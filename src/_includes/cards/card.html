@@ -1,0 +1,40 @@
+<div class="card{% if include.collapsed %} card-collapsed{% endif %}">
+	{% if include.status or include.status-left %}
+	<div class="card-status{% if include.status-left %} card-status-left{% endif %} bg-{{ include.status | default: include.status-left }}"></div>
+	{% endif %}
+
+	<div class="card-header">
+		{% if include.title %}
+		<h3 class="card-title">{{ include.title }}</h3>
+		{% endif %}
+
+		{% unless include.hide-options %}
+		<div class="card-options">
+			{% if include.options %}
+			{{ include.options }}
+			{% else %}
+				<a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
+				{% if include.show-fullscreen %}
+				<a href="#" class="card-options-fullscreen" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
+				{% endif %}
+				<a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
+			{% endif %}
+		</div>
+		{% endunless %}
+	</div>
+	{% if include.alert %}
+	<div class="card-alert alert alert-{{ include.alert-type | default: 'success' }} mb-0">
+		{{ include.alert }}
+	</div>
+	{% endif %}
+	<div class="card-body">
+		<p>
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan.
+		</p>
+	</div>
+	{% if include.show-footer %}
+	<div class="card-footer">
+		This is standard card footer
+	</div>
+	{% endif %}
+</div>

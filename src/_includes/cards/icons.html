@@ -1,0 +1,26 @@
+<div class="card">
+	<div class="card-header">
+		<div class="card-title">{{ include.title }}</div>
+	</div>
+	<div class="card-body">
+
+		<div class="row">
+			<div class="col-3">
+				<p>{{ include.description }} For more info <a href="{{ include.url }}" target="_blank">click here</a>.</p>
+				<p><code>&lt;i class="{{ include.icon_class }} {{ include.icon_class }}-ICON_NAME"&gt;&lt;/i&gt;</code></p>
+			</div>
+			<div class="col-9">
+				<div class="icons-list-wrap">
+					<ul class="icons-list">
+						{% for icon in include.icons %}
+						<li class="icons-list-item"><i class="{{ include.icon_class }} {{ icon }}" data-toggle="tooltip" title="{{ include.icon_class }} {{ icon }}"></i></li>
+						{% endfor %}
+						{% for icon in (0..20) %}
+						<li></li>
+						{% endfor %}
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

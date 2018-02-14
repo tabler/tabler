@@ -1,0 +1,47 @@
+.btn {
+	cursor: pointer;
+	font-weight: 600;
+	letter-spacing: .03em;
+	font-size: px2rem(13px);
+	min-width: px2rem(38px);
+}
+
+.btn-secondary {
+	@include button-variant(#fff, $input-border-color, #f6f6f6);
+	box-shadow: 0 1px 1px 0 rgba(0, 0, 0, 0.05);
+}
+
+.btn-pill {
+	border-radius: 10rem;
+}
+
+@each $vendor, $color in $social-colors {
+	.btn-#{$vendor} {
+		@include button-variant($color, $color);
+	}
+}
+
+.btn-option {
+	background: transparent;
+	color: $text-muted;
+
+	&:hover {
+		color: $text-muted-dark;
+	}
+
+	&:focus {
+		box-shadow: none;
+		color: $text-muted-dark;
+	}
+}
+
+.btn-sm {
+	font-size: px2rem(12px);
+	min-width: px2rem(26px);
+}
+
+.btn-lg {
+	font-size: px2rem(16px);
+	min-width: px2rem(44px);
+	font-weight: 400;
+}

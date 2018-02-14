@@ -1,0 +1,65 @@
+<div class="card">
+	<div class="card-body">
+		<h3 class="card-title">Browsers traffic</h3>
+		<div>
+			<div id="chart-browsers" style="height: 15rem"></div>
+		</div>
+	</div>
+	<table class="table card-table">
+		<tbody>
+		<tr>
+			<td width="1"><i class="browser browser-chrome"></i></td>
+			<td>Google Chrome</td>
+			<td class="text-right"><span class="text-muted">23%</span></td>
+		</tr>
+		<tr>
+			<td><i class="browser browser-firefox"></i></td>
+			<td>Mozila Firefox</td>
+			<td class="text-right"><span class="text-muted">15%</span></td>
+		</tr>
+		<tr>
+			<td><i class="browser browser-safari"></i></td>
+			<td>Apple Safari</td>
+			<td class="text-right"><span class="text-muted">7%</span></td>
+		</tr>
+		<tr>
+			<td><i class="browser browser-opera"></i></td>
+			<td>Opera mini</td>
+			<td class="text-right"><span class="text-muted">23%</span></td>
+		</tr>
+		<tr>
+			<td><i class="browser browser-edge"></i></td>
+			<td>Microsoft edge</td>
+			<td class="text-right"><span class="text-muted">9%</span></td>
+		</tr>
+		</tbody>
+	</table>
+</div>
+
+<script>
+    require(['c3', 'jquery'], function (c3) {
+        var chart = c3.generate({
+            bindto: '#chart-browsers',
+            data: {
+                columns: [
+                    ['Chrome', 36],
+                    ['Firefox', 5],
+                    ['Safari', 9],
+                    ['Edge', 20],
+                    ['Opera', 30],
+                ],
+                colors: {
+                    Chrome: '{{ site.colors.green }}',
+                    Firefox: '{{ site.colors.orange }}',
+                    Safari: '{{ site.colors.blue }}',
+                    Edge: '{{ site.colors.azure }}',
+                    Opera: '{{ site.colors.red }}',
+                },
+                type: 'donut'
+            },
+            legend: {
+                show: false
+            }
+        });
+    });
+</script>

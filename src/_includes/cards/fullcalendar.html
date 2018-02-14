@@ -1,0 +1,96 @@
+<div class="card">
+	<div class="card-body">
+		<div id="fullcalendar"></div>
+	</div>
+</div>
+
+<script>
+    require(['fullcalendar', 'jquery'], function () {
+        $(document).ready(function () {
+            $('#fullcalendar').fullCalendar({
+                eventColor: tabler.colors.blue,
+                displayEventTime: true,
+                defaultDate: '2017-11-12',
+                editable: true,
+                eventLimit: true,
+                columnFormat: 'dddd',
+                timeFormat: 'H:mm',
+				header: {
+                    left:   'today',
+                    center: 'title',
+                    right:  'prev,next'
+				},
+                viewRender: function(view, element) {
+                    if(view.name === 'month') {
+                        element.find('.fc-head-container').addClass('table');
+                    }
+                },
+                events: [
+                    {
+                        title: 'All Day Event',
+                        start: '2017-11-01',
+                        color: tabler.colors.red
+                    },
+                    {
+                        title: 'Long Event',
+                        start: '2017-11-07',
+                        end: '2017-11-10'
+                    },
+                    {
+                        id: 999,
+                        title: 'Repeating Event',
+                        start: '2017-11-09T16:00:00',
+                        color: tabler.colors.yellow
+                    },
+                    {
+                        id: 999,
+                        title: 'Repeating Event',
+                        start: '2017-11-16T16:00:00',
+                        color: tabler.colors.yellow
+                    },
+                    {
+                        id: 999,
+                        title: 'Repeating Event',
+                        start: '2017-11-23T16:00:00',
+                        color: tabler.colors.yellow
+                    },
+                    {
+                        title: 'Conference',
+                        start: '2017-11-11',
+                        end: '2017-11-13'
+                    },
+                    {
+                        title: 'Meeting',
+                        start: '2017-11-12T10:30:00',
+                        end: '2017-11-12T12:30:00'
+                    },
+                    {
+                        title: 'Lunch',
+                        start: '2017-11-12T12:00:00'
+                    },
+                    {
+                        title: 'Meeting',
+                        start: '2017-11-12T14:30:00'
+                    },
+                    {
+                        title: 'Happy Hour',
+                        start: '2017-11-12T17:30:00'
+                    },
+                    {
+                        title: 'Dinner',
+                        start: '2017-11-12T20:00:00'
+                    },
+                    {
+                        title: 'Birthday Party',
+                        start: '2017-11-13T07:00:00'
+                    },
+                    {
+                        title: 'Click for Google',
+                        url: 'http://google.com/',
+                        start: '2017-11-28'
+                    }
+                ]
+            })
+        });
+    });
+</script>

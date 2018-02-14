@@ -1,0 +1,40 @@
+---
+layout: default
+title: Crypto currencies
+---
+
+
+<div class="container">
+	{% include page-title.html title="Crypto currencies" %}
+
+	<div class="card">
+		<table class="table card-table">
+			<tr>
+				<th></th>
+				<th></th>
+				<th>Name</th>
+				<th>Price</th>
+				<th>% 24h</th>
+				<th>Market Cap</th>
+				<th>Circulating Supply</th>
+				<th>Volume 24H</th>
+				<th>CMGR/Month</th>
+				<th>Inflation</th>
+			</tr>
+			{% for item in site.data.crypto-currencies %}
+			<tr>
+				<td>{{ forloop.index }}</td>
+				<td>{% if item.icon %}<img src="{{ site.base }}/assets/images/crypto-currencies/{{ item.icon }}" alt="{{ item.name }}" class="w-4 h-4">{% endif %}</td>
+				<td>{{ item.name }}</td>
+				<td>{{ item.price }}</td>
+				<td class="{% if item.p24h > 0 %}text-green{% elsif item.p24h < 0 %}text-red{% endif %}">{{ item.p24h }}%</td>
+				<td class="text-right">{{ item.market-cap }}</td>
+				<td>{{ item.circulating-supply }}</td>
+				<td class="text-right">{{ item.volume-24h }}</td>
+				<td>{{ item.cmgr }}</td>
+				<td class="text-right">{{ item.inflation }}</td>
+			</tr>
+			{% endfor %}
+		</table>
+	</div>
+</div>

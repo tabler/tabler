@@ -1,0 +1,34 @@
+{% assign article = include.article | default: site.data.articles[0] %}
+{% assign type = include.type | default: 'none' %}
+{% assign author = site.data.users[article.author] %}
+{% assign liked = include.liked | default: false %}
+{% assign truncate = include.truncate | default: 100 %}
+
+<div class="card{% if type == 'aside' %} card-aside{% endif %}">
+	{% if type == 'image' %}
+	<a href="#"><img class="card-img-top" src="{{ site.base }}/{{ site.data.photos[article.image].small }}" alt="{{ article.title | escape}}"></a>
+	{% endif %}
+
+	{% if type == 'aside' %}
+	<a href="#" class="card-aside-column{% if include.aside-class %} {{ include.aside-class }}{% endif %}" style="background-image: url({{ site.base }}/{{ site.data.photos[article.image].small }})"></a>
+	{% endif %}
+
+
+
+	<div class="card-body d-flex flex-column">
+		<h4><a href="#">{{ article.title }}</a></h4>
+
+		<div class="text-muted">{{ article.description | truncate: truncate }}</div>
+
+		<div class="d-flex align-items-center pt-5 mt-auto">
+			<div class="avatar avatar-md mr-3" style="background-image: url({{ site.base }}/{{ author.photo }})"></div>
+			<div>
+				<a href="{{ site.base }}/profile.html" class="text-default">{{ author.name }} {{ author.surname }}</a>
+				<small class="d-block text-muted">3 days ago</small>
+			</div>
+			<div class="ml-auto {% if liked %}text-red{% else %}text-muted{% endif %}">
+				<a href="javascript:void(0)" class="icon d-none d-md-inline-block ml-3"><i class="fe fe-heart mr-1"></i></a>
+			</div>
+		</div>
+	</div>
+</div>

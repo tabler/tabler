@@ -1,0 +1,1 @@
+for i in *.jpg; do convert "$i" -resize 500x333^ -gravity center -crop 500x333+0+0 -quality 80 -monitor "${i%.*}-500.jpg"; done

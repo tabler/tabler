@@ -1,0 +1,51 @@
+//.colorinput-stacked {
+//	display: flex;
+//	flex-wrap: wrap;
+//
+//	.colorinput {
+//		margin-right: .25rem;
+//	}
+//}
+
+.colorinput {
+	margin: 0;
+	position: relative;
+	cursor: pointer;
+}
+
+.colorinput-input {
+	position: absolute;
+	z-index: -1;
+	opacity: 0;
+}
+
+.colorinput-color {
+	display: inline-block;
+	width: 1.75rem;
+	height: 1.75rem;
+	border-radius: 3px;
+	border: 1px solid $border-color;
+	color: #fff;
+	box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+
+	&:before {
+		content: '';
+		opacity: 0;
+		position: absolute;
+		top: .25rem;
+		left: .25rem;
+		height: 1.25rem;
+		width: 1.25rem;
+		transition: .3s opacity;
+		background: $custom-checkbox-indicator-icon-checked no-repeat center center/50% 50%;
+
+		.colorinput-input:checked ~ & {
+			opacity: 1;
+		}
+	}
+
+	.colorinput-input:focus ~ & {
+		border-color: $primary;
+		box-shadow: $input-btn-focus-box-shadow;
+	}
+}

@@ -1,0 +1,51 @@
+$sizes: (
+	'xs': 2.5rem,
+	'sm': 4rem,
+	'lg': 10rem
+);
+
+.chart-circle {
+	display: block;
+	height: 8rem;
+	width: 8rem;
+	position: relative;
+
+	canvas {
+		margin: 0 auto;
+		display: block;
+		max-width: 100%;
+		max-height: 100%;
+	}
+}
+
+@each $size, $value in $sizes {
+	.chart-circle-#{$size} {
+		height: $value;
+		width: $value;
+		font-size: .8rem;
+	}
+}
+
+.chart-circle-value {
+	position: absolute;
+	top: 0;
+	left: 0;
+	right: 0;
+	margin-left: auto;
+	margin-right: auto;
+	bottom: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+
+	//font-size: px2rem(24px);
+	//font-weight: 600;
+	line-height: 1;
+
+	small {
+		display: block;
+		color: $text-muted;
+		font-size: px2rem(15px);
+	}
+}

@@ -1,0 +1,37 @@
+---
+layout: default
+menu: components.blog
+---
+
+<div class="container">
+
+	{% include page-title.html title="Blog components" %}
+
+	<div class="row row-cards row-deck">
+
+		{% for article in site.data.articles limit: 4 %}
+		<div class="col-sm-6 col-xl-3">
+			{% include cards/blog-single.html article=article id=forloop.index type="image" %}
+		</div>
+		{% endfor %}
+
+		{% for article in site.data.articles limit: 3 offset: 4 %}
+		<div class="col-lg-4">
+			{% include cards/blog-single.html article=article id=forloop.index %}
+		</div>
+		{% endfor %}
+
+		{% for article in site.data.articles limit: 2 %}
+		<div class="col-lg-6">
+			{% include cards/blog-single.html article=article type="aside" %}
+		</div>
+		{% endfor %}
+
+		{% for article in site.data.articles limit: 2 offset: 4 %}
+		<div class="col-lg-6">
+			{% include cards/blog-single.html article=article type="aside" aside-class="w-50" truncate=200 %}
+		</div>
+		{% endfor %}
+
+	</div>
+</div>

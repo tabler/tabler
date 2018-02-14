@@ -1,0 +1,42 @@
+<div class="card">
+	<div class="card-body">
+		<h3 class="card-title">Responsive Table</h3>
+
+		<table class="table table-responsive table-striped table-vcenter">
+			<thead>
+			<tr>
+				<th class="text-center" style="width: 1%">&nbsp;</th>
+				<th>Name</th>
+				<th>Email</th>
+				<th>Phone</th>
+				<th class="text-center" style="width: 1%">Actions</th>
+			</tr>
+			</thead>
+			<tbody>
+
+			{% for user in site.data.users limit: 10 %}
+			<tr>
+				<td class="text-center">
+					<span class="avatar avatar-md d-block" style="background-image: url({{ user.photo }})"></span>
+				</td>
+				<td class="font-weight-bold">{{ user.name }} {{ user.surname }}</td>
+				<td>{{ user.email }}</td>
+				<td>
+					{{ user.phone }}
+				</td>
+				<td class="text-center">
+					<div class="btn-group">
+						<button type="button" class="btn btn-sm btn-secondary js-tooltip-enabled" data-toggle="tooltip" title="" data-original-title="Edit">
+							<i class="fa fa-pencil"></i>
+						</button>
+						<button type="button" class="btn btn-sm btn-secondary js-tooltip-enabled" data-toggle="tooltip" title="" data-original-title="Delete">
+							<i class="fa fa-times"></i>
+						</button>
+					</div>
+				</td>
+			</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>

@@ -1,0 +1,60 @@
+<div class="card">
+	<div class="card-header">
+		<h3 class="card-title">Total Revenue</h3>
+	</div>
+	<div class="card-body">
+		<div id="chart-revenue" style="height: 20rem"></div>
+	</div>
+</div>
+
+<script>
+	require(['c3', 'jquery'], function(c3) {
+	   $(document).ready(function(){
+           var chart = c3.generate({
+               bindto: '#chart-revenue',
+               data: {
+                   columns: [
+					   ['data1', 39, 44, 47, 50, 55, 66, 79, 84, 86, 87, 92, 95],
+                       ['data2', 65, 73, 83, 95, 96, 97, 99, 100, 103, 116, 138, 143],
+                       ['data3', 101, 104, 119, 125, 132, 143, 145, 161, 167, 187, 191, 194]
+                   ],
+                   type: 'bar',
+                   groups: [
+                       ['data1', 'data2', 'data3']
+                   ],
+				   colors: {
+                     	'data1': tabler.colors.red,
+                     	'data2': tabler.colors.green,
+                     	'data3': tabler.colors.blue,
+				   },
+				   names: {
+                       'data1': '2015',
+                       'data2': '2016',
+                       'data3': '2017',
+				   }
+               },
+               axis : {
+                   x: {
+                       type: 'category',
+                       categories: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec']
+                   },
+                   y: {
+                       tick: {
+                           format: d3.format("$")
+                       }
+                   }
+               },
+               bar: {
+                   width: 32
+               },
+               padding: {
+                   bottom: 24,
+                   top: 0
+               },
+               legend: {
+                   padding: 16
+               }
+           });
+	   });
+	});
+</script>

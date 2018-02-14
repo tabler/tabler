@@ -1,0 +1,68 @@
+<div class="card">
+	<img src="{{ site.data.photos[1].small }}" class="card-img-top" alt="">
+	<div class="card-body">
+
+		<h4 class="mb-4">Girl & Lake</h4>
+
+		<div class="row mb-4">
+			<div class="col-5">
+				<i class="mdi mdi-camera mr-1"></i>ISO 200
+			</div>
+			<div class="col-7">
+				<i class="mdi mdi-camera-iris mr-1"></i>1/1000
+			</div>
+			<div class="col-5">3780 x 2984</div>
+			<div class="col-7">9.54 MB</div>
+		</div>
+
+		<div class="row">
+			<div class="col-5"><strong>Created:</strong></div>
+			<div class="col-7">09 Jun 2017 11:32AM</div>
+			<div class="col-5"><strong>Updated:</strong></div>
+			<div class="col-7">19 Jun 2017 9:43PM</div>
+			<div class="col-5"><strong>Bit Depth:</strong></div>
+			<div class="col-7">16 bit</div>
+			<div class="col-5"><strong>Creator:</strong></div>
+			<div class="col-7">{{ site.data.users[1].name }} {{ site.data.users[1].surname }}</div>
+			<div class="col-5"><strong>Used colors:</strong></div>
+			<div class="col-7">
+				<div class="colors-list">
+					<span class="colors-list-item" style="background-color: #646432"></span>
+					<span class="colors-list-item" style="background-color: #323232"></span>
+					<span class="colors-list-item" style="background-color: #c8c8fa"></span>
+					<span class="colors-list-item" style="background-color: #969696"></span>
+					<span class="colors-list-item" style="background-color: #6496c8"></span>
+					<span class="colors-list-item" style="background-color: #939f5f"></span>
+					<span class="colors-list-item" style="background-color: #3264c8"></span>
+				</div>
+			</div>
+		</div>
+
+		<hr>
+
+		<div class="row align-items-center mb-4">
+			<div class="col-5"><strong>Privacy</strong></div>
+			<div class="col-7">
+				<select class="custom-select custom-select-sm">
+					<option value="">Public</option>
+					<option value="">Private</option>
+					<option value="">Friends</option>
+				</select>
+			</div>
+		</div>
+		<div class="row align-items-center">
+			<div class="col-5"><strong>Collaborators</strong></div>
+			<div class="col-7">
+				<ul class="avatar-list avatar-list-stacked">
+					{% for user in site.data.users limit: 6 offset: 1 %}
+					<li class="avatar-list-item">
+						<span class="avatar avatar-sm" style="background-image: url({{ user.photo }})"></span>
+					</li>
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+

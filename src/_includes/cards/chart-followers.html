@@ -1,0 +1,87 @@
+<div class="card">
+	<div class="card-header">
+		<div class="card-title">Gained &amp; Lost Followers</div>
+	</div>
+	<div class="card-body">
+		<div id="chart-followers" style="height: 16rem"></div>
+	</div>
+</div>
+
+<script>
+    require(['c3', 'jquery'], function (c3, $) {
+        $(document).ready(function () {
+            var chart = c3.generate({
+                bindto: '#chart-followers',
+                padding: {
+                    bottom: 24,
+                    top: 0
+                },
+                data: {
+                    names: {
+                        data1: 'Gained followers',
+                        data2: 'Lost followers',
+                        data3: 'Posts',
+                    },
+                    colors: {
+                        data1: '{{ site.colors.blue }}',
+                        data2: '{{ site.colors.gray }}',
+                        data3: '{{ site.colors.lime }}',
+                    },
+                    columns: [
+                        ['data1', 200, 290, 110, 80, 300, 90, 120],
+                        ['data2', 0, -35, -20, -10, -50, -10, 0],
+                        ['data3', 1, 2, 2, 0, 1, 1, 0]
+                    ],
+                    type: 'bar',
+                    types: {
+                        data3: 'line'
+                    },
+                    groups: [
+                        ['data1', 'data2']
+                    ],
+                    axes: {
+                        data3: 'y2'
+                    }
+                },
+                bar: {
+                    width: 16
+                },
+                legend: {
+                    padding: 16
+                },
+                axis: {
+                    y: {
+                        min: -100,
+                        tick: {
+                            count: 5
+                        },
+                        padding: {
+                            bottom: 0,
+							top: 0
+                        }
+                    },
+                    y2: {
+                        min: -1,
+						max: 3,
+                        show: true,
+                        tick: {
+							format: d3.format('d')
+                        },
+                        padding: {
+                            bottom: 0,
+                            top: 0
+                        }
+                    }
+                },
+                grid: {
+                    y: {
+                        show: true,
+                        lines: [
+                            {value: 0.0}
+                        ]
+                    }
+                }
+            });
+        });
+    });
+</script>

@@ -1,0 +1,140 @@
+@keyframes indeterminate {
+	0% {
+		left: -35%;
+		right: 100%
+	}
+
+	100%, 60% {
+		left: 100%;
+		right: -90%
+	}
+}
+
+@keyframes indeterminate-short {
+	0% {
+		left: -200%;
+		right: 100%
+	}
+
+	100%, 60% {
+		left: 107%;
+		right: -8%
+	}
+}
+
+.progress {
+	position: relative;
+}
+
+.progress-xs,
+.progress-xs .progress-bar {
+	height: .25rem;
+}
+
+.progress-sm,
+.progress-sm .progress-bar {
+	height: .5rem;
+}
+
+.progress-bar-indeterminate {
+	&:after,
+	&:before {
+		content: '';
+		position: absolute;
+		background-color: inherit;
+		left: 0;
+		will-change: left, right;
+		top: 0;
+		bottom: 0;
+	}
+
+	&:before {
+		animation: indeterminate 2.1s cubic-bezier(.65, .815, .735, .395) infinite;
+	}
+
+	&:after {
+		animation: indeterminate-short 2.1s cubic-bezier(.165, .84, .44, 1) infinite;
+		animation-delay: 1.15s;
+	}
+}
+
+
+
+@keyframes loader {
+	from {
+		transform: rotate(0deg);
+	}
+
+	to {
+		transform: rotate(360deg);
+	}
+}
+
+
+/**
+Dimmer
+*/
+.dimmer {
+	position: relative;
+
+	.loader {
+		display: none;
+		margin: 0 auto;
+		position: absolute;
+		top: 50%;
+		left: 0;
+		right: 0;
+		transform: translateY(-50%);
+	}
+
+	&.active {
+		.loader {
+			display: block;
+		}
+
+		.dimmer-content {
+			opacity: .04;
+			pointer-events: none;
+		}
+	}
+}
+
+/**
+Loader
+*/
+$loader-size: 2.5rem;
+.loader {
+	display: block;
+	position: relative;
+	height: $loader-size;
+	width: $loader-size;
+	color: $blue;
+
+	&:before,
+	&:after {
+		width: $loader-size;
+		height: $loader-size;
+		margin: (- $loader-size / 2) 0 0 (- $loader-size / 2);
+		position: absolute;
+		content: '';
+		top: 50%;
+		left: 50%;
+	}
+
+	&:before {
+		border-radius: 50%;
+		border: 3px solid currentColor;
+		opacity: .15;
+	}
+
+	&:after {
+		animation: loader .6s linear;
+		animation-iteration-count: infinite;
+
+		border-radius: 50%;
+		border: 3px solid;
+		border-color: transparent;
+		border-top-color: currentColor;
+		box-shadow: 0 0 0 1px transparent;
+	}
+}

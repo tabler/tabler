@@ -1,0 +1,40 @@
+---
+layout: default
+menu: docs
+title: Documentation
+---
+
+<div class="container">
+	{% include page-title.html title="Documentation" %}
+
+	<div class="row">
+		<div class="col-lg-3">
+			<div class="card">
+				<div class="card-body">
+					<ul class="list">
+					{% for doc in site.docs %}
+						<li><a href="{{ site.base }}{{ doc.url }}">{{ doc.title }}</a></li>
+					{% endfor %}
+					</ul>
+				</div>
+			</div>
+		</div>
+		<div class="col-lg-9">
+			<div class="card">
+				<div class="card-body">
+
+
+					<div class="text-wrap">
+						<h2 class="mt-0 mb-4">{{ page.title }}</h2>
+
+						{% if page.toc %}
+						{{ content | toc_only }}
+						{% endif %}
+
+						{{ content }}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

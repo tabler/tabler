@@ -1,0 +1,19 @@
+{% assign change = include.change | default: 12 %}
+<div class="card p-3 px-4">
+	<div>
+		{{ include.title | default: 'Total revenue' }}
+	</div>
+	<div class="py-4 m-0 text-center h1 text-{{ include.color | default: 'default' }}">{{ include.value | default: '$14,320' }}</div>
+	<div class="d-flex">
+		<small class="text-muted">{{ include.subtitle | default: 'Income' }}</small>
+		<div class="ml-auto">
+			{% if change > 0 %}
+			<i class="fa fa-caret-up text-green"></i>
+			{% elsif change < 0 %}
+			<i class="fa fa-caret-down text-red"></i>
+			{% endif %}
+
+			{{ change | abs }}%
+		</div>
+	</div>
+</div>

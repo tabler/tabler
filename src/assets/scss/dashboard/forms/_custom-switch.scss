@@ -1,0 +1,74 @@
+$custom-switch-width: 2.25rem;
+$custom-switch-height: 1.25rem;
+$custom-switch-padding: 1px;
+
+.custom-switch {
+	user-select: none;
+	cursor: default;
+	display: inline-flex;
+	align-items: center;
+	margin: 0;
+}
+
+.custom-switch-input {
+	position: absolute;
+	z-index: -1;
+	opacity: 0;
+}
+
+.custom-switches-stacked {
+	display: flex;
+	flex-direction: column;
+
+	.custom-switch {
+		margin-bottom: .5rem;
+	}
+}
+
+.custom-switch-indicator {
+	display: inline-block;
+	height: $custom-switch-height;
+	width: $custom-switch-width;
+	background: $gray-200;
+	border-radius: 50px;
+	position: relative;
+	vertical-align: bottom;
+	border: 1px solid $border-color;
+	transition: .3s border-color, .3s background-color;
+
+	&:before {
+		content: '';
+		position: absolute;
+		height: calc(#{$custom-switch-height} - #{$custom-switch-padding * 2 + 2px});
+		width: calc(#{$custom-switch-height} - #{$custom-switch-padding * 2 + 2px});
+		top: $custom-switch-padding;
+		left: $custom-switch-padding;
+		background: #fff;
+		border-radius: 50%;
+		transition: .3s left;
+		box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.4);
+	}
+
+	.custom-switch-input:checked ~ & {
+		background: $primary;
+
+		&:before {
+			left: calc(#{$custom-switch-width - $custom-switch-height} + #{$custom-switch-padding})
+		}
+	}
+
+	.custom-switch-input:focus ~ & {
+		box-shadow: $input-btn-focus-box-shadow;
+		border-color: $primary;
+	}
+}
+
+.custom-switch-description {
+	margin-left: .5rem;
+	color: $text-muted-dark;
+	transition: .3s color;
+
+	.custom-switch-input:checked ~ & {
+		color: $body-color;
+	}
+}

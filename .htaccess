@@ -1,0 +1,41 @@
+RewriteEngine On
+RewriteCond %{HTTPS} off
+RewriteCond %{HTTP_HOST} !=localhost
+RewriteCond %{HTTP_HOST} !=127.0.0.1
+RewriteCond %{REMOTE_ADDR} !=127.0.0.1
+RewriteCond %{REMOTE_ADDR} !=::1
+RewriteRule ^(.*)$ https://%{HTTP_HOST}/$1 [R=301,L]
+
+ErrorDocument 404 /404.html
+ErrorDocument 500 /500.html
+
+<IfModule mod_deflate.c>
+    SetOutputFilter DEFLATE
+    SetEnvIfNoCase Request_URI \
+    \.(?:gif|jpe?g|png)$ no-gzip dont-vary
+</IfModule>
+
+<IfModule mod_headers.c>
+    ServerSignature Off
+    Header unset X-Powered-By
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>
+
+<IfModule mod_expires.c>
+    ExpiresActive on
+    ExpiresByType image/jpg "access 2 month"
+    ExpiresByType image/gif "access 2 month"
+    ExpiresByType image/jpeg "access 2 month"
+    ExpiresByType image/png "access 2 month"
+    ExpiresByType text/css "access 2 month"
+    ExpiresByType image/svg+xml "access 2 month"
+    ExpiresByType application/x-javascript "access plus 2 month"
+    ExpiresByType text/javascript "access plus 2 month"
+    ExpiresByType application/javascript "access plus 2 month"
+    ExpiresByType image/x-icon "access plus 12 month"
+    ExpiresByType image/icon "access plus 12 month"
+    ExpiresByType application/x-ico "access plus 12 month"
+    ExpiresByType application/ico "access plus 12 month"
+
+    ExpiresByType text/html "access plus 2 days"
+</IfModule>

@@ -1,0 +1,65 @@
+{% removeemptylines %}
+{% assign data-id = include.data | default: 'default' %}
+{% assign data = site.data.maps[data-id] %}
+{% if data %}
+<script>
+require(['{{ site.google-maps-url }}', 'jquery'], function (maps, $) {
+	$(document).ready(function(){
+		var myLatlng = new google.maps.LatLng({lat: {{data.center[0] }}, lng: {{data.center[1] }}});
+		var mapOptions = {
+			zoom: {{data.zoom | default: 9 }},
+			center: myLatlng,
+			streetViewControl: false,
+			mapTypeControl: false,
+			scaleControl: false,
+			zoomControl: false,
+			fullscreenControl: false,
+			gestureHandling: 'none',
+			{% if data.custom-styles %}
+			styles: [
+				{"featureType": "water","elementType": "geometry","stylers": [{"color": "#e9e9e9"},{"lightness": 17}]},{"featureType": "landscape","elementType": "geometry","stylers": [{"color": "#f5f5f5"},{"lightness": 20}]},{"featureType": "road.highway","elementType": "geometry.fill","stylers": [{"color": "#ffffff"},{"lightness": 17}]},{"featureType": "road.highway","elementType": "geometry.stroke","stylers": [{"color": "#ffffff"},{"lightness": 29},{"weight": 0.2}]},{"featureType": "road.arterial","elementType": "geometry","stylers": [{"color": "#ffffff"},{"lightness": 18}]},{"featureType": "road.local","elementType": "geometry","stylers": [{"color": "#ffffff"},{"lightness": 16}]},{"featureType": "poi","elementType": "geometry","stylers": [{"color": "#f5f5f5"},{"lightness": 21}]},{"featureType": "poi.park","elementType": "geometry","stylers": [{"color": "#dedede"},{"lightness": 21}]},{"elementType": "labels.text.stroke","stylers": [{"visibility": "on"},{"color": "#ffffff"},{"lightness": 16}]},{"elementType": "labels.text.fill","stylers": [{"saturation": 36},{"color": "#333333"},{"lightness": 40}]},{"elementType": "labels.icon","stylers": [{"visibility": "off"}]},{"featureType": "transit","elementType": "geometry","stylers": [{"color": "#f2f2f2"},{"lightness": 19}]},{"featureType": "administrative","elementType": "geometry.fill","stylers": [{"color": "#fefefe"},{"lightness": 20}]},{"featureType": "administrative","elementType": "geometry.stroke","stylers": [{"color": "#fefefe"},{"lightness": 17},{"weight": 1.2}]},
+			]
+			{% endif %}
+		};
+
+		map = new google.maps.Map(document.getElementById('{{ include.id }}'), mapOptions);
+
+		{% if data.points %}
+		var mapPathCoordinates = [
+			{% for point in data.points %}
+			{lat: {{ point[0] }}, lng: {{ point[1] }}}{% unless forloop.last %},{% endunless %}
+			{% endfor %}
+		];
+
+		var bounds = new google.maps.LatLngBounds();
+		for (var i = 0; i < mapPathCoordinates.length; i++) {
+			var marker = new google.maps.Marker({
+				position: mapPathCoordinates[i],
+				icon: {
+					path: google.maps.SymbolPath.CIRCLE,
+					scale: 2,
+					fillColor: '#fff',
+					strokeColor: tabler.colors.{{ data.path-color | default: 'red' }},
+				},
+				map: map
+			});
+
+			bounds.extend(mapPathCoordinates[i]);
+		}
+		map.fitBounds(bounds);
+
+		var mapPath = new google.maps.Polyline({
+			path: mapPathCoordinates,
+			geodesic: true,
+			strokeColor: tabler.colors.{{ data.path-color | default: 'red' }},
+			strokeOpacity: 1.0,
+			strokeWeight: 3
+		});
+		mapPath.setMap(map);
+
+		{% endif %}
+	});
+});
+</script>
+{% endif %}
+{% endremoveemptylines %}

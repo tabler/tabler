@@ -1,0 +1,120 @@
+<div class="card">
+	<div class="card-tabs">
+		<div class="card-tabs-item">
+			<div class="row">
+				<div class="col-auto align-self-center">
+					<div class="chart-circle chart-circle-xs" data-value="0.8" data-thickness="4" data-color="#fca328"></div>
+				</div>
+				<div class="col">
+					<div class="text-muted">Projects</div>
+					<div class="h3 m-0">11,164</div>
+				</div>
+			</div>
+		</div>
+		<div class="card-tabs-item">
+			<div class="row">
+				<div class="col-auto align-self-center">
+					<div class="chart-circle chart-circle-xs" data-value="0.2" data-thickness="4" data-color="#7bd235"></div>
+				</div>
+				<div class="col">
+					<div class="text-muted">Calls</div>
+					<div class="h3 m-0">986</div>
+				</div>
+			</div>
+		</div>
+		<div class="card-tabs-item">
+			<div class="row">
+				<div class="col-auto align-self-center">
+					<div class="chart-circle chart-circle-xs" data-value="0.45" data-thickness="4" data-color="#76befe"></div>
+				</div>
+				<div class="col">
+					<div class="text-muted">Referrals</div>
+					<div class="h3 m-0">1,986</div>
+				</div>
+			</div>
+		</div>
+		<div class="card-tabs-item">
+			<div class="row">
+				<div class="col-auto align-self-center">
+					<div class="chart-circle chart-circle-xs" data-value="0.6" data-thickness="4" data-color="#f90049"></div>
+				</div>
+				<div class="col">
+					<div class="text-muted">Revenue</div>
+					<div class="h3 m-0">$640</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="card-body">
+		<div id="chart-visitors" style="min-height: 18rem"></div>
+	</div>
+</div>
+
+<script>
+    require(['c3', 'jquery'], function (c3) {
+        $(document).ready(function() {
+            var chart = c3.generate({
+                bindto: '#chart-visitors',
+                padding: {
+                    bottom: 24
+                },
+                data: {
+                    x: 'x',
+                    names: {
+                        data1: 'Referral',
+                        data2: 'Calls',
+                        data3: 'Prospects',
+                    },
+                    columns: [
+                        ['x', '2013-07-12', '2013-07-13', '2013-07-14', '2013-07-15', '2013-07-16', '2013-07-17', '2013-07-18', '2013-07-19', '2013-07-20', '2013-07-21', '2013-07-22'],
+                        ['data1', 22, 28, 21, 46, 48, 38, 48, 52, 28, 57, 32],
+                        ['data2', 72, 61, 102, 104, 132, 86, 74, 108, 78, 106, 144],
+                        ['data3', 125, 100, 72, 132, 154, 141, 178, 142, 146, 72, 186],
+                    ],
+                    types: {
+                        data1: 'area',
+                    }
+                },
+                point: {
+                    show: false
+                },
+                legend: {
+                    position: 'top',
+                    padding: 16
+                },
+                transition: {
+                    duration: 0
+                },
+                axis: {
+                    y: {
+                        tick: {
+                            fit: true
+                        }
+                    },
+                    x: {
+                        type: 'timeseries',
+                        tick: {
+                            format: '%d %b'
+                        },
+                        padding: {
+                            top: 10,
+                            bottom: 0
+                        }
+                    }
+                },
+                grid: {
+                    y: {
+                        show: true
+                    }
+                },
+                color: {
+                    pattern: [
+                        '#fca328',
+                        '#7bd235',
+                        '#76befe',
+                    ]
+                }
+            });
+        });
+    });
+</script>

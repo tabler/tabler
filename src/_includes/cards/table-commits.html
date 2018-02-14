@@ -1,0 +1,75 @@
+<div class="card">
+	<div class="card-header">
+		<h3 class="card-title">Last commits</h3>
+	</div>
+	<table class="card-table table table-striped table-vcenter">
+		<thead>
+		<tr>
+			<th style="width:1%;">
+				<label class="custom-control custom-checkbox m-0 d-block">
+					<input type="checkbox" class="custom-control-input">
+					<span class="custom-control-indicator"></span>
+				</label>
+			</th>
+			<th colspan="2">User</th>
+			<th>Last Commit</th>
+			<th>Milestone</th>
+			<th>Branch</th>
+			<th>Date</th>
+			<th style="width: 1%"></th>
+		</tr>
+		</thead>
+		<tbody>
+		{% for commit in site.data.commits limit: 5 %}
+		<tr>
+			<td>
+				<label class="custom-control custom-checkbox m-0 d-block">
+					<input type="checkbox" class="custom-control-input">
+					<span class="custom-control-indicator"></span>
+				</label>
+			</td>
+			<td style="width: 1%;">
+				<div class="avatar d-block" style="background-image: url({{ site.data.users[forloop.index].photo }})"></div>
+			</td>
+			<td class="user-avatar cell-detail user-info">
+				<div>{{ site.data.users[forloop.index].name }} {{ site.data.users[forloop.index].surname }}</div>
+				<div class="small text-muted">{{ commit.commiter.position }}</div>
+			</td>
+			<td>
+				<div>{{ commit.commit.name }}</div>
+				<div class="small text-muted">{{ commit.commit.project }}</div>
+			</td>
+			<td class="milestone">
+				<div class="row mb-1">
+					<div class="col small text-muted">v1.1.5</div>
+					<div class="col small text-muted text-right">{{ commit.milestone.start }} / {{ commit.milestone.end }}</div>
+				</div>
+				<div class="progress progress-xs">
+					<div style="width: {{ commit.milestone.percentage }}%" class="progress-bar progress-bar-primary"></div>
+				</div>
+			</td>
+			<td>
+				<div>{{ commit.branch }}</div>
+				<div class="small text-muted">{{ commit.commit.md5 }}</div>
+			</td>
+			<td class="text-nowrap">
+				<div>{{ commit.commit.date }}</div>
+				<div class="small text-muted">{{ commit.commit.hour }}</div>
+			</td>
+			<td class="text-right">
+				<div class="btn-group">
+					<button type="button" data-toggle="dropdown" class="btn btn-secondary dropdown-toggle">Open</button>
+					<div role="menu" class="dropdown-menu dropdown-menu-right">
+						<a href="javascript:void(0)" class="dropdown-item" onclick="javascript:void(0);">Action</a>
+						<a href="javascript:void(0)" class="dropdown-item" onclick="javascript:void(0);">Another action</a>
+						<a href="javascript:void(0)" class="dropdown-item" onclick="javascript:void(0);">Something else here</a>
+						<div class="dropdown-divider"></div>
+						<a href="javascript:void(0)" class="dropdown-item" onclick="javascript:void(0);">Separated link</a>
+					</div>
+				</div>
+			</td>
+		</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+</div>

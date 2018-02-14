@@ -1,0 +1,41 @@
+<div class="card">
+	<div class="card-header">
+		<h4 class="card-title">New users</h4>
+		<div class="card-options">
+			<button type="button" class="btn btn-option" data-toggle="tooltip" title="Edit">
+				<i class="si si-pencil"></i>
+			</button>
+			<div class="dropdown card-options-dropdown">
+				<button type="button" class="btn btn-option dropdown-toggle" data-toggle="dropdown"><i class="si si-options"></i></button>
+				<div class="dropdown-menu dropdown-menu-right">
+					<a class="dropdown-item" href="javascript:void(0)">
+						<i class="si si-bell mr-3"></i>News
+					</a>
+					<a class="dropdown-item" href="javascript:void(0)">
+						<i class="si si-envelope mr-3"></i>Messages
+					</a>
+					<div class="dropdown-divider"></div>
+					<a class="dropdown-item" href="javascript:void(0)">
+						<i class="si si-pencil mr-3"></i>Edit Profile
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="card-body">
+		<div class="card-text">
+			<ul class="avatar-list">
+				{% for user in site.data.users limit: 10 offset: 16 %}
+				<li class="avatar-list-item">
+					<a href="javascript:void(0)" class="avatar avatar-lg" style="background-image: url({{ user.photo }})">
+						{% if forloop.index > 3 and forloop.index < 7 or forloop.index == 9 %}
+							<span class="avatar-status bg-green"></span>
+						{% endif %}
+					</a>
+				</li>
+				{% endfor %}
+			</ul>
+		</div>
+	</div>
+</div>

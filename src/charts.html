@@ -1,0 +1,32 @@
+---
+layout: default
+title: Charts
+menu: interface.charts
+---
+
+<div class="container">
+	{% include page-title.html title="Charts" %}
+
+
+	<div class="row row-cards">
+		{% for chart in site.data.charts %}
+		{% if chart[1].display %}
+		{% assign data = chart[0] %}
+		{% assign key = 'chart-' | append: data %}
+		<div class="col-lg-6 col-xl-4">
+			<div class="card">
+				<div class="card-header">
+					<h3 class="card-title">{{ chart[1].name }}</h3>
+				</div>
+				<div class="card-body">
+					<div id="{{ key }}" style="height: 16rem"></div>
+				</div>
+			</div>
+			{% include js-charts.html id=key data=data %}
+		</div>
+		{% endif %}
+		{% endfor %}
+
+	</div>
+
+</div>

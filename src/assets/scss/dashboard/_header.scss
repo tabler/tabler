@@ -1,0 +1,144 @@
+.header {
+	padding-top: 1rem;
+	padding-bottom: 1rem;
+	//height: $header-height;
+	background: #fff;
+	border-bottom: 1px solid $border-color;
+
+	body.fixed-header & {
+		position: fixed;
+		top: 0;
+		left: 0;
+		right: 0;
+		z-index: $zindex-fixed;
+	}
+
+	@media print {
+		display: none;
+	}
+
+	.nav-link,
+	.nav-item {
+		padding: 0 .75rem;
+		min-width: 2rem;
+		transition: .3s color;
+		user-select: none;
+		cursor: pointer;
+		line-height: 1;
+		display: flex;
+		align-items: center;
+
+		&:hover {
+			//color: $body-color !important;
+		}
+
+		.badge {
+			position: absolute;
+			top: 0;
+			right: 0;
+			padding: .2rem .25rem;
+			min-width: 1rem
+		}
+	}
+}
+
+.bg-header {
+	background: $header-bg !important;
+}
+
+.navbar-brand {
+	color: inherit;
+	margin-right: 1rem;
+	font-size: 1.25rem;
+	white-space: nowrap;
+	font-weight: 600;
+	padding: 0;
+	transition: .3s opacity;
+	line-height: 2rem;
+
+	&:hover {
+		opacity: .8;
+		color: inherit;
+		text-decoration: none;
+	}
+}
+
+.navbar-brand-img {
+	height: 2rem;
+	line-height: 2rem;
+	vertical-align: bottom;
+	margin-right: .5rem;
+	width: auto;
+}
+
+.header-avatar {
+	width: 2rem;
+	height: 2rem;
+	display: inline-block;
+	vertical-align: bottom;
+	border-radius: 50%;
+}
+
+.header-overlay {
+	position: fixed;
+	top: $header-height;
+	right: 0;
+	bottom: 0;
+	left: 0;
+	background: rgba(26,54,80,0.1);
+	visibility: hidden;
+	opacity: 0;
+	z-index: $zindex-overlay;
+	transition: .6s opacity, .6s visibility;
+	backdrop-filter: blur(1px);
+
+
+	.dropdown-menu.show + & {
+		visibility: visible;
+		opacity: 1;
+	}
+}
+
+.header-nav {
+	background: #fff;
+	border-bottom: 1px solid $border-color;
+	color: $text-muted;
+	align-items: center;
+
+
+	@media print {
+		display: none;
+	}
+
+	.nav-tabs {
+		border: 0;
+
+		.nav-item + .nav-item {
+			margin-left: 1.5rem;
+		}
+	}
+}
+
+.header-btn {
+	display: inline-block;
+	width: 2rem;
+	height: 2rem;
+	line-height: 2rem;
+	text-align: center;
+	font-size: 1rem;
+
+	&.has-new {
+		position: relative;
+
+		&:before {
+			content: '';
+			width: 6px;
+			height: 6px;
+			background: $red;
+			position: absolute;
+			top: 4px;
+			right: 4px;
+			border-radius: 50%;
+		}
+	}
+}
