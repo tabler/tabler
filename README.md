@@ -10,6 +10,8 @@
   </p>
 </p>
 
+![Tabler preview](https://tabler.github.io/assets/images/dashboard.png)
+
 <br>
 
 
