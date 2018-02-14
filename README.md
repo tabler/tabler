@@ -1,4 +1,19 @@
-# Dashboard
+<p align="center">
+  <a href="https://tabler.github.io/">
+    <img src="https://tabler.github.io/assets/images/logo-default.svg" alt="Tabler" width="72" height="72">
+  </a>
+
+  <h3 align="center">Tabler</h3>
+
+  <p align="center">
+    Premium and Open Source dashboard template with responsive and high quality UI. For Free!
+  </p>
+</p>
+
+<br>
+
+
+# About Tabler
 
 We’ve created this admin panel for everyone who wants to create any templates based on our ready components. Our mission is to deliver a user-friendly, clear and easy administration panel, that can be used by both, simple websites and sophisticated systems. The only requirement is a basic HTML and CSS knowledge—as a reward, you'll be able to manage and visualize different types of data in the easiest possible way!
 
