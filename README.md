@@ -18,6 +18,9 @@
 
 - [About Tabler](#about-tabler)
 - [Status](#status)
+- [Bugs and feature requests](#bugs-and-feature-requests)
+- [Contributing](#contributing)
+- [Browser Support](#browser-support)
 - [Creators](#creators)
 - [Copyright and license](#copyright-and-license)
 
@@ -34,9 +37,12 @@ To make the system works fast and reliable, we've converted most of the componen
 
 ## Status
 
-[![Build Status](https://img.shields.io/travis/tabler/tabler/dev.svg)](https://travis-ci.org/tabler/tabler)
+<!--[![Build Status](https://img.shields.io/travis/tabler/tabler/dev.svg)](https://travis-ci.org/tabler/tabler)-->
 [![CSS gzip size](http://img.badgesize.io/tabler/tabler/dev/dist/assets/css/dashboard.min.css?compression=gzip&label=CSS+gzip+size)](https://github.com/twbs/bootstrap/tree/v4-dev/dist/css/bootstrap.min.css)
 
+## Bugs and feature requests
+
+Have a bug or a feature request? [Please open a new issue](https://github.com/tabler/tabler/issues/new).
 
 ## Browser Support
 
