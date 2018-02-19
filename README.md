@@ -68,8 +68,8 @@ Open the project [http://localhost:4000](http://localhost:4000).
 
 ## Status
 
-<!--[![Build Status](https://img.shields.io/travis/tabler/tabler/dev.svg)](https://travis-ci.org/tabler/tabler)-->
-[![CSS gzip size](http://img.badgesize.io/tabler/tabler/dev/dist/assets/css/dashboard.min.css?compression=gzip&label=CSS+gzip+size)](https://github.com/twbs/bootstrap/tree/v4-dev/dist/css/bootstrap.min.css)
+![Build Status](https://app.buddy.works/codecalm/tabler/pipelines/pipeline/125783/badge.svg?token=1ab151000ecf8700a90dd4d0d7184945d439d2642679b257092d16e76a45dce4)
+![CSS gzip size](http://img.badgesize.io/tabler/tabler/dev/dist/assets/css/dashboard.min.css?compression=gzip&label=CSS+gzip+size)
 
 ## Bugs and feature requests
 
