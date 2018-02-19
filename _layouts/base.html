@@ -17,31 +17,11 @@
 	<link href="{{ site.base }}/assets/css/dashboard.css" rel="stylesheet" />
 	<script src="{{ site.base }}/assets/js/dashboard.js"></script>
 
-
-	<!-- c3.js Charts Plugin -->
-	<link href="{{ site.base }}/assets/plugins/charts-c3/plugin.css" rel="stylesheet" />
-	<script src="{{ site.base }}/assets/plugins/charts-c3/plugin.js"></script>
-
-	{% comment %}
-	<!-- Google Maps Plugin -->
-	<link href="{{ site.base }}/assets/plugins/maps-google/plugin.css" rel="stylesheet" />
-	<script src="{{ site.base }}/assets/plugins/maps-google/plugin.js"></script>
-
-	<!-- Iconfonts Plugin -->
-	<link href="{{ site.base }}/assets/plugins/iconfonts/plugin.css" rel="stylesheet" />
-
-
-	<!-- Code Highlight Plugin -->
-	<!--<link href="{{ site.base }}/assets/plugins/prismjs/plugin.css" rel="stylesheet" />-->
-	<!--<script src="{{ site.base }}/assets/plugins/prismjs/plugin.js"></script>-->
-
-	<!-- Fullcalendar Plugin -->
-	<link href="{{ site.base }}/assets/plugins/fullcalendar/plugin.css" rel="stylesheet" />
-	<script src="{{ site.base }}/assets/plugins/fullcalendar/plugin.js"></script>
-
-	<!-- Weather Plugin -->
-	<!--<link href="{{ site.base }}/assets/plugins/weather/plugin.css" rel="stylesheet" />-->
-	{% endcomment %}
+	{% for plugin in site.theme-plugins %}
+	<!-- {{ plugin[1].name }} Plugin -->
+	{% if plugin[1].files contains 'css' %}<link href="{{ site.base }}/assets/plugins/{{ plugin[0] }}/plugin.css" rel="stylesheet" />{% endif %}
+	{% if plugin[1].files contains 'js' %}<script src="{{ site.base }}/assets/plugins/{{ plugin[0] }}/plugin.js"></script>{% endif %}
+	{% endfor %}
 </head>
 <body class="{{ page.body-class }}">
 
