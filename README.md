@@ -8,15 +8,20 @@
   <p align="center">
     Premium and Open Source dashboard template with responsive and high quality UI. For Free!
   </p>
+  
+  <p align="center">
+    <strong>
+      <a href="https://tabler.github.io/demo/">View Demo</a> | <a href="https://github.com/tabler/tabler/archive/master.zip">Download ZIP</a>
+    </strong>
+  </p>
 </p>
 
 ![Tabler preview](https://tabler.github.io/assets/images/dashboard.png)
 
-<br>
-
 ## Table of contents
 
 - [About Tabler](#about-tabler)
+- [Getting Started](#getting-started)
 - [Status](#status)
 - [Bugs and feature requests](#bugs-and-feature-requests)
 - [Contributing](#contributing)
@@ -33,6 +38,32 @@ After using many of different admin panels, no matter free or paid, we've notice
 They were loading loads of useless components that you wouldn't ever use, so we've decided to choose a different way. The whole system is plugin-based, what means that you have a control over what is needed and what not.
 
 To make the system works fast and reliable, we've converted most of the components to CSS. Thanks to this, you don't have to load a lot of unnecessary libraries into your browser what really boosts the overall speed.
+
+## Getting Started
+
+### 1. [Download ZIP](https://github.com/tabler/tabler/archive/master.zip) or Git Clone
+
+```
+git clone https://github.com/tabler/tabler.git
+```
+
+### 2. Build the project
+
+The cloned/downloaded repository doesn't contain prebuilt version of the project and you need to build it. You need to have [NodeJs](https://nodejs.org/en/) with npm installed.
+
+Install npm dependencies 
+```
+npm install
+```
+
+Build the project and start local web server
+```
+jekyll serve
+```
+
+Open the project [http://localhost:4000](http://localhost:4000).
+
+**Warning!** all changes made in ```dist/``` folder would be overwriten on application build.
 
 
 ## Status
