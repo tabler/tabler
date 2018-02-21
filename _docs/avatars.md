@@ -1,5 +1,6 @@
 ---
 title: Avatars
+icon: fe fe-user
 ---
 
 ### Simple avatar

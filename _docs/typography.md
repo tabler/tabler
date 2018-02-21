@@ -1,5 +1,6 @@
 ---
 title: Typography
+icon: fe fe-type
 description: A single class to handle WYSIWYG generated content, where only HTML tags are available
 ---
 

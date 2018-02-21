@@ -1,5 +1,6 @@
 ---
 title: Charts
+icon: fe fe-pie-chart
 ---
 
 ### c3.js charts 

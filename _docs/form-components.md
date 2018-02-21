@@ -1,5 +1,6 @@
 ---
 title: Form components
+icon: fe fe-check-square
 ---
 
 {:toc}
