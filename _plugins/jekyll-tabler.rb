@@ -41,6 +41,10 @@ module Jekyll
         'red'
       end
     end
+
+    def first_letter(value)
+      return value[0, 1]
+    end
   end
 end
 
