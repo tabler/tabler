@@ -4,6 +4,17 @@
 	letter-spacing: .03em;
 	font-size: px2rem(13px);
 	min-width: px2rem(38px);
+
+	i {
+		font-size: 1rem;
+		vertical-align: -2px;
+	}
+}
+
+.btn-icon {
+	padding-left: .5rem;
+	padding-right: .5rem;
+	text-align: center;
 }
 
 .btn-secondary {
@@ -15,7 +26,17 @@
 	border-radius: 10rem;
 }
 
+.btn-square {
+	border-radius: 0;
+}
+
 @each $vendor, $color in $social-colors {
+	.btn-#{$vendor} {
+		@include button-variant($color, $color);
+	}
+}
+
+@each $vendor, $color in $colors {
 	.btn-#{$vendor} {
 		@include button-variant($color, $color);
 	}
@@ -44,4 +65,14 @@
 	font-size: px2rem(16px);
 	min-width: px2rem(44px);
 	font-weight: 400;
+}
+
+.btn-list {
+	margin-bottom: -.5rem;
+	font-size: 0;
+
+	.btn {
+		margin-right: .5rem;
+		margin-bottom: .5rem;
+	}
 }
