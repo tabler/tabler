@@ -182,7 +182,9 @@ Wrap the dropdown’s toggle (your button or link) and the dropdown menu within 
 
 ### Loading button
 
-Add `.btn-loading` to use a loading state on a button. Since the loading spinner is implemented using the `:after` pseudo-element, it is not supported by the `<input type="submit">` element.
+Add `.btn-loading` to use a loading state on a button. The width of the button depends on the length of the text inside.
+
+Since the loading spinner is implemented using the `:after` pseudo-element, it is not supported by the `<input type="submit">` element.
 
 {% example html wrapper=btn-list %}
 <button type="button" class="btn btn-primary btn-loading">Button text</button>
