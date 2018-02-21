@@ -12,7 +12,7 @@ title: Documentation
 			<div class="card">
 				<ul class="list-group card-list-group">
 					{% for doc in site.docs %}
-					<li class="list-group-item"><a href="{{ site.base }}{{ doc.url }}">{{ doc.title }}</a></li>
+					{% unless doc.hide %}<li class="list-group-item"><a href="{{ site.base }}{{ doc.url }}">{{ doc.title }}</a></li>{% endunless %}
 					{% endfor %}
 				</ul>
 			</div>
@@ -24,11 +24,15 @@ title: Documentation
 					<div class="text-wrap p-lg-6">
 						<h2 class="mt-0 mb-4">{{ page.title }}</h2>
 
+						{% if page.description %}
+							<p>{{ page.description }}</p>
+						{% endif %}
+
 						{% if page.toc %}
 						{{ content | toc_only }}
 						{% endif %}
 
-						{{ content }}
+						{{ content | toc_generate }}
 					</div>
 				</div>
 			</div>
