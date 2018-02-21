@@ -232,3 +232,19 @@ If the list is very long, it will automatically wrap on multiple lines, while ke
   <a href="#" class="btn btn-secondary">Nineteen</a>
 </div>
 {% endexample %}
+
+Use the `.text-center` or the `.text-right` modifiers to alter the alignment.
+
+{% example html %}
+<div class="btn-list text-center">
+  <a href="#" class="btn btn-primary">Save changes</a>
+  <a href="#" class="btn btn-secondary">Save and continue</a>
+</div>
+{% endexample %}
+
+{% example html %}
+<div class="btn-list text-right">
+  <a href="#" class="btn btn-primary">Save changes</a>
+  <a href="#" class="btn btn-secondary">Save and continue</a>
+</div>
+{% endexample %}
