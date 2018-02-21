@@ -29,6 +29,16 @@ Use any of the available button classes to quickly create a styled button . We p
 <a href="#" class="btn btn-link">Link</a>
 {% endexample %}
 
+### Disabled buttons
+
+Make buttons look inactive by adding the disabled boolean attribute to any `.btn` element. `<a>`s don’t support the disabled attribute, so you must add the `.disabled` class to make it visually appear disabled.
+
+{% example html wrapper=btn-list %}
+{% for button in site.button-types %}
+<a href="#" class="btn btn-{{ button[0] }} disabled">{{ button[1] }}</a>
+{% endfor %}
+{% endexample %}
+
 
 ### Color variations
 
@@ -36,7 +46,7 @@ The classic button, in different colors.
 
 {% example html wrapper=btn-list %}
 {% for button in site.colors %}
-<a href="#" class="btn btn-{{ button[0] }}">{{ button[0] }}</a>
+<a href="#" class="btn btn-{{ button[0] }}">{{ button[1].name }}</a>
 {% endfor %}
 {% endexample %}
 

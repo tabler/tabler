@@ -27,7 +27,10 @@ require.config({
 });
 
 window.tabler = {
-    colors: {{ site.colors | jsonify | lstrip }}
+    colors: {
+        {% for color in site.colors %}"{{ color[0] }}": "{{ color[1].hex }}"{% unless forloop.last %},{% endunless %}
+        {% endfor %}
+    }
 };
 
 require(['core']);
