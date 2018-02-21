@@ -1,7 +1,6 @@
 ---
 title: Buttons
 description: Use Bootstrap’s custom button styles for actions in forms, dialogs, and more. Includes support for a handful of contextual variations, sizes, states, and more.
-toc: true
 ---
 
 
@@ -21,6 +20,8 @@ The `.btn` classes are designed to be used with the `<button>` element. However,
 
 ### Button variations
 
+Use any of the available button classes to quickly create a styled button . We provide a variety of colors for you to express different emotions.
+
 {% example html wrapper=btn-list %}
 {% for button in site.button-types %}
 <a href="#" class="btn btn-{{ button[0] }}">{{ button[1] }}</a>
@@ -30,6 +31,8 @@ The `.btn` classes are designed to be used with the `<button>` element. However,
 
 
 ### Color variations
+
+The classic button, in different colors.
 
 {% example html wrapper=btn-list %}
 {% for button in site.colors %}
@@ -157,4 +160,16 @@ Wrap the dropdown’s toggle (your button or link) and the dropdown menu within 
     <a class="dropdown-item" href="javascript:void(0)">Dropdown link</a>
   </div>
 </div>
+{% endexample %}
+
+### Loading button
+
+Add `.btn-loading` to use a loading state on a button. Since the loading spinner is implemented using the `:after` pseudo-element, it is not supported by the `<input type="submit">` element.
+
+{% example html wrapper=btn-list %}
+<button type="button" class="btn btn-primary btn-loading">Button text</button>
+<button type="button" class="btn btn-success btn-loading btn-icon"><i class="fe fe-check"></i></button>
+<button type="button" class="btn btn-warning btn-loading btn-sm">Button text</button>
+<button type="button" class="btn btn-danger btn-loading btn-lg">Button text</button>
+<button type="button" class="btn btn-secondary btn-loading btn-block">Button text</button>
 {% endexample %}
