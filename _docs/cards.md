@@ -71,3 +71,9 @@ You can also add the image on the left side of the card. All you need do to is: 
 </div>
 {% endexample %}
 
+
+### Card with switch
+
+{% example html columns=1 %}
+{% include cards/card.html title="Card with switch" show-switch=true %}
+{% endexample %}
