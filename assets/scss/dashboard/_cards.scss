@@ -19,7 +19,6 @@
 	margin: 0;
 	padding: $card-spacer-y $card-spacer-x;
 	position: relative;
-	overflow: auto;
 
 	& + & {
 		border-top: 1px solid $border-color;
@@ -51,9 +50,9 @@
 
 .card-header {
 	background: none;
-	padding: 1rem $card-spacer-x;
+	padding: .5rem $card-spacer-x;
 	display: flex;
-	//min-height: 4rem;
+	min-height: 3.5rem;
 	align-items: center;
 
 	.card-title {
@@ -107,7 +106,6 @@
 }
 
 .card-table {
-	margin-bottom: .75rem;
 	margin-bottom: 0;
 
 	tr {
@@ -115,15 +113,6 @@
 			td,
 			th {
 				border-top: 0;
-			}
-		}
-
-		.card-body + & {
-			&:first-child {
-				td,
-				th {
-					padding-top: 0;
-				}
 			}
 		}
 
@@ -137,6 +126,10 @@
 				padding-right: $card-spacer-x;
 			}
 		}
+	}
+
+	.card-body + & {
+		border-top: 1px solid $border-color;
 	}
 }
 
@@ -163,6 +156,10 @@
 }
 
 .card-list-group {
+	.card-body + & {
+		border-top: 1px solid $border-color;
+	}
+
 	.list-group-item {
 		border-right: 0;
 		border-left: 0;
@@ -170,6 +167,14 @@
 
 		padding-left: $card-spacer-x;
 		padding-right: $card-spacer-x;
+
+		&:last-child {
+			border-bottom: 0;
+		}
+
+		&:first-child {
+			border-top: 0;
+		}
 	}
 }
 
@@ -228,7 +233,7 @@
 	order: 100;
 	margin-right: -.5rem;
 	color: $text-muted;
-	align-self: flex-start;
+	align-self: center;
 
 	a {
 		margin-left: .5rem;

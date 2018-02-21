@@ -6,13 +6,11 @@ Tabler is a great choice when it comes to the blog management. It allows you to 
 
 ### Post card
 
-The best way to make your post eye-catching is adding an image to it. To do so, just add the image with the `.card-img-top` class:
+The best way to make your post eye-catching is adding an image to it. To do so, just add the image with the `.card-img-top` class. We've added the `.d-flex .flex-column` classes to the `.card-body` to have the author details be on the bottom of the card.
 
 {% example html columns=1 %}
 {% include cards/blog-single.html type="image" %}
 {% endexample %}
-
-We've added the `.d-flex .flex-column` classes to the `.card-body` to have the author details be on the bottom of the card.
 
 If you want to create a couple of posts next to each other, add the `.row-deck` class to `.row`—then they will all have the same height:
 

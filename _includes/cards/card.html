@@ -4,14 +4,26 @@
 	{% endif %}
 
 	<div class="card-header">
-		{% if include.title %}
-		<h3 class="card-title">{{ include.title }}</h3>
-		{% endif %}
+		<h3 class="card-title">{{ include.title | default: 'Card title' }}</h3>
 
 		{% unless include.hide-options %}
 		<div class="card-options">
-			{% if include.options %}
-			{{ include.options }}
+			{% if include.show-form %}
+				<form action="">
+					<div class="input-group">
+						<input type="text" class="form-control form-control-sm" placeholder="Search something..." name="s">
+						<span class="input-group-btn ml-2">
+							<button class="btn btn-sm btn-default" type="submit">
+								<span class="fe fe-search"></span>
+							</button>
+						</span>
+					</div>
+				</form>
+			{% elsif include.show-buttons %}
+				<a class="btn btn-secondary btn-sm">Action 1</a>
+				<a class="btn btn-secondary btn-sm ml-2">Action 2</a>
+			{% elsif include.options %}
+				{{ include.options }}
 			{% else %}
 				<a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
 				{% if include.show-fullscreen %}
@@ -28,9 +40,11 @@
 	</div>
 	{% endif %}
 	<div class="card-body">
-		<p>
-			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan. Aliquam ornare lacus adipiscing, posuere lectus et, fringilla augue.Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum tincidunt est vitae ultrices accumsan.
-		</p>
+		{% if include.body %}
+			{{ include.body }}
+		{% else %}
+			Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit incidunt, iste, itaque minima neque pariatur perferendis sed suscipit velit vitae voluptatem. A consequuntur, deserunt eaque error nulla temporibus!
+		{% endif %}
 	</div>
 	{% if include.show-footer %}
 	<div class="card-footer">
