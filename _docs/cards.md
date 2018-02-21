@@ -77,3 +77,9 @@ You can also add the image on the left side of the card. All you need do to is: 
 {% example html columns=1 %}
 {% include cards/card.html title="Card with switch" show-switch=true %}
 {% endexample %}
+
+### Card with loader
+
+{% example html columns=1 %}
+{% include cards/card.html title="Card with loader" hide-options=true show-loader=true %}
+{% endexample %}
