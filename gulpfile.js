@@ -1,8 +1,8 @@
 var gulp = require('gulp'),
     sass = require('gulp-sass'),
     rename = require('gulp-rename'),
-	gs = require('gulp-selectors'),
-    autoprefixer = require('gulp-autoprefixer');
+    autoprefixer = require('gulp-autoprefixer'),
+    pckg = require('./package.json');
 
 gulp.task('styles', function () {
     return gulp.src('src/assets/scss/bundle.scss', { base: '.' })
@@ -11,7 +11,7 @@ gulp.task('styles', function () {
             outputStyle: 'expanded'
         }).on('error', sass.logError))
         .pipe(autoprefixer({
-            browsers: ['>1%'],
+            browsers: pckg.browserslist,
             cascade: false
         }))
         .pipe(rename('dashboard.css'))
@@ -25,7 +25,7 @@ gulp.task('styles-plugins', function () {
             outputStyle: 'expanded'
         }).on('error', sass.logError))
         .pipe(autoprefixer({
-            browsers: ['>1%'],
+            browsers: pckg.browserslist,
             cascade: false
         }))
         .pipe(rename(function(path) {
