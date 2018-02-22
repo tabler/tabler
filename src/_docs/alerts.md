@@ -69,7 +69,7 @@ Add a dismiss button and the `.alert-dismissible` class, which adds extra paddin
     voluptate.
   </p>
   <div class="btn-list">
-    <button class="btn btn-success btn-outline" type="button">Okay</button>
+    <button class="btn btn-success" type="button">Okay</button>
     <button class="btn btn-secondary" type="button">No, thanks</button>
   </div>
 </div>

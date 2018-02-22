@@ -39,4 +39,6 @@ gulp.task('watch', ['styles', 'styles-plugins'], function() {
     gulp.watch('src/assets/plugins/**/*.scss', ['styles-plugins']);
 });
 
-gulp.task('default', ['styles', 'styles-plugins']);
+gulp.task('build', ['styles', 'styles-plugins']);
+
+gulp.task('default', ['build']);
