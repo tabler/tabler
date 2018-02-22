@@ -8,16 +8,20 @@ title: Documentation
 	{% include page-title.html title="Documentation" %}
 
 	<div class="row">
-		<div class="col-lg-3 order-lg-1 mb-5">
-			<a href="{{ site.github_url }}" class="btn btn-block btn-primary mb-5">
+		<div class="col-lg-3 order-lg-1 mb-4">
+			<a href="{{ site.github_url }}" class="btn btn-block btn-primary mb-6">
 				<i class="fe fe-github mr-2"></i>Browse source code
 			</a>
 
-			<div class="list-group list-group-transparent">
-				{% for doc in site.docs %}
-				{% unless doc.hide %}<a href="{{ site.base }}{{ doc.url }}" class="list-group-item list-group-item-action{% if page.url == doc.url %} active{% endif %}"><span class="icon mr-3"><i class="{{ doc.icon }}"></i></span>{{ doc.title }}</a>{% endunless %}
+			{% for group in site.docs-menu %}
+			<!-- {{ group.title }} -->
+			<div class="list-group list-group-transparent mb-0">
+				{% for p in group.pages %}
+				{% assign doc = site.docs | where: "slug", p | first %}
+				<a href="{{ site.base }}{{ doc.url }}" class="list-group-item list-group-item-action{% if page.url == doc.url %} active{% endif %}"><span class="icon mr-3"><i class="{{ doc.icon }}"></i></span>{{ doc.title }}</a>
 				{% endfor %}
 			</div>
+			{% endfor %}
 		</div>
 		<div class="col-lg-9">
 			<div class="card">
@@ -27,7 +31,7 @@ title: Documentation
 						<h2 class="mt-0 mb-4">{{ page.title }}</h2>
 
 						{% if page.description %}
-							<p>{{ page.description }}</p>
+						<p>{{ page.description }}</p>
 						{% endif %}
 
 						{% if page.in_progress %}
