@@ -5,7 +5,7 @@ var gulp = require('gulp'),
     autoprefixer = require('gulp-autoprefixer');
 
 gulp.task('styles', function () {
-    return gulp.src('assets/scss/bundle.scss', { base: '.' })
+    return gulp.src('src/assets/scss/bundle.scss', { base: '.' })
         .pipe(sass({
             precision: 8,
             outputStyle: 'expanded'
@@ -15,11 +15,11 @@ gulp.task('styles', function () {
             cascade: false
         }))
         .pipe(rename('dashboard.css'))
-        .pipe(gulp.dest('assets/css/'));
+        .pipe(gulp.dest('src/assets/css/'));
 });
 
 gulp.task('styles-plugins', function () {
-    return gulp.src('assets/plugins/**/plugin.scss', { base: '.' })
+    return gulp.src('src/assets/plugins/**/plugin.scss', { base: '.' })
         .pipe(sass({
             precision: 6,
             outputStyle: 'expanded'
@@ -31,16 +31,12 @@ gulp.task('styles-plugins', function () {
         .pipe(rename(function(path) {
             path.extname = '.css';
         }))
-        .pipe(gulp.dest('.'))
-        .pipe(rename(function(path) {
-            path.extname = '.min.css';
-        }))
         .pipe(gulp.dest('.'));
 });
 
 gulp.task('watch', ['styles', 'styles-plugins'], function() {
-    gulp.watch('assets/scss/**/*.scss', ['styles']);
-    gulp.watch('assets/plugins/**/*.scss', ['styles-plugins']);
+    gulp.watch('src/assets/scss/**/*.scss', ['styles']);
+    gulp.watch('src/assets/plugins/**/*.scss', ['styles-plugins']);
 });
 
 gulp.task('default', ['styles', 'styles-plugins']);
