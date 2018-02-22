@@ -8,7 +8,11 @@ title: Documentation
 	{% include page-title.html title="Documentation" %}
 
 	<div class="row">
-		<div class="col-lg-3 order-lg-1">
+		<div class="col-lg-3 order-lg-1 mb-5">
+			<a href="{{ site.github-url }}" class="btn btn-block btn-primary mb-5">
+				<i class="fe fe-github mr-2"></i>Browse source code
+			</a>
+
 			<div class="list-group list-group-transparent">
 				{% for doc in site.docs %}
 				{% unless doc.hide %}<a href="{{ site.base }}{{ doc.url }}" class="list-group-item list-group-item-action{% if page.url == doc.url %} active{% endif %}"><span class="icon mr-3"><i class="{{ doc.icon }}"></i></span>{{ doc.title }}</a>{% endunless %}
@@ -24,6 +28,13 @@ title: Documentation
 
 						{% if page.description %}
 							<p>{{ page.description }}</p>
+						{% endif %}
+
+						{% if page.in_progress %}
+						<div class="alert alert-info mt-5 mb-6">
+							<h4 class="mb-1">Work in progress!</h4>
+							<div>More detailed documentation is coming soon, but in the meantime here's a quick class reference.</div>
+						</div>
 						{% endif %}
 
 						{% if page.toc %}
