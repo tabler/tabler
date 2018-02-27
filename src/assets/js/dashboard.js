@@ -26,6 +26,13 @@ require.config({
 
 window.tabler = {
     colors: {
+        'blue-darkest': '#0e1929',
+        'blue-darker': '#1c3353',
+        'blue-dark': '#3866a6',
+        'blue-light': '#7ea5dd',
+        'blue-lighter': '#c8d9f1',
+        'blue-lightest': '#edf2fa',
+
         {% for color in site.colors %}"{{ color[0] }}": "{{ color[1].hex }}"{% unless forloop.last %},{% endunless %}
         {% endfor %}
     }

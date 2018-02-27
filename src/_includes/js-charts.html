@@ -32,7 +32,7 @@ require(['c3', 'jquery'], function(c3, $) {
 				{% endif %}
 
 				colors: { {% for serie in data.series %}
-					'data{{ forloop.index }}': tabler.colors.{{ serie.color | default: 'blue' }}{% unless forloop.last %},{% endunless %}{% endfor %}
+					'data{{ forloop.index }}': tabler.colors["{{ serie.color | default: 'blue' }}"]{% unless forloop.last %},{% endunless %}{% endfor %}
 				},
 
 				names: {
@@ -42,6 +42,26 @@ require(['c3', 'jquery'], function(c3, $) {
 				}
 			},
 
+        	{% if data.remove-padding %}
+			axis: {
+				y: {
+					padding: {
+						bottom: 0,
+					},
+					show: false,
+						tick: {
+						outer: false
+					}
+				},
+				x: {
+					padding: {
+						left: 0,
+						right: 0
+					},
+					show: false
+				}
+			},
+			{% else %}
 			axis: {
 				{% if data.type != 'pie' and data.type != 'donut' %}
 				x: {
@@ -54,6 +74,7 @@ require(['c3', 'jquery'], function(c3, $) {
 				rotated: true,
 				{% endif %}
 			},
+        	{% endif %}
 
 
 			{% if data.type == 'bar' %}
@@ -63,15 +84,45 @@ require(['c3', 'jquery'], function(c3, $) {
 
 
 			legend: {
-				{% if data.hide-legend %}show: false, //hide legend
-				{% else %}padding: 16,{% endif %}
+                {% if data.hide-legend %}show: false, //hide legend
+                {% else %}
+				{% if data.legend-position == 'top' %}
+				position: 'inset',
+				padding: 0,
+				inset: {
+                    anchor: 'top-left',
+					x: 20,
+					y: 8,
+					step: 10
+				}
+				{% else %}
+                padding: 16,
+                {% endif %}
+                {% endif %}
 			},
 
+        	{% if data.hide-tooltip %}
+			tooltip: {
+				format: {
+					title: function (x) {
+						return '';
+					}
+				}
+			},
+        	{% endif %}
 
+        	{% if data.remove-padding %}
+			padding: {
+				bottom: 0,
+				left: -1,
+				right: -1
+			},
+			{% else %}
 			padding: {
 				{% if data.hide-legend %}bottom: 0,{% else %}bottom: 16,{% endif %}
 				top: 0
 			},
+       		{% endif %}
 
 			{% if data.hide-points %}
 			point: {
