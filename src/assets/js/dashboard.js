@@ -26,15 +26,14 @@ require.config({
 
 window.tabler = {
     colors: {
-        'blue-darkest': '#0e1929',
-        'blue-darker': '#1c3353',
-        'blue-dark': '#3866a6',
-        'blue-light': '#7ea5dd',
-        'blue-lighter': '#c8d9f1',
-        'blue-lightest': '#edf2fa',
-
-        {% for color in site.colors %}"{{ color[0] }}": "{{ color[1].hex }}"{% unless forloop.last %},{% endunless %}
-        {% endfor %}
+        {% for color in site.colors %}
+        '{{ color[0] }}': '{{ color[1].hex }}',
+        '{{ color[0] }}-darkest': '{{ color[1].hex | mix: "#000000", 20  }}',
+        '{{ color[0] }}-darker': '{{ color[1].hex | mix: "#000000", 40  }}',
+        '{{ color[0] }}-dark': '{{ color[1].hex | mix: "#000000", 80  }}',
+        '{{ color[0] }}-light': '{{ color[1].hex | mix: "#ffffff", 70 }}',
+        '{{ color[0] }}-lighter': '{{ color[1].hex | mix: "#ffffff", 30 }}',
+        '{{ color[0] }}-lightest': '{{ color[1].hex | mix: "#ffffff", 10 }}'{% unless forloop.last %},{% endunless %}{% endfor %}
     }
 };
 

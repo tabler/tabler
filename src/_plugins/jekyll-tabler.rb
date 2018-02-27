@@ -45,6 +45,29 @@ module Jekyll
     def first_letter(value)
       return value[0, 1]
     end
+
+
+
+    def mix(color_1, color_2, weight=50)
+      color = "#"
+      color_1 = color_1[0,1] == '#' ? color_1[1,6] : color_1
+      color_2 = color_2[0,1] == '#' ? color_2[1,6] : color_2
+
+      for i in [0, 2, 4]
+        v1 = color_1[i, 2].to_i(16).to_s(10)
+        v2 = color_2[i, 2].to_i(16).to_s(10)
+
+        val = ((v2.to_i + (v1.to_i - v2.to_i) * (weight / 100.0)).round).to_s(16);
+
+        while val.length < 2
+          val = '0' + val
+        end
+
+        color += val
+      end
+
+      color
+    end
   end
 end
 
