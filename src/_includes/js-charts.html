@@ -13,6 +13,13 @@ require(['c3', 'jquery'], function(c3, $) {
 					['data{{ forloop.index }}', {{ serie.data | join: ', '}}]{% unless forloop.last %},{% endunless %}{% endfor %}
 				],
 
+				{% if data.fill %}
+				classes: {
+                    {% for serie in data.series %}
+					data{{ forloop.index }}: 'filled'{% unless forloop.last %},{% endunless %}{% endfor %}
+				},
+        		{% endif %}
+
 				{% if data.show-labels %}
 				labels: true,
 				{% endif %}
