@@ -1,7 +1,7 @@
 ---
-title: Styleguide
-icon: fe fe-image
-description: Welcome to Tabler style guide. If you're new here, have a look through some of the topics on the side.
+title: Colors
+icon: fe fe-feather
+description: Convey meaning through color with a handful of color utility classes.
 ---
 
 ### Contextual colors
