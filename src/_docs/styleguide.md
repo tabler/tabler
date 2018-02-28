@@ -1,0 +1,54 @@
+---
+title: Styleguide
+icon: fe fe-image
+description: Welcome to Tabler style guide. If you're new here, have a look through some of the topics on the side.
+---
+
+### Contextual colors
+
+A background fill can be applied to a container using one of the `.bg-[color]` classes.
+
+{% example html %}
+{% for color in site.theme-colors %}
+<div class="d-flex align-items-center mb-4">
+  <div class="w-7 h-7 bg-{{ color[0] }} rounded mr-4"></div>
+  <div>
+    <strong>{{ color[1].name }}</strong><br />
+    <code>.bg-{{ color[0] }}</code>
+  </div>
+</div>
+{% endfor %}
+{% endexample %}
+
+### Other colors
+
+Instead of using contextual classes you can use ordinary color names.
+
+{% example html %}
+{% for color in site.colors %}
+<div class="d-flex align-items-center mb-4">
+  <div class="w-7 h-7 bg-{{ color[0] }} rounded mr-4"></div>
+  <div>
+    <strong>{{ color[1].name }}</strong><br />
+    <code>.bg-{{ color[0] }}</code>
+  </div>
+</div>
+{% endfor %}
+{% endexample %}
+
+### Tinting backgrounds
+
+Translucent background fills to shade an element against a background. You can use one of few suffixes:  
+`-darkest`, `-darker`, `-dark`, `-lightest`, `-lighter` or `-light`. 
+ 
+{% example html %}
+{% for variant in site.color_variants %}
+<div class="d-flex align-items-center mb-4">
+  <div class="w-7 h-7 bg-blue{{ variant.suffix }} rounded mr-4"></div>
+  <div>
+    <strong>{{ variant.name }} blue</strong><br />
+    <code>.bg-blue{{ variant.suffix }}</code>
+  </div>
+</div>
+{% endfor %}
+{% endexample %}
