@@ -68,6 +68,12 @@ module Jekyll
 
       color
     end
+
+
+    def each_slice(array, count=2)
+      @size = (array.size / (count * 1.0)).ceil
+      array.each_slice(@size).to_a
+    end
   end
 end
 

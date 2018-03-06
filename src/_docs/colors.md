@@ -25,7 +25,11 @@ A background fill can be applied to a container using one of the `.bg-[color]` c
 Instead of using contextual classes you can use ordinary color names.
 
 {% example html %}
-{% for color in site.colors %}
+{% assign groups = site.colors | each_slice: 3 %}
+<div class="row">
+{% for group in groups %}
+<div class="col-4">
+{% for color in group %}
 <div class="d-flex align-items-center mb-4">
   <div class="w-7 h-7 bg-{{ color[0] }} rounded mr-4"></div>
   <div>
@@ -34,6 +38,9 @@ Instead of using contextual classes you can use ordinary color names.
   </div>
 </div>
 {% endfor %}
+</div>
+{% endfor %}
+</div>
 {% endexample %}
 
 ### Tinting backgrounds
