@@ -14,7 +14,7 @@
     <meta name="MobileOptimized" content="320">
     <link rel="icon" href="./favicon.ico" type="image/x-icon"/>
     <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico" />
-    <!-- Generated: 2018-02-27 21:39:42 +0100 -->
+    <!-- Generated: 2018-03-01 13:01:27 +0100 -->
     <title>Homepage - tabler.github.io - a responsive, flat and full featured admin template</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,500,500i,600,600i,700,700i&amp;subset=latin-ext">
@@ -151,6 +151,7 @@
                       <a href="./404.html" class="nav-item ">404 error</a>
                       <a href="./500.html" class="nav-item ">500 error</a>
                       <a href="./503.html" class="nav-item ">503 error</a>
+                      <a href="./email.html" class="nav-item ">Email</a>
                       <a href="./empty.html" class="nav-item ">Empty page</a>
                     </div>
                   </li>
@@ -184,7 +185,7 @@
                 Dashboard
               </h1>
             </div>
-            <div class="row row-cards row-deck">
+            <div class="row row-cards">
               <div class="col-6 col-sm-4 col-lg-2">
                 <div class="card">
                   <div class="card-body p-3 text-center">
@@ -257,80 +258,122 @@
                   </div>
                 </div>
               </div>
-              <div class="col-lg-8">
+              <div class="col-lg-6">
                 <div class="card">
                   <div class="card-header">
-                    <h2 class="card-title">Tasks activity</h2>
-                    <div class="card-options text-muted">
-                      <select class="custom-select custom-select-sm ml-2" name="" id="">
-                        <option>This week</option>
-                        <option>Last week</option>
-                      </select>
-                    </div>
+                    <h3 class="card-title">Development Activity</h3>
                   </div>
-                  <div class="card-body">
-                    <div id="chart-tasks" style="height: 15rem"></div>
-                  </div>
-                  <div class="card-tabs card-tabs-bottom">
-                    <a href="javascript:void(0)" class="card-tabs-item text-center active">
-                      <h3 class="mb-1">120</h3>
-                      <div class="text-muted-dark">Tasks completed</div>
-                    </a>
-                    <a href="javascript:void(0)" class="card-tabs-item text-center">
-                      <h3 class="mb-1">25</h3>
-                      <div class="text-muted-dark">Hours logged</div>
-                    </a>
-                    <a href="javascript:void(0)" class="card-tabs-item text-center">
-                      <h3 class="mb-1">2</h3>
-                      <div class="text-muted-dark">Invoices sent</div>
-                    </a>
-                    <a href="javascript:void(0)" class="card-tabs-item text-center">
-                      <h3 class="mb-1">2</h3>
-                      <div class="text-muted-dark">Files uploaded</div>
-                    </a>
-                  </div>
+                  <div id="chart-development-activity" style="height: 14rem"></div>
+                  <table class="table card-table table-striped table-vcenter">
+                    <thead>
+                      <tr>
+                        <th colspan="2">User</th>
+                        <th>Commit</th>
+                        <th>Date</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td class="w-1"><span class="avatar" style="background-image: url(./assets/images/faces/male/9.jpg)"></span></td>
+                        <td>Ronald Bradley</td>
+                        <td>Initial commit</td>
+                        <td>May 6, 2018</td>
+                        <td class="w-1"><a href="#" class="icon"><i class="fe fe-trash"></i></a></td>
+                      </tr>
+                      <tr>
+                        <td><span class="avatar">BM</span></td>
+                        <td>Russell Gibson</td>
+                        <td>Main structure</td>
+                        <td>April 22, 2018</td>
+                        <td><a href="#" class="icon"><i class="fe fe-trash"></i></a></td>
+                      </tr>
+                      <tr>
+                        <td><span class="avatar" style="background-image: url(./assets/images/faces/female/1.jpg)"></span></td>
+                        <td>Beverly Armstrong</td>
+                        <td>Left sidebar adjusments</td>
+                        <td>April 15, 2018</td>
+                        <td><a href="#" class="icon"><i class="fe fe-trash"></i></a></td>
+                      </tr>
+                      <tr>
+                        <td><span class="avatar" style="background-image: url(./assets/images/faces/male/4.jpg)"></span></td>
+                        <td>Bobby Knight</td>
+                        <td>Topbar dropdown style</td>
+                        <td>April 8, 2018</td>
+                        <td><a href="#" class="icon"><i class="fe fe-trash"></i></a></td>
+                      </tr>
+                    </tbody>
+                  </table>
                 </div>
                 <script>
                   require(['c3', 'jquery'], function(c3, $) {
                   	$(document).ready(function(){
                   		var chart = c3.generate({
-                  			bindto: '#chart-tasks', // id of chart wrapper
+                  			bindto: '#chart-development-activity', // id of chart wrapper
                   			data: {
                   				columns: [
                   				    // each columns data
-                  					['data1', 0, 0, 1, 2, 21, 9, 12, 10, 31, 13, 65, 10, 12, 6, 4, 3, 0],
-                  					['data2', 0, 0, 1, 2, 7, 5, 6, 8, 24, 7, 12, 5, 6, 3, 2, 2, 0],
-                  					['data3', 0, 0, 1, 0, 2, 0, 1, 0, 2, 3, 0, 2, 3, 2, 1, 0, 0]
+                  					['data1', 30, 10, 10, 15, 0, 47, 65, 10],
+                  					['data2', 20, 25, 30, 35, 55, 42, 15, 25],
+                  					['data3', 10, 30, 25, 30, 35, 15, 10, 15]
                   				],
-                  				type: 'spline', // default type of chart
-                  				groups: [
-                  					[ 'data1', 'data2', 'data3']
-                  				],
+                  				classes: {
+                  					data1: 'filled',
+                  					data2: 'filled',
+                  					data3: 'filled'
+                  				},
+                  				type: 'area', // default type of chart
                   				colors: {
-                  					'data1': tabler.colors.blue,
-                  					'data2': tabler.colors.lime,
-                  					'data3': tabler.colors.orange
+                  					'data1': tabler.colors["blue"],
+                  					'data2': tabler.colors["blue-light"],
+                  					'data3': tabler.colors["blue-lighter"]
                   				},
                   				names: {
                   				    // name of each serie
-                  					'data1': 'New',
-                  					'data2': 'Completed',
-                  					'data3': 'Closed'
+                  					'data1': 'Purchases',
+                  					'data2': 'Plans',
+                  					'data3': 'Services'
                   				}
                   			},
                   			axis: {
-                  				x: {
-                  					type: 'category',
-                  					// name of each category
-                  					categories: ['M', 'T', 'W', 'T', 'F', 'S', 'S', 'M', 'T', 'W', 'T', 'F', 'S', 'S', 'M', 'T', 'W']
+                  				y: {
+                  					padding: {
+                  						bottom: 0,
+                  					},
+                  					show: false,
+                  						tick: {
+                  						outer: false
+                  					}
                   				},
+                  				x: {
+                  					padding: {
+                  						left: 0,
+                  						right: 0
+                  					},
+                  					show: false
+                  				}
                   			},
                   			legend: {
-                  				padding: 16,
+                  				position: 'inset',
+                  				padding: 0,
+                  				inset: {
+                                      anchor: 'top-left',
+                  					x: 20,
+                  					y: 8,
+                  					step: 10
+                  				}
+                  			},
+                  			tooltip: {
+                  				format: {
+                  					title: function (x) {
+                  						return '';
+                  					}
+                  				}
                   			},
                   			padding: {
-                  				bottom: 16,
-                  				top: 0
+                  				bottom: 0,
+                  				left: -1,
+                  				right: -1
                   			},
                   			point: {
                   				show: false
@@ -340,51 +383,139 @@
                   });
                 </script>
               </div>
-              <div class="col-sm-4">
-                <div class="alert alert-info">Are you in trouble? <a href="./docs/index.html" class="alert-link">Read our documentation</a> with code samples.</div>
-                <div class="card">
-                  <div class="card-header">
-                    <h3 class="card-title">Chart name</h3>
+              <div class="col-sm-6">
+                <div class="alert alert-primary">Are you in trouble? <a href="./docs/index.html" class="alert-link">Read our documentation</a> with code samples.</div>
+                <div class="row">
+                  <div class="col-6">
+                    <div class="card">
+                      <div class="card-header">
+                        <h3 class="card-title">Chart title</h3>
+                      </div>
+                      <div class="card-body">
+                        <div id="chart-donut" style="height: 12rem;"></div>
+                      </div>
+                    </div>
+                    <script>
+                      require(['c3', 'jquery'], function(c3, $) {
+                      	$(document).ready(function(){
+                      		var chart = c3.generate({
+                      			bindto: '#chart-donut', // id of chart wrapper
+                      			data: {
+                      				columns: [
+                      				    // each columns data
+                      					['data1', 63],
+                      					['data2', 37]
+                      				],
+                      				type: 'donut', // default type of chart
+                      				colors: {
+                      					'data1': tabler.colors["green"],
+                      					'data2': tabler.colors["green-light"]
+                      				},
+                      				names: {
+                      				    // name of each serie
+                      					'data1': 'Maximum',
+                      					'data2': 'Minimum'
+                      				}
+                      			},
+                      			axis: {
+                      			},
+                      			legend: {
+                                      show: false, //hide legend
+                      			},
+                      			padding: {
+                      				bottom: 0,
+                      				top: 0
+                      			},
+                      		});
+                      	});
+                      });
+                    </script>
                   </div>
-                  <div class="card-body">
-                    <div id="chart-donut" style="height: 15rem;"></div>
+                  <div class="col-6">
+                    <div class="card">
+                      <div class="card-header">
+                        <h3 class="card-title">Chart title</h3>
+                      </div>
+                      <div class="card-body">
+                        <div id="chart-pie" style="height: 12rem;"></div>
+                      </div>
+                    </div>
+                    <script>
+                      require(['c3', 'jquery'], function(c3, $) {
+                      	$(document).ready(function(){
+                      		var chart = c3.generate({
+                      			bindto: '#chart-pie', // id of chart wrapper
+                      			data: {
+                      				columns: [
+                      				    // each columns data
+                      					['data1', 63],
+                      					['data2', 44],
+                      					['data3', 12],
+                      					['data4', 14]
+                      				],
+                      				type: 'pie', // default type of chart
+                      				colors: {
+                      					'data1': tabler.colors["blue-darker"],
+                      					'data2': tabler.colors["blue"],
+                      					'data3': tabler.colors["blue-light"],
+                      					'data4': tabler.colors["blue-lighter"]
+                      				},
+                      				names: {
+                      				    // name of each serie
+                      					'data1': 'A',
+                      					'data2': 'B',
+                      					'data3': 'C',
+                      					'data4': 'D'
+                      				}
+                      			},
+                      			axis: {
+                      			},
+                      			legend: {
+                                      show: false, //hide legend
+                      			},
+                      			padding: {
+                      				bottom: 0,
+                      				top: 0
+                      			},
+                      		});
+                      	});
+                      });
+                    </script>
+                  </div>
+                  <div class="col-4">
+                    <div class="card">
+                      <div class="card-body text-center">
+                        <div class="h5">New fedbacks</div>
+                        <div class="display-4 font-weight-bold mb-4">62</div>
+                        <div class="progress progress-sm">
+                          <div class="progress-bar bg-red" style="width: 28%"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="card">
+                      <div class="card-body text-center">
+                        <div class="h5">Today profit</div>
+                        <div class="display-4 font-weight-bold mb-4">$652</div>
+                        <div class="progress progress-sm">
+                          <div class="progress-bar bg-green" style="width: 84%"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <div class="card">
+                      <div class="card-body text-center">
+                        <div class="h5">Users online</div>
+                        <div class="display-4 font-weight-bold mb-4">76</div>
+                        <div class="progress progress-sm">
+                          <div class="progress-bar bg-yellow" style="width: 34%"></div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                <script>
-                  require(['c3', 'jquery'], function(c3, $) {
-                  	$(document).ready(function(){
-                  		var chart = c3.generate({
-                  			bindto: '#chart-donut', // id of chart wrapper
-                  			data: {
-                  				columns: [
-                  				    // each columns data
-                  					['data1', 63],
-                  					['data2', 37]
-                  				],
-                  				type: 'donut', // default type of chart
-                  				colors: {
-                  					'data1': tabler.colors.blue,
-                  					'data2': tabler.colors.pink
-                  				},
-                  				names: {
-                  				    // name of each serie
-                  					'data1': 'Maximum',
-                  					'data2': 'Minimum'
-                  				}
-                  			},
-                  			axis: {
-                  			},
-                  			legend: {
-                  				padding: 16,
-                  			},
-                  			padding: {
-                  				bottom: 16,
-                  				top: 0
-                  			},
-                  		});
-                  	});
-                  });
-                </script>
               </div>
               <div class="col-sm-6 col-lg-3">
                 <div class="card p-3">
@@ -504,7 +635,7 @@
                         <td>
                           <div>Elizabeth Martin</div>
                           <div class="small text-muted">
-                            Registered: Feb 6, 2018
+                            Registered: Feb 7, 2018
                           </div>
                         </td>
                         <td>
@@ -554,7 +685,7 @@
                         <td>
                           <div>Michelle Schultz</div>
                           <div class="small text-muted">
-                            Registered: Dec 25, 2017
+                            Registered: Dec 27, 2017
                           </div>
                         </td>
                         <td>
@@ -575,7 +706,7 @@
                         </td>
                         <td>
                           <div class="small text-muted">Last login</div>
-                          <div>12 minutes ago</div>
+                          <div>11 minutes ago</div>
                         </td>
                         <td class="text-center">
                           <div class="mx-auto chart-circle chart-circle-xs" data-value="0.63" data-thickness="3" data-color="blue">
@@ -604,7 +735,7 @@
                         <td>
                           <div>Crystal Austin</div>
                           <div class="small text-muted">
-                            Registered: Dec 4, 2017
+                            Registered: Dec 6, 2017
                           </div>
                         </td>
                         <td>
@@ -654,7 +785,7 @@
                         <td>
                           <div>Douglas Ray</div>
                           <div class="small text-muted">
-                            Registered: Dec 14, 2017
+                            Registered: Dec 16, 2017
                           </div>
                         </td>
                         <td>
@@ -704,7 +835,7 @@
                         <td>
                           <div>Teresa Reyes</div>
                           <div class="small text-muted">
-                            Registered: Jan 24, 2018
+                            Registered: Jan 26, 2018
                           </div>
                         </td>
                         <td>
@@ -754,7 +885,7 @@
                         <td>
                           <div>Emma Wade</div>
                           <div class="small text-muted">
-                            Registered: Feb 19, 2018
+                            Registered: Feb 21, 2018
                           </div>
                         </td>
                         <td>
@@ -804,7 +935,7 @@
                         <td>
                           <div>Carol Henderson</div>
                           <div class="small text-muted">
-                            Registered: Feb 13, 2018
+                            Registered: Feb 15, 2018
                           </div>
                         </td>
                         <td>
@@ -854,7 +985,7 @@
                         <td>
                           <div>Christopher Harvey</div>
                           <div class="small text-muted">
-                            Registered: Jan 6, 2018
+                            Registered: Jan 8, 2018
                           </div>
                         </td>
                         <td>
