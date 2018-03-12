@@ -1,13 +1,6 @@
 module Jekyll
   module TablerFilter
 
-    def random_number(value, min=0, max=100, offset=0, round=0)
-      formatter = round ? '%.' + round.to_s + 'f' : '%'
-      value = formatter % ((Math.sin(Math.sin(value + offset)) + 1) * ((max - min) / 2) + min)
-
-      value
-    end
-
     def to_pretty_time(value)
       a = (Time.now-value).to_i
 

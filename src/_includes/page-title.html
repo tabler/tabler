@@ -1,8 +1,10 @@
 <div class="page-header">
 	<h1 class="page-title">
-		<i class="{{ include.icon }} page-title-icon"></i>
+		{% if include.icon %}
+			<i class="{{ include.icon }} page-title-icon"></i>
+		{% endif %}
 
-		{{ include.title }}
+		{{ include.title | default: page.title }}
 	</h1>
 
 	{% if include.subtitle %}
