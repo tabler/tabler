@@ -40,16 +40,18 @@
 	</table>
 </div>
 
-{% contentfor scripts %}
-requirejs(['tablesorter'], function() {
-	$('#js-table-sorted').tablesorter({
-		cssHeader: 'table-header',
-		cssAsc: 'table-header-asc',
-		cssDesc: 'table-header-desc',
-		headers: {
-			0: { sorter: false },
-			4: { sorter: false },
-		}
+<script>
+requirejs(['tablesorter', 'jquery'], function(tablesorter, $) {
+	$(document).ready(function(){
+		$('#js-table-sorted').tablesorter({
+			cssHeader: 'table-header',
+			cssAsc: 'table-header-asc',
+			cssDesc: 'table-header-desc',
+			headers: {
+				0: { sorter: false },
+				4: { sorter: false }
+			}
+		});
 	});
 });
-{% endcontentfor %}
+</script>
