@@ -14,7 +14,7 @@
     <meta name="MobileOptimized" content="320">
     <link rel="icon" href="./favicon.ico" type="image/x-icon"/>
     <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico" />
-    <!-- Generated: 2018-02-28 23:24:40 +0100 -->
+    <!-- Generated: 2018-03-20 15:36:58 +0100 -->
     <title>Homepage - tabler.github.io - a responsive, flat and full featured admin template</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,500,500i,600,600i,700,700i&amp;subset=latin-ext">
@@ -127,6 +127,7 @@
                     <div class="nav-submenu nav">
                       <a href="./cards.html" class="nav-item ">Cards design</a>
                       <a href="./charts.html" class="nav-item ">Charts</a>
+                      <a href="./pricing-cards.html" class="nav-item ">Pricing cards</a>
                     </div>
                   </li>
                   <li class="nav-item">
@@ -983,6 +984,43 @@
                     <h3 class="card-title">Email Statistics</h3>
                     <div>
                       <div id="chart-emails" style="height: 15rem"></div>
+                      require(['c3', 'jquery'], function (c3, $) {
+                      $(document).ready(function() {
+                      var chart = c3.generate({
+                      bindto: '#chart-emails',
+                      padding: {
+                      bottom: 24,
+                      top: 0
+                      },
+                      data: {
+                      type: 'donut',
+                      names: {
+                      data1: 'Open',
+                      data2: 'Bounce',
+                      data3: 'Unsubscribe',
+                      },
+                      columns: [
+                      ['data1', 30],
+                      ['data2', 50],
+                      ['data3', 25],
+                      ],
+                      colors: {
+                      data1: tabler.colors.blue,
+                      data2: tabler.colors.red,
+                      data3: tabler.colors.yellow,
+                      }
+                      },
+                      donut: {
+                      label: {
+                      show: false
+                      }
+                      },
+                      legend: {
+                      show: true
+                      },
+                      });
+                      });
+                      });
                     </div>
                   </div>
                   <div class="card-footer">
@@ -1628,7 +1666,7 @@
                     <h3 class="card-title">Match results</h3>
                   </div>
                   <div class="card-body">
-                    <div class="row align-items-center sm-gutters">
+                    <div class="row align-items-center gutters-sm">
                       <div class="col text-left">
                         <img src="assets/images/teams/real-madrid.png" alt="">
                       </div>
@@ -3282,97 +3320,5 @@
         </div>
       </footer>
     </div>
-    <script type="text/javascript">
-      requirejs(['jquery'], function($) {
-          $(document).ready(function () {
-      
-      
-      
-      
-      
-      
-      require(['c3'], function (c3) {
-      	var chart = c3.generate({
-      		bindto: '#chart-emails',
-      		padding: {
-      			bottom: 24,
-      			top: 0
-      		},
-      		data: {
-      			type: 'donut',
-      			names: {
-      
-      					data1: 'Open',
-      					data2: 'Bounce',
-      					data3: 'Unsubscribe',
-      			},
-      			columns: [
-      
-      					['data1', 30],
-      					['data2', 50],
-      					['data3', 25],
-      			],
-      			colors: {
-      
-      				data1: tabler.colors.blue,
-      				data2: tabler.colors.red,
-      				data3: tabler.colors.yellow,
-      			}
-      		},
-      		donut: {
-      			label: {
-      				show: false
-      			}
-      		},
-      		legend: {
-      			show: true
-      		},
-      	});
-      });
-      
-      require(['c3'], function (c3) {
-      	var chart = c3.generate({
-      		bindto: '#chart-pie',
-      		padding: {
-      			bottom: 24,
-      			top: 0
-      		},
-      		data: {
-      			type: 'donut',
-      			names: {
-      				data1: 'Open',
-      				data2: 'Resolved',
-      				data3: 'Closed',
-      				data4: 'Archived',
-      			},
-      			columns: [
-      				['data1', 30],
-      				['data2', 50],
-      				['data3', 8],
-      				['data4', 30]
-      			]
-      		},
-      		donut: {
-      			label: {
-      				show: false
-      			}
-      		},
-      		color: {
-      			pattern: [
-      				'{"hex"=>"#467fcf", "name"=>"Blue"}',
-      				'{"hex"=>"#5eba00", "name"=>"Green"}',
-      				'{"hex"=>"#e74c3c", "name"=>"Red"}',
-      				'{"hex"=>"#f1c40f", "name"=>"Yellow"}',
-      				'{"hex"=>"#fd9644", "name"=>"Orange"}',
-      				'{"hex"=>"#f66d9b", "name"=>"Pink"}',
-      			]
-      		}
-      	});
-      });
-      
-      
-          });
-      });
-    </script>
   </body>
 </html>
