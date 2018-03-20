@@ -14,7 +14,7 @@
     <meta name="MobileOptimized" content="320">
     <link rel="icon" href="./favicon.ico" type="image/x-icon"/>
     <link rel="shortcut icon" type="image/x-icon" href="./favicon.ico" />
-    <!-- Generated: 2018-02-28 23:24:40 +0100 -->
+    <!-- Generated: 2018-03-20 15:36:58 +0100 -->
     <title>tabler.github.io - a responsive, flat and full featured admin template</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,300i,400,400i,500,500i,600,600i,700,700i&amp;subset=latin-ext">
@@ -127,6 +127,7 @@
                     <div class="nav-submenu nav">
                       <a href="./cards.html" class="nav-item ">Cards design</a>
                       <a href="./charts.html" class="nav-item ">Charts</a>
+                      <a href="./pricing-cards.html" class="nav-item ">Pricing cards</a>
                     </div>
                   </li>
                   <li class="nav-item">
@@ -210,7 +211,7 @@
                         </div>
                         <div class="form-group">
                           <label class="form-label">Image Check</label>
-                          <div class="row sm-gutters">
+                          <div class="row gutters-sm">
                             <div class="col-6 col-sm-4">
                               <label class="imagecheck mb-4">
                                 <input name="imagecheck" type="checkbox" value="1" class="imagecheck-input"  />
@@ -378,7 +379,7 @@
                         </div>
                         <div class="form-group">
                           <label class="form-label">Separated inputs</label>
-                          <div class="row xs-gutters">
+                          <div class="row gutters-xs">
                             <div class="col">
                               <input type="text" class="form-control" placeholder="Search for...">
                             </div>
@@ -389,7 +390,7 @@
                         </div>
                         <div class="form-group">
                           <label class="form-label">ZIP Code</label>
-                          <div class="row sm-gutters">
+                          <div class="row gutters-sm">
                             <div class="col">
                               <input type="text" class="form-control" placeholder="Search for...">
                             </div>
@@ -658,7 +659,7 @@
                       </div>
                       <div class="form-group">
                         <label class="form-label">Date of birth</label>
-                        <div class="row xs-gutters">
+                        <div class="row gutters-xs">
                           <div class="col-5">
                             <select name="user[month]" class="form-control custom-select">
                               <option value="">Month</option>
@@ -1030,6 +1031,58 @@
                   </div>
                 </div>
               </form>
+              <script>
+                require(['jquery', 'selectize'], function ($, selectize) {
+                    $(document).ready(function () {
+                        $('#input-tags').selectize({
+                            delimiter: ',',
+                            persist: false,
+                            create: function (input) {
+                                return {
+                                    value: input,
+                                    text: input
+                                }
+                            }
+                        });
+                
+                        $('#select-beast').selectize({});
+                
+                        $('#select-users').selectize({
+                            render: {
+                                option: function (data, escape) {
+                                    return '<div>' +
+                                        '<span class="image"><img src="' + data.image + '" alt=""></span>' +
+                                        '<span class="title">' + escape(data.text) + '</span>' +
+                                        '</div>';
+                                },
+                                item: function (data, escape) {
+                                    return '<div>' +
+                                        '<span class="image"><img src="' + data.image + '" alt=""></span>' +
+                                        escape(data.text) +
+                                        '</div>';
+                                }
+                            }
+                        });
+                
+                        $('#select-countries').selectize({
+                            render: {
+                                option: function (data, escape) {
+                                    return '<div>' +
+                                        '<span class="image"><img src="' + data.image + '" alt=""></span>' +
+                                        '<span class="title">' + escape(data.text) + '</span>' +
+                                        '</div>';
+                                },
+                                item: function (data, escape) {
+                                    return '<div>' +
+                                        '<span class="image"><img src="' + data.image + '" alt=""></span>' +
+                                        escape(data.text) +
+                                        '</div>';
+                                }
+                            }
+                        });
+                    });
+                });
+              </script>
             </div>
             <div class="col-lg-4">
               <div class="card">
@@ -1417,57 +1470,5 @@ But that's the difference in our opinions.</textarea>
       </div>
     </footer>
   </div>
-  <script>
-    require(['jquery', 'selectize'], function ($, selectize) {
-        $(document).ready(function () {
-            $('#input-tags').selectize({
-                delimiter: ',',
-                persist: false,
-                create: function (input) {
-                    return {
-                        value: input,
-                        text: input
-                    }
-                }
-            });
-    
-            $('#select-beast').selectize({});
-    
-            $('#select-users').selectize({
-                render: {
-                    option: function (data, escape) {
-                        return '<div>' +
-                            '<span class="image"><img src="' + data.image + '" alt=""></span>' +
-                            '<span class="title">' + escape(data.text) + '</span>' +
-                            '</div>';
-                    },
-                    item: function (data, escape) {
-                        return '<div>' +
-                            '<span class="image"><img src="' + data.image + '" alt=""></span>' +
-                            escape(data.text) +
-                            '</div>';
-                    }
-                }
-            });
-    
-            $('#select-countries').selectize({
-                render: {
-                    option: function (data, escape) {
-                        return '<div>' +
-                            '<span class="image"><img src="' + data.image + '" alt=""></span>' +
-                            '<span class="title">' + escape(data.text) + '</span>' +
-                            '</div>';
-                    },
-                    item: function (data, escape) {
-                        return '<div>' +
-                            '<span class="image"><img src="' + data.image + '" alt=""></span>' +
-                            escape(data.text) +
-                            '</div>';
-                    }
-                }
-            });
-        });
-    });
-  </script>
 </body>
 </html>
