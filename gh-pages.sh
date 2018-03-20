@@ -1,5 +1,4 @@
 #!/bin/bash
-set -e # stop on error
 
 git checkout master
 
