@@ -1,13 +1,21 @@
-<ul class="pagination">
-	<li class="page-item disabled">
-		<a class="page-link" href="#" tabindex="-1">Previous</a>
+{% assign count = include.count | default: 5 %}
+{% assign active-item = include.active-item | default: 2 %}
+<ul class="pagination {{ include.class }}">
+	<li class="page-item disabled{% if include.pager %} mr-auto{% endif %}">
+		<a class="page-link" href="#" tabindex="-1">
+			{% if include.left-icon %}<i class="{{ include.left-icon }}"></i>{% else %}Prev{% endif %}
+		</a>
 	</li>
-	<li class="page-item"><a class="page-link" href="#">1</a></li>
-	<li class="page-item active">
-		<a class="page-link" href="#">2 <span class="sr-only">(current)</span></a>
-	</li>
-	<li class="page-item"><a class="page-link" href="#">3</a></li>
-	<li class="page-item">
-		<a class="page-link" href="#">Next</a>
+
+	{% unless include.pager %}
+	{% for i in (1..count) %}
+	<li class="page-item{% if i == active-item %} active{% endif %}"><a class="page-link" href="#">{{ i }}</a></li>
+	{% endfor %}
+	{% endunless %}
+
+	<li class="page-item{% if include.pager %} ml-auto{% endif %}">
+		<a class="page-link" href="#">
+			{% if include.right-icon %}<i class="{{ include.right-icon }}"></i>{% else %}Next{% endif %}
+		</a>
 	</li>
 </ul>
