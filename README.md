@@ -38,6 +38,10 @@ They were loading loads of useless components that you wouldn't ever use, so we'
 
 To make the system works fast and reliable, we've converted most of the components to CSS. Thanks to this, you don't have to load a lot of unnecessary libraries into your browser what really boosts the overall speed.
 
+## Documentation
+
+For full documentation, visit [tabler.github.io/tabler/docs](https://tabler.github.io/tabler/docs/index.html).
+
 ## Getting Started
 
 ### [Download ZIP](https://github.com/tabler/tabler/archive/dev.zip) or Git Clone
