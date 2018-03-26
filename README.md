@@ -2,32 +2,32 @@
   <a href="https://tabler.github.io/">
     <img src="https://tabler.github.io/assets/images/logo-default.svg" alt="Tabler" width="72" height="72">
   </a>
-
-  <h3 align="center">Tabler - Admin panel made simple</h3>
-
-  <p align="center">
-    Premium and Open Source dashboard template with responsive and high quality UI. For Free!
-  </p>
-  
-  <p align="center">
-    <strong>
-      <a href="https://tabler.github.io/demo/">View Demo</a> | <a href="https://github.com/tabler/tabler/archive/master.zip">Download ZIP</a>
-    </strong>
-  </p>
 </p>
+
+<h3 align="center">Tabler - Admin panel made simple</h3>
+
+<p align="center">
+Premium and Open Source dashboard template with responsive and high quality UI. For Free!
+</p>
+
+<p align="center">
+	<strong>
+	  <a href="https://tabler.github.io/demo/">View Demo</a> | <a href="https://github.com/tabler/tabler/archive/master.zip">Download ZIP</a>
+	</strong>
+</p>
+
+<p align="center">
+    <a href="https://www.npmjs.com/package/tabler-ui"><img src="https://img.shields.io/npm/dt/tabler-ui.svg" alt="Total Downloads"></a>
+    <a href="https://github.com/tabler/tabler/releases"><img src="https://img.shields.io/npm/v/tabler-ui.svg" alt="Latest Release"></a>
+    <a href="https://github.com/tabler/tabler/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/tabler-ui.svg" alt="License"></a>
+    <a href="https://david-dm.org/tabler/tabler?type=dev"><img src="https://img.shields.io/david/dev/tabler/tabler.svg" alt="devDependency Status"></a>
+</p>
+
+
 
 ![Tabler preview](https://tabler.github.io/assets/images/dashboard.png)
 
-## Table of contents
-
-- [About Tabler](#about-tabler)
-- [Getting Started](#getting-started)
-- [Bugs and feature requests](#bugs-and-feature-requests)
-- [Contributing](#contributing)
-- [Browser Support](#browser-support)
-- [Creators](#creators)
-- [Copyright and license](#copyright-and-license)
-
+----------
 
 ## About Tabler
 
@@ -37,6 +37,10 @@ After using many of different admin panels, no matter free or paid, we've notice
 They were loading loads of useless components that you wouldn't ever use, so we've decided to choose a different way. The whole system is plugin-based, what means that you have a control over what is needed and what not.
 
 To make the system works fast and reliable, we've converted most of the components to CSS. Thanks to this, you don't have to load a lot of unnecessary libraries into your browser what really boosts the overall speed.
+
+## Documentation
+
+For full documentation, visit [tabler.github.io/tabler/docs](https://tabler.github.io/tabler/docs/index.html).
 
 ## Getting Started
 
