@@ -20,6 +20,8 @@ We’ve created this admin panel for everyone who wants to create any templates 
 * **Clean Code:** We strictly followed Bootstrap’s guidelines to make your integration as easy as possible. All code is handwritten and W3c valid.
 * **Demo pages**: Tabler features over 20 individual pages featuring various components, giving you the freedom of choosing and combining. All components can take variation in color and styling, that can easily be modified using Sass. The sky is the limit!
 
+![Tabler preview](https://tabler.github.io/assets/images/dashboard.png)
+
 ## Documentation
 
 For full documentation, visit [tabler.github.io/tabler/docs](https://tabler.github.io/tabler/docs/index.html).
