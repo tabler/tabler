@@ -6,9 +6,11 @@ Premium and Open Source dashboard template with responsive and high quality UI.
 
 <strong><a href="https://tabler.github.io/demo/">View Demo</a> | <a href="https://github.com/tabler/tabler/archive/master.zip">Download ZIP</a></strong>
 
-<img src="https://tabler.github.io/assets/images/features/features-2.png" width="400" align="right" style="max-width: 50%">
+![Tabler preview](https://tabler.github.io/assets/images/dashboard.png)
 
 ## Features
+
+<img src="https://tabler.github.io/assets/images/features/features-2.png" width="400" align="right" style="max-width: 50%">
 
 We’ve created this admin panel for everyone who wants to create any templates based on our ready components. Our mission is to deliver a user-friendly, clear and easy administration panel, that can be used by both, simple websites and sophisticated systems. The only requirement is a basic HTML and CSS knowledge—as a reward, you'll be able to manage and visualize different types of data in the easiest possible way!
 
@@ -17,8 +19,6 @@ We’ve created this admin panel for everyone who wants to create any templates 
 * **HTML5 & CSS3:** We only use modern web technologies like HTML5 and CSS3. Our theme includes some subtile CSS3 animations so you will get anyone’s attention.
 * **Clean Code:** We strictly followed Bootstrap’s guidelines to make your integration as easy as possible. All code is handwritten and W3c valid.
 * **Demo pages**: Tabler features over 20 individual pages featuring various components, giving you the freedom of choosing and combining. All components can take variation in color and styling, that can easily be modified using Sass. The sky is the limit!
-
-![Tabler preview](https://tabler.github.io/assets/images/dashboard.png)
 
 ## Documentation
 
