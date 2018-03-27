@@ -1,42 +1,24 @@
-<p align="center">
-  <a href="https://tabler.github.io/">
-    <img src="https://tabler.github.io/assets/images/logo-default.svg" alt="Tabler" width="72" height="72">
-  </a>
-</p>
+# Tabler <a href="https://www.npmjs.com/package/tabler-ui"><img src="https://img.shields.io/npm/dt/tabler-ui.svg" alt="Total Downloads"></a> <a href="https://github.com/tabler/tabler/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/tabler-ui.svg" alt="License"></a> <a href="https://github.com/tabler/tabler/releases"><img src="https://img.shields.io/npm/v/tabler-ui.svg" alt="Latest Release"></a> <a href="https://david-dm.org/tabler/tabler?type=dev"><img src="https://img.shields.io/david/dev/tabler/tabler.svg" alt="devDependency Status"></a>
 
-<h3 align="center">Tabler - Admin panel made simple</h3>
+Premium and Open Source dashboard template with responsive and high quality UI.
 
-<p align="center">
-Premium and Open Source dashboard template with responsive and high quality UI. For Free!
-</p>
-
-<p align="center">
-	<strong>
-	  <a href="https://tabler.github.io/demo/">View Demo</a> | <a href="https://github.com/tabler/tabler/archive/master.zip">Download ZIP</a>
-	</strong>
-</p>
-
-<p align="center">
-    <a href="https://www.npmjs.com/package/tabler-ui"><img src="https://img.shields.io/npm/dt/tabler-ui.svg" alt="Total Downloads"></a>
-    <a href="https://github.com/tabler/tabler/releases"><img src="https://img.shields.io/npm/v/tabler-ui.svg" alt="Latest Release"></a>
-    <a href="https://github.com/tabler/tabler/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/tabler-ui.svg" alt="License"></a>
-    <a href="https://david-dm.org/tabler/tabler?type=dev"><img src="https://img.shields.io/david/dev/tabler/tabler.svg" alt="devDependency Status"></a>
-</p>
+<img src="https://tabler.github.io/assets/images/features/features-2.png" width="400" align="right" style="max-width: 50%">
 
 
+<strong><a href="https://tabler.github.io/demo/">View Demo</a> | <a href="https://github.com/tabler/tabler/archive/master.zip">Download ZIP</a></strong>
 
-![Tabler preview](https://tabler.github.io/assets/images/dashboard.png)
 
-----------
+<!--![Tabler preview](https://tabler.github.io/assets/images/dashboard.png)-->
 
-## About Tabler
+## Features
 
 We’ve created this admin panel for everyone who wants to create any templates based on our ready components. Our mission is to deliver a user-friendly, clear and easy administration panel, that can be used by both, simple websites and sophisticated systems. The only requirement is a basic HTML and CSS knowledge—as a reward, you'll be able to manage and visualize different types of data in the easiest possible way!
 
-After using many of different admin panels, no matter free or paid, we've noticed they all had a lot of defects—and the main one was resource intensity.
-They were loading loads of useless components that you wouldn't ever use, so we've decided to choose a different way. The whole system is plugin-based, what means that you have a control over what is needed and what not.
-
-To make the system works fast and reliable, we've converted most of the components to CSS. Thanks to this, you don't have to load a lot of unnecessary libraries into your browser what really boosts the overall speed.
+* **Responsive:** With support for mobile, tablet and desktop it doesn’t matter what device you’re using. Tsbler is responsive in all major browsers.
+* **Cross Browser:** Our theme works perfectly with: Latest Chrome, Firefox+, Latest Safari, Opera, Internet Explorer 10+ and mobile browsers. We’re working hard to support them.
+* **HTML5 & CSS3:** We only use modern web technologies like HTML5 and CSS3. Our theme includes some subtile CSS3 animations so you will get anyone’s attention.
+* **Clean Code:** We strictly followed Bootstrap’s guidelines to make your integration as easy as possible. All code is handwritten and W3c valid.
+* **Demo pages**: Tabler features over 20 individual pages featuring various components, giving you the freedom of choosing and combining. All components can take variation in color and styling, that can easily be modified using Sass. The sky is the limit!
 
 ## Documentation
 
