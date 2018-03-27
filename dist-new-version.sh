@@ -6,7 +6,7 @@ echo "Version $version"
 
 npm run dist
 git add .
-git commit -am "version $version"
+git commit -am "generate dist"
 npm version $version
 git push origin master && git push origin master --tags
 
