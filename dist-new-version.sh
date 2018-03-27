@@ -1,15 +1,15 @@
 #!/usr/bin/env bash
 
-version=0.0.14
+version=0.0.15
 
 echo "Version $version"
 
 npm run dist
 git add .
 git commit -am "version $version"
-git push origin master
+npm version $version
+git push origin master && git push origin master --tags
 
 npm run publish-dist
 
-npm version $version
 npm publish
