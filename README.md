@@ -1,5 +1,3 @@
-<p align="center">
-	
 # Tabler 
 
 Premium and Open Source dashboard template with responsive and high quality UI.
@@ -7,7 +5,8 @@ Premium and Open Source dashboard template with responsive and high quality UI.
 <a href="https://www.npmjs.com/package/tabler-ui"><img src="https://img.shields.io/npm/dt/tabler-ui.svg" alt="Total Downloads"></a> <a href="https://github.com/tabler/tabler/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/tabler-ui.svg" alt="License"></a> <a href="https://github.com/tabler/tabler/releases"><img src="https://img.shields.io/npm/v/tabler-ui.svg" alt="Latest Release"></a> <a href="https://david-dm.org/tabler/tabler?type=dev"><img src="https://img.shields.io/david/dev/tabler/tabler.svg" alt="devDependency Status"></a>
 
 <strong><a href="https://tabler.github.io/demo/">View Demo</a> | <a href="https://github.com/tabler/tabler/archive/master.zip">Download ZIP</a></strong>
-</p>
+
+<br><br><br>
 
 ![Tabler preview](https://tabler.github.io/assets/images/dashboard.png)
 
