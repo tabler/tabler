@@ -14,7 +14,7 @@ Premium and Open Source dashboard template with responsive and high quality UI.
 
 <img src="https://tabler.github.io/assets/images/features/features-2.png" width="400" align="right" style="max-width: 50%">
 
-We’ve created this admin panel for anyone who wants to improve upon our templates based upon ready-made and modular components. Our mission is to truly create an user-experience that's second-to-none among our peers. Our goal as a company is to deliver effective templating solutions that can integrate into any software solution whether they be large or small. The only requirement is a basic HTML and CSS knowledge! Start using tabler today! As a reward, you'll be able to manage and visualize different types of data in the easiest possible way!
+We’ve created this admin panel for anyone who wants to improve upon our templates based upon ready-made and modular components. Our mission is to truly create an user-experience that's second-to-none among our peers. Our goal as a company is to deliver effective templating solutions that can integrate into any software solution whether they be large or small. The only requirement is basic HTML and CSS knowledge! Start using tabler today! As a reward, you'll be able to manage and visualize different types of data in the easiest possible way!
 <hr>
 * **Responsive:** With support for mobile, tablet and desktop it doesn’t matter what device you’re using. Tabler is responsive in all major browsers.
 * **Cross Browser:** Our theme works perfectly with: Latest Chrome, Firefox+, Latest Safari, Opera, Internet Explorer 10+ and mobile browsers. We’re working hard to support them.
