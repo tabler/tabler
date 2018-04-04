@@ -4,7 +4,7 @@
 
 Premium and Open Source dashboard template with responsive and high quality UI.
 
-<strong><a href="https://tabler.github.io/demo/">View Demo</a> | <a href="https://github.com/tabler/tabler/archive/master.zip">Download ZIP</a></strong>
+<strong><a href="https://tabler.github.io/demo/">View Demo</a> | <a href="https://github.com/tabler/tabler/archive/master.zip">Download ZIP</a></strong> | <strong><a href="https://goo.gl/zJP2dT">Join us on Slack</a></strong>
 
 <br><br>
 
