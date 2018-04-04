@@ -2,6 +2,7 @@ var gulp = require('gulp'),
     sass = require('gulp-sass'),
     rename = require('gulp-rename'),
     autoprefixer = require('gulp-autoprefixer'),
+    rtlcss = require('gulp-rtlcss'),
     pckg = require('./package.json');
 
 gulp.task('styles', function () {
@@ -15,6 +16,10 @@ gulp.task('styles', function () {
             cascade: false
         }))
         .pipe(rename('dashboard.css'))
+        .pipe(gulp.dest('src/assets/css/'))
+
+        .pipe(rtlcss())
+        .pipe(rename('dashboard.rtl.css'))
         .pipe(gulp.dest('src/assets/css/'));
 });
 
