@@ -14,7 +14,7 @@ Premium and Open Source dashboard template with responsive and high quality UI.
 
 <img src="https://tabler.github.io/assets/images/features/features-2.png" width="400" align="right" style="max-width: 50%">
 
-We’ve created this admin panel for everyone who wants to create any templates based on our ready components. Our mission is to deliver a user-friendly, clear and easy administration panel, that can be used by both, simple websites and sophisticated systems. The only requirement is a basic HTML and CSS knowledge—as a reward, you'll be able to manage and visualize different types of data in the easiest possible way!
+We’ve created this admin panel for everyone who wants to create any template based on our ready components. Our mission is to deliver a user-friendly, clear and easy administration panel, that can be used by both, simple websites and sophisticated systems. The only requirement is a basic HTML and CSS knowledge, as a reward, you'll be able to manage and visualize different types of data in the easiest possible way!
 
 * **Responsive:** With support for mobile, tablet and desktop it doesn’t matter what device you’re using. Tabler is responsive in all major browsers.
 * **Cross Browser:** Our theme works perfectly with: Latest Chrome, Firefox+, Latest Safari, Opera, Internet Explorer 10+ and mobile browsers. We’re working hard to support them.
@@ -44,7 +44,7 @@ To use our build system and run our documentation locally, you'll need a copy of
    
    **Windows users:** Read [this guide](https://jekyllrb.com/docs/windows/) to get Jekyll up and running without problems.
   
-When completed, you'll be able to run the various commands provided from the command line.
+When completed, you'll be able to run the various commands provided in the command line.
 
 ### Build Tabler
 
