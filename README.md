@@ -1,14 +1,18 @@
 # Tabler 
 
-Premium and Open Source dashboard template with responsive and high quality UI.
+<a href="https://buddy.works"><img src="https://assets.buddy.works/automated-dark.svg" alt="Automated by Buddy" align="right"></a>
 
-<a href="https://www.npmjs.com/package/tabler-ui"><img src="https://img.shields.io/npm/dt/tabler-ui.svg" alt="Total Downloads"></a> <a href="https://github.com/tabler/tabler/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/tabler-ui.svg" alt="License"></a> <a href="https://github.com/tabler/tabler/releases"><img src="https://img.shields.io/npm/v/tabler-ui.svg" alt="Latest Release"></a> <a href="https://david-dm.org/tabler/tabler?type=dev"><img src="https://img.shields.io/david/dev/tabler/tabler.svg" alt="devDependency Status"></a>
+Premium and Open Source dashboard template with responsive and high quality UI.
 
 <strong><a href="https://tabler.github.io/demo/">View Demo</a> | <a href="https://github.com/tabler/tabler/archive/master.zip">Download ZIP</a></strong>
 
 <br><br>
 
 ![Tabler preview](https://tabler.github.io/assets/images/dashboard.png)
+
+## Status
+
+<a href="https://www.npmjs.com/package/tabler-ui"><img src="https://img.shields.io/npm/dt/tabler-ui.svg" alt="Total Downloads"></a> <a href="https://github.com/tabler/tabler/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/tabler-ui.svg" alt="License"></a> <a href="https://github.com/tabler/tabler/releases"><img src="https://img.shields.io/npm/v/tabler-ui.svg" alt="Latest Release"></a> <a href="https://david-dm.org/tabler/tabler?type=dev"><img src="https://img.shields.io/david/dev/tabler/tabler.svg" alt="devDependency Status"></a> [![buddy pipeline](https://app.buddy.works/codecalm/tabler/pipelines/pipeline/131922/badge.svg?token=1ab151000ecf8700a90dd4d0d7184945d439d2642679b257092d16e76a45dce4 "buddy pipeline")](https://app.buddy.works/codecalm/tabler/pipelines/pipeline/131922)
 
 ## Features
 
