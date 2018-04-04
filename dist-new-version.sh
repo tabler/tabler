@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
 
-version=0.0.17
+version=0.0.18
 
 echo "Version $version"
 
 npm run dist
 git add .
-git commit -am "generate dist"
+git commit -am "version $version"
 npm version $version
 git push origin master && git push origin master --tags
 
