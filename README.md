@@ -4,7 +4,7 @@
 
 Premium and Open Source dashboard template with responsive and high quality UI.
 
-<strong><a href="https://tabler.github.io/demo/">View Demo</a> | <a href="https://github.com/tabler/tabler/archive/master.zip">Download ZIP</a></strong>
+<strong><a href="https://tabler.github.io/demo/">View Demo</a> | <a href="https://github.com/tabler/tabler/archive/master.zip">Download ZIP</a> | <a href="https://goo.gl/zJP2dT">Join us on Slack</a></strong>
 
 <br><br>
 
@@ -14,17 +14,19 @@ Premium and Open Source dashboard template with responsive and high quality UI.
 
 <img src="https://tabler.github.io/assets/images/features/features-2.png" width="400" align="right" style="max-width: 50%">
 
-We have created Tabler for everyone who wants to create any template based on our ready components. Our mission is to deliver a user-friendly, clear, and easy administration panel and allow Tabler to be used by simple websites and sophisticated systems. The only requirement is a basic HTML and CSS knowledge to be able to manage and visualize different types of data in the easiest possible way!
 
-* **Responsive:** With support for mobile, tablet, and desktop, Tabler is responsive in all major browsers.
-* **Cross Browser:** Our theme works perfectly with: Latest Chrome, Firefox+, Latest Safari, Opera, Internet Explorer 10+, and mobile browsers. We are working hard to support them.
-* **HTML5 & CSS3:** We only use modern web technologies like HTML5 and CSS3. Our theme includes some subtle CSS3 animations to grab anyone’s attention.
-* **Clean Code:** We strictly followed Bootstrap’s guidelines to make your integration as easy as possible. All code is handwritten and W3C valid.
-* **Demo pages**: Allowing the freedom of choosing and combining, Tabler features over 20 individual pages featuring various components. All components can easily be modified using Sass to have variation in color and styling. The sky is the limit!
+We created this admin panel for everyone who wants to create any templates based on our pre-made components. Our mission is to deliver a user-friendly, clear and easy administration panel, that can be used by both, simple websites and sophisticated systems. The only requirement is a basic HTML and CSS knowledge—as a reward, you'll be able to manage and visualize different types of data in the easiest possible way!
+
+* **Responsive:** With support for mobile, tablet and desktop it doesn’t matter what device you’re using. Tabler is responsive in all major browsers.
+* **Cross Browser:** Our theme works perfectly with: Latest Chrome, Firefox+, Latest Safari, Opera, Internet Explorer 10+ and mobile browsers. We work hard to continuously support them.
+* **HTML5 & CSS3:** We only use modern web technologies like HTML5 and CSS3. Our theme includes some subtile CSS3 animations so you will get anyone’s attention.
+* **Clean Code:** We strictly followed Bootstrap’s guidelines to make your integration as easy as possible. All code is handwritten and W3c valid.
+* **Demo pages**: Tabler features over 20 individual pages featuring various components, giving you the freedom of choosing and combining. All components can take variation in color and styling, that can easily be modified using Sass. The sky is the limit!
 
 ## Status
 
 <a href="https://www.npmjs.com/package/tabler-ui"><img src="https://img.shields.io/npm/dt/tabler-ui.svg" alt="Total Downloads"></a> <a href="https://github.com/tabler/tabler/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/tabler-ui.svg" alt="License"></a> <a href="https://github.com/tabler/tabler/releases"><img src="https://img.shields.io/npm/v/tabler-ui.svg" alt="Latest Release"></a> <a href="https://david-dm.org/tabler/tabler?type=dev"><img src="https://img.shields.io/david/dev/tabler/tabler.svg" alt="devDependency Status"></a> [![buddy pipeline](https://app.buddy.works/codecalm/tabler/pipelines/pipeline/131922/badge.svg?token=1ab151000ecf8700a90dd4d0d7184945d439d2642679b257092d16e76a45dce4 "buddy pipeline")](https://app.buddy.works/codecalm/tabler/pipelines/pipeline/131922)
+
 
 ## Documentation
 
@@ -58,6 +60,10 @@ When completed, you will be able to run the various commands provided in the com
 
 **Warning!** all changes made in `_site/` folder would be overwritten on application build.
 
+## Development preview
+
+All changes made on `dev` branch are avaliable on https://dev-tabler-tabler.buddy.show/. Every change in the code automatically compiles the source code.
+
 ## Bugs and feature requests
 
 Have a bug or a feature request? [Please open a new issue](https://github.com/tabler/tabler/issues/new).
@@ -65,8 +71,8 @@ Have a bug or a feature request? [Please open a new issue](https://github.com/ta
 ## Browser Support
 
 ![Chrome](https://raw.github.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png) | ![Firefox](https://raw.github.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png) | ![Edge](https://raw.github.com/alrra/browser-logos/master/src/edge/edge_48x48.png) | ![IE](https://raw.github.com/alrra/browser-logos/master/src/archive/internet-explorer_9-11/internet-explorer_9-11_48x48.png) | ![Safari](https://raw.github.com/alrra/browser-logos/master/src/safari/safari_48x48.png) | ![Opera](https://raw.github.com/alrra/browser-logos/master/src/opera/opera_48x48.png)
---- | --- | --- | --- | --- | --- |
-Latest ✔ | Latest ✔ | Latest ✔ | 11+ ✔ | 9.1+ ✔ | Latest ✔ |
+--- | --- | --- | --- | --- | ---
+Latest ✔ | Latest ✔ | Latest ✔ | 11+ ✔ | 9.1+ ✔ | Latest ✔
 
 ## Creators
 
