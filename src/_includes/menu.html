@@ -3,7 +3,7 @@
 	{% assign menu_levels = layout.menu | default: page.menu | split: '.' %}
 
 	{% for item in menu %}
-	<li class="nav-item d-block">
+	<li class="nav-item">
 		{% assign index = item[0] %}
 		{% assign data = item[1] %}
 		<a href="{% if data.url %}{% if data.url != '#' %}{{ site.base }}/{% endif %}{{ data.url }}{% else %}javascript:void(0){% endif %}" class="nav-link{% if menu_levels[0] == index %} active{% endif %}{% if data.disabled %} disabled{% endif %}">{% if data.icon %}<i class="{{ data.icon }}"></i>{% endif %} {{ data.name }}{% if data.count %} <span class="badge badge-pill bg-primary text-white ml-2">{{ data.count }}</span>{% endif %}</a>
