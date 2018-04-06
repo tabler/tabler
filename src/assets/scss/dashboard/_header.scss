@@ -1,7 +1,6 @@
 .header {
-	padding-top: 1rem;
-	padding-bottom: 1rem;
-	//height: $header-height;
+	padding-top: .75rem;
+	padding-bottom: .75rem;
 	background: #fff;
 	border-bottom: 1px solid $border-color;
 
@@ -15,30 +14,6 @@
 
 	@media print {
 		display: none;
-	}
-
-	.nav-link,
-	.nav-item {
-		padding: 0 .75rem;
-		min-width: 2rem;
-		transition: .3s color;
-		user-select: none;
-		cursor: pointer;
-		line-height: 1;
-		display: flex;
-		align-items: center;
-
-		&:hover {
-			//color: $body-color !important;
-		}
-
-		.badge {
-			position: absolute;
-			top: 0;
-			right: 0;
-			padding: .2rem .25rem;
-			min-width: 1rem
-		}
 	}
 
 	.dropdown-menu {
@@ -56,7 +31,7 @@
 	border-radius: 50%;
 }
 
-.navbar-brand {
+.header-brand {
 	color: inherit;
 	margin-right: 1rem;
 	font-size: 1.25rem;
@@ -73,7 +48,7 @@
 	}
 }
 
-.navbar-brand-img {
+.header-brand-img {
 	height: 2rem;
 	line-height: 2rem;
 	vertical-align: bottom;
@@ -89,45 +64,20 @@
 	border-radius: 50%;
 }
 
-.header-overlay {
-	position: fixed;
-	top: $header-height;
-	right: 0;
-	bottom: 0;
-	left: 0;
-	background: rgba(26,54,80,0.1);
-	visibility: hidden;
-	opacity: 0;
-	z-index: $zindex-overlay;
-	transition: .6s opacity, .6s visibility;
-	backdrop-filter: blur(1px);
-
-
-	.dropdown-menu.show + & {
-		visibility: visible;
-		opacity: 1;
-	}
-}
-
-.header-nav {
-	background: #fff;
-	border-bottom: 1px solid $border-color;
-	color: $text-muted;
-	align-items: center;
-
-
-	@media print {
-		display: none;
-	}
-
-	.nav-tabs {
-		border: 0;
-
-		.nav-item + .nav-item {
-			margin-left: 1.5rem;
-		}
-	}
-}
+//.header-nav {
+//	background: #fff;
+//	border-bottom: 1px solid $border-color;
+//	color: $text-muted;
+//	align-items: center;
+//
+//	@media print {
+//		display: none;
+//	}
+//
+//	.nav-tabs {
+//		border: 0;
+//	}
+//}
 
 .header-btn {
 	display: inline-block;
@@ -151,4 +101,28 @@
 			border-radius: 50%;
 		}
 	}
+}
+
+.header-toggler {
+	width: 2rem;
+	height: 2rem;
+	position: relative;
+	color: $text-muted;
+
+	&:hover {
+		color: $text-muted-dark;
+	}
+}
+
+.header-toggler-icon {
+	position: absolute;
+	width: 1rem;
+	height: 2px;
+	color: inherit;
+	background: currentColor;
+	border-radius: 3px;
+	top: 50%;
+	left: 50%;
+	margin: -2px 0 0 -.5rem;
+	box-shadow: 0 5px currentColor, 0 -5px currentColor;
 }
