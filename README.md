@@ -62,7 +62,7 @@ When completed, you will be able to run the various commands provided in the com
 
 ## Development preview
 
-All changes made on `dev` branch are avaliable on https://dev-tabler-tabler.buddy.show/. Every change in the code automatically compiles the source code.
+All changes made on `dev` branch are avaliable on http://tabler.codecalm.net/dev/. Every change in the code automatically compiles the source code.
 
 ## Bugs and feature requests
 
