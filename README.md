@@ -19,9 +19,9 @@ We created this admin panel for everyone who wants to create any templates based
 
 * **Responsive:** With support for mobile, tablet and desktop it doesn’t matter what device you’re using. Tabler is responsive in all major browsers.
 * **Cross Browser:** Our theme works perfectly with: Latest Chrome, Firefox+, Latest Safari, Opera, Internet Explorer 10+ and mobile browsers. We work hard to continuously support them.
-* **HTML5 & CSS3:** We only use modern web technologies like HTML5 and CSS3. Our theme includes some subtile CSS3 animations so you will get anyone’s attention.
-* **Clean Code:** We strictly followed Bootstrap’s guidelines to make your integration as easy as possible. All code is handwritten and W3c valid.
-* **Demo pages**: Tabler features over 20 individual pages featuring various components, giving you the freedom of choosing and combining. All components can take variation in color and styling, that can easily be modified using Sass. The sky is the limit!
+* **HTML5 & CSS3:** We only use modern web technologies like HTML5 and CSS3. Our theme includes some subtle CSS3 animations so you will get anyone’s attention.
+* **Clean Code:** We strictly followed Bootstrap’s guidelines to make your integration as easy as possible. All code is handwritten and W3C valid.
+* **Demo pages**: Tabler features over 20 individual pages featuring various components, giving you the freedom to choose and combine. All components can take variation in color and styling that can easily be modified using Sass. The sky is the limit!
 
 ## Status
 
