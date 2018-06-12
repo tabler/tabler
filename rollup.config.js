@@ -25,7 +25,8 @@ module.exports = {
         file: path.resolve(__dirname, `${fileDest}`),
         format: 'umd',
         globals,
-        name: 'tabler'
+        name: 'tabler',
+        sourcemap: true
     },
     // external,
     // plugins
