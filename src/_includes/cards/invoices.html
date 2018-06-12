@@ -1,10 +1,9 @@
 <div class="card">
 	<div class="card-header">
 		<h3 class="card-title">Invoices</h3>
-	</div>
-
+	</div>	
 	<div class="table-responsive">
-		<table class="table card-table table-vcenter text-nowrap">
+		<table class="table card-table table-vcenter text-nowrap datatable">
 			<thead>
 			<tr>
 				<th class="w-1">No.</th>
@@ -20,7 +19,7 @@
 			</thead>
 
 			<tbody>
-			{% for invoice in site.data.invoices limit: 6 %}
+			{% for invoice in site.data.invoices limit: 30 %}
 			<tr>
 				<td><span class="text-muted">00{{ forloop.index | plus: 1400 }}</span></td>
 				<td><a href="invoice.html" class="text-inherit">{{ invoice.name }}</a></td>
@@ -53,5 +52,10 @@
 			{% endfor %}
 			</tbody>
 		</table>
+		<script>
+		require(['datatables', 'jquery'], function(datatable, $) {
+	    $('.datatable').DataTable();
+	  });		
+	  </script>
 	</div>
 </div>
