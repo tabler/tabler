@@ -1,33 +1,44 @@
 'use strict';
 
-const path    = require('path');
+const path = require('path');
+const babel = require('rollup-plugin-babel');
+const resolve = require('rollup-plugin-node-resolve');
+const commonJS = require('rollup-plugin-commonjs');
 
 const pkg = require(path.resolve(__dirname, 'package.json'));
+const bundle = process.env.bundle === 'true';
 
-const fileDest = 'tabler.js';
+let fileDest = 'tabler.js';
 const year = new Date().getFullYear();
 
-const external = ['jquery', 'popper.js'];
+let plugins = [
+    commonJS({
+        include: 'node_modules/**'
+    })
+];
 
-const globals = {
-    // jquery: 'jQuery',
-    // 'popper.js': 'Popper'
-};
+if (bundle) {
+    fileDest = 'tabler.bundle.js';
+    plugins = [
+        resolve(),
+        commonJS({
+            include: 'node_modules/**'
+        })
+    ];
+}
 
 module.exports = {
-    input: path.resolve(__dirname, 'src/assets/js/tabler.js'),
+    input: path.resolve(__dirname, 'src/assets/js/index.js'),
     output: {
         banner: `/*!
   * Tabler v${pkg.version} (${pkg.homepage})
   * Copyright ${year} ${pkg.author}
   * Licensed under MIT (https://github.com/tabler/tabler/blob/master/LICENSE)
   */`,
-        file: path.resolve(__dirname, `${fileDest}`),
+        file: path.resolve(__dirname, `js/dist/${fileDest}`),
         format: 'umd',
-        globals,
         name: 'tabler',
         sourcemap: true
     },
-    // external,
-    // plugins
+    plugins
 };
