@@ -1,8 +1,8 @@
-import jquery from 'jquery'
-import bootstrap from 'bootstrap'
+import 'jquery'
+import 'bootstrap'
 
-// jquery(document).ready(function () {
-//     console.log('ready');
-// });
-
-export default bootstrap;
+(function($) {
+    $(document).ready(function () {
+        console.log('ready');
+    });
+})(jquery);

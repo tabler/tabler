@@ -19,12 +19,7 @@ let plugins = [
 
 if (bundle) {
     fileDest = 'tabler.bundle.js';
-    plugins = [
-        resolve(),
-        commonJS({
-            include: 'node_modules/**'
-        })
-    ];
+    plugins.push(resolve());
 }
 
 module.exports = {
@@ -40,5 +35,6 @@ module.exports = {
         name: 'tabler',
         sourcemap: true
     },
+    external: ['jquery'],
     plugins
 };

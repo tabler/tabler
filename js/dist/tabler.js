@@ -4,17 +4,16 @@
   * Licensed under MIT (https://github.com/tabler/tabler/blob/master/LICENSE)
   */
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('jquery'), require('bootstrap')) :
-	typeof define === 'function' && define.amd ? define(['jquery', 'bootstrap'], factory) :
-	(global.tabler = factory(global.jquery,global.bootstrap));
-}(this, (function (jquery,bootstrap) { 'use strict';
+    typeof exports === 'object' && typeof module !== 'undefined' ? factory(require('jquery'), require('bootstrap')) :
+    typeof define === 'function' && define.amd ? define(['jquery', 'bootstrap'], factory) :
+    (factory());
+}(this, (function () { 'use strict';
 
-	jquery = jquery && jquery.hasOwnProperty('default') ? jquery['default'] : jquery;
-	bootstrap = bootstrap && bootstrap.hasOwnProperty('default') ? bootstrap['default'] : bootstrap;
-
-
-
-	return bootstrap;
+    (function($) {
+        $(document).ready(function () {
+            console.log('ready');
+        });
+    })(jquery);
 
 })));
 //# sourceMappingURL=tabler.js.map

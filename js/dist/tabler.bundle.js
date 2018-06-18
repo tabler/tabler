@@ -6,10 +6,8 @@
 (function (global, factory) {
 	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('bootstrap')) :
 	typeof define === 'function' && define.amd ? define(['bootstrap'], factory) :
-	(global.tabler = factory(global.bootstrap));
-}(this, (function (bootstrap) { 'use strict';
-
-	bootstrap = bootstrap && bootstrap.hasOwnProperty('default') ? bootstrap['default'] : bootstrap;
+	(global.tabler = factory());
+}(this, (function () { 'use strict';
 
 	var commonjsGlobal = typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
