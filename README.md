@@ -1,5 +1,6 @@
 # Tabler 
-
+[![Backers on Open Collective](https://opencollective.com/tabler/backers/badge.svg)](#backers)
+ [![Sponsors on Open Collective](https://opencollective.com/tabler/sponsors/badge.svg)](#sponsors) 
 <a href="https://buddy.works"><img src="https://assets.buddy.works/automated-dark.svg" alt="Automated by Buddy" align="right"></a>
 
 Premium and Open Source dashboard template with responsive and high quality UI.
@@ -25,7 +26,7 @@ We created this admin panel for everyone who wants to create any templates based
 
 ## Status
 
-<a href="https://www.npmjs.com/package/tabler-ui"><img src="https://img.shields.io/npm/dt/tabler-ui.svg" alt="Total Downloads"></a> <a href="https://github.com/tabler/tabler/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/tabler-ui.svg" alt="License"></a> <a href="https://github.com/tabler/tabler/releases"><img src="https://img.shields.io/npm/v/tabler-ui.svg" alt="Latest Release"></a> <a href="https://david-dm.org/tabler/tabler?type=dev"><img src="https://img.shields.io/david/dev/tabler/tabler.svg" alt="devDependency Status"></a> [![buddy pipeline](https://app.buddy.works/codecalm/tabler/pipelines/pipeline/131922/badge.svg?token=1ab151000ecf8700a90dd4d0d7184945d439d2642679b257092d16e76a45dce4 "buddy pipeline")](https://app.buddy.works/codecalm/tabler/pipelines/pipeline/131922)
+<a href="https://www.npmjs.com/package/tabler-ui"><a href="#backers" alt="sponsors on Open Collective"><img src="https://opencollective.com/tabler/backers/badge.svg" /></a> <a href="#sponsors" alt="Sponsors on Open Collective"><img src="https://opencollective.com/tabler/sponsors/badge.svg" /></a> <img src="https://img.shields.io/npm/dt/tabler-ui.svg" alt="Total Downloads"></a> <a href="https://github.com/tabler/tabler/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/tabler-ui.svg" alt="License"></a> <a href="https://github.com/tabler/tabler/releases"><img src="https://img.shields.io/npm/v/tabler-ui.svg" alt="Latest Release"></a> <a href="https://david-dm.org/tabler/tabler?type=dev"><img src="https://img.shields.io/david/dev/tabler/tabler.svg" alt="devDependency Status"></a> [![buddy pipeline](https://app.buddy.works/codecalm/tabler/pipelines/pipeline/131922/badge.svg?token=1ab151000ecf8700a90dd4d0d7184945d439d2642679b257092d16e76a45dce4 "buddy pipeline")](https://app.buddy.works/codecalm/tabler/pipelines/pipeline/131922)
 
 
 ## Documentation
@@ -81,6 +82,36 @@ Latest ✔ | Latest ✔ | Latest ✔ | 11+ ✔ | 9.1+ ✔ | Latest ✔
 - <https://twitter.com/codecalm>
 - <https://github.com/codecalm>
 - <https://codecalm.net>
+
+## Contributors
+
+This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
+<a href="graphs/contributors"><img src="https://opencollective.com/tabler/contributors.svg?width=890&button=false" /></a>
+
+
+## Backers
+
+Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/tabler#backer)]
+
+<a href="https://opencollective.com/tabler#backers" target="_blank"><img src="https://opencollective.com/tabler/backers.svg?width=890"></a>
+
+
+## Sponsors
+
+Support this project by becoming a sponsor. Your logo will show up here with a link to your website. [[Become a sponsor](https://opencollective.com/tabler#sponsor)]
+
+<a href="https://opencollective.com/tabler/sponsor/0/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/0/avatar.svg"></a>
+<a href="https://opencollective.com/tabler/sponsor/1/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/1/avatar.svg"></a>
+<a href="https://opencollective.com/tabler/sponsor/2/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/2/avatar.svg"></a>
+<a href="https://opencollective.com/tabler/sponsor/3/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/3/avatar.svg"></a>
+<a href="https://opencollective.com/tabler/sponsor/4/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/4/avatar.svg"></a>
+<a href="https://opencollective.com/tabler/sponsor/5/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/5/avatar.svg"></a>
+<a href="https://opencollective.com/tabler/sponsor/6/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/6/avatar.svg"></a>
+<a href="https://opencollective.com/tabler/sponsor/7/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/7/avatar.svg"></a>
+<a href="https://opencollective.com/tabler/sponsor/8/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/8/avatar.svg"></a>
+<a href="https://opencollective.com/tabler/sponsor/9/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/9/avatar.svg"></a>
+
+
 
 ## Copyright and license
 
