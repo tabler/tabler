@@ -13029,11 +13029,15 @@ a.icon:hover {
 }
 
 .card-body {
-  -ms-flex: 1 1 auto;
-  flex: 1 1 auto;
-  margin: 0;
-  padding: 1.5rem 1.5rem;
-  position: relative;
+  -ms-flex: 1 1 auto; 
+    flex: 1 1 auto;
+    margin: 0;
+    padding: 1.5rem 1.5rem;
+    position: relative;
+    height: auto;
+    min-height: 100px;
+    display: block;
+    transition: all .2s ease;
 }
 
 .card-body + .card-body {
@@ -13277,11 +13281,19 @@ a.icon:hover {
 Card options
  */
 .card-collapsed > :not(.card-header):not(.card-status) {
-  display: none;
+  
+    height: 0 !important;
+    min-height: 0px !important;
+    overflow: hidden;
+    padding: 0px 1.5rem!important;
 }
+.card .card-options-collapse {
+  transform-origin: 50% 60%;
+   transition: all .4s ease;
+}
+.card-collapsed .card-options-collapse {
 
-.card-collapsed .card-options-collapse i:before {
-  content: '\e92d';
+    transform: rotate(180deg);
 }
 
 .card-fullscreen .card-options-fullscreen i:before {

@@ -12,6 +12,11 @@
 		box-shadow: none;
 		border: none;
 	}
+
+	.card-options-collapse {
+		transform-origin: 50% 60%;
+		transition: all .4s ease;
+	}
 }
 
 .card-body {
@@ -19,7 +24,10 @@
 	margin: 0;
 	padding: $card-spacer-y $card-spacer-x;
 	position: relative;
-
+ 	height: auto;
+ 	min-height: 100px;
+ 	display: block;
+ 	transition: all .2s ease;
 	& + & {
 		border-top: 1px solid $border-color;
 	}
@@ -266,16 +274,15 @@ Card options
  */
 .card-collapsed {
 	>:not(.card-header):not(.card-status) {
-		display: none;
+		height: 0 !important;
+		min-height: 0px !important;
+		overflow: hidden;
+		padding: 0px 1.5rem !important;
 	}
 }
 
 .card-options-collapse {
-	i:before {
-		.card-collapsed & {
-			content: '\e92d';
-		}
-	}
+	transform: rotate(180deg);
 }
 
 .card-options-fullscreen {
