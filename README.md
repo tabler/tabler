@@ -1,6 +1,6 @@
-# Tabler 
+# Tabler
 [![Backers on Open Collective](https://opencollective.com/tabler/backers/badge.svg)](#backers)
- [![Sponsors on Open Collective](https://opencollective.com/tabler/sponsors/badge.svg)](#sponsors) 
+ [![Sponsors on Open Collective](https://opencollective.com/tabler/sponsors/badge.svg)](#sponsors)
 <a href="https://buddy.works"><img src="https://assets.buddy.works/automated-dark.svg" alt="Automated by Buddy" align="right"></a>
 
 Premium and Open Source dashboard template with responsive and high quality UI.
@@ -48,9 +48,9 @@ To use our build system and run documentation locally, you will need a copy of T
 1. [Download and install Node.js](https://nodejs.org/download/), which is used to manage our dependencies.
 2. Navigate to the root `/tabler` directory and run `npm install` to install local dependencies listed in `package.json`.
 3. [Install Ruby](https://www.ruby-lang.org/en/documentation/installation/), install [Bundler](https://bundler.io/) with `gem install bundler`, and finally run `bundle install`. This will install all Ruby dependencies, such as Jekyll and plugins.
-   
+
    **Windows users:** Read [this guide](https://jekyllrb.com/docs/windows/) to get Jekyll up and running without problems.
-  
+
 When completed, you will be able to run the various commands provided in the command line.
 
 ### Build Tabler
@@ -116,3 +116,7 @@ Support this project by becoming a sponsor. Your logo will show up here with a l
 ## Copyright and license
 
 Code and documentation copyright 2018 the [Tabler Authors](https://github.com/tabler/tabler/graphs/contributors) and [codecalm.net](https://codecalm.net). Code released under the [MIT License](https://github.com/tabler/tabler/blob/master/LICENSE).
+
+
+## Changes
+Add smooth animations to te card collapse
