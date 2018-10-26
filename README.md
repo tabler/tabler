@@ -1,11 +1,11 @@
-# Tabler 
+# Tabler
 [![Backers on Open Collective](https://opencollective.com/tabler/backers/badge.svg)](#backers)
- [![Sponsors on Open Collective](https://opencollective.com/tabler/sponsors/badge.svg)](#sponsors) 
+ [![Sponsors on Open Collective](https://opencollective.com/tabler/sponsors/badge.svg)](#sponsors)
 <a href="https://buddy.works"><img src="https://assets.buddy.works/automated-dark.svg" alt="Automated by Buddy" align="right"></a>
 
 Premium and Open Source dashboard template with responsive and high quality UI.
 
-<strong><a href="https://tabler.github.io/demo/">View Demo</a> | <a href="https://github.com/tabler/tabler/archive/master.zip">Download ZIP</a> | <a href="https://goo.gl/zJP2dT">Join us on Slack</a></strong>
+<strong><a href="https://tabler.github.io/demo/">View Demo</a> | <a href="https://github.com/tabler/tabler-react">View React Version</a> | <a href="https://github.com/tabler/tabler/archive/master.zip">Download ZIP</a> | <a href="https://goo.gl/zJP2dT">Join us on Slack</a></strong>
 
 <br><br>
 
@@ -23,6 +23,7 @@ We created this admin panel for everyone who wants to create any templates based
 * **HTML5 & CSS3:** We only use modern web technologies like HTML5 and CSS3. Our theme includes some subtle CSS3 animations so you will get anyone’s attention.
 * **Clean Code:** We strictly followed Bootstrap’s guidelines to make your integration as easy as possible. All code is handwritten and W3C valid.
 * **Demo pages**: Tabler features over 20 individual pages featuring various components, giving you the freedom to choose and combine. All components can take variation in color and styling that can easily be modified using Sass. The sky is the limit!
+* **Single Page Application versions:** [Tabler React](https://github.com/tabler/tabler-react) has React components for Tabler.
 
 ## Status
 
@@ -48,9 +49,9 @@ To use our build system and run documentation locally, you will need a copy of T
 1. [Download and install Node.js](https://nodejs.org/download/), which is used to manage our dependencies.
 2. Navigate to the root `/tabler` directory and run `npm install` to install local dependencies listed in `package.json`.
 3. [Install Ruby](https://www.ruby-lang.org/en/documentation/installation/), install [Bundler](https://bundler.io/) with `gem install bundler`, and finally run `bundle install`. This will install all Ruby dependencies, such as Jekyll and plugins.
-   
+
    **Windows users:** Read [this guide](https://jekyllrb.com/docs/windows/) to get Jekyll up and running without problems.
-  
+
 When completed, you will be able to run the various commands provided in the command line.
 
 ### Build Tabler
