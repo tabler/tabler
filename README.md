@@ -5,7 +5,7 @@
 
 Premium and Open Source dashboard template with responsive and high-quality UI.
 
-<strong><a href="https://tabler.github.io/demo/">View Demo</a> | <a href="https://github.com/tabler/tabler-react">View React Version</a> | <a href="https://github.com/tabler/tabler/archive/master.zip">Download ZIP</a> | <a href="https://goo.gl/zJP2dT">Join us on Slack</a></strong>
+<strong><a href="https://tabler.github.io/demo/">View Demo</a> | <a href="https://github.com/alt3/ember-tabler">View Ember  Version</a> | <a href="https://github.com/tabler/tabler-react">View React Version</a> | <a href="https://github.com/tabler/tabler/archive/master.zip">Download ZIP</a> | <a href="https://goo.gl/zJP2dT">Join us on Slack</a></strong>
 
 <br><br>
 
@@ -23,7 +23,9 @@ We created this admin panel for everyone who wants to create any templates based
 * **HTML5 & CSS3:** We only use modern web technologies like HTML5 and CSS3. Our theme includes some subtle CSS3 animations so you will get anyone’s attention.
 * **Clean Code:** We strictly followed Bootstrap’s guidelines to make your integration as easy as possible. All code is handwritten and W3C valid.
 * **Demo pages**: Tabler features over 20 individual pages featuring various components, giving you the freedom to choose and combine. All components can take variation in color and styling that can easily be modified using Sass. The sky is the limit!
-* **Single Page Application versions:** [Tabler React](https://github.com/tabler/tabler-react) has React components for Tabler.
+* **Single Page Application versions:**
+    * [Ember Tabler](https://github.com/alt3/ember-tabler) - application skeleton and components for Tabler.
+    * [Tabler React](https://github.com/tabler/tabler-react) - React components for Tabler.
 
 ## Status
 
