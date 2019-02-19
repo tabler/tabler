@@ -9,7 +9,7 @@ Premium and Open Source dashboard template with responsive and high quality UI.
 
 <br><br>
 
-![Tabler preview](https://tabler.github.io/assets/images/dashboard.png)
+![Tabler preview](https://tabler.io/img/dashboard-preview.png)
 
 ## Features
 
