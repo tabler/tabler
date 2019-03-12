@@ -1,0 +1,18 @@
+{% assign type = include.type %}
+{% assign square = false %}
+	{% if type == "pie" or type == "donut" %}
+{% assign square = true %}
+{% endif %}
+
+<div class="sparkline{% if square %} sparkline-square{% endif %}{% if include.wide %} sparkline-wide{% endif %}" data-spark="{{ include.data }}" data-spark-type="{{  include.type }}" {% if include.color %}data-spark-color="{{ include.color }}"{% endif %}>
+	{% if include.label %}
+	<div class="sparkline-label">
+		{{ include.label }}
+	</div>
+	{% endif %}
+	{% if include.label-icon %}
+	<div class="sparkline-label">
+		{% include ui/icon.html icon=include.label-icon color=include.color %}
+	</div>
+	{% endif %}
+</div>

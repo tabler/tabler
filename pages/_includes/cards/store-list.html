@@ -1,0 +1,22 @@
+<div class="card">
+	<table class="table card-table table-vcenter">
+		{% for product in site.data.products %}
+		<tr>
+			<td><img src="{{ site.base }}/img/products/{{ product.image }}" alt="" class="h-16"></td>
+			<td>
+				{{ product.name }}
+
+				{% assign mod = forloop.index | modulo: 2 %}
+				{% if mod == 0 %}
+				<span class="badge badge-secondary-lt">New</span>
+				{% endif %}
+			</td>
+			<td class="text-right text-muted d-none d-md-table-cell text-nowrap">{{ forloop.index | random_number: 4, 100 }} reviews</td>
+			<td class="text-right text-muted d-none d-md-table-cell text-nowrap">{{ forloop.index | random_number: 4, 50 }} offers</td>
+			<td class="text-right">
+				<strong>{{ product.price }}</strong>
+			</td>
+		</tr>
+		{% endfor %}
+	</table>
+</div>

@@ -1,0 +1,16 @@
+{% assign limit = include.limit | default: 6 %}
+<div class="form-group">
+	<label class="form-label">Image Check</label>
+	<div class="row row-xs">
+		{% for photo in site.data.photos limit: limit offset: 30 %}
+		<div class="{{ include.row-class | default: 'col-6 col-sm-4' }}">
+			<label class="imagecheck mb-2">
+				<input name="imagecheck" type="checkbox" value="{{ forloop.index }}" class="imagecheck-input" {% if forloop.index == 2 or forloop.index == 4  or forloop.index == 7 %} checked{% endif %} />
+				<div class="imagecheck-figure">
+					<img src="{{ site.base }}/img/photos/{{ photo.file }}" alt="" class="imagecheck-image">
+				</div>
+			</label>
+		</div>
+		{% endfor %}
+	</div>
+</div>

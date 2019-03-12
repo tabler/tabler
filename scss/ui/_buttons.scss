@@ -1,0 +1,139 @@
+.btn {
+  font-weight: 500;
+  border-radius: 3px;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, .03);
+
+  &.btn {
+    //color: $full-white;
+    //border-color: rgba(0, 0, 0, .08);
+  }
+}
+
+.btn-avatar {
+  width: 1.25rem !important;
+  height: 1.25rem !important;
+  margin: 0 .25rem 0 -.25rem;
+}
+
+.btn-pill {
+  padding-right: 1.5em;
+  padding-left: 1.5em;
+  border-radius: 10rem;
+}
+
+.btn-link {
+  box-shadow: none !important;
+}
+
+.btn-secondary {
+  @include button-variant(#fff, $border-color, #fff, $border-color);
+  color: $text-muted;
+
+  &:hover {
+    color: $text-muted;
+  }
+}
+
+.btn-square {
+  border-radius: 0;
+}
+
+.btn-icon {
+  min-width: px2rem(35px); //todo: porpawic, wpisalem z palca
+  padding-right: .5rem;
+  padding-left: .5rem;
+}
+
+.btn-list {
+  margin-bottom: -.5rem;
+  font-size: 0;
+
+  > .btn,
+  > .dropdown {
+    margin-bottom: .5rem;
+
+    &:not(:last-child) {
+      margin-right: .5rem;
+    }
+  }
+}
+
+@if $generate-social-colors {
+  @each $vendor, $color in $social-colors {
+    .btn-#{$vendor} {
+      @include button-variant($color, $color);
+    }
+  }
+
+}
+
+@if $generate-colors {
+  @each $name, $color in $colors {
+    .btn-#{$name} {
+      @include button-variant($color, $color);
+    }
+
+    .btn-outline-#{$name} {
+      @include button-outline-variant($color, $color);
+    }
+  }
+}
+
+.btn-loader {
+  display: none;
+  width: 1em;
+  height: 1em;
+  color: inherit;
+
+  @at-root .btn-loading & {
+    display: inline-block;
+  }
+}
+
+.btn-options {
+  display: flex;
+  align-items: center;
+  padding: 0;
+  color: $text-muted;
+  cursor: pointer;
+  background: none;
+  border: none;
+
+  &:focus {
+    outline: 0;
+  }
+
+  .icon {
+    width: 1rem;
+    height: 1rem;
+  }
+}
+
+.btn-floating {
+  position: fixed;
+  right: 1.5rem;
+  bottom: 1.5rem;
+  z-index: 1030;
+}
+
+/**
+Button with label
+ */
+.btn-label {
+  position: relative;
+  padding-left: px2rem(48px);
+}
+
+.btn-label-icon {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: px2rem(36px);
+  padding-top: px2rem(6px);
+  padding-bottom: px2rem(6px);
+  margin-bottom: 0;
+  line-height: inherit;
+  cursor: pointer;
+  background-color: rgba(0, 0, 0, .1);
+}

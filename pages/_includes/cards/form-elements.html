@@ -1,0 +1,552 @@
+<form action="https://httpbin.org/post" method="post" class="card">
+   <div class="card-header">
+      <h4 class="card-title">Form elements</h4>
+   </div>
+   <div class="card-body">
+      <div class="row">
+         <div class="col-md-4">
+            <div class="form-group">
+               <label class="form-label">Static</label>
+               <div class="form-control-plaintext">Username</div>
+            </div>
+            <div class="form-group">
+               <label class="form-label">Text</label>
+               <input type="text" class="form-control" name="example-text-input" placeholder="Text..">
+            </div>
+            <div class="form-group">
+               <label class="form-label">Disabled</label>
+               <input type="text" class="form-control" name="example-disabled-input" placeholder="Disabled.."
+                      value="Well, she turned me into a newt." disabled>
+            </div>
+            <div class="form-group">
+               <label class="form-label">Readonly</label>
+               <input type="text" class="form-control" name="example-disabled-input" placeholder="Disabled.."
+                      value="Well, how'd you become king, then?" readonly>
+            </div>
+            <div class="form-group">
+               <label class="form-label">Textarea <span class="float-right text-muted-light">56/100</span></label>
+               <textarea class="form-control" name="example-textarea-input" rows="6" placeholder="Content..">Oh! Come and see the violence inherent in the system! Help, help, I'm being repressed! We shall say 'Ni' again to you, if you do not appease us. I'm not a witch. I'm not a witch. Camelot!</textarea>
+            </div>
+
+            {% include parts/input-image.html %}
+
+            {% include parts/input-color.html %}
+
+            <div class="form-group">
+               <label class="form-label">Input group</label>
+               <div class="input-group">
+                  <input type="text" class="form-control" placeholder="Search for...">
+                  <span class="input-group-append">
+							<button class="btn btn-primary" type="button">Go!</button>
+						</span>
+               </div>
+            </div>
+            <div class="form-group">
+               <label class="form-label">Input group buttons</label>
+               <div class="input-group">
+                  <input type="text" class="form-control">
+                  <div class="input-group-append">
+                     <button type="button" class="btn btn-primary">Action</button>
+                     <button data-toggle="dropdown" type="button"
+                             class="btn btn-primary dropdown-toggle"></button>
+                     <div class="dropdown-menu dropdown-menu-right">
+                        <a class="dropdown-item" href="javascript:void(0)">
+                           News
+                        </a>
+                        <a class="dropdown-item" href="javascript:void(0)">
+                           Messages
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="javascript:void(0)">
+                           Edit Profile
+                        </a>
+                     </div>
+                  </div>
+               </div>
+            </div>
+
+            {% include parts/input-icon.html %}
+
+            <div class="form-group">
+               <label class="form-label">Separated inputs</label>
+               <div class="row row-xs">
+                  <div class="col">
+                     <input type="text" class="form-control" placeholder="Search for...">
+                  </div>
+                  <span class="col-auto">
+							<button class="btn btn-secondary" type="button">{% include ui/icon.html icon="search" %}</button>
+						</span>
+               </div>
+            </div>
+            <div class="form-group">
+               <label class="form-label">ZIP Code</label>
+               <div class="row row-sm">
+                  <div class="col">
+                     <input type="text" class="form-control" placeholder="Search for...">
+                  </div>
+                  <span class="col-auto align-self-center">
+							<span class="form-help" data-toggle="popover" data-placement="top"
+                           data-content="<p>ZIP Code must be US or CDN format. You can use an extended ZIP+4 code to determine address more accurately.</p><p class='mb-0'><a href=''>USP ZIP codes lookup tools</a></p>">?</span>
+						</span>
+               </div>
+            </div>
+         </div>
+         <div class="col-md-4">
+            <div class="form-group">
+               <label class="form-label">Password</label>
+               <input type="password" class="form-control" name="example-password-input" placeholder="Password..">
+            </div>
+
+            <div class="form-group">
+               <label class="form-label">Valid State</label>
+               <input type="text" class="form-control is-valid" name="example-text-input-valid"
+                      placeholder="Valid State..">
+
+               <input type="text" class="form-control mt-3 state-valid" value="Valid state">
+            </div>
+
+            <div class="form-group">
+               <label class="form-label">Invalid State</label>
+               <input type="text" class="form-control is-invalid" name="example-text-input-invalid"
+                      placeholder="Invalid State..">
+               <div class="invalid-feedback">Invalid feedback</div>
+
+               <input type="text" class="form-control mt-3 state-invalid" value="Invalid state">
+            </div>
+
+            <div class="form-group">
+               <label class="form-label">Country</label>
+               <select class="form-control custom-select">
+                  <option value="">Germany</option>
+               </select>
+            </div>
+            <div class="form-group">
+               <label class="form-label">Ratios</label>
+               <div class="row align-items-center">
+                  <div class="col">
+                     <input type="range" class="form-control custom-range" step="5" min="0" max="50">
+                  </div>
+                  <div class="col-auto">
+                     <input type="number" class="form-control w-8" value="45">
+                  </div>
+               </div>
+            </div>
+            <div class="form-group">
+               <label class="form-label">Size</label>
+               <div class="selectgroup w-100">
+                  <label class="selectgroup-item">
+                     <input type="radio" name="value" value="50" class="selectgroup-input" checked="">
+                     <span class="selectgroup-button">S</span>
+                  </label>
+                  <label class="selectgroup-item">
+                     <input type="radio" name="value" value="100" class="selectgroup-input">
+                     <span class="selectgroup-button">M</span>
+                  </label>
+
+                  <label class="selectgroup-item">
+                     <input type="radio" name="value" value="150" class="selectgroup-input">
+                     <span class="selectgroup-button">L</span>
+                  </label>
+                  <label class="selectgroup-item">
+                     <input type="radio" name="value" value="200" class="selectgroup-input">
+                     <span class="selectgroup-button">XL</span>
+                  </label>
+               </div>
+            </div>
+            <div class="form-group">
+               <label class="form-label">Shipping methods</label>
+               <div class="selectgroup selectgroup-vertical w-100">
+                  <label class="selectgroup-item">
+                     <input type="radio" name="shipping" value="unregistered" class="selectgroup-input" checked>
+                     <span class="selectgroup-button">Unregistered</span>
+                  </label>
+                  <label class="selectgroup-item">
+                     <input type="radio" name="shipping" value="priority" class="selectgroup-input">
+                     <span class="selectgroup-button">Priority Mail</span>
+                  </label>
+                  <label class="selectgroup-item">
+                     <input type="radio" name="shipping" value="express" class="selectgroup-input">
+                     <span class="selectgroup-button">Express Mail</span>
+                  </label>
+               </div>
+            </div>
+            <div class="form-group">
+               <label class="form-label">Icons input</label>
+               <div class="selectgroup w-100">
+                  <label class="selectgroup-item">
+                     <input type="radio" name="transportation" value="2" class="selectgroup-input">
+                     <span
+                        class="selectgroup-button selectgroup-button-icon">{% include ui/icon.html icon="smartphone" %}</span>
+                  </label>
+                  <label class="selectgroup-item">
+                     <input type="radio" name="transportation" value="1" class="selectgroup-input" checked="">
+                     <span
+                        class="selectgroup-button selectgroup-button-icon">{% include ui/icon.html icon="tablet" %}</span>
+                  </label>
+                  <label class="selectgroup-item">
+                     <input type="radio" name="transportation" value="6" class="selectgroup-input">
+                     <span
+                        class="selectgroup-button selectgroup-button-icon">{% include ui/icon.html icon="monitor" %}</span>
+                  </label>
+                  <label class="selectgroup-item">
+                     <input type="radio" name="transportation" value="6" class="selectgroup-input">
+                     <span class="selectgroup-button selectgroup-button-icon">{% include ui/icon.html icon="x" %}</span>
+                  </label>
+               </div>
+            </div>
+
+            <div class="form-group">
+               <label class="form-label">Icon input</label>
+               <div class="selectgroup selectgroup-pills">
+                  <label class="selectgroup-item">
+                     <input type="radio" name="icon-input" value="1" class="selectgroup-input" checked="">
+                     <span
+                        class="selectgroup-button selectgroup-button-icon">{% include ui/icon.html icon="sun" %}</span>
+                  </label>
+                  <label class="selectgroup-item">
+                     <input type="radio" name="icon-input" value="2" class="selectgroup-input">
+                     <span
+                        class="selectgroup-button selectgroup-button-icon">{% include ui/icon.html icon="moon" %}</span>
+                  </label>
+                  <label class="selectgroup-item">
+                     <input type="radio" name="icon-input" value="3" class="selectgroup-input">
+                     <span
+                        class="selectgroup-button selectgroup-button-icon">{% include ui/icon.html icon="cloud-rain" %}</span>
+                  </label>
+                  <label class="selectgroup-item">
+                     <input type="radio" name="icon-input" value="4" class="selectgroup-input">
+                     <span
+                        class="selectgroup-button selectgroup-button-icon">{% include ui/icon.html icon="cloud" %}</span>
+                  </label>
+               </div>
+            </div>
+
+            <div class="form-group">
+               <label class="form-label">Your skills</label>
+               <div class="selectgroup selectgroup-pills">
+                  <label class="selectgroup-item">
+                     <input type="checkbox" name="value" value="HTML" class="selectgroup-input" checked="">
+                     <span class="selectgroup-button">HTML</span>
+                  </label>
+                  <label class="selectgroup-item">
+                     <input type="checkbox" name="value" value="CSS" class="selectgroup-input">
+                     <span class="selectgroup-button">CSS</span>
+                  </label>
+                  <label class="selectgroup-item">
+                     <input type="checkbox" name="value" value="PHP" class="selectgroup-input">
+                     <span class="selectgroup-button">PHP</span>
+                  </label>
+                  <label class="selectgroup-item">
+                     <input type="checkbox" name="value" value="JavaScript" class="selectgroup-input">
+                     <span class="selectgroup-button">JavaScript</span>
+                  </label>
+                  <label class="selectgroup-item">
+                     <input type="checkbox" name="value" value="Ruby" class="selectgroup-input">
+                     <span class="selectgroup-button">Ruby</span>
+                  </label>
+                  <label class="selectgroup-item">
+                     <input type="checkbox" name="value" value="Ruby" class="selectgroup-input">
+                     <span class="selectgroup-button">Ruby</span>
+                  </label>
+                  <label class="selectgroup-item">
+                     <input type="checkbox" name="value" value="C++" class="selectgroup-input">
+                     <span class="selectgroup-button">C++</span>
+                  </label>
+               </div>
+            </div>
+
+            {% include parts/input-toggle.html %}
+
+            <div class="form-group">
+               <div class="form-label">Toggle switch single</div>
+               <label class="custom-switch">
+                  <input type="checkbox" name="custom-switch-checkbox" class="custom-switch-input">
+                  <span class="custom-switch-indicator"></span>
+                  <span class="custom-switch-description">I agree with terms and conditions</span>
+               </label>
+            </div>
+
+            <div class="form-group">
+               <div class="form-label">Radios</div>
+               <div class="custom-controls-stacked">
+                  <label class="custom-control custom-radio">
+                     <input type="radio" class="custom-control-input" name="example-radios" value="option1"
+                            checked>
+                     <div class="custom-control-label">Option 1</div>
+                  </label>
+                  <label class="custom-control custom-radio">
+                     <input type="radio" class="custom-control-input" name="example-radios" value="option2">
+                     <div class="custom-control-label">Option 2</div>
+                  </label>
+                  <label class="custom-control custom-radio">
+                     <input type="radio" class="custom-control-input" name="example-radios" value="option3"
+                            disabled>
+                     <div class="custom-control-label">Option Disabled</div>
+                  </label>
+                  <label class="custom-control custom-radio">
+                     <input type="radio" class="custom-control-input" name="example-radios2" value="option4"
+                            disabled checked>
+                     <div class="custom-control-label">Option Disabled Checked</div>
+                  </label>
+               </div>
+            </div>
+
+         </div>
+         <div class="col-md-4">
+
+            <div class="form-group">
+               <div class="form-label">Inline Radios</div>
+               <div class="custom-controls-stacked">
+                  <label class="custom-control custom-radio custom-control-inline">
+                     <input type="radio" class="custom-control-input" name="example-inline-radios"
+                            value="option1" checked>
+                     <span class="custom-control-label">Option 1</span>
+                  </label>
+                  <label class="custom-control custom-radio custom-control-inline">
+                     <input type="radio" class="custom-control-input" name="example-inline-radios"
+                            value="option2">
+                     <span class="custom-control-label">Option 2</span>
+                  </label>
+                  <label class="custom-control custom-radio custom-control-inline">
+                     <input type="radio" class="custom-control-input" name="example-inline-radios"
+                            value="option3">
+                     <span class="custom-control-label">Option 3</span>
+                  </label>
+               </div>
+            </div>
+            <div class="form-group">
+               <div class="form-label">Checkboxes</div>
+               <div class="custom-controls-stacked">
+                  <label class="custom-control custom-checkbox">
+                     <input type="checkbox" class="custom-control-input" name="example-checkbox1" value="option1"
+                            checked>
+                     <span class="custom-control-label">Option 1</span>
+                  </label>
+                  <label class="custom-control custom-checkbox">
+                     <input type="checkbox" class="custom-control-input" name="example-checkbox2"
+                            value="option2">
+                     <span class="custom-control-label">Option 2</span>
+                  </label>
+                  <label class="custom-control custom-checkbox">
+                     <input type="checkbox" class="custom-control-input" name="example-checkbox3" value="option3"
+                            disabled>
+                     <span class="custom-control-label">Option Disabled</span>
+                  </label>
+                  <label class="custom-control custom-checkbox">
+                     <input type="checkbox" class="custom-control-input" name="example-checkbox4" value="option4"
+                            checked disabled>
+                     <span class="custom-control-label">Option Disabled Checked</span>
+                  </label>
+               </div>
+            </div>
+            <div class="form-group">
+               <div class="form-label">Inline Checkboxes</div>
+               <div>
+                  <label class="custom-control custom-checkbox custom-control-inline">
+                     <input type="checkbox" class="custom-control-input" name="example-inline-checkbox1"
+                            value="option1" checked>
+                     <span class="custom-control-label">Option 1</span>
+                  </label>
+                  <label class="custom-control custom-checkbox custom-control-inline">
+                     <input type="checkbox" class="custom-control-input" name="example-inline-checkbox2"
+                            value="option2">
+                     <span class="custom-control-label">Option 2</span>
+                  </label>
+                  <label class="custom-control custom-checkbox custom-control-inline">
+                     <input type="checkbox" class="custom-control-input" name="example-inline-checkbox3"
+                            value="option3">
+                     <span class="custom-control-label">Option 3</span>
+                  </label>
+               </div>
+            </div>
+            <div class="form-group">
+               <div class="form-label">Bootstrap's Custom File Input</div>
+               <div class="custom-file">
+                  <input type="file" class="custom-file-input" name="example-file-input-custom">
+                  <label class="custom-file-label">Choose file</label>
+               </div>
+            </div>
+
+            <div class="form-group">
+               <label class="form-label">Date of birth</label>
+               <div class="row row-xs">
+                  <div class="col-5">
+                     <select name="user[month]" class="form-control custom-select">
+                        <option value="">Month</option>
+                        <option value="1">January</option>
+                        <option value="2">February</option>
+                        <option value="3">March</option>
+                        <option value="4">April</option>
+                        <option value="5">May</option>
+                        <option selected="selected" value="6">June</option>
+                        <option value="7">July</option>
+                        <option value="8">August</option>
+                        <option value="9">September</option>
+                        <option value="10">October</option>
+                        <option value="11">November</option>
+                        <option value="12">December</option>
+                     </select>
+                  </div>
+                  <div class="col-3">
+                     <select name="user[day]" class="form-control custom-select">
+                        <option value="">Day</option>
+                        {% for i in (1..31) %}
+                        <option value="{{ i }}"{% if i == 20 %} selected{% endif %}>{{ i }}</option>{% endfor %}
+                     </select>
+                  </div>
+                  <div class="col-4">
+                     <select name="user[year]" class="form-control custom-select">
+                        <option value="">Year</option>
+                        {% for i in (1897..2014) reversed %}
+                        <option value="{{ i }}"{% if i == 1989 %} selected{% endif %}>{{ i }}</option>{% endfor %}
+                     </select>
+                  </div>
+               </div>
+            </div>
+
+
+            <div class="form-group">
+               <label class="form-label">Username</label>
+               {% include forms/input-group.html prepend="@" placeholder="username" %}
+            </div>
+
+            <div class="form-group">
+               <label class="form-label">Subdomain</label>
+               {% include forms/input-group.html append=".tabler.io" placeholder="subdomain" %}
+            </div>
+
+            <div class="form-group">
+               <label class="form-label">Your vanity URL</label>
+               {% include forms/input-group.html prepend="https://example.com/users/" %}
+            </div>
+
+            <div class="form-group">
+               <label class="form-label">Price</label>
+               {% include forms/input-group.html prepend="$" append=".00" %}
+            </div>
+
+            <div class="form-group">
+               <label class="form-label">Button input</label>
+               <div class="input-group">
+                  <div class="input-group-prepend">
+                     <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                             aria-haspopup="true" aria-expanded="false">
+                        Action
+                     </button>
+                     <div class="dropdown-menu">
+                        <a class="dropdown-item" href="javascript:void(0)">Action</a>
+                        <a class="dropdown-item" href="javascript:void(0)">Another action</a>
+                        <a class="dropdown-item" href="javascript:void(0)">Something else here</a>
+                        <div role="separator" class="dropdown-divider"></div>
+                        <a class="dropdown-item" href="javascript:void(0)">Separated link</a>
+                     </div>
+                  </div>
+                  <input type="text" class="form-control" aria-label="Text input with dropdown button">
+               </div>
+            </div>
+
+            <div class="form-group">
+               <label class="form-label">Tags</label>
+               <input type="text" class="form-control" id="input-tags" value="aa,bb,cc,dd">
+            </div>
+
+            <div class="form-group">
+               <label class="form-label">Beast</label>
+               <select name="beast" id="select-beast" class="form-control custom-select">
+                  <option value="1">Chuck Testa</option>
+                  <option value="4">Sage Cattabriga-Alosa</option>
+                  <option value="3">Nikola Tesla</option>
+               </select>
+            </div>
+
+            <div class="form-group">
+               <label class="form-label">Users list</label>
+               <select name="user" id="select-users" class="form-control custom-select">
+                  {% for user in site.data.people limit: 10 %}
+                  <option value="{{ forloop.index }}" data-data='{"image": "{{ user.photo }}"}'>
+                     {{ user.first_name }} {{ user.last_name }}
+                  </option>
+                  {% endfor %}
+               </select>
+            </div>
+
+            <div class="form-group">
+               <label class="form-label">Countries</label>
+               <select name="country" id="select-countries" class="form-control custom-select">
+                  <option value="br" data-data='{"image": "{{ site.base }}/assets/images/flags/br.svg"}'>Brazil</option>
+                  <option value="cz" data-data='{"image": "{{ site.base }}/assets/images/flags/cz.svg"}'>Czech Republic
+                  </option>
+                  <option value="de" data-data='{"image": "{{ site.base }}/assets/images/flags/de.svg"}'>Germany
+                  </option>
+                  <option value="pl" data-data='{"image": "{{ site.base }}/assets/images/flags/pl.svg"}' selected>Poland
+                  </option>
+               </select>
+            </div>
+         </div>
+
+         <div class="col-6">
+            {% include parts/form-fieldset.html %}
+         </div>
+      </div>
+   </div>
+   <div class="card-footer text-right">
+      <div class="d-flex">
+         <a href="javascript:void(0)" class="btn btn-link">Cancel</a>
+         <button type="submit" class="btn btn-primary ml-auto">Send data</button>
+      </div>
+
+   </div>
+</form>
+
+{% comment %}
+<script>
+   $(document).ready(function () {
+      $('#input-tags').selectize({
+         delimiter: ',',
+         persist: false,
+         create: function (input) {
+            return {
+               value: input,
+               text: input
+            };
+         }
+      });
+
+      $('#select-beast').selectize({});
+
+      $('#select-users').selectize({
+         render: {
+            option: function (data, escape) {
+               return '<div>' +
+                  '<span class="image"><img src="{{ site.base }}' + data.image + '" alt=""></span>' +
+                  '<span class="title">' + escape(data.text) + '</span>' +
+                  '</div>';
+            },
+            item: function (data, escape) {
+               return '<div>' +
+                  '<span class="image"><img src="{{ site.base }}' + data.image + '" alt=""></span>' +
+                  escape(data.text) +
+                  '</div>';
+            }
+         }
+      });
+
+      $('#select-countries').selectize({
+         render: {
+            option: function (data, escape) {
+               return '<div>' +
+                  '<span class="image"><img src="{{ site.base }}' + data.image + '" alt=""></span>' +
+                  '<span class="title">' + escape(data.text) + '</span>' +
+                  '</div>';
+            },
+            item: function (data, escape) {
+               return '<div>' +
+                  '<span class="image"><img src="{{ site.base }}' + data.image + '" alt=""></span>' +
+                  escape(data.text) +
+                  '</div>';
+            }
+         }
+      });
+   });
+</script>
+{% endcomment %}

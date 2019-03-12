@@ -1,0 +1,140 @@
+.ribbon {
+  position: absolute;
+  top: .75rem;
+  right: -($ribbon-margin);
+  z-index: 1;
+  padding: .5rem 1rem;
+  font-weight: 600;
+  color: #fff;
+  text-align: center;
+  background: $primary;
+  border-color: $primary;
+
+  &::before {
+    position: absolute;
+    right: 0;
+    bottom: 100%;
+    width: 0;
+    height: 0;
+    content: "";
+    filter: brightness(70%);
+    border: ($ribbon-margin / 2) solid;
+    border-color: inherit;
+    border-top-color: transparent;
+    border-right-color: transparent;
+  }
+
+  @if $generate-colors {
+    @each $color, $value in $colors {
+      &.bg-#{$color} {
+        border-color: $value;
+      }
+
+      &.bg-#{$color}-lt {
+        border-color: theme-color-lighter($value) !important;
+      }
+    }
+  }
+
+  .icon {
+    width: 1rem;
+    height: 1rem;
+  }
+}
+
+.ribbon-top {
+  top: -($ribbon-margin);
+  right: .75rem;
+  width: 2.25rem;
+  padding: 1rem 0;
+
+  &::before {
+    top: 0;
+    right: 100%;
+    bottom: auto;
+    border-color: inherit;
+    border-top-color: transparent;
+    border-left-color: transparent;
+  }
+
+  &.ribbon-left {
+    right: auto;
+    left: .75rem;
+
+    &::before {
+      top: 0;
+      right: 100%;
+      left: auto;
+    }
+  }
+}
+
+.ribbon-left {
+  right: auto;
+  left: -($ribbon-margin);
+
+  &::before {
+    top: auto;
+    bottom: 100%;
+    left: 0;
+    border-color: inherit;
+    border-top-color: transparent;
+    border-left-color: transparent;
+  }
+}
+
+.ribbon-bottom {
+  top: auto;
+  bottom: .75rem;
+}
+
+.ribbon-bookmark {
+  padding-left: .5rem;
+
+  &::after {
+    position: absolute;
+    top: 0;
+    right: 100%;
+    display: block;
+    width: 0;
+    height: 0;
+    content: "";
+    border: 1.125rem solid;
+    border-color: inherit;
+    border-right-width: 0;
+    border-left-color: transparent;
+    border-left-width: .75rem;
+  }
+
+  &.ribbon-left {
+    padding-right: .5rem;
+    padding-left: 1rem;
+
+    &::after {
+      right: auto;
+      left: 100%;
+      border-right-color: transparent;
+
+      border-right-width: .75rem;
+      border-left-width: 0;
+    }
+  }
+
+  &.ribbon-top {
+    padding-right: 0;
+    padding-bottom: .5rem;
+    padding-left: 0;
+
+    &::after {
+      top: 100%;
+      right: 0;
+      left: 0;
+      border-color: inherit;
+      border-width: 1.125rem;
+      border-top-width: 0;
+      border-bottom-color: transparent;
+      border-bottom-width: .75rem;
+    }
+  }
+}
+

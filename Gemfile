@@ -1,6 +1,12 @@
-source 'https://rubygems.org' do
-  gem 'jekyll-tidy'
-  gem 'jekyll-redirect-from'
-  gem 'jekyll-toc'
-  gem 'jekyll-random'
-end
+# frozen_string_literal: true
+
+source "https://rubygems.org"
+
+git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
+
+# gem "rails"
+
+gem "jekyll-random", "~> 0.0.3"
+gem "jekyll-tidy"
+gem "jekyll-timeago"
+gem 'jekyll-redirect-from'

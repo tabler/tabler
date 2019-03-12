@@ -1,0 +1,29 @@
+<div class="card">
+	<div class="card-header">
+		<h4 class="card-title">Most Visited Pages</h4>
+	</div>
+	<div class="table-responsive">
+		<table class="table card-table table-vcenter">
+			<tr>
+				<th colspan="2">Page name</th>
+				<th>Visitors</th>
+				<th>Unique page visits</th>
+				<th colspan="2">Bounce rate</th>
+			</tr>
+
+			{% for page in site.data.pages %}
+			<tr>
+				<td>{{ page.uri }}</td>
+				<td><a href="#" class="text-muted-light">{% include ui/icon.html icon="link" %}</a></td>
+				<td>{{ page.visitors | format_number }}</td>
+				<td>{{ page.unique | format_number }}</td>
+				<td>{{ page.bounce-rate }}</td>
+				<td class="text-right">
+					{% include ui/sparkline.html data="4,3,6,5,4,5,4,6,7,6,5,7,8,7,8,9,8,9,10" wide=true %}
+				</td>
+			</tr>
+			{% endfor %}
+
+		</table>
+	</div>
+</div>

@@ -1,0 +1,40 @@
+{% if page.page-title or layout.page-title %}
+<div class="page-title-box">
+	<h2 class="page-title">
+		{{ page.page-title | default: layout.page-title }}
+		{% if page.done %}
+		{% include ui/icon.html icon="check" color="success" %}
+		{% endif %}
+	</h2>
+
+	<div class="page-options d-none d-md-block ml-auto">
+
+		{% if page.page-right == "date" %}
+		<form class="form-inline">
+			<div class="form-group">
+				<div class="input-group">
+					<input type="text" class="form-control form-control-light" placeholder="09/10/2018">
+					<div class="input-group-append">
+                        <a class="input-group-text">
+                            {% include ui/icon.html icon="calendar" %}
+                        </a>
+					</div>
+				</div>
+			</div>
+			<a href="#" class="btn btn-icon btn-secondary ml-2">
+				{% include ui/icon.html icon="refresh-ccw" %}
+			</a>
+			<a href="#" class="btn btn-icon btn-secondary ml-2">
+				{% include ui/icon.html icon="filter" %}
+			</a>
+		</form>
+		{% elsif page.page-right == "breadcrumb" %}
+		<ol class="breadcrumb m-0">
+			<li class="breadcrumb-item"><a href="#">UI Kit</a></li>
+			<li class="breadcrumb-item"><a href="#">Tables</a></li>
+			<li class="breadcrumb-item active">Basic Tables</li>
+		</ol>
+		{% endif %}
+	</div>
+</div>
+{% endif %}

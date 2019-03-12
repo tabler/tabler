@@ -1,0 +1,41 @@
+---
+title: Gallery
+page-title: Gallery
+done: true
+---
+{% assign horizontal = 0 %}
+
+<div class="row">
+	{% for photo in site.data.photos %}
+	{% if photo.horizontal %}
+	{% assign person = site.data.people[forloop.index0] %}
+	<div class="col-sm-6 col-lg-4">
+		<div class="card p-3">
+			<a href="#" class="mb-3"><img src="{{ site.base }}/img/photos/{{photo.file}}" class="rounded"></a>
+			<div class="d-flex align-items-center">
+				{% include ui/avatar.html person=person class="mr-2" %}
+				<div>
+					<div>{{ person.full_name }}</div>
+					<div class="text-muted">{{ forloop.index | random_date_ago: 10 | timeago }}</div>
+				</div>
+				<div class="ml-auto">
+					<a href="#" class="text-muted">
+						{% include ui/icon.html icon="eye" %}
+						{{ forloop.index | random_number: 300, 600 }}
+					</a>
+					<a href="#" class="ml-3 text-muted">
+						{% include ui/icon.html icon="heart" %}
+						{{ forloop.index | random_number: 20, 100 }}
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+	{% assign horizontal = horizontal | plus: 1 %}
+	{% endif %}
+
+	{% if horizontal == 12 %}
+		{% break %}
+	{% endif %}
+	{% endfor %}
+</div>

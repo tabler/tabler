@@ -1,0 +1,52 @@
+---
+layout: default
+menu: docs
+title: Documentation
+page-title: Documentation
+---
+
+
+<div class="row">
+	<div class="col-lg-3 order-lg-1 mb-4">
+		<a href="{{ site.github_url }}" class="btn btn-block btn-primary mb-4">
+			{% include ui/icon.html icon="github" class="mr-2" %}Browse source code
+		</a>
+
+		{% for group in site.docs-menu %}
+		<div class="list-group list-group-transparent mb-0">
+			{% for p in group.pages %}
+			{% assign doc = site.docs | where: "slug", p | first %}
+			<a href="{{ site.base }}{{ doc.url }}" class="list-group-item list-group-item-action{% if page.url == doc.url %} active{% endif %}">
+				{{ doc.title }}
+			</a>
+			{% endfor %}
+		</div>
+		{% endfor %}
+	</div>
+	<div class="col-lg-9">
+		<div class="card">
+			<div class="card-body p-lg-5">
+
+				<div class="text-wrap">
+					<h2 class="mt-0 mb-4">{{ page.title }}</h2>
+
+					{% if page.description %}
+					<p>{{ page.description }}</p>
+					{% endif %}
+
+					{% if page.in_progress %}
+					<div class="alert alert-primary mt-5 mb-6">
+						<div><strong>Work in progress!</strong> More detailed documentation is coming soon.</div>
+					</div>
+					{% endif %}
+
+					{% if page.toc %}
+					{{ content | toc_only }}
+					{% endif %}
+
+					{{ content | toc_generate }}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

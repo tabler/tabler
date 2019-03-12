@@ -1,0 +1,74 @@
+$sidebar-width: 15rem;
+
+.sidebar {
+  flex: 1 0 15rem;
+  width: $sidebar-width;
+  height: 100%;
+  padding: 1.5rem;
+  background: #fff;
+  border-right: 1px solid $border-color;
+
+  @include media-breakpoint-down(md) {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    z-index: 1000;
+    max-width: 90vw;
+    margin-left: -($sidebar-width);
+    transition: .3s transform;
+
+    @at-root body.sidebar-opened & {
+      transform: translate($sidebar-width, 0);
+    }
+  }
+}
+
+.sidebar-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 999;
+  display: none;
+  visibility: hidden;
+  background: rgba(0, 0, 0, .1);
+  opacity: 0;
+  backdrop-filter: blur(1px);
+
+  @include media-breakpoint-down(md) {
+    display: block;
+    transition: .3s backdrop-filter, .3s opacity;
+
+    @at-root body.sidebar-opened & {
+      visibility: visible;
+      opacity: 1;
+    }
+  }
+}
+
+.sidebar-btn {
+  position: fixed;
+  bottom: 1rem;
+  left: 1rem;
+  z-index: 1001;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 4rem;
+  height: 4rem;
+  color: $text-muted !important;
+  background: theme-color-lightest($text-muted);
+  border-radius: 50%;
+  box-shadow: $box-shadow-sm;
+
+  .icon {
+    width: 24px;
+    height: 24px;
+    stroke-width: 1;
+  }
+
+  @include media-breakpoint-up(md) {
+    display: none;
+  }
+}

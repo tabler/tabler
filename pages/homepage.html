@@ -1,0 +1,53 @@
+---
+title: Homepage
+page-title: Homepage
+---
+
+
+<div class="row">
+	<div class="col-md-4">
+
+
+		{% include cards/project-summary.html %}
+		{% include cards/social-traffic.html %}
+
+		{% for person in site.data.people limit: 6 %}
+		<div class="card p-3">
+			<div class="d-flex">
+				{% include ui/avatar.html person=person class="mr-3" size="md" %}
+				<div>
+					{{ person.first_name }} <a href="#">created a new task</a><br>
+					<div class="text-muted">{{ forloop.index | random_number: 1, 10 }}h ago</div>
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+	<div class="col-md-8">
+		{% include cards/tasks.html %}
+		{% include cards/company-employees.html %}
+		{% include cards/most-visited-pages.html %}
+		{% include cards/form-elements.html %}
+	</div>
+	<div class="col-md-4">
+		{% include cards/simple.html %}
+	</div>
+	<div class="col-md-4">
+		{% include cards/simple.html %}
+	</div>
+	<div class="col-md-4">
+		{% include cards/simple.html %}
+	</div>
+	<div class="col-md-6 col-lg-4">
+		{% include cards/simple.html %}
+	</div>
+	<div class="col-md-6 col-lg-4">
+		{% include cards/simple.html %}
+	</div>
+	<div class="col-md-6 col-lg-4">
+		{% include cards/simple.html %}
+	</div>
+	<div class="col-md-6 col-lg-4">
+		{% include cards/progress-multi.html %}
+	</div>
+</div>

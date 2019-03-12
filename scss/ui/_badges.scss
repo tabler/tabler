@@ -1,0 +1,66 @@
+.badge {
+  //color: #ffffff;
+  //color: $text-muted;
+  //background: theme-color-lightest($text-muted);
+  font-weight: 600;
+
+  &:empty {
+    display: block;
+    width: 8px;
+    min-width: 0;
+    height: 8px;
+    min-height: auto;
+    padding: 0;
+  }
+}
+
+.badge-up {
+  position: absolute;
+  top: 25%;
+  right: 0;
+  min-width: 1rem;
+  min-height: 1rem;
+  padding: 0 .25rem;
+  line-height: 1rem;
+  background-clip: padding-box;
+  transform: translate(0%, -50%);
+}
+
+//light
+@each $name, $color in $status-colors {
+  .badge-#{$name}-lt {
+    color: $color;
+    background-color: theme-color-lighter($color);
+  }
+}
+
+//bordered
+@each $name, $color in $status-colors {
+  .badge-#{$name}.badge-outline {
+    color: $color;
+    background-color: transparent;
+    border: 1px solid $color;
+  }
+}
+
+// rest colors
+@if $generate-colors {
+  @each $name, $color in $colors {
+    .badge-#{$name}-lt {
+      color: $color;
+      background-color: theme-color-lighter($color);
+    }
+
+    .badge-#{$name}.badge-outline {
+      color: $color;
+      background-color: transparent;
+      border: 1px solid $color;
+    }
+
+    .badge-#{$name} {
+      color: #fff;
+      background-color: $color;
+    }
+  }
+
+}

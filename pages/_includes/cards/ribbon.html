@@ -1,0 +1,10 @@
+{% assign product-id = include.product-id | default: 0 %}
+{% assign product = site.data.products[product-id] %}
+
+<div class="card">
+	<div class="card-body p-5">
+		<div class="h-16"></div>
+	</div>
+
+	<div class="ribbon{% if include.top %} ribbon-top{% endif %}{% if include.left %} ribbon-left{% endif %}{% if include.bottom %} ribbon-bottom{% endif %}{% if include.bookmark %} ribbon-bookmark{% endif %}{% if include.color %} bg-{{ include.color }}{% endif %}">{% include ui/icon.html icon="star" class="icon-filled icon-thin" %}</div>
+</div>

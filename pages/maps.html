@@ -1,0 +1,15 @@
+---
+title: Maps
+page-title: Maps
+---
+
+
+{% for map in site.data.maps %}
+{% assign title = map[0] %}
+{% assign key = 'map-' | append: title %}
+
+<div id="{{ key }}" style="height: 600px;"></div>
+
+{% include js/maps.html id=key data=map %}
+
+{% endfor %}

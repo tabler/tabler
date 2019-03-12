@@ -1,0 +1,59 @@
+{% assign id = 0 | random_id %}
+{% assign reverse = include.reverse | default: false %}
+<div class="card">
+	<ul class="nav nav-tabs{% if include.alternative %} nav-tabs-alt{% endif %}{% if reverse %} flex-row-reverse{% endif %}{% if include.justified %} nav-fill{% endif %}" data-toggle="tabs">
+		<li class="nav-item ">
+			<a href="#tabs-home-{{ id }}" class="nav-link active" data-toggle="tab">{% if include.icons %}{% include ui/icon.html icon="home" class="mr-2" %}{% endif %}Home</a>
+		</li>
+		<li class="nav-item">
+			<a href="#tabs-profile-{{ id }}" class="nav-link" data-toggle="tab">{% if include.icons %}{% include ui/icon.html icon="user" class="mr-2" %}{% endif %}Profile</a>
+		</li>
+		{% if include.activity %}
+		<li class="nav-item">
+			<a href="#tabs-activity-{{ id }}" class="nav-link" data-toggle="tab">{% if include.icons %}{% include ui/icon.html icon="activity" class="mr-2" %}{% endif %}Activity</a>
+		</li>
+		{% endif %}
+		{% if include.disabled %}
+		<li class="nav-item">
+			<a href="#tabs-activity-{{ id }}" class="nav-link disabled" data-toggle="tab">{% if include.icons %}{% include ui/icon.html icon="x" class="mr-2" %}{% endif %}Disabled</a>
+		</li>
+		{% endif %}
+		{% if include.dropdown %}
+		<li class="nav-item dropdown">
+			<a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+			<div class="dropdown-menu">
+				<a class="dropdown-item" href="#">Action</a>
+				<a class="dropdown-item" href="#">Another action</a>
+				<a class="dropdown-item" href="#">Something else here</a>
+				<div class="dropdown-divider"></div>
+				<a class="dropdown-item" href="#">Separated link</a>
+			</div>
+		</li>
+		{% endif %}
+		{% if include.settings %}
+		<li class="nav-item {% if reverse %}mr-auto{% else %}ml-auto{% endif %}">
+			<a href="#tabs-settings-{{ id }}" class="nav-link" title="Settings" data-toggle="tab">{% include ui/icon.html icon="settings" %}</a>
+		</li>
+		{% endif %}
+	</ul>
+	<div class="card-body">
+		<div class="tab-content">
+			<div class="tab-pane{% if include.animation %} fade{% endif %} active show" id="tabs-home-{{ id }}">
+				<div>Cursus turpis vestibulum, dui in pharetra vulputate id sed non turpis ultricies fringilla at sed facilisis lacus pellentesque purus nibh</div>
+			</div>
+			<div class="tab-pane{% if include.animation %} fade{% endif %}" id="tabs-profile-{{ id }}">
+				<div>Fringilla egestas nunc quis tellus diam rhoncus ultricies tristique enim at diam, sem nunc amet, pellentesque id egestas velit sed</div>
+			</div>
+			{% if include.settings %}
+			<div class="tab-pane{% if include.animation %} fade{% endif %}" id="tabs-settings-{{ id }}">
+				<div>Donec ac vitae diam amet vel leo egestas consequat rhoncus in luctus amet, facilisi sit mauris accumsan nibh habitant senectus</div>
+			</div>
+			{% endif %}
+			{% if include.activity %}
+			<div class="tab-pane{% if include.animation %} fade{% endif %}" id="tabs-activity-{{ id }}">
+				<div>Donec ac vitae diam amet vel leo egestas consequat rhoncus in luctus amet, facilisi sit mauris accumsan nibh habitant senectus</div>
+			</div>
+			{% endif %}
+		</div>
+	</div>
+</div>

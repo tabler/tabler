@@ -1,0 +1,10 @@
+{% assign items = include.items | default: "Action|Another action|Something else|-|Separated link" | split: "|" %}
+<div class="dropdown-menu{% if include.right %} dropdown-menu-right{% endif %}">
+	{% for item in items %}
+	{% if item == '-' %}
+	<div class="dropdown-divider"></div>
+	{% else %}
+	<a class="dropdown-item" href="#">{{ item }}</a>
+	{% endif %}
+	{% endfor %}
+</div>

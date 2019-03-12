@@ -1,0 +1,78 @@
+.avatar {
+  position: relative;
+  display: inline-block;
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: .875rem;
+  font-weight: 400;
+  line-height: 2.5rem;
+  color: $text-muted-light;
+  text-align: center;
+  text-transform: uppercase;
+  vertical-align: bottom;
+  user-select: none;
+  background: $body-bg no-repeat center/cover;
+  border-radius: 50%;
+}
+
+.avatar-icon {
+  width: 1.25em;
+  height: 1.25em;
+  vertical-align: text-bottom;
+}
+
+.avatar-status {
+  position: absolute;
+  right: -2px;
+  bottom: -2px;
+  width: .75rem;
+  height: .75rem;
+  background: #98a9bc;
+  border: 2px solid #fff;
+  border-radius: 50%;
+}
+
+.avatar-thumb {
+  margin: 4px;
+  box-shadow: 0 0 0 4px rgba(255, 255, 255, .4);
+}
+
+@each $avatar-size, $size, $font-size in $avatar-sizes {
+  .avatar-#{$avatar-size} {
+    width: $size;
+    height: $size;
+    font-size: $font-size;
+    line-height: $size;
+  }
+}
+
+.avatar-list {
+  padding: 0;
+  margin: 0 0 -.5rem;
+  font-size: 0;
+
+  .avatar {
+    margin-bottom: .5rem;
+
+    &:not(:last-child) {
+      margin-right: .5rem;
+    }
+  }
+}
+
+.avatar-list-stacked {
+  .avatar {
+    margin-right: -.5em !important;
+  }
+
+  .avatar {
+    box-shadow: 0 0 0 2px #fff;
+  }
+}
+
+@each $vendor, $color in $colors {
+  .avatar-#{$vendor} {
+    color: $color;
+    background-color: rgba($color, .3);
+  }
+}

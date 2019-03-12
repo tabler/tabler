@@ -1,0 +1,19 @@
+{% removeemptylines %}
+{% assign src = include.src %}
+{% assign placeholder = include.placeholder %}
+{% if include.person-id %}
+	{% assign person = site.data.people | where: "id", include.person-id %}
+	{% assign src = person[0].photo %}
+	{% unless src %}
+		{% assign placeholder = person[0].full_name | first_letters %}
+	{% endunless %}
+{% elsif include.person %}
+    {% assign person = include.person %}
+    {% assign src = person.photo %}
+	{% unless src %}
+		{% assign placeholder = person.full_name | first_letters %}
+	{% endunless %}
+{% endif %}
+{% assign element = include.element | default: 'span' %}
+<{{ element }} class="avatar{% if include['size'] %} avatar-{{ include['size'] }}{% endif %}{% if include.thumb %} avatar-thumb{% endif %}{% if include.class %} {{ include.class }}{% endif %}"{% if src %} style="background-image: url({{ site.base }}{{ src }})"{% endif %}>{% if include.status %}<span class="avatar-status bg-{{ include.status }}">{% if include.status-text %}{{ include.status-text }}{% elsif include.status-icon %}{% include ui/icon.html icon=include.status-icon class="avatar-status-icon" %}{% endif %}</span>{% endif %}{% if placeholder %}{{ placeholder }}{% elsif include.icon %}{% include ui/icon.html icon=include.icon class="avatar-icon" %}{% endif %}</{{ element }}>
+{% endremoveemptylines %}

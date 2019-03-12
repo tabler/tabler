@@ -1,0 +1,37 @@
+{% assign current-page = page.menu | default: layout.menu | split: '.' %}
+<ul class="sidenav-menu">
+	{% for level-1 in site.data.menu %}
+	{% assign level-1-key = level-1[0] %}
+	{% assign level-1-item = level-1[1] %}
+	<li class="sidenav-menu-item">
+		<a href="{{ site.base }}/{{ level-1-item.url }}" class="sidenav-link{% if level-1-key == current-page[0] %} active{% endif %}">
+			{% include ui/icon.html icon=level-1-item.icon class="sidenav-icon" %}
+			<span class="sidenav-link-description">{{ level-1-item.title }} ({{ level-1-key }})</span>
+
+			{% if level-1-item.counter %}
+			<span class="badge badge-green ml-auto">{{ level-1-item.counter }}</span>
+			{% endif %}
+		</a>
+		{% if level-1-item.children %}
+		<ul class="sidenav-submenu">
+			{% for level-2 in level-1-item.children %}
+			{% assign level-2-key = level-2[0] %}
+			{% assign level-2-item = level-2[1] %}
+			<li>
+				<a href="{{ level-2-item.url }}" class="sidenav-link">{{ level-2-item.title }} ({{ level-2-key }})</a>
+				{% if level-2-item.children %}
+				<ul class="sidenav-submenu">
+					{% for level-3 in level-2-item.children %}
+					{% assign level-3-key = level-3[0] %}
+					{% assign level-3-item = level-3[1] %}
+					<li><a href="{{ level-3-item.url }}" class="sidenav-link">{{ level-3-item.title }} ({{ level-3-key }})</a></li>
+					{% endfor %}
+				</ul>
+				{% endif %}
+			</li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+	</li>
+	{% endfor %}
+</ul>

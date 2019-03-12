@@ -1,0 +1,157 @@
+.media {
+  position: relative;
+  display: block;
+  flex-shrink: 0;
+  padding: 0;
+  overflow: hidden;
+  border-top-left-radius: inherit;
+  border-top-right-radius: inherit;
+  -ms-flex-negative: 0;
+
+  &::after {
+    display: block;
+    padding-top: 100%;
+    content: "";
+  }
+
+  &:not(:first-child):not(:last-child):not(:only-child) {
+    border-radius: 0;
+  }
+}
+
+.media-overlay {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  padding: 1rem;
+  color: #fff;
+
+  &.overlay-top {
+    bottom: auto;
+  }
+
+  &.overlay-bottom {
+    top: auto;
+  }
+}
+
+.media-action {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 3;
+
+  display: flex;
+  align-items: center;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .3s;
+  transform: translate(-50%, -50%);
+
+  &.active {
+    opacity: 1;
+  }
+
+  &.media-action-overlay {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    height: 100%;
+    padding: 0 5%;
+    color: #fff;
+    background-color: rgba(0, 0, 0, .2);
+
+    .btn {
+      flex-shrink: 0;
+    }
+  }
+}
+
+.list-item:hover,
+.list-item:active,
+.media:hover,
+.media:active,
+.active > .media {
+  .media-action {
+    pointer-events: initial;
+    opacity: 1;
+  }
+}
+
+.media iframe,
+.media-content {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: $body-bg;
+  background-repeat: no-repeat;
+  background-position: 50% 50%;
+  background-size: cover;
+  border: 0;
+  border-radius: inherit;
+}
+
+.media-21x9::after {
+  padding-top: 42.857143%;
+}
+
+.media-16x9::after {
+  padding-top: 56.25%;
+}
+
+.media-4x3::after {
+  padding-top: 75%;
+}
+
+.media-2x3::after {
+  padding-top: 150%;
+}
+
+.media-3x4::after {
+  padding-top: 133.33333%;
+}
+
+.media-1x2::after {
+  padding-top: 200%;
+}
+
+.media-2x1::after {
+  padding-top: 50%;
+}
+
+.media-1x1::after {
+  padding-top: 100%;
+}
+
+.media-3x1::after {
+  padding-top: 33%;
+}
+
+.media-4x1::after {
+  padding-top: 25%;
+}
+
+.media-1-4::after {
+  min-height: 10rem;
+  padding-top: 25vh;
+}
+
+.media-1-3::after {
+  min-height: 12.5rem;
+  padding-top: 33vh;
+}
+
+.media-1-2::after {
+  min-height: 15rem;
+  padding-top: 50vh;
+}

@@ -1,0 +1,30 @@
+{% assign person-id = include.person-id | default: 13 %}
+{% assign person = site.data.people[person-id] %}
+{% assign p = person[0] %}
+
+<div class="card">
+	<div class="card-body">
+		<div class="d-flex align-items-center mb-3">
+			<a href="#">
+				{% include ui/avatar.html person=p size="lg" %}
+			</a>
+			<div class="mx-3">
+				<h4>{{ p.full_name }}</h4>
+				<div class="text-muted">
+					{% include ui/icon.html icon="map-pin" %}
+					{{ p.city }}, {{ p.country }}
+				</div>
+			</div>
+		</div>
+
+		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis consectetur dolore earum magnam
+			officiis.</p>
+
+		<div class="d-flex">
+			<a href="#" class="btn btn-block btn-primary">View profile</a>
+			<a href="#" class="btn btn-secondary btn-icon ml-3">
+				{% include ui/icon.html icon="user" %}
+			</a>
+		</div>
+	</div>
+</div>

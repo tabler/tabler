@@ -1,0 +1,25 @@
+<!-- {{ site.title }} additional libs -->
+<script src="{{ site.base }}/libs/jquery/jquery.js"></script>
+<script src="{{ site.base }}/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="{{ site.base }}/libs/apexcharts/apexcharts.min.js"></script>
+<script src="{{ site.base }}/libs/peity/jquery.peity.min.js"></script>
+
+<script src="{{ site.base }}/libs/jqvmap/jquery.vmap.js"></script>
+<script src="{{ site.base }}/libs/jqvmap/maps/jquery.vmap.world.js"></script>
+<script src="{{ site.base }}/libs/jqvmap/maps/jquery.vmap.france.js"></script>
+
+{% if site.debug %}
+{% if jekyll.environment == 'development' %}
+{% include layout/debug-header.html %}
+{% endif %}
+{% endif %}
+
+<!-- {{ site.title }} main JavaScript file -->
+<script src="{{ site.base }}/js/ui-kit.js"></script>
+<script src="{{ site.base }}/js/app/charts.js"></script>
+
+<script>
+	window.uikit.colors = { {% for color in site.colors %}
+		'{{ color[0] }}': '{{ color[1].hex }}'{% unless forloop.last %},{% endunless %}{% endfor %}
+	};
+</script>

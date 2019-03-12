@@ -1,0 +1,20 @@
+.container {
+  @include make-container-breakpoints();
+}
+
+@each $name, $value in (0: 0, xs: .25rem, sm: .5rem, lg: 1rem, xl: 1.5rem) {
+  .row-#{$name} {
+    margin-right: (-$value);
+    margin-left: -($value);
+
+    > .col,
+    > [class*="col-"] {
+      padding-right: $value;
+      padding-left: $value;
+    }
+
+    .card {
+      margin-bottom: 2 * $value;
+    }
+  }
+}

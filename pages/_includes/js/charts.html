@@ -1,0 +1,70 @@
+{% removeemptylines %}
+{% assign data = site.data.charts[include.data] %}
+{% if data %}
+<script>
+$(document).ready(function(){
+	var chart = new ApexCharts(document.getElementById('{{ include.id }}'), {
+		chart: {
+			type: '{{ data.type }}',
+			{% if data.stacked %}stacked: true{% endif %}
+		},
+
+    	{% if data.spline %}
+    	stroke: {
+			curve: 'smooth'
+		},{% endif %}
+
+		{% if data.type == 'pie' or data.type == 'donut' %}
+    	series: [44, 55, 13, 43, 22],
+		{% else %}
+		series: [{% for serie in data.series %}{
+			name: '{{ serie.name }}',
+			data: [{{ serie.data | join: ', '}}]
+		}{% unless forloop.last %},{% endunless %}{% endfor %}],
+		{% endif %}
+
+		xaxis: {
+            categories: [{% for category in data.categories %}'{{ category }}'{% unless forloop.last %}, {% endunless %}{% endfor %}]
+		},
+
+ 		{% if data.show-labels %}
+		dataLabels: {
+			enabled: false
+		},
+		{% endif %}
+
+		{% if data.rotated %}
+		plotOptions: {
+			bar: {
+				horizontal: true,
+			}
+		},
+		{% endif %}
+
+		colors: [ {% for serie in data.series %}
+			uikit.colors["{{ serie.color | default: 'blue' }}"]{% unless forloop.last %},{% endunless %}{% endfor %}
+		],
+
+		legend: {
+			{% if data.hide-legend %}show: false, //hide legend
+			{% endif %}
+		},
+
+		{% if data.hide-tooltip %}
+		tooltip: {
+			enabled: false
+		},
+		{% endif %}
+
+		{% if data.hide-points %}
+		point: {
+			show: false
+		}
+		{% endif %}
+	});
+
+	chart.render();
+});
+</script>
+{% endif %}
+{% endremoveemptylines %}

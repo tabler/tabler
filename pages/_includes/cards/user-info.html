@@ -1,0 +1,29 @@
+{% assign person-id = include.person-id | default: 22 %}
+{% assign person = site.data.people | where: "id", person-id %}
+{% assign p = person[0] %}
+
+<div class="card">
+    <div class="card-body">
+        <div class="card-title font-bold mb-4">Basic info</div>
+        <div class="mb-3">
+            {% include ui/icon.html icon="calendar" class="mr-2" %}
+            <span class="mr-2">Went to:</span>
+            <strong>{{ p.university }}</strong>
+        </div>
+        <div class="mb-3">
+            {% include ui/icon.html icon="briefcase" class="mr-2" %}
+            <span class="mr-2">Worked at:</span>
+            <strong>{{ p.company }}</strong>
+        </div>
+        <div class="mb-3">
+            {% include ui/icon.html icon="home" class="mr-2" %}
+            <span class="mr-2">Lives in:</span>
+            <strong>{{ p.city }}, {{ p.country }}</strong>
+        </div>
+        <div class="">
+            {% include ui/icon.html icon="map-pin" class="mr-2" %}
+            <span class="mr-2">From:</span>
+            <strong>{{ p.country }}</strong>
+        </div>
+    </div>
+</div>
