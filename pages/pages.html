@@ -1,0 +1,34 @@
+---
+title: Index
+page-title: Index
+menu: index
+---
+
+<div class="row row justify-content-center mt-3 mt-lg-5">
+	<div class="col-lg-6 col-xl-5">
+		<div class="card">
+			<div class="card-header">
+				<h2 class="card-title">
+					All pages
+				</h2>
+			</div>
+			<div class="card-body">
+				<ul>
+					{% assign pages = site.pages | sort: 'title' %}
+					{% for page in pages %}
+					{% if page.name != 'index.html' %}
+					<li>
+						<a href="{{ page.url }}">
+							{% if page.done %}
+							{% include ui/icon.html icon="check" color="success" %}
+							{% endif %}
+							{{ page.title | default: page.name }}
+						</a>
+					</li>
+					{% endif %}
+					{% endfor %}
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>
