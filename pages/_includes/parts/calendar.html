@@ -1,0 +1,42 @@
+{% assign day-names = "Sun,Mon,Tue,Wed,Thu,Fri,Sat" | split: "," %}
+{% assign start-day = include.start-day | default: -2 %}
+{% assign today = include.today | default: 8 %}
+{% assign days = include.days | default: 30 %}
+{% assign all-days = days | minus: start-day | plus: 1 | divide: 7.0 | ceil | times: 7 %}
+{% assign end-day = all-days | plus: start-day | minus: 1 %}
+{% assign range-start = include.range-start | default: 14 %}
+{% assign range-end = include.range-end | default: 21 %}
+
+<div class="calendar{% if include.class %} {{ include.class }}{% endif %}">
+   <div class="calendar-nav">
+      <button class="btn btn-action btn-link btn-lg">
+         {% include ui/icon.html icon="chevron-left" %}
+      </button>
+      <div class="calendar-title">{{ include.title | default: 'March 2017' }}</div>
+      <button class="btn btn-action btn-link btn-lg">
+         {% include ui/icon.html icon="chevron-right" %}
+      </button>
+   </div>
+   <div class="calendar-container">
+      <div class="calendar-header">
+         {% for col in (1..7) %}
+         <div class="calendar-date">{{ day-names[forloop.index0] }}</div>
+         {% endfor %}
+      </div>
+      <div class="calendar-body">
+         {% for day in (start-day..end-day) %}
+            {% if day <= 0 %}
+            {% assign d = 31 | plus: day %}
+            {% elsif day > days %}
+            {% assign d = day | minus: days %}
+            {% else %}
+            {% assign d = day %}
+            {% endif %}
+
+            <div class="calendar-date{% if day <= 0 %} prev-month{% elsif day > days %} next-month{% endif %}{% if range-start and day >= range-start and range-end and day <= range-end %} calendar-range{% if day == range-start %} range-start{% endif %}{% if day == range-end %} range-end{% endif %}{% endif %}">
+               <a href="#" class="date-item{% if day == today %} date-today{% endif %}">{{ d }}</a>
+            </div>
+         {% endfor %}
+      </div>
+   </div>
+</div>

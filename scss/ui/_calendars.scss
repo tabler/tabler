@@ -1,0 +1,104 @@
+.calendar {
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
+  display: block;
+  font-size: $font-size-sm;
+}
+
+.calendar-nav {
+  display: flex;
+  align-items: center;
+}
+
+.calendar-title {
+  flex: 1;
+  text-align: center;
+}
+
+.calendar-body,
+.calendar-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  padding: .5rem 0
+}
+
+.calendar-header {
+  color: $text-muted-light;
+}
+
+.calendar-date {
+  text-align: center;
+  flex: 0 0 (100% / 7);
+  max-width: (100% / 7);
+  border: 0;
+  padding: .2rem;
+
+  &.prev-month,
+  &.next-month {
+    opacity: .25;
+  }
+
+  .date-item {
+    display: inline-block;
+    background: 0 0;
+    border: 1px solid transparent;
+    border-radius: 50%;
+    color: #66758c;
+    cursor: pointer;
+    height: 1.4rem;
+    line-height: 1.4rem;
+    width: 1.4rem;
+    outline: 0;
+    position: relative;
+    text-align: center;
+    text-decoration: none;
+    vertical-align: middle;
+    white-space: nowrap;
+    transition: background .3s, border .3s, box-shadow .32s, color .3s;
+
+    &:hover {
+      background: #fefeff;
+      border-color: $border-color;
+      color: $primary;
+      text-decoration: none;
+    }
+  }
+
+  .date-today {
+    border-color: $border-color;
+    color: $primary;
+  }
+}
+
+.calendar-range {
+  position: relative;
+
+  &:before {
+    content: "";
+    background: rgba($primary, .1);
+    height: 1.4rem;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  &.range-start,
+  &.range-end {
+    .date-item {
+      background: $primary;
+      border-color: $primary;
+      color: #fff;
+    }
+  }
+
+  &.range-start::before {
+    left: 50%;
+  }
+
+  &.range-end::before {
+    right: 50%;
+  }
+}
