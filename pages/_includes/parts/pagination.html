@@ -1,9 +1,14 @@
 {% assign count = include.count | default: 5 %}
 {% assign active-item = include.active-item | default: 2 %}
-<ul class="pagination {{ include.class }}{% if include.pager %} pagination-pager{% endif %}">
-   <li class="page-item page-prev disabled">
+<ul class="pagination {{ include.class }}">
+   <li class="page-item{% if include.prev-description %} page-prev{% endif %} disabled">
       <a class="page-link" href="#" tabindex="-1">
-         {% if include.left-icon %}<i class="{{ include.left-icon }}"></i>{% else %}Prev{% endif %}
+         {% if include.prev-description %}
+            <div class="page-item-subtitle">Previous</div>
+            <div class="page-item-title">{{ include.prev-description }}</div>
+         {% else %}
+            {% if include.icons %}{% include ui/icon.html icon="chevron-left" %}{% else %}Prev{% endif %}
+         {% endif %}
       </a>
    </li>
 
@@ -11,9 +16,15 @@
    <li class="page-item{% if i == active-item %} active{% endif %}"><a class="page-link" href="#">{{ i }}</a></li>
    {% endfor %}
 
-   <li class="page-item page-next">
+   <li class="page-item{% if include.prev-description %} page-next{% endif %}">
       <a class="page-link" href="#">
-         {% if include.right-icon %}<i class="{{ include.right-icon }}"></i>{% else %}Next{% endif %}
+
+         {% if include.next-description %}
+            <div class="page-item-subtitle">Next</div>
+            <div class="page-item-title">{{ include.next-description }}</div>
+         {% else %}
+            {% if include.icons %}{% include ui/icon.html icon="chevron-right" %}{% else %}Next{% endif %}
+         {% endif %}
       </a>
    </li>
 </ul>
