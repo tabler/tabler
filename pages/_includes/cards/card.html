@@ -23,18 +23,15 @@
 			<a href="#" class="btn btn-primary btn-sm">Action 1</a>
 			<a href="#" class="btn btn-secondary btn-sm ml-2">Action 2</a>
 			{% elsif include.show-switch %}
-			<label class="custom-switch m-0">
-				<input type="checkbox" value="1" class="custom-switch-input" checked>
-				<span class="custom-switch-indicator"></span>
-			</label>
+			   {% include ui/switch.html checked=true %}
 			{% elsif include.options %}
-			{{ include.options }}
+			   {{ include.options }}
 			{% else %}
-			<a href="#" class="card-options-collapse" data-toggle="card-collapse"><i class="fe fe-chevron-up"></i></a>
+			<a href="#" class="card-options-link" data-toggle="card-collapse">{% include ui/icon.html icon="chevron-up" %}</a>
 			{% if include.show-fullscreen %}
-			<a href="#" class="card-options-fullscreen" data-toggle="card-fullscreen"><i class="fe fe-maximize"></i></a>
+			<a href="#" class="card-options-link" data-toggle="card-fullscreen">{% include ui/icon.html icon="maximize" %}</a>
 			{% endif %}
-			<a href="#" class="card-options-remove" data-toggle="card-remove"><i class="fe fe-x"></i></a>
+			<a href="#" class="card-options-link" data-toggle="card-remove">{% include ui/icon.html icon="x" %}</a>
 			{% endif %}
 		</div>
 		{% endunless %}
@@ -63,4 +60,8 @@
 		This is standard card footer
 	</div>
 	{% endif %}
+
+   {% if include.status-bottom %}
+   <div class="card-status card-status-bottom bg-{{ include.status-bottom }}"></div>
+   {% endif %}
 </div>
