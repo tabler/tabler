@@ -14,7 +14,7 @@
                 fillColor = uikit.colors[color];
 
             if (type === 'donut' || type === 'pie') {
-                fillColor = [fillColor, 'rgba(0, 0, 0, .064)'];
+                fillColor = [fillColor, uikit.hexToRgbA(fillColor, .1)];
             } else if (type === 'bar') {
                 fillColor = [fillColor];
             } else if (type === 'line') {
