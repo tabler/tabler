@@ -10,10 +10,10 @@
 
 
       <a href="{{ site.base }}" class="navbar-brand text-inherit">
-         {% if include.icon %}<span class="stamp mr-2">{% include ui/icon.html icon=include.icon %}</span>{% endif %}
+         {% if include.icon %}<span class="text-green">{% include ui/icon.html icon=include.icon %}</span>{% endif %}
          {% if include.stamp %}<span class="stamp bg-primary text-white">UI</span>{% endif %}
-         {% if include.logo %}<img src="./img/tabler.svg" alt="" class="navbar-brand-logo mr-2">{% endif %}
-         {% if include.title %}<span class="d-inline ml-3">{{ include.title }}</span>{% endif %}
+         {% if include.logo %}<img src="./img/tabler.svg" alt="" class="navbar-brand-logo mr-3">{% endif %}
+         {% if include.title %}<span class="d-inline">{{ include.title }}</span>{% endif %}
       </a>
 
       {% if include.plus-left %}
@@ -130,11 +130,11 @@
             <a href="#" data-toggle="dropdown"
                class="nav-link d-flex align-items-center py-0 px-lg-0 px-2 text-color ml-2">
                {% if include.user-menu == 1 %}
-               <span class="mx-2 d-none leading-none d-lg-block text-right">
-                       <small class="d-block mb-1">Hello, Welcome</small>
-                       <span class="text-default">{{ person.full_name }}</span>
-                   </span>
-               {% include ui/avatar.html src=person.photo %}
+                  {% include ui/avatar.html src=person.photo %}
+                  <span class="ml-2 d-none d-lg-block leading-none">
+                     <span>{{ person.full_name }}</span>
+                     <span class="text-muted d-block mt-1 text-h6">Administrator</span>
+                  </span>
                {% elsif include.user-menu == 2 %}
                <span class="mx-2 d-none leading-none d-lg-block text-right">
                        <span class="text-default">{{ person.full_name }}</span>
@@ -146,39 +146,27 @@
                <span class="btn btn-secondary">{% include ui/avatar.html src=person.photo class="mr-2 btn-avatar" %}{{ person.full_name }}</span>
                {% endif %}
             </a>
-            <div class="dropdown-menu dropdown-menu-right pt-0 mt-3">
-               <div class="row no-gutters mb-2 text-center border-bottom">
-                  <div class="col-4 border-right">
-                     <a href="#" class="py-3 d-block">
-                        {% include ui/icon.html icon="user" %}
-                     </a>
-                  </div>
-                  <div class="col-4 border-right">
-                     <a href="#" class="py-3 d-block">
-                        {% include ui/icon.html icon="mail" %}
-                     </a>
-                  </div>
-                  <div class="col-4">
-                     <a href="#" class="py-3 d-block">
-                        {% include ui/icon.html icon="send" %}
-                     </a>
-                  </div>
-               </div>
+            <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                <a class="dropdown-item" href="#">
-                  <span>Profile</span>
+                  {% include ui/icon.html icon="user" class="dropdown-icon" %} Profile
                </a>
                <a class="dropdown-item" href="#">
-                  <span>Account Settings</span>
+                  {% include ui/icon.html icon="settings" class="dropdown-icon" %} Settings
                </a>
                <a class="dropdown-item" href="#">
-                  <span class="badge bg-success text-uppercase">Upgrade</span>
-                  <span>to Pro</span>
+                  <span class="float-right"><span class="badge badge-primary">6</span></span>
+                  {% include ui/icon.html icon="mail" class="dropdown-icon" %} Inbox
+               </a>
+               <a class="dropdown-item" href="#">
+                  {% include ui/icon.html icon="send" class="dropdown-icon" %}  Message
                </a>
                <div class="dropdown-divider"></div>
                <a class="dropdown-item" href="#">
-                  Need help?
+                  {% include ui/icon.html icon="help-circle" class="dropdown-icon" %}  Need help?
                </a>
-               <a class="dropdown-item" href="#">Sign out</a>
+               <a class="dropdown-item" href="#">
+                  {% include ui/icon.html icon="log-out" class="dropdown-icon" %}  Sign out
+               </a>
             </div>
          </li>
          {% endif %}
