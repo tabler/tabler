@@ -2,244 +2,245 @@
 {% assign person = site.data.people | where: "id", include.person %}
 {% assign person = person[0] %}
 
-<div class="navbar navbar-expand-lg">
-	<a class="d-lg-none px-1" data-toggle="modal" data-target="#aside">
-		{% include ui/icon.html icon="menu" %}
-	</a>
+<div class="navbar navbar-expand-lg{% if include.dark %} navbar-dark bg-dark{% endif %}">
+   <div class="container{% if include.fluid %}-fluid{% endif %}">
+      <a class="d-lg-none px-1" data-toggle="modal" data-target="#aside">
+         {% include ui/icon.html icon="menu" %}
+      </a>
 
 
-	<a href="{{ site.base }}" class="navbar-brand text-default">
-		{% if include.icon %}<span class="stamp mr-2">{% include ui/icon.html icon=include.icon %}</span>{% endif %}
-		{% if include.stamp %}<span class="stamp bg-primary text-white">UI</span>{% endif %}
-		{% if include.logo %}<img src="https://placehold.it/24x24" alt="" class="mr-2">{% endif %}
-		{% if include.title %}<span class="d-inline">{{ include.title }}</span>{% endif %}
-	</a>
+      <a href="{{ site.base }}" class="navbar-brand text-inherit">
+         {% if include.icon %}<span class="stamp mr-2">{% include ui/icon.html icon=include.icon %}</span>{% endif %}
+         {% if include.stamp %}<span class="stamp bg-primary text-white">UI</span>{% endif %}
+         {% if include.logo %}<img src="./img/tabler.svg" alt="" class="navbar-brand-logo mr-2">{% endif %}
+         {% if include.title %}<span class="d-inline ml-3">{{ include.title }}</span>{% endif %}
+      </a>
 
-	{% if include.plus-left %}
-	<a href="#" class="btn btn-primary">
-		{% include ui/icon.html icon="plus" %}
-	</a>
-	{% endif %}
-
-
-	<div class="collapse navbar-collapse order-2 order-lg-1" id="navbarToggler">
-		{% if include.big-menu %}
-		<ul class="navbar-nav">
-			<li class="nav-item">
-				<a class="nav-link" href="#">Homepage</a>
-			</li>
-
-			<li class="nav-item dropdown">
-				<div class="dropdown">
-					<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Pages</a>
-					<div class="dropdown-menu">
-						<a class="dropdown-item" href="##">App Pages</a>
-						<a class="dropdown-item" href="#">Utility Pages</a>
-						<a class="dropdown-item" href="#">Layouts</a>
-					</div>
-				</div>
-			</li>
-
-			<li class="nav-item">
-				<div class="dropdown">
-					<a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Components</a>
-					<div class="dropdown-menu">
-						<a class="dropdown-item" href="#">Bootstrap</a>
-						<a class="dropdown-item" href="#">Pipeline</a>
-					</div>
-				</div>
-			</li>
-
-			<li class="nav-item">
-				<a class="nav-link" href="#">Documentation</a>
-			</li>
-
-			<li class="nav-item">
-				<a class="nav-link" href="#">Changelog</a>
-			</li>
-		</ul>
-		{% endif %}
-
-		{% if include.search %}
-		<!-- Navbar Search -->
-		<form class="input-group m-2 my-lg-0 ">
-                <span class="input-group-prepend">
-                    <button type="button"
-                            class="btn no-shadow no-bg px-0">{% include ui/icon.html icon="search" %}</button>
-                </span>
-			<input type="text" class="form-control no-border no-shadow no-bg typeahead" placeholder="Search..."
-			       data-plugin="typeahead">
-		</form>
-		{% endif %}
-	</div>
-
-	<ul class="nav navbar-menu order-1 order-lg-2">
-		{% if include.fullscreen %}
-		<li class="nav-item d-none d-sm-block">
-			<a class="nav-link px-2" data-toggle="fullscreen" data-title="Fullscreen">
-				{% include ui/icon.html icon="maximize" %}
-			</a>
-		</li>
-		{% endif %}
-
-		{% if include.customize %}
-		<li class="nav-item dropdown">
-			<a class="nav-link px-2" data-toggle="dropdown">
-				{% include ui/icon.html icon="droplet" %}
-				<span class="badge badge-pill badge-up bg-success"></span>
-			</a>
-		</li>
-		{% endif %}
-
-		{% if include.notifications %}
-		<!-- Notification -->
-		<li class="nav-item dropdown">
-			<a class="nav-link px-2" data-toggle="dropdown">
-				{% include ui/icon.html icon="bell" %}
-				<span class="badge badge-pill badge-up bg-primary">4</span>
-			</a>
-			<div class="dropdown-menu dropdown-menu-right mt-3 p-0">
-				<div class="scrollable">
-					<div class="list list-row">
-					</div>
-				</div>
-				<div class="d-flex px-3 py-2 b-t">
-					<div class="flex">
-						<span>6 Notifications</span>
-					</div>
-					<a href="#">See all <i class="fa fa-angle-right text-muted"></i></a>
-				</div>
-			</div>
-		</li>
-		{% endif %}
-
-		{% if include.progress %}
-		<li class="nav-item">
-			<a href="#" class="nav-link text-muted-light">
-				Profile Completeness: 70%
-				<!--<span class="progress progress-xs">-->
-				<!--<span class="progress-bar" style="width: 70%"></span>-->
-				<!--</span>-->
-			</a>
-		</li>
-		{% endif %}
-
-		{% if include.user-menu %}
-		<li class="nav-item dropdown">
-			<a href="#" data-toggle="dropdown"
-			   class="nav-link d-flex align-items-center py-0 px-lg-0 px-2 text-color ml-2">
-				{% if include.user-menu == 1 %}
-				<span class="mx-2 d-none leading-none d-lg-block text-right">
-                    <small class="d-block mb-1">Hello, Welcome</small>
-                    <span class="text-default">{{ person.full_name }}</span>
-                </span>
-				{% include ui/avatar.html src=person.photo %}
-				{% elsif include.user-menu == 2 %}
-				<span class="mx-2 d-none leading-none d-lg-block text-right">
-                    <span class="text-default">{{ person.full_name }}</span>
-                </span>
-				{% include ui/avatar.html src=person.photo %}
-				{% elsif include.user-menu == 3 %}
-				{% include ui/avatar.html src=person.photo %}
-				{% elsif include.user-menu == 4 %}
-				<span class="btn btn-secondary">{% include ui/avatar.html src=person.photo class="mr-2 btn-avatar" %}{{ person.full_name }}</span>
-				{% endif %}
-			</a>
-			<div class="dropdown-menu dropdown-menu-right pt-0 mt-3">
-				<div class="row no-gutters mb-2 text-center border-bottom">
-					<div class="col-4 border-right">
-						<a href="#" class="py-3 d-block">
-							{% include ui/icon.html icon="user" %}
-						</a>
-					</div>
-					<div class="col-4 border-right">
-						<a href="#" class="py-3 d-block">
-							{% include ui/icon.html icon="mail" %}
-						</a>
-					</div>
-					<div class="col-4">
-						<a href="#" class="py-3 d-block">
-							{% include ui/icon.html icon="send" %}
-						</a>
-					</div>
-				</div>
-				<a class="dropdown-item" href="#">
-					<span>Profile</span>
-				</a>
-				<a class="dropdown-item" href="#">
-					<span>Account Settings</span>
-				</a>
-				<a class="dropdown-item" href="#">
-					<span class="badge bg-success text-uppercase">Upgrade</span>
-					<span>to Pro</span>
-				</a>
-				<div class="dropdown-divider"></div>
-				<a class="dropdown-item" href="#">
-					Need help?
-				</a>
-				<a class="dropdown-item" href="#">Sign out</a>
-			</div>
-		</li>
-		{% endif %}
-
-		{% if include.manage %}
-		<li class="nav-item">
-			<a href="#" class="btn btn-secondary">Manage Widgets</a>
-		</li>
-		{% endif %}
-
-		{% if include.register %}
-		<li class="nav-item ">
-			<a href="#" class="nav-link">
-				Sign in
-			</a>
-		</li>
-		<li class="d-flex align-items-center">
-			<a href="#" class="btn btn-pill btn-sm btn-primary d-none d-lg-block">
-				Register
-			</a>
-		</li>
-		{% endif %}
-
-		{% if include.plus %}
-		<li class="nav-item">
-			<a href="#" class="btn btn-primary btn-icon">{% include ui/icon.html icon="plus" %}</a>
-		</li>
-		{% endif %}
-
-		{% if include.premium %}
-		<li class="nav-item">
-			<a href="#" class="btn btn-success">Go Premium</a>
-		</li>
-		{% endif %}
-
-		{% if include.sync %}
-		<li class="nav-item">
-			<a href="#" class="btn btn-secondary">{% include ui/icon.html icon="rotate-cw" class="mr-2" %}Sync</a>
-		</li>
-		{% endif %}
-
-		{% if include.language %}
-		<li class="nav-item dropdown">
-			<a href="#" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
-				<span class="flag flag-gb mr-2"></span>English
-			</a>
-			<div class="dropdown-menu dropdown-menu-right dropdown-menu-scrollable">
-				{% for language in site.data.languages %}
-				<a href="#" class="dropdown-item"><span class="flag flag-{{ language.flag }} mr-2"></span>{{
-					language.name }}</a>
-				{% endfor %}
-			</div>
-		</li>
-		{% endif %}
+      {% if include.plus-left %}
+      <a href="#" class="btn btn-primary">
+         {% include ui/icon.html icon="plus" %}
+      </a>
+      {% endif %}
 
 
-		<li class="nav-item d-lg-none">
-			<a href="#" class="nav-link  px-1" data-toggle="collapse" data-toggle-class=""
-			   data-target="#navbarToggler">
-				{% include ui/icon.html icon="menu" %}
-			</a>
-		</li>
-	</ul>
+      <div class="collapse navbar-collapse order-2 order-lg-1" id="navbarToggler">
+         {% if include.big-menu %}
+         <ul class="navbar-nav">
+            <li class="nav-item">
+               <a class="nav-link" href="#">Homepage</a>
+            </li>
 
+            <li class="nav-item dropdown">
+               <div class="dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Pages</a>
+                  <div class="dropdown-menu">
+                     <a class="dropdown-item" href="##">App Pages</a>
+                     <a class="dropdown-item" href="#">Utility Pages</a>
+                     <a class="dropdown-item" href="#">Layouts</a>
+                  </div>
+               </div>
+            </li>
+
+            <li class="nav-item">
+               <div class="dropdown">
+                  <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Components</a>
+                  <div class="dropdown-menu">
+                     <a class="dropdown-item" href="#">Bootstrap</a>
+                     <a class="dropdown-item" href="#">Pipeline</a>
+                  </div>
+               </div>
+            </li>
+
+            <li class="nav-item">
+               <a class="nav-link" href="#">Documentation</a>
+            </li>
+
+            <li class="nav-item">
+               <a class="nav-link" href="#">Changelog</a>
+            </li>
+         </ul>
+         {% endif %}
+
+         {% if include.search %}
+         <!-- Navbar Search -->
+         <form class="input-group m-2 my-lg-0 ">
+                   <span class="input-group-prepend">
+                       <button type="button"
+                               class="btn no-shadow no-bg px-0">{% include ui/icon.html icon="search" %}</button>
+                   </span>
+            <input type="text" class="form-control no-border no-shadow no-bg typeahead" placeholder="Search..."
+                   data-plugin="typeahead">
+         </form>
+         {% endif %}
+      </div>
+
+      <ul class="nav navbar-menu order-1 order-lg-2">
+         {% if include.fullscreen %}
+         <li class="nav-item d-none d-sm-block">
+            <a class="nav-link px-2" data-toggle="fullscreen" data-title="Fullscreen">
+               {% include ui/icon.html icon="maximize" %}
+            </a>
+         </li>
+         {% endif %}
+
+         {% if include.customize %}
+         <li class="nav-item dropdown">
+            <a class="nav-link px-2" data-toggle="dropdown">
+               {% include ui/icon.html icon="droplet" %}
+               <span class="badge badge-pill badge-up bg-success"></span>
+            </a>
+         </li>
+         {% endif %}
+
+         {% if include.notifications %}
+         <!-- Notification -->
+         <li class="nav-item dropdown">
+            <a class="nav-link px-2" data-toggle="dropdown">
+               {% include ui/icon.html icon="bell" %}
+               <span class="badge badge-pill badge-up bg-primary">4</span>
+            </a>
+            <div class="dropdown-menu dropdown-menu-right mt-3 p-0">
+               <div class="scrollable">
+                  <div class="list list-row">
+                  </div>
+               </div>
+               <div class="d-flex px-3 py-2 b-t">
+                  <div class="flex">
+                     <span>6 Notifications</span>
+                  </div>
+                  <a href="#">See all <i class="fa fa-angle-right text-muted"></i></a>
+               </div>
+            </div>
+         </li>
+         {% endif %}
+
+         {% if include.progress %}
+         <li class="nav-item">
+            <a href="#" class="nav-link text-muted-light">
+               Profile Completeness: 70%
+               <!--<span class="progress progress-xs">-->
+               <!--<span class="progress-bar" style="width: 70%"></span>-->
+               <!--</span>-->
+            </a>
+         </li>
+         {% endif %}
+
+         {% if include.user-menu %}
+         <li class="nav-item dropdown">
+            <a href="#" data-toggle="dropdown"
+               class="nav-link d-flex align-items-center py-0 px-lg-0 px-2 text-color ml-2">
+               {% if include.user-menu == 1 %}
+               <span class="mx-2 d-none leading-none d-lg-block text-right">
+                       <small class="d-block mb-1">Hello, Welcome</small>
+                       <span class="text-default">{{ person.full_name }}</span>
+                   </span>
+               {% include ui/avatar.html src=person.photo %}
+               {% elsif include.user-menu == 2 %}
+               <span class="mx-2 d-none leading-none d-lg-block text-right">
+                       <span class="text-default">{{ person.full_name }}</span>
+                   </span>
+               {% include ui/avatar.html src=person.photo %}
+               {% elsif include.user-menu == 3 %}
+               {% include ui/avatar.html src=person.photo %}
+               {% elsif include.user-menu == 4 %}
+               <span class="btn btn-secondary">{% include ui/avatar.html src=person.photo class="mr-2 btn-avatar" %}{{ person.full_name }}</span>
+               {% endif %}
+            </a>
+            <div class="dropdown-menu dropdown-menu-right pt-0 mt-3">
+               <div class="row no-gutters mb-2 text-center border-bottom">
+                  <div class="col-4 border-right">
+                     <a href="#" class="py-3 d-block">
+                        {% include ui/icon.html icon="user" %}
+                     </a>
+                  </div>
+                  <div class="col-4 border-right">
+                     <a href="#" class="py-3 d-block">
+                        {% include ui/icon.html icon="mail" %}
+                     </a>
+                  </div>
+                  <div class="col-4">
+                     <a href="#" class="py-3 d-block">
+                        {% include ui/icon.html icon="send" %}
+                     </a>
+                  </div>
+               </div>
+               <a class="dropdown-item" href="#">
+                  <span>Profile</span>
+               </a>
+               <a class="dropdown-item" href="#">
+                  <span>Account Settings</span>
+               </a>
+               <a class="dropdown-item" href="#">
+                  <span class="badge bg-success text-uppercase">Upgrade</span>
+                  <span>to Pro</span>
+               </a>
+               <div class="dropdown-divider"></div>
+               <a class="dropdown-item" href="#">
+                  Need help?
+               </a>
+               <a class="dropdown-item" href="#">Sign out</a>
+            </div>
+         </li>
+         {% endif %}
+
+         {% if include.manage %}
+         <li class="nav-item">
+            <a href="#" class="btn btn-secondary">Manage Widgets</a>
+         </li>
+         {% endif %}
+
+         {% if include.register %}
+         <li class="nav-item ">
+            <a href="#" class="nav-link">
+               Sign in
+            </a>
+         </li>
+         <li class="d-flex align-items-center">
+            <a href="#" class="btn btn-pill btn-sm btn-primary d-none d-lg-block">
+               Register
+            </a>
+         </li>
+         {% endif %}
+
+         {% if include.plus %}
+         <li class="nav-item">
+            <a href="#" class="btn btn-primary btn-icon">{% include ui/icon.html icon="plus" %}</a>
+         </li>
+         {% endif %}
+
+         {% if include.premium %}
+         <li class="nav-item">
+            <a href="#" class="btn btn-success">Go Premium</a>
+         </li>
+         {% endif %}
+
+         {% if include.sync %}
+         <li class="nav-item">
+            <a href="#" class="btn btn-secondary">{% include ui/icon.html icon="rotate-cw" class="mr-2" %}Sync</a>
+         </li>
+         {% endif %}
+
+         {% if include.language %}
+         <li class="nav-item dropdown">
+            <a href="#" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+               <span class="flag flag-gb mr-2"></span>English
+            </a>
+            <div class="dropdown-menu dropdown-menu-right dropdown-menu-scrollable">
+               {% for language in site.data.languages %}
+               <a href="#" class="dropdown-item"><span class="flag flag-{{ language.flag }} mr-2"></span>{{
+                  language.name }}</a>
+               {% endfor %}
+            </div>
+         </li>
+         {% endif %}
+
+
+         <li class="nav-item d-lg-none">
+            <a href="#" class="nav-link  px-1" data-toggle="collapse" data-toggle-class=""
+               data-target="#navbarToggler">
+               {% include ui/icon.html icon="menu" %}
+            </a>
+         </li>
+      </ul>
+   </div>
 </div>
