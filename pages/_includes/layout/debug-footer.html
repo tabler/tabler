@@ -1,7 +1,7 @@
 <div class="debug">
 	<a href="#" data-debug="dark">Dark mode</a>
 	<a href="#" data-debug="rtl">RTL mode</a>
-	<a href="#" data-debug="code">Disable code</a>
+	<a href="#" data-debug="code">Show cards code</a>
 	<a href="#" data-debug="folded">Folded sidebar</a>
 	<a href="#" data-debug="fullscreen">Fullscreen</a>
 	<a href="#" data-debug="header-sticky">Sticky header</a>
@@ -36,8 +36,8 @@
 		border-radius: 50%;
 	}
 
-	body.disable-debug-code .card-debug {
-		display: none;
+	body.show-debug-code .card-debug {
+		display: block;
 	}
 
 	@media (max-width: 991.98px) {
@@ -46,7 +46,7 @@
 		}
 	}
 
-	body.disable-debug-code a[data-debug="code"]:after,
+	body.show-debug-code a[data-debug="code"]:after,
 	html[dir="rtl"] a[data-debug="rtl"]:after,
 	body.theme-dark a[data-debug="dark"]:after,
 	:fullscreen a[data-debug="fullscreen"]:after,
@@ -70,7 +70,7 @@
 		        return false;
 	        })
 	        .on('click', '[data-debug="code"]', function (e) {
-		        $body.toggleClass('disable-debug-code');
+		        $body.toggleClass('show-debug-code');
 
 		        e.preventDefault();
 		        return false;
