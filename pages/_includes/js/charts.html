@@ -4,13 +4,10 @@
 {% if data %}
 <script>
 $(document).ready(function(){
-   (new ApexCharts(document.getElementById('{{ include.id }}'), {
+   window.ApexCharts && (new ApexCharts(document.getElementById('{{ include.id }}'), {
       chart: {
          type: '{{ data.type }}',
          height: document.getElementById('{{ include.id }}').offsetHeight,
-         toolbar: {
-            show: false,
-         },
          {% if data.sparkline %}
          sparkline: {
             enabled: true
@@ -19,38 +16,24 @@ $(document).ready(function(){
          {% if data.stacked %}
          stacked: true,
          {% endif %}
-         animations: {
-            enabled: false,
-         }
       },
 
+      {% if data.type == 'area' %}
       fill: {
-        type: 'solid',
-        opacity: {% if data.type == 'area' %}.16{% else %}1{% endif %}
+        opacity: .16
       },
+      {% endif %}
 
-      grid: {
-         padding: {
-            right: 0,
-            left: 0,
-            bottom: 0,
-            top: 0
-         }
-      },
-
+      {% if data.dashed-history %}
       stroke: {
-         {% if data.dashed-history %}
          width: [2, 1],
          dashArray: [0, 3],
-         {% else %}
-         width: 2,
-         {% endif %}
-         curve: 'smooth',
       },
+      {% endif %}
 
       {% if data.series %}
       {% if data.type == 'pie' or data.type == 'donut' %}
-       series: [44, 55, 13, 43, 22],
+      series: [{% for serie in data.series %}{{ serie.data[0] }}{% unless forloop.last %}, {% endunless %}{% endfor %}],
       {% else %}
       series: [{% for serie in data.series %}{
          name: '{{ serie.name }}',
@@ -66,10 +49,6 @@ $(document).ready(function(){
       },
       {% endif %}
 
-      dataLabels: {
-         enabled: false
-      },
-
       {% if data.days-labels-count %}
       labels: [...Array({{ data.days-labels-count }}).keys()].map(n => `2019-05-${n+1}`),
       {% endif %}
@@ -84,14 +63,13 @@ $(document).ready(function(){
 
       {% if data.series %}
       colors: [ {% for serie in data.series %}
-         uikit.colors["{{ serie.color | default: 'blue' }}"]{% unless forloop.last %},{% endunless %}{% endfor %}
+         {{ serie.color | default: 'blue' | tabler_js_color }}{% unless forloop.last %},{% endunless %}{% endfor %}
       ],
       {% endif %}
 
       {% if data.hide-legend %}
       legend: {
          show: false, //hide legend
-
       },
       {% endif %}
 

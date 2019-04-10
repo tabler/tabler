@@ -1,7 +1,6 @@
-var uikit = {
+var tabler = {
     colorVariation: function (color, variation) {
         var colorValue = this.colors[color];
-
 
         if (colorValue) {
             switch (variation) {
@@ -112,4 +111,4 @@ $(document).ready(function () {
     });
 });
 
-window.uikit = uikit;
+window.tabler = tabler;

@@ -67,6 +67,18 @@ module Jekyll
       value = value.gsub(/ class="feather[^"]+"/, '')
       value = value.gsub(/<svg /, '<svg class="icon ' + class_name.to_s + '" ')
     end
+
+
+    def tabler_js_color(color)
+      color = color.split('-')
+
+      if color.size == 2
+        'tabler.colorVariation("'+ color[0] + '", "'+ color[1] + '")'
+      else
+        'tabler.colors["'+ color[0] + '"]'
+      end
+
+    end
   end
 end
 
