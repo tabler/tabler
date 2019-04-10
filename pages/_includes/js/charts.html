@@ -1,69 +1,112 @@
 {% removeemptylines %}
-{% assign data = site.data.charts[include.data] %}
+{% assign data = site.data.charts[include.chart-id] %}
+
 {% if data %}
 <script>
 $(document).ready(function(){
-	var chart = new ApexCharts(document.getElementById('{{ include.id }}'), {
-		chart: {
-			type: '{{ data.type }}',
-			{% if data.stacked %}stacked: true{% endif %}
-		},
+   (new ApexCharts(document.getElementById('{{ include.id }}'), {
+      chart: {
+         type: '{{ data.type }}',
+         height: document.getElementById('{{ include.id }}').offsetHeight,
+         toolbar: {
+            show: false,
+         },
+         {% if data.sparkline %}
+         sparkline: {
+            enabled: true
+         },
+         {% endif %}
+         {% if data.stacked %}
+         stacked: true,
+         {% endif %}
+         animations: {
+            enabled: false,
+         }
+      },
 
-    	{% if data.spline %}
-    	stroke: {
-			curve: 'smooth'
-		},{% endif %}
+      fill: {
+        type: 'solid',
+        opacity: {% if data.type == 'area' %}.16{% else %}1{% endif %}
+      },
 
-		{% if data.type == 'pie' or data.type == 'donut' %}
-    	series: [44, 55, 13, 43, 22],
-		{% else %}
-		series: [{% for serie in data.series %}{
-			name: '{{ serie.name }}',
-			data: [{{ serie.data | join: ', '}}]
-		}{% unless forloop.last %},{% endunless %}{% endfor %}],
-		{% endif %}
+      grid: {
+         padding: {
+            right: 0,
+            left: 0,
+            bottom: 0,
+            top: 0
+         }
+      },
 
-		xaxis: {
-            categories: [{% for category in data.categories %}'{{ category }}'{% unless forloop.last %}, {% endunless %}{% endfor %}]
-		},
+      stroke: {
+         {% if data.dashed-history %}
+         width: [2, 1],
+         dashArray: [0, 3],
+         {% else %}
+         width: 2,
+         {% endif %}
+         curve: 'smooth',
+      },
 
- 		{% if data.show-labels %}
-		dataLabels: {
-			enabled: false
-		},
-		{% endif %}
+      {% if data.series %}
+      {% if data.type == 'pie' or data.type == 'donut' %}
+       series: [44, 55, 13, 43, 22],
+      {% else %}
+      series: [{% for serie in data.series %}{
+         name: '{{ serie.name }}',
+         data: [{{ serie.data | join: ', '}}]
+      }{% unless forloop.last %},{% endunless %}{% endfor %}],
+      {% endif %}
+      {% endif %}
 
-		{% if data.rotated %}
-		plotOptions: {
-			bar: {
-				horizontal: true,
-			}
-		},
-		{% endif %}
+      {% if data.categories or data.days-labels-count %}
+      xaxis: {
+         {% if data.categories %}categories: [{% for category in data.categories %}'{{ category }}'{% unless forloop.last %}, {% endunless %}{% endfor %}],{% endif %}
+         {% if data.days-labels-count %}type: 'datetime',{% endif %}
+      },
+      {% endif %}
 
-		colors: [ {% for serie in data.series %}
-			uikit.colors["{{ serie.color | default: 'blue' }}"]{% unless forloop.last %},{% endunless %}{% endfor %}
-		],
+      dataLabels: {
+         enabled: false
+      },
 
-		legend: {
-			{% if data.hide-legend %}show: false, //hide legend
-			{% endif %}
-		},
+      {% if data.days-labels-count %}
+      labels: [...Array({{ data.days-labels-count }}).keys()].map(n => `2019-05-${n+1}`),
+      {% endif %}
 
-		{% if data.hide-tooltip %}
-		tooltip: {
-			enabled: false
-		},
-		{% endif %}
+      {% if data.rotated %}
+      plotOptions: {
+         bar: {
+            horizontal: true,
+         }
+      },
+      {% endif %}
 
-		{% if data.hide-points %}
-		point: {
-			show: false
-		}
-		{% endif %}
-	});
+      {% if data.series %}
+      colors: [ {% for serie in data.series %}
+         uikit.colors["{{ serie.color | default: 'blue' }}"]{% unless forloop.last %},{% endunless %}{% endfor %}
+      ],
+      {% endif %}
 
-	chart.render();
+      {% if data.hide-legend %}
+      legend: {
+         show: false, //hide legend
+
+      },
+      {% endif %}
+
+      {% if data.hide-tooltip %}
+      tooltip: {
+         enabled: false
+      },
+      {% endif %}
+
+      {% if data.hide-points %}
+      point: {
+         show: false
+      }
+      {% endif %}
+   })).render();
 });
 </script>
 {% endif %}
