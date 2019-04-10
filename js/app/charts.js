@@ -47,7 +47,9 @@ if (window.Apex) {
   Apex.grid = {
     padding: {
       right: 0,
-      left: 0
+      left: 0,
+      bottom: 0,
+      top: 0
     }
   };
 
@@ -58,9 +60,6 @@ if (window.Apex) {
   Apex.plotOptions = {
     pie: {
       expandOnClick: false,
-      donut: {
-        size: '10%'
-      }
     },
   };
 
@@ -81,5 +80,9 @@ if (window.Apex) {
   Apex.fill = {
     type: 'solid',
     opacity: 1
+  };
+
+  Apex.legend = {
+    show: false
   };
 }

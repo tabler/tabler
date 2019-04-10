@@ -24,10 +24,15 @@ $(document).ready(function(){
       },
       {% endif %}
 
-      {% if data.dashed-history %}
+      {% if data.dashed-history or data.stroke-straight %}
       stroke: {
+         {% if data.dashed-history %}
          width: [2, 1],
-         dashArray: [0, 3],
+            dashArray: [0, 3],
+         {% endif %}
+         {% if data.stroke-straight %}
+         curve: 'straight',
+         {% endif %}
       },
       {% endif %}
 
@@ -46,6 +51,12 @@ $(document).ready(function(){
       xaxis: {
          {% if data.categories %}categories: [{% for category in data.categories %}'{{ category }}'{% unless forloop.last %}, {% endunless %}{% endfor %}],{% endif %}
          {% if data.days-labels-count %}type: 'datetime',{% endif %}
+      },
+      {% endif %}
+
+      {% if data.auto-min %}
+      yaxis: {
+         min: function(min) { return min },
       },
       {% endif %}
 
