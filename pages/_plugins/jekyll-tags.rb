@@ -1,3 +1,6 @@
+require 'pathname'
+
+
 module Jekyll
   module Tags
     class RemoveEmptyLines < Liquid::Block
@@ -10,9 +13,21 @@ module Jekyll
       def render(context)
         super.strip.gsub /^[\t\s]*$\n/, ''
       end
-
     end
 
+    class DocsUrl < Liquid::Tag
+      def initialize(tag_name, path, tokens)
+        super
+        @path = path.strip
+      end
+
+      def render(context)
+        url = context.environments.first.page.url.sub!(/^\//, '')
+        pageDir = Pathname(url).parent
+
+        ('./' + Pathname('docs/' + @path + '.html').relative_path_from(pageDir).to_s).gsub(/^\.\/\.\./, "..")
+      end
+    end
 
     class CardBlock < Liquid::Block
       def initialize(tag_name, params, tokens)
@@ -38,6 +53,8 @@ module Jekyll
         card_text += super + "\n"
         card_text += '</div>' + "\n"
         card_text += '</div>'
+
+        card_text
       end
     end
   end
@@ -45,3 +62,5 @@ end
 
 Liquid::Template.register_tag('removeemptylines', Jekyll::Tags::RemoveEmptyLines)
 Liquid::Template.register_tag('card', Jekyll::Tags::CardBlock)
+Liquid::Template.register_tag('docs_url', Jekyll::Tags::DocsUrl)
+

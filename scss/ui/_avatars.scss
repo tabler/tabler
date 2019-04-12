@@ -5,7 +5,7 @@
   height: 2rem;
   font-size: .875rem;
   font-weight: 400;
-  line-height: 2.5rem;
+  line-height: 2rem;
   color: $text-muted-light;
   text-align: center;
   text-transform: uppercase;
@@ -13,12 +13,23 @@
   user-select: none;
   background: $body-bg no-repeat center/cover;
   border-radius: 50%;
+
+  .icon {
+    font-size: 1.25em;
+  }
+
+  @at-root a#{&} {
+    cursor: pointer;
+  }
 }
 
-.avatar-icon {
-  width: 1.25em;
-  height: 1.25em;
-  vertical-align: text-bottom;
+@each $avatar-size, $size in $avatar-sizes {
+  .avatar-#{$avatar-size} {
+    width: $size;
+    height: $size;
+    line-height: $size;
+    font-size: $size / 2;
+  }
 }
 
 .avatar-status {
@@ -30,20 +41,6 @@
   background: #98a9bc;
   border: 2px solid #fff;
   border-radius: 50%;
-}
-
-.avatar-thumb {
-  margin: 4px;
-  box-shadow: 0 0 0 4px rgba(255, 255, 255, .4);
-}
-
-@each $avatar-size, $size, $font-size in $avatar-sizes {
-  .avatar-#{$avatar-size} {
-    width: $size;
-    height: $size;
-    font-size: $font-size;
-    line-height: $size;
-  }
 }
 
 .avatar-list {
@@ -58,6 +55,13 @@
       margin-right: .5rem;
     }
   }
+
+  a.avatar {
+
+    &:hover {
+      z-index: 1;
+    }
+  }
 }
 
 .avatar-list-stacked {
@@ -67,12 +71,5 @@
 
   .avatar {
     box-shadow: 0 0 0 2px #fff;
-  }
-}
-
-@each $vendor, $color in $colors {
-  .avatar-#{$vendor} {
-    color: $color;
-    background-color: rgba($color, .3);
   }
 }

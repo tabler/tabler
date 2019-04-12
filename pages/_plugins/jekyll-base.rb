@@ -15,7 +15,6 @@ def get_dir(dir)
 end
 
 module Jekyll
-
   Jekyll::Hooks.register :pages, :pre_render do |page, jekyll|
     jekyll.site['base'] = get_dir(page.dir)
   end

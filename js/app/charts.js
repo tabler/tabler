@@ -41,48 +41,89 @@
 
 
 /*
-Apexcharts default configuration
+charts default configuration
  */
 if (window.Apex) {
-  Apex.grid = {
-    padding: {
-      right: 0,
-      left: 0,
-      bottom: 0,
-      top: 0
-    }
-  };
 
-  Apex.dataLabels = {
-    enabled: false
-  };
-
-  Apex.plotOptions = {
-    pie: {
-      expandOnClick: false,
-    },
-  };
-
-  Apex.chart = {
-    toolbar: {
+  window.Apex = {
+    grid: {
       show: false,
+      padding: {
+        right: 0,
+        left: 0,
+        bottom: 0,
+        top: 0
+      }
     },
-    animations: {
-      enabled: false,
+
+    dataLabels: {
+      enabled: false
+    },
+
+    plotOptions: {
+      pie: {
+        expandOnClick: false,
+      },
+    },
+
+    chart: {
+      toolbar: {
+        show: false,
+      },
+      zoom: {
+        enabled: false
+      },
+      animations: {
+        enabled: false,
+      }
+    },
+
+    stroke: {
+      width: 2,
+      curve: 'smooth',
+    },
+
+    fill: {
+      type: 'solid',
+      opacity: 1
+    },
+
+    markers: {
+      strokeWidth: 1
+    },
+
+    legend: {
+      show: false
+    },
+
+    title: {
+      style: {
+        fontSize: '14px',
+        fontFamily: 'inherit'
+      }
+    },
+
+    tooltip: {
+      fillSeriesColor: false
+    },
+
+    xaxis: {
+      labels: {
+        show: false
+      },
+      tooltip: {
+        enabled: false
+      },
+      axisBorder: {
+        show: false
+      }
+    },
+
+    yaxis: {
+      show: false,
+      labels: {
+        show: false
+      }
     }
-  };
-
-  Apex.stroke = {
-    width: 2,
-    curve: 'smooth',
-  };
-
-  Apex.fill = {
-    type: 'solid',
-    opacity: 1
-  };
-
-  Apex.legend = {
-    show: false
-  };
+  }
 }

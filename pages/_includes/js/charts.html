@@ -4,7 +4,9 @@
 {% if data %}
 <script>
 $(document).ready(function(){
-   window.ApexCharts && (new ApexCharts(document.getElementById('{{ include.id }}'), {
+   window.chart = window.chart || {};
+
+   window.ApexCharts && (window.chart["{{ include.chart-id }}"] = new ApexCharts(document.getElementById('{{ include.id }}'), {
       chart: {
          type: '{{ data.type }}',
          height: document.getElementById('{{ include.id }}').offsetHeight,
