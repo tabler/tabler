@@ -1,7 +1,8 @@
 ---
 title: Avatars
-description: Create and group avatars of various shapes and sizes with one component.
 ---
+
+Create and group avatars of various shapes and sizes with one component.
 
 ### Default markup
 
