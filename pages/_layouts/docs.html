@@ -8,15 +8,16 @@ page-title: Documentation
 
 <div class="row">
 	<div class="col-lg-3 order-lg-1 mb-4">
-		<a href="{{ site.github_url }}" class="btn btn-block btn-primary mb-4">
+		<a href="{{ site.github_url }}" class="btn btn-block btn-primary mb-4" target="_blank">
 			{% include ui/icon.html icon="github" class="mr-2" %}Browse source code
 		</a>
 
 		{% for group in site.docs-menu %}
+      {{ group.title }}
 		<div class="list-group list-group-transparent mb-0">
 			{% for p in group.pages %}
 			{% assign doc = site.docs | where: "slug", p | first %}
-			<a href="{{ site.base }}{{ doc.url }}" class="list-group-item list-group-item-action{% if page.url == doc.url %} active{% endif %}">
+			<a href="{{ site.base }}/{{ doc.url }}" class="list-group-item list-group-item-action{% if page.url == doc.url %} active{% endif %}">
 				{{ doc.title }}
 			</a>
 			{% endfor %}

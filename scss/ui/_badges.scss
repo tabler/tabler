@@ -1,11 +1,12 @@
 .badge {
-  //color: #ffffff;
-  //color: $text-muted;
-  //background: theme-color-lightest($text-muted);
-  font-weight: 600;
+  //font-weight: 600;
+
+  @at-root a#{&} {
+    color: $white;
+  }
 
   &:empty {
-    display: block;
+    display: inline-block;
     width: 8px;
     min-width: 0;
     height: 8px;
@@ -26,41 +27,8 @@
   transform: translate(0%, -50%);
 }
 
-//light
-@each $name, $color in $status-colors {
-  .badge-#{$name}-lt {
-    color: $color;
-    background-color: theme-color-lighter($color);
-  }
-}
-
 //bordered
-@each $name, $color in $status-colors {
-  .badge-#{$name}.badge-outline {
-    color: $color;
-    background-color: transparent;
-    border: 1px solid $color;
-  }
-}
-
-// rest colors
-@if $generate-colors {
-  @each $name, $color in $colors {
-    .badge-#{$name}-lt {
-      color: $color;
-      background-color: theme-color-lighter($color);
-    }
-
-    .badge-#{$name}.badge-outline {
-      color: $color;
-      background-color: transparent;
-      border: 1px solid $color;
-    }
-
-    .badge-#{$name} {
-      color: #fff;
-      background-color: $color;
-    }
-  }
-
+.badge-outline {
+  background-color: transparent;
+  border: 1px solid currentColor;
 }
