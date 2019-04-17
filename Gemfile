@@ -9,3 +9,5 @@ gem "jekyll-random", "~> 0.0.3"
 gem "jekyll-tidy"
 gem "jekyll-timeago"
 gem 'jekyll-redirect-from'
+
+gem "htmlbeautifier", "~> 1.3"

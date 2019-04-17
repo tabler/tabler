@@ -1,3 +1,5 @@
+require 'htmlbeautifier'
+
 module Jekyll
   module Tags
     class ExampleBlock < Liquid::Block
@@ -21,8 +23,8 @@ module Jekyll
               key, value = opt.split('=')
               # If a quoted list, convert to array
               if value && value.include?("\"")
-                  value.gsub!(/"/, "")
-                  value = value.split
+                value.gsub!(/"/, "")
+                value = value.split
               end
               @options[key.to_sym] = value || true
             end
@@ -35,7 +37,7 @@ Syntax Error in tag 'example' while parsing the following markup:
   #{markup}
 
 Valid syntax: example <lang> [id=foo]
-eos
+          eos
         end
       end
 
@@ -46,9 +48,11 @@ eos
 
         output = case context.registers[:site].highlighter
 
-        when 'rouge'
-          render_rouge(code)
-        end
+                 when 'rouge'
+                   render_rouge(code)
+                 end
+
+        # output = HtmlBeautifier.beautify(output, indent: "\t")
 
         rendered_output = example(code) + add_code_tag(output)
         prefix + rendered_output + suffix
@@ -82,8 +86,8 @@ eos
 
       def add_code_tag(code)
         # Add nested <code> tags to code blocks
-        code = code.sub(/<pre>\n*/,'<pre><code class="language-' + @lang.to_s.gsub("+", "-") + '" data-lang="' + @lang.to_s + '">')
-        code = code.sub(/\n*<\/pre>/,"</code></pre>")
+        code = code.sub(/<pre>\n*/, '<pre><code class="language-' + @lang.to_s.gsub("+", "-") + '" data-lang="' + @lang.to_s + '">')
+        code = code.sub(/\n*<\/pre>/, "</code></pre>")
         code.strip
       end
 
