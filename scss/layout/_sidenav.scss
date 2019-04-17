@@ -1,9 +1,81 @@
+/*
+Sidebar
+ */
 .sidenav {
-  background: $dark;
+  background: $sidenav-bg;
   width: 16rem;
-  outline: 1px solid red;
+  min-width: 16rem;
+  border-right: 1px solid $sidenav-border-color;
+  padding: .75rem 1rem;
+
+  .nav-link {
+    color: $text-muted;
+  }
 }
 
+/**
+Narrow sidebar
+ */
 .sidenav-narrow {
-  width: 4rem
+  width: 4rem;
+  min-width: 4rem;
+  padding: .5rem;
+}
+
+/*
+Right sidebar
+ */
+.sidenav-right {
+  order: 9;
+  border-left: 1px solid $sidenav-border-color;
+  border-right: none;
+}
+
+/*
+Dark sidebar
+ */
+.sidenav-dark {
+  background-color: $sidenav-dark-bg;
+  border: none;
+  color: #fff;
+}
+
+@each $breakpoint, $dimension in $grid-breakpoints {
+
+  .sidenav-expand-#{$breakpoint} {
+    display: none;
+
+    @include media-breakpoint-up(#{$breakpoint}) {
+      padding-left: 0;
+      padding-right: 0;
+      display: block;
+
+      .navbar-nav {
+        margin-left: 0;
+        margin-right: 0;
+      }
+
+      .navbar-nav .nav-link {
+        padding: .625rem $sidenav-link-padding-x;
+
+        &.active {
+          position: relative;
+
+          &:before {
+            top: auto;
+            left: $sidenav-link-padding-x;
+            right: $sidenav-link-padding-x;
+            bottom: calc(-#{$navbar-padding-y} - #{$border-width});
+            border-left: 0;
+            border-bottom: 1px solid $primary;
+          }
+        }
+      }
+
+      .sidenav > [class*="container"] {
+        padding-left: 0;
+        padding-right: 0;
+      }
+    }
+  }
 }
