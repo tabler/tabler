@@ -3,26 +3,21 @@ layout: default
 menu: gallery
 ---
 
-
 <div class="container">
-	<div class="page-header">
-		<h1 class="page-title">
-			Gallery
-		</h1>
-		<div class="page-subtitle">1 - 12 of 1713 photos</div>
-		<div class="page-options d-flex">
-			<select class="form-control custom-select w-auto">
-				<option value="asc">Newest</option>
-				<option value="desc">Oldest</option>
-			</select>
-			<div class="input-icon ml-2">
-				<span class="input-icon-addon">
-					<i class="fe fe-search"></i>
-				</span>
-				<input type="text" class="form-control w-10" placeholder="Search photo">
-			</div>
-		</div>
-	</div>
+	
+    {% capture options %}
+    <select class="form-control custom-select w-auto">
+        <option value="asc">Newest</option>
+        <option value="desc">Oldest</option>
+    </select>
+    <div class="input-icon ml-2">
+        <span class="input-icon-addon">
+            <i class="fe fe-search"></i>
+        </span>
+        <input type="text" class="form-control w-10" placeholder="Search photo">
+    </div>
+    {% endcapture %}
+    {% include page-title.html title="Gallery" icon="fe fe-image" subtitle="1 - 12 of 58 photos" options=options %}
 	
 	<div class="row row-cards">
 
@@ -48,7 +43,8 @@ menu: gallery
 		</div>
 		{% endfor %}
 
-
 	</div>
+	
+	{% include pagination.html count=5 active-item=1 class="justify-content-center" %}
 	
 </div>
