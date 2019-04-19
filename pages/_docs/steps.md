@@ -7,27 +7,26 @@ Steps are progress indicators of a sequence of task steps.
 ### Default markup
 
 {% example html %}
-{% include ui/steps.html %}
+{% include ui/steps.html show-title=true %}
 {% endexample %}
 
-### Size
+### Tooltips
 
 {% example html %}
-{% include ui/steps.html size="md" %}
-{% include ui/steps.html size="lg" %}
+{% include ui/steps.html show-title=true show-tooltip=true %}
 {% endexample %}
 
 ### Color
 
 {% example html %}
-{% include ui/steps.html color="green" %}
-{% include ui/steps.html color="red" %}
+{% include ui/steps.html color="green" show-title=true %}
+{% include ui/steps.html color="red" show-title=true %}
 {% endexample %}
 
-### Steps with title
+### Steps without title
 
 {% example html %}
-{% include ui/steps.html show-title=true %}
+{% include ui/steps.html show-tooltip=true %}
 {% endexample %}
 
 ### Steps with numbers

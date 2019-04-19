@@ -1,4 +1,5 @@
 $steps-border-width: 2px;
+$steps-color-inactive: #f3f5f5;
 
 @mixin step-size($border-width, $dot-size: 1rem) {
   .step-item {
@@ -21,10 +22,12 @@ $steps-border-width: 2px;
     &:after,
     &:before {
       background: $color;
+      color: $white;
     }
 
     &.active:before {
       border-color: $color;
+      color: inherit;
     }
   }
 }
@@ -38,14 +41,6 @@ $steps-border-width: 2px;
   width: 100%;
   @include step-size(2px, .5rem);
   @include step-color($primary);
-}
-
-.steps-md {
-  @include step-size(4px);
-}
-
-.steps-lg {
-  @include step-size(8px);
 }
 
 @each $color, $value in $colors {
@@ -100,9 +95,15 @@ $steps-border-width: 2px;
     }
 
     & ~ .step-item {
+      color: $text-muted-light;
+
       &:after,
       &:before {
-        background: $border-color;
+        background: $steps-color-inactive;
+      }
+
+      &:before {
+        color: $text-muted-light !important;
       }
     }
   }
@@ -110,12 +111,21 @@ $steps-border-width: 2px;
 
 .steps-counter {
   counter-reset: steps;
+  @include step-size(2px, 1.5rem);
 
   .step-item {
     counter-increment: steps;
 
     &:before {
-      content: counter(steps)
+      content: counter(steps);
+      line-height: 1.5rem;
+      font-size: 1rem;
+    }
+
+    &.active ~ .step-item {
+      &:before {
+        background: #fff;
+      }
     }
   }
 }
