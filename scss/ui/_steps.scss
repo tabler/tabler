@@ -1,0 +1,121 @@
+$steps-border-width: 2px;
+
+@mixin step-size($border-width, $dot-size: 1rem) {
+  .step-item {
+    padding-top: calc(#{$dot-size} + 4px);
+
+    &:after {
+      height: $border-width;
+      top: calc(#{$dot-size / 2} + 2px);
+    }
+
+    &:before {
+      width: $dot-size;
+      height: $dot-size;
+    }
+  }
+}
+
+@mixin step-color($color) {
+  .step-item {
+    &:after,
+    &:before {
+      background: $color;
+    }
+
+    &.active:before {
+      border-color: $color;
+    }
+  }
+}
+
+.steps {
+  list-style: none;
+  display: flex;
+  flex-wrap: nowrap;
+  margin: 2rem 0;
+  padding: 0;
+  width: 100%;
+  @include step-size(2px, .5rem);
+  @include step-color($primary);
+}
+
+.steps-md {
+  @include step-size(4px);
+}
+
+.steps-lg {
+  @include step-size(8px);
+}
+
+@each $color, $value in $colors {
+  .steps-#{$color} {
+    @include step-color($value);
+  }
+}
+
+.step-item {
+  flex: 1 1 0;
+  margin-top: 0;
+  min-height: 1rem;
+  text-align: center;
+  position: relative;
+  color: inherit;
+  cursor: default;
+
+  @at-root a#{&} {
+    cursor: pointer;
+
+    &:hover {
+      color: inherit;
+    }
+  }
+
+  &:not(:first-child):after {
+    content: '';
+    position: absolute;
+    left: -50%;
+    width: 100%;
+    transform: translateY(-50%);
+  }
+
+  &:before {
+    content: '';
+    border: 2px solid #fff;
+    box-sizing: content-box;
+    border-radius: 50%;
+    display: block;
+    position: absolute;
+    left: 50%;
+    top: 0;
+    transform: translateX(-50%);
+    z-index: 1;
+  }
+
+  &.active {
+    font-weight: 600;
+
+    &:before {
+      background: #fff;
+    }
+
+    & ~ .step-item {
+      &:after,
+      &:before {
+        background: $border-color;
+      }
+    }
+  }
+}
+
+.steps-counter {
+  counter-reset: steps;
+
+  .step-item {
+    counter-increment: steps;
+
+    &:before {
+      content: counter(steps)
+    }
+  }
+}
