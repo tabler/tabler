@@ -1,0 +1,24 @@
+<script src="{{ .Site.BaseURL }}libs/jquery/jquery.js"></script>
+<script src="{{ .Site.BaseURL }}libs/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+<script src="{{ .Site.BaseURL }}libs/apexcharts/apexcharts.min.js"></script>
+<script src="{{ .Site.BaseURL }}libs/peity/jquery.peity.min.js"></script>
+
+
+{{ if eq (getenv "HUGO_ENV") "development" }}
+{{/*
+include layout/debug-header.html
+*/}}
+{{ end }}
+
+<script src="{{ .Site.BaseURL }}js/ui-kit.js"></script>
+<script src="{{ .Site.BaseURL }}js/app/charts.js"></script>
+
+<script>
+   window.tabler = window.tabler || {};
+   window.tabler.colors = { {{ range $color, $val := .Site.Params.colors }}
+      '{{ $color }}': '{{ $val.hex }}',{{ end }}
+   };
+</script>
+
+{{ getenv "HUGO_ENV" }}

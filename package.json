@@ -3,8 +3,13 @@
   "version": "1.0.0",
   "description": "Premium and Open Source dashboard template with responsive and high quality UI.",
   "scripts": {
-    "start": "gulp",
-    "build": "gulp build"
+    "start": "npm-run-all --parallel watch docs-serve",
+    "bundlesize": "bundlesize",
+    "linkinator": "linkinator _gh_pages --recurse --skip \"^(?!http://localhost)\"",
+    "docs-serve": "hugo server --port 9001 --disableFastRender",
+    "watch": "npm-run-all --parallel watch-*",
+    "watch-css": "nodemon --watch scss/ --ext scss --exec \"npm run css-main\"",
+    "watch-js": "nodemon --watch js/src/ --ext js --exec \"npm run js-compile\""
   },
   "repository": {
     "type": "git",
@@ -19,34 +24,10 @@
   "homepage": "https://tabler.io",
   "devDependencies": {
     "apexcharts": "3.6.2",
-    "bootstrap": "4.3.1",
-    "browser-sync": "2.26.3",
-    "child_process": "1.0.2",
-    "del": "4.0.0",
-    "eslint": "5.15.1",
-    "gulp": "4.0.0",
-    "gulp-autoprefixer": "6.0.0",
-    "gulp-banner": "0.1.3",
-    "gulp-clean": "0.4.0",
-    "gulp-clean-css": "4.0.0",
-    "gulp-concat": "2.6.1",
-    "gulp-htmlclean": "2.7.22",
-    "gulp-htmlmin": "5.0.1",
-    "gulp-if": "2.0.2",
-    "gulp-imagemin": "5.0.3",
-    "gulp-rename": "1.4.0",
-    "gulp-replace": "1.0.0",
-    "gulp-sass": "4.0.2",
-    "gulp-selectors": "0.1.10",
-    "gulp-sourcemaps": "2.6.5",
-    "gulp-uglify": "3.0.2",
-    "gulp-useref": "3.1.6",
-    "jquery": "3.3.1",
-    "jqvmap": "1.5.1",
-    "peity": "3.3.0",
-    "popper.js": "1.14.7",
-    "selectize": "0.12.6",
-    "stylelint": "9.10.1",
-    "stylelint-config-twbs-bootstrap": "0.3.0"
+    "bootstrap": "twbs/bootstrap#275cd7f",
+    "bundlesize": "0.15.3",
+    "http-server": "0.11.1",
+    "hugo-bin": "0.42.0",
+    "popper.js": "1.15.0"
   }
 }

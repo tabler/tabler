@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en"{{ if .Params.rtl }} dir="rtl"{{ end }}>
+<head>
+   <meta charset="UTF-8" />
+   <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+   <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+   <meta http-equiv="Content-Language" content="{{ .Site.Language }}" />
+
+   <meta name="author" content="{{ .Site.Params.authors }}" />
+
+   <meta name="msapplication-TileColor" content="#4188c9" />
+   <meta name="theme-color" content="#4188c9" />
+
+   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+   <meta name="apple-mobile-web-app-capable" content="yes" />
+   <meta name="mobile-web-app-capable" content="yes" />
+   <meta name="HandheldFriendly" content="True" />
+   <meta name="MobileOptimized" content="320" />
+
+   {{ .Hugo.Generator }}
+
+   <link rel="icon" href="{{ .Site.BaseURL }}favicon.ico" type="image/x-icon" />
+   <link rel="shortcut icon" href="{{ .Site.BaseURL }}favicon.ico" type="image/x-icon" />
+
+   <link rel="canonical" href="{{ .Permalink }}" />
+
+   {{ with .Params.robots -}}
+   <meta name="robots" content="{{ . }}" />
+   {{- end }}
+
+   <title>{{ if .Title }}{{ .Title }} - {{ end }}{{ .Site.Title }}{{ if .Site.Params.description }} - {{ .Site.Params.description }}{{ end }}</title>
+
+   {{ partial "css" . }}
+</head>
+<body class="antialiased{{ if .Params.DarkTheme }} theme-dark{{ end }}">
+
+{{ .Content}}
+
+{{ if eq (getenv "HUGO_ENV") "development" }}
+   {{ partial "debug-footer" }}
+{{ end }}
+
+{{ partial "js" . }}
+</body>
+</html>
