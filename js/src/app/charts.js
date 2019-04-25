@@ -2,15 +2,15 @@
   $(document).ready(function () {
 
     $().peity && $('[data-spark]').each(function () {
-      var $this = $(this),
+      const $this = $(this),
         data = $this.attr('data-spark'),
         color = $this.attr('data-spark-color') || 'blue',
         type = $this.attr('data-spark-type') || 'line';
 
-      var $div = $('<div />').html(data);
+      const $div = $('<div />').html(data);
       $this.append($div);
 
-      var strokeColor = tabler.colors[color],
+      let strokeColor = tabler.colors[color],
         fillColor = tabler.colors[color];
 
       if (type === 'donut' || type === 'pie') {
@@ -125,5 +125,5 @@ if (window.Apex) {
         show: false
       }
     }
-  }
+  };
 }
