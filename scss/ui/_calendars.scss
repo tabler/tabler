@@ -1,8 +1,8 @@
 .calendar {
-  border: 1px solid $border-color;
-  border-radius: $border-radius;
   display: block;
   font-size: $font-size-sm;
+  border: 1px solid $border-color;
+  border-radius: $border-radius;
 }
 
 .calendar-nav {
@@ -20,7 +20,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
-  padding: .5rem 0
+  padding: .5rem 0;
 }
 
 .calendar-header {
@@ -28,11 +28,11 @@
 }
 
 .calendar-date {
-  text-align: center;
   flex: 0 0 (100% / 7);
   max-width: (100% / 7);
-  border: 0;
   padding: .2rem;
+  text-align: center;
+  border: 0;
 
   &.prev-month,
   &.next-month {
@@ -40,57 +40,57 @@
   }
 
   .date-item {
+    position: relative;
     display: inline-block;
+    width: 1.4rem;
+    height: 1.4rem;
+    line-height: 1.4rem;
+    color: #66758c;
+    text-align: center;
+    text-decoration: none;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
     background: 0 0;
     border: 1px solid transparent;
     border-radius: 50%;
-    color: #66758c;
-    cursor: pointer;
-    height: 1.4rem;
-    line-height: 1.4rem;
-    width: 1.4rem;
     outline: 0;
-    position: relative;
-    text-align: center;
-    text-decoration: none;
-    vertical-align: middle;
-    white-space: nowrap;
     transition: background .3s, border .3s, box-shadow .32s, color .3s;
 
     &:hover {
-      background: #fefeff;
-      border-color: $border-color;
       color: $primary;
       text-decoration: none;
+      background: #fefeff;
+      border-color: $border-color;
     }
   }
 
   .date-today {
-    border-color: $border-color;
     color: $primary;
+    border-color: $border-color;
   }
 }
 
 .calendar-range {
   position: relative;
 
-  &:before {
+  &::before {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    left: 0;
+    height: 1.4rem;
     content: "";
     background: rgba($primary, .1);
-    height: 1.4rem;
-    left: 0;
-    position: absolute;
-    right: 0;
-    top: 50%;
     transform: translateY(-50%);
   }
 
   &.range-start,
   &.range-end {
     .date-item {
+      color: #fff;
       background: $primary;
       border-color: $primary;
-      color: #fff;
     }
   }
 

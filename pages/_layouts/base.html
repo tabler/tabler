@@ -18,24 +18,20 @@
 	<link rel="icon" href="{{ site.base }}/favicon.ico" type="image/x-icon"/>
 	<link rel="shortcut icon" href="{{ site.base }}/favicon.ico" type="image/x-icon"/>
 
-	<!-- Generated: {{ site.time }} -->
-
 	<title>{% if page.title %}{{ page.title }} - {% endif %}{% if layout.title %}{{ layout.title }} - {% endif %}{% if site.title %}{{ site.title }} - {% endif %}{{ site.description }}</title>
 
-	{% include layout/css.html %}
-	{% include layout/js.html %}
+	{% include_cached layout/css.html %}
+	{% include_cached layout/js.html %}
 </head>
 <body class="antialiased{% if page.dark-theme %} theme-dark{% endif %}">
 
-{{ content}}
+   {{ content}}
 
-
-{% if site.debug %}
-{% if jekyll.environment == 'development' %}
-{% include layout/debug-footer.html %}
-{% endif %}
-{% endif %}
-
+   {% if site.debug %}
+      {% if jekyll.environment == 'development' %}
+         {% include layout/debug.html %}
+      {% endif %}
+   {% endif %}
 
 </body>
 </html>

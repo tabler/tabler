@@ -1,16 +1,15 @@
-$steps-border-width: 2px;
-$steps-color-inactive: #f3f5f5;
+// stylelint-disable declaration-no-important
 
 @mixin step-size($border-width, $dot-size: 1rem) {
   .step-item {
     padding-top: calc(#{$dot-size} + 4px);
 
-    &:after {
-      height: $border-width;
+    &::after {
       top: calc(#{$dot-size / 2} + 2px);
+      height: $border-width;
     }
 
-    &:before {
+    &::before {
       width: $dot-size;
       height: $dot-size;
     }
@@ -19,26 +18,26 @@ $steps-color-inactive: #f3f5f5;
 
 @mixin step-color($color) {
   .step-item {
-    &:after,
-    &:before {
-      background: $color;
+    &::after,
+    &::before {
       color: $white;
+      background: $color;
     }
 
-    &.active:before {
-      border-color: $color;
+    &.active::before {
       color: inherit;
+      border-color: $color;
     }
   }
 }
 
 .steps {
-  list-style: none;
   display: flex;
   flex-wrap: nowrap;
-  margin: 2rem 0;
-  padding: 0;
   width: 100%;
+  padding: 0;
+  margin: 2rem 0;
+  list-style: none;
   @include step-size(2px, .5rem);
   @include step-color($primary);
 }
@@ -50,12 +49,12 @@ $steps-color-inactive: #f3f5f5;
 }
 
 .step-item {
-  flex: 1 1 0;
-  margin-top: 0;
-  min-height: 1rem;
-  text-align: center;
   position: relative;
+  flex: 1 1 0;
+  min-height: 1rem;
+  margin-top: 0;
   color: inherit;
+  text-align: center;
   cursor: default;
 
   @at-root a#{&} {
@@ -66,43 +65,43 @@ $steps-color-inactive: #f3f5f5;
     }
   }
 
-  &:not(:first-child):after {
-    content: '';
+  &:not(:first-child)::after {
     position: absolute;
     left: -50%;
     width: 100%;
+    content: "";
     transform: translateY(-50%);
   }
 
-  &:before {
-    content: '';
-    border: 2px solid #fff;
-    box-sizing: content-box;
-    border-radius: 50%;
-    display: block;
+  &::before {
     position: absolute;
-    left: 50%;
     top: 0;
-    transform: translateX(-50%);
+    left: 50%;
     z-index: 1;
+    box-sizing: content-box;
+    display: block;
+    content: "";
+    border: 2px solid #fff;
+    border-radius: 50%;
+    transform: translateX(-50%);
   }
 
   &.active {
     font-weight: 600;
 
-    &:before {
+    &::before {
       background: #fff;
     }
 
     & ~ .step-item {
       color: $text-muted-light;
 
-      &:after,
-      &:before {
+      &::after,
+      &::before {
         background: $steps-color-inactive;
       }
 
-      &:before {
+      &::before {
         color: $text-muted-light !important;
       }
     }
@@ -116,14 +115,14 @@ $steps-color-inactive: #f3f5f5;
   .step-item {
     counter-increment: steps;
 
-    &:before {
-      content: counter(steps);
-      line-height: 1.5rem;
+    &::before {
       font-size: 1rem;
+      line-height: 1.5rem;
+      content: counter(steps);
     }
 
     &.active ~ .step-item {
-      &:before {
+      &::before {
         background: #fff;
       }
     }
