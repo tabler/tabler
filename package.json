@@ -4,33 +4,32 @@
   "description": "Premium and Open Source dashboard template with responsive and high quality UI.",
   "scripts": {
     "start": "npm-run-all --parallel browsersync watch html-watch",
+    "build": "npm-run-all lint html-build css-compile js-compile",
+
     "bundlesize": "bundlesize",
-    "html-watch": "JEKYLL_ENV=development bundle exec jekyll build --watch --incremental",
     "browsersync": "node build/browsersync.js",
+    "html-watch": "JEKYLL_ENV=development bundle exec jekyll build --watch --incremental",
+    "html-build": "JEKYLL_ENV=production bundle exec jekyll build",
 
     "lint": "npm-run-all --parallel js-lint css-lint",
-    "css": "npm-run-all css-compile css-prefix css-minify css-copy",
-    "css-compile": "echo 'CSS COMPILE' && node-sass --output-style expanded --source-map true --source-map-contents true --precision 6 scss/tabler.scss dist/css/tabler.css",
+    "css-compile": "node-sass --output-style expanded --source-map true --source-map-contents true --precision 6 scss/tabler.scss dist/css/tabler.css",
     "css-prefix": "postcss --config build/postcss.config.js --replace \"dist/css/*.css\" \"!dist/css/*.min.css\"",
     "css-minify": "cleancss --level 1 --format breakWith=lf --source-map --source-map-inline-sources --output dist/css/tabler.min.css dist/css/tabler.css",
     "css-copy": "cross-env-shell shx mkdir -p site/static/dist/ && cross-env-shell shx cp -r dist/css/ site/static/dist/",
     "css-lint": "stylelint \"scss/**/*.scss\" --cache --cache-location .cache/.stylelintcache",
-    "css-main": "npm-run-all css-compile css-copy",
-    "css-main-build": "npm-run-all css-lint css-compile css-prefix css-minify css-copy",
+    "css-main": "npm-run-all css-compile",
+    "css-main-build": "npm-run-all css-lint css-compile css-prefix css-minify",
     "watch": "npm-run-all --parallel watch-*",
     "watch-css": "nodemon --watch scss/ --ext scss --exec \"npm run css-main\"",
-    "watch-js": "nodemon --watch js/src/ --ext js --exec \"npm run js-compile-standalone\"",
+    "watch-js": "nodemon --watch js/ --ext js --exec \"npm run js-compile-standalone\"",
 
-
-    "v1-html-build": "JEKYLL_ENV=development bundle exec jekyll build --watch --incremental",
-    "v1-js-lint": "eslint --cache --cache-location .cache/.eslintcache js/src build/",
-    "v1-js-compile": "npm-run-all --parallel js-compile-* --sequential js-copy",
+    "js-lint": "eslint --cache --cache-location .cache/.eslintcache js build/",
+    "js-compile": "npm-run-all --parallel js-compile-* --sequential js-minify",
     "js-compile-standalone": "rollup --environment BUNDLE:false --config build/rollup.config.js --sourcemap",
-    "v1-js-compile-bundle": "rollup --environment BUNDLE:true --config build/rollup.config.js --sourcemap",
-    "v1-js-copy": "cross-env-shell shx mkdir -p site/static/dist/ && cross-env-shell shx cp -r dist/js/ site/static/dist/",
-    "v1-js-minify": "npm-run-all js-minify-standalone* js-minify-bundle",
-    "v1-js-minify-standalone": "terser --compress typeofs=false --mangle --comments \"/^!/\" --source-map \"content=dist/js/tabler.js.map,includeSources,url=tabler.min.js.map\" --output dist/js/tabler.min.js dist/js/tabler.js",
-    "v1-js-minify-bundle": "terser --compress typeofs=false --mangle --comments \"/^!/\" --source-map \"content=dist/js/tabler.bundle.js.map,includeSources,url=tabler.bundle.min.js.map\" --output dist/js/tabler.bundle.min.js dist/js/tabler.bundle.js"
+    "js-compile-bundle": "rollup --environment BUNDLE:true --config build/rollup.config.js --sourcemap",
+    "js-minify": "npm-run-all js-minify-standalone* js-minify-bundle",
+    "js-minify-standalone": "terser --compress typeofs=false --mangle --comments \"/^!/\" --source-map \"content=dist/js/tabler.js.map,includeSources,url=tabler.min.js.map\" --output dist/js/tabler.min.js dist/js/tabler.js",
+    "js-minify-bundle": "terser --compress typeofs=false --mangle --comments \"/^!/\" --source-map \"content=dist/js/tabler.bundle.js.map,includeSources,url=tabler.bundle.min.js.map\" --output dist/js/tabler.bundle.min.js dist/js/tabler.bundle.js"
   },
   "repository": {
     "type": "git",

@@ -34,11 +34,11 @@ if (BUNDLE) {
   // Remove last entry in external array to bundle Popper
   external.pop();
   delete globals['popper.js'];
-  plugins.push(resolve())
+  plugins.push(resolve());
 }
 
 const rollupConfig = {
-  input: path.resolve(__dirname, `../js/tabler.js`),
+  input: path.resolve(__dirname, '../js/tabler.js'),
   output: {
     banner,
     file: path.resolve(__dirname, `../dist/js/${fileDest}.js`),
@@ -47,10 +47,10 @@ const rollupConfig = {
   },
   external,
   plugins
-}
+};
 
 if (!ESM) {
-  rollupConfig.output.name = 'tabler'
+  rollupConfig.output.name = 'tabler';
 }
 
-module.exports = rollupConfig
+module.exports = rollupConfig;

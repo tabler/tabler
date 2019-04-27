@@ -4,13 +4,13 @@ bs.init({
   watch: true,
   server: {
     routes: {
-      "/": "tmp",
-      "/dist": "dist",
-      "/libs": "static/libs",
-      "/img": "static/img",
+      '/': 'tmp',
+      '/dist': 'dist',
+      '/libs': 'static/libs',
+      '/img': 'static/img',
     }
   },
-  files: ["tmp/**/*", "dist/css/*.css", "dist/js/*.js"],
+  files: ['tmp/**/*', 'dist/css/*.css', 'dist/js/*.js'],
   watchOptions: {
     ignoreInitial: true
   },
