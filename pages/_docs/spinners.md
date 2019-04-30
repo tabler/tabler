@@ -2,14 +2,14 @@
 title: Spinners
 ---
 
-### Default markup
+## Default markup
 
 {% example html %}
 {% include ui/spinner.html %}
 {% endexample %}
 
 
-### Colors
+## Colors
 
 {% example html %}
 {% for color in site.colors %}
@@ -18,14 +18,14 @@ title: Spinners
 {% endfor %}
 {% endexample %}
 
-### Size
+## Size
 
 {% example html %}
 {% include ui/spinner.html %}
 {% include ui/spinner.html size="sm" %}
 {% endexample %}
 
-### Growing spinner
+## Growing spinner
 
 {% example html %}
 {% include ui/spinner.html type="grow" %}
@@ -38,7 +38,7 @@ title: Spinners
 {% endfor %}
 {% endexample %}
 
-### Buttons
+## Buttons
 
 {% example html wrapper=btn-list %}
 {% include ui/button.html spinner=true text="Button" color="primary" %}

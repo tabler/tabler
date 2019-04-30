@@ -4,7 +4,7 @@ title: Avatars
 
 Create and group avatars of various shapes and sizes with one component.
 
-### Default markup
+## Default markup
 
 {% example html wrapper=avatar-list %}
 {% include ui/avatar.html person-id=1 %}
@@ -12,7 +12,7 @@ Create and group avatars of various shapes and sizes with one component.
 {% include ui/avatar.html person-id=3 %}
 {% endexample %}
 
-### Avatar size
+## Avatar size
 
 Using Bootstrap’s typical naming structure, you can create a standard avatar, or scale it up to different sizes based on what’s needed.
 
@@ -24,7 +24,7 @@ Using Bootstrap’s typical naming structure, you can create a standard avatar, 
 {% include ui/avatar.html person-id=6 size="sm" %}
 {% endexample %}
 
-### Avatar status
+## Avatar status
 
 Add an online or offline status indicator to show user's availability.
 
@@ -37,7 +37,7 @@ Add an online or offline status indicator to show user's availability.
 {% include ui/avatar.html person-id=16 status="gray" %}
 {% endexample %}
 
-### Avatar shape
+## Avatar shape
 
 Change the shape of an avatar with the default Bootstrap image classes.
 
@@ -49,7 +49,7 @@ Change the shape of an avatar with the default Bootstrap image classes.
 {% include ui/avatar.html person-id=21 shape="rounded-lg" %}
 {% endexample %}
 
-### Initials
+## Initials
 
 {% example html wrapper=avatar-list %}
 {% include ui/avatar.html placeholder="AB" size="xl" %}
@@ -60,7 +60,7 @@ Change the shape of an avatar with the default Bootstrap image classes.
 {% endexample %}
 
 
-### Avatar initials color
+## Avatar initials color
 
 [See more]({% docs_url colors %})
 
@@ -72,7 +72,7 @@ Change the shape of an avatar with the default Bootstrap image classes.
 {% include ui/avatar.html placeholder="IJ" color="purple" %}
 {% endexample %}
 
-### Avatar initials icons
+## Avatar initials icons
 
 {% example html wrapper=avatar-list %}
 {% include ui/avatar.html icon="user" %}
@@ -80,7 +80,7 @@ Change the shape of an avatar with the default Bootstrap image classes.
 {% include ui/avatar.html icon="user-plus" %}
 {% endexample %}
 
-### Avatars list
+## Avatars list
 
 {% example html %}
 <div class="avatar-list">

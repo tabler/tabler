@@ -17,7 +17,7 @@
     "css-minify": "cleancss --level 1 --format breakWith=lf --source-map --source-map-inline-sources --output dist/css/tabler.min.css dist/css/tabler.css",
     "css-copy": "cross-env-shell shx mkdir -p site/static/dist/ && cross-env-shell shx cp -r dist/css/ site/static/dist/",
     "css-lint": "stylelint \"scss/**/*.scss\" --cache --cache-location .cache/.stylelintcache",
-    "css-main": "npm-run-all css-compile",
+    "css-main": "npm-run-all css-compile css-prefix",
     "css-main-build": "npm-run-all css-lint css-compile css-prefix css-minify",
     "watch": "npm-run-all --parallel watch-*",
     "watch-css": "nodemon --watch scss/ --ext scss --exec \"npm run css-main\"",

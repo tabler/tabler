@@ -1,21 +1,29 @@
 {% assign id = 0 | random_id %}
+{% if include.id %}
+   {% assign id = include.id %}
+{% endif %}
+{% assign icon-class = "mr-2" %}
+{% if include.hide-text %}
+   {% assign icon-class = "" %}
+{% endif %}
 {% assign reverse = include.reverse | default: false %}
+
 <div class="card">
 	<ul class="nav nav-tabs{% if include.alternative %} nav-tabs-alt{% endif %}{% if reverse %} flex-row-reverse{% endif %}{% if include.justified %} nav-fill{% endif %}" data-toggle="tabs">
-		<li class="nav-item ">
-			<a href="#tabs-home-{{ id }}" class="nav-link active" data-toggle="tab">{% if include.icons %}{% include ui/icon.html icon="home" class="mr-2" %}{% endif %}Home</a>
+		<li class="nav-item">
+			<a href="#tabs-home-{{ id }}" class="nav-link active" data-toggle="tab">{% if include.icons %}{% include ui/icon.html icon="home" class=icon-class %}{% endif %}{% unless include.hide-text %}Home{% endunless %}</a>
 		</li>
 		<li class="nav-item">
-			<a href="#tabs-profile-{{ id }}" class="nav-link" data-toggle="tab">{% if include.icons %}{% include ui/icon.html icon="user" class="mr-2" %}{% endif %}Profile</a>
+			<a href="#tabs-profile-{{ id }}" class="nav-link" data-toggle="tab">{% if include.icons %}{% include ui/icon.html icon="user" class=icon-class %}{% endif %}{% unless include.hide-text %}Profile{% endunless %}</a>
 		</li>
 		{% if include.activity %}
 		<li class="nav-item">
-			<a href="#tabs-activity-{{ id }}" class="nav-link" data-toggle="tab">{% if include.icons %}{% include ui/icon.html icon="activity" class="mr-2" %}{% endif %}Activity</a>
+			<a href="#tabs-activity-{{ id }}" class="nav-link" data-toggle="tab">{% if include.icons %}{% include ui/icon.html icon="activity" class=icon-class %}{% endif %}{% unless include.hide-text %}Activity{% endunless %}</a>
 		</li>
 		{% endif %}
 		{% if include.disabled %}
 		<li class="nav-item">
-			<a href="#tabs-activity-{{ id }}" class="nav-link disabled" data-toggle="tab">{% if include.icons %}{% include ui/icon.html icon="x" class="mr-2" %}{% endif %}Disabled</a>
+			<a href="#tabs-activity-{{ id }}" class="nav-link disabled" data-toggle="tab">{% if include.icons %}{% include ui/icon.html icon="x" class=icon-class %}{% endif %}{% unless include.hide-text %}Disabled{% endunless %}</a>
 		</li>
 		{% endif %}
 		{% if include.dropdown %}

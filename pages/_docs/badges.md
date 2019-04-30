@@ -4,7 +4,7 @@ title: Badges
 
 A small count and labeling component. Please read the [official Bootstrap documentation](https://getbootstrap.com/docs/4.3/components/badge/) for a full list of options.
 
-### Default markup
+## Default markup
 
 {% example html %}
 {% for color in site.colors %}
@@ -12,7 +12,7 @@ A small count and labeling component. Please read the [official Bootstrap docume
 {% endfor %}
 {% endexample %}
 
-### Pill badges
+## Pill badges
 
 {% example html %}
 {% for color in site.colors %}
@@ -21,7 +21,7 @@ A small count and labeling component. Please read the [official Bootstrap docume
 {% endexample %}
 
 
-### Soft badges
+## Soft badges
 
 {% example html %}
 {% for color in site.colors %}
@@ -30,7 +30,7 @@ A small count and labeling component. Please read the [official Bootstrap docume
 {% endexample %}
 
 
-### Links
+## Links
 
 {% example html %}
 {% for color in site.colors %}
@@ -39,7 +39,7 @@ A small count and labeling component. Please read the [official Bootstrap docume
 {% endexample %}
 
 
-### Empty badges
+## Empty badges
 
 {% example html %}
 {% for color in site.colors %}
