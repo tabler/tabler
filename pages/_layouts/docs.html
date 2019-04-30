@@ -13,9 +13,9 @@ page-title: Documentation
 		</a>
 
 		{% for group in site.docs-menu %}
-      {{ group.title }}
+      {{ group[1].title }}
 		<div class="list-group list-group-transparent mb-0">
-			{% for p in group.pages %}
+			{% for p in group[1].pages %}
 			{% assign doc = site.docs | where: "slug", p | first %}
 			<a href="{{ site.base }}/docs/{{ doc.slug }}.html" class="list-group-item list-group-item-action{% if page.url == doc.url %} active{% endif %}">
 				{{ doc.title }}

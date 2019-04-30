@@ -8,10 +8,10 @@ Bootstrap provides an easy way to create predefined alert messages.
 
 {% example html %}
 {% for variant in site.variants %}
-	{% capture text_with_variant %}
-		This is a {{ variant }} alert — check it out!
+	{% capture variant-text %}
+		This is a {{ variant.name }} alert — check it out!
 	{% endcapture %}
-	{% include ui/alert.html type=variant text=text_with_variant %}
+	{% include ui/alert.html type=variant.name text=variant-text %}
 {% endfor %}
 {% endexample %}
 
@@ -22,10 +22,10 @@ Add the `alert-link` class to any links inside the alert box to create "matching
 
 {% example html %}
 {% for variant in site.variants %}
-	{% capture text_with_variant %}
-		This is a {{ variant }} alert — <a href="#">check it out!</a>
+	{% capture variant-text %}
+		This is a {{ variant.name }} alert — <a href="#">check it out!</a>
 	{% endcapture %}
-	{% include ui/alert.html type=variant text=text_with_variant %}
+	{% include ui/alert.html type=variant.name text=variant-text %}
 {% endfor %}
 {% endexample %}
 
@@ -34,9 +34,20 @@ Add the `alert-link` class to any links inside the alert box to create "matching
 
 {% example html %}
 {% for variant in site.variants %}
-	{% capture text_with_variant %}
-		This is a {{ variant }} alert — check it out!
+	{% capture variant-text %}
+		This is a {{ variant.name }} alert — check it out!
 	{% endcapture %}
-	{% include ui/alert.html type=variant text=text_with_variant close=true %}
+	{% include ui/alert.html type=variant.name text=variant-text close=true %}
+{% endfor %}
+{% endexample %}
+
+## Alerts with icons
+
+{% example html %}
+{% for variant in site.variants %}
+	{% capture variant-text %}
+		This is a {{ variant.name }} alert — check it out!
+	{% endcapture %}
+	{% include ui/alert.html type=variant.name icon=variant.icon text=variant-text close=true %}
 {% endfor %}
 {% endexample %}
