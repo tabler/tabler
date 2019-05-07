@@ -12,6 +12,7 @@ Sidebar
     display: flex;
     align-items: center;
     color: $text-muted;
+    border-radius: $border-radius;
 
     &.active,
     &:hover {
@@ -21,6 +22,24 @@ Sidebar
 
     > .icon {
       min-width: 2rem;
+    }
+
+    &[data-toggle="collapse"] {
+      &:after {
+        display: block;
+        content: '';
+        margin-left: auto;
+        transition: transform .3s;
+        width: 1rem;
+        height: 1rem;
+        background: red;
+        //background: url("<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-chevron-down"><polyline points="6 9 12 15 18 9"></polyline></svg>")
+      }
+
+      &[aria-expanded="true"]:after {
+        transform: rotate(-180deg);
+        background: green;
+      }
     }
   }
 
@@ -38,6 +57,12 @@ Sidebar
     padding: .5rem 0;
     margin: 0;
     @extend .text-subheader;
+  }
+
+  .nav {
+    .nav-item {
+      padding-left: 2rem;
+    }
   }
 }
 
