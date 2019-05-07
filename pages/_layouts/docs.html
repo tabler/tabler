@@ -13,9 +13,9 @@ page-title: Documentation
 		</a>
 
 		{% for group in site.docs-menu %}
-      {{ group.title }}
+      {{ group[1].title }}
 		<div class="list-group list-group-transparent mb-0">
-			{% for p in group.pages %}
+			{% for p in group[1].pages %}
 			{% assign doc = site.docs | where: "slug", p | first %}
 			<a href="{{ site.base }}/docs/{{ doc.slug }}.html" class="list-group-item list-group-item-action{% if page.url == doc.url %} active{% endif %}">
 				{{ doc.title }}
@@ -29,7 +29,7 @@ page-title: Documentation
 			<div class="card-body p-lg-5">
 
 				<div class="text-wrap">
-					<h2 class="mt-0 mb-4">{{ page.title }}</h2>
+					<h2 class="h1 mt-0 mb-4">{{ page.title }}</h2>
 
 					{% if page.description %}
 					<p>{{ page.description }}</p>

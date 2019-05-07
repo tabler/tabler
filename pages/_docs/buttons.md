@@ -2,7 +2,7 @@
 title: Buttons
 ---
 
-### Default markup
+## Default markup
 
 {% example html wrapper=btn-list %}
 {% include ui/button.html color="primary" text="Button" %}

@@ -3,7 +3,7 @@ title: Typography
 description: Documentation and examples for common text utilities to control alignment, wrapping, weight, and more.
 ---
 
-### Text alignment
+## Text alignment
 
 Easily realign text to components with text alignment classes.
 
@@ -14,7 +14,7 @@ Easily realign text to components with text alignment classes.
 <p class="text-justify">Both aligned text on all viewport sizes. Ambitioni dedisse scripsisse iudicaretur. Cras mattis iudicium purus sit amet fermentum. Donec sed odio operae, eu vulputate felis rhoncus.</p>
 {% endexample %}
 
-### Text transform
+## Text transform
 
 Transform text in components with text capitalization classes.
 
@@ -24,7 +24,7 @@ Transform text in components with text capitalization classes.
 <p class="text-capitalize">Capitalized text.</p>
 {% endexample %}
 
-### Letter spacing
+## Letter spacing
 
 Utilities for controlling the tracking (letter spacing) of an element.
 
@@ -34,7 +34,7 @@ Utilities for controlling the tracking (letter spacing) of an element.
 <p class="tracking-wide">Lorem ipsum dolor sit amet. Wide letter spacing.</p>
 {% endexample %}
 
-### Line Height
+## Line Height
 
 Utilities for controlling the leading (line height) of an element.
 
@@ -45,7 +45,7 @@ Utilities for controlling the leading (line height) of an element.
 <p class="leading-loose">Lorem ipsum dolor sit amet.<br>Dolor sit amet.</p>
 {% endexample %}
 
-### Basic elements
+## Basic elements
 
 When you can't use the CSS classes you want, or when you just want to directly use HTML tags, use `.text-wrap` as container. It can handle almost any HTML tag.
 

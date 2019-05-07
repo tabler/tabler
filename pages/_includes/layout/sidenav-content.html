@@ -13,146 +13,28 @@
    {% for item in site.data.menu %}
    {% assign icon = item[1].icon %}
    <li class="nav-item">
-      <a class="nav-link{% if item[1].active %} active{% endif %}" {% if item[1].children %}href="#sidebar-{{ id }}" data-toggle="collapse" role="button" aria-expanded="false"{% else %}href="{{ site.base }}/{{ item[1].url }}"{% endif %}>
+      <a class="nav-link{% if item[1].active %} active{% endif %}" {% if item[1].children or item[1].docs %}href="#sidebar-{{ id }}" data-toggle="collapse" role="button" aria-expanded="false"{% else %}href="{{ site.base }}/{{ item[1].url }}"{% endif %}>
          {% include ui/icon.html icon=icon  %}
          <span class="nav-link-text">{{ item[1].title }}</span>
          {% if item[1].label %}
          <span class="badge bg-primary text-white ml-auto">{{ item[1].label }}</span>
          {% endif %}
       </a>
-      {% if item[1].children %}
-      <div class="collapse navbar-collapse" id="sidebar-{{ id }}">
+      {% if item[1].children or item[1].docs %}
+      <div class="collapse navbar-collapse show" id="sidebar-{{ id }}">
          <ul class="nav nav-sm flex-column">
+
+            {% if item[1].docs %}
+            {% assign docs-key = item[1].docs %}
+            {% for p in site.docs-menu[docs-key].pages %}
+            {% assign doc = site.docs | where: "slug", p | first %}
             <li class="nav-item">
-               <a href="#" class="nav-link">
-                  Alerts
+               <a href="{{ site.base }}/docs/{{ doc.slug }}.html" class="nav-link">
+                  {{ doc.title }}
                </a>
             </li>
-            <li class="nav-item">
-               <a href="#" class="nav-link">
-                  Avatars
-               </a>
-            </li>
-            <li class="nav-item">
-               <a href="#" class="nav-link">
-                  Badges
-               </a>
-            </li>
-            <li class="nav-item">
-               <a href="#" class="nav-link">
-                  Breadcrumb
-               </a>
-            </li>
-            <li class="nav-item">
-               <a href="#" class="nav-link">
-                  Buttons
-               </a>
-            </li>
-            <li class="nav-item">
-               <a href="#" class="nav-link">
-                  Button group
-               </a>
-            </li>
-            <li class="nav-item">
-               <a href="#" class="nav-link">
-                  Cards
-               </a>
-            </li>
-            <li class="nav-item">
-               <a href="#" class="nav-link">
-                  Charts
-               </a>
-            </li>
-            <li class="nav-item">
-               <a href="#" class="nav-link">
-                  Dropdowns
-               </a>
-            </li>
-            <li class="nav-item">
-               <a href="#" class="nav-link">
-                  Forms
-               </a>
-            </li>
-            <li class="nav-item">
-               <a href="#" class="nav-link">
-                  Icons
-               </a>
-            </li>
-            <li class="nav-item">
-               <a href="#" class="nav-link">
-                  Lists
-               </a>
-            </li>
-            <li class="nav-item">
-               <a href="#" class="nav-link">
-                  Modal
-               </a>
-            </li>
-            <li class="nav-item">
-               <a href="#" class="nav-link">
-                  Navs
-               </a>
-            </li>
-            <li class="nav-item">
-               <a href="#" class="nav-link">
-                  Navbar
-               </a>
-            </li>
-            <li class="nav-item">
-               <a href="#" class="nav-link">
-                  Page headers
-               </a>
-            </li>
-            <li class="nav-item">
-               <a href="#" class="nav-link">
-                  Pagination
-               </a>
-            </li>
-            <li class="nav-item">
-               <a href="#" class="nav-link">
-                  Popovers
-               </a>
-            </li>
-            <li class="nav-item">
-               <a href="#" class="nav-link">
-                  Progress
-               </a>
-            </li>
-            <li class="nav-item">
-               <a href="#" class="nav-link">
-                  Social post
-               </a>
-            </li>
-            <li class="nav-item">
-               <a href="#" class="nav-link">
-                  Spinners
-               </a>
-            </li>
-            <li class="nav-item">
-               <a href="#" class="nav-link">
-                  Tables
-               </a>
-            </li>
-            <li class="nav-item">
-               <a href="#" class="nav-link">
-                  Toasts
-               </a>
-            </li>
-            <li class="nav-item">
-               <a href="#" class="nav-link">
-                  Tooltips
-               </a>
-            </li>
-            <li class="nav-item">
-               <a href="#" class="nav-link">
-                  Typography
-               </a>
-            </li>
-            <li class="nav-item">
-               <a href="#" class="nav-link">
-                  Utilities
-               </a>
-            </li>
+            {% endfor %}
+            {% endif %}
          </ul>
       </div>
       {% endif %}
