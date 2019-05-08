@@ -1,55 +1,57 @@
 {% assign id = 0 | random_id %}
-<a href="{{ site.base }}" class="navbar-brand text-inherit">
-   <img src="{{ site.base }}/img/logo{% if include.logo %}-{{ include.logo }}{% endif %}.svg" alt="" class="navbar-brand-logo">
-</a>
+<div class="p-3">
+   <a href="{{ site.base }}" class="navbar-brand text-inherit">
+      <img src="{{ site.base }}/img/logo{% if include.logo %}-{{ include.logo }}{% endif %}.svg" alt="" class="navbar-brand-logo">
+   </a>
+</div>
 
-<hr class="navbar-divider my-3" />
+<div class="container">
+   <h6 class="navbar-heading">
+      Docs
+   </h6>
 
-<h6 class="navbar-heading">
-   Docs
-</h6>
-
-<ul class="navbar-nav mb-md-4">
-   {% for item in site.data.menu %}
-   {% assign icon = item[1].icon %}
-   <li class="nav-item">
-      <a class="nav-link{% if item[1].active %} active{% endif %}" {% if item[1].children or item[1].docs %}href="#sidebar-{{ item[0] }}" data-toggle="collapse" role="button" aria-expanded="false"{% else %}href="{{ site.base }}/{{ item[1].url }}"{% endif %}>
-         {% include ui/icon.html icon=icon  %}
-         <span class="nav-link-text">{{ item[1].title }}</span>
-         {% if item[1].label %}
-         <span class="badge bg-primary text-white ml-auto">{{ item[1].label }}</span>
-         {% endif %}
-      </a>
-      {% if item[1].children or item[1].docs %}
-      <div class="collapse navbar-collapse" id="sidebar-{{ item[0] }}">
-         <ul class="nav nav-sm flex-column">
-
-            {% if item[1].docs %}
-            {% assign docs-key = item[1].docs %}
-            {% for p in site.docs-menu[docs-key].pages %}
-            {% assign doc = site.docs | where: "slug", p | first %}
-            <li class="nav-item">
-               <a href="{{ site.base }}/docs/{{ doc.slug }}.html" class="nav-link">
-                  {{ doc.title }}
-               </a>
-            </li>
-            {% endfor %}
+   <ul class="navbar-nav mb-md-4">
+      {% for item in site.data.menu %}
+      {% assign icon = item[1].icon %}
+      <li class="nav-item">
+         <a class="nav-link{% if item[1].active %} active{% endif %}" {% if item[1].children or item[1].docs %}href="#sidebar-{{ item[0] }}" data-toggle="collapse" role="button" aria-expanded="false"{% else %}href="{{ site.base }}/{{ item[1].url }}"{% endif %}>
+            {% include ui/icon.html icon=icon  %}
+            <span class="nav-link-text">{{ item[1].title }}</span>
+            {% if item[1].label %}
+            <span class="badge bg-primary text-white ml-auto">{{ item[1].label }}</span>
             {% endif %}
-         </ul>
-      </div>
-      {% endif %}
-   </li>
-   {% endfor %}
-   <li class="nav-item dropdown">
-      <a class="nav-link" href="#" >
-         {% include ui/icon.html icon="book-open" %}
-         <span class="nav-link-text">Components</span>
-      </a>
-   </li>
-   <li class="nav-item">
-      <a class="nav-link" href="#">
-         {% include ui/icon.html icon="git-branch" %}
-         <span class="nav-link-text">Changelog</span>
-      </a>
-   </li>
-</ul>
+         </a>
+         {% if item[1].children or item[1].docs %}
+         <div class="collapse navbar-collapse" id="sidebar-{{ item[0] }}">
+            <ul class="nav nav-sm flex-column">
+
+               {% if item[1].docs %}
+               {% assign docs-key = item[1].docs %}
+               {% for p in site.docs-menu[docs-key].pages %}
+               {% assign doc = site.docs | where: "slug", p | first %}
+               <li class="nav-item">
+                  <a href="{{ site.base }}/docs/{{ doc.slug }}.html" class="nav-link">
+                     {{ doc.title }}
+                  </a>
+               </li>
+               {% endfor %}
+               {% endif %}
+            </ul>
+         </div>
+         {% endif %}
+      </li>
+      {% endfor %}
+      <li class="nav-item dropdown">
+         <a class="nav-link" href="#" >
+            {% include ui/icon.html icon="book-open" %}
+            <span class="nav-link-text">Components</span>
+         </a>
+      </li>
+      <li class="nav-item">
+         <a class="nav-link" href="#">
+            {% include ui/icon.html icon="git-branch" %}
+            <span class="nav-link-text">Changelog</span>
+         </a>
+      </li>
+   </ul>
+</div>
