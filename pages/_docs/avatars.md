@@ -1,5 +1,6 @@
 ---
 title: Avatars
+menu: docs.avatars
 ---
 
 Create and group avatars of various shapes and sizes with one component.

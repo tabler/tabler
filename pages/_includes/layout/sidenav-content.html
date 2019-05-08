@@ -36,6 +36,27 @@
                </li>
                {% endfor %}
                {% endif %}
+
+               {% for p in item[1].children %}
+               <li class="nav-item">
+                  <a href="{% if p[1].url %}{{ p[1].url }}{% else %}#{% endif %}" class="nav-link">
+                     {{ p[1].title }}
+                  </a>
+                  {% if p[1].children %}
+                  <div class="collapse navbar-collapse" id="sidebar-{{ p[0] }}">
+                     <ul class="nav nav-sm flex-column">
+                        {% for r in p[1].children %}
+                        <li class="nav-item">
+                           <a href="{% if r[1].url %}{{ r[1].url }}{% else %}#{% endif %}" class="nav-link">
+                              {{ r[1].title }}
+                           </a>
+                        </li>
+                        {% endfor %}
+                     </ul>
+                  </div>
+                  {% endif %}
+               </li>
+               {% endfor %}
             </ul>
          </div>
          {% endif %}
