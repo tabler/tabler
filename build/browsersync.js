@@ -5,10 +5,10 @@ bs.init({
   server: {
     routes: {
       '/': 'tmp',
+      '/dist/fonts': 'static/fonts',
       '/dist': 'dist',
       '/libs': 'static/libs',
       '/img': 'static/img',
-      '/fonts': 'static/fonts',
     }
   },
   files: ['tmp/**/*', 'dist/css/*.css', 'dist/js/*.js'],
