@@ -1,5 +1,6 @@
 ---
 title: Carousel
+menu: docs.carousel
 ---
 
 The Carousel is a slideshow for cycling through elements.

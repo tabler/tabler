@@ -1,5 +1,6 @@
 ---
 title: Tooltips
+menu: docs.tooltips
 ---
 
 The Tooltip component is small pop-up box that appears when the user moves the mouse pointer over an element:

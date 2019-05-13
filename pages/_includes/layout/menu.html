@@ -1,38 +1,70 @@
-{% assign current-page = page.menu | default: layout.menu | split: '.' %}
-{{ current-page }}
-<ul class="sidenav-menu">
-	{% for level-1 in site.data.menu %}
-	{% assign level-1-key = level-1[0] %}
-	{% assign level-1-item = level-1[1] %}
-	<li class="sidenav-menu-item">
-		<a href="{{ site.base }}/{{ level-1-item.url }}" class="sidenav-link{% if level-1-key == current-page[0] %} active{% endif %}">
-			{% include ui/icon.html icon=level-1-item.icon class="sidenav-icon" %}
-			<span class="sidenav-link-description">{{ level-1-item.title }} ({{ level-1-key }})</span>
+<ul class="navbar-nav mb-md-4">
+   {% assign current-page = include.menu | split: '.' %}
+   {{ current-page.size }}
 
-			{% if level-1-item.counter %}
-			<span class="badge badge-green ml-auto">{{ level-1-item.counter }}</span>
-			{% endif %}
-		</a>
-		{% if level-1-item.children %}
-		<ul class="sidenav-submenu">
-			{% for level-2 in level-1-item.children %}
-			{% assign level-2-key = level-2[0] %}
-			{% assign level-2-item = level-2[1] %}
-			<li>
-				<a href="{{ level-2-item.url }}" class="sidenav-link">{{ level-2-item.title }} ({{ level-2-key }})</a>
-				{% if level-2-item.children %}
-				<ul class="sidenav-submenu">
-					{% for level-3 in level-2-item.children %}
-					{% assign level-3-key = level-3[0] %}
-					{% assign level-3-item = level-3[1] %}
-					<li><a href="{{ level-3-item.url }}" class="sidenav-link">{{ level-3-item.title }} ({{ level-3-key }})</a></li>
-					{% endfor %}
-				</ul>
-				{% endif %}
-			</li>
-			{% endfor %}
-		</ul>
-		{% endif %}
-	</li>
-	{% endfor %}
+   {% for level-1 in site.data.menu %}
+   {% assign icon = level-1[1].icon %}
+   <li class="nav-item">
+      <a class="nav-link{% if level-1[0] == current-page[0] and current-page.size == 1 %} active{% endif %}" {% if level-1[1].children or level-1[1].docs %}href="#sidebar-{{ level-1[0] }}" data-toggle="collapse" role="button" aria-expanded="{% if level-1[0] == current-page[0] %}true{% else %}false{% endif %}"{% else %}href="{{ site.base }}/{{ level-1[1].url }}"{% endif %}>
+         {% include ui/icon.html icon=icon  %}
+         <span class="nav-link-text">{{ level-1[1].title }}</span>
+         {% if level-1[1].label %}
+         <span class="badge bg-primary text-white ml-auto">{{ level-1[1].label }}</span>
+         {% endif %}
+      </a>
+      {% if level-1[1].children or level-1[1].docs %}
+      <div class="collapse navbar-collapse{% if level-1[0] == current-page[0] %} show{% endif %}" id="sidebar-{{ level-1[0] }}">
+         <ul class="nav nav-sm flex-column">
+
+            {% if level-1[1].docs %}
+            {% assign docs-key = level-1[1].docs %}
+            {% for doc-slug in site.docs-menu[docs-key].pages %}
+            {% assign doc = site.docs | where: "slug", doc-slug | first %}
+            <li class="nav-item">
+               <a href="{{ site.base }}/docs/{{ doc.slug }}.html" class="nav-link{% if current-page[0] == 'docs' and current-page[1] == doc.slug %} active{% endif %}">
+                  {{ doc.title }}
+               </a>
+            </li>
+            {% endfor %}
+            {% endif %}
+
+            {% for level-2 in level-1[1].children %}
+            <li class="nav-item">
+               <a class="nav-link{% if level-2[0] == current-page[1] and current-page.size == 2 %} active{% endif %}" {% if level-2[1].children %}href="#sidebar-{{ level-2[0] }}" data-toggle="collapse" role="button" aria-expanded="false"{% else %}href="{{ site.base }}/{{ level-2[1].url }}"{% endif %}>
+                  {{ level-2[1].title }}
+               </a>
+               {% if level-2[1].children %}
+               <div class="collapse navbar-collapse{% if level-2[0] == current-page[1] %} show{% endif %}" id="sidebar-{{ level-2[0] }}">
+                  <ul class="nav nav-sm flex-column">
+                     {% for level-3 in level-2[1].children %}
+                     <li class="nav-item">
+                        <a class="nav-link{% if level-3[0] == current-page[2] and current-page.size == 3 %} active{% endif %}" {% if level-3[1].children %}href="#sidebar-{{ level-3[0] }}" data-toggle="collapse" role="button" aria-expanded="false"{% else %}href="{{ site.base }}/{{ level-3[1].url }}"{% endif %}>
+                           {{ level-3[1].title }}
+                        </a>
+
+                        {% if level-3[1].children %}
+                        <div class="collapse navbar-collapse{% if level-3[0] == current-page[2] %} show{% endif %}" id="sidebar-{{ level-3[0] }}">
+                           <ul class="nav nav-sm flex-column">
+                              {% for level-4 in level-3[1].children %}
+                              <li class="nav-item">
+                                 <a class="nav-link{% if level-4[0] == current-page[3] and current-page.size == 4 %} active{% endif %}" href="{% if level-4[1].url %}{{ site.base }}/{{ level-4[1].url }}{% else %}#{% endif %}">
+                                    {{ level-4[1].title }}
+                                 </a>
+                              </li>
+                              {% endfor %}
+                           </ul>
+                        </div>
+                        {% endif %}
+                     </li>
+                     {% endfor %}
+                  </ul>
+               </div>
+               {% endif %}
+            </li>
+            {% endfor %}
+         </ul>
+      </div>
+      {% endif %}
+   </li>
+   {% endfor %}
 </ul>

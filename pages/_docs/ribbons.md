@@ -1,5 +1,6 @@
 ---
 title: Ribbons
+menu: docs.ribbons
 ---
 
 ## Default markup

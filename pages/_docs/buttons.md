@@ -1,5 +1,6 @@
 ---
 title: Buttons
+menu: docs.buttons
 ---
 
 ## Default markup

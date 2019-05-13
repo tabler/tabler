@@ -1,5 +1,6 @@
 ---
 title: Tabs
+menu: docs.tabs
 ---
 
 ## Default markup

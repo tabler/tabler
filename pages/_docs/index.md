@@ -1,5 +1,6 @@
 ---
 title: Introduction
+menu: docs.index
 icon: flag
 order: -1
 ---

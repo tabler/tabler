@@ -1,5 +1,6 @@
 ---
 title: Steps
+menu: docs.steps
 ---
 
 Steps are progress indicators of a sequence of task steps.

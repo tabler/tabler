@@ -1,5 +1,6 @@
 ---
 title: Spinners
+menu: docs.spinners
 ---
 
 ## Default markup
