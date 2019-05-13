@@ -5,7 +5,7 @@
    {% for level-1 in site.data.menu %}
    {% assign icon = level-1[1].icon %}
    <li class="nav-item">
-      <a class="nav-link{% if level-1[0] == current-page[0] and current-page.size == 1 %} active{% endif %}" {% if level-1[1].children or level-1[1].docs %}href="#sidebar-{{ level-1[0] }}" data-toggle="collapse" role="button" aria-expanded="{% if level-1[0] == current-page[0] %}true{% else %}false{% endif %}"{% else %}href="{{ site.base }}/{{ level-1[1].url }}"{% endif %}>
+      <a class="nav-link{% if level-1[0] == current-page[0] %} active{% endif %}" {% if level-1[1].children or level-1[1].docs %}href="#sidebar-{{ level-1[0] }}" data-toggle="collapse" role="button" aria-expanded="{% if level-1[0] == current-page[0] %}true{% else %}false{% endif %}"{% else %}href="{{ site.base }}/{{ level-1[1].url }}"{% endif %}>
          {% include ui/icon.html icon=icon  %}
          <span class="nav-link-text">{{ level-1[1].title }}</span>
          {% if level-1[1].label %}
@@ -30,7 +30,7 @@
 
             {% for level-2 in level-1[1].children %}
             <li class="nav-item">
-               <a class="nav-link{% if level-2[0] == current-page[1] and current-page.size == 2 %} active{% endif %}" {% if level-2[1].children %}href="#sidebar-{{ level-2[0] }}" data-toggle="collapse" role="button" aria-expanded="false"{% else %}href="{{ site.base }}/{{ level-2[1].url }}"{% endif %}>
+               <a class="nav-link{% if level-2[0] == current-page[1] %} active{% endif %}" {% if level-2[1].children %}href="#sidebar-{{ level-2[0] }}" data-toggle="collapse" role="button" aria-expanded="false"{% else %}href="{{ site.base }}/{{ level-2[1].url }}"{% endif %}>
                   {{ level-2[1].title }}
                </a>
                {% if level-2[1].children %}
@@ -38,7 +38,7 @@
                   <ul class="nav nav-sm flex-column">
                      {% for level-3 in level-2[1].children %}
                      <li class="nav-item">
-                        <a class="nav-link{% if level-3[0] == current-page[2] and current-page.size == 3 %} active{% endif %}" {% if level-3[1].children %}href="#sidebar-{{ level-3[0] }}" data-toggle="collapse" role="button" aria-expanded="false"{% else %}href="{{ site.base }}/{{ level-3[1].url }}"{% endif %}>
+                        <a class="nav-link{% if level-3[0] == current-page[2] %} active{% endif %}" {% if level-3[1].children %}href="#sidebar-{{ level-3[0] }}" data-toggle="collapse" role="button" aria-expanded="false"{% else %}href="{{ site.base }}/{{ level-3[1].url }}"{% endif %}>
                            {{ level-3[1].title }}
                         </a>
 
@@ -47,7 +47,7 @@
                            <ul class="nav nav-sm flex-column">
                               {% for level-4 in level-3[1].children %}
                               <li class="nav-item">
-                                 <a class="nav-link{% if level-4[0] == current-page[3] and current-page.size == 4 %} active{% endif %}" href="{% if level-4[1].url %}{{ site.base }}/{{ level-4[1].url }}{% else %}#{% endif %}">
+                                 <a class="nav-link{% if level-4[0] == current-page[3] %} active{% endif %}" href="{% if level-4[1].url %}{{ site.base }}/{{ level-4[1].url }}{% else %}#{% endif %}">
                                     {{ level-4[1].title }}
                                  </a>
                               </li>
