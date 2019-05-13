@@ -1,9 +1,41 @@
 // stylelint-disable declaration-no-important
+$border-sizing: () !default;
+$border-sizing: map-merge((
+  2: 2,
+  4: 4
+), $border-sizing);
 
-.b-dashed{
+@each $size, $value in $border-sizing {
+
+  .border-#{$size} {
+    border-width: $border-width * $value !important;
+  }
+
+  .border-top-#{$size} {
+    border-top-width: $border-width * $value !important;
+    border-top-style: solid;
+  }
+
+  .border-right-#{$size} {
+    border-right-width: $border-width * $value !important;
+    border-right-style: solid;
+  }
+
+  .border-bottom-#{$size} {
+    border-bottom-width: $border-width * $value !important;
+    border-bottom-style: solid;
+  }
+
+  .border-left-#{$size} {
+    border-left-width: $border-width * $value !important;
+    border-left-style: solid;
+  }
+}
+
+.border-dashed {
   border-style: dashed !important;
 }
 
-.b-transparent{
+.border-transparent {
   border-color: transparent !important;
 }

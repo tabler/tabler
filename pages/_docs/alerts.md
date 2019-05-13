@@ -1,5 +1,6 @@
 ---
 title: Alerts
+menu: docs.alerts
 ---
 
 Bootstrap provides an easy way to create predefined alert messages.

@@ -4,7 +4,6 @@ Sidebar
 .sidenav {
   width: 16rem;
   min-width: 16rem;
-  padding: .75rem 1rem;
   background: $sidenav-bg;
   border-right: 1px solid $sidenav-border-color;
 
@@ -12,6 +11,7 @@ Sidebar
     display: flex;
     align-items: center;
     color: $text-muted;
+    border-radius: $border-radius;
 
     &.active,
     &:hover {
@@ -22,11 +22,23 @@ Sidebar
     > .icon {
       min-width: 2rem;
     }
+
+    &[data-toggle="collapse"] {
+      &:after {
+        display: block;
+        font-family: 'Feather' !important;
+        content: $icon-fe-chevron-down;
+        margin-left: auto;
+        transition: transform .3s;
+      }
+
+      &[aria-expanded="true"]:after {
+        transform: rotate(-180deg);
+      }
+    }
   }
 
   .navbar-brand {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
     text-align: center;
   }
 
@@ -38,6 +50,12 @@ Sidebar
     padding: .5rem 0;
     margin: 0;
     @extend .text-subheader;
+  }
+
+  .nav {
+    .nav-item {
+      padding-left: 2rem;
+    }
   }
 }
 

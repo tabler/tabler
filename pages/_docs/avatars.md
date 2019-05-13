@@ -1,5 +1,6 @@
 ---
 title: Avatars
+menu: docs.avatars
 ---
 
 Create and group avatars of various shapes and sizes with one component.
@@ -34,7 +35,7 @@ Add an online or offline status indicator to show user's availability.
 {% include ui/avatar.html person-id=13 status="success" %}
 {% include ui/avatar.html person-id=14 status="warning" %}
 {% include ui/avatar.html person-id=15 status="info" %}
-{% include ui/avatar.html person-id=16 status="gray" %}
+{% include ui/avatar.html person-id=16 status="gray" status-text="5" %}
 {% endexample %}
 
 ## Avatar shape
