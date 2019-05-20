@@ -2,8 +2,8 @@
 Sidebar
  */
 .sidenav {
-  width: 16rem;
-  min-width: 16rem;
+  width: $sidenav-width;
+  min-width: $sidenav-width;
   background: $sidenav-bg;
   border-right: 1px solid $sidenav-border-color;
   user-select: none;
@@ -12,12 +12,14 @@ Sidebar
     display: flex;
     align-items: center;
     color: $text-muted;
-    border-radius: $border-radius;
+    transition: .3s background, .3s box-shadow;
 
     &.active,
     &:hover {
-      color: $link-color;
+      color: $body-color;
       background: rgba($link-color, .04);
+      border-color: $primary;
+      box-shadow: inset 2px 0 0 0 $primary;
     }
 
     > .icon {
@@ -27,6 +29,7 @@ Sidebar
     &[data-toggle="collapse"] {
       &.active {
         background: none;
+        box-shadow: none;
       }
 
       &:after {
@@ -43,12 +46,24 @@ Sidebar
     }
   }
 
-  .nav-item .nav-item {
-    padding-left: 2rem;
-
-    .nav-item {
-      padding-left: 1rem;
+  &:not(.sidenav-folded) {
+    .nav-item .nav-item .nav-link {
+      padding-left: 2.5rem;
     }
+
+    .nav-item .nav-item .nav-item .nav-link {
+      padding-left: 3.5rem;
+    }
+
+    .nav-item .nav-item .nav-item .nav-item .nav-link {
+      padding-left: 4.5rem;
+    }
+  }
+
+  .nav-link-title {
+    display: flex;
+    width: 100%;
+    align-items: center;
   }
 
   .navbar-brand {
@@ -56,25 +71,78 @@ Sidebar
   }
 
   .navbar-heading {
-    padding: .5rem 0;
-    margin: 0;
     @extend .text-subheader;
+    padding: .5rem $sidenav-link-padding-x;
+    margin: 0;
   }
 }
 
-/**
-Narrow sidebar
- */
-.sidenav-narrow {
+/*.sidenav-folded {
   width: 4rem;
-  min-width: 4rem;
-  padding: .5rem;
 
-  .navbar-brand {
-    min-height: 2.5rem;
-    padding: 0;
+  .nav-item {
+    position: relative;
+
+    .nav-item {
+      .nav-link {
+        height: auto;
+      }
+
+      .nav-link-title {
+        display: block;
+      }
+    }
+
+    .nav-link {
+      padding: 0 $sidenav-link-padding-x;
+    }
+  }
+
+  .nav-link-title {
+    display: none;
+  }
+
+  .navbar-heading {
+    display: none;
+  }
+
+  .nav-link {
+    height: 4rem;
+
+    > .icon {
+      font-size: 1.25rem;
+      width: 100%;
+      text-align: center;
+    }
+
+    .badge {
+      position: absolute;
+      right: 0;
+      top: 0;
+      text-indent: -9999px;
+      width: 8px;
+      height: 8px;
+      padding: 0;
+      border-radius: 50%;
+    }
+
+    &:after {
+      display: none !important;
+    }
+  }
+
+  .navbar-collapse {
+    position: absolute;
+    left: 100%;
+    top: 0;
+    background: #fff;
+    z-index: $zindex-dropdown;
+    width: 10rem;
+    box-shadow: $box-shadow-sm;
+    border: 1px solid $border-color;
   }
 }
+*/
 
 /*
 Right sidebar
@@ -149,5 +217,17 @@ Dark sidebar
         padding-left: 0;
       }
     }
+  }
+}
+
+.hide-sidenav-folded {
+  @at-root .sidenav.sidenav-folded & {
+    display: none;
+  }
+}
+
+.hide-sidenav-expanded {
+  @at-root .sidenav:not(.sidenav-folded) & {
+    display: none;
   }
 }
