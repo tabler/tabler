@@ -48,10 +48,10 @@ Utilities for controlling the leading (line height) of an element.
 
 ## Basic elements
 
-When you can't use the CSS classes you want, or when you just want to directly use HTML tags, use `.text-wrap` as container. It can handle almost any HTML tag.
+When you can't use the CSS classes you want, or when you just want to directly use HTML tags, use `.markdown` as container. It can handle almost any HTML tag.
 
 {% example html %}
-<div class="text-wrap">
+<div class="markdown">
    <h1>Hello World</h1>
    <p>Lorem ipsum<sup><a>[1]</a></sup> dolor sit amet, consectetur adipiscing elit. Nulla accumsan, metus ultrices eleifend gravida, nulla nunc varius lectus, nec rutrum justo nibh eu lectus. Ut vulputate semper dui. Fusce erat odio, sollicitudin vel erat vel, interdum mattis neque. Sub<sub>script</sub> works as well!</p>
    <h2>Second level</h2>

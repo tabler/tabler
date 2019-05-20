@@ -6,29 +6,12 @@ page-title: Documentation
 ---
 
 
-<div class="row">
-	<div class="col-lg-3 order-lg-1 mb-4">
-		<a href="{{ site.github_url }}" class="btn btn-block btn-primary mb-4" target="_blank">
-			{% include ui/icon.html icon="github" class="mr-2" %}Browse source code
-		</a>
-
-		{% for group in site.docs-menu %}
-      {{ group[1].title }}
-		<div class="list-group list-group-transparent mb-0">
-			{% for p in group[1].pages %}
-			{% assign doc = site.docs | where: "slug", p | first %}
-			<a href="{{ site.base }}/docs/{{ doc.slug }}.html" class="list-group-item list-group-item-action{% if page.url == doc.url %} active{% endif %}">
-				{{ doc.title }}
-			</a>
-			{% endfor %}
-		</div>
-		{% endfor %}
-	</div>
+<div class="row justify-content-center">
 	<div class="col-lg-9">
 		<div class="card">
 			<div class="card-body p-lg-5">
 
-				<div class="text-wrap">
+				<div class="markdown">
 					<h2 class="h1 mt-0 mb-4">{{ page.title }}</h2>
 
 					{% if page.description %}
