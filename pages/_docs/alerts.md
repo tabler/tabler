@@ -7,7 +7,7 @@ Bootstrap provides an easy way to create predefined alert messages.
 
 ## Default markup
 
-{% example html %}
+{% example %}
 {% for variant in site.variants %}
 	{% capture variant-text %}
 		This is a {{ variant.name }} alert — check it out!
@@ -21,7 +21,7 @@ Bootstrap provides an easy way to create predefined alert messages.
 
 Add the `alert-link` class to any links inside the alert box to create "matching colored links":
 
-{% example html %}
+{% example %}
 {% for variant in site.variants %}
 	{% capture variant-text %}
 		This is a {{ variant.name }} alert — <a href="#">check it out!</a>
@@ -33,7 +33,7 @@ Add the `alert-link` class to any links inside the alert box to create "matching
 
 ## Closing Alerts
 
-{% example html %}
+{% example %}
 {% for variant in site.variants %}
 	{% capture variant-text %}
 		This is a {{ variant.name }} alert — check it out!
@@ -44,7 +44,7 @@ Add the `alert-link` class to any links inside the alert box to create "matching
 
 ## Alerts with icons
 
-{% example html %}
+{% example %}
 {% for variant in site.variants %}
 	{% capture variant-text %}
 		This is a {{ variant.name }} alert — check it out!

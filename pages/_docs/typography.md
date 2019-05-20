@@ -8,7 +8,7 @@ description: Documentation and examples for common text utilities to control ali
 
 Easily realign text to components with text alignment classes.
 
-{% example html %}
+{% example %}
 <p class="text-left">Left aligned text on all viewport sizes.</p>
 <p class="text-center">Center aligned text on all viewport sizes.</p>
 <p class="text-right">Right aligned text on all viewport sizes.</p>
@@ -19,7 +19,7 @@ Easily realign text to components with text alignment classes.
 
 Transform text in components with text capitalization classes.
 
-{% example html %}
+{% example %}
 <p class="text-lowercase">Lowercased text.</p>
 <p class="text-uppercase">Uppercased text.</p>
 <p class="text-capitalize">Capitalized text.</p>
@@ -29,7 +29,7 @@ Transform text in components with text capitalization classes.
 
 Utilities for controlling the tracking (letter spacing) of an element.
 
-{% example html %}
+{% example %}
 <p class="tracking-tight">Lorem ipsum dolor sit amet. Tight letter spacing.</p>
 <p class="tracking-normal">Lorem ipsum dolor sit amet. Normal letter spacing.</p>
 <p class="tracking-wide">Lorem ipsum dolor sit amet. Wide letter spacing.</p>
@@ -39,18 +39,29 @@ Utilities for controlling the tracking (letter spacing) of an element.
 
 Utilities for controlling the leading (line height) of an element.
 
-{% example html %}
+{% example %}
 <p class="leading-none">Lorem ipsum dolor sit amet.<br>Dolor sit amet.</p>
 <p class="leading-tight">Lorem ipsum dolor sit amet.<br>Dolor sit amet.</p>
 <p class="leading-normal">Lorem ipsum dolor sit amet.<br>Dolor sit amet.</p>
 <p class="leading-loose">Lorem ipsum dolor sit amet.<br>Dolor sit amet.</p>
 {% endexample %}
 
-## Basic elements
+## Antialiasing
+
+Utilities for controlling the font smoothing of an element.
+
+Use the `.antialiased` utility to render text using subpixel antialiasing or use the `.subpixel-antialiased` render without antialiasing.
+
+{% example %}
+<div class="antialiased">Text with antialiasing</div>
+<div class="subpixel-antialiased">Text without antialiasing</div>
+{% endexample %}
+
+## Markdown elements
 
 When you can't use the CSS classes you want, or when you just want to directly use HTML tags, use `.markdown` as container. It can handle almost any HTML tag.
 
-{% example html %}
+{% example %}
 <div class="markdown">
    <h1>Hello World</h1>
    <p>Lorem ipsum<sup><a>[1]</a></sup> dolor sit amet, consectetur adipiscing elit. Nulla accumsan, metus ultrices eleifend gravida, nulla nunc varius lectus, nec rutrum justo nibh eu lectus. Ut vulputate semper dui. Fusce erat odio, sollicitudin vel erat vel, interdum mattis neque. Sub<sub>script</sub> works as well!</p>

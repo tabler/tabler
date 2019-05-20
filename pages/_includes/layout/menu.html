@@ -19,9 +19,9 @@
          <ul class="nav nav-sm flex-column">
 
             {% if level-1[1].docs %}
-            {% assign docs-key = level-1[1].docs %}
-            {% for doc-slug in site.docs-menu[docs-key].pages %}
-            {% assign doc = site.docs | where: "slug", doc-slug | first %}
+            {% for d in site.data.docs %}
+            {% assign doc = site.docs | where: "slug", d.page | first %}
+            {% if doc %}
             <li class="nav-item">
                <a href="{{ site.base }}/docs/{{ doc.slug }}.html" class="nav-link{% if current-page[0] == 'docs' and current-page[1] == doc.slug %} active{% endif %}">
                   <span class="nav-link-title">
@@ -33,6 +33,7 @@
                   </span>
                </a>
             </li>
+            {% endif %}
             {% endfor %}
             {% endif %}
 

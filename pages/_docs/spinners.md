@@ -5,14 +5,14 @@ menu: docs.spinners
 
 ## Default markup
 
-{% example html %}
+{% example %}
 {% include ui/spinner.html %}
 {% endexample %}
 
 
 ## Colors
 
-{% example html %}
+{% example %}
 {% for color in site.colors %}
 {% assign c = color[0] %}
 {% include ui/spinner.html color=c %}
@@ -21,18 +21,18 @@ menu: docs.spinners
 
 ## Size
 
-{% example html %}
+{% example %}
 {% include ui/spinner.html %}
 {% include ui/spinner.html size="sm" %}
 {% endexample %}
 
 ## Growing spinner
 
-{% example html %}
+{% example %}
 {% include ui/spinner.html type="grow" %}
 {% endexample %}
 
-{% example html %}
+{% example %}
 {% for color in site.colors %}
 {% assign c = color[0] %}
 {% include ui/spinner.html color=c type="grow" %}

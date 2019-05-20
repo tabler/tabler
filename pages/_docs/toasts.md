@@ -7,6 +7,6 @@ The toast component is like an alert box that is only shown for a couple of seco
 
 ## Default markup
 
-{% example html %}
+{% example %}
 {% include ui/toast.html %}
 {% endexample %}

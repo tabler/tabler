@@ -83,7 +83,7 @@ Change the shape of an avatar with the default Bootstrap image classes.
 
 ## Avatars list
 
-{% example html %}
+{% example %}
 <div class="avatar-list">
 {% for person in site.data.people limit: 5 offset: 20 %}
   {% include ui/avatar.html person=person %}
@@ -91,7 +91,7 @@ Change the shape of an avatar with the default Bootstrap image classes.
 </div>
 {% endexample %}
 
-{% example html %}
+{% example %}
 <div class="avatar-list avatar-list-stacked">
   {% for person in site.data.people limit: 5 offset: 30 %}
   {% include ui/avatar.html person=person element="a" %}

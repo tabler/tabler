@@ -14,6 +14,10 @@ module Jekyll
 
       def initialize(tag_name, markup, tokens)
         super
+        if markup.strip == ""
+          markup = 'html'
+        end
+
         if markup.strip =~ SYNTAX
           @lang = $1.downcase
           @options = {}

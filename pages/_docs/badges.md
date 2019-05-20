@@ -7,7 +7,7 @@ A small count and labeling component. Please read the [official Bootstrap docume
 
 ## Default markup
 
-{% example html %}
+{% example %}
 {% for color in site.colors %}
 <span class="badge text-white bg-{{ color[0] }}">{{ color[0] }}</span>
 {% endfor %}
@@ -15,7 +15,7 @@ A small count and labeling component. Please read the [official Bootstrap docume
 
 ## Pill badges
 
-{% example html %}
+{% example %}
 {% for color in site.colors %}
 <span class="badge badge-pill text-white bg-{{ color[0] }}">{{ forloop.index }}</span>
 {% endfor %}
@@ -24,7 +24,7 @@ A small count and labeling component. Please read the [official Bootstrap docume
 
 ## Soft badges
 
-{% example html %}
+{% example %}
 {% for color in site.colors %}
 <span class="badge bg-{{ color[0] }}-lt">{{ color[0] }}</span>
 {% endfor %}
@@ -33,7 +33,7 @@ A small count and labeling component. Please read the [official Bootstrap docume
 
 ## Links
 
-{% example html %}
+{% example %}
 {% for color in site.colors %}
 <a href="#" class="badge bg-{{ color[0] }}">{{ color[0] }}</a>
 {% endfor %}
@@ -42,7 +42,7 @@ A small count and labeling component. Please read the [official Bootstrap docume
 
 ## Empty badges
 
-{% example html %}
+{% example %}
 {% for color in site.colors %}
 <a href="#" class="badge bg-{{ color[0] }}"></a>
 {% endfor %}

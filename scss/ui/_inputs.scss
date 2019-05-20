@@ -16,6 +16,10 @@ textarea {
 }
 
 .form-control {
+  &:-webkit-autofill {
+    -webkit-box-shadow: 0 0 0px 1000px #fff inset;
+  }
+
   &:disabled,
   &.disabled {
     color: $text-muted;
@@ -48,3 +52,27 @@ textarea {
   border: 1px solid $border-color;
 }
 
+/**
+Form help
+ */
+.form-help {
+  display: inline-block;
+  width: 1rem;
+  height: 1rem;
+  text-align: center;
+  line-height: 1rem;
+  color: $text-muted;
+  background: $gray-100;
+  border-radius: 50%;
+  font-size: px2rem(12px);
+  transition: .3s background-color, .3s color;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+
+  &:hover,
+  &[aria-describedby] {
+    background: $primary;
+    color: #fff;
+  }
+}
