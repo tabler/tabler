@@ -3,10 +3,18 @@ layout: base
 ---
 
 <div class="d-flex h-auto min-h-screen">
+
+   {% if page.nav-position == "left" or page.nav-position == "right" %}
    {% include layout/sidenav.html %}
+   {% endif %}
 
    <div class="flex-fill d-flex flex-column mw-100">
-      {% include_cached layout/header.html %}
+      {{ page.header-dark }}
+      {% include layout/header.html dark=page.header-dark %}
+
+      {% if page.nav-position == "top" %}
+      {% include layout/topnav.html %}
+      {% endif %}
 
       <div class="d-flex flex-fill">
 
