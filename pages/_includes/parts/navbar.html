@@ -11,9 +11,21 @@
    <a href="{{ site.base }}" class="navbar-brand text-inherit">
       {% if include.icon %}<span class="text-green">{% include ui/icon.html icon=include.icon %}</span>{% endif %}
       {% if include.stamp %}<span class="stamp bg-primary text-white">UI</span>{% endif %}
-      {% if include.logo %}<img src="{{ site.base }}/img/logo{% if include.white-logo %}-white{% endif %}.svg" alt="" class="navbar-brand-logo mr-3">{% endif %}
+      {% if include.logo %}
+         <img src="{{ site.base }}/img/logo{% if include.white-logo %}-white{% endif %}.svg" alt="{{ site.title }}" class="d-none d-md-block navbar-brand-logo mr-3">
+         <img src="{{ site.base }}/img/logo-small{% if include.white-logo %}-white{% endif %}.svg" alt="{{ site.title }}" class="d-md-none navbar-brand-logo mr-3">
+      {% endif %}
       {% if include.title %}<span class="d-inline">{{ include.title }}</span>{% endif %}
    </a>
+
+   {% if include.search %}
+   <div class="w-auto flex-fill max-w-md ml-0 ml-md-8 mr-auto d-none d-lg-block">
+      <div class="input-icon">
+         <span class="input-icon-addon">{% include ui/icon.html icon="search" %}</span>
+         <input type="text" class="form-control" placeholder="Search">
+      </div>
+   </div>
+   {% endif %}
 
    {% if include.plus-left %}
    <a href="#" class="btn btn-primary">
@@ -58,18 +70,6 @@
             <a class="nav-link" href="#">Changelog</a>
          </li>
       </ul>
-      {% endif %}
-
-      {% if include.search %}
-      <!-- Navbar Search -->
-      <form class="input-group m-2 my-lg-0 ">
-                <span class="input-group-prepend">
-                    <button type="button"
-                            class="btn no-shadow no-bg px-0">{% include ui/icon.html icon="search" %}</button>
-                </span>
-         <input type="text" class="form-control no-border no-shadow no-bg typeahead" placeholder="Search..."
-                data-plugin="typeahead">
-      </form>
       {% endif %}
    </div>
 
@@ -129,8 +129,8 @@
          <a href="#" data-toggle="dropdown"
             class="nav-link d-flex align-items-center py-0 px-lg-0 px-2 text-color ml-2">
             {% if include.user-menu == 1 %}
-               {% include ui/avatar.html src=person.photo %}
-               <span class="ml-2 d-none d-lg-block leading-none">
+            {% include ui/avatar.html src=person.photo %}
+            <span class="ml-2 d-none d-lg-block leading-none">
                   <span>{{ person.full_name }}</span>
                   <span class="text-muted d-block mt-1 text-h6">Administrator</span>
                </span>
@@ -157,14 +157,14 @@
                {% include ui/icon.html icon="mail" class="dropdown-icon" %} Inbox
             </a>
             <a class="dropdown-item" href="#">
-               {% include ui/icon.html icon="send" class="dropdown-icon" %}  Message
+               {% include ui/icon.html icon="send" class="dropdown-icon" %} Message
             </a>
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" href="#">
-               {% include ui/icon.html icon="help-circle" class="dropdown-icon" %}  Need help?
+               {% include ui/icon.html icon="help-circle" class="dropdown-icon" %} Need help?
             </a>
             <a class="dropdown-item" href="#">
-               {% include ui/icon.html icon="log-out" class="dropdown-icon" %}  Sign out
+               {% include ui/icon.html icon="log-out" class="dropdown-icon" %} Sign out
             </a>
          </div>
       </li>
