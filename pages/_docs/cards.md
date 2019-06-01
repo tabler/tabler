@@ -87,7 +87,7 @@ You can also add the image on the left side of the card. All you need do to is: 
 {% include cards/card.html title="Card with loader" hide-options=true show-loader=true %}
 {% endexample %}
 
-### Card with badge
+### Card with badge on image
 
 {% example html columns=2 %}
 <div class="card flex-row flex-row-reverse">
@@ -113,6 +113,36 @@ You can also add the image on the left side of the card. All you need do to is: 
 	</div>
 </div>
 {% endexample %}
+
+### Card with badge
+
+{% example html columns=2 %}
+<div class="card flex-row">
+	<div class="media media-4x3 col-5">
+		<a class="media-content " style="background-image:url({% include ui/image.html id=13 %})">
+		</a>
+		<div class="media-action ">
+		</div>
+	</div>
+	<div class="card-body d-flex flex-column ">
+		<div class="flex-fill ">
+			<div class="mb-3">
+				<a href="#">
+					<span class="badge badge-md text-uppercase bg-danger">Fashion</span>
+				</a>
+			</div>
+			<a href="#" class="card-title h-2x">
+				What Not To Wear: The Hats, Scarves In History
+			</a>
+		</div>
+		<div class="">
+			<div class="text-muted text-sm">Feb 26, 1:49 am</div>
+		</div>
+	</div>
+</div>
+{% endexample %}
+
+
 
 ### Card with aside image
 
