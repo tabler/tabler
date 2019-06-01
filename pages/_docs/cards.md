@@ -30,7 +30,7 @@ The best way to make your post eye-catching is adding an image to it. To do so, 
 
 If you want to create a couple of posts next to each other, add the `.row-deck` class to `.row`—then they will all have the same height.
 
-{% example html columns=2 %}
+{% example html columns=3 %}
 <div class="row row-cards row-deck">
     <div class="col-md-4">
         <div class="card">
@@ -54,13 +54,13 @@ If you want to create a couple of posts next to each other, add the `.row-deck` 
 
 You can also add the image on the left side of the card. All you need do to is: add the `.card-aside` class to the element with the `.card` class. Then add the image in the `.card-aside-column` element. No worries, tabler will automatically center it and scale to right size:
 
-{% example html columns=2 %}
+{% example html columns=3 %}
 {% include cards/blog-single.html type="aside" liked=1 %}
 {% endexample %}
 
 ### Color variations
 
-{% example html columns=2 %}
+{% example html columns=3 %}
 <div class="row row-cards row-deck">
     <div class="col-md-4">
         {% include cards/card.html title="Card status on top" hide-options=true status-position="top" status-color="red" body="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit incidunt, iste, itaque minima neque" %}
@@ -89,7 +89,7 @@ You can also add the image on the left side of the card. All you need do to is: 
 
 ### Card with badge on image
 
-{% example html columns=2 %}
+{% example html columns=3 %}
 <div class="card flex-row flex-row-reverse">
 	<div class="media media-4x3 col-4">
 		<a class="media-content " style="background-image:url({% include ui/image.html id=7 %})">
@@ -116,7 +116,7 @@ You can also add the image on the left side of the card. All you need do to is: 
 
 ### Card with badge
 
-{% example html columns=2 %}
+{% example html columns=3 %}
 <div class="card flex-row">
 	<div class="media media-4x3 col-5">
 		<a class="media-content " style="background-image:url({% include ui/image.html id=13 %})">
@@ -146,7 +146,7 @@ You can also add the image on the left side of the card. All you need do to is: 
 
 ### Card with aside image
 
-{% example html columns=2 %}
+{% example html columns=3 %}
 <div class="card flex-row">
 	<div class="media media-4x3 col-4">
 		<a class="media-content" style="background-image:url({% include ui/image.html id=6 %})"></a>
@@ -251,7 +251,7 @@ You can also add the image on the left side of the card. All you need do to is: 
 {% endexample %}
 
 ### Card with search
-{% example html columns=2 %}
+{% example html columns=3 %}
 	<div class="row">
 	  <div class="col-lg-6 col-xl-6">
 		  {% include cards/card.html title="Card with alert" alert="Adding action was successful" %}
