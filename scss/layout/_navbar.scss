@@ -42,6 +42,15 @@
 }
 
 /**
+Navbar toggler
+ */
+.navbar-toggler-icon {
+  width: 2rem;
+  height: 2rem;
+  background: red;
+}
+
+/**
 Fixed navbar
  */
 .navbar-fixed {
@@ -59,64 +68,6 @@ Fixed navbar
     }
   }
 }
-
-/**
-Navbar expand
- */
-@each $breakpoint, $dimension in $grid-breakpoints {
-  .navbar-expand-#{$breakpoint} {
-    display: none;
-
-    @include media-breakpoint-up(#{$breakpoint}) {
-      display: block;
-      padding-right: 0;
-      padding-left: 0;
-
-      .navbar-nav {
-        margin-right: 0;
-        margin-left: 0;
-      }
-
-      .navbar-nav .nav-link {
-        padding: .5rem $sidenav-link-padding-x;
-
-        &.active {
-          position: relative;
-
-          &::before {
-            top: auto;
-            right: $sidenav-link-padding-x;
-            bottom: calc(-#{$navbar-padding-y} - #{$border-width});
-            left: $sidenav-link-padding-x;
-            border-bottom: 1px solid $primary;
-            border-left: 0;
-          }
-        }
-      }
-
-
-      > .container,
-      > .container-fluid {
-        padding-right: 0;
-        padding-left: 0;
-      }
-
-      &.navbar-side.navbar-fixed {
-        @include media-breakpoint-up(#{$breakpoint}) {
-          ~ .main-content {
-            margin-left: $sidenav-width;
-          }
-
-          &.navbar-right ~ .main-content {
-            margin-right: $sidenav-width;
-            margin-left: 0;
-          }
-        }
-      }
-    }
-  }
-}
-
 
 /*
 Sidebar
