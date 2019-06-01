@@ -15,7 +15,7 @@ page-title: Documentation
       <div class="list-group list-group-transparent mb-0">
          {% for p in site.data.docs %}
          {% assign doc = site.docs | where: "slug", p.page | first %}
-         <a href="{{ site.base }}{{ doc.url }}" class="list-group-item list-group-item-action{% if page.url == doc.url %} active{% endif %}">
+         <a href="{{ site.base }}{{ doc.url | relative_url }}" class="list-group-item list-group-item-action{% if page.url == doc.url %} active{% endif %}">
             {{ doc.title }}
          </a>
          {% endfor %}
