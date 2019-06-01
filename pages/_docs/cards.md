@@ -86,3 +86,180 @@ You can also add the image on the left side of the card. All you need do to is: 
 {% example html columns=1 %}
 {% include cards/card.html title="Card with loader" hide-options=true show-loader=true %}
 {% endexample %}
+
+### Card with badge on image
+
+{% example html columns=2 %}
+<div class="card flex-row flex-row-reverse">
+	<div class="media media-4x3 col-4">
+		<a class="media-content " style="background-image:url({% include ui/image.html id=7 %})">
+		</a>
+		<div class="media-overlay overlay-top">
+			<a href="#"><span class="badge badge-md text-uppercase bg-yellow">NATURE</span></a>
+		</div>
+		<div class="media-action ">
+		</div>
+	</div>
+	<div class="card-body d-flex flex-column">
+		<div class="flex-fill ">
+			<a href="#" class="card-title text-md">
+				It’s 2018, and the race is on between tech giants to decide who will control what you see every time you open your eyes
+			</a>
+			<a class="text-muted mt-2 ">What Not To Wear: The Hats, Scarves In History</a>
+		</div>
+		<div class="">
+			<div class="text-muted text-sm">Feb 28, 10:54 am</div>
+		</div>
+	</div>
+</div>
+{% endexample %}
+
+### Card with badge
+
+{% example html columns=2 %}
+<div class="card flex-row">
+	<div class="media media-4x3 col-5">
+		<a class="media-content " style="background-image:url({% include ui/image.html id=13 %})">
+		</a>
+		<div class="media-action ">
+		</div>
+	</div>
+	<div class="card-body d-flex flex-column ">
+		<div class="flex-fill ">
+			<div class="mb-3">
+				<a href="#">
+					<span class="badge badge-md text-uppercase bg-danger">Fashion</span>
+				</a>
+			</div>
+			<a href="#" class="card-title h-2x">
+				What Not To Wear: The Hats, Scarves In History
+			</a>
+		</div>
+		<div class="">
+			<div class="text-muted text-sm">Feb 26, 1:49 am</div>
+		</div>
+	</div>
+</div>
+{% endexample %}
+
+
+
+### Card with aside image
+
+{% example html columns=2 %}
+<div class="card flex-row">
+	<div class="media media-4x3 col-4">
+		<a class="media-content" style="background-image:url({% include ui/image.html id=6 %})"></a>
+		<div class="media-overlay overlay-top">
+			<a href="#"><span class="badge badge-md text-uppercase bg-white-overlay">MUSIC</span></a>
+		</div>
+		<div class="media-action ">
+		</div>
+	</div>
+	<div class="card-body d-flex flex-column">
+		<div class="flex-fill">
+			<a href="#" class="card-title text-md">
+				Radio Listeners Prepare For An Impending Alien Invasion In This Visually Stunning Short Film
+			</a>
+			<a class="text-muted mt-2">What Not To Wear: The Hats, Scarves In History</a>
+		</div>
+		<div class="text-muted text-sm">Feb 22, 11:38 am</div>
+	</div>
+</div>
+{% endexample %}
+
+### Card with image
+{% example html columns=1 %}
+<div class="card">
+	<img class="card-img-top" src="{{ site.base }}/img/photos/{{ site.data.photos[17].file }}" alt="Card image cap">
+	<div class="card-body">
+		<h5 class="card-title">Card title that wraps to a new line</h5>
+		<p class="card-text">This is a longer card with supporting text below as a natural lead-in to
+			additional content. This content is a little bit longer.</p>
+		<div class="text-muted text-sm">Feb 28, 10:54 am</div>
+	</div>
+</div>
+{% endexample %}
+
+### Quote card
+
+{% example html columns=1 %}
+<div class="card">
+  <cardquote class="cardquote text-white bg-primary mb-0 card-body">
+	 <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante.</p>
+	 <footer class="cardquote-footer">
+		 <small>
+			 Someone famous in <cite title="Source Title">Source Title</cite>
+		 </small>
+	 </footer>
+  </cardquote>
+  </div>
+{% endexample %}
+
+### Another Card
+
+{% example html columns=3 %}
+<div class="row row-deck">
+   <div class="col-6">
+      <div class="card text-center">
+         <div class="card-body">
+            <h5 class="card-title">Card title</h5>
+            <p class="card-text">This card has supporting text below as a natural lead-in to additional
+               content.</p>
+            <p class="card-text">
+               <small class="text-muted">Last updated 3 mins ago</small>
+            </p>
+         </div>
+      </div>
+   </div>
+   <div class="col-6">
+      <div class="card text-right">
+         <div class="card-body">
+            <h5 class="card-title">Card title</h5>
+            <p class="card-text">This card has supporting text below as a natural lead-in to additional
+               content.</p>
+            <p class="card-text">
+               <small class="text-muted">Last updated 3 mins ago</small>
+            </p>
+         </div>
+      </div>
+   </div>
+</div>
+{% endexample %}
+
+### Image card
+
+{% example html columns=1 %}
+<div class="card">
+	<img class="card-img" src="{{ site.base }}/img/photos/{{ site.data.photos[19].file }}" alt="Card image">
+</div>
+{% endexample %}
+ 
+### Card with options
+{% example html columns=1 %}
+	{% include cards/card.html title="This is a standard card" show-footer=true %}
+{% endexample %}
+
+### Card with fullscreen
+{% example html columns=1 %}
+	{% include cards/card.html title="With additional fullscreen button" show-fullscreen=true %}
+{% endexample %}
+
+### Card with search
+{% example html columns=1 %}
+	{% include cards/card.html title="Card with search form" show-form=true %}
+{% endexample %}
+
+### Card with search
+{% example html columns=2 %}
+	<div class="row">
+	  <div class="col-lg-6 col-xl-6">
+		  {% include cards/card.html title="Card with alert" alert="Adding action was successful" %}
+	  </div>
+	  <div class="col-lg-6 col-xl-6">
+		  {% include cards/card.html title="Card with alert" alert="Adding action failed" alert-type="danger" %}
+	  </div>
+	</div>
+{% endexample %}
+
+
