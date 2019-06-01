@@ -1,6 +1,6 @@
 // stylelint-disable declaration-no-important
 
-body.theme-dark {
+@mixin dark-mode {
   color: #afbdd1;
   background: $dark;
 
@@ -29,3 +29,12 @@ body.theme-dark {
   }
 }
 
+body.theme-dark {
+  @include dark-mode;
+}
+
+@media (prefers-color-scheme: dark) {
+  body {
+    @include dark-mode;
+  }
+}
