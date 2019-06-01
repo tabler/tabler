@@ -2,7 +2,7 @@
 {% assign person = site.data.people | where: "id", include.person %}
 {% assign person = person[0] %}
 
-<div class="container{% if include.fluid %}-fluid{% endif %}{% if include.dark %} navbar-dark bg-dark{% endif %}">
+<div class="container{% if include.fluid %}-fluid{% endif %}">
    <a class="navbar-toggler" data-toggle="modal" data-target="#aside">
       <span class="navbar-toggler-icon"></span>
    </a>
@@ -11,8 +11,8 @@
       {% if include.icon %}<span class="text-green">{% include ui/icon.html icon=include.icon %}</span>{% endif %}
       {% if include.stamp %}<span class="stamp bg-primary text-white">UI</span>{% endif %}
       {% if include.logo %}
-         <img src="{{ site.base }}/img/logo{% if include.white-logo %}-white{% endif %}.svg" alt="{{ site.title }}" class="d-none d-md-block navbar-brand-logo">
-         <img src="{{ site.base }}/img/logo-small{% if include.white-logo %}-white{% endif %}.svg" alt="{{ site.title }}" class="d-md-none navbar-brand-logo">
+         <img src="{{ site.base }}/img/logo{% if include.dark %}-white{% endif %}.svg" alt="{{ site.title }}" class="d-none d-md-block navbar-brand-logo">
+         <img src="{{ site.base }}/img/logo-small{% if include.dark %}-white{% endif %}.svg" alt="{{ site.title }}" class="d-md-none navbar-brand-logo">
       {% endif %}
       {% if include.title %}<span class="d-inline">{{ include.title }}</span>{% endif %}
    </a>
