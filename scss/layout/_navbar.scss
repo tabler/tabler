@@ -1,4 +1,9 @@
 .navbar {
+  background: #fff;
+  border-bottom: 1px solid $border-color;
+}
+
+.navbar {
   display: flex;
   min-height: 3.75rem;
   padding: .75rem 1rem;
@@ -6,6 +11,15 @@
   .nav-link {
     color: inherit;
     white-space: nowrap;
+  }
+}
+
+.navbar-nav {
+  flex-direction: row;
+
+  .navbar-nav {
+    padding-left: .5rem;
+    padding-right: .5rem;
   }
 }
 
@@ -27,4 +41,215 @@
 
 .navbar-brand-logo {
   height: 2rem;
+}
+
+/**
+Fixed navbar
+ */
+.navbar-fixed {
+  position: fixed;
+  z-index: $zindex-sticky;
+
+  &.navbar-side {
+    top: 0;
+    left: 0;
+    bottom: 0;
+
+    &.navbar-right {
+      right: 0;
+      left: auto;
+    }
+  }
+}
+
+/**
+Navbar expand
+ */
+@each $breakpoint, $dimension in $grid-breakpoints {
+  .navbar-expand-#{$breakpoint} {
+    display: none;
+
+    @include media-breakpoint-up(#{$breakpoint}) {
+      display: block;
+      padding-right: 0;
+      padding-left: 0;
+
+      .navbar-nav {
+        margin-right: 0;
+        margin-left: 0;
+      }
+
+      .navbar-nav .nav-link {
+        padding: .5rem $sidenav-link-padding-x;
+
+        &.active {
+          position: relative;
+
+          &::before {
+            top: auto;
+            right: $sidenav-link-padding-x;
+            bottom: calc(-#{$navbar-padding-y} - #{$border-width});
+            left: $sidenav-link-padding-x;
+            border-bottom: 1px solid $primary;
+            border-left: 0;
+          }
+        }
+      }
+
+
+      > .container,
+      > .container-fluid {
+        padding-right: 0;
+        padding-left: 0;
+      }
+
+      &.navbar-side.navbar-fixed {
+        @include media-breakpoint-up(#{$breakpoint}) {
+          ~ .main-content {
+            margin-left: $sidenav-width;
+          }
+
+          &.navbar-right ~ .main-content {
+            margin-right: $sidenav-width;
+            margin-left: 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+/*
+Sidebar
+ */
+.navbar-side {
+  width: $sidenav-width;
+  min-width: $sidenav-width;
+  background: $sidenav-bg;
+  border-right: 1px solid $sidenav-border-color;
+  user-select: none;
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    color: $text-muted;
+    transition: .3s background, .3s box-shadow;
+
+    &.active,
+    &:hover {
+      color: $body-color;
+      background: rgba($link-color, .04);
+      border-color: $primary;
+      box-shadow: inset 2px 0 0 0 $primary;
+    }
+
+    > .icon {
+      width: 2rem;
+    }
+
+    &[data-toggle="collapse"] {
+      &.active {
+        background: none;
+        box-shadow: none;
+      }
+
+      &:after {
+        display: block;
+        font-family: $font-icons !important;
+        content: $icon-fe-chevron-down;
+        margin-left: auto;
+        transition: transform .3s;
+      }
+
+      &[aria-expanded="true"]:after {
+        transform: rotate(-180deg);
+      }
+    }
+  }
+
+  &:not(.sidenav-folded) {
+    .nav-item .nav-item .nav-link {
+      padding-left: 2.5rem;
+    }
+
+    .nav-item .nav-item .nav-item .nav-link {
+      padding-left: 3.5rem;
+    }
+
+    .nav-item .nav-item .nav-item .nav-item .nav-link {
+      padding-left: 4.5rem;
+    }
+  }
+
+  .nav-link-title {
+    display: flex;
+    width: 100%;
+    align-items: center;
+  }
+
+  .navbar-brand {
+    text-align: center;
+  }
+
+  .navbar-heading {
+    @extend .text-subheader;
+    padding: .5rem $sidenav-link-padding-x;
+    margin: 0;
+  }
+
+  .navbar-nav {
+    flex-direction: column;
+  }
+}
+
+/*
+Right navbar
+ */
+.navbar-right {
+  order: 9;
+  border-right: none;
+  border-left: 1px solid $sidenav-border-color;
+}
+
+/*
+Dark navbar
+ */
+.navbar-dark {
+  color: #fff;
+  background-color: $sidenav-dark-bg;
+  border: none;
+
+  .navbar-brand {
+    filter: brightness(0) invert(1);
+  }
+
+  .navbar-divider {
+    border-color: rgba(#fff, .2);
+  }
+
+  .nav-link {
+    color: $text-muted-light;
+
+    &.active,
+    &:hover {
+      color: $white;
+      background: rgba($white, .04);
+    }
+  }
+}
+
+/**
+Utils
+ */
+.hide-sidenav-folded {
+  @at-root .sidenav.sidenav-folded & {
+    display: none;
+  }
+}
+
+.hide-sidenav-expanded {
+  @at-root .sidenav:not(.sidenav-folded) & {
+    display: none;
+  }
 }
