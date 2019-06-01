@@ -3,16 +3,16 @@
 {% assign person = person[0] %}
 
 <div class="container{% if include.fluid %}-fluid{% endif %}{% if include.dark %} navbar-dark bg-dark{% endif %}">
-   <a class="d-lg-none px-1" data-toggle="modal" data-target="#aside">
-      {% include ui/icon.html icon="menu" %}
+   <a class="navbar-toggler" data-toggle="modal" data-target="#aside">
+      <span class="navbar-toggler-icon"></span>
    </a>
 
-   <a href="{{ site.base }}" class="navbar-brand text-inherit">
+   <a href="{{ site.base }}" class="navbar-brand text-inherit mr-md-3">
       {% if include.icon %}<span class="text-green">{% include ui/icon.html icon=include.icon %}</span>{% endif %}
       {% if include.stamp %}<span class="stamp bg-primary text-white">UI</span>{% endif %}
       {% if include.logo %}
-         <img src="{{ site.base }}/img/logo{% if include.white-logo %}-white{% endif %}.svg" alt="{{ site.title }}" class="d-none d-md-block navbar-brand-logo mr-3">
-         <img src="{{ site.base }}/img/logo-small{% if include.white-logo %}-white{% endif %}.svg" alt="{{ site.title }}" class="d-md-none navbar-brand-logo mr-3">
+         <img src="{{ site.base }}/img/logo{% if include.white-logo %}-white{% endif %}.svg" alt="{{ site.title }}" class="d-none d-md-block navbar-brand-logo">
+         <img src="{{ site.base }}/img/logo-small{% if include.white-logo %}-white{% endif %}.svg" alt="{{ site.title }}" class="d-md-none navbar-brand-logo">
       {% endif %}
       {% if include.title %}<span class="d-inline">{{ include.title }}</span>{% endif %}
    </a>
@@ -21,7 +21,7 @@
    <div class="w-auto flex-fill max-w-md ml-0 ml-md-8 mr-auto d-none d-lg-block">
       <div class="input-icon">
          <span class="input-icon-addon">{% include ui/icon.html icon="search" %}</span>
-         <input type="text" class="form-control" placeholder="Search" tabindex="-1">
+         <input type="text" class="form-control form-control-light" placeholder="Search" tabindex="-1">
       </div>
    </div>
    {% endif %}
@@ -31,46 +31,6 @@
       {% include ui/icon.html icon="plus" %}
    </a>
    {% endif %}
-
-
-   <div class="collapse navbar-collapse order-2 order-lg-1" id="navbarToggler">
-      {% if include.big-menu %}
-      <ul class="navbar-nav">
-         <li class="nav-item">
-            <a class="nav-link" href="#">Homepage</a>
-         </li>
-
-         <li class="nav-item dropdown">
-            <div class="dropdown">
-               <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Pages</a>
-               <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">App Pages</a>
-                  <a class="dropdown-item" href="#">Utility Pages</a>
-                  <a class="dropdown-item" href="#">Layouts</a>
-               </div>
-            </div>
-         </li>
-
-         <li class="nav-item">
-            <div class="dropdown">
-               <a class="nav-link dropdown-toggle" href="#" data-toggle="dropdown">Components</a>
-               <div class="dropdown-menu">
-                  <a class="dropdown-item" href="#">Bootstrap</a>
-                  <a class="dropdown-item" href="#">Pipeline</a>
-               </div>
-            </div>
-         </li>
-
-         <li class="nav-item">
-            <a class="nav-link" href="#">Documentation</a>
-         </li>
-
-         <li class="nav-item">
-            <a class="nav-link" href="#">Changelog</a>
-         </li>
-      </ul>
-      {% endif %}
-   </div>
 
    <ul class="nav navbar-menu order-1 order-lg-2">
       {% if include.fullscreen %}
@@ -120,6 +80,20 @@
             <!--<span class="progress-bar" style="width: 70%"></span>-->
             <!--</span>-->
          </a>
+      </li>
+      {% endif %}
+
+      {% if include.language %}
+      <li class="nav-item dropdown">
+         <a href="#" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+            <span class="flag flag-gb mr-2"></span>English
+         </a>
+         <div class="dropdown-menu dropdown-menu-right dropdown-menu-scrollable">
+            {% for language in site.data.languages %}
+            <a href="#" class="dropdown-item"><span class="flag flag-{{ language.flag }} mr-2"></span>{{
+               language.name }}</a>
+            {% endfor %}
+         </div>
       </li>
       {% endif %}
 
@@ -203,20 +177,6 @@
       {% if include.sync %}
       <li class="nav-item">
          <a href="#" class="btn btn-secondary">{% include ui/icon.html icon="rotate-cw" class="mr-2" %}Sync</a>
-      </li>
-      {% endif %}
-
-      {% if include.language %}
-      <li class="nav-item dropdown">
-         <a href="#" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
-            <span class="flag flag-gb mr-2"></span>English
-         </a>
-         <div class="dropdown-menu dropdown-menu-right dropdown-menu-scrollable">
-            {% for language in site.data.languages %}
-            <a href="#" class="dropdown-item"><span class="flag flag-{{ language.flag }} mr-2"></span>{{
-               language.name }}</a>
-            {% endfor %}
-         </div>
       </li>
       {% endif %}
    </ul>
