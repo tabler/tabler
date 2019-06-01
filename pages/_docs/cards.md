@@ -235,3 +235,31 @@ You can also add the image on the left side of the card. All you need do to is: 
 </div>
 {% endexample %}
  
+### Card with options
+{% example html columns=1 %}
+	{% include cards/card.html title="This is a standard card" show-footer=true %}
+{% endexample %}
+
+### Card with fullscreen
+{% example html columns=1 %}
+	{% include cards/card.html title="With additional fullscreen button" show-fullscreen=true %}
+{% endexample %}
+
+### Card with search
+{% example html columns=1 %}
+	{% include cards/card.html title="Card with search form" show-form=true %}
+{% endexample %}
+
+### Card with search
+{% example html columns=2 %}
+	<div class="row">
+	  <div class="col-lg-6 col-xl-6">
+		  {% include cards/card.html title="Card with alert" alert="Adding action was successful" %}
+	  </div>
+	  <div class="col-lg-6 col-xl-6">
+		  {% include cards/card.html title="Card with alert" alert="Adding action failed" alert-type="danger" %}
+	  </div>
+	</div>
+{% endexample %}
+
+
