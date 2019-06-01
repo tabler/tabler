@@ -109,6 +109,25 @@ $(document).ready(function () {
     e.preventDefault();
     return false;
   });
+
+
+  /*
+  Autosize plugin
+   */
+  if(window.autosize) {
+    (function() {
+
+      var $elem = $('[data-toggle="autosize"]');
+      console.log('$elem', $elem);
+
+      if ($elem) {
+        $elem.each(function() {
+          autosize($(this));
+        });
+      }
+
+    })();
+  }
 });
 
 window.tabler = tabler;
