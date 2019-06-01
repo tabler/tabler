@@ -79,6 +79,14 @@ In need of a button, but not the hefty background colors they bring? Replace the
 {% endfor %}
 {% endexample %}
 
+## Button with star
+
+{% example html %}
+{% for button in site.button_variants %}
+  {% include ui/button.html text="Button" label="star" color=button.name class="mr-2" %}
+{% endfor %}
+{% endexample %}
+
 ### Button size
 
 Add `.btn-lg` or `.btn-sm` for additional sizes.
@@ -246,3 +254,12 @@ Use the `.text-center` or the `.text-right` modifiers to alter the alignment.
   <a href="#" class="btn btn-secondary">Save and continue</a>
 </div>
 {% endexample %}
+
+### Button with avatar
+
+{% example html%}
+<a href="#" class="btn btn-secondary mr-2">{% include ui/avatar.html person-id="4" class="btn-avatar" %} Avatar</a>
+<a href="#" class="btn btn-secondary mr-2">{% include ui/avatar.html person-id="5" class="btn-avatar" %} Avatar</a>
+<a href="#" class="btn btn-secondary mr-2">{% include ui/avatar.html person-id="6" class="btn-avatar" %} Avatar</a>
+{% endexample %}
+
