@@ -62,11 +62,14 @@ You can also add the image on the left side of the card. All you need do to is: 
 
 {% example html columns=2 %}
 <div class="row row-cards row-deck">
-    <div class="col-md-6">
-        {% include cards/card.html title="Card status" hide-options=true status="purple" %}
+    <div class="col-md-4">
+        {% include cards/card.html title="Card status on top" hide-options=true status-position="top" status-color="red" body="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit incidunt, iste, itaque minima neque" %}
     </div>
-    <div class="col-md-6">
-        {% include cards/card.html title="Card status on left side" hide-options=true status-left="blue" %}
+    <div class="col-md-4">
+        {% include cards/card.html title="Card status on left side" hide-options=true status-position="left" status-color="blue" body="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit incidunt, iste, itaque minima neque"  %}
+    </div>
+    <div class="col-md-4">
+        {% include cards/card.html title="Card status on bottom" hide-options=true status-position="bottom" status-color="green" body="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit incidunt, iste, itaque minima neque"  %}
     </div>
 </div>
 {% endexample %}
