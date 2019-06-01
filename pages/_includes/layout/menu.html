@@ -9,14 +9,16 @@
          <span class="nav-link-title">
             {{ level-1[1].title }}
 
+            {% unless include.top %}
             {% if level-1[1].label %}
             <span class="badge bg-{{ level-1[1].label-color | default: 'primary' }} text-white ml-auto">{{ level-1[1].label }}</span>
             {% endif %}
+            {% endunless %}
          </span>
       </a>
       {% if level-1[1].children or level-1[1].docs %}
-      <div class="collapse navbar-collapse{% if level-1[0] == current-page[0] %} show{% endif %}" id="sidebar-{{ level-1[0] }}">
-         <ul class="nav nav-sm flex-column">
+      <div class="collapse{% if level-1[0] == current-page[0] %} show{% endif %}" id="sidebar-{{ level-1[0] }}">
+         <ul class="nav">
 
             {% if level-1[1].docs %}
             {% for d in site.data.docs %}
@@ -48,7 +50,7 @@
                   </span>
                </a>
                {% if level-2[1].children %}
-               <div class="collapse navbar-collapse{% if level-2[0] == current-page[1] %} show{% endif %}" id="sidebar-{{ level-2[0] }}">
+               <div class="collapse{% if level-2[0] == current-page[1] %} show{% endif %}" id="sidebar-{{ level-2[0] }}">
                   <ul class="nav nav-sm flex-column">
                      {% for level-3 in level-2[1].children %}
                      <li class="nav-item">
@@ -62,7 +64,7 @@
                         </a>
 
                         {% if level-3[1].children %}
-                        <div class="collapse navbar-collapse{% if level-3[0] == current-page[2] %} show{% endif %}" id="sidebar-{{ level-3[0] }}">
+                        <div class="collapse{% if level-3[0] == current-page[2] %} show{% endif %}" id="sidebar-{{ level-3[0] }}">
                            <ul class="nav nav-sm flex-column">
                               {% for level-4 in level-3[1].children %}
                               <li class="nav-item">
