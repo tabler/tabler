@@ -18,5 +18,4 @@ menu: docs.flags
 {% include ui/flag.html name="br" class="flag-size-lg mr-1" %}
 {% include ui/flag.html name="pt" class="flag-size-md" %}
 {% include ui/flag.html name="gb" class="mr-1" %}
-{% include ui/flag.html name="gr" class="flag-size-sm" %}
 {% endexample %}

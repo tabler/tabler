@@ -19,18 +19,14 @@
   .flag {
     position: relative;
     display: inline-block;
-    width: 2em;
-    height: 2rem;
-    line-height: 2rem;
+    width: 1.125rem * 1.33333;
+    height: 1.125rem;
     background-repeat: no-repeat;
-    background-position: 50%;
-    background-size: contain;
-    border-radius: 2px;
-    vertical-align: bottom;
-  }
-
-  .flag::before {
-    content: "\00a0";
+    background-position: center;
+    background-size: cover;
+    border-radius: 3px;
+    border: 1px solid $border-color;
+    vertical-align: -3px;
   }
 
   @each $country in $countries {
@@ -38,12 +34,11 @@
       background-image: url("/img/flags/#{$country}.svg");
     }
   }
-}
 
-@each $avatar-size, $size in $avatar-sizes {
-  .flag-size-#{$avatar-size} {
-    width: $size;
-    height: $size;
-    line-height: $size;
+  @each $flag-size, $size in $flag-sizes {
+    .flag-size-#{$flag-size} {
+      width: $size * 1.33333;
+      height: $size;
+    }
   }
 }
