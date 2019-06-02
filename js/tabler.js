@@ -148,6 +148,17 @@ $(document).ready(function () {
       }
     })();
   }
+
+  /**
+   * Seelectize plugin
+   */
+  if(jQuery && jQuery().selectize) {
+    var $elem = $('[data-selectize]');
+
+    if ($elem) {
+      $elem.selectize();
+    }
+  }
 });
 
 window.tabler = tabler;
