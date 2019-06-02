@@ -1,0 +1,188 @@
+<div class="form-group">
+   <div class="form-label">Inline Radios</div>
+   <div class="custom-controls-stacked">
+      <label class="custom-control custom-radio custom-control-inline">
+         <input type="radio" class="custom-control-input" name="example-inline-radios"
+                value="option1" checked>
+         <span class="custom-control-label">Option 1</span>
+      </label>
+      <label class="custom-control custom-radio custom-control-inline">
+         <input type="radio" class="custom-control-input" name="example-inline-radios"
+                value="option2">
+         <span class="custom-control-label">Option 2</span>
+      </label>
+      <label class="custom-control custom-radio custom-control-inline">
+         <input type="radio" class="custom-control-input" name="example-inline-radios"
+                value="option3">
+         <span class="custom-control-label">Option 3</span>
+      </label>
+   </div>
+</div>
+<div class="form-group">
+   <div class="form-label">Checkboxes</div>
+   <div class="custom-controls-stacked">
+      <label class="custom-control custom-checkbox">
+         <input type="checkbox" class="custom-control-input" name="example-checkbox1" value="option1"
+                checked>
+         <span class="custom-control-label">Option 1</span>
+      </label>
+      <label class="custom-control custom-checkbox">
+         <input type="checkbox" class="custom-control-input" name="example-checkbox2"
+                value="option2">
+         <span class="custom-control-label">Option 2</span>
+      </label>
+      <label class="custom-control custom-checkbox">
+         <input type="checkbox" class="custom-control-input" name="example-checkbox3" value="option3"
+                disabled>
+         <span class="custom-control-label">Option Disabled</span>
+      </label>
+      <label class="custom-control custom-checkbox">
+         <input type="checkbox" class="custom-control-input" name="example-checkbox4" value="option4"
+                checked disabled>
+         <span class="custom-control-label">Option Disabled Checked</span>
+      </label>
+   </div>
+</div>
+<div class="form-group">
+   <div class="form-label">Inline Checkboxes</div>
+   <div>
+      <label class="custom-control custom-checkbox custom-control-inline">
+         <input type="checkbox" class="custom-control-input" name="example-inline-checkbox1"
+                value="option1" checked>
+         <span class="custom-control-label">Option 1</span>
+      </label>
+      <label class="custom-control custom-checkbox custom-control-inline">
+         <input type="checkbox" class="custom-control-input" name="example-inline-checkbox2"
+                value="option2">
+         <span class="custom-control-label">Option 2</span>
+      </label>
+      <label class="custom-control custom-checkbox custom-control-inline">
+         <input type="checkbox" class="custom-control-input" name="example-inline-checkbox3"
+                value="option3">
+         <span class="custom-control-label">Option 3</span>
+      </label>
+   </div>
+</div>
+<div class="form-group">
+   <div class="form-label">Bootstrap's Custom File Input</div>
+   <div class="custom-file">
+      <input type="file" class="custom-file-input" name="example-file-input-custom">
+      <label class="custom-file-label">Choose file</label>
+   </div>
+</div>
+
+<div class="form-group">
+   <label class="form-label">Date of birth</label>
+   <div class="row row-xs">
+      <div class="col-5">
+         <select name="user[month]" class="form-control custom-select">
+            <option value="">Month</option>
+            <option value="1">January</option>
+            <option value="2">February</option>
+            <option value="3">March</option>
+            <option value="4">April</option>
+            <option value="5">May</option>
+            <option selected="selected" value="6">June</option>
+            <option value="7">July</option>
+            <option value="8">August</option>
+            <option value="9">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+         </select>
+      </div>
+      <div class="col-3">
+         <select name="user[day]" class="form-control custom-select">
+            <option value="">Day</option>
+            {% for i in (1..31) %}
+            <option value="{{ i }}"{% if i == 20 %} selected{% endif %}>{{ i }}</option>{% endfor %}
+         </select>
+      </div>
+      <div class="col-4">
+         <select name="user[year]" class="form-control custom-select">
+            <option value="">Year</option>
+            {% for i in (1897..2014) reversed %}
+            <option value="{{ i }}"{% if i == 1989 %} selected{% endif %}>{{ i }}</option>{% endfor %}
+         </select>
+      </div>
+   </div>
+</div>
+
+
+<div class="form-group">
+   <label class="form-label">Username</label>
+   {% include ui/input-group.html prepend="@" placeholder="username" %}
+</div>
+
+<div class="form-group">
+   <label class="form-label">Subdomain</label>
+   {% include ui/input-group.html append=".tabler.io" placeholder="subdomain" %}
+</div>
+
+<div class="form-group">
+   <label class="form-label">Your vanity URL</label>
+   {% include ui/input-group.html prepend="https://example.com/users/" %}
+</div>
+
+<div class="form-group">
+   <label class="form-label">Price</label>
+   {% include ui/input-group.html prepend="$" append=".00" %}
+</div>
+
+<div class="form-group">
+   <label class="form-label">Button input</label>
+   <div class="input-group">
+      <div class="input-group-prepend">
+         <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                 aria-haspopup="true" aria-expanded="false">
+            Action
+         </button>
+         <div class="dropdown-menu">
+            <a class="dropdown-item" href="javascript:void(0)">Action</a>
+            <a class="dropdown-item" href="javascript:void(0)">Another action</a>
+            <a class="dropdown-item" href="javascript:void(0)">Something else here</a>
+            <div role="separator" class="dropdown-divider"></div>
+            <a class="dropdown-item" href="javascript:void(0)">Separated link</a>
+         </div>
+      </div>
+      <input type="text" class="form-control" aria-label="Text input with dropdown button">
+   </div>
+</div>
+
+<div class="form-group">
+   <label class="form-label">Tags</label>
+   <input type="text" class="form-control" id="input-tags" value="aa,bb,cc,dd">
+</div>
+
+<div class="form-group">
+   <label class="form-label">Beast</label>
+   <select name="beast" id="select-beast" class="form-control custom-select">
+      <option value="1">Chuck Testa</option>
+      <option value="4">Sage Cattabriga-Alosa</option>
+      <option value="3">Nikola Tesla</option>
+   </select>
+</div>
+
+<div class="form-group">
+   <label class="form-label">Users list</label>
+   <select name="user" id="select-users" class="form-control custom-select">
+      {% for user in site.data.people limit: 10 %}
+      <option value="{{ forloop.index }}" data-data='{"image": "{{ user.photo }}"}'>
+         {{ user.first_name }} {{ user.last_name }}
+      </option>
+      {% endfor %}
+   </select>
+</div>
+
+<div class="form-group">
+   <label class="form-label">Countries</label>
+   <select name="country" id="select-countries" class="form-control custom-select">
+      <option value="br" data-data='{"image": "{{ site.base }}/assets/images/flags/br.svg"}'>Brazil</option>
+      <option value="cz" data-data='{"image": "{{ site.base }}/assets/images/flags/cz.svg"}'>Czech Republic
+      </option>
+      <option value="de" data-data='{"image": "{{ site.base }}/assets/images/flags/de.svg"}'>Germany
+      </option>
+      <option value="pl" data-data='{"image": "{{ site.base }}/assets/images/flags/pl.svg"}' selected>Poland
+      </option>
+   </select>
+</div>

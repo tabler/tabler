@@ -121,7 +121,6 @@ $(document).ready(function () {
     (function() {
 
       var $elem = $('[data-toggle="autosize"]');
-      console.log('$elem', $elem);
 
       if ($elem) {
         $elem.each(function() {
@@ -129,6 +128,24 @@ $(document).ready(function () {
         });
       }
 
+    })();
+  }
+
+  /*
+  Imask plugin
+   */
+  if(window.IMask) {
+    (function() {
+      var $elem = $('[data-mask]');
+
+      if ($elem) {
+        $elem.each(function() {
+          IMask($(this).get(0), {
+            mask: $(this).attr('data-mask'),
+            lazy: $(this).attr('data-mask-visible') === 'true'
+          })
+        });
+      }
     })();
   }
 });
