@@ -2,25 +2,27 @@
 layout: base
 ---
 
-<div class="d-flex h-auto min-h-screen flex-wrap flex-column">
+<div class="d-flex h-auto min-h-screen">
+   <div class="d-flex flex-fill">
+      {% if page.nav-position == "left" or page.nav-position == "right" or page.nav-position == "all"  %}
+      {% include layout/sidenav.html dark=true  %}
+      {% endif %}
 
-   {% if page.nav-position == "left" or page.nav-position == "right" or page.nav-position == "all"  %}
-   {% include layout/sidenav.html %}
-   {% endif %}
+      <div class="main-content flex-fill d-flex flex-column mw-100">
+         {% include layout/topnav.html dark=page.header-dark %}
 
-   {% include layout/topnav.html dark=page.header-dark %}
+         <div class="d-flex flex-fill">
 
-   <div class="main-content flex-fill d-flex flex-column mw-100">
+            <div class="flex-fill px-lg-2 mw-100{% if page.blank %} d-flex align-items-center{% endif %}">
+               <div class="container{% if page.container-size %} container-{{ page.container-size }}{% endif %}{% if page.fluid %}-fluid{% endif %} my-4">
+                  {% include layout/page-title.html %}
 
-      <div class="d-flex flex-fill">
-
-         <div class="flex-fill px-lg-2 mw-100{% if page.blank %} d-flex align-items-center{% endif %}">
-            <div class="container{% if page.container-size %} container-{{ page.container-size }}{% endif %}{% if page.fluid %}-fluid{% endif %} my-4">
-               {% include layout/page-title.html %}
-
-               {{ content }}
+                  {{ content }}
+               </div>
             </div>
          </div>
       </div>
    </div>
+
+
 </div>
