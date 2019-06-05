@@ -26,7 +26,9 @@
     "js-compile-bundle": "rollup --environment BUNDLE:true --config build/rollup.config.js --sourcemap",
     "js-minify": "npm-run-all js-minify-standalone* js-minify-bundle",
     "js-minify-standalone": "terser --compress typeofs=false --mangle --comments \"/^!/\" --source-map \"content=dist/js/tabler.js.map,includeSources,url=tabler.min.js.map\" --output dist/js/tabler.min.js dist/js/tabler.js",
-    "js-minify-bundle": "terser --compress typeofs=false --mangle --comments \"/^!/\" --source-map \"content=dist/js/tabler.bundle.js.map,includeSources,url=tabler.bundle.min.js.map\" --output dist/js/tabler.bundle.min.js dist/js/tabler.bundle.js"
+    "js-minify-bundle": "terser --compress typeofs=false --mangle --comments \"/^!/\" --source-map \"content=dist/js/tabler.bundle.js.map,includeSources,url=tabler.bundle.min.js.map\" --output dist/js/tabler.bundle.min.js dist/js/tabler.bundle.js",
+    "svg-svgo": "svgo -f svg/feather/ --pretty",
+    "svg-iconfont": "mkdir -p svg-tmp && for i in svg/feather/*.svg;do N=`basename ${i}`; rsvg-convert svg/feather/$N -o svg-tmp/$N -f svg -w 1000; done && svgo ./svg-tmp/*.svg --disable={removeViewBox} && icon-font-generator ./svg-tmp/*.svg -o static/fonts/feather --html false --csstp build/feather.hbs --csspath scss/fonts/_feather.scss --center --normalize --name feather --types svg,ttf,woff,woff2 --json true --jsonpath pages/_data/feather.json --round 10e12 && rm -rf svg-tmp"
   },
   "repository": {
     "type": "git",
@@ -48,7 +50,7 @@
   ],
   "homepage": "https://tabler.io",
   "devDependencies": {
-    "browser-sync": "^2.26.5",
+    "browser-sync": "2.26.5",
     "bundlesize": "0.15.3",
     "clean-css-cli": "4.3.0",
     "cross-env": "5.2.0",
@@ -57,7 +59,8 @@
     "eslint-plugin-import": "2.16.0",
     "eslint-plugin-unicorn": "8.0.2",
     "http-server": "0.11.1",
-    "node-sass": "^4.12.0",
+    "icon-font-generator": "2.1.10",
+    "node-sass": "4.12.0",
     "nodemon": "1.18.11",
     "npm-run-all": "4.1.5",
     "popper.js": "1.15.0",
@@ -68,15 +71,14 @@
     "shx": "0.3.2",
     "stylelint": "9.10.1",
     "stylelint-config-twbs-bootstrap": "0.3.0",
-    "terser": "3.17.0",
-    "icon-font-generator": "2.1.10",
-    "svgo": "1.2.2"
+    "svgo": "1.2.2",
+    "terser": "3.17.0"
   },
   "dependencies": {
     "apexcharts": "3.6.2",
     "autosize": "4.0.2",
     "bootstrap": "twbs/bootstrap#41fcd13",
-    "imask": "^5.1.5",
-    "selectize": "^0.12.6"
+    "imask": "5.1.5",
+    "selectize": "0.12.6"
   }
 }
