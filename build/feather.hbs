@@ -1,0 +1,26 @@
+@font-face {
+    font-family: "{{ fontName }}";
+    src: {{{ src }}};
+    font-weight: normal;
+    font-style: normal;
+}
+
+.fe {
+    font-family: '{{ fontName }}' !important;
+    speak: none;
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-transform: none;
+    line-height: 1;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+{{# each codepoints }}
+$icon-fe-{{ @key }}: "\\{{ this }}";
+.fe-{{ @key }}:before {
+    content: $icon-fe-{{ @key }};
+}
+
+{{/ each }}

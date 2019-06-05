@@ -27,8 +27,8 @@
     "js-minify": "npm-run-all js-minify-standalone* js-minify-bundle",
     "js-minify-standalone": "terser --compress typeofs=false --mangle --comments \"/^!/\" --source-map \"content=dist/js/tabler.js.map,includeSources,url=tabler.min.js.map\" --output dist/js/tabler.min.js dist/js/tabler.js",
     "js-minify-bundle": "terser --compress typeofs=false --mangle --comments \"/^!/\" --source-map \"content=dist/js/tabler.bundle.js.map,includeSources,url=tabler.bundle.min.js.map\" --output dist/js/tabler.bundle.min.js dist/js/tabler.bundle.js",
-    "svg-svgo": "svgo -f static/feather-svg/ --pretty",
-    "svg-iconfont": "icon-font-generator static/feather-svg/*.svg -o static/fonts/feather --center --normalize --name Feather --types svg,ttf,woff,woff2 --json true --jsonpath pages/_data/feather.json --csspath scss/fonts/_feather.scss --cssfontsurl ../fonts/feather/ --csstp build/feather.hbs"
+    "svg-svgo": "svgo -f svg/feather/ --pretty",
+    "svg-iconfont": "mkdir -p svg-tmp && for i in svg/feather/*.svg;do N=`basename ${i}`; rsvg-convert svg/feather/$N -o svg-tmp/$N -f svg -w 1000; done && svgo ./svg-tmp/*.svg --disable={removeViewBox} && icon-font-generator ./svg-tmp/*.svg -o static/fonts/feather --center --normalize --name feather --types svg,ttf,woff,woff2 --json true --jsonpath pages/_data/feather.json --round 10e12 && rm -rf svg-tmp"
   },
   "repository": {
     "type": "git",
