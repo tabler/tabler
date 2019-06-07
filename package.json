@@ -27,8 +27,8 @@
     "js-minify": "npm-run-all js-minify-standalone* js-minify-bundle",
     "js-minify-standalone": "terser --compress typeofs=false --mangle --comments \"/^!/\" --source-map \"content=dist/js/tabler.js.map,includeSources,url=tabler.min.js.map\" --output dist/js/tabler.min.js dist/js/tabler.js",
     "js-minify-bundle": "terser --compress typeofs=false --mangle --comments \"/^!/\" --source-map \"content=dist/js/tabler.bundle.js.map,includeSources,url=tabler.bundle.min.js.map\" --output dist/js/tabler.bundle.min.js dist/js/tabler.bundle.js",
-    "svg-svgo": "svgo -f svg/feather/ --pretty",
-    "svg-iconfont": "mkdir -p svg-tmp && for i in svg/feather/*.svg;do N=`basename ${i}`; rsvg-convert svg/feather/$N -o svg-tmp/$N -f svg -w 1000; done && svgo ./svg-tmp/*.svg --disable={removeViewBox} && icon-font-generator ./svg-tmp/*.svg -o static/fonts/feather --html false --csstp build/feather.hbs --csspath scss/fonts/_feather.scss --center --normalize --name feather --types svg,ttf,woff,woff2 --json true --jsonpath pages/_data/feather.json --round 10e12 && rm -rf svg-tmp"
+    "svg-svgo": "svgo -f svg/fe --pretty && svgo -f svg/brand --pretty",
+    "svg-iconfont": "mkdir -p svg-tmp && for i in svg/*/*.svg;do N=`echo $i | sed -e 's/^svg\\///g' | sed -e 's/\\\\.svg$//g' | sed -e 's/\\//-/g'`; echo $i; rsvg-convert $i -o svg-tmp/$N.svg -f svg -w 1000; done && svgo ./svg-tmp/*.svg --disable={removeViewBox} && icon-font-generator ./svg-tmp/*.svg -o fonts/tabler-webfont --html false --csstp build/tabler-webfont.hbs --csspath scss/fonts/_tabler-webfont.scss --center --normalize --name tabler-webfont --types svg,eot,ttf,woff,woff2 --json false && rm -rf svg-tmp && node build/generate-font-codepoints.js"
   },
   "repository": {
     "type": "git",
@@ -72,7 +72,8 @@
     "stylelint": "9.10.1",
     "stylelint-config-twbs-bootstrap": "0.3.0",
     "svgo": "1.2.2",
-    "terser": "3.17.0"
+    "terser": "3.17.0",
+    "yaml": "1.6.0"
   },
   "dependencies": {
     "apexcharts": "3.6.2",
