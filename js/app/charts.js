@@ -93,7 +93,7 @@ if (window.Apex) {
     },
 
     legend: {
-      show: false
+      show: true
     },
 
     title: {
