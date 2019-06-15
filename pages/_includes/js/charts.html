@@ -26,14 +26,14 @@ $(document).ready(function(){
       },
       {% endif %}
 
-      {% if data.dashed-history or data.stroke-straight %}
+      {% if data.dashed-history or data.stroke-curve %}
       stroke: {
          {% if data.dashed-history %}
          width: [2, 1],
             dashArray: [0, 3],
          {% endif %}
-         {% if data.stroke-straight %}
-         curve: 'straight',
+         {% if data.stroke-curve %}
+         curve: '{{ data.stroke-curve }}',
          {% endif %}
       },
       {% endif %}
