@@ -87,11 +87,8 @@ if (window.Apex) {
       pie: {
         expandOnClick: false,
         dataLabels: {
-          offset: 36,
+          offset: -8,
           minAngleToShowLabel: 10,
-          style: {
-            color: 'red'
-          }
         },
       },
     },
