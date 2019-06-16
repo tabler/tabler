@@ -45,28 +45,13 @@ charts default configuration
  */
 if (window.Apex) {
 
+  var borderColor = 'rgba(0, 0, 0, 0.09)';
+  var mutedColor = '#888e9a';
+
   window.Apex = {
-    grid: {
-      show: false,
-      padding: {
-        right: 0,
-        left: 0,
-        bottom: 0,
-        top: 0
-      }
-    },
-
-    dataLabels: {
-      enabled: false
-    },
-
-    plotOptions: {
-      pie: {
-        expandOnClick: false,
-      },
-    },
-
     chart: {
+      fontFamily: 'inherit',
+      foreColor: 'inherit',
       toolbar: {
         show: false,
       },
@@ -76,6 +61,36 @@ if (window.Apex) {
       animations: {
         enabled: false,
       }
+    },
+
+    grid: {
+      show: false,
+      position: 'back',
+      borderColor: borderColor,
+      padding: {
+        right: 0,
+        left: 0,
+        bottom: 0,
+        top: 0
+      }
+    },
+
+    dataLabels: {
+      enabled: false,
+      offsetY: -6,
+      dropShadow: {
+        enabled: false,
+      },
+    },
+
+    plotOptions: {
+      pie: {
+        expandOnClick: false,
+        dataLabels: {
+          offset: -8,
+          minAngleToShowLabel: 10,
+        },
+      },
     },
 
     stroke: {
@@ -89,17 +104,30 @@ if (window.Apex) {
     },
 
     markers: {
-      strokeWidth: 1
+      size: 0,
+      strokeWidth: 1,
+      radius: 2,
+      hover: {
+        size: 4,
+      }
     },
 
     legend: {
-      show: true
+      show: true,
+      fontSize: '14px',
+      markers: {
+        width: 8,
+        height: 8
+      },
+      itemMargin: {
+        horizontal: 0,
+        vertical: 8
+      },
     },
 
     title: {
       style: {
         fontSize: '14px',
-        fontFamily: 'inherit'
       }
     },
 
@@ -109,13 +137,22 @@ if (window.Apex) {
 
     xaxis: {
       labels: {
-        show: false
+        style: {
+          colors: mutedColor,
+          fontSize: '12px',
+        }
       },
       tooltip: {
         enabled: false
       },
       axisBorder: {
-        show: false
+        color: borderColor,
+        height: 0
+      },
+      axisTicks: {
+        show: true,
+        height: 4,
+        color: borderColor
       }
     },
 

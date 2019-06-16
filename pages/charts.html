@@ -6,18 +6,10 @@ menu: charts
 	<div class="row row-cards">
 		{% for chart in site.data.charts %}
 		{% if chart[1].display %}
-		{% assign data = chart[0] %}
-		{% assign key = 'chart-' | append: data %}
+		{% assign chart-name = chart[0] %}
+		{% assign chart-data = chart[1] %}
 		<div class="col-lg-6 col-xl-4">
-			<div class="card">
-				<div class="card-header">
-					<h3 class="card-title">{{ chart[1].name }}</h3>
-				</div>
-				<div class="card-body">
-					<div id="{{ key }}" style="height: 16rem"></div>
-				</div>
-			</div>
-			{% include js/charts.html id=key chart-id=data %}
+			{% include cards/charts/card.html name=chart-name data=chart-data %}
 		</div>
 		{% endif %}
 		{% endfor %}
