@@ -25,15 +25,9 @@ We created this admin panel for everyone who wants to create any templates based
 
 <a href="https://www.npmjs.com/package/tabler-ui"><a href="#backers" alt="sponsors on Open Collective"><img src="https://opencollective.com/tabler/backers/badge.svg" /></a> <a href="#sponsors" alt="Sponsors on Open Collective"><img src="https://opencollective.com/tabler/sponsors/badge.svg" /></a> <img src="https://img.shields.io/npm/dt/tabler-ui.svg" alt="Total Downloads"></a> <a href="https://github.com/tabler/tabler/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/tabler-ui.svg" alt="License"></a> <a href="https://github.com/tabler/tabler/releases"><img src="https://img.shields.io/npm/v/tabler-ui.svg" alt="Latest Release"></a>
 
+## Feature requests
 
-## Documentation
-
-For full documentation, visit [tabler.github.io/tabler/docs](https://tabler.github.io/tabler/docs/index.html).
-
-
-## Development preview
-
-All changes made on `tabler-v1` branch are available on http://tabler.codecalm.net/dev/. Every change in the code automatically compiles the source code.
+https://tabler.canny.io/feature-requests
 
 ## Bugs and feature requests
 
