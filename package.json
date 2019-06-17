@@ -4,22 +4,23 @@
   "description": "Premium and Open Source dashboard template with responsive and high quality UI.",
   "scripts": {
     "start": "npm-run-all --parallel browsersync watch html-watch",
-    "build": "npm-run-all lint html-build css-compile js-compile",
+    "build": "npm-run-all html-build css js",
     "bundlesize": "bundlesize",
     "browsersync": "node build/browsersync.js",
     "html-watch": "JEKYLL_ENV=development bundle exec jekyll build --watch",
     "html-build": "JEKYLL_ENV=production bundle exec jekyll build",
     "lint": "npm-run-all --parallel js-lint css-lint",
+    "css": "npm-run-all css-compile css-prefix css-minify",
     "css-compile": "node-sass --output-style expanded --source-map true --source-map-contents true --precision 6 scss/tabler.scss dist/css/tabler.css",
     "css-prefix": "postcss --config build/postcss.config.js --replace \"dist/css/*.css\" \"!dist/css/*.min.css\"",
     "css-minify": "cleancss --level 1 --format breakWith=lf --source-map --source-map-inline-sources --output dist/css/tabler.min.css dist/css/tabler.css",
-    "css-copy": "cross-env-shell shx mkdir -p site/static/dist/ && cross-env-shell shx cp -r dist/css/ site/static/dist/",
     "css-lint": "stylelint \"scss/**/*.scss\" --cache --cache-location .cache/.stylelintcache",
     "css-main": "npm-run-all css-compile css-prefix",
     "css-main-build": "npm-run-all css-lint css-compile css-prefix css-minify",
     "watch": "npm-run-all --parallel watch-*",
     "watch-css": "nodemon --watch scss/ --ext scss --exec \"npm run css-main\"",
     "watch-js": "nodemon --watch js/ --ext js --exec \"npm run js-compile-standalone\"",
+    "js": "npm-run-all js-compile js-minify",
     "js-lint": "eslint --cache --cache-location .cache/.eslintcache js build/",
     "js-compile": "npm-run-all --parallel js-compile-* --sequential js-minify",
     "js-compile-standalone": "rollup --environment BUNDLE:false --config build/rollup.config.js --sourcemap",
@@ -81,5 +82,31 @@
     "bootstrap": "twbs/bootstrap#41fcd13",
     "imask": "5.1.5",
     "selectize": "0.12.6"
-  }
+  },
+  "bundlesize": [
+    {
+      "path": "./dist/css/tabler.css",
+      "maxSize": "50 kB"
+    },
+    {
+      "path": "./dist/css/tabler.min.css",
+      "maxSize": "45 kB"
+    },
+    {
+      "path": "./dist/js/tabler.js",
+      "maxSize": "2 kB"
+    },
+    {
+      "path": "./dist/js/tabler.min.js",
+      "maxSize": "1.5 kB"
+    },
+    {
+      "path": "./dist/js/tabler.bundle.js",
+      "maxSize": "1.5 kB"
+    },
+    {
+      "path": "./dist/js/tabler.bundle.min.js",
+      "maxSize": "1.1 kB"
+    }
+  ]
 }
