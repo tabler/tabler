@@ -85,6 +85,7 @@ if (window.Apex) {
 
     plotOptions: {
       pie: {
+        customScale: 1,
         expandOnClick: false,
         dataLabels: {
           offset: -8,
@@ -96,6 +97,7 @@ if (window.Apex) {
     stroke: {
       width: 2,
       curve: 'smooth',
+      lineCap: "round",
     },
 
     fill: {
@@ -126,9 +128,14 @@ if (window.Apex) {
     },
 
     title: {
+      margin: 0,
       style: {
         fontSize: '14px',
       }
+    },
+
+    subtitle: {
+      margin: 0,
     },
 
     tooltip: {

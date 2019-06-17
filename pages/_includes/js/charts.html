@@ -5,11 +5,12 @@
 <script>
 $(document).ready(function(){
    window.chart = window.chart || {};
-
-   window.ApexCharts && (window.chart["{{ include.chart-id }}"] = new ApexCharts(document.getElementById('{{ include.id }}'), {
+   
+   var el;
+   window.ApexCharts && (window.chart["{{ include.chart-id }}"] = new ApexCharts((el = document.getElementById('{{ include.id }}')), {
       chart: {
          type: '{{ data.type }}',
-         height: document.getElementById('{{ include.id }}').offsetHeight,
+         height: el.offsetHeight,
          {% if data.sparkline %}
          sparkline: {
             enabled: true
@@ -47,6 +48,12 @@ $(document).ready(function(){
          data: [{{ serie.data | join: ', '}}]
       }{% unless forloop.last %},{% endunless %}{% endfor %}],
       {% endif %}
+      {% endif %}
+
+      {% if data.type == 'pie' or data.type == 'donut' %}
+      pie: {
+         height: el.offsetHeight
+      },
       {% endif %}
 
       {% if data.show-grid %}
