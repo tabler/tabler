@@ -113,19 +113,19 @@ Create block level buttons—those that span the full width of a parent—by add
 Basic buttons are traditional buttons with borders and background with an extra commponent like an icon. You can place it either on the left or the right which ever you want with different color opitons.
 
 {% example html wrapper=btn-list %}
-<button type="button" class="btn btn-dark"><i class="fe fe-upload mr-2"></i>Upload</button>
-<button type="button" class="btn btn-warning"><i class="fe fe-heart mr-2"></i>I like</button>
-<button type="button" class="btn btn-success"><i class="fe fe-check mr-2"></i>I agree</button>
-<button type="button" class="btn btn-outline-primary"><i class="fe fe-plus mr-2"></i>More</button>
-<button type="button" class="btn btn-danger"><i class="fe fe-link mr-2"></i>Link</button>
-<button type="button" class="btn btn-info"><i class="fe fe-message-circle mr-2"></i>Comment</button>
+<button type="button" class="btn btn-dark"><i class="icon fe fe-upload mr-2"></i>Upload</button>
+<button type="button" class="btn btn-warning"><i class="icon fe fe-heart mr-2"></i>I like</button>
+<button type="button" class="btn btn-success"><i class="icon fe fe-check mr-2"></i>I agree</button>
+<button type="button" class="btn btn-outline-primary"><i class="icon fe fe-plus mr-2"></i>More</button>
+<button type="button" class="btn btn-danger"><i class="icon fe fe-link mr-2"></i>Link</button>
+<button type="button" class="btn btn-info"><i class="icon fe fe-message-circle mr-2"></i>Comment</button>
 {% endexample %}
 
 ### Social buttons
 
 {% example html wrapper=btn-list %} 
 {% for button in site.socials %}
-{% include ui/button.html color=button.name icon=button.name text=button.title provider="fas" %}
+{% include ui/button.html color=button.name icon=button.name text=button.title provider="brand" %}
 {% endfor %}
 {% endexample %}
 
@@ -133,7 +133,7 @@ You can use only icons.
 
 {% example html wrapper=btn-list %} 
 {% for button in site.socials %}
-{% include ui/button.html color=button.name icon=button.name provider="fas" %}
+{% include ui/button.html color=button.name icon=button.name provider="brand" %}
 {% endfor %}
 {% endexample %}
 
@@ -142,13 +142,13 @@ You can use only icons.
 Icon only button. Add `.btn-icon` class to remove unnecessary padding from button.
 
 {% example html wrapper=btn-list %} 
-<button type="button" class="btn btn-icon btn-primary"><i class="fe fe-activity"></i></button>
-<button type="button" class="btn btn-icon btn-primary btn-github"><i class="fe fe-github"></i></button>
-<button type="button" class="btn btn-icon btn-primary btn-success"><i class="fe fe-bell"></i></button>
-<button type="button" class="btn btn-icon btn-primary btn-warning"><i class="fe fe-star"></i></button>
-<button type="button" class="btn btn-icon btn-primary btn-danger"><i class="fe fe-trash"></i></button>
-<button type="button" class="btn btn-icon btn-primary btn-purple"><i class="fe fe-bar-chart"></i></button>
-<button type="button" class="btn btn-icon btn-primary btn-secondary"><i class="fe fe-git-merge"></i></button>
+<button type="button" class="btn btn-icon btn-primary"><i class="icon fe fe-activity"></i></button>
+<button type="button" class="btn btn-icon btn-primary btn-github"><i class="icon fe fe-github"></i></button>
+<button type="button" class="btn btn-icon btn-primary btn-success"><i class="icon fe fe-bell"></i></button>
+<button type="button" class="btn btn-icon btn-primary btn-warning"><i class="icon fe fe-star"></i></button>
+<button type="button" class="btn btn-icon btn-primary btn-danger"><i class="icon fe fe-trash"></i></button>
+<button type="button" class="btn btn-icon btn-primary btn-purple"><i class="icon fe fe-bar-chart"></i></button>
+<button type="button" class="btn btn-icon btn-primary btn-secondary"><i class="icon fe fe-git-merge"></i></button>
 {% endexample %}
 
 ### Button dropdown
@@ -158,7 +158,7 @@ Wrap the dropdown’s toggle (your button or link) and the dropdown menu within 
 {% example html wrapper=btn-list %}
 <div class="dropdown">
   <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
-     <i class="fe fe-calendar"></i>
+     <i class="icon fe fe-calendar"></i>
   </button>
   <div class="dropdown-menu">
     <a class="dropdown-item" href="javascript:void(0)">Dropdown link</a>
@@ -168,7 +168,7 @@ Wrap the dropdown’s toggle (your button or link) and the dropdown menu within 
 
 <div class="dropdown">
   <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
-     <i class="fe fe-calendar mr-2"></i>Show calendar
+     <i class="icon fe fe-calendar mr-2"></i>Show calendar
   </button>
   <div class="dropdown-menu">
     <a class="dropdown-item" href="javascript:void(0)">Dropdown link</a>
