@@ -20,13 +20,13 @@ const plugins = [
       'createClass',
       'inheritsLoose',
       'defineProperty',
-      'objectSpread'
-    ]
-  })
+      'objectSpread',
+    ],
+  }),
 ];
 
 const globals = {
-  'popper.js': 'Popper'
+  'popper.js': 'Popper',
 };
 
 if (BUNDLE) {
@@ -43,10 +43,10 @@ const rollupConfig = {
     banner,
     file: path.resolve(__dirname, `../dist/js/${fileDest}.js`),
     format: ESM ? 'esm' : 'umd',
-    globals
+    globals,
   },
   external,
-  plugins
+  plugins,
 };
 
 if (!ESM) {
