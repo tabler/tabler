@@ -10,12 +10,11 @@ bs.init({
       '/dist': 'dist',
       '/libs': 'static/libs',
       '/img': 'static/img',
-    }
+    },
   },
   files: ['tmp/**/*', 'dist/css/*.css', 'dist/js/*.js'],
   watchOptions: {
-    ignoreInitial: true
+    ignoreInitial: true,
   },
-  notify: false
+  notify: false,
 });
-

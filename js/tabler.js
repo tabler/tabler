@@ -1,21 +1,21 @@
 const tabler = {
-  colorVariation: function (color, variation) {
+  colorVariation: function(color, variation) {
     const colorValue = this.colors[color];
 
     if (colorValue) {
       switch (variation) {
-      case 'light':
-        return this.mixColors(colorValue, '#ffffff', 70);
-      case 'lighten':
-        return this.mixColors(colorValue, '#ffffff', 30);
-      case 'lightest':
-        return this.mixColors(colorValue, '#ffffff', 10);
-      case 'dark':
-        return this.mixColors(colorValue, '#000000', 80);
-      case 'darken':
-        return this.mixColors(colorValue, '#000000', 40);
-      case 'darkest':
-        return this.mixColors(colorValue, '#000000', 20);
+        case 'light':
+          return this.mixColors(colorValue, '#ffffff', 70);
+        case 'lighten':
+          return this.mixColors(colorValue, '#ffffff', 30);
+        case 'lightest':
+          return this.mixColors(colorValue, '#ffffff', 10);
+        case 'dark':
+          return this.mixColors(colorValue, '#000000', 80);
+        case 'darken':
+          return this.mixColors(colorValue, '#000000', 40);
+        case 'darkest':
+          return this.mixColors(colorValue, '#000000', 20);
       }
 
       return colorValue;
@@ -24,7 +24,7 @@ const tabler = {
     throw new Error('Wrong color: ' + color);
   },
 
-  hexToRgbA: function (hex, opacity) {
+  hexToRgbA: function(hex, opacity) {
     let c;
 
     opacity = opacity || 1;
@@ -40,7 +40,7 @@ const tabler = {
     throw new Error('Bad Hex');
   },
 
-  mixColors: function (color_1, color_2, weight) {
+  mixColors: function(color_1, color_2, weight) {
     color_1 = color_1.substr(1);
     color_2 = color_2.substr(1);
 
@@ -52,7 +52,7 @@ const tabler = {
       return parseInt(h, 16);
     }
 
-    weight = (typeof(weight) !== 'undefined') ? weight : 50;
+    weight = typeof weight !== 'undefined' ? weight : 50;
 
     let color = '#';
 
@@ -72,10 +72,14 @@ const tabler = {
     return color;
   },
 
-  toggleFullscreen: function (elem) {
+  toggleFullscreen: function(elem) {
     elem = elem || document.documentElement;
-    if (!document.fullscreenElement && !document.mozFullScreenElement &&
-      !document.webkitFullscreenElement && !document.msFullscreenElement) {
+    if (
+      !document.fullscreenElement &&
+      !document.mozFullScreenElement &&
+      !document.webkitFullscreenElement &&
+      !document.msFullscreenElement
+    ) {
       if (elem.requestFullscreen) {
         elem.requestFullscreen();
       } else if (elem.msRequestFullscreen) {
@@ -96,14 +100,13 @@ const tabler = {
         document.webkitExitFullscreen();
       }
     }
-  }
+  },
 };
 
-
-$(document).ready(function () {
+$(document).ready(function() {
   const $body = $('body');
 
-  $body.on('click', '[data-toggle="sidebar"]', function (e) {
+  $body.on('click', '[data-toggle="sidebar"]', function(e) {
     $body.toggleClass('sidebar-opened');
 
     e.preventDefault();
@@ -113,37 +116,34 @@ $(document).ready(function () {
   $('[data-toggle="tooltip"]').tooltip();
   $('[data-toggle="popover"]').popover();
 
-
   /*
   Autosize plugin
    */
-  if(window.autosize) {
+  if (window.autosize) {
     (function() {
-
-      var $elem = $('[data-toggle="autosize"]');
+      const $elem = $('[data-toggle="autosize"]');
 
       if ($elem) {
         $elem.each(function() {
           autosize($(this));
         });
       }
-
     })();
   }
 
   /*
   Imask plugin
    */
-  if(window.IMask) {
+  if (window.IMask) {
     (function() {
-      var $elem = $('[data-mask]');
+      const $elem = $('[data-mask]');
 
       if ($elem) {
         $elem.each(function() {
           IMask($(this).get(0), {
             mask: $(this).attr('data-mask'),
-            lazy: $(this).attr('data-mask-visible') === 'true'
-          })
+            lazy: $(this).attr('data-mask-visible') === 'true',
+          });
         });
       }
     })();
@@ -152,8 +152,8 @@ $(document).ready(function () {
   /**
    * Seelectize plugin
    */
-  if(jQuery && jQuery().selectize) {
-    var $elem = $('[data-selectize]');
+  if (jQuery && jQuery().selectize) {
+    const $elem = $('[data-selectize]');
 
     if ($elem) {
       $elem.selectize();
