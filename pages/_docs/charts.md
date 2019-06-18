@@ -6,8 +6,8 @@ menu: docs.charts
 ### c3.js charts 
 
 {% for chart in site.data.charts %}
-{% example html %}
 {% if chart[1].display %}
+{% example html %}
 {% assign data = chart[0] %}
 {% assign key = 'chart-' | append: data %}
 	<div class="card">
@@ -19,6 +19,6 @@ menu: docs.charts
 		</div>
 	</div>
 	{% include js/charts.html id=key chart-id=data %}
-{% endif %}
 {% endexample %}
+{% endif %}
 {% endfor %}
