@@ -22,6 +22,7 @@
   flex-direction: row;
 
   .nav-link {
+    display: flex;
     color: $text-muted;
     transition: .3s color;
 
@@ -81,7 +82,7 @@
 /**
 Navbar toggler
  */
-.navbar-toggler{
+.navbar-toggler {
   padding: 0;
   border: 0;
 }
@@ -89,7 +90,6 @@ Navbar toggler
 .navbar-toggler-icon {
   width: 2rem;
   height: 2rem;
-  background: red;
 }
 
 /**
@@ -134,6 +134,7 @@ Sidebar
     display: flex;
     align-items: center;
     color: $text-muted;
+    padding: 0;
     transition: .3s background, .3s box-shadow;
 
     &.active,
@@ -184,11 +185,12 @@ Sidebar
 
   .navbar-brand {
     text-align: center;
+    height: 3rem;
   }
 
   .navbar-heading {
     @extend .text-subheader;
-    margin: 0;
+    margin: 0 0 .5rem;
   }
 
   .navbar-nav {
@@ -236,8 +238,49 @@ Dark navbar
   width: $sidenav-folded-width;
   min-width: $sidenav-folded-width;
 
+  .navbar-brand {
+    width: 3rem;
+  }
+
+  .navbar-heading {
+    display: none;
+  }
+
   .nav-text {
     display: none;
+  }
+
+  .nav-link {
+    padding-top: 0;
+    padding-bottom: 0;
+
+    &[data-toggle="collapse"]:after {
+      content: none;
+    }
+  }
+
+  .nav-icon {
+    width: 3rem;
+    height: 3rem;
+    outline: 1px solid red;
+    font-size: px2rem(15px);
+    opacity: 1;
+  }
+}
+
+.nav-icon {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 1rem;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 100%;
+  flex-shrink: 0;
+  opacity: .8;
+
+  .icon {
+    font-size: inherit;
   }
 }
 
