@@ -1,4 +1,3 @@
-
 .navbar {
   background: #fff;
   color: $body-color;
@@ -21,7 +20,6 @@
 
 .navbar-nav {
   flex-direction: row;
-  margin: 0 (-$navbar-nav-link-padding-x);
 
   .nav-link {
     color: $text-muted;
@@ -124,6 +122,9 @@ Sidebar
   user-select: none;
   flex-direction: column;
   align-items: inherit;
+  margin: 0;
+  pointer-events: inherit;
+  justify-content: start;
 
   .nav {
     flex-direction: column;
@@ -167,7 +168,7 @@ Sidebar
     }
   }
 
-  &:not(.sidenav-folded) {
+  &:not(.hide-navbar-folded) {
     .nav-item .nav-item .nav-link {
       padding-left: 2.5rem;
     }
@@ -181,19 +182,12 @@ Sidebar
     }
   }
 
-  .nav-link-title {
-    display: flex;
-    width: 100%;
-    align-items: center;
-  }
-
   .navbar-brand {
     text-align: center;
   }
 
   .navbar-heading {
     @extend .text-subheader;
-    padding: .5rem $sidenav-link-padding-x;
     margin: 0;
   }
 
@@ -238,17 +232,32 @@ Dark navbar
   }
 }
 
-/**
-Utils
- */
-.hide-sidenav-folded {
-  @at-root .sidenav.sidenav-folded & {
+.navbar-folded {
+  width: $sidenav-folded-width;
+  min-width: $sidenav-folded-width;
+
+  .nav-text {
     display: none;
   }
 }
 
-.hide-sidenav-expanded {
-  @at-root .sidenav:not(.sidenav-folded) & {
+.nav-text {
+  display: flex;
+  width: 100%;
+  align-items: center;
+}
+
+/**
+Utils
+ */
+.hide-navbar-folded {
+  @at-root .navbar-side.navbar-folded & {
+    display: none;
+  }
+}
+
+.hide-navbar-expanded {
+  @at-root .navbar-side:not(.navbar-folded) & {
     display: none;
   }
 }
