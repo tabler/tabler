@@ -4,22 +4,18 @@
   border-bottom: 1px solid $border-color;
   display: flex;
   min-height: 3.5rem;
-  padding: .75rem .75rem;
   width: 100%;
 
   .nav-link {
     color: inherit;
     white-space: nowrap;
-
-    .icon {
-      font-size: 0.875rem;
-      vertical-align: top;
-    }
   }
 }
 
 .navbar-nav {
   flex-direction: row;
+  margin-left: -($navbar-padding-x);
+  margin-right: -($navbar-padding-x);
 
   .nav-link {
     display: flex;
@@ -59,6 +55,9 @@
   }
 }
 
+/**
+Navbar brand
+ */
 .navbar-brand {
   display: flex;
   align-items: center;
@@ -134,7 +133,8 @@ Sidebar
     display: flex;
     align-items: center;
     color: $text-muted;
-    padding: 0;
+    height: 2.5rem;
+    padding: 0 $navbar-padding-x;
     transition: .3s background, .3s box-shadow;
 
     &.active,
@@ -185,7 +185,7 @@ Sidebar
 
   .navbar-brand {
     text-align: center;
-    height: 3rem;
+    height: 2.5rem;
   }
 
   .navbar-heading {
@@ -224,7 +224,7 @@ Dark navbar
   }
 
   .nav-link {
-    color: $text-muted-light;
+    color: inherit;
 
     &.active,
     &:hover {
@@ -239,7 +239,7 @@ Dark navbar
   min-width: $sidenav-folded-width;
 
   .navbar-brand {
-    width: 3rem;
+    width: 2.5rem;
   }
 
   .navbar-heading {
@@ -253,6 +253,7 @@ Dark navbar
   .nav-link {
     padding-top: 0;
     padding-bottom: 0;
+    justify-content: center;
 
     &[data-toggle="collapse"]:after {
       content: none;
@@ -260,9 +261,7 @@ Dark navbar
   }
 
   .nav-icon {
-    width: 3rem;
-    height: 3rem;
-    outline: 1px solid red;
+    width: 1.5rem;
     font-size: px2rem(15px);
     opacity: 1;
   }
@@ -270,14 +269,12 @@ Dark navbar
 
 .nav-icon {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: 1rem;
-  width: 2rem;
-  height: 2rem;
+  width: 1.5rem;
   border-radius: 100%;
   flex-shrink: 0;
   opacity: .8;
+  font-size: px2rem(15px);
+  align-items: center;
 
   .icon {
     font-size: inherit;
