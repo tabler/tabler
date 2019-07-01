@@ -2,14 +2,12 @@
 layout: base
 ---
 
-{% include layout/topnav.html dark=page.header-dark sticky=true fluid=true %}
-
 <div class="d-flex flex-row">
    {% if page.nav-position == "left" or page.nav-position == "right" %}
-   {% include layout/sidenav.html dark=page.sidenav-dark folded=page.sidenav-folded %}
+   {% include layout/sidenav.html dark=page.sidenav-dark folded=page.sidenav-folded fixed=true %}
    {% endif %}
 
-   <main class="d-flex flex-column flex-fill max-w-full">
+   <div class="layout-main d-flex flex-column flex-fill max-w-full">
       {% include layout/topnav.html dark=page.header-dark sticky=page.header-sticky %}
 
       {% if page.nav-position == "top" or page.nav-position == "all" %}
@@ -20,10 +18,10 @@ layout: base
       </div>
       {% endif %}
 
-      <div class="container{% if page.container-size %} container-{{ page.container-size }}{% endif %}{% if page.fluid %}-fluid{% endif %} my-4">
+      <main class="container{% if page.container-size %} container-{{ page.container-size }}{% endif %}{% if page.fluid %}-fluid{% endif %} my-4">
          <!--{% include layout/page-title.html %}-->
 
          {{ content }}
-      </div>
-   </main>
+      </main>
+   </div>
 </div>
