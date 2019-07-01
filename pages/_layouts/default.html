@@ -2,35 +2,28 @@
 layout: base
 ---
 
-{% if page.header-primary %}
-   {% include layout/topnav.html dark=page.header-dark sticky=page.header-sticky %}
-{% endif %}
+{% include layout/topnav.html dark=page.header-dark sticky=true fluid=true %}
 
-<div class="d-flex h-auto min-h-screen">
-   <div class="d-flex flex-fill">
-      {% if page.nav-position == "all" %}
-      {% include layout/sidenav.html dark=true folded=true %}
-      {% endif %}
+<div class="d-flex flex-row">
+   {% if page.nav-position == "left" or page.nav-position == "right" %}
+   {% include layout/sidenav.html dark=page.sidenav-dark folded=page.sidenav-folded %}
+   {% endif %}
 
-      {% if page.nav-position == "left" or page.nav-position == "right" or page.nav-position == "all"  %}
-      {% include layout/sidenav.html dark=page.sidenav-dark folded=page.sidenav-folded %}
-      {% endif %}
+   <main class="d-flex flex-column flex-fill max-w-full">
+      {% include layout/topnav.html dark=page.header-dark sticky=page.header-sticky %}
 
-      <div class="main-content flex-fill d-flex flex-column max-w-full">
-         {% unless page.header-primary %}
-         {% include layout/topnav.html dark=page.header-dark sticky=page.header-sticky %}
-         {% endunless %}
-
-         <div class="d-flex flex-fill max-w-full">
-
-            <div class="flex-fill px-lg-2 mw-100{% if page.blank %} d-flex align-items-center{% endif %}">
-               <div class="container{% if page.container-size %} container-{{ page.container-size }}{% endif %}{% if page.fluid %}-fluid{% endif %} my-4">
-                  {% include layout/page-title.html %}
-
-                  {{ content }}
-               </div>
-            </div>
+      {% if page.nav-position == "top" or page.nav-position == "all" %}
+      <div class="d-none d-lg-flex navbar navbar-expand-md">
+         <div class="container">
+            {% include layout/menu.html top=true %}
          </div>
       </div>
-   </div>
+      {% endif %}
+
+      <div class="container{% if page.container-size %} container-{{ page.container-size }}{% endif %}{% if page.fluid %}-fluid{% endif %} my-4">
+         <!--{% include layout/page-title.html %}-->
+
+         {{ content }}
+      </div>
+   </main>
 </div>
