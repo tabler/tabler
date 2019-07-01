@@ -138,9 +138,8 @@ Sidebar
     box-shadow: inset 2px 0 0 0 transparent;
     transition: .3s background, .3s box-shadow;
 
-    &.active,
+    &[aria-expanded=true],
     &:hover {
-      color: $body-color;
       background: rgba($link-color, .04);
       border-color: $primary;
       box-shadow: inset 2px 0 0 0 $primary;
@@ -151,11 +150,6 @@ Sidebar
     }
 
     &[data-toggle="collapse"] {
-      &.active {
-        background: none;
-        box-shadow: none;
-      }
-
       &:after {
         display: block;
         font-family: $font-icons !important;
@@ -167,6 +161,13 @@ Sidebar
       &[aria-expanded="true"]:after {
         transform: rotate(-180deg);
       }
+    }
+  }
+
+  &:not(.navbar-folded) {
+    &[data-toggle="collapse"][aria-expanded=true] {
+      background: none;
+      box-shadow: none;
     }
   }
 
@@ -226,12 +227,6 @@ Dark navbar
 
   .nav-link {
     color: inherit;
-
-    &.active,
-    &:hover {
-      color: $white;
-      background: rgba($white, .04);
-    }
   }
 }
 
@@ -282,6 +277,21 @@ Folded navbar
     font-size: px2rem(15px);
     opacity: 1;
     justify-content: center;
+  }
+
+  .navbar-subnav {
+    position: absolute;
+    left: 100%;
+    top: 0;
+    background: #fff;
+
+    .nav-text {
+      display: block;
+    }
+
+    .nav-link {
+      color: $body-color;
+    }
   }
 }
 
