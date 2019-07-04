@@ -1,29 +1,24 @@
-
 .navbar {
   background: #fff;
   color: $body-color;
   border-bottom: 1px solid $border-color;
   display: flex;
   min-height: 3.5rem;
-  padding: .75rem .75rem;
   width: 100%;
 
   .nav-link {
     color: inherit;
     white-space: nowrap;
-
-    .icon {
-      font-size: 0.875rem;
-      vertical-align: top;
-    }
   }
 }
 
 .navbar-nav {
   flex-direction: row;
-  margin: 0 (-$navbar-nav-link-padding-x);
+  margin-left: -($navbar-padding-x);
+  margin-right: -($navbar-padding-x);
 
   .nav-link {
+    display: flex;
     color: $text-muted;
     transition: .3s color;
 
@@ -60,6 +55,9 @@
   }
 }
 
+/**
+Navbar brand
+ */
 .navbar-brand {
   display: flex;
   align-items: center;
@@ -83,7 +81,7 @@
 /**
 Navbar toggler
  */
-.navbar-toggler{
+.navbar-toggler {
   padding: 0;
   border: 0;
 }
@@ -91,7 +89,6 @@ Navbar toggler
 .navbar-toggler-icon {
   width: 2rem;
   height: 2rem;
-  background: red;
 }
 
 /**
@@ -124,6 +121,9 @@ Sidebar
   user-select: none;
   flex-direction: column;
   align-items: inherit;
+  margin: 0;
+  pointer-events: inherit;
+  justify-content: start;
 
   .nav {
     flex-direction: column;
@@ -133,11 +133,13 @@ Sidebar
     display: flex;
     align-items: center;
     color: $text-muted;
+    height: 2.5rem;
+    padding: 0 $navbar-padding-x;
+    box-shadow: inset 2px 0 0 0 transparent;
     transition: .3s background, .3s box-shadow;
 
-    &.active,
+    &[aria-expanded=true],
     &:hover {
-      color: $body-color;
       background: rgba($link-color, .04);
       border-color: $primary;
       box-shadow: inset 2px 0 0 0 $primary;
@@ -148,11 +150,6 @@ Sidebar
     }
 
     &[data-toggle="collapse"] {
-      &.active {
-        background: none;
-        box-shadow: none;
-      }
-
       &:after {
         display: block;
         font-family: $font-icons !important;
@@ -167,7 +164,14 @@ Sidebar
     }
   }
 
-  &:not(.sidenav-folded) {
+  &:not(.navbar-folded) {
+    &[data-toggle="collapse"][aria-expanded=true] {
+      background: none;
+      box-shadow: none;
+    }
+  }
+
+  &:not(.hide-navbar-folded) {
     .nav-item .nav-item .nav-link {
       padding-left: 2.5rem;
     }
@@ -181,24 +185,35 @@ Sidebar
     }
   }
 
-  .nav-link-title {
-    display: flex;
-    width: 100%;
-    align-items: center;
-  }
-
   .navbar-brand {
     text-align: center;
+    height: 2.5rem;
   }
 
   .navbar-heading {
     @extend .text-subheader;
-    padding: .5rem $sidenav-link-padding-x;
-    margin: 0;
+    margin: 0 0 .5rem;
   }
 
   .navbar-nav {
     flex-direction: column;
+  }
+}
+
+/*
+Fixed navbar
+ */
+.navbar-fixed {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+
+  & + .layout-main {
+    margin-left: $sidenav-width;
+  }
+
+  &.navbar-folded + .layout-main {
+    margin-left: $sidenav-folded-width;
   }
 }
 
@@ -228,27 +243,111 @@ Dark navbar
   }
 
   .nav-link {
-    color: $text-muted-light;
+    color: inherit;
+  }
+}
 
-    &.active,
-    &:hover {
-      color: $white;
-      background: rgba($white, .04);
+/**
+Sticky navbar
+ */
+.navbar-sticky {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+
+  &.navbar-side {
+    left: 0;
+  }
+}
+
+/**
+Folded navbar
+ */
+.navbar-folded {
+  width: $sidenav-folded-width;
+  min-width: $sidenav-folded-width;
+
+  .navbar-brand {
+    width: 2.5rem;
+  }
+
+  .navbar-heading {
+    display: none;
+  }
+
+  .nav-text {
+    display: none;
+  }
+
+  .nav-link {
+    padding-top: 0;
+    padding-bottom: 0;
+    justify-content: center;
+
+    &[data-toggle="collapse"]:after {
+      content: none;
     }
   }
+
+  .nav-icon {
+    width: 1.5rem;
+    font-size: px2rem(15px);
+    opacity: 1;
+    justify-content: center;
+  }
+
+  .navbar-subnav {
+    position: absolute;
+    left: 100%;
+    top: 0;
+    background: #fff;
+
+    .nav-text {
+      display: block;
+    }
+
+    .nav-link {
+      color: $body-color;
+    }
+  }
+}
+
+.nav-icon {
+  display: flex;
+  width: 1.75rem;
+  border-radius: 100%;
+  flex-shrink: 0;
+  opacity: .8;
+  font-size: px2rem(15px);
+  align-items: center;
+
+  .icon {
+    font-size: inherit;
+  }
+}
+
+.nav-text {
+  display: flex;
+  width: 100%;
+  align-items: center;
 }
 
 /**
 Utils
  */
-.hide-sidenav-folded {
-  @at-root .sidenav.sidenav-folded & {
+.hide-navbar-folded {
+  @at-root .navbar-side.navbar-folded & {
     display: none;
   }
 }
 
-.hide-sidenav-expanded {
-  @at-root .sidenav:not(.sidenav-folded) & {
+.hide-navbar-expanded {
+  @at-root .navbar-side:not(.navbar-folded) & {
     display: none;
   }
+}
+
+
+.navbar-toggler-icon {
+  outline: 1px solid red;
 }

@@ -5,8 +5,10 @@
    {% assign icon = level-1[1].icon %}
    <li class="nav-item">
       <a class="nav-link{% if level-1[0] == current-page[0] %} active{% endif %}" {% if level-1[1].children or level-1[1].docs %}href="#sidebar-{{ level-1[0] }}" data-toggle="collapse" data-parent="#menu" role="button" aria-expanded="{% if level-1[0] == current-page[0] %}true{% else %}false{% endif %}"{% else %}href="{{ site.base }}/{{ level-1[1].url }}"{% endif %}>
-         {% include ui/icon.html icon=icon  %}
-         <span class="nav-link-title">
+         <span class="nav-icon">
+            {% include ui/icon.html icon=icon  %}
+         </span>
+         <span class="nav-text">
             {{ level-1[1].title }}
 
             {% unless include.top %}
@@ -17,7 +19,7 @@
          </span>
       </a>
       {% if level-1[1].children or level-1[1].docs %}
-      <div class="navbar-subnav collapse{% if level-1[0] == current-page[0] %} show{% endif %}" id="sidebar-{{ level-1[0] }}">
+      <div class="navbar-subnav collapse" id="sidebar-{{ level-1[0] }}">
          <ul class="nav">
 
             {% if level-1[1].docs %}
@@ -26,7 +28,7 @@
             {% if doc %}
             <li class="nav-item">
                <a href="{{ site.base }}/docs/{{ doc.slug }}.html" class="nav-link{% if current-page[0] == 'docs' and current-page[1] == doc.slug %} active{% endif %}">
-                  <span class="nav-link-title">
+                  <span class="nav-text">
                      {{ doc.title }}
 
                      {% if doc.new %}
@@ -42,7 +44,7 @@
             {% for level-2 in level-1[1].children %}
             <li class="nav-item">
                <a class="nav-link{% if level-2[0] == current-page[1] %} active{% endif %}" {% if level-2[1].children %}href="#sidebar-{{ level-2[0] }}" data-toggle="collapse" role="button" aria-expanded="false"{% else %}href="{{ site.base }}/{{ level-2[1].url }}"{% endif %}>
-                  <span class="nav-link-title">
+                  <span class="nav-text">
                      {{ level-2[1].title }}
                      {% if level-2[1].label %}
                         <span class="badge bg-{{ level-2[1].label-color | default: 'primary' }} text-white ml-auto">{{ level-2[1].label }}</span>
@@ -50,12 +52,12 @@
                   </span>
                </a>
                {% if level-2[1].children %}
-               <div class="navbar-subnav collapse{% if level-2[0] == current-page[1] %} show{% endif %}" id="sidebar-{{ level-2[0] }}">
+               <div class="navbar-subnav collapse" id="sidebar-{{ level-2[0] }}">
                   <ul class="nav nav-sm flex-column">
                      {% for level-3 in level-2[1].children %}
                      <li class="nav-item">
                         <a class="nav-link{% if level-3[0] == current-page[2] %} active{% endif %}" {% if level-3[1].children %}href="#sidebar-{{ level-3[0] }}" data-toggle="collapse" role="button" aria-expanded="false"{% else %}href="{{ site.base }}/{{ level-3[1].url }}"{% endif %}>
-                           <span class="nav-link-title">
+                           <span class="nav-text">
                               {{ level-3[1].title }}
                               {% if level-3[1].label %}
                                  <span class="badge bg-{{ level-3[1].label-color | default: 'primary' }} text-white ml-auto">{{ level-3[1].label }}</span>
@@ -64,12 +66,12 @@
                         </a>
 
                         {% if level-3[1].children %}
-                        <div class="navbar-subnav collapse{% if level-3[0] == current-page[2] %} show{% endif %}" id="sidebar-{{ level-3[0] }}">
+                        <div class="navbar-subnav collapse" id="sidebar-{{ level-3[0] }}">
                            <ul class="nav nav-sm flex-column">
                               {% for level-4 in level-3[1].children %}
                               <li class="nav-item">
                                  <a class="nav-link{% if level-4[0] == current-page[3] %} active{% endif %}" href="{% if level-4[1].url %}{{ site.base }}/{{ level-4[1].url }}{% else %}#{% endif %}">
-                                    <span class="nav-link-title">
+                                    <span class="nav-text">
                                        {{ level-4[1].title }}
                                        {% if level-4[1].label %}
                                           <span class="badge bg-{{ level-4[1].label-color | default: 'primary' }} text-white ml-auto">{{ level-4[1].label }}</span>
