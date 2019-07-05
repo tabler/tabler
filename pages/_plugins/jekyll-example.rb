@@ -5,11 +5,6 @@ module Jekyll
     class ExampleBlock < Liquid::Block
       include Liquid::StandardFilters
 
-      # The regular expression syntax checker. Start with the language specifier.
-      # Follow that by zero or more space separated options that take one of three
-      # forms: name, name=value, or name="<quoted list>"
-      #
-      # <quoted list> is a space-separated list of numbers
       SYNTAX = /^([a-zA-Z0-9.+#-]+)((\s+\w+(=((\w|[0-9_-])+|"([0-9]+\s)*[0-9]+"))?)*)$/
 
       def initialize(tag_name, markup, tokens)
@@ -63,6 +58,8 @@ Valid syntax: example <lang> [id=foo]
       end
 
       def example(output)
+        output = output.gsub(/<hide>/, "").gsub(/<\/hide>/, "")
+
         "<div class=\"example" + (@options[:columns] ? " example-bg" : "") + "\"" + (@options[:id] ? " data-example-id=\"#{@options[:id]}\"" : "") + ">\n" + (@options[:columns] ? "<div class=\"example-column example-column-" + @options[:columns] + "\">\n" : "") + (@options[:wrapper] ? "<div class=\"" + @options[:wrapper] + "\">\n" : "") + "#{output}" + (@options[:wrapper] ? "\n</div>" : "") + (@options[:columns] ? "\n</div>" : "") + "\n</div>"
       end
 
@@ -80,6 +77,7 @@ Valid syntax: example <lang> [id=foo]
         formatter = Rouge::Formatters::HTML.new(line_numbers: @options[:linenos], wrap: false)
         lexer = Rouge::Lexer.find_fancy(@lang, code) || Rouge::Lexers::PlainText
         code = remove_example_classes(code)
+        code = code.gsub(/<hide>.*?<\/hide>/, "")
         code = formatter.format(lexer.lex(code))
         code = code.strip.gsub /^[\t\s]*$\n/, ''
         code = code.gsub /\t/, "\s\s"

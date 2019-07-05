@@ -4,18 +4,77 @@ menu: docs.typography
 description: Documentation and examples for common text utilities to control alignment, wrapping, weight, and more.
 ---
 
-## Text alignment
-
-Easily realign text to components with text alignment classes.
+### Headings
 
 {% example %}
-<p class="text-left">Left aligned text on all viewport sizes.</p>
-<p class="text-center">Center aligned text on all viewport sizes.</p>
-<p class="text-right">Right aligned text on all viewport sizes.</p>
-<p class="text-justify">Both aligned text on all viewport sizes. Ambitioni dedisse scripsisse iudicaretur. Cras mattis iudicium purus sit amet fermentum. Donec sed odio operae, eu vulputate felis rhoncus.</p>
+{% for i in (1..6) %}<h{{ i }}>H{{ i }} Heading</h{{ i }}>
+{% endfor %}
 {% endexample %}
 
-## Text transform
+### Paragraphs
+
+{% example %}
+<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>
+<p>At vero eos et accusam et justo duo dolores et ea rebum.</p>
+{% endexample %}
+
+### Semantic text elements
+
+{% example %}
+<abbr title="Internationalization">I18N</abbr><hide> <code class="ml-2">abbr</code><br /></hide>
+<strong>Bold</strong><hide> <code class="ml-2">strong</code> <code>b</code><br /></hide>
+<cite>Citation</cite><hide> <code class="ml-2">cite</code><br /></hide>
+<code>Hello World!</code><hide> <code class="ml-2">code</code><br /></hide>
+<del>Deleted</del><hide> <code class="ml-2">del</code><br /></hide>
+<em>Emphasis</em><hide> <code class="ml-2">em</code><br /></hide>
+<i>Italic</i><hide> <code class="ml-2">i</code><br /></hide>
+<ins>Inserted</ins><hide> <code class="ml-2">ins</code><br /></hide>
+<kbd>Ctrl + S</kbd><hide> <code class="ml-2">kbd</code><br /></hide>
+<mark>Highlighted</mark><hide> <code class="ml-2">mark</code><br /></hide>
+<s>Strikethrough</s<hide>> <code class="ml-2">s</code><br /></hide>
+<samp>Sample</samp><hide> <code class="ml-2">samp</code><br /></hide>
+Text <sub>Subscripted</sub><hide> <code class="ml-2">sub</code><br /></hide>
+Text <sup>Superscripted</sup><hide> <code class="ml-2">sup</code><br /></hide>
+<time>20:00</time><hide> <code class="ml-2">time</code><br /></hide>
+<u>Underline</u><hide> <code class="ml-2">u</code><br /></hide>
+<var>x</var> = <var>y</var> + 2<hide> <code class="ml-2">var</code><br /></hide>
+{% endexample %}
+
+### Optimized for Asian, African, and Middle Eastern alphabets
+
+{% example %}
+<h5>Chinese</h5>
+<p>汉字</p>
+
+<h5>Japanese</h5>
+<p>日本語の表記体系</p>
+
+<h5>Korean</h5>
+<p>한글</p>
+
+<h5>Cyrillic</h5>
+<p>Кириллица</p>
+
+<h5>Greek</h5>
+<p>Eλληνική</p>
+
+<h5>Georgian</h5>
+<p>ქართული დამწერლობა</p>
+
+<h5>Armenian</h5>
+<p>Հայերենի այբուբեն</p>
+
+<h5>Arabic</h5>
+<p>الحروف العربية</p>
+
+<h5>Hebrew</h5>
+<p>אלפבית עברי</p>
+
+<h5>Thai</h5>
+<p>อักษรไทย</p>
+{% endexample %}
+
+### Text transform
 
 Transform text in components with text capitalization classes.
 
@@ -25,7 +84,7 @@ Transform text in components with text capitalization classes.
 <p class="text-capitalize">Capitalized text.</p>
 {% endexample %}
 
-## Letter spacing
+### Letter spacing
 
 Utilities for controlling the tracking (letter spacing) of an element.
 
@@ -35,7 +94,7 @@ Utilities for controlling the tracking (letter spacing) of an element.
 <p class="tracking-wide">Lorem ipsum dolor sit amet. Wide letter spacing.</p>
 {% endexample %}
 
-## Line Height
+### Line Height
 
 Utilities for controlling the leading (line height) of an element.
 
@@ -46,7 +105,7 @@ Utilities for controlling the leading (line height) of an element.
 <p class="leading-loose">Lorem ipsum dolor sit amet.<br>Dolor sit amet.</p>
 {% endexample %}
 
-## Antialiasing
+### Antialiasing
 
 Utilities for controlling the font smoothing of an element.
 
@@ -57,7 +116,7 @@ Use the `.antialiased` utility to render text using subpixel antialiasing or use
 <div class="subpixel-antialiased">Text without antialiasing</div>
 {% endexample %}
 
-## Markdown elements
+### Markdown elements
 
 When you can't use the CSS classes you want, or when you just want to directly use HTML tags, use `.markdown` as container. It can handle almost any HTML tag.
 
