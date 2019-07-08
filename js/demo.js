@@ -30,11 +30,13 @@ class TablerDemo {
   getConfig = function () {
     return {
       colorScheme: (localStorage.getItem('tablerColorScheme')) ? localStorage.getItem('tablerColorScheme') : 'light',
-      sidebarColor: (localStorage.getItem('tablerSidebarColor')) ? localStorage.getItem('tablerSidebarColor') : 'light',
-      headerColor: (localStorage.getItem('tablerHeaderColor')) ? localStorage.getItem('tablerHeaderColor') : 'light',
       navPosition: (localStorage.getItem('tablerNavPosition')) ? localStorage.getItem('tablerNavPosition') : 'side',
+      headerColor: (localStorage.getItem('tablerHeaderColor')) ? localStorage.getItem('tablerHeaderColor') : 'light',
+      headerFixed: (localStorage.getItem('tablerHeaderFixed')) ? localStorage.getItem('tablerHeaderFixed') : 'default',
+      sidebarColor: (localStorage.getItem('tablerSidebarColor')) ? localStorage.getItem('tablerSidebarColor') : 'dark',
       sidebarSize: (localStorage.getItem('tablerSidebarSize')) ? localStorage.getItem('tablerSidebarSize') : 'default',
-      sidebarPosition: (localStorage.getItem('tablerSidebarPosition')) ? localStorage.getItem('tablerSidebarPosition') : 'left'
+      sidebarPosition: (localStorage.getItem('tablerSidebarPosition')) ? localStorage.getItem('tablerSidebarPosition') : 'left',
+      sidebarFixed: (localStorage.getItem('tablerSidebarFixed')) ? localStorage.getItem('tablerSidebarFixed') : 'fixed',
     };
   };
 
@@ -55,10 +57,12 @@ class TablerDemo {
 
     this.toggleColorScheme(form.querySelector('[name="color-scheme"]:checked').value);
     this.toggleNavPosition(form.querySelector('[name="nav-position"]:checked').value);
-    this.toggleSidebarPosition(form.querySelector('[name="sidebar-position"]:checked').value);
+    this.toggleHeaderColor(form.querySelector('[name="header-color"]:checked').value);
+    this.toggleHeaderFixed(form.querySelector('[name="header-fixed"]:checked').value);
     this.toggleSidebarSize(form.querySelector('[name="sidebar-size"]:checked').value);
     this.toggleSidebarColor(form.querySelector('[name="sidebar-color"]:checked').value);
-    this.toggleHeaderColor(form.querySelector('[name="header-color"]:checked').value);
+    this.toggleSidebarPosition(form.querySelector('[name="sidebar-position"]:checked').value);
+    this.toggleSidebarFixed(form.querySelector('[name="sidebar-fixed"]:checked').value);
   };
 
   initFormControls = function() {
@@ -66,10 +70,12 @@ class TablerDemo {
 
     this.toggleColorScheme(config.colorScheme);
     this.toggleNavPosition(config.navPosition);
+    this.toggleHeaderColor(config.headerColor);
+    this.toggleHeaderFixed(config.headerFixed);
     this.toggleSidebarPosition(config.sidebarPosition);
     this.toggleSidebarSize(config.sidebarSize);
     this.toggleSidebarColor(config.sidebarColor);
-    this.toggleHeaderColor(config.headerColor);
+    this.toggleSidebarFixed(config.sidebarFixed);
   };
 
   setFormValue = function(name, value,) {
@@ -142,6 +148,18 @@ class TablerDemo {
     });
   };
 
+  toggleSidebarFixed(fixed) {
+    return this.setConfig('sidebarFixed', fixed, ['fixed', 'default'], () => {
+      if (fixed === 'fixed') {
+        document.querySelector('.js-sidebar').classList.add('navbar-fixed');
+      } else {
+        document.querySelector('.js-sidebar').classList.remove('navbar-fixed');
+      }
+
+      this.setFormValue('sidebar-fixed', fixed);
+    });
+  };
+
   toggleHeaderColor(color) {
     return this.setConfig('headerColor', color, ['dark', 'light'], () => {
       if (color === 'dark') {
@@ -151,6 +169,18 @@ class TablerDemo {
       }
 
       this.setFormValue('header-color', color);
+    });
+  };
+
+  toggleHeaderFixed(fixed) {
+    return this.setConfig('headerFixed', fixed, ['fixed', 'default'], () => {
+      if (fixed === 'fixed') {
+        document.querySelector('.js-header').classList.add('navbar-fixed');
+      } else {
+        document.querySelector('.js-header').classList.remove('navbar-fixed');
+      }
+
+      this.setFormValue('header-fixed', fixed);
     });
   };
 }
