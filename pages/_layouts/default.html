@@ -3,20 +3,16 @@ layout: base
 ---
 
 <div class="d-flex flex-row">
-   {% if page.nav-position == "left" or page.nav-position == "right" %}
    {% include layout/sidenav.html dark=page.sidenav-dark folded=page.sidenav-folded fixed=true %}
-   {% endif %}
 
    <div class="layout-main d-flex flex-column flex-fill max-w-full">
       {% include layout/topnav.html dark=page.header-dark sticky=page.header-sticky %}
 
-      {% if page.nav-position == "top" or page.nav-position == "all" %}
       <div class="d-none d-lg-flex navbar navbar-expand-md">
          <div class="container">
             {% include layout/menu.html top=true %}
          </div>
       </div>
-      {% endif %}
 
       <main class="container{% if page.container-size %} container-{{ page.container-size }}{% endif %}{% if page.fluid %}-fluid{% endif %} my-4">
          <!--{% include layout/page-title.html %}-->
