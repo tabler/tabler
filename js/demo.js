@@ -58,7 +58,7 @@ class TablerDemo {
     this.toggleColorScheme(form.querySelector('[name="color-scheme"]:checked').value);
     this.toggleNavPosition(form.querySelector('[name="nav-position"]:checked').value);
     this.toggleHeaderColor(form.querySelector('[name="header-color"]:checked').value);
-    this.toggleHeaderFixed(form.querySelector('[name="header-fixed"]:checked').value);
+    // this.toggleHeaderFixed(form.querySelector('[name="header-fixed"]:checked').value);
     this.toggleSidebarSize(form.querySelector('[name="sidebar-size"]:checked').value);
     this.toggleSidebarColor(form.querySelector('[name="sidebar-color"]:checked').value);
     this.toggleSidebarPosition(form.querySelector('[name="sidebar-position"]:checked').value);
@@ -71,7 +71,7 @@ class TablerDemo {
     this.toggleColorScheme(config.colorScheme);
     this.toggleNavPosition(config.navPosition);
     this.toggleHeaderColor(config.headerColor);
-    this.toggleHeaderFixed(config.headerFixed);
+    // this.toggleHeaderFixed(config.headerFixed);
     this.toggleSidebarPosition(config.sidebarPosition);
     this.toggleSidebarSize(config.sidebarSize);
     this.toggleSidebarColor(config.sidebarColor);
@@ -85,10 +85,6 @@ class TablerDemo {
       elements.forEach((e) => e.checked = false);
       this.form.querySelector(`[name="${name}"][value="${value}"]`).checked = true;
     }
-  };
-
-  renderManagerHtml(elem) {
-    elem.innerHTML = 'test2';
   };
 
   /*
