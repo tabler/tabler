@@ -21,7 +21,7 @@
 	<title>{% if page.title %}{{ page.title }} - {% endif %}{% if layout.title %}{{ layout.title }} - {% endif %}{% if site.title %}{{ site.title }} - {% endif %}{{ site.description }}</title>
 
 	{% include layout/css.html %}
-	{% include layout/js.html %}
+   <style>body { display: none; }</style>
 </head>
 <body class="antialiased {% if page.dark-theme %} theme-dark{% endif %}{% if layout.body-class %} {{ layout.body-class }}{% endif %}{% if page.body-class %} {{ page.body-class }}{% endif %}">
 
@@ -33,5 +33,7 @@
       {% endif %}
    {% endif %}
 
+   {% include layout/js.html %}
+   <script>document.body.style.display = 'block';</script>
 </body>
 </html>
