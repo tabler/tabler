@@ -1,3 +1,6 @@
-<div class="progress {% if include['size'] %}progress-{{ include['size'] }}{% endif %}{{ include.class }}">
-	<div class="progress-bar{% if include.color %} bg-{{ include.color }}{% endif %}"{% if include.percentage %} style="width: {{ include.percentage }}%"{% endif %} role="progressbar" aria-valuenow="{{ include.percentage | default: 0}}" aria-valuemin="0" aria-valuemax="100"></div>
+{% assign percentage = include.percentage | default: 38 %}
+<div class="progress{% if include['size'] %} progress-{{ include['size'] }}{% endif %}{% if include.class %}{{ include.class }}{% endif %}">
+	<div class="progress-bar{% if include.color %} bg-{{ include.color }}{% endif %}" style="width: {{ percentage }}%" role="progressbar" aria-valuenow="{{ percentage }}" aria-valuemin="0" aria-valuemax="100">
+      <span class="sr-only">{{ percentage }}% Complete</span>
+   </div>
 </div>
