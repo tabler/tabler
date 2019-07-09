@@ -4,16 +4,16 @@
   background: transparent;
 }
 
-.breadcrumb-dots {
-  .breadcrumb-item + .breadcrumb-item::before {
-    content: '·';
+@each $name, $symbol in $breadcrumb-variants {
+  .breadcrumb-#{$name} {
+    .breadcrumb-item + .breadcrumb-item::before {
+      content: $symbol;
+    }
   }
 }
 
-.breadcrumb-arrows {
-  .breadcrumb-item + .breadcrumb-item::before {
-    content: $icon-fe-chevron-right;
-    font-family: $font-icons;
-    vertical-align: bottom;
+.breadcrumb-alternate {
+  a {
+    color: $body-color;
   }
 }
