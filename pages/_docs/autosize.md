@@ -1,5 +1,6 @@
 ---
 title: Autosize
+done: true
 ---
 
 A small, stand-alone script to automatically adjust textarea height.

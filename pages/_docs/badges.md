@@ -1,6 +1,7 @@
 ---
 title: Badges
 menu: docs.badges
+done: true
 ---
 
 A small count and labeling component. Please read the [official Bootstrap documentation](https://getbootstrap.com/docs/4.3/components/badge/) for a full list of options.

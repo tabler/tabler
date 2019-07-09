@@ -1,12 +1,10 @@
 ---
 title: Tooltips
 menu: docs.tooltips
+description: The Tooltip component is small pop-up box that appears when the user moves the mouse pointer over an element.
 ---
 
-The Tooltip component is small pop-up box that appears when the user moves the mouse pointer over an element:
-
-
-## Default markup
+### Default markup
 
 {% example html wrapper=btn-list %}
 <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
@@ -23,7 +21,7 @@ The Tooltip component is small pop-up box that appears when the user moves the m
 </button>
 {% endexample %}
 
-## Tooltip with HTML
+### Tooltip with HTML
 
 {% example html wrapper=btn-list %}
 <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-html="true" title="<em>Tooltip</em> <u>with</u> <b>HTML</b>">

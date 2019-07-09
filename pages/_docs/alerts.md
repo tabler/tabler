@@ -1,11 +1,12 @@
 ---
 title: Alerts
 menu: docs.alerts
+done: true
 ---
 
 Bootstrap provides an easy way to create predefined alert messages.
 
-## Default markup
+### Default markup
 
 {% example %}
 {% for variant in site.variants %}
@@ -17,7 +18,7 @@ Bootstrap provides an easy way to create predefined alert messages.
 {% endexample %}
 
 
-## Alert Links
+### Alert Links
 
 Add the `alert-link` class to any links inside the alert box to create "matching colored links":
 
@@ -31,7 +32,7 @@ Add the `alert-link` class to any links inside the alert box to create "matching
 {% endexample %}
 
 
-## Dismissible Alerts
+### Dismissible Alerts
 
 {% example %}
 {% for variant in site.variants %}
@@ -42,7 +43,7 @@ Add the `alert-link` class to any links inside the alert box to create "matching
 {% endfor %}
 {% endexample %}
 
-## Alerts with icons
+### Alerts with icons
 
 {% example %}
 {% for variant in site.variants %}
@@ -53,7 +54,7 @@ Add the `alert-link` class to any links inside the alert box to create "matching
 {% endfor %}
 {% endexample %}
 
-## Alert with avatar
+### Alert with avatar
 {% assign person = site.data.people[1] %}
 {% example %}
 {% for variant in site.variants %}
@@ -64,7 +65,7 @@ Add the `alert-link` class to any links inside the alert box to create "matching
 {% endfor %}
 {% endexample %}
 
-## Alert with buttons
+### Alert with buttons
 {% example %}
  {% capture variant-text %}
  	<h3>Some Title</h3>

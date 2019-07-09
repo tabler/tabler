@@ -5,7 +5,7 @@ module Jekyll
     class ExampleBlock < Liquid::Block
       include Liquid::StandardFilters
 
-      SYNTAX = /^([a-zA-Z0-9.+#-]+)((\s+\w+(=((\w|[0-9_-])+|"([0-9]+\s)*[0-9]+"))?)*)$/
+      SYNTAX = /^([a-zA-Z0-9.+#-]+)((\s+[\w-]+(=((\w|[0-9_-])+|"([0-9]+\s)*[0-9]+"))?)*)$/
 
       def initialize(tag_name, markup, tokens)
         super
@@ -18,7 +18,7 @@ module Jekyll
           @options = {}
           if defined?($2) && $2 != ''
             # Split along 3 possible forms -- key="<quoted list>", key=value, or key
-            $2.scan(/(?:\w+(?:=(?:(?:\w|[0-9_-])+|"[^"]*")?)?)/) do |opt|
+            $2.scan(/(?:[\w-]+(?:=(?:(?:\w|[0-9_-])+|"[^"]*")?)?)/) do |opt|
               key, value = opt.split('=')
               # If a quoted list, convert to array
               if value && value.include?("\"")
@@ -60,7 +60,7 @@ Valid syntax: example <lang> [id=foo]
       def example(output)
         output = output.gsub(/<hide>/, "").gsub(/<\/hide>/, "")
 
-        "<div class=\"example" + (@options[:columns] ? " example-bg" : "") + "\"" + (@options[:id] ? " data-example-id=\"#{@options[:id]}\"" : "") + ">\n" + (@options[:columns] ? "<div class=\"example-column example-column-" + @options[:columns] + "\">\n" : "") + (@options[:wrapper] ? "<div class=\"" + @options[:wrapper] + "\">\n" : "") + "#{output}" + (@options[:wrapper] ? "\n</div>" : "") + (@options[:columns] ? "\n</div>" : "") + "\n</div>"
+        "<div class=\"example" + (@options[:columns] ? " example-bg" : "") + "\"" + (@options[:id] ? " data-example-id=\"#{@options[:id]}\"" : "") + ">\n" + (@options[:columns] ? "<div class=\"example-column example-column-" + @options[:columns] + "\">\n" : "") + (@options[:wrapper] ? "<div class=\"" + @options[:wrapper] + "\">\n" : "") + (@options[:"max-width"] ? "<div style=\"max-width: " + @options[:"max-width"] + "px; margin: 0 auto;\">\n" : "") + "#{output}" + (@options[:wrapper] ? "\n</div>" : "") + (@options[:columns] ? "\n</div>" : "") + (@options[:"max-width"] ? "\n</div>" : "") + "\n</div>"
       end
 
       def remove_example_classes(code)
