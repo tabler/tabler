@@ -1,6 +1,7 @@
 ---
 title: Divider
 description: A divider visually segments content into groups
+done: true
 ---
 
 ### Default markup

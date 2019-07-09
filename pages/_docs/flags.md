@@ -1,6 +1,7 @@
 ---
 title: Flags
 menu: docs.flags
+plugin: flags
 ---
 
 ## Flag
