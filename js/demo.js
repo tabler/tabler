@@ -3,7 +3,6 @@
 class TablerDemo {
   constructor() {
     this.init();
-    this.initFormControls();
 
     this.form = document.querySelector('.js-layout-form');
 
@@ -20,6 +19,8 @@ class TablerDemo {
         });
       }
     }
+
+    this.initFormControls();
   };
 
   init() {
