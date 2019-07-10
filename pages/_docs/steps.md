@@ -6,32 +6,32 @@ new: true
 
 Steps are progress indicators of a sequence of task steps.
 
-## Default markup
+### Default markup
 
 {% example %}
 {% include ui/steps.html show-title=true %}
 {% endexample %}
 
-## Tooltips
+### Tooltips
 
 {% example %}
 {% include ui/steps.html show-title=true show-tooltip=true %}
 {% endexample %}
 
-## Color
+### Color
 
 {% example %}
 {% include ui/steps.html color="green" show-title=true %}
 {% include ui/steps.html color="red" show-title=true %}
 {% endexample %}
 
-## Steps without title
+### Steps without title
 
 {% example %}
 {% include ui/steps.html show-tooltip=true %}
 {% endexample %}
 
-## Steps with numbers
+### Steps with numbers
 
 {% example %}
 {% include ui/steps.html count=5 active=2 numbers=true color="lime" %}

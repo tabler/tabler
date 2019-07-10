@@ -3,7 +3,7 @@ title: Tables
 menu: docs.tables
 ---
 
-## Basic Table
+### Basic Table
 
 A basic Bootstrap table has a light padding and only horizontal dividers.
 
@@ -13,7 +13,7 @@ The `.table` class adds basic styling to a table:
 {% include ui/table.html %}
 {% endexample %}
 
-## No wrap
+### No wrap
 
 Prevents table cell content from wrapping to another line.
 

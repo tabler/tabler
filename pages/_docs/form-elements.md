@@ -2,7 +2,7 @@
 title: Form Elements
 ---
 
-## Classic Input
+### Classic Input
 
 {% example %}
 <div class="form-group">
@@ -27,7 +27,7 @@ title: Form Elements
 </div>
 {% endexample %}
 
-## Password and validation
+### Password and validation
 {% example %}
 <div class="form-group">
    <label class="form-label">Password</label>
@@ -52,7 +52,7 @@ title: Form Elements
 </div>
 {% endexample %}
 
-## Select
+### Select
 {% example %}
 <div class="form-group">
    <label class="form-label">Country</label>
@@ -64,7 +64,7 @@ title: Form Elements
 </div>
 {% endexample %}
 
-## Textarea
+### Textarea
 {% example %}
 <div class="form-group">
    <label class="form-label">Textarea <span class="float-right text-muted-light">56/100</span></label>
@@ -72,17 +72,17 @@ title: Form Elements
 </div>
 {% endexample %}
 
-## Image check
+### Image check
 {% example %}
 {% include parts/input-image.html %}
 {% endexample %}
 
-## Input color
+### Input color
 {% example %}
 {% include parts/input-color.html %}
 {% endexample %}
 
-## Custom Checkbox examples
+### Custom Checkbox examples
 {% example %}
 <div class="form-group">
    <label class="form-label">Icons input</label>
@@ -110,7 +110,7 @@ title: Form Elements
 </div>
 {% endexample %}
 
-## Toggle switches
+### Toggle switches
 {% example %}
 {% include parts/input-toggle.html %}
 
@@ -123,7 +123,7 @@ title: Form Elements
 </div>
 {% endexample %}
 
-## Radios
+### Radios
 {% example %}
 <div class="form-group">
    <div class="form-label">Radios</div>
@@ -171,7 +171,7 @@ title: Form Elements
 </div>
 {% endexample %}
 
-## Checkboxes
+### Checkboxes
 {% example %}
 <div class="form-group">
    <div class="form-label">Checkboxes</div>
@@ -220,7 +220,7 @@ title: Form Elements
 </div>
 {% endexample%}
 
-## Ratios
+### Ratios
 {% example %}
 <div class="form-group">
    <label class="form-label">Ratios</label>
@@ -228,7 +228,7 @@ title: Form Elements
 </div>
 {% endexample %}
 
-## Sample form
+### Sample form
 {% example %}
 <fieldset class="form-fieldset">
 	<div class="form-group">
@@ -250,7 +250,7 @@ title: Form Elements
 </fieldset>
 {% endexample %}
 
-## Input group
+### Input group
 {% example %}
 <div class="form-group">
    <label class="form-label">Input group</label>
@@ -286,12 +286,12 @@ title: Form Elements
 </div>
 {% endexample %}
 
-## Input with icon
+### Input with icon
 {% example %}
 {% include parts/input-icon.html %}
 {% endexample %}
 
-## Separated inputs
+### Separated inputs
 {% example %}
 <div class="form-group">
    <label class="form-label">Separated inputs</label>
@@ -305,7 +305,7 @@ title: Form Elements
 </div>
 </div>{% endexample %}
 
-## Custom Input examples
+### Custom Input examples
 {% example %}
 <div class="form-group">
    <label class="form-label">Username</label>
@@ -328,7 +328,7 @@ title: Form Elements
 </div>
 {% endexample %}
 
-## Date component
+### Date component
 {% example %}
 <div class="form-group">
    <label class="form-label">Date of birth</label>
@@ -368,7 +368,7 @@ title: Form Elements
 </div>
 {% endexample %}
 
-## Input with button
+### Input with button
 {% example %}
 <div class="form-group">
    <label class="form-label">Button input</label>

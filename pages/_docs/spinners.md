@@ -1,16 +1,17 @@
 ---
 title: Spinners
 menu: docs.spinners
+done: true
 ---
 
-## Default markup
+### Default markup
 
 {% example %}
 {% include ui/spinner.html %}
 {% endexample %}
 
 
-## Colors
+### Colors
 
 {% example %}
 {% for color in site.colors %}
@@ -19,14 +20,14 @@ menu: docs.spinners
 {% endfor %}
 {% endexample %}
 
-## Size
+### Size
 
 {% example %}
 {% include ui/spinner.html %}
 {% include ui/spinner.html size="sm" %}
 {% endexample %}
 
-## Growing spinner
+### Growing spinner
 
 {% example %}
 {% include ui/spinner.html type="grow" %}
@@ -39,7 +40,7 @@ menu: docs.spinners
 {% endfor %}
 {% endexample %}
 
-## Buttons
+### Buttons
 
 {% example html wrapper=btn-list %}
 {% include ui/button.html spinner=true text="Button" color="primary" %}

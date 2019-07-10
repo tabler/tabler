@@ -4,31 +4,31 @@ menu: docs.ribbons
 new: true
 ---
 
-## Default markup
+### Default markup
 
 {% example html columns=1 %}
 {% include cards/ribbon.html %}
 {% endexample %}
 
-## Ribbon position
+### Ribbon position
 
 {% example html columns=1 %}
 {% include cards/ribbon.html top=true left=true %}
 {% endexample %}
 
-## Ribbon color
+### Ribbon color
 
 {% example html columns=1 %}
 {% include cards/ribbon.html color="red" %}
 {% endexample %}
 
-## Ribbon text
+### Ribbon text
 
 {% example html columns=1 %}
 {% include cards/ribbon.html color="green" text="-50%" %}
 {% endexample %}
 
-## Ribbon style
+### Ribbon style
 
 {% example html columns=1 %}
 {% include cards/ribbon.html bookmark=true color="orange" text="-50%" %}

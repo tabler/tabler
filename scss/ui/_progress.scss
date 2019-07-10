@@ -1,12 +1,58 @@
-.progress {
-  background: $min-black;
-  border-radius: 2px;
+@keyframes progress-indeterminate {
+  0% {
+    left: -35%;
+    right: 100%
+  }
+
+  100%, 60% {
+    left: 100%;
+    right: -90%
+  }
 }
 
-.progress-xs {
-  height: .25rem;
+.progress {
+  appearance: none;
+  background: $min-black;
+  height: .75rem;
+  line-height: .75rem;
+  position: relative;
+  width: 100%;
+
+  &::-webkit-progress-bar {
+    background: $min-black;
+  }
+
+  &::-webkit-progress-value {
+    background-color: $primary
+  }
+
+  &::-moz-progress-bar {
+    background-color: $primary
+  }
+
+  &::-ms-fill {
+    background-color: $primary;
+    border: none
+  }
 }
 
 .progress-sm {
-  height: .5rem;
+  height: .25rem;
+}
+
+.progress-bar-indeterminate {
+  &:after,
+  &:before {
+    content: '';
+    position: absolute;
+    background-color: inherit;
+    left: 0;
+    will-change: left, right;
+    top: 0;
+    bottom: 0;
+  }
+
+  &:before {
+    animation: progress-indeterminate 2.1s cubic-bezier(.65, .815, .735, .395) infinite;
+  }
 }

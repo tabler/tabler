@@ -79,7 +79,7 @@ In need of a button, but not the hefty background colors they bring? Replace the
 {% endfor %}
 {% endexample %}
 
-## Button with star
+### Button with star
 
 {% example html %}
 {% for button in site.button_variants %}
@@ -122,6 +122,8 @@ Basic buttons are traditional buttons with borders and background with an extra 
 {% endexample %}
 
 ### Social buttons
+
+A button can be formatted to link to a social website
 
 {% example html wrapper=btn-list %} 
 {% for button in site.socials %}

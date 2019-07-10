@@ -9,7 +9,7 @@ We’ve created this admin panel for everyone who wants to create any templates 
 
 
 
-## Setup environment
+### Setup environment
 
 To use our build system and run our documentation locally, you'll need a copy of Tabler's source files and Node. Follow these steps:
 
@@ -21,13 +21,13 @@ To use our build system and run our documentation locally, you'll need a copy of
   
 When completed, you'll be able to run the various commands provided from the command line.
 
-## Build Tabler locally
+### Build Tabler locally
 
 1. From the root `/tabler` directory, run `npm run serve` in the command line.
 2. Open [http://localhost:4000](http://localhost:4000) in your browser, and voilà.
 3. Any change in `/src` directory will build application and refresh the page.
 
 
-## Bugs and feature requests
+### Bugs and feature requests
 
 Have a bug or a feature request? [Please open a new issue](https://github.com/tabler/tabler/issues/new).
