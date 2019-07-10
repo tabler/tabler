@@ -206,29 +206,60 @@ Sidebar
 Fixed navbar
  */
 .navbar-fixed {
-  position: fixed;
   top: 0;
   bottom: 0;
 
-  @include media-breakpoint-up(xl) {
-    & + .layout-main {
-      margin-left: $sidenav-width;
-    }
-
-    &.navbar-right + .layout-main {
-      margin-left: 0;
-      margin-right: $sidenav-width;
-    }
+  + .navbar-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba($dark, .2);
+    z-index: $zindex-dropdown;
+    display: none;
   }
+}
 
-  @include media-breakpoint-up(lg) {
-    &.navbar-folded + .layout-main {
-      margin-left: $sidenav-folded-width;
+/*
+Responsive utils
+ */
+.navbar {
+  &.navbar-side {
+    display: none;
+    outline: 1px solid red;
+
+    @include media-breakpoint-up(xl) {
+      display: flex;
+
+      outline: 3px solid orange;
+
+      & ~ .layout-main {
+        margin-left: $sidenav-width;
+      }
+
+      &.navbar-right ~ .layout-main {
+        margin-left: 0;
+        margin-right: $sidenav-width;
+      }
     }
 
-    &.navbar-right.navbar-folded + .layout-main {
-      margin-left: 0;
-      margin-right: $sidenav-folded-width;
+    &.navbar-folded {
+      display: flex;
+
+      @include media-breakpoint-up(lg) {
+
+        outline: 3px solid yellow;
+
+        & ~ .layout-main {
+          margin-left: $sidenav-folded-width;
+        }
+
+        &.navbar-right ~ .layout-main {
+          margin-left: 0;
+          margin-right: $sidenav-folded-width;
+        }
+      }
     }
   }
 }
@@ -361,7 +392,6 @@ Utils
     display: none;
   }
 }
-
 
 .navbar-toggler-icon {
   outline: 1px solid red;

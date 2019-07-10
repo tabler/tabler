@@ -135,6 +135,7 @@ class TablerDemo {
   };
 
   toggleSidebarColor(color) {
+    console.log('color', color);
     return this.setConfig('sidebarColor', color, ['dark', 'light'], () => {
       if (color === 'dark') {
         document.querySelector('.js-sidebar').classList.add('navbar-dark');
