@@ -3,6 +3,7 @@
 class TablerDemo {
   constructor() {
     this.init();
+    this.initFormControls();
 
     this.form = document.querySelector('.js-layout-form');
 
@@ -18,8 +19,6 @@ class TablerDemo {
           this.onSubmitForm();
         });
       }
-
-      this.initFormControls();
     }
   };
 
@@ -79,11 +78,13 @@ class TablerDemo {
   };
 
   setFormValue = function(name, value,) {
-    let elements = this.form.querySelectorAll(`[name="${name}"]`);
+    if(this.form) {
+      let elements = this.form.querySelectorAll(`[name="${name}"]`);
 
-    if(elements) {
-      elements.forEach((e) => e.checked = false);
-      this.form.querySelector(`[name="${name}"][value="${value}"]`).checked = true;
+      if (elements) {
+        elements.forEach((e) => e.checked = false);
+        this.form.querySelector(`[name="${name}"][value="${value}"]`).checked = true;
+      }
     }
   };
 

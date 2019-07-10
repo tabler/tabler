@@ -210,22 +210,26 @@ Fixed navbar
   top: 0;
   bottom: 0;
 
-  & + .layout-main {
-    margin-left: $sidenav-width;
+  @include media-breakpoint-up(xl) {
+    & + .layout-main {
+      margin-left: $sidenav-width;
+    }
+
+    &.navbar-right + .layout-main {
+      margin-left: 0;
+      margin-right: $sidenav-width;
+    }
   }
 
-  &.navbar-right + .layout-main {
-    margin-left: 0;
-    margin-right: $sidenav-width;
-  }
+  @include media-breakpoint-up(lg) {
+    &.navbar-folded + .layout-main {
+      margin-left: $sidenav-folded-width;
+    }
 
-  &.navbar-folded + .layout-main {
-    margin-left: $sidenav-folded-width;
-  }
-
-  &.navbar-right.navbar-folded + .layout-main {
-    margin-left: 0;
-    margin-right: $sidenav-folded-width;
+    &.navbar-right.navbar-folded + .layout-main {
+      margin-left: 0;
+      margin-right: $sidenav-folded-width;
+    }
   }
 }
 
