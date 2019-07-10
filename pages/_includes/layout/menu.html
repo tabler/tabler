@@ -4,7 +4,7 @@
    {% for level-1 in site.data.menu %}
    {% assign icon = level-1[1].icon %}
    <li class="nav-item">
-      <a class="nav-link{% if level-1[0] == current-page[0] %} active{% endif %}" {% if level-1[1].children or level-1[1].docs %}href="#sidebar-{{ level-1[0] }}" data-toggle="collapse" data-parent="#menu" role="button" aria-expanded="{% if level-1[0] == current-page[0] %}true{% else %}false{% endif %}"{% else %}href="{{ site.base }}/{{ level-1[1].url }}"{% endif %}>
+      <a class="nav-link{% if level-1[0] == current-page[0] %} active{% endif %}" {% if level-1[1].children or level-1[1].docs %}href="#sidebar-{{ level-1[0] }}" data-toggle="collapse" data-parent="#menu" role="button" aria-expanded="{% if level-1[0] == current-page[0] %}true{% else %}false{% endif %}"{% elsif level-1[1].toggle %}href="{{ level-1[1].url }}" data-toggle="{{ level-1[1].toggle }}"{% else %}href="{{ site.base }}/{{ level-1[1].url }}"{% endif %}>
          <span class="nav-icon">
             {% include ui/icon.html icon=icon  %}
          </span>

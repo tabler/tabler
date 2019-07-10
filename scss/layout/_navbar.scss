@@ -231,28 +231,32 @@ Responsive utils
     @include media-breakpoint-up(xl) {
       display: flex;
 
-      & ~ .layout-main {
-        margin-left: $sidenav-width;
-      }
+      &.navbar-fixed {
+        & ~ .layout-main {
+          margin-left: $sidenav-width;
+        }
 
-      &.navbar-right ~ .layout-main {
-        margin-left: 0;
-        margin-right: $sidenav-width;
+        &.navbar-right ~ .layout-main {
+          margin-left: 0;
+          margin-right: $sidenav-width;
+        }
       }
     }
 
     &.navbar-folded {
       display: flex;
 
-      @include media-breakpoint-up(lg) {
+      &.navbar-fixed {
+        @include media-breakpoint-up(lg) {
 
-        & ~ .layout-main {
-          margin-left: $sidenav-folded-width;
-        }
+          & ~ .layout-main {
+            margin-left: $sidenav-folded-width;
+          }
 
-        &.navbar-right ~ .layout-main {
-          margin-left: 0;
-          margin-right: $sidenav-folded-width;
+          &.navbar-right ~ .layout-main {
+            margin-left: 0;
+            margin-right: $sidenav-folded-width;
+          }
         }
       }
     }
