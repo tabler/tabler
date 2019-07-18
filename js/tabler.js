@@ -112,6 +112,13 @@ $(document).ready(function() {
     e.preventDefault();
     return false;
   });
+  
+  $(".custom-file-input").on('change',function() { 
+	      // Get the complete path and keep only the filename
+        var filename = $(this).val().split('\\').pop();
+        // Assign the filename to the associated label
+	      $(this).siblings(".custom-file-label").text(filename);
+   })
 
   $('[data-toggle="tooltip"]').tooltip();
   $('[data-toggle="popover"]').popover();
