@@ -27,7 +27,7 @@ class TablerDemo {
     this.config = this.getConfig();
   };
 
-  getConfig = function () {
+  getConfig() {
     return {
       colorScheme: (localStorage.getItem('tablerColorScheme')) ? localStorage.getItem('tablerColorScheme') : 'light',
       navPosition: (localStorage.getItem('tablerNavPosition')) ? localStorage.getItem('tablerNavPosition') : 'side',
@@ -40,7 +40,7 @@ class TablerDemo {
     };
   };
 
-  setConfig = function (key, value, availableValues, onSuccess) {
+  setConfig(key, value, availableValues, onSuccess) {
     if (availableValues && availableValues.indexOf(value) !== -1) {
       key = 'tabler' + key.charAt(0).toUpperCase() + key.slice(1);
 
@@ -52,7 +52,7 @@ class TablerDemo {
     return this.getConfig();
   };
 
-  onSubmitForm = function () {
+  onSubmitForm() {
     const form = this.form;
 
     this.toggleColorScheme(form.querySelector('[name="color-scheme"]:checked').value);
@@ -65,7 +65,7 @@ class TablerDemo {
     this.toggleSidebarFixed(form.querySelector('[name="sidebar-fixed"]:checked').value);
   };
 
-  initFormControls = function() {
+  initFormControls() {
     const config = this.getConfig();
 
     this.toggleColorScheme(config.colorScheme);
@@ -78,7 +78,7 @@ class TablerDemo {
     this.toggleSidebarFixed(config.sidebarFixed);
   };
 
-  setFormValue = function(name, value,) {
+  setFormValue(name, value) {
     if(this.form) {
       let elements = this.form.querySelectorAll(`[name="${name}"]`);
 
