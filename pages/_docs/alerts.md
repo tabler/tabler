@@ -25,7 +25,7 @@ Add the `alert-link` class to any links inside the alert box to create "matching
 {% example %}
 {% for variant in site.variants %}
 	{% capture variant-text %}
-		This is a {{ variant.name }} alert — <a href="#">check it out!</a>
+		This is a {{ variant.name }} alert — <a href="#" class="alert-link">check it out</a>!
 	{% endcapture %}
 	{% include ui/alert.html type=variant.name text=variant-text %}
 {% endfor %}
