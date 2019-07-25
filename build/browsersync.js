@@ -2,7 +2,7 @@ const bs = require('browser-sync').create();
 
 bs.init({
   watch: true,
-  port: 4567,
+  port: 4000,
   server: {
     routes: {
       '/': 'tmp',
