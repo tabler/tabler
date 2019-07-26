@@ -10,4 +10,4 @@ gem "jekyll-tidy"
 gem "jekyll-timeago"
 gem 'jekyll-redirect-from'
 gem 'jekyll-include-cache'
-
+gem 'wdm', '>= 0.1.1' if Gem.win_platform?
