@@ -31,7 +31,7 @@
     "js-minify-standalone": "terser --compress typeofs=false --mangle --comments \"/^!/\" --source-map \"content=dist/js/tabler.js.map,includeSources,url=tabler.min.js.map\" --output dist/js/tabler.min.js dist/js/tabler.js",
     "js-minify-bundle": "terser --compress typeofs=false --mangle --comments \"/^!/\" --source-map \"content=dist/js/tabler.bundle.js.map,includeSources,url=tabler.bundle.min.js.map\" --output dist/js/tabler.bundle.min.js dist/js/tabler.bundle.js",
     "svg-svgo": "svgo -f svg/fe --pretty && svgo -f svg/brand --pretty",
-    "svg-iconfont": "mkdir -p svg-tmp && for i in svg/*/*.svg;do N=`echo $i | sed -e 's/^svg\\///g' | sed -e 's/\\\\.svg$//g' | sed -e 's/\\//-/g'`; echo $i; rsvg-convert $i -o svg-tmp/$N.svg -f svg -w 1000; done && svgo ./svg-tmp/*.svg --disable={removeViewBox} && icon-font-generator ./svg-tmp/*.svg -o fonts/tabler-webfont --html false --csstp build/tabler-webfont.hbs --csspath scss/fonts/_tabler-webfont.scss --center --normalize --name tabler-webfont --types svg,eot,ttf,woff,woff2 --json false && rm -rf svg-tmp && node build/generate-font-codepoints.js"
+    "svg-iconfont": "mkdir -p svg-tmp && for i in svg/*/*.svg;do N=`echo $i | sed -e 's/^svg\\///g' | sed -e 's/\\\\.svg$//g' | sed -e 's/\\//-/g'`; echo $i; rsvg-convert $i -o svg-tmp/$N.svg -f svg -w 1000; done && svgo ./svg-tmp/*.svg --disable={removeViewBox} && icon-font-generator ./svg-tmp/*.svg -o fonts/tabler-webfont --html false --cssfontsurl ../fonts/tabler-webfont --csstp build/tabler-webfont.hbs --csspath scss/fonts/_tabler-webfont.scss --center --normalize --name tabler-webfont --types svg,eot,ttf,woff,woff2 --json false && rm -rf svg-tmp && node build/generate-font-codepoints.js"
   },
   "repository": {
     "type": "git",
@@ -39,7 +39,7 @@
   },
   "keywords": [],
   "author": "codecalm",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/tabler/tabler/issues"
   },

@@ -7,7 +7,7 @@ function getBanner(pluginFilename) {
   return `/*!
   * Tabler${pluginFilename ? ` ${pluginFilename}` : ''} v${pkg.version} (${pkg.homepage})
   * Copyright 2018-${year} ${pkg.author}
-  * Licensed under MIT (https://github.com/twbs/tabler/blob/master/LICENSE)
+  * Licensed under ${pkg.license} (https://github.com/tabler/tabler/blob/master/LICENSE)
   */`;
 }
 
