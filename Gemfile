@@ -4,7 +4,7 @@ source "https://rubygems.org"
 
 git_source(:github) {|repo_name| "https://github.com/#{repo_name}" }
 
-gem "jekyll", ">= 3.8.5"
+gem "jekyll", ">= 3.8.6"
 gem "jekyll-random", "~> 0.0.3"
 gem "jekyll-tidy"
 gem "jekyll-timeago"
