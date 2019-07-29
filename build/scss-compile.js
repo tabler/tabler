@@ -6,9 +6,11 @@ const path = require('path'),
   sass = require("node-sass");
 
 glob("scss/tabler*.scss", {}, function (er, files) {
+  console.log('files', files);
+  
   files.forEach(function(file){
     var basename = path.basename(file, '.scss');
-
+    
     sass.render(
       {
         file: file,
@@ -30,6 +32,8 @@ glob("scss/tabler*.scss", {}, function (er, files) {
               console.log(error);
             }
           });
+        } else {
+          throw error;
         }
       }
     );

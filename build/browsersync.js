@@ -6,8 +6,8 @@ bs.init({
   server: {
     routes: {
       '/': 'tmp',
-      '/dist/fonts': 'fonts',
       '/dist': 'dist',
+      '/dist/fonts': 'fonts',
       '/libs': 'static/libs',
       '/img': 'static/img',
     },
