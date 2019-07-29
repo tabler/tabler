@@ -5,22 +5,22 @@ title: Form Elements
 ### Classic Input
 
 {% example %}
-<div class="form-group">
+<div class="mb-2">
   <label class="form-label">Static</label>
 <div class="form-control-plaintext">Username</div>
 </div>
 
-<div class="form-group">
+<div class="mb-2">
   <label class="form-label">Text</label>
   <input type="text" class="form-control" name="example-text-input" placeholder="Text..">
 </div>
 
-<div class="form-group">
+<div class="mb-2">
    <label class="form-label">Disabled</label>
    <input type="text" class="form-control" name="example-disabled-input" placeholder="Disabled.."
           value="Well, she turned me into a newt." disabled>
 </div>
-<div class="form-group">
+<div class="mb-2">
    <label class="form-label">Readonly</label>
    <input type="text" class="form-control" name="example-disabled-input" placeholder="Disabled.."
           value="Well, how'd you become king, then?" readonly>
@@ -29,12 +29,12 @@ title: Form Elements
 
 ### Password and validation
 {% example %}
-<div class="form-group">
+<div class="mb-2">
    <label class="form-label">Password</label>
    <input type="password" class="form-control" name="example-password-input" placeholder="Password..">
 </div>
 
-<div class="form-group">
+<div class="mb-2">
    <label class="form-label">Valid State</label>
    <input type="text" class="form-control is-valid" name="example-text-input-valid"
           placeholder="Valid State..">
@@ -42,7 +42,7 @@ title: Form Elements
    <input type="text" class="form-control mt-3 state-valid" value="Valid state">
 </div>
 
-<div class="form-group">
+<div class="mb-2">
    <label class="form-label">Invalid State</label>
    <input type="text" class="form-control is-invalid" name="example-text-input-invalid"
           placeholder="Invalid State..">
@@ -54,7 +54,7 @@ title: Form Elements
 
 ### Select
 {% example %}
-<div class="form-group">
+<div class="mb-2">
    <label class="form-label">Country</label>
    <select class="form-control custom-select">
       <option value="">Germany</option>
@@ -66,7 +66,7 @@ title: Form Elements
 
 ### Textarea
 {% example %}
-<div class="form-group">
+<div class="mb-2">
    <label class="form-label">Textarea <span class="float-right text-muted-light">56/100</span></label>
    <textarea class="form-control" name="example-textarea-input" rows="6" placeholder="Content..">Oh! Come and see the violence inherent in the system! Help, help, I'm being repressed! We shall say 'Ni' again to you, if you do not appease us. I'm not a witch. I'm not a witch. Camelot!</textarea>
 </div>
@@ -84,27 +84,27 @@ title: Form Elements
 
 ### Custom Checkbox examples
 {% example %}
-<div class="form-group">
+<div class="mb-2">
    <label class="form-label">Icons input</label>
    {% include ui/input-selectgroup.html values="i:smartphone,i:tablet,i:monitor,i:x" class="w-100" type="radio" name="device" %}
 </div>
 
-<div class="form-group">
+<div class="mb-2">
    <label class="form-label">Icon input</label>
    {% include ui/input-selectgroup.html values="i:sun,i:moon,i:cloud-rain,i:cloud,Other" class="selectgroup-pills" %}
 </div>
 
-<div class="form-group">
+<div class="mb-2">
    <label class="form-label">Your skills</label>
    {% include ui/input-selectgroup.html values="HTML,CSS,PHP,JavaScript" class="selectgroup-pills" %}
 </div>
 
-<div class="form-group">
+<div class="mb-2">
    <label class="form-label">Size</label>
    {% include ui/input-selectgroup.html values="S,M,L,XL,XXL" type="radio" name="size" %}
 </div>
 
-<div class="form-group">
+<div class="mb-2">
    <label class="form-label">Shipping methods</label>
    {% include ui/input-selectgroup.html values="Unregistered,Priority Mail,Express Mail" class="selectgroup-vertical" type="radio" name="shipping-method" %}
 </div>
@@ -114,7 +114,7 @@ title: Form Elements
 {% example %}
 {% include parts/input-toggle.html %}
 
-<div class="form-group">
+<div class="mb-2">
    <div class="form-label">Toggle switch single</div>
    <label class="custom-control custom-switch">
       <input type="checkbox" class="custom-control-input">
@@ -125,7 +125,7 @@ title: Form Elements
 
 ### Radios
 {% example %}
-<div class="form-group">
+<div class="mb-2">
    <div class="form-label">Radios</div>
    <div class="custom-controls-stacked">
       <label class="custom-control custom-radio">
@@ -149,7 +149,7 @@ title: Form Elements
       </label>
    </div>
 </div>
-<div class="form-group">
+<div class="mb-2">
    <div class="form-label">Inline Radios</div>
    <div class="custom-controls-stacked">
       <label class="custom-control custom-radio custom-control-inline">
@@ -173,7 +173,7 @@ title: Form Elements
 
 ### Checkboxes
 {% example %}
-<div class="form-group">
+<div class="mb-2">
    <div class="form-label">Checkboxes</div>
    <div class="custom-controls-stacked">
       <label class="custom-control custom-checkbox">
@@ -198,7 +198,7 @@ title: Form Elements
       </label>
    </div>
 </div>
-<div class="form-group">
+<div class="mb-2">
    <div class="form-label">Inline Checkboxes</div>
    <div>
       <label class="custom-control custom-checkbox custom-control-inline">
@@ -222,7 +222,7 @@ title: Form Elements
 
 ### Ratios
 {% example %}
-<div class="form-group">
+<div class="mb-2">
    <label class="form-label">Ratios</label>
    <input type="range" class="custom-range" step="5" min="0" max="50">
 </div>
@@ -231,19 +231,19 @@ title: Form Elements
 ### Sample form
 {% example %}
 <fieldset class="form-fieldset">
-	<div class="form-group">
+	<div class="mb-2">
 		<label class="form-label">Full name<span class="form-required">*</span></label>
 		<input type="text" class="form-control"/>
 	</div>
-	<div class="form-group">
+	<div class="mb-2">
 		<label class="form-label">Company<span class="form-required">*</span></label>
 		<input type="text" class="form-control"/>
 	</div>
-	<div class="form-group">
+	<div class="mb-2">
 		<label class="form-label">Email<span class="form-required">*</span></label>
 		<input type="email" class="form-control"/>
 	</div>
-	<div class="form-group mb-0">
+	<div class="mb-2 mb-0">
 		<label class="form-label">Phone number</label>
 		<input type="tel" class="form-control"/>
 	</div>
@@ -252,7 +252,7 @@ title: Form Elements
 
 ### Input group
 {% example %}
-<div class="form-group">
+<div class="mb-2">
    <label class="form-label">Input group</label>
    <div class="input-group">
       <input type="text" class="form-control" placeholder="Search for&hellip;">
@@ -261,7 +261,7 @@ title: Form Elements
 						</span>
    </div>
 </div>
-<div class="form-group">
+<div class="mb-2">
    <label class="form-label">Input group buttons</label>
    <div class="input-group">
       <input type="text" class="form-control">
@@ -293,7 +293,7 @@ title: Form Elements
 
 ### Separated inputs
 {% example %}
-<div class="form-group">
+<div class="mb-2">
    <label class="form-label">Separated inputs</label>
    <div class="row row-xs">
       <div class="col">
@@ -307,22 +307,22 @@ title: Form Elements
 
 ### Custom Input examples
 {% example %}
-<div class="form-group">
+<div class="mb-2">
    <label class="form-label">Username</label>
    {% include ui/input-group.html prepend="@" placeholder="username" %}
 </div>
 
-<div class="form-group">
+<div class="mb-2">
    <label class="form-label">Subdomain</label>
    {% include ui/input-group.html append=".tabler.io" placeholder="subdomain" %}
 </div>
 
-<div class="form-group">
+<div class="mb-2">
    <label class="form-label">Your vanity URL</label>
    {% include ui/input-group.html prepend="https://example.com/users/" %}
 </div>
 
-<div class="form-group">
+<div class="mb-2">
    <label class="form-label">Price</label>
    {% include ui/input-group.html prepend="$" append=".00" %}
 </div>
@@ -330,7 +330,7 @@ title: Form Elements
 
 ### Date component
 {% example %}
-<div class="form-group">
+<div class="mb-2">
    <label class="form-label">Date of birth</label>
    <div class="row row-xs">
       <div class="col-5">
@@ -370,7 +370,7 @@ title: Form Elements
 
 ### Input with button
 {% example %}
-<div class="form-group">
+<div class="mb-2">
    <label class="form-label">Button input</label>
    <div class="input-group">
       <div class="input-group-prepend">

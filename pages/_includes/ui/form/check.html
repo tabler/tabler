@@ -1,0 +1,17 @@
+{% assign type = include.type | default: 'checkbox' %}
+{% assign checked = include.checked | default: false %}
+{% assign disabled = include.disabled | default: false %}
+{% assign switch = include.switch | default: false %}
+{% assign title = include.title | default: false %}
+{% unless title %}
+   {% assign title = '' %}
+   {% if disabled %}{% assign title = title | append: ' disabled' %}{% endif %}
+   {% if checked %}{% assign title = title | append: ' checked' %}{% endif %}
+   {% if switch %}{% assign title = title | append: ' switch' %}{% endif %}
+   {% assign title = title | append: ' ' | append: type %}
+   {% assign title = title | append: ' input' | lstrip | capitalize %}
+{% endunless %}
+<label class="form-check{% if include.inline %} form-check-inline{% endif %}{% if switch %} form-switch{% endif %}">
+   <input class="form-check-input" type="{{ type }}"{% if checked %} checked{% endif %}{% if disabled %} disabled{% endif %}>
+   <span class="form-check-label">{{ title }}</span>
+</label>
