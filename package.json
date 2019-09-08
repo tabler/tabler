@@ -24,12 +24,9 @@
     "watch-js": "nodemon --watch js/ --ext js --exec \"npm run js-compile-standalone\"",
     "js": "npm-run-all js-compile js-minify",
     "js-lint": "eslint --cache --cache-location .cache/.eslintcache js build/",
-    "js-compile": "npm-run-all --parallel js-compile-* --sequential js-minify",
+    "js-compile": "npm-run-all --sequential js-compile-*",
     "js-compile-standalone": "rollup --environment BUNDLE:false --config build/rollup.config.js --sourcemap",
     "js-compile-bundle": "rollup --environment BUNDLE:true --config build/rollup.config.js --sourcemap",
-    "js-minify": "npm-run-all js-minify-standalone* js-minify-bundle",
-    "js-minify-standalone": "terser --compress typeofs=false --mangle --comments \"/^!/\" --source-map \"content=dist/js/tabler.js.map,includeSources,url=tabler.min.js.map\" --output dist/js/tabler.min.js dist/js/tabler.js",
-    "js-minify-bundle": "terser --compress typeofs=false --mangle --comments \"/^!/\" --source-map \"content=dist/js/tabler.bundle.js.map,includeSources,url=tabler.bundle.min.js.map\" --output dist/js/tabler.bundle.min.js dist/js/tabler.bundle.js",
     "svg-svgo": "svgo -f svg/fe --pretty && svgo -f svg/brand --pretty",
     "svg-iconfont": "mkdir -p svg-tmp && for i in svg/*/*.svg;do N=`echo $i | sed -e 's/^svg\\///g' | sed -e 's/\\\\.svg$//g' | sed -e 's/\\//-/g'`; echo $i; rsvg-convert $i -o svg-tmp/$N.svg -f svg -w 1000; done && svgo ./svg-tmp/*.svg --disable={removeViewBox} && icon-font-generator ./svg-tmp/*.svg -o fonts/tabler-webfont --html false --cssfontsurl ../fonts/tabler-webfont --csstp build/tabler-webfont.hbs --csspath scss/fonts/_tabler-webfont.scss --center --normalize --name tabler-webfont --types svg,eot,ttf,woff,woff2 --json false && rm -rf svg-tmp && node build/generate-font-codepoints.js"
   },
@@ -53,6 +50,7 @@
   ],
   "homepage": "https://tabler.io",
   "devDependencies": {
+    "@babel/preset-env": "^7.6.0",
     "browser-sync": "2.26.7",
     "bundlesize": "0.17.2",
     "clean-css-cli": "4.3.0",
@@ -70,6 +68,10 @@
     "postcss-cli": "6.1.2",
     "rollup": "1.15.6",
     "rollup-plugin-babel": "4.3.2",
+    "rollup-plugin-babel-minify": "^9.0.0",
+    "rollup-plugin-commonjs": "10.1.0",
+    "rollup-plugin-filesize": "6.2.0",
+    "rollup-plugin-multi-input": "1.0.2",
     "rollup-plugin-node-resolve": "5.0.3",
     "shx": "0.3.2",
     "stylelint": "10.1.0",
@@ -81,8 +83,9 @@
   "dependencies": {
     "apexcharts": "3.8.0",
     "autosize": "4.0.2",
-    "bootstrap": "twbs/bootstrap#fb475e9",
+    "bootstrap": "twbs/bootstrap#2f549ec",
     "imask": "5.1.5",
+    "jquery": "3.4.1",
     "selectize": "0.12.6"
   },
   "bundlesize": [

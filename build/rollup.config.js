@@ -1,56 +1,43 @@
 'use strict';
 
-const path = require('path');
-const babel = require('rollup-plugin-babel');
-const resolve = require('rollup-plugin-node-resolve');
-const banner = require('./banner.js');
-
 const BUNDLE = process.env.BUNDLE === 'true';
-const ESM = process.env.ESM === 'true';
 
-let fileDest = `tabler${ESM ? '.esm' : ''}`;
-const external = ['popper.js'];
-const plugins = [
-  babel({
-    // Only transpile our source code
-    exclude: 'node_modules/**',
-    // Include only required helpers
-    externalHelpersWhitelist: [
-      'defineProperties',
-      'createClass',
-      'inheritsLoose',
-      'defineProperty',
-      'objectSpread',
-    ],
-  }),
+import path from 'path';
+import babel from 'rollup-plugin-babel';
+import resolve from 'rollup-plugin-node-resolve';
+import minify from 'rollup-plugin-babel-minify';
+
+
+const fileDest = 'tabler',
+  banner = require('./banner');
+
+let plugins = [
+  resolve()
 ];
 
-const globals = {
-  'popper.js': 'Popper',
-};
-
 if (BUNDLE) {
-  fileDest += '.bundle';
-  // Remove last entry in external array to bundle Popper
-  external.pop();
-  delete globals['popper.js'];
-  plugins.push(resolve());
+  plugins = [plugins, ...[
+    babel({
+      exclude: 'node_modules/**'
+    }),
+    minify({
+      comments: false
+    })
+  ]];
 }
 
-const rollupConfig = {
-  input: path.resolve(__dirname, '../js/tabler.js'),
+module.exports = {
+  input: {
+    tabler: path.resolve(__dirname, '../js/tabler.js'),
+    'tabler-charts': path.resolve(__dirname, '../js/tabler-charts.js'),
+    demo: path.resolve(__dirname, '../js/demo.js')
+  },
   output: {
     banner,
-    file: path.resolve(__dirname, `../dist/js/${fileDest}.js`),
-    format: ESM ? 'esm' : 'umd',
-    globals,
+    // name: 'tabler',
+    dir: path.resolve(__dirname, `../dist/js/`),
+    entryFileNames: BUNDLE ? '[name].min.js' : '[name].js',
+    format: 'cjs'
   },
-  external,
   plugins,
 };
-
-if (!ESM) {
-  rollupConfig.output.name = 'tabler';
-}
-
-module.exports = rollupConfig;

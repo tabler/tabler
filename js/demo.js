@@ -192,10 +192,4 @@ Init demo
 (function () {
   const demo = new TablerDemo();
   window.DEMO = demo;
-
-  let elem = document.getElementById('layout-manager');
-
-  if (elem) {
-    demo.renderManagerHtml(elem);
-  }
 })();

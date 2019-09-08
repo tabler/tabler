@@ -1,38 +1,38 @@
-(function($) {
-  $(document).ready(function() {
+(function ($) {
+  $(document).ready(function () {
     $().peity &&
-      $('[data-spark]').each(function() {
-        const $this = $(this),
-          data = $this.attr('data-spark'),
-          color = $this.attr('data-spark-color') || 'blue',
-          type = $this.attr('data-spark-type') || 'line';
+    $('[data-spark]').each(function () {
+      const $this = $(this),
+        data = $this.attr('data-spark'),
+        color = $this.attr('data-spark-color') || 'blue',
+        type = $this.attr('data-spark-type') || 'line';
 
-        const $div = $('<div />').html(data);
-        $this.append($div);
+      const $div = $('<div />').html(data);
+      $this.append($div);
 
-        let strokeColor = tabler.colors[color],
-          fillColor = tabler.colors[color];
+      let strokeColor = tabler.colors[color],
+        fillColor = tabler.colors[color];
 
-        if (type === 'donut' || type === 'pie') {
-          fillColor = [fillColor, tabler.hexToRgbA(fillColor, 0.1)];
-        } else if (type === 'bar') {
-          fillColor = [fillColor];
-        } else if (type === 'line') {
-          fillColor = tabler.hexToRgbA(fillColor, 0.1);
-        }
+      if (type === 'donut' || type === 'pie') {
+        fillColor = [fillColor, tabler.hexToRgbA(fillColor, 0.1)];
+      } else if (type === 'bar') {
+        fillColor = [fillColor];
+      } else if (type === 'line') {
+        fillColor = tabler.hexToRgbA(fillColor, 0.1);
+      }
 
-        $div.peity(type, {
-          width: $this.width(),
-          height: $this.height(),
-          // max: 100,
-          // min: 0,
-          stroke: strokeColor,
-          strokeWidth: 2,
-          fill: fillColor,
-          padding: 0.2,
-          innerRadius: type === 'donut' ? 17 : 0,
-        });
+      $div.peity(type, {
+        width: $this.width(),
+        height: $this.height(),
+        // max: 100,
+        // min: 0,
+        stroke: strokeColor,
+        strokeWidth: 2,
+        fill: fillColor,
+        padding: 0.2,
+        innerRadius: type === 'donut' ? 17 : 0,
       });
+    });
   });
 })(jQuery);
 
