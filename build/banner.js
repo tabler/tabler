@@ -8,7 +8,7 @@ function getBanner(pluginFilename) {
   * Tabler${pluginFilename ? ` ${pluginFilename}` : ''} v${pkg.version} (${pkg.homepage})
   * Copyright 2018-${year} ${pkg.author}
   * Licensed under ${pkg.license} (https://github.com/tabler/tabler/blob/master/LICENSE)
-  */\n\n`;
+  */`;
 }
 
 module.exports = getBanner;
