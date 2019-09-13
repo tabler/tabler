@@ -1,42 +1,32 @@
 'use strict';
 
-class TablerDemo {
+class TablerDemo
+{
   constructor() {
-    this.init();
-
     this.form = document.querySelector('.js-layout-form');
-
-    if(this.form) {
-      this.form.addEventListener('submit', (e) => {
-        e.preventDefault();
-        this.onSubmitForm();
-      });
-
-      var inputs = this.form.querySelectorAll('input[type="radio"]');
-      for (var i = 0; i < inputs.length; i++) {
-        inputs[i].addEventListener('change', () => {
-          this.onSubmitForm();
-        });
-      }
+    if (this.form) {
+      this.initFormControls();
     }
 
-    this.initFormControls();
-  };
-
-  init() {
-    this.config = this.getConfig();
+    // Prevents redirect at click to anchor, used to sets href attribute as `#` instead 'javascript:void(0)'.
+    let anchors = document.querySelectorAll('a[href="#"]');
+    for (let i = 0; i < anchors.length; i++) {
+      anchors[i].addEventListener('click', (e) => {
+        e.preventDefault();
+      });
+    }
   };
 
   getConfig() {
     return {
-      colorScheme: (localStorage.getItem('tablerColorScheme')) ? localStorage.getItem('tablerColorScheme') : 'light',
-      navPosition: (localStorage.getItem('tablerNavPosition')) ? localStorage.getItem('tablerNavPosition') : 'side',
-      headerColor: (localStorage.getItem('tablerHeaderColor')) ? localStorage.getItem('tablerHeaderColor') : 'light',
-      headerFixed: (localStorage.getItem('tablerHeaderFixed')) ? localStorage.getItem('tablerHeaderFixed') : 'default',
-      sidebarColor: (localStorage.getItem('tablerSidebarColor')) ? localStorage.getItem('tablerSidebarColor') : 'dark',
-      sidebarSize: (localStorage.getItem('tablerSidebarSize')) ? localStorage.getItem('tablerSidebarSize') : 'default',
-      sidebarPosition: (localStorage.getItem('tablerSidebarPosition')) ? localStorage.getItem('tablerSidebarPosition') : 'left',
-      sidebarFixed: (localStorage.getItem('tablerSidebarFixed')) ? localStorage.getItem('tablerSidebarFixed') : 'fixed',
+      colorScheme: localStorage.getItem('tablerColorScheme') || 'light',
+      navPosition: localStorage.getItem('tablerNavPosition') || 'side',
+      headerColor: localStorage.getItem('tablerHeaderColor') || 'light',
+      headerFixed: localStorage.getItem('tablerHeaderFixed') || 'default',
+      sidebarColor: localStorage.getItem('tablerSidebarColor') || 'dark',
+      sidebarSize: localStorage.getItem('tablerSidebarSize') || 'default',
+      sidebarPosition: localStorage.getItem('tablerSidebarPosition') || 'left',
+      sidebarFixed: localStorage.getItem('tablerSidebarFixed') || 'fixed',
     };
   };
 
@@ -66,6 +56,18 @@ class TablerDemo {
   };
 
   initFormControls() {
+    this.form.addEventListener('submit', (e) => {
+      e.preventDefault();
+      this.onSubmitForm();
+    });
+
+    let inputs = this.form.querySelectorAll('input[type="radio"]');
+    for (let i = 0; i < inputs.length; i++) {
+      inputs[i].addEventListener('change', () => {
+        this.onSubmitForm();
+      });
+    }
+    
     const config = this.getConfig();
 
     this.toggleColorScheme(config.colorScheme);
@@ -79,7 +81,7 @@ class TablerDemo {
   };
 
   setFormValue(name, value) {
-    if(this.form) {
+    if (this.form) {
       let elements = this.form.querySelectorAll(`[name="${name}"]`);
 
       if (elements) {
@@ -89,8 +91,8 @@ class TablerDemo {
     }
   };
 
-  /*
-  Color scheme toggle
+  /**
+   * Color scheme toggle
    */
   toggleColorScheme(color) {
     return this.setConfig('colorScheme', color, ['dark', 'light'], () => {
@@ -184,12 +186,9 @@ class TablerDemo {
   };
 }
 
-/*
-Init demo
+/**
+ * Init demo
  */
-
-
 (function () {
-  const demo = new TablerDemo();
-  window.DEMO = demo;
+  window.DEMO = new TablerDemo();
 })();
