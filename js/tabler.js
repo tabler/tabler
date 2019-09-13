@@ -1,3 +1,5 @@
+'use strict';
+
 const tabler = {
   colorVariation: function(color, variation) {
     const colorValue = this.colors[color];
@@ -58,9 +60,8 @@ const tabler = {
 
     for (let i = 0; i <= 5; i += 2) {
       let v1 = h2d(color_1.substr(i, 2)),
-        v2 = h2d(color_2.substr(i, 2));
-
-      let val = d2h(Math.floor(v2 + (v1 - v2) * (weight / 100.0)));
+        v2 = h2d(color_2.substr(i, 2)),
+        val = d2h(Math.floor(v2 + (v1 - v2) * (weight / 100.0)));
 
       while (val.length < 2) {
         val = '0' + val;
@@ -106,58 +107,82 @@ const tabler = {
 $(document).ready(function() {
   const $body = $('body');
 
+  // TODO: add tag to selector
   $body.on('click', '[data-toggle="sidebar"]', function(e) {
-    $body.toggleClass('sidebar-opened');
-
     e.preventDefault();
-    return false;
+    $body.toggleClass('sidebar-opened');
   });
 
-  $('[data-toggle="tooltip"]').tooltip();
-  $('[data-toggle="popover"]').popover();
+  $('[data-toggle="tooltip"]', $body).tooltip();
+  $('[data-toggle="popover"]', $body).popover();
 
-  /*
-  Autosize plugin
+  /**
+   * Autosize plugin
+   * @link TODO
    */
   if (window.autosize) {
     (function() {
-      const $elem = $('[data-toggle="autosize"]');
-
-      if ($elem) {
-        $elem.each(function() {
-          autosize($(this));
-        });
-      }
-    })();
-  }
-
-  /*
-  Imask plugin
-   */
-  if (window.IMask) {
-    (function() {
-      const $elem = $('[data-mask]');
-
-      if ($elem) {
-        $elem.each(function() {
-          IMask($(this).get(0), {
-            mask: $(this).attr('data-mask'),
-            lazy: $(this).attr('data-mask-visible') === 'true',
-          });
-        });
-      }
+      $('[data-toggle="autosize"]', $body).each(function() {
+        autosize($(this));
+      });
     })();
   }
 
   /**
-   * Seelectize plugin
+   * Imask plugin
+   * @link TODO
    */
-  if (jQuery && jQuery().selectize) {
-    const $elem = $('[data-selectize]');
-
-    if ($elem) {
-      $elem.selectize();
-    }
+  if (window.IMask) {
+    (function() {
+      $('input[data-mask]', $body).each(function() {
+        const input = $(this);
+        IMask(
+          input.get(0),
+          {
+            mask: input.prop('data-mask'), 
+            lazy: input.prop('data-mask-visible') == 'true'
+          }
+        );
+      });
+    })();
+  }
+  
+  /**
+   * Seelectize plugin
+   * @see http://selectize.github.io/selectize.js/
+   */
+  if (window.jQuery && window.jQuery.fn.selectize) {
+    // Select options with images:
+    $('select[data-selectize="images"]', $body).selectize({
+       render: {
+          option: function (data, escape) {
+             const text = escape(data.text);
+             return `<div>
+                <span class="image"><img src="{{ site.base }}${data.image}" alt="${text}"></span>
+                <span class="title">${text}</span>
+                </div>`;
+          },
+          item: function (data, escape) {
+             const text = escape(data.text);
+             return `<div>
+                <span class="image"><img src="{{ site.base }}${data.image}" alt="${text}"></span>
+                ${text}
+                </div>`;
+          }
+       }
+    });
+    
+    // Input tags:
+    $('input,textarea', $body).filter('[data-selectize="tags"]').selectize({
+       delimiter: ',',
+       persist: false,
+       create: function (input) {
+          return {value: input, text: input};
+       }
+    });
+    
+    // In other cases:
+    $('input,textarea,select', $body).filter('[data-selectize]').not('.selectized').selectize();
   }
 });
 
