@@ -3,13 +3,14 @@
 class TablerDemo
 {
   constructor() {
-    this.form = document.querySelector('.js-layout-form');
+    this.form = document.body.querySelector('.js-layout-form');
     if (this.form) {
+      this.sidebar = document.body.querySelector('.js-sidebar');
       this.initFormControls();
     }
 
     // Prevents redirect at click to anchor, used to sets href attribute as `#` instead 'javascript:void(0)'.
-    let anchors = document.querySelectorAll('a[href="#"]');
+    let anchors = document.body.querySelectorAll('a[href="#"]');
     for (let i = 0; i < anchors.length; i++) {
       anchors[i].addEventListener('click', (e) => {
         e.preventDefault();
@@ -26,7 +27,7 @@ class TablerDemo
       sidebarColor: localStorage.getItem('tablerSidebarColor') || 'dark',
       sidebarSize: localStorage.getItem('tablerSidebarSize') || 'default',
       sidebarPosition: localStorage.getItem('tablerSidebarPosition') || 'left',
-      sidebarFixed: localStorage.getItem('tablerSidebarFixed') || 'fixed',
+      sidebarFixed: localStorage.getItem('tablerSidebarFixed') || 'fixed'
     };
   };
 
@@ -115,9 +116,9 @@ class TablerDemo
   toggleSidebarPosition(position) {
     return this.setConfig('sidebarPosition', position, ['left', 'right'], () => {
       if (position === 'right') {
-        document.querySelector('.js-sidebar').classList.add('navbar-right');
+        this.sidebar.classList.add('navbar-right');
       } else {
-        document.querySelector('.js-sidebar').classList.remove('navbar-right');
+        this.sidebar.classList.remove('navbar-right');
       }
 
       this.setFormValue('sidebar-position', position);
@@ -127,9 +128,9 @@ class TablerDemo
   toggleSidebarSize(size) {
     return this.setConfig('sidebarSize', size, ['default', 'folded'], () => {
       if (size === 'folded') {
-        document.querySelector('.js-sidebar').classList.add('navbar-folded');
+        this.sidebar.classList.add('navbar-folded');
       } else {
-        document.querySelector('.js-sidebar').classList.remove('navbar-folded');
+        this.sidebar.classList.remove('navbar-folded');
       }
 
       this.setFormValue('sidebar-size', size);
@@ -137,12 +138,11 @@ class TablerDemo
   };
 
   toggleSidebarColor(color) {
-    console.log('color', color);
     return this.setConfig('sidebarColor', color, ['dark', 'light'], () => {
-      if (color === 'dark') {
-        document.querySelector('.js-sidebar').classList.add('navbar-dark');
+      if (color == 'dark') {
+        this.sidebar.classList.add('navbar-dark');
       } else {
-        document.querySelector('.js-sidebar').classList.remove('navbar-dark');
+        this.sidebar.classList.remove('navbar-dark');
       }
 
       this.setFormValue('sidebar-color', color);
@@ -151,10 +151,10 @@ class TablerDemo
 
   toggleSidebarFixed(fixed) {
     return this.setConfig('sidebarFixed', fixed, ['fixed', 'default'], () => {
-      if (fixed === 'fixed') {
-        document.querySelector('.js-sidebar').classList.add('navbar-fixed');
+      if (fixed == 'fixed') {
+        this.sidebar.classList.add('navbar-fixed');
       } else {
-        document.querySelector('.js-sidebar').classList.remove('navbar-fixed');
+        this.sidebar.classList.remove('navbar-fixed');
       }
 
       this.setFormValue('sidebar-fixed', fixed);
@@ -163,10 +163,10 @@ class TablerDemo
 
   toggleHeaderColor(color) {
     return this.setConfig('headerColor', color, ['dark', 'light'], () => {
-      if (color === 'dark') {
-        document.querySelector('.js-header').classList.add('navbar-dark');
+      if (color == 'dark') {
+        this.sidebar.classList.add('navbar-dark');
       } else {
-        document.querySelector('.js-header').classList.remove('navbar-dark');
+        this.sidebar.classList.remove('navbar-dark');
       }
 
       this.setFormValue('header-color', color);
@@ -175,10 +175,10 @@ class TablerDemo
 
   toggleHeaderFixed(fixed) {
     return this.setConfig('headerFixed', fixed, ['fixed', 'default'], () => {
-      if (fixed === 'fixed') {
-        document.querySelector('.js-header').classList.add('navbar-fixed');
+      if (fixed == 'fixed') {
+        this.sidebar.classList.add('navbar-fixed');
       } else {
-        document.querySelector('.js-header').classList.remove('navbar-fixed');
+        this.sidebar.classList.remove('navbar-fixed');
       }
 
       this.setFormValue('header-fixed', fixed);
