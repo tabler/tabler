@@ -56,7 +56,7 @@
             <option value="3">March</option>
             <option value="4">April</option>
             <option value="5">May</option>
-            <option selected="selected" value="6">June</option>
+            <option value="6" selected="selected">June</option>
             <option value="7">July</option>
             <option value="8">August</option>
             <option value="9">September</option>
@@ -69,14 +69,16 @@
          <select name="user[day]" class="form-control custom-select">
             <option value="">Day</option>
             {% for i in (1..31) %}
-            <option value="{{ i }}"{% if i == 20 %} selected{% endif %}>{{ i }}</option>{% endfor %}
+            <option value="{{ i }}"{% if i == 20 %} selected{% endif %}>{{ i }}</option>
+            {% endfor %}
          </select>
       </div>
       <div class="col-4">
          <select name="user[year]" class="form-control custom-select">
             <option value="">Year</option>
             {% for i in (1897..2014) reversed %}
-            <option value="{{ i }}"{% if i == 1989 %} selected{% endif %}>{{ i }}</option>{% endfor %}
+            <option value="{{ i }}"{% if i == 1989 %} selected{% endif %}>{{ i }}</option>
+            {% endfor %}
          </select>
       </div>
    </div>
@@ -112,11 +114,11 @@
             Action
          </button>
          <div class="dropdown-menu">
-            <a class="dropdown-item" href="javascript:void(0)">Action</a>
-            <a class="dropdown-item" href="javascript:void(0)">Another action</a>
-            <a class="dropdown-item" href="javascript:void(0)">Something else here</a>
+            <a class="dropdown-item" href="#">Action</a>
+            <a class="dropdown-item" href="#">Another action</a>
+            <a class="dropdown-item" href="#">Something else here</a>
             <div role="separator" class="dropdown-divider"></div>
-            <a class="dropdown-item" href="javascript:void(0)">Separated link</a>
+            <a class="dropdown-item" href="#">Separated link</a>
          </div>
       </div>
       <input type="text" class="form-control" aria-label="Text input with dropdown button">
@@ -125,12 +127,12 @@
 
 <div class="mb-2">
    <label class="form-label">Tags</label>
-   <input type="text" class="form-control" id="input-tags" value="aa,bb,cc,dd">
+   <input type="text" class="form-control" id="input-tags" data-selectize="tags" value="aa,bb,cc,dd">
 </div>
 
 <div class="mb-2">
    <label class="form-label">Beast</label>
-   <select name="beast" id="select-beast" class="form-control custom-select">
+   <select name="beast" class="form-control custom-select" id="select-beast" data-selectize="">
       <option value="1">Chuck Testa</option>
       <option value="4">Sage Cattabriga-Alosa</option>
       <option value="3">Nikola Tesla</option>
@@ -139,8 +141,8 @@
 
 <div class="mb-2">
    <label class="form-label">Users list</label>
-   <select name="user" id="select-users" class="form-control custom-select">
-      {% for user in site.data.people limit: 10 %}
+   <select name="user" class="form-control custom-select" id="select-users" data-selectize="images">
+      {% for user in site.data.people limit: 5 %}
       <option value="{{ forloop.index }}" data-data='{"image": "{{ user.photo }}"}'>
          {{ user.first_name }} {{ user.last_name }}
       </option>
@@ -150,13 +152,11 @@
 
 <div class="mb-2">
    <label class="form-label">Countries</label>
-   <select name="country" id="select-countries" class="form-control custom-select">
-      <option value="br" data-data='{"image": "{{ site.base }}/assets/images/flags/br.svg"}'>Brazil</option>
-      <option value="cz" data-data='{"image": "{{ site.base }}/assets/images/flags/cz.svg"}'>Czech Republic
+   <select name="country" class="form-control custom-select" id="select-countries" data-selectize="images">
+      {% for country in site.data.flags limit: 5 %}
+      <option value="{{ country.flag }}" data-data='{"image": "{{ site.base }}/assets/images/flags/{{ country.flag }}.svg"}'>
+         {{ country.name }}
       </option>
-      <option value="de" data-data='{"image": "{{ site.base }}/assets/images/flags/de.svg"}'>Germany
-      </option>
-      <option value="pl" data-data='{"image": "{{ site.base }}/assets/images/flags/pl.svg"}' selected>Poland
-      </option>
+      {% endfor %}
    </select>
 </div>
