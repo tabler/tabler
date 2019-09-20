@@ -16,4 +16,5 @@ bs.init({
     ignoreInitial: true,
   },
   notify: false,
+  open: false
 });

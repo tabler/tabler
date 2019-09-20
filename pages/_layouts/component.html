@@ -1,0 +1,18 @@
+---
+layout: base
+---
+
+{% assign columns = page.columns | default: 0 %}
+{% assign columns = 1 %}
+
+<div class="container">
+   <div class="d-flex align-items-center justify-content-center p-5" style="min-height: 50vh">
+      <div class="flex-fill "{% if columns > 0 %} style="max-width: {{ columns | times: 298 | minus: 24 }}px"{% endif %}>
+         {{ content }}
+      </div>
+   </div>
+</div>
+
+<div>
+   {{ content | highlight_tidy }}
+</div>

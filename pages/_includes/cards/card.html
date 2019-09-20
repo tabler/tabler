@@ -3,7 +3,7 @@
 	<div class="card-status-{{include.status-position}} bg-{{ include.status-color | default: 'blue' }}"></div>
 	{% endif %}
 
-   {% unless include.hide-header %}
+   {% if include.show-header %}
 	<div class="card-header">
 		<h3 class="card-title">{{ include.title | default: 'Card title' }}</h3>
 
@@ -37,7 +37,7 @@
 		</div>
 		{% endunless %}
 	</div>
-   {% endunless %}
+   {% endif %}
 
    {% if include.alert %}
 	<div class="card-alert alert alert-{{ include.alert-type | default: 'success' }} mb-0">
