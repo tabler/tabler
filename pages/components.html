@@ -1,11 +1,7 @@
 ---
+layout: none
 title: Table UI components
+redirect_from:
+- components/index.html
 ---
-
-<div class="container">
-   <ul>
-      {% for component in site.components %}
-      <li><a href="{{ component.url }}">{{ component.title }}</a></li>
-      {% endfor %}
-   </ul>
-</div>
+{% assign url = "." %}{% for component in site.components limit: 1 %}{% assign url = component.url %}{% endfor %}{% include redirect.html url=url %}

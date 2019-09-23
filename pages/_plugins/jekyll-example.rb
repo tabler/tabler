@@ -1,8 +1,9 @@
 require 'htmlbeautifier'
 
-def render_rouge(code, lang, line_numbers = false)
+def render_rouge(code, lang, dark = false)
   require 'rouge'
-  formatter = Rouge::Formatters::HTML.new(line_numbers: line_numbers, wrap: false)
+
+  formatter = Rouge::Formatters::HTML.new()
   lexer = Rouge::Lexer.find_fancy(lang, code) || Rouge::Lexers::PlainText
 
   code = HtmlBeautifier.beautify(code, indent: "\t")
@@ -14,8 +15,7 @@ def render_rouge(code, lang, line_numbers = false)
   code = code.gsub "javascript:void(0)", "#"
   code = code.gsub "../", "./"
 
-
-  "<div class=\"highlight\"><pre>#{code}</pre></div>"
+  "<pre>#{code}</pre>"
 end
 
 def add_code_tag(code, lang)
@@ -81,14 +81,14 @@ Valid syntax: example <lang> [id=foo]
     def example(output)
       output = output.gsub(/<hide>/, "").gsub(/<\/hide>/, "")
 
-      "<div class=\"example" + (@options[:columns] ? " example-bg" : "") + "\"" + (@options[:id] ? " data-example-id=\"#{@options[:id]}\"" : "") + ">\n" + (@options[:columns] ? "<div class=\"example-column example-column-" + @options[:columns] + "\">\n" : "") + (@options[:wrapper] ? "<div class=\"" + @options[:wrapper] + "\">\n" : "") + (@options[:"max-width"] ? "<div style=\"max-width: " + @options[:"max-width"] + "px; margin: 0 auto;\">\n" : "") + "#{output}" + (@options[:wrapper] ? "\n</div>" : "") + (@options[:columns] ? "\n</div>" : "") + (@options[:"max-width"] ? "\n</div>" : "") + "\n</div>"
+      "<div class=\"example" + (@options[:columns] ? " example-bg" : "") + "\"" + (@options[:id] ? " data-example-id=\"#{@options[:id]}\"" : "") + ">\n" + (@options[:columns] ? "<div class=\"example-column example-column-" + @options[:columns] + "\">\n" : "") + (@options[:wrapper] ? "<div class=\"" + @options[:wrapper] + "\">\n" : "") + (@options[:"max-width"] ? "<div style=\"max-width: " + @options[:"max-width"] + "px; margin: 0 auto;\">\n" : "") + "<div class=\"highlight\">#{output}</div>" + (@options[:wrapper] ? "\n</div>" : "") + (@options[:columns] ? "\n</div>" : "") + (@options[:"max-width"] ? "\n</div>" : "") + "\n</div>"
     end
 
   end
 
   module HightlightFilter
-    def highlight_tidy(code, language = 'html')
-      code = render_rouge(code, language)
+    def highlight_tidy(code, language = 'html', dark = false)
+      code = render_rouge(code, language, dark)
       add_code_tag(code, language)
     end
   end
