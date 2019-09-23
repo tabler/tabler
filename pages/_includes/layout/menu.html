@@ -1,5 +1,6 @@
+{% removeemptylines %}
 <ul class="navbar-nav{% if include.class %} {{ include.class }}{% endif %}" id="menu">
-   {% assign current-page = include.menu | split: '.' %}
+   {% assign current-page = page.menu | default: layout.menu | split: '.' %}
 
    {% for level-1 in site.data.menu %}
    {% assign icon = level-1[1].icon %}
@@ -96,3 +97,4 @@
    </li>
    {% endfor %}
 </ul>
+{% endremoveemptylines %}

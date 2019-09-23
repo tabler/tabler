@@ -56,7 +56,7 @@ title: Form Elements
 {% example %}
 <div class="mb-2">
    <label class="form-label">Country</label>
-   <select class="form-control custom-select">
+   <select class="form-select">
       <option value="">Germany</option>
       <option value="">USA</option>
       <option value="">Poland</option>
@@ -334,7 +334,7 @@ title: Form Elements
    <label class="form-label">Date of birth</label>
    <div class="row row-xs">
       <div class="col-5">
-         <select name="user[month]" class="form-control custom-select">
+         <select name="user[month]" class="form-select">
             <option value="">Month</option>
             <option value="1">January</option>
             <option value="2">February</option>
@@ -351,14 +351,14 @@ title: Form Elements
          </select>
       </div>
       <div class="col-3">
-         <select name="user[day]" class="form-control custom-select">
+         <select name="user[day]" class="form-select">
             <option value="">Day</option>
             {% for i in (1..31) %}
             <option value="{{ i }}"{% if i == 20 %} selected{% endif %}>{{ i }}</option>{% endfor %}
          </select>
       </div>
       <div class="col-4">
-         <select name="user[year]" class="form-control custom-select">
+         <select name="user[year]" class="form-select">
             <option value="">Year</option>
             {% for i in (1897..2014) reversed %}
             <option value="{{ i }}"{% if i == 1989 %} selected{% endif %}>{{ i }}</option>{% endfor %}
