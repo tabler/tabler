@@ -21,6 +21,7 @@ end
 def add_code_tag(code, lang)
   code = code.sub(/<pre>\n*/, '<pre><code class="language-' + lang.to_s.gsub("+", "-") + '" data-lang="' + lang.to_s + '">')
   code = code.sub(/\n*<\/pre>/, "</code></pre>")
+
   code.strip
 end
 
@@ -74,14 +75,14 @@ Valid syntax: example <lang> [id=foo]
                  render_rouge(code, @lang, @options[:linenos])
                end
 
-      rendered_output = example(code) + add_code_tag(output, @lang)
+      rendered_output = example(code) + "<div class=\"highlight\">#{add_code_tag(output, @lang)}</div>"
       prefix + rendered_output + suffix
     end
 
     def example(output)
       output = output.gsub(/<hide>/, "").gsub(/<\/hide>/, "")
 
-      "<div class=\"example" + (@options[:columns] ? " example-bg" : "") + "\"" + (@options[:id] ? " data-example-id=\"#{@options[:id]}\"" : "") + ">\n" + (@options[:columns] ? "<div class=\"example-column example-column-" + @options[:columns] + "\">\n" : "") + (@options[:wrapper] ? "<div class=\"" + @options[:wrapper] + "\">\n" : "") + (@options[:"max-width"] ? "<div style=\"max-width: " + @options[:"max-width"] + "px; margin: 0 auto;\">\n" : "") + "<div class=\"highlight\">#{output}</div>" + (@options[:wrapper] ? "\n</div>" : "") + (@options[:columns] ? "\n</div>" : "") + (@options[:"max-width"] ? "\n</div>" : "") + "\n</div>"
+      "<div class=\"example" + (@options[:columns] ? " example-bg" : "") + "\"" + (@options[:id] ? " data-example-id=\"#{@options[:id]}\"" : "") + ">\n" + (@options[:columns] ? "<div class=\"example-column example-column-" + @options[:columns] + "\">\n" : "") + (@options[:wrapper] ? "<div class=\"" + @options[:wrapper] + "\">\n" : "") + (@options[:"max-width"] ? "<div style=\"max-width: " + @options[:"max-width"] + "px; margin: 0 auto;\">\n" : "") + output + (@options[:wrapper] ? "\n</div>" : "") + (@options[:columns] ? "\n</div>" : "") + (@options[:"max-width"] ? "\n</div>" : "") + "\n</div>"
     end
 
   end
