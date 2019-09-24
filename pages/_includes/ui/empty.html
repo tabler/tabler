@@ -1,9 +1,16 @@
 <div class="empty{% if include.bordered %} empty-bordered{% endif %}">
    <div class="empty-icon">
+      {% if include.illustration %}
+      {% include ui/illustration.html image="undraw_quitting_time_dm8t.svg" class="h-12" %}
+      {% else %}
       {% include ui/icon.html icon="search" %}
+      {% endif %}
    </div>
+
    <p class="empty-title h3">{{ include.title | default: "No results found" }}</p>
-   <p class="empty-subtitle">{{ include.title | default: "Try adjusting your search or filter to find what you're looking for." }}</p>
+   <p class="empty-subtitle">
+      {{ include.title | default: "Try adjusting your search or filter to find what you're looking for." }}
+   </p>
    <div class="empty-action">
       <button class="btn btn-primary">{{ include.button-text | default: "Search again" }}</button>
    </div>
