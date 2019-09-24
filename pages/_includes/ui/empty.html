@@ -1,15 +1,20 @@
-<div class="empty{% if include.bordered %} empty-bordered{% endif %}">
+{% assign icon = include.icon | default: "search" %}
+<div class="empty{% if include.bordered %} empty-bordered{% endif %}{% if include.class %} {{ include.class }}{% endif %}">
    <div class="empty-icon">
       {% if include.illustration %}
       {% include ui/illustration.html image="undraw_quitting_time_dm8t.svg" class="h-12" %}
+      {% elsif include.icon-text %}
+      <div class="display-4">{{ include.icon-text }}</div>
       {% else %}
-      {% include ui/icon.html icon="search" %}
+      {% include ui/icon.html icon=icon %}
       {% endif %}
+
+
    </div>
 
    <p class="empty-title h3">{{ include.title | default: "No results found" }}</p>
    <p class="empty-subtitle">
-      {{ include.title | default: "Try adjusting your search or filter to find what you're looking for." }}
+      {{ include.subtitle | default: "Try adjusting your search or filter to find what you're looking for." }}
    </p>
    <div class="empty-action">
       <button class="btn btn-primary">{{ include.button-text | default: "Search again" }}</button>
