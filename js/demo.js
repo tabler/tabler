@@ -1,3 +1,10 @@
+/*
+ * Tabler Demo (v0.9.0)
+ * Copyright 2018-2019 The Tabler Authors
+ * Copyright 2018-2019 codecalm
+ * Licensed under MIT (https://github.com/tabler/tabler/blob/master/LICENSE)
+ */
+
 'use strict';
 
 class TablerDemo {

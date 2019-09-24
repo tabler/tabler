@@ -1,3 +1,10 @@
+/*
+ * Tabler (v0.9.0): scss-compile.js
+ * Copyright 2018-2019 The Tabler Authors
+ * Copyright 2018-2019 codecalm
+ * Licensed under MIT (https://github.com/tabler/tabler/blob/master/LICENSE)
+ */
+
 //node-sass --output-style expanded --source-map true --source-map-contents true --precision 6 scss/tabler.scss dist/css/tabler.css
 
 const path = require('path'),
