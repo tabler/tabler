@@ -36,7 +36,7 @@ A small count and labeling component. Please read the [official Bootstrap docume
 
 {% example %}
 {% for color in site.colors %}
-<a href="#" class="badge bg-{{ color[0] }}">{{ color[0] }}</a>
+<a href="javascript:void(0)" class="badge bg-{{ color[0] }}">{{ color[0] }}</a>
 {% endfor %}
 {% endexample %}
 
@@ -45,6 +45,6 @@ A small count and labeling component. Please read the [official Bootstrap docume
 
 {% example %}
 {% for color in site.colors %}
-<a href="#" class="badge bg-{{ color[0] }}"></a>
+<a href="javascript:void(0)" class="badge bg-{{ color[0] }}"></a>
 {% endfor %}
 {% endexample %}
