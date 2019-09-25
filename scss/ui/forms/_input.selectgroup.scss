@@ -1,0 +1,103 @@
+/*
+Selectgroup
+ */
+.selectgroup {
+  display: inline-flex;
+}
+
+.selectgroup-vertical {
+  flex-direction: column;
+}
+
+.selectgroup-item {
+  position: relative;
+  flex-grow: 1;
+}
+
+.selectgroup:not(.selectgroup-vertical) > .selectgroup-item {
+  & + .selectgroup-item {
+    margin-left: -1px;
+  }
+
+  &:not(:first-child) .selectgroup-button {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  &:not(:last-child) .selectgroup-button {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
+
+.selectgroup-vertical > .selectgroup-item {
+  &:not(:last-child) {
+    margin-bottom: 0;
+  }
+
+  & + .selectgroup-item {
+    margin-top: -1px;
+    margin-left: 0;
+  }
+
+  &:not(:first-child) .selectgroup-button {
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+  }
+
+  &:not(:last-child) .selectgroup-button {
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+}
+
+.selectgroup-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  opacity: 0;
+}
+
+.selectgroup-button {
+  position: relative;
+  display: block;
+  min-width: $input-height;
+  padding: $input-btn-padding-y 1rem;
+  font-size: $font-size-base;
+  line-height: $input-line-height;
+  color: $text-muted;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+  border: 1px solid $input-border-color;
+  border-radius: 3px;
+  background: rgba(#fff, .064);
+}
+
+.selectgroup-input:checked + .selectgroup-button {
+  z-index: 1;
+  color: $primary;
+  background: rgba($primary, .08);
+  border-color: $primary;
+}
+
+.selectgroup-input:focus + .selectgroup-button {
+  z-index: 2;
+  color: $primary;
+  border-color: $primary;
+  box-shadow: $input-btn-focus-box-shadow;
+}
+
+.selectgroup-pills {
+  flex-wrap: wrap;
+  align-items: flex-start;
+
+  .selectgroup-item {
+    flex-grow: 0;
+  }
+
+  .selectgroup-button {
+    border-radius: 50px;
+  }
+}

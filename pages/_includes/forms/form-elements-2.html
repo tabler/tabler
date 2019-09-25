@@ -1,55 +1,79 @@
+
+
 <div class="mb-3">
-   <label class="form-label">Password</label>
-   <input type="password" class="form-control" name="example-password-input" placeholder="Password..">
+   <label class="form-label">Username</label>
+   {% include ui/input-group.html prepend="@" placeholder="username" %}
 </div>
 
 <div class="mb-3">
-   <label class="form-label">Valid State</label>
-   <input type="text" class="form-control is-valid" name="example-text-input-valid"
-          placeholder="Valid State..">
-
-   <input type="text" class="form-control mt-3 state-valid" value="Valid state">
+   <label class="form-label">Subdomain</label>
+   {% include ui/input-group.html append=".tabler.io" placeholder="subdomain" %}
 </div>
 
 <div class="mb-3">
-   <label class="form-label">Invalid State</label>
-   <input type="text" class="form-control is-invalid" name="example-text-input-invalid"
-          placeholder="Invalid State..">
-   <div class="invalid-feedback">Invalid feedback</div>
-
-   <input type="text" class="form-control mt-3 state-invalid" value="Invalid state">
+   <label class="form-label">Your vanity URL</label>
+   {% include ui/input-group.html prepend="https://example.com/users/" %}
 </div>
 
 <div class="mb-3">
-   <label class="form-label">Country</label>
-   <select class="form-select">
-      <option value="">Germany</option>
+   <label class="form-label">Price</label>
+   {% include ui/input-group.html prepend="$" append=".00" %}
+</div>
+
+<div class="mb-3">
+   <label class="form-label">Button input</label>
+   <div class="input-group">
+      <div class="input-group-prepend">
+         <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
+                 aria-haspopup="true" aria-expanded="false">
+            Action
+         </button>
+         <div class="dropdown-menu">
+            <a class="dropdown-item" href="javascript:void(0)">Action</a>
+            <a class="dropdown-item" href="javascript:void(0)">Another action</a>
+            <a class="dropdown-item" href="javascript:void(0)">Something else here</a>
+            <div role="separator" class="dropdown-divider"></div>
+            <a class="dropdown-item" href="javascript:void(0)">Separated link</a>
+         </div>
+      </div>
+      <input type="text" class="form-control" aria-label="Text input with dropdown button">
+   </div>
+</div>
+
+<div class="mb-3">
+   <label class="form-label">Tags</label>
+   <input type="text" class="form-control" id="input-tags" value="aa,bb,cc,dd">
+</div>
+
+<div class="mb-3">
+   <label class="form-label">Beast</label>
+   <select name="beast" id="select-beast" class="form-select">
+      <option value="1">Chuck Testa</option>
+      <option value="4">Sage Cattabriga-Alosa</option>
+      <option value="3">Nikola Tesla</option>
    </select>
 </div>
+
 <div class="mb-3">
-   <label class="form-label">Ratios</label>
-   <input type="range" class="form-range" step="5" min="0" max="50">
-</div>
-<div class="mb-3">
-   <label class="form-label">Size</label>
-   {% include ui/input-selectgroup.html values="S,M,L,XL,XXL" type="radio" name="size" %}
-</div>
-<div class="mb-3">
-   <label class="form-label">Shipping methods</label>
-   {% include ui/input-selectgroup.html values="Unregistered,Priority Mail,Express Mail" class="selectgroup-vertical" type="radio" name="shipping-method" %}
-</div>
-<div class="mb-3">
-   <label class="form-label">Icons input</label>
-   {% include ui/input-selectgroup.html values="i:smartphone,i:tablet,i:monitor,i:x" class="w-100" type="radio" name="device" %}
+   <label class="form-label">Users list</label>
+   <select name="user" id="select-users" class="form-select">
+      {% for user in site.data.people limit: 10 %}
+      <option value="{{ forloop.index }}" data-data='{"image": "{{ user.photo }}"}'>
+         {{ user.first_name }} {{ user.last_name }}
+      </option>
+      {% endfor %}
+   </select>
 </div>
 
 <div class="mb-3">
-   <label class="form-label">Icon input</label>
-   {% include ui/input-selectgroup.html values="i:sun,i:moon,i:cloud-rain,i:cloud,Other" class="selectgroup-pills" %}
+   <label class="form-label">Countries</label>
+   <select name="country" id="select-countries" class="form-select">
+      <option value="br" data-data='{"image": "{{ site.base }}/assets/images/flags/br.svg"}'>Brazil</option>
+      <option value="cz" data-data='{"image": "{{ site.base }}/assets/images/flags/cz.svg"}'>Czech Republic
+      </option>
+      <option value="de" data-data='{"image": "{{ site.base }}/assets/images/flags/de.svg"}'>Germany
+      </option>
+      <option value="pl" data-data='{"image": "{{ site.base }}/assets/images/flags/pl.svg"}' selected>Poland
+      </option>
+   </select>
 </div>
-
-<div class="mb-3">
-   <label class="form-label">Your skills</label>
-   {% include ui/input-selectgroup.html values="HTML,CSS,PHP,JavaScript" class="selectgroup-pills" %}
-</div>
-

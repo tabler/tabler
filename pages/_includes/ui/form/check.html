@@ -3,6 +3,7 @@
 {% assign disabled = include.disabled | default: false %}
 {% assign switch = include.switch | default: false %}
 {% assign title = include.title | default: false %}
+{% assign is_empty = include['empty'] | default: false %}
 {% unless title %}
    {% assign title = '' %}
    {% if disabled %}{% assign title = title | append: ' disabled' %}{% endif %}
@@ -12,6 +13,6 @@
    {% assign title = title | append: ' input' | lstrip | capitalize %}
 {% endunless %}
 <label class="form-check{% if include.inline %} form-check-inline{% endif %}{% if switch %} form-switch{% endif %}">
-   <input class="form-check-input" type="{{ type }}"{% if checked %} checked{% endif %}{% if disabled %} disabled{% endif %}>
-   <span class="form-check-label">{{ title }}</span>
+   <input class="form-check-input{% if is_empty %} position-static{% endif %}" type="{{ type }}"{% if checked %} checked{% endif %}{% if disabled %} disabled{% endif %}>
+   {% unless is_empty %}<span class="form-check-label">{{ title }}</span>{% endunless %}
 </label>

@@ -52,6 +52,11 @@ title: Form Elements
 </div>
 {% endexample %}
 
+### Input size
+
+{% include parts/input-sizes.html %}
+
+
 ### Select
 {% example %}
 <div class="mb-2">
@@ -82,150 +87,42 @@ title: Form Elements
 {% include parts/input-color.html %}
 {% endexample %}
 
-### Custom Checkbox examples
+### Input color picker
 {% example %}
-<div class="mb-2">
-   <label class="form-label">Icons input</label>
-   {% include ui/input-selectgroup.html values="i:smartphone,i:tablet,i:monitor,i:x" class="w-100" type="radio" name="device" %}
-</div>
+{% include parts/input-colorpicker.html %}
+{% endexample %}
 
-<div class="mb-2">
-   <label class="form-label">Icon input</label>
-   {% include ui/input-selectgroup.html values="i:sun,i:moon,i:cloud-rain,i:cloud,Other" class="selectgroup-pills" %}
-</div>
+### Datalists
+{% example %}
+{% include parts/input-datalist.html %}
+{% endexample %}
 
-<div class="mb-2">
-   <label class="form-label">Your skills</label>
-   {% include ui/input-selectgroup.html values="HTML,CSS,PHP,JavaScript" class="selectgroup-pills" %}
-</div>
-
-<div class="mb-2">
-   <label class="form-label">Size</label>
-   {% include ui/input-selectgroup.html values="S,M,L,XL,XXL" type="radio" name="size" %}
-</div>
-
-<div class="mb-2">
-   <label class="form-label">Shipping methods</label>
-   {% include ui/input-selectgroup.html values="Unregistered,Priority Mail,Express Mail" class="selectgroup-vertical" type="radio" name="shipping-method" %}
-</div>
+### Custom selectboxes
+{% example %}
+{% include parts/input-selectgroups.html %}
 {% endexample %}
 
 ### Toggle switches
 {% example %}
 {% include parts/input-toggle.html %}
-
-<div class="mb-2">
-   <div class="form-label">Toggle switch single</div>
-   <label class="custom-control custom-switch">
-      <input type="checkbox" class="custom-control-input">
-      <div class="custom-control-label">I agree with terms and conditions</div>
-   </label>
-</div>
+{% include parts/input-toggle-single.html %}
 {% endexample %}
 
 ### Radios
 {% example %}
-<div class="mb-2">
-   <div class="form-label">Radios</div>
-   <div class="custom-controls-stacked">
-      <label class="custom-control custom-radio">
-         <input type="radio" class="custom-control-input" name="example-radios" value="option1"
-                checked>
-         <div class="custom-control-label">Option 1</div>
-      </label>
-      <label class="custom-control custom-radio">
-         <input type="radio" class="custom-control-input" name="example-radios" value="option2">
-         <div class="custom-control-label">Option 2</div>
-      </label>
-      <label class="custom-control custom-radio">
-         <input type="radio" class="custom-control-input" name="example-radios" value="option3"
-                disabled>
-         <div class="custom-control-label">Option Disabled</div>
-      </label>
-      <label class="custom-control custom-radio">
-         <input type="radio" class="custom-control-input" name="example-radios2" value="option4"
-                disabled checked>
-         <div class="custom-control-label">Option Disabled Checked</div>
-      </label>
-   </div>
-</div>
-<div class="mb-2">
-   <div class="form-label">Inline Radios</div>
-   <div class="custom-controls-stacked">
-      <label class="custom-control custom-radio custom-control-inline">
-         <input type="radio" class="custom-control-input" name="example-inline-radios"
-                value="option1" checked>
-         <span class="custom-control-label">Option 1</span>
-      </label>
-      <label class="custom-control custom-radio custom-control-inline">
-         <input type="radio" class="custom-control-input" name="example-inline-radios"
-                value="option2">
-         <span class="custom-control-label">Option 2</span>
-      </label>
-      <label class="custom-control custom-radio custom-control-inline">
-         <input type="radio" class="custom-control-input" name="example-inline-radios"
-                value="option3">
-         <span class="custom-control-label">Option 3</span>
-      </label>
-   </div>
-</div>
+{% include parts/input-radios.html %}
+{% include parts/input-radios-inline.html %}
 {% endexample %}
 
 ### Checkboxes
 {% example %}
-<div class="mb-2">
-   <div class="form-label">Checkboxes</div>
-   <div class="custom-controls-stacked">
-      <label class="custom-control custom-checkbox">
-         <input type="checkbox" class="custom-control-input" name="example-checkbox1" value="option1"
-                checked>
-         <span class="custom-control-label">Option 1</span>
-      </label>
-      <label class="custom-control custom-checkbox">
-         <input type="checkbox" class="custom-control-input" name="example-checkbox2"
-                value="option2">
-         <span class="custom-control-label">Option 2</span>
-      </label>
-      <label class="custom-control custom-checkbox">
-         <input type="checkbox" class="custom-control-input" name="example-checkbox3" value="option3"
-                disabled>
-         <span class="custom-control-label">Option Disabled</span>
-      </label>
-      <label class="custom-control custom-checkbox">
-         <input type="checkbox" class="custom-control-input" name="example-checkbox4" value="option4"
-                checked disabled>
-         <span class="custom-control-label">Option Disabled Checked</span>
-      </label>
-   </div>
-</div>
-<div class="mb-2">
-   <div class="form-label">Inline Checkboxes</div>
-   <div>
-      <label class="custom-control custom-checkbox custom-control-inline">
-         <input type="checkbox" class="custom-control-input" name="example-inline-checkbox1"
-                value="option1" checked>
-         <span class="custom-control-label">Option 1</span>
-      </label>
-      <label class="custom-control custom-checkbox custom-control-inline">
-         <input type="checkbox" class="custom-control-input" name="example-inline-checkbox2"
-                value="option2">
-         <span class="custom-control-label">Option 2</span>
-      </label>
-      <label class="custom-control custom-checkbox custom-control-inline">
-         <input type="checkbox" class="custom-control-input" name="example-inline-checkbox3"
-                value="option3">
-         <span class="custom-control-label">Option 3</span>
-      </label>
-   </div>
-</div>
+{% include parts/input-checkboxes.html %}
+{% include parts/input-checkboxes-inline.html %}
 {% endexample%}
 
-### Ratios
+### Range input
 {% example %}
-<div class="mb-2">
-   <label class="form-label">Ratios</label>
-   <input type="range" class="custom-range" step="5" min="0" max="50">
-</div>
+{% include parts/input-range.html %}
 {% endexample %}
 
 ### Sample form
@@ -300,8 +197,8 @@ title: Form Elements
          <input type="text" class="form-control" placeholder="Search for&hellip;">
       </div>
       <span class="col-auto">
-							<button class="btn btn-secondary" type="button">{% include ui/icon.html icon="search" %}</button>
-						</span>
+        <button class="btn btn-secondary" type="button">{% include ui/icon.html icon="search" %}</button>
+        </span>
 </div>
 </div>{% endexample %}
 
