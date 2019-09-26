@@ -1,0 +1,61 @@
+
+/**
+Horizontal rules
+ */
+.hr {
+  @extend hr;
+}
+
+/**
+Hr text
+ */
+.hr-text {
+  margin: $hr-margin-y 0;
+  display: flex;
+  align-items: center;
+  font-size: $h6-font-size;
+
+  &:after,
+  &:before {
+    height: $hr-height;
+    background-color: currentColor;
+    opacity: $hr-opacity;
+    flex: 1 1 auto;
+  }
+
+  &:after {
+    content: '';
+  }
+
+  > *:first-child {
+    padding-left: 0;
+    padding-right: .5rem;
+    color: $text-muted;
+  }
+
+  &.hr-text-center {
+    &:before {
+      content: '';
+    }
+
+    & > *:first-child {
+      padding-left: .5rem;
+      padding-right: .5rem;
+    }
+  }
+
+  &.hr-text-right {
+    &:before {
+      content: '';
+    }
+
+    &:after {
+      content: none;
+    }
+
+    & > *:first-child {
+      padding-left: .5rem;
+      padding-right: 0;
+    }
+  }
+}

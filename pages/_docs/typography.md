@@ -40,6 +40,39 @@ Text <sup>Superscripted</sup><hide> <code class="ml-2">sup</code><br /></hide>
 <var>x</var> = <var>y</var> + 2<hide> <code class="ml-2">var</code><br /></hide>
 {% endexample %}
 
+### Horizontal rules
+
+{% example %}
+<hr> 
+{% endexample %}
+
+#### Horizontal rules with label
+
+{% example %}
+<p>
+  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+</p>
+<div class="hr-text">
+  <span>Rule text</span>
+</div>
+<p>
+  At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+</p>
+<div class="hr-text hr-text-center">
+  <span>Rule text</span>
+</div>
+<p>
+  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
+</p>
+<div class="hr-text hr-text-right">
+  <span>Rule text</span>
+</div>
+<p>
+  At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea takimata sanctus est Lorem ipsum dolor sit amet.
+</p>
+{% endexample %}
+
+
 ### Optimized for Asian, African, and Middle Eastern alphabets
 
 {% example %}
