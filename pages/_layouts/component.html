@@ -1,20 +1,21 @@
 ---
 layout: default
 menu: components
+page-title: Tabler components
 ---
 
 {% assign columns = page.columns | default: 0 %}
 
 <div class="row">
-   <div class="col-3">
+   <div class="col-lg-3">
       <div class="list-group list-group-transparent mb-0">
          {% for component in site.components %}
          <a href="{{ component.url }}" class="list-group-item list-group-item-action{% if component.url == page.url %} active{% endif %}">{{ component.title }}</a>
          {% endfor %}
       </div>
    </div>
-   <div class="col-9">
-      <div class="d-flex align-items-center justify-content-center p-5" style="min-height: 50vh">
+   <div class="col-lg-9">
+      <div class="d-flex align-items-center justify-content-center p-5 pb-6" style="min-height: 50vh">
          <div {% if columns > 0 %}class="flex-fill" style="max-width: {{ columns | times: 298 | minus: 24 }}px"{% endif %}>
             {{ content }}
          </div>
