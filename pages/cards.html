@@ -1,21 +1,37 @@
 ---
+title: Cards
 page-title: Cards
 ---
 
 <div class="row">
    <div class="col-md-6 col-xl-4">
-      {% include_cached cards/card.html body="This is some text within a card body."%}
-      {% include_cached cards/card.html active=true body="This is a card with active state."%}
+      {% include_cached cards/card.html body="This is some text within a card body." %}
       {% include_cached cards/card.html img-bottom=true title="Card with bottom image" %}
+      {% include_cached cards/card.html active=true body="This is a card with active state." %}
+      {% include_cached cards/card.html inactive=true body="This is some text inactive state." %}
+
+      {% include_cached cards/card.html footer-elements="more,>switch"  %}
    </div>
-   <div class="col-md-6 col-xl-4">
-      {% include_cached cards/card.html img-top=true title="Card with top image" %}
-      {% include_cached cards/card.html link=true title="Card with button link" %}
+   <div class="col-md-6 col-xl-8">
+      {% include_cached cards/card-image.html title="Card with left side image" %}
+      {% include_cached cards/card-image.html title="Card with right side image" right=true %}
+      {% include_cached cards/card-group.html %}
+
+      <div class="row">
+         <div class="col-xl-6">
+            {% include_cached cards/card.html img-top=true title="Card with top image" %}
+            {% include_cached cards/card.html link=true title="Card with button link" %}
+            {% include_cached cards/card.html status-top="danger" title="Card with top status" %}
+            {% include_cached cards/card.html status-bottom="success" title="Card with bottom status" %}
+         </div>
+         <div class="col-xl-6">
+            {% include_cached cards/card.html title="Card title" subtitle="Card subtitle" %}
+            {% include_cached cards/card.html header=true  %}
+            {% include_cached cards/card.html title="Card with footer" footer=true %}
+            {% include_cached cards/card.html title="Card with footer button" footer-button=true %}
+            {% include_cached cards/card.html title="Card with footer buttons" footer-buttons=true %}
+         </div>
+      </div>
    </div>
-   <div class="col-md-6 col-xl-4">
-      {% include_cached cards/card.html title="Card title" subtitle="Card subtitle" %}
-      {% include_cached cards/card.html title="Card with footer" footer=true %}
-      {% include_cached cards/card.html title="Card with footer button" footer-button=true %}
-      {% include_cached cards/card.html title="Card with footer buttons" footer-buttons=true %}
-   </div>
+
 </div>

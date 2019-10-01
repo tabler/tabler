@@ -12,7 +12,7 @@
    {% assign title = title | append: ' ' | append: type %}
    {% assign title = title | append: ' input' | lstrip | capitalize %}
 {% endunless %}
-<label class="form-check{% if include.inline %} form-check-inline{% endif %}{% if switch %} form-switch{% endif %}">
+<label class="form-check{% if include.inline %} form-check-inline{% endif %}{% if switch %} form-switch{% endif %}{% if include.class %} {{ include.class }}{% endif %}">
    <input class="form-check-input{% if is_empty %} position-static{% endif %}" type="{{ type }}"{% if checked %} checked{% endif %}{% if disabled %} disabled{% endif %}>
    {% unless is_empty %}<span class="form-check-label">{{ title }}</span>{% endunless %}
 </label>
