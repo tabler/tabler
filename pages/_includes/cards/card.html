@@ -1,74 +1,67 @@
-<div class="card{% if include.collapsed %} card-collapsed{% endif %}">
-	{% if include.status-position %}
-	<div class="card-status-{{include.status-position}} bg-{{ include.status-color | default: 'blue' }}"></div>
-	{% endif %}
+<div class="card{% if include.active %} border-primary{% endif %}">
+   {% if include.img-top %}
+   <img src="//placehold.it/374x210" class="card-img-top" alt="{{ include.img-top-alt | default: 'Card top image' }}">
+   {% endif %}
 
-   {% if include.show-header %}
-	<div class="card-header">
-		<h3 class="card-title">{{ include.title | default: 'Card title' }}</h3>
+   {% if include.status-position %}
+   <div class="card-status-{{include.status-position}} bg-{{ include.status-color | default: 'blue' }}"></div>
+   {% endif %}
 
-		{% unless include.hide-options %}
-		<div class="card-options">
-			{% if include.show-form %}
-			<form action="">
-				<div class="input-group">
-					<input type="text" class="form-control form-control-sm" placeholder="Search something&hellip;" name="s">
-					<span class="input-group-btn ml-2">
-							<button class="btn btn-sm btn-secondary" type="submit">
-								{% include ui/icon.html icon="search" %}
-							</button>
-						</span>
-				</div>
-			</form>
-			{% elsif include.show-buttons %}
-			<a href="javascript:void(0)" class="btn btn-primary btn-sm">Action 1</a>
-			<a href="javascript:void(0)" class="btn btn-secondary btn-sm ml-2">Action 2</a>
-			{% elsif include.show-switch %}
-			   {% include ui/switch.html checked=true %}
-			{% elsif include.options %}
-			   {{ include.options }}
-			{% else %}
-			<a href="javascript:void(0)" class="card-options-link" data-toggle="card-collapse">{% include ui/icon.html icon="chevron-up" %}</a>
-			{% if include.show-fullscreen %}
-			<a href="javascript:void(0)" class="card-options-link" data-toggle="card-fullscreen">{% include ui/icon.html icon="maximize" %}</a>
-			{% endif %}
-			<a href="javascript:void(0)" class="card-options-link" data-toggle="card-remove">{% include ui/icon.html icon="x" %}</a>
-			{% endif %}
-		</div>
-		{% endunless %}
-	</div>
+   {% if include.header-title %}
+   <div class="card-header">
+      <h3 class="card-title">{{ include.header-title }}</h3>
+   </div>
    {% endif %}
 
    {% if include.alert %}
-	<div class="card-alert alert alert-{{ include.alert-type | default: 'success' }} mb-0">
-		{{ include.alert }}
-	</div>
-	{% endif %}
-	<div class="card-body">
-      {% if include.body-title %}
-      <h3 class="card-title">{{ include.body-title }}</h3>
+   <div class="card-alert alert alert-{{ include.alert-type | default: 'success' }} mb-0">
+      {{ include.alert }}
+   </div>
+   {% endif %}
+   <div class="card-body">
+      {% if include.title %}
+      <h3 class="card-title">{{ include.title }}</h3>
+      {% endif %}
+      {% if include.subtitle %}
+      <div class="card-subtitle">Card subtitle</div>
       {% endif %}
 
-		{% if include.body %}
-		   {{ include.body }}
-		{% elsif include.show-loader %}
-		<div class="dimmer active">
-			<div class="loader"></div>
-			<div class="dimmer-content">
-            <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit incidunt, iste, itaque minima neque pariatur perferendis sed suscipit velit vitae voluptatem. A consequuntur, deserunt eaque error nulla temporibus!</p>
-			</div>
-		</div>
-		{% else %}
-		<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit incidunt, iste, itaque minima neque pariatur perferendis sed suscipit velit vitae voluptatem. A consequuntur, deserunt eaque error nulla temporibus!</p>
-		{% endif %}
-	</div>
-	{% if include.show-footer %}
-	<div class="card-footer">
-		This is standard card footer
-	</div>
-	{% endif %}
+      {% if include.body %}
+      <p>{{ include.body }}</p>
+      {% else %}
+      <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit incidunt, iste, itaque minima
+         neque pariatur perferendis sed suscipit velit vitae voluptatem.</p>
+      {% endif %}
+
+      {% if include.link %}
+      <div class="card-text">
+         <a href="#" class="btn btn-primary">Go somewhere</a>
+      </div>
+      {% endif %}
+   </div>
+
+   {% if include.footer or include.footer-button or include.footer-buttons %}
+   <!-- Card footer -->
+   <div class="card-footer">
+      {% if include.footer-button %}
+      <a href="#" class="btn btn-primary">Go somewhere</a>
+      {% elsif include.footer-buttons %}
+      <div class="d-flex">
+         <a href="#" class="btn btn-link">Cancel</a>
+         <a href="#" class="btn btn-primary ml-auto">Go somewhere</a>
+      </div>
+      {% else %}
+      This is standard card footer
+      {% endif %}
+   </div>
+   {% endif %}
 
    {% if include.status-bottom %}
    <div class="card-status card-status-bottom bg-{{ include.status-bottom }}"></div>
+   {% endif %}
+
+   {% if include.img-bottom %}
+   <img src="//placehold.it/374x210" class="card-img-bottom"
+        alt="{{ include.img-bottom-alt | default: 'Card bottom image' }}">
    {% endif %}
 </div>
