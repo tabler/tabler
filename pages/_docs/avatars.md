@@ -85,11 +85,7 @@ Change the shape of an avatar with the default Bootstrap image classes.
 ### Avatars list
 
 {% example %}
-<div class="avatar-list">
-{% for person in site.data.people limit: 5 offset: 20 %}
-  {% include ui/avatar.html person=person %}
-{% endfor %}
-</div>
+{% include ui/avatar-list.html %}
 {% endexample %}
 
 {% example %}

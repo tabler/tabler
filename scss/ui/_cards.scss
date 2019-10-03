@@ -1,6 +1,16 @@
 .card {
   margin-bottom: $card-group-margin;
-  box-shadow: rgba(0, 0, 0, 0.04) 0 2px 4px 0;
+  box-shadow: $card-shadow;
+
+  @at-root a#{&} {
+    color: inherit;
+    transition: .3s box-shadow;
+
+    &:hover {
+      text-decoration: none;
+      box-shadow: $card-shadow-hover;
+    }
+  }
 }
 
 .card-group {
@@ -9,8 +19,27 @@
 
 .card-inactive {
   box-shadow: none;
-  opacity: .8;
   pointer-events: none;
+
+  .card-body {
+    opacity: .64;
+  }
+}
+
+.card-active {
+  position: relative;
+  background-color: rgba($primary, .03);
+
+  &:before {
+    content: '';
+    position: absolute;
+    top: -1px;
+    left: -1px;
+    right: -1px;
+    bottom: -1px;
+    border: 1px solid $primary;
+    border-radius: inherit;
+  }
 }
 
 .card-link {
@@ -32,6 +61,23 @@
   &:hover {
     text-decoration: none;
     background: rgba($primary, .06);
+  }
+}
+
+.card-stacked {
+  position: relative;
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: -5px;
+    left: 5px;
+    right: 5px;
+    border: 1px solid $card-border-color;
+    border-radius: $card-border-radius $card-border-radius 0 0;
+    background: $card-bg;
+    z-index: -1;
+    height: 5px
   }
 }
 
@@ -65,12 +111,16 @@
 .card-header {
   display: flex;
   align-items: center;
-  min-height: 3.5rem;
   background: transparent;
 }
 
 .card-header-tabs {
+  flex: 1;
   margin: (- $card-spacer-y) (- $card-spacer-x);
+}
+
+.card-header-pills {
+  flex: 1;
 }
 
 .card-footer {
@@ -78,7 +128,6 @@
 }
 
 .card-progress {
-  height: 4px;
 
   &:last-child {
     border-radius: 0 0 2px 2px;
@@ -103,7 +152,7 @@
   }
 
   .card-header & {
-    margin: 0;
+    margin: -.125rem 0;
   }
 }
 
@@ -158,7 +207,7 @@ Card status
   right: auto;
   bottom: 0;
   height: 100%;
-  width: 2px;
+  width: $card-status-size;
   border-radius: $card-border-radius 0 0 $card-border-radius;
 }
 
@@ -167,7 +216,7 @@ Card status
   bottom: 0;
   width: 100%;
   top: initial;
-  height: 2px;
+  height: $card-status-size;
   border-radius: 0 0 $card-border-radius $card-border-radius;
 }
 
@@ -230,21 +279,6 @@ Card chart
   position: relative;
   z-index: 1;
   height: 3.5rem;
-}
-/*
-Card Aside
-*/
-.card-aside {
-  flex-direction: row;
-}
-
-.card-aside-column {
-  min-width: 5rem;
-  width: 30%;
-  flex: 0 0 30%;
-  border-top-left-radius: 3px;
-  border-bottom-left-radius: 3px;
-  background: no-repeat center/cover;
 }
 
 /*
