@@ -127,7 +127,7 @@ A button can be formatted to link to a social website
 
 {% example html wrapper=btn-list %} 
 {% for button in site.socials %}
-{% include ui/button.html color=button.name icon=button.name text=button.title provider="brand" %}
+{% include ui/button.html color=button.name icon=button.icon text=button.title %}
 {% endfor %}
 {% endexample %}
 
@@ -135,7 +135,7 @@ You can use only icons.
 
 {% example html wrapper=btn-list %} 
 {% for button in site.socials %}
-{% include ui/button.html color=button.name icon=button.name provider="brand" %}
+{% include ui/button.html color=button.name icon=button.icon %}
 {% endfor %}
 {% endexample %}
 

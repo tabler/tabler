@@ -3,54 +3,78 @@ title: Buttons
 done: true
 ---
 
-<p>
-    {% include ui/button.html text="Button" %}
-    {% include ui/button.html text="Button value" %}
-    {% include ui/button.html text="Button" color="primary" %}
-    {% include ui/button.html text="Button" color="secondary" %}
-    {% include ui/button.html text="Button" color="green" %}
-    {% include ui/button.html text="Button" color="teal" %}
-    {% include ui/button.html text="Button" color="yellow" %}
-    {% include ui/button.html text="Button" color="dark" %}
-    {% include ui/button.html text="Button" color="red" link=true %}
-    {% include ui/button.html text="Button" color="red" disabled=true %}
-    {% include ui/button.html text="Button" link=true %}
-    {% include ui/button.html text="Button" link=true class="text-danger" %}
-</p>
-<p>
-    {% include ui/button.html text="Button" color="red" square=true %}
-    {% include ui/button.html text="Button" color="red" pill=true %}
-    {% include ui/button.html text="Button" color="red" pill=true outline=true %}
-    {% include ui/button.html text="Button" color="red" outline=true %}
-    {% include ui/button.html text="Button" color="twitter" icon="twitter" %}
-    {% include ui/button.html color="facebook" icon="facebook" %}
-    {% include ui/button.html color="github" icon="github" %}
-</p>
-<p>
-	{% include ui/button.html text="Button" color="red" size="lg" %}
-	{% include ui/button.html text="Button" color="red" size="sm" %}
-</p>
-<p>
-    {% include ui/button.html text="Button" block=true color="primary" %}
-    {% include ui/button.html text="Button" block=true color="secondary" %}
-</p>
-<p>
-	<a href="javascript:void(0)" class="btn btn-secondary">{% include ui/avatar.html person-id="4" class="btn-avatar" %} Avatar</a>
-	<a href="javascript:void(0)" class="btn btn-secondary">{% include ui/avatar.html person-id="5" class="btn-avatar" %} Avatar</a>
-	<a href="javascript:void(0)" class="btn btn-secondary">{% include ui/avatar.html person-id="6" class="btn-avatar" %} Avatar</a>
-</p>
-<p>
-	<a href="javascript:void(0)" class="btn btn-primary btn-loading"><span class="loader btn-loader"></span> Loading&hellip;</a>
-	<a href="javascript:void(0)" class="btn btn-secondary btn-loading"><span class="loader btn-loader"></span> Loading&hellip;</a>
-	<a href="javascript:void(0)" class="btn btn-warning btn-loading"><span class="loader btn-loader"></span> Loading&hellip;</a>
-	<a href="javascript:void(0)" class="btn btn-outline-danger btn-loading"><span class="loader btn-loader"></span> Loading&hellip;</a>
-</p>
+<div class="row">
+   <div class="col-md-6">
+      <div class="card">
+         <div class="card-body">
+            <h3 class="card-title">Buttons</h3>
 
-<p>
-  {% include ui/button.html text="Button" label="star" color="primary" %}
-  {% include ui/button.html text="Button" label="star" color="green" %}
-  {% include ui/button.html text="Button" label="star" color="lime" %}
-  {% include ui/button.html text="Button" label="star" color="pink" %}
-  {% include ui/button.html text="Button" label="star" color="yellow" %}
-  {% include ui/button.html text="Button" label="star" color="orange" %}
-</p>
+            <div class="btn-list">
+               {% for color in site.colors %}
+               {% assign c = color[0] %}
+               {% include ui/button.html text="Button" color=c %}
+               {% endfor %}
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <div class="col-md-6">
+      <div class="card">
+         <div class="card-body">
+            <h3 class="card-title">Outlined buttons</h3>
+
+            <div class="btn-list">
+               {% for color in site.colors %}
+               {% assign c = color[0] %}
+               {% include ui/button.html text="Button" outline=true color=c %}
+               {% endfor %}
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <div class="col-md-6">
+      <div class="card">
+         <div class="card-body">
+            <h3 class="card-title">Buttons with icons</h3>
+
+            <div class="btn-list">
+               {% for color in site.colors %}
+               {% assign c = color[0] %}
+               {% include ui/button.html text="Button" color=c icon="star" %}
+               {% endfor %}
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <div class="col-md-6">
+      <div class="card">
+         <div class="card-body">
+            <h3 class="card-title">Outlined buttons with icons</h3>
+
+            <div class="btn-list">
+               {% for color in site.colors %}
+               {% assign c = color[0] %}
+               {% include ui/button.html text="Button" outline=true color=c icon-right="star" %}
+               {% endfor %}
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <div class="col-md-6">
+      <div class="card">
+         <div class="card-body">
+            <h3 class="card-title">Social buttons</h3>
+
+            <div class="btn-list">
+               {% for social in site.socials %}
+               {% include ui/button.html text=social.title color=social.name icon=social.icon %}
+               {% endfor %}
+            </div>
+         </div>
+      </div>
+   </div>
+</div>

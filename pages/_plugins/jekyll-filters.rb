@@ -77,7 +77,12 @@ module Jekyll
       else
         'tabler.colors["'+ color[0] + '"]'
       end
+    end
 
+    def replace_regex(input, reg_str, repl_str)
+      re = Regexp.new reg_str
+
+      input.gsub re, repl_str
     end
   end
 end

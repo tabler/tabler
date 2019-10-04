@@ -1,9 +1,32 @@
 .btn {
-  letter-spacing: .03em;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   box-shadow: 0 1px 1px rgba(0, 0, 0, .03);
 
-  .flag {
-    vertical-align: -5px;
+  &:not([class^='btn-outline']):not([class*=' btn-outline']) {
+    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .05), inset 0 2px 0 -1px rgba(255, 255, 255, .1);
+    text-shadow: 1px 1px 0 rgba(0, 0, 0, .1);
+
+    svg.icon {
+      filter: drop-shadow(1px 1px 0 rgba(0, 0, 0, .1));
+    }
+  }
+
+  .icon {
+    font-size: 1.2em;
+    vertical-align: sub;
+    margin: 0 .5em 0 -.25em;
+  }
+
+  .icon-right {
+    margin: 0 -.25em 0 .5em;
+  }
+
+  svg.icon {
+    width: 1em;
+    height: 1em;
+    stroke-width: 1.5;
   }
 }
 
@@ -41,9 +64,6 @@
 }
 
 .btn-icon {
-  min-width: px2rem(35px); //todo: porpawic, wpisalem z palca
-  padding-right: .5rem;
-  padding-left: .5rem;
 }
 
 .btn-list {
@@ -53,7 +73,6 @@
   > .btn,
   > .dropdown {
     margin-bottom: .5rem;
-    display: inline-block;
 
     &:not(:last-child) {
       margin-right: .5rem;

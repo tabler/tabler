@@ -1,1 +1,19 @@
-{% assign provider = include.provider | default: "fe" %}<i class="icon {{ provider }} {{ provider }}-{{ include.icon }}{% if include.class %} {{ include.class }}{% endif %}{% if include.color %} text-{{ include.color }}{% endif %}"></i>
+{% removeemptylines %}
+   {% if include.use-svg %}
+   {% assign svg-file="svg/" | append: include.icon | append: ".svg" %}
+   {% capture svg-icon %}
+   {% include_cached {{ svg-file }} %}
+   {% endcapture %}
+
+   {% if include.right %}
+   {% assign replace-to = 'class="icon icon-right"' %}
+   {% else %}
+   {% assign replace-to = 'class="icon"' %}
+   {% endif %}
+
+   {{ svg-icon | replace_regex: 'class=\"[^"]+\"', replace-to }}
+{% else %}
+   {% assign provider = include.provider | default: "fe" %}
+   <i class="icon {{ provider }} {{ provider }}-{{ include.icon }}{% if include.class %} {{ include.class }}{% endif %}{% if include.color %} text-{{ include.color }}{% endif %}"></i>
+{% endif %}
+{% endremoveemptylines %}
