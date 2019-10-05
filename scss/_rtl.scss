@@ -1,24 +1,323 @@
 // stylelint-disable declaration-no-important
+.rtl,
+[dir="rtl"] {
+  text-align: right;
+  direction: rtl;
 
-html[dir="rtl"] {
-  body {
+  .nav {
+    padding-right: 0;
+  }
+
+  .navbar-nav .nav-item {
+    float: right;
+  }
+
+  .navbar-nav .nav-item + .nav-item {
+    margin-right: 1rem;
+    margin-left: inherit;
+  }
+
+  th {
     text-align: right;
-    direction: rtl;
   }
 
-  .hide-rtl {
-    display: none !important;
+  .alert-dismissible {
+    padding-right: 1.25rem;
+    padding-left: 4rem;
   }
 
-  .show-rtl {
-    display: block !important;
+  .dropdown-menu {
+    right: 0;
+    left: inherit;
+    text-align: right;
   }
 
-  .float-right {
-    float: left !important;
+  .checkbox label {
+    padding-right: 1.25rem;
+    padding-left: inherit;
   }
 
-  .float-left {
-    float: right !important;
+  .btn-group > .btn:not(:first-child),
+  .btn-group > .btn-group:not(:first-child) {
+    margin-left: initial;
+    margin-right: -$btn-border-width;
   }
+  
+  .btn-group > .btn:first-child:not(:last-child):not(.dropdown-toggle) {
+    border-radius: 0 $border-radius $border-radius 0;
+  }
+
+  .btn-group > .btn:last-child:not(:first-child),
+  .btn-group > .dropdown-toggle:not(:first-child) {
+    border-radius: $border-radius 0 0 $border-radius;
+  }
+
+  .btn-group > .btn-group:last-child:not(:first-child) > .btn:first-child {
+    border-radius: $border-radius 0 0 $border-radius;
+  }
+
+  .custom-control {
+    padding-right: 1.5rem;
+    padding-left: inherit;
+    margin-right: inherit;
+    margin-left: 1rem;
+  }
+
+  .custom-control-indicator {
+    right: 0;
+    left: inherit;
+  }
+
+  .custom-file-label::after {
+    right: initial;
+    left: -1px;
+    border-radius: .25rem 0 0 .25rem;
+  }
+
+  .custom-control-label::after,
+  .custom-control-label::before {
+    right: -1.5rem;
+    left: inherit;
+  }
+
+  .custom-select {
+    padding: $custom-select-padding-y $custom-select-padding-x $custom-select-padding-y ($custom-select-padding-x + $custom-select-indicator-padding);
+    background: $custom-select-bg $custom-select-indicator no-repeat left $custom-select-padding-x center;
+    background-size: $custom-select-bg-size;
+  }
+
+  .custom-switch {
+    padding-right: $custom-switch-width + $custom-control-gutter; 
+    padding-left: inherit;
+
+    .custom-control-label {
+      &::before {
+        right: -($custom-switch-width + $custom-control-gutter); 
+      }
+
+      &::after {
+        right: calc(#{-($custom-switch-width + $custom-control-gutter)} + #{$custom-control-indicator-border-width * 2}); 
+      }
+    }
+
+    .custom-control-input:checked~.custom-control-label {
+      &::after {
+        transform: translateX(- $custom-switch-width + $custom-control-indicator-size);
+      }
+    }
+  }
+
+  .input-group > .input-group-append:last-child > .btn:not(:last-child):not(.dropdown-toggle),
+  .input-group > .input-group-append:last-child > .input-group-text:not(:last-child),
+  .input-group > .input-group-append:not(:last-child) > .btn,
+  .input-group > .input-group-append:not(:last-child) > .input-group-text,
+  .input-group > .input-group-prepend > .btn,
+  .input-group > .input-group-prepend > .input-group-text {
+    border-radius: 0 $border-radius $border-radius 0;
+  }
+
+  .input-group > .input-group-append > .btn,
+  .input-group > .input-group-append > .input-group-text,
+  .input-group > .input-group-prepend:first-child > .btn:not(:first-child),
+  .input-group > .input-group-prepend:first-child > .input-group-text:not(:first-child),
+  .input-group > .input-group-prepend:not(:first-child) > .btn,
+  .input-group > .input-group-prepend:not(:first-child) > .input-group-text {
+    border-radius: $border-radius 0 0 $border-radius;
+  }
+
+  .input-group > .custom-select:not(:first-child),
+  .input-group > .form-control:not(:first-child) {
+    border-radius: $border-radius 0 0 $border-radius;
+  }
+
+  .input-group > .custom-select:not(:last-child),
+  .input-group > .form-control:not(:last-child) {
+    border-radius: 0 $border-radius $border-radius 0;
+  }
+
+  .input-group > .custom-select:not(:last-child):not(:first-child),
+  .input-group > .form-control:not(:last-child):not(:first-child) {
+    border-radius: 0;
+  }
+
+  .radio input,
+  .radio-inline,
+  .checkbox input,
+  .checkbox-inline input {
+    margin-right: -1.25rem;
+    margin-left: inherit;
+  }
+
+  .breadcrumb-item {
+    + .breadcrumb-item {
+      padding-right: $breadcrumb-item-padding-x;
+      padding-left: 0;
+
+      &::before {
+        padding-right: 0;
+        padding-left: $breadcrumb-item-padding-x;
+      }
+
+      color: $breadcrumb-divider-color;
+      content: $breadcrumb-divider;
+    }
+  }
+
+  .list-group {
+    padding-right: 0;
+    padding-left: 40px;
+  }
+
+  .close {
+    float: left;
+  }
+
+  .modal-header .close {
+    margin: -15px auto -15px -15px;
+  }
+
+  .modal-footer {
+    > :not(:first-child) {
+      margin-right: .25rem;
+    }
+
+    > :not(:last-child) {
+      margin-left: .25rem;
+    }
+
+    > :first-child {
+      margin-right: 0;
+    }
+
+    > :last-child {
+      margin-left: 0;
+    }
+  }
+
+  .alert-dismissible .close {
+    right: inherit;
+    left: 0;
+  }
+
+  .dropdown-toggle::after {
+    margin-right: .255em;
+    margin-left: 0;
+  }
+
+  .form-check-input {
+    margin-right: -1.25rem;
+    margin-left: inherit;
+  }
+
+  .form-check-label {
+    padding-right: 1.25rem;
+    padding-left: inherit;
+  }
+
+  .pagination,
+  .list-unstyled,
+  .list-inline {
+    padding-right: 0;
+    padding-left: inherit;
+  }
+
+  .pagination{
+    .page-item {
+      &:first-child {
+        .page-link {
+          @include border-right-radius($border-radius);
+          @include border-left-radius(0);
+        }
+      }
+
+      &:last-child {
+        .page-link {
+          @include border-right-radius(0);
+          @include border-left-radius($border-radius);
+        }
+      }
+    }
+  }
+
+  @mixin make-col-offset($size, $columns: $grid-columns) {
+    $num: $size / $columns;
+    margin-right: if($num == 0, 0, percentage($num));
+    margin-left: 0;
+  }
+
+  @mixin make-grid-columns($columns: $grid-columns, $gutter: $grid-gutter-width, $breakpoints: $grid-breakpoints) {
+    @each $breakpoint in map-keys($breakpoints) {
+      $infix: breakpoint-infix($breakpoint, $breakpoints);
+      @include media-breakpoint-up($breakpoint, $breakpoints) {
+        @for $i from 0 through ($columns - 1) {
+          @if not ($infix == "" and $i == 0) {
+            .offset#{$infix}-#{$i} {
+              @include make-col-offset($i, $columns);
+            }
+          }
+        }
+      }
+    }
+  }
+  @if $enable-grid-classes {
+    @include make-grid-columns();
+  }
+
+  // stylelint-disable declaration-no-important
+  @each $breakpoint in map-keys($grid-breakpoints) {
+    @include media-breakpoint-up($breakpoint) {
+      $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+      @each $prop, $abbrev in (margin: m, padding: p) {
+        @each $size, $length in $spacers {
+
+          .#{$abbrev}r#{$infix}-#{$size} {
+            #{$prop}-right: 0 !important;
+            #{$prop}-left: $length !important;
+          }
+          .#{$abbrev}l#{$infix}-#{$size} {
+            #{$prop}-left: 0 !important;
+            #{$prop}-right: $length !important;
+          }
+          #{$abbrev}x#{$infix}-#{$size} {
+            #{$prop}-left: $length !important;
+            #{$prop}-right: $length !important;
+          }
+        }
+      }
+
+      .mr#{$infix}-auto {
+        margin-right: 0 !important;
+        margin-left: auto !important;
+      }
+      .ml#{$infix}-auto {
+        margin-right: auto !important;
+        margin-left: 0 !important;
+      }
+      .mx#{$infix}-auto {
+        margin-right: auto !important;
+        margin-left: auto !important;
+      }
+    }
+  }
+
+  @each $breakpoint in map-keys($grid-breakpoints) {
+    @include media-breakpoint-up($breakpoint) {
+      $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+      .text#{$infix}-right {
+        text-align: left !important;
+      }
+      .text#{$infix}-left {
+        text-align: right !important;
+      }
+    }
+  }
+}
+
+.hide-rtl {
+  display: none !important;
+}
+
+.show-rtl {
+  display: block !important;
 }
