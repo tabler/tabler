@@ -5,11 +5,17 @@
    {% include_cached {{ svg-file }} %}
    {% endcapture %}
 
+   {% assign replace-to = "icon" %}
+
    {% if include.right %}
-   {% assign replace-to = 'class="icon icon-right"' %}
-   {% else %}
-   {% assign replace-to = 'class="icon"' %}
+   {% assign replace-to = replace-to | append: " icon-right" %}
    {% endif %}
+
+   {% if include.class %}
+   {% assign replace-to = replace-to | append: ' ' | append: include.class %}
+   {% endif %}
+
+   {% assign replace-to = 'class="' | append: replace-to | append: '"' %}
 
    {{ svg-icon | replace_regex: 'class=\"[^"]+\"', replace-to }}
 {% else %}

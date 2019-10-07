@@ -2,8 +2,15 @@
   @return ($px / 16px) * 1rem;
 }
 
+@function alpha-attribute($color, $background) {
+  $percent: alpha($color) * 100%;
+  $opaque: opacify($color, 1);
+
+  @return mix($opaque, $background, $percent);
+}
+
 @function theme-color-lighter($color) {
-  @return rgba($color, .2);
+  @return alpha-attribute(rgba($color, .2), #fff);
 }
 
 @function theme-color-lightest($color) {

@@ -12,9 +12,18 @@ Selectgroup
 .selectgroup-item {
   position: relative;
   flex-grow: 1;
+  margin: 0;
 }
 
-.selectgroup:not(.selectgroup-vertical) > .selectgroup-item {
+.selectgroup-separated {
+  margin: 0 -.5rem -.5rem 0;
+
+  .selectgroup-item {
+    margin: 0 .5rem .5rem 0;
+  }
+}
+
+.selectgroup:not(.selectgroup-vertical):not(.selectgroup-separated) > .selectgroup-item {
   & + .selectgroup-item {
     margin-left: -1px;
   }
@@ -30,7 +39,7 @@ Selectgroup
   }
 }
 
-.selectgroup-vertical > .selectgroup-item {
+.selectgroup-vertical:not(.selectgroup-separated) > .selectgroup-item {
   &:not(:last-child) {
     margin-bottom: 0;
   }
@@ -64,7 +73,7 @@ Selectgroup
   display: block;
   min-width: $input-height;
   padding: $input-btn-padding-y 1rem;
-  font-size: $font-size-base;
+  font-size: $input-btn-font-size;
   line-height: $input-line-height;
   color: $text-muted;
   text-align: center;

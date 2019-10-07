@@ -10,7 +10,7 @@ og-component: true
 <div class="row">
    <div class="col-lg-3">
       <div class="list-group list-group-transparent mb-0">
-         {% assign components = site.components | sort: title %}
+         {% assign components = site.components | sort: 'title' %}
          {% for component in components %}
          <a href="{{ component.url }}" class="list-group-item list-group-item-action{% if component.url == page.url %} active{% endif %}">{{ component.title }}</a>
          {% endfor %}
@@ -18,7 +18,7 @@ og-component: true
    </div>
    <div class="col-lg-9">
       <div class="card">
-         <div class="card-body">
+         <div class="card-body p-6">
             <div class="card-title">{{ page.title }}</div>
             <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi autem dignissimos doloribus, fuga iste omnis reprehenderit ullam veritatis. Ab aut blanditiis dolore eos exercitationem iste quis rerum, tempore unde voluptatem!</p>
 
@@ -31,13 +31,13 @@ og-component: true
                </div>
             </div>
 
-            <div class="highlight m-0 rounded-0 rounded-bottom">
+            <div class="highlight m-0 rounded-0 rounded-bottom mb-3">
                {{ content | highlight_tidy: 'html' }}
             </div>
 
             <div class="row">
-               <div class="col">{% include ui/button.html text="Copy code" color="secondary" block=true class="mt-4" %}</div>
-               <div class="col">{% include ui/button.html text="Open in sandbox" color="primary" block=true class="mt-4" %}</div>
+               <div class="col">{% include ui/button.html icon="clipboard" text="Copy code" color="secondary" block=true class="mt-4" %}</div>
+               <div class="col">{% include ui/button.html icon="codesandbox" text="Open in sandbox" color="primary" block=true class="mt-4" %}</div>
             </div>
          </div>
       </div>
