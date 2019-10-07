@@ -90,7 +90,7 @@
 .card-cover {
   position: relative;
   padding: $card-spacer-y $card-spacer-x;
-  background: #666 no-repeat center/cover;
+  background: #666666 no-repeat center/cover;
 
   &::before {
     position: absolute;
@@ -153,6 +153,7 @@
   font-size: $h4-font-size;
   font-weight: $headings-font-weight;
   margin: 0 0 1rem;
+  color: $headings-color;
 
   @at-root a#{&}:hover {
     color: inherit;
@@ -273,7 +274,7 @@ Card code
   pre {
     padding: 0;
     margin: 0;
-    color: #fff;
+    color: #ffffff;
     text-shadow: none;
     background: transparent;
   }
@@ -302,7 +303,7 @@ Card profile
   max-width: 6rem;
   margin-top: -5rem;
   margin-bottom: 1rem;
-  border: 3px solid #fff;
+  border: 3px solid #ffffff;
   border-radius: 100%;
   box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
 }
@@ -330,5 +331,56 @@ Card list group
     &:first-child {
       border-top: 0;
     }
+  }
+}
+
+/**
+Card tabs
+ */
+.card-tabs {
+  .nav-tabs {
+    border-bottom-color: transparent;
+    margin-bottom: -1px;
+    z-index: $zindex-dropdown;
+    position: relative;
+
+    .nav-link {
+      border: $card-border-width solid $card-border-color;
+      border-bottom: 0;
+      background: $card-cap-bg;
+
+      &.active,
+      &:active,
+      &:hover {
+        border-color: $card-border-color;
+      }
+
+      &.active {
+        background: $card-bg;
+        color: $headings-color;
+      }
+    }
+
+    .nav-item {
+      &:not(:first-child) {
+        .nav-link {
+          border-top-left-radius: 0;
+        }
+      }
+
+      &:not(:last-child) {
+        .nav-link {
+          border-top-right-radius: 0;
+        }
+      }
+
+      + .nav-item {
+        margin-left: -1px;
+      }
+    }
+  }
+
+  .card {
+    border-top-left-radius: 0;
   }
 }
