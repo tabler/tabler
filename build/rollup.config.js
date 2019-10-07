@@ -37,7 +37,6 @@ module.exports = {
   input: {
     tabler: path.resolve(__dirname, '../js/tabler.js'),
     'tabler-charts': path.resolve(__dirname, '../js/tabler-charts.js'),
-    demo: path.resolve(__dirname, '../js/demo.js')
   },
   output: {
     banner,

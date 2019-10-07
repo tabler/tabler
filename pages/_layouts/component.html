@@ -2,6 +2,7 @@
 layout: default
 menu: components
 page-title: Tabler components
+og-component: true
 ---
 
 {% assign columns = page.columns | default: 0 %}
@@ -17,7 +18,11 @@ page-title: Tabler components
    </div>
    <div class="col-lg-9">
       <div class="card">
-         <div class="card-body p-5">
+         <div class="card-body">
+            <div class="card-title">{{ page.title }}</div>
+            <p class="mb-5">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi autem dignissimos doloribus, fuga iste omnis reprehenderit ullam veritatis. Ab aut blanditiis dolore eos exercitationem iste quis rerum, tempore unde voluptatem!</p>
+
+
             <div class="border border-bottom-0 bg-light p-1 rounded-top">
                <div class="d-flex align-items-center justify-content-center p-5 pb-6" style="min-height: 50vh" id="component-wrapper">
                   <div {% if columns > 0 %}class="flex-fill" style="max-width: {{ columns | times: 298 | minus: 24 }}px"{% endif %}>
@@ -28,6 +33,11 @@ page-title: Tabler components
 
             <div class="highlight m-0 rounded-0 rounded-bottom">
                {{ content | highlight_tidy: 'html' }}
+            </div>
+
+            <div class="row">
+               <div class="col">{% include ui/button.html text="Copy code" color="secondary" block=true class="mt-4" %}</div>
+               <div class="col">{% include ui/button.html text="Open in sandbox" color="primary" block=true class="mt-4" %}</div>
             </div>
          </div>
       </div>
