@@ -7,17 +7,17 @@
 
 <div class="card{% if type == 'aside' %} card-aside{% endif %}">
    {% if type == 'image' %}
-   <a href="javascript:void(0)"><img class="card-img-top" src="{{ site.base }}/img/photos//{{ site.data.photos[article.image].file }}" alt="{{ article.title | escape}}"></a>
+   <a href="#"><img class="card-img-top" src="{{ site.base }}/img/photos//{{ site.data.photos[article.image].file }}" alt="{{ article.title | escape}}"></a>
    {% endif %}
 
    {% if type == 'aside' %}
-   <a href="javascript:void(0)" class="card-aside-column{% if include.aside-class %} {{ include.aside-class }}{% endif %}" style="background-image: url({{ site.base }}/img/photos//{{ site.data.photos[article.image].file }})"></a>
+   <a href="#" class="card-aside-column{% if include.aside-class %} {{ include.aside-class }}{% endif %}" style="background-image: url({{ site.base }}/img/photos//{{ site.data.photos[article.image].file }})"></a>
    {% endif %}
 
 
 
    <div class="card-body d-flex flex-column">
-      <h4><a href="javascript:void(0)">{{ article.title }}</a></h4>
+      <h4><a href="#">{{ article.title }}</a></h4>
 
       <div class="text-muted">{{ article.description | truncate: truncate }}</div>
 
@@ -27,9 +27,9 @@
             <a href="{{ site.base }}/profile.html" class="text-default">{{ author.first_name }} {{ author.last_name }}</a>
             <small class="d-block text-muted">3 days ago</small>
          </div>
-         <div class="ml-auto {% if liked %}text-red{% else %}text-muted{% endif %}">
-            <a href="javascript:void(0)" class="icon d-none d-md-inline-block ml-3 text-inherit">
-               {% include ui/icon.html icon="heart" %}
+         <div class="ml-auto">
+            <a href="#" class="icon d-none d-md-inline-block ml-3 {% if liked %}text-red{% else %}text-muted{% endif %}">
+               {% include ui/icon.html icon="heart" use-svg=true  %}
             </a>
          </div>
       </div>

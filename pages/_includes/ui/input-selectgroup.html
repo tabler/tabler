@@ -7,7 +7,7 @@
    <label class="selectgroup-item">
       {% assign s = value | split: "i:" %}
       <input type="{{ type }}" name="{{ name }}" value="{% if s.size == 2 %}{{ s[1] }}{% else %}{{ value }}{% endif %}" class="selectgroup-input"{% if value == default %}{% if type == "radio" %} checked{% else %} checked{% endif %}{% endif %}>
-      <span class="selectgroup-button">{% if s.size == 2 %}{% assign icon = s[1] %}{% include ui/icon.html icon=icon %}{% else %}{{ value }}{% endif %}</span>
+      <span class="selectgroup-button">{% if s.size == 2 %}{% assign icon = s[1] %}{% include ui/icon.html icon=icon use-svg=true %}{% else %}{{ value }}{% endif %}</span>
    </label>
    {% endfor %}
 </div>
