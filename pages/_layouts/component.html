@@ -9,7 +9,8 @@ page-title: Tabler components
 <div class="row">
    <div class="col-lg-3">
       <div class="list-group list-group-transparent mb-0">
-         {% for component in site.components %}
+         {% assign components = site.components | sort: title %}
+         {% for component in components %}
          <a href="{{ component.url }}" class="list-group-item list-group-item-action{% if component.url == page.url %} active{% endif %}">{{ component.title }}</a>
          {% endfor %}
       </div>
