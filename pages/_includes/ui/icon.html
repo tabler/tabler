@@ -1,25 +1,24 @@
 {% removeemptylines %}
-   {% if include.use-svg %}
-   {% assign svg-file="svg/" | append: include.icon | append: ".svg" %}
-   {% capture svg-icon %}
-   {% include_cached {{ svg-file }} %}
-   {% endcapture %}
+{% assign svg-file="svg/" | append: include.icon | append: ".svg" %}
+{% capture svg-icon %}
+{% include_cached {{ svg-file }} %}
+{% endcapture %}
 
-   {% assign replace-to = "icon" %}
+{% assign replace-to = "icon" %}
 
-   {% if include.right %}
-   {% assign replace-to = replace-to | append: " icon-right" %}
-   {% endif %}
-
-   {% if include.class %}
-   {% assign replace-to = replace-to | append: ' ' | append: include.class %}
-   {% endif %}
-
-   {% assign replace-to = 'class="' | append: replace-to | append: '"' %}
-
-   {{ svg-icon | replace_regex: 'class=\"[^"]+\"', replace-to }}
-{% else %}
-   {% assign provider = include.provider | default: "fe" %}
-   <i class="icon {{ provider }} {{ provider }}-{{ include.icon }}{% if include.class %} {{ include.class }}{% endif %}{% if include.color %} text-{{ include.color }}{% endif %}"></i>
+{% if include.right %}
+{% assign replace-to = replace-to | append: " icon-right" %}
 {% endif %}
+
+{% if include.class %}
+{% assign replace-to = replace-to | append: ' ' | append: include.class %}
+{% endif %}
+
+{% if include.color %}
+{% assign replace-to = replace-to | append: ' text-' | append: include.color %}
+{% endif %}
+
+{% assign replace-to = 'class="' | append: replace-to | append: '"' %}
+
+{{ svg-icon | replace_regex: 'class=\"[^"]+\"', replace-to }}
 {% endremoveemptylines %}

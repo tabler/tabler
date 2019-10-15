@@ -1,0 +1,11 @@
+{% assign size = include['size'] | default: 'sm' %}
+{% assign color = include.color | default: 'blue' %}
+
+<div class="{% if include.class %}{{ include.class }}{% else %}mb-3{% endif %}">
+   <div class="d-flex mb-1 align-items-center">
+      <div class="text-h5 font-weight-bolder m-0 mr-2">Label</div>
+      <div class="text-h5 text-muted">Description</div>
+      <span class="ml-auto text-h6 text-{{ color }}">{{ include.percentage }}%</span>
+   </div>
+   {% include ui/progress.html size=size percentage=include.percentage color=color %}
+</div>
