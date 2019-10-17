@@ -1,39 +1,19 @@
 {% if page.page-title or layout.page-title %}
 <div class="page-title-box">
-	<h2 class="page-title">
-		{{ page.page-title | default: layout.page-title }}
-	</h2>
 
-   {% if page.page-right %}
-	<div class="page-options d-none d-md-block ml-auto">
-
-		{% if page.page-right == "date" %}
-		<form class="form-inline">
-			<div class="mb-2">
-				<div class="input-group">
-					<input type="text" class="form-control form-control-light" placeholder="09/10/2018">
-					<div class="input-group-append">
-                        <a class="input-group-text">
-                            {% include ui/icon.html icon="calendar" %}
-                        </a>
-					</div>
-				</div>
-			</div>
-			<a href="javascript:void(0)" class="btn btn-icon btn-secondary ml-2">
-				{% include ui/icon.html icon="refresh-ccw" %}
-			</a>
-			<a href="javascript:void(0)" class="btn btn-icon btn-secondary ml-2">
-				{% include ui/icon.html icon="filter" %}
-			</a>
-		</form>
-		{% elsif page.page-right == "breadcrumb" %}
-		<ol class="breadcrumb m-0">
-			<li class="breadcrumb-item"><a href="javascript:void(0)">UI Kit</a></li>
-			<li class="breadcrumb-item"><a href="javascript:void(0)">Tables</a></li>
-			<li class="breadcrumb-item active">Basic Tables</li>
-		</ol>
-		{% endif %}
-	</div>
-   {% endif %}
+   <div class="row align-items-center">
+      <div class="col">
+         <div class="page-pretitle">
+            Overview
+         </div>
+         <h2 class="page-title">
+            {{ page.page-title | default: layout.page-title }}
+         </h2>
+      </div>
+      <div class="col-auto">
+         {% include ui/button.html text="New view" color="secondary" icon="plus" %}
+         {% include ui/button.html text="Create new report" color="primary" class="ml-3" %}
+      </div>
+   </div>
 </div>
 {% endif %}
