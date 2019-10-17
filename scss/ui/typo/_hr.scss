@@ -10,52 +10,52 @@ Horizontal rules
 Hr text
  */
 .hr-text {
-  margin: $hr-margin-y 0;
   display: flex;
   align-items: center;
+  margin: $hr-margin-y 0;
   font-size: $h6-font-size;
 
-  &:after,
-  &:before {
+  &::after,
+  &::before {
+    flex: 1 1 auto;
     height: $hr-height;
     background-color: currentColor;
     opacity: $hr-opacity;
-    flex: 1 1 auto;
   }
 
-  &:after {
-    content: '';
+  &::after {
+    content: "";
   }
 
   > *:first-child {
-    padding-left: 0;
     padding-right: .5rem;
+    padding-left: 0;
     color: $text-muted;
   }
 
   &.hr-text-center {
-    &:before {
-      content: '';
+    &::before {
+      content: "";
     }
 
     & > *:first-child {
-      padding-left: .5rem;
       padding-right: .5rem;
+      padding-left: .5rem;
     }
   }
 
   &.hr-text-right {
-    &:before {
-      content: '';
+    &::before {
+      content: "";
     }
 
-    &:after {
+    &::after {
       content: none;
     }
 
     & > *:first-child {
-      padding-left: .5rem;
       padding-right: 0;
+      padding-left: .5rem;
     }
   }
 }

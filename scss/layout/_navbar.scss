@@ -1,10 +1,10 @@
 .navbar {
-  background: #fff;
-  color: $body-color;
-  border-bottom: 1px solid $border-color;
   display: flex;
-  min-height: 3.5rem;
   width: 100%;
+  min-height: 3.5rem;
+  color: $body-color;
+  background: #fff;
+  border-bottom: 1px solid $border-color;
 
   .nav-link {
     color: inherit;
@@ -14,8 +14,8 @@
 
 .navbar-nav {
   flex-direction: row;
-  margin-left: -($navbar-padding-x);
   margin-right: -($navbar-padding-x);
+  margin-left: -($navbar-padding-x);
 
   .nav-link {
     display: flex;
@@ -32,8 +32,8 @@
   }
 
   .navbar-nav {
-    padding-left: .5rem;
     padding-right: .5rem;
+    padding-left: .5rem;
   }
 }
 
@@ -42,13 +42,13 @@
   top: 100%;
   left: 0;
   z-index: $zindex-tooltip;
+  width: 12rem;
+  padding: .25rem;
+  font-size: $h5-font-size;
   background: #fff;
   border: 1px solid $border-color;
   border-radius: 3px;
-  width: 12rem;
-  font-size: $h5-font-size;
-  box-shadow: 0 0.5rem 1rem rgba(18, 18, 18, 0.15);
-  padding: .25rem;
+  box-shadow: 0 .5rem 1rem rgba(18, 18, 18, .15);
 
   .nav {
     flex-direction: column;
@@ -91,41 +91,22 @@ Navbar toggler
   height: 2rem;
 }
 
-/**
-Fixed navbar
- */
-.navbar-fixed {
-  position: fixed;
-  z-index: $zindex-sticky;
-
-  &.navbar-side {
-    top: 0;
-    left: 0;
-    bottom: 0;
-
-    &.navbar-right {
-      right: 0;
-      left: auto;
-    }
-  }
-}
-
 /*
 Sidebar
  */
 .navbar-side {
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: inherit;
+  justify-content: start;
   width: $sidenav-width;
   min-width: $sidenav-width;
+  margin: 0;
+  overflow: auto;
+  pointer-events: inherit;
+  user-select: none;
   background: $sidenav-bg;
   border-right: 1px solid $sidenav-border-color;
-  user-select: none;
-  flex-direction: column;
-  align-items: inherit;
-  margin: 0;
-  pointer-events: inherit;
-  justify-content: start;
-  flex-wrap: nowrap;
-  overflow: auto;
 
   .nav {
     flex-direction: column;
@@ -134,13 +115,13 @@ Sidebar
   .nav-link {
     display: flex;
     align-items: center;
-    color: $text-muted;
     height: 2.5rem;
     padding: 0 $navbar-padding-x;
+    color: $text-muted;
     box-shadow: inset 2px 0 0 0 transparent;
     transition: .3s background, .3s box-shadow;
 
-    &[aria-expanded=true],
+    &[aria-expanded="true"],
     &:hover {
       background: rgba($link-color, .04);
       border-color: $primary;
@@ -152,44 +133,44 @@ Sidebar
     }
 
     &[data-toggle="collapse"] {
-      &:after {
+      &::after {
         display: block;
-        font-family: $font-icons !important;
-        content: '';
         margin-left: auto;
+        font-family: $font-icons !important;
+        content: "";
         transition: transform .3s;
       }
 
-      &[aria-expanded="true"]:after {
+      &[aria-expanded="true"]::after {
         transform: rotate(-180deg);
       }
     }
   }
 
   &:not(.navbar-folded) {
-    &[data-toggle="collapse"][aria-expanded=true] {
+    &[data-toggle="collapse"][aria-expanded="true"] {
       background: none;
       box-shadow: none;
     }
   }
 
   &:not(.hide-navbar-folded) {
-    .nav-item .nav-item .nav-link {
-      padding-left: 2.5rem;
-    }
-
-    .nav-item .nav-item .nav-item .nav-link {
-      padding-left: 3.5rem;
-    }
-
-    .nav-item .nav-item .nav-item .nav-item .nav-link {
-      padding-left: 4.5rem;
-    }
+    //.nav-item .nav-item .nav-link {
+    //  padding-left: 2.5rem;
+    //}
+    //
+    //.nav-item .nav-item .nav-item .nav-link {
+    //  padding-left: 3.5rem;
+    //}
+    //
+    //.nav-item .nav-item .nav-item .nav-item .nav-link {
+    //  padding-left: 4.5rem;
+    //}
   }
 
   .navbar-brand {
-    text-align: center;
     height: 2.5rem;
+    text-align: center;
   }
 
   .navbar-heading {
@@ -206,57 +187,65 @@ Sidebar
 Fixed navbar
  */
 .navbar-fixed {
+  position: fixed;
   top: 0;
   bottom: 0;
+  z-index: $zindex-sticky;
 
   + .navbar-bg {
     position: fixed;
     top: 0;
-    left: 0;
     right: 0;
     bottom: 0;
-    background: rgba($dark, .2);
+    left: 0;
     z-index: $zindex-dropdown;
     display: none;
+    background: rgba($dark, .2);
+  }
+
+  &.navbar-side {
+    top: 0;
+    bottom: 0;
+    left: 0;
+
+    &.navbar-right {
+      right: 0;
+      left: auto;
+    }
   }
 }
 
-/*
-Responsive utils
- */
-.navbar {
-  &.navbar-side {
-    display: none;
+.navbar-side {
+  display: none;
 
-    @include media-breakpoint-up(xl) {
-      display: flex;
+  @include media-breakpoint-up(xl) {
+    display: flex;
 
-      &.navbar-fixed {
+    &.navbar-fixed {
+      & ~ .layout-main {
+        margin-left: $sidenav-width;
+      }
+
+      &.navbar-right ~ .layout-main {
+        margin-right: $sidenav-width;
+        margin-left: 0;
+      }
+    }
+  }
+
+  &.navbar-folded {
+    display: flex;
+
+    &.navbar-fixed {
+      @include media-breakpoint-up(lg) {
+
         & ~ .layout-main {
-          margin-left: $sidenav-width;
+          margin-left: $sidenav-folded-width;
         }
 
         &.navbar-right ~ .layout-main {
+          margin-right: $sidenav-folded-width;
           margin-left: 0;
-          margin-right: $sidenav-width;
-        }
-      }
-    }
-
-    &.navbar-folded {
-      display: flex;
-
-      &.navbar-fixed {
-        @include media-breakpoint-up(lg) {
-
-          & ~ .layout-main {
-            margin-left: $sidenav-folded-width;
-          }
-
-          &.navbar-right ~ .layout-main {
-            margin-left: 0;
-            margin-right: $sidenav-folded-width;
-          }
         }
       }
     }
@@ -325,24 +314,24 @@ Folded navbar
   }
 
   .nav-link {
+    justify-content: center;
     padding-top: 0;
     padding-bottom: 0;
-    justify-content: center;
 
-    &[data-toggle="collapse"]:after {
+    &[data-toggle="collapse"]::after {
       content: none;
     }
   }
 
   .nav-icon {
-    opacity: 1;
     justify-content: center;
+    opacity: 1;
   }
 
   .navbar-subnav {
     position: absolute;
-    left: 100%;
     top: 0;
+    left: 100%;
     background: #fff;
 
     .nav-text {
@@ -357,12 +346,12 @@ Folded navbar
 
 .nav-icon {
   display: flex;
-  width: 1.5rem;
-  border-radius: 100%;
   flex-shrink: 0;
-  opacity: .8;
-  font-size: px2rem(15px);
   align-items: center;
+  width: 1.5rem;
+  font-size: px2rem(15px);
+  border-radius: 100%;
+  opacity: .8;
 
   .icon {
     font-size: inherit;
@@ -371,8 +360,8 @@ Folded navbar
 
 .nav-text {
   display: flex;
-  width: 100%;
   align-items: center;
+  width: 100%;
 }
 
 /**
@@ -390,6 +379,3 @@ Utils
   }
 }
 
-.navbar-toggler-icon {
-  outline: 1px solid red;
-}

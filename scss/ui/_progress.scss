@@ -1,36 +1,37 @@
 @keyframes progress-indeterminate {
   0% {
+    right: 100%;
     left: -35%;
-    right: 100%
   }
 
-  100%, 60% {
+  100%,
+  60% {
+    right: -90%;
     left: 100%;
-    right: -90%
   }
 }
 
 .progress {
-  appearance: none;
-  line-height: $progress-height;
   position: relative;
   width: 100%;
+  line-height: $progress-height;
+  appearance: none;
 
   &::-webkit-progress-bar {
     background: $gray-100;
   }
 
   &::-webkit-progress-value {
-    background-color: $primary
+    background-color: $primary;
   }
 
   &::-moz-progress-bar {
-    background-color: $primary
+    background-color: $primary;
   }
 
   &::-ms-fill {
     background-color: $primary;
-    border: none
+    border: none;
   }
 }
 
@@ -39,18 +40,18 @@
 }
 
 .progress-bar-indeterminate {
-  &:after,
-  &:before {
-    content: '';
+  &::after,
+  &::before {
     position: absolute;
-    background-color: inherit;
-    left: 0;
-    will-change: left, right;
     top: 0;
     bottom: 0;
+    left: 0;
+    content: "";
+    background-color: inherit;
+    will-change: left, right;
   }
 
-  &:before {
+  &::before {
     animation: progress-indeterminate 2.1s cubic-bezier(.65, .815, .735, .395) infinite;
   }
 }
