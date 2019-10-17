@@ -1,21 +1,29 @@
 {% if page.page-title or layout.page-title %}
+<!-- Page title -->
 <div class="page-title-box">
 
    <div class="row align-items-center">
       <div class="col">
+         {% if page.page-subtitle %}
+         <!-- Page pre-title -->
          <div class="page-pretitle">
             Overview
          </div>
+         {% endif %}
          <h2 class="page-title">
             {{ page.page-title | default: layout.page-title }}
          </h2>
       </div>
+
+      {% if page.page-title-actions %}
+      <!-- Page title actions -->
       <div class="col-auto">
          <span class="d-none d-sm-inline">
             {% include ui/button.html text="New view" color="secondary" icon="plus" %}
          </span>
          {% include ui/button.html text="Create new report" color="primary" class="ml-3" %}
       </div>
+      {% endif %}
    </div>
 </div>
 {% endif %}
