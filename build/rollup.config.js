@@ -7,13 +7,12 @@
 
 'use strict';
 
-const BUNDLE = process.env.BUNDLE === 'true';
+const BUNDLE  = process.env.BUNDLE === 'true';
 
 import path from 'path';
 import babel from 'rollup-plugin-babel';
 import resolve from 'rollup-plugin-node-resolve';
 import minify from 'rollup-plugin-babel-minify';
-
 
 const fileDest = 'tabler',
   banner = require('./banner');
@@ -34,6 +33,7 @@ if (BUNDLE) {
 }
 
 module.exports = {
+  context: "window",
   input: {
     tabler: path.resolve(__dirname, '../js/tabler.js'),
     'tabler-charts': path.resolve(__dirname, '../js/tabler-charts.js'),

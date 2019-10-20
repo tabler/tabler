@@ -79,6 +79,8 @@ const tabler = {
     return color;
   },
 
+  colors: (window.tabler_colors || []),
+
   toggleFullscreen: function(elem) {
     elem = elem || document.documentElement;
     if (
@@ -110,6 +112,8 @@ const tabler = {
   },
 };
 
+
+
 $(document).ready(function() {
   const $body = $('body');
 
@@ -120,19 +124,21 @@ $(document).ready(function() {
     return false;
   });
 
-  $('[data-toggle="tooltip"]').tooltip();
-  $('[data-toggle="popover"]').popover();
+  // $('[data-toggle="tooltip"]').tooltip();
+  // $('[data-toggle="popover"]').popover();
 
   /*
   Autosize plugin
    */
   if (window.autosize) {
     (function() {
-      const $elem = $('[data-toggle="autosize"]');
+      const elements = document.querySelectorAll('[data-toggle="autosize"]');
 
-      if ($elem) {
-        $elem.each(function() {
-          autosize($(this));
+      console.log('elements.length', elements.length);
+      if (elements.length) {
+        elements.forEach(function(element) {
+          console.log('1', element);
+          autosize(element);
         });
       }
     })();

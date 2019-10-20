@@ -1,20 +1,18 @@
-<!-- tabler core -->
-<script src="{{ site.base }}/libs/jquery/jquery.js"></script>
-<script src="{{ site.base }}/libs/bootstrap/js/bootstrap.bundle.min.js"></script>
-<script src="{{ site.base }}/libs/autosize/autosize.min.js"></script>
-<script src="{{ site.base }}/libs/imask/imask.min.js"></script>
-<script src="{{ site.base }}/libs/selectize/js/standalone/selectize.min.js"></script>
+<script>
+	window.tabler_colors = { {% for color in site.colors %}
+	'{{ color[0] }}': '{{ color[1].hex }}',{% endfor %}
+	};
+</script>
 
+<!-- Libs JS -->
+{% for lib in site.data.libs %}
+<script src="{{ site.base }}/{% if jekyll.environment == 'production' %}libs{% else %}node_modules{% endif %}/{{ lib }}"></script>
+{% endfor %}
+
+<!-- Tabler Core -->
 <script src="{{ site.base }}/dist/js/tabler{% if jekyll.environment == 'production' %}.min{% endif %}.js"></script>
 
-<!-- tabler charts -->
-<script src="{{ site.base }}/libs/apexcharts/apexcharts.min.js"></script>
-<script src="{{ site.base }}/libs/peity/jquery.peity.min.js"></script>
+<!-- Tabler Plugins -->
 <script src="{{ site.base }}/dist/js/tabler-charts{% if jekyll.environment == 'production' %}.min{% endif %}.js"></script>
 
-<script>
-   window.tabler = window.tabler || {};
-   window.tabler.colors = { {% for color in site.colors %}
-      '{{ color[0] }}': '{{ color[1].hex }}',{% endfor %}
-   };
-</script>
+
