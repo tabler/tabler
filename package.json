@@ -5,14 +5,13 @@
   "description": "Premium and Open Source dashboard template with responsive and high quality UI.",
   "scripts": {
     "start": "npm-run-all clean css-main js-compile-standalone --parallel html-watch browsersync watch",
-    "build": "npm-run-all clean html-build css js fonts",
+    "build": "npm-run-all clean html-build css js",
     "bundlesize": "bundlesize",
     "browsersync": "node build/browsersync.js",
     "html-watch": "JEKYLL_ENV=development bundle exec jekyll build --watch",
     "html-build": "JEKYLL_ENV=production bundle exec jekyll build --destination dist-html",
     "lint": "npm-run-all --parallel js-lint css-lint",
-    "fonts": "cp -R fonts/* dist/fonts",
-    "clean": "rm -rf dist && mkdir dist && mkdir dist/css && mkdir dist/js && mkdir dist/fonts",
+    "clean": "rm -rf dist && mkdir dist && mkdir dist/css && mkdir dist/js",
     "css": "npm-run-all css-compile css-prefix css-minify",
     "css-compile": "node build/scss-compile.js",
     "css-prefix": "postcss --config build/postcss.config.js --replace \"dist/css/*.css\" \"!dist/css/*.min.css\"",
@@ -54,7 +53,6 @@
   },
   "files": [
     "dist/{css,js}/*.{css,js,map}",
-    "dist/fonts/**/*",
     "js/**/*.{js,map}",
     "scss/**/*.scss"
   ],
