@@ -5,8 +5,6 @@
  * Licensed under MIT (https://github.com/tabler/tabler/blob/master/LICENSE)
  */
 
-//node-sass --output-style expanded --source-map true --source-map-contents true --precision 6 scss/tabler.scss dist/css/tabler.css
-
 const path = require('path'),
   glob = require("glob"),
   fs = require("fs"),

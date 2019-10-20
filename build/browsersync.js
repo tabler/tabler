@@ -16,6 +16,7 @@ bs.init({
       '/dist/fonts': 'fonts',
       '/libs': 'static/libs',
       '/img': 'static/img',
+      '/node_modules': 'node_modules',
     },
   },
   files: ['tmp/**/*', 'dist/css/*.css', 'dist/js/*.js'],
