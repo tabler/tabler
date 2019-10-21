@@ -46,7 +46,7 @@ When completed, you'll be able to run the various commands provided from the com
 3. Any change in `/pages` directory will build application and refresh the page.
 
 **Note**: 
-Run `npm run build` for rerforms a one off build application without refresh.
+Run `npm run build` for reforms a one off build application without refresh.
 Open [http://localhost:3001](http://localhost:3001) to configure the Web server.
 
 ## Feature requests
