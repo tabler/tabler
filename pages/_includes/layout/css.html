@@ -1,3 +1,13 @@
+{% if site.data.libs %}
+<!-- Libs CSS -->
+{% for lib in site.data.libs.css %}
+<link href="{{ site.base }}/{% if jekyll.environment == 'production' %}dist/libs{% else %}node_modules{% endif %}/{{ lib }}?{{ site.time | date: '%s' }}" rel="stylesheet" />
+{% endfor %}
+{% endif %}
+
+<!-- Tabler Core -->
 <link href="{{ site.base }}/dist/css/tabler.css?{{ site.time | date: '%s' }}" rel="stylesheet" />
+
+<!-- Tabler Plugins -->
 <link href="{{ site.base }}/dist/css/tabler-flags.css?{{ site.time | date: '%s' }}" rel="stylesheet" />
 <link href="{{ site.base }}/dist/css/tabler-charts.css?{{ site.time | date: '%s' }}" rel="stylesheet" />

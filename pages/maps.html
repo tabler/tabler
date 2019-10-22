@@ -3,13 +3,16 @@ title: Maps
 page-title: Maps
 ---
 
+<div class="row">
+   {% for map in site.data.maps %}
+   <div class="col-lg-6">
 
-{% for map in site.data.maps %}
-{% assign title = map[0] %}
-{% assign key = 'map-' | append: title %}
-
-<div id="{{ key }}" style="height: 600px;"></div>
-
-{% include js/maps.html id=key data=map %}
-
-{% endfor %}
+      <div class="card">
+         <div class="card-body">
+            {% assign id = map[0] %}
+            {% include ui/map.html map=id %}
+         </div>
+      </div>
+   </div>
+   {% endfor %}
+</div>
