@@ -1,6 +1,7 @@
 {% assign id = include.map %}
 {% assign height = include.height | default: 20 %}
 {% assign data = site.data.maps[id] %}
+{% assign color = include.color | default: data.color | default: 'green' %}
 
 {% if data %}
 <div id="map-{{ id }}" style="height: {{ height }}rem"></div>
@@ -10,8 +11,18 @@
 			map: '{{ data.map }}',
 			backgroundColor: 'transparent',
 			color: 'rgba(120, 130, 140, .1)',
-		  borderColor: 'transparent',
+			borderColor: 'transparent',
 			{% if data.zoom %}enableZoom: true,{% endif %}
+			{% if data.values %}
+			scaleColors: [tabler.colorVariation('{{ color }}', 'lightest'), tabler.colors.{{ color }}],
+			normalizeFunction: 'polynomial',
+			values: (chart_data = {{ data.values }}),
+			onLabelShow: function (event, label, code) {
+				if (chart_data[code] > 0) {
+					label.append(': <strong>' + chart_data[code] + '</strong>');
+				}
+			},
+			{% endif %}
 		});
 	});
 </script>
