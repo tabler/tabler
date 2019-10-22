@@ -1,10 +1,25 @@
-{% assign items = include.items | default: "Action|Another action|Something else|-|Separated link" | split: "|" %}
-<div class="dropdown-menu{% if include.right %} dropdown-menu-right{% endif %}">
-	{% for item in items %}
-	{% if item == '-' %}
-	<div class="dropdown-divider"></div>
-	{% else %}
-	<a class="dropdown-item" href="javascript:void(0)">{{ item }}</a>
-	{% endif %}
-	{% endfor %}
+<div class="dropdown-menu{% if include.right %} dropdown-menu-right{% endif %}{% if include.show %} position-relative d-inline-block{% endif %}{% if include.arrow %} dropdown-menu-arrow{% endif %}{% if include.dark %} bg-dark text-white{% endif %}{% if include.class %} {{ include.class }}{% endif %}">
+   {% if include.check or include.radio %}
+      {% for i in (1..3) %}
+      <label class="dropdown-item"><input class="form-check-input m-0 mr-2" type="{% if include.radio %}radio{% else %}checkbox{% endif %}"> Option {{ i }}</label>
+      {% endfor %}
+   {% elsif include.type == 'text' %}
+
+   {% else %}
+      {% if include.header %}<span class="dropdown-header">Dropdown header</span>{% endif %}
+      <a class="dropdown-item" href="#">
+         {% if include.icons %}{% include ui/icon.html icon="settings" %} {% endif %}
+         Action
+         {% if include.badge %}<span class="badge bg-primary ml-auto">12</span>{% endif %}
+      </a>
+      <a class="dropdown-item" href="#">
+         {% if include.icons %}{% include ui/icon.html icon="edit" %} {% endif %}Another action
+      </a>
+      {% if include.active %}<a class="dropdown-item active" href="#">{% if include.icons %}{% include ui/icon.html icon="activity" %} {% endif %}Active action</a>{% endif %}
+      {% if include.disabled %}<a class="dropdown-item disabled" href="#">{% if include.icons %}{% include ui/icon.html icon="user-x" %} {% endif %}Disabled action</a>{% endif %}
+      {% if include.separated %}
+      <div class="dropdown-divider"></div>
+      <a class="dropdown-item" href="#">{% if include.icons %}{% include ui/icon.html icon="plus" class="dropdown-icon" %} {% endif %}Separated link</a>
+      {% endif %}
+   {% endif %}
 </div>
