@@ -134,7 +134,6 @@ $(document).ready(function() {
     (function() {
       const elements = document.querySelectorAll('[data-toggle="autosize"]');
 
-      console.log('elements.length', elements.length);
       if (elements.length) {
         elements.forEach(function(element) {
           console.log('1', element);
