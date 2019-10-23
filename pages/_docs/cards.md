@@ -31,7 +31,7 @@ The best way to make your post eye-catching is adding an image to it. To do so, 
 If you want to create a couple of posts next to each other, add the `.row-deck` class to `.row`—then they will all have the same height.
 
 {% example html columns=3 %}
-<div class="row row-cards row-deck">
+<div class="row row-deck">
     <div class="col-md-4">
         <div class="card">
             <div class="card-body">Short content</div>
@@ -61,7 +61,7 @@ You can also add the image on the left side of the card. All you need do to is: 
 ### Color variations
 
 {% example html columns=3 %}
-<div class="row row-cards row-deck">
+<div class="row row-deck">
     <div class="col-md-4">
         {% include cards/card.html title="Card status on top" hide-options=true status-position="top" status-color="red" body="Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit incidunt, iste, itaque minima neque" %}
     </div>

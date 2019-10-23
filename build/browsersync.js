@@ -24,5 +24,13 @@ bs.init({
     ignoreInitial: true,
   },
   notify: false,
-  open: false
+  open: false,
+  snippetOptions: {
+    rule: {
+      match: /<\/head>/i,
+      fn: function (snippet, match) {
+        return snippet + match;
+      }
+    }
+  }
 });
