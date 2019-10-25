@@ -1,5 +1,6 @@
 ---
 title: Autosize
+menu: docs.autosize
 done: true
 ---
 
