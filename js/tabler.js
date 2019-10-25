@@ -136,7 +136,6 @@ $(document).ready(function() {
 
       if (elements.length) {
         elements.forEach(function(element) {
-          console.log('1', element);
           autosize(element);
         });
       }
