@@ -1,0 +1,77 @@
+{% assign key = include.key | default: 'people' %}
+{% assign data = site.data.selects[key] %}
+{% assign options = data.options %}
+<select name="{{ key }}" id="select-{{ key }}" class="form-select">
+   {% if options == 'people' %}
+      {% for person in site.data.people limit: 20 %}
+      <option value="{{ person.id }}" data-data='{"image": "{{ site.base }}/{{ person.photo }}"}'{% if person.id == value %} selected{% endif %}>{{ person.full_name }}</option>
+      {% endfor %}
+
+   {% else %}
+      {% for option in options %}
+      {% if option[1] %}
+         {% assign value = option[0] %}
+         {% assign name = option[1].name %}
+         {% assign all-data = option[1] %}
+      {% else %}
+      {% assign value = option %}
+      {% assign name = option %}
+      {% endif %}
+      <option value="{{ value }}"{% if all-data.image %} data-data='{"image": "{{ site.base }}/{{ all-data.image }}"}'{% endif %}{% if data.value == value %} selected{% endif %}>{{ name }}</option>
+      {% endfor %}
+
+   {% endif %}
+</select>
+
+<script>
+   $(document).ready(function(){
+	   $('#select-{{ key }}').selectize({});
+   });
+
+   // $('#input-tags').selectize({
+	//    delimiter: ',',
+	//    persist: false,
+	//    create: function (input) {
+	// 	   return {
+	// 		   value: input,
+	// 		   text: input
+	// 	   };
+	//    }
+   // });
+   //
+   // $('#select-beast').selectize({});
+   //
+   // $('#select-users').selectize({
+	//    render: {
+	// 	   option: function (data, escape) {
+	// 		   return '<div>' +
+	// 			   '<span class="image"><img src="{{ site.base }}' + data.image + '" alt=""></span>' +
+	// 			   '<span class="title">' + escape(data.text) + '</span>' +
+	// 			   '</div>';
+	// 	   },
+	// 	   item: function (data, escape) {
+	// 		   return '<div>' +
+	// 			   '<span class="image"><img src="{{ site.base }}' + data.image + '" alt=""></span>' +
+	// 			   escape(data.text) +
+	// 			   '</div>';
+	// 	   }
+	//    }
+   // });
+   //
+   // $('#select-countries').selectize({
+	//    render: {
+	// 	   option: function (data, escape) {
+	// 		   return '<div>' +
+	// 			   '<span class="image"><img src="{{ site.base }}' + data.image + '" alt=""></span>' +
+	// 			   '<span class="title">' + escape(data.text) + '</span>' +
+	// 			   '</div>';
+	// 	   },
+	// 	   item: function (data, escape) {
+	// 		   return '<div>' +
+	// 			   '<span class="image"><img src="{{ site.base }}' + data.image + '" alt=""></span>' +
+	// 			   escape(data.text) +
+	// 			   '</div>';
+	// 	   }
+	//    }
+   // });
+</script>
