@@ -22,5 +22,4 @@ module Jekyll
   Jekyll::Hooks.register :documents, :pre_render do |doc, jekyll|
     jekyll.site['base'] = get_dir(doc.relative_path)
   end
-
 end
