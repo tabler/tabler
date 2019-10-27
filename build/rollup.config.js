@@ -24,15 +24,17 @@ let plugins = [
 ];
 
 if (BUNDLE) {
-  plugins = [plugins, ...[
+  plugins = plugins.concat([
     babel({
       exclude: 'node_modules/**'
     }),
     minify({
       comments: false
     })
-  ]];
+  ]);
 }
+
+console.log('plugins', plugins);
 
 module.exports = {
   context: "window",
