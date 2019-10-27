@@ -2,7 +2,7 @@
 {% assign active-item = include.active-item | default: 2 %}
 <ul class="pagination {{ include.class }}">
    <li class="page-item{% if include.prev-description %} page-prev{% endif %} disabled">
-      <a class="page-link" href="javascript:void(0)" tabindex="-1">
+      <a class="page-link" href="#" tabindex="-1">
          {% if include.prev-description %}
             <div class="page-item-subtitle">Previous</div>
             <div class="page-item-title">{{ include.prev-description }}</div>
@@ -13,11 +13,11 @@
    </li>
 
    {% for i in (1..count) %}
-   <li class="page-item{% if i == active-item %} active{% endif %}"><a class="page-link" href="javascript:void(0)">{{ i }}</a></li>
+   <li class="page-item{% if i == active-item %} active{% endif %}"><a class="page-link" href="#">{{ i }}</a></li>
    {% endfor %}
 
    <li class="page-item{% if include.prev-description %} page-next{% endif %}">
-      <a class="page-link" href="javascript:void(0)">
+      <a class="page-link" href="#">
 
          {% if include.next-description %}
             <div class="page-item-subtitle">Next</div>

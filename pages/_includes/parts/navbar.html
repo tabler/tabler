@@ -2,7 +2,6 @@
 {% assign person = site.data.people | where: "id", include.person %}
 {% assign person = person[0] %}
 
-<div class="container{% if include.fluid %}-fluid{% endif %}">
    <a class="navbar-toggler" data-toggle="modal" data-target="#aside">
       <span class="navbar-toggler-icon"></span>
    </a>
@@ -17,38 +16,15 @@
       {% if include.title %}<span class="d-inline">{{ include.title }}</span>{% endif %}
    </a>
 
-   {% if include.plus-left %}
-   <a href="#" class="btn btn-primary">
-      {% include ui/icon.html icon="plus" %}
-   </a>
-   {% endif %}
-
    <ul class="nav navbar-menu align-items-center order-1 order-lg-2">
-      {% if include.fullscreen %}
-      <li class="nav-item d-none d-sm-block">
-         <a class="nav-link px-2" data-toggle="fullscreen" data-title="Fullscreen">
-            {% include ui/icon.html icon="maximize" %}
-         </a>
-      </li>
-      {% endif %}
-
-      {% if include.customize %}
-      <li class="nav-item dropdown">
-         <a class="nav-link px-2" data-toggle="dropdown">
-            {% include ui/icon.html icon="droplet" %}
-            <span class="badge badge-pill badge-up bg-success"></span>
-         </a>
-      </li>
-      {% endif %}
 
       {% if include.notifications %}
-      <!-- Notification -->
-      <li class="nav-item dropdown">
-         <a class="nav-link px-2" data-toggle="dropdown">
+      <li class="nav-item dropdown mr-3">
+         <a class="nav-link text-reset px-2" data-toggle="dropdown">
             {% include ui/icon.html icon="bell" %}
             <span class="badge badge-pill badge-up bg-primary">4</span>
          </a>
-         <div class="dropdown-menu dropdown-menu-right mt-3 p-0">
+         <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-right mt-3 p-0">
             <div class="scrollable">
                <div class="list list-row">
                </div>
@@ -63,28 +39,6 @@
       </li>
       {% endif %}
 
-      {% if include.progress %}
-      <li class="nav-item">
-         <a href="#" class="nav-link text-muted">
-            Profile Completeness: 70%
-         </a>
-      </li>
-      {% endif %}
-
-      {% if include.language %}
-      <li class="nav-item dropdown">
-         <a href="#" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
-            <span class="flag flag-gb mr-2"></span>English
-         </a>
-         <div class="dropdown-menu dropdown-menu-right dropdown-menu-scrollable">
-            {% for language in site.data.languages %}
-            <a href="#" class="dropdown-item"><span class="flag flag-{{ language.flag }} mr-2"></span>{{
-               language.name }}</a>
-            {% endfor %}
-         </div>
-      </li>
-      {% endif %}
-
       <li class="nav-item d-none d-lg-flex mr-3">
          <a href="{{ site.github_url }}" class="btn btn-sm btn-success" target="_blank">Source code</a>
       </li>
@@ -92,23 +46,12 @@
       {% if include.user-menu %}
       <li class="nav-item dropdown">
          <a href="#" data-toggle="dropdown"
-            class="nav-link d-flex align-items-center py-0 px-lg-0 px-2 text-color ml-2">
-            {% if include.user-menu == 1 %}
+            class="nav-link d-flex align-items-center py-0 px-lg-0 px-2 text-reset ml-2">
             {% include ui/avatar.html src=person.photo %}
             <span class="ml-2 d-none d-lg-block leading-none">
-                  <span>{{ person.full_name }}</span>
+                  {{ person.full_name }}
                   <span class="text-muted d-block mt-1 text-h6">Administrator</span>
                </span>
-            {% elsif include.user-menu == 2 %}
-            <span class="mx-2 d-none leading-none d-lg-block text-right">
-                    <span class="text-body">{{ person.full_name }}</span>
-                </span>
-            {% include ui/avatar.html src=person.photo %}
-            {% elsif include.user-menu == 3 %}
-            {% include ui/avatar.html src=person.photo %}
-            {% elsif include.user-menu == 4 %}
-            <span class="btn btn-secondary">{% include ui/avatar.html src=person.photo class="mr-2 btn-avatar" %}{{ person.full_name }}</span>
-            {% endif %}
          </a>
          <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
             <a class="dropdown-item" href="#">
@@ -118,8 +61,8 @@
                {% include ui/icon.html icon="settings" class="dropdown-icon" %} Settings
             </a>
             <a class="dropdown-item" href="#">
-               <span class="float-right"><span class="badge badge-primary">6</span></span>
                {% include ui/icon.html icon="mail" class="dropdown-icon" %} Inbox
+               <span class="badge bg-primary ml-auto">6</span>
             </a>
             <a class="dropdown-item" href="#">
                {% include ui/icon.html icon="send" class="dropdown-icon" %} Message
@@ -172,4 +115,3 @@
       </li>
       {% endif %}
    </ul>
-</div>
