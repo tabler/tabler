@@ -5,10 +5,10 @@
 {% if data %}
 <script>
 document.addEventListener("DOMContentLoaded", function(event) {
-   window.chart = window.chart || {};
+    {% if jekyll.environment == 'development' %}window.chart = window.chart || {};{% endif %}
    
    var el;
-   window.ApexCharts && (window.chart["{{ include.chart-id }}"] = new ApexCharts((el = document.getElementById('{{ include.id }}')), {
+   window.ApexCharts && ({% if jekyll.environment == 'development' %}window.chart["{{ include.chart-id }}"] = {% endif %}new ApexCharts((el = document.getElementById('{{ include.id }}')), {
       chart: {
          type: '{{ data.type }}',
          height: el.offsetHeight,
