@@ -12,7 +12,7 @@ def render_rouge(code, lang, dark = false)
   code = formatter.format(lexer.lex(code))
   code = code.strip.gsub /^[\t\s]*$\n/, ''
   code = code.gsub /\t/, "\s\s\s"
-  code = code.gsub "javascript:void(0)", "#"
+  code = code.gsub "#", "#"
   code = code.gsub "../", "./"
 
   "<pre>#{code}</pre>"

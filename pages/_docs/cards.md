@@ -95,14 +95,14 @@ You can also add the image on the left side of the card. All you need do to is: 
 		<a class="media-content " style="background-image:url({% include ui/image.html id=7 %})">
 		</a>
 		<div class="media-overlay overlay-top">
-			<a href="javascript:void(0)"><span class="badge badge-md text-uppercase bg-yellow">NATURE</span></a>
+			<a href="#"><span class="badge badge-md text-uppercase bg-yellow">NATURE</span></a>
 		</div>
 		<div class="media-action ">
 		</div>
 	</div>
 	<div class="card-body d-flex flex-column">
 		<div class="flex-fill ">
-			<a href="javascript:void(0)" class="card-title text-md">
+			<a href="#" class="card-title text-md">
 				It’s 2018, and the race is on between tech giants to decide who will control what you see every time you open your eyes
 			</a>
 			<a class="text-muted mt-2 ">What Not To Wear: The Hats, Scarves In History</a>
@@ -127,11 +127,11 @@ You can also add the image on the left side of the card. All you need do to is: 
 	<div class="card-body d-flex flex-column ">
 		<div class="flex-fill ">
 			<div class="mb-3">
-				<a href="javascript:void(0)">
+				<a href="#">
 					<span class="badge badge-md text-uppercase bg-danger">Fashion</span>
 				</a>
 			</div>
-			<a href="javascript:void(0)" class="card-title h-2x">
+			<a href="#" class="card-title h-2x">
 				What Not To Wear: The Hats, Scarves In History
 			</a>
 		</div>
@@ -151,14 +151,14 @@ You can also add the image on the left side of the card. All you need do to is: 
 	<div class="media media-4x3 col-4">
 		<a class="media-content" style="background-image:url({% include ui/image.html id=6 %})"></a>
 		<div class="media-overlay overlay-top">
-			<a href="javascript:void(0)"><span class="badge badge-md text-uppercase bg-white-overlay">MUSIC</span></a>
+			<a href="#"><span class="badge badge-md text-uppercase bg-white-overlay">MUSIC</span></a>
 		</div>
 		<div class="media-action ">
 		</div>
 	</div>
 	<div class="card-body d-flex flex-column">
 		<div class="flex-fill">
-			<a href="javascript:void(0)" class="card-title text-md">
+			<a href="#" class="card-title text-md">
 				Radio Listeners Prepare For An Impending Alien Invasion In This Visually Stunning Short Film
 			</a>
 			<a class="text-muted mt-2">What Not To Wear: The Hats, Scarves In History</a>

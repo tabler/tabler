@@ -10,7 +10,7 @@ description: Use Bootstrap’s custom button styles for actions in forms, dialog
 The `.btn` classes are designed to be used with the `<button>` element. However, you can also use these classes on `<a>` or `<input>` elements (though some browsers may apply a slightly different rendering).
 
 {% example html wrapper=btn-list %}
-<a href="javascript:void(0)" class="btn btn-primary" role="button">Link</a>
+<a href="#" class="btn btn-primary" role="button">Link</a>
 <button class="btn btn-primary">Button</button>
 <input type="button" class="btn btn-primary" value="Input" />
 <input type="submit" class="btn btn-primary" value="Submit" />
@@ -23,9 +23,9 @@ Use any of the available button classes to quickly create a styled button . We p
 
 {% example html wrapper=btn-list %}
 {% for button in site.button_variants %}
-<a href="javascript:void(0)" class="btn btn-{{ button.name }}">{{ button.title }}</a>
+<a href="#" class="btn btn-{{ button.name }}">{{ button.title }}</a>
 {% endfor %}
-<a href="javascript:void(0)" class="btn btn-link">Link</a>
+<a href="#" class="btn btn-link">Link</a>
 {% endexample %}
 
 ### Disabled buttons
@@ -45,7 +45,7 @@ The classic button, in different colors.
 
 {% example html wrapper=btn-list %}
 {% for button in site.colors %}
-<a href="javascript:void(0)" class="btn btn-{{ button[0] }}">{{ button[1].name }}</a>
+<a href="#" class="btn btn-{{ button[0] }}">{{ button[1].name }}</a>
 {% endfor %}
 {% endexample %}
 
@@ -163,8 +163,8 @@ Wrap the dropdown’s toggle (your button or link) and the dropdown menu within 
      <i class="icon fe fe-calendar"></i>
   </button>
   <div class="dropdown-menu">
-    <a class="dropdown-item" href="javascript:void(0)">Dropdown link</a>
-    <a class="dropdown-item" href="javascript:void(0)">Dropdown link</a>
+    <a class="dropdown-item" href="#">Dropdown link</a>
+    <a class="dropdown-item" href="#">Dropdown link</a>
   </div>
 </div>
 
@@ -173,8 +173,8 @@ Wrap the dropdown’s toggle (your button or link) and the dropdown menu within 
      <i class="icon fe fe-calendar mr-2"></i>Show calendar
   </button>
   <div class="dropdown-menu">
-    <a class="dropdown-item" href="javascript:void(0)">Dropdown link</a>
-    <a class="dropdown-item" href="javascript:void(0)">Dropdown link</a>
+    <a class="dropdown-item" href="#">Dropdown link</a>
+    <a class="dropdown-item" href="#">Dropdown link</a>
   </div>
 </div>
 
@@ -183,8 +183,8 @@ Wrap the dropdown’s toggle (your button or link) and the dropdown menu within 
      Show calendar
   </button>
   <div class="dropdown-menu">
-    <a class="dropdown-item" href="javascript:void(0)">Dropdown link</a>
-    <a class="dropdown-item" href="javascript:void(0)">Dropdown link</a>
+    <a class="dropdown-item" href="#">Dropdown link</a>
+    <a class="dropdown-item" href="#">Dropdown link</a>
   </div>
 </div>
 {% endexample %}
@@ -209,9 +209,9 @@ You can now create a list of buttons with the `.btn-list` container.
 
 {% example html %}
 <div class="btn-list">
-  <a href="javascript:void(0)" class="btn btn-success">Save changes</a>
-  <a href="javascript:void(0)" class="btn btn-secondary">Save and continue</a>
-  <a href="javascript:void(0)" class="btn btn-danger">Cancel</a>
+  <a href="#" class="btn btn-success">Save changes</a>
+  <a href="#" class="btn btn-secondary">Save and continue</a>
+  <a href="#" class="btn btn-danger">Cancel</a>
 </div>
 {% endexample %}
 
@@ -219,25 +219,25 @@ If the list is very long, it will automatically wrap on multiple lines, while ke
 
 {% example html %}
 <div class="btn-list">
-  <a href="javascript:void(0)" class="btn btn-secondary">One</a>
-  <a href="javascript:void(0)" class="btn btn-secondary">Two</a>
-  <a href="javascript:void(0)" class="btn btn-secondary">Three</a>
-  <a href="javascript:void(0)" class="btn btn-secondary">Four</a>
-  <a href="javascript:void(0)" class="btn btn-secondary">Five</a>
-  <a href="javascript:void(0)" class="btn btn-secondary">Six</a>
-  <a href="javascript:void(0)" class="btn btn-secondary">Seven</a>
-  <a href="javascript:void(0)" class="btn btn-secondary">Eight</a>
-  <a href="javascript:void(0)" class="btn btn-secondary">Nine</a>
-  <a href="javascript:void(0)" class="btn btn-secondary">Ten</a>
-  <a href="javascript:void(0)" class="btn btn-secondary">Eleven</a>
-  <a href="javascript:void(0)" class="btn btn-secondary">Twelve</a>
-  <a href="javascript:void(0)" class="btn btn-secondary">Thirteen</a>
-  <a href="javascript:void(0)" class="btn btn-secondary">Fourteen</a>
-  <a href="javascript:void(0)" class="btn btn-secondary">Fifteen</a>
-  <a href="javascript:void(0)" class="btn btn-secondary">Sixteen</a>
-  <a href="javascript:void(0)" class="btn btn-secondary">Seventeen</a>
-  <a href="javascript:void(0)" class="btn btn-secondary">Eighteen</a>
-  <a href="javascript:void(0)" class="btn btn-secondary">Nineteen</a>
+  <a href="#" class="btn btn-secondary">One</a>
+  <a href="#" class="btn btn-secondary">Two</a>
+  <a href="#" class="btn btn-secondary">Three</a>
+  <a href="#" class="btn btn-secondary">Four</a>
+  <a href="#" class="btn btn-secondary">Five</a>
+  <a href="#" class="btn btn-secondary">Six</a>
+  <a href="#" class="btn btn-secondary">Seven</a>
+  <a href="#" class="btn btn-secondary">Eight</a>
+  <a href="#" class="btn btn-secondary">Nine</a>
+  <a href="#" class="btn btn-secondary">Ten</a>
+  <a href="#" class="btn btn-secondary">Eleven</a>
+  <a href="#" class="btn btn-secondary">Twelve</a>
+  <a href="#" class="btn btn-secondary">Thirteen</a>
+  <a href="#" class="btn btn-secondary">Fourteen</a>
+  <a href="#" class="btn btn-secondary">Fifteen</a>
+  <a href="#" class="btn btn-secondary">Sixteen</a>
+  <a href="#" class="btn btn-secondary">Seventeen</a>
+  <a href="#" class="btn btn-secondary">Eighteen</a>
+  <a href="#" class="btn btn-secondary">Nineteen</a>
 </div>
 {% endexample %}
 
@@ -245,23 +245,23 @@ Use the `.text-center` or the `.text-right` modifiers to alter the alignment.
 
 {% example html %}
 <div class="btn-list text-center">
-  <a href="javascript:void(0)" class="btn btn-primary">Save changes</a>
-  <a href="javascript:void(0)" class="btn btn-secondary">Save and continue</a>
+  <a href="#" class="btn btn-primary">Save changes</a>
+  <a href="#" class="btn btn-secondary">Save and continue</a>
 </div>
 {% endexample %}
 
 {% example html %}
 <div class="btn-list text-right">
-  <a href="javascript:void(0)" class="btn btn-primary">Save changes</a>
-  <a href="javascript:void(0)" class="btn btn-secondary">Save and continue</a>
+  <a href="#" class="btn btn-primary">Save changes</a>
+  <a href="#" class="btn btn-secondary">Save and continue</a>
 </div>
 {% endexample %}
 
 ### Button with avatar
 
 {% example html%}
-<a href="javascript:void(0)" class="btn btn-secondary mr-2">{% include ui/avatar.html person-id="4" class="btn-avatar" %} Avatar</a>
-<a href="javascript:void(0)" class="btn btn-secondary mr-2">{% include ui/avatar.html person-id="5" class="btn-avatar" %} Avatar</a>
-<a href="javascript:void(0)" class="btn btn-secondary mr-2">{% include ui/avatar.html person-id="6" class="btn-avatar" %} Avatar</a>
+<a href="#" class="btn btn-secondary mr-2">{% include ui/avatar.html person-id="4" class="btn-avatar" %} Avatar</a>
+<a href="#" class="btn btn-secondary mr-2">{% include ui/avatar.html person-id="5" class="btn-avatar" %} Avatar</a>
+<a href="#" class="btn btn-secondary mr-2">{% include ui/avatar.html person-id="6" class="btn-avatar" %} Avatar</a>
 {% endexample %}
 
