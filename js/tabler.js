@@ -5,6 +5,8 @@
  * Licensed under MIT (https://github.com/tabler/tabler/blob/master/LICENSE)
  */
 
+require('./tabler/dropdowns');
+
 const tabler = {
   colorVariation: function(color, variation) {
     const colorValue = this.colors[color];
@@ -111,8 +113,6 @@ const tabler = {
     }
   },
 };
-
-
 
 $(document).ready(function() {
   const $body = $('body');
