@@ -9,11 +9,11 @@
 document.addEventListener("DOMContentLoaded", function(event) {
    {% if jekyll.environment == 'development' %}window.tabler_chart = window.tabler_chart || {};{% endif %}
    
-   var chartElement = document.getElementById('chart-{{ id }}');
-   window.ApexCharts && ({% if jekyll.environment == 'development' %}window.tabler_chart["chart-{{ include.chart-id }}"] = {% endif %}new ApexCharts(chartElement, {
+   var chartEl = document.getElementById('chart-{{ id }}');
+   window.ApexCharts && chartEl && ({% if jekyll.environment == 'development' %}window.tabler_chart["chart-{{ include.chart-id }}"] = {% endif %}new ApexCharts(chartEl, {
       chart: {
          type: '{{ data.type }}',
-         height: chartElement.offsetHeight,
+         height: chartEl.offsetHeight,
          {% if data.sparkline %}
          sparkline: {
             enabled: true
@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
       {% if data.type == 'pie' or data.type == 'donut' %}
       pie: {
-         height: chartElement.offsetHeight
+         height: chartEl.offsetHeight
       },
       {% endif %}
 
@@ -133,7 +133,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       {% endif %}
    })).render();
    
-   console.log('chartElement.offsetHeight', chartElement.offsetHeight);
+   console.log('chartEl.offsetHeight', chartEl.offsetHeight);
 });
 </script>
 {% endcapture_global %}
