@@ -1,7 +1,7 @@
 {% if site.data.libs %}
 <!-- Libs CSS -->
 {% for lib in site.data.libs.css %}
-<link href="{{ site.base }}/{% if jekyll.environment == 'production' %}dist/libs{% else %}node_modules{% endif %}/{{ lib }}?{{ site.time | date: '%s' }}" rel="stylesheet" />
+<link href="{{ site.base }}/{% if jekyll.environment == 'production' %}dist/libs{% else %}node_modules{% endif %}/{% if jekyll.environment == 'production' %}{{ lib | replace: '@', '' }}{% else %}{{ lib }}{% endif %}?{{ site.time | date: '%s' }}" rel="stylesheet" />
 {% endfor %}
 {% endif %}
 
