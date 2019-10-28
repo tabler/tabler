@@ -72,7 +72,6 @@ if (window.Apex) {
 
     dataLabels: {
       enabled: false,
-      offsetY: -6,
       dropShadow: {
         enabled: false,
       },
@@ -83,7 +82,6 @@ if (window.Apex) {
         customScale: 1,
         expandOnClick: false,
         dataLabels: {
-          offset: -8,
           minAngleToShowLabel: 10,
         },
       },
@@ -145,6 +143,12 @@ if (window.Apex) {
           colors: mutedColor,
           fontSize: '12px',
         },
+        datetimeFormatter: {
+          year: 'yyyy',
+          month: 'MMM \'yy',
+          day: 'd MMM',
+          hour: 'HH:mm'
+        }
       },
       tooltip: {
         enabled: false,
