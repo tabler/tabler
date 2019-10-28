@@ -7,7 +7,7 @@
 {% if site.data.libs %}
    <!-- Libs JS -->
    {% for lib in site.data.libs.js %}
-   <script src="{{ site.base }}/{% if jekyll.environment == 'production' %}dist/libs{% else %}node_modules{% endif %}/{{ lib }}?{{ site.time | date: '%s' }}"></script>
+   <script src="{{ site.base }}/{% if jekyll.environment == 'production' %}dist/libs{% else %}node_modules{% endif %}/{% if jekyll.environment == 'production' %}{{ lib | replace: '@', '' }}{% else %}{{ lib }}{% endif %}?{{ site.time | date: '%s' }}"></script>
    {% endfor %}
 {% endif %}
 
