@@ -1,7 +1,6 @@
 {% assign menu = page.menu | default: layout.menu %}
-<aside class="navbar navbar-side{% if include.dark %} navbar-dark{% endif %}{% if include.fixed %} navbar-fixed{% endif %}{% if include.right %} navbar-right{% endif %}{% if include.folded %} navbar-folded{% endif %} js-sidebar">
+<aside class="navbar navbar-side {% if include.dark %}navbar-dark bg-dark text-white{% else %}navbar-light{% endif %}{% if include.fixed %} navbar-fixed{% endif %}{% if include.right %} navbar-right{% endif %}{% if include.folded %} navbar-folded{% endif %} js-sidebar" id="sidebar">
    {% unless include.empty %}
-   {% include layout/sidenav-content.html menu=menu %}
+   {% include layout/sidenav-content.html menu=menu dark=include.dark %}
    {% endunless %}
 </aside>
-<div class="navbar-bg"></div>
