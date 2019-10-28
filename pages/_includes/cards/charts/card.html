@@ -1,17 +1,10 @@
-{% if include.data %}
-{% assign data = include.data %}
-{% else %}
-{% assign data = site.data.charts[include.name] %}
-{% endif %}
-{% assign key = 'chart-' | append: include.name %}
+{% assign data = site.data.charts[include.chart-id] %}
+{% assign height = include.height | default: 10 %}
 <div class="card">
-   {% unless include.hide-title %}
-   <div class="card-header">
-      <h3 class="card-title">{{ include.title | default: data.name }}</h3>
-   </div>
-   {% endunless %}
    <div class="card-body">
-      <div id="{{ key }}" style="height: {{ include.height | default: 16 }}rem"></div>
+      {% if include.title %}
+         <h3 class="card-title">{{ include.title }}</h3>
+      {% endif %}
+      {% include ui/chart.html height=height chart-id=include.chart-id %}
    </div>
 </div>
-{% include js/charts.html id=key chart-id=include.name %}
