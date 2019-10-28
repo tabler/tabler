@@ -6,7 +6,8 @@
       <table class="table card-table table-vcenter text-nowrap datatable">
          <thead>
             <tr>
-               <th class="w-1">No.</th>
+               <th class="w-1p"><input class="form-check-input m-0 align-middle" type="checkbox"></th>
+               <th class="w-1p">No.</th>
                <th>Invoice Subject</th>
                <th>Client</th>
                <th>VAT No.</th>
@@ -20,6 +21,7 @@
          <tbody>
          {% for invoice in site.data.invoices limit: 5 %}
          <tr>
+            <td><input class="form-check-input m-0 align-middle" type="checkbox"></td>
             <td><span class="text-muted">00{{ forloop.index | plus: 1400 }}</span></td>
             <td><a href="invoice.html" class="text-reset">{{ invoice.name }}</a></td>
             <td>
@@ -38,9 +40,9 @@
             <td>{{ invoice.price }}</td>
 
             <td class="text-right">
-               <a href="#" class="btn btn-secondary btn-sm">Manage</a>
                <span class="dropdown">
-                  <button class="btn btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown">Actions</button>
+                  <button class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">Actions</button>
+                  {% include ui/dropdown-menu.html %}
                </span>
             </td>
          </tr>

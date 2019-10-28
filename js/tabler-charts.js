@@ -46,7 +46,7 @@ if (window.Apex) {
   window.Apex = {
     chart: {
       fontFamily: 'inherit',
-      foreColor: 'inherit',
+      foreColor: 'currentColor',
       toolbar: {
         show: false,
       },
@@ -124,8 +124,10 @@ if (window.Apex) {
 
     title: {
       margin: 0,
+      floating: true,
+      offsetX: 10,
       style: {
-        fontSize: '14px',
+        fontSize: '18px',
       },
     },
 
