@@ -1,0 +1,16 @@
+{% assign calendar-id = include.calendar-id | default: 'main' %}
+
+<div id="calendar-{{ calendar-id }}"></div>
+
+{% capture_global scripts %}
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+      {% if jekyll.environment == 'development' %}window.tabler_calendar = window.tabler_calendar || {};{% endif %}
+      var calendarEl = document.getElementById('calendar-{{ calendar-id }}');
+
+      window.FullCalendar && ({% if jekyll.environment == 'development' %}window.tabler_calendar["calendar-{{ calendar-id }}"] = {% endif %}new FullCalendar.Calendar(calendarEl, {
+         plugins: ['dayGrid']
+      })).render();
+	});
+</script>
+{% endcapture_global %}
