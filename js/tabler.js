@@ -1,5 +1,3 @@
-require('./tabler/dropdowns');
-
 const tabler = {
   colorVariation: function(color, variation) {
     const colorValue = this.colors[color];
