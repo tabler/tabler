@@ -3,17 +3,17 @@
 {% assign height = include.height %}
 
 {% if data %}
-<div id="chart-{{ id }}"{% if include.class %} class="{{ include.class }}"{% endif %}{% if height %} style="height: {{ height }}rem"{% endif %}></div>
+<div id="chart-{{ id }}"{% if include.class %} class="{{ include.class }}"{% endif %}{% if height %} style="height: {% if height == '100%' %}100%{% else %}{{ height }}rem{% endif %}"{% endif %}></div>
 {% capture_global scripts %}
 <script>
 document.addEventListener("DOMContentLoaded", function(event) {
    {% if jekyll.environment == 'development' %}window.tabler_chart = window.tabler_chart || {};{% endif %}
    
-   var el;
-   window.ApexCharts && ({% if jekyll.environment == 'development' %}window.tabler_chart["chart-{{ include.chart-id }}"] = {% endif %}new ApexCharts((el = document.getElementById('chart-{{ id }}')), {
+   var chartElement = document.getElementById('chart-{{ id }}');
+   window.ApexCharts && ({% if jekyll.environment == 'development' %}window.tabler_chart["chart-{{ include.chart-id }}"] = {% endif %}new ApexCharts(chartElement, {
       chart: {
          type: '{{ data.type }}',
-         height: el.offsetHeight,
+         height: chartElement.offsetHeight,
          {% if data.sparkline %}
          sparkline: {
             enabled: true
@@ -61,7 +61,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
       {% if data.type == 'pie' or data.type == 'donut' %}
       pie: {
-         height: el.offsetHeight
+         height: chartElement.offsetHeight
       },
       {% endif %}
 
@@ -91,7 +91,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       {% endif %}
 
       {% if data.days-labels-count %}
-      labels: [...Array({{ data.days-labels-count }}).keys()].map(n => `2019-05-${n+1}`),
+      labels: [...Array({{ data.days-labels-count }}).keys()].map(n => `2019-09-${n+1}`),
       {% endif %}
 
       {% if data.rotated %}
@@ -132,6 +132,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
       },
       {% endif %}
    })).render();
+   
+   console.log('chartElement.offsetHeight', chartElement.offsetHeight);
 });
 </script>
 {% endcapture_global %}
