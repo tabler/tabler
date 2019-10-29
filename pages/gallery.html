@@ -1,7 +1,9 @@
 ---
 title: Gallery
 page-title: Gallery
+page-title-description: 1-12 of 241 photos
 done: true
+menu: gallery
 ---
 {% assign horizontal = 0 %}
 
@@ -12,10 +14,10 @@ done: true
 	<div class="col-sm-6 col-lg-4">
 		<div class="card p-3">
 			<a href="#" class="mb-4"><img src="{{ site.base }}/img/photos/{{photo.file}}" class="rounded"></a>
-			<div class="d-flex align-items-center">
+			<div class="d-flex align-items-center leading-none">
 				{% include ui/avatar.html person=person class="mr-3" %}
 				<div>
-					<h5 class="m-0">{{ person.full_name }}</h5>
+					<div>{{ person.full_name }}</div>
 					<small class="text-muted">{{ forloop.index | random_date_ago: 10 | timeago }}</small>
 				</div>
 				<div class="ml-auto">
@@ -38,4 +40,8 @@ done: true
 		{% break %}
 	{% endif %}
 	{% endfor %}
+</div>
+
+<div class="d-flex">
+   {% include parts/pagination.html class="ml-auto" %}
 </div>
