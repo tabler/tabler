@@ -9,8 +9,22 @@
       var calendarEl = document.getElementById('calendar-{{ calendar-id }}');
 
       window.FullCalendar && ({% if jekyll.environment == 'development' %}window.tabler_calendar["calendar-{{ calendar-id }}"] = {% endif %}new FullCalendar.Calendar(calendarEl, {
-         plugins: ['dayGrid']
-      })).render();
+		   plugins: [ 'interaction', 'dayGrid', 'timeGrid', 'list' ],
+         themeSystem: 'standard',
+
+		   header: {
+			   left: 'prev,next today',
+			   center: 'title',
+			   right: 'dayGridMonth,timeGridWeek,timeGridDay'
+		   },
+		   views: {
+			   dayGridMonth: { buttonText: 'month' },
+			   timeGridWeek: { buttonText: 'week' },
+			   timeGridDay: { buttonText: 'day' }
+		   },
+		   defaultView: 'dayGridMonth',
+
+	   })).render();
 	});
 </script>
 {% endcapture_global %}

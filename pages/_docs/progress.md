@@ -14,13 +14,13 @@ To create a default progress bar, add a `.progress` class to a `<div>` element:
 ### Small progress
 
 {% example html %}
-{% include ui/progress.html percentage=57 size="sm" %}
+{% include ui/progress.html value=57 size="sm" %}
 {% endexample %}
 
 ### Progress with value
 
 {% example html %}
-{% include ui/progress.html percentage=75 show-value=true %}
+{% include ui/progress.html value=75 show-value=true %}
 {% endexample %}
 
 ### Indeterminate progress

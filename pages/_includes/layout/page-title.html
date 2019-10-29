@@ -3,11 +3,11 @@
 <div class="page-title-box">
 
    <div class="row align-items-center">
-      <div class="col">
+      <div class="col-auto">
          {% if page.page-pretitle %}
          <!-- Page pre-title -->
          <div class="page-pretitle">
-            Overview
+            {{ page.page-pretitle }}
          </div>
          {% endif %}
          <h2 class="page-title">
@@ -15,13 +15,26 @@
          </h2>
       </div>
 
+      {% if page.page-title-description %}
+      <div class="col-auto">
+         <div class="text-muted text-h5">{{ page.page-title-description }}</div>
+      </div>
+      {% endif %}
+
       {% if page.page-title-actions %}
       <!-- Page title actions -->
-      <div class="col-auto">
-         <span class="d-none d-sm-inline">
-            {% include ui/button.html text="New view" color="secondary" icon="plus" %}
-         </span>
-         {% include ui/button.html text="Create new report" color="primary" class="ml-3" %}
+      <div class="col-auto ml-auto">
+         {% if page.page-title-actions == 'users' %}
+            <div class="d-flex">
+               <input type="search" class="form-control d-inline-block w-9 mr-3" placeholder="Search user&hellip;" />
+               {% include ui/button.html text="New user" color="primary" icon="plus" %}
+            </div>
+         {% else %}
+            <span class="d-none d-sm-inline">
+               {% include ui/button.html text="New view" color="secondary" icon="plus" %}
+            </span>
+            {% include ui/button.html text="Create new report" color="primary" class="ml-3" %}
+         {% endif %}
       </div>
       {% endif %}
    </div>

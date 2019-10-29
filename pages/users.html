@@ -1,0 +1,63 @@
+---
+layout: default
+title: Users list
+page-title: Users
+page-title-actions: users
+page-title-description: 1-18 of 413 people
+done: true
+menu: users
+---
+
+<div class="row">
+   {% for person in site.data.people limit: 18 %}
+   {% assign progress = forloop.index | random_number: 4, 95 %}
+   {% assign online_counter = forloop.index | random_number: 1, 10 %}
+   <div class="col-md-6 col-lg-4">
+      <div class="card">
+         <div class="card-body">
+            <div class="row row-sm align-items-center">
+               <div class="col-auto">
+                  {% include ui/avatar.html person=person size="md" %}
+               </div>
+               <div class="col">
+                  <h3 class="mb-0"><a href="#">{{ person.full_name }}</a></h3>
+                  <div class="text-muted text-h5">{{ person.job_title }}</div>
+               </div>
+               {% comment %}
+               <div class="col-auto">
+                  <!-- todo: better buttons -->
+                  {% include ui/button.html color="twitter" icon="brand/twitter" icon-only=true outline=true %}
+                  {% include ui/button.html color="facebook" icon="brand/facebook" icon-only=true outline=true %}
+               </div>
+               {% endcomment %}
+
+               {% if online_counter > 7 %}
+                  <div class="col-auto leading-none align-self-start">
+                     {% include ui/badge.html text="online" color="green-lt" %}
+                  </div>
+               {% elsif online_counter > 5 %}
+               <div class="col-auto leading-none align-self-start">
+                  {% include ui/badge.html text="offline" color="gray-lt" %}
+               </div>
+               {% endif %}
+            </div>
+            <div class="row align-items-center mt-4">
+               <div class="col">
+                  {% include ui/progress-description.html value=progress size="sm" label="Progress" %}
+               </div>
+               <div class="col-auto">
+                  <div class="btn-list">
+                     {% include ui/button.html text="Chat" color="secondary" size="sm" %}
+                     {% include ui/button.html text="Profile" color="secondary" size="sm" %}
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   {% endfor %}
+</div>
+
+<div class="d-flex">
+   {% include parts/pagination.html class="ml-auto" %}
+</div>
