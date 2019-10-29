@@ -1,8 +1,14 @@
 # Tabler
+
+Premium and Open Source dashboard template with responsive and high-quality UI.
+
+👉 [Become a sponsor to Tabler](https://github.com/sponsors/codecalm) 🚀
+
+<br><br><br>
+
 [![Backers on Open Collective](https://opencollective.com/tabler/backers/badge.svg)](#backers)
  [![Sponsors on Open Collective](https://opencollective.com/tabler/sponsors/badge.svg)](#sponsors)
 
-Premium and Open Source dashboard template with responsive and high-quality UI.
 
 <strong><a href="https://preview-dev.tabler.io">View Demo</a> | <a href="https://github.com/tabler/tabler-react">View React Version</a> | <a href="https://github.com/tabler/tabler/archive/master.zip">Download ZIP</a> | <a href="https://goo.gl/zJP2dT">Join us on Slack</a></strong>
 
