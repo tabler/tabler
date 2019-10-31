@@ -3,8 +3,23 @@ $sidenav-padding-y: 1rem;
 $sidenav-active-color: $primary;
 $breakpoints: $grid-breakpoints;
 
+@mixin sidenav-overlay {
+  display: none;
+
+  body.show-sidenav & {
+    display: block;
+    position: fixed;
+    z-index: $zindex-fixed - 1;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba($dark, .1);
+  }
+}
+
 @mixin sidenav-base {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   bottom: 0;
@@ -14,7 +29,8 @@ $breakpoints: $grid-breakpoints;
   transition: .3s opacity, .3s transform;
   will-change: transform;
 
-  @include sidenav-expanded;
+  width: $sidenav-width;
+  min-width: $sidenav-width;
 
   body.show-sidenav & {
     @include sidenav-visible-common;
@@ -27,8 +43,17 @@ $breakpoints: $grid-breakpoints;
 }
 
 @mixin sidenav-expanded {
+  @include sidenav-visible-common;
   width: $sidenav-width;
   min-width: $sidenav-width;
+
+  & ~ .layout-main {
+    padding-left: $sidenav-width;
+  }
+
+  & ~ .sidenav-overlay {
+    display: none !important;
+  }
 
   &:before {
     content: 'sidenav'
@@ -39,6 +64,14 @@ $breakpoints: $grid-breakpoints;
   @include sidenav-visible-common;
   width: $sidenav-folded-width;
   min-width: $sidenav-folded-width;
+
+  & ~ .layout-main {
+    padding-left: $sidenav-folded-width;
+  }
+
+  & ~ .sidenav-overlay {
+    display: none !important;
+  }
 
   &:before {
     content: 'sidenav-folded'
@@ -67,8 +100,6 @@ Sidebar
 
   box-shadow: 1px 0 $sidenav-border-color;
 
-
-
   /*
   Right navbar
    */
@@ -76,6 +107,10 @@ Sidebar
     order: 9;
     box-shadow: -1px 0 $sidenav-border-color;
   }
+}
+
+.sidenav-overlay {
+  @include sidenav-overlay;
 }
 
 /*
