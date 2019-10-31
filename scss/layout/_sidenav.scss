@@ -1,0 +1,121 @@
+$sidenav-padding-x: 1rem;
+$sidenav-padding-y: 1rem;
+$sidenav-active-color: $primary;
+$breakpoints: $grid-breakpoints;
+
+@mixin sidenav-base {
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: $zindex-fixed;
+  opacity: 0;
+  transform: translateX(-100%);
+  transition: .3s opacity, .3s transform;
+  will-change: transform;
+
+  @include sidenav-expanded;
+
+  body.show-sidenav & {
+    @include sidenav-visible-common;
+  }
+}
+
+@mixin sidenav-visible-common {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+@mixin sidenav-expanded {
+  width: $sidenav-width;
+  min-width: $sidenav-width;
+
+  &:before {
+    content: 'sidenav'
+  }
+}
+
+@mixin sidenav-folded {
+  @include sidenav-visible-common;
+  width: $sidenav-folded-width;
+  min-width: $sidenav-folded-width;
+
+  &:before {
+    content: 'sidenav-folded'
+  }
+}
+
+/*
+Sidebar
+ */
+.sidenav {
+  @include sidenav-base;
+
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: inherit;
+  justify-content: start;
+
+  margin: 0;
+  overflow: auto;
+  pointer-events: inherit;
+  user-select: none;
+  background: $sidenav-bg;
+  padding: $sidenav-padding-y $sidenav-padding-x;
+  padding: 0; //todo: remove
+
+  box-shadow: 1px 0 $sidenav-border-color;
+
+
+
+  /*
+  Right navbar
+   */
+  &.navbar-right {
+    order: 9;
+    box-shadow: -1px 0 $sidenav-border-color;
+  }
+}
+
+/*
+Folded navbar
+ */
+.sidenav-folded {
+  @each $breakpoint in map-keys($breakpoints) {
+    $infix: breakpoint-infix($breakpoint, $breakpoints);
+
+    @include media-breakpoint-up($breakpoint, $breakpoints) {
+      &#{$infix} {
+        @include sidenav-folded;
+      }
+    }
+  }
+}
+
+.sidenav-expanded {
+  @each $breakpoint in map-keys($breakpoints) {
+    $infix: breakpoint-infix($breakpoint, $breakpoints);
+
+    @include media-breakpoint-up($breakpoint, $breakpoints) {
+      &#{$infix} {
+        @include sidenav-expanded;
+      }
+    }
+  }
+}
+
+/**
+Utils
+ */
+.hide-sidenav-folded {
+  .sidenav.sidenav-folded & {
+    display: none;
+  }
+}
+
+.hide-sidenav-expanded {
+  .sidenav:not(.sidenav-folded) & {
+    display: none;
+  }
+}

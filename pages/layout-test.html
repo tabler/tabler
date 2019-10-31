@@ -1,0 +1,33 @@
+---
+title: Layout test
+side-class: sidenav-expanded-xl sidenav-folded-lg
+---
+
+<div class="card" id="card-test">
+   <div class="card-body">
+      <a href="#" class="btn btn-secondary btn-block" id="toggle-sidebar">sidebar</a>
+      <div id="card-body"></div>
+   </div>
+</div>
+
+{% capture_global scripts %}
+<script>
+	$(document).ready(function () {
+		var $test_el = $('#card-test'),
+			$test_body_el = $('#card-body'),
+			test_width = function () {
+				$test_body_el.text($test_el.width());
+			};
+
+		test_width();
+
+		$(window).on('resize', function () {
+			test_width();
+		});
+
+		$('#toggle-sidebar').on('click', function () {
+         $('body').toggleClass('show-sidenav');
+		});
+	});
+</script>
+{% endcapture_global %}
