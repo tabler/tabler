@@ -1,0 +1,51 @@
+$breakpoints: $grid-breakpoints;
+
+
+
+.layout {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto;
+}
+
+.layout-with-sidebar {
+  display: none;
+
+  @each $breakpoint in map-keys($breakpoints) {
+    $infix: breakpoint-infix($breakpoint, $breakpoints);
+
+    @include media-breakpoint-up($breakpoint, $breakpoints) {
+
+      &#{$infix} {
+        .layout-menubar {
+          width: $sidenav-width;
+          grid-column: 1;
+          grid-row: 1 / 10;
+        }
+      }
+
+      &-folded#{$infix} {
+        .layout-menubar {
+          width: $sidenav-folded-width;
+          grid-column: 1;
+          grid-row: 1 / 10;
+        }
+      }
+    }
+  }
+}
+
+.layout-topnav {
+  grid-column: 2/ none;
+}
+
+.layout-menubar {
+  grid-column: 2;
+  grid-row: 2 / none;
+}
+
+.layout-main {
+  grid-column: 2;
+  grid-row: 4;
+}

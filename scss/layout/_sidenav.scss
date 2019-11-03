@@ -28,9 +28,14 @@ $breakpoints: $grid-breakpoints;
   transform: translateX(-100%);
   transition: .3s opacity, .3s transform;
   will-change: transform;
-
   width: $sidenav-width;
   min-width: $sidenav-width;
+
+  &.sidenav-right {
+    left: auto;
+    right: 0;
+    transform: translateX(100%);
+  }
 
   body.show-sidenav & {
     @include sidenav-visible-common;
@@ -38,7 +43,7 @@ $breakpoints: $grid-breakpoints;
 }
 
 @mixin sidenav-visible-common {
-  transform: translateX(0);
+  transform: translateX(0) !important;
   opacity: 1;
 }
 
@@ -47,16 +52,16 @@ $breakpoints: $grid-breakpoints;
   width: $sidenav-width;
   min-width: $sidenav-width;
 
-  & ~ .layout-main {
-    padding-left: $sidenav-width;
+  &:not(.sidenav-right) ~ .layout-main {
+    //padding-left: $sidenav-width;
+  }
+
+  &.sidenav-right ~ .layout-main {
+    //padding-right: $sidenav-width;
   }
 
   & ~ .sidenav-overlay {
     display: none !important;
-  }
-
-  &:before {
-    content: 'sidenav'
   }
 }
 
@@ -65,16 +70,16 @@ $breakpoints: $grid-breakpoints;
   width: $sidenav-folded-width;
   min-width: $sidenav-folded-width;
 
-  & ~ .layout-main {
-    padding-left: $sidenav-folded-width;
+  &:not(.sidenav-right) ~ .layout-main {
+    //padding-left: $sidenav-folded-width;
+  }
+
+  &.sidenav-right ~ .layout-main {
+    //padding-right: $sidenav-folded-width;
   }
 
   & ~ .sidenav-overlay {
     display: none !important;
-  }
-
-  &:before {
-    content: 'sidenav-folded'
   }
 }
 
@@ -103,7 +108,7 @@ Sidebar
   /*
   Right navbar
    */
-  &.navbar-right {
+  &.sidenav-right {
     order: 9;
     box-shadow: -1px 0 $sidenav-border-color;
   }
