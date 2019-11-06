@@ -17,7 +17,8 @@ module.exports = ctx => ({
     },
   plugins: {
     autoprefixer: {
-      cascade: false
+      cascade: false,
+      grid: "autoplace"
     }
   }
 });
