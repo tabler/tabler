@@ -20,7 +20,7 @@ Premium and Open Source dashboard template with responsive and high-quality UI.
 
 ## Features
 
-We created this admin panel for everyone who wants to create any templates based on our pre-made components. Our mission is to deliver a user-friendly, clear and easy administration panel, that can be used by both, simple websites and sophisticated systems. The only requirement is a basic HTML and CSS knowledge—as a reward, you'll be able to manage and visualize different types of data in the easiest possible way!
+We created this admin panel for everyone who wants to create any templates based on our pre-made components. Our mission is to deliver a user-friendly, clear and easy administration panel, that can be used by both, simple websites and sophisticated systems. The only requirement is a basic HTML and CSS (and some [Liquid](https://github.com/Shopify/liquid/wiki)) knowledge—as a reward, you'll be able to manage and visualize different types of data in the easiest possible way!
 
 * **Responsive:** With support for mobile, tablet and desktop it doesn’t matter what device you’re using. Tabler is responsive in all major browsers.
 * **Cross Browser:** Our theme works perfectly with Latest Chrome, Firefox+, Latest Safari, Opera, Edge and mobile browsers. We work hard to continuously support them.
@@ -37,12 +37,12 @@ To use our build system and run our documentation locally, you'll need a copy of
 2. Navigate to the root `/tabler` directory and run `npm install` to install our local dependencies listed in `package.json`.
 3. [Install Ruby](https://ruby-lang.org/en/documentation/installation/), recommended version is [2.5.5](https://cache.ruby-lang.org/pub/ruby/2.5/ruby-2.5.5.tar.gz).
 4. [Install Bundler](https://bundler.io) with `gem install bundler`, and finally run `bundle install`. This will install all Ruby dependencies, such as [Jekyll and plugins](https://jekyllrb.com).
-   
-**Windows users**: 
+
+**Windows users**:
 1. [Install Git](https://git-scm.com/download/win) in `C:\\Program Files\\git\\bin` directory and run `npm config set script-shell "C:\\Program Files\\git\\bin\\bash.exe"` to change default shell.
 2. [Install Ruby+Devkit](https://rubyinstaller.org/downloads/), recommended version is [2.5.5](https://github.com/oneclick/rubyinstaller2/releases/download/RubyInstaller-2.5.5-1/rubyinstaller-devkit-2.5.5-1-x86.exe).
 3. [Read guide](https://jekyllrb.com/docs/installation/windows/) to get Jekyll up and running without problems.
-  
+
 When completed, you'll be able to run the various commands provided from the command line.
 
 ## Build locally
@@ -51,7 +51,7 @@ When completed, you'll be able to run the various commands provided from the com
 2. Open [http://localhost:3000](http://localhost:3000) in your browser, and voilà.
 3. Any change in `/pages` directory will build application and refresh the page.
 
-**Note**: 
+**Note**:
 Run `npm run build` for reforms a one off build application without refresh.
 Open [http://localhost:3001](http://localhost:3001) to configure the Web server.
 
