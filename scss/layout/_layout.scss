@@ -1,0 +1,124 @@
+/**
+Layout
+ */
+
+@mixin menu-side {
+  align-items: flex-start;
+}
+
+@mixin menu-collapsed {
+  .layout-area-menu {
+    position: fixed;
+    left: -($sidenav-width);
+    top: 0;
+    bottom: 0;
+    background: $dark;
+    color: $white;
+    width: $sidenav-width;
+    z-index: $zindex-fixed;
+    transition: .3s left;
+
+    @include menu-side;
+  }
+
+  .layout-area-menu-backdrop {
+    display: block;
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    width: 100vw;
+    background: rgba($dark, .1);
+    z-index: $zindex-fixed - 1;
+    visibility: hidden;
+    opacity: 0;
+  }
+
+  @at-root body.menu-visible & {
+    .layout-area-menu {
+      left: 0;
+    }
+
+    .layout-area-menu-backdrop {
+      opacity: 1;
+      visibility: visible;
+    }
+  }
+}
+
+.layout {
+  position: relative;
+  display: grid;
+
+  grid-template:
+    "head" auto
+    "menu" auto
+    "main" auto /
+    auto;
+}
+
+.layout-collapsed {
+  @each $breakpoint in map-keys($grid-breakpoints) {
+    $infix: breakpoint-infix($breakpoint);
+
+    @if $infix != '' {
+      @include media-breakpoint-down($breakpoint) {
+
+        &#{$infix} {
+          @include menu-collapsed;
+        }
+      }
+    } @else {
+      @include menu-collapsed;
+    }
+  }
+}
+
+.layout-sidebar {
+  @each $breakpoint in map-keys($grid-breakpoints) {
+    $infix: breakpoint-infix($breakpoint);
+
+    @include media-breakpoint-up($breakpoint) {
+
+
+      &#{$infix} {
+        grid-template:
+          "menu head" auto
+          "menu main" auto /
+          auto 1fr;
+
+        .layout-area-menu {
+          width: $sidenav-width;
+        }
+      }
+
+      &-folded#{$infix} {
+        grid-template:
+          "menu head" auto
+          "menu main" auto /
+          auto 1fr;
+
+        .layout-area-menu {
+          width: $sidenav-folded-width;
+
+        }
+      }
+    }
+  }
+}
+
+.layout-area-topnav {
+  grid-area: head;
+}
+
+.layout-area-menu {
+  grid-area: menu;
+}
+
+.layout-area-menu-backdrop {
+  display: none;
+}
+
+.layout-area-main {
+  grid-area: main;
+}

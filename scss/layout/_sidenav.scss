@@ -1,0 +1,161 @@
+$sidenav-padding-x: 1rem;
+$sidenav-padding-y: 1rem;
+$sidenav-active-color: $primary;
+$breakpoints: $grid-breakpoints;
+
+@mixin sidenav-overlay {
+  display: none;
+
+  body.show-sidenav & {
+    display: block;
+    position: fixed;
+    z-index: $zindex-fixed - 1;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba($dark, .1);
+  }
+}
+
+@mixin sidenav-base {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  z-index: $zindex-fixed;
+  opacity: 0;
+  transform: translateX(-100%);
+  transition: .3s opacity, .3s transform;
+  will-change: transform;
+  width: $sidenav-width;
+  min-width: $sidenav-width;
+
+  &.sidenav-right {
+    left: auto;
+    right: 0;
+    transform: translateX(100%);
+  }
+
+  body.show-sidenav & {
+    @include sidenav-visible-common;
+  }
+}
+
+@mixin sidenav-visible-common {
+  transform: translateX(0) !important;
+  opacity: 1;
+}
+
+@mixin sidenav-expanded {
+  @include sidenav-visible-common;
+  width: $sidenav-width;
+  min-width: $sidenav-width;
+
+  &:not(.sidenav-right) ~ .layout-main {
+    //padding-left: $sidenav-width;
+  }
+
+  &.sidenav-right ~ .layout-main {
+    //padding-right: $sidenav-width;
+  }
+
+  & ~ .sidenav-overlay {
+    display: none !important;
+  }
+}
+
+@mixin sidenav-folded {
+  @include sidenav-visible-common;
+  width: $sidenav-folded-width;
+  min-width: $sidenav-folded-width;
+
+  &:not(.sidenav-right) ~ .layout-main {
+    //padding-left: $sidenav-folded-width;
+  }
+
+  &.sidenav-right ~ .layout-main {
+    //padding-right: $sidenav-folded-width;
+  }
+
+  & ~ .sidenav-overlay {
+    display: none !important;
+  }
+}
+
+/*
+Sidebar
+ */
+.sidenav {
+  @include sidenav-base;
+
+  display: flex;
+  flex-direction: column;
+  flex-wrap: nowrap;
+  align-items: inherit;
+  justify-content: flex-start;
+
+  margin: 0;
+  overflow: auto;
+  pointer-events: inherit;
+  user-select: none;
+  background: $sidenav-bg;
+  padding: $sidenav-padding-y $sidenav-padding-x;
+  padding: 0; //todo: remove
+
+  box-shadow: 1px 0 $sidenav-border-color;
+
+  /*
+  Right navbar
+   */
+  &.sidenav-right {
+    order: 9;
+    box-shadow: -1px 0 $sidenav-border-color;
+  }
+}
+
+.sidenav-overlay {
+  @include sidenav-overlay;
+}
+
+/*
+Folded navbar
+ */
+.sidenav-folded {
+  @each $breakpoint in map-keys($breakpoints) {
+    $infix: breakpoint-infix($breakpoint, $breakpoints);
+
+    @include media-breakpoint-up($breakpoint, $breakpoints) {
+      &#{$infix} {
+        @include sidenav-folded;
+      }
+    }
+  }
+}
+
+.sidenav-expanded {
+  @each $breakpoint in map-keys($breakpoints) {
+    $infix: breakpoint-infix($breakpoint, $breakpoints);
+
+    @include media-breakpoint-up($breakpoint, $breakpoints) {
+      &#{$infix} {
+        @include sidenav-expanded;
+      }
+    }
+  }
+}
+
+/**
+Utils
+ */
+.hide-sidenav-folded {
+  .sidenav.sidenav-folded & {
+    display: none;
+  }
+}
+
+.hide-sidenav-expanded {
+  .sidenav:not(.sidenav-folded) & {
+    display: none;
+  }
+}

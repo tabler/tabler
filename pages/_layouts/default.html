@@ -2,16 +2,12 @@
 layout: base
 ---
 
-<div class="layout d-flex flex-row vh-100">
-   {% if page.nav-side %}
-   {% include layout/sidenav.html dark=page.nav-dark folded=page.nav-folded fixed=page.nav-fixed right=page.nav-right %}
-   {% endif %}
+<div class="layout{% if page.site-layout %} {{ page.site-layout }}{% endif %}">
 
-   <div class="layout-main d-flex flex-column flex-fill max-w-full">
-      {% unless page.nav-side %}
-      {% include layout/topnav.html dark=page.header-dark sticky=page.header-sticky %}
-      {% include layout/topmenu.html %}
-      {% endunless %}
+   {% include layout/topnav.html dark=page.header-dark sticky=page.header-sticky %}
+   {% include layout/topmenu.html %}
+
+   <div class="layout-area-main">
 
       <main class="container{% if page.container-size %} container-{{ page.container-size }}{% endif %}{% if page.fluid %}-fluid{% endif %} my-4 flex-fill">
          {% include layout/page-title.html %}

@@ -108,8 +108,8 @@ const tabler = {
 $(document).ready(function() {
   const $body = $('body');
 
-  $body.on('click', '[data-toggle="sidebar"]', function(e) {
-    $body.toggleClass('sidebar-opened');
+  $body.on('click', '[data-toggle="menubar"]', function(e) {
+    $body.toggleClass('menu-visible');
 
     e.preventDefault();
     return false;
