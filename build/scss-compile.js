@@ -8,7 +8,8 @@
 const path = require('path'),
   glob = require("glob"),
   fs = require("fs"),
-  sass = require("node-sass");
+  sass = require("node-sass"),
+  packageImporter = require('node-sass-package-importer');
 
 glob("scss/tabler*.scss", {}, function (er, files) {
   files.forEach(function(file){
@@ -20,7 +21,8 @@ glob("scss/tabler*.scss", {}, function (er, files) {
         outFile: `dist/css/${basename}.css`,
         sourceMap: true,
         sourceMapContents: true,
-        precision: 6
+        precision: 6,
+        importer: packageImporter()
       },
       (error, result) => {
         if (!error) {
@@ -41,6 +43,4 @@ glob("scss/tabler*.scss", {}, function (er, files) {
       }
     );
   });
-
- 
 });

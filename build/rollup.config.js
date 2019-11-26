@@ -34,8 +34,6 @@ if (BUNDLE) {
   ]);
 }
 
-console.log('plugins', plugins);
-
 module.exports = {
   context: "window",
   input: {
