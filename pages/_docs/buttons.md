@@ -33,7 +33,7 @@ Use any of the available button classes to quickly create a styled button . We p
 Make buttons look inactive by adding the disabled boolean attribute to any `.btn` element. `<a>`s don’t support the disabled attribute, so you must add the `.disabled` class to make it visually appear disabled.
 {% example html wrapper=btn-list %}
 {% for button in site.button_variants %}
-{% include ui/button.html color=button.name text=button.title disabled="true" %}
+{% include_cached ui/button.html color=button.name text=button.title disabled="true" %}
 {% endfor %}
 
 {% endexample %}
@@ -55,7 +55,7 @@ Add `.btn-square` to button to remove border-radius.
 
 {% example html wrapper=btn-list %}
 {% for button in site.button_variants %}
-{% include ui/button.html text=button.title color=button.name square=true %}
+{% include_cached ui/button.html text=button.title color=button.name square=true %}
 {% endfor %}
 {% endexample %}
 
@@ -65,7 +65,7 @@ Add `.btn-pill` class to any button to make them more rounded.
 
 {% example html wrapper=btn-list %}
 {% for button in site.button_variants %}
-{% include ui/button.html text=button.title color=button.name pill=true %}
+{% include_cached ui/button.html text=button.title color=button.name pill=true %}
 {% endfor %}
 {% endexample %}
 
@@ -75,7 +75,7 @@ In need of a button, but not the hefty background colors they bring? Replace the
 
 {% example html wrapper=btn-list %}
 {% for button in site.button_variants %}
-{% include ui/button.html text=button.title color=button.name outline=true %}
+{% include_cached ui/button.html text=button.title color=button.name outline=true %}
 {% endfor %}
 {% endexample %}
 
@@ -83,7 +83,7 @@ In need of a button, but not the hefty background colors they bring? Replace the
 
 {% example html %}
 {% for button in site.button_variants %}
-  {% include ui/button.html text="Button" label="star" color=button.name class="mr-2" %}
+  {% include_cached ui/button.html text="Button" label="star" color=button.name class="mr-2" %}
 {% endfor %}
 {% endexample %}
 
@@ -127,7 +127,7 @@ A button can be formatted to link to a social website
 
 {% example html wrapper=btn-list %} 
 {% for button in site.socials %}
-{% include ui/button.html color=button.name icon=button.icon text=button.title %}
+{% include_cached ui/button.html color=button.name icon=button.icon text=button.title %}
 {% endfor %}
 {% endexample %}
 
@@ -135,7 +135,7 @@ You can use only icons.
 
 {% example html wrapper=btn-list %} 
 {% for button in site.socials %}
-{% include ui/button.html color=button.name icon=button.icon %}
+{% include_cached ui/button.html color=button.name icon=button.icon %}
 {% endfor %}
 {% endexample %}
 
@@ -196,11 +196,11 @@ Add `.btn-loading` to use a loading state on a button. The width of the button d
 Since the loading spinner is implemented using the `:after` pseudo-element, it is not supported by the `<input type="submit">` element.
 
 {% example html wrapper=btn-list %}
-{% include ui/button.html spinner=true text="Button" color="primary" %}
-{% include ui/button.html spinner=true text="Button" color="danger" %}
-{% include ui/button.html spinner=true text="Button" color="warning" %}
-{% include ui/button.html spinner=true color="success" %}
-{% include ui/button.html spinner=true color="secondary" %}
+{% include_cached ui/button.html spinner=true text="Button" color="primary" %}
+{% include_cached ui/button.html spinner=true text="Button" color="danger" %}
+{% include_cached ui/button.html spinner=true text="Button" color="warning" %}
+{% include_cached ui/button.html spinner=true color="success" %}
+{% include_cached ui/button.html spinner=true color="secondary" %}
 {% endexample %}
 
 ### List of buttons

@@ -1,33 +1,32 @@
-{% assign person-id = include.person-id | default: 25 %}
-{% assign person = site.data.people | where: "id", person-id %}
-{% assign p = person[0] %}
+{% assign person-id = include.person-id | default: 25 | minus: 1 %}
+{% assign person = site.data.people[person-id] %}
 
 <div class="card">
     <div class="card-body">
         <div class="card-title">{{ include.title | default: 'Basic info' }}</div>
         <div class="mb-2">
-            {% include ui/icon.html icon="book" class="mr-2 text-muted" %}
-            Went to: <strong>{{ p.university }}</strong>
+            {% include_cached ui/icon.html icon="book" class="mr-2 text-muted" %}
+            Went to: <strong>{{ person.university }}</strong>
         </div>
         <div class="mb-2">
-            {% include ui/icon.html icon="briefcase" class="mr-2 text-muted" %}
-            Worked at: <strong>{{ p.company }}</strong>
+            {% include_cached ui/icon.html icon="briefcase" class="mr-2 text-muted" %}
+            Worked at: <strong>{{ person.company }}</strong>
         </div>
         <div class="mb-2">
-            {% include ui/icon.html icon="home" class="mr-2 text-muted" %}
-            Lives in: <strong>{{ p.city }}, {{ p.country }}</strong>
+            {% include_cached ui/icon.html icon="home" class="mr-2 text-muted" %}
+            Lives in: <strong>{{ person.city }}, {{ person.country }}</strong>
         </div>
        <div class="mb-2">
-          {% include ui/icon.html icon="map-pin" class="mr-2 text-muted" %}
-          From: <strong>{% include ui/flag.html flag=p.country_code %} {{ p.country }}</strong>
+          {% include_cached ui/icon.html icon="map-pin" class="mr-2 text-muted" %}
+          From: <strong>{% include ui/flag.html flag=person.country_code %} {{ person.country }}</strong>
        </div>
        <div class="mb-2">
-          {% include ui/icon.html icon="calendar" class="mr-2 text-muted" %}
-          Birth date: <strong>{{ p.birth_date }}</strong>
+          {% include_cached ui/icon.html icon="calendar" class="mr-2 text-muted" %}
+          Birth date: <strong>{{ person.birth_date }}</strong>
        </div>
        <div>
-          {% include ui/icon.html icon="clock" class="mr-2 text-muted" %}
-          Time zone: <strong>{{ p.time_zone }}</strong>
+          {% include_cached ui/icon.html icon="clock" class="mr-2 text-muted" %}
+          Time zone: <strong>{{ person.time_zone }}</strong>
        </div>
     </div>
 </div>

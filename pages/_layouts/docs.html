@@ -9,14 +9,14 @@ page-title: Documentation
 <div class="row justify-content-center">
    <div class="col-lg-3 order-lg-1 mb-4">
       <a href="{{ site.github_url }}" class="btn btn-block btn-primary mb-4" target="_blank">
-         {% include ui/icon.html icon="github" class="mr-2" %}Browse source code
+         {% include_cached ui/icon.html icon="github" class="mr-2" %}Browse source code
       </a>
 
       <div class="list-group list-group-transparent mb-0">
          {% for p in site.data.docs %}
          {% assign doc = site.docs | where: "slug", p.page | first %}
          <a href="{{ site.base }}{{ doc.url | relative_url }}" class="list-group-item list-group-item-action{% if page.url == doc.url %} active{% endif %}">
-            {{ doc.title }}{% if doc.done %} {% include ui/icon.html icon="check" color="green" %}{% endif %}
+            {{ doc.title }}{% if doc.done %} {% include_cached ui/icon.html icon="check" color="green" %}{% endif %}
          </a>
          {% endfor %}
       </div>
@@ -26,7 +26,7 @@ page-title: Documentation
 			<div class="card-body p-lg-7">
 
 				<div class="markdown">
-					<h2 class="h1 mt-0 mb-4">{{ page.title }}{% if page.done %} {% include ui/icon.html icon="check" color="green" %}{% endif %}</h2>
+					<h2 class="h1 mt-0 mb-4">{{ page.title }}{% if page.done %} {% include_cached ui/icon.html icon="check" color="green" %}{% endif %}</h2>
 
                {% if page.plugin %}
                   <div class="alert alert-info">This module is available in <code>tabler-{{ page.plugin }}</code> plugin.</div>
