@@ -109,7 +109,7 @@ $(document).ready(function() {
   const $body = $('body');
 
   $body.on('click', '[data-toggle="menubar"]', function(e) {
-    $body.toggleClass('menu-visible');
+    $body.toggleClass('aside-visible');
 
     e.preventDefault();
     return false;

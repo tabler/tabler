@@ -1,7 +1,6 @@
 /**
 Layout
  */
-
 @mixin menu-side {
   align-items: flex-start;
 }
@@ -34,7 +33,11 @@ Layout
     opacity: 0;
   }
 
-  @at-root body.menu-visible & {
+  .layout-toggler {
+    display: block;
+  }
+
+  @at-root body.aside-visible & {
     .layout-area-menu {
       left: 0;
     }
@@ -50,10 +53,7 @@ Layout
   position: relative;
   display: grid;
 
-  grid-template:
-    "head" auto
-    "menu" auto
-    "main" auto /
+  grid-template: "head" auto "menu" auto "main" auto /
     100%;
 }
 
@@ -79,12 +79,12 @@ Layout
     $infix: breakpoint-infix($breakpoint);
 
     @include media-breakpoint-up($breakpoint) {
-
+      .layout-toggler {
+        display: none;
+      }
 
       &#{$infix} {
-        grid-template:
-          "menu head" auto
-          "menu main" auto /
+        grid-template: "menu head" auto "menu main" auto /
           auto 1fr;
 
         .layout-area-menu {
@@ -93,15 +93,71 @@ Layout
       }
 
       &-folded#{$infix} {
-        grid-template:
-          "menu head" auto
-          "menu main" auto /
+        grid-template: "menu head" auto "menu main" auto /
           auto 1fr;
 
         .layout-area-menu {
           width: $sidenav-folded-width;
-
         }
+      }
+    }
+  }
+}
+
+.layout-toggler {
+  display: none;
+  width: 2rem;
+  height: 2rem;
+  cursor: pointer;
+  position: relative;
+  opacity: .8;
+
+  &-icon {
+    top: 50%;
+    left: 50%;
+    display: block;
+    margin-top: -2px;
+    margin-left: -.75rem;
+
+    transition-timing-function: cubic-bezier(.55, .055, .675, .19);
+    transition-duration: 75ms;
+
+    &,
+    &:after,
+    &:before {
+      content: '';
+      width: 1.5rem;
+      height: 2px;
+      background: currentColor;
+      position: absolute;
+      border-radius: 4px;
+    }
+
+    &:before {
+      top: -.5rem;
+      transition: top 75ms ease .12s, opacity 75ms ease;
+    }
+
+    &:after {
+      bottom: -.5rem;
+      transition: bottom 75ms ease .12s, transform 75ms cubic-bezier(.55, .055, .675, .19);
+    }
+
+    @at-root body.aside-visible & {
+      transform: rotate(45deg);
+      transition-delay: .12s;
+      transition-timing-function: cubic-bezier(.215, .61, .355, 1);
+
+      &:before {
+        top: 0;
+        transition: top 75ms ease, opacity 75ms ease .12s;
+        opacity: 0;
+      }
+
+      &:after {
+        bottom: 0;
+        transition: bottom 75ms ease, transform 75ms cubic-bezier(.215, .61, .355, 1) .12s;
+        transform: rotate(-90deg);
       }
     }
   }
@@ -109,6 +165,8 @@ Layout
 
 .layout-area-topnav {
   grid-area: head;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .layout-area-menu {
