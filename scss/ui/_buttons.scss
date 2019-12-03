@@ -3,9 +3,8 @@
   align-items: center;
   justify-content: center;
   letter-spacing: .01em;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, .03);
 
-  &:not([class^="btn-outline"]):not([class*=" btn-outline"]):not(.btn-secondary) {
+  &:not([class^="btn-outline"]):not([class*=" btn-outline"]):not([class^="btn-ghost"]):not([class*=" btn-ghost"]):not(.btn-secondary) {
     text-shadow: 1px 1px 0 rgba(0, 0, 0, .05);
     box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .05), inset 0 2px 0 -1px rgba(255, 255, 255, .1);
 
@@ -13,6 +12,12 @@
       filter: drop-shadow(1px 1px 0 rgba(0, 0, 0, .05));
     }
   }
+
+  &:disabled,
+  &.disabled {
+    cursor: not-allowed;
+  }
+
 
   .icon {
     margin: 0 .5em 0 -.25em;
@@ -62,7 +67,7 @@
 }
 
 .btn-secondary {
-  @include button-variant(#fff, $border-color, $text-muted);
+  @include button-variant(#fff, $border-color, $body-color);
 }
 
 .btn-square {
@@ -83,7 +88,15 @@
   }
 }
 
-@if $generate-social-colors {
+@if $enable-ghost-buttons {
+  @each $vendor, $color in $theme-colors {
+    .btn-ghost-#{$vendor} {
+      @include button-variant(transparent, transparent, $color, $color, $color, #fff, $color, $color);
+    }
+  }
+}
+
+@if $enable-social-colors {
   @each $vendor, $color in $social-colors {
     .btn-#{$vendor} {
       @include button-variant($color, $color);
@@ -93,10 +106,9 @@
       @include button-outline-variant($color, $color);
     }
   }
-
 }
 
-@if $generate-colors {
+@if $enable-extra-colors {
   @each $name, $color in $colors {
     .btn-#{$name} {
       @include button-variant($color, $color);

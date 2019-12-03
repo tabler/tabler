@@ -22,18 +22,17 @@ The `.btn` classes are designed to be used with the `<button>` element. However,
 Use any of the available button classes to quickly create a styled button . We provide a variety of colors for you to express different emotions.
 
 {% example html wrapper=btn-list %}
-{% for button in site.button_variants %}
-<a href="#" class="btn btn-{{ button.name }}">{{ button.title }}</a>
+{% for button in site.button-variants %}
+<a href="#" class="btn btn-{{ button[0] }}">{{ button[1].title }}</a>
 {% endfor %}
-<a href="#" class="btn btn-link">Link</a>
 {% endexample %}
 
 ### Disabled buttons
 
 Make buttons look inactive by adding the disabled boolean attribute to any `.btn` element. `<a>`s don’t support the disabled attribute, so you must add the `.disabled` class to make it visually appear disabled.
 {% example html wrapper=btn-list %}
-{% for button in site.button_variants %}
-{% include_cached ui/button.html color=button.name text=button.title disabled="true" %}
+{% for button in site.button-variants %}
+{% include_cached ui/button.html color=button.1.class text=button.title disabled=true %}
 {% endfor %}
 
 {% endexample %}
@@ -45,7 +44,7 @@ The classic button, in different colors.
 
 {% example html wrapper=btn-list %}
 {% for button in site.colors %}
-<a href="#" class="btn btn-{{ button[0] }}">{{ button[1].name }}</a>
+<a href="#" class="btn btn-{{ button[0] }}">{{ button[1].title }}</a>
 {% endfor %}
 {% endexample %}
 
@@ -54,8 +53,8 @@ The classic button, in different colors.
 Add `.btn-square` to button to remove border-radius.
 
 {% example html wrapper=btn-list %}
-{% for button in site.button_variants %}
-{% include_cached ui/button.html text=button.title color=button.name square=true %}
+{% for button in site.button-variants %}
+{% include_cached ui/button.html text=button.title color=button.class square=true %}
 {% endfor %}
 {% endexample %}
 
@@ -64,8 +63,8 @@ Add `.btn-square` to button to remove border-radius.
 Add `.btn-pill` class to any button to make them more rounded.
 
 {% example html wrapper=btn-list %}
-{% for button in site.button_variants %}
-{% include_cached ui/button.html text=button.title color=button.name pill=true %}
+{% for button in site.button-variants %}
+{% include_cached ui/button.html text=button.title color=button.class pill=true %}
 {% endfor %}
 {% endexample %}
 
@@ -74,16 +73,8 @@ Add `.btn-pill` class to any button to make them more rounded.
 In need of a button, but not the hefty background colors they bring? Replace the default modifier classes with the `.btn-outline-*` ones to remove all background images and colors on any button.
 
 {% example html wrapper=btn-list %}
-{% for button in site.button_variants %}
-{% include_cached ui/button.html text=button.title color=button.name outline=true %}
-{% endfor %}
-{% endexample %}
-
-### Button with star
-
-{% example html %}
-{% for button in site.button_variants %}
-  {% include_cached ui/button.html text="Button" label="star" color=button.name class="mr-2" %}
+{% for button in site.button-variants %}
+{% include_cached ui/button.html text=button.title color=button.class outline=true %}
 {% endfor %}
 {% endexample %}
 
