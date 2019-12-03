@@ -1,6 +1,7 @@
 source "https://rubygems.org"
 
-gem "jekyll", "~> 4.0"
+gem "jekyll"
+gem "liquid-c"
 
 group :jekyll_plugins do
   gem "jekyll-random"

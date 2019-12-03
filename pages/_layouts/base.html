@@ -26,9 +26,9 @@
    <meta name="description" content="{{ page.description | escape }}"/>
    {% endif %}
 
-   {% include layout/og.html %}
+   {% include_cached layout/og.html show=layout.og-component %}
 
-   {% include layout/css.html %}
+   {% include_cached layout/css.html %}
 
    <style>body { display: none; }</style>
 </head>
@@ -36,13 +36,14 @@
 
 {{ content}}
 
+{% include_cached layout/js.html %}
+{% include layout/js-capture.html %}
+
 {% if site.debug %}
 {% if jekyll.environment == 'development' %}
-{% include layout/debug.html %}
+{% include_cached layout/debug.html %}
 {% endif %}
 {% endif %}
-
-{% include layout/js.html %}
 
 <script>document.body.style.display = 'block';</script>
 </body>
