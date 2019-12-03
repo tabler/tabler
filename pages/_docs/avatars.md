@@ -14,6 +14,50 @@ Create and group avatars of various shapes and sizes with one component.
 {% include ui/avatar.html person-id=3 %}
 {% endexample %}
 
+### Avatar image
+
+Set an image as the background.
+
+{% example html wrapper=avatar-list %}
+{% include ui/avatar.html person-id=1 %}
+{% include ui/avatar.html person-id=3 %}
+{% include ui/avatar.html person-id=4 %}
+{% endexample %}
+
+### Initials
+
+You can easily use initials instead of images.
+
+{% example html wrapper=avatar-list %}
+{% include ui/avatar.html placeholder="AB" %}
+{% include ui/avatar.html placeholder="CD" %}
+{% include ui/avatar.html placeholder="EF" %}
+{% include ui/avatar.html placeholder="GH" %}
+{% include ui/avatar.html placeholder="IJ" %}
+{% endexample %}
+
+### Avatar icons
+
+You can also use icons in avatars.
+
+{% example html wrapper=avatar-list %}
+{% include ui/avatar.html icon="user" %}
+{% include ui/avatar.html icon="plus" %}
+{% include ui/avatar.html icon="user-plus" %}
+{% endexample %}
+
+### Avatar initials color
+
+Customize the color of the avatars' background. You can click You can click [here]({% docs_url colors %}) to see the list of available colors.
+
+{% example html wrapper=avatar-list %}
+{% include ui/avatar.html placeholder="AB" color="green" %}
+{% include ui/avatar.html placeholder="CD" color="red" %}
+{% include ui/avatar.html placeholder="EF" color="yellow" %}
+{% include ui/avatar.html placeholder="GH" color="blue" %}
+{% include ui/avatar.html placeholder="IJ" color="purple" %}
+{% endexample %}
+
 ### Avatar size
 
 Using Bootstrap’s typical naming structure, you can create a standard avatar, or scale it up to different sizes based on what’s needed.
@@ -51,42 +95,17 @@ Change the shape of an avatar with the default Bootstrap image classes.
 {% include ui/avatar.html person-id=21 shape="rounded-lg" %}
 {% endexample %}
 
-### Initials
-
-{% example html wrapper=avatar-list %}
-{% include ui/avatar.html placeholder="AB" size="xl" %}
-{% include ui/avatar.html placeholder="CD" size="lg" %}
-{% include ui/avatar.html placeholder="EF" size="md" %}
-{% include ui/avatar.html placeholder="GH" %}
-{% include ui/avatar.html placeholder="IJ" size="sm" %}
-{% endexample %}
-
-
-### Avatar initials color
-
-[See more]({% docs_url colors %})
-
-{% example html wrapper=avatar-list %}
-{% include ui/avatar.html placeholder="AB" color="green" %}
-{% include ui/avatar.html placeholder="CD" color="red" %}
-{% include ui/avatar.html placeholder="EF" color="yellow" %}
-{% include ui/avatar.html placeholder="GH" color="blue" %}
-{% include ui/avatar.html placeholder="IJ" color="purple" %}
-{% endexample %}
-
-### Avatar initials icons
-
-{% example html wrapper=avatar-list %}
-{% include ui/avatar.html icon="user" %}
-{% include ui/avatar.html icon="plus" %}
-{% include ui/avatar.html icon="user-plus" %}
-{% endexample %}
-
 ### Avatars list
+
+You can easily create a list of avatars.
 
 {% example %}
 {% include ui/avatar-list.html %}
 {% endexample %}
+
+### Stacked list
+
+Make the list stack when it reaches a certain length.
 
 {% example %}
 <div class="avatar-list avatar-list-stacked">
