@@ -15,6 +15,8 @@ done: true
 
 ### Pill badges
 
+To make a pill bagde (with rounded corners) add <code>.bagde-pill</code> class.
+
 {% example %}
 {% for color in site.colors %}
 <span class="badge badge-pill text-white bg-{{ color[0] }}">{{ forloop.index }}</span>
@@ -23,6 +25,8 @@ done: true
 
 
 ### Soft badges
+
+Creates a soft variant of a corresponding contextual badge variation. You can click [here]({% docs_url colors %}) to see the list of available colors.
 
 {% example %}
 {% for color in site.colors %}
@@ -33,6 +37,8 @@ done: true
 
 ### Links
 
+Make a badge work as a link by putting it into an <code>&lt;a&gt;</code> element.
+
 {% example %}
 {% for color in site.colors %}
 <a href="#" class="badge bg-{{ color[0] }}">{{ color[0] }}</a>
@@ -41,6 +47,8 @@ done: true
 
 
 ### Empty badges
+
+If you don't want your badge to contain any text you can do it by leaving the html element empty.
 
 {% example %}
 {% for color in site.colors %}
