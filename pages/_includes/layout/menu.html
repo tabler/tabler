@@ -1,14 +1,17 @@
 {% removeemptylines %}
-{% assign side = false %}
 <ul class="navbar-nav flex-wrap{% if include.class %} {{ include.class }}{% endif %}">
    {% assign current-page = page.menu | default: layout.menu | split: '.' %}
 
    {% for level-1 in site.data.menu %}
    {% assign icon = level-1[1].icon %}
-   <li
-      class="nav-item{% if level-1[0] == current-page[0] %} active{% endif %}{% if level-1[1].children or level-1[1].docs %} {% if side %}dropright{% else %}dropdown{% endif %}{% endif %}">
-      <a class="nav-link{% if level-1[1].children or level-1[1].docs %} dropdown-toggle{% endif %}" {% if
-         level-1[1].children or level-1[1].docs %}href="#sidebar-{{ level-1[0] }}" data-toggle="dropdown" role="button"
+
+   {% assign has-children = false %}
+   {% if level-1[1].children or level-1[1].docs %}
+      {% assign has-children = true %}
+   {% endif %}
+
+   <li class="nav-item{% if level-1[0] == current-page[0] %} active{% endif %}{% if has-children %} dropdown{% endif %}">
+      <a class="nav-link{% if has-children %} dropdown-toggle{% endif %}" {% if has-children %}href="#navbar-{{ level-1[0] }}" data-toggle="dropdown" role="button"
          aria-expanded="{% if level-1[0] == current-page[0] %}true{% else %}false{% endif %}" {% elsif level-1[1].toggle
          %}href="{{ level-1[1].url }}" data-toggle="{{ level-1[1].toggle }}" {% else
          %}href="{{ site.base }}/{{ level-1[1].url }}" {% endif %}>
@@ -25,9 +28,9 @@
             {% endunless %}
          </span>
       </a>
-      {% if level-1[1].children or level-1[1].docs %}
-      <div class="dropdown-menu">
 
+      {% if has-children %}
+      <div class="dropdown-menu">
          {% if level-1[1].docs %}
          {% for d in site.data.docs %}
          {% assign doc = site.docs | where: "slug", d.page | first %}
