@@ -1,4 +1,5 @@
-{% assign article = include.article | default: site.data.articles[0] %}
+{% assign article-id = include.article-id | default: 2 %}
+{% assign article = include.article | default: site.data.articles[article-id] %}
 {% assign type = include.type | default: 'none' %}
 {% assign author = site.data.people[article.author] %}
 {% assign liked = include.liked | default: false %}
@@ -6,7 +7,7 @@
 {% assign avatar = article.author %}
 
 {% capture card-content %}
-   <h3><a href="#">{{ article.title }}</a></h3>
+   <h3 class="card-title"><a href="#">{{ article.title }}</a></h3>
 
    <div class="text-muted">{{ article.description | truncate: truncate }}</div>
 

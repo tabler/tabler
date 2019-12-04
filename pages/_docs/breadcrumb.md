@@ -1,7 +1,7 @@
 ---
 title: Breadcrumb
 menu: docs.breadcrumb
-description: A breadcrumb navigation provide links back to each previous page the user navigated through, and shows the user's current location in a website.
+description: Indicate the current page’s location within a navigational hierarchy that automatically adds separators via CSS.
 done: true
 ---
 
