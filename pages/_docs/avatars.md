@@ -47,7 +47,7 @@ You can also use icons in avatars.
 
 ### Avatar initials color
 
-Customize the color of the avatars' background. You can click You can click [here]({% docs_url colors %}) to see the list of available colors.
+Customize the color of the avatars' background. You can click [here]({% docs_url colors %}) to see the list of available colors.
 
 {% example html wrapper=avatar-list %}
 {% include ui/avatar.html placeholder="AB" color="green" %}
