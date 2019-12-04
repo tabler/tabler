@@ -1,6 +1,8 @@
 ---
 title: Colors
 menu: docs.colors
+description: 
+bsLink: https://getbootstrap.com/docs/4.4/utilities/colors/
 ---
 
 <div class="row">
@@ -15,9 +17,9 @@ menu: docs.colors
 				<ul class="list-unstyled">
 					{% for color in site.colors %}
 					<li class="d-flex align-items-center mb-3">
-						<div class="stamp bg-{{ color[0] }} text-white mr-3">{{ color[1].name | first_letters | upcase }}</div>
+						<div class="stamp bg-{{ color[0] }} text-white mr-3"></div>
 						<div>
-							<strong>{{ color[1].name }}</strong><br />
+							<strong>{{ color[1].title }}</strong><br />
 							<code>.bg-{{ color[0] }}</code>
 						</div>
 					</li>
@@ -37,9 +39,9 @@ menu: docs.colors
 				<ul class="list-unstyled">
 					{% for color in site.colors %}
 					<li class="d-flex align-items-center mb-3">
-						<div class="stamp bg-{{ color[0] }}-lt mr-3">{{ color[1].name | first_letters | upcase }}</div>
+						<div class="stamp bg-{{ color[0] }}-lt mr-3"></div>
 						<div>
-							<strong>{{ color[1].name }} lite</strong><br />
+							<strong>{{ color[1].title }} lite</strong><br />
 							<code>.bg-{{ color[0] }}-lt</code>
 						</div>
 					</li>

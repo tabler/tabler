@@ -1,6 +1,7 @@
 ---
 title: Tabs
 menu: docs.tabs
+bsLink: https://getbootstrap.com/docs/4.4/components/navs/
 ---
 
 ### Default markup

@@ -2,6 +2,7 @@
 title: Buttons
 icon: fe fe-plus-square
 description: Use Bootstrap’s custom button styles for actions in forms, dialogs, and more. Includes support for a handful of contextual variations, sizes, states, and more.
+bsLink: https://getbootstrap.com/docs/4.4/components/buttons/
 ---
 
 

@@ -2,6 +2,7 @@
 title: Alerts
 menu: docs.alerts
 description: Bootstrap provides an easy way to create predefined alert messages.
+bsLink: https://getbootstrap.com/docs/4.4/components/alerts/
 done: true
 ---
 
