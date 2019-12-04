@@ -15,6 +15,13 @@ done: true
 
 ### Flag sizes
 
+Change the flag size. 
+<ul>
+    <li><code>xl</code> - large</li>
+    <li><code>mr</code> - big</li>
+    <li><code>md</code> - medium</li>
+</ul>
+
 {% example html %}
 {% include ui/flag.html flag="pl" class="flag-size-xl mr-1" %}
 {% include ui/flag.html flag="pl" class="flag-size-lg mr-1" %}
@@ -23,6 +30,8 @@ done: true
 {% endexample %}
 
 ### Types
+
+To set the flag of the country you want add a class flag-(country name). For example to create a flag of Andorra your class should look like this: flag-ad.
 
 <table>
 {% for flag in site.data.flags %}
