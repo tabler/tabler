@@ -36,3 +36,9 @@ You can also use native HTML5 `<progress>` element.
 {% example html %}
 <progress class="progress progress-sm" value="15" max="100" />
 {% endexample %}
+
+### Progress color
+
+{% example %}
+{% include ui/progress.html size="sm" color="purple"%} 
+{% endexample %}
