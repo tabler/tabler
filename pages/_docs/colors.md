@@ -20,7 +20,7 @@ bsLink: https://getbootstrap.com/docs/4.4/utilities/colors/
 						<div class="stamp bg-{{ color[0] }} text-white mr-3"></div>
 						<div>
 							<strong>{{ color[1].title }}</strong><br />
-							<code>.bg-{{ color[0] }}</code>
+							<code class="bg-{{color[0]}}">.bg-{{ color[0] }}</code>
 						</div>
 					</li>
 					{% endfor %}
@@ -42,7 +42,7 @@ bsLink: https://getbootstrap.com/docs/4.4/utilities/colors/
 						<div class="stamp bg-{{ color[0] }}-lt mr-3"></div>
 						<div>
 							<strong>{{ color[1].title }} lite</strong><br />
-							<code>.bg-{{ color[0] }}-lt</code>
+							<code class="bg-{{color[0]}}-lt">.bg-{{ color[0] }}-lt</code>
 						</div>
 					</li>
 					{% endfor %}
