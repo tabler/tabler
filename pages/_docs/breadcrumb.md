@@ -2,7 +2,7 @@
 title: Breadcrumb
 menu: docs.breadcrumb
 description: Indicate the current page’s location within a navigational hierarchy that automatically adds separators via CSS.
-bsLink: https://getbootstrap.com/docs/4.4/components/breadcrumb/
+bootstrap-link: https://getbootstrap.com/docs/4.4/components/breadcrumb/
 done: true
 ---
 

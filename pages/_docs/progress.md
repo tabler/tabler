@@ -1,7 +1,7 @@
 ---
 title: Progress
 description: A progress bar can be used to show a user how far along he is in a process.
-bsLink: https://getbootstrap.com/docs/4.4/components/progress/
+bootstrap-link: https://getbootstrap.com/docs/4.4/components/progress/
 ---
 
 ### Default markup
@@ -22,7 +22,7 @@ Using Bootstrap’s typical naming structure, you can create a standard progress
 
 ### Progress without value
 
-Remove the showed value by adding a class called <code>.sr-only</code>.
+Remove the showed value by adding a class called `.sr-only`.
 
 {% example html %}
 {% include ui/progress.html value=75 show-value=false %}
@@ -30,7 +30,7 @@ Remove the showed value by adding a class called <code>.sr-only</code>.
 
 ### Indeterminate progress
 
-To create indeterminate progress add <code>.progress-bar-indeterminate</code> to the <code>.progress-bar</code> element.
+To create indeterminate progress add `.progress-bar-indeterminate` to the `.progress-bar` element.
 
 {% example html %}
 {% include ui/progress.html indeterminate=true size="sm" %}

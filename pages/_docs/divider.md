@@ -1,7 +1,7 @@
 ---
 title: Divider
 description: A divider visually segments content into groups
-bsLink: https://getbootstrap.com/docs/4.4/components/dropdowns/#dividers
+bootstrap-link: https://getbootstrap.com/docs/4.4/components/dropdowns/#dividers
 done: true
 ---
 

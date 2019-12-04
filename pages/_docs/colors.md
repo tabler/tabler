@@ -2,7 +2,7 @@
 title: Colors
 menu: docs.colors
 description: 
-bsLink: https://getbootstrap.com/docs/4.4/utilities/colors/
+bootstrap-link: https://getbootstrap.com/docs/4.4/utilities/colors/
 ---
 
 <div class="row">
@@ -20,7 +20,7 @@ bsLink: https://getbootstrap.com/docs/4.4/utilities/colors/
 						<div class="stamp bg-{{ color[0] }} text-white mr-3"></div>
 						<div>
 							<strong>{{ color[1].title }}</strong><br />
-							<code class="bg-{{color[0]}}">.bg-{{ color[0] }}</code>
+							<code>.bg-{{ color[0] }}</code>
 						</div>
 					</li>
 					{% endfor %}

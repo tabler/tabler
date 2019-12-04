@@ -1,7 +1,7 @@
 ---
 title: Spinners
 menu: docs.spinners
-bsLink: https://getbootstrap.com/docs/4.4/components/spinners/
+bootstrap-link: https://getbootstrap.com/docs/4.4/components/spinners/
 done: true
 ---
 

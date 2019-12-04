@@ -2,7 +2,7 @@
 title: Badges
 menu: docs.badges
 description: A small count and labeling component.
-bsLink: https://getbootstrap.com/docs/4.4/components/badge/
+bootstrap-link: https://getbootstrap.com/docs/4.4/components/badge/
 done: true
 ---
 
