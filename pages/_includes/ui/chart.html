@@ -1,9 +1,9 @@
 {% assign data = site.data.charts[include.chart-id] %}
 {% assign id = include.id | default: include.chart-id %}
-{% assign height = include.height %}
+{% assign height = include.height | default: 10 %}
 
 {% if data %}
-<div id="chart-{{ id }}"{% if include.class %} class="{{ include.class }}"{% endif %}{% if height %} style="height: {% if height == '100%' %}100%{% else %}{{ height }}rem{% endif %}"{% endif %}></div>
+<div id="chart-{{ id }}"{% if include.class %} class="{{ include.class }}"{% endif %}></div>
 {% capture_global scripts %}
 <script>
 document.addEventListener("DOMContentLoaded", function(event) {
@@ -13,7 +13,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
    window.ApexCharts && chartEl && ({% if jekyll.environment == 'development' %}window.tabler_chart["chart-{{ include.chart-id }}"] = {% endif %}new ApexCharts(chartEl, {
       chart: {
          type: '{{ data.type }}',
-         height: chartEl.offsetHeight,
+         height: {{ height | times: 16 }},
          {% if data.sparkline %}
          sparkline: {
             enabled: true
@@ -50,19 +50,16 @@ document.addEventListener("DOMContentLoaded", function(event) {
 
       {% if data.series %}
       {% if data.type == 'pie' or data.type == 'donut' %}
-      series: [{% for serie in data.series %}{{ serie.data[0] }}{% unless forloop.last %}, {% endunless %}{% endfor %}],
+      series: [{% for serie in data.series %}{{ serie.data }}{% unless forloop.last %}, {% endunless %}{% endfor %}],
+
+      labels: [{% for serie in data.series %}"{{ serie.name }}"{% unless forloop.last %},{% endunless %}{% endfor %}],
+
       {% else %}
       series: [{% for serie in data.series %}{
          name: '{{ serie.name }}',
          data: [{{ serie.data | join: ', '}}]
       }{% unless forloop.last %},{% endunless %}{% endfor %}],
       {% endif %}
-      {% endif %}
-
-      {% if data.type == 'pie' or data.type == 'donut' %}
-      pie: {
-         height: chartEl.offsetHeight
-      },
       {% endif %}
 
       {% if data.show-grid %}
@@ -103,7 +100,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
       {% endif %}
 
       {% if data.series %}
-      colors: [ {% for serie in data.series %}
+      colors: [ //chart colors
+         {% for serie in data.series %}
          {{ serie.color | default: 'blue' | tabler_js_color }}{% unless forloop.last %},{% endunless %}{% endfor %}
       ],
       {% endif %}

@@ -84,6 +84,9 @@ if (window.Apex) {
         dataLabels: {
           minAngleToShowLabel: 10,
         },
+        donut: {
+          size: '80%'
+        }
       },
     },
 
@@ -91,6 +94,7 @@ if (window.Apex) {
       width: 2,
       curve: 'smooth',
       lineCap: "round",
+      colors: ["transparent"]
     },
 
     fill: {
