@@ -18,8 +18,8 @@
 			{% assign percentage = forloop.index | random_number %}
 			{% assign time_offset = forloop.index | random_number: 0, 800 %}
             {% assign register_offset = forloop.index | random_number: 0, 8000000 %}
-            {% assign percentage_color = percentage | number_color%}
-            {% assign payment_type = forloop.index | 'googlewallet', 'mastercard', 'shopify', 'ebay', 'paypal', 'visa'%}
+			{% assign percentage_color = percentage | number_color%}
+			
 			<tr>
 				<td class="text-center">
                     {% include ui/avatar.html person-id=person.id status="success"%}
@@ -43,8 +43,10 @@
 
                 </td>
 				<td class="text-center">
-                    <i class="payment payment-{% cycle 'visa', 'googlewallet', 'mastercard', 'shopify', 'ebay', 'paypal' %}"></i>
-                    {% include ui/payment.html payment=payment_type%}
+					{% capture payment %}
+					{%- cycle 'visa', 'googlewallet', 'mastercard', 'shopify', 'ebay', 'paypal' -%}
+					{% endcapture %}
+					{% include ui/payment.html payment=payment %}
 				</td>
 				<td>
 					<div class="small text-muted">Last login</div>
