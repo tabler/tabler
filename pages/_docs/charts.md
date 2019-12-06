@@ -18,7 +18,7 @@ menu: docs.charts
 			<div id="{{ key }}" style="height: 16rem"></div>
 		</div>
 	</div>
-	{% include ui/chart.html id=key chart-id=data %}
+	{% include ui/chart.html id=key chart-id=data show-scripts=true %}
 {% endexample %}
 {% endif %}
 {% endfor %}
