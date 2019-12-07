@@ -1,0 +1,127 @@
+---
+layout: default
+title: Homepage
+menu: index
+---
+
+
+<div class="container">
+
+	{% include page-title.html title="Dashboard" %}
+
+	<div class="row row-cards">
+
+		<div class="col-6 col-sm-4 col-lg-2">
+			{% include cards/stats-1.html number=43 title="New Tickets" percentage=6 %}
+		</div>
+		<div class="col-6 col-sm-4 col-lg-2">
+			{% include cards/stats-1.html number=17 title="Closed Today" percentage=-3 %}
+		</div>
+		<div class="col-6 col-sm-4 col-lg-2">
+			{% include cards/stats-1.html number=7 title="New Replies" percentage=9 %}
+		</div>
+		<div class="col-6 col-sm-4 col-lg-2">
+			{% include cards/stats-1.html number="27.3K" title="Followers" percentage=3 %}
+		</div>
+		<div class="col-6 col-sm-4 col-lg-2">
+			{% include cards/stats-1.html number="$95" title="Daily Earnings" percentage=-2 %}
+		</div>
+		<div class="col-6 col-sm-4 col-lg-2">
+			{% include cards/stats-1.html number=621 title="Products" percentage=-1 %}
+		</div>
+		<div class="col-lg-6">
+			{% include cards/development-activity.html %}
+			{% comment %}{% include cards/tasks.html %}{% endcomment %}
+
+			<div class="row">
+				<div class="col-sm-6">
+					{% include cards/digit.html color="red" title="New feedback" digit="62" width="28%" %}
+				</div>
+				<div class="col-sm-6">
+					{% include cards/digit.html color="green" title="Today profit" digit="$652" width="84%" %}
+				</div>
+			</div>
+		</div>
+
+		<div class="col-md-6">
+			<div class="alert alert-primary">Are you in trouble? <a href="{{ site.base }}/docs/index.html" class="alert-link">Read our documentation</a> with code samples.</div>
+
+			<div class="row">
+				<div class="col-sm-6">
+					{% include cards/chart.html height=12 title="Chart title" id="chart-donut" data="donut" %}
+				</div>
+				<div class="col-sm-6">
+					{% include cards/chart.html height=12 title="Chart title" id="chart-pie" data="pie" %}
+				</div>
+
+				<div class="col-sm-12">
+					<a href="https://gumroad.com/l/tabler-email?utm_source=demo" class="card" target="_blank">
+						<img src="/demo/card-demo.jpg" alt="" class="card-img">
+					</a>
+				</div>
+			</div>
+		</div>
+
+
+		<div class="col-sm-6 col-lg-3">
+			{% include cards/icon-box.html color="blue" icon="fe fe-dollar-sign" value="132" description="Sales" subtitle="12 waiting payments" %}
+		</div>
+		<div class="col-sm-6 col-lg-3">
+			{% include cards/icon-box.html color="green" icon="fe fe-shopping-cart" value="78" description="Orders" subtitle="32 shipped" %}
+		</div>
+		<div class="col-sm-6 col-lg-3">
+			{% include cards/icon-box.html color="red" icon="fe fe-users" value="1,352" description="Members" subtitle="163 registered today" %}
+		</div>
+		<div class="col-sm-6 col-lg-3">
+			{% include cards/icon-box.html color="yellow" icon="fe fe-message-square" value="132" description="Comments" subtitle="16 waiting" %}
+		</div>
+	</div>
+
+	<div class="row row-cards row-deck">
+		{% for article in site.data.articles limit: 2 %}
+		<div class="col-lg-6">
+			{% include cards/blog-single.html article=article type="aside" %}
+		</div>
+		{% endfor %}
+	</div>
+
+	<div class="row row-cards row-deck">
+
+		<div class="col-12">
+			{% include cards/table-users.html %}
+		</div>
+
+		<div class="col-sm-6 col-lg-4">
+			{% include cards/browsers.html %}
+		</div>
+		<div class="col-sm-6 col-lg-4">
+			{% include cards/projects-list.html %}
+		</div>
+		<div class="col-md-6 col-lg-4">
+			{% include cards/members.html %}
+		</div>
+
+		<div class="col-md-6 col-lg-12">
+			<div class="row">
+				<div class="col-sm-6 col-lg-3">
+					{% include cards/chart-bg.html id="chart-bg-users-1" %}
+				</div>
+				<div class="col-sm-6 col-lg-3">
+					{% include cards/chart-bg.html id="chart-bg-users-2" offset=60 aggregate=true color="red" rate="-3%" %}
+				</div>
+				<div class="col-sm-6 col-lg-3">
+					{% include cards/chart-bg.html id="chart-bg-users-3" offset=50 color="green" rate="-3%" %}
+				</div>
+				<div class="col-sm-6 col-lg-3">
+					{% include cards/chart-bg.html id="chart-bg-users-4" offset=40 color="yellow" rate="9%" %}
+				</div>
+			</div>
+		</div>
+
+		<div class="col-12">
+			{% include cards/invoices.html %}
+		</div>
+	</div>
+</div>
+
+{% include tabler-emails.html %}

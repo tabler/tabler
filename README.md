@@ -1,10 +1,24 @@
 # Tabler
+<<<<<<< HEAD
+
+Premium and Open Source dashboard template with responsive and high-quality UI.
+=======
+[![Backers on Open Collective](https://opencollective.com/tabler/backers/badge.svg)](#backers)
+ [![Sponsors on Open Collective](https://opencollective.com/tabler/sponsors/badge.svg)](#sponsors)
+<a href="https://buddy.works"><img src="https://assets.buddy.works/automated-dark.svg" alt="Automated by Buddy" align="right"></a>
 
 Premium and Open Source dashboard template with responsive and high-quality UI.
 
+<strong><a href="https://tabler.github.io/demo/">View Demo</a> | <a href="https://github.com/tabler/tabler-react">View React Version</a> | <a href="https://github.com/tabler/tabler/archive/master.zip">Download ZIP</a> | <a href="https://goo.gl/zJP2dT">Join us on Slack</a></strong>
+>>>>>>> 4b21db779b75fb45f9e9b16607617c55a03074a8
+
 👉 [Become a sponsor to Tabler](https://github.com/sponsors/codecalm) 🚀
 
+<<<<<<< HEAD
 <br><br><br>
+=======
+![Tabler preview](https://tabler.github.io/img/dashboard-preview.png)
+>>>>>>> 4b21db779b75fb45f9e9b16607617c55a03074a8
 
 [![Backers on Open Collective](https://opencollective.com/tabler/backers/badge.svg)](#backers)
  [![Sponsors on Open Collective](https://opencollective.com/tabler/sponsors/badge.svg)](#sponsors)
@@ -12,7 +26,16 @@ Premium and Open Source dashboard template with responsive and high-quality UI.
 
 <strong><a href="https://preview-dev.tabler.io">View Demo</a> | <a href="https://github.com/tabler/tabler-react">View React Version</a> | <a href="https://github.com/tabler/tabler/archive/master.zip">Download ZIP</a> | <a href="https://goo.gl/zJP2dT">Join us on Slack</a></strong>
 
+<<<<<<< HEAD
 ![Tabler preview](https://raw.githubusercontent.com/tabler/tabler/dev/static/img/tabler-preview.png)
+=======
+* **Responsive:** With support for mobile, tablet and desktop it doesn’t matter what device you’re using. Tabler is responsive in all major browsers.
+* **Cross Browser:** Our theme works perfectly with Latest Chrome, Firefox+, Latest Safari, Opera, Internet Explorer 10+ and mobile browsers. We work hard to continuously support them.
+* **HTML5 & CSS3:** We only use modern web technologies like HTML5 and CSS3. Our theme includes some subtle CSS3 animations so you will get anyone’s attention.
+* **Clean Code:** We strictly followed Bootstrap’s guidelines to make your integration as easy as possible. All code is handwritten and W3C valid.
+* **Demo pages**: Tabler features over 20 individual pages featuring various components, giving you the freedom to choose and combine. All components can take variation in color and styling that can easily be modified using Sass. The sky is the limit!
+* **Single Page Application versions:** [Tabler React](https://github.com/tabler/tabler-react) has React components for Tabler.
+>>>>>>> 4b21db779b75fb45f9e9b16607617c55a03074a8
 
 ## Status
 
@@ -43,10 +66,21 @@ To use our build system and run our documentation locally, you'll need a copy of
 2. [Install Ruby+Devkit](https://rubyinstaller.org/downloads/), recommended version is [2.5.5](https://github.com/oneclick/rubyinstaller2/releases/download/RubyInstaller-2.5.5-1/rubyinstaller-devkit-2.5.5-1-x86.exe).
 3. [Read guide](https://jekyllrb.com/docs/installation/windows/) to get Jekyll up and running without problems.
 
+<<<<<<< HEAD
 When completed, you'll be able to run the various commands provided from the command line.
+=======
+1. [Download and install Node.js](https://nodejs.org/download/), which is used to manage our dependencies.
+2. Navigate to the root `/tabler` directory and run `npm install` to install local dependencies listed in `package.json`.
+3. [Install Ruby](https://www.ruby-lang.org/en/documentation/installation/), install [Bundler](https://bundler.io/) with `gem install bundler`, and finally run `bundle install`. This will install all Ruby dependencies, such as Jekyll and plugins.
+
+   **Windows users:** Read [this guide](https://jekyllrb.com/docs/windows/) to get Jekyll up and running without problems.
+
+When completed, you will be able to run the various commands provided in the command line.
+>>>>>>> 4b21db779b75fb45f9e9b16607617c55a03074a8
 
 ## Build locally
 
+<<<<<<< HEAD
 1. From the root `/tabler` directory, run `npm run start` in the command line.
 2. Open [http://localhost:3000](http://localhost:3000) in your browser, and voilà.
 3. Any change in `/pages` directory will build application and refresh the page.
@@ -54,10 +88,21 @@ When completed, you'll be able to run the various commands provided from the com
 **Note**:
 Run `npm run build` for reforms a one off build application without refresh.
 Open [http://localhost:3001](http://localhost:3001) to configure the Web server.
+=======
+1. From the root `/tabler` directory, run `npm run serve` in the command line.
+2. Open [http://localhost:4000](http://localhost:4000) in your browser, and voilà.
+3. Any change in the `/src` directory will build the application and refresh the page.
+
+**Warning!** all changes made in the `_site/` folder will be overwritten on application build.
+>>>>>>> 4b21db779b75fb45f9e9b16607617c55a03074a8
 
 ## Feature requests
 
+<<<<<<< HEAD
 https://tabler.canny.io/feature-requests
+=======
+All changes made on `dev` branch are available on http://tabler.codecalm.net/dev/. Every change in the code automatically compiles the source code.
+>>>>>>> 4b21db779b75fb45f9e9b16607617c55a03074a8
 
 ## Bugs and feature requests
 
