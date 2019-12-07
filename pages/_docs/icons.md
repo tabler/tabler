@@ -1,11 +1,10 @@
 ---
 title: Icons
-menu: docs.icons
 description: Use icons anywhere you like!
 bootstrap-link: https://getbootstrap.com/docs/4.4/extend/icons/
 ---
 
-If you want to **choose the one you like** go [**here** {% include_cached ui/icon.html icon="search" class="icon-sm2" %}](/icons.html)
+If you want to **choose the one you like** go [**here** {% include_cached ui/icon.html icon="search" class="icon-sm2" %}](/docs/icons.html#icons)
 
 ### Icon size
 
@@ -57,16 +56,9 @@ Change icon color using `color` css property **or** use `text-*color*` classes t
 
 ## Icons
 
-Click [**here** {% include_cached ui/icon.html icon="search" class="icon-sm2" %}](/icons.html) to find the one you looking for **easier**!
-
-{% for icon in site.data.icons %}
-### - {{icon[0] | capitalize }}
-{% for ico in icon[1] %}
-<ul>
-    <li id="{{ico}}"><code>{{ico}}</code></li>
-</ul>
-{% example %}
-    {% include_cached ui/icon.html icon=ico class="icon-md" %}
-{% endexample %}
-{% endfor %}
-{% endfor %}
+<div class="row" id="icons">
+   {% include_cached cards/icons.html title="Feather icons" group="fe" %}
+</div>
+<div class="row">
+    {% include_cached cards/icons.html title="Brand icons" group="brand" %}
+</div>
