@@ -1,6 +1,7 @@
 .icon {
   width: 1em;
   height: 1em;
+  stroke-width: 2;
   font-size: 1em;
   vertical-align: -0.2em;
 
@@ -13,16 +14,17 @@
   fill: currentColor;
 }
 
+.icon-thick {
+  stroke-width: 3;
+}
 .icon-thin {
   stroke-width: 1.5;
 }
 
-.icon-md {
-  font-size: px2rem(20px);
-}
-
-.icon-lg {
-  font-size: px2rem(40px);
+@each $icon, $value in $icons {
+  .icon-#{$icon}{
+    font-size: px2rem($value);
+  }
 }
 
 .icons-list {
@@ -49,8 +51,21 @@
   text-align: center;
   border-right: 1px solid $border-color;
   border-bottom: 1px solid $border-color;
+  transition: background 150ms;
 
   i {
     font-size: 1.25rem;
+  }
+  a {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: $body-color;
+  }
+
+  &:hover{
+    background: darken($color: white, $amount: 5);
   }
 }

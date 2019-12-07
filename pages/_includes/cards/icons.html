@@ -1,14 +1,16 @@
 <div class="card">
    <div class="card-body">
-      <div class="card-title">{{ include.title }}</div>
-      <div class="icons-list-wrap">
+      <div class="card-title text-nowrap"><h2 class="d-inline mb-0">{{ include.title }}</h2> <p class="d-inline font-weight-normal mb-0 ml-1" style="font-size: small;">(click icon to get to the code)</p></div>
+      <div class="icons-list-wrap" id="boi">
          <ul class="icons-list">
             {% for icon in site.data.icons[include.group] %}
             <li class="icons-list-item">
-               {% include_cached ui/icon.html icon=icon class="icon-md" %}
+               <a href="/docs/icons.html#{{icon}}">
+                  {% include_cached ui/icon.html icon=icon class="icon-md" %}
+               </a>
             </li>
             {% endfor %}
-            {% for icon in (0..20) %}
+            {% for icon in (0..10) %}
             <li></li>
             {% endfor %}
          </ul>
