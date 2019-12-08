@@ -5,17 +5,17 @@
       {% assign illustration-src = include.illustration-src | default: 'undraw_quitting_time_dm8t.svg' %}
       {% include ui/illustration.html image=illustration-src class="h-8 mb-4" %}
       {% elsif include.icon-text %}
-      <div class="display-4">{{ include.icon-text }}</div>
+      <div class="display-3 text-muted">{{ include.icon-text }}</div>
       {% else %}
       {% include_cached ui/icon.html icon=icon %}
       {% endif %}
    </div>
 
-   <p class="empty-title h3">{{ include.title | default: "No results found" }}</p>
+   <p class="empty-title h1">{{ include.title | default: "No results found" }}</p>
    <p class="empty-subtitle text-muted">
       {{ include.subtitle | default: "Try adjusting your search or filter to find what you're looking for." }}
    </p>
-   <div class="empty-action">
+   <div class="empty-action mb-6">
       {% assign button-text = include.button-text | default: "Search again" %}
       {% include_cached ui/button.html text=button-text color="primary" icon=include.button-icon %}
    </div>
