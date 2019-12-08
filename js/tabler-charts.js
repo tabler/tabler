@@ -94,7 +94,6 @@ if (window.Apex) {
       width: 2,
       curve: 'smooth',
       lineCap: "round",
-      colors: ["transparent"]
     },
 
     fill: {

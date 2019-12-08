@@ -15,6 +15,8 @@ done: true
 
 ### Flag sizes
 
+Using Bootstrap’s typical naming structure, you can create a standard flag, or scale it up to different sizes based on what’s needed.
+
 {% example html %}
 {% include ui/flag.html flag="pl" class="flag-size-xl mr-1" %}
 {% include ui/flag.html flag="pl" class="flag-size-lg mr-1" %}
@@ -23,6 +25,8 @@ done: true
 {% endexample %}
 
 ### Types
+
+To set the flag of the country you want add a class `flag-(country name)`. For example to create a flag of Andorra your class should look like this: `.flag-ad`.
 
 <table>
 {% for flag in site.data.flags %}

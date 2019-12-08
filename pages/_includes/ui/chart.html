@@ -1,136 +1,151 @@
 {% assign data = site.data.charts[include.chart-id] %}
 {% assign id = include.id | default: include.chart-id %}
 {% assign height = include.height | default: 10 %}
+{% assign class = include.class | default: '' %}
+
+{% if include['size'] == 'sm' %}
+   {% assign class = class | append: ' chart-sm' | strip %}
+   {% assign height = 2.5 %}
+{% endif %}
 
 {% if data %}
-<div id="chart-{{ id }}"{% if include.class %} class="{{ include.class }}"{% endif %}></div>
-{% capture_global scripts %}
+<div id="chart-{{ id }}"{% if class %} class="{{ class }}"{% endif %}></div>
+
+{% capture script %}
 <script>
-document.addEventListener("DOMContentLoaded", function(event) {
-   {% if jekyll.environment == 'development' %}window.tabler_chart = window.tabler_chart || {};{% endif %}
-   
-   var chartEl = document.getElementById('chart-{{ id }}');
-   window.ApexCharts && chartEl && ({% if jekyll.environment == 'development' %}window.tabler_chart["chart-{{ include.chart-id }}"] = {% endif %}new ApexCharts(chartEl, {
-      chart: {
-         type: '{{ data.type }}',
-         height: {{ height | times: 16 }},
-         {% if data.sparkline %}
-         sparkline: {
-            enabled: true
-         },
-         {% endif %}
-         {% if data.stacked %}
-         stacked: true,
-         {% endif %}
-      },
+	document.addEventListener("DOMContentLoaded", function(event) {
+		{% if jekyll.environment == 'development' %}window.tabler_chart = window.tabler_chart || {};{% endif %}
 
-      {% if data.type == 'area' %}
-      fill: {
-        opacity: .16
-      },
-      {% endif %}
+		window.ApexCharts && ({% if jekyll.environment == 'development' %}window.tabler_chart["chart-{{ include.chart-id }}"] = {% endif %}new ApexCharts(document.getElementById('chart-{{ id }}'), {
+			chart: {
+				type: '{{ data.type }}',
+				height: {{ height | times: 16 }},
+		{% if data.sparkline %}
+		sparkline: {
+			enabled: true
+		},
+		{% endif %}
+		{% if data.stacked %}
+		stacked: true,
+		{% endif %}
+	},
 
-      {% if data.title %}
-      title: {
-         text: '{{ data.title | escape }}'
-      },
-      {% endif %}
+		{% if data.type == 'area' %}
+		fill: {
+			opacity: .16
+		},
+		{% endif %}
 
-      {% if data.dashed-history or data.stroke-curve %}
-      stroke: {
-         {% if data.dashed-history %}
-         width: [2, 1],
-            dashArray: [0, 3],
-         {% endif %}
-         {% if data.stroke-curve %}
-         curve: '{{ data.stroke-curve }}',
-         {% endif %}
-      },
-      {% endif %}
+		{% if data.title %}
+		title: {
+			text: '{{ data.title | escape }}'
+		},
+		{% endif %}
 
-      {% if data.series %}
-      {% if data.type == 'pie' or data.type == 'donut' %}
-      series: [{% for serie in data.series %}{{ serie.data }}{% unless forloop.last %}, {% endunless %}{% endfor %}],
+		{% if data.dashed-history or data.stroke-curve %}
+		stroke: {
+			{% if data.dashed-history %}
+			width: [2, 1],
+				dashArray: [0, 3],
+			{% endif %}
+			{% if data.stroke-curve %}
+			curve: '{{ data.stroke-curve }}',
+			{% endif %}
+		},
+		{% endif %}
 
-      labels: [{% for serie in data.series %}"{{ serie.name }}"{% unless forloop.last %},{% endunless %}{% endfor %}],
+		{% if data.series %}
+		{% if data.type == 'pie' or data.type == 'donut' %}
+		series: [{% for serie in data.series %}{{ serie.data }}{% unless forloop.last %}, {% endunless %}{% endfor %}],
 
-      {% else %}
-      series: [{% for serie in data.series %}{
-         name: '{{ serie.name }}',
-         data: [{{ serie.data | join: ', '}}]
-      }{% unless forloop.last %},{% endunless %}{% endfor %}],
-      {% endif %}
-      {% endif %}
+		labels: [{% for serie in data.series %}"{{ serie.name }}"{% unless forloop.last %},{% endunless %}{% endfor %}],
 
-      {% if data.show-grid %}
-      grid: {
-         show: true,
-      },
-      {% endif %}
+		{% else %}
+		series: [{% for serie in data.series %}{
+			name: '{{ serie.name }}',
+				data: [{{ serie.data | join: ', '}}]
+		}{% unless forloop.last %},{% endunless %}{% endfor %}],
+		{% endif %}
+		{% endif %}
 
-      {% if data.show-data-labels %}
-      dataLabels: {
-         enabled: true,
-      },
-      {% endif %}
+		{% if data.show-grid %}
+		grid: {
+			show: true,
+		},
+		{% endif %}
 
-      {% if data.categories or data.days-labels-count %}
-      xaxis: {
-         {% if data.categories %}categories: [{% for category in data.categories %}'{{ category }}'{% unless forloop.last %}, {% endunless %}{% endfor %}],{% endif %}
-         {% if data.days-labels-count %}type: 'datetime',{% endif %}
-      },
-      {% endif %}
+		{% if data.show-data-labels %}
+		dataLabels: {
+			enabled: true,
+		},
+		{% endif %}
 
-      {% if data.auto-min %}
-      yaxis: {
-         min: function(min) { return min },
-      },
-      {% endif %}
+		{% if data.categories or data.days-labels-count %}
+		xaxis: {
+			{% if data.categories %}categories: [{% for category in data.categories %}'{{ category }}'{% unless forloop.last %}, {% endunless %}{% endfor %}],{% endif %}
+			{% if data.days-labels-count %}type: 'datetime',{% endif %}
+		},
+		{% endif %}
 
-      {% if data.days-labels-count %}
-      labels: [...Array({{ data.days-labels-count }}).keys()].map(n => `2019-09-${n+1}`),
-      {% endif %}
+		{% if data.auto-min %}
+		yaxis: {
+			min: function(min) { return min },
+		},
+		{% endif %}
 
-      {% if data.rotated %}
-      plotOptions: {
-         bar: {
-            horizontal: true,
-         }
-      },
-      {% endif %}
+		{% if data.days-labels-count %}
+		labels: [...Array({{ data.days-labels-count }}).keys()].map(n => `2019-09-${n+1}`),
+		{% endif %}
 
-      {% if data.series %}
-      colors: [ //chart colors
-         {% for serie in data.series %}
-         {{ serie.color | default: 'blue' | tabler_js_color }}{% unless forloop.last %},{% endunless %}{% endfor %}
-      ],
-      {% endif %}
+		{% if data.rotated %}
+		plotOptions: {
+			bar: {
+				horizontal: true,
+			}
+		},
+		{% endif %}
 
-      {% if data.hide-legend %}
-      legend: {
-         show: false, //hide legend
-      },
-      {% endif %}
+		{% if data.series %}
+		colors: [ //chart colors
+			{% for serie in data.series %}
+		{{ serie.color | default: 'blue' | tabler_js_color }}{% unless forloop.last %},{% endunless %}{% endfor %}
+	],
+		{% endif %}
 
-      {% if data.hide-tooltip %}
-      tooltip: {
-         enabled: false
-      },
-      {% endif %}
+		{% if data.hide-legend %}
+		legend: {
+			show: false, //hide legend
+		},
+		{% endif %}
 
-      {% if data.hide-points %}
-      point: {
-         show: false
-      },
-      {% endif %}
+		{% if data.hide-tooltip %}
+		tooltip: {
+			enabled: false
+		},
+		{% endif %}
 
-      {% if data.show-markers %}
-      markers: {
-         size: 2
-      },
-      {% endif %}
-   })).render();
-});
+		{% if data.hide-points %}
+		point: {
+			show: false
+		},
+		{% endif %}
+
+		{% if data.show-markers %}
+		markers: {
+			size: 2
+		},
+		{% endif %}
+	})).render();
+	});
 </script>
-{% endcapture_global %}
+{% endcapture %}
+
+{% if include.show-scripts %}
+   {{ script }}
+{% else %}
+   {% capture_global scripts %}
+      {{ script }}
+   {% endcapture_global %}
+{% endif %}
+
 {% endif %}
