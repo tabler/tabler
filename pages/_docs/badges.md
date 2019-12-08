@@ -1,10 +1,10 @@
 ---
 title: Badges
 menu: docs.badges
+description: A small count and labeling component.
+bootstrap-link: https://getbootstrap.com/docs/4.4/components/badge/
 done: true
 ---
-
-A small count and labeling component. Please read the [official Bootstrap documentation](https://getbootstrap.com/docs/4.3/components/badge/) for a full list of options.
 
 ### Default markup
 

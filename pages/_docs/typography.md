@@ -2,6 +2,7 @@
 title: Typography
 menu: docs.typography
 description: Documentation and examples for common text utilities to control alignment, wrapping, weight, and more.
+bootstrap-link: https://getbootstrap.com/docs/4.4/content/typography/
 ---
 
 ### Headings
