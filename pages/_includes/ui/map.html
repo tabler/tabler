@@ -5,7 +5,7 @@
 
 {% if data %}
 <div id="map-{{ id }}" style="height: {{ height }}rem"></div>
-{% capture_global scripts %}
+{% capture script %}
 <script>
 	{% if jekyll.environment == 'development' %}window.tabler_map = window.tabler_map || {};{% endif %}
 
@@ -29,5 +29,13 @@
 		});
 	});
 </script>
-{% endcapture_global %}
+{% endcapture %}
+
+{% if include.show-scripts %}
+   {{ script }}
+{% else %}
+   {% capture_global scripts %}
+      {{ script }}
+   {% endcapture_global %}
+{% endif %}
 {% endif %}

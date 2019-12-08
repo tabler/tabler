@@ -1,32 +1,38 @@
 {% assign data = site.data.charts[include.chart-id] %}
 {% assign id = include.id | default: include.chart-id %}
 {% assign height = include.height | default: 10 %}
+{% assign class = include.class | default: '' %}
+
+{% if include['size'] == 'sm' %}
+   {% assign class = class | append: ' chart-sm' | strip %}
+   {% assign height = 2.5 %}
+{% endif %}
 
 {% if data %}
-<div id="chart-{{ id }}"{% if include.class %} class="{{ include.class }}"{% endif %}></div>
-{% capture_global scripts %}
+<div id="chart-{{ id }}"{% if class %} class="{{ class }}"{% endif %}></div>
+
+{% capture script %}
 <script>
-document.addEventListener("DOMContentLoaded", function(event) {
-   {% if jekyll.environment == 'development' %}window.tabler_chart = window.tabler_chart || {};{% endif %}
-   
-   var chartEl = document.getElementById('chart-{{ id }}');
-   window.ApexCharts && chartEl && ({% if jekyll.environment == 'development' %}window.tabler_chart["chart-{{ include.chart-id }}"] = {% endif %}new ApexCharts(chartEl, {
-      chart: {
-         type: '{{ data.type }}',
-         height: {{ height | times: 16 }},
-         {% if data.sparkline %}
-         sparkline: {
-            enabled: true
-         },
-         {% endif %}
-         {% if data.stacked %}
-         stacked: true,
-         {% endif %}
+   document.addEventListener("DOMContentLoaded", function(event) {
+      {% if jekyll.environment == 'development' %}window.tabler_chart = window.tabler_chart || {};{% endif %}
+
+      window.ApexCharts && ({% if jekyll.environment == 'development' %}window.tabler_chart["chart-{{ include.chart-id }}"] = {% endif %}new ApexCharts(document.getElementById('chart-{{ id }}'), {
+         chart: {
+            type: '{{ data.type }}',
+            height: {{ height | times: 16 }},
+      {% if data.sparkline %}
+      sparkline: {
+         enabled: true
+      },
+      {% endif %}
+      {% if data.stacked %}
+      stacked: true,
+      {% endif %}
       },
 
       {% if data.type == 'area' %}
       fill: {
-        opacity: .16
+         opacity: .16
       },
       {% endif %}
 
@@ -49,15 +55,14 @@ document.addEventListener("DOMContentLoaded", function(event) {
       {% endif %}
 
       {% if data.series %}
-      {% if data.type == 'pie' or data.type == 'donut' %}
+      {% if data.type == 'pie' or data.type == 'donut' or data.type == 'radialBar' %}
       series: [{% for serie in data.series %}{{ serie.data }}{% unless forloop.last %}, {% endunless %}{% endfor %}],
-
       labels: [{% for serie in data.series %}"{{ serie.name }}"{% unless forloop.last %},{% endunless %}{% endfor %}],
 
       {% else %}
       series: [{% for serie in data.series %}{
          name: '{{ serie.name }}',
-         data: [{{ serie.data | join: ', '}}]
+            data: [{{ serie.data | join: ', '}}]
       }{% unless forloop.last %},{% endunless %}{% endfor %}],
       {% endif %}
       {% endif %}
@@ -100,7 +105,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
       {% endif %}
 
       {% if data.series %}
-      colors: [ //chart colors
+      colors: [
          {% for serie in data.series %}
          {{ serie.color | default: 'blue' | tabler_js_color }}{% unless forloop.last %},{% endunless %}{% endfor %}
       ],
@@ -130,7 +135,16 @@ document.addEventListener("DOMContentLoaded", function(event) {
       },
       {% endif %}
    })).render();
-});
+   });
 </script>
-{% endcapture_global %}
+{% endcapture %}
+
+{% if include.show-scripts %}
+   {{ script }}
+{% else %}
+   {% capture_global scripts %}
+      {{ script }}
+   {% endcapture_global %}
+{% endif %}
+
 {% endif %}

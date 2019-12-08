@@ -12,7 +12,7 @@ Premium and Open Source dashboard template with responsive and high-quality UI.
 
 <strong><a href="https://preview-dev.tabler.io">View Demo</a> | <a href="https://github.com/tabler/tabler-react">View React Version</a> | <a href="https://github.com/tabler/tabler/archive/master.zip">Download ZIP</a> | <a href="https://goo.gl/zJP2dT">Join us on Slack</a></strong>
 
-![Tabler preview](https://tabler.github.io/img/dashboard-preview.png)
+![Tabler preview](https://raw.githubusercontent.com/tabler/tabler/dev/static/img/tabler-preview.png)
 
 ## Status
 
