@@ -1,0 +1,53 @@
+{% assign amount = include.amount | default: 6%}
+{% assign show-summary = include.show-summary | default: flase%}
+{% assign price = 0 %}
+
+<div class="card">
+        <table class="table card-table table-vcenter">
+            <tr>
+                <th>Product</th>
+                <th></th>
+                <th class="text-center">Amount</th>
+                <th class="text-center">Cost</th>
+                <th></th>
+            </tr>
+            {% for product in site.data.products limit: amount %}
+            {% assign price = price | plus: product.price %}
+
+            <tr>
+                <td><img src="{{ site.base }}/img/products/{{ product.image }}" alt="" class="h-6 m-2"></td>
+                <td>
+                    {{ product.name }}
+    
+                    {% assign mod = forloop.index | modulo: 2 %}
+                </td>
+                <td>
+                    <table class="m-0">
+                        <tr>
+                            <td>+</td>
+                            <td>1</td>
+                            <td>+</td>
+                        </tr>
+                    </table>
+                </td>
+                <td class="text-center">
+                    {{ product.price }}$
+                </td>
+                <td class="text-center">
+                    <button type="button" class="ml-2 close" data-dismiss="toast" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+            {% if show-summary == true%}
+                <tr>
+                    <td></td>
+                    <td class="text-right"><strong>Total:</strong></td>
+                    <td class="text-center text-grey-lt"><strong>{{amount}} items</strong></td>
+                    <td class="text-center"><strong>{{price}}$</strong></td>
+                    <td></td>
+                </tr>
+            {% endif %}
+        </table>
+    </div>
