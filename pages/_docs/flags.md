@@ -16,11 +16,10 @@ done: true
 ### Flag sizes
 
 Change the flag size. 
-<ul>
-    <li><code>xl</code> - large</li>
-    <li><code>mr</code> - big</li>
-    <li><code>md</code> - medium</li>
-</ul>
+
+- `xl` - large
+- `mr` - big
+- `md` - medium
 
 {% example html %}
 {% include ui/flag.html flag="pl" class="flag-size-xl mr-1" %}
