@@ -84,6 +84,9 @@ if (window.Apex) {
         dataLabels: {
           minAngleToShowLabel: 10,
         },
+        donut: {
+          size: '80%'
+        }
       },
     },
 
