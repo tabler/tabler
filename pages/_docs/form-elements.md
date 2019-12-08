@@ -197,10 +197,11 @@ title: Form Elements
          <input type="text" class="form-control" placeholder="Search for&hellip;">
       </div>
       <span class="col-auto">
-        <button class="btn btn-secondary" type="button">{% include_cached ui/icon.html icon="search" %}</button>
-        </span>
+        <button class="btn btn-secondary btn-icon" type="button" style="height:100%">{% include_cached ui/icon.html icon="search" %}</button>
+      </span>
+   </div>
 </div>
-</div>{% endexample %}
+{% endexample %}
 
 ### Custom Input examples
 {% example %}
