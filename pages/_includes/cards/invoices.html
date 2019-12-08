@@ -1,95 +1,84 @@
 <div class="card">
-   <div class="card-header">
-      <h3 class="card-title">Invoices</h3>
-   </div>
-   <style>
-         @media screen and (max-width: 550px){
-            #scroll-padding {
-               display: inline-block !important;
-            }
-         }
-      </style>
-   <div class="card-body d-flex justify-content-between flex-nowrap table-responsive border-bottom text-nowrap">
-
-      <div class="mb-0">
-         Show
-         <div class="mx-2 d-inline-block" style="width: 4rem;">
-            <input type="text" class="form-control" value="8">
-         </div>
-         entries
+      <div class="card-header">
+         <h3 class="card-title">Invoices</h3>
       </div>
-      
-      <div class="mb-0 ml-4">
-            Serach:
-            <div class="ml-2 d-inline-block" style="width: 10rem;">
-               <input type="text" class="form-control">
+      <div class="card-body d-flex justify-content-between flex-nowrap table-responsive border-bottom text-nowrap">
+   
+         <div class="mb-0">
+            Show
+            <div class="mx-2 d-inline-block" style="width: 4rem;">
+               <input type="text" class="form-control" value="8">
             </div>
-            <div id="scroll-padding" class="d-none" style="width: 1.10rem"></div>
+            entries
+         </div>
+         
+         <div class="mb-0 ml-4">
+               Serach:
+               <div class="ml-2 d-inline-block" style="width: 10rem;">
+                  <input type="text" class="form-control">
+               </div>
+         </div>
+   
       </div>
-
-   </div>
-   <div class="table-responsive">
-      <table class="table card-table table-vcenter text-nowrap datatable">
-         <thead>
+      <div class="table-responsive">
+         <table class="table card-table table-vcenter text-nowrap datatable">
+            <thead>
+               <tr>
+                  <th class="w-1p"><input class="form-check-input m-0 align-middle" type="checkbox"></th>
+                  <th class="w-1p">No. {% include_cached ui/icon.html icon="chevron-up" class="icon-sm text-dark icon-thick" %}</th>
+                  <th>Invoice Subject {% include_cached ui/icon.html icon="code" class="icon-sm" %}</th>
+                  <th>Client {% include_cached ui/icon.html icon="code" class="icon-sm" %}</th>
+                  <th>VAT No. {% include_cached ui/icon.html icon="code" class="icon-sm" %}</th>
+                  <th>Created {% include_cached ui/icon.html icon="code" class="icon-sm" %}</th>
+                  <th>Status {% include_cached ui/icon.html icon="code" class="icon-sm" %}</th>
+                  <th>Price {% include_cached ui/icon.html icon="code" class="icon-sm" %}</th>
+                  <th></th>
+                  <th></th>
+               </tr>
+            </thead>
+   
+            <tbody>
+            {% for invoice in site.data.invoices limit: 8 %}
             <tr>
-               <th class="w-1p"><input class="form-check-input m-0 align-middle" type="checkbox"></th>
-               <th class="w-1p">No. <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" class="icon icon-sm" style="color:black"><polyline points="18 15 12 9 6 15"></polyline></svg></th>
-               <th>Invoice Subject <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-sm"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg></th>
-               <th>Client <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-sm"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg></th>
-               <th>VAT No. <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-sm"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg></th>
-               <th>Created <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-sm"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg></th>
-               <th>Status <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-sm"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg></th>
-               <th>Price <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-sm"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg></th>
-               <th></th>
-               <th></th>
+               <td><input class="form-check-input m-0 align-middle" type="checkbox"></td>
+               <td><span class="text-muted">00{{ forloop.index | plus: 1400 }}</span></td>
+               <td><a href="invoice.html" class="text-reset">{{ invoice.name }}</a></td>
+               <td>
+                  {% include ui/flag.html flag=invoice.country %}
+                  {{ invoice.client }}
+               </td>
+               <td>
+                  {{ invoice.vat-no }}
+               </td>
+               <td>
+                  {{ invoice.date }}
+               </td>
+               <td>
+                  <span class="status-icon bg-{{ invoice.status }}"></span> {{ invoice.status-name }}
+               </td>
+               <td>{{ invoice.price }}</td>
+   
+               <td class="text-right">
+                  <button class="btn btn-secondary btn-sm align-text-top">Manage</button> 
+                  <span class="dropdown ml-1">
+                     <button class="btn btn-secondary btn-sm dropdown-toggle align-text-top" data-toggle="dropdown">Actions</button>
+                     {% include ui/dropdown-menu.html %}
+                  </span>
+               </td>
+               <td style="padding-right: 1rem;">
+                  {% include_cached ui/icon.html icon="edit" class="icon-sm float-right" %}
+               </td>
             </tr>
-         </thead>
-
-         <tbody>
-         {% for invoice in site.data.invoices limit: 8 %}
-         <tr>
-            <td><input class="form-check-input m-0 align-middle" type="checkbox"></td>
-            <td><span class="text-muted">00{{ forloop.index | plus: 1400 }}</span></td>
-            <td><a href="invoice.html" class="text-reset">{{ invoice.name }}</a></td>
-            <td>
-               {% include ui/flag.html flag=invoice.country %}
-               {{ invoice.client }}
-            </td>
-            <td>
-               {{ invoice.vat-no }}
-            </td>
-            <td>
-               {{ invoice.date }}
-            </td>
-            <td>
-               <span class="status-icon bg-{{ invoice.status }}"></span> {{ invoice.status-name }}
-            </td>
-            <td>{{ invoice.price }}</td>
-
-            <td class="text-right">
-               <button class="btn btn-secondary btn-sm align-text-top">Manage</button> 
-               <span class="dropdown ml-1">
-                  <button class="btn btn-secondary btn-sm dropdown-toggle align-text-top" data-toggle="dropdown">Actions</button>
-                  {% include ui/dropdown-menu.html %}
-               </span>
-            </td>
-            <td style="padding-right: 1rem;">
-               <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-sm2 float-right"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-            </td>
-         </tr>
-         {% endfor %}
-         </tbody>
-      </table>
-   </div>
-   <div class="card-body d-flex justify-content-between flex-nowrap table-responsive border-bottom text-nowrap">
-
-      <div class="mb-0 d-flex align-items-center">
-         <p class="mb-0 align-middle">Showing <span>1</span> to <span>8</span> of <span>16</span> entries</p>
+            {% endfor %}
+            </tbody>
+         </table>
       </div>
-      <div class="mb-0 ml-4">
-            <a href="#" class="btn btn-secondary disabled">Previous</a><a href="#" class="btn btn-primary ml-2">1</a><a href="#" class="btn btn-secondary ml-2">2</a><a href="#" class="btn btn-secondary ml-2 font-weight-bold text-secondary">Next</a>
-            <div id="scroll-padding" class="d-none" style="width: 1.10rem"></div>
+      <div class="card-body d-flex justify-content-between flex-nowrap table-responsive border-bottom text-nowrap">
+         <div class="mb-0 d-flex align-items-center">
+            <p class="mb-0 align-middle">Showing <span>1</span> to <span>8</span> of <span>16</span> entries</p>
+         </div>
+         <div class="mb-0 ml-4">
+               <a href="#" class="btn btn-secondary disabled">Previous</a><a href="#" class="btn btn-primary ml-2">1</a><a href="#" class="btn btn-secondary ml-2">2</a><a href="#" class="btn btn-secondary ml-2 font-weight-bold text-secondary">Next</a>
+         </div>
       </div>
-
    </div>
-</div>
