@@ -1,9 +1,9 @@
 ---
 title: Divider
 description: A divider visually segments content into groups
+bootstrap-link: https://getbootstrap.com/docs/4.4/components/dropdowns/#dividers
 done: true
 ---
-
 ### Default markup
 
 {% example html columns=1 %}
