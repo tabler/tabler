@@ -6,7 +6,7 @@ description: The Tooltip component is small pop-up box that appears when the use
 
 ### Default markup
 
-{% example html wrapper=btn-list %}
+{% example wrapper=btn-list %}
 <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
   Tooltip on top
 </button>
@@ -23,7 +23,7 @@ description: The Tooltip component is small pop-up box that appears when the use
 
 ### Tooltip with HTML
 
-{% example html wrapper=btn-list %}
+{% example wrapper=btn-list %}
 <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-html="true" title="<em>Tooltip</em> <u>with</u> <b>HTML</b>">
   Tooltip with HTML
 </button>

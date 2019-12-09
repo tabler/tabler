@@ -6,7 +6,7 @@ new: true
 
 ### Default markup
 
-{% example html columns=1 %}
+{% example columns=1 %}
 {% include cards/ribbon.html %}
 {% endexample %}
 
@@ -21,7 +21,7 @@ You can easily change the position of a ribbon by adding a class to the element.
 
 You can also use multiple classes at once for example: `.ribbon.ribbon-top.ribbon-left` moves the ribbon to the top left corner.
 
-{% example html columns=1 %}
+{% example columns=1 %}
 {% include cards/ribbon.html top=true left=true %}
 {% endexample %}
 
@@ -29,7 +29,7 @@ You can also use multiple classes at once for example: `.ribbon.ribbon-top.ribbo
 
 Customize the ribbon's background color. You can click [here]({% docs_url colors %}) to see the list of available colors.
 
-{% example html columns=1 %}
+{% example columns=1 %}
 {% include cards/ribbon.html color="red" %}
 {% endexample %}
 
@@ -37,7 +37,7 @@ Customize the ribbon's background color. You can click [here]({% docs_url colors
 
 Set your own text in a ribbon.
 
-{% example html columns=1 %}
+{% example columns=1 %}
 {% include cards/ribbon.html color="green" text="-50%" %}
 {% endexample %}
 
@@ -45,6 +45,6 @@ Set your own text in a ribbon.
 
 Change the style of a ribbon. 
 
-{% example html columns=1 %}
+{% example columns=1 %}
 {% include cards/ribbon.html bookmark=true color="orange" text="-50%" %}
 {% endexample %}

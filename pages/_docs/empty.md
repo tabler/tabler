@@ -5,12 +5,12 @@ description: Empty states/blanks are commonly used as placeholders for first tim
 
 ### Default markup
 
-{% example html %}
+{% example %}
 {% include ui/empty.html %}
 {% endexample %}
 
 ### Empty state with illustration
 
-{% example html %}
+{% example %}
 {% include ui/empty.html illustration=true %}
 {% endexample %}

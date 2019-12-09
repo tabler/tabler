@@ -7,7 +7,7 @@ done: true
 
 ### Flag
 
-{% example html %}
+{% example %}
 {% include ui/flag.html flag="tg" class="mr-1" %}
 {% include ui/flag.html flag="br" class="mr-1" %}
 {% include ui/flag.html flag="pt" %}
@@ -17,7 +17,7 @@ done: true
 
 Using Bootstrap’s typical naming structure, you can create a standard flag, or scale it up to different sizes based on what’s needed.
 
-{% example html %}
+{% example %}
 {% include ui/flag.html flag="pl" class="flag-size-xl mr-1" %}
 {% include ui/flag.html flag="pl" class="flag-size-lg mr-1" %}
 {% include ui/flag.html flag="pl" class="flag-size-md" %}

@@ -5,7 +5,7 @@ menu: docs.cursors
 
 ### Cursor utilities 
 
-{% example html %}
+{% example %}
 <div class="row text-center">
   <div class="col-4 mb-3">
     <div class="cursor-auto bg-light py-3">Cursor auto</div>

@@ -7,7 +7,7 @@ menu: docs.charts
 
 {% for chart in site.data.charts %}
 {% if chart[1].display %}
-{% example html %}
+{% example %}
 {% assign data = chart[0] %}
 {% assign key = 'chart-' | append: data %}
 	<div class="card">

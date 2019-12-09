@@ -42,7 +42,7 @@ done: true
 
 ### Buttons
 
-{% example html wrapper=btn-list %}
+{% example wrapper=btn-list %}
 {% include_cached ui/button.html spinner=true text="Button" color="primary" %}
 {% include_cached ui/button.html spinner=true text="Button" color="danger" %}
 {% include_cached ui/button.html spinner=true text="Button" color="warning" %}
