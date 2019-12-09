@@ -34,5 +34,5 @@ To create a default progress bar, add a `.progress` class to a `<div>` element:
 You can also use native HTML5 `<progress>` element.
 
 {% example html %}
-<progress class="progress progress-sm" value="15" max="100" />
+<progress class="progress progress-sm" value="15" max="100"/>
 {% endexample %}
