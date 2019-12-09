@@ -20,121 +20,121 @@
          chart: {
             type: '{{ data.type }}',
             height: {{ height | times: 16 }},
-      {% if data.sparkline %}
-      sparkline: {
-         enabled: true
-      },
-      {% endif %}
-      {% if data.stacked %}
-      stacked: true,
-      {% endif %}
-      },
-
-      {% if data.type == 'area' %}
-      fill: {
-         opacity: .16
-      },
-      {% endif %}
-
-      {% if data.title %}
-      title: {
-         text: '{{ data.title | escape }}'
-      },
-      {% endif %}
-
-      {% if data.dashed-history or data.stroke-curve %}
-      stroke: {
-         {% if data.dashed-history %}
-         width: [2, 1],
-            dashArray: [0, 3],
+         {% if data.sparkline %}
+         sparkline: {
+            enabled: true
+         },
          {% endif %}
-         {% if data.stroke-curve %}
-         curve: '{{ data.stroke-curve }}',
+         {% if data.stacked %}
+         stacked: true,
          {% endif %}
-      },
-      {% endif %}
+         },
 
-      {% if data.series %}
-      {% if data.type == 'pie' or data.type == 'donut' or data.type == 'radialBar' %}
-      series: [{% for serie in data.series %}{{ serie.data }}{% unless forloop.last %}, {% endunless %}{% endfor %}],
-      labels: [{% for serie in data.series %}"{{ serie.name }}"{% unless forloop.last %},{% endunless %}{% endfor %}],
+         {% if data.type == 'area' %}
+         fill: {
+            opacity: .16
+         },
+         {% endif %}
 
-      {% else %}
-      series: [{% for serie in data.series %}{
-         name: '{{ serie.name }}',
+         {% if data.title %}
+         title: {
+            text: '{{ data.title | escape }}'
+         },
+         {% endif %}
+
+         {% if data.dashed-history or data.stroke-curve %}
+         stroke: {
+            {% if data.dashed-history %}
+            width: [2, 1],
+               dashArray: [0, 3],
+            {% endif %}
+            {% if data.stroke-curve %}
+            curve: '{{ data.stroke-curve }}',
+            {% endif %}
+         },
+         {% endif %}
+
+         {% if data.series %}
+         {% if data.type == 'pie' or data.type == 'donut' or data.type == 'radialBar' %}
+         series: [{% for serie in data.series %}{{ serie.data }}{% unless forloop.last %}, {% endunless %}{% endfor %}],
+         labels: [{% for serie in data.series %}"{{ serie.name }}"{% unless forloop.last %},{% endunless %}{% endfor %}],
+
+         {% else %}
+         series: [{% for serie in data.series %}{
+            name: '{{ serie.name }}',
             data: [{{ serie.data | join: ', '}}]
-      }{% unless forloop.last %},{% endunless %}{% endfor %}],
-      {% endif %}
-      {% endif %}
+         }{% unless forloop.last %},{% endunless %}{% endfor %}],
+         {% endif %}
+         {% endif %}
 
-      {% if data.show-grid %}
-      grid: {
-         show: true,
-      },
-      {% endif %}
+         {% if data.show-grid %}
+         grid: {
+            show: true,
+         },
+         {% endif %}
 
-      {% if data.show-data-labels %}
-      dataLabels: {
-         enabled: true,
-      },
-      {% endif %}
+         {% if data.show-data-labels %}
+         dataLabels: {
+            enabled: true,
+         },
+         {% endif %}
 
-      {% if data.categories or data.days-labels-count %}
-      xaxis: {
-         {% if data.categories %}categories: [{% for category in data.categories %}'{{ category }}'{% unless forloop.last %}, {% endunless %}{% endfor %}],{% endif %}
-         {% if data.days-labels-count %}type: 'datetime',{% endif %}
-      },
-      {% endif %}
+         {% if data.categories or data.days-labels-count %}
+         xaxis: {
+            {% if data.categories %}categories: [{% for category in data.categories %}'{{ category }}'{% unless forloop.last %}, {% endunless %}{% endfor %}],{% endif %}
+            {% if data.days-labels-count %}type: 'datetime',{% endif %}
+         },
+         {% endif %}
 
-      {% if data.auto-min %}
-      yaxis: {
-         min: function(min) { return min },
-      },
-      {% endif %}
+         {% if data.auto-min %}
+         yaxis: {
+            min: function(min) { return min },
+         },
+         {% endif %}
 
-      {% if data.days-labels-count %}
-      labels: [...Array({{ data.days-labels-count }}).keys()].map(n => `2019-09-${n+1}`),
-      {% endif %}
+         {% if data.days-labels-count %}
+         labels: [...Array({{ data.days-labels-count }}).keys()].map(n => `2019-09-${n+1}`),
+         {% endif %}
 
-      {% if data.rotated %}
-      plotOptions: {
-         bar: {
-            horizontal: true,
-         }
-      },
-      {% endif %}
+         {% if data.rotated %}
+         plotOptions: {
+            bar: {
+               horizontal: true,
+            }
+         },
+         {% endif %}
 
-      {% if data.series %}
-      colors: [
-         {% for serie in data.series %}
-         {{ serie.color | default: 'blue' | tabler_js_color }}{% unless forloop.last %},{% endunless %}{% endfor %}
-      ],
-      {% endif %}
+         {% if data.series %}
+         colors: [
+            {% for serie in data.series %}
+            {{ serie.color | default: 'blue' | tabler_js_color }}{% unless forloop.last %},{% endunless %}{% endfor %}
+         ],
+         {% endif %}
 
-      {% if data.hide-legend %}
-      legend: {
-         show: false, //hide legend
-      },
-      {% endif %}
+         {% if data.hide-legend %}
+         legend: {
+            show: false, //hide legend
+         },
+         {% endif %}
 
-      {% if data.hide-tooltip %}
-      tooltip: {
-         enabled: false
-      },
-      {% endif %}
+         {% if data.hide-tooltip %}
+         tooltip: {
+            enabled: false
+         },
+         {% endif %}
 
-      {% if data.hide-points %}
-      point: {
-         show: false
-      },
-      {% endif %}
+         {% if data.hide-points %}
+         point: {
+            show: false
+         },
+         {% endif %}
 
-      {% if data.show-markers %}
-      markers: {
-         size: 2
-      },
-      {% endif %}
-   })).render();
+         {% if data.show-markers %}
+         markers: {
+            size: 2
+         },
+         {% endif %}
+      })).render();
    });
 </script>
 {% endcapture %}

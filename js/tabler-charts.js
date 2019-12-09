@@ -169,9 +169,6 @@ if (window.Apex) {
 
     yaxis: {
       show: false,
-      labels: {
-        show: false,
-      },
     },
   };
 }
