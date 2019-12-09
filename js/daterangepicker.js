@@ -1,1 +1,0 @@
-$('input[name="dates"]').daterangepicker();

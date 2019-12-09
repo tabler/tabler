@@ -118,6 +118,11 @@ $(document).ready(function() {
   // $('[data-toggle="tooltip"]').tooltip();
   // $('[data-toggle="popover"]').popover();
 
+  /* Daterangepicker */
+  if(window.daterangepicker){
+    $('input[name="dates"]').daterangepicker();
+  }
+
   /*
   Autosize plugin
    */

@@ -38,8 +38,7 @@ module.exports = {
   context: "window",
   input: {
     tabler: path.resolve(__dirname, '../js/tabler.js'),
-    'tabler-charts': path.resolve(__dirname, '../js/tabler-charts.js'),
-    'daterangepicker': path.resolve(__dirname,'../js/daterangepicker.js')
+    'tabler-charts': path.resolve(__dirname, '../js/tabler-charts.js')
   },
   output: {
     banner,
