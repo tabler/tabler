@@ -6,7 +6,7 @@ done: true
 
 ### Default markup
 
-{% example max-width=300 %}
+{% example html max-width=300 %}
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab consequatur maxime quia reprehenderit tempore? 
 </p>

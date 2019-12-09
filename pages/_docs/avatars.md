@@ -8,7 +8,7 @@ Create and group avatars of various shapes and sizes with one component.
 
 ### Default markup
 
-{% example wrapper=avatar-list %}
+{% example html wrapper=avatar-list %}
 {% include ui/avatar.html person-id=1 %}
 {% include ui/avatar.html person-id=2 %}
 {% include ui/avatar.html person-id=3 %}
@@ -18,7 +18,7 @@ Create and group avatars of various shapes and sizes with one component.
 
 Set an image as the background.
 
-{% example wrapper=avatar-list %}
+{% example html wrapper=avatar-list %}
 {% include ui/avatar.html person-id=1 %}
 {% include ui/avatar.html person-id=3 %}
 {% include ui/avatar.html person-id=4 %}
@@ -28,7 +28,7 @@ Set an image as the background.
 
 You can easily use initials instead of images.
 
-{% example wrapper=avatar-list %}
+{% example html wrapper=avatar-list %}
 {% include ui/avatar.html placeholder="AB" %}
 {% include ui/avatar.html placeholder="CD" %}
 {% include ui/avatar.html placeholder="EF" %}
@@ -40,7 +40,7 @@ You can easily use initials instead of images.
 
 You can also use icons in avatars.
 
-{% example wrapper=avatar-list %}
+{% example html wrapper=avatar-list %}
 {% include ui/avatar.html icon="user" %}
 {% include ui/avatar.html icon="plus" %}
 {% include ui/avatar.html icon="user-plus" %}
@@ -50,7 +50,7 @@ You can also use icons in avatars.
 
 Customize the color of the avatars' background. You can click [here]({% docs_url colors %}) to see the list of available colors.
 
-{% example wrapper=avatar-list %}
+{% example html wrapper=avatar-list %}
 {% include ui/avatar.html placeholder="AB" color="green" %}
 {% include ui/avatar.html placeholder="CD" color="red" %}
 {% include ui/avatar.html placeholder="EF" color="yellow" %}
@@ -62,7 +62,7 @@ Customize the color of the avatars' background. You can click [here]({% docs_url
 
 Using Bootstrap’s typical naming structure, you can create a standard avatar, or scale it up to different sizes based on what’s needed.
 
-{% example wrapper=avatar-list %}
+{% example html wrapper=avatar-list %}
 {% include ui/avatar.html person-id=10 size="xl" %}
 {% include ui/avatar.html person-id=9 size="lg" %}
 {% include ui/avatar.html person-id=8 size="md" %}
@@ -74,7 +74,7 @@ Using Bootstrap’s typical naming structure, you can create a standard avatar, 
 
 Add an online or offline status indicator to show user's availability.
 
-{% example wrapper=avatar-list %}
+{% example html wrapper=avatar-list %}
 {% include ui/avatar.html person-id=11 %}
 {% include ui/avatar.html person-id=12 status="danger" %}
 {% include ui/avatar.html person-id=13 status="success" %}
@@ -87,7 +87,7 @@ Add an online or offline status indicator to show user's availability.
 
 Change the shape of an avatar with the default Bootstrap image classes.
 
-{% example wrapper=avatar-list %}
+{% example html wrapper=avatar-list %}
 {% include ui/avatar.html person-id=17 %}
 {% include ui/avatar.html person-id=18 shape="rounded" %}
 {% include ui/avatar.html person-id=19 shape="rounded-circle" %}

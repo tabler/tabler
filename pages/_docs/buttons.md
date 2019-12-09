@@ -9,7 +9,7 @@ description: Use Bootstrap’s custom button styles for actions in forms, dialog
 
 The `.btn` classes are designed to be used with the `<button>` element. However, you can also use these classes on `<a>` or `<input>` elements (though some browsers may apply a slightly different rendering).
 
-{% example wrapper=btn-list %}
+{% example html wrapper=btn-list %}
 <a href="#" class="btn btn-primary" role="button">Link</a>
 <button class="btn btn-primary">Button</button>
 <input type="button" class="btn btn-primary" value="Input" />
@@ -21,7 +21,7 @@ The `.btn` classes are designed to be used with the `<button>` element. However,
 
 Use any of the available button classes to quickly create a styled button . We provide a variety of colors for you to express different emotions.
 
-{% example wrapper=btn-list %}
+{% example html wrapper=btn-list %}
 {% for button in site.button-variants %}
 <a href="#" class="btn btn-{{ button[0] }}">{{ button[1].title }}</a>
 {% endfor %}
@@ -30,7 +30,7 @@ Use any of the available button classes to quickly create a styled button . We p
 ### Disabled buttons
 
 Make buttons look inactive by adding the disabled boolean attribute to any `.btn` element. `<a>`s don’t support the disabled attribute, so you must add the `.disabled` class to make it visually appear disabled.
-{% example wrapper=btn-list %}
+{% example html wrapper=btn-list %}
 {% for button in site.button-variants %}
 {% include_cached ui/button.html color=button.1.class text=button.title disabled=true %}
 {% endfor %}
@@ -42,7 +42,7 @@ Make buttons look inactive by adding the disabled boolean attribute to any `.btn
 
 The classic button, in different colors.
 
-{% example wrapper=btn-list %}
+{% example html wrapper=btn-list %}
 {% for button in site.colors %}
 <a href="#" class="btn btn-{{ button[0] }}">{{ button[1].title }}</a>
 {% endfor %}
@@ -52,7 +52,7 @@ The classic button, in different colors.
 
 Add `.btn-square` to button to remove border-radius.
 
-{% example wrapper=btn-list %}
+{% example html wrapper=btn-list %}
 {% for button in site.button-variants %}
 {% include_cached ui/button.html text=button.title color=button.class square=true %}
 {% endfor %}
@@ -62,7 +62,7 @@ Add `.btn-square` to button to remove border-radius.
 
 Add `.btn-pill` class to any button to make them more rounded.
 
-{% example wrapper=btn-list %}
+{% example html wrapper=btn-list %}
 {% for button in site.button-variants %}
 {% include_cached ui/button.html text=button.title color=button.class pill=true %}
 {% endfor %}
@@ -72,7 +72,7 @@ Add `.btn-pill` class to any button to make them more rounded.
 
 In need of a button, but not the hefty background colors they bring? Replace the default modifier classes with the `.btn-outline-*` ones to remove all background images and colors on any button.
 
-{% example wrapper=btn-list %}
+{% example html wrapper=btn-list %}
 {% for button in site.button-variants %}
 {% include_cached ui/button.html text=button.title color=button.class outline=true %}
 {% endfor %}
@@ -82,12 +82,12 @@ In need of a button, but not the hefty background colors they bring? Replace the
 
 Add `.btn-lg` or `.btn-sm` for additional sizes.
 
-{% example wrapper=btn-list %}
+{% example html wrapper=btn-list %}
 <button type="button" class="btn btn-primary btn-lg">Large button</button>
 <button type="button" class="btn btn-secondary btn-lg">Large button</button>
 {% endexample %}
 
-{% example wrapper=btn-list %}
+{% example html wrapper=btn-list %}
 <button type="button" class="btn btn-primary btn-sm">Small button</button>
 <button type="button" class="btn btn-secondary btn-sm">Small button</button>
 {% endexample %}
@@ -103,7 +103,7 @@ Create block level buttons—those that span the full width of a parent—by add
 
 Basic buttons are traditional buttons with borders and background with an extra commponent like an icon. You can place it either on the left or the right which ever you want with different color opitons.
 
-{% example wrapper=btn-list %}
+{% example html wrapper=btn-list %}
 <button type="button" class="btn btn-dark"><i class="icon fe fe-upload mr-2"></i>Upload</button>
 <button type="button" class="btn btn-warning"><i class="icon fe fe-heart mr-2"></i>I like</button>
 <button type="button" class="btn btn-success"><i class="icon fe fe-check mr-2"></i>I agree</button>
@@ -116,7 +116,7 @@ Basic buttons are traditional buttons with borders and background with an extra 
 
 A button can be formatted to link to a social website
 
-{% example wrapper=btn-list %} 
+{% example html wrapper=btn-list %} 
 {% for button in site.socials %}
 {% include_cached ui/button.html color=button.name icon=button.icon text=button.title %}
 {% endfor %}
@@ -124,7 +124,7 @@ A button can be formatted to link to a social website
 
 You can use only icons.
 
-{% example wrapper=btn-list %} 
+{% example html wrapper=btn-list %} 
 {% for button in site.socials %}
 {% include_cached ui/button.html color=button.name icon=button.icon %}
 {% endfor %}
@@ -134,7 +134,7 @@ You can use only icons.
 
 Icon only button. Add `.btn-icon` class to remove unnecessary padding from button.
 
-{% example wrapper=btn-list %} 
+{% example html wrapper=btn-list %} 
 <button type="button" class="btn btn-icon btn-primary"><i class="icon fe fe-activity"></i></button>
 <button type="button" class="btn btn-icon btn-primary btn-github"><i class="icon fe fe-github"></i></button>
 <button type="button" class="btn btn-icon btn-primary btn-success"><i class="icon fe fe-bell"></i></button>
@@ -148,7 +148,7 @@ Icon only button. Add `.btn-icon` class to remove unnecessary padding from butto
 
 Wrap the dropdown’s toggle (your button or link) and the dropdown menu within `.dropdown`, or another element that declares `position: relative;`. Dropdowns can be triggered from `<a>` or `<button>` elements to better fit your potential needs.
 
-{% example wrapper=btn-list %}
+{% example html wrapper=btn-list %}
 <div class="dropdown">
   <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
      <i class="icon fe fe-calendar"></i>
@@ -186,7 +186,7 @@ Add `.btn-loading` to use a loading state on a button. The width of the button d
 
 Since the loading spinner is implemented using the `:after` pseudo-element, it is not supported by the `<input type="submit">` element.
 
-{% example wrapper=btn-list %}
+{% example html wrapper=btn-list %}
 {% include_cached ui/button.html spinner=true text="Button" color="primary" %}
 {% include_cached ui/button.html spinner=true text="Button" color="danger" %}
 {% include_cached ui/button.html spinner=true text="Button" color="warning" %}
