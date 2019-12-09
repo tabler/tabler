@@ -6,8 +6,7 @@ done: true
 
 ### Default markup
 
-{% example html max-width=300 %}
-{% include ui/hr.html %}
+{% example html columns=1 %}
 <p>
   Dicta error hic illo iure necessitatibus nihil officiis omnis perferendis, praesentium repellendus rerum, saepe sed, sit!
 </p>
@@ -29,9 +28,12 @@ done: true
 
 Customize the color of the divider. You can click [here]({% docs_url colors %}) to see the list of available colors.
 
-{% example %}
+{% example html columns=1 %}
+<p>
+  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias, dolore dolores doloribus est ex.
+</p>
 {% include ui/hr.html text="Green divider" color="green" %}
 <p>
-Dicta error hic illo iure necessitatibus nihil officiis omnis perferendis, praesentium repellendus rerum, saepe sed, sit!
+   Dicta error hic illo iure necessitatibus nihil officiis omnis perferendis, praesentium repellendus rerum, saepe sed, sit!
 </p>
 {% endexample %}
