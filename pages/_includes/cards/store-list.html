@@ -2,21 +2,26 @@
 	<table class="table card-table table-vcenter">
 		{% for product in site.data.products %}
 		<tr>
-			<td><img src="{{ site.base }}/img/products/{{ product.image }}" alt="" class="h-16"></td>
+			<td style="width: 33%"><img src="{{ site.base }}/img/products/{{ product.image }}" alt="" class="h-16"></td>
 			<td>
-				{{ product.name }}
-
+				<h3>
+					{{ product.name }}
+				</h3>
 				{% assign mod = forloop.index | modulo: 2 %}
 				{% if mod == 0 %}
 				<span class="badge bg-red">New</span>
 				{% endif %}
-			</td>
-			<td class="text-right text-muted d-none d-md-table-cell text-nowrap">{{ forloop.index | random_number: 4, 100 }} reviews</td>
-			<td class="text-right text-muted d-none d-md-table-cell text-nowrap">{{ forloop.index | random_number: 4, 50 }} offers</td>
-			<td class="text-right">
-				<strong>{{ product.price }}</strong>
+			<div class="d-flex">
+				{% include ui/stars.html %}
+				<div class="text-muted">({{ forloop.index | random_number: 4, 100 }})</div>
+			</div>
+			<div class="text-muted">{{ forloop.index | random_number: 4, 50 }} offers</div>
+			<h1 class="text-azure">{{ product.price }}$</h1>
 			</td>
 		</tr>
 		{% endfor %}
 	</table>
+	<div class="d-flex">
+		
+	</div>
 </div>
