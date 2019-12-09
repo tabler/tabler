@@ -1,5 +1,6 @@
 {% assign amount = include.amount | default: 6%}
 {% assign show-summary = include.show-summary | default: flase%}
+{% assign show-option = include.show-option | default: false%}
 {% assign price = 0 %}
 
 <div class="card">
@@ -8,7 +9,7 @@
                 <th>Product</th>
                 <th></th>
                 <th class="text-center">Amount</th>
-                <th class="text-center">Cost</th>
+                <th>Cost</th>
                 <th></th>
             </tr>
             {% for product in site.data.products limit: amount %}
@@ -21,31 +22,36 @@
     
                     {% assign mod = forloop.index | modulo: 2 %}
                 </td>
+
+                {% if show-options == true %}
+                    <td>
+                        <table class="m-0">
+                            <tr>
+                                <td>+</td>
+                                <td>1</td>
+                                <td>+</td>
+                            </tr>
+                        </table>
+                    </td>
+                    {% else %}
+                    <td class="text-center">1</td>
+                {% endif %}
                 <td>
-                    <table class="m-0">
-                        <tr>
-                            <td>+</td>
-                            <td>1</td>
-                            <td>+</td>
-                        </tr>
-                    </table>
-                </td>
-                <td class="text-center">
                     {{ product.price }}$
                 </td>
-                <td class="text-center">
+                <td>
                     <button type="button" class="ml-2 close" data-dismiss="toast" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </td>
             </tr>
             {% endfor %}
-            {% if show-summary == true%}
+            {% if show-summary == true %}
                 <tr>
                     <td></td>
                     <td class="text-right"><strong>Total:</strong></td>
                     <td class="text-center text-grey-lt"><strong>{{amount}} items</strong></td>
-                    <td class="text-center"><strong>{{price}}$</strong></td>
+                    <td><strong>{{price}}$</strong></td>
                     <td></td>
                 </tr>
             {% endif %}
