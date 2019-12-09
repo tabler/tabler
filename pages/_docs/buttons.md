@@ -13,9 +13,9 @@ The `.btn` classes are designed to be used with the `<button>` element. However,
 {% example html wrapper=btn-list %}
 <a href="#" class="btn btn-primary" role="button">Link</a>
 <button class="btn btn-primary">Button</button>
-<input type="button" class="btn btn-primary" value="Input" />
-<input type="submit" class="btn btn-primary" value="Submit" />
-<input type="reset" class="btn btn-primary" value="Reset" />
+<input type="button" class="btn btn-primary" value="Input"/>
+<input type="submit" class="btn btn-primary" value="Submit"/>
+<input type="reset" class="btn btn-primary" value="Reset"/>
 {% endexample %}
 
 ### Button variations
