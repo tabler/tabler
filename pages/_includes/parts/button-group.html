@@ -1,0 +1,14 @@
+{% assign buttons = include.buttons | default: 'First,Second,Third' | split: ',' %}
+{% assign color = include.color | default: 'secondary' %}
+{% assign class = include.class %}
+
+<div class="btn-group" role="group" aria-label="Basic example">
+    {% for btn in buttons %}
+    {% if btn == "dropdown" %}
+    {% include ui/button-dropdown.html color=color class=class %}
+    {% else %}
+    {% include ui/button.html text=btn color=color class=class %}
+    {% endif %}
+    
+    {% endfor %}
+</div>

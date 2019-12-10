@@ -255,4 +255,3 @@ Use the `.text-center` or the `.text-right` modifiers to alter the alignment.
 <a href="#" class="btn btn-secondary mr-2">{% include ui/avatar.html person-id="5" class="btn-avatar" %} Avatar</a>
 <a href="#" class="btn btn-secondary mr-2">{% include ui/avatar.html person-id="6" class="btn-avatar" %} Avatar</a>
 {% endexample %}
-
