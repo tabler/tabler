@@ -1,16 +1,11 @@
 {% assign person-id = include.person-id | default: 12 | minus: 1 %}
 {% assign person = site.data.people[person-id] %}
 
-<a href="{{ site.base }}" class="navbar-brand text-reset mr-md-3">
-   <img src="{{ site.base }}/img/logo{% if include.dark %}-white{% endif %}.svg" alt="{{ site.title }}" class="d-none d-md-block navbar-brand-logo">
-   <img src="{{ site.base }}/img/logo-small{% if include.dark %}-white{% endif %}.svg" alt="{{ site.title }}" class="d-md-none navbar-brand-logo">
-</a>
-
-{% comment %}
-{% if include.search %}
-   {% include parts/navbar-search.html %}
+{% if page.menu-layout != 'vertical' %}
+	{% include_cached parts/navbar-logo.html %}
 {% endif %}
-{% endcomment %}
+
+{% include_cached parts/navbar-search.html %}
 
 <ul class="nav navbar-menu align-items-center ml-auto">
    <li class="nav-item d-none d-lg-flex mr-3">
