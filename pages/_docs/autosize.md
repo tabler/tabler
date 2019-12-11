@@ -1,10 +1,9 @@
 ---
 title: Autosize
 menu: docs.autosize
+description: A small, stand-alone script to automatically adjust textarea height.
 done: true
 ---
-
-A small, stand-alone script to automatically adjust textarea height.
 
 ### Default markup
 

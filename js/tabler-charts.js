@@ -7,7 +7,7 @@
         color = $this.attr('data-spark-color') || 'blue',
         type = $this.attr('data-spark-type') || 'line';
 
-      const $div = $('<div />').html(data);
+      const $div = $('<div/>').html(data);
       $this.append($div);
 
       let strokeColor = tabler.colors[color],
@@ -169,9 +169,6 @@ if (window.Apex) {
 
     yaxis: {
       show: false,
-      labels: {
-        show: false,
-      },
     },
   };
 }
