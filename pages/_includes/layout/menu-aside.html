@@ -5,13 +5,19 @@
 	{% for level-1 in site.data.menu %}
 	<li class="sidebar-nav-item">
 
-		<a href="{{ site.base }}/{{ level-2[1].url }}" class="sidebar-nav-link{% if level-1[0] == current-page[0] and current-page.size == 1 %} active{% endif %}">
+		<a href="{{ site.base }}/{{ level-1[1].url }}" class="sidebar-nav-link{% if level-1[0] == current-page[0] and current-page.size == 1 %} active{% endif %}">
 			{% if level-1[1].icon %}
 				{% assign icon = level-1[1].icon %}
-				{% include ui/icon.html icon=icon %}
+				{% include ui/icon.html icon=icon class="nav-icon" %}
 			{% endif %}
 
-			<span>{{ level-1[1].title }}</span>
+			<span class="nav-text">{{ level-1[1].title }}</span>
+
+			{% if level-1[1].badge %}
+			{% assign badge = level-1[1].badge %}
+			{% assign badge-color = level-1[1].badge-color | default: 'green' %}
+			{% include ui/badge.html text=badge color=badge-color %}
+			{% endif %}
 		</a>
 
 		{% comment %}
@@ -19,7 +25,7 @@
 		{% endcomment %}
 
 		{% if level-1[1].children %}
-		<ul>
+		<ul class="sidebar-subnav">
 			{% for level-2 in level-1[1].children %}
 			<li class="sidebar-nav-item">
 				<a href="{{ site.base }}/{{ level-2[1].url }}" class="sidebar-nav-link{% if level-1[0] == current-page[0] and level-2[0] == current-page[1] and current-page.size == 2 %} active{% endif %}">

@@ -2,7 +2,7 @@
 title: Cards
 menu: docs.cards
 description: A card is a flexible and extensible content container. It includes options for headers and footers, a wide variety of content, contextual background colors, and powerful display options. 
-bootstrap-link: https://getbootstrap.com/docs/4.4/components/card/
+bootstrap-link: components/card/
 done: true
 ---
 

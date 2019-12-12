@@ -5,8 +5,111 @@ $sidenav-bg: $white;
 $sidenav-border-color: $border-color-alpha;
 $sidenav-dark-bg: $dark;
 $sidenav-padding: 1.25rem;
-$sidenav-breakpoint-show: 'md';
-$sidenav-breakpoint-folded: false;
+$sidenav-breakpoint-show: 'sm';
+$sidenav-breakpoint-folded: 'lg';
+$sidenav-folded-item-height: 3.5rem;
+
+@mixin sidebar-folded($breakpoint-folded) {
+  @if $breakpoint-folded {
+
+    @include media-breakpoint-down($breakpoint-folded) {
+      width: $sidenav-width-folded;
+
+      .sidebar-brand {
+        width: $sidenav-width-folded;
+      }
+
+      .sidebar-content {
+        padding: 0;
+        overflow: visible;
+      }
+
+      .sidebar-nav {
+        margin: 0;
+
+        > .sidebar-nav-item {
+          position: relative;
+          white-space: nowrap;
+
+          &:hover {
+            background: $primary;
+            width: $sidenav-width;
+
+            > .sidebar-nav-link {
+              color: #fff;
+
+              > span {
+                display: block;
+              }
+
+              .icon {
+                margin-right: add(1rem, $sidenav-padding);
+              }
+            }
+
+            .sidebar-subnav {
+              display: block;
+
+              .sidebar-nav-link {
+                padding-left: $sidenav-padding;
+              }
+            }
+          }
+
+          > .sidebar-nav-link {
+            min-height: $sidenav-folded-item-height;
+            padding: 0 1rem !important;
+            position: relative;
+
+            .icon {
+              margin: 0;
+              width: 2rem;
+              height: 1.125rem;
+            }
+
+            >span {
+              display: none;
+            }
+
+            .badge {
+              display: block;
+              position: absolute;
+              left: 2.5rem;
+              top: 1rem;
+
+              text-indent: -99999px;
+              width: $badge-empty-size;
+              height: $badge-empty-size;
+              padding: 0;
+            }
+          }
+        }
+      }
+
+      .sidebar-subnav {
+        display: none;
+        position: absolute;
+        top: $sidenav-folded-item-height;
+        left: $sidenav-width-folded;
+        right: 0;
+        padding: .5rem 0;
+        background: $dark;
+        box-shadow: -6px 0px 16px -10px rgba(0, 0, 0, 0.2), $box-shadow;
+      }
+
+      .sidebar-nav-title {
+        display: none;
+      }
+    }
+  }
+}
+
+@mixin sidebar-show($breakpoint-show) {
+  @include media-breakpoint-down($breakpoint-show) {
+    display: none;
+  }
+}
+
 
 /**
 Topnav
@@ -137,21 +240,14 @@ Sidebar
   z-index: $zindex-fixed;
   padding: 0;
   background: $white;
-  border-right: 1px solid $border-color-alpha;
+  box-shadow: inset -1px 0 $border-color-alpha;
   top: 0;
   bottom: 0;
   display: flex;
   flex-direction: column;
 
-  @if $sidenav-breakpoint-folded {
-    @include media-breakpoint-down($sidenav-breakpoint-folded) {
-      width: $sidenav-width-folded;
-    }
-  }
-
-  @include media-breakpoint-down($sidenav-breakpoint-show) {
-    display: none;
-  }
+  @include sidebar-folded($sidenav-breakpoint-folded);
+  @include sidebar-show($sidenav-breakpoint-show);
 }
 
 .sidebar-brand {
@@ -268,7 +364,7 @@ Sidebar dark
 .sidebar-dark {
   background: $dark;
   color: $text-muted;
-  border-color: transparent;
+  box-shadow: none;
 
   .sidebar-brand {
     filter: brightness(0) invert(1);

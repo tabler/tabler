@@ -1,6 +1,6 @@
 ---
 title: Form Elements
-bootstrap-link: https://getbootstrap.com/docs/4.4/components/forms/
+bootstrap-link: components/forms/
 ---
 
 ### Classic Input
