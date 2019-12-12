@@ -1,0 +1,38 @@
+{% assign current-page = page.menu | default: layout.menu | split: '.' %}
+
+<ul class="sidebar-nav">
+	<li class="sidebar-nav-title">Navigation</li>
+	{% for level-1 in site.data.menu %}
+	<li class="sidebar-nav-item">
+
+		<a href="{{ site.base }}/{{ level-2[1].url }}" class="sidebar-nav-link{% if level-1[0] == current-page[0] and current-page.size == 1 %} active{% endif %}">
+			{% if level-1[1].icon %}
+				{% assign icon = level-1[1].icon %}
+				{% include ui/icon.html icon=icon %}
+			{% endif %}
+
+			<span>{{ level-1[1].title }}</span>
+		</a>
+
+		{% comment %}
+		<div class="sidebar-nav-title">{{ level-1[1].title }}</div>
+		{% endcomment %}
+
+		{% if level-1[1].children %}
+		<ul>
+			{% for level-2 in level-1[1].children %}
+			<li class="sidebar-nav-item">
+				<a href="{{ site.base }}/{{ level-2[1].url }}" class="sidebar-nav-link{% if level-1[0] == current-page[0] and level-2[0] == current-page[1] and current-page.size == 2 %} active{% endif %}">
+					<span>{{ level-2[1].title }}</span>
+					{% if level-2[1].badge %}
+					{% assign badge = level-2[1].badge %}
+					{% include ui/badge.html text=badge color="green" %}
+					{% endif %}
+				</a>
+			</li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+	</li>
+	{% endfor %}
+</ul>

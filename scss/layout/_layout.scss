@@ -1,14 +1,16 @@
-
 //sidenav
 $sidenav-width: 16.25rem;
 $sidenav-width-folded: 4rem;
 $sidenav-bg: $white;
 $sidenav-border-color: $border-color-alpha;
 $sidenav-dark-bg: $dark;
-$sidenav-link-padding-x: .75rem;
+$sidenav-padding: 1.25rem;
 $sidenav-breakpoint-show: 'md';
 $sidenav-breakpoint-folded: false;
 
+/**
+Topnav
+ */
 .topnav {
   border-bottom: 1px solid;
   background-color: $navbar-bg;
@@ -37,6 +39,9 @@ $sidenav-breakpoint-folded: false;
   }
 }
 
+/**
+Topbar
+ */
 .topbar {
   position: absolute;
   top: 0;
@@ -75,12 +80,18 @@ $sidenav-breakpoint-folded: false;
   z-index: $zindex-fixed;
 }
 
+/**
+Wrapper
+ */
 .wrapper {
   height: 100%;
   overflow: hidden;
   width: 100%;
 }
 
+/**
+Content
+ */
 .content {
   overflow: hidden;
   min-height: 100vh;
@@ -124,12 +135,13 @@ Sidebar
   width: $sidenav-width;
   position: fixed;
   z-index: $zindex-fixed;
-  padding: .75rem;
+  padding: 0;
   background: $white;
   border-right: 1px solid $border-color-alpha;
-  //padding-top: $navbar-height;
   top: 0;
   bottom: 0;
+  display: flex;
+  flex-direction: column;
 
   @if $sidenav-breakpoint-folded {
     @include media-breakpoint-down($sidenav-breakpoint-folded) {
@@ -143,10 +155,14 @@ Sidebar
 }
 
 .sidebar-brand {
-  line-height: 1;
   display: block;
   text-align: center;
-  margin-bottom: 1.5rem;
+
+  line-height: $navbar-height;
+  width: $sidenav-width;
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 
 .sidebar-brand-logo {
@@ -169,9 +185,89 @@ Sidebar
   }
 }
 
+.sidebar-content {
+  padding: $sidenav-padding;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  @include scrollbar(true);
+
+  .sidebar-brand + & {
+    margin-top: $navbar-height;
+  }
+}
+
+/**
+Sidebar menu
+ */
+.sidebar-nav {
+  margin: (-$sidenav-padding) (-$sidenav-padding) $sidenav-padding;
+  padding: 0;
+  list-style: none;
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+}
+
+.sidebar-nav-link {
+  padding: .5rem $sidenav-padding;
+  transition: .3s color, .3s background-color;
+  color: inherit;
+  display: flex;
+  align-items: center;
+
+  .sidebar-nav-item .sidebar-nav-item & {
+    padding-left: add(1.5rem, $sidenav-padding);
+  }
+
+  .sidebar-nav-item .sidebar-nav-item .sidebar-nav-item & {
+    padding-left: add(3rem, $sidenav-padding);
+  }
+
+  &:hover {
+    background-color: rgba(#fff, .02);
+    text-decoration: none;
+    color: #fff;
+  }
+
+  &.active {
+    opacity: 1;
+    color: #fff;
+    box-shadow: inset 3px 0 $primary;
+    background-color: rgba(#fff, .01);
+  }
+
+  .icon {
+    width: 1rem;
+    margin-right: .5rem;
+  }
+
+  .badge {
+    margin-left: auto;
+  }
+}
+
+.sidebar-nav-title {
+  @include subheader(false);
+  color: inherit;
+  opacity: .8;
+  padding: $sidenav-padding $sidenav-padding .5rem;
+
+  &:not(:first-child) {
+    margin-top: .5rem;
+  }
+}
+
+/**
+Sidebar dark
+ */
 .sidebar-dark {
   background: $dark;
-  color: $white;
+  color: $text-muted;
   border-color: transparent;
 
   .sidebar-brand {
