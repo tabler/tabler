@@ -1,13 +1,85 @@
-<div class="input-group{% if include.class %} {{ include.class }}{% endif %}">
-  {% if include.prepend %}
+<div class="input-group {% if include.class %} {{ include.class }}{% endif %}">
+  {% if include.prepend-button or include.prepend-button-icon or include.prepend-text or include.prepend-dropdown %}
   <div class="input-group-prepend">
-    <span class="input-group-text">{{ include.prepend }}</span>
+    {% if include.prepend-button or include.prepend-button-icon%}
+      <button type="button" class="btn btn-primary {% if include.prepend-button-color %}btn-{{ include.prepend-button-color }}{% endif %}">
+        {% if include.prepend-button-icon %}
+          {% assign prepend-icon-position = "m-0" %}
+          {% if include.prepend-button %}
+            {% assign prepend-icon-position = prepend-icon-position | append: " mr-2" %}
+          {% endif %}
+        {% endif %}
+        {% if include.prepend-button-icon %}
+          {% include ui/icon.html icon=include.prepend-button-icon class=prepend-icon-position %}
+        {% endif %}
+        {% if include.prepend-button%}
+          {{ include.prepend-button }}
+        {% endif %}
+      </button>
+    {% endif %}
+    {% if include.prepend-dropdown %}
+      <button type="button" class="btn btn-primary dropdown-toggle {% if include.prepend-dropdown-color %}btn-{{ include.prepend-dropdown-color }}{% endif %}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        {{ include.prepend-dropdown }}
+      </button>
+      <div class="dropdown-menu">
+        {% assign pdc = include.prepend-dropdown-content | split: ","%}
+        {% for item in pdc %}
+          <a class="dropdown-item" href="#">{{item}}</a>
+        {% endfor %}
+      </div>
+    {% endif %}
+    {% if include.prepend-text %}
+      <span class="input-group-text">{{ include.prepend-text }}</span>
+    {% endif %}
   </div>
   {% endif %}
-  <input type="text" class="form-control"{% if include.placeholder %} placeholder="{{ include.placeholder }}"{% endif %}{% if include.placeholder %} value="{{ include.value }}"{% endif %}>
-  {% if include.append %}
-  <div class="input-group-append">
-    <span class="input-group-text">{{ include.append }}</span>
+
+  {% if include.append-input-icon or include.prepend-input-icon %}
+    <div class="input-icon">
+      {% if include.prepend-input-icon %}
+        <div class="input-icon-addon">{% include ui/icon.html icon=include.prepend-input-icon%}</div>
+      {% endif %}
+        <input type="text" class="form-control"{% if include.placeholder %} placeholder="{{ include.placeholder }}"{% endif %}{% if include.placeholder %} value="{{ include.value }}"{% endif %}>
+      {% if include.append-input-icon %}
+        <div class="input-icon-addon">{% include ui/icon.html icon=include.append-input-icon%}</div>
+      {% endif %}
+    </div>
+  {% else %}
+    <input type="text" class="form-control"{% if include.placeholder %} placeholder="{{ include.placeholder }}"{% endif %}{% if include.placeholder %} value="{{ include.value }}"{% endif %}>
+  {% endif %}
+
+  {% if include.append-button or include.append-button-icon or include.append-text or include.append-dropdown %}
+  <div class="input-group-prepend">
+    {% if include.append-button or include.append-button-icon%}
+      <button type="button" class="btn btn-primary {% if include.prepend-button-color %}btn-{{ include.prepend-button-color }}{% endif %}">
+        {% if include.append-button-icon %}
+          {% assign append-icon-position = "m-0" %}
+          {% if include.append-button %}
+            {% assign append-icon-position = append-icon-position | append: " mr-2" %}
+          {% endif %}
+        {% endif %}
+        {% if include.append-button-icon %}
+          {% include ui/icon.html icon=inappend-button-icon class=append-icon-position %}
+        {% endif %}
+        {% if include.append-button%}
+          {{ include.append-button }}
+        {% endif %}
+      </button>
+    {% endif %}
+    {% if include.append-dropdown %}
+      <button type="button" class="btn btn-primary dropdown-toggle {% if include.append-dropdown-color %}btn-{{ include.append-dropdown-color }}{% endif %}" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        {{ include.append-dropdown }}
+      </button>
+      <div class="dropdown-menu">
+        {% assign pdc = include.append-dropdown-content | split: ","%}
+        {% for item in pdc %}
+          <a class="dropdown-item" href="#">{{item}}</a>
+        {% endfor %}
+      </div>
+    {% endif %}
+    {% if include.append-text %}
+      <span class="input-group-text">{{ include.append-text }}</span>
+    {% endif %}
   </div>
   {% endif %}
 </div>
