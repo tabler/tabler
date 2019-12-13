@@ -1,0 +1,20 @@
+{% assign colors = include.colors | default: site.colors %}
+{% assign light = include.light %}
+
+<div class="example">
+   <div class="mb-n3">
+      {% for color in colors %}
+      <div class="row row-sm mb-3 align-items-center">
+         <div class="col-auto">
+            <div class="stamp bg-{{ color[0] }}{% if light %}-lt{% else %} text-white{% endif %}">{{ color[0] | capitalize | first_letter }}</div>
+         </div>
+         <div class="col">
+            <span class="font-weight-semibold">{{ color[1].title }}</span><br/>
+            <code>bg-{{ color[0] }}{% if light %}-lt{% endif %}</code>
+         </div>
+      </div>
+      {% endfor %}
+   </div>
+</div>
+
+

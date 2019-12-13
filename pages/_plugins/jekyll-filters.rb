@@ -84,6 +84,11 @@ module Jekyll
 
       input.gsub re, repl_str
     end
+
+    def hex_to_rgb(color)
+      r, g, b = color.match(/^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/).captures
+      "rgb(#{r.hex}, #{g.hex}, #{b.hex})"
+    end
   end
 end
 
