@@ -2,6 +2,7 @@
 title: Tooltips
 menu: docs.tooltips
 description: The Tooltip component is small pop-up box that appears when the user moves the mouse pointer over an element.
+bootstrap-link: https://getbootstrap.com/docs/4.4/components/tooltips/
 ---
 
 ### Default markup
