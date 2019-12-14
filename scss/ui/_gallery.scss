@@ -1,0 +1,87 @@
+.media-grid{
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-gap: .5rem;
+    grid-column: span 4;
+
+    div{
+        border-radius: 3px;
+        padding-top: 56.25%;
+    }
+
+    div:only-child{
+        grid-column: span 12;
+    }
+
+    div:nth-last-child(n+2):nth-last-child(-n+2):first-child, div:nth-last-child(n+2):nth-last-child(-n+2):first-child ~ div { 
+        grid-column: span 6;
+    }
+
+    div:nth-last-child(n+3):nth-last-child(-n+3):first-child, div:nth-last-child(n+3):nth-last-child(-n+3):first-child ~ div { 
+
+        &:first-child{
+            grid-column: span 8;
+            grid-row: span 2;
+        }
+    }
+
+    div:nth-last-child(n+4):nth-last-child(-n+4):first-child, div:nth-last-child(n+4):nth-last-child(-n+4):first-child ~ div { 
+        grid-column: span 6;
+    }
+
+    div:nth-last-child(n+5):nth-last-child(-n+5):first-child, div:nth-last-child(n+5):nth-last-child(-n+5):first-child ~ div { 
+        @for $i from 1 through 2{
+            &:nth-child(#{$i}){
+                grid-column: span 6;
+            }
+        }
+    }
+
+    div:nth-last-child(n+7):nth-last-child(-n+7):first-child, div:nth-last-child(n+7):nth-last-child(-n+7):first-child ~ div {
+
+        @for $i from 1 through 2{
+            &:nth-child(#{$i}){
+                grid-column: span 6;
+            }
+        }
+
+        @for $i from 6 through 7{
+            &:nth-child(#{$i}){
+                grid-column: span 6;
+            }
+        }
+    }
+
+    div:nth-last-child(n+8):nth-last-child(-n+8):first-child, div:nth-last-child(n+8):nth-last-child(-n+8):first-child ~ div {
+        grid-column: span 4;
+
+        @for $i from 4 through 5{
+            &:nth-child(#{$i}){
+                grid-column: span 6;
+            }
+        }
+    }
+
+    div:nth-last-child(n+9):nth-last-child(-n+9):first-child, div:nth-last-child(n+9):nth-last-child(-n+9):first-child ~ div {
+        grid-column: span 4;
+    }
+
+    div:nth-last-child(n+10):nth-last-child(-n+10):first-child, div:nth-last-child(n+10):nth-last-child(-n+10):first-child ~ div {
+        grid-column: span 4;
+
+        &:nth-child(9){
+            position: relative;
+
+            &::after{
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background-color: rgba(0, 0, 0, 0.5);
+                border-radius: 3px;
+            }
+        }
+    }
+}
