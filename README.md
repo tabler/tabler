@@ -39,7 +39,7 @@ To use our build system and run our documentation locally, you'll need a copy of
 4. [Install Bundler](https://bundler.io) with `gem install bundler`, and finally run `bundle install`. This will install all Ruby dependencies, such as [Jekyll and plugins](https://jekyllrb.com).
 
 **Windows users**:
-1. [Install Git](https://git-scm.com/download/win) in `C:\\Program Files\\git\\bin` directory and run `npm config set script-shell "C:\\Program Files\\git\\bin\\bash.exe"` to change default shell.
+1. [Install Git](https://git-scm.com/download/win) in `C:\Program Files\git\bin` directory and run `npm config set script-shell "C:\\Program Files\git\bin\bash.exe"` to change default shell.
 2. [Install Ruby+Devkit](https://rubyinstaller.org/downloads/), recommended version is [2.5.5](https://github.com/oneclick/rubyinstaller2/releases/download/RubyInstaller-2.5.5-1/rubyinstaller-devkit-2.5.5-1-x86.exe).
 3. [Read guide](https://jekyllrb.com/docs/installation/windows/) to get Jekyll up and running without problems.
 
