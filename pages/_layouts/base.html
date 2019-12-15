@@ -23,27 +23,24 @@
    <title>{% if page.title %}{{ page.title }} - {% endif %}{% if layout.title %}{{ layout.title }} - {% endif %}{% if site.title %}{{ site.title }} - {% endif %}{{ site.description }}</title>
 
    {% if page.description %}
-   <meta name="description" content="{{ page.description | escape }}"/>
+      <meta name="description" content="{{ page.description | escape }}"/>
    {% endif %}
 
    {% include_cached layout/og.html show=layout.og-component %}
-
    {% include_cached layout/css.html %}
 
    <style>body { display: none; }</style>
 </head>
-<body class="antialiased {% if page.dark-theme %} theme-dark{% endif %}{% if layout.body-class %} {{ layout.body-class }}{% endif %}{% if page.body-class %} {{ page.body-class }}{% endif %}">
+<body class="antialiased{% if page.dark-theme %} theme-dark{% endif %}{% if layout.body-class %} {{ layout.body-class }}{% endif %}{% if page.body-class %} {{ page.body-class }}{% endif %}">
 
-{{ content}}
+	{{ content }}
 
-{% include_cached layout/js.html %}
-{% include layout/js-capture.html %}
+	{% include_cached layout/js.html %}
+	{% include layout/js-capture.html %}
 
-{% if site.debug %}
-{% if jekyll.environment == 'development' %}
-{% include_cached layout/debug.html %}
-{% endif %}
-{% endif %}
+	{% if site.debug and jekyll.environment == 'development' %}
+		{% include_cached layout/debug.html %}
+	{% endif %}
 
 <script>document.body.style.display = 'block';</script>
 </body>
