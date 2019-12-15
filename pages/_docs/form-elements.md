@@ -174,22 +174,22 @@ bootstrap-link: components/forms/
 {% example %}
 <div class="mb-2">
    <label class="form-label">Username</label>
-   {% include ui/input-group.html prepend="@" placeholder="username" %}
+   {% include ui/form/input-group.html prepend="@" placeholder="username" %}
 </div>
 
 <div class="mb-2">
    <label class="form-label">Subdomain</label>
-   {% include ui/input-group.html append=".tabler.io" placeholder="subdomain" %}
+   {% include ui/form/input-group.html append=".tabler.io" placeholder="subdomain" %}
 </div>
 
 <div class="mb-2">
    <label class="form-label">Your vanity URL</label>
-   {% include ui/input-group.html prepend="https://example.com/users/" %}
+   {% include ui/form/input-group.html prepend="https://example.com/users/" %}
 </div>
 
 <div class="mb-2">
    <label class="form-label">Price</label>
-   {% include ui/input-group.html prepend="$" append=".00" %}
+   {% include ui/form/input-group.html prepend="$" append=".00" %}
 </div>
 {% endexample %}
 

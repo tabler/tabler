@@ -290,13 +290,13 @@ Use the `.text-center` or the `.text-right` modifiers to alter the alignment.
 
 {% example html wrapper=btn-list %}
 <a href="#" class="btn btn-secondary">
-  {% include ui/avatar.html person-id="4" class="btn-avatar" %} Avatar
+  {% include_cached ui/avatar.html person-id="4" %} Avatar
 </a>
 <a href="#" class="btn btn-secondary">
-  {% include ui/avatar.html person-id="5" class="btn-avatar" %} Avatar
+  {% include_cached ui/avatar.html person-id="5" %} Avatar
 </a>
 <a href="#" class="btn btn-secondary">
-  {% include ui/avatar.html person-id="6" class="btn-avatar" %} Avatar
+  {% include_cached ui/avatar.html person-id="6" %} Avatar
 </a>
 {% endexample %}
 
