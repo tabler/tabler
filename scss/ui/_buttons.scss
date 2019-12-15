@@ -1,9 +1,10 @@
 .btn {
-  letter-spacing: .01em;
-
   &:not([class^="btn-outline"]):not([class*=" btn-outline"]):not([class^="btn-ghost"]):not([class*=" btn-ghost"]):not(.btn-secondary) {
     text-shadow: 1px 1px 0 rgba(0, 0, 0, .05);
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .05), inset 0 2px 0 -1px rgba(255, 255, 255, .1);
+
+    &:not(:focus):not(.focus) {
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .05), inset 0 2px 0 -1px rgba(255, 255, 255, .1);
+    }
 
     svg.icon {
       filter: drop-shadow(1px 1px 0 rgba(0, 0, 0, .05));
@@ -16,7 +17,7 @@
   }
 
   .icon {
-    margin: 0 .5em 0 -.25em;
+    margin: 0 .25em 0 -.25em;
     font-size: 1.2em;
     vertical-align: sub;
   }
@@ -117,17 +118,6 @@
   }
 }
 
-.btn-loader {
-  display: none;
-  width: 1em;
-  height: 1em;
-  color: inherit;
-
-  @at-root .btn-loading & {
-    display: inline-block;
-  }
-}
-
 .btn-options {
   display: flex;
   align-items: center;
@@ -145,33 +135,4 @@
     width: 1rem;
     height: 1rem;
   }
-}
-
-.btn-floating {
-  position: fixed;
-  right: 1.5rem;
-  bottom: 1.5rem;
-  z-index: 1030;
-}
-
-/**
-Button with label
- */
-.btn-label {
-  position: relative;
-  padding-left: px2rem(48px);
-}
-
-.btn-label-icon {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: px2rem(36px);
-  padding-top: px2rem(6px);
-  padding-bottom: px2rem(6px);
-  margin-bottom: 0;
-  line-height: inherit;
-  cursor: pointer;
-  background-color: rgba(0, 0, 0, .1);
 }
