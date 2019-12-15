@@ -1,7 +1,3 @@
-@function px2rem($px) {
-  @return ($px / 16px) * 1rem;
-}
-
 @function alpha-attribute($color, $background) {
   $percent: alpha($color) * 100%;
   $opaque: opacify($color, 1);
@@ -10,13 +6,8 @@
 }
 
 @function theme-color-lighter($color) {
-  @return alpha-attribute(rgba($color, .2), #fff);
+  @return rgba($color, .2);
 }
-
-@function theme-color-lightest($color) {
-  @return mix($color, #fff, 10%);
-}
-
 
 @function str-replace($string, $search, $replace: "") {
   $index: str-index($string, $search);
