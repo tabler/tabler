@@ -1,7 +1,7 @@
 ---
 title: Tables
 menu: docs.tables
-bootstrap-link: https://getbootstrap.com/docs/4.4/content/tables/
+bootstrap-link: content/tables/
 ---
 
 ### Basic Table

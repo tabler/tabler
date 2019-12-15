@@ -5,6 +5,7 @@ title: Documentation
 page-title: Documentation
 ---
 
+{% assign current-url = page.url | replace_regex: "^/", "" %}
 
 <div class="row justify-content-center">
 	<div class="col-lg-3 order-lg-1 mb-4">
@@ -13,11 +14,21 @@ page-title: Documentation
 		</a>
 
 		<div class="list-group list-group-transparent mb-0">
-			{% for p in site.data.docs %}
-			{% assign doc = site.docs | where: "slug", p.page | first %}
-			<a href="{{ site.base }}{{ doc.url | relative_url }}"
-			   class="list-group-item list-group-item-action{% if page.url == doc.url %} active{% endif %}">
-				{{ doc.title }}{% if doc.done %} {% include_cached ui/icon.html icon="check" color="green" %}{% endif %}
+			{% for doc in site.data.menu.docs.children %}
+			{% assign key = doc[0] %}
+			<a href="{{ site.base }}{{ doc[1].url | relative_url }}" class="list-group-item list-group-item-action{% if current-url == doc[1].url %} active{% endif %}">
+
+				{% if jekyll.environment == 'development' %}
+					{% assign doc-page = site.docs | where: "slug", key | first %}
+					{% if doc-page.done %}{% include_cached ui/icon.html icon="check" color="green" class="mr-2" %}{% endif %}
+				{% endif %}
+
+				{{ doc[1].title }}
+
+				{% if doc[1].badge %}
+					{% assign badge = doc[1].badge %}
+					{% include ui/badge.html text=badge color="green" class="ml-auto" %}
+				{% endif %}
 			</a>
 			{% endfor %}
 		</div>
@@ -29,7 +40,7 @@ page-title: Documentation
 				<div class="markdown">
 					{% if page.bootstrap-link %}
 					<p class="mb-4 float-right">
-						<a href="{{ page.bootstrap-link }}" target="_blank">
+						<a href="https://getbootstrap.com/docs/4.4/{{ page.bootstrap-link }}" target="_blank">
 							{% include_cached ui/icon.html icon="external-link" color="blue" class="pr-1" %}
 							Bootstrap documentation
 						</a>
@@ -39,8 +50,6 @@ page-title: Documentation
 					<h2 class="h1 mt-0 mb-3">{{ page.title }}
 						{% if page.done %} {% include_cached ui/icon.html icon="check" color="green" %}{% endif %}
 					</h2>
-
-
 
 					{% if page.plugin %}
 					<div class="alert alert-info">This module is available in <code>tabler-{{ page.plugin }}</code>
