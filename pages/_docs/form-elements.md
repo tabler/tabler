@@ -60,14 +60,7 @@ bootstrap-link: components/forms/
 
 ### Select
 {% example %}
-<div class="mb-2">
-   <label class="form-label">Country</label>
-   <select class="form-select">
-      <option value="">Germany</option>
-      <option value="">USA</option>
-      <option value="">Poland</option>
-   </select>
-</div>
+{% include parts/select.html options="Germany,USA,Poland" %}
 {% endexample %}
 
 ### Textarea
@@ -128,24 +121,7 @@ bootstrap-link: components/forms/
 
 ### Sample form
 {% example %}
-<fieldset class="form-fieldset">
-	<div class="mb-2">
-		<label class="form-label">Full name<span class="form-required">*</span></label>
-		<input type="text" class="form-control"/>
-	</div>
-	<div class="mb-2">
-		<label class="form-label">Company<span class="form-required">*</span></label>
-		<input type="text" class="form-control"/>
-	</div>
-	<div class="mb-2">
-		<label class="form-label">Email<span class="form-required">*</span></label>
-		<input type="email" class="form-control"/>
-	</div>
-	<div class="mb-2 mb-0">
-		<label class="form-label">Phone number</label>
-		<input type="tel" class="form-control"/>
-	</div>
-</fieldset>
+{% include parts/form-fieldset.html %}
 {% endexample %}
 
 ### Input group
@@ -191,17 +167,8 @@ bootstrap-link: components/forms/
 
 ### Separated inputs
 {% example %}
-<div class="mb-2">
-   <label class="form-label">Separated inputs</label>
-   <div class="row row-xs">
-      <div class="col">
-         <input type="text" class="form-control" placeholder="Search for&hellip;">
-      </div>
-      <span class="col-auto">
-        <button class="btn btn-secondary" type="button">{% include_cached ui/icon.html icon="search" %}</button>
-        </span>
-</div>
-</div>{% endexample %}
+{% include parts/input-icon-separated.html %}
+{% endexample %}
 
 ### Custom Input examples
 {% example %}
