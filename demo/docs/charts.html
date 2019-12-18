@@ -1,7 +1,7 @@
 <!doctype html>
 <!--
 * Tabler - Premium and Open Source dashboard template with responsive and high quality UI.
-* @version 1.0-alpha
+* @version v1.0.0-alpha
 * @link https://github.com/tabler/tabler
 * Copyright 2018-2019 The Tabler Authors
 * Copyright 2018-2019 codecalm.net Paweł Kuna
@@ -25,397 +25,518 @@
     <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon"/>
     <title>Charts - Documentation - Tabler - Premium and Open Source dashboard template with responsive and high quality UI.</title>
     <!-- Libs CSS -->
-    <link href="../dist/libs/jqvmap/dist/jqvmap.min.css?1576401968" rel="stylesheet"/>
-    <link href="../dist/libs/selectize/dist/css/selectize.css?1576401968" rel="stylesheet"/>
-    <link href="../dist/libs/fullcalendar/core/main.min.css?1576401968" rel="stylesheet"/>
-    <link href="../dist/libs/fullcalendar/daygrid/main.min.css?1576401968" rel="stylesheet"/>
-    <link href="../dist/libs/fullcalendar/timegrid/main.min.css?1576401968" rel="stylesheet"/>
-    <link href="../dist/libs/fullcalendar/list/main.min.css?1576401968" rel="stylesheet"/>
+    <link href="../dist/libs/jqvmap/dist/jqvmap.min.css?1576701882" rel="stylesheet"/>
+    <link href="../dist/libs/selectize/dist/css/selectize.css?1576701882" rel="stylesheet"/>
+    <link href="../dist/libs/fullcalendar/core/main.min.css?1576701882" rel="stylesheet"/>
+    <link href="../dist/libs/fullcalendar/daygrid/main.min.css?1576701882" rel="stylesheet"/>
+    <link href="../dist/libs/fullcalendar/timegrid/main.min.css?1576701882" rel="stylesheet"/>
+    <link href="../dist/libs/fullcalendar/list/main.min.css?1576701882" rel="stylesheet"/>
     <!-- Tabler Core -->
-    <link href="../dist/css/tabler.min.css?1576401968" rel="stylesheet"/>
+    <link href="../dist/css/tabler.min.css?1576701882" rel="stylesheet"/>
     <!-- Tabler Plugins -->
-    <link href="../dist/css/tabler-flags.min.css?1576401968" rel="stylesheet"/>
-    <link href="../dist/css/tabler-charts.min.css?1576401968" rel="stylesheet"/>
+    <link href="../dist/css/tabler-flags.min.css?1576701882" rel="stylesheet"/>
+    <link href="../dist/css/tabler-charts.min.css?1576701882" rel="stylesheet"/>
     <style>
       body { display: none; }
     </style>
   </head>
-  <body class="antialiased ">
-    <div class="layout">
-      <header class="layout-area-topnav navbar navbar-expand-lg navbar-light">
-        <div class="container">
-          <a class="layout-toggler" data-toggle="menubar">
-            <span class="layout-toggler-icon"></span>
-          </a>
-          <a href=".." class="navbar-brand text-reset mr-md-3">
-            <img src="../img/logo.svg" alt="Tabler" class="d-none d-md-block navbar-brand-logo">
-            <img src="../img/logo-small.svg" alt="Tabler" class="d-md-none navbar-brand-logo">
-          </a>
-          <ul class="nav navbar-menu align-items-center order-1 order-lg-2">
-            <li class="nav-item dropdown mr-3">
-              <a class="nav-link text-reset px-2" data-toggle="dropdown">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path><path d="M13.73 21a2 2 0 0 1-3.46 0"></path></svg>
-                <span class="badge badge-pill badge-up bg-primary">4</span>
+  <body class="antialiased">
+    <div class="wrapper">
+      <div class="content">
+        <header class="topnav topbar">
+          <div class="container">
+            <div class="navbar navbar-expand-lg navbar-light">
+              <a href=".." class="navbar-brand mr-4">
+                <img src="../img/logo.svg" alt="Tabler" class="navbar-brand-logo navbar-brand-logo-lg">
+                <img src="../img/logo-small.svg" alt="Tabler" class="navbar-brand-logo navbar-brand-logo-sm">
               </a>
-              <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-right mt-3 p-0">
-                <div class="scrollable">
-                  <div class="list list-row">
-                  </div>
-                </div>
-                <div class="d-flex px-3 py-2 b-t">
-                  <div class="flex">
-                    <span>6 Notifications</span>
-                  </div>
-                  <a href="#">See all <i class="fa fa-angle-right text-muted"></i></a>
-                </div>
-              </div>
-            </li>
-            <li class="nav-item d-none d-lg-flex mr-3">
-              <a href="https://github.com/tabler/tabler" class="btn btn-sm btn-success" target="_blank">Source code</a>
-            </li>
-            <li class="nav-item dropdown">
-              <a href="#" data-toggle="dropdown"
+              <ul class="nav navbar-menu align-items-center ml-auto">
+                <li class="nav-item d-none d-lg-flex mr-3">
+                  <a href="https://github.com/tabler/tabler" class="btn btn-sm btn-success" target="_blank">Source code</a>
+                </li>
+                <li class="nav-item dropdown">
+                  <a href="#" data-toggle="dropdown"
          class="nav-link d-flex align-items-center py-0 px-lg-0 px-2 text-reset ml-2">
-                <span class="avatar" style="background-image: url(../img/avatars/000m.jpg)"></span>
-                <span class="ml-2 d-none d-lg-block leading-none">
-                  Paweł Kuna
-                  <span class="text-muted d-block mt-1 text-h6">Administrator</span>
-                </span>
-              </a>
-              <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
-                <a class="dropdown-item" href="#">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon dropdown-icon"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
-                  Profile
-                </a>
-                <a class="dropdown-item" href="#">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon dropdown-icon"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-                  Settings
-                </a>
-                <a class="dropdown-item" href="#">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon dropdown-icon"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
-                  Inbox
-                  <span class="badge bg-primary ml-auto">6</span>
-                </a>
-                <a class="dropdown-item" href="#">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon dropdown-icon"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-                  Message
-                </a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon dropdown-icon"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12" y2="17"></line></svg>
-                  Need help?
-                </a>
-                <a class="dropdown-item" href="#">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon dropdown-icon"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-                  Sign out
-                </a>
-              </div>
-            </li>
-          </ul>
-        </div>
-      </header>
-      <div class="layout-area-menu navbar navbar-expand-lg navbar-light">
-        <div class="container">
-          <ul class="navbar-nav flex-wrap">
-            <li class="nav-item">
-              <a class="nav-link" href="../index.html" >
-                <span class="nav-icon">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
-                </span>
-                <span class="nav-text">
-                  Dashboard
-                </span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="../form-elements.html" >
-                <span class="nav-icon">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
-                </span>
-                <span class="nav-text">
-                  Form elements
-                </span>
-              </a>
-            </li>
-            <li class="nav-item dropdown">
-              <a class="nav-link dropdown-toggle" href="#navbar-base" data-toggle="dropdown" role="button"
+                    <span class="avatar" style="background-image: url(../img/avatars/004f.jpg)"></span>
+                    <span class="ml-2 d-none d-lg-block leading-none">
+                      Leesa Beaty
+                      <span class="text-muted d-block mt-1 text-h6">Administrator</span>
+                    </span>
+                  </a>
+                  <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                    <a class="dropdown-item" href="#">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon dropdown-icon"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path><circle cx="12" cy="7" r="4"></circle></svg>
+                      Profile
+                    </a>
+                    <a class="dropdown-item" href="#">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon dropdown-icon"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+                      Settings
+                    </a>
+                    <a class="dropdown-item" href="#">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon dropdown-icon"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+                      Inbox
+                      <span class="badge bg-primary ml-auto">6</span>
+                    </a>
+                    <a class="dropdown-item" href="#">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon dropdown-icon"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                      Message
+                    </a>
+                    <div class="dropdown-divider"></div>
+                    <a class="dropdown-item" href="#">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon dropdown-icon"><circle cx="12" cy="12" r="10"></circle><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"></path><line x1="12" y1="17" x2="12" y2="17"></line></svg>
+                      Need help?
+                    </a>
+                    <a class="dropdown-item" href="#">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon dropdown-icon"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
+                      Sign out
+                    </a>
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </header>
+        <header class="topnav topbar">
+          <div class="navbar navbar-expand-lg navbar-light">
+            <div class="container">
+              <ul class="navbar-nav flex-wrap">
+                <li class="nav-item">
+                  <a class="nav-link" href="../index.html" >
+                    <span class="nav-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+                    </span>
+                    <span class="nav-text">
+                      Dashboard
+                    </span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../form-elements.html" >
+                    <span class="nav-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+                    </span>
+                    <span class="nav-text">
+                      Form elements
+                    </span>
+                  </a>
+                </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#navbar-error" data-toggle="dropdown" role="button"
          aria-expanded="false" >
-                <span class="nav-icon">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
-                </span>
-                <span class="nav-text">
-                  Base
-                </span>
-              </a>
-              <div class="dropdown-menu">
-                <a class="dropdown-item" href="../buttons.html" >
-                  <span class="nav-text">
-                    Buttons
-                  </span>
-                </a>
-                <a class="dropdown-item" href="../cards.html" >
-                  <span class="nav-text">
-                    Cards
-                  </span>
-                </a>
-                <a class="dropdown-item" href="../c.html" >
-                  <span class="nav-text">
-                    C
-                  </span>
-                </a>
-              </div>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="../charts.html" >
-                <span class="nav-icon">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg>
-                </span>
-                <span class="nav-text">
-                  Charts
-                </span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="../calendar.html" >
-                <span class="nav-icon">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
-                </span>
-                <span class="nav-text">
-                  Calendar
-                </span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="../users.html" >
-                <span class="nav-icon">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-                </span>
-                <span class="nav-text">
-                  Users
-                </span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="../gallery.html" >
-                <span class="nav-icon">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-                </span>
-                <span class="nav-text">
-                  Gallery
-                </span>
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="../layouts.html" >
-                <span class="nav-icon">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
-                </span>
-                <span class="nav-text">
-                  Layouts
-                </span>
-              </a>
-            </li>
-            <li class="nav-item active">
-              <a class="nav-link" href="../docs/index.html" >
-                <span class="nav-icon">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
-                </span>
-                <span class="nav-text">
-                  Documentation
-                </span>
-              </a>
-            </li>
-          </ul>
-        </div>
-      </div>
-      <div class="layout-area-menu-backdrop" data-toggle="menubar"></div>
-      <div class="layout-area-main">
-        <main class="container my-4 flex-fill">
-          <!-- Page title -->
-          <div class="page-title-box">
-            <div class="row align-items-center">
-              <div class="col-auto">
-                <h2 class="page-title">
-                  Documentation
-                </h2>
+                    <span class="nav-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+                    </span>
+                    <span class="nav-text">
+                      Error pages
+                    </span>
+                  </a>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="../400.html" >
+                      <span class="nav-text">
+                        400 page
+                      </span>
+                    </a>
+                    <a class="dropdown-item" href="../401.html" >
+                      <span class="nav-text">
+                        401 page
+                      </span>
+                    </a>
+                    <a class="dropdown-item" href="../403.html" >
+                      <span class="nav-text">
+                        403 page
+                      </span>
+                    </a>
+                    <a class="dropdown-item" href="../404.html" >
+                      <span class="nav-text">
+                        404 page
+                      </span>
+                    </a>
+                    <a class="dropdown-item" href="../500.html" >
+                      <span class="nav-text">
+                        500 page
+                      </span>
+                    </a>
+                    <a class="dropdown-item" href="../503.html" >
+                      <span class="nav-text">
+                        503 page
+                      </span>
+                    </a>
+                    <a class="dropdown-item" href="../maintenance.html" >
+                      <span class="nav-text">
+                        Maintenance page
+                      </span>
+                    </a>
+                  </div>
+                </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#navbar-base" data-toggle="dropdown" role="button"
+         aria-expanded="false" >
+                    <span class="nav-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+                    </span>
+                    <span class="nav-text">
+                      Base
+                    </span>
+                  </a>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="../buttons.html" >
+                      <span class="nav-text">
+                        Buttons
+                      </span>
+                    </a>
+                    <a class="dropdown-item" href="../cards.html" >
+                      <span class="nav-text">
+                        Cards
+                      </span>
+                    </a>
+                    <a class="dropdown-item" href="../calendar.html" >
+                      <span class="nav-text">
+                        Calendar
+                      </span>
+                    </a>
+                    <a class="dropdown-item" href="../users.html" >
+                      <span class="nav-text">
+                        Users
+                      </span>
+                    </a>
+                    <a class="dropdown-item" href="../gallery.html" >
+                      <span class="nav-text">
+                        Gallery
+                      </span>
+                    </a>
+                  </div>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../charts.html" >
+                    <span class="nav-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M21.21 15.89A10 10 0 1 1 8 2.83"></path><path d="M22 12A10 10 0 0 0 12 2v10z"></path></svg>
+                    </span>
+                    <span class="nav-text">
+                      Charts
+                    </span>
+                  </a>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../layouts.html" >
+                    <span class="nav-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="3" y1="9" x2="21" y2="9"></line><line x1="9" y1="21" x2="9" y2="9"></line></svg>
+                    </span>
+                    <span class="nav-text">
+                      Layouts
+                    </span>
+                  </a>
+                </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#navbar-extra" data-toggle="dropdown" role="button"
+         aria-expanded="false" >
+                    <span class="nav-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"></polygon></svg>
+                    </span>
+                    <span class="nav-text">
+                      Extra
+                    </span>
+                  </a>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="../invoice.html" >
+                      <span class="nav-text">
+                        Invoice
+                      </span>
+                    </a>
+                  </div>
+                </li>
+                <li class="nav-item active dropdown">
+                  <a class="nav-link dropdown-toggle" href="#navbar-docs" data-toggle="dropdown" role="button"
+         aria-expanded="true" >
+                    <span class="nav-icon">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                    </span>
+                    <span class="nav-text">
+                      Documentation
+                    </span>
+                  </a>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="../docs/index.html" >
+                      <span class="nav-text">
+                        index
+                      </span>
+                    </a>
+                    <a class="dropdown-item" href="../docs/alerts.html" >
+                      <span class="nav-text">
+                        Alerts
+                      </span>
+                    </a>
+                    <a class="dropdown-item" href="../docs/autosize.html" >
+                      <span class="nav-text">
+                        Autosize
+                      </span>
+                    </a>
+                    <a class="dropdown-item" href="../docs/avatars.html" >
+                      <span class="nav-text">
+                        Avatars
+                      </span>
+                    </a>
+                    <a class="dropdown-item" href="../docs/badges.html" >
+                      <span class="nav-text">
+                        Badges
+                      </span>
+                    </a>
+                    <a class="dropdown-item" href="../docs/breadcrumb.html" >
+                      <span class="nav-text">
+                        Breadcrumb
+                      </span>
+                    </a>
+                    <a class="dropdown-item" href="../docs/buttons.html" >
+                      <span class="nav-text">
+                        Buttons
+                      </span>
+                    </a>
+                    <a class="dropdown-item" href="../docs/cards.html" >
+                      <span class="nav-text">
+                        Cards
+                      </span>
+                    </a>
+                    <a class="dropdown-item" href="../docs/carousel.html" >
+                      <span class="nav-text">
+                        Carousel
+                      </span>
+                    </a>
+                    <a class="dropdown-item" href="../docs/colors.html" >
+                      <span class="nav-text">
+                        Colors
+                      </span>
+                    </a>
+                    <a class="dropdown-item" href="../docs/cursors.html" >
+                      <span class="nav-text">
+                        Cursors
+                      </span>
+                    </a>
+                    <a class="dropdown-item" href="../docs/charts.html" >
+                      <span class="nav-text">
+                        Charts
+                      </span>
+                    </a>
+                    <a class="dropdown-item" href="../docs/divider.html" >
+                      <span class="nav-text">
+                        Divider
+                      </span>
+                    </a>
+                    <a class="dropdown-item" href="../docs/empty.html" >
+                      <span class="nav-text">
+                        Empty states
+                      </span>
+                    </a>
+                    <a class="dropdown-item" href="../docs/flags.html" >
+                      <span class="nav-text">
+                        Flags
+                      </span>
+                    </a>
+                    <a class="dropdown-item" href="../docs/form-elements.html" >
+                      <span class="nav-text">
+                        Form elements
+                      </span>
+                    </a>
+                    <a class="dropdown-item" href="../docs/form-helpers.html" >
+                      <span class="nav-text">
+                        Form helpers
+                      </span>
+                    </a>
+                    <a class="dropdown-item" href="../docs/input-mask.html" >
+                      <span class="nav-text">
+                        Form input mask
+                      </span>
+                    </a>
+                    <a class="dropdown-item" href="../docs/progress.html" >
+                      <span class="nav-text">
+                        Progress
+                      </span>
+                    </a>
+                    <a class="dropdown-item" href="../docs/ribbons.html" >
+                      <span class="nav-text">
+                        Ribbons
+                      </span>
+                    </a>
+                    <a class="dropdown-item" href="../docs/spinners.html" >
+                      <span class="nav-text">
+                        Spinners
+                      </span>
+                    </a>
+                    <a class="dropdown-item" href="../docs/steps.html" >
+                      <span class="nav-text">
+                        Steps
+                      </span>
+                    </a>
+                    <a class="dropdown-item" href="../docs/tables.html" >
+                      <span class="nav-text">
+                        Tables
+                      </span>
+                    </a>
+                    <a class="dropdown-item" href="../docs/tabs.html" >
+                      <span class="nav-text">
+                        Tabs
+                      </span>
+                    </a>
+                    <a class="dropdown-item" href="../docs/timelines.html" >
+                      <span class="nav-text">
+                        Timelines
+                      </span>
+                    </a>
+                    <a class="dropdown-item" href="../docs/toasts.html" >
+                      <span class="nav-text">
+                        Toasts
+                      </span>
+                    </a>
+                    <a class="dropdown-item" href="../docs/tooltips.html" >
+                      <span class="nav-text">
+                        Tooltips
+                      </span>
+                    </a>
+                    <a class="dropdown-item" href="../docs/typography.html" >
+                      <span class="nav-text">
+                        Typography
+                      </span>
+                    </a>
+                  </div>
+                </li>
+              </ul>
+              <div class="navbar-search d-none d-lg-block">
+                <form action="." method="get">
+                  <div class="input-icon">
+                    <span class="input-icon-addon">
+                      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    </span>
+                    <input type="text" class="form-control form-control-light" placeholder="Search for&hellip;">
+                  </div>
+                </form>
               </div>
             </div>
           </div>
-          <div class="row justify-content-center">
-            <div class="col-lg-3 order-lg-1 mb-4">
-              <a href="https://github.com/tabler/tabler" class="btn btn-block btn-primary mb-4" target="_blank">
-                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon mr-2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
-                Browse source code
-              </a>
-              <div class="list-group list-group-transparent mb-0">
-                <a href="../docs/index.html"
-			   class="list-group-item list-group-item-action">
-                  Introduction
-                </a>
-                <a href="../docs/alerts.html"
-			   class="list-group-item list-group-item-action">
-                  Alerts <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon text-green"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                </a>
-                <a href="../docs/autosize.html"
-			   class="list-group-item list-group-item-action">
-                  Autosize <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon text-green"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                </a>
-                <a href="../docs/avatars.html"
-			   class="list-group-item list-group-item-action">
-                  Avatars <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon text-green"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                </a>
-                <a href="../docs/badges.html"
-			   class="list-group-item list-group-item-action">
-                  Badges <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon text-green"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                </a>
-                <a href="../docs/breadcrumb.html"
-			   class="list-group-item list-group-item-action">
-                  Breadcrumb <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon text-green"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                </a>
-                <a href="../docs/buttons.html"
-			   class="list-group-item list-group-item-action">
-                  Buttons <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon text-green"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                </a>
-                <a href="../docs/cards.html"
-			   class="list-group-item list-group-item-action">
-                  Cards <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon text-green"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                </a>
-                <a href="../docs/carousel.html"
-			   class="list-group-item list-group-item-action">
-                  Carousel
-                </a>
-                <a href="../docs/colors.html"
-			   class="list-group-item list-group-item-action">
-                  Colors <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon text-green"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                </a>
-                <a href="../docs/cursors.html"
-			   class="list-group-item list-group-item-action">
-                  Cursors
-                </a>
-                <a href="../docs/charts.html"
-			   class="list-group-item list-group-item-action active">
-                  Charts
-                </a>
-                <a href="../docs/divider.html"
-			   class="list-group-item list-group-item-action">
-                  Divider <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon text-green"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                </a>
-                <a href="../docs/empty.html"
-			   class="list-group-item list-group-item-action">
-                  Empty states
-                </a>
-                <a href="../docs/flags.html"
-			   class="list-group-item list-group-item-action">
-                  Flags <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon text-green"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                </a>
-                <a href="../docs/form-elements.html"
-			   class="list-group-item list-group-item-action">
-                  Form Elements
-                </a>
-                <a href="../docs/form-helpers.html"
-			   class="list-group-item list-group-item-action">
-                  Form helpers
-                </a>
-                <a href="../docs/input-mask.html"
-			   class="list-group-item list-group-item-action">
-                  Input mask
-                </a>
-                <a href="../docs/progress.html"
-			   class="list-group-item list-group-item-action">
-                  Progress
-                </a>
-                <a href="../docs/ribbons.html"
-			   class="list-group-item list-group-item-action">
-                  Ribbons
-                </a>
-                <a href="../docs/spinners.html"
-			   class="list-group-item list-group-item-action">
-                  Spinners <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon text-green"><polyline points="20 6 9 17 4 12"></polyline></svg>
-                </a>
-                <a href="../docs/steps.html"
-			   class="list-group-item list-group-item-action">
-                  Steps
-                </a>
-                <a href="../docs/tables.html"
-			   class="list-group-item list-group-item-action">
-                  Tables
-                </a>
-                <a href="../docs/tabs.html"
-			   class="list-group-item list-group-item-action">
-                  Tabs
-                </a>
-                <a href="../docs/timelines.html"
-			   class="list-group-item list-group-item-action">
-                  Timelines
-                </a>
-                <a href="../docs/toasts.html"
-			   class="list-group-item list-group-item-action">
-                  Toasts
-                </a>
-                <a href="../docs/tooltips.html"
-			   class="list-group-item list-group-item-action">
-                  Tooltips
-                </a>
-                <a href="../docs/typography.html"
-			   class="list-group-item list-group-item-action">
-                  Typography
-                </a>
+        </header>
+        <div class="content-page">
+          <main class="container my-4 flex-fill">
+            <!-- Page title -->
+            <div class="page-title-box">
+              <div class="row align-items-center">
+                <div class="col-auto">
+                  <h2 class="page-title">
+                    Documentation
+                  </h2>
+                </div>
               </div>
             </div>
-            <div class="col-lg-9">
-              <div class="card">
-                <div class="card-body p-md-6 p-xl-7">
-                  <div class="markdown">
-                    <h2 class="h1 mt-0 mb-3">Charts
-                    </h2>
-                    <h3 id="c3js-charts">c3.js charts</h3>
+            <div class="row justify-content-center">
+              <div class="col-lg-3 order-lg-1 mb-4">
+                <a href="https://github.com/tabler/tabler" class="btn btn-block btn-primary mb-4" target="_blank">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon mr-2"><path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path></svg>
+                  Browse source code
+                </a>
+                <div class="list-group list-group-transparent mb-0">
+                  <a href="../docs/index.html" class="list-group-item list-group-item-action">
+                    index
+                  </a>
+                  <a href="../docs/alerts.html" class="list-group-item list-group-item-action">
+                    Alerts
+                  </a>
+                  <a href="../docs/autosize.html" class="list-group-item list-group-item-action">
+                    Autosize
+                  </a>
+                  <a href="../docs/avatars.html" class="list-group-item list-group-item-action">
+                    Avatars
+                  </a>
+                  <a href="../docs/badges.html" class="list-group-item list-group-item-action">
+                    Badges
+                  </a>
+                  <a href="../docs/breadcrumb.html" class="list-group-item list-group-item-action">
+                    Breadcrumb
+                  </a>
+                  <a href="../docs/buttons.html" class="list-group-item list-group-item-action">
+                    Buttons
+                  </a>
+                  <a href="../docs/cards.html" class="list-group-item list-group-item-action">
+                    Cards
+                  </a>
+                  <a href="../docs/carousel.html" class="list-group-item list-group-item-action">
+                    Carousel
+                  </a>
+                  <a href="../docs/colors.html" class="list-group-item list-group-item-action">
+                    Colors
+                  </a>
+                  <a href="../docs/cursors.html" class="list-group-item list-group-item-action">
+                    Cursors
+                  </a>
+                  <a href="../docs/charts.html" class="list-group-item list-group-item-action active">
+                    Charts
+                  </a>
+                  <a href="../docs/divider.html" class="list-group-item list-group-item-action">
+                    Divider
+                  </a>
+                  <a href="../docs/empty.html" class="list-group-item list-group-item-action">
+                    Empty states
+                  </a>
+                  <a href="../docs/flags.html" class="list-group-item list-group-item-action">
+                    Flags
+                  </a>
+                  <a href="../docs/form-elements.html" class="list-group-item list-group-item-action">
+                    Form elements
+                  </a>
+                  <a href="../docs/form-helpers.html" class="list-group-item list-group-item-action">
+                    Form helpers
+                  </a>
+                  <a href="../docs/input-mask.html" class="list-group-item list-group-item-action">
+                    Form input mask
+                  </a>
+                  <a href="../docs/progress.html" class="list-group-item list-group-item-action">
+                    Progress
+                  </a>
+                  <a href="../docs/ribbons.html" class="list-group-item list-group-item-action">
+                    Ribbons
+                    <span class="badge bg-green ml-auto">New</span>
+                  </a>
+                  <a href="../docs/spinners.html" class="list-group-item list-group-item-action">
+                    Spinners
+                  </a>
+                  <a href="../docs/steps.html" class="list-group-item list-group-item-action">
+                    Steps
+                  </a>
+                  <a href="../docs/tables.html" class="list-group-item list-group-item-action">
+                    Tables
+                  </a>
+                  <a href="../docs/tabs.html" class="list-group-item list-group-item-action">
+                    Tabs
+                  </a>
+                  <a href="../docs/timelines.html" class="list-group-item list-group-item-action">
+                    Timelines
+                  </a>
+                  <a href="../docs/toasts.html" class="list-group-item list-group-item-action">
+                    Toasts
+                  </a>
+                  <a href="../docs/tooltips.html" class="list-group-item list-group-item-action">
+                    Tooltips
+                  </a>
+                  <a href="../docs/typography.html" class="list-group-item list-group-item-action">
+                    Typography
+                  </a>
+                </div>
+              </div>
+              <div class="col-lg-9">
+                <div class="card">
+                  <div class="card-body p-md-6 p-xl-7">
+                    <div class="markdown">
+                      <h2 class="h1 mt-0 mb-3">Charts
+                      </h2>
+                      <h3 id="c3js-charts">c3.js charts</h3>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-          </div>
-        </main>
+          </main>
+        </div>
       </div>
     </div>
-    <script>
-      window.tabler_colors = {
-      'blue': '#206bc4',
-      'azure': '#45aaf2',
-      'indigo': '#6574cd',
-      'purple': '#a55eea',
-      'pink': '#f66d9b',
-      'red': '#fa4654',
-      'orange': '#fd9644',
-      'yellow': '#f1c40f',
-      'lime': '#7bd235',
-      'green': '#5eba00',
-      'teal': '#2bcbba',
-      'cyan': '#17a2b8',
-      'gray': '#868e96',
-      };
-    </script>
-    <!-- Libs JS -->
-    <script src="../dist/libs/jquery/dist/jquery.min.js?1576401968"></script>
-    <script src="../dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js?1576401968"></script>
-    <script src="../dist/libs/autosize/dist/autosize.min.js?1576401968"></script>
-    <script src="../dist/libs/imask/dist/imask.min.js?1576401968"></script>
-    <script src="../dist/libs/selectize/dist/js/standalone/selectize.min.js?1576401968"></script>
-    <script src="../dist/libs/apexcharts/dist/apexcharts.min.js?1576401968"></script>
-    <script src="../dist/libs/jqvmap/dist/jquery.vmap.min.js?1576401968"></script>
-    <script src="../dist/libs/jqvmap/dist/maps/jquery.vmap.world.js?1576401968"></script>
-    <script src="../dist/libs/jqvmap/dist/maps/jquery.vmap.usa.js?1576401968"></script>
-    <script src="../dist/libs/jqvmap/dist/maps/continents/jquery.vmap.europe.js?1576401968"></script>
-    <script src="../dist/libs/peity/jquery.peity.min.js?1576401968"></script>
-    <script src="../dist/libs/selectize/dist/js/selectize.min.js?1576401968"></script>
-    <script src="../dist/libs/fullcalendar/core/main.min.js?1576401968"></script>
-    <script src="../dist/libs/fullcalendar/daygrid/main.min.js?1576401968"></script>
-    <script src="../dist/libs/fullcalendar/interaction/main.min.js?1576401968"></script>
-    <script src="../dist/libs/fullcalendar/timegrid/main.min.js?1576401968"></script>
-    <script src="../dist/libs/fullcalendar/list/main.min.js?1576401968"></script>
     <!-- Tabler Core -->
-    <script src="../dist/js/tabler.min.js?1576401968"></script>
+    <script src="../dist/js/tabler.min.js?1576701882"></script>
     <!-- Tabler Plugins -->
-    <script src="../dist/js/tabler-charts.min.js?1576401968"></script>
+    <script src="../dist/js/tabler-charts.min.js?1576701882"></script>
     <script>
       document.body.style.display = 'block';
     </script>

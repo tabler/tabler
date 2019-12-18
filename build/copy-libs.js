@@ -1,3 +1,14 @@
+if (!Array.prototype.flat) {
+	Object.defineProperty(Array.prototype, 'flat', {
+		value: function(depth = 1) {
+			return this.reduce(function (flat, toFlatten) {
+				return flat.concat((Array.isArray(toFlatten) && (depth>1)) ? toFlatten.flat(depth-1) : toFlatten);
+			}, []);
+		}
+	});
+}
+
+
 const all_libs = require('../pages/_data/libs'),
   path = require('path'),
   { exec } = require('child_process');
