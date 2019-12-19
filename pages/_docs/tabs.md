@@ -1,6 +1,7 @@
 ---
 title: Tabs
 menu: docs.tabs
+bootstrap-link: components/navs/
 ---
 
 ### Default markup

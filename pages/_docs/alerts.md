@@ -1,10 +1,10 @@
 ---
 title: Alerts
 menu: docs.alerts
+description: Bootstrap provides an easy way to create predefined alert messages.
+bootstrap-link: components/alerts/
 done: true
 ---
-
-Bootstrap provides an easy way to create predefined alert messages.
 
 ### Default markup
 

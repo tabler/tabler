@@ -2,6 +2,7 @@
 title: Typography
 menu: docs.typography
 description: Documentation and examples for common text utilities to control alignment, wrapping, weight, and more.
+bootstrap-link: content/typography/
 ---
 
 ### Headings
@@ -21,23 +22,23 @@ description: Documentation and examples for common text utilities to control ali
 ### Semantic text elements
 
 {% example %}
-<abbr title="Internationalization">I18N</abbr><hide> <code class="ml-2">abbr</code><br /></hide>
-<strong>Bold</strong><hide> <code class="ml-2">strong</code> <code>b</code><br /></hide>
-<cite>Citation</cite><hide> <code class="ml-2">cite</code><br /></hide>
-<code>Hello World!</code><hide> <code class="ml-2">code</code><br /></hide>
-<del>Deleted</del><hide> <code class="ml-2">del</code><br /></hide>
-<em>Emphasis</em><hide> <code class="ml-2">em</code><br /></hide>
-<i>Italic</i><hide> <code class="ml-2">i</code><br /></hide>
-<ins>Inserted</ins><hide> <code class="ml-2">ins</code><br /></hide>
-<kbd>Ctrl + S</kbd><hide> <code class="ml-2">kbd</code><br /></hide>
-<mark>Highlighted</mark><hide> <code class="ml-2">mark</code><br /></hide>
-<s>Strikethrough</s<hide>> <code class="ml-2">s</code><br /></hide>
-<samp>Sample</samp><hide> <code class="ml-2">samp</code><br /></hide>
-Text <sub>Subscripted</sub><hide> <code class="ml-2">sub</code><br /></hide>
-Text <sup>Superscripted</sup><hide> <code class="ml-2">sup</code><br /></hide>
-<time>20:00</time><hide> <code class="ml-2">time</code><br /></hide>
-<u>Underline</u><hide> <code class="ml-2">u</code><br /></hide>
-<var>x</var> = <var>y</var> + 2<hide> <code class="ml-2">var</code><br /></hide>
+<abbr title="Internationalization">I18N</abbr><hide> <code class="ml-2">abbr</code><br/></hide>
+<strong>Bold</strong><hide> <code class="ml-2">strong</code> <code>b</code><br/></hide>
+<cite>Citation</cite><hide> <code class="ml-2">cite</code><br/></hide>
+<code>Hello World!</code><hide> <code class="ml-2">code</code><br/></hide>
+<del>Deleted</del><hide> <code class="ml-2">del</code><br/></hide>
+<em>Emphasis</em><hide> <code class="ml-2">em</code><br/></hide>
+<i>Italic</i><hide> <code class="ml-2">i</code><br/></hide>
+<ins>Inserted</ins><hide> <code class="ml-2">ins</code><br/></hide>
+<kbd>Ctrl + S</kbd><hide> <code class="ml-2">kbd</code><br/></hide>
+<mark>Highlighted</mark><hide> <code class="ml-2">mark</code><br/></hide>
+<s>Strikethrough</s<hide>> <code class="ml-2">s</code><br/></hide>
+<samp>Sample</samp><hide> <code class="ml-2">samp</code><br/></hide>
+Text <sub>Subscripted</sub><hide> <code class="ml-2">sub</code><br/></hide>
+Text <sup>Superscripted</sup><hide> <code class="ml-2">sup</code><br/></hide>
+<time>20:00</time><hide> <code class="ml-2">time</code><br/></hide>
+<u>Underline</u><hide> <code class="ml-2">u</code><br/></hide>
+<var>x</var> = <var>y</var> + 2<hide> <code class="ml-2">var</code><br/></hide>
 {% endexample %}
 
 ### Horizontal rules
