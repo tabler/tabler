@@ -1,7 +1,7 @@
 {% assign data = site.data.charts[include.chart-id] %}
 {% assign id = include.id | default: include.chart-id %}
 {% assign height = include.height | default: 10 %}
-{% assign class = include.class | default: '' %}
+{% assign class = include.class %}
 
 {% if include['size'] == 'sm' %}
 {% assign class = class | append: ' chart-sm' | strip %}
@@ -9,8 +9,11 @@
 {% endif %}
 
 {% if data %}
-<div id="chart-{{ id }}" {% if class %} class="{{ class }}" {% endif %}{% if data.debug %}
-     style="outline: 1px solid red" {% endif %}></div>
+{% if data.extend %}
+{% assign data = site.data.charts[data.extend] | concat_objects: site.data.charts[include.chart-id] %}
+{% endif %}
+
+<div id="chart-{{ id }}" {% if class %} class="{{ class }}" {% endif %}{% if data.debug %} style="outline: 1px solid red" {% endif %}></div>
 
 {% append_lib apexcharts %}
 {% capture script %}
@@ -21,12 +24,10 @@
 		window.tabler_chart = window.tabler_chart || {};
 		{% endif %}
 
-		window.ApexCharts && ({% if jekyll.environment == 'development' %}
-		window.tabler_chart["chart-{{ include.chart-id }}"] = {% endif %}
-		new ApexCharts(document.getElementById('chart-{{ id }}'), {
+		window.ApexCharts && ({% if jekyll.environment == 'development' %}window.tabler_chart["chart-{{ include.chart-id }}"] = {% endif %}new ApexCharts(document.getElementById('chart-{{ id }}'), {
 			chart: {
 				type: "{{ data.type }}",
-				{% if data.title %}
+				{% if data.title or data.type == "bar" or data.type == "line" %}
 				fontFamily: 'inherit',
 				{% endif %}
 				height: {{ height | times: 16 }},
@@ -51,6 +52,20 @@
 				stacked: true,
 				{% endif %}
 			},
+
+			{% if data.type == 'bar' and data.horizontal %}
+			plotOptions: {
+				bar: {
+			 		horizontal: true,
+				}
+			},
+			{% endif %}
+
+			{% if data.datalabels %}
+			dataLabels: {
+				enabled: true,
+			},
+			{% endif %}
 
 			fill: {
 				opacity: {% if data.type == 'area' %}.16{% else %}1{% endif %},

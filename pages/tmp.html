@@ -3,13 +3,19 @@ tmp: true
 ---
 
 <div class="row">
-	<div class="col-md-6 col-lg-4">
-		<div class="card">
-			<div class="card-body">
-				{% include ui/chart.html chart-id="completion-tasks" height=15 %}
-			</div>
-		</div>
-	</div>
+
+  {% assign charts = 'completion-tasks,completion-tasks2,completion-tasks3,completion-tasks4,completion-tasks5,completion-tasks6,completion-tasks7' | split: ',' %}
+  {% for chart in charts %}
+  <div class="col-md-6 col-lg-4">
+    <div class="card">
+      <div class="card-body">
+        {% include ui/chart.html chart-id=chart height=15 %}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+
+
    <div class="col-12">
       <div class="card">
          <div class="card-body">
