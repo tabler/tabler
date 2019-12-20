@@ -20,12 +20,10 @@
   stroke-width: 1.5;
 }
 
-.icon-md {
-  font-size: 1.5rem;
-}
-
-.icon-lg {
-  font-size: 2rem;
+@each $icon, $value in $icons {
+  .icon-#{$icon}{
+    font-size: $value;
+  }
 }
 
 .icons-list {
@@ -52,7 +50,7 @@
   text-align: center;
   border-right: 1px solid $border-color;
   border-bottom: 1px solid $border-color;
-  transition: background 150ms;
+  transition: background .3s;
 
   i {
     font-size: 1.25rem;
@@ -64,9 +62,5 @@
     align-items: center;
     justify-content: center;
     color: $body-color;
-  }
-
-  &:hover{
-    background: darken($color: white, $amount: 5);
   }
 }
