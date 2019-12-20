@@ -3,16 +3,22 @@ tmp: true
 ---
 
 <div class="row">
+  <div class="col-md-6 col-xl-4">
+    {% include cards/small-stats.html chart-position="right" %}
+  </div>
 
-  {% assign charts = 'completion-tasks,completion-tasks2,completion-tasks3,completion-tasks4,completion-tasks5,completion-tasks6,completion-tasks7' | split: ',' %}
-  {% for chart in charts %}
-  <div class="col-md-6 col-lg-4">
+  {% for chart in site.data.charts %}
+  {% if chart[1].demo %}
+  <div class="col-md-6 col-xl-4">
     <div class="card">
       <div class="card-body">
-        {% include ui/chart.html chart-id=chart height=15 %}
+        {% assign chart-id = chart[0] %}
+        <p>{{ chart-id }}</p>
+        {% include ui/chart.html chart-id=chart-id height=15 %}
       </div>
     </div>
   </div>
+  {% endif %}
   {% endfor %}
 
 

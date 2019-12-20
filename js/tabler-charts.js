@@ -5,7 +5,7 @@
       const $this = $(this),
         data = $this.attr('data-spark'),
         color = $this.attr('data-spark-color') || 'blue',
-        bgColor = $this.attr('data-spark-color-bg') || 'blue',
+        bgColor = $this.attr('data-spark-color-bg') || 'blue-100',
         type = $this.attr('data-spark-type') || 'line';
 
       const $div = $('<div/>').html(data);
