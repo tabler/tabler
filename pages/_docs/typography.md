@@ -133,10 +133,10 @@ Utilities for controlling the tracking (letter spacing) of an element.
 Utilities for controlling the leading (line height) of an element.
 
 {% example %}
-<p class="leading-none">Lorem ipsum dolor sit amet.<br>Dolor sit amet.</p>
-<p class="leading-tight">Lorem ipsum dolor sit amet.<br>Dolor sit amet.</p>
-<p class="leading-normal">Lorem ipsum dolor sit amet.<br>Dolor sit amet.</p>
-<p class="leading-loose">Lorem ipsum dolor sit amet.<br>Dolor sit amet.</p>
+<p class="lh-1">Lorem ipsum dolor sit amet.<br>Dolor sit amet.</p>
+<p class="lh-sm">Lorem ipsum dolor sit amet.<br>Dolor sit amet.</p>
+<p class="lh-base">Lorem ipsum dolor sit amet.<br>Dolor sit amet.</p>
+<p class="lh-lg">Lorem ipsum dolor sit amet.<br>Dolor sit amet.</p>
 {% endexample %}
 
 ### Antialiasing

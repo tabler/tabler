@@ -2,23 +2,30 @@
 
 <!-- Page title actions -->
 <div class="col-auto ml-auto d-print-none">
-	{% if actions == 'users' %}
-		<div class="d-flex">
-			<input type="search" class="form-control d-inline-block w-9 mr-3" placeholder="Search user&hellip;"/>
-			{% include_cached ui/button.html text="New user" color="primary" icon="plus" %}
-		</div>
-	{% elsif actions == 'calendar' %}
-		<div class="d-flex">
-			{% include_cached ui/button.html text="Add event" color="primary" icon="plus" %}
-		</div>
-	{% elsif actions == 'breadcrumb' %}
-		<div class="d-flex">
-			{% include_cached ui/breadcrumb.html class="breadcrumb-alternate" %}
-		</div>
-	{% elsif actions == 'buttons' %}
-		<span class="d-none d-sm-inline">
+  {% if actions == 'users' %}
+  <div class="d-flex">
+    <input type="search" class="form-control d-inline-block w-9 mr-3" placeholder="Search user&hellip;"/>
+    {% include_cached ui/button.html text="New user" color="primary" icon="plus" %}
+  </div>
+  {% elsif actions == 'calendar' %}
+  <div class="d-flex">
+    {% include_cached ui/button.html text="Add event" color="primary" icon="plus" %}
+  </div>
+  {% elsif actions == 'photos' %}
+  <div class="d-flex">
+    <div class="mr-3">
+      {% include ui/form/input-icon.html %}
+    </div>
+    {% include_cached ui/button.html text="Add event" color="primary" icon="plus" %}
+  </div>
+  {% elsif actions == 'breadcrumb' %}
+  <div class="d-flex">
+    {% include_cached ui/breadcrumb.html class="breadcrumb-alternate" %}
+  </div>
+  {% elsif actions == 'buttons' %}
+  <span class="d-none d-sm-inline">
 			{% include_cached ui/button.html text="New view" color="secondary" icon="plus" %}
 		</span>
-		{% include_cached ui/button.html text="Create new report" color="primary" class="ml-3" %}
-	{% endif %}
+  {% include_cached ui/button.html text="Create new report" color="primary" class="ml-3" %}
+  {% endif %}
 </div>
