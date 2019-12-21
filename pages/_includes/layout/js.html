@@ -1,14 +1,12 @@
-<script>
-	window.tabler_colors = { {% for color in site.colors %}
-	'{{ color[0] }}': '{{ color[1].hex }}',{% endfor %}
-	};
-</script>
-
-{% if site.data.libs %}
-   <!-- Libs JS -->
-   {% for lib in site.data.libs.js %}
-   <script src="{{ site.base }}/{% if jekyll.environment == 'production' %}dist/libs{% else %}node_modules{% endif %}/{% if jekyll.environment == 'production' %}{{ lib | replace: '@', '' }}{% else %}{{ lib }}{% endif %}?{{ site.time | date: '%s' }}"></script>
-   {% endfor %}
+{% if site.data.libs.js and site.captured_libs %}
+<!-- Libs JS -->
+{% for lib in site.data.libs.js %}
+{% if site.captured_libs contains lib[0] or site.data.libs.global-libs contains lib[0] %}
+{% for file in lib[1] %}
+<script src="{{ site.base }}/{% if jekyll.environment == 'production' %}dist/libs{% else %}node_modules{% endif %}/{% if jekyll.environment == 'production' %}{{ file | replace: '@', '' }}{% else %}{{ file }}{% endif %}?{{ site.time | date: '%s' }}"></script>
+{% endfor %}
+{% endif %}
+{% endfor %}
 {% endif %}
 
 <!-- Tabler Core -->

@@ -1,7 +1,8 @@
 ---
 title: Progress
 description: A progress bar can be used to show a user how far along he is in a process.
-bootstrap-link: https://getbootstrap.com/docs/4.4/components/progress/
+bootstrap-link: components/progress/
+done: true
 ---
 
 ### Default markup
@@ -49,5 +50,8 @@ You can also use native HTML5 `<progress>` element.
 Customize the color of the progress bar. You can click [here]({% docs_url colors %}) to see the list of available colors.
 
 {% example %}
-{% include ui/progress.html size="sm" color="purple"%} 
+{% include ui/progress.html size="sm" color="red" class="mb-2" value=24 %} 
+{% include ui/progress.html size="sm" color="green" class="mb-2" value=45 %} 
+{% include ui/progress.html size="sm" color="purple" class="mb-2" value=64 %} 
+{% include ui/progress.html size="sm" color="pink" %} 
 {% endexample %}

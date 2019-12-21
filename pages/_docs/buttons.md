@@ -2,7 +2,7 @@
 title: Buttons
 icon: fe fe-plus-square
 description: Use Bootstrap’s custom button styles for actions in forms, dialogs, and more. Includes support for a handful of contextual variations, sizes, states, and more.
-bootstrap-link: https://getbootstrap.com/docs/4.4/components/buttons/
+bootstrap-link: components/buttons/
 done: true
 ---
 
@@ -115,7 +115,7 @@ Create block level buttons—those that span the full width of a parent—by add
 
 Basic buttons are traditional buttons with borders and background with an extra commponent like an icon. You can place it either on the left or the right which ever you want with different color opitons.
 
-Icons can be found [**here** {% include_cached ui/icon.html icon="search" class="icon-sm" %}](/docs/icons.html#icons)
+Icons can be found [**here**](/docs/icons.html#icons)
 
 {% example html wrapper=btn-list %}
 <button type="button" class="btn btn-dark">
@@ -204,30 +204,21 @@ Wrap the dropdown’s toggle (your button or link) and the dropdown menu within 
   <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
      {% include_cached ui/icon.html icon="calendar" class="icon-sm" %}
   </button>
-  <div class="dropdown-menu">
-    <a class="dropdown-item" href="#">Dropdown link</a>
-    <a class="dropdown-item" href="#">Dropdown link</a>
-  </div>
+  {% include_cached ui/dropdown-menu.html %}
 </div>
 
 <div class="dropdown">
   <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
      {% include_cached ui/icon.html icon="calendar" class="icon-sm" %}Show calendar
   </button>
-  <div class="dropdown-menu">
-    <a class="dropdown-item" href="#">Dropdown link</a>
-    <a class="dropdown-item" href="#">Dropdown link</a>
-  </div>
+  {% include_cached ui/dropdown-menu.html %}
 </div>
 
 <div class="dropdown">
   <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
      Show calendar
   </button>
-  <div class="dropdown-menu">
-    <a class="dropdown-item" href="#">Dropdown link</a>
-    <a class="dropdown-item" href="#">Dropdown link</a>
-  </div>
+  {% include_cached ui/dropdown-menu.html %}
 </div>
 {% endexample %}
 
@@ -297,9 +288,15 @@ Use the `.text-center` or the `.text-right` modifiers to alter the alignment.
 
 ### Button with avatar
 
-{% example html%}
-<a href="#" class="btn btn-secondary mr-2">{% include ui/avatar.html person-id="4" class="btn-avatar" %} Avatar</a>
-<a href="#" class="btn btn-secondary mr-2">{% include ui/avatar.html person-id="5" class="btn-avatar" %} Avatar</a>
-<a href="#" class="btn btn-secondary mr-2">{% include ui/avatar.html person-id="6" class="btn-avatar" %} Avatar</a>
+{% example html wrapper=btn-list %}
+<a href="#" class="btn btn-secondary">
+  {% include_cached ui/avatar.html person-id="4" %} Avatar
+</a>
+<a href="#" class="btn btn-secondary">
+  {% include_cached ui/avatar.html person-id="5" %} Avatar
+</a>
+<a href="#" class="btn btn-secondary">
+  {% include_cached ui/avatar.html person-id="6" %} Avatar
+</a>
 {% endexample %}
 

@@ -1,7 +1,7 @@
 ---
 title: Tabs
 menu: docs.tabs
-bootstrap-link: https://getbootstrap.com/docs/4.4/components/navs/
+bootstrap-link: components/navs/
 ---
 
 ### Default markup

@@ -2,7 +2,7 @@
 title: Carousel
 menu: docs.carousel
 description: The Carousel is a slideshow for cycling through elements.
-bootstrap-link: https://getbootstrap.com/docs/4.4/components/carousel/
+bootstrap-link: components/carousel/
 ---
 
 {% example html columns=1 %}

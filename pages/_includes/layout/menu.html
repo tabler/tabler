@@ -1,12 +1,10 @@
-{% removeemptylines %}
+{% assign current-page = page.menu | default: layout.menu | split: '.' %}
 <ul class="navbar-nav flex-wrap{% if include.class %} {{ include.class }}{% endif %}">
-   {% assign current-page = page.menu | default: layout.menu | split: '.' %}
-
    {% for level-1 in site.data.menu %}
    {% assign icon = level-1[1].icon %}
 
    {% assign has-children = false %}
-   {% if level-1[1].children or level-1[1].docs %}
+   {% if level-1[1].children %}
       {% assign has-children = true %}
    {% endif %}
 
@@ -31,23 +29,6 @@
 
       {% if has-children %}
       <div class="dropdown-menu">
-         {% if level-1[1].docs %}
-         {% for d in site.data.docs %}
-         {% assign doc = site.docs | where: "slug", d.page | first %}
-         {% if doc %}
-         <a class="dropdown-item{% if current-page[0] == 'docs' and current-page[1] == doc.slug %} active{% endif %}{% if level-1[1].children %} dropdown{% endif %}">
-            <span class="nav-text">
-               {{ doc.title }}
-
-               {% if doc.new %}
-               <span class="badge bg-primary text-white ml-auto text-uppercase">new</span>
-               {% endif %}
-            </span>
-         </a>
-         {% endif %}
-         {% endfor %}
-         {% endif %}
-
          {% for level-2 in level-1[1].children %}
          <a class="dropdown-item" {% if level-2[1].children %}href="#sidebar-{{ level-2[0] }}" data-toggle="dropdown" role="button" aria-expanded="false" {% else %}href="{{ site.base }}/{{ level-2[1].url }}" {% endif %}>
             <span class="nav-text">
@@ -63,4 +44,3 @@
    </li>
    {% endfor %}
 </ul>
-{% endremoveemptylines %}
