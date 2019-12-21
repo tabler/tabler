@@ -69,21 +69,25 @@ module Jekyll
     end
 
 
-    def tabler_js_color(color)
-      color = color.split('-')
-
-      if color.size == 2
-        'tabler.colorVariation("'+ color[0] + '", "'+ color[1] + '")'
-      else
-        'tabler.colors["'+ color[0] + '"]'
-      end
-    end
-
     def replace_regex(input, reg_str, repl_str)
       re = Regexp.new reg_str
 
       input.gsub re, repl_str
     end
+
+    def hex_to_rgb(color)
+      r, g, b = color.match(/^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/).captures
+      "rgb(#{r.hex}, #{g.hex}, #{b.hex})"
+    end
+
+    def tabler_color(color, variation = false)
+      if variation
+        color = color + '-' + variation
+      end
+
+      Jekyll.sites.first.data['colors'][color]
+    end
+
   end
 end
 

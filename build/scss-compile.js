@@ -21,7 +21,7 @@ glob("scss/tabler*.scss", {}, function (er, files) {
         outFile: `dist/css/${basename}.css`,
         sourceMap: true,
         sourceMapContents: true,
-        precision: 6,
+        precision: 7,
         importer: packageImporter()
       },
       (error, result) => {

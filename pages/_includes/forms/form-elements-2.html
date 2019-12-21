@@ -1,38 +1,31 @@
 <div class="mb-3">
    <label class="form-label">Username</label>
-   {% include ui/input-group.html prepend="@" placeholder="username" %}
+   {% include ui/form/input-group.html prepend="@" placeholder="username" %}
 </div>
 
 <div class="mb-3">
    <label class="form-label">Subdomain</label>
-   {% include ui/input-group.html append=".tabler.io" placeholder="subdomain" %}
+   {% include ui/form/input-group.html append=".tabler.io" placeholder="subdomain" %}
 </div>
 
 <div class="mb-3">
    <label class="form-label">Your vanity URL</label>
-   {% include ui/input-group.html prepend="https://example.com/users/" %}
+   {% include ui/form/input-group.html prepend="https://example.com/users/" %}
 </div>
 
 <div class="mb-3">
    <label class="form-label">Price</label>
-   {% include ui/input-group.html prepend="$" append=".00" %}
+   {% include ui/form/input-group.html prepend="$" append=".00" %}
 </div>
 
 <div class="mb-3">
    <label class="form-label">Button input</label>
    <div class="input-group">
       <div class="input-group-prepend">
-         <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
-                 aria-haspopup="true" aria-expanded="false">
+         <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             Action
          </button>
-         <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
-            <div role="separator" class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Separated link</a>
-         </div>
+	      {% include_cached ui/dropdown-menu.html %}
       </div>
       <input type="text" class="form-control" aria-label="Text input with dropdown button">
    </div>

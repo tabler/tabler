@@ -1,13 +1,15 @@
-{% if site.data.libs %}
-   <!-- Libs CSS -->
-   {% for lib in site.data.libs.css %}
-   <link href="{{ site.base }}/{% if jekyll.environment == 'production' %}dist/libs{% else %}node_modules{% endif %}/{% if jekyll.environment == 'production' %}{{ lib | replace: '@', '' }}{% else %}{{ lib }}{% endif %}?{{ site.time | date: '%s' }}" rel="stylesheet" />
-   {% endfor %}
+{% if site.data.libs.css %}
+<!-- Libs CSS -->
+{% for lib in site.data.libs.css %}
+{% for file in lib[1] %}
+<link href="{{ site.base }}/{% if jekyll.environment == 'production' %}dist/libs{% else %}node_modules{% endif %}/{% if jekyll.environment == 'production' %}{{ file | replace: '@', '' }}{% else %}{{ file }}{% endif %}?{{ site.time | date: '%s' }}" rel="stylesheet"/>
+{% endfor %}
+{% endfor %}
 {% endif %}
 
 <!-- Tabler Core -->
-<link href="{{ site.base }}/dist/css/tabler{% if jekyll.environment == 'production' %}.min{% endif %}.css?{{ site.time | date: '%s' }}" rel="stylesheet" />
+<link href="{{ site.base }}/dist/css/tabler{% if jekyll.environment == 'production' %}.min{% endif %}.css?{{ site.time | date: '%s' }}" rel="stylesheet"/>
 
 <!-- Tabler Plugins -->
-<link href="{{ site.base }}/dist/css/tabler-flags{% if jekyll.environment == 'production' %}.min{% endif %}.css?{{ site.time | date: '%s' }}" rel="stylesheet" />
-<link href="{{ site.base }}/dist/css/tabler-charts{% if jekyll.environment == 'production' %}.min{% endif %}.css?{{ site.time | date: '%s' }}" rel="stylesheet" />
+<link href="{{ site.base }}/dist/css/tabler-flags{% if jekyll.environment == 'production' %}.min{% endif %}.css?{{ site.time | date: '%s' }}" rel="stylesheet"/>
+<link href="{{ site.base }}/dist/css/tabler-charts{% if jekyll.environment == 'production' %}.min{% endif %}.css?{{ site.time | date: '%s' }}" rel="stylesheet"/>
