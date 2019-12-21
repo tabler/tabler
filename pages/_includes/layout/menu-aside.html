@@ -18,11 +18,11 @@
 			{% assign badge-color = level-1[1].badge-color | default: 'green' %}
 			{% include ui/badge.html text=badge color=badge-color %}
 			{% endif %}
-		</a>
 
-		{% comment %}
-		<div class="sidebar-nav-title">{{ level-1[1].title }}</div>
-		{% endcomment %}
+        {% if level-1[1].children %}
+        <span class="sidebar-nav-arrow"></span>
+        {% endif %}
+		</a>
 
 		{% if level-1[1].children %}
 		<ul class="sidebar-subnav">

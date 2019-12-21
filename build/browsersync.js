@@ -13,13 +13,12 @@ bs.init({
     routes: {
       '/': 'tmp',
       '/dist': 'tmp-dist',
-      '/dist/fonts': 'fonts',
       '/libs': 'static/libs',
       '/img': 'static/img',
       '/node_modules': 'node_modules',
     },
   },
-  files: ['tmp/**/*', 'dist/css/*.css', 'dist/js/*.js'],
+  files: ['tmp/**/*', 'tmp-dist/css/*.css', 'tmp-dist/js/*.js'],
   watchOptions: {
     ignoreInitial: true,
   },
