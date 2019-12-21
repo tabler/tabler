@@ -65,21 +65,6 @@ $(document).ready(function() {
   }
 
   /*
-  Autosize plugin
-   */
-  if (window.autosize) {
-    (function() {
-      const elements = document.querySelectorAll('[data-toggle="autosize"]');
-
-      if (elements.length) {
-        elements.forEach(function(element) {
-          autosize(element);
-        });
-      }
-    })();
-  }
-
-  /*
   Imask plugin
    */
   if (window.IMask) {
