@@ -1,182 +1,380 @@
-/**
-Layout
- */
-@mixin menu-side {
-  align-items: flex-start;
-}
+//sidenav
+$sidenav-width: 16.25rem;
+$sidenav-width-folded: 4rem;
+$sidenav-bg: $white;
+$sidenav-border-color: $border-color-alpha;
+$sidenav-dark-bg: $dark;
+$sidenav-padding: 1.25rem;
+$sidenav-breakpoint-show: 'sm';
+$sidenav-breakpoint-folded: 'lg';
+$sidenav-folded-item-height: 3.5rem;
 
-@mixin menu-collapsed {
-  .layout-area-menu {
-    position: fixed;
-    left: -($sidenav-width);
-    top: 0;
-    bottom: 0;
-    background: $dark;
-    color: $white;
-    width: $sidenav-width;
-    z-index: $zindex-fixed;
-    transition: .3s left;
+@mixin sidebar-folded($breakpoint-folded) {
+  @if $breakpoint-folded {
 
-    @include menu-side;
-  }
+    @include media-breakpoint-down($breakpoint-folded) {
+      width: $sidenav-width-folded;
 
-  .layout-area-menu-backdrop {
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: 100vw;
-    background: rgba($dark, .1);
-    z-index: $zindex-fixed - 1;
-    visibility: hidden;
-    opacity: 0;
-  }
+      .sidebar-brand {
+        width: $sidenav-width-folded;
+      }
 
-  .layout-toggler {
-    display: block;
-  }
+      .sidebar-content {
+        padding: 0;
+        overflow: visible;
+      }
 
-  @at-root body.aside-visible & {
-    .layout-area-menu {
-      left: 0;
-    }
+      .sidebar-nav {
+        margin: 0;
 
-    .layout-area-menu-backdrop {
-      opacity: 1;
-      visibility: visible;
-    }
-  }
-}
+        > .sidebar-nav-item {
+          position: relative;
+          white-space: nowrap;
 
-.layout {
-  position: relative;
-  display: grid;
+          &:hover {
+            background: $primary;
+            width: $sidenav-width;
 
-  grid-template: "head" auto "menu" auto "main" auto /
-    100%;
-}
+            > .sidebar-nav-link {
+              color: #fff;
 
-.layout-collapsed {
-  @each $breakpoint in map-keys($grid-breakpoints) {
-    $infix: breakpoint-infix($breakpoint);
+              > span {
+                display: block;
+              }
 
-    @if $infix != '' {
-      @include media-breakpoint-down($breakpoint) {
+              .icon {
+                margin-right: add(1rem, $sidenav-padding);
+              }
+            }
 
-        &#{$infix} {
-          @include menu-collapsed;
+            .sidebar-subnav {
+              display: block;
+
+              .sidebar-nav-link {
+                padding-left: $sidenav-padding;
+              }
+            }
+          }
+
+          > .sidebar-nav-link {
+            min-height: $sidenav-folded-item-height;
+            padding: 0 1rem !important;
+            position: relative;
+
+            .icon {
+              margin: 0;
+              width: 2rem;
+              height: 1.125rem;
+            }
+
+            >span {
+              display: none;
+            }
+
+            .badge {
+              display: block;
+              position: absolute;
+              left: 2.5rem;
+              top: 1rem;
+
+              text-indent: -99999px;
+              width: $badge-empty-size;
+              height: $badge-empty-size;
+              padding: 0;
+            }
+          }
         }
       }
-    } @else {
-      @include menu-collapsed;
+
+      .sidebar-subnav {
+        display: none;
+        position: absolute;
+        top: $sidenav-folded-item-height;
+        left: $sidenav-width-folded;
+        right: 0;
+        padding: .5rem 0;
+        background: $dark;
+        box-shadow: -6px 0px 16px -10px rgba(0, 0, 0, 0.2), $box-shadow;
+      }
+
+      .sidebar-nav-title {
+        display: none;
+      }
     }
   }
 }
 
-.layout-sidebar {
-  @each $breakpoint in map-keys($grid-breakpoints) {
-    $infix: breakpoint-infix($breakpoint);
+@mixin sidebar-show($breakpoint-show) {
+  @include media-breakpoint-down($breakpoint-show) {
+    display: none;
+  }
+}
 
-    @include media-breakpoint-up($breakpoint) {
-      .layout-toggler {
+
+/**
+Topnav
+ */
+.topnav {
+  border-bottom: 1px solid;
+  background-color: $navbar-bg;
+  border-color: $navbar-border-color;
+
+  @media print {
+    display: none;
+  }
+
+  .navbar {
+    margin: 0;
+    padding: 0;
+    min-height: $navbar-height;
+  }
+
+  .navbar-brand-logo {
+    &-sm {
+      display: none;
+    }
+
+    @include media-breakpoint-down($sidenav-breakpoint-show) {
+      &-lg {
         display: none;
       }
 
-      &#{$infix} {
-        grid-template: "menu head" auto "menu main" auto /
-          auto 1fr;
-
-        .layout-area-menu {
-          width: $sidenav-width;
-        }
-      }
-
-      &-folded#{$infix} {
-        grid-template: "menu head" auto "menu main" auto /
-          auto 1fr;
-
-        .layout-area-menu {
-          width: $sidenav-folded-width;
-        }
+      &-sm {
+        display: block;
       }
     }
   }
 }
 
-.layout-toggler {
-  display: none;
-  width: 2rem;
+/**
+Topbar
+ */
+.topbar {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  padding: 0 .5rem;
+  z-index: $zindex-sticky;
+  min-height: $navbar-height;
+
+  & + & {
+    top: add($navbar-height, 1px);
+  }
+
+  & + & + & {
+    top: add($navbar-height * 2, 2px);
+  }
+
+  .sidebar + .content & {
+    left: $sidenav-width;
+
+    @if $sidenav-breakpoint-folded {
+      @include media-breakpoint-down($sidenav-breakpoint-folded) {
+        left: $sidenav-width-folded;
+      }
+    }
+
+    @include media-breakpoint-down($sidenav-breakpoint-show) {
+      left: 0;
+      padding: 0;
+    }
+  }
+}
+
+.topbar-fixed {
+  position: fixed;
+  z-index: $zindex-fixed;
+}
+
+/**
+Wrapper
+ */
+.wrapper {
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
+}
+
+/**
+Content
+ */
+.content {
+  overflow: hidden;
+  min-height: 100vh;
+  padding: 0 .5rem 0;
+
+  .sidebar + & {
+    margin-left: $sidenav-width;
+
+    @if $sidenav-breakpoint-folded {
+      @include media-breakpoint-down($sidenav-breakpoint-folded) {
+        margin-left: $sidenav-width-folded;
+      }
+    }
+
+    @include media-breakpoint-down($sidenav-breakpoint-show) {
+      margin-left: 0;
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+}
+
+.content-page {
+  @media print {
+    padding-top: 0 !important;
+  }
+
+  .topbar + & {
+    padding-top: add($navbar-height, 1px);
+  }
+
+  .topbar + .topbar + & {
+    padding-top: add($navbar-height * 2, 2px);
+  }
+
+  .topbar + .topbar + .topbar + & {
+    padding-top: add($navbar-height * 3, 3px);
+  }
+}
+
+/**
+Sidebar
+ */
+.sidebar {
+  width: $sidenav-width;
+  position: fixed;
+  z-index: $zindex-fixed;
+  padding: 0;
+  background: $sidenav-bg;
+  box-shadow: inset -1px 0 $sidenav-border-color;
+  top: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+
+  @include sidebar-folded($sidenav-breakpoint-folded);
+  @include sidebar-show($sidenav-breakpoint-show);
+}
+
+.sidebar-brand {
+  display: block;
+  text-align: center;
+
+  line-height: $navbar-height;
+  width: $sidenav-width;
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.sidebar-brand-logo {
   height: 2rem;
-  cursor: pointer;
-  position: relative;
-  opacity: .8;
 
-  &-icon {
-    top: 50%;
-    left: 50%;
-    display: block;
-    margin-top: -2px;
-    margin-left: -.75rem;
+  &-sm {
+    display: none;
+  }
 
-    transition-timing-function: cubic-bezier(.55, .055, .675, .19);
-    transition-duration: 75ms;
-
-    &,
-    &:after,
-    &:before {
-      content: '';
-      width: 1.5rem;
-      height: 2px;
-      background: currentColor;
-      position: absolute;
-      border-radius: 4px;
-    }
-
-    &:before {
-      top: -.5rem;
-      transition: top 75ms ease .12s, opacity 75ms ease;
-    }
-
-    &:after {
-      bottom: -.5rem;
-      transition: bottom 75ms ease .12s, transform 75ms cubic-bezier(.55, .055, .675, .19);
-    }
-
-    @at-root body.aside-visible & {
-      transform: rotate(45deg);
-      transition-delay: .12s;
-      transition-timing-function: cubic-bezier(.215, .61, .355, 1);
-
-      &:before {
-        top: 0;
-        transition: top 75ms ease, opacity 75ms ease .12s;
-        opacity: 0;
+  @if $sidenav-breakpoint-folded {
+    @include media-breakpoint-down($sidenav-breakpoint-folded) {
+      &-sm {
+        display: inline-block;
       }
 
-      &:after {
-        bottom: 0;
-        transition: bottom 75ms ease, transform 75ms cubic-bezier(.215, .61, .355, 1) .12s;
-        transform: rotate(-90deg);
+      &-lg {
+        display: none;
       }
     }
   }
 }
 
-.layout-area-topnav {
-  grid-area: head;
-  padding-left: 0;
-  padding-right: 0;
+.sidebar-content {
+  padding: $sidenav-padding;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: auto;
+  @include scrollbar(true);
+
+  .sidebar-brand + & {
+    margin-top: $navbar-height;
+  }
 }
 
-.layout-area-menu {
-  grid-area: menu;
+/**
+Sidebar menu
+ */
+.sidebar-nav {
+  margin: (-$sidenav-padding) (-$sidenav-padding) $sidenav-padding;
+  padding: 0;
+  list-style: none;
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
 }
 
-.layout-area-menu-backdrop {
-  display: none;
+.sidebar-nav-link {
+  padding: .5rem $sidenav-padding;
+  transition: .3s color, .3s background-color;
+  color: inherit;
+  display: flex;
+  align-items: center;
+
+  .sidebar-nav-item .sidebar-nav-item & {
+    padding-left: add(1.5rem, $sidenav-padding);
+  }
+
+  .sidebar-nav-item .sidebar-nav-item .sidebar-nav-item & {
+    padding-left: add(3rem, $sidenav-padding);
+  }
+
+  &:hover {
+    background-color: rgba(#fff, .02);
+    text-decoration: none;
+    color: #fff;
+  }
+
+  &.active {
+    opacity: 1;
+    color: #fff;
+    box-shadow: inset 3px 0 $primary;
+    background-color: rgba(#fff, .01);
+  }
+
+  .icon {
+    width: 1rem;
+    margin-right: .5rem;
+  }
+
+  .badge {
+    margin-left: auto;
+  }
 }
 
-.layout-area-main {
-  grid-area: main;
+.sidebar-nav-title {
+  @include subheader(false);
+  color: inherit;
+  opacity: .8;
+  padding: $sidenav-padding $sidenav-padding .5rem;
+
+  &:not(:first-child) {
+    margin-top: .5rem;
+  }
+}
+
+/**
+Sidebar dark
+ */
+.sidebar-dark {
+  background: $sidenav-dark-bg;
+  color: $text-muted;
+  box-shadow: none;
+
+  .sidebar-brand {
+    filter: brightness(0) invert(1);
+  }
 }
