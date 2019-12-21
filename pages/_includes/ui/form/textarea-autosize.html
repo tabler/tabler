@@ -1,2 +1,19 @@
 {% append_lib autosize %}
+
 <textarea class="form-control" data-toggle="autosize" placeholder="{{ include.placeholder | default: 'Typing something&hellip;' }}"></textarea>
+
+{% capture_once scripts %}
+<script>
+	if (window.autosize) {
+		(function () {
+			const elements = document.querySelectorAll('[data-toggle="autosize"]');
+
+			if (elements.length) {
+				elements.forEach(function (element) {
+					autosize(element);
+				});
+			}
+		})();
+	}
+</script>
+{% endcapture_once %}
