@@ -97,6 +97,10 @@ $sidenav-folded-item-height: 3.5rem;
         box-shadow: -6px 0px 16px -10px rgba(0, 0, 0, 0.2), $box-shadow;
       }
 
+      .sidebar-nav-arrow {
+        display: none !important;
+      }
+
       .sidebar-nav-title {
         display: none;
       }
@@ -294,7 +298,7 @@ Sidebar
   flex: 1;
   display: flex;
   flex-direction: column;
-  overflow: auto;
+  overflow-y: scroll;
   @include scrollbar(true);
 
   .sidebar-brand + & {
@@ -309,6 +313,7 @@ Sidebar menu
   margin: (-$sidenav-padding) (-$sidenav-padding) $sidenav-padding;
   padding: 0;
   list-style: none;
+  user-select: none;
 
   ul {
     margin: 0;
@@ -356,18 +361,17 @@ Sidebar menu
 }
 
 .sidebar-nav-arrow {
-  outline: 1px solid green;
   display: block;
+
   margin-left: auto;
   @include caret(right);
+
+  .sidebar-nav-link[aria-expanded="true"] &:after {
+    transform: rotate(-45deg);
+  }
 }
 
 .sidebar-subnav {
-  display: none;
-
-  .sidebar-nav-item.active & {
-    display: block;
-  }
 }
 
 .sidebar-nav-title {
