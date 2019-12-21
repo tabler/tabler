@@ -80,6 +80,14 @@ module Jekyll
       "rgb(#{r.hex}, #{g.hex}, #{b.hex})"
     end
 
+    def concat_objects(object, object2)
+      if object and object2 and object.is_a?(Hash) and object2.is_a?(Hash)
+        return object.merge(object2)
+      end
+
+      object
+    end
+
     def tabler_color(color, variation = false)
       if variation
         color = color + '-' + variation
