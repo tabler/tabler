@@ -2,6 +2,11 @@
 {% assign id = 0 | random_id %}
 {% assign color = include.color | default: 'blue' %}
 
+{% assign data = include.data %}
+{% if include.percentage %}
+	{% assign data = include.percentage | append: "/100" %}
+{% endif %}
+
 {% append_lib peity %}
 
 <div class="chart-sparkline{% if type == 'pie' %} chart-sparkline-square{% endif %}{% if include.wide %} chart-sparkline-wide{% endif %}" id="sparkline-{{ id }}"></div>
@@ -9,14 +14,14 @@
 {% capture_global scripts %}
 <script>
 	document.addEventListener("DOMContentLoaded", function () {
-		$().peity && $('#sparkline-{{ id }}').text("{{ include.data }}").peity("{{ type | default: 'bar' }}", {
+		$().peity && $('#sparkline-{{ id }}').text("{{ data }}").peity("{{ type | default: 'bar' }}", {
 			width: {% if type == 'pie' %}40{% else %}64{% endif %},
 			height: 40,
 			stroke: "{{ color | tabler_color }}",
 			strokeWidth: 2,
-			fill: {% if type == 'pie' %}["{{ color | default: 'blue' | tabler_color }}", "{{ 'border-color' | tabler_color }}"]{% elsif type == 'bar' %}["{{ color | tabler_color }}"]{% else %}"transparent"{% endif %},
+			fill: {% if type == 'pie' %}["{{ color | default: 'blue' | tabler_color }}", "{{ 'gray-200' | tabler_color }}"]{% elsif type == 'bar' %}["{{ color | tabler_color }}"]{% else %}"transparent"{% endif %},
 			padding: .2,
-			innerRadius: 16,
+			innerRadius: 17,
 		});
 	});
 </script>
