@@ -1,0 +1,44 @@
+{% assign current-page = page.menu | default: layout.menu | split: '.' %}
+
+<ul class="sidebar-nav">
+	<li class="sidebar-nav-title">Navigation</li>
+	{% for level-1 in site.data.menu %}
+	<li class="sidebar-nav-item">
+
+		<a{% unless level-1[1].children %} href="{{ site.base }}/{{ level-1[1].url }}"{% endunless %} class="sidebar-nav-link{% if level-1[0] == current-page[0] and current-page.size == 1 %} active{% endif %}" {% if level-1[1].children %}data-toggle="collapse" data-target="#sidebar-menu-{{ level-1[0] }}"{% if level-1[0] == current-page[0] %} aria-expanded="true"{% endif %}{% endif %}>
+			{% if level-1[1].icon %}
+				{% assign icon = level-1[1].icon %}
+				{% include ui/icon.html icon=icon class="nav-icon" %}
+			{% endif %}
+
+			<span class="nav-text">{{ level-1[1].title }}</span>
+
+			{% if level-1[1].badge %}
+			{% assign badge = level-1[1].badge %}
+			{% assign badge-color = level-1[1].badge-color | default: 'green' %}
+			{% include ui/badge.html text=badge color=badge-color %}
+			{% endif %}
+
+        {% if level-1[1].children %}
+        <span class="sidebar-nav-arrow"></span>
+        {% endif %}
+		</a>
+
+		{% if level-1[1].children %}
+		<ul class="sidebar-subnav collapse{% if level-1[0] == current-page[0] %} show{% endif %}" id="sidebar-menu-{{ level-1[0] }}">
+			{% for level-2 in level-1[1].children %}
+			<li class="sidebar-nav-item">
+				<a href="{{ site.base }}/{{ level-2[1].url }}" class="sidebar-nav-link{% if level-1[0] == current-page[0] and level-2[0] == current-page[1] and current-page.size == 2 %} active{% endif %}">
+					<span>{{ level-2[1].title }}</span>
+					{% if level-2[1].badge %}
+					{% assign badge = level-2[1].badge %}
+					{% include ui/badge.html text=badge color="green" %}
+					{% endif %}
+				</a>
+			</li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+	</li>
+	{% endfor %}
+</ul>

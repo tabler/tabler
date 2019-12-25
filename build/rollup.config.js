@@ -8,6 +8,7 @@
 'use strict';
 
 const BUNDLE  = process.env.BUNDLE === 'true';
+const dir = BUNDLE ? 'dist' : 'tmp-dist';
 
 import path from 'path';
 import babel from 'rollup-plugin-babel';
@@ -34,16 +35,18 @@ if (BUNDLE) {
   ]);
 }
 
+
+
 module.exports = {
   context: "window",
   input: {
     tabler: path.resolve(__dirname, '../js/tabler.js'),
-    'tabler-charts': path.resolve(__dirname, '../js/tabler-charts.js'),
+    // 'tabler-charts': path.resolve(__dirname, '../js/tabler-charts.js'),
   },
   output: {
     banner,
     // name: 'tabler',
-    dir: path.resolve(__dirname, `../dist/js/`),
+    dir: path.resolve(__dirname, `../${dir}/js/`),
     entryFileNames: BUNDLE ? '[name].min.js' : '[name].js',
     format: 'cjs'
   },

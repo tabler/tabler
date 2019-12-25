@@ -1,3 +1,9 @@
+$enable-social-colors: true !default;
+$enable-ghost-buttons: true !default;
+$enable-color-hues: true !default;
+$enable-extra-colors: true !default;
+$enable-gradients: false !default;
+
 // FONTS
 $google-font: "Source Sans Pro" !default;
 
@@ -8,8 +14,8 @@ $font-family-serif: "Georgia", "Times New Roman", times, serif !default;
 $icon-fonts: () !default;
 
 // COLORS
-$full-black: rgba(0, 0, 0, 1) !default;
-$full-white: rgba(255, 255, 255, 1) !default;
+$theme-color-interval: 10% !default;
+
 $light-black: rgba(0, 0, 0, .4) !default;
 $light-white: rgba(255, 255, 255, .4) !default;
 $min-black: rgba(135, 150, 165, .032) !default;
@@ -78,16 +84,6 @@ $social-colors: (
   "tabler": #206bc4
 ) !default;
 
-$status-colors: (
-  "primary": $blue,
-  "secondary": $gray-600,
-  "success": $green,
-  "info": $cyan,
-  "warning": $yellow,
-  "danger": $red,
-  "dark": $dark,
-) !default;
-
 $colors: (
   "blue": $blue,
   "azure": $azure,
@@ -108,31 +104,36 @@ $colors: (
 ) !default;
 
 $avatar-sizes: (
-  "sm": 1.25rem,
+  "sm": 2rem,
   "md": 3rem,
   "lg": 4.5rem,
   "xl": 6rem
 ) !default;
 
 //Fonts
-$font-size-base: 1rem !default;
-$font-weight-base: 400 !default;
-$line-height-base: 1.6 !default;
+$font-size-base: .9375rem !default;
+$font-weight-bold: 600 !default;
 $body-letter-spacing: null !default;
 
+$line-height-base: 1.6 !default;
+$line-height-sm: 1.3333334 !default;
+$line-height-lg: 2 !default;
+
+$border-width: 1px !default;
+$border-width-wide: 2px !default;
 $border-radius: 3px !default;
 
 //Typography
-$headings-font-weight: 600 !default;
+$headings-font-weight: $font-weight-bold !default;
 
 $small-font-size: 87.5% !default;
 
-$h1-font-size: (26rem / 16) !default;
-$h2-font-size: (21rem / 16) !default;
-$h3-font-size: (18rem / 16) !default;
-$h4-font-size: (16rem / 16) !default;
-$h5-font-size: (14rem / 16) !default;
-$h6-font-size: (12rem / 16) !default;
+$h1-font-size: (26em / 15) !default;
+$h2-font-size: (23em / 15) !default;
+$h3-font-size: (18em / 15) !default;
+$h4-font-size: (15em / 15) !default;
+$h5-font-size: (13em / 15) !default;
+$h6-font-size: (11em / 15) !default;
 
 $blockquote-font-size: $h4-font-size !default;
 
@@ -179,14 +180,6 @@ $sizes-percentage: (
 ) !default;
 
 
-
-$enable-social-colors: true !default;
-$enable-ghost-buttons: true !default;
-$enable-color-hues: true !default;
-$enable-extra-colors: true !default;
-
-$enable-gradients: false !default;
-
 $container-max-widths: (
   sm: 540px,
   md: 720px,
@@ -195,7 +188,7 @@ $container-max-widths: (
 ) !default;
 
 //alerts
-$alert-link-font-weight: 600 !default;
+$alert-link-font-weight: $font-weight-bold !default;
 
 //breadcrumb
 $breadcrumb-variants: (
@@ -205,39 +198,40 @@ $breadcrumb-variants: (
 ) !default;
 
 //badges
-$badge-font-weight: 500 !default;
+$badge-font-weight: $font-weight-bold !default;
+$badge-empty-size: .5rem !default;
 
 //buttons
-$input-btn-line-height: 1.5 !default;
-$input-btn-font-size: 15px !default;
+$input-btn-line-height: (22/15) !default;
+$input-btn-font-size: $font-size-base !default;
 
-$input-btn-font-size-sm: 12px !default;
-$input-btn-padding-x-sm: 6px !default;
-$input-btn-padding-y-sm: 1px !default;
+$input-btn-font-size-sm: $h5-font-size !default;
+$input-btn-padding-x-sm: .5rem !default;
+$input-btn-padding-y-sm: .125rem !default;
 
-$input-btn-font-size-lg: 20px !default;
-$input-btn-padding-x-lg: 20px !default;
-$input-btn-padding-y-lg: 8px !default;
+$input-btn-font-size-lg: $h2-font-size !default;
+$input-btn-padding-x-lg: 1.5rem !default;
+$input-btn-padding-y-lg: .5rem !default;
 
 $input-height: null !default;
 $input-height-sm: null !default;
 $input-height-lg: null !default;
 
 $btn-padding-x: 1rem !default;
-$btn-font-weight: 500 !default;
+$btn-font-weight: $font-weight-bold !default;
 $btn-border-radius: 3px !default;
 
 //cards
-$card-border-color: $border-color !default;
+$card-border-color: $border-color-alpha !default;
 $card-border-radius: $border-radius !default;
 $card-cap-bg: $min-black !default;
 
 $card-active-border-color: $primary !default;
-$card-status-size: 2px !default;
+$card-status-size: $border-width-wide !default;
 $card-group-margin: 1.5rem !default;
 
 $card-shadow: rgba($dark, .04) 0 2px 4px 0 !default;
-$card-shadow-hover: rgba($dark, .08) 0 2px 12px 0 !default;
+$card-shadow-hover: rgba($dark, .16) 0 2px 16px 0 !default;
 
 //close
 $close-font-weight: 400 !default;
@@ -245,32 +239,33 @@ $close-font-size: 1.5rem !default;
 
 //dropdown
 $dropdown-item-padding-x: 1rem !default;
-$dropdown-font-size: $h5-font-size !default;
+$dropdown-font-size: $h4-font-size !default;
 $dropdown-divider-bg: $border-color-alpha !default;
 $dropdown-padding-y: .5rem !default;
 $dropdown-link-hover-bg: $hover-bg !default;
 $dropdown-link-hover-color: inherit !default;
+$dropdown-spacer: 1px !default;
 
 //grid
 $grid-gutter-width: 1.5rem !default;
-$grid-breakpoints: (
-  xs: 0,
-  sm: 576px,
-  md: 768px,
-  lg: 992px,
-  xl: 1280px
-) !default;
 
 //loader
 $loader-size: 2.5rem !default;
 
 //navbar
 $navbar-bg: $white !default;
-$navbar-border-color: $border-color !default;
-$navbar-border-color: $border-color !default;
+$navbar-height: 3.5rem !default;
+$navbar-border-color: $border-color-alpha !default;
 
 //nav
-$nav-link-padding-y: .25rem !default;
+$nav-link-padding-y: 1rem !default;
+
+$navbar-padding-x: .75rem !default;
+$navbar-padding-y: .75rem !default;
+$navbar-nav-link-padding-x: .75rem !default;
+$navbar-light-color: $text-muted !default;
+$navbar-light-active-color: $primary !default;
+$navbar-light-hover-color: $body-color !default;
 
 //pagination
 $pagination-border-width: 0 !default;
@@ -281,20 +276,7 @@ $pagination-bg: transparent !default;
 $pagination-disabled-bg: transparent !default;
 $pagination-disabled-color: rgba($text-muted, .5) !default;
 
-//sidenav
-$sidenav-width: 16rem !default;
-$sidenav-folded-width: 4rem !default;
-$sidenav-bg: $white !default;
-$sidenav-border-color: $border-color-alpha !default;
-$sidenav-dark-bg: $dark !default;
-$sidenav-link-padding-x: .75rem !default;
 
-$navbar-padding-x: .75rem !default;
-$navbar-padding-y: .75rem !default;
-$navbar-nav-link-padding-x: .75rem !default;
-$navbar-light-color: $text-muted !default;
-$navbar-light-active-color: $primary !default;
-$navbar-light-hover-color: $body-color !default;
 
 //steps
 $steps-border-width: 2px !default;
@@ -340,16 +322,22 @@ $input-border-radius: $border-radius !default;
 
 
 //Forms
-$form-check-input-width: 1em !default;
+$form-check-input-width: 1rem !default;
+$form-check-padding-left: $form-check-input-width + .5rem !default;
+$form-check-input-bg: $white !default;
 $form-check-input-border: 1px solid $border-color !default;
 $form-check-input-border-radius: $border-radius !default;
 $form-check-input-checked-bg-size: .75rem !default;
 
+$form-switch-width: 1.75rem !default;
+$form-switch-padding-left: $form-switch-width + .5rem !default;
+
 $form-range-track-height: .25rem !default;
 
-$form-feedback-icon-valid: str-replace(url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='" + $green + "' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-check'><polyline points='20 6 9 17 4 12'></polyline></svg>"), "#", "%23") !default;
-$form-feedback-icon-invalid: str-replace(url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='" + $red + "' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' class='feather feather-x'><line x1='18' y1='6' x2='6' y2='18'></line><line x1='6' y1='6' x2='18' y2='18'></line></svg>"), "#", "%23") !default;
+$form-feedback-icon-valid: str-replace(url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='" + $green + "' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'></polyline></svg>"), "#", "%23") !default;
+$form-feedback-icon-invalid: str-replace(url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='" + $red + "' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><line x1='18' y1='6' x2='6' y2='18'></line><line x1='6' y1='6' x2='18' y2='18'></line></svg>"), "#", "%23") !default;
 
+$caret-width: .32em !default;
 
 //Flags
 $generate-flags: true !default;

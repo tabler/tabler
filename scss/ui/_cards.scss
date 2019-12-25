@@ -2,6 +2,11 @@
   margin-bottom: $card-group-margin;
   box-shadow: $card-shadow;
 
+  @media print {
+    border: none;
+    box-shadow: none;
+  }
+
   @at-root a#{&} {
     color: inherit;
     transition: .3s box-shadow;
@@ -15,7 +20,7 @@
 
 .card-sm {
   .card-body {
-    padding: .75rem;
+    padding: map-get($spacers, 3);
   }
 }
 
@@ -154,6 +159,7 @@
   font-size: $h3-font-size;
   font-weight: $headings-font-weight;
   color: $headings-color;
+  line-height: (24/18);
 
   @at-root a#{&}:hover {
     color: inherit;
@@ -172,6 +178,10 @@
 }
 
 .card-body {
+  @media print {
+    padding: 0;
+  }
+
   > :last-child {
     margin-bottom: 0;
   }

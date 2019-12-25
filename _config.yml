@@ -1,12 +1,14 @@
 source: pages
 destination: tmp
 
-version: 1.0-alpha
+version: v1.0.0-alpha
 title: Tabler
 description: Premium and Open Source dashboard template with responsive and high quality UI.
 github_url: https://github.com/tabler/tabler
 
-debug: true
+debug: false
+
+dark-theme: false
 
 plugins:
 - jekyll-random
@@ -50,21 +52,29 @@ collections:
 defaults:
   -
     scope:
-      type: pages
+      type: "pages"
+      path: "*.md"
+    values:
+      layout: markdown
+      menu-layout: vertical
+
+  - scope:
+      type: "pages"
     values:
       layout: default
-      nav-position: top
+      menu-layout: vertical
   -
     scope:
-      type: docs
+      type: "docs"
     values:
       layout: docs
-      nav-position: top
+      menu-layout: vertical
   -
     scope:
-      type: components
+      type: "components"
     values:
       layout: component
+      menu-layout: vertical
 
 
 colors:

@@ -1,5 +1,6 @@
 ---
 title: Form Elements
+bootstrap-link: components/forms/
 ---
 
 ### Classic Input
@@ -59,14 +60,7 @@ title: Form Elements
 
 ### Select
 {% example %}
-<div class="mb-2">
-   <label class="form-label">Country</label>
-   <select class="form-select">
-      <option value="">Germany</option>
-      <option value="">USA</option>
-      <option value="">Poland</option>
-   </select>
-</div>
+{% include parts/select.html options="Germany,USA,Poland" %}
 {% endexample %}
 
 ### Textarea
@@ -127,24 +121,7 @@ title: Form Elements
 
 ### Sample form
 {% example %}
-<fieldset class="form-fieldset">
-	<div class="mb-2">
-		<label class="form-label">Full name<span class="form-required">*</span></label>
-		<input type="text" class="form-control"/>
-	</div>
-	<div class="mb-2">
-		<label class="form-label">Company<span class="form-required">*</span></label>
-		<input type="text" class="form-control"/>
-	</div>
-	<div class="mb-2">
-		<label class="form-label">Email<span class="form-required">*</span></label>
-		<input type="email" class="form-control"/>
-	</div>
-	<div class="mb-2 mb-0">
-		<label class="form-label">Phone number</label>
-		<input type="tel" class="form-control"/>
-	</div>
-</fieldset>
+{% include parts/form-fieldset.html %}
 {% endexample %}
 
 ### Input group
@@ -190,39 +167,29 @@ title: Form Elements
 
 ### Separated inputs
 {% example %}
-<div class="mb-2">
-   <label class="form-label">Separated inputs</label>
-   <div class="row row-xs">
-      <div class="col">
-         <input type="text" class="form-control" placeholder="Search for&hellip;">
-      </div>
-      <span class="col-auto">
-        <button class="btn btn-secondary btn-icon" type="button" style="height:100%">{% include_cached ui/icon.html icon="search" %}</button>
-      </span>
-   </div>
-</div>
+{% include parts/input-icon-separated.html %}
 {% endexample %}
 
 ### Custom Input examples
 {% example %}
 <div class="mb-2">
    <label class="form-label">Username</label>
-   {% include ui/input-group.html prepend="@" placeholder="username" %}
+   {% include ui/form/input-group.html prepend="@" placeholder="username" %}
 </div>
 
 <div class="mb-2">
    <label class="form-label">Subdomain</label>
-   {% include ui/input-group.html append=".tabler.io" placeholder="subdomain" %}
+   {% include ui/form/input-group.html append=".tabler.io" placeholder="subdomain" %}
 </div>
 
 <div class="mb-2">
    <label class="form-label">Your vanity URL</label>
-   {% include ui/input-group.html prepend="https://example.com/users/" %}
+   {% include ui/form/input-group.html prepend="https://example.com/users/" %}
 </div>
 
 <div class="mb-2">
    <label class="form-label">Price</label>
-   {% include ui/input-group.html prepend="$" append=".00" %}
+   {% include ui/form/input-group.html prepend="$" append=".00" %}
 </div>
 {% endexample %}
 
