@@ -3,8 +3,7 @@
 		<table class="table table-hover table-outline table-vcenter text-nowrap card-table">
 			<thead>
 			<tr>
-				<th class="text-center w-1"><i class="icon-people"></i></th>
-				<th>User</th>
+				<th colspan="2">User</th>
 				<th>Usage</th>
 				<th class="text-center">Payment</th>
 				<th>Activity</th>
@@ -14,15 +13,15 @@
 			</thead>
 			<tbody>
 
-            {% for person in site.data.people limit: 8 offset: 50 %}
+			{% for person in site.data.people limit: 8 offset: 50 %}
 			{% assign percentage = forloop.index | random_number %}
 			{% assign time_offset = forloop.index | random_number: 0, 800 %}
-            {% assign register_offset = forloop.index | random_number: 0, 8000000 %}
-			{% assign percentage_color = percentage | number_color%}
-			
+			{% assign register_offset = forloop.index | random_number: 0, 8000000 %}
+			{% assign percentage_color = percentage | number_color %}
+
 			<tr>
-				<td class="text-center">
-                    {% include ui/avatar.html person-id=person.id status="success"%}
+				<td class="text-center w-1p">
+					{% include ui/avatar.html person-id=person.id %}
 				</td>
 				<td>
 					<div>{{ person.full_name }}</div>
@@ -39,9 +38,9 @@
 							<small class="text-muted">Jun 11, 2015 - Jul 10, 2015</small>
 						</div>
 					</div>
-                    {% include ui/progress.html value=percentage size="sm" color=percentage_color %}
+					{% include ui/progress.html value=percentage size="sm" color=percentage_color %}
 
-                </td>
+				</td>
 				<td class="text-center">
 					{% capture payment %}
 					{%- cycle 'visa', 'googlewallet', 'mastercard', 'shopify', 'ebay', 'paypal' -%}
@@ -54,33 +53,20 @@
 				</td>
 				<td class="text-center">
 					{% assign circle-percentage = forloop.index | random_number: 0, 100 %}
-					<div class="mx-auto chart-circle chart-circle-xs" data-value="{{ circle-percentage | divide: 100 }}" data-thickness="3" data-color="blue">
+					<div class="mx-auto chart-circle chart-circle-xs" data-value="{{ circle-percentage | divide: 100 }}"
+					     data-thickness="3" data-color="blue">
 						<div class="chart-circle-value">{{ circle-percentage }}%</div>
 					</div>
 				</td>
 				<td class="text-center">
-					<span class="dropdown cursor-pointer">
+					<div class="dropdown">
 						<a class="btn-icon mx-2" data-toggle="dropdown">
-							{% include_cached ui/icon.html icon="more-vertical" use-svg=true class="icon-sm2" %}
+							{% include_cached ui/icon.html icon="more-vertical" %}
 						</a>
-						<div class="dropdown-menu">
-							<a class="dropdown-item" href="#">
-								{% include_cached ui/icon.html icon="tag" use-svg=true class="icon-sm2" %}Action
-							</a>
-							<a class="dropdown-item" href="#">
-								{% include_cached ui/icon.html icon="edit-2" use-svg=true class="icon-sm2" %}Another action
-							</a>
-							<a class="dropdown-item" href="#">
-								{% include_cached ui/icon.html icon="message-square" use-svg=true class="icon-sm2" %}Something else here
-							</a>
-							<div class="dropdown-divider"></div>
-							<a class="dropdown-item" href="#">
-								{% include_cached ui/icon.html icon="link" use-svg=true class="icon-sm2" %}Separated link
-							</a>
-						</div>
-					</span>
+						{% include ui/dropdown-menu.html %}
+					</div>
 				</td>
-            </tr>
+			</tr>
 			{% endfor %}
 			</tbody>
 		</table>

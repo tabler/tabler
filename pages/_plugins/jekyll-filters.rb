@@ -50,7 +50,7 @@ module Jekyll
 
       if value >= 75
         'green'
-      elsif value >= 60
+      elsif value >= 30
         'yellow'
       else
         'red'
