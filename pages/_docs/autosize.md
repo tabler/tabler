@@ -10,8 +10,4 @@ done: true
 {% example html %}
 <label class="form-label">Autosize example</label>
 {% include ui/form/textarea-autosize.html %}
-{% include ui/form/textarea-autosize.html %}
-{% include ui/form/textarea-autosize.html %}
-{% include ui/form/textarea-autosize.html %}
-{% include ui/form/textarea-autosize.html %}
 {% endexample %}

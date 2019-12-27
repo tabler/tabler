@@ -22,6 +22,7 @@ bs.init({
   watchOptions: {
     ignoreInitial: true,
   },
+  reloadDelay: 1000,
   notify: false,
   open: false,
   snippetOptions: {
