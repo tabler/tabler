@@ -4,10 +4,19 @@ page-title: Music components
 menu: base.music
 ---
 
-<div class="card">
-	{% for track in site.data.tracks %}
-		<div class="card-body">
-			{{ track.name }}
+<div class="row">
+	<div class="col-lg-8">
+		{% include_cached cards/music/tracks-list.html %}
+	</div>
+	<div class="col-lg-4">
+		<h3 class="mb-3">Top tracks</h3>
+
+		<div class="row">
+			{% for i in (8..13) %}
+			<div class="col-md-6 col-lg-12">
+				{% include cards/music/track-info.html track-id=i %}
+			</div>
+			{% endfor %}
 		</div>
-	{% endfor %}
+	</div>
 </div>
