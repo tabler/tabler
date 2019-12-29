@@ -1,9 +1,10 @@
 {% removeemptylines %}
 {% assign spinner-class = false %}
+{% assign color = include.color | default: 'secondary' %}
 {% assign provider = include.provider | default: 'fe' %}
 {% if include.text %}{% assign spinner-class="mr-2" %}{% endif %}
 {% assign e = include.element | default: 'a' %}
-<{{ e }}{% if e == 'a' %} href="{% if include.href %}{{ site.base }}/{{ include.href }}{% else %}#{% endif %}"{% endif %}{% if include.type %} type="{{ include.type }}"{% endif %} class="btn{% if include.height %} btn-{{ include.height }}{% endif %}{% if include.color %} btn-{% if include.outline %}outline-{% endif %}{{ include.color }}{% endif %}{% if include.disabled %} disabled{% endif %}{% if include.square %} btn-square{% endif %}{% if include.pill %} btn-pill{% endif %}{% if include['size'] %} btn-{{ include['size'] }}{% endif %}{% if include.class %} {{ include.class }}{% endif %}{% if include.block %} btn-block{% endif %}{% if include.link %} btn-link{% endif %}{% if include.icon-only %} btn-icon{% endif %}">
+<{{ e }}{% if e == 'a' %} href="{% if include.href %}{{ site.base }}/{{ include.href }}{% else %}#{% endif %}"{% endif %}{% if include.type %} type="{{ include.type }}"{% endif %} class="btn{% if include.height %} btn-{{ include.height }}{% endif %}{% if color %} btn-{% if include.outline %}outline-{% endif %}{{ color }}{% endif %}{% if include.disabled %} disabled{% endif %}{% if include.square %} btn-square{% endif %}{% if include.pill %} btn-pill{% endif %}{% if include['size'] %} btn-{{ include['size'] }}{% endif %}{% if include.class %} {{ include.class }}{% endif %}{% if include.block %} btn-block{% endif %}{% if include.link %} btn-link{% endif %}{% if include.icon-only %} btn-icon{% endif %}">
 {% if include.spinner %}
 {% include ui/spinner.html color=false size="sm" class=spinner-class element="span" %}{% endif %}
 {% if include.icon %}{% include_cached ui/icon.html icon=include.icon use-svg=true %}{% endif %}

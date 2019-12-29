@@ -96,6 +96,19 @@ module Jekyll
       Jekyll.sites.first.data['colors'][color]
     end
 
+    def seconds_to_minutes(seconds)
+      p "seconds_to_minutes"
+      seconds = seconds.to_i.round
+
+      minutes = (seconds / 60).round
+      seconds = seconds - (minutes * 60)
+
+      minutes.to_s.rjust(2, '0') + ":" + seconds.to_s.rjust(2, '0')
+    end
+
+    def miliseconds_to_minutes(miliseconds)
+      seconds_to_minutes(miliseconds.to_i / 1000)
+    end
   end
 end
 
