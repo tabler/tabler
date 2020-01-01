@@ -97,7 +97,6 @@ module Jekyll
     end
 
     def seconds_to_minutes(seconds)
-      p "seconds_to_minutes"
       seconds = seconds.to_i.round
 
       minutes = (seconds / 60).round
