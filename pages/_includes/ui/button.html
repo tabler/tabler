@@ -1,6 +1,9 @@
 {% removeemptylines %}
 {% assign spinner-class = false %}
 {% assign color = include.color | default: 'secondary' %}
+{% if include.color == false %}
+{% assign color = null %}
+{% endif %}
 {% assign provider = include.provider | default: 'fe' %}
 {% if include.text %}{% assign spinner-class="mr-2" %}{% endif %}
 {% assign e = include.element | default: 'a' %}
