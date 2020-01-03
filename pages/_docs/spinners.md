@@ -44,9 +44,9 @@ done: true
 ### Buttons
 
 {% example html wrapper=btn-list %}
-{% include_cached ui/button.html spinner=true text="Button" color="primary" %}
-{% include_cached ui/button.html spinner=true text="Button" color="danger" %}
-{% include_cached ui/button.html spinner=true text="Button" color="warning" %}
-{% include_cached ui/button.html spinner=true color="success" %}
-{% include_cached ui/button.html spinner=true color="secondary" %}
+{% include ui/button.html spinner=true text="Button" color="primary" %}
+{% include ui/button.html spinner=true text="Button" color="danger" %}
+{% include ui/button.html spinner=true text="Button" color="warning" %}
+{% include ui/button.html spinner=true color="success" %}
+{% include ui/button.html spinner=true color="secondary" %}
 {% endexample %}
