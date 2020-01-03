@@ -27,7 +27,7 @@ Use any of the available button classes to quickly create a styled button . We p
 {% for button in site.button-variants %}
 {% assign btn-color = button[1].class %}
 {% assign btn-title = button[1].title %}
-{% include_cached ui/button.html color=btn-color text=btn-title %}
+{% include ui/button.html color=btn-color text=btn-title %}
 {% endfor %}
 {% endexample %}
 
@@ -39,7 +39,7 @@ Make buttons look inactive by adding the disabled boolean attribute to any `.btn
 {% for button in site.button-variants %}
 {% assign btn-color = button[1].class %}
 {% assign btn-title = button[1].title %}
-{% include_cached ui/button.html color=btn-color text=btn-title disabled=true %}
+{% include ui/button.html color=btn-color text=btn-title disabled=true %}
 {% endfor %}
 {% endexample %}
 
@@ -62,7 +62,7 @@ Add `.btn-square` to button to remove border-radius.
 {% for button in site.button-variants %}
 {% assign btn-color = button[1].class %}
 {% assign btn-title = button[1].title %}
-{% include_cached ui/button.html color=btn-color text=btn-title square=true %}
+{% include ui/button.html color=btn-color text=btn-title square=true %}
 {% endfor %}
 {% endexample %}
 
@@ -74,7 +74,7 @@ Add `.btn-pill` class to any button to make them more rounded.
 {% for button in site.button-variants %}
 {% assign btn-color = button[1].class %}
 {% assign btn-title = button[1].title %}
-{% include_cached ui/button.html color=btn-color text=btn-title pill=true %}
+{% include ui/button.html color=btn-color text=btn-title pill=true %}
 {% endfor %}
 {% endexample %}
 
@@ -86,7 +86,7 @@ In need of a button, but not the hefty background colors they bring? Replace the
 {% for button in site.button-variants %}
 {% assign btn-color = button[1].class %}
 {% assign btn-title = button[1].title %}
-{% include_cached ui/button.html text=btn-title color=btn-color outline=true %}
+{% include ui/button.html text=btn-title color=btn-color outline=true %}
 {% endfor %}
 {% endexample %}
 
@@ -119,27 +119,27 @@ Icons can be found [**here**](/docs/icons.html#icons)
 
 {% example html wrapper=btn-list %}
 <button type="button" class="btn btn-dark">
-{% include_cached ui/icon.html icon="upload" class="icon-sm" %}
+{% include ui/icon.html icon="upload" class="icon-sm" %}
 Upload
 </button>
 <button type="button" class="btn btn-warning">
-{% include_cached ui/icon.html icon="heart" class="icon-sm" %}
+{% include ui/icon.html icon="heart" class="icon-sm" %}
 I like
 </button>
 <button type="button" class="btn btn-success">
-{% include_cached ui/icon.html icon="check" class="icon-sm" %}
+{% include ui/icon.html icon="check" class="icon-sm" %}
 I agree
 </button>
 <button type="button" class="btn btn-outline-primary">
-{% include_cached ui/icon.html icon="plus" class="icon-sm" %}
+{% include ui/icon.html icon="plus" class="icon-sm" %}
 More
 </button>
 <button type="button" class="btn btn-danger">
-{% include_cached ui/icon.html icon="link" class="icon-sm" %}
+{% include ui/icon.html icon="link" class="icon-sm" %}
 Link
 </button>
 <button type="button" class="btn btn-info">
-{% include_cached ui/icon.html icon="message-circle" class="icon-sm" %}
+{% include ui/icon.html icon="message-circle" class="icon-sm" %}
 Comment
 </button>
 {% endexample %}
@@ -153,7 +153,7 @@ A button can be formatted to link to a social website
 {% assign btn-icon = button[1].icon %}
 {% assign btn-title = button[1].title %}
 {% assign btn-color = button[0] %}
-{% include_cached ui/button.html color=btn-color icon=btn-icon text=btn-title %}
+{% include ui/button.html color=btn-color icon=btn-icon text=btn-title %}
 {% endfor %}
 {% endexample %}
 
@@ -163,7 +163,7 @@ You can use only icons.
 {% for button in site.socials %}
 {% assign btn-icon = button[1].icon %}
 {% assign btn-color = button[0] %}
-{% include_cached ui/button.html color=btn-color icon=btn-icon icon-only=true %}
+{% include ui/button.html color=btn-color icon=btn-icon icon-only=true %}
 {% endfor %}
 {% endexample %}
 
@@ -173,25 +173,25 @@ Icon only button. Add `.btn-icon` class to remove unnecessary padding from butto
 
 {% example html wrapper=btn-list %} 
 <button type="button" class="btn btn-icon btn-primary">
-{% include_cached ui/icon.html icon="activity" class="icon-sm" %}
+{% include ui/icon.html icon="activity" class="icon-sm" %}
 </button>
 <button type="button" class="btn btn-icon btn-primary btn-github">
-{% include_cached ui/icon.html icon="github" class="icon-sm" %}
+{% include ui/icon.html icon="github" class="icon-sm" %}
 </button>
 <button type="button" class="btn btn-icon btn-primary btn-success">
-{% include_cached ui/icon.html icon="bell" class="icon-sm" %}
+{% include ui/icon.html icon="bell" class="icon-sm" %}
 </button>
 <button type="button" class="btn btn-icon btn-primary btn-warning">
-{% include_cached ui/icon.html icon="star" class="icon-sm" %}
+{% include ui/icon.html icon="star" class="icon-sm" %}
 </button>
 <button type="button" class="btn btn-icon btn-primary btn-danger">
-{% include_cached ui/icon.html icon="trash-2" class="icon-sm" %}
+{% include ui/icon.html icon="trash-2" class="icon-sm" %}
 </button>
 <button type="button" class="btn btn-icon btn-primary btn-purple">
-{% include_cached ui/icon.html icon="bar-chart" class="icon-sm" %}
+{% include ui/icon.html icon="bar-chart" class="icon-sm" %}
 </button>
 <button type="button" class="btn btn-icon btn-primary btn-secondary">
-{% include_cached ui/icon.html icon="git-merge" class="icon-sm" %}
+{% include ui/icon.html icon="git-merge" class="icon-sm" %}
 </button>
 {% endexample %}
 
@@ -202,23 +202,23 @@ Wrap the dropdown’s toggle (your button or link) and the dropdown menu within 
 {% example html wrapper=btn-list %}
 <div class="dropdown">
   <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
-     {% include_cached ui/icon.html icon="calendar" class="icon-sm" %}
+     {% include ui/icon.html icon="calendar" class="icon-sm" %}
   </button>
-  {% include_cached ui/dropdown-menu.html %}
+  {% include ui/dropdown-menu.html %}
 </div>
 
 <div class="dropdown">
   <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
-     {% include_cached ui/icon.html icon="calendar" class="icon-sm" %}Show calendar
+     {% include ui/icon.html icon="calendar" class="icon-sm" %}Show calendar
   </button>
-  {% include_cached ui/dropdown-menu.html %}
+  {% include ui/dropdown-menu.html %}
 </div>
 
 <div class="dropdown">
   <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
      Show calendar
   </button>
-  {% include_cached ui/dropdown-menu.html %}
+  {% include ui/dropdown-menu.html %}
 </div>
 {% endexample %}
 
@@ -229,7 +229,7 @@ Add `.btn-loading` to use a loading state on a button. The width of the button d
 Since the loading spinner is implemented using the `:after` pseudo-element, it is not supported by the `<input type="submit">` element.
 
 {% example html wrapper=btn-list %}
-{% include_cached ui/button.html color="primary" text="Button" spinner=true %}
+{% include ui/button.html color="primary" text="Button" spinner=true %}
 {% endexample %}
 
 ### List of buttons
@@ -290,13 +290,13 @@ Use the `.text-center` or the `.text-right` modifiers to alter the alignment.
 
 {% example html wrapper=btn-list %}
 <a href="#" class="btn btn-secondary">
-  {% include_cached ui/avatar.html person-id="4" %} Avatar
+  {% include ui/avatar.html person-id="4" %} Avatar
 </a>
 <a href="#" class="btn btn-secondary">
-  {% include_cached ui/avatar.html person-id="5" %} Avatar
+  {% include ui/avatar.html person-id="5" %} Avatar
 </a>
 <a href="#" class="btn btn-secondary">
-  {% include_cached ui/avatar.html person-id="6" %} Avatar
+  {% include ui/avatar.html person-id="6" %} Avatar
 </a>
 {% endexample %}
 

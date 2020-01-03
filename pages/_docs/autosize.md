@@ -9,5 +9,5 @@ done: true
 
 {% example html %}
 <label class="form-label">Autosize example</label>
-<textarea class="form-control" data-toggle="autosize" placeholder="Typing something&hellip;"></textarea>
+{% include ui/form/textarea-autosize.html %}
 {% endexample %}

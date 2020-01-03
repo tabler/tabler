@@ -6,30 +6,32 @@
   "scripts": {
     "start": "npm-run-all clean css-main js-compile-standalone --parallel browsersync watch",
     "start-incremental": "npm-run-all clean css-main js-compile-standalone --parallel browsersync watch-incremental",
-    "build": "npm-run-all clean html-build css js assets-copy",
+    "build": "BUNDLE=true npm-run-all clean-build html-build css-build js-compile-bundle js-libs-bundle assets-copy-build",
     "bundlesize": "bundlesize",
     "browsersync": "node build/browsersync.js",
-    "assets-copy": "mkdir -p demo/dist && cp -R dist/* demo/dist/ && cp -R static/* demo/",
+    "assets-copy-build": "mkdir -p demo/dist && cp -R dist/* demo/dist/ && cp -R static/* demo/",
     "html-build": "JEKYLL_ENV=production bundle exec jekyll build --destination demo",
     "lint": "npm-run-all --parallel js-lint css-lint",
-    "clean": "rm -rf dist && mkdir dist && mkdir dist/css && mkdir dist/js",
+    "clean": "rm -rf tmp-dist && mkdir tmp-dist && mkdir tmp-dist/css && mkdir tmp-dist/js",
+    "clean-build": "rm -rf dist && mkdir dist && mkdir dist/css && mkdir dist/js",
     "css": "npm-run-all css-compile css-prefix css-minify",
+    "css-build": "npm-run-all css-compile css-prefix-build css-minify-build",
     "css-compile": "node build/scss-compile.js",
-    "css-prefix": "postcss --config build/postcss.config.js --replace \"dist/css/*.css\" \"!dist/css/*.min.css\"",
-    "css-minify": "for i in dist/css/tabler*.css;do echo $i; N=`echo $i | sed -e 's/^dist\\/css\\///g' | sed -e 's/\\\\.css//g'`; echo $N; cleancss --level 1 --format breakWith=lf --source-map --source-map-inline-sources --output dist/css/$N.min.css dist/css/$N.css; done",
+    "css-prefix": "postcss --config build/postcss.config.js --replace \"tmp-dist/css/*.css\" \"!tmp-dist/css/*.min.css\"",
+    "css-prefix-build": "postcss --config build/postcss.config.js --replace \"dist/css/*.css\" \"!dist/css/*.min.css\"",
+    "css-minify": "for i in tmp-dist/css/tabler*.css;do echo $i; N=`echo $i | sed -e 's/^dist\\/css\\///g' | sed -e 's/\\\\.css//g'`; echo $N; cleancss --level 1 --format breakWith=lf --source-map --source-map-inline-sources --output tmp-dist/css/$N.min.css tmp-dist/css/$N.css; done",
+    "css-minify-build": "for i in dist/css/tabler*.css;do echo $i; N=`echo $i | sed -e 's/^dist\\/css\\///g' | sed -e 's/\\\\.css//g'`; echo $N; cleancss --level 1 --format breakWith=lf --source-map --source-map-inline-sources --output dist/css/$N.min.css dist/css/$N.css; done",
     "css-lint": "stylelint \"scss/**/*.scss\" --cache --cache-location .cache/.stylelintcache",
     "css-main": "npm-run-all css-compile css-prefix",
-    "css-main-build": "npm-run-all css-lint css-compile css-prefix css-minify",
+    "css-main-build": "npm-run-all css-lint css-compile css-prefix-build css-minify",
     "watch": "npm-run-all --parallel watch-css watch-js watch-html",
     "watch-incremental": "npm-run-all --parallel watch-css watch-js watch-html-incremental",
     "watch-css": "nodemon --watch scss/ --ext scss --exec \"npm run css-main\"",
     "watch-js": "nodemon --watch js/ --ext js --exec \"npm run js-compile-standalone\"",
     "watch-html": "JEKYLL_ENV=development bundle exec jekyll build --watch",
     "watch-html-incremental": "JEKYLL_ENV=development bundle exec jekyll build --watch --incremental",
-    "js": "npm-run-all --sequential js-compile js-libs",
-    "js-libs": "rm -rf dist/libs && mkdir dist/libs && node build/copy-libs.js",
+    "js-libs-bundle": "rm -rf dist/libs && mkdir dist/libs && node build/copy-libs.js",
     "js-lint": "eslint --cache --cache-location .cache/.eslintcache js build/",
-    "js-compile": "npm-run-all --sequential js-compile-*",
     "js-compile-standalone": "rollup --environment BUNDLE:false --config build/rollup.config.js --sourcemap",
     "js-compile-bundle": "rollup --environment BUNDLE:true --config build/rollup.config.js --sourcemap",
     "svg-svgo": "svgo -f svg/fe --pretty && svgo -f svg/brand --pretty",
@@ -70,15 +72,15 @@
   "main": "dist/js/tabler.js",
   "homepage": "https://tabler.io",
   "devDependencies": {
-    "@babel/preset-env": "7.7.6",
+    "@babel/preset-env": "7.7.7",
     "browser-sync": "2.26.7",
     "bundlesize": "0.18.0",
     "clean-css-cli": "4.3.0",
     "cross-env": "6.0.3",
-    "eslint": "6.7.2",
+    "eslint": "6.8.0",
     "eslint-config-xo": "0.27.2",
     "eslint-plugin-import": "2.19.1",
-    "eslint-plugin-unicorn": "14.0.1",
+    "eslint-plugin-unicorn": "15.0.1",
     "glob": "7.1.6",
     "http-server": "0.12.0",
     "icon-font-generator": "2.1.10",
@@ -87,7 +89,7 @@
     "nodemon": "2.0.2",
     "npm-run-all": "4.1.5",
     "postcss-cli": "6.1.3",
-    "rollup": "1.27.13",
+    "rollup": "1.27.14",
     "rollup-plugin-babel": "4.3.3",
     "rollup-plugin-babel-minify": "9.1.1",
     "rollup-plugin-commonjs": "10.1.0",
@@ -97,7 +99,7 @@
     "stylelint": "12.0.0",
     "stylelint-config-twbs-bootstrap": "1.0.0",
     "svgo": "1.3.2",
-    "terser": "4.4.2",
+    "terser": "4.4.3",
     "yaml": "1.7.2"
   },
   "dependencies": {
@@ -106,9 +108,9 @@
     "@fullcalendar/interaction": "4.3.0",
     "@fullcalendar/list": "4.3.0",
     "@fullcalendar/timegrid": "4.3.0",
-    "apexcharts": "3.11.0",
+    "apexcharts": "3.11.2",
     "autosize": "4.0.2",
-    "bootstrap": "twbs/bootstrap#c340897",
+    "bootstrap": "twbs/bootstrap#e2530d3",
     "fullcalendar": "3.10.1",
     "imask": "5.2.1",
     "jquery": "3.4.1",
@@ -126,19 +128,19 @@
       "maxSize": "45 kB"
     },
     {
-      "path": "./dist/css/tabler-charts.css",
-      "maxSize": "2 kB"
-    },
-    {
-      "path": "./dist/css/tabler-charts.min.css",
-      "maxSize": "2 kB"
-    },
-    {
       "path": "./dist/css/tabler-flags.css",
       "maxSize": "2 kB"
     },
     {
       "path": "./dist/css/tabler-flags.min.css",
+      "maxSize": "2 kB"
+    },
+    {
+      "path": "./dist/css/tabler-payments.css",
+      "maxSize": "2 kB"
+    },
+    {
+      "path": "./dist/css/tabler-payments.min.css",
       "maxSize": "2 kB"
     },
     {

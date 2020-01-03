@@ -1,15 +1,31 @@
 ---
 tmp: true
+menu: a.b.c
 ---
 
 <div class="row">
-	<div class="col-md-6 col-lg-4">
-		<div class="card">
-			<div class="card-body">
-				{% include ui/chart.html chart-id="completion-tasks" height=15 %}
-			</div>
-		</div>
-	</div>
+  <div class="col-md-6 col-xl-4">
+    {% include cards/small-stats.html chart-type="bar" chart-data="20,40,30,40,60,80,70" color="red" icon="heart" %}
+  </div>
+  <div class="col-md-6 col-xl-4">
+    {% include cards/small-stats.html chart-type="bar" chart-data="5,8,2,5,-1,3,5,3" color="blue" icon="heart" %}
+  </div>
+
+  {% for chart in site.data.charts %}
+  {% if chart[1].demo %}
+  <div class="col-md-6 col-xl-4">
+    <div class="card">
+      <div class="card-body">
+        {% assign chart-id = chart[0] %}
+        <p>{{ chart-id }}</p>
+        {% include ui/chart.html chart-id=chart-id height=15 %}
+      </div>
+    </div>
+  </div>
+  {% endif %}
+  {% endfor %}
+
+
    <div class="col-12">
       <div class="card">
          <div class="card-body">

@@ -1,8 +1,8 @@
 //sidenav
-$sidenav-width: 16.25rem;
+$sidenav-width: 16rem;
 $sidenav-width-folded: 4rem;
 $sidenav-bg: $white;
-$sidenav-border-color: $border-color-alpha;
+$sidenav-border-color: $border-color;
 $sidenav-dark-bg: $dark;
 $sidenav-padding: 1.25rem;
 $sidenav-breakpoint-show: 'sm';
@@ -36,7 +36,7 @@ $sidenav-folded-item-height: 3.5rem;
             width: $sidenav-width;
 
             > .sidebar-nav-link {
-              color: #fff;
+              color: #ffffff;
 
               > span {
                 display: block;
@@ -67,7 +67,7 @@ $sidenav-folded-item-height: 3.5rem;
               height: 1.125rem;
             }
 
-            >span {
+            > span {
               display: none;
             }
 
@@ -95,6 +95,10 @@ $sidenav-folded-item-height: 3.5rem;
         padding: .5rem 0;
         background: $dark;
         box-shadow: -6px 0px 16px -10px rgba(0, 0, 0, 0.2), $box-shadow;
+      }
+
+      .sidebar-nav-arrow {
+        display: none !important;
       }
 
       .sidebar-nav-title {
@@ -294,7 +298,7 @@ Sidebar
   flex: 1;
   display: flex;
   flex-direction: column;
-  overflow: auto;
+  overflow-y: scroll;
   @include scrollbar(true);
 
   .sidebar-brand + & {
@@ -309,6 +313,7 @@ Sidebar menu
   margin: (-$sidenav-padding) (-$sidenav-padding) $sidenav-padding;
   padding: 0;
   list-style: none;
+  user-select: none;
 
   ul {
     margin: 0;
@@ -335,12 +340,13 @@ Sidebar menu
   &:hover {
     background-color: rgba(#fff, .02);
     text-decoration: none;
-    color: #fff;
+    color: #ffffff !important;
+    cursor: pointer !important;
   }
 
   &.active {
     opacity: 1;
-    color: #fff;
+    color: #ffffff;
     box-shadow: inset 3px 0 $primary;
     background-color: rgba(#fff, .01);
   }
@@ -353,6 +359,24 @@ Sidebar menu
   .badge {
     margin-left: auto;
   }
+}
+
+.sidebar-nav-arrow {
+  display: block;
+
+  margin-left: auto;
+  @include caret(right);
+
+  &:after {
+    transition: .3s transform;
+  }
+
+  .sidebar-nav-link[aria-expanded="true"] &:after {
+    transform: rotate(-45deg);
+  }
+}
+
+.sidebar-subnav {
 }
 
 .sidebar-nav-title {
