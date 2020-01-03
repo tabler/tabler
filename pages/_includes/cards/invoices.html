@@ -1,84 +1,82 @@
 <div class="card">
-      <div class="card-header">
-         <h3 class="card-title">Invoices</h3>
-      </div>
-      <div class="card-body d-flex justify-content-between flex-nowrap table-responsive border-bottom text-nowrap overflow-hidden">
-   
-         <div class="mb-0">
-            Show
-            <div class="mx-2 d-inline-block" style="width: 4rem;">
-               <input type="text" class="form-control" value="8">
-            </div>
-            entries
-         </div>
-         
-         <div class="mb-0 ml-4">
-               Serach:
-               <div class="ml-2 d-inline-block" style="width: 10rem;">
-                  <input type="text" class="form-control">
-               </div>
-         </div>
-   
-      </div>
-      <div class="table-responsive">
-         <table class="table card-table table-vcenter text-nowrap datatable">
-            <thead>
-               <tr>
-                  <th class="w-1p"><input class="form-check-input m-0 align-middle" type="checkbox"></th>
-                  <th class="w-1p">No. {% include_cached ui/icon.html icon="chevron-up" class="icon-sm text-dark icon-thick" %}</th>
-                  <th>Invoice Subject {% include_cached ui/icon.html icon="code" class="icon-sm" %}</th>
-                  <th>Client {% include_cached ui/icon.html icon="code" class="icon-sm" %}</th>
-                  <th>VAT No. {% include_cached ui/icon.html icon="code" class="icon-sm" %}</th>
-                  <th>Created {% include_cached ui/icon.html icon="code" class="icon-sm" %}</th>
-                  <th>Status {% include_cached ui/icon.html icon="code" class="icon-sm" %}</th>
-                  <th>Price {% include_cached ui/icon.html icon="code" class="icon-sm" %}</th>
-                  <th></th>
-                  <th></th>
-               </tr>
-            </thead>
-   
-            <tbody>
-            {% for invoice in site.data.invoices limit: 8 %}
-            <tr>
-               <td><input class="form-check-input m-0 align-middle" type="checkbox"></td>
-               <td><span class="text-muted">00{{ forloop.index | plus: 1400 }}</span></td>
-               <td><a href="invoice.html" class="text-reset">{{ invoice.name }}</a></td>
-               <td>
-                  {% include ui/flag.html flag=invoice.country %}
-                  {{ invoice.client }}
-               </td>
-               <td>
-                  {{ invoice.vat-no }}
-               </td>
-               <td>
-                  {{ invoice.date }}
-               </td>
-               <td>
-                  <span class="status-icon bg-{{ invoice.status }}"></span> {{ invoice.status-name }}
-               </td>
-               <td>{{ invoice.price }}</td>
-   
-               <td class="text-right">
-                  <button class="btn btn-secondary btn-sm align-text-top">Manage</button> 
-                  <span class="dropdown ml-1">
-                     <button class="btn btn-secondary btn-sm dropdown-toggle align-text-top" data-toggle="dropdown">Actions</button>
-                     {% include ui/dropdown-menu.html %}
-                  </span>
-               </td>
-               <td style="padding-right: 1rem;">
-                  {% include_cached ui/icon.html icon="edit" class="icon-sm float-right" %}
-               </td>
-            </tr>
-            {% endfor %}
-            </tbody>
-         </table>
-      </div>
-      <div class="card-body d-flex justify-content-between flex-nowrap table-responsive border-bottom text-nowrap">
-         <div class="mb-0 d-flex align-items-center">
-            <p class="mb-0 align-middle">Showing <span>1</span> to <span>8</span> of <span>16</span> entries</p>
-         </div>
-         <div class="mb-0 ml-4">
-               <a href="#" class="btn btn-secondary disabled">Previous</a><a href="#" class="btn btn-primary ml-2">1</a><a href="#" class="btn btn-secondary ml-2">2</a><a href="#" class="btn btn-secondary ml-2 font-weight-bold text-secondary">Next</a>
-         </div>
-      </div>
-   </div>
+	<div class="card-header">
+		<h3 class="card-title">Invoices</h3>
+	</div>
+	<div class="card-body border-bottom py-3">
+
+		<div class="d-flex">
+			<div class="mb-0">
+				Show
+				<div class="mx-2 d-inline-block">
+					<input type="text" class="form-control form-control-sm" value="8" size="3">
+				</div>
+				entries
+			</div>
+
+			<div class="mb-0 ml-auto">
+				Search:
+				<div class="ml-2 d-inline-block">
+					<input type="text" class="form-control form-control-sm">
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<div class="table-responsive">
+		<table class="table card-table table-vcenter text-nowrap datatable">
+			<thead>
+			<tr>
+				<th class="w-1p"><input class="form-check-input m-0 align-middle" type="checkbox"></th>
+				<th class="w-1p">No. {% include ui/icon.html icon="chevron-up" class="icon-sm text-dark icon-thick" %}</th>
+				<th>Invoice Subject {% include ui/icon.html icon="code" class="icon-sm" %}</th>
+				<th>Client {% include ui/icon.html icon="code" class="icon-sm" %}</th>
+				<th>VAT No. {% include ui/icon.html icon="code" class="icon-sm" %}</th>
+				<th>Created {% include ui/icon.html icon="code" class="icon-sm" %}</th>
+				<th>Status {% include ui/icon.html icon="code" class="icon-sm" %}</th>
+				<th>Price {% include ui/icon.html icon="code" class="icon-sm" %}</th>
+				<th></th>
+				<th></th>
+			</tr>
+			</thead>
+
+			<tbody>
+			{% for invoice in site.data.invoices limit: 8 %}
+			<tr>
+				<td><input class="form-check-input m-0 align-middle" type="checkbox"></td>
+				<td><span class="text-muted">00{{ forloop.index | plus: 1400 }}</span></td>
+				<td><a href="invoice.html" class="text-reset" tabindex="-1">{{ invoice.name }}</a></td>
+				<td>
+					{% include ui/flag.html flag=invoice.country %}
+					{{ invoice.client }}
+				</td>
+				<td>
+					{{ invoice.vat-no }}
+				</td>
+				<td>
+					{{ invoice.date }}
+				</td>
+				<td>
+					<span class="status-icon bg-{{ invoice.status }}"></span> {{ invoice.status-name }}
+				</td>
+				<td>{{ invoice.price }}</td>
+
+				<td class="text-right">
+					<button class="btn btn-secondary btn-sm align-text-top">Manage</button>
+					<span class="dropdown ml-1">
+						<button class="btn btn-secondary btn-sm dropdown-toggle align-text-top" data-toggle="dropdown">Actions</button>
+						{% include ui/dropdown-menu.html %}
+					</span>
+				</td>
+				<td>
+					{% include ui/icon.html icon="edit" class="icon-sm float-right" %}
+				</td>
+			</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	<div class="card-footer d-flex align-items-center border-top-0">
+		<p class="m-0 text-muted">Showing <span>1</span> to <span>8</span> of <span>16</span> entries</p>
+		{% include ui/pagination.html class="m-0 ml-auto" %}
+	</div>
+</div>

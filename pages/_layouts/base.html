@@ -1,5 +1,5 @@
 <!doctype html>
-{% include_cached layout/banner.html %}
+{% include layout/banner.html %}
 <html lang="en"{% if page.rtl %} dir="rtl" {% endif %}>
 <head>
    <meta charset="utf-8"/>
@@ -26,10 +26,8 @@
       <meta name="description" content="{{ page.description | escape }}"/>
    {% endif %}
 
-   {% include_cached layout/og.html show=layout.og-component %}
-   {% include_cached layout/css.html %}
-
-   <style>body { display: none; }</style>
+   {% include layout/og.html show=layout.og-component %}
+   {% include layout/css.html %}
 </head>
 
 {% assign dark-theme = page.dark-theme | default: site.dark-theme %}
@@ -41,9 +39,8 @@
 	{% include layout/js-capture.html %}
 
 	{% if site.debug and jekyll.environment == 'development' %}
-		{% include_cached layout/debug.html %}
+		{% include layout/debug.html %}
 	{% endif %}
 
-<script>document.body.style.display = 'block';</script>
 </body>
 </html>

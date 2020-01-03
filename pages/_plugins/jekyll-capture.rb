@@ -7,7 +7,7 @@ module Jekyll
       end
 
       def render(context)
-        if $captured_global[@text] === nil
+        unless $captured_global[@text]
           $captured_global[@text] = [];
         end
 
@@ -54,22 +54,22 @@ module Jekyll
     end
   end
 
-  Jekyll::Hooks.register :site, :after_init do |page, jekyll|
+  Jekyll::Hooks.register :pages, :post_init do |page|
     $captured_global = {}
-    $captured_libs = []
     $captured_once = {}
+    $captured_libs = []
+  end
+
+  Jekyll::Hooks.register :pages, :post_render do |page|
+    $captured_global = {}
+    $captured_once = {}
+    $captured_libs = []
   end
 
   Jekyll::Hooks.register :pages, :pre_render do |page, jekyll|
     jekyll.site['captured_global'] = $captured_global
     jekyll.site['captured_once'] = $captured_once
     jekyll.site['captured_libs'] = $captured_libs
-  end
-
-  Jekyll::Hooks.register :pages, :post_render do |page, jekyll|
-    $captured_global = {}
-    $captured_libs = []
-    $captured_once = {}
   end
 end
 
