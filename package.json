@@ -9,11 +9,11 @@
     "build": "BUNDLE=true npm-run-all clean-build html-build css-build js-compile-bundle js-libs-bundle assets-copy-build",
     "bundlesize": "bundlesize",
     "browsersync": "node build/browsersync.js",
-    "assets-copy-build": "mkdir -p demo/dist && cp -R dist/* demo/dist/ && cp -R static/* demo/",
+    "assets-copy-build": "mkdir -p demo/dist && cp -R dist/* demo/dist/ && cp -R static/* demo/ && cp -R img/* dist/img/ ",
     "html-build": "JEKYLL_ENV=production bundle exec jekyll build --destination demo",
     "lint": "npm-run-all --parallel js-lint css-lint",
     "clean": "rm -rf tmp-dist && mkdir tmp-dist && mkdir tmp-dist/css && mkdir tmp-dist/js",
-    "clean-build": "rm -rf dist && mkdir dist && mkdir dist/css && mkdir dist/js",
+    "clean-build": "rm -rf dist && mkdir dist && mkdir dist/css && mkdir dist/js && mkdir dist/img",
     "css": "npm-run-all css-compile css-prefix css-minify",
     "css-build": "npm-run-all css-compile css-prefix-build css-minify-build",
     "css-compile": "node build/scss-compile.js",
@@ -63,8 +63,9 @@
     "node": ">=10"
   },
   "files": [
-    "dist/{css,js}/*.{css,js,map}",
+    "dist/{css,js,img}/*.{css,js,map,svg}",
     "js/**/*.{js,map}",
+    "img/**/*.{svg}",
     "scss/**/*.scss"
   ],
   "style": "dist/css/tabler.css",
