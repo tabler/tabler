@@ -6,10 +6,11 @@
   "scripts": {
     "start": "npm-run-all clean css-main js-compile-standalone --parallel browsersync watch",
     "start-incremental": "npm-run-all clean css-main js-compile-standalone --parallel browsersync watch-incremental",
-    "build": "BUNDLE=true npm-run-all clean-build html-build css-build js-compile-bundle js-libs-bundle assets-copy-build",
+    "build": "BUNDLE=true npm-run-all clean-build html-build css-build js-compile-bundle js-libs-bundle images-copy-build assets-copy-build",
     "bundlesize": "bundlesize",
     "browsersync": "node build/browsersync.js",
-    "assets-copy-build": "mkdir -p demo/dist && cp -R dist/* demo/dist/ && cp -R static/* demo/ && cp -R img/* dist/img/ ",
+    "images-copy-build": "cp -R img/* dist/img/",
+    "assets-copy-build": "mkdir -p demo/dist && cp -R dist/* demo/dist/ && mkdir -p demo/static && cp -R static/* demo/static/",
     "html-build": "JEKYLL_ENV=production bundle exec jekyll build --destination demo",
     "lint": "npm-run-all --parallel js-lint css-lint",
     "clean": "rm -rf tmp-dist && mkdir tmp-dist && mkdir tmp-dist/css && mkdir tmp-dist/js",
