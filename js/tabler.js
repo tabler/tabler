@@ -1,22 +1,6 @@
 import {CountUp} from "countup.js";
 
 const tabler = {
-	hexToRgbA: function (hex, opacity) {
-		let c;
-
-		opacity = opacity || 1;
-
-		if (/^#([A-Fa-f0-9]{3}){1,2}$/.test(hex)) {
-			c = hex.substring(1).split('');
-			if (c.length === 3) {
-				c = [c[0], c[0], c[1], c[1], c[2], c[2]];
-			}
-			c = '0x' + c.join('');
-			return 'rgba(' + [(c >> 16) & 255, (c >> 8) & 255, c & 255].join(',') + ',' + opacity + ')';
-		}
-		throw new Error('Bad Hex');
-	},
-
 	toggleFullscreen: function (elem) {
 		elem = elem || document.documentElement;
 		if (
@@ -72,24 +56,6 @@ $(document).ready(function () {
 		}
 		let countup = new CountUp(countups[i], parseFloat(countups[i].innerText), dataCountUp);
 		countup.start();
-	}
-
-	/*
-	Imask plugin
-	 */
-	if (window.IMask) {
-		(function () {
-			const $elem = $('[data-mask]');
-
-			if ($elem) {
-				$elem.each(function () {
-					IMask($(this).get(0), {
-						mask: $(this).attr('data-mask'),
-						lazy: $(this).attr('data-mask-visible') === 'true',
-					});
-				});
-			}
-		})();
 	}
 });
 
