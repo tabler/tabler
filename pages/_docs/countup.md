@@ -3,7 +3,7 @@ title: Countup
 menu: docs.countup
 ---
 
-Countups with many options that can be found [**here**](https://inorganik.github.io/countUp.js/)
+Countups with many options that can be found [here](https://inorganik.github.io/countUp.js/)
 
 To make countup add `data-countup` to any html text tag.
 
