@@ -1,3 +1,5 @@
+import { CountUp } from "countup.js";
+
 const tabler = {
   hexToRgbA: function(hex, opacity) {
     let c;
@@ -58,6 +60,19 @@ $(document).ready(function() {
 
   // $('[data-toggle="tooltip"]').tooltip();
   // $('[data-toggle="popover"]').popover();
+
+  /* 
+    CountUp
+  */
+  let countups = document.querySelectorAll("[data-countup]");
+  for(let i = 0;i<countups.length;i++){
+    let dataCountUp;
+    if(countups[i].getAttribute("data-countup") != ''){
+      dataCountUp = JSON.parse(countups[i].getAttribute("data-countup"));
+    }
+    let countup = new CountUp(countups[i],parseFloat(countups[i].innerText),dataCountUp);
+    countup.start();
+  }
 
   /*
   Imask plugin
