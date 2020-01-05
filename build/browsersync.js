@@ -15,7 +15,7 @@ bs.init({
       '/dist': 'tmp-dist',
       '/libs': 'static/libs',
       '/tmp-dist/img': 'img',
-      '/static': 'static/img',
+      '/static': 'static',
       '/node_modules': 'node_modules',
     },
   },
