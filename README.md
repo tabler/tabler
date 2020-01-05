@@ -10,7 +10,7 @@ Premium and Open Source dashboard template with responsive and high-quality UI.
  [![Sponsors on Open Collective](https://opencollective.com/tabler/sponsors/badge.svg)](#sponsors)
 
 
-<strong><a href="https://preview-dev.tabler.io">View Demo</a> | <a href="https://github.com/tabler/tabler-react">View React Version</a> | <a href="https://github.com/tabler/tabler/archive/master.zip">Download ZIP</a> | <a href="https://tabler-ui.slack.com">Join us on Slack</a></strong>
+<strong><a href="https://preview-dev.tabler.io">View Demo</a> | <a href="https://github.com/tabler/tabler-react">View React Version</a> | <a href="https://github.com/tabler/tabler/archive/master.zip">Download ZIP</a> | <a href="https://join.slack.com/t/tabler-ui/shared_invite/enQtMzQxMTYxODk5NDYwLWU4Y2FiNWYxN2UyNWUzOTBjNmU0ZGM2ZDViMjQzMWMyZWM0ZDFkMGRhZGFiYzFhZjM1NmIxOGQ2ZDUwZjlhMTU">Join us on Slack</a></strong>
 
 ![Tabler preview](https://raw.githubusercontent.com/tabler/tabler/dev/static/img/tabler-preview.png)
 
