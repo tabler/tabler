@@ -23,10 +23,10 @@
 		</a>
 
 		{% if level-1[1].children %}
-		<div class="dropdown-menu">
+		<ul class="dropdown-menu">
 			{% for level-2 in level-1[1].children %}
-			<div class="dropright">
-				<a class="dropdown-item" {% if level-2[1].children %}href="#sidebar-{{ level-2[0] }}" data-toggle="dropdown" role="button" aria-expanded="false" {% else %}href="{{ site.base }}/{{ level-2[1].url }}" {% endif %}>
+			<li {% if level-2[1].children %}class="dropright"{% endif %}>
+				<a class="dropdown-item{% if level-2[1].children %} dropdown-toggle{% endif %}{% if level-1[0] == current-page[0] and level-2[0] == current-page[1] and current-page.size == 2 %} active{% endif %}" {% if level-2[1].children %}href="#sidebar-{{ level-2[0] }}" data-toggle="dropdown" role="button" aria-expanded="false" {% else %}href="{{ site.base }}/{{ level-2[1].url }}" {% endif %}>
 					<span class="nav-text">
 						{{ level-2[1].title }}
 						{% if level-2[1].label %}
@@ -34,15 +34,17 @@
 						{% endif %}
 					</span>
 				</a>
-			</div>
 
-			<ul class="dropdown-menu">
-				<li><a href="">AA</a></li>
-				<li><a href="">BB</a></li>
-				<li><a href="">CC</a></li>
-			</ul>
+				{% if level-2[1].children %}
+				<div class="dropdown-menu">
+					{% for level-3 in level-2[1].children %}
+					<a href="{{ site.base }}/{{ level-3[1].url }}" class="dropdown-item">{{ level-3[1].title }}</a>
+					{% endfor %}
+				</div>
+				{% endif %}
+			</li>
 			{% endfor %}
-		</div>
+		</ul>
 		{% endif %}
 	</li>
 	{% endfor %}
