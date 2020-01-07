@@ -13,6 +13,12 @@
 			</span>
 
 			{{ level-1[1].title }}
+
+			{% if level-1[1].badge %}
+			{% assign badge = level-1[1].badge %}
+			{% assign badge-color = level-1[1].badge-color | default: "green" %}
+			{% include ui/badge.html text=badge color=badge-color class="ml-2" %}
+			{% endif %}
 		</a>
 
 		{% if level-1[1].children %}
@@ -24,7 +30,7 @@
 
 					{% if level-2[1].badge %}
 					{% assign badge = level-2[1].badge %}
-					{% assign badge-color = level-2[1].badge-color | default: 'green' %}
+					{% assign badge-color = level-2[1].badge-color | default: "green" %}
 					{% include ui/badge.html text=badge color=badge-color class="ml-auto" %}
 					{% endif %}
 				</a>
