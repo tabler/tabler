@@ -25,18 +25,19 @@
     <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon"/>
     <title>Payments - Documentation - Tabler - Premium and Open Source dashboard template with responsive and high quality UI.</title>
     <!-- Libs CSS -->
-    <link href="../dist/libs/jqvmap/dist/jqvmap.min.css?1578436289" rel="stylesheet"/>
-    <link href="../dist/libs/selectize/dist/css/selectize.css?1578436289" rel="stylesheet"/>
-    <link href="../dist/libs/fullcalendar/core/main.min.css?1578436289" rel="stylesheet"/>
-    <link href="../dist/libs/fullcalendar/daygrid/main.min.css?1578436289" rel="stylesheet"/>
-    <link href="../dist/libs/fullcalendar/timegrid/main.min.css?1578436289" rel="stylesheet"/>
-    <link href="../dist/libs/fullcalendar/list/main.min.css?1578436289" rel="stylesheet"/>
+    <link href="../dist/libs/jqvmap/dist/jqvmap.min.css?1578694044" rel="stylesheet"/>
+    <link href="../dist/libs/selectize/dist/css/selectize.css?1578694044" rel="stylesheet"/>
+    <link href="../dist/libs/fullcalendar/core/main.min.css?1578694044" rel="stylesheet"/>
+    <link href="../dist/libs/fullcalendar/daygrid/main.min.css?1578694044" rel="stylesheet"/>
+    <link href="../dist/libs/fullcalendar/timegrid/main.min.css?1578694044" rel="stylesheet"/>
+    <link href="../dist/libs/fullcalendar/list/main.min.css?1578694044" rel="stylesheet"/>
+    <link href="../dist/libs/daterangepicker/daterangepicker.css?1578694044" rel="stylesheet"/>
     <!-- Tabler Core -->
-    <link href="../dist/css/tabler.min.css?1578436289" rel="stylesheet"/>
+    <link href="../dist/css/tabler.min.css?1578694044" rel="stylesheet"/>
     <!-- Tabler Plugins -->
-    <link href="../dist/css/tabler-flags.min.css?1578436289" rel="stylesheet"/>
-    <link href="../dist/css/tabler-payments.min.css?1578436289" rel="stylesheet"/>
-    <link href="../dist/css/tabler-buttons.min.css?1578436289" rel="stylesheet"/>
+    <link href="../dist/css/tabler-flags.min.css?1578694044" rel="stylesheet"/>
+    <link href="../dist/css/tabler-payments.min.css?1578694044" rel="stylesheet"/>
+    <link href="../dist/css/tabler-buttons.min.css?1578694044" rel="stylesheet"/>
   </head>
   <body class="antialiased">
     <div class="wrapper">
@@ -404,6 +405,11 @@
                       </a>
                     </li>
                     <li >
+                      <a class="dropdown-item active" href="../docs/payments.html" >
+                        Payments
+                      </a>
+                    </li>
+                    <li >
                       <a class="dropdown-item" href="../docs/ribbons.html" >
                         Ribbons
                         <span class="badge bg-green ml-auto">New</span>
@@ -549,6 +555,9 @@
                   <a href="../docs/progress.html" class="list-group-item list-group-item-action">
                     Progress
                   </a>
+                  <a href="../docs/payments.html" class="list-group-item list-group-item-action active">
+                    Payments
+                  </a>
                   <a href="../docs/ribbons.html" class="list-group-item list-group-item-action">
                     Ribbons
                     <span class="badge bg-green ml-auto">New</span>
@@ -584,574 +593,683 @@
                   <div class="card-body p-md-6 p-xl-7">
                     <div class="markdown">
                       <h2 class="h1 mt-0 mb-3">Payments
+                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon text-green"><polyline points="20 6 9 17 4 12"></polyline></svg>
                       </h2>
                       <div class="alert alert-info">This module is available in <code>tabler-payments</code>
                         plugin.
                       </div>
                       <h3 id="payment">Payment</h3>
                       <div class="example">
-                        <span class="payment payment-shopify"></span>
-                        <span class="payment payment-visa"></span>
-                        <span class="payment payment-paypal"></span>
+                        <span class="payment payment-provider-shopify"></span>
+                        <span class="payment payment-provider-visa"></span>
+                        <span class="payment payment-provider-paypal"></span>
                       </div>
                       <div class="highlight">
-                        <pre><code class="language-html" data-lang="html"><span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"payment payment-shopify"</span><span class="nt">&gt;&lt;/span&gt;</span>
-<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"payment payment-visa"</span><span class="nt">&gt;&lt;/span&gt;</span>
-<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"payment payment-paypal"</span><span class="nt">&gt;&lt;/span&gt;</span></code></pre>
+                        <pre><code class="language-html" data-lang="html"><span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"payment payment-provider-shopify"</span><span class="nt">&gt;&lt;/span&gt;</span>
+<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"payment payment-provider-visa"</span><span class="nt">&gt;&lt;/span&gt;</span>
+<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"payment payment-provider-paypal"</span><span class="nt">&gt;&lt;/span&gt;</span></code></pre>
                       </div>
                       <h3 id="payment-sizes">Payment sizes</h3>
                       <p>Using Bootstrap’s typical naming structure, you can create a standard payment, or scale it up to different sizes based on what’s needed.</p>
                       <div class="example">
-                        <span class="payment payment-shopify payment-size-xl"></span>
-                        <span class="payment payment-visa payment-size-lg"></span>
-                        <span class="payment payment-paypal payment-size-md"></span>
-                        <span class="payment payment-amazon"></span>
+                        <span class="payment payment-xl payment-provider-shopify"></span>
+                        <span class="payment payment-lg payment-provider-visa"></span>
+                        <span class="payment payment-md payment-provider-paypal"></span>
+                        <span class="payment payment-provider-amazon"></span>
                       </div>
                       <div class="highlight">
-                        <pre><code class="language-html" data-lang="html"><span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"payment payment-shopify payment-size-xl"</span><span class="nt">&gt;&lt;/span&gt;</span>
-<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"payment payment-visa payment-size-lg"</span><span class="nt">&gt;&lt;/span&gt;</span>
-<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"payment payment-paypal payment-size-md"</span><span class="nt">&gt;&lt;/span&gt;</span>
-<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"payment payment-amazon"</span><span class="nt">&gt;&lt;/span&gt;</span></code></pre>
+                        <pre><code class="language-html" data-lang="html"><span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"payment payment-xl payment-provider-shopify"</span><span class="nt">&gt;&lt;/span&gt;</span>
+<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"payment payment-lg payment-provider-visa"</span><span class="nt">&gt;&lt;/span&gt;</span>
+<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"payment payment-md payment-provider-paypal"</span><span class="nt">&gt;&lt;/span&gt;</span>
+<span class="nt">&lt;span</span> <span class="na">class=</span><span class="s">"payment payment-provider-amazon"</span><span class="nt">&gt;&lt;/span&gt;</span></code></pre>
                       </div>
                       <h3 id="types">Types</h3>
                       <table>
                         <tr>
-                          <td><span class="payment payment-2checkout-dark"></span></td>
+                          <td><span class="payment payment-provider-2checkout-dark"></span>
+                          </td>
                           <td><code>2checkout-dark</code></td>
                           <td>2checkout Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-2checkout"></span></td>
+                          <td><span class="payment payment-provider-2checkout"></span>
+                          </td>
                           <td><code>2checkout</code></td>
                           <td>2checkout</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-alipay-dark"></span></td>
+                          <td><span class="payment payment-provider-alipay-dark"></span>
+                          </td>
                           <td><code>alipay-dark</code></td>
                           <td>Alipay Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-alipay"></span></td>
+                          <td><span class="payment payment-provider-alipay"></span>
+                          </td>
                           <td><code>alipay</code></td>
                           <td>Alipay</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-amazon-dark"></span></td>
+                          <td><span class="payment payment-provider-amazon-dark"></span>
+                          </td>
                           <td><code>amazon-dark</code></td>
                           <td>Amazon Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-amazon"></span></td>
+                          <td><span class="payment payment-provider-amazon"></span>
+                          </td>
                           <td><code>amazon</code></td>
                           <td>Amazon</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-americanexpress-dark"></span></td>
+                          <td><span class="payment payment-provider-americanexpress-dark"></span>
+                          </td>
                           <td><code>americanexpress-dark</code></td>
                           <td>Americanexpress Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-americanexpress"></span></td>
+                          <td><span class="payment payment-provider-americanexpress"></span>
+                          </td>
                           <td><code>americanexpress</code></td>
                           <td>Americanexpress</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-applepay-dark"></span></td>
+                          <td><span class="payment payment-provider-applepay-dark"></span>
+                          </td>
                           <td><code>applepay-dark</code></td>
                           <td>Applepay Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-applepay"></span></td>
+                          <td><span class="payment payment-provider-applepay"></span>
+                          </td>
                           <td><code>applepay</code></td>
                           <td>Applepay</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-bancontact-dark"></span></td>
+                          <td><span class="payment payment-provider-bancontact-dark"></span>
+                          </td>
                           <td><code>bancontact-dark</code></td>
                           <td>Bancontact Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-bancontact"></span></td>
+                          <td><span class="payment payment-provider-bancontact"></span>
+                          </td>
                           <td><code>bancontact</code></td>
                           <td>Bancontact</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-bitcoin-dark"></span></td>
+                          <td><span class="payment payment-provider-bitcoin-dark"></span>
+                          </td>
                           <td><code>bitcoin-dark</code></td>
                           <td>Bitcoin Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-bitcoin"></span></td>
+                          <td><span class="payment payment-provider-bitcoin"></span>
+                          </td>
                           <td><code>bitcoin</code></td>
                           <td>Bitcoin</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-bitpay-dark"></span></td>
+                          <td><span class="payment payment-provider-bitpay-dark"></span>
+                          </td>
                           <td><code>bitpay-dark</code></td>
                           <td>Bitpay Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-bitpay"></span></td>
+                          <td><span class="payment payment-provider-bitpay"></span>
+                          </td>
                           <td><code>bitpay</code></td>
                           <td>Bitpay</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-cirrus-dark"></span></td>
+                          <td><span class="payment payment-provider-cirrus-dark"></span>
+                          </td>
                           <td><code>cirrus-dark</code></td>
                           <td>Cirrus Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-cirrus"></span></td>
+                          <td><span class="payment payment-provider-cirrus"></span>
+                          </td>
                           <td><code>cirrus</code></td>
                           <td>Cirrus</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-clickandbuy-dark"></span></td>
+                          <td><span class="payment payment-provider-clickandbuy-dark"></span>
+                          </td>
                           <td><code>clickandbuy-dark</code></td>
                           <td>Clickandbuy Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-clickandbuy"></span></td>
+                          <td><span class="payment payment-provider-clickandbuy"></span>
+                          </td>
                           <td><code>clickandbuy</code></td>
                           <td>Clickandbuy</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-coinkite-dark"></span></td>
+                          <td><span class="payment payment-provider-coinkite-dark"></span>
+                          </td>
                           <td><code>coinkite-dark</code></td>
                           <td>Coinkite Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-coinkite"></span></td>
+                          <td><span class="payment payment-provider-coinkite"></span>
+                          </td>
                           <td><code>coinkite</code></td>
                           <td>Coinkite</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-dinersclub-dark"></span></td>
+                          <td><span class="payment payment-provider-dinersclub-dark"></span>
+                          </td>
                           <td><code>dinersclub-dark</code></td>
                           <td>Dinersclub Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-dinersclub"></span></td>
+                          <td><span class="payment payment-provider-dinersclub"></span>
+                          </td>
                           <td><code>dinersclub</code></td>
                           <td>Dinersclub</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-directdebit-dark"></span></td>
+                          <td><span class="payment payment-provider-directdebit-dark"></span>
+                          </td>
                           <td><code>directdebit-dark</code></td>
                           <td>Directdebit Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-directdebit"></span></td>
+                          <td><span class="payment payment-provider-directdebit"></span>
+                          </td>
                           <td><code>directdebit</code></td>
                           <td>Directdebit</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-discover-dark"></span></td>
+                          <td><span class="payment payment-provider-discover-dark"></span>
+                          </td>
                           <td><code>discover-dark</code></td>
                           <td>Discover Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-discover"></span></td>
+                          <td><span class="payment payment-provider-discover"></span>
+                          </td>
                           <td><code>discover</code></td>
                           <td>Discover</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-dwolla-dark"></span></td>
+                          <td><span class="payment payment-provider-dwolla-dark"></span>
+                          </td>
                           <td><code>dwolla-dark</code></td>
                           <td>Dwolla Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-dwolla"></span></td>
+                          <td><span class="payment payment-provider-dwolla"></span>
+                          </td>
                           <td><code>dwolla</code></td>
                           <td>Dwolla</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-ebay-dark"></span></td>
+                          <td><span class="payment payment-provider-ebay-dark"></span>
+                          </td>
                           <td><code>ebay-dark</code></td>
                           <td>Ebay Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-ebay"></span></td>
+                          <td><span class="payment payment-provider-ebay"></span>
+                          </td>
                           <td><code>ebay</code></td>
                           <td>Ebay</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-eway-dark"></span></td>
+                          <td><span class="payment payment-provider-eway-dark"></span>
+                          </td>
                           <td><code>eway-dark</code></td>
                           <td>Eway Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-eway"></span></td>
+                          <td><span class="payment payment-provider-eway"></span>
+                          </td>
                           <td><code>eway</code></td>
                           <td>Eway</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-giropay-dark"></span></td>
+                          <td><span class="payment payment-provider-giropay-dark"></span>
+                          </td>
                           <td><code>giropay-dark</code></td>
                           <td>Giropay Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-giropay"></span></td>
+                          <td><span class="payment payment-provider-giropay"></span>
+                          </td>
                           <td><code>giropay</code></td>
                           <td>Giropay</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-googlewallet-dark"></span></td>
+                          <td><span class="payment payment-provider-googlewallet-dark"></span>
+                          </td>
                           <td><code>googlewallet-dark</code></td>
                           <td>Googlewallet Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-googlewallet"></span></td>
+                          <td><span class="payment payment-provider-googlewallet"></span>
+                          </td>
                           <td><code>googlewallet</code></td>
                           <td>Googlewallet</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-ingenico-dark"></span></td>
+                          <td><span class="payment payment-provider-ingenico-dark"></span>
+                          </td>
                           <td><code>ingenico-dark</code></td>
                           <td>Ingenico Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-ingenico"></span></td>
+                          <td><span class="payment payment-provider-ingenico"></span>
+                          </td>
                           <td><code>ingenico</code></td>
                           <td>Ingenico</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-jcb-dark"></span></td>
+                          <td><span class="payment payment-provider-jcb-dark"></span>
+                          </td>
                           <td><code>jcb-dark</code></td>
                           <td>Jcb Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-jcb"></span></td>
+                          <td><span class="payment payment-provider-jcb"></span>
+                          </td>
                           <td><code>jcb</code></td>
                           <td>Jcb</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-klarna-dark"></span></td>
+                          <td><span class="payment payment-provider-klarna-dark"></span>
+                          </td>
                           <td><code>klarna-dark</code></td>
                           <td>Klarna Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-klarna"></span></td>
+                          <td><span class="payment payment-provider-klarna"></span>
+                          </td>
                           <td><code>klarna</code></td>
                           <td>Klarna</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-laser-dark"></span></td>
+                          <td><span class="payment payment-provider-laser-dark"></span>
+                          </td>
                           <td><code>laser-dark</code></td>
                           <td>Laser Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-laser"></span></td>
+                          <td><span class="payment payment-provider-laser"></span>
+                          </td>
                           <td><code>laser</code></td>
                           <td>Laser</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-maestro-dark"></span></td>
+                          <td><span class="payment payment-provider-maestro-dark"></span>
+                          </td>
                           <td><code>maestro-dark</code></td>
                           <td>Maestro Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-maestro"></span></td>
+                          <td><span class="payment payment-provider-maestro"></span>
+                          </td>
                           <td><code>maestro</code></td>
                           <td>Maestro</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-mastercard-dark"></span></td>
+                          <td><span class="payment payment-provider-mastercard-dark"></span>
+                          </td>
                           <td><code>mastercard-dark</code></td>
                           <td>Mastercard Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-mastercard"></span></td>
+                          <td><span class="payment payment-provider-mastercard"></span>
+                          </td>
                           <td><code>mastercard</code></td>
                           <td>Mastercard</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-monero-dark"></span></td>
+                          <td><span class="payment payment-provider-monero-dark"></span>
+                          </td>
                           <td><code>monero-dark</code></td>
                           <td>Monero Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-monero"></span></td>
+                          <td><span class="payment payment-provider-monero"></span>
+                          </td>
                           <td><code>monero</code></td>
                           <td>Monero</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-neteller-dark"></span></td>
+                          <td><span class="payment payment-provider-neteller-dark"></span>
+                          </td>
                           <td><code>neteller-dark</code></td>
                           <td>Neteller Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-neteller"></span></td>
+                          <td><span class="payment payment-provider-neteller"></span>
+                          </td>
                           <td><code>neteller</code></td>
                           <td>Neteller</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-ogone-dark"></span></td>
+                          <td><span class="payment payment-provider-ogone-dark"></span>
+                          </td>
                           <td><code>ogone-dark</code></td>
                           <td>Ogone Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-ogone"></span></td>
+                          <td><span class="payment payment-provider-ogone"></span>
+                          </td>
                           <td><code>ogone</code></td>
                           <td>Ogone</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-okpay-dark"></span></td>
+                          <td><span class="payment payment-provider-okpay-dark"></span>
+                          </td>
                           <td><code>okpay-dark</code></td>
                           <td>Okpay Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-okpay"></span></td>
+                          <td><span class="payment payment-provider-okpay"></span>
+                          </td>
                           <td><code>okpay</code></td>
                           <td>Okpay</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-paybox-dark"></span></td>
+                          <td><span class="payment payment-provider-paybox-dark"></span>
+                          </td>
                           <td><code>paybox-dark</code></td>
                           <td>Paybox Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-paybox"></span></td>
+                          <td><span class="payment payment-provider-paybox"></span>
+                          </td>
                           <td><code>paybox</code></td>
                           <td>Paybox</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-paymill-dark"></span></td>
+                          <td><span class="payment payment-provider-paymill-dark"></span>
+                          </td>
                           <td><code>paymill-dark</code></td>
                           <td>Paymill Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-paymill"></span></td>
+                          <td><span class="payment payment-provider-paymill"></span>
+                          </td>
                           <td><code>paymill</code></td>
                           <td>Paymill</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-payone-dark"></span></td>
+                          <td><span class="payment payment-provider-payone-dark"></span>
+                          </td>
                           <td><code>payone-dark</code></td>
                           <td>Payone Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-payone"></span></td>
+                          <td><span class="payment payment-provider-payone"></span>
+                          </td>
                           <td><code>payone</code></td>
                           <td>Payone</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-payoneer-dark"></span></td>
+                          <td><span class="payment payment-provider-payoneer-dark"></span>
+                          </td>
                           <td><code>payoneer-dark</code></td>
                           <td>Payoneer Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-payoneer"></span></td>
+                          <td><span class="payment payment-provider-payoneer"></span>
+                          </td>
                           <td><code>payoneer</code></td>
                           <td>Payoneer</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-paypal-dark"></span></td>
+                          <td><span class="payment payment-provider-paypal-dark"></span>
+                          </td>
                           <td><code>paypal-dark</code></td>
                           <td>Paypal Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-paypal"></span></td>
+                          <td><span class="payment payment-provider-paypal"></span>
+                          </td>
                           <td><code>paypal</code></td>
                           <td>Paypal</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-paysafecard-dark"></span></td>
+                          <td><span class="payment payment-provider-paysafecard-dark"></span>
+                          </td>
                           <td><code>paysafecard-dark</code></td>
                           <td>Paysafecard Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-paysafecard"></span></td>
+                          <td><span class="payment payment-provider-paysafecard"></span>
+                          </td>
                           <td><code>paysafecard</code></td>
                           <td>Paysafecard</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-payu-dark"></span></td>
+                          <td><span class="payment payment-provider-payu-dark"></span>
+                          </td>
                           <td><code>payu-dark</code></td>
                           <td>Payu Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-payu"></span></td>
+                          <td><span class="payment payment-provider-payu"></span>
+                          </td>
                           <td><code>payu</code></td>
                           <td>Payu</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-payza-dark"></span></td>
+                          <td><span class="payment payment-provider-payza-dark"></span>
+                          </td>
                           <td><code>payza-dark</code></td>
                           <td>Payza Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-payza"></span></td>
+                          <td><span class="payment payment-provider-payza"></span>
+                          </td>
                           <td><code>payza</code></td>
                           <td>Payza</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-ripple-dark"></span></td>
+                          <td><span class="payment payment-provider-ripple-dark"></span>
+                          </td>
                           <td><code>ripple-dark</code></td>
                           <td>Ripple Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-ripple"></span></td>
+                          <td><span class="payment payment-provider-ripple"></span>
+                          </td>
                           <td><code>ripple</code></td>
                           <td>Ripple</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-sage-dark"></span></td>
+                          <td><span class="payment payment-provider-sage-dark"></span>
+                          </td>
                           <td><code>sage-dark</code></td>
                           <td>Sage Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-sage"></span></td>
+                          <td><span class="payment payment-provider-sage"></span>
+                          </td>
                           <td><code>sage</code></td>
                           <td>Sage</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-sepa-dark"></span></td>
+                          <td><span class="payment payment-provider-sepa-dark"></span>
+                          </td>
                           <td><code>sepa-dark</code></td>
                           <td>Sepa Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-sepa"></span></td>
+                          <td><span class="payment payment-provider-sepa"></span>
+                          </td>
                           <td><code>sepa</code></td>
                           <td>Sepa</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-shopify-dark"></span></td>
+                          <td><span class="payment payment-provider-shopify-dark"></span>
+                          </td>
                           <td><code>shopify-dark</code></td>
                           <td>Shopify Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-shopify"></span></td>
+                          <td><span class="payment payment-provider-shopify"></span>
+                          </td>
                           <td><code>shopify</code></td>
                           <td>Shopify</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-skrill-dark"></span></td>
+                          <td><span class="payment payment-provider-skrill-dark"></span>
+                          </td>
                           <td><code>skrill-dark</code></td>
                           <td>Skrill Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-skrill"></span></td>
+                          <td><span class="payment payment-provider-skrill"></span>
+                          </td>
                           <td><code>skrill</code></td>
                           <td>Skrill</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-solo-dark"></span></td>
+                          <td><span class="payment payment-provider-solo-dark"></span>
+                          </td>
                           <td><code>solo-dark</code></td>
                           <td>Solo Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-solo"></span></td>
+                          <td><span class="payment payment-provider-solo"></span>
+                          </td>
                           <td><code>solo</code></td>
                           <td>Solo</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-square-dark"></span></td>
+                          <td><span class="payment payment-provider-square-dark"></span>
+                          </td>
                           <td><code>square-dark</code></td>
                           <td>Square Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-square"></span></td>
+                          <td><span class="payment payment-provider-square"></span>
+                          </td>
                           <td><code>square</code></td>
                           <td>Square</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-stripe-dark"></span></td>
+                          <td><span class="payment payment-provider-stripe-dark"></span>
+                          </td>
                           <td><code>stripe-dark</code></td>
                           <td>Stripe Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-stripe"></span></td>
+                          <td><span class="payment payment-provider-stripe"></span>
+                          </td>
                           <td><code>stripe</code></td>
                           <td>Stripe</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-switch-dark"></span></td>
+                          <td><span class="payment payment-provider-switch-dark"></span>
+                          </td>
                           <td><code>switch-dark</code></td>
                           <td>Switch Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-switch"></span></td>
+                          <td><span class="payment payment-provider-switch"></span>
+                          </td>
                           <td><code>switch</code></td>
                           <td>Switch</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-ukash-dark"></span></td>
+                          <td><span class="payment payment-provider-ukash-dark"></span>
+                          </td>
                           <td><code>ukash-dark</code></td>
                           <td>Ukash Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-ukash"></span></td>
+                          <td><span class="payment payment-provider-ukash"></span>
+                          </td>
                           <td><code>ukash</code></td>
                           <td>Ukash</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-unionpay-dark"></span></td>
+                          <td><span class="payment payment-provider-unionpay-dark"></span>
+                          </td>
                           <td><code>unionpay-dark</code></td>
                           <td>Unionpay Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-unionpay"></span></td>
+                          <td><span class="payment payment-provider-unionpay"></span>
+                          </td>
                           <td><code>unionpay</code></td>
                           <td>Unionpay</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-verifone-dark"></span></td>
+                          <td><span class="payment payment-provider-verifone-dark"></span>
+                          </td>
                           <td><code>verifone-dark</code></td>
                           <td>Verifone Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-verifone"></span></td>
+                          <td><span class="payment payment-provider-verifone"></span>
+                          </td>
                           <td><code>verifone</code></td>
                           <td>Verifone</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-verisign-dark"></span></td>
+                          <td><span class="payment payment-provider-verisign-dark"></span>
+                          </td>
                           <td><code>verisign-dark</code></td>
                           <td>Verisign Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-verisign"></span></td>
+                          <td><span class="payment payment-provider-verisign"></span>
+                          </td>
                           <td><code>verisign</code></td>
                           <td>Verisign</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-visa-dark"></span></td>
+                          <td><span class="payment payment-provider-visa-dark"></span>
+                          </td>
                           <td><code>visa-dark</code></td>
                           <td>Visa Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-visa"></span></td>
+                          <td><span class="payment payment-provider-visa"></span>
+                          </td>
                           <td><code>visa</code></td>
                           <td>Visa</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-webmoney-dark"></span></td>
+                          <td><span class="payment payment-provider-webmoney-dark"></span>
+                          </td>
                           <td><code>webmoney-dark</code></td>
                           <td>Webmoney Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-webmoney"></span></td>
+                          <td><span class="payment payment-provider-webmoney"></span>
+                          </td>
                           <td><code>webmoney</code></td>
                           <td>Webmoney</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-westernunion-dark"></span></td>
+                          <td><span class="payment payment-provider-westernunion-dark"></span>
+                          </td>
                           <td><code>westernunion-dark</code></td>
                           <td>Westernunion Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-westernunion"></span></td>
+                          <td><span class="payment payment-provider-westernunion"></span>
+                          </td>
                           <td><code>westernunion</code></td>
                           <td>Westernunion</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-worldpay-dark"></span></td>
+                          <td><span class="payment payment-provider-worldpay-dark"></span>
+                          </td>
                           <td><code>worldpay-dark</code></td>
                           <td>Worldpay Dark</td>
                         </tr>
                         <tr>
-                          <td><span class="payment payment-worldpay"></span></td>
+                          <td><span class="payment payment-provider-worldpay"></span>
+                          </td>
                           <td><code>worldpay</code></td>
                           <td>Worldpay</td>
                         </tr>
@@ -1166,9 +1284,9 @@
       </div>
     </div>
     <!-- Libs JS -->
-    <script src="../dist/libs/jquery/dist/jquery.slim.min.js?1578436289"></script>
-    <script src="../dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js?1578436289"></script>
+    <script src="../dist/libs/jquery/dist/jquery.slim.min.js?1578694044"></script>
+    <script src="../dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js?1578694044"></script>
     <!-- Tabler Core -->
-    <script src="../dist/js/tabler.min.js?1578436289"></script>
+    <script src="../dist/js/tabler.min.js?1578694044"></script>
   </body>
 </html>
