@@ -184,7 +184,7 @@ bootstrap-link: components/forms/
 
 <div class="mb-2">
    <label class="form-label">Your vanity URL</label>
-   {% include ui/form/input-group.html prepend="https://example.com/users/" %}
+   {% include ui/form/input-group.html prepend="https://tabler.io/users/" %}
 </div>
 
 <div class="mb-2">
