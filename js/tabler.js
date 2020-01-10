@@ -35,6 +35,10 @@ const tabler = {
 $(document).ready(function () {
 	const $body = $('body');
 
+  // $('[data-toggle="tooltip"]').tooltip();
+  
+  $('[data-toggle="toast"]').toast();
+  
 	$body.on('click', '[data-toggle="menubar"]', function (e) {
 		$body.toggleClass('aside-visible');
 
