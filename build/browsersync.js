@@ -12,17 +12,18 @@ bs.init({
   server: {
     routes: {
       '/': 'tmp',
-      '/dist': 'dist',
-      '/dist/fonts': 'fonts',
+      '/dist': 'tmp-dist',
       '/libs': 'static/libs',
-      '/img': 'static/img',
+      '/tmp-dist/img': 'img',
+      '/static': 'static',
       '/node_modules': 'node_modules',
     },
   },
-  files: ['tmp/**/*', 'dist/css/*.css', 'dist/js/*.js'],
+  files: ['tmp/**/*', 'tmp-dist/css/*.css', 'tmp-dist/js/*.js', 'tmp-dist/img/*.svg'],
   watchOptions: {
     ignoreInitial: true,
   },
+  reloadDelay: 1000,
   notify: false,
   open: false,
   snippetOptions: {

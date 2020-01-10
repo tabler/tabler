@@ -2,17 +2,25 @@
 layout: base
 ---
 
-<div class="layout{% if page.site-layout %} {{ page.site-layout }}{% endif %}">
+<div class="wrapper">
 
-   {% include layout/topnav.html dark=page.header-dark sticky=page.header-sticky %}
-   {% include layout/topmenu.html %}
+	{% if page.menu-layout == 'vertical' %}
+		{% include layout/sidebar.html %}
+	{% endif %}
 
-   <div class="layout-area-main">
+	<div class="content">
+		{% include layout/topnav.html dark=page.header-dark sticky=page.header-sticky %}
 
-      <main class="container{% if page.container-size %} container-{{ page.container-size }}{% endif %}{% if page.fluid %}-fluid{% endif %} my-4 flex-fill">
-         {% include layout/page-title.html %}
+		{% if page.menu-layout != 'vertical' %}
+			{% include layout/topmenu.html %}
+		{% endif %}
 
-         {{ content }}
-      </main>
-   </div>
+		<div class="content-page">
+			<main class="container{% if page.container-size %}-{{ page.container-size }}{% endif %} my-4 flex-fill">
+				{% include layout/page-title.html %}
+
+				{{ content }}
+			</main>
+		</div>
+	</div>
 </div>

@@ -7,7 +7,7 @@
       {% elsif include.icon-text %}
       <div class="display-4">{{ include.icon-text }}</div>
       {% else %}
-      {% include_cached ui/icon.html icon=icon %}
+      {% include ui/icon.html icon=icon %}
       {% endif %}
    </div>
 
@@ -17,6 +17,7 @@
    </p>
    <div class="empty-action">
       {% assign button-text = include.button-text | default: "Search again" %}
-      {% include_cached ui/button.html text=button-text color="primary" icon=include.button-icon %}
+      {% assign button-icon = include.button-icon | default: "search" %}
+      {% include ui/button.html text=button-text color="primary" icon=button-icon href="index.html" %}
    </div>
 </div>

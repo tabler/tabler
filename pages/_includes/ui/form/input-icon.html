@@ -1,0 +1,18 @@
+{% assign icon = include.icon | default: 'search' %}
+{% capture addon %}
+<span class="input-icon-addon">
+	{% include ui/icon.html icon=icon %}
+</span>
+{% endcapture %}
+
+<div class="input-icon{% if include.class %} {{ include.class }}{% endif %}">
+	{% if include.prepend %}
+		{{ addon }}
+	{% endif %}
+
+	<input type="text" class="form-control{% if include.light %} form-control-light{% endif %}" placeholder="{{ include.placeholder | default: 'Search&hellip;' }}">
+
+	{% unless include.prepend %}
+		{{ addon }}
+	{% endunless %}
+</div>

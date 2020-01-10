@@ -1,7 +1,7 @@
 ---
 title: Ribbons
 menu: docs.ribbons
-new: true
+done: true
 ---
 
 ### Default markup
@@ -14,10 +14,10 @@ new: true
 
 You can easily change the position of a ribbon by adding a class to the element.
 
-    `ribbon-top` - moves it to the top
-    `ribbon-right` - moves it to the right
-    `ribbon-bottom` - moves it to the bottom
-    `ribbon-left` - moves it to the lefg
+- `ribbon-top` - moves it to the top
+- `ribbon-right` - moves it to the right
+- `ribbon-bottom` - moves it to the bottom
+- `ribbon-left` - moves it to the lefg
 
 You can also use multiple classes at once for example: `.ribbon.ribbon-top.ribbon-left` moves the ribbon to the top left corner.
 

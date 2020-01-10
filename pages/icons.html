@@ -1,13 +1,20 @@
 ---
 title: Icons
+page-title: Icons
 ---
 
 <div class="row">
-   <div class="col">
-      {% include_cached cards/icons.html title="Feather icons" group="fe" %}
+   <div class="col-12">
+      {% include cards/icons.html title="Feather icons" group="fe" %}
    </div>
-   <div class="col">
-      {% include_cached cards/icons.html title="Brand icons" group="brand" %}
-   </div>
+
+	{% if jekyll.environment == 'production' %}
+	<div class="col-lg-6">
+		{% include cards/icons.html title="Brand icons" group="brand" %}
+	</div>
+	<div class="col-lg-6">
+		{% include cards/icons.html title="Bootstrap icons" group="bootstrap" %}
+	</div>
+	{% endif %}
 </div>
 

@@ -10,13 +10,13 @@ Premium and Open Source dashboard template with responsive and high-quality UI.
  [![Sponsors on Open Collective](https://opencollective.com/tabler/sponsors/badge.svg)](#sponsors)
 
 
-<strong><a href="https://preview-dev.tabler.io">View Demo</a> | <a href="https://github.com/tabler/tabler-react">View React Version</a> | <a href="https://github.com/tabler/tabler/archive/master.zip">Download ZIP</a> | <a href="https://goo.gl/zJP2dT">Join us on Slack</a></strong>
+<strong><a href="https://preview-dev.tabler.io">View Demo</a> | <a href="https://github.com/tabler/tabler-react">View React Version</a> | <a href="https://github.com/tabler/tabler/archive/master.zip">Download ZIP</a> | <a href="https://join.slack.com/t/tabler-ui/shared_invite/enQtMzQxMTYxODk5NDYwLWU4Y2FiNWYxN2UyNWUzOTBjNmU0ZGM2ZDViMjQzMWMyZWM0ZDFkMGRhZGFiYzFhZjM1NmIxOGQ2ZDUwZjlhMTU">Join us on Slack</a></strong>
 
-![Tabler preview](https://raw.githubusercontent.com/tabler/tabler/dev/static/img/tabler-preview.png)
+![Tabler preview](https://raw.githubusercontent.com/tabler/tabler/dev/static/tabler-preview.png)
 
 ## Status
 
-<a href="https://www.npmjs.com/package/tabler-ui"><a href="#backers" alt="sponsors on Open Collective"><img src="https://opencollective.com/tabler/backers/badge.svg" /></a> <a href="#sponsors" alt="Sponsors on Open Collective"><img src="https://opencollective.com/tabler/sponsors/badge.svg" /></a> <img src="https://img.shields.io/npm/dt/tabler-ui.svg" alt="Total Downloads"></a> <a href="https://github.com/tabler/tabler/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/tabler-ui.svg" alt="License"></a> <a href="https://github.com/tabler/tabler/releases"><img src="https://img.shields.io/npm/v/tabler-ui.svg" alt="Latest Release"></a>
+<a href="https://www.npmjs.com/package/tabler-ui"><a href="#backers" alt="sponsors on Open Collective"><img src="https://opencollective.com/tabler/backers/badge.svg"/></a> <a href="#sponsors" alt="Sponsors on Open Collective"><img src="https://opencollective.com/tabler/sponsors/badge.svg"/></a> <img src="https://img.shields.io/npm/dt/tabler-ui.svg" alt="Total Downloads"></a> <a href="https://github.com/tabler/tabler/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/tabler-ui.svg" alt="License"></a> <a href="https://github.com/tabler/tabler/releases"><img src="https://img.shields.io/npm/v/tabler-ui.svg" alt="Latest Release"></a>
 
 ## Features
 
@@ -39,7 +39,7 @@ To use our build system and run our documentation locally, you'll need a copy of
 4. [Install Bundler](https://bundler.io) with `gem install bundler`, and finally run `bundle install`. This will install all Ruby dependencies, such as [Jekyll and plugins](https://jekyllrb.com).
 
 **Windows users**:
-1. [Install Git](https://git-scm.com/download/win) in `C:\\Program Files\\git\\bin` directory and run `npm config set script-shell "C:\\Program Files\\git\\bin\\bash.exe"` to change default shell.
+1. [Install Git](https://git-scm.com/download/win) in `C:\Program Files\git\bin` directory and run `npm config set script-shell "C:\\Program Files\git\bin\bash.exe"` to change default shell.
 2. [Install Ruby+Devkit](https://rubyinstaller.org/downloads/), recommended version is [2.5.5](https://github.com/oneclick/rubyinstaller2/releases/download/RubyInstaller-2.5.5-1/rubyinstaller-devkit-2.5.5-1-x86.exe).
 3. [Read guide](https://jekyllrb.com/docs/installation/windows/) to get Jekyll up and running without problems.
 

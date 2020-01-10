@@ -1,10 +1,9 @@
 ---
 title: Avatars
 menu: docs.avatars
+description: Create and group avatars of various shapes and sizes with one component.
 done: true
 ---
-
-Create and group avatars of various shapes and sizes with one component.
 
 ### Default markup
 
