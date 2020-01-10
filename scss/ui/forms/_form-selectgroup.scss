@@ -1,66 +1,23 @@
 /*
-Selectgroup
+Select group
  */
-.selectgroup {
+.form-selectgroup {
   display: inline-flex;
+  margin: 0 -.5rem -.5rem 0;
 }
 
-.selectgroup-vertical {
+.form-selectgroup-vertical {
   flex-direction: column;
 }
 
-.selectgroup-item {
+.form-selectgroup-item {
+  display: block;
   position: relative;
   flex-grow: 1;
-  margin: 0;
+  margin: 0 .5rem .5rem 0;
 }
 
-.selectgroup-separated {
-  margin: 0 -.5rem -.5rem 0;
-
-  .selectgroup-item {
-    margin: 0 .5rem .5rem 0;
-  }
-}
-
-.selectgroup:not(.selectgroup-vertical):not(.selectgroup-separated) > .selectgroup-item {
-  & + .selectgroup-item {
-    margin-left: -1px;
-  }
-
-  &:not(:first-child) .selectgroup-button {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-  }
-
-  &:not(:last-child) .selectgroup-button {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-}
-
-.selectgroup-vertical:not(.selectgroup-separated) > .selectgroup-item {
-  &:not(:last-child) {
-    margin-bottom: 0;
-  }
-
-  & + .selectgroup-item {
-    margin-top: -1px;
-    margin-left: 0;
-  }
-
-  &:not(:first-child) .selectgroup-button {
-    border-top-left-radius: 0;
-    border-top-right-radius: 0;
-  }
-
-  &:not(:last-child) .selectgroup-button {
-    border-bottom-right-radius: 0;
-    border-bottom-left-radius: 0;
-  }
-}
-
-.selectgroup-input {
+.form-selectgroup-input {
   position: absolute;
   top: 0;
   left: 0;
@@ -68,11 +25,11 @@ Selectgroup
   opacity: 0;
 }
 
-.selectgroup-button {
+.form-selectgroup-box {
   position: relative;
   display: block;
   min-width: $input-height;
-  padding: $input-btn-padding-y 1rem;
+  padding: $input-btn-padding-y $input-btn-padding-x;
   font-size: $input-btn-font-size;
   line-height: $input-line-height;
   color: $text-muted;
@@ -82,31 +39,102 @@ Selectgroup
   background: rgba(#fff, .064);
   border: 1px solid $input-border-color;
   border-radius: 3px;
+  transition: border-color .3s, background .3s, color .3s;
+
+  .icon:only-child {
+    margin: 0 -.25rem;
+  }
+
+  &:hover {
+    color: $body-color;
+  }
 }
 
-.selectgroup-input:checked + .selectgroup-button {
+.form-selectgroup-check {
+  display: inline-block;
+  width: $form-check-input-width;
+  height: $form-check-input-width;
+  border: $form-check-input-border;
+  vertical-align: middle;
+
+  .form-selectgroup-input[type="checkbox"] + .form-selectgroup-box & {
+    border-radius: $form-check-input-border-radius;
+  }
+
+  .form-selectgroup-input[type="radio"] + .form-selectgroup-box & {
+    border-radius: $form-check-radio-border-radius;
+  }
+
+  .form-selectgroup-input:checked + .form-selectgroup-box & {
+    background-color: $form-check-input-checked-bg-color;
+    background-repeat: $form-check-input-checked-bg-repeat;
+    background-position: $form-check-input-checked-bg-position;
+    background-size: $form-check-input-checked-bg-size;
+    border-color: $form-check-input-checked-border-color;
+  }
+
+  .form-selectgroup-input[type="checkbox"]:checked + .form-selectgroup-box & {
+    background-image: escape-svg($form-check-input-checked-bg-image);
+  }
+
+  .form-selectgroup-input[type="radio"]:checked + .form-selectgroup-box & {
+    background-image: escape-svg($form-check-radio-checked-bg-image);
+  }
+}
+
+.form-selectgroup-input:checked + .form-selectgroup-box {
   z-index: 1;
   color: $primary;
-  background: rgba($primary, .08);
-  border-color: $primary;
+  background: rgba($primary, .04);
+  border-color: $input-focus-border-color;
+  box-shadow: 0 1px 1px 0 rgba($primary, .2);
 }
 
-.selectgroup-input:focus + .selectgroup-button {
+.form-selectgroup-input:focus + .form-selectgroup-box {
   z-index: 2;
   color: $primary;
-  border-color: $primary;
+  border-color: $input-focus-border-color;
   box-shadow: $input-btn-focus-box-shadow;
 }
 
-.selectgroup-pills {
+/**
+Alternate version of form select group
+ */
+.form-selectgroup-boxes {
+  .form-selectgroup-box {
+    text-align: left;
+    padding: $card-spacer-x $card-spacer-y;
+    color: inherit;
+  }
+
+  .form-selectgroup-box-content {
+    opacity: .64;
+    transition: .3s opacity;
+  }
+
+  .form-selectgroup-input:checked {
+    + .form-selectgroup-box {
+      color: $body-color;
+
+      .form-selectgroup-box-content {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+/**
+Select group
+ */
+.form-selectgroup-pills {
   flex-wrap: wrap;
   align-items: flex-start;
 
-  .selectgroup-item {
+  .form-selectgroup-item {
     flex-grow: 0;
   }
 
-  .selectgroup-button {
+  .form-selectgroup-box {
     border-radius: 50px;
   }
 }

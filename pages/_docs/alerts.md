@@ -55,13 +55,12 @@ Add the `alert-link` class to any links inside the alert box to create "matching
 {% endexample %}
 
 ### Alert with avatar
-{% assign person = site.data.people[1] %}
 {% example %}
 {% for variant in site.variants %}
 	{% capture variant-text %}
 		Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit.
 	{% endcapture %}
-	{% include ui/alert.html type=variant.name text=variant-text avatar=true person=person %}
+	{% include ui/alert.html type=variant.name text=variant-text person-id=forloop.index %}
 {% endfor %}
 {% endexample %}
 

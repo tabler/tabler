@@ -66,7 +66,7 @@ bootstrap-link: components/forms/
 ### Textarea
 {% example %}
 <div class="mb-2">
-   <label class="form-label">Textarea <span class="float-right text-muted">56/100</span></label>
+   <label class="form-label">Textarea <span class="form-label-description">56/100</span></label>
    <textarea class="form-control" name="example-textarea-input" rows="6" placeholder="Content..">Oh! Come and see the violence inherent in the system! Help, help, I'm being repressed! We shall say 'Ni' again to you, if you do not appease us. I'm not a witch. I'm not a witch. Camelot!</textarea>
 </div>
 {% endexample %}

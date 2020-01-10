@@ -2,6 +2,7 @@
 title: Payments
 menu: docs.payments
 plugin: payments
+done: true
 ---
 
 ### Payment

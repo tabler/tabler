@@ -1,46 +1,51 @@
 {% assign current-page = page.menu | default: layout.menu | split: '.' %}
 <ul class="navbar-nav flex-wrap{% if include.class %} {{ include.class }}{% endif %}">
-   {% for level-1 in site.data.menu %}
-   {% assign icon = level-1[1].icon %}
+	{% for level-1 in site.data.menu %}
+	{% assign icon = level-1[1].icon %}
 
-   {% assign has-children = false %}
-   {% if level-1[1].children %}
-      {% assign has-children = true %}
-   {% endif %}
+	<li class="nav-item{% if level-1[0] == current-page[0] %} active{% endif %}{% if level-1[1].children %} dropdown{% endif %}">
+		<a class="nav-link{% if level-1[1].children %} dropdown-toggle{% endif %}" {% if level-1[1].children %}href="#navbar-{{ level-1[0] }}" data-toggle="dropdown" role="button"
+			aria-expanded="{% if level-1[0] == current-page[0] %}true{% else %}false{% endif %}" {% elsif level-1[1].toggle
+			%}href="{{ level-1[1].url }}" data-toggle="{{ level-1[1].toggle }}" {% else
+			%}href="{{ site.base }}/{{ level-1[1].url }}" {% endif %}>
+			<span class="nav-icon">
+				{% include ui/icon.html icon=icon  %}
+			</span>
 
-   <li class="nav-item{% if level-1[0] == current-page[0] %} active{% endif %}{% if has-children %} dropdown{% endif %}">
-      <a class="nav-link{% if has-children %} dropdown-toggle{% endif %}" {% if has-children %}href="#navbar-{{ level-1[0] }}" data-toggle="dropdown" role="button"
-         aria-expanded="{% if level-1[0] == current-page[0] %}true{% else %}false{% endif %}" {% elsif level-1[1].toggle
-         %}href="{{ level-1[1].url }}" data-toggle="{{ level-1[1].toggle }}" {% else
-         %}href="{{ site.base }}/{{ level-1[1].url }}" {% endif %}>
-         <span class="nav-icon">
-            {% include ui/icon.html icon=icon  %}
-         </span>
-         <span class="nav-text">
-            {{ level-1[1].title }}
+			{{ level-1[1].title }}
 
-            {% unless include.top %}
-            {% if level-1[1].label %}
-            <span class="badge bg-{{ level-1[1].label-color | default: 'primary' }} text-white ml-auto">{{ level-1[1].label }}</span>
-            {% endif %}
-            {% endunless %}
-         </span>
-      </a>
+			{% if level-1[1].badge %}
+			{% assign badge = level-1[1].badge %}
+			{% assign badge-color = level-1[1].badge-color | default: "green" %}
+			{% include ui/badge.html text=badge color=badge-color class="ml-2" %}
+			{% endif %}
+		</a>
 
-      {% if has-children %}
-      <div class="dropdown-menu">
-         {% for level-2 in level-1[1].children %}
-         <a class="dropdown-item" {% if level-2[1].children %}href="#sidebar-{{ level-2[0] }}" data-toggle="dropdown" role="button" aria-expanded="false" {% else %}href="{{ site.base }}/{{ level-2[1].url }}" {% endif %}>
-            <span class="nav-text">
-               {{ level-2[1].title }}
-               {% if level-2[1].label %}
-                  <span class="badge bg-{{ level-2[1].label-color | default: 'primary' }} text-white ml-auto">{{ level-2[1].label }}</span>
-               {% endif %}
-            </span>
-         </a>
-         {% endfor %}
-      </div>
-      {% endif %}
-   </li>
-   {% endfor %}
+		{% if level-1[1].children %}
+		<ul class="dropdown-menu">
+			{% for level-2 in level-1[1].children %}
+			<li {% if level-2[1].children %}class="dropright"{% endif %}>
+				<a class="dropdown-item{% if level-2[1].children %} dropdown-toggle{% endif %}{% if level-1[0] == current-page[0] and level-2[0] == current-page[1] and current-page.size == 2 %} active{% endif %}" {% if level-2[1].children %}href="#sidebar-{{ level-2[0] }}" data-toggle="dropdown" role="button" aria-expanded="false" {% else %}href="{{ site.base }}/{{ level-2[1].url }}" {% endif %}>
+					{{ level-2[1].title }}
+
+					{% if level-2[1].badge %}
+					{% assign badge = level-2[1].badge %}
+					{% assign badge-color = level-2[1].badge-color | default: "green" %}
+					{% include ui/badge.html text=badge color=badge-color class="ml-auto" %}
+					{% endif %}
+				</a>
+
+				{% if level-2[1].children %}
+				<div class="dropdown-menu">
+					{% for level-3 in level-2[1].children %}
+					<a href="{{ site.base }}/{{ level-3[1].url }}" class="dropdown-item">{{ level-3[1].title }}</a>
+					{% endfor %}
+				</div>
+				{% endif %}
+			</li>
+			{% endfor %}
+		</ul>
+		{% endif %}
+	</li>
+	{% endfor %}
 </ul>

@@ -116,12 +116,29 @@ $sidenav-folded-item-height: 3.5rem;
 
 
 /**
-Topnav
+Top nav
  */
 .topnav {
   border-bottom: 1px solid;
   background-color: $navbar-bg;
   border-color: $navbar-border-color;
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  padding: 0 .5rem;
+  z-index: $zindex-sticky;
+  min-height: $navbar-height;
+
+  & + & {
+    top: add($navbar-height, 1px);
+    z-index: $zindex-sticky - 1;
+  }
+
+  & + & + & {
+    top: add($navbar-height * 2, 2px);
+    z-index: $zindex-sticky - 2;
+  }
 
   @media print {
     display: none;
@@ -131,6 +148,25 @@ Topnav
     margin: 0;
     padding: 0;
     min-height: $navbar-height;
+  }
+
+  .nav-link {
+    height: $navbar-height;
+  }
+
+  .nav-item {
+    &.active {
+      position: relative;
+
+      &:after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: 2px;
+        right: 2px;
+        border-bottom: 1px solid $primary;
+      }
+    }
   }
 
   .navbar-brand-logo {
@@ -147,27 +183,6 @@ Topnav
         display: block;
       }
     }
-  }
-}
-
-/**
-Topbar
- */
-.topbar {
-  position: absolute;
-  top: 0;
-  right: 0;
-  left: 0;
-  padding: 0 .5rem;
-  z-index: $zindex-sticky;
-  min-height: $navbar-height;
-
-  & + & {
-    top: add($navbar-height, 1px);
-  }
-
-  & + & + & {
-    top: add($navbar-height * 2, 2px);
   }
 
   .sidebar + .content & {
@@ -186,7 +201,7 @@ Topbar
   }
 }
 
-.topbar-fixed {
+.topnav-fixed {
   position: fixed;
   z-index: $zindex-fixed;
 }
@@ -207,6 +222,8 @@ Content
   overflow: hidden;
   min-height: 100vh;
   padding: 0 .5rem 0;
+  display: flex;
+  flex-direction: column;
 
   .sidebar + & {
     margin-left: $sidenav-width;
@@ -226,19 +243,22 @@ Content
 }
 
 .content-page {
+  flex: 1;
+  display: flex;
+
   @media print {
     padding-top: 0 !important;
   }
 
-  .topbar + & {
+  .topnav + & {
     padding-top: add($navbar-height, 1px);
   }
 
-  .topbar + .topbar + & {
+  .topnav + .topnav + & {
     padding-top: add($navbar-height * 2, 2px);
   }
 
-  .topbar + .topbar + .topbar + & {
+  .topnav + .topnav + .topnav + & {
     padding-top: add($navbar-height * 3, 3px);
   }
 }
