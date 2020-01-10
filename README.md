@@ -73,7 +73,7 @@ Have a bug or a feature request? [Please open a new issue](https://github.com/ta
 
 ## Contributors
 
-This project exists thanks to all the people who contribute. [[Contribute](CONTRIBUTING.md)].
+This project exists thanks to all the people who contribute. [[Contribute](https://github.com/tabler/tabler/graphs/contributors)].
 <a href="https://github.com/tabler/tabler/graphs/contributors"><img src="https://opencollective.com/tabler/contributors.svg?width=890&button=false"></a>
 
 ## Backers
