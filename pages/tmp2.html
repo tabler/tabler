@@ -2,45 +2,64 @@
 page-title: Search results
 ---
 
-{% include ui/button.html color="primary" icon="plus" icon-only=true class="btn-floating" size="lg" %}
-
 
 <div class="row">
-	<div class="col-4">
-
+	<div class="col-8">
 		<div class="card">
-			<div class="card-header">
-				<h3 class="card-title">
-					Configuration
-				</h3>
-				<div class="card-actions">
-					<a href="#">
-						Edit configuration{% include ui/icon.html icon="edit" class="ml-1" %}
-					</a>
-				</div>
-			</div>
 			<div class="card-body">
-				<dl class="row">
-					<dt class="col-5">Date:</dt>
-					<dd class="col-7">2020-01-05 16:42:29 UTC</dd>
+				<div>
+					{% assign items = "HTML,CSS,JavaScript,Ruby,GraphSQL" | split: ',' %}
+					<div class="form-selectgroup">
+						{% for item in items %}
+						<label class="form-selectgroup-item">
+							<input type="checkbox" name="name" value="{{ item | escape }}" class="form-selectgroup-input"{% if forloop.index <= 2 %} checked{% endif %}>
+							<span class="form-selectgroup-box">
+								{{ item }}
+							</span>
+						</label>
+						{% endfor %}
+					</div>
+				</div>
 
-					<dt class="col-5">Account:</dt>
-					<dd class="col-7">tabler</dd>
+				<div class="mt-4">
+					{% assign items = "home,check-square,pie-chart,users,circle,square" | split: ',' %}
+					<div class="form-selectgroup">
+						{% for item in items %}
+						<label class="form-selectgroup-item">
+							<input type="checkbox" name="name" value="{{ item | escape }}" class="form-selectgroup-input"{% if forloop.index <= 2 %} checked{% endif %}>
+							<div class="form-selectgroup-box">
+								{% include ui/icon.html icon=item class="mr-1" %}
+								<span>{{ item }}</span>
+							</div>
+						</label>
+						{% endfor %}
+					</div>
+				</div>
 
-					<dt class="col-5">Location:</dt>
-					<dd class="col-7">{% include ui/flag.html flag="pl" %} Poland</dd>
+				<div class="mt-4">
+					{% assign items = "home,check-square,pie-chart,users,circle,square" | split: ',' %}
+					<div class="form-selectgroup">
+						{% for item in items %}
+						<label class="form-selectgroup-item">
+							<input type="checkbox" name="name" value="{{ item | escape }}" class="form-selectgroup-input"{% if forloop.index <= 2 %} checked{% endif %}>
+							<div class="form-selectgroup-box">
+								{% include ui/icon.html icon=item %}
+							</div>
+						</label>
+						{% endfor %}
+					</div>
+				</div>
 
-					<dt class="col-5">IP Address:</dt>
-					<dd class="col-7">46.113.11.3</dd>
+				<div class="mt-4">
+					<input type="checkbox" class="form-check-input" checked>
+					<input type="radio" class="form-check-input" checked> lorem haha
+				</div>
 
-					<dt class="col-5">Operating system:</dt>
-					<dd class="col-7">OS X 10.15.2 64-bit</dd>
 
-					<dt class="col-5">Browser:</dt>
-					<dd class="col-7">Chrome</dd>
-				</dl>
 			</div>
 		</div>
-
+	</div>
+	<div class="col">
+		{% include cards/configuration.html %}
 	</div>
 </div>
