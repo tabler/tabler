@@ -9,10 +9,10 @@ $sidenav-breakpoint-show: 'sm';
 $sidenav-breakpoint-folded: 'lg';
 $sidenav-folded-item-height: 3.5rem;
 
-@mixin sidebar-folded($breakpoint-folded) {
+@mixin sidebar-folded($breakpoint-folded, $breakpoint-show: false) {
   @if $breakpoint-folded {
 
-    @include media-breakpoint-down($breakpoint-folded) {
+    @include media-breakpoint-between($breakpoint-show, $breakpoint-folded) {
       width: $sidenav-width-folded;
 
       .sidebar-brand {
@@ -103,6 +103,10 @@ $sidenav-folded-item-height: 3.5rem;
 
       .sidebar-nav-title {
         display: none;
+      }
+
+      .hide-sidebar-folded {
+        display: none !important
       }
     }
   }
@@ -278,7 +282,7 @@ Sidebar
   display: flex;
   flex-direction: column;
 
-  @include sidebar-folded($sidenav-breakpoint-folded);
+  @include sidebar-folded($sidenav-breakpoint-folded, $sidenav-breakpoint-show);
   @include sidebar-show($sidenav-breakpoint-show);
 }
 
@@ -319,7 +323,7 @@ Sidebar
   display: flex;
   flex-direction: column;
   overflow-y: scroll;
-  @include scrollbar(true);
+  @include scrollbar;
 
   .sidebar-brand + & {
     margin-top: $navbar-height;
@@ -334,6 +338,7 @@ Sidebar menu
   padding: 0;
   list-style: none;
   user-select: none;
+  color: $text-muted;
 
   ul {
     margin: 0;
@@ -360,13 +365,13 @@ Sidebar menu
   &:hover {
     background-color: rgba(#fff, .02);
     text-decoration: none;
-    color: #ffffff !important;
+    color: $body-color !important;
     cursor: pointer !important;
   }
 
   &.active {
     opacity: 1;
-    color: #ffffff;
+    color: $body-color !important;
     box-shadow: inset 3px 0 $primary;
     background-color: rgba(#fff, .01);
   }
@@ -420,5 +425,16 @@ Sidebar dark
 
   .sidebar-brand {
     filter: brightness(0) invert(1);
+  }
+
+  .sidebar-nav-link {
+    &:hover,
+    &.active {
+      color: $white !important;
+    }
+  }
+
+  .sidebar-content {
+    @include scrollbar(true);
   }
 }
