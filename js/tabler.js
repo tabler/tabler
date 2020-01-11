@@ -1,4 +1,5 @@
 import {CountUp} from "countup.js";
+import noUiSlider from "nouislider";
 
 const tabler = {
 	toggleFullscreen: function (elem) {
@@ -47,14 +48,17 @@ $(document).ready(function() {
 
   /*
 	NoUiSlider
-	*/
-	let sliders = document.querySelectorAll("[data-slider]");
+  */
+  let sliders = document.querySelectorAll("[data-slider]");
 	for (let i = 0; i < sliders.length; i++) {
 		let dataSlider;
 		if (sliders[i].getAttribute("data-slider")) {
 			dataSlider = JSON.parse(sliders[i].getAttribute("data-slider"));
-    }
-		noUiSlider.create(sliders[i],dataSlider);
+	}
+	let slider = noUiSlider.create(sliders[i],dataSlider);
+	if(dataSlider['js-name']){
+		window[dataSlider['js-name']] = slider;
+	}
   }
   
   /*
