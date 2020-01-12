@@ -23,7 +23,7 @@
     "css-minify": "for i in tmp-dist/css/tabler*.css;do echo $i; N=`echo $i | sed -e 's/^dist\\/css\\///g' | sed -e 's/\\\\.css//g'`; echo $N; cleancss --level 1 --format breakWith=lf --source-map --source-map-inline-sources --output tmp-dist/css/$N.min.css tmp-dist/css/$N.css; done",
     "css-minify-build": "for i in dist/css/tabler*.css;do echo $i; N=`echo $i | sed -e 's/^dist\\/css\\///g' | sed -e 's/\\\\.css//g'`; echo $N; cleancss --level 1 --format breakWith=lf --source-map --source-map-inline-sources --output dist/css/$N.min.css dist/css/$N.css; done",
     "css-lint": "stylelint \"scss/**/*.scss\" --cache --cache-location .cache/.stylelintcache",
-    "css-main": "npm-run-all css-compile css-prefix",
+    "css-main": "npm-run-all css-compile",
     "css-main-build": "npm-run-all css-lint css-compile css-prefix-build css-minify",
     "watch": "npm-run-all --parallel watch-css watch-js watch-html",
     "watch-incremental": "npm-run-all --parallel watch-css watch-js watch-html-incremental",
