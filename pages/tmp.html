@@ -7,8 +7,13 @@ menu: a.b.c
 	<div class="col-md-6 col-xl-4">
 		{% assign person = site.data.people[0] %}
 		<div class="card">
-			<div class="card-body">
-				<h3 class="card-title">{{ person.full_name }}</h3>
+			<div class="card-img-top embed-responsive embed-responsive-21by9">
+				<div class="embed-responsive-item bg-cover" style="background-image: url({{ site.base }}/static/photos/{{ site.data.photos[8].file }})"></div>
+			</div>
+			{% include ui/avatar.html person=person size="xl" class="mt-n5 mx-auto card-avatar" %}
+			<div class="card-body text-center">
+				<h2 class="mb-3">{{ person.full_name }}</h2>
+				<p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci aperiam atque autem consectetur dignissimos ea error exercitationem id, maxime minus mollitia nulla quasi quia quisquam sed tempora ut voluptas, voluptatem!</p>
 			</div>
 		</div>
 		{% include cards/user-info.html %}
