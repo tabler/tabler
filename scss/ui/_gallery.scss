@@ -1,0 +1,65 @@
+.media-grid{
+    display: grid;
+    grid-template-columns: repeat(12, 1fr);
+    grid-gap: .5rem;
+    grid-column: span 4;
+
+    *{
+        display: block;
+        border-radius: 3px;
+        padding-top: 56.25%;
+        grid-column: span 4;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: cover;
+
+        @include exactly(1){
+            grid-column: span 12;
+        }
+
+        @include exactly(2){
+            grid-column: span 6;
+        }
+          
+        @include exactly(3){
+            &:first-child{
+                grid-column: span 8;
+                grid-row: span 2;
+            }
+        }
+          
+        @include exactly(4){
+            grid-column: span 6;
+        }
+          
+        @include exactly(5){
+            @for $i from 1 through 2{
+                &:nth-child(#{$i}){
+                    grid-column: span 6;
+                }
+            }
+        }
+          
+        @include exactly(7){
+            @for $i from 1 through 2{
+                &:nth-child(#{$i}){
+                    grid-column: span 6;
+                }
+            }
+    
+            @for $i from 6 through 7{
+                &:nth-child(#{$i}){
+                    grid-column: span 6;
+                }
+            }
+        }
+          
+        @include exactly(8){
+            @for $i from 4 through 5{
+                &:nth-child(#{$i}){
+                    grid-column: span 6;
+                }
+            }
+        }
+    }
+}
