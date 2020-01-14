@@ -35,34 +35,45 @@ const tabler = {
 
 $(document).ready(function() {
   const $body = $('body');
-
-  $body.on('click', '[data-toggle="menubar"]', function(e) {
-    $body.toggleClass('aside-visible');
+  
+  $('[data-toggle="toast"]').toast();
+  
+	$body.on('click', '[data-toggle="menubar"]', function (e) {
+		$body.toggleClass('aside-visible');
 
     e.preventDefault();
     return false;
   });
 
-  // $('[data-toggle="tooltip"]').tooltip();
-  // $('[data-toggle="popover"]').popover();
+	$('[data-toggle="tooltip"]').tooltip();
 
-  /*
+	/*
+	Popover
+	 */
+	var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="popover"]'));
+	popoverTriggerList.map(function (popoverTriggerEl) {
+		return new bootstrap.Popover(popoverTriggerEl, {
+			autoHide: true
+		})
+	});
+
+	/*
 	NoUiSlider
-  */
-  let sliders = document.querySelectorAll("[data-slider]");
-	for (let i = 0; i < sliders.length; i++) {
-		let dataSlider;
-		if (sliders[i].getAttribute("data-slider")) {
-			dataSlider = JSON.parse(sliders[i].getAttribute("data-slider"));
+	*/
+	let sliders = document.querySelectorAll("[data-slider]");
+		for (let i = 0; i < sliders.length; i++) {
+			let dataSlider;
+			if (sliders[i].getAttribute("data-slider")) {
+				dataSlider = JSON.parse(sliders[i].getAttribute("data-slider"));
+		}
+		let slider = noUiSlider.create(sliders[i],dataSlider);
+		if(dataSlider['js-name']){
+			window[dataSlider['js-name']] = slider;
+		}
 	}
-	let slider = noUiSlider.create(sliders[i],dataSlider);
-	if(dataSlider['js-name']){
-		window[dataSlider['js-name']] = slider;
-	}
-  }
-  
-  /*
-	  CountUp
+	
+	/*
+	CountUp
 	*/
 	let countups = document.querySelectorAll("[data-countup]");
 	for (let i = 0; i < countups.length; i++) {

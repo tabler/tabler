@@ -16,10 +16,12 @@ $theme-color-interval: 10% !default;
 $light: #f5f7fb !default;
 $dark: #354052 !default;
 
-$light-black: rgba($dark, .4) !default;
-$light-white: rgba($light, .4) !default;
-$min-black: rgba($dark, .02) !default;
-$min-white: rgba($light, .02) !default;
+$light-black: rgba($dark, .24) !default;
+$light-mix: rgba(mix($light, $dark, 64%), .24) !default;
+$light-white: rgba($light, .24) !default;
+
+$min-black: rgba($dark, .032) !default;
+$min-white: rgba($light, .032) !default;
 
 $gray-100: $light !default;
 $gray-200: mix($light, $dark, 98%) !default;
@@ -39,16 +41,25 @@ $pink: #f66d9b !default;
 $red: #fa4654 !default;
 $orange: #ff922b !default;
 $yellow: #fab005 !default;
-$lime: #7bd235 !default;
+$lime: #94d82d !default;
 $green: #5eba00 !default;
 $teal: #2bcbba !default;
 $cyan: #17a2b8 !default;
 $black: #000000 !default;
 $white: #ffffff !default;
 
-$text-muted: $gray-700 !default;
-$border-color: $gray-400 !default;
-$hover-bg: $gray-200 !default;
+$body-bg: $light !default;
+$body-color: $dark !default;
+
+$text-muted: mix($body-color, #fff, 64%) !default;
+$border-color: rgba(mix($body-color, #fff, 75%), .24) !default;
+
+$hover-bg: $light-white !default;
+$active-bg: rgba($blue, .06) !default;
+
+$dark-body-bg: #222935 !default;
+$dark-body-color: #afbdd1 !default;
+$dark-border-color: rgba($dark-body-color, .4) !default;
 
 $primary: $blue !default;
 $secondary: $text-muted !default;
@@ -56,11 +67,6 @@ $success: $green !default;
 $info: $azure !default;
 $warning: $yellow !default;
 $danger: $red !default;
-
-$body-bg: $light !default;
-$body-color: $dark !default;
-
-
 
 $social-colors: (
   "facebook": #3b5998,
@@ -151,9 +157,9 @@ $spacers: (
   1: $spacer * .25,
   2: $spacer * .5,
   3: $spacer,
-  4: $spacer * 1.25,
-  5: $spacer * 1.5,
-  6: $spacer * 3,
+  4: $spacer * 1.5,
+  5: $spacer * 3,
+  6: $spacer * 4.5,
   7: $spacer * 6,
   8: $spacer * 9,
   9: $spacer * 12,
@@ -181,6 +187,13 @@ $container-max-widths: (
   md: 720px,
   lg: 960px,
   xl: 1200px
+) !default;
+
+$embed-responsive-aspect-ratios: (
+  '2by1': (
+    x: 2,
+    y: 1
+  )
 ) !default;
 
 //alerts
@@ -216,7 +229,10 @@ $input-btn-padding-y-lg: .5rem !default;
 $input-height: null !default;
 $input-height-sm: null !default;
 $input-height-lg: null !default;
+$input-color: inherit !default;
+$input-focus-color: inherit !default;
 
+//buttons
 $btn-padding-x: 1rem !default;
 $btn-font-weight: 500 !default;
 $btn-border-radius: 3px !default;
@@ -233,6 +249,7 @@ $card-group-margin: 1.5rem !default;
 $card-shadow: rgba($dark, .04) 0 2px 4px 0 !default;
 $card-shadow-hover: rgba($dark, .16) 0 2px 16px 0 !default;
 
+
 //close
 $close-font-weight: 400 !default;
 $close-font-size: 1.5rem !default;
@@ -246,19 +263,49 @@ $dropdown-link-hover-bg: $hover-bg !default;
 $dropdown-link-hover-color: inherit !default;
 $dropdown-spacer: 1px !default;
 
+$dropdown-link-active-color: $primary !default;
+$dropdown-link-active-bg: $active-bg !default;
+
 //grid
 $grid-gutter-width: 1.5rem !default;
 
 //loader
 $loader-size: 2.5rem !default;
 
+//lists
+$list-group-item-padding-y: .5rem !default;
+$list-group-item-padding-x: .75rem !default;
+
+//modals
+$modal-content-border-color: $border-color !default;
+$modal-backdrop-opacity: .24 !default;
+$modal-backdrop-bg: $dark !default;
+$modal-backdrop-blur: 2px !default;
+
+$modal-fade-transform: translate(0, -1rem) !default;
+
+$modal-content-border-radius: $border-radius !default;
+
+$modal-inner-padding: .75rem !default;
+$modal-inner-padding-x: 1.25rem !default;
+$modal-footer-border-width: 0 !default;
+$modal-header-border-width: 0 !default;
+
+$modal-xl: 1140px !default;
+$modal-lg: 800px !default;
+$modal-md: 540px !default;
+$modal-sm: 300px !default;
+
 //navbar
 $navbar-bg: $white !default;
 $navbar-height: 3.5rem !default;
 $navbar-border-color: $border-color !default;
 
+//popover
+$popover-border-color: $border-color !default;
+
 //nav
-$nav-link-padding-y: 1rem !default;
+//$nav-link-padding-y: 1rem !default;
 
 $navbar-padding-x: .75rem !default;
 $navbar-padding-y: .75rem !default;
@@ -298,7 +345,7 @@ $toast-header-color: $text-muted !default;
 $yiq-contrasted-threshold: 200 !default;
 
 //progress
-$progress-bg: $gray-200 !default;
+$progress-bg: $light-mix !default;
 $progress-height: .75rem !default;
 
 //ribbons
@@ -312,7 +359,7 @@ $input-disabled-bg: $gray-100 !default;
 $input-border-color: $border-color !default;
 $input-placeholder-color: $text-muted !default;
 
-$input-group-addon-bg: $gray-100 !default;
+$input-group-addon-bg: $min-black !default;
 $input-group-addon-color: $text-muted !default;
 
 $dropdown-border-color: $border-color !default;
@@ -326,7 +373,11 @@ $form-check-padding-left: $form-check-input-width + .5rem !default;
 $form-check-input-bg: $white !default;
 $form-check-input-border: 1px solid $border-color !default;
 $form-check-input-border-radius: $border-radius !default;
-$form-check-input-checked-bg-size: .75rem !default;
+$form-check-input-checked-bg-size: .8rem !default;
+
+$form-check-input-checked-border-color: $border-color !default;
+
+$form-select-indicator-color: $border-color !default;
 
 $form-switch-width: 1.75rem !default;
 $form-switch-padding-left: $form-switch-width + .5rem !default;
@@ -348,15 +399,12 @@ $flag-sizes: (
 
 //Payments
 $payment-sizes: (
-  "md": 2rem,
+  "sm": 1.5rem,
   "lg": 3rem,
   "xl": 4rem
 ) !default;
 
-
-
 $enable-social-colors: true !default;
 $enable-ghost-buttons: true !default;
-$enable-color-hues: true !default;
 $enable-extra-colors: true !default;
 $enable-gradients: false !default;

@@ -4,6 +4,9 @@ textarea {
   }
 }
 
+/**
+Form label
+ */
 .form-label {
   font-size: $h4-font-size;
   font-weight: $font-weight-bold;
@@ -11,17 +14,43 @@ textarea {
   margin-bottom: .5rem;
 }
 
-.form-control {
-  vertical-align: middle;
+.form-label-description {
+  float: right;
+  font-weight: $font-weight-normal;
+  color: $text-muted;
+  line-height: $line-height-base * (100%/$small-font-size);
+  font-size: $small-font-size;
+}
 
+/**
+Form hint
+ */
+.form-hint {
+  font-size: $small-font-size;
+  color: $text-muted;
+  margin: 0 0 .5rem;
+
+  .form-label + & {
+    margin-top: -.75rem;
+  }
+}
+
+/**
+Form control
+ */
+.form-control {
   &:-webkit-autofill {
-    box-shadow: 0 0 0 1000px #fff inset;
+    box-shadow: 0 0 0 1000px #ffffff inset;
   }
 
   &:disabled,
   &.disabled {
     color: $text-muted;
     user-select: none;
+  }
+
+  &[size] {
+    width: auto;
   }
 }
 
@@ -55,23 +84,99 @@ textarea {
 Form help
  */
 .form-help {
-  display: inline-block;
-  width: 1rem;
-  height: 1rem;
-  font-size: $h5-font-size;
-  line-height: 1rem;
+  display: inline-flex;
+  font-weight: 600;
+  align-items: center;
+  justify-content: center;
+  width: 1.125rem;
+  height: 1.125rem;
+  font-size: .75rem;
   color: $text-muted;
   text-align: center;
   text-decoration: none;
   cursor: pointer;
   user-select: none;
-  background: $gray-100;
+  background: $gray-200;
   border-radius: 50%;
   transition: .3s background-color, .3s color;
 
   &:hover,
   &[aria-describedby] {
-    color: #fff;
+    color: #ffffff;
     background: $primary;
+  }
+}
+
+/**
+Form switch
+ */
+.form-check-input {
+  color: $form-check-input-checked-bg-color;
+
+  &:checked {
+    background-color: currentColor;
+  }
+}
+
+.form-check .form-check-input:not(:checked) ~ .form-check-label {
+  color: $text-muted;
+}
+
+/**
+Input group
+ */
+.input-group-prepend .input-group-text {
+  border-right: 0;
+}
+
+.input-group-append .input-group-text {
+  border-left: 0;
+}
+
+.input-group-flat {
+  &:focus-within {
+    box-shadow: $input-focus-box-shadow;
+    border-radius: $input-border-radius;
+
+    .form-control,
+    .input-group-text {
+      border-color: $input-focus-border-color !important;
+    }
+  }
+
+  .form-control {
+    &:focus {
+      border-color: $input-border-color;
+      box-shadow: none;
+    }
+
+    &:not(:last-child) {
+      border-right: 0;
+    }
+
+    &:not(:first-child) {
+      border-left: 0;
+    }
+  }
+
+  .input-group-prepend {
+    margin-right: 0;
+
+    .input-group-text {
+      padding-right: 0;
+    }
+  }
+
+  .input-group-append {
+    margin-left: 0;
+
+    .input-group-text {
+      padding-left: 0;
+    }
+  }
+
+  .input-group-text {
+    background: transparent;
+    transition: $input-transition;
   }
 }

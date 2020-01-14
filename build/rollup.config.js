@@ -7,7 +7,7 @@
 
 'use strict';
 
-const BUNDLE  = process.env.BUNDLE === 'true';
+const BUNDLE = process.env.BUNDLE === 'true';
 const dir = BUNDLE ? 'dist' : 'tmp-dist';
 
 import path from 'path';
@@ -17,39 +17,38 @@ import minify from 'rollup-plugin-babel-minify';
 import commonjs from 'rollup-plugin-commonjs';
 
 const fileDest = 'tabler',
-  banner = require('./banner');
+	banner = require('./banner');
 
 let plugins = [
-  resolve(),
-  commonjs()
+	resolve(),
+	commonjs()
 ];
 
 if (BUNDLE) {
-  plugins = plugins.concat([
-    babel({
-      exclude: 'node_modules/**'
-    }),
-    minify({
-      comments: false
-    })
-  ]);
+	plugins = plugins.concat([
+		babel({
+			exclude: 'node_modules/**'
+		}),
+		minify({
+			comments: false
+		})
+	]);
 }
 
 
-
 module.exports = {
-  context: "window",
-  input: {
-    tabler: path.resolve(__dirname, '../js/tabler.js'),
-    // 'tabler-charts': path.resolve(__dirname, '../js/tabler-charts.js'),
-    'tabler-range-sliders': path.resolve(__dirname, '../js/tabler-range-sliders.js')
-  },
-  output: {
-    banner,
-    // name: 'tabler',
-    dir: path.resolve(__dirname, `../${dir}/js/`),
-    entryFileNames: BUNDLE ? '[name].min.js' : '[name].js',
-    format: 'cjs'
-  },
-  plugins,
+	context: "window",
+	input: {
+		tabler: path.resolve(__dirname, '../js/tabler.js'),
+		// 'tabler-charts': path.resolve(__dirname, '../js/tabler-charts.js'),
+		'tabler-range-sliders': path.resolve(__dirname, '../js/tabler-range-sliders.js')
+	},
+	output: {
+		banner,
+		// name: 'tabler',
+		dir: path.resolve(__dirname, `../${dir}/js/`),
+		entryFileNames: BUNDLE ? '[name].min.js' : '[name].js',
+		format: 'cjs'
+	},
+	plugins,
 };

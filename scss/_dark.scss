@@ -1,9 +1,5 @@
 // stylelint-disable declaration-no-important
 
-$dark-body-bg: #222935;
-$dark-body-color: #afbdd1;
-$dark-border-color: rgba($border-color, .01);
-
 @mixin dark-mode {
   &,
   .modal-content,
@@ -17,21 +13,7 @@ $dark-border-color: rgba($border-color, .01);
   .sidebar,
   .topbar {
     color: inherit;
-    background: rgba($white, .02);
-    border-color: $dark-border-color;
-  }
-
-  .progress,
-  .form-control-light {
-    background: $dark-border-color;
-  }
-
-  .example,
-  .card-footer,
-  .card-header,
-  .table th, .markdown table th, .table td, .markdown table td,
-  .dropdown-menu {
-    border-color: $dark-border-color;
+    background: $dark;
   }
 
   .text-body {
@@ -49,16 +31,28 @@ $dark-border-color: rgba($border-color, .01);
   .form-fieldset {
     border-color: transparent;
   }
+
+  .form-control,
+  .form-select,
+  .form-check-input:not(:checked) {
+    background: transparent;
+    border-color: $dark-border-color;
+    color: inherit;
+  }
+
+  .input-group-text {
+    border-color: $dark-border-color;
+  }
 }
 
 @media not print {
-  body.theme-dark {
+  .theme-dark {
     @include dark-mode;
   }
 }
 
-@media (prefers-color-scheme: dark) {
-  body.auto-theme-dark {
+@media not print and (prefers-color-scheme: dark) {
+  .auto-theme-dark {
     @include dark-mode;
   }
 }
