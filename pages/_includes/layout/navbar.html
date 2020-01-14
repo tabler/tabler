@@ -1,10 +1,10 @@
 {% assign person-id = include.person-id | default: 12 | minus: 1 %}
 {% assign person = site.data.people[person-id] %}
 
-{% if include.menu-layout != 'vertical' %}
-{% include layout/navbar-logo.html class="mr-4" %}
-{% else %}
+{% if page.sidebar %}
 {% include layout/navbar-search.html class="mr-4" %}
+{% else %}
+{% include layout/navbar-logo.html class="mr-4" %}
 {% endif %}
 
 <ul class="nav navbar-menu align-items-center ml-auto">

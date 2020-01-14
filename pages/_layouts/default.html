@@ -4,16 +4,16 @@ layout: base
 
 <div class="wrapper">
 
-	{% if page.menu-layout == 'vertical' %}
+	{% if page.sidebar %}
 		{% include layout/sidebar.html %}
 	{% endif %}
 
 	<div class="content">
-		{% include layout/topnav.html dark=page.header-dark sticky=page.header-sticky %}
+		{% include layout/topnav.html %}
 
-		{% if page.menu-layout != 'vertical' %}
+		{% unless page.sidebar %}
 			{% include layout/topmenu.html %}
-		{% endif %}
+		{% endunless %}
 
 		<div class="content-page">
 			<main class="container{% if page.container-size %}-{{ page.container-size }}{% endif %} my-4 flex-fill">
