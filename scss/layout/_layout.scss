@@ -1,6 +1,6 @@
 //sidenav
 $sidenav-width: 16rem;
-$sidenav-width-folded: 4rem;
+$sidenav-width-narrow: 4rem;
 $sidenav-bg: $white;
 $sidenav-border-color: $border-color;
 $sidenav-dark-bg: $dark;
@@ -9,106 +9,111 @@ $sidenav-breakpoint-show: 'sm';
 $sidenav-breakpoint-folded: 'lg';
 $sidenav-folded-item-height: 3.5rem;
 
-@mixin sidebar-folded($breakpoint-folded, $breakpoint-show: false) {
-  @if $breakpoint-folded {
+@mixin sidebar-narrow {
+  width: $sidenav-width-narrow;
 
-    @include media-breakpoint-between($breakpoint-show, $breakpoint-folded) {
-      width: $sidenav-width-folded;
+  .sidebar-brand {
+    width: $sidenav-width-narrow;
+  }
 
-      .sidebar-brand {
-        width: $sidenav-width-folded;
-      }
+  .sidebar-brand-logo {
+    &-sm {
+      display: inline-block;
+    }
 
-      .sidebar-content {
-        padding: 0;
-        overflow: visible;
-      }
+    &-lg {
+      display: none;
+    }
+  }
 
-      .sidebar-nav {
-        margin: 0;
+  .sidebar-content {
+    padding: 0;
+    overflow: visible;
+  }
 
-        > .sidebar-nav-item {
-          position: relative;
-          white-space: nowrap;
+  .sidebar-nav {
+    margin: 0;
 
-          &:hover {
-            background: $primary;
-            width: $sidenav-width;
+    > .sidebar-nav-item {
+      position: relative;
+      white-space: nowrap;
 
-            > .sidebar-nav-link {
-              color: #ffffff;
+      &:hover {
+        background: $primary;
+        width: $sidenav-width;
 
-              > span {
-                display: block;
-              }
+        > .sidebar-nav-link {
+          color: #ffffff;
 
-              .icon {
-                margin-right: add(1rem, $sidenav-padding);
-              }
-            }
-
-            .sidebar-subnav {
-              display: block;
-
-              .sidebar-nav-link {
-                padding-left: $sidenav-padding;
-              }
-            }
+          > span {
+            display: block;
           }
 
-          > .sidebar-nav-link {
-            min-height: $sidenav-folded-item-height;
-            padding: 0 1rem !important;
-            position: relative;
+          .icon {
+            margin-right: add(1rem, $sidenav-padding);
+          }
+        }
 
-            .icon {
-              margin: 0;
-              width: 2rem;
-              height: 1.125rem;
-            }
+        .sidebar-subnav {
+          display: block;
 
-            > span {
-              display: none;
-            }
-
-            .badge {
-              display: block;
-              position: absolute;
-              left: 2.5rem;
-              top: 1rem;
-
-              text-indent: -99999px;
-              width: $badge-empty-size;
-              height: $badge-empty-size;
-              padding: 0;
-            }
+          .sidebar-nav-link {
+            padding-left: $sidenav-padding;
           }
         }
       }
 
-      .sidebar-subnav {
-        display: none;
-        position: absolute;
-        top: $sidenav-folded-item-height;
-        left: $sidenav-width-folded;
-        right: 0;
-        padding: .5rem 0;
-        background: $dark;
-        box-shadow: -6px 0px 16px -10px rgba(0, 0, 0, 0.2), $box-shadow;
-      }
+      > .sidebar-nav-link {
+        min-height: $sidenav-folded-item-height;
+        padding: 0 1rem !important;
+        position: relative;
 
-      .sidebar-nav-arrow {
-        display: none !important;
-      }
+        .icon {
+          margin: 0;
+          width: 2rem;
+          height: 1.125rem;
+        }
 
-      .sidebar-nav-title {
-        display: none;
-      }
+        > span {
+          display: none;
+        }
 
-      .hide-sidebar-folded {
-        display: none !important
+        .badge {
+          display: block;
+          position: absolute;
+          left: 2.5rem;
+          top: 1rem;
+
+          text-indent: -99999px;
+          width: $badge-empty-size;
+          height: $badge-empty-size;
+          padding: 0;
+        }
       }
     }
+  }
+
+  .sidebar-subnav {
+    display: none;
+    position: absolute;
+    top: $sidenav-folded-item-height;
+    left: $sidenav-width-narrow;
+    right: 0;
+    padding: .5rem 0;
+    background: $dark;
+    box-shadow: -6px 0px 16px -10px rgba(0, 0, 0, 0.2), $box-shadow;
+  }
+
+  .sidebar-nav-arrow {
+    display: none !important;
+  }
+
+  .sidebar-nav-title {
+    display: none;
+  }
+
+  .hide-sidebar-narrow {
+    display: none !important
   }
 }
 
@@ -134,12 +139,12 @@ Top nav
   user-select: none;
 
   & + & {
-    top: add($navbar-height, 1px);
+    top: $navbar-height;
     z-index: $zindex-sticky - 1;
   }
 
   & + & + & {
-    top: add($navbar-height * 2, 2px);
+    top: $navbar-height * 2;
     z-index: $zindex-sticky - 2;
   }
 
@@ -193,7 +198,7 @@ Top nav
 
     @if $sidenav-breakpoint-folded {
       @include media-breakpoint-down($sidenav-breakpoint-folded) {
-        left: $sidenav-width-folded;
+        left: $sidenav-width-narrow;
       }
     }
 
@@ -233,7 +238,7 @@ Content
 
     @if $sidenav-breakpoint-folded {
       @include media-breakpoint-down($sidenav-breakpoint-folded) {
-        margin-left: $sidenav-width-folded;
+        margin-left: $sidenav-width-narrow;
       }
     }
 
@@ -281,7 +286,12 @@ Sidebar
   display: flex;
   flex-direction: column;
 
-  @include sidebar-folded($sidenav-breakpoint-folded, $sidenav-breakpoint-show);
+  @if $sidenav-breakpoint-folded {
+    @include media-breakpoint-between($sidenav-breakpoint-show, $sidenav-breakpoint-folded) {
+      @include sidebar-narrow;
+    }
+  }
+
   @include sidebar-show($sidenav-breakpoint-show);
 }
 
@@ -301,18 +311,6 @@ Sidebar
 
   &-sm {
     display: none;
-  }
-
-  @if $sidenav-breakpoint-folded {
-    @include media-breakpoint-down($sidenav-breakpoint-folded) {
-      &-sm {
-        display: inline-block;
-      }
-
-      &-lg {
-        display: none;
-      }
-    }
   }
 }
 
@@ -453,6 +451,21 @@ Right sidebar
     .topnav {
       left: 0;
       right: $sidenav-width;
+    }
+  }
+}
+
+/**
+Folded sidebar
+ */
+.sidebar-narrow {
+  @include sidebar-narrow;
+
+  + .content {
+    margin-left: $sidenav-width-narrow;
+
+    .topnav {
+      left: $sidenav-width-narrow;
     }
   }
 }
