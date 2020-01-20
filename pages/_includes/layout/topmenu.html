@@ -1,9 +1,12 @@
-<header class="topnav">
-	<div class="navbar navbar-expand-lg {% if page.topmenu-dark %}navbar-dark bg-dark text-white{% else %}navbar-light{% endif %}">
-		<div class="container{% if include.fluid %}-fluid{% endif %}">
+{% assign fixed = page.topnav-fixed %}
+{% assign fixed = true %}
+
+<nav class="navbar navbar-border fixed-top navbar-expand-lg {% if page.topmenu-dark %}navbar-dark bg-dark text-white{% else %}navbar-light bg-white{% endif %}{% if fixed %} fixed-top{% endif %}">
+	<div class="container{% if include.fluid %}-fluid{% endif %}">
+		<div class="collapse navbar-collapse">
 			{% include layout/menu.html top=true %}
 
 			{% include layout/navbar-search.html %}
 		</div>
 	</div>
-</header>
+</nav>

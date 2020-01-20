@@ -1,6 +1,79 @@
 .navbar {
-  //padding-top: 0;
-  //padding-bottom: 0;
+  min-height: $navbar-height;
+
+  &.fixed-top {
+    + .content-page {
+      padding-top: $navbar-height;
+    }
+
+    + .navbar.fixed-top {
+      top: $navbar-height;
+
+      + .content-page {
+        padding-top: $navbar-height * 2;
+      }
+
+      + .navbar.fixed-top {
+        top: $navbar-height * 2;
+
+        + .content-page {
+          padding-top: $navbar-height * 3;
+        }
+      }
+    }
+  }
+}
+
+/**
+navbar toggler
+ */
+.navbar-toggler {
+  border: 0;
+  font-size: $navbar-toggler-font-size;
+  width: add($navbar-toggler-size, $navbar-toggler-padding-x * 2);
+  height: add($navbar-toggler-size, $navbar-toggler-padding-y * 2);
+  margin: $navbar-toggler-margin;
+  position: relative;
+}
+
+.navbar-toggler-icon {
+  background-image: none !important;
+  position: absolute;
+  width: 1.5rem;
+  height: 2px;
+  border-radius: 3px;
+
+  left: 50%;
+  top: 50%;
+
+  background: currentColor;
+  transform: translateX(-50%);
+
+  &:before,
+  &:after {
+    content: '';
+    background: inherit;
+    position: absolute;
+    height: inherit;
+    width: inherit;
+    left: 0;
+    border-radius: inherit;
+  }
+
+  &:before {
+    top: .5rem;
+  }
+
+  &:after {
+    bottom: .5rem;
+  }
+}
+
+/**
+navbar with border
+*/
+.navbar-border {
+  box-shadow: inset 0 -1px 0 0px $navbar-border-color;
 }
 
 /**
@@ -11,7 +84,6 @@ Navbar logo
 }
 
 .navbar-nav {
-  flex-direction: row;
   margin-right: -($navbar-padding-x);
   margin-left: -($navbar-padding-x);
 
