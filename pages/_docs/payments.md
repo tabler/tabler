@@ -8,9 +8,9 @@ done: true
 ### Payment
 
 {% example %}
-{% include ui/payment.html payment="shopify"%}
-{% include ui/payment.html%}
-{% include ui/payment.html payment="paypal"%}
+{% include ui/payment.html class="mr-3" payment="shopify"%}
+{% include ui/payment.html class="mr-3" payment="visa" %}
+{% include ui/payment.html class="mr-3" payment="paypal"%}
 {% endexample %}
 
 ### Payment sizes
@@ -18,20 +18,21 @@ done: true
 Using Bootstrap’s typical naming structure, you can create a standard payment, or scale it up to different sizes based on what’s needed.
 
 {% example %}
-{% include ui/payment.html payment="shopify" size="xl"%}
-{% include ui/payment.html size="lg"%}
-{% include ui/payment.html payment="paypal" size="md"%}
-{% include ui/payment.html payment="amazon"%}
+{% include ui/payment.html class="mr-3" payment="shopify" size="xl" %}
+{% include ui/payment.html class="mr-3" payment="visa" size="lg" %}
+{% include ui/payment.html class="mr-3" payment="paypal" size="md" %}
+{% include ui/payment.html class="mr-3" payment="amazon" size="sm" %}
 {% endexample %}
 
 ### Types
 
-<table>
+<table class="table-vcenter">
 {% for payment in site.data.payments %}
-    <tr>
-    <td>{% include ui/payment.html payment=payment.payment %}</td>
-    <td><code>{{ payment.payment }}</code></td>
+<tr>
     <td>{{ payment.name }}</td>
-    </tr>
+    <td><code>{{ payment.logo }}</code></td>
+    <td class="w-1p">{% include ui/payment.html payment=payment.logo %}</td>
+    <td class="w-1p">{% include ui/payment.html payment=payment.logo dark=true %}</td>
+</tr>
 {% endfor %}
 </table>
