@@ -1,3 +1,6 @@
+/*
+Navbar
+ */
 .navbar {
   min-height: $navbar-height;
 
@@ -36,18 +39,24 @@ navbar toggler
   position: relative;
 }
 
+
 .navbar-toggler-icon {
+  $time: $navbar-toggler-transform-time / 2;
+
   background-image: none !important;
   position: absolute;
-  width: 1.5rem;
-  height: 2px;
+  width: $navbar-toggler-size;
+  height: $navbar-toggler-item-height;
   border-radius: 3px;
 
   left: 50%;
   top: 50%;
+  margin-left: -($navbar-toggler-size / 2);
+  margin-top: -($navbar-toggler-item-height / 2);
 
   background: currentColor;
-  transform: translateX(-50%);
+  transform-origin: center;
+  transition: transform $time, top $time $time, bottom $time $time;
 
   &:before,
   &:after {
@@ -58,6 +67,7 @@ navbar toggler
     width: inherit;
     left: 0;
     border-radius: inherit;
+    transition: inherit;
   }
 
   &:before {
@@ -66,6 +76,21 @@ navbar toggler
 
   &:after {
     bottom: .5rem;
+  }
+
+  .navbar-toggler.collapsed & {
+    transform: rotate(45deg);
+    transition: top $time, bottom $time, transform $time $time, opacity $time;
+
+    &:before {
+      top: 0;
+      transform: rotate(-90deg);
+    }
+
+    &:after {
+      bottom: 0;
+      opacity: 0;
+    }
   }
 }
 
