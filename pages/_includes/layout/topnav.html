@@ -3,12 +3,12 @@
 
 {% assign dark = page.topnav-dark %}
 {% assign fixed = page.topnav-fixed %}
-{% assign fixed = true %}
+{% assign breakpoint = 'lg' %}
 
 <header class="navbar navbar-border {% if dark %}navbar-dark bg-dark text-white{% else %}navbar-light bg-white{% endif %}{% if fixed %} fixed-top{% endif %}">
 	<div class="container{% if include.topnav-fluid %}-fluid{% endif %}">
 
-		<button class="navbar-toggler mr-auto hide-sidebar-visible" type="button" data-toggle="collapse" data-target="#nav-main-menu" aria-expanded="false">
+		<button class="navbar-toggler mr-auto {% if page.sidebar %}hide-sidebar-visible{% else %}d-{{ breakpoint }}-none{% endif %}" type="button" data-toggle="collapse" data-target="#nav-main-menu" aria-expanded="false">
 			<span class="navbar-toggler-icon"></span>
 		</button>
 
@@ -63,4 +63,15 @@
 	</div>
 </header>
 
+{% unless page.sidebar %}
+<nav id="nav-main-menu" class="navbar navbar-border {% if page.topmenu-dark %}navbar-dark bg-dark text-white{% else %}navbar-light bg-white{% endif %}{% if fixed %} fixed-top{% endif %}">
+	<div class="container{% if include.fluid %}-fluid{% endif %}">
+		<div class="collapse navbar-collapse">
+			{% include layout/menu.html top=true %}
+
+			{% include layout/navbar-search.html %}
+		</div>
+	</div>
+</nav>
+{% endunless %}
 
