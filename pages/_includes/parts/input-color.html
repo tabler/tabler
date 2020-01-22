@@ -1,11 +1,16 @@
+{% assign colors = 'dark,white' | split: ',' %}
+{% for color in site.colors limit: 10 %}
+{% assign colors = colors | push: color[0] %}
+{% endfor %}
+
 <div class="mb-3">
 	<label class="form-label">Color Input</label>
 	<div class="row row-xs">
-		{% for color in site.colors limit: 10 %}
+		{% for color in colors %}
 		<div class="col-auto">
-			<label class="form-colorinput">
-				<input name="color" type="checkbox" value="{{ color[0] }}" class="form-colorinput-input" {% if forloop.index== 2 %} checked{% endif %}/>
-				<span class="form-colorinput-color bg-{{ color[0] }}"></span>
+			<label class="form-colorinput{% if color == 'white' %} form-colorinput-light{% endif %}">
+				<input name="color" type="checkbox" value="{{ color }}" class="form-colorinput-input" {% if forloop.index >= 2 and forloop.index <= 4 %} checked{% endif %}/>
+				<span class="form-colorinput-color bg-{{ color }}"></span>
 			</label>
 		</div>
 		{% endfor %}
