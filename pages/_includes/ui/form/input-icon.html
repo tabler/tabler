@@ -1,8 +1,14 @@
-{% assign icon = include.icon | default: 'search' %}
 {% capture addon %}
-<span class="input-icon-addon">
-	{% include ui/icon.html icon=icon %}
-</span>
+	{% if include.loader %}
+		<span class="input-icon-addon">
+			{% include ui/spinner.html class="text-muted" size="sm" %}
+		</span>
+	{% else %}
+		{% assign icon = include.icon | default: 'search' %}
+		<span class="input-icon-addon">
+			{% include ui/icon.html icon=icon %}
+		</span>
+	{% endif %}
 {% endcapture %}
 
 <div class="input-icon{% if include.class %} {{ include.class }}{% endif %}">
