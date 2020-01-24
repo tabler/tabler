@@ -129,7 +129,7 @@ bootstrap-link: components/forms/
 <div class="mb-2">
    <label class="form-label">Input group</label>
    <div class="input-group">
-      <input type="text" class="form-control" placeholder="Search for&hellip;">
+      <input type="text" class="form-control" placeholder="Search for…">
       <span class="input-group-append">
 							<button class="btn btn-primary" type="button">Go!</button>
 						</span>
