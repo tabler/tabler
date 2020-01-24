@@ -1,13 +1,25 @@
 <div class="input-group{% if include.class %} {{ include.class }}{% endif %}">
-  {% if include.prepend %}
-  <div class="input-group-prepend">
-    <span class="input-group-text">{{ include.prepend }}</span>
-  </div>
-  {% endif %}
-  <input type="text" class="form-control{% if include.input-class %} {{ include.input-class }}{% endif %}"{% if include.placeholder %} placeholder="{{ include.placeholder }}"{% endif %}{% if include.placeholder %} value="{{ include.value }}"{% endif %}>
-  {% if include.append %}
-  <div class="input-group-append">
-    <span class="input-group-text">{{ include.append }}</span>
-  </div>
-  {% endif %}
+	{% if include.prepend %}
+	<div class="input-group-prepend">
+		<span class="input-group-text">
+			{% if include.prepend == "checkbox" or include.prepend == "radio" %}
+				<input class="form-check-input m-0" type="{{ include.prepend }}" checked>
+			{% else %}
+				{{ include.prepend }}
+			{% endif %}
+		</span>
+	</div>
+	{% endif %}
+	<input type="text" class="form-control{% if include.input-class %} {{ include.input-class }}{% endif %}" {% if include.placeholder %} placeholder="{{ include.placeholder }}" {% endif %}{% if include.value %} value="{{ include.value }}"{% endif %}>
+	{% if include.append %}
+	<div class="input-group-append">
+		<span class="input-group-text">
+			{% if include.append == "checkbox" or include.append == "radio" %}
+				<input class="form-check-input m-0" type="{{ include.append }}" checked>
+			{% else %}
+				{{ include.append }}
+			{% endif %}
+		</span>
+	</div>
+	{% endif %}
 </div>
