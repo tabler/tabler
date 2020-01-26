@@ -1,12 +1,26 @@
-import {CountUp} from "countup.js";
+'use strict';
 
-document.addEventListener("DOMContentLoaded", function () {
+import {CountUp} from "countup.js";
+import {Dropdown, Tooltip, Popover} from 'bootstrap';
+import 'popper.js';
+
+
+(function() {
+	/**
+	 * Dropdown
+	 */
+	var dropdownElementList = [].slice.call(document.querySelectorAll('[data-toggle="dropdown"]'))
+	dropdownElementList.map(function (dropdownToggleEl) {
+		console.log('dropdownToggleEl', dropdownToggleEl);
+		return new Dropdown(dropdownToggleEl, {})
+	});
+	
 	/**
 	 * Tooltip
 	 */
 	var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="tooltip"]'));
 	tooltipTriggerList.map(function (tooltipTriggerEl) {
-		return new bootstrap.Tooltip(tooltipTriggerEl, {})
+		return new Tooltip(tooltipTriggerEl, {})
 	});
 
 	/*
@@ -14,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function () {
 	 */
 	var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="popover"]'));
 	popoverTriggerList.map(function (popoverTriggerEl) {
-		return new bootstrap.Popover(popoverTriggerEl, {
+		return new Popover(popoverTriggerEl, {
 			autoHide: true
 		})
 	});
@@ -22,13 +36,9 @@ document.addEventListener("DOMContentLoaded", function () {
 	/*
 	  CountUp
 	*/
-	let countups = document.querySelectorAll("[data-countup]");
-	for (let i = 0; i < countups.length; i++) {
-		let dataCountUp;
-		if (countups[i].getAttribute("data-countup")) {
-			dataCountUp = JSON.parse(countups[i].getAttribute("data-countup"));
-		}
-		let countup = new CountUp(countups[i], parseFloat(countups[i].innerText), dataCountUp);
-		countup.start();
-	}
-});
+	let countupTriggerList = [].slice.call(document.querySelectorAll("[data-countup]"));
+	countupTriggerList.map(function (countupTriggerEl) {
+		let dataCountUp = JSON.parse(countupTriggerEl.getAttribute("data-countup"));
+		return (new CountUp(countupTriggerEl, parseFloat(countupTriggerEl.innerText), dataCountUp)).start();
+	});
+})();
