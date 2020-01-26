@@ -1,52 +1,13 @@
 import {CountUp} from "countup.js";
 
-const tabler = {
-	toggleFullscreen: function (elem) {
-		elem = elem || document.documentElement;
-		if (
-			!document.fullscreenElement &&
-			!document.mozFullScreenElement &&
-			!document.webkitFullscreenElement &&
-			!document.msFullscreenElement
-		) {
-			if (elem.requestFullscreen) {
-				elem.requestFullscreen();
-			} else if (elem.msRequestFullscreen) {
-				elem.msRequestFullscreen();
-			} else if (elem.mozRequestFullScreen) {
-				elem.mozRequestFullScreen();
-			} else if (elem.webkitRequestFullscreen) {
-				elem.webkitRequestFullscreen(Element.ALLOW_KEYBOARD_INPUT);
-			}
-		} else {
-			if (document.exitFullscreen) {
-				document.exitFullscreen();
-			} else if (document.msExitFullscreen) {
-				document.msExitFullscreen();
-			} else if (document.mozCancelFullScreen) {
-				document.mozCancelFullScreen();
-			} else if (document.webkitExitFullscreen) {
-				document.webkitExitFullscreen();
-			}
-		}
-	},
-};
-
-$(document).ready(function () {
-	const $body = $('body');
-
-  // $('[data-toggle="tooltip"]').tooltip();
-  
-  $('[data-toggle="toast"]').toast();
-  
-	$body.on('click', '[data-toggle="menubar"]', function (e) {
-		$body.toggleClass('aside-visible');
-
-		e.preventDefault();
-		return false;
+document.addEventListener("DOMContentLoaded", function () {
+	/**
+	 * Tooltip
+	 */
+	var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="tooltip"]'));
+	tooltipTriggerList.map(function (tooltipTriggerEl) {
+		return new bootstrap.Tooltip(tooltipTriggerEl, {})
 	});
-
-	$('[data-toggle="tooltip"]').tooltip();
 
 	/*
 	Popover
@@ -71,5 +32,3 @@ $(document).ready(function () {
 		countup.start();
 	}
 });
-
-window.tabler = tabler;
