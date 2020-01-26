@@ -8,7 +8,7 @@ done: true
 
 ### Default markup
 
-The dividers are automatically created in the content of the `::before` pseudo-element of li tags. You can inform the current page using the `active` modifier in a `li` tag. It will disable the navigation of inner links.
+The dividers are automatically created in the content of the `:before` pseudo-element of li tags. You can inform the current page using the `active` modifier in a `li` tag. It will disable the navigation of inner links.
 
 {% example %}
 {% include ui/breadcrumb.html %}
