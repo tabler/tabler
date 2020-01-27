@@ -1,9 +1,10 @@
 {% assign type = include.type | default: 'date' %}
+{% assign value = include.value | default: '2020-06-20' %}
 {% assign placeholder = include.placeholder | default: 'Select a date' %}
 {% assign id = include.id | default: 'simple' %}
 
 {% capture input %}
-<input id="calendar-{{ id }}" type="{{ type }}" class="form-control{% if include.class %} {{ include.class }}{% endif %}"{% if placeholder %} placeholder="{{ placeholder }}"{% endif %} />
+<input id="calendar-{{ id }}" type="{{ type }}" value="{{ value }}" class="form-control{% if include.class %} {{ include.class }}{% endif %}"{% if placeholder %} placeholder="{{ placeholder }}"{% endif %} />
 {% endcapture %}
 
 {% if include.inline %}
