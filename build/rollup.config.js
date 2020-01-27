@@ -41,6 +41,7 @@ module.exports = {
 	input: {
 		tabler: path.resolve(__dirname, '../js/tabler.js'),
 		// 'tabler-charts': path.resolve(__dirname, '../js/tabler-charts.js'),
+		'tabler-range-sliders': path.resolve(__dirname, '../js/tabler-range-sliders.js')
 	},
 	output: {
 		banner,
