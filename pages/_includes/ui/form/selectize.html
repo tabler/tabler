@@ -1,26 +1,28 @@
 {% assign key = include.key | default: 'people' %}
 {% assign data = site.data.selects[key] %}
 {% assign options = data.options %}
-<select name="{{ key }}" id="select-{{ key }}" class="form-select">
+
+<select name="{{ key }}" id="select-{{ key }}" class="form-select"{% if data.multiple %} multiple{% endif %}>
 	{% if options == 'people' %}
 		{% for person in site.data.people limit: 20 %}
 		{% capture avatar %}
 			{% include ui/avatar.html person=person class="avatar-xs rounded mr-2 ml-n1" %}
 		{% endcapture %}
-		<option value="{{ person.id }}" data-data='{"avatar": "{{ avatar | strip  | replace: '"', '\"' }}"}'{% if person.id == value %} selected{% endif %}>{{ person.full_name }}</option>
+		<option value="{{ person.id }}" data-data='{"avatar": "{{ avatar | strip  | replace: '"', '\"' }}"}'{% if person.id == data.value %} selected{% endif %}>{{ person.full_name }}</option>
 		{% endfor %}
 
 	{% else %}
 		{% for option in options %}
 		{% if option[1] %}
-			{% assign value = option[0] %}
-			{% assign name = option[1].name %}
+			{% assign current-value = option[0] %}
+			{% assign current-name = option[1].name %}
 			{% assign all-data = option[1] %}
 		{% else %}
-		{% assign value = option %}
-		{% assign name = option %}
+			{% assign current-value = option %}
+			{% assign current-name = option %}
 		{% endif %}
-		<option value="{{ value }}"{% if all-data.image %} data-data='{"image": "{{ site.base }}/{{ all-data.image }}"}'{% elsif all-data.flag %} data-data='{"flag": "{{ all-data.flag }}"}'{% endif %}{% if data.value == value %} selected{% endif %}>{{ name }}</option>
+
+		<option value="{{ current-value }}"{% if all-data.image %} data-data='{"image": "{{ site.base }}/{{ all-data.image }}"}'{% elsif all-data.flag %} data-data='{"flag": "{{ all-data.flag }}"}'{% endif %}{% if data.value == current-value or data.value contains current-value %} selected{% endif %}>{{ current-name }}</option>
 		{% endfor %}
 
 	{% endif %}
@@ -31,7 +33,7 @@
 <script>
 	$(document).ready(function () {
 		$('#select-{{ key }}').selectize({
-		{% if key == "countries" %}
+			{% if key == "countries" %}
 			render: {
 				option: function (data, escape) {
 					return '<div class="option"><span class="flag flag-country-' + data.flag + ' mr-2 ml-n1"></span>' + escape(data.text) + '</div>';
@@ -40,7 +42,7 @@
 					return '<div class="d-flex align-items-center"><span class="flag flag-country-' + data.flag + ' mr-2 ml-n1"></span>' + escape(data.text) + '</div>';
 				}
 			}
-		{% elsif key == "people" %}
+			{% elsif key == "people" %}
 			render: {
 				option: function (data, escape) {
 					return '<div class="option">' + data.avatar + '' + escape(data.text) + '</div>';
@@ -49,10 +51,14 @@
 					return '<div class="d-flex align-items-center">' + data.avatar + '' + escape(data.text) + '</div>';
 				}
 			}
-		{% endif %}
-		{% if data.max-items %}
-			maxItems: {{ data.max-items }}
-		{% endif %}
+			{% endif %}
+			{% if data.max-items %}
+			maxItems: {{ data.max-items }},
+			{% endif %}
+
+			{% if data.removable %}
+			plugins: ['remove_button'],
+			{% endif %}
 		});
 	});
 </script>
