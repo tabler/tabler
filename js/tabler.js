@@ -1,18 +1,15 @@
 'use strict';
 
-import {CountUp} from "countup.js";
-import noUiSlider from "nouislider";
 import {Dropdown, Tooltip, Popover} from 'bootstrap';
 import 'popper.js';
+import {CountUp} from "countup.js";
 
-
-(function() {
+(function () {
 	/**
 	 * Dropdown
 	 */
 	var dropdownElementList = [].slice.call(document.querySelectorAll('[data-toggle="dropdown"]'))
 	dropdownElementList.map(function (dropdownToggleEl) {
-		console.log('dropdownToggleEl', dropdownToggleEl);
 		return new Dropdown(dropdownToggleEl, {})
 	});
 
@@ -33,21 +30,6 @@ import 'popper.js';
 			autoHide: true
 		})
 	});
-
-	/*
-	NoUiSlider
-	*/
-	let sliders = document.querySelectorAll("[data-slider]");
-		for (let i = 0; i < sliders.length; i++) {
-			let dataSlider;
-			if (sliders[i].getAttribute("data-slider")) {
-				dataSlider = JSON.parse(sliders[i].getAttribute("data-slider"));
-		}
-		let slider = noUiSlider.create(sliders[i],dataSlider);
-		if(dataSlider['js-name']){
-			window[dataSlider['js-name']] = slider;
-		}
-	}
 
 	/*
 	CountUp

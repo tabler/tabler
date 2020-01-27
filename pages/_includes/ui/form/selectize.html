@@ -4,7 +4,10 @@
 <select name="{{ key }}" id="select-{{ key }}" class="form-select">
 	{% if options == 'people' %}
 		{% for person in site.data.people limit: 20 %}
-		<option value="{{ person.id }}" data-data='{"image": "{{ site.base }}/{{ person.photo }}"}'{% if person.id == value %} selected{% endif %}>{{ person.full_name }}</option>
+		{% capture avatar %}
+			{% include ui/avatar.html person=person class="avatar-xs rounded mr-2 ml-n1" %}
+		{% endcapture %}
+		<option value="{{ person.id }}" data-data='{"avatar": "{{ avatar | strip  | replace: '"', '\"' }}"}'{% if person.id == value %} selected{% endif %}>{{ person.full_name }}</option>
 		{% endfor %}
 
 	{% else %}
@@ -40,10 +43,10 @@
 		{% elsif key == "people" %}
 			render: {
 				option: function (data, escape) {
-					return '<div class="option"><span class="avatar avatar-xs rounded mr-2 ml-n1" style="background-image: url({{ site.base }}/' + data.image + ')"></span>' + escape(data.text) + '</div>';
+					return '<div class="option">' + data.avatar + '' + escape(data.text) + '</div>';
 				},
 				item: function (data, escape) {
-					return '<div class="d-flex align-items-center"><span class="avatar avatar-xs rounded mr-2 ml-n1" style="background-image: url({{ site.base }}/' + data.image + ')"></span>' + escape(data.text) + '</div>';
+					return '<div class="d-flex align-items-center">' + data.avatar + '' + escape(data.text) + '</div>';
 				}
 			}
 		{% endif %}
