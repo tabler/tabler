@@ -7,14 +7,14 @@
 {% if id %}
 	{% append_lib nouislider %}
 
-	<div class="form-range mb-2{% if include.class %} {{ include.class }}{% endif %}" id="slider-{{ id }}" data-slider='{"start": {{ value }}, "connect": [true, false], "step": {{ step }}, "range": {"min": {{ min }}, "max": {{ max }}}}'></div>
+	<div class="form-range mb-2{% if include.class %} {{ include.class }}{% endif %}" id="range-{{ id }}"></div>
 
 	{% capture_global scripts %}
 	<script>
 		// @formatter:off
 		{% assign value = value | split: ',' %}
 
-		noUiSlider.create(document.getElementById('slider-{{ id }}'), {
+		noUiSlider.create(document.getElementById('range-{{ id }}'), {
 			start: {% if value.size > 1 %}[{{ value | join: ', ' }}]{% else %}{{ value }}{% endif %},
 			{% if value.size > 1 or include.connect %}
 			connect: [{% for i in (2..value.size) %}{% cycle 'false', 'true' %}, {% endfor %}true, false],
