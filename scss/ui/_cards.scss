@@ -22,20 +22,6 @@
   }
 }
 
-.card-sm {
-  .card-body {
-    padding: map-get($spacers, 3);
-  }
-}
-
-.card-md {
-  .card-body {
-    @include media-breakpoint-up(md) {
-      padding: map-get($spacers, 6);
-    }
-  }
-}
-
 .card-group {
   margin-bottom: $card-group-margin;
 }
@@ -199,12 +185,24 @@
 }
 
 .card-body {
-  @media print {
-    padding: 0;
+  .card-sm & {
+    padding: map-get($spacers, 3);
   }
 
-  > :last-child {
-    margin-bottom: 0;
+  .card-md & {
+    @include media-breakpoint-up(md) {
+      padding: map-get($spacers, 5);
+    }
+  }
+
+  .card-lg & {
+    @include media-breakpoint-up(md) {
+      padding: map-get($spacers, 6);
+    }
+  }
+
+  @media print {
+    padding: 0;
   }
 
   & + & {

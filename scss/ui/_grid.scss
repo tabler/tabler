@@ -2,6 +2,15 @@
   border-left: 1px solid $border-color;
 }
 
+.container {
+  @each $variation, $size in $container-variations {
+    &-#{$variation} {
+      @include make-container();
+      max-width: $size;
+    }
+  }
+}
+
 @each $name, $value in (0: 0, xs: .25rem, sm: .5rem, md: 1.5rem, lg: 3rem) {
   .row-#{$name} {
     margin-right: (-$value);

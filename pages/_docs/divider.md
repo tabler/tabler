@@ -10,11 +10,11 @@ done: true
 <p>
   Dicta error hic illo iure necessitatibus nihil officiis omnis perferendis, praesentium repellendus rerum, saepe sed, sit!
 </p>
-{% include ui/hr.html text="Left divider" %}
+{% include ui/hr.html text="Left divider" position="left" %}
 <p>
   Dicta error hic illo iure necessitatibus nihil officiis omnis perferendis, praesentium repellendus rerum, saepe sed, sit!
 </p>
-{% include ui/hr.html text="Centered divider" position="center" %}
+{% include ui/hr.html text="Centered divider"  %}
 <p>
   Dicta error hic illo iure necessitatibus nihil officiis omnis perferendis, praesentium repellendus rerum, saepe sed, sit!
 </p>
