@@ -55,12 +55,12 @@ bootstrap-link: components/forms/
 
 ### Input size
 
-{% include parts/input-sizes.html %}
+{% include parts/form/input-sizes.html %}
 
 
 ### Select
 {% example %}
-{% include parts/select.html options="Germany,USA,Poland" %}
+{% include parts/form/select.html options="Germany,USA,Poland" %}
 {% endexample %}
 
 ### Textarea
@@ -73,55 +73,55 @@ bootstrap-link: components/forms/
 
 ### Image check
 {% example %}
-{% include parts/input-image.html %}
+{% include parts/form/input-image.html %}
 {% endexample %}
 
 ### Input color
 {% example %}
-{% include parts/input-color.html %}
+{% include parts/form/input-color.html %}
 {% endexample %}
 
 ### Input color picker
 {% example %}
-{% include parts/input-colorpicker.html %}
+{% include parts/form/input-colorpicker.html %}
 {% endexample %}
 
 ### Datalists
 {% example %}
-{% include parts/input-datalist.html %}
+{% include parts/form/input-datalist.html %}
 {% endexample %}
 
 ### Custom selectboxes
 {% example %}
-{% include parts/input-selectgroups.html %}
+{% include parts/form/input-selectgroups.html %}
 {% endexample %}
 
 ### Toggle switches
 {% example %}
-{% include parts/input-toggle.html %}
-{% include parts/input-toggle-single.html %}
+{% include parts/form/input-toggle.html %}
+{% include parts/form/input-toggle-single.html %}
 {% endexample %}
 
 ### Radios
 {% example %}
-{% include parts/input-radios.html %}
-{% include parts/input-radios-inline.html %}
+{% include parts/form/input-radios.html %}
+{% include parts/form/input-radios-inline.html %}
 {% endexample %}
 
 ### Checkboxes
 {% example %}
-{% include parts/input-checkboxes.html %}
-{% include parts/input-checkboxes-inline.html %}
+{% include parts/form/input-checkboxes.html %}
+{% include parts/form/input-checkboxes-inline.html %}
 {% endexample%}
 
 ### Range input
 {% example %}
-{% include parts/input-range.html %}
+{% include parts/form/input-range.html %}
 {% endexample %}
 
 ### Sample form
 {% example %}
-{% include parts/form-fieldset.html %}
+{% include parts/form/fieldset.html %}
 {% endexample %}
 
 ### Input group
@@ -162,12 +162,12 @@ bootstrap-link: components/forms/
 
 ### Input with icon
 {% example %}
-{% include parts/input-icon.html %}
+{% include parts/form/input-icon.html %}
 {% endexample %}
 
 ### Separated inputs
 {% example %}
-{% include parts/input-icon-separated.html %}
+{% include parts/form/input-icon-separated.html %}
 {% endexample %}
 
 ### Custom Input examples
