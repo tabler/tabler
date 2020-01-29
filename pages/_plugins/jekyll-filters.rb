@@ -1,3 +1,5 @@
+require 'date'
+
 module Jekyll
   module JekyllFilter
     def to_pretty_time(value)
@@ -107,6 +109,10 @@ module Jekyll
 
     def miliseconds_to_minutes(miliseconds)
       seconds_to_minutes(miliseconds.to_i / 1000)
+    end
+
+    def timestamp_to_date(timestamp)
+      DateTime.strptime(timestamp.to_s, '%s').strftime('%F')
     end
   end
 end
