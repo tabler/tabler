@@ -2,6 +2,8 @@
 layout: base
 ---
 
+{% assign page-title = page.page-title | default: layout.page-title %}
+
 <div class="page">
 	{% if page.sidebar %}
 		{% include layout/sidebar.html %}
@@ -12,7 +14,9 @@ layout: base
 
 		<div class="content-page">
 			<main class="container{% if page.container-size %}-{{ page.container-size }}{% endif %} my-4 flex-fill">
-				{% include layout/page-title.html %}
+				{% if page-title %}
+					{% include layout/page-title.html title=page-title description=page.page-title-description actions=page.page-title-actions pretitle=page.page-pretitle %}
+				{% endif %}
 
 				{{ content }}
 			</main>

@@ -1,29 +1,27 @@
-{% if page.page-title or layout.page-title %}
 <!-- Page title -->
 <div class="page-title-box">
 
 	<div class="row align-items-center">
 		<div class="col-auto">
-			{% if page.page-pretitle %}
+			{% if include.pretitle %}
 			<!-- Page pre-title -->
 			<div class="page-pretitle">
-				{{ page.page-pretitle }}
+				{{ include.pretitle }}
 			</div>
 			{% endif %}
 			<h2 class="page-title">
-				{{ page.page-title | default: layout.page-title }}
+				{{ include.title }}
 			</h2>
 		</div>
 
-		{% if page.page-title-description %}
+		{% if include.description %}
 		<div class="col-auto">
-			<div class="text-muted text-h5 mt-2">{{ page.page-title-description }}</div>
+			<div class="text-muted text-h5 mt-2">{{ include.description }}</div>
 		</div>
 		{% endif %}
 
-		{% if page.page-title-actions %}
-			{% include layout/page-title-actions.html actions=page.page-title-actions %}
+		{% if include.actions %}
+			{% include layout/page-title-actions.html actions=include.actions %}
 		{% endif %}
 	</div>
 </div>
-{% endif %}
