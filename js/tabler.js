@@ -2,7 +2,7 @@
 
 import {Dropdown, Tooltip, Popover} from 'bootstrap';
 import 'popper.js';
-// import {CountUp} from "countup.js";
+import {CountUp} from "countup.js";
 
 (function () {
 	/**
@@ -34,9 +34,10 @@ import 'popper.js';
 	/*
 	CountUp
 	*/
-	// let countupTriggerList = [].slice.call(document.querySelectorAll("[data-countup]"));
-	// countupTriggerList.map(function (countupTriggerEl) {
-	// 	let dataCountUp = JSON.parse(countupTriggerEl.getAttribute("data-countup"));
-	// 	return (new CountUp(countupTriggerEl, parseFloat(countupTriggerEl.innerText), dataCountUp)).start();
-	// });
+	let countupTriggerList = [].slice.call(document.querySelectorAll("[data-countup]"));
+	countupTriggerList.map(function (countupTriggerEl) {
+		let dataCountUp;
+		if(countupTriggerEl.getAttribute("data-countup") != "") dataCountUp = JSON.parse(countupTriggerEl.getAttribute("data-countup"));
+		return (new CountUp(countupTriggerEl, parseFloat(countupTriggerEl.innerText), dataCountUp)).start();
+	});
 })();
