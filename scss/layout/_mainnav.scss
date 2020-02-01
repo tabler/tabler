@@ -1,0 +1,89 @@
+@mixin navbar-vertical {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: $sidenav-width;
+  z-index: $zindex-fixed;
+  min-height: auto;
+  align-items: start;
+
+  >.container {
+    flex-direction: column;
+  }
+
+  ~ .navbar,
+  ~ .content {
+    margin-left: $sidenav-width;
+  }
+
+  &.navbar-vertical-narrow {
+    width: $sidenav-width-narrow;
+
+    ~ .navbar,
+    ~ .content {
+      margin-left: $sidenav-width-narrow;
+    }
+  }
+
+  &.navbar-right {
+    left: auto;
+    right: 0;
+
+    ~ .navbar,
+    ~ .content {
+      margin-left: 0;
+      margin-right: $sidenav-width;
+    }
+
+    &.navbar-vertical-narrow {
+      ~ .navbar,
+      ~ .content {
+        margin-right: $sidenav-width-narrow;
+      }
+    }
+  }
+}
+
+.page {
+  display: flex;
+  flex-direction: column;
+}
+
+.content {
+  padding-top: map-get($spacers, 4);
+  padding-bottom: map-get($spacers, 4);
+
+  @include media-breakpoint-up(xl) {
+    padding-left: .5rem;
+    padding-right: .5rem;
+  }
+}
+
+.navbar {
+  min-height: $navbar-height;
+}
+
+.navbar-light {
+  background: $white;
+  box-shadow: 0 0 0 1px $border-color;
+}
+
+.navbar-dark {
+  background: $sidenav-dark-bg;
+  color: $sidenav-dark-color;
+}
+
+.navbar-vertical {
+  @each $breakpoint, $breakpoint-max-width in $grid-breakpoints {
+    @include media-breakpoint-up($breakpoint) {
+      &.navbar-expand-#{$breakpoint} {
+        @include navbar-vertical;
+      }
+    }
+  }
+}
+
+.navbar-secondary {
+  order: -1;
+}

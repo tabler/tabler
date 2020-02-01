@@ -1,0 +1,84 @@
+---
+tmp: true
+page-header: Layout test
+page-header-actions: breadcrumb
+---
+
+<div class="row row-cards">
+	<div class="col-12">
+		<div class="card">
+			<div class="card-body">
+				<div class="btn-list">
+					<a href="#" class="btn btn-secondary" data-theme-toggle="navbar-vertical">Toggle sidebar</a>
+					<a href="#" class="btn btn-secondary" data-theme-toggle="navbar-vertical-narrow">Sidebar narrow</a>
+					<a href="#" class="btn btn-secondary" data-theme-toggle="navbar-right">Sidebar left/right</a>
+					<a href="#" class="btn btn-secondary" data-theme-toggle="navbar-color">Sidebar color</a>
+					<a href="#" class="btn btn-secondary" data-theme-toggle="navbar-secondary">Toggle secondary</a>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	{% for i in (1..6) %}
+	<div class="col-md-6">
+		<div class="card card-body">
+			<div style="height: 10rem;"></div>
+		</div>
+	</div>
+	{% endfor %}
+	{% for i in (1..6) %}
+	<div class="col-md-4">
+		<div class="card card-body">
+			<div style="height: 10rem;"></div>
+		</div>
+	</div>
+	{% endfor %}
+</div>
+
+{% capture_global scripts %}
+<script>
+	(function () {
+		var navbarPrimary = document.getElementById('navbar-primary'),
+			navbarSecondary = document.getElementById('navbar-secondary');
+
+		var events = {
+			'navbar-vertical': function () {
+				navbarPrimary.classList.toggle('navbar-vertical');
+			},
+			'navbar-right': function () {
+				navbarPrimary.classList.toggle('navbar-right');
+			},
+			'navbar-vertical-narrow': function () {
+				navbarPrimary.classList.toggle('navbar-vertical-narrow');
+			},
+			'navbar-color': function () {
+				var classList = navbarPrimary.classList;
+
+				if (classList.contains('navbar-light')) {
+					classList.add('navbar-dark');
+					classList.remove('navbar-light');
+				} else {
+					classList.add('navbar-light');
+					classList.remove('navbar-dark');
+				}
+			},
+			'navbar-secondary': function () {
+				navbarSecondary.classList.toggle('d-none');
+			},
+		};
+
+		for (var name in events) {
+			var event = events[name];
+
+			(function(event){
+				document.querySelector('[data-theme-toggle="' + name + '"]').addEventListener("click", function (e) {
+					event.call();
+					e.preventDefault();
+					return false;
+				});
+			})(event);
+		}
+
+	})();
+</script>
+{% endcapture_global %}
