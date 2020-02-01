@@ -4,16 +4,17 @@
 {% capture_once scripts %}
 <script>
 (function () {
-	const $elem = $('[data-mask]');
-
-	if ($elem) {
-		$elem.each(function () {
-			IMask($(this).get(0), {
-				mask: $(this).attr('data-mask'),
-				lazy: $(this).attr('data-mask-visible') === 'true',
-			});
-		});
-	}
+	/**
+	 * Input mask
+	 */
+	var maskElementList = [].slice.call(document.querySelectorAll('[data-mask]'))
+	maskElementList.map(function (maskEl) {
+		console.log('maskEl', maskEl);
+		return new IMask(maskEl, {
+			mask: maskEl.dataset.mask,
+			lazy: maskEl.dataset['mask-visible'] === 'true'
+		})
+	});
 })();
 </script>
 {% endcapture_once %}

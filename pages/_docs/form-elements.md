@@ -197,7 +197,7 @@ bootstrap-link: components/forms/
 {% example %}
 <div class="mb-2">
    <label class="form-label">Date of birth</label>
-   <div class="row row-xs">
+   <div class="row row-sm">
       <div class="col-5">
          <select name="user[month]" class="form-select">
             <option value="">Month</option>
