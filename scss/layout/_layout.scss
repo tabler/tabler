@@ -1,0 +1,393 @@
+//sidenav
+$sidenav-width: 16rem;
+$sidenav-width-narrow: 4rem;
+$sidenav-bg: $white;
+$sidenav-border-color: $border-color;
+$sidenav-dark-bg: $dark;
+$sidenav-padding: 1.25rem;
+$sidenav-breakpoint-show: 'sm';
+$sidenav-breakpoint-folded: 'lg';
+$sidenav-folded-item-height: 3.5rem;
+
+@mixin sidebar-narrow {
+  width: $sidenav-width-narrow;
+
+  .sidebar-brand {
+    width: 100%;
+  }
+
+  .sidebar-brand-logo {
+    &-sm {
+      display: inline-block;
+    }
+
+    &-lg {
+      display: none;
+    }
+  }
+
+  .sidebar-content {
+    padding: 0;
+    overflow: visible;
+  }
+
+  .sidebar-nav {
+    margin: 0;
+
+    > .sidebar-nav-item {
+      position: relative;
+      white-space: nowrap;
+
+      &:hover {
+        background: $primary;
+        width: $sidenav-width;
+
+        > .sidebar-nav-link {
+          color: #ffffff;
+
+          > span {
+            display: block;
+          }
+
+          .icon {
+            margin-right: add(1rem, $sidenav-padding);
+          }
+        }
+
+        .sidebar-subnav {
+          display: block;
+
+          .sidebar-nav-link {
+            padding-left: $sidenav-padding;
+          }
+        }
+      }
+
+      > .sidebar-nav-link {
+        min-height: $sidenav-folded-item-height;
+        padding: 0 1rem !important;
+        position: relative;
+
+        .icon {
+          margin: 0;
+          width: 2rem;
+          height: 1.125rem;
+        }
+
+        > span {
+          display: none;
+        }
+
+        .badge {
+          display: block;
+          position: absolute;
+          left: 2.5rem;
+          top: 1rem;
+
+          text-indent: -99999px;
+          width: $badge-empty-size;
+          height: $badge-empty-size;
+          padding: 0;
+        }
+      }
+    }
+  }
+
+  .sidebar-subnav {
+    display: none;
+    position: absolute;
+    top: $sidenav-folded-item-height;
+    left: $sidenav-width-narrow;
+    right: 0;
+    padding: .5rem 0;
+    background: $dark;
+    box-shadow: -6px 0px 16px -10px rgba(0, 0, 0, 0.2), $box-shadow;
+  }
+
+  .sidebar-nav-arrow {
+    display: none !important;
+  }
+
+  .sidebar-nav-title {
+    display: none;
+  }
+
+  + .content {
+    margin-left: $sidenav-width-narrow;
+
+    .navbar.fixed-top {
+      left: $sidenav-width-narrow;
+    }
+  }
+
+  &.sidebar-right {
+    + .content {
+      margin-left: 0;
+      margin-right: $sidenav-width-narrow;
+
+      .navbar.fixed-top {
+        left: 0;
+        right: $sidenav-width-narrow;
+      }
+    }
+  }
+
+  .hide-sidebar-narrow {
+    display: none !important
+  }
+}
+
+@mixin sidebar-visible {
+  display: flex;
+  
+  + .content .navbar.fixed-top {
+    left: $sidenav-width;
+  }
+
+  .hide-sidebar-visible,
+  + .content .hide-sidebar-visible {
+    display: none !important;
+  }
+}
+
+/**
+Wrapper
+ */
+.page {
+  height: 100%;
+  overflow: hidden;
+  width: 100%;
+}
+
+/**
+Content
+ */
+.content {
+  overflow: hidden;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+
+  .sidebar + & {
+    margin-left: $sidenav-width;
+
+    @if $sidenav-breakpoint-folded {
+      @include media-breakpoint-down($sidenav-breakpoint-folded) {
+        margin-left: $sidenav-width-narrow;
+      }
+    }
+
+    @include media-breakpoint-down($sidenav-breakpoint-show) {
+      margin-left: 0;
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+}
+
+.content-page {
+  flex: 1;
+  display: flex;
+
+  //@include media-breakpoint-up($cards-grid-breakpoint) {
+  //  padding-left: $cards-grid-gap / 2;
+  //  padding-right: $cards-grid-gap / 2;
+  //}
+
+  @media print {
+    padding-top: 0 !important;
+  }
+}
+
+/**
+Sidebar
+ */
+.sidebar {
+  width: $sidenav-width;
+  position: fixed;
+  z-index: $zindex-fixed;
+  padding: 0;
+  background: $sidenav-bg;
+  box-shadow: inset -1px 0 $sidenav-border-color;
+  top: 0;
+  bottom: 0;
+  display: none;
+  flex-direction: column;
+  
+  @include media-breakpoint-up($sidenav-breakpoint-show) {
+    @include sidebar-visible;
+  }
+  
+  @if $sidenav-breakpoint-folded {
+    @include media-breakpoint-between($sidenav-breakpoint-show, $sidenav-breakpoint-folded) {
+      @include sidebar-narrow;
+    }
+  }
+}
+
+.sidebar-brand {
+  display: block;
+  text-align: center;
+
+  line-height: $navbar-height;
+  width: $sidenav-width;
+  position: absolute;
+  top: 0;
+  left: 0;
+}
+
+.sidebar-brand-logo {
+  height: 2rem;
+
+  &-sm {
+    display: none;
+  }
+}
+
+.sidebar-content {
+  padding: $sidenav-padding;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow-y: scroll;
+  @include scrollbar;
+
+  .sidebar-brand + & {
+    margin-top: $navbar-height;
+  }
+}
+
+/**
+Sidebar menu
+ */
+.sidebar-nav {
+  margin: (-$sidenav-padding) (-$sidenav-padding) $sidenav-padding;
+  padding: 0;
+  list-style: none;
+  user-select: none;
+  color: $text-muted;
+
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+}
+
+.sidebar-nav-link {
+  padding: .5rem $sidenav-padding;
+  transition: .3s color, .3s background-color;
+  color: inherit;
+  display: flex;
+  align-items: center;
+
+  .sidebar-nav-item .sidebar-nav-item & {
+    padding-left: add(1.5rem, $sidenav-padding);
+  }
+
+  .sidebar-nav-item .sidebar-nav-item .sidebar-nav-item & {
+    padding-left: add(3rem, $sidenav-padding);
+  }
+
+  &:hover {
+    background-color: rgba(#fff, .02);
+    text-decoration: none;
+    color: $body-color !important;
+    cursor: pointer !important;
+  }
+
+  &.active {
+    opacity: 1;
+    color: $body-color !important;
+    box-shadow: inset 3px 0 $primary;
+    background-color: rgba(#fff, .01);
+  }
+
+  .icon {
+    width: 1rem;
+    margin-right: .5rem;
+  }
+
+  .badge {
+    margin-left: auto;
+  }
+}
+
+.sidebar-nav-arrow {
+  display: block;
+
+  margin-left: auto;
+  @include caret(right);
+
+  &:after {
+    transition: .3s transform;
+  }
+
+  .sidebar-nav-link[aria-expanded="true"] &:after {
+    transform: rotate(-45deg);
+  }
+}
+
+.sidebar-subnav {
+}
+
+.sidebar-nav-title {
+  @include subheader(false);
+  color: inherit;
+  opacity: .8;
+  padding: $sidenav-padding $sidenav-padding .5rem;
+
+  &:not(:first-child) {
+    margin-top: .5rem;
+  }
+}
+
+/**
+Sidebar dark
+ */
+.sidebar-dark {
+  background: $sidenav-dark-bg;
+  color: $text-muted;
+  box-shadow: none;
+
+  .sidebar-brand {
+    filter: brightness(0) invert(1);
+  }
+
+  .sidebar-nav-link {
+    &:hover,
+    &.active {
+      color: $white !important;
+    }
+  }
+
+  .sidebar-content {
+    @include scrollbar(true);
+  }
+}
+
+/**
+Right sidebar
+ */
+.sidebar-right {
+  left: auto;
+  right: 0;
+  box-shadow: inset 1px 0 $sidenav-border-color;
+
+  + .content {
+    margin-left: 0;
+    margin-right: $sidenav-width;
+
+    .navbar.fixed-top {
+      left: 0;
+      right: $sidenav-width;
+    }
+  }
+}
+
+/**
+Folded sidebar
+ */
+.sidebar-narrow {
+  @include sidebar-narrow;
+}

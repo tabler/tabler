@@ -2,6 +2,7 @@
   min-width: 12rem;
   box-shadow: $box-shadow;
   user-select: none;
+  margin: 0;
 
   .icon {
     width: 1em;
@@ -10,6 +11,16 @@
     opacity: .5;
     text-align: center;
     stroke-width: 2px;
+  }
+
+  &.card {
+    padding: 0;
+    min-width: $dropdown-menu-max-width;
+    display: none;
+
+    &.show {
+      display: flex;
+    }
   }
 }
 
@@ -25,7 +36,6 @@
   overflow-x: hidden;
 }
 
-
 .dropdown-item {
   color: inherit;
   display: flex;
@@ -36,7 +46,7 @@
 .dropdown-menu-arrow {
   margin-top: .75rem;
 
-  &::before {
+  &:before {
     content: "";
     position: absolute;
     top: -4px;
@@ -54,9 +64,22 @@
   }
 
   &.dropdown-menu-right {
-    &::before {
+    &:before {
       right: 12px;
       left: auto;
+    }
+  }
+}
+
+.dropright {
+  >.dropdown-menu {
+    margin-top: subtract(-$dropdown-padding-y, 1px);
+    margin-left: 0;
+  }
+
+  .dropdown-toggle {
+    &:after {
+      margin-left: auto;
     }
   }
 }

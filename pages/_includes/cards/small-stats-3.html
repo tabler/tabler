@@ -1,15 +1,9 @@
 <div class="card">
-   <div class="card-body p-2 text-center">
-      <div class="text-right {% if include.percentage > 0 %}text-green{% elsif include.percentage < 0 %}text-red{% endif %}">
-         {{ include.percentage }}%
-
-         {% if include.percentage > 0 %}
-            {% include ui/icon.html icon="arrow-up-right" class="icon-thin" %}
-         {% elsif include.percentage < 0 %}
-            {% include ui/icon.html icon="arrow-down-right" class="icon-thin" %}
-         {% endif %}
-      </div>
-      <div class="h1 m-0">{{ include.number }}</div>
-      <div class="text-muted mb-4">{{ include.title }}</div>
-   </div>
+	<div class="card-body p-2 text-center">
+		<div class="text-right {% if include.percentage > 0 %}text-green{% elsif include.percentage < 0 %}text-red{% endif %}">
+			{% include ui/trending.html value=include.percentage %}
+		</div>
+		<div class="h1 m-0">{{ include.number }}</div>
+		<div class="text-muted mb-4">{{ include.title }}</div>
+	</div>
 </div>

@@ -1,0 +1,18 @@
+{% removeemptylines %}
+{% assign count = include.count | default: 5 %}
+{% assign rate = include.rate | default: 4 %}
+{% assign icon = include.icon | default: 'star' %}
+{% assign class = include.color | default: 'yellow' | prepend: 'text-' %}
+{% assign filled = include.filled | default: false %}
+<div class="stars">
+   {% for i in (1..5) %}
+   <span class="star {% if forloop.index <= rate %}{{ class }}{% endif %}">
+      {% if forloop.index <= rate and filled %}
+         {% include ui/icon.html icon=icon class="icon-filled" %}
+      {% else %}
+         {% include ui/icon.html icon=icon %}
+      {% endif %}
+   </span>
+   {% endfor %}
+</div>
+{% endremoveemptylines %}

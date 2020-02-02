@@ -1,0 +1,24 @@
+{% assign limit = include.limit | default: 10 %}
+{% assign offset = include.offset | default: 0 %}
+<div class="card">
+	<div class="card-header">
+		<h3 class="card-title">{{ include.title | default: 'Top users' }}</h3>
+	</div>
+	<div class="card-body">
+		<div class="row mb-n3">
+			{% assign colors = 'green,red,yellow,x,x' | split: ',' %}
+			{% for person in site.data.people limit: limit offset: offset %}
+			{% assign color = forloop.index | plus: 5 | random_item: colors %}
+			<div class="col-6 row row-sm mb-3 align-items-center">
+				<a href="#" class="col-auto">
+					{% include ui/avatar.html person=person status=color %}
+				</a>
+				<div class="col text-truncate">
+					<a href="#" class="text-body d-block text-truncate">{{ person.full_name }}</a>
+					<small class="d-block text-muted text-truncate mt-n1">{{ forloop.index | random_date_ago: 6 | timeago }}</small>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+</div>

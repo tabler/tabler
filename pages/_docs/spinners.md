@@ -1,6 +1,7 @@
 ---
 title: Spinners
 menu: docs.spinners
+bootstrap-link: components/spinners/
 done: true
 ---
 

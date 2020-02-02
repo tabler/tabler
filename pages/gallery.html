@@ -2,8 +2,9 @@
 title: Gallery
 page-title: Gallery
 page-title-description: 1-12 of 241 photos
+page-title-actions: photos
 done: true
-menu: gallery
+menu: base.gallery
 ---
 {% assign horizontal = 0 %}
 
@@ -12,26 +13,7 @@ menu: gallery
 	{% if photo.horizontal %}
 	{% assign person = site.data.people[forloop.index0] %}
 	<div class="col-sm-6 col-lg-4">
-		<div class="card p-3">
-			<a href="#" class="mb-4"><img src="{{ site.base }}/img/photos/{{photo.file}}" class="rounded"></a>
-			<div class="d-flex align-items-center leading-none">
-				{% include ui/avatar.html person=person class="mr-3" %}
-				<div>
-					<div>{{ person.full_name }}</div>
-					<small class="text-muted">{{ forloop.index | random_date_ago: 10 | timeago }}</small>
-				</div>
-				<div class="ml-auto">
-					<a href="#" class="text-muted">
-						{% include ui/icon.html icon="eye" %}
-						{{ forloop.index | random_number: 300, 600 }}
-					</a>
-					<a href="#" class="ml-3 text-muted">
-						{% include ui/icon.html icon="heart" %}
-						{{ forloop.index | random_number: 20, 100 }}
-					</a>
-				</div>
-			</div>
-		</div>
+		{% include cards/gallery-photo.html person=person %}
 	</div>
 	{% assign horizontal = horizontal | plus: 1 %}
 	{% endif %}
@@ -43,5 +25,5 @@ menu: gallery
 </div>
 
 <div class="d-flex">
-   {% include parts/pagination.html class="ml-auto" %}
+   {% include ui/pagination.html class="ml-auto" %}
 </div>

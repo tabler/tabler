@@ -1,5 +1,6 @@
 ---
 title: Form Elements
+bootstrap-link: components/forms/
 ---
 
 ### Classic Input
@@ -54,97 +55,73 @@ title: Form Elements
 
 ### Input size
 
-{% include parts/input-sizes.html %}
+{% include parts/form/input-sizes.html %}
 
 
 ### Select
 {% example %}
-<div class="mb-2">
-   <label class="form-label">Country</label>
-   <select class="form-select">
-      <option value="">Germany</option>
-      <option value="">USA</option>
-      <option value="">Poland</option>
-   </select>
-</div>
+{% include parts/form/select.html options="Germany,USA,Poland" %}
 {% endexample %}
 
 ### Textarea
 {% example %}
 <div class="mb-2">
-   <label class="form-label">Textarea <span class="float-right text-muted">56/100</span></label>
+   <label class="form-label">Textarea <span class="form-label-description">56/100</span></label>
    <textarea class="form-control" name="example-textarea-input" rows="6" placeholder="Content..">Oh! Come and see the violence inherent in the system! Help, help, I'm being repressed! We shall say 'Ni' again to you, if you do not appease us. I'm not a witch. I'm not a witch. Camelot!</textarea>
 </div>
 {% endexample %}
 
 ### Image check
 {% example %}
-{% include parts/input-image.html %}
+{% include parts/form/input-image.html %}
 {% endexample %}
 
 ### Input color
 {% example %}
-{% include parts/input-color.html %}
+{% include parts/form/input-color.html %}
 {% endexample %}
 
 ### Input color picker
 {% example %}
-{% include parts/input-colorpicker.html %}
+{% include parts/form/input-colorpicker.html %}
 {% endexample %}
 
 ### Datalists
 {% example %}
-{% include parts/input-datalist.html %}
+{% include parts/form/input-datalist.html %}
 {% endexample %}
 
 ### Custom selectboxes
 {% example %}
-{% include parts/input-selectgroups.html %}
+{% include parts/form/input-selectgroups.html %}
 {% endexample %}
 
 ### Toggle switches
 {% example %}
-{% include parts/input-toggle.html %}
-{% include parts/input-toggle-single.html %}
+{% include parts/form/input-toggle.html %}
+{% include parts/form/input-toggle-single.html %}
 {% endexample %}
 
 ### Radios
 {% example %}
-{% include parts/input-radios.html %}
-{% include parts/input-radios-inline.html %}
+{% include parts/form/input-radios.html %}
+{% include parts/form/input-radios-inline.html %}
 {% endexample %}
 
 ### Checkboxes
 {% example %}
-{% include parts/input-checkboxes.html %}
-{% include parts/input-checkboxes-inline.html %}
+{% include parts/form/input-checkboxes.html %}
+{% include parts/form/input-checkboxes-inline.html %}
 {% endexample%}
 
 ### Range input
 {% example %}
-{% include parts/input-range.html %}
+{% include parts/form/input-range.html %}
 {% endexample %}
 
 ### Sample form
 {% example %}
-<fieldset class="form-fieldset">
-	<div class="mb-2">
-		<label class="form-label">Full name<span class="form-required">*</span></label>
-		<input type="text" class="form-control"/>
-	</div>
-	<div class="mb-2">
-		<label class="form-label">Company<span class="form-required">*</span></label>
-		<input type="text" class="form-control"/>
-	</div>
-	<div class="mb-2">
-		<label class="form-label">Email<span class="form-required">*</span></label>
-		<input type="email" class="form-control"/>
-	</div>
-	<div class="mb-2 mb-0">
-		<label class="form-label">Phone number</label>
-		<input type="tel" class="form-control"/>
-	</div>
-</fieldset>
+{% include parts/form/fieldset.html %}
 {% endexample %}
 
 ### Input group
@@ -152,7 +129,7 @@ title: Form Elements
 <div class="mb-2">
    <label class="form-label">Input group</label>
    <div class="input-group">
-      <input type="text" class="form-control" placeholder="Search for&hellip;">
+      <input type="text" class="form-control" placeholder="Search for…">
       <span class="input-group-append">
 							<button class="btn btn-primary" type="button">Go!</button>
 						</span>
@@ -185,43 +162,34 @@ title: Form Elements
 
 ### Input with icon
 {% example %}
-{% include parts/input-icon.html %}
+{% include parts/form/input-icon.html %}
 {% endexample %}
 
 ### Separated inputs
 {% example %}
-<div class="mb-2">
-   <label class="form-label">Separated inputs</label>
-   <div class="row row-xs">
-      <div class="col">
-         <input type="text" class="form-control" placeholder="Search for&hellip;">
-      </div>
-      <span class="col-auto">
-        <button class="btn btn-secondary" type="button">{% include ui/icon.html icon="search" %}</button>
-        </span>
-</div>
-</div>{% endexample %}
+{% include parts/form/input-icon-separated.html %}
+{% endexample %}
 
 ### Custom Input examples
 {% example %}
 <div class="mb-2">
    <label class="form-label">Username</label>
-   {% include ui/input-group.html prepend="@" placeholder="username" %}
+   {% include ui/form/input-group.html prepend="@" placeholder="username" %}
 </div>
 
 <div class="mb-2">
    <label class="form-label">Subdomain</label>
-   {% include ui/input-group.html append=".tabler.io" placeholder="subdomain" %}
+   {% include ui/form/input-group.html append=".tabler.io" placeholder="subdomain" %}
 </div>
 
 <div class="mb-2">
    <label class="form-label">Your vanity URL</label>
-   {% include ui/input-group.html prepend="https://example.com/users/" %}
+   {% include ui/form/input-group.html prepend="https://tabler.io/users/" %}
 </div>
 
 <div class="mb-2">
    <label class="form-label">Price</label>
-   {% include ui/input-group.html prepend="$" append=".00" %}
+   {% include ui/form/input-group.html prepend="$" append=".00" %}
 </div>
 {% endexample %}
 
@@ -229,7 +197,7 @@ title: Form Elements
 {% example %}
 <div class="mb-2">
    <label class="form-label">Date of birth</label>
-   <div class="row row-xs">
+   <div class="row row-sm">
       <div class="col-5">
          <select name="user[month]" class="form-select">
             <option value="">Month</option>

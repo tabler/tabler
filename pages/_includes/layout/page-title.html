@@ -1,46 +1,27 @@
-{% if page.page-title or layout.page-title %}
 <!-- Page title -->
 <div class="page-title-box">
 
-   <div class="row align-items-center">
-      <div class="col-auto">
-         {% if page.page-pretitle %}
-         <!-- Page pre-title -->
-         <div class="page-pretitle">
-            {{ page.page-pretitle }}
-         </div>
-         {% endif %}
-         <h2 class="page-title">
-            {{ page.page-title | default: layout.page-title }}
-         </h2>
-      </div>
+	<div class="row align-items-center">
+		<div class="col-auto">
+			{% if include.pretitle %}
+			<!-- Page pre-title -->
+			<div class="page-pretitle">
+				{{ include.pretitle }}
+			</div>
+			{% endif %}
+			<h2 class="page-title">
+				{{ include.title }}
+			</h2>
+		</div>
 
-      {% if page.page-title-description %}
-      <div class="col-auto">
-         <div class="text-muted text-h5">{{ page.page-title-description }}</div>
-      </div>
-      {% endif %}
+		{% if include.description %}
+		<div class="col-auto">
+			<div class="text-muted text-h5 mt-2">{{ include.description }}</div>
+		</div>
+		{% endif %}
 
-      {% if page.page-title-actions %}
-      <!-- Page title actions -->
-      <div class="col-auto ml-auto">
-         {% if page.page-title-actions == 'users' %}
-         <div class="d-flex">
-            <input type="search" class="form-control d-inline-block w-9 mr-3" placeholder="Search user&hellip;" />
-            {% include ui/button.html text="New user" color="primary" icon="plus" %}
-         </div>
-         {% elsif page.page-title-actions == 'calendar' %}
-         <div class="d-flex">
-            {% include ui/button.html text="Add event" color="primary" icon="plus" %}
-         </div>
-         {% else %}
-            <span class="d-none d-sm-inline">
-               {% include ui/button.html text="New view" color="secondary" icon="plus" %}
-            </span>
-            {% include ui/button.html text="Create new report" color="primary" class="ml-3" %}
-         {% endif %}
-      </div>
-      {% endif %}
-   </div>
+		{% if include.actions %}
+			{% include layout/page-title-actions.html actions=include.actions %}
+		{% endif %}
+	</div>
 </div>
-{% endif %}

@@ -2,14 +2,14 @@
 
 @mixin step-size($border-width, $dot-size: 1rem) {
   .step-item {
-    padding-top: calc(#{$dot-size} + 4px);
+    padding-top: add($dot-size, 4px);
 
-    &::after {
-      top: calc(#{$dot-size / 2} + 2px);
+    &:after {
+      top: add($dot-size / 2, 2px);
       height: $border-width;
     }
 
-    &::before {
+    &:before {
       width: $dot-size;
       height: $dot-size;
     }
@@ -18,13 +18,13 @@
 
 @mixin step-color($color) {
   .step-item {
-    &::after,
-    &::before {
+    &:after,
+    &:before {
       color: $white;
       background: $color;
     }
 
-    &.active::before {
+    &.active:before {
       color: inherit;
       border-color: $color;
     }
@@ -65,7 +65,7 @@
     }
   }
 
-  &:not(:first-child)::after {
+  &:not(:first-child):after {
     position: absolute;
     left: -50%;
     width: 100%;
@@ -73,7 +73,7 @@
     transform: translateY(-50%);
   }
 
-  &::before {
+  &:before {
     position: absolute;
     top: 0;
     left: 50%;
@@ -87,21 +87,21 @@
   }
 
   &.active {
-    font-weight: 600;
+    font-weight: $font-weight-bold;
 
-    &::before {
+    &:before {
       background: #fff;
     }
 
     & ~ .step-item {
       color: $text-muted;
 
-      &::after,
-      &::before {
+      &:after,
+      &:before {
         background: $steps-color-inactive;
       }
 
-      &::before {
+      &:before {
         color: $text-muted !important;
       }
     }
@@ -115,14 +115,14 @@
   .step-item {
     counter-increment: steps;
 
-    &::before {
+    &:before {
       font-size: 1rem;
       line-height: 1.5rem;
       content: counter(steps);
     }
 
     &.active ~ .step-item {
-      &::before {
+      &:before {
         background: #fff;
       }
     }

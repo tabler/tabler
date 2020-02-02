@@ -1,6 +1,77 @@
-<header class="navbar navbar-expand-lg {% if include.dark %}navbar-dark bg-dark text-white{% else %}navbar-light{% endif %}{% if include.sticky %} navbar-sticky{% endif %}">
-   <div class="container{% if include.fluid %} container-fluid{% endif %}">
-      {% include parts/navbar.html logo=true search=true user-menu=1 person=1 dark=include.dark notifications=true %}
-   </div>
-</header>
+{% assign person-id = include.person-id | default: 12 | minus: 1 %}
+{% assign person = site.data.people[person-id] %}
 
+{% assign dark = page.topnav-dark %}
+{% assign fixed = page.topnav-fixed %}
+{% assign breakpoint = 'lg' %}
+
+{% unless page.hide-topnav %}
+<header class="navbar-wrap navbar-expand-lg flex-column{% if fixed %} fixed-top{% endif %}">
+	<div class="navbar navbar-border {% if page.topnav-dark %}navbar-dark bg-dark text-white{% else %}navbar-light bg-white{% endif %}">
+		<div class="container{% if include.topnav-fluid %}-fluid{% endif %}">
+
+			<button class="navbar-toggler mr-auto {% if page.sidebar %}hide-sidebar-visible{% else %}d-{{ breakpoint }}-none{% endif %}" type="button" data-toggle="collapse" data-target="#nav-main-menu" aria-expanded="false" aria-label="Toggle menu">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<a href="{{ site.base }}" class="navbar-brand hide-sidebar-visible m-0">
+				<img src="{{ site.base }}/static/logo{% if dark %}-white{% endif %}.svg" alt="{{ site.title }}" class="navbar-brand-logo">
+			</a>
+
+			{% comment %}
+			{% if page.sidebar %}
+			{% include layout/navbar-search.html class="mr-4" %}
+			{% endif %}
+			{% endcomment %}
+
+			<ul class="nav navbar-menu align-items-center ml-auto">
+				<li class="nav-item d-none d-lg-flex mr-3">
+					{% include ui/button.html href=site.github_url text="Source code" icon="brand/github" external=true %}
+				</li>
+
+				<li class="nav-item dropdown">
+					<a href="#" data-toggle="dropdown" class="nav-link d-flex align-items-center py-0 px-lg-0 px-2 text-reset ml-2" aria-label="Show personal menu">
+						{% include ui/avatar.html src=person.photo size="sm" %}
+						<span class="ml-2 d-none d-lg-block lh-1">
+							{{ person.full_name }}
+							<span class="text-muted d-block mt-1 text-h6">Administrator</span>
+						</span>
+					</a>
+					<div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+						<a class="dropdown-item" href="#">
+							{% include ui/icon.html icon="user" class="dropdown-icon" %} Profile
+						</a>
+						<a class="dropdown-item" href="#">
+							{% include ui/icon.html icon="settings" class="dropdown-icon" %} Settings
+						</a>
+						<a class="dropdown-item" href="#">
+							{% include ui/icon.html icon="mail" class="dropdown-icon" %} Inbox
+							<span class="badge bg-primary ml-auto">6</span>
+						</a>
+						<a class="dropdown-item" href="#">
+							{% include ui/icon.html icon="send" class="dropdown-icon" %} Message
+						</a>
+						<div class="dropdown-divider"></div>
+						<a class="dropdown-item" href="#">
+							{% include ui/icon.html icon="help-circle" class="dropdown-icon" %} Need help?
+						</a>
+						<a class="dropdown-item" href="#">
+							{% include ui/icon.html icon="log-out" class="dropdown-icon" %} Sign out
+						</a>
+					</div>
+				</li>
+			</ul>
+		</div>
+	</div>
+
+	{% unless page.sidebar %}
+	<div class="navbar navbar-border collapse navbar-collapse navbar-collapse-absolute {% if page.topmenu-dark %}navbar-dark bg-dark text-white{% else %}navbar-light bg-white{% endif %}" id="nav-main-menu">
+		<div class="container{% if include.topnav-fluid %}-fluid{% endif %}">
+				{% include layout/menu.html top=true %}
+				{% include layout/navbar-search.html %}
+		</div>
+	</div>
+	{% endunless %}
+
+</header>
+{% endunless %}

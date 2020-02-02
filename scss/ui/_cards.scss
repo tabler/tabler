@@ -1,6 +1,15 @@
 .card {
-  margin-bottom: $card-group-margin;
+  margin-bottom: $cards-grid-gap;
   box-shadow: $card-shadow;
+
+  @include media-breakpoint-down($cards-grid-breakpoint) {
+    margin-bottom: $cards-grid-gap-sm;
+  }
+
+  @media print {
+    border: none;
+    box-shadow: none;
+  }
 
   @at-root a#{&} {
     color: inherit;
@@ -10,12 +19,6 @@
       text-decoration: none;
       box-shadow: $card-shadow-hover;
     }
-  }
-}
-
-.card-sm {
-  .card-body {
-    padding: .75rem;
   }
 }
 
@@ -36,7 +39,7 @@
   position: relative;
   background-color: rgba($primary, .03);
 
-  &::before {
+  &:before {
     position: absolute;
     top: -1px;
     right: -1px;
@@ -66,19 +69,18 @@
 
   &:hover {
     text-decoration: none;
-    background: rgba($primary, .06);
+    background: $active-bg;
   }
 }
 
 .card-stacked {
   position: relative;
 
-  &::after {
+  &:after {
     position: absolute;
     top: -5px;
     right: 5px;
     left: 5px;
-    z-index: -1;
     height: 5px;
     content: "";
     background: $card-bg;
@@ -90,9 +92,9 @@
 .card-cover {
   position: relative;
   padding: $card-spacer-y $card-spacer-x;
-  background: #666 no-repeat center/cover;
+  background: #666666 no-repeat center/cover;
 
-  &::before {
+  &:before {
     position: absolute;
     top: 0;
     right: 0;
@@ -103,14 +105,23 @@
   }
 
   &:first-child,
-  &:first-child::before {
+  &:first-child:before {
     border-radius: $border-radius $border-radius 0 0;
   }
 }
 
 .card-cover-blurred {
-  &::before {
+  &:before {
     backdrop-filter: blur(2px);
+  }
+}
+
+.card-actions {
+  margin-left: auto;
+  font-size: $h5-font-size;
+
+  a {
+    text-decoration: none;
   }
 }
 
@@ -155,6 +166,7 @@
   font-size: $h3-font-size;
   font-weight: $headings-font-weight;
   color: $headings-color;
+  line-height: (24/18);
 
   @at-root a#{&}:hover {
     color: inherit;
@@ -173,8 +185,28 @@
 }
 
 .card-body {
-  > :last-child {
-    margin-bottom: 0;
+  .card-sm & {
+    padding: map-get($spacers, 3);
+  }
+
+  .card-md & {
+    @include media-breakpoint-up(md) {
+      padding: map-get($spacers, 5);
+    }
+  }
+
+  .card-lg & {
+    @include media-breakpoint-up(md) {
+      padding: map-get($spacers, 6);
+    }
+  }
+
+  @media print {
+    padding: 0;
+  }
+
+  & + & {
+    border-top: 1px solid $border-color;
   }
 }
 
@@ -197,6 +229,17 @@ Card optinos
   min-width: 1rem;
   margin-left: .25rem;
   color: $text-muted;
+}
+
+.card-drop {
+  line-height: 1;
+  color: $text-muted;
+
+  .icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    stroke-width: 1;
+  }
 }
 
 /**
@@ -266,16 +309,17 @@ Card table
 Card code
  */
 .card-code {
-  background: $dark;
+  padding: 0;
 
   .highlight {
+    @extend .highlight-dark;
     margin: 0;
+    border: 0;
   }
 
   pre {
-    padding: 0;
     margin: 0;
-    color: #fff;
+    color: #ffffff;
     text-shadow: none;
     background: transparent;
   }
@@ -290,23 +334,11 @@ Card chart
   height: 3.5rem;
 }
 
-/*
-Card profile
+/**
+Card avatar
  */
-.card-profile {
-  .card-header {
-    height: 9rem;
-    background-size: cover;
-  }
-}
-
-.card-profile-img {
-  max-width: 6rem;
-  margin-top: -5rem;
-  margin-bottom: 1rem;
-  border: 3px solid #fff;
-  border-radius: 100%;
-  box-shadow: 0 1px 1px rgba(0, 0, 0, .1);
+.card-avatar {
+  box-shadow: 0 0 0 .5rem $card-bg;
 }
 
 /*
@@ -319,7 +351,6 @@ Card list group
 
   .list-group-item {
     padding-right: $card-spacer-x;
-
     padding-left: $card-spacer-x;
     border-right: 0;
     border-left: 0;

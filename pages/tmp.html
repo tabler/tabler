@@ -1,0 +1,44 @@
+---
+menu: a.b.c
+---
+
+<div class="row">
+	<div class="col-xl-4">
+		<div class="card card-body">
+
+		</div>
+	</div>
+
+	<div class="col-md-6 col-xl-4">
+		{% assign person = site.data.people[0] %}
+		<div class="card">
+			<div class="card-img-top embed-responsive embed-responsive-21by9">
+				<div class="embed-responsive-item bg-cover"
+				     style="background-image: url({{ site.base }}/static/photos/{{ site.data.photos[8].file }})"></div>
+			</div>
+			{% include ui/avatar.html person=person size="xl" class="mt-n5 mx-auto card-avatar" %}
+			<div class="card-body text-center">
+				<h2 class="mb-3">{{ person.full_name }}</h2>
+				<p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci aperiam atque autem
+					consectetur dignissimos ea error exercitationem id, maxime minus mollitia nulla quasi quia quisquam sed
+					tempora ut voluptas, voluptatem!</p>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-4">
+		<div class="card card-body">
+			{% include ui/button.html modal-id="simple" text="Open modal" %}
+			{% include ui/modal.html modal-id="simple" %}
+		</div>
+
+		<div class="card card-body">
+			<div>{% include ui/stars.html %}</div>
+			<div>{% include ui/stars.html count=3 %}</div>
+			<div>{% include ui/stars.html color="red" %}</div>
+			<div>{% include ui/stars.html filled=true %}</div>
+			<div>{% include ui/stars.html icon="heart" color="red" rate=2 %}</div>
+			<div>{% include ui/stars.html icon="circle" color="blue" %}</div>
+		</div>
+	</div>
+</div>

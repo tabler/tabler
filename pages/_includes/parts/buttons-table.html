@@ -1,0 +1,34 @@
+{% assign prefix = include.prefix | default: 'btn-' %}
+{% assign show-link = include.show-link | default: false %}
+{% assign show-states = include.show-states | default: false %}
+{% assign hide-labels = include.hide-labels | default: false %}
+{% assign variants = include.variants | default: site.button-variants %}
+
+{% for state in site.button-states %}
+   {% if show-states or (state.class != 'active' and state.class != 'disabled') %}
+      <div class="row row-sm align-items-center mb-n3{% unless forloop.first %} mt-3{% endunless %}">
+         {% unless hide-labels %}<div class="col-12 col-xl-2 mb-3 font-weight-semibold">{{ state.title }}</div>{% endunless %}
+         {% for type in variants %}
+            {% if show-link or type[0] != 'link' %}
+               <div class="col-6 col-sm-4 col-md-2 col-xl{% if include.auto-columns %}-auto{% endif %} mb-3">
+                  {% if include.icon or include.icon-only %}
+                     {% assign icon = type[1].icon %}
+                  {% endif %}
+
+                  {% assign class = prefix | append: type[0] %}
+                  {% if state.class %}
+                     {% assign class = class | append: ' ' | append: state.class %}
+                  {% endif %}
+                  {% if include.class %}
+                     {% assign class = class | append: ' ' | append: include.class %}
+                  {% endif %}
+
+                  {% assign text = type[1].title %}
+                  {% assign color = type[0] %}
+                  {% include ui/button.html block=true color=false class=class icon=icon icon-only=include.icon-only text=text %}
+               </div>
+               {% endif %}
+         {% endfor %}
+      </div>
+   {% endif %}
+{% endfor %}

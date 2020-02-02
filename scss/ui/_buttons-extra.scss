@@ -1,0 +1,31 @@
+@if $enable-ghost-buttons {
+  @each $vendor, $color in $theme-colors {
+    .btn-ghost-#{$vendor} {
+      @include button-variant(transparent, transparent, $color, $color, $color, #fff, $color, $color);
+    }
+  }
+}
+
+@if $enable-social-colors {
+  @each $vendor, $color in $social-colors {
+    .btn-#{$vendor} {
+      @include button-variant($color, $color);
+    }
+
+    .btn-outline-#{$vendor} {
+      @include button-outline-variant($color, $color);
+    }
+  }
+}
+
+@if $enable-extra-colors {
+  @each $name, $color in $colors {
+    .btn-#{$name} {
+      @include button-variant($color, $color);
+    }
+
+    .btn-outline-#{$name} {
+      @include button-outline-variant($color, $color);
+    }
+  }
+}

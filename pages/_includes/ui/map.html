@@ -5,7 +5,9 @@
 
 {% if data %}
 <div id="map-{{ id }}" style="height: {{ height }}rem"></div>
-{% capture_global scripts %}
+
+{% append_lib jqvmap %}
+{% capture script %}
 <script>
 	{% if jekyll.environment == 'development' %}window.tabler_map = window.tabler_map || {};{% endif %}
 
@@ -17,7 +19,8 @@
 			borderColor: 'transparent',
 			{% if data.zoom %}enableZoom: true,{% endif %}
 			{% if data.values %}
-			scaleColors: [tabler.colorVariation('{{ color }}', 'lightest'), tabler.colors.{{ color }}],
+	      {% assign color-light = color | append: "-100" %}
+			scaleColors: ["{{ color | tabler_color: '100' }}", "{{ color | tabler_color }}"],
 			normalizeFunction: 'polynomial',
 			values: (chart_data = {{ data.values }}),
 			onLabelShow: function (event, label, code) {
@@ -29,5 +32,13 @@
 		});
 	});
 </script>
-{% endcapture_global %}
+{% endcapture %}
+
+{% if include.show-scripts %}
+   {{ script }}
+{% else %}
+   {% capture_global scripts %}
+      {{ script }}
+   {% endcapture_global %}
+{% endif %}
 {% endif %}
