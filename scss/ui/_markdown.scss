@@ -2,14 +2,18 @@
 Markdown
  */
 .markdown {
-  font-size: 1rem;
   color: $gray-800;
+
+  @include media-breakpoint-up(md) {
+    font-size: 1rem;
+  }
 
   > :first-child {
     margin-top: 0;
   }
 
-  > :last-child {
+  > :last-child,
+  > :last-child .highlight {
     margin-bottom: 0;
   }
 
@@ -26,15 +30,17 @@ Markdown
 
     &:before {
       content: '';
-      padding-top: 2rem;
-      margin-top: -2rem;
+      padding-top: 2em;
+      margin-top: -2em;
       display: block;
     }
   }
 
   >hr {
-    margin-top: 3rem;
-    margin-bottom: 3rem;
+    @include media-breakpoint-up(md) {
+      margin-top: 3em;
+      margin-bottom: 3em;
+    }
   }
 
   > table {
