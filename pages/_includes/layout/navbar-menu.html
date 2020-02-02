@@ -1,0 +1,20 @@
+{% assign current-page = page.menu | default: layout.menu | split: '.' %}
+
+<ul class="navbar-nav">
+	{% for level-1 in site.data.menu %}
+		{% assign icon = level-1[1].icon %}
+		<li class="nav-item{% if level-1[0] == current-page[0] %} active{% endif %}">
+			<a href="#" class="nav-link">
+				<span class="nav-link-icon">{% include ui/icon.html icon=icon %}</span>
+				<span class="nav-link-title">{{ level-1[1].title }}</span>
+			</a>
+		</li>
+	{% endfor %}
+
+	<li class="nav-item">
+		<a href="#" class="nav-link d-none-navbar-vertical">
+			<span class="nav-link-icon">{% include ui/icon.html icon="sliders" %}</span>
+			<span class="nav-link-title">Customize</span>
+		</a>
+	</li>
+</ul>

@@ -1,3 +1,48 @@
+@mixin navbar-vertical-narrow {
+  width: $sidenav-width-narrow;
+
+  .navbar-nav {
+    margin-top: 0;
+  }
+
+  .nav-link {
+    height: 3rem; //todo: to variable
+  }
+
+  .nav-link-title {
+    display: none;
+  }
+
+  .nav-link-icon {
+    margin: 0 auto;
+  }
+
+  .d-none-navbar-vertical-narrow {
+    display: none;
+  }
+
+  .navbar-brand-logo-large {
+    display: none;
+  }
+
+  .navbar-brand-logo-small {
+    display: inline-block;
+  }
+
+  ~ .navbar,
+  ~ .content {
+    margin-left: $sidenav-width-narrow;
+  }
+
+  &.navbar-right {
+    ~ .navbar,
+    ~ .content {
+      margin-left: 0;
+      margin-right: $sidenav-width-narrow;
+    }
+  }
+}
+
 @mixin navbar-vertical {
   position: fixed;
   left: 0;
@@ -7,10 +52,15 @@
   z-index: $zindex-fixed;
   min-height: auto;
   align-items: start;
+  overflow: auto;
+  box-shadow: inset -1px 0 0 0 $border-color;
 
   > [class*="container"] {
     flex-direction: column;
-    align-items: start;
+    align-items: stretch;
+    padding-left: 0;
+    padding-right: 0;
+    min-height: 100%;
   }
 
   ~ .navbar,
@@ -32,58 +82,93 @@
     justify-content: center;
   }
 
-  &.navbar-vertical-narrow {
-    width: $sidenav-width-narrow;
+  .navbar-heading {
+    @include subheader();
+    display: block;
+    margin-bottom: .5rem;
+  }
 
-    .d-none-navbar-vertical-narrow {
-      display: none;
+  .navbar-collapse {
+    flex-direction: column;
+    text-align: left;
+    align-items: normal;
+
+    padding: $sidenav-padding $sidenav-padding;
+  }
+
+  .navbar-nav {
+    flex-direction: column;
+    margin-left: -($sidenav-padding);
+    margin-right: -($sidenav-padding);
+
+    .nav-link {
+      min-height: 0;
+      padding-left: $sidenav-padding;
+      padding-right: $sidenav-padding;
     }
 
-    .navbar-brand-logo-large {
-      display: none;
-    }
+    .nav-item {
+      &.active {
+        background: rgba($sidenav-active-accent-color, .032);
 
-    .navbar-brand-logo-small {
-      display: inline-block;
+        &:before {
+          left: 0;
+          right: auto;
+          top: 0;
+          bottom: 0;
+          height: auto;
+          width: 2px;
+        }
+      }
     }
+  }
 
-    ~ .navbar,
-    ~ .content {
-      margin-left: $sidenav-width-narrow;
+  .navbar-side {
+    margin-left: 0;
+    margin-top: auto;
+    padding-left: 0;
+    padding-top: $sidenav-padding;
+
+    > * {
+      margin-left: 0;
+      margin-top: 1rem;
     }
   }
 
   &.navbar-right {
     left: auto;
     right: 0;
+    box-shadow: inset 1px 0 0 0 $border-color;
 
     ~ .navbar,
     ~ .content {
       margin-left: 0;
       margin-right: $sidenav-width;
     }
+  }
 
-    &.navbar-vertical-narrow {
-      ~ .navbar,
-      ~ .content {
-        margin-right: $sidenav-width-narrow;
-      }
-    }
+  &.navbar-vertical-narrow {
+    @include navbar-vertical-narrow;
   }
 }
 
 .page {
   display: flex;
   flex-direction: column;
+  position: relative;
 }
 
 .content {
-  padding-top: map-get($spacers, 4);
-  padding-bottom: map-get($spacers, 4);
+  padding-top: 1.25rem;
+  padding-bottom: 1.25rem;
 
   @include media-breakpoint-up(xl) {
     padding-left: .5rem;
     padding-right: .5rem;
+  }
+
+  @media print {
+    margin: 0 !important;
   }
 }
 
@@ -91,6 +176,65 @@
   min-height: $navbar-height;
   padding-top: 0; //todo: move to varaibles
   padding-bottom: 0;
+
+  @media print {
+    display: none;
+    margin: 0 !important;
+  }
+
+  .nav-link {
+    min-height: $navbar-height;
+  }
+
+  .nav-link-icon {
+    font-size: 1rem;
+    width: 1rem;
+    height: 1rem;
+    display: block;
+    margin-right: .5rem;
+    line-height: .99;
+  }
+}
+
+.navbar-expand {
+  @each $breakpoint, $breakpoint-max-width in $grid-breakpoints {
+    &-#{$breakpoint} {
+      @include media-breakpoint-up($breakpoint) {
+        .navbar-nav {
+          margin-left: (-$navbar-nav-link-padding-x);
+
+          .nav-item {
+            position: relative;
+
+            &.active {
+              &:before {
+                content: '';
+                position: absolute;
+                bottom: 0;
+                left: $navbar-nav-link-padding-x;
+                right: $navbar-nav-link-padding-x;
+                height: 1px;
+                background: $sidenav-active-accent-color;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.navbar-side {
+  margin-left: auto;
+  padding-left: 1.5rem;
+
+  > * {
+    margin-left: 1rem;
+  }
+}
+
+.navbar-heading {
+  display: none;
 }
 
 /**
@@ -113,12 +257,14 @@ Navbar colors
  */
 .navbar-light {
   background: $white;
-  box-shadow: 0 0 0 1px $border-color;
+  box-shadow: inset 0 -1px 0 0 $border-color;
+  @include scrollbar;
 }
 
 .navbar-dark {
   background: $sidenav-dark-bg;
   color: $sidenav-dark-color;
+  @include scrollbar(true);
 
   .text-muted {
     color: inherit !important;
@@ -128,27 +274,35 @@ Navbar colors
   .navbar-brand-autodark {
     filter: brightness(0) invert(1);
   }
+
+  .form-control {
+    border-color: transparent;
+    background: $min-white;
+    color: $white;
+  }
 }
 
 /**
 Navbar vertical
  */
-.navbar:not(.navbar-vertical) {
-  .d-none-navbar-horizontal {
-    display: none;
+@if $enable-navbar-vertical {
+  .navbar:not(.navbar-vertical) {
+    .d-none-navbar-horizontal {
+      display: none;
+    }
   }
-}
 
-.navbar-vertical {
-  @each $breakpoint, $breakpoint-max-width in $grid-breakpoints {
-    &.navbar-expand-#{$breakpoint} {
-      @include media-breakpoint-up($breakpoint) {
-        @include navbar-vertical;
-      }
+  .navbar-vertical {
+    @each $breakpoint, $breakpoint-max-width in $grid-breakpoints {
+      &.navbar-expand-#{$breakpoint} {
+        @include media-breakpoint-up($breakpoint) {
+          @include navbar-vertical;
+        }
 
-      @include media-breakpoint-down-than($breakpoint) {
-        .d-none-navbar-horizontal {
-          display: none;
+        @include media-breakpoint-down-than($breakpoint) {
+          .d-none-navbar-horizontal {
+            display: none;
+          }
         }
       }
     }
