@@ -199,8 +199,7 @@
 }
 
 .navbar {
-  min-height: $navbar-height;
-  padding-top: 0; //todo: move to varaibles
+  padding-top: 0;
   padding-bottom: 0;
 
   @media print {
@@ -226,6 +225,8 @@
   @each $breakpoint, $breakpoint-max-width in $grid-breakpoints {
     &-#{$breakpoint} {
       @include media-breakpoint-up($breakpoint) {
+        min-height: $navbar-height;
+
         .navbar-nav {
           margin-left: (-$navbar-nav-link-padding-x);
 
