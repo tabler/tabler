@@ -3,6 +3,7 @@ tmp: true
 page-header: Layout test
 page-header-actions: buttons
 menu: home
+body-class: theme-dark-auto
 ---
 
 <div class="row row-cards">
@@ -10,11 +11,13 @@ menu: home
 		<div class="card">
 			<div class="card-body">
 				<div class="btn-list">
-					<a href="#" class="btn btn-secondary" data-theme-toggle="navbar-vertical">Toggle sidebar</a>
-					<a href="#" class="btn btn-secondary" data-theme-toggle="navbar-vertical-narrow">Sidebar narrow</a>
-					<a href="#" class="btn btn-secondary" data-theme-toggle="navbar-right">Sidebar left/right</a>
-					<a href="#" class="btn btn-secondary" data-theme-toggle="navbar-color">Sidebar color</a>
-					<a href="#" class="btn btn-secondary" data-theme-toggle="navbar-secondary">Toggle secondary</a>
+					<a href="#" class="btn btn-secondary" data-theme-toggle="primary-vertical">Toggle sidebar</a>
+					<a href="#" class="btn btn-secondary" data-theme-toggle="primary-vertical-narrow">Sidebar narrow</a>
+					<a href="#" class="btn btn-secondary" data-theme-toggle="primary-right">Sidebar left/right</a>
+					<a href="#" class="btn btn-secondary" data-theme-toggle="primary-color">Sidebar color</a>
+					<a href="#" class="btn btn-secondary" data-theme-toggle="secondary-color">Secondary color</a>
+					<a href="#" class="btn btn-secondary" data-theme-toggle="secondary-visible">Toggle secondary</a>
+					<a href="#" class="btn btn-secondary" data-theme-toggle="dark-mode">Dark mode</a>
 				</div>
 			</div>
 		</div>
@@ -30,16 +33,19 @@ menu: home
 			navbarSecondary = document.getElementById('navbar-secondary');
 
 		var events = {
-			'navbar-vertical': function () {
+			'primary-vertical': function () {
 				navbarPrimary.classList.toggle('navbar-vertical');
 			},
-			'navbar-right': function () {
+			'primary-right': function () {
 				navbarPrimary.classList.toggle('navbar-right');
 			},
-			'navbar-vertical-narrow': function () {
+			'primary-vertical-narrow': function () {
 				navbarPrimary.classList.toggle('navbar-vertical-narrow');
 			},
-			'navbar-color': function () {
+			'dark-mode': function () {
+				document.body.classList.toggle('theme-dark');
+			},
+			'primary-color': function () {
 				var classList = navbarPrimary.classList;
 
 				if (classList.contains('navbar-light')) {
@@ -50,7 +56,18 @@ menu: home
 					classList.remove('navbar-dark');
 				}
 			},
-			'navbar-secondary': function () {
+			'secondary-color': function () {
+				var classList = navbarSecondary.classList;
+
+				if (classList.contains('navbar-light')) {
+					classList.add('navbar-dark');
+					classList.remove('navbar-light');
+				} else {
+					classList.add('navbar-light');
+					classList.remove('navbar-dark');
+				}
+			},
+			'secondary-visible': function () {
 				navbarSecondary.classList.toggle('d-none');
 			},
 		};

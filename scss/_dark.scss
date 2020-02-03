@@ -1,50 +1,40 @@
 // stylelint-disable declaration-no-important
 
 @mixin dark-mode {
-  &,
-  .modal-content,
-  .dropdown-menu {
-    color: $dark-body-color;
+  & {
+    color: #ffffff;
     background: $dark-body-bg;
   }
 
   .card,
-  .sidebar,
-  .topbar {
-    color: inherit;
+  .navbar-light {
     background: $dark;
+    color: inherit;
   }
 
-  .text-body {
-    color: #afbdd1 !important;
-  }
-
-  .avatar-list-stacked .avatar {
-    box-shadow: 0 0 0 2px #222226;
-  }
-
-  .navbar-brand-logo {
-    filter: brightness(0) invert(1);
-  }
-
-  .form-fieldset {
+  .card {
     border-color: transparent;
   }
 
-  .form-control,
-  .form-select,
-  .form-check-input:not(:checked) {
-    background: transparent;
-    border-color: $dark-border-color;
-    color: inherit;
+  .btn-secondary {
+    @include button-variant($min-white, $border-color, $light, rgba($dark, 0), $border-color, $light);
+    background-image: none;
   }
 
-  .input-group-text {
-    border-color: $dark-border-color;
+  .avatar-list-stacked .avatar {
+    box-shadow: 0 0 0 2px $dark;
   }
 
-  .brand-logo {
-    filter: brightness(0) invert(1);
+  .apexcharts-text {
+    fill: #ffffff;
+  }
+
+  .apexcharts-legend-text {
+    color: inherit !important;
+  }
+
+  .navbar-brand-autodark {
+    @include autodark-image;
   }
 }
 
@@ -55,7 +45,7 @@
 }
 
 @media not print and (prefers-color-scheme: dark) {
-  .auto-theme-dark {
+  .theme-dark-auto {
     @include dark-mode;
   }
 }

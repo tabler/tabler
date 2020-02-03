@@ -1,9 +1,7 @@
 .dropdown-menu {
-  min-width: 12rem;
   box-shadow: $box-shadow;
   user-select: none;
   margin: 0;
-  color: $text-muted;
 
   &.card {
     padding: 0;
@@ -16,12 +14,23 @@
   }
 }
 
+.dropdown-item {
+  min-width: 12rem;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  margin: 0;
+
+  @at-root a#{&}:hover {
+    color: $body-color;
+  }
+}
+
 .dropdown-item-icon {
   width: 1rem;
   font-size: 1rem;
   margin-right: .5rem;
-  color: inherit;
-  opacity: .5;
+  opacity: .64;
   text-align: center;
   stroke-width: 2px;
 }
@@ -38,14 +47,18 @@
   overflow-x: hidden;
 }
 
-.dropdown-item {
-  color: inherit;
-  display: flex;
-  align-items: center;
-  margin: 0;
+.dropdown-menu-columns {
+  columns: 2;
+  column-gap: 0;
 
-  @at-root a#{&}:hover {
-    color: $body-color;
+  .dropdown-item {
+    display: inline-flex;
+  }
+}
+
+@for $i from 2 through 4 {
+  .dropdown-menu-columns-#{$i} {
+    columns: $i;
   }
 }
 
