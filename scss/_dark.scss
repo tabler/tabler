@@ -1,9 +1,11 @@
 // stylelint-disable declaration-no-important
 
-@mixin dark-mode {
+$dark-text: #fafafa;
+
+@include dark-mode {
   & {
-    color: #ffffff;
-    background: $dark-body-bg;
+    color: $dark-text;
+    background: $dark-darken;
   }
 
   .card,
@@ -17,8 +19,23 @@
   }
 
   .btn-secondary {
-    @include button-variant($min-white, $border-color, $light, rgba($dark, 0), $border-color, $light);
+    @include button-variant($dark-lighten, $border-color, $light, rgba($dark, 0), $border-color, $light);
     background-image: none;
+    border-color: transparent;
+  }
+
+  .form-check-input:not(:checked),
+  .form-control {
+    background-color: $dark-darken;
+    color: $dark-text;
+  }
+
+  .navbar {
+    box-shadow: 0 0 0 1px $dark-darken;
+  }
+
+  .avatar {
+    background-color: $dark-lighten;
   }
 
   .avatar-list-stacked .avatar {
@@ -26,7 +43,7 @@
   }
 
   .apexcharts-text {
-    fill: #ffffff;
+    fill: $dark-text;
   }
 
   .apexcharts-legend-text {
@@ -38,14 +55,3 @@
   }
 }
 
-@media not print {
-  .theme-dark {
-    @include dark-mode;
-  }
-}
-
-@media not print and (prefers-color-scheme: dark) {
-  .theme-dark-auto {
-    @include dark-mode;
-  }
-}
