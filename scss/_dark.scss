@@ -1,6 +1,6 @@
 // stylelint-disable declaration-no-important
 
-$dark-text: #fafafa;
+$dark-text: $light;
 
 @include dark-mode {
   & {
@@ -18,16 +18,25 @@ $dark-text: #fafafa;
     border-color: transparent;
   }
 
-  .btn-secondary {
-    @include button-variant($dark-lighten, $border-color, $light, rgba($dark, 0), $border-color, $light);
+  .btn-secondary,
+  .form-file-button {
+    @include button-variant($dark-lighten, $border-color, $dark-text, rgba($dark, 0), $border-color, $dark-text);
     background-image: none;
-    border-color: transparent;
   }
 
   .form-check-input:not(:checked),
-  .form-control {
+  .form-select,
+  .form-file-text,
+  .form-control,
+  .flatpickr-input.flatpickr-input,
+  .form-selectgroup-check,
+  .form-imagecheck-figure:before {
     background-color: $dark-darken;
     color: $dark-text;
+  }
+
+  .input-group-flat .input-group-text {
+    background-color: $dark-darken;
   }
 
   .navbar {

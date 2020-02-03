@@ -6,20 +6,13 @@
 
 	<li class="nav-item{% if level-1[0] == current-page[0] %} active{% endif %}{% if level-1[1].children %} dropdown{% endif %}">
 		<a class="nav-link{% if level-1[1].children %} dropdown-toggle{% endif %}" {% if level-1[1].children %}href="#navbar-{{ level-1[0] }}" data-toggle="dropdown" role="button"
-			aria-expanded="{% if level-1[0] == current-page[0] %}true{% else %}false{% endif %}" {% elsif level-1[1].toggle
-			%}href="{{ level-1[1].url }}" data-toggle="{{ level-1[1].toggle }}" {% else
-			%}href="{{ site.base }}/{{ level-1[1].url }}" {% endif %}>
+			aria-expanded="{% if level-1[0] == current-page[0] %}true{% else %}false{% endif %}" {% elsif level-1[1].toggle %}href="{{ level-1[1].url }}" data-toggle="{{ level-1[1].toggle }}" {% else %}href="{{ site.base }}/{{ level-1[1].url }}" {% endif %}>
 			<span class="nav-icon">
 				{% include ui/icon.html icon=icon  %}
 			</span>
 
 			{{ level-1[1].title }}
 
-			{% if level-1[1].badge %}
-			{% assign badge = level-1[1].badge %}
-			{% assign badge-color = level-1[1].badge-color | default: "green" %}
-			{% include ui/badge.html text=badge color=badge-color class="ml-2" %}
-			{% endif %}
 		</a>
 
 		{% if level-1[1].children %}

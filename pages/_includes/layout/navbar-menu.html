@@ -1,57 +1,21 @@
 {% assign current-page = page.menu | default: layout.menu | split: '.' %}
 
 <ul class="navbar-nav">
-	<li class="nav-item dropdown">
-		<a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
-			<span class="nav-link-icon">{% include ui/icon.html icon="menu" %}</span>
-			<span class="nav-link-title">Dropdown</span>
-		</a>
-		<div class="dropdown-menu dropdown-menu-arrow dropdown-menu-columns">
-			{% for i in (1..21) %}
-			{% assign icon = site.data.icons.fe[i] %}
-			<a class="dropdown-item" href="#">{% include ui/icon.html icon=icon class="dropdown-item-icon" %}
-				Action {{ i }}
-			</a>
-			{% endfor %}
-		</div>
-	</li>
-
 	{% for level-1 in site.data.menu %}
 		{% assign icon = level-1[1].icon %}
 		<li class="nav-item{% if level-1[0] == current-page[0] %} active{% endif %}">
-			<a href="#" class="nav-link">
+			<a class="nav-link{% if level-1[1].children %} dropdown-toggle{% endif %}" {% if level-1[1].children %}href="#navbar-{{ level-1[0] }}" data-toggle="dropdown" role="button"
+			   aria-expanded="{% if level-1[0] == current-page[0] %}true{% else %}false{% endif %}" {% elsif level-1[1].toggle %}href="{{ level-1[1].url }}" data-toggle="{{ level-1[1].toggle }}" {% else %}href="{{ site.base }}/{{ level-1[1].url }}" {% endif %}>
 				<span class="nav-link-icon">{% include ui/icon.html icon=icon %}</span>
 				<span class="nav-link-title">{{ level-1[1].title }}</span>
 			</a>
 		</li>
 	{% endfor %}
 
-	<li class="nav-item dropdown">
-		<a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-expanded="false">
-			<span class="nav-link-icon">{% include ui/icon.html icon="menu" %}</span>
-			<span class="nav-link-title">Dropdown</span>
-		</a>
-		<div class="dropdown-menu dropdown-menu-arrow dropdown-menu-right dropdown-menu-columns dropdown-menu-columns-3">
-			{% for i in (1..21) %}
-			{% assign icon = site.data.icons.fe[i] %}
-			<a class="dropdown-item" href="#">{% include ui/icon.html icon=icon class="dropdown-item-icon" %}
-				Action {{ i }}
-			</a>
-			{% endfor %}
-		</div>
-	</li>
-
-	<li class="nav-item d-none-navbar-vertical">
-		<a href="#" class="nav-link">
+	<li class="nav-item d-none-navbar-vertical" title="Soon" data-toggle="tooltip">
+		<a href="#" class="nav-link disabled">
 			<span class="nav-link-icon">{% include ui/icon.html icon="sliders" %}</span>
 			<span class="nav-link-title">Customize</span>
-		</a>
-	</li>
-
-	<li class="nav-item">
-		<a href="#" class="nav-link disabled">
-			<span class="nav-link-icon">{% include ui/icon.html icon="x-square" %}</span>
-			<span class="nav-link-title">Disabled</span>
 		</a>
 	</li>
 </ul>
