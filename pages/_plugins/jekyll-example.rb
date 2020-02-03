@@ -19,8 +19,8 @@ def render_rouge(code, lang, dark = false)
 end
 
 def add_code_tag(code, lang)
-  code = code.sub(/<pre>\n*/, '<pre><code class="language-' + lang.to_s.gsub("+", "-") + '" data-lang="' + lang.to_s + '">')
-  code = code.sub(/\n*<\/pre>/, "</code></pre>")
+  code = code.sub(/<pre>\n*/, '<div class="example-code language-' + lang.to_s.gsub("+", "-") + '" data-lang="' + lang.to_s + '"><pre class="highlight"><code>')
+  code = code.sub(/\n*<\/pre>/, "</code></pre></div>")
 
   code.strip
 end
@@ -74,7 +74,7 @@ Valid syntax: example <lang> [id=foo]
                  render_rouge(code, @lang, @options[:linenos])
                end
 
-      rendered_output = example(code) + "<div class=\"highlight\">#{add_code_tag(output, @lang)}</div>"
+      rendered_output = example(code) + add_code_tag(output, @lang)
       prefix + rendered_output + suffix
     end
 

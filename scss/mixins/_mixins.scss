@@ -26,6 +26,10 @@
     }
   }
 
+  &::-webkit-scrollbar-corner {
+    background: transparent;
+  }
+
   &:hover::-webkit-scrollbar-thumb {
     background: $gray-500;
 
@@ -37,9 +41,23 @@
   }
 }
 
-@mixin dark {
-  .bg-dark &,
-  .theme-dark & {
-    @content;
+
+@mixin autodark-image {
+  filter: brightness(0) invert(1);
+}
+
+@mixin dark-mode {
+  @if $enable-dark-mode {
+    @media not print {
+      .theme-dark {
+        @content
+      }
+    }
+
+    @media not print and (prefers-color-scheme: dark) {
+      .theme-dark-auto {
+        @content
+      }
+    }
   }
 }

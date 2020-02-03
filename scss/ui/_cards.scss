@@ -185,17 +185,21 @@
 }
 
 .card-body {
-  .card-sm & {
+  >:last-child {
+    margin-bottom: 0;
+  }
+
+  .card-sm>& {
     padding: map-get($spacers, 3);
   }
 
-  .card-md & {
+  .card-md>& {
     @include media-breakpoint-up(md) {
       padding: map-get($spacers, 5);
     }
   }
 
-  .card-lg & {
+  .card-lg>& {
     @include media-breakpoint-up(md) {
       padding: map-get($spacers, 6);
     }
@@ -312,7 +316,6 @@ Card code
   padding: 0;
 
   .highlight {
-    @extend .highlight-dark;
     margin: 0;
     border: 0;
   }
