@@ -1,7 +1,7 @@
 <!doctype html>
 <!--
 * Tabler - Premium and Open Source dashboard template with responsive and high quality UI.
-* @version v1.0.0-alpha
+* @version 1.0.0-alpha.3
 * @link https://github.com/tabler/tabler
 * Copyright 2018-2019 The Tabler Authors
 * Copyright 2018-2019 codecalm.net Paweł Kuna
@@ -24,22 +24,21 @@
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon"/>
     <title>Page 400 - Tabler - Premium and Open Source dashboard template with responsive and high quality UI.</title>
     <!-- Libs CSS -->
-    <link href="./dist/libs/jqvmap/dist/jqvmap.min.css?1580339009" rel="stylesheet"/>
-    <link href="./dist/libs/selectize/dist/css/selectize.css?1580339009" rel="stylesheet"/>
-    <link href="./dist/libs/fullcalendar/core/main.min.css?1580339009" rel="stylesheet"/>
-    <link href="./dist/libs/fullcalendar/daygrid/main.min.css?1580339009" rel="stylesheet"/>
-    <link href="./dist/libs/fullcalendar/timegrid/main.min.css?1580339009" rel="stylesheet"/>
-    <link href="./dist/libs/fullcalendar/list/main.min.css?1580339009" rel="stylesheet"/>
-    <link href="./dist/libs/flatpickr/dist/flatpickr.min.css?1580339009" rel="stylesheet"/>
-    <link href="./dist/libs/nouislider/distribute/nouislider.min.css?1580339009" rel="stylesheet"/>
+    <link href="./dist/libs/jqvmap/dist/jqvmap.min.css?1580803658" rel="stylesheet"/>
+    <link href="./dist/libs/selectize/dist/css/selectize.css?1580803658" rel="stylesheet"/>
+    <link href="./dist/libs/fullcalendar/core/main.min.css?1580803658" rel="stylesheet"/>
+    <link href="./dist/libs/fullcalendar/daygrid/main.min.css?1580803658" rel="stylesheet"/>
+    <link href="./dist/libs/fullcalendar/timegrid/main.min.css?1580803658" rel="stylesheet"/>
+    <link href="./dist/libs/fullcalendar/list/main.min.css?1580803658" rel="stylesheet"/>
+    <link href="./dist/libs/flatpickr/dist/flatpickr.min.css?1580803658" rel="stylesheet"/>
+    <link href="./dist/libs/nouislider/distribute/nouislider.min.css?1580803658" rel="stylesheet"/>
     <!-- Tabler Core -->
-    <link href="./dist/css/tabler.min.css?1580339009" rel="stylesheet"/>
+    <link href="./dist/css/tabler.min.css?1580803658" rel="stylesheet"/>
     <!-- Tabler Plugins -->
-    <link href="./dist/css/tabler-flags.min.css?1580339009" rel="stylesheet"/>
-    <link href="./dist/css/tabler-payments.min.css?1580339009" rel="stylesheet"/>
-    <link href="./dist/css/tabler-buttons.min.css?1580339009" rel="stylesheet"/>
-    <link href="./dist/css/tabler-dark.min.css?1580339009" rel="stylesheet"/>
-    <link href="./dist/css/tabler-rtl.min.css?1580339009" rel="stylesheet"/>
+    <link href="./dist/css/tabler-flags.min.css?1580803658" rel="stylesheet"/>
+    <link href="./dist/css/tabler-payments.min.css?1580803658" rel="stylesheet"/>
+    <link href="./dist/css/tabler-buttons.min.css?1580803658" rel="stylesheet"/>
+    <link href="./dist/css/demo.min.css?1580803658" rel="stylesheet"/>
   </head>
   <body class="antialiased border-top-wide border-primary d-flex flex-column">
     <div class="flex-fill d-flex align-items-center justify-content-center">
@@ -62,14 +61,14 @@
       </div>
     </div>
     <!-- Libs JS -->
-    <script src="./dist/libs/jquery/dist/jquery.slim.min.js?1580339009"></script>
-    <script src="./dist/libs/autosize/dist/autosize.min.js?1580339009"></script>
-    <script src="./dist/libs/imask/dist/imask.min.js?1580339009"></script>
-    <script src="./dist/libs/apexcharts/dist/apexcharts.min.js?1580339009"></script>
-    <script src="./dist/libs/nouislider/distribute/nouislider.min.js?1580339009"></script>
+    <script src="./dist/libs/jquery/dist/jquery.slim.min.js?1580803658"></script>
+    <script src="./dist/libs/autosize/dist/autosize.min.js?1580803658"></script>
+    <script src="./dist/libs/imask/dist/imask.min.js?1580803658"></script>
+    <script src="./dist/libs/apexcharts/dist/apexcharts.min.js?1580803658"></script>
+    <script src="./dist/libs/nouislider/distribute/nouislider.min.js?1580803658"></script>
     <!-- Tabler Core -->
-    <script src="./dist/js/tabler.min.js?1580339009"></script>
-    <script src="./dist/js/tabler-range-sliders.min.js?1580339009"></script>
+    <script src="./dist/js/tabler.min.js?1580803658"></script>
+    <script src="./dist/js/tabler-range-sliders.min.js?1580803658"></script>
     <script>
       // @formatter:off
       noUiSlider.create(document.getElementById('range-simple'), {
@@ -183,15 +182,17 @@
     </script>
     <script>
       (function () {
-      	const $elem = $('[data-mask]');
-      	if ($elem) {
-      		$elem.each(function () {
-      			IMask($(this).get(0), {
-      				mask: $(this).attr('data-mask'),
-      				lazy: $(this).attr('data-mask-visible') === 'true',
-      			});
-      		});
-      	}
+      	/**
+      	 * Input mask
+      	 */
+      	var maskElementList = [].slice.call(document.querySelectorAll('[data-mask]'))
+      	maskElementList.map(function (maskEl) {
+      		console.log('maskEl', maskEl);
+      		return new IMask(maskEl, {
+      			mask: maskEl.dataset.mask,
+      			lazy: maskEl.dataset['mask-visible'] === 'true'
+      		})
+      	});
       })();
     </script>
   </body>
