@@ -6,6 +6,8 @@ order: -1
 test: true
 ---
 
+test
+
 We’ve created this admin panel for everyone who wants to create any templates based on our ready components. Our mission is to deliver a user-friendly, clear and easy administration panel, that can be used by both, simple websites and sophisticated systems. The only requirement is a basic HTML and CSS knowledge—as a reward, you'll be able to manage and visualize different types of data in the easiest possible way!
 
 ### Setup environment
