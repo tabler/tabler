@@ -8,6 +8,8 @@ done: true
 
 ### Default markup
 
+description here
+
 {% example %}
 {% for variant in site.variants %}
 	{% capture variant-text %}
