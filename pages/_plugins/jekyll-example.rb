@@ -81,7 +81,7 @@ Valid syntax: example <lang> [id=foo]
     def example(output)
       output = output.gsub(/<hide>/, "").gsub(/<\/hide>/, "")
 
-      "<div class=\"example" + (@options[:columns] ? " example-bg" : "") + (@options[:class] ? " " + @options[:class] : "") + "\"" + (@options[:id] ? " data-example-id=\"#{@options[:id]}\"" : "") + ">\n" + (@options[:columns] ? "<div class=\"example-column example-column-" + @options[:columns] + "\">\n" : "") + (@options[:wrapper] ? "<div class=\"" + @options[:wrapper] + "\">\n" : "") + (@options[:"max-width"] ? "<div style=\"max-width: " + @options[:"max-width"] + "px; margin: 0 auto;\">\n" : "") + output + (@options[:wrapper] ? "\n</div>" : "") + (@options[:columns] ? "\n</div>" : "") + (@options[:"max-width"] ? "\n</div>" : "") + "\n</div>"
+      '<div class="example' + (@options[:columns] ? ' example-bg' : '') + (@options[:class] ? ' ' + @options[:class] : "") + '"' + (@options[:id] ? " data-example-id=\"#{@options[:id]}\"" : '') + '><div class="example-content">' + (@options[:columns] ? '<div class="example-column example-column-' + @options[:columns] + '">' : '') + (@options[:wrapper] ? '<div class="' + @options[:wrapper] + '">' : '') + (@options[:"max-width"] ? '<div style="max-width: ' + @options[:"max-width"] + 'px; margin: 0 auto;">' : '') + output + (@options[:wrapper] ? "</div>" : '') + (@options[:columns] ? "</div>" : '') + (@options[:"max-width"] ? '</div>' : '') + '</div></div>'
     end
 
   end
