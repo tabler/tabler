@@ -12,7 +12,7 @@
 
 .list-bordered {
   .list-item {
-    border-top: 1px solid $border-color-alpha;
+    border-top: 1px solid $border-color;
     margin-top: -1px;
 
     &:first-child {
@@ -93,7 +93,7 @@
 
 .list-timeline-title {
   margin: 0;
-  font-weight: 600;
+  font-weight: $font-weight-bold;
 }
 
 .list-timeline-content {
@@ -103,7 +103,7 @@
 
 @media screen and (min-width: 768px) {
   .list-timeline:not(.list-timeline-simple) {
-    &::before {
+    &:before {
       position: absolute;
       top: 0;
       bottom: 0;
@@ -143,8 +143,9 @@
 
 
 .list-group-transparent {
+  margin: 0 (- $list-group-item-padding-x);
+
   .list-group-item {
-    padding: .5rem 1rem;
     background: none;
     border: 0;
     border-radius: 3px;
@@ -154,9 +155,9 @@
     }
 
     &.active {
-      font-weight: 600;
-      color: $primary;
-      background: rgba($primary, .06);
+      font-weight: $font-weight-bold;
+      color: inherit;
+      background: $active-bg;
 
       .icon {
         color: inherit;

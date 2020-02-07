@@ -1,12 +1,24 @@
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  letter-spacing: .01em;
+.btn-secondary {
+  @include button-variant($white, $border-color, $dark);
+  background-image: linear-gradient(-180deg, rgba($dark, 0), rgba($dark, .04) 100%);
+  box-shadow: none !important;
+}
 
-  &:not([class^="btn-outline"]):not([class*=" btn-outline"]):not([class^="btn-ghost"]):not([class*=" btn-ghost"]):not(.btn-secondary) {
-    text-shadow: 1px 1px 0 rgba(0, 0, 0, .05);
-    box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .05), inset 0 2px 0 -1px rgba(255, 255, 255, .1);
+.btn-outlined-secondary {
+  @include button-outline-variant($white, $border-color, $dark);
+}
+
+.btn {
+  font-weight: 600;
+
+  &:not([class^="btn-outline"]):not([class*=" btn-outline"]):not([class^="btn-ghost"]):not([class*=" btn-ghost"]) {
+    &:not(.btn-secondary) {
+      text-shadow: 1px 1px 0 rgba(0, 0, 0, .02);
+    }
+
+    &:not(:focus):not(.focus) {
+      box-shadow: 0 1px 3px 0 rgba(0, 0, 0, .05), inset 0 2px 0 -1px rgba(255, 255, 255, .1);
+    }
 
     svg.icon {
       filter: drop-shadow(1px 1px 0 rgba(0, 0, 0, .05));
@@ -18,11 +30,17 @@
     cursor: not-allowed;
   }
 
-
   .icon {
-    margin: 0 .5em 0 -.25em;
+    margin: 0 .25em 0 -.25em;
     font-size: 1.2em;
     vertical-align: sub;
+  }
+
+  .avatar {
+    width: 1.25rem;
+    height: 1.25rem;
+    vertical-align: text-top;
+    margin: 0 .5em 0 -.25em;
   }
 
   .icon-right {
@@ -36,16 +54,9 @@
   }
 }
 
-.btn-sm {
-  font-weight: 400;
-}
-
-.btn-avatar {
-  margin: 0 .25rem 0 -.25rem;
-
-  @at-root .btn #{&} {
-    width: 1.25rem;
-    height: 1.25rem;
+.btn-lg {
+  svg.icon {
+    stroke-width: 2;
   }
 }
 
@@ -56,8 +67,10 @@
 }
 
 .btn-icon {
+  min-width: add($btn-line-height * $btn-font-size + $btn-padding-y * 2, $btn-border-width * 2);
+
   .icon {
-    margin: 0 -.5em;
+    margin: 0 -1em;
   }
 }
 
@@ -66,68 +79,24 @@
   box-shadow: none !important;
 }
 
-.btn-secondary {
-  @include button-variant(#fff, $border-color, $body-color);
-}
-
 .btn-square {
   border-radius: 0;
 }
 
 .btn-list {
-  margin-bottom: -.5rem;
-  font-size: 0;
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: -.5rem !important;
+  margin-right: -.5rem;
 
   > .btn,
   > .dropdown {
-    margin-bottom: .5rem;
-
-    &:not(:last-child) {
-      margin-right: .5rem;
-    }
+    margin: 0 .5rem .5rem 0;
   }
-}
 
-@if $enable-ghost-buttons {
-  @each $vendor, $color in $theme-colors {
-    .btn-ghost-#{$vendor} {
-      @include button-variant(transparent, transparent, $color, $color, $color, #fff, $color, $color);
-    }
-  }
-}
-
-@if $enable-social-colors {
-  @each $vendor, $color in $social-colors {
-    .btn-#{$vendor} {
-      @include button-variant($color, $color);
-    }
-
-    .btn-outline-#{$vendor} {
-      @include button-outline-variant($color, $color);
-    }
-  }
-}
-
-@if $enable-extra-colors {
-  @each $name, $color in $colors {
-    .btn-#{$name} {
-      @include button-variant($color, $color);
-    }
-
-    .btn-outline-#{$name} {
-      @include button-outline-variant($color, $color);
-    }
-  }
-}
-
-.btn-loader {
-  display: none;
-  width: 1em;
-  height: 1em;
-  color: inherit;
-
-  @at-root .btn-loading & {
-    display: inline-block;
+  >.btn-block {
+    flex: 1;
+    white-space: nowrap;
   }
 }
 
@@ -152,29 +121,8 @@
 
 .btn-floating {
   position: fixed;
-  right: 1.5rem;
+  z-index: $zindex-fixed;
   bottom: 1.5rem;
-  z-index: 1030;
-}
-
-/**
-Button with label
- */
-.btn-label {
-  position: relative;
-  padding-left: px2rem(48px);
-}
-
-.btn-label-icon {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  width: px2rem(36px);
-  padding-top: px2rem(6px);
-  padding-bottom: px2rem(6px);
-  margin-bottom: 0;
-  line-height: inherit;
-  cursor: pointer;
-  background-color: rgba(0, 0, 0, .1);
+  right: 1.5rem;
+  border-radius: 50%;
 }

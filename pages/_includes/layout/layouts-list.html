@@ -1,0 +1,24 @@
+<div class="row row-md {% if include.wide %}mb-n5{% else %}mb-n3 mb-md-n5{% endif %}{% if include.class %} {{ include.class }}{% endif %}">
+	{% for layout in site.data.layouts %}
+	<div class="{% if include.wide %}col-12{% else %}col-lg-6{% endif %} {% if include.wide %}mb-5{% else %}mb-3 mb-md-5{% endif %}{% if layout.soon %} opacity-25{% endif %}">
+		<div class="row">
+			<div class="col-auto">
+				<a href="{{ site.base }}/{{ layout.page }}" class="position-relative">
+					{% include parts/demo-layout.html config=layout.config %}
+				</a>
+			</div>
+			<div class="col">
+				<h3>
+					<a href="{{ site.base }}/{{ layout.page }}">{{ layout.title }}</a>
+					{% if layout.new %}
+					{% include ui/badge.html text="New" color="green" class="ml-2" %}
+					{% elsif layout.soon %}
+					{% include ui/badge.html text="Soon!" color="yellow" class="ml-2" %}
+					{% endif %}
+				</h3>
+				<p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam assumenda atque consequatur.</p>
+			</div>
+		</div>
+	</div>
+	{% endfor %}
+</div>

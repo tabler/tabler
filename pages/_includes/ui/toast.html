@@ -1,6 +1,6 @@
 {% assign person-id = include.person-id | default: 2 %}
 {% assign person = site.data.people[person-id] %}
-<div class="toast show" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false">
+<div class="toast show" role="alert" aria-live="assertive" aria-atomic="true" data-autohide="false" data-toggle="toast">
    <div class="toast-header">
       {% include ui/avatar.html person=person class="mr-2" size="sm" %}
       <strong class="mr-auto">{{ person.full_name }}</strong>
@@ -10,6 +10,6 @@
       </button>
    </div>
    <div class="toast-body">
-      Hello, world! This is a toast message.
+      {{ include.text | default: 'Hello, world! This is a toast message.' }}
    </div>
 </div>

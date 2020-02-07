@@ -1,52 +1,75 @@
 // stylelint-disable declaration-no-important
 
-@mixin dark-mode {
+$dark-text: $light;
 
-  &,
-  .modal-content,
-  .dropdown-menu {
-    color: #afbdd1;
-    background: $dark;
-  }
-
-  .dropdown-menu-arrow::after {
-    border-bottom-color: $dark;
+@include dark-mode {
+  & {
+    color: $dark-text;
+    background: $dark-darken;
   }
 
   .card,
-  .header,
-  .sidebar,
-  .sidenav,
-  .topnav,
-  .navbar,
-  .footer,
-  .form-control,
-  .form-select,
-  .form-switch .form-check-input,
-  .selectgroup-button {
+  .navbar-light {
+    background: $dark;
     color: inherit;
-    background: rgba(0, 0, 0, .1);
   }
 
-  .text-body {
-    color: #afbdd1 !important;
+  .card {
+    border-color: transparent;
+  }
+
+  .btn-secondary,
+  .form-file-button {
+    @include button-variant($dark-lighten, $border-color, $dark-text, rgba($dark, 0), $border-color, $dark-text);
+    background-image: none;
+  }
+
+  .form-check-input:not(:checked),
+  .form-select,
+  .form-file-text,
+  .form-control,
+  .flatpickr-input.flatpickr-input,
+  .form-selectgroup-check,
+  .form-imagecheck-figure:before {
+    background-color: $dark-darken;
+    color: $dark-text;
+  }
+
+  .input-group-flat .input-group-text {
+    background-color: $dark-darken;
+  }
+
+  .navbar {
+    box-shadow: 0 0 0 1px $dark-darken;
+  }
+
+  .highlight {
+    background-color: $dark-darken;
+  }
+
+  .avatar {
+    background-color: $dark-lighten;
   }
 
   .avatar-list-stacked .avatar {
-    box-shadow: 0 0 0 2px #2b3648;
+    box-shadow: 0 0 0 2px $dark;
   }
 
-  .navbar-brand-logo {
-    filter: brightness(0) invert(1);
+  .markdown,
+  .markdown>* {
+    color: inherit;
+  }
+
+  .apexcharts-text {
+    fill: $dark-text;
+  }
+
+  .apexcharts-legend-text {
+    color: inherit !important;
+  }
+
+  .navbar-brand-autodark {
+    @include autodark-image;
   }
 }
 
-body.theme-dark {
-  @include dark-mode ();
-}
-
-@media (prefers-color-scheme: dark) {
-  body.auto-theme-dark {
-    @include dark-mode ();
-  }
-}

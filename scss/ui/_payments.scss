@@ -1,0 +1,29 @@
+$payment-icons: ('2checkout', 'alipay', 'amazon', 'americanexpress', 'applepay', 'bancontact', 'bitcoin', 'bitpay', 'blik', 'cirrus', 'clickandbuy', 'coinkite', 'dinersclub', 'directdebit', 'discover', 'dotpay', 'dwolla', 'ebay', 'eway', 'giropay', 'googlewallet', 'ingenico', 'jcb', 'klarna', 'laser', 'maestro', 'mastercard', 'mir', 'monero', 'neteller', 'ogone', 'okpay', 'paybox', 'paymill', 'payone', 'payoneer', 'paypal', 'paysafecard', 'payu', 'payza', 'przelewy24', 'ripple', 'sage', 'sepa', 'shopify', 'skrill', 'solo', 'square', 'stripe', 'switch', 'tpay', 'ukash', 'unionpay', 'verifone', 'verisign', 'visa', 'webmoney', 'westernunion', 'worldpay');
+
+.payment {
+  width: 2rem * 1.66666;
+  height: 2rem;
+  display: inline-block;
+  background: no-repeat center/100% 100%;
+  vertical-align: bottom;
+  font-style: normal;
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, .1);
+  border-radius: 2px;
+}
+
+@each $payment in $payment-icons {
+  .payment-provider-#{$payment} {
+    background-image: url("#{$assets-base}/img/payments/#{$payment}.svg");
+  }
+
+  .payment-provider-#{$payment}-dark {
+    background-image: url("#{$assets-base}/img/payments/#{$payment}-dark.svg");
+  }
+}
+
+@each $payment-size, $size in $payment-sizes {
+  .payment-#{$payment-size} {
+    width: $size * 1.66666;
+    height: $size;
+  }
+}

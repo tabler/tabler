@@ -1,40 +1,79 @@
-<form action="#" class="js-layout-form">
-   <div class="mb-2">
-      <label class="form-label">Color scheme</label>
-      {% include_cached ui/input-selectgroup.html name="color-scheme" values="light,dark" type="radio" class="w-100p" %}
-   </div>
-   <div class="mb-2">
-      <label class="form-label">Nav position</label>
-      {% include_cached ui/input-selectgroup.html name="nav-position" values="top,side" type="radio" class="w-100p" %}
-   </div>
-   <div class="mb-2">
-      <label class="form-label">Header color</label>
-      {% include_cached ui/input-selectgroup.html name="header-color" values="light,dark" type="radio" class="w-100p" %}
-   </div>
-   <!--<div class="mb-2">-->
-   <!--<label class="form-label">Header fixed</label>-->
-   <!--{% include_cached ui/input-selectgroup.html name="header-fixed" values="fixed,default" type="radio" class="w-100p" %}-->
-   <!--</div>-->
-   <div class="mb-2">
-      <label class="form-label">Sidebar position</label>
-      {% include_cached ui/input-selectgroup.html name="sidebar-position" values="left,right" type="radio" class="w-100p" %}
-   </div>
-   <div class="mb-2">
-      <label class="form-label">Sidebar size</label>
-      {% include_cached ui/input-selectgroup.html name="sidebar-size" values="default,folded" type="radio" class="w-100p" %}
-   </div>
-   <div class="mb-2">
-      <label class="form-label">Sidebar color</label>
-      {% include_cached ui/input-selectgroup.html name="sidebar-color" values="light,dark" type="radio" class="w-100p" %}
-   </div>
-   <div class="mb-2">
-      <label class="form-label">Sidebar fixed</label>
-      {% include_cached ui/input-selectgroup.html name="sidebar-fixed" values="fixed,default" type="radio" class="w-100p" %}
-   </div>
+<div class="row row-cards">
+	<div class="col-12">
+		<div class="card">
+			<div class="card-body">
+				<div class="btn-list">
+					<a href="#" class="btn btn-secondary" data-theme-toggle="primary-vertical">Toggle sidebar</a>
+					<a href="#" class="btn btn-secondary" data-theme-toggle="primary-vertical-narrow">Sidebar narrow</a>
+					<a href="#" class="btn btn-secondary" data-theme-toggle="primary-right">Sidebar left/right</a>
+					<a href="#" class="btn btn-secondary" data-theme-toggle="primary-color">Sidebar color</a>
+					<a href="#" class="btn btn-secondary" data-theme-toggle="secondary-color">Secondary color</a>
+					<a href="#" class="btn btn-secondary" data-theme-toggle="secondary-visible">Toggle secondary</a>
+					<a href="#" class="btn btn-secondary" data-theme-toggle="dark-mode">Dark mode</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
 
+{% capture_global scripts %}
+<script>
+	(function () {
+		var navbarPrimary = document.getElementById('navbar-primary'),
+			navbarSecondary = document.getElementById('navbar-secondary');
 
+		var events = {
+			'primary-vertical': function () {
+				navbarPrimary.classList.toggle('navbar-vertical');
+			},
+			'primary-right': function () {
+				navbarPrimary.classList.toggle('navbar-right');
+			},
+			'primary-vertical-narrow': function () {
+				navbarPrimary.classList.toggle('navbar-vertical-narrow');
+			},
+			'dark-mode': function () {
+				document.body.classList.toggle('theme-dark');
+			},
+			'primary-color': function () {
+				var classList = navbarPrimary.classList;
 
-   <!--<div class="form-footer">-->
-   <!--<button type="submit" class="btn btn-primary">Save options</button>-->
-   <!--</div>-->
-</form>
+				if (classList.contains('navbar-light')) {
+					classList.add('navbar-dark');
+					classList.remove('navbar-light');
+				} else {
+					classList.add('navbar-light');
+					classList.remove('navbar-dark');
+				}
+			},
+			'secondary-color': function () {
+				var classList = navbarSecondary.classList;
+
+				if (classList.contains('navbar-light')) {
+					classList.add('navbar-dark');
+					classList.remove('navbar-light');
+				} else {
+					classList.add('navbar-light');
+					classList.remove('navbar-dark');
+				}
+			},
+			'secondary-visible': function () {
+				navbarSecondary.classList.toggle('d-none');
+			},
+		};
+
+		for (var name in events) {
+			var event = events[name];
+
+			(function(event){
+				document.querySelector('[data-theme-toggle="' + name + '"]').addEventListener("click", function (e) {
+					event.call();
+					e.preventDefault();
+					return false;
+				});
+			})(event);
+		}
+
+	})();
+</script>
+{% endcapture_global %}
