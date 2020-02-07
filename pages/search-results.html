@@ -1,0 +1,28 @@
+---
+page-header: Search results
+page-header-description: About 2,410 result (0.19 seconds)
+menu: extra.search-results
+---
+
+<div class="row">
+	<div class="col-3">
+		{% include parts/nav/nav-aside.html %}
+	</div>
+	<div class="col-9">
+		<div class="row">
+			{% for photo in site.data.photos %}
+			{% if photo.horizontal %}
+			{% assign person = site.data.people[forloop.index0] %}
+			<div class="col-sm-6 col-lg-4">
+				{% include cards/gallery-photo.html person=person hide-likes=true %}
+			</div>
+			{% assign horizontal = horizontal | plus: 1 %}
+			{% endif %}
+
+			{% if horizontal == 12 %}
+			{% break %}
+			{% endif %}
+			{% endfor %}
+		</div>
+	</div>
+</div>

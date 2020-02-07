@@ -1,0 +1,19 @@
+{% assign track-id = include.track-id | default: 5 %}
+{% assign track = site.data.tracks[track-id] %}
+<div class="card">
+	<div class="row row-0">
+		<div class="col-auto">
+			<img src="{{ site.base }}/static/tracks/{{ track.album.images[1].path }}" class="rounded-left" alt="{{ track.name | escape }}" width="88" height="88">
+		</div>
+		<div class="col">
+			<div class="card-body">
+				{{ track.name }}
+				<div class="text-muted">
+					{% for artist in track.artists %}
+					{{ artist.name }}{% unless forloop.last %},{% endunless %}
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
