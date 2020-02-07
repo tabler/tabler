@@ -15,6 +15,7 @@
 			</thead>
 
 			{% for page in site.data.pages %}
+			{% assign data = page.data | join: ',' %}
 			<tr>
 				<td>
 					{{ page.uri }}
@@ -24,7 +25,7 @@
 				<td class="text-muted">{{ page.unique | format_number }}</td>
 				<td class="text-muted">{{ page.bounce-rate }}</td>
 				<td class="text-right">
-					{% include ui/sparkline.html type="line" data="4,3,6,5,4,5,4,6,7,6,5,7,8,7,8,9,8,9,10" %}
+					{% include ui/sparkline.html type="line" data=data %}
 				</td>
 			</tr>
 			{% endfor %}
