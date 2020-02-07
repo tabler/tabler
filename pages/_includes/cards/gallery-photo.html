@@ -1,0 +1,24 @@
+<div class="card card-sm">
+	<a href="#" class="d-block"><img src="{{ site.base }}/static/photos/{{ photo.file }}" class="card-img-top"></a>
+	<div class="card-body">
+		<div class="d-flex align-items-center">
+			{% include ui/avatar.html person=include.person class="mr-3 rounded" %}
+			<div class="lh-sm">
+				<div>{{ include.person.full_name }}</div>
+				<div class="text-muted">{{ forloop.index | random_date_ago: 10 | timeago }}</div>
+			</div>
+			{% unless include.hide-likes %}
+			<div class="ml-auto">
+				<a href="#" class="text-muted">
+					{% include ui/icon.html icon="eye" %}
+					{{ forloop.index | random_number: 300, 600 }}
+				</a>
+				<a href="#" class="ml-3 text-muted">
+					{% include ui/icon.html icon="heart" %}
+					{{ forloop.index | random_number: 20, 100 }}
+				</a>
+			</div>
+			{% endunless %}
+		</div>
+	</div>
+</div>

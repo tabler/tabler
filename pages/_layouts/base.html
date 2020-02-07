@@ -1,14 +1,13 @@
 <!doctype html>
-{% include_cached layout/banner.html %}
-<html lang="en" {% if page.rtl %} dir="rtl" {% endif %}>
+{% include layout/banner.html %}
+<html lang="en"{% if page.rtl %} dir="rtl" {% endif %}>
 <head>
    <meta charset="utf-8"/>
    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
-   <meta http-equiv="Content-Language" content="en"/>
 
-   <meta name="msapplication-TileColor" content="{{ site.colors.blue.hex }}"/>
-   <meta name="theme-color" content="{{ site.colors.blue.hex }}"/>
+   <meta name="msapplication-TileColor" content="{{ site.data.colors.blue }}"/>
+   <meta name="theme-color" content="{{ site.data.colors.blue }}"/>
 
    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
    <meta name="apple-mobile-web-app-capable" content="yes"/>
@@ -23,28 +22,25 @@
    <title>{% if page.title %}{{ page.title }} - {% endif %}{% if layout.title %}{{ layout.title }} - {% endif %}{% if site.title %}{{ site.title }} - {% endif %}{{ site.description }}</title>
 
    {% if page.description %}
-   <meta name="description" content="{{ page.description | escape }}"/>
+      <meta name="description" content="{{ page.description | escape }}"/>
    {% endif %}
 
-   {% include_cached layout/og.html show=layout.og-component %}
-
-   {% include_cached layout/css.html %}
-
-   <style>body { display: none; }</style>
+   {% include layout/og.html show=layout.og-component %}
+   {% include layout/css.html %}
 </head>
-<body class="antialiased {% if page.dark-theme %} theme-dark{% endif %}{% if layout.body-class %} {{ layout.body-class }}{% endif %}{% if page.body-class %} {{ page.body-class }}{% endif %}">
 
-{{ content}}
+{% assign dark-theme = page.dark-theme | default: site.dark-theme %}
+<body class="antialiased{% if dark-theme %} theme-dark{% endif %}{% if layout.body-class %} {{ layout.body-class }}{% endif %}{% if page.body-class %} {{ page.body-class }}{% endif %}">
 
-{% include_cached layout/js.html %}
-{% include layout/js-capture.html %}
+	{{ content }}
 
-{% if site.debug %}
-{% if jekyll.environment == 'development' %}
-{% include_cached layout/debug.html %}
-{% endif %}
-{% endif %}
+	{% include layout/js.html %}
+	{% include layout/js-capture.html %}
+	{% include layout/modals-capture.html %}
 
-<script>document.body.style.display = 'block';</script>
+	{% if site.debug and jekyll.environment == 'development' %}
+		{% include layout/debug.html %}
+	{% endif %}
+
 </body>
 </html>

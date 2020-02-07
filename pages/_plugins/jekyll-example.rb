@@ -19,8 +19,8 @@ def render_rouge(code, lang, dark = false)
 end
 
 def add_code_tag(code, lang)
-  code = code.sub(/<pre>\n*/, '<pre><code class="language-' + lang.to_s.gsub("+", "-") + '" data-lang="' + lang.to_s + '">')
-  code = code.sub(/\n*<\/pre>/, "</code></pre>")
+  code = code.sub(/<pre>\n*/, '<div class="example-code language-' + lang.to_s.gsub("+", "-") + '" data-lang="' + lang.to_s + '"><pre class="highlight"><code>')
+  code = code.sub(/\n*<\/pre>/, "</code></pre></div>")
 
   code.strip
 end
@@ -29,7 +29,7 @@ module Jekyll
   class ExampleBlock < Liquid::Block
     include Liquid::StandardFilters
 
-    SYNTAX = /^([a-zA-Z0-9.+#-]+)((\s+[\w-]+(=((\w|[0-9_-])+|"([0-9]+\s)*[0-9]+"))?)*)$/
+    SYNTAX = /^([a-zA-Z0-9.+#-]+)((\s+[\w-]+(=((\w|[0-9_-])+|"(\w|[0-9_-]|\s)+"))?)*)$/
 
     def initialize(tag_name, markup, tokens)
       super
@@ -47,7 +47,6 @@ module Jekyll
             # If a quoted list, convert to array
             if value && value.include?("\"")
               value.gsub!(/"/, "")
-              value = value.split
             end
             @options[key.to_sym] = value || true
           end
@@ -75,14 +74,14 @@ Valid syntax: example <lang> [id=foo]
                  render_rouge(code, @lang, @options[:linenos])
                end
 
-      rendered_output = example(code) + "<div class=\"highlight\">#{add_code_tag(output, @lang)}</div>"
+      rendered_output = example(code) + add_code_tag(output, @lang)
       prefix + rendered_output + suffix
     end
 
     def example(output)
       output = output.gsub(/<hide>/, "").gsub(/<\/hide>/, "")
 
-      "<div class=\"example" + (@options[:columns] ? " example-bg" : "") + "\"" + (@options[:id] ? " data-example-id=\"#{@options[:id]}\"" : "") + ">\n" + (@options[:columns] ? "<div class=\"example-column example-column-" + @options[:columns] + "\">\n" : "") + (@options[:wrapper] ? "<div class=\"" + @options[:wrapper] + "\">\n" : "") + (@options[:"max-width"] ? "<div style=\"max-width: " + @options[:"max-width"] + "px; margin: 0 auto;\">\n" : "") + output + (@options[:wrapper] ? "\n</div>" : "") + (@options[:columns] ? "\n</div>" : "") + (@options[:"max-width"] ? "\n</div>" : "") + "\n</div>"
+      '<div class="example' + (@options[:columns] ? ' example-bg' : '') + (@options[:class] ? ' ' + @options[:class] : "") + '"' + (@options[:id] ? " data-example-id=\"#{@options[:id]}\"" : '') + '><div class="example-content">' + (@options[:columns] ? '<div class="example-column example-column-' + @options[:columns] + '">' : '') + (@options[:wrapper] ? '<div class="' + @options[:wrapper] + '">' : '') + (@options[:"max-width"] ? '<div style="max-width: ' + @options[:"max-width"] + 'px; margin: 0 auto;">' : '') + output + (@options[:wrapper] ? "</div>" : '') + (@options[:columns] ? "</div>" : '') + (@options[:"max-width"] ? '</div>' : '') + '</div></div>'
     end
 
   end

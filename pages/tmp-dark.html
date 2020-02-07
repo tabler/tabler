@@ -1,0 +1,54 @@
+---
+page-header: Dark
+---
+
+<div class="row row-md">
+	{% for i in (0..1) %}
+		<div class="col py-4 {% if i > 0 %} theme-dark{% endif %}">
+			<div class="card m-0">
+				<header class="card-header">
+					<h3 class="card-title">Card title</h3>
+				</header>
+				<div class="card-body">
+					<h3>H3 header</h3>
+					<h4>H4 header</h4>
+					<h5>H5 header</h5>
+					<h6>H6 header</h6>
+					<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. A accusamus adipisci consectetur cupiditate, doloribus error ex expedita fuga incidunt laboriosam pariatur perferendis possimus praesentium quisquam reiciendis tempora ut! Cumque, fuga!</p>
+					{% include ui/progress.html value=60 size="sm" class="mb-3" %}
+					<div class="mb-3">
+						{% include ui/button.html color="primary" %}
+						{% include ui/button.html color="secondary" %}
+						{% include ui/button.html color="danger" %}
+						{% include ui/button.html color="success" %}
+						{% include ui/button.html color="warning" %}
+					</div>
+
+					<div class="mb-3">
+						<label class="form-label">Text</label>
+						<div class="form-hint">Here's some more info.</div>
+						<input type="text" class="form-control" name="example-text-input" placeholder="Text..">
+					</div>
+
+					{% include parts/form/select.html %}
+
+					{% include parts/form/input-color.html %}
+					{% include parts/form/input-checkboxes.html %}
+
+					<div class="mb-3">
+						<label class="form-label">Input with appended text</label>
+						{% include ui/form/input-group.html append=".tabler.io" input-class="text-right pr-0" flat=true %}
+					</div>
+
+					<div class="mb-3">
+						<label class="form-label">Price</label>
+						{% include ui/form/input-group.html prepend="$" append=".00" %}
+					</div>
+				</div>
+				<footer class="card-footer">
+					Card footer
+				</footer>
+			</div>
+		</div>
+	{% endfor %}
+</div>

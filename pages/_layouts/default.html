@@ -2,17 +2,21 @@
 layout: base
 ---
 
-<div class="layout{% if page.site-layout %} {{ page.site-layout }}{% endif %}">
+{% assign page-header = page.page-header | default: layout.page-header %}
 
-   {% include layout/topnav.html dark=page.header-dark sticky=page.header-sticky %}
-   {% include layout/topmenu.html %}
+<div class="page">
+	{% include layout/navbar-primary.html %}
+	{% include layout/navbar-secondary.html %}
 
-   <div class="layout-area-main">
+	<div class="content">
+		<div class="container">
+			{% if page-header %}
+				{% include layout/page-header.html title=page-header description=page.page-header-description actions=page.page-header-actions pretitle=page.page-header-pretitle %}
+			{% endif %}
 
-      <main class="container{% if page.container-size %} container-{{ page.container-size }}{% endif %}{% if page.fluid %}-fluid{% endif %} my-4 flex-fill">
-         {% include layout/page-title.html %}
+			{{ content }}
+		</div>
 
-         {{ content }}
-      </main>
-   </div>
+		{% include layout/footer.html %}
+	</div>
 </div>

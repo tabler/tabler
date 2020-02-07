@@ -1,35 +1,22 @@
 // stylelint-disable property-no-vendor-prefix
 html {
-  height: 100%;
   font-size: 16px;
+  scroll-behavior: smooth;
 }
 
 body {
-  min-height: 100%;
   overflow-y: scroll;
   letter-spacing: $body-letter-spacing;
   touch-action: manipulation;
   text-rendering: optimizeLegibility;
   font-feature-settings: "liga" 0;
+
+  .content * {
+    @include scrollbar;
+  }
+
+  @media print {
+    background: transparent;
+  }
 }
 
-body *::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
-  transition: .3s background;
-}
-
-body *::-webkit-scrollbar-thumb {
-  background: $gray-400;
-}
-
-body *:hover::-webkit-scrollbar-thumb {
-  background: $gray-500;
-}
-
-/**
-Remove the cancel buttons in Chrome and Safari on macOS.
- */
-[type="search"]::-webkit-search-cancel-button {
-  -webkit-appearance: none;
-}

@@ -1,0 +1,24 @@
+{% capture addon %}
+	{% if include.loader %}
+		<span class="input-icon-addon">
+			{% include ui/spinner.html class="text-muted" size="sm" %}
+		</span>
+	{% else %}
+		{% assign icon = include.icon | default: 'search' %}
+		<span class="input-icon-addon">
+			{% include ui/icon.html icon=icon %}
+		</span>
+	{% endif %}
+{% endcapture %}
+
+<div class="input-icon{% if include.class %} {{ include.class }}{% endif %}">
+	{% if include.prepend %}
+		{{ addon }}
+	{% endif %}
+
+	<input type="text" class="form-control{% if include.light %} form-control-light{% endif %}{% if include.input-class %} {{ include.input-class }}{% endif %}" placeholder="{{ include.placeholder | default: 'Search…' }}">
+
+	{% unless include.prepend %}
+		{{ addon }}
+	{% endunless %}
+</div>

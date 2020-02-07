@@ -1,25 +1,39 @@
 ---
 title: Divider
 description: A divider visually segments content into groups
+bootstrap-link: components/dropdowns/#dividers
 done: true
 ---
-
 ### Default markup
 
-{% example html max-width=300 %}
-<p>
-  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab consequatur maxime quia reprehenderit tempore? 
-</p>
-<div class="hr-text">Left divider</div>
+{% example html columns=1 %}
 <p>
   Dicta error hic illo iure necessitatibus nihil officiis omnis perferendis, praesentium repellendus rerum, saepe sed, sit!
 </p>
-<div class="hr-text hr-text-center">Centered divider</div>
+{% include ui/hr.html text="Left divider" position="left" %}
 <p>
   Dicta error hic illo iure necessitatibus nihil officiis omnis perferendis, praesentium repellendus rerum, saepe sed, sit!
 </p>
-<div class="hr-text hr-text-right">Right divider</div>
+{% include ui/hr.html text="Centered divider"  %}
 <p>
   Dicta error hic illo iure necessitatibus nihil officiis omnis perferendis, praesentium repellendus rerum, saepe sed, sit!
+</p>
+{% include ui/hr.html text="Right divider" position="right" %}
+<p>
+  Dicta error hic illo iure necessitatibus nihil officiis omnis perferendis, praesentium repellendus rerum, saepe sed, sit!
+</p>
+{% endexample %}
+
+### Divider color
+
+Customize the color of the divider. You can click [here]({% docs_url colors %}) to see the list of available colors.
+
+{% example html columns=1 %}
+<p>
+  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias, dolore dolores doloribus est ex.
+</p>
+{% include ui/hr.html text="Green divider" color="green" %}
+<p>
+   Dicta error hic illo iure necessitatibus nihil officiis omnis perferendis, praesentium repellendus rerum, saepe sed, sit!
 </p>
 {% endexample %}

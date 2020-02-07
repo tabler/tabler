@@ -1,6 +1,7 @@
 ---
 title: Tables
 menu: docs.tables
+bootstrap-link: content/tables/
 ---
 
 ### Basic Table

@@ -2,12 +2,13 @@
 title: Breadcrumb
 menu: docs.breadcrumb
 description: Indicate the current page’s location within a navigational hierarchy that automatically adds separators via CSS.
+bootstrap-link: components/breadcrumb/
 done: true
 ---
 
 ### Default markup
 
-The dividers are automatically created in the content of the `::before` pseudo-element of li tags. You can inform the current page using the `active` modifier in a `li` tag. It will disable the navigation of inner links.
+The dividers are automatically created in the content of the `:before` pseudo-element of li tags. You can inform the current page using the `active` modifier in a `li` tag. It will disable the navigation of inner links.
 
 {% example %}
 {% include ui/breadcrumb.html %}

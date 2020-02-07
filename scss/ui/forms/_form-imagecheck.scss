@@ -1,0 +1,96 @@
+/**
+Image check
+ */
+.form-imagecheck {
+  position: relative;
+  margin: 0;
+  cursor: pointer;
+}
+
+.form-imagecheck-input {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+
+.form-imagecheck-figure {
+  position: relative;
+  display: block;
+  margin: 0;
+  user-select: none;
+  border: 1px solid $border-color;
+  border-radius: 3px;
+
+  .form-imagecheck-input:focus ~ & {
+    border-color: $primary;
+    box-shadow: $input-btn-focus-box-shadow;
+  }
+
+  .form-imagecheck-input:checked ~ & {
+    border-color: $border-color;
+  }
+
+  &:before {
+    position: absolute;
+    top: .25rem;
+    left: .25rem;
+    z-index: 1;
+    display: block;
+    width: $form-check-input-width;
+    height: $form-check-input-width;
+    color: #fff;
+    pointer-events: none;
+    content: "";
+    user-select: none;
+    background: $white;
+    border: 1px solid $border-color;
+    border-radius: 3px;
+    transition: .3s opacity;
+
+    .form-imagecheck-input:checked ~ & {
+      background-color: $form-check-input-checked-bg-color;
+      background-image: escape-svg($form-check-input-checked-bg-image);
+      background-repeat: $form-check-input-checked-bg-repeat;
+      background-position: $form-check-input-checked-bg-position;
+      background-size: $form-check-input-checked-bg-size;
+      border-color: $form-check-input-checked-border-color;
+    }
+  }
+}
+
+.form-imagecheck-image {
+  max-width: 100%;
+  display: block;
+  opacity: .64;
+  transition: .3s opacity;
+
+  &:first-child {
+    border-top-left-radius: 2px;
+    border-top-right-radius: 2px;
+  }
+
+  &:last-child {
+    border-bottom-right-radius: 2px;
+    border-bottom-left-radius: 2px;
+  }
+
+  .form-imagecheck:hover &,
+  .form-imagecheck-input:focus ~ .form-imagecheck-figure &,
+  .form-imagecheck-input:checked ~ .form-imagecheck-figure & {
+    opacity: 1;
+  }
+}
+
+.form-imagecheck-caption {
+  padding: .25rem;
+  font-size: $font-size-sm;
+  color: $text-muted;
+  text-align: center;
+  transition: .3s color;
+
+  .form-imagecheck:hover &,
+  .form-imagecheck-input:focus ~ .form-imagecheck-figure &,
+  .form-imagecheck-input:checked ~ .form-imagecheck-figure & {
+    color: $body-color;
+  }
+}

@@ -11,7 +11,7 @@
          {% for type in variants %}
             {% if show-link or type[0] != 'link' %}
                <div class="col-6 col-sm-4 col-md-2 col-xl{% if include.auto-columns %}-auto{% endif %} mb-3">
-                  {% if include.icon == true %}
+                  {% if include.icon or include.icon-only %}
                      {% assign icon = type[1].icon %}
                   {% endif %}
 
@@ -24,8 +24,8 @@
                   {% endif %}
 
                   {% assign text = type[1].title %}
-
-                  {% include_cached ui/button.html block=true class=class icon=icon icon-only=icon-only text=text %}
+                  {% assign color = type[0] %}
+                  {% include ui/button.html block=true color=false class=class icon=icon icon-only=include.icon-only text=text %}
                </div>
                {% endif %}
          {% endfor %}

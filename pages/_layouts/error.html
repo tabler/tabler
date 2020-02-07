@@ -1,7 +1,12 @@
 ---
 layout: base
-body-class: border-top-2 border-primary
+body-class: border-top-wide border-primary d-flex flex-column
 ---
 
-{% assign error = site.data.errors[page.error] %}
-{% include ui/empty.html icon="settings" icon-text=page.error title="Oops&hellip; You just found an error page" subtitle=error %}
+<div class="flex-fill d-flex align-items-center justify-content-center">
+	<div class="container-tight py-6">
+		{% assign error = site.data.errors[page.error] %}
+		{% assign header = error.header | default: 'Oops… You just found an error page' %}
+		{% include ui/empty.html icon="settings" illustration=error.illustration icon-text=error.title title=header subtitle=error.description button-icon="arrow-left" button-text="Take me home" %}
+	</div>
+</div>
