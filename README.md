@@ -2,17 +2,6 @@
 
 A premium and open source dashboard template with a responsive and high-quality UI.
 
-<a href="https://github.com/sponsors/codecalm" target="_blank"><img src="/static/sponsor-banner-readme.png?raw=true" alt="Sponsor Tabler" /></a>
-
-<br><br><br>
-
-----
-
-<br><br><br>
-
-# Tabler preview
-
-
 <strong><a href="https://preview-dev.tabler.io">View Demo</a> | <a href="https://github.com/tabler/tabler-react">View React Version</a> | <a href="https://github.com/tabler/tabler/archive/master.zip">Download ZIP</a> | <a href="https://join.slack.com/t/tabler-ui/shared_invite/enQtMzQxMTYxODk5NDYwLWU4Y2FiNWYxN2UyNWUzOTBjNmU0ZGM2ZDViMjQzMWMyZWM0ZDFkMGRhZGFiYzFhZjM1NmIxOGQ2ZDUwZjlhMTU">Join us on Slack</a></strong>
 
 ![Tabler preview](/static/tabler-preview.png?raw=true)
@@ -34,6 +23,10 @@ We've created this admin panel for everyone who wants to create templates based 
 * **Clean Code:** We followed Bootstrap’s guidelines carefully to make your integration as easy as possible. All code is handwritten and W3C valid.
 * **Demo pages**: Tabler features over 20 individual pages using various components, which gives you the freedom to choose and combine. All components can vary in color and styling that you can easily modify using Sass. Sky is the limit!
 * **Single Page Application versions:** [Tabler React](https://github.com/tabler/tabler-react) has React components for Tabler.
+
+## Sponsor Tabler
+
+<a href="https://github.com/sponsors/codecalm" target="_blank"><img src="/static/sponsor-banner-readme.png?raw=true" alt="Sponsor Tabler" /></a>
 
 ## Setup environment
 
