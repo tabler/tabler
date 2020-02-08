@@ -2,7 +2,7 @@
 
 A premium and open source dashboard template with a responsive and high-quality UI.
 
-<a href="https://github.com/sponsors/codecalm" target="_blank"><img src="/static/sponsor-banner-readme.svg?raw=true" alt="Sponsor Tabler" /></a>
+<a href="https://github.com/sponsors/codecalm" target="_blank"><img src="/static/sponsor-banner-readme.png?raw=true" alt="Sponsor Tabler" /></a>
 
 <br><br><br>
 
