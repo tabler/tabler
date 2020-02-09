@@ -8,10 +8,10 @@ import {CountUp} from "countup.js";
 	/**
 	 * Dropdown
 	 */
-	var dropdownElementList = [].slice.call(document.querySelectorAll('[data-toggle="dropdown"]'))
-	dropdownElementList.map(function (dropdownToggleEl) {
-		return new Dropdown(dropdownToggleEl, {})
-	});
+	// var dropdownElementList = [].slice.call(document.querySelectorAll('[data-toggle="dropdown"]'))
+	// dropdownElementList.map(function (dropdownToggleEl) {
+	// 	return new Dropdown(dropdownToggleEl, {})
+	// });
 
 	/**
 	 * Tooltip

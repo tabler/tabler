@@ -6,7 +6,11 @@
    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
 
-   <meta name="msapplication-TileColor" content="{{ site.data.colors.blue }}"/>
+   <title>{% if page.title %}{{ page.title }} - {% endif %}{% if layout.title %}{{ layout.title }} - {% endif %}{% if site.title %}{{ site.title }} - {% endif %}{{ site.description }}</title>
+
+	<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
+
+	<meta name="msapplication-TileColor" content="{{ site.data.colors.blue }}"/>
    <meta name="theme-color" content="{{ site.data.colors.blue }}"/>
 
    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
@@ -19,7 +23,6 @@
    <link rel="icon" href="{{ site.base }}/favicon.ico" type="image/x-icon"/>
    <link rel="shortcut icon" href="{{ site.base }}/favicon.ico" type="image/x-icon"/>
 
-   <title>{% if page.title %}{{ page.title }} - {% endif %}{% if layout.title %}{{ layout.title }} - {% endif %}{% if site.title %}{{ site.title }} - {% endif %}{{ site.description }}</title>
 
    {% if page.description %}
       <meta name="description" content="{{ page.description | escape }}"/>
@@ -34,9 +37,10 @@
 
 	{{ content }}
 
+	{% include layout/modals-capture.html %}
+
 	{% include layout/js.html %}
 	{% include layout/js-capture.html %}
-	{% include layout/modals-capture.html %}
 
 	{% if site.debug and jekyll.environment == 'development' %}
 		{% include layout/debug.html %}

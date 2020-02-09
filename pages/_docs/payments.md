@@ -31,8 +31,8 @@ Using Bootstrap’s typical naming structure, you can create a standard payment,
 <tr>
     <td>{{ payment.name }}</td>
     <td><code>{{ payment.logo }}</code></td>
-    <td class="w-1p">{% include ui/payment.html payment=payment.logo %}</td>
-    <td class="w-1p">{% include ui/payment.html payment=payment.logo dark=true %}</td>
+    <td class="w-1">{% include ui/payment.html payment=payment.logo %}</td>
+    <td class="w-1">{% include ui/payment.html payment=payment.logo dark=true %}</td>
 </tr>
 {% endfor %}
 </table>
