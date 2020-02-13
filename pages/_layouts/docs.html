@@ -8,9 +8,19 @@ page-header: Documentation
 {% assign current-url = page.url | replace_regex: "^/", "" %}
 
 <div class="row justify-content-center">
-	<div class="col-lg-3 order-lg-1 mb-4">
-		{% include ui/button.html href=site.github_url text="Browse source code" icon="brand/github" icon-color="github" external=true block=true class="mb-4" %}
+	<div class="d-none d-lg-block col-lg-3 order-lg-1 mb-4">
 
+
+		<div class="sticky-top pt-4">
+			<h5 class="subheader">On this page</h5>
+			{{ content | toc_only }}
+
+			{% include ui/button.html href=site.github_url text="Browse source code" icon="brand/github" icon-color="github" external=true block=true class="mb-4" %}
+		</div>
+
+
+
+		{% comment %}
 		<div class="list-group list-group-transparent mb-0">
 			{% for doc in site.data.menu.docs.children %}
 			{% assign key = doc[0] %}
@@ -22,32 +32,30 @@ page-header: Documentation
 				{% endif %}
 
 				{{ doc[1].title }}
-
-				{% if doc[1].badge %}
-					{% assign badge = doc[1].badge %}
-					{% include ui/badge.html text=badge color="green" class="ml-auto" %}
-				{% endif %}
 			</a>
 			{% endfor %}
 		</div>
+		{% endcomment %}
 	</div>
 	<div class="col-lg-9">
 		<div class="card">
 			<div class="card-body p-md-6 p-xl-7">
 
 				<div class="markdown">
-					{% if page.bootstrap-link %}
-					<p class="mb-4 float-right">
-						<a href="https://getbootstrap.com/docs/4.4/{{ page.bootstrap-link }}" target="_blank">
-							{% include ui/icon.html icon="external-link" color="blue" class="pr-1" %}
-							Bootstrap documentation
-						</a>
-					</p>
-					{% endif %}
+					<div class="d-flex">
+						<h2 class="h1 mt-0 mb-3">{{ page.title }}
+							{% if page.done %} {% include ui/icon.html icon="check" color="green" %}{% endif %}
+						</h2>
 
-					<h2 class="h1 mt-0 mb-3">{{ page.title }}
-						{% if page.done %} {% include ui/icon.html icon="check" color="green" %}{% endif %}
-					</h2>
+						{% if page.bootstrap-link %}
+						<p class="ml-auto">
+							<a href="https://getbootstrap.com/docs/4.4/{{ page.bootstrap-link }}" target="_blank">
+								{% include ui/icon.html icon="external-link" color="blue" class="pr-1" %}
+								Bootstrap documentation
+							</a>
+						</p>
+						{% endif %}
+					</div>
 
 					{% if page.plugin %}
 					<div class="alert alert-info">This module is available in <code>tabler-{{ page.plugin }}</code>
@@ -57,10 +65,6 @@ page-header: Documentation
 
 					{% if page.description %}
 					<p>{{ page.description }}</p>
-					{% endif %}
-
-					{% if page.toc %}
-					{{ content | toc_only }}
 					{% endif %}
 
 					{{ content | toc_generate }}

@@ -4,6 +4,7 @@ icon: fe fe-plus-square
 description: Use Bootstrap’s custom button styles for actions in forms, dialogs, and more. Includes support for a handful of contextual variations, sizes, states, and more.
 bootstrap-link: components/buttons/
 done: true
+toc: true
 ---
 
 ### Button tag
@@ -263,7 +264,7 @@ You can now create a list of buttons with the `.btn-list` container.
   <a href="#" class="btn btn-danger">Cancel</a>
 </div>
 {% endcapture %}
-{% include example.html code=code centered=true %}
+{% include example.html code=code %}
 
 If the list is very long, it will automatically wrap on multiple lines, while keeping all buttons evenly spaced.
 

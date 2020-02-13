@@ -1,9 +1,11 @@
-<div class="example{% if include.centered %} example-centered{% endif %}">
+<div class="example no_toc_section{% if include.centered %} example-centered{% endif %}{% if include.columns %} example-bg{% endif %}">
 	<div class="example-content">
 		{% if include.wrapper %}<div class="{{ include.wrapper }}">{% endif %}
+		{% if include.columns %}<div class="example-column example-column-{{ include.columns }}">{% endif %}
 
 		{{ code }}
 
+		{% if include.columns %}</div>{% endif %}
 		{% if include.wrapper %}</div>{% endif %}
 	</div>
 </div>
