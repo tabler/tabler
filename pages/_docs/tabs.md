@@ -6,36 +6,42 @@ bootstrap-link: components/navs/
 
 ### Default markup
 
-{% example html columns=1 %}
+{% capture code %}
 {% include cards/tabs.html id="ex1" %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 ### Tabs with icons
 
-{% example html columns=1 %}
+{% capture code %}
 {% include cards/tabs.html icons=true settings=true id="ex2" %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 ### Tabs only with icons
 
-{% example html columns=1 %}
+{% capture code %}
 {% include cards/tabs.html icons=true settings=true hide-text=true id="ex3" %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 ### Tabs with dropdown
 
-{% example html columns=1 %}
+{% capture code %}
 {% include cards/tabs.html dropdown=true id="ex4" %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 ### Full-width tabs
 
-{% example html columns=1 %}
+{% capture code %}
 {% include cards/tabs.html justified=true icons=true hide-text=true activity=true id="ex5" %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 ### Alternate style
 
-{% example html columns=1 %}
+{% capture code %}
 {% include cards/tabs.html icons=true alternative=true settings=true id="ex6" %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}

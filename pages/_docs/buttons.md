@@ -6,110 +6,120 @@ bootstrap-link: components/buttons/
 done: true
 ---
 
-
 ### Button tag
 
 The `.btn` classes are designed to be used with the `<button>` element. However, you can also use these classes on `<a>` or `<input>` elements (though some browsers may apply a slightly different rendering).
 
-{% example html wrapper=btn-list %}
+{% capture code %}
 <a href="#" class="btn btn-primary" role="button">Link</a>
 <button class="btn btn-primary">Button</button>
 <input type="button" class="btn btn-primary" value="Input"/>
 <input type="submit" class="btn btn-primary" value="Submit"/>
 <input type="reset" class="btn btn-primary" value="Reset"/>
-{% endexample %}
+{% endcapture  %}
+{% include example.html code=code wrapper="btn-list" centered=true %}
+
 
 ### Button variations
 
 Use any of the available button classes to quickly create a styled button . We provide a variety of colors for you to express different emotions.
 
-{% example html wrapper=btn-list %}
+{% capture code %}
 {% for button in site.button-variants %}
 {% assign btn-color = button[1].class %}
 {% assign btn-title = button[1].title %}
 {% include ui/button.html color=btn-color text=btn-title %}
 {% endfor %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code wrapper="btn-list" centered=true %}
 
 ### Disabled buttons
 
 Make buttons look inactive by adding the disabled boolean attribute to any `.btn` element. `<a>`s don’t support the disabled attribute, so you must add the `.disabled` class to make it visually appear disabled.
 
-{% example html wrapper=btn-list %}
+{% capture code %}
 {% for button in site.button-variants %}
 {% assign btn-color = button[1].class %}
 {% assign btn-title = button[1].title %}
 {% include ui/button.html color=btn-color text=btn-title disabled=true %}
 {% endfor %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code wrapper="btn-list" centered=true %}
 
 
 ### Color variations
 
 The classic button, in different colors.
 
-{% example html wrapper=btn-list %}
+{% capture code %}
 {% for button in site.colors %}
 <a href="#" class="btn btn-{{ button[0] }}">{{ button[1].title }}</a>
 {% endfor %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code wrapper="btn-list" centered=true %}
 
 ### Square buttons
 
 Add `.btn-square` to button to remove border-radius.
 
-{% example html wrapper=btn-list %}
+{% capture code %}
 {% for button in site.button-variants %}
 {% assign btn-color = button[1].class %}
 {% assign btn-title = button[1].title %}
 {% include ui/button.html color=btn-color text=btn-title square=true %}
 {% endfor %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code wrapper="btn-list" centered=true %}
 
 ### Pill buttons
 
 Add `.btn-pill` class to any button to make them more rounded.
 
-{% example html wrapper=btn-list %}
+{% capture code %}
 {% for button in site.button-variants %}
 {% assign btn-color = button[1].class %}
 {% assign btn-title = button[1].title %}
 {% include ui/button.html color=btn-color text=btn-title pill=true %}
 {% endfor %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code wrapper="btn-list" centered=true %}
 
 ### Outline buttons
 
 In need of a button, but not the hefty background colors they bring? Replace the default modifier classes with the `.btn-outline-*` ones to remove all background images and colors on any button.
 
-{% example html wrapper=btn-list %}
+{% capture code %}
 {% for button in site.button-variants %}
 {% assign btn-color = button[1].class %}
 {% assign btn-title = button[1].title %}
 {% include ui/button.html text=btn-title color=btn-color outline=true %}
 {% endfor %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code wrapper="btn-list" centered=true %}
 
 ### Button size
 
 Add `.btn-lg` or `.btn-sm` for additional sizes.
 
-{% example html wrapper=btn-list %}
+{% capture code %}
 <button type="button" class="btn btn-primary btn-lg">Large button</button>
 <button type="button" class="btn btn-secondary btn-lg">Large button</button>
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code wrapper="btn-list" centered=true %}
 
-{% example html wrapper=btn-list %}
+{% capture code %}
 <button type="button" class="btn btn-primary btn-sm">Small button</button>
 <button type="button" class="btn btn-secondary btn-sm">Small button</button>
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code wrapper="btn-list" centered=true %}
 
 Create block level buttons—those that span the full width of a parent—by adding `.btn-block`.
 
-{% example html %}
+{% capture code %}
 <button type="button" class="btn btn-primary btn-block">Block level button</button>
 <button type="button" class="btn btn-secondary btn-block">Block level button</button>
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code wrapper="btn-list" centered=true %}
 
 ### Button with icon
 
@@ -117,99 +127,90 @@ Basic buttons are traditional buttons with borders and background with an extra 
 
 Icons can be found [**here**](/docs/icons.html#icons)
 
-{% example html wrapper=btn-list %}
+{% capture code %}
 <button type="button" class="btn btn-dark">
-{% include ui/icon.html icon="upload" class="icon-sm" %}
+{% include ui/icon.html icon="upload" %}
 Upload
 </button>
 <button type="button" class="btn btn-warning">
-{% include ui/icon.html icon="heart" class="icon-sm" %}
+{% include ui/icon.html icon="heart" %}
 I like
 </button>
 <button type="button" class="btn btn-success">
-{% include ui/icon.html icon="check" class="icon-sm" %}
+{% include ui/icon.html icon="check" %}
 I agree
 </button>
 <button type="button" class="btn btn-outline-primary">
-{% include ui/icon.html icon="plus" class="icon-sm" %}
+{% include ui/icon.html icon="plus" %}
 More
 </button>
 <button type="button" class="btn btn-danger">
-{% include ui/icon.html icon="link" class="icon-sm" %}
+{% include ui/icon.html icon="link" %}
 Link
 </button>
 <button type="button" class="btn btn-info">
-{% include ui/icon.html icon="message-circle" class="icon-sm" %}
+{% include ui/icon.html icon="message-circle" %}
 Comment
 </button>
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code wrapper="btn-list" centered=true %}
 
 ### Social buttons
 
 A button can be formatted to link to a social website
 
-{% example html wrapper=btn-list %} 
+{% capture code %}
 {% for button in site.socials %}
 {% assign btn-icon = button[1].icon %}
 {% assign btn-title = button[1].title %}
 {% assign btn-color = button[0] %}
 {% include ui/button.html color=btn-color icon=btn-icon text=btn-title %}
 {% endfor %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code wrapper="btn-list" centered=true %}
 
 You can use only icons.
 
-{% example html wrapper=btn-list %} 
+{% capture code %}
 {% for button in site.socials %}
 {% assign btn-icon = button[1].icon %}
 {% assign btn-color = button[0] %}
 {% include ui/button.html color=btn-color icon=btn-icon icon-only=true %}
 {% endfor %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code wrapper="btn-list" centered=true %}
 
 ### Icon buttons
 
 Icon only button. Add `.btn-icon` class to remove unnecessary padding from button.
 
-{% example html wrapper=btn-list %} 
-<button type="button" class="btn btn-icon btn-primary">
-{% include ui/icon.html icon="activity" class="icon-sm" %}
-</button>
-<button type="button" class="btn btn-icon btn-primary btn-github">
-{% include ui/icon.html icon="github" class="icon-sm" %}
-</button>
-<button type="button" class="btn btn-icon btn-primary btn-success">
-{% include ui/icon.html icon="bell" class="icon-sm" %}
-</button>
-<button type="button" class="btn btn-icon btn-primary btn-warning">
-{% include ui/icon.html icon="star" class="icon-sm" %}
-</button>
-<button type="button" class="btn btn-icon btn-primary btn-danger">
-{% include ui/icon.html icon="trash-2" class="icon-sm" %}
-</button>
-<button type="button" class="btn btn-icon btn-primary btn-purple">
-{% include ui/icon.html icon="bar-chart" class="icon-sm" %}
-</button>
-<button type="button" class="btn btn-icon btn-primary btn-secondary">
-{% include ui/icon.html icon="git-merge" class="icon-sm" %}
-</button>
-{% endexample %}
+{% capture code %}
+{% include ui/button.html icon="activity" color="primary" icon-only=true %}
+{% include ui/button.html icon="github" color="github" icon-only=true %}
+{% include ui/button.html icon="bell" color="success" icon-only=true %}
+{% include ui/button.html icon="star" color="warning" icon-only=true %}
+{% include ui/button.html icon="trash-2" color="danger" icon-only=true %}
+{% include ui/button.html icon="bar-chart" color="purple" icon-only=true %}
+{% include ui/button.html icon="git-merge" color="secondary" icon-only=true %}
+{% endcapture %}
+{% include example.html code=code %}
+
 
 ### Button dropdown
 
 Wrap the dropdown’s toggle (your button or link) and the dropdown menu within `.dropdown`, or another element that declares `position: relative;`. Dropdowns can be triggered from `<a>` or `<button>` elements to better fit your potential needs.
 
-{% example html wrapper=btn-list %}
+{% capture code %}
 <div class="dropdown">
   <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
-     {% include ui/icon.html icon="calendar" class="icon-sm" %}
+     {% include ui/icon.html icon="calendar" %}
   </button>
   {% include ui/dropdown-menu.html %}
 </div>
 
 <div class="dropdown">
   <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
-     {% include ui/icon.html icon="calendar" class="icon-sm" %}Show calendar
+     {% include ui/icon.html icon="calendar" %}Show calendar
   </button>
   {% include ui/dropdown-menu.html %}
 </div>
@@ -220,7 +221,8 @@ Wrap the dropdown’s toggle (your button or link) and the dropdown menu within 
   </button>
   {% include ui/dropdown-menu.html %}
 </div>
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 ### Loading button
 
@@ -228,25 +230,27 @@ Add `.btn-loading` to use a loading state on a button. The width of the button d
 
 Since the loading spinner is implemented using the `:after` pseudo-element, it is not supported by the `<input type="submit">` element.
 
-{% example html wrapper=btn-list %}
+{% capture code %}
 {% include ui/button.html color="primary" text="Button" spinner=true %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 ### List of buttons
 
 You can now create a list of buttons with the `.btn-list` container.
 
-{% example html %}
+{% capture code %}
 <div class="btn-list">
   <a href="#" class="btn btn-success">Save changes</a>
   <a href="#" class="btn btn-secondary">Save and continue</a>
   <a href="#" class="btn btn-danger">Cancel</a>
 </div>
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 If the list is very long, it will automatically wrap on multiple lines, while keeping all buttons evenly spaced.
 
-{% example html %}
+{% capture code %}
 <div class="btn-list">
   <a href="#" class="btn btn-secondary">One</a>
   <a href="#" class="btn btn-secondary">Two</a>
@@ -268,27 +272,30 @@ If the list is very long, it will automatically wrap on multiple lines, while ke
   <a href="#" class="btn btn-secondary">Eighteen</a>
   <a href="#" class="btn btn-secondary">Nineteen</a>
 </div>
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 Use the `.text-center` or the `.text-right` modifiers to alter the alignment.
 
-{% example html %}
+{% capture code %}
 <div class="btn-list text-center">
   <a href="#" class="btn btn-primary">Save changes</a>
   <a href="#" class="btn btn-secondary">Save and continue</a>
 </div>
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
-{% example html %}
+{% capture code %}
 <div class="btn-list text-right">
   <a href="#" class="btn btn-primary">Save changes</a>
   <a href="#" class="btn btn-secondary">Save and continue</a>
 </div>
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 ### Button with avatar
 
-{% example html wrapper=btn-list %}
+{% capture code %}
 <a href="#" class="btn btn-secondary">
   {% include ui/avatar.html person-id="4" %} Avatar
 </a>
@@ -298,5 +305,5 @@ Use the `.text-center` or the `.text-right` modifiers to alter the alignment.
 <a href="#" class="btn btn-secondary">
   {% include ui/avatar.html person-id="6" %} Avatar
 </a>
-{% endexample %}
-
+{% endcapture %}
+{% include example.html code=code %}

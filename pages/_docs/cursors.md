@@ -12,7 +12,7 @@ menu: docs.cursors
 - `.cursor-zoom-in` - cursor showing that user can zoom in
 - `.cursor-zoom-out` - cursor showing that user can zoom out
 
-{% example html %}
+{% capture code %}
 <div class="row text-center">
   <div class="col-4 mb-3">
     <div class="cursor-auto bg-light py-3">Cursor auto</div>
@@ -33,4 +33,5 @@ menu: docs.cursors
     <div class="cursor-zoom-out bg-light py-3">Cursor zoom out</div>
   </div>
 </div>
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}

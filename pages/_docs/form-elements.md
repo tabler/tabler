@@ -5,7 +5,7 @@ bootstrap-link: components/forms/
 
 ### Classic Input
 
-{% example %}
+{% capture code %}
 <div class="mb-2">
   <label class="form-label">Static</label>
 <div class="form-control-plaintext">Username</div>
@@ -26,10 +26,11 @@ bootstrap-link: components/forms/
    <input type="text" class="form-control" name="example-disabled-input" placeholder="Disabled.."
           value="Well, how'd you become king, then?" readonly>
 </div>
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 ### Password and validation
-{% example %}
+{% capture code %}
 <div class="mb-2">
    <label class="form-label">Password</label>
    <input type="password" class="form-control" name="example-password-input" placeholder="Password..">
@@ -51,7 +52,8 @@ bootstrap-link: components/forms/
 
    <input type="text" class="form-control mt-3 state-invalid" value="Invalid state">
 </div>
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 ### Input size
 
@@ -59,73 +61,85 @@ bootstrap-link: components/forms/
 
 
 ### Select
-{% example %}
+{% capture code %}
 {% include parts/form/select.html options="Germany,USA,Poland" %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 ### Textarea
-{% example %}
+{% capture code %}
 <div class="mb-2">
    <label class="form-label">Textarea <span class="form-label-description">56/100</span></label>
    <textarea class="form-control" name="example-textarea-input" rows="6" placeholder="Content..">Oh! Come and see the violence inherent in the system! Help, help, I'm being repressed! We shall say 'Ni' again to you, if you do not appease us. I'm not a witch. I'm not a witch. Camelot!</textarea>
 </div>
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 ### Image check
-{% example %}
+{% capture code %}
 {% include parts/form/input-image.html %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 ### Input color
-{% example %}
+{% capture code %}
 {% include parts/form/input-color.html %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 ### Input color picker
-{% example %}
+{% capture code %}
 {% include parts/form/input-colorpicker.html %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 ### Datalists
-{% example %}
+{% capture code %}
 {% include parts/form/input-datalist.html %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 ### Custom selectboxes
-{% example %}
+{% capture code %}
 {% include parts/form/input-selectgroups.html %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 ### Toggle switches
-{% example %}
+{% capture code %}
 {% include parts/form/input-toggle.html %}
 {% include parts/form/input-toggle-single.html %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 ### Radios
-{% example %}
+{% capture code %}
 {% include parts/form/input-radios.html %}
 {% include parts/form/input-radios-inline.html %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 ### Checkboxes
-{% example %}
+{% capture code %}
 {% include parts/form/input-checkboxes.html %}
 {% include parts/form/input-checkboxes-inline.html %}
-{% endexample%}
+{% endcapture %}
+{% include example.html code=code %}
 
 ### Range input
-{% example %}
+{% capture code %}
 {% include parts/form/input-range.html %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 ### Sample form
-{% example %}
+{% capture code %}
 {% include parts/form/fieldset.html %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 ### Input group
-{% example %}
+{% capture code %}
 <div class="mb-2">
    <label class="form-label">Input group</label>
    <div class="input-group">
@@ -158,20 +172,23 @@ bootstrap-link: components/forms/
       </div>
    </div>
 </div>
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 ### Input with icon
-{% example %}
+{% capture code %}
 {% include parts/form/input-icon.html %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 ### Separated inputs
-{% example %}
+{% capture code %}
 {% include parts/form/input-icon-separated.html %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 ### Custom Input examples
-{% example %}
+{% capture code %}
 <div class="mb-2">
    <label class="form-label">Username</label>
    {% include ui/form/input-group.html prepend="@" placeholder="username" %}
@@ -191,10 +208,11 @@ bootstrap-link: components/forms/
    <label class="form-label">Price</label>
    {% include ui/form/input-group.html prepend="$" append=".00" %}
 </div>
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 ### Date component
-{% example %}
+{% capture code %}
 <div class="mb-2">
    <label class="form-label">Date of birth</label>
    <div class="row row-sm">
@@ -231,10 +249,11 @@ bootstrap-link: components/forms/
       </div>
    </div>
 </div>
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 ### Input with button
-{% example %}
+{% capture code %}
 <div class="mb-2">
    <label class="form-label">Button input</label>
    <div class="input-group">
@@ -254,4 +273,5 @@ bootstrap-link: components/forms/
       <input type="text" class="form-control" aria-label="Text input with dropdown button">
    </div>
 </div>
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}

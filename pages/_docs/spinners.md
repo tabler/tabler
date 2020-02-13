@@ -7,46 +7,52 @@ done: true
 
 ### Default markup
 
-{% example %}
+{% capture code %}
 {% include ui/spinner.html %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 
 ### Colors
 
-{% example %}
+{% capture code %}
 {% for color in site.colors %}
 {% assign c = color[0] %}
 {% include ui/spinner.html color=c %}
 {% endfor %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 ### Size
 
-{% example %}
+{% capture code %}
 {% include ui/spinner.html %}
 {% include ui/spinner.html size="sm" %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 ### Growing spinner
 
-{% example %}
+{% capture code %}
 {% include ui/spinner.html type="grow" %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
-{% example %}
+{% capture code %}
 {% for color in site.colors %}
 {% assign c = color[0] %}
 {% include ui/spinner.html color=c type="grow" %}
 {% endfor %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 ### Buttons
 
-{% example html wrapper=btn-list %}
+{% capture code %}
 {% include ui/button.html spinner=true text="Button" color="primary" %}
 {% include ui/button.html spinner=true text="Button" color="danger" %}
 {% include ui/button.html spinner=true text="Button" color="warning" %}
 {% include ui/button.html spinner=true color="success" %}
 {% include ui/button.html spinner=true color="secondary" %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}

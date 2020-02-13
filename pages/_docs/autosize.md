@@ -7,7 +7,8 @@ done: true
 
 ### Default markup
 
-{% example html %}
+{% capture code %}
 <label class="form-label">Autosize example</label>
 {% include ui/form/textarea-autosize.html %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}

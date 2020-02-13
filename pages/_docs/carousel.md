@@ -5,6 +5,7 @@ description: The Carousel is a slideshow for cycling through elements.
 bootstrap-link: components/carousel/
 ---
 
-{% example html columns=1 %}
+{% capture code %}
 {% include ui/carousel.html show-indicators=true show-controls=true id="carousel-sample" %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}

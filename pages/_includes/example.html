@@ -1,0 +1,20 @@
+<div class="example{% if include.centered %} example-centered{% endif %}">
+	<div class="example-content">
+		{% if include.wrapper %}<div class="{{ include.wrapper }}">{% endif %}
+
+		{{ code }}
+
+		{% if include.wrapper %}</div>{% endif %}
+	</div>
+</div>
+
+{% assign code = code | strip %}
+{% capture new_line %}
+{% endcapture %}
+{% assign code = code | replace_regex: "\n\n+", new_line %}
+{% assign code = code | replace_regex: '<svg[^>]*>.*?<\/svg>', '<!-- SVG icon code -->' %}
+
+<div class="example-code">
+	{% highlight html %}{{ code }}{% endhighlight %}
+</div>
+

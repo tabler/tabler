@@ -7,7 +7,7 @@ bootstrap-link: components/tooltips/
 
 ### Default markup
 
-{% example html wrapper=btn-list %}
+{% capture code %}
 <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
   Tooltip on top
 </button>
@@ -20,12 +20,14 @@ bootstrap-link: components/tooltips/
 <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="left" title="Tooltip on left">
   Tooltip on left
 </button>
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 ### Tooltip with HTML
 
-{% example html wrapper=btn-list %}
+{% capture code %}
 <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-html="true" title="<em>Tooltip</em> <u>with</u> <b>HTML</b>">
   Tooltip with HTML
 </button>
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
