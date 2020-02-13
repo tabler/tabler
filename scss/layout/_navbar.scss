@@ -4,7 +4,7 @@ Horizontal navbar
 @mixin navbar-horizontal {
   .d-none-navbar-horizontal,
   ~ * .d-none-navbar-vertical-narrow {
-    display: none;
+    display: none !important;
   }
 
   .dropdown-menu {
@@ -22,7 +22,7 @@ Vertical narrow navbar
 
   .d-none-navbar-vertical-narrow,
   ~ * .d-none-navbar-vertical-narrow {
-    display: none;
+    display: none !important;
   }
 
   .navbar-nav {
@@ -119,11 +119,16 @@ Vertical navbar
   ~ .navbar,
   ~ .content {
     margin-left: $sidenav-width;
+
+    [class*="container"] {
+      padding-left: $cards-grid-gap;
+      padding-right: $cards-grid-gap;
+    }
   }
 
   .d-none-navbar-vertical,
   ~ * .d-none-navbar-vertical {
-    display: none;
+    display: none !important;
   }
 
   .navbar-brand {
@@ -152,6 +157,7 @@ Vertical navbar
 
   .navbar-nav {
     flex-direction: column;
+    align-items: normal;
     margin-left: -($sidenav-padding);
     margin-right: -($sidenav-padding);
 
@@ -203,7 +209,7 @@ Vertical navbar
   &:not(.navbar-vertical-narrow) {
     .d-none-navbar-vertical-wide,
     ~ * .d-none-navbar-vertical-wide {
-      display: none;
+      display: none !important;
     }
 
     .dropdown-menu {
@@ -334,6 +340,8 @@ Navbar colors
   box-shadow: 0 0 0 1px $border-color;
 
   .navbar-nav {
+    align-items: center;
+
     .nav-link {
       color: inherit;
       opacity: $text-muted-opacity;

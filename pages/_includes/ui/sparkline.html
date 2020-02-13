@@ -1,4 +1,4 @@
-{% assign type = include.type %}
+{% assign type = include.type | default: 'bar' %}
 {% assign id = 0 | random_id %}
 {% assign color = include.color | default: 'blue' %}
 
@@ -19,9 +19,9 @@
 			height: 40,
 			stroke: "{{ color | tabler_color }}",
 			strokeWidth: 2,
-			fill: {% if type == 'pie' %}["{{ color | default: 'blue' | tabler_color }}", "{{ 'border-color' | tabler_color }}"]{% elsif type == 'bar' %}["{{ color | tabler_color }}"]{% else %}"transparent"{% endif %},
+			fill: {% if type == 'pie' %}["{{ color | default: 'blue' | tabler_color }}", "{{ 'border-color' | tabler_color }}"]{% elsif type == 'line' %}["{{ color | append: '-100' | tabler_color }}"]{% else %}"transparent"{% endif %},
 			padding: .2,
-			innerRadius: 17,
+			{% if type == 'pie' %}innerRadius: 17,{% endif %}
 		});
 	});
 </script>

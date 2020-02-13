@@ -2,21 +2,16 @@
 
 A premium and open source dashboard template with a responsive and high-quality UI.
 
-👉 [Become a sponsor to Tabler](https://github.com/sponsors/codecalm) 🚀
-
-<br><br><br>
-
-[![Backers on Open Collective](https://opencollective.com/tabler/backers/badge.svg)](#backers)
- [![Sponsors on Open Collective](https://opencollective.com/tabler/sponsors/badge.svg)](#sponsors)
-
-
 <strong><a href="https://preview-dev.tabler.io">View Demo</a> | <a href="https://github.com/tabler/tabler-react">View React Version</a> | <a href="https://github.com/tabler/tabler/archive/master.zip">Download ZIP</a> | <a href="https://join.slack.com/t/tabler-ui/shared_invite/enQtMzQxMTYxODk5NDYwLWU4Y2FiNWYxN2UyNWUzOTBjNmU0ZGM2ZDViMjQzMWMyZWM0ZDFkMGRhZGFiYzFhZjM1NmIxOGQ2ZDUwZjlhMTU">Join us on Slack</a></strong>
 
-![Tabler preview](https://raw.githubusercontent.com/tabler/tabler/dev/static/tabler-preview.png)
+![Tabler preview](/static/tabler-preview.png?raw=true)
 
 ## Status
 
 <a href="https://www.npmjs.com/package/tabler"><a href="#backers" alt="sponsors on Open Collective"><img src="https://opencollective.com/tabler/backers/badge.svg"/></a> <a href="#sponsors" alt="Sponsors on Open Collective"><img src="https://opencollective.com/tabler/sponsors/badge.svg"/></a> <img src="https://img.shields.io/npm/dt/tabler.svg" alt="Total Downloads"></a> <a href="https://github.com/tabler/tabler/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/tabler.svg" alt="License"></a> <a href="https://github.com/tabler/tabler/releases"><img src="https://img.shields.io/npm/v/tabler.svg" alt="Latest Release"></a>
+
+[![Backers on Open Collective](https://opencollective.com/tabler/backers/badge.svg)](#backers)
+ [![Sponsors on Open Collective](https://opencollective.com/tabler/sponsors/badge.svg)](#sponsors)
 
 ## Features
 
@@ -28,6 +23,10 @@ We've created this admin panel for everyone who wants to create templates based 
 * **Clean Code:** We followed Bootstrap’s guidelines carefully to make your integration as easy as possible. All code is handwritten and W3C valid.
 * **Demo pages**: Tabler features over 20 individual pages using various components, which gives you the freedom to choose and combine. All components can vary in color and styling that you can easily modify using Sass. Sky is the limit!
 * **Single Page Application versions:** [Tabler React](https://github.com/tabler/tabler-react) has React components for Tabler.
+
+## Sponsor Tabler
+
+<a href="https://github.com/sponsors/codecalm" target="_blank"><img src="/static/sponsor-banner-readme.png?raw=true" alt="Sponsor Tabler" /></a>
 
 ## Setup environment
 

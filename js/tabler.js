@@ -8,7 +8,7 @@ import {CountUp} from "countup.js";
 	/**
 	 * Dropdown
 	 */
-	var dropdownElementList = [].slice.call(document.querySelectorAll('[data-toggle="dropdown"]'))
+	var dropdownElementList = [].slice.call(document.querySelectorAll('[data-toggle="dropdown"]'));
 	dropdownElementList.map(function (dropdownToggleEl) {
 		return new Dropdown(dropdownToggleEl, {})
 	});
