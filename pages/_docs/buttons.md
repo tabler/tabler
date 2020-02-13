@@ -46,7 +46,6 @@ Make buttons look inactive by adding the disabled boolean attribute to any `.btn
 {% endcapture %}
 {% include example.html code=code wrapper="btn-list" centered=true %}
 
-
 ### Color variations
 
 The classic button, in different colors.
@@ -54,6 +53,17 @@ The classic button, in different colors.
 {% capture code %}
 {% for button in site.colors %}
 <a href="#" class="btn btn-{{ button[0] }}">{{ button[1].title }}</a>
+{% endfor %}
+{% endcapture %}
+{% include example.html code=code wrapper="btn-list" centered=true %}
+
+### Ghost Buttons
+
+Use `.btn-ghost-*` class for ghost buttons.
+
+{% capture code %}
+{% for button in site.button-variants %}
+<a href="#" class="btn btn-ghost-{{ button[0] }}">{{ button[1].title }}</a>
 {% endfor %}
 {% endcapture %}
 {% include example.html code=code wrapper="btn-list" centered=true %}
