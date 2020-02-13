@@ -13,6 +13,8 @@
 {% endcapture %}
 {% assign code = code | replace_regex: "\n\n+", new_line %}
 {% assign code = code | replace_regex: '<svg[^>]*>.*?<\/svg>', '<!-- SVG icon code -->' %}
+{% assign code = code | replace_regex: 'url\(([^\)]+)\)', 'url(...)' %}
+{% assign code = code | htmlbeautifier %}
 
 <div class="example-code">
 	{% highlight html %}{{ code }}{% endhighlight %}

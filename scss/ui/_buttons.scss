@@ -1,18 +1,9 @@
-.btn-secondary {
-  @include button-variant($white, $border-color, $dark);
-  background-image: linear-gradient(-180deg, rgba($dark, 0), rgba($dark, .04) 100%);
-  box-shadow: none !important;
-
-  &.active {
-    background: $primary;
-    color: $white;
-    z-index: 3 !important;
-  }
-}
-
-
 .btn {
   font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 36px;
 
   &:not([class^="btn-outline"]):not([class*=" btn-outline"]):not([class^="btn-ghost"]):not([class*=" btn-ghost"]) {
     &:not(.btn-secondary) {
@@ -56,6 +47,19 @@
     stroke-width: 1.75;
   }
 }
+
+.btn-secondary {
+  @include button-variant($white, $border-color, $dark);
+  background-image: linear-gradient(-180deg, rgba($dark, 0), rgba($dark, .04) 100%);
+  box-shadow: none !important;
+
+  &.active {
+    background: $primary;
+    color: $white;
+    z-index: 3 !important;
+  }
+}
+
 
 .btn-lg {
   svg.icon {
@@ -128,4 +132,27 @@
   bottom: 1.5rem;
   right: 1.5rem;
   border-radius: 50%;
+}
+
+.btn-loading {
+  position: relative;
+  color: transparent !important;
+  text-shadow: none !important;
+  pointer-events: none;
+
+  &:after {
+    content: '';
+    display: inline-block;
+    vertical-align: text-bottom;
+    border: $spinner-border-width-sm solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    color: $white;
+    position: absolute;
+    width: 1rem;
+    height: 1rem;
+    left: calc(50% - .5rem);
+    top: calc(50% - .5rem);
+    animation: spinner-border .75s linear infinite;
+  }
 }

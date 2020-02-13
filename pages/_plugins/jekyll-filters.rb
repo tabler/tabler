@@ -1,4 +1,6 @@
 require 'date'
+require 'htmlbeautifier'
+
 
 module Jekyll
   module JekyllFilter
@@ -113,6 +115,10 @@ module Jekyll
 
     def timestamp_to_date(timestamp)
       DateTime.strptime(timestamp.to_s, '%s').strftime('%F')
+    end
+
+    def htmlbeautifier(output)
+      HtmlBeautifier.beautify output
     end
   end
 end

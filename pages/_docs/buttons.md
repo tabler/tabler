@@ -193,7 +193,7 @@ Icon only button. Add `.btn-icon` class to remove unnecessary padding from butto
 {% include ui/button.html icon="bar-chart" color="purple" icon-only=true %}
 {% include ui/button.html icon="git-merge" color="secondary" icon-only=true %}
 {% endcapture %}
-{% include example.html code=code %}
+{% include example.html code=code wrapper="btn-list" centered=true %}
 
 
 ### Button dropdown
@@ -222,18 +222,25 @@ Wrap the dropdown’s toggle (your button or link) and the dropdown menu within 
   {% include ui/dropdown-menu.html %}
 </div>
 {% endcapture %}
-{% include example.html code=code %}
+{% include example.html code=code wrapper="btn-list" centered=true %}
 
 ### Loading button
 
 Add `.btn-loading` to use a loading state on a button. The width of the button depends on the length of the text inside.
 
-Since the loading spinner is implemented using the `:after` pseudo-element, it is not supported by the `<input type="submit">` element.
+
+{% capture code %}
+{% include ui/button.html color="primary" text="Button" loading=true %}
+{% include ui/button.html color="primary" text="Loading button with loooong content" loading=true %}
+{% endcapture %}
+{% include example.html code=code wrapper="btn-list" centered=true %}
+
+
 
 {% capture code %}
 {% include ui/button.html color="primary" text="Button" spinner=true %}
 {% endcapture %}
-{% include example.html code=code %}
+{% include example.html code=code centered=true %}
 
 ### List of buttons
 
@@ -246,7 +253,7 @@ You can now create a list of buttons with the `.btn-list` container.
   <a href="#" class="btn btn-danger">Cancel</a>
 </div>
 {% endcapture %}
-{% include example.html code=code %}
+{% include example.html code=code centered=true %}
 
 If the list is very long, it will automatically wrap on multiple lines, while keeping all buttons evenly spaced.
 
@@ -278,17 +285,26 @@ If the list is very long, it will automatically wrap on multiple lines, while ke
 Use the `.text-center` or the `.text-right` modifiers to alter the alignment.
 
 {% capture code %}
-<div class="btn-list text-center">
-  <a href="#" class="btn btn-primary">Save changes</a>
+<div class="btn-list justify-content-center">
   <a href="#" class="btn btn-secondary">Save and continue</a>
+  <a href="#" class="btn btn-primary">Save changes</a>
 </div>
 {% endcapture %}
 {% include example.html code=code %}
 
 {% capture code %}
-<div class="btn-list text-right">
-  <a href="#" class="btn btn-primary">Save changes</a>
+<div class="btn-list justify-content-end">
   <a href="#" class="btn btn-secondary">Save and continue</a>
+  <a href="#" class="btn btn-primary">Save changes</a>
+</div>
+{% endcapture %}
+{% include example.html code=code %}
+
+{% capture code %}
+<div class="btn-list">
+  <a href="#" class="btn btn-outline-danger mr-auto">Delete</a>
+  <a href="#" class="btn btn-secondary">Save and continue</a>
+  <a href="#" class="btn btn-primary">Save changes</a>
 </div>
 {% endcapture %}
 {% include example.html code=code %}
@@ -306,4 +322,4 @@ Use the `.text-center` or the `.text-right` modifiers to alter the alignment.
   {% include ui/avatar.html person-id="6" %} Avatar
 </a>
 {% endcapture %}
-{% include example.html code=code %}
+{% include example.html code=code wrapper="btn-list" centered=true %}
