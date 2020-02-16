@@ -13,6 +13,44 @@ bootstrap-link: components/forms/
 {% include example.html code=code %}
 
 
+## Form control rounded
+
+{% capture code %}
+<div class="mb-3">
+	<label class="form-label">Form control rounded</label>
+	<input type="text" class="form-control form-control-rounded mb-2" name="Form control rounded" placeholder="Text..">
+	{% include ui/form/input-icon.html input-class="form-control-rounded" %}
+</div>
+{% endcapture %}
+{% include example.html code=code %}
+
+
+## Form control flush
+
+{% capture code %}
+<div class="mb-3">
+	<label class="form-label">Form control flush</label>
+	<input type="text" class="form-control form-control-flush" name="Form control flush" placeholder="Text..">
+</div>
+{% endcapture %}
+{% include example.html code=code %}
+
+
+## Input with icon
+
+{% capture code %}
+{% include parts/form/input-icon.html %}
+{% endcapture %}
+{% include example.html code=code %}
+
+
+## Separated inputs
+
+{% capture code %}
+{% include parts/form/input-icon-separated.html %}
+{% endcapture %}
+{% include example.html code=code %}
+
 ## Textarea and select
 
 {% capture code %}
@@ -88,6 +126,15 @@ bootstrap-link: components/forms/
 {% include example.html code=code %}
 
 
+## Advanced selectboxes
+
+{% capture code %}
+{% include parts/form/selectgroup-payments.html %}
+{% include parts/form/selectgroup-project-manager.html %}
+{% endcapture %}
+{% include example.html code=code %}
+
+
 ## Toggle switches
 
 {% capture code %}
@@ -123,7 +170,7 @@ bootstrap-link: components/forms/
 {% include example.html code=code %}
 
 
-## Sample form
+## Fieldset
 
 {% capture code %}
 {% include parts/form/fieldset.html %}
@@ -134,148 +181,55 @@ bootstrap-link: components/forms/
 ## Input group
 
 {% capture code %}
-<div class="mb-2">
-   <label class="form-label">Input group</label>
-   <div class="input-group">
-      <input type="text" class="form-control" placeholder="Search for…">
-      <span class="input-group-append">
-							<button class="btn btn-primary" type="button">Go!</button>
-						</span>
-   </div>
-</div>
-<div class="mb-2">
-   <label class="form-label">Input group buttons</label>
-   <div class="input-group">
-      <input type="text" class="form-control">
-      <div class="input-group-append">
-         <button type="button" class="btn btn-primary">Action</button>
-         <button data-toggle="dropdown" type="button"
-                 class="btn btn-primary dropdown-toggle"></button>
-         <div class="dropdown-menu dropdown-menu-right">
-            <a class="dropdown-item" href="#">
-               News
-            </a>
-            <a class="dropdown-item" href="#">
-               Messages
-            </a>
-            <div class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">
-               Edit Profile
-            </a>
-         </div>
-      </div>
-   </div>
+<div class="mb-3">
+	<label class="form-label">Input group</label>
+	{% include ui/form/input-group.html prepend="@" placeholder="username" class="mb-2" %}
+	{% include ui/form/input-group.html append=".tabler.io" placeholder="subdomain" class="mb-2" %}
+	{% include ui/form/input-group.html prepend="https://" append=".tabler.io" placeholder="subdomain" %}
 </div>
 {% endcapture %}
 {% include example.html code=code %}
 
 
-## Input with icon
+## Input with checkbox or radios
 
 {% capture code %}
-{% include parts/form/input-icon.html %}
+<div class="mb-3">
+	<label class="form-label">Input with checkbox or radios</label>
+	{% include ui/form/input-group.html prepend="checkbox" class="mb-2" %}
+	{% include ui/form/input-group.html append="radio" %}
+</div>
 {% endcapture %}
 {% include example.html code=code %}
 
-
-## Separated inputs
+## Input with prepended or appended text
 
 {% capture code %}
-{% include parts/form/input-icon-separated.html %}
+<div class="mb-3">
+	<label class="form-label">Input with prepended text</label>
+	{% include ui/form/input-group.html prepend="https://tabler.io/users/" flat=true input-class="pl-0" value="yourfancyusername" class="mb-2" %}
+	{% include ui/form/input-group.html append=".tabler.io" input-class="text-right pr-0" flat=true value="yourfancydomain" %}
+</div>
 {% endcapture %}
 {% include example.html code=code %}
 
-
-## Custom Input examples
+## Input with appended link
 
 {% capture code %}
-<div class="mb-2">
-   <label class="form-label">Username</label>
-   {% include ui/form/input-group.html prepend="@" placeholder="username" %}
-</div>
-
-<div class="mb-2">
-   <label class="form-label">Subdomain</label>
-   {% include ui/form/input-group.html append=".tabler.io" placeholder="subdomain" %}
-</div>
-
-<div class="mb-2">
-   <label class="form-label">Your vanity URL</label>
-   {% include ui/form/input-group.html prepend="https://tabler.io/users/" %}
-</div>
-
-<div class="mb-2">
-   <label class="form-label">Price</label>
-   {% include ui/form/input-group.html prepend="$" append=".00" %}
+<div class="mb-3">
+	<label class="form-label">Input with appended link</label>
+	{% include ui/form/input-group.html append-link="Show password" flat=true type="password" value="ultrastrongpassword" %}
 </div>
 {% endcapture %}
 {% include example.html code=code %}
 
 
-## Date component
+## Input with appended icon links
 
 {% capture code %}
-<div class="mb-2">
-   <label class="form-label">Date of birth</label>
-   <div class="row row-sm">
-      <div class="col-5">
-         <select name="user[month]" class="form-select">
-            <option value="">Month</option>
-            <option value="1">January</option>
-            <option value="2">February</option>
-            <option value="3">March</option>
-            <option value="4">April</option>
-            <option value="5">May</option>
-            <option selected="selected" value="6">June</option>
-            <option value="7">July</option>
-            <option value="8">August</option>
-            <option value="9">September</option>
-            <option value="10">October</option>
-            <option value="11">November</option>
-            <option value="12">December</option>
-         </select>
-      </div>
-      <div class="col-3">
-         <select name="user[day]" class="form-select">
-            <option value="">Day</option>
-            {% for i in (1..31) %}
-            <option value="{{ i }}"{% if i == 20 %} selected{% endif %}>{{ i }}</option>{% endfor %}
-         </select>
-      </div>
-      <div class="col-4">
-         <select name="user[year]" class="form-select">
-            <option value="">Year</option>
-            {% for i in (1897..2014) reversed %}
-            <option value="{{ i }}"{% if i == 1989 %} selected{% endif %}>{{ i }}</option>{% endfor %}
-         </select>
-      </div>
-   </div>
-</div>
-{% endcapture %}
-{% include example.html code=code %}
-
-
-## Input with button
-
-{% capture code %}
-<div class="mb-2">
-   <label class="form-label">Button input</label>
-   <div class="input-group">
-      <div class="input-group-prepend">
-         <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown"
-                 aria-haspopup="true" aria-expanded="false">
-            Action
-         </button>
-         <div class="dropdown-menu">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
-            <div role="separator" class="dropdown-divider"></div>
-            <a class="dropdown-item" href="#">Separated link</a>
-         </div>
-      </div>
-      <input type="text" class="form-control" aria-label="Text input with dropdown button">
-   </div>
+<div class="mb-3">
+	<label class="form-label">Input with appended icon links</label>
+	{% include ui/form/input-group.html append-button="x:Clear search,sliders:Search settings,bell:Add notification" flat=true %}
 </div>
 {% endcapture %}
 {% include example.html code=code %}
