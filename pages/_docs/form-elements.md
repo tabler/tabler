@@ -25,12 +25,14 @@ bootstrap-link: components/forms/
 
 {% capture code %}
 {% include parts/form/validation-states.html %}
+{% endcapture %}
 {% include example.html code=code %}
 
 ### Subtle validation states
 
 {% capture code %}
 {% include parts/form/validation-states.html lite=true %}
+{% endcapture %}
 {% include example.html code=code %}
 
 ## Input size
