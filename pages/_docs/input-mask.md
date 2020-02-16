@@ -2,7 +2,8 @@
 title: Input mask
 ---
 
-{% example %}
+{% capture code %}
 <label class="form-label">Telephone mask</label>
 {% include ui/form/input-mask.html mask="(00) 0000-0000" placeholder="(00) 0000-0000" visible=true %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}

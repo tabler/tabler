@@ -2,20 +2,23 @@
 layout: base
 ---
 
+{% assign page-header = page.page-header | default: layout.page-header %}
+
 <div class="page">
-	{% if page.sidebar %}
-		{% include layout/sidebar.html %}
-	{% endif %}
+	{% include layout/navbar-primary.html %}
+	{% include layout/navbar-secondary.html %}
 
 	<div class="content">
-		{% include layout/topnav.html %}
+		<div class="container{% if page.container-centered %} d-flex flex-column justify-content-center{% endif %}">
+			{% if page-header %}
+				{% include layout/page-header.html title=page-header description=page.page-header-description actions=page.page-header-actions pretitle=page.page-header-pretitle %}
+			{% endif %}
 
-		<div class="content-page">
-			<main class="container{% if page.container-size %}-{{ page.container-size }}{% endif %} my-4 flex-fill">
-				{% include layout/page-title.html %}
-
-				{{ content }}
-			</main>
+			{{ content }}
 		</div>
+
+		{% include layout/footer.html %}
 	</div>
 </div>
+
+{% include ui/modal.html modal-id="customize" top=true %}

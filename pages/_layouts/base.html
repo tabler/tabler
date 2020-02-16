@@ -2,31 +2,36 @@
 {% include layout/banner.html %}
 <html lang="en"{% if page.rtl %} dir="rtl" {% endif %}>
 <head>
-   <meta charset="utf-8"/>
-   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
-   <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+	<meta http-equiv="X-UA-Compatible" content="ie=edge"/>
 
-   <meta name="msapplication-TileColor" content="{{ site.data.colors.blue }}"/>
-   <meta name="theme-color" content="{{ site.data.colors.blue }}"/>
+	<title>{% if page.title %}{{ page.title }} - {% endif %}{% if layout.title %}{{ layout.title }} - {% endif %}{% if site.title %}{{ site.title }} - {% endif %}{{ site.description }}</title>
 
-   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
-   <meta name="apple-mobile-web-app-capable" content="yes"/>
-   <meta name="mobile-web-app-capable" content="yes"/>
-   <meta name="HandheldFriendly" content="True"/>
-   <meta name="MobileOptimized" content="320"/>
-   <meta name="robots" content="noindex,nofollow,noarchive"/>
+	<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
 
-   <link rel="icon" href="{{ site.base }}/favicon.ico" type="image/x-icon"/>
-   <link rel="shortcut icon" href="{{ site.base }}/favicon.ico" type="image/x-icon"/>
+	<meta name="msapplication-TileColor" content="{{ site.data.colors.blue }}"/>
+	<meta name="theme-color" content="{{ site.data.colors.blue }}"/>
 
-   <title>{% if page.title %}{{ page.title }} - {% endif %}{% if layout.title %}{{ layout.title }} - {% endif %}{% if site.title %}{{ site.title }} - {% endif %}{{ site.description }}</title>
+	<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+	<meta name="apple-mobile-web-app-capable" content="yes"/>
+	<meta name="mobile-web-app-capable" content="yes"/>
+	<meta name="HandheldFriendly" content="True"/>
+	<meta name="MobileOptimized" content="320"/>
+	<meta name="robots" content="noindex,nofollow,noarchive"/>
 
-   {% if page.description %}
-      <meta name="description" content="{{ page.description | escape }}"/>
-   {% endif %}
+	<link rel="icon" href="{{ site.base }}/favicon.ico" type="image/x-icon"/>
+	<link rel="shortcut icon" href="{{ site.base }}/favicon.ico" type="image/x-icon"/>
 
-   {% include layout/og.html show=layout.og-component %}
-   {% include layout/css.html %}
+
+	{% if page.description %}
+		<meta name="description" content="{{ page.description | escape }}"/>
+	{% endif %}
+
+	{% include layout/og.html show=layout.og-component %}
+	{% include layout/css.html %}
+
+	{% include layout/js.html %}
 </head>
 
 {% assign dark-theme = page.dark-theme | default: site.dark-theme %}
@@ -34,9 +39,9 @@
 
 	{{ content }}
 
-	{% include layout/js.html %}
-	{% include layout/js-capture.html %}
 	{% include layout/modals-capture.html %}
+
+	{% include layout/js-capture.html %}
 
 	{% if site.debug and jekyll.environment == 'development' %}
 		{% include layout/debug.html %}

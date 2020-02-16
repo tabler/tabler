@@ -1,0 +1,18 @@
+{% assign limit = include.limit | default: 9 %}
+<div class="mb-3">
+	<label class="form-label">Image Check</label>
+	<div class="row row-sm">
+		{% assign photos = site.data.photos | where: 'horizontal', true %}
+
+		{% for photo in photos limit: limit %}
+		<div class="{{ include.row-class | default: 'col-6 col-sm-4' }}">
+			<label class="form-imagecheck mb-2">
+				<input name="form-imagecheck" type="checkbox" value="{{ forloop.index }}" class="form-imagecheck-input" {% if forloop.index == 2 or forloop.index == 4  or forloop.index == 7 %} checked{% endif %}/>
+				<span class="form-imagecheck-figure">
+					<img src="{{ site.base }}/static/photos/{{ photo.file }}" alt="{{ photo.title }}" class="form-imagecheck-image">
+				</span>
+			</label>
+		</div>
+		{% endfor %}
+	</div>
+</div>

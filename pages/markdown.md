@@ -1,6 +1,6 @@
 ---
 title: Markdown
-page-title: Markdown
+page-header: Markdown
 ---
 
 # Who's that then?

@@ -6,15 +6,15 @@ done: true
 ---
 ### Default markup
 
-{% example html columns=1 %}
+{% capture code %}
 <p>
   Dicta error hic illo iure necessitatibus nihil officiis omnis perferendis, praesentium repellendus rerum, saepe sed, sit!
 </p>
-{% include ui/hr.html text="Left divider" %}
+{% include ui/hr.html text="Left divider" position="left" %}
 <p>
   Dicta error hic illo iure necessitatibus nihil officiis omnis perferendis, praesentium repellendus rerum, saepe sed, sit!
 </p>
-{% include ui/hr.html text="Centered divider" position="center" %}
+{% include ui/hr.html text="Centered divider"  %}
 <p>
   Dicta error hic illo iure necessitatibus nihil officiis omnis perferendis, praesentium repellendus rerum, saepe sed, sit!
 </p>
@@ -22,13 +22,14 @@ done: true
 <p>
   Dicta error hic illo iure necessitatibus nihil officiis omnis perferendis, praesentium repellendus rerum, saepe sed, sit!
 </p>
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 ### Divider color
 
 Customize the color of the divider. You can click [here]({% docs_url colors %}) to see the list of available colors.
 
-{% example html columns=1 %}
+{% capture code %}
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias, dolore dolores doloribus est ex.
 </p>
@@ -36,4 +37,5 @@ Customize the color of the divider. You can click [here]({% docs_url colors %}) 
 <p>
    Dicta error hic illo iure necessitatibus nihil officiis omnis perferendis, praesentium repellendus rerum, saepe sed, sit!
 </p>
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}

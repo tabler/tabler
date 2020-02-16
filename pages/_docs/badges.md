@@ -8,73 +8,80 @@ done: true
 
 ### Default markup
 
-{% example %}
+{% capture code %}
 {% for color in site.colors %}
 <span class="badge bg-{{ color[0] }}">{{ color[0] }}</span>
 {% endfor %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 ### Pill badges
 
 To make a pill bagde (with rounded corners) add `.bagde-pill` class.
 
-{% example %}
+{% capture code %}
 {% for color in site.colors %}
 <span class="badge badge-pill bg-{{ color[0] }}">{{ forloop.index }}</span>
 {% endfor %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 
 ### Soft badges
 
 Creates a soft variant of a corresponding contextual badge variation. You can click [here]({% docs_url colors %}) to see the list of available colors.
 
-{% example %}
+{% capture code %}
 {% for color in site.colors %}
 <span class="badge bg-{{ color[0] }}-lt">{{ color[0] }}</span>
 {% endfor %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 
 ### Links
 
 Make a badge work as a link by putting it into an `<a>` element.
 
-{% example %}
+{% capture code %}
 {% for color in site.colors %}
 <a href="#" class="badge bg-{{ color[0] }}">{{ color[0] }}</a>
 {% endfor %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 
 ### Empty badges
 
 If you don't want your badge to contain any text you can do it by leaving the html element empty.
 
-{% example %}
+{% capture code %}
 {% for color in site.colors %}
 <a href="#" class="badge bg-{{ color[0] }}"></a>
 {% endfor %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 ### Badge addons
 
 You can add badge addon by adding `.badge-addon` class.
 
-{% example %}
+{% capture code %}
 {% include ui/badge.html text="task" color="green" addon="finished" %}
 {% include ui/badge.html text="bundle" color="purple" addon="passing" %}
 {% include ui/badge.html text="CSS gzip size" color="red-lt" addon="20.9kB" addon-color="red" %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 ### Badge avatars
 
 If you want to add an avatar to your badge just create `.badge-avatar` class.
 
-{% example %}
+{% capture code %}
 {% include ui/badge.html person-id=1 color="blue" %}
 {% include ui/badge.html person-id=2 color="blue" %}
 {% include ui/badge.html person-id=3 color="blue" %}
 {% include ui/badge.html person-id=4 color="blue" %}
 {% include ui/badge.html person-id=5 color="blue" %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}

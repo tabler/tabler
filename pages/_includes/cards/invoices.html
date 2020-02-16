@@ -5,7 +5,7 @@
 	<div class="card-body border-bottom py-3">
 
 		<div class="d-flex">
-			<div class="mb-0">
+			<div class="text-muted">
 				Show
 				<div class="mx-2 d-inline-block">
 					<input type="text" class="form-control form-control-sm" value="8" size="3">
@@ -13,7 +13,7 @@
 				entries
 			</div>
 
-			<div class="mb-0 ml-auto">
+			<div class="ml-auto text-muted">
 				Search:
 				<div class="ml-2 d-inline-block">
 					<input type="text" class="form-control form-control-sm">
@@ -26,15 +26,14 @@
 		<table class="table card-table table-vcenter text-nowrap datatable">
 			<thead>
 			<tr>
-				<th class="w-1p"><input class="form-check-input m-0 align-middle" type="checkbox"></th>
-				<th class="w-1p">No. {% include ui/icon.html icon="chevron-up" class="icon-sm text-dark icon-thick" %}</th>
-				<th>Invoice Subject {% include ui/icon.html icon="code" class="icon-sm" %}</th>
-				<th>Client {% include ui/icon.html icon="code" class="icon-sm" %}</th>
-				<th>VAT No. {% include ui/icon.html icon="code" class="icon-sm" %}</th>
-				<th>Created {% include ui/icon.html icon="code" class="icon-sm" %}</th>
-				<th>Status {% include ui/icon.html icon="code" class="icon-sm" %}</th>
-				<th>Price {% include ui/icon.html icon="code" class="icon-sm" %}</th>
-				<th></th>
+				<th class="w-1"><input class="form-check-input m-0 align-middle" type="checkbox"></th>
+				<th class="w-1">No. {% include ui/icon.html icon="chevron-up" class="icon-sm text-dark icon-thick" %}</th>
+				<th>Invoice Subject {% include ui/icon.html icon="code" %}</th>
+				<th>Client {% include ui/icon.html icon="code" %}</th>
+				<th>VAT No. {% include ui/icon.html icon="code" %}</th>
+				<th>Created {% include ui/icon.html icon="code" %}</th>
+				<th>Status {% include ui/icon.html icon="code" %}</th>
+				<th>Price {% include ui/icon.html icon="code" %}</th>
 				<th></th>
 			</tr>
 			</thead>
@@ -61,21 +60,17 @@
 				<td>{{ invoice.price }}</td>
 
 				<td class="text-right">
-					<button class="btn btn-secondary btn-sm align-text-top">Manage</button>
 					<span class="dropdown ml-1">
-						<button class="btn btn-secondary btn-sm dropdown-toggle align-text-top" data-toggle="dropdown">Actions</button>
-						{% include ui/dropdown-menu.html %}
+						<button class="btn btn-secondary btn-sm dropdown-toggle align-text-top" data-boundary="viewport" data-toggle="dropdown">Actions</button>
+						{% include ui/dropdown-menu.html right=true %}
 					</span>
-				</td>
-				<td>
-					{% include ui/icon.html icon="edit" class="icon-sm float-right" %}
 				</td>
 			</tr>
 			{% endfor %}
 			</tbody>
 		</table>
 	</div>
-	<div class="card-footer d-flex align-items-center border-top-0">
+	<div class="card-footer d-flex align-items-center">
 		<p class="m-0 text-muted">Showing <span>1</span> to <span>8</span> of <span>16</span> entries</p>
 		{% include ui/pagination.html class="m-0 ml-auto" %}
 	</div>

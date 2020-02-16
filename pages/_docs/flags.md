@@ -7,22 +7,24 @@ done: true
 
 ### Flag
 
-{% example html %}
+{% capture code %}
 {% include ui/flag.html flag="tg" class="mr-1" %}
 {% include ui/flag.html flag="br" class="mr-1" %}
 {% include ui/flag.html flag="pt" %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 ### Flag sizes
 
 Using Bootstrap’s typical naming structure, you can create a standard flag, or scale it up to different sizes based on what’s needed.
 
-{% example html %}
+{% capture code %}
 {% include ui/flag.html flag="pl" size="xl" class="mr-1" %}
 {% include ui/flag.html flag="pl" size="lg" class="mr-1" %}
 {% include ui/flag.html flag="pl" size="md" %}
 {% include ui/flag.html flag="pl" class="mr-1" %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 ### Types
 

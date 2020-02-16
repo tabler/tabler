@@ -4,11 +4,13 @@ menu: docs.timelines
 ---
 
 ### Timeline
-{% example html columns=3 %}
-	{% include cards/timeline.html %}
-{% endexample %}
+{% capture code %}
+{% include cards/timeline.html %}
+{% endcapture %}
+{% include example.html code=code %}
 
 ### Simple Timeline
-{% example html columns=1 %}
-	{% include cards/timeline.html simple=true %}
-{% endexample %}
+{% capture code %}
+{% include cards/timeline.html simple=true %}
+{% endcapture %}
+{% include example.html code=code %}

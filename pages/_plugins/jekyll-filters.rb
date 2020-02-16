@@ -1,4 +1,6 @@
 require 'date'
+require 'htmlbeautifier'
+
 
 module Jekyll
   module JekyllFilter
@@ -72,7 +74,7 @@ module Jekyll
 
 
     def replace_regex(input, reg_str, repl_str)
-      re = Regexp.new reg_str
+      re = Regexp.new(reg_str.to_s, Regexp::MULTILINE)
 
       input.gsub re, repl_str
     end
@@ -113,6 +115,10 @@ module Jekyll
 
     def timestamp_to_date(timestamp)
       DateTime.strptime(timestamp.to_s, '%s').strftime('%F')
+    end
+
+    def htmlbeautifier(output)
+      HtmlBeautifier.beautify output
     end
   end
 end

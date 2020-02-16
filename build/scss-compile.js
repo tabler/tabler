@@ -15,7 +15,7 @@ const path = require('path'),
 
 const dir = BUNDLE ? 'dist' : 'tmp-dist';
 
-glob("scss/tabler*.scss", {}, function (er, files) {
+glob("scss/{tabler*,demo}.scss", {}, function (er, files) {
 	files.forEach(function (file) {
 		var basename = path.basename(file, '.scss');
 

@@ -22,20 +22,6 @@
   }
 }
 
-.card-sm {
-  .card-body {
-    padding: map-get($spacers, 3);
-  }
-}
-
-.card-md {
-  .card-body {
-    @include media-breakpoint-up(md) {
-      padding: map-get($spacers, 6);
-    }
-  }
-}
-
 .card-group {
   margin-bottom: $card-group-margin;
 }
@@ -199,12 +185,28 @@
 }
 
 .card-body {
-  @media print {
-    padding: 0;
-  }
-
   > :last-child {
     margin-bottom: 0;
+  }
+
+  .card-sm > & {
+    padding: .75rem;
+  }
+
+  .card-md > & {
+    @include media-breakpoint-up(md) {
+      padding: 1.5rem;
+    }
+  }
+
+  .card-lg > & {
+    @include media-breakpoint-up(md) {
+      padding: 3rem;
+    }
+  }
+
+  @media print {
+    padding: 0;
   }
 
   & + & {
@@ -281,13 +283,6 @@ Card table
   margin-bottom: 0;
 
   tr {
-    &:first-child {
-      td,
-      th {
-        border-top: 0;
-      }
-    }
-
     td,
     th {
       border-top: 1px solid $border-color;
@@ -298,6 +293,26 @@ Card table
 
       &:last-child {
         padding-right: $card-spacer-x;
+      }
+    }
+  }
+
+  thead {
+    tr {
+      &:first-child {
+        td,
+        th {
+          border-top: 0;
+        }
+      }
+    }
+  }
+
+  tbody {
+    tr:last-child {
+      td,
+      th {
+        border-bottom: 0;
       }
     }
   }
@@ -314,7 +329,6 @@ Card code
   padding: 0;
 
   .highlight {
-    @extend .highlight-dark;
     margin: 0;
     border: 0;
   }

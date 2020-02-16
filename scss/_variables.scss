@@ -5,6 +5,7 @@ $assets-base: ".." !default;
 $google-font: "Source Sans Pro" !default;
 
 $font-family-sans-serif: $google-font, -apple-system, blinkmacsystemfont, segoe ui, helvetica, arial, sans-serif, apple color emoji, segoe ui emoji, segoe ui symbol !default;
+$font-family-monospace: Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
 $font-family-serif: "Georgia", "Times New Roman", times, serif !default;
 
 // EXTERNAL FONTS
@@ -14,23 +15,26 @@ $icon-fonts: () !default;
 $theme-color-interval: 10% !default;
 
 $light: #f5f7fb !default;
-$dark: #303645 !default;
+$dark: #354052 !default;
+
+$dark-darken: darken($dark, 3%) !default;
+$dark-lighten: lighten($dark, 3%) !default;
 
 $light-black: rgba($dark, .24) !default;
 $light-mix: rgba(mix($light, $dark, 64%), .24) !default;
 $light-white: rgba($light, .24) !default;
 
 $min-black: rgba($dark, .032) !default;
-$min-white: rgba($light, .032) !default;
+$min-white: rgba(mix($light, $dark, 48%), .1) !default;
 
 $gray-100: $light !default;
 $gray-200: mix($light, $dark, 98%) !default;
 $gray-300: mix($light, $dark, 94%) !default;
 $gray-400: mix($light, $dark, 88%) !default;
-$gray-500: mix($light, $dark, 79%) !default;
-$gray-600: mix($light, $dark, 63%) !default;
-$gray-700: mix($light, $dark, 45%) !default;
-$gray-800: mix($light, $dark, 22%) !default;
+$gray-500: mix($light, $dark, 78%) !default;
+$gray-600: mix($light, $dark, 60%) !default;
+$gray-700: mix($light, $dark, 36%) !default;
+$gray-800: mix($light, $dark, 16%) !default;
 $gray-900: $dark !default;
 
 $blue: #206bc4 !default;
@@ -51,15 +55,12 @@ $white: #ffffff !default;
 $body-bg: $light !default;
 $body-color: $dark !default;
 
-$text-muted: mix($body-color, #fff, 64%) !default;
-$border-color: rgba(mix($body-color, #fff, 64%), .24) !default;
+$text-muted-opacity: .60 !default;
+$text-muted: mix($body-color, #ffffff, $text-muted-opacity * 100%) !default;
+$border-color: rgba($text-muted, .24) !default;
 
-$hover-bg: $light-white !default;
+$hover-bg: $light !default;
 $active-bg: rgba($blue, .06) !default;
-
-$dark-body-bg: #222935 !default;
-$dark-body-color: #afbdd1 !default;
-$dark-border-color: rgba($dark-body-color, .4) !default;
 
 $primary: $blue !default;
 $secondary: $text-muted !default;
@@ -131,7 +132,7 @@ $headings-font-weight: $font-weight-bold !default;
 $small-font-size: 87.5% !default;
 
 $h1-font-size: (26em / 15) !default;
-$h2-font-size: (23em / 15) !default;
+$h2-font-size: (22em / 15) !default;
 $h3-font-size: (18em / 15) !default;
 $h4-font-size: (15em / 15) !default;
 $h5-font-size: (13em / 15) !default;
@@ -139,7 +140,7 @@ $h6-font-size: (11em / 15) !default;
 
 $blockquote-font-size: $h4-font-size !default;
 
-$code-font-size: 80% !default;
+$code-font-size: $h6-font-size !default;
 $code-color: $primary !default;
 
 $lead-font-size: $h4-font-size !default;
@@ -157,9 +158,9 @@ $spacers: (
   1: $spacer * .25,
   2: $spacer * .5,
   3: $spacer,
-  4: $spacer * 1.5,
-  5: $spacer * 3,
-  6: $spacer * 4.5,
+  4: $spacer * 1.25,
+  5: $spacer * 1.5,
+  6: $spacer * 3,
   7: $spacer * 6,
   8: $spacer * 9,
   9: $spacer * 12,
@@ -172,7 +173,7 @@ $size-spacers: (
 ) !default;
 
 
-$sizes-percentage: (
+$size-values: (
   1: 1%,
   25: 25%,
   50: 50%,
@@ -196,12 +197,31 @@ $container-max-widths: (
   xl: 75.25rem
 ) !default;
 
+$container-variations: (
+  tight: 30rem,
+  narrow: 45rem,
+) !default;
+
 $embed-responsive-aspect-ratios: (
   '2by1': (
     x: 2,
     y: 1
   )
 ) !default;
+
+$content-padding-y: 1.25rem !default;
+
+//sidenav
+$sidenav-width: 15.625rem !default;
+$sidenav-width-narrow: 4rem !default;
+$sidenav-bg: $white !default;
+$sidenav-border-color: $border-color !default;
+$sidenav-dark-bg: $dark !default;
+$sidenav-dark-color: $white !default;
+$sidenav-padding: 1rem !default;
+$sidenav-breakpoint-show: 'sm' !default;
+$sidenav-breakpoint-folded: 'lg' !default;
+$sidenav-active-accent-color: $primary !default;
 
 //alerts
 $alert-link-font-weight: $font-weight-bold !default;
@@ -248,6 +268,9 @@ $btn-border-radius: 3px !default;
 $card-border-color: $border-color !default;
 $card-border-radius: $border-radius !default;
 $card-cap-bg: $min-black !default;
+
+$card-cap-padding-x: 1.25rem !default;
+$card-cap-padding-y: .75rem !default;
 
 $card-active-border-color: $primary !default;
 $card-status-size: $border-width-wide !default;
@@ -301,8 +324,7 @@ $modal-fade-transform: translate(0, -1rem) !default;
 
 $modal-content-border-radius: $border-radius !default;
 
-$modal-inner-padding: .75rem !default;
-$modal-inner-padding-x: 1.25rem !default;
+$modal-inner-padding: 1.5rem !default;
 $modal-footer-border-width: 0 !default;
 $modal-header-border-width: 0 !default;
 
@@ -328,14 +350,24 @@ $navbar-toggler-transform-time: .2s !default;
 //popover
 $popover-border-color: $border-color !default;
 
+//footer
+$footer-bg: $white !default;
+$footer-border-color: $border-color !default;
+$footer-border-color: $border-color !default;
+
 //nav
 //$nav-link-padding-y: 1rem !default;
 
 $navbar-padding-y: .75rem !default;
 $navbar-nav-link-padding-x: .75rem !default;
-$navbar-light-color: $text-muted !default;
+
+$navbar-light-color: rgba($body-color, .64) !default;
 $navbar-light-active-color: $primary !default;
 $navbar-light-hover-color: $body-color !default;
+
+$navbar-dark-color: rgba($white, .64) !default;
+$navbar-dark-active-color: $white !default;
+$navbar-dark-hover-color: $white !default;
 
 //pagination
 $pagination-border-width: 0 !default;
@@ -408,6 +440,8 @@ $form-select-indicator-color: opacify($border-color, .24) !default;
 
 $form-switch-width: 1.75rem !default;
 $form-switch-padding-left: $form-switch-width + .5rem !default;
+$form-switch-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='#{$border-color}'/></svg>") !default;
+
 
 $form-range-track-height: .25rem !default;
 $form-range-track-bg: $light-mix !default;
@@ -439,3 +473,5 @@ $enable-social-colors: true !default;
 $enable-ghost-buttons: true !default;
 $enable-extra-colors: true !default;
 $enable-gradients: false !default;
+$enable-navbar-vertical: true !default;
+$enable-dark-mode: true !default;

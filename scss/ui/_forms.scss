@@ -30,6 +30,10 @@ Form hint
   color: $text-muted;
   margin: 0 0 .75rem;
   line-height: $line-height-sm;
+
+  .form-label + & {
+    margin-top: -.5rem;
+  }
 }
 
 /**
@@ -85,11 +89,6 @@ Form control
   color: $red;
 }
 
-.custom-control-label:before {
-  background: transparent;
-  border: 1px solid $border-color;
-}
-
 /**
 Form help
  */
@@ -106,7 +105,7 @@ Form help
   text-decoration: none;
   cursor: pointer;
   user-select: none;
-  background: $gray-200;
+  background: $min-white;
   border-radius: 50%;
   transition: .3s background-color, .3s color;
 
@@ -120,16 +119,27 @@ Form help
 /**
 Form switch
  */
-.form-check-input {
-  color: $form-check-input-checked-bg-color;
+.form-check {
+  user-select: none;
 
-  &:checked {
-    background-color: currentColor;
+  &.form-check-highlight .form-check-input:not(:checked) ~ .form-check-label {
+    opacity: .64;
   }
 }
 
-.form-check .form-check-input:not(:checked) ~ .form-check-label {
+.form-check-input {
+  margin-top: .25rem;
+}
+
+.form-check-label {
+  line-height: $line-height-sm;
+  padding: .125rem 0;
+}
+
+.form-check-description {
   color: $text-muted;
+  font-size: $h5-font-size;
+  line-height: $line-height-sm;
 }
 
 /**

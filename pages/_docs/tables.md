@@ -10,14 +10,16 @@ A basic Bootstrap table has a light padding and only horizontal dividers.
 
 The `.table` class adds basic styling to a table:
 
-{% example %}
+{% capture code %}
 {% include ui/table.html %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 ### No wrap
 
 Prevents table cell content from wrapping to another line.
 
-{% example %}
+{% capture code %}
 {% include ui/table.html nowrap=true responsive=true %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}

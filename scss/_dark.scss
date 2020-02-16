@@ -1,62 +1,78 @@
 // stylelint-disable declaration-no-important
 
-@mixin dark-mode {
-  &,
-  .modal-content,
-  .dropdown-menu,
-  .example-bg {
-    color: $dark-body-color;
-    background: $dark-body-bg;
+$dark-text: $light;
+
+@include dark-mode {
+  & {
+    color: $dark-text;
+    background: $dark-darken;
   }
 
   .card,
-  .sidebar,
-  .topbar {
-    color: inherit;
+  .navbar-light,
+  .footer,
+  .modal-content {
     background: $dark;
+    color: inherit;
   }
 
-  .text-body {
-    color: #afbdd1 !important;
-  }
-
-  .avatar-list-stacked .avatar {
-    box-shadow: 0 0 0 2px #222226;
-  }
-
-  .navbar-brand-logo {
-    filter: brightness(0) invert(1);
-  }
-
-  .form-fieldset {
+  .card {
     border-color: transparent;
   }
 
-  .form-control,
+  .btn-secondary,
+  .form-file-button {
+    @include button-variant($dark-lighten, $border-color, $dark-text, rgba($dark, 0), $border-color, $dark-text);
+    background-image: none;
+  }
+
+  .form-check-input:not(:checked),
   .form-select,
-  .form-check-input:not(:checked) {
-    background: transparent;
-    border-color: $dark-border-color;
+  .form-file-text,
+  .form-control,
+  .flatpickr-input.flatpickr-input,
+  .form-selectgroup-check,
+  .form-imagecheck-figure:before {
+    background-color: $dark-darken;
+    color: $dark-text;
+  }
+
+  .input-group-flat .input-group-text {
+    background-color: $dark-darken;
+  }
+
+  .navbar {
+    box-shadow: 0 0 0 1px $dark-darken;
+  }
+
+  .highlight {
+    background-color: $dark-darken;
+  }
+
+  .avatar {
+    background-color: $dark-lighten;
+  }
+
+  .avatar-list-stacked .avatar {
+    box-shadow: 0 0 0 2px $dark;
+  }
+
+  .markdown,
+  .markdown>*,
+  .close {
     color: inherit;
   }
 
-  .input-group-text {
-    border-color: $dark-border-color;
+  .apexcharts-text {
+    fill: $dark-text;
   }
 
-  .brand-logo {
-    filter: brightness(0) invert(1);
+  .apexcharts-legend-text {
+    color: inherit !important;
+  }
+
+  .navbar-brand-autodark {
+    @include autodark-image;
   }
 }
 
-@media not print {
-  .theme-dark {
-    @include dark-mode;
-  }
-}
-
-@media not print and (prefers-color-scheme: dark) {
-  .auto-theme-dark {
-    @include dark-mode;
-  }
-}
