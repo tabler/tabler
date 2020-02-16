@@ -4,6 +4,7 @@ description: Toggle contextual overlays for displaying lists of links and more w
 bootstrap-link: components/dropdowns
 ---
 
+
 ## Default dropdown
 
 Any single `.btn` can be turned into a dropdown toggle with some markup changes. Here’s how you can do this:
@@ -12,6 +13,7 @@ Any single `.btn` can be turned into a dropdown toggle with some markup changes.
 {% include ui/dropdown-menu.html show=true %}
 {% endcapture %}
 {% include example.html code=code centered=true %}
+
 
 ## Dropdown divider
 
@@ -22,6 +24,7 @@ Separate groups of related menu items with a divider.
 {% endcapture %}
 {% include example.html code=code centered=true %}
 
+
 ## Active state
 
 {% capture code %}
@@ -29,12 +32,14 @@ Separate groups of related menu items with a divider.
 {% endcapture %}
 {% include example.html code=code centered=true %}
 
+
 ## Disabled state
 
 {% capture code %}
 {% include ui/dropdown-menu.html show=true disabled=true %}
 {% endcapture %}
 {% include example.html code=code centered=true %}
+
 
 ## Dropdown header
 
@@ -45,12 +50,14 @@ Add a header to label sections of actions in any dropdown menu.
 {% endcapture %}
 {% include example.html code=code centered=true %}
 
+
 ## Dropdown with icons
 
 {% capture code %}
 {% include ui/dropdown-menu.html show=true icons=true header=true %}
 {% endcapture %}
 {% include example.html code=code centered=true %}
+
 
 ## Dropdown with arrow
 
@@ -59,12 +66,14 @@ Add a header to label sections of actions in any dropdown menu.
 {% endcapture %}
 {% include example.html code=code centered=true %}
 
+
 ## Dropdown with badge
 
 {% capture code %}
 {% include ui/dropdown-menu.html show=true badge=true %}
 {% endcapture %}
 {% include example.html code=code centered=true %}
+
 
 ## Dropdown with checkboxes
 
@@ -78,12 +87,14 @@ Add a header to label sections of actions in any dropdown menu.
 {% endcapture %}
 {% include example.html code=code centered=true %}
 
+
 ## Dark dropdown
 
 {% capture code %}
 {% include ui/dropdown-menu.html show=true dark=true header=true icons=true arrow=true %}
 {% endcapture %}
 {% include example.html code=code centered=true %}
+
 
 ## Dropdown with card content
 

@@ -6,6 +6,7 @@ bootstrap-link: components/buttons/
 done: true
 ---
 
+
 ## Button tag
 
 The `.btn` classes are designed to be used with the `<button>` element. However, you can also use these classes on `<a>` or `<input>` elements (though some browsers may apply a slightly different rendering).
@@ -33,6 +34,7 @@ Use any of the available button classes to quickly create a styled button . We p
 {% endcapture %}
 {% include example.html code=code wrapper="btn-list" centered=true %}
 
+
 ## Disabled buttons
 
 Make buttons look inactive by adding the disabled boolean attribute to any `.btn` element. `<a>`s don’t support the disabled attribute, so you must add the `.disabled` class to make it visually appear disabled.
@@ -46,6 +48,7 @@ Make buttons look inactive by adding the disabled boolean attribute to any `.btn
 {% endcapture %}
 {% include example.html code=code wrapper="btn-list" centered=true %}
 
+
 ## Color variations
 
 The classic button, in different colors.
@@ -57,6 +60,7 @@ The classic button, in different colors.
 {% endcapture %}
 {% include example.html code=code wrapper="btn-list" centered=true %}
 
+
 ## Ghost Buttons
 
 Use `.btn-ghost-*` class for ghost buttons.
@@ -67,6 +71,7 @@ Use `.btn-ghost-*` class for ghost buttons.
 {% endfor %}
 {% endcapture %}
 {% include example.html code=code wrapper="btn-list" centered=true %}
+
 
 ## Square buttons
 
@@ -81,6 +86,7 @@ Add `.btn-square` to button to remove border-radius.
 {% endcapture %}
 {% include example.html code=code wrapper="btn-list" centered=true %}
 
+
 ## Pill buttons
 
 Add `.btn-pill` class to any button to make them more rounded.
@@ -94,6 +100,7 @@ Add `.btn-pill` class to any button to make them more rounded.
 {% endcapture %}
 {% include example.html code=code wrapper="btn-list" centered=true %}
 
+
 ## Outline buttons
 
 In need of a button, but not the hefty background colors they bring? Replace the default modifier classes with the `.btn-outline-*` ones to remove all background images and colors on any button.
@@ -106,6 +113,7 @@ In need of a button, but not the hefty background colors they bring? Replace the
 {% endfor %}
 {% endcapture %}
 {% include example.html code=code wrapper="btn-list" centered=true %}
+
 
 ## Button size
 
@@ -130,6 +138,7 @@ Create block level buttons—those that span the full width of a parent—by add
 <button type="button" class="btn btn-secondary btn-block">Block level button</button>
 {% endcapture %}
 {% include example.html code=code wrapper="btn-list" centered=true %}
+
 
 ## Button with icon
 
@@ -165,6 +174,7 @@ Comment
 {% endcapture %}
 {% include example.html code=code wrapper="btn-list" centered=true %}
 
+
 ## Social buttons
 
 A button can be formatted to link to a social website
@@ -189,6 +199,7 @@ You can use only icons.
 {% endfor %}
 {% endcapture %}
 {% include example.html code=code wrapper="btn-list" centered=true %}
+
 
 ## Icon buttons
 
@@ -234,6 +245,7 @@ Wrap the dropdown’s toggle (your button or link) and the dropdown menu within 
 {% endcapture %}
 {% include example.html code=code wrapper="btn-list" centered=true %}
 
+
 ## Loading button
 
 Add `.btn-loading` to use a loading state on a button. The width of the button depends on the length of the text inside.
@@ -251,6 +263,7 @@ Add `.btn-loading` to use a loading state on a button. The width of the button d
 {% include ui/button.html color="primary" text="Button" spinner=true %}
 {% endcapture %}
 {% include example.html code=code centered=true %}
+
 
 ## List of buttons
 
@@ -318,6 +331,7 @@ Use the `.text-center` or the `.text-right` modifiers to alter the alignment.
 </div>
 {% endcapture %}
 {% include example.html code=code %}
+
 
 ## Button with avatar
 

@@ -4,6 +4,7 @@ menu: docs.tables
 bootstrap-link: content/tables/
 ---
 
+
 ## Basic Table
 
 A basic Bootstrap table has a light padding and only horizontal dividers.
@@ -14,6 +15,7 @@ The `.table` class adds basic styling to a table:
 {% include ui/table.html %}
 {% endcapture %}
 {% include example.html code=code %}
+
 
 ## No wrap
 

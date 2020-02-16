@@ -5,6 +5,7 @@ description: A small, stand-alone script to automatically adjust textarea height
 done: true
 ---
 
+
 ## Default markup
 
 {% capture code %}

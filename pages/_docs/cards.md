@@ -8,6 +8,7 @@ done: true
 
 The `.card` element is simply a container with a shadow, a border, a radius, and some padding. Built with flexbox, they offer easy alignment and mix well with other Bootstrap components.
 
+
 ## Default card
 
 To create a new card you have to use the `.card` and `.card-body` classes. You can put any content inside. 
@@ -16,6 +17,7 @@ To create a new card you have to use the `.card` and `.card-body` classes. You c
 {% include cards/card.html body="This is some text within a card body." %}
 {% endcapture %}
 {% include example.html code=code columns=1 %}
+
 
 ## Card padding
 
@@ -31,6 +33,7 @@ Cards with the `.card-sm` class are very well suited for small items such as sni
 {% endcapture %}
 {% include example.html code=code columns=2 %}
 
+
 ## Card with title
 
 To add a title to a card you should add a class `.card-title` inside `.card-body`.
@@ -43,12 +46,14 @@ You can also place the title inside the `.card-header` element - then the title 
 {% endcapture %}
 {% include example.html code=code columns=1 %}
 
+
 ## Card with title and image
 
 {% capture code %}
 {% include cards/card.html img-top=true title="Card with title and image" %}
 {% endcapture %}
 {% include example.html code=code columns=1 %}
+
 
 ## Blog post card
 
@@ -58,6 +63,7 @@ The best way to make your post eye-catching is adding an image to it. To do so, 
 {% include cards/blog-single.html type="image" %}
 {% endcapture %}
 {% include example.html code=code columns=1 %}
+
 
 ## Row deck
 
@@ -84,6 +90,7 @@ If you want to create a couple of posts next to each other, add the `.row-deck` 
 {% endcapture %}
 {% include example.html code=code columns=2 %}
 
+
 ## Post card with aside image
 
 You can also add the image on the left side of the card. All you need do to is: add the `.card-aside` class to the element with the `.card` class. Then add the image in the `.card-aside-column` element. No worries, tabler will automatically center it and scale to right size:
@@ -92,6 +99,7 @@ You can also add the image on the left side of the card. All you need do to is: 
 {% include cards/blog-single.html type="aside" liked=1 article-id=3 %}
 {% endcapture %}
 {% include example.html code=code columns=2 %}
+
 
 ## Color variations
 
@@ -107,12 +115,14 @@ You can also add the image on the left side of the card. All you need do to is: 
 {% endcapture %}
 {% include example.html code=code columns=2 %}
 
+
 ## Stacked card
 
 {% capture code %}
 {% include cards/card.html class="card-stacked" title="Stacked card" %}
 {% endcapture %}
 {% include example.html code=code columns=1 %}
+
 
 ## Tabbed card
 

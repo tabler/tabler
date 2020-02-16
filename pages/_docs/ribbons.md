@@ -4,12 +4,14 @@ menu: docs.ribbons
 done: true
 ---
 
+
 ## Default markup
 
 {% capture code %}
 {% include cards/ribbon.html %}
 {% endcapture %}
 {% include example.html code=code %}
+
 
 ## Ribbon position
 
@@ -27,6 +29,7 @@ You can also use multiple classes at once for example: `.ribbon.ribbon-top.ribbo
 {% endcapture %}
 {% include example.html code=code %}
 
+
 ## Ribbon color
 
 Customize the ribbon's background color. You can click [here]({% docs_url colors %}) to see the list of available colors.
@@ -36,6 +39,7 @@ Customize the ribbon's background color. You can click [here]({% docs_url colors
 {% endcapture %}
 {% include example.html code=code %}
 
+
 ## Ribbon text
 
 Set your own text in a ribbon.
@@ -44,6 +48,7 @@ Set your own text in a ribbon.
 {% include cards/ribbon.html color="green" text="-50%" %}
 {% endcapture %}
 {% include example.html code=code %}
+
 
 ## Ribbon style
 

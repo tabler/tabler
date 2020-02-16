@@ -5,12 +5,14 @@ description: The toast component is like an alert box that is only shown for a c
 bootstrap-link: components/toasts/
 ---
 
+
 ## Default markup
 
 {% capture code %}
 {% include ui/toast.html %}
 {% endcapture %}
 {% include example.html code=code %}
+
 
 ## Translucent
 
@@ -20,6 +22,7 @@ Toasts are slightly translucent, too, so they blend over whatever they might app
 {% include ui/toast.html %}
 {% endcapture %}
 {% include example.html code=code %}
+
 
 ## Stacking toasts
 

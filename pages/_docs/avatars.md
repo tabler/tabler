@@ -4,6 +4,7 @@ menu: docs.avatars
 description: Create and group avatars of various shapes and sizes with one component.
 ---
 
+
 ## Default markup
 
 {% capture code %}
@@ -12,6 +13,7 @@ description: Create and group avatars of various shapes and sizes with one compo
 {% include ui/avatar.html person-id=3 %}
 {% endcapture %}
 {% include example.html code=code centered=true %}
+
 
 ## Avatar image
 
@@ -23,6 +25,7 @@ Set an image as the background.
 {% include ui/avatar.html person-id=4 %}
 {% endcapture %}
 {% include example.html code=code centered=true %}
+
 
 ## Initials
 
@@ -37,6 +40,7 @@ You can easily use initials instead of images.
 {% endcapture %}
 {% include example.html code=code centered=true %}
 
+
 ## Avatar icons
 
 You can also use icons in avatars.
@@ -47,6 +51,7 @@ You can also use icons in avatars.
 {% include ui/avatar.html icon="user-plus" %}
 {% endcapture %}
 {% include example.html code=code centered=true %}
+
 
 ## Avatar initials color
 
@@ -61,6 +66,7 @@ Customize the color of the avatars' background. You can click [here]({% docs_url
 {% endcapture %}
 {% include example.html code=code centered=true %}
 
+
 ## Avatar size
 
 Using Bootstrap’s typical naming structure, you can create a standard avatar, or scale it up to different sizes based on what’s needed.
@@ -73,6 +79,7 @@ Using Bootstrap’s typical naming structure, you can create a standard avatar, 
 {% include ui/avatar.html person-id=6 size="sm" %}
 {% endcapture %}
 {% include example.html code=code centered=true %}
+
 
 ## Avatar status
 
@@ -88,6 +95,7 @@ Add an online or offline status indicator to show user's availability.
 {% endcapture %}
 {% include example.html code=code centered=true %}
 
+
 ## Avatar shape
 
 Change the shape of an avatar with the default Bootstrap image classes.
@@ -101,6 +109,7 @@ Change the shape of an avatar with the default Bootstrap image classes.
 {% endcapture %}
 {% include example.html code=code centered=true %}
 
+
 ## Avatars list
 
 You can easily create a list of avatars.
@@ -109,6 +118,7 @@ You can easily create a list of avatars.
 {% include ui/avatar-list.html %}
 {% endcapture %}
 {% include example.html code=code centered=true %}
+
 
 ## Stacked list
 

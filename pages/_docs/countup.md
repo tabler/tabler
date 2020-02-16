@@ -7,6 +7,7 @@ Countups with many options that can be found [here](https://inorganik.github.io/
 
 To make countup add `data-countup` to any html text tag.
 
+
 ## Default countup
 
 Set number to count up.
@@ -15,6 +16,7 @@ Set number to count up.
 <h1 data-countup>30000</h1>
 {% endcapture %}
 {% include example.html code=code %}
+
 
 ## Duration
 
@@ -27,6 +29,7 @@ Set the `duration` of the countup. (2s is set by default)
 {% endcapture %}
 {% include example.html code=code %}
 
+
 ## Starting value
 
 Set the start value of countup using `startVal`.
@@ -37,6 +40,7 @@ If you set it bigger than the `count`, countup will run reverse.
 <h1 data-countup='{"startVal":47655}'>30000</h1>
 {% endcapture %}
 {% include example.html code=code %}
+
 
 ## Decimal places
 
@@ -50,6 +54,7 @@ Set how many decimal places to show using `decimalPlaces`.
 {% endcapture %}
 {% include example.html code=code %}
 
+
 ## Easing
 
 Disable easing using `"useEasing": false`. (`true` by default)
@@ -60,6 +65,7 @@ Disable easing using `"useEasing": false`. (`true` by default)
 {% endcapture %}
 {% include example.html code=code %}
 
+
 ## Use grouping
 
 Disable grouping using `"useGrouping": false`. (`true` by default)
@@ -69,6 +75,7 @@ Disable grouping using `"useGrouping": false`. (`true` by default)
     <h1 data-countup='{"useGrouping": false}'>30000</h1>
 {% endcapture %}
 {% include example.html code=code %}
+
 
 ## Separator
 
@@ -82,6 +89,7 @@ Set seperator that seperates groups using `separator`. (`,` by default)
 {% endcapture %}
 {% include example.html code=code %}
 
+
 ## Decimal separator
 
 Set decimal separator using `decimal`. (`.` by default)
@@ -94,6 +102,7 @@ Set decimal separator using `decimal`. (`.` by default)
 {% endcapture %}
 {% include example.html code=code %}
 
+
 ## Prefix
 
 Set countup prefix using `prefix`.
@@ -104,6 +113,7 @@ Set countup prefix using `prefix`.
     <h1 data-countup='{"prefix":"£"}'>30000</h1>
 {% endcapture %}
 {% include example.html code=code %}
+
 
 ## Suffix
 

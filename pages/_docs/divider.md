@@ -5,6 +5,7 @@ bootstrap-link: components/dropdowns/#dividers
 done: true
 ---
 
+
 ## Default markup
 
 {% capture code %}
@@ -17,6 +18,7 @@ done: true
 </p>
 {% endcapture %}
 {% include example.html code=code %}
+
 
 ## Text position
 
@@ -38,6 +40,7 @@ done: true
 </p>
 {% endcapture %}
 {% include example.html code=code %}
+
 
 ## Divider color
 

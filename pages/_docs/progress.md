@@ -5,6 +5,7 @@ bootstrap-link: components/progress
 done: true
 ---
 
+
 ## Default markup
 
 To create a default progress bar, add a `.progress` class to a `<div>` element:
@@ -13,6 +14,7 @@ To create a default progress bar, add a `.progress` class to a `<div>` element:
 {% include ui/progress.html %}
 {% endcapture %}
 {% include example.html code=code %}
+
 
 ## Progress size
 
@@ -23,6 +25,7 @@ Using Bootstrap’s typical naming structure, you can create a standard progress
 {% endcapture %}
 {% include example.html code=code %}
 
+
 ## Progress without value
 
 Remove the showed value by adding a class called `.sr-only`.
@@ -31,6 +34,7 @@ Remove the showed value by adding a class called `.sr-only`.
 {% include ui/progress.html value=75 show-value=false %}
 {% endcapture %}
 {% include example.html code=code %}
+
 
 ## Indeterminate progress
 
@@ -41,6 +45,7 @@ To create indeterminate progress add `.progress-bar-indeterminate` to the `.prog
 {% endcapture %}
 {% include example.html code=code %}
 
+
 ## Native progress element
 
 You can also use native HTML5 `<progress>` element.
@@ -49,6 +54,7 @@ You can also use native HTML5 `<progress>` element.
 <progress class="progress progress-sm" value="15" max="100"/>
 {% endcapture %}
 {% include example.html code=code %}
+
 
 ## Progress color
 

@@ -5,6 +5,7 @@ description: A small count and labeling component.
 bootstrap-link: components/badge/
 ---
 
+
 ## Default markup
 
 {% capture code %}
@@ -13,6 +14,7 @@ bootstrap-link: components/badge/
 {% endfor %}
 {% endcapture %}
 {% include example.html code=code centered=true %}
+
 
 ## Pill badges
 
@@ -61,6 +63,7 @@ If you don't want your badge to contain any text you can do it by leaving the ht
 {% endcapture %}
 {% include example.html code=code centered=true %}
 
+
 ### Badge addons
 
 You can add badge addon by adding `.badge-addon` class.
@@ -71,6 +74,7 @@ You can add badge addon by adding `.badge-addon` class.
 {% include ui/badge.html text="CSS gzip size" color="red-lt" addon="20.9kB" addon-color="red" %}
 {% endcapture %}
 {% include example.html code=code %}
+
 
 ### Badge avatars
 

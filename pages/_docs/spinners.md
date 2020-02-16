@@ -5,6 +5,7 @@ bootstrap-link: components/spinners/
 done: true
 ---
 
+
 ## Default markup
 
 {% capture code %}
@@ -23,6 +24,7 @@ done: true
 {% endcapture %}
 {% include example.html code=code %}
 
+
 ## Size
 
 {% capture code %}
@@ -30,6 +32,7 @@ done: true
 {% include ui/spinner.html size="sm" %}
 {% endcapture %}
 {% include example.html code=code %}
+
 
 ## Growing spinner
 
@@ -45,6 +48,7 @@ done: true
 {% endfor %}
 {% endcapture %}
 {% include example.html code=code %}
+
 
 ## Buttons
 

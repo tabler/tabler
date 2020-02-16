@@ -5,6 +5,7 @@ description: Bootstrap provides an easy way to create predefined alert messages.
 bootstrap-link: components/alerts/
 ---
 
+
 ## Default markup
 
 {% capture code %}
@@ -45,6 +46,7 @@ Add the `alert-link` class to any links inside the alert box to create "matching
 {% endcapture %}
 {% include example.html code=code %}
 
+
 ## Alerts with icons
 
 {% capture code %}
@@ -57,6 +59,7 @@ Add the `alert-link` class to any links inside the alert box to create "matching
 {% endcapture %}
 {% include example.html code=code %}
 
+
 ## Alert with avatar
 
 {% capture code %}
@@ -68,6 +71,7 @@ Add the `alert-link` class to any links inside the alert box to create "matching
 {% endfor %}
 {% endcapture %}
 {% include example.html code=code %}
+
 
 ## Alert with buttons
 

@@ -5,15 +5,18 @@ icon: flag
 order: -1
 ---
 
+
 ## What is Tabler?
 
 Tabler is a UI kit that speeds up the development process and makes it easier than ever! Built on the latest version of Bootstrap, it helps you create templates based on fully customisable and ready-to-use UI components, which can be used by both simple websites and sophisticated systems. With basic knowledge of HTML and CSS, you’ll be able to create dashboards that are fully functional and beautifully designed!
+
 
 ## What are the benefits?
 
 Tabler is a perfect solution if you want to create an interface which is not only user-friendly but also fully reponsive. Thanks to the big choice of ready-made components, you can customise your design and adapt it to the needs of even the most demanding users. On top of that, Tabler is an open source solution, continuously developed and improved by the open source community. 
 
 To start using Tabler, first you need to set up the environment.
+
 
 ## Set up the environment
 
@@ -31,6 +34,7 @@ To use our build system and run our documentation locally, you'll need a copy of
   
 Once you've completed the setup, you'll be able to run the various commands provided from the command line.
 
+
 ## Build Tabler locally
 
 1. From the root `/tabler` directory, run `npm run start` in the command line.
@@ -40,6 +44,7 @@ Once you've completed the setup, you'll be able to run the various commands prov
 **Note**:
 Run `npm run build` for rerforms a one off build application without refresh.
 Open [http://localhost:3001](http://localhost:3001) to configure the Web server.
+
 
 ## Bugs and feature requests
 

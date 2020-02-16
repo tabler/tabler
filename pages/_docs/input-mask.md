@@ -2,6 +2,7 @@
 title: Input mask
 ---
 
+
 ## Default markup
 
 {% capture code %}

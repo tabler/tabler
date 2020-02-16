@@ -5,6 +5,7 @@ description: Documentation and examples for common text utilities to control ali
 bootstrap-link: content/typography/
 ---
 
+
 ## Headings
 
 {% capture code %}
@@ -13,6 +14,7 @@ bootstrap-link: content/typography/
 {% endcapture %}
 {% include example.html code=code %}
 
+
 ## Paragraphs
 
 {% capture code %}
@@ -20,6 +22,7 @@ bootstrap-link: content/typography/
 <p>At vero eos et accusam et justo duo dolores et ea rebum.</p>
 {% endcapture %}
 {% include example.html code=code %}
+
 
 ## Semantic text elements
 
@@ -44,12 +47,14 @@ Text <sup>Superscripted</sup>{% hide %} <code class="ml-2">sup</code><br/>{% end
 {% endcapture %}
 {% include example.html code=code %}
 
+
 ## Horizontal rules
 
 {% capture code %}
 <hr> 
 {% endcapture %}
 {% include example.html code=code %}
+
 
 ## Horizontal rules with label
 
@@ -116,6 +121,7 @@ Tabler has been optimized to correctly display content in any language. The Tabl
 {% endcapture %}
 {% include example.html code=code %}
 
+
 ## Text transform
 
 Transform text in components with text capitalization classes.
@@ -127,6 +133,7 @@ Transform text in components with text capitalization classes.
 {% endcapture %}
 {% include example.html code=code %}
 
+
 ## Letter spacing
 
 Utilities for controlling the tracking (letter spacing) of an element.
@@ -137,6 +144,7 @@ Utilities for controlling the tracking (letter spacing) of an element.
 <p class="tracking-wide">Lorem ipsum dolor sit amet. Wide letter spacing.</p>
 {% endcapture %}
 {% include example.html code=code %}
+
 
 ## Line Height
 
@@ -150,6 +158,7 @@ Utilities for controlling the leading (line height) of an element.
 {% endcapture %}
 {% include example.html code=code %}
 
+
 ## Antialiasing
 
 Utilities for controlling the font smoothing of an element.
@@ -161,6 +170,7 @@ Use the `.antialiased` utility to render text using subpixel antialiasing or use
 <div class="subpixel-antialiased">Text without antialiasing</div>
 {% endcapture %}
 {% include example.html code=code %}
+
 
 ## Markdown elements
 

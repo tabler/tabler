@@ -5,6 +5,7 @@ menu: docs.range-slider
 
 All options and features can be found [**here**](https://refreshless.com/nouislider/).
 
+
 ## Basic range slider
 
 {% capture code %}
@@ -29,9 +30,11 @@ $(document).ready(function() {
 });
 ```
 
+
 ## Basic options
 
 Basic range slider options.
+
 
 ## js-name
 
@@ -55,6 +58,7 @@ function slider(){
 {% endcapture %}
 {% include example.html code=code %}
 
+
 ## start
 
 The `start` option sets the number of handles and corresponding start positions.
@@ -71,6 +75,7 @@ The `start` option uses the slider's `'format'` option to decode the input. Numb
 {% endcapture %}
 {% include example.html code=code %}
 
+
 ## range
 
 All values on the slider are part of a range. The range has a minimum and maximum value. **The minimum value cannot be equal to the maximum value.**
@@ -85,6 +90,7 @@ All values on the slider are part of a range. The range has a minimum and maximu
 {% endcapture %}
 {% include example.html code=code %}
 
+
 ## step
 
 By default, the slider slides fluently. In order to make the handles jump between intervals, you can use the step option.
@@ -98,6 +104,7 @@ By default, the slider slides fluently. In order to make the handles jump betwee
     <p demo-slider="slider10"></p>
 {% endcapture %}
 {% include example.html code=code %}
+
 
 ## connect
 
@@ -118,6 +125,7 @@ Setting true sets the bars between the handles, but not between the handles and 
 {% endcapture %}
 {% include example.html code=code %}
 
+
 ## margin
 
 When using two handles, the minimum distance between the handles can be set using the margin option. The margin value is relative to the value set in 'range'. This option is only available on linear sliders.
@@ -130,6 +138,7 @@ When using two handles, the minimum distance between the handles can be set usin
 {% endcapture %}
 {% include example.html code=code %}
 
+
 ## limit
 
 The `limit` option is the oposite of the margin option, limiting the maximum distance between two handles. As with the margin option, the `limit` option can only be used on linear sliders.
@@ -139,6 +148,7 @@ The `limit` option is the oposite of the margin option, limiting the maximum dis
     <p demo-slider="slider16"></p>
 {% endcapture %}
 {% include example.html code=code %}
+
 
 ## padding
 

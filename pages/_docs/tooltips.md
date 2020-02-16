@@ -5,6 +5,7 @@ description: The Tooltip component is small pop-up box that appears when the use
 bootstrap-link: components/tooltips/
 ---
 
+
 ## Default markup
 
 {% capture code %}
@@ -22,6 +23,7 @@ bootstrap-link: components/tooltips/
 </button>
 {% endcapture %}
 {% include example.html code=code %}
+
 
 ## Tooltip with HTML
 

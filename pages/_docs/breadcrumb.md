@@ -7,13 +7,14 @@ bootstrap-link: components/breadcrumb/
 
 
 ## Default markup
- 
+
 The dividers are automatically created in the content of the `:before` pseudo-element of li tags. You can inform the current page using the `active` modifier in a `li` tag. It will disable the navigation of inner links.
 
 {% capture code %}
 {% include ui/breadcrumb.html %}
 {% endcapture %}
 {% include example.html code=code centered=true %}
+
 
 ## Breadcrumb variations
 
@@ -33,6 +34,7 @@ You can add more variations by modify `$breadcrumb-variants` variable in Tabler 
 {% include ui/breadcrumb.html class="breadcrumb-bullets" %}
 {% endcapture %}
 {% include example.html code=code centered=true %}
+
 
 ## Alternate version
 

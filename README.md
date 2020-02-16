@@ -6,12 +6,14 @@ A premium and open source dashboard template with a responsive and high-quality 
 
 ![Tabler preview](/static/tabler-preview.png?raw=true)
 
+
 ## Status
 
 <a href="https://www.npmjs.com/package/tabler"><a href="#backers" alt="sponsors on Open Collective"><img src="https://opencollective.com/tabler/backers/badge.svg"/></a> <a href="#sponsors" alt="Sponsors on Open Collective"><img src="https://opencollective.com/tabler/sponsors/badge.svg"/></a> <img src="https://img.shields.io/npm/dt/tabler.svg" alt="Total Downloads"></a> <a href="https://github.com/tabler/tabler/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/tabler.svg" alt="License"></a> <a href="https://github.com/tabler/tabler/releases"><img src="https://img.shields.io/npm/v/tabler.svg" alt="Latest Release"></a>
 
 [![Backers on Open Collective](https://opencollective.com/tabler/backers/badge.svg)](#backers)
  [![Sponsors on Open Collective](https://opencollective.com/tabler/sponsors/badge.svg)](#sponsors)
+
 
 ## Features
 
@@ -24,9 +26,11 @@ We've created this admin panel for everyone who wants to create templates based 
 * **Demo pages**: Tabler features over 20 individual pages using various components, which gives you the freedom to choose and combine. All components can vary in color and styling that you can easily modify using Sass. Sky is the limit!
 * **Single Page Application versions:** [Tabler React](https://github.com/tabler/tabler-react) has React components for Tabler.
 
+
 ## Sponsor Tabler
 
 <a href="https://github.com/sponsors/codecalm" target="_blank"><img src="/static/sponsor-banner-readme.png?raw=true" alt="Sponsor Tabler" /></a>
+
 
 ## Setup environment
 
@@ -45,6 +49,7 @@ To use our build system and run our documentation locally, you'll need a copy of
 
 Once you complete the setup, you'll be able to run the various commands provided from the command line.
 
+
 ## Build locally
 
 1. From the root `/tabler` directory, run `npm run start` in the command line.
@@ -55,13 +60,16 @@ Once you complete the setup, you'll be able to run the various commands provided
 Run `npm run build` for reforms a one off build application without refresh.
 Open [http://localhost:3001](http://localhost:3001) to configure the Web server.
 
+
 ## Feature requests
 
 https://tabler.canny.io/feature-requests
 
+
 ## Bugs and feature requests
 
 Found a bug or have a feature request? [Please open a new issue](https://github.com/tabler/tabler/issues/new).
+
 
 ## Creators
 
@@ -71,10 +79,12 @@ Found a bug or have a feature request? [Please open a new issue](https://github.
 - <https://github.com/codecalm>
 - <https://codecalm.net>
 
+
 ## Contributors
 
 This project exists thanks to all the people who contribute. [[Contribute](https://github.com/tabler/tabler/graphs/contributors)].
 <a href="https://github.com/tabler/tabler/graphs/contributors"><img src="https://opencollective.com/tabler/contributors.svg?width=890&button=false"></a>
+
 
 ## Backers
 
@@ -97,6 +107,7 @@ Support this project by becoming a sponsor. Your logo will be displayed here wit
 <a href="https://opencollective.com/tabler/sponsor/7/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/7/avatar.svg"></a>
 <a href="https://opencollective.com/tabler/sponsor/8/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/8/avatar.svg"></a>
 <a href="https://opencollective.com/tabler/sponsor/9/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/9/avatar.svg"></a>
+
 
 ## Copyright and license
 

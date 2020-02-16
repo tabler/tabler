@@ -3,6 +3,7 @@ title: Cursors
 menu: docs.cursors
 ---
 
+
 ## Cursor utilities 
 
 - `.cursor-auto`- cursor style depends on what's inside element

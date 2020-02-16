@@ -5,6 +5,7 @@ plugin: flags
 done: true
 ---
 
+
 ## Flag
 
 {% capture code %}
@@ -13,6 +14,7 @@ done: true
 {% include ui/flag.html flag="pt" %}
 {% endcapture %}
 {% include example.html code=code %}
+
 
 ## Flag sizes
 
@@ -25,6 +27,7 @@ Using Bootstrap’s typical naming structure, you can create a standard flag, or
 {% include ui/flag.html flag="pl" class="mr-1" %}
 {% endcapture %}
 {% include example.html code=code %}
+
 
 ## Types
 

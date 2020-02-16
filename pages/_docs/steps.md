@@ -8,6 +8,7 @@ new: true
 
 Steps are progress indicators of a sequence of task steps.
 
+
 ## Default markup
 
 {% capture code %}
@@ -15,12 +16,14 @@ Steps are progress indicators of a sequence of task steps.
 {% endcapture %}
 {% include example.html code=code %}
 
+
 ## Tooltips
 
 {% capture code %}
 {% include ui/steps.html show-title=true show-tooltip=true %}
 {% endcapture %}
 {% include example.html code=code %}
+
 
 ## Color
 
@@ -30,12 +33,14 @@ Steps are progress indicators of a sequence of task steps.
 {% endcapture %}
 {% include example.html code=code %}
 
+
 ## Steps without title
 
 {% capture code %}
 {% include ui/steps.html show-tooltip=true %}
 {% endcapture %}
 {% include example.html code=code %}
+
 
 ## Steps with numbers
 

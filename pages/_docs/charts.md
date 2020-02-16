@@ -3,6 +3,7 @@ title: Charts
 menu: docs.charts
 ---
 
+
 ## Default markup
 
 {% for chart in site.data.charts %}

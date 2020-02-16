@@ -5,6 +5,7 @@ plugin: payments
 done: true
 ---
 
+
 ## Payment
 
 {% capture code %}
@@ -13,6 +14,7 @@ done: true
 {% include ui/payment.html class="mr-3" payment="paypal"%}
 {% endcapture %}
 {% include example.html code=code %}
+
 
 ## Payment sizes
 
@@ -25,6 +27,7 @@ Using Bootstrap’s typical naming structure, you can create a standard payment,
 {% include ui/payment.html class="mr-3" payment="amazon" size="sm" %}
 {% endcapture %}
 {% include example.html code=code %}
+
 
 ## Types
 
