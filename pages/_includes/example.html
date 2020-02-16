@@ -1,9 +1,14 @@
+{% assign demo-code = code %}
+
+{% assign demo-code = demo-code | replace_regex: '\{% (end)?hide %\}', '' %}
+{% assign demo-code = demo-code | replace_regex: 'href="#"', 'href="javascript:void(0)"' %}
+
 <div class="example no_toc_section{% if include.centered %} example-centered{% endif %}{% if include.columns %} example-bg{% endif %}">
 	<div class="example-content">
 		{% if include.wrapper %}<div class="{{ include.wrapper }}">{% endif %}
 		{% if include.columns %}<div class="example-column example-column-{{ include.columns }}">{% endif %}
 
-		{{ code }}
+		{{ demo-code }}
 
 		{% if include.columns %}</div>{% endif %}
 		{% if include.wrapper %}</div>{% endif %}
@@ -18,6 +23,7 @@
 {% assign code = code | replace_regex: 'url\(([^\)]+)\)', 'url(...)' %}
 {% assign code = code | replace_regex: 'src="([^"]+)"', 'src="..."' %}
 {% assign code = code | replace_regex: 'href="([^#][^"]+)"', 'href="#"' %}
+{% assign code = code | replace_regex: '\{% hide %\}.*?\{% endhide %\}', '' %}
 {% assign code = code | htmlbeautifier %}
 
 <div class="example-code">

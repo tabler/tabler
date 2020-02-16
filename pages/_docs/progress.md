@@ -1,7 +1,7 @@
 ---
 title: Progress
 description: A progress bar can be used to show a user how far along he is in a process.
-bootstrap-link: components/progress/
+bootstrap-link: components/progress
 done: true
 ---
 
