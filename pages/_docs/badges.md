@@ -61,3 +61,27 @@ If you don't want your badge to contain any text you can do it by leaving the ht
 {% endfor %}
 {% endcapture %}
 {% include example.html code=code %}
+
+### Badge addons
+
+You can add badge addon by adding `.badge-addon` class.
+
+{% capture code %}
+{% include ui/badge.html text="task" color="green" addon="finished" %}
+{% include ui/badge.html text="bundle" color="purple" addon="passing" %}
+{% include ui/badge.html text="CSS gzip size" color="red-lt" addon="20.9kB" addon-color="red" %}
+{% endcapture %}
+{% include example.html code=code %}
+
+### Badge avatars
+
+If you want to add an avatar to your badge just create `.badge-avatar` class.
+
+{% capture code %}
+{% include ui/badge.html person-id=1 color="blue" %}
+{% include ui/badge.html person-id=2 color="blue" %}
+{% include ui/badge.html person-id=3 color="blue" %}
+{% include ui/badge.html person-id=4 color="blue" %}
+{% include ui/badge.html person-id=5 color="blue" %}
+{% endcapture %}
+{% include example.html code=code %}
