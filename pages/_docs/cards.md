@@ -83,7 +83,7 @@ If you want to create a couple of posts next to each other, add the `.row-deck` 
     </div>
 </div>
 {% endcapture %}
-{% include example.html code=code %}
+{% include example.html code=code columns=2 %}
 
 ## Post card with aside image
 
@@ -92,7 +92,7 @@ You can also add the image on the left side of the card. All you need do to is: 
 {% capture code %}
 {% include cards/blog-single.html type="aside" liked=1 article-id=3 %}
 {% endcapture %}
-{% include example.html code=code %}
+{% include example.html code=code columns=2 %}
 
 ## Color variations
 
@@ -106,19 +106,19 @@ You can also add the image on the left side of the card. All you need do to is: 
     </div>
 </div>
 {% endcapture %}
-{% include example.html code=code %}
+{% include example.html code=code columns=2 %}
 
 ## Stacked card
 
 {% capture code %}
 {% include cards/card.html class="card-stacked" title="Stacked card" %}
 {% endcapture %}
-{% include example.html code=code %}
+{% include example.html code=code columns=1 %}
 
 ## Tabbed card
 
 {% capture code %}
 {% include cards/card-tabs.html count=4 %}
 {% endcapture %}
-{% include example.html code=code %}
+{% include example.html code=code columns=2 %}
 
