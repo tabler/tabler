@@ -7,7 +7,7 @@ Countups with many options that can be found [here](https://inorganik.github.io/
 
 To make countup add `data-countup` to any html text tag.
 
-### Default countup
+## Default countup
 
 Set number to count up.
 
@@ -16,7 +16,7 @@ Set number to count up.
 {% endcapture %}
 {% include example.html code=code %}
 
-### Duration
+## Duration
 
 Set the `duration` of the countup. (2s is set by default)
 
@@ -27,7 +27,7 @@ Set the `duration` of the countup. (2s is set by default)
 {% endcapture %}
 {% include example.html code=code %}
 
-### Starting value
+## Starting value
 
 Set the start value of countup using `startVal`.
 If you set it bigger than the `count`, countup will run reverse.
@@ -38,7 +38,7 @@ If you set it bigger than the `count`, countup will run reverse.
 {% endcapture %}
 {% include example.html code=code %}
 
-### Decimal places
+## Decimal places
 
 Set how many decimal places to show using `decimalPlaces`.
 
@@ -50,7 +50,7 @@ Set how many decimal places to show using `decimalPlaces`.
 {% endcapture %}
 {% include example.html code=code %}
 
-### Easing
+## Easing
 
 Disable easing using `"useEasing": false`. (`true` by default)
 
@@ -60,7 +60,7 @@ Disable easing using `"useEasing": false`. (`true` by default)
 {% endcapture %}
 {% include example.html code=code %}
 
-### Use grouping
+## Use grouping
 
 Disable grouping using `"useGrouping": false`. (`true` by default)
 
@@ -70,7 +70,7 @@ Disable grouping using `"useGrouping": false`. (`true` by default)
 {% endcapture %}
 {% include example.html code=code %}
 
-### Separator
+## Separator
 
 Set seperator that seperates groups using `separator`. (`,` by default)
 
@@ -82,7 +82,7 @@ Set seperator that seperates groups using `separator`. (`,` by default)
 {% endcapture %}
 {% include example.html code=code %}
 
-### Decimal separator
+## Decimal separator
 
 Set decimal separator using `decimal`. (`.` by default)
 
@@ -94,7 +94,7 @@ Set decimal separator using `decimal`. (`.` by default)
 {% endcapture %}
 {% include example.html code=code %}
 
-### Prefix
+## Prefix
 
 Set countup prefix using `prefix`.
 
@@ -105,7 +105,7 @@ Set countup prefix using `prefix`.
 {% endcapture %}
 {% include example.html code=code %}
 
-### Suffix
+## Suffix
 
 Set countup suffix using `suffix`.
 

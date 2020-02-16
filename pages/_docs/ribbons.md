@@ -4,14 +4,14 @@ menu: docs.ribbons
 done: true
 ---
 
-### Default markup
+## Default markup
 
 {% capture code %}
 {% include cards/ribbon.html %}
 {% endcapture %}
 {% include example.html code=code %}
 
-### Ribbon position
+## Ribbon position
 
 You can easily change the position of a ribbon by adding a class to the element.
 
@@ -27,7 +27,7 @@ You can also use multiple classes at once for example: `.ribbon.ribbon-top.ribbo
 {% endcapture %}
 {% include example.html code=code %}
 
-### Ribbon color
+## Ribbon color
 
 Customize the ribbon's background color. You can click [here]({% docs_url colors %}) to see the list of available colors.
 
@@ -36,7 +36,7 @@ Customize the ribbon's background color. You can click [here]({% docs_url colors
 {% endcapture %}
 {% include example.html code=code %}
 
-### Ribbon text
+## Ribbon text
 
 Set your own text in a ribbon.
 
@@ -45,7 +45,7 @@ Set your own text in a ribbon.
 {% endcapture %}
 {% include example.html code=code %}
 
-### Ribbon style
+## Ribbon style
 
 Change the style of a ribbon. 
 

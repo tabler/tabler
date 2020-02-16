@@ -10,10 +10,14 @@ page-header: Documentation
 <div class="row justify-content-center">
 	<div class="d-none d-lg-block col-lg-3 order-lg-1 mb-4">
 
+		{% assign toc = content | toc_only %}
+
 
 		<div class="sticky-top pt-4">
-			<h5 class="subheader">On this page</h5>
-			{{ content | toc_only }}
+			{% if toc != '' %}
+				<h5 class="subheader">On this page</h5>
+				{{ toc }}
+			{% endif %}
 
 			{% include ui/button.html href=site.github_url text="Browse source code" icon="brand/github" icon-color="github" external=true block=true class="mb-4" %}
 		</div>
@@ -43,9 +47,7 @@ page-header: Documentation
 
 				<div class="markdown">
 					<div class="d-flex">
-						<h2 class="h1 mt-0 mb-3">{{ page.title }}
-							{% if page.done %} {% include ui/icon.html icon="check" color="green" %}{% endif %}
-						</h2>
+						<h2 class="h1 mt-0 mb-3">{{ page.title }}</h2>
 
 						{% if page.bootstrap-link %}
 						<p class="ml-auto">

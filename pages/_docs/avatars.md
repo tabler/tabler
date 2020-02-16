@@ -2,19 +2,18 @@
 title: Avatars
 menu: docs.avatars
 description: Create and group avatars of various shapes and sizes with one component.
-done: true
 ---
 
-### Default markup
+## Default markup
 
 {% capture code %}
 {% include ui/avatar.html person-id=1 %}
 {% include ui/avatar.html person-id=2 %}
 {% include ui/avatar.html person-id=3 %}
 {% endcapture %}
-{% include example.html code=code %}
+{% include example.html code=code centered=true %}
 
-### Avatar image
+## Avatar image
 
 Set an image as the background.
 
@@ -23,9 +22,9 @@ Set an image as the background.
 {% include ui/avatar.html person-id=3 %}
 {% include ui/avatar.html person-id=4 %}
 {% endcapture %}
-{% include example.html code=code %}
+{% include example.html code=code centered=true %}
 
-### Initials
+## Initials
 
 You can easily use initials instead of images.
 
@@ -36,9 +35,9 @@ You can easily use initials instead of images.
 {% include ui/avatar.html placeholder="GH" %}
 {% include ui/avatar.html placeholder="IJ" %}
 {% endcapture %}
-{% include example.html code=code %}
+{% include example.html code=code centered=true %}
 
-### Avatar icons
+## Avatar icons
 
 You can also use icons in avatars.
 
@@ -47,9 +46,9 @@ You can also use icons in avatars.
 {% include ui/avatar.html icon="plus" %}
 {% include ui/avatar.html icon="user-plus" %}
 {% endcapture %}
-{% include example.html code=code %}
+{% include example.html code=code centered=true %}
 
-### Avatar initials color
+## Avatar initials color
 
 Customize the color of the avatars' background. You can click [here]({% docs_url colors %}) to see the list of available colors.
 
@@ -60,9 +59,9 @@ Customize the color of the avatars' background. You can click [here]({% docs_url
 {% include ui/avatar.html placeholder="GH" color="blue" %}
 {% include ui/avatar.html placeholder="IJ" color="purple" %}
 {% endcapture %}
-{% include example.html code=code %}
+{% include example.html code=code centered=true %}
 
-### Avatar size
+## Avatar size
 
 Using Bootstrap’s typical naming structure, you can create a standard avatar, or scale it up to different sizes based on what’s needed.
 
@@ -73,9 +72,9 @@ Using Bootstrap’s typical naming structure, you can create a standard avatar, 
 {% include ui/avatar.html person-id=7 %}
 {% include ui/avatar.html person-id=6 size="sm" %}
 {% endcapture %}
-{% include example.html code=code %}
+{% include example.html code=code centered=true %}
 
-### Avatar status
+## Avatar status
 
 Add an online or offline status indicator to show user's availability.
 
@@ -87,9 +86,9 @@ Add an online or offline status indicator to show user's availability.
 {% include ui/avatar.html person-id=15 status="info" %}
 {% include ui/avatar.html person-id=16 status="gray" status-text="5" %}
 {% endcapture %}
-{% include example.html code=code %}
+{% include example.html code=code centered=true %}
 
-### Avatar shape
+## Avatar shape
 
 Change the shape of an avatar with the default Bootstrap image classes.
 
@@ -100,18 +99,18 @@ Change the shape of an avatar with the default Bootstrap image classes.
 {% include ui/avatar.html person-id=20 shape="rounded-0" %}
 {% include ui/avatar.html person-id=21 shape="rounded-lg" %}
 {% endcapture %}
-{% include example.html code=code %}
+{% include example.html code=code centered=true %}
 
-### Avatars list
+## Avatars list
 
 You can easily create a list of avatars.
 
 {% capture code %}
 {% include ui/avatar-list.html %}
 {% endcapture %}
-{% include example.html code=code %}
+{% include example.html code=code centered=true %}
 
-### Stacked list
+## Stacked list
 
 Make the list stack when it reaches a certain length.
 
@@ -120,7 +119,7 @@ Make the list stack when it reaches a certain length.
   {% for person in site.data.people limit: 5 offset: 30 %}
   {% include ui/avatar.html person=person element="a" %}
   {% endfor %}
-  <span class="avatar" element="a">+8</span>
+  <span class="avatar">+8</span>
 </div>
 {% endcapture %}
-{% include example.html code=code %}
+{% include example.html code=code centered=true %}

@@ -4,7 +4,6 @@ menu: docs.cards
 description: A card is a flexible and extensible content container. It includes options for headers and footers, a wide variety of content, contextual background colors, and powerful display options. 
 bootstrap-link: components/card/
 done: true
-toc: true
 ---
 
 The `.card` element is simply a container with a shadow, a border, a radius, and some padding. Built with flexbox, they offer easy alignment and mix well with other Bootstrap components.
@@ -18,7 +17,7 @@ To create a new card you have to use the `.card` and `.card-body` classes. You c
 {% endcapture %}
 {% include example.html code=code columns=1 %}
 
-### Card padding
+## Card padding
 
 You can change the padding of a newly created card. You can do this with the `.card-sm`, `.card-md` and `.card-lg` classes. 
 

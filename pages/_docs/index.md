@@ -15,7 +15,7 @@ Tabler is a perfect solution if you want to create an interface which is not onl
 
 To start using Tabler, first you need to set up the environment.
 
-### Set up the environment
+## Set up the environment
 
 To use our build system and run our documentation locally, you'll need a copy of Tabler's source files. Follow the steps below:
 
@@ -31,7 +31,7 @@ To use our build system and run our documentation locally, you'll need a copy of
   
 Once you've completed the setup, you'll be able to run the various commands provided from the command line.
 
-### Build Tabler locally
+## Build Tabler locally
 
 1. From the root `/tabler` directory, run `npm run start` in the command line.
 2. Open [http://localhost:4000](http://localhost:4000) in your browser, and voilà.
@@ -41,6 +41,6 @@ Once you've completed the setup, you'll be able to run the various commands prov
 Run `npm run build` for rerforms a one off build application without refresh.
 Open [http://localhost:3001](http://localhost:3001) to configure the Web server.
 
-### Bugs and feature requests
+## Bugs and feature requests
 
 Found a bug or have a feature request? [Please open a new issue](https://github.com/tabler/tabler/issues/new).

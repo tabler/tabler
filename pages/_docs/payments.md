@@ -5,7 +5,7 @@ plugin: payments
 done: true
 ---
 
-### Payment
+## Payment
 
 {% capture code %}
 {% include ui/payment.html class="mr-3" payment="shopify"%}
@@ -14,7 +14,7 @@ done: true
 {% endcapture %}
 {% include example.html code=code %}
 
-### Payment sizes
+## Payment sizes
 
 Using Bootstrap’s typical naming structure, you can create a standard payment, or scale it up to different sizes based on what’s needed.
 
@@ -26,7 +26,7 @@ Using Bootstrap’s typical naming structure, you can create a standard payment,
 {% endcapture %}
 {% include example.html code=code %}
 
-### Types
+## Types
 
 <table class="table-vcenter">
 {% for payment in site.data.payments %}

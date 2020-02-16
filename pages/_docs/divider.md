@@ -4,7 +4,21 @@ description: A divider visually segments content into groups
 bootstrap-link: components/dropdowns/#dividers
 done: true
 ---
-### Default markup
+
+## Default markup
+
+{% capture code %}
+<p>
+  Dicta error hic illo iure necessitatibus nihil officiis omnis perferendis, praesentium repellendus rerum, saepe sed, sit!
+</p>
+{% include ui/hr.html text="See also" %}
+<p>
+  Dicta error hic illo iure necessitatibus nihil officiis omnis perferendis, praesentium repellendus rerum, saepe sed, sit!
+</p>
+{% endcapture %}
+{% include example.html code=code %}
+
+## Text position
 
 {% capture code %}
 <p>
@@ -25,7 +39,7 @@ done: true
 {% endcapture %}
 {% include example.html code=code %}
 
-### Divider color
+## Divider color
 
 Customize the color of the divider. You can click [here]({% docs_url colors %}) to see the list of available colors.
 
@@ -34,6 +48,10 @@ Customize the color of the divider. You can click [here]({% docs_url colors %}) 
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias, dolore dolores doloribus est ex.
 </p>
 {% include ui/hr.html text="Green divider" color="green" %}
+<p>
+   Dicta error hic illo iure necessitatibus nihil officiis omnis perferendis, praesentium repellendus rerum, saepe sed, sit!
+</p>
+{% include ui/hr.html text="Red divider" color="red" %}
 <p>
    Dicta error hic illo iure necessitatibus nihil officiis omnis perferendis, praesentium repellendus rerum, saepe sed, sit!
 </p>

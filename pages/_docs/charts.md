@@ -3,7 +3,7 @@ title: Charts
 menu: docs.charts
 ---
 
-### c3.js charts 
+## Default markup
 
 {% for chart in site.data.charts %}
 {% if chart[1].display %}

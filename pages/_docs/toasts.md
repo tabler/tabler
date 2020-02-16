@@ -5,14 +5,14 @@ description: The toast component is like an alert box that is only shown for a c
 bootstrap-link: components/toasts/
 ---
 
-### Default markup
+## Default markup
 
 {% capture code %}
 {% include ui/toast.html %}
 {% endcapture %}
 {% include example.html code=code %}
 
-### Translucent
+## Translucent
 
 Toasts are slightly translucent, too, so they blend over whatever they might appear over. For browsers that support the `backdrop-filter` CSS property, we’ll also attempt to blur the elements under a toast.
 
@@ -21,7 +21,7 @@ Toasts are slightly translucent, too, so they blend over whatever they might app
 {% endcapture %}
 {% include example.html code=code %}
 
-### Stacking toasts
+## Stacking toasts
 
 If you want to stack toasts just put them in the same container.
 

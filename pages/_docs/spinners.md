@@ -5,7 +5,7 @@ bootstrap-link: components/spinners/
 done: true
 ---
 
-### Default markup
+## Default markup
 
 {% capture code %}
 {% include ui/spinner.html %}
@@ -13,7 +13,7 @@ done: true
 {% include example.html code=code %}
 
 
-### Colors
+## Colors
 
 {% capture code %}
 {% for color in site.colors %}
@@ -23,7 +23,7 @@ done: true
 {% endcapture %}
 {% include example.html code=code %}
 
-### Size
+## Size
 
 {% capture code %}
 {% include ui/spinner.html %}
@@ -31,7 +31,7 @@ done: true
 {% endcapture %}
 {% include example.html code=code %}
 
-### Growing spinner
+## Growing spinner
 
 {% capture code %}
 {% include ui/spinner.html type="grow" %}
@@ -46,7 +46,7 @@ done: true
 {% endcapture %}
 {% include example.html code=code %}
 
-### Buttons
+## Buttons
 
 {% capture code %}
 {% include ui/button.html spinner=true text="Button" color="primary" %}

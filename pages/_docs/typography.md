@@ -5,7 +5,7 @@ description: Documentation and examples for common text utilities to control ali
 bootstrap-link: content/typography/
 ---
 
-### Headings
+## Headings
 
 {% capture code %}
 {% for i in (1..6) %}<h{{ i }}>H{{ i }} Heading</h{{ i }}>
@@ -13,7 +13,7 @@ bootstrap-link: content/typography/
 {% endcapture %}
 {% include example.html code=code %}
 
-### Paragraphs
+## Paragraphs
 
 {% capture code %}
 <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>
@@ -21,7 +21,7 @@ bootstrap-link: content/typography/
 {% endcapture %}
 {% include example.html code=code %}
 
-### Semantic text elements
+## Semantic text elements
 
 {% capture code %}
 <abbr title="Internationalization">I18N</abbr>{% hide %} <code class="ml-2">abbr</code><br/>{% endhide %}
@@ -44,14 +44,14 @@ Text <sup>Superscripted</sup>{% hide %} <code class="ml-2">sup</code><br/>{% end
 {% endcapture %}
 {% include example.html code=code %}
 
-### Horizontal rules
+## Horizontal rules
 
 {% capture code %}
 <hr> 
 {% endcapture %}
 {% include example.html code=code %}
 
-#### Horizontal rules with label
+## Horizontal rules with label
 
 {% capture code %}
 <p>
@@ -79,7 +79,9 @@ Text <sup>Superscripted</sup>{% hide %} <code class="ml-2">sup</code><br/>{% end
 {% include example.html code=code %}
 
 
-### Optimized for Asian, African, and Middle Eastern alphabets
+## Optimized for different alphabets
+
+Tabler has been optimized to correctly display content in any language. The Tabler supports most Asian, African and Middle Eastern languages.
 
 {% capture code %}
 <h5>Chinese</h5>
@@ -114,7 +116,7 @@ Text <sup>Superscripted</sup>{% hide %} <code class="ml-2">sup</code><br/>{% end
 {% endcapture %}
 {% include example.html code=code %}
 
-### Text transform
+## Text transform
 
 Transform text in components with text capitalization classes.
 
@@ -125,7 +127,7 @@ Transform text in components with text capitalization classes.
 {% endcapture %}
 {% include example.html code=code %}
 
-### Letter spacing
+## Letter spacing
 
 Utilities for controlling the tracking (letter spacing) of an element.
 
@@ -136,7 +138,7 @@ Utilities for controlling the tracking (letter spacing) of an element.
 {% endcapture %}
 {% include example.html code=code %}
 
-### Line Height
+## Line Height
 
 Utilities for controlling the leading (line height) of an element.
 
@@ -148,7 +150,7 @@ Utilities for controlling the leading (line height) of an element.
 {% endcapture %}
 {% include example.html code=code %}
 
-### Antialiasing
+## Antialiasing
 
 Utilities for controlling the font smoothing of an element.
 
@@ -160,7 +162,7 @@ Use the `.antialiased` utility to render text using subpixel antialiasing or use
 {% endcapture %}
 {% include example.html code=code %}
 
-### Markdown elements
+## Markdown elements
 
 When you can't use the CSS classes you want, or when you just want to directly use HTML tags, use `.markdown` as container. It can handle almost any HTML tag.
 

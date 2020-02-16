@@ -3,7 +3,7 @@ title: Cursors
 menu: docs.cursors
 ---
 
-### Cursor utilities 
+## Cursor utilities 
 
 - `.cursor-auto`- cursor style depends on what's inside element
 - `.cursor-pointer` - pointing cursor

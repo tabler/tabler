@@ -5,7 +5,7 @@ description: A small, stand-alone script to automatically adjust textarea height
 done: true
 ---
 
-### Default markup
+## Default markup
 
 {% capture code %}
 <label class="form-label">Autosize example</label>

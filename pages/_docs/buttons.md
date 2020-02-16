@@ -4,10 +4,9 @@ icon: fe fe-plus-square
 description: Use Bootstrap’s custom button styles for actions in forms, dialogs, and more. Includes support for a handful of contextual variations, sizes, states, and more.
 bootstrap-link: components/buttons/
 done: true
-toc: true
 ---
 
-### Button tag
+## Button tag
 
 The `.btn` classes are designed to be used with the `<button>` element. However, you can also use these classes on `<a>` or `<input>` elements (though some browsers may apply a slightly different rendering).
 
@@ -21,7 +20,7 @@ The `.btn` classes are designed to be used with the `<button>` element. However,
 {% include example.html code=code wrapper="btn-list" centered=true %}
 
 
-### Button variations
+## Button variations
 
 Use any of the available button classes to quickly create a styled button . We provide a variety of colors for you to express different emotions.
 
@@ -34,7 +33,7 @@ Use any of the available button classes to quickly create a styled button . We p
 {% endcapture %}
 {% include example.html code=code wrapper="btn-list" centered=true %}
 
-### Disabled buttons
+## Disabled buttons
 
 Make buttons look inactive by adding the disabled boolean attribute to any `.btn` element. `<a>`s don’t support the disabled attribute, so you must add the `.disabled` class to make it visually appear disabled.
 
@@ -47,7 +46,7 @@ Make buttons look inactive by adding the disabled boolean attribute to any `.btn
 {% endcapture %}
 {% include example.html code=code wrapper="btn-list" centered=true %}
 
-### Color variations
+## Color variations
 
 The classic button, in different colors.
 
@@ -58,7 +57,7 @@ The classic button, in different colors.
 {% endcapture %}
 {% include example.html code=code wrapper="btn-list" centered=true %}
 
-### Ghost Buttons
+## Ghost Buttons
 
 Use `.btn-ghost-*` class for ghost buttons.
 
@@ -69,7 +68,7 @@ Use `.btn-ghost-*` class for ghost buttons.
 {% endcapture %}
 {% include example.html code=code wrapper="btn-list" centered=true %}
 
-### Square buttons
+## Square buttons
 
 Add `.btn-square` to button to remove border-radius.
 
@@ -82,7 +81,7 @@ Add `.btn-square` to button to remove border-radius.
 {% endcapture %}
 {% include example.html code=code wrapper="btn-list" centered=true %}
 
-### Pill buttons
+## Pill buttons
 
 Add `.btn-pill` class to any button to make them more rounded.
 
@@ -95,7 +94,7 @@ Add `.btn-pill` class to any button to make them more rounded.
 {% endcapture %}
 {% include example.html code=code wrapper="btn-list" centered=true %}
 
-### Outline buttons
+## Outline buttons
 
 In need of a button, but not the hefty background colors they bring? Replace the default modifier classes with the `.btn-outline-*` ones to remove all background images and colors on any button.
 
@@ -108,7 +107,7 @@ In need of a button, but not the hefty background colors they bring? Replace the
 {% endcapture %}
 {% include example.html code=code wrapper="btn-list" centered=true %}
 
-### Button size
+## Button size
 
 Add `.btn-lg` or `.btn-sm` for additional sizes.
 
@@ -132,7 +131,7 @@ Create block level buttons—those that span the full width of a parent—by add
 {% endcapture %}
 {% include example.html code=code wrapper="btn-list" centered=true %}
 
-### Button with icon
+## Button with icon
 
 Basic buttons are traditional buttons with borders and background with an extra commponent like an icon. You can place it either on the left or the right which ever you want with different color opitons.
 
@@ -166,7 +165,7 @@ Comment
 {% endcapture %}
 {% include example.html code=code wrapper="btn-list" centered=true %}
 
-### Social buttons
+## Social buttons
 
 A button can be formatted to link to a social website
 
@@ -191,7 +190,7 @@ You can use only icons.
 {% endcapture %}
 {% include example.html code=code wrapper="btn-list" centered=true %}
 
-### Icon buttons
+## Icon buttons
 
 Icon only button. Add `.btn-icon` class to remove unnecessary padding from button.
 
@@ -207,7 +206,7 @@ Icon only button. Add `.btn-icon` class to remove unnecessary padding from butto
 {% include example.html code=code wrapper="btn-list" centered=true %}
 
 
-### Button dropdown
+## Button dropdown
 
 Wrap the dropdown’s toggle (your button or link) and the dropdown menu within `.dropdown`, or another element that declares `position: relative;`. Dropdowns can be triggered from `<a>` or `<button>` elements to better fit your potential needs.
 
@@ -235,7 +234,7 @@ Wrap the dropdown’s toggle (your button or link) and the dropdown menu within 
 {% endcapture %}
 {% include example.html code=code wrapper="btn-list" centered=true %}
 
-### Loading button
+## Loading button
 
 Add `.btn-loading` to use a loading state on a button. The width of the button depends on the length of the text inside.
 
@@ -253,7 +252,7 @@ Add `.btn-loading` to use a loading state on a button. The width of the button d
 {% endcapture %}
 {% include example.html code=code centered=true %}
 
-### List of buttons
+## List of buttons
 
 You can now create a list of buttons with the `.btn-list` container.
 
@@ -320,7 +319,7 @@ Use the `.text-center` or the `.text-right` modifiers to alter the alignment.
 {% endcapture %}
 {% include example.html code=code %}
 
-### Button with avatar
+## Button with avatar
 
 {% capture code %}
 <a href="#" class="btn btn-secondary">
