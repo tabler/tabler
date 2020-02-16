@@ -54,19 +54,19 @@ module Jekyll
     end
   end
 
-  Jekyll::Hooks.register :pages, :post_init do |page|
+  Jekyll::Hooks.register [:pages, :docs], :post_init do |page|
     $captured_global = {}
     $captured_once = {}
     $captured_libs = []
   end
 
-  Jekyll::Hooks.register :pages, :post_render do |page|
+  Jekyll::Hooks.register [:pages, :docs], :post_render do |page|
     $captured_global = {}
     $captured_once = {}
     $captured_libs = []
   end
 
-  Jekyll::Hooks.register :pages, :pre_render do |page, jekyll|
+  Jekyll::Hooks.register [:pages, :docs], :pre_render do |page, jekyll|
     jekyll.site['captured_global'] = $captured_global
     jekyll.site['captured_once'] = $captured_once
     jekyll.site['captured_libs'] = $captured_libs
