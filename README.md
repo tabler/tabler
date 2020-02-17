@@ -31,6 +31,21 @@ We've created this admin panel for everyone who wants to create templates based 
 
 <a href="https://github.com/sponsors/codecalm" target="_blank"><img src="/static/sponsor-banner-readme.png?raw=true" alt="Sponsor Tabler" /></a>
 
+## Tabler Sponsors
+
+Support this project by becoming a sponsor. Your logo will be displayed here with a link to your website. [[Become a sponsor](https://opencollective.com/tabler#sponsor)]
+
+<a href="https://opencollective.com/tabler/sponsor/0/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/0/avatar.svg"></a>
+<a href="https://opencollective.com/tabler/sponsor/1/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/1/avatar.svg"></a>
+<a href="https://opencollective.com/tabler/sponsor/2/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/2/avatar.svg"></a>
+<a href="https://opencollective.com/tabler/sponsor/3/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/3/avatar.svg"></a>
+<a href="https://opencollective.com/tabler/sponsor/4/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/4/avatar.svg"></a>
+<a href="https://opencollective.com/tabler/sponsor/5/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/5/avatar.svg"></a>
+<a href="https://opencollective.com/tabler/sponsor/6/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/6/avatar.svg"></a>
+<a href="https://opencollective.com/tabler/sponsor/7/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/7/avatar.svg"></a>
+<a href="https://opencollective.com/tabler/sponsor/8/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/8/avatar.svg"></a>
+<a href="https://opencollective.com/tabler/sponsor/9/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/9/avatar.svg"></a>
+
 
 ## Setup environment
 
@@ -92,21 +107,6 @@ Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com
 
 <a href="https://opencollective.com/tabler#backers" target="_blank"><img src="https://opencollective.com/tabler/backers.svg?width=890"></a>
 
-
-## Sponsors
-
-Support this project by becoming a sponsor. Your logo will be displayed here with a link to your website. [[Become a sponsor](https://opencollective.com/tabler#sponsor)]
-
-<a href="https://opencollective.com/tabler/sponsor/0/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/0/avatar.svg"></a>
-<a href="https://opencollective.com/tabler/sponsor/1/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/1/avatar.svg"></a>
-<a href="https://opencollective.com/tabler/sponsor/2/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/2/avatar.svg"></a>
-<a href="https://opencollective.com/tabler/sponsor/3/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/3/avatar.svg"></a>
-<a href="https://opencollective.com/tabler/sponsor/4/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/4/avatar.svg"></a>
-<a href="https://opencollective.com/tabler/sponsor/5/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/5/avatar.svg"></a>
-<a href="https://opencollective.com/tabler/sponsor/6/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/6/avatar.svg"></a>
-<a href="https://opencollective.com/tabler/sponsor/7/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/7/avatar.svg"></a>
-<a href="https://opencollective.com/tabler/sponsor/8/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/8/avatar.svg"></a>
-<a href="https://opencollective.com/tabler/sponsor/9/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/9/avatar.svg"></a>
 
 
 ## Copyright and license
