@@ -1,7 +1,7 @@
 ---
 title: Buttons
 icon: fe fe-plus-square
-description: Use Bootstrap’s custom button styles for actions in forms, dialogs, and more. Includes support for a handful of contextual variations, sizes, states, and more.
+description: Use button styles that best suit your designs and encourage users to take the desired actions. You can customise the button's properties to improve the user experience of your website or system, changing the size, shape, colour and many more.
 bootstrap-link: components/buttons/
 done: true
 ---
@@ -9,7 +9,7 @@ done: true
 
 ## Button tag
 
-The `.btn` classes are designed to be used with the `<button>` element. However, you can also use these classes on `<a>` or `<input>` elements (though some browsers may apply a slightly different rendering).
+As one of the most common elements of UI design, buttons have a very important function of engaging users with your website or system and guiding them in their actions. Use the `.btn` classes with the `<button>` element and add additional styling that will make your buttons serve their purpose and draw users' attention. 
 
 {% capture code %}
 <a href="#" class="btn btn-primary" role="button">Link</a>
@@ -23,7 +23,7 @@ The `.btn` classes are designed to be used with the `<button>` element. However,
 
 ## Button variations
 
-Use any of the available button classes to quickly create a styled button . We provide a variety of colors for you to express different emotions.
+Use the button classes that correspond to the function of your button. The big range of available colours will help you show your buttons' purpose and make them easy to spot.
 
 {% capture code %}
 {% for button in site.button-variants %}
@@ -37,7 +37,7 @@ Use any of the available button classes to quickly create a styled button . We p
 
 ## Disabled buttons
 
-Make buttons look inactive by adding the disabled boolean attribute to any `.btn` element. `<a>`s don’t support the disabled attribute, so you must add the `.disabled` class to make it visually appear disabled.
+Make buttons look inactive to show that an action is possible once the user meets certain criteria, such as completing the required fields to submit a form. 
 
 {% capture code %}
 {% for button in site.button-variants %}
@@ -51,7 +51,7 @@ Make buttons look inactive by adding the disabled boolean attribute to any `.btn
 
 ## Color variations
 
-The classic button, in different colors.
+Choose the right colour for your button to make it go well with your design and draw users' attention. Button colours can have a big influence on users' decisions, which is why it's important to choose them based on the intended purpose.
 
 {% capture code %}
 {% for button in site.colors %}
@@ -61,9 +61,9 @@ The classic button, in different colors.
 {% include example.html code=code wrapper="btn-list" centered=true %}
 
 
-## Ghost Buttons
+## Ghost buttons
 
-Use `.btn-ghost-*` class for ghost buttons.
+Use the `.btn-ghost-*` class to make your button look simple yet aesthetically appealing. Ghost buttons help focus users' attention on the website's primary design, at the same time encouraging them to take action. 
 
 {% capture code %}
 {% for button in site.button-variants %}
@@ -75,7 +75,7 @@ Use `.btn-ghost-*` class for ghost buttons.
 
 ## Square buttons
 
-Add `.btn-square` to button to remove border-radius.
+Use the `.btn-square` class to remove border-radius, if you want the corners of your button to be square, not rounded.
 
 {% capture code %}
 {% for button in site.button-variants %}
@@ -89,7 +89,7 @@ Add `.btn-square` to button to remove border-radius.
 
 ## Pill buttons
 
-Add `.btn-pill` class to any button to make them more rounded.
+Add the `.btn-pill` class to your button to make it rounded and give it a modern and attractive look.
 
 {% capture code %}
 {% for button in site.button-variants %}
@@ -103,7 +103,7 @@ Add `.btn-pill` class to any button to make them more rounded.
 
 ## Outline buttons
 
-In need of a button, but not the hefty background colors they bring? Replace the default modifier classes with the `.btn-outline-*` ones to remove all background images and colors on any button.
+Replace the default modifier class with the `.btn-outline-*` class, if you want to remove the colour and background of your button and give it a more subtle look. Outline buttons are perfect to use as secondary buttons, as they don't distract users from the main action.
 
 {% capture code %}
 {% for button in site.button-variants %}
@@ -117,7 +117,7 @@ In need of a button, but not the hefty background colors they bring? Replace the
 
 ## Button size
 
-Add `.btn-lg` or `.btn-sm` for additional sizes.
+Add `.btn-lg` or `.btn-sm` to change the size of your button and differentiate those which should have primary focus from those of secondary importance. Adapt the button size to your design and encourage users to take actions.  
 
 {% capture code %}
 <button type="button" class="btn btn-primary btn-lg">Large button</button>
@@ -131,7 +131,7 @@ Add `.btn-lg` or `.btn-sm` for additional sizes.
 {% endcapture %}
 {% include example.html code=code wrapper="btn-list" centered=true %}
 
-Create block level buttons—those that span the full width of a parent—by adding `.btn-block`.
+You can also add the `.btn-block` class to create block level buttons which span the full width of a parent.
 
 {% capture code %}
 <button type="button" class="btn btn-primary btn-block">Block level button</button>
@@ -140,9 +140,9 @@ Create block level buttons—those that span the full width of a parent—by add
 {% include example.html code=code wrapper="btn-list" centered=true %}
 
 
-## Button with icon
+## Buttons with icons
 
-Basic buttons are traditional buttons with borders and background with an extra commponent like an icon. You can place it either on the left or the right which ever you want with different color opitons.
+Label your button with text and add an icon to communiacate the action and make it easy to identify for users. Icons are easily recognised and improve the aesthetics of your button design, giving it a modern and atractive look.  
 
 Icons can be found [**here**](/docs/icons.html#icons)
 
@@ -177,7 +177,7 @@ Comment
 
 ## Social buttons
 
-A button can be formatted to link to a social website
+You can use the icons of popular social networking sites, which users are familiar with. Thanks to buttons with social media icons users can share content or follow a website with just one click, without leaving the website.
 
 {% capture code %}
 {% for button in site.socials %}
@@ -189,7 +189,7 @@ A button can be formatted to link to a social website
 {% endcapture %}
 {% include example.html code=code wrapper="btn-list" centered=true %}
 
-You can use only icons.
+You can also add an icon without the name of a social networking site, if you want to display more buttons on a small space.
 
 {% capture code %}
 {% for button in site.socials %}
@@ -203,7 +203,7 @@ You can use only icons.
 
 ## Icon buttons
 
-Icon only button. Add `.btn-icon` class to remove unnecessary padding from button.
+Add the `.btn-icon` class to remove unnecessary padding from your button and use an icon without any additional label. Thanks to that, you can save space and make the action easy to recognise for international users.
 
 {% capture code %}
 {% include ui/button.html icon="activity" color="primary" icon-only=true %}
@@ -217,9 +217,9 @@ Icon only button. Add `.btn-icon` class to remove unnecessary padding from butto
 {% include example.html code=code wrapper="btn-list" centered=true %}
 
 
-## Button dropdown
+## Dropdown buttons
 
-Wrap the dropdown’s toggle (your button or link) and the dropdown menu within `.dropdown`, or another element that declares `position: relative;`. Dropdowns can be triggered from `<a>` or `<button>` elements to better fit your potential needs.
+Create a dropdown button that will encourage users to click for more options. You can add a label with an icon or remove the label and add an icon on its own if you want to save space. Choose the option that will best suit your design and improve the user experience. 
 
 {% capture code %}
 <div class="dropdown">
@@ -246,9 +246,9 @@ Wrap the dropdown’s toggle (your button or link) and the dropdown menu within 
 {% include example.html code=code wrapper="btn-list" centered=true %}
 
 
-## Loading button
+## Loading buttons
 
-Add `.btn-loading` to use a loading state on a button. The width of the button depends on the length of the text inside.
+Add the `.btn-loading` class to show a button's loading state, which can be useful in the case of operations that take longer to process. Thanks to that, users will be aware of the current state of their action and won't give it up before it's finished.
 
 
 {% capture code %}
@@ -267,7 +267,7 @@ Add `.btn-loading` to use a loading state on a button. The width of the button d
 
 ## List of buttons
 
-You can now create a list of buttons with the `.btn-list` container.
+Create a list of buttons using the `.btn-list` container to display different actions a user can take. If you add aditional styling, such as colours, you will be able to focus users' attention on a particular action or suggest the result. 
 
 {% capture code %}
 <div class="btn-list">
@@ -278,7 +278,7 @@ You can now create a list of buttons with the `.btn-list` container.
 {% endcapture %}
 {% include example.html code=code %}
 
-If the list is very long, it will automatically wrap on multiple lines, while keeping all buttons evenly spaced.
+If the list is long, it will be wrapped and some buttons will be moved to the next line, keeping them all evenly spaced.
 
 {% capture code %}
 <div class="btn-list">
@@ -305,7 +305,7 @@ If the list is very long, it will automatically wrap on multiple lines, while ke
 {% endcapture %}
 {% include example.html code=code %}
 
-Use the `.text-center` or the `.text-right` modifiers to alter the alignment.
+Use the `.text-center` or the `.text-right` modifiers to change the buttons' alignment and place them where they suit best.
 
 {% capture code %}
 <div class="btn-list justify-content-center">
@@ -333,7 +333,9 @@ Use the `.text-center` or the `.text-right` modifiers to alter the alignment.
 {% include example.html code=code %}
 
 
-## Button with avatar
+## Buttons with avatars
+
+Use buttons with avatars to simplify the process of interaction and make your design more personalised. Buttons can contain avatars and labels or only avatars, if displayed on a smaller space. 
 
 {% capture code %}
 <a href="#" class="btn btn-secondary">
