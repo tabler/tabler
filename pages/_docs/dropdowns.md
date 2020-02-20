@@ -1,13 +1,13 @@
 ---
 title: Dropdowns
-description: Toggle contextual overlays for displaying lists of links and more with the Bootstrap dropdown plugin.
+description: Use dropdowns to display lists of options or include more positions in a menu without overwhelming users with too many buttons and long lists. Dropdowns facilitate users' interaction with your website or software and make your design look clear.
 bootstrap-link: components/dropdowns
 ---
 
 
 ## Default dropdown
 
-Any single `.btn` can be turned into a dropdown toggle with some markup changes. Here’s how you can do this:
+With small markup changes, you can turn any `.btn` into a dropdown toggle and use it to display more options for users to choose from. Start with the default dropdown and then use additional classes to make your dropdown more user-friendly.
 
 {% capture code %}
 {% include ui/dropdown-menu.html show=true %}
@@ -17,7 +17,7 @@ Any single `.btn` can be turned into a dropdown toggle with some markup changes.
 
 ## Dropdown divider
 
-Separate groups of related menu items with a divider.
+Use dropdown dividers to separate groups of dropdown items for greater clarity.
 
 {% capture code %}
 {% include ui/dropdown-menu.html show=true separated=true %}
@@ -27,6 +27,8 @@ Separate groups of related menu items with a divider.
 
 ## Active state
 
+Make a dropdown item look active, so that it highlights when a user hovers over a given option.
+
 {% capture code %}
 {% include ui/dropdown-menu.html show=true active=true %}
 {% endcapture %}
@@ -34,6 +36,8 @@ Separate groups of related menu items with a divider.
 
 
 ## Disabled state
+
+Make a dropdown item look disabled to display options which are currently not available but can activate once certain conditions are met.
 
 {% capture code %}
 {% include ui/dropdown-menu.html show=true disabled=true %}
@@ -43,7 +47,7 @@ Separate groups of related menu items with a divider.
 
 ## Dropdown header
 
-Add a header to label sections of actions in any dropdown menu.
+Add a dropdown header to group dropdown items into sections and name them accordingly. 
 
 {% capture code %}
 {% include ui/dropdown-menu.html show=true header=true %}
@@ -53,6 +57,8 @@ Add a header to label sections of actions in any dropdown menu.
 
 ## Dropdown with icons
 
+Use icons in your dropdowns to add more visual content and make the options easy to identify for users.
+
 {% capture code %}
 {% include ui/dropdown-menu.html show=true icons=true header=true %}
 {% endcapture %}
@@ -60,6 +66,8 @@ Add a header to label sections of actions in any dropdown menu.
 
 
 ## Dropdown with arrow
+
+Add an arrow that points at the dropdown button.
 
 {% capture code %}
 {% include ui/dropdown-menu.html show=true arrow=true %}
@@ -69,6 +77,8 @@ Add a header to label sections of actions in any dropdown menu.
 
 ## Dropdown with badge
 
+Add a badge to your dropdown items to show additional information related to an item or distinguish it from other elements.
+
 {% capture code %}
 {% include ui/dropdown-menu.html show=true badge=true %}
 {% endcapture %}
@@ -76,6 +86,8 @@ Add a header to label sections of actions in any dropdown menu.
 
 
 ## Dropdown with checkboxes
+
+Use dropdowns with checkboxes to allow users to select options from a predefined list. Dropdowns with checkboxes are particularly useful for filtering. 
 
 {% capture code %}
 {% include ui/dropdown-menu.html show=true check=true %}
@@ -90,6 +102,8 @@ Add a header to label sections of actions in any dropdown menu.
 
 ## Dark dropdown
 
+Make your dropdown suit the dark mode of your website or software. 
+
 {% capture code %}
 {% include ui/dropdown-menu.html show=true dark=true header=true icons=true arrow=true %}
 {% endcapture %}
@@ -97,6 +111,8 @@ Add a header to label sections of actions in any dropdown menu.
 
 
 ## Dropdown with card content
+
+Use a dropdown with card content to make it easy for users to get more information on a given subject and avoid ovewhelming them with too much content at once.
 
 {% capture code %}
 {% include ui/button.html color="secondary" text="Button" %}
