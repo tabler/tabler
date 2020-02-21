@@ -1,12 +1,14 @@
 ---
 title: Tooltips
 menu: docs.tooltips
-description: The Tooltip component is small pop-up box that appears when the user moves the mouse pointer over an element.
+description: Tooltips are text labels which appear when a user hovers over an interface element. They explain the interface elements that may be unclear for users and guide them when they need help. If used properly, tooltips can significantly enhance user experience and add value to your website or software.
 bootstrap-link: components/tooltips/
 ---
 
 
 ## Default markup
+
+Use the default markup to create tooltips that will help users understand particular elements of your interface. You can decide where the text label is to be displayed - at the top, bottom or on either side of the element. 
 
 {% capture code %}
 <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
@@ -26,6 +28,8 @@ bootstrap-link: components/tooltips/
 
 
 ## Tooltip with HTML
+
+If the default tooltip is not enough, you can add the option to use HTML code in the text to highlight particular bits of information and make the content more attractive.
 
 {% capture code %}
 <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-html="true" title="<em>Tooltip</em> <u>with</u> <b>HTML</b>">
