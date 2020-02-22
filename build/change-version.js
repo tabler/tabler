@@ -85,7 +85,10 @@ function main(args) {
 		'node_modules',
 		'vendor',
 		'demo',
-		'dist'
+		'dist',
+		'pages/.jekyll-cache',
+		'.cache',
+		'.idea'
 	]);
 
 	const INCLUDED_EXTENSIONS = new Set([
