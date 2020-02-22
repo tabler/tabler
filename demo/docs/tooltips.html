@@ -1,7 +1,7 @@
 <!doctype html>
 <!--
 * Tabler - Premium and Open Source dashboard template with responsive and high quality UI.
-* @version 1.0.0-alpha.3
+* @version 1.0.0-alpha.4
 * @link https://github.com/tabler/tabler
 * Copyright 2018-2019 The Tabler Authors
 * Copyright 2018-2019 codecalm.net Paweł Kuna
@@ -24,23 +24,24 @@
     <meta name="robots" content="noindex,nofollow,noarchive"/>
     <link rel="icon" href="../favicon.ico" type="image/x-icon"/>
     <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon"/>
-    <meta name="description" content="The Tooltip component is small pop-up box that appears when the user moves the mouse pointer over an element."/>
+    <meta name="description" content="Tooltips are text labels which appear when a user hovers over an interface element. They explain the interface elements that may be unclear for users and guide them when they need help. If used properly, tooltips can significantly enhance user experience and add value to your website or software."/>
     <!-- Libs CSS -->
-    <link href="../dist/libs/jqvmap/dist/jqvmap.min.css?1582145729" rel="stylesheet"/>
-    <link href="../dist/libs/selectize/dist/css/selectize.css?1582145729" rel="stylesheet"/>
-    <link href="../dist/libs/fullcalendar/core/main.min.css?1582145729" rel="stylesheet"/>
-    <link href="../dist/libs/fullcalendar/daygrid/main.min.css?1582145729" rel="stylesheet"/>
-    <link href="../dist/libs/fullcalendar/timegrid/main.min.css?1582145729" rel="stylesheet"/>
-    <link href="../dist/libs/fullcalendar/list/main.min.css?1582145729" rel="stylesheet"/>
-    <link href="../dist/libs/flatpickr/dist/flatpickr.min.css?1582145729" rel="stylesheet"/>
-    <link href="../dist/libs/nouislider/distribute/nouislider.min.css?1582145729" rel="stylesheet"/>
+    <link href="../dist/libs/jqvmap/dist/jqvmap.min.css?1582373134" rel="stylesheet"/>
+    <link href="../dist/libs/selectize/dist/css/selectize.css?1582373134" rel="stylesheet"/>
+    <link href="../dist/libs/fullcalendar/core/main.min.css?1582373134" rel="stylesheet"/>
+    <link href="../dist/libs/fullcalendar/daygrid/main.min.css?1582373134" rel="stylesheet"/>
+    <link href="../dist/libs/fullcalendar/timegrid/main.min.css?1582373134" rel="stylesheet"/>
+    <link href="../dist/libs/fullcalendar/list/main.min.css?1582373134" rel="stylesheet"/>
+    <link href="../dist/libs/flatpickr/dist/flatpickr.min.css?1582373134" rel="stylesheet"/>
+    <link href="../dist/libs/nouislider/distribute/nouislider.min.css?1582373134" rel="stylesheet"/>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.8.0/mapbox-gl.css" rel="stylesheet"/>
     <!-- Tabler Core -->
-    <link href="../dist/css/tabler.min.css?1582145729" rel="stylesheet"/>
+    <link href="../dist/css/tabler.min.css?1582373134" rel="stylesheet"/>
     <!-- Tabler Plugins -->
-    <link href="../dist/css/tabler-flags.min.css?1582145729" rel="stylesheet"/>
-    <link href="../dist/css/tabler-payments.min.css?1582145729" rel="stylesheet"/>
-    <link href="../dist/css/tabler-buttons.min.css?1582145729" rel="stylesheet"/>
-    <link href="../dist/css/demo.min.css?1582145729" rel="stylesheet"/>
+    <link href="../dist/css/tabler-flags.min.css?1582373134" rel="stylesheet"/>
+    <link href="../dist/css/tabler-payments.min.css?1582373134" rel="stylesheet"/>
+    <link href="../dist/css/tabler-buttons.min.css?1582373134" rel="stylesheet"/>
+    <link href="../dist/css/demo.min.css?1582373134" rel="stylesheet"/>
     <style>
       body {
       	display: none;
@@ -103,6 +104,16 @@
                   <li >
                     <a class="dropdown-item" href="../modals.html" >
                       Modals
+                    </a>
+                  </li>
+                  <li >
+                    <a class="dropdown-item" href="../maps.html" >
+                      Maps
+                    </a>
+                  </li>
+                  <li >
+                    <a class="dropdown-item" href="../maps-vector.html" >
+                      Vector maps
                     </a>
                   </li>
                   <li >
@@ -425,16 +436,16 @@
             <img src="../static/logo-small.svg" alt="Tabler" class="navbar-brand-logo navbar-brand-logo-small">
           </a>
           <form class="form-inline w-50 mr-4 d-none d-md-flex">
-            <div class="input-icon w100">
+            <div class="input-icon w-100">
               <span class="input-icon-addon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
               </span>
-              <input type="text" class="form-control form-control-flush w100" placeholder="Search…">
+              <input type="text" class="form-control form-control-flush w-100" placeholder="Search…">
             </div>
           </form>
           <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown">
-              <a href="#" class="nav-link" data-toggle="dropdown">
+              <a href="#" class="nav-link px-0" data-toggle="dropdown">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
               </a>
               <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
@@ -454,7 +465,7 @@
             <li class="nav-item dropdown">
               <a href="#" class="nav-link" data-toggle="dropdown">
                 <span class="flag flag-country-us mr-1"></span>
-                English
+                <span class="d-none d-lg-inline">English</span>
               </a>
               <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-right" style="">
                 <a href="#" class="dropdown-item"><span class="flag flag-country-de mr-1"></span>
@@ -480,9 +491,9 @@
               </div>
             </li>
             <li class="nav-item dropdown pl-2">
-              <a href="#" class="nav-link d-flex lh-1 text-inherit py-0 text-left" data-toggle="dropdown">
+              <a href="#" class="nav-link d-flex lh-1 text-inherit p-0 text-left" data-toggle="dropdown">
                 <span class="avatar" style="background-image: url(../static/avatars/000m.jpg)"></span>
-                <div class="d-none d-md-block pl-2">
+                <div class="d-none d-lg-block pl-2">
                   <div>Paweł Kuna</div>
                   <div class="mt-1 small text-muted">Founder</div>
                 </div>
@@ -545,8 +556,9 @@
                         </a>
                       </p>
                     </div>
-                    <p>The Tooltip component is small pop-up box that appears when the user moves the mouse pointer over an element.</p>
+                    <p>Tooltips are text labels which appear when a user hovers over an interface element. They explain the interface elements that may be unclear for users and guide them when they need help. If used properly, tooltips can significantly enhance user experience and add value to your website or software.</p>
                     <h2 id="default-markup">Default markup</h2>
+                    <p>Use the default markup to create tooltips that will help users understand particular elements of your interface. You can decide where the text label is to be displayed - at the top, bottom or on either side of the element.</p>
                     <div class="example no_toc_section">
                       <div class="example-content">
                         <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
@@ -580,6 +592,7 @@
                       </figure>
                     </div>
                     <h2 id="tooltip-with-html">Tooltip with HTML</h2>
+                    <p>If the default tooltip is not enough, you can add the option to use HTML code in the text to highlight particular bits of information and make the content more attractive.</p>
                     <div class="example no_toc_section">
                       <div class="example-content">
                         <button type="button" class="btn btn-secondary" data-toggle="tooltip" data-html="true" title="&lt;em&gt;Tooltip&lt;/em&gt; &lt;u&gt;with&lt;/u&gt; &lt;b&gt;HTML&lt;/b&gt;">
@@ -602,23 +615,15 @@ Tooltip with HTML
         </div>
         <footer class="footer footer-transparent">
           <div class="container">
-            <div class="row align-items-center flex-row-reverse">
-              <div class="col-auto ml-lg-auto">
-                <div class="row align-items-center">
-                  <div class="col-auto">
-                    <ul class="list-inline list-inline-dots mb-0">
-                      <li class="list-inline-item"><a href="../docs/index.html" class="link-secondary">Documentation</a></li>
-                      <li class="list-inline-item"><a href="../faq.html" class="link-secondary">FAQ</a></li>
-                    </ul>
-                  </div>
-                  <div class="col-auto">
-                    <a href="https://github.com/tabler/tabler" class="btn btn-secondary btn-sm" target="_blank" rel="noreferrer">
-                      Source code
-                    </a>
-                  </div>
-                </div>
+            <div class="row text-center align-items-center flex-row-reverse">
+              <div class="col-lg-auto ml-lg-auto">
+                <ul class="list-inline list-inline-dots mb-0">
+                  <li class="list-inline-item"><a href="../docs/index.html" class="link-secondary">Documentation</a></li>
+                  <li class="list-inline-item"><a href="../faq.html" class="link-secondary">FAQ</a></li>
+                  <li class="list-inline-item"><a href="https://github.com/tabler/tabler" target="_blank" class="link-secondary">Source code</a></li>
+                </ul>
               </div>
-              <div class="col-12 col-lg-auto mt-3 mt-lg-0 text-center">
+              <div class="col-12 col-lg-auto mt-3 mt-lg-0">
                 Copyright © 2020
                 <a href=".." class="link-secondary">Tabler</a>.
                 All rights reserved.
@@ -690,10 +695,10 @@ Tooltip with HTML
       </div>
     </div>
     <!-- Libs JS -->
-    <script src="../dist/libs/bootstrap/dist/js/bootstrap.bundle.js?1582145729"></script>
-    <script src="../dist/libs/jquery/dist/jquery.slim.min.js?1582145729"></script>
+    <script src="../dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js?1582373134"></script>
+    <script src="../dist/libs/jquery/dist/jquery.slim.min.js?1582373134"></script>
     <!-- Tabler Core -->
-    <script src="../dist/js/tabler.min.js?1582145729"></script>
+    <script src="../dist/js/tabler.min.js?1582373134"></script>
     <script>
       (function() {
       	var navbarPrimary = document.getElementById('navbar-primary'),

@@ -1,7 +1,7 @@
 <!doctype html>
 <!--
 * Tabler - Premium and Open Source dashboard template with responsive and high quality UI.
-* @version 1.0.0-alpha.3
+* @version 1.0.0-alpha.4
 * @link https://github.com/tabler/tabler
 * Copyright 2018-2019 The Tabler Authors
 * Copyright 2018-2019 codecalm.net Paweł Kuna
@@ -24,23 +24,24 @@
     <meta name="robots" content="noindex,nofollow,noarchive"/>
     <link rel="icon" href="../favicon.ico" type="image/x-icon"/>
     <link rel="shortcut icon" href="../favicon.ico" type="image/x-icon"/>
-    <meta name="description" content="Use Bootstrap’s custom button styles for actions in forms, dialogs, and more. Includes support for a handful of contextual variations, sizes, states, and more."/>
+    <meta name="description" content="Use button styles that best suit your designs and encourage users to take the desired actions. You can customise the button&#39;s properties to improve the user experience of your website or system, changing the size, shape, colour and many more."/>
     <!-- Libs CSS -->
-    <link href="../dist/libs/jqvmap/dist/jqvmap.min.css?1582145729" rel="stylesheet"/>
-    <link href="../dist/libs/selectize/dist/css/selectize.css?1582145729" rel="stylesheet"/>
-    <link href="../dist/libs/fullcalendar/core/main.min.css?1582145729" rel="stylesheet"/>
-    <link href="../dist/libs/fullcalendar/daygrid/main.min.css?1582145729" rel="stylesheet"/>
-    <link href="../dist/libs/fullcalendar/timegrid/main.min.css?1582145729" rel="stylesheet"/>
-    <link href="../dist/libs/fullcalendar/list/main.min.css?1582145729" rel="stylesheet"/>
-    <link href="../dist/libs/flatpickr/dist/flatpickr.min.css?1582145729" rel="stylesheet"/>
-    <link href="../dist/libs/nouislider/distribute/nouislider.min.css?1582145729" rel="stylesheet"/>
+    <link href="../dist/libs/jqvmap/dist/jqvmap.min.css?1582373134" rel="stylesheet"/>
+    <link href="../dist/libs/selectize/dist/css/selectize.css?1582373134" rel="stylesheet"/>
+    <link href="../dist/libs/fullcalendar/core/main.min.css?1582373134" rel="stylesheet"/>
+    <link href="../dist/libs/fullcalendar/daygrid/main.min.css?1582373134" rel="stylesheet"/>
+    <link href="../dist/libs/fullcalendar/timegrid/main.min.css?1582373134" rel="stylesheet"/>
+    <link href="../dist/libs/fullcalendar/list/main.min.css?1582373134" rel="stylesheet"/>
+    <link href="../dist/libs/flatpickr/dist/flatpickr.min.css?1582373134" rel="stylesheet"/>
+    <link href="../dist/libs/nouislider/distribute/nouislider.min.css?1582373134" rel="stylesheet"/>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.8.0/mapbox-gl.css" rel="stylesheet"/>
     <!-- Tabler Core -->
-    <link href="../dist/css/tabler.min.css?1582145729" rel="stylesheet"/>
+    <link href="../dist/css/tabler.min.css?1582373134" rel="stylesheet"/>
     <!-- Tabler Plugins -->
-    <link href="../dist/css/tabler-flags.min.css?1582145729" rel="stylesheet"/>
-    <link href="../dist/css/tabler-payments.min.css?1582145729" rel="stylesheet"/>
-    <link href="../dist/css/tabler-buttons.min.css?1582145729" rel="stylesheet"/>
-    <link href="../dist/css/demo.min.css?1582145729" rel="stylesheet"/>
+    <link href="../dist/css/tabler-flags.min.css?1582373134" rel="stylesheet"/>
+    <link href="../dist/css/tabler-payments.min.css?1582373134" rel="stylesheet"/>
+    <link href="../dist/css/tabler-buttons.min.css?1582373134" rel="stylesheet"/>
+    <link href="../dist/css/demo.min.css?1582373134" rel="stylesheet"/>
     <style>
       body {
       	display: none;
@@ -103,6 +104,16 @@
                   <li >
                     <a class="dropdown-item" href="../modals.html" >
                       Modals
+                    </a>
+                  </li>
+                  <li >
+                    <a class="dropdown-item" href="../maps.html" >
+                      Maps
+                    </a>
+                  </li>
+                  <li >
+                    <a class="dropdown-item" href="../maps-vector.html" >
+                      Vector maps
                     </a>
                   </li>
                   <li >
@@ -425,16 +436,16 @@
             <img src="../static/logo-small.svg" alt="Tabler" class="navbar-brand-logo navbar-brand-logo-small">
           </a>
           <form class="form-inline w-50 mr-4 d-none d-md-flex">
-            <div class="input-icon w100">
+            <div class="input-icon w-100">
               <span class="input-icon-addon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
               </span>
-              <input type="text" class="form-control form-control-flush w100" placeholder="Search…">
+              <input type="text" class="form-control form-control-flush w-100" placeholder="Search…">
             </div>
           </form>
           <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown">
-              <a href="#" class="nav-link" data-toggle="dropdown">
+              <a href="#" class="nav-link px-0" data-toggle="dropdown">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
               </a>
               <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
@@ -454,7 +465,7 @@
             <li class="nav-item dropdown">
               <a href="#" class="nav-link" data-toggle="dropdown">
                 <span class="flag flag-country-us mr-1"></span>
-                English
+                <span class="d-none d-lg-inline">English</span>
               </a>
               <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-right" style="">
                 <a href="#" class="dropdown-item"><span class="flag flag-country-de mr-1"></span>
@@ -480,9 +491,9 @@
               </div>
             </li>
             <li class="nav-item dropdown pl-2">
-              <a href="#" class="nav-link d-flex lh-1 text-inherit py-0 text-left" data-toggle="dropdown">
+              <a href="#" class="nav-link d-flex lh-1 text-inherit p-0 text-left" data-toggle="dropdown">
                 <span class="avatar" style="background-image: url(../static/avatars/000m.jpg)"></span>
-                <div class="d-none d-md-block pl-2">
+                <div class="d-none d-lg-block pl-2">
                   <div>Paweł Kuna</div>
                   <div class="mt-1 small text-muted">Founder</div>
                 </div>
@@ -531,18 +542,18 @@
                   <li class="toc-entry toc-h2"><a href="#button-variations">Button variations</a></li>
                   <li class="toc-entry toc-h2"><a href="#disabled-buttons">Disabled buttons</a></li>
                   <li class="toc-entry toc-h2"><a href="#color-variations">Color variations</a></li>
-                  <li class="toc-entry toc-h2"><a href="#ghost-buttons">Ghost Buttons</a></li>
+                  <li class="toc-entry toc-h2"><a href="#ghost-buttons">Ghost buttons</a></li>
                   <li class="toc-entry toc-h2"><a href="#square-buttons">Square buttons</a></li>
                   <li class="toc-entry toc-h2"><a href="#pill-buttons">Pill buttons</a></li>
                   <li class="toc-entry toc-h2"><a href="#outline-buttons">Outline buttons</a></li>
                   <li class="toc-entry toc-h2"><a href="#button-size">Button size</a></li>
-                  <li class="toc-entry toc-h2"><a href="#button-with-icon">Button with icon</a></li>
+                  <li class="toc-entry toc-h2"><a href="#buttons-with-icons">Buttons with icons</a></li>
                   <li class="toc-entry toc-h2"><a href="#social-buttons">Social buttons</a></li>
                   <li class="toc-entry toc-h2"><a href="#icon-buttons">Icon buttons</a></li>
-                  <li class="toc-entry toc-h2"><a href="#button-dropdown">Button dropdown</a></li>
-                  <li class="toc-entry toc-h2"><a href="#loading-button">Loading button</a></li>
+                  <li class="toc-entry toc-h2"><a href="#dropdown-buttons">Dropdown buttons</a></li>
+                  <li class="toc-entry toc-h2"><a href="#loading-buttons">Loading buttons</a></li>
                   <li class="toc-entry toc-h2"><a href="#list-of-buttons">List of buttons</a></li>
-                  <li class="toc-entry toc-h2"><a href="#button-with-avatar">Button with avatar</a></li>
+                  <li class="toc-entry toc-h2"><a href="#buttons-with-avatars">Buttons with avatars</a></li>
                 </ul>
               </div>
             </div>
@@ -559,9 +570,9 @@
                         </a>
                       </p>
                     </div>
-                    <p>Use Bootstrap’s custom button styles for actions in forms, dialogs, and more. Includes support for a handful of contextual variations, sizes, states, and more.</p>
+                    <p>Use button styles that best suit your designs and encourage users to take the desired actions. You can customise the button's properties to improve the user experience of your website or system, changing the size, shape, colour and many more.</p>
                     <h2 id="button-tag">Button tag</h2>
-                    <p>The <code class="highlighter-rouge">.btn</code> classes are designed to be used with the <code class="highlighter-rouge">&lt;button&gt;</code> element. However, you can also use these classes on <code class="highlighter-rouge">&lt;a&gt;</code> or <code class="highlighter-rouge">&lt;input&gt;</code> elements (though some browsers may apply a slightly different rendering).</p>
+                    <p>As one of the most common elements of UI design, buttons have a very important function of engaging users with your website or system and guiding them in their actions. Use the <code class="highlighter-rouge">.btn</code> classes with the <code class="highlighter-rouge">&lt;button&gt;</code> element and add additional styling that will make your buttons serve their purpose and draw users’ attention.</p>
                     <div class="example no_toc_section example-centered">
                       <div class="example-content">
                         <div class="btn-list">
@@ -583,7 +594,7 @@
                       </figure>
                     </div>
                     <h2 id="button-variations">Button variations</h2>
-                    <p>Use any of the available button classes to quickly create a styled button . We provide a variety of colors for you to express different emotions.</p>
+                    <p>Use the button classes that correspond to the function of your button. The big range of available colours will help you show your buttons’ purpose and make them easy to spot.</p>
                     <div class="example no_toc_section example-centered">
                       <div class="example-content">
                         <div class="btn-list">
@@ -649,7 +660,7 @@
                       </figure>
                     </div>
                     <h2 id="disabled-buttons">Disabled buttons</h2>
-                    <p>Make buttons look inactive by adding the disabled boolean attribute to any <code class="highlighter-rouge">.btn</code> element. <code class="highlighter-rouge">&lt;a&gt;</code>s don’t support the disabled attribute, so you must add the <code class="highlighter-rouge">.disabled</code> class to make it visually appear disabled.</p>
+                    <p>Make buttons look inactive to show that an action is possible once the user meets certain criteria, such as completing the required fields to submit a form.</p>
                     <div class="example no_toc_section example-centered">
                       <div class="example-content">
                         <div class="btn-list">
@@ -715,7 +726,7 @@
                       </figure>
                     </div>
                     <h2 id="color-variations">Color variations</h2>
-                    <p>The classic button, in different colors.</p>
+                    <p>Choose the right colour for your button to make it go well with your design and draw users’ attention. Button colours can have a big influence on users’ decisions, which is why it’s important to choose them based on the intended purpose.</p>
                     <div class="example no_toc_section example-centered">
                       <div class="example-content">
                         <div class="btn-list">
@@ -752,8 +763,8 @@
 <span class="nt">&lt;a</span> <span class="na">href=</span><span class="s">"#"</span> <span class="na">class=</span><span class="s">"btn btn-gray"</span><span class="nt">&gt;</span>Gray<span class="nt">&lt;/a&gt;</span></code></pre>
                       </figure>
                     </div>
-                    <h2 id="ghost-buttons">Ghost Buttons</h2>
-                    <p>Use <code class="highlighter-rouge">.btn-ghost-*</code> class for ghost buttons.</p>
+                    <h2 id="ghost-buttons">Ghost buttons</h2>
+                    <p>Use the <code class="highlighter-rouge">.btn-ghost-*</code> class to make your button look simple yet aesthetically appealing. Ghost buttons help focus users’ attention on the website’s primary design, at the same time encouraging them to take action.</p>
                     <div class="example no_toc_section example-centered">
                       <div class="example-content">
                         <div class="btn-list">
@@ -783,7 +794,7 @@
                       </figure>
                     </div>
                     <h2 id="square-buttons">Square buttons</h2>
-                    <p>Add <code class="highlighter-rouge">.btn-square</code> to button to remove border-radius.</p>
+                    <p>Use the <code class="highlighter-rouge">.btn-square</code> class to remove border-radius, if you want the corners of your button to be square, not rounded.</p>
                     <div class="example no_toc_section example-centered">
                       <div class="example-content">
                         <div class="btn-list">
@@ -849,7 +860,7 @@
                       </figure>
                     </div>
                     <h2 id="pill-buttons">Pill buttons</h2>
-                    <p>Add <code class="highlighter-rouge">.btn-pill</code> class to any button to make them more rounded.</p>
+                    <p>Add the <code class="highlighter-rouge">.btn-pill</code> class to your button to make it rounded and give it a modern and attractive look.</p>
                     <div class="example no_toc_section example-centered">
                       <div class="example-content">
                         <div class="btn-list">
@@ -915,7 +926,7 @@
                       </figure>
                     </div>
                     <h2 id="outline-buttons">Outline buttons</h2>
-                    <p>In need of a button, but not the hefty background colors they bring? Replace the default modifier classes with the <code class="highlighter-rouge">.btn-outline-*</code> ones to remove all background images and colors on any button.</p>
+                    <p>Replace the default modifier class with the <code class="highlighter-rouge">.btn-outline-*</code> class, if you want to remove the colour and background of your button and give it a more subtle look. Outline buttons are perfect to use as secondary buttons, as they don’t distract users from the main action.</p>
                     <div class="example no_toc_section example-centered">
                       <div class="example-content">
                         <div class="btn-list">
@@ -981,7 +992,7 @@
                       </figure>
                     </div>
                     <h2 id="button-size">Button size</h2>
-                    <p>Add <code class="highlighter-rouge">.btn-lg</code> or <code class="highlighter-rouge">.btn-sm</code> for additional sizes.</p>
+                    <p>Add <code class="highlighter-rouge">.btn-lg</code> or <code class="highlighter-rouge">.btn-sm</code> to change the size of your button and differentiate those which should have primary focus from those of secondary importance. Adapt the button size to your design and encourage users to take actions.</p>
                     <div class="example no_toc_section example-centered">
                       <div class="example-content">
                         <div class="btn-list">
@@ -1010,7 +1021,7 @@
 <span class="nt">&lt;button</span> <span class="na">type=</span><span class="s">"button"</span> <span class="na">class=</span><span class="s">"btn btn-secondary btn-sm"</span><span class="nt">&gt;</span>Small button<span class="nt">&lt;/button&gt;</span></code></pre>
                       </figure>
                     </div>
-                    <p>Create block level buttons—those that span the full width of a parent—by adding <code class="highlighter-rouge">.btn-block</code>.</p>
+                    <p>You can also add the <code class="highlighter-rouge">.btn-block</code> class to create block level buttons which span the full width of a parent.</p>
                     <div class="example no_toc_section example-centered">
                       <div class="example-content">
                         <div class="btn-list">
@@ -1025,8 +1036,8 @@
 <span class="nt">&lt;button</span> <span class="na">type=</span><span class="s">"button"</span> <span class="na">class=</span><span class="s">"btn btn-secondary btn-block"</span><span class="nt">&gt;</span>Block level button<span class="nt">&lt;/button&gt;</span></code></pre>
                       </figure>
                     </div>
-                    <h2 id="button-with-icon">Button with icon</h2>
-                    <p>Basic buttons are traditional buttons with borders and background with an extra commponent like an icon. You can place it either on the left or the right which ever you want with different color opitons.</p>
+                    <h2 id="buttons-with-icons">Buttons with icons</h2>
+                    <p>Label your button with text and add an icon to communiacate the action and make it easy to identify for users. Icons are easily recognised and improve the aesthetics of your button design, giving it a modern and atractive look.</p>
                     <p>Icons can be found <a href="/docs/icons.html#icons"><strong>here</strong></a></p>
                     <div class="example no_toc_section example-centered">
                       <div class="example-content">
@@ -1087,7 +1098,7 @@
                       </figure>
                     </div>
                     <h2 id="social-buttons">Social buttons</h2>
-                    <p>A button can be formatted to link to a social website</p>
+                    <p>You can use the icons of popular social networking sites, which users are familiar with. Thanks to buttons with social media icons users can share content or follow a website with just one click, without leaving the website.</p>
                     <div class="example no_toc_section example-centered">
                       <div class="example-content">
                         <div class="btn-list">
@@ -1238,7 +1249,7 @@
 <span class="nt">&lt;/a&gt;</span></code></pre>
                       </figure>
                     </div>
-                    <p>You can use only icons.</p>
+                    <p>You can also add an icon without the name of a social networking site, if you want to display more buttons on a small space.</p>
                     <div class="example no_toc_section example-centered">
                       <div class="example-content">
                         <div class="btn-list">
@@ -1362,7 +1373,7 @@
                       </figure>
                     </div>
                     <h2 id="icon-buttons">Icon buttons</h2>
-                    <p>Icon only button. Add <code class="highlighter-rouge">.btn-icon</code> class to remove unnecessary padding from button.</p>
+                    <p>Add the <code class="highlighter-rouge">.btn-icon</code> class to remove unnecessary padding from your button and use an icon without any additional label. Thanks to that, you can save space and make the action easy to recognise for international users.</p>
                     <div class="example no_toc_section example-centered">
                       <div class="example-content">
                         <div class="btn-list">
@@ -1415,8 +1426,8 @@
 <span class="nt">&lt;/a&gt;</span></code></pre>
                       </figure>
                     </div>
-                    <h2 id="button-dropdown">Button dropdown</h2>
-                    <p>Wrap the dropdown’s toggle (your button or link) and the dropdown menu within <code class="highlighter-rouge">.dropdown</code>, or another element that declares <code class="highlighter-rouge">position: relative;</code>. Dropdowns can be triggered from <code class="highlighter-rouge">&lt;a&gt;</code> or <code class="highlighter-rouge">&lt;button&gt;</code> elements to better fit your potential needs.</p>
+                    <h2 id="dropdown-buttons">Dropdown buttons</h2>
+                    <p>Create a dropdown button that will encourage users to click for more options. You can add a label with an icon or remove the label and add an icon on its own if you want to save space. Choose the option that will best suit your design and improve the user experience.</p>
                     <div class="example no_toc_section example-centered">
                       <div class="example-content">
                         <div class="btn-list">
@@ -1507,8 +1518,8 @@
 <span class="nt">&lt;/div&gt;</span></code></pre>
                       </figure>
                     </div>
-                    <h2 id="loading-button">Loading button</h2>
-                    <p>Add <code class="highlighter-rouge">.btn-loading</code> to use a loading state on a button. The width of the button depends on the length of the text inside.</p>
+                    <h2 id="loading-buttons">Loading buttons</h2>
+                    <p>Add the <code class="highlighter-rouge">.btn-loading</code> class to show a button’s loading state, which can be useful in the case of operations that take longer to process. Thanks to that, users will be aware of the current state of their action and won’t give it up before it’s finished.</p>
                     <div class="example no_toc_section example-centered">
                       <div class="example-content">
                         <div class="btn-list">
@@ -1548,7 +1559,7 @@
                       </figure>
                     </div>
                     <h2 id="list-of-buttons">List of buttons</h2>
-                    <p>You can now create a list of buttons with the <code class="highlighter-rouge">.btn-list</code> container.</p>
+                    <p>Create a list of buttons using the <code class="highlighter-rouge">.btn-list</code> container to display different actions a user can take. If you add aditional styling, such as colours, you will be able to focus users’ attention on a particular action or suggest the result.</p>
                     <div class="example no_toc_section">
                       <div class="example-content">
                         <div class="btn-list">
@@ -1567,7 +1578,7 @@
 <span class="nt">&lt;/div&gt;</span></code></pre>
                       </figure>
                     </div>
-                    <p>If the list is very long, it will automatically wrap on multiple lines, while keeping all buttons evenly spaced.</p>
+                    <p>If the list is long, it will be wrapped and some buttons will be moved to the next line, keeping them all evenly spaced.</p>
                     <div class="example no_toc_section">
                       <div class="example-content">
                         <div class="btn-list">
@@ -1618,7 +1629,7 @@
 <span class="nt">&lt;/div&gt;</span></code></pre>
                       </figure>
                     </div>
-                    <p>Use the <code class="highlighter-rouge">.text-center</code> or the <code class="highlighter-rouge">.text-right</code> modifiers to alter the alignment.</p>
+                    <p>Use the <code class="highlighter-rouge">.text-center</code> or the <code class="highlighter-rouge">.text-right</code> modifiers to change the buttons’ alignment and place them where they suit best.</p>
                     <div class="example no_toc_section">
                       <div class="example-content">
                         <div class="btn-list justify-content-center">
@@ -1669,7 +1680,8 @@
 <span class="nt">&lt;/div&gt;</span></code></pre>
                       </figure>
                     </div>
-                    <h2 id="button-with-avatar">Button with avatar</h2>
+                    <h2 id="buttons-with-avatars">Buttons with avatars</h2>
+                    <p>Use buttons with avatars to simplify the process of interaction and make your design more personalised. Buttons can contain avatars and labels or only avatars, if displayed on a smaller space.</p>
                     <div class="example no_toc_section example-centered">
                       <div class="example-content">
                         <div class="btn-list">
@@ -1712,23 +1724,15 @@
         </div>
         <footer class="footer footer-transparent">
           <div class="container">
-            <div class="row align-items-center flex-row-reverse">
-              <div class="col-auto ml-lg-auto">
-                <div class="row align-items-center">
-                  <div class="col-auto">
-                    <ul class="list-inline list-inline-dots mb-0">
-                      <li class="list-inline-item"><a href="../docs/index.html" class="link-secondary">Documentation</a></li>
-                      <li class="list-inline-item"><a href="../faq.html" class="link-secondary">FAQ</a></li>
-                    </ul>
-                  </div>
-                  <div class="col-auto">
-                    <a href="https://github.com/tabler/tabler" class="btn btn-secondary btn-sm" target="_blank" rel="noreferrer">
-                      Source code
-                    </a>
-                  </div>
-                </div>
+            <div class="row text-center align-items-center flex-row-reverse">
+              <div class="col-lg-auto ml-lg-auto">
+                <ul class="list-inline list-inline-dots mb-0">
+                  <li class="list-inline-item"><a href="../docs/index.html" class="link-secondary">Documentation</a></li>
+                  <li class="list-inline-item"><a href="../faq.html" class="link-secondary">FAQ</a></li>
+                  <li class="list-inline-item"><a href="https://github.com/tabler/tabler" target="_blank" class="link-secondary">Source code</a></li>
+                </ul>
               </div>
-              <div class="col-12 col-lg-auto mt-3 mt-lg-0 text-center">
+              <div class="col-12 col-lg-auto mt-3 mt-lg-0">
                 Copyright © 2020
                 <a href=".." class="link-secondary">Tabler</a>.
                 All rights reserved.
@@ -1800,10 +1804,10 @@
       </div>
     </div>
     <!-- Libs JS -->
-    <script src="../dist/libs/bootstrap/dist/js/bootstrap.bundle.js?1582145729"></script>
-    <script src="../dist/libs/jquery/dist/jquery.slim.min.js?1582145729"></script>
+    <script src="../dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js?1582373134"></script>
+    <script src="../dist/libs/jquery/dist/jquery.slim.min.js?1582373134"></script>
     <!-- Tabler Core -->
-    <script src="../dist/js/tabler.min.js?1582145729"></script>
+    <script src="../dist/js/tabler.min.js?1582373134"></script>
     <script>
       (function() {
       	var navbarPrimary = document.getElementById('navbar-primary'),

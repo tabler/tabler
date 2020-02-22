@@ -1,7 +1,7 @@
 <!doctype html>
 <!--
 * Tabler - Premium and Open Source dashboard template with responsive and high quality UI.
-* @version 1.0.0-alpha.3
+* @version 1.0.0-alpha.4
 * @link https://github.com/tabler/tabler
 * Copyright 2018-2019 The Tabler Authors
 * Copyright 2018-2019 codecalm.net Paweł Kuna
@@ -25,21 +25,22 @@
     <link rel="icon" href="./favicon.ico" type="image/x-icon"/>
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon"/>
     <!-- Libs CSS -->
-    <link href="./dist/libs/jqvmap/dist/jqvmap.min.css?1582145729" rel="stylesheet"/>
-    <link href="./dist/libs/selectize/dist/css/selectize.css?1582145729" rel="stylesheet"/>
-    <link href="./dist/libs/fullcalendar/core/main.min.css?1582145729" rel="stylesheet"/>
-    <link href="./dist/libs/fullcalendar/daygrid/main.min.css?1582145729" rel="stylesheet"/>
-    <link href="./dist/libs/fullcalendar/timegrid/main.min.css?1582145729" rel="stylesheet"/>
-    <link href="./dist/libs/fullcalendar/list/main.min.css?1582145729" rel="stylesheet"/>
-    <link href="./dist/libs/flatpickr/dist/flatpickr.min.css?1582145729" rel="stylesheet"/>
-    <link href="./dist/libs/nouislider/distribute/nouislider.min.css?1582145729" rel="stylesheet"/>
+    <link href="./dist/libs/jqvmap/dist/jqvmap.min.css?1582373134" rel="stylesheet"/>
+    <link href="./dist/libs/selectize/dist/css/selectize.css?1582373134" rel="stylesheet"/>
+    <link href="./dist/libs/fullcalendar/core/main.min.css?1582373134" rel="stylesheet"/>
+    <link href="./dist/libs/fullcalendar/daygrid/main.min.css?1582373134" rel="stylesheet"/>
+    <link href="./dist/libs/fullcalendar/timegrid/main.min.css?1582373134" rel="stylesheet"/>
+    <link href="./dist/libs/fullcalendar/list/main.min.css?1582373134" rel="stylesheet"/>
+    <link href="./dist/libs/flatpickr/dist/flatpickr.min.css?1582373134" rel="stylesheet"/>
+    <link href="./dist/libs/nouislider/distribute/nouislider.min.css?1582373134" rel="stylesheet"/>
+    <link href="https://api.mapbox.com/mapbox-gl-js/v1.8.0/mapbox-gl.css" rel="stylesheet"/>
     <!-- Tabler Core -->
-    <link href="./dist/css/tabler.min.css?1582145729" rel="stylesheet"/>
+    <link href="./dist/css/tabler.min.css?1582373134" rel="stylesheet"/>
     <!-- Tabler Plugins -->
-    <link href="./dist/css/tabler-flags.min.css?1582145729" rel="stylesheet"/>
-    <link href="./dist/css/tabler-payments.min.css?1582145729" rel="stylesheet"/>
-    <link href="./dist/css/tabler-buttons.min.css?1582145729" rel="stylesheet"/>
-    <link href="./dist/css/demo.min.css?1582145729" rel="stylesheet"/>
+    <link href="./dist/css/tabler-flags.min.css?1582373134" rel="stylesheet"/>
+    <link href="./dist/css/tabler-payments.min.css?1582373134" rel="stylesheet"/>
+    <link href="./dist/css/tabler-buttons.min.css?1582373134" rel="stylesheet"/>
+    <link href="./dist/css/demo.min.css?1582373134" rel="stylesheet"/>
     <style>
       body {
       	display: none;
@@ -71,9 +72,9 @@
                   <span class="nav-link-title">Form elements</span>
                 </a>
               </li>
-              <li class="nav-item">
+              <li class="nav-item active">
                 <a class="nav-link dropdown-toggle" href="#navbar-base" data-toggle="dropdown" role="button"
-			   aria-expanded="false" >
+			   aria-expanded="true" >
                   <span class="nav-link-icon"><svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><line x1="16.5" y1="9.4" x2="7.5" y2="4.21"></line><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
                   </span>
                   <span class="nav-link-title">Base</span>
@@ -105,7 +106,17 @@
                     </a>
                   </li>
                   <li >
-                    <a class="dropdown-item" href="./charts.html" >
+                    <a class="dropdown-item" href="./maps.html" >
+                      Maps
+                    </a>
+                  </li>
+                  <li >
+                    <a class="dropdown-item" href="./maps-vector.html" >
+                      Vector maps
+                    </a>
+                  </li>
+                  <li >
+                    <a class="dropdown-item active" href="./charts.html" >
                       Charts
                     </a>
                   </li>
@@ -424,16 +435,16 @@
             <img src="./static/logo-small.svg" alt="Tabler" class="navbar-brand-logo navbar-brand-logo-small">
           </a>
           <form class="form-inline w-50 mr-4 d-none d-md-flex">
-            <div class="input-icon w100">
+            <div class="input-icon w-100">
               <span class="input-icon-addon">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
               </span>
-              <input type="text" class="form-control form-control-flush w100" placeholder="Search…">
+              <input type="text" class="form-control form-control-flush w-100" placeholder="Search…">
             </div>
           </form>
           <ul class="navbar-nav ml-auto">
             <li class="nav-item dropdown">
-              <a href="#" class="nav-link" data-toggle="dropdown">
+              <a href="#" class="nav-link px-0" data-toggle="dropdown">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
               </a>
               <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
@@ -453,7 +464,7 @@
             <li class="nav-item dropdown">
               <a href="#" class="nav-link" data-toggle="dropdown">
                 <span class="flag flag-country-us mr-1"></span>
-                English
+                <span class="d-none d-lg-inline">English</span>
               </a>
               <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-right" style="">
                 <a href="#" class="dropdown-item"><span class="flag flag-country-de mr-1"></span>
@@ -479,9 +490,9 @@
               </div>
             </li>
             <li class="nav-item dropdown pl-2">
-              <a href="#" class="nav-link d-flex lh-1 text-inherit py-0 text-left" data-toggle="dropdown">
+              <a href="#" class="nav-link d-flex lh-1 text-inherit p-0 text-left" data-toggle="dropdown">
                 <span class="avatar" style="background-image: url(./static/avatars/000m.jpg)"></span>
-                <div class="d-none d-md-block pl-2">
+                <div class="d-none d-lg-block pl-2">
                   <div>Paweł Kuna</div>
                   <div class="mt-1 small text-muted">Founder</div>
                 </div>
@@ -520,13 +531,6 @@
               <div class="card">
                 <div class="card-body">
                   <div id="chart-tasks-overview" ></div>
-                </div>
-              </div>
-            </div>
-            <div class="col-lg-6 col-xl-4">
-              <div class="card">
-                <div class="card-body">
-                  <div id="chart-mentions" ></div>
                 </div>
               </div>
             </div>
@@ -688,23 +692,15 @@
         </div>
         <footer class="footer footer-transparent">
           <div class="container">
-            <div class="row align-items-center flex-row-reverse">
-              <div class="col-auto ml-lg-auto">
-                <div class="row align-items-center">
-                  <div class="col-auto">
-                    <ul class="list-inline list-inline-dots mb-0">
-                      <li class="list-inline-item"><a href="./docs/index.html" class="link-secondary">Documentation</a></li>
-                      <li class="list-inline-item"><a href="./faq.html" class="link-secondary">FAQ</a></li>
-                    </ul>
-                  </div>
-                  <div class="col-auto">
-                    <a href="https://github.com/tabler/tabler" class="btn btn-secondary btn-sm" target="_blank" rel="noreferrer">
-                      Source code
-                    </a>
-                  </div>
-                </div>
+            <div class="row text-center align-items-center flex-row-reverse">
+              <div class="col-lg-auto ml-lg-auto">
+                <ul class="list-inline list-inline-dots mb-0">
+                  <li class="list-inline-item"><a href="./docs/index.html" class="link-secondary">Documentation</a></li>
+                  <li class="list-inline-item"><a href="./faq.html" class="link-secondary">FAQ</a></li>
+                  <li class="list-inline-item"><a href="https://github.com/tabler/tabler" target="_blank" class="link-secondary">Source code</a></li>
+                </ul>
               </div>
-              <div class="col-12 col-lg-auto mt-3 mt-lg-0 text-center">
+              <div class="col-12 col-lg-auto mt-3 mt-lg-0">
                 Copyright © 2020
                 <a href="." class="link-secondary">Tabler</a>.
                 All rights reserved.
@@ -776,11 +772,11 @@
       </div>
     </div>
     <!-- Libs JS -->
-    <script src="./dist/libs/bootstrap/dist/js/bootstrap.bundle.js?1582145729"></script>
-    <script src="./dist/libs/jquery/dist/jquery.slim.min.js?1582145729"></script>
-    <script src="./dist/libs/apexcharts/dist/apexcharts.min.js?1582145729"></script>
+    <script src="./dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js?1582373134"></script>
+    <script src="./dist/libs/jquery/dist/jquery.slim.min.js?1582373134"></script>
+    <script src="./dist/libs/apexcharts/dist/apexcharts.min.js?1582373134"></script>
     <!-- Tabler Core -->
-    <script src="./dist/js/tabler.min.js?1582145729"></script>
+    <script src="./dist/js/tabler.min.js?1582373134"></script>
     <script>
       // @formatter:off
       document.addEventListener("DOMContentLoaded", function () {
@@ -839,86 +835,6 @@
       			},
       		},
       		colors: ["#206bc4"],
-      		legend: {
-      			show: false,
-      		},
-      	})).render();
-      });
-      // @formatter:on
-    </script>
-    <script>
-      // @formatter:off
-      document.addEventListener("DOMContentLoaded", function () {
-      	window.ApexCharts && (new ApexCharts(document.getElementById('chart-mentions'), {
-      		chart: {
-      			type: "bar",
-      			fontFamily: 'inherit',
-      			height: 240,
-      			parentHeightOffset: 0,
-      			toolbar: {
-      				show: false,
-      			},
-      			animations: {
-      				enabled: false
-      			},
-      			stacked: true,
-      		},
-      		plotOptions: {
-      			bar: {
-      				columnWidth: '50%',
-      			}
-      		},
-      		dataLabels: {
-      			enabled: false,
-      		},
-      		fill: {
-      			opacity: 1,
-      		},
-      		series: [{
-      			name: "Web",
-      			data: [1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 2, 12, 5, 8, 22, 6, 8, 6, 4, 1, 8, 24, 29, 51, 40, 47, 23, 26, 50, 26, 41, 22, 46, 47, 81, 46, 6]
-      		},{
-      			name: "Social",
-      			data: [2, 5, 4, 3, 3, 1, 4, 7, 5, 1, 2, 5, 3, 2, 6, 7, 7, 1, 5, 5, 2, 12, 4, 6, 18, 3, 5, 2, 13, 15, 20, 47, 18, 15, 11, 10, 0]
-      		},{
-      			name: "Other",
-      			data: [2, 9, 1, 7, 8, 3, 6, 5, 5, 4, 6, 4, 1, 9, 3, 6, 7, 5, 2, 8, 4, 9, 1, 2, 6, 7, 5, 1, 8, 3, 2, 3, 4, 9, 7, 1, 6]
-      		}],
-      		grid: {
-      			padding: {
-      				top: -20,
-      				right: 0,
-      				left: -4,
-      				bottom: -8
-      			},
-      			strokeDashArray: 4,
-      			xaxis: {
-      				lines: {
-      					show: true
-      				}
-      			},
-      		},
-      		xaxis: {
-      			labels: {
-      				padding: 0
-      			},
-      			tooltip: {
-      				enabled: false
-      			},
-      			axisBorder: {
-      				show: false,
-      			},
-      			type: 'datetime',
-      		},
-      		yaxis: {
-      			labels: {
-      				padding: 4
-      			},
-      		},
-      		labels: [
-      			'2020-06-20', '2020-06-21', '2020-06-22', '2020-06-23', '2020-06-24', '2020-06-25', '2020-06-26', '2020-06-27', '2020-06-28', '2020-06-29', '2020-06-30', '2020-07-01', '2020-07-02', '2020-07-03', '2020-07-04', '2020-07-05', '2020-07-06', '2020-07-07', '2020-07-08', '2020-07-09', '2020-07-10', '2020-07-11', '2020-07-12', '2020-07-13', '2020-07-14', '2020-07-15', '2020-07-16', '2020-07-17', '2020-07-18', '2020-07-19', '2020-07-20', '2020-07-21', '2020-07-22', '2020-07-23', '2020-07-24', '2020-07-25', '2020-07-26'
-      		],
-      		colors: ["#206bc4", "#79a6dc", "#bfe399"],
       		legend: {
       			show: false,
       		},
