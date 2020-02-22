@@ -1,10 +1,3 @@
-/*
- * Tabler (v0.9.0): scss-compile.js
- * Copyright 2018-2019 The Tabler Authors
- * Copyright 2018-2019 codecalm
- * Licensed under MIT (https://github.com/tabler/tabler/blob/master/LICENSE)
- */
-
 const BUNDLE = process.env.BUNDLE === 'true';
 
 const path = require('path'),
