@@ -1,8 +1,9 @@
 {% assign key = include.key | default: 'people' %}
+{% assign id = include.select-id | default: key %}
 {% assign data = site.data.selects[key] %}
 {% assign options = data.options %}
 
-<select name="{{ key }}" id="select-{{ key }}" class="form-select"{% if data.multiple %} multiple{% endif %}>
+<select name="{{ key }}" id="select-{{ id }}" class="form-select{% if include.state %} is-{{ include.state }}{% endif %}"{% if data.multiple %} multiple{% endif %}>
 	{% if options == 'people' %}
 		{% for person in site.data.people limit: 20 %}
 		{% capture avatar %}
@@ -32,7 +33,7 @@
 {% capture_global scripts %}
 <script>
 	$(document).ready(function () {
-		$('#select-{{ key }}').selectize({
+		$('#select-{{ id }}').selectize({
 			{% if key == "countries" %}
 			render: {
 				option: function (data, escape) {
