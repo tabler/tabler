@@ -165,6 +165,7 @@ Vertical navbar
       height: 2.5rem;
       padding-left: $navbar-vertical-padding;
       padding-right: $navbar-vertical-padding;
+      justify-content: start;
     }
 
     .nav-item {
@@ -265,6 +266,7 @@ All navbars
   padding-top: 0;
   padding-bottom: 0;
   min-height: $navbar-height;
+  box-shadow: 0 0 0 1px $border-color;
 
   @media print {
     display: none;
@@ -288,14 +290,41 @@ All navbars
     margin-right: .5rem;
     line-height: .99;
   }
+
+  .navbar-nav {
+    align-items: center;
+
+    .nav-link {
+      color: inherit;
+      opacity: $text-muted-opacity;
+      transition: .3s opacity;
+      justify-content: center;
+
+      &:hover {
+        color: inherit;
+        opacity: 1;
+      }
+
+      &.disabled {
+        color: inherit;
+        opacity: $text-muted-opacity / 3;
+      }
+    }
+
+    .show > .nav-link,
+    .active > .nav-link,
+    .nav-link.show,
+    .nav-link.active {
+      color: inherit;
+      opacity: 1;
+    }
+  }
 }
 
 .navbar-expand {
   @each $breakpoint, $breakpoint-max-width in $grid-breakpoints {
     &-#{$breakpoint} {
       @include media-breakpoint-up($breakpoint) {
-
-
         .navbar-nav {
           margin-left: (-$navbar-nav-link-padding-x);
 
@@ -334,41 +363,6 @@ Navbar brand
 
 .navbar-brand-logo-small {
   display: none;
-}
-
-/**
-Navbar colors
- */
-.navbar {
-  box-shadow: 0 0 0 1px $border-color;
-
-  .navbar-nav {
-    align-items: center;
-
-    .nav-link {
-      color: inherit;
-      opacity: $text-muted-opacity;
-      transition: .3s opacity;
-
-      &:hover {
-        color: inherit;
-        opacity: 1;
-      }
-
-      &.disabled {
-        color: inherit;
-        opacity: $text-muted-opacity / 3;
-      }
-    }
-
-    .show > .nav-link,
-    .active > .nav-link,
-    .nav-link.show,
-    .nav-link.active {
-      color: inherit;
-      opacity: 1;
-    }
-  }
 }
 
 .navbar-light {
