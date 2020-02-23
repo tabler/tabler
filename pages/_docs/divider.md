@@ -1,12 +1,14 @@
 ---
 title: Divider
-description: A divider visually segments content into groups
+description: Dividers help organise content and make the interface layout clear and uncluttered. Greater clarity adds up to better user experience and enhanced interaction with a website or app.  
 bootstrap-link: components/dropdowns/#dividers
 done: true
 ---
 
 
 ## Default markup
+
+Use dividers to visually separate content into parts. You can use a line only or add text that will be centered by default.   
 
 {% capture code %}
 <p>
@@ -21,6 +23,8 @@ done: true
 
 
 ## Text position
+
+You can modify the position of the text which is to be included in a separator and make it left- or right-aligned. Otherwise, the text will remain centered.
 
 {% capture code %}
 <p>
@@ -44,7 +48,7 @@ done: true
 
 ## Divider color
 
-Customize the color of the divider. You can click [here]({% docs_url colors %}) to see the list of available colors.
+Customise the colour of dividers to make them go well with your design. Click [here]({% docs_url colors %}) to see the list of available colours.
 
 {% capture code %}
 <p>
