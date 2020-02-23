@@ -17,6 +17,35 @@ The `.table` class adds basic styling to a table:
 {% include example.html code=code %}
 
 
+
+## Responsive tables
+
+Across each breakpoint, use `.table-responsive` class for horizontal scrolling tables. Use `.table-responsive{-sm|-md|-lg|-xl}` as needed to create responsive tables up to a specific breakpoint. From that breakpoint and up, the table will behave normally and not scroll horizontally.
+
+{% capture code %}
+<table class="table table-responsive">
+    <thead>
+    <tr>
+        <th>#</th>
+        {% for i in (1..10) %}
+        <th class="text-nowrap">Heading {{ i }}</th>
+        {% endfor %}
+    </tr>
+    </thead>
+    <tbody>
+    {% for j in (1..2) %}
+    <tr>
+        <th>{{ j }}</th>
+        {% for i in (1..10) %}
+        <td>Cell</td>
+        {% endfor %}
+    </tr>
+    {% endfor %}
+    </tbody>
+</table>
+{% endcapture %}
+{% include example.html code=code %}
+
 ## No wrap
 
 Prevents table cell content from wrapping to another line.
