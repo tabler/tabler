@@ -1,6 +1,6 @@
 {% append_lib autosize %}
 
-<textarea class="form-control" data-toggle="autosize" placeholder="{{ include.placeholder | default: 'Typing something…' }}"></textarea>
+<textarea class="form-control{% if include.class %} {{ include.class }}{% endif %}" data-toggle="autosize" placeholder="{{ include.placeholder | default: 'Typing something…' }}"{% if include.rows %} rows="{{ include.rows }}"{% endif %}></textarea>
 
 {% capture_once scripts %}
 <script>
