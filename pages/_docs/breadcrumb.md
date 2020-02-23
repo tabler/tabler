@@ -1,14 +1,14 @@
 ---
 title: Breadcrumb
 menu: docs.breadcrumb
-description: Indicate the current page’s location within a navigational hierarchy that automatically adds separators via CSS.
+description: Breadcrumbs are used to show the current website or app location and reduce the number of actions users have to take. Thanks to breadcrumbs, they can easily navigate within the website hierarchy and better understand its structure.
 bootstrap-link: components/breadcrumb/
 ---
 
 
 ## Default markup
 
-The dividers are automatically created in the content of the `:before` pseudo-element of li tags. You can inform the current page using the `active` modifier in a `li` tag. It will disable the navigation of inner links.
+Add the `:before` pseudo-element in `li` tags to use the default separators. The `active` modifier in a `li` tag will help you indicate the current page location and facilitate navigation within your website or app. 
 
 {% capture code %}
 {% include ui/breadcrumb.html %}
@@ -18,7 +18,7 @@ The dividers are automatically created in the content of the `:before` pseudo-el
 
 ## Breadcrumb variations
 
-You can add more variations by modify `$breadcrumb-variants` variable in Tabler config.
+If you wish to use different separators, modify the `$breadcrumb-variants` variable in the Tabler config. Depending on the aesthetics of your design, you can choose dots, bullets or arrows.
 
 {% capture code %}
 {% include ui/breadcrumb.html class="breadcrumb-dots" %}
@@ -37,6 +37,8 @@ You can add more variations by modify `$breadcrumb-variants` variable in Tabler 
 
 
 ## Alternate version
+
+Use the `breadcrumb-alternate` class to make the breadcrumb colours more neutral, retaining its function of showing the current location within an interface.  
 
 {% capture code %}
 {% include ui/breadcrumb.html class="breadcrumb-alternate" %}
