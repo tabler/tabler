@@ -1,7 +1,5 @@
 'use strict';
 
-import {Dropdown, Tooltip, Popover} from 'bootstrap';
-import 'popper.js';
 import {CountUp} from "countup.js";
 
 (function () {
@@ -10,7 +8,7 @@ import {CountUp} from "countup.js";
 	 */
 	var dropdownElementList = [].slice.call(document.querySelectorAll('[data-toggle="dropdown"]'));
 	dropdownElementList.map(function (dropdownToggleEl) {
-		return new Dropdown(dropdownToggleEl, {})
+		return new bootstrap.Dropdown(dropdownToggleEl, {})
 	});
 
 	/**
@@ -18,7 +16,7 @@ import {CountUp} from "countup.js";
 	 */
 	var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="tooltip"]'));
 	tooltipTriggerList.map(function (tooltipTriggerEl) {
-		return new Tooltip(tooltipTriggerEl, {})
+		return new bootstrap.Tooltip(tooltipTriggerEl, {})
 	});
 
 	/*
@@ -26,7 +24,7 @@ import {CountUp} from "countup.js";
 	 */
 	var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="popover"]'));
 	popoverTriggerList.map(function (popoverTriggerEl) {
-		return new Popover(popoverTriggerEl, {
+		return new bootstrap.Popover(popoverTriggerEl, {
 			autoHide: true
 		})
 	});
@@ -37,7 +35,10 @@ import {CountUp} from "countup.js";
 	let countupTriggerList = [].slice.call(document.querySelectorAll("[data-countup]"));
 	countupTriggerList.map(function (countupTriggerEl) {
 		let dataCountUp;
-		if(countupTriggerEl.getAttribute("data-countup") != "") dataCountUp = JSON.parse(countupTriggerEl.getAttribute("data-countup"));
+		if(countupTriggerEl.getAttribute("data-countup") !== "") {
+			dataCountUp = JSON.parse(countupTriggerEl.getAttribute("data-countup"));
+		}
+
 		return (new CountUp(countupTriggerEl, parseFloat(countupTriggerEl.innerText), dataCountUp)).start();
 	});
 })();

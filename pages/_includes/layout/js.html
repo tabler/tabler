@@ -2,7 +2,7 @@
 {% for lib in site.data.libs.js %}
 {% if site.captured_libs contains lib[0] or site.data.libs.global-libs contains lib[0] or page.libs contains lib[0] %}
 {% for file in lib[1] %}
-<script src="{{ site.base }}/{% if jekyll.environment == 'production' %}dist/libs{% else %}node_modules{% endif %}/{% if jekyll.environment == 'production' %}{{ file | replace: '@', '' }}{% else %}{{ file }}{% endif %}?{{ site.time | date: '%s' }}"></script>
+<script src="{% if file contains 'http://' or file contains 'https://' %}{{ file }}{% else %}{{ site.base }}/{% if jekyll.environment == 'production' %}dist/libs{% else %}node_modules{% endif %}/{% if jekyll.environment == 'production' %}{{ file | replace: '@', '' }}{% else %}{{ file }}{% endif %}?{{ site.time | date: '%s' }}{% endif %}"></script>
 {% endfor %}
 {% endif %}
 {% endfor %}

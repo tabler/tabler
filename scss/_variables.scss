@@ -17,16 +17,14 @@ $theme-color-interval: 10% !default;
 $light: #f5f7fb !default;
 $dark: #354052 !default;
 
-$dark-darken: darken($dark, 3%) !default;
-$dark-lighten: lighten($dark, 3%) !default;
-
 $light-black: rgba($dark, .24) !default;
 $light-mix: rgba(mix($light, $dark, 64%), .24) !default;
 $light-white: rgba($light, .24) !default;
 
-$min-black: rgba($dark, .032) !default;
+$min-black: rgba($dark, .024) !default;
 $min-white: rgba(mix($light, $dark, 48%), .1) !default;
 
+$gray-50: #fbfbfb !default;
 $gray-100: $light !default;
 $gray-200: mix($light, $dark, 98%) !default;
 $gray-300: mix($light, $dark, 94%) !default;
@@ -58,6 +56,7 @@ $body-color: $dark !default;
 $text-muted-opacity: .60 !default;
 $text-muted: mix($body-color, #ffffff, $text-muted-opacity * 100%) !default;
 $border-color: rgba($text-muted, .24) !default;
+$border-color-light: rgba($text-muted, .12) !default;
 
 $hover-bg: $light !default;
 $active-bg: rgba($blue, .06) !default;
@@ -105,9 +104,17 @@ $colors: (
   "dark": $dark
 ) !default;
 
+
+/**
+Dark mode
+ */
+
+$dark-mode-darken: darken($dark, 3%) !default;
+$dark-mode-lighten: lighten($dark, 3%) !default;
+$dark-mode-text: $light;
+
 $avatar-sizes: (
-  "xs": 1.5rem,
-  "sm": 2rem,
+  "sm": 1.5rem,
   "md": 3rem,
   "lg": 4.5rem,
   "xl": 6rem
@@ -163,7 +170,6 @@ $spacers: (
   6: $spacer * 3,
   7: $spacer * 6,
   8: $spacer * 9,
-  9: $spacer * 12,
 ) !default;
 
 $size-spacers: (
@@ -203,6 +209,22 @@ $container-variations: (
 ) !default;
 
 $embed-responsive-aspect-ratios: (
+  "21by9": (
+    x: 21,
+    y: 9
+  ),
+  "16by9": (
+    x: 16,
+    y: 9
+  ),
+  "4by3": (
+    x: 4,
+    y: 3
+  ),
+  "1by1": (
+    x: 1,
+    y: 1
+  ),
   '2by1': (
     x: 2,
     y: 1
@@ -211,17 +233,7 @@ $embed-responsive-aspect-ratios: (
 
 $content-padding-y: 1.25rem !default;
 
-//sidenav
-$sidenav-width: 15.625rem !default;
-$sidenav-width-narrow: 4rem !default;
-$sidenav-bg: $white !default;
-$sidenav-border-color: $border-color !default;
-$sidenav-dark-bg: $dark !default;
-$sidenav-dark-color: $white !default;
-$sidenav-padding: 1rem !default;
-$sidenav-breakpoint-show: 'sm' !default;
-$sidenav-breakpoint-folded: 'lg' !default;
-$sidenav-active-accent-color: $primary !default;
+
 
 //alerts
 $alert-link-font-weight: $font-weight-bold !default;
@@ -284,6 +296,13 @@ $cards-grid-gap: 1.25rem !default;
 $cards-grid-gap-sm: .75rem !default;
 $cards-grid-breakpoint: lg !default;
 
+//carousel
+$carousel-control-color: $white !default;
+$carousel-control-icon-width: 1.5rem !default;
+$carousel-control-prev-icon-bg: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='#{$carousel-control-color}' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='15 18 9 12 15 6'></polyline></svg>") !default;
+$carousel-control-next-icon-bg: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='#{$carousel-control-color}' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='9 18 15 12 9 6'></polyline></svg>") !default;
+
+
 
 //close
 $close-font-weight: 400 !default;
@@ -297,6 +316,7 @@ $dropdown-padding-y: .5rem !default;
 $dropdown-link-hover-bg: $hover-bg !default;
 $dropdown-link-hover-color: inherit !default;
 $dropdown-spacer: 1px !default;
+$dropdown-min-width: 12rem !default;
 
 $dropdown-link-active-color: $primary !default;
 $dropdown-link-active-bg: $active-bg !default;
@@ -315,23 +335,29 @@ $list-group-item-padding-y: .5rem !default;
 $list-group-item-padding-x: .75rem !default;
 
 //modals
-$modal-content-border-color: $border-color !default;
 $modal-backdrop-opacity: .24 !default;
 $modal-backdrop-bg: $dark !default;
 $modal-backdrop-blur: 2px !default;
 
 $modal-fade-transform: translate(0, -1rem) !default;
 
+$modal-content-border-color: $border-color-light !default;
+$modal-content-bg: $gray-50 !default;
 $modal-content-border-radius: $border-radius !default;
 
+$modal-header-padding: 1.5rem !default;
+$modal-header-height: 3.5rem !default;
+$modal-header-border-width: 1px !default;
+$modal-header-border-color: $border-color-light !default;
+$modal-header-bg: $white !default;
 $modal-inner-padding: 1.5rem !default;
 $modal-footer-border-width: 0 !default;
-$modal-header-border-width: 0 !default;
+$modal-footer-margin-between: .75rem !default;
 
 $modal-xl: 1140px !default;
-$modal-lg: 800px !default;
+$modal-lg: 720px !default;
 $modal-md: 540px !default;
-$modal-sm: 300px !default;
+$modal-sm: 380px !default;
 
 //navbar
 $navbar-padding-y: .5rem !default;
@@ -347,6 +373,24 @@ $navbar-toggler-item-height: 2px !default;
 $navbar-toggler-item-spacing: 7px !default;
 $navbar-toggler-transform-time: .2s !default;
 
+//sidenav
+$navbar-vertical-width: 15.625rem !default;
+$navbar-vertical-narrow-width: 4rem !default;
+$navbar-vertical-dark-bg: $dark !default;
+$navbar-vertical-dark-color: $white !default;
+$navbar-vertical-padding: 1rem !default;
+$navbar-vertical-active-accent-color: $primary !default;
+
+$navbar-nav-link-padding-x: .75rem !default;
+
+//$navbar-light-color: rgba($body-color, .64) !default;
+//$navbar-light-active-color: $primary !default;
+//$navbar-light-hover-color: $body-color !default;
+
+//$navbar-dark-color: rgba($white, .64) !default;
+//$navbar-dark-active-color: $white !default;
+//$navbar-dark-hover-color: $white !default;
+
 //popover
 $popover-border-color: $border-color !default;
 
@@ -355,19 +399,6 @@ $footer-bg: $white !default;
 $footer-border-color: $border-color !default;
 $footer-border-color: $border-color !default;
 
-//nav
-//$nav-link-padding-y: 1rem !default;
-
-$navbar-padding-y: .75rem !default;
-$navbar-nav-link-padding-x: .75rem !default;
-
-$navbar-light-color: rgba($body-color, .64) !default;
-$navbar-light-active-color: $primary !default;
-$navbar-light-hover-color: $body-color !default;
-
-$navbar-dark-color: rgba($white, .64) !default;
-$navbar-dark-active-color: $white !default;
-$navbar-dark-hover-color: $white !default;
 
 //pagination
 $pagination-border-width: 0 !default;
@@ -428,11 +459,13 @@ $form-check-padding-left: $form-check-input-width + .5rem !default;
 $form-check-input-bg: $white !default;
 $form-check-input-border: 1px solid $border-color !default;
 $form-check-input-border-radius: $border-radius !default;
-$form-check-input-checked-bg-size: .75rem !default;
+$form-check-input-checked-bg-size: 1rem !default;
 
 $form-check-input-checked-color: $white !default;
-$form-check-input-checked-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='none' stroke='#{$form-check-input-checked-color}' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M4 8.5L6.5 11l6-6'/></svg>") !default;
-$form-check-input-checked-bg-image-dark: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='none' stroke='#{$dark}' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M4 8.5L6.5 11l6-6'/></svg>") !default;
+$form-check-input-checked-bg-repeat: repeat !default;
+$form-check-input-checked-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='none' stroke='#{$form-check-input-checked-color}' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M4 8.5L6.5 11l6-6' transform='scale(.8)' transform-origin='50% 50%'/></svg>") !default;
+$form-check-input-checked-bg-image-dark: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><path fill='none' stroke='#{$dark}' stroke-linecap='round' stroke-linejoin='round' stroke-width='3' d='M4 8.5L6.5 11l6-6' transform='scale(.8)' transform-origin='50% 50%'/></svg>") !default;
+$form-check-radio-checked-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><circle r='3' fill='#{$form-check-input-checked-color}' cx='8' cy='8' /></svg>") !default;
 
 $form-check-input-checked-border-color: $border-color !default;
 

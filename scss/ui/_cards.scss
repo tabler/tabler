@@ -201,7 +201,11 @@
 
   .card-lg > & {
     @include media-breakpoint-up(md) {
-      padding: 3rem;
+      padding: 2rem;
+    }
+
+    @include media-breakpoint-up(lg) {
+      padding: 4rem;
     }
   }
 
@@ -283,9 +287,16 @@ Card table
   margin-bottom: 0;
 
   tr {
+    .card-header ~ .table-responsive &,
+    .card-header ~ & {
+      &:first-child td {
+        //border-top: 0;
+      }
+    }
+
     td,
     th {
-      border-top: 1px solid $border-color;
+      //border-top: 1px solid $border-color;
 
       &:first-child {
         padding-left: $card-spacer-x;

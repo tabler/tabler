@@ -32,6 +32,22 @@ We've created this admin panel for everyone who wants to create templates based 
 <a href="https://github.com/sponsors/codecalm" target="_blank"><img src="/static/sponsor-banner-readme.png?raw=true" alt="Sponsor Tabler" /></a>
 
 
+### Sponsors
+
+Support this project by becoming a sponsor. Your logo will show up in this README with a link to your website. [Become a sponsor!](https://opencollective.com/tabler#sponsor)
+
+<a href="https://opencollective.com/tabler/tiers/sponsor/0/website" target="_blank"><img src="https://opencollective.com/tabler/tiers/sponsor/0/avatar.svg" /></a>
+<a href="https://opencollective.com/tabler/tiers/sponsor/1/website" target="_blank"><img src="https://opencollective.com/tabler/tiers/sponsor/1/avatar.svg" /></a>
+<a href="https://opencollective.com/tabler/tiers/sponsor/2/website" target="_blank"><img src="https://opencollective.com/tabler/tiers/sponsor/2/avatar.svg" /></a>
+<a href="https://opencollective.com/tabler/tiers/sponsor/3/website" target="_blank"><img src="https://opencollective.com/tabler/tiers/sponsor/3/avatar.svg" /></a>
+<a href="https://opencollective.com/tabler/tiers/sponsor/4/website" target="_blank"><img src="https://opencollective.com/tabler/tiers/sponsor/4/avatar.svg" /></a>
+<a href="https://opencollective.com/tabler/tiers/sponsor/5/website" target="_blank"><img src="https://opencollective.com/tabler/tiers/sponsor/5/avatar.svg" /></a>
+<a href="https://opencollective.com/tabler/tiers/sponsor/6/website" target="_blank"><img src="https://opencollective.com/tabler/tiers/sponsor/6/avatar.svg" /></a>
+<a href="https://opencollective.com/tabler/tiers/sponsor/7/website" target="_blank"><img src="https://opencollective.com/tabler/tiers/sponsor/7/avatar.svg" /></a>
+<a href="https://opencollective.com/tabler/tiers/sponsor/8/website" target="_blank"><img src="https://opencollective.com/tabler/tiers/sponsor/8/avatar.svg" /></a>
+<a href="https://opencollective.com/tabler/tiers/sponsor/9/website" target="_blank"><img src="https://opencollective.com/tabler/tiers/sponsor/9/avatar.svg" /></a>
+
+
 ## Setup environment
 
 To use our build system and run our documentation locally, you'll need a copy of Tabler's source files. Follow the steps below:
@@ -80,35 +96,18 @@ Found a bug or have a feature request? [Please open a new issue](https://github.
 - <https://codecalm.net>
 
 
-## Contributors
+### Contributors
 
-This project exists thanks to all the people who contribute. [[Contribute](https://github.com/tabler/tabler/graphs/contributors)].
-<a href="https://github.com/tabler/tabler/graphs/contributors"><img src="https://opencollective.com/tabler/contributors.svg?width=890&button=false"></a>
+This project exists thanks to all the people who contribute.
 
+<img src="https://opencollective.com/tabler/contributors.svg?width=890&button=false" />
 
-## Backers
+### Backers
 
-Thank you to all our backers! 🙏 [[Become a backer](https://opencollective.com/tabler#backer)]
+Thank you to all our backers! 🙏 [Become a backer](https://opencollective.com/tabler#backer)
 
-<a href="https://opencollective.com/tabler#backers" target="_blank"><img src="https://opencollective.com/tabler/backers.svg?width=890"></a>
+<a href="https://opencollective.com/tabler#backers" target="_blank"><img src="https://opencollective.com/tabler/tiers/backer.svg?width=890&button=false" /></a>
 
+## License
 
-## Sponsors
-
-Support this project by becoming a sponsor. Your logo will be displayed here with a link to your website. [[Become a sponsor](https://opencollective.com/tabler#sponsor)]
-
-<a href="https://opencollective.com/tabler/sponsor/0/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/0/avatar.svg"></a>
-<a href="https://opencollective.com/tabler/sponsor/1/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/1/avatar.svg"></a>
-<a href="https://opencollective.com/tabler/sponsor/2/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/2/avatar.svg"></a>
-<a href="https://opencollective.com/tabler/sponsor/3/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/3/avatar.svg"></a>
-<a href="https://opencollective.com/tabler/sponsor/4/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/4/avatar.svg"></a>
-<a href="https://opencollective.com/tabler/sponsor/5/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/5/avatar.svg"></a>
-<a href="https://opencollective.com/tabler/sponsor/6/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/6/avatar.svg"></a>
-<a href="https://opencollective.com/tabler/sponsor/7/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/7/avatar.svg"></a>
-<a href="https://opencollective.com/tabler/sponsor/8/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/8/avatar.svg"></a>
-<a href="https://opencollective.com/tabler/sponsor/9/website" target="_blank"><img src="https://opencollective.com/tabler/sponsor/9/avatar.svg"></a>
-
-
-## Copyright and license
-
-Code and documentation copyright 2018 the [Tabler Authors](https://github.com/tabler/tabler/graphs/contributors) and [codecalm.net](https://codecalm.net). Code released under the [MIT License](https://github.com/tabler/tabler/blob/master/LICENSE).
+See the [LICENSE](https://github.com/tabler/tabler/blob/master/LICENSE) file.

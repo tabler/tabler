@@ -2,7 +2,7 @@
 <!-- Libs CSS -->
 {% for lib in site.data.libs.css %}
 {% for file in lib[1] %}
-<link href="{{ site.base }}/{% if jekyll.environment == 'production' %}dist/libs{% else %}node_modules{% endif %}/{% if jekyll.environment == 'production' %}{{ file | replace: '@', '' }}{% else %}{{ file }}{% endif %}?{{ site.time | date: '%s' }}" rel="stylesheet"/>
+<link href="{% if file contains 'http://' or file contains 'https://' %}{{ file }}{% else %}{{ site.base }}/{% if jekyll.environment == 'production' %}dist/libs{% else %}node_modules{% endif %}/{% if jekyll.environment == 'production' %}{{ file | replace: '@', '' }}{% else %}{{ file }}{% endif %}?{{ site.time | date: '%s' }}{% endif %}" rel="stylesheet"/>
 {% endfor %}
 {% endfor %}
 {% endif %}

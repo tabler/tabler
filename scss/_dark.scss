@@ -1,18 +1,17 @@
 // stylelint-disable declaration-no-important
 
-$dark-text: $light;
-
 @include dark-mode {
   & {
-    color: $dark-text;
-    background: $dark-darken;
+    color: $dark-mode-text;
+    background-color: $dark-mode-darken;
   }
 
   .card,
   .navbar-light,
   .footer,
-  .modal-content {
-    background: $dark;
+  .modal-content,
+  .modal-header {
+    background-color: $dark;
     color: inherit;
   }
 
@@ -22,7 +21,7 @@ $dark-text: $light;
 
   .btn-secondary,
   .form-file-button {
-    @include button-variant($dark-lighten, $border-color, $dark-text, rgba($dark, 0), $border-color, $dark-text);
+    @include button-variant($dark-mode-lighten, $border-color, $dark-mode-text, rgba($dark, 0), $border-color, $dark-mode-text);
     background-image: none;
   }
 
@@ -30,27 +29,32 @@ $dark-text: $light;
   .form-select,
   .form-file-text,
   .form-control,
+  .form-selectgroup-box,
   .flatpickr-input.flatpickr-input,
   .form-selectgroup-check,
   .form-imagecheck-figure:before {
-    background-color: $dark-darken;
-    color: $dark-text;
+    background-color: $dark-mode-darken;
+    color: $dark-mode-text;
+  }
+
+  .form-control-plaintext {
+    color: $dark-mode-text;
   }
 
   .input-group-flat .input-group-text {
-    background-color: $dark-darken;
+    background-color: $dark-mode-darken;
   }
 
   .navbar {
-    box-shadow: 0 0 0 1px $dark-darken;
+    box-shadow: 0 0 0 1px $dark-mode-darken;
   }
 
   .highlight {
-    background-color: $dark-darken;
+    background-color: $dark-mode-darken;
   }
 
   .avatar {
-    background-color: $dark-lighten;
+    background-color: $dark-mode-lighten;
   }
 
   .avatar-list-stacked .avatar {
@@ -64,7 +68,7 @@ $dark-text: $light;
   }
 
   .apexcharts-text {
-    fill: $dark-text;
+    fill: $dark-mode-text;
   }
 
   .apexcharts-legend-text {

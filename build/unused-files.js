@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 const glob = require("glob"),
 	fs = require("fs");
 
@@ -22,6 +24,3 @@ includeFiles.forEach(function (file) {
 		console.log('file', file);
 	}
 });
-
-// console.log('foundFiles', foundFiles);
-// console.log('includeFiles', includeFiles);

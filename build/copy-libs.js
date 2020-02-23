@@ -26,8 +26,10 @@ Object.keys(all_libs.css).forEach(function (lib) {
 files = files.flat();
 
 files.forEach(function (file) {
-	let dirname = path.dirname(file).replace('@', '');
-	let cmd = `mkdir -p "dist/libs/${dirname}" && cp -r node_modules/${file} dist/libs/${file.replace('@', '')}`;
+	if(! file.match(/^https?/)) {
+		let dirname = path.dirname(file).replace('@', '');
+		let cmd = `mkdir -p "dist/libs/${dirname}" && cp -r node_modules/${file} dist/libs/${file.replace('@', '')}`;
 
-	exec(cmd)
+		exec(cmd)
+	}
 });
