@@ -1,17 +1,74 @@
 .selectize-control {
   padding: 0;
   border: 0;
+
+  &.multi .selectize-input {
+    &.has-items {
+      padding-left: 6px;
+    }
+
+    > div {
+      font-size: $h5-font-size;
+      margin: 0 6px 2px 0;
+      padding: 2px 8px;
+      border-radius: $border-radius;
+      background-color: $min-white;
+      color: inherit;
+    }
+  }
+
+  .remove {
+    font-size: inherit !important;
+    font-weight: normal !important;
+    border-left: 0 !important;
+    color: $text-muted !important;
+  }
+
+  @each $state, $data in $form-validation-states {
+    $color: map-get($data, 'color');
+
+    &.is-#{$state} {
+      padding: 0;
+
+      .selectize-input {
+        border-color: $color;
+
+        &.focus {
+          box-shadow: 0 0 0 $input-focus-width rgba($color, .25);
+        }
+      }
+
+      .selectize-dropdown {
+        background: none;
+        background-color: inherit;
+        border-color: $border-color;
+        padding-right: 0;
+      }
+    }
+  }
 }
 
 .selectize-input {
+  display: flex !important;
+  height: 100%;
   border: 1px solid $border-color;
   padding: $input-padding-y $input-padding-x;
   font-size: $input-font-size;
   box-shadow: none;
   line-height: $input-line-height;
+  background-color: inherit;
+  color: inherit !important;
+
+  &.full {
+    background-color: inherit;
+  }
+
+  &.dropdown-active {
+    border-radius: $border-radius;
+  }
 
   .selectize-control.single & {
-    background: $form-select-bg escape-svg($form-select-indicator) $form-select-background;
+    background: $form-select-bg escape-svg($form-select-indicator) no-repeat $form-select-bg-position/$form-select-bg-size;
   }
 
   &.focus {

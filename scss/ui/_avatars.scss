@@ -1,11 +1,12 @@
 .avatar {
   position: relative;
-  display: inline-block;
   width: 2rem;
   height: 2rem;
-  font-size: .875rem;
+  font-size: $h5-font-size;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-weight: 400;
-  line-height: 2rem;
   color: $text-muted;
   text-align: center;
   text-transform: uppercase;
@@ -42,9 +43,9 @@
 
 
 .avatar-list {
+  display: inline-flex;
   padding: 0;
   margin: 0 0 -.5rem;
-  font-size: 0;
 
   .avatar {
     margin-bottom: .5rem;
@@ -63,11 +64,38 @@
 
 .avatar-list-stacked {
   .avatar {
-    margin-right: -.5em !important;
+    margin-right: -.5rem !important;
     box-shadow: 0 0 0 2px #fff;
 
     @at-root .card-footer & {
       box-shadow: 0 0 0 2px $card-cap-bg;
     }
   }
+}
+
+.avatar-upload {
+  width: 4rem;
+  height: 4rem;
+  border: 1px dashed $border-color;
+  background: $form-check-input-bg;
+  flex-direction: column;
+  transition: .3s color, .3s background-color;
+
+  svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    stroke-width: 1;
+  }
+
+  &:hover {
+    border-color: $primary;
+    color: $primary;
+    text-decoration: none;
+  }
+}
+
+.avatar-upload-text {
+  font-size: $h6-font-size;
+  line-height: 1;
+  margin-top: .25rem;
 }

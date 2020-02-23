@@ -1,43 +1,51 @@
 source: pages
 destination: tmp
 
-version: 1.0-alpha
+version: 1.0.0-alpha.4
 title: Tabler
 description: Premium and Open Source dashboard template with responsive and high quality UI.
 github_url: https://github.com/tabler/tabler
+sponsor_url: https://github.com/sponsors/codecalm
 
-debug: true
+mapbox_key: pk.eyJ1IjoiY29kZWNhbG0iLCJhIjoiSzRiOVJvQSJ9.BUVkTT6IYs83xSUs4H7bjQ
+
+debug: false
+
+dark-theme: false
 
 plugins:
-- jekyll-random
-- jekyll-tidy
-- jekyll-timeago
-- jekyll-redirect-from
-- jekyll-include-cache
+  - jekyll-random
+  - jekyll-toc
+  - jekyll-tidy
+  - jekyll-timeago
+  - jekyll-redirect-from
+
+tabler-plugins:
+  - tabler-flags
+  - tabler-payments
+  - tabler-buttons
 
 exclude:
-- .jekyll-cache
+  - .jekyll-cache
 
 keep_files:
-- css/ui-kit.css
-- css/dark.css
-- css/rtl.css
-#- js/ui-kit.js
+  - css/ui-kit.css
+  - css/dark.css
+  - css/rtl.css
 
 markdown: kramdown
-highlighter: rouge
-
 kramdown:
+  input: GFM
   syntax_highlighter: rouge
-  syntax_highlighter_opts:
-    css_class: ''
-    span:
-      line_numbers: false
 
 jekyll_tidy:
   compress_html: false
   ignore_env: development
 
+toc:
+  min_level: 2
+  max_level: 3
+  list_class: list-unstyled
 
 collections:
   docs:
@@ -48,21 +56,23 @@ collections:
     output: true
 
 defaults:
-  -
-    scope:
-      type: pages
+  - scope:
+      type: "pages"
+      path: "*.md"
+    values:
+      layout: markdown
+
+  - scope:
+      type: "pages"
     values:
       layout: default
-      nav-position: top
-  -
-    scope:
-      type: docs
+  - scope:
+      type: "docs"
     values:
       layout: docs
-      nav-position: top
-  -
-    scope:
-      type: components
+      toc: true
+  - scope:
+      type: "components"
     values:
       layout: component
 
@@ -107,6 +117,14 @@ colors:
   gray:
     hex: '#868e96'
     title: Gray
+
+colors-extra:
+  white:
+    hex: '#ffffff'
+    title: White
+  dark:
+    hex: '#303645'
+    title: Dark
 
 variants:
   - name: success

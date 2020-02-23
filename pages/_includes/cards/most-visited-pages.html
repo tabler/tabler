@@ -4,22 +4,28 @@
 	</div>
 	<div class="table-responsive">
 		<table class="table card-table table-vcenter">
+
+			<thead>
 			<tr>
-				<th colspan="2">Page name</th>
+				<th>Page name</th>
 				<th>Visitors</th>
-				<th>Unique page visits</th>
+				<th>Unique</th>
 				<th colspan="2">Bounce rate</th>
 			</tr>
+			</thead>
 
 			{% for page in site.data.pages %}
+			{% assign data = page.data | join: ',' %}
 			<tr>
-				<td>{{ page.uri }}</td>
-				<td><a href="#" class="text-muted">{% include_cached ui/icon.html icon="link" %}</a></td>
-				<td>{{ page.visitors | format_number }}</td>
-				<td>{{ page.unique | format_number }}</td>
-				<td>{{ page.bounce-rate }}</td>
+				<td>
+					{{ page.uri }}
+					<a href="#" class="link-secondary ml-2">{% include ui/icon.html icon="link" %}</a>
+				</td>
+				<td class="text-muted">{{ page.visitors | format_number }}</td>
+				<td class="text-muted">{{ page.unique | format_number }}</td>
+				<td class="text-muted">{{ page.bounce-rate }}</td>
 				<td class="text-right">
-					{% include ui/sparkline.html data="4,3,6,5,4,5,4,6,7,6,5,7,8,7,8,9,8,9,10" wide=true %}
+					{% include ui/sparkline.html type="line" data=data %}
 				</td>
 			</tr>
 			{% endfor %}

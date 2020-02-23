@@ -1,0 +1,35 @@
+{% assign code = code | replace_regex: '// @formatter:(off|on)', '' %}
+
+{% assign demo-code = code %}
+{% assign demo-code = demo-code | replace_regex: '\{% (end)?hide %\}', '' %}
+
+<div class="example no_toc_section{% if include.centered %} example-centered{% endif %}{% if include.columns %} example-bg{% endif %}">
+	<div class="example-content">
+		{% if include.max-width %}<div style="max-width: {{ include.max-width }}">{% endif %}
+		{% if include.wrapper %}<div class="{{ include.wrapper }}">{% endif %}
+		{% if include.columns %}<div class="example-column example-column-{{ include.columns }}">{% endif %}
+		{% if include.modal %}<div class="example-modal-backdrop"></div>{% endif %}
+
+		{{ demo-code }}
+
+		{% if include.columns %}</div>{% endif %}
+		{% if include.wrapper %}</div>{% endif %}
+		{% if include.max-width %}</div>{% endif %}
+	</div>
+</div>
+
+{% assign code = code | strip %}
+{% capture new_line %}
+{% endcapture %}
+{% assign code = code | replace_regex: "\n\n+", new_line %}
+{% assign code = code | replace_regex: '<svg[^>]*>.*?<\/svg>', '<!-- SVG icon code -->' %}
+{% assign code = code | replace_regex: 'url\(([^\)]+)\)', 'url(...)' %}
+{% assign code = code | replace_regex: 'src="([^"]+)"', 'src="..."' %}
+{% assign code = code | replace_regex: 'href="([^#][^"]+)"', 'href="#"' %}
+{% assign code = code | replace_regex: '\{% hide %\}.*?\{% endhide %\}', '' %}
+{% assign code = code | htmlbeautifier %}
+
+<div class="example-code">
+	{% highlight html %}{{ code }}{% endhighlight %}
+</div>
+

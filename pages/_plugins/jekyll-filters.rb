@@ -1,3 +1,7 @@
+require 'date'
+require 'htmlbeautifier'
+
+
 module Jekyll
   module JekyllFilter
     def to_pretty_time(value)
@@ -50,7 +54,7 @@ module Jekyll
 
       if value >= 75
         'green'
-      elsif value >= 60
+      elsif value >= 30
         'yellow'
       else
         'red'
@@ -69,18 +73,8 @@ module Jekyll
     end
 
 
-    def tabler_js_color(color)
-      color = color.split('-')
-
-      if color.size == 2
-        'tabler.colorVariation("'+ color[0] + '", "'+ color[1] + '")'
-      else
-        'tabler.colors["'+ color[0] + '"]'
-      end
-    end
-
     def replace_regex(input, reg_str, repl_str)
-      re = Regexp.new reg_str
+      re = Regexp.new(reg_str.to_s, Regexp::MULTILINE)
 
       input.gsub re, repl_str
     end
@@ -88,6 +82,43 @@ module Jekyll
     def hex_to_rgb(color)
       r, g, b = color.match(/^#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/).captures
       "rgb(#{r.hex}, #{g.hex}, #{b.hex})"
+    end
+
+    def concat_objects(object, object2)
+      if object and object2 and object.is_a?(Hash) and object2.is_a?(Hash)
+        return object.merge(object2)
+      end
+
+      object
+    end
+
+    def tabler_color(color, variation = false)
+      if variation
+        color = color + '-' + variation
+      end
+
+      Jekyll.sites.first.data['colors'][color]
+    end
+
+    def seconds_to_minutes(seconds)
+      seconds = seconds.to_i.round
+
+      minutes = (seconds / 60).round
+      seconds = seconds - (minutes * 60)
+
+      minutes.to_s.rjust(2, '0') + ":" + seconds.to_s.rjust(2, '0')
+    end
+
+    def miliseconds_to_minutes(miliseconds)
+      seconds_to_minutes(miliseconds.to_i / 1000)
+    end
+
+    def timestamp_to_date(timestamp)
+      DateTime.strptime(timestamp.to_s, '%s').strftime('%F')
+    end
+
+    def htmlbeautifier(output)
+      HtmlBeautifier.beautify output
     end
   end
 end

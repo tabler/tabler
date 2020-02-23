@@ -1,0 +1,62 @@
+<form action="" method="get">
+
+	<div class="subheader mb-2">Category</div>
+	{% assign items = "Games,Clothing,Jewelery,Toys" | split:  "," %}
+	<div class="list-group list-group-transparent mb-3">
+		{% for item in items %}
+		<a class="list-group-item list-group-item-action d-flex align-items-center{% if forloop.first %} active{% endif %}" href="#">
+			{{ item }}
+			<small class="text-muted ml-auto">{{ forloop.index | random_number: 11, 200 }}</small>
+		</a>
+		{% endfor %}
+	</div>
+
+	<div class="subheader mb-2">Rating</div>
+	{% assign items = "5 stars,4 stars,3 stars,2 and less stars" | split:  "," %}
+	<div class="mb-3">
+		{% for item in items %}
+		<label class="form-check mb-1">
+			<input type="radio" class="form-check-input" name="form-stars" value="{{ item | escape }}"{% if forloop.first %} checked{% endif %}>
+			<span class="form-check-label">{{ item }}</span>
+		</label>
+		{% endfor %}
+	</div>
+
+	<div class="subheader mb-2">Tags</div>
+	{% assign items = "business,evening,leisure,party" | split:  "," %}
+	<div class="mb-3">
+		{% for item in items %}
+		<label class="form-check mb-1">
+			<input type="checkbox" class="form-check-input" name="form-tags[]" value="{{ item | escape }}"{% if forloop.first %} checked{% endif %}>
+			<span class="form-check-label">{{ item }}</span>
+		</label>
+		{% endfor %}
+	</div>
+
+	<div class="subheader mb-2">Price</div>
+	<div class="row row-sm align-items-center mb-3">
+		<div class="col">
+			{% include ui/form/input-group.html prepend="$" placeholder="from" value="3" %}
+		</div>
+		<div class="col-auto">—</div>
+		<div class="col">
+			{% include ui/form/input-group.html prepend="$" placeholder="to" %}
+		</div>
+	</div>
+
+	<div class="subheader mb-2">Shipping</div>
+	<div>
+		<select name="" class="form-select">
+			<option>United Kingdom</option>
+			<option>USA</option>
+			<option>Germany</option>
+			<option>Poland</option>
+			<option>Other…</option>
+		</select>
+	</div>
+
+	<div class="mt-5">
+		{% include ui/button.html text="Confirm changes" color="primary" block=true element="button" %}
+		{% include ui/button.html text="Reset to defaults" color="link" block=true %}
+	</div>
+</form>

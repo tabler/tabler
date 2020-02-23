@@ -5,9 +5,11 @@ description: A small, stand-alone script to automatically adjust textarea height
 done: true
 ---
 
-### Default markup
 
-{% example html %}
+## Default markup
+
+{% capture code %}
 <label class="form-label">Autosize example</label>
-<textarea class="form-control" data-toggle="autosize" placeholder="Typing something&hellip;"></textarea>
-{% endexample %}
+{% include ui/form/textarea-autosize.html %}
+{% endcapture %}
+{% include example.html code=code %}

@@ -1,18 +1,27 @@
 ---
 title: Maps
-page-title: Maps
+page-header: Maps
+menu: base.maps
 ---
 
 <div class="row">
-   {% for map in site.data.maps %}
-   <div class="col-lg-6">
-
-      <div class="card">
-         <div class="card-body">
-            {% assign id = map[0] %}
-            {% include ui/map.html map-id=id %}
-         </div>
-      </div>
-   </div>
-   {% endfor %}
+	{% for map in site.data.maps %}
+	{% assign map-id = map[0] %}
+		{% if map[1].card %}
+			<div class="col-lg-12">
+				<div class="card">
+					{% include ui/map.html map-id=map-id ratio="2by1" %}
+				</div>
+			</div>
+		{% else %}
+			<div class="col-lg-6">
+				<div class="card">
+					<div class="card-body">
+						<div class="card-title">{{ map[1].title }}</div>
+						{% include ui/map.html map-id=map-id %}
+					</div>
+				</div>
+			</div>
+		{% endif %}
+	{% endfor %}
 </div>

@@ -1,35 +1,39 @@
 <div class="card">
-    <div class="card-header">
-	    <h4 class="card-title">Tasks</h4>
-    </div>
-    <div class="table-responsive">
-	    <table class="table card-table table-vcenter">
-		    {% for task in site.data.tasks %}
-		    <tr>
-			    <td class="w-1 pr-0">
-				    <label class="custom-control custom-checkbox m-0">
-					    <input type="checkbox" class="custom-control-input" name="" value=""{% if task.checked %} checked{% endif %}>
-					    <span class="custom-control-label"></span>
-				    </label>
-			    </td>
-			    <td class="w-100">
-				    <a href="#" class="text-reset">{{ task.name }}</a>
-			    </td>
-			    <td class="text-nowrap text-muted">
-				    {% include_cached ui/icon.html icon="calendar" %}
-				    {{ forloop.index | random_date: "2019-01-01", "2018-01-01" | date: '%B %d, %Y' }}
-			    </td>
-			    <td class="text-nowrap">
-				    <a href="#" class="text-muted">{% include_cached ui/icon.html icon="check" %} {{ forloop.index | random_number: 0, 6 }}/{{ forloop.index | random_number: 5, 10 }}</a>
-			    </td>
-			    <td class="text-nowrap">
-				    <a href="#" class="text-muted">{% include_cached ui/icon.html icon="message-square" %} {{ forloop.index | random_number: 0, 12 }}</a>
-			    </td>
-			    <td>
-				    {% include ui/avatar.html person-id=forloop.index size="sm" %}
-			    </td>
-		    </tr>
-		    {% endfor %}
-	    </table>
-    </div>
+	<div class="card-header">
+		<h4 class="card-title">Tasks</h4>
+	</div>
+	<div class="table-responsive">
+		<table class="table card-table table-vcenter">
+			{% for task in site.data.tasks %}
+			<tr>
+				<td class="w-1 pr-0">
+					<label class="form-check m-0">
+						<input type="checkbox" class="form-check-input"{% if task.checked %} checked{% endif %}>
+						<span class="form-check-label"></span>
+					</label>
+				</td>
+				<td class="w-100">
+					<a href="#" class="text-reset">{{ task.name }}</a>
+				</td>
+				<td class="text-nowrap text-muted">
+					{% include ui/icon.html icon="calendar" %}
+					{{ forloop.index | random_date: "2019-01-01", "2018-01-01" | date: '%B %d, %Y' }}
+				</td>
+				<td class="text-nowrap">
+					<a href="#" class="text-muted">
+						{% include ui/icon.html icon="check" %}
+						{{ forloop.index | random_number: 0, 6 }}/{{ forloop.index | random_number: 5, 10 }}
+					</a>
+				</td>
+				<td class="text-nowrap">
+					<a href="#" class="text-muted">
+						{% include ui/icon.html icon="message-square" %} {{ forloop.index | random_number: 0, 12 }}</a>
+				</td>
+				<td>
+					{% include ui/avatar.html person-id=forloop.index size="sm" %}
+				</td>
+			</tr>
+			{% endfor %}
+		</table>
+	</div>
 </div>

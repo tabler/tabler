@@ -1,18 +1,12 @@
-<script>
-	window.tabler_colors = { {% for color in site.colors %}
-	'{{ color[0] }}': '{{ color[1].hex }}',{% endfor %}
-	};
-</script>
-
-{% if site.data.libs %}
-   <!-- Libs JS -->
-   {% for lib in site.data.libs.js %}
-   <script src="{{ site.base }}/{% if jekyll.environment == 'production' %}dist/libs{% else %}node_modules{% endif %}/{% if jekyll.environment == 'production' %}{{ lib | replace: '@', '' }}{% else %}{{ lib }}{% endif %}?{{ site.time | date: '%s' }}"></script>
-   {% endfor %}
+<!-- Libs JS -->
+{% for lib in site.data.libs.js %}
+{% if site.captured_libs contains lib[0] or site.data.libs.global-libs contains lib[0] or page.libs contains lib[0] %}
+{% for file in lib[1] %}
+<script src="{% if file contains 'http://' or file contains 'https://' %}{{ file }}{% else %}{{ site.base }}/{% if jekyll.environment == 'production' %}dist/libs{% else %}node_modules{% endif %}/{% if jekyll.environment == 'production' %}{{ file | replace: '@', '' }}{% else %}{{ file }}{% endif %}?{{ site.time | date: '%s' }}{% endif %}"></script>
+{% endfor %}
 {% endif %}
+{% endfor %}
 
 <!-- Tabler Core -->
-<script src="{{ site.base }}/dist/js/tabler{% if jekyll.environment == 'production' %}.min{% endif %}.js?{{ site.time | date: '%s' }}"></script>
 
-<!-- Tabler Plugins -->
-<script src="{{ site.base }}/dist/js/tabler-charts{% if jekyll.environment == 'production' %}.min{% endif %}.js?{{ site.time | date: '%s' }}"></script>
+<script src="{{ site.base }}/{% if jekyll.environment == 'development' %}tmp-{% endif %}dist/js/tabler{% if jekyll.environment == 'production' %}.min{% endif %}.js?{{ site.time | date: '%s' }}"></script>

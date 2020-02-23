@@ -1,0 +1,20 @@
+<div class="row">
+    {% for product in site.data.products%}
+    <div class="col-lg-3">
+        <div class="card p-3">
+            <img src="{{ site.base }}/img/products/{{ product.image }}" alt="" class="mb-3">
+            <h3 class="mb-0">{{product.name}}</h3>
+            <div class="text-muted mb-2">{{product.producer}}</div>
+            <h1 class="text-azure">{{product.price}}$</h1>
+            <div class="d-flex justify-content-between align-items-center">
+                {% include ui/stars.html %}
+
+                <a href="#" class="btn btn-primary">Add to cart</a>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+<div class="d-flex">
+    {% include parts/pagination.html class="ml-auto" %}
+</div>

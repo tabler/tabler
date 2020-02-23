@@ -14,20 +14,22 @@ Hr text
   align-items: center;
   margin: $hr-margin-y 0;
   @include subheader;
+  height: 1px;
 
-  &::after,
-  &::before {
+  &:after,
+  &:before {
     flex: 1 1 auto;
     height: $hr-height;
     background-color: currentColor;
     opacity: $hr-opacity;
   }
 
-  &::before {
+  &:before {
+    content: "";
     margin-right: .5rem;
   }
 
-  &::after {
+  &:after {
     content: "";
     margin-left: .5rem;
   }
@@ -38,9 +40,9 @@ Hr text
     color: $text-muted;
   }
 
-  &.hr-text-center {
-    &::before {
-      content: "";
+  &.hr-text-left {
+    &:before {
+      content: none;
     }
 
     & > *:first-child {
@@ -50,11 +52,11 @@ Hr text
   }
 
   &.hr-text-right {
-    &::before {
+    &:before {
       content: "";
     }
 
-    &::after {
+    &:after {
       content: none;
     }
 
@@ -63,4 +65,12 @@ Hr text
       padding-left: .5rem;
     }
   }
+
+  .card > & {
+    margin: 0;
+  }
+}
+
+.hr-text-spaceless {
+  margin: -.5rem 0;
 }

@@ -1,52 +1,62 @@
 ---
 title: Spinners
 menu: docs.spinners
-bootstrap-link: https://getbootstrap.com/docs/4.4/components/spinners/
+bootstrap-link: components/spinners/
 done: true
 ---
 
-### Default markup
 
-{% example %}
+## Default markup
+
+{% capture code %}
 {% include ui/spinner.html %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
 
-### Colors
+## Colors
 
-{% example %}
+{% capture code %}
 {% for color in site.colors %}
 {% assign c = color[0] %}
 {% include ui/spinner.html color=c %}
 {% endfor %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
-### Size
 
-{% example %}
+## Size
+
+{% capture code %}
 {% include ui/spinner.html %}
 {% include ui/spinner.html size="sm" %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
-### Growing spinner
 
-{% example %}
+## Growing spinner
+
+{% capture code %}
 {% include ui/spinner.html type="grow" %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
-{% example %}
+{% capture code %}
 {% for color in site.colors %}
 {% assign c = color[0] %}
 {% include ui/spinner.html color=c type="grow" %}
 {% endfor %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
-### Buttons
 
-{% example html wrapper=btn-list %}
-{% include_cached ui/button.html spinner=true text="Button" color="primary" %}
-{% include_cached ui/button.html spinner=true text="Button" color="danger" %}
-{% include_cached ui/button.html spinner=true text="Button" color="warning" %}
-{% include_cached ui/button.html spinner=true color="success" %}
-{% include_cached ui/button.html spinner=true color="secondary" %}
-{% endexample %}
+## Buttons
+
+{% capture code %}
+{% include ui/button.html spinner=true text="Button" color="primary" %}
+{% include ui/button.html spinner=true text="Button" color="danger" %}
+{% include ui/button.html spinner=true text="Button" color="warning" %}
+{% include ui/button.html spinner=true color="success" %}
+{% include ui/button.html spinner=true color="secondary" %}
+{% endcapture %}
+{% include example.html code=code %}

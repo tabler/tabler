@@ -2,28 +2,28 @@
 {% assign available-features = include.features | default: '1000' | split: '' %}
 <div class="card">
 	{% if include.featured-color %}
-	<div class="card-status bg-{{ include.featured-color }}"></div>
+	{% include ui/ribbon.html color=include.featured-color bookmark=true top=true %}
 	{% endif %}
 
 	<div class="card-body text-center">
 		<div class="text-uppercase text-muted">{{ include.category | default: 'Enterprise' }}</div>
-		<div class="h1 my-4">${{ include.price | default: '79' }}</div>
+		<div class="h1 my-3">${{ include.price | default: '79' }}</div>
 
-		<ul class="list-unstyled leading-loose">
+		<ul class="list-unstyled lh-lg">
 			<li><strong>{{ include.users | default: 10 }}</strong> Users</li>
 			{% for feature in features %}
 			<li>
 				{% if available-features[forloop.index0] == '1' %}
-				{% include_cached ui/icon.html icon="check" class="mr-1 text-success" %}
+				{% include ui/icon.html icon="check" class="mr-1 text-success" %}
 				{% else %}
-				{% include_cached ui/icon.html icon="x" class="mr-1 text-danger" %}
+				{% include ui/icon.html icon="x" class="mr-1 text-danger" %}
 				{% endif %}
 				{{ feature }}
 			</li>
 			{% endfor %}
 		</ul>
 
-		<div class="text-center mt-6">
+		<div class="text-center mt-4">
 			<a href="#" class="btn btn-{{ include.featured-color | default: 'secondary' }} btn-block">Choose plan</a>
 		</div>
 	</div>

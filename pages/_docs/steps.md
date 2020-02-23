@@ -4,35 +4,47 @@ menu: docs.steps
 new: true
 ---
 
+
+
 Steps are progress indicators of a sequence of task steps.
 
-### Default markup
 
-{% example %}
+## Default markup
+
+{% capture code %}
 {% include ui/steps.html show-title=true %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
-### Tooltips
 
-{% example %}
+## Tooltips
+
+{% capture code %}
 {% include ui/steps.html show-title=true show-tooltip=true %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
-### Color
 
-{% example %}
+## Color
+
+{% capture code %}
 {% include ui/steps.html color="green" show-title=true %}
 {% include ui/steps.html color="red" show-title=true %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
-### Steps without title
 
-{% example %}
+## Steps without title
+
+{% capture code %}
 {% include ui/steps.html show-tooltip=true %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
-### Steps with numbers
 
-{% example %}
+## Steps with numbers
+
+{% capture code %}
 {% include ui/steps.html count=5 active=2 numbers=true color="lime" %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}

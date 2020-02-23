@@ -1,38 +1,49 @@
 ---
+menu: a.b.c
 ---
 
 <div class="row">
-   <div class="col-12">
-      <div class="card">
-         <div class="card-body">
-            {% include ui/chart.html chart-id="tasks-overview" height=20 %}
-         </div>
-      </div>
-   </div>
-   <div class="col-4">
-      {% include cards/charts/total-sales.html %}
-   </div>
-   <div class="col-8"></div>
-</div>
-<div class="row">
-   <div class="col-md-6">
-      {% include cards/user-info.html %}
-      {% include cards/users-list-2.html %}
+	<div class="col-xl-4">
+		<div class="dropdown show">
+			<a href="#" class="btn btn-secondary">Dropdown</a>
+			<div class="dropdown-menu dropdown-menu-card show">
+				<div class="card">
+					<div class="card-body">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Commodi consequatur dolore dolores, earum explicabo id temporibus veritatis. Alias amet aperiam corporis dolore eos, iste magni non omnis perferendis, quos sed.</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-      <div class="card">
-         <div class="card-body">
-            <div>{% include ui/stars.html %}</div>
-            <div>{% include ui/stars.html count=3 %}</div>
-            <div>{% include ui/stars.html color="red" %}</div>
-            <div>{% include ui/stars.html filled=true %}</div>
-            <div>{% include ui/stars.html icon="heart" color="red" rate=2 %}</div>
-            <div>{% include ui/stars.html icon="circle" color="blue" %}</div>
-         </div>
-      </div>
-   </div>
-   <div class="col-md-6">
-      {% include cards/users-list.html hoverable=true checked-ids="2,5,8" %}
-      {% include cards/users-list.html offset=8 checkbox=true title="Contacts" %}
-   </div>
-</div>
+	<div class="col-md-6 col-xl-4">
+		{% assign person = site.data.people[0] %}
+		<div class="card">
+			<div class="card-img-top embed-responsive embed-responsive-21by9">
+				<div class="embed-responsive-item bg-cover"
+				     style="background-image: url({{ site.base }}/static/photos/{{ site.data.photos[8].file }})"></div>
+			</div>
+			{% include ui/avatar.html person=person size="xl" class="mt-n5 mx-auto card-avatar" %}
+			<div class="card-body text-center">
+				<h2 class="mb-3">{{ person.full_name }}</h2>
+				<p class="text-muted">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci aperiam atque autem
+					consectetur dignissimos ea error exercitationem id, maxime minus mollitia nulla quasi quia quisquam sed
+					tempora ut voluptas, voluptatem!</p>
+			</div>
+		</div>
+	</div>
 
+	<div class="col-4">
+		<div class="card card-body">
+			{% include ui/button.html modal-id="simple" text="Open modal" %}
+			{% include ui/modal.html modal-id="simple" %}
+		</div>
+
+		<div class="card card-body">
+			<div>{% include ui/stars.html %}</div>
+			<div>{% include ui/stars.html count=3 %}</div>
+			<div>{% include ui/stars.html color="red" %}</div>
+			<div>{% include ui/stars.html filled=true %}</div>
+			<div>{% include ui/stars.html icon="heart" color="red" rate=2 %}</div>
+			<div>{% include ui/stars.html icon="circle" color="blue" %}</div>
+		</div>
+	</div>
+</div>

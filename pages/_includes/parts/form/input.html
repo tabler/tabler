@@ -1,0 +1,28 @@
+{% assign type = include.type %}
+
+{% if type == 'static' %}
+	<div class="mb-3">
+		<label class="form-label">{{ include.label | default: 'Static' }}</label>
+		<div class="form-control-plaintext">{{ include.value | default: 'Input value' }}</div>
+	</div>
+
+{% elsif type == 'password' %}
+	<div class="mb-3">
+		<label class="form-label">{{ include.label | default: 'Password' }}</label>
+		<input type="text" class="form-control" name="example-password-input" placeholder="{{ include.placeholder | default: 'Input placeholder' }}">
+	</div>
+
+{% elsif type == 'textarea' %}
+<div class="mb-3">
+	<label class="form-label">{{ include.label | default: 'Textarea' }}</label>
+	<textarea class="form-control" name="example-textarea" placeholder="{{ include.placeholder | default: 'Textarea placeholder' }}">{{ include.value }}</textarea>
+</div>
+
+{% else %}
+
+<div class="mb-3">
+	<label class="form-label">{{ include.label | default: 'Text' }}</label>
+	<input type="text" class="form-control" name="example-text-input" placeholder="{{ include.placeholder | default: 'Input placeholder' }}">
+</div>
+
+{% endif %}

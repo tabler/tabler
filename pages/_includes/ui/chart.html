@@ -1,150 +1,250 @@
 {% assign data = site.data.charts[include.chart-id] %}
 {% assign id = include.id | default: include.chart-id %}
 {% assign height = include.height | default: 10 %}
-{% assign class = include.class | default: '' %}
+{% assign class = include.class %}
 
 {% if include['size'] == 'sm' %}
-   {% assign class = class | append: ' chart-sm' | strip %}
-   {% assign height = 2.5 %}
+	{% assign class = class | append: ' chart-sm' | strip %}
+	{% assign height = 2.5 %}
+{% elsif include['size'] == 'lg' %}
+	{% assign class = class | append: ' chart-lg' | strip %}
+	{% assign height = 15 %}
 {% endif %}
 
 {% if data %}
-<div id="chart-{{ id }}"{% if class %} class="{{ class }}"{% endif %}></div>
+{% if data.extend %}
+{% assign data = site.data.charts[data.extend] | concat_objects: site.data.charts[include.chart-id] %}
+{% endif %}
 
+<div id="chart-{{ id }}" {% if class %} class="{{ class }}" {% endif %}{% if data.debug and jekyll.environment == 'development' %} style="outline: 1px solid red" {% endif %}></div>
+
+{% append_lib apexcharts %}
 {% capture script %}
+{% assign chart-type = data.type | default: 'bar' %}
 <script>
-   document.addEventListener("DOMContentLoaded", function(event) {
-      {% if jekyll.environment == 'development' %}window.tabler_chart = window.tabler_chart || {};{% endif %}
+	// @formatter:off
+	document.addEventListener("DOMContentLoaded", function () {
+		{% if jekyll.environment == 'development' %}
+		window.tabler_chart = window.tabler_chart || {};
+		{% endif %}
+		
+		window.ApexCharts && ({% if jekyll.environment == 'development' %}window.tabler_chart["chart-{{ include.chart-id }}"] = {% endif %}new ApexCharts(document.getElementById('chart-{{ id }}'), {
+			chart: {
+				type: "{{ chart-type }}",
+				fontFamily: 'inherit',
+				height: {{ height | times: 16 }},
 
-      window.ApexCharts && ({% if jekyll.environment == 'development' %}window.tabler_chart["chart-{{ include.chart-id }}"] = {% endif %}new ApexCharts(document.getElementById('chart-{{ id }}'), {
-         chart: {
-            type: '{{ data.type }}',
-            height: {{ height | times: 16 }},
-         {% if data.sparkline %}
-         sparkline: {
-            enabled: true
-         },
-         {% endif %}
-         {% if data.stacked %}
-         stacked: true,
-         {% endif %}
-         },
+				{% if data.sparkline %}
+				sparkline: {
+					enabled: true
+				},
+				{% else %}
+				parentHeightOffset: 0,
+				toolbar: {
+					show: false,
+				},
+				{% endif %}
 
-         {% if data.type == 'area' %}
-         fill: {
-            opacity: .16
-         },
-         {% endif %}
+				{% unless data.animations %}
+				animations: {
+					enabled: false
+				},
+				{% endunless %}
 
-         {% if data.title %}
-         title: {
-            text: '{{ data.title | escape }}'
-         },
-         {% endif %}
+				{% if data.stacked %}
+				stacked: true,
+				{% endif %}
+			},
 
-         {% if data.dashed-history or data.stroke-curve %}
-         stroke: {
-            {% if data.dashed-history %}
-            width: [2, 1],
-               dashArray: [0, 3],
-            {% endif %}
-            {% if data.stroke-curve %}
-            curve: '{{ data.stroke-curve }}',
-            {% endif %}
-         },
-         {% endif %}
+			{% if chart-type == 'bar' %}
+			plotOptions: {
+				bar: {
+					{% if data.horizontal %}
+					barHeight: '50%',
+			 		horizontal: true,
+					{% else %}
+					columnWidth: '50%',
+					{% endif %}
+				}
+			},
+			{% endif %}
 
-         {% if data.series %}
-         {% if data.type == 'pie' or data.type == 'donut' or data.type == 'radialBar' %}
-         series: [{% for serie in data.series %}{{ serie.data }}{% unless forloop.last %}, {% endunless %}{% endfor %}],
-         labels: [{% for serie in data.series %}"{{ serie.name }}"{% unless forloop.last %},{% endunless %}{% endfor %}],
+			{% if chart-type == 'bar' or chart-type == 'area' %}
+			dataLabels: {
+				enabled: {% if data.datalabels %}true{% else %}false{% endif %},
+			},
+			{% endif %}
 
-         {% else %}
-         series: [{% for serie in data.series %}{
-            name: '{{ serie.name }}',
-            data: [{{ serie.data | join: ', '}}]
-         }{% unless forloop.last %},{% endunless %}{% endfor %}],
-         {% endif %}
-         {% endif %}
+			fill: {
+				opacity: {% if chart-type == 'area' %}.16{% else %}1{% endif %},
+				{% if chart-type == 'area' %}type: 'solid'{% endif %}
+			},
 
-         {% if data.show-grid %}
-         grid: {
-            show: true,
-         },
-         {% endif %}
+			{% if data.title %}
+			title: {
+				text: "{{ data.title | escape }}",
+				margin: 0,
+				floating: true,
+				offsetX: 10,
+				style: {
+					fontSize: '18px',
+				},
+			},
+			{% endif %}
 
-         {% if data.show-data-labels %}
-         dataLabels: {
-            enabled: true,
-         },
-         {% endif %}
+			{% if chart-type == 'area' or chart-type == 'line' %}
+			stroke: {
+				width: {% if data.stroke-width %}[{{ data.stroke-width | join: ', '}}]{% else %}2{% endif %},
+				{% if data.stroke-dash %}dashArray: [{{ data.stroke-dash | join: ', '}}],{% endif %}
+				lineCap: "round",
+				curve: "{{ data.stroke-curve | default: 'smooth' }}",
+			},
+			{% endif %}
 
-         {% if data.categories or data.days-labels-count %}
-         xaxis: {
-            {% if data.categories %}categories: [{% for category in data.categories %}'{{ category }}'{% unless forloop.last %}, {% endunless %}{% endfor %}],{% endif %}
-            {% if data.days-labels-count %}type: 'datetime',{% endif %}
-         },
-         {% endif %}
+			{% if data.series %}
+			{% if chart-type == 'pie' or chart-type == 'donut' or chart-type == 'radialBar' %}
+			series: [{% for serie in data.series %}{{ serie.data }}{% unless forloop.last %}, {% endunless %}{% endfor %}],
+			labels: [{% for serie in data.series %}"{{ serie.name }}"{% unless forloop.last %}, {% endunless %}{% endfor %}],
 
-         {% if data.auto-min %}
-         yaxis: {
-            min: function(min) { return min },
-         },
-         {% endif %}
+			{% else %}series: [{% for serie in data.series %}{
+				name: "{{ serie.name }}",
+				data: [{{ serie.data | join: ', ' }}]
+			}{% unless forloop.last %},{% endunless %}{% endfor %}],
+			{% endif %}
+			{% endif %}
 
-         {% if data.days-labels-count %}
-         labels: [...Array({{ data.days-labels-count }}).keys()].map(n => `2019-09-${n+1}`),
-         {% endif %}
+			grid: {
+				{% unless data.sparkline %}
+				padding: {
+					top: -20,
+					right: 0,
+					left: -4,
+					bottom: -8
+				},
+				{% endunless %}
+				{% if data.hide-grid %}
+				show: false,
+				{% else %}
+				strokeDashArray: 4,
+				{% if data.show-x %}
+				xaxis: {
+					lines: {
+						show: true
+					}
+				},
+				{% endif %}
+				{% endif %}
+			},
 
-         {% if data.rotated %}
-         plotOptions: {
-            bar: {
-               horizontal: true,
-            }
-         },
-         {% endif %}
+			{% if data.show-data-labels %}
+			dataLabels: {
+				enabled: true,
+			},
+			{% endif %}
 
-         {% if data.series %}
-         colors: [
-            {% for serie in data.series %}
-            {{ serie.color | default: 'blue' | tabler_js_color }}{% unless forloop.last %},{% endunless %}{% endfor %}
-         ],
-         {% endif %}
+			{% if data.categories or data.datetime %}
+			xaxis: {
+				labels: {
+					padding: 0
+				},
+				tooltip: {
+					enabled: false
+				},
+				{% if chart-type == 'area' or chart-type == 'bar' %}
+				axisBorder: {
+					show: false,
+				},
+				{% endif %}
+				{% if data.categories %}
+				categories: [{% for category in data.categories %}"{{ category }}"{% unless forloop.last %}, {% endunless %}{% endfor %}],
+				{% endif %}
 
-         {% if data.hide-legend %}
-         legend: {
-            show: false, //hide legend
-         },
-         {% endif %}
+				{% if data.datetime %}
+				type: 'datetime',
+				{% endif %}
+			},
+			{% endif %}
 
-         {% if data.hide-tooltip %}
-         tooltip: {
-            enabled: false
-         },
-         {% endif %}
+			{% unless chart-type == 'pie' or chart-type == 'donut' or chart-type == 'radialBar' %}
+			yaxis: {
+				labels: {
+					padding: 4
+				},
+				{% if data.y-title %}
+				title: {
+					text: '{{ data.y-title | escape }}'
+				}
+				{% endif %}
+			},
+			{% endunless %}
 
-         {% if data.hide-points %}
-         point: {
-            show: false
-         },
-         {% endif %}
+			{% if data.datetime %}
+			{% assign date = data.start-date | default: '2020-06-20' | date: "%s" %}
+			{% assign days-count = data.series[0].data.size %}
 
-         {% if data.show-markers %}
-         markers: {
-            size: 2
-         },
-         {% endif %}
-      })).render();
-   });
+			labels: [
+				{% for i in (1..days-count) %}{% assign date = date | plus: 86400 %}'{{ date | timestamp_to_date }}'{% unless forloop.last %}, {% endunless %}{% endfor %}
+			],
+			{% endif %}
+
+			{% if data.series %}
+			colors: [{% for serie in data.series %}{% assign color = serie.color | default: data.color | default: 'blue' %}"{{ color | tabler_color }}"{% unless forloop.last %}, {% endunless %}{% endfor %}],
+			{% endif %}
+
+			legend: {
+				{% if include.legend %}
+				show: true,
+				position: 'bottom',
+				height: 32,
+				offsetY: 8,
+				markers: {
+					width: 8,
+					height: 8,
+					radius: 100,
+				},
+				itemMargin: {
+					horizontal: 8,
+				},
+				{% else %}
+				show: false,
+				{% endif %}
+			},
+
+			{% if data.hide-tooltip or chart-type == 'pie' or chart-type == 'donut' %}
+			tooltip: {
+				{% if data.hide-tooltip %}
+				enabled: false,
+				{% endif %}
+
+				{% if chart-type == 'pie' or chart-type == 'donut' %}
+				fillSeriesColor: false
+				{% endif %}
+			},
+			{% endif %}
+
+			{% if data.hide-points %}
+			point: {
+				show: false
+			},
+			{% endif %}
+
+			{% if data.show-markers %}
+			markers: {
+				size: 2
+			},
+			{% endif %}
+		})).render();
+	});
+	// @formatter:on
 </script>
 {% endcapture %}
 
 {% if include.show-scripts %}
-   {{ script }}
+{{ script }}
 {% else %}
-   {% capture_global scripts %}
-      {{ script }}
-   {% endcapture_global %}
+{% capture_global scripts %}
+{{ script }}
+{% endcapture_global %}
 {% endif %}
 
 {% endif %}

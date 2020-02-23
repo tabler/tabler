@@ -1,15 +1,31 @@
 {% removeemptylines %}
 {% assign spinner-class = false %}
+
+{% assign color = include.color | default: 'secondary' %}
+{% if include.color == false %}
+{% assign color = null %}
+{% endif %}
+
 {% assign provider = include.provider | default: 'fe' %}
 {% if include.text %}{% assign spinner-class="mr-2" %}{% endif %}
+
+{% assign href = '#' %}
+{% if include.href %}
+	{% if include.external %}
+		{% assign href = include.href %}
+	{% else %}
+		{% assign href = site.base | append: '/' | append: include.href %}
+	{% endif %}
+{% endif %}
+
 {% assign e = include.element | default: 'a' %}
-<{{ e }}{% if e == 'a' %} href="{{ include.href | default: '#' }}"{% endif %}{% if include.type %} type="{{ include.type }}"{% endif %} class="btn{% if include.height %} btn-{{ include.height }}{% endif %}{% if include.color %} btn-{% if include.outline %}outline-{% endif %}{{ include.color }}{% endif %}{% if include.disabled %} disabled{% endif %}{% if include.square %} btn-square{% endif %}{% if include.pill %} btn-pill{% endif %}{% if include['size'] %} btn-{{ include['size'] }}{% endif %}{% if include.class %} {{ include.class }}{% endif %}{% if include.block %} btn-block{% endif %}{% if include.link %} btn-link{% endif %}{% if include.label %} btn-label{% endif %}{% if include.icon-only %} btn-icon{% endif %}">
+<{{ e }}{% if e == 'a' %} href="{{ href }}"{% endif %}{% if include.type %} type="{{ include.type }}"{% endif %} class="btn{% if include.height %} btn-{{ include.height }}{% endif %}{% if color %} btn-{% if include.outline %}outline-{% endif %}{{ color }}{% endif %}{% if include.disabled %} disabled{% endif %}{% if include.square %} btn-square{% endif %}{% if include.loading %} btn-loading{% endif %}{% if include.pill %} btn-pill{% endif %}{% if include['size'] %} btn-{{ include['size'] }}{% endif %}{% if include.class %} {{ include.class }}{% endif %}{% if include.block %} btn-block{% endif %}{% if include.link %} btn-link{% endif %}{% if include.icon-only %} btn-icon{% endif %}"{% if include.external %} target="_blank" rel="noreferrer"{% endif %}{% if include.modal-id %} data-toggle="modal" data-target="#modal-{{ include.modal-id }}"{% endif %}{% if include.icon-only %} aria-label="{{ include.text | default: "Button" }}"{% endif %}{% if include.dismiss %} data-dismiss="modal"{% endif %}>
 {% if include.spinner %}
 {% include ui/spinner.html color=false size="sm" class=spinner-class element="span" %}{% endif %}
-{% if include.icon %}{% include_cached ui/icon.html icon=include.icon use-svg=true %}{% endif %}
+{% if include.icon %}{% include ui/icon.html icon=include.icon use-svg=true color=include.icon-color %}{% endif %}
 {% unless include.icon-only %}
 {{ include.text | default: "Button" }}
-{% if include.icon-right %}{% include_cached ui/icon.html icon=include.icon-right use-svg=true right=true %}{% endif %}
+{% if include.icon-right %}{% include ui/icon.html icon=include.icon-right use-svg=true right=true %}{% endif %}
 {% endunless %}
 </{{ e }}>
 {% endremoveemptylines %}

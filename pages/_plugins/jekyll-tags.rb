@@ -3,6 +3,18 @@ require 'pathname'
 
 module Jekyll
   module Tags
+    class Hide < Liquid::Block
+
+      def initialize(tag_name, text, tokens)
+        super
+        @text = text
+      end
+
+      def render(context)
+        '{% hide %}' + super.to_s + '{% endhide %}'
+      end
+    end
+
     class RemoveEmptyLines < Liquid::Block
 
       def initialize(tag_name, text, tokens)
@@ -63,4 +75,5 @@ end
 Liquid::Template.register_tag('removeemptylines', Jekyll::Tags::RemoveEmptyLines)
 Liquid::Template.register_tag('card', Jekyll::Tags::CardBlock)
 Liquid::Template.register_tag('docs_url', Jekyll::Tags::DocsUrl)
+Liquid::Template.register_tag('hide', Jekyll::Tags::Hide)
 

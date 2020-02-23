@@ -1,58 +1,31 @@
 <div class="card">
-   {% include ui/chart.html chart-id="development-activity" height=10 class="mt-4" %}
+	{% include ui/chart.html chart-id="development-activity" height=10 class="mt-4" %}
 
-   <div class="table-responsive">
-      <table class="table card-table table-vcenter">
-         <thead>
-         <tr>
-            <th colspan="2">User</th>
-            <th>Commit</th>
-            <th>Date</th>
-         </tr>
-         </thead>
-         <tbody>
-         <tr>
-            <td class="w-1p">
-               {% include ui/avatar.html person-id=10 %}
-            </td>
-            <td>{{ site.data.people[10].full_name }}</td>
-            <td>Initial commit</td>
-            <td class="text-nowrap text-muted">May 6, 2019</td>
-         </tr>
-         <tr>
-            <td class="w-1p">
-               {% include ui/avatar.html person-id=17 %}
-            </td>
-            <td>{{ site.data.people[17].full_name }}</td>
-            <td>Main structure</td>
-            <td class="text-nowrap text-muted">April 22, 2019</td>
-         </tr>
-         <tr>
-            <td class="w-1p">
-               {% include ui/avatar.html person-id=16 %}
-            </td>
-            <td>{{ site.data.people[16].full_name }}</td>
-            <td>Left sidebar adjustments</td>
-            <td class="text-nowrap text-muted">April 15, 2019</td>
-         </tr>
-         <tr>
-            <td class="w-1p">
-               {% include ui/avatar.html person-id=12 %}
-            </td>
-            <td>{{ site.data.people[12].full_name }}</td>
-            <td>Topbar dropdown style</td>
-            <td class="text-nowrap text-muted">April 8, 2019</td>
-         </tr>
-         <tr>
-            <td class="w-1p">
-               {% include ui/avatar.html person-id=19 %}
-            </td>
-            <td>{{ site.data.people[19].full_name }}</td>
-            <td>Fixes #625</td>
-            <td class="text-nowrap text-muted">April 9, 2019</td>
-         </tr>
-         </tbody>
-      </table>
-   </div>
+	<div class="table-responsive">
+		<table class="table card-table table-vcenter">
+			<thead>
+			<tr>
+				<th>User</th>
+				<th>Commit</th>
+				<th>Date</th>
+			</tr>
+			</thead>
+			<tbody>
+			{% for commit in site.data.commits limit: 5 %}
+			<tr>
+				<td class="w-1">
+					{% include ui/avatar.html person-id=forloop.index %}
+				</td>
+				<td class="td-truncate">
+					<div class="text-truncate">
+						{{ commit.description }}
+					</div>
+				</td>
+				<td class="text-nowrap text-muted">{{ commit.date | date_to_string }}</td>
+			</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+	</div>
 </div>
 

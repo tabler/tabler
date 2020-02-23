@@ -1,261 +1,286 @@
 ---
 title: Buttons
 icon: fe fe-plus-square
-description: Use Bootstrap’s custom button styles for actions in forms, dialogs, and more. Includes support for a handful of contextual variations, sizes, states, and more.
-bootstrap-link: https://getbootstrap.com/docs/4.4/components/buttons/
+description: Use button styles that best suit your designs and encourage users to take the desired actions. You can customise the button's properties to improve the user experience of your website or system, changing the size, shape, colour and many more.
+bootstrap-link: components/buttons/
 done: true
 ---
 
 
-### Button tag
+## Button tag
 
-The `.btn` classes are designed to be used with the `<button>` element. However, you can also use these classes on `<a>` or `<input>` elements (though some browsers may apply a slightly different rendering).
+As one of the most common elements of UI design, buttons have a very important function of engaging users with your website or system and guiding them in their actions. Use the `.btn` classes with the `<button>` element and add additional styling that will make your buttons serve their purpose and draw users' attention. 
 
-{% example html wrapper=btn-list %}
+{% capture code %}
 <a href="#" class="btn btn-primary" role="button">Link</a>
 <button class="btn btn-primary">Button</button>
 <input type="button" class="btn btn-primary" value="Input"/>
 <input type="submit" class="btn btn-primary" value="Submit"/>
 <input type="reset" class="btn btn-primary" value="Reset"/>
-{% endexample %}
+{% endcapture  %}
+{% include example.html code=code wrapper="btn-list" centered=true %}
 
-### Button variations
 
-Use any of the available button classes to quickly create a styled button . We provide a variety of colors for you to express different emotions.
+## Button variations
 
-{% example html wrapper=btn-list %}
+Use the button classes that correspond to the function of your button. The big range of available colours will help you show your buttons' purpose and make them easy to spot.
+
+{% capture code %}
 {% for button in site.button-variants %}
 {% assign btn-color = button[1].class %}
 {% assign btn-title = button[1].title %}
-{% include_cached ui/button.html color=btn-color text=btn-title %}
+{% include ui/button.html color=btn-color text=btn-title %}
 {% endfor %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code wrapper="btn-list" centered=true %}
 
-### Disabled buttons
 
-Make buttons look inactive by adding the disabled boolean attribute to any `.btn` element. `<a>`s don’t support the disabled attribute, so you must add the `.disabled` class to make it visually appear disabled.
+## Disabled buttons
 
-{% example html wrapper=btn-list %}
+Make buttons look inactive to show that an action is possible once the user meets certain criteria, such as completing the required fields to submit a form. 
+
+{% capture code %}
 {% for button in site.button-variants %}
 {% assign btn-color = button[1].class %}
 {% assign btn-title = button[1].title %}
-{% include_cached ui/button.html color=btn-color text=btn-title disabled=true %}
+{% include ui/button.html color=btn-color text=btn-title disabled=true %}
 {% endfor %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code wrapper="btn-list" centered=true %}
 
 
-### Color variations
+## Color variations
 
-The classic button, in different colors.
+Choose the right colour for your button to make it go well with your design and draw users' attention. Button colours can have a big influence on users' decisions, which is why it's important to choose them based on the intended purpose.
 
-{% example html wrapper=btn-list %}
+{% capture code %}
 {% for button in site.colors %}
 <a href="#" class="btn btn-{{ button[0] }}">{{ button[1].title }}</a>
 {% endfor %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code wrapper="btn-list" centered=true %}
 
-### Square buttons
 
-Add `.btn-square` to button to remove border-radius.
+## Ghost buttons
 
-{% example html wrapper=btn-list %}
+Use the `.btn-ghost-*` class to make your button look simple yet aesthetically appealing. Ghost buttons help focus users' attention on the website's primary design, at the same time encouraging them to take action. 
+
+{% capture code %}
+{% for button in site.button-variants %}
+<a href="#" class="btn btn-ghost-{{ button[0] }}">{{ button[1].title }}</a>
+{% endfor %}
+{% endcapture %}
+{% include example.html code=code wrapper="btn-list" centered=true %}
+
+
+## Square buttons
+
+Use the `.btn-square` class to remove border-radius, if you want the corners of your button to be square, not rounded.
+
+{% capture code %}
 {% for button in site.button-variants %}
 {% assign btn-color = button[1].class %}
 {% assign btn-title = button[1].title %}
-{% include_cached ui/button.html color=btn-color text=btn-title square=true %}
+{% include ui/button.html color=btn-color text=btn-title square=true %}
 {% endfor %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code wrapper="btn-list" centered=true %}
 
-### Pill buttons
 
-Add `.btn-pill` class to any button to make them more rounded.
+## Pill buttons
 
-{% example html wrapper=btn-list %}
+Add the `.btn-pill` class to your button to make it rounded and give it a modern and attractive look.
+
+{% capture code %}
 {% for button in site.button-variants %}
 {% assign btn-color = button[1].class %}
 {% assign btn-title = button[1].title %}
-{% include_cached ui/button.html color=btn-color text=btn-title pill=true %}
+{% include ui/button.html color=btn-color text=btn-title pill=true %}
 {% endfor %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code wrapper="btn-list" centered=true %}
 
-### Outline buttons
 
-In need of a button, but not the hefty background colors they bring? Replace the default modifier classes with the `.btn-outline-*` ones to remove all background images and colors on any button.
+## Outline buttons
 
-{% example html wrapper=btn-list %}
+Replace the default modifier class with the `.btn-outline-*` class, if you want to remove the colour and background of your button and give it a more subtle look. Outline buttons are perfect to use as secondary buttons, as they don't distract users from the main action.
+
+{% capture code %}
 {% for button in site.button-variants %}
 {% assign btn-color = button[1].class %}
 {% assign btn-title = button[1].title %}
-{% include_cached ui/button.html text=btn-title color=btn-color outline=true %}
+{% include ui/button.html text=btn-title color=btn-color outline=true %}
 {% endfor %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code wrapper="btn-list" centered=true %}
 
-### Button size
 
-Add `.btn-lg` or `.btn-sm` for additional sizes.
+## Button size
 
-{% example html wrapper=btn-list %}
+Add `.btn-lg` or `.btn-sm` to change the size of your button and differentiate those which should have primary focus from those of secondary importance. Adapt the button size to your design and encourage users to take actions.  
+
+{% capture code %}
 <button type="button" class="btn btn-primary btn-lg">Large button</button>
 <button type="button" class="btn btn-secondary btn-lg">Large button</button>
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code wrapper="btn-list" centered=true %}
 
-{% example html wrapper=btn-list %}
+{% capture code %}
 <button type="button" class="btn btn-primary btn-sm">Small button</button>
 <button type="button" class="btn btn-secondary btn-sm">Small button</button>
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code wrapper="btn-list" centered=true %}
 
-Create block level buttons—those that span the full width of a parent—by adding `.btn-block`.
+You can also add the `.btn-block` class to create block level buttons which span the full width of a parent.
 
-{% example html %}
+{% capture code %}
 <button type="button" class="btn btn-primary btn-block">Block level button</button>
 <button type="button" class="btn btn-secondary btn-block">Block level button</button>
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code wrapper="btn-list" centered=true %}
 
-### Button with icon
 
-Basic buttons are traditional buttons with borders and background with an extra commponent like an icon. You can place it either on the left or the right which ever you want with different color opitons.
+## Buttons with icons
 
-Icons can be found [**here** {% include_cached ui/icon.html icon="search" class="icon-sm" %}](/docs/icons.html#icons)
+Label your button with text and add an icon to communiacate the action and make it easy to identify for users. Icons are easily recognised and improve the aesthetics of your button design, giving it a modern and atractive look.  
 
-{% example html wrapper=btn-list %}
+Icons can be found [**here**](/docs/icons.html#icons)
+
+{% capture code %}
 <button type="button" class="btn btn-dark">
-{% include_cached ui/icon.html icon="upload" class="icon-sm" %}
+{% include ui/icon.html icon="upload" %}
 Upload
 </button>
 <button type="button" class="btn btn-warning">
-{% include_cached ui/icon.html icon="heart" class="icon-sm" %}
+{% include ui/icon.html icon="heart" %}
 I like
 </button>
 <button type="button" class="btn btn-success">
-{% include_cached ui/icon.html icon="check" class="icon-sm" %}
+{% include ui/icon.html icon="check" %}
 I agree
 </button>
 <button type="button" class="btn btn-outline-primary">
-{% include_cached ui/icon.html icon="plus" class="icon-sm" %}
+{% include ui/icon.html icon="plus" %}
 More
 </button>
 <button type="button" class="btn btn-danger">
-{% include_cached ui/icon.html icon="link" class="icon-sm" %}
+{% include ui/icon.html icon="link" %}
 Link
 </button>
 <button type="button" class="btn btn-info">
-{% include_cached ui/icon.html icon="message-circle" class="icon-sm" %}
+{% include ui/icon.html icon="message-circle" %}
 Comment
 </button>
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code wrapper="btn-list" centered=true %}
 
-### Social buttons
 
-A button can be formatted to link to a social website
+## Social buttons
 
-{% example html wrapper=btn-list %} 
+You can use the icons of popular social networking sites, which users are familiar with. Thanks to buttons with social media icons users can share content or follow a website with just one click, without leaving the website.
+
+{% capture code %}
 {% for button in site.socials %}
 {% assign btn-icon = button[1].icon %}
 {% assign btn-title = button[1].title %}
 {% assign btn-color = button[0] %}
-{% include_cached ui/button.html color=btn-color icon=btn-icon text=btn-title %}
+{% include ui/button.html color=btn-color icon=btn-icon text=btn-title %}
 {% endfor %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code wrapper="btn-list" centered=true %}
 
-You can use only icons.
+You can also add an icon without the name of a social networking site, if you want to display more buttons on a small space.
 
-{% example html wrapper=btn-list %} 
+{% capture code %}
 {% for button in site.socials %}
 {% assign btn-icon = button[1].icon %}
 {% assign btn-color = button[0] %}
-{% include_cached ui/button.html color=btn-color icon=btn-icon icon-only=true %}
+{% include ui/button.html color=btn-color icon=btn-icon icon-only=true %}
 {% endfor %}
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code wrapper="btn-list" centered=true %}
 
-### Icon buttons
 
-Icon only button. Add `.btn-icon` class to remove unnecessary padding from button.
+## Icon buttons
 
-{% example html wrapper=btn-list %} 
-<button type="button" class="btn btn-icon btn-primary">
-{% include_cached ui/icon.html icon="activity" class="icon-sm" %}
-</button>
-<button type="button" class="btn btn-icon btn-primary btn-github">
-{% include_cached ui/icon.html icon="github" class="icon-sm" %}
-</button>
-<button type="button" class="btn btn-icon btn-primary btn-success">
-{% include_cached ui/icon.html icon="bell" class="icon-sm" %}
-</button>
-<button type="button" class="btn btn-icon btn-primary btn-warning">
-{% include_cached ui/icon.html icon="star" class="icon-sm" %}
-</button>
-<button type="button" class="btn btn-icon btn-primary btn-danger">
-{% include_cached ui/icon.html icon="trash-2" class="icon-sm" %}
-</button>
-<button type="button" class="btn btn-icon btn-primary btn-purple">
-{% include_cached ui/icon.html icon="bar-chart" class="icon-sm" %}
-</button>
-<button type="button" class="btn btn-icon btn-primary btn-secondary">
-{% include_cached ui/icon.html icon="git-merge" class="icon-sm" %}
-</button>
-{% endexample %}
+Add the `.btn-icon` class to remove unnecessary padding from your button and use an icon without any additional label. Thanks to that, you can save space and make the action easy to recognise for international users.
 
-### Button dropdown
+{% capture code %}
+{% include ui/button.html icon="activity" color="primary" icon-only=true %}
+{% include ui/button.html icon="github" color="github" icon-only=true %}
+{% include ui/button.html icon="bell" color="success" icon-only=true %}
+{% include ui/button.html icon="star" color="warning" icon-only=true %}
+{% include ui/button.html icon="trash-2" color="danger" icon-only=true %}
+{% include ui/button.html icon="bar-chart" color="purple" icon-only=true %}
+{% include ui/button.html icon="git-merge" color="secondary" icon-only=true %}
+{% endcapture %}
+{% include example.html code=code wrapper="btn-list" centered=true %}
 
-Wrap the dropdown’s toggle (your button or link) and the dropdown menu within `.dropdown`, or another element that declares `position: relative;`. Dropdowns can be triggered from `<a>` or `<button>` elements to better fit your potential needs.
 
-{% example html wrapper=btn-list %}
+## Dropdown buttons
+
+Create a dropdown button that will encourage users to click for more options. You can add a label with an icon or remove the label and add an icon on its own if you want to save space. Choose the option that will best suit your design and improve the user experience. 
+
+{% capture code %}
 <div class="dropdown">
   <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
-     {% include_cached ui/icon.html icon="calendar" class="icon-sm" %}
+     {% include ui/icon.html icon="calendar" %}
   </button>
-  <div class="dropdown-menu">
-    <a class="dropdown-item" href="#">Dropdown link</a>
-    <a class="dropdown-item" href="#">Dropdown link</a>
-  </div>
+  {% include ui/dropdown-menu.html %}
 </div>
 
 <div class="dropdown">
   <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
-     {% include_cached ui/icon.html icon="calendar" class="icon-sm" %}Show calendar
+     {% include ui/icon.html icon="calendar" %}Show calendar
   </button>
-  <div class="dropdown-menu">
-    <a class="dropdown-item" href="#">Dropdown link</a>
-    <a class="dropdown-item" href="#">Dropdown link</a>
-  </div>
+  {% include ui/dropdown-menu.html %}
 </div>
 
 <div class="dropdown">
   <button type="button" class="btn btn-secondary dropdown-toggle" data-toggle="dropdown">
      Show calendar
   </button>
-  <div class="dropdown-menu">
-    <a class="dropdown-item" href="#">Dropdown link</a>
-    <a class="dropdown-item" href="#">Dropdown link</a>
-  </div>
+  {% include ui/dropdown-menu.html %}
 </div>
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code wrapper="btn-list" centered=true %}
 
-### Loading button
 
-Add `.btn-loading` to use a loading state on a button. The width of the button depends on the length of the text inside.
+## Loading buttons
 
-Since the loading spinner is implemented using the `:after` pseudo-element, it is not supported by the `<input type="submit">` element.
+Add the `.btn-loading` class to show a button's loading state, which can be useful in the case of operations that take longer to process. Thanks to that, users will be aware of the current state of their action and won't give it up before it's finished.
 
-{% example html wrapper=btn-list %}
-{% include_cached ui/button.html color="primary" text="Button" spinner=true %}
-{% endexample %}
 
-### List of buttons
+{% capture code %}
+{% include ui/button.html color="primary" text="Button" loading=true %}
+{% include ui/button.html color="primary" text="Loading button with loooong content" loading=true %}
+{% endcapture %}
+{% include example.html code=code wrapper="btn-list" centered=true %}
 
-You can now create a list of buttons with the `.btn-list` container.
 
-{% example html %}
+
+{% capture code %}
+{% include ui/button.html color="primary" text="Button" spinner=true %}
+{% endcapture %}
+{% include example.html code=code centered=true %}
+
+
+## List of buttons
+
+Create a list of buttons using the `.btn-list` container to display different actions a user can take. If you add aditional styling, such as colours, you will be able to focus users' attention on a particular action or suggest the result. 
+
+{% capture code %}
 <div class="btn-list">
   <a href="#" class="btn btn-success">Save changes</a>
   <a href="#" class="btn btn-secondary">Save and continue</a>
   <a href="#" class="btn btn-danger">Cancel</a>
 </div>
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
-If the list is very long, it will automatically wrap on multiple lines, while keeping all buttons evenly spaced.
+If the list is long, it will be wrapped and some buttons will be moved to the next line, keeping them all evenly spaced.
 
-{% example html %}
+{% capture code %}
 <div class="btn-list">
   <a href="#" class="btn btn-secondary">One</a>
   <a href="#" class="btn btn-secondary">Two</a>
@@ -277,29 +302,50 @@ If the list is very long, it will automatically wrap on multiple lines, while ke
   <a href="#" class="btn btn-secondary">Eighteen</a>
   <a href="#" class="btn btn-secondary">Nineteen</a>
 </div>
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
-Use the `.text-center` or the `.text-right` modifiers to alter the alignment.
+Use the `.text-center` or the `.text-right` modifiers to change the buttons' alignment and place them where they suit best.
 
-{% example html %}
-<div class="btn-list text-center">
-  <a href="#" class="btn btn-primary">Save changes</a>
+{% capture code %}
+<div class="btn-list justify-content-center">
   <a href="#" class="btn btn-secondary">Save and continue</a>
-</div>
-{% endexample %}
-
-{% example html %}
-<div class="btn-list text-right">
   <a href="#" class="btn btn-primary">Save changes</a>
-  <a href="#" class="btn btn-secondary">Save and continue</a>
 </div>
-{% endexample %}
+{% endcapture %}
+{% include example.html code=code %}
 
-### Button with avatar
+{% capture code %}
+<div class="btn-list justify-content-end">
+  <a href="#" class="btn btn-secondary">Save and continue</a>
+  <a href="#" class="btn btn-primary">Save changes</a>
+</div>
+{% endcapture %}
+{% include example.html code=code %}
 
-{% example html%}
-<a href="#" class="btn btn-secondary mr-2">{% include ui/avatar.html person-id="4" class="btn-avatar" %} Avatar</a>
-<a href="#" class="btn btn-secondary mr-2">{% include ui/avatar.html person-id="5" class="btn-avatar" %} Avatar</a>
-<a href="#" class="btn btn-secondary mr-2">{% include ui/avatar.html person-id="6" class="btn-avatar" %} Avatar</a>
-{% endexample %}
+{% capture code %}
+<div class="btn-list">
+  <a href="#" class="btn btn-outline-danger mr-auto">Delete</a>
+  <a href="#" class="btn btn-secondary">Save and continue</a>
+  <a href="#" class="btn btn-primary">Save changes</a>
+</div>
+{% endcapture %}
+{% include example.html code=code %}
 
+
+## Buttons with avatars
+
+Use buttons with avatars to simplify the process of interaction and make your design more personalised. Buttons can contain avatars and labels or only avatars, if displayed on a smaller space. 
+
+{% capture code %}
+<a href="#" class="btn btn-secondary">
+  {% include ui/avatar.html person-id="4" %} Avatar
+</a>
+<a href="#" class="btn btn-secondary">
+  {% include ui/avatar.html person-id="5" %} Avatar
+</a>
+<a href="#" class="btn btn-secondary">
+  {% include ui/avatar.html person-id="6" %} Avatar
+</a>
+{% endcapture %}
+{% include example.html code=code wrapper="btn-list" centered=true %}

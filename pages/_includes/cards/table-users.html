@@ -1,0 +1,67 @@
+<div class="card">
+	<div class="table-responsive">
+		<table class="table table-hover table-outline table-vcenter text-nowrap card-table">
+			<thead>
+			<tr>
+				<th colspan="2">User</th>
+				<th>Usage</th>
+				<th class="text-center">Payment</th>
+				<th>Activity</th>
+				<th class="w-1">Satisfaction</th>
+			</tr>
+			</thead>
+			<tbody>
+
+			{% for person in site.data.people limit: 8 offset: 50 %}
+			{% assign percentage = forloop.index | random_number %}
+			{% assign time_offset = forloop.index | random_number: 0, 800 %}
+			{% assign register_offset = forloop.index | random_number: 0, 8000000 %}
+			{% assign percentage_color = percentage | number_color %}
+
+			<tr>
+				<td class="text-center w-1">
+					{% include ui/avatar.html person-id=person.id %}
+				</td>
+				<td>
+					<div>{{ person.full_name }}</div>
+					<div class="small text-muted">
+						Registered: {{ site.time | date: "%s" | minus: register_offset | date: '%b %-d, %Y' }}
+					</div>
+				</td>
+				<td>
+					<div class="clearfix">
+						<div class="float-left">
+							<strong>{{ percentage }}%</strong>
+						</div>
+						<div class="float-right">
+							<small class="text-muted">Jun 11, 2015 - Jul 10, 2015</small>
+						</div>
+					</div>
+					{% include ui/progress.html value=percentage size="sm" color=percentage_color %}
+
+				</td>
+				<td class="text-center">
+					{% capture payment %}
+					{%- cycle 'visa', 'googlewallet', 'mastercard', 'shopify', 'ebay', 'paypal' -%}
+					{% endcapture %}
+					{% include ui/payment.html payment=payment %}
+				</td>
+				<td>
+					<div class="small text-muted">Last login</div>
+					<div>{{ site.time | date: "%s" | minus: time_offset | to_pretty_time }}</div>
+				</td>
+				<td class="text-center">
+					{% assign percentage = forloop.index | random_number: 0, 100 %}
+<!--					<div class="mx-auto" data-value="{{ circle-percentage | divide: 100 }}"-->
+<!--					     data-thickness="3" data-color="blue">-->
+<!--						<div class="chart-circle-value">{{ percentage }}%</div>-->
+<!--					</div>-->
+					{% include ui/sparkline.html percentage=percentage type="pie" %}
+				</td>
+			</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+	</div>
+
+</div>
