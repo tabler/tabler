@@ -1,7 +1,11 @@
-<div class="dropdown-menu{% if include.right %} dropdown-menu-right{% endif %}{% if include.show %} position-relative d-inline-block{% endif %}{% if include.arrow %} dropdown-menu-arrow{% endif %}{% if include.dark %} bg-dark text-white{% endif %}{% if include.class %} {{ include.class }}{% endif %}">
+<div class="dropdown-menu{% if include.right %} dropdown-menu-right{% endif %}{% if include.show %} dropdown-menu-demo{% endif %}{% if include.arrow %} dropdown-menu-arrow{% endif %}{% if include.dark %} bg-dark text-white{% endif %}{% if include.class %} {{ include.class }}{% endif %}">
 	{% if include.check or include.radio %}
 		{% for i in (1..3) %}
 		<label class="dropdown-item"><input class="form-check-input m-0 mr-2" type="{% if include.radio %}radio{% else %}checkbox{% endif %}"> Option {{ i }}</label>
+		{% endfor %}
+	{% elsif include.people %}
+		{% for person in site.data.people limit: 5 %}
+		<a href="#" class="dropdown-item">{% include ui/avatar.html person-id=person.id size="sm" class="rounded mr-2" %} {{ person.full_name }}</a>
 		{% endfor %}
 	{% elsif include.type == 'text' %}
 
