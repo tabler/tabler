@@ -2,6 +2,7 @@
 
 import {CountUp} from "countup.js";
 import noUiSlider from 'nouislider';
+import 'dropzone';
 
 (function () {
 	/**
