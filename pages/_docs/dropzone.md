@@ -15,10 +15,9 @@ The typical way of using dropzone is by creating a form element with the class `
 
 That’s it. Dropzone will find all form elements with the class dropzone, automatically attach itself to it, and upload files dropped into it to the specified `action` attribute. The uploaded files can be handled just as if there would have been a html input like this:
 
-{% capture code %}
+```html
 <input type="file" name="file" />
-{% endcapture %}
-{% include example.html code=code %}
+```
 
 If you want another name than `file` you can [configure dropzone](https://www.dropzonejs.com/#configuration) with the option `paramName`.
 
@@ -57,12 +56,11 @@ $("div#myId").dropzone({ url: "/file/post" });
 
 Dropzone does not provide the server side implementation of handling the files, but the way files are uploaded is identical to simple file upload forms like this:
 
-{% capture code %}
+```html
 <form action="" method="post" enctype="multipart/form-data">
   <input type="file" name="file" />
 </form>
-{% endcapture %}
-{% include example.html code=code %}
+```
 
 ## Configuration
 
