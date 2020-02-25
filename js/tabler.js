@@ -1,6 +1,7 @@
 'use strict';
 
 import {CountUp} from "countup.js";
+import noUiSlider from 'nouislider';
 
 (function () {
 	/**
@@ -27,6 +28,21 @@ import {CountUp} from "countup.js";
 		return new bootstrap.Popover(popoverTriggerEl, {
 			autoHide: true
 		})
+	});
+
+	/*
+	NoUiSlider
+	*/
+	let sliderTriggerList = [].slice.call(document.querySelectorAll("[data-slider]"));
+	sliderTriggerList.map(function (sliderTriggerEl){
+		let dataSlider;
+		if (sliderTriggerEl.getAttribute("data-slider")) {
+			dataSlider = JSON.parse(sliderTriggerEl.getAttribute("data-slider"));
+		}
+		let slider = noUiSlider.create(sliderTriggerEl,dataSlider);
+		if(dataSlider['js-name']){
+			window[dataSlider['js-name']] = slider;
+		}
 	});
 
 	/*
