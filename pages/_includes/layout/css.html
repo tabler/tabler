@@ -2,17 +2,17 @@
 <!-- Libs CSS -->
 {% for lib in site.data.libs.css %}
 {% for file in lib[1] %}
-<link href="{% if file contains 'http://' or file contains 'https://' %}{{ file }}{% else %}{{ site.base }}/{% if jekyll.environment == 'production' %}dist/libs{% else %}node_modules{% endif %}/{% if jekyll.environment == 'production' %}{{ file | replace: '@', '' }}{% else %}{{ file }}{% endif %}?{{ site.time | date: '%s' }}{% endif %}" rel="stylesheet"/>
+<link href="{% if file contains 'http://' or file contains 'https://' %}{{ file }}{% else %}{{ site.base }}/{% if jekyll.environment == 'production' %}dist/libs{% else %}node_modules{% endif %}/{% if jekyll.environment == 'production' %}{{ file | replace: '@', '' }}{% else %}{{ file }}{% endif %}{% if site.preview %}?{{ site.time | date: '%s' }}{% endif %}{% endif %}" rel="stylesheet"/>
 {% endfor %}
 {% endfor %}
 {% endif %}
 
 <!-- Tabler Core -->
-<link href="{{ site.base }}/{% if jekyll.environment == 'development' %}tmp-{% endif %}dist/css/tabler{% if jekyll.environment == 'production' %}.min{% endif %}.css?{{ site.time | date: '%s' }}" rel="stylesheet"/>
+<link href="{{ site.base }}/{% if jekyll.environment == 'development' %}tmp-{% endif %}dist/css/tabler{% if jekyll.environment == 'production' %}.min{% endif %}.css{% if site.preview %}?{{ site.time | date: '%s' }}{% endif %}" rel="stylesheet"/>
 
 <!-- Tabler Plugins -->
 {% for plugin in site.tabler-plugins %}
-<link href="{{ site.base }}/{% if jekyll.environment == 'development' %}tmp-{% endif %}dist/css/{{ plugin }}{% if jekyll.environment == 'production' %}.min{% endif %}.css?{{ site.time | date: '%s' }}" rel="stylesheet"/>
+<link href="{{ site.base }}/{% if jekyll.environment == 'development' %}tmp-{% endif %}dist/css/{{ plugin }}{% if jekyll.environment == 'production' %}.min{% endif %}.css{% if site.preview %}?{{ site.time | date: '%s' }}{% endif %}" rel="stylesheet"/>
 {% endfor %}
 
-<link href="{{ site.base }}/{% if jekyll.environment == 'development' %}tmp-{% endif %}dist/css/demo{% if jekyll.environment == 'production' %}.min{% endif %}.css?{{ site.time | date: '%s' }}" rel="stylesheet"/>
+<link href="{{ site.base }}/{% if jekyll.environment == 'development' %}tmp-{% endif %}dist/css/demo{% if jekyll.environment == 'production' %}.min{% endif %}.css{% if site.preview %}?{{ site.time | date: '%s' }}{% endif %}" rel="stylesheet"/>
