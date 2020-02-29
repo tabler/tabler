@@ -1,10 +1,13 @@
 ---
-title: Form Elements
+title: Form elements
+Description: Forms are one of the most important types of interaction with a website or app. Since their aim is to enable users to make a purchase, subscribe to a service or sign up to create an account, it's important to make sure they are easy to complete and help increase conversion rates. Use the available elements to create forms which are well-structured and user-friendly.
 bootstrap-link: components/forms/
 ---
 
 
-## Classic Inputs
+## Classic inputs
+
+Use classic, user-friendly inputs, label them appropriately and include input placeholders that will help users avoid confusion when completing a form.
 
 {% capture code %}
 {% include parts/form/input.html type="text" hint="Here's some more info." %}
@@ -14,6 +17,8 @@ bootstrap-link: components/forms/
 
 
 ## Form control rounded
+
+Use the ``form-control-rounded`` class if you prefer form controls with rounded corners.
 
 {% capture code %}
 <div class="mb-3">
@@ -27,6 +32,8 @@ bootstrap-link: components/forms/
 
 ## Form control flush
 
+You can remove borders from your form control by adding the ``form-control-flush`` class.
+
 {% capture code %}
 <div class="mb-3">
 	<label class="form-label">Form control flush</label>
@@ -38,6 +45,8 @@ bootstrap-link: components/forms/
 
 ## Input with icon
 
+Add icons to your input controls to sugegst users what they should enter or inform them of the current state of a form element.
+
 {% capture code %}
 {% include parts/form/input-icon.html %}
 {% endcapture %}
@@ -46,12 +55,18 @@ bootstrap-link: components/forms/
 
 ## Separated inputs
 
+Include an additional element in your input section, such as a button which can be used to submit the information enetered in the input control. 
+
 {% capture code %}
 {% include parts/form/input-icon-separated.html %}
 {% endcapture %}
 {% include example.html code=code %}
 
 ## Textarea and select
+
+Use a multi-line text input control to enable users to enter longer pieces of text. The control will automatically adjust to the length of the text entered.
+
+Add one of the available selects - either a dropdown or a multiple choice select - to let users choose from a predefined set of options.
 
 {% capture code %}
 {% include parts/form/input.html type="textarea" %}
@@ -64,6 +79,8 @@ bootstrap-link: components/forms/
 
 ## Validation states
 
+To inform users whether the entered value is correct or not, use either of the validation states. Thanks to that, users will immediately know which form elements they need to correct and, if the state displays as invalid, why the value is incorrect.
+
 {% capture code %}
 {% include parts/form/validation-states.html %}
 {% endcapture %}
@@ -71,6 +88,8 @@ bootstrap-link: components/forms/
 
 
 ### Subtle validation states
+
+If you prefer a more subtle manner of informing users of the input control validation state, you can use tick and cross symbols and resign from coloured control frames and the validation feedback. 
 
 {% capture code %}
 {% include parts/form/validation-states.html lite=true %}
@@ -80,6 +99,8 @@ bootstrap-link: components/forms/
 
 ## Input size
 
+Choose the size of an input control that will go well with your form design. Apart from the default size, you can also use small and large input controls.
+
 {% capture code %}
 {% include parts/form/input-sizes.html %}
 {% endcapture %}
@@ -88,13 +109,17 @@ bootstrap-link: components/forms/
 
 ## Image check
 
+Add an image check to your form and give users visually appealing options to choose from. 
+
 {% capture code %}
 {% include parts/form/input-image.html %}
 {% endcapture %}
 {% include example.html code=code max-width="25rem" %}
 
 
-## Input color
+## Input colour
+
+Your input controls can come in a variety of colours, depending on your preferences. Click [here]({% docs_url colors %}) to see the list of available colours.
 
 {% capture code %}
 {% include parts/form/input-color.html %}
@@ -102,7 +127,9 @@ bootstrap-link: components/forms/
 {% include example.html code=code %}
 
 
-## Input color picker
+## Input colour picker
+
+Add an colour picker to your form to let users customise it according to their preferences. 
 
 {% capture code %}
 {% include parts/form/input-colorpicker.html %}
@@ -112,6 +139,8 @@ bootstrap-link: components/forms/
 
 ## Datalists
 
+Use the ``datalist`` element to add an autocomplete feature to your input control. The list of available options will display once a user starts to type and will make it quicker to complete form sections. 
+
 {% capture code %}
 {% include parts/form/input-datalist.html %}
 {% endcapture %}
@@ -120,6 +149,8 @@ bootstrap-link: components/forms/
 
 ## Custom selectboxes
 
+Add selectboxes to make your form more intuitive by providing users with a set of options to choose from. You can add simple selectboxes with a label, use icons only or icons with labels. Alternatively, you can use pill selectboxes if they go well with your design.  
+
 {% capture code %}
 {% include parts/form/input-selectgroups.html %}
 {% endcapture %}
@@ -127,6 +158,8 @@ bootstrap-link: components/forms/
 
 
 ## Advanced selectboxes
+
+Use more advanced selectboxes to display the range of available options. You can choose selectboxes with radio buttons, if you want users to select only one option or with checkboxes, if they are allowed to choose multiple options. 
 
 {% capture code %}
 {% include parts/form/selectgroup-payments.html %}
@@ -137,6 +170,8 @@ bootstrap-link: components/forms/
 
 ## Toggle switches
 
+Use toggle switches for the elements of your form which require choosing between two opposing states.  
+
 {% capture code %}
 {% include parts/form/input-toggle.html %}
 {% include parts/form/input-toggle-single.html %}
@@ -145,6 +180,8 @@ bootstrap-link: components/forms/
 
 
 ## Radios
+
+Use radio buttons for the parts of your form which require users to choose one option from a set of two or more mutually exclusive options.  
 
 {% capture code %}
 {% include parts/form/input-radios.html %}
@@ -155,6 +192,8 @@ bootstrap-link: components/forms/
 
 ## Checkboxes
 
+Use checkoxes if you want to allow users to select more than one option from a set of predefined options or to turn an option on or off.
+
 {% capture code %}
 {% include parts/form/input-checkboxes.html %}
 {% include parts/form/input-checkboxes-inline.html %}
@@ -164,6 +203,8 @@ bootstrap-link: components/forms/
 
 ## Range input
 
+Add a range slider to make it possible for users to set a value or range, such as a price range or a time frame.
+
 {% capture code %}
 {% include parts/form/input-range.html %}
 {% endcapture %}
@@ -172,6 +213,8 @@ bootstrap-link: components/forms/
 
 ## Fieldset
 
+Group parts of your form to make it well-structured and clearer for users, using the ``fieldset`` element.
+
 {% capture code %}
 {% include parts/form/fieldset.html %}
 {% endcapture %}
@@ -179,6 +222,8 @@ bootstrap-link: components/forms/
 
 
 ## Input group
+
+Create a group of input controls and place add-ons on either side of an input.
 
 {% capture code %}
 <div class="mb-3">
@@ -191,7 +236,9 @@ bootstrap-link: components/forms/
 {% include example.html code=code %}
 
 
-## Input with checkbox or radios
+## Input with checkboxes or radios
+
+Add checkboxes or radio buttons on either side of your input control. 
 
 {% capture code %}
 <div class="mb-3">
@@ -204,6 +251,8 @@ bootstrap-link: components/forms/
 
 ## Input with prepended or appended text
 
+Add text to your input control, either before or after the text which is to be entered by a user. 
+
 {% capture code %}
 <div class="mb-3">
 	<label class="form-label">Input with prepended text</label>
@@ -215,6 +264,8 @@ bootstrap-link: components/forms/
 
 ## Input with appended link
 
+Include a link in your input control to add a clickable element within the control. 
+
 {% capture code %}
 <div class="mb-3">
 	<label class="form-label">Input with appended link</label>
@@ -225,6 +276,8 @@ bootstrap-link: components/forms/
 
 
 ## Input with appended icon links
+
+Add an icon link which you want to display at the end of your input control to visually represent actions which a user can take.
 
 {% capture code %}
 <div class="mb-3">
