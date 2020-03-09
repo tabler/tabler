@@ -49,7 +49,7 @@ Make buttons look inactive to show that an action is possible once the user meet
 {% include example.html code=code wrapper="btn-list" centered=true %}
 
 
-## Color variations
+## Colour variations
 
 Choose the right colour for your button to make it go well with your design and draw users' attention. Button colours can have a big influence on users' decisions, which is why it's important to choose them based on the intended purpose.
 
