@@ -1,5 +1,3 @@
-[![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-Ready--to--Code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/tabler/tabler) 
-
 # Tabler
 
 A premium and open source dashboard template with a responsive and high-quality UI.
