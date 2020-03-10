@@ -1,6 +1,6 @@
 ---
-title: Progress
-description: A progress bar can be used to show a user how far along he is in a process.
+title: Progress bars
+description: Progress bars are used to provide feedback on an action status and inform users of the current progress. Although seemingly small interface elements, they are extremely hepful in managing users' expectations and preventing them from abandoning a process they have initiated.
 bootstrap-link: components/progress
 done: true
 ---
@@ -8,7 +8,7 @@ done: true
 
 ## Default markup
 
-To create a default progress bar, add a `.progress` class to a `<div>` element:
+To create a default progress bar, add a `.progress` class to a `<div>` element. Thanks to that, you will be able to notify users how long they have to wait for a process to complete.
 
 {% capture code %}
 {% include ui/progress.html %}
@@ -18,7 +18,7 @@ To create a default progress bar, add a `.progress` class to a `<div>` element:
 
 ## Progress size
 
-Using Bootstrap’s typical naming structure, you can create a standard progress, or scale it up to different sizes based on what’s needed.
+Using Bootstrap’s typical naming structure, you can create a standard progress bar or scale it up or down to different sizes based on what’s needed.
 
 {% capture code %}
 {% include ui/progress.html value=57 size="sm" %}
@@ -28,7 +28,7 @@ Using Bootstrap’s typical naming structure, you can create a standard progress
 
 ## Progress without value
 
-Remove the showed value by adding a class called `.sr-only`.
+Remove the displayed value by adding the `.sr-only` class.
 
 {% capture code %}
 {% include ui/progress.html value=75 show-value=false %}
@@ -38,7 +38,7 @@ Remove the showed value by adding a class called `.sr-only`.
 
 ## Indeterminate progress
 
-To create indeterminate progress add `.progress-bar-indeterminate` to the `.progress-bar` element.
+You can create a progress bar which shows indeterminate progress by adding `.progress-bar-indeterminate` to the `.progress-bar` element.
 
 {% capture code %}
 {% include ui/progress.html indeterminate=true size="sm" %}
@@ -58,7 +58,7 @@ You can also use native HTML5 `<progress>` element.
 
 ## Progress color
 
-Customize the color of the progress bar. You can click [here]({% docs_url colors %}) to see the list of available colors.
+Customize the color of the progress bar to suit your design. Click [here]({% docs_url colors %}) to see the list of available colors.
 
 {% capture code %}
 {% include ui/progress.html size="sm" color="red" class="mb-2" value=24 %} 
