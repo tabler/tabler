@@ -1,6 +1,6 @@
 ---
 title: Divider
-description: Dividers help organise content and make the interface layout clear and uncluttered. Greater clarity adds up to better user experience and enhanced interaction with a website or app.  
+description: Dividers help organize content and make the interface layout clear and uncluttered. Greater clarity adds up to better user experience and enhanced interaction with a website or app.  
 bootstrap-link: components/dropdowns/#dividers
 done: true
 ---
@@ -48,7 +48,7 @@ You can modify the position of the text which is to be included in a separator a
 
 ## Divider color
 
-Customise the colour of dividers to make them go well with your design. Click [here]({% docs_url colors %}) to see the list of available colours.
+Customize the color of dividers to make them go well with your design. Click [here]({% docs_url colors %}) to see the list of available colors.
 
 {% capture code %}
 <p>

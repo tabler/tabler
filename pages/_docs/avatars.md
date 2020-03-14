@@ -1,11 +1,13 @@
 ---
 title: Avatars
 menu: docs.avatars
-description: Create and group avatars of various shapes and sizes with one component.
+description: Avatars help customise various elements of a user interface and make the product experience more personalised. They are often used in communication apps, collaboration tools and social media.
 ---
 
 
 ## Default markup
+
+Use the `avatar` class to add an avatar to your interface design for greater customisation.
 
 {% capture code %}
 {% include ui/avatar.html person-id=1 %}
@@ -17,7 +19,7 @@ description: Create and group avatars of various shapes and sizes with one compo
 
 ## Avatar image
 
-Set an image as the background.
+Set an image as the background to make users easy to indentify and create a personalised experience.
 
 {% capture code %}
 {% include ui/avatar.html person-id=1 %}
@@ -29,7 +31,7 @@ Set an image as the background.
 
 ## Initials
 
-You can easily use initials instead of images.
+You can also use initials instead of pictures.
 
 {% capture code %}
 {% include ui/avatar.html placeholder="AB" %}
@@ -43,7 +45,7 @@ You can easily use initials instead of images.
 
 ## Avatar icons
 
-You can also use icons in avatars.
+Apart from pictures and initials, you can also use icons to make the avatars more universal.
 
 {% capture code %}
 {% include ui/avatar.html icon="user" %}
@@ -69,7 +71,7 @@ Customize the color of the avatars' background. You can click [here]({% docs_url
 
 ## Avatar size
 
-Using Bootstrap’s typical naming structure, you can create a standard avatar, or scale it up to different sizes based on what’s needed.
+Using Bootstrap’s typical naming structure, you can create a standard avatar or scale it up or down to different sizes based on what you need.
 
 {% capture code %}
 {% include ui/avatar.html person-id=10 size="xl" %}
@@ -83,7 +85,7 @@ Using Bootstrap’s typical naming structure, you can create a standard avatar, 
 
 ## Avatar status
 
-Add an online or offline status indicator to show user's availability.
+Add a status indicator to your avatar to show, for instance, if a users is online or offline or indicate the number of messages they have received.
 
 {% capture code %}
 {% include ui/avatar.html person-id=11 %}
@@ -98,7 +100,7 @@ Add an online or offline status indicator to show user's availability.
 
 ## Avatar shape
 
-Change the shape of an avatar with the default Bootstrap image classes.
+Change the shape of an avatar with the default Bootstrap image classes. You can make them round or square and change their border radius.
 
 {% capture code %}
 {% include ui/avatar.html person-id=17 %}
@@ -112,7 +114,7 @@ Change the shape of an avatar with the default Bootstrap image classes.
 
 ## Avatars list
 
-You can easily create a list of avatars.
+Create a list of avatars within one parent container.
 
 {% capture code %}
 {% include ui/avatar-list.html %}
@@ -122,7 +124,7 @@ You can easily create a list of avatars.
 
 ## Stacked list
 
-Make the list stack when it reaches a certain length.
+Make the list stack once a certain number of avatars is reached to make it look clear and display well regardless of the screen size.
 
 {% capture code %}
 <div class="avatar-list avatar-list-stacked">

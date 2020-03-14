@@ -1,7 +1,7 @@
 ---
 title: Buttons
 icon: fe fe-plus-square
-description: Use button styles that best suit your designs and encourage users to take the desired actions. You can customise the button's properties to improve the user experience of your website or system, changing the size, shape, colour and many more.
+description: Use button styles that best suit your designs and encourage users to take the desired actions. You can customize the button's properties to improve the user experience of your website or system, changing the size, shape, color and many more.
 bootstrap-link: components/buttons/
 done: true
 ---
@@ -9,7 +9,7 @@ done: true
 
 ## Button tag
 
-As one of the most common elements of UI design, buttons have a very important function of engaging users with your website or system and guiding them in their actions. Use the `.btn` classes with the `<button>` element and add additional styling that will make your buttons serve their purpose and draw users' attention. 
+As one of the most common elements of UI design, buttons have a very important function of engaging users with your website or app and guiding them in their actions. Use the `.btn` classes with the `<button>` element and add additional styling that will make your buttons serve their purpose and draw users' attention. 
 
 {% capture code %}
 <a href="#" class="btn btn-primary" role="button">Link</a>
@@ -23,7 +23,7 @@ As one of the most common elements of UI design, buttons have a very important f
 
 ## Button variations
 
-Use the button classes that correspond to the function of your button. The big range of available colours will help you show your buttons' purpose and make them easy to spot.
+Use the button classes that correspond to the function of your button. The big range of available colors will help you show your buttons' purpose and make them easy to spot.
 
 {% capture code %}
 {% for button in site.button-variants %}
@@ -49,9 +49,9 @@ Make buttons look inactive to show that an action is possible once the user meet
 {% include example.html code=code wrapper="btn-list" centered=true %}
 
 
-## Colour variations
+## Color variations
 
-Choose the right colour for your button to make it go well with your design and draw users' attention. Button colours can have a big influence on users' decisions, which is why it's important to choose them based on the intended purpose.
+Choose the right color for your button to make it go well with your design and draw users' attention. Button colors can have a big influence on users' decisions, which is why it's important to choose them based on the intended purpose.
 
 {% capture code %}
 {% for button in site.colors %}
@@ -75,7 +75,7 @@ Use the `.btn-ghost-*` class to make your button look simple yet aesthetically a
 
 ## Square buttons
 
-Use the `.btn-square` class to remove border-radius, if you want the corners of your button to be square, not rounded.
+Use the `.btn-square` class to remove the border radius, if you want the corners of your button to be square rather than rounded.
 
 {% capture code %}
 {% for button in site.button-variants %}
@@ -103,7 +103,7 @@ Add the `.btn-pill` class to your button to make it rounded and give it a modern
 
 ## Outline buttons
 
-Replace the default modifier class with the `.btn-outline-*` class, if you want to remove the colour and background of your button and give it a more subtle look. Outline buttons are perfect to use as secondary buttons, as they don't distract users from the main action.
+Replace the default modifier class with the `.btn-outline-*` class, if you want to remove the color and the background of your button and give it a more subtle look. Outline buttons are perfect to use as secondary buttons, as they don't distract users from the main action.
 
 {% capture code %}
 {% for button in site.button-variants %}
@@ -142,7 +142,7 @@ You can also add the `.btn-block` class to create block level buttons which span
 
 ## Buttons with icons
 
-Label your button with text and add an icon to communiacate the action and make it easy to identify for users. Icons are easily recognised and improve the aesthetics of your button design, giving it a modern and atractive look.  
+Label your button with text and add an icon to communiacate the action and make it easy to identify for users. Icons are easily recognized and improve the aesthetics of your button design, giving it a modern and atractive look.  
 
 Icons can be found [**here**](/docs/icons.html#icons)
 
@@ -203,7 +203,7 @@ You can also add an icon without the name of a social networking site, if you wa
 
 ## Icon buttons
 
-Add the `.btn-icon` class to remove unnecessary padding from your button and use an icon without any additional label. Thanks to that, you can save space and make the action easy to recognise for international users.
+Add the `.btn-icon` class to remove unnecessary padding from your button and use an icon without any additional label. Thanks to that, you can save space and make the action easy to recognize for international users.
 
 {% capture code %}
 {% include ui/button.html icon="activity" color="primary" icon-only=true %}
@@ -335,7 +335,7 @@ Use the `.text-center` or the `.text-right` modifiers to change the buttons' ali
 
 ## Buttons with avatars
 
-Use buttons with avatars to simplify the process of interaction and make your design more personalised. Buttons can contain avatars and labels or only avatars, if displayed on a smaller space. 
+Use buttons with avatars to simplify the process of interaction and make your design more personalized. Buttons can contain avatars and labels or only avatars, if displayed on a smaller space. 
 
 {% capture code %}
 <a href="#" class="btn btn-secondary">

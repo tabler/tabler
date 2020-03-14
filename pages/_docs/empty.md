@@ -16,7 +16,7 @@ Use the default empty state to engage users in the critical moments of their exp
 
 ## Empty state with illustration
 
-Make your empty state screen more attractive and engaging by adding an illustration. Thanks to a more personalised design, you will improve your brand image and make your website or app more user friendly.
+Make your empty state screen more attractive and engaging by adding an illustration. Thanks to a more personalized design, you will improve your brand image and make your website or app more user friendly.
 
 {% capture code %}
 {% include ui/empty.html illustration=true %}

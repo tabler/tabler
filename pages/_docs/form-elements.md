@@ -45,7 +45,7 @@ You can remove borders from your form control by adding the ``form-control-flush
 
 ## Input with icon
 
-Add icons to your input controls to sugegst users what they should enter or inform them of the current state of a form element.
+Add icons to your input controls to suggest users what they should enter or inform them of the current state of a form element.
 
 {% capture code %}
 {% include parts/form/input-icon.html %}
@@ -89,7 +89,7 @@ To inform users whether the entered value is correct or not, use either of the v
 
 ### Subtle validation states
 
-If you prefer a more subtle manner of informing users of the input control validation state, you can use tick and cross symbols and resign from coloured control frames and the validation feedback. 
+If you prefer a more subtle manner of informing users of the input control validation state, you can use tick and cross symbols and resign from colored control frames and the validation feedback. 
 
 {% capture code %}
 {% include parts/form/validation-states.html lite=true %}
@@ -109,7 +109,7 @@ Choose the size of an input control that will go well with your form design. Apa
 
 ## Image check
 
-Add an image check to your form and give users visually appealing options to choose from. 
+Add an image check to your form and give users visually attractive options to choose from. 
 
 {% capture code %}
 {% include parts/form/input-image.html %}
@@ -117,9 +117,9 @@ Add an image check to your form and give users visually appealing options to cho
 {% include example.html code=code max-width="25rem" %}
 
 
-## Input colour
+## Input color
 
-Your input controls can come in a variety of colours, depending on your preferences. Click [here]({% docs_url colors %}) to see the list of available colours.
+Your input controls can come in a variety of colors, depending on your preferences. Click [here]({% docs_url colors %}) to see the list of available colors.
 
 {% capture code %}
 {% include parts/form/input-color.html %}
@@ -127,9 +127,9 @@ Your input controls can come in a variety of colours, depending on your preferen
 {% include example.html code=code %}
 
 
-## Input colour picker
+## Input color picker
 
-Add an colour picker to your form to let users customise it according to their preferences. 
+Add an color picker to your form to let users customise it according to their preferences. 
 
 {% capture code %}
 {% include parts/form/input-colorpicker.html %}

@@ -68,7 +68,7 @@ Add an icon to your alert modal to make it more user-friendly and help users eas
 
 ## Alert with avatar
 
-Add an avatar to your alert modal to make it more personalised. 
+Add an avatar to your alert modal to make it more personalized. 
 
 {% capture code %}
 {% for variant in site.variants %}
