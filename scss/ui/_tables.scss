@@ -53,3 +53,46 @@
   max-width: 1px;
   width: 100%;
 }
+
+.table-mobile {
+  @each $breakpoint, $breakpoint-max-widthin in $grid-breakpoints {
+    &#{breakpoint-infix($breakpoint)} {
+      @include media-breakpoint-down($breakpoint) {
+        display: block;
+
+        thead {
+          display: none;
+        }
+
+        tbody,
+        tr {
+          display: flex;
+          flex-direction: column;
+        }
+
+        td {
+          display: block;
+          padding: $table-cell-padding !important;
+          border: none;
+          color: $body-color !important;
+
+          &[data-label] {
+            &:before {
+              @include subheader;
+              content: attr(data-label);
+              display: block;
+            }
+          }
+        }
+
+        tr {
+          border-bottom: 1px solid $table-border-color;
+        }
+
+        .btn {
+          display: block;
+        }
+      }
+    }
+  }
+}
