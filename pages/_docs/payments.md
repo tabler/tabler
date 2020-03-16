@@ -1,12 +1,15 @@
 ---
 title: Payments
 menu: docs.payments
+description: The Tabler payments plug-in will let you use a set of payment provider icons to facilitate the payment process and make it more-user friendly.
 plugin: payments
 done: true
 ---
 
 
 ## Payment
+
+To create a payment provider icon, add the `payment` class to a component and specify the payment provider. The full list of payment providers can be found below.
 
 {% capture code %}
 {% include ui/payment.html class="mr-3" payment="shopify"%}
@@ -18,7 +21,7 @@ done: true
 
 ## Payment sizes
 
-Using Bootstrap’s typical naming structure, you can create a standard payment, or scale it up to different sizes based on what’s needed.
+Using Bootstrap’s typical naming structure, you can create a standard payment, or scale it up or down to different sizes based on what’s needed.
 
 {% capture code %}
 {% include ui/payment.html class="mr-3" payment="shopify" size="xl" %}
@@ -30,6 +33,8 @@ Using Bootstrap’s typical naming structure, you can create a standard payment,
 
 
 ## Types
+
+Select an icon from the list of payment providers. Each icon comes in two color variants - light and dark, so you can choose the one that goes well with your design.
 
 <table class="table-vcenter">
 {% for payment in site.data.payments %}

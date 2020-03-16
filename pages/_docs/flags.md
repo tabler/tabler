@@ -1,12 +1,15 @@
 ---
 title: Flags
 menu: docs.flags
+description: Thanks to the Tabler flags plug-in, you can create flags to visually represent countries or languages. Flags are often used in forms, as an element of a delivery address, phone number dialling code and many more. 
 plugin: flags
 done: true
 ---
 
 
 ## Flag
+
+To create a flag, add the `flag` class to a component and choose the country whose flag you want to use. The full list of countries can be found below. 
 
 {% capture code %}
 {% include ui/flag.html flag="tg" class="mr-1" %}
@@ -18,7 +21,7 @@ done: true
 
 ## Flag sizes
 
-Using Bootstrap’s typical naming structure, you can create a standard flag, or scale it up to different sizes based on what’s needed.
+Using Bootstrap’s typical naming structure, you can create a standard flag, or scale it up or down to different sizes based on what’s needed.
 
 {% capture code %}
 {% include ui/flag.html flag="pl" size="xl" class="mr-1" %}
@@ -31,7 +34,7 @@ Using Bootstrap’s typical naming structure, you can create a standard flag, or
 
 ## Types
 
-To set the flag of the country you want add a class `flag-(country name)`. For example to create a flag of Andorra your class should look like this: `.flag-ad`.
+To use the flag of a particular country, add the `flag-(country name)` class. For example, to create a flag of Andorra should use the following class: `.flag-ad`.
 
 <table>
 {% for flag in site.data.flags %}
