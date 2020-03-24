@@ -1,12 +1,14 @@
 ---
 title: Typography
 menu: docs.typography
-description: Documentation and examples for common text utilities to control alignment, wrapping, weight, and more.
+description: Typography plays an important role in creating an attractive and clear interface design. Good typography will make the content easy to follow and improve the usability of your website.
 bootstrap-link: content/typography/
 ---
 
 
 ## Headings
+
+Use HTML headings to organize content on your website and make the structure clear and user-friendly. 
 
 {% capture code %}
 {% for i in (1..6) %}<h{{ i }}>H{{ i }} Heading</h{{ i }}>
@@ -17,6 +19,8 @@ bootstrap-link: content/typography/
 
 ## Paragraphs
 
+Organize longer pieces of text into paragraphs using the `p` tag.
+
 {% capture code %}
 <p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.</p>
 <p>At vero eos et accusam et justo duo dolores et ea rebum.</p>
@@ -25,6 +29,8 @@ bootstrap-link: content/typography/
 
 
 ## Semantic text elements
+
+Use a variety of semantic text elements, depending of how you want to display particular fragments of content.
 
 {% capture code %}
 <abbr title="Internationalization">I18N</abbr>{% hide %} <code class="ml-2">abbr</code><br/>{% endhide %}
@@ -50,6 +56,8 @@ Text <sup>Superscripted</sup>{% hide %} <code class="ml-2">sup</code><br/>{% end
 
 ## Horizontal rules
 
+Use the `hr` tag to represent a thematic break between paragraphs within one section.
+
 {% capture code %}
 <hr> 
 {% endcapture %}
@@ -57,6 +65,8 @@ Text <sup>Superscripted</sup>{% hide %} <code class="ml-2">sup</code><br/>{% end
 
 
 ## Horizontal rules with label
+
+You can also add a label to a horizontal rule and align it as you see fit.
 
 {% capture code %}
 <p>
@@ -86,7 +96,7 @@ Text <sup>Superscripted</sup>{% hide %} <code class="ml-2">sup</code><br/>{% end
 
 ## Optimized for different alphabets
 
-Tabler has been optimized to correctly display content in any language. The Tabler supports most Asian, African and Middle Eastern languages.
+Tabler has been optimized to correctly display content in any language. It supports most Asian, African and Middle Eastern languages.
 
 {% capture code %}
 <h5>Chinese</h5>
@@ -124,7 +134,7 @@ Tabler has been optimized to correctly display content in any language. The Tabl
 
 ## Text transform
 
-Transform text in components with text capitalization classes.
+Transform the content of components with text capitalization classes.
 
 {% capture code %}
 <p class="text-lowercase">Lowercased text.</p>
@@ -136,7 +146,7 @@ Transform text in components with text capitalization classes.
 
 ## Letter spacing
 
-Utilities for controlling the tracking (letter spacing) of an element.
+Control the tracking (letter spacing) of an element and make it tight, wide or normal.
 
 {% capture code %}
 <p class="tracking-tight">Lorem ipsum dolor sit amet. Tight letter spacing.</p>
@@ -146,9 +156,9 @@ Utilities for controlling the tracking (letter spacing) of an element.
 {% include example.html code=code %}
 
 
-## Line Height
+## Line height
 
-Utilities for controlling the leading (line height) of an element.
+Control the leading (line height) of an element.
 
 {% capture code %}
 <p class="lh-1">Lorem ipsum dolor sit amet.<br>Dolor sit amet.</p>
@@ -161,9 +171,9 @@ Utilities for controlling the leading (line height) of an element.
 
 ## Antialiasing
 
-Utilities for controlling the font smoothing of an element.
+Control the font smoothing of an element.
 
-Use the `.antialiased` utility to render text using subpixel antialiasing or use the `.subpixel-antialiased` render without antialiasing.
+Use the `.antialiased` utility to render text using subpixel antialiasing or use the `.subpixel-antialiased` utility to remove antialiasing.
 
 {% capture code %}
 <div class="antialiased">Text with antialiasing</div>
@@ -174,7 +184,7 @@ Use the `.antialiased` utility to render text using subpixel antialiasing or use
 
 ## Markdown elements
 
-When you can't use the CSS classes you want, or when you just want to directly use HTML tags, use `.markdown` as container. It can handle almost any HTML tag.
+If you can't use the CSS classes you want or if you just want to use HTML tags, use the `.markdown` class in a container. It can handle almost any HTML tag.
 
 {% capture code %}
 <div class="markdown">
