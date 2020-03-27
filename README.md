@@ -54,7 +54,7 @@ To use our build system and run our documentation locally, you'll need a copy of
 
 1. [Install Node.js](https://nodejs.org/download/), which we use to manage our dependencies.
 2. Navigate to the root `/tabler` directory and run `npm install` to install our local dependencies listed in `package.json`.
-3. [Install Ruby](https://ruby-lang.org/en/documentation/installation/) - the recommended version is [2.5.5](https://cache.ruby-lang.org/pub/ruby/2.5/ruby-2.5.5.tar.gz).
+3. [Install Ruby](https://www.ruby-lang.org/en/documentation/installation/) - the recommended version is [2.5.5](https://cache.ruby-lang.org/pub/ruby/2.5/ruby-2.5.5.tar.gz).
 4. [Install Bundler](https://bundler.io) with `gem install bundler` and finally run `bundle install`. It will install all Ruby dependencies, such as [Jekyll and plugins](https://jekyllrb.com).
 
 **Windows users**:
