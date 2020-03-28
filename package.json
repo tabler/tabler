@@ -17,6 +17,7 @@
     "lint": "npm-run-all --parallel js-lint css-lint",
     "clean": "rm -rf tmp-dist && mkdir tmp-dist && mkdir tmp-dist/css && mkdir tmp-dist/js",
     "clean-build": "rm -rf dist && mkdir dist && mkdir dist/css && mkdir dist/js && mkdir dist/img",
+    "copy-icons": "rm -f pages/_includes/svg/*.svg && cp node_modules/tabler-icons/icons/*.svg pages/_includes/svg/",
     "css": "npm-run-all css-compile",
     "css-build": "npm-run-all css-compile css-prefix-build css-minify-build",
     "css-compile": "node build/scss-compile.js",
@@ -37,7 +38,7 @@
     "js-lint": "eslint --cache --cache-location .cache/.eslintcache js build/",
     "js-compile-standalone": "rollup --environment BUNDLE:false --config build/rollup.config.js --sourcemap",
     "js-compile-bundle": "rollup --environment BUNDLE:true --config build/rollup.config.js --sourcemap",
-    "svg-svgo": "svgo -f svg/fe --pretty && svgo -f svg/brand --pretty",
+    "svg-svgo": "svgo -f svg/brand --pretty",
     "unused-files": "node build/unused-files.js"
   },
   "repository": {
@@ -105,6 +106,7 @@
     "stylelint": "13.2.1",
     "stylelint-config-twbs-bootstrap": "2.0.1",
     "svgo": "1.3.2",
+    "tabler-icons": "1.3.1",
     "terser": "4.6.7",
     "yaml": "1.8.3"
   },
@@ -114,7 +116,7 @@
     "@fullcalendar/interaction": "4.4.0",
     "@fullcalendar/list": "4.4.0",
     "@fullcalendar/timegrid": "4.4.0",
-    "apexcharts": "3.17.0",
+    "apexcharts": "3.17.1",
     "autosize": "4.0.2",
     "bootstrap": "twbs/bootstrap#74afe14",
     "countup.js": "2.0.4",

@@ -282,7 +282,7 @@ Add an icon link which you want to display at the end of your input control to v
 {% capture code %}
 <div class="mb-3">
 	<label class="form-label">Input with appended icon links</label>
-	{% include ui/form/input-group.html append-button="x:Clear search,sliders:Search settings,bell:Add notification" flat=true %}
+	{% include ui/form/input-group.html append-button="x:Clear search,adjustments:Search settings,bell:Add notification" flat=true %}
 </div>
 {% endcapture %}
 {% include example.html code=code %}

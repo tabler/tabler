@@ -68,7 +68,6 @@ module Jekyll
     end
 
     def svg_icon(value, class_name)
-      value = value.gsub(/ class="feather[^"]+"/, '')
       value = value.gsub(/<svg /, '<svg class="icon ' + class_name.to_s + '" ')
     end
 

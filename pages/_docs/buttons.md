@@ -1,6 +1,5 @@
 ---
 title: Buttons
-icon: fe fe-plus-square
 description: Use button styles that best suit your designs and encourage users to take the desired actions. You can customize the button's properties to improve the user experience of your website or system, changing the size, shape, color and many more.
 bootstrap-link: components/buttons/
 done: true
@@ -207,11 +206,11 @@ Add the `.btn-icon` class to remove unnecessary padding from your button and use
 
 {% capture code %}
 {% include ui/button.html icon="activity" color="primary" icon-only=true %}
-{% include ui/button.html icon="github" color="github" icon-only=true %}
+{% include ui/button.html icon="brand/github" color="github" icon-only=true %}
 {% include ui/button.html icon="bell" color="success" icon-only=true %}
 {% include ui/button.html icon="star" color="warning" icon-only=true %}
-{% include ui/button.html icon="trash-2" color="danger" icon-only=true %}
-{% include ui/button.html icon="bar-chart" color="purple" icon-only=true %}
+{% include ui/button.html icon="trash" color="danger" icon-only=true %}
+{% include ui/button.html icon="chart-bar" color="purple" icon-only=true %}
 {% include ui/button.html icon="git-merge" color="secondary" icon-only=true %}
 {% endcapture %}
 {% include example.html code=code wrapper="btn-list" centered=true %}
