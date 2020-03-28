@@ -1,7 +1,7 @@
 ---
 title: Tabs
 menu: docs.tabs
-description: Tabs allow users to alternate between equally important views within the same context. By dividing content into meaningful sections, they improve its organisation and make it easy for users to navigate.
+description: Tabs allow users to alternate between equally important views within the same context. By dividing content into meaningful sections, they improve its organization and make it easy for users to navigate.
 bootstrap-link: components/navs/
 ---
 

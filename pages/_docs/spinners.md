@@ -5,7 +5,6 @@ description: Spinners are used to show the loading state of a component or page.
 bootstrap-link: components/spinners/
 done: true
 ---
-loading state of a component
 
 
 ## Default markup

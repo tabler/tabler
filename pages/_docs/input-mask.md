@@ -1,9 +1,12 @@
 ---
 title: Input mask
+description: An input mask is a used to clarify the input format required in a given field and is helpful for users, removing confusion and reducing the number of validation errors.
 ---
 
 
 ## Default markup
+
+Use an input mask in the fields where users have to enter their phone number, to make the formatting rules clear and help them avoid confusion.
 
 {% capture code %}
 <label class="form-label">Telephone mask</label>

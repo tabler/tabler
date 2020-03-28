@@ -8,7 +8,7 @@ bootstrap-link: components/badge/
 
 ## Default markup
 
-The default badges are square and come in the basic set of colours. 
+The default badges are square and come in the basic set of colors. 
 
 {% capture code %}
 {% for color in site.colors %}
@@ -30,9 +30,9 @@ Use the `.bagde-pill` class if you want to create a badge with rounded corners. 
 {% include example.html code=code centered=true %}
 
 
-## Soft colour badges
+## Soft color badges
 
-You can create a soft colour variant of a corresponding contextual badge variation, to make it look more subtle. Click [here]({% docs_url colors %}) to see the list of available colours and choose ones that best suit your design.
+You can create a soft colour variant of a corresponding contextual badge variation, to make it look more subtle. Click [here]({% docs_url colors %}) to see the list of available colors and choose ones that best suit your design.
 
 {% capture code %}
 {% for color in site.colors %}
@@ -68,7 +68,7 @@ Leave the HTML element empty if you want to create badges without any text. Empt
 
 ### Badge add-ons
 
-Add the `.badge-addon` class to create an add-on that will customise your badge and make it more noticeable. You can use any colour variants and combine them as you see fit.
+Add the `.badge-addon` class to create an add-on that will customize your badge and make it more noticeable. You can use any color variants and combine them as you see fit.
 
 {% capture code %}
 {% include ui/badge.html text="task" color="green" addon="finished" %}
@@ -80,7 +80,7 @@ Add the `.badge-addon` class to create an add-on that will customise your badge 
 
 ### Badge avatars
 
-Create the `.badge-avatar` class to add an avatar that will make a badge more personalised.
+Create the `.badge-avatar` class to add an avatar that will make a badge more personalized.
 
 {% capture code %}
 {% include ui/badge.html person-id=1 color="blue" %}

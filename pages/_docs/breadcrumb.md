@@ -38,7 +38,7 @@ If you wish to use different separators, modify the `$breadcrumb-variants` varia
 
 ## Alternate version
 
-Use the `breadcrumb-alternate` class to make the breadcrumb colours more neutral, retaining its function of showing the current location within an interface.  
+Use the `breadcrumb-alternate` class to make the breadcrumb colors more neutral, retaining its function of showing the current location within an interface.  
 
 {% capture code %}
 {% include ui/breadcrumb.html class="breadcrumb-alternate" %}

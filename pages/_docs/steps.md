@@ -20,7 +20,7 @@ Use the `steps` class to create the default progress tracker and name the steps 
 
 ## Tooltips
 
-Add tooltips, if you want to provide users with additional information about the steps they are expected to complete. Tooltips will display when a user hovers over a given step and help clarify what might not be clear from the interface.
+Add tooltips, if you want to provide users with additional information about the steps they are expected to complete. Tooltips are displayed when a user hovers over a given step and help clarify what might not be clear from the interface.
 
 {% capture code %}
 {% include ui/steps.html show-title=true show-tooltip=true %}
@@ -28,9 +28,9 @@ Add tooltips, if you want to provide users with additional information about the
 {% include example.html code=code %}
 
 
-## Colour
+## Color
 
-You can customise the default progress indicator by changing the colour to one that better suits your design. Click [here]({% docs_url colors %}) to see the range of available colours.
+You can customize the default progress indicator by changing the color to one that better suits your design. Click [here]({% docs_url colors %}) to see the range of available colors.
 
 {% capture code %}
 {% include ui/steps.html color="green" show-title=true %}
@@ -51,7 +51,7 @@ For designs with limited space, use progress indicators without titles and add t
 
 ## Steps with numbers
 
-Use the `steps-counter` class to create a progress tracker with numbers instead of titles and change the colour to customise it.
+Use the `steps-counter` class to create a progress tracker with numbers instead of titles and change the color to customize it.
 
 {% capture code %}
 {% include ui/steps.html count=5 active=2 numbers=true color="lime" %}

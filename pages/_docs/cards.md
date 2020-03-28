@@ -1,17 +1,15 @@
 ---
 title: Cards
 menu: docs.cards
-description: A card is a flexible and extensible content container. It includes options for headers and footers, a wide variety of content, contextual background colors, and powerful display options. 
+description: Cards are flexible user interface elements, which help organize content into meaningful sections and make it easier to display on different screen sizes. Cards contain various smaller components, such as images, text, links and buttons and may act as an entry to more detailed information, helping users scan the page quickly and find the most relevant content.
 bootstrap-link: components/card/
 done: true
 ---
 
-The `.card` element is simply a container with a shadow, a border, a radius, and some padding. Built with flexbox, they offer easy alignment and mix well with other Bootstrap components.
-
 
 ## Default card
 
-To create a new card you have to use the `.card` and `.card-body` classes. You can put any content inside. 
+Use the `.card` and `.card-body` classes to create a card and use it as the basis for a more advanced card design. A card is a perfect way to organize content and make it look neat and tidy. 
 
 {% capture code %}
 {% include cards/card.html body="This is some text within a card body." %}
@@ -21,9 +19,9 @@ To create a new card you have to use the `.card` and `.card-body` classes. You c
 
 ## Card padding
 
-You can change the padding of a newly created card. You can do this with the `.card-sm`, `.card-md` and `.card-lg` classes. 
+You can change the padding of a newly created card. To do it, use the `.card-sm`, `.card-md` or `.card-lg` classes. 
 
-Cards with the `.card-sm` class are very well suited for small items such as snippets, etc., while `.card-lg` can be used for large blocks of text. On small devices, padding will automatically be reduced to fit on the screen.
+Cards with the `.card-sm` class are well suited for small items such as snippets, etc., while the `.card-lg` class can be used for large blocks of text. Padding will be automatically reduced on small devices, to fit the screen size.
 
 {% capture code %}
 {% include cards/card.html class="card-sm" body="This is some text within a card body." %}
@@ -36,9 +34,7 @@ Cards with the `.card-sm` class are very well suited for small items such as sni
 
 ## Card with title
 
-To add a title to a card you should add a class `.card-title` inside `.card-body`.
-
-You can also place the title inside the `.card-header` element - then the title will be separated from the content by a horizontal line.
+Add a title to your card by including the `.card-title` class within `.card-body`. You can also place the title inside the `.card-header` element to separate the title from the content with a horizontal line.
 
 {% capture code %}
 {% include cards/card.html title="Card title" body="This is some text within a card body." %}
@@ -49,6 +45,8 @@ You can also place the title inside the `.card-header` element - then the title 
 
 ## Card with title and image
 
+To create a more visually appealing card, add a title and an image. Thanks to that, the card will go well with your inteface design and draw users' attention.  
+
 {% capture code %}
 {% include cards/card.html img-top=true title="Card with title and image" %}
 {% endcapture %}
@@ -57,7 +55,7 @@ You can also place the title inside the `.card-header` element - then the title 
 
 ## Blog post card
 
-The best way to make your post eye-catching is adding an image to it. To do so, just add the image with the `.card-img-top` class. We've added the `.d-flex .flex-column` classes to the `.card-body` to have the author details be on the bottom of the card.
+Add an image to your blog post card to make it eye-catching. You can do it by adding the image in the `.card-img-top` class. Thanks to the `.d-flex` and `.flex-column` classes within `.card-body`, the author details will be displayed at the bottom of the card.
 
 {% capture code %}
 {% include cards/blog-single.html type="image" %}
@@ -67,7 +65,7 @@ The best way to make your post eye-catching is adding an image to it. To do so, 
 
 ## Row deck
 
-If you want to create a couple of posts next to each other, add the `.row-deck` class to `.row`—then they will all have the same height.
+Add the `.row-deck` class to `.row`, if you want to display several cards next to one another. Thanks to that, they will all have the same height.
 
 {% capture code %}
 <div class="row row-deck">
@@ -93,7 +91,7 @@ If you want to create a couple of posts next to each other, add the `.row-deck` 
 
 ## Post card with aside image
 
-You can also add the image on the left side of the card. All you need do to is: add the `.card-aside` class to the element with the `.card` class. Then add the image in the `.card-aside-column` element. No worries, tabler will automatically center it and scale to right size:
+You can also add an image on the left side of the card. To do it, add the `.card-aside` class to the element with the `.card` class. Then add the image in the `.card-aside-column` element and it will be automatically centered and scaled to the right size.
 
 {% capture code %}
 {% include cards/blog-single.html type="aside" liked=1 article-id=3 %}
@@ -102,6 +100,8 @@ You can also add the image on the left side of the card. All you need do to is: 
 
 
 ## Color variations
+
+Add a status color to your card, either at the top or on the side of the card, to customise it and make it more eye-catching. 
 
 {% capture code %}
 <div class="row row-deck">
@@ -118,6 +118,8 @@ You can also add the image on the left side of the card. All you need do to is: 
 
 ## Stacked card
 
+Use the `card-stacked` class to stack up multiple cards, if you want to save screen space or create a visually appealing effect.
+
 {% capture code %}
 {% include cards/card.html class="card-stacked" title="Stacked card" %}
 {% endcapture %}
@@ -125,6 +127,8 @@ You can also add the image on the left side of the card. All you need do to is: 
 
 
 ## Tabbed card
+
+Organize multiple cards into tabs to be able to display more content in a well-organized way and allow users to alternate between them easily.
 
 {% capture code %}
 {% include cards/card-tabs.html count=4 %}
