@@ -7,7 +7,7 @@
 	{% if options == 'people' %}
 		{% for person in site.data.people limit: 20 %}
 		{% capture avatar %}
-			{% include ui/avatar.html person=person class="avatar-xs rounded mr-2 ml-n1" %}
+			{% include ui/avatar.html person=person class="avatar-sm rounded mr-2 ml-n1" %}
 		{% endcapture %}
 		<option value="{{ person.id }}" data-data='{"avatar": "{{ avatar | strip  | replace: '"', '\"' }}"}'{% if person.id == data.value %} selected{% endif %}>{{ person.full_name }}</option>
 		{% endfor %}
