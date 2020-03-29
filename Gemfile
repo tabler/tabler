@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem "jekyll"
+gem "jekyll", "~> 4.0"
 
 group :jekyll_plugins do
 	gem 'jekyll-toc'
@@ -11,3 +11,5 @@ group :jekyll_plugins do
 end
 
 gem 'wdm', '>= 0.1.1' if Gem.win_platform?
+
+
