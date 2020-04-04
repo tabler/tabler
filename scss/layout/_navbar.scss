@@ -4,8 +4,40 @@
     $infix: breakpoint-infix($next, $grid-breakpoints);
 
     &#{$infix} {
-      @include media-breakpoint-up($next) {
+      @include media-breakpoint-down($breakpoint) {
+        .dropdown-menu {
+          position: absolute;
+        }
 
+        .navbar-collapse {
+          .navbar-nav {
+            width: 100%;
+
+            .nav-link {
+              padding-top: .5rem;
+              padding-bottom: .5rem;
+            }
+          }
+
+          .dropdown-menu {
+            position: static;
+            border: 0;
+            box-shadow: none;
+            margin-bottom: .5rem;
+            background: transparent;
+            color: inherit;
+            columns: 1;
+            padding: 0;
+
+            .dropdown-item {
+              padding-left: 1.5rem;
+              padding-right: 1.5rem;
+            }
+          }
+        }
+      }
+
+      @include media-breakpoint-up($next) {
         .navbar-collapse {
           width: auto;
           flex: 1 1 auto;
@@ -94,15 +126,16 @@ Navbar dark
   }
 }
 
+
 .navbar-nav {
   align-items: stretch;
 
   .nav-item {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    justify-content: center;
   }
 }
-
 
 ///*
 //Horizontal navbar
