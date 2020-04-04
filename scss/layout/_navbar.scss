@@ -8,10 +8,6 @@ Navbar
 
   .navbar-nav {
     height: subtract($navbar-height, 2 * $navbar-padding-y);
-
-    .nav-link {
-      min-width: 2.5rem;
-    }
   }
 }
 
@@ -38,6 +34,26 @@ Navbar toggler
 }
 
 /**
+Navbar light
+ */
+.navbar-light {
+  .navbar-nav {
+    .nav-item.active {
+      position: relative;
+
+      &:after {
+        content: '';
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: subtract(-$navbar-padding-y, 1px);
+        border-bottom: 2px solid $primary;
+      }
+    }
+  }
+}
+
+/**
 Navbar dark
  */
 .navbar-dark {
@@ -47,6 +63,14 @@ Navbar dark
 
   .text-muted {
     color: $navbar-dark-color !important;
+  }
+
+  .navbar-nav {
+    .nav-item.active {
+      .nav-link {
+        background-color: rgba(#000, .1);
+      }
+    }
   }
 }
 
