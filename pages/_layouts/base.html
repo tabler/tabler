@@ -8,6 +8,7 @@
 
 	<title>{% if page.title %}{{ page.title }} - {% endif %}{% if layout.title %}{{ layout.title }} - {% endif %}{% if site.title %}{{ site.title }} - {% endif %}{{ site.description }}</title>
 
+	{% if jekyll.environment == 'production' %}
 	<link rel="preconnect" href="https://fonts.gstatic.com/" crossorigin>
 
 	<meta name="msapplication-TileColor" content="{{ site.data.colors.blue }}"/>
@@ -32,6 +33,8 @@
 	{% endif %}
 
 	{% include layout/og.html show=layout.og-component %}
+	{% endif %}
+
 	{% include layout/css.html %}
 
 	<style>
@@ -48,13 +51,14 @@
 
 	{% include layout/modals-capture.html %}
 
+	{% comment %}
 	{% include layout/js.html %}
 	{% include layout/js-capture.html %}
 
 	{% if site.debug and jekyll.environment == 'development' %}
 		{% include layout/debug.html %}
 	{% endif %}
-
+	{% endcomment %}
 
 	<script>document.body.style.display = "block"</script>
 </body>
