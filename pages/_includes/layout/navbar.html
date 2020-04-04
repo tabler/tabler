@@ -1,14 +1,29 @@
 {% assign breakpoint = include.breakpoint | default: 'md' %}
-<nav class="navbar navbar-expand-{{ breakpoint }} {% if include.dark %}navbar-dark{% else %}navbar-light{% endif %}{% if include.background %} bg-{{ include.background }}{% endif %}">
+{% assign secondary = include.secondary | default: false %}
+
+<header class="navbar navbar-expand-{{ breakpoint }} {% if include.dark %}navbar-dark{% else %}navbar-light{% endif %}"{% if include.background %} style="background: {{ include.background }}"{% endif %}">
 	<div class="container-xl">
 		{% include layout/navbar-toggler.html target="navbar-menu" %}
 		{% include layout/navbar-logo.html dark=include.dark class="d-none-navbar-horizontal" breakpoint=breakpoint %}
 
+		{% unless secondary %}
 		<div class="collapse navbar-collapse pl-0 pl-{{ breakpoint }}-4" id="navbar-menu">
-			{% include layout/navbar-menu.html class="ml-lg-5" %}
+			{% include layout/navbar-menu.html %}
+			{% include layout/navbar-search.html breakpoint="lg" class="mr-3" %}
 		</div>
+		{% endunless %}
 
-		{% include layout/navbar-search.html breakpoint=breakpoint class="mr-4" %}
 		{% include layout/navbar-side.html %}
 	</div>
-</nav>
+</header>
+
+{% if secondary %}
+<div class="navbar-expand-{{ breakpoint }}">
+	<div class="navbar navbar-light collapse navbar-collapse" id="navbar-menu">
+		<div class="container-xl">
+			{% include layout/navbar-menu.html %}
+			{% include layout/navbar-search.html breakpoint=breakpoint %}
+		</div>
+	</div>
+</div>
+{% endif %}

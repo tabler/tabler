@@ -1,7 +1,10 @@
 {% assign prefix = include.prefix | default: 'navbar' %}
+{% assign small-logo = include.small-logo | default: false %}
 {% assign breakpoint = include.breakpoint | default: 'lg' %}
 
 <a href="{{ site.base }}" class="{{ prefix }}-brand {{ prefix }}-brand-autodark{% if include.class %} {{ include.class }}{% endif %}">
-	<img src="{{ site.base }}/static/logo{% if include.dark %}-white{% endif %}.svg" alt="{{ site.title }}" class="navbar-brand-image d-none d-{{ breakpoint }}-block">
+	<img src="{{ site.base }}/static/logo{% if include.dark %}-white{% endif %}.svg" alt="{{ site.title }}" class="navbar-brand-image{% if small-logo %} d-none d-{{ breakpoint }}-block{% endif %}">
+	{% if small-logo %}
 	<img src="{{ site.base }}/static/logo-small{% if include.dark %}-white{% endif %}.svg" alt="{{ site.title }}" class="navbar-brand-image d-{{ breakpoint }}-none">
+	{% endif %}
 </a>
