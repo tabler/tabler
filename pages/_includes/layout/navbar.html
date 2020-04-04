@@ -9,7 +9,7 @@
 		{% unless secondary %}
 		<div class="collapse navbar-collapse pl-0 pl-{{ breakpoint }}-4" id="navbar-menu">
 			{% include layout/navbar-menu.html %}
-			{% include layout/navbar-search.html breakpoint="lg" class="mr-3" %}
+			{% include layout/navbar-search.html breakpoint="lg" class="flex-fill ml-4 mr-4" dark=include.dark %}
 		</div>
 		{% endunless %}
 
@@ -19,10 +19,10 @@
 
 {% if secondary %}
 <div class="navbar-expand-{{ breakpoint }}">
-	<div class="navbar navbar-light collapse navbar-collapse" id="navbar-menu">
+	<div class="navbar collapse navbar-collapse {% if include.dark-secondary %}navbar-dark{% else %}navbar-light{% endif %}" id="navbar-menu">
 		<div class="container-xl">
 			{% include layout/navbar-menu.html %}
-			{% include layout/navbar-search.html breakpoint=breakpoint %}
+			{% include layout/navbar-search.html breakpoint=breakpoint dark=dark-secondary %}
 		</div>
 	</div>
 </div>
