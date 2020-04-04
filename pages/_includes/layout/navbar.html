@@ -8,9 +8,12 @@
 		{% include layout/navbar-side.html class="order-md-last" %}
 
 		{% unless secondary %}
-		<div class="collapse navbar-collapse pl-0 pl-{{ breakpoint }}-4" id="navbar-menu">
+		<div class="collapse navbar-collapse" id="navbar-menu">
+			<div class="pl-0 pl-md-4 d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center">
 			{% include layout/navbar-menu.html %}
-			{% include layout/navbar-search.html breakpoint="lg" class="flex-fill ml-4 mr-4" dark=include.dark %}
+			{% include layout/navbar-search.html breakpoint="lg" class="flex-fill ml-md-4 mr-md-4 order-first order-md-last" dark=include.dark %}
+
+			</div>
 		</div>
 		{% endunless %}
 
@@ -23,7 +26,7 @@
 	<div class="navbar collapse navbar-collapse {% if include.dark-secondary %}navbar-dark{% else %}navbar-light{% endif %}" id="navbar-menu">
 		<div class="container-xl">
 			{% include layout/navbar-menu.html %}
-			{% include layout/navbar-search.html breakpoint=breakpoint dark=include.dark-secondary %}
+			{% include layout/navbar-search.html breakpoint=breakpoint dark=include.dark-secondary class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last" %}
 		</div>
 	</div>
 </div>
