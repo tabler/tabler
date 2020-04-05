@@ -1,7 +1,7 @@
 {% assign breakpoint = include.breakpoint | default: 'md' %}
 {% assign secondary = include.secondary | default: false %}
 
-<header class="navbar navbar-expand-{{ breakpoint }} {% if include.dark %}navbar-dark{% else %}navbar-light{% endif %}{% if include.background %} bg-{{ include.background }}{% endif %}"{% if include.background-color %} style="background: {{ include.background-color }}"{% endif %}>
+<header class="navbar navbar-expand-{{ breakpoint }}{% unless include.transparent %} {% if include.dark %}navbar-dark{% else %}navbar-light{% endif %}{% if include.background %} bg-{{ include.background }}{% endif %}{% endunless %}"{% if include.background-color %} style="background: {{ include.background-color }}"{% endif %}>
 	<div class="container-xl">
 		{% include layout/navbar-toggler.html target="navbar-menu" %}
 
@@ -24,7 +24,7 @@
 						{% assign search-class = search-class | append: " flex-md-grow-0" %}
 					{% endunless %}
 
-					{% include layout/navbar-search.html breakpoint="lg" class=search-class dark=include.dark %}
+					{% include layout/navbar-search.html breakpoint="lg" rounded=include.transparent class=search-class dark=include.dark %}
 				</div>
 			{% endif %}
 		</div>
