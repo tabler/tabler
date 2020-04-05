@@ -1,0 +1,129 @@
+---
+title: Covid19 - Dashboard
+page-header: Situazione Italia
+page-header-pretitle: Covid-19 Dashboard
+page-header-actions: covid
+menu: italia
+---
+
+{% assign nazionale = site.data.dpc-covid19-ita-andamento-nazionale %}
+{% assign stats-nazionale = site.data.stats %}
+
+{% assign perc_deceduti = stats-nazionale.last.perc_deceduti | round: 0 %}
+{% assign perc_totale_attualmente_positivi = stats-nazionale.last.perc_totale_attualmente_positivi | round: 0 %}
+{% assign perc_dimessi_guariti = stats-nazionale.last.perc_dimessi_guariti | round: 0 %} 
+{% assign perc_terapia_intensiva = stats-nazionale.last.perc_terapia_intensiva | round: 0 %} 
+{% assign perc_ricoverati_con_sintomi = stats-nazionale.last.perc_ricoverati_con_sintomi | round: 0 %} 
+{% assign perc_isolamento_domiciliare = stats-nazionale.last.perc_isolamento_domiciliare | round: 0 %} 
+
+
+
+<div class="row row-deck row-cards">
+    <div class="col-sm-6 col-lg-3">
+        <div class="card">
+            <div class="card-body text-center">
+                <div class="h5">Totale Casi </div>
+                <div class="display-4 font-weight-bold mb-4">{{ nazionale.last.totale_casi | intcomma: '.' }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="card">
+            <div class="card-body text-center">
+                <div class="h5">Attualmente Positivi </div>
+                <div class="display-4 font-weight-bold mb-4">{{ nazionale.last.totale_positivi | intcomma: '.' }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="card">
+            <div class="card-body text-center">
+                <div class="h5">Totale Ospedalizzati </div>
+                <div class="display-4 font-weight-bold mb-4">{{ nazionale.last.totale_ospedalizzati | intcomma: '.' }}</div>
+            </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-3">
+        <div class="card">
+            <div class="card-body text-center">
+                <div class="h5">Totale Deceduti </div>
+                <div class="display-4 font-weight-bold mb-4">{{ nazionale.last.deceduti | intcomma: '.' }}</div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row row-deck row-cards">
+    <div class="col-sm-6 col-lg-2">
+        <div class="card">
+        <div class="card-body text-center">
+            <div class="h5">Positivi </div>
+            <div class="display-4 font-weight-bold mb-4">{{ stats-nazionale.last.perc_totale_attualmente_positivi | round: 0 }}%</div>
+            <div class="subheader">sul totale dei casi</div>
+            <div class="progress progress-sm">
+            <div class="progress-bar bg-red" style="width: {{ perc_totale_attualmente_positivi }}%"></div>
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-2">
+        <div class="card">
+        <div class="card-body text-center">
+            <div class="h5">Guariti</div>
+            <div class="display-4 font-weight-bold mb-4">{{ perc_dimessi_guariti }}%</div>
+            <div class="subheader">sul totale dei casi</div>
+            <div class="progress progress-sm">
+            <div class="progress-bar bg-green" style="width: {{ perc_dimessi_guariti }}%"></div>
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-2">
+        <div class="card">
+        <div class="card-body text-center">
+            <div class="h5">Deceduti</div>
+            <div class="display-4 font-weight-bold mb-4">{{ perc_deceduti }}%</div>
+            <div class="subheader">sul totale dei casi</div>
+            <div class="progress progress-sm">
+            <div class="progress-bar bg-red" style="width: {{ perc_deceduti }}%"></div>
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-2">
+        <div class="card">
+        <div class="card-body text-center">
+            <div class="h5">Isolamento Domiciliare </div>
+            <div class="display-4 font-weight-bold mb-4">{{ perc_isolamento_domiciliare }}%</div>
+            <div class="subheader">sul totale dei positivi</div>
+            <div class="progress progress-sm">
+            <div class="progress-bar bg-green" style="width: {{ perc_isolamento_domiciliare }}%"></div>
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-2">
+        <div class="card">
+        <div class="card-body text-center">
+            <div class="h5">Ricoverati</div>
+            <div class="display-4 font-weight-bold mb-4">{{ perc_ricoverati_con_sintomi }}%</div>
+            <div class="subheader">sul totale dei positivi</div>
+            <div class="progress progress-sm">
+            <div class="progress-bar bg-yellow" style="width: {{ perc_ricoverati_con_sintomi }}%"></div>
+            </div>
+        </div>
+        </div>
+    </div>
+    <div class="col-sm-6 col-lg-2">
+        <div class="card">
+            <div class="card-body text-center">
+                <div class="h5">Terapia Intensiva</div>
+                <div class="display-4 font-weight-bold mb-4">{{ perc_terapia_intensiva }}%</div>
+                <div class="subheader">sul totale dei positivi</div>
+                <div class="progress progress-sm">
+                <div class="progress-bar bg-red" style="width: {{ perc_terapia_intensiva }}%"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
