@@ -1,10 +1,14 @@
 {% assign breakpoint = include.breakpoint | default: 'md' %}
 {% assign secondary = include.secondary | default: false %}
 
-<header class="navbar navbar-expand-{{ breakpoint }} {% if include.dark %}navbar-dark{% else %}navbar-light{% endif %}"{% if include.background %} style="background: {{ include.background }}"{% endif %}>
+<header class="navbar navbar-expand-{{ breakpoint }} {% if include.dark %}navbar-dark{% else %}navbar-light{% endif %}{% if include.background %} bg-{{ include.background }}{% endif %}"{% if include.background-color %} style="background: {{ include.background-color }}"{% endif %}>
 	<div class="container-xl">
 		{% include layout/navbar-toggler.html target="navbar-menu" %}
-		{% include layout/navbar-logo.html dark=include.dark small-logo=include.small-logo hide-logo=include.hide-logo class="d-none-navbar-horizontal pr-0 pr-md-3" breakpoint=breakpoint show-title=include.show-title %}
+
+		{% unless include.hide-brand %}
+			{% include layout/navbar-logo.html dark=include.dark small-logo=include.small-logo hide-logo=include.hide-logo class="d-none-navbar-horizontal pr-0 pr-md-3" breakpoint=breakpoint show-title=include.show-title %}
+		{% endunless %}
+
 		{% include layout/navbar-side.html class="order-md-last" hide-username=include.hide-username person-id=include.person-id %}
 
 		{% unless secondary %}
@@ -14,7 +18,13 @@
 			{% else %}
 				<div class="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center">
 					{% include layout/navbar-menu.html sample=include.sample hide-icons=include.hide-icons %}
-					{% include layout/navbar-search.html breakpoint="lg" class="flex-grow-1 flex-md-grow-0 ml-md-auto pl-md-4 mr-md-4 order-first order-md-last" dark=include.dark %}
+
+					{% assign search-class = "ml-md-auto pl-md-4 mr-md-4 order-first order-md-last flex-grow-1" %}
+					{% unless include.fluid-search %}
+						{% assign search-class = search-class | append: " flex-md-grow-0" %}
+					{% endunless %}
+
+					{% include layout/navbar-search.html breakpoint="lg" class=search-class dark=include.dark %}
 				</div>
 			{% endif %}
 		</div>

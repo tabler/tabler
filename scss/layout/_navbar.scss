@@ -1,3 +1,17 @@
+.navbar {
+  .nav-link {
+    position: relative;
+
+    .badge {
+      position: absolute;
+      top: .375rem;
+      right: .375rem;
+      transform: translate(50%, -50%);
+    }
+  }
+}
+
+
 .navbar-expand {
   @each $breakpoint in map-keys($grid-breakpoints) {
     $next: breakpoint-next($breakpoint, $grid-breakpoints);
@@ -7,6 +21,14 @@
       @include media-breakpoint-down($breakpoint) {
         .dropdown-menu {
           position: absolute;
+        }
+
+        .nav-link {
+          .badge {
+            position: static;
+            margin-left: .5rem;
+            transform: none;
+          }
         }
 
         .navbar-collapse {

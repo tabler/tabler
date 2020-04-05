@@ -9,7 +9,7 @@
 <ul class="navbar-nav{% if include.class %} {{ include.class }}{% endif %}">
 	{% for level-1 in menu %}
 		{% assign icon = level-1[1].icon %}
-		<li class="nav-item{% if level-1[0] == current-page[0] %} active{% endif %}{% if level-1[1].children %} dropdown{% endif %}">
+		<li class="nav-item{% if level-1[0] == current-page[0] or level-1[1].active %} active{% endif %}{% if level-1[1].children %} dropdown{% endif %}">
 			<a class="nav-link{% if level-1[1].children %} dropdown-toggle{% endif %}" {% if level-1[1].children %}href="#navbar-{{ level-1[0] }}" data-toggle="dropdown" role="button"
 			   aria-expanded="{% if level-1[0] == current-page[0] %}true{% else %}false{% endif %}" {% else %}href="{{ site.base }}/{{ level-1[1].url }}" {% endif %}>
 				{% unless hide-icons %}
@@ -23,6 +23,10 @@
 					{{ level-1[1].title }}
 					{% endif %}
 				</span>
+
+				{% if level-1[1].badge %}
+				<span class="badge bg-red">{{ level-1[1].badge }}</span>
+				{% endif %}
 			</a>
 
 			{% if level-1[1].children %}
