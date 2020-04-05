@@ -1,13 +1,20 @@
 {% assign current-page = page.menu | default: layout.menu | split: '.' %}
 {% assign hide-icons = include.hide-icons %}
 
+{% assign menu = site.data.menu %}
+{% if include.sample %}
+	{% assign menu = site.data.menu-sample %}
+{% endif %}
+
 <ul class="navbar-nav{% if include.class %} {{ include.class }}{% endif %}">
-	{% for level-1 in site.data.menu %}
+	{% for level-1 in menu %}
 		{% assign icon = level-1[1].icon %}
 		<li class="nav-item{% if level-1[0] == current-page[0] %} active{% endif %}{% if level-1[1].children %} dropdown{% endif %}">
 			<a class="nav-link{% if level-1[1].children %} dropdown-toggle{% endif %}" {% if level-1[1].children %}href="#navbar-{{ level-1[0] }}" data-toggle="dropdown" role="button"
 			   aria-expanded="{% if level-1[0] == current-page[0] %}true{% else %}false{% endif %}" {% else %}href="{{ site.base }}/{{ level-1[1].url }}" {% endif %}>
-				<span class="nav-link-icon{% if hide-icons %} d-md-none d-lg-inline-block{% endif %}">{% include ui/icon.html icon=icon %}</span>
+				{% unless hide-icons %}
+				<span class="nav-link-icon d-md-none d-lg-inline-block">{% include ui/icon.html icon=icon %}</span>
+				{% endunless %}
 
 				<span class="nav-link-title">
 					{% if include.long-titles %}

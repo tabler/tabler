@@ -4,16 +4,16 @@
 <header class="navbar navbar-expand-{{ breakpoint }} {% if include.dark %}navbar-dark{% else %}navbar-light{% endif %}"{% if include.background %} style="background: {{ include.background }}"{% endif %}>
 	<div class="container-xl">
 		{% include layout/navbar-toggler.html target="navbar-menu" %}
-		{% include layout/navbar-logo.html dark=include.dark class="d-none-navbar-horizontal" breakpoint=breakpoint %}
+		{% include layout/navbar-logo.html dark=include.dark small-logo=include.small-logo hide-logo=include.hide-logo class="d-none-navbar-horizontal pr-0 pr-md-3" breakpoint=breakpoint show-title=include.show-title %}
 		{% include layout/navbar-side.html class="order-md-last" hide-username=include.hide-username person-id=include.person-id %}
 
 		{% unless secondary %}
-		<div class="collapse navbar-collapse pl-0 pl-md-4" id="navbar-menu">
+		<div class="collapse navbar-collapse" id="navbar-menu">
 			{% if include.hide-search %}
-				{% include layout/navbar-menu.html hide-icons=true %}
+				{% include layout/navbar-menu.html sample=include.sample hide-icons=include.hide-icons %}
 			{% else %}
 				<div class="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center">
-					{% include layout/navbar-menu.html hide-icons=true %}
+					{% include layout/navbar-menu.html sample=include.sample hide-icons=include.hide-icons %}
 					{% include layout/navbar-search.html breakpoint="lg" class="flex-grow-1 flex-md-grow-0 ml-md-auto pl-md-4 mr-md-4 order-first order-md-last" dark=include.dark %}
 				</div>
 			{% endif %}
@@ -26,7 +26,7 @@
 <div class="navbar-expand-{{ breakpoint }}">
 	<div class="navbar collapse navbar-collapse {% if include.dark-secondary %}navbar-dark{% else %}navbar-light{% endif %}" id="navbar-menu">
 		<div class="container-xl">
-			{% include layout/navbar-menu.html hide-icons=true long-titles=true %}
+			{% include layout/navbar-menu.html sample=include.sample hide-icons=include.hide-icons long-titles=true %}
 			{% include layout/navbar-search.html breakpoint=breakpoint dark=include.dark-secondary class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last" %}
 		</div>
 	</div>
