@@ -1,5 +1,7 @@
+{% assign person-id = include.person-id | default: 1 %}
+{% assign person = site.data.people[person-id] %}
 <ul class="navbar-nav flex-row{% if include.class %} {{ include.class }}{% endif %}">
-	<li class="nav-item dropdown d-none d-md-flex mr-3">
+	<li class="nav-item nav-item-icon dropdown d-none d-md-flex mr-3">
 		<a href="#" class="nav-link px-0" data-toggle="dropdown" tabindex="-1">
 			{% include ui/icon.html icon="bell" %}
 		</a>
@@ -10,11 +12,13 @@
 
 	<li class="nav-item dropdown">
 		<a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-toggle="dropdown">
-			{% include ui/avatar.html person-id=1 %}
+			{% include ui/avatar.html person-id=person-id %}
+			{% unless include.hide-username %}
 			<div class="d-none d-xl-block pl-2">
-				<div>Paweł Kuna</div>
-				<div class="mt-1 small text-muted">Founder</div>
+				<div>{{ person.full_name }}</div>
+				<div class="mt-1 small text-muted">{{ person.job_title }}</div>
 			</div>
+			{% endunless %}
 		</a>
 		{% include ui/dropdown-menu.html right=true icons=true separated=true %}
 	</li>

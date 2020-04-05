@@ -5,15 +5,18 @@
 	<div class="container-xl">
 		{% include layout/navbar-toggler.html target="navbar-menu" %}
 		{% include layout/navbar-logo.html dark=include.dark class="d-none-navbar-horizontal" breakpoint=breakpoint %}
-		{% include layout/navbar-side.html class="order-md-last" %}
+		{% include layout/navbar-side.html class="order-md-last" hide-username=include.hide-username person-id=include.person-id %}
 
 		{% unless secondary %}
-		<div class="collapse navbar-collapse" id="navbar-menu">
-			<div class="pl-0 pl-md-4 d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center">
-			{% include layout/navbar-menu.html hide-icons=true %}
-			{% include layout/navbar-search.html breakpoint="lg" class="flex-grow-1 flex-md-grow-0 ml-md-auto pl-md-4 mr-md-4 order-first order-md-last" dark=include.dark %}
-
-			</div>
+		<div class="collapse navbar-collapse pl-0 pl-md-4" id="navbar-menu">
+			{% if include.hide-search %}
+				{% include layout/navbar-menu.html hide-icons=true %}
+			{% else %}
+				<div class="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center">
+					{% include layout/navbar-menu.html hide-icons=true %}
+					{% include layout/navbar-search.html breakpoint="lg" class="flex-grow-1 flex-md-grow-0 ml-md-auto pl-md-4 mr-md-4 order-first order-md-last" dark=include.dark %}
+				</div>
+			{% endif %}
 		</div>
 		{% endunless %}
 	</div>
