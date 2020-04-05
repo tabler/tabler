@@ -1,17 +1,36 @@
 {% assign current-page = page.menu | default: layout.menu | split: '.' %}
+{% assign hide-icons = include.hide-icons %}
 
-<ul class="navbar-nav">
-	{% for level-1 in site.data.menu %}
+{% assign menu = site.data.menu %}
+{% if include.sample %}
+	{% assign menu = site.data.menu-sample %}
+{% endif %}
+
+<ul class="navbar-nav{% if include.class %} {{ include.class }}{% endif %}">
+	{% for level-1 in menu %}
 		{% assign icon = level-1[1].icon %}
-		<li class="nav-item{% if level-1[0] == current-page[0] %} active{% endif %}">
+		<li class="nav-item{% if level-1[0] == current-page[0] or level-1[1].active %} active{% endif %}{% if level-1[1].children %} dropdown{% endif %}">
 			<a class="nav-link{% if level-1[1].children %} dropdown-toggle{% endif %}" {% if level-1[1].children %}href="#navbar-{{ level-1[0] }}" data-toggle="dropdown" role="button"
 			   aria-expanded="{% if level-1[0] == current-page[0] %}true{% else %}false{% endif %}" {% else %}href="{{ site.base }}/{{ level-1[1].url }}" {% endif %}>
-				<span class="nav-link-icon">{% include ui/icon.html icon=icon %}</span>
-				<span class="nav-link-title">{{ level-1[1].title }}</span>
+				{% unless hide-icons %}
+				<span class="nav-link-icon d-md-none d-lg-inline-block">{% include ui/icon.html icon=icon %}</span>
+				{% endunless %}
+
+				<span class="nav-link-title">
+					{% if include.long-titles %}
+					{{ level-1[1].title-long | default: level-1[1].title }}
+					{% else %}
+					{{ level-1[1].title }}
+					{% endif %}
+				</span>
+
+				{% if level-1[1].badge %}
+				<span class="badge bg-red">{{ level-1[1].badge }}</span>
+				{% endif %}
 			</a>
 
 			{% if level-1[1].children %}
-			<ul class="dropdown-menu dropdown-menu-arrow{% if level-1[1].right %} dropdown-menu-right{% endif %}{% if level-1[1].columns %} dropdown-menu-columns  dropdown-menu-columns-{{ level-1[1].columns }}{% endif %}">
+			<ul class="dropdown-menu{% if level-1[1].right %} dropdown-menu-right{% endif %}{% if level-1[1].columns %} dropdown-menu-columns  dropdown-menu-columns-{{ level-1[1].columns }}{% endif %}">
 				{% for level-2 in level-1[1].children %}
 				<li {% if level-2[1].children %}class="dropright"{% endif %}>
 					<a class="dropdown-item{% if level-2[1].children %} dropdown-toggle{% endif %}{% if level-1[0] == current-page[0] and level-2[0] == current-page[1] and current-page.size == 2 %} active{% endif %}" {% if level-2[1].children %}href="#sidebar-{{ level-2[0] }}" data-toggle="dropdown" role="button" aria-expanded="false" {% else %}href="{{ site.base }}/{{ level-2[1].url }}" {% endif %}>
@@ -32,10 +51,12 @@
 		</li>
 	{% endfor %}
 
+	{% comment %}
 	<li class="nav-item d-none-navbar-vertical">
 		<a href="#" class="nav-link" data-toggle="modal" data-target="#modal-customize">
 			<span class="nav-link-icon">{% include ui/icon.html icon="adjustments" %}</span>
 			<span class="nav-link-title">Customize</span>
 		</a>
 	</li>
+	{% endcomment %}
 </ul>

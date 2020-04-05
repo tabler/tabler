@@ -1,6 +1,16 @@
 {% assign prefix = include.prefix | default: 'navbar' %}
+{% assign breakpoint = include.breakpoint | default: 'lg' %}
 
 <a href="{{ site.base }}" class="{{ prefix }}-brand {{ prefix }}-brand-autodark{% if include.class %} {{ include.class }}{% endif %}">
-	<img src="{{ site.base }}/static/logo{% if include.dark %}-white{% endif %}.svg" alt="{{ site.title }}" class="{{ prefix }}-brand-logo {{ prefix }}-brand-logo-large">
-	<img src="{{ site.base }}/static/logo-small{% if include.dark %}-white{% endif %}.svg" alt="{{ site.title }}" class="{{ prefix }}-brand-logo {{ prefix }}-brand-logo-small">
+	{% unless include.hide-logo %}
+		{% if include.small-logo %}
+			<img src="{{ site.base }}/static/logo-small{% if include.dark %}-white{% endif %}.svg" alt="{{ site.title }}" class="navbar-brand-image{% if include.show-title %} mr-3{% endif %}">
+		{% else %}
+			<img src="{{ site.base }}/static/logo{% if include.dark %}-white{% endif %}.svg" alt="{{ site.title }}" class="navbar-brand-image{% if include.show-title %} mr-3{% endif %}">
+		{% endif %}
+	{% endunless %}
+
+	{% if include.show-title %}
+		Dashboard
+	{% endif %}
 </a>

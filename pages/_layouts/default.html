@@ -5,20 +5,14 @@ layout: base
 {% assign page-header = page.page-header | default: layout.page-header %}
 
 <div class="page">
+	{% include layout/navbar.html %}
+
+	{% comment %}
 	{% include layout/navbar-primary.html %}
 	{% include layout/navbar-secondary.html %}
+	{% endcomment %}
 
-	<div class="content">
-		<div class="container{% if page.container-size %}-{{ page.container-size }}{% endif %}{% if page.container-centered %} d-flex flex-column justify-content-center{% endif %}">
-			{% if page-header %}
-				{% include layout/page-header.html title=page-header description=page.page-header-description actions=page.page-header-actions pretitle=page.page-header-pretitle %}
-			{% endif %}
-
-			{{ content }}
-		</div>
-
-		{% include layout/footer.html %}
-	</div>
+	{% include layout/content.html %}
 </div>
 
 {% include ui/modal.html modal-id="customize" top=true %}
