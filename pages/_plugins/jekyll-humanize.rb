@@ -141,7 +141,7 @@ module Jekyll
         return value
       else
         return ["zero", "one", "two", "three", "four", "five", "six",
-                "seven", "eight", "nine"][value]
+          "seven", "eight", "nine"][value]
       end
 
     end
