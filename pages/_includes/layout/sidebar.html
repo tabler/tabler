@@ -1,0 +1,13 @@
+{% assign breakpoint = include.breakpoint | default: 'md' %}
+
+<aside class="navbar navbar-vertical{% if include.right %} navbar-right{% endif %} navbar-expand-{{ breakpoint }}{% unless include.transparent %} {% if include.dark %}navbar-dark{% else %}navbar-light{% endif %}{% if include.background %} bg-{{ include.background }}{% endif %}{% endunless %}"{% if include.background-color %} style="background: {{ include.background-color }}"{% endif %}>
+	<div class="container-fluid">
+		{% unless include.hide-brand %}
+			{% include layout/navbar-logo.html dark=include.dark breakpoint=breakpoint %}
+		{% endunless %}
+
+		<div class="collapse navbar-collapse" id="navbar-menu">
+			{% include layout/navbar-menu.html %}
+		</div>
+	</div>
+</aside>

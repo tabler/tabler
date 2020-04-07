@@ -1,8 +1,8 @@
 {% assign breakpoint = include.breakpoint | default: 'md' %}
 {% assign secondary = include.secondary | default: false %}
 
-<header class="navbar navbar-expand-{{ breakpoint }}{% unless include.transparent %} {% if include.dark %}navbar-dark{% else %}navbar-light{% endif %}{% if include.background %} bg-{{ include.background }}{% endif %}{% endunless %}"{% if include.background-color %} style="background: {{ include.background-color }}"{% endif %}>
-	<div class="container-xl">
+<header class="navbar navbar-expand-{{ breakpoint }}{% unless include.transparent %} {% if include.dark %}navbar-dark{% else %}navbar-light{% endif %}{% if include.background %} bg-{{ include.background }}{% endif %}{% endunless %}{% if include.sticky %} sticky-top{% endif %}"{% if include.background-color %} style="background: {{ include.background-color }}"{% endif %}>
+	<div class="container{% if page.layout-fluid %}-fluid{% else %}-xl{% endif %}">
 		{% include layout/navbar-toggler.html target="navbar-menu" %}
 
 		{% unless include.hide-brand %}
@@ -15,6 +15,8 @@
 		<div class="collapse navbar-collapse" id="navbar-menu">
 			{% if include.hide-search %}
 				{% include layout/navbar-menu.html sample=include.sample hide-icons=include.hide-icons %}
+			{% elsif include.hide-menu %}
+				{% include layout/navbar-search.html rounded=include.transparent dark=include.dark %}
 			{% else %}
 				<div class="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center">
 					{% include layout/navbar-menu.html sample=include.sample hide-icons=include.hide-icons %}
@@ -35,7 +37,7 @@
 {% if secondary %}
 <div class="navbar-expand-{{ breakpoint }}">
 	<div class="navbar collapse navbar-collapse {% if include.dark-secondary %}navbar-dark{% else %}navbar-light{% endif %}" id="navbar-menu">
-		<div class="container-xl">
+		<div class="container{% if page.layout-fluid %}-fluid{% else %}-xl{% endif %}">
 			{% include layout/navbar-menu.html sample=include.sample hide-icons=include.hide-icons long-titles=true %}
 			{% include layout/navbar-search.html breakpoint=breakpoint dark=include.dark-secondary class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last" %}
 		</div>
