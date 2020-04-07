@@ -2,9 +2,13 @@
 
 <aside class="navbar navbar-vertical{% if include.right %} navbar-right{% endif %} navbar-expand-{{ breakpoint }}{% unless include.transparent %} {% if include.dark %}navbar-dark{% else %}navbar-light{% endif %}{% if include.background %} bg-{{ include.background }}{% endif %}{% endunless %}"{% if include.background-color %} style="background: {{ include.background-color }}"{% endif %}>
 	<div class="container-fluid">
+		{% include layout/navbar-toggler.html target="navbar-menu" %}
+
 		{% unless include.hide-brand %}
 			{% include layout/navbar-logo.html dark=include.dark breakpoint=breakpoint %}
 		{% endunless %}
+
+		{% include layout/navbar-side.html class="d-lg-none" hide-username=include.hide-username person-id=include.person-id %}
 
 		<div class="collapse navbar-collapse" id="navbar-menu">
 			{% include layout/navbar-menu.html %}
