@@ -34,7 +34,7 @@
     background: $gray-500;
 
     @if ($is-dark) {
-      background: mix(#fff, $dark, 20%);
+      background: mix(#ffffff, $dark, 20%);
     } @else {
       background: $gray-500;
     }
@@ -48,15 +48,29 @@
 
 @mixin dark-mode {
   @if $enable-dark-mode {
+    $selector: &;
+
     @media not print {
-      .theme-dark {
-        @content
+      @if ($selector) {
+        .theme-dark & {
+          @content
+        }
+      } @else {
+        .theme-dark {
+          @content
+        }
       }
     }
 
     @media not print and (prefers-color-scheme: dark) {
-      .theme-dark-auto {
-        @content
+      @if ($selector) {
+        .theme-dark-auto & {
+          @content
+        }
+      } @else {
+        .theme-dark-auto {
+          @content
+        }
       }
     }
   }

@@ -1,9 +1,88 @@
+@mixin navbar-color($bg-color: transparent, $text-color: $body-color, $link-color: $text-muted, $link-hover-color: $body-color, $link-disabled-color: rgba($link-color, .4)) {
+  background: $bg-color;
+  color: $text-color;
+
+  .navbar-brand {
+    color: $text-color;
+
+    &:hover,
+    &:focus {
+      color: $text-color;
+    }
+  }
+
+  .navbar-nav {
+    .nav-link {
+      color: $link-color;
+
+      &:hover,
+      &:focus {
+        color: $link-hover-color;
+      }
+
+      &.disabled {
+        color: $link-disabled-color;
+      }
+    }
+
+    .show > .nav-link,
+    .active > .nav-link,
+    .nav-link.show,
+    .nav-link.active {
+      color: $link-hover-color;
+    }
+  }
+
+  .navbar-toggler {
+    color: $link-color;
+    border-color: transparent;
+  }
+
+  .navbar-toggler-icon {
+    background-image: escape-svg($navbar-light-toggler-icon-bg);
+  }
+
+  .navbar-text {
+    color: $text-color;
+
+    a,
+    a:hover,
+    a:focus  {
+      color: $link-color;
+    }
+  }
+}
+
+@mixin navbar-dark() {
+  box-shadow: none;
+  @include navbar-color($dark, $white, rgba($white, .7), $white);
+
+  .input-icon-addon {
+    color: rgba($white, .7);
+  }
+
+  .form-control {
+    border-color: transparent;
+    background-color: rgba(0, 0, 0, .1);
+
+    &::placeholder {
+      color: rgba($white, .7);
+    }
+  }
+}
+
 /**
 Navbar
  */
 .navbar {
   min-height: $navbar-height;
   align-items: stretch;
+
+  @include navbar-color();
+
+  @include dark-mode {
+    @include navbar-dark();
+  }
 
   .navbar-nav {
     min-height: subtract($navbar-height, 2 * $navbar-padding-y);
@@ -19,63 +98,7 @@ Navbar
       }
     }
   }
-
-  &:not(.navbar-light):not(.navbar-dark) {
-    background: transparent;
-    box-shadow: none;
-
-    .navbar-brand {
-      color: $navbar-light-brand-color;
-
-      &:hover,
-      &:focus {
-        color: $navbar-light-brand-hover-color;
-      }
-    }
-
-    .navbar-nav {
-      .nav-link {
-        color: $navbar-light-color;
-
-        &:hover,
-        &:focus {
-          color: $navbar-light-hover-color;
-        }
-
-        &.disabled {
-          color: $navbar-light-disabled-color;
-        }
-      }
-
-      .show > .nav-link,
-      .active > .nav-link,
-      .nav-link.show,
-      .nav-link.active {
-        color: $navbar-light-active-color;
-      }
-    }
-
-    .navbar-toggler {
-      color: $navbar-light-color;
-      border-color: $navbar-light-toggler-border-color;
-    }
-
-    .navbar-toggler-icon {
-      background-image: escape-svg($navbar-light-toggler-icon-bg);
-    }
-
-    .navbar-text {
-      color: $navbar-light-color;
-
-      a,
-      a:hover,
-      a:focus  {
-        color: $navbar-light-active-color;
-      }
-    }
-  }
 }
-
 
 .navbar-expand {
   @each $breakpoint in map-keys($grid-breakpoints) {
@@ -159,8 +182,6 @@ Navbar
   }
 }
 
-
-
 /**
 Navbar brand
  */
@@ -196,16 +217,12 @@ Navbar light
 Navbar dark
  */
 .navbar-dark {
-  color: $white;
-  background-color: $dark;
-  box-shadow: none;
-
-  .text-muted {
-    color: $navbar-dark-color !important;
-  }
+  @include navbar-dark();
 }
 
-
+/**
+Navbar nav
+ */
 .navbar-nav {
   align-items: stretch;
 
@@ -213,5 +230,78 @@ Navbar dark
     display: flex;
     flex-direction: column;
     justify-content: center;
+  }
+}
+
+
+/**
+Navbar vertical
+ */
+@if $enable-navbar-vertical {
+  .navbar-vertical {
+    &.navbar-expand {
+      @each $breakpoint in map-keys($grid-breakpoints) {
+        $next: breakpoint-next($breakpoint, $grid-breakpoints);
+        $infix: breakpoint-infix($next, $grid-breakpoints);
+
+        &#{$infix} {
+          @include media-breakpoint-up($next) {
+            width: $sidebar-width;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: $zindex-fixed;
+            align-items: flex-start;
+            transition: .3s transform;
+
+            &.navbar-right {
+              left: auto;
+              right: 0;
+            }
+
+            .navbar-brand {
+              padding: (($navbar-height - $navbar-brand-image-height) / 2) 0;
+              justify-content: center;
+            }
+
+            .navbar-collapse {
+              align-items: flex-start;
+            }
+
+            .navbar-nav {
+              flex-direction: column;
+              flex-grow: 1;
+
+              .nav-link {
+                padding-top: .5rem;
+                padding-bottom: .5rem;
+              }
+            }
+
+            > [class*="container"] {
+              flex-direction: column;
+              align-items: stretch;
+              min-height: 100%;
+              justify-content: flex-start;
+            }
+
+            ~ .page {
+              padding-left: $sidebar-width;
+
+              [class*="container"] {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+              }
+            }
+
+            &.navbar-right ~ .page {
+              padding-left: 0;
+              padding-right: $sidebar-width;
+            }
+          }
+        }
+      }
+    }
   }
 }
