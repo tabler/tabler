@@ -1,5 +1,7 @@
-<div class="d-none d-xl-block ml-auto{% if include.class %} {{ include.class }}{% endif %}">
+{% assign breakpoint = include.breakpoint | default: 'lg' %}
+
+<div{% if include.class %} class="{{ include.class }}"{% endif %}>
 	<form action="." method="get">
-		{% include ui/form/input-icon.html prepend=true %}
+		{% include ui/form/input-icon.html prepend=true dark=include.dark rounded=include.rounded %}
 	</form>
 </div>

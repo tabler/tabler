@@ -2,14 +2,23 @@
 $assets-base: ".." !default;
 
 // FONTS
-$google-font: "Source Sans Pro" !default;
+$google-font: "Ubuntu" !default;
 
-$font-family-sans-serif: $google-font, -apple-system, blinkmacsystemfont, segoe ui, helvetica, arial, sans-serif, apple color emoji, segoe ui emoji, segoe ui symbol !default;
+$font-family-sans-serif: $google-font, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji !default;
 $font-family-monospace: Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
 $font-family-serif: "Georgia", "Times New Roman", times, serif !default;
 
 // EXTERNAL FONTS
 $icon-fonts: () !default;
+
+//Fonts
+$font-size-base: .875rem !default;
+$font-weight-bold: 500 !default;
+$body-letter-spacing: -.01em !default;
+
+$line-height-base: (1.5rem/$font-size-base) !default;
+$line-height-sm: 1.3333334 !default;
+$line-height-lg: 2.1333334 !default;
 
 // COLORS
 $theme-color-interval: 10% !default;
@@ -54,10 +63,10 @@ $white: #ffffff !default;
 $body-bg: $light !default;
 $body-color: $dark !default;
 
-$text-muted-opacity: .60 !default;
+$text-muted-opacity: .72 !default; //Perfect color for AA
 $text-muted: mix($body-color, #ffffff, $text-muted-opacity * 100%) !default;
-$border-color: rgba($text-muted, .24) !default;
-$border-color-light: rgba($text-muted, .12) !default;
+$border-color: rgba($text-muted, .2) !default;
+$border-color-light: rgba($text-muted, .1) !default;
 
 $active-bg: rgba($blue, .06) !default;
 $hover-bg: rgba($text-muted, .06) !default;
@@ -122,14 +131,6 @@ $avatar-sizes: (
   "xl": 6rem
 ) !default;
 
-//Fonts
-$font-size-base: .9375rem !default;
-$font-weight-bold: 600 !default;
-$body-letter-spacing: null !default;
-
-$line-height-base: 1.6 !default;
-$line-height-sm: 1.3333334 !default;
-$line-height-lg: 2.1333334 !default;
 
 $link-decoration: none !default;
 
@@ -142,19 +143,19 @@ $headings-font-weight: $font-weight-bold !default;
 
 $small-font-size: 87.5% !default;
 
-$h1-font-size: (26rem / 16) !default;
+$h1-font-size: (28rem / 16) !default;
 $h2-font-size: (22rem / 16) !default;
 $h3-font-size: (18rem / 16) !default;
-$h4-font-size: (15rem / 16) !default;
-$h5-font-size: (13rem / 16) !default;
-$h6-font-size: (11rem / 16) !default;
+$h4-font-size: $font-size-base !default;
+$h5-font-size: (12rem / 16) !default;
+$h6-font-size: (10rem / 16) !default;
 
-$blockquote-font-size: $h4-font-size !default;
+$blockquote-font-size: $font-size-base !default;
 
 $code-font-size: $h6-font-size !default;
 $code-color: $primary !default;
 
-$lead-font-size: $h4-font-size !default;
+$lead-font-size: $font-size-base !default;
 $lead-font-weight: 400 !default;
 
 $hr-opacity: .1 !default;
@@ -169,11 +170,9 @@ $spacers: (
   1: $spacer * .25,
   2: $spacer * .5,
   3: $spacer,
-  4: $spacer * 1.25,
-  5: $spacer * 2,
-  6: $spacer * 3,
-  7: $spacer * 6,
-  8: $spacer * 9,
+  4: $spacer * 1.5,
+  5: $spacer * 3,
+  6: $spacer * 4.5
 ) !default;
 
 $size-spacers: (
@@ -238,7 +237,6 @@ $embed-responsive-aspect-ratios: (
 $content-padding-y: 1.25rem !default;
 
 
-
 //alerts
 $alert-link-font-weight: $font-weight-bold !default;
 $alert-bg-level: -8 !default;
@@ -253,6 +251,9 @@ $breadcrumb-variants: (
 ) !default;
 
 //badges
+$badge-padding-y: .125rem !default;
+$badge-padding-x: .25rem !default;
+$badge-font-size: $h6-font-size !default;
 $badge-font-weight: $font-weight-bold !default;
 $badge-empty-size: .5rem !default;
 
@@ -277,7 +278,7 @@ $input-focus-color: inherit !default;
 
 //buttons
 $btn-padding-x: 1rem !default;
-$btn-font-weight: 500 !default;
+$btn-font-weight: $font-weight-bold !default;
 $btn-border-radius: 3px !default;
 
 //cards
@@ -307,14 +308,13 @@ $carousel-control-prev-icon-bg: url("data:image/svg+xml,<svg xmlns='http://www.w
 $carousel-control-next-icon-bg: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='#{$carousel-control-color}' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='9 18 15 12 9 6'></polyline></svg>") !default;
 
 
-
 //close
 $close-font-weight: 400 !default;
 $close-font-size: 1.5rem !default;
 
 //dropdown
 $dropdown-item-padding-x: 1rem !default;
-$dropdown-font-size: $h4-font-size !default;
+$dropdown-font-size: $font-size-base !default;
 $dropdown-divider-bg: $border-color !default;
 $dropdown-padding-y: .5rem !default;
 $dropdown-link-hover-bg: $hover-bg !default;
@@ -330,6 +330,7 @@ $dropdown-menu-max-width: 25rem !default;
 
 //grid
 $grid-gutter-width: 1.5rem !default;
+$container-padding-x: .75rem !default;
 
 //loader
 $loader-size: 2.5rem !default;
@@ -363,29 +364,41 @@ $modal-lg: 720px !default;
 $modal-md: 540px !default;
 $modal-sm: 380px !default;
 
+//nav
+$nav-link-padding-y: .25rem !default;
+$nav-link-padding-x: .75rem !default;
+
 //navbar
-$navbar-padding-y: .5rem !default;
 $navbar-height: 3.5rem !default;
-$navbar-border-color: $border-color !default;
+$navbar-padding-y: .25rem !default;
 
-$navbar-toggler-padding-y: .75rem !default;
-$navbar-toggler-padding-x: .75rem !default;
-$navbar-toggler-margin: -.75rem !default;
+$navbar-light-color: rgba($body-color, $text-muted-opacity) !default;
+$navbar-light-brand-color: $body-color !default;
+$navbar-light-active-color: $body-color !default;
+$navbar-light-disabled-color: rgba($body-color, .3) !default;
+
+$navbar-dark-color: rgba($white, $text-muted-opacity) !default;
+$navbar-dark-brand-color: $white !default;
+$navbar-dark-active-color: $white !default;
+$navbar-dark-disabled-color: rgba($white, .3) !default;
+
+
+$navbar-brand-padding-y: $nav-link-padding-y !default;
+$navbar-brand-image-height: 2rem !default;
+$navbar-brand-margin-right: 0 !default;
+$navbar-brand-font-size: $h3-font-size !default;
+$navbar-brand-font-weight: $font-weight-bold !default;
+
 $navbar-toggler-font-size: 1rem !default;
-$navbar-toggler-size: 1.5rem !default;
-$navbar-toggler-item-height: 2px !default;
-$navbar-toggler-item-spacing: 7px !default;
-$navbar-toggler-transform-time: .2s !default;
+$navbar-toggler-padding-x: 0 !default;
+$navbar-toggler-padding-y: 0 !default;
+$navbar-toggler-animation-time: .2s !default;
+$navbar-toggler-focus-width: 0 !default;
 
-//sidenav
-$navbar-vertical-width: 15.625rem !default;
-$navbar-vertical-narrow-width: 4rem !default;
-$navbar-vertical-dark-bg: $dark !default;
-$navbar-vertical-dark-color: $white !default;
-$navbar-vertical-padding: 1rem !default;
-$navbar-vertical-active-accent-color: $primary !default;
+$navbar-nav-link-padding-x: $nav-link-padding-x !default;
 
-$navbar-nav-link-padding-x: .75rem !default;
+//sidebar
+$sidebar-width: 15rem !default;
 
 //popover
 $popover-border-color: $border-color !default;
@@ -481,7 +494,7 @@ $form-range-thumb-focus-box-shadow-width: .125rem !default;
 $form-feedback-icon-valid: str-replace(url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='" + $green + "' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'></polyline></svg>"), "#", "%23") !default;
 $form-feedback-icon-invalid: str-replace(url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='" + $red + "' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><line x1='18' y1='6' x2='6' y2='18'></line><line x1='6' y1='6' x2='18' y2='18'></line></svg>"), "#", "%23") !default;
 
-$caret-width: .32em !default;
+$caret-width: .36em !default;
 
 //Flags
 $generate-flags: true !default;

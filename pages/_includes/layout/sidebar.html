@@ -1,0 +1,23 @@
+{% assign breakpoint = include.breakpoint | default: 'lg' %}
+
+<aside class="navbar navbar-vertical{% if include.right %} navbar-right{% endif %} navbar-expand-{{ breakpoint }}{% unless include.transparent %} {% if include.dark %}navbar-dark{% else %}navbar-light{% endif %}{% if include.background %} bg-{{ include.background }}{% endif %}{% endunless %}{% if include.class %} {{ include.class }}{% endif %}"{% if include.background-color %} style="background: {{ include.background-color }}"{% endif %}>
+	<div class="container">
+		{% include layout/navbar-toggler.html target="navbar-menu" %}
+
+		{% unless include.hide-brand %}
+			{% include layout/navbar-logo.html dark=include.dark breakpoint=breakpoint %}
+		{% endunless %}
+
+		{% include layout/navbar-side.html class="d-lg-none" hide-username=include.hide-username person-id=include.person-id %}
+
+		<div class="collapse navbar-collapse" id="navbar-menu">
+			{% include layout/navbar-menu.html auto-open=true class="pt-lg-3" %}
+
+			{% comment %}
+			<div class="d-none d-{{ breakpoint }}-flex mt-auto">
+				Lorem ipsum dolor sit amet, consectetur adipisicing elit. Blanditiis, cupiditate doloribus dolorum impedit labore magni nisi nostrum rerum tempora! Accusantium asperiores cum, est eum quas quia similique sunt ullam vel!
+			</div>
+			{% endcomment %}
+		</div>
+	</div>
+</aside>

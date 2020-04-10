@@ -2,23 +2,15 @@
 layout: base
 ---
 
-{% assign page-header = page.page-header | default: layout.page-header %}
+{% if page.layout-sidebar %}
+	{% include layout/sidebar.html dark=page.layout-sidebar-dark right=page.layout-sidebar-right %}
+{% endif %}
 
 <div class="page">
-	{% include layout/navbar-primary.html %}
-	{% include layout/navbar-secondary.html %}
+	{% unless page.layout-hide-topbar %}
+		{% include layout/navbar.html condensed=page.layout-navbar-condensed dark=page.layout-navbar-dark hide-brand=page.layout-navbar-hide-brand hide-menu=page.layout-navbar-hide-menu class=page.layout-navbar-class %}
+	{% endunless %}
 
-	<div class="content">
-		<div class="container{% if page.container-size %}-{{ page.container-size }}{% endif %}{% if page.container-centered %} d-flex flex-column justify-content-center{% endif %}">
-			{% if page-header %}
-				{% include layout/page-header.html title=page-header description=page.page-header-description actions=page.page-header-actions pretitle=page.page-header-pretitle %}
-			{% endif %}
-
-			{{ content }}
-		</div>
-
-		{% include layout/footer.html %}
-	</div>
+	{% include layout/content.html %}
 </div>
 
-{% include ui/modal.html modal-id="customize" top=true %}
