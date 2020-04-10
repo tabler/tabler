@@ -1,5 +1,3 @@
-{% comment %}
-
 {% if site.data.libs.css %}
 <!-- Libs CSS -->
 {% for lib in site.data.libs.css %}
@@ -9,18 +7,12 @@
 {% endfor %}
 {% endif %}
 
-{% endcomment %}
-
 <!-- Tabler Core -->
 <link href="{{ site.base }}/{% if jekyll.environment == 'development' %}tmp-{% endif %}dist/css/tabler{% if jekyll.environment == 'production' %}.min{% endif %}.css{% if site.preview %}?{{ site.time | date: '%s' }}{% endif %}" rel="stylesheet"/>
-
-{% comment %}
 
 <!-- Tabler Plugins -->
 {% for plugin in site.tabler-plugins %}
 <link href="{{ site.base }}/{% if jekyll.environment == 'development' %}tmp-{% endif %}dist/css/{{ plugin }}{% if jekyll.environment == 'production' %}.min{% endif %}.css{% if site.preview %}?{{ site.time | date: '%s' }}{% endif %}" rel="stylesheet"/>
 {% endfor %}
-
-{% endcomment %}
 
 <link href="{{ site.base }}/{% if jekyll.environment == 'development' %}tmp-{% endif %}dist/css/demo{% if jekyll.environment == 'production' %}.min{% endif %}.css{% if site.preview %}?{{ site.time | date: '%s' }}{% endif %}" rel="stylesheet"/>
