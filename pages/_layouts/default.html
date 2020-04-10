@@ -2,8 +2,15 @@
 layout: base
 ---
 
+{% if page.layout-sidebar %}
+	{% include layout/sidebar.html dark=page.layout-sidebar-dark right=page.layout-sidebar-right %}
+{% endif %}
+
 <div class="page">
-	{% include layout/navbar.html secondary=true %}
+	{% unless page.layout-hide-topbar %}
+		{% include layout/navbar.html condensed=page.layout-navbar-condensed dark=page.layout-navbar-dark hide-brand=page.layout-navbar-hide-brand hide-menu=page.layout-navbar-hide-menu class=page.layout-navbar-class %}
+	{% endunless %}
+
 	{% include layout/content.html %}
 </div>
 

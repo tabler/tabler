@@ -1,5 +1,5 @@
 {% assign breakpoint = include.breakpoint | default: 'md' %}
-{% assign secondary = include.secondary | default: false %}
+{% assign condensed = include.condensed | default: false %}
 
 <header class="navbar navbar-expand-{{ breakpoint }}{% unless include.transparent %} {% if include.dark %}navbar-dark{% else %}navbar-light{% endif %}{% if include.background %} bg-{{ include.background }}{% endif %}{% endunless %}{% if include.sticky %} sticky-top{% endif %}{% if include.class %} {{ include.class }}{% endif %}"{% if include.background-color %} style="background: {{ include.background-color }}"{% endif %}>
 	<div class="container{% if page.layout-fluid %}-fluid{% else %}-xl{% endif %}">
@@ -11,7 +11,7 @@
 
 		{% include layout/navbar-side.html class="order-md-last" hide-username=include.hide-username person-id=include.person-id %}
 
-		{% unless secondary %}
+		{% if condensed %}
 		<div class="collapse navbar-collapse" id="navbar-menu">
 			{% if include.hide-search %}
 				{% include layout/navbar-menu.html sample=include.sample hide-icons=include.hide-icons %}
@@ -30,11 +30,11 @@
 				</div>
 			{% endif %}
 		</div>
-		{% endunless %}
+		{% endif %}
 	</div>
 </header>
 
-{% if secondary %}
+{% unless condensed %}
 <div class="navbar-expand-{{ breakpoint }}">
 	<div class="navbar collapse navbar-collapse {% if include.dark-secondary %}navbar-dark{% else %}navbar-light{% endif %}" id="navbar-menu">
 		<div class="container{% if page.layout-fluid %}-fluid{% else %}-xl{% endif %}">
@@ -43,4 +43,4 @@
 		</div>
 	</div>
 </div>
-{% endif %}
+{% endunless %}
