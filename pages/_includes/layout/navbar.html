@@ -36,10 +36,12 @@
 
 {% unless condensed %}
 <div class="navbar-expand-{{ breakpoint }}">
-	<div class="navbar collapse navbar-collapse {% if include.dark-secondary %}navbar-dark{% else %}navbar-light{% endif %}" id="navbar-menu">
-		<div class="container{% if page.layout-fluid %}-fluid{% else %}-xl{% endif %}">
-			{% include layout/navbar-menu.html sample=include.sample hide-icons=include.hide-icons long-titles=true %}
-			{% include layout/navbar-search.html breakpoint=breakpoint dark=include.dark-secondary class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last" %}
+	<div class="collapse navbar-collapse" id="navbar-menu">
+		<div class="navbar {% if include.dark-secondary %}navbar-dark{% else %}navbar-light{% endif %}">
+			<div class="container{% if page.layout-fluid %}-fluid{% else %}-xl{% endif %}">
+				{% include layout/navbar-menu.html sample=include.sample hide-icons=include.hide-icons long-titles=true %}
+				{% include layout/navbar-search.html breakpoint=breakpoint dark=include.dark-secondary class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last" %}
+			</div>
 		</div>
 	</div>
 </div>
