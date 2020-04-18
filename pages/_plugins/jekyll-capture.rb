@@ -17,21 +17,6 @@ module Jekyll
       end
     end
 
-    class CaptureScripts < Liquid::Tag
-      def initialize(tag_name, text, tokens)
-        super
-        @text = text.strip
-      end
-
-      def render(context)
-        unless $captured_libs.include? @text
-          $captured_libs.push(@text)
-        end
-
-        ''
-      end
-    end
-
     class CaptureOnce < Liquid::Block
       def initialize(tag_name, text, tokens)
         super
@@ -57,23 +42,19 @@ module Jekyll
   Jekyll::Hooks.register [:pages, :docs], :post_init do |page|
     $captured_global = {}
     $captured_once = {}
-    $captured_libs = []
   end
 
   Jekyll::Hooks.register [:pages, :docs], :post_render do |page|
     $captured_global = {}
     $captured_once = {}
-    $captured_libs = []
   end
 
   Jekyll::Hooks.register [:pages, :docs], :pre_render do |page, jekyll|
     jekyll.site['captured_global'] = $captured_global
     jekyll.site['captured_once'] = $captured_once
-    jekyll.site['captured_libs'] = $captured_libs
   end
 end
 
 Liquid::Template.register_tag('capture_global', Jekyll::Tags::CaptureGlobal)
 Liquid::Template.register_tag('capture_once', Jekyll::Tags::CaptureOnce)
-Liquid::Template.register_tag('append_lib', Jekyll::Tags::CaptureScripts)
 
