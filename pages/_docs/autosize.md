@@ -3,6 +3,7 @@ title: Autosize
 menu: docs.autosize
 description: The autosize element will automatically adjust the textarea height and make it easier for users to follow as they type.
 done: true
+libs: autosize
 ---
 
 

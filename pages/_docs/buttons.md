@@ -3,6 +3,7 @@ title: Buttons
 description: Use button styles that best suit your designs and encourage users to take the desired actions. You can customize the button's properties to improve the user experience of your website or system, changing the size, shape, color and many more.
 bootstrap-link: components/buttons/
 done: true
+libs: tabler-buttons
 ---
 
 
