@@ -6,6 +6,11 @@ page-header: Markdown
 
 # Who's that then?
 
+Payment providers  
+Enable and manage your store's  
+payment providers
+
+
 Well, she turned me into a newt. Burn her! We want a shrubbery!! Well, I got better. Listen. Strange women lying in ponds distributing swords is no basis for a system of government. Supreme executive power derives from a mandate from the masses, not from some farcical aquatic ceremony.
 
 Listen. __Strange women lying in ponds distributing swords is no basis for a system of government.__ *Supreme executive power derives from a mandate from the masses, not from some farcical aquatic ceremony.* The swallow may fly south with the sun, and the house martin or the plover may seek warmer climes in winter, yet these are not strangers to our land.
@@ -33,6 +38,26 @@ Well, I got better. Camelot! A newt? We want a shrubbery!! The Lady of the Lake,
 Shut up! …Are you suggesting that coconuts migrate? I'm not a witch. Well, we did do the nose.
 
 Well, how'd you become king, then? Shut up! Ni! Ni! Ni! Ni! Well, Mercia's a temperate zone! I don't want to talk to you no more, you empty-headed animal food trough water! I fart in your general direction! Your mother was a hamster and your father smelt of elderberries! Now leave before I am forced to taunt you a second time!
+
+```scss
+$colors: (
+  "blue": $blue,
+  "azure": $azure,
+  "indigo": $indigo,
+  "purple": $purple,
+  "pink": $pink,
+  "red": $red,
+  "orange": $orange,
+  "yellow": $yellow,
+  "lime": $lime,
+  "green": $green,
+  "teal": $teal,
+  "cyan": $cyan,
+  "gray": $gray-600,
+  "gray-dark": $gray-800,
+  "dark": $dark
+) !default;
+```
 
 You can't expect to wield supreme power just 'cause some watery tart threw a sword at you! You don't frighten us, English pig-dogs! Go and boil your bottoms, sons of a silly person! I blow my nose at you, so-called Ah-thoor Keeng, you and all your silly English K-n-n-n-n-n-n-n-niggits!
 
