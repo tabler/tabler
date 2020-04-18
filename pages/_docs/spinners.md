@@ -70,6 +70,6 @@ Use buttons with spinners to notify users that an action they have taken by clic
 {% include ui/button.html spinner=true text="Button" color="danger" %}
 {% include ui/button.html spinner=true text="Button" color="warning" %}
 {% include ui/button.html spinner=true color="success" %}
-{% include ui/button.html spinner=true color="secondary" %}
+{% include ui/button.html spinner=true color="white" %}
 {% endcapture %}
 {% include example.html code=code %}

@@ -11,16 +11,16 @@ bootstrap-link: components/tooltips/
 Use the default markup to create tooltips that will help users understand particular elements of your interface. You can decide where the text label is to be displayed - at the top, bottom or on either side of the element. 
 
 {% capture code %}
-<button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
+<button type="button" class="btn btn-white" data-toggle="tooltip" data-placement="top" title="Tooltip on top">
   Tooltip on top
 </button>
-<button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="right" title="Tooltip on right">
+<button type="button" class="btn btn-white" data-toggle="tooltip" data-placement="right" title="Tooltip on right">
   Tooltip on right
 </button>
-<button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="bottom" title="Tooltip on bottom">
+<button type="button" class="btn btn-white" data-toggle="tooltip" data-placement="bottom" title="Tooltip on bottom">
   Tooltip on bottom
 </button>
-<button type="button" class="btn btn-secondary" data-toggle="tooltip" data-placement="left" title="Tooltip on left">
+<button type="button" class="btn btn-white" data-toggle="tooltip" data-placement="left" title="Tooltip on left">
   Tooltip on left
 </button>
 {% endcapture %}
@@ -32,7 +32,7 @@ Use the default markup to create tooltips that will help users understand partic
 If the default tooltip is not enough, you can add the option to use HTML code in the text to highlight particular bits of information and make the content more attractive.
 
 {% capture code %}
-<button type="button" class="btn btn-secondary" data-toggle="tooltip" data-html="true" title="<em>Tooltip</em> <u>with</u> <b>HTML</b>">
+<button type="button" class="btn btn-white" data-toggle="tooltip" data-html="true" title="<em>Tooltip</em> <u>with</u> <b>HTML</b>">
   Tooltip with HTML
 </button>
 {% endcapture %}
