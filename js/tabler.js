@@ -1,60 +1,78 @@
 'use strict';
 
-import {CountUp} from "countup.js";
+import {CountUp} from 'countup.js';
 import noUiSlider from 'nouislider';
 
 (function () {
 	/**
-	 * Dropdown
+	 * Bootstrap4 dropdown plugin.
+	 * @link https://getbootstrap.com/docs/4.4/components/dropdowns/
 	 */
-	var dropdownElementList = [].slice.call(document.querySelectorAll('[data-toggle="dropdown"]'));
+	let dropdownElementList = [].slice.call(document.querySelectorAll('[data-toggle="dropdown"]'));
 	dropdownElementList.map(function (dropdownToggleEl) {
-		return new bootstrap.Dropdown(dropdownToggleEl, {})
+		let options = {};
+		return new bootstrap.Dropdown(dropdownToggleEl, options);
 	});
 
 	/**
-	 * Tooltip
+	 * Bootstrap4 tooltip plugin.
+	 * @link https://getbootstrap.com/docs/4.4/components/tooltips/
 	 */
-	var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="tooltip"]'));
+	let tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="tooltip"]'));
 	tooltipTriggerList.map(function (tooltipTriggerEl) {
-		return new bootstrap.Tooltip(tooltipTriggerEl, {})
+		let options = {
+			delay: {show: 50, hide: 50},
+			html: true,
+			placement: 'auto'
+		};
+		return new bootstrap.Tooltip(tooltipTriggerEl, options);
 	});
 
-	/*
-	Popover
+	/**
+	 * Bootstrap4 popover plugin.
+	 * @link https://getbootstrap.com/docs/4.4/components/popovers/
 	 */
-	var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="popover"]'));
+	let popoverTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="popover"]'));
 	popoverTriggerList.map(function (popoverTriggerEl) {
-		return new bootstrap.Popover(popoverTriggerEl, {
-			autoHide: true
-		})
+		let options = {
+			delay: {show: 50, hide: 50},
+			html: true,
+			placement: 'auto'
+		};
+		return new bootstrap.Popover(popoverTriggerEl, options);
 	});
 
-	/*
-	NoUiSlider
+  /**
+	* noUiSlider - range slider with full touch support.
+	* @link https://refreshless.com/nouislider/
 	*/
 	let sliderTriggerList = [].slice.call(document.querySelectorAll("[data-slider]"));
-	sliderTriggerList.map(function (sliderTriggerEl){
-		let dataSlider;
+	sliderTriggerList.map(function (sliderTriggerEl) {
+		let options = {};
 		if (sliderTriggerEl.getAttribute("data-slider")) {
-			dataSlider = JSON.parse(sliderTriggerEl.getAttribute("data-slider"));
+			options = JSON.parse(sliderTriggerEl.getAttribute("data-slider"));
 		}
-		let slider = noUiSlider.create(sliderTriggerEl,dataSlider);
-		if(dataSlider['js-name']){
-			window[dataSlider['js-name']] = slider;
+		let slider = noUiSlider.create(sliderTriggerEl, options);
+		if (options['js-name']) {
+			window[options['js-name']] = slider;
 		}
 	});
 
-	/*
-	CountUp
-	*/
+	/**
+	 * CountUp - animations that display numerical data in a more interesting way.
+	 * @link https://inorganik.github.io/countUp.js/
+	 */
 	let countupTriggerList = [].slice.call(document.querySelectorAll("[data-countup]"));
 	countupTriggerList.map(function (countupTriggerEl) {
-		let dataCountUp;
-		if(countupTriggerEl.getAttribute("data-countup") !== "") {
-			dataCountUp = JSON.parse(countupTriggerEl.getAttribute("data-countup"));
+		let options = {};
+		if (countupTriggerEl.getAttribute("data-countup")) {
+			options = JSON.parse(countupTriggerEl.getAttribute("data-countup"));
 		}
-
-		return (new CountUp(countupTriggerEl, parseFloat(countupTriggerEl.innerText), dataCountUp)).start();
+		let countUp = new CountUp(countupTriggerEl, +countupTriggerEl.innerText, options);
+		if (countUp.error) {
+		  console.error('CountUp: ' + countUp.error);
+		}
+		return countUp.start();
 	});
+
 })();
