@@ -1,8 +1,7 @@
 {% removeemptylines %}
 {% assign svg-file="svg/" | append: include.icon | append: ".svg" %}
-{% capture svg-icon %}
-{% include {{ svg-file }} %}
-{% endcapture %}
+
+{% assign svg-icon = site.data['icons-tabler'][include.icon] | default: '' %}
 
 {% assign replace-to = "icon" %}
 
