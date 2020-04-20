@@ -1,6 +1,6 @@
 {% assign data = site.data.charts[include.chart-id] %}
 {% assign id = include.id | default: include.chart-id %}
-{% assign height = include.height | default: 10 %}
+{% assign height = include.height | default: data.height | default: 10 %}
 {% assign class = include.class %}
 
 {% if include['size'] == 'sm' %}
@@ -16,7 +16,7 @@
 {% assign data = site.data.charts[data.extend] | concat_objects: site.data.charts[include.chart-id] %}
 {% endif %}
 
-<div id="chart-{{ id }}" {% if class %} class="{{ class }}" {% endif %}{% if data.debug and jekyll.environment == 'development' %} style="outline: 1px solid red" {% endif %}></div>
+<div id="chart-{{ id }}"{% if class %} class="{{ class }}"{% endif %}></div>
 
 {% capture script %}
 {% assign chart-type = data.type | default: 'bar' %}
@@ -118,7 +118,7 @@
 					top: -20,
 					right: 0,
 					left: -4,
-					bottom: -8
+					bottom: -4
 				},
 				{% endunless %}
 				{% if data.hide-grid %}
