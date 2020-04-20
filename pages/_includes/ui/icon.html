@@ -1,7 +1,18 @@
 {% removeemptylines %}
-{% assign svg-file="svg/" | append: include.icon | append: ".svg" %}
+{% if include.svg-icon %}
+	{% assign svg-icon = include.svg-icon %}
+{% else %}
+	{% assign icon-info = include.icon | split: '/' %}
+	{% if icon-info.size == 2 %}
+		{% assign icon-provider = 'icons-' | append: icon-info[0] %}
+		{% assign icon-name = icon-info[1] %}
+	{% else %}
+		{% assign icon-provider = 'icons-tabler' %}
+		{% assign icon-name = icon-info[0] %}
+	{% endif %}
 
-{% assign svg-icon = site.data['icons-tabler'][include.icon] | default: '' %}
+	{% assign svg-icon = site.data[icon-provider][icon-name] | default: '' %}
+{% endif %}
 
 {% assign replace-to = "icon" %}
 

@@ -6,11 +6,11 @@ const gulp = require('gulp'),
 	cp = require('child_process');
 
 const prepareSvgFile = function(svg) {
-	return svg.replace(/\n/g, '');
+	return svg.replace(/\n/g, '').replace(/>\s+</g, '><');
 };
 
-gulp.task('svg-icons', function (cb) {
-	const files = glob.sync("./node_modules/tabler-icons/icons/*.svg");
+const generateIconsYml = function(dir, filename) {
+	const files = glob.sync(dir);
 	let svgList = {};
 
 	files.forEach(function(file){
@@ -18,6 +18,11 @@ gulp.task('svg-icons', function (cb) {
 		svgList[basename] = prepareSvgFile(fs.readFileSync(file).toString());
 	});
 
-	fs.writeFileSync('./pages/_data/icons-tabler.yml', YAML.stringify(svgList));
+	fs.writeFileSync(filename, YAML.stringify(svgList));
+};
+
+gulp.task('svg-icons', function (cb) {
+	generateIconsYml("./node_modules/tabler-icons/icons/*.svg", './pages/_data/icons-tabler.yml');
+	generateIconsYml("./svg/brand/*.svg", './pages/_data/icons-brand.yml');
 	cb();
 });
