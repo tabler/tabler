@@ -1,0 +1,13 @@
+<script>
+	let sliderTriggerList = [].slice.call(document.querySelectorAll("[data-slider]"));
+	sliderTriggerList.map(function (sliderTriggerEl) {
+		let options = {};
+		if (sliderTriggerEl.getAttribute("data-slider")) {
+			options = JSON.parse(sliderTriggerEl.getAttribute("data-slider"));
+		}
+		let slider = noUiSlider.create(sliderTriggerEl, options);
+		if (options['js-name']) {
+			window[options['js-name']] = slider;
+		}
+	});
+</script>

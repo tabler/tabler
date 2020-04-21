@@ -21,3 +21,14 @@
 {{ script }}
 {% endfor %}
 {% endremoveemptylines %}
+
+{% for lib in site.data.libs.js-files %}
+{% if page.libs contains lib[0] or site.data.libs.global-libs contains lib[0] %}
+{% for file in lib[1] %}
+
+{% assign filename = 'js/' | append: file | append: '.html' %}
+{% include {{filename }} %}
+
+{% endfor %}
+{% endif %}
+{% endfor %}

@@ -1,6 +1,7 @@
 ---
 title: Range slider
 menu: docs.range-slider
+libs: nouislider
 ---
 
 All options and features can be found [**here**](https://refreshless.com/nouislider/).
