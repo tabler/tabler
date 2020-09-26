@@ -1,0 +1,10 @@
+.img-responsive {
+  background: no-repeat center/cover;
+  padding-top: percentage(3 / 4);
+}
+
+@each $key, $ratio in $embed-responsive-aspect-ratios {
+  .img-responsive-#{$key} {
+    padding-top: percentage(map-get($ratio, y) / map-get($ratio, x));
+  }
+}
