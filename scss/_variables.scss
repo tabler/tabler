@@ -1,10 +1,18 @@
-//ASSETS BASE
+// BASE CONFIG
+$enable-social-colors: true !default;
+$enable-ghost-buttons: true !default;
+$enable-extra-colors: true !default;
+$enable-gradients: false !default;
+$enable-navbar-vertical: true !default;
+$enable-dark-mode: true !default;
+$enable-negative-margins: false !default;
+// ASSETS BASE
 $assets-base: ".." !default;
 
 // FONTS
-$google-font: "Ubuntu" !default;
+$google-font: false !default;
 
-$font-family-sans-serif: $google-font, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Helvetica Neue, Arial, Noto Sans, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol, Noto Color Emoji !default;
+$font-family-sans-serif: $google-font, -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif !default;
 $font-family-monospace: Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
 $font-family-serif: "Georgia", "Times New Roman", times, serif !default;
 
@@ -15,7 +23,7 @@ $icon-fonts: () !default;
 $font-size-base: .875rem !default;
 $font-weight-normal: 400 !default;
 $font-weight-bold: 500 !default;
-$body-letter-spacing: -.01em !default;
+$body-letter-spacing: 0 !default;
 
 $line-height-base: (1.5rem/$font-size-base) !default;
 $line-height-sm: (1.25rem/$font-size-base) !default;
@@ -27,6 +35,7 @@ $min-contrast-ratio: 1.5 !default;
 
 $light: #f5f7fb !default;
 $dark: #354052 !default;
+$text: #212b36 !default;
 
 $light-black: rgba($dark, .24) !default;
 $light-mix: rgba(mix($light, $dark, 64%), .24) !default;
@@ -62,7 +71,7 @@ $black: #000000 !default;
 $white: #ffffff !default;
 
 $body-bg: $light !default;
-$body-color: $dark !default;
+$body-color: $text !default;
 
 $text-muted-opacity: .72 !default; //Perfect color for AA
 $text-muted: mix($body-color, #ffffff, $text-muted-opacity * 100%) !default;
@@ -185,6 +194,8 @@ $spacers: (
   5: $spacer * 3,
   6: $spacer * 4.5
 ) !default;
+
+$negative-spacers: if($enable-negative-margins, negativify-map($spacers), null) !default;
 
 $size-spacers: (
   auto: auto,
@@ -508,9 +519,3 @@ $payment-sizes: (
   "xl": 4rem
 ) !default;
 
-$enable-social-colors: true !default;
-$enable-ghost-buttons: true !default;
-$enable-extra-colors: true !default;
-$enable-gradients: false !default;
-$enable-navbar-vertical: true !default;
-$enable-dark-mode: true !default;

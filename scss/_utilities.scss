@@ -1,5 +1,15 @@
 //Utilities
 $utilities: (
+  "text-align": (
+    responsive: true,
+    property: text-align,
+    class: text,
+    values: (
+      left: start,
+      right: end,
+      center: center
+    )
+  ),
   "object": (
     property: object-fit,
     class: object,
@@ -96,13 +106,11 @@ $utilities: (
       0: 0,
     )
   ),
-
   "leading": (
     property: line-height,
     class: leading,
     values: $spacers
   ),
-
   "width": (
     property: width,
     class: w,
@@ -112,5 +120,43 @@ $utilities: (
     property: height,
     class: h,
     values: $size-values
+  ),
+
+  //Flow-relative values
+  "padding-right": (
+    responsive: true,
+    property: padding-inline-end,
+    class: pr,
+    values: $spacers
+  ),
+  "padding-left": (
+    responsive: true,
+    property: padding-inline-start,
+    class: pl,
+    values: $spacers
+  ),
+  "margin-right": (
+    responsive: true,
+    property: margin-inline-end,
+    class: mr,
+    values: map-merge($spacers, (auto: auto))
+  ),
+  "margin-left": (
+    responsive: true,
+    property: margin-inline-start,
+    class: ml,
+    values: map-merge($spacers, (auto: auto))
+  ),
+  "negative-margin-right": (
+    responsive: true,
+    property: margin-inline-end,
+    class: mr,
+    values: $negative-spacers
+  ),
+  "negative-margin-left": (
+    responsive: true,
+    property: margin-inline-start,
+    class: ml,
+    values: $negative-spacers
   ),
 ) !default;
