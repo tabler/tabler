@@ -28,7 +28,7 @@ Using Bootstrap’s typical naming structure, you can create a standard progress
 
 ## Progress without value
 
-Remove the displayed value by adding the `.sr-only` class.
+Remove the displayed value by adding the `.visually-hidden` class.
 
 {% capture code %}
 {% include ui/progress.html value=75 show-value=false %}
