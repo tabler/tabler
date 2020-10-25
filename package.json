@@ -6,6 +6,7 @@
   "scripts": {
     "start": "npm-run-all clean css-main js-compile-standalone --parallel browsersync watch",
     "start-incremental": "npm-run-all clean css-main js-compile-standalone --parallel browsersync watch-incremental",
+    "bundlewatch": "bundlewatch --config .bundlewatch.config.json",
     "build": "BUNDLE=true npm-run-all clean-build html-build css-build js-compile-bundle js-libs-bundle images-copy-build assets-copy-build",
     "build-demo": "BUNDLE=true npm-run-all clean-build html-build-demo css-build js-compile-bundle js-libs-bundle images-copy-build assets-copy-build",
     "bundlesize": "bundlesize",
@@ -78,7 +79,7 @@
   "devDependencies": {
     "@babel/preset-env": "^7.11.5",
     "browser-sync": "^2.26.12",
-    "bundlesize": "^0.18.0",
+    "bundlewatch": "^0.3.1",
     "child_process": "^1.0.2",
     "clean-css-cli": "^4.3.0",
     "cross-env": "^7.0.2",
@@ -134,39 +135,5 @@
   },
   "resolutions": {
     "**/**/node-gyp": "^5.0.0"
-  },
-  "bundlesize": [
-    {
-      "path": "./dist/css/tabler.css",
-      "maxSize": "55 kB"
-    },
-    {
-      "path": "./dist/css/tabler.min.css",
-      "maxSize": "45 kB"
-    },
-    {
-      "path": "./dist/css/tabler-flags.css",
-      "maxSize": "2 kB"
-    },
-    {
-      "path": "./dist/css/tabler-flags.min.css",
-      "maxSize": "2 kB"
-    },
-    {
-      "path": "./dist/css/tabler-payments.css",
-      "maxSize": "2 kB"
-    },
-    {
-      "path": "./dist/css/tabler-payments.min.css",
-      "maxSize": "2 kB"
-    },
-    {
-      "path": "./dist/js/tabler.js",
-      "maxSize": "2 kB"
-    },
-    {
-      "path": "./dist/js/tabler.min.js",
-      "maxSize": "1.5 kB"
-    }
-  ]
+  }
 }
