@@ -2,6 +2,7 @@ const gulp = require('gulp'),
 	clean = require('gulp-clean'),
 	sass = require('gulp-sass'),
 	postcss = require('gulp-postcss'),
+	header = require('gulp-header'),
 	cleanCSS = require('gulp-clean-css'),
 	rename = require('gulp-rename'),
 	browserSync = require('browser-sync'),
@@ -9,31 +10,53 @@ const gulp = require('gulp'),
 	fs = require('fs'),
 	path = require('path'),
 	YAML = require('yaml'),
-	tildeImporter = require('node-sass-tilde-importer'),
-	cp = require('child_process');
-
+	cp = require('child_process'),
+	pkg = require('./package.json'),
+	year = new Date().getFullYear();
 
 let BUILD = false,
 	distDir = './dist',
 	demoDir = './demo',
 	srcDir = './src';
 
-gulp.task('build-on', function (cb) {
+const getBanner = () => {
+	return `/*!
+* Tabler v${pkg.version} (${pkg.homepage})
+* @version ${pkg.version}
+* @link ${pkg.homepage}
+* Copyright 2018-${year} The Tabler Authors
+* Copyright 2018-${year} codecalm.net Paweł Kuna
+* Licensed under MIT (https://github.com/tabler/tabler/blob/master/LICENSE)
+*/
+`;
+};
+
+if (!Array.prototype.flat) {
+	Object.defineProperty(Array.prototype, 'flat', {
+		value: (depth = 1) =>  {
+			return this.reduce((flat, toFlatten)  => {
+				return flat.concat((Array.isArray(toFlatten) && (depth > 1)) ? toFlatten.flat(depth - 1) : toFlatten);
+			}, []);
+		}
+	});
+}
+
+gulp.task('build-on', (cb)  => {
 	BUILD = true;
 
 	cb();
 });
 
-gulp.task('svg-icons', function (cb) {
-	const prepareSvgFile = function (svg) {
+gulp.task('svg-icons',  (cb)  => {
+	const prepareSvgFile = (svg)  => {
 		return svg.replace(/\n/g, '').replace(/>\s+</g, '><');
 	};
 
-	const generateIconsYml = function (dir, filename) {
+	const generateIconsYml =  (dir, filename) =>  {
 		const files = glob.sync(dir);
 		let svgList = {};
 
-		files.forEach(function (file) {
+		files.forEach( (file) =>  {
 			const basename = path.basename(file, '.svg');
 			svgList[basename] = prepareSvgFile(fs.readFileSync(file).toString());
 		});
@@ -47,13 +70,13 @@ gulp.task('svg-icons', function (cb) {
 	cb();
 });
 
-gulp.task('unused-files', function(cb) {
+gulp.task('unused-files', (cb)  => {
 	let foundFiles = [];
 
-	glob.sync(`${srcDir}/pages/**/*.{html,md}`).forEach(function (file) {
+	glob.sync(`${srcDir}/pages/**/*.{html,md}`).forEach((file)  => {
 		let fileContent = fs.readFileSync(file);
 
-		fileContent.toString().replace(/\{% include(_cached)? ([a-z0-9\/_-]+\.html)/g, function (f, c, filename) {
+		fileContent.toString().replace(/\{% include(_cached)? ([a-z0-9\/_-]+\.html)/g, (f, c, filename) =>  {
 			filename = `${srcDir}/pages/_includes/${filename}`;
 
 			if (!foundFiles.includes(filename)) {
@@ -64,7 +87,7 @@ gulp.task('unused-files', function(cb) {
 
 	let includeFiles = glob.sync(`${srcDir}/pages/_includes/**/*.html`);
 
-	includeFiles.forEach(function (file) {
+	includeFiles.forEach((file) =>  {
 		if (!foundFiles.includes(file)) {
 			console.log('file', file);
 		}
@@ -76,7 +99,7 @@ gulp.task('unused-files', function(cb) {
 /**
  * Clean `dist` folder
  */
-gulp.task('clean', function () {
+gulp.task('clean',  () =>  {
 	return gulp
 		.src(`{${distDir}/*,${demoDir}/*}`, { read: false })
 		.pipe(clean());
@@ -85,7 +108,7 @@ gulp.task('clean', function () {
 /**
  * Compile sass to css
  */
-gulp.task('sass', function () {
+gulp.task('sass',  () =>  {
 	const g = gulp
 		.src(`${srcDir}/scss/*.scss`)
 		.pipe(sass({
@@ -108,7 +131,7 @@ gulp.task('sass', function () {
 
 	if (BUILD) {
 		g.pipe(cleanCSS())
-			.pipe(rename(function (path) {
+			.pipe(rename((path)  => {
 				path.basename += '.min';
 			}))
 			.pipe(gulp.dest(`${distDir}/css/`));
@@ -117,28 +140,31 @@ gulp.task('sass', function () {
 	return g;
 });
 
-gulp.task('js', function cb() {
+gulp.task('js', (cb) =>  {
 	cb();
 });
 
-gulp.task('watch-jekyll', function(cb) {
+gulp.task('watch-jekyll', (cb)  => {
 	browserSync.notify('Building Jekyll');
 	return cp.spawn('bundle', ['exec', 'jekyll', 'build', '--watch', '--destination', demoDir], { stdio: 'inherit' })
 		.on('close', cb);
 });
 
-gulp.task('build-jekyll', function(cb) {
-	return cp.spawn('bundle', ['exec', 'jekyll', 'build', '--destination', demoDir], { stdio: 'inherit' })
+gulp.task('build-jekyll', (cb)  => {
+	var env = Object.create( process.env );
+	env.JEKYLL_ENV = 'production';
+
+	return cp.spawn('bundle', ['exec', 'jekyll', 'build', '--destination', demoDir], { env: env, stdio: 'inherit' })
 		.on('close', cb);
 });
 
-gulp.task('watch', function(cb) {
+gulp.task('watch', (cb)  =>  {
 	gulp.watch('./src/scss/**/*.scss', gulp.series('sass'));
 	gulp.watch('./src/js/**/*.js', gulp.series('js'));
 	cb();
 });
 
-gulp.task('browser-sync', function() {
+gulp.task('browser-sync',()  => {
 	browserSync({
 		watch: true,
 		server: {
@@ -159,26 +185,66 @@ gulp.task('browser-sync', function() {
 	});
 });
 
-gulp.task('copy-images', function() {
+gulp.task('copy-libs', (cb) => {
+	const allLibs = require(`${srcDir}/pages/_data/libs`);
+
+	let files = [];
+
+	Object.keys(allLibs.js).forEach((lib)  => {
+		files.push(Array.isArray(allLibs.js[lib]) ? allLibs.js[lib] : [allLibs.js[lib]]);
+	});
+
+	Object.keys(allLibs.css).forEach((lib)  => {
+		files.push(Array.isArray(allLibs.css[lib]) ? allLibs.css[lib] : [allLibs.css[lib]]);
+	});
+
+	files = files.flat();
+
+	files.forEach( (file) =>  {
+		if(! file.match(/^https?/)) {
+			let dirname = path.dirname(file).replace('@', '');
+			let cmd = `mkdir -p "dist/libs/${dirname}" && cp -r node_modules/${file} ${distDir}/libs/${file.replace('@', '')}`;
+
+			cp.exec(cmd)
+		}
+	});
+
+	cb();
+});
+
+gulp.task('copy-images', () =>  {
 	return gulp
 		.src(`${srcDir}/img/**/*`)
 		.pipe(gulp.dest(`${distDir}/img`));
 });
 
-gulp.task('copy-static', function() {
+gulp.task('copy-static', () =>  {
 	return gulp
 		.src(`${srcDir}/static/**/*`)
 		.pipe(gulp.dest(`${demoDir}/static`));
 });
 
-gulp.task('copy-dist', function() {
+gulp.task('copy-dist', ()  => {
 	return gulp
 		.src(`${distDir}/**/*`)
 		.pipe(gulp.dest(`${demoDir}/dist/`));
+});
+
+gulp.task('add-banner', () => {
+	return gulp.src(`${distDir}/{css,js}/**/*.{js,css}`)
+		.pipe(header(getBanner()))
+		.pipe(gulp.dest(`${distDir}`))
+});
+
+gulp.task('update-version', (cb) => {
+	const oldVersion = 'v1.0.0-alpha.7',
+		newVersion = 'v1.0.0-alpha.8';
+
+	cb();
 });
 
 gulp.task('start', gulp.series('clean', 'sass', 'build-jekyll', /*'js',*/ gulp.parallel('watch-jekyll', 'watch', 'browser-sync')));
 
 gulp.task('prepare-demo', gulp.series('build-jekyll', 'copy-static', 'copy-dist'));
 
-gulp.task('build', gulp.series('build-on', 'clean', 'sass'/*, 'js'*/, 'copy-images', 'prepare-demo'));
+gulp.task('build', gulp.series('build-on', 'clean', 'sass'/*, 'js'*/, 'copy-images', 'copy-libs', 'add-banner', 'prepare-demo'));
