@@ -15,14 +15,27 @@ const gulp = require('gulp'),
 	cp = require('child_process'),
 	argv = require('minimist')(process.argv.slice(2)),
 	pkg = require('./package.json'),
-	year = new Date().getFullYear(),
+	year = new Date().getFullYear();
 
-	distDir = './dist',
-	demoDir = './demo',
+let BUILD = false,
+	distDir = './.tmp',
+	demoDir = './.tmp',
 	srcDir = './src';
 
-let BUILD = false;
+/**
+ * Enable BUILD mode and set directories
+ */
+gulp.task('build-on', (cb)  => {
+	BUILD = true;
+	distDir = './dist';
+	demoDir = './demo';
 
+	cb();
+});
+
+/**
+ * Return banner added to CSS and JS dist files
+ */
 const getBanner = () => {
 	return `/*!
 * Tabler v${pkg.version} (${pkg.homepage})
@@ -35,6 +48,9 @@ const getBanner = () => {
 `;
 };
 
+/**
+ * Array.flat polyfill
+ */
 if (!Array.prototype.flat) {
 	Object.defineProperty(Array.prototype, 'flat', {
 		value: function (depth = 1) {
@@ -45,12 +61,9 @@ if (!Array.prototype.flat) {
 	});
 }
 
-gulp.task('build-on', (cb)  => {
-	BUILD = true;
-
-	cb();
-});
-
+/**
+ * Import tabler-icons form npm and other svg files from `/svg/brand/` directory and generate Jekyll `.yml` data files
+ */
 gulp.task('svg-icons',  (cb)  => {
 	const prepareSvgFile = (svg)  => {
 		return svg.replace(/\n/g, '').replace(/>\s+</g, '><');
@@ -74,6 +87,9 @@ gulp.task('svg-icons',  (cb)  => {
 	cb();
 });
 
+/**
+ * Check unused Jekyll partials
+ */
 gulp.task('unused-files', (cb)  => {
 	let foundFiles = [];
 
@@ -101,7 +117,7 @@ gulp.task('unused-files', (cb)  => {
 });
 
 /**
- * Clean `dist` folder
+ * Clean `dist` folder before build
  */
 gulp.task('clean',  () =>  {
 	return gulp
@@ -110,7 +126,7 @@ gulp.task('clean',  () =>  {
 });
 
 /**
- * Compile sass to css
+ * Compile SASS to CSS and move it to dist directory
  */
 gulp.task('sass',  () =>  {
 	const g = gulp
@@ -144,16 +160,25 @@ gulp.task('sass',  () =>  {
 	return g;
 });
 
+/**
+ * Compile JS files to dist directory
+ */
 gulp.task('js', (cb) =>  {
 	cb();
 });
 
+/**
+ * Watch Jekyll files and build it to demo directory
+ */
 gulp.task('watch-jekyll', (cb)  => {
 	browserSync.notify('Building Jekyll');
 	return cp.spawn('bundle', ['exec', 'jekyll', 'build', '--watch', '--destination', demoDir], { stdio: 'inherit' })
 		.on('close', cb);
 });
 
+/**
+ * Build Jekyll files do demo directory
+ */
 gulp.task('build-jekyll', (cb)  => {
 	var env = Object.create( process.env );
 	env.JEKYLL_ENV = 'production';
@@ -162,12 +187,18 @@ gulp.task('build-jekyll', (cb)  => {
 		.on('close', cb);
 });
 
+/**
+ * Watch JS and SCSS files
+ */
 gulp.task('watch', (cb)  =>  {
 	gulp.watch('./src/scss/**/*.scss', gulp.series('sass'));
 	gulp.watch('./src/js/**/*.js', gulp.series('js'));
 	cb();
 });
 
+/**
+ * Create BrowserSync server
+ */
 gulp.task('browser-sync',()  => {
 	browserSync({
 		watch: true,
@@ -189,6 +220,9 @@ gulp.task('browser-sync',()  => {
 	});
 });
 
+/**
+ * Copy libs used in tabler from npm to dist directory
+ */
 gulp.task('copy-libs', (cb) => {
 	const allLibs = require(`${srcDir}/pages/_data/libs`);
 
@@ -216,36 +250,51 @@ gulp.task('copy-libs', (cb) => {
 	cb();
 });
 
+/**
+ * Copy static files (flags, payments images, etc) to dist directory
+ */
 gulp.task('copy-images', () =>  {
 	return gulp
 		.src(`${srcDir}/img/**/*`)
 		.pipe(gulp.dest(`${distDir}/img`));
 });
 
+/**
+ * Copy static files (demo images, etc) to demo directory
+ */
 gulp.task('copy-static', () =>  {
 	return gulp
 		.src(`${srcDir}/static/**/*`)
 		.pipe(gulp.dest(`${demoDir}/static`));
 });
 
+/**
+ * Copy Tabler dist files to demo directory
+ */
 gulp.task('copy-dist', ()  => {
 	return gulp
 		.src(`${distDir}/**/*`)
 		.pipe(gulp.dest(`${demoDir}/dist/`));
 });
 
+/**
+ * Add banner to build JS and CSS files
+ */
 gulp.task('add-banner', () => {
 	return gulp.src(`${distDir}/{css,js}/**/*.{js,css}`)
 		.pipe(header(getBanner()))
 		.pipe(gulp.dest(`${distDir}`))
 });
 
+/**
+ * Update version of Tabler in jekyll _config.yml and package.json
+ */
 gulp.task('update-version', () => {
 	const oldVersion = argv['latest-version'] || `${pkg.version}`,
 		newVersion = argv['new-version'] || `${pkg.version}`;
 
 	return gulp.src(['./_config.yml', './package.json'])
-			.pipe(replace('version: ' + oldVersion, `version: ${newVersion}`))
+			.pipe(replace(/version: .*/, `version: ${newVersion}`))
 			.pipe(replace('"version": "' + oldVersion + '"', `"version": "${newVersion}"`))
 			.pipe(replace('"version_short": "' + oldVersion + '"', `"version_short": "${newVersion}"`))
 			.pipe(gulp.dest('.'));
