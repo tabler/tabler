@@ -1,14 +1,13 @@
 {
   "name": "tabler",
   "version": "1.0.0-alpha.7",
-  "version_short": "1.0.0-alpha.7",
   "description": "Premium and Open Source dashboard template with responsive and high quality UI.",
   "scripts": {
     "start": "gulp start",
     "build": "gulp build",
     "svg-optimize": "svgo -f svg/brand --pretty",
     "unused-files": "node build/unused-files.js",
-    "release": "release-it"
+    "release": "release-it --no-npm.publish"
   },
   "repository": {
     "type": "git",
@@ -58,6 +57,7 @@
     "gulp-replace": "^1.0.0",
     "gulp-sass": "^4.1.0",
     "gulp-string-replace": "^1.1.2",
+    "minimist": "^1.2.5",
     "postcss": "^8.1.4",
     "release-it": "^14.2.0",
     "yaml": "^1.10.0"
@@ -88,13 +88,12 @@
   },
   "release-it": {
     "hooks": {
-      "after:bump": "gulp build --latest-version ${latestVersion} --new-version ${version} --verbose",
+      "after:bump": "gulp build --latest-version ${latestVersion} --new-version ${version}",
       "after:release": "echo Successfully released ${name} v${latestVersion} to ${repo.repository}."
     },
     "git": {
       "requireCleanWorkingDir": false,
       "addUntrackedFiles": true,
-      "changelog": "gulp changelog --silent --latest-tag ${latestTag}",
       "tagName": "v${version}"
     },
     "github": {

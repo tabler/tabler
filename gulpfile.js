@@ -13,13 +13,15 @@ const gulp = require('gulp'),
 	path = require('path'),
 	YAML = require('yaml'),
 	cp = require('child_process'),
+	argv = require('minimist')(process.argv.slice(2)),
 	pkg = require('./package.json'),
-	year = new Date().getFullYear();
+	year = new Date().getFullYear(),
 
-let BUILD = false,
 	distDir = './dist',
 	demoDir = './demo',
 	srcDir = './src';
+
+let BUILD = false;
 
 const getBanner = () => {
 	return `/*!
