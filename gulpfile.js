@@ -323,22 +323,7 @@ gulp.task('add-banner', () => {
 		.pipe(gulp.dest(`${distDir}`))
 });
 
-/**
- * Update version of Tabler in jekyll _config.yml and package.json
- */
-gulp.task('update-version', () => {
-	const oldVersion = argv['latest-version'] || `${pkg.version}`,
-		newVersion = argv['new-version'] || `${pkg.version}`;
+gulp.task('start', gulp.series('clean', 'sass', 'js', 'build-jekyll', gulp.parallel('watch-jekyll', 'watch', 'browser-sync')));
 
-	return gulp.src(['./_config.yml', './package.json'])
-		.pipe(replace(/version: .*/, `version: ${newVersion}`))
-		.pipe(replace('"version": "' + oldVersion + '"', `"version": "${newVersion}"`))
-		.pipe(replace('"version_short": "' + oldVersion + '"', `"version_short": "${newVersion}"`))
-		.pipe(gulp.dest('.'));
-});
-
-gulp.task('start', gulp.series('clean', 'sass', 'build-jekyll', /*'js',*/ gulp.parallel('watch-jekyll', 'watch', 'browser-sync')));
-
-gulp.task('prepare-demo', gulp.series('build-jekyll', 'copy-static', 'copy-dist'));
-
-gulp.task('build', gulp.series('build-on', 'update-version', 'clean', 'sass'/*, 'js'*/, 'copy-images', 'copy-libs', 'add-banner', 'prepare-demo'));
+gulp.task('build', gulp.series('build-on', 'clean', 'sass', 'js', 'copy-images', 'copy-libs', 'add-banner'));
+gulp.task('build-demo', gulp.series('build-on', 'build-jekyll', 'copy-static', 'copy-dist'));
