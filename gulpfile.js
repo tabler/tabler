@@ -1,10 +1,12 @@
 const gulp = require('gulp'),
+	debug = require('gulp-debug'),
 	clean = require('gulp-clean'),
 	sass = require('gulp-sass'),
 	postcss = require('gulp-postcss'),
 	header = require('gulp-header'),
 	cleanCSS = require('gulp-clean-css'),
 	rename = require('gulp-rename'),
+	replace = require('gulp-string-replace'),
 	browserSync = require('browser-sync'),
 	glob = require('glob'),
 	fs = require('fs'),
@@ -33,8 +35,8 @@ const getBanner = () => {
 
 if (!Array.prototype.flat) {
 	Object.defineProperty(Array.prototype, 'flat', {
-		value: (depth = 1) =>  {
-			return this.reduce((flat, toFlatten)  => {
+		value: function (depth = 1) {
+			return this.reduce(function (flat, toFlatten) {
 				return flat.concat((Array.isArray(toFlatten) && (depth > 1)) ? toFlatten.flat(depth - 1) : toFlatten);
 			}, []);
 		}
@@ -236,15 +238,19 @@ gulp.task('add-banner', () => {
 		.pipe(gulp.dest(`${distDir}`))
 });
 
-gulp.task('update-version', (cb) => {
-	const oldVersion = 'v1.0.0-alpha.7',
-		newVersion = 'v1.0.0-alpha.8';
+gulp.task('update-version', () => {
+	const oldVersion = '1.0.0-alpha.7',
+		newVersion = '1.0.0-beta.1';
 
-	cb();
+	return gulp.src(['./_config.yml', './package.json'])
+			.pipe(replace('version: ' + oldVersion, `version: ${newVersion}`))
+			.pipe(replace('"version": "' + oldVersion + '"', `"version": "${newVersion}"`))
+			.pipe(replace('"version_short": "' + oldVersion + '"', `"version_short": "${newVersion}"`))
+			.pipe(gulp.dest('.'));
 });
 
 gulp.task('start', gulp.series('clean', 'sass', 'build-jekyll', /*'js',*/ gulp.parallel('watch-jekyll', 'watch', 'browser-sync')));
 
 gulp.task('prepare-demo', gulp.series('build-jekyll', 'copy-static', 'copy-dist'));
 
-gulp.task('build', gulp.series('build-on', 'clean', 'sass'/*, 'js'*/, 'copy-images', 'copy-libs', 'add-banner', 'prepare-demo'));
+gulp.task('build', gulp.series('build-on', 'update-version', 'clean', 'sass'/*, 'js'*/, 'copy-images', 'copy-libs', 'add-banner', 'prepare-demo'));
