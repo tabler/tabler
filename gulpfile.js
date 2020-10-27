@@ -239,8 +239,8 @@ gulp.task('add-banner', () => {
 });
 
 gulp.task('update-version', () => {
-	const oldVersion = '1.0.0-alpha.7',
-		newVersion = '1.0.0-beta.1';
+	const oldVersion = argv['latest-version'] || `${pkg.version}`,
+		newVersion = argv['new-version'] || `${pkg.version}`;
 
 	return gulp.src(['./_config.yml', './package.json'])
 			.pipe(replace('version: ' + oldVersion, `version: ${newVersion}`))

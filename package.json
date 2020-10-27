@@ -7,7 +7,8 @@
     "start": "gulp start",
     "build": "gulp build",
     "svg-optimize": "svgo -f svg/brand --pretty",
-    "unused-files": "node build/unused-files.js"
+    "unused-files": "node build/unused-files.js",
+    "release": "release-it"
   },
   "repository": {
     "type": "git",
@@ -58,6 +59,7 @@
     "gulp-sass": "^4.1.0",
     "gulp-string-replace": "^1.1.2",
     "postcss": "^8.1.4",
+    "release-it": "^14.2.0",
     "yaml": "^1.10.0"
   },
   "dependencies": {
@@ -83,5 +85,20 @@
   },
   "resolutions": {
     "**/**/node-gyp": "^5.0.0"
+  },
+  "release-it": {
+    "hooks": {
+      "after:bump": "gulp build --latest-version ${latestVersion} --new-version ${version} --verbose",
+      "after:release": "echo Successfully released ${name} v${latestVersion} to ${repo.repository}."
+    },
+    "git": {
+      "requireCleanWorkingDir": false,
+      "addUntrackedFiles": true,
+      "changelog": "gulp changelog --silent --latest-tag ${latestTag}",
+      "tagName": "v${version}"
+    },
+    "github": {
+      "release": true
+    }
   }
 }
