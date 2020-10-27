@@ -29,3 +29,10 @@
 // 		return new bootstrap.Popover(popoverTriggerEl, options);
 // 	});
 // })();
+
+
+const sayHello = (element) => {
+	alert(element.index ?? -1);
+};
+
+export default sayHello;
