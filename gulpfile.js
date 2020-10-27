@@ -325,5 +325,6 @@ gulp.task('add-banner', () => {
 
 gulp.task('start', gulp.series('clean', 'sass', 'js', 'build-jekyll', gulp.parallel('watch-jekyll', 'watch', 'browser-sync')));
 
-gulp.task('build', gulp.series('build-on', 'clean', 'sass', 'js', 'copy-images', 'copy-libs', 'add-banner'));
+gulp.task('build-core', gulp.series('build-on', 'clean', 'sass', 'js', 'copy-images', 'copy-libs', 'add-banner'));
 gulp.task('build-demo', gulp.series('build-on', 'build-jekyll', 'copy-static', 'copy-dist'));
+gulp.task('build', gulp.series('build-core', 'build-demo'));
