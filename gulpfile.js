@@ -1,4 +1,5 @@
 const gulp = require('gulp'),
+	debug = require('gulp-debug'),
 	clean = require('gulp-clean'),
 	sass = require('gulp-sass'),
 	postcss = require('gulp-postcss'),
@@ -6,11 +7,13 @@ const gulp = require('gulp'),
 	cleanCSS = require('gulp-clean-css'),
 	minifyJS = require('gulp-minify'),
 	rename = require('gulp-rename'),
-	rollup = require('gulp-rollup'),
+	rollupStream = require('@rollup/stream'),
 	rollupBabel = require('rollup-plugin-babel'),
 	rollupCleanup = require('rollup-plugin-cleanup'),
-	rollupCommonJS = require('@rollup/plugin-commonjs'),
-	rollupNodeResolve = require('@rollup/plugin-node-resolve').nodeResolve,
+	{nodeResolve} = require('@rollup/plugin-node-resolve'),
+	rollupCommonjs = require('@rollup/plugin-commonjs'),
+	vinylSource = require('vinyl-source-stream'),
+	vinylBuffer = require('vinyl-buffer'),
 	browserSync = require('browser-sync'),
 	glob = require('glob'),
 	fs = require('fs'),
@@ -167,23 +170,27 @@ gulp.task('sass', () => {
  * Compile JS files to dist directory
  */
 gulp.task('js', () => {
-	const g = gulp.src(`${srcDir}/**/*.js`)
-		.pipe(rollup({
-			cache: true,
-			input: [`${srcDir}/js/tabler.js`, `${srcDir}/js/demo.js`],
-			output: {
-				format: 'umd',
-				name: '[name].js'
-			},
-			plugins: [
-				rollupNodeResolve(),
-				rollupCommonJS(),
-				rollupBabel({
-					exclude: 'node_modules/**'
-				}),
-				rollupCleanup()
-			]
-		}))
+	const g = rollupStream({
+		input: `${srcDir}/js/tabler.js`,
+		cache,
+		output: {
+			name: 'tabler.js',
+			format: 'umd',
+		},
+		plugins: [
+			rollupBabel({
+				exclude: 'node_modules/**'
+			}),
+			nodeResolve(),
+			rollupCommonjs(),
+			rollupCleanup()
+		]
+	})
+		.on('bundle', (bundle) => {
+			cache = bundle;
+		})
+		.pipe(vinylSource('tabler.js'))
+		.pipe(vinylBuffer())
 		.pipe(rename((path) => {
 			path.dirname = '';
 		}))
