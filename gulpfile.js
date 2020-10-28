@@ -169,6 +169,7 @@ gulp.task('sass', () => {
 /**
  * Compile JS files to dist directory
  */
+let cache;
 gulp.task('js', () => {
 	const g = rollupStream({
 		input: `${srcDir}/js/tabler.js`,
