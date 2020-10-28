@@ -1,4 +1,5 @@
-'use strict';
+//Vendor
+import 'bootstrap';
 
 // (function () {
 // 	/**

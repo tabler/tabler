@@ -1,5 +1,4 @@
 const gulp = require('gulp'),
-	debug = require('gulp-debug'),
 	clean = require('gulp-clean'),
 	sass = require('gulp-sass'),
 	postcss = require('gulp-postcss'),
@@ -10,6 +9,8 @@ const gulp = require('gulp'),
 	rollup = require('gulp-rollup'),
 	rollupBabel = require('rollup-plugin-babel'),
 	rollupCleanup = require('rollup-plugin-cleanup'),
+	rollupCommonJS = require('@rollup/plugin-commonjs'),
+	rollupNodeResolve = require('@rollup/plugin-node-resolve').nodeResolve,
 	browserSync = require('browser-sync'),
 	glob = require('glob'),
 	fs = require('fs'),
@@ -168,12 +169,15 @@ gulp.task('sass', () => {
 gulp.task('js', () => {
 	const g = gulp.src(`${srcDir}/**/*.js`)
 		.pipe(rollup({
+			cache: true,
 			input: [`${srcDir}/js/tabler.js`, `${srcDir}/js/demo.js`],
 			output: {
 				format: 'umd',
 				name: '[name].js'
 			},
 			plugins: [
+				rollupNodeResolve(),
+				rollupCommonJS(),
 				rollupBabel({
 					exclude: 'node_modules/**'
 				}),
