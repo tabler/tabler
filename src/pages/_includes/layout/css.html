@@ -12,12 +12,8 @@
 
 <link href="{{ site.base }}/dist/css/tabler{% if jekyll.environment == 'production' %}.min{% endif %}.css{% if site.preview %}?{{ site.time | date: '%s' }}{% endif %}" rel="stylesheet"/>
 
-{% if page.libs %}
-	{% for plugin in site.tabler-plugins %}
-		{% if page.libs contains plugin %}
-		<link href="{{ site.base }}/dist/css/{{ plugin }}{% if jekyll.environment == 'production' %}.min{% endif %}.css{% if site.preview %}?{{ site.time | date: '%s' }}{% endif %}" rel="stylesheet"/>
-		{% endif %}
-	{% endfor %}
-{% endif %}
+{% for plugin in site.tabler-plugins %}
+	<link href="{{ site.base }}/dist/css/{{ plugin }}{% if jekyll.environment == 'production' %}.min{% endif %}.css{% if site.preview %}?{{ site.time | date: '%s' }}{% endif %}" rel="stylesheet"/>
+{% endfor %}
 
 <link href="{{ site.base }}/dist/css/demo{% if jekyll.environment == 'production' %}.min{% endif %}.css{% if site.preview %}?{{ site.time | date: '%s' }}{% endif %}" rel="stylesheet"/>

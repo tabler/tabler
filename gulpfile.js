@@ -139,6 +139,7 @@ gulp.task('sass', () => {
 		.src(`${srcDir}/scss/*.scss`)
 		.pipe(sass({
 			style: 'expanded',
+			precision: 7,
 			importer: (url, prev, done) => {
 				if (url[0] === '~') {
 					url = path.resolve('node_modules', url.substr(1));

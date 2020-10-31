@@ -1,3 +1,5 @@
+$margin-spacers: map-merge($spacers, (auto: auto, null: $spacer));
+
 //Utilities
 $utilities: (
   "text-align": (
@@ -8,6 +10,15 @@ $utilities: (
       left: start,
       right: end,
       center: center
+    )
+  ),
+  "float": (
+    property: float,
+    responsive: true,
+    values: (
+      left: inline-start,
+      right: inline-end,
+      none: none
     )
   ),
   "object": (
@@ -59,6 +70,7 @@ $utilities: (
     values: (
       light: $font-weight-light,
       normal: $font-weight-normal,
+      medium: $font-weight-medium,
       bold: $font-weight-bold,
     )
   ),
@@ -117,7 +129,6 @@ $utilities: (
     class: h,
     values: $size-values
   ),
-
   //Flow-relative values
   "padding-right": (
     responsive: true,
@@ -131,17 +142,35 @@ $utilities: (
     class: pl,
     values: $spacers
   ),
+  "margin": (
+    responsive: true,
+    property: margin,
+    class: m,
+    values: $margin-spacers
+  ),
   "margin-right": (
     responsive: true,
     property: margin-inline-end,
     class: mr,
-    values: map-merge($spacers, (auto: auto))
+    values: $margin-spacers
   ),
   "margin-left": (
     responsive: true,
     property: margin-inline-start,
     class: ml,
-    values: map-merge($spacers, (auto: auto))
+    values: $margin-spacers
+  ),
+  "margin-top": (
+    responsive: true,
+    property: margin-top,
+    class: mt,
+    values: $margin-spacers
+  ),
+  "margin-bottom": (
+    responsive: true,
+    property: margin-bottom,
+    class: mb,
+    values: $margin-spacers
   ),
   "negative-margin-right": (
     responsive: true,
