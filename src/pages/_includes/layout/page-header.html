@@ -2,7 +2,7 @@
 <div class="page-header{% if include.class %} {{ include.class }}{% endif %}">
 
 	<div class="row align-items-center">
-		<div class="col-auto">
+		<div class="col">
 			{% if include.pretitle %}
 			<!-- Page pre-title -->
 			<div class="page-pretitle">
@@ -19,7 +19,10 @@
 		</div>
 
 		{% if include.actions %}
-			{% include layout/page-header-actions.html actions=include.actions %}
+			<!-- Page title actions -->
+			<div class="col-auto ml-auto d-print-none">
+				{% include layout/header-actions/{{ include.actions }}.html %}
+			</div>
 		{% endif %}
 	</div>
 </div>
