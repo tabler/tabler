@@ -35,7 +35,7 @@ Shut up! …Are you suggesting that coconuts migrate? I'm not a witch. Well, we 
 Well, how'd you become king, then? Shut up! Ni! Ni! Ni! Ni! Well, Mercia's a temperate zone! I don't want to talk to you no more, you empty-headed animal food trough water! I fart in your general direction! Your mother was a hamster and your father smelt of elderberries! Now leave before I am forced to taunt you a second time!
 
 ```scss
-$colors: (
+$extra-colors: (
   "blue": $blue,
   "azure": $azure,
   "indigo": $indigo,
