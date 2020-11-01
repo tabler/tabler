@@ -2,8 +2,7 @@
 title: Buttons
 description: Use button styles that best suit your designs and encourage users to take the desired actions. You can customize the button's properties to improve the user experience of your website or system, changing the size, shape, color and many more.
 bootstrap-link: components/buttons/
-done: true
-libs: tabler-buttons
+menu: docs.buttons
 ---
 
 
@@ -12,14 +11,23 @@ libs: tabler-buttons
 As one of the most common elements of UI design, buttons have a very important function of engaging users with your website or app and guiding them in their actions. Use the `.btn` classes with the `<button>` element and add additional styling that will make your buttons serve their purpose and draw users' attention. 
 
 {% capture code %}
-<a href="#" class="btn btn-primary" role="button">Link</a>
-<button class="btn btn-primary">Button</button>
-<input type="button" class="btn btn-primary" value="Input"/>
-<input type="submit" class="btn btn-primary" value="Submit"/>
-<input type="reset" class="btn btn-primary" value="Reset"/>
+<a href="#" class="btn" role="button">Link</a>
+<button class="btn">Button</button>
+<input type="button" class="btn" value="Input"/>
+<input type="submit" class="btn" value="Submit"/>
+<input type="reset" class="btn" value="Reset"/>
 {% endcapture  %}
 {% include example.html code=code wrapper="btn-list" centered=true %}
 
+
+## Default button 
+
+The standard button creates a white background and subtle hover animation. It's meant to look and behave as an interactive element of your page. 
+
+{% capture code %}
+<a href="#" class="btn" role="button">Link</a>
+{% endcapture  %}
+{% include example.html code=code wrapper="btn-list" centered=true %}
 
 ## Button variations
 

@@ -1,5 +1,5 @@
 {% assign el = 'span' %}
-<{{ el }} class="badge bg-{{ include.color | default: 'primary' }}{% if include.class %} {{ include.class }}{% endif %}">
+<{{ el }} class="badge{% if include.color %} bg-{{ include.color }}{% endif %}{% if include.class %} {{ include.class }}{% endif %}">
 {% if include.person-id %}
     {% assign person-id = include.person-id | minus: 1 %}
     {% assign person = site.data.people[person-id] %}
@@ -7,7 +7,7 @@
     {% unless src %}
         {% assign placeholder = person.full_name | first_letters %}
     {% endunless %}
-    <{{ el }} class="badge-avatar" style="background-image: url({{ site.base }}/{{ src }})">{% unless src %}{{ person.full_name | first_letters }}{% endunless %}</{{ el }}>
+    <{{ el }} class="avatar" style="background-image: url({{ site.base }}/{{ src }})">{% unless src %}{{ person.full_name | first_letters }}{% endunless %}</{{ el }}>
  {% endif %}
 {% if include.text %}
     {{ include.text }}

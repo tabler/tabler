@@ -1,5 +1,4 @@
 ---
-done: true
 title: Markdown
 page-header: Markdown
 ---
@@ -92,10 +91,5 @@ Bloody Peasant! What do you mean? It's only a model. Well, Mercia's a temperate 
 
 
 ##### Heading 5
-
-Bloody Peasant! What do you mean? It's only a model. Well, Mercia's a temperate zone!
-
-
-###### Heading 6
 
 Bloody Peasant! What do you mean? It's only a model. Well, Mercia's a temperate zone!

@@ -1,5 +1,6 @@
 //Vendor
-// import 'bootstrap';
+
+import './autosize';
 
 (function() {
 	/**

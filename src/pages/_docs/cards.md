@@ -3,7 +3,6 @@ title: Cards
 menu: docs.cards
 description: Cards are flexible user interface elements, which help organize content into meaningful sections and make it easier to display on different screen sizes. Cards contain various smaller components, such as images, text, links and buttons and may act as an entry to more detailed information, helping users scan the page quickly and find the most relevant content.
 bootstrap-link: components/card/
-done: true
 ---
 
 

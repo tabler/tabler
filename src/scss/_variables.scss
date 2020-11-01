@@ -70,11 +70,14 @@ $min-contrast-ratio: 1.5 !default;
 $text-muted-opacity: .68 !default;
 $text-muted-light-opacity: .4 !default;
 
-$border-opacity: .18 !default;
-$border-dark-opacity: .32 !default;
+$border-opacity: .16 !default;
+$border-dark-opacity: .24 !default;
 
 $light: #f5f7fb !default;
-$dark: #252f3f !default;
+$dark: #354052 !default;
+
+$body-bg: $light !default;
+$body-color: #252f3f !default;
 
 $color-contrast-dark: $dark !default;
 $color-contrast-light: $light !default;
@@ -106,14 +109,11 @@ $red: #e53e3e !default;
 $orange: #ed8936 !default;
 $yellow: #fab005 !default;
 $lime: #74b816 !default;
-$green: #48bb78 !default;
+$green: #40c057 !default;
 $teal: #2bcbba !default;
 $cyan: #17a2b8 !default;
 $black: #000000 !default;
 $white: #ffffff !default;
-
-$body-bg: $light !default;
-$body-color: $dark !default;
 
 $text-muted: mix($body-color, #fff, percentage($text-muted-opacity)) !default;
 $text-muted-light: mix($body-color, #fff, percentage($text-muted-light-opacity)) !default;
@@ -183,10 +183,11 @@ $border-radius-full: 50% !default;
 // Avatars
 $avatar-size: 2.5rem !default;
 $avatar-sizes: (
-  "sm": 1.25rem,
+  "xs": 1.25rem,
+  "sm": 2rem,
   "md": 3.75rem,
   "lg": 5rem,
-  "xl": 8rem
+  "xl": 7rem
 ) !default;
 $avatar-border-radius: $border-radius !default;
 $avatar-font-size: $h4-font-size;
@@ -194,7 +195,7 @@ $avatar-font-size: $h4-font-size;
 $link-decoration: none !default;
 
 //Typography
-$headings-font-weight: $font-weight-bold !default;
+$headings-font-weight: $font-weight-medium !default;
 
 $hr-opacity: .1 !default;
 $hr-margin-y: 2rem !default;
@@ -265,6 +266,8 @@ $breadcrumb-variants: (
 ) !default;
 
 //badges
+$badge-font-size: $code-font-size !default;
+$badge-line-height: $code-line-height !default;
 $badge-empty-size: .5rem !default;
 
 //buttons
@@ -308,8 +311,8 @@ $card-group-margin: 1.5rem !default;
 $card-shadow: rgba($dark, .04) 0 2px 4px 0 !default;
 $card-shadow-hover: rgba($dark, .16) 0 2px 16px 0 !default;
 
-$cards-grid-gap: 1.25rem !default;
-$cards-grid-gap-sm: .75rem !default;
+$cards-grid-gap: 1rem !default;
+$cards-grid-gap-sm: .5rem !default;
 $cards-grid-breakpoint: lg !default;
 
 //carousel
@@ -324,10 +327,12 @@ $btn-close-color: inherit !default;
 $btn-close-width: .75rem !default;
 
 //dropdown
-$dropdown-item-padding-x: 1rem !default;
+$dropdown-item-padding-x: .75rem !default;
+$dropdown-item-padding-y: .5rem !default;
 $dropdown-font-size: $font-size-base !default;
 $dropdown-divider-bg: $border-color !default;
-$dropdown-padding-y: .5rem !default;
+$dropdown-padding-y: .25rem !default;
+$dropdown-link-color: inherit !default;
 $dropdown-link-hover-bg: $hover-bg !default;
 $dropdown-link-hover-color: inherit !default;
 $dropdown-spacer: 1px !default;
@@ -486,7 +491,7 @@ $input-border-radius: $border-radius !default;
 $form-check-input-width: 1rem !default;
 $form-check-padding-left: $form-check-input-width + .5rem !default;
 $form-check-input-bg: $white !default;
-$form-check-input-border: 1px solid $border-color !default;
+$form-check-input-border: 1px solid $border-color-transparent !default;
 $form-check-input-border-radius: $border-radius !default;
 $form-check-input-checked-bg-size: 1rem !default;
 
@@ -496,7 +501,7 @@ $form-check-input-checked-bg-image: url("data:image/svg+xml,<svg xmlns='http://w
 $form-check-input-checked-bg-image-dark: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' width='16' height='16'><path fill='none' stroke='#{$dark}' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4 8.5l2.5 2.5l5.5 -5.5'/></svg>") !default;
 $form-check-radio-checked-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><circle r='3' fill='#{$form-check-input-checked-color}' cx='8' cy='8' /></svg>") !default;
 
-$form-check-input-checked-border-color: $border-color !default;
+$form-check-input-checked-border-color: $border-color-transparent !default;
 
 $form-select-indicator-color: opacify($border-color, .24) !default;
 
@@ -513,6 +518,9 @@ $form-range-thumb-focus-box-shadow-width: .125rem !default;
 
 $form-feedback-icon-valid: str-replace(url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='" + $green + "' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'></polyline></svg>"), "#", "%23") !default;
 $form-feedback-icon-invalid: str-replace(url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='" + $red + "' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><line x1='18' y1='6' x2='6' y2='18'></line><line x1='6' y1='6' x2='18' y2='18'></line></svg>"), "#", "%23") !default;
+
+$form-label-font-size: $h4-font-size !default;
+$form-label-font-weight: $font-weight-medium !default;
 
 $caret-width: .36em !default;
 

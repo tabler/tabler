@@ -41,25 +41,15 @@
 }
 
 .row-cards {
-  margin-left: -($cards-grid-gap / 2);
-  margin-right: -($cards-grid-gap / 2);
+  --#{$variable-prefix}gutter-x: #{$cards-grid-gap};
+  --#{$variable-prefix}gutter-y: #{$cards-grid-gap};
 
   .row-cards {
     flex: 1;
   }
 
-  >* {
-    padding-left: $cards-grid-gap / 2;
-    padding-right: $cards-grid-gap / 2;
-  }
-
   @include media-breakpoint-down($cards-grid-breakpoint) {
-    margin-left: -($cards-grid-gap-sm / 2);
-    margin-right: -($cards-grid-gap-sm / 2);
-
-    >* {
-      padding-left: $cards-grid-gap-sm / 2;
-      padding-right: $cards-grid-gap-sm / 2;
-    }
+    --#{$variable-prefix}gutter-x: #{$cards-grid-gap-sm} / 2;
+    --#{$variable-prefix}gutter-y: #{$cards-grid-gap-sm} / 2;
   }
 }

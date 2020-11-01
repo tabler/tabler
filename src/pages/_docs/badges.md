@@ -66,27 +66,29 @@ Leave the HTML element empty if you want to create badges without any text. Empt
 {% include example.html code=code centered=true %}
 
 
-### Badge add-ons
-
-Add the `.badge-addon` class to create an add-on that will customize your badge and make it more noticeable. You can use any color variants and combine them as you see fit.
-
-{% capture code %}
-{% include ui/badge.html text="task" color="green" addon="finished" %}
-{% include ui/badge.html text="bundle" color="purple" addon="passing" %}
-{% include ui/badge.html text="CSS gzip size" color="red-lt" addon="20.9kB" addon-color="red" %}
-{% endcapture %}
-{% include example.html code=code %}
-
-
-### Badge avatars
+## Badge avatars
 
 Create the `.badge-avatar` class to add an avatar that will make a badge more personalized.
 
 {% capture code %}
-{% include ui/badge.html person-id=1 color="blue" %}
-{% include ui/badge.html person-id=2 color="blue" %}
-{% include ui/badge.html person-id=3 color="blue" %}
-{% include ui/badge.html person-id=4 color="blue" %}
-{% include ui/badge.html person-id=5 color="blue" %}
+{% include ui/badge.html person-id=1 %}
+{% include ui/badge.html person-id=2 %}
+{% include ui/badge.html person-id=3 %}
+{% include ui/badge.html person-id=4 %}
+{% include ui/badge.html person-id=5 %}
 {% endcapture %}
 {% include example.html code=code %}
+
+## Button with badge
+
+Badges can be used as part of links or buttons to provide a counter.
+
+{% capture code %}
+<button type="button" class="btn">
+  Notifications <span class="badge bg-red ml-2">4</span>
+</button>
+<button type="button" class="btn">
+  Notifications <span class="badge bg-green ml-2">4</span>
+</button>
+{% endcapture %}
+{% include example.html code=code wrapper="btn-list" %}

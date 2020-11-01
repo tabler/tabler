@@ -2,7 +2,6 @@
 title: Divider
 description: Dividers help organize content and make the interface layout clear and uncluttered. Greater clarity adds up to better user experience and enhanced interaction with a website or app.  
 bootstrap-link: components/dropdowns/#dividers
-done: true
 ---
 
 

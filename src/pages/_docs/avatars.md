@@ -79,6 +79,7 @@ Using Bootstrap’s typical naming structure, you can create a standard avatar o
 {% include ui/avatar.html person-id=8 size="md" %}
 {% include ui/avatar.html person-id=7 %}
 {% include ui/avatar.html person-id=6 size="sm" %}
+{% include ui/avatar.html person-id=5 size="xs" %}
 {% endcapture %}
 {% include example.html code=code centered=true %}
 
