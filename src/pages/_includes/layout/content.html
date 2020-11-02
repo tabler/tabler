@@ -3,7 +3,12 @@
 <div class="content">
 	<div class="container{% if page.layout-fluid %}-fluid{% else %}-xl{% endif %}{% if page.container-centered %} d-flex flex-column justify-content-center{% endif %}">
 		{% if page-header %}
-		{% include layout/page-header.html title=page-header description=page.page-header-description actions=page.page-header-actions pretitle=page.page-header-pretitle class=page.page-header-class%}
+			{% assign description = page.page-header-description | default: layout.page-header-description %}
+			{% assign actions = page.page-header-actions | default: layout.page-header-actions %}
+			{% assign pretitle = page.page-header-pretitle | default: layout.page-header-pretitle %}
+			{% assign class = page.page-header-class | default: layout.page-header-class %}
+
+			{% include layout/page-header.html title=page-header description=description actions=actions pretitle=pretitle class=class %}
 		{% endif %}
 
 		{{ content }}

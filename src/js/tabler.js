@@ -1,6 +1,7 @@
 //Vendor
 
 import './autosize';
+import './input-mask';
 
 (function() {
 	/**

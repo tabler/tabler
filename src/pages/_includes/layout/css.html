@@ -1,8 +1,9 @@
 <!-- CSS files -->
+{% assign libs = page.libs | default: layout.libs %}
 
-{% if page.libs %}
+{% if libs %}
 	{% for lib in site.data.libs.css %}
-		{% if page.libs contains lib[0] %}
+		{% if libs contains lib[0] %}
 			{% for file in lib[1] %}
 				<link href="{% if file contains 'http://' or file contains 'https://' %}{{ file }}{% else %}{{ site.base }}/{% if jekyll.environment == 'production' %}dist/libs{% else %}node_modules{% endif %}/{% if jekyll.environment == 'production' %}{{ file | replace: '@', '' }}{% else %}{{ file }}{% endif %}{% if site.preview %}?{{ site.time | date: '%s' }}{% endif %}{% endif %}" rel="stylesheet"/>
 			{% endfor %}
