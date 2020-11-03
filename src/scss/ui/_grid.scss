@@ -2,10 +2,20 @@
   border-left: 1px solid $border-color;
 }
 
+%container-common {
+  @include media-breakpoint-down($cards-grid-breakpoint) {
+    --bs-gutter-x: #{$grid-gutter-width};
+  }
+}
+
+.container,
+.container-fluid {
+  @extend %container-common;
+}
+
 .container {
   @each $variation, $size in $container-variations {
     &-#{$variation} {
-      @include make-container();
       max-width: $size;
     }
   }
@@ -49,7 +59,7 @@
   }
 
   @include media-breakpoint-down($cards-grid-breakpoint) {
-    --#{$variable-prefix}gutter-x: #{$cards-grid-gap-sm};
-    --#{$variable-prefix}gutter-y: #{$cards-grid-gap-sm};
+    --#{$variable-prefix}gutter-x: #{$cards-grid-gap / 2};
+    --#{$variable-prefix}gutter-y: #{$cards-grid-gap / 2};
   }
 }
