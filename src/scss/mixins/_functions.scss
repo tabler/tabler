@@ -2,8 +2,12 @@
   @return red($hex), green($hex), blue($hex);
 }
 
-@function theme-color-lighter($color) {
-  @return tint-color($color, 90%);
+@function theme-color-lighter($color, $transparent: false) {
+  @if ($transparent) {
+    @return rgba($color, .1);
+  } @else {
+    @return tint-color($color, 90%);
+  }
 }
 
 @function theme-color-darker($color) {
