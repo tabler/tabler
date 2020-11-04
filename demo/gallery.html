@@ -1,7 +1,7 @@
 <!doctype html>
 <!--
 * Tabler - Premium and Open Source dashboard template with responsive and high quality UI.
-* @version 1.0.0-alpha.8
+* @version 1.0.0-alpha.9
 * @link https://tabler.io
 * Copyright 2018-2020 The Tabler Authors
 * Copyright 2018-2020 codecalm.net Paweł Kuna
@@ -26,6 +26,8 @@
     <link rel="shortcut icon" href="./favicon.ico" type="image/x-icon"/>
     <!-- CSS files -->
     <link href="./dist/css/tabler.min.css" rel="stylesheet"/>
+    <link href="./dist/css/tabler-flags.min.css" rel="stylesheet"/>
+    <link href="./dist/css/tabler-payments.min.css" rel="stylesheet"/>
     <link href="./dist/css/demo.min.css" rel="stylesheet"/>
     <style>
       body {
@@ -41,7 +43,7 @@
             <span class="navbar-toggler-icon"></span>
           </button>
           <a href="." class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pr-0 pr-md-3">
-            <img src="./static/logo.svg" alt="Tabler" class="navbar-brand-image">
+            <img src="./static/logo.svg" width="110" height="32" alt="Tabler" class="navbar-brand-image">
           </a>
           <div class="navbar-nav flex-row order-md-last">
             <div class="nav-item dropdown d-none d-md-flex mr-3">
@@ -59,24 +61,19 @@
             </div>
             <div class="nav-item dropdown">
               <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-toggle="dropdown">
-                <span class="avatar" style="background-image: url(./static/avatars/000m.jpg)"></span>
+                <span class="avatar avatar-sm" style="background-image: url(./static/avatars/000m.jpg)"></span>
                 <div class="d-none d-xl-block pl-2">
                   <div>Paweł Kuna</div>
                   <div class="mt-1 small text-muted">UI Designer</div>
                 </div>
               </a>
-              <div class="dropdown-menu dropdown-menu-right">
-                <a class="dropdown-item" href="#">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" /><circle cx="12" cy="12" r="3" /></svg>
-                  Action
-                </a>
-                <a class="dropdown-item" href="#">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 7h-3a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-3" /><path d="M9 15h3l8.5 -8.5a1.5 1.5 0 0 0 -3 -3l-8.5 8.5v3" /><line x1="16" y1="5" x2="19" y2="8" /></svg>
-                  Another action
-                </a>
+              <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                <a href="#" class="dropdown-item">Set status</a>
+                <a href="#" class="dropdown-item">Profile & account</a>
+                <a href="#" class="dropdown-item">Feedback</a>
                 <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#"><svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
-                  Separated link</a>
+                <a href="#" class="dropdown-item">Settings</a>
+                <a href="#" class="dropdown-item">Logout</a>
               </div>
             </div>
           </div>
@@ -188,6 +185,11 @@
                     <li >
                       <a class="dropdown-item" href="./lists.html" >
                         Lists
+                      </a>
+                    </li>
+                    <li >
+                      <a class="dropdown-item" href="./docs-index.html" >
+                        Docs index
                       </a>
                     </li>
                     <li class="dropright">
@@ -335,6 +337,11 @@
                     <li >
                       <a class="dropdown-item" href="./layout-dark.html" >
                         Dark mode
+                      </a>
+                    </li>
+                    <li >
+                      <a class="dropdown-item" href="./layout-rtl.html" >
+                        RTL mode
                       </a>
                     </li>
                     <li >
@@ -540,13 +547,11 @@
           <!-- Page title -->
           <div class="page-header">
             <div class="row align-items-center">
-              <div class="col-auto">
+              <div class="col">
                 <h2 class="page-title">
                   Gallery
                 </h2>
-              </div>
-              <div class="col-auto">
-                <div class="text-muted text-h5 mt-2">1-12 of 241 photos</div>
+                <div class="text-muted mt-1">1-12 of 241 photos</div>
               </div>
               <!-- Page title actions -->
               <div class="col-auto ml-auto d-print-none">
@@ -574,7 +579,7 @@
                 <div class="card-body">
                   <div class="d-flex align-items-center">
                     <span class="avatar mr-3 rounded" style="background-image: url(./static/avatars/000m.jpg)"></span>
-                    <div class="lh-sm">
+                    <div>
                       <div>Paweł Kuna</div>
                       <div class="text-muted">3 days ago</div>
                     </div>
@@ -597,19 +602,19 @@
                 <a href="#" class="d-block"><img src="./static/photos/3d2998219313cd37.jpg" class="card-img-top"></a>
                 <div class="card-body">
                   <div class="d-flex align-items-center">
-                    <span class="avatar mr-3 rounded" style="background-image: url(./static/avatars/002m.jpg)"></span>
-                    <div class="lh-sm">
-                      <div>Mallory Hulme</div>
-                      <div class="text-muted">yesterday</div>
+                    <span class="avatar mr-3 rounded">JL</span>
+                    <div>
+                      <div>Jeffie Lewzey</div>
+                      <div class="text-muted">5 days ago</div>
                     </div>
                     <div class="ml-auto">
                       <a href="#" class="text-muted">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="2" /><path d="M22 12c-2.667 4.667 -6 7 -10 7s-7.333 -2.333 -10 -7c2.667 -4.667 6 -7 10 -7s7.333 2.333 10 7" /></svg>
-                        369
+                        335
                       </a>
                       <a href="#" class="ml-3 text-muted">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 13.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
-                        32
+                        80
                       </a>
                     </div>
                   </div>
@@ -621,19 +626,19 @@
                 <a href="#" class="d-block"><img src="./static/photos/6ab3200b14549f8a.jpg" class="card-img-top"></a>
                 <div class="card-body">
                   <div class="d-flex align-items-center">
-                    <span class="avatar mr-3 rounded" style="background-image: url(./static/avatars/000f.jpg)"></span>
-                    <div class="lh-sm">
-                      <div>Emmy Levet</div>
-                      <div class="text-muted">5 days ago</div>
+                    <span class="avatar mr-3 rounded" style="background-image: url(./static/avatars/002m.jpg)"></span>
+                    <div>
+                      <div>Mallory Hulme</div>
+                      <div class="text-muted">yesterday</div>
                     </div>
                     <div class="ml-auto">
                       <a href="#" class="text-muted">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="2" /><path d="M22 12c-2.667 4.667 -6 7 -10 7s-7.333 -2.333 -10 -7c2.667 -4.667 6 -7 10 -7s7.333 2.333 10 7" /></svg>
-                        481
+                        369
                       </a>
                       <a href="#" class="ml-3 text-muted">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 13.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
-                        57
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-filled text-red" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 13.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
+                        32
                       </a>
                     </div>
                   </div>
@@ -645,19 +650,19 @@
                 <a href="#" class="d-block"><img src="./static/photos/6d35d9a2bd6c63c2.jpg" class="card-img-top"></a>
                 <div class="card-body">
                   <div class="d-flex align-items-center">
-                    <span class="avatar mr-3 rounded">EP</span>
-                    <div class="lh-sm">
-                      <div>Egan Poetz</div>
-                      <div class="text-muted">6 days ago</div>
+                    <span class="avatar mr-3 rounded" style="background-image: url(./static/avatars/003m.jpg)"></span>
+                    <div>
+                      <div>Dunn Slane</div>
+                      <div class="text-muted">1 week and 3 days ago</div>
                     </div>
                     <div class="ml-auto">
                       <a href="#" class="text-muted">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="2" /><path d="M22 12c-2.667 4.667 -6 7 -10 7s-7.333 -2.333 -10 -7c2.667 -4.667 6 -7 10 -7s7.333 2.333 10 7" /></svg>
-                        332
+                        479
                       </a>
                       <a href="#" class="ml-3 text-muted">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 13.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
-                        51
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-filled text-red" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 13.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
+                        71
                       </a>
                     </div>
                   </div>
@@ -669,8 +674,152 @@
                 <a href="#" class="d-block"><img src="./static/photos/8a26974ee6444acd.jpg" class="card-img-top"></a>
                 <div class="card-body">
                   <div class="d-flex align-items-center">
+                    <span class="avatar mr-3 rounded" style="background-image: url(./static/avatars/000f.jpg)"></span>
+                    <div>
+                      <div>Emmy Levet</div>
+                      <div class="text-muted">5 days ago</div>
+                    </div>
+                    <div class="ml-auto">
+                      <a href="#" class="text-muted">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="2" /><path d="M22 12c-2.667 4.667 -6 7 -10 7s-7.333 -2.333 -10 -7c2.667 -4.667 6 -7 10 -7s7.333 2.333 10 7" /></svg>
+                        481
+                      </a>
+                      <a href="#" class="ml-3 text-muted">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-filled text-red" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 13.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
+                        57
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-lg-4">
+              <div class="card card-sm">
+                <a href="#" class="d-block"><img src="./static/photos/8c13ad59f739558c.jpg" class="card-img-top"></a>
+                <div class="card-body">
+                  <div class="d-flex align-items-center">
+                    <span class="avatar mr-3 rounded" style="background-image: url(./static/avatars/001f.jpg)"></span>
+                    <div>
+                      <div>Maryjo Lebarree</div>
+                      <div class="text-muted">3 days ago</div>
+                    </div>
+                    <div class="ml-auto">
+                      <a href="#" class="text-muted">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="2" /><path d="M22 12c-2.667 4.667 -6 7 -10 7s-7.333 -2.333 -10 -7c2.667 -4.667 6 -7 10 -7s7.333 2.333 10 7" /></svg>
+                        405
+                      </a>
+                      <a href="#" class="ml-3 text-muted">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-filled text-red" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 13.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
+                        23
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-lg-4">
+              <div class="card card-sm">
+                <a href="#" class="d-block"><img src="./static/photos/8fdeb4785d2b82ef.jpg" class="card-img-top"></a>
+                <div class="card-body">
+                  <div class="d-flex align-items-center">
+                    <span class="avatar mr-3 rounded">EP</span>
+                    <div>
+                      <div>Egan Poetz</div>
+                      <div class="text-muted">6 days ago</div>
+                    </div>
+                    <div class="ml-auto">
+                      <a href="#" class="text-muted">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="2" /><path d="M22 12c-2.667 4.667 -6 7 -10 7s-7.333 -2.333 -10 -7c2.667 -4.667 6 -7 10 -7s7.333 2.333 10 7" /></svg>
+                        332
+                      </a>
+                      <a href="#" class="ml-3 text-muted">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-filled text-red" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 13.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
+                        51
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-lg-4">
+              <div class="card card-sm">
+                <a href="#" class="d-block"><img src="./static/photos/9f36332564ca271d.jpg" class="card-img-top"></a>
+                <div class="card-body">
+                  <div class="d-flex align-items-center">
+                    <span class="avatar mr-3 rounded" style="background-image: url(./static/avatars/002f.jpg)"></span>
+                    <div>
+                      <div>Kellie Skingley</div>
+                      <div class="text-muted">1 week and 2 days ago</div>
+                    </div>
+                    <div class="ml-auto">
+                      <a href="#" class="text-muted">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="2" /><path d="M22 12c-2.667 4.667 -6 7 -10 7s-7.333 -2.333 -10 -7c2.667 -4.667 6 -7 10 -7s7.333 2.333 10 7" /></svg>
+                        369
+                      </a>
+                      <a href="#" class="ml-3 text-muted">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-filled text-red" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 13.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
+                        70
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-lg-4">
+              <div class="card card-sm">
+                <a href="#" class="d-block"><img src="./static/photos/35b88fc04a518c1b.jpg" class="card-img-top"></a>
+                <div class="card-body">
+                  <div class="d-flex align-items-center">
+                    <span class="avatar mr-3 rounded" style="background-image: url(./static/avatars/003f.jpg)"></span>
+                    <div>
+                      <div>Christabel Charlwood</div>
+                      <div class="text-muted">today</div>
+                    </div>
+                    <div class="ml-auto">
+                      <a href="#" class="text-muted">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="2" /><path d="M22 12c-2.667 4.667 -6 7 -10 7s-7.333 -2.333 -10 -7c2.667 -4.667 6 -7 10 -7s7.333 2.333 10 7" /></svg>
+                        555
+                      </a>
+                      <a href="#" class="ml-3 text-muted">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 13.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
+                        73
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-lg-4">
+              <div class="card card-sm">
+                <a href="#" class="d-block"><img src="./static/photos/36e273986ed577b8.jpg" class="card-img-top"></a>
+                <div class="card-body">
+                  <div class="d-flex align-items-center">
+                    <span class="avatar mr-3 rounded">HS</span>
+                    <div>
+                      <div>Haskel Shelper</div>
+                      <div class="text-muted">2 days ago</div>
+                    </div>
+                    <div class="ml-auto">
+                      <a href="#" class="text-muted">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="2" /><path d="M22 12c-2.667 4.667 -6 7 -10 7s-7.333 -2.333 -10 -7c2.667 -4.667 6 -7 10 -7s7.333 2.333 10 7" /></svg>
+                        383
+                      </a>
+                      <a href="#" class="ml-3 text-muted">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-filled text-red" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 13.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
+                        37
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-sm-6 col-lg-4">
+              <div class="card card-sm">
+                <a href="#" class="d-block"><img src="./static/photos/75b555b99d5b38c4.jpg" class="card-img-top"></a>
+                <div class="card-body">
+                  <div class="d-flex align-items-center">
                     <span class="avatar mr-3 rounded" style="background-image: url(./static/avatars/006m.jpg)"></span>
-                    <div class="lh-sm">
+                    <div>
                       <div>Lorry Mion</div>
                       <div class="text-muted">5 days ago</div>
                     </div>
@@ -690,11 +839,11 @@
             </div>
             <div class="col-sm-6 col-lg-4">
               <div class="card card-sm">
-                <a href="#" class="d-block"><img src="./static/photos/8c13ad59f739558c.jpg" class="card-img-top"></a>
+                <a href="#" class="d-block"><img src="./static/photos/546fd146c83f428c.jpg" class="card-img-top"></a>
                 <div class="card-body">
                   <div class="d-flex align-items-center">
                     <span class="avatar mr-3 rounded" style="background-image: url(./static/avatars/004f.jpg)"></span>
-                    <div class="lh-sm">
+                    <div>
                       <div>Leesa Beaty</div>
                       <div class="text-muted">6 days ago</div>
                     </div>
@@ -706,150 +855,6 @@
                       <a href="#" class="ml-3 text-muted">
                         <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 13.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
                         64
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-6 col-lg-4">
-              <div class="card card-sm">
-                <a href="#" class="d-block"><img src="./static/photos/8fdeb4785d2b82ef.jpg" class="card-img-top"></a>
-                <div class="card-body">
-                  <div class="d-flex align-items-center">
-                    <span class="avatar mr-3 rounded">SA</span>
-                    <div class="lh-sm">
-                      <div>Sunny Airey</div>
-                      <div class="text-muted">5 days ago</div>
-                    </div>
-                    <div class="ml-auto">
-                      <a href="#" class="text-muted">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="2" /><path d="M22 12c-2.667 4.667 -6 7 -10 7s-7.333 -2.333 -10 -7c2.667 -4.667 6 -7 10 -7s7.333 2.333 10 7" /></svg>
-                        301
-                      </a>
-                      <a href="#" class="ml-3 text-muted">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 13.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
-                        99
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-6 col-lg-4">
-              <div class="card card-sm">
-                <a href="#" class="d-block"><img src="./static/photos/9f36332564ca271d.jpg" class="card-img-top"></a>
-                <div class="card-body">
-                  <div class="d-flex align-items-center">
-                    <span class="avatar mr-3 rounded" style="background-image: url(./static/avatars/009m.jpg)"></span>
-                    <div class="lh-sm">
-                      <div>Geoffry Flaunders</div>
-                      <div class="text-muted">1 week ago</div>
-                    </div>
-                    <div class="ml-auto">
-                      <a href="#" class="text-muted">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="2" /><path d="M22 12c-2.667 4.667 -6 7 -10 7s-7.333 -2.333 -10 -7c2.667 -4.667 6 -7 10 -7s7.333 2.333 10 7" /></svg>
-                        596
-                      </a>
-                      <a href="#" class="ml-3 text-muted">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 13.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
-                        64
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-6 col-lg-4">
-              <div class="card card-sm">
-                <a href="#" class="d-block"><img src="./static/photos/35b88fc04a518c1b.jpg" class="card-img-top"></a>
-                <div class="card-body">
-                  <div class="d-flex align-items-center">
-                    <span class="avatar mr-3 rounded" style="background-image: url(./static/avatars/010m.jpg)"></span>
-                    <div class="lh-sm">
-                      <div>Thatcher Keel</div>
-                      <div class="text-muted">1 week and 2 days ago</div>
-                    </div>
-                    <div class="ml-auto">
-                      <a href="#" class="text-muted">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="2" /><path d="M22 12c-2.667 4.667 -6 7 -10 7s-7.333 -2.333 -10 -7c2.667 -4.667 6 -7 10 -7s7.333 2.333 10 7" /></svg>
-                        373
-                      </a>
-                      <a href="#" class="ml-3 text-muted">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 13.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
-                        64
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-6 col-lg-4">
-              <div class="card card-sm">
-                <a href="#" class="d-block"><img src="./static/photos/36e273986ed577b8.jpg" class="card-img-top"></a>
-                <div class="card-body">
-                  <div class="d-flex align-items-center">
-                    <span class="avatar mr-3 rounded" style="background-image: url(./static/avatars/005f.jpg)"></span>
-                    <div class="lh-sm">
-                      <div>Dyann Escala</div>
-                      <div class="text-muted">4 days ago</div>
-                    </div>
-                    <div class="ml-auto">
-                      <a href="#" class="text-muted">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="2" /><path d="M22 12c-2.667 4.667 -6 7 -10 7s-7.333 -2.333 -10 -7c2.667 -4.667 6 -7 10 -7s7.333 2.333 10 7" /></svg>
-                        537
-                      </a>
-                      <a href="#" class="ml-3 text-muted">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 13.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
-                        51
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-6 col-lg-4">
-              <div class="card card-sm">
-                <a href="#" class="d-block"><img src="./static/photos/75b555b99d5b38c4.jpg" class="card-img-top"></a>
-                <div class="card-body">
-                  <div class="d-flex align-items-center">
-                    <span class="avatar mr-3 rounded" style="background-image: url(./static/avatars/006f.jpg)"></span>
-                    <div class="lh-sm">
-                      <div>Avivah Mugleston</div>
-                      <div class="text-muted">6 days ago</div>
-                    </div>
-                    <div class="ml-auto">
-                      <a href="#" class="text-muted">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="2" /><path d="M22 12c-2.667 4.667 -6 7 -10 7s-7.333 -2.333 -10 -7c2.667 -4.667 6 -7 10 -7s7.333 2.333 10 7" /></svg>
-                        487
-                      </a>
-                      <a href="#" class="ml-3 text-muted">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 13.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
-                        58
-                      </a>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-sm-6 col-lg-4">
-              <div class="card card-sm">
-                <a href="#" class="d-block"><img src="./static/photos/546fd146c83f428c.jpg" class="card-img-top"></a>
-                <div class="card-body">
-                  <div class="d-flex align-items-center">
-                    <span class="avatar mr-3 rounded" style="background-image: url(./static/avatars/008f.jpg)"></span>
-                    <div class="lh-sm">
-                      <div>Tessie Curzon</div>
-                      <div class="text-muted">3 days ago</div>
-                    </div>
-                    <div class="ml-auto">
-                      <a href="#" class="text-muted">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="2" /><path d="M22 12c-2.667 4.667 -6 7 -10 7s-7.333 -2.333 -10 -7c2.667 -4.667 6 -7 10 -7s7.333 2.333 10 7" /></svg>
-                        400
-                      </a>
-                      <a href="#" class="ml-3 text-muted">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 13.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
-                        56
                       </a>
                     </div>
                   </div>
@@ -889,116 +894,20 @@
                 </ul>
               </div>
               <div class="col-12 col-lg-auto mt-3 mt-lg-0">
-                Copyright © 2020
-                <a href="." class="link-secondary">Tabler</a>.
-                All rights reserved.
+                <ul class="list-inline list-inline-dots mb-0">
+                  <li class="list-inline-item">
+                    Copyright © 2020
+                    <a href="." class="link-secondary">Tabler</a>.
+                    All rights reserved.
+                  </li>
+                  <li class="list-inline-item">
+                    <a href="https://github.com/tabler/tabler/releases" target="_blank" class="link-secondary">v1.0.0-alpha.9</a>
+                  </li>
+                </ul>
               </div>
             </div>
           </div>
         </footer>
-      </div>
-    </div>
-    <div class="modal modal-blur fade" id="modal-report" tabindex="-1" role="dialog" aria-hidden="true">
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">New report</h5>
-            <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close">
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>
-            </button>
-          </div>
-          <div class="modal-body">
-            <div class="mb-3">
-              <label class="form-label">Name</label>
-              <input type="text" class="form-control" name="example-text-input" placeholder="Your report name">
-            </div>
-            <label class="form-label">Report type</label>
-            <div class="form-selectgroup-boxes row mb-3">
-              <div class="col-lg-6">
-                <label class="form-selectgroup-item">
-                  <input type="radio" name="report-type" value="1" class="form-selectgroup-input" checked>
-                  <span class="form-selectgroup-label d-flex align-items-center p-3">
-                    <span class="mr-3">
-                      <span class="form-selectgroup-check"></span>
-                    </span>
-                    <span class="form-selectgroup-label-content">
-                      <span class="form-selectgroup-title strong mb-1">Simple</span>
-                      <span class="d-block text-muted">Provide only basic data needed for the report</span>
-                    </span>
-                  </span>
-                </label>
-              </div>
-              <div class="col-lg-6">
-                <label class="form-selectgroup-item">
-                  <input type="radio" name="report-type" value="1" class="form-selectgroup-input">
-                  <span class="form-selectgroup-label d-flex align-items-center p-3">
-                    <span class="mr-3">
-                      <span class="form-selectgroup-check"></span>
-                    </span>
-                    <span class="form-selectgroup-label-content">
-                      <span class="form-selectgroup-title strong mb-1">Advanced</span>
-                      <span class="d-block text-muted">Insert charts and additional advanced analyses to be inserted in the report</span>
-                    </span>
-                  </span>
-                </label>
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-lg-8">
-                <div class="mb-3">
-                  <label class="form-label">Report url</label>
-                  <div class="input-group input-group-flat">
-                    <span class="input-group-text">
-                      https://tabler.io/reports/
-                    </span>
-                    <input type="text" class="form-control pl-0"  value="report-01">
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-4">
-                <div class="mb-3">
-                  <label class="form-label">Visibility</label>
-                  <select class="form-select">
-                    <option value="1" selected>Private</option>
-                    <option value="2">Public</option>
-                    <option value="3">Hidden</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="modal-body">
-            <div class="row">
-              <div class="col-lg-6">
-                <div class="mb-3">
-                  <label class="form-label">Client name</label>
-                  <input type="text" class="form-control">
-                </div>
-              </div>
-              <div class="col-lg-6">
-                <div class="mb-3">
-                  <label class="form-label">Reporting period</label>
-                  <input type="date" class="form-control">
-                </div>
-              </div>
-              <div class="col-lg-12">
-                <div>
-                  <label class="form-label">Additional information</label>
-                  <textarea class="form-control" rows="3"></textarea>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <a href="#" class="btn btn-link link-secondary" data-dismiss="modal">
-              Cancel
-            </a>
-            <a href="#" class="btn btn-primary ml-auto" data-dismiss="modal">
-              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="12" y1="5" x2="12" y2="19" /><line x1="5" y1="12" x2="19" y2="12" /></svg>
-              Create new report
-            </a>
-          </div>
-        </div>
       </div>
     </div>
     <!-- Libs JS -->
