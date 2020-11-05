@@ -63,3 +63,51 @@
     --#{$variable-prefix}gutter-y: #{$cards-grid-gap / 2};
   }
 }
+
+@each $name, $size in map-merge((null: $spacer), $spacers) {
+  $name-prefixed: if($name == null, null, '-#{$name}');
+
+  .space-y#{$name-prefixed} {
+    > :not(template) ~ :not(template) {
+      margin-top: $size !important;
+    }
+  }
+
+  .space-x#{$name-prefixed} {
+    > :not(template) ~ :not(template) {
+      margin-left: $size !important;
+    }
+  }
+}
+
+@each $name, $size in map-merge((null: $spacer), $spacers) {
+  $name-prefixed: if($name == null, null, '-#{$name}');
+
+  .divide-y#{$name-prefixed} {
+    > :not(template) ~ :not(template) {
+      border-top: 1px solid $border-color-transparent !important;
+    }
+
+    > :not(template):not(:first-child) {
+      padding-top: $size/2 !important;
+    }
+
+    > :not(template):not(:last-child) {
+      padding-bottom: $size/2 !important;
+    }
+  }
+
+  .divide-x#{$name-prefixed} {
+    > :not(template) ~ :not(template) {
+      border-left: 1px solid $border-color-transparent !important;
+    }
+
+    > :not(template):not(:first-child) {
+      padding-left: $size/2 !important;
+    }
+
+    > :not(template):not(:last-child) {
+      padding-right: $size/2 !important;
+    }
+  }
+}

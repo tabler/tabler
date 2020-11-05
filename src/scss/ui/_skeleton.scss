@@ -1,0 +1,98 @@
+@keyframes skeleton-load {
+  from {
+    background-position: 0 0;
+  }
+  to {
+    background-position: 100vw 0;
+  }
+}
+
+%skeleton-common {
+  background-image: linear-gradient(to right, mix($body-bg, $body-color, 98%) 0, mix($body-bg, $body-color, 90%) 40%, mix($body-bg, $body-color, 98%) 80%);
+  background-size: 50vw 100%;
+  background-attachment: fixed;
+  animation: skeleton-load 2s linear infinite
+}
+
+.skeleton-avatar {
+  @extend %skeleton-common;
+  display: inline-block;
+  vertical-align: bottom;
+  width: $avatar-size;
+  height: $avatar-size;
+  border-radius: $border-radius-full;
+
+  @each $name, $size in $avatar-sizes {
+    &-#{$name} {
+      width: $size;
+      height: $size;
+    }
+  }
+}
+
+.skeleton-line {
+  padding: .375rem 0;
+  display: block;
+  line-height: 0;
+  height: $font-size-base * $line-height-base;
+
+  &:after {
+    content: '';
+    display: inline-block;
+    height: 100%;
+    border-radius: $border-radius;
+    width: 100%;
+    @extend %skeleton-common;
+  }
+
+  &:nth-child(5n+2):after {
+    width: 80%;
+  }
+
+  &:nth-child(5n+3):after {
+    width: 90%;
+  }
+
+  &:nth-child(5n+4):after {
+    width: 95%;
+  }
+
+  &:nth-child(5n+5):after {
+    width: 85%;
+  }
+}
+
+.skeleton-line-full {
+  &:after {
+    width: 100% !important;
+  }
+}
+
+.skeleton-heading {
+  @extend .skeleton-line;
+  height: 1.5rem;
+  margin-bottom: .5rem;
+
+  &:after {
+    width: 70%;
+  }
+}
+
+.skeleton-image {
+  @extend %skeleton-common;
+
+  &:after {
+    content: '';
+    padding-top: percentage(9/16);
+    display: block;
+  }
+}
+
+.card-img-top,
+.card-img-bottom,
+.card-img-left,
+.card-img-right {
+  .skeleton-image {
+    border-radius: inherit;
+  }
+}
