@@ -1,6 +1,6 @@
 ---
 title: Spinners
-menu: docs.spinners
+menu: docs.components.spinners
 description: Spinners are used to show the loading state of a component or page. They provide feedback for an action a user has taken, when it takes a bit longer to complete.
 bootstrap-link: components/spinners/
 ---

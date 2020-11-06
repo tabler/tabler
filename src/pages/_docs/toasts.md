@@ -1,6 +1,6 @@
 ---
 title: Toasts
-menu: docs.toasts
+menu: docs.components.toasts
 description: Toasts are lightweight alert boxes which display for a few seconds after a user has taken an action, to inform them of the state or outcome. They can be used when a user clicks a button or submits a form and their aim is to provide feedback, rather than encourage to take action.
 bootstrap-link: components/toasts/
 ---

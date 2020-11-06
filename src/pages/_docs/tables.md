@@ -1,6 +1,6 @@
 ---
 title: Tables
-menu: docs.tables
+menu: docs.components.tables
 description: Tables are a useful interface element that allows to visualise data and arrange it in a clear way. Thanks to that, users can browse a lot of information at once and a good table design will help you take care of its clarity.
 bootstrap-link: content/tables/
 ---

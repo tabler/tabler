@@ -1,6 +1,6 @@
 ---
 title: Avatars
-menu: docs.avatars
+menu: docs.components.avatars
 description: Avatars help customise various elements of a user interface and make the product experience more personalised. They are often used in communication apps, collaboration tools and social media.
 ---
 

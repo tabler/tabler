@@ -1,6 +1,6 @@
 ---
 title: Steps
-menu: docs.steps
+menu: docs.components.steps
 description: Steps are used to guide users through complex processes, making them easier and more intuitive. Breaking a multi-step process into smaller parts and tracking progress along the way helps users complete it successfully.
 new: true
 ---

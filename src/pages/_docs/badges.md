@@ -1,6 +1,6 @@
 ---
 title: Badges
-menu: docs.badges
+menu: docs.components.badges
 description: Badges are small count and labeling components, which are used to add extra information to an interface element. You can use them to draw users' attention to a new element, notify about unread messages or provide any kind of additional info.
 bootstrap-link: components/badge/
 ---

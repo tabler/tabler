@@ -2,7 +2,7 @@
 title: Buttons
 description: Use button styles that best suit your designs and encourage users to take the desired actions. You can customize the button's properties to improve the user experience of your website or system, changing the size, shape, color and many more.
 bootstrap-link: components/buttons/
-menu: docs.buttons
+menu: docs.components.buttons
 ---
 
 
@@ -86,6 +86,7 @@ Use the `.btn-ghost-*` class to make your button look simple yet aesthetically a
 Use the `.btn-square` class to remove the border radius, if you want the corners of your button to be square rather than rounded.
 
 {% capture code %}
+{% include ui/button.html text="White" square=true %}
 {% for button in site.button-variants %}
 {% assign btn-color = button[1].class %}
 {% assign btn-title = button[1].title %}
@@ -100,6 +101,7 @@ Use the `.btn-square` class to remove the border radius, if you want the corners
 Add the `.btn-pill` class to your button to make it rounded and give it a modern and attractive look.
 
 {% capture code %}
+{% include ui/button.html text="White" pill=true %}
 {% for button in site.button-variants %}
 {% assign btn-color = button[1].class %}
 {% assign btn-title = button[1].title %}

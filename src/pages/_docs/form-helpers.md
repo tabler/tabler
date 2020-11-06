@@ -1,6 +1,7 @@
 ---
 title: Form helpers
 description: A form helper can be used to provide users with additional information about the elements of a form that may be unclear. 
+menu: docs.components.form-helpers
 ---
 
 

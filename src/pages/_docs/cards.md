@@ -1,6 +1,6 @@
 ---
 title: Cards
-menu: docs.cards
+menu: docs.components.cards
 description: Cards are flexible user interface elements, which help organize content into meaningful sections and make it easier to display on different screen sizes. Cards contain various smaller components, such as images, text, links and buttons and may act as an entry to more detailed information, helping users scan the page quickly and find the most relevant content.
 bootstrap-link: components/card/
 ---
@@ -28,7 +28,7 @@ Cards with the `.card-sm` class are well suited for small items such as snippets
 {% include cards/card.html class="card-md" body="This is some text within a card body." %}
 {% include cards/card.html class="card-lg" body="This is some text within a card body." %}
 {% endcapture %}
-{% include example.html code=code columns=2 %}
+{% include example.html code=code columns=2 wrapper="space-y" %}
 
 
 ## Card with title
@@ -39,7 +39,7 @@ Add a title to your card by including the `.card-title` class within `.card-body
 {% include cards/card.html title="Card title" body="This is some text within a card body." %}
 {% include cards/card.html header-title="Card title" body="This is some text within a card body." %}
 {% endcapture %}
-{% include example.html code=code columns=1 %}
+{% include example.html code=code columns=1 wrapper="space-y" %}
 
 
 ## Card with title and image

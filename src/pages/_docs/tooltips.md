@@ -1,6 +1,6 @@
 ---
 title: Tooltips
-menu: docs.tooltips
+menu: docs.components.tooltips
 description: Tooltips are text labels which appear when a user hovers over an interface element. They explain the interface elements that may be unclear for users and guide them when they need help. If used properly, tooltips can significantly enhance user experience and add value to your website or software.
 bootstrap-link: components/tooltips/
 ---

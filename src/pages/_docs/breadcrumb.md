@@ -1,6 +1,6 @@
 ---
 title: Breadcrumb
-menu: docs.breadcrumb
+menu: docs.components.breadcrumb
 description: Breadcrumbs are used to show the current website or app location and reduce the number of actions users have to take. Thanks to breadcrumbs, they can easily navigate within the website hierarchy and better understand its structure.
 bootstrap-link: components/breadcrumb/
 ---

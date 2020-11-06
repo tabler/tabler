@@ -1,6 +1,6 @@
 ---
 title: Skeleton
-menu: docs.skeleton
+menu: docs.components.skeleton
 description: Skeleton is used to reserve space for content that soon will appear in a layout.
 ---
 

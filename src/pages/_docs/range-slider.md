@@ -1,6 +1,6 @@
 ---
 title: Range slider
-menu: docs.range-slider
+menu: docs.components.range-slider
 libs: nouislider
 ---
 

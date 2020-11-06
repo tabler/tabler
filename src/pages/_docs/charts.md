@@ -1,6 +1,6 @@
 ---
 title: Charts
-menu: docs.charts
+menu: docs.components.charts
 ---
 
 

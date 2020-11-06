@@ -1,7 +1,7 @@
 ---
 title: Countup
 description: A countup element is used to display numerical data in an interesting way and make the interface more interactive. All the available options can be found [here](https://inorganik.github.io/countUp.js/)
-menu: docs.countup
+menu: docs.components.countup
 libs: countup
 ---
 
