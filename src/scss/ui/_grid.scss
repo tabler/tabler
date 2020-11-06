@@ -4,7 +4,7 @@
 
 %container-common {
   @include media-breakpoint-down($cards-grid-breakpoint) {
-    --bs-gutter-x: #{$grid-gutter-width};
+    --#{$variable-prefix}gutter-x: #{$grid-gutter-width};
   }
 }
 
@@ -16,6 +16,7 @@
 .container {
   @each $variation, $size in $container-variations {
     &-#{$variation} {
+      @include make-container();
       max-width: $size;
     }
   }
