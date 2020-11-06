@@ -12,14 +12,14 @@ Use dividers to visually separate content into parts. You can use a line only or
 
 {% capture code %}
 <p>
-  Dicta error hic illo iure necessitatibus nihil officiis omnis perferendis, praesentium repellendus rerum, saepe sed, sit!
+  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias, dolore dolores doloribus est ex.
 </p>
 {% include ui/hr.html text="See also" %}
 <p>
   Dicta error hic illo iure necessitatibus nihil officiis omnis perferendis, praesentium repellendus rerum, saepe sed, sit!
 </p>
 {% endcapture %}
-{% include example.html code=code %}
+{% include example.html code=code wrapper="demo-dividers" %}
 
 
 ## Text position
@@ -28,7 +28,7 @@ You can modify the position of the text which is to be included in a separator a
 
 {% capture code %}
 <p>
-  Dicta error hic illo iure necessitatibus nihil officiis omnis perferendis, praesentium repellendus rerum, saepe sed, sit!
+  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias, dolore dolores doloribus est ex.
 </p>
 {% include ui/hr.html text="Left divider" position="left" %}
 <p>
@@ -36,14 +36,14 @@ You can modify the position of the text which is to be included in a separator a
 </p>
 {% include ui/hr.html text="Centered divider"  %}
 <p>
-  Dicta error hic illo iure necessitatibus nihil officiis omnis perferendis, praesentium repellendus rerum, saepe sed, sit!
+  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias, dolore dolores doloribus est ex.
 </p>
 {% include ui/hr.html text="Right divider" position="right" %}
 <p>
   Dicta error hic illo iure necessitatibus nihil officiis omnis perferendis, praesentium repellendus rerum, saepe sed, sit!
 </p>
 {% endcapture %}
-{% include example.html code=code %}
+{% include example.html code=code wrapper="demo-dividers" %}
 
 
 ## Divider color
@@ -56,11 +56,15 @@ Customize the color of dividers to make them go well with your design. Click [he
 </p>
 {% include ui/hr.html text="Green divider" color="green" %}
 <p>
-   Dicta error hic illo iure necessitatibus nihil officiis omnis perferendis, praesentium repellendus rerum, saepe sed, sit!
+  Dicta error hic illo iure necessitatibus nihil officiis omnis perferendis, praesentium repellendus rerum, saepe sed, sit!
 </p>
 {% include ui/hr.html text="Red divider" color="red" %}
+<p>
+  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias, dolore dolores doloribus est ex.
+</p>
+{% include ui/hr.html text="Primary divider" color="primary" %}
 <p>
    Dicta error hic illo iure necessitatibus nihil officiis omnis perferendis, praesentium repellendus rerum, saepe sed, sit!
 </p>
 {% endcapture %}
-{% include example.html code=code %}
+{% include example.html code=code wrapper="demo-dividers" %}

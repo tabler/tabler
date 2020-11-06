@@ -1,9 +1,8 @@
 ---
 title: Cursors
 description: You can use different cursors to reflect the intended user interaction with particular elements of an interface. The cursor will change when a user hovers over a given element to indicate the action which can be performed.
-menu: docs.components.cursors
+menu: docs.utils.cursors
 ---
-
 
 ## Cursor utilities 
 

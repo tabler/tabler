@@ -1,6 +1,6 @@
 ---
 title: Introduction
-menu: docs.index.index
+menu: docs.base.index
 icon: flag
 redirect_from: docs.html
 ---
