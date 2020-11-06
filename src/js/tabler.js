@@ -2,6 +2,7 @@
 
 import './autosize';
 import './input-mask';
+import './dropdown';
 
 (function() {
 	/**
