@@ -23,7 +23,12 @@
 {% capture new_line %}
 {% endcapture %}
 {% assign code = code | replace_regex: "\n\n+", new_line %}
-{% assign code = code | replace_regex: '<svg[^>]*>.*?<\/svg>', '<!-- SVG icon code -->' %}
+
+{% unless include.show-svg %}
+	{% assign code = code | replace_regex: '<svg[^>]*class="icon ([^"]+)"[^>]*>.*?<\/svg>', '<!-- SVG icon code with class="\1" -->' %}
+	{% assign code = code | replace_regex: '<svg[^>]*>.*?<\/svg>', '<!-- SVG icon code -->' %}
+{% endunless %}
+
 {% assign code = code | replace_regex: 'url\(([^\)]+)\)', 'url(...)' %}
 {% assign code = code | replace_regex: 'src="([^"]+)"', 'src="..."' %}
 {% assign code = code | replace_regex: 'href="([^#][^"]+)"', 'href="#"' %}

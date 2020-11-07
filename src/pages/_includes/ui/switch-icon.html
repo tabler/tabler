@@ -1,0 +1,12 @@
+{% assign icon = include.icon | default: 'heart' %}
+{% assign icon-b = include.icon-b | default: icon | default: 'heart' %}
+{% assign icon-a-color = include.icon-a-color | default: 'muted' %}
+{% assign icon-b-color = include.icon-b-color | default: 'red' %}
+<button class="switch-icon{% if include.variant %} switch-icon-{{ include.variant }}{% endif %}" data-toggle="switch-icon">
+	<span class="switch-icon-a text-{{ icon-a-color }}">
+		{% include ui/icon.html icon=icon %}
+	</span>
+	<span class="switch-icon-b text-{{ icon-b-color }}">
+		{% include ui/icon.html icon=icon-b class=include.icon-b-class %}
+	</span>
+</button>
