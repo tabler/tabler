@@ -1,16 +1,21 @@
 ---
 title: Switch icon
 menu: docs.components.switch-icon
+description: The Switch Icon component is used to create a transition between two icons. You can use any icon, both line and filled version.
 ---
 
 ## Default markup
 
+To replace the icons, all should add `active` class to the `switch-icon` component.
+
 {% capture code %}
-{% include ui/switch-icon.html icon="circle" icon-b-class="icon-filled" icon-b-color="blue"  %}
+{% include ui/switch-icon.html icon="circle" icon-b="square" icon-b-color="blue"  %}
 {% endcapture %}
 {% include example.html code=code wrapper="d-flex space-x-2" %}
 
 ## Switch animations
+
+You can also add a fancy animation to add variety to your button. See demo below:
 
 {% capture code %}
 {% include ui/switch-icon.html icon="circle" icon-b-class="icon-filled" icon-b-color="blue"  %}
