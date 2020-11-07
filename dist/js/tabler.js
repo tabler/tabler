@@ -1,6 +1,6 @@
 /*!
-* Tabler v1.0.0-alpha.10 (https://tabler.io)
-* @version 1.0.0-alpha.10
+* Tabler v1.0.0-alpha.11 (https://tabler.io)
+* @version 1.0.0-alpha.11
 * @link https://tabler.io
 * Copyright 2018-2020 The Tabler Authors
 * Copyright 2018-2020 codecalm.net Paweł Kuna
@@ -3056,6 +3056,26 @@
 	  });
 	});
 
+	var selectors = '.dropdown, .dropup, .dropright, .dropleft',
+	    dropdowns = document.querySelectorAll(selectors);
+	var currentTarget = undefined;
+	dropdowns.forEach(function (dropdown) {
+	  dropdown.addEventListener('mousedown', function (e) {
+	    e.stopPropagation();
+	    if (e.target.dataset.toggle && e.target.dataset.toggle === 'dropdown') {
+	      currentTarget = e.currentTarget;
+	    }
+	  });
+	  dropdown.addEventListener('hide.bs.dropdown', function (e) {
+	    e.stopPropagation();
+	    var parent = currentTarget ? currentTarget.parentElement.closest(selectors) : undefined;
+	    if (parent && parent === dropdown) {
+	      e.preventDefault();
+	    }
+	    currentTarget = undefined;
+	  });
+	});
+
 	(function () {
 	  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="tooltip"]'));
 	  tooltipTriggerList.map(function (tooltipTriggerEl) {
@@ -3084,6 +3104,13 @@
 	  var dropdownTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="dropdown"]'));
 	  dropdownTriggerList.map(function (dropdownTriggerEl) {
 	    return new bootstrap.Dropdown(dropdownTriggerEl);
+	  });
+	  var switchesTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="switch-icon"]'));
+	  switchesTriggerList.map(function (switchTriggerEl) {
+	    switchTriggerEl.addEventListener('click', function (e) {
+	      e.stopPropagation();
+	      switchTriggerEl.classList.toggle('active');
+	    });
 	  });
 	})();
 
