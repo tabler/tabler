@@ -88,8 +88,7 @@ gulp.task('svg-icons', (cb) => {
 		fs.writeFileSync(filename, YAML.stringify(svgList));
 	};
 
-	generateIconsYml("./node_modules/tabler-icons/icons/*.svg", `${srcDir}/pages/_data/icons-tabler.yml`);
-	generateIconsYml(`${srcDir}/svg/brand/*.svg`, `${srcDir}/pages/_data/icons-brand.yml`);
+	generateIconsYml("./node_modules/tabler-icons/icons/*.svg", `${srcDir}/pages/_data/icons.yml`);
 
 	cb();
 });

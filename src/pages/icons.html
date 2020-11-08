@@ -4,12 +4,24 @@ page-header: Icons
 menu: base.icons
 ---
 
+{% assign icons-brand = '' | split: ',' %}
+{% assign icons-core = '' | split: ',' %}
+
+{% for icon in site.data.icons %}
+	{% assign i = icon[0] %}
+	{% if i contains 'brand-' %}
+		{% assign icons-brand = icons-brand | push: i %}
+	{% else %}
+		{% assign icons-core = icons-core | push: i %}
+	{% endif %}
+{% endfor %}
+
 <div class="row row-cards">
 	<div class="col-12">
-		{% include cards/icons.html title="Tabler icons" group="icons-tabler" %}
+		{% include cards/icons.html title="Tabler icons" icons=icons-core %}
 	</div>
 	<div class="col-12">
-		{% include cards/icons.html title="Brand icons" group="icons-brand" %}
+		{% include cards/icons.html title="Brand icons" icons=icons-brand %}
 	</div>
 </div>
 
