@@ -16,6 +16,7 @@ const gulp = require('gulp'),
 	vinylBuffer = require('vinyl-buffer'),
 	browserSync = require('browser-sync'),
 	glob = require('glob'),
+	spawn = require('cross-spawn'),
 	fs = require('fs'),
 	path = require('path'),
 	YAML = require('yaml'),
@@ -224,7 +225,7 @@ gulp.task('js', () => {
  */
 gulp.task('watch-jekyll', (cb) => {
 	browserSync.notify('Building Jekyll');
-	return cp.spawn('bundle', ['exec', 'jekyll', 'build', '--watch', '--destination', demoDir, '--trace'], { stdio: 'inherit' })
+	return spawn('bundle', ['exec', 'jekyll', 'build', '--watch', '--destination', demoDir, '--trace'], { stdio: 'inherit' })
 		.on('close', cb);
 });
 
@@ -235,7 +236,7 @@ gulp.task('build-jekyll', (cb) => {
 	var env = Object.create(process.env);
 	env.JEKYLL_ENV = 'production';
 
-	return cp.spawn('bundle', ['exec', 'jekyll', 'build', '--destination', demoDir, '--trace'], { env: env, stdio: 'inherit' })
+	return spawn('bundle', ['exec', 'jekyll', 'build', '--destination', demoDir, '--trace'], { env: env, stdio: 'inherit' })
 		.on('close', cb);
 });
 
