@@ -1,25 +1,9 @@
 {% removeemptylines %}
-{% if include.svg-icon %}
-	{% assign svg-icon = include.svg-icon %}
-{% else %}
-	{% assign icon-info = include.icon | split: '/' %}
-	{% if icon-info.size == 2 %}
-		{% assign icon-provider = 'icons-' | append: icon-info[0] %}
-		{% assign icon-name = icon-info[1] %}
-	{% else %}
-		{% assign icon-provider = 'icons-tabler' %}
-		{% assign icon-name = icon-info[0] %}
-	{% endif %}
 
-	{% assign svg-icon = site.data[icon-provider][icon-name] | default: '' %}
-{% endif %}
+{% assign icon-name = include.icon %}
 
 
 {% assign replace-to = "icon" %}
-
-{% if include.right %}
-{% assign replace-to = replace-to | append: " icon-right" %}
-{% endif %}
 
 {% if include.class %}
 {% assign replace-to = replace-to | append: ' ' | append: include.class %}
@@ -35,6 +19,10 @@
 
 {% assign replace-to = 'class="' | append: replace-to | append: '"' %}
 
-{{ svg-icon | replace_regex: 'class=\"[^"]+\"', replace-to }}
+{% if site.use-iconfont %}
+	<i class="icon ti ti-{{ icon-name }}{% if include.color %} {{ include.color }}{% endif %}{% if include.class %} {{ include.class }}{% endif %}"></i>
+{% else %}
+	{{ svg-icon | replace_regex: 'class=\"[^"]+\"', replace-to }}
+{% endif %}
 
 {% endremoveemptylines %}

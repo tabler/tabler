@@ -1,4 +1,4 @@
-{% assign icons = site.data[include.group] %}
+{% assign icons = include.icons %}
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">{{ include.title }}</div>
@@ -7,14 +7,13 @@
 		<div class="row" data-icon-preview>
 			<div class="col-md-6 col-lg-4">
 				{% assign first-icon = icons | first %}
-				{% assign first-icon-name = first-icon[0] %}
-				{% assign first-icon-svg = first-icon[1] %}
+				{% capture first-icon-svg %}{% include ui/icon.html icon=first-icon %}{% endcapture %}
 
 				<div class="demo-icon-preview">
 					<div data-icon-preview-icon>
-						{% include ui/icon.html svg-icon=first-icon-svg %}
+						{{ first-icon-svg }}
 					</div>
-					<h2 class="mt-2" data-icon-preview-title>{{ first-icon-name }}</h2>
+					<h2 class="mt-2" data-icon-preview-title>{{ first-icon }}</h2>
 					<pre class="highlight user-select-all" style="max-height: 10rem"><code data-icon-preview-code>{{ first-icon-svg | escape }}</code></pre>
 				</div>
 			</div>
@@ -23,9 +22,8 @@
 					<ul class="icons-list">
 						{% for icon in icons %}
 						<li class="icons-list-item">
-							{% assign svg-icon = icon[1] %}
-							<a href="#" class="text-reset" data-toggle-icon="{{ icon[0] }}" data-toggle="tooltip" title="{{ icon[0] }}">
-								{% include ui/icon.html svg-icon=svg-icon %}
+							<a href="#" class="text-reset" data-toggle-icon="{{ icon }}" data-toggle="tooltip" title="{{ icon }}">
+								{% include ui/icon.html icon=icon %}
 							</a>
 						</li>
 						{% endfor %}
