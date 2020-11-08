@@ -1,0 +1,103 @@
+.nav {
+  margin: 0;
+}
+
+.nav-vertical {
+  &,
+  .nav {
+    flex-direction: column;
+    flex-wrap: nowrap;
+  }
+
+  .nav {
+    margin-inline-start: 1.25rem;
+    border-left: 1px solid $border-color;
+    padding-inline-start: .5rem;
+  }
+
+  .nav-link.active,
+  .nav-item.show .nav-link {
+    font-weight: $font-weight-bold;
+  }
+
+  &.nav-pills {
+    margin: 0 (-$nav-link-padding-x);
+  }
+}
+
+.nav-tabs {
+  margin: 0;
+
+  .icon {
+    color: $text-muted;
+  }
+
+  .nav-link {
+    padding: $card-title-spacer-y $card-spacer-x;
+    line-height: 20px;
+    color: $text-muted;
+    cursor: pointer;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid transparent;
+    transition: .3s color, .3s border-color;
+
+    &:hover {
+      color: $body-color;
+      border-color: transparent;
+    }
+
+    &.disabled {
+      color: rgba($text-muted, .2);
+    }
+
+    &.active {
+      color: $body-color;
+      background: inherit;
+      border-color: transparent;
+      border-bottom-color: $primary;
+    }
+  }
+}
+
+.nav-tabs-alt {
+  .nav-link {
+    font-size: 13px;
+    font-weight: $font-weight-bold;
+    text-transform: uppercase;
+  }
+}
+
+.nav-link {
+  display: flex;
+  transition: .3s color;
+  align-items: center;
+}
+
+.nav-link-toggle {
+  margin-left: auto;
+  padding: 0 .25rem;
+  transition: .3s transform;
+  @include caret();
+
+  &:after {
+    margin: 0;
+  }
+
+  @at-root .nav-link[aria-expanded="true"] & {
+    transform: rotate(180deg);
+  }
+}
+
+.nav-link-icon {
+  width: $icon-size;
+  height: $icon-size;
+  margin-inline-end: .5rem;
+  opacity: $text-muted-opacity;
+
+  svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+}

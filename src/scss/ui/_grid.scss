@@ -1,0 +1,114 @@
+.col-separator {
+  border-left: 1px solid $border-color;
+}
+
+%container-common {
+  @include media-breakpoint-down($cards-grid-breakpoint) {
+    --#{$variable-prefix}gutter-x: #{$grid-gutter-width};
+  }
+}
+
+.container,
+.container-fluid {
+  @extend %container-common;
+}
+
+.container {
+  @each $variation, $size in $container-variations {
+    &-#{$variation} {
+      @include make-container();
+      max-width: $size;
+    }
+  }
+}
+
+@each $name, $value in (0: 0, sm: .375rem, md: 1.5rem, lg: 3rem) {
+  .row-#{$name} {
+    margin-right: (-$value);
+    margin-left: -($value);
+
+    > .col,
+    > [class*="col-"] {
+      padding-right: $value;
+      padding-left: $value;
+    }
+
+    .card {
+      margin-bottom: 2 * $value;
+    }
+  }
+}
+
+.row-deck {
+  > .col,
+  > [class*="col-"] {
+    display: flex;
+    align-items: stretch;
+
+    .card {
+      flex: 1 1 auto;
+    }
+  }
+}
+
+.row-cards {
+  --#{$variable-prefix}gutter-x: #{$cards-grid-gap};
+  --#{$variable-prefix}gutter-y: #{$cards-grid-gap};
+
+  .row-cards {
+    flex: 1;
+  }
+
+  @include media-breakpoint-down($cards-grid-breakpoint) {
+    --#{$variable-prefix}gutter-x: #{$cards-grid-gap / 2};
+    --#{$variable-prefix}gutter-y: #{$cards-grid-gap / 2};
+  }
+}
+
+@each $name, $size in map-merge((null: $spacer), $spacers) {
+  $name-prefixed: if($name == null, null, '-#{$name}');
+
+  .space-y#{$name-prefixed} {
+    > :not(template) ~ :not(template) {
+      margin-top: $size !important;
+    }
+  }
+
+  .space-x#{$name-prefixed} {
+    > :not(template) ~ :not(template) {
+      margin-left: $size !important;
+    }
+  }
+}
+
+@each $name, $size in map-merge((null: $spacer), $spacers) {
+  $name-prefixed: if($name == null, null, '-#{$name}');
+
+  .divide-y#{$name-prefixed} {
+    > :not(template) ~ :not(template) {
+      border-top: 1px solid $border-color-transparent !important;
+    }
+
+    > :not(template):not(:first-child) {
+      padding-top: $size/2 !important;
+    }
+
+    > :not(template):not(:last-child) {
+      padding-bottom: $size/2 !important;
+    }
+  }
+
+  .divide-x#{$name-prefixed} {
+    > :not(template) ~ :not(template) {
+      border-left: 1px solid $border-color-transparent !important;
+    }
+
+    > :not(template):not(:first-child) {
+      padding-left: $size/2 !important;
+    }
+
+    > :not(template):not(:last-child) {
+      padding-right: $size/2 !important;
+    }
+  }
+}

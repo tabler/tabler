@@ -1,0 +1,20 @@
+{% assign percentage = include.value | default: 38 %}
+{% assign colors = include.colors | default: 'blue,red,green,yellow,dark' | split: ',' %}
+<div class="progress{% if include['size'] %} progress-{{ include['size'] }}{% endif %}{% if include.class %} {{ include.class }}{% endif %}">
+   {% if include.indeterminate %}
+      <div class="progress-bar progress-bar-indeterminate{% if include.color %} bg-{{ include.color }}{% endif %}"></div>
+   {% elsif include.values  %}
+      {% assign values = include.values | split: ',' %}
+      {% for value in values %}
+         <div class="progress-bar bg-{{ colors[forloop.index0] }}" style="width: {{ value }}%" role="progressbar" aria-valuenow="{{ value }}" aria-valuemin="0" aria-valuemax="100"></div>
+      {% endfor %}
+   {% else %}
+      <div class="progress-bar{% if include.color %} bg-{{ include.color }}{% endif %}" style="width: {{ percentage }}%" role="progressbar" aria-valuenow="{{ percentage }}" aria-valuemin="0" aria-valuemax="100">
+         {% if include.show-value %}
+            {{ percentage }}%
+         {% else %}
+            <span class="visually-hidden">{{ percentage }}% Complete</span>
+         {% endif %}
+      </div>
+   {% endif %}
+</div>

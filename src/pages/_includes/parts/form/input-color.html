@@ -1,0 +1,18 @@
+{% assign colors = 'dark,white' | split: ',' %}
+{% for color in site.colors limit: 9 %}
+{% assign colors = colors | push: color[0] %}
+{% endfor %}
+
+<div class="mb-3">
+	<label class="form-label">{{ include.label | default: 'Color Input' }}</label>
+	<div class="row g-2">
+		{% for color in colors %}
+		<div class="col-auto">
+			<label class="form-colorinput{% if color == 'white' %} form-colorinput-light{% endif %}">
+				<input name="{{ include.name | default: 'color' }}" type="radio" value="{{ color }}" class="form-colorinput-input" {% if forloop.index == 2 %} checked{% endif %}/>
+				<span class="form-colorinput-color bg-{{ color }}{% if include.rounded %} rounded-circle{% endif %}"></span>
+			</label>
+		</div>
+		{% endfor %}
+	</div>
+</div>

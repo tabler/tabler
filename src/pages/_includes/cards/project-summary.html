@@ -1,0 +1,14 @@
+<div class="card">
+	<div class="card-body p-4 py-5 text-center">
+		{% include ui/avatar.html size="xl" placeholder="W" class="mb-4" color=include.project-color rounded=true %}
+		<h3 class="mb-0">{{ include.title | default: "New website" }}</h3>
+		<p class="text-muted">Due to: {{ include.date | default: '28 Aug 2019' }}</p>
+		<p class="mb-3">
+			<span class="badge bg-{{ include.stage-color | default: 'green' }}-lt">{{ include.stage | default: 'Waiting' }}</span>
+		</p>
+		<div>
+			{% include ui/avatar-list.html stacked=true offset=include.avatar-offset limit=include.avatar-limit %}
+		</div>
+	</div>
+	{% include ui/progress.html class="card-progress" value=include.percentage color=include.percentage-color %}
+</div>

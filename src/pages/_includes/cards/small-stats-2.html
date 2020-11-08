@@ -1,0 +1,26 @@
+{% assign icon = include.icon | default: "user" %}
+{% if include.growth > 0 %}
+	{% assign color="green" %}
+	{% assign arrow="arrow-up" %}
+{% elsif include.growth < 0 %}
+	{% assign color="red" %}
+	{% assign arrow="arrow-down" %}
+{% else %}
+	{% assign color="grey" %}
+	{% assign arrow="clock" %}
+{% endif %}
+
+
+<div class="card" data-color={{color}}>
+	<div class="card-body">
+		<div class="float-right avatar{% if include.color %} bg-{{ include.color }}{% if include.light %}-lt{% else %} text-white{% endif %}{% endif %}">
+			{% include ui/icon.html icon=icon %}
+		</div>
+		<div class="text-muted font-weight-normal mt-0">{{ include.title | default: 'Customers' }}</div>
+		<h3 class="h2 mt-2 mb-3">{{ include.count | default: "1,850" }}</h3>
+		<p class="mb-0 text-muted">
+			{% include ui/trending.html value=include.growth %}
+			<span class="text-nowrap">{{ include.description | default: 'Since last month' }}</span>
+		</p>
+	</div>
+</div>

@@ -1,0 +1,51 @@
+{% assign current-menu = page.menu | split: '.' %}
+
+<ul class="nav nav-pills nav-vertical">
+	{% for doc in site.data.docs %}
+	<li class="nav-item">
+		{% assign key = doc[0] %}
+		{% assign item = doc[1] %}
+
+		{% assign current-item = false %}
+		{% if current-menu[1] == key %}
+			{% assign current-item = true %}
+		{% endif %}
+
+		<a href="{% if item.children %}#menu-{{ key }}{% else %}{{ site.base }}{{ item.url | relative_url }}{% endif %}" class="nav-link{% unless item.children %}{% if current-item %} active{% endif %}{% endunless %}"{% if item.children %} data-toggle="collapse" aria-expanded="{% if current-item %}true{% else %}false{% endif %}"{% endif %}>
+			{% if item.icon %}
+				<span class="nav-link-icon">{% include ui/icon.html icon=item.icon %}</span>
+			{% endif %}
+
+			{{ item.title }}
+
+			{% if item.show-version %}
+				<span class="badge bg-blue-lt ml-auto">{{ site.data.package.version }}</span>
+			{% endif %}
+
+			{% if item.children %}
+				<span class="nav-link-toggle"></span>
+			{% endif %}
+		</a>
+
+		{% if item.children %}
+			<ul class="nav collapse{% if current-item %} show{% endif %}" id="menu-{{ key }}">
+			{% for subdoc in item.children %}
+				{% assign subkey = subdoc[0] %}
+				{% assign subitem = subdoc[1] %}
+
+				{% assign current-subitem = false %}
+				{% if current-menu[2] == subkey %}
+					{% assign current-subitem = true %}
+				{% endif %}
+
+				<li class="nav-item">
+					<a href="{{ site.base }}{{ subitem.url | relative_url }}" class="nav-link{% if current-subitem %} active{% endif %}">
+						{{ subitem.title }}
+					</a>
+				</li>
+			{% endfor %}
+			</ul>
+		{% endif %}
+	</li>
+	{% endfor %}
+</ul>

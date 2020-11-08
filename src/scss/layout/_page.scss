@@ -1,0 +1,54 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-height: 100vh;
+}
+
+.content {
+  margin-top: $content-padding-y;
+  margin-bottom: $content-padding-y;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+
+  >[class*="container"] {
+    flex: 1;
+  }
+
+  @media print {
+    margin: 0 !important;
+  }
+}
+
+.page-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  min-height: 2.25rem;
+  margin: 0 0 $content-padding-y;
+
+  >* {
+    flex: 1;
+  }
+}
+
+.page-pretitle {
+  @include subheader;
+}
+
+.page-title {
+  margin: 0;
+  font-size: $h2-font-size;
+  line-height: $h2-line-height;
+  font-weight: $font-weight-medium;
+  color: inherit;
+  display: flex;
+  align-items: center;
+
+  svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-inline-end: .25rem;
+  }
+}

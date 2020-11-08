@@ -1,0 +1,115 @@
+{% removeemptylines %}
+{% assign link = include.link | default: false %}
+<{% if link %}a href="#"{% else %}div{% endif %} class="card{% if include.active %} card-active{% endif %}{% if include.inactive %} card-inactive{% endif %}{% if include.class %} {{ include.class }}{% endif %}">
+
+	{% if include['empty'] %}
+		{% include ui/empty.html illustration=true %}
+
+	{% else %}
+
+		{% if include.img-top %}
+		<div class="card-img-top img-responsive img-responsive-16by9" style="background-image: url({{ site.base }}/static/photos/9f36332564ca271d.jpg)"></div>
+		{% endif %}
+
+		{% if include.status-top %}
+			<div class="card-status-top bg-{{ include.status-top | default: 'blue' }}"></div>
+		{% elsif include.status-bottom %}
+			<div class="card-status-bottom bg-{{ include.status-bottom | default: 'blue' }}"></div>
+		{% elsif include.status-left %}
+			<div class="card-status-left bg-{{ include.status-left | default: 'blue' }}"></div>
+		{% endif %}
+
+		{% if include.header or include.header-title or include.header-tabs or include.header-pills %}
+		<div class="card-header">
+			{% if include.header-tabs or include.header-pills %}
+				{% include ui/nav.html header=true pills=include.header-pills tabs=include.header-tabs %}
+
+			{% else %}
+				<h3 class="card-title">{{ include.header-title | default: 'Header title' }}</h3>
+			{% endif %}
+		</div>
+		{% endif %}
+
+		{% if include.alert %}
+		<div class="card-alert alert alert-{{ include.alert-type | default: 'success' }} mb-0">
+			{{ include.alert }}
+		</div>
+		{% endif %}
+		<div class="card-body">
+			{% if include.title %}
+			<h3 class="card-title">{{ include.title }}</h3>
+			{% endif %}
+			{% if include.subtitle %}
+			<div class="card-subtitle">Card subtitle</div>
+			{% endif %}
+
+			{% if include.body %}
+			<p>{{ include.body }}</p>
+			{% else %}
+			<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit incidunt, iste, itaque minima
+				neque pariatur perferendis sed suscipit velit vitae voluptatem.</p>
+			{% endif %}
+
+			{% if include.button %}
+			<div class="card-text">
+				<a href="#" class="btn btn-primary">Go somewhere</a>
+			</div>
+			{% endif %}
+		</div>
+
+		{% if include.footer or include.footer-button or include.footer-buttons or include.footer-elements %}
+		<!-- Card footer -->
+		<div class="card-footer">
+			{% if include.footer-elements %}
+			<div class="row align-items-center">
+				{% assign elements = include.footer-elements | split: "," %}
+
+				{% for element in elements %}
+					{% assign el = element %}
+					{% assign first_letter = el | slice: 0 %}
+					{% if first_letter == ">" %}
+						{% assign right = true %}
+						{% assign el = element | slice: 1, element.size %}
+					{% endif %}
+
+					<div class="col-auto{% if right %} ml-auto{% endif %}">
+						{% case el %}
+							{% when "switch" %}
+								{% include ui/form/check.html switch=true empty=true checked=true class="m-0" %}
+							{% when "check" %}
+								{% include ui/form/check.html empty=true checked=true class="m-0" %}
+							{% when "avatars" %}
+								{% include ui/avatar-list.html stacked=true text="+3" %}
+							{% when "more" %}
+								<a href="#">More information</a>
+						{% endcase %}
+					</div>
+				{% endfor %}
+			</div>
+
+			{% elsif include.footer-button %}
+			<a href="#" class="btn btn-primary">Go somewhere</a>
+
+			{% elsif include.footer-buttons %}
+			<div class="d-flex">
+				<a href="#" class="btn btn-link">Cancel</a>
+				<a href="#" class="btn btn-primary ml-auto">Go somewhere</a>
+			</div>
+
+			{% else %}
+			This is standard card footer
+
+			{% endif %}
+		</div>
+		{% endif %}
+
+		{% if include.img-bottom %}
+		<div class="card-img-bottom img-responsive img-responsive-16by9" style="background-image: url({{ site.base }}/static/photos/56614e12b2a7bd68.jpg)"></div>
+		{% endif %}
+
+		{% if include.progress %}
+			{% include ui/progress.html class="progress-sm card-progress" %}
+		{% endif %}
+	{% endif %}
+</{% if link %}a{% else %}div{% endif %}>
+{% endremoveemptylines %}

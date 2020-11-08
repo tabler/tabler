@@ -1,0 +1,67 @@
+@keyframes progress-indeterminate {
+  0% {
+    right: 100%;
+    left: -35%;
+  }
+
+  100%,
+  60% {
+    right: -90%;
+    left: 100%;
+  }
+}
+
+.progress {
+  position: relative;
+  width: 100%;
+  line-height: $progress-height;
+  appearance: none;
+
+  &::-webkit-progress-bar {
+    background: $gray-100;
+  }
+
+  &::-webkit-progress-value {
+    background-color: $primary;
+  }
+
+  &::-moz-progress-bar {
+    background-color: $primary;
+  }
+
+  &::-ms-fill {
+    background-color: $primary;
+    border: none;
+  }
+}
+
+.progress-sm {
+  height: .25rem;
+}
+
+.progress-bar {
+  height: 100%;
+}
+
+.progress-bar-indeterminate {
+  &:after,
+  &:before {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    content: "";
+    background-color: inherit;
+    will-change: left, right;
+  }
+
+  &:before {
+    animation: progress-indeterminate 2.1s cubic-bezier(.65, .815, .735, .395) infinite;
+  }
+}
+
+.progress-separated {
+  .progress-bar {
+    border-right: 2px solid $white;
+  }
+}

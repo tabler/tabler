@@ -1,0 +1,71 @@
+{% removeemptylines %}
+{% assign colors = include.colors | default: 1 %}
+<script>
+	var generateData = function() {
+		var data = [],
+			min = 0,
+			max = 100,
+			count = {{ include.count | default: 15 }};
+
+		for (var n = 0; n < count; n++) {
+			data.push({
+				x: (n + 1).toString(),
+				y: Math.floor(Math.random() * (max - min + 1)) + min
+			});
+		}
+
+		return data;
+	};
+
+	var options = {
+		chart: {
+			height: 400,
+			type: "heatmap"
+		},
+		dataLabels: {
+			enabled: {% if include.labels %}true{% else %}false{% endif %}
+		},
+		{% if include.scale %}
+		plotOptions: {
+			heatmap: {
+				enableShades: {% unless include.no-shades %}true{% else %}false{% endunless %},
+				colorScale: {
+					ranges: [{
+						from: 0,
+						to: 20,
+						name: "Low",
+						color: tabler.colors.green
+					}, {
+						from: 21,
+						to: 50,
+						name: "Medium",
+						color: tabler.colors.blue
+					}, {
+						from: 51,
+						to: 75,
+						name: "High",
+						color: tabler.colors.yellow
+					}, {
+						from: 76,
+						to: 100,
+						name: "Extreme",
+						color: tabler.colors.red
+					}]
+				}
+			}
+		},
+		{% else %}
+		colors: [{% if include.color %}'{{ include.color }}'{% else %}{% for color in site.colors limit: colors %}tabler.colors.{{ color[0] }}, {% endfor %}{% endif %}],
+		{% endif %}
+		series: [
+		{% for i in site.monthsshort limit: 12 %}
+			{ name: "{{ i }}", data: generateData() },{% endfor %}
+		],
+		xaxis: {
+			type: "category"
+		}
+	};
+
+	(new ApexCharts(document.querySelector("#{{ include.id }}"),options)).render();
+</script>
+{% endremoveemptylines %}

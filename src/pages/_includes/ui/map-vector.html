@@ -1,0 +1,48 @@
+{% assign id = include.map-id %}
+{% assign data = site.data.maps-vector[id] %}
+{% assign color = include.color | default: data.color | default: 'green' %}
+
+{% if data %}
+	<div class="ratio ratio-16x9">
+		<div>
+			<div id="map-{{ id }}" class="w-100 h-100"></div>
+		</div>
+	</div>
+
+	{% capture script %}
+	<script>
+		// @formatter:on
+		{% if jekyll.environment == 'development' %}window.tabler_map_vector = window.tabler_map_vector || {};{% endif %}
+
+		document.addEventListener("DOMContentLoaded", function() {
+			{% if jekyll.environment == 'development' %}window.tabler_map_vector["map-{{ id }}"] = {% endif %}$('#map-{{ id }}').vectorMap({
+				map: '{{ data.map }}',
+				backgroundColor: 'transparent',
+				color: 'rgba(120, 130, 140, .1)',
+				borderColor: 'transparent',
+				{% if data.zoom %}enableZoom: true,{% endif %}
+				{% if data.values %}
+				{% assign color-light = color | append: "-100" %}
+				scaleColors: ["{{ color | tabler_color: '100' }}", "{{ color | tabler_color }}"],
+				normalizeFunction: 'polynomial',
+				values: (chart_data = {{ data.values }}),
+				onLabelShow: function (event, label, code) {
+					if (chart_data[code] > 0) {
+						label.append(': <strong>' + chart_data[code] + '</strong>');
+					}
+				},
+				{% endif %}
+			});
+		});
+		// @formatter:off
+	</script>
+	{% endcapture %}
+
+	{% if include.show-scripts %}
+		{{ script }}
+	{% else %}
+		{% capture_global scripts %}
+			{{ script }}
+		{% endcapture_global %}
+	{% endif %}
+{% endif %}

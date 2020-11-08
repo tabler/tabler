@@ -1,0 +1,104 @@
+.avatar {
+  --#{$variable-prefix}avatar-size: #{$avatar-size};
+  position: relative;
+  width: var(--#{$variable-prefix}avatar-size);
+  height: var(--#{$variable-prefix}avatar-size);
+  font-size: calc(var(--#{$variable-prefix}avatar-size) / #{$line-height-base * 2});
+  font-weight: $font-weight-normal;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: $text-muted;
+  text-align: center;
+  text-transform: uppercase;
+  vertical-align: bottom;
+  user-select: none;
+  background: $gray-200 no-repeat center/cover;
+  border-radius: $avatar-border-radius;
+
+  svg {
+    width: 1.5rem;
+    height: 1.5rem;
+  }
+
+  .badge {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    border-radius: $border-radius-full;
+    box-shadow: 0 0 0 2px #fff;
+  }
+
+  @at-root a#{&} {
+    cursor: pointer;
+  }
+}
+
+.avatar-rounded {
+  border-radius: $border-radius-full;
+}
+
+@each $avatar-size, $size in $avatar-sizes {
+  .avatar-#{$avatar-size} {
+    --#{$variable-prefix}avatar-size: #{$size};
+  }
+}
+
+
+.avatar-list {
+  display: inline-flex;
+  padding: 0;
+  margin: 0 0 -.5rem;
+
+  .avatar {
+    margin-bottom: .5rem;
+
+    &:not(:last-child) {
+      margin-right: .5rem;
+    }
+  }
+
+  a.avatar {
+    &:hover {
+      z-index: 1;
+    }
+  }
+}
+
+.avatar-list-stacked {
+  .avatar {
+    margin-right: -.5rem !important;
+    box-shadow: 0 0 0 2px #fff;
+
+    @at-root .card-footer & {
+      box-shadow: 0 0 0 2px $card-cap-bg;
+    }
+  }
+}
+
+.avatar-upload {
+  width: 4rem;
+  height: 4rem;
+  border: 1px dashed $border-color;
+  background: $form-check-input-bg;
+  flex-direction: column;
+  transition: .3s color, .3s background-color;
+
+  svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    stroke-width: 1;
+  }
+
+  &:hover {
+    border-color: $primary;
+    color: $primary;
+    text-decoration: none;
+  }
+}
+
+.avatar-upload-text {
+  font-size: $h6-font-size;
+  line-height: 1;
+  margin-top: .25rem;
+}
