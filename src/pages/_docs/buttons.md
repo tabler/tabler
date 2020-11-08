@@ -219,7 +219,7 @@ Add the `.btn-icon` class to remove unnecessary padding from your button and use
 
 {% capture code %}
 {% include ui/button.html icon="activity" color="primary" icon-only=true %}
-{% include ui/button.html icon="brand/github" color="github" icon-only=true %}
+{% include ui/button.html icon="brand-github" color="github" icon-only=true %}
 {% include ui/button.html icon="bell" color="success" icon-only=true %}
 {% include ui/button.html icon="star" color="warning" icon-only=true %}
 {% include ui/button.html icon="trash" color="danger" icon-only=true %}

@@ -69,7 +69,7 @@ if (!Array.prototype.flat) {
 }
 
 /**
- * Import tabler-icons form npm and other svg files from `/svg/brand/` directory and generate Jekyll `.yml` data files
+ * Import tabler-icons form npm and generate Jekyll `.yml` data files
  */
 gulp.task('svg-icons', (cb) => {
 	const prepareSvgFile = (svg) => {
