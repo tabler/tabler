@@ -133,7 +133,7 @@ gulp.task('clean-dirs', () => {
 });
 
 gulp.task('clean-jekyll', (cb) => {
-	return cp.spawn('bundle', ['exec', 'jekyll', 'clean'], { stdio: 'inherit' })
+	return spawn('bundle', ['exec', 'jekyll', 'clean'], { stdio: 'inherit' })
 		.on('close', cb);
 });
 
