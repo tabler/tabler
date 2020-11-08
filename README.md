@@ -9,11 +9,7 @@ A premium and open source dashboard template with a responsive and high-quality 
 
 ## Status
 
-<a href="#backers" alt="sponsors on Open Collective"><img src="https://opencollective.com/tabler/backers/badge.svg"></a> 
-<a href="#sponsors" alt="Sponsors on Open Collective"><img src="https://opencollective.com/tabler/sponsors/badge.svg"></a> 
-<a href="https://www.npmjs.com/package/tabler"><img src="https://img.shields.io/npm/dt/tabler.svg" alt="Total Downloads"></a> 
-<a href="https://github.com/tabler/tabler/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/tabler.svg" alt="License"></a> 
-<a href="https://github.com/tabler/tabler/releases"><img src="https://img.shields.io/npm/v/tabler.svg" alt="Latest Release"></a>
+<a href="#backers" alt="Backers Open Collective"><img src="https://opencollective.com/tabler/backers/badge.svg"/></a> <a href="#sponsors" alt="Sponsors on Open Collective"><img src="https://opencollective.com/tabler/sponsors/badge.svg"/></a> <a href="https://www.npmjs.com/package/tabler"><img src="https://img.shields.io/npm/dt/tabler.svg" alt="Total Downloads"></a> <a href="https://github.com/tabler/tabler/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/tabler.svg" alt="License"></a> <a href="https://github.com/tabler/tabler/releases"><img src="https://img.shields.io/npm/v/tabler.svg" alt="Latest Release"></a>
 
 
 ## Features
