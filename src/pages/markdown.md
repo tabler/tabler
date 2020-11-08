@@ -1,6 +1,7 @@
 ---
 title: Markdown
 page-header: Markdown
+menu: base.markdown
 ---
 
 # Who's that then?
@@ -57,39 +58,82 @@ You can't expect to wield supreme power just 'cause some watery tart threw a swo
 
 What do you mean? Listen. Strange women lying in ponds distributing swords is no basis for a system of government. Supreme executive power derives from a mandate from the masses, not from some farcical aquatic ceremony.
 
+![Image Alt]({{ site.base }}/static/photos/{{ site.data.photos[4].file }})
+
 Well, how'd you become king, then? You can't expect to wield supreme power just 'cause some watery tart threw a sword at you! The Lady of the Lake, her arm clad in the purest shimmering samite, held aloft Excalibur from the bosom of the water, signifying by divine providence that I, Arthur, was to carry Excalibur. That is why I am your king.
 
 Well, I got better. Shut up! Will you shut up?! Well, I got better. I don't want to talk to you no more, you empty-headed animal food trough water! I fart in your general direction! Your mother was a hamster and your father smelt of elderberries! Now leave before I am forced to taunt you a second time!
+
+---
+
+# Typographic elements
+
+
+
+## Emphasis
+
+**This is bold text**
+
+__This is bold text__
+
+*This is italic text*
+
+_This is italic text_
+
+~~Strikethrough~~
+
+## Blockquotes
+
+> Blockquotes can also be nested...
+>> ...by using additional greater-than signs right next to each other...
+> > > ...or with spaces between arrows.
 
 Bloody Peasant! What do you mean? It's only a model. Well, Mercia's a temperate zone!
 
 I am your king. Shh! Knights, I bid you welcome to your new home. Let us ride to Camelot! Ni! Ni! Ni! Ni! Who's that then? Listen. Strange women lying in ponds distributing swords is no basis for a system of government. Supreme executive power derives from a mandate from the masses, not from some farcical aquatic ceremony.
 
-Bloody Peasant! What a strange person. Burn her anyway! Camelot! You don't vote for kings.
+## Lists
 
-You don't vote for kings. I dunno. Must be a king. How do you know she is a witch? Why? I don't want to talk to you no more, you empty-headed animal food trough water! I fart in your general direction! Your mother was a hamster and your father smelt of elderberries! Now leave before I am forced to taunt you a second time!
+Unordered
+
++ Create a list by starting a line with `+`, `-`, or `*`
++ Sub-lists are made by indenting 2 spaces:
+  - Marker character change forces new list start:
+    * Ac tristique libero volutpat at
+    + Facilisis in pretium nisl aliquet
+    - Nulla volutpat aliquam velit
++ Very easy!
+
+Ordered
+
+1. Lorem ipsum dolor sit amet
+2. Consectetur adipiscing elit
+3. Integer molestie lorem at massa
+
+## Code
+
+Inline `code`
+
+Indented code
+
+    // Some comments
+    line 1 of code
+    line 2 of code
+    line 3 of code
 
 
-# Heading 1
+Block code "fences"
 
-Bloody Peasant! What do you mean? It's only a model. Well, Mercia's a temperate zone!
+```
+Sample text here...
+```
 
+Syntax highlighting
 
-## Heading 2
+``` js
+var foo = function (bar) {
+  return bar++;
+};
 
-Bloody Peasant! What do you mean? It's only a model. Well, Mercia's a temperate zone!
-
-
-### Heading 3
-
-Bloody Peasant! What do you mean? It's only a model. Well, Mercia's a temperate zone!
-
-
-#### Heading 4
-
-Bloody Peasant! What do you mean? It's only a model. Well, Mercia's a temperate zone!
-
-
-##### Heading 5
-
-Bloody Peasant! What do you mean? It's only a model. Well, Mercia's a temperate zone!
+console.log(foo(5));
+```

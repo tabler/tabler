@@ -14,6 +14,7 @@
 	{% assign svg-icon = site.data[icon-provider][icon-name] | default: '' %}
 {% endif %}
 
+
 {% assign replace-to = "icon" %}
 
 {% if include.right %}
@@ -28,7 +29,12 @@
 {% assign replace-to = replace-to | append: ' text-' | append: include.color %}
 {% endif %}
 
+{% if include['size'] %}
+{% assign replace-to = replace-to | append: ' icon-' | append: include['size'] %}
+{% endif %}
+
 {% assign replace-to = 'class="' | append: replace-to | append: '"' %}
 
 {{ svg-icon | replace_regex: 'class=\"[^"]+\"', replace-to }}
+
 {% endremoveemptylines %}

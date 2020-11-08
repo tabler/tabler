@@ -1,4 +1,11 @@
-{% removeemptylines %}
+{% assign id = include.chart-id %}
+{% assign class = include.class %}
+{% assign height = include.height | default: data.height | default: 25 %}
+{% assign class = include.class %}
+
+<div id="chart-{{ id }}"{% if class %} class="{{ class }}"{% endif %}></div>
+
+{% capture script %}
 {% assign colors = include.colors | default: 1 %}
 <script>
 	var generateData = function() {
@@ -19,8 +26,11 @@
 
 	var options = {
 		chart: {
-			height: 400,
-			type: "heatmap"
+			height: {{ height | times: 16 }},
+			type: "heatmap",
+			toolbar: {
+				show: false,
+			},
 		},
 		dataLabels: {
 			enabled: {% if include.labels %}true{% else %}false{% endif %}
@@ -34,31 +44,31 @@
 						from: 0,
 						to: 20,
 						name: "Low",
-						color: tabler.colors.green
+						color: "{{ "green" | tabler_color }}"
 					}, {
 						from: 21,
 						to: 50,
 						name: "Medium",
-						color: tabler.colors.blue
+						color: "{{ "blue" | tabler_color }}"
 					}, {
 						from: 51,
 						to: 75,
 						name: "High",
-						color: tabler.colors.yellow
+						color: "{{ "yellow" | tabler_color }}"
 					}, {
 						from: 76,
 						to: 100,
 						name: "Extreme",
-						color: tabler.colors.red
+						color: "{{ "red" | tabler_color }}"
 					}]
 				}
 			}
 		},
 		{% else %}
-		colors: [{% if include.color %}'{{ include.color }}'{% else %}{% for color in site.colors limit: colors %}tabler.colors.{{ color[0] }}, {% endfor %}{% endif %}],
+		colors: [{% if include.color %}'{{ include.color }}'{% else %}{% for color in site.colors limit: colors %}"{{ color[0] | tabler_color }}", {% endfor %}{% endif %}],
 		{% endif %}
 		series: [
-		{% for i in site.monthsshort limit: 12 %}
+		{% for i in site.months-short limit: 12 %}
 			{ name: "{{ i }}", data: generateData() },{% endfor %}
 		],
 		xaxis: {
@@ -66,6 +76,14 @@
 		}
 	};
 
-	(new ApexCharts(document.querySelector("#{{ include.id }}"),options)).render();
+	(new ApexCharts(document.querySelector("#chart-{{ id }}"),options)).render();
 </script>
-{% endremoveemptylines %}
+{% endcapture %}
+
+{% if include.show-scripts %}
+{{ script }}
+{% else %}
+{% capture_global scripts %}
+{{ script }}
+{% endcapture_global %}
+{% endif %}

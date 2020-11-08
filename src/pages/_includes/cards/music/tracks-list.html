@@ -7,7 +7,7 @@
 					{{ forloop.index }}
 				</div>
 				<div class="col-auto">
-					<img src="{{ site.base }}/static/tracks/{{ track.album.images[1].path }}" class="rounded" alt="{{ track.name | escape }}" width="48" height="48">
+					<img src="{{ site.base }}/static/tracks/{{ track.album.images[1].path }}" class="rounded" alt="{{ track.name | escape }}" width="40" height="40">
 				</div>
 				<div class="col">
 					{{ track.name }}
@@ -21,9 +21,11 @@
 					{{ track.duration_ms | miliseconds_to_minutes }}
 				</div>
 				<div class="col-auto">
-					<a href="#" class="link-secondary">{% include ui/icon.html icon="heart" %}</a>
+					<a href="#" class="link-secondary">
+						{% include ui/switch-icon.html icon="heart" %}
+					</a>
 				</div>
-				<div class="col-auto">
+				<div class="col-auto lh-1">
 					<div class="dropdown">
 						<a href="#" class="link-secondary" data-toggle="dropdown">{% include ui/icon.html icon="dots" %}</a>
 						{% include ui/dropdown-menu.html right=true %}
