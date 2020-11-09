@@ -141,16 +141,6 @@ Add `.btn-lg` or `.btn-sm` to change the size of your button and differentiate t
 {% endcapture %}
 {% include example.html code=code wrapper="btn-list" centered=true %}
 
-You can also add the `.btn-block` class to create block level buttons which span the full width of a parent.
-
-{% capture code %}
-<div>
-  <button type="button" class="btn btn-primary btn-block">Block level button</button>
-  <button type="button" class="btn btn-block">Block level button</button>
-</div>
-{% endcapture %}
-{% include example.html code=code wrapper="btn-list" centered=true %}
-
 
 ## Buttons with icons
 
