@@ -1,4 +1,8 @@
 {% assign icons = include.icons %}
+{% assign limit = 20 %}
+{% if jekyll.environment == 'production' %}
+	{% assign limit = null %}
+{% endif %}
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">{{ include.title }}</div>
@@ -13,16 +17,18 @@
 					<div data-icon-preview-icon>
 						{{ first-icon-svg }}
 					</div>
-					<h2 class="mt-2" data-icon-preview-title>{{ first-icon }}</h2>
-					<pre class="highlight user-select-all" style="max-height: 10rem"><code data-icon-preview-code>{{ first-icon-svg | escape }}</code></pre>
+					<h2 class="my-2" data-icon-preview-title>{{ first-icon }}</h2>
+					<div class="demo-icon-preview-icon" data-icon-preview-code>
+						{% highlight html %}{{ first-icon-svg }}{% endhighlight %}
+					</div>
 				</div>
 			</div>
 			<div class="col">
 				<div class="icons-list-wrap">
 					<ul class="icons-list">
-						{% for icon in icons %}
+						{% for icon in icons limit: limit %}
 						<li class="icons-list-item">
-							<a href="#" class="text-reset" data-toggle-icon="{{ icon }}" data-toggle="tooltip" title="{{ icon }}">
+							<a href="#" class="text-reset" data-toggle-icon="{{ icon }}" data-toggle="tooltip" title="{{ icon }}" data-icon-svg="{% capture svg %}{% highlight html %}{% include ui/icon.html icon=icon %}{% endhighlight %}{% endcapture %}{{ svg | escape }}">
 								{% include ui/icon.html icon=icon %}
 							</a>
 						</li>
@@ -54,11 +60,14 @@
 				element.addEventListener('click', function(e){
 					var icon = this.dataset.toggleIcon,
 						svg = this.innerHTML,
+						iconCode = this.dataset.iconSvg,
 						editor = getClosest(this, '[data-icon-preview]');
+
+					console.log('iconCode', iconCode);
 
 					editor.querySelectorAll('[data-icon-preview-icon]')[0].innerHTML = svg;
 					editor.querySelectorAll('[data-icon-preview-title]')[0].innerText = icon;
-					editor.querySelectorAll('[data-icon-preview-code]')[0].innerText = svg.trim();
+					editor.querySelectorAll('[data-icon-preview-code]')[0].innerHTML = iconCode.trim();
 
 					e.preventDefault();
 					return false;
