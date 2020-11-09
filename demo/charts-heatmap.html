@@ -1,7 +1,7 @@
 <!doctype html>
 <!--
 * Tabler - Premium and Open Source dashboard template with responsive and high quality UI.
-* @version 1.0.0-alpha.11
+* @version 1.0.0-alpha.12
 * @link https://tabler.io
 * Copyright 2018-2020 The Tabler Authors
 * Copyright 2018-2020 codecalm.net Paweł Kuna
@@ -37,7 +37,7 @@
   </head>
   <body class="antialiased">
     <div class="page">
-      <header class="navbar navbar-expand-md navbar-light">
+      <header class="navbar navbar-expand-md navbar-light d-print-none">
         <div class="container-xl">
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu">
             <span class="navbar-toggler-icon"></span>
@@ -163,6 +163,11 @@
                       </a>
                     </li>
                     <li >
+                      <a class="dropdown-item" href="./charts-heatmap.html" >
+                        Charts heatmap
+                      </a>
+                    </li>
+                    <li >
                       <a class="dropdown-item" href="./pagination.html" >
                         Pagination
                       </a>
@@ -170,6 +175,11 @@
                     <li >
                       <a class="dropdown-item" href="./skeleton.html" >
                         Skeleton
+                      </a>
+                    </li>
+                    <li >
+                      <a class="dropdown-item" href="./tabs.html" >
+                        Tabs
                       </a>
                     </li>
                     <li >
@@ -193,8 +203,13 @@
                       </a>
                     </li>
                     <li >
-                      <a class="dropdown-item" href="./docs-index.html" >
-                        Docs index
+                      <a class="dropdown-item" href="./typography.html" >
+                        Typography
+                      </a>
+                    </li>
+                    <li >
+                      <a class="dropdown-item" href="./markdown.html" >
+                        Markdown
                       </a>
                     </li>
                     <li class="dropright">
@@ -271,6 +286,11 @@
                     <li >
                       <a class="dropdown-item" href="./gallery.html" >
                         Gallery
+                      </a>
+                    </li>
+                    <li >
+                      <a class="dropdown-item" href="./license.html" >
+                        License
                       </a>
                     </li>
                     <li >
@@ -388,7 +408,7 @@
       <div class="content">
         <div class="container-xl">
           <!-- Page title -->
-          <div class="page-header">
+          <div class="page-header d-print-none">
             <div class="row align-items-center">
               <div class="col">
                 <h2 class="page-title">
@@ -397,193 +417,42 @@
               </div>
             </div>
           </div>
-          <div class="row">
+          <div class="row row-cards">
             <div class="col-xl-6">
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title">Basic Heatmap - Single Series</h4>
-                  <div id="heatmap-basic" class="chart"></div>
+                  <div id="chart-heatmap-basic"></div>
                 </div>
               </div>
-              <script>
-                var generateData = function() {
-                	var data = [],
-                		min = 0,
-                		max = 100,
-                		count = 15;
-                	for (var n = 0; n < count; n++) {
-                		data.push({
-                			x: (n + 1).toString(),
-                			y: Math.floor(Math.random() * (max - min + 1)) + min
-                		});
-                	}
-                	return data;
-                };
-                var options = {
-                	chart: {
-                		height: 400,
-                		type: "heatmap"
-                	},
-                	dataLabels: {
-                		enabled: false
-                	},
-                	colors: [tabler.colors.blue, ],
-                	series: [
-                	],
-                	xaxis: {
-                		type: "category"
-                	}
-                };
-                (new ApexCharts(document.querySelector("#heatmap-basic"),options)).render();
-              </script>
             </div>
             <div class="col-xl-6">
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title">Heatmap - Multiple series</h4>
-                  <div id="heatmap-multiple" class="chart"></div>
+                  <div id="chart-heatmap-multiple"></div>
                 </div>
               </div>
-              <script>
-                var generateData = function() {
-                	var data = [],
-                		min = 0,
-                		max = 100,
-                		count = 15;
-                	for (var n = 0; n < count; n++) {
-                		data.push({
-                			x: (n + 1).toString(),
-                			y: Math.floor(Math.random() * (max - min + 1)) + min
-                		});
-                	}
-                	return data;
-                };
-                var options = {
-                	chart: {
-                		height: 400,
-                		type: "heatmap"
-                	},
-                	dataLabels: {
-                		enabled: false
-                	},
-                	colors: [tabler.colors.blue, tabler.colors.azure, tabler.colors.indigo, tabler.colors.purple, tabler.colors.pink, tabler.colors.red, tabler.colors.orange, tabler.colors.yellow, tabler.colors.lime, tabler.colors.green, tabler.colors.teal, tabler.colors.cyan, ],
-                	series: [
-                	],
-                	xaxis: {
-                		type: "category"
-                	}
-                };
-                (new ApexCharts(document.querySelector("#heatmap-multiple"),options)).render();
-              </script>
             </div>
             <div class="col-xl-6">
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title">Heatmap - Labels included</h4>
-                  <div id="heatmap-labels" class="chart"></div>
+                  <div id="chart-heatmap-labels"></div>
                 </div>
               </div>
-              <script>
-                var generateData = function() {
-                	var data = [],
-                		min = 0,
-                		max = 100,
-                		count = 15;
-                	for (var n = 0; n < count; n++) {
-                		data.push({
-                			x: (n + 1).toString(),
-                			y: Math.floor(Math.random() * (max - min + 1)) + min
-                		});
-                	}
-                	return data;
-                };
-                var options = {
-                	chart: {
-                		height: 400,
-                		type: "heatmap"
-                	},
-                	dataLabels: {
-                		enabled: true
-                	},
-                	colors: [tabler.colors.blue, ],
-                	series: [
-                	],
-                	xaxis: {
-                		type: "category"
-                	}
-                };
-                (new ApexCharts(document.querySelector("#heatmap-labels"),options)).render();
-              </script>
             </div>
             <div class="col-xl-6">
               <div class="card">
                 <div class="card-body">
                   <h4 class="card-title">Heatmap - Color range</h4>
-                  <div id="heatmap-colors" class="chart"></div>
+                  <div id="chart-heatmap-colors"></div>
                 </div>
               </div>
-              <script>
-                var generateData = function() {
-                	var data = [],
-                		min = 0,
-                		max = 100,
-                		count = 15;
-                	for (var n = 0; n < count; n++) {
-                		data.push({
-                			x: (n + 1).toString(),
-                			y: Math.floor(Math.random() * (max - min + 1)) + min
-                		});
-                	}
-                	return data;
-                };
-                var options = {
-                	chart: {
-                		height: 400,
-                		type: "heatmap"
-                	},
-                	dataLabels: {
-                		enabled: false
-                	},
-                	plotOptions: {
-                		heatmap: {
-                			enableShades: true,
-                			colorScale: {
-                				ranges: [{
-                					from: 0,
-                					to: 20,
-                					name: "Low",
-                					color: tabler.colors.green
-                				}, {
-                					from: 21,
-                					to: 50,
-                					name: "Medium",
-                					color: tabler.colors.blue
-                				}, {
-                					from: 51,
-                					to: 75,
-                					name: "High",
-                					color: tabler.colors.yellow
-                				}, {
-                					from: 76,
-                					to: 100,
-                					name: "Extreme",
-                					color: tabler.colors.red
-                				}]
-                			}
-                		}
-                	},
-                	series: [
-                	],
-                	xaxis: {
-                		type: "category"
-                	}
-                };
-                (new ApexCharts(document.querySelector("#heatmap-colors"),options)).render();
-              </script>
             </div>
           </div>
         </div>
-        <footer class="footer footer-transparent">
+        <footer class="footer footer-transparent d-print-none">
           <div class="container">
             <div class="row text-center align-items-center flex-row-reverse">
               <div class="col-lg-auto ml-lg-auto">
@@ -601,7 +470,7 @@
                     All rights reserved.
                   </li>
                   <li class="list-inline-item">
-                    <a href="./changelog.html" class="link-secondary">v1.0.0-alpha.11</a>
+                    <a href="./changelog.html" class="link-secondary">v1.0.0-alpha.12</a>
                   </li>
                 </ul>
               </div>
@@ -612,8 +481,220 @@
     </div>
     <!-- Libs JS -->
     <script src="./dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="./dist/libs/apexcharts/dist/apexcharts.min.js"></script>
     <!-- Tabler Core -->
     <script src="./dist/js/tabler.min.js"></script>
+    <script>
+      var generateData = function() {
+      	var data = [],
+      		min = 0,
+      		max = 100,
+      		count = 15;
+      	for (var n = 0; n < count; n++) {
+      		data.push({
+      			x: (n + 1).toString(),
+      			y: Math.floor(Math.random() * (max - min + 1)) + min
+      		});
+      	}
+      	return data;
+      };
+      var options = {
+      	chart: {
+      		height: 400,
+      		type: "heatmap",
+      		toolbar: {
+      			show: false,
+      		},
+      	},
+      	dataLabels: {
+      		enabled: false
+      	},
+      	colors: ["#206bc4", ],
+      	series: [
+      		{ name: "Jan", data: generateData() },
+      		{ name: "Feb", data: generateData() },
+      		{ name: "Mar", data: generateData() },
+      		{ name: "Apr", data: generateData() },
+      		{ name: "May", data: generateData() },
+      		{ name: "Jun", data: generateData() },
+      		{ name: "Jul", data: generateData() },
+      		{ name: "Aug", data: generateData() },
+      		{ name: "Sep", data: generateData() },
+      		{ name: "Oct", data: generateData() },
+      		{ name: "Nov", data: generateData() },
+      		{ name: "Dec", data: generateData() },
+      	],
+      	xaxis: {
+      		type: "category"
+      	}
+      };
+      (new ApexCharts(document.querySelector("#chart-heatmap-basic"),options)).render();
+    </script>
+    <script>
+      var generateData = function() {
+      	var data = [],
+      		min = 0,
+      		max = 100,
+      		count = 15;
+      	for (var n = 0; n < count; n++) {
+      		data.push({
+      			x: (n + 1).toString(),
+      			y: Math.floor(Math.random() * (max - min + 1)) + min
+      		});
+      	}
+      	return data;
+      };
+      var options = {
+      	chart: {
+      		height: 400,
+      		type: "heatmap",
+      		toolbar: {
+      			show: false,
+      		},
+      	},
+      	dataLabels: {
+      		enabled: false
+      	},
+      	colors: ["#206bc4", "#45aaf2", "#6574cd", "#a55eea", "#f66d9b", "#cd201f", "#ff922b", "#fab005", "#94d82d", "#5eba00", "#2bcbba", "#17a2b8", ],
+      	series: [
+      		{ name: "Jan", data: generateData() },
+      		{ name: "Feb", data: generateData() },
+      		{ name: "Mar", data: generateData() },
+      		{ name: "Apr", data: generateData() },
+      		{ name: "May", data: generateData() },
+      		{ name: "Jun", data: generateData() },
+      		{ name: "Jul", data: generateData() },
+      		{ name: "Aug", data: generateData() },
+      		{ name: "Sep", data: generateData() },
+      		{ name: "Oct", data: generateData() },
+      		{ name: "Nov", data: generateData() },
+      		{ name: "Dec", data: generateData() },
+      	],
+      	xaxis: {
+      		type: "category"
+      	}
+      };
+      (new ApexCharts(document.querySelector("#chart-heatmap-multiple"),options)).render();
+    </script>
+    <script>
+      var generateData = function() {
+      	var data = [],
+      		min = 0,
+      		max = 100,
+      		count = 15;
+      	for (var n = 0; n < count; n++) {
+      		data.push({
+      			x: (n + 1).toString(),
+      			y: Math.floor(Math.random() * (max - min + 1)) + min
+      		});
+      	}
+      	return data;
+      };
+      var options = {
+      	chart: {
+      		height: 400,
+      		type: "heatmap",
+      		toolbar: {
+      			show: false,
+      		},
+      	},
+      	dataLabels: {
+      		enabled: true
+      	},
+      	colors: ["#206bc4", ],
+      	series: [
+      		{ name: "Jan", data: generateData() },
+      		{ name: "Feb", data: generateData() },
+      		{ name: "Mar", data: generateData() },
+      		{ name: "Apr", data: generateData() },
+      		{ name: "May", data: generateData() },
+      		{ name: "Jun", data: generateData() },
+      		{ name: "Jul", data: generateData() },
+      		{ name: "Aug", data: generateData() },
+      		{ name: "Sep", data: generateData() },
+      		{ name: "Oct", data: generateData() },
+      		{ name: "Nov", data: generateData() },
+      		{ name: "Dec", data: generateData() },
+      	],
+      	xaxis: {
+      		type: "category"
+      	}
+      };
+      (new ApexCharts(document.querySelector("#chart-heatmap-labels"),options)).render();
+    </script>
+    <script>
+      var generateData = function() {
+      	var data = [],
+      		min = 0,
+      		max = 100,
+      		count = 15;
+      	for (var n = 0; n < count; n++) {
+      		data.push({
+      			x: (n + 1).toString(),
+      			y: Math.floor(Math.random() * (max - min + 1)) + min
+      		});
+      	}
+      	return data;
+      };
+      var options = {
+      	chart: {
+      		height: 400,
+      		type: "heatmap",
+      		toolbar: {
+      			show: false,
+      		},
+      	},
+      	dataLabels: {
+      		enabled: false
+      	},
+      	plotOptions: {
+      		heatmap: {
+      			enableShades: true,
+      			colorScale: {
+      				ranges: [{
+      					from: 0,
+      					to: 20,
+      					name: "Low",
+      					color: "#5eba00"
+      				}, {
+      					from: 21,
+      					to: 50,
+      					name: "Medium",
+      					color: "#206bc4"
+      				}, {
+      					from: 51,
+      					to: 75,
+      					name: "High",
+      					color: "#fab005"
+      				}, {
+      					from: 76,
+      					to: 100,
+      					name: "Extreme",
+      					color: "#cd201f"
+      				}]
+      			}
+      		}
+      	},
+      	series: [
+      		{ name: "Jan", data: generateData() },
+      		{ name: "Feb", data: generateData() },
+      		{ name: "Mar", data: generateData() },
+      		{ name: "Apr", data: generateData() },
+      		{ name: "May", data: generateData() },
+      		{ name: "Jun", data: generateData() },
+      		{ name: "Jul", data: generateData() },
+      		{ name: "Aug", data: generateData() },
+      		{ name: "Sep", data: generateData() },
+      		{ name: "Oct", data: generateData() },
+      		{ name: "Nov", data: generateData() },
+      		{ name: "Dec", data: generateData() },
+      	],
+      	xaxis: {
+      		type: "category"
+      	}
+      };
+      (new ApexCharts(document.querySelector("#chart-heatmap-colors"),options)).render();
+    </script>
     <script>
       document.body.style.display = "block"
     </script>

@@ -1,7 +1,7 @@
 <!doctype html>
 <!--
 * Tabler - Premium and Open Source dashboard template with responsive and high quality UI.
-* @version 1.0.0-alpha.11
+* @version 1.0.0-alpha.12
 * @link https://tabler.io
 * Copyright 2018-2020 The Tabler Authors
 * Copyright 2018-2020 codecalm.net Paweł Kuna
@@ -38,7 +38,7 @@
   </head>
   <body class="antialiased">
     <div class="page">
-      <header class="navbar navbar-expand-md navbar-light">
+      <header class="navbar navbar-expand-md navbar-light d-print-none">
         <div class="container-xl">
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar-menu">
             <span class="navbar-toggler-icon"></span>
@@ -164,6 +164,11 @@
                       </a>
                     </li>
                     <li >
+                      <a class="dropdown-item" href="./charts-heatmap.html" >
+                        Charts heatmap
+                      </a>
+                    </li>
+                    <li >
                       <a class="dropdown-item" href="./pagination.html" >
                         Pagination
                       </a>
@@ -171,6 +176,11 @@
                     <li >
                       <a class="dropdown-item" href="./skeleton.html" >
                         Skeleton
+                      </a>
+                    </li>
+                    <li >
+                      <a class="dropdown-item" href="./tabs.html" >
+                        Tabs
                       </a>
                     </li>
                     <li >
@@ -194,8 +204,13 @@
                       </a>
                     </li>
                     <li >
-                      <a class="dropdown-item" href="./docs-index.html" >
-                        Docs index
+                      <a class="dropdown-item" href="./typography.html" >
+                        Typography
+                      </a>
+                    </li>
+                    <li >
+                      <a class="dropdown-item" href="./markdown.html" >
+                        Markdown
                       </a>
                     </li>
                     <li class="dropright">
@@ -272,6 +287,11 @@
                     <li >
                       <a class="dropdown-item" href="./gallery.html" >
                         Gallery
+                      </a>
+                    </li>
+                    <li >
+                      <a class="dropdown-item" href="./license.html" >
+                        License
                       </a>
                     </li>
                     <li >
@@ -389,7 +409,7 @@
       <div class="content">
         <div class="container-xl">
           <!-- Page title -->
-          <div class="page-header">
+          <div class="page-header d-print-none">
             <div class="row align-items-center">
               <div class="col">
                 <!-- Page pre-title -->
@@ -694,9 +714,17 @@
                   <div class="card-title">Development activity</div>
                 </div>
                 <div class="position-relative">
-                  <div class="position-absolute top-0 left-0 px-4 w-50">
-                    <div class="mb-1">Today's Earning: $4,262.40</div>
-                    <p class="text-muted text-h5">Etiam ultricies nisi vel augue. Curabitur ullamcorper ultricies nisi. Nam eget dui. Etiam rhoncus...</p>
+                  <div class="position-absolute top-0 left-0 px-3 mt-1 w-50">
+                    <div class="row g-2">
+                      <div class="col-auto">
+                        <div class="chart-sparkline chart-sparkline-square" id="sparkline-7"></div>
+                      </div>
+                      <div class="col">
+                        <div>Today's Earning: $4,262.40</div>
+                        <div class="text-muted"><svg xmlns="http://www.w3.org/2000/svg" class="icon icon-inline text-green" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="3 17 9 11 13 15 21 7" /><polyline points="14 7 21 7 21 14" /></svg>
+                          +5% more than yesterday</div>
+                      </div>
+                    </div>
                   </div>
                   <div id="chart-development-activity"></div>
                 </div>
@@ -770,60 +798,330 @@
                 </div>
               </div>
             </div>
-            <div class="col-sm-6 col-xl-3">
-              <div class="card card-sm">
-                <div class="card-body d-flex align-items-center">
-                  <span class="bg-blue text-white avatar mr-3"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6h-4a3 3 0 0 1 -2.7 -2" /><path d="M12 3v3m0 12v3" /></svg>
-                  </span>
-                  <div class="mr-3">
-                    <div class="font-weight-medium">
-                      132 Sales
+            <div class="col-md-8">
+              <div class="card" style="height: calc(24rem + 10px)">
+                <div class="card-body card-body-scrollable card-body-scrollable-shadow">
+                  <div class="divide-y-4">
+                    <div>
+                      <div class="row">
+                        <div class="col-auto">
+                          <span class="avatar">JL</span>
+                        </div>
+                        <div class="col">
+                          <div class="text-truncate">
+                            <strong>Jeffie Lewzey</strong> commented on your <strong>"I'm not a witch."</strong> post.
+                          </div>
+                          <div class="text-muted">yesterday</div>
+                        </div>
+                        <div class="col-auto align-self-center">
+                          <div class="badge bg-primary"></div>
+                        </div>
+                      </div>
                     </div>
-                    <div class="text-muted">12 waiting payments</div>
+                    <div>
+                      <div class="row">
+                        <div class="col-auto">
+                          <span class="avatar" style="background-image: url(./static/avatars/002m.jpg)"></span>
+                        </div>
+                        <div class="col">
+                          <div class="text-truncate">
+                            It's <strong>Mallory Hulme</strong>'s birthday. Wish him well!
+                          </div>
+                          <div class="text-muted">2 days ago</div>
+                        </div>
+                        <div class="col-auto align-self-center">
+                          <div class="badge bg-primary"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="row">
+                        <div class="col-auto">
+                          <span class="avatar" style="background-image: url(./static/avatars/003m.jpg)"></span>
+                        </div>
+                        <div class="col">
+                          <div class="text-truncate">
+                            <strong>Dunn Slane</strong> posted <strong>"Well, what do you want?"</strong>.
+                          </div>
+                          <div class="text-muted">today</div>
+                        </div>
+                        <div class="col-auto align-self-center">
+                          <div class="badge bg-primary"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="row">
+                        <div class="col-auto">
+                          <span class="avatar" style="background-image: url(./static/avatars/000f.jpg)"></span>
+                        </div>
+                        <div class="col">
+                          <div class="text-truncate">
+                            <strong>Emmy Levet</strong> created a new project <strong>Morning alarm clock</strong>.
+                          </div>
+                          <div class="text-muted">4 days ago</div>
+                        </div>
+                        <div class="col-auto align-self-center">
+                          <div class="badge bg-primary"></div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="row">
+                        <div class="col-auto">
+                          <span class="avatar" style="background-image: url(./static/avatars/001f.jpg)"></span>
+                        </div>
+                        <div class="col">
+                          <div class="text-truncate">
+                            <strong>Maryjo Lebarree</strong> liked your photo.
+                          </div>
+                          <div class="text-muted">2 days ago</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="row">
+                        <div class="col-auto">
+                          <span class="avatar">EP</span>
+                        </div>
+                        <div class="col">
+                          <div class="text-truncate">
+                            <strong>Egan Poetz</strong> registered new client as <strong>Trilia</strong>.
+                          </div>
+                          <div class="text-muted">yesterday</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="row">
+                        <div class="col-auto">
+                          <span class="avatar" style="background-image: url(./static/avatars/002f.jpg)"></span>
+                        </div>
+                        <div class="col">
+                          <div class="text-truncate">
+                            <strong>Kellie Skingley</strong> closed a new deal on project <strong>Pen Pineapple Apple Pen</strong>.
+                          </div>
+                          <div class="text-muted">2 days ago</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="row">
+                        <div class="col-auto">
+                          <span class="avatar" style="background-image: url(./static/avatars/003f.jpg)"></span>
+                        </div>
+                        <div class="col">
+                          <div class="text-truncate">
+                            <strong>Christabel Charlwood</strong> created a new project for <strong>Wikibox</strong>.
+                          </div>
+                          <div class="text-muted">4 days ago</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="row">
+                        <div class="col-auto">
+                          <span class="avatar">HS</span>
+                        </div>
+                        <div class="col">
+                          <div class="text-truncate">
+                            <strong>Haskel Shelper</strong> change status of <strong>Tabler Icons</strong> from <strong>open</strong> to <strong>closed</strong>.
+                          </div>
+                          <div class="text-muted">today</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="row">
+                        <div class="col-auto">
+                          <span class="avatar" style="background-image: url(./static/avatars/006m.jpg)"></span>
+                        </div>
+                        <div class="col">
+                          <div class="text-truncate">
+                            <strong>Lorry Mion</strong> liked <strong>Tabler UI Kit</strong>.
+                          </div>
+                          <div class="text-muted">yesterday</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="row">
+                        <div class="col-auto">
+                          <span class="avatar" style="background-image: url(./static/avatars/004f.jpg)"></span>
+                        </div>
+                        <div class="col">
+                          <div class="text-truncate">
+                            <strong>Leesa Beaty</strong> posted new video.
+                          </div>
+                          <div class="text-muted">2 days ago</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="row">
+                        <div class="col-auto">
+                          <span class="avatar" style="background-image: url(./static/avatars/007m.jpg)"></span>
+                        </div>
+                        <div class="col">
+                          <div class="text-truncate">
+                            <strong>Perren Keemar</strong> and 3 others followed you.
+                          </div>
+                          <div class="text-muted">2 days ago</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="row">
+                        <div class="col-auto">
+                          <span class="avatar">SA</span>
+                        </div>
+                        <div class="col">
+                          <div class="text-truncate">
+                            <strong>Sunny Airey</strong> upload 3 new photos to category <strong>Inspirations</strong>.
+                          </div>
+                          <div class="text-muted">2 days ago</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="row">
+                        <div class="col-auto">
+                          <span class="avatar" style="background-image: url(./static/avatars/009m.jpg)"></span>
+                        </div>
+                        <div class="col">
+                          <div class="text-truncate">
+                            <strong>Geoffry Flaunders</strong> made a <strong>$10</strong> donation.
+                          </div>
+                          <div class="text-muted">2 days ago</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="row">
+                        <div class="col-auto">
+                          <span class="avatar" style="background-image: url(./static/avatars/010m.jpg)"></span>
+                        </div>
+                        <div class="col">
+                          <div class="text-truncate">
+                            <strong>Thatcher Keel</strong> created a profile.
+                          </div>
+                          <div class="text-muted">3 days ago</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="row">
+                        <div class="col-auto">
+                          <span class="avatar" style="background-image: url(./static/avatars/005f.jpg)"></span>
+                        </div>
+                        <div class="col">
+                          <div class="text-truncate">
+                            <strong>Dyann Escala</strong> hosted the event <strong>Tabler UI Birthday</strong>.
+                          </div>
+                          <div class="text-muted">4 days ago</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="row">
+                        <div class="col-auto">
+                          <span class="avatar" style="background-image: url(./static/avatars/006f.jpg)"></span>
+                        </div>
+                        <div class="col">
+                          <div class="text-truncate">
+                            <strong>Avivah Mugleston</strong> mentioned you on <strong>Best of 2020</strong>.
+                          </div>
+                          <div class="text-muted">2 days ago</div>
+                        </div>
+                      </div>
+                    </div>
+                    <div>
+                      <div class="row">
+                        <div class="col-auto">
+                          <span class="avatar">AA</span>
+                        </div>
+                        <div class="col">
+                          <div class="text-truncate">
+                            <strong>Arlie Armstead</strong> sent a Review Request to <strong>Amanda Blake</strong>.
+                          </div>
+                          <div class="text-muted">2 days ago</div>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="col-sm-6 col-xl-3">
-              <div class="card card-sm">
-                <div class="card-body d-flex align-items-center">
-                  <span class="bg-green text-white avatar mr-3"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="9" cy="19" r="2" /><circle cx="17" cy="19" r="2" /><path d="M3 3h2l2 12a3 3 0 0 0 3 2h7a3 3 0 0 0 3 -2l1 -7h-15.2" /></svg>
-                  </span>
-                  <div class="mr-3">
-                    <div class="font-weight-medium">
-                      78 Orders
+            <div class="col-md-4">
+              <div class="row row-cards">
+                <div class="col-12">
+                  <div class="card card-sm">
+                    <div class="card-body d-flex align-items-center">
+                      <span class="bg-blue text-white avatar mr-3"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M16.7 8a3 3 0 0 0 -2.7 -2h-4a3 3 0 0 0 0 6h4a3 3 0 0 1 0 6h-4a3 3 0 0 1 -2.7 -2" /><path d="M12 3v3m0 12v3" /></svg>
+                      </span>
+                      <div class="mr-3">
+                        <div class="font-weight-medium">
+                          132 Sales
+                        </div>
+                        <div class="text-muted">12 waiting payments</div>
+                      </div>
                     </div>
-                    <div class="text-muted">32 shipped</div>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div class="col-sm-6 col-xl-3">
-              <div class="card card-sm">
-                <div class="card-body d-flex align-items-center">
-                  <div class="mr-3">
-                    <div class="chart-sparkline chart-sparkline-square" id="sparkline-7"></div>
-                  </div>
-                  <div class="mr-3">
-                    <div class="font-weight-medium">
-                      1,352 Members
+                <div class="col-12">
+                  <div class="card card-sm">
+                    <div class="card-body d-flex align-items-center">
+                      <span class="bg-green text-white avatar mr-3"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="9" cy="19" r="2" /><circle cx="17" cy="19" r="2" /><path d="M3 3h2l2 12a3 3 0 0 0 3 2h7a3 3 0 0 0 3 -2l1 -7h-15.2" /></svg>
+                      </span>
+                      <div class="mr-3">
+                        <div class="font-weight-medium">
+                          78 Orders
+                        </div>
+                        <div class="text-muted">32 shipped</div>
+                      </div>
                     </div>
-                    <div class="text-muted">163 registered today</div>
                   </div>
                 </div>
-              </div>
-            </div>
-            <div class="col-sm-6 col-xl-3">
-              <div class="card card-sm">
-                <div class="card-body d-flex align-items-center">
-                  <div class="mr-3">
-                    <div class="font-weight-medium">
-                      132 Comments
+                <div class="col-12">
+                  <div class="card card-sm">
+                    <div class="card-body d-flex align-items-center">
+                      <span class="bg-yellow text-white avatar mr-3"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="9" cy="7" r="4" /><path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /><path d="M16 3.13a4 4 0 0 1 0 7.75" /><path d="M21 21v-2a4 4 0 0 0 -3 -3.85" /></svg>
+                      </span>
+                      <div class="mr-3">
+                        <div class="font-weight-medium">
+                          1,352 Members
+                        </div>
+                        <div class="text-muted">163 registered today</div>
+                      </div>
                     </div>
-                    <div class="text-muted">16 waiting</div>
                   </div>
-                  <div class="ml-auto">
-                    <div class="chart-sparkline chart-sparkline-square" id="sparkline-8"></div>
+                </div>
+                <div class="col-12">
+                  <div class="card card-sm">
+                    <div class="card-body d-flex align-items-center">
+                      <span class="bg-twitter text-white avatar mr-3"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" /></svg>
+                      </span>
+                      <div class="mr-3">
+                        <div class="font-weight-medium">
+                          623 Shares
+                        </div>
+                        <div class="text-muted">16 today</div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-12">
+                  <div class="card card-sm">
+                    <div class="card-body d-flex align-items-center">
+                      <span class="bg-facebook text-white avatar mr-3"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 10v4h3v7h4v-7h3l1 -4h-4v-2a1 1 0 0 1 1 -1h3v-4h-3a5 5 0 0 0 -5 5v2h-3" /></svg>
+                      </span>
+                      <div class="mr-3">
+                        <div class="font-weight-medium">
+                          132 Likes
+                        </div>
+                        <div class="text-muted">21 today</div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -853,7 +1151,7 @@
                       <td class="text-muted">3,654</td>
                       <td class="text-muted">82.54%</td>
                       <td class="text-right">
-                        <div class="chart-sparkline" id="sparkline-9"></div>
+                        <div class="chart-sparkline" id="sparkline-8"></div>
                       </td>
                     </tr>
                     <tr>
@@ -866,7 +1164,7 @@
                       <td class="text-muted">3,215</td>
                       <td class="text-muted">76.29%</td>
                       <td class="text-right">
-                        <div class="chart-sparkline" id="sparkline-10"></div>
+                        <div class="chart-sparkline" id="sparkline-9"></div>
                       </td>
                     </tr>
                     <tr>
@@ -879,7 +1177,7 @@
                       <td class="text-muted">2,865</td>
                       <td class="text-muted">72.65%</td>
                       <td class="text-right">
-                        <div class="chart-sparkline" id="sparkline-11"></div>
+                        <div class="chart-sparkline" id="sparkline-10"></div>
                       </td>
                     </tr>
                     <tr>
@@ -892,7 +1190,7 @@
                       <td class="text-muted">865</td>
                       <td class="text-muted">44.89%</td>
                       <td class="text-right">
-                        <div class="chart-sparkline" id="sparkline-12"></div>
+                        <div class="chart-sparkline" id="sparkline-11"></div>
                       </td>
                     </tr>
                   </table>
@@ -968,6 +1266,15 @@
                       <td class="w-50">
                         <div class="progress progress-xs">
                           <div class="progress-bar bg-primary" style="width: 13.0%"></div>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr>
+                      <td>Pinterest</td>
+                      <td>420</td>
+                      <td class="w-50">
+                        <div class="progress progress-xs">
+                          <div class="progress-bar bg-primary" style="width: 8.4%"></div>
                         </div>
                       </td>
                     </tr>
@@ -1214,7 +1521,7 @@
                           15 Dec 2017
                         </td>
                         <td>
-                          <span class="status-icon bg-success"></span> Paid
+                          <span class="badge bg-success mr-1"></span> Paid
                         </td>
                         <td>$887</td>
                         <td class="text-right">
@@ -1246,7 +1553,7 @@
                           12 Apr 2017
                         </td>
                         <td>
-                          <span class="status-icon bg-warning"></span> Pending
+                          <span class="badge bg-warning mr-1"></span> Pending
                         </td>
                         <td>$1200</td>
                         <td class="text-right">
@@ -1278,7 +1585,7 @@
                           23 Oct 2017
                         </td>
                         <td>
-                          <span class="status-icon bg-warning"></span> Pending
+                          <span class="badge bg-warning mr-1"></span> Pending
                         </td>
                         <td>$534</td>
                         <td class="text-right">
@@ -1310,7 +1617,7 @@
                           2 Sep 2017
                         </td>
                         <td>
-                          <span class="status-icon bg-secondary"></span> Due in 2 Weeks
+                          <span class="badge bg-secondary mr-1"></span> Due in 2 Weeks
                         </td>
                         <td>$1500</td>
                         <td class="text-right">
@@ -1342,7 +1649,7 @@
                           29 Jan 2018
                         </td>
                         <td>
-                          <span class="status-icon bg-danger"></span> Paid Today
+                          <span class="badge bg-danger mr-1"></span> Paid Today
                         </td>
                         <td>$648</td>
                         <td class="text-right">
@@ -1374,7 +1681,7 @@
                           4 Feb 2018
                         </td>
                         <td>
-                          <span class="status-icon bg-secondary"></span> Due in 3 Weeks
+                          <span class="badge bg-secondary mr-1"></span> Due in 3 Weeks
                         </td>
                         <td>$300</td>
                         <td class="text-right">
@@ -1406,7 +1713,7 @@
                           22 Mar 2018
                         </td>
                         <td>
-                          <span class="status-icon bg-success"></span> Paid Today
+                          <span class="badge bg-success mr-1"></span> Paid Today
                         </td>
                         <td>$2500</td>
                         <td class="text-right">
@@ -1438,7 +1745,7 @@
                           13 May 2018
                         </td>
                         <td>
-                          <span class="status-icon bg-success"></span> Paid Today
+                          <span class="badge bg-success mr-1"></span> Paid Today
                         </td>
                         <td>$940</td>
                         <td class="text-right">
@@ -1483,7 +1790,7 @@
             </div>
           </div>
         </div>
-        <footer class="footer footer-transparent">
+        <footer class="footer footer-transparent d-print-none">
           <div class="container">
             <div class="row text-center align-items-center flex-row-reverse">
               <div class="col-lg-auto ml-lg-auto">
@@ -1501,7 +1808,7 @@
                     All rights reserved.
                   </li>
                   <li class="list-inline-item">
-                    <a href="./changelog.html" class="link-secondary">v1.0.0-alpha.11</a>
+                    <a href="./changelog.html" class="link-secondary">v1.0.0-alpha.12</a>
                   </li>
                 </ul>
               </div>
@@ -1914,6 +2221,19 @@
       // @formatter:off
     </script>
     <script>
+      document.addEventListener("DOMContentLoaded", function () {
+      	$().peity && $('#sparkline-7').text("35/100").peity("pie", {
+      		width: 40,
+      		height: 40,
+      		stroke: "#206bc4",
+      		strokeWidth: 2,
+      		fill: ["#206bc4", "rgba(110, 117, 130, 0.2)"],
+      		padding: .2,
+      		innerRadius: 16,
+      	});
+      });
+    </script>
+    <script>
       // @formatter:off
       document.addEventListener("DOMContentLoaded", function () {
       	window.ApexCharts && (new ApexCharts(document.getElementById('chart-development-activity'), {
@@ -1980,33 +2300,7 @@
     </script>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-      	$().peity && $('#sparkline-7').text("56/100").peity("pie", {
-      		width: 40,
-      		height: 40,
-      		stroke: "#cd201f",
-      		strokeWidth: 2,
-      		fill: ["#cd201f", "rgba(110, 117, 130, 0.2)"],
-      		padding: .2,
-      		innerRadius: 16,
-      	});
-      });
-    </script>
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-      	$().peity && $('#sparkline-8').text("22/100").peity("pie", {
-      		width: 40,
-      		height: 40,
-      		stroke: "#fab005",
-      		strokeWidth: 2,
-      		fill: ["#fab005", "rgba(110, 117, 130, 0.2)"],
-      		padding: .2,
-      		innerRadius: 16,
-      	});
-      });
-    </script>
-    <script>
-      document.addEventListener("DOMContentLoaded", function () {
-      	$().peity && $('#sparkline-9').text("17, 24, 20, 10, 5, 1, 4, 18, 13").peity("line", {
+      	$().peity && $('#sparkline-8').text("17, 24, 20, 10, 5, 1, 4, 18, 13").peity("line", {
       		width: 64,
       		height: 40,
       		stroke: "#206bc4",
@@ -2018,7 +2312,7 @@
     </script>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-      	$().peity && $('#sparkline-10').text("13, 11, 19, 22, 12, 7, 14, 3, 21").peity("line", {
+      	$().peity && $('#sparkline-9').text("13, 11, 19, 22, 12, 7, 14, 3, 21").peity("line", {
       		width: 64,
       		height: 40,
       		stroke: "#206bc4",
@@ -2030,7 +2324,7 @@
     </script>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-      	$().peity && $('#sparkline-11').text("10, 13, 10, 4, 17, 3, 23, 22, 19").peity("line", {
+      	$().peity && $('#sparkline-10').text("10, 13, 10, 4, 17, 3, 23, 22, 19").peity("line", {
       		width: 64,
       		height: 40,
       		stroke: "#206bc4",
@@ -2042,7 +2336,7 @@
     </script>
     <script>
       document.addEventListener("DOMContentLoaded", function () {
-      	$().peity && $('#sparkline-12').text("9, 6, 14, 11, 8, 24, 2, 16, 15").peity("line", {
+      	$().peity && $('#sparkline-11').text("9, 6, 14, 11, 8, 24, 2, 16, 15").peity("line", {
       		width: 64,
       		height: 40,
       		stroke: "#206bc4",
