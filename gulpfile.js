@@ -20,9 +20,12 @@ const gulp = require('gulp'),
 	fs = require('fs'),
 	path = require('path'),
 	YAML = require('yaml'),
+	yargs = require('yargs/yargs'),
 	cp = require('child_process'),
 	pkg = require('./package.json'),
-	year = new Date().getFullYear();
+	year = new Date().getFullYear(),
+	argv = yargs(process.argv).argv;
+
 
 let BUILD = false,
 	distDir = './.tmp',
@@ -233,7 +236,13 @@ gulp.task('watch-jekyll', (cb) => {
  */
 gulp.task('build-jekyll', (cb) => {
 	var env = Object.create(process.env);
-	env.JEKYLL_ENV = 'production';
+
+	if(argv.preview) {
+		env.JEKYLL_ENV = 'preview';
+	}
+	else {
+		env.JEKYLL_ENV = 'production';
+	}
 
 	return spawn('bundle', ['exec', 'jekyll', 'build', '--destination', demoDir, '--trace'], { env: env, stdio: 'inherit' })
 		.on('close', cb);
