@@ -2,15 +2,34 @@
 layout: base
 ---
 
+{% assign page-header = page.page-header | default: layout.page-header %}
+{% assign description = page.page-header-description | default: layout.page-header-description %}
+{% assign actions = page.page-header-actions | default: layout.page-header-actions %}
+{% assign pretitle = page.page-header-pretitle | default: layout.page-header-pretitle %}
+{% assign class = page.page-header-class | default: layout.page-header-class %}
+{% assign icon = page.page-header-icon | default: layout.page-header-icon %}
+
+
 {% if page.layout-sidebar %}
 	{% include layout/sidebar.html dark=page.layout-sidebar-dark right=page.layout-sidebar-right %}
 {% endif %}
 
 <div class="page">
 	{% unless page.layout-hide-topbar %}
-		{% include layout/navbar.html condensed=page.layout-navbar-condensed overlap=page.layout-navbar-overlap dark=page.layout-navbar-dark hide-brand=page.layout-navbar-hide-brand hide-menu=page.layout-navbar-hide-menu class=page.layout-navbar-class %}
+		{% include layout/navbar.html condensed=page.layout-navbar-condensed overlap=page.layout-navbar-overlap dark=page.layout-navbar-dark transparent=page.layout-navbar-transparent hide-brand=page.layout-navbar-hide-brand hide-menu=page.layout-navbar-hide-menu class=page.layout-navbar-class %}
 	{% endunless %}
 
-	{% include layout/content.html %}
-</div>
 
+
+	<div class="content">
+		<div class="container{% if page.layout-fluid %}-fluid{% else %}-xl{% endif %}{% if page.container-centered %} d-flex flex-column justify-content-center{% endif %}">
+			{% if page-header %}
+				{% include layout/page-header.html title=page-header description=description actions=actions pretitle=pretitle icon=icon class=class %}
+			{% endif %}
+
+			{{ content }}
+		</div>
+
+		{% include layout/footer.html %}
+	</div>
+</div>
