@@ -248,8 +248,10 @@ gulp.task('build-jekyll', (cb) => {
 		.on('close', cb);
 });
 
-gulp.task('build-cleanup', (cb) => {
-	cb();
+gulp.task('build-cleanup', () => {
+	return gulp
+		.src(`${demoDir}/redirects.json`, { read: false, allowEmpty: true })
+		.pipe(clean());
 });
 
 /**
