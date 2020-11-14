@@ -2,6 +2,7 @@
 {% assign hide-icons = include.hide-icons %}
 
 {% assign menu = site.data.menu %}
+
 {% if include.sample %}
 	{% assign menu = site.data.menu-sample %}
 {% endif %}
@@ -29,9 +30,22 @@
 			</a>
 
 			{% if level-1[1].children %}
-			<ul class="dropdown-menu{% if level-1[1].right %} dropdown-menu-right{% endif %}{% if level-1[1].columns %} dropdown-menu-columns  dropdown-menu-columns-{{ level-1[1].columns }}{% endif %}{% if include.auto-open and level-1[0] == current-page[0] %} show{% endif %}">
+			<div class="dropdown-menu{% if level-1[1].right %} dropdown-menu-right{% endif %}{% if include.auto-open and level-1[0] == current-page[0] %} show{% endif %}">
+
+				{% if level-1[1].columns %}
+					<div class="dropdown-menu-columns">
+					{% assign per-column = level-1[1].children | size | times: 1.0 | divided_by: level-1[1].columns | ceil %}
+					<div class="dropdown-menu-column">
+				{% endif %}
+
 				{% for level-2 in level-1[1].children %}
-				<li {% if level-2[1].children %}class="dropright"{% endif %}>
+
+				{% if level-1[1].columns %}
+					{% assign modulo = forloop.index0 | modulo: per-column %}
+					{% if forloop.index > 1 and modulo == 0 %}</div><div class="dropdown-menu-column">{% endif %}
+				{% endif %}
+
+				<div {% if level-2[1].children %}class="dropright"{% endif %}>
 					<a class="dropdown-item{% if level-2[1].children %} dropdown-toggle{% endif %}{% if level-1[0] == current-page[0] and level-2[0] == current-page[1] and current-page.size == 2 %} active{% endif %}" {% if level-2[1].children %}href="#sidebar-{{ level-2[0] }}" data-toggle="dropdown" role="button" aria-expanded="false" {% else %}href="{{ site.base }}/{{ level-2[1].url }}" {% endif %}>
 						{{ level-2[1].title }}
 					</a>
@@ -43,9 +57,11 @@
 						{% endfor %}
 					</div>
 					{% endif %}
-				</li>
+				</div>
 				{% endfor %}
-			</ul>
+
+				{% if level-1[1].columns %}</div></div>{% endif %}
+				</div>
 			{% endif %}
 		</li>
 	{% endfor %}
