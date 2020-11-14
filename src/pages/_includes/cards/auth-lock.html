@@ -1,0 +1,22 @@
+{% assign person = site.data.people[0] %}
+<form class="card card-md" action="{{ site.base }}" method="get" autocomplete="off">
+	<div class="card-body text-center">
+		<div class="mb-4">
+			<h2 class="card-title">Account Locked</h2>
+			<p class="text-muted">Please enter your password to unlock your account</p>
+		</div>
+
+		<div class="mb-4">
+			{% include ui/avatar.html person=person size="xl" class="mb-3" %}
+			<h3>{{ person.full_name }}</h3>
+		</div>
+
+		<div class="mb-4">
+			<input type="password" class="form-control" placeholder="Password&hellip;">
+		</div>
+
+		<div>
+			{% include ui/button.html color="primary" block=true icon="lock-open" text="Unlock" %}
+		</div>
+	</div>
+</form>
