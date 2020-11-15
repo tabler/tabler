@@ -20,10 +20,19 @@ npm install @tabler/core@alpha
 
 All files included in `@tabler/core` npm package are available over a CDN.
 
+### Javascript
+
 ```html
-<link rel="stylesheet" href="https://unpkg.com/@tabler/core@latest/dist/css/tabler.min.css">
 <script src="https://unpkg.com/@tabler/core@latest/dist/js/tabler.min.js"></script>
 ```
+
+### Styles
+
+```html
+<link rel="stylesheet" href="https://unpkg.com/@tabler/core@latest/dist/css/tabler.min.css">
+```
+
+### Other versions
 
 To load a specific version replace `latest` with the desired version number.
 
