@@ -73,6 +73,22 @@ Once you complete the setup, you'll be able to run the various commands provided
 Run `npm run build` for reforms a one off build application without refresh.
 Open [http://localhost:3001](http://localhost:3001) to configure the Web server.
 
+## Installation
+
+Tabler is distributed via npm.
+
+```sh
+npm install --save @tabler/core
+```
+
+### CDN support
+
+All files included in `@tabler/core` npm package are available over a CDN.
+
+```html
+<link rel="stylesheet" href="https://unpkg.com/@tabler/core@latest/dist/css/tabler.min.css">
+<script src="https://unpkg.com/@tabler/core@latest/dist/js/tabler.min.js"></script>
+```
 
 ## Feature requests
 
