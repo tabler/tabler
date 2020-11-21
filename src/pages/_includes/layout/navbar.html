@@ -1,48 +1,56 @@
 {% assign breakpoint = include.breakpoint | default: 'md' %}
 {% assign condensed = include.condensed | default: false %}
 
-<header class="navbar navbar-expand-{{ breakpoint }}{% unless include.transparent %} {% if include.dark %}navbar-dark{% else %}navbar-light{% endif %}{% if include.background %} bg-{{ include.background }}{% endif %}{% endunless %}{% if include.sticky %} sticky-top{% endif %}{% if include.overlap %} navbar-overlap{% endif %}{% if include.class %} {{ include.class }}{% endif %} d-print-none"{% if include.background-color %} style="background: {{ include.background-color }}"{% endif %}>
-	<div class="container{% if page.layout-fluid %}-fluid{% else %}-xl{% endif %}">
-		{% include layout/navbar-toggler.html target="navbar-menu" %}
+{% if include.sticky %}
+<div class="sticky-top">
+{% endif %}
 
-		{% unless include.hide-brand %}
-			{% include layout/navbar-logo.html dark=include.dark small-logo=include.small-logo hide-logo=include.hide-logo class="d-none-navbar-horizontal pr-0 pr-md-3" breakpoint=breakpoint show-title=include.show-title %}
-		{% endunless %}
+	<header class="navbar navbar-expand-{{ breakpoint }}{% unless include.transparent %} {% if include.dark %}navbar-dark{% else %}navbar-light{% endif %}{% if include.background %} bg-{{ include.background }}{% endif %}{% endunless %}{% if include.sticky %} sticky-top{% endif %}{% if include.overlap %} navbar-overlap{% endif %}{% if include.class %} {{ include.class }}{% endif %} d-print-none"{% if include.background-color %} style="background: {{ include.background-color }}"{% endif %}>
+		<div class="container{% if page.layout-fluid %}-fluid{% else %}-xl{% endif %}">
+			{% include layout/navbar-toggler.html target="navbar-menu" %}
 
-		{% include layout/navbar-side.html class="order-md-last" hide-username=include.hide-username person-id=include.person-id %}
+			{% unless include.hide-brand %}
+				{% include layout/navbar-logo.html dark=include.dark small-logo=include.small-logo hide-logo=include.hide-logo class="d-none-navbar-horizontal pr-0 pr-md-3" breakpoint=breakpoint show-title=include.show-title %}
+			{% endunless %}
 
-		{% if condensed %}
-		<div class="collapse navbar-collapse" id="navbar-menu">
-			{% if include.hide-search %}
-				{% include layout/navbar-menu.html sample=include.sample hide-icons=include.hide-icons %}
-			{% elsif include.hide-menu %}
-				{% include layout/navbar-search.html rounded=include.transparent dark=include.dark %}
-			{% else %}
-				<div class="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center">
+			{% include layout/navbar-side.html class="order-md-last" hide-username=include.hide-username person-id=include.person-id %}
+
+			{% if condensed %}
+			<div class="collapse navbar-collapse" id="navbar-menu">
+				{% if include.hide-search %}
 					{% include layout/navbar-menu.html sample=include.sample hide-icons=include.hide-icons %}
+				{% elsif include.hide-menu %}
+					{% include layout/navbar-search.html rounded=include.transparent dark=include.dark %}
+				{% else %}
+					<div class="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center">
+						{% include layout/navbar-menu.html sample=include.sample hide-icons=include.hide-icons %}
 
-					{% assign search-class = "ml-md-auto pl-md-4 py-2 py-md-0 mr-md-4 order-first order-md-last flex-grow-1" %}
-					{% unless include.fluid-search %}
-						{% assign search-class = search-class | append: " flex-md-grow-0" %}
-					{% endunless %}
+						{% assign search-class = "ml-md-auto pl-md-4 py-2 py-md-0 mr-md-4 order-first order-md-last flex-grow-1" %}
+						{% unless include.fluid-search %}
+							{% assign search-class = search-class | append: " flex-md-grow-0" %}
+						{% endunless %}
 
-					{% include layout/navbar-search.html breakpoint="lg" rounded=include.transparent class=search-class dark=include.dark %}
-				</div>
+						{% include layout/navbar-search.html breakpoint="lg" rounded=include.transparent class=search-class dark=include.dark %}
+					</div>
+				{% endif %}
+			</div>
 			{% endif %}
 		</div>
-		{% endif %}
-	</div>
-</header>
+	</header>
 
-{% unless condensed %}
-<div class="navbar-expand-{{ breakpoint }}">
-	<div class="collapse navbar-collapse" id="navbar-menu">
-		<div class="navbar {% if include.dark-secondary %}navbar-dark{% else %}navbar-light{% endif %}">
-			<div class="container{% if page.layout-fluid %}-fluid{% else %}-xl{% endif %}">
-				{% include layout/navbar-menu.html sample=include.sample hide-icons=include.hide-icons long-titles=true %}
-				{% include layout/navbar-search.html breakpoint=breakpoint dark=include.dark-secondary class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last" %}
+	{% unless condensed %}
+	<div class="navbar-expand-{{ breakpoint }}">
+		<div class="collapse navbar-collapse" id="navbar-menu">
+			<div class="navbar {% if include.dark-secondary %}navbar-dark{% else %}navbar-light{% endif %}">
+				<div class="container{% if page.layout-fluid %}-fluid{% else %}-xl{% endif %}">
+					{% include layout/navbar-menu.html sample=include.sample hide-icons=include.hide-icons long-titles=true %}
+					{% include layout/navbar-search.html breakpoint=breakpoint dark=include.dark-secondary class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last" %}
+				</div>
 			</div>
 		</div>
 	</div>
+	{% endunless %}
+
+{% if include.sticky %}
 </div>
-{% endunless %}
+{% endif %}
