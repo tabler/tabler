@@ -1,6 +1,6 @@
 {% assign current-menu = page.menu | split: '.' %}
 
-<ul class="nav nav-pills nav-vertical">
+<ul class="nav nav-vertical">
 	{% for doc in site.data.docs %}
 	<li class="nav-item">
 		{% assign key = doc[0] %}
@@ -28,7 +28,7 @@
 		</a>
 
 		{% if item.children %}
-			<ul class="nav collapse{% if current-item %} show{% endif %}" id="menu-{{ key }}">
+			<ul class="nav nav-pills collapse{% if current-item %} show{% endif %}" id="menu-{{ key }}">
 			{% for subdoc in item.children %}
 				{% assign subkey = subdoc[0] %}
 				{% assign subitem = subdoc[1] %}

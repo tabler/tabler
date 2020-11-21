@@ -12,7 +12,7 @@ Use the `ribbon` class to add the default ribbon to any section of your interfac
 {% capture code %}
 {% include cards/ribbon.html %}
 {% endcapture %}
-{% include example.html code=code %}
+{% include example.html code=code columns=1 %}
 
 
 ## Ribbon position
@@ -29,7 +29,7 @@ Using multiple classes at once will give you more position options. For example,
 {% capture code %}
 {% include cards/ribbon.html top=true left=true %}
 {% endcapture %}
-{% include example.html code=code %}
+{% include example.html code=code columns=1 %}
 
 
 ## Ribbon color
@@ -39,7 +39,7 @@ Customize the ribbon's background color. You can click [here]({% docs_url colors
 {% capture code %}
 {% include cards/ribbon.html color="red" %}
 {% endcapture %}
-{% include example.html code=code %}
+{% include example.html code=code columns=1 %}
 
 
 ## Ribbon text
@@ -49,7 +49,7 @@ Add your own text to a ribbon to display any additional information and make it 
 {% capture code %}
 {% include cards/ribbon.html color="green" text="-50%" %}
 {% endcapture %}
-{% include example.html code=code %}
+{% include example.html code=code columns=1 %}
 
 
 ## Ribbon style
@@ -59,4 +59,4 @@ Change the style of a ribbon to make it go well with your interface design.
 {% capture code %}
 {% include cards/ribbon.html bookmark=true color="orange" text="-50%" %}
 {% endcapture %}
-{% include example.html code=code %}
+{% include example.html code=code columns=1 %}

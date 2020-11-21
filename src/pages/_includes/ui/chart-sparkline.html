@@ -1,0 +1,74 @@
+{% assign type = include.type | default: 'bar' %}
+{% assign id = include.id %}
+{% assign color = include.color | default: 'blue' %}
+{% assign height = include.height | default: 2.5 %}
+
+{% assign data = include.data %}
+
+{% if id %}
+	<div class="chart-sparkline{% if type == 'pie' or type == 'donut' %} chart-sparkline-square{% endif %}{% if include.wide %} chart-sparkline-wide{% endif %}" id="sparkline-{{ id }}"></div>
+
+	{% capture_global scripts %}
+	<script>
+		// @formatter:off
+		document.addEventListener("DOMContentLoaded", function () {
+			{% if jekyll.environment == 'development' %}
+			window.tabler_chart = window.tabler_chart || {};
+			{% endif %}
+
+			window.ApexCharts && ({% if jekyll.environment == 'development' %}window.tabler_chart["sparkline-{{ id }}"] = {% endif %}new ApexCharts(document.getElementById('sparkline-{{ id }}'), {
+				chart: {
+					type: "{% if type == 'donut' %}radialBar{% else %}{{ type }}{% endif %}",
+					fontFamily: 'inherit',
+					height: {{ height | times: 16 | round }},
+					{% if type == 'pie' or type == 'donut' %}
+					width: {{ height | times: 16 | round }},
+					{% endif %}
+					animations: {
+						enabled: false
+					},
+					sparkline: {
+						enabled: true
+					},
+				},
+				tooltip: {
+					enabled: false,
+				},
+				{% if type == 'donut' %}
+				plotOptions: {
+					radialBar: {
+						hollow: {
+							margin: 0,
+							size: '75%'
+						},
+						track: {
+							margin: 0
+						},
+						dataLabels: {
+							show: false
+						}
+					}
+				},
+				{% endif %}
+				{% if type == 'area' or type == 'line' %}
+				stroke: {
+					width: 2,
+					lineCap: "round",
+				},
+				{% endif %}
+
+				{% if type == 'donut' %}
+				colors: ["{{ color | default: 'blue' | tabler_color }}"],
+				series: [{{ data }}],
+				{% else %}
+				series: [{
+					color: "{{ color | default: 'blue' | tabler_color }}",
+					data: [{{ data }}]
+				}],
+				{% endif %}
+			})).render();
+		});
+		// @formatter:on
+	</script>
+	{% endcapture_global %}
+{% endif %}

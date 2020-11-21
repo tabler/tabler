@@ -1,0 +1,36 @@
+{% assign project-id = include.project-id | default: 0 %}
+{% assign project = site.data.projects[project-id] %}
+{% assign progress = include.progress | default: 25 %}
+{% assign days-ago = include.days-ago | default: 2 %}
+
+<div class="card">
+	<div class="card-body">
+		<div class="row align-items-center">
+			<div class="col-3">
+				<img src="{{ project.image }}" alt="{{ project.title | escape }}" class="rounded">
+			</div>
+			<div class="col">
+				<h3 class="card-title mb-1">
+					<a href="project-overview.html" class="text-reset">{{ project.title }}</a>
+				</h3>
+				<div class="text-muted">
+					Updated 2 hours ago
+				</div>
+
+				<div class="mt-3">
+					<div class="row g-2 align-items-center">
+						<div class="col-auto">
+							{{ progress }}%
+						</div>
+						<div class="col">
+							{% include ui/progress.html value=progress size="sm" %}
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-auto">
+				{% include ui/card-dropdown.html %}
+			</div>
+		</div>
+	</div>
+</div>

@@ -6,15 +6,11 @@
 <div class="card">
 	{% include ui/progress.html value=percentage class="card-progress" color=percentage-color %}
 	<div class="card-body">
-		<div class="dropdown card-options">
-			<button class="btn-options" type="button" data-toggle="dropdown">
-				{% include ui/icon.html icon="dots-vertical" %}
-			</button>
-			{% include ui/dropdown-menu.html right=true %}
-		</div>
-		<div class="card-title">
-			<h6 class="h4 mb-3"><a href="#">{{ include.title | default: 'Task Title' }}</a>{% if include.badge %} <span class="badge">{{ include.badge }}</span>{% endif %}</h6>
-		</div>
+
+		<h3 class="card-title">
+			<a href="#">{{ include.title | default: 'Task Title' }}</a>
+			{% if include.badge %} <span class="badge ml-2">{{ include.badge }}</span>{% endif %}
+		</h3>
 
 		{% include ui/avatar-list.html offset=offset limit=limit stacked=true class="mb-3" %}
 

@@ -20,9 +20,12 @@ const gulp = require('gulp'),
 	fs = require('fs'),
 	path = require('path'),
 	YAML = require('yaml'),
+	yargs = require('yargs/yargs'),
 	cp = require('child_process'),
 	pkg = require('./package.json'),
-	year = new Date().getFullYear();
+	year = new Date().getFullYear(),
+	argv = yargs(process.argv).argv;
+
 
 let BUILD = false,
 	distDir = './.tmp',
@@ -88,7 +91,7 @@ gulp.task('svg-icons', (cb) => {
 		fs.writeFileSync(filename, YAML.stringify(svgList));
 	};
 
-	generateIconsYml("./node_modules/tabler-icons/icons/*.svg", `${srcDir}/pages/_data/icons.yml`);
+	generateIconsYml("./node_modules/@tabler/icons/icons/*.svg", `${srcDir}/pages/_data/icons.yml`);
 
 	cb();
 });
@@ -233,10 +236,22 @@ gulp.task('watch-jekyll', (cb) => {
  */
 gulp.task('build-jekyll', (cb) => {
 	var env = Object.create(process.env);
-	env.JEKYLL_ENV = 'production';
+
+	if(argv.preview) {
+		env.JEKYLL_ENV = 'preview';
+	}
+	else {
+		env.JEKYLL_ENV = 'production';
+	}
 
 	return spawn('bundle', ['exec', 'jekyll', 'build', '--destination', demoDir, '--trace'], { env: env, stdio: 'inherit' })
 		.on('close', cb);
+});
+
+gulp.task('build-cleanup', () => {
+	return gulp
+		.src(`${demoDir}/redirects.json`, { read: false, allowEmpty: true })
+		.pipe(clean());
 });
 
 /**
@@ -343,5 +358,5 @@ gulp.task('clean', gulp.series('clean-dirs', 'clean-jekyll'));
 gulp.task('start', gulp.series('clean', 'sass', 'js', 'build-jekyll', gulp.parallel('watch-jekyll', 'watch', 'browser-sync')));
 
 gulp.task('build-core', gulp.series('build-on', 'clean', 'sass', 'js', 'copy-images', 'copy-libs', 'add-banner'));
-gulp.task('build-demo', gulp.series('build-on', 'build-jekyll', 'copy-static', 'copy-dist'));
+gulp.task('build-demo', gulp.series('build-on', 'build-jekyll', 'copy-static', 'copy-dist', 'build-cleanup'));
 gulp.task('build', gulp.series('build-core', 'build-demo'));

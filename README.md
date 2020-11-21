@@ -2,14 +2,14 @@
 
 A premium and open source dashboard template with a responsive and high-quality UI.
 
-<a href="https://preview-dev.tabler.io">View Demo</a> | <a href="https://github.com/tabler/tabler-react">View React Version</a> | <a href="https://github.com/tabler/tabler/archive/master.zip">Download ZIP</a>
+<a href="https://preview.tabler.io">View Demo</a> | <a href="https://github.com/tabler/tabler/archive/dev.zip">Download ZIP</a>
 
 ![Tabler preview](/src/static/tabler-preview.png?raw=true)
 
 
 ## Status
 
-<a href="#backers" alt="Backers Open Collective"><img src="https://opencollective.com/tabler/backers/badge.svg"/></a> <a href="#sponsors" alt="Sponsors on Open Collective"><img src="https://opencollective.com/tabler/sponsors/badge.svg"/></a> <a href="https://www.npmjs.com/package/tabler"><img src="https://img.shields.io/npm/dt/tabler.svg" alt="Total Downloads"></a> <a href="https://github.com/tabler/tabler/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/tabler.svg" alt="License"></a> <a href="https://github.com/tabler/tabler/releases"><img src="https://img.shields.io/npm/v/tabler.svg" alt="Latest Release"></a>
+<a href="#backers" alt="Backers Open Collective"><img src="https://opencollective.com/tabler/backers/badge.svg"/></a> <a href="#sponsors" alt="Sponsors on Open Collective"><img src="https://opencollective.com/tabler/sponsors/badge.svg"/></a> <a href="https://www.npmjs.com/package/tabler"><img src="https://img.shields.io/npm/dt/tabler.svg" alt="Total Downloads"></a> <a href="https://github.com/tabler/tabler/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/tabler.svg" alt="License"></a> <a href="https://github.com/tabler/tabler/releases"><img src="https://img.shields.io/npm/v/@tabler/core.svg" alt="Latest Release"></a>
 
 
 ## Features
@@ -26,7 +26,7 @@ We've created this admin panel for everyone who wants to create templates based 
 
 ## Sponsor Tabler
 
-<a href="https://github.com/sponsors/codecalm" target="_blank"><img src="/static/sponsor-banner-readme.png?raw=true" alt="Sponsor Tabler" /></a>
+<a href="https://github.com/sponsors/codecalm" target="_blank"><img src="/src/static/sponsor-banner-readme.png?raw=true" alt="Sponsor Tabler" /></a>
 
 
 ### Sponsors
@@ -67,12 +67,35 @@ Once you complete the setup, you'll be able to run the various commands provided
 
 1. From the root `/tabler` directory, run `npm run start` in the command line.
 2. Open [http://localhost:3000](http://localhost:3000) in your browser, and voilà.
-3. Any change in the `/pages` directory will build the application and refresh the page.
+3. Any change in the `/src` directory will build the application and refresh the page.
 
 **Note**:
 Run `npm run build` for reforms a one off build application without refresh.
 Open [http://localhost:3001](http://localhost:3001) to configure the Web server.
 
+## Installation
+
+Tabler is distributed via npm.
+
+```sh
+npm install --save @tabler/core
+```
+
+### CDN support
+
+All files included in `@tabler/core` npm package are available over a CDN.
+
+#### Javascript
+
+```html
+<script src="https://unpkg.com/@tabler/core@latest/dist/js/tabler.min.js"></script>
+```
+
+#### Styles
+
+```html
+<link rel="stylesheet" href="https://unpkg.com/@tabler/core@latest/dist/css/tabler.min.css">
+```
 
 ## Feature requests
 

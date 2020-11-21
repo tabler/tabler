@@ -20,7 +20,7 @@ Use the `.card` and `.card-body` classes to create a card and use it as the basi
 
 You can change the padding of a newly created card. To do it, use the `.card-sm`, `.card-md` or `.card-lg` classes. 
 
-Cards with the `.card-sm` class are well suited for small items such as snippets, etc., while the `.card-lg` class can be used for large blocks of text. Padding will be automatically reduced on small devices, to fit the screen size.
+Cards with the `.card-sm` class are well suited for small items such as widgets, etc., while the `.card-lg` class can be used for large blocks of text. Padding will be automatically reduced on small devices, to fit the screen size.
 
 {% capture code %}
 {% include cards/card.html class="card-sm" body="This is some text within a card body." %}
