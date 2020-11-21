@@ -25,19 +25,17 @@
 			</div>
 			<div class="col">
 				<div class="demo-icons-list-wrap">
-					<ul class="demo-icons-list">
+					<div class="demo-icons-list">
 						{% for icon in icons limit: limit %}
-						<li class="demo-icons-list-item">
-							<a href="#" class="text-reset" data-toggle-icon="{{ icon }}" title="{{ icon }}" data-icon-svg="{% capture svg %}{% highlight html %}{% include ui/icon.html icon=icon %}{% endhighlight %}{% endcapture %}{{ svg | escape }}">
-								{% include ui/icon.html icon=icon %}
-								<div class="mt-1 text-muted text-h5">{{ icon }}</div>
-							</a>
-						</li>
+						<a href="#" class="demo-icons-list-item" data-toggle-icon="{{ icon }}" title="{{ icon }}" data-icon-svg="{% capture svg %}{% highlight html %}{% include ui/icon.html icon=icon %}{% endhighlight %}{% endcapture %}{{ svg | escape }}">
+							{% include ui/icon.html icon=icon %}
+							<div class="mt-1 text-muted text-h5">{{ icon }}</div>
+						</a>
 						{% endfor %}
 						{% for icon in (0..20) %}
-						<li></li>
+						<div></div>
 						{% endfor %}
-					</ul>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -60,17 +58,13 @@
 			elements.forEach(function (element) {
 				element.addEventListener('click', function(e){
 					var icon = this.dataset.toggleIcon,
-						svg = this.querySelector('svg'),
+						svg = this.querySelector('svg').outerHTML,
 						iconCode = this.dataset.iconSvg,
 						editor = getClosest(this, '[data-icon-preview]');
 
-					console.log('icon', icon);
-					console.log('icon', this.querySelector('svg'));
-					console.log('iconCode', iconCode);
-
-					editor.querySelectorAll('[data-icon-preview-icon]')[0].innerHTML = svg;
-					editor.querySelectorAll('[data-icon-preview-title]')[0].innerText = icon;
-					editor.querySelectorAll('[data-icon-preview-code]')[0].innerHTML = iconCode.trim();
+					editor.querySelector('[data-icon-preview-icon]').innerHTML = svg;
+					editor.querySelector('[data-icon-preview-title]').innerText = icon;
+					editor.querySelector('[data-icon-preview-code]').innerHTML = iconCode.trim();
 
 					e.preventDefault();
 					return false;
