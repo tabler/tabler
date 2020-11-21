@@ -312,6 +312,14 @@ Navbar light
 .navbar-light {
   box-shadow: inset 0 -1px 0 0 $navbar-light-border-color;
   background-color: $white;
+
+  &.navbar-vertical {
+    box-shadow: inset -1px 0 0 0 $navbar-light-border-color;
+
+    &.navbar-right {
+      box-shadow: inset 1px 0 0 0 $navbar-light-border-color;
+    }
+  }
 }
 
 /**
@@ -350,6 +358,7 @@ Navbar vertical
  */
 @if $enable-navbar-vertical {
   .navbar-vertical {
+
     &.navbar-expand {
       @each $breakpoint in map-keys($grid-breakpoints) {
         $next: breakpoint-next($breakpoint, $grid-breakpoints);
