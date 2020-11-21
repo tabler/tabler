@@ -105,12 +105,21 @@
       box-shadow: none;
       border: none;
       min-width: 0;
+      margin: 0;
 
       .dropdown-item {
         min-width: 0;
         display: flex;
         width: auto;
-        padding-left: add($container-padding-x, 1.5rem);
+        padding-left: add($container-padding-x, 2rem);
+      }
+
+      .dropdown-menu .dropdown-item {
+        padding-left: add($container-padding-x, 3.5rem);
+      }
+
+      .dropdown-menu .dropdown-menu .dropdown-item {
+        padding-left: add($container-padding-x, 5rem);
       }
     }
 
@@ -185,7 +194,7 @@ Navbar
     $infix: breakpoint-infix($next, $grid-breakpoints);
 
     &#{$infix} {
-      @include media-breakpoint-down($breakpoint) {
+      @include media-breakpoint-down(breakpoint-next($breakpoint)) {
         @include navbar-vertical-nav;
       }
 
