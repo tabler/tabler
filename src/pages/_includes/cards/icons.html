@@ -24,12 +24,13 @@
 				</div>
 			</div>
 			<div class="col">
-				<div class="icons-list-wrap">
-					<ul class="icons-list">
+				<div class="demo-icons-list-wrap">
+					<ul class="demo-icons-list">
 						{% for icon in icons limit: limit %}
-						<li class="icons-list-item">
+						<li class="demo-icons-list-item">
 							<a href="#" class="text-reset" data-toggle-icon="{{ icon }}" data-toggle="tooltip" title="{{ icon }}" data-icon-svg="{% capture svg %}{% highlight html %}{% include ui/icon.html icon=icon %}{% endhighlight %}{% endcapture %}{{ svg | escape }}">
 								{% include ui/icon.html icon=icon %}
+								<div class="mt-1 text-muted text-h5">{{ icon }}</div>
 							</a>
 						</li>
 						{% endfor %}
