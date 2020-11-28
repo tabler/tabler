@@ -4,6 +4,9 @@
 {% assign height = include.height | default: 2.5 %}
 
 {% assign data = include.data %}
+{% if include.percentage %}
+	{% assign data = include.percentage %}
+{% endif %}
 
 {% if id %}
 	<div class="chart-sparkline{% if type == 'pie' or type == 'donut' %} chart-sparkline-square{% endif %}{% if include.wide %} chart-sparkline-wide{% endif %}" id="sparkline-{{ id }}"></div>
