@@ -11,16 +11,16 @@ bootstrap-link: components/tooltips/
 Use the default markup to create tooltips that will help users understand particular elements of your interface. You can decide where the text label is to be displayed - at the top, bottom or on either side of the element. 
 
 {% capture code %}
-<button type="button" class="btn" data-bs-toggle="tooltip" data-placement="top" title="Tooltip on top">
+<button type="button" class="btn" data-bs-toggle="tooltip" data-bs-placement="top" title="Tooltip on top">
   Tooltip on top
 </button>
-<button type="button" class="btn" data-bs-toggle="tooltip" data-placement="right" title="Tooltip on right">
+<button type="button" class="btn" data-bs-toggle="tooltip" data-bs-placement="right" title="Tooltip on right">
   Tooltip on right
 </button>
-<button type="button" class="btn" data-bs-toggle="tooltip" data-placement="bottom" title="Tooltip on bottom">
+<button type="button" class="btn" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Tooltip on bottom">
   Tooltip on bottom
 </button>
-<button type="button" class="btn" data-bs-toggle="tooltip" data-placement="left" title="Tooltip on left">
+<button type="button" class="btn" data-bs-toggle="tooltip" data-bs-placement="left" title="Tooltip on left">
   Tooltip on left
 </button>
 {% endcapture %}
