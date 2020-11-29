@@ -225,21 +225,21 @@ Create a dropdown button that will encourage users to click for more options. Yo
 
 {% capture code %}
 <div class="dropdown">
-  <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+  <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown">
      {% include ui/icon.html icon="calendar" %}
   </button>
   {% include ui/dropdown-menu.html %}
 </div>
 
 <div class="dropdown">
-  <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+  <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown">
      {% include ui/icon.html icon="calendar" %}Show calendar
   </button>
   {% include ui/dropdown-menu.html %}
 </div>
 
 <div class="dropdown">
-  <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+  <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown">
      Show calendar
   </button>
   {% include ui/dropdown-menu.html %}
