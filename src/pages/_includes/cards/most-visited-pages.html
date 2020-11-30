@@ -2,8 +2,8 @@
 	<div class="card-header">
 		<h3 class="card-title">Most Visited Pages</h3>
 	</div>
-	<div class="table-responsive">
-		<table class="table card-table table-vcenter">
+	<div class="card-table table-responsive">
+		<table class="table table-vcenter">
 
 			<thead>
 			<tr>
@@ -16,6 +16,7 @@
 
 			{% for page in site.data.pages %}
 			{% assign data = page.data | join: ',' %}
+			{% assign id = "bounce-rate-" | append: forloop.index %}
 			<tr>
 				<td>
 					{{ page.uri }}
@@ -25,7 +26,7 @@
 				<td class="text-muted">{{ page.unique | format_number }}</td>
 				<td class="text-muted">{{ page.bounce-rate }}</td>
 				<td class="text-right w-1">
-					{% include ui/chart-sparkline.html type="line" data=data %}
+					{% include ui/chart-sparkline.html type="line" data=data id=id small=true %}
 				</td>
 			</tr>
 			{% endfor %}
