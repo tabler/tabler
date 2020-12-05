@@ -256,7 +256,7 @@ gulp.task('build-cleanup', () => {
 });
 
 gulp.task('build-purgecss', () => {
-	return gulp.src('demo/dist/css/*.css')
+	return gulp.src('demo/dist/{libs,css}/**/*.css')
 		.pipe(purgecss({
 			content: ['demo/**/*.html']
 		}))
