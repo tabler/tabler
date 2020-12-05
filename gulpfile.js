@@ -276,8 +276,13 @@ gulp.task('build-critical', (cb) => {
 				critical({
 					base: 'demo/',
 					inline: true,
-					height: 1200,
-					css: 'demo/dist/{libs,css}/**/*.css'
+					css: ['demo/dist/css/tabler.css'],
+					ignore: {
+						atrule: ['@font-face', '@import'],
+						decl: (node, value) => {
+							/url\(/.test(value)
+						},
+					},
 				})
 			)
 			.on('error', err => {
