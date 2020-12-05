@@ -15,6 +15,7 @@ const gulp = require('gulp'),
 	rollupCommonjs = require('@rollup/plugin-commonjs'),
 	vinylSource = require('vinyl-source-stream'),
 	vinylBuffer = require('vinyl-buffer'),
+	critical = require('critical').stream,
 	browserSync = require('browser-sync'),
 	glob = require('glob'),
 	spawn = require('cross-spawn'),
@@ -255,12 +256,36 @@ gulp.task('build-cleanup', () => {
 		.pipe(clean());
 });
 
-gulp.task('build-purgecss', () => {
-	return gulp.src('demo/dist/{libs,css}/**/*.css')
-		.pipe(purgecss({
-			content: ['demo/**/*.html']
-		}))
-		.pipe(gulp.dest('demo/dist/css'))
+gulp.task('build-purgecss', (cb) => {
+	if(argv.preview) {
+		return gulp.src('demo/dist/{libs,css}/**/*.css')
+			.pipe(purgecss({
+				content: ['demo/**/*.html']
+			}))
+			.pipe(gulp.dest('demo/dist/css'))
+	}
+
+	cb();
+});
+
+gulp.task('build-critical', (cb) => {
+	if(argv.preview) {
+		return gulp
+			.src('demo/**/*.html')
+			.pipe(
+				critical({
+					base: 'demo/',
+					inline: true,
+					height: 1200,
+				})
+			)
+			.on('error', err => {
+				console.log(err.message);
+			})
+			.pipe(gulp.dest('demo'));
+	}
+
+	cb();
 });
 
 /**
@@ -367,5 +392,5 @@ gulp.task('clean', gulp.series('clean-dirs', 'clean-jekyll'));
 gulp.task('start', gulp.series('clean', 'sass', 'js', 'build-jekyll', gulp.parallel('watch-jekyll', 'watch', 'browser-sync')));
 
 gulp.task('build-core', gulp.series('build-on', 'clean', 'sass', 'js', 'copy-images', 'copy-libs', 'add-banner'));
-gulp.task('build-demo', gulp.series('build-on', 'build-jekyll', 'copy-static', 'copy-dist', 'build-cleanup', 'build-purgecss'));
+gulp.task('build-demo', gulp.series('build-on', 'build-jekyll', 'copy-static', 'copy-dist', 'build-cleanup', 'build-purgecss', 'build-critical'));
 gulp.task('build', gulp.series('build-core', 'build-demo'));
