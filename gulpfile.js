@@ -277,6 +277,7 @@ gulp.task('build-critical', (cb) => {
 					base: 'demo/',
 					inline: true,
 					height: 1200,
+					css: 'demo/dist/{libs,css}/**/*.css'
 				})
 			)
 			.on('error', err => {
