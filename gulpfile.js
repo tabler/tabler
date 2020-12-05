@@ -7,6 +7,7 @@ const gulp = require('gulp'),
 	cleanCSS = require('gulp-clean-css'),
 	minifyJS = require('gulp-minify'),
 	rename = require('gulp-rename'),
+	purgecss = require('gulp-purgecss'),
 	rollupStream = require('@rollup/stream'),
 	rollupBabel = require('rollup-plugin-babel'),
 	rollupCleanup = require('rollup-plugin-cleanup'),
@@ -254,6 +255,14 @@ gulp.task('build-cleanup', () => {
 		.pipe(clean());
 });
 
+gulp.task('build-purgecss', () => {
+	return gulp.src('demo/dist/css/*.css')
+		.pipe(purgecss({
+			content: ['demo/**/*.html']
+		}))
+		.pipe(gulp.dest('demo/dist/css'))
+});
+
 /**
  * Watch JS and SCSS files
  */
@@ -358,5 +367,5 @@ gulp.task('clean', gulp.series('clean-dirs', 'clean-jekyll'));
 gulp.task('start', gulp.series('clean', 'sass', 'js', 'build-jekyll', gulp.parallel('watch-jekyll', 'watch', 'browser-sync')));
 
 gulp.task('build-core', gulp.series('build-on', 'clean', 'sass', 'js', 'copy-images', 'copy-libs', 'add-banner'));
-gulp.task('build-demo', gulp.series('build-on', 'build-jekyll', 'copy-static', 'copy-dist', 'build-cleanup'));
+gulp.task('build-demo', gulp.series('build-on', 'build-jekyll', 'copy-static', 'copy-dist', 'build-cleanup', 'build-purgecss'));
 gulp.task('build', gulp.series('build-core', 'build-demo'));
