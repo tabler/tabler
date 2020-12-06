@@ -85,10 +85,10 @@ Badges can be used as part of links or buttons to provide a counter.
 
 {% capture code %}
 <button type="button" class="btn">
-  Notifications <span class="badge bg-red ml-2">4</span>
+  Notifications <span class="badge bg-red ms-2">4</span>
 </button>
 <button type="button" class="btn">
-  Notifications <span class="badge bg-green ml-2">4</span>
+  Notifications <span class="badge bg-green ms-2">4</span>
 </button>
 {% endcapture %}
 {% include example.html code=code wrapper="btn-list" %}

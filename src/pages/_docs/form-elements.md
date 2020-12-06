@@ -258,8 +258,8 @@ Add text to your input control, either before or after the text which is to be e
 {% capture code %}
 <div class="mb-3">
 	<label class="form-label">Input with prepended text</label>
-	{% include ui/form/input-group.html prepend="https://tabler.io/users/" flat=true input-class="pl-0" value="yourfancyusername" class="mb-2" %}
-	{% include ui/form/input-group.html append=".tabler.io" input-class="text-right pr-0" flat=true value="yourfancydomain" %}
+	{% include ui/form/input-group.html prepend="https://tabler.io/users/" flat=true input-class="ps-0" value="yourfancyusername" class="mb-2" %}
+	{% include ui/form/input-group.html append=".tabler.io" input-class="text-right pe-0" flat=true value="yourfancydomain" %}
 </div>
 {% endcapture %}
 {% include example.html code=code %}

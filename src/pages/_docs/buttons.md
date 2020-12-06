@@ -327,7 +327,7 @@ Use the `.text-center` or the `.text-right` modifiers to change the buttons' ali
 
 {% capture code %}
 <div class="btn-list">
-  <a href="#" class="btn btn-outline-danger mr-auto">Delete</a>
+  <a href="#" class="btn btn-outline-danger me-auto">Delete</a>
   <a href="#" class="btn">Save and continue</a>
   <a href="#" class="btn btn-primary">Save changes</a>
 </div>
