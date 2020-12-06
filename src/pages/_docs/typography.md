@@ -33,23 +33,23 @@ Organize longer pieces of text into paragraphs using the `p` tag.
 Use a variety of semantic text elements, depending of how you want to display particular fragments of content.
 
 {% capture code %}
-<abbr title="Internationalization">I18N</abbr>{% hide %} <code class="ml-2">abbr</code><br/>{% endhide %}
-<strong>Bold</strong>{% hide %} <code class="ml-2">strong</code> <code>b</code><br/>{% endhide %}
-<cite>Citation</cite>{% hide %} <code class="ml-2">cite</code><br/>{% endhide %}
-<code>Hello World!</code>{% hide %} <code class="ml-2">code</code><br/>{% endhide %}
-<del>Deleted</del>{% hide %} <code class="ml-2">del</code><br/>{% endhide %}
-<em>Emphasis</em>{% hide %} <code class="ml-2">em</code><br/>{% endhide %}
-<i>Italic</i>{% hide %} <code class="ml-2">i</code><br/>{% endhide %}
-<ins>Inserted</ins>{% hide %} <code class="ml-2">ins</code><br/>{% endhide %}
-<kbd>Ctrl + S</kbd>{% hide %} <code class="ml-2">kbd</code><br/>{% endhide %}
-<mark>Highlighted</mark>{% hide %} <code class="ml-2">mark</code><br/>{% endhide %}
-<s>Strikethrough</s{% hide %}> <code class="ml-2">s</code><br/>{% endhide %}
-<samp>Sample</samp>{% hide %} <code class="ml-2">samp</code><br/>{% endhide %}
-Text <sub>Subscripted</sub>{% hide %} <code class="ml-2">sub</code><br/>{% endhide %}
-Text <sup>Superscripted</sup>{% hide %} <code class="ml-2">sup</code><br/>{% endhide %}
-<time>20:00</time>{% hide %} <code class="ml-2">time</code><br/>{% endhide %}
-<u>Underline</u>{% hide %} <code class="ml-2">u</code><br/>{% endhide %}
-<var>x</var> = <var>y</var> + 2{% hide %} <code class="ml-2">var</code><br/>{% endhide %}
+<abbr title="Internationalization">I18N</abbr>{% hide %} <code class="ms-2">abbr</code><br/>{% endhide %}
+<strong>Bold</strong>{% hide %} <code class="ms-2">strong</code> <code>b</code><br/>{% endhide %}
+<cite>Citation</cite>{% hide %} <code class="ms-2">cite</code><br/>{% endhide %}
+<code>Hello World!</code>{% hide %} <code class="ms-2">code</code><br/>{% endhide %}
+<del>Deleted</del>{% hide %} <code class="ms-2">del</code><br/>{% endhide %}
+<em>Emphasis</em>{% hide %} <code class="ms-2">em</code><br/>{% endhide %}
+<i>Italic</i>{% hide %} <code class="ms-2">i</code><br/>{% endhide %}
+<ins>Inserted</ins>{% hide %} <code class="ms-2">ins</code><br/>{% endhide %}
+<kbd>Ctrl + S</kbd>{% hide %} <code class="ms-2">kbd</code><br/>{% endhide %}
+<mark>Highlighted</mark>{% hide %} <code class="ms-2">mark</code><br/>{% endhide %}
+<s>Strikethrough</s{% hide %}> <code class="ms-2">s</code><br/>{% endhide %}
+<samp>Sample</samp>{% hide %} <code class="ms-2">samp</code><br/>{% endhide %}
+Text <sub>Subscripted</sub>{% hide %} <code class="ms-2">sub</code><br/>{% endhide %}
+Text <sup>Superscripted</sup>{% hide %} <code class="ms-2">sup</code><br/>{% endhide %}
+<time>20:00</time>{% hide %} <code class="ms-2">time</code><br/>{% endhide %}
+<u>Underline</u>{% hide %} <code class="ms-2">u</code><br/>{% endhide %}
+<var>x</var> = <var>y</var> + 2{% hide %} <code class="ms-2">var</code><br/>{% endhide %}
 {% endcapture %}
 {% include example.html code=code %}
 
@@ -84,7 +84,7 @@ You can also add a label to a horizontal rule and align it as you see fit.
 <p>
   Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
 </p>
-<div class="hr-text hr-text-right">
+<div class="hr-text hr-text-end">
   <span>Rule text</span>
 </div>
 <p>
