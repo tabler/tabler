@@ -84,7 +84,7 @@ You can also add a label to a horizontal rule and align it as you see fit.
 <p>
   Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam erat, sed diam voluptua.
 </p>
-<div class="hr-text hr-text-right">
+<div class="hr-text hr-text-end">
   <span>Rule text</span>
 </div>
 <p>

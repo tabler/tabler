@@ -29,7 +29,7 @@ However, it may be useful, however, to specify the full width in order to fit th
 You can also move the lines to right or to center:
 
 {% capture code %}
-<div class="text-right">
+<div class="text-end">
   <div class="skeleton-line"></div>
   <div class="skeleton-line"></div>
   <div class="skeleton-line"></div>

@@ -28,10 +28,12 @@ Toasts blend over the elements they appear over. If a browser supports the `back
 
 ## Stacking toasts
 
-Stack multiple toasts together by putting them within one container.
+Stack multiple toasts together by putting them within one `.toast-container`.
 
 {% capture code %}
-{% include ui/toast.html person-id=3 %}
-{% include ui/toast.html date="7 mins ago" text="This is another toast message." %}
+<div class="toast-container">
+  {% include ui/toast.html person-id=3 %}
+  {% include ui/toast.html date="7 mins ago" text="This is another toast message." %}
+</div>
 {% endcapture %}
 {% include example.html code=code %}

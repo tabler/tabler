@@ -307,7 +307,7 @@ If the list is long, it will be wrapped and some buttons will be moved to the ne
 {% endcapture %}
 {% include example.html code=code %}
 
-Use the `.text-center` or the `.text-right` modifiers to change the buttons' alignment and place them where they suit best.
+Use the `.text-center` or the `.text-end` modifiers to change the buttons' alignment and place them where they suit best.
 
 {% capture code %}
 <div class="btn-list justify-content-center">
