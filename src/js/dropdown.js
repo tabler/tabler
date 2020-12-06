@@ -1,6 +1,6 @@
 // Nested dropdowns
 
-const selectors = '.dropdown, .dropup, .dropright, .dropleft',
+const selectors = '.dropdown, .dropup, .dropend, .dropstart',
 	dropdowns = document.querySelectorAll(selectors);
 
 let currentTarget = undefined;
