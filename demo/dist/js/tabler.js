@@ -1,6 +1,6 @@
 /*!
-* Tabler v1.0.0-alpha.16 (https://tabler.io)
-* @version 1.0.0-alpha.16
+* Tabler v1.0.0-alpha.17 (https://tabler.io)
+* @version 1.0.0-alpha.17
 * @link https://tabler.io
 * Copyright 2018-2020 The Tabler Authors
 * Copyright 2018-2020 codecalm.net Paweł Kuna
@@ -3047,7 +3047,7 @@
 	  });
 	});
 
-	var selectors = '.dropdown, .dropup, .dropright, .dropleft',
+	var selectors = '.dropdown, .dropup, .dropend, .dropstart',
 	    dropdowns = document.querySelectorAll(selectors);
 	var currentTarget = undefined;
 	dropdowns.forEach(function (dropdown) {
