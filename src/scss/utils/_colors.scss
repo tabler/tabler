@@ -16,7 +16,7 @@ SOCIAL COLORS
 
 
 @if $enable-extra-colors {
-  @each $color, $value in $colors {
+  @each $color, $value in map-merge($colors, (dark: $dark, muted: $text-muted, white: $white)) {
     .bg-#{$color} {
       background: $value;
     }
@@ -26,7 +26,7 @@ SOCIAL COLORS
     }
 
     .bg-#{$color}-lt {
-      color: $value !important;
+      color: theme-color-darker($value) !important;
       background: theme-color-lighter($value, true) !important;
     }
   }

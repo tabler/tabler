@@ -1,0 +1,136 @@
+---
+title: Colors
+page-header: Colors
+---
+
+{% assign colors = '' | split: '' %}
+{% for color in site.colors %}
+{% assign colors = colors | push: color[0] %}
+{% endfor %}
+{% assign colors = colors | push: 'dark' %}
+{% assign colors = colors | push: 'muted' %}
+
+<div class="card">
+	<div class="card-body">
+		<div class="table-responsive">
+			<table class="table text-center">
+				<tr>
+					{% for color in colors %}
+					<td>
+						<div class="avatar text-{% if color == 'white' %}dark{% else %}white{% endif %} bg-{{ color }}" data-demo-color>{{ color | slice: 0, 2 }}
+						</div>
+					</td>
+					{% endfor %}
+				</tr>
+				<tr>
+					{% for color in colors %}
+					<td>
+						<div class="avatar bg-{{ color }}-lt" data-demo-color>{{ color | slice: 0, 2 }}</div>
+					</td>
+					{% endfor %}
+				</tr>
+				<tr>
+					{% for color in colors %}
+					<td>
+						<div class="avatar text-{{ color }} bg-white" data-demo-color>{{ color | slice: 0, 2 }}</div>
+					</td>
+					{% endfor %}
+				</tr>
+				<tr class="bg-light">
+					{% for color in colors %}
+					<td>
+						<div class="avatar text-{{ color }} bg-light" data-demo-color>{{ color | slice: 0, 2 }}</div>
+					</td>
+					{% endfor %}
+				</tr>
+				<tr class="bg-dark text-white">
+					{% for color in colors %}
+					<td>
+						{% if color == 'dark' %}{% assign c = 'white' %}{% else %}{% assign c = color %}{% endif %}
+						<div class="avatar text-{{ c }} bg-dark" data-demo-color>{{ c | slice: 0, 2 }}</div>
+					</td>
+					{% endfor %}
+				</tr>
+				<tr class="bg-dark text-white">
+					{% for color in colors %}
+					<td>
+						{% if color == 'dark' %}{% assign c = 'white' %}{% else %}{% assign c = color %}{% endif %}
+						<div class="avatar bg-{{ c }}-lt" data-demo-color>{{ c | slice: 0, 2 }}</div>
+						<div class="mt-2" data-demo-color-contrast></div>
+					</td>
+					{% endfor %}
+				</tr>
+			</table>
+		</div>
+	</div>
+</div>
+
+{% comment %}
+{% capture_once scripts %}
+<script>
+	var colorChannelMixer = function (colorChannelA, colorChannelB, amountToMix) {
+		var channelA = colorChannelA * amountToMix;
+		var channelB = colorChannelB * (1 - amountToMix);
+		return parseInt(channelA + channelB);
+	};
+
+	var color2Rgb = function (color) {
+		var resultHex = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(color);
+		if (resultHex) {
+			return [
+				parseInt(resultHex[1], 16),
+				parseInt(resultHex[2], 16),
+				parseInt(resultHex[3], 16)
+			]
+		}
+
+		var resultRgb = /^rgba?\((\d+),\s?(\d+),\s?(\d+)(?:,\s?([\d.]+))?\)$/i.exec(color);
+
+		if (resultRgb) {
+			var alpha = resultRgb[4] ? (parseFloat(resultRgb[4])) : 1;
+
+			return [
+				colorChannelMixer(resultRgb[1], 255, alpha),
+				colorChannelMixer(resultRgb[2], 255, alpha),
+				colorChannelMixer(resultRgb[3], 255, alpha)
+			]
+		}
+
+		return null;
+	};
+
+	var getLuminanace = (values) => {
+		const rgb = values.map((v) => {
+			var val = v / 255;
+			return val <= 0.03928 ? val / 12.92 : ((val + 0.055) / 1.055) ** 2.4;
+		});
+		return Number((0.2126 * rgb[0] + 0.7152 * rgb[1] + 0.0722 * rgb[2]).toFixed(3));
+	};
+
+	var getContrastRatio = (colorA, colorB) => {
+		var lumA = getLuminanace(color2Rgb(colorA)),
+			lumB = getLuminanace(color2Rgb(colorB));
+
+		console.log('colorA, colorB, color2Rgb(colorA), color2Rgb(colorB)', colorA, colorB, color2Rgb(colorA), color2Rgb(colorB));
+
+		return Math.round((Math.max(lumA, lumB) + 0.05) / (Math.min(lumA, lumB) + 0.05) * 100) / 100;
+	};
+
+	(function () {
+		const elements = document.querySelectorAll('[data-demo-color]');
+
+		if (elements.length) {
+			elements.forEach(function (element) {
+				var { color, backgroundColor } = window.getComputedStyle(element),
+					elementRatio = element.parentElement.querySelector('[data-demo-color-contrast]'),
+					ratio = getContrastRatio(color, backgroundColor);
+
+				elementRatio.innerHTML = ratio;
+				elementRatio.classList.add(ratio > 4.5 ? 'text-green' : 'text-red');
+
+			});
+		}
+	})();
+</script>
+{% endcapture_once %}
+{% endcomment %}

@@ -1,6 +1,6 @@
 /*!
-* Tabler v1.0.0-alpha.13 (https://tabler.io)
-* @version 1.0.0-alpha.13
+* Tabler v1.0.0-alpha.17 (https://tabler.io)
+* @version 1.0.0-alpha.17
 * @link https://tabler.io
 * Copyright 2018-2020 The Tabler Authors
 * Copyright 2018-2020 codecalm.net Paweł Kuna
@@ -13,26 +13,17 @@
 
 	var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
 
-	function createCommonjsModule(fn, basedir, module) {
-		return module = {
-			path: basedir,
-			exports: {},
-			require: function (path, base) {
-				return commonjsRequire(path, (base === undefined || base === null) ? module.path : base);
-			}
-		}, fn(module, module.exports), module.exports;
+	function createCommonjsModule(fn) {
+	  var module = { exports: {} };
+		return fn(module, module.exports), module.exports;
 	}
 
-	function commonjsRequire () {
-		throw new Error('Dynamic requires are not currently supported by @rollup/plugin-commonjs');
-	}
-
-	var autosize = createCommonjsModule(function (module, exports) {
 	/*!
 		autosize 4.0.2
 		license: MIT
 		http://www.jacklmoore.com/autosize
 	*/
+	var autosize = createCommonjsModule(function (module, exports) {
 	(function (global, factory) {
 		{
 			factory(module, exports);
@@ -249,7 +240,7 @@
 	});
 	});
 
-	var elements = document.querySelectorAll('[data-toggle="autosize"]');
+	var elements = document.querySelectorAll('[data-bs-toggle="autosize"]');
 	if (elements.length) {
 	  elements.forEach(function (element) {
 	    autosize(element);
@@ -3056,13 +3047,13 @@
 	  });
 	});
 
-	var selectors = '.dropdown, .dropup, .dropright, .dropleft',
+	var selectors = '.dropdown, .dropup, .dropend, .dropstart',
 	    dropdowns = document.querySelectorAll(selectors);
 	var currentTarget = undefined;
 	dropdowns.forEach(function (dropdown) {
 	  dropdown.addEventListener('mousedown', function (e) {
 	    e.stopPropagation();
-	    if (e.target.dataset.toggle && e.target.dataset.toggle === 'dropdown') {
+	    if (e.target.dataset.bsToggle && e.target.dataset.bsToggle === 'dropdown') {
 	      currentTarget = e.currentTarget;
 	    }
 	  });
@@ -3077,7 +3068,7 @@
 	});
 
 	(function () {
-	  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="tooltip"]'));
+	  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
 	  tooltipTriggerList.map(function (tooltipTriggerEl) {
 	    var options = {
 	      delay: {
@@ -3089,7 +3080,7 @@
 	    };
 	    return new bootstrap.Tooltip(tooltipTriggerEl, options);
 	  });
-	  var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="popover"]'));
+	  var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
 	  popoverTriggerList.map(function (popoverTriggerEl) {
 	    var options = {
 	      delay: {
@@ -3101,11 +3092,11 @@
 	    };
 	    return new bootstrap.Popover(popoverTriggerEl, options);
 	  });
-	  var dropdownTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="dropdown"]'));
+	  var dropdownTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="dropdown"]'));
 	  dropdownTriggerList.map(function (dropdownTriggerEl) {
 	    return new bootstrap.Dropdown(dropdownTriggerEl);
 	  });
-	  var switchesTriggerList = [].slice.call(document.querySelectorAll('[data-toggle="switch-icon"]'));
+	  var switchesTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="switch-icon"]'));
 	  switchesTriggerList.map(function (switchTriggerEl) {
 	    switchTriggerEl.addEventListener('click', function (e) {
 	      e.stopPropagation();

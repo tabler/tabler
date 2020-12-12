@@ -1,16 +1,29 @@
 {% assign prefix = include.prefix | default: 'navbar' %}
 {% assign breakpoint = include.breakpoint | default: 'lg' %}
 
-<a href="{{ site.base }}" class="{{ prefix }}-brand {{ prefix }}-brand-autodark{% if include.class %} {{ include.class }}{% endif %}">
-	{% unless include.hide-logo %}
-		{% if include.small-logo %}
-			<img src="{{ site.base }}/static/logo-small{% if include.dark %}-white{% endif %}.svg" width="32" height="32" alt="{{ site.title }}" class="navbar-brand-image{% if include.show-title %} mr-3{% endif %}">
-		{% else %}
-			<img src="{{ site.base }}/static/logo{% if include.dark %}-white{% endif %}.svg" width="110" height="32" alt="{{ site.title }}" class="navbar-brand-image{% if include.show-title %} mr-3{% endif %}">
-		{% endif %}
-	{% endunless %}
+{% capture class-attr %}class="{{ prefix }}-brand {{ prefix }}-brand-autodark{% if include.class %} {{ include.class }}{% endif %}"{% endcapture %}
 
-	{% if include.show-title %}
+{% if include.header %}
+<h1 {{ class-attr }}>
+	<a href="{{ site.base }}">
+{% else %}
+	<a href="{{ site.base }}" {{ class-attr }}>
+{% endif %}
+		{% unless include.hide-logo %}
+		{% if include.small-logo %}
+		<img src="{{ site.base }}/static/logo-small{% if include.dark %}-white{% endif %}.svg" width="32" height="32" alt="{{ site.title }}" class="navbar-brand-image{% if include.show-title %} me-3{% endif %}">
+		{% else %}
+		<img src="{{ site.base }}/static/logo{% if include.dark %}-white{% endif %}.svg" width="110" height="32" alt="{{ site.title }}" class="navbar-brand-image{% if include.show-title %} me-3{% endif %}">
+		{% endif %}
+		{% endunless %}
+
+		{% if include.show-title %}
 		Dashboard
-	{% endif %}
+		{% endif %}
+
+{% if include.header %}
+	</a>
+</h1>
+{% else %}
 </a>
+{% endif %}

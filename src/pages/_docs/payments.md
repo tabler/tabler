@@ -11,9 +11,9 @@ plugin: payments
 To create a payment provider icon, add the `payment` class to a component and specify the payment provider. The full list of payment providers can be found below.
 
 {% capture code %}
-{% include ui/payment.html class="mr-3" payment="shopify"%}
-{% include ui/payment.html class="mr-3" payment="visa" %}
-{% include ui/payment.html class="mr-3" payment="paypal"%}
+{% include ui/payment.html class="me-3" payment="shopify"%}
+{% include ui/payment.html class="me-3" payment="visa" %}
+{% include ui/payment.html class="me-3" payment="paypal"%}
 {% endcapture %}
 {% include example.html code=code %}
 
@@ -23,10 +23,10 @@ To create a payment provider icon, add the `payment` class to a component and sp
 Using Bootstrap’s typical naming structure, you can create a standard payment, or scale it up or down to different sizes based on what’s needed.
 
 {% capture code %}
-{% include ui/payment.html class="mr-3" payment="shopify" size="xl" %}
-{% include ui/payment.html class="mr-3" payment="visa" size="lg" %}
-{% include ui/payment.html class="mr-3" payment="paypal" size="md" %}
-{% include ui/payment.html class="mr-3" payment="amazon" size="sm" %}
+{% include ui/payment.html class="me-3" payment="shopify" size="xl" %}
+{% include ui/payment.html class="me-3" payment="visa" size="lg" %}
+{% include ui/payment.html class="me-3" payment="paypal" size="md" %}
+{% include ui/payment.html class="me-3" payment="amazon" size="sm" %}
 {% endcapture %}
 {% include example.html code=code %}
 

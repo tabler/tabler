@@ -1,6 +1,6 @@
 // Nested dropdowns
 
-const selectors = '.dropdown, .dropup, .dropright, .dropleft',
+const selectors = '.dropdown, .dropup, .dropend, .dropstart',
 	dropdowns = document.querySelectorAll(selectors);
 
 let currentTarget = undefined;
@@ -9,7 +9,7 @@ dropdowns.forEach(dropdown => {
 	dropdown.addEventListener('mousedown', (e) => {
 		e.stopPropagation();
 
-		if (e.target.dataset.toggle && e.target.dataset.toggle === 'dropdown') {
+		if (e.target.dataset.bsToggle && e.target.dataset.bsToggle === 'dropdown') {
 			currentTarget = e.currentTarget;
 		}
 	});

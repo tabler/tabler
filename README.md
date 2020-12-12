@@ -2,7 +2,7 @@
 
 A premium and open source dashboard template with a responsive and high-quality UI.
 
-<a href="https://preview.tabler.io">View Demo</a> | <a href="https://github.com/tabler/tabler-react">View React Version</a> | <a href="https://github.com/tabler/tabler/archive/master.zip">Download ZIP</a>
+<a href="https://preview.tabler.io">View Demo</a> | <a href="https://github.com/tabler/tabler/archive/dev.zip">Download ZIP</a>
 
 ![Tabler preview](/src/static/tabler-preview.png?raw=true)
 
@@ -26,7 +26,7 @@ We've created this admin panel for everyone who wants to create templates based 
 
 ## Sponsor Tabler
 
-<a href="https://github.com/sponsors/codecalm" target="_blank"><img src="/static/sponsor-banner-readme.png?raw=true" alt="Sponsor Tabler" /></a>
+<a href="https://github.com/sponsors/codecalm" target="_blank"><img src="/src/static/sponsor-banner-readme.png?raw=true" alt="Sponsor Tabler" /></a>
 
 
 ### Sponsors
@@ -67,7 +67,7 @@ Once you complete the setup, you'll be able to run the various commands provided
 
 1. From the root `/tabler` directory, run `npm run start` in the command line.
 2. Open [http://localhost:3000](http://localhost:3000) in your browser, and voilà.
-3. Any change in the `/pages` directory will build the application and refresh the page.
+3. Any change in the `/src` directory will build the application and refresh the page.
 
 **Note**:
 Run `npm run build` for reforms a one off build application without refresh.

@@ -20,9 +20,9 @@ Use the `ribbon` class to add the default ribbon to any section of your interfac
 You can change the position of a ribbon by adding one of the following classes to the element:
 
 - `ribbon-top` - moves it to the top
-- `ribbon-right` - moves it to the right
+- `ribbon-end` - moves it to the right
 - `ribbon-bottom` - moves it to the bottom
-- `ribbon-left` - moves it to the lefg
+- `ribbon-start` - moves it to the left
 
 Using multiple classes at once will give you more position options. For example, the following class: `.ribbon.ribbon-top.ribbon-left` will move the ribbon to the top left corner.
 

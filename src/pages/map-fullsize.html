@@ -1,0 +1,30 @@
+---
+layout: default
+libs: google-maps
+layout-content-full: true
+layout-sidebar: true
+layout-hide-topbar: true
+menu: base.map-fullsize
+---
+
+{% assign map-id = 'google' %}
+
+<div class="map flex-fill" id="map-{{ map-id }}"></div>
+
+{% capture_global scripts %}
+<script>
+	// @formatter:off
+	let map;
+	{% if jekyll.environment == 'development' %}window.tabler_map = window.tabler_map || {};{% endif %}
+
+	document.addEventListener("DOMContentLoaded", function() {
+		map = new google.maps.Map(document.getElementById("map-{{ map-id }}"), {
+			center: { lat: -34.397, lng: 150.644 },
+			zoom: 8,
+		});
+
+		{% if jekyll.environment == 'development' %}window.tabler_map["map-{{ map-id }}"] = map;{% endif %}
+	});
+// @formatter:on
+</script>
+{% endcapture_global %}

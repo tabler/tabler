@@ -225,21 +225,21 @@ Create a dropdown button that will encourage users to click for more options. Yo
 
 {% capture code %}
 <div class="dropdown">
-  <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+  <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown">
      {% include ui/icon.html icon="calendar" %}
   </button>
   {% include ui/dropdown-menu.html %}
 </div>
 
 <div class="dropdown">
-  <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+  <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown">
      {% include ui/icon.html icon="calendar" %}Show calendar
   </button>
   {% include ui/dropdown-menu.html %}
 </div>
 
 <div class="dropdown">
-  <button type="button" class="btn dropdown-toggle" data-toggle="dropdown">
+  <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown">
      Show calendar
   </button>
   {% include ui/dropdown-menu.html %}
@@ -307,7 +307,7 @@ If the list is long, it will be wrapped and some buttons will be moved to the ne
 {% endcapture %}
 {% include example.html code=code %}
 
-Use the `.text-center` or the `.text-right` modifiers to change the buttons' alignment and place them where they suit best.
+Use the `.text-center` or the `.text-end` modifiers to change the buttons' alignment and place them where they suit best.
 
 {% capture code %}
 <div class="btn-list justify-content-center">
@@ -327,7 +327,7 @@ Use the `.text-center` or the `.text-right` modifiers to change the buttons' ali
 
 {% capture code %}
 <div class="btn-list">
-  <a href="#" class="btn btn-outline-danger mr-auto">Delete</a>
+  <a href="#" class="btn btn-outline-danger me-auto">Delete</a>
   <a href="#" class="btn">Save and continue</a>
   <a href="#" class="btn btn-primary">Save changes</a>
 </div>

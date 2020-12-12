@@ -2,15 +2,27 @@
 layout: base
 ---
 
-{% if page.layout-sidebar %}
-	{% include layout/sidebar.html dark=page.layout-sidebar-dark right=page.layout-sidebar-right %}
-{% endif %}
-
 <div class="page">
+	{% if page.layout-sidebar %}
+	{% include layout/sidebar.html dark=page.layout-sidebar-dark right=page.layout-sidebar-right transparent=page.layout-navbar-transparent breakpoint="lg" %}
+	{% endif %}
+
 	{% unless page.layout-hide-topbar %}
-		{% include layout/navbar.html condensed=page.layout-navbar-condensed overlap=page.layout-navbar-overlap dark=page.layout-navbar-dark hide-brand=page.layout-navbar-hide-brand hide-menu=page.layout-navbar-hide-menu class=page.layout-navbar-class %}
+		{% include layout/navbar.html condensed=page.layout-navbar-condensed overlap=page.layout-navbar-overlap dark=page.layout-navbar-dark hide-brand=page.layout-navbar-hide-brand hide-menu=page.layout-navbar-hide-menu sticky=page.layout-navbar-sticky transparent=page.layout-topbar-transparent class=page.layout-navbar-class %}
 	{% endunless %}
 
-	{% include layout/content.html %}
-</div>
 
+	<div class="content{% if page.layout-content-full %} content-full{% endif %}">
+		{% if page.layout-content-full %}
+			{{ content }}
+		{% else %}
+			<div class="container{% if page.layout-fluid %}-fluid{% else %}-xl{% endif %}{% if page.container-centered %} d-flex flex-column justify-content-center{% endif %}">
+				{% include layout/page-header.html %}
+
+				{{ content }}
+			</div>
+
+			{% include layout/footer.html %}
+		{% endif %}
+	</div>
+</div>
