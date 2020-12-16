@@ -87,3 +87,15 @@ Add primary and secondary buttons to your alert modals if you want users to take
 {% endcapture %}
 {% include example.html code=code %}
 
+
+## Important alerts
+
+If you want your alert to be really eye-catching, you can add a class `alert-important`.
+
+{% capture code %}
+{% for alert in site.data.alerts %}
+{% include ui/alert.html type=alert.color text=alert.description close=true important=true icon=alert.icon %}
+{% endfor %}
+{% endcapture %}
+{% include example.html code=code %}
+

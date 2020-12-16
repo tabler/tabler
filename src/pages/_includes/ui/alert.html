@@ -1,4 +1,4 @@
-<div class="alert alert-{{ include.type | default: 'primary'}}{%if include.close %} alert-dismissible{% endif %}{% if include.avatar %} alert-avatar{% endif %}" role="alert">
+<div class="alert{% if include.important %} alert-important{% endif %} alert-{{ include.type | default: 'primary'}}{%if include.close %} alert-dismissible{% endif %}{% if include.avatar %} alert-avatar{% endif %}" role="alert">
 
 	{% if include.icon or include.person-id %}
 		<div class="d-flex">
@@ -32,5 +32,5 @@
 		</div>
 	{% endif %}
 
-	{% if include.close %}<a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>{% endif %}
+	{% if include.close %}<a class="btn-close{% if include.important %} btn-close-white{% endif %}" data-bs-dismiss="alert" aria-label="close"></a>{% endif %}
 </div>
