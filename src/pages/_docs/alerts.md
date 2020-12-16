@@ -11,11 +11,8 @@ bootstrap-link: components/alerts/
 Depending on the information you need to convey, you can use one of the following types of alert messages - **success**, **info**, **warning** or **danger**. Using the right type of alert modal will help draw users' attention to the message and prompt them to take action. 
 
 {% capture code %}
-{% for variant in site.variants %}
-	{% capture variant-text %}
-		This is a {{ variant.name }} alert — check it out!
-	{% endcapture %}
-	{% include ui/alert.html type=variant.name text=variant-text %}
+{% for alert in site.data.alerts %}
+	{% include ui/alert.html type=alert.color text=alert.text description=alert.description %}
 {% endfor %}
 {% endcapture %}
 {% include example.html code=code %}
@@ -41,11 +38,8 @@ Add a link to your alert message to redirect users to the details they need to c
 Add the `x` close button to make an alert modal dismissible. Thanks to that, your alert modal will disappear only once the user closes it. 
 
 {% capture code %}
-{% for variant in site.variants %}
-	{% capture variant-text %}
-		This is a {{ variant.name }} alert — check it out!
-	{% endcapture %}
-	{% include ui/alert.html type=variant.name text=variant-text close=true %}
+{% for alert in site.data.alerts %}
+{% include ui/alert.html type=alert.color icon=alert.icon text=alert.text description=alert.description close=true %}
 {% endfor %}
 {% endcapture %}
 {% include example.html code=code %}
@@ -56,11 +50,8 @@ Add the `x` close button to make an alert modal dismissible. Thanks to that, you
 Add an icon to your alert modal to make it more user-friendly and help users easily identify the message.
 
 {% capture code %}
-{% for variant in site.variants %}
-	{% capture variant-text %}
-		This is a {{ variant.name }} alert — check it out!
-	{% endcapture %}
-	{% include ui/alert.html type=variant.name icon=variant.icon text=variant-text %}
+{% for alert in site.data.alerts %}
+{% include ui/alert.html type=alert.color icon=alert.icon text=alert.text description=alert.description %}
 {% endfor %}
 {% endcapture %}
 {% include example.html code=code %}
@@ -87,10 +78,12 @@ Add primary and secondary buttons to your alert modals if you want users to take
 
 {% capture code %}
 {% capture variant-text %}
- 	<h3>Some Title</h3>
- 	<p>Lorem ipsum Minim ad pariatur eiusmod ea ut nulla aliqua est quis id dolore minim voluptate.</p>
- {% endcapture %}
- {% include ui/alert.html type='success' close=true text=variant-text buttons=true %}
+	<h3 class="mb-1">Some Title</h3>
+	<p>Lorem ipsum Minim ad pariatur eiusmod ea ut nulla aliqua est quis id dolore minim voluptate.</p>
+{% endcapture %}
+{% for alert in site.data.alerts %}
+{% include ui/alert.html type=alert.color text=variant-text close=true buttons=true %}
+{% endfor %}
 {% endcapture %}
 {% include example.html code=code %}
 

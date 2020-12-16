@@ -1,1 +1,37 @@
-.alert { }
+.alert {
+  --#{$variable-prefix}alert-color: #{$text-muted};
+  border: $alert-border-width solid $alert-border-color;
+  border-left: .25rem solid var(--#{$variable-prefix}alert-color);
+  box-shadow: $alert-shadow;
+
+  >:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.alert-link, {
+  &,
+  &:hover {
+    color: var(--#{$variable-prefix}alert-color);
+  }
+}
+
+@each $state, $value in $theme-colors {
+  .alert-#{$state} {
+    --#{$variable-prefix}alert-color: #{$value};
+  }
+}
+
+.alert-icon {
+  color: var(--#{$variable-prefix}alert-color);
+  width: 1.5rem !important;
+  height: 1.5rem !important;
+  margin: -.125rem $alert-padding-x -.125rem 0;
+}
+
+.alert-title {
+  font-size: $h4-font-size;
+  line-height: $h4-line-height;
+  font-weight: $headings-font-weight;
+  margin-bottom: .25rem;
+}
