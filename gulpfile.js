@@ -5,6 +5,7 @@ const gulp = require('gulp'),
 	postcss = require('gulp-postcss'),
 	header = require('gulp-header'),
 	cleanCSS = require('gulp-clean-css'),
+	rtlcss = require('gulp-rtlcss'),
 	minifyJS = require('gulp-minify'),
 	rename = require('gulp-rename'),
 	purgecss = require('gulp-purgecss'),
@@ -145,8 +146,9 @@ gulp.task('clean-jekyll', (cb) => {
  * Compile SASS to CSS and move it to dist directory
  */
 gulp.task('sass', () => {
-	const g = gulp
-		.src(`${srcDir}/scss/*.scss`)
+	return gulp
+		.src(`${srcDir}/scss/!(_)*.scss`)
+		.pipe(debug())
 		.pipe(sass({
 			style: 'expanded',
 			precision: 7,
@@ -164,18 +166,27 @@ gulp.task('sass', () => {
 		.pipe(gulp.dest(`${distDir}/css/`))
 		.pipe(browserSync.reload({
 			stream: true,
-		}));
-
-	if (BUILD) {
-		g.pipe(cleanCSS())
-			.pipe(rename((path) => {
-				path.basename += '.min';
-			}))
-			.pipe(gulp.dest(`${distDir}/css/`));
-	}
-
-	return g;
+		}))
+		.pipe(rtlcss())
+		.pipe(rename((path) => {
+			path.basename += '.rtl';
+		}))
+		.pipe(gulp.dest(`${distDir}/css/`));
 });
+
+/**
+ * CSS minify
+ */
+gulp.task('css-minify', function(){
+	return gulp.src(`${distDir}/css/!(*.min).css`)
+		.pipe(debug())
+		.pipe(cleanCSS())
+		.pipe(rename((path) => {
+			path.basename += '.min';
+		}))
+		.pipe(gulp.dest(`${distDir}/css/`));
+});
+
 
 /**
  * Compile JS files to dist directory
@@ -397,6 +408,6 @@ gulp.task('clean', gulp.series('clean-dirs', 'clean-jekyll'));
 
 gulp.task('start', gulp.series('clean', 'sass', 'js', 'build-jekyll', gulp.parallel('watch-jekyll', 'watch', 'browser-sync')));
 
-gulp.task('build-core', gulp.series('build-on', 'clean', 'sass', 'js', 'copy-images', 'copy-libs', 'add-banner'));
+gulp.task('build-core', gulp.series('build-on', 'clean', 'sass', 'css-minify', 'js', 'copy-images', 'copy-libs', 'add-banner'));
 gulp.task('build-demo', gulp.series('build-on', 'build-jekyll', 'copy-static', 'copy-dist', 'build-cleanup', 'build-purgecss'/*, 'build-critical'*/));
 gulp.task('build', gulp.series('build-core', 'build-demo'));
