@@ -1,6 +1,6 @@
 /*!
-* Tabler v1.0.0-alpha.19 (https://tabler.io)
-* @version 1.0.0-alpha.19
+* Tabler v1.0.0-alpha.20 (https://tabler.io)
+* @version 1.0.0-alpha.20
 * @link https://tabler.io
 * Copyright 2018-2020 The Tabler Authors
 * Copyright 2018-2020 codecalm.net Paweł Kuna
@@ -2932,6 +2932,93 @@ textarea.form-control-lg {
         .card-group > .card:not(:first-child) .card-img-bottom,
         .card-group > .card:not(:first-child) .card-footer {
           border-bottom-left-radius: 0; } }
+
+.accordion-button {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: 1rem 1.25rem;
+  font-size: 0.875rem;
+  color: #232e3c;
+  background-color: transparent;
+  border: 1px solid rgba(101, 109, 119, 0.16);
+  border-radius: 0;
+  overflow-anchor: none;
+  transition: color 0.15s ease-in-out, background-color 0.15s ease-in-out, border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out, border-radius 0.15s ease; }
+  @media (prefers-reduced-motion: reduce) {
+    .accordion-button {
+      transition: none; } }
+  .accordion-button.collapsed {
+    border-bottom-width: 0; }
+  .accordion-button:not(.collapsed) {
+    color: inherit;
+    background-color: transparent; }
+    .accordion-button:not(.collapsed)::after {
+      background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='inherit'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+      transform: rotate(180deg); }
+  .accordion-button::after {
+    flex-shrink: 0;
+    width: 1rem;
+    height: 1rem;
+    margin-left: auto;
+    content: "";
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='%23232e3c'%3e%3cpath fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-size: 1rem;
+    transition: transform 0.2s ease-in-out; }
+    @media (prefers-reduced-motion: reduce) {
+      .accordion-button::after {
+        transition: none; } }
+  .accordion-button:hover {
+    z-index: 2; }
+  .accordion-button:focus {
+    z-index: 3;
+    border-color: rgba(101, 109, 119, 0.16);
+    outline: 0;
+    box-shadow: 0 0 0 0.25rem rgba(32, 107, 196, 0.25); }
+
+.accordion-header {
+  margin-bottom: 0; }
+
+.accordion-item:first-of-type .accordion-button {
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px; }
+
+.accordion-item:last-of-type .accordion-button.collapsed {
+  border-bottom-width: 1px;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px; }
+
+.accordion-item:last-of-type .accordion-collapse {
+  border-bottom-width: 1px;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px; }
+
+.accordion-collapse {
+  border: solid rgba(101, 109, 119, 0.16);
+  border-width: 0 1px; }
+
+.accordion-body {
+  padding: 1rem 1.25rem; }
+
+.accordion-flush .accordion-button {
+  border-right: 0;
+  border-left: 0;
+  border-radius: 0; }
+
+.accordion-flush .accordion-collapse {
+  border-width: 0; }
+
+.accordion-flush .accordion-item:first-of-type .accordion-button {
+  border-top-width: 0;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0; }
+
+.accordion-flush .accordion-item:last-of-type .accordion-button.collapsed {
+  border-bottom-width: 0;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0; }
 
 .breadcrumb {
   display: flex;
@@ -8384,6 +8471,19 @@ Navbar vertical
   background-color: transparent;
   border-top: 0; }
 
+.accordion-button:focus:not(:focus-visible) {
+  outline: none;
+  box-shadow: none; }
+
+.accordion-button:after {
+  opacity: 0.7; }
+
+.accordion-button:not(.collapsed) {
+  font-weight: 600;
+  border-bottom-color: transparent; }
+  .accordion-button:not(.collapsed):after {
+    opacity: 1; }
+
 .alert {
   --tblr-alert-color: #656d77;
   border: 1px solid rgba(101, 109, 119, 0.16);
@@ -9790,7 +9890,13 @@ Card tabs
 
 .icon-md {
   width: 2.5rem;
-  height: 2.5rem; }
+  height: 2.5rem;
+  stroke-width: 1; }
+
+.icon-lg {
+  width: 3.5rem;
+  height: 3.5rem;
+  stroke-width: 1; }
 
 .img-responsive {
   background: no-repeat center/cover;
@@ -10545,6 +10651,15 @@ Dimmer
 
 .modal-body + .modal-body {
   border-top: 1px solid #e6e8e9; }
+
+.modal-status {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: #656d77;
+  border-radius: 3px 3px 0 0; }
 
 .modal-header {
   align-items: center;
