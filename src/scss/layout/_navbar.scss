@@ -74,7 +74,7 @@
   }
 }
 
-@mixin navbar-vertical-nav {
+@mixin navbar-vertical {
   .navbar-collapse {
     flex-direction: column;
 
@@ -84,11 +84,11 @@
     }
 
     .navbar-nav {
-      margin-left: calc( -1 * var(--#{$variable-prefix}gutter-x, #{$container-padding-x}));
-      margin-right: calc( -1 * var(--#{$variable-prefix}gutter-x, #{$container-padding-x}));
+      margin-left: calc( -1 * var(--#{$variable-prefix}navbar-padding-x));
+      margin-right: calc( -1 * var(--#{$variable-prefix}navbar-padding-x));
 
       .nav-link {
-        padding: .5rem $container-padding-x;
+        padding: .5rem var(--#{$variable-prefix}navbar-padding-x);
         justify-content: flex-start;
       }
     }
@@ -111,15 +111,18 @@
         min-width: 0;
         display: flex;
         width: auto;
-        padding-left: add($container-padding-x, 1.75rem);
+        padding-left: calc(var(--#{$variable-prefix}navbar-padding-x) + 1.75rem);
+        max-width: 100%;
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
 
       .dropdown-menu .dropdown-item {
-        padding-left: add($container-padding-x, 3.25rem);
+        padding-left: calc(var(--#{$variable-prefix}navbar-padding-x) + 3.25rem);
       }
 
       .dropdown-menu .dropdown-menu .dropdown-item {
-        padding-left: add($container-padding-x, 4.75rem);
+        padding-left: calc(var(--#{$variable-prefix}navbar-padding-x) + 4.25rem);
       }
     }
 
@@ -144,6 +147,7 @@ Navbar
   --#{$variable-prefix}navbar-bg: transparent;
   --#{$variable-prefix}navbar-color: #{$white};
   --#{$variable-prefix}navbar-border-color: #{$border-color-transparent};
+  --#{$variable-prefix}navbar-padding-x: var(--#{$variable-prefix}-gutter-x, 1.5rem);
 
   align-items: stretch;
   min-height: $navbar-height;
@@ -199,7 +203,7 @@ Navbar
 
     &#{$infix} {
       @include media-breakpoint-down(breakpoint-next($breakpoint)) {
-        @include navbar-vertical-nav;
+        @include navbar-vertical;
       }
 
       @include media-breakpoint-up($next) {
@@ -378,6 +382,7 @@ Navbar vertical
 
         &#{$infix} {
           @include media-breakpoint-up($next) {
+            --#{$variable-prefix}navbar-padding-x: 1rem;
             width: $sidebar-width;
             position: fixed;
             top: 0;
@@ -426,6 +431,8 @@ Navbar vertical
               align-items: stretch;
               min-height: 100%;
               justify-content: flex-start;
+              padding-left: var(--#{$variable-prefix}navbar-padding-x);
+              padding-right: var(--#{$variable-prefix}navbar-padding-x);
             }
 
             ~ .page {
@@ -442,7 +449,7 @@ Navbar vertical
               padding-right: $sidebar-width;
             }
 
-            @include navbar-vertical-nav;
+            @include navbar-vertical;
           }
         }
       }
