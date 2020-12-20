@@ -7,16 +7,16 @@
 
 	<header class="navbar navbar-expand-{{ breakpoint }}{% if include.transparent %} navbar-transparent{% else %}{% if include.dark %} navbar-dark{% else %} navbar-light{% endif %}{% if include.background %} bg-{{ include.background }}{% endif %}{% endif %}{% if include.sticky %} sticky-top{% endif %}{% if include.overlap %} navbar-overlap{% endif %}{% if include.class %} {{ include.class }}{% endif %} d-print-none"{% if include.background-color %} style="background: {{ include.background-color }}"{% endif %}>
 		<div class="container{% if page.layout-fluid %}-fluid{% else %}-xl{% endif %}">
-			{% include layout/navbar-toggler.html target="navbar-menu" %}
+			{% include layout/navbar-toggler.html target="navbar-menu" id=include.id %}
 
 			{% unless include.hide-brand %}
-				{% include layout/navbar-logo.html dark=include.dark small-logo=include.small-logo hide-logo=include.hide-logo class="d-none-navbar-horizontal pe-0 pe-md-3" breakpoint=breakpoint show-title=include.show-title header=true %}
+				{% include layout/navbar-logo.html dark=include.dark small-logo=include.small-logo hide-logo=include.hide-logo class="d-none-navbar-horizontal pe-0 pe-md-3" breakpoint=breakpoint show-title=include.show-title %}
 			{% endunless %}
 
 			{% include layout/navbar-side.html class="order-md-last" hide-username=include.hide-username person-id=include.person-id %}
 
 			{% if condensed %}
-			<div class="collapse navbar-collapse" id="navbar-menu">
+			<div class="collapse navbar-collapse" id="navbar-menu{% if include.id %}-{{ include.id }}{% endif %}">
 				{% if include.hide-search %}
 					{% include layout/navbar-menu.html sample=include.sample hide-icons=include.hide-icons %}
 				{% elsif include.hide-menu %}
@@ -40,12 +40,10 @@
 
 	{% unless condensed %}
 	<div class="navbar-expand-{{ breakpoint }}">
-		<div class="collapse navbar-collapse" id="navbar-menu">
-			<div class="navbar {% if include.dark-secondary %}navbar-dark{% else %}navbar-light{% endif %}">
-				<div class="container{% if page.layout-fluid %}-fluid{% else %}-xl{% endif %}">
-					{% include layout/navbar-menu.html sample=include.sample hide-icons=include.hide-icons long-titles=true %}
-					{% include layout/navbar-search.html breakpoint=breakpoint dark=include.dark-secondary class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last" %}
-				</div>
+		<div class="navbar {% if include.dark-secondary %}navbar-dark{% else %}navbar-light{% endif %} navbar-collapse collapse" id="navbar-menu{% if include.id %}-{{ include.id }}{% endif %}">
+			<div class="container{% if page.layout-fluid %}-fluid{% else %}-xl{% endif %}">
+				{% include layout/navbar-search.html breakpoint=breakpoint dark=include.dark-secondary class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-md-last" %}
+				{% include layout/navbar-menu.html sample=include.sample hide-icons=include.hide-icons long-titles=true %}
 			</div>
 		</div>
 	</div>
