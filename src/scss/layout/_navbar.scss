@@ -35,6 +35,7 @@
   &.navbar-right {
     left: auto;
     right: 0;
+    box-shadow: inset 1px 0 0 0 var(--#{$variable-prefix}navbar-border-color);
   }
 
   .navbar-brand {
@@ -147,29 +148,47 @@
     padding-left: 0;
     padding-right: $sidebar-condensed-width;
   }
+
+  ~ .navbar-vertical.navbar-expand {
+    @each $breakpoint in map-keys($grid-breakpoints) {
+      $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+      &#{$infix} {
+        @include media-breakpoint-up($breakpoint) {
+          left: $sidebar-condensed-width;
+          display: flex;
+
+          ~ .content {
+            padding-left: $sidebar-condensed-width + $sidebar-width;
+          }
+        }
+      }
+    }
+  }
 }
 
 /**
 Navbar
  */
 .navbar {
-  --#{$variable-prefix}navbar-bg: transparent;
+  --#{$variable-prefix}navbar-bg: #{$white};
   --#{$variable-prefix}navbar-color: #{$navbar-light-color};
   --#{$variable-prefix}navbar-border-color: #{$border-color-transparent};
   --#{$variable-prefix}navbar-padding-x: var(--#{$variable-prefix}-gutter-x, var(--#{$variable-prefix}-gutter-x, 1.5rem));
   box-shadow: inset 0 -1px 0 0 var(--#{$variable-prefix}navbar-border-color);
   background: var(--#{$variable-prefix}navbar-bg);
   color: var(--#{$variable-prefix}navbar-color);
-
   align-items: stretch;
   min-height: $navbar-height;
 
-  &.collapsing {
-    min-height: 0;
-  }
+  @include scrollbar;
 
   @include dark-mode {
     @include navbar-dark;
+  }
+
+  &.collapsing {
+    min-height: 0;
   }
 
   .nav-item {
@@ -196,11 +215,10 @@ Navbar
 
 .navbar-expand {
   @each $breakpoint in map-keys($grid-breakpoints) {
-    $next: breakpoint-next($breakpoint, $grid-breakpoints);
-    $infix: breakpoint-infix($next, $grid-breakpoints);
+    $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
 
     &#{$infix} {
-      @include media-breakpoint-down($next) {
+      @include media-breakpoint-down($breakpoint) {
         .dropdown-toggle:after {
           margin-left: auto;
         }
@@ -214,7 +232,7 @@ Navbar
         }
       }
 
-      @include media-breakpoint-up($next) {
+      @include media-breakpoint-up($breakpoint) {
         .navbar-nav {
           min-width: 0;
         }
@@ -236,11 +254,10 @@ Navbar vertical
   .navbar-vertical {
     &.navbar-expand {
       @each $breakpoint in map-keys($grid-breakpoints) {
-        $next: breakpoint-next($breakpoint, $grid-breakpoints);
-        $infix: breakpoint-infix($next, $grid-breakpoints);
+        $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
 
         &#{$infix} {
-          @include media-breakpoint-up($next) {
+          @include media-breakpoint-up($breakpoint) {
             @include navbar-vertical;
           }
         }

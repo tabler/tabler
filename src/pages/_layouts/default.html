@@ -5,12 +5,17 @@ layout: base
 <div class="page">
 	{% if page.layout-sidebar %}
 		{% include layout/sidebar.html dark=page.layout-sidebar-dark right=page.layout-sidebar-right transparent=page.layout-navbar-transparent condensed=page.layout-sidebar-condensed breakpoint="lg" %}
+
+		{% if page.layout-sidebar-double %}
+			<div class="navbar navbar-vertical navbar-collapse collapse navbar-expand-xl p-0">
+				{% include parts/users-list-headers.html %}
+			</div>
+		{% endif %}
 	{% endif %}
 
 	{% unless page.layout-hide-topbar %}
 		{% include layout/navbar.html condensed=page.layout-navbar-condensed overlap=page.layout-navbar-overlap dark=page.layout-navbar-dark hide-brand=page.layout-navbar-hide-brand hide-menu=page.layout-navbar-hide-menu sticky=page.layout-navbar-sticky transparent=page.layout-topbar-transparent class=page.layout-navbar-class %}
 	{% endunless %}
-
 
 	<div class="content{% if page.layout-content-full %} content-full{% endif %}">
 		{% if page.layout-content-full %}
