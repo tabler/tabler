@@ -21,7 +21,16 @@ menu: docs.components.modals
 {% capture code %}
 <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">
-        {% include parts/modals/small.html %}
+        {% include parts/modals/danger.html %}
+    </div>
+</div>
+{% endcapture %}
+{% include example.html code=code modal=true %}
+
+{% capture code %}
+<div class="modal-dialog modal-sm" role="document">
+    <div class="modal-content">
+        {% include parts/modals/success.html %}
     </div>
 </div>
 {% endcapture %}

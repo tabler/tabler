@@ -1,0 +1,28 @@
+---
+title: Accordion
+page-header: Accordion
+menu: base.accordion
+---
+
+<div class="card">
+	<div class="card-body">
+
+		<div class="accordion" id="accordion-example">
+			{% for i in (1..4) %}
+			<div class="accordion-item">
+				<h2 class="accordion-header" id="heading-{{ i }}">
+					<button class="accordion-button {% unless i == 1 %}collapsed{% endunless %}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ i }}" aria-expanded="{% if i == 1 %}true{% else %}false{% endif %}">
+						Accordion Item #{{ i }}
+					</button>
+				</h2>
+				<div id="collapse-{{ i }}" class="accordion-collapse collapse{% if i == 1 %} show{% endif %}" data-bs-parent="#accordion-example">
+					<div class="accordion-body pt-0">
+						<strong>This is the {% cycle 'first', 'second', 'third', 'fourth' %} item's accordion body.</strong> It is hidden by default, until the collapse plugin adds the appropriate classes that we use to style each element. These classes control the overall appearance, as well as the showing and hiding via CSS transitions. You can modify any of this with custom CSS or overriding our default variables. It's also worth noting that just about any HTML can go within the <code>.accordion-body</code>, though the transition does limit overflow.
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+
+	</div>
+</div>

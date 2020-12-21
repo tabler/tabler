@@ -60,7 +60,7 @@ Growing spinners also come in a variety of colors to choose from.
 {% include example.html code=code %}
 
 
-## Buttons
+### Button with spinner
 
 Use buttons with spinners to notify users that an action they have taken by clicking the button is in progress and prevent them from clicking multiple times or giving up.  
 
@@ -68,7 +68,20 @@ Use buttons with spinners to notify users that an action they have taken by clic
 {% include ui/button.html spinner=true text="Button" color="primary" %}
 {% include ui/button.html spinner=true text="Button" color="danger" %}
 {% include ui/button.html spinner=true text="Button" color="warning" %}
-{% include ui/button.html spinner=true color="success" %}
-{% include ui/button.html spinner=true color="white" %}
+{% include ui/button.html spinner=true text="Button" color="success" %}
+{% include ui/button.html spinner=true text="Button" color="white" %}
+{% endcapture %}
+{% include example.html code=code %}
+
+## Animated dots
+
+{% capture code %}
+<h1>Loading<span class="animated-dots"></span></h1>
+{% endcapture %}
+{% include example.html code=code wrapper="text-center" %}
+
+{% capture code %}
+{% include ui/button.html dots=true text='Loading' color="primary" %}
+{% include ui/button.html dots=true text='Loading' disabled=true color="primary" %}
 {% endcapture %}
 {% include example.html code=code %}

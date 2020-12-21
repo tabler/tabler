@@ -8,22 +8,6 @@
 {% capture script %}
 {% assign colors = include.colors | default: 1 %}
 <script>
-	var generateData = function() {
-		var data = [],
-			min = 0,
-			max = 100,
-			count = {{ include.count | default: 15 }};
-
-		for (var n = 0; n < count; n++) {
-			data.push({
-				x: (n + 1).toString(),
-				y: Math.floor(Math.random() * (max - min + 1)) + min
-			});
-		}
-
-		return data;
-	};
-
 	var options = {
 		chart: {
 			height: {{ height | times: 16 }},
@@ -69,7 +53,8 @@
 		{% endif %}
 		series: [
 		{% for i in site.months-short limit: 12 %}
-			{ name: "{{ i }}", data: generateData() },{% endfor %}
+			{% assign month-i = forloop.index %}
+			{ name: "{{ i }}", data: [{% for j in (1..16) %}{x: '{{ j }}', y: {{ j | random_number: 0, 100  | plus: month-i | random_number: 0, 100 }}},{% endfor %}] },{% endfor %}
 		],
 		xaxis: {
 			type: "category"
