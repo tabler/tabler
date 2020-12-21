@@ -5,7 +5,6 @@ description: The Tabler payments plug-in will let you use a set of payment provi
 plugin: payments
 ---
 
-
 ## Payment
 
 To create a payment provider icon, add the `payment` class to a component and specify the payment provider. The full list of payment providers can be found below.

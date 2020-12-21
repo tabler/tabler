@@ -2,36 +2,43 @@
 {% assign offset = include.offset | default: 0 %}
 {% assign hoverable = include.hoverable | default: false %}
 {% assign checked-ids = include.checked-ids | default: '3,5,6' | extract: ',' %}
-<div class="card">
+<div class="card{% if include.class %} {{ include.class }}{% endif %}">
 	<div class="card-header">
 		<h3 class="card-title">{{ include.title | default: 'Last commits' }}</h3>
 	</div>
-	<div class="list list-row{% if hoverable %} list-hoverable{% endif %}">
+	<div class="list-group list-group-flush{% if hoverable %} list-group-hoverable{% endif %}">
 		{% assign colors = 'green,red,yellow,x,x' | split: ',' %}
 		{% for person in site.data.people limit: limit offset: offset %}
 			{% assign color = forloop.index | plus: 5 | random_item: colors %}
-			<div class="list-item">
-				{% if include.checkbox %}
-					<div><input type="checkbox" class="form-check-input"{% if checked-ids contains forloop.index %} checked{% endif %}></div>
-				{% else %}
-					<div><span class="badge{% if color != 'x' %} bg-{{ color }}{% endif %}"></span></div>
-				{% endif %}
-				<a href="#">
-					{% include ui/avatar.html person=person %}
-				</a>
-				<div class="text-truncate">
-					<a href="#" class="text-body d-block">{{ person.full_name }}</a>
-					{% assign i = forloop.index | plus: offset %}
-					<small class="d-block text-muted text-truncate mt-n1">{{ site.data.commits[i].description }}</small>
-				</div>
-				{% if hoverable %}
-					{% if checked-ids contains forloop.index %}
-						{% assign star-color = 'text-yellow' %}
+			<div class="list-group-item">
+				<div class="row align-items-center">
+					{% if include.checkbox %}
+					<div class="col-auto"><input type="checkbox" class="form-check-input"{% if checked-ids contains forloop.index %} checked{% endif %}></div>
 					{% else %}
-						{% assign star-color = 'text-muted' %}
+					<div class="col-auto"><span class="badge{% if color != 'x' %} bg-{{ color }}{% endif %}"></span></div>
 					{% endif %}
-					<a href="#" class="list-item-actions{% if checked-ids contains forloop.index %} show{% endif %}">{% include ui/icon.html icon="star" class=star-color %}</a>
-				{% endif %}
+					<div class="col-auto">
+						<a href="#">
+							{% include ui/avatar.html person=person %}
+						</a>
+					</div>
+
+					<div class="col text-truncate">
+						<a href="#" class="text-body d-block">{{ person.full_name }}</a>
+						{% assign i = forloop.index | plus: offset %}
+						<small class="d-block text-muted text-truncate mt-n1">{{ site.data.commits[i].description }}</small>
+					</div>
+					{% if hoverable %}
+					{% if checked-ids contains forloop.index %}
+					{% assign star-color = 'text-yellow' %}
+					{% else %}
+					{% assign star-color = 'text-muted' %}
+					{% endif %}
+					<div class="col-auto">
+						<a href="#" class="list-group-item-actions{% if checked-ids contains forloop.index %} show{% endif %}">{% include ui/icon.html icon="star" class=star-color %}</a>
+					</div>
+					{% endif %}
+				</div>
 			</div>
 		{% endfor %}
 	</div>

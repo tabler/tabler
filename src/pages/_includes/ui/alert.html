@@ -1,17 +1,36 @@
-<div class="alert alert-{{ include.type | default: 'primary'}}{%if include.close %} alert-dismissible{% endif %}{% if include.avatar %} alert-avatar{% endif %}" role="alert">
-	{% if include.person-id %}{% include ui/avatar.html person-id=include.person-id class="float-left me-3" %}{% endif %}
-	{% if include.icon %}
-	{% include ui/icon.html icon=include.icon class="me-1" %}
+<div class="alert{% if include.important %} alert-important{% endif %} alert-{{ include.type | default: 'primary'}}{%if include.close %} alert-dismissible{% endif %}{% if include.avatar %} alert-avatar{% endif %}" role="alert">
+
+	{% if include.icon or include.person-id %}
+		<div class="d-flex">
+		<div>
+			{% if include.person-id %}{% include ui/avatar.html person-id=include.person-id class="float-start me-3" %}{% endif %}
+
+			{% if include.icon %}
+			{% include ui/icon.html icon=include.icon class="alert-icon" %}
+			{% endif %}
+		</div>
+		<div>
 	{% endif %}
 
-	{{ include.text | default: "This is a custom alert box!" }}
+
+	{% if include.description %}
+		<h4 class="alert-title">{{ include.text | default: "This is a custom alert box!" }}</h4>
+		<div class="text-muted">{{ include.description }}</div>
+	{% else %}
+		{{ include.text | default: "This is a custom alert box!" }}
+	{% endif %}
 
 	{% if include.buttons %}
 	<div class="btn-list">
-		<a href="#" class="btn btn-success">Save changes</a>
+		<a href="#" class="btn btn-{{ include.type | default: 'primary'}}">Okay</a>
 		<a href="#" class="btn">Cancel</a>
 	</div>
 	{% endif %}
 
-	{% if include.close %}<a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>{% endif %}
+	{% if include.icon or include.person-id %}
+		</div>
+		</div>
+	{% endif %}
+
+	{% if include.close %}<a class="btn-close{% if include.important %} btn-close-white{% endif %}" data-bs-dismiss="alert" aria-label="close"></a>{% endif %}
 </div>

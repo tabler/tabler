@@ -1,0 +1,32 @@
+<div class="card">
+	<div class="card-header">
+		<h3 class="card-title">{{ include.title | default: 'People' }}</h3>
+	</div>
+
+	<div class="list-group list-group-flush overflow-auto" style="max-height: 35rem">
+		{% assign prev-letter = '' %}
+		{% assign people = site.data.people | sort: 'last_name' %}
+
+		{% for person in people %}
+			{% assign first-letter = person.last_name | slice: 0 %}
+			{% if prev-letter != first-letter %}
+				{% assign prev-letter = first-letter %}
+				<div class="list-group-header sticky-top">{{ prev-letter }}</div>
+			{% endif %}
+			<div class="list-group-item">
+				<div class="row">
+					<div class="col-auto">
+						<a href="#">
+							{% include ui/avatar.html person=person %}
+						</a>
+					</div>
+					<div class="col text-truncate">
+						<a href="#" class="text-body d-block">{{ person.full_name }}</a>
+						{% assign i = forloop.index | plus: offset %}
+						<div class="text-muted text-truncate mt-n1">{{ site.data.commits[i].description }}</div>
+					</div>
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+</div>

@@ -34,7 +34,7 @@ You can also move the lines to right or to center:
   <div class="skeleton-line"></div>
   <div class="skeleton-line"></div>
 </div>
-<div class="text-center mt">
+<div class="text-center mt-3">
   <div class="skeleton-line"></div>
   <div class="skeleton-line"></div>
   <div class="skeleton-line"></div>

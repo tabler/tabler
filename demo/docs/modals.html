@@ -1,7 +1,7 @@
 <!doctype html>
 <!--
 * Tabler - Premium and Open Source dashboard template with responsive and high quality UI.
-* @version 1.0.0-alpha.17
+* @version 1.0.0-alpha.21
 * @link https://tabler.io
 * Copyright 2018-2020 The Tabler Authors
 * Copyright 2018-2020 codecalm.net Paweł Kuna
@@ -94,6 +94,9 @@
                         <a class="dropdown-item" href="../empty.html" >
                           Empty page
                         </a>
+                        <a class="dropdown-item" href="../accordion.html" >
+                          Accordion
+                        </a>
                         <a class="dropdown-item" href="../blank.html" >
                           Blank page
                         </a>
@@ -150,9 +153,6 @@
                         <a class="dropdown-item" href="../tables.html" >
                           Tables
                         </a>
-                        <a class="dropdown-item" href="../calendar.html" >
-                          Calendar
-                        </a>
                         <a class="dropdown-item" href="../carousel.html" >
                           Carousel
                         </a>
@@ -161,6 +161,9 @@
                         </a>
                         <a class="dropdown-item" href="../typography.html" >
                           Typography
+                        </a>
+                        <a class="dropdown-item" href="../page-headers.html" >
+                          Page headers
                         </a>
                         <a class="dropdown-item" href="../markdown.html" >
                           Markdown
@@ -448,13 +451,13 @@
                       </a>
                     </li>
                     <li class="nav-item">
-                      <a href="../docs/progress.html" class="nav-link">
-                        Progress
+                      <a href="../docs/page-headers.html" class="nav-link">
+                        Page headers
                       </a>
                     </li>
                     <li class="nav-item">
-                      <a href="../docs/payments.html" class="nav-link">
-                        Payments
+                      <a href="../docs/progress.html" class="nav-link">
+                        Progress
                       </a>
                     </li>
                     <li class="nav-item">
@@ -553,6 +556,11 @@
                       </a>
                     </li>
                     <li class="nav-item">
+                      <a href="../docs/payments.html" class="nav-link">
+                        Payments
+                      </a>
+                    </li>
+                    <li class="nav-item">
                       <a href="../docs/charts.html" class="nav-link">
                         Charts
                       </a>
@@ -564,7 +572,7 @@
                     <span class="nav-link-icon"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="7" cy="18" r="2" /><circle cx="7" cy="6" r="2" /><circle cx="17" cy="6" r="2" /><line x1="7" y1="8" x2="7" y2="16" /><path d="M9 18h6a2 2 0 0 0 2 -2v-5" /><polyline points="14 14 17 11 20 14" /></svg>
                     </span>
                     Changelog
-                    <span class="badge bg-blue-lt ms-auto">1.0.0-alpha.17</span>
+                    <span class="badge bg-blue-lt ms-auto">1.0.0-alpha.21</span>
                   </a>
                 </li>
               </ul>
@@ -625,13 +633,24 @@
                         <div class="example-modal-backdrop"></div>
                         <div class="modal-dialog modal-sm" role="document">
                           <div class="modal-content">
-                            <div class="modal-body">
-                              <div class="modal-title">Are you sure?</div>
-                              <div>If you proceed, you will lose all your personal data.</div>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <div class="modal-status bg-danger"></div>
+                            <div class="modal-body text-center py-4">
+                              <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-danger icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><path d="M12 9v2m0 4v.01" /><path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75" /></svg>
+                              <h3>Are you sure?</h3>
+                              <div class="text-muted">Do you really want to remove 84 files? What you've done cannot be undone.</div>
                             </div>
                             <div class="modal-footer">
-                              <button type="button" class="btn btn-link link-secondary me-auto" data-bs-dismiss="modal">Cancel</button>
-                              <button type="button" class="btn btn-danger" data-bs-dismiss="modal">Yes, delete all my data</button>
+                              <div class="w-100">
+                                <div class="row">
+                                  <div class="col"><a href="javascript:void(0)" class="btn btn-white w-100" data-bs-dismiss="modal">
+                                      Cancel
+                                    </a></div>
+                                  <div class="col"><a href="javascript:void(0)" class="btn btn-danger w-100" data-bs-dismiss="modal">
+                                      Delete 84 items
+                                    </a></div>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         </div>
@@ -641,13 +660,79 @@
                       <figure class="highlight">
                         <pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"modal-dialog modal-sm"</span> <span class="na">role=</span><span class="s">"document"</span><span class="nt">&gt;</span>
   <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"modal-content"</span><span class="nt">&gt;</span>
-    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"modal-body"</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"modal-title"</span><span class="nt">&gt;</span>Are you sure?<span class="nt">&lt;/div&gt;</span>
-      <span class="nt">&lt;div&gt;</span>If you proceed, you will lose all your personal data.<span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;button</span> <span class="na">type=</span><span class="s">"button"</span> <span class="na">class=</span><span class="s">"btn-close"</span> <span class="na">data-bs-dismiss=</span><span class="s">"modal"</span> <span class="na">aria-label=</span><span class="s">"Close"</span><span class="nt">&gt;&lt;/button&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"modal-status bg-danger"</span><span class="nt">&gt;&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"modal-body text-center py-4"</span><span class="nt">&gt;</span>
+      <span class="c">&lt;!-- SVG icon code with class="mb-2 text-danger icon-lg" --&gt;</span>
+      <span class="nt">&lt;h3&gt;</span>Are you sure?<span class="nt">&lt;/h3&gt;</span>
+      <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"text-muted"</span><span class="nt">&gt;</span>Do you really want to remove 84 files? What you've done cannot be undone.<span class="nt">&lt;/div&gt;</span>
     <span class="nt">&lt;/div&gt;</span>
     <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"modal-footer"</span><span class="nt">&gt;</span>
-      <span class="nt">&lt;button</span> <span class="na">type=</span><span class="s">"button"</span> <span class="na">class=</span><span class="s">"btn btn-link link-secondary me-auto"</span> <span class="na">data-bs-dismiss=</span><span class="s">"modal"</span><span class="nt">&gt;</span>Cancel<span class="nt">&lt;/button&gt;</span>
-      <span class="nt">&lt;button</span> <span class="na">type=</span><span class="s">"button"</span> <span class="na">class=</span><span class="s">"btn btn-danger"</span> <span class="na">data-bs-dismiss=</span><span class="s">"modal"</span><span class="nt">&gt;</span>Yes, delete all my data<span class="nt">&lt;/button&gt;</span>
+      <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"w-100"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"row"</span><span class="nt">&gt;</span>
+          <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"col"</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">"#"</span> <span class="na">class=</span><span class="s">"btn btn-white w-100"</span> <span class="na">data-bs-dismiss=</span><span class="s">"modal"</span><span class="nt">&gt;</span>
+              Cancel
+            <span class="nt">&lt;/a&gt;&lt;/div&gt;</span>
+          <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"col"</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">"#"</span> <span class="na">class=</span><span class="s">"btn btn-danger w-100"</span> <span class="na">data-bs-dismiss=</span><span class="s">"modal"</span><span class="nt">&gt;</span>
+              Delete 84 items
+            <span class="nt">&lt;/a&gt;&lt;/div&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+      <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span></code></pre>
+                      </figure>
+                    </div>
+                    <div class="example no_toc_section">
+                      <div class="example-content">
+                        <div class="example-modal-backdrop"></div>
+                        <div class="modal-dialog modal-sm" role="document">
+                          <div class="modal-content">
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <div class="modal-status bg-success"></div>
+                            <div class="modal-body text-center py-4">
+                              <svg xmlns="http://www.w3.org/2000/svg" class="icon mb-2 text-green icon-lg" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none" /><circle cx="12" cy="12" r="9" /><path d="M9 12l2 2l4 -4" /></svg>
+                              <h3>Payment succedeed</h3>
+                              <div class="text-muted">Your payment of $290 has been successfully submitted. Your invoice has been sent to support@tabler.io.</div>
+                            </div>
+                            <div class="modal-footer">
+                              <div class="w-100">
+                                <div class="row">
+                                  <div class="col"><a href="javascript:void(0)" class="btn btn-white w-100" data-bs-dismiss="modal">
+                                      Go to dashboard
+                                    </a></div>
+                                  <div class="col"><a href="javascript:void(0)" class="btn btn-success w-100" data-bs-dismiss="modal">
+                                      View invoice
+                                    </a></div>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="example-code">
+                      <figure class="highlight">
+                        <pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"modal-dialog modal-sm"</span> <span class="na">role=</span><span class="s">"document"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"modal-content"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;button</span> <span class="na">type=</span><span class="s">"button"</span> <span class="na">class=</span><span class="s">"btn-close"</span> <span class="na">data-bs-dismiss=</span><span class="s">"modal"</span> <span class="na">aria-label=</span><span class="s">"Close"</span><span class="nt">&gt;&lt;/button&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"modal-status bg-success"</span><span class="nt">&gt;&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"modal-body text-center py-4"</span><span class="nt">&gt;</span>
+      <span class="c">&lt;!-- SVG icon code with class="mb-2 text-green icon-lg" --&gt;</span>
+      <span class="nt">&lt;h3&gt;</span>Payment succedeed<span class="nt">&lt;/h3&gt;</span>
+      <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"text-muted"</span><span class="nt">&gt;</span>Your payment of $290 has been successfully submitted. Your invoice has been sent to support@tabler.io.<span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;/div&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"modal-footer"</span><span class="nt">&gt;</span>
+      <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"w-100"</span><span class="nt">&gt;</span>
+        <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"row"</span><span class="nt">&gt;</span>
+          <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"col"</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">"#"</span> <span class="na">class=</span><span class="s">"btn btn-white w-100"</span> <span class="na">data-bs-dismiss=</span><span class="s">"modal"</span><span class="nt">&gt;</span>
+              Go to dashboard
+            <span class="nt">&lt;/a&gt;&lt;/div&gt;</span>
+          <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"col"</span><span class="nt">&gt;&lt;a</span> <span class="na">href=</span><span class="s">"#"</span> <span class="na">class=</span><span class="s">"btn btn-success w-100"</span> <span class="na">data-bs-dismiss=</span><span class="s">"modal"</span><span class="nt">&gt;</span>
+              View invoice
+            <span class="nt">&lt;/a&gt;&lt;/div&gt;</span>
+        <span class="nt">&lt;/div&gt;</span>
+      <span class="nt">&lt;/div&gt;</span>
     <span class="nt">&lt;/div&gt;</span>
   <span class="nt">&lt;/div&gt;</span>
 <span class="nt">&lt;/div&gt;</span></code></pre>
@@ -880,12 +965,12 @@
               <div class="col-12 col-lg-auto mt-3 mt-lg-0">
                 <ul class="list-inline list-inline-dots mb-0">
                   <li class="list-inline-item">
-                    Copyright © 2020
+                    Copyright &copy; 2020
                     <a href=".." class="link-secondary">Tabler</a>.
                     All rights reserved.
                   </li>
                   <li class="list-inline-item">
-                    <a href="../changelog.html" class="link-secondary" rel="noopener">v1.0.0-alpha.17</a>
+                    <a href="../changelog.html" class="link-secondary" rel="noopener">v1.0.0-alpha.21</a>
                   </li>
                 </ul>
               </div>
