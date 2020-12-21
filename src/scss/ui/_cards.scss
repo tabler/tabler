@@ -476,3 +476,111 @@ Card tabs
     border-top-left-radius: 0;
   }
 }
+
+/*
+Rounded cards
+ */
+@for $i from 1 through 4 {
+
+  $radius: #{$i / 2}em;
+
+  .card-rounded-#{$i} {
+
+    .card {
+      border-radius: $radius;
+
+      .card-img,
+      .card-img-top {
+        @include border-top-radius($radius);
+      }
+
+      .card-img,
+      .card-img-right {
+        @include border-end-radius($radius);
+      }
+
+      .card-img,
+      .card-img-bottom {
+        @include border-bottom-radius($radius);
+      }
+
+      .card-img,
+      .card-img-left {
+        @include border-start-radius($radius);
+      }
+
+      .card-progress {
+        margin: auto;
+        transform: translateY($border-radius);
+        transform: scaleY(1);
+
+        &:last-child {
+          border-radius: 0 0 $radius $radius;
+        }
+
+        &:first-child {
+          border-radius: $radius $radius 0 0;
+        }
+      }
+
+      .card-status-top, .card-status-start, .card-status-bottom {
+        z-index: -1;
+      }
+
+      .card-progress, .card-status-top, .card-status-bottom {
+        height: $radius;
+      }
+
+      .card-status-start {
+        width: $radius;
+      }
+
+      .card-status-top {
+        transform: translateY(-$border-radius);
+        border-radius: $radius $radius 0 0;
+      }
+
+      .card-status-start {
+        transform: translateX(-$border-radius);
+        border-radius: $radius 0 0 $radius;
+      }
+
+      .card-status-bottom {
+        transform: translateY($border-radius);
+        border-radius: 0 0 $radius $radius;
+      }
+    }
+
+    .card-stacked {
+      margin-top: 10px;
+      box-shadow:
+      /* The top layer shadow */
+      0 -1px 1px rgba(0, 0, 0, 0.1),
+      /* The second layer */
+      0 -10px 0 -5px #eee,
+      /* The second layer shadow */
+      0 -10px 1px -4px rgba(0, 0, 0, 0.05),
+      /* The third layer */
+      0 -20px 0 -10px #eee,
+      /* The third layer shadow */
+      0 -20px 1px -9px rgba(0, 0, 0, 0.01);
+
+      &:after {
+        height:0;
+      }
+    }
+  }
+}
+
+.card-edge-right-top .card {
+  border-top-right-radius: $card-border-radius;
+}
+.card-edge-right-bottom .card {
+  border-top-right-radius: $card-border-radius;
+}
+.card-edge-left-bottom .card {
+  border-bottom-left-radius: $card-border-radius;
+}
+.card-edge-left-top .card {
+  border-top-left-radius: $card-border-radius;
+}
