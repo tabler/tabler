@@ -23,8 +23,8 @@ import './dropdown';
 	popoverTriggerList.map(function (popoverTriggerEl) {
 		let options = {
 			delay: {show: 50, hide: 50},
-			html: true,
-			placement: 'auto'
+			html: tooltipTriggerEl.getAttribute('data-bs-html') ?? false,
+			placement: tooltipTriggerEl.getAttribute('data-bs-placement') ?? 'auto'
 		};
 		return new bootstrap.Popover(popoverTriggerEl, options);
 	});
