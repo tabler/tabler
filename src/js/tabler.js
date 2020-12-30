@@ -13,7 +13,7 @@ import './dropdown';
 			delay: {show: 50, hide: 50},
 			html: true,
 			placement: tooltipTriggerEl.getAttribute('data-bs-placement') ?? 'auto'
- 		};
+		};
 		return new bootstrap.Tooltip(tooltipTriggerEl, options);
 	});
 
