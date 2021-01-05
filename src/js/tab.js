@@ -5,6 +5,6 @@ if (locationHash) {
   const matchedTabs = tabsList.filter(tab => tab.hash === locationHash);
 
   matchedTabs.map(tab => {
-	 new bootstrap.Tab(tab).show();
+    new bootstrap.Tab(tab).show();
   });
 }
