@@ -3,6 +3,7 @@
 import './autosize';
 import './input-mask';
 import './dropdown';
+import './tab';
 
 (function() {
 	/**
