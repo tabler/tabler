@@ -1,7 +1,7 @@
 (function (global, factory) {
     typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
     typeof define === 'function' && define.amd ? define(factory) :
-    (global = global || self, global.rangePlugin = factory());
+    (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.rangePlugin = factory());
 }(this, (function () { 'use strict';
 
     /*! *****************************************************************************
@@ -56,21 +56,23 @@
                         fp.selectedDates.push(parsedDate);
                 }
                 secondInput.setAttribute("data-fp-omit", "");
-                fp._bind(secondInput, ["focus", "click"], function () {
-                    if (fp.selectedDates[1]) {
-                        fp.latestSelectedDateObj = fp.selectedDates[1];
-                        fp._setHoursFromDate(fp.selectedDates[1]);
-                        fp.jumpToDate(fp.selectedDates[1]);
-                    }
-                    _secondInputFocused = true;
-                    fp.isOpen = false;
-                    fp.open(undefined, config.position === "left" ? fp._input : secondInput);
-                });
-                fp._bind(fp._input, ["focus", "click"], function (e) {
-                    e.preventDefault();
-                    fp.isOpen = false;
-                    fp.open();
-                });
+                if (fp.config.clickOpens) {
+                    fp._bind(secondInput, ["focus", "click"], function () {
+                        if (fp.selectedDates[1]) {
+                            fp.latestSelectedDateObj = fp.selectedDates[1];
+                            fp._setHoursFromDate(fp.selectedDates[1]);
+                            fp.jumpToDate(fp.selectedDates[1]);
+                        }
+                        _secondInputFocused = true;
+                        fp.isOpen = false;
+                        fp.open(undefined, config.position === "left" ? fp._input : secondInput);
+                    });
+                    fp._bind(fp._input, ["focus", "click"], function (e) {
+                        e.preventDefault();
+                        fp.isOpen = false;
+                        fp.open();
+                    });
+                }
                 if (fp.config.allowInput)
                     fp._bind(secondInput, "keydown", function (e) {
                         if (e.key === "Enter") {
