@@ -44,4 +44,9 @@ import './dropdown';
 		});
 	});
 
+	let toastsTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="toast"]'));
+	toastsTriggerList.map(function (toastTriggerEl) {
+		return new bootstrap.Toast(toastTriggerEl);
+	});
+
 })();
