@@ -16,7 +16,7 @@ A premium and open source dashboard template with a responsive and high-quality 
 
 <p align="center">
   <a href="https://github.com/sponsors/codecalm">
-    <img src='https://cdn.jsdelivr.net/gh/antfu/static/sponsors.svg'>
+    <img src='https://cdn.jsdelivr.net/gh/tabler/static/sponsors.svg'>
   </a>
 </p>
 
