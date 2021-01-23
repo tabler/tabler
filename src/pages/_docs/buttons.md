@@ -34,7 +34,7 @@ The standard button creates a white background and subtle hover animation. It's 
 Use the button classes that correspond to the function of your button. The big range of available colors will help you show your buttons' purpose and make them easy to spot.
 
 {% capture code %}
-{% for button in site.button-variants %}
+{% for button in site.theme-colors %}
 {% assign btn-color = button[1].class %}
 {% assign btn-title = button[1].title %}
 {% include ui/button.html color=btn-color text=btn-title %}
@@ -48,7 +48,7 @@ Use the button classes that correspond to the function of your button. The big r
 Make buttons look inactive to show that an action is possible once the user meets certain criteria, such as completing the required fields to submit a form. 
 
 {% capture code %}
-{% for button in site.button-variants %}
+{% for button in site.theme-colors %}
 {% assign btn-color = button[1].class %}
 {% assign btn-title = button[1].title %}
 {% include ui/button.html color=btn-color text=btn-title disabled=true %}
@@ -74,7 +74,7 @@ Choose the right color for your button to make it go well with your design and d
 Use the `.btn-ghost-*` class to make your button look simple yet aesthetically appealing. Ghost buttons help focus users' attention on the website's primary design, at the same time encouraging them to take action. 
 
 {% capture code %}
-{% for button in site.button-variants %}
+{% for button in site.theme-colors %}
 <a href="#" class="btn btn-ghost-{{ button[0] }}">{{ button[1].title }}</a>
 {% endfor %}
 {% endcapture %}
