@@ -59,7 +59,7 @@
 		height: 6px;
 		display: inline-block;
 		background: rgba(255, 255, 255, .3);
-		border-radius: $border-radius-full;
+		border-radius: $border-radius-pill;
 	}
 
 	body.show-debug-code .card-debug {
@@ -81,79 +81,3 @@
 		background: #5eba00;
 	}
 </style>
-<script>
-	$(document).ready(function () {
-
-
-		var $body = $('body'),
-			$html = $('html');
-
-		$body
-			.on('click', '[data-debug="dark"]', function (e) {
-				$body.toggleClass('theme-dark');
-
-				e.preventDefault();
-				return false;
-			})
-			.on('click', '[data-debug="code"]', function (e) {
-				$body.toggleClass('show-debug-code');
-
-				e.preventDefault();
-				return false;
-			})
-			.on('click', '[data-debug="folded"]', function (e) {
-				$('.sidenav').toggleClass('sidenav-folded');
-
-				e.preventDefault();
-				return false;
-			})
-			.on('click', '[data-debug="fullscreen"]', function (e) {
-				tabler.toggleFullscreen();
-
-				e.preventDefault();
-				return false;
-			})
-			.on('click', '[data-debug="header-sticky"]', function (e) {
-				$body.toggleClass('header-sticky');
-
-				e.preventDefault();
-				return false;
-			})
-			.on('click', '[data-debug="rtl"]', function (e) {
-				if ($html.attr('dir') === 'rtl') {
-					$html.attr('dir', 'ltr');
-				} else {
-					$html.attr('dir', 'rtl');
-				}
-
-				e.preventDefault();
-				return false;
-			});
-
-
-		$('.card').each(function () {
-			var $card = $(this),
-				htmlCode = $card[0].innerHTML.replace(/(^[ \t]*\n)/gm, '');
-
-			var $button = $('<div class="card-debug"><a href="#" class="text-muted" data-code>code</a></div>'),
-				$codeLink = $button.find('[data-code]');
-
-			$codeLink
-			// .data('htmlCode', htmlCode)
-				.on('click', function (e) {
-
-					var $modal = $('<div class="modal hide"><div class="modal-dialog modal-lg"><div class="modal-content"><div class="modal-body"><pre class="m-0"></pre></div></div></div></div>');
-					$modal.find('pre').text(htmlCode);
-					$('body').append($modal);
-					console.log();
-
-					$modal.modal('show');
-
-					e.preventDefault();
-					return false;
-				});
-
-			$card.prepend($button);
-		});
-	});
-</script>

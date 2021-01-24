@@ -1,9 +1,9 @@
 /*!
-* Tabler v1.0.0-alpha.21 (https://tabler.io)
-* @version 1.0.0-alpha.21
+* Tabler v1.0.0-alpha.22 (https://tabler.io)
+* @version 1.0.0-alpha.22
 * @link https://tabler.io
-* Copyright 2018-2020 The Tabler Authors
-* Copyright 2018-2020 codecalm.net Paweł Kuna
+* Copyright 2018-2021 The Tabler Authors
+* Copyright 2018-2021 codecalm.net Paweł Kuna
 * Licensed under MIT (https://github.com/tabler/tabler/blob/master/LICENSE)
 */
 (function (factory) {
@@ -3070,25 +3070,27 @@
 	(function () {
 	  var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
 	  tooltipTriggerList.map(function (tooltipTriggerEl) {
+	    var _tooltipTriggerEl$get;
 	    var options = {
 	      delay: {
 	        show: 50,
 	        hide: 50
 	      },
 	      html: true,
-	      placement: 'auto'
+	      placement: (_tooltipTriggerEl$get = tooltipTriggerEl.getAttribute('data-bs-placement')) !== null && _tooltipTriggerEl$get !== void 0 ? _tooltipTriggerEl$get : 'auto'
 	    };
 	    return new bootstrap.Tooltip(tooltipTriggerEl, options);
 	  });
 	  var popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'));
 	  popoverTriggerList.map(function (popoverTriggerEl) {
+	    var _popoverTriggerEl$get, _popoverTriggerEl$get2;
 	    var options = {
 	      delay: {
 	        show: 50,
 	        hide: 50
 	      },
-	      html: true,
-	      placement: 'auto'
+	      html: (_popoverTriggerEl$get = popoverTriggerEl.getAttribute('data-bs-html')) !== null && _popoverTriggerEl$get !== void 0 ? _popoverTriggerEl$get : false,
+	      placement: (_popoverTriggerEl$get2 = popoverTriggerEl.getAttribute('data-bs-placement')) !== null && _popoverTriggerEl$get2 !== void 0 ? _popoverTriggerEl$get2 : 'auto'
 	    };
 	    return new bootstrap.Popover(popoverTriggerEl, options);
 	  });
