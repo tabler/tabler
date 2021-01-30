@@ -6,7 +6,7 @@ const gulp = require('gulp'),
 	header = require('gulp-header'),
 	cleanCSS = require('gulp-clean-css'),
 	rtlcss = require('gulp-rtlcss'),
-	minifyJS = require('gulp-minify'),
+	child_process = require('child_process'),
 	rename = require('gulp-rename'),
 	purgecss = require('gulp-purgecss'),
 	rollupStream = require('@rollup/stream'),
@@ -223,13 +223,7 @@ gulp.task('js', () => {
 		}));
 
 	if (BUILD) {
-		g.pipe(minifyJS({
-			ext: {
-				src: '.js',
-				min: '.min.js'
-			},
-		}))
-			.pipe(gulp.dest(`${distDir}/js/`));
+		 child_process.execSync(`terser dist/js/tabler.js --compress passes=2 --mangle --output dist/js/tabler.min.js`, {encoding: "utf8"});
 	}
 
 	return g;
