@@ -1,5 +1,7 @@
 //Vendor
 
+import 'bootstrap/dist/js/bootstrap.bundle';
+
 import './autosize';
 import './input-mask';
 import './dropdown';
