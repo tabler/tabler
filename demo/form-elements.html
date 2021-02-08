@@ -14,7 +14,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
     <title>Form elements - Tabler - Premium and Open Source dashboard template with responsive and high quality UI.</title>
     <!-- CSS files -->
-    <link href="./dist/libs/selectize/dist/css/selectize.css" rel="stylesheet"/>
     <link href="./dist/libs/flatpickr/dist/flatpickr.min.css" rel="stylesheet"/>
     <link href="./dist/libs/nouislider/distribute/nouislider.min.css" rel="stylesheet"/>
     <link href="./dist/css/tabler.min.css" rel="stylesheet"/>
@@ -487,10 +486,10 @@
                               </div>
                               <div class="col-auto align-self-center">
                                 <span class="form-help" data-bs-toggle="popover" data-bs-placement="top"
-			      data-content="<p>ZIP Code must be US or CDN format. You can use an extended ZIP+4 code to determine address more accurately.</p>
+			      data-bs-content="<p>ZIP Code must be US or CDN format. You can use an extended ZIP+4 code to determine address more accurately.</p>
                                 <p class='mb-0'><a href='#'>USP ZIP codes lookup tools</a></p>
                                 "
-                                data-html="true">?</span>
+                                data-bs-html="true">?</span>
                             </div>
                           </div>
                         </div>
@@ -1133,7 +1132,7 @@
                               <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="11" y1="5" x2="17" y2="5" /><line x1="7" y1="19" x2="13" y2="19" /><line x1="14" y1="5" x2="10" y2="19" /></svg>
                             </a>
                             <a href="#" class="btn btn-white btn-icon" aria-label="Button">
-                              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><line x1="6" y1="20" x2="18" y2="20" /><path d="M8 5v6a4 4 0 0 0 8 0v-6" /></svg>
+                              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M7 5v5a5 5 0 0 0 10 0v-5" /><path d="M5 19h14" /></svg>
                             </a>
                             <a href="#" class="btn btn-white btn-icon" aria-label="Button">
                               <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><rect x="8" y="8" width="12" height="12" rx="2" /><path d="M16 8v-2a2 2 0 0 0 -2 -2h-8a2 2 0 0 0 -2 2v8a2 2 0 0 0 2 2h2" /></svg>
@@ -1806,8 +1805,6 @@
 </div>
 <!-- Libs JS -->
 <script src="./dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="./dist/libs/jquery/dist/jquery.slim.min.js"></script>
-<script src="./dist/libs/selectize/dist/js/standalone/selectize.min.js"></script>
 <script src="./dist/libs/flatpickr/dist/flatpickr.min.js"></script>
 <script src="./dist/libs/flatpickr/dist/plugins/rangePlugin.js"></script>
 <script src="./dist/libs/nouislider/distribute/nouislider.min.js"></script>
@@ -1868,69 +1865,6 @@
   document.addEventListener("DOMContentLoaded", function () {
   	flatpickr(document.getElementById('calendar-inline'), {
   		inline: true,
-  	});
-  });
-</script>
-<script>
-  $(document).ready(function () {
-  	$('#select-tags').selectize({
-  		maxItems: 15,
-  	});
-  });
-</script>
-<script>
-  $(document).ready(function () {
-  	$('#select-tags-advanced').selectize({
-  		maxItems: 15,
-  		plugins: ['remove_button'],
-  	});
-  });
-</script>
-<script>
-  $(document).ready(function () {
-  	$('#select-users').selectize({
-  	});
-  });
-</script>
-<script>
-  $(document).ready(function () {
-  	$('#select-people').selectize({
-  		render: {
-  			option: function (data, escape) {
-  				return '<div class="option">' + data.avatar + '' + escape(data.text) + '</div>';
-  			},
-  			item: function (data, escape) {
-  				return '<div class="d-flex align-items-center">' + data.avatar + '' + escape(data.text) + '</div>';
-  			}
-  		}
-  	});
-  });
-</script>
-<script>
-  $(document).ready(function () {
-  	$('#select-countries').selectize({
-  		render: {
-  			option: function (data, escape) {
-  				return '<div class="option"><span class="flag flag-country-' + data.flag + ' me-2"></span>' + escape(data.text) + '</div>';
-  			},
-  			item: function (data, escape) {
-  				return '<div class="d-flex align-items-center"><span class="flag flag-country-' + data.flag + ' me-2"></span>' + escape(data.text) + '</div>';
-  			}
-  		}
-  	});
-  });
-</script>
-<script>
-  $(document).ready(function () {
-  	$('#select-states').selectize({
-  		render: {
-  			option: function (data, escape) {
-  				return '<div class="option"><span class="flag flag-country-' + data.flag + ' me-2"></span>' + escape(data.text) + '</div>';
-  			},
-  			item: function (data, escape) {
-  				return '<div class="d-flex align-items-center"><span class="flag flag-country-' + data.flag + ' me-2"></span>' + escape(data.text) + '</div>';
-  			}
-  		}
   	});
   });
 </script>
