@@ -14,6 +14,7 @@ const gulp = require('gulp'),
 	rollupCleanup = require('rollup-plugin-cleanup'),
 	{nodeResolve} = require('@rollup/plugin-node-resolve'),
 	rollupCommonjs = require('@rollup/plugin-commonjs'),
+	rollupReplace = require('@rollup/plugin-replace'),
 	vinylSource = require('vinyl-source-stream'),
 	vinylBuffer = require('vinyl-buffer'),
 	critical = require('critical').stream,
@@ -201,6 +202,9 @@ gulp.task('js', () => {
 			format: 'umd',
 		},
 		plugins: [
+			rollupReplace({
+				'process.env.NODE_ENV': JSON.stringify(BUILD ? 'production' : 'development'),
+			}),
 			rollupBabel({
 				exclude: 'node_modules/**'
 			}),
