@@ -1,7 +1,7 @@
 <!doctype html>
 <!--
 * Tabler - Premium and Open Source dashboard template with responsive and high quality UI.
-* @version 1.0.0-alpha.22
+* @version 1.0.0-alpha.23
 * @link https://tabler.io
 * Copyright 2018-2021 The Tabler Authors
 * Copyright 2018-2021 codecalm.net Paweł Kuna
@@ -14,7 +14,6 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
     <title>Form elements - Tabler - Premium and Open Source dashboard template with responsive and high quality UI.</title>
     <!-- CSS files -->
-    <link href="./dist/libs/flatpickr/dist/flatpickr.min.css" rel="stylesheet"/>
     <link href="./dist/libs/nouislider/distribute/nouislider.min.css" rel="stylesheet"/>
     <link href="./dist/css/tabler.min.css" rel="stylesheet"/>
     <link href="./dist/css/tabler-flags.min.css" rel="stylesheet"/>
@@ -1534,16 +1533,21 @@
                         </div>
                         <div class="mb-3">
                           <label class="form-label">Datepicker</label>
-                          <input id="calendar-simple" type="date" value="2020-06-20" class="form-control mb-2" placeholder="Select a date" />
-                          <div class="input-icon">
-                            <input id="calendar-time" type="date" value="2020-06-20" class="form-control" placeholder="Select a date" />
+                          <input class="form-control mb-2" placeholder="Select a date" id="datepicker-default" value="2020-06-20"/>
+                          <div class="input-icon mb-2">
+                            <input class="form-control " placeholder="Select a date" id="datepicker-icon" value="2020-06-20"/>
                             <span class="input-icon-addon"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><rect x="4" y="5" width="16" height="16" rx="2" /><line x1="16" y1="3" x2="16" y2="7" /><line x1="8" y1="3" x2="8" y2="7" /><line x1="4" y1="11" x2="20" y2="11" /><line x1="11" y1="15" x2="12" y2="15" /><line x1="12" y1="15" x2="12" y2="18" /></svg>
                             </span>
+                          </div>
+                          <div class="input-icon">
+                            <span class="input-icon-addon"><svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><rect x="4" y="5" width="16" height="16" rx="2" /><line x1="16" y1="3" x2="16" y2="7" /><line x1="8" y1="3" x2="8" y2="7" /><line x1="4" y1="11" x2="20" y2="11" /><line x1="11" y1="15" x2="12" y2="15" /><line x1="12" y1="15" x2="12" y2="18" /></svg>
+                            </span>
+                            <input class="form-control" placeholder="Select a date" id="datepicker-icon-prepend" value="2020-06-20"/>
                           </div>
                         </div>
                         <div class="mb-3">
                           <label class="form-label">Inline datepicker</label>
-                          <div id="calendar-inline"></div>
+                          <div class="datepicker-inline" id="datepicker-inline"></div>
                         </div>
                         <div class="mb-3">
                           <label class="form-label">Progress</label>
@@ -1794,7 +1798,7 @@
             All rights reserved.
           </li>
           <li class="list-inline-item">
-            <a href="./changelog.html" class="link-secondary" rel="noopener">v1.0.0-alpha.22</a>
+            <a href="./changelog.html" class="link-secondary" rel="noopener">v1.0.0-alpha.23</a>
           </li>
         </ul>
       </div>
@@ -1804,10 +1808,8 @@
 </div>
 </div>
 <!-- Libs JS -->
-<script src="./dist/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-<script src="./dist/libs/flatpickr/dist/flatpickr.min.js"></script>
-<script src="./dist/libs/flatpickr/dist/plugins/rangePlugin.js"></script>
 <script src="./dist/libs/nouislider/distribute/nouislider.min.js"></script>
+<script src="./dist/libs/litepicker/dist/litepicker.js"></script>
 <!-- Tabler Core -->
 <script src="./dist/js/tabler.min.js"></script>
 <script>
@@ -1850,23 +1852,57 @@
   // @formatter:on
 </script>
 <script>
+  // @formatter:off
   document.addEventListener("DOMContentLoaded", function () {
-  	flatpickr(document.getElementById('calendar-simple'), {
-  	});
+  	window.Litepicker && (new Litepicker({
+  		element: document.getElementById('datepicker-default'),
+  		buttonText: {
+  			previousMonth: '<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="15 6 9 12 15 18" /></svg>',
+  			nextMonth: '<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="9 6 15 12 9 18" /></svg>',
+  		},
+  	}));
   });
+  // @formatter:on
 </script>
 <script>
+  // @formatter:off
   document.addEventListener("DOMContentLoaded", function () {
-  	flatpickr(document.getElementById('calendar-time'), {
-  	});
+  	window.Litepicker && (new Litepicker({
+  		element: document.getElementById('datepicker-icon'),
+  		buttonText: {
+  			previousMonth: '<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="15 6 9 12 15 18" /></svg>',
+  			nextMonth: '<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="9 6 15 12 9 18" /></svg>',
+  		},
+  	}));
   });
+  // @formatter:on
 </script>
 <script>
+  // @formatter:off
   document.addEventListener("DOMContentLoaded", function () {
-  	flatpickr(document.getElementById('calendar-inline'), {
-  		inline: true,
-  	});
+  	window.Litepicker && (new Litepicker({
+  		element: document.getElementById('datepicker-icon-prepend'),
+  		buttonText: {
+  			previousMonth: '<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="15 6 9 12 15 18" /></svg>',
+  			nextMonth: '<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="9 6 15 12 9 18" /></svg>',
+  		},
+  	}));
   });
+  // @formatter:on
+</script>
+<script>
+  // @formatter:off
+  document.addEventListener("DOMContentLoaded", function () {
+  	window.Litepicker && (new Litepicker({
+  		element: document.getElementById('datepicker-inline'),
+  		buttonText: {
+  			previousMonth: '<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="15 6 9 12 15 18" /></svg>',
+  			nextMonth: '<svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="9 6 15 12 9 18" /></svg>',
+  		},
+  		inlineMode: true,
+  	}));
+  });
+  // @formatter:on
 </script>
 <script>
   let sliderTriggerList = [].slice.call(document.querySelectorAll("[data-slider]"));
