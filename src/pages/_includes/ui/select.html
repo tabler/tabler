@@ -1,0 +1,42 @@
+{% assign id = include.id %}
+
+{% if id %}
+
+{% assign key = include.key | default: 'people' %}
+{% assign data = site.data.selects[key] %}
+{% assign options = data.options %}
+
+<select type="text" class="form-control{% if include.class %} {{ include.class }}{% endif %}"{% if placeholder %} placeholder="{{ placeholder }}"{% endif %} id="select-{{ id }}" value="{{ value }}">
+	{% for option in options %}
+	<option value="{{ option }}">{{ option }}</option>
+	{% endfor %}
+</select>
+
+
+{% capture script %}
+<script>
+	// @formatter:off
+	document.addEventListener("DOMContentLoaded", function () {
+		{% if jekyll.environment == 'development' %}
+		window.tabler_select = window.tabler_select || {};
+		{% endif %}
+
+		window.Choices && ({% if jekyll.environment == 'development' %}window.tabler_select["select-{{ id }}"] = {% endif %}new Choices(document.getElementById('select-{{ id }}'), {
+
+		}));
+
+	});
+	// @formatter:on
+</script>
+{% endcapture %}
+
+
+{% if include.show-scripts %}
+{{ script }}
+{% else %}
+{% capture_global scripts %}
+{{ script }}
+{% endcapture_global %}
+{% endif %}
+
+{% endif %}
