@@ -2,14 +2,33 @@
 
 {% if id %}
 
-{% assign key = include.key | default: 'people' %}
-{% assign data = site.data.selects[key] %}
-{% assign options = data.options %}
+<select type="text" class="form-select{% if include.class %} {{ include.class }}{% endif %}{% if include.state %} is-{{ include.state }}{% endif %}"{% if placeholder %} placeholder="{{ placeholder }}"{% endif %} id="select-{{ id }}" value="{{ value }}">
+	{% if include.values %}
+		{% assign values = include.values | split: ',' %}
 
-<select type="text" class="form-control{% if include.class %} {{ include.class }}{% endif %}"{% if placeholder %} placeholder="{{ placeholder }}"{% endif %} id="select-{{ id }}" value="{{ value }}">
-	{% for option in options %}
-	<option value="{{ option }}">{{ option }}</option>
-	{% endfor %}
+		{% for value in values %}
+			<option value="{{ value }}">{{ value }}</option>
+		{% endfor %}
+	{% else %}
+		{% assign key = include.key | default: 'people' %}
+		{% assign data = site.data.selects[key] %}
+		{% assign options = data.options %}
+
+		{% if data.data == 'people' %}
+			{% for person in site.data.people %}
+				<option value="{{ person.id }}">{{ person.full_name }}</option>
+			{% endfor %}
+
+		{% else %}
+			{% for option in options %}
+				{% if option.first %}
+					<option value="{{ option[0] }}">{{ option[1].name }}</option>
+				{% else %}
+					<option value="{{ option }}">{{ option }}</option>
+				{% endif %}
+			{% endfor %}
+		{% endif %}
+	{% endif %}
 </select>
 
 
@@ -21,8 +40,19 @@
 		window.tabler_select = window.tabler_select || {};
 		{% endif %}
 
-		window.Choices && ({% if jekyll.environment == 'development' %}window.tabler_select["select-{{ id }}"] = {% endif %}new Choices(document.getElementById('select-{{ id }}'), {
-
+		var el;
+		window.Choices && ({% if jekyll.environment == 'development' %}window.tabler_select["select-{{ id }}"] = {% endif %}new Choices(el = document.getElementById('select-{{ id }}'), {
+			classNames: {
+				containerInner: el.className,
+				input: 'form-control',
+				inputCloned: 'form-control-sm',
+				listDropdown: 'dropdown-menu',
+				itemChoice: 'dropdown-item',
+				activeState: 'show',
+				selectedState: 'active',
+			},
+			shouldSort: false,
+			{% unless include.show-search %}searchEnabled: false,{% endunless %}
 		}));
 
 	});
