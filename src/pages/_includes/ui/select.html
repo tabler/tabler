@@ -1,4 +1,5 @@
-{% assign id = include.id %}
+{% assign id = include.id | default: include.key %}
+{% assign value = include.value %}
 
 {% if id %}
 
@@ -16,7 +17,7 @@
 
 		{% if data.data == 'people' %}
 			{% for person in site.data.people limit: 20 %}
-				<option value="{{ person.id }}"{% if include.indicator == 'avatar' %} data-indicator="{% capture indicator %}{% include ui/avatar.html size='xs' person=person %}{% endcapture %}{{ indicator | strip | escape }}"{% endif %}>{{ person.full_name }}</option>
+				<option value="{{ person.id }}"{% if include.indicator == 'avatar' %} data-custom-properties="{% capture indicator %}{% include ui/avatar.html size='xs' person=person %}{% endcapture %}{{ indicator | strip | escape }}"{% endif %}>{{ person.full_name }}</option>
 			{% endfor %}
 
 		{% else %}
@@ -24,11 +25,17 @@
 				{% if option.first %}
 					{% if include.indicator == 'flag' %}
 						{% capture indicator-html %}
-							{% include ui/flag.html size="xs" flag=option.flag %}
+							{% assign country = option[1].flag %}
+							{% include ui/flag.html size="xs" flag=country %}
+						{% endcapture %}
+					{% elsif include.indicator == 'label' %}
+						{% capture indicator-html %}
+							{% assign label = option[1].label %}
+							<span class="badge bg-blue-lt">{{ label }}</span>
 						{% endcapture %}
 					{% endif %}
 
-					<option value="{{ option[0] }}"{% if include.indicator %} data-indicator="{{ indicator-html | strip | escape }}"{% endif %}>{{ option[1].name }}</option>
+					<option value="{{ option[0] }}"{% if include.indicator %} data-custom-properties="{{ indicator-html | strip | escape }}"{% endif %}>{{ option[1].name }}</option>
 				{% else %}
 					<option value="{{ option }}">{{ option }}</option>
 				{% endif %}
@@ -65,21 +72,13 @@
 				var classNames = this.config.className,
 						itemSelectText = this.config.itemSelectText;
 
-				{% capture indicator-text %}
-					{% if include.indicator == 'avatar' %}
-						<span class="avatar avatar-xs"></span>
-					{% elsif include.indicator == 'flag' %}
-						<span class="flag flag-xs"></span>
-					{% endif %}
-				{% endcapture %}
-
 				return {
 					item: function(classNames, data) {
-						return template('<div class="' + String(classNames.item) + ' ' + String( data.highlighted ? classNames.highlightedState : classNames.itemSelectable ) + '" data-item data-id="' + String(data.id) + '" data-value="' + String(data.value) + '"' + String(data.active ? 'aria-selected="true"' : '') + '' + String(data.disabled ? 'aria-disabled="true"' : '') + '><span class="dropdown-item-indicator">{{ indicator-text | strip }}</span>' + String(data.label) + '</div>');
+						return template('<div class="' + String(classNames.item) + ' ' + String( data.highlighted ? classNames.highlightedState : classNames.itemSelectable ) + '" data-item data-id="' + String(data.id) + '" data-value="' + String(data.value) + '"' + String(data.active ? 'aria-selected="true"' : '') + '' + String(data.disabled ? 'aria-disabled="true"' : '') + '><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + String(data.label) + '</div>');
 					},
 					choice: function(classNames, data) {
 						console.log('data', data);
-						return template('<div class="' + String(classNames.item) + ' ' + String(classNames.itemChoice) + ' ' + String( data.disabled ? classNames.itemDisabled : classNames.itemSelectable ) + '" data-select-text="' + String(itemSelectText) + '" data-choice  ' + String( data.disabled ? 'data-choice-disabled aria-disabled="true"' : 'data-choice-selectable' ) + ' data-id="' + String(data.id) + '" data-value="' + String(data.value) + '" ' + String( data.groupId > 0 ? 'role="treeitem"' : 'role="option"' ) + ' ><span class="dropdown-item-indicator">{{ indicator-text | strip }}</span>' + String(data.label) + '</div>');
+						return template('<div class="' + String(classNames.item) + ' ' + String(classNames.itemChoice) + ' ' + String( data.disabled ? classNames.itemDisabled : classNames.itemSelectable ) + '" data-select-text="' + String(itemSelectText) + '" data-choice  ' + String( data.disabled ? 'data-choice-disabled aria-disabled="true"' : 'data-choice-selectable' ) + ' data-id="' + String(data.id) + '" data-value="' + String(data.value) + '" ' + String( data.groupId > 0 ? 'role="treeitem"' : 'role="option"' ) + ' ><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + String(data.label) + '</div>');
 					},
 				};
 			},
