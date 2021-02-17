@@ -1,6 +1,6 @@
 /*!
-* Tabler v1.0.0-alpha.24 (https://tabler.io)
-* @version 1.0.0-alpha.24
+* Tabler v1.0.0-beta (https://tabler.io)
+* @version 1.0.0-beta
 * @link https://tabler.io
 * Copyright 2018-2021 The Tabler Authors
 * Copyright 2018-2021 codecalm.net Paweł Kuna
@@ -318,6 +318,17 @@
 	  };
 	  return _setPrototypeOf(o, p);
 	}
+	function _isNativeReflectConstruct() {
+	  if (typeof Reflect === "undefined" || !Reflect.construct) return false;
+	  if (Reflect.construct.sham) return false;
+	  if (typeof Proxy === "function") return true;
+	  try {
+	    Date.prototype.toString.call(Reflect.construct(Date, [], function () {}));
+	    return true;
+	  } catch (e) {
+	    return false;
+	  }
+	}
 	function _objectWithoutPropertiesLoose(source, excluded) {
 	  if (source == null) return {};
 	  var target = {};
@@ -356,6 +367,20 @@
 	    return call;
 	  }
 	  return _assertThisInitialized(self);
+	}
+	function _createSuper(Derived) {
+	  var hasNativeReflectConstruct = _isNativeReflectConstruct();
+	  return function _createSuperInternal() {
+	    var Super = _getPrototypeOf(Derived),
+	        result;
+	    if (hasNativeReflectConstruct) {
+	      var NewTarget = _getPrototypeOf(this).constructor;
+	      result = Reflect.construct(Super, arguments, NewTarget);
+	    } else {
+	      result = Super.apply(this, arguments);
+	    }
+	    return _possibleConstructorReturn(this, result);
+	  };
 	}
 	function _superPropBase(object, property) {
 	  while (!Object.prototype.hasOwnProperty.call(object, property)) {
@@ -419,15 +444,13 @@
 	  return value;
 	}
 	function _slicedToArray(arr, i) {
-	  return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _nonIterableRest();
+	  return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest();
 	}
 	function _arrayWithHoles(arr) {
 	  if (Array.isArray(arr)) return arr;
 	}
 	function _iterableToArrayLimit(arr, i) {
-	  if (!(Symbol.iterator in Object(arr) || Object.prototype.toString.call(arr) === "[object Arguments]")) {
-	    return;
-	  }
+	  if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return;
 	  var _arr = [];
 	  var _n = true;
 	  var _d = false;
@@ -449,8 +472,21 @@
 	  }
 	  return _arr;
 	}
+	function _unsupportedIterableToArray(o, minLen) {
+	  if (!o) return;
+	  if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+	  var n = Object.prototype.toString.call(o).slice(8, -1);
+	  if (n === "Object" && o.constructor) n = o.constructor.name;
+	  if (n === "Map" || n === "Set") return Array.from(o);
+	  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+	}
+	function _arrayLikeToArray(arr, len) {
+	  if (len == null || len > arr.length) len = arr.length;
+	  for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
+	  return arr2;
+	}
 	function _nonIterableRest() {
-	  throw new TypeError("Invalid attempt to destructure non-iterable instance");
+	  throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
 	}
 
 	function isString(str) {
@@ -474,7 +510,7 @@
 	  }
 	}
 	function escapeRegExp(str) {
-	  return str.replace(/([.*+?^=!:${}()|[\]/\\])/g, '\\$1');
+	  return str.replace(/([.*+?^=!:${}()|[\]\/\\])/g, '\\$1');
 	}
 	function objectIncludes(b, a) {
 	  if (a === b) return true;
@@ -512,8 +548,7 @@
 	  return false;
 	}
 
-	var ActionDetails =
-	function () {
+	var ActionDetails = function () {
 	  function ActionDetails(value, cursorPos, oldValue, oldSelection) {
 	    _classCallCheck(this, ActionDetails);
 	    this.value = value;
@@ -570,8 +605,7 @@
 	  return ActionDetails;
 	}();
 
-	var ChangeDetails =
-	function () {
+	var ChangeDetails = function () {
 	  function ChangeDetails(details) {
 	    _classCallCheck(this, ChangeDetails);
 	    Object.assign(this, {
@@ -599,8 +633,7 @@
 	  return ChangeDetails;
 	}();
 
-	var ContinuousTailDetails =
-	function () {
+	var ContinuousTailDetails = function () {
 	  function ContinuousTailDetails() {
 	    var value = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
 	    var from = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
@@ -628,14 +661,6 @@
 	      }).aggregate(masked._appendPlaceholder());
 	    }
 	  }, {
-	    key: "shiftBefore",
-	    value: function shiftBefore(pos) {
-	      if (this.from >= pos || !this.value.length) return '';
-	      var shiftChar = this.value[0];
-	      this.value = this.value.slice(1);
-	      return shiftChar;
-	    }
-	  }, {
 	    key: "state",
 	    get: function get() {
 	      return {
@@ -647,6 +672,14 @@
 	    set: function set(state) {
 	      Object.assign(this, state);
 	    }
+	  }, {
+	    key: "shiftBefore",
+	    value: function shiftBefore(pos) {
+	      if (this.from >= pos || !this.value.length) return '';
+	      var shiftChar = this.value[0];
+	      this.value = this.value.slice(1);
+	      return shiftChar;
+	    }
 	  }]);
 	  return ContinuousTailDetails;
 	}();
@@ -656,12 +689,11 @@
 	  return new IMask.InputMask(el, opts);
 	}
 
-	var Masked =
-	function () {
+	var Masked = function () {
 	  function Masked(opts) {
 	    _classCallCheck(this, Masked);
 	    this._value = '';
-	    this._update(Object.assign({}, Masked.DEFAULTS, {}, opts));
+	    this._update(Object.assign({}, Masked.DEFAULTS, opts));
 	    this.isInitialized = true;
 	  }
 	  _createClass(Masked, [{
@@ -676,9 +708,27 @@
 	      Object.assign(this, opts);
 	    }
 	  }, {
+	    key: "state",
+	    get: function get() {
+	      return {
+	        _value: this.value
+	      };
+	    },
+	    set: function set(state) {
+	      this._value = state._value;
+	    }
+	  }, {
 	    key: "reset",
 	    value: function reset() {
 	      this._value = '';
+	    }
+	  }, {
+	    key: "value",
+	    get: function get() {
+	      return this._value;
+	    },
+	    set: function set(value) {
+	      this.resolve(value);
 	    }
 	  }, {
 	    key: "resolve",
@@ -689,6 +739,43 @@
 	      }, '');
 	      this.doCommit();
 	      return this.value;
+	    }
+	  }, {
+	    key: "unmaskedValue",
+	    get: function get() {
+	      return this.value;
+	    },
+	    set: function set(value) {
+	      this.reset();
+	      this.append(value, {}, '');
+	      this.doCommit();
+	    }
+	  }, {
+	    key: "typedValue",
+	    get: function get() {
+	      return this.doParse(this.value);
+	    },
+	    set: function set(value) {
+	      this.value = this.doFormat(value);
+	    }
+	  }, {
+	    key: "rawInputValue",
+	    get: function get() {
+	      return this.extractInput(0, this.value.length, {
+	        raw: true
+	      });
+	    },
+	    set: function set(value) {
+	      this.reset();
+	      this.append(value, {
+	        raw: true
+	      }, '');
+	      this.doCommit();
+	    }
+	  }, {
+	    key: "isComplete",
+	    get: function get() {
+	      return true;
 	    }
 	  }, {
 	    key: "nearestInputPos",
@@ -718,8 +805,6 @@
 	  }, {
 	    key: "_appendCharRaw",
 	    value: function _appendCharRaw(ch) {
-	      var flags = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-	      ch = this.doPrepare(ch, flags);
 	      if (!ch) return new ChangeDetails();
 	      this._value += ch;
 	      return new ChangeDetails({
@@ -733,7 +818,7 @@
 	      var flags = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
 	      var checkTail = arguments.length > 2 ? arguments[2] : undefined;
 	      var consistentState = this.state;
-	      var details = this._appendCharRaw(ch, flags);
+	      var details = this._appendCharRaw(this.doPrepare(ch, flags), flags);
 	      if (details.inserted) {
 	        var consistentTail;
 	        var appended = this.doValidate(flags) !== false;
@@ -766,7 +851,7 @@
 	      if (!isString(str)) throw new Error('value should be string');
 	      var details = new ChangeDetails();
 	      var checkTail = isString(tail) ? new ContinuousTailDetails(String(tail)) : tail;
-	      if (flags.tail) flags._beforeTailState = this.state;
+	      if (flags && flags.tail) flags._beforeTailState = this.state;
 	      for (var ci = 0; ci < str.length; ++ci) {
 	        details.aggregate(this._appendChar(str[ci], flags, checkTail));
 	      }
@@ -792,7 +877,7 @@
 	      var value = this.value;
 	      var ret = fn();
 	      this.rawInputValue = rawInput;
-	      if (this.value !== value && value.indexOf(this.value) === 0) {
+	      if (this.value && this.value !== value && value.indexOf(this.value) === 0) {
 	        this.append(value.slice(this.value.length), {}, '');
 	      }
 	      delete this._refreshing;
@@ -848,61 +933,6 @@
 	      }, tail));
 	      return changeDetails;
 	    }
-	  }, {
-	    key: "state",
-	    get: function get() {
-	      return {
-	        _value: this.value
-	      };
-	    },
-	    set: function set(state) {
-	      this._value = state._value;
-	    }
-	  }, {
-	    key: "value",
-	    get: function get() {
-	      return this._value;
-	    },
-	    set: function set(value) {
-	      this.resolve(value);
-	    }
-	  }, {
-	    key: "unmaskedValue",
-	    get: function get() {
-	      return this.value;
-	    },
-	    set: function set(value) {
-	      this.reset();
-	      this.append(value, {}, '');
-	      this.doCommit();
-	    }
-	  }, {
-	    key: "typedValue",
-	    get: function get() {
-	      return this.doParse(this.value);
-	    },
-	    set: function set(value) {
-	      this.value = this.doFormat(value);
-	    }
-	  }, {
-	    key: "rawInputValue",
-	    get: function get() {
-	      return this.extractInput(0, this.value.length, {
-	        raw: true
-	      });
-	    },
-	    set: function set(value) {
-	      this.reset();
-	      this.append(value, {
-	        raw: true
-	      }, '');
-	      this.doCommit();
-	    }
-	  }, {
-	    key: "isComplete",
-	    get: function get() {
-	      return true;
-	    }
 	  }]);
 	  return Masked;
 	}();
@@ -947,8 +977,7 @@
 	  'a': /[\u0041-\u005A\u0061-\u007A\u00AA\u00B5\u00BA\u00C0-\u00D6\u00D8-\u00F6\u00F8-\u02C1\u02C6-\u02D1\u02E0-\u02E4\u02EC\u02EE\u0370-\u0374\u0376\u0377\u037A-\u037D\u0386\u0388-\u038A\u038C\u038E-\u03A1\u03A3-\u03F5\u03F7-\u0481\u048A-\u0527\u0531-\u0556\u0559\u0561-\u0587\u05D0-\u05EA\u05F0-\u05F2\u0620-\u064A\u066E\u066F\u0671-\u06D3\u06D5\u06E5\u06E6\u06EE\u06EF\u06FA-\u06FC\u06FF\u0710\u0712-\u072F\u074D-\u07A5\u07B1\u07CA-\u07EA\u07F4\u07F5\u07FA\u0800-\u0815\u081A\u0824\u0828\u0840-\u0858\u08A0\u08A2-\u08AC\u0904-\u0939\u093D\u0950\u0958-\u0961\u0971-\u0977\u0979-\u097F\u0985-\u098C\u098F\u0990\u0993-\u09A8\u09AA-\u09B0\u09B2\u09B6-\u09B9\u09BD\u09CE\u09DC\u09DD\u09DF-\u09E1\u09F0\u09F1\u0A05-\u0A0A\u0A0F\u0A10\u0A13-\u0A28\u0A2A-\u0A30\u0A32\u0A33\u0A35\u0A36\u0A38\u0A39\u0A59-\u0A5C\u0A5E\u0A72-\u0A74\u0A85-\u0A8D\u0A8F-\u0A91\u0A93-\u0AA8\u0AAA-\u0AB0\u0AB2\u0AB3\u0AB5-\u0AB9\u0ABD\u0AD0\u0AE0\u0AE1\u0B05-\u0B0C\u0B0F\u0B10\u0B13-\u0B28\u0B2A-\u0B30\u0B32\u0B33\u0B35-\u0B39\u0B3D\u0B5C\u0B5D\u0B5F-\u0B61\u0B71\u0B83\u0B85-\u0B8A\u0B8E-\u0B90\u0B92-\u0B95\u0B99\u0B9A\u0B9C\u0B9E\u0B9F\u0BA3\u0BA4\u0BA8-\u0BAA\u0BAE-\u0BB9\u0BD0\u0C05-\u0C0C\u0C0E-\u0C10\u0C12-\u0C28\u0C2A-\u0C33\u0C35-\u0C39\u0C3D\u0C58\u0C59\u0C60\u0C61\u0C85-\u0C8C\u0C8E-\u0C90\u0C92-\u0CA8\u0CAA-\u0CB3\u0CB5-\u0CB9\u0CBD\u0CDE\u0CE0\u0CE1\u0CF1\u0CF2\u0D05-\u0D0C\u0D0E-\u0D10\u0D12-\u0D3A\u0D3D\u0D4E\u0D60\u0D61\u0D7A-\u0D7F\u0D85-\u0D96\u0D9A-\u0DB1\u0DB3-\u0DBB\u0DBD\u0DC0-\u0DC6\u0E01-\u0E30\u0E32\u0E33\u0E40-\u0E46\u0E81\u0E82\u0E84\u0E87\u0E88\u0E8A\u0E8D\u0E94-\u0E97\u0E99-\u0E9F\u0EA1-\u0EA3\u0EA5\u0EA7\u0EAA\u0EAB\u0EAD-\u0EB0\u0EB2\u0EB3\u0EBD\u0EC0-\u0EC4\u0EC6\u0EDC-\u0EDF\u0F00\u0F40-\u0F47\u0F49-\u0F6C\u0F88-\u0F8C\u1000-\u102A\u103F\u1050-\u1055\u105A-\u105D\u1061\u1065\u1066\u106E-\u1070\u1075-\u1081\u108E\u10A0-\u10C5\u10C7\u10CD\u10D0-\u10FA\u10FC-\u1248\u124A-\u124D\u1250-\u1256\u1258\u125A-\u125D\u1260-\u1288\u128A-\u128D\u1290-\u12B0\u12B2-\u12B5\u12B8-\u12BE\u12C0\u12C2-\u12C5\u12C8-\u12D6\u12D8-\u1310\u1312-\u1315\u1318-\u135A\u1380-\u138F\u13A0-\u13F4\u1401-\u166C\u166F-\u167F\u1681-\u169A\u16A0-\u16EA\u1700-\u170C\u170E-\u1711\u1720-\u1731\u1740-\u1751\u1760-\u176C\u176E-\u1770\u1780-\u17B3\u17D7\u17DC\u1820-\u1877\u1880-\u18A8\u18AA\u18B0-\u18F5\u1900-\u191C\u1950-\u196D\u1970-\u1974\u1980-\u19AB\u19C1-\u19C7\u1A00-\u1A16\u1A20-\u1A54\u1AA7\u1B05-\u1B33\u1B45-\u1B4B\u1B83-\u1BA0\u1BAE\u1BAF\u1BBA-\u1BE5\u1C00-\u1C23\u1C4D-\u1C4F\u1C5A-\u1C7D\u1CE9-\u1CEC\u1CEE-\u1CF1\u1CF5\u1CF6\u1D00-\u1DBF\u1E00-\u1F15\u1F18-\u1F1D\u1F20-\u1F45\u1F48-\u1F4D\u1F50-\u1F57\u1F59\u1F5B\u1F5D\u1F5F-\u1F7D\u1F80-\u1FB4\u1FB6-\u1FBC\u1FBE\u1FC2-\u1FC4\u1FC6-\u1FCC\u1FD0-\u1FD3\u1FD6-\u1FDB\u1FE0-\u1FEC\u1FF2-\u1FF4\u1FF6-\u1FFC\u2071\u207F\u2090-\u209C\u2102\u2107\u210A-\u2113\u2115\u2119-\u211D\u2124\u2126\u2128\u212A-\u212D\u212F-\u2139\u213C-\u213F\u2145-\u2149\u214E\u2183\u2184\u2C00-\u2C2E\u2C30-\u2C5E\u2C60-\u2CE4\u2CEB-\u2CEE\u2CF2\u2CF3\u2D00-\u2D25\u2D27\u2D2D\u2D30-\u2D67\u2D6F\u2D80-\u2D96\u2DA0-\u2DA6\u2DA8-\u2DAE\u2DB0-\u2DB6\u2DB8-\u2DBE\u2DC0-\u2DC6\u2DC8-\u2DCE\u2DD0-\u2DD6\u2DD8-\u2DDE\u2E2F\u3005\u3006\u3031-\u3035\u303B\u303C\u3041-\u3096\u309D-\u309F\u30A1-\u30FA\u30FC-\u30FF\u3105-\u312D\u3131-\u318E\u31A0-\u31BA\u31F0-\u31FF\u3400-\u4DB5\u4E00-\u9FCC\uA000-\uA48C\uA4D0-\uA4FD\uA500-\uA60C\uA610-\uA61F\uA62A\uA62B\uA640-\uA66E\uA67F-\uA697\uA6A0-\uA6E5\uA717-\uA71F\uA722-\uA788\uA78B-\uA78E\uA790-\uA793\uA7A0-\uA7AA\uA7F8-\uA801\uA803-\uA805\uA807-\uA80A\uA80C-\uA822\uA840-\uA873\uA882-\uA8B3\uA8F2-\uA8F7\uA8FB\uA90A-\uA925\uA930-\uA946\uA960-\uA97C\uA984-\uA9B2\uA9CF\uAA00-\uAA28\uAA40-\uAA42\uAA44-\uAA4B\uAA60-\uAA76\uAA7A\uAA80-\uAAAF\uAAB1\uAAB5\uAAB6\uAAB9-\uAABD\uAAC0\uAAC2\uAADB-\uAADD\uAAE0-\uAAEA\uAAF2-\uAAF4\uAB01-\uAB06\uAB09-\uAB0E\uAB11-\uAB16\uAB20-\uAB26\uAB28-\uAB2E\uABC0-\uABE2\uAC00-\uD7A3\uD7B0-\uD7C6\uD7CB-\uD7FB\uF900-\uFA6D\uFA70-\uFAD9\uFB00-\uFB06\uFB13-\uFB17\uFB1D\uFB1F-\uFB28\uFB2A-\uFB36\uFB38-\uFB3C\uFB3E\uFB40\uFB41\uFB43\uFB44\uFB46-\uFBB1\uFBD3-\uFD3D\uFD50-\uFD8F\uFD92-\uFDC7\uFDF0-\uFDFB\uFE70-\uFE74\uFE76-\uFEFC\uFF21-\uFF3A\uFF41-\uFF5A\uFF66-\uFFBE\uFFC2-\uFFC7\uFFCA-\uFFCF\uFFD2-\uFFD7\uFFDA-\uFFDC]/,
 	  '*': /./
 	};
-	var PatternInputDefinition =
-	function () {
+	var PatternInputDefinition = function () {
 	  function PatternInputDefinition(opts) {
 	    _classCallCheck(this, PatternInputDefinition);
 	    var mask = opts.mask,
@@ -974,6 +1003,21 @@
 	        return this.masked.remove(fromPos, toPos);
 	      }
 	      return new ChangeDetails();
+	    }
+	  }, {
+	    key: "value",
+	    get: function get() {
+	      return this.masked.value || (this._isFilled && !this.isOptional ? this.placeholderChar : '');
+	    }
+	  }, {
+	    key: "unmaskedValue",
+	    get: function get() {
+	      return this.masked.unmaskedValue;
+	    }
+	  }, {
+	    key: "isComplete",
+	    get: function get() {
+	      return Boolean(this.masked.value) || this.isOptional;
 	    }
 	  }, {
 	    key: "_appendChar",
@@ -1059,21 +1103,6 @@
 	      this.masked.doCommit();
 	    }
 	  }, {
-	    key: "value",
-	    get: function get() {
-	      return this.masked.value || (this._isFilled && !this.isOptional ? this.placeholderChar : '');
-	    }
-	  }, {
-	    key: "unmaskedValue",
-	    get: function get() {
-	      return this.masked.unmaskedValue;
-	    }
-	  }, {
-	    key: "isComplete",
-	    get: function get() {
-	      return Boolean(this.masked.value) || this.isOptional;
-	    }
-	  }, {
 	    key: "state",
 	    get: function get() {
 	      return {
@@ -1089,14 +1118,23 @@
 	  return PatternInputDefinition;
 	}();
 
-	var PatternFixedDefinition =
-	function () {
+	var PatternFixedDefinition = function () {
 	  function PatternFixedDefinition(opts) {
 	    _classCallCheck(this, PatternFixedDefinition);
 	    Object.assign(this, opts);
 	    this._value = '';
 	  }
 	  _createClass(PatternFixedDefinition, [{
+	    key: "value",
+	    get: function get() {
+	      return this._value;
+	    }
+	  }, {
+	    key: "unmaskedValue",
+	    get: function get() {
+	      return this.isUnmasking ? this.value : '';
+	    }
+	  }, {
 	    key: "reset",
 	    value: function reset() {
 	      this._isRawInput = false;
@@ -1135,6 +1173,11 @@
 	      var toPos = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : this._value.length;
 	      var flags = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : {};
 	      return flags.raw && this._isRawInput && this._value.slice(fromPos, toPos) || '';
+	    }
+	  }, {
+	    key: "isComplete",
+	    get: function get() {
+	      return true;
 	    }
 	  }, {
 	    key: "_appendChar",
@@ -1182,21 +1225,6 @@
 	    key: "doCommit",
 	    value: function doCommit() {}
 	  }, {
-	    key: "value",
-	    get: function get() {
-	      return this._value;
-	    }
-	  }, {
-	    key: "unmaskedValue",
-	    get: function get() {
-	      return this.isUnmasking ? this.value : '';
-	    }
-	  }, {
-	    key: "isComplete",
-	    get: function get() {
-	      return true;
-	    }
-	  }, {
 	    key: "state",
 	    get: function get() {
 	      return {
@@ -1211,8 +1239,7 @@
 	  return PatternFixedDefinition;
 	}();
 
-	var ChunksTailDetails =
-	function () {
+	var ChunksTailDetails = function () {
 	  function ChunksTailDetails() {
 	    var chunks = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : [];
 	    var from = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 0;
@@ -1294,25 +1321,6 @@
 	      return details;
 	    }
 	  }, {
-	    key: "shiftBefore",
-	    value: function shiftBefore(pos) {
-	      if (this.from >= pos || !this.chunks.length) return '';
-	      var chunkShiftPos = pos - this.from;
-	      var ci = 0;
-	      while (ci < this.chunks.length) {
-	        var chunk = this.chunks[ci];
-	        var shiftChar = chunk.shiftBefore(chunkShiftPos);
-	        if (chunk.toString()) {
-	          if (!shiftChar) break;
-	          ++ci;
-	        } else {
-	          this.chunks.splice(ci, 1);
-	        }
-	        if (shiftChar) return shiftChar;
-	      }
-	      return '';
-	    }
-	  }, {
 	    key: "state",
 	    get: function get() {
 	      return {
@@ -1334,20 +1342,40 @@
 	        return chunk;
 	      });
 	    }
+	  }, {
+	    key: "shiftBefore",
+	    value: function shiftBefore(pos) {
+	      if (this.from >= pos || !this.chunks.length) return '';
+	      var chunkShiftPos = pos - this.from;
+	      var ci = 0;
+	      while (ci < this.chunks.length) {
+	        var chunk = this.chunks[ci];
+	        var shiftChar = chunk.shiftBefore(chunkShiftPos);
+	        if (chunk.toString()) {
+	          if (!shiftChar) break;
+	          ++ci;
+	        } else {
+	          this.chunks.splice(ci, 1);
+	        }
+	        if (shiftChar) return shiftChar;
+	      }
+	      return '';
+	    }
 	  }]);
 	  return ChunksTailDetails;
 	}();
 
-	var MaskedRegExp =
-	function (_Masked) {
+	var MaskedRegExp = function (_Masked) {
 	  _inherits(MaskedRegExp, _Masked);
+	  var _super = _createSuper(MaskedRegExp);
 	  function MaskedRegExp() {
 	    _classCallCheck(this, MaskedRegExp);
-	    return _possibleConstructorReturn(this, _getPrototypeOf(MaskedRegExp).apply(this, arguments));
+	    return _super.apply(this, arguments);
 	  }
 	  _createClass(MaskedRegExp, [{
 	    key: "_update",
-	    value: function _update(opts) {
+	    value:
+	    function _update(opts) {
 	      if (opts.mask) opts.validate = function (value) {
 	        return value.search(opts.mask) >= 0;
 	      };
@@ -1358,14 +1386,14 @@
 	}(Masked);
 	IMask.MaskedRegExp = MaskedRegExp;
 
-	var MaskedPattern =
-	function (_Masked) {
+	var MaskedPattern = function (_Masked) {
 	  _inherits(MaskedPattern, _Masked);
+	  var _super = _createSuper(MaskedPattern);
 	  function MaskedPattern() {
 	    var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
 	    _classCallCheck(this, MaskedPattern);
 	    opts.definitions = Object.assign({}, DEFAULT_INPUT_DEFINITIONS, opts.definitions);
-	    return _possibleConstructorReturn(this, _getPrototypeOf(MaskedPattern).call(this, Object.assign({}, MaskedPattern.DEFAULTS, {}, opts)));
+	    return _super.call(this, Object.assign({}, MaskedPattern.DEFAULTS, opts));
 	  }
 	  _createClass(MaskedPattern, [{
 	    key: "_update",
@@ -1417,7 +1445,7 @@
 	          if (_ret === "continue") continue;
 	        }
 	        var char = pattern[i];
-	        var _isInput = char in defs;
+	        var _isInput = (char in defs);
 	        if (char === MaskedPattern.STOP_CHAR) {
 	          this._stops.push(this._blocks.length);
 	          continue;
@@ -1450,11 +1478,35 @@
 	      }
 	    }
 	  }, {
+	    key: "state",
+	    get: function get() {
+	      return Object.assign({}, _get(_getPrototypeOf(MaskedPattern.prototype), "state", this), {
+	        _blocks: this._blocks.map(function (b) {
+	          return b.state;
+	        })
+	      });
+	    },
+	    set: function set(state) {
+	      var _blocks = state._blocks,
+	          maskedState = _objectWithoutProperties(state, ["_blocks"]);
+	      this._blocks.forEach(function (b, bi) {
+	        return b.state = _blocks[bi];
+	      });
+	      _set(_getPrototypeOf(MaskedPattern.prototype), "state", maskedState, this, true);
+	    }
+	  }, {
 	    key: "reset",
 	    value: function reset() {
 	      _get(_getPrototypeOf(MaskedPattern.prototype), "reset", this).call(this);
 	      this._blocks.forEach(function (b) {
 	        return b.reset();
+	      });
+	    }
+	  }, {
+	    key: "isComplete",
+	    get: function get() {
+	      return this._blocks.every(function (b) {
+	        return b.isComplete;
 	      });
 	    }
 	  }, {
@@ -1466,6 +1518,26 @@
 	      _get(_getPrototypeOf(MaskedPattern.prototype), "doCommit", this).call(this);
 	    }
 	  }, {
+	    key: "unmaskedValue",
+	    get: function get() {
+	      return this._blocks.reduce(function (str, b) {
+	        return str += b.unmaskedValue;
+	      }, '');
+	    },
+	    set: function set(unmaskedValue) {
+	      _set(_getPrototypeOf(MaskedPattern.prototype), "unmaskedValue", unmaskedValue, this, true);
+	    }
+	  }, {
+	    key: "value",
+	    get: function get() {
+	      return this._blocks.reduce(function (str, b) {
+	        return str += b.value;
+	      }, '');
+	    },
+	    set: function set(value) {
+	      _set(_getPrototypeOf(MaskedPattern.prototype), "value", value, this, true);
+	    }
+	  }, {
 	    key: "appendTail",
 	    value: function appendTail(tail) {
 	      return _get(_getPrototypeOf(MaskedPattern.prototype), "appendTail", this).call(this, tail).aggregate(this._appendPlaceholder());
@@ -1474,7 +1546,6 @@
 	    key: "_appendCharRaw",
 	    value: function _appendCharRaw(ch) {
 	      var flags = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
-	      ch = this.doPrepare(ch, flags);
 	      var blockIter = this._mapPosToBlock(this.value.length);
 	      var details = new ChangeDetails();
 	      if (!blockIter) return details;
@@ -1754,50 +1825,6 @@
 	        return _this4._blocks[gi];
 	      });
 	    }
-	  }, {
-	    key: "state",
-	    get: function get() {
-	      return Object.assign({}, _get(_getPrototypeOf(MaskedPattern.prototype), "state", this), {
-	        _blocks: this._blocks.map(function (b) {
-	          return b.state;
-	        })
-	      });
-	    },
-	    set: function set(state) {
-	      var _blocks = state._blocks,
-	          maskedState = _objectWithoutProperties(state, ["_blocks"]);
-	      this._blocks.forEach(function (b, bi) {
-	        return b.state = _blocks[bi];
-	      });
-	      _set(_getPrototypeOf(MaskedPattern.prototype), "state", maskedState, this, true);
-	    }
-	  }, {
-	    key: "isComplete",
-	    get: function get() {
-	      return this._blocks.every(function (b) {
-	        return b.isComplete;
-	      });
-	    }
-	  }, {
-	    key: "unmaskedValue",
-	    get: function get() {
-	      return this._blocks.reduce(function (str, b) {
-	        return str += b.unmaskedValue;
-	      }, '');
-	    },
-	    set: function set(unmaskedValue) {
-	      _set(_getPrototypeOf(MaskedPattern.prototype), "unmaskedValue", unmaskedValue, this, true);
-	    }
-	  }, {
-	    key: "value",
-	    get: function get() {
-	      return this._blocks.reduce(function (str, b) {
-	        return str += b.value;
-	      }, '');
-	    },
-	    set: function set(value) {
-	      _set(_getPrototypeOf(MaskedPattern.prototype), "value", value, this, true);
-	    }
 	  }]);
 	  return MaskedPattern;
 	}(Masked);
@@ -1816,14 +1843,20 @@
 	}
 	IMask.MaskedPattern = MaskedPattern;
 
-	var MaskedRange =
-	function (_MaskedPattern) {
+	var MaskedRange = function (_MaskedPattern) {
 	  _inherits(MaskedRange, _MaskedPattern);
+	  var _super = _createSuper(MaskedRange);
 	  function MaskedRange() {
 	    _classCallCheck(this, MaskedRange);
-	    return _possibleConstructorReturn(this, _getPrototypeOf(MaskedRange).apply(this, arguments));
+	    return _super.apply(this, arguments);
 	  }
 	  _createClass(MaskedRange, [{
+	    key: "_matchFrom",
+	    get:
+	    function get() {
+	      return this.maxLength - String(this.from).length;
+	    }
+	  }, {
 	    key: "_update",
 	    value: function _update(opts) {
 	      opts = Object.assign({
@@ -1841,6 +1874,11 @@
 	      }
 	      opts.mask = toStr.slice(0, sameCharsCount).replace(/0/g, '\\0') + '0'.repeat(maxLength - sameCharsCount);
 	      _get(_getPrototypeOf(MaskedRange.prototype), "_update", this).call(this, opts);
+	    }
+	  }, {
+	    key: "isComplete",
+	    get: function get() {
+	      return _get(_getPrototypeOf(MaskedRange.prototype), "isComplete", this) && Boolean(this.value);
 	    }
 	  }, {
 	    key: "boundaries",
@@ -1895,27 +1933,17 @@
 	      }
 	      return this.from <= Number(maxstr) && Number(minstr) <= this.to && (_get2 = _get(_getPrototypeOf(MaskedRange.prototype), "doValidate", this)).call.apply(_get2, [this].concat(args));
 	    }
-	  }, {
-	    key: "_matchFrom",
-	    get: function get() {
-	      return this.maxLength - String(this.from).length;
-	    }
-	  }, {
-	    key: "isComplete",
-	    get: function get() {
-	      return _get(_getPrototypeOf(MaskedRange.prototype), "isComplete", this) && Boolean(this.value);
-	    }
 	  }]);
 	  return MaskedRange;
 	}(MaskedPattern);
 	IMask.MaskedRange = MaskedRange;
 
-	var MaskedDate =
-	function (_MaskedPattern) {
+	var MaskedDate = function (_MaskedPattern) {
 	  _inherits(MaskedDate, _MaskedPattern);
+	  var _super = _createSuper(MaskedDate);
 	  function MaskedDate(opts) {
 	    _classCallCheck(this, MaskedDate);
-	    return _possibleConstructorReturn(this, _getPrototypeOf(MaskedDate).call(this, Object.assign({}, MaskedDate.DEFAULTS, {}, opts)));
+	    return _super.call(this, Object.assign({}, MaskedDate.DEFAULTS, opts));
 	  }
 	  _createClass(MaskedDate, [{
 	    key: "_update",
@@ -2015,31 +2043,14 @@
 	};
 	IMask.MaskedDate = MaskedDate;
 
-	var MaskElement =
-	function () {
+	var MaskElement = function () {
 	  function MaskElement() {
 	    _classCallCheck(this, MaskElement);
 	  }
 	  _createClass(MaskElement, [{
-	    key: "select",
-	    value: function select(start, end) {
-	      if (start == null || end == null || start === this.selectionStart && end === this.selectionEnd) return;
-	      try {
-	        this._unsafeSelect(start, end);
-	      } catch (e) {}
-	    }
-	  }, {
-	    key: "_unsafeSelect",
-	    value: function _unsafeSelect(start, end) {}
-	  }, {
-	    key: "bindEvents",
-	    value: function bindEvents(handlers) {}
-	  }, {
-	    key: "unbindEvents",
-	    value: function unbindEvents() {}
-	  }, {
 	    key: "selectionStart",
-	    get: function get() {
+	    get:
+	    function get() {
 	      var start;
 	      try {
 	        start = this._unsafeSelectionStart;
@@ -2056,30 +2067,75 @@
 	      return end != null ? end : this.value.length;
 	    }
 	  }, {
+	    key: "select",
+	    value: function select(start, end) {
+	      if (start == null || end == null || start === this.selectionStart && end === this.selectionEnd) return;
+	      try {
+	        this._unsafeSelect(start, end);
+	      } catch (e) {}
+	    }
+	  }, {
+	    key: "_unsafeSelect",
+	    value: function _unsafeSelect(start, end) {}
+	  }, {
 	    key: "isActive",
 	    get: function get() {
 	      return false;
 	    }
+	  }, {
+	    key: "bindEvents",
+	    value: function bindEvents(handlers) {}
+	  }, {
+	    key: "unbindEvents",
+	    value: function unbindEvents() {}
 	  }]);
 	  return MaskElement;
 	}();
 	IMask.MaskElement = MaskElement;
 
-	var HTMLMaskElement =
-	function (_MaskElement) {
+	var HTMLMaskElement = function (_MaskElement) {
 	  _inherits(HTMLMaskElement, _MaskElement);
+	  var _super = _createSuper(HTMLMaskElement);
 	  function HTMLMaskElement(input) {
 	    var _this;
 	    _classCallCheck(this, HTMLMaskElement);
-	    _this = _possibleConstructorReturn(this, _getPrototypeOf(HTMLMaskElement).call(this));
+	    _this = _super.call(this);
 	    _this.input = input;
 	    _this._handlers = {};
 	    return _this;
 	  }
 	  _createClass(HTMLMaskElement, [{
+	    key: "rootElement",
+	    get: function get() {
+	      return this.input.getRootNode ? this.input.getRootNode() : document;
+	    }
+	  }, {
+	    key: "isActive",
+	    get: function get() {
+	      return this.input === this.rootElement.activeElement;
+	    }
+	  }, {
+	    key: "_unsafeSelectionStart",
+	    get: function get() {
+	      return this.input.selectionStart;
+	    }
+	  }, {
+	    key: "_unsafeSelectionEnd",
+	    get: function get() {
+	      return this.input.selectionEnd;
+	    }
+	  }, {
 	    key: "_unsafeSelect",
 	    value: function _unsafeSelect(start, end) {
 	      this.input.setSelectionRange(start, end);
+	    }
+	  }, {
+	    key: "value",
+	    get: function get() {
+	      return this.input.value;
+	    },
+	    set: function set(value) {
+	      this.input.value = value;
 	    }
 	  }, {
 	    key: "bindEvents",
@@ -2109,34 +2165,6 @@
 	        this._handlers[event] = handler;
 	      }
 	    }
-	  }, {
-	    key: "rootElement",
-	    get: function get() {
-	      return this.input.getRootNode ? this.input.getRootNode() : document;
-	    }
-	  }, {
-	    key: "isActive",
-	    get: function get() {
-	      return this.input === this.rootElement.activeElement;
-	    }
-	  }, {
-	    key: "_unsafeSelectionStart",
-	    get: function get() {
-	      return this.input.selectionStart;
-	    }
-	  }, {
-	    key: "_unsafeSelectionEnd",
-	    get: function get() {
-	      return this.input.selectionEnd;
-	    }
-	  }, {
-	    key: "value",
-	    get: function get() {
-	      return this.input.value;
-	    },
-	    set: function set(value) {
-	      this.input.value = value;
-	    }
 	  }]);
 	  return HTMLMaskElement;
 	}(MaskElement);
@@ -2150,14 +2178,29 @@
 	};
 	IMask.HTMLMaskElement = HTMLMaskElement;
 
-	var HTMLContenteditableMaskElement =
-	function (_HTMLMaskElement) {
+	var HTMLContenteditableMaskElement = function (_HTMLMaskElement) {
 	  _inherits(HTMLContenteditableMaskElement, _HTMLMaskElement);
+	  var _super = _createSuper(HTMLContenteditableMaskElement);
 	  function HTMLContenteditableMaskElement() {
 	    _classCallCheck(this, HTMLContenteditableMaskElement);
-	    return _possibleConstructorReturn(this, _getPrototypeOf(HTMLContenteditableMaskElement).apply(this, arguments));
+	    return _super.apply(this, arguments);
 	  }
 	  _createClass(HTMLContenteditableMaskElement, [{
+	    key: "_unsafeSelectionStart",
+	    get:
+	    function get() {
+	      var root = this.rootElement;
+	      var selection = root.getSelection && root.getSelection();
+	      return selection && selection.anchorOffset;
+	    }
+	  }, {
+	    key: "_unsafeSelectionEnd",
+	    get: function get() {
+	      var root = this.rootElement;
+	      var selection = root.getSelection && root.getSelection();
+	      return selection && this._unsafeSelectionStart + String(selection).length;
+	    }
+	  }, {
 	    key: "_unsafeSelect",
 	    value: function _unsafeSelect(start, end) {
 	      if (!this.rootElement.createRange) return;
@@ -2172,20 +2215,6 @@
 	      }
 	    }
 	  }, {
-	    key: "_unsafeSelectionStart",
-	    get: function get() {
-	      var root = this.rootElement;
-	      var selection = root.getSelection && root.getSelection();
-	      return selection && selection.anchorOffset;
-	    }
-	  }, {
-	    key: "_unsafeSelectionEnd",
-	    get: function get() {
-	      var root = this.rootElement;
-	      var selection = root.getSelection && root.getSelection();
-	      return selection && this._unsafeSelectionStart + String(selection).length;
-	    }
-	  }, {
 	    key: "value",
 	    get: function get() {
 	      return this.input.textContent;
@@ -2198,8 +2227,7 @@
 	}(HTMLMaskElement);
 	IMask.HTMLContenteditableMaskElement = HTMLContenteditableMaskElement;
 
-	var InputMask =
-	function () {
+	var InputMask = function () {
 	  function InputMask(el, opts) {
 	    _classCallCheck(this, InputMask);
 	    this.el = el instanceof MaskElement ? el : el.isContentEditable && el.tagName !== 'INPUT' && el.tagName !== 'TEXTAREA' ? new HTMLContenteditableMaskElement(el) : new HTMLMaskElement(el);
@@ -2220,9 +2248,58 @@
 	    this._onChange();
 	  }
 	  _createClass(InputMask, [{
+	    key: "mask",
+	    get: function get() {
+	      return this.masked.mask;
+	    },
+	    set: function set(mask) {
+	      if (this.maskEquals(mask)) return;
+	      if (!(mask instanceof IMask.Masked) && this.masked.constructor === maskedClass(mask)) {
+	        this.masked.updateOptions({
+	          mask: mask
+	        });
+	        return;
+	      }
+	      var masked = createMask({
+	        mask: mask
+	      });
+	      masked.unmaskedValue = this.masked.unmaskedValue;
+	      this.masked = masked;
+	    }
+	  }, {
 	    key: "maskEquals",
 	    value: function maskEquals(mask) {
 	      return mask == null || mask === this.masked.mask || mask === Date && this.masked instanceof MaskedDate;
+	    }
+	  }, {
+	    key: "value",
+	    get: function get() {
+	      return this._value;
+	    },
+	    set: function set(str) {
+	      this.masked.value = str;
+	      this.updateControl();
+	      this.alignCursor();
+	    }
+	  }, {
+	    key: "unmaskedValue",
+	    get: function get() {
+	      return this._unmaskedValue;
+	    },
+	    set: function set(str) {
+	      this.masked.unmaskedValue = str;
+	      this.updateControl();
+	      this.alignCursor();
+	    }
+	  }, {
+	    key: "typedValue",
+	    get: function get() {
+	      return this.masked.typedValue;
+	    },
+	    set: function set(val) {
+	      this.masked.typedValue = val;
+	      this.updateControl();
+	      this.alignCursor();
 	    }
 	  }, {
 	    key: "_bindEvents",
@@ -2252,6 +2329,21 @@
 	      listeners.forEach(function (l) {
 	        return l.apply(void 0, args);
 	      });
+	    }
+	  }, {
+	    key: "selectionStart",
+	    get: function get() {
+	      return this._cursorChanging ? this._changingCursorPos : this.el.selectionStart;
+	    }
+	  }, {
+	    key: "cursorPos",
+	    get: function get() {
+	      return this._cursorChanging ? this._changingCursorPos : this.el.selectionEnd;
+	    },
+	    set: function set(pos) {
+	      if (!this.el || !this.el.isActive) return;
+	      this.el.select(pos, pos);
+	      this._saveSelection();
 	    }
 	  }, {
 	    key: "_saveSelection",
@@ -2406,85 +2498,22 @@
 	      this._listeners.length = 0;
 	      delete this.el;
 	    }
-	  }, {
-	    key: "mask",
-	    get: function get() {
-	      return this.masked.mask;
-	    },
-	    set: function set(mask) {
-	      if (this.maskEquals(mask)) return;
-	      if (!(mask instanceof IMask.Masked) && this.masked.constructor === maskedClass(mask)) {
-	        this.masked.updateOptions({
-	          mask: mask
-	        });
-	        return;
-	      }
-	      var masked = createMask({
-	        mask: mask
-	      });
-	      masked.unmaskedValue = this.masked.unmaskedValue;
-	      this.masked = masked;
-	    }
-	  }, {
-	    key: "value",
-	    get: function get() {
-	      return this._value;
-	    },
-	    set: function set(str) {
-	      this.masked.value = str;
-	      this.updateControl();
-	      this.alignCursor();
-	    }
-	  }, {
-	    key: "unmaskedValue",
-	    get: function get() {
-	      return this._unmaskedValue;
-	    },
-	    set: function set(str) {
-	      this.masked.unmaskedValue = str;
-	      this.updateControl();
-	      this.alignCursor();
-	    }
-	  }, {
-	    key: "typedValue",
-	    get: function get() {
-	      return this.masked.typedValue;
-	    },
-	    set: function set(val) {
-	      this.masked.typedValue = val;
-	      this.updateControl();
-	      this.alignCursor();
-	    }
-	  }, {
-	    key: "selectionStart",
-	    get: function get() {
-	      return this._cursorChanging ? this._changingCursorPos : this.el.selectionStart;
-	    }
-	  }, {
-	    key: "cursorPos",
-	    get: function get() {
-	      return this._cursorChanging ? this._changingCursorPos : this.el.selectionEnd;
-	    },
-	    set: function set(pos) {
-	      if (!this.el || !this.el.isActive) return;
-	      this.el.select(pos, pos);
-	      this._saveSelection();
-	    }
 	  }]);
 	  return InputMask;
 	}();
 	IMask.InputMask = InputMask;
 
-	var MaskedEnum =
-	function (_MaskedPattern) {
+	var MaskedEnum = function (_MaskedPattern) {
 	  _inherits(MaskedEnum, _MaskedPattern);
+	  var _super = _createSuper(MaskedEnum);
 	  function MaskedEnum() {
 	    _classCallCheck(this, MaskedEnum);
-	    return _possibleConstructorReturn(this, _getPrototypeOf(MaskedEnum).apply(this, arguments));
+	    return _super.apply(this, arguments);
 	  }
 	  _createClass(MaskedEnum, [{
 	    key: "_update",
-	    value: function _update(opts) {
+	    value:
+	    function _update(opts) {
 	      if (opts.enum) opts.mask = '*'.repeat(opts.enum[0].length);
 	      _get(_getPrototypeOf(MaskedEnum.prototype), "_update", this).call(this, opts);
 	    }
@@ -2505,12 +2534,12 @@
 	}(MaskedPattern);
 	IMask.MaskedEnum = MaskedEnum;
 
-	var MaskedNumber =
-	function (_Masked) {
+	var MaskedNumber = function (_Masked) {
 	  _inherits(MaskedNumber, _Masked);
+	  var _super = _createSuper(MaskedNumber);
 	  function MaskedNumber(opts) {
 	    _classCallCheck(this, MaskedNumber);
-	    return _possibleConstructorReturn(this, _getPrototypeOf(MaskedNumber).call(this, Object.assign({}, MaskedNumber.DEFAULTS, {}, opts)));
+	    return _super.call(this, Object.assign({}, MaskedNumber.DEFAULTS, opts));
 	  }
 	  _createClass(MaskedNumber, [{
 	    key: "_update",
@@ -2759,16 +2788,17 @@
 	};
 	IMask.MaskedNumber = MaskedNumber;
 
-	var MaskedFunction =
-	function (_Masked) {
+	var MaskedFunction = function (_Masked) {
 	  _inherits(MaskedFunction, _Masked);
+	  var _super = _createSuper(MaskedFunction);
 	  function MaskedFunction() {
 	    _classCallCheck(this, MaskedFunction);
-	    return _possibleConstructorReturn(this, _getPrototypeOf(MaskedFunction).apply(this, arguments));
+	    return _super.apply(this, arguments);
 	  }
 	  _createClass(MaskedFunction, [{
 	    key: "_update",
-	    value: function _update(opts) {
+	    value:
+	    function _update(opts) {
 	      if (opts.mask) opts.validate = opts.mask;
 	      _get(_getPrototypeOf(MaskedFunction.prototype), "_update", this).call(this, opts);
 	    }
@@ -2777,13 +2807,13 @@
 	}(Masked);
 	IMask.MaskedFunction = MaskedFunction;
 
-	var MaskedDynamic =
-	function (_Masked) {
+	var MaskedDynamic = function (_Masked) {
 	  _inherits(MaskedDynamic, _Masked);
+	  var _super = _createSuper(MaskedDynamic);
 	  function MaskedDynamic(opts) {
 	    var _this;
 	    _classCallCheck(this, MaskedDynamic);
-	    _this = _possibleConstructorReturn(this, _getPrototypeOf(MaskedDynamic).call(this, Object.assign({}, MaskedDynamic.DEFAULTS, {}, opts)));
+	    _this = _super.call(this, Object.assign({}, MaskedDynamic.DEFAULTS, opts));
 	    _this.currentMask = null;
 	    return _this;
 	  }
@@ -2799,11 +2829,11 @@
 	    }
 	  }, {
 	    key: "_appendCharRaw",
-	    value: function _appendCharRaw() {
-	      var details = this._applyDispatch.apply(this, arguments);
+	    value: function _appendCharRaw(ch) {
+	      var flags = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
+	      var details = this._applyDispatch(ch, flags);
 	      if (this.currentMask) {
-	        var _this$currentMask;
-	        details.aggregate((_this$currentMask = this.currentMask)._appendChar.apply(_this$currentMask, arguments));
+	        details.aggregate(this.currentMask._appendChar(ch, flags));
 	      }
 	      return details;
 	    }
@@ -2824,10 +2854,12 @@
 	      if (this.currentMask) {
 	        if (this.currentMask !== prevMask) {
 	          this.currentMask.reset();
-	          var d = this.currentMask.append(insertValue, {
-	            raw: true
-	          });
-	          details.tailShift = d.inserted.length - prevValueBeforeTail.length;
+	          if (insertValue) {
+	            var d = this.currentMask.append(insertValue, {
+	              raw: true
+	            });
+	            details.tailShift = d.inserted.length - prevValueBeforeTail.length;
+	          }
 	          if (tailValue) {
 	            details.tailShift += this.currentMask.append(tailValue, {
 	              raw: true,
@@ -2858,11 +2890,11 @@
 	  }, {
 	    key: "doValidate",
 	    value: function doValidate() {
-	      var _get2, _this$currentMask2;
+	      var _get2, _this$currentMask;
 	      for (var _len = arguments.length, args = new Array(_len), _key = 0; _key < _len; _key++) {
 	        args[_key] = arguments[_key];
 	      }
-	      return (_get2 = _get(_getPrototypeOf(MaskedDynamic.prototype), "doValidate", this)).call.apply(_get2, [this].concat(args)) && (!this.currentMask || (_this$currentMask2 = this.currentMask).doValidate.apply(_this$currentMask2, args));
+	      return (_get2 = _get(_getPrototypeOf(MaskedDynamic.prototype), "doValidate", this)).call.apply(_get2, [this].concat(args)) && (!this.currentMask || (_this$currentMask = this.currentMask).doValidate.apply(_this$currentMask, args));
 	    }
 	  }, {
 	    key: "reset",
@@ -2871,47 +2903,6 @@
 	      this.compiledMasks.forEach(function (m) {
 	        return m.reset();
 	      });
-	    }
-	  }, {
-	    key: "remove",
-	    value: function remove() {
-	      var details = new ChangeDetails();
-	      if (this.currentMask) {
-	        var _this$currentMask3;
-	        details.aggregate((_this$currentMask3 = this.currentMask).remove.apply(_this$currentMask3, arguments))
-	        .aggregate(this._applyDispatch());
-	      }
-	      return details;
-	    }
-	  }, {
-	    key: "extractInput",
-	    value: function extractInput() {
-	      var _this$currentMask4;
-	      return this.currentMask ? (_this$currentMask4 = this.currentMask).extractInput.apply(_this$currentMask4, arguments) : '';
-	    }
-	  }, {
-	    key: "extractTail",
-	    value: function extractTail() {
-	      var _this$currentMask5, _get3;
-	      for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
-	        args[_key2] = arguments[_key2];
-	      }
-	      return this.currentMask ? (_this$currentMask5 = this.currentMask).extractTail.apply(_this$currentMask5, args) : (_get3 = _get(_getPrototypeOf(MaskedDynamic.prototype), "extractTail", this)).call.apply(_get3, [this].concat(args));
-	    }
-	  }, {
-	    key: "doCommit",
-	    value: function doCommit() {
-	      if (this.currentMask) this.currentMask.doCommit();
-	      _get(_getPrototypeOf(MaskedDynamic.prototype), "doCommit", this).call(this);
-	    }
-	  }, {
-	    key: "nearestInputPos",
-	    value: function nearestInputPos() {
-	      var _this$currentMask6, _get4;
-	      for (var _len3 = arguments.length, args = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
-	        args[_key3] = arguments[_key3];
-	      }
-	      return this.currentMask ? (_this$currentMask6 = this.currentMask).nearestInputPos.apply(_this$currentMask6, args) : (_get4 = _get(_getPrototypeOf(MaskedDynamic.prototype), "nearestInputPos", this)).call.apply(_get4, [this].concat(args));
 	    }
 	  }, {
 	    key: "value",
@@ -2949,6 +2940,17 @@
 	      return !!this.currentMask && this.currentMask.isComplete;
 	    }
 	  }, {
+	    key: "remove",
+	    value: function remove() {
+	      var details = new ChangeDetails();
+	      if (this.currentMask) {
+	        var _this$currentMask2;
+	        details.aggregate((_this$currentMask2 = this.currentMask).remove.apply(_this$currentMask2, arguments))
+	        .aggregate(this._applyDispatch());
+	      }
+	      return details;
+	    }
+	  }, {
 	    key: "state",
 	    get: function get() {
 	      return Object.assign({}, _get(_getPrototypeOf(MaskedDynamic.prototype), "state", this), {
@@ -2973,6 +2975,36 @@
 	        this.currentMask.state = currentMask;
 	      }
 	      _set(_getPrototypeOf(MaskedDynamic.prototype), "state", maskedState, this, true);
+	    }
+	  }, {
+	    key: "extractInput",
+	    value: function extractInput() {
+	      var _this$currentMask3;
+	      return this.currentMask ? (_this$currentMask3 = this.currentMask).extractInput.apply(_this$currentMask3, arguments) : '';
+	    }
+	  }, {
+	    key: "extractTail",
+	    value: function extractTail() {
+	      var _this$currentMask4, _get3;
+	      for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+	        args[_key2] = arguments[_key2];
+	      }
+	      return this.currentMask ? (_this$currentMask4 = this.currentMask).extractTail.apply(_this$currentMask4, args) : (_get3 = _get(_getPrototypeOf(MaskedDynamic.prototype), "extractTail", this)).call.apply(_get3, [this].concat(args));
+	    }
+	  }, {
+	    key: "doCommit",
+	    value: function doCommit() {
+	      if (this.currentMask) this.currentMask.doCommit();
+	      _get(_getPrototypeOf(MaskedDynamic.prototype), "doCommit", this).call(this);
+	    }
+	  }, {
+	    key: "nearestInputPos",
+	    value: function nearestInputPos() {
+	      var _this$currentMask5, _get4;
+	      for (var _len3 = arguments.length, args = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
+	        args[_key3] = arguments[_key3];
+	      }
+	      return this.currentMask ? (_this$currentMask5 = this.currentMask).nearestInputPos.apply(_this$currentMask5, args) : (_get4 = _get(_getPrototypeOf(MaskedDynamic.prototype), "nearestInputPos", this)).call.apply(_get4, [this].concat(args));
 	    }
 	  }, {
 	    key: "overwrite",
@@ -3352,6 +3384,7 @@
 	  requiresIfExists: ['preventOverflow']
 	};
 
+	var round = Math.round;
 	var unsetSides = {
 	  top: 'auto',
 	  right: 'auto',
@@ -3364,8 +3397,8 @@
 	  var win = window;
 	  var dpr = win.devicePixelRatio || 1;
 	  return {
-	    x: Math.round(x * dpr) / dpr || 0,
-	    y: Math.round(y * dpr) / dpr || 0
+	    x: round(round(x * dpr) / dpr) || 0,
+	    y: round(round(y * dpr) / dpr) || 0
 	  };
 	}
 	function mapToStyles(_ref2) {
@@ -3378,7 +3411,7 @@
 	      gpuAcceleration = _ref2.gpuAcceleration,
 	      adaptive = _ref2.adaptive,
 	      roundOffsets = _ref2.roundOffsets;
-	  var _ref3 = roundOffsets ? roundOffsetsByDPR(offsets) : offsets,
+	  var _ref3 = roundOffsets === true ? roundOffsetsByDPR(offsets) : typeof roundOffsets === 'function' ? roundOffsets(offsets) : offsets,
 	      _ref3$x = _ref3.x,
 	      x = _ref3$x === void 0 ? 0 : _ref3$x,
 	      _ref3$y = _ref3.y,
@@ -3613,7 +3646,7 @@
 	    list = [];
 	  }
 	  var scrollParent = getScrollParent(element);
-	  var isBody = getNodeName(scrollParent) === 'body';
+	  var isBody = scrollParent === element.ownerDocument.body;
 	  var win = getWindow(scrollParent);
 	  var target = isBody ? [win].concat(win.visualViewport || [], isScrollParent(scrollParent) ? scrollParent : []) : scrollParent;
 	  var updatedList = list.concat(target);
@@ -4461,8 +4494,8 @@
 	});
 
 	/*!
-	  * Bootstrap v5.0.0-beta1 (https://getbootstrap.com/)
-	  * Copyright 2011-2020 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
+	  * Bootstrap v5.0.0-beta2 (https://getbootstrap.com/)
+	  * Copyright 2011-2021 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
 	  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
 	  */
 	function _defineProperties$1(target, props) {
@@ -4496,7 +4529,14 @@
 	function _inheritsLoose(subClass, superClass) {
 	  subClass.prototype = Object.create(superClass.prototype);
 	  subClass.prototype.constructor = subClass;
-	  subClass.__proto__ = superClass;
+	  _setPrototypeOf$1(subClass, superClass);
+	}
+	function _setPrototypeOf$1(o, p) {
+	  _setPrototypeOf$1 = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+	    o.__proto__ = p;
+	    return o;
+	  };
+	  return _setPrototypeOf$1(o, p);
 	}
 	var MAX_UID = 1000000;
 	var MILLISECONDS_MULTIPLIER = 1000;
@@ -4517,6 +4557,12 @@
 	  var selector = element.getAttribute('data-bs-target');
 	  if (!selector || selector === '#') {
 	    var hrefAttr = element.getAttribute('href');
+	    if (!hrefAttr || !hrefAttr.includes('#') && !hrefAttr.startsWith('.')) {
+	      return null;
+	    }
+	    if (hrefAttr.includes('#') && !hrefAttr.startsWith('#')) {
+	      hrefAttr = '#' + hrefAttr.split('#')[1];
+	    }
 	    selector = hrefAttr && hrefAttr !== '#' ? hrefAttr.trim() : null;
 	  }
 	  return selector;
@@ -4575,7 +4621,7 @@
 	    var value = config[property];
 	    var valueType = value && isElement$1(value) ? 'element' : toType(value);
 	    if (!new RegExp(expectedTypes).test(valueType)) {
-	      throw new Error(componentName.toUpperCase() + ": " + ("Option \"" + property + "\" provided type \"" + valueType + "\" ") + ("but expected type \"" + expectedTypes + "\"."));
+	      throw new TypeError(componentName.toUpperCase() + ": " + ("Option \"" + property + "\" provided type \"" + valueType + "\" ") + ("but expected type \"" + expectedTypes + "\"."));
 	    }
 	  });
 	};
@@ -4628,6 +4674,20 @@
 	  }
 	};
 	var isRTL = document.documentElement.dir === 'rtl';
+	var defineJQueryPlugin = function defineJQueryPlugin(name, plugin) {
+	  onDOMContentLoaded(function () {
+	    var $ = getjQuery();
+	    if ($) {
+	      var JQUERY_NO_CONFLICT = $.fn[name];
+	      $.fn[name] = plugin.jQueryInterface;
+	      $.fn[name].Constructor = plugin;
+	      $.fn[name].noConflict = function () {
+	        $.fn[name] = JQUERY_NO_CONFLICT;
+	        return plugin.jQueryInterface;
+	      };
+	    }
+	  });
+	};
 	var mapData = function () {
 	  var storeData = {};
 	  var id = 1;
@@ -4881,7 +4941,7 @@
 	    return evt;
 	  }
 	};
-	var VERSION = '5.0.0-beta1';
+	var VERSION = '5.0.0-beta2';
 	var BaseComponent = function () {
 	  function BaseComponent(element) {
 	    if (!element) {
@@ -4915,9 +4975,9 @@
 	var EVENT_CLOSE = "close" + EVENT_KEY;
 	var EVENT_CLOSED = "closed" + EVENT_KEY;
 	var EVENT_CLICK_DATA_API = "click" + EVENT_KEY + DATA_API_KEY;
-	var CLASSNAME_ALERT = 'alert';
-	var CLASSNAME_FADE = 'fade';
-	var CLASSNAME_SHOW = 'show';
+	var CLASS_NAME_ALERT = 'alert';
+	var CLASS_NAME_FADE = 'fade';
+	var CLASS_NAME_SHOW = 'show';
 	var Alert = function (_BaseComponent) {
 	  _inheritsLoose(Alert, _BaseComponent);
 	  function Alert() {
@@ -4934,20 +4994,20 @@
 	  }
 	  ;
 	  _proto._getRootElement = function _getRootElement(element) {
-	    return getElementFromSelector(element) || element.closest("." + CLASSNAME_ALERT);
+	    return getElementFromSelector(element) || element.closest("." + CLASS_NAME_ALERT);
 	  };
 	  _proto._triggerCloseEvent = function _triggerCloseEvent(element) {
 	    return EventHandler.trigger(element, EVENT_CLOSE);
 	  };
 	  _proto._removeElement = function _removeElement(element) {
 	    var _this = this;
-	    element.classList.remove(CLASSNAME_SHOW);
-	    if (!element.classList.contains(CLASSNAME_FADE)) {
+	    element.classList.remove(CLASS_NAME_SHOW);
+	    if (!element.classList.contains(CLASS_NAME_FADE)) {
 	      this._destroyElement(element);
 	      return;
 	    }
 	    var transitionDuration = getTransitionDurationFromElement(element);
-	    EventHandler.one(element, TRANSITION_END, function () {
+	    EventHandler.one(element, 'transitionend', function () {
 	      return _this._destroyElement(element);
 	    });
 	    emulateTransitionEnd(element, transitionDuration);
@@ -4980,25 +5040,15 @@
 	  };
 	  _createClass$1(Alert, null, [{
 	    key: "DATA_KEY",
-	    get: function get() {
+	    get:
+	    function get() {
 	      return DATA_KEY;
 	    }
 	  }]);
 	  return Alert;
 	}(BaseComponent);
 	EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DISMISS, Alert.handleDismiss(new Alert()));
-	onDOMContentLoaded(function () {
-	  var $ = getjQuery();
-	  if ($) {
-	    var JQUERY_NO_CONFLICT = $.fn[NAME];
-	    $.fn[NAME] = Alert.jQueryInterface;
-	    $.fn[NAME].Constructor = Alert;
-	    $.fn[NAME].noConflict = function () {
-	      $.fn[NAME] = JQUERY_NO_CONFLICT;
-	      return Alert.jQueryInterface;
-	    };
-	  }
-	});
+	defineJQueryPlugin(NAME, Alert);
 	var NAME$1 = 'button';
 	var DATA_KEY$1 = 'bs.button';
 	var EVENT_KEY$1 = "." + DATA_KEY$1;
@@ -5029,7 +5079,8 @@
 	  };
 	  _createClass$1(Button, null, [{
 	    key: "DATA_KEY",
-	    get: function get() {
+	    get:
+	    function get() {
 	      return DATA_KEY$1;
 	    }
 	  }]);
@@ -5044,18 +5095,7 @@
 	  }
 	  data.toggle();
 	});
-	onDOMContentLoaded(function () {
-	  var $ = getjQuery();
-	  if ($) {
-	    var JQUERY_NO_CONFLICT = $.fn[NAME$1];
-	    $.fn[NAME$1] = Button.jQueryInterface;
-	    $.fn[NAME$1].Constructor = Button;
-	    $.fn[NAME$1].noConflict = function () {
-	      $.fn[NAME$1] = JQUERY_NO_CONFLICT;
-	      return Button.jQueryInterface;
-	    };
-	  }
-	});
+	defineJQueryPlugin(NAME$1, Button);
 	function normalizeData(val) {
 	  if (val === 'true') {
 	    return true;
@@ -5116,9 +5156,6 @@
 	};
 	var NODE_TEXT = 3;
 	var SelectorEngine = {
-	  matches: function matches(element, selector) {
-	    return element.matches(selector);
-	  },
 	  find: function find(selector, element) {
 	    var _ref;
 	    if (element === void 0) {
@@ -5134,8 +5171,7 @@
 	  },
 	  children: function children(element, selector) {
 	    var _ref2;
-	    var children = (_ref2 = []).concat.apply(_ref2, element.children);
-	    return children.filter(function (child) {
+	    return (_ref2 = []).concat.apply(_ref2, element.children).filter(function (child) {
 	      return child.matches(selector);
 	    });
 	  },
@@ -5143,7 +5179,7 @@
 	    var parents = [];
 	    var ancestor = element.parentNode;
 	    while (ancestor && ancestor.nodeType === Node.ELEMENT_NODE && ancestor.nodeType !== NODE_TEXT) {
-	      if (this.matches(ancestor, selector)) {
+	      if (ancestor.matches(selector)) {
 	        parents.push(ancestor);
 	      }
 	      ancestor = ancestor.parentNode;
@@ -5163,7 +5199,7 @@
 	  next: function next(element, selector) {
 	    var next = element.nextElementSibling;
 	    while (next) {
-	      if (this.matches(next, selector)) {
+	      if (next.matches(selector)) {
 	        return [next];
 	      }
 	      next = next.nextElementSibling;
@@ -5226,12 +5262,11 @@
 	var SELECTOR_ITEM_IMG = '.carousel-item img';
 	var SELECTOR_NEXT_PREV = '.carousel-item-next, .carousel-item-prev';
 	var SELECTOR_INDICATORS = '.carousel-indicators';
+	var SELECTOR_INDICATOR = '[data-bs-target]';
 	var SELECTOR_DATA_SLIDE = '[data-bs-slide], [data-bs-slide-to]';
 	var SELECTOR_DATA_RIDE = '[data-bs-ride="carousel"]';
-	var PointerType = {
-	  TOUCH: 'touch',
-	  PEN: 'pen'
-	};
+	var POINTER_TYPE_TOUCH = 'touch';
+	var POINTER_TYPE_PEN = 'pen';
 	var Carousel = function (_BaseComponent) {
 	  _inheritsLoose(Carousel, _BaseComponent);
 	  function Carousel(element, config) {
@@ -5338,10 +5373,18 @@
 	    var direction = absDeltax / this.touchDeltaX;
 	    this.touchDeltaX = 0;
 	    if (direction > 0) {
-	      this.prev();
+	      if (isRTL) {
+	        this.next();
+	      } else {
+	        this.prev();
+	      }
 	    }
 	    if (direction < 0) {
-	      this.next();
+	      if (isRTL) {
+	        this.prev();
+	      } else {
+	        this.next();
+	      }
 	    }
 	  };
 	  _proto._addEventListeners = function _addEventListeners() {
@@ -5366,7 +5409,7 @@
 	  _proto._addTouchEventListeners = function _addTouchEventListeners() {
 	    var _this4 = this;
 	    var start = function start(event) {
-	      if (_this4._pointerEvent && PointerType[event.pointerType.toUpperCase()]) {
+	      if (_this4._pointerEvent && (event.pointerType === POINTER_TYPE_PEN || event.pointerType === POINTER_TYPE_TOUCH)) {
 	        _this4.touchStartX = event.clientX;
 	      } else if (!_this4._pointerEvent) {
 	        _this4.touchStartX = event.touches[0].clientX;
@@ -5380,7 +5423,7 @@
 	      }
 	    };
 	    var end = function end(event) {
-	      if (_this4._pointerEvent && PointerType[event.pointerType.toUpperCase()]) {
+	      if (_this4._pointerEvent && (event.pointerType === POINTER_TYPE_PEN || event.pointerType === POINTER_TYPE_TOUCH)) {
 	        _this4.touchDeltaX = event.clientX - _this4.touchStartX;
 	      }
 	      _this4._handleSwipe();
@@ -5423,15 +5466,20 @@
 	    if (/input|textarea/i.test(event.target.tagName)) {
 	      return;
 	    }
-	    switch (event.key) {
-	      case ARROW_LEFT_KEY:
-	        event.preventDefault();
-	        this.prev();
-	        break;
-	      case ARROW_RIGHT_KEY:
-	        event.preventDefault();
+	    if (event.key === ARROW_LEFT_KEY) {
+	      event.preventDefault();
+	      if (isRTL) {
 	        this.next();
-	        break;
+	      } else {
+	        this.prev();
+	      }
+	    } else if (event.key === ARROW_RIGHT_KEY) {
+	      event.preventDefault();
+	      if (isRTL) {
+	        this.prev();
+	      } else {
+	        this.next();
+	      }
 	    }
 	  };
 	  _proto._getItemIndex = function _getItemIndex(element) {
@@ -5463,13 +5511,16 @@
 	  };
 	  _proto._setActiveIndicatorElement = function _setActiveIndicatorElement(element) {
 	    if (this._indicatorsElement) {
-	      var indicators = SelectorEngine.find(SELECTOR_ACTIVE, this._indicatorsElement);
+	      var activeIndicator = SelectorEngine.findOne(SELECTOR_ACTIVE, this._indicatorsElement);
+	      activeIndicator.classList.remove(CLASS_NAME_ACTIVE$1);
+	      activeIndicator.removeAttribute('aria-current');
+	      var indicators = SelectorEngine.find(SELECTOR_INDICATOR, this._indicatorsElement);
 	      for (var i = 0; i < indicators.length; i++) {
-	        indicators[i].classList.remove(CLASS_NAME_ACTIVE$1);
-	      }
-	      var nextIndicator = this._indicatorsElement.children[this._getItemIndex(element)];
-	      if (nextIndicator) {
-	        nextIndicator.classList.add(CLASS_NAME_ACTIVE$1);
+	        if (Number.parseInt(indicators[i].getAttribute('data-bs-slide-to'), 10) === this._getItemIndex(element)) {
+	          indicators[i].classList.add(CLASS_NAME_ACTIVE$1);
+	          indicators[i].setAttribute('aria-current', 'true');
+	          break;
+	        }
 	      }
 	    }
 	  };
@@ -5493,18 +5544,9 @@
 	    var nextElement = element || activeElement && this._getItemByDirection(direction, activeElement);
 	    var nextElementIndex = this._getItemIndex(nextElement);
 	    var isCycling = Boolean(this._interval);
-	    var directionalClassName;
-	    var orderClassName;
-	    var eventDirectionName;
-	    if (direction === DIRECTION_NEXT) {
-	      directionalClassName = CLASS_NAME_START;
-	      orderClassName = CLASS_NAME_NEXT;
-	      eventDirectionName = DIRECTION_LEFT;
-	    } else {
-	      directionalClassName = CLASS_NAME_END;
-	      orderClassName = CLASS_NAME_PREV;
-	      eventDirectionName = DIRECTION_RIGHT;
-	    }
+	    var directionalClassName = direction === DIRECTION_NEXT ? CLASS_NAME_START : CLASS_NAME_END;
+	    var orderClassName = direction === DIRECTION_NEXT ? CLASS_NAME_NEXT : CLASS_NAME_PREV;
+	    var eventDirectionName = direction === DIRECTION_NEXT ? DIRECTION_LEFT : DIRECTION_RIGHT;
 	    if (nextElement && nextElement.classList.contains(CLASS_NAME_ACTIVE$1)) {
 	      this._isSliding = false;
 	      return;
@@ -5528,7 +5570,7 @@
 	      activeElement.classList.add(directionalClassName);
 	      nextElement.classList.add(directionalClassName);
 	      var transitionDuration = getTransitionDurationFromElement(activeElement);
-	      EventHandler.one(activeElement, TRANSITION_END, function () {
+	      EventHandler.one(activeElement, 'transitionend', function () {
 	        nextElement.classList.remove(directionalClassName, orderClassName);
 	        nextElement.classList.add(CLASS_NAME_ACTIVE$1);
 	        activeElement.classList.remove(CLASS_NAME_ACTIVE$1, orderClassName, directionalClassName);
@@ -5622,18 +5664,7 @@
 	    Carousel.carouselInterface(carousels[i], Data.getData(carousels[i], DATA_KEY$2));
 	  }
 	});
-	onDOMContentLoaded(function () {
-	  var $ = getjQuery();
-	  if ($) {
-	    var JQUERY_NO_CONFLICT = $.fn[NAME$2];
-	    $.fn[NAME$2] = Carousel.jQueryInterface;
-	    $.fn[NAME$2].Constructor = Carousel;
-	    $.fn[NAME$2].noConflict = function () {
-	      $.fn[NAME$2] = JQUERY_NO_CONFLICT;
-	      return Carousel.jQueryInterface;
-	    };
-	  }
-	});
+	defineJQueryPlugin(NAME$2, Carousel);
 	var NAME$3 = 'collapse';
 	var DATA_KEY$3 = 'bs.collapse';
 	var EVENT_KEY$3 = "." + DATA_KEY$3;
@@ -5651,7 +5682,7 @@
 	var EVENT_HIDE = "hide" + EVENT_KEY$3;
 	var EVENT_HIDDEN = "hidden" + EVENT_KEY$3;
 	var EVENT_CLICK_DATA_API$3 = "click" + EVENT_KEY$3 + DATA_API_KEY$3;
-	var CLASS_NAME_SHOW = 'show';
+	var CLASS_NAME_SHOW$1 = 'show';
 	var CLASS_NAME_COLLAPSE = 'collapse';
 	var CLASS_NAME_COLLAPSING = 'collapsing';
 	var CLASS_NAME_COLLAPSED = 'collapsed';
@@ -5690,7 +5721,7 @@
 	  }
 	  var _proto = Collapse.prototype;
 	  _proto.toggle = function toggle() {
-	    if (this._element.classList.contains(CLASS_NAME_SHOW)) {
+	    if (this._element.classList.contains(CLASS_NAME_SHOW$1)) {
 	      this.hide();
 	    } else {
 	      this.show();
@@ -5698,7 +5729,7 @@
 	  };
 	  _proto.show = function show() {
 	    var _this2 = this;
-	    if (this._isTransitioning || this._element.classList.contains(CLASS_NAME_SHOW)) {
+	    if (this._isTransitioning || this._element.classList.contains(CLASS_NAME_SHOW$1)) {
 	      return;
 	    }
 	    var actives;
@@ -5751,7 +5782,7 @@
 	    this.setTransitioning(true);
 	    var complete = function complete() {
 	      _this2._element.classList.remove(CLASS_NAME_COLLAPSING);
-	      _this2._element.classList.add(CLASS_NAME_COLLAPSE, CLASS_NAME_SHOW);
+	      _this2._element.classList.add(CLASS_NAME_COLLAPSE, CLASS_NAME_SHOW$1);
 	      _this2._element.style[dimension] = '';
 	      _this2.setTransitioning(false);
 	      EventHandler.trigger(_this2._element, EVENT_SHOWN);
@@ -5759,13 +5790,13 @@
 	    var capitalizedDimension = dimension[0].toUpperCase() + dimension.slice(1);
 	    var scrollSize = "scroll" + capitalizedDimension;
 	    var transitionDuration = getTransitionDurationFromElement(this._element);
-	    EventHandler.one(this._element, TRANSITION_END, complete);
+	    EventHandler.one(this._element, 'transitionend', complete);
 	    emulateTransitionEnd(this._element, transitionDuration);
 	    this._element.style[dimension] = this._element[scrollSize] + "px";
 	  };
 	  _proto.hide = function hide() {
 	    var _this3 = this;
-	    if (this._isTransitioning || !this._element.classList.contains(CLASS_NAME_SHOW)) {
+	    if (this._isTransitioning || !this._element.classList.contains(CLASS_NAME_SHOW$1)) {
 	      return;
 	    }
 	    var startEvent = EventHandler.trigger(this._element, EVENT_HIDE);
@@ -5776,13 +5807,13 @@
 	    this._element.style[dimension] = this._element.getBoundingClientRect()[dimension] + "px";
 	    reflow(this._element);
 	    this._element.classList.add(CLASS_NAME_COLLAPSING);
-	    this._element.classList.remove(CLASS_NAME_COLLAPSE, CLASS_NAME_SHOW);
+	    this._element.classList.remove(CLASS_NAME_COLLAPSE, CLASS_NAME_SHOW$1);
 	    var triggerArrayLength = this._triggerArray.length;
 	    if (triggerArrayLength > 0) {
 	      for (var i = 0; i < triggerArrayLength; i++) {
 	        var trigger = this._triggerArray[i];
 	        var elem = getElementFromSelector(trigger);
-	        if (elem && !elem.classList.contains(CLASS_NAME_SHOW)) {
+	        if (elem && !elem.classList.contains(CLASS_NAME_SHOW$1)) {
 	          trigger.classList.add(CLASS_NAME_COLLAPSED);
 	          trigger.setAttribute('aria-expanded', false);
 	        }
@@ -5797,7 +5828,7 @@
 	    };
 	    this._element.style[dimension] = '';
 	    var transitionDuration = getTransitionDurationFromElement(this._element);
-	    EventHandler.one(this._element, TRANSITION_END, complete);
+	    EventHandler.one(this._element, 'transitionend', complete);
 	    emulateTransitionEnd(this._element, transitionDuration);
 	  };
 	  _proto.setTransitioning = function setTransitioning(isTransitioning) {
@@ -5841,7 +5872,7 @@
 	    if (!element || !triggerArray.length) {
 	      return;
 	    }
-	    var isOpen = element.classList.contains(CLASS_NAME_SHOW);
+	    var isOpen = element.classList.contains(CLASS_NAME_SHOW$1);
 	    triggerArray.forEach(function (elem) {
 	      if (isOpen) {
 	        elem.classList.remove(CLASS_NAME_COLLAPSED);
@@ -5887,7 +5918,7 @@
 	  return Collapse;
 	}(BaseComponent);
 	EventHandler.on(document, EVENT_CLICK_DATA_API$3, SELECTOR_DATA_TOGGLE$1, function (event) {
-	  if (event.target.tagName === 'A') {
+	  if (event.target.tagName === 'A' || event.delegateTarget && event.delegateTarget.tagName === 'A') {
 	    event.preventDefault();
 	  }
 	  var triggerData = Manipulator.getDataAttributes(this);
@@ -5908,18 +5939,7 @@
 	    Collapse.collapseInterface(element, config);
 	  });
 	});
-	onDOMContentLoaded(function () {
-	  var $ = getjQuery();
-	  if ($) {
-	    var JQUERY_NO_CONFLICT = $.fn[NAME$3];
-	    $.fn[NAME$3] = Collapse.jQueryInterface;
-	    $.fn[NAME$3].Constructor = Collapse;
-	    $.fn[NAME$3].noConflict = function () {
-	      $.fn[NAME$3] = JQUERY_NO_CONFLICT;
-	      return Collapse.jQueryInterface;
-	    };
-	  }
-	});
+	defineJQueryPlugin(NAME$3, Collapse);
 	var NAME$4 = 'dropdown';
 	var DATA_KEY$4 = 'bs.dropdown';
 	var EVENT_KEY$4 = "." + DATA_KEY$4;
@@ -5940,7 +5960,7 @@
 	var EVENT_KEYDOWN_DATA_API = "keydown" + EVENT_KEY$4 + DATA_API_KEY$4;
 	var EVENT_KEYUP_DATA_API = "keyup" + EVENT_KEY$4 + DATA_API_KEY$4;
 	var CLASS_NAME_DISABLED = 'disabled';
-	var CLASS_NAME_SHOW$1 = 'show';
+	var CLASS_NAME_SHOW$2 = 'show';
 	var CLASS_NAME_DROPUP = 'dropup';
 	var CLASS_NAME_DROPEND = 'dropend';
 	var CLASS_NAME_DROPSTART = 'dropstart';
@@ -5957,7 +5977,7 @@
 	var PLACEMENT_RIGHT = isRTL ? 'left-start' : 'right-start';
 	var PLACEMENT_LEFT = isRTL ? 'right-start' : 'left-start';
 	var Default$2 = {
-	  offset: 0,
+	  offset: [0, 2],
 	  flip: true,
 	  boundary: 'clippingParents',
 	  reference: 'toggle',
@@ -5965,12 +5985,12 @@
 	  popperConfig: null
 	};
 	var DefaultType$2 = {
-	  offset: '(number|string|function)',
+	  offset: '(array|string|function)',
 	  flip: 'boolean',
 	  boundary: '(string|element)',
-	  reference: '(string|element)',
+	  reference: '(string|element|object)',
 	  display: 'string',
-	  popperConfig: '(null|object)'
+	  popperConfig: '(null|object|function)'
 	};
 	var Dropdown = function (_BaseComponent) {
 	  _inheritsLoose(Dropdown, _BaseComponent);
@@ -5989,7 +6009,7 @@
 	    if (this._element.disabled || this._element.classList.contains(CLASS_NAME_DISABLED)) {
 	      return;
 	    }
-	    var isActive = this._element.classList.contains(CLASS_NAME_SHOW$1);
+	    var isActive = this._element.classList.contains(CLASS_NAME_SHOW$2);
 	    Dropdown.clearMenus();
 	    if (isActive) {
 	      return;
@@ -5997,7 +6017,7 @@
 	    this.show();
 	  };
 	  _proto.show = function show() {
-	    if (this._element.disabled || this._element.classList.contains(CLASS_NAME_DISABLED) || this._menu.classList.contains(CLASS_NAME_SHOW$1)) {
+	    if (this._element.disabled || this._element.classList.contains(CLASS_NAME_DISABLED) || this._menu.classList.contains(CLASS_NAME_SHOW$2)) {
 	      return;
 	    }
 	    var parent = Dropdown.getParentFromElement(this._element);
@@ -6008,7 +6028,9 @@
 	    if (showEvent.defaultPrevented) {
 	      return;
 	    }
-	    if (!this._inNavbar) {
+	    if (this._inNavbar) {
+	      Manipulator.setDataAttribute(this._menu, 'popper', 'none');
+	    } else {
 	      if (typeof Popper === 'undefined') {
 	        throw new TypeError('Bootstrap\'s dropdowns require Popper (https://popper.js.org)');
 	      }
@@ -6020,8 +6042,17 @@
 	        if (typeof this._config.reference.jquery !== 'undefined') {
 	          referenceElement = this._config.reference[0];
 	        }
+	      } else if (typeof this._config.reference === 'object') {
+	        referenceElement = this._config.reference;
 	      }
-	      this._popper = createPopper$2(referenceElement, this._menu, this._getPopperConfig());
+	      var popperConfig = this._getPopperConfig();
+	      var isDisplayStatic = popperConfig.modifiers.find(function (modifier) {
+	        return modifier.name === 'applyStyles' && modifier.enabled === false;
+	      });
+	      this._popper = createPopper$2(referenceElement, this._menu, popperConfig);
+	      if (isDisplayStatic) {
+	        Manipulator.setDataAttribute(this._menu, 'popper', 'static');
+	      }
 	    }
 	    if ('ontouchstart' in document.documentElement && !parent.closest(SELECTOR_NAVBAR_NAV)) {
 	      var _ref;
@@ -6031,28 +6062,28 @@
 	    }
 	    this._element.focus();
 	    this._element.setAttribute('aria-expanded', true);
-	    this._menu.classList.toggle(CLASS_NAME_SHOW$1);
-	    this._element.classList.toggle(CLASS_NAME_SHOW$1);
-	    EventHandler.trigger(parent, EVENT_SHOWN$1, relatedTarget);
+	    this._menu.classList.toggle(CLASS_NAME_SHOW$2);
+	    this._element.classList.toggle(CLASS_NAME_SHOW$2);
+	    EventHandler.trigger(this._element, EVENT_SHOWN$1, relatedTarget);
 	  };
 	  _proto.hide = function hide() {
-	    if (this._element.disabled || this._element.classList.contains(CLASS_NAME_DISABLED) || !this._menu.classList.contains(CLASS_NAME_SHOW$1)) {
+	    if (this._element.disabled || this._element.classList.contains(CLASS_NAME_DISABLED) || !this._menu.classList.contains(CLASS_NAME_SHOW$2)) {
 	      return;
 	    }
-	    var parent = Dropdown.getParentFromElement(this._element);
 	    var relatedTarget = {
 	      relatedTarget: this._element
 	    };
-	    var hideEvent = EventHandler.trigger(parent, EVENT_HIDE$1, relatedTarget);
+	    var hideEvent = EventHandler.trigger(this._element, EVENT_HIDE$1, relatedTarget);
 	    if (hideEvent.defaultPrevented) {
 	      return;
 	    }
 	    if (this._popper) {
 	      this._popper.destroy();
 	    }
-	    this._menu.classList.toggle(CLASS_NAME_SHOW$1);
-	    this._element.classList.toggle(CLASS_NAME_SHOW$1);
-	    EventHandler.trigger(parent, EVENT_HIDDEN$1, relatedTarget);
+	    this._menu.classList.toggle(CLASS_NAME_SHOW$2);
+	    this._element.classList.toggle(CLASS_NAME_SHOW$2);
+	    Manipulator.removeDataAttribute(this._menu, 'popper');
+	    EventHandler.trigger(this._element, EVENT_HIDDEN$1, relatedTarget);
 	  };
 	  _proto.dispose = function dispose() {
 	    _BaseComponent.prototype.dispose.call(this);
@@ -6081,6 +6112,9 @@
 	  _proto._getConfig = function _getConfig(config) {
 	    config = _extends({}, this.constructor.Default, Manipulator.getDataAttributes(this._element), config);
 	    typeCheckConfig(NAME$4, config, this.constructor.DefaultType);
+	    if (typeof config.reference === 'object' && !isElement$1(config.reference) && typeof config.reference.getBoundingClientRect !== 'function') {
+	      throw new TypeError(NAME$4.toUpperCase() + ": Option \"reference\" provided type \"object\" without a required \"getBoundingClientRect\" method.");
+	    }
 	    return config;
 	  };
 	  _proto._getMenuElement = function _getMenuElement() {
@@ -6103,24 +6137,44 @@
 	  _proto._detectNavbar = function _detectNavbar() {
 	    return this._element.closest("." + CLASS_NAME_NAVBAR) !== null;
 	  };
+	  _proto._getOffset = function _getOffset() {
+	    var _this3 = this;
+	    var offset = this._config.offset;
+	    if (typeof offset === 'string') {
+	      return offset.split(',').map(function (val) {
+	        return Number.parseInt(val, 10);
+	      });
+	    }
+	    if (typeof offset === 'function') {
+	      return function (popperData) {
+	        return offset(popperData, _this3._element);
+	      };
+	    }
+	    return offset;
+	  };
 	  _proto._getPopperConfig = function _getPopperConfig() {
-	    var popperConfig = {
+	    var defaultBsPopperConfig = {
 	      placement: this._getPlacement(),
 	      modifiers: [{
 	        name: 'preventOverflow',
 	        options: {
 	          altBoundary: this._config.flip,
-	          rootBoundary: this._config.boundary
+	          boundary: this._config.boundary
+	        }
+	      }, {
+	        name: 'offset',
+	        options: {
+	          offset: this._getOffset()
 	        }
 	      }]
 	    };
 	    if (this._config.display === 'static') {
-	      popperConfig.modifiers = [{
+	      defaultBsPopperConfig.modifiers = [{
 	        name: 'applyStyles',
 	        enabled: false
 	      }];
 	    }
-	    return _extends({}, popperConfig, this._config.popperConfig);
+	    return _extends({}, defaultBsPopperConfig, typeof this._config.popperConfig === 'function' ? this._config.popperConfig(defaultBsPopperConfig) : this._config.popperConfig);
 	  }
 	  ;
 	  Dropdown.dropdownInterface = function dropdownInterface(element, config) {
@@ -6147,7 +6201,6 @@
 	    }
 	    var toggles = SelectorEngine.find(SELECTOR_DATA_TOGGLE$2);
 	    for (var i = 0, len = toggles.length; i < len; i++) {
-	      var parent = Dropdown.getParentFromElement(toggles[i]);
 	      var context = Data.getData(toggles[i], DATA_KEY$4);
 	      var relatedTarget = {
 	        relatedTarget: toggles[i]
@@ -6159,13 +6212,13 @@
 	        continue;
 	      }
 	      var dropdownMenu = context._menu;
-	      if (!toggles[i].classList.contains(CLASS_NAME_SHOW$1)) {
+	      if (!toggles[i].classList.contains(CLASS_NAME_SHOW$2)) {
 	        continue;
 	      }
 	      if (event && (event.type === 'click' && /input|textarea/i.test(event.target.tagName) || event.type === 'keyup' && event.key === TAB_KEY) && dropdownMenu.contains(event.target)) {
 	        continue;
 	      }
-	      var hideEvent = EventHandler.trigger(parent, EVENT_HIDE$1, relatedTarget);
+	      var hideEvent = EventHandler.trigger(toggles[i], EVENT_HIDE$1, relatedTarget);
 	      if (hideEvent.defaultPrevented) {
 	        continue;
 	      }
@@ -6179,9 +6232,10 @@
 	      if (context._popper) {
 	        context._popper.destroy();
 	      }
-	      dropdownMenu.classList.remove(CLASS_NAME_SHOW$1);
-	      toggles[i].classList.remove(CLASS_NAME_SHOW$1);
-	      EventHandler.trigger(parent, EVENT_HIDDEN$1, relatedTarget);
+	      dropdownMenu.classList.remove(CLASS_NAME_SHOW$2);
+	      toggles[i].classList.remove(CLASS_NAME_SHOW$2);
+	      Manipulator.removeDataAttribute(dropdownMenu, 'popper');
+	      EventHandler.trigger(toggles[i], EVENT_HIDDEN$1, relatedTarget);
 	    }
 	  };
 	  Dropdown.getParentFromElement = function getParentFromElement(element) {
@@ -6197,11 +6251,16 @@
 	      return;
 	    }
 	    var parent = Dropdown.getParentFromElement(this);
-	    var isActive = this.classList.contains(CLASS_NAME_SHOW$1);
+	    var isActive = this.classList.contains(CLASS_NAME_SHOW$2);
 	    if (event.key === ESCAPE_KEY) {
 	      var button = this.matches(SELECTOR_DATA_TOGGLE$2) ? this : SelectorEngine.prev(this, SELECTOR_DATA_TOGGLE$2)[0];
 	      button.focus();
 	      Dropdown.clearMenus();
+	      return;
+	    }
+	    if (!isActive && (event.key === ARROW_UP_KEY || event.key === ARROW_DOWN_KEY)) {
+	      var _button = this.matches(SELECTOR_DATA_TOGGLE$2) ? this : SelectorEngine.prev(this, SELECTOR_DATA_TOGGLE$2)[0];
+	      _button.click();
 	      return;
 	    }
 	    if (!isActive || event.key === SPACE_KEY) {
@@ -6252,18 +6311,7 @@
 	EventHandler.on(document, EVENT_CLICK_DATA_API$4, SELECTOR_FORM_CHILD, function (e) {
 	  return e.stopPropagation();
 	});
-	onDOMContentLoaded(function () {
-	  var $ = getjQuery();
-	  if ($) {
-	    var JQUERY_NO_CONFLICT = $.fn[NAME$4];
-	    $.fn[NAME$4] = Dropdown.jQueryInterface;
-	    $.fn[NAME$4].Constructor = Dropdown;
-	    $.fn[NAME$4].noConflict = function () {
-	      $.fn[NAME$4] = JQUERY_NO_CONFLICT;
-	      return Dropdown.jQueryInterface;
-	    };
-	  }
-	});
+	defineJQueryPlugin(NAME$4, Dropdown);
 	var NAME$5 = 'modal';
 	var DATA_KEY$5 = 'bs.modal';
 	var EVENT_KEY$5 = "." + DATA_KEY$5;
@@ -6294,8 +6342,8 @@
 	var CLASS_NAME_SCROLLBAR_MEASURER = 'modal-scrollbar-measure';
 	var CLASS_NAME_BACKDROP = 'modal-backdrop';
 	var CLASS_NAME_OPEN = 'modal-open';
-	var CLASS_NAME_FADE = 'fade';
-	var CLASS_NAME_SHOW$2 = 'show';
+	var CLASS_NAME_FADE$1 = 'fade';
+	var CLASS_NAME_SHOW$3 = 'show';
 	var CLASS_NAME_STATIC = 'modal-static';
 	var SELECTOR_DIALOG = '.modal-dialog';
 	var SELECTOR_MODAL_BODY = '.modal-body';
@@ -6327,7 +6375,7 @@
 	    if (this._isShown || this._isTransitioning) {
 	      return;
 	    }
-	    if (this._element.classList.contains(CLASS_NAME_FADE)) {
+	    if (this._element.classList.contains(CLASS_NAME_FADE$1)) {
 	      this._isTransitioning = true;
 	    }
 	    var showEvent = EventHandler.trigger(this._element, EVENT_SHOW$2, {
@@ -6369,19 +6417,19 @@
 	      return;
 	    }
 	    this._isShown = false;
-	    var transition = this._element.classList.contains(CLASS_NAME_FADE);
+	    var transition = this._element.classList.contains(CLASS_NAME_FADE$1);
 	    if (transition) {
 	      this._isTransitioning = true;
 	    }
 	    this._setEscapeEvent();
 	    this._setResizeEvent();
 	    EventHandler.off(document, EVENT_FOCUSIN);
-	    this._element.classList.remove(CLASS_NAME_SHOW$2);
+	    this._element.classList.remove(CLASS_NAME_SHOW$3);
 	    EventHandler.off(this._element, EVENT_CLICK_DISMISS);
 	    EventHandler.off(this._dialog, EVENT_MOUSEDOWN_DISMISS);
 	    if (transition) {
 	      var transitionDuration = getTransitionDurationFromElement(this._element);
-	      EventHandler.one(this._element, TRANSITION_END, function (event) {
+	      EventHandler.one(this._element, 'transitionend', function (event) {
 	        return _this3._hideModal(event);
 	      });
 	      emulateTransitionEnd(this._element, transitionDuration);
@@ -6415,7 +6463,7 @@
 	  };
 	  _proto._showElement = function _showElement(relatedTarget) {
 	    var _this4 = this;
-	    var transition = this._element.classList.contains(CLASS_NAME_FADE);
+	    var transition = this._element.classList.contains(CLASS_NAME_FADE$1);
 	    var modalBody = SelectorEngine.findOne(SELECTOR_MODAL_BODY, this._dialog);
 	    if (!this._element.parentNode || this._element.parentNode.nodeType !== Node.ELEMENT_NODE) {
 	      document.body.appendChild(this._element);
@@ -6431,7 +6479,7 @@
 	    if (transition) {
 	      reflow(this._element);
 	    }
-	    this._element.classList.add(CLASS_NAME_SHOW$2);
+	    this._element.classList.add(CLASS_NAME_SHOW$3);
 	    if (this._config.focus) {
 	      this._enforceFocus();
 	    }
@@ -6446,7 +6494,7 @@
 	    };
 	    if (transition) {
 	      var transitionDuration = getTransitionDurationFromElement(this._dialog);
-	      EventHandler.one(this._dialog, TRANSITION_END, transitionComplete);
+	      EventHandler.one(this._dialog, 'transitionend', transitionComplete);
 	      emulateTransitionEnd(this._dialog, transitionDuration);
 	    } else {
 	      transitionComplete();
@@ -6506,7 +6554,7 @@
 	  };
 	  _proto._showBackdrop = function _showBackdrop(callback) {
 	    var _this9 = this;
-	    var animate = this._element.classList.contains(CLASS_NAME_FADE) ? CLASS_NAME_FADE : '';
+	    var animate = this._element.classList.contains(CLASS_NAME_FADE$1) ? CLASS_NAME_FADE$1 : '';
 	    if (this._isShown && this._config.backdrop) {
 	      this._backdrop = document.createElement('div');
 	      this._backdrop.className = CLASS_NAME_BACKDROP;
@@ -6531,23 +6579,23 @@
 	      if (animate) {
 	        reflow(this._backdrop);
 	      }
-	      this._backdrop.classList.add(CLASS_NAME_SHOW$2);
+	      this._backdrop.classList.add(CLASS_NAME_SHOW$3);
 	      if (!animate) {
 	        callback();
 	        return;
 	      }
 	      var backdropTransitionDuration = getTransitionDurationFromElement(this._backdrop);
-	      EventHandler.one(this._backdrop, TRANSITION_END, callback);
+	      EventHandler.one(this._backdrop, 'transitionend', callback);
 	      emulateTransitionEnd(this._backdrop, backdropTransitionDuration);
 	    } else if (!this._isShown && this._backdrop) {
-	      this._backdrop.classList.remove(CLASS_NAME_SHOW$2);
+	      this._backdrop.classList.remove(CLASS_NAME_SHOW$3);
 	      var callbackRemove = function callbackRemove() {
 	        _this9._removeBackdrop();
 	        callback();
 	      };
-	      if (this._element.classList.contains(CLASS_NAME_FADE)) {
+	      if (this._element.classList.contains(CLASS_NAME_FADE$1)) {
 	        var _backdropTransitionDuration = getTransitionDurationFromElement(this._backdrop);
-	        EventHandler.one(this._backdrop, TRANSITION_END, callbackRemove);
+	        EventHandler.one(this._backdrop, 'transitionend', callbackRemove);
 	        emulateTransitionEnd(this._backdrop, _backdropTransitionDuration);
 	      } else {
 	        callbackRemove();
@@ -6568,11 +6616,11 @@
 	    }
 	    this._element.classList.add(CLASS_NAME_STATIC);
 	    var modalTransitionDuration = getTransitionDurationFromElement(this._dialog);
-	    EventHandler.off(this._element, TRANSITION_END);
-	    EventHandler.one(this._element, TRANSITION_END, function () {
+	    EventHandler.off(this._element, 'transitionend');
+	    EventHandler.one(this._element, 'transitionend', function () {
 	      _this10._element.classList.remove(CLASS_NAME_STATIC);
 	      if (!isModalOverflowing) {
-	        EventHandler.one(_this10._element, TRANSITION_END, function () {
+	        EventHandler.one(_this10._element, 'transitionend', function () {
 	          _this10._element.style.overflowY = '';
 	        });
 	        emulateTransitionEnd(_this10._element, modalTransitionDuration);
@@ -6603,47 +6651,41 @@
 	  _proto._setScrollbar = function _setScrollbar() {
 	    var _this11 = this;
 	    if (this._isBodyOverflowing) {
-	      SelectorEngine.find(SELECTOR_FIXED_CONTENT).forEach(function (element) {
-	        var actualPadding = element.style.paddingRight;
-	        var calculatedPadding = window.getComputedStyle(element)['padding-right'];
-	        Manipulator.setDataAttribute(element, 'padding-right', actualPadding);
-	        element.style.paddingRight = Number.parseFloat(calculatedPadding) + _this11._scrollbarWidth + "px";
+	      this._setElementAttributes(SELECTOR_FIXED_CONTENT, 'paddingRight', function (calculatedValue) {
+	        return calculatedValue + _this11._scrollbarWidth;
 	      });
-	      SelectorEngine.find(SELECTOR_STICKY_CONTENT).forEach(function (element) {
-	        var actualMargin = element.style.marginRight;
-	        var calculatedMargin = window.getComputedStyle(element)['margin-right'];
-	        Manipulator.setDataAttribute(element, 'margin-right', actualMargin);
-	        element.style.marginRight = Number.parseFloat(calculatedMargin) - _this11._scrollbarWidth + "px";
+	      this._setElementAttributes(SELECTOR_STICKY_CONTENT, 'marginRight', function (calculatedValue) {
+	        return calculatedValue - _this11._scrollbarWidth;
 	      });
-	      var actualPadding = document.body.style.paddingRight;
-	      var calculatedPadding = window.getComputedStyle(document.body)['padding-right'];
-	      Manipulator.setDataAttribute(document.body, 'padding-right', actualPadding);
-	      document.body.style.paddingRight = Number.parseFloat(calculatedPadding) + this._scrollbarWidth + "px";
+	      this._setElementAttributes('body', 'paddingRight', function (calculatedValue) {
+	        return calculatedValue + _this11._scrollbarWidth;
+	      });
 	    }
 	    document.body.classList.add(CLASS_NAME_OPEN);
 	  };
+	  _proto._setElementAttributes = function _setElementAttributes(selector, styleProp, callback) {
+	    SelectorEngine.find(selector).forEach(function (element) {
+	      var actualValue = element.style[styleProp];
+	      var calculatedValue = window.getComputedStyle(element)[styleProp];
+	      Manipulator.setDataAttribute(element, styleProp, actualValue);
+	      element.style[styleProp] = callback(Number.parseFloat(calculatedValue)) + 'px';
+	    });
+	  };
 	  _proto._resetScrollbar = function _resetScrollbar() {
-	    SelectorEngine.find(SELECTOR_FIXED_CONTENT).forEach(function (element) {
-	      var padding = Manipulator.getDataAttribute(element, 'padding-right');
-	      if (typeof padding !== 'undefined') {
-	        Manipulator.removeDataAttribute(element, 'padding-right');
-	        element.style.paddingRight = padding;
+	    this._resetElementAttributes(SELECTOR_FIXED_CONTENT, 'paddingRight');
+	    this._resetElementAttributes(SELECTOR_STICKY_CONTENT, 'marginRight');
+	    this._resetElementAttributes('body', 'paddingRight');
+	  };
+	  _proto._resetElementAttributes = function _resetElementAttributes(selector, styleProp) {
+	    SelectorEngine.find(selector).forEach(function (element) {
+	      var value = Manipulator.getDataAttribute(element, styleProp);
+	      if (typeof value === 'undefined' && element === document.body) {
+	        element.style[styleProp] = '';
+	      } else {
+	        Manipulator.removeDataAttribute(element, styleProp);
+	        element.style[styleProp] = value;
 	      }
 	    });
-	    SelectorEngine.find("" + SELECTOR_STICKY_CONTENT).forEach(function (element) {
-	      var margin = Manipulator.getDataAttribute(element, 'margin-right');
-	      if (typeof margin !== 'undefined') {
-	        Manipulator.removeDataAttribute(element, 'margin-right');
-	        element.style.marginRight = margin;
-	      }
-	    });
-	    var padding = Manipulator.getDataAttribute(document.body, 'padding-right');
-	    if (typeof padding === 'undefined') {
-	      document.body.style.paddingRight = '';
-	    } else {
-	      Manipulator.removeDataAttribute(document.body, 'padding-right');
-	      document.body.style.paddingRight = padding;
-	    }
 	  };
 	  _proto._getScrollbarWidth = function _getScrollbarWidth() {
 	    var scrollDiv = document.createElement('div');
@@ -6703,20 +6745,9 @@
 	    var config = _extends({}, Manipulator.getDataAttributes(target), Manipulator.getDataAttributes(this));
 	    data = new Modal(target, config);
 	  }
-	  data.show(this);
+	  data.toggle(this);
 	});
-	onDOMContentLoaded(function () {
-	  var $ = getjQuery();
-	  if ($) {
-	    var JQUERY_NO_CONFLICT = $.fn[NAME$5];
-	    $.fn[NAME$5] = Modal.jQueryInterface;
-	    $.fn[NAME$5].Constructor = Modal;
-	    $.fn[NAME$5].noConflict = function () {
-	      $.fn[NAME$5] = JQUERY_NO_CONFLICT;
-	      return Modal.jQueryInterface;
-	    };
-	  }
-	});
+	defineJQueryPlugin(NAME$5, Modal);
 	var uriAttrs = new Set(['background', 'cite', 'href', 'itemtype', 'longdesc', 'poster', 'src', 'xlink:href']);
 	var ARIA_ATTRIBUTE_PATTERN = /^aria-[\w-]*$/i;
 	var SAFE_URL_PATTERN = /^(?:(?:https?|mailto|ftp|tel|file):|[^#&/:?]*(?:[#/?]|$))/gi;
@@ -6725,7 +6756,7 @@
 	  var attrName = attr.nodeName.toLowerCase();
 	  if (allowedAttributeList.includes(attrName)) {
 	    if (uriAttrs.has(attrName)) {
-	      return Boolean(attr.nodeValue.match(SAFE_URL_PATTERN) || attr.nodeValue.match(DATA_URL_PATTERN));
+	      return Boolean(SAFE_URL_PATTERN.test(attr.nodeValue) || DATA_URL_PATTERN.test(attr.nodeValue));
 	    }
 	    return true;
 	  }
@@ -6733,7 +6764,7 @@
 	    return attrRegex instanceof RegExp;
 	  });
 	  for (var i = 0, len = regExp.length; i < len; i++) {
-	    if (attrName.match(regExp[i])) {
+	    if (regExp[i].test(attrName)) {
 	      return true;
 	    }
 	  }
@@ -6820,14 +6851,15 @@
 	  html: 'boolean',
 	  selector: '(string|boolean)',
 	  placement: '(string|function)',
+	  offset: '(array|string|function)',
 	  container: '(string|element|boolean)',
-	  fallbackPlacements: '(null|array)',
+	  fallbackPlacements: 'array',
 	  boundary: '(string|element)',
 	  customClass: '(string|function)',
 	  sanitize: 'boolean',
 	  sanitizeFn: '(null|function)',
 	  allowList: 'object',
-	  popperConfig: '(null|object)'
+	  popperConfig: '(null|object|function)'
 	};
 	var AttachmentMap = {
 	  AUTO: 'auto',
@@ -6845,8 +6877,9 @@
 	  html: false,
 	  selector: false,
 	  placement: 'top',
+	  offset: [0, 0],
 	  container: false,
-	  fallbackPlacements: null,
+	  fallbackPlacements: ['top', 'right', 'bottom', 'left'],
 	  boundary: 'clippingParents',
 	  customClass: '',
 	  sanitize: true,
@@ -6866,9 +6899,9 @@
 	  MOUSEENTER: "mouseenter" + EVENT_KEY$6,
 	  MOUSELEAVE: "mouseleave" + EVENT_KEY$6
 	};
-	var CLASS_NAME_FADE$1 = 'fade';
+	var CLASS_NAME_FADE$2 = 'fade';
 	var CLASS_NAME_MODAL = 'modal';
-	var CLASS_NAME_SHOW$3 = 'show';
+	var CLASS_NAME_SHOW$4 = 'show';
 	var HOVER_STATE_SHOW = 'show';
 	var HOVER_STATE_OUT = 'out';
 	var SELECTOR_TOOLTIP_INNER = '.tooltip-inner';
@@ -6909,12 +6942,7 @@
 	      return;
 	    }
 	    if (event) {
-	      var dataKey = this.constructor.DATA_KEY;
-	      var context = Data.getData(event.delegateTarget, dataKey);
-	      if (!context) {
-	        context = new this.constructor(event.delegateTarget, this._getDelegateConfig());
-	        Data.setData(event.delegateTarget, dataKey, context);
-	      }
+	      var context = this._initializeOnDelegatedTarget(event);
 	      context._activeTrigger.click = !context._activeTrigger.click;
 	      if (context._isWithActiveTrigger()) {
 	        context._enter(null, context);
@@ -6922,7 +6950,7 @@
 	        context._leave(null, context);
 	      }
 	    } else {
-	      if (this.getTipElement().classList.contains(CLASS_NAME_SHOW$3)) {
+	      if (this.getTipElement().classList.contains(CLASS_NAME_SHOW$4)) {
 	        this._leave(null, this);
 	        return;
 	      }
@@ -6933,7 +6961,7 @@
 	    clearTimeout(this._timeout);
 	    EventHandler.off(this._element, this.constructor.EVENT_KEY);
 	    EventHandler.off(this._element.closest("." + CLASS_NAME_MODAL), 'hide.bs.modal', this._hideModalHandler);
-	    if (this.tip) {
+	    if (this.tip && this.tip.parentNode) {
 	      this.tip.parentNode.removeChild(this.tip);
 	    }
 	    this._isEnabled = null;
@@ -6953,58 +6981,59 @@
 	    if (this._element.style.display === 'none') {
 	      throw new Error('Please use show on visible elements');
 	    }
-	    if (this.isWithContent() && this._isEnabled) {
-	      var showEvent = EventHandler.trigger(this._element, this.constructor.Event.SHOW);
-	      var shadowRoot = findShadowRoot(this._element);
-	      var isInTheDom = shadowRoot === null ? this._element.ownerDocument.documentElement.contains(this._element) : shadowRoot.contains(this._element);
-	      if (showEvent.defaultPrevented || !isInTheDom) {
-	        return;
+	    if (!(this.isWithContent() && this._isEnabled)) {
+	      return;
+	    }
+	    var showEvent = EventHandler.trigger(this._element, this.constructor.Event.SHOW);
+	    var shadowRoot = findShadowRoot(this._element);
+	    var isInTheDom = shadowRoot === null ? this._element.ownerDocument.documentElement.contains(this._element) : shadowRoot.contains(this._element);
+	    if (showEvent.defaultPrevented || !isInTheDom) {
+	      return;
+	    }
+	    var tip = this.getTipElement();
+	    var tipId = getUID(this.constructor.NAME);
+	    tip.setAttribute('id', tipId);
+	    this._element.setAttribute('aria-describedby', tipId);
+	    this.setContent();
+	    if (this.config.animation) {
+	      tip.classList.add(CLASS_NAME_FADE$2);
+	    }
+	    var placement = typeof this.config.placement === 'function' ? this.config.placement.call(this, tip, this._element) : this.config.placement;
+	    var attachment = this._getAttachment(placement);
+	    this._addAttachmentClass(attachment);
+	    var container = this._getContainer();
+	    Data.setData(tip, this.constructor.DATA_KEY, this);
+	    if (!this._element.ownerDocument.documentElement.contains(this.tip)) {
+	      container.appendChild(tip);
+	    }
+	    EventHandler.trigger(this._element, this.constructor.Event.INSERTED);
+	    this._popper = createPopper$2(this._element, tip, this._getPopperConfig(attachment));
+	    tip.classList.add(CLASS_NAME_SHOW$4);
+	    var customClass = typeof this.config.customClass === 'function' ? this.config.customClass() : this.config.customClass;
+	    if (customClass) {
+	      var _tip$classList;
+	      (_tip$classList = tip.classList).add.apply(_tip$classList, customClass.split(' '));
+	    }
+	    if ('ontouchstart' in document.documentElement) {
+	      var _ref;
+	      (_ref = []).concat.apply(_ref, document.body.children).forEach(function (element) {
+	        EventHandler.on(element, 'mouseover', noop());
+	      });
+	    }
+	    var complete = function complete() {
+	      var prevHoverState = _this2._hoverState;
+	      _this2._hoverState = null;
+	      EventHandler.trigger(_this2._element, _this2.constructor.Event.SHOWN);
+	      if (prevHoverState === HOVER_STATE_OUT) {
+	        _this2._leave(null, _this2);
 	      }
-	      var tip = this.getTipElement();
-	      var tipId = getUID(this.constructor.NAME);
-	      tip.setAttribute('id', tipId);
-	      this._element.setAttribute('aria-describedby', tipId);
-	      this.setContent();
-	      if (this.config.animation) {
-	        tip.classList.add(CLASS_NAME_FADE$1);
-	      }
-	      var placement = typeof this.config.placement === 'function' ? this.config.placement.call(this, tip, this._element) : this.config.placement;
-	      var attachment = this._getAttachment(placement);
-	      this._addAttachmentClass(attachment);
-	      var container = this._getContainer();
-	      Data.setData(tip, this.constructor.DATA_KEY, this);
-	      if (!this._element.ownerDocument.documentElement.contains(this.tip)) {
-	        container.appendChild(tip);
-	      }
-	      EventHandler.trigger(this._element, this.constructor.Event.INSERTED);
-	      this._popper = createPopper$2(this._element, tip, this._getPopperConfig(attachment));
-	      tip.classList.add(CLASS_NAME_SHOW$3);
-	      var customClass = typeof this.config.customClass === 'function' ? this.config.customClass() : this.config.customClass;
-	      if (customClass) {
-	        var _tip$classList;
-	        (_tip$classList = tip.classList).add.apply(_tip$classList, customClass.split(' '));
-	      }
-	      if ('ontouchstart' in document.documentElement) {
-	        var _ref;
-	        (_ref = []).concat.apply(_ref, document.body.children).forEach(function (element) {
-	          EventHandler.on(element, 'mouseover', noop());
-	        });
-	      }
-	      var complete = function complete() {
-	        var prevHoverState = _this2._hoverState;
-	        _this2._hoverState = null;
-	        EventHandler.trigger(_this2._element, _this2.constructor.Event.SHOWN);
-	        if (prevHoverState === HOVER_STATE_OUT) {
-	          _this2._leave(null, _this2);
-	        }
-	      };
-	      if (this.tip.classList.contains(CLASS_NAME_FADE$1)) {
-	        var transitionDuration = getTransitionDurationFromElement(this.tip);
-	        EventHandler.one(this.tip, TRANSITION_END, complete);
-	        emulateTransitionEnd(this.tip, transitionDuration);
-	      } else {
-	        complete();
-	      }
+	    };
+	    if (this.tip.classList.contains(CLASS_NAME_FADE$2)) {
+	      var transitionDuration = getTransitionDurationFromElement(this.tip);
+	      EventHandler.one(this.tip, 'transitionend', complete);
+	      emulateTransitionEnd(this.tip, transitionDuration);
+	    } else {
+	      complete();
 	    }
 	  };
 	  _proto.hide = function hide() {
@@ -7029,7 +7058,7 @@
 	    if (hideEvent.defaultPrevented) {
 	      return;
 	    }
-	    tip.classList.remove(CLASS_NAME_SHOW$3);
+	    tip.classList.remove(CLASS_NAME_SHOW$4);
 	    if ('ontouchstart' in document.documentElement) {
 	      var _ref2;
 	      (_ref2 = []).concat.apply(_ref2, document.body.children).forEach(function (element) {
@@ -7039,9 +7068,9 @@
 	    this._activeTrigger[TRIGGER_CLICK] = false;
 	    this._activeTrigger[TRIGGER_FOCUS] = false;
 	    this._activeTrigger[TRIGGER_HOVER] = false;
-	    if (this.tip.classList.contains(CLASS_NAME_FADE$1)) {
+	    if (this.tip.classList.contains(CLASS_NAME_FADE$2)) {
 	      var transitionDuration = getTransitionDurationFromElement(tip);
-	      EventHandler.one(tip, TRANSITION_END, complete);
+	      EventHandler.one(tip, 'transitionend', complete);
 	      emulateTransitionEnd(tip, transitionDuration);
 	    } else {
 	      complete();
@@ -7069,7 +7098,7 @@
 	  _proto.setContent = function setContent() {
 	    var tip = this.getTipElement();
 	    this.setElementContent(SelectorEngine.findOne(SELECTOR_TOOLTIP_INNER, tip), this.getTitle());
-	    tip.classList.remove(CLASS_NAME_FADE$1, CLASS_NAME_SHOW$3);
+	    tip.classList.remove(CLASS_NAME_FADE$2, CLASS_NAME_SHOW$4);
 	  };
 	  _proto.setElementContent = function setElementContent(element, content) {
 	    if (element === null) {
@@ -7115,23 +7144,49 @@
 	    return attachment;
 	  }
 	  ;
-	  _proto._getPopperConfig = function _getPopperConfig(attachment) {
-	    var _this4 = this;
-	    var flipModifier = {
-	      name: 'flip',
-	      options: {
-	        altBoundary: true
-	      }
-	    };
-	    if (this.config.fallbackPlacements) {
-	      flipModifier.options.fallbackPlacements = this.config.fallbackPlacements;
+	  _proto._initializeOnDelegatedTarget = function _initializeOnDelegatedTarget(event, context) {
+	    var dataKey = this.constructor.DATA_KEY;
+	    context = context || Data.getData(event.delegateTarget, dataKey);
+	    if (!context) {
+	      context = new this.constructor(event.delegateTarget, this._getDelegateConfig());
+	      Data.setData(event.delegateTarget, dataKey, context);
 	    }
-	    var defaultBsConfig = {
+	    return context;
+	  };
+	  _proto._getOffset = function _getOffset() {
+	    var _this4 = this;
+	    var offset = this.config.offset;
+	    if (typeof offset === 'string') {
+	      return offset.split(',').map(function (val) {
+	        return Number.parseInt(val, 10);
+	      });
+	    }
+	    if (typeof offset === 'function') {
+	      return function (popperData) {
+	        return offset(popperData, _this4._element);
+	      };
+	    }
+	    return offset;
+	  };
+	  _proto._getPopperConfig = function _getPopperConfig(attachment) {
+	    var _this5 = this;
+	    var defaultBsPopperConfig = {
 	      placement: attachment,
-	      modifiers: [flipModifier, {
+	      modifiers: [{
+	        name: 'flip',
+	        options: {
+	          altBoundary: true,
+	          fallbackPlacements: this.config.fallbackPlacements
+	        }
+	      }, {
+	        name: 'offset',
+	        options: {
+	          offset: this._getOffset()
+	        }
+	      }, {
 	        name: 'preventOverflow',
 	        options: {
-	          rootBoundary: this.config.boundary
+	          boundary: this.config.boundary
 	        }
 	      }, {
 	        name: 'arrow',
@@ -7143,16 +7198,16 @@
 	        enabled: true,
 	        phase: 'afterWrite',
 	        fn: function fn(data) {
-	          return _this4._handlePopperPlacementChange(data);
+	          return _this5._handlePopperPlacementChange(data);
 	        }
 	      }],
 	      onFirstUpdate: function onFirstUpdate(data) {
 	        if (data.options.placement !== data.placement) {
-	          _this4._handlePopperPlacementChange(data);
+	          _this5._handlePopperPlacementChange(data);
 	        }
 	      }
 	    };
-	    return _extends({}, defaultBsConfig, this.config.popperConfig);
+	    return _extends({}, defaultBsPopperConfig, typeof this.config.popperConfig === 'function' ? this.config.popperConfig(defaultBsPopperConfig) : this.config.popperConfig);
 	  };
 	  _proto._addAttachmentClass = function _addAttachmentClass(attachment) {
 	    this.getTipElement().classList.add(CLASS_PREFIX + "-" + this.updateAttachment(attachment));
@@ -7170,27 +7225,27 @@
 	    return AttachmentMap[placement.toUpperCase()];
 	  };
 	  _proto._setListeners = function _setListeners() {
-	    var _this5 = this;
+	    var _this6 = this;
 	    var triggers = this.config.trigger.split(' ');
 	    triggers.forEach(function (trigger) {
 	      if (trigger === 'click') {
-	        EventHandler.on(_this5._element, _this5.constructor.Event.CLICK, _this5.config.selector, function (event) {
-	          return _this5.toggle(event);
+	        EventHandler.on(_this6._element, _this6.constructor.Event.CLICK, _this6.config.selector, function (event) {
+	          return _this6.toggle(event);
 	        });
 	      } else if (trigger !== TRIGGER_MANUAL) {
-	        var eventIn = trigger === TRIGGER_HOVER ? _this5.constructor.Event.MOUSEENTER : _this5.constructor.Event.FOCUSIN;
-	        var eventOut = trigger === TRIGGER_HOVER ? _this5.constructor.Event.MOUSELEAVE : _this5.constructor.Event.FOCUSOUT;
-	        EventHandler.on(_this5._element, eventIn, _this5.config.selector, function (event) {
-	          return _this5._enter(event);
+	        var eventIn = trigger === TRIGGER_HOVER ? _this6.constructor.Event.MOUSEENTER : _this6.constructor.Event.FOCUSIN;
+	        var eventOut = trigger === TRIGGER_HOVER ? _this6.constructor.Event.MOUSELEAVE : _this6.constructor.Event.FOCUSOUT;
+	        EventHandler.on(_this6._element, eventIn, _this6.config.selector, function (event) {
+	          return _this6._enter(event);
 	        });
-	        EventHandler.on(_this5._element, eventOut, _this5.config.selector, function (event) {
-	          return _this5._leave(event);
+	        EventHandler.on(_this6._element, eventOut, _this6.config.selector, function (event) {
+	          return _this6._leave(event);
 	        });
 	      }
 	    });
 	    this._hideModalHandler = function () {
-	      if (_this5._element) {
-	        _this5.hide();
+	      if (_this6._element) {
+	        _this6.hide();
 	      }
 	    };
 	    EventHandler.on(this._element.closest("." + CLASS_NAME_MODAL), 'hide.bs.modal', this._hideModalHandler);
@@ -7215,16 +7270,11 @@
 	    }
 	  };
 	  _proto._enter = function _enter(event, context) {
-	    var dataKey = this.constructor.DATA_KEY;
-	    context = context || Data.getData(event.delegateTarget, dataKey);
-	    if (!context) {
-	      context = new this.constructor(event.delegateTarget, this._getDelegateConfig());
-	      Data.setData(event.delegateTarget, dataKey, context);
-	    }
+	    context = this._initializeOnDelegatedTarget(event, context);
 	    if (event) {
 	      context._activeTrigger[event.type === 'focusin' ? TRIGGER_FOCUS : TRIGGER_HOVER] = true;
 	    }
-	    if (context.getTipElement().classList.contains(CLASS_NAME_SHOW$3) || context._hoverState === HOVER_STATE_SHOW) {
+	    if (context.getTipElement().classList.contains(CLASS_NAME_SHOW$4) || context._hoverState === HOVER_STATE_SHOW) {
 	      context._hoverState = HOVER_STATE_SHOW;
 	      return;
 	    }
@@ -7241,12 +7291,7 @@
 	    }, context.config.delay.show);
 	  };
 	  _proto._leave = function _leave(event, context) {
-	    var dataKey = this.constructor.DATA_KEY;
-	    context = context || Data.getData(event.delegateTarget, dataKey);
-	    if (!context) {
-	      context = new this.constructor(event.delegateTarget, this._getDelegateConfig());
-	      Data.setData(event.delegateTarget, dataKey, context);
-	    }
+	    context = this._initializeOnDelegatedTarget(event, context);
 	    if (event) {
 	      context._activeTrigger[event.type === 'focusout' ? TRIGGER_FOCUS : TRIGGER_HOVER] = false;
 	    }
@@ -7385,18 +7430,7 @@
 	  }]);
 	  return Tooltip;
 	}(BaseComponent);
-	onDOMContentLoaded(function () {
-	  var $ = getjQuery();
-	  if ($) {
-	    var JQUERY_NO_CONFLICT = $.fn[NAME$6];
-	    $.fn[NAME$6] = Tooltip.jQueryInterface;
-	    $.fn[NAME$6].Constructor = Tooltip;
-	    $.fn[NAME$6].noConflict = function () {
-	      $.fn[NAME$6] = JQUERY_NO_CONFLICT;
-	      return Tooltip.jQueryInterface;
-	    };
-	  }
-	});
+	defineJQueryPlugin(NAME$6, Tooltip);
 	var NAME$7 = 'popover';
 	var DATA_KEY$7 = 'bs.popover';
 	var EVENT_KEY$7 = "." + DATA_KEY$7;
@@ -7404,6 +7438,7 @@
 	var BSCLS_PREFIX_REGEX$1 = new RegExp("(^|\\s)" + CLASS_PREFIX$1 + "\\S+", 'g');
 	var Default$5 = _extends({}, Tooltip.Default, {
 	  placement: 'right',
+	  offset: [0, 8],
 	  trigger: 'click',
 	  content: '',
 	  template: '<div class="popover" role="tooltip">' + '<div class="popover-arrow"></div>' + '<h3 class="popover-header"></h3>' + '<div class="popover-body"></div>' + '</div>'
@@ -7423,8 +7458,8 @@
 	  MOUSEENTER: "mouseenter" + EVENT_KEY$7,
 	  MOUSELEAVE: "mouseleave" + EVENT_KEY$7
 	};
-	var CLASS_NAME_FADE$2 = 'fade';
-	var CLASS_NAME_SHOW$4 = 'show';
+	var CLASS_NAME_FADE$3 = 'fade';
+	var CLASS_NAME_SHOW$5 = 'show';
 	var SELECTOR_TITLE = '.popover-header';
 	var SELECTOR_CONTENT = '.popover-body';
 	var Popover = function (_Tooltip) {
@@ -7444,7 +7479,7 @@
 	      content = content.call(this._element);
 	    }
 	    this.setElementContent(SelectorEngine.findOne(SELECTOR_CONTENT, tip), content);
-	    tip.classList.remove(CLASS_NAME_FADE$2, CLASS_NAME_SHOW$4);
+	    tip.classList.remove(CLASS_NAME_FADE$3, CLASS_NAME_SHOW$5);
 	  }
 	  ;
 	  _proto._addAttachmentClass = function _addAttachmentClass(attachment) {
@@ -7486,7 +7521,8 @@
 	  };
 	  _createClass$1(Popover, null, [{
 	    key: "Default",
-	    get: function get() {
+	    get:
+	    function get() {
 	      return Default$5;
 	    }
 	  }, {
@@ -7517,18 +7553,7 @@
 	  }]);
 	  return Popover;
 	}(Tooltip);
-	onDOMContentLoaded(function () {
-	  var $ = getjQuery();
-	  if ($) {
-	    var JQUERY_NO_CONFLICT = $.fn[NAME$7];
-	    $.fn[NAME$7] = Popover.jQueryInterface;
-	    $.fn[NAME$7].Constructor = Popover;
-	    $.fn[NAME$7].noConflict = function () {
-	      $.fn[NAME$7] = JQUERY_NO_CONFLICT;
-	      return Popover.jQueryInterface;
-	    };
-	  }
-	});
+	defineJQueryPlugin(NAME$7, Popover);
 	var NAME$8 = 'scrollspy';
 	var DATA_KEY$8 = 'bs.scrollspy';
 	var EVENT_KEY$8 = "." + DATA_KEY$8;
@@ -7569,8 +7594,8 @@
 	    _this._targets = [];
 	    _this._activeTarget = null;
 	    _this._scrollHeight = 0;
-	    EventHandler.on(_this._scrollElement, EVENT_SCROLL, function (event) {
-	      return _this._process(event);
+	    EventHandler.on(_this._scrollElement, EVENT_SCROLL, function () {
+	      return _this._process();
 	    });
 	    _this.refresh();
 	    _this._process();
@@ -7733,18 +7758,7 @@
 	    return new ScrollSpy(spy, Manipulator.getDataAttributes(spy));
 	  });
 	});
-	onDOMContentLoaded(function () {
-	  var $ = getjQuery();
-	  if ($) {
-	    var JQUERY_NO_CONFLICT = $.fn[NAME$8];
-	    $.fn[NAME$8] = ScrollSpy.jQueryInterface;
-	    $.fn[NAME$8].Constructor = ScrollSpy;
-	    $.fn[NAME$8].noConflict = function () {
-	      $.fn[NAME$8] = JQUERY_NO_CONFLICT;
-	      return ScrollSpy.jQueryInterface;
-	    };
-	  }
-	});
+	defineJQueryPlugin(NAME$8, ScrollSpy);
 	var NAME$9 = 'tab';
 	var DATA_KEY$9 = 'bs.tab';
 	var EVENT_KEY$9 = "." + DATA_KEY$9;
@@ -7757,8 +7771,8 @@
 	var CLASS_NAME_DROPDOWN_MENU = 'dropdown-menu';
 	var CLASS_NAME_ACTIVE$3 = 'active';
 	var CLASS_NAME_DISABLED$1 = 'disabled';
-	var CLASS_NAME_FADE$3 = 'fade';
-	var CLASS_NAME_SHOW$5 = 'show';
+	var CLASS_NAME_FADE$4 = 'fade';
+	var CLASS_NAME_SHOW$6 = 'show';
 	var SELECTOR_DROPDOWN$1 = '.dropdown';
 	var SELECTOR_NAV_LIST_GROUP$1 = '.nav, .list-group';
 	var SELECTOR_ACTIVE$1 = '.active';
@@ -7785,12 +7799,9 @@
 	      previous = SelectorEngine.find(itemSelector, listElement);
 	      previous = previous[previous.length - 1];
 	    }
-	    var hideEvent = null;
-	    if (previous) {
-	      hideEvent = EventHandler.trigger(previous, EVENT_HIDE$3, {
-	        relatedTarget: this._element
-	      });
-	    }
+	    var hideEvent = previous ? EventHandler.trigger(previous, EVENT_HIDE$3, {
+	      relatedTarget: this._element
+	    }) : null;
 	    var showEvent = EventHandler.trigger(this._element, EVENT_SHOW$3, {
 	      relatedTarget: previous
 	    });
@@ -7817,14 +7828,14 @@
 	    var _this2 = this;
 	    var activeElements = container && (container.nodeName === 'UL' || container.nodeName === 'OL') ? SelectorEngine.find(SELECTOR_ACTIVE_UL, container) : SelectorEngine.children(container, SELECTOR_ACTIVE$1);
 	    var active = activeElements[0];
-	    var isTransitioning = callback && active && active.classList.contains(CLASS_NAME_FADE$3);
+	    var isTransitioning = callback && active && active.classList.contains(CLASS_NAME_FADE$4);
 	    var complete = function complete() {
 	      return _this2._transitionComplete(element, active, callback);
 	    };
 	    if (active && isTransitioning) {
 	      var transitionDuration = getTransitionDurationFromElement(active);
-	      active.classList.remove(CLASS_NAME_SHOW$5);
-	      EventHandler.one(active, TRANSITION_END, complete);
+	      active.classList.remove(CLASS_NAME_SHOW$6);
+	      EventHandler.one(active, 'transitionend', complete);
 	      emulateTransitionEnd(active, transitionDuration);
 	    } else {
 	      complete();
@@ -7846,8 +7857,8 @@
 	      element.setAttribute('aria-selected', true);
 	    }
 	    reflow(element);
-	    if (element.classList.contains(CLASS_NAME_FADE$3)) {
-	      element.classList.add(CLASS_NAME_SHOW$5);
+	    if (element.classList.contains(CLASS_NAME_FADE$4)) {
+	      element.classList.add(CLASS_NAME_SHOW$6);
 	    }
 	    if (element.parentNode && element.parentNode.classList.contains(CLASS_NAME_DROPDOWN_MENU)) {
 	      var dropdownElement = element.closest(SELECTOR_DROPDOWN$1);
@@ -7876,7 +7887,8 @@
 	  };
 	  _createClass$1(Tab, null, [{
 	    key: "DATA_KEY",
-	    get: function get() {
+	    get:
+	    function get() {
 	      return DATA_KEY$9;
 	    }
 	  }]);
@@ -7887,18 +7899,7 @@
 	  var data = Data.getData(this, DATA_KEY$9) || new Tab(this);
 	  data.show();
 	});
-	onDOMContentLoaded(function () {
-	  var $ = getjQuery();
-	  if ($) {
-	    var JQUERY_NO_CONFLICT = $.fn[NAME$9];
-	    $.fn[NAME$9] = Tab.jQueryInterface;
-	    $.fn[NAME$9].Constructor = Tab;
-	    $.fn[NAME$9].noConflict = function () {
-	      $.fn[NAME$9] = JQUERY_NO_CONFLICT;
-	      return Tab.jQueryInterface;
-	    };
-	  }
-	});
+	defineJQueryPlugin(NAME$9, Tab);
 	var NAME$a = 'toast';
 	var DATA_KEY$a = 'bs.toast';
 	var EVENT_KEY$a = "." + DATA_KEY$a;
@@ -7907,9 +7908,9 @@
 	var EVENT_HIDDEN$4 = "hidden" + EVENT_KEY$a;
 	var EVENT_SHOW$4 = "show" + EVENT_KEY$a;
 	var EVENT_SHOWN$4 = "shown" + EVENT_KEY$a;
-	var CLASS_NAME_FADE$4 = 'fade';
+	var CLASS_NAME_FADE$5 = 'fade';
 	var CLASS_NAME_HIDE = 'hide';
-	var CLASS_NAME_SHOW$6 = 'show';
+	var CLASS_NAME_SHOW$7 = 'show';
 	var CLASS_NAME_SHOWING = 'showing';
 	var DefaultType$7 = {
 	  animation: 'boolean',
@@ -7941,11 +7942,11 @@
 	    }
 	    this._clearTimeout();
 	    if (this._config.animation) {
-	      this._element.classList.add(CLASS_NAME_FADE$4);
+	      this._element.classList.add(CLASS_NAME_FADE$5);
 	    }
 	    var complete = function complete() {
 	      _this2._element.classList.remove(CLASS_NAME_SHOWING);
-	      _this2._element.classList.add(CLASS_NAME_SHOW$6);
+	      _this2._element.classList.add(CLASS_NAME_SHOW$7);
 	      EventHandler.trigger(_this2._element, EVENT_SHOWN$4);
 	      if (_this2._config.autohide) {
 	        _this2._timeout = setTimeout(function () {
@@ -7958,7 +7959,7 @@
 	    this._element.classList.add(CLASS_NAME_SHOWING);
 	    if (this._config.animation) {
 	      var transitionDuration = getTransitionDurationFromElement(this._element);
-	      EventHandler.one(this._element, TRANSITION_END, complete);
+	      EventHandler.one(this._element, 'transitionend', complete);
 	      emulateTransitionEnd(this._element, transitionDuration);
 	    } else {
 	      complete();
@@ -7966,7 +7967,7 @@
 	  };
 	  _proto.hide = function hide() {
 	    var _this3 = this;
-	    if (!this._element.classList.contains(CLASS_NAME_SHOW$6)) {
+	    if (!this._element.classList.contains(CLASS_NAME_SHOW$7)) {
 	      return;
 	    }
 	    var hideEvent = EventHandler.trigger(this._element, EVENT_HIDE$4);
@@ -7977,10 +7978,10 @@
 	      _this3._element.classList.add(CLASS_NAME_HIDE);
 	      EventHandler.trigger(_this3._element, EVENT_HIDDEN$4);
 	    };
-	    this._element.classList.remove(CLASS_NAME_SHOW$6);
+	    this._element.classList.remove(CLASS_NAME_SHOW$7);
 	    if (this._config.animation) {
 	      var transitionDuration = getTransitionDurationFromElement(this._element);
-	      EventHandler.one(this._element, TRANSITION_END, complete);
+	      EventHandler.one(this._element, 'transitionend', complete);
 	      emulateTransitionEnd(this._element, transitionDuration);
 	    } else {
 	      complete();
@@ -7988,8 +7989,8 @@
 	  };
 	  _proto.dispose = function dispose() {
 	    this._clearTimeout();
-	    if (this._element.classList.contains(CLASS_NAME_SHOW$6)) {
-	      this._element.classList.remove(CLASS_NAME_SHOW$6);
+	    if (this._element.classList.contains(CLASS_NAME_SHOW$7)) {
+	      this._element.classList.remove(CLASS_NAME_SHOW$7);
 	    }
 	    EventHandler.off(this._element, EVENT_CLICK_DISMISS$1);
 	    _BaseComponent.prototype.dispose.call(this);
@@ -8045,18 +8046,7 @@
 	  }]);
 	  return Toast;
 	}(BaseComponent);
-	onDOMContentLoaded(function () {
-	  var $ = getjQuery();
-	  if ($) {
-	    var JQUERY_NO_CONFLICT = $.fn[NAME$a];
-	    $.fn[NAME$a] = Toast.jQueryInterface;
-	    $.fn[NAME$a].Constructor = Toast;
-	    $.fn[NAME$a].noConflict = function () {
-	      $.fn[NAME$a] = JQUERY_NO_CONFLICT;
-	      return Toast.jQueryInterface;
-	    };
-	  }
-	});
+	defineJQueryPlugin(NAME$a, Toast);
 
 	var dropdownTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="dropdown"]'));
 	dropdownTriggerList.map(function (dropdownTriggerEl) {
