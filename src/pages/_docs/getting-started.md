@@ -26,8 +26,8 @@ Once you've completed the setup, you'll be able to run the various commands prov
 ## Build Tabler locally
 
 1. From the root `/tabler` directory, run `npm run start` in the command line.
-2. Open [http://localhost:4000](http://localhost:4000) in your browser, and voilà.
-3. Any change in `/pages` directory will build the application and refresh the page.
+2. Open [http://localhost:3000](http://localhost:3000) in your browser, and voilà.
+3. Any change in `/src` directory will build the application and refresh the page.
 
 
 ## Bugs and feature requests
