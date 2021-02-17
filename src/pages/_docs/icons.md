@@ -1,6 +1,6 @@
 ---
 title: Icons
-menu: docs.base.icons
+menu: docs.content.icons
 ---
 
 ## Base icon

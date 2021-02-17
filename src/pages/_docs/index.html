@@ -1,0 +1,27 @@
+---
+title: Introduction
+menu: docs.index
+redirect_from: docs.html
+---
+
+<p>Tabler is a UI kit that speeds up the development process and makes it easier than ever! Built on the latest version of Bootstrap, it helps you create templates based on fully customizable and ready-to-use UI components, which can be used by both simple websites and sophisticated systems. With basic knowledge of HTML and CSS, you’ll be able to create dashboards that are fully functional and beautifully designed!</p>
+
+<div class="mt-4">
+	<div class="row">
+		{% for doc in site.data.docs %}
+		{% unless doc[1].hide-in-index %}
+		<div class="{% if doc[1].columns == 2 %}col-12{% else %}col-sm-6{% endif %}">
+			<h3>{{ doc[1].title }}</h3>
+
+			<ul class="list-unstyled{% if doc[1].columns %} columns-md-{{ doc[1].columns }}{% endif %}">
+				{% for item in doc[1].children %}
+				<li>
+					- <a href="{{ site.base }}{{ item[1].url | relative_url }}">{{ item[1].title }}</a>
+				</li>
+				{% endfor %}
+			</ul>
+		</div>
+		{% endunless %}
+		{% endfor %}
+	</div>
+</div>

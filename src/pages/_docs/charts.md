@@ -1,6 +1,6 @@
 ---
 title: Charts
-menu: docs.components.charts
+menu: docs.plugins.charts
 ---
 
 
