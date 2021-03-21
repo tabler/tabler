@@ -41,36 +41,3 @@
 		</div>
 	</div>
 </div>
-
-{% capture_once scripts %}
-<script>
-	var getClosest = function (elem, selector) {
-		for ( ; elem && elem !== document; elem = elem.parentNode ) {
-			if ( elem.matches( selector ) ) return elem;
-		}
-		return null;
-	};
-
-	(function () {
-		const elements = document.querySelectorAll('[data-toggle-icon]');
-
-		if (elements.length) {
-			elements.forEach(function (element) {
-				element.addEventListener('click', function(e){
-					var icon = this.dataset.toggleIcon,
-						svg = this.querySelector('svg').outerHTML,
-						iconCode = this.dataset.iconSvg,
-						editor = getClosest(this, '[data-icon-preview]');
-
-					editor.querySelector('[data-icon-preview-icon]').innerHTML = svg;
-					editor.querySelector('[data-icon-preview-title]').innerText = icon;
-					editor.querySelector('[data-icon-preview-code]').innerHTML = iconCode.trim();
-
-					e.preventDefault();
-					return false;
-				})
-			});
-		}
-	})();
-</script>
-{% endcapture_once %}
