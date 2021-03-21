@@ -19,23 +19,32 @@
   }
 }
 
+.content-full {
+  .page-body:first-child {
+    margin: 0;
+    border-top: 0;
+  }
+}
+
 // Content body
 .page-body {
   margin-top: $content-padding-y;
-  margin-bottom: 0;
+  margin-bottom: $content-padding-y;
 }
 
 .page-body-card {
   background: $card-bg;
   border-top: 1px solid $card-border-color;
   padding: $content-padding-y 0;
-  margin: 0;
+  margin-bottom: 0;
   flex: 1;
+
+  .page-body ~ & {
+    margin-top: 0;
+  }
 }
 
-.content-cover {
-  margin-top: -$content-padding-y;
-  margin-bottom: $content-padding-y;
+.page-cover {
   background: no-repeat center/cover;
   min-height: 9rem;
 
@@ -48,7 +57,7 @@
   }
 }
 
-.content-cover-overlay {
+.page-cover-overlay {
   position: relative;
 
   &:after {
@@ -62,9 +71,6 @@
   }
 }
 
-.content-full {
-  margin: 0;
-}
 
 .page-header {
   display: flex;
