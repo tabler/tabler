@@ -5,6 +5,10 @@
   min-height: 100vh;
 }
 
+.page-center {
+  justify-content: center;
+}
+
 .content {
   margin-top: $content-padding-y;
   margin-bottom: $content-padding-y;
@@ -19,6 +23,41 @@
   @media print {
     margin: 0 !important;
   }
+}
+
+.content-cover {
+  margin-top: -$content-padding-y;
+  margin-bottom: $content-padding-y;
+  background: no-repeat center/cover;
+  min-height: 9rem;
+
+  @include media-breakpoint-up(md) {
+    min-height: 12rem;
+  }
+
+  @include media-breakpoint-up(lg) {
+    min-height: 15rem;
+  }
+}
+
+.content-cover-overlay {
+  position: relative;
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: $overlay-gradient;
+  }
+}
+
+.content-white {
+  background: $card-bg;
+  border-top: 1px solid $card-border-color;
+  padding: $content-padding-y 0;
 }
 
 .content-full {
