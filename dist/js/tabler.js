@@ -265,7 +265,7 @@
 	    throw new TypeError("Cannot call a class as a function");
 	  }
 	}
-	function _defineProperties(target, props) {
+	function _defineProperties$1(target, props) {
 	  for (var i = 0; i < props.length; i++) {
 	    var descriptor = props[i];
 	    descriptor.enumerable = descriptor.enumerable || false;
@@ -274,9 +274,9 @@
 	    Object.defineProperty(target, descriptor.key, descriptor);
 	  }
 	}
-	function _createClass(Constructor, protoProps, staticProps) {
-	  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
-	  if (staticProps) _defineProperties(Constructor, staticProps);
+	function _createClass$1(Constructor, protoProps, staticProps) {
+	  if (protoProps) _defineProperties$1(Constructor.prototype, protoProps);
+	  if (staticProps) _defineProperties$1(Constructor, staticProps);
 	  return Constructor;
 	}
 	function _defineProperty(obj, key, value) {
@@ -303,7 +303,7 @@
 	      configurable: true
 	    }
 	  });
-	  if (superClass) _setPrototypeOf(subClass, superClass);
+	  if (superClass) _setPrototypeOf$1(subClass, superClass);
 	}
 	function _getPrototypeOf(o) {
 	  _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf : function _getPrototypeOf(o) {
@@ -311,12 +311,12 @@
 	  };
 	  return _getPrototypeOf(o);
 	}
-	function _setPrototypeOf(o, p) {
-	  _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+	function _setPrototypeOf$1(o, p) {
+	  _setPrototypeOf$1 = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
 	    o.__proto__ = p;
 	    return o;
 	  };
-	  return _setPrototypeOf(o, p);
+	  return _setPrototypeOf$1(o, p);
 	}
 	function _isNativeReflectConstruct() {
 	  if (typeof Reflect === "undefined" || !Reflect.construct) return false;
@@ -559,7 +559,7 @@
 	      --this.oldSelection.start;
 	    }
 	  }
-	  _createClass(ActionDetails, [{
+	  _createClass$1(ActionDetails, [{
 	    key: "startChangePos",
 	    get: function get() {
 	      return Math.min(this.cursorPos, this.oldSelection.start);
@@ -615,7 +615,7 @@
 	      tailShift: 0
 	    }, details);
 	  }
-	  _createClass(ChangeDetails, [{
+	  _createClass$1(ChangeDetails, [{
 	    key: "aggregate",
 	    value: function aggregate(details) {
 	      this.rawInserted += details.rawInserted;
@@ -643,7 +643,7 @@
 	    this.from = from;
 	    this.stop = stop;
 	  }
-	  _createClass(ContinuousTailDetails, [{
+	  _createClass$1(ContinuousTailDetails, [{
 	    key: "toString",
 	    value: function toString() {
 	      return this.value;
@@ -696,7 +696,7 @@
 	    this._update(Object.assign({}, Masked.DEFAULTS, opts));
 	    this.isInitialized = true;
 	  }
-	  _createClass(Masked, [{
+	  _createClass$1(Masked, [{
 	    key: "updateOptions",
 	    value: function updateOptions(opts) {
 	      if (!Object.keys(opts).length) return;
@@ -987,7 +987,7 @@
 	    });
 	    Object.assign(this, blockOpts);
 	  }
-	  _createClass(PatternInputDefinition, [{
+	  _createClass$1(PatternInputDefinition, [{
 	    key: "reset",
 	    value: function reset() {
 	      this._isFilled = false;
@@ -1124,7 +1124,7 @@
 	    Object.assign(this, opts);
 	    this._value = '';
 	  }
-	  _createClass(PatternFixedDefinition, [{
+	  _createClass$1(PatternFixedDefinition, [{
 	    key: "value",
 	    get: function get() {
 	      return this._value;
@@ -1247,7 +1247,7 @@
 	    this.chunks = chunks;
 	    this.from = from;
 	  }
-	  _createClass(ChunksTailDetails, [{
+	  _createClass$1(ChunksTailDetails, [{
 	    key: "toString",
 	    value: function toString() {
 	      return this.chunks.map(String).join('');
@@ -1372,7 +1372,7 @@
 	    _classCallCheck(this, MaskedRegExp);
 	    return _super.apply(this, arguments);
 	  }
-	  _createClass(MaskedRegExp, [{
+	  _createClass$1(MaskedRegExp, [{
 	    key: "_update",
 	    value:
 	    function _update(opts) {
@@ -1395,7 +1395,7 @@
 	    opts.definitions = Object.assign({}, DEFAULT_INPUT_DEFINITIONS, opts.definitions);
 	    return _super.call(this, Object.assign({}, MaskedPattern.DEFAULTS, opts));
 	  }
-	  _createClass(MaskedPattern, [{
+	  _createClass$1(MaskedPattern, [{
 	    key: "_update",
 	    value: function _update() {
 	      var opts = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : {};
@@ -1850,7 +1850,7 @@
 	    _classCallCheck(this, MaskedRange);
 	    return _super.apply(this, arguments);
 	  }
-	  _createClass(MaskedRange, [{
+	  _createClass$1(MaskedRange, [{
 	    key: "_matchFrom",
 	    get:
 	    function get() {
@@ -1945,7 +1945,7 @@
 	    _classCallCheck(this, MaskedDate);
 	    return _super.call(this, Object.assign({}, MaskedDate.DEFAULTS, opts));
 	  }
-	  _createClass(MaskedDate, [{
+	  _createClass$1(MaskedDate, [{
 	    key: "_update",
 	    value: function _update(opts) {
 	      if (opts.mask === Date) delete opts.mask;
@@ -2047,7 +2047,7 @@
 	  function MaskElement() {
 	    _classCallCheck(this, MaskElement);
 	  }
-	  _createClass(MaskElement, [{
+	  _createClass$1(MaskElement, [{
 	    key: "selectionStart",
 	    get:
 	    function get() {
@@ -2104,7 +2104,7 @@
 	    _this._handlers = {};
 	    return _this;
 	  }
-	  _createClass(HTMLMaskElement, [{
+	  _createClass$1(HTMLMaskElement, [{
 	    key: "rootElement",
 	    get: function get() {
 	      return this.input.getRootNode ? this.input.getRootNode() : document;
@@ -2185,7 +2185,7 @@
 	    _classCallCheck(this, HTMLContenteditableMaskElement);
 	    return _super.apply(this, arguments);
 	  }
-	  _createClass(HTMLContenteditableMaskElement, [{
+	  _createClass$1(HTMLContenteditableMaskElement, [{
 	    key: "_unsafeSelectionStart",
 	    get:
 	    function get() {
@@ -2247,7 +2247,7 @@
 	    this.updateValue();
 	    this._onChange();
 	  }
-	  _createClass(InputMask, [{
+	  _createClass$1(InputMask, [{
 	    key: "mask",
 	    get: function get() {
 	      return this.masked.mask;
@@ -2510,7 +2510,7 @@
 	    _classCallCheck(this, MaskedEnum);
 	    return _super.apply(this, arguments);
 	  }
-	  _createClass(MaskedEnum, [{
+	  _createClass$1(MaskedEnum, [{
 	    key: "_update",
 	    value:
 	    function _update(opts) {
@@ -2541,7 +2541,7 @@
 	    _classCallCheck(this, MaskedNumber);
 	    return _super.call(this, Object.assign({}, MaskedNumber.DEFAULTS, opts));
 	  }
-	  _createClass(MaskedNumber, [{
+	  _createClass$1(MaskedNumber, [{
 	    key: "_update",
 	    value: function _update(opts) {
 	      _get(_getPrototypeOf(MaskedNumber.prototype), "_update", this).call(this, opts);
@@ -2795,7 +2795,7 @@
 	    _classCallCheck(this, MaskedFunction);
 	    return _super.apply(this, arguments);
 	  }
-	  _createClass(MaskedFunction, [{
+	  _createClass$1(MaskedFunction, [{
 	    key: "_update",
 	    value:
 	    function _update(opts) {
@@ -2817,7 +2817,7 @@
 	    _this.currentMask = null;
 	    return _this;
 	  }
-	  _createClass(MaskedDynamic, [{
+	  _createClass$1(MaskedDynamic, [{
 	    key: "_update",
 	    value: function _update(opts) {
 	      _get(_getPrototypeOf(MaskedDynamic.prototype), "_update", this).call(this, opts);
@@ -3113,6 +3113,9 @@
 	}
 
 	function getWindow(node) {
+	  if (node == null) {
+	    return window;
+	  }
 	  if (node.toString() !== '[object Window]') {
 	    var ownerDocument = node.ownerDocument;
 	    return ownerDocument ? ownerDocument.defaultView || window : window;
@@ -3120,7 +3123,7 @@
 	  return node;
 	}
 
-	function isElement(node) {
+	function isElement$1(node) {
 	  var OwnElement = getWindow(node).Element;
 	  return node instanceof OwnElement || node instanceof Element;
 	}
@@ -3129,6 +3132,9 @@
 	  return node instanceof OwnElement || node instanceof HTMLElement;
 	}
 	function isShadowRoot(node) {
+	  if (typeof ShadowRoot === 'undefined') {
+	    return false;
+	  }
 	  var OwnElement = getWindow(node).ShadowRoot;
 	  return node instanceof OwnElement || node instanceof ShadowRoot;
 	}
@@ -3153,7 +3159,7 @@
 	    });
 	  });
 	}
-	function effect(_ref2) {
+	function effect$2(_ref2) {
 	  var state = _ref2.state;
 	  var initialStyles = {
 	    popper: {
@@ -3168,6 +3174,7 @@
 	    reference: {}
 	  };
 	  Object.assign(state.elements.popper.style, initialStyles.popper);
+	  state.styles = initialStyles;
 	  if (state.elements.arrow) {
 	    Object.assign(state.elements.arrow.style, initialStyles.arrow);
 	  }
@@ -3195,7 +3202,7 @@
 	  enabled: true,
 	  phase: 'write',
 	  fn: applyStyles,
-	  effect: effect,
+	  effect: effect$2,
 	  requires: ['computeStyles']
 	};
 
@@ -3203,12 +3210,35 @@
 	  return placement.split('-')[0];
 	}
 
+	function getBoundingClientRect(element) {
+	  var rect = element.getBoundingClientRect();
+	  return {
+	    width: rect.width,
+	    height: rect.height,
+	    top: rect.top,
+	    right: rect.right,
+	    bottom: rect.bottom,
+	    left: rect.left,
+	    x: rect.left,
+	    y: rect.top
+	  };
+	}
+
 	function getLayoutRect(element) {
+	  var clientRect = getBoundingClientRect(element);
+	  var width = element.offsetWidth;
+	  var height = element.offsetHeight;
+	  if (Math.abs(clientRect.width - width) <= 1) {
+	    width = clientRect.width;
+	  }
+	  if (Math.abs(clientRect.height - height) <= 1) {
+	    height = clientRect.height;
+	  }
 	  return {
 	    x: element.offsetLeft,
 	    y: element.offsetTop,
-	    width: element.offsetWidth,
-	    height: element.offsetHeight
+	    width: width,
+	    height: height
 	  };
 	}
 
@@ -3238,7 +3268,7 @@
 	}
 
 	function getDocumentElement(element) {
-	  return ((isElement(element) ? element.ownerDocument :
+	  return ((isElement$1(element) ? element.ownerDocument :
 	  element.document) || window.document).documentElement;
 	}
 
@@ -3248,8 +3278,8 @@
 	  }
 	  return (
 	    element.assignedSlot ||
-	    element.parentNode ||
-	    element.host ||
+	    element.parentNode || (
+	    isShadowRoot(element) ? element.host : null) ||
 	    getDocumentElement(element)
 	  );
 	}
@@ -3259,20 +3289,14 @@
 	  getComputedStyle$1(element).position === 'fixed') {
 	    return null;
 	  }
-	  var offsetParent = element.offsetParent;
-	  if (offsetParent) {
-	    var html = getDocumentElement(offsetParent);
-	    if (getNodeName(offsetParent) === 'body' && getComputedStyle$1(offsetParent).position === 'static' && getComputedStyle$1(html).position !== 'static') {
-	      return html;
-	    }
-	  }
-	  return offsetParent;
+	  return element.offsetParent;
 	}
 	function getContainingBlock(element) {
+	  var isFirefox = navigator.userAgent.toLowerCase().indexOf('firefox') !== -1;
 	  var currentNode = getParentNode(element);
 	  while (isHTMLElement(currentNode) && ['html', 'body'].indexOf(getNodeName(currentNode)) < 0) {
 	    var css = getComputedStyle$1(currentNode);
-	    if (css.transform !== 'none' || css.perspective !== 'none' || css.willChange && css.willChange !== 'auto') {
+	    if (css.transform !== 'none' || css.perspective !== 'none' || css.contain === 'paint' || ['transform', 'perspective'].indexOf(css.willChange) !== -1 || isFirefox && css.willChange === 'filter' || isFirefox && css.filter && css.filter !== 'none') {
 	      return currentNode;
 	    } else {
 	      currentNode = currentNode.parentNode;
@@ -3286,7 +3310,7 @@
 	  while (offsetParent && isTableElement(offsetParent) && getComputedStyle$1(offsetParent).position === 'static') {
 	    offsetParent = getTrueOffsetParent(offsetParent);
 	  }
-	  if (offsetParent && getNodeName(offsetParent) === 'body' && getComputedStyle$1(offsetParent).position === 'static') {
+	  if (offsetParent && (getNodeName(offsetParent) === 'html' || getNodeName(offsetParent) === 'body' && getComputedStyle$1(offsetParent).position === 'static')) {
 	    return window;
 	  }
 	  return offsetParent || getContainingBlock(element) || window;
@@ -3296,8 +3320,12 @@
 	  return ['top', 'bottom'].indexOf(placement) >= 0 ? 'x' : 'y';
 	}
 
-	function within(min, value, max) {
-	  return Math.max(min, Math.min(value, max));
+	var max = Math.max;
+	var min = Math.min;
+	var round = Math.round;
+
+	function within(min$1, value, max$1) {
+	  return max(min$1, min(value, max$1));
 	}
 
 	function getFreshSideObject() {
@@ -3310,7 +3338,7 @@
 	}
 
 	function mergePaddingObject(paddingObject) {
-	  return Object.assign(Object.assign({}, getFreshSideObject()), paddingObject);
+	  return Object.assign({}, getFreshSideObject(), paddingObject);
 	}
 
 	function expandToHashMap(value, keys) {
@@ -3320,10 +3348,17 @@
 	  }, {});
 	}
 
+	var toPaddingObject = function toPaddingObject(padding, state) {
+	  padding = typeof padding === 'function' ? padding(Object.assign({}, state.rects, {
+	    placement: state.placement
+	  })) : padding;
+	  return mergePaddingObject(typeof padding !== 'number' ? padding : expandToHashMap(padding, basePlacements));
+	};
 	function arrow(_ref) {
 	  var _state$modifiersData$;
 	  var state = _ref.state,
-	      name = _ref.name;
+	      name = _ref.name,
+	      options = _ref.options;
 	  var arrowElement = state.elements.arrow;
 	  var popperOffsets = state.modifiersData.popperOffsets;
 	  var basePlacement = getBasePlacement(state.placement);
@@ -3333,7 +3368,7 @@
 	  if (!arrowElement || !popperOffsets) {
 	    return;
 	  }
-	  var paddingObject = state.modifiersData[name + "#persistent"].padding;
+	  var paddingObject = toPaddingObject(options.padding, state);
 	  var arrowRect = getLayoutRect(arrowElement);
 	  var minProp = axis === 'y' ? top : left;
 	  var maxProp = axis === 'y' ? bottom : right;
@@ -3351,12 +3386,9 @@
 	}
 	function effect$1(_ref2) {
 	  var state = _ref2.state,
-	      options = _ref2.options,
-	      name = _ref2.name;
+	      options = _ref2.options;
 	  var _options$element = options.element,
-	      arrowElement = _options$element === void 0 ? '[data-popper-arrow]' : _options$element,
-	      _options$padding = options.padding,
-	      padding = _options$padding === void 0 ? 0 : _options$padding;
+	      arrowElement = _options$element === void 0 ? '[data-popper-arrow]' : _options$element;
 	  if (arrowElement == null) {
 	    return;
 	  }
@@ -3370,9 +3402,6 @@
 	    return;
 	  }
 	  state.elements.arrow = arrowElement;
-	  state.modifiersData[name + "#persistent"] = {
-	    padding: mergePaddingObject(typeof padding !== 'number' ? padding : expandToHashMap(padding, basePlacements))
-	  };
 	}
 	var arrow$1 = {
 	  name: 'arrow',
@@ -3384,7 +3413,6 @@
 	  requiresIfExists: ['preventOverflow']
 	};
 
-	var round = Math.round;
 	var unsetSides = {
 	  top: 'auto',
 	  right: 'auto',
@@ -3423,17 +3451,24 @@
 	  var win = window;
 	  if (adaptive) {
 	    var offsetParent = getOffsetParent(popper);
+	    var heightProp = 'clientHeight';
+	    var widthProp = 'clientWidth';
 	    if (offsetParent === getWindow(popper)) {
 	      offsetParent = getDocumentElement(popper);
+	      if (getComputedStyle$1(offsetParent).position !== 'static') {
+	        heightProp = 'scrollHeight';
+	        widthProp = 'scrollWidth';
+	      }
 	    }
+	    offsetParent = offsetParent;
 	    if (placement === top) {
 	      sideY = bottom;
-	      y -= offsetParent.clientHeight - popperRect.height;
+	      y -= offsetParent[heightProp] - popperRect.height;
 	      y *= gpuAcceleration ? 1 : -1;
 	    }
 	    if (placement === left) {
 	      sideX = right;
-	      x -= offsetParent.clientWidth - popperRect.width;
+	      x -= offsetParent[widthProp] - popperRect.width;
 	      x *= gpuAcceleration ? 1 : -1;
 	    }
 	  }
@@ -3442,9 +3477,9 @@
 	  }, adaptive && unsetSides);
 	  if (gpuAcceleration) {
 	    var _Object$assign;
-	    return Object.assign(Object.assign({}, commonStyles), {}, (_Object$assign = {}, _Object$assign[sideY] = hasY ? '0' : '', _Object$assign[sideX] = hasX ? '0' : '', _Object$assign.transform = (win.devicePixelRatio || 1) < 2 ? "translate(" + x + "px, " + y + "px)" : "translate3d(" + x + "px, " + y + "px, 0)", _Object$assign));
+	    return Object.assign({}, commonStyles, (_Object$assign = {}, _Object$assign[sideY] = hasY ? '0' : '', _Object$assign[sideX] = hasX ? '0' : '', _Object$assign.transform = (win.devicePixelRatio || 1) < 2 ? "translate(" + x + "px, " + y + "px)" : "translate3d(" + x + "px, " + y + "px, 0)", _Object$assign));
 	  }
-	  return Object.assign(Object.assign({}, commonStyles), {}, (_Object$assign2 = {}, _Object$assign2[sideY] = hasY ? y + "px" : '', _Object$assign2[sideX] = hasX ? x + "px" : '', _Object$assign2.transform = '', _Object$assign2));
+	  return Object.assign({}, commonStyles, (_Object$assign2 = {}, _Object$assign2[sideY] = hasY ? y + "px" : '', _Object$assign2[sideX] = hasX ? x + "px" : '', _Object$assign2.transform = '', _Object$assign2));
 	}
 	function computeStyles(_ref4) {
 	  var state = _ref4.state,
@@ -3462,7 +3497,7 @@
 	    gpuAcceleration: gpuAcceleration
 	  };
 	  if (state.modifiersData.popperOffsets != null) {
-	    state.styles.popper = Object.assign(Object.assign({}, state.styles.popper), mapToStyles(Object.assign(Object.assign({}, commonStyles), {}, {
+	    state.styles.popper = Object.assign({}, state.styles.popper, mapToStyles(Object.assign({}, commonStyles, {
 	      offsets: state.modifiersData.popperOffsets,
 	      position: state.options.strategy,
 	      adaptive: adaptive,
@@ -3470,14 +3505,14 @@
 	    })));
 	  }
 	  if (state.modifiersData.arrow != null) {
-	    state.styles.arrow = Object.assign(Object.assign({}, state.styles.arrow), mapToStyles(Object.assign(Object.assign({}, commonStyles), {}, {
+	    state.styles.arrow = Object.assign({}, state.styles.arrow, mapToStyles(Object.assign({}, commonStyles, {
 	      offsets: state.modifiersData.arrow,
 	      position: 'absolute',
 	      adaptive: false,
 	      roundOffsets: roundOffsets
 	    })));
 	  }
-	  state.attributes.popper = Object.assign(Object.assign({}, state.attributes.popper), {}, {
+	  state.attributes.popper = Object.assign({}, state.attributes.popper, {
 	    'data-popper-placement': state.placement
 	  });
 	}
@@ -3492,7 +3527,7 @@
 	var passive = {
 	  passive: true
 	};
-	function effect$2(_ref) {
+	function effect(_ref) {
 	  var state = _ref.state,
 	      instance = _ref.instance,
 	      options = _ref.options;
@@ -3526,11 +3561,11 @@
 	  enabled: true,
 	  phase: 'write',
 	  fn: function fn() {},
-	  effect: effect$2,
+	  effect: effect,
 	  data: {}
 	};
 
-	var hash = {
+	var hash$1 = {
 	  left: 'right',
 	  right: 'left',
 	  bottom: 'top',
@@ -3538,32 +3573,18 @@
 	};
 	function getOppositePlacement(placement) {
 	  return placement.replace(/left|right|bottom|top/g, function (matched) {
-	    return hash[matched];
+	    return hash$1[matched];
 	  });
 	}
 
-	var hash$1 = {
+	var hash = {
 	  start: 'end',
 	  end: 'start'
 	};
 	function getOppositeVariationPlacement(placement) {
 	  return placement.replace(/start|end/g, function (matched) {
-	    return hash$1[matched];
+	    return hash[matched];
 	  });
-	}
-
-	function getBoundingClientRect(element) {
-	  var rect = element.getBoundingClientRect();
-	  return {
-	    width: rect.width,
-	    height: rect.height,
-	    top: rect.top,
-	    right: rect.right,
-	    bottom: rect.bottom,
-	    left: rect.left,
-	    x: rect.left,
-	    y: rect.top
-	  };
 	}
 
 	function getWindowScroll(node) {
@@ -3605,15 +3626,16 @@
 	}
 
 	function getDocumentRect(element) {
+	  var _element$ownerDocumen;
 	  var html = getDocumentElement(element);
 	  var winScroll = getWindowScroll(element);
-	  var body = element.ownerDocument.body;
-	  var width = Math.max(html.scrollWidth, html.clientWidth, body ? body.scrollWidth : 0, body ? body.clientWidth : 0);
-	  var height = Math.max(html.scrollHeight, html.clientHeight, body ? body.scrollHeight : 0, body ? body.clientHeight : 0);
+	  var body = (_element$ownerDocumen = element.ownerDocument) == null ? void 0 : _element$ownerDocumen.body;
+	  var width = max(html.scrollWidth, html.clientWidth, body ? body.scrollWidth : 0, body ? body.clientWidth : 0);
+	  var height = max(html.scrollHeight, html.clientHeight, body ? body.scrollHeight : 0, body ? body.clientHeight : 0);
 	  var x = -winScroll.scrollLeft + getWindowScrollBarX(element);
 	  var y = -winScroll.scrollTop;
 	  if (getComputedStyle$1(body || html).direction === 'rtl') {
-	    x += Math.max(html.clientWidth, body ? body.clientWidth : 0) - width;
+	    x += max(html.clientWidth, body ? body.clientWidth : 0) - width;
 	  }
 	  return {
 	    width: width,
@@ -3642,11 +3664,12 @@
 	}
 
 	function listScrollParents(element, list) {
+	  var _element$ownerDocumen;
 	  if (list === void 0) {
 	    list = [];
 	  }
 	  var scrollParent = getScrollParent(element);
-	  var isBody = scrollParent === element.ownerDocument.body;
+	  var isBody = scrollParent === ((_element$ownerDocumen = element.ownerDocument) == null ? void 0 : _element$ownerDocumen.body);
 	  var win = getWindow(scrollParent);
 	  var target = isBody ? [win].concat(win.visualViewport || [], isScrollParent(scrollParent) ? scrollParent : []) : scrollParent;
 	  var updatedList = list.concat(target);
@@ -3655,7 +3678,7 @@
 	}
 
 	function rectToClientRect(rect) {
-	  return Object.assign(Object.assign({}, rect), {}, {
+	  return Object.assign({}, rect, {
 	    left: rect.x,
 	    top: rect.y,
 	    right: rect.x + rect.width,
@@ -3682,11 +3705,11 @@
 	  var clippingParents = listScrollParents(getParentNode(element));
 	  var canEscapeClipping = ['absolute', 'fixed'].indexOf(getComputedStyle$1(element).position) >= 0;
 	  var clipperElement = canEscapeClipping && isHTMLElement(element) ? getOffsetParent(element) : element;
-	  if (!isElement(clipperElement)) {
+	  if (!isElement$1(clipperElement)) {
 	    return [];
 	  }
 	  return clippingParents.filter(function (clippingParent) {
-	    return isElement(clippingParent) && contains(clippingParent, clipperElement) && getNodeName(clippingParent) !== 'body';
+	    return isElement$1(clippingParent) && contains(clippingParent, clipperElement) && getNodeName(clippingParent) !== 'body';
 	  });
 	}
 	function getClippingRect(element, boundary, rootBoundary) {
@@ -3695,10 +3718,10 @@
 	  var firstClippingParent = clippingParents[0];
 	  var clippingRect = clippingParents.reduce(function (accRect, clippingParent) {
 	    var rect = getClientRectFromMixedType(element, clippingParent);
-	    accRect.top = Math.max(rect.top, accRect.top);
-	    accRect.right = Math.min(rect.right, accRect.right);
-	    accRect.bottom = Math.min(rect.bottom, accRect.bottom);
-	    accRect.left = Math.max(rect.left, accRect.left);
+	    accRect.top = max(rect.top, accRect.top);
+	    accRect.right = min(rect.right, accRect.right);
+	    accRect.bottom = min(rect.bottom, accRect.bottom);
+	    accRect.left = max(rect.left, accRect.left);
 	    return accRect;
 	  }, getClientRectFromMixedType(element, firstClippingParent));
 	  clippingRect.width = clippingRect.right - clippingRect.left;
@@ -3789,7 +3812,7 @@
 	  var referenceElement = state.elements.reference;
 	  var popperRect = state.rects.popper;
 	  var element = state.elements[altBoundary ? altContext : elementContext];
-	  var clippingClientRect = getClippingRect(isElement(element) ? element : element.contextElement || getDocumentElement(state.elements.popper), boundary, rootBoundary);
+	  var clippingClientRect = getClippingRect(isElement$1(element) ? element : element.contextElement || getDocumentElement(state.elements.popper), boundary, rootBoundary);
 	  var referenceClientRect = getBoundingClientRect(referenceElement);
 	  var popperOffsets = computeOffsets({
 	    reference: referenceClientRect,
@@ -3797,7 +3820,7 @@
 	    strategy: 'absolute',
 	    placement: placement
 	  });
-	  var popperClientRect = rectToClientRect(Object.assign(Object.assign({}, popperRect), popperOffsets));
+	  var popperClientRect = rectToClientRect(Object.assign({}, popperRect, popperOffsets));
 	  var elementClientRect = elementContext === popper ? popperClientRect : referenceClientRect;
 	  var overflowOffsets = {
 	    top: clippingClientRect.top - elementClientRect.top + paddingObject.top,
@@ -4011,7 +4034,7 @@
 	    isReferenceHidden: isReferenceHidden,
 	    hasPopperEscaped: hasPopperEscaped
 	  };
-	  state.attributes.popper = Object.assign(Object.assign({}, state.attributes.popper), {}, {
+	  state.attributes.popper = Object.assign({}, state.attributes.popper, {
 	    'data-popper-reference-hidden': isReferenceHidden,
 	    'data-popper-escaped': hasPopperEscaped
 	  });
@@ -4027,7 +4050,7 @@
 	function distanceAndSkiddingToXY(placement, rects, offset) {
 	  var basePlacement = getBasePlacement(placement);
 	  var invertDistance = [left, top].indexOf(basePlacement) >= 0 ? -1 : 1;
-	  var _ref = typeof offset === 'function' ? offset(Object.assign(Object.assign({}, rects), {}, {
+	  var _ref = typeof offset === 'function' ? offset(Object.assign({}, rects, {
 	    placement: placement
 	  })) : offset,
 	      skidding = _ref[0],
@@ -4121,7 +4144,7 @@
 	  var popperOffsets = state.modifiersData.popperOffsets;
 	  var referenceRect = state.rects.reference;
 	  var popperRect = state.rects.popper;
-	  var tetherOffsetValue = typeof tetherOffset === 'function' ? tetherOffset(Object.assign(Object.assign({}, state.rects), {}, {
+	  var tetherOffsetValue = typeof tetherOffset === 'function' ? tetherOffset(Object.assign({}, state.rects, {
 	    placement: state.placement
 	  })) : tetherOffset;
 	  var data = {
@@ -4131,13 +4154,13 @@
 	  if (!popperOffsets) {
 	    return;
 	  }
-	  if (checkMainAxis) {
+	  if (checkMainAxis || checkAltAxis) {
 	    var mainSide = mainAxis === 'y' ? top : left;
 	    var altSide = mainAxis === 'y' ? bottom : right;
 	    var len = mainAxis === 'y' ? 'height' : 'width';
 	    var offset = popperOffsets[mainAxis];
-	    var min = popperOffsets[mainAxis] + overflow[mainSide];
-	    var max = popperOffsets[mainAxis] - overflow[altSide];
+	    var min$1 = popperOffsets[mainAxis] + overflow[mainSide];
+	    var max$1 = popperOffsets[mainAxis] - overflow[altSide];
 	    var additive = tether ? -popperRect[len] / 2 : 0;
 	    var minLen = variation === start ? referenceRect[len] : popperRect[len];
 	    var maxLen = variation === start ? -popperRect[len] : -referenceRect[len];
@@ -4157,19 +4180,21 @@
 	    var offsetModifierValue = state.modifiersData.offset ? state.modifiersData.offset[state.placement][mainAxis] : 0;
 	    var tetherMin = popperOffsets[mainAxis] + minOffset - offsetModifierValue - clientOffset;
 	    var tetherMax = popperOffsets[mainAxis] + maxOffset - offsetModifierValue;
-	    var preventedOffset = within(tether ? Math.min(min, tetherMin) : min, offset, tether ? Math.max(max, tetherMax) : max);
-	    popperOffsets[mainAxis] = preventedOffset;
-	    data[mainAxis] = preventedOffset - offset;
-	  }
-	  if (checkAltAxis) {
-	    var _mainSide = mainAxis === 'x' ? top : left;
-	    var _altSide = mainAxis === 'x' ? bottom : right;
-	    var _offset = popperOffsets[altAxis];
-	    var _min = _offset + overflow[_mainSide];
-	    var _max = _offset - overflow[_altSide];
-	    var _preventedOffset = within(_min, _offset, _max);
-	    popperOffsets[altAxis] = _preventedOffset;
-	    data[altAxis] = _preventedOffset - _offset;
+	    if (checkMainAxis) {
+	      var preventedOffset = within(tether ? min(min$1, tetherMin) : min$1, offset, tether ? max(max$1, tetherMax) : max$1);
+	      popperOffsets[mainAxis] = preventedOffset;
+	      data[mainAxis] = preventedOffset - offset;
+	    }
+	    if (checkAltAxis) {
+	      var _mainSide = mainAxis === 'x' ? top : left;
+	      var _altSide = mainAxis === 'x' ? bottom : right;
+	      var _offset = popperOffsets[altAxis];
+	      var _min = _offset + overflow[_mainSide];
+	      var _max = _offset - overflow[_altSide];
+	      var _preventedOffset = within(tether ? min(_min, tetherMin) : _min, _offset, tether ? max(_max, tetherMax) : _max);
+	      popperOffsets[altAxis] = _preventedOffset;
+	      data[altAxis] = _preventedOffset - _offset;
+	    }
 	  }
 	  state.modifiersData[name] = data;
 	}
@@ -4286,9 +4311,9 @@
 	function mergeByName(modifiers) {
 	  var merged = modifiers.reduce(function (merged, current) {
 	    var existing = merged[current.name];
-	    merged[current.name] = existing ? Object.assign(Object.assign(Object.assign({}, existing), current), {}, {
-	      options: Object.assign(Object.assign({}, existing.options), current.options),
-	      data: Object.assign(Object.assign({}, existing.data), current.data)
+	    merged[current.name] = existing ? Object.assign({}, existing, current, {
+	      options: Object.assign({}, existing.options, current.options),
+	      data: Object.assign({}, existing.data, current.data)
 	    }) : current;
 	    return merged;
 	  }, {});
@@ -4326,7 +4351,7 @@
 	    var state = {
 	      placement: 'bottom',
 	      orderedModifiers: [],
-	      options: Object.assign(Object.assign({}, DEFAULT_OPTIONS), defaultOptions),
+	      options: Object.assign({}, DEFAULT_OPTIONS, defaultOptions),
 	      modifiersData: {},
 	      elements: {
 	        reference: reference,
@@ -4341,9 +4366,9 @@
 	      state: state,
 	      setOptions: function setOptions(options) {
 	        cleanupModifierEffects();
-	        state.options = Object.assign(Object.assign(Object.assign({}, defaultOptions), state.options), options);
+	        state.options = Object.assign({}, defaultOptions, state.options, options);
 	        state.scrollParents = {
-	          reference: isElement(reference) ? listScrollParents(reference) : reference.contextElement ? listScrollParents(reference.contextElement) : [],
+	          reference: isElement$1(reference) ? listScrollParents(reference) : reference.contextElement ? listScrollParents(reference.contextElement) : [],
 	          popper: listScrollParents(popper)
 	        };
 	        var orderedModifiers = orderModifiers(mergeByName([].concat(defaultModifiers, state.options.modifiers)));
@@ -4439,24 +4464,24 @@
 	    return instance;
 	  };
 	}
-	var createPopper = popperGenerator();
+	var createPopper$2 = popperGenerator();
 
-	var defaultModifiers = [eventListeners, popperOffsets$1, computeStyles$1, applyStyles$1];
+	var defaultModifiers$1 = [eventListeners, popperOffsets$1, computeStyles$1, applyStyles$1];
 	var createPopper$1 = popperGenerator({
-	  defaultModifiers: defaultModifiers
+	  defaultModifiers: defaultModifiers$1
 	});
 
-	var defaultModifiers$1 = [eventListeners, popperOffsets$1, computeStyles$1, applyStyles$1, offset$1, flip$1, preventOverflow$1, arrow$1, hide$1];
-	var createPopper$2 = popperGenerator({
-	  defaultModifiers: defaultModifiers$1
+	var defaultModifiers = [eventListeners, popperOffsets$1, computeStyles$1, applyStyles$1, offset$1, flip$1, preventOverflow$1, arrow$1, hide$1];
+	var createPopper = popperGenerator({
+	  defaultModifiers: defaultModifiers
 	});
 
 	var Popper = /*#__PURE__*/Object.freeze({
 		__proto__: null,
 		popperGenerator: popperGenerator,
 		detectOverflow: detectOverflow,
-		createPopperBase: createPopper,
-		createPopper: createPopper$2,
+		createPopperBase: createPopper$2,
+		createPopper: createPopper,
 		createPopperLite: createPopper$1,
 		top: top,
 		bottom: bottom,
@@ -4498,7 +4523,7 @@
 	  * Copyright 2011-2021 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
 	  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
 	  */
-	function _defineProperties$1(target, props) {
+	function _defineProperties(target, props) {
 	  for (var i = 0; i < props.length; i++) {
 	    var descriptor = props[i];
 	    descriptor.enumerable = descriptor.enumerable || false;
@@ -4507,9 +4532,9 @@
 	    Object.defineProperty(target, descriptor.key, descriptor);
 	  }
 	}
-	function _createClass$1(Constructor, protoProps, staticProps) {
-	  if (protoProps) _defineProperties$1(Constructor.prototype, protoProps);
-	  if (staticProps) _defineProperties$1(Constructor, staticProps);
+	function _createClass(Constructor, protoProps, staticProps) {
+	  if (protoProps) _defineProperties(Constructor.prototype, protoProps);
+	  if (staticProps) _defineProperties(Constructor, staticProps);
 	  return Constructor;
 	}
 	function _extends() {
@@ -4529,14 +4554,14 @@
 	function _inheritsLoose(subClass, superClass) {
 	  subClass.prototype = Object.create(superClass.prototype);
 	  subClass.prototype.constructor = subClass;
-	  _setPrototypeOf$1(subClass, superClass);
+	  _setPrototypeOf(subClass, superClass);
 	}
-	function _setPrototypeOf$1(o, p) {
-	  _setPrototypeOf$1 = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+	function _setPrototypeOf(o, p) {
+	  _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
 	    o.__proto__ = p;
 	    return o;
 	  };
-	  return _setPrototypeOf$1(o, p);
+	  return _setPrototypeOf(o, p);
 	}
 	var MAX_UID = 1000000;
 	var MILLISECONDS_MULTIPLIER = 1000;
@@ -4597,7 +4622,7 @@
 	var triggerTransitionEnd = function triggerTransitionEnd(element) {
 	  element.dispatchEvent(new Event(TRANSITION_END));
 	};
-	var isElement$1 = function isElement(obj) {
+	var isElement = function isElement(obj) {
 	  return (obj[0] || obj).nodeType;
 	};
 	var emulateTransitionEnd = function emulateTransitionEnd(element, duration) {
@@ -4619,7 +4644,7 @@
 	  Object.keys(configTypes).forEach(function (property) {
 	    var expectedTypes = configTypes[property];
 	    var value = config[property];
-	    var valueType = value && isElement$1(value) ? 'element' : toType(value);
+	    var valueType = value && isElement(value) ? 'element' : toType(value);
 	    if (!new RegExp(expectedTypes).test(valueType)) {
 	      throw new TypeError(componentName.toUpperCase() + ": " + ("Option \"" + property + "\" provided type \"" + valueType + "\" ") + ("but expected type \"" + expectedTypes + "\"."));
 	    }
@@ -4959,7 +4984,7 @@
 	  BaseComponent.getInstance = function getInstance(element) {
 	    return Data.getData(element, this.DATA_KEY);
 	  };
-	  _createClass$1(BaseComponent, null, [{
+	  _createClass(BaseComponent, null, [{
 	    key: "VERSION",
 	    get: function get() {
 	      return VERSION;
@@ -5038,7 +5063,7 @@
 	      alertInstance.close(this);
 	    };
 	  };
-	  _createClass$1(Alert, null, [{
+	  _createClass(Alert, null, [{
 	    key: "DATA_KEY",
 	    get:
 	    function get() {
@@ -5077,7 +5102,7 @@
 	      }
 	    });
 	  };
-	  _createClass$1(Button, null, [{
+	  _createClass(Button, null, [{
 	    key: "DATA_KEY",
 	    get:
 	    function get() {
@@ -5644,7 +5669,7 @@
 	    }
 	    event.preventDefault();
 	  };
-	  _createClass$1(Carousel, null, [{
+	  _createClass(Carousel, null, [{
 	    key: "Default",
 	    get: function get() {
 	      return Default;
@@ -5854,7 +5879,7 @@
 	  _proto._getParent = function _getParent() {
 	    var _this4 = this;
 	    var parent = this._config.parent;
-	    if (isElement$1(parent)) {
+	    if (isElement(parent)) {
 	      if (typeof parent.jquery !== 'undefined' || typeof parent[0] !== 'undefined') {
 	        parent = parent[0];
 	      }
@@ -5904,7 +5929,7 @@
 	      Collapse.collapseInterface(this, config);
 	    });
 	  };
-	  _createClass$1(Collapse, null, [{
+	  _createClass(Collapse, null, [{
 	    key: "Default",
 	    get: function get() {
 	      return Default$1;
@@ -6037,7 +6062,7 @@
 	      var referenceElement = this._element;
 	      if (this._config.reference === 'parent') {
 	        referenceElement = parent;
-	      } else if (isElement$1(this._config.reference)) {
+	      } else if (isElement(this._config.reference)) {
 	        referenceElement = this._config.reference;
 	        if (typeof this._config.reference.jquery !== 'undefined') {
 	          referenceElement = this._config.reference[0];
@@ -6049,7 +6074,7 @@
 	      var isDisplayStatic = popperConfig.modifiers.find(function (modifier) {
 	        return modifier.name === 'applyStyles' && modifier.enabled === false;
 	      });
-	      this._popper = createPopper$2(referenceElement, this._menu, popperConfig);
+	      this._popper = createPopper(referenceElement, this._menu, popperConfig);
 	      if (isDisplayStatic) {
 	        Manipulator.setDataAttribute(this._menu, 'popper', 'static');
 	      }
@@ -6112,7 +6137,7 @@
 	  _proto._getConfig = function _getConfig(config) {
 	    config = _extends({}, this.constructor.Default, Manipulator.getDataAttributes(this._element), config);
 	    typeCheckConfig(NAME$4, config, this.constructor.DefaultType);
-	    if (typeof config.reference === 'object' && !isElement$1(config.reference) && typeof config.reference.getBoundingClientRect !== 'function') {
+	    if (typeof config.reference === 'object' && !isElement(config.reference) && typeof config.reference.getBoundingClientRect !== 'function') {
 	      throw new TypeError(NAME$4.toUpperCase() + ": Option \"reference\" provided type \"object\" without a required \"getBoundingClientRect\" method.");
 	    }
 	    return config;
@@ -6281,7 +6306,7 @@
 	    index = index === -1 ? 0 : index;
 	    items[index].focus();
 	  };
-	  _createClass$1(Dropdown, null, [{
+	  _createClass(Dropdown, null, [{
 	    key: "Default",
 	    get: function get() {
 	      return Default$2;
@@ -6711,7 +6736,7 @@
 	      }
 	    });
 	  };
-	  _createClass$1(Modal, null, [{
+	  _createClass(Modal, null, [{
 	    key: "Default",
 	    get: function get() {
 	      return Default$3;
@@ -7007,7 +7032,7 @@
 	      container.appendChild(tip);
 	    }
 	    EventHandler.trigger(this._element, this.constructor.Event.INSERTED);
-	    this._popper = createPopper$2(this._element, tip, this._getPopperConfig(attachment));
+	    this._popper = createPopper(this._element, tip, this._getPopperConfig(attachment));
 	    tip.classList.add(CLASS_NAME_SHOW$4);
 	    var customClass = typeof this.config.customClass === 'function' ? this.config.customClass() : this.config.customClass;
 	    if (customClass) {
@@ -7104,7 +7129,7 @@
 	    if (element === null) {
 	      return;
 	    }
-	    if (typeof content === 'object' && isElement$1(content)) {
+	    if (typeof content === 'object' && isElement(content)) {
 	      if (content.jquery) {
 	        content = content[0];
 	      }
@@ -7216,7 +7241,7 @@
 	    if (this.config.container === false) {
 	      return document.body;
 	    }
-	    if (isElement$1(this.config.container)) {
+	    if (isElement(this.config.container)) {
 	      return this.config.container;
 	    }
 	    return SelectorEngine.findOne(this.config.container);
@@ -7397,7 +7422,7 @@
 	      }
 	    });
 	  };
-	  _createClass$1(Tooltip, null, [{
+	  _createClass(Tooltip, null, [{
 	    key: "Default",
 	    get: function get() {
 	      return Default$4;
@@ -7519,7 +7544,7 @@
 	      }
 	    });
 	  };
-	  _createClass$1(Popover, null, [{
+	  _createClass(Popover, null, [{
 	    key: "Default",
 	    get:
 	    function get() {
@@ -7644,7 +7669,7 @@
 	  ;
 	  _proto._getConfig = function _getConfig(config) {
 	    config = _extends({}, Default$6, typeof config === 'object' && config ? config : {});
-	    if (typeof config.target !== 'string' && isElement$1(config.target)) {
+	    if (typeof config.target !== 'string' && isElement(config.target)) {
 	      var id = config.target.id;
 	      if (!id) {
 	        id = getUID(NAME$8);
@@ -7740,7 +7765,7 @@
 	      }
 	    });
 	  };
-	  _createClass$1(ScrollSpy, null, [{
+	  _createClass(ScrollSpy, null, [{
 	    key: "Default",
 	    get: function get() {
 	      return Default$6;
@@ -7885,7 +7910,7 @@
 	      }
 	    });
 	  };
-	  _createClass$1(Tab, null, [{
+	  _createClass(Tab, null, [{
 	    key: "DATA_KEY",
 	    get:
 	    function get() {
@@ -8028,7 +8053,7 @@
 	      }
 	    });
 	  };
-	  _createClass$1(Toast, null, [{
+	  _createClass(Toast, null, [{
 	    key: "DefaultType",
 	    get: function get() {
 	      return DefaultType$7;
