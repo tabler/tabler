@@ -1,10 +1,10 @@
 //Vendor
 
-import './autosize';
-import './input-mask';
-import './dropdown';
-import './tooltip';
-import './popover';
-import './switch-icon';
-import './toast';
+import './src/autosize';
+import './src/input-mask';
+import './src/dropdown';
+import './src/tooltip';
+import './src/popover';
+import './src/switch-icon';
+import './src/toast';
 
