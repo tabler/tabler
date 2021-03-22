@@ -56,7 +56,28 @@
 		var el;
 		window.TomSelect && ({% if jekyll.environment == 'development' %}window.tabler_select["select-{{ id }}"] = {% endif %}new TomSelect(el = document.getElementById('select-{{ id }}'), {
 			copyClassesToDropdown: false,
+			dropdownClass: 'dropdown-menu',
+			//dropdownContentClass: 'ts-dropdown-content',
+			optionClass:'dropdown-item',
 
+			{% unless include.show-search %}
+			controlInput: '<input>',
+			{% endunless %}
+
+			render:{
+				item: function(data,escape) {
+					if( data.customProperties ){
+						return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+					}
+					return '<div>' + escape(data.text) + '</div>';
+				},
+				option: function(data,escape){
+					if( data.customProperties ){
+						return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + String(data.text) + '</div>';
+					}
+					return '<div>' + String(data.text) + '</div>';
+				},
+			},
 		}));
 
 	});
