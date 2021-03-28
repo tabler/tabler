@@ -1,6 +1,6 @@
 /*!
-* Tabler v1.0.0-beta (https://tabler.io)
-* @version 1.0.0-beta
+* Tabler v1.0.0-beta2 (https://tabler.io)
+* @version 1.0.0-beta2
 * @link https://tabler.io
 * Copyright 2018-2021 The Tabler Authors
 * Copyright 2018-2021 codecalm.net Paweł Kuna
@@ -2552,9 +2552,9 @@ textarea.form-control-lg {
       border-color: transparent; }
   .nav-tabs .nav-link.active,
   .nav-tabs .nav-item.show .nav-link {
-    color: #206bc4;
+    color: #6e7680;
     background-color: #f4f6fa;
-    border-color: #206bc4; }
+    border-color: #e7eaef #e7eaef #f4f6fa; }
   .nav-tabs .dropdown-menu {
     margin-top: -1px;
     border-top-right-radius: 0;
@@ -8619,9 +8619,10 @@ Navbar vertical
   display: flex;
   flex-wrap: wrap;
   min-height: 2.25rem;
-  margin: 1.25rem 0 0;
   flex-direction: column;
   justify-content: center; }
+  .page-wrapper .page-header {
+    margin: 1.25rem 0 0; }
 
 .page-header-border {
   border-bottom: 1px solid rgba(101, 109, 119, 0.16);
@@ -8657,7 +8658,14 @@ Navbar vertical
   color: #656d77; }
 
 .page-tabs {
-  margin-top: .5rem; }
+  margin-top: .5rem;
+  position: relative; }
+
+.page-header-tabs .nav-bordered {
+  border: 0; }
+
+.page-header-tabs + .page-body-card {
+  margin-top: 0; }
 
 .footer {
   border-top: 1px solid #e6e8e9;
@@ -8879,7 +8887,8 @@ Navbar vertical
   font-weight: 600;
   font-size: 0.625rem;
   letter-spacing: .04em;
-  text-transform: uppercase; }
+  text-transform: uppercase;
+  vertical-align: bottom; }
   a.badge {
     color: #ffffff; }
   .badge:empty {
@@ -8895,6 +8904,11 @@ Navbar vertical
     width: 1.25rem;
     height: 1.25rem;
     margin: 0 -.5rem 0 .5rem; }
+  .badge .icon {
+    width: 1em;
+    height: 1em;
+    font-size: 1rem;
+    margin: 0 0 0 .25rem; }
 
 .badge-outline {
   background-color: transparent;
@@ -10987,15 +11001,20 @@ Dimmer
 .nav-vertical.nav-pills {
   margin: 0 -0.75rem; }
 
-.nav-tabs .nav-item + .nav-item {
-  margin-right: 1.25rem; }
-
-.nav-tabs .nav-link {
-  padding-right: 0;
-  padding-left: 0;
-  margin: 0 0 -1px;
-  border: 0;
-  border-bottom: 2px solid transparent; }
+.nav-bordered {
+  border-bottom: 1px solid #e6e8e9; }
+  .nav-bordered .nav-item + .nav-item {
+    margin-right: 1.25rem; }
+  .nav-bordered .nav-link {
+    padding-right: 0;
+    padding-left: 0;
+    margin: 0 0 -1px;
+    border: 0;
+    border-bottom: 2px solid transparent; }
+  .nav-bordered .nav-link.active,
+  .nav-bordered .nav-item.show .nav-link {
+    color: #206bc4;
+    border-color: #206bc4; }
 
 .nav-tabs-alt .nav-link {
   font-size: 13px;
@@ -12075,9 +12094,6 @@ blockquote {
 
 ul, ol {
   padding-right: 1.5rem; }
-  ul li::marker, ol li::marker {
-    color: #206bc4;
-    font-weight: 600; }
 
 hr, .hr {
   margin: 2rem 0; }
