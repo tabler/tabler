@@ -7,7 +7,4 @@ import './src/tooltip';
 import './src/popover';
 import './src/switch-icon';
 import './src/toast';
-import * as bootstrap from 'bootstrap';
-
-window.bootstrap = bootstrap;
 
