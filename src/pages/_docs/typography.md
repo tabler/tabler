@@ -1,6 +1,6 @@
 ---
 title: Typography
-menu: docs.base.typography
+menu: docs.content.typography
 description: Typography plays an important role in creating an attractive and clear interface design. Good typography will make the content easy to follow and improve the usability of your website.
 bootstrap-link: content/typography/
 ---

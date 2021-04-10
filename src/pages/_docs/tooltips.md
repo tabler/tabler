@@ -32,7 +32,7 @@ Use the default markup to create tooltips that will help users understand partic
 If the default tooltip is not enough, you can add the option to use HTML code in the text to highlight particular bits of information and make the content more attractive.
 
 {% capture code %}
-<button type="button" class="btn" data-bs-toggle="tooltip" data-html="true" title="<em>Tooltip</em> <u>with</u> <b>HTML</b>">
+<button type="button" class="btn" data-bs-toggle="tooltip" data-bs-html="true" title="<em>Tooltip</em> <u>with</u> <b>HTML</b>">
   Tooltip with HTML
 </button>
 {% endcapture %}

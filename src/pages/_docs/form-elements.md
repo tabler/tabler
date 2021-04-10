@@ -3,7 +3,7 @@ title: Form elements
 description: Forms are one of the most important types of interaction with a website or app. Since their aim is to enable users to make a purchase, subscribe to a service or sign up to create an account, it's important to make sure they are easy to complete and help increase conversion rates. Use the available elements to create forms which are well-structured and user-friendly.
 bootstrap-link: components/forms/
 libs: nouislider
-menu: docs.components.form-elements
+menu: docs.forms.form-elements
 ---
 
 
@@ -79,26 +79,6 @@ Add one of the available selects - either a dropdown or a multiple choice select
 {% include example.html code=code %}
 
 
-## Validation states
-
-To inform users whether the entered value is correct or not, use either of the validation states. Thanks to that, users will immediately know which form elements they need to correct and, if the state displays as invalid, why the value is incorrect.
-
-{% capture code %}
-{% include parts/form/validation-states.html %}
-{% endcapture %}
-{% include example.html code=code %}
-
-
-### Subtle validation states
-
-If you prefer a more subtle manner of informing users of the input control validation state, you can use tick and cross symbols and resign from colored control frames and the validation feedback. 
-
-{% capture code %}
-{% include parts/form/validation-states.html lite=true %}
-{% endcapture %}
-{% include example.html code=code %}
-
-
 ## Input size
 
 Choose the size of an input control that will go well with your form design. Apart from the default size, you can also use small and large input controls.
@@ -109,35 +89,6 @@ Choose the size of an input control that will go well with your form design. Apa
 {% include example.html code=code %}
 
 
-## Image check
-
-Add an image check to your form and give users visually attractive options to choose from. 
-
-{% capture code %}
-{% include parts/form/input-image.html %}
-{% endcapture %}
-{% include example.html code=code max-width="25rem" %}
-
-
-## Input color
-
-Your input controls can come in a variety of colors, depending on your preferences. Click [here]({% docs_url colors %}) to see the list of available colors.
-
-{% capture code %}
-{% include parts/form/input-color.html %}
-{% endcapture %}
-{% include example.html code=code %}
-
-
-## Input color picker
-
-Add an color picker to your form to let users customise it according to their preferences. 
-
-{% capture code %}
-{% include parts/form/input-colorpicker.html %}
-{% endcapture %}
-{% include example.html code=code %}
-
 
 ## Datalists
 
@@ -145,27 +96,6 @@ Use the ``datalist`` element to add an autocomplete feature to your input contro
 
 {% capture code %}
 {% include parts/form/input-datalist.html %}
-{% endcapture %}
-{% include example.html code=code %}
-
-
-## Custom selectboxes
-
-Add selectboxes to make your form more intuitive by providing users with a set of options to choose from. You can add simple selectboxes with a label, use icons only or icons with labels. Alternatively, you can use pill selectboxes if they go well with your design.  
-
-{% capture code %}
-{% include parts/form/input-selectgroups.html %}
-{% endcapture %}
-{% include example.html code=code %}
-
-
-## Advanced selectboxes
-
-Use more advanced selectboxes to display the range of available options. You can choose selectboxes with radio buttons, if you want users to select only one option or with checkboxes, if they are allowed to choose multiple options. 
-
-{% capture code %}
-{% include parts/form/selectgroup-payments.html %}
-{% include parts/form/selectgroup-project-manager.html %}
 {% endcapture %}
 {% include example.html code=code %}
 
@@ -209,16 +139,6 @@ Add a range slider to make it possible for users to set a value or range, such a
 
 {% capture code %}
 {% include parts/form/input-range.html %}
-{% endcapture %}
-{% include example.html code=code %}
-
-
-## Fieldset
-
-Group parts of your form to make it well-structured and clearer for users, using the ``fieldset`` element.
-
-{% capture code %}
-{% include parts/form/fieldset.html %}
 {% endcapture %}
 {% include example.html code=code %}
 

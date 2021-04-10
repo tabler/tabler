@@ -1,0 +1,102 @@
+{% assign id = include.id | default: include.key %}
+{% assign value = include.value %}
+
+{% if id %}
+
+<select type="text" class="form-select{% if include.class %} {{ include.class }}{% endif %}{% if include.state %} is-{{ include.state }}{% endif %}"{% if placeholder %} placeholder="{{ placeholder }}"{% endif %} id="select-{{ id }}" value="{{ value }}">
+	{% if include.values %}
+		{% assign values = include.values | split: ',' %}
+
+		{% for value in values %}
+			<option value="{{ value }}">{{ value }}</option>
+		{% endfor %}
+	{% else %}
+		{% assign key = include.key | default: 'people' %}
+		{% assign data = site.data.selects[key] %}
+		{% assign options = data.options %}
+
+		{% if data.data == 'people' %}
+			{% for person in site.data.people limit: 20 %}
+				<option value="{{ person.id }}"{% if include.indicator == 'avatar' %} data-custom-properties="{% capture indicator %}{% include ui/avatar.html size='xs' person=person %}{% endcapture %}{{ indicator | strip | escape }}"{% endif %}>{{ person.full_name }}</option>
+			{% endfor %}
+
+		{% else %}
+			{% for option in options %}
+				{% if option.first %}
+					{% if include.indicator == 'flag' %}
+						{% capture indicator-html %}
+							{% assign country = option[1].flag %}
+							{% include ui/flag.html size="xs" flag=country %}
+						{% endcapture %}
+					{% elsif include.indicator == 'label' %}
+						{% capture indicator-html %}
+							{% assign label = option[1].label %}
+							<span class="badge bg-blue-lt">{{ label }}</span>
+						{% endcapture %}
+					{% endif %}
+
+					<option value="{{ option[0] }}"{% if include.indicator %} data-custom-properties="{{ indicator-html | strip | escape }}"{% endif %}>{{ option[1].name }}</option>
+				{% else %}
+					<option value="{{ option }}">{{ option }}</option>
+				{% endif %}
+			{% endfor %}
+		{% endif %}
+	{% endif %}
+</select>
+
+
+{% capture script %}
+<script>
+	// @formatter:off
+	document.addEventListener("DOMContentLoaded", function () {
+		{% if jekyll.environment == 'development' %}
+		window.tabler_select = window.tabler_select || {};
+		{% endif %}
+
+		var el;
+		window.Choices && ({% if jekyll.environment == 'development' %}window.tabler_select["select-{{ id }}"] = {% endif %}new Choices(el = document.getElementById('select-{{ id }}'), {
+			classNames: {
+				containerInner: el.className,
+				input: 'form-control',
+				inputCloned: 'form-control-sm',
+				listDropdown: 'dropdown-menu',
+				itemChoice: 'dropdown-item',
+				activeState: 'show',
+				selectedState: 'active',
+			},
+			shouldSort: false,
+			{% unless include.show-search %}searchEnabled: false,{% endunless %}
+
+			{% if include.indicator %}
+			callbackOnCreateTemplates: function(template) {
+				var classNames = this.config.className,
+						itemSelectText = this.config.itemSelectText;
+
+				return {
+					item: function(classNames, data) {
+						return template('<div class="' + String(classNames.item) + ' ' + String( data.highlighted ? classNames.highlightedState : classNames.itemSelectable ) + '" data-item data-id="' + String(data.id) + '" data-value="' + String(data.value) + '"' + String(data.active ? 'aria-selected="true"' : '') + '' + String(data.disabled ? 'aria-disabled="true"' : '') + '><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + String(data.label) + '</div>');
+					},
+					choice: function(classNames, data) {
+						console.log('data', data);
+						return template('<div class="' + String(classNames.item) + ' ' + String(classNames.itemChoice) + ' ' + String( data.disabled ? classNames.itemDisabled : classNames.itemSelectable ) + '" data-select-text="' + String(itemSelectText) + '" data-choice  ' + String( data.disabled ? 'data-choice-disabled aria-disabled="true"' : 'data-choice-selectable' ) + ' data-id="' + String(data.id) + '" data-value="' + String(data.value) + '" ' + String( data.groupId > 0 ? 'role="treeitem"' : 'role="option"' ) + ' ><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + String(data.label) + '</div>');
+					},
+				};
+			},
+			{% endif %}
+		}));
+
+	});
+	// @formatter:on
+</script>
+{% endcapture %}
+
+
+{% if include.show-scripts %}
+{{ script }}
+{% else %}
+{% capture_global scripts %}
+{{ script }}
+{% endcapture_global %}
+{% endif %}
+
+{% endif %}

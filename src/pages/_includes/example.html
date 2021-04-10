@@ -1,5 +1,3 @@
-{% assign code = code | replace_regex: '// @formatter:(off|on)', '' %}
-
 {% assign demo-code = code %}
 {% assign demo-code = demo-code | replace_regex: '\{% (end)?hide %\}', '' %}
 {% assign demo-code = demo-code | replace_regex: 'href="#"', 'href="javascript:void(0)"' %}
@@ -19,23 +17,34 @@
 	</div>
 </div>
 
-{% assign code = code | strip %}
+
+{% capture html %}
+{{ code }}
+
+{% removeemptylines %}
+{{ site.captured_global.scripts | last }}
+{% endremoveemptylines %}
+{% endcapture %}
+
+{% assign html = html | strip %}
+{% assign html = html | replace_regex: '// @formatter:(off|on)', '' %}
+
 {% capture new_line %}
 {% endcapture %}
-{% assign code = code | replace_regex: "\n\n+", new_line %}
+{% assign html = html | replace_regex: "\n\n+", new_line %}
 
 {% unless include.show-svg %}
-	{% assign code = code | replace_regex: '<svg[^>]*class="icon ([^"]+)"[^>]*>.*?<\/svg>', '<!-- SVG icon code with class="\1" -->' %}
-	{% assign code = code | replace_regex: '<svg[^>]*>.*?<\/svg>', '<!-- SVG icon code -->' %}
+{% assign html = html | replace_regex: '<svg[^>]*class="icon ([^"]+)"[^>]*>.*?<\/svg>', '<!-- SVG icon code with class="\1" -->' %}
+{% assign html = html | replace_regex: '<svg[^>]*>.*?<\/svg>', '<!-- SVG icon code -->' %}
 {% endunless %}
 
-{% assign code = code | replace_regex: 'url\(([^\)]+)\)', 'url(...)' %}
-{% assign code = code | replace_regex: 'src="([^"]+)"', 'src="..."' %}
-{% assign code = code | replace_regex: 'href="([^#][^"]+)"', 'href="#"' %}
-{% assign code = code | replace_regex: '\{% hide %\}.*?\{% endhide %\}', '' %}
-{% assign code = code | htmlbeautifier %}
+{% assign html = html | replace_regex: 'url\(([^\)]+)\)', 'url(...)' %}
+{% assign html = html | replace_regex: 'src="([^"]+)"', 'src="..."' %}
+{% assign html = html | replace_regex: 'href="([^#][^"]+)"', 'href="#"' %}
+{% assign html = html | replace_regex: '\{% hide %\}.*?\{% endhide %\}', '' %}
+
+{% assign html = html | htmlbeautifier %}
 
 <div class="example-code">
-	{% highlight html %}{{ code }}{% endhighlight %}
+	{% highlight html %}{{ html }}{% endhighlight %}
 </div>
-

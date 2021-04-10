@@ -1,6 +1,16 @@
 {% assign person-id = include.person-id | default: 1 %}
 {% assign person = site.data.people[person-id] %}
 <div class="navbar-nav flex-row{% if include.class %} {{ include.class }}{% endif %}">
+
+	{% unless include.condensed %}
+	<div class="nav-item d-none d-md-flex me-3">
+		<div class="btn-list">
+			{% include ui/button.html icon="brand-github" icon-color="github" outline=true text="Source code" href=site.github-url external=true %}
+			{% include ui/button.html icon="heart" icon-color="pink" outline=true text="Sponsor" href=site.github-sponsors-url external=true %}
+		</div>
+	</div>
+	{% endunless %}
+
 	<div class="nav-item dropdown d-none d-md-flex me-3">
 		<a href="#" class="nav-link px-0" data-bs-toggle="dropdown" tabindex="-1" aria-label="Show notifications">
 			{% include ui/icon.html icon="bell" %}

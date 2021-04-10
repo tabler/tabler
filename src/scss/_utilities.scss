@@ -1,4 +1,9 @@
 $margin-spacers: map-merge($spacers, (auto: auto, null: $spacer));
+$border-values: (
+  null: $border-width solid $border-color-transparent,
+  wide: $border-width-wide solid $border-color-transparent,
+  0: 0,
+);
 
 //Utilities
 $utilities: (
@@ -57,43 +62,35 @@ $utilities: (
   ),
   "border": (
     property: border,
-    values: (
-      null: $border-width solid $border-color-transparent,
-      wide: $border-width-wide solid $border-color-transparent,
-      0: 0,
-    )
+    values: $border-values
   ),
   "border-top": (
     property: border-top,
-    values: (
-      null: $border-width solid $border-color-transparent,
-      wide: $border-width-wide solid $border-color-transparent,
-      0: 0,
-    )
+    values: $border-values
   ),
   "border-end": (
+    class: border-end,
     property: border-right,
-    values: (
-      null: $border-width solid $border-color-transparent,
-      wide: $border-width-wide solid $border-color-transparent,
-      0: 0,
-    )
+    values: $border-values
   ),
   "border-bottom": (
     property: border-bottom,
-    values: (
-      null: $border-width solid $border-color-transparent,
-      wide: $border-width-wide solid $border-color-transparent,
-      0: 0,
-    )
+    values: $border-values
   ),
   "border-start": (
+    class: border-start,
     property: border-left,
-    values: (
-      null: $border-width solid $border-color-transparent,
-      wide: $border-width-wide solid $border-color-transparent,
-      0: 0,
-    )
+    values: $border-values
+  ),
+  "border-x": (
+    class: border-x,
+    property: border-left border-right,
+    values: $border-values
+  ),
+  "border-y": (
+    class: border-y,
+    property: border-top border-bottom,
+    values: $border-values
   ),
   "width": (
     property: width,
@@ -105,4 +102,10 @@ $utilities: (
     class: h,
     values: $size-values
   ),
+  "columns": (
+    property: columns,
+    class: columns,
+    responsive: true,
+    values: 2 3 4
+  )
 ) !default;

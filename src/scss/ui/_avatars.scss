@@ -17,15 +17,15 @@
   border-radius: $avatar-border-radius;
 
   svg {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: calc(var(--tblr-avatar-size) / #{(40 / 24)});
+    height: calc(var(--tblr-avatar-size) / #{(40 / 24)});
   }
 
   .badge {
     position: absolute;
     right: 0;
     bottom: 0;
-    border-radius: $border-radius-full;
+    border-radius: $border-radius-pill;
     box-shadow: 0 0 0 2px $white;
   }
 
@@ -35,7 +35,7 @@
 }
 
 .avatar-rounded {
-  border-radius: $border-radius-full;
+  border-radius: $border-radius-pill;
 }
 
 @each $avatar-size, $size in $avatar-sizes {
@@ -54,6 +54,7 @@
   display: inline-flex;
   padding: 0;
   margin: 0 0 -.5rem;
+  flex-wrap: wrap;
 
   .avatar {
     margin-bottom: .5rem;
@@ -106,4 +107,11 @@
   font-size: $h6-font-size;
   line-height: 1;
   margin-top: .25rem;
+}
+
+.page-avatar {
+  .page-cover ~ * & {
+    margin-top: calc(calc(-1 * calc(var(--tblr-avatar-size) / 2)) - #{$content-padding-y});
+    box-shadow: 0 0 0 .25rem $body-bg;
+  }
 }

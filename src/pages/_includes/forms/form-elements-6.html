@@ -3,13 +3,14 @@
 
 <div class="mb-3">
 	<label class="form-label">Datepicker</label>
-	{% include ui/form/calendar.html class="mb-2" %}
-	{% include ui/form/calendar.html id="time" layout="icon" %}
+	{% include ui/datepicker.html id="default" class="mb-2" %}
+	{% include ui/datepicker.html id="icon" layout="icon" class="mb-2" %}
+	{% include ui/datepicker.html id="icon-prepend" layout="icon-prepend" %}
 </div>
 
 <div class="mb-3">
 	<label class="form-label">Inline datepicker</label>
-	{% include ui/form/calendar.html id="inline" inline=true %}
+	{% include ui/datepicker.html id="inline" inline=true %}
 </div>
 
 <div class="mb-3">
@@ -32,30 +33,36 @@
 
 <div class="mb-3">
 	<label class="form-label">Tags input</label>
-	{% include ui/form/selectize.html key="tags" %}
+	{% include ui/select.html key="tags" %}
 </div>
 
 <div class="mb-3">
 	<label class="form-label">Advanced tags input</label>
-	{% include ui/form/selectize.html key="tags-advanced" %}
+	{% include ui/select.html key="tags-advanced" %}
 </div>
 
 <div class="mb-3">
 	<label class="form-label">Advanced select</label>
-	{% include ui/form/selectize.html key="users" %}
+	{% include ui/select.html key="users" %}
 </div>
 
 <div class="mb-3">
 	<label class="form-label">Select with avatars</label>
-	{% include ui/form/selectize.html key="people" %}
+	{% include ui/select.html key="people" indicator="avatar" %}
 </div>
 
 <div class="mb-3">
 	<label class="form-label">Select with flags</label>
-	{% include ui/form/selectize.html key="countries"  %}
+	{% include ui/select.html key="countries" indicator="flag" %}
+</div>
+
+<div class="mb-3">
+	<label class="form-label">Select with labels</label>
+	{% include ui/select.html key="labels" indicator="label" %}
 </div>
 
 <div class="mb-3">
 	<label class="form-label">Advanced select with validation state</label>
-	{% include ui/form/selectize.html key="countries" state="valid" select-id="states" %}
+	{% include ui/select.html id="countries-valid" key="countries" state="valid" class="mb-3" %}
+	{% include ui/select.html id="countries-invalid" key="countries" state="invalid" %}
 </div>

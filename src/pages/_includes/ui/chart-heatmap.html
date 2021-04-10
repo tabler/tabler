@@ -58,17 +58,30 @@
 		],
 		xaxis: {
 			type: "category"
-		}
+		},
+		legend: {
+			{% if include.legend %}
+			show: true,
+			position: 'bottom',
+			offsetY: 8,
+			markers: {
+				width: 10,
+				height: 10,
+				radius: 100,
+			},
+			itemMargin: {
+				horizontal: 8,
+			},
+			{% else %}
+			show: false,
+			{% endif %}
+		},
 	};
 
 	(new ApexCharts(document.querySelector("#chart-{{ id }}"),options)).render();
 </script>
 {% endcapture %}
 
-{% if include.show-scripts %}
-{{ script }}
-{% else %}
 {% capture_global scripts %}
 {{ script }}
 {% endcapture_global %}
-{% endif %}

@@ -31,15 +31,25 @@
 }
 
 
-
+// Card image
 .card-img,
-.card-img-left {
+.card-img-start {
   @include border-start-radius($card-inner-border-radius);
 }
 
 .card-img,
-.card-img-right {
+.card-img-end {
   @include border-end-radius($card-inner-border-radius);
+}
+
+.card-img-overlay {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.card-img-overlay-dark {
+  background-image: $overlay-gradient;
 }
 
 .card-inactive {
@@ -168,8 +178,16 @@
   flex: 1;
 }
 
+/*
+Card footer
+ */
 .card-footer {
   margin-top: auto;
+}
+
+.card-footer-gray {
+  border-top: 0;
+  background: $min-black;
 }
 
 .card-progress {
@@ -207,9 +225,12 @@
 
 .card-subtitle {
   margin-top: -$card-spacer-y;
-  margin-bottom: $card-spacer-y;
-  font-size: $small-font-size;
+  margin-bottom: $card-title-spacer-y;
   color: $text-muted;
+
+  .card-header & {
+    margin: -.125rem 0 0;
+  }
 }
 
 .card-body {
@@ -392,7 +413,10 @@ Card chart
 Card avatar
  */
 .card-avatar {
-  box-shadow: 0 0 0 .5rem $card-bg;
+  margin-left: auto;
+  margin-right: auto;
+  box-shadow: 0 0 0 .25rem $card-bg;
+  margin-top: calc(-1 * calc(var(--#{$variable-prefix}avatar-size) / 2));
 }
 
 /*

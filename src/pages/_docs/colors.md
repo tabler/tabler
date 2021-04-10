@@ -1,6 +1,6 @@
 ---
 title: Colors
-menu: docs.base.colors
+menu: docs.content.colors
 description: The choice of colors for a website or app interface has an big influence on how users interact with the product and what decisions they make. Harmonic colors can contribute to a nice first impression and encourage users to engage with your product, so it's a very important aspect of a successful design, which needs to be well thought out. 
 bootstrap-link: utilities/colors/
 ---
