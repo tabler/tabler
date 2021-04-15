@@ -125,6 +125,18 @@ Replace the default modifier class with the `.btn-outline-*` class, if you want 
 {% include example.html code=code wrapper="btn-list" centered=true %}
 
 
+## Another color button hover
+
+Add the `.hover-btn-*` class to your button to change the hover color if you want diffrent than basic. 
+<!-- Analogy, use `.hover-btn-ghost-*` and  `.hover-btn-outline-*`. -->
+
+{% capture code %}
+<button type="button" class="btn btn-primary hover-btn-secondary">Primary to Secondary</button>
+<button type="button" class="btn btn-ghost-orange hover-btn-red">Ghost Orange to Red</button>
+{% endcapture %}
+{% include example.html code=code wrapper="btn-list" centered=true %}
+
+
 ## Button size
 
 Add `.btn-lg` or `.btn-sm` to change the size of your button and differentiate those which should have primary focus from those of secondary importance. Adapt the button size to your design and encourage users to take actions.  
