@@ -212,3 +212,31 @@ $btn-colors: $theme-colors;
     @extend %btn-ghost;
   }
 }
+
+@each $name, $color in $btn-colors {
+  .hover-btn-#{$name}:hover,
+  .hover-btn-outline-#{$name}:hover,
+  .hover-ghost-#{$name}:hover {
+    --#{$variable-prefix}btn-color: #{hex-to-rgb($color)};
+    --#{$variable-prefix}btn-color-darker: #{hex-to-rgb(theme-color-darker($color))};
+    --#{$variable-prefix}btn-color-text: #{color-contrast($color)};
+  }
+
+  .hover-btn-#{$name}:hover {
+    @extend %btn-color;
+  }
+
+  .hover-btn-outline-#{$name}:hover {
+    @extend %btn-outline;
+  }
+
+  .hover-btn-ghost-#{$name}:hover {
+    @extend %btn-ghost;
+  }
+}
+
+// .hover-btn-primary:hover{
+//   color: #eee;
+//   border-color: #ddd;
+//   background-color: #333;
+// }
