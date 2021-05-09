@@ -11,7 +11,7 @@
 	{% for level-1 in menu %}
 		{% assign icon = level-1[1].icon %}
 		<li class="nav-item{% if level-1[0] == current-page[0] or level-1[1].active %} active{% endif %}{% if level-1[1].children %} dropdown{% endif %}">
-			<a class="nav-link{% if level-1[1].children %} dropdown-toggle{% endif %}{% if level-1[1].disabled %} disabled{% endif %}" {% if level-1[1].children %}href="#navbar-{{ level-1[0] }}" data-bs-toggle="dropdown" role="button" aria-expanded="{% if include.auto-open and level-1[0] == current-page[0] %}true{% else %}false{% endif %}" {% else %}href="{{ site.base }}/{{ level-1[1].url }}" {% endif %}>
+			<a class="nav-link{% if level-1[1].children %} dropdown-toggle{% endif %}{% if level-1[1].disabled %} disabled{% endif %}" {% if level-1[1].children %}href="#navbar-{{ level-1[0] }}" data-bs-toggle="dropdown" data-bs-auto-close="{% if include.keep-open %}false{% else %}outside{% endif %}" role="button" aria-expanded="{% if include.auto-open and level-1[0] == current-page[0] %}true{% else %}false{% endif %}" {% else %}href="{{ site.base }}/{{ level-1[1].url }}" {% endif %}>
 				{% unless hide-icons %}
 				<span class="nav-link-icon d-md-none d-lg-inline-block">{% include ui/icon.html icon=icon %}</span>
 				{% endunless %}
@@ -47,7 +47,7 @@
 
 					{% if level-2[1].children %}<div class="dropend">{% endif %}
 
-					<a class="dropdown-item{% if level-2[1].children %} dropdown-toggle{% endif %}{% if level-1[0] == current-page[0] and level-2[0] == current-page[1] and current-page.size == 2 %} active{% endif %}" {% if level-2[1].children %}href="#sidebar-{{ level-2[0] }}" data-bs-toggle="dropdown" role="button" aria-expanded="false" {% else %}href="{{ site.base }}/{{ level-2[1].url }}" {% endif %}>
+					<a class="dropdown-item{% if level-2[1].children %} dropdown-toggle{% endif %}{% if level-1[0] == current-page[0] and level-2[0] == current-page[1] and current-page.size == 2 %} active{% endif %}" {% if level-2[1].children %}href="#sidebar-{{ level-2[0] }}" data-bs-toggle="dropdown" data-bs-auto-close="{% if include.keep-open %}false{% else %}outside{% endif %}" role="button" aria-expanded="false" {% else %}href="{{ site.base }}/{{ level-2[1].url }}" {% endif %}>
 						{{ level-2[1].title }}
 					</a>
 
