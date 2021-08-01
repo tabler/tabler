@@ -39,6 +39,11 @@ We've created this admin panel for everyone who wants to create templates based 
 * **Demo pages**: Tabler features over 20 individual pages using various components, which gives you the freedom to choose and combine. All components can vary in color and styling that you can easily modify using Sass. Sky is the limit!
 * **Single Page Application versions:** [Tabler React](https://github.com/tabler/tabler-react) has React components for Tabler.
 
+
+## Documentation
+
+Documentation is available as a part of Tabler preview: https://preview.tabler.io/docs/
+
 ## Sponsor Tabler
 
 <a href="https://github.com/sponsors/codecalm" target="_blank"><img src="/src/static/sponsor-banner-readme.png?raw=true" alt="Sponsor Tabler" /></a>
