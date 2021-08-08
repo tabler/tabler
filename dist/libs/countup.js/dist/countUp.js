@@ -16,7 +16,7 @@ var CountUp = /** @class */ (function () {
         this.target = target;
         this.endVal = endVal;
         this.options = options;
-        this.version = '2.0.7';
+        this.version = '2.0.8';
         this.defaults = {
             startVal: 0,
             decimalPlaces: 0,
@@ -87,10 +87,10 @@ var CountUp = /** @class */ (function () {
         // default format and easing functions
         this.formatNumber = function (num) {
             var neg = (num < 0) ? '-' : '';
-            var result, x, x1, x2, x3;
+            var result, x1, x2, x3;
             result = Math.abs(num).toFixed(_this.options.decimalPlaces);
             result += '';
-            x = result.split('.');
+            var x = result.split('.');
             x1 = x[0];
             x2 = x.length > 1 ? _this.options.decimal + x[1] : '';
             if (_this.options.useGrouping) {
