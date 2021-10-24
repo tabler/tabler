@@ -9,7 +9,7 @@
 (function (factory) {
 	typeof define === 'function' && define.amd ? define(factory) :
 	factory();
-}((function () { 'use strict';
+})((function () { 'use strict';
 
 	var e,t,n="function"==typeof Map?new Map:(e=[],t=[],{has:function(t){return e.indexOf(t)>-1},get:function(n){return t[e.indexOf(n)]},set:function(n,o){-1===e.indexOf(n)&&(e.push(n),t.push(o));},delete:function(n){var o=e.indexOf(n);o>-1&&(e.splice(o,1),t.splice(o,1));}}),o=function(e){return new Event(e,{bubbles:!0})};try{new Event("test");}catch(e){o=function(e){var t=document.createEvent("Event");return t.initEvent(e,!0,!1),t};}function r(e){var t=n.get(e);t&&t.destroy();}function i(e){var t=n.get(e);t&&t.update();}var l=null;"undefined"==typeof window||"function"!=typeof window.getComputedStyle?((l=function(e){return e}).destroy=function(e){return e},l.update=function(e){return e}):((l=function(e,t){return e&&Array.prototype.forEach.call(e.length?e:[e],function(e){return function(e){if(e&&e.nodeName&&"TEXTAREA"===e.nodeName&&!n.has(e)){var t,r=null,i=null,l=null,d=function(){e.clientWidth!==i&&c();},a=function(t){window.removeEventListener("resize",d,!1),e.removeEventListener("input",c,!1),e.removeEventListener("keyup",c,!1),e.removeEventListener("autosize:destroy",a,!1),e.removeEventListener("autosize:update",c,!1),Object.keys(t).forEach(function(n){e.style[n]=t[n];}),n.delete(e);}.bind(e,{height:e.style.height,resize:e.style.resize,overflowY:e.style.overflowY,overflowX:e.style.overflowX,wordWrap:e.style.wordWrap});e.addEventListener("autosize:destroy",a,!1),"onpropertychange"in e&&"oninput"in e&&e.addEventListener("keyup",c,!1),window.addEventListener("resize",d,!1),e.addEventListener("input",c,!1),e.addEventListener("autosize:update",c,!1),e.style.overflowX="hidden",e.style.wordWrap="break-word",n.set(e,{destroy:a,update:c}),"vertical"===(t=window.getComputedStyle(e,null)).resize?e.style.resize="none":"both"===t.resize&&(e.style.resize="horizontal"),r="content-box"===t.boxSizing?-(parseFloat(t.paddingTop)+parseFloat(t.paddingBottom)):parseFloat(t.borderTopWidth)+parseFloat(t.borderBottomWidth),isNaN(r)&&(r=0),c();}function u(t){var n=e.style.width;e.style.width="0px",e.style.width=n,e.style.overflowY=t;}function s(){if(0!==e.scrollHeight){var t=function(e){for(var t=[];e&&e.parentNode&&e.parentNode instanceof Element;)e.parentNode.scrollTop&&t.push({node:e.parentNode,scrollTop:e.parentNode.scrollTop}),e=e.parentNode;return t}(e),n=document.documentElement&&document.documentElement.scrollTop;e.style.height="",e.style.height=e.scrollHeight+r+"px",i=e.clientWidth,t.forEach(function(e){e.node.scrollTop=e.scrollTop;}),n&&(document.documentElement.scrollTop=n);}}function c(){s();var t=Math.round(parseFloat(e.style.height)),n=window.getComputedStyle(e,null),r="content-box"===n.boxSizing?Math.round(parseFloat(n.height)):e.offsetHeight;if(r<t?"hidden"===n.overflowY&&(u("scroll"),s(),r="content-box"===n.boxSizing?Math.round(parseFloat(window.getComputedStyle(e,null).height)):e.offsetHeight):"hidden"!==n.overflowY&&(u("hidden"),s(),r="content-box"===n.boxSizing?Math.round(parseFloat(window.getComputedStyle(e,null).height)):e.offsetHeight),l!==r){l=r;var i=o("autosize:resized");try{e.dispatchEvent(i);}catch(e){}}}}(e)}),e}).destroy=function(e){return e&&Array.prototype.forEach.call(e.length?e:[e],r),e},l.update=function(e){return e&&Array.prototype.forEach.call(e.length?e:[e],i),e});var d=l;
 
@@ -138,6 +138,8 @@
 	function _possibleConstructorReturn(self, call) {
 	  if (call && (typeof call === "object" || typeof call === "function")) {
 	    return call;
+	  } else if (call !== void 0) {
+	    throw new TypeError("Derived constructors may only return object or undefined");
 	  }
 	  return _assertThisInitialized(self);
 	}
@@ -1034,8 +1036,7 @@
 	      if (!String(tailChunk)) return;
 	      if (isString(tailChunk)) tailChunk = new ContinuousTailDetails(String(tailChunk));
 	      var lastChunk = this.chunks[this.chunks.length - 1];
-	      var extendLast = lastChunk && (
-	      lastChunk.stop === tailChunk.stop || tailChunk.stop == null) &&
+	      var extendLast = lastChunk && (lastChunk.stop === tailChunk.stop || tailChunk.stop == null) &&
 	      tailChunk.from === lastChunk.from + lastChunk.toString().length;
 	      if (tailChunk instanceof ContinuousTailDetails) {
 	        if (extendLast) {
@@ -1071,8 +1072,7 @@
 	        var lastBlockIter = masked._mapPosToBlock(masked.value.length);
 	        var stop = chunk.stop;
 	        var chunkBlock = void 0;
-	        if (stop != null && (
-	        !lastBlockIter || lastBlockIter.index <= stop)) {
+	        if (stop != null && (!lastBlockIter || lastBlockIter.index <= stop)) {
 	          if (chunk instanceof ChunksTailDetails ||
 	          masked._stops.indexOf(stop) >= 0) {
 	            details.aggregate(masked._appendPlaceholder(stop));
@@ -2125,8 +2125,7 @@
 	    }
 	  }, {
 	    key: "_saveSelection",
-	    value: function _saveSelection()
-	    {
+	    value: function _saveSelection() {
 	      if (this.value !== this.el.value) {
 	        console.warn('Element value was changed outside of mask. Syncronize mask using `mask.updateValue()` to work properly.');
 	      }
@@ -2478,9 +2477,7 @@
 	      var valid = regexp.test(this._removeThousandsSeparators(this.value));
 	      if (valid) {
 	        var number = this.number;
-	        valid = valid && !isNaN(number) && (
-	        this.min == null || this.min >= 0 || this.min <= this.number) && (
-	        this.max == null || this.max <= 0 || this.number <= this.max);
+	        valid = valid && !isNaN(number) && (this.min == null || this.min >= 0 || this.min <= this.number) && (this.max == null || this.max <= 0 || this.number <= this.max);
 	      }
 	      return valid && _get(_getPrototypeOf(MaskedNumber.prototype), "doValidate", this).call(this, flags);
 	    }
@@ -2989,27 +2986,20 @@
 	  return placement.split('-')[0];
 	}
 
-	var round$1 = Math.round;
-	function getBoundingClientRect(element, includeScale) {
-	  if (includeScale === void 0) {
-	    includeScale = false;
-	  }
+	function getBoundingClientRect(element,
+	includeScale) {
 	  var rect = element.getBoundingClientRect();
 	  var scaleX = 1;
 	  var scaleY = 1;
-	  if (isHTMLElement(element) && includeScale) {
-	    scaleX = rect.width / element.offsetWidth || 1;
-	    scaleY = rect.height / element.offsetHeight || 1;
-	  }
 	  return {
-	    width: round$1(rect.width / scaleX),
-	    height: round$1(rect.height / scaleY),
-	    top: round$1(rect.top / scaleY),
-	    right: round$1(rect.right / scaleX),
-	    bottom: round$1(rect.bottom / scaleY),
-	    left: round$1(rect.left / scaleX),
-	    x: round$1(rect.left / scaleX),
-	    y: round$1(rect.top / scaleY)
+	    width: rect.width / scaleX,
+	    height: rect.height / scaleY,
+	    top: rect.top / scaleY,
+	    right: rect.right / scaleX,
+	    bottom: rect.bottom / scaleY,
+	    left: rect.left / scaleX,
+	    x: rect.left / scaleX,
+	    y: rect.top / scaleY
 	  };
 	}
 
@@ -3209,6 +3199,10 @@
 	  requiresIfExists: ['preventOverflow']
 	};
 
+	function getVariation(placement) {
+	  return placement.split('-')[1];
+	}
+
 	var unsetSides = {
 	  top: 'auto',
 	  right: 'auto',
@@ -3230,6 +3224,7 @@
 	  var popper = _ref2.popper,
 	      popperRect = _ref2.popperRect,
 	      placement = _ref2.placement,
+	      variation = _ref2.variation,
 	      offsets = _ref2.offsets,
 	      position = _ref2.position,
 	      gpuAcceleration = _ref2.gpuAcceleration,
@@ -3251,18 +3246,18 @@
 	    var widthProp = 'clientWidth';
 	    if (offsetParent === getWindow(popper)) {
 	      offsetParent = getDocumentElement(popper);
-	      if (getComputedStyle$1(offsetParent).position !== 'static') {
+	      if (getComputedStyle$1(offsetParent).position !== 'static' && position === 'absolute') {
 	        heightProp = 'scrollHeight';
 	        widthProp = 'scrollWidth';
 	      }
 	    }
 	    offsetParent = offsetParent;
-	    if (placement === top) {
+	    if (placement === top || (placement === left || placement === right) && variation === end) {
 	      sideY = bottom;
 	      y -= offsetParent[heightProp] - popperRect.height;
 	      y *= gpuAcceleration ? 1 : -1;
 	    }
-	    if (placement === left) {
+	    if (placement === left || (placement === top || placement === bottom) && variation === end) {
 	      sideX = right;
 	      x -= offsetParent[widthProp] - popperRect.width;
 	      x *= gpuAcceleration ? 1 : -1;
@@ -3273,7 +3268,7 @@
 	  }, adaptive && unsetSides);
 	  if (gpuAcceleration) {
 	    var _Object$assign;
-	    return Object.assign({}, commonStyles, (_Object$assign = {}, _Object$assign[sideY] = hasY ? '0' : '', _Object$assign[sideX] = hasX ? '0' : '', _Object$assign.transform = (win.devicePixelRatio || 1) < 2 ? "translate(" + x + "px, " + y + "px)" : "translate3d(" + x + "px, " + y + "px, 0)", _Object$assign));
+	    return Object.assign({}, commonStyles, (_Object$assign = {}, _Object$assign[sideY] = hasY ? '0' : '', _Object$assign[sideX] = hasX ? '0' : '', _Object$assign.transform = (win.devicePixelRatio || 1) <= 1 ? "translate(" + x + "px, " + y + "px)" : "translate3d(" + x + "px, " + y + "px, 0)", _Object$assign));
 	  }
 	  return Object.assign({}, commonStyles, (_Object$assign2 = {}, _Object$assign2[sideY] = hasY ? y + "px" : '', _Object$assign2[sideX] = hasX ? x + "px" : '', _Object$assign2.transform = '', _Object$assign2));
 	}
@@ -3288,6 +3283,7 @@
 	      roundOffsets = _options$roundOffsets === void 0 ? true : _options$roundOffsets;
 	  var commonStyles = {
 	    placement: getBasePlacement(state.placement),
+	    variation: getVariation(state.placement),
 	    popper: state.elements.popper,
 	    popperRect: state.rects.popper,
 	    gpuAcceleration: gpuAcceleration
@@ -3527,10 +3523,6 @@
 	  return clippingRect;
 	}
 
-	function getVariation(placement) {
-	  return placement.split('-')[1];
-	}
-
 	function computeOffsets(_ref) {
 	  var reference = _ref.reference,
 	      element = _ref.element,
@@ -3605,11 +3597,10 @@
 	      padding = _options$padding === void 0 ? 0 : _options$padding;
 	  var paddingObject = mergePaddingObject(typeof padding !== 'number' ? padding : expandToHashMap(padding, basePlacements));
 	  var altContext = elementContext === popper ? reference : popper;
-	  var referenceElement = state.elements.reference;
 	  var popperRect = state.rects.popper;
 	  var element = state.elements[altBoundary ? altContext : elementContext];
 	  var clippingClientRect = getClippingRect(isElement$1(element) ? element : element.contextElement || getDocumentElement(state.elements.popper), boundary, rootBoundary);
-	  var referenceClientRect = getBoundingClientRect(referenceElement);
+	  var referenceClientRect = getBoundingClientRect(state.elements.reference);
 	  var popperOffsets = computeOffsets({
 	    reference: referenceClientRect,
 	    element: popperRect,
@@ -4028,9 +4019,9 @@
 	    isFixed = false;
 	  }
 	  var isOffsetParentAnElement = isHTMLElement(offsetParent);
-	  var offsetParentIsScaled = isHTMLElement(offsetParent) && isElementScaled(offsetParent);
+	  isHTMLElement(offsetParent) && isElementScaled(offsetParent);
 	  var documentElement = getDocumentElement(offsetParent);
-	  var rect = getBoundingClientRect(elementOrVirtualElement, offsetParentIsScaled);
+	  var rect = getBoundingClientRect(elementOrVirtualElement);
 	  var scroll = {
 	    scrollLeft: 0,
 	    scrollTop: 0
@@ -4045,7 +4036,7 @@
 	      scroll = getNodeScroll(offsetParent);
 	    }
 	    if (isHTMLElement(offsetParent)) {
-	      offsets = getBoundingClientRect(offsetParent, true);
+	      offsets = getBoundingClientRect(offsetParent);
 	      offsets.x += offsetParent.clientLeft;
 	      offsets.y += offsetParent.clientTop;
 	    } else if (documentElement) {
@@ -4167,7 +4158,8 @@
 	    var isDestroyed = false;
 	    var instance = {
 	      state: state,
-	      setOptions: function setOptions(options) {
+	      setOptions: function setOptions(setOptionsAction) {
+	        var options = typeof setOptionsAction === 'function' ? setOptionsAction(state.options) : setOptionsAction;
 	        cleanupModifierEffects();
 	        state.options = Object.assign({}, defaultOptions, state.options, options);
 	        state.scrollParents = {
@@ -7823,4 +7815,4 @@
 
 	EnableActivationTabsFromLocationHash();
 
-})));
+}));
