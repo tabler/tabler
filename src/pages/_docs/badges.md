@@ -20,7 +20,7 @@ The default badges are square and come in the basic set of colors.
 
 ## Pill badges
 
-Use the `.bagde-pill` class if you want to create a badge with rounded corners. Its width will adjust to the label text.
+Use the `.badge-pill` class if you want to create a badge with rounded corners. Its width will adjust to the label text.
 
 {% capture code %}
 {% for color in site.colors %}

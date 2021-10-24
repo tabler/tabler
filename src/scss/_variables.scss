@@ -12,8 +12,8 @@ $enable-negative-margins: false !default;
 $assets-base: ".." !default;
 
 // FONTS
-$google-font: 'Inter' !default;
-$google-font-monospaced: null !default;
+$google-font: false !default;
+$google-font-monospaced: false !default;
 
 $font-family-sans-serif: $google-font, -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif !default;
 $font-family-monospace: $google-font-monospaced, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
@@ -27,7 +27,7 @@ $icon-stroke-width: 1.5 !default;
 $icon-size: 1.25rem !default;
 
 //Fonts
-$font-size-base: .875rem !default;
+$font-size-base: .9375rem !default;
 $body-letter-spacing: 0 !default;
 
 $font-weight-light: 300 !default;
@@ -35,27 +35,27 @@ $font-weight-normal: 400 !default;
 $font-weight-medium: 500 !default;
 $font-weight-bold: 600 !default;
 
-$line-height-base: (1.25rem/$font-size-base) !default;
-$line-height-sm: (1rem/$font-size-base) !default;
-$line-height-lg: (1.5rem/$font-size-base) !default;
+$line-height-base: divide(1.25rem, $font-size-base) !default;
+$line-height-sm: divide(1rem, $font-size-base) !default;
+$line-height-lg: divide(1.5rem, $font-size-base) !default;
 
-$h1-font-size: (24rem / 16) !default;
-$h1-line-height: (2rem/$h1-font-size) !default;
+$h1-font-size: divide(24rem, 16) !default;
+$h1-line-height: divide(2rem, $h1-font-size) !default;
 
-$h2-font-size: (20rem / 16) !default;
-$h2-line-height: (1.75rem/$h2-font-size) !default;
+$h2-font-size: divide(20rem, 16) !default;
+$h2-line-height: divide(1.75rem, $h2-font-size) !default;
 
-$h3-font-size: (16rem / 16) !default;
-$h3-line-height: (1.5rem/$h3-font-size) !default;
+$h3-font-size: divide(16rem, 16) !default;
+$h3-line-height: divide(1.5rem, $h3-font-size) !default;
 
 $h4-font-size: $font-size-base !default;
-$h4-line-height: (1.25rem/$h4-font-size) !default;
+$h4-line-height: divide(1.25rem, $h4-font-size) !default;
 
-$h5-font-size: (12rem / 16) !default;
-$h5-line-height: (1rem/$h5-font-size) !default;
+$h5-font-size: divide(12rem, 16) !default;
+$h5-line-height: divide(1rem, $h5-font-size) !default;
 
-$h6-font-size: (10rem / 16) !default;
-$h6-line-height: (1rem/$h6-font-size) !default;
+$h6-font-size: divide(10rem, 16) !default;
+$h6-line-height: divide(1rem, $h6-font-size) !default;
 
 $display-font-sizes: (
   1: 5rem,
@@ -66,7 +66,7 @@ $display-font-sizes: (
   6: 2.5rem
 ) !default;
 
-$small-font-size: percentage($h5-font-size/$font-size-base) !default;
+$small-font-size: percentage(divide($h5-font-size, $font-size-base)) !default;
 $code-font-size: $small-font-size !default;
 $code-line-height: 1.25rem !default;
 
@@ -227,8 +227,8 @@ $container-padding-x: 1.5rem !default;
 $spacer: 1rem !default;
 $spacers: (
   0: 0,
-  1: $spacer / 4,
-  2: $spacer / 2,
+  1: $spacer * .25,
+  2: $spacer * .5,
   3: $spacer,
   4: $spacer * 2,
   5: $spacer * 4,
@@ -518,7 +518,6 @@ $table-head-color: $text-muted !default;
 $table-head-bg: $light !default;
 $table-striped-order: even !default;
 $table-striped-bg: $light !default;
-$table-accent-bg: $light !default;
 $table-group-separator-color: $border-color-transparent !default;
 
 //toasts
