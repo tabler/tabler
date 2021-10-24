@@ -291,7 +291,7 @@ Navbar toggler
   width: 1.25em;
   background: currentColor;
   border-radius: 10px;
-  transition: $navbar-toggler-animation-time $navbar-toggler-animation-time top, $navbar-toggler-animation-time $navbar-toggler-animation-time bottom, $navbar-toggler-animation-time transform, 0s $navbar-toggler-animation-time opacity;
+  @include transition(top $navbar-toggler-animation-time $navbar-toggler-animation-time, bottom $navbar-toggler-animation-time $navbar-toggler-animation-time, transform $navbar-toggler-animation-time, opacity 0s $navbar-toggler-animation-time);
   position: relative;
 
   &:before,
@@ -304,7 +304,7 @@ Navbar toggler
     background: inherit;
     position: absolute;
     left: 0;
-    transition: inherit;
+    @include transition(inherit);
   }
 
   &:before {
@@ -317,7 +317,7 @@ Navbar toggler
 
   .navbar-toggler[aria-expanded="true"] & {
     transform: rotate(45deg);
-    transition: .3s top, .3s bottom, .3s .3s transform, 0s .3s opacity;
+    @include transition(top $transition-time, bottom $transition-time, transform $transition-time $transition-time, opacity 0s $transition-time);
 
     &:before {
       top: 0;
@@ -390,7 +390,7 @@ Navbar vertical
             bottom: 0;
             z-index: $zindex-fixed;
             align-items: flex-start;
-            transition: .3s transform;
+            @include transition(transform $transition-time);
             overflow-x: auto;
 
             &.navbar-right {
