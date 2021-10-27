@@ -7749,28 +7749,25 @@
 	enableDismissTrigger(Toast);
 	defineJQueryPlugin(Toast);
 
+	var bootstrap = /*#__PURE__*/Object.freeze({
+		__proto__: null,
+		Alert: Alert,
+		Button: Button,
+		Carousel: Carousel,
+		Collapse: Collapse,
+		Dropdown: Dropdown,
+		Modal: Modal,
+		Offcanvas: Offcanvas,
+		Popover: Popover,
+		ScrollSpy: ScrollSpy,
+		Tab: Tab,
+		Toast: Toast,
+		Tooltip: Tooltip
+	});
+
 	var dropdownTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="dropdown"]'));
 	dropdownTriggerList.map(function (dropdownTriggerEl) {
 	  return new Dropdown(dropdownTriggerEl);
-	});
-	var selectors = '.dropdown, .dropup, .dropend, .dropstart',
-	    dropdowns = document.querySelectorAll(selectors);
-	var currentTarget = undefined;
-	dropdowns.forEach(function (dropdown) {
-	  dropdown.addEventListener('mousedown', function (e) {
-	    e.stopPropagation();
-	    if (e.target.dataset.bsToggle && e.target.dataset.bsToggle === 'dropdown') {
-	      currentTarget = e.currentTarget;
-	    }
-	  });
-	  dropdown.addEventListener('hide.bs.dropdown', function (e) {
-	    e.stopPropagation();
-	    var parent = currentTarget ? currentTarget.parentElement.closest(selectors) : undefined;
-	    if (parent && parent === dropdown) {
-	      e.preventDefault();
-	    }
-	    currentTarget = undefined;
-	  });
 	});
 
 	var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
@@ -7827,6 +7824,7 @@
 	  return new Toast(toastTriggerEl);
 	});
 
+	window.bootstrap = bootstrap;
 	EnableActivationTabsFromLocationHash();
 
 }));
