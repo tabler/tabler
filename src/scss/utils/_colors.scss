@@ -1,24 +1,36 @@
 // stylelint-disable declaration-no-important
 
-/**
-SOCIAL COLORS
- */
-@each $color, $value in $social-colors {
-  .bg-#{"" + $color} {
-    color: #fff !important;
-    background: $value !important;
-  }
-
-  .text-#{"" + $color} {
+@each $color, $value in $theme-colors {
+  .bg-#{"" + $color}-lt {
     color: $value !important;
+    background: theme-color-lighter($value, true) !important;
   }
 }
 
-
+// Extra colors
 @if $enable-extra-colors {
-  @each $color, $value in map-merge($colors, ( muted: $text-muted )) {
+  @each $color, $value in $extra-colors {
     .bg-#{"" + $color} {
       background: $value;
+    }
+
+    .text-#{"" + $color} {
+      color: $value !important;
+    }
+
+    .bg-#{"" + $color}-lt {
+      color: $value !important;
+      background: theme-color-lighter($value, true) !important;
+    }
+  }
+}
+
+// Social colors
+@if $enable-social-colors {
+  @each $color, $value in $social-colors {
+    .bg-#{"" + $color} {
+      color: #ffffff !important;
+      background: $value !important;
     }
 
     .text-#{"" + $color} {
