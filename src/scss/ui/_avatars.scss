@@ -1,5 +1,6 @@
 .avatar {
   --#{$variable-prefix}avatar-size: #{$avatar-size};
+  --#{$variable-prefix}avatar-bg: #{$gray-200};
   position: relative;
   width: var(--#{$variable-prefix}avatar-size);
   height: var(--#{$variable-prefix}avatar-size);
@@ -13,12 +14,12 @@
   text-transform: uppercase;
   vertical-align: bottom;
   user-select: none;
-  background: $gray-200 no-repeat center/cover;
+  background: var(--#{$variable-prefix}avatar-bg) no-repeat center/cover;
   border-radius: $avatar-border-radius;
 
   svg {
-    width: calc(var(--tblr-avatar-size) / #{(40 / 24)});
-    height: calc(var(--tblr-avatar-size) / #{(40 / 24)});
+    width: calc(var(--tblr-avatar-size) / #{divide(40, 24)});
+    height: calc(var(--tblr-avatar-size) / #{divide(40, 24)});
   }
 
   .badge {
@@ -44,8 +45,8 @@
   }
 
   .avatar-#{$avatar-size} .badge:empty {
-    width: $size / 4;
-    height: $size / 4;
+    width: $size * .25;
+    height: $size * .25;
   }
 }
 
@@ -88,7 +89,7 @@
   border: 1px dashed $border-color;
   background: $form-check-input-bg;
   flex-direction: column;
-  transition: .3s color, .3s background-color;
+  @include transition(color $transition-time, background-color $transition-time);
 
   svg {
     width: 1.5rem;
@@ -111,7 +112,7 @@
 
 .page-avatar {
   .page-cover ~ * & {
-    margin-top: calc(calc(-1 * calc(var(--tblr-avatar-size) / 2)) - #{$content-padding-y});
+    margin-top: calc(calc(-1 * calc(var(--tblr-avatar-size) * .5)) - #{$content-padding-y});
     box-shadow: 0 0 0 .25rem $body-bg;
   }
 }

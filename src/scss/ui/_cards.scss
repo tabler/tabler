@@ -21,7 +21,7 @@
 
   @at-root a#{&} {
     color: inherit;
-    transition: .3s box-shadow;
+    @include transition(box-shadow $transition-time);
 
     &:hover {
       text-decoration: none;
@@ -94,7 +94,7 @@
   justify-content: center;
   padding: $card-spacer-y $card-spacer-x;
   text-align: center;
-  transition: .3s background;
+  @include transition(background $transition-time);
   border-top: 1px solid $border-color;
   flex: 1;
   color: inherit;
@@ -187,7 +187,7 @@ Card footer
 
 .card-footer-gray {
   border-top: 0;
-  background: $min-black;
+  background: $gray-50;
 }
 
 .card-progress {
@@ -416,7 +416,7 @@ Card avatar
   margin-left: auto;
   margin-right: auto;
   box-shadow: 0 0 0 .25rem $card-bg;
-  margin-top: calc(-1 * calc(var(--#{$variable-prefix}avatar-size) / 2));
+  margin-top: calc(-1 * calc(var(--#{$variable-prefix}avatar-size) * .5));
 }
 
 /*

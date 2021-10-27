@@ -12,8 +12,8 @@ $enable-negative-margins: false !default;
 $assets-base: ".." !default;
 
 // FONTS
-$google-font: 'Inter' !default;
-$google-font-monospaced: null !default;
+$google-font: false !default;
+$google-font-monospaced: false !default;
 
 $font-family-sans-serif: $google-font, -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif !default;
 $font-family-monospace: $google-font-monospaced, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
@@ -27,7 +27,7 @@ $icon-stroke-width: 1.5 !default;
 $icon-size: 1.25rem !default;
 
 //Fonts
-$font-size-base: .875rem !default;
+$font-size-base: .9375rem !default;
 $body-letter-spacing: 0 !default;
 
 $font-weight-light: 300 !default;
@@ -35,27 +35,27 @@ $font-weight-normal: 400 !default;
 $font-weight-medium: 500 !default;
 $font-weight-bold: 600 !default;
 
-$line-height-base: (1.25rem/$font-size-base) !default;
-$line-height-sm: (1rem/$font-size-base) !default;
-$line-height-lg: (1.5rem/$font-size-base) !default;
+$line-height-base: divide(1.25rem, $font-size-base) !default;
+$line-height-sm: divide(1rem, $font-size-base) !default;
+$line-height-lg: divide(1.5rem, $font-size-base) !default;
 
-$h1-font-size: (24rem / 16) !default;
-$h1-line-height: (2rem/$h1-font-size) !default;
+$h1-font-size: divide(24rem, 16) !default;
+$h1-line-height: divide(2rem, $h1-font-size) !default;
 
-$h2-font-size: (20rem / 16) !default;
-$h2-line-height: (1.75rem/$h2-font-size) !default;
+$h2-font-size: divide(20rem, 16) !default;
+$h2-line-height: divide(1.75rem, $h2-font-size) !default;
 
-$h3-font-size: (16rem / 16) !default;
-$h3-line-height: (1.5rem/$h3-font-size) !default;
+$h3-font-size: divide(16rem, 16) !default;
+$h3-line-height: divide(1.5rem, $h3-font-size) !default;
 
 $h4-font-size: $font-size-base !default;
-$h4-line-height: (1.25rem/$h4-font-size) !default;
+$h4-line-height: divide(1.25rem, $h4-font-size) !default;
 
-$h5-font-size: (12rem / 16) !default;
-$h5-line-height: (1rem/$h5-font-size) !default;
+$h5-font-size: divide(12rem, 16) !default;
+$h5-line-height: divide(1rem, $h5-font-size) !default;
 
-$h6-font-size: (10rem / 16) !default;
-$h6-line-height: (1rem/$h6-font-size) !default;
+$h6-font-size: divide(10rem, 16) !default;
+$h6-line-height: divide(1rem, $h6-font-size) !default;
 
 $display-font-sizes: (
   1: 5rem,
@@ -66,7 +66,7 @@ $display-font-sizes: (
   6: 2.5rem
 ) !default;
 
-$small-font-size: percentage($h5-font-size/$font-size-base) !default;
+$small-font-size: percentage(divide($h5-font-size, $font-size-base)) !default;
 $code-font-size: $small-font-size !default;
 $code-line-height: 1.25rem !default;
 
@@ -84,32 +84,25 @@ $text-muted-dark-opacity: .8 !default;
 $border-opacity: .16 !default;
 $border-dark-opacity: .24 !default;
 
-$light: #f4f6fa !default;
-$dark: #232e3c !default;
+$gray-50: #f8fafc !default;
+$gray-100: #f1f5f9 !default;
+$gray-200: #e2e8f0 !default;
+$gray-300: #cbd5e1 !default;
+$gray-400: #94a3b8 !default;
+$gray-500: #64748b !default;
+$gray-600: #475569 !default;
+$gray-700: #334155 !default;
+$gray-800: #1e293b !default;
+$gray-900: #0f172a !default;
+
+$light: $gray-50 !default;
+$dark: $gray-800 !default;
 
 $body-bg: $light !default;
 $body-color: $dark !default;
 
 $color-contrast-dark: $dark !default;
 $color-contrast-light: $light !default;
-
-$light-black: rgba($dark, .24) !default;
-$light-mix: rgba(mix($light, $dark, 64%), .24) !default;
-$light-white: rgba($light, .24) !default;
-
-$min-black: rgba($dark, .024) !default;
-$min-white: rgba(mix($light, $dark, 48%), .1) !default;
-
-$gray-50: #fbfbfb !default;
-$gray-100: $light !default;
-$gray-200: mix($light, $dark, 98%) !default;
-$gray-300: mix($light, $dark, 94%) !default;
-$gray-400: mix($light, $dark, 88%) !default;
-$gray-500: mix($light, $dark, 78%) !default;
-$gray-600: mix($light, $dark, 60%) !default;
-$gray-700: mix($light, $dark, 36%) !default;
-$gray-800: mix($light, $dark, 16%) !default;
-$gray-900: $dark !default;
 
 $blue: #206bc4 !default;
 $azure: #4299e1 !default;
@@ -185,6 +178,7 @@ $colors: (
 // Dark mode
 $dark-mode-darken: darken($dark, 2%) !default;
 $dark-mode-lighten: lighten($dark, 2%) !default;
+$dark-mode-lighten-10: lighten($dark, 10%) !default;
 $dark-mode-text: $light;
 
 // Borders
@@ -194,7 +188,7 @@ $border-width-wide: 2px !default;
 $border-radius-sm: 2px !default;
 $border-radius: 4px !default;
 $border-radius-lg: 8px !default;
-$border-radius-pill: 50% !default;
+$border-radius-pill: 100rem !default;
 
 // Avatars
 $avatar-size: 2.5rem !default;
@@ -227,8 +221,8 @@ $container-padding-x: 1.5rem !default;
 $spacer: 1rem !default;
 $spacers: (
   0: 0,
-  1: $spacer / 4,
-  2: $spacer / 2,
+  1: $spacer * .25,
+  2: $spacer * .5,
   3: $spacer,
   4: $spacer * 2,
   5: $spacer * 4,
@@ -259,7 +253,7 @@ $container-variations: (
 
 $content-padding-y: 1.25rem !default;
 
-
+// Acpect ratios
 $aspect-ratios: (
   "1x1": 100%,
   "4x3": calc(3 / 4 * 100%),
@@ -270,7 +264,10 @@ $aspect-ratios: (
   "9x21": calc(21 / 9 * 100%),
 ) !default;
 
-// overlay
+// Transitions
+$transition-time: .3s !default;
+
+// Overlay
 $overlay-gradient: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, .6) 100%) !default;
 
 //accordion
@@ -308,7 +305,6 @@ $badge-font-weight: $font-weight-medium !default;
 $badge-empty-size: .5rem !default;
 
 //buttons
-$input-color: $body-color !default;
 $input-btn-line-height: $line-height-base !default;
 $input-btn-font-size: $font-size-base !default;
 $input-btn-padding-y: .5rem - .0625rem !default;
@@ -518,7 +514,6 @@ $table-head-color: $text-muted !default;
 $table-head-bg: $light !default;
 $table-striped-order: even !default;
 $table-striped-bg: $light !default;
-$table-accent-bg: $light !default;
 $table-group-separator-color: $border-color-transparent !default;
 
 //toasts
@@ -537,6 +532,7 @@ $list-group-border-color: $border-color !default;
 $list-group-action-color: inherit !default;
 $list-group-bg: inherit !default;
 
+$input-bg: $white !default;
 $input-disabled-bg: $gray-100 !default;
 $input-border-color: $border-color-dark !default;
 $input-border-color-transparent: $border-color-dark-transparent !default;
@@ -576,7 +572,7 @@ $form-switch-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/200
 $form-switch-bg-size: auto !default;
 
 $form-range-track-height: .25rem !default;
-$form-range-track-bg: $light-mix !default;
+$form-range-track-bg: $gray-200 !default;
 $form-range-thumb-border: 2px solid $white !default;
 $form-range-thumb-height: 1rem !default;
 $form-range-thumb-focus-box-shadow-width: .125rem !default;

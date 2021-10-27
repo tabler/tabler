@@ -1,7 +1,7 @@
 const gulp = require('gulp'),
 	debug = require('gulp-debug'),
 	clean = require('gulp-clean'),
-	sass = require('gulp-sass'),
+	sass = require('gulp-sass')(require('node-sass')),
 	postcss = require('gulp-postcss'),
 	header = require('gulp-header'),
 	cleanCSS = require('gulp-clean-css'),
@@ -204,6 +204,7 @@ gulp.task('js', () => {
 		plugins: [
 			rollupReplace({
 				'process.env.NODE_ENV': JSON.stringify(BUILD ? 'production' : 'development'),
+				preventAssignment: false
 			}),
 			rollupBabel({
 				exclude: 'node_modules/**'
@@ -217,6 +218,58 @@ gulp.task('js', () => {
 			cache = bundle;
 		})
 		.pipe(vinylSource('tabler.js'))
+		.pipe(vinylBuffer())
+		.pipe(rename((path) => {
+			path.dirname = '';
+		}))
+		.pipe(gulp.dest(`${distDir}/js/`))
+		.pipe(browserSync.reload({
+			stream: true,
+		}));
+
+	if (BUILD) {
+		g.pipe(minifyJS({
+			ext: {
+				src: '.js',
+				min: '.min.js'
+			},
+		}))
+			.pipe(gulp.dest(`${distDir}/js/`));
+	}
+
+	return g;
+});
+
+/**
+ * Compile JS module files to dist directory
+ */
+let cacheEsm;
+gulp.task('mjs', () => {
+	const g = rollupStream({
+		input: `${srcDir}/js/tabler.esm.js`,
+		cache: cacheEsm,
+		output: {
+			name: 'tabler.esm.js',
+			format: 'es',
+			exports: 'named'
+		},
+		plugins: [
+			rollupReplace({
+				'process.env.NODE_ENV': JSON.stringify(BUILD ? 'production' : 'development'),
+				preventAssignment: false
+			}),
+			rollupBabel({
+				exclude: 'node_modules/**'
+			}),
+			nodeResolve(),
+			rollupCommonjs(),
+			rollupCleanup()
+		]
+	})
+		.on('bundle', (bundle) => {
+			cacheEsm = bundle;
+		})
+		.pipe(vinylSource('tabler.esm.js'))
 		.pipe(vinylBuffer())
 		.pipe(rename((path) => {
 			path.dirname = '';
@@ -314,7 +367,7 @@ gulp.task('build-critical', (cb) => {
  */
 gulp.task('watch', (cb) => {
 	gulp.watch('./src/scss/**/*.scss', gulp.series('sass'));
-	gulp.watch('./src/js/**/*.js', gulp.series('js'));
+	gulp.watch('./src/js/**/*.js', gulp.series('js', 'mjs'));
 	cb();
 });
 
@@ -410,8 +463,8 @@ gulp.task('add-banner', () => {
 
 gulp.task('clean', gulp.series('clean-dirs', 'clean-jekyll'));
 
-gulp.task('start', gulp.series('clean', 'sass', 'js', 'build-jekyll', gulp.parallel('watch-jekyll', 'watch', 'browser-sync')));
+gulp.task('start', gulp.series('clean', 'sass', 'js', 'mjs', 'build-jekyll', gulp.parallel('watch-jekyll', 'watch', 'browser-sync')));
 
-gulp.task('build-core', gulp.series('build-on', 'clean', 'sass', 'css-minify', 'js', 'copy-images', 'copy-libs', 'add-banner'));
+gulp.task('build-core', gulp.series('build-on', 'clean', 'sass', 'css-minify', 'js', 'mjs', 'copy-images', 'copy-libs', 'add-banner'));
 gulp.task('build-demo', gulp.series('build-on', 'build-jekyll', 'copy-static', 'copy-dist', 'build-cleanup', 'build-purgecss'/*, 'build-critical'*/));
 gulp.task('build', gulp.series('build-core', 'build-demo'));
