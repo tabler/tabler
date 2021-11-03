@@ -5,6 +5,7 @@ description: The autosize element will automatically adjust the textarea height 
 libs: autosize
 ---
 
+To be able to use the autosize in your application you will need to install the autosize dependency with `npm install autosize`.
 
 ## Default markup
 

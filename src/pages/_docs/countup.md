@@ -5,6 +5,7 @@ menu: docs.components.countup
 libs: countup
 ---
 
+To be able to use the countup in your application you will need to install the countup.js dependency with `npm install countup.js`.
 
 ## Default countup
 

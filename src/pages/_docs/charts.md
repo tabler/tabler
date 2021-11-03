@@ -5,7 +5,9 @@ libs: apexcharts
 description: Tabler uses ApexCharts - a free and open-source modern charting library that helps developers to create beautiful and interactive visualizations for web pages.
 ---
 
-[ApexCharts](https://apexcharts.com/) documentation.
+To be able to use the charts in your application you will need to install the apexcharts dependency with `npm install apexcharts`. 
+
+See also the [ApexCharts](https://apexcharts.com/) documentation.
 
 ## Line Chart
 
