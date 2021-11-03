@@ -12,7 +12,7 @@ $enable-negative-margins: false !default;
 $assets-base: ".." !default;
 
 // FONTS
-$google-font: false !default;
+$google-font: 'Inter' !default;
 $google-font-monospaced: false !default;
 
 $font-family-sans-serif: $google-font, -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif !default;
@@ -27,7 +27,7 @@ $icon-stroke-width: 1.5 !default;
 $icon-size: 1.25rem !default;
 
 //Fonts
-$font-size-base: .9375rem !default;
+$font-size-base: .875rem !default;
 $body-letter-spacing: 0 !default;
 
 $font-weight-light: 300 !default;
@@ -66,10 +66,6 @@ $display-font-sizes: (
   6: 2.5rem
 ) !default;
 
-$small-font-size: percentage(divide($h5-font-size, $font-size-base)) !default;
-$code-font-size: $small-font-size !default;
-$code-line-height: 1.25rem !default;
-
 $lead-font-size: $font-size-base !default;
 $lead-font-weight: $font-weight-normal !default;
 
@@ -84,32 +80,25 @@ $text-muted-dark-opacity: .8 !default;
 $border-opacity: .16 !default;
 $border-dark-opacity: .24 !default;
 
-$light: #f4f6fa !default;
-$dark: #232e3c !default;
+$gray-50: #f8fafc !default;
+$gray-100: #f1f5f9 !default;
+$gray-200: #e2e8f0 !default;
+$gray-300: #cbd5e1 !default;
+$gray-400: #94a3b8 !default;
+$gray-500: #64748b !default;
+$gray-600: #475569 !default;
+$gray-700: #334155 !default;
+$gray-800: #1e293b !default;
+$gray-900: #0f172a !default;
+
+$light: $gray-50 !default;
+$dark: $gray-800 !default;
 
 $body-bg: $light !default;
 $body-color: $dark !default;
 
 $color-contrast-dark: $dark !default;
 $color-contrast-light: $light !default;
-
-$light-black: rgba($dark, .24) !default;
-$light-mix: rgba(mix($light, $dark, 64%), .24) !default;
-$light-white: rgba($light, .24) !default;
-
-$min-black: rgba($dark, .024) !default;
-$min-white: rgba(mix($light, $dark, 48%), .1) !default;
-
-$gray-50: #fbfbfb !default;
-$gray-100: $light !default;
-$gray-200: mix($light, $dark, 98%) !default;
-$gray-300: mix($light, $dark, 94%) !default;
-$gray-400: mix($light, $dark, 88%) !default;
-$gray-500: mix($light, $dark, 78%) !default;
-$gray-600: mix($light, $dark, 60%) !default;
-$gray-700: mix($light, $dark, 36%) !default;
-$gray-800: mix($light, $dark, 16%) !default;
-$gray-900: $dark !default;
 
 $blue: #206bc4 !default;
 $azure: #4299e1 !default;
@@ -146,7 +135,32 @@ $info: $azure !default;
 $warning: $orange !default;
 $danger: $red !default;
 
-$code-color: $primary !default;
+$theme-colors: (
+  "primary": $primary,
+  "secondary": $secondary,
+  "success": $success,
+  "info": $info,
+  "warning": $warning,
+  "danger": $danger,
+  "light": $light,
+  "dark":  $dark,
+  "muted": $text-muted
+) !default;
+
+$extra-colors: (
+  "blue": $blue,
+  "azure": $azure,
+  "indigo": $indigo,
+  "purple": $purple,
+  "pink": $pink,
+  "red": $red,
+  "orange": $orange,
+  "yellow": $yellow,
+  "lime": $lime,
+  "green": $green,
+  "teal": $teal,
+  "cyan": $cyan,
+) !default;
 
 $social-colors: (
   "facebook": #3b5998,
@@ -166,22 +180,6 @@ $social-colors: (
   "tabler": #206bc4
 ) !default;
 
-$colors: (
-  "blue": $blue,
-  "azure": $azure,
-  "indigo": $indigo,
-  "purple": $purple,
-  "pink": $pink,
-  "red": $red,
-  "orange": $orange,
-  "yellow": $yellow,
-  "lime": $lime,
-  "green": $green,
-  "teal": $teal,
-  "cyan": $cyan,
-) !default;
-
-
 // Dark mode
 $dark-mode-darken: darken($dark, 2%) !default;
 $dark-mode-lighten: lighten($dark, 2%) !default;
@@ -196,6 +194,12 @@ $border-radius-sm: 2px !default;
 $border-radius: 4px !default;
 $border-radius-lg: 8px !default;
 $border-radius-pill: 100rem !default;
+
+// Code
+$small-font-size: percentage(divide($h5-font-size, $font-size-base)) !default;
+$code-color: $primary !default;
+$code-font-size: $small-font-size !default;
+$code-line-height: 1.25rem !default;
 
 // Avatars
 $avatar-size: 2.5rem !default;
@@ -579,7 +583,7 @@ $form-switch-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/200
 $form-switch-bg-size: auto !default;
 
 $form-range-track-height: .25rem !default;
-$form-range-track-bg: $light-mix !default;
+$form-range-track-bg: $gray-200 !default;
 $form-range-thumb-border: 2px solid $white !default;
 $form-range-thumb-height: 1rem !default;
 $form-range-thumb-focus-box-shadow-width: .125rem !default;
