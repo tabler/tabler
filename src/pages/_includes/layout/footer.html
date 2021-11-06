@@ -22,7 +22,13 @@
 						All rights reserved.
 					</li>
 					<li class="list-inline-item">
-						<a href="{{ site.base }}/changelog.html" class="link-secondary" rel="noopener">v{{ site.data.package.version }}</a>
+						{% if jekyll.environment == 'production' %}
+						<a href="{{ site.base }}/changelog.html" class="link-secondary" rel="noopener">
+							v{{ site.data.package.version }}
+						</a>
+						{% else %}
+							Generated {{ site.time | date: '%Y-%m-%d %H:%M %Z' }}
+						{% endif %}
 					</li>
 				</ul>
 			</div>
