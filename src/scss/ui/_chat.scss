@@ -1,0 +1,76 @@
+//
+// Chat component
+//
+.chat {
+  padding: 1rem;
+}
+
+.chat-date {
+  @include subheader($text-muted);
+  text-align: center;
+}
+
+.chat-message {
+  margin-top: .25rem;
+}
+
+.chat-message-outer {
+  display: flex;
+}
+
+.chat-message-inner {
+  flex: 1;
+  display: flex;
+  flex-direction: row;
+  margin: 0 .5rem;
+}
+
+.chat-message-bubble {
+  border-radius: $border-radius-lg $border-radius-lg $border-radius-lg 0 ;
+  background: $white;
+  max-width: calc(100% - 4rem);
+  overflow-wrap: break-word;
+  display: flex;
+  align-items: center;
+  padding: .25rem .5rem;
+  box-shadow: $card-shadow;
+  border: 1px solid $border-color;
+}
+
+.chat-message-actions {
+  width: 4rem;
+  padding-right: .25rem;
+  flex-shrink: 0;
+}
+
+.chat-message-status {
+  width: 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.chat-message-spacer {
+  flex: 1;
+}
+
+.chat-message-me {
+  .chat-message-outer {
+    flex-direction: row-reverse;
+  }
+
+  .chat-message-inner {
+    flex-direction: row-reverse;
+  }
+
+  .chat-message-bubble {
+    background: rgba($primary, .04);
+    border-radius: $border-radius-lg $border-radius-lg 0 $border-radius-lg;
+  }
+}
+
+.chat-message-me + .chat-message-friend,
+.chat-message-friend + .chat-message-me {
+  margin-top: .5rem;
+}

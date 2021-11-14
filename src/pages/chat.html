@@ -1,0 +1,32 @@
+---
+title: Chat
+---
+
+<div class="card">
+	<div class="card-body">
+		<div class="chat">
+			{% for message in site.data.chat.messages %}
+			{% if message.type == 'date' %}
+				<div class="chat-date">{{ message.date }}</div>
+			{% else %}
+			{% assign author = site.data.people[message.author-id] %}
+			<div class="chat-message {% if message.author-id == 13 %}chat-message-me{% else %}chat-message-friend{% endif %}">
+				<div class="chat-message-outer">
+					<div class="chat-message-avatar">
+						<div data-bs-toggle="tooltip" data-bs-placement="top" title="{{ author.full_name }}">
+							{% include ui/avatar.html person-id=message.author-id size="sm" rounded=true %}
+						</div>
+					</div>
+					<div class="chat-message-inner">
+						<div class="chat-message-bubble">{{ message.text }}</div>
+						<div class="chat-message-actions"></div>
+						<div class="chat-message-spacer"></div>
+					</div>
+					<div class="chat-message-status"></div>
+				</div>
+			</div>
+			{% endif %}
+			{% endfor %}
+		</div>
+	</div>
+</div>
