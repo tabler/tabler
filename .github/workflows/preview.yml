@@ -37,13 +37,9 @@ jobs:
       - name: Build preview
         run: npm run preview
 
-      - name: rsync preview
-        uses: burnett01/rsync-deployments@5.1
+      - name: Sync files
+        uses: SamKirkland/FTP-Deploy-Action@4.1.0
         with:
-          switches: -avzr --delete
-          path: demo/*
-          remote_path: ${{ secrets.PREVIEW_PATH }}
-          remote_host: ${{ secrets.PREVIEW_HOST }}
-          remote_port: 22
-          remote_user: ${{ secrets.PREVIEW_USER }}
-          remote_key: "${{ secrets.PREVIEW_PASSWORD }}"
+          server: ${{ secrets.PREVIEW_HOST }}
+          username: ${{ secrets.PREVIEW_USER }}
+          password: ${{ secrets.PREVIEW_PASSWORD }}
