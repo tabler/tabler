@@ -38,4 +38,12 @@ jobs:
         run: npm run preview
 
       - name: rsync preview
-        run: "sshpass -p ${{ secrets.PREVIEW_PASSWORD }} rsync -avzr --delete demo/* ${{ secrets.PREVIEW_USER }}@${{ secrets.PREVIEW_HOST }}:${{ secrets.PREVIEW_PATH }}"
+        uses: burnett01/rsync-deployments@5.1
+        with:
+          switches: -avzr --delete
+          path: demo/*
+          remote_path: ${{ secrets.PREVIEW_PATH }}
+          remote_host: ${{ secrets.PREVIEW_HOST }}
+          remote_port: 22
+          remote_user: ${{ secrets.PREVIEW_USER }}
+          remote_key: "${{ secrets.PREVIEW_PASSWORD }}"
