@@ -4,6 +4,8 @@ menu: docs.components.range-slider
 libs: nouislider
 ---
 
+To be able to use the range slider in your application you will need to install the nouislider dependency with `npm install nouislider`.
+
 All options and features can be found [**here**](https://refreshless.com/nouislider/).
 
 

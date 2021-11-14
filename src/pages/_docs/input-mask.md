@@ -4,6 +4,7 @@ description: An input mask is a used to clarify the input format required in a g
 menu: docs.plugins.input-mask
 ---
 
+To be able to use the input mask in your application you will need to install the imask dependency with `npm install imask`.
 
 ## Default markup
 
