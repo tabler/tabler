@@ -1,0 +1,32 @@
+name: Build and deploy preview
+
+on:
+  push:
+    branches:
+      - dev
+      - dev-gh
+
+env:
+  NODE: 14
+
+jobs:
+  github-pages:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v2
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v2
+        with:
+          node-version: "${{ env.NODE }}"
+          cache: npm
+
+      - run: ruby -version
+      - run: node -version
+
+      - name: Install npm dependencies
+        run: npm install
+
+      - name: Build preview
+        run: npm run preview
