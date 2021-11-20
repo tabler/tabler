@@ -116,7 +116,7 @@ Add the `.btn-pill` class to your button to make it rounded and give it a modern
 Replace the default modifier class with the `.btn-outline-*` class, if you want to remove the color and the background of your button and give it a more subtle look. Outline buttons are perfect to use as secondary buttons, as they don't distract users from the main action.
 
 {% capture code %}
-{% for button in site.button-variants %}
+{% for button in site.theme-colors %}
 {% assign btn-color = button[1].class %}
 {% assign btn-title = button[1].title %}
 {% include ui/button.html text=btn-title color=btn-color outline=true %}
