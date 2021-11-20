@@ -1,0 +1,48 @@
+<div class="settings">
+
+	<a href="#" class="btn btn-icon settings-btn" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSettings">
+		{% include ui/icon.html icon="settings" %}
+	</a>
+
+
+	<div class="offcanvas offcanvas-end offcanvas-narrow show" tabindex="-1" id="offcanvasSettings">
+		<div class="offcanvas-header">
+			<h2 class="offcanvas-title">Theme Builder</h2>
+			<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+		</div>
+		<div class="offcanvas-body">
+			<div class="mb-4">
+				<label class="form-label">Color scheme</label>
+
+				<div class="form-selectgroup form-selectgroup-boxes">
+					{% assign schemes = 'default,mixed,colored,dark,transparent' | split: ',' %}
+					{% for scheme in schemes %}
+					<label class="form-selectgroup-item flex-fill">
+						<input type="radio" name="settings-scheme" value="{{ i }}" class="form-selectgroup-input"{% if scheme == 'default' %} checked{% endif %}>
+						<div class="form-selectgroup-label text-center">
+							<span class="form-selectgroup-check form-selectgroup-check-floated"></span>
+							<div class="settings-scheme settings-scheme-{{ scheme }}"></div>
+							<div>{{ scheme | capitalize }}</div>
+						</div>
+					</label>
+					{% endfor %}
+
+				</div>
+			</div>
+
+			<div class="mb-4">
+				<div class="form-label">Menu position</div>
+				<div>
+					{% assign positions = 'top,top-condensed,top-overlap,left,right' | split: ',' %}
+					{% for position in positions %}
+					<label class="form-check">
+						<input class="form-check-input" name="settings-position" value="{{ position }}" type="radio"{% if position == 'top' %} checked{% endif %}>
+						<span class="form-check-label">{{ position }}</span>
+					</label>
+					{% endfor %}
+				</div>
+			</div>
+
+		</div>
+	</div>
+</div>
