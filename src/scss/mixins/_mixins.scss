@@ -72,14 +72,16 @@
       }
     }
 
-    @media not print and (prefers-color-scheme: dark) {
-      @if ($selector) {
-        .theme-dark-auto & {
-          @content
-        }
-      } @else {
-        .theme-dark-auto {
-          @content
+    @media not print {
+      @media (prefers-color-scheme: dark) {
+        @if ($selector) {
+          .theme-dark-auto & {
+            @content
+          }
+        } @else {
+          .theme-dark-auto {
+            @content
+          }
         }
       }
     }
