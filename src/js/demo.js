@@ -19,15 +19,15 @@ const parseUrl = () => {
 
 	for (let i = 0; i < params.length; i++) {
 		const arr = params[i].split('=')
-		const prop = arr[0]
-		const val = arr[1]
+		const key = arr[0]
+		const value = arr[1]
 
-		if (!!items[prop]) {
+		if (!!items[key]) {
 			// Save to localStorage
-			localStorage.setItem(items[prop].localStorage, val)
+			localStorage.setItem(items[key].localStorage, value)
 
 			// Update local variables
-			config[prop] = val
+			config[key] = value
 		}
 	}
 }
@@ -54,12 +54,20 @@ const updateBodyClasses = () => {
 const submitForm = (form) => {
 	// Save data to localStorage
 	for (const [key, params] of Object.entries(items)) {
+		// Save to localStorage
 		const value = form.querySelector(`[name="settings-${key}"]:checked`).value
 		localStorage.setItem(params.localStorage, value)
+
+		// Update local variables
+		config[key] = value
 	}
 
-	// Reload page
-	window.location = window.location.pathname
+	// Update body classes
+	updateBodyClasses();
+
+	window.dispatchEvent(new Event('resize'));
+
+	(new bootstrap.Offcanvas(form)).hide()
 }
 
 

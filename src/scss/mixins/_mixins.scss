@@ -13,7 +13,7 @@
   }
 }
 
-@mixin scrollbar($is-dark: false) {
+@mixin scrollbar {
   &::-webkit-scrollbar {
     width: 6px;
     height: 6px;
@@ -22,32 +22,19 @@
 
   &::-webkit-scrollbar-thumb {
     border-radius: 5px;
-
-    @if ($is-dark) {
-      background: transparent;
-    } @else {
-      background: $gray-600;
-    }
+    background: rgba(var(--#{$variable-prefix}body-color-rgb), .16);
   }
 
   &::-webkit-scrollbar-track {
-    @if ($is-dark) {
-      background: transparent;
-    } @else {
-      background: $gray-300;
-    }
+    background: rgba(var(--#{$variable-prefix}body-color-rgb), .06);
+  }
+
+  &:hover::-webkit-scrollbar-thumb {
+    background: rgba(var(--#{$variable-prefix}body-color-rgb), .32);
   }
 
   &::-webkit-scrollbar-corner {
     background: transparent;
-  }
-
-  &:hover::-webkit-scrollbar-thumb {
-    @if ($is-dark) {
-      background: mix($white, $dark, 20%);
-    } @else {
-      background: $gray-600;
-    }
   }
 }
 

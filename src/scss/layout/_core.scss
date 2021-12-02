@@ -22,12 +22,19 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  * {
-    @include scrollbar;
-  }
-
   @media print {
     background: transparent;
   }
 }
 
+@include scrollbar;
+
+//
+// Fluid container
+//
+[data-container-layout="fluid"] {
+  [class^="container-"],
+  [class*=" container-"] {
+    max-width: 100%;
+  }
+}
