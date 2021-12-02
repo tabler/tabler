@@ -388,7 +388,7 @@ gulp.task('build-critical', (cb) => {
  */
 gulp.task('watch', (cb) => {
 	gulp.watch('./src/scss/**/*.scss', gulp.series('sass'))
-	gulp.watch('./src/js/**/*.js', gulp.series('js', 'mjs', 'js-demo'))
+	gulp.watch('./src/js/**/*.js', gulp.parallel('js', 'mjs', 'js-demo'))
 	cb()
 })
 
