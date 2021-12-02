@@ -1,9 +1,9 @@
 // Setting items
 const items = {
-	colorScheme: { localStorage: 'tablerColorScheme', default: 'light' },
-	menuPosition: { localStorage: 'tablerMenuPosition', default: 'top' },
-	menuBehavior: { localStorage: 'tablerMenuBehavior', default: 'sticky' },
-	containerLayout: { localStorage: 'tablerContainerLayout', default: 'boxed' },
+	'theme': { localStorage: 'tablerTheme', default: 'light' },
+	'menu-position': { localStorage: 'tablerMenuPosition', default: 'top' },
+	'menu-behavior': { localStorage: 'tablerMenuBehavior', default: 'sticky' },
+	'container-layout': { localStorage: 'tablerContainerLayout', default: 'boxed' },
 }
 
 // Theme config
@@ -43,6 +43,14 @@ const toggleFormControls = (form) => {
 	}
 }
 
+// Update body classes
+const updateBodyClasses = () => {
+	for (const [key, params] of Object.entries(items)) {
+		document.body.setAttribute(`data-${key}`, config[key]);
+	}
+}
+
+// Submit form
 const submitForm = (form) => {
 	// Save data to localStorage
 	for (const [key, params] of Object.entries(items)) {
@@ -54,22 +62,24 @@ const submitForm = (form) => {
 	window.location = window.location.pathname
 }
 
+
 // Parse url
 parseUrl()
 
-document.addEventListener("DOMContentLoaded", function () {
-	// Elements
-	const form = document.querySelector('#offcanvasSettings')
+// Update body classes
+updateBodyClasses();
 
-	// Toggle form controls
-	if (form) {
+// Elements
+const form = document.querySelector('#offcanvasSettings')
 
-		form.addEventListener('submit', function (e) {
-			e.preventDefault()
+// Toggle form controls
+if (form) {
 
-			submitForm(form)
-		})
+	form.addEventListener('submit', function (e) {
+		e.preventDefault()
 
-		toggleFormControls(form)
-	}
-})
+		submitForm(form)
+	})
+
+	toggleFormControls(form)
+}
