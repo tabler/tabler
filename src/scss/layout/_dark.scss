@@ -6,6 +6,9 @@
  */
 
 // stylelint-disable declaration-no-important
+body:not([data-theme="dark"]) .hide-theme-light {
+  display: none !important;
+}
 
 @include dark-mode {
   & {
@@ -23,6 +26,10 @@
 
     color: $dark-mode-text;
     background-color: $dark-mode-darken;
+  }
+
+  .hide-theme-dark {
+    display: none !important;
   }
 
   .text-body {
@@ -99,9 +106,13 @@
 
   .markdown,
   .markdown>*,
-  .btn-close,
   .accordion-button {
     color: inherit;
+  }
+
+  .btn-close,
+  .accordion-button:after {
+    filter: $btn-close-white-filter;
   }
 
   .apexcharts-text {
