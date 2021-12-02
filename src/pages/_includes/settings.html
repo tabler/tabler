@@ -13,25 +13,29 @@
 		<div class="offcanvas-body">
 			<div class="mb-4">
 				<label class="form-label">Color scheme</label>
+				<p class="form-hint">The perfect color mode for your app.</p>
 
-				<div class="form-selectgroup form-selectgroup-boxes">
+				<div class="row g-2">
 					{% assign schemes = 'default,mixed,colored,dark,transparent' | split: ',' %}
 					{% for scheme in schemes %}
-					<label class="form-selectgroup-item flex-fill">
-						<input type="radio" name="settings-scheme" value="{{ i }}" class="form-selectgroup-input"{% if scheme == 'default' %} checked{% endif %}>
-						<div class="form-selectgroup-label text-center">
-							<span class="form-selectgroup-check form-selectgroup-check-floated"></span>
-							<div class="settings-scheme settings-scheme-{{ scheme }}"></div>
-							<div>{{ scheme | capitalize }}</div>
-						</div>
-					</label>
+					<div class="col-6">
+						<label class="form-selectgroup-item">
+							<input type="radio" name="settings-scheme" value="{{ i }}" class="form-selectgroup-input"{% if scheme == 'default' %} checked{% endif %}>
+							<div class="form-selectgroup-label text-center">
+								<span class="form-selectgroup-check form-selectgroup-check-floated"></span>
+								<div class="settings-scheme settings-scheme-{{ scheme }}"></div>
+								<div>{{ scheme | capitalize }}</div>
+							</div>
+						</label>
+					</div>
 					{% endfor %}
-
 				</div>
 			</div>
 
 			<div class="mb-4">
 				<div class="form-label">Menu position</div>
+				<p class="form-hint">Toggle the position of the menu.</p>
+
 				<div>
 					{% assign positions = 'top,top-condensed,top-overlap,left,right' | split: ',' %}
 					{% for position in positions %}
@@ -43,6 +47,42 @@
 				</div>
 			</div>
 
+			<div class="mb-4">
+				<div class="form-label">Menu behavior</div>
+				<p class="form-hint">Change the behavior of the menu.</p>
+
+				<div>
+					{% assign positions = 'sticky,fixed,compact' | split: ',' %}
+					{% for position in positions %}
+					<label class="form-check">
+						<input class="form-check-input" name="settings-position" value="{{ position }}" type="radio"{% if position == 'top' %} checked{% endif %}>
+						<span class="form-check-label">{{ position }}</span>
+					</label>
+					{% endfor %}
+				</div>
+			</div>
+
+			<div class="mb-4">
+				<div class="form-label">Layout</div>
+				<p class="form-hint">Toggle container layout system.</p>
+
+				<div>
+					{% assign positions = 'fluid,boxed' | split: ',' %}
+					{% for position in positions %}
+					<label class="form-check">
+						<input class="form-check-input" name="settings-position" value="{{ position }}" type="radio"{% if position == 'top' %} checked{% endif %}>
+						<span class="form-check-label">{{ position }}</span>
+					</label>
+					{% endfor %}
+				</div>
+			</div>
+
+		</div>
+		<div class="offcanvas-footer">
+			<a href="#" class="btn btn-primary w-100">
+				{% include ui/icon.html icon="settings" %}
+				Save settings
+			</a>
 		</div>
 	</div>
 </div>
