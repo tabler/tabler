@@ -45,9 +45,14 @@ const toggleFormControls = (form) => {
 
 // Update body classes
 const updateBodyClasses = () => {
-	for (const [key, params] of Object.entries(items)) {
-		document.body.setAttribute(`data-${key}`, config[key]);
-	}
+	document.body.classList.remove('theme-dark');
+	document.body.classList.remove('theme-light');
+
+	document.body.classList.add(`theme-${config.theme}`);
+
+	// for (const [key, params] of Object.entries(items)) {
+	// 	document.body.setAttribute(`data-${key}`, config[key]);
+	// }
 }
 
 // Submit form
