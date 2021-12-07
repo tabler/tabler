@@ -1,6 +1,6 @@
 /*!
-* Tabler v1.0.0-beta4 (https://tabler.io)
-* @version 1.0.0-beta4
+* Tabler v1.0.0-beta5 (https://tabler.io)
+* @version 1.0.0-beta5
 * @link https://tabler.io
 * Copyright 2018-2021 The Tabler Authors
 * Copyright 2018-2021 codecalm.net Paweł Kuna
@@ -11,7 +11,7 @@ pre.highlight,
   max-height: 30rem;
   margin: 1.5rem 0;
   overflow: auto;
-  font-size: 80%;
+  font-size: 85.7142857%;
   border-radius: 4px; }
   pre.highlight::-webkit-scrollbar,
   .highlight pre::-webkit-scrollbar {
@@ -27,16 +27,16 @@ pre.highlight,
   pre.highlight::-webkit-scrollbar-thumb,
   .highlight pre::-webkit-scrollbar-thumb {
     border-radius: 5px;
-    background: #475569; }
+    background: rgba(var(--tblr-body-color-rgb), 0.16); }
   pre.highlight::-webkit-scrollbar-track,
   .highlight pre::-webkit-scrollbar-track {
-    background: #cbd5e1; }
+    background: rgba(var(--tblr-body-color-rgb), 0.06); }
+  pre.highlight:hover::-webkit-scrollbar-thumb,
+  .highlight pre:hover::-webkit-scrollbar-thumb {
+    background: rgba(var(--tblr-body-color-rgb), 0.32); }
   pre.highlight::-webkit-scrollbar-corner,
   .highlight pre::-webkit-scrollbar-corner {
     background: transparent; }
-  pre.highlight:hover::-webkit-scrollbar-thumb,
-  .highlight pre:hover::-webkit-scrollbar-thumb {
-    background: #475569; }
 
 .highlight {
   margin: 0; }
@@ -203,8 +203,8 @@ pre.highlight,
     flex: 0 auto; }
 
 .example-content {
-  font-size: 0.9375rem;
-  line-height: 1.3333333;
+  font-size: 0.875rem;
+  line-height: 1.4285714;
   color: #1e293b;
   flex: 1;
   max-width: 100%; }
@@ -247,13 +247,13 @@ pre.highlight,
   border-radius: 2px 2px 0 0; }
 
 @media not print {
+  .theme-dark .example {
+    background-color: #1b2434;
+    border-color: #2c3c56; }
+  .theme-dark .example-content {
+    color: #f8fafc; }
   .theme-dark .example-code {
-    border: 1px solid #e6e7e9;
-    border-top: none; } }
-
-@media not print and (prefers-color-scheme: dark) {
-  .theme-dark-auto .example-code {
-    border: 1px solid #e6e7e9;
+    border-color: #2c3c56;
     border-top: none; } }
 
 .card-sponsor {
@@ -323,8 +323,8 @@ body.no-transitions * {
   height: 7rem;
   text-align: center;
   padding: .5rem;
-  border-right: 1px solid #e6e7e9;
-  border-bottom: 1px solid #e6e7e9;
+  border-right: 1px solid var(--tblr-border-color);
+  border-bottom: 1px solid var(--tblr-border-color);
   color: inherit;
   cursor: pointer; }
   .demo-icons-list-item .icon {
@@ -333,3 +333,30 @@ body.no-transitions * {
     font-size: 1.5rem; }
   .demo-icons-list-item:hover {
     text-decoration: none; }
+
+.settings-btn {
+  position: fixed;
+  right: -1px;
+  top: 10rem;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  box-shadow: rgba(30, 41, 59, 0.04) 0 2px 4px 0; }
+
+.settings-scheme {
+  display: inline-block;
+  border-radius: 50%;
+  height: 3rem;
+  width: 3rem;
+  position: relative;
+  border: 1px solid var(--tblr-border-color);
+  box-shadow: rgba(30, 41, 59, 0.04) 0 2px 4px 0; }
+  .settings-scheme-light {
+    background: linear-gradient(135deg, #ffffff 50%, #f8fafc 50%); }
+  .settings-scheme-mixed {
+    background-image: linear-gradient(135deg, #1e293b 50%, #fff 50%); }
+  .settings-scheme-transparent {
+    background: #f8fafc; }
+  .settings-scheme-dark {
+    background: #1e293b; }
+  .settings-scheme-colored {
+    background-image: linear-gradient(135deg, var(--tblr-primary) 50%, #f8fafc 50%); }
