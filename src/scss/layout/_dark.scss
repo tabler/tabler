@@ -1,14 +1,35 @@
+/*!
+ * Tabler (v0.9.0): _dark.scss
+ * Copyright 2018-2021 The Tabler Authors
+ * Copyright 2018-2021 codecalm
+ * Licensed under MIT (https://github.com/tabler/tabler/blob/master/LICENSE)
+ */
+
 // stylelint-disable declaration-no-important
+body:not(.theme-dark) .hide-theme-light {
+  display: none !important;
+}
 
 @include dark-mode {
   & {
+    --#{$variable-prefix}body-color: #{$dark-mode-text};
+    --#{$variable-prefix}body-color-rgb: #{to-rgb($dark-mode-text)};
+
+    --#{$variable-prefix}body-bg: #{$dark-mode-darken};
+    --#{$variable-prefix}body-bg-rgb: #{to-rgb($dark-mode-darken)};
+
+    --#{$variable-prefix}card-bg: #{$dark};
+    --#{$variable-prefix}card-bg-rgb: #{to-rgb($dark)};
+
+    --#{$variable-prefix}border-color: #{$dark-mode-border-color};
+    --#{$variable-prefix}border-color-light: #{$dark-mode-border-color-light};
+
     color: $dark-mode-text;
     background-color: $dark-mode-darken;
   }
 
-  pre {
-    background-color: $dark-mode-darken;
-    border-color: $dark-mode-lighten-10;
+  .hide-theme-dark {
+    display: none !important;
   }
 
   .text-body {
@@ -36,6 +57,11 @@
     color: inherit;
   }
 
+  pre {
+    background-color: $dark-mode-darken;
+    border-color: $dark-mode-border-color;
+  }
+
   .card-tabs .nav-tabs .nav-link.active {
     background-color: $dark;
     color: inherit;
@@ -56,7 +82,7 @@
   .form-imagecheck-figure:before {
     background-color: $dark-mode-darken;
     color: $dark-mode-text;
-    border-color: $dark-mode-lighten-10;
+    border-color: $dark-mode-border-color;
   }
 
   .form-control-plaintext {
@@ -67,12 +93,16 @@
     background-color: $dark-mode-darken;
   }
 
+  .input-group-text {
+    border-color: $dark-mode-border-color;
+  }
+
   .highlight {
     background-color: $dark-mode-darken;
   }
 
   .avatar {
-    --tblr-avatar-bg: #{$dark-mode-lighten};
+    --#{$variable-prefix}avatar-bg: #{$dark-mode-lighten};
   }
 
   .avatar-list-stacked .avatar {
@@ -81,17 +111,36 @@
 
   .markdown,
   .markdown>*,
-  .btn-close,
   .accordion-button {
     color: inherit;
+  }
+
+  .btn-close,
+  .accordion-button:after {
+    filter: $btn-close-white-filter;
   }
 
   .apexcharts-text {
     fill: $dark-mode-text;
   }
 
+  .apexcharts-gridline {
+    stroke: var(--#{$variable-prefix}border-color);
+  }
+
   .apexcharts-legend-text {
     color: inherit !important;
+  }
+
+  .apexcharts-tooltip {
+    background: $dark !important;
+    border: 1px solid $dark-mode-border-color !important;
+    box-shadow: 2px 2px 6px -4px $dark-mode-darken !important;
+
+    .apexcharts-tooltip-title {
+      background: $dark !important;
+      border-bottom: 1px solid $dark-mode-border-color !important;
+    }
   }
 
   .navbar-brand-autodark {
@@ -108,13 +157,12 @@
     border-color: $border-color-transparent;
   }
 
-  .form-fieldset {
-    border-color: $input-border-color;
-  }
-
   .list-group-header {
     background: $dark-mode-darken;
-    border-color: $input-border-color;
+  }
+
+  .apexcharts-radialbar-area {
+    stroke: $dark-mode-border-color;
   }
 }
 

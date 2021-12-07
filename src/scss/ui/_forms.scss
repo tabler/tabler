@@ -9,6 +9,7 @@ Form label
  */
 .form-label {
   display: block;
+  font-weight: $font-weight-medium;
 
   &.required {
     &:after {
@@ -30,10 +31,7 @@ Form hint
  */
 .form-hint {
   display: block;
-  font-size: $h5-font-size;
-  line-height: $h5-line-height;
   color: $text-muted;
-
 
   &:last-child {
     margin-bottom: 0;
@@ -44,7 +42,7 @@ Form hint
   }
 
   .form-label + & {
-    margin-top: -.5rem;
+    margin-top: -.25rem;
   }
 
   .input-group + &,
@@ -59,7 +57,8 @@ Form control
  */
 .form-control {
   &:-webkit-autofill {
-    box-shadow: 0 0 0 1000px $white inset;
+    box-shadow: 0 0 0 1000px var(--#{$variable-prefix}body-bg) inset;
+    color: var(--#{$variable-prefix}body-color);
   }
 
   &:disabled,
@@ -130,8 +129,8 @@ Form control
 .form-fieldset {
   padding: 1rem;
   margin-bottom: 1rem;
-  background: $gray-50;
-  border: 1px solid $border-color;
+  background: var(--#{$variable-prefix}border-color-light);
+  border: 1px solid var(--#{$variable-prefix}border-color);
   border-radius: $border-radius;
 }
 

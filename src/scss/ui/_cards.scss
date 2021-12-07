@@ -1,5 +1,4 @@
 .border-0 {
-
   .card, .nav-link {
     border: 0 !important;
   }
@@ -7,12 +6,12 @@
   .card-stacked::after {
     border: 1px solid rgba($text-muted, 0.07) !important;
   }
-
 }
 
 .card {
   box-shadow: $card-shadow;
   border: $card-border-width solid $card-border-color;
+  background: var(--#{$variable-prefix}card-bg, #{$card-bg});
 
   @media print {
     border: none;
@@ -95,7 +94,7 @@
   padding: $card-spacer-y $card-spacer-x;
   text-align: center;
   @include transition(background $transition-time);
-  border-top: 1px solid $border-color;
+  border-top: 1px solid var(--#{$variable-prefix}border-color);
   flex: 1;
   color: inherit;
   font-weight: $font-weight-medium;
@@ -105,8 +104,8 @@
     background: $active-bg;
   }
 
-  &:not(:first-child) {
-    border-left: 1px solid $border-color;
+  & + & {
+    border-left: 1px solid var(--#{$variable-prefix}border-color);
   }
 }
 

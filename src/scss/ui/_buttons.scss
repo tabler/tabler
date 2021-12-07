@@ -1,21 +1,22 @@
 .btn {
+  --#{$variable-prefix}btn-color-text-rgb: var(--#{$variable-prefix}body-color-rgb);
+
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: $body-color;
-  background-color: $white;
-  border-color: $border-color-dark-transparent;
+  border-color: var(--#{$variable-prefix}border-color);
   white-space: nowrap;
 
+  background-color: var(--#{$variable-prefix}btn-color, var(--#{$variable-prefix}card-bg));
+  color: var(--#{$variable-prefix}btn-color-text);
+
   &:hover {
-    color: $body-color;
-    border-color: $text-muted-light;
-    background-color: $light;
+    color: var(--#{$variable-prefix}btn-color-text);
+    border-color: rgba(var(--#{$variable-prefix}btn-color-text-rgb), #{$border-active-opacity});
   }
 
-  &:focus {
-    border-color: rgba(var(--#{$variable-prefix}btn-color, hex-to-rgb($primary)), .5);
-    box-shadow: 0 0 0 $input-btn-focus-width rgba(var(--#{$variable-prefix}btn-color, hex-to-rgb($primary)), $input-btn-focus-color-opacity)
+  &:focus:not([disabled]):not(.disabled) {
+    border-color: var(--#{$variable-prefix}btn-color, #{$primary});
   }
 
   &:disabled,
@@ -29,7 +30,7 @@
     min-width: $icon-size;
     margin: 0 .5rem 0 -.25rem;
     vertical-align: bottom;
-    color: $text-muted;
+    color: inherit;
   }
 
   .avatar {
@@ -49,45 +50,36 @@
 }
 
 %btn-color {
-  background-color: rgba(var(--#{$variable-prefix}btn-color), 1);
-  color: var(--#{$variable-prefix}btn-color-text);
-
-  .icon {
-    color: inherit;
-  }
+  border-color: $border-color-dark-transparent;
 
   &:hover {
     color: var(--#{$variable-prefix}btn-color-text);
-    background: rgba(var(--#{$variable-prefix}btn-color-darker), 1);
-    border-color: transparent;
+    background: var(--#{$variable-prefix}btn-color-interactive);
+    border-color: var(--#{$variable-prefix}btn-color);
   }
 }
 
 %btn-outline {
   background-color: transparent;
-  color: rgba(var(--#{$variable-prefix}btn-color), 1);
-  border-color: $border-color-transparent;
-
-  .icon {
-    color: inherit;
-  }
+  color: var(--#{$variable-prefix}btn-color);
+  border-color: var(--#{$variable-prefix}btn-color);
 
   &:hover {
-    background-color: rgba(var(--#{$variable-prefix}btn-color), 1);
+    background-color: var(--#{$variable-prefix}btn-color);
     color: var(--#{$variable-prefix}btn-color-text);
-    border-color: rgba(var(--#{$variable-prefix}btn-color), 1);
+    border-color: var(--#{$variable-prefix}btn-color);
   }
 }
 
 %btn-ghost {
   background: transparent;
-  color: rgba(var(--#{$variable-prefix}btn-color), 1);
+  color: var(--#{$variable-prefix}btn-color);
   border-color: transparent;
 
   &:hover {
-    background-color: rgba(var(--#{$variable-prefix}btn-color), 1);
+    background-color: var(--#{$variable-prefix}btn-color);
     color: var(--#{$variable-prefix}btn-color-text);
-    border-color: rgba(var(--#{$variable-prefix}btn-color), 1);
+    border-color: var(--#{$variable-prefix}btn-color);
   }
 }
 
@@ -180,7 +172,9 @@
   }
 }
 
-
+//
+// Button color variations
+//
 $btn-colors: $theme-colors;
 
 @if $enable-extra-colors {
@@ -195,8 +189,8 @@ $btn-colors: $theme-colors;
   .btn-#{$name},
   .btn-outline-#{$name},
   .btn-ghost-#{$name} {
-    --#{$variable-prefix}btn-color: #{hex-to-rgb($color)};
-    --#{$variable-prefix}btn-color-darker: #{hex-to-rgb(theme-color-darker($color))};
+    --#{$variable-prefix}btn-color: #{$color};
+    --#{$variable-prefix}btn-color-interactive: #{theme-color-darker($color)};
     --#{$variable-prefix}btn-color-text: #{color-contrast($color)};
   }
 

@@ -1,8 +1,16 @@
 // stylelint-disable property-no-vendor-prefix
-html {
+:root {
   font-size: 16px;
-  scroll-behavior: smooth;
   height: 100%;
+
+  --#{$variable-prefix}card-bg: #{$card-bg};
+  --#{$variable-prefix}card-bg-rgb: #{to-rgb($card-bg)};
+
+  --#{$variable-prefix}border-color: #{$border-color};
+  --#{$variable-prefix}border-color-rgb: #{to-rgb($border-color)};
+
+  --#{$variable-prefix}border-color-light: #{$border-color-light};
+  --#{$variable-prefix}border-color-light-rgb: #{to-rgb($border-color-light)};
 }
 
 body {
@@ -17,12 +25,19 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  * {
-    @include scrollbar;
-  }
-
   @media print {
     background: transparent;
   }
 }
 
+@include scrollbar;
+
+//
+// Fluid container
+//
+[data-container-layout="fluid"] {
+  [class^="container-"],
+  [class*=" container-"] {
+    max-width: 100%;
+  }
+}

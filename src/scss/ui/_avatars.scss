@@ -1,6 +1,6 @@
 .avatar {
   --#{$variable-prefix}avatar-size: #{$avatar-size};
-  --#{$variable-prefix}avatar-bg: #{$gray-200};
+  --#{$variable-prefix}avatar-bg: var(--#{$variable-prefix}border-color-light);
   position: relative;
   width: var(--#{$variable-prefix}avatar-size);
   height: var(--#{$variable-prefix}avatar-size);
@@ -18,8 +18,8 @@
   border-radius: $avatar-border-radius;
 
   svg {
-    width: calc(var(--tblr-avatar-size) / #{divide(40, 24)});
-    height: calc(var(--tblr-avatar-size) / #{divide(40, 24)});
+    width: calc(var(--#{$variable-prefix}avatar-size) / #{divide(40, 24)});
+    height: calc(var(--#{$variable-prefix}avatar-size) / #{divide(40, 24)});
   }
 
   .badge {
@@ -112,7 +112,7 @@
 
 .page-avatar {
   .page-cover ~ * & {
-    margin-top: calc(calc(-1 * calc(var(--tblr-avatar-size) * .5)) - #{$content-padding-y});
+    margin-top: calc(calc(-1 * calc(var(--#{$variable-prefix}avatar-size) * .5)) - #{$content-padding-y});
     box-shadow: 0 0 0 .25rem $body-bg;
   }
 }
