@@ -14,26 +14,26 @@
 }
 
 @mixin scrollbar {
-  &::-webkit-scrollbar {
+  #{if(&, "&", "*")}::-webkit-scrollbar {
     width: 6px;
     height: 6px;
     @include transition(background $transition-time);
   }
 
-  &::-webkit-scrollbar-thumb {
+  #{if(&, "&", "*")}::-webkit-scrollbar-thumb {
     border-radius: 5px;
     background: rgba(var(--#{$variable-prefix}body-color-rgb), .16);
   }
 
-  &::-webkit-scrollbar-track {
+  #{if(&, "&", "*")}::-webkit-scrollbar-track {
     background: rgba(var(--#{$variable-prefix}body-color-rgb), .06);
   }
 
-  &:hover::-webkit-scrollbar-thumb {
+  #{if(&, "&", "*")}:hover::-webkit-scrollbar-thumb {
     background: rgba(var(--#{$variable-prefix}body-color-rgb), .32);
   }
 
-  &::-webkit-scrollbar-corner {
+  #{if(&, "&", "*")}::-webkit-scrollbar-corner {
     background: transparent;
   }
 }
