@@ -13,7 +13,7 @@
 				{% include layout/navbar-logo.html dark=include.dark small-logo=include.small-logo hide-logo=include.hide-logo class="d-none-navbar-horizontal pe-0 pe-md-3" breakpoint=breakpoint show-title=include.show-title %}
 			{% endunless %}
 
-			{% include layout/navbar-side.html class="order-md-last" hide-username=include.hide-username person-id=include.person-id %}
+			{% include layout/navbar-side.html class="order-md-last" hide-username=include.hide-username condensed=condensed person-id=include.person-id %}
 
 			{% if condensed %}
 			<div class="collapse navbar-collapse" id="navbar-menu{% if include.id %}-{{ include.id }}{% endif %}">
@@ -25,12 +25,14 @@
 					<div class="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center">
 						{% include layout/navbar-menu.html sample=include.sample hide-icons=include.hide-icons %}
 
-						{% assign search-class = "ms-md-auto ps-md-4 py-2 py-md-0 me-md-4 order-first order-md-last flex-grow-1" %}
-						{% unless include.fluid-search %}
-							{% assign search-class = search-class | append: " flex-md-grow-0" %}
-						{% endunless %}
+						{% unless condensed %}
+							{% assign search-class = "ms-md-auto ps-md-4 py-2 py-md-0 me-md-4 order-first order-md-last flex-grow-1" %}
+							{% unless include.fluid-search %}
+								{% assign search-class = search-class | append: " flex-md-grow-0" %}
+							{% endunless %}
 
-						{% include layout/navbar-search.html breakpoint=breakpoint rounded=include.transparent class=search-class dark=include.dark %}
+							{% include layout/navbar-search.html breakpoint=breakpoint rounded=include.transparent class=search-class dark=include.dark %}
+						{% endunless %}
 					</div>
 				{% endif %}
 			</div>

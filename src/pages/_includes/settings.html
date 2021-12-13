@@ -1,0 +1,88 @@
+<div class="settings">
+
+	<a href="#" class="btn btn-icon btn-lg settings-btn" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSettings">
+		{% include ui/icon.html icon="settings" %}
+	</a>
+
+
+	<form class="offcanvas offcanvas-end offcanvas-narrow" tabindex="-1" id="offcanvasSettings">
+		<div class="offcanvas-header">
+			<h2 class="offcanvas-title">Theme Builder</h2>
+			<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+		</div>
+		<div class="offcanvas-body">
+			<div class="mb-4">
+				<label class="form-label">Color scheme</label>
+				<p class="form-hint">The perfect color mode for your app.</p>
+
+				<div class="row g-2">
+					{% assign schemes = 'light,mixed,colored,dark,transparent' | split: ',' %}
+					{% for scheme in schemes %}
+					<div class="col-6">
+						<label class="form-selectgroup-item">
+							<input type="radio" name="settings-theme" value="{{ scheme }}" class="form-selectgroup-input" />
+							<div class="form-selectgroup-label text-center">
+								<span class="form-selectgroup-check form-selectgroup-check-floated"></span>
+								<div class="settings-scheme settings-scheme-{{ scheme }}"></div>
+								<div>{{ scheme | capitalize }}</div>
+							</div>
+						</label>
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+
+			<div class="mb-4">
+				<div class="form-label">Menu position</div>
+				<p class="form-hint">Toggle the position of the menu.</p>
+
+				<div>
+					{% assign positions = 'top,top-condensed,top-overlap,combo,left,right' | split: ',' %}
+					{% for position in positions %}
+					<label class="form-check">
+						<input class="form-check-input" name="settings-menu-position" value="{{ position }}" type="radio" />
+						<span class="form-check-label">{{ position | capitalize }}</span>
+					</label>
+					{% endfor %}
+				</div>
+			</div>
+
+			<div class="mb-4">
+				<div class="form-label">Menu behavior</div>
+				<p class="form-hint">Change the behavior of the menu.</p>
+
+				<div>
+					{% assign behaviors = 'sticky,fixed,compact' | split: ',' %}
+					{% for behavior in behaviors %}
+					<label class="form-check">
+						<input class="form-check-input" name="settings-menu-behavior" value="{{ behavior }}" type="radio" />
+						<span class="form-check-label">{{ behavior | capitalize }}</span>
+					</label>
+					{% endfor %}
+				</div>
+			</div>
+
+			<div class="mb-4">
+				<div class="form-label">Layout</div>
+				<p class="form-hint">Toggle container layout system.</p>
+
+				<div>
+					{% assign systems = 'boxed,fluid' | split: ',' %}
+					{% for system in systems %}
+					<label class="form-check">
+						<input class="form-check-input" name="settings-container-layout" value="{{ system }}" type="radio" />
+						<span class="form-check-label">{{ system | capitalize }}</span>
+					</label>
+					{% endfor %}
+				</div>
+			</div>
+
+		</div>
+		<div class="offcanvas-footer">
+			<button type="submit" class="btn btn-primary w-100">
+				{% include ui/icon.html icon="settings" %}
+				Save settings
+			</button>
+		</div>
+	</form>
+</div>

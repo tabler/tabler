@@ -1,170 +1,138 @@
-@mixin navbar-dark {
-  --#{$variable-prefix}navbar-bg: #{$navbar-dark-bg};
-  --#{$variable-prefix}navbar-color: #{$navbar-dark-color};
-  @include scrollbar(true);
-}
+@mixin navbar-color($bg-color: transparent, $color: $navbar-light-color, $brand-color: $navbar-light-brand-color, $link-active-color: $navbar-light-active-color, $link-disabled-color: $navbar-light-disabled-color) {
+  background: $bg-color;
+  color: $color;
 
-@mixin navbar-transparent {
-  --#{$variable-prefix}navbar-border-color: transparent;
-  --#{$variable-prefix}navbar-bg: transparent;
-}
+  @include scrollbar;
 
-@mixin navbar-vertical {
-  --#{$variable-prefix}navbar-padding-x: 1rem;
-  width: $sidebar-width;
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  z-index: $zindex-fixed;
-  align-items: flex-start;
-  transition: .3s transform;
-  overflow-x: auto;
-  box-shadow: inset -1px 0 0 0 var(--#{$variable-prefix}navbar-border-color);
-
-  [class^="container"] {
-    padding-left: var(--#{$variable-prefix}navbar-padding-x);
-    padding-right: var(--#{$variable-prefix}navbar-padding-x);
-    flex-direction: column;
-    align-items: stretch;
-  }
-
-  &.navbar-condensed {
-    @include navbar-vertical-condensed;
-  }
-
-  &.navbar-right {
-    left: auto;
-    right: 0;
-    box-shadow: inset 1px 0 0 0 var(--#{$variable-prefix}navbar-border-color);
+  .text-muted {
+    color: rgba($color, $text-muted-opacity) !important;
   }
 
   .navbar-brand {
-    padding: (($navbar-height - $navbar-brand-image-height) / 2) 0;
-    justify-content: center;
-  }
+    color: $brand-color;
 
-  .navbar-collapse {
-    align-items: stretch;
+    &:hover,
+    &:focus {
+      color: $brand-color;
+      opacity: .8;
+    }
   }
 
   .navbar-nav {
-    flex-direction: column;
-    flex-grow: 1;
-    min-height: auto;
-    margin-left: calc(-1 * var(--#{$variable-prefix}navbar-padding-x));
-    margin-right: calc(-1 * var(--#{$variable-prefix}navbar-padding-x));
-
     .nav-link {
-      padding: .5rem var(--#{$variable-prefix}navbar-padding-x);
-      justify-content: flex-start;
+      color: $color;
+
+      &:hover,
+      &:focus {
+        color: $link-active-color;
+      }
+
+      &.disabled {
+        color: $link-disabled-color;
+      }
+    }
+
+    .show > .nav-link,
+    .active > .nav-link,
+    .nav-link.show,
+    .nav-link.active {
+      color: $link-active-color;
+    }
+  }
+
+  .navbar-toggler {
+    color: $brand-color;
+    border-color: transparent;
+  }
+
+  .navbar-text {
+    color: $color;
+
+    a,
+    a:hover,
+    a:focus {
+      color: $color;
+    }
+  }
+}
+
+@mixin navbar-dark {
+  @include navbar-color($dark, $navbar-dark-color, $navbar-dark-brand-color, $navbar-dark-active-color, $navbar-dark-disabled-color);
+  @include scrollbar;
+
+  .input-icon-addon {
+    color: rgba($dark-mode-text, .64);
+  }
+
+  .form-control {
+    border-color: transparent;
+    background-color: rgba(0, 0, 0, .1);
+
+    &::placeholder {
+      color: rgba($dark-mode-text, .64);
+    }
+  }
+}
+
+@mixin navbar-vertical-nav {
+  .navbar-collapse {
+    flex-direction: column;
+
+    [class^="container"] {
+      flex-direction: column;
+      align-items: stretch;
+    }
+
+    .navbar-nav {
+      margin-left: calc( -1 * var(--#{$variable-prefix}gutter-x, #{$container-padding-x}));
+      margin-right: calc( -1 * var(--#{$variable-prefix}gutter-x, #{$container-padding-x}));
+
+      .nav-link {
+        padding: .5rem $container-padding-x;
+        justify-content: flex-start;
+      }
+    }
+
+    .dropdown-menu-columns {
+      flex-direction: column;
+    }
+
+    .dropdown-menu {
+      padding: 0;
+      background: transparent;
+      position: static;
+      color: inherit;
+      box-shadow: none;
+      border: none;
+      min-width: 0;
+      margin: 0;
+
+      .dropdown-item {
+        min-width: 0;
+        display: flex;
+        width: auto;
+        padding-left: add($container-padding-x, 1.75rem);
+      }
+
+      .dropdown-menu .dropdown-item {
+        padding-left: add($container-padding-x, 3.25rem);
+      }
+
+      .dropdown-menu .dropdown-menu .dropdown-item {
+        padding-left: add($container-padding-x, 4.75rem);
+      }
     }
 
     .dropdown-toggle:after {
       margin-left: auto;
     }
-  }
 
-  ~ .content {
-    padding-left: $sidebar-width;
-
-    [class^="container"] {
-      padding-left: var(--#{$variable-prefix}gutter-x, #{$container-padding-x});
-      padding-right: var(--#{$variable-prefix}gutter-x, #{$container-padding-x});
-    }
-  }
-
-  &.navbar-right ~ .content {
-    padding-left: 0;
-    padding-right: $sidebar-width;
-  }
-
-  .badge {
-    margin-left: auto;
-    position: static;
-  }
-
-  &:not(.navbar-condensed) {
-    .dropdown-menu {
-      position: static;
-      box-shadow: none;
-      border: 0;
-      background: transparent;
-      color: inherit;
-      border-radius: 0;
-
-      .dropdown-menu-columns {
-        flex-direction: column;
-      }
-
-      .dropdown-item {
-        padding-left: calc(var(--#{$variable-prefix}navbar-padding-x) + 1.75rem);
-        padding-right: var(--#{$variable-prefix}navbar-padding-x);
-      }
-
-      .dropdown-menu .dropdown-item {
-        padding-left: calc(var(--#{$variable-prefix}navbar-padding-x) + 3.5rem);
-      }
-
-      .dropdown-menu .dropdown-item .dropdown-item {
-        padding-left: calc(var(--#{$variable-prefix}navbar-padding-x) + 5.25rem);
-      }
-    }
-  }
-}
-
-@mixin navbar-vertical-condensed {
-  width: $sidebar-condensed-width;
-
-  .nav-link {
-    min-height: 3rem;
-  }
-
-  .nav-link-title {
-    display: none;
-  }
-
-  .nav-link-icon {
-    width: 100%;
-    margin: 0 auto;
-    text-align: center;
-  }
-
-  .badge {
-    position: absolute;
-    top: 0;
-    right: 0;
-    transform: translate(-50%, 50%);
-  }
-
-  .dropdown-toggle:after {
-    display: none;
-  }
-
-  ~ .content {
-    padding-left: $sidebar-condensed-width;
-  }
-
-  &.navbar-right ~ .content {
-    padding-left: 0;
-    padding-right: $sidebar-condensed-width;
-  }
-
-  ~ .navbar-vertical.navbar-expand {
-    @each $breakpoint in map-keys($grid-breakpoints) {
-      $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
-
-      &#{$infix} {
-        @include media-breakpoint-up($breakpoint) {
-          left: $sidebar-condensed-width;
-          width: $sidebar-double-width;
-          display: flex;
-
-          ~ .content {
-            padding-left: $sidebar-condensed-width + $sidebar-double-width;
-          }
-        }
-      }
+    .nav-item.active:after {
+      border-bottom-width: 0;
+      border-left-width: 2px;
+      right: auto;
+      top: 0;
+      bottom: 0;
     }
   }
 }
@@ -173,123 +141,120 @@
 Navbar
  */
 .navbar {
-  --#{$variable-prefix}navbar-bg: #{$white};
-  --#{$variable-prefix}navbar-color: #{$navbar-light-color};
-  --#{$variable-prefix}navbar-border-color: #{$border-color-transparent};
-  --#{$variable-prefix}navbar-padding-x: var(--#{$variable-prefix}-gutter-x, var(--#{$variable-prefix}-gutter-x, 1.5rem));
-  box-shadow: inset 0 -1px 0 0 var(--#{$variable-prefix}navbar-border-color);
-  background: var(--#{$variable-prefix}navbar-bg);
-  color: var(--#{$variable-prefix}navbar-color);
   align-items: stretch;
   min-height: $navbar-height;
 
-  @include scrollbar;
-
-  @include dark-mode {
-    @include navbar-dark;
+  .navbar-collapse & {
+    flex-grow: 1;
   }
 
   &.collapsing {
     min-height: 0;
   }
 
-  .nav-item {
-    position: relative;
+  @include navbar-color();
+
+  @include dark-mode {
+    @include navbar-dark();
   }
 
-  .nav-link {
-    min-width: 2rem;
+  .dropdown-menu {
+    position: absolute;
+    z-index: $zindex-fixed;
   }
 
-  .input-icon-addon {
-    color: var(--#{$variable-prefix}navbar-color);
-  }
+  .navbar-nav {
+    min-height: subtract($navbar-height, 2 * $navbar-padding-y);
 
-  .badge {
-    min-width: 1rem;
-    height: 1rem;
-    padding: 0;
-    font-size: $h6-font-size;
-    line-height: 1;
+    .nav-link {
+      position: relative;
+      min-width: 2rem;
+      min-height: 2rem;
+      justify-content: center;
+      border-radius: $border-radius;
+
+      .badge {
+        position: absolute;
+        top: .375rem;
+        right: .375rem;
+        transform: translate(50%, -50%);
+      }
+    }
   }
+}
+
+.navbar-nav {
+  margin: 0;
+  padding: 0;
 }
 
 .navbar-expand {
   @each $breakpoint in map-keys($grid-breakpoints) {
-    $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+    $next: breakpoint-next($breakpoint, $grid-breakpoints);
+    $infix: breakpoint-infix($next, $grid-breakpoints);
 
     &#{$infix} {
-      @include media-breakpoint-down($breakpoint) {
-        .dropdown-toggle:after {
-          margin-left: auto;
-        }
+      @include media-breakpoint-down(breakpoint-next($breakpoint)) {
+        @include navbar-vertical-nav;
+      }
 
-        &.navbar-collapse,
+      @include media-breakpoint-up($next) {
         .navbar-collapse {
-          [class^="container"] {
-            flex-direction: column;
-            align-items: stretch;
+          width: auto;
+          flex: 1 1 auto;
+        }
+
+        &.navbar-dark,
+        .navbar-dark {
+          .nav-item.active {
+            .nav-link {
+              background-color: rgba($black, .1);
+            }
           }
         }
-      }
 
-      @include media-breakpoint-up($breakpoint) {
-        .navbar-nav {
-          min-width: 0;
+        &.navbar-light,
+        .navbar-light {
+          .nav-item.active {
+            position: relative;
+
+            &:after {
+              content: '';
+              position: absolute;
+              left: 0;
+              right: 0;
+              bottom: -.25rem;
+              border: 0 solid $primary;
+              border-bottom-width: 2px;
+            }
+          }
+
+          &.navbar-vertical {
+            box-shadow: inset -1px 0 0 0 $navbar-light-border-color;
+
+            &.navbar-right {
+              box-shadow: inset 1px 0 0 0 $navbar-light-border-color;
+            }
+          }
         }
 
-        .nav-link {
-          justify-content: center;
+        &.navbar-vertical {
+          ~ .navbar,
+          ~ .page-wrapper {
+            margin-left: $sidebar-width;
+          }
         }
 
-        .badge {
-          position: absolute;
-          top: 0;
-          right: 0;
+        &.navbar-vertical.navbar-right {
+          ~ .navbar,
+          ~ .page-wrapper {
+            margin-left: 0;
+            margin-right: $sidebar-width;
+          }
         }
       }
     }
   }
-}
-
-/**
-Navbar vertical
- */
-@if $enable-navbar-vertical {
-  .navbar-vertical {
-    &.navbar-expand {
-      @each $breakpoint in map-keys($grid-breakpoints) {
-        $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
-
-        &#{$infix} {
-          @include media-breakpoint-up($breakpoint) {
-            @include navbar-vertical;
-          }
-        }
-      }
-    }
-  }
-}
-
-/**
-Navbar light
- */
-.navbar-light {
-  background-color: $white;
-}
-
-/**
-Navbar dark
- */
-.navbar-dark {
-  @include navbar-dark;
-}
-
-/**
-Navbar transparent
- */
-.navbar-transparent {
-  @include navbar-transparent;
 }
 
 /**
@@ -305,6 +270,7 @@ Navbar brand
 .navbar-brand-image {
   display: block;
   height: $navbar-brand-image-height;
+  width: auto;
 }
 
 /**
@@ -318,7 +284,6 @@ Navbar toggler
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: (($navbar-height - $navbar-brand-image-height - 2 * $navbar-padding-y) / 2) calc(-1 * var(--#{$variable-prefix}navbar-padding-x) + #{add($navbar-brand-image-height / 2, $navbar-padding-y)});
 }
 
 .navbar-toggler-icon {
@@ -326,7 +291,7 @@ Navbar toggler
   width: 1.25em;
   background: currentColor;
   border-radius: 10px;
-  transition: $navbar-toggler-animation-time $navbar-toggler-animation-time top, $navbar-toggler-animation-time $navbar-toggler-animation-time bottom, $navbar-toggler-animation-time transform, 0s $navbar-toggler-animation-time opacity;
+  @include transition(top $navbar-toggler-animation-time $navbar-toggler-animation-time, bottom $navbar-toggler-animation-time $navbar-toggler-animation-time, transform $navbar-toggler-animation-time, opacity 0s $navbar-toggler-animation-time);
   position: relative;
 
   &:before,
@@ -339,7 +304,7 @@ Navbar toggler
     background: inherit;
     position: absolute;
     left: 0;
-    transition: inherit;
+    @include transition(inherit);
   }
 
   &:before {
@@ -352,7 +317,7 @@ Navbar toggler
 
   .navbar-toggler[aria-expanded="true"] & {
     transform: rotate(45deg);
-    transition: .3s top, .3s bottom, .3s .3s transform, 0s .3s opacity;
+    @include transition(top $transition-time, bottom $transition-time, transform $transition-time $transition-time, opacity 0s $transition-time);
 
     &:before {
       top: 0;
@@ -365,6 +330,123 @@ Navbar toggler
     }
   }
 }
+
+/**
+Navbar light
+ */
+.navbar-light {
+  box-shadow: inset 0 -1px 0 0 $navbar-light-border-color;
+  background-color: $white;
+}
+
+/**
+Navbar dark
+ */
+.navbar-dark {
+  @include navbar-dark;
+}
+
+/**
+Navbar nav
+ */
+.navbar-nav {
+  align-items: stretch;
+
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+/**
+Navbar side
+ */
+.navbar-side {
+  margin: 0;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-around;
+}
+
+/**
+Navbar vertical
+ */
+@if $enable-navbar-vertical {
+  .navbar-vertical {
+
+    &.navbar-expand {
+      @each $breakpoint in map-keys($grid-breakpoints) {
+        $next: breakpoint-next($breakpoint, $grid-breakpoints);
+        $infix: breakpoint-infix($next, $grid-breakpoints);
+
+        &#{$infix} {
+          @include media-breakpoint-up($next) {
+            width: $sidebar-width;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: $zindex-fixed;
+            align-items: flex-start;
+            @include transition(transform $transition-time);
+            overflow-x: auto;
+
+            &.navbar-right {
+              left: auto;
+              right: 0;
+            }
+
+            .navbar-brand {
+              padding: (($navbar-height - $navbar-brand-image-height) * .5) 0;
+              justify-content: center;
+            }
+
+            .navbar-collapse {
+              align-items: stretch;
+            }
+
+            .navbar-nav {
+              flex-direction: column;
+              flex-grow: 1;
+              min-height: auto;
+
+              .nav-link {
+                padding-top: .5rem;
+                padding-bottom: .5rem;
+              }
+            }
+
+            > [class^="container"] {
+              flex-direction: column;
+              align-items: stretch;
+              min-height: 100%;
+              justify-content: flex-start;
+            }
+
+            ~ .page {
+              padding-left: $sidebar-width;
+
+              [class^="container"] {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+              }
+            }
+
+            &.navbar-right ~ .page {
+              padding-left: 0;
+              padding-right: $sidebar-width;
+            }
+
+            @include navbar-vertical-nav;
+          }
+        }
+      }
+    }
+  }
+}
+
 
 .navbar-overlap {
   &:after {

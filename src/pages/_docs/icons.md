@@ -1,7 +1,10 @@
 ---
 title: Icons
-menu: docs.base.icons
+menu: docs.content.icons
 ---
+
+All icons come from the Tabler Icons set and are MIT-licensed. Visit <a href="https://tabler-icons.io" target="_blank">tabler-icons.io</a>, download the icons you need in SVG, PNG or React and use them in your favourite design tools. You can show all icons and SVG codes [here]({{ site.base }}/icons.html).
+
 
 ## Base icon
 

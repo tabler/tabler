@@ -6,6 +6,12 @@
 					<li class="list-inline-item"><a href="{{ site.base }}/docs/index.html" class="link-secondary">Documentation</a></li>
 					<li class="list-inline-item"><a href="{{ site.base }}/license.html" class="link-secondary">License</a></li>
 					<li class="list-inline-item"><a href="{{ site.github-url }}" target="_blank" class="link-secondary" rel="noopener">Source code</a></li>
+					<li class="list-inline-item">
+						<a href="{{ site.github-sponsors-url }}" target="_blank" class="link-secondary" rel="noopener">
+							{% include ui/icon.html icon="heart" inline=true filled=true color="pink" %}
+							Sponsor
+						</a>
+					</li>
 				</ul>
 			</div>
 			<div class="col-12 col-lg-auto mt-3 mt-lg-0">
@@ -16,7 +22,13 @@
 						All rights reserved.
 					</li>
 					<li class="list-inline-item">
-						<a href="{{ site.base }}/changelog.html" class="link-secondary" rel="noopener">v{{ site.data.package.version }}</a>
+						{% if jekyll.environment == 'production' %}
+						<a href="{{ site.base }}/changelog.html" class="link-secondary" rel="noopener">
+							v{{ site.data.package.version }}
+						</a>
+						{% else %}
+							Generated {{ site.time | date: '%Y-%m-%d %H:%M %Z' }}
+						{% endif %}
 					</li>
 				</ul>
 			</div>

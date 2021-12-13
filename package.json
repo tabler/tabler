@@ -1,6 +1,6 @@
 {
   "name": "@tabler/core",
-  "version": "1.0.0-alpha.22",
+  "version": "1.0.0-beta5",
   "description": "Premium and Open Source dashboard template with responsive and high quality UI.",
   "scripts": {
     "start": "gulp start",
@@ -10,7 +10,11 @@
     "unused-files": "node build/unused-files.js",
     "release": "release-it",
     "svg-icons": "gulp svg-icons",
-    "percy": "gulp build && npx percy snapshot demo"
+    "percy": "gulp build && npx percy snapshot demo",
+    "bundlewatch": "bundlewatch --config .bundlewatch.config.json",
+    "chromatic": "chromatic --project-token=CHROMATIC_PROJECT_TOKEN",
+    "storybook": "start-storybook -p 6006",
+    "build-storybook": "build-storybook"
   },
   "repository": {
     "type": "git",
@@ -35,7 +39,7 @@
     "url": "https://github.com/sponsors/codecalm"
   },
   "engines": {
-    "node": ">=10"
+    "node": ">=14"
   },
   "files": [
     "dist/**/*",
@@ -45,56 +49,100 @@
   ],
   "style": "dist/css/tabler.css",
   "sass": "src/scss/tabler.scss",
+  "unpkg": "dist/js/tabler.min.js",
+  "umd:main": "dist/js/tabler.min.js",
+  "module": "dist/js/tabler.esm.js",
   "main": "dist/js/tabler.js",
   "homepage": "https://tabler.io",
   "devDependencies": {
-    "@babel/core": "^7.12.10",
-    "@babel/preset-env": "^7.12.11",
-    "@rollup/plugin-commonjs": "^17.0.0",
-    "@rollup/plugin-node-resolve": "^11.1.0",
+    "@babel/core": "^7.16.0",
+    "@babel/preset-env": "^7.16.4",
+    "@rollup/plugin-commonjs": "^21.0.1",
+    "@rollup/plugin-node-resolve": "^13.0.6",
+    "@rollup/plugin-replace": "^3.0.0",
+    "@rollup/pluginutils": "^4.1.1",
     "@rollup/stream": "^2.0.0",
-    "autoprefixer": "^10.2.3",
-    "browser-sync": "^2.26.13",
-    "critical": "^2.0.6",
+    "apexcharts": "^3.32.0",
+    "autoprefixer": "^10.4.0",
+    "autosize": "^5.0.1",
+    "browser-sync": "^2.27.7",
+    "bundlewatch": "^0.3.2",
+    "choices.js": "^9.0.1",
+    "chromatic": "^6.2.0",
+    "countup.js": "^2.0.8",
+    "critical": "^4.0.1",
     "cross-spawn": "^7.0.3",
+    "flatpickr": "^4.6.9",
     "gulp": "^4.0.2",
     "gulp-clean": "^0.4.0",
     "gulp-clean-css": "^4.3.0",
     "gulp-debug": "^4.0.0",
     "gulp-header": "^2.0.9",
     "gulp-minify": "^3.1.0",
-    "gulp-postcss": "^9.0.0",
-    "gulp-purgecss": "^4.0.0",
+    "gulp-postcss": "^9.0.1",
+    "gulp-purgecss": "^4.1.3",
     "gulp-rename": "^2.0.0",
-    "gulp-rtlcss": "^1.4.1",
-    "gulp-sass": "^4.1.0",
-    "postcss": "^8.2.4",
-    "release-it": "^14.2.2",
-    "rollup": "^2.38.0",
+    "gulp-rtlcss": "^1.4.2",
+    "gulp-sass": "^5.0.0",
+    "imask": "^6.2.2",
+    "litepicker": "^2.0.12",
+    "nouislider": "^15.5.0",
+    "postcss": "^8.4.4",
+    "release-it": "^14.11.8",
+    "rollup": "^2.60.2",
     "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-cleanup": "^3.2.1",
+    "sass": "^1.45.0",
+    "tom-select": "^2.0.0",
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^2.0.0",
-    "yaml": "^1.10.0",
-    "yargs": "^16.2.0"
+    "yaml": "^1.10.2",
+    "yargs": "^17.3.0"
   },
   "dependencies": {
-    "@fullcalendar/core": "^5.5.1",
-    "@fullcalendar/daygrid": "^5.5.0",
-    "@fullcalendar/interaction": "^5.5.0",
-    "@fullcalendar/list": "^5.5.0",
-    "@fullcalendar/timegrid": "^5.5.1",
-    "apexcharts": "^3.23.1",
-    "autosize": "^4.0.2",
-    "bootstrap": "twbs/bootstrap#c6d6160a7c2203fbe620b6e4a660f72c40b2efd3",
-    "countup.js": "^2.0.7",
+    "@popperjs/core": "^2.11.0",
+    "@tabler/icons": "^1.46.0",
+    "bootstrap": "5.1.3"
+  },
+  "peerDependencies": {
+    "apexcharts": "^3.32.0",
+    "autosize": "^5.0.1",
+    "choices.js": "^9.0.1",
+    "countup.js": "^2.0.8",
     "flatpickr": "^4.6.9",
-    "fullcalendar": "^5.5.1",
-    "imask": "^6.0.5",
-    "nouislider": "^14.6.3",
-    "popper.js": "^1.16.1",
-    "rollup-plugin-cleanup": "^3.2.1",
-    "rollup-plugin-commonjs": "^10.1.0",
-    "@tabler/icons": "^1.39.1"
+    "imask": "^6.2.2",
+    "litepicker": "^2.0.12",
+    "nouislider": "^15.5.0",
+    "tom-select": "^2.0.0"
+  },
+  "peerDependenciesMeta": {
+    "apexcharts": {
+      "optional": true
+    },
+    "autosize": {
+      "optional": true
+    },
+    "choices.js": {
+      "optional": true
+    },
+    "countup.js": {
+      "optional": true
+    },
+    "flatpickr": {
+      "optional": true
+    },
+    "imask": {
+      "optional": true
+    },
+    "litepicker": {
+      "optional": true
+    },
+    "nouislider": {
+      "optional": true
+    },
+    "tom-select": {
+      "optional": true
+    }
   },
   "resolutions": {
     "**/**/node-gyp": "^5.0.0"

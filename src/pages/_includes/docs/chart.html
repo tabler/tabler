@@ -1,0 +1,19 @@
+{% assign chart-id = include.chart %}
+{% assign data = site.data.charts[chart-id] %}
+
+{% if data or include.heatmap %}
+<div class="card">
+	{% if include.title %}
+	<div class="card-header">
+		<h3 class="card-title">{{ include.title }}</h3>
+	</div>
+	{% endif %}
+	<div class="card-body">
+		{% if include.heatmap %}
+		{% include ui/chart-heatmap.html chart-id=chart-id show-scripts=true size="lg" %}
+		{% else %}
+		{% include ui/chart.html chart-id=chart-id show-scripts=true size="lg" %}
+		{% endif %}
+	</div>
+</div>
+{% endif %}

@@ -1,0 +1,58 @@
+{% assign value = include.value | default: '2020-06-20' %}
+{% assign placeholder = include.placeholder | default: 'Select a date' %}
+{% assign id = include.id %}
+
+{% if id %}
+
+{% capture input %}
+<input class="form-control{% if include.class %} {{ include.class }}{% endif %}"{% if placeholder %} placeholder="{{ placeholder }}"{% endif %} id="datepicker-{{ id }}" value="{{ value }}"/>
+{% endcapture %}
+
+
+{% if include.inline %}
+	<div class="datepicker-inline" id="datepicker-{{ id }}"></div>
+{% elsif include.layout == 'icon' %}
+	<div class="input-icon{% if include.class %} {{ include.class }}{% endif %}">
+		{{ input | replace: include.class, '' }}
+		<span class="input-icon-addon">{% include ui/icon.html icon="calendar" %}</span>
+	</div>
+{% elsif include.layout == 'icon-prepend' %}
+	<div class="input-icon{% if include.class %} {{ include.class }}{% endif %}">
+		<span class="input-icon-addon">{% include ui/icon.html icon="calendar" %}</span>
+		{{ input | replace: include.class, ''  }}
+	</div>
+{% else %}
+	{{ input }}
+{% endif %}
+
+{% capture script %}
+<script>
+	// @formatter:off
+	document.addEventListener("DOMContentLoaded", function () {
+		{% if jekyll.environment == 'development' %}
+		window.tabler_datepicker = window.tabler_datepicker || {};
+		{% endif %}
+
+		window.Litepicker && ({% if jekyll.environment == 'development' %}window.tabler_datepicker["datepicker-{{ id }}"] = {% endif %}new Litepicker({
+			element: document.getElementById('datepicker-{{ id }}'),
+			buttonText: {
+				previousMonth: `{% capture icon %}{% include ui/icon.html icon="chevron-left" %}{% endcapture %}{{ icon | strip }}`,
+				nextMonth: `{% capture icon %}{% include ui/icon.html icon="chevron-right" %}{% endcapture %}{{ icon | strip }}`,
+			},
+			{% if include.inline %}inlineMode: true,{% endif %}
+		}));
+
+	});
+	// @formatter:on
+</script>
+{% endcapture %}
+
+{% if include.show-scripts %}
+{{ script }}
+{% else %}
+{% capture_global scripts %}
+{{ script }}
+{% endcapture_global %}
+{% endif %}
+
+{% endif %}

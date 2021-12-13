@@ -11,10 +11,10 @@ Form check
 
 .form-check-input {
   background-size: $form-check-input-width;
-  margin-top: ($form-check-min-height - $form-check-input-width) / 2;
+  margin-top: ($form-check-min-height - $form-check-input-width) * .5;
 
   .form-switch & {
-    transition: .3s background-color, .3s background-position;
+    @include transition(background-color$transition-time, background-position $transition-time);
   }
 }
 
@@ -52,6 +52,14 @@ Form switch
 .form-switch {
   .form-check-input {
     height: $form-switch-height;
-    margin-top: ($form-check-min-height - $form-switch-height) / 2;
+    margin-top: ($form-check-min-height - $form-switch-height) * .5;
+  }
+}
+
+.form-switch-lg {
+  .form-check-input {
+    height: 1.5rem;
+    width: 2.75rem;
+    background-size: 1.5rem;
   }
 }

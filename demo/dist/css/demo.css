@@ -1,6 +1,6 @@
 /*!
-* Tabler v1.0.0-alpha.22 (https://tabler.io)
-* @version 1.0.0-alpha.22
+* Tabler v1.0.0-beta5 (https://tabler.io)
+* @version 1.0.0-beta5
 * @link https://tabler.io
 * Copyright 2018-2021 The Tabler Authors
 * Copyright 2018-2021 codecalm.net Paweł Kuna
@@ -12,24 +12,31 @@ pre.highlight,
   margin: 1.5rem 0;
   overflow: auto;
   font-size: 85.7142857%;
-  border-radius: 3px; }
+  border-radius: 4px; }
   pre.highlight::-webkit-scrollbar,
   .highlight pre::-webkit-scrollbar {
     width: 6px;
     height: 6px;
-    -webkit-transition: .3s background;
-    transition: .3s background; }
+    -webkit-transition: background 0.3s;
+    transition: background 0.3s; }
+    @media (prefers-reduced-motion: reduce) {
+      pre.highlight::-webkit-scrollbar,
+      .highlight pre::-webkit-scrollbar {
+        -webkit-transition: none;
+        transition: none; } }
   pre.highlight::-webkit-scrollbar-thumb,
   .highlight pre::-webkit-scrollbar-thumb {
     border-radius: 5px;
-    background: #dbdee3; }
+    background: rgba(var(--tblr-body-color-rgb), 0.16); }
+  pre.highlight::-webkit-scrollbar-track,
+  .highlight pre::-webkit-scrollbar-track {
+    background: rgba(var(--tblr-body-color-rgb), 0.06); }
+  pre.highlight:hover::-webkit-scrollbar-thumb,
+  .highlight pre:hover::-webkit-scrollbar-thumb {
+    background: rgba(var(--tblr-body-color-rgb), 0.32); }
   pre.highlight::-webkit-scrollbar-corner,
   .highlight pre::-webkit-scrollbar-corner {
     background: transparent; }
-  pre.highlight:hover::-webkit-scrollbar-thumb,
-  .highlight pre:hover::-webkit-scrollbar-thumb {
-    background: #c6cad0;
-    background: #c6cad0; }
 
 .highlight {
   margin: 0; }
@@ -181,8 +188,8 @@ pre.highlight,
 
 .example {
   padding: 2rem;
-  margin: 2rem 0;
-  border: 1px solid #e6e8e9;
+  margin: 1rem 0 2rem;
+  border: 1px solid #e6e7e9;
   border-radius: 3px 3px 0 0;
   position: relative;
   min-height: 12rem;
@@ -198,18 +205,18 @@ pre.highlight,
 .example-content {
   font-size: 0.875rem;
   line-height: 1.4285714;
-  color: #232e3c;
+  color: #1e293b;
   flex: 1;
   max-width: 100%; }
   .example-content .page-header {
     margin-bottom: 0; }
 
 .example-bg {
-  background: #f4f6fa; }
+  background: #f8fafc; }
 
 .example-code {
   margin: 2rem 0;
-  border: 1px solid #e6e8e9;
+  border: 1px solid #e6e7e9;
   border-top: none; }
   .example-code pre {
     margin: 0;
@@ -230,7 +237,7 @@ pre.highlight,
   max-width: 52rem; }
 
 .example-modal-backdrop {
-  background: #232e3c;
+  background: #1e293b;
   opacity: 0.24;
   position: absolute;
   width: 100%;
@@ -240,13 +247,13 @@ pre.highlight,
   border-radius: 2px 2px 0 0; }
 
 @media not print {
+  .theme-dark .example {
+    background-color: #1b2434;
+    border-color: #2c3c56; }
+  .theme-dark .example-content {
+    color: #f8fafc; }
   .theme-dark .example-code {
-    border: 1px solid #e6e8e9;
-    border-top: none; } }
-
-@media not print and (prefers-color-scheme: dark) {
-  .theme-dark-auto .example-code {
-    border: 1px solid #e6e8e9;
+    border-color: #2c3c56;
     border-top: none; } }
 
 .card-sponsor {
@@ -316,8 +323,8 @@ body.no-transitions * {
   height: 7rem;
   text-align: center;
   padding: .5rem;
-  border-right: 1px solid #e6e8e9;
-  border-bottom: 1px solid #e6e8e9;
+  border-right: 1px solid var(--tblr-border-color);
+  border-bottom: 1px solid var(--tblr-border-color);
   color: inherit;
   cursor: pointer; }
   .demo-icons-list-item .icon {
@@ -326,3 +333,30 @@ body.no-transitions * {
     font-size: 1.5rem; }
   .demo-icons-list-item:hover {
     text-decoration: none; }
+
+.settings-btn {
+  position: fixed;
+  right: -1px;
+  top: 10rem;
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  box-shadow: rgba(30, 41, 59, 0.04) 0 2px 4px 0; }
+
+.settings-scheme {
+  display: inline-block;
+  border-radius: 50%;
+  height: 3rem;
+  width: 3rem;
+  position: relative;
+  border: 1px solid var(--tblr-border-color);
+  box-shadow: rgba(30, 41, 59, 0.04) 0 2px 4px 0; }
+  .settings-scheme-light {
+    background: linear-gradient(135deg, #ffffff 50%, #f8fafc 50%); }
+  .settings-scheme-mixed {
+    background-image: linear-gradient(135deg, #1e293b 50%, #fff 50%); }
+  .settings-scheme-transparent {
+    background: #f8fafc; }
+  .settings-scheme-dark {
+    background: #1e293b; }
+  .settings-scheme-colored {
+    background-image: linear-gradient(135deg, var(--tblr-primary) 50%, #f8fafc 50%); }

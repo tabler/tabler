@@ -18,7 +18,7 @@ Image check
   display: block;
   margin: 0;
   user-select: none;
-  border: 1px solid $border-color;
+  border: 1px solid var(--#{$variable-prefix}border-color);
   border-radius: 3px;
 
   .form-imagecheck-input:focus ~ & {
@@ -27,7 +27,7 @@ Image check
   }
 
   .form-imagecheck-input:checked ~ & {
-    border-color: $border-color;
+    border-color: $primary;
   }
 
   &:before {
@@ -45,7 +45,7 @@ Image check
     background: $white;
     border: 1px solid $border-color;
     border-radius: 3px;
-    transition: .3s opacity;
+    @include transition(opacity $transition-time);
 
     .form-imagecheck-input:checked ~ & {
       background-color: $form-check-input-checked-bg-color;
@@ -62,7 +62,7 @@ Image check
   max-width: 100%;
   display: block;
   opacity: .64;
-  transition: .3s opacity;
+  @include transition(opacity $transition-time);
 
   &:first-child {
     border-top-left-radius: 2px;
@@ -86,7 +86,7 @@ Image check
   font-size: $font-size-sm;
   color: $text-muted;
   text-align: center;
-  transition: .3s color;
+  @include transition(color $transition-time);
 
   .form-imagecheck:hover &,
   .form-imagecheck-input:focus ~ .form-imagecheck-figure &,

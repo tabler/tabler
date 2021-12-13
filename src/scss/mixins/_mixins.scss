@@ -13,35 +13,28 @@
   }
 }
 
-@mixin scrollbar($is-dark: false) {
-  &::-webkit-scrollbar {
+@mixin scrollbar {
+  #{if(&, "&", "*")}::-webkit-scrollbar {
     width: 6px;
     height: 6px;
-    transition: .3s background;
+    @include transition(background $transition-time);
   }
 
-  &::-webkit-scrollbar-thumb {
+  #{if(&, "&", "*")}::-webkit-scrollbar-thumb {
     border-radius: 5px;
-
-    @if ($is-dark) {
-      background: transparent;
-    } @else {
-      background: $gray-400;
-    }
+    background: rgba(var(--#{$variable-prefix}body-color-rgb), .16);
   }
 
-  &::-webkit-scrollbar-corner {
+  #{if(&, "&", "*")}::-webkit-scrollbar-track {
+    background: rgba(var(--#{$variable-prefix}body-color-rgb), .06);
+  }
+
+  #{if(&, "&", "*")}:hover::-webkit-scrollbar-thumb {
+    background: rgba(var(--#{$variable-prefix}body-color-rgb), .32);
+  }
+
+  #{if(&, "&", "*")}::-webkit-scrollbar-corner {
     background: transparent;
-  }
-
-  &:hover::-webkit-scrollbar-thumb {
-    background: $gray-500;
-
-    @if ($is-dark) {
-      background: mix($white, $dark, 20%);
-    } @else {
-      background: $gray-500;
-    }
   }
 }
 
@@ -66,14 +59,16 @@
       }
     }
 
-    @media not print and (prefers-color-scheme: dark) {
-      @if ($selector) {
-        .theme-dark-auto & {
-          @content
-        }
-      } @else {
-        .theme-dark-auto {
-          @content
+    @media not print {
+      @media (prefers-color-scheme: dark) {
+        @if ($selector) {
+          .theme-dark-auto & {
+            @content
+          }
+        } @else {
+          .theme-dark-auto {
+            @content
+          }
         }
       }
     }

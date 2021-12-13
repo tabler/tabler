@@ -1,0 +1,81 @@
+---
+title: Dark mode playground
+page-header: Dark mode playground
+---
+
+{% assign colors = '' | split: ',' %}
+{% for color in site.theme-colors %}
+	{% assign colors = colors | push: color[0] %}
+{% endfor %}
+{% for color in site.colors %}
+	{% assign colors = colors | push: color[0] %}
+{% endfor %}
+
+{% capture html %}
+	<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias magni minus omnis provident qui repudiandae saepe sunt vel, veniam voluptatibus? Cum eius est harum molestias necessitatibus quasi repellat velit voluptatum.</p>
+
+	<div class="card">
+		<div class="card-body">
+			<div class="space-y">
+				<div>
+					<div class="btn-list">
+						{% include ui/button.html text="Default" icon="check" %}
+						{% for color in colors %}
+						{% assign title = color | capitalize %}
+						{% include ui/button.html color=color text=title icon="check" %}
+						{% endfor %}
+					</div>
+				</div>
+				<div>
+					<div class="btn-list">
+						{% include ui/button.html text="Default" disabled=true %}
+						{% for color in colors %}
+						{% assign title = color | capitalize %}
+						{% include ui/button.html color=color text=title icon="check" disabled=true %}
+						{% endfor %}
+					</div>
+				</div>
+				<div>
+					<div class="btn-list">
+						{% for color in colors %}
+						{% assign title = color | capitalize %}
+						{% include ui/button.html color=color text=title icon="check" ghost=true %}
+						{% endfor %}
+					</div>
+				</div>
+				<div>
+					<div class="btn-list">
+						{% for color in colors %}
+						{% assign title = color | capitalize %}
+						{% include ui/button.html color=color text=title icon="check" ghost=true disabled=true %}
+						{% endfor %}
+					</div>
+				</div>
+				<div>
+					<div class="btn-list">
+						{% for color in colors %}
+						{% assign title = color | capitalize %}
+						{% include ui/button.html color=color text=title icon="check" outline=true %}
+						{% endfor %}
+					</div>
+				</div>
+				<div>
+					<div class="btn-list">
+						{% for color in colors %}
+						{% assign title = color | capitalize %}
+						{% include ui/button.html color=color text=title icon="check" outline=true disabled=true %}
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endcapture %}
+
+<div class="row g-5">
+	<div class="col-lg py-3">{{ html }}</div>
+
+	<div class="col-lg py-3 theme-dark">
+		{{ html }}
+	</div>
+</div>

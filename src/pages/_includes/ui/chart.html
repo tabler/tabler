@@ -26,7 +26,7 @@
 		{% if jekyll.environment == 'development' %}
 		window.tabler_chart = window.tabler_chart || {};
 		{% endif %}
-		
+
 		window.ApexCharts && ({% if jekyll.environment == 'development' %}window.tabler_chart["chart-{{ include.chart-id }}"] = {% endif %}new ApexCharts(document.getElementById('chart-{{ id }}'), {
 			chart: {
 				type: "{{ chart-type }}",
@@ -144,7 +144,12 @@
 			{% if data.categories or data.datetime %}
 			xaxis: {
 				labels: {
-					padding: 0
+					padding: 0,
+					{% if data.x-formatter %}
+					formatter: function(val) {
+						return {{ data.x-formatter }}
+					},
+					{% endif %}
 				},
 				tooltip: {
 					enabled: false
@@ -155,7 +160,7 @@
 				},
 				{% endif %}
 				{% if data.categories %}
-				categories: [{% for category in data.categories %}"{{ category }}"{% unless forloop.last %}, {% endunless %}{% endfor %}],
+				categories: [{% for category in data.categories %}'{{ category }}'{% unless forloop.last %}, {% endunless %}{% endfor %}],
 				{% endif %}
 
 				{% if data.datetime %}
@@ -191,18 +196,18 @@
 			{% endif %}
 
 			legend: {
-				{% if include.legend %}
+				{% if data.legend %}
 				show: true,
 				position: 'bottom',
-				height: 32,
-				offsetY: 8,
+				offsetY: 12,
 				markers: {
-					width: 8,
-					height: 8,
+					width: 10,
+					height: 10,
 					radius: 100,
 				},
 				itemMargin: {
 					horizontal: 8,
+					vertical: 8
 				},
 				{% else %}
 				show: false,
@@ -238,12 +243,8 @@
 </script>
 {% endcapture %}
 
-{% if include.show-scripts %}
-{{ script }}
-{% else %}
 {% capture_global scripts %}
 {{ script }}
 {% endcapture_global %}
-{% endif %}
 
 {% endif %}
