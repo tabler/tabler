@@ -8,11 +8,21 @@ bootstrap-link: components/badge/
 
 ## Default markup
 
-The default badges are square and come in the basic set of colors. 
+The default badges are square and come in the basic set of colors.
 
 {% capture code %}
 {% for color in site.colors %}
 <span class="badge bg-{{ color[0] }}">{{ color[0] }}</span>
+{% endfor %}
+{% endcapture %}
+{% include example.html code=code centered=true %}
+
+## Outline badges
+
+
+{% capture code %}
+{% for color in site.colors %}
+<span class="badge badge-outline text-{{ color[0] }}">{{ color[0] }}</span>
 {% endfor %}
 {% endcapture %}
 {% include example.html code=code centered=true %}
