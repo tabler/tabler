@@ -17,8 +17,19 @@ The default badges are square and come in the basic set of colors.
 {% endcapture %}
 {% include example.html code=code centered=true %}
 
-## Outline badges
+## Headings
 
+{% capture code %}
+<h1>Example heading <span class="badge bg-secondary">New</span></h1>
+<h2>Example heading <span class="badge bg-secondary">New</span></h2>
+<h3>Example heading <span class="badge bg-secondary">New</span></h3>
+<h4>Example heading <span class="badge bg-secondary">New</span></h4>
+<h5>Example heading <span class="badge bg-secondary">New</span></h5>
+<h6>Example heading <span class="badge bg-secondary">New</span></h6>
+{% endcapture %}
+{% include example.html code=code %}
+
+## Outline badges
 
 {% capture code %}
 {% for color in site.colors %}
@@ -26,7 +37,6 @@ The default badges are square and come in the basic set of colors.
 {% endfor %}
 {% endcapture %}
 {% include example.html code=code centered=true %}
-
 
 ## Pill badges
 
