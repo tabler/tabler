@@ -1,8 +1,6 @@
-<span class="badge badge-status{% if include.color %}{% if include.light %} bg-{{ include.color }}-lt{% else %} bg-{{ include.color }}{% endif %}{% endif %}">
-	{% if include.icon %}
-	{% include ui/icon.html icon=include.icon %}
+<span class="status{% if include.color %} status-{{ include.color }}{% endif %}{% if include.lite %} status-lite{% endif %}">
+	{% if include.dot %}
+	<span class="status-dot{% if include.animated %} status-dot-animated{% endif %}"></span>
 	{% endif %}
-	{% unless include.icononly %}
 	{{ include.text | default: 'Status' }}
-	{% endunless %}
 </span>

@@ -74,18 +74,6 @@ Place the badge within an `<a>` element if you want it to perform the function o
 {% include example.html code=code centered=true %}
 
 
-## Empty badges
-
-Leave the HTML element empty if you want to create badges without any text. Empty badges are particularly useful if you want to make an interface element more noticeable regardless of limited space.
-
-{% capture code %}
-{% for color in site.colors %}
-<a href="#" class="badge bg-{{ color[0] }}"></a>
-{% endfor %}
-{% endcapture %}
-{% include example.html code=code centered=true %}
-
-
 ## Badge avatars
 
 Create the `.badge-avatar` class to add an avatar that will make a badge more personalized.
