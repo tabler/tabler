@@ -40,16 +40,16 @@
 // Status
 //
 .status {
-  --status-color: #{$text-muted};
-  --status-color-rgb: #{to-rgb($text-muted)};
+  --#{$variable-prefix}status-color: #{$text-muted};
+  --#{$variable-prefix}status-color-rgb: #{to-rgb($text-muted)};
 
   display: inline-flex;
   align-items: center;
   height: 2rem;
   padding: .5rem .75rem;
   gap: .5rem;
-  color: var(--status-color);
-  background: rgba(var(--status-color-rgb), .1);
+  color: var(--#{$variable-prefix}status-color);
+  background: rgba(var(--#{$variable-prefix}status-color-rgb), .1);
   font-size: $font-size-base;
   text-transform: none;
   letter-spacing: normal;
@@ -59,7 +59,7 @@
   margin: 0;
 
   .status-dot {
-    background: var(--status-color);
+    background: var(--#{$variable-prefix}status-color);
   }
 
   .icon {
@@ -75,8 +75,8 @@
 
 @each $name, $color in theme-colors() {
   .status-#{$name} {
-    --status-color: #{$color};
-    --status-color-rgb: #{to-rgb($color)};
+    --#{$variable-prefix}status-color: #{$color};
+    --#{$variable-prefix}status-color-rgb: #{to-rgb($color)};
   }
 }
 
@@ -84,13 +84,13 @@
 // Status dot
 //
 .status-dot {
-  --status-dot-color: var(--status-color, #{$text-muted});
+  --#{$variable-prefix}status-dot-color: var(--#{$variable-prefix}status-color, #{$text-muted});
   --#{$variable-prefix}status-size: #{$status-dot-size};
   position: relative;
   display: inline-block;
   width: var(--#{$variable-prefix}status-size);
   height: var(--#{$variable-prefix}status-size);
-  background: var(--status-dot-color);
+  background: var(--#{$variable-prefix}status-dot-color);
   border-radius: $border-radius-pill;
 }
 
@@ -121,24 +121,24 @@ $btn-colors: $theme-colors;
 // Status indicator
 //
 .status-indicator {
-  --status-indicator-size: 2.5rem;
-  --status-indicator-color: var(--status-color, #{$text-muted});
+  --#{$variable-prefix}status-indicator-size: 2.5rem;
+  --#{$variable-prefix}status-indicator-color: var(--#{$variable-prefix}status-color, #{$text-muted});
   display: inline-block;
   position: relative;
-  width: var(--status-indicator-size);
-  height: var(--status-indicator-size);
+  width: var(--#{$variable-prefix}status-indicator-size);
+  height: var(--#{$variable-prefix}status-indicator-size);
 }
 
 .status-indicator-circle {
-  --status-circle-size: .75rem;
+  --#{$variable-prefix}status-circle-size: .75rem;
   position: absolute;
   left: 50%;
   top: 50%;
-  margin: calc(var(--status-circle-size) / -2) 0 0 calc(var(--status-circle-size) / -2);
-  width: var(--status-circle-size);
-  height: var(--status-circle-size);
+  margin: calc(var(--#{$variable-prefix}status-circle-size) / -2) 0 0 calc(var(--#{$variable-prefix}status-circle-size) / -2);
+  width: var(--#{$variable-prefix}status-circle-size);
+  height: var(--#{$variable-prefix}status-circle-size);
   border-radius: $border-radius-pill;
-  background: var(--status-color);
+  background: var(--#{$variable-prefix}status-color);
 
   &:nth-child(1) {
     z-index: 3;
