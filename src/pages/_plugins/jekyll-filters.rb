@@ -45,10 +45,6 @@ module Jekyll
       value.to_s.split.map(&:chr).join
     end
 
-    def divide(value, number)
-      value.to_i * 1.0 / number
-    end
-
     def number_color(value)
       value = value.to_i
 
