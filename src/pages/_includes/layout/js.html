@@ -9,7 +9,7 @@
 {% for lib in site.data.libs.js %}
 	{% if libs contains lib[0] or site.data.libs.global-libs contains lib[0] %}
 		{% for file in lib[1] %}
-		<script src="{% if file contains 'http://' or file contains 'https://' %}{{ file | replace: 'GOOGLE_MAPS_KEY', google-maps-key }}{% else %}{{ site.base }}/{% if jekyll.environment != 'development' %}dist/libs{% else %}node_modules{% endif %}/{% if jekyll.environment != 'development' %}{{ file | replace: '@', '' }}{% else %}{{ file }}{% endif %}{% if jekyll.environment == 'preview' %}?{{ site.time | date: '%s' }}{% endif %}{% endif %}"></script>
+		<script src="{% if file contains 'http://' or file contains 'https://' %}{{ file | replace: 'GOOGLE_MAPS_KEY', google-maps-key }}{% else %}{{ site.base }}/{% if jekyll.environment != 'development' %}dist/libs{% else %}node_modules{% endif %}/{% if jekyll.environment != 'development' %}{{ file | replace: '@', '' }}{% else %}{{ file }}{% endif %}{% if jekyll.environment == 'preview' %}?{{ site.time | date: '%s' }}{% endif %}{% endif %}" defer></script>
 		{% endfor %}
 	{% endif %}
 {% endfor %}
