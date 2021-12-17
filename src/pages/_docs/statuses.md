@@ -55,7 +55,7 @@ description: Status dots are particularly useful if you want to make an interfac
 <span class="status-dot status-{{ color[0] }}"></span>
 {% endfor %}
 {% endcapture %}
-{% include example.html code=code centered=true %}
+{% include example.html code=code centered=true wrapper="btn-list" %}
 
 ### Animated dots
 
@@ -64,7 +64,7 @@ description: Status dots are particularly useful if you want to make an interfac
 <span class="status-dot status-dot-animated status-{{ color[0] }}"></span>
 {% endfor %}
 {% endcapture %}
-{% include example.html code=code centered=true %}### Animated dots
+{% include example.html code=code centered=true wrapper="btn-list" %}
 
 ## Status indicator 
 
@@ -74,4 +74,4 @@ description: Status dots are particularly useful if you want to make an interfac
 {% include ui/status-indicator.html animated=true color=c %}
 {% endfor %}
 {% endcapture %}
-{% include example.html code=code centered=true %}
+{% include example.html code=code centered=true wrapper="btn-list" %}
