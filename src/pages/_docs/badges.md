@@ -12,7 +12,7 @@ The default badges are square and come in the basic set of colors.
 
 {% capture code %}
 {% for color in site.colors %}
-<span class="badge bg-{{ color[0] }}">{{ color[0] }}</span>
+<span class="badge bg-{{ color[0] }}">{{ color[1].title }}</span>
 {% endfor %}
 {% endcapture %}
 {% include example.html code=code centered=true %}
@@ -36,7 +36,7 @@ You can create a soft colour variant of a corresponding contextual badge variati
 
 {% capture code %}
 {% for color in site.colors %}
-<span class="badge bg-{{ color[0] }}-lt">{{ color[0] }}</span>
+<span class="badge bg-{{ color[0] }}-lt">{{ color[1].title }}</span>
 {% endfor %}
 {% endcapture %}
 {% include example.html code=code centered=true %}
@@ -48,7 +48,7 @@ Place the badge within an `<a>` element if you want it to perform the function o
 
 {% capture code %}
 {% for color in site.colors %}
-<a href="#" class="badge bg-{{ color[0] }}">{{ color[0] }}</a>
+<a href="#" class="badge bg-{{ color[0] }}">{{ color[1].title }}</a>
 {% endfor %}
 {% endcapture %}
 {% include example.html code=code centered=true %}
@@ -65,19 +65,6 @@ Leave the HTML element empty if you want to create badges without any text. Empt
 {% endcapture %}
 {% include example.html code=code centered=true %}
 
-
-## Badge avatars
-
-Create the `.badge-avatar` class to add an avatar that will make a badge more personalized.
-
-{% capture code %}
-{% include ui/badge.html person-id=1 %}
-{% include ui/badge.html person-id=2 %}
-{% include ui/badge.html person-id=3 %}
-{% include ui/badge.html person-id=4 %}
-{% include ui/badge.html person-id=5 %}
-{% endcapture %}
-{% include example.html code=code %}
 
 ## Button with badge
 
