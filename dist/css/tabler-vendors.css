@@ -1,9 +1,9 @@
 /*!
-* Tabler v1.0.0-beta5 (https://tabler.io)
-* @version 1.0.0-beta5
+* Tabler v1.0.0-beta6 (https://tabler.io)
+* @version 1.0.0-beta6
 * @link https://tabler.io
-* Copyright 2018-2021 The Tabler Authors
-* Copyright 2018-2021 codecalm.net Paweł Kuna
+* Copyright 2018-2022 The Tabler Authors
+* Copyright 2018-2022 codecalm.net Paweł Kuna
 * Licensed under MIT (https://github.com/tabler/tabler/blob/master/LICENSE)
 */
 /* Functional styling;
@@ -418,7 +418,7 @@
 .litepicker svg {
   fill: none !important;
 }
-.litepicker .container__months {
+.litepicker .container__main {
   border: 1px solid var(--tblr-border-color);
   border-radius: 4px;
   box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
@@ -1008,4 +1008,173 @@
 .ts-control .dropdown-menu {
   width: 100%;
   height: auto;
+}
+
+svg {
+  touch-action: none;
+}
+
+image, text, .jvm-zoomin, .jvm-zoomout {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+.jvm-container {
+  touch-action: none;
+  position: relative;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
+}
+
+.jvm-tooltip {
+  border-radius: 3px;
+  background-color: #5c5cff;
+  font-family: sans-serif, Verdana;
+  font-size: smaller;
+  box-shadow: 1px 2px 12px rgba(0, 0, 0, 0.2);
+  padding: 3px 5px;
+  white-space: nowrap;
+  position: absolute;
+  display: none;
+  color: #FFF;
+}
+
+.jvm-tooltip.active {
+  display: block;
+}
+
+.jvm-zoom-btn {
+  border-radius: 3px;
+  background-color: #292929;
+  padding: 3px;
+  box-sizing: border-box;
+  position: absolute;
+  line-height: 10px;
+  cursor: pointer;
+  color: #FFF;
+  height: 15px;
+  width: 15px;
+  left: 10px;
+}
+
+.jvm-zoom-btn.jvm-zoomout {
+  top: 30px;
+}
+
+.jvm-zoom-btn.jvm-zoomin {
+  top: 10px;
+}
+
+.jvm-series-container {
+  right: 15px;
+  position: absolute;
+}
+
+.jvm-series-container.jvm-series-h {
+  bottom: 15px;
+}
+
+.jvm-series-container.jvm-series-v {
+  top: 15px;
+}
+
+.jvm-series-container .jvm-legend {
+  background-color: #FFF;
+  border: 1px solid #e5e7eb;
+  margin-left: 0.75rem;
+  border-radius: 0.25rem;
+  border-color: #e5e7eb;
+  padding: 0.6rem;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  float: left;
+}
+
+.jvm-series-container .jvm-legend .jvm-legend-title {
+  line-height: 1;
+  border-bottom: 1px solid #e5e7eb;
+  padding-bottom: 0.5rem;
+  margin-bottom: 0.575rem;
+  text-align: left;
+}
+
+.jvm-series-container .jvm-legend .jvm-legend-inner {
+  overflow: hidden;
+}
+
+.jvm-series-container .jvm-legend .jvm-legend-inner .jvm-legend-tick {
+  overflow: hidden;
+  min-width: 40px;
+}
+
+.jvm-series-container .jvm-legend .jvm-legend-inner .jvm-legend-tick:not(:first-child) {
+  margin-top: 0.575rem;
+}
+
+.jvm-series-container .jvm-legend .jvm-legend-inner .jvm-legend-tick .jvm-legend-tick-sample {
+  border-radius: 4px;
+  margin-right: 0.65rem;
+  height: 16px;
+  width: 16px;
+  float: left;
+}
+
+.jvm-series-container .jvm-legend .jvm-legend-inner .jvm-legend-tick .jvm-legend-tick-text {
+  font-size: 12px;
+  text-align: center;
+  float: left;
+}
+
+.jvm-line[animation=true] {
+  -webkit-animation: jvm-line-animation 10s linear forwards infinite;
+  animation: jvm-line-animation 10s linear forwards infinite;
+}
+
+@-webkit-keyframes jvm-line-animation {
+  from {
+    stroke-dashoffset: 250;
+  }
+}
+@keyframes jvm-line-animation {
+  from {
+    stroke-dashoffset: 250;
+  }
+}
+.jvm-series-container .jvm-legend .jvm-legend-title {
+  border-bottom: 0;
+  font-weight: 500;
+}
+
+.jvm-series-container .jvm-legend {
+  background-color: var(--tblr-card-bg);
+  border: 1px solid var(--tblr-border-color);
+  min-width: 8rem;
+}
+.jvm-series-container .jvm-legend .jvm-legend-inner .jvm-legend-tick {
+  display: flex;
+  align-items: center;
+}
+.jvm-series-container .jvm-legend .jvm-legend-inner .jvm-legend-tick .jvm-legend-tick-sample {
+  width: 0.75rem;
+  height: 0.75rem;
+}
+
+.jvm-zoom-btn {
+  border: 1px solid var(--tblr-border-color);
+  background: var(--tblr-card-bg);
+  color: var(--tblr-body-color);
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 1rem;
+  box-shadow: rgba(30, 41, 59, 0.04) 0 2px 4px 0;
+}
+.jvm-zoom-btn.jvm-zoomout {
+  top: 2.5rem;
 }
