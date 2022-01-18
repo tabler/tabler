@@ -14,32 +14,19 @@
       background-color: $value !important;
     }
 
-    .text-#{"" + $color} {
-      color: $value !important;
-    }
-
-    .bg-#{"" + $color}-lt {
-      color: $value !important;
-      background: theme-color-lighter($value, true) !important;
-    }
+// All colors
+@each $color, $value in theme-colors() {
+  .bg-#{"" + $color} {
+    color: #ffffff !important;
+    background: $value !important;
   }
-}
 
-// Social colors
-@if $enable-social-colors {
-  @each $color, $value in $social-colors {
-    .bg-#{"" + $color} {
-      color: #ffffff !important;
-      background: $value !important;
-    }
+  .text-#{"" + $color} {
+    color: $value !important;
+  }
 
-    .text-#{"" + $color} {
-      color: $value !important;
-    }
-
-    .bg-#{"" + $color}-lt {
-      color: $value !important;
-      background: theme-color-lighter($value, true) !important;
-    }
+  .bg-#{"" + $color}-lt {
+    color: $value !important;
+    background: theme-color-lighter($value, true) !important;
   }
 }
