@@ -3,7 +3,7 @@
 {% assign color = include.color | default: data.color | default: 'green' %}
 
 {% if data %}
-	<div class="ratio ratio-16x9">
+	<div class="ratio ratio-21x9">
 		<div>
 			<div id="map-{{ id }}" class="w-100 h-100"></div>
 		</div>
@@ -15,21 +15,24 @@
 		{% if jekyll.environment == 'development' %}window.tabler_map_vector = window.tabler_map_vector || {};{% endif %}
 
 		document.addEventListener("DOMContentLoaded", function() {
-			{% if jekyll.environment == 'development' %}window.tabler_map_vector["map-{{ id }}"] = {% endif %}$('#map-{{ id }}').vectorMap({
+			{% if jekyll.environment == 'development' %}window.tabler_map_vector["map-{{ id }}"] = {% endif %}new jsVectorMap({
+				selector: '#map-{{ id }}',
 				map: '{{ data.map }}',
 				backgroundColor: 'transparent',
-				color: 'rgba(120, 130, 140, .1)',
-				borderColor: 'transparent',
-				{% if data.zoom %}enableZoom: true,{% endif %}
-				{% if data.values %}
-				{% assign color-light = color | append: "-100" %}
-				scaleColors: ["{{ color | tabler_color: '100' }}", "{{ color | tabler_color }}"],
-				normalizeFunction: 'polynomial',
-				values: (chart_data = {{ data.values }}),
-				onLabelShow: function (event, label, code) {
-					if (chart_data[code] > 0) {
-						label.append(': <strong>' + chart_data[code] + '</strong>');
+				regionStyle: {
+					initial: {
+						fill: '#F8FAFC',
+						stroke: '#dae1e7',
+						strokeWidth: 1,
 					}
+				},
+				zoomOnScroll: {% if data.zoom %}true{% else %}false{% endif %},
+				zoomButtons: {% if data.zoom %}true{% else %}false{% endif %},
+				{% if data.values %}
+				// -------- Series --------
+				visualizeData: {
+					scale: ['#F8FAFC', '{{ data.color | tabler_color }}'],
+					values: {{ data.values }},
 				},
 				{% endif %}
 			});
