@@ -146,7 +146,7 @@ gulp.task('clean-jekyll', (cb) => {
  * Compile SASS to CSS and move it to dist directory
  */
 gulp.task('sass', () => {
-	return gulp
+	const g = gulp
 		.src(`${srcDir}/scss/!(_)*.scss`)
 		.pipe(debug())
 		.pipe(sass({
@@ -167,11 +167,17 @@ gulp.task('sass', () => {
 		.pipe(browserSync.reload({
 			stream: true,
 		}))
-		.pipe(rtlcss())
-		.pipe(rename((path) => {
-			path.basename += '.rtl'
-		}))
-		.pipe(gulp.dest(`${distDir}/css/`))
+
+	if (BUILD) {
+		g
+			.pipe(rtlcss())
+			.pipe(rename((path) => {
+				path.basename += '.rtl'
+			}))
+			.pipe(gulp.dest(`${distDir}/css/`))
+	}
+
+	return g
 })
 
 /**

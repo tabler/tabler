@@ -8,7 +8,7 @@ bootstrap-link: components/badge/
 
 ## Default markup
 
-The default badges are square and come in the basic set of colors. 
+The default badges are square and come in the basic set of colors.
 
 {% capture code %}
 {% for color in site.colors %}
@@ -28,6 +28,15 @@ The default badges are square and come in the basic set of colors.
 <h6>Example heading <span class="badge bg-secondary">New</span></h6>
 {% endcapture %}
 {% include example.html code=code %}
+
+## Outline badges
+
+{% capture code %}
+{% for color in site.colors %}
+<span class="badge badge-outline text-{{ color[0] }}">{{ color[0] }}</span>
+{% endfor %}
+{% endcapture %}
+{% include example.html code=code centered=true %}
 
 ## Pill badges
 
@@ -60,18 +69,6 @@ Place the badge within an `<a>` element if you want it to perform the function o
 {% capture code %}
 {% for color in site.colors %}
 <a href="#" class="badge bg-{{ color[0] }}">{{ color[1].title }}</a>
-{% endfor %}
-{% endcapture %}
-{% include example.html code=code centered=true %}
-
-
-## Empty badges
-
-Leave the HTML element empty if you want to create badges without any text. Empty badges are particularly useful if you want to make an interface element more noticeable regardless of limited space.
-
-{% capture code %}
-{% for color in site.colors %}
-<a href="#" class="badge bg-{{ color[0] }}"></a>
 {% endfor %}
 {% endcapture %}
 {% include example.html code=code centered=true %}
