@@ -93,7 +93,7 @@ module Jekyll
 
     def tabler_color(color, variation = false)
       if variation
-        color = color + '-' + variation
+        color = color + '-' + variation.to_s
       end
 
       Jekyll.sites.first.data['colors'][color]

@@ -1,5 +1,47 @@
 $tooltip-bg-color: $dark;
 $tooltip-font-family: inherit;
 $tooltip-font-size: $h5-font-size;
+$box-shadow: $card-shadow;
+$legend-tick-sample-radius: $border-radius-pill;
 
 @import "~jsvectormap/src/scss/jsvectormap.scss";
+
+.#{$classPrefix}series-container .#{$classPrefix}legend  .#{$classPrefix}legend-title {
+  border-bottom: 0;
+  font-weight: $font-weight-medium;
+}
+
+.#{$classPrefix}series-container .#{$classPrefix}legend {
+  background-color: var(--#{$variable-prefix}card-bg);
+  border: 1px solid var(--#{$variable-prefix}border-color);
+  min-width: 8rem;
+
+  .#{$classPrefix}legend-inner .#{$classPrefix}legend-tick {
+    display: flex;
+    align-items: center;
+
+    .#{$classPrefix}legend-tick-sample {
+      width: .75rem;
+      height: .75rem;
+    }
+  }
+}
+
+.#{$classPrefix}zoom-btn {
+  border: 1px solid var(--#{$variable-prefix}border-color);
+  background: var(--#{$variable-prefix}card-bg);
+  color: var(--#{$variable-prefix}body-color);
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  width: 1.5rem;
+  height: 1.5rem;
+  font-size: 1rem;
+  box-shadow: $card-shadow;
+
+  &.#{$classPrefix}zoomout {
+    top: 2.5rem;
+  }
+}

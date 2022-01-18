@@ -3,7 +3,7 @@
 {% assign color = include.color | default: data.color | default: 'green' %}
 
 {% if data %}
-	<div class="ratio ratio-16x9">
+	<div class="ratio ratio-21x9">
 		<div>
 			<div id="map-{{ id }}" class="w-100 h-100"></div>
 		</div>
@@ -21,34 +21,18 @@
 				backgroundColor: 'transparent',
 				regionStyle: {
 					initial: {
-						fill: "rgba(120, 130, 140, .1)",
-						stroke: "transparent"
+						fill: '#F8FAFC',
+						stroke: '#dae1e7',
+						strokeWidth: 1,
 					}
 				},
-				// labels: {
-				// 	regions: {
-				// 		render(code) {
-				// 			return ['EG', 'US', 'CH'].indexOf(code) > -1 ? code : null
-				// 		}
-				// 	}
-				// },
 				zoomOnScroll: {% if data.zoom %}true{% else %}false{% endif %},
 				zoomButtons: {% if data.zoom %}true{% else %}false{% endif %},
 				{% if data.values %}
 				// -------- Series --------
-				series: {
-					regions: [{
-						legend: {
-							title: '{{ data.label }}',
-						},
-						attribute: 'fill',
-						scale: {
-							one: '#5c5cff',
-							two: '#ff9251',
-							three: '#56de80',
-						},
-						values: {{ data.values }},
-					}]
+				visualizeData: {
+					scale: ['#F8FAFC', '{{ data.color | tabler_color }}'],
+					values: {{ data.values }},
 				},
 				{% endif %}
 			});
