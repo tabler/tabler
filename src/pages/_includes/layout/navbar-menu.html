@@ -1,5 +1,6 @@
 {% assign current-page = page.menu | default: layout.menu | split: '.' %}
 {% assign hide-icons = include.hide-icons %}
+{% assign icons-count = site.data.icons | size %}
 
 {% assign menu = site.data.menu %}
 
@@ -18,9 +19,9 @@
 
 				<span class="nav-link-title">
 					{% if include.long-titles %}
-					{{ level-1[1].title-long | default: level-1[1].title }}
+					{{ level-1[1].title-long | default: level-1[1].title | replace: '%ICONS_COUNT%', icons-count }}
 					{% else %}
-					{{ level-1[1].title }}
+					{{ level-1[1].title | replace: '%ICONS_COUNT%', icons-count   }}
 					{% endif %}
 				</span>
 
