@@ -147,7 +147,7 @@ gulp.task('clean-jekyll', (cb) => {
  */
 gulp.task('sass', () => {
 	const g = gulp
-		.src(`${srcDir}/scss/!(_)*.scss`)
+		.src(argv.withPlugins || BUILD ? `${srcDir}/scss/!(_)*.scss` : `${srcDir}/scss/+(tabler|demo).scss`)
 		.pipe(debug())
 		.pipe(sass({
 			style: 'expanded',
