@@ -15,7 +15,7 @@
 		{% if jekyll.environment == 'development' %}window.tabler_map_vector = window.tabler_map_vector || {};{% endif %}
 
 		document.addEventListener("DOMContentLoaded", function() {
-			{% if jekyll.environment == 'development' %}window.tabler_map_vector["map-{{ id }}"] = {% endif %}new jsVectorMap({
+			const map = {% if jekyll.environment == 'development' %}window.tabler_map_vector["map-{{ id }}"] = {% endif %}new jsVectorMap({
 				selector: '#map-{{ id }}',
 				map: '{{ data.map }}',
 				backgroundColor: 'transparent',
@@ -35,6 +35,10 @@
 					values: {{ data.values }},
 				},
 				{% endif %}
+			});
+
+			window.addEventListener("resize", () => {
+				map.updateSize();
 			});
 		});
 		// @formatter:off
