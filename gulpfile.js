@@ -100,6 +100,34 @@ gulp.task('svg-icons', (cb) => {
 })
 
 /**
+ * Generate CHANGELOG.md
+ */
+gulp.task('changelog', (cb) => {
+	const content = YAML.parse(fs.readFileSync('./src/pages/_data/changelog.yml', 'utf8'))
+	let readme = `# Changelog
+
+All notable changes to this project will be documented in this file.\n`
+
+	content.forEach((change) => {
+		readme += `\n\n## \`${change.version}\` - ${change.date}\n\n`
+
+		if(change.description) {
+			readme += `**${change.description}**\n\n`
+		}
+
+		change.changes.forEach((line) => {
+			readme += `- ${line}\n`
+		})
+
+		console.log(change.version);
+	})
+
+	fs.writeFileSync('CHANGELOG.md', readme)
+
+	cb()
+})
+
+/**
  * Check unused Jekyll partials
  */
 gulp.task('unused-files', (cb) => {

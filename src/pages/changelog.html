@@ -12,13 +12,13 @@ layout: docs
 	</div>
 
 	{% if version.description %}
-	<p>{{ version.description }}</p>
+	<p class="strong">{{ version.description }}</p>
 	{% endif %}
 
 	{% if version.changes %}
 	<ul>
 		{% for change in version.changes %}
-		<li>{{ change }}</li>
+		<li>{{ change | markdownify | replace_regex: '</p>\s+$', '' | replace_regex: '^<p>', '' }}</li>
 		{% endfor %}
 	</ul>
 	{% endif %}
