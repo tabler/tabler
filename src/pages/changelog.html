@@ -18,7 +18,7 @@ layout: docs
 	{% if version.changes %}
 	<ul>
 		{% for change in version.changes %}
-		<li>{{ change | markdownify | replace_regex: '</p>\s+$', '' | replace_regex: '^<p>', '' }}</li>
+		<li>{{ change | markdownify | replace_regex: '</p>\s+$', '' | replace_regex: '^<p>', ''  | replace_regex: '#([0-9]+)', '<a href="https://github.com/tabler/tabler/issues/\1" target="_blank" rel="noopener">#\1</a>' }}</li>
 		{% endfor %}
 	</ul>
 	{% endif %}
