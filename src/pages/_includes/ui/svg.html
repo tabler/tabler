@@ -1,0 +1,7 @@
+{% assign width = include.width | default: include.size | default: 20 %}
+{% assign height = include.height | default: include.size | default: 20 %}
+<svg xmlns="http://www.w3.org/2000/svg"{% if include.class %} class="{{ include.class }}"{% endif %} preserveAspectRatio="{% if include.ratio %}xMidYMid meet{% else %}none{% endif %}" width="{{ width }}" height="{% if include.ratio %}auto{% else %}{{ height }}{% endif %}" viewBox="0 0 {{ width }} {{ height }}" stroke="var(--tblr-border-color, #b8cef1)">
+<!--	<rect x=".5" y=".5" width="{{ width | minus: 1 }}" height="{{ height | minus: 1 }}" fill="#fff" rx="2"></rect>-->
+	<line x1="0" y1="0" x2="{{ width }}" y2="{{ height }}"></line>
+	<line x1="0" y1="{{ height }}" x2="{{ width }}" y2="0"></line>
+</svg>
