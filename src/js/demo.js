@@ -3,13 +3,14 @@ const items = {
 	'theme': { localStorage: 'tablerTheme', default: 'light' },
 	'menu-position': { localStorage: 'tablerMenuPosition', default: 'top' },
 	'menu-behavior': { localStorage: 'tablerMenuBehavior', default: 'sticky' },
-	'container-layout': { localStorage: 'tablerContainerLayout', default: 'boxed' },
+	'container-layout': { localStorage: 'tablerContainerLayout', default: 'boxed' }
 }
 
 // Theme config
 const config = {}
 for (const [key, params] of Object.entries(items)) {
-	config[key] = localStorage.getItem(params.localStorage) ? localStorage.getItem(params.localStorage) : params.default
+   const lsParams = localStorage.getItem(params.localStorage)
+   config[key] = lsParams ? lsParams : params.default
 }
 
 // Parse url params
@@ -45,9 +46,7 @@ const toggleFormControls = (form) => {
 
 // Update body classes
 const updateBodyClasses = () => {
-	document.body.classList.remove('theme-dark');
-	document.body.classList.remove('theme-light');
-
+	document.body.classList.remove('theme-dark', 'theme-light');
 	document.body.classList.add(`theme-${config.theme}`);
 
 	// for (const [key, params] of Object.entries(items)) {
