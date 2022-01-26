@@ -201,7 +201,6 @@ gulp.task('css-rtl', function () {
 	return gulp.src(`${distDir}/css/*.css`)
 		.pipe(rtlcss())
 		.pipe(rename((path) => {
-			console.log('path', path);
 			path.basename += '.rtl'
 		}))
 		.pipe(gulp.dest(`${distDir}/css/`))
