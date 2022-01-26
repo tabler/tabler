@@ -2,6 +2,7 @@
   box-shadow: $card-shadow;
   border: $card-border-width solid $card-border-color;
   background: var(--#{$variable-prefix}card-bg, #{$card-bg});
+  @include transition(transform $transition-time ease-out, opacity $transition-time ease-out, box-shadow $transition-time ease-out);
 
   @media print {
     border: none;
@@ -10,7 +11,6 @@
 
   @at-root a#{&} {
     color: inherit;
-    @include transition(box-shadow $transition-time);
 
     &:hover {
       text-decoration: none;
@@ -120,16 +120,6 @@
   }
 }
 
-.card-link {
-  color: inherit;
-
-  &:hover {
-    color: inherit;
-    text-decoration: none;
-    box-shadow: 0 1px 6px 0 rgba(0, 0, 0, .08);
-  }
-}
-
 .card-btn {
   display: flex;
   align-items: center;
@@ -235,6 +225,27 @@
 
 .card-rotate-right {
   transform: rotate(1.5deg);
+}
+
+// Card link
+.card-link {
+  color: inherit;
+
+  &:hover {
+    color: inherit;
+    text-decoration: none;
+    box-shadow: 0 1px 6px 0 rgba(0, 0, 0, .08);
+  }
+}
+
+.card-link-rotate:hover {
+  transform: rotate(1.5deg);
+  opacity: 1
+}
+
+.card-link-pop:hover {
+  transform: translateY(-2px);
+  opacity: 1
 }
 
 // Card footer
