@@ -2,6 +2,7 @@
   box-shadow: $card-shadow;
   border: $card-border-width solid $card-border-color;
   background: var(--#{$variable-prefix}card-bg, #{$card-bg});
+  @include transition(transform $transition-time ease-out, opacity $transition-time ease-out, box-shadow $transition-time ease-out);
 
   @media print {
     border: none;
@@ -10,12 +11,24 @@
 
   @at-root a#{&} {
     color: inherit;
-    @include transition(box-shadow $transition-time);
 
     &:hover {
       text-decoration: none;
       box-shadow: $card-shadow-hover;
     }
+  }
+
+  .card {
+    box-shadow: none;
+  }
+}
+
+// Card borderless
+.card-borderless {
+  &,
+  .card-header,
+  .card-footer {
+    border-color: transparent;
   }
 }
 
@@ -107,16 +120,6 @@
   }
 }
 
-.card-link {
-  color: inherit;
-
-  &:hover {
-    color: inherit;
-    text-decoration: none;
-    box-shadow: 0 1px 6px 0 rgba(0, 0, 0, .08);
-  }
-}
-
 .card-btn {
   display: flex;
   align-items: center;
@@ -191,6 +194,7 @@
   }
 }
 
+// Card header
 .card-header {
   color: inherit;
   display: flex;
@@ -198,27 +202,64 @@
   background: transparent;
 }
 
+.card-header-light {
+  border-bottom-color: transparent;
+  background: var(--#{$variable-prefix}light);
+}
+
 .card-header-tabs {
   flex: 1;
-  margin: (- $card-spacer-y) (- $card-spacer-x);
+  margin: (- $card-spacer-y * .5) (- $card-spacer-x * .5) (- $card-spacer-y );
 }
 
 .card-header-pills {
   flex: 1;
+  margin-top: -.5rem;
+  margin-bottom: -.5rem;
 }
 
-/*
-Card footer
- */
+// Card rotate
+.card-rotate-left {
+  transform: rotate(-1.5deg);
+}
+
+.card-rotate-right {
+  transform: rotate(1.5deg);
+}
+
+// Card link
+.card-link {
+  color: inherit;
+
+  &:hover {
+    color: inherit;
+    text-decoration: none;
+    box-shadow: 0 1px 6px 0 rgba(0, 0, 0, .08);
+  }
+}
+
+.card-link-rotate:hover {
+  transform: rotate(1.5deg);
+  opacity: 1
+}
+
+.card-link-pop:hover {
+  transform: translateY(-2px);
+  opacity: 1
+}
+
+// Card footer
 .card-footer {
   margin-top: auto;
 }
 
-.card-footer-gray {
-  border-top: 0;
-  background: $gray-50;
+.card-footer-transparent {
+  background: transparent;
+  border-color: transparent;
+  padding-top: 0;
 }
 
+// Card progress
 .card-progress {
   height: .25rem;
 
@@ -256,9 +297,15 @@ Card footer
   margin-top: divide(-$card-spacer-y, 2);
   margin-bottom: $card-title-spacer-y;
   color: $text-muted;
+  font-weight: normal;
 
   .card-header & {
     margin: 0;
+  }
+
+  .card-title & {
+    margin: 0 0 0 .25rem;
+    font-size: $h4-font-size;
   }
 }
 
@@ -462,9 +509,7 @@ Card list group
   }
 }
 
-/**
-Card tabs
- */
+// Card tabs
 .card-tabs {
 
   .nav-tabs {
@@ -473,19 +518,21 @@ Card tabs
     border-bottom: 0;
 
     .nav-link {
+      color: $text-muted;
       background: $card-cap-bg;
       border: $card-border-width solid $card-border-color;
-      border-bottom: 0;
 
       &.active,
       &:active,
       &:hover {
         border-color: $card-border-color;
+        color: $body-color;
       }
 
       &.active {
         color: $headings-color;
         background: $card-bg;
+        border-bottom-color: transparent;
       }
     }
 
@@ -511,12 +558,19 @@ Card tabs
   .nav-tabs-bottom {
     margin-bottom: 0;
 
+    .nav-link {
+      margin-bottom: 0;
+
+      &.active {
+        border-top-color: transparent;
+      }
+    }
+
     .nav-item {
-      margin-top: -1px;
+      margin-top: -$card-border-width;
       margin-bottom: 0;
 
       .nav-link {
-        border-top-width: 0;
         border-bottom: $card-border-width solid $card-border-color;
 
         border-top-left-radius: 0;
@@ -528,16 +582,5 @@ Card tabs
   .card {
     margin: 0;
     border-top-left-radius: 0;
-  }
-}
-
-// Border-0 card
-.border-0 {
-  .card, .nav-link {
-    border: 0 !important;
-  }
-
-  .card-stacked::after {
-    border: 1px solid rgba($text-muted, 0.07) !important;
   }
 }
