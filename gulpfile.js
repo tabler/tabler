@@ -174,7 +174,7 @@ gulp.task('clean-jekyll', (cb) => {
  * Compile SASS to CSS and move it to dist directory
  */
 gulp.task('sass', () => {
-	const g = gulp
+	return gulp
 		.src(argv.withPlugins || BUILD ? `${srcDir}/scss/!(_)*.scss` : `${srcDir}/scss/+(tabler|demo).scss`)
 		.pipe(debug())
 		.pipe(sass({
@@ -194,19 +194,17 @@ gulp.task('sass', () => {
 		.pipe(gulp.dest(`${distDir}/css/`))
 		.pipe(browserSync.reload({
 			stream: true,
-		}))
-
-	if (BUILD) {
-		g
-			.pipe(rtlcss())
-			.pipe(rename((path) => {
-				path.basename += '.rtl'
-			}))
-			.pipe(gulp.dest(`${distDir}/css/`))
-	}
-
-	return g
+		}));
 })
+
+gulp.task('css-rtl', function () {
+	return gulp.src(`${distDir}/css/*.css`)
+		.pipe(rtlcss())
+		.pipe(rename((path) => {
+			path.basename += '.rtl'
+		}))
+		.pipe(gulp.dest(`${distDir}/css/`))
+});
 
 /**
  * CSS minify
@@ -530,6 +528,6 @@ gulp.task('clean', gulp.series('clean-dirs', 'clean-jekyll'))
 
 gulp.task('start', gulp.series('clean', 'sass', 'js', 'js-demo', 'mjs', 'build-jekyll', gulp.parallel('watch-jekyll', 'watch', 'browser-sync')))
 
-gulp.task('build-core', gulp.series('build-on', 'clean', 'sass', 'css-minify', 'js', 'js-demo', 'mjs', 'copy-images', 'copy-fonts', 'copy-libs', 'add-banner'))
+gulp.task('build-core', gulp.series('build-on', 'clean', 'sass', 'css-rtl', 'css-minify', 'js', 'js-demo', 'mjs', 'copy-images', 'copy-fonts', 'copy-libs', 'add-banner'))
 gulp.task('build-demo', gulp.series('build-on', 'build-jekyll', 'copy-static', 'copy-dist', 'build-cleanup', 'build-purgecss'/*, 'build-critical'*/))
 gulp.task('build', gulp.series('build-core', 'build-demo'))
