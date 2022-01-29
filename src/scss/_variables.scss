@@ -13,15 +13,15 @@ $enable-rfs: false !default;
 $assets-base: ".." !default;
 
 // FONTS
-$google-font: 'Inter' !default;
-$google-font-monospaced: false !default;
+$font-google: null !default;
+$font-google-monospaced: null !default;
+$font-local: 'Inter' !default;
+$font-icons: () !default;
 
-$font-family-sans-serif: $google-font, -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif !default;
-$font-family-monospace: $google-font-monospaced, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
+$font-family-sans-serif: unquote("#{if($font-local, "#{$font-local}, ", '')} #{if($font-google, "#{$font-google}, ", '')}") -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif !default;
+$font-family-monospace: unquote("#{if($font-google-monospaced, "#{$font-google-monospaced}, ", '')}"), Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
 $font-family-serif: "Georgia", "Times New Roman", times, serif !default;
 
-// EXTERNAL FONTS
-$icon-fonts: () !default;
 
 //Icons
 $icon-stroke-width: 1.5 !default;
