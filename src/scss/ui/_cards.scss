@@ -1,7 +1,9 @@
 .card {
+  --#{$variable-prefix}card-border-radius: #{$card-border-radius};
   box-shadow: $card-shadow;
   border: $card-border-width solid $card-border-color;
   background: var(--#{$variable-prefix}card-bg, #{$card-bg});
+  border-radius: var(--#{$variable-prefix}card-border-radius);
   @include transition(transform $transition-time ease-out, opacity $transition-time ease-out, box-shadow $transition-time ease-out);
 
   @media print {
@@ -154,7 +156,7 @@
     content: "";
     background: $card-bg;
     border: 1px solid $card-border-color;
-    border-radius: $card-border-radius $card-border-radius 0 0;
+    border-radius: var(--#{$variable-prefix}card-border-radius) var(--#{$variable-prefix}card-border-radius) 0 0;
   }
 }
 
@@ -200,6 +202,10 @@
   display: flex;
   align-items: center;
   background: transparent;
+
+  &:first-child {
+    border-radius: var(--#{$variable-prefix}card-border-radius) var(--#{$variable-prefix}card-border-radius) 0 0;
+  }
 }
 
 .card-header-light {
@@ -251,6 +257,10 @@
 // Card footer
 .card-footer {
   margin-top: auto;
+
+  &:last-child {
+    border-radius: 0 0 var(--#{$variable-prefix}card-border-radius) var(--#{$variable-prefix}card-border-radius);
+  }
 }
 
 .card-footer-transparent {
@@ -374,7 +384,7 @@ Card status
   right: 0;
   left: 0;
   height: $card-status-size;
-  border-radius: $card-border-radius $card-border-radius 0 0;
+  border-radius: var(--#{$variable-prefix}card-border-radius) var(--#{$variable-prefix}card-border-radius) 0 0;
 }
 
 .card-status-start {
@@ -383,7 +393,7 @@ Card status
   bottom: 0;
   width: $card-status-size;
   height: 100%;
-  border-radius: $card-border-radius 0 0 $card-border-radius;
+  border-radius: var(--#{$variable-prefix}card-border-radius) 0 0 var(--#{$variable-prefix}card-border-radius);
 }
 
 .card-status-bottom {
@@ -392,7 +402,7 @@ Card status
   bottom: 0;
   width: 100%;
   height: $card-status-size;
-  border-radius: 0 0 $card-border-radius $card-border-radius;
+  border-radius: 0 0 var(--#{$variable-prefix}card-border-radius) var(--#{$variable-prefix}card-border-radius);
 }
 
 /**
@@ -511,7 +521,6 @@ Card list group
 
 // Card tabs
 .card-tabs {
-
   .nav-tabs {
     position: relative;
     z-index: $zindex-dropdown;
@@ -580,7 +589,11 @@ Card list group
   }
 
   .card {
-    margin: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  .nav-tabs + .tab-content .card {
+    border-bottom-left-radius: var(--#{$variable-prefix}card-border-radius);
     border-top-left-radius: 0;
   }
 }
