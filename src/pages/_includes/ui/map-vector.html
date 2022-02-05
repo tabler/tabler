@@ -21,9 +21,15 @@
 				backgroundColor: 'transparent',
 				regionStyle: {
 					initial: {
+						{% unless data.filled %}
 						fill: '#F8FAFC',
-						stroke: '#dae1e7',
+						stroke: 'rgba(98, 105, 118, .16)',
 						strokeWidth: 1,
+						{% else %}
+						fill: '#e9ecef',
+						stroke: '#fff',
+						strokeWidth: 1,
+						{% endunless %}
 					}
 				},
 				zoomOnScroll: {% if data.zoom %}true{% else %}false{% endif %},
@@ -33,6 +39,42 @@
 				visualizeData: {
 					scale: ['#F8FAFC', '{{ data.color | tabler_color }}'],
 					values: {{ data.values }},
+				},
+				{% endif %}
+				{% if data.markers %}
+				markers: [
+					{% for marker in data.markers %}
+					{
+						coords: [{{ marker.coords }}],
+						name: "{{ marker.name }}",
+					},
+					{% endfor %}
+				],
+				markerStyle: {
+					initial: {
+						r: 3,
+						stroke: '#fff',
+						opacity: 1,
+						strokeWidth: 3,
+						stokeOpacity: .5,
+						fill: '{{ color | tabler_color }}'
+					},
+					hover: {
+						fill: '{{ color | tabler_color }}',
+						stroke: '{{ color | tabler_color }}'
+					}
+				},
+				markerLabelStyle: {
+					initial: {
+						fontSize: 10
+					},
+				},
+				labels: {
+					markers: {
+						render: function(marker) {
+							return marker.name
+						},
+					},
 				},
 				{% endif %}
 			});
