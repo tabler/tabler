@@ -72,3 +72,27 @@ All notable changes to this project will be documented in this file.
 - fix #960 - Badges not honoring font sizes
 - fix #959 - `node-sass` does not properly compile nested media queries
 - update package dependencies to newest version
+
+
+## `1.0.0-beta7` - 2021-02-05
+
+- fix: #1019 - project-overview.html link not working
+- fix: #1010 - card with bottom tabs has incorrect border radius
+- uptime monitor mobile fixes
+- navbar dark button fix
+- `tabler-icons` link
+- autoloading webfonts
+- cards fixes, new cards demos
+- ruby dependencies update
+- RTL stylesheet fixes
+- new card action demos
+
+
+## `1.0.0-beta8` - 2021-02-05
+
+- update dependencies
+- new vector maps demos
+- fixes update map on resize
+- docs improvement
+- replace `badge` with `status-dot` in `navbar-notifications.html`
+- map tooltip fixes
