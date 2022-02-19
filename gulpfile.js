@@ -437,7 +437,6 @@ gulp.task('browser-sync', () => {
 				'/dist/css': `${distDir}/css`,
 				'/dist/js': `${distDir}/js`,
 				'/dist/img': `${srcDir}/img`,
-				'/dist/fonts': `${srcDir}/fonts`,
 				'/static': `${srcDir}/static`,
 			},
 		},
@@ -498,15 +497,6 @@ gulp.task('copy-static', () => {
 })
 
 /**
- * Copy fonts
- */
-gulp.task('copy-fonts', () => {
-	return gulp
-		.src(`${srcDir}/fonts/**/*`)
-		.pipe(gulp.dest(`${distDir}/fonts`))
-})
-
-/**
  * Copy Tabler dist files to demo directory
  */
 gulp.task('copy-dist', () => {
@@ -528,6 +518,6 @@ gulp.task('clean', gulp.series('clean-dirs', 'clean-jekyll'))
 
 gulp.task('start', gulp.series('clean', 'sass', 'js', 'js-demo', 'mjs', 'build-jekyll', gulp.parallel('watch-jekyll', 'watch', 'browser-sync')))
 
-gulp.task('build-core', gulp.series('build-on', 'clean', 'sass', 'css-rtl', 'css-minify', 'js', 'js-demo', 'mjs', 'copy-images', 'copy-fonts', 'copy-libs', 'add-banner'))
+gulp.task('build-core', gulp.series('build-on', 'clean', 'sass', 'css-rtl', 'css-minify', 'js', 'js-demo', 'mjs', 'copy-images', 'copy-libs', 'add-banner'))
 gulp.task('build-demo', gulp.series('build-on', 'build-jekyll', 'copy-static', 'copy-dist', 'build-cleanup', 'build-purgecss'/*, 'build-critical'*/))
 gulp.task('build', gulp.series('build-core', 'build-demo'))
