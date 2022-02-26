@@ -1,6 +1,6 @@
 /*!
-* Tabler v1.0.0-beta8 (https://tabler.io)
-* @version 1.0.0-beta8
+* Tabler v1.0.0-beta9 (https://tabler.io)
+* @version 1.0.0-beta9
 * @link https://tabler.io
 * Copyright 2018-2022 The Tabler Authors
 * Copyright 2018-2022 codecalm.net Paweł Kuna
@@ -2893,6 +2893,15 @@
 	      return details;
 	    }
 	  }, {
+	    key: "_appendEager",
+	    value: function _appendEager() {
+	      var details = this._applyDispatch.apply(this, arguments);
+	      if (this.currentMask) {
+	        details.aggregate(this.currentMask._appendEager());
+	      }
+	      return details;
+	    }
+	  }, {
 	    key: "doDispatch",
 	    value: function doDispatch(appended) {
 	      var flags = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : {};
@@ -2910,7 +2919,8 @@
 	  }, {
 	    key: "reset",
 	    value: function reset() {
-	      if (this.currentMask) this.currentMask.reset();
+	      var _this$currentMask2;
+	      (_this$currentMask2 = this.currentMask) === null || _this$currentMask2 === void 0 ? void 0 : _this$currentMask2.reset();
 	      this.compiledMasks.forEach(function (m) {
 	        return m.reset();
 	      });
@@ -2948,15 +2958,22 @@
 	  }, {
 	    key: "isComplete",
 	    get: function get() {
-	      return !!this.currentMask && this.currentMask.isComplete;
+	      var _this$currentMask3;
+	      return Boolean((_this$currentMask3 = this.currentMask) === null || _this$currentMask3 === void 0 ? void 0 : _this$currentMask3.isComplete);
+	    }
+	  }, {
+	    key: "isFilled",
+	    get: function get() {
+	      var _this$currentMask4;
+	      return Boolean((_this$currentMask4 = this.currentMask) === null || _this$currentMask4 === void 0 ? void 0 : _this$currentMask4.isFilled);
 	    }
 	  }, {
 	    key: "remove",
 	    value: function remove() {
 	      var details = new ChangeDetails();
 	      if (this.currentMask) {
-	        var _this$currentMask2;
-	        details.aggregate((_this$currentMask2 = this.currentMask).remove.apply(_this$currentMask2, arguments))
+	        var _this$currentMask5;
+	        details.aggregate((_this$currentMask5 = this.currentMask).remove.apply(_this$currentMask5, arguments))
 	        .aggregate(this._applyDispatch());
 	      }
 	      return details;
@@ -2990,17 +3007,17 @@
 	  }, {
 	    key: "extractInput",
 	    value: function extractInput() {
-	      var _this$currentMask3;
-	      return this.currentMask ? (_this$currentMask3 = this.currentMask).extractInput.apply(_this$currentMask3, arguments) : '';
+	      var _this$currentMask6;
+	      return this.currentMask ? (_this$currentMask6 = this.currentMask).extractInput.apply(_this$currentMask6, arguments) : '';
 	    }
 	  }, {
 	    key: "extractTail",
 	    value: function extractTail() {
-	      var _this$currentMask4, _get3;
+	      var _this$currentMask7, _get3;
 	      for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
 	        args[_key2] = arguments[_key2];
 	      }
-	      return this.currentMask ? (_this$currentMask4 = this.currentMask).extractTail.apply(_this$currentMask4, args) : (_get3 = _get(_getPrototypeOf(MaskedDynamic.prototype), "extractTail", this)).call.apply(_get3, [this].concat(args));
+	      return this.currentMask ? (_this$currentMask7 = this.currentMask).extractTail.apply(_this$currentMask7, args) : (_get3 = _get(_getPrototypeOf(MaskedDynamic.prototype), "extractTail", this)).call.apply(_get3, [this].concat(args));
 	    }
 	  }, {
 	    key: "doCommit",
@@ -3011,11 +3028,11 @@
 	  }, {
 	    key: "nearestInputPos",
 	    value: function nearestInputPos() {
-	      var _this$currentMask5, _get4;
+	      var _this$currentMask8, _get4;
 	      for (var _len3 = arguments.length, args = new Array(_len3), _key3 = 0; _key3 < _len3; _key3++) {
 	        args[_key3] = arguments[_key3];
 	      }
-	      return this.currentMask ? (_this$currentMask5 = this.currentMask).nearestInputPos.apply(_this$currentMask5, args) : (_get4 = _get(_getPrototypeOf(MaskedDynamic.prototype), "nearestInputPos", this)).call.apply(_get4, [this].concat(args));
+	      return this.currentMask ? (_this$currentMask8 = this.currentMask).nearestInputPos.apply(_this$currentMask8, args) : (_get4 = _get(_getPrototypeOf(MaskedDynamic.prototype), "nearestInputPos", this)).call.apply(_get4, [this].concat(args));
 	    }
 	  }, {
 	    key: "overwrite",
@@ -3024,6 +3041,14 @@
 	    },
 	    set: function set(overwrite) {
 	      console.warn('"overwrite" option is not available in dynamic mask, use this option in siblings');
+	    }
+	  }, {
+	    key: "eager",
+	    get: function get() {
+	      return this.currentMask ? this.currentMask.eager : _get(_getPrototypeOf(MaskedDynamic.prototype), "eager", this);
+	    },
+	    set: function set(eager) {
+	      console.warn('"eager" option is not available in dynamic mask, use this option in siblings');
 	    }
 	  }, {
 	    key: "maskEquals",

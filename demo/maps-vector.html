@@ -1,7 +1,7 @@
 <!doctype html>
 <!--
 * Tabler - Premium and Open Source dashboard template with responsive and high quality UI.
-* @version 1.0.0-beta8
+* @version 1.0.0-beta9
 * @link https://tabler.io
 * Copyright 2018-2022 The Tabler Authors
 * Copyright 2018-2022 codecalm.net Paweł Kuna
@@ -358,9 +358,12 @@
                     <a class="dropdown-item" href="./music.html" >
                       Music
                     </a>
+                    <a class="dropdown-item" href="./tasks.html" >
+                      Tasks
+                      <span class="badge badge-sm bg-green text-uppercase ms-2">New</span>
+                    </a>
                     <a class="dropdown-item" href="./uptime.html" >
                       Uptime monitor
-                      <span class="badge badge-sm bg-green text-uppercase ms-2">New</span>
                     </a>
                     <a class="dropdown-item" href="./widgets.html" >
                       Widgets
@@ -384,6 +387,9 @@
                       <div class="dropdown-menu-column">
                         <a class="dropdown-item" href="./layout-horizontal.html" >
                           Horizontal
+                        </a>
+                        <a class="dropdown-item" href="./layout-boxed.html" >
+                          Boxed
                         </a>
                         <a class="dropdown-item" href="./layout-vertical.html" >
                           Vertical
@@ -490,9 +496,9 @@
                 <div class="card">
                   <div class="card-body">
                     <h3 class="card-title">World map</h3>
-                    <div class="ratio ratio-21x9">
+                    <div class="ratio ratio-4x3">
                       <div>
-                        <div id="map-world" class="w-100 h-100"></div>
+                        <div id="map-world-merc" class="w-100 h-100"></div>
                       </div>
                     </div>
                   </div>
@@ -501,10 +507,10 @@
               <div class="col-md-6">
                 <div class="card">
                   <div class="card-body">
-                    <h3 class="card-title">Map of Russia</h3>
-                    <div class="ratio ratio-21x9">
+                    <h3 class="card-title">Map with markers</h3>
+                    <div class="ratio ratio-4x3">
                       <div>
-                        <div id="map-russia" class="w-100 h-100"></div>
+                        <div id="map-world-markers" class="w-100 h-100"></div>
                       </div>
                     </div>
                   </div>
@@ -513,10 +519,10 @@
               <div class="col-md-6">
                 <div class="card">
                   <div class="card-body">
-                    <h3 class="card-title">Map od USA</h3>
-                    <div class="ratio ratio-21x9">
+                    <h3 class="card-title">Map with markers and lines</h3>
+                    <div class="ratio ratio-4x3">
                       <div>
-                        <div id="map-usa" class="w-100 h-100"></div>
+                        <div id="map-world-lines" class="w-100 h-100"></div>
                       </div>
                     </div>
                   </div>
@@ -551,7 +557,7 @@
                   </li>
                   <li class="list-inline-item">
                     <a href="./changelog.html" class="link-secondary" rel="noopener">
-                      v1.0.0-beta8
+                      v1.0.0-beta9
                     </a>
                   </li>
                 </ul>
@@ -564,9 +570,7 @@
     <!-- Libs JS -->
     <script src="./dist/libs/jsvectormap/dist/js/jsvectormap.min.js"></script>
     <script src="./dist/libs/jsvectormap/dist/maps/world.js"></script>
-    <script src="./dist/libs/jsvectormap/dist/maps/us-merc-en.js"></script>
-    <script src="./dist/libs/jsvectormap/dist/maps/canada.js"></script>
-    <script src="./dist/libs/jsvectormap/dist/maps/russia.js"></script>
+    <script src="./dist/libs/jsvectormap/dist/maps/world-merc.js"></script>
     <!-- Tabler Core -->
     <script src="./dist/js/tabler.min.js"></script>
     <script src="./dist/js/demo.min.js"></script>
@@ -574,8 +578,8 @@
       // @formatter:on
       document.addEventListener("DOMContentLoaded", function() {
       	const map = new jsVectorMap({
-      		selector: '#map-world',
-      		map: 'world',
+      		selector: '#map-world-merc',
+      		map: 'world_merc',
       		backgroundColor: 'transparent',
       		regionStyle: {
       			initial: {
@@ -602,13 +606,13 @@
       // @formatter:on
       document.addEventListener("DOMContentLoaded", function() {
       	const map = new jsVectorMap({
-      		selector: '#map-russia',
-      		map: 'russia',
+      		selector: '#map-world-markers',
+      		map: 'world_merc',
       		backgroundColor: 'transparent',
       		regionStyle: {
       			initial: {
-      				fill: '#e9ecef',
-      				stroke: '#fff',
+      				fill: '#F8FAFC',
+      				stroke: 'rgba(98, 105, 118, .16)',
       				strokeWidth: 1,
       			}
       		},
@@ -616,34 +620,54 @@
       		zoomButtons: false,
       		markers: [
       			{
-      				coords: [55.75, 37.61],
-      				name: "Moscow",
+      				coords: [61.524, 105.3188],
+      				name: "Russia",
       			},
       			{
-      				coords: [59.93, 30.30],
-      				name: "St Petersburg",
+      				coords: [56.1304, -106.3468],
+      				name: "Canada",
       			},
       			{
-      				coords: [55.01, 82.93],
-      				name: "Novosibirsk",
+      				coords: [71.7069, -42.6043],
+      				name: "Greenland",
       			},
       			{
-      				coords: [43.10, 131.87],
-      				name: "Vladivostok",
+      				coords: [26.8206, 30.8025],
+      				name: "Egypt",
+      			},
+      			{
+      				coords: [-14.235, -51.9253],
+      				name: "Brazil",
+      			},
+      			{
+      				coords: [35.8617, 104.1954],
+      				name: "China",
+      			},
+      			{
+      				coords: [37.0902, -95.7129],
+      				name: "United States",
+      			},
+      			{
+      				coords: [60.472024, 8.468946],
+      				name: "Norway",
+      			},
+      			{
+      				coords: [48.379433, 31.16558],
+      				name: "Ukraine",
       			},
       		],
       		markerStyle: {
       			initial: {
-      				r: 3,
+      				r: 4,
       				stroke: '#fff',
       				opacity: 1,
       				strokeWidth: 3,
       				stokeOpacity: .5,
-      				fill: '#5eba00'
+      				fill: '#cd201f'
       			},
       			hover: {
-      				fill: '#5eba00',
-      				stroke: '#5eba00'
+      				fill: '#cd201f',
+      				stroke: '#cd201f'
       			}
       		},
       		markerLabelStyle: {
@@ -669,13 +693,13 @@
       // @formatter:on
       document.addEventListener("DOMContentLoaded", function() {
       	const map = new jsVectorMap({
-      		selector: '#map-usa',
-      		map: 'us_merc_en',
+      		selector: '#map-world-lines',
+      		map: 'world_merc',
       		backgroundColor: 'transparent',
       		regionStyle: {
       			initial: {
-      				fill: '#e9ecef',
-      				stroke: '#fff',
+      				fill: '#F8FAFC',
+      				stroke: 'rgba(98, 105, 118, .16)',
       				strokeWidth: 1,
       			}
       		},
@@ -683,38 +707,54 @@
       		zoomButtons: false,
       		markers: [
       			{
-      				coords: [37.77, -122.41],
-      				name: "San Francisco",
+      				coords: [61.524, 105.3188],
+      				name: "Russia",
       			},
       			{
-      				coords: [40.71, -74.00],
-      				name: "New York",
+      				coords: [56.1304, -106.3468],
+      				name: "Canada",
       			},
       			{
-      				coords: [39.09, -94.57],
-      				name: "Kansas City",
+      				coords: [71.7069, -42.6043],
+      				name: "Greenland",
       			},
       			{
-      				coords: [36.16, -115.13],
-      				name: "Las Vegas",
+      				coords: [26.8206, 30.8025],
+      				name: "Egypt",
       			},
       			{
-      				coords: [32.77, -96.79],
-      				name: "Dallas",
+      				coords: [-14.235, -51.9253],
+      				name: "Brazil",
+      			},
+      			{
+      				coords: [35.8617, 104.1954],
+      				name: "China",
+      			},
+      			{
+      				coords: [37.0902, -95.7129],
+      				name: "United States",
+      			},
+      			{
+      				coords: [60.472024, 8.468946],
+      				name: "Norway",
+      			},
+      			{
+      				coords: [48.379433, 31.16558],
+      				name: "Ukraine",
       			},
       		],
       		markerStyle: {
       			initial: {
-      				r: 3,
+      				r: 4,
       				stroke: '#fff',
       				opacity: 1,
       				strokeWidth: 3,
       				stokeOpacity: .5,
-      				fill: '#cd201f'
+      				fill: '#206bc4'
       			},
       			hover: {
-      				fill: '#cd201f',
-      				stroke: '#cd201f'
+      				fill: '#206bc4',
+      				stroke: '#206bc4'
       			}
       		},
       		markerLabelStyle: {
@@ -728,6 +768,42 @@
       					return marker.name
       				},
       			},
+      		},
+      		lines: [
+      			{
+      				from: "Russia",
+      				to: "Greenland"
+      			},
+      			{
+      				from: "Russia",
+      				to: "United States"
+      			},
+      			{
+      				from: "Russia",
+      				to: "Canada"
+      			},
+      			{
+      				from: "Brazil",
+      				to: "Norway"
+      			},
+      			{
+      				from: "Brazil",
+      				to: "Ukraine"
+      			},
+      			{
+      				from: "Brazil",
+      				to: "Egypt"
+      			},
+      			{
+      				from: "Brazil",
+      				to: "China"
+      			},
+      		],
+      		lineStyle: {
+      			strokeDasharray:"4 4",
+      			animation: true,
+      			stroke: "rgba(98, 105, 118, .75)",
+      			strokeWidth: .5,
       		},
       	});
       	window.addEventListener("resize", () => {
