@@ -175,17 +175,7 @@
 //
 // Button color variations
 //
-$btn-colors: $theme-colors;
-
-@if $enable-extra-colors {
-  $btn-colors: map-merge($btn-colors, $extra-colors);
-}
-
-@if $enable-social-colors {
-  $btn-colors: map-merge($btn-colors, $social-colors);
-}
-
-@each $name, $color in $btn-colors {
+@each $name, $color in theme-colors() {
   .btn-#{$name},
   .btn-outline-#{$name},
   .btn-ghost-#{$name} {
@@ -205,4 +195,50 @@ $btn-colors: $theme-colors;
   .btn-ghost-#{$name} {
     @extend %btn-ghost;
   }
+}
+
+//
+// Action button
+//
+.btn-action {
+  padding: 0;
+  border: 0;
+  color: $text-muted;
+  display: inline-flex;
+  width: 2rem;
+  height: 2rem;
+  align-items: center;
+  justify-content: center;
+  border-radius: $border-radius;
+
+  &:after {
+    content: none;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+
+  &:hover,
+  &.show {
+    color: $body-color;
+    background: $body-bg;
+  }
+
+  &.show {
+    color: $primary;
+  }
+
+  .icon {
+    margin: 0;
+    width: 1.25rem;
+    height: 1.25rem;
+    font-size: 1.25rem;
+    stroke-width: 1;
+  }
+}
+
+.btn-actions {
+  display: flex;
 }

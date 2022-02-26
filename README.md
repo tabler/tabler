@@ -10,7 +10,7 @@ A premium and open source dashboard template with a responsive and high-quality 
 <a href="https://preview.tabler.io" target="__blank"><img src="https://img.shields.io/static/v1?label=Demo&message=preview&color=228be6" alt="Tabler preview"></a>
 <a href="https://github.com/tabler/tabler/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/tabler.svg?label=License&message=MIT&color=1c7ed6" alt="License"></a>
 <a href="https://github.com/tabler/tabler/archive/dev.zip" target="__blank"><img src="https://img.shields.io/static/v1?label=Download&message=ZIP&color=339af0" alt="Tabler preview"></a>
-<br>
+<a href="https://github.com/tabler/tabler/actions/workflows/preview.yml" target="__blank"><img alt="GitHub stars" src="https://github.com/tabler/tabler/actions/workflows/preview.yml/badge.svg"></a>
 <a href="https://github.com/tabler/tabler" target="__blank"><img alt="GitHub stars" src="https://img.shields.io/github/stars/tabler/tabler?style=social"></a>
 </p>
 

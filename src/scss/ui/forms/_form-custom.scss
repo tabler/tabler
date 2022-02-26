@@ -14,3 +14,15 @@ Remove the cancel buttons in Chrome and Safari on macOS.
   -webkit-appearance: none;
 }
 
+/**
+Form control dark theme fix
+ */
+.form-control {
+  &::file-selector-button {
+    background-color: var(--#{$variable-prefix}btn-color, #{$form-file-button-bg});
+  }
+
+  &:hover:not(:disabled):not([readonly])::file-selector-button {
+    background-color: var(--#{$variable-prefix}btn-color, #{$form-file-button-hover-bg});
+  }
+}

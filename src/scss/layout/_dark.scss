@@ -24,8 +24,14 @@ body:not(.theme-dark) .hide-theme-light {
     --#{$variable-prefix}border-color: #{$dark-mode-border-color};
     --#{$variable-prefix}border-color-light: #{$dark-mode-border-color-light};
 
+    --#{$variable-prefix}btn-color: #{$dark};
+
     color: $dark-mode-text;
     background-color: $dark-mode-darken;
+  }
+
+  .page {
+    color: $dark-mode-text;
   }
 
   .hide-theme-dark {
@@ -152,17 +158,36 @@ body:not(.theme-dark) .hide-theme-light {
     background: transparent;
   }
 
+  .list-group-header {
+    background: $dark-mode-darken;
+  }
+
   .list-group-item {
-    color: $dark-mode-text;
     border-color: $border-color-transparent;
   }
 
-  .list-group-header {
-    background: $dark-mode-darken;
+  .list-group-item:not(.disabled):not(:disabled) {
+    color: $dark-mode-text;
+  }
+
+  .list-group-item {
+    &.disabled,
+    &:disabled {
+      color: $gray-600;
+    }
   }
 
   .apexcharts-radialbar-area {
     stroke: $dark-mode-border-color;
   }
-}
 
+  .form-control.is-invalid,
+  .was-validated .form-control:invalid {
+    border-color: var(--#{$variable-prefix}danger);
+  }
+
+  .form-control.is-valid,
+  .was-validated .form-control:valid {
+    border-color: var(--#{$variable-prefix}success);
+  }
+}

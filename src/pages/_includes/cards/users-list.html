@@ -1,7 +1,7 @@
 {% assign limit = include.limit | default: 8 %}
 {% assign offset = include.offset | default: 0 %}
 {% assign hoverable = include.hoverable | default: false %}
-{% assign checked-ids = include.checked-ids | default: '3,5,6' | extract: ',' %}
+{% assign checked-ids = include.checked-ids | default: '' | extract: ',' %}
 <div class="card{% if include.class %} {{ include.class }}{% endif %}">
 	<div class="card-header">
 		<h3 class="card-title">{{ include.title | default: 'Last commits' }}</h3>
@@ -10,7 +10,7 @@
 		{% assign colors = 'green,red,yellow,x,x' | split: ',' %}
 		{% for person in site.data.people limit: limit offset: offset %}
 			{% assign color = forloop.index | plus: 5 | random_item: colors %}
-			<div class="list-group-item">
+			<div class="list-group-item{% if checked-ids contains forloop.index %} active{% endif %}">
 				<div class="row align-items-center">
 					{% if include.checkbox %}
 					<div class="col-auto"><input type="checkbox" class="form-check-input"{% if checked-ids contains forloop.index %} checked{% endif %}></div>
@@ -24,9 +24,9 @@
 					</div>
 
 					<div class="col text-truncate">
-						<a href="#" class="text-body d-block">{{ person.full_name }}</a>
+						<a href="#" class="text-reset d-block">{{ person.full_name }}</a>
 						{% assign i = forloop.index | plus: offset %}
-						<small class="d-block text-muted text-truncate mt-n1">{{ site.data.commits[i].description }}</small>
+						<div class="d-block text-muted text-truncate mt-n1">{{ site.data.commits[i].description }}</div>
 					</div>
 					{% if hoverable %}
 					{% if checked-ids contains forloop.index %}

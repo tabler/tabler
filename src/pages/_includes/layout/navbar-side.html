@@ -3,29 +3,36 @@
 <div class="navbar-nav flex-row{% if include.class %} {{ include.class }}{% endif %}">
 
 	{% unless include.condensed %}
-	<div class="nav-item d-none d-md-flex me-3">
+	<div class="nav-item d-none d-{{ include.breakpoint }}-flex me-3">
 		<div class="btn-list">
-			{% include ui/button.html icon="brand-github" outline=true text="Source code" href=site.github-url external=true %}
-			{% include ui/button.html icon="heart" icon-color="pink" outline=true text="Sponsor" href=site.github-sponsors-url external=true %}
+			{% if include.dark %}
+				{% include ui/button.html color="dark" icon="brand-github" text="Source code" href=site.github-url external=true %}
+				{% include ui/button.html color="dark" icon="heart" icon-color="pink" text="Sponsor" href=site.github-sponsors-url external=true %}
+			{% else %}
+				{% include ui/button.html icon="brand-github" outline=true text="Source code" href=site.github-url external=true %}
+				{% include ui/button.html icon="heart" icon-color="pink" outline=true text="Sponsor" href=site.github-sponsors-url external=true %}
+			{% endif %}
 		</div>
 	</div>
 	{% endunless %}
 
-	<a href="?theme=dark" class="nav-link px-0 hide-theme-dark" title="Enable dark mode" data-bs-toggle="tooltip" data-bs-placement="bottom">
-		{% include ui/icon.html icon="moon" %}
-	</a>
-
-	<a href="?theme=light" class="nav-link px-0 hide-theme-light" title="Enable light mode" data-bs-toggle="tooltip" data-bs-placement="bottom">
-		{% include ui/icon.html icon="sun" %}
-	</a>
-
-	<div class="nav-item dropdown d-none d-md-flex me-3">
-		<a href="#" class="nav-link px-0" data-bs-toggle="dropdown" tabindex="-1" aria-label="Show notifications">
-			{% include ui/icon.html icon="bell" %}
-			<span class="badge bg-red"></span>
+	<div class="d-none d-{{ include.breakpoint }}-flex">
+		<a href="?theme=dark" class="nav-link px-0 hide-theme-dark" title="Enable dark mode" data-bs-toggle="tooltip" data-bs-placement="bottom">
+			{% include ui/icon.html icon="moon" %}
 		</a>
-		<div class="dropdown-menu dropdown-menu-end dropdown-menu-card">
-			{% include cards/navbar-notifications.html %}
+
+		<a href="?theme=light" class="nav-link px-0 hide-theme-light" title="Enable light mode" data-bs-toggle="tooltip" data-bs-placement="bottom">
+			{% include ui/icon.html icon="sun" %}
+		</a>
+
+		<div class="nav-item dropdown d-none d-md-flex me-3">
+			<a href="#" class="nav-link px-0" data-bs-toggle="dropdown" tabindex="-1" aria-label="Show notifications">
+				{% include ui/icon.html icon="bell" %}
+				<span class="badge bg-red"></span>
+			</a>
+			<div class="dropdown-menu dropdown-menu-arrow dropdown-menu-end dropdown-menu-card">
+				{% include cards/navbar-notifications.html %}
+			</div>
 		</div>
 	</div>
 

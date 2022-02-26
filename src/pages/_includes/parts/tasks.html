@@ -1,0 +1,100 @@
+{% assign data = include.data | default: site.data.tasks %}
+
+<div class="row{% if include.class %} {{ include.class }}{% endif %}">
+	{% for column in data.columns %}
+	<div class="col-12 col-md-6 col-lg">
+		<h2 class="mb-3">{{ column.name }}</h2>
+
+		<div class="mb-4">
+			<div class="row row-cards">
+				{% for task in column.tasks %}
+				<div class="col-12">
+					<div class="card card-sm">
+						{% if task.color %}
+						<div class="card-status-top bg-{{ task.color }}"></div>
+						{% endif %}
+
+						{% if task.starred %}
+						<div class="ribbon ribbon-top ribbon-bookmark bg-yellow">
+							{% include ui/icon.html icon="star" %}
+						</div>
+						{% endif %}
+
+						<div class="card-body">
+							<h3 class="card-title">{{ task.name }}</h3>
+
+							{% if task.description %}
+							<div class="text-muted">{{ task.description }}</div>
+							{% endif %}
+
+							{% if task.image %}
+							<div class="ratio ratio-16x9">
+								<img src="{{ site.base }}/{{ task.image }}" class="rounded object-cover" alt="{{ task.name }}">
+							</div>
+							{% endif %}
+
+							<div class="mt-4">
+								<div class="row">
+									<div class="col">
+										{% if task.users %}
+										{% include ui/avatar-list.html limit=task.users offset=task.users-offset stacked=true size="xs" %}
+										{% endif %}
+									</div>
+
+									{% if task.due-date %}
+									<div class="col-auto">
+										<a href="#" class="link-warning">
+											{% include ui/icon.html icon="calendar" %}
+											{{ task.due-date }}
+										</a>
+									</div>
+									{% endif %}
+
+									<div class="col-auto text-muted">
+										{% include ui/switch-icon.html icon="heart" icon-b-color="red" variant="scale" active=task.favorite %}
+										{% if task.likes %}{{ task.likes }}{% endif %}
+									</div>
+
+									{% if task.subtasks %}
+									<div class="col-auto">
+										<a href="#" class="link-muted">
+											{% include ui/icon.html icon="activity" %}
+											1/{{ task.subtasks.size }}
+										</a>
+									</div>
+									{% endif %}
+									{% if task.comments %}
+									<div class="col-auto">
+										<a href="#" class="link-muted">{% include ui/icon.html icon="message" %} {{ task.comments }}</a>
+									</div>
+									{% endif %}
+									<div class="col-auto">
+										<a href="#" class="link-muted">{% include ui/icon.html icon="share" %}</a>
+									</div>
+								</div>
+							</div>
+
+							{% if task.subtasks %}
+							<div class="divide-y-2 mt-4">
+								{% for subtask in task.subtasks %}
+								<div>
+									{% if subtask.done %}
+									{% include ui/icon.html icon="check" color="muted" %}
+									<span class="text-muted text-decoration-line-through">{{ subtask.name }}</span>
+									{% else %}
+									{% include ui/icon.html icon="check" color="green" %}
+									{{ subtask.name }}
+									{% endif %}
+								</div>
+								{% endfor %}
+							</div>
+							{% endif %}
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+	{% endfor %}
+</div>

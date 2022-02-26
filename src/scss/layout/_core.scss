@@ -35,9 +35,41 @@ body {
 //
 // Fluid container
 //
-[data-container-layout="fluid"] {
+.layout-fluid {
+  .container,
   [class^="container-"],
   [class*=" container-"] {
     max-width: 100%;
+  }
+}
+
+//
+// Boxed container
+//
+.layout-boxed {
+  --#{$variable-prefix}theme-boxed-border-radius: 0;
+  --#{$variable-prefix}theme-boxed-width: #{map-get($container-max-widths, xxl)};
+
+  @include media-breakpoint-up(md) {
+    background: $dark linear-gradient(to right, rgba(#fff, .1), transparent) fixed;
+    padding: 1rem;
+    --#{$variable-prefix}theme-boxed-border-radius: #{$border-radius};
+  }
+
+  .page {
+    margin: 0 auto;
+    max-width: var(--#{$variable-prefix}theme-boxed-width);
+    border-radius: var(--#{$variable-prefix}theme-boxed-border-radius);
+    color: $body-color;
+
+    @include media-breakpoint-up(md) {
+      border: 1px solid var(--tblr-border-color);
+      background: var(--tblr-body-bg);
+    }
+
+    > .navbar:first-child {
+      border-top-left-radius: var(--#{$variable-prefix}theme-boxed-border-radius);
+      border-top-right-radius: var(--#{$variable-prefix}theme-boxed-border-radius);
+    }
   }
 }

@@ -1,17 +1,10 @@
-.border-0 {
-  .card, .nav-link {
-    border: 0 !important;
-  }
-
-  .card-stacked::after {
-    border: 1px solid rgba($text-muted, 0.07) !important;
-  }
-}
-
 .card {
+  --#{$variable-prefix}card-border-radius: #{$card-border-radius};
   box-shadow: $card-shadow;
   border: $card-border-width solid $card-border-color;
   background: var(--#{$variable-prefix}card-bg, #{$card-bg});
+  border-radius: var(--#{$variable-prefix}card-border-radius);
+  @include transition(transform $transition-time ease-out, opacity $transition-time ease-out, box-shadow $transition-time ease-out);
 
   @media print {
     border: none;
@@ -20,15 +13,67 @@
 
   @at-root a#{&} {
     color: inherit;
-    @include transition(box-shadow $transition-time);
 
     &:hover {
       text-decoration: none;
       box-shadow: $card-shadow-hover;
     }
   }
+
+  .card {
+    box-shadow: none;
+  }
 }
 
+// Card borderless
+.card-borderless {
+  &,
+  .card-header,
+  .card-footer {
+    border-color: transparent;
+  }
+}
+
+// Card stamp
+.card-stamp {
+  --stamp-size: 7rem;
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: calc(var(--stamp-size) * 1);
+  height: calc(var(--stamp-size) * 1);
+  max-height: 100%;
+  border-top-right-radius: $border-radius;
+  opacity: $card-stamp-opacity;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.card-stamp-lg {
+  --stamp-size: 13rem;
+}
+
+.card-stamp-icon {
+  background: $text-muted;
+  color: $white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: $border-radius-pill;
+  width: calc(var(--stamp-size) * 1);
+  height: calc(var(--stamp-size) * 1);
+  position: relative;
+  top: calc(var(--stamp-size) * -.25);
+  right: calc(var(--stamp-size) * -.25);
+  font-size: calc(var(--stamp-size) * .75);
+  transform: rotate(10deg);
+
+  .icon {
+    stroke-width: 2;
+    width: calc(var(--stamp-size) * .75);
+    height: calc(var(--stamp-size) * .75);
+  }
+}
 
 // Card image
 .card-img,
@@ -77,16 +122,6 @@
   }
 }
 
-.card-link {
-  color: inherit;
-
-  &:hover {
-    color: inherit;
-    text-decoration: none;
-    box-shadow: 0 1px 6px 0 rgba(0, 0, 0, .08);
-  }
-}
-
 .card-btn {
   display: flex;
   align-items: center;
@@ -121,7 +156,7 @@
     content: "";
     background: $card-bg;
     border: 1px solid $card-border-color;
-    border-radius: $card-border-radius $card-border-radius 0 0;
+    border-radius: var(--#{$variable-prefix}card-border-radius) var(--#{$variable-prefix}card-border-radius) 0 0;
   }
 }
 
@@ -153,42 +188,88 @@
 }
 
 .card-actions {
-  margin-left: auto;
-  font-size: $h5-font-size;
+  margin: -.5rem -.5rem -.5rem auto;
+  padding-left: .5rem;
 
   a {
     text-decoration: none;
   }
 }
 
+// Card header
 .card-header {
   color: inherit;
   display: flex;
   align-items: center;
   background: transparent;
+
+  &:first-child {
+    border-radius: var(--#{$variable-prefix}card-border-radius) var(--#{$variable-prefix}card-border-radius) 0 0;
+  }
+}
+
+.card-header-light {
+  border-bottom-color: transparent;
+  background: var(--#{$variable-prefix}light);
 }
 
 .card-header-tabs {
   flex: 1;
-  margin: (- $card-spacer-y) (- $card-spacer-x);
+  margin: (- $card-spacer-y * .5) (- $card-spacer-x * .5) (- $card-spacer-y );
 }
 
 .card-header-pills {
   flex: 1;
+  margin-top: -.5rem;
+  margin-bottom: -.5rem;
 }
 
-/*
-Card footer
- */
+// Card rotate
+.card-rotate-left {
+  transform: rotate(-1.5deg);
+}
+
+.card-rotate-right {
+  transform: rotate(1.5deg);
+}
+
+// Card link
+.card-link {
+  color: inherit;
+
+  &:hover {
+    color: inherit;
+    text-decoration: none;
+    box-shadow: 0 1px 6px 0 rgba(0, 0, 0, .08);
+  }
+}
+
+.card-link-rotate:hover {
+  transform: rotate(1.5deg);
+  opacity: 1
+}
+
+.card-link-pop:hover {
+  transform: translateY(-2px);
+  opacity: 1
+}
+
+// Card footer
 .card-footer {
   margin-top: auto;
+
+  &:last-child {
+    border-radius: 0 0 var(--#{$variable-prefix}card-border-radius) var(--#{$variable-prefix}card-border-radius);
+  }
 }
 
-.card-footer-gray {
-  border-top: 0;
-  background: $gray-50;
+.card-footer-transparent {
+  background: transparent;
+  border-color: transparent;
+  padding-top: 0;
 }
 
+// Card progress
 .card-progress {
   height: .25rem;
 
@@ -218,17 +299,23 @@ Card footer
   }
 
   .card-header & {
-    margin: .125rem 0;
+    margin: 0;
   }
 }
 
 .card-subtitle {
-  margin-top: -$card-spacer-y;
+  margin-top: divide(-$card-spacer-y, 2);
   margin-bottom: $card-title-spacer-y;
   color: $text-muted;
+  font-weight: normal;
 
   .card-header & {
-    margin: -.125rem 0 0;
+    margin: 0;
+  }
+
+  .card-title & {
+    margin: 0 0 0 .25rem;
+    font-size: $h4-font-size;
   }
 }
 
@@ -238,12 +325,12 @@ Card footer
   }
 
   .card-sm > & {
-    padding: .75rem;
+    padding: 1rem;
   }
 
   .card-md > & {
     @include media-breakpoint-up(md) {
-      padding: 2rem;
+      padding: 2.5rem;
     }
   }
 
@@ -287,17 +374,6 @@ Card optinos
   color: $text-muted;
 }
 
-.card-dropdown {
-  line-height: 1;
-  color: $text-muted;
-
-  .icon {
-    width: 1.5rem;
-    height: 1.5rem;
-    font-size: 1.5rem;
-    stroke-width: 1;
-  }
-}
 
 /**
 Card status
@@ -308,7 +384,7 @@ Card status
   right: 0;
   left: 0;
   height: $card-status-size;
-  border-radius: $card-border-radius $card-border-radius 0 0;
+  border-radius: var(--#{$variable-prefix}card-border-radius) var(--#{$variable-prefix}card-border-radius) 0 0;
 }
 
 .card-status-start {
@@ -317,7 +393,7 @@ Card status
   bottom: 0;
   width: $card-status-size;
   height: 100%;
-  border-radius: $card-border-radius 0 0 $card-border-radius;
+  border-radius: var(--#{$variable-prefix}card-border-radius) 0 0 var(--#{$variable-prefix}card-border-radius);
 }
 
 .card-status-bottom {
@@ -326,7 +402,7 @@ Card status
   bottom: 0;
   width: 100%;
   height: $card-status-size;
-  border-radius: 0 0 $card-border-radius $card-border-radius;
+  border-radius: 0 0 var(--#{$variable-prefix}card-border-radius) var(--#{$variable-prefix}card-border-radius);
 }
 
 /**
@@ -443,30 +519,29 @@ Card list group
   }
 }
 
-/**
-Card tabs
- */
+// Card tabs
 .card-tabs {
-
   .nav-tabs {
     position: relative;
     z-index: $zindex-dropdown;
     border-bottom: 0;
 
     .nav-link {
+      color: $text-muted;
       background: $card-cap-bg;
       border: $card-border-width solid $card-border-color;
-      border-bottom: 0;
 
       &.active,
       &:active,
       &:hover {
         border-color: $card-border-color;
+        color: $body-color;
       }
 
       &.active {
         color: $headings-color;
         background: $card-bg;
+        border-bottom-color: transparent;
       }
     }
 
@@ -492,22 +567,39 @@ Card tabs
   .nav-tabs-bottom {
     margin-bottom: 0;
 
+    .nav-link {
+      margin-bottom: 0;
+
+      &.active {
+        border-top-color: transparent;
+      }
+    }
+
     .nav-item {
-      margin-top: -1px;
+      margin-top: -$card-border-width;
       margin-bottom: 0;
 
       .nav-link {
-        border-top-width: 0;
         border-bottom: $card-border-width solid $card-border-color;
+        border-radius: 0 0 $card-border-radius $card-border-radius;
+      }
 
-        border-top-left-radius: 0;
-        border-top-right-radius: 0;
+      &:not(:first-child) .nav-link {
+        border-bottom-left-radius: 0;
+      }
+
+      &:not(:last-child) .nav-link {
+        border-bottom-right-radius: 0;
       }
     }
   }
 
   .card {
-    margin: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  .nav-tabs + .tab-content .card {
+    border-bottom-left-radius: var(--#{$variable-prefix}card-border-radius);
     border-top-left-radius: 0;
   }
 }

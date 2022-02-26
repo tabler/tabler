@@ -7,11 +7,15 @@ page-header: Documentation
 
 {% assign current-url = page.url | replace_regex: "^/", "" %}
 
-<div class="row gx-lg-4">
+<div class="row gx-lg-5">
 	<div class="d-none d-lg-block col-lg-3">
 		{% include docs/menu.html %}
 	</div>
 	<div class="col-lg-9">
+		{% if page.banner == 'icons' %}
+		{% include cards/icons-banner.html class="mb-3" %}
+		{% endif %}
+
 		<div class="card card-lg">
 			<div class="card-body">
 				<div class="markdown">
@@ -30,7 +34,7 @@ page-header: Documentation
 						</div>
 
 						{% if page.description %}
-						<p>{{ page.description }}</p>
+						<p class="mb-4 text-muted">{{ page.description }}</p>
 						{% endif %}
 
 						{% if page.plugin %}

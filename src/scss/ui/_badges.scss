@@ -1,15 +1,14 @@
 .badge {
-  display: inline-flex;
   justify-content: center;
   align-items: center;
   background: $gray-500;
   overflow: hidden;
   user-select: none;
   border: 1px solid transparent;
-  min-width: ($badge-padding-y * 2 ) + ($badge-font-size / 100% * 1em);
+  min-width: ($badge-padding-y * 2 ) + (divide($badge-font-size, 100%) * 1em);
   font-weight: $headings-font-weight;
   letter-spacing: .04em;
-  text-transform: uppercase;
+  vertical-align: bottom;
 
   @at-root a#{&} {
     color: $white;
@@ -23,6 +22,7 @@
     min-height: auto;
     padding: 0;
     border-radius: $border-radius-pill;
+    vertical-align: baseline;
   }
 
   .avatar {
@@ -36,8 +36,14 @@
     width: 1em;
     height: 1em;
     font-size: 1rem;
-    margin: 0 .25rem 0 0;
+    stroke-width: 2;
   }
+}
+
+.badge-sm {
+  font-size: $h6-font-size;
+  line-height: $h6-line-height;
+  padding: 0 .25rem;
 }
 
 // bordered
@@ -47,6 +53,5 @@
 }
 
 .badge-pill {
-  border-radius: 100px;
-  min-width: 1.75em;
+  border-radius: $border-radius-pill;
 }

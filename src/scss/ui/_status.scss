@@ -1,0 +1,172 @@
+@keyframes status-pulsate-main {
+  40% {
+    transform: scale(1.25, 1.25);
+  }
+  60% {
+    transform: scale(1.25, 1.25);
+  }
+}
+
+@keyframes status-pulsate-secondary {
+  10% {
+    transform: scale(1, 1)
+  }
+  30% {
+    transform: scale(3, 3)
+  }
+  80% {
+    transform: scale(3, 3)
+  }
+  100% {
+    transform: scale(1, 1)
+  }
+}
+
+@keyframes status-pulsate-tertiary {
+  25% {
+    transform: scale(1, 1);
+  }
+  80% {
+    transform: scale(3, 3);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(3, 3);
+    opacity: 0;
+  }
+}
+
+//
+// Status
+//
+.status {
+  --#{$variable-prefix}status-color: #{$text-muted};
+  --#{$variable-prefix}status-color-rgb: #{to-rgb($text-muted)};
+
+  display: inline-flex;
+  align-items: center;
+  height: 2rem;
+  padding: .5rem .75rem;
+  gap: .5rem;
+  color: var(--#{$variable-prefix}status-color);
+  background: rgba(var(--#{$variable-prefix}status-color-rgb), .1);
+  font-size: $font-size-base;
+  text-transform: none;
+  letter-spacing: normal;
+  border-radius: $border-radius-pill;
+  font-weight: $font-weight-medium;
+  line-height: 1;
+  margin: 0;
+
+  .status-dot {
+    background: var(--#{$variable-prefix}status-color);
+  }
+
+  .icon {
+    font-size: 1.25rem;
+  }
+}
+
+.status-lite {
+  border: 1px solid var(--#{$variable-prefix}border-color) !important;
+  background: transparent !important;
+  color: var(--#{$variable-prefix}body-text) !important;
+}
+
+@each $name, $color in theme-colors() {
+  .status-#{$name} {
+    --#{$variable-prefix}status-color: #{$color};
+    --#{$variable-prefix}status-color-rgb: #{to-rgb($color)};
+  }
+}
+
+//
+// Status dot
+//
+.status-dot {
+  --#{$variable-prefix}status-dot-color: var(--#{$variable-prefix}status-color, #{$text-muted});
+  --#{$variable-prefix}status-size: #{$status-dot-size};
+  position: relative;
+  display: inline-block;
+  width: var(--#{$variable-prefix}status-size);
+  height: var(--#{$variable-prefix}status-size);
+  background: var(--#{$variable-prefix}status-dot-color);
+  border-radius: $border-radius-pill;
+}
+
+.status-dot-animated {
+  &:before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    background: inherit;
+    border-radius: inherit;
+    opacity: .6;
+    animation: 1s linear 2s backwards infinite status-pulsate-tertiary;
+  }
+}
+
+$btn-colors: $theme-colors;
+
+@if $enable-extra-colors {
+  $btn-colors: map-merge($btn-colors, $extra-colors);
+}
+
+@if $enable-social-colors {
+  $btn-colors: map-merge($btn-colors, $social-colors);
+}
+
+//
+// Status indicator
+//
+.status-indicator {
+  --#{$variable-prefix}status-indicator-size: 2.5rem;
+  --#{$variable-prefix}status-indicator-color: var(--#{$variable-prefix}status-color, #{$text-muted});
+  display: block;
+  position: relative;
+  width: var(--#{$variable-prefix}status-indicator-size);
+  height: var(--#{$variable-prefix}status-indicator-size);
+}
+
+.status-indicator-circle {
+  --#{$variable-prefix}status-circle-size: .75rem;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  margin: calc(var(--#{$variable-prefix}status-circle-size) / -2) 0 0 calc(var(--#{$variable-prefix}status-circle-size) / -2);
+  width: var(--#{$variable-prefix}status-circle-size);
+  height: var(--#{$variable-prefix}status-circle-size);
+  border-radius: $border-radius-pill;
+  background: var(--#{$variable-prefix}status-color);
+
+  &:nth-child(1) {
+    z-index: 3;
+  }
+
+  &:nth-child(2) {
+    z-index: 2;
+    opacity: .1;
+  }
+
+  &:nth-child(3) {
+    z-index: 1;
+    opacity: .3;
+  }
+}
+
+.status-indicator-animated {
+  .status-indicator-circle {
+    &:nth-child(1) {
+      animation: 2s linear 1s infinite backwards status-pulsate-main;
+    }
+
+    &:nth-child(2) {
+      animation: 2s linear 1s infinite backwards status-pulsate-secondary;
+    }
+
+    &:nth-child(3) {
+      animation: 2s linear 1s infinite backwards status-pulsate-tertiary;
+    }
+  }
+}

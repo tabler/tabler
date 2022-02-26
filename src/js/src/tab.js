@@ -12,3 +12,5 @@ export const EnableActivationTabsFromLocationHash = () => {
 	 });
   }
 }
+
+EnableActivationTabsFromLocationHash()

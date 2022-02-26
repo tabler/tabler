@@ -1,9 +1,9 @@
 /*!
-* Tabler v1.0.0-beta5 (https://tabler.io)
-* @version 1.0.0-beta5
+* Tabler v1.0.0-beta9 (https://tabler.io)
+* @version 1.0.0-beta9
 * @link https://tabler.io
-* Copyright 2018-2021 The Tabler Authors
-* Copyright 2018-2021 codecalm.net Paweł Kuna
+* Copyright 2018-2022 The Tabler Authors
+* Copyright 2018-2022 codecalm.net Paweł Kuna
 * Licensed under MIT (https://github.com/tabler/tabler/blob/master/LICENSE)
 */
 (function (factory) {
@@ -93,7 +93,8 @@
     var _Object$entries$_i = _slicedToArray(_Object$entries[_i], 2),
         key = _Object$entries$_i[0],
         params = _Object$entries$_i[1];
-    config[key] = localStorage.getItem(params.localStorage) ? localStorage.getItem(params.localStorage) : params.default;
+    var lsParams = localStorage.getItem(params.localStorage);
+    config[key] = lsParams ? lsParams : params.default;
   }
   var parseUrl = function parseUrl() {
     var search = window.location.search.substring(1);
@@ -120,8 +121,7 @@
     }
   };
   var updateBodyClasses = function updateBodyClasses() {
-    document.body.classList.remove('theme-dark');
-    document.body.classList.remove('theme-light');
+    document.body.classList.remove('theme-dark', 'theme-light');
     document.body.classList.add("theme-".concat(config.theme));
   };
   var submitForm = function submitForm(form) {

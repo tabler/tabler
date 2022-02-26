@@ -7,36 +7,17 @@
 	<div class="card-header">
 		<div class="card-title">{{ include.title }}</div>
 	</div>
-	<div class="card-body">
-		<div class="row" data-icon-preview>
-			<div class="col-md-6 col-lg-4">
-				{% assign first-icon = icons | first %}
-				{% capture first-icon-svg %}{% include ui/icon.html icon=first-icon %}{% endcapture %}
-
-				<div class="demo-icon-preview">
-					<div data-icon-preview-icon>
-						{{ first-icon-svg }}
-					</div>
-					<h2 class="my-2" data-icon-preview-title>{{ first-icon }}</h2>
-					<div class="demo-icon-preview-icon" data-icon-preview-code>
-						{% highlight html %}{{ first-icon-svg }}{% endhighlight %}
-					</div>
-				</div>
-			</div>
-			<div class="col">
-				<div class="demo-icons-list-wrap">
-					<div class="demo-icons-list">
-						{% for icon in icons limit: limit %}
-						<a href="#" class="demo-icons-list-item" data-toggle-icon="{{ icon }}" title="{{ icon }}" data-icon-svg="{% capture svg %}{% highlight html %}{% include ui/icon.html icon=icon %}{% endhighlight %}{% endcapture %}{{ svg | escape }}">
-							{% include ui/icon.html icon=icon %}
-							<div class="mt-1 text-muted text-h5">{{ icon }}</div>
-						</a>
-						{% endfor %}
-						{% for icon in (0..20) %}
-						<div></div>
-						{% endfor %}
-					</div>
-				</div>
+	<div class="card-body p-0">
+		<div class="demo-icons-list-wrap">
+			<div class="demo-icons-list">
+				{% for icon in icons limit: limit %}
+				<a href="https://tabler-icons.io/i/{{ icon }}" target="_blank" rel="noopener" class="demo-icons-list-item" title="{{ icon }}" data-bs-toggle="tooltip" data-bs-placement="top">
+					{% include ui/icon.html icon=icon %}
+				</a>
+				{% endfor %}
+				{% for icon in (0..20) %}
+				<div></div>
+				{% endfor %}
 			</div>
 		</div>
 	</div>

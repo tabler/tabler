@@ -7,20 +7,21 @@ $enable-gradients: false !default;
 $enable-navbar-vertical: true !default;
 $enable-dark-mode: true !default;
 $enable-negative-margins: false !default;
+$enable-rfs: false !default;
 
 // ASSETS BASE
 $assets-base: ".." !default;
 
 // FONTS
-$google-font: null !default;
-$google-font-monospaced: null !default;
+$font-google: null !default;
+$font-google-monospaced: null !default;
+$font-local: null !default;
+$font-icons: () !default;
 
-$font-family-sans-serif: $google-font, -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif !default;
-$font-family-monospace: $google-font-monospaced, Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
+$font-family-sans-serif: unquote("#{if($font-local, "#{$font-local}, ", ' ')}#{if($font-google, "#{$font-google}, ", ' ')}")-apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif !default;
+$font-family-monospace: unquote("#{if($font-google-monospaced, "#{$font-google-monospaced}, ", '')}") Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
 $font-family-serif: "Georgia", "Times New Roman", times, serif !default;
 
-// EXTERNAL FONTS
-$icon-fonts: () !default;
 
 //Icons
 $icon-stroke-width: 1.5 !default;
@@ -84,7 +85,7 @@ $border-light-opacity: .08 !default;
 $border-dark-opacity: .24 !default;
 $border-active-opacity: .48 !default;
 
-$gray-50: #f8fafc !default;
+$gray-50: #fafbfc !default;
 $gray-100: #f1f5f9 !default;
 $gray-200: #e2e8f0 !default;
 $gray-300: #cbd5e1 !default;
@@ -98,7 +99,7 @@ $gray-900: #0f172a !default;
 $light: $gray-50 !default;
 $dark: $gray-800 !default;
 
-$body-bg: $light !default;
+$body-bg: #f5f7fb !default;
 $body-color: $dark !default;
 
 $color-contrast-dark: $dark !default;
@@ -135,8 +136,8 @@ $border-color-dark-transparent: rgba($text-muted, $border-dark-opacity) !default
 $border-color-active: mix($text-muted, #ffffff, percentage($border-active-opacity)) !default;
 $border-color-active-transparent: rgba($text-muted, $border-active-opacity) !default;
 
-$active-bg: rgba($blue, .06) !default;
-$hover-bg: rgba($text-muted, .06) !default;
+$active-bg: rgba($blue, .04) !default;
+$hover-bg: rgba($text-muted, .04) !default;
 
 $primary: $blue !default;
 $secondary: $text-muted !default;
@@ -207,14 +208,14 @@ $border-radius-lg: 8px !default;
 $border-radius-pill: 100rem !default;
 
 // Code
-$code-color: $primary !default;
+$code-color: $text-muted-dark !default;
 $code-font-size: $small-font-size !default;
 $code-line-height: 1.25rem !default;
 
 // Avatars
 $avatar-size: 2.5rem !default;
 $avatar-sizes: (
-  "xs": 1.25rem,
+  "xs": 1.5rem,
   "sm": 2rem,
   "md": 3.75rem,
   "lg": 5rem,
@@ -327,9 +328,9 @@ $breadcrumb-variants: (
 $badge-font-size: $code-font-size !default;
 $badge-line-height: $code-line-height !default;
 $badge-font-weight: $font-weight-medium !default;
-$badge-empty-size: .5rem !default;
 $badge-padding-y: .25em !default;
 $badge-padding-x: .5em !default;
+$badge-empty-size: .5rem !default;
 
 //buttons
 $input-btn-line-height: $line-height-base !default;
@@ -364,18 +365,21 @@ $card-border-width: $border-width !default;
 $card-border-color: $border-color-transparent !default;
 $card-border-radius: $border-radius !default;
 
-$card-cap-bg: $white !default;
-$card-cap-color: $text-muted !default;
-$card-cap-padding-x: 1rem !default;
-$card-cap-padding-y: .75rem !default;
+$card-spacer-x: 1.25rem !default;
+$card-spacer-y: 1rem !default;
 
-$card-spacer-x: 1rem !default;
+$card-cap-bg: $gray-50 !default;
+$card-cap-color: $text-muted !default;
+$card-cap-padding-x: $card-spacer-x !default;
+$card-cap-padding-y: $card-spacer-y !default;
 
 $card-status-size: $border-width-wide !default;
 $card-group-margin: 1.5rem !default;
 
 $card-shadow: $shadow !default;
 $card-shadow-hover: rgba($dark, .16) 0 2px 16px 0 !default;
+
+$card-stamp-opacity: .2 !default;
 
 $cards-grid-gap: 1rem !default;
 $cards-grid-breakpoint: lg !default;
@@ -519,6 +523,8 @@ $pagination-bg: transparent !default;
 $pagination-disabled-bg: transparent !default;
 $pagination-disabled-color: rgba($text-muted, .5) !default;
 
+//statuses
+$status-dot-size: .5rem !default;
 
 //steps
 $steps-border-width: 2px !default;
@@ -555,12 +561,16 @@ $progress-height: .5rem !default;
 $ribbon-margin: .25rem !default;
 
 
+$list-group-bg: inherit !default;
 $list-group-border-color: $border-color !default;
 $list-group-action-color: inherit !default;
-$list-group-bg: inherit !default;
+$list-group-hover-bg: $hover-bg !default;
+$list-group-active-bg: $active-bg !default;
+$list-group-active-border-color: $list-group-border-color !default;
+$list-group-active-color: inherit !default;
 
 $input-bg: $white !default;
-$input-disabled-bg: $gray-100 !default;
+$input-disabled-bg: $gray-50 !default;
 $input-border-color: $border-color-dark !default;
 $input-border-color-transparent: $border-color-dark-transparent !default;
 $input-placeholder-color: $text-muted-light !default;
@@ -590,7 +600,7 @@ $form-check-input-checked-border-color: $input-border-color-transparent !default
 
 $form-check-label-disabled-opacity: $text-muted-opacity;
 
-$form-select-indicator-color: $border-color-dark !default;
+$form-select-indicator-color: $text-muted-light !default;
 
 $form-switch-width: 2rem !default;
 $form-switch-height: 1.125rem !default;
@@ -620,3 +630,7 @@ $payment-sizes: $avatar-sizes !default;
 
 // Offcanvas
 $offcanvas-border-color: $border-color-transparent !default;
+
+// Placeholder
+$placeholder-opacity-min: .1 !default;
+$placeholder-opacity-max: .2 !default;

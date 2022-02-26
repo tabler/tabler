@@ -6,14 +6,14 @@
 {% endif %}
 
 	<header class="navbar navbar-expand-{{ breakpoint }}{% if include.transparent %} navbar-transparent{% else %}{% if include.dark %} navbar-dark{% else %} navbar-light{% endif %}{% if include.background %} bg-{{ include.background }}{% endif %}{% endif %}{% if include.sticky %} sticky-top{% endif %}{% if include.overlap %} navbar-overlap{% endif %}{% if include.class %} {{ include.class }}{% endif %} d-print-none"{% if include.background-color %} style="background: {{ include.background-color }}"{% endif %}>
-		<div class="container{% if page.layout-fluid %}-fluid{% else %}-xl{% endif %}">
+		<div class="container-xl">
 			{% include layout/navbar-toggler.html target="navbar-menu" %}
 
 			{% unless include.hide-brand %}
 				{% include layout/navbar-logo.html dark=include.dark small-logo=include.small-logo hide-logo=include.hide-logo class="d-none-navbar-horizontal pe-0 pe-md-3" breakpoint=breakpoint show-title=include.show-title header=true %}
 			{% endunless %}
 
-			{% include layout/navbar-side.html class="order-md-last" hide-username=include.hide-username condensed=condensed person-id=include.person-id %}
+			{% include layout/navbar-side.html class="order-md-last" hide-username=include.hide-username condensed=condensed person-id=include.person-id dark=include.dark breakpoint=breakpoint %}
 
 			{% if condensed %}
 			<div class="collapse navbar-collapse" id="navbar-menu">
@@ -44,7 +44,7 @@
 	<div class="navbar-expand-{{ breakpoint }}">
 		<div class="collapse navbar-collapse" id="navbar-menu">
 			<div class="navbar {% if include.dark-secondary %}navbar-dark{% else %}navbar-light{% endif %}">
-				<div class="container{% if page.layout-fluid %}-fluid{% else %}-xl{% endif %}">
+				<div class="container-xl">
 					{% include layout/navbar-menu.html sample=include.sample hide-icons=include.hide-icons long-titles=true %}
 					{% include layout/navbar-search.html breakpoint=breakpoint dark=include.dark-secondary class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last" %}
 				</div>

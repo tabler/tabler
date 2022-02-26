@@ -1,7 +1,7 @@
 ---
 title: Icons
 page-header: Icons
-menu: base.icons
+menu: icons
 ---
 
 {% assign icons-brand = '' | split: ',' %}
@@ -16,49 +16,15 @@ menu: base.icons
 {% endif %}
 {% endfor %}
 
-<div class="alert alert-primary mb-3">
-	All icons come from the Tabler Icons set and are MIT-licensed. Visit
-	<a href="https://tabler-icons.io" target="_blank">tabler-icons.io</a>, download
-	the icons you need in SVG, PNG or React and use them in your favourite design tools.
-</div>
 
 <div class="row row-cards">
 	<div class="col-12">
-		{% include cards/icons.html title="Tabler icons" icons=icons-core %}
+		{% include cards/icons-banner.html %}
+	</div>
+	<div class="col-12">
+		{% include cards/icons.html title="Interface icons" icons=icons-core %}
 	</div>
 	<div class="col-12">
 		{% include cards/icons.html title="Brand icons" icons=icons-brand %}
 	</div>
 </div>
-
-<script>
-	var getClosest = function (elem, selector) {
-		for (; elem && elem !== document; elem = elem.parentNode) {
-			if (elem.matches(selector)) return elem
-		}
-		return null
-	};
-
-	(function () {
-		const elements = document.querySelectorAll('[data-toggle-icon]')
-
-		if (elements.length) {
-			elements.forEach(function (element) {
-				element.addEventListener('click', function (e) {
-					var icon = this.dataset.toggleIcon,
-							  svg = this.querySelector('svg').outerHTML,
-							  iconCode = this.dataset.iconSvg,
-							  editor = getClosest(this, '[data-icon-preview]')
-
-					editor.querySelector('[data-icon-preview-icon]').innerHTML = svg
-					editor.querySelector('[data-icon-preview-title]').innerText = icon
-					editor.querySelector('[data-icon-preview-code]').innerHTML = iconCode.trim()
-
-					e.preventDefault()
-					return false
-				})
-			})
-		}
-	})()
-</script>
-

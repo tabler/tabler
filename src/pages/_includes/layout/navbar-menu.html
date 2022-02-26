@@ -1,5 +1,6 @@
 {% assign current-page = page.menu | default: layout.menu | split: '.' %}
 {% assign hide-icons = include.hide-icons %}
+{% assign icons-count = site.data.icons | size %}
 
 {% assign menu = site.data.menu %}
 
@@ -18,14 +19,14 @@
 
 				<span class="nav-link-title">
 					{% if include.long-titles %}
-					{{ level-1[1].title-long | default: level-1[1].title }}
+					{{ level-1[1].title-long | default: level-1[1].title | replace: '%ICONS_COUNT%', icons-count }}
 					{% else %}
-					{{ level-1[1].title }}
+					{{ level-1[1].title | replace: '%ICONS_COUNT%', icons-count   }}
 					{% endif %}
 				</span>
 
 				{% if level-1[1].badge %}
-				<span class="badge bg-red">{{ level-1[1].badge }}</span>
+				<span class="badge badge-sm bg-red">{{ level-1[1].badge }}</span>
 				{% endif %}
 			</a>
 
@@ -49,12 +50,22 @@
 
 					<a class="dropdown-item{% if level-2[1].children %} dropdown-toggle{% endif %}{% if level-1[0] == current-page[0] and level-2[0] == current-page[1] and current-page.size == 2 %} active{% endif %}" {% if level-2[1].children %}href="#sidebar-{{ level-2[0] }}" data-bs-toggle="dropdown" data-bs-auto-close="{% if include.keep-open %}false{% else %}outside{% endif %}" role="button" aria-expanded="false" {% else %}href="{{ site.base }}/{{ level-2[1].url }}" {% endif %}>
 						{{ level-2[1].title }}
+
+						{% if level-2[1].badge %}
+						<span class="badge badge-sm bg-green text-uppercase ms-2">{{ level-2[1].badge }}</span>
+						{% endif %}
 					</a>
 
 					{% if level-2[1].children %}
 					<div class="dropdown-menu">
 						{% for level-3 in level-2[1].children %}
-						<a href="{{ site.base }}/{{ level-3[1].url }}" class="dropdown-item">{{ level-3[1].title }}</a>
+						<a href="{{ site.base }}/{{ level-3[1].url }}" class="dropdown-item">
+							{{ level-3[1].title }}
+
+							{% if level-3[1].badge %}
+							<span class="badge badge-sm bg-green text-uppercase ms-2">{{ level-3[1].badge }}</span>
+							{% endif %}
+						</a>
 						{% endfor %}
 					</div>
 					{% endif %}

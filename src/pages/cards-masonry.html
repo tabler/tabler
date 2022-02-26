@@ -1,43 +1,19 @@
 ---
 title: Cards Masonry
 page-header: Cards Masonry
-menu: base.cards-masonry
+menu: base.cards.masonry
 libs: masonry
 ---
 
+{% assign heights = '200,150,400,300,350,600,700,200,150,250,50,400,300,200' | split: ',' %}
+
 <div class="row row-cards" data-masonry='{"percentPosition": true }'>
+	{% for height in heights %}
 	<div class="col-sm-6 col-lg-4">
-		{% include cards/card.html body="This is some text within a card body." %}
+		<div class="card">
+			{% include cards/body-placeholder.html height=height %}
+		</div>
 	</div>
-	<div class="col-sm-6 col-lg-4">
-		{% include cards/card.html img-bottom=true title="Card with bottom image" %}
-	</div>
-	<div class="col-sm-6 col-lg-4">
-		{% include cards/card.html footer-elements="more,>switch" %}
-	</div>
-	<div class="col-sm-6 col-lg-4">
-		{% include cards/card.html footer-elements=">avatars" %}
-	</div>
-	<div class="col-sm-6 col-lg-4">
-		{% include cards/card.html header-tabs=true %}
-	</div>
-	<div class="col-sm-6 col-lg-4">
-		{% include cards/card.html header-pills=true %}
-	</div>
-	<div class="col-sm-6 col-lg-4">
-		{% include cards/card.html empty=true %}
-	</div>
-	<div class="col-sm-6 col-lg-4">
-		{% include cards/card.html progress=true title="Card with progress bar" %}
-	</div>
-	<div class="col-sm-6 col-lg-4">
-		{% include cards/card.html title="Card title" subtitle="Card subtitle" %}
-	</div>
-	<div class="col-sm-6 col-lg-4">
-		{% include cards/card.html header=true %}
-	</div>
-	<div class="col-sm-6 col-lg-4">
-		{% include cards/credit-card.html %}
-	</div>
+	{% endfor %}
 </div>
 

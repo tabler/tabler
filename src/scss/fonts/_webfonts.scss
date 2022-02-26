@@ -1,15 +1,65 @@
-@if $google-font {
-  $google-font-url: "https://fonts.googleapis.com/css2?family=" + str-replace($google-font, " ", "+") + ":wght@300;400;500;600;700&display=swap" !default;
+@if $font-google {
+  $google-font-url: "https://fonts.googleapis.com/css2?family=" + str-replace($font-google, " ", "+") + ":wght@300;400;500;600;700&display=swap" !default;
   @import url($google-font-url);
+} @else if $font-local {
+  @font-face {
+    font-family: $font-local;
+    font-style: normal;
+    font-display: swap;
+    font-weight: 300;
+    src: local(''),
+    url('#{$assets-base}/fonts/inter-v7-latin-ext_latin-300.woff2') format('woff2'),
+    url('#{$assets-base}/fonts/inter-v7-latin-ext_latin-300.woff') format('woff');
+  }
+
+  @font-face {
+    font-family: $font-local;
+    font-style: normal;
+    font-display: swap;
+    font-weight: 400;
+    src: local(''),
+    url('#{$assets-base}/fonts/inter-v7-latin-ext_latin-regular.woff2') format('woff2'),
+    url('#{$assets-base}/fonts/inter-v7-latin-ext_latin-regular.woff') format('woff');
+  }
+
+  @font-face {
+    font-family: $font-local;
+    font-style: normal;
+    font-display: swap;
+    font-weight: 500;
+    src: local(''),
+    url('#{$assets-base}/fonts/inter-v7-latin-ext_latin-500.woff2') format('woff2'),
+    url('#{$assets-base}/fonts/inter-v7-latin-ext_latin-500.woff') format('woff');
+  }
+
+  @font-face {
+    font-family: $font-local;
+    font-style: normal;
+    font-display: swap;
+    font-weight: 600;
+    src: local(''),
+    url('#{$assets-base}/fonts/inter-v7-latin-ext_latin-600.woff2') format('woff2'),
+    url('#{$assets-base}/fonts/inter-v7-latin-ext_latin-600.woff') format('woff');
+  }
+
+  @font-face {
+    font-family: $font-local;
+    font-style: normal;
+    font-display: swap;
+    font-weight: 700;
+    src: local(''),
+    url('#{$assets-base}/fonts/inter-v7-latin-ext_latin-700.woff2') format('woff2'),
+    url('#{$assets-base}/fonts/inter-v7-latin-ext_latin-700.woff') format('woff');
+  }
 }
 
-@if $google-font-monospaced {
-  $google-font-monospaced-url: "https://fonts.googleapis.com/css2?family=" + str-replace($google-font-monospaced, " ", "+") + ":wght@300;400;500;600;700&display=swap" !default;
+@if $font-google-monospaced {
+  $google-font-monospaced-url: "https://fonts.googleapis.com/css2?family=" + str-replace($font-google-monospaced, " ", "+") + ":wght@300;400;500;600;700&display=swap" !default;
   @import url($google-font-monospaced-url);
 }
 
-@if $icon-fonts {
-  @each $icon-font in $icon-fonts {
+@if $font-icons {
+  @each $icon-font in $font-icons {
     @import url($icon-font);
   }
 }

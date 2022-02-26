@@ -108,7 +108,7 @@ Change the shape of an avatar with the default Bootstrap image classes. You can 
 {% include ui/avatar.html person-id=18 shape="rounded" %}
 {% include ui/avatar.html person-id=19 shape="rounded-circle" %}
 {% include ui/avatar.html person-id=20 shape="rounded-0" %}
-{% include ui/avatar.html person-id=21 shape="rounded-lg" %}
+{% include ui/avatar.html person-id=21 shape="rounded-3" %}
 {% endcapture %}
 {% include example.html code=code centered=true %}
 
