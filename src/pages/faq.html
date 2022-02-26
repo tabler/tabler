@@ -11,14 +11,14 @@ menu: extra.faq
 			{% assign categories-loop = forloop %}
 			<div>
 				<h2 class="h3 mb-3">{{ categories-loop.index }}. {{ category.name }}</h2>
-				<div id="faq-{{ forloop.index }}" class="accordion" role="tablist" aria-multiselectable="true">
+				<div id="faq-{{ categories-loop.index }}" class="accordion" role="tablist" aria-multiselectable="true">
 					{% for question in category.questions %}
 					{% assign questions-loop = forloop %}
 					<div class="accordion-item">
 						<div class="accordion-header" role="tab">
 							<button class="accordion-button{% unless questions-loop.index == 1 %} collapsed{% endunless %}" data-bs-toggle="collapse" data-bs-target="#faq-{{ categories-loop.index }}-{{ questions-loop.index }}">{{ question.question }}</button>
 						</div>
-						<div id="faq-{{ categories-loop.index }}-{{ questions-loop.index }}" class="accordion-collapse collapse{% if questions-loop.index == 1 %} show{% endif %}" role="tabpanel">
+						<div id="faq-{{ categories-loop.index }}-{{ questions-loop.index }}" class="accordion-collapse collapse{% if questions-loop.index == 1 %} show{% endif %}" role="tabpanel" data-bs-parent="#faq-{{ categories-loop.index }}">
 							<div class="accordion-body pt-0">
 								<div>
 									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium alias dignissimos dolorum ea est eveniet, excepturi illum in iste iure maiores nemo recusandae rerum saepe sed, sunt totam! Explicabo, ipsa?</p>
