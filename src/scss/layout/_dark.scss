@@ -156,13 +156,23 @@ body:not(.theme-dark) .hide-theme-light {
     background: transparent;
   }
 
+  .list-group-header {
+    background: $dark-mode-darken;
+  }
+
   .list-group-item {
-    color: $dark-mode-text;
     border-color: $border-color-transparent;
   }
 
-  .list-group-header {
-    background: $dark-mode-darken;
+  .list-group-item:not(.disabled):not(:disabled) {
+    color: $dark-mode-text;
+  }
+
+  .list-group-item {
+    &.disabled,
+    &:disabled {
+      color: $gray-600;
+    }
   }
 
   .apexcharts-radialbar-area {
