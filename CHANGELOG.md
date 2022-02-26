@@ -60,7 +60,7 @@ All notable changes to this project will be documented in this file.
 - add `tom-select` and remove `choices.js`
 
 
-## `1.0.0-beta6` - 2021-01-18
+## `1.0.0-beta6` - 2022-01-18
 
 - pricing cards fix
 - fix bug `fw-...`, `.fs-...` is missed (#987)
@@ -74,7 +74,7 @@ All notable changes to this project will be documented in this file.
 - update package dependencies to newest version
 
 
-## `1.0.0-beta7` - 2021-02-05
+## `1.0.0-beta7` - 2022-02-05
 
 - fix: #1019 - project-overview.html link not working
 - fix: #1010 - card with bottom tabs has incorrect border radius
@@ -88,7 +88,7 @@ All notable changes to this project will be documented in this file.
 - new card action demos
 
 
-## `1.0.0-beta8` - 2021-02-05
+## `1.0.0-beta8` - 2022-02-05
 
 - update dependencies
 - new vector maps demos
@@ -96,3 +96,17 @@ All notable changes to this project will be documented in this file.
 - docs improvement
 - replace `badge` with `status-dot` in `navbar-notifications.html`
 - map tooltip fixes
+
+
+## `1.0.0-beta9` - 2022-02-26
+
+- fix: #1061 - list group item colors in light and dark modes
+- new 'tasks' dashboard
+- fix: #1059 - upload button in form element in dark view has problem
+- fix: #1052 - card background icon is practically invisible
+- remove Inter font and use default font system stack
+- fix: #1018 - vector map not working
+- fix: #1035 - wrong background color of hovered list group items in dark mode
+- dependencies update
+- add `font-display: swap;` to improve font loading
+- new `Boxed` layout
