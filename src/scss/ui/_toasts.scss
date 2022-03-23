@@ -1,7 +1,20 @@
-.toast-header {
-  user-select: none;
+.toast {
+  background: $white;
+  border: $alert-border-width solid $alert-border-color;
+  border-left: .25rem solid var(--#{$variable-prefix}toast-color);
+  box-shadow: $alert-shadow;
+
+  .toast-header {
+    user-select: none;
+  }
+
+  button[data-bs-dismiss="toast"] {
+    outline: none;
+  }
 }
 
-.toast button[data-bs-dismiss="toast"] {
-  outline: none;
+@each $state, $value in $theme-colors {
+  .toast-#{$state} {
+    --#{$variable-prefix}toast-color: #{$value};
+  }
 }
