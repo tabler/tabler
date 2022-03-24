@@ -12,16 +12,18 @@
 		// @formatter:off
 		{% assign value = value | split: ',' %}
 
-		noUiSlider.create(document.getElementById('range-{{ id }}'), {
-			start: {% if value.size > 1 %}[{{ value | join: ', ' }}]{% else %}{{ value }}{% endif %},
-			{% if value.size > 1 or include.connect %}
-			connect: [{% for i in (2..value.size) %}{% cycle 'false', 'true' %}, {% endfor %}true, false],
-			{% endif %}
-			step: {{ step }},
-			range: {
-				min: {{ min }},
-				max: {{ max }}
-			}
+		document.addEventListener("DOMContentLoaded", function () {
+			 window.noUiSlider && (noUiSlider.create(document.getElementById('range-{{ id }}'), {
+					  start: {% if value.size > 1 %}[{{ value | join: ', ' }}]{% else %}{{ value }}{% endif %},
+					  {% if value.size > 1 or include.connect %}
+					  connect: [{% for i in (2..value.size) %}{% cycle 'false', 'true' %}, {% endfor %}true, false],
+					  {% endif %}
+					  step: {{ step }},
+					  range: {
+						  min: {{ min }},
+						  max: {{ max }}
+					  }
+			 }));
 		});
 		// @formatter:on
 	</script>
