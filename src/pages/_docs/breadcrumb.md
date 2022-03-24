@@ -34,3 +34,12 @@ If you wish to use different separators, modify the `$breadcrumb-variants` varia
 {% include ui/breadcrumb.html class="breadcrumb-bullets" %}
 {% endcapture %}
 {% include example.html code=code centered=true %}
+
+## Breadcrumb in headers
+
+If you wish to use breadcrumbs in headers, place them above the headers.
+
+{% capture code %}
+{% include layout/headers/page-header-4.html %}
+{% endcapture %}
+{% include example.html code=code columns=2 %}
