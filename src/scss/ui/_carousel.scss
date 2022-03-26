@@ -30,7 +30,7 @@
 
 .carousel-indicators-thumb {
   [data-bs-target] {
-    width: 2rem;
+    width: $carousel-indicator-thumb-width * .5;
     height: auto;
     background: no-repeat center/cover;
     border: 0;
@@ -38,10 +38,6 @@
     box-shadow: $shadow;
     margin: 0 $carousel-indicator-spacer;
     opacity: $carousel-indicator-thumb-opacity;
-
-    @include media-breakpoint-up(md) {
-      width: 3.5rem;
-    }
 
     @include media-breakpoint-up(lg) {
       width: $carousel-indicator-thumb-width;
@@ -51,6 +47,12 @@
       content: '';
       padding-top: var(--#{$variable-prefix}aspect-ratio, 100%);
       display: block;
+    }
+  }
+
+  &.carousel-indicators-vertical {
+    [data-bs-target] {
+      margin: $carousel-indicator-spacer 0;
     }
   }
 }
