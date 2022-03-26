@@ -11,6 +11,6 @@ bootstrap-link: components/carousel/
 Use a carousel to make your website design more visually appealing for users. In the default carousel design, respective elements slide automatically and users can go to the next slide by clicking an arrow.
 
 {% capture code %}
-{% include ui/carousel.html show-indicators=true show-controls=true id="carousel-sample" %}
+{% include ui/carousel.html indicators=true controls=true id="carousel-sample" %}
 {% endcapture %}
 {% include example.html code=code max-width="20rem" centered=true %}
