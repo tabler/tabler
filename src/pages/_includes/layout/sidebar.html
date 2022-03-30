@@ -4,13 +4,9 @@
 	<div class="container-fluid">
 		{% include layout/navbar-toggler.html target="navbar-menu" %}
 
-		{% comment %}
 		{% unless include.hide-brand %}
 			{% include layout/navbar-logo.html dark=include.dark breakpoint=breakpoint header=true %}
 		{% endunless %}
-		{% endcomment %}
-
-		<div class="navbar-brand">Navbar Brand</div>
 
 		{% include layout/navbar-side.html class="d-lg-none" hide-username=include.hide-username person-id=include.person-id breakpoint=breakpoint %}
 
@@ -19,18 +15,18 @@
 		</div>
 	</div>
 
-	<div class="navbar-aside">
+	<a href="#" class="navbar-aside navbar-aside-highlighted">
 		{% assign person = site.data.people[0] %}
 		<div class="container-fluid">
 			<div class="row">
 				<div class="col-auto">
-					{% include ui/avatar.html person=person rounded=true %}
+					{% include ui/avatar.html person=person %}
 				</div>
 				<div class="col">
 					<div>{{ person.full_name }}</div>
-					<div>{{ person.job_title }}</div>
+					<div class="text-muted">{{ person.job_title }}</div>
 				</div>
 			</div>
 		</div>
-	</div>
+	</a>
 </aside>

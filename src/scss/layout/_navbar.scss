@@ -8,11 +8,11 @@
     }
 
     .navbar-nav {
-      margin-left: calc(-1 * var(--#{$variable-prefix}gutter-x, #{$container-padding-x}));
-      margin-right: calc(-1 * var(--#{$variable-prefix}gutter-x, #{$container-padding-x}));
+      margin-left: calc(-1 * var(--navbar-padding-x));
+      margin-right: calc(-1 * var(--navbar-padding-x));
 
       .nav-link {
-        padding: .5rem $container-padding-x;
+        padding: .5rem var(--navbar-padding-x);
         justify-content: flex-start;
       }
     }
@@ -35,20 +35,21 @@
         min-width: 0;
         display: flex;
         width: auto;
-        padding-left: add($container-padding-x, 1.75rem);
+        padding-left: calc(var(--navbar-padding-x) + var(--navbar-icon-width) + #{$nav-icon-margin});
         color: inherit;
 
         &.active {
+          color: var(--navbar-active-color);
           background: var(--navbar-active-background);
         }
       }
 
       .dropdown-menu .dropdown-item {
-        padding-left: add($container-padding-x, 3.25rem);
+        padding-left: calc(var(--navbar-padding-x) + 2 * var(--navbar-icon-width) + #{$nav-icon-margin});
       }
 
       .dropdown-menu .dropdown-menu .dropdown-item {
-        padding-left: add($container-padding-x, 4.75rem);
+        padding-left: calc(var(--navbar-padding-x) + 3 * var(--navbar-icon-width) + #{$nav-icon-margin});
       }
     }
 
@@ -66,25 +67,28 @@
   }
 }
 
-/**
-Navbar
- */
+//
+// Navbar
+//
 .navbar {
   --navbar-height: #{$navbar-height};
   --navbar-padding-x: #{1rem};
   --navbar-background: transparent;
   --navbar-color: #{$navbar-light-color};
-  --navbar-icon-color: #{green};
+  --navbar-color-rgb: #{to-rgb($navbar-light-color)};
+  --navbar-icon-color: #{$navbar-light-icon-color};
+  --navbar-icon-width: #{$navbar-icon-width};
   --navbar-active-color: #{$navbar-light-active-color};
   --navbar-active-icon-color: #{$primary};
-  --navbar-active-background: #{rgba(red, .1)};
+  --navbar-active-background: #{rgba(var(--navbar-color-rgb), .04)};
   --navbar-disabled-color: #{$navbar-light-disabled-color};
   --navbar-muted-color: #{$text-muted};
-  --navbar-border-color: #{$navbar-light-border-color};
+  --navbar-border-color: transparent;
   background: var(--navbar-background);
   color: var(--navbar-color);
   align-items: stretch;
   min-height: var(--navbar-height);
+  box-shadow: inset 0 -1px 0 0 var(--navbar-border-color);
 
   @include scrollbar;
 
@@ -172,10 +176,39 @@ Navbar
 
     .nav-link-icon {
       color: var(--navbar-icon-color);
+      width: var(--navbar-icon-width);
+      height: var(--navbar-icon-width);
+
+      .icon {
+        width: 100%;
+        height: 100%;
+      }
     }
   }
 }
 
+//
+// Navbar light
+//
+.navbar-light {
+  --navbar-background: #{$white};
+  --navbar-border-color: #{$navbar-light-border-color};
+}
+
+//
+//Navbar dark
+//
+.navbar-dark {
+  --navbar-background: #{$dark};
+  --navbar-color: #{$navbar-dark-color};
+  --navbar-color-rgb: #{to-rgb($navbar-dark-color)};
+  --navbar-active-color: #{$navbar-dark-active-color};
+  --navbar-border-color: rgba(var(--navbar-color-rgb), .02);
+}
+
+//
+// Navbar nav
+//
 .navbar-nav {
   margin: 0;
   padding: 0;
@@ -186,12 +219,31 @@ Navbar
   display: none;
   padding: var(--navbar-padding-x);
   width: 100%;
+  border-top: 1px solid var(--navbar-border-color);
+
+  @at-root a#{&} {
+    color: inherit;
+
+    &:hover {
+      color: inherit;
+      text-decoration: none;
+      opacity: .8;
+    }
+  }
 
   > [class^="container"] {
     padding: 0;
   }
 }
 
+.navbar-aside-highlighted {
+  background: rgba(var(--navbar-color-rgb), .02);
+  border-color: transparent;
+}
+
+//
+// Navbar expand
+//
 .navbar-expand {
   @each $breakpoint in map-keys($grid-breakpoints) {
     $next: breakpoint-next($breakpoint, $grid-breakpoints);
@@ -292,22 +344,6 @@ Navbar toggler
 }
 
 /**
-Navbar light
- */
-.navbar-light {
-  box-shadow: inset 0 -1px 0 0 $navbar-light-border-color;
-  background-color: $white;
-}
-
-/**
-Navbar dark
- */
-.navbar-dark {
-  --navbar-background: #{$dark};
-  --navbar-color: #{$navbar-dark-color};
-}
-
-/**
 Navbar nav
  */
 .navbar-nav {
@@ -336,14 +372,6 @@ Navbar vertical
  */
 @if $enable-navbar-vertical {
   .navbar-vertical {
-    --navbar-vertical-width: #{$sidebar-width};
-    box-shadow: inset -1px 0 0 0 var(--navbar-border-color);
-    flex-direction: column;
-
-    &.navbar-right {
-      box-shadow: inset 1px 0 0 0 var(--navbar-border-color);
-    }
-
     &.navbar-expand {
       @each $breakpoint in map-keys($grid-breakpoints) {
         $next: breakpoint-next($breakpoint, $grid-breakpoints);
@@ -358,9 +386,11 @@ Navbar vertical
             bottom: 0;
             z-index: $zindex-fixed;
             align-items: flex-start;
+            flex-direction: column;
             @include transition(transform $transition-time);
             overflow-x: auto;
             padding: 0;
+            box-shadow: inset -1px 0 0 0 var(--navbar-border-color);
 
             &.navbar-right {
               left: auto;
@@ -390,13 +420,12 @@ Navbar vertical
             > [class^="container"] {
               flex-direction: column;
               align-items: stretch;
-              min-height: 100%;
               justify-content: flex-start;
               padding: 0 var(--navbar-padding-x);
             }
 
             ~ .page {
-              padding-left: $sidebar-width;
+              padding-left: var(--navbar-vertical-width);
 
               [class^="container"] {
                 padding-left: 1.5rem;
@@ -404,44 +433,38 @@ Navbar vertical
               }
             }
 
-            &.navbar-right ~ .page {
-              padding-left: 0;
-              padding-right: $sidebar-width;
-            }
-
-            @include navbar-vertical-nav;
-          }
-
-          // Page wrapper margins
-          ~ .navbar,
-          ~ .page-wrapper {
-            margin-left: $sidebar-width;
-          }
-
-          + .navbar-vertical ~ .navbar,
-          + .navbar-vertical ~ .page-wrapper {
-            margin-left: $sidebar-width * 2;
-          }
-
-          &.navbar-right {
+            // Page wrapper margins
             ~ .navbar,
             ~ .page-wrapper {
-              margin-left: 0;
-              margin-right: $sidebar-width;
+              margin-left: var(--navbar-vertical-width);
             }
 
             + .navbar-vertical ~ .navbar,
             + .navbar-vertical ~ .page-wrapper {
-              margin-left: 0;
-              margin-right: $sidebar-width * 2;
+              margin-left: calc(var(--navbar-vertical-width) * 2);
             }
+
+            &.navbar-right {
+              ~ .navbar,
+              ~ .page-wrapper {
+                margin-left: 0;
+                margin-right: var(--navbar-vertical-width);
+              }
+
+              + .navbar-vertical ~ .navbar,
+              + .navbar-vertical ~ .page-wrapper {
+                margin-left: 0;
+                margin-right: calc(var(--navbar-vertical-width) * 2);
+              }
+            }
+
+            @include navbar-vertical-nav;
           }
         }
       }
     }
   }
 }
-
 
 .navbar-overlap {
   &:after {
