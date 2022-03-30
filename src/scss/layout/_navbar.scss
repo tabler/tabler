@@ -439,26 +439,39 @@ Navbar vertical
               margin-left: var(--navbar-vertical-width);
             }
 
-            + .navbar-vertical ~ .navbar,
-            + .navbar-vertical ~ .page-wrapper {
-              margin-left: calc(var(--navbar-vertical-width) * 2);
-            }
-
             &.navbar-right {
               ~ .navbar,
               ~ .page-wrapper {
                 margin-left: 0;
                 margin-right: var(--navbar-vertical-width);
               }
-
-              + .navbar-vertical ~ .navbar,
-              + .navbar-vertical ~ .page-wrapper {
-                margin-left: 0;
-                margin-right: calc(var(--navbar-vertical-width) * 2);
-              }
             }
 
             @include navbar-vertical-nav;
+
+
+            // Collapsed navbar
+            &.navbar-vertical-collapsed {
+              width: var(--navbar-vertical-collapsed-width);
+
+              ~ .navbar,
+              ~ .page-wrapper {
+                margin-left: var(--navbar-vertical-collapsed-width);
+              }
+
+              &.navbar-right {
+                ~ .navbar,
+                ~ .page-wrapper {
+                  margin-left: 0;
+                  margin-right: var(--navbar-vertical-collapsed-width);
+                }
+              }
+
+              .nav-link-title,
+              .dropdown-menu /* todo */ {
+                display: none;
+              }
+            }
           }
         }
       }
