@@ -12,7 +12,7 @@
       margin-right: calc(-1 * var(--navbar-padding-x));
 
       .nav-link {
-        padding: .5rem var(--navbar-padding-x);
+        padding: var(--navbar-link-padding-y) var(--navbar-padding-x);
         justify-content: flex-start;
       }
     }
@@ -35,7 +35,7 @@
         min-width: 0;
         display: flex;
         width: auto;
-        padding-left: calc(var(--navbar-padding-x) + var(--navbar-icon-width) + #{$nav-icon-margin});
+        padding-left: calc(var(--navbar-padding-x) + var(--navbar-icon-width) + var(--navbar-padding-x));
         color: inherit;
 
         &.active {
@@ -45,11 +45,11 @@
       }
 
       .dropdown-menu .dropdown-item {
-        padding-left: calc(var(--navbar-padding-x) + 2 * var(--navbar-icon-width) + #{$nav-icon-margin});
+        padding-left: calc(var(--navbar-padding-x) + 2 * var(--navbar-icon-width) + var(--navbar-padding-x));
       }
 
       .dropdown-menu .dropdown-menu .dropdown-item {
-        padding-left: calc(var(--navbar-padding-x) + 3 * var(--navbar-icon-width) + #{$nav-icon-margin});
+        padding-left: calc(var(--navbar-padding-x) + 3 * var(--navbar-icon-width) + var(--navbar-padding-x));
       }
     }
 
@@ -67,12 +67,62 @@
   }
 }
 
+@mixin navbar-vertical-collapsed {
+  //--navbar-icon-width: 1.5rem;
+  --navbar-link-padding-y: .75rem;
+  width: var(--navbar-vertical-collapsed-width);
+
+  ~ .navbar,
+  ~ .page-wrapper {
+    margin-left: var(--navbar-vertical-collapsed-width);
+  }
+
+  &.navbar-right {
+    ~ .navbar,
+    ~ .page-wrapper {
+      margin-left: 0;
+      margin-right: var(--navbar-vertical-collapsed-width);
+    }
+  }
+
+  .nav-link-title,
+  .dropdown-menu /* todo */ {
+    display: none;
+  }
+
+  .navbar-nav {
+    .nav-link {
+      align-self: center;
+    }
+
+    .nav-link-icon {
+      margin: 0;
+      opacity: 1;
+    }
+
+    .dropdown-toggle {
+      &:after {
+        display: none;
+      }
+    }
+  }
+
+  .hide-sidebar-collapsed,
+  .navbar-brand-image-lg {
+    display: none;
+  }
+
+  .navbar-brand-image-sm {
+    display: block;
+  }
+}
+
 //
 // Navbar
 //
 .navbar {
   --navbar-height: #{$navbar-height};
-  --navbar-padding-x: #{1rem};
+  --navbar-padding-x: .75rem;
   --navbar-background: transparent;
   --navbar-color: #{$navbar-light-color};
   --navbar-color-rgb: #{to-rgb($navbar-light-color)};
@@ -84,6 +134,7 @@
   --navbar-disabled-color: #{$navbar-light-disabled-color};
   --navbar-muted-color: #{$text-muted};
   --navbar-border-color: transparent;
+  --navbar-link-padding-y: .5rem;
   background: var(--navbar-background);
   color: var(--navbar-color);
   align-items: stretch;
@@ -156,6 +207,11 @@
     z-index: $zindex-fixed;
   }
 
+  .dropdown-item {
+    padding-top: var(--navbar-link-padding-y);
+    padding-bottom: var(--navbar-link-padding-y);
+  }
+
   .navbar-nav {
     min-height: subtract($navbar-height, 2 * $navbar-padding-y);
 
@@ -178,6 +234,7 @@
       color: var(--navbar-icon-color);
       width: var(--navbar-icon-width);
       height: var(--navbar-icon-width);
+      margin-right: var(--navbar-padding-x);
 
       .icon {
         width: 100%;
@@ -283,6 +340,10 @@ Navbar brand
   display: block;
   height: $navbar-brand-image-height;
   width: auto;
+}
+
+.navbar-brand-image-sm {
+  display: none;
 }
 
 /**
@@ -400,6 +461,7 @@ Navbar vertical
             .navbar-brand {
               padding: (($navbar-height - $navbar-brand-image-height) * .5) 0;
               justify-content: center;
+              margin-bottom: .5rem;
             }
 
             .navbar-collapse {
@@ -412,8 +474,8 @@ Navbar vertical
               min-height: auto;
 
               .nav-link {
-                padding-top: .5rem;
-                padding-bottom: .5rem;
+                //padding-top: .5rem;
+                //padding-bottom: .5rem;
               }
             }
 
@@ -449,28 +511,18 @@ Navbar vertical
 
             @include navbar-vertical-nav;
 
+            // Utils
+            .navbar-brand-image-sm {
+              display: none;
+            }
+
+            .navbar-brand-image-lg {
+              display: block;
+            }
 
             // Collapsed navbar
             &.navbar-vertical-collapsed {
-              width: var(--navbar-vertical-collapsed-width);
-
-              ~ .navbar,
-              ~ .page-wrapper {
-                margin-left: var(--navbar-vertical-collapsed-width);
-              }
-
-              &.navbar-right {
-                ~ .navbar,
-                ~ .page-wrapper {
-                  margin-left: 0;
-                  margin-right: var(--navbar-vertical-collapsed-width);
-                }
-              }
-
-              .nav-link-title,
-              .dropdown-menu /* todo */ {
-                display: none;
-              }
+              @include navbar-vertical-collapsed;
             }
           }
         }

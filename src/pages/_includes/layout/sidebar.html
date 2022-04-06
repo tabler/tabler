@@ -5,28 +5,28 @@
 		{% include layout/navbar-toggler.html target="navbar-menu" %}
 
 		{% unless include.hide-brand %}
-			{% include layout/navbar-logo.html dark=include.dark breakpoint=breakpoint header=true small-logo=include.collapsed %}
+			{% include layout/navbar-logo.html dark=include.dark breakpoint=breakpoint collapsed=true %}
 		{% endunless %}
 
 		{% include layout/navbar-side.html class="d-lg-none" hide-username=include.hide-username person-id=include.person-id breakpoint=breakpoint %}
 
 		<div class="collapse navbar-collapse" id="navbar-menu">
-			{% include layout/navbar-menu.html auto-open=true class="pt-lg-3" keep-open=true %}
+			{% include layout/navbar-menu.html auto-open=true keep-open=true %}
 		</div>
-	</div>
 
-	<a href="#" class="navbar-aside navbar-aside-highlighted">
-		{% assign person = site.data.people[0] %}
-		<div class="container-fluid">
-			<div class="row">
-				<div class="col-auto">
-					{% include ui/avatar.html person=person %}
-				</div>
-				<div class="col">
-					<div>{{ person.full_name }}</div>
-					<div class="text-muted">{{ person.job_title }}</div>
+		<a href="#" class="navbar-aside navbar-aside-highlighted">
+			{% assign person = site.data.people[0] %}
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-auto">
+						{% include ui/avatar.html person=person %}
+					</div>
+					<div class="col hide-sidebar-collapsed">
+						<div>{{ person.full_name }}</div>
+						<div class="text-muted">{{ person.job_title }}</div>
+					</div>
 				</div>
 			</div>
-		</div>
-	</a>
+		</a>
+	</div>
 </aside>
