@@ -20,7 +20,7 @@
 		<li class="nav-item{% if level-1[0] == current-page[0] or level-1[1].active %} active{% endif %}{% if level-1[1].children %} dropdown{% endif %}">
 			<a class="nav-link{% if level-1[1].children %} dropdown-toggle{% endif %}{% if level-1[1].disabled %} disabled{% endif %}" {% if level-1[1].children %}href="#navbar-{{ level-1[0] }}" data-bs-toggle="dropdown" data-bs-auto-close="{% if include.keep-open %}false{% else %}outside{% endif %}" role="button" aria-expanded="{% if include.auto-open and level-1[0] == current-page[0] %}true{% else %}false{% endif %}" {% else %}href="{{ site.base }}/{{ level-1[1].url }}" {% endif %}>
 				{% unless hide-icons %}
-				<span class="nav-link-icon d-md-none d-lg-inline-block">{% include ui/icon.html icon=icon %}</span>
+				<span class="nav-link-icon">{% include ui/icon.html icon=icon %}</span>
 				{% endunless %}
 
 				<span class="nav-link-title">
@@ -28,20 +28,20 @@
 				</span>
 
 				{% if level-1[1].badge %}
-				<span class="badge badge-sm bg-red">{{ level-1[1].badge }}</span>
+				<span class="badge badge-sm bg-red">{{ level-1[1].badropdown-headerdge }}</span>
 				{% endif %}
 			</a>
 
 			{% if level-1[1].children %}
 			<div class="dropdown-menu{% if level-1[1].right %} dropdown-menu-end{% endif %}{% if include.auto-open and level-1[0] == current-page[0] %}{% unless include.collapsed %} show{% endunless %}{% endif %}">
 
+				<div class="dropdown-header">{{ title }}</div>
+
 				{% if level-1[1].columns %}
 					<div class="dropdown-menu-columns">
 					{% assign per-column = level-1[1].children | size | times: 1.0 | divided_by: level-1[1].columns | ceil %}
 					<div class="dropdown-menu-column">
 				{% endif %}
-
-				<div class="dropdown-header">{{ title }}</div>
 
 				{% for level-2 in level-1[1].children %}
 
