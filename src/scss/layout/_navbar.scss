@@ -1,4 +1,4 @@
-@mixin navbar-vertical-nav {
+@mixin navbar-vertical {
   .navbar-collapse {
     flex-direction: column;
 
@@ -85,9 +85,31 @@
     }
   }
 
-  .nav-link-title,
-  .dropdown-menu /* todo */ {
+  .nav-link-title {
     display: none;
+  }
+
+  .nav-link-icon {
+    color: inherit;
+  }
+
+  .navbar-collapse {
+    .dropdown-menu {
+      position: absolute;
+      left: 100%;
+      top: 0;
+      background: var(--navbar-background);
+      border: 1px solid var(--navbar-border-color);
+      margin-left: .25rem;
+
+      .dropdown-item {
+        padding: .5rem var(--navbar-padding-x);
+      }
+    }
+
+    .dropdown-menu-columns {
+      flex-direction: row;
+    }
   }
 
   .navbar-nav {
@@ -261,6 +283,10 @@
   --navbar-color-rgb: #{to-rgb($navbar-dark-color)};
   --navbar-active-color: #{$navbar-dark-active-color};
   --navbar-border-color: rgba(var(--navbar-color-rgb), .02);
+
+  .navbar-brand-autodark {
+    filter: invert(1) grayscale(100%) brightness(200%);
+  }
 }
 
 //
@@ -269,33 +295,6 @@
 .navbar-nav {
   margin: 0;
   padding: 0;
-}
-
-.navbar-aside {
-  margin-top: auto;
-  display: none;
-  padding: var(--navbar-padding-x);
-  width: 100%;
-  border-top: 1px solid var(--navbar-border-color);
-
-  @at-root a#{&} {
-    color: inherit;
-
-    &:hover {
-      color: inherit;
-      text-decoration: none;
-      opacity: .8;
-    }
-  }
-
-  > [class^="container"] {
-    padding: 0;
-  }
-}
-
-.navbar-aside-highlighted {
-  background: rgba(var(--navbar-color-rgb), .02);
-  border-color: transparent;
 }
 
 //
@@ -308,7 +307,7 @@
 
     &#{$infix} {
       @include media-breakpoint-down(breakpoint-next($breakpoint)) {
-        @include navbar-vertical-nav;
+        @include navbar-vertical;
       }
 
       @include media-breakpoint-up($next) {
@@ -446,11 +445,10 @@ Navbar vertical
             left: 0;
             bottom: 0;
             z-index: $zindex-fixed;
+            padding: 0 var(--navbar-padding-x);
             align-items: flex-start;
             flex-direction: column;
             @include transition(transform $transition-time);
-            overflow-x: auto;
-            padding: 0;
             box-shadow: inset -1px 0 0 0 var(--navbar-border-color);
 
             &.navbar-right {
@@ -472,20 +470,33 @@ Navbar vertical
               flex-direction: column;
               flex-grow: 1;
               min-height: auto;
+            }
 
-              .nav-link {
-                //padding-top: .5rem;
-                //padding-bottom: .5rem;
+            .nav-link {
+              border-radius: $border-radius;
+
+              &:hover,
+              &:focus {
+                background: var(--navbar-active-background);
+                color: var(--navbar-active-color);
               }
             }
 
-            > [class^="container"] {
+            // Container
+            > [class*="container"] {
               flex-direction: column;
               align-items: stretch;
-              justify-content: flex-start;
-              padding: 0 var(--navbar-padding-x);
+              min-height: 100%;
+              padding-left: 0;
+              padding-right: 0;
             }
 
+            // Aside
+            .navbar-aside {
+              display: block;
+            }
+
+            // Page
             ~ .page {
               padding-left: var(--navbar-vertical-width);
 
@@ -509,7 +520,7 @@ Navbar vertical
               }
             }
 
-            @include navbar-vertical-nav;
+            @include navbar-vertical;
 
             // Utils
             .navbar-brand-image-sm {
@@ -531,6 +542,36 @@ Navbar vertical
   }
 }
 
+//
+// Navbar aside
+//
+.navbar-aside {
+  display: none;
+  margin-top: auto;
+  padding: var(--navbar-padding-x);
+  margin-left: calc(-1 * var(--navbar-padding-x));
+  margin-right: calc(-1 * var(--navbar-padding-x));
+  border-top: 1px solid var(--navbar-border-color);
+
+  @at-root a#{&} {
+    color: inherit;
+
+    &:hover {
+      color: inherit;
+      text-decoration: none;
+      opacity: .8;
+    }
+  }
+}
+
+.navbar-aside-highlighted {
+  background: rgba(var(--navbar-color-rgb), .02);
+  border-color: transparent;
+}
+
+//
+// Navbar overlap
+//
 .navbar-overlap {
   &:after {
     content: '';

@@ -11,12 +11,12 @@
 		{% include layout/navbar-side.html class="d-lg-none" hide-username=include.hide-username person-id=include.person-id breakpoint=breakpoint %}
 
 		<div class="collapse navbar-collapse" id="navbar-menu">
-			{% include layout/navbar-menu.html auto-open=true keep-open=true %}
+			{% include layout/navbar-menu.html auto-open=true keep-open=false collapsed=include.collapsed %}
 		</div>
 
-		<a href="#" class="navbar-aside navbar-aside-highlighted">
-			{% assign person = site.data.people[0] %}
-			<div class="container-fluid">
+		<div class="navbar-aside navbar-aside-highlighted">
+			<a href="#">
+				{% assign person = site.data.people[0] %}
 				<div class="row">
 					<div class="col-auto">
 						{% include ui/avatar.html person=person %}
@@ -26,7 +26,7 @@
 						<div class="text-muted">{{ person.job_title }}</div>
 					</div>
 				</div>
-			</div>
-		</a>
+			</a>
+		</div>
 	</div>
 </aside>
