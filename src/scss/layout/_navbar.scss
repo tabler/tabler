@@ -38,7 +38,7 @@
         padding: 0 0 0 var(--navbar-padding-x);
 
         &:after {
-          left: var(--navbar-padding-x);
+          left: calc(var(--navbar-padding-x) / 2);
         }
       }
 
@@ -96,12 +96,14 @@
   width: var(--navbar-vertical-collapsed-width);
 
   ~ .navbar,
+  ~ [class*="navbar-expand"],
   ~ .page-wrapper {
     margin-left: var(--navbar-vertical-collapsed-width);
   }
 
   &.navbar-right {
     ~ .navbar,
+    ~ [class*="navbar-expand"],
     ~ .page-wrapper {
       margin-left: 0;
       margin-right: var(--navbar-vertical-collapsed-width);
@@ -360,10 +362,6 @@
           width: auto;
           flex: 1 1 auto;
         }
-
-        .navbar-aside {
-          display: block;
-        }
       }
     }
   }
@@ -557,12 +555,14 @@ Navbar vertical
 
             // Page wrapper margins
             ~ .navbar,
+            ~ [class*="navbar-expand"],
             ~ .page-wrapper {
               margin-left: var(--navbar-vertical-width);
             }
 
             &.navbar-right {
               ~ .navbar,
+              ~ [class*="navbar-expand"],
               ~ .page-wrapper {
                 margin-left: 0;
                 margin-right: var(--navbar-vertical-width);
