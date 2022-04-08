@@ -1,13 +1,14 @@
 {% assign limit = include.limit | default: 5 %}
 {% assign offset = include.offset | default: 0 %}
 {% assign photos = site.data.photos | where: "horizontal", true %}
-<div id="{{ include.id }}" class="carousel slide" data-bs-ride="carousel">
-   {% if include.show-indicators %}
-   <ol class="carousel-indicators">
-      {% for i in (1..limit) %}
-      <li data-bs-target="#{{ include.id }}" data-bs-slide-to="{{ forloop.index | minus: 1 }}" class="{% if forloop.first %}active{% endif %}"></li>
+{% assign id = include.id | default: "carousel" %}
+<div id="{{ id }}" class="carousel slide{% if include.fade %} carousel-fade{% endif %}" data-bs-ride="carousel">
+   {% if include.indicators %}
+   <div class="carousel-indicators{% if include.indicators-vertical %} carousel-indicators-vertical{% endif %}{% if include.indicators-dot %} carousel-indicators-dot{% elsif include.indicators-thumb %} carousel-indicators-thumb{% endif %}">
+	   {% for photo in photos limit: limit offset: offset %}
+      <button type="button" data-bs-target="#{{ id }}" data-bs-slide-to="{{ forloop.index | minus: 1 }}" class="{%if include.indicators-thumb-ratio %} ratio ratio-4x3{% endif %}{% if forloop.first %} active{% endif %}"{% if include.indicators-thumb %} style="background-image: url({{ site.base }}/static/photos/{{ photo.file }})"{% endif %}></button>
       {% endfor %}
-   </ol>
+   </div>
    {% endif %}
 
    <div class="carousel-inner">
@@ -15,8 +16,8 @@
       <div class="carousel-item{% if forloop.first %} active{% endif %}">
          <img class="d-block w-100" alt="" src="{{ site.base }}/static/photos/{{ photo.file }}">
 
-         {% if include.show-captions %}
-         <div class="carousel-item-background d-none d-md-block"></div>
+         {% if include.captions %}
+         <div class="carousel-caption-background d-none d-md-block"></div>
          <div class="carousel-caption d-none d-md-block">
             <h3>Slide label</h3>
             <p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
@@ -26,12 +27,12 @@
       {% endfor %}
    </div>
 
-   {% if include.show-controls %}
-   <a class="carousel-control-prev" href="#{{ include.id }}" role="button" data-bs-slide="prev">
+   {% if include.controls %}
+   <a class="carousel-control-prev" href="#{{ id }}" role="button" data-bs-slide="prev">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Previous</span>
    </a>
-   <a class="carousel-control-next" href="#{{ include.id }}" role="button" data-bs-slide="next">
+   <a class="carousel-control-next" href="#{{ id }}" role="button" data-bs-slide="next">
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Next</span>
    </a>

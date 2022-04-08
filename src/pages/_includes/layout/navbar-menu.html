@@ -48,7 +48,7 @@
 
 					{% if level-2[1].children %}<div class="dropend">{% endif %}
 
-					<a class="dropdown-item{% if level-2[1].children %} dropdown-toggle{% endif %}{% if level-1[0] == current-page[0] and level-2[0] == current-page[1] and current-page.size == 2 %} active{% endif %}" {% if level-2[1].children %}href="#sidebar-{{ level-2[0] }}" data-bs-toggle="dropdown" data-bs-auto-close="{% if include.keep-open %}false{% else %}outside{% endif %}" role="button" aria-expanded="false" {% else %}href="{{ site.base }}/{{ level-2[1].url }}" {% endif %}>
+					<a class="dropdown-item{% if level-2[1].children %} dropdown-toggle{% endif %}{% if level-1[0] == current-page[0] and level-2[0] == current-page[1] and current-page.size == 2 %} active{% endif %}" {% if level-2[1].children %}href="#sidebar-{{ level-2[0] }}" data-bs-toggle="dropdown" data-bs-auto-close="{% if include.keep-open %}false{% else %}outside{% endif %}" role="button" aria-expanded="false" {% else %}href="{% if level-2[1].url contains 'http://' or level-2[1].url contains 'https://'%}{{ level-2[1].url }}{% else %}{{ site.base }}/{{ level-2[1].url }}{% endif %}"{% endif %}{% if level-2[1].url contains 'http://' or level-2[1].url contains 'https://'%} target="_blank" rel="noopener"{% endif %}>
 						{{ level-2[1].title }}
 
 						{% if level-2[1].badge %}
@@ -59,7 +59,7 @@
 					{% if level-2[1].children %}
 					<div class="dropdown-menu">
 						{% for level-3 in level-2[1].children %}
-						<a href="{{ site.base }}/{{ level-3[1].url }}" class="dropdown-item">
+						<a href="{% if level-3[1].url contains 'http://' or level-3[1].url contains 'https://'%}{{ level-3[1].url }}{% else %}{{ site.base }}/{{ level-3[1].url }}{% endif %}" class="dropdown-item">
 							{{ level-3[1].title }}
 
 							{% if level-3[1].badge %}
