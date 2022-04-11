@@ -85,9 +85,14 @@ Once you complete the setup, you'll be able to run the various commands provided
 
 ## Build locally
 
-1. From the root `/tabler` directory, run `npm run start` in the command line.
-2. Open [http://localhost:3000](http://localhost:3000) in your browser, and voilà.
-3. Any change in the `/src` directory will build the application and refresh the page.
+You need to have `npm` and `bundler` installed.
+
+1. From the root `/tabler` directory, run installation in the command line:
+  - `npm install` 
+  - `bundler install` 
+2. Then execute `npm run start-plugins` to start up the application stack.
+3. Open [http://localhost:3000](http://localhost:3000) in your browser, and voilà.
+4. Any change in the `/src` directory will build the application and refresh the page.
 
 **Note**:
 Run `npm run build` for reforms a one off build application without refresh.
