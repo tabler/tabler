@@ -20,6 +20,15 @@
 				<option value="{{ person.id }}"{% if include.indicator == 'avatar' %} data-custom-properties="{% capture indicator %}{% include ui/avatar.html size='xs' person=person %}{% endcapture %}{{ indicator | strip | escape }}"{% endif %}>{{ person.full_name }}</option>
 			{% endfor %}
 
+		{% elsif data.data == 'optgroup' %}
+			{% for group in options %}
+	 			<optgroup label="{{ group.title }}">
+					{% for option in group.options %}
+					<option value="{{ option }}">{{ option }}</option>
+					{% endfor %}
+				</optgroup>
+			{% endfor %}
+
 		{% else %}
 			{% for option in options %}
 				{% if option.first %}
