@@ -1,4 +1,8 @@
+{% assign colors = '' | split: ',' %}
+{% unless include.hide-black-white %}
 {% assign colors = 'dark,white' | split: ',' %}
+{% endunless %}
+
 {% for color in site.colors limit: 9 %}
 {% assign colors = colors | push: color[0] %}
 {% endfor %}
