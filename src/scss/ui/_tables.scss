@@ -1,11 +1,12 @@
 .table {
   thead {
     th {
-      color: $table-head-color;
-      background: $table-head-bg;
+      color: $table-th-color;
+      background: $table-th-bg;
       @include subheader;
-      padding-top: $table-head-padding-y;
-      padding-bottom: $table-head-padding-y;
+      padding-top: $table-th-padding-y;
+      padding-bottom: $table-th-padding-y;
+      white-space: nowrap;
 
       @media print {
         background: transparent;
@@ -13,7 +14,7 @@
     }
   }
 
-  >:not(:first-child) {
+  > :not(:first-child) {
     border-top-width: $table-border-width;
   }
 }
@@ -95,5 +96,45 @@
         }
       }
     }
+  }
+}
+
+.table-sort {
+  font: inherit;
+  color: inherit;
+  text-transform: inherit;
+  letter-spacing: inherit;
+  border: 0;
+  background: inherit;
+  display: block;
+  width: 100%;
+  text-align: inherit;
+  @include transition(color $transition-time);
+
+  margin: (-$table-th-padding-y) (-$table-th-padding-x);
+  padding: $table-th-padding-y $table-th-padding-x;
+
+  &:hover,
+  &.asc,
+  &.desc {
+    color: $body-color;
+  }
+
+  &:after,
+  &.asc:after,
+  &.desc:after {
+    content: '';
+    display: inline-flex;
+    width: 1rem;
+    height: 1rem;
+    vertical-align: bottom;
+  }
+
+  &.asc:after {
+    background: $table-sort-desc-bg-image no-repeat center;
+  }
+
+  &.desc:after {
+    background: $table-sort-asc-bg-image no-repeat center;
   }
 }
