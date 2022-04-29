@@ -110,3 +110,13 @@ All notable changes to this project will be documented in this file.
 - dependencies update
 - add `font-display: swap;` to improve font loading
 - new `Boxed` layout
+
+
+## `1.0.0-beta10` - 2022-04-29
+
+- new 'datatable' component
+- update Tabler Icons to v1.67
+- fix: #1024 - fix Tom-select in dark mode
+- new carousel indicators: dots, vertical, thumbs (#1101)
+- replace !important modifier with more specific selectors (#1100)
+- new 'FAQ' page
