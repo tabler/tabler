@@ -70,13 +70,13 @@ To use our build system and run our documentation locally, you'll need a copy of
 
 1. [Install Node.js](https://nodejs.org/download/), which we use to manage our dependencies.
 2. Navigate to the root `/tabler` directory and run `npm install` to install our local dependencies listed in `package.json`.
-3. [Install Ruby](https://www.ruby-lang.org/en/documentation/installation/) - the recommended version is [3.1.2](https://cache.ruby-lang.org/pub/ruby/3.1/ruby-3.1.2.tar.gz).
+3. [Install Ruby](https://www.ruby-lang.org/en/documentation/installation/) - the recommended version is [2.7.6](https://cache.ruby-lang.org/pub/ruby/2.7/ruby-2.7.6.tar.gz).
 4. [Install Bundler](https://bundler.io) with `gem install bundler` and finally run `bundle install`. It will install all Ruby dependencies, such as [Jekyll and plugins](https://jekyllrb.com).
 
 **Windows users**:
 
 1. [Install Git](https://git-scm.com/download/win) in `C:\Program Files\git\bin` directory and run `npm config set script-shell "C:\\Program Files\\git\\bin\\bash.exe"` to change the default shell.
-2. [Install Ruby+Devkit](https://rubyinstaller.org/downloads/) - the recommended version is [3.1.2](https://github.com/oneclick/rubyinstaller2/releases/download/RubyInstaller-3.1.2-1/rubyinstaller-devkit-3.1.2-1-x64.exe).
+2. [Install Ruby+Devkit](https://rubyinstaller.org/downloads/) - the recommended version is [2.7.6](https://github.com/oneclick/rubyinstaller2/releases/download/RubyInstaller-2.7.6-1/rubyinstaller-devkit-2.7.6-1-x64.exe).
 3. [Read guide](https://jekyllrb.com/docs/installation/windows/) to get Jekyll up and running without problems.
 
 Once you complete the setup, you'll be able to run the various commands provided from the command line.
