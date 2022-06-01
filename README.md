@@ -74,19 +74,20 @@ To use our build system and run our documentation locally, you'll need a copy of
 4. [Install Bundler](https://bundler.io) with `gem install bundler` and finally run `bundle install`. It will install all Ruby dependencies, such as [Jekyll and plugins](https://jekyllrb.com).
 
 **OSX users**:
-0. NPM ```npm install```
-1. install Ruby (2.5.* recommended)
+
+1. NPM ```npm install```
+2. install Ruby (2.5.* recommended)
 	```brew install ruby @2.5```
-2. install bundler
+3. install bundler
 	```gem install bundler```
-3. install
+4. install
 	```bundle install```
 - if bundler get any errors try
 ```
 sudo rm -rf /Library/Developer/CommandLineTools
 sudo xcode-select --install
 ```
-4. Run NPM
+5. Run NPM
 	```npm run start```
 
 
