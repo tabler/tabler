@@ -73,6 +73,23 @@ To use our build system and run our documentation locally, you'll need a copy of
 3. [Install Ruby](https://www.ruby-lang.org/en/documentation/installation/) - the recommended version is [2.7.6](https://cache.ruby-lang.org/pub/ruby/2.7/ruby-2.7.6.tar.gz).
 4. [Install Bundler](https://bundler.io) with `gem install bundler` and finally run `bundle install`. It will install all Ruby dependencies, such as [Jekyll and plugins](https://jekyllrb.com).
 
+**OSX users**:
+0. NPM ```npm install```
+1. install Ruby (2.5.* recommended)
+	```brew install ruby @2.5```
+2. install bundler
+	```gem install bundler```
+3. install
+	```bundle install```
+- if bundler get any errors try
+```
+sudo rm -rf /Library/Developer/CommandLineTools
+sudo xcode-select --install
+```
+4. Run NPM
+	```npm run start```
+
+
 **Windows users**:
 
 1. [Install Git](https://git-scm.com/download/win) in `C:\Program Files\git\bin` directory and run `npm config set script-shell "C:\\Program Files\\git\\bin\\bash.exe"` to change the default shell.

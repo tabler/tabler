@@ -1,0 +1,27 @@
+---
+layout: default
+title: Settings
+---
+{% include layout/headers/page-header-settings.html %}
+<div class="row">
+	 <div class="col-12 col-md-4 px-4">
+		  {% assign items = "Account,Preferences,Privacy Settings, Theme,Audience and visibility,App Development" | split: "," %}
+		  <div class="list-group list-group-transparent mb-3 ml-3">
+				{% for item in items %}
+				<a class="list-group-item list-group-item-action d-flex align-items-center{% if forloop.first %} active{% endif %}"
+					href="#">
+					 {{ item }}
+					 <small class="text-muted ms-auto">{{ forloop.index | random_number: 11, 200 }}</small>
+				</a>
+				{% endfor %}
+		  </div>
+	 </div>
+	 <div class="col-12 col-md-8">
+		  <div class="row">
+				<div class="col-12">
+					 {% include cards/form/layout.html horizontal=true title="Account" %}
+				</div>
+		  </div>
+	 </div>
+</div>
+
