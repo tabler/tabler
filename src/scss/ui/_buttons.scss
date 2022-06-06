@@ -3,7 +3,8 @@
 //
 .btn {
   --#{$prefix}btn-icon-size: #{$icon-size};
-  --#{$prefix}btn-border-color: #{$border-color};
+  --#{$prefix}btn-color: var(--#{$prefix}color-text);
+  --#{$prefix}btn-border-color: var(--#{$prefix}border-color);
   //background-color: var(--#{$prefix}btn-color, var(--#{$prefix}card-bg));
   //color: var(--#{$prefix}btn-color-text);
 
@@ -64,13 +65,14 @@
 // Button color variations
 //
 .btn-white {
-  --#{$prefix}btn-bg: white;
-  --#{$prefix}btn-hover-bg: white;
+  --#{$prefix}btn-bg: var(--#{$prefix}card-bg);
+  --#{$prefix}btn-hover-bg: var(--#{$prefix}card-bg);
 }
 
 @each $color, $value in $theme-colors {
   .btn-#{$color} {
     --#{$prefix}btn-border-color: transparent;
+    --#{$prefix}btn-color: #{color-contrast($value)};
   }
 }
 
