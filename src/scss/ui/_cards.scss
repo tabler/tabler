@@ -1,9 +1,9 @@
 .card {
-  --#{$variable-prefix}card-border-radius: #{$card-border-radius};
+  --#{$prefix}card-border-radius: #{$card-border-radius};
   box-shadow: $card-shadow;
   border: $card-border-width solid $card-border-color;
-  background: var(--#{$variable-prefix}card-bg, #{$card-bg});
-  border-radius: var(--#{$variable-prefix}card-border-radius);
+  background: var(--#{$prefix}card-bg, #{$card-bg});
+  border-radius: var(--#{$prefix}card-border-radius);
   @include transition(transform $transition-time ease-out, opacity $transition-time ease-out, box-shadow $transition-time ease-out);
 
   @media print {
@@ -54,8 +54,8 @@
 }
 
 .card-stamp-icon {
-  background: $text-muted;
-  color: $white;
+  background: var(--#{$prefix}muted);
+  color: var(--#{$prefix}card-bg);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -129,7 +129,7 @@
   padding: $card-spacer-y $card-spacer-x;
   text-align: center;
   @include transition(background $transition-time);
-  border-top: 1px solid var(--#{$variable-prefix}border-color);
+  border-top: 1px solid var(--#{$prefix}border-color);
   flex: 1;
   color: inherit;
   font-weight: $font-weight-medium;
@@ -140,7 +140,7 @@
   }
 
   & + & {
-    border-left: 1px solid var(--#{$variable-prefix}border-color);
+    border-left: 1px solid var(--#{$prefix}border-color);
   }
 }
 
@@ -156,7 +156,7 @@
     content: "";
     background: $card-bg;
     border: 1px solid $card-border-color;
-    border-radius: var(--#{$variable-prefix}card-border-radius) var(--#{$variable-prefix}card-border-radius) 0 0;
+    border-radius: var(--#{$prefix}card-border-radius) var(--#{$prefix}card-border-radius) 0 0;
   }
 }
 
@@ -204,13 +204,13 @@
   background: transparent;
 
   &:first-child {
-    border-radius: var(--#{$variable-prefix}card-border-radius) var(--#{$variable-prefix}card-border-radius) 0 0;
+    border-radius: var(--#{$prefix}card-border-radius) var(--#{$prefix}card-border-radius) 0 0;
   }
 }
 
 .card-header-light {
   border-bottom-color: transparent;
-  background: var(--#{$variable-prefix}light);
+  background: var(--#{$prefix}light);
 }
 
 .card-header-tabs {
@@ -259,7 +259,7 @@
   margin-top: auto;
 
   &:last-child {
-    border-radius: 0 0 var(--#{$variable-prefix}card-border-radius) var(--#{$variable-prefix}card-border-radius);
+    border-radius: 0 0 var(--#{$prefix}card-border-radius) var(--#{$prefix}card-border-radius);
   }
 }
 
@@ -384,7 +384,7 @@ Card status
   right: 0;
   left: 0;
   height: $card-status-size;
-  border-radius: var(--#{$variable-prefix}card-border-radius) var(--#{$variable-prefix}card-border-radius) 0 0;
+  border-radius: var(--#{$prefix}card-border-radius) var(--#{$prefix}card-border-radius) 0 0;
 }
 
 .card-status-start {
@@ -393,7 +393,7 @@ Card status
   bottom: 0;
   width: $card-status-size;
   height: 100%;
-  border-radius: var(--#{$variable-prefix}card-border-radius) 0 0 var(--#{$variable-prefix}card-border-radius);
+  border-radius: var(--#{$prefix}card-border-radius) 0 0 var(--#{$prefix}card-border-radius);
 }
 
 .card-status-bottom {
@@ -402,7 +402,7 @@ Card status
   bottom: 0;
   width: 100%;
   height: $card-status-size;
-  border-radius: 0 0 var(--#{$variable-prefix}card-border-radius) var(--#{$variable-prefix}card-border-radius);
+  border-radius: 0 0 var(--#{$prefix}card-border-radius) var(--#{$prefix}card-border-radius);
 }
 
 /**
@@ -488,7 +488,7 @@ Card avatar
   margin-left: auto;
   margin-right: auto;
   box-shadow: 0 0 0 .25rem $card-bg;
-  margin-top: calc(-1 * calc(var(--#{$variable-prefix}avatar-size) * .5));
+  margin-top: calc(-1 * calc(var(--#{$prefix}avatar-size) * .5));
 }
 
 /*
@@ -596,7 +596,7 @@ Card list group
   }
 
   .nav-tabs + .tab-content .card {
-    border-bottom-left-radius: var(--#{$variable-prefix}card-border-radius);
+    border-bottom-left-radius: var(--#{$prefix}card-border-radius);
     border-top-left-radius: 0;
   }
 }

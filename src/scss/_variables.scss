@@ -1,4 +1,4 @@
-$variable-prefix: "tblr-" !default;
+$prefix: "tblr-" !default;
 
 // BASE CONFIG
 $enable-social-colors: true !default;
@@ -191,6 +191,8 @@ $social-colors: (
   "tabler": #206bc4
 ) !default;
 
+$theme-colors: map-merge($theme-colors, map-merge($extra-colors, $social-colors));
+
 // Dark mode
 $dark-mode-darken: darken($dark, 2%) !default;
 $dark-mode-lighten: lighten($dark, 2%) !default;
@@ -299,6 +301,7 @@ $overlay-gradient: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, .6
 
 //accordion
 $accordion-bg: transparent !default;
+$accordion-color: var(--#{$prefix}body-color) !default;
 $accordion-border-color: $border-color-transparent !default;
 $accordion-icon-width: 1rem !default;
 
@@ -482,7 +485,7 @@ $nav-bordered-margin-x: 1.25rem !default;
 $navbar-height: 3.5rem !default;
 $navbar-padding-y: .25rem !default;
 
-$navbar-light-color: rgba($body-color, $text-muted-opacity) !default;
+$navbar-light-color: $body-color !default;
 $navbar-light-brand-color: $body-color !default;
 $navbar-light-border-color: $border-color-transparent !default;
 $navbar-light-active-color: $body-color !default;
@@ -547,7 +550,6 @@ $spinner-height: 1.5rem !default;
 $spinner-width-sm: 1rem !default;
 $spinner-height-sm: 1rem !default;
 $spinner-border-width: 2px !default;
-$spinner-border-width-sm: 1px !default;
 
 //tables
 $table-color: inherit !default;
@@ -558,9 +560,9 @@ $table-th-border-color: $border-color-transparent !default;
 $table-th-padding-x: $table-cell-padding-x !default;
 $table-th-padding-y: .5rem !default;
 $table-th-color: $text-muted !default;
-$table-th-bg: var(--#{$variable-prefix}border-color-light) !default;
+$table-th-bg: var(--#{$prefix}border-color-light) !default;
 $table-striped-order: even !default;
-$table-striped-bg: var(--#{$variable-prefix}border-color-light) !default;
+$table-striped-bg: var(--#{$prefix}border-color-light) !default;
 $table-group-separator-color: $border-color-transparent !default;
 
 $table-sort-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' width='16' height='16' fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='1'><path d='M5 7l3 -3l3 3'/><path d='M5 10l3 3l3 -3'/></svg>") !default;
@@ -627,7 +629,7 @@ $form-switch-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/200
 $form-switch-bg-size: auto !default;
 
 $form-range-track-height: .25rem !default;
-$form-range-track-bg: var(--#{$variable-prefix}border-color-light) !default;
+$form-range-track-bg: var(--#{$prefix}border-color-light) !default;
 $form-range-thumb-border: 2px solid $form-range-track-bg !default;
 $form-range-thumb-height: 1rem !default;
 $form-range-thumb-focus-box-shadow-width: .125rem !default;

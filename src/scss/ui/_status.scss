@@ -40,17 +40,17 @@
 // Status
 //
 .status {
-  --#{$variable-prefix}status-height: #{$status-height};
-  --#{$variable-prefix}status-color: #{$text-muted};
-  --#{$variable-prefix}status-color-rgb: #{to-rgb($text-muted)};
+  --#{$prefix}status-height: #{$status-height};
+  --#{$prefix}status-color: #{$text-muted};
+  --#{$prefix}status-color-rgb: #{to-rgb($text-muted)};
 
   display: inline-flex;
   align-items: center;
-  height: var(--#{$variable-prefix}status-height);
+  height: var(--#{$prefix}status-height);
   padding: .25rem .75rem;
   gap: .5rem;
-  color: var(--#{$variable-prefix}status-color);
-  background: rgba(var(--#{$variable-prefix}status-color-rgb), .1);
+  color: var(--#{$prefix}status-color);
+  background: rgba(var(--#{$prefix}status-color-rgb), .1);
   font-size: $font-size-base;
   text-transform: none;
   letter-spacing: normal;
@@ -60,7 +60,7 @@
   margin: 0;
 
   .status-dot {
-    background: var(--#{$variable-prefix}status-color);
+    background: var(--#{$prefix}status-color);
   }
 
   .icon {
@@ -69,15 +69,15 @@
 }
 
 .status-lite {
-  border: 1px solid var(--#{$variable-prefix}border-color) !important;
+  border: 1px solid var(--#{$prefix}border-color) !important;
   background: transparent !important;
-  color: var(--#{$variable-prefix}body-text) !important;
+  color: var(--#{$prefix}body-text) !important;
 }
 
-@each $name, $color in theme-colors() {
+@each $name, $color in $theme-colors {
   .status-#{$name} {
-    --#{$variable-prefix}status-color: #{$color};
-    --#{$variable-prefix}status-color-rgb: #{to-rgb($color)};
+    --#{$prefix}status-color: #{$color};
+    --#{$prefix}status-color-rgb: #{to-rgb($color)};
   }
 }
 
@@ -85,13 +85,13 @@
 // Status dot
 //
 .status-dot {
-  --#{$variable-prefix}status-dot-color: var(--#{$variable-prefix}status-color, #{$text-muted});
-  --#{$variable-prefix}status-size: #{$status-dot-size};
+  --#{$prefix}status-dot-color: var(--#{$prefix}status-color, #{$text-muted});
+  --#{$prefix}status-size: #{$status-dot-size};
   position: relative;
   display: inline-block;
-  width: var(--#{$variable-prefix}status-size);
-  height: var(--#{$variable-prefix}status-size);
-  background: var(--#{$variable-prefix}status-dot-color);
+  width: var(--#{$prefix}status-size);
+  height: var(--#{$prefix}status-size);
+  background: var(--#{$prefix}status-dot-color);
   border-radius: $border-radius-pill;
 }
 
@@ -122,24 +122,24 @@ $btn-colors: $theme-colors;
 // Status indicator
 //
 .status-indicator {
-  --#{$variable-prefix}status-indicator-size: 2.5rem;
-  --#{$variable-prefix}status-indicator-color: var(--#{$variable-prefix}status-color, #{$text-muted});
+  --#{$prefix}status-indicator-size: 2.5rem;
+  --#{$prefix}status-indicator-color: var(--#{$prefix}status-color, #{$text-muted});
   display: block;
   position: relative;
-  width: var(--#{$variable-prefix}status-indicator-size);
-  height: var(--#{$variable-prefix}status-indicator-size);
+  width: var(--#{$prefix}status-indicator-size);
+  height: var(--#{$prefix}status-indicator-size);
 }
 
 .status-indicator-circle {
-  --#{$variable-prefix}status-circle-size: .75rem;
+  --#{$prefix}status-circle-size: .75rem;
   position: absolute;
   left: 50%;
   top: 50%;
-  margin: calc(var(--#{$variable-prefix}status-circle-size) / -2) 0 0 calc(var(--#{$variable-prefix}status-circle-size) / -2);
-  width: var(--#{$variable-prefix}status-circle-size);
-  height: var(--#{$variable-prefix}status-circle-size);
+  margin: calc(var(--#{$prefix}status-circle-size) / -2) 0 0 calc(var(--#{$prefix}status-circle-size) / -2);
+  width: var(--#{$prefix}status-circle-size);
+  height: var(--#{$prefix}status-circle-size);
   border-radius: $border-radius-pill;
-  background: var(--#{$variable-prefix}status-color);
+  background: var(--#{$prefix}status-color);
 
   &:nth-child(1) {
     z-index: 3;

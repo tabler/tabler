@@ -1,85 +1,48 @@
+//
+// Button
+//
 .btn {
-  --#{$variable-prefix}btn-color-text-rgb: var(--#{$variable-prefix}body-color-rgb);
+  --#{$prefix}btn-icon-size: #{$icon-size};
+  --#{$prefix}btn-color: var(--#{$prefix}color-text);
+  --#{$prefix}btn-border-color: var(--#{$prefix}border-color);
+  //background-color: var(--#{$prefix}btn-color, var(--#{$prefix}card-bg));
+  //color: var(--#{$prefix}btn-color-text);
 
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-color: var(--#{$variable-prefix}border-color);
   white-space: nowrap;
 
-  background-color: var(--#{$variable-prefix}btn-color, var(--#{$variable-prefix}card-bg));
-  color: var(--#{$variable-prefix}btn-color-text);
-
-  &:hover {
-    color: var(--#{$variable-prefix}btn-color-text);
-    border-color: rgba(var(--#{$variable-prefix}btn-color-text-rgb), #{$border-active-opacity});
-  }
-
-  &:focus:not([disabled]):not(.disabled) {
-    border-color: var(--#{$variable-prefix}btn-color, #{$primary});
-  }
-
-  &:disabled,
-  &.disabled {
-    cursor: not-allowed;
-  }
+  //&:hover {
+  //  color: var(--#{$prefix}btn-color-text);
+  //  border-color: rgba(var(--#{$prefix}btn-color-text-rgb), #{$border-active-opacity});
+  //}
+  //
+  //&:focus:not([disabled]):not(.disabled) {
+  //  border-color: var(--#{$prefix}btn-color, #{$primary});
+  //}
 
   .icon {
-    width: $icon-size;
-    height: $icon-size;
-    min-width: $icon-size;
-    margin: 0 .5rem 0 -.25rem;
+    width: var(--#{$prefix}btn-icon-size);
+    height: var(--#{$prefix}btn-icon-size);
+    min-width: var(--#{$prefix}btn-icon-size);
+    margin: 0 calc(var(--tblr-btn-padding-x) / 2) 0 calc(var(--tblr-btn-padding-x) / -4);
     vertical-align: bottom;
     color: inherit;
   }
 
   .avatar {
-    width: 1.25rem;
-    height: 1.25rem;
-    vertical-align: text-top;
-    margin: 0 .5rem 0 -.25rem;
+    width: var(--#{$prefix}btn-icon-size);
+    height: var(--#{$prefix}btn-icon-size);
+    margin: 0 calc(var(--tblr-btn-padding-x) / 2) 0 calc(var(--tblr-btn-padding-x) / -4);
   }
 
   .icon-right {
-    margin: 0 -.25rem 0 .5rem;
+    margin: 0 calc(var(--tblr-btn-padding-x) / -4) 0 calc(var(--tblr-btn-padding-x) / 2);
   }
 
   .badge {
     top: auto;
-  }
-}
-
-%btn-color {
-  border-color: $border-color-dark-transparent;
-
-  &:hover {
-    color: var(--#{$variable-prefix}btn-color-text);
-    background: var(--#{$variable-prefix}btn-color-interactive);
-    border-color: var(--#{$variable-prefix}btn-color);
-  }
-}
-
-%btn-outline {
-  background-color: transparent;
-  color: var(--#{$variable-prefix}btn-color);
-  border-color: var(--#{$variable-prefix}btn-color);
-
-  &:hover {
-    background-color: var(--#{$variable-prefix}btn-color);
-    color: var(--#{$variable-prefix}btn-color-text);
-    border-color: var(--#{$variable-prefix}btn-color);
-  }
-}
-
-%btn-ghost {
-  background: transparent;
-  color: var(--#{$variable-prefix}btn-color);
-  border-color: transparent;
-
-  &:hover {
-    background-color: var(--#{$variable-prefix}btn-color);
-    color: var(--#{$variable-prefix}btn-color-text);
-    border-color: var(--#{$variable-prefix}btn-color);
   }
 }
 
@@ -98,12 +61,43 @@
   }
 }
 
-.btn-lg {
-  svg.icon {
-    stroke-width: 2;
+//
+// Button color variations
+//
+.btn-white {
+  --#{$prefix}btn-bg: var(--#{$prefix}card-bg);
+  --#{$prefix}btn-hover-bg: var(--#{$prefix}card-bg);
+}
+
+@each $color, $value in $theme-colors {
+  .btn-#{$color} {
+    --#{$prefix}btn-border-color: transparent;
+    --#{$prefix}btn-color: #{color-contrast($value)};
   }
 }
 
+@each $color, $value in $theme-colors {
+  .btn-ghost-#{$color} {
+    @include button-ghost-variant($value);
+  }
+}
+
+//
+// Button sizes
+//
+.btn-sm, .btn-group-sm > .btn {
+  --#{$prefix}btn-line-height: 1.5;
+  --#{$prefix}btn-icon-size: .75rem;
+}
+
+.btn-lg, .btn-group-lg > .btn {
+  --#{$prefix}btn-line-height: 1.5;
+  --#{$prefix}btn-icon-size: 2rem;
+}
+
+//
+// Button shapes
+//
 .btn-pill {
   padding-right: 1.5em;
   padding-left: 1.5em;
@@ -114,22 +108,27 @@
   }
 }
 
-.btn-icon {
-  min-width: add($btn-line-height * $btn-font-size + $btn-padding-y * 2, $btn-border-width * 2);
-
-  &.btn-sm {
-    min-width: add($btn-line-height * $btn-font-size-sm + $btn-padding-y-sm * 2, $btn-border-width * 2);
-  }
-
-  .icon {
-    margin: 0 -1em;
-  }
-}
-
 .btn-square {
   border-radius: 0;
 }
 
+//
+// Icon button
+//
+.btn-icon {
+  min-width: calc((var(--#{$prefix}btn-line-height) * var(--#{$prefix}btn-font-size)) + (var(--#{$prefix}btn-padding-y) * 2) + (var(--#{$prefix}btn-border-width) * 2));
+  min-height: calc((var(--#{$prefix}btn-line-height) * var(--#{$prefix}btn-font-size)) + (var(--#{$prefix}btn-padding-y) * 2) + (var(--#{$prefix}btn-border-width) * 2));
+  padding-left: 0;
+  padding-right: 0;
+
+  .icon {
+    margin: calc(-1 * var(--#{$prefix}btn-padding-x));
+  }
+}
+
+//
+// Button list
+//
 .btn-list {
   display: flex;
   flex-wrap: wrap;
@@ -141,6 +140,9 @@
   }
 }
 
+//
+// Button floating
+//
 .btn-floating {
   position: fixed;
   z-index: $zindex-fixed;
@@ -149,51 +151,33 @@
   border-radius: $border-radius-pill;
 }
 
+//
+// Button loading
+//
 .btn-loading {
   position: relative;
   color: transparent !important;
   text-shadow: none !important;
   pointer-events: none;
 
+  > * {
+    opacity: 0;
+  }
+
   &:after {
     content: '';
     display: inline-block;
     vertical-align: text-bottom;
-    border: $spinner-border-width-sm solid currentColor;
+    border: $spinner-border-width solid currentColor;
     border-right-color: transparent;
     border-radius: $border-radius-pill;
-    color: $white;
+    color: var(--#{$prefix}btn-color);
     position: absolute;
-    width: 1rem;
-    height: 1rem;
-    left: calc(50% - .5rem);
-    top: calc(50% - .5rem);
+    width: var(--tblr-btn-icon-size);
+    height: var(--tblr-btn-icon-size);
+    left: calc(50% - var(--tblr-btn-icon-size) / 2);
+    top: calc(50% - var(--tblr-btn-icon-size) / 2);
     animation: spinner-border .75s linear infinite;
-  }
-}
-
-//
-// Button color variations
-//
-@each $name, $color in theme-colors() {
-  .btn-#{$name},
-  .btn-outline-#{$name},
-  .btn-ghost-#{$name} {
-    --#{$variable-prefix}btn-color: #{$color};
-    --#{$variable-prefix}btn-color-interactive: #{theme-color-darker($color)};
-    --#{$variable-prefix}btn-color-text: #{color-contrast($color)};
-  }
-
-  .btn-#{$name} {
-    @extend %btn-color;
-  }
-
-  .btn-outline-#{$name} {
-    @extend %btn-outline;
-  }
-
-  .btn-ghost-#{$name} {
-    @extend %btn-ghost;
   }
 }
 
