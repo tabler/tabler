@@ -1,6 +1,10 @@
+//
+// Button
+//
 .btn {
   --#{$prefix}btn-bg: #{$white};
   --#{$prefix}btn-color-text-rgb: var(--#{$prefix}body-color-rgb);
+  --#{$prefix}btn-icon-size: #{$icon-size};
   //background-color: var(--#{$prefix}btn-color, var(--#{$prefix}card-bg));
   //color: var(--#{$prefix}btn-color-text);
 
@@ -25,10 +29,10 @@
   }
 
   .icon {
-    width: $icon-size;
-    height: $icon-size;
-    min-width: $icon-size;
-    margin: 0 .5rem 0 -.25rem;
+    width: var(--#{$prefix}btn-icon-size);
+    height: var(--#{$prefix}btn-icon-size);
+    min-width: var(--#{$prefix}btn-icon-size);
+    margin: 0 calc(var(--tblr-btn-padding-x) / 2) 0 calc(var(--tblr-btn-padding-x) / -4);
     vertical-align: bottom;
     color: inherit;
   }
@@ -98,12 +102,22 @@
   }
 }
 
-.btn-lg {
-  svg.icon {
-    stroke-width: 2;
-  }
+//
+// Button sizes
+//
+.btn-sm, .btn-group-sm > .btn {
+  --#{$prefix}btn-line-height: 1.5;
+  --#{$prefix}btn-icon-size: .75rem;
 }
 
+.btn-lg, .btn-group-lg > .btn {
+  --#{$prefix}btn-line-height: 1.5;
+  --#{$prefix}btn-icon-size: 2rem;
+}
+
+//
+// Button shapes
+//
 .btn-pill {
   padding-right: 1.5em;
   padding-left: 1.5em;
@@ -115,14 +129,13 @@
 }
 
 .btn-icon {
-  min-width: add($btn-line-height * $btn-font-size + $btn-padding-y * 2, $btn-border-width * 2);
-
-  &.btn-sm {
-    min-width: add($btn-line-height * $btn-font-size-sm + $btn-padding-y-sm * 2, $btn-border-width * 2);
-  }
+  min-width: calc((var(--#{$prefix}btn-line-height) * var(--#{$prefix}btn-font-size)) + (var(--#{$prefix}btn-padding-y) * 2) + (var(--#{$prefix}btn-border-width) * 2));
+  min-height: calc((var(--#{$prefix}btn-line-height) * var(--#{$prefix}btn-font-size)) + (var(--#{$prefix}btn-padding-y) * 2) + (var(--#{$prefix}btn-border-width) * 2));
+  padding-left: 0;
+  padding-right: 0;
 
   .icon {
-    margin: 0 -1em;
+    margin: calc(-1 * var(--#{$prefix}btn-padding-x));
   }
 }
 

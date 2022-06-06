@@ -3,7 +3,8 @@
 // All colors
 @each $color, $value in theme-colors() {
   .bg-#{"" + $color} {
-    background: $value !important;
+    --tblr-bg-opacity: 1;
+    background-color: rgba(var(--#{$prefix}#{$color}-rgb), var(--#{$prefix}bg-opacity)) !important;
   }
 
   .bg-#{"" + $color}-lt {
@@ -14,6 +15,6 @@
 
 @each $color, $value in theme-colors() {
   .text-#{"" + $color} {
-    color: $value !important;
+    color: var(--#{$prefix}#{$color}) !important;
   }
 }

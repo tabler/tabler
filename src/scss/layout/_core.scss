@@ -3,6 +3,14 @@
   font-size: 16px;
   height: 100%;
 
+  @each $name, $color in theme-colors() {
+    --#{$prefix}#{$name}: #{$color};
+  }
+
+  @each $name, $color in theme-colors() {
+    --#{$prefix}#{$name}-rgb: #{to-rgb($color)};
+  }
+
   --#{$prefix}card-bg: #{$card-bg};
   --#{$prefix}card-bg-rgb: #{to-rgb($card-bg)};
 

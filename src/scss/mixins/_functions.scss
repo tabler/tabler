@@ -10,10 +10,14 @@
   @return shade-color($color, 10%);
 }
 
-@function theme-colors($social: true) {
-  $colors: $theme-colors;
+@function theme-colors($social: true, $extra: true, $base: true) {
+  $colors: ();
 
-  @if $enable-extra-colors {
+  @if ($base) {
+    $colors: $theme-colors;
+  }
+
+  @if ($enable-extra-colors and $extra) {
     $colors: map-merge($colors, $extra-colors);
   }
 
