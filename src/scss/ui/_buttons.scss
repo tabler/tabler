@@ -2,7 +2,6 @@
 // Button
 //
 .btn {
-  --#{$prefix}btn-bg: #{$white};
   --#{$prefix}btn-color-text-rgb: var(--#{$prefix}body-color-rgb);
   --#{$prefix}btn-icon-size: #{$icon-size};
   //background-color: var(--#{$prefix}btn-color, var(--#{$prefix}card-bg));
@@ -54,7 +53,6 @@
 }
 
 %btn-color {
-  border-color: $border-color-dark-transparent;
 
   &:hover {
     color: var(--#{$prefix}btn-color-text);
@@ -128,6 +126,13 @@
   }
 }
 
+.btn-square {
+  border-radius: 0;
+}
+
+//
+// Icon button
+//
 .btn-icon {
   min-width: calc((var(--#{$prefix}btn-line-height) * var(--#{$prefix}btn-font-size)) + (var(--#{$prefix}btn-padding-y) * 2) + (var(--#{$prefix}btn-border-width) * 2));
   min-height: calc((var(--#{$prefix}btn-line-height) * var(--#{$prefix}btn-font-size)) + (var(--#{$prefix}btn-padding-y) * 2) + (var(--#{$prefix}btn-border-width) * 2));
@@ -139,10 +144,9 @@
   }
 }
 
-.btn-square {
-  border-radius: 0;
-}
-
+//
+// Button list
+//
 .btn-list {
   display: flex;
   flex-wrap: wrap;
@@ -154,6 +158,9 @@
   }
 }
 
+//
+// Button floating
+//
 .btn-floating {
   position: fixed;
   z-index: $zindex-fixed;
@@ -162,6 +169,9 @@
   border-radius: $border-radius-pill;
 }
 
+//
+// Button loading
+//
 .btn-loading {
   position: relative;
   color: transparent !important;
@@ -172,15 +182,15 @@
     content: '';
     display: inline-block;
     vertical-align: text-bottom;
-    border: $spinner-border-width-sm solid currentColor;
+    border: $spinner-border-width solid currentColor;
     border-right-color: transparent;
     border-radius: $border-radius-pill;
-    color: $white;
+    color: var(--#{$prefix}btn-color);
     position: absolute;
-    width: 1rem;
-    height: 1rem;
-    left: calc(50% - .5rem);
-    top: calc(50% - .5rem);
+    width: var(--tblr-btn-icon-size);
+    height: var(--tblr-btn-icon-size);
+    left: calc(50% - var(--tblr-btn-icon-size) / 2 );
+    top: calc(50% - var(--tblr-btn-icon-size) / 2);
     animation: spinner-border .75s linear infinite;
   }
 }
