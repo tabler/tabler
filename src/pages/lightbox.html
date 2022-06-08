@@ -1,0 +1,18 @@
+---
+title: Lightbox
+page-header: Lightbox
+libs: fslightbox
+menu: base.lightbox
+---
+
+{% assign photos = site.data.photos | where: "horizontal", true %}
+
+<div class="row row-cols-6 g-3">
+	{% for photo in photos %}
+	<div class="col">
+		<a data-fslightbox="gallery" href="/static/photos/{{ photo.file }}">
+			<img src="/static/photos/{{ photo.file }}" alt="{{ photo.title }}" class="rounded">
+		</a>
+	</div>
+	{% endfor %}
+</div>
