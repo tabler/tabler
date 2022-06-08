@@ -1,0 +1,26 @@
+{% assign id = include.id %}
+{% assign text = include.text  | default: "Text"%}
+{% assign description = include.description | default: "Description" %}
+
+<form class="dropzone" id="dropzone-{{ id }}" action=".">
+	<div class="fallback">
+		<input name="file" type="file" {% if include.multiple %} multiple {% endif %} />
+	</div>
+	{% if include.custom %}
+	<div class="dz-message">
+		<h3 class="dropzone-msg-title">{{text}}</h3>
+		<span class="dropzone-msg-desc">{{description}}</span>
+	</div>
+	{% endif %}
+</form>
+
+{% capture_global scripts %}
+<script>
+  // @formatter:off
+  {% if jekyll.environment == 'development' %}window.tabler_dropzone = window.tabler_dropzone || {};{% endif %}
+
+  document.addEventListener("DOMContentLoaded", function() {
+    {% if jekyll.environment == 'development' %}window.tabler_dropzone["dropzone-{{ id }}"] = {% endif %}new Dropzone("#dropzone-{{ id }}")
+  })
+</script>
+{% endcapture_global %}
