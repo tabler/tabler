@@ -1,0 +1,19 @@
+{% assign id = include.id %}
+
+{% if id and include.embed-id %}
+<div id="player-{{ id }}" data-plyr-provider="{{ include.type | default: 'youtube' }}" data-plyr-embed-id="{{ include.embed-id }}"></div>
+
+{% capture_global scripts %}
+<script>
+  // @formatter:off
+  document.addEventListener("DOMContentLoaded", function () {
+    {% if jekyll.environment == 'development' %}
+    window.tabler_player = window.tabler_player || {};
+    {% endif %}
+    window.Plyr && ({% if jekyll.environment == 'development' %}window.tabler_player["player-{{ id }}"] = {% endif %}new Plyr('#player-{{ id }}'));
+  });
+  // @formatter:on
+</script>
+{% endcapture_global %}
+
+{% endif %}
