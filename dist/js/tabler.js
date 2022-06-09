@@ -1,6 +1,6 @@
 /*!
-* Tabler v1.0.0-beta9 (https://tabler.io)
-* @version 1.0.0-beta9
+* Tabler v1.0.0-beta10 (https://tabler.io)
+* @version 1.0.0-beta10
 * @link https://tabler.io
 * Copyright 2018-2022 The Tabler Authors
 * Copyright 2018-2022 codecalm.net Paweł Kuna
@@ -3364,6 +3364,9 @@
 	    }
 	  }
 	  var currentNode = getParentNode(element);
+	  if (isShadowRoot(currentNode)) {
+	    currentNode = currentNode.host;
+	  }
 	  while (isHTMLElement(currentNode) && ['html', 'body'].indexOf(getNodeName(currentNode)) < 0) {
 	    var css = getComputedStyle$1(currentNode);
 	    if (css.transform !== 'none' || css.perspective !== 'none' || css.contain === 'paint' || ['transform', 'perspective'].indexOf(css.willChange) !== -1 || isFirefox && css.willChange === 'filter' || isFirefox && css.filter && css.filter !== 'none') {
@@ -3547,14 +3550,14 @@
 	    offsetParent = offsetParent;
 	    if (placement === top || (placement === left || placement === right) && variation === end) {
 	      sideY = bottom;
-	      var offsetY = isFixed && win.visualViewport ? win.visualViewport.height :
+	      var offsetY = isFixed && offsetParent === win && win.visualViewport ? win.visualViewport.height :
 	      offsetParent[heightProp];
 	      y -= offsetY - popperRect.height;
 	      y *= gpuAcceleration ? 1 : -1;
 	    }
 	    if (placement === left || (placement === top || placement === bottom) && variation === end) {
 	      sideX = right;
-	      var offsetX = isFixed && win.visualViewport ? win.visualViewport.width :
+	      var offsetX = isFixed && offsetParent === win && win.visualViewport ? win.visualViewport.width :
 	      offsetParent[widthProp];
 	      x -= offsetX - popperRect.width;
 	      x *= gpuAcceleration ? 1 : -1;

@@ -52,7 +52,12 @@
 
 					{% if level-2[1].children %}<div class="dropend">{% endif %}
 
-					<a class="dropdown-item{% if level-2[1].children %} dropdown-toggle{% endif %}{% if level-1[0] == current-page[0] and level-2[0] == current-page[1] and current-page.size == 2 %} active{% endif %}" {% if level-2[1].children %}href="#sidebar-{{ level-2[0] }}" data-bs-toggle="dropdown" data-bs-auto-close="{% if include.keep-open %}false{% else %}outside{% endif %}" role="button" aria-expanded="false" {% else %}href="{% if level-2[1].url contains 'http://' or level-2[1].url contains 'https://'%}{{ level-2[1].url }}{% else %}{{ site.base }}/{{ level-2[1].url }}{% endif %}"{% endif %}{% if level-2[1].url contains 'http://' or level-2[1].url contains 'https://'%} target="_blank" rel="noopener"{% endif %}>
+					<a class="dropdown-item{% if level-2[1].children %} dropdown-toggle{% endif %}{% if level-1[0] == current-page[0] and level-2[0] == current-page[1] and current-page.size == 2 %} active{% endif %}{% if level-2[1].color %} text-{{ level-2[1].color }}{% endif %}" {% if level-2[1].children %}href="#sidebar-{{ level-2[0] }}" data-bs-toggle="dropdown" data-bs-auto-close="{% if include.keep-open %}false{% else %}outside{% endif %}" role="button" aria-expanded="false" {% else %}href="{% if level-2[1].url contains 'http://' or level-2[1].url contains 'https://'%}{{ level-2[1].url }}{% else %}{{ site.base }}/{{ level-2[1].url }}{% endif %}"{% endif %}{% if level-2[1].url contains 'http://' or level-2[1].url contains 'https://'%} target="_blank" rel="noopener"{% endif %}>
+						{% if level-2[1].icon %}
+							{% assign icon = level-2[1].icon %}
+							{% include ui/icon.html icon=icon class="icon-inline me-1" %}
+						{% endif %}
+
 						{{ level-2[1].title }}
 
 						{% if level-2[1].badge %}

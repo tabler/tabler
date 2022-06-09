@@ -1,10 +1,10 @@
 .avatar {
-  --#{$variable-prefix}avatar-size: #{$avatar-size};
-  --#{$variable-prefix}avatar-bg: var(--#{$variable-prefix}border-color-light);
+  --#{$prefix}avatar-size: #{$avatar-size};
+  --#{$prefix}avatar-bg: var(--#{$prefix}border-color-light);
   position: relative;
-  width: var(--#{$variable-prefix}avatar-size);
-  height: var(--#{$variable-prefix}avatar-size);
-  font-size: calc(var(--#{$variable-prefix}avatar-size) / #{$line-height-base * 2});
+  width: var(--#{$prefix}avatar-size);
+  height: var(--#{$prefix}avatar-size);
+  font-size: calc(var(--#{$prefix}avatar-size) / #{$line-height-base * 2});
   font-weight: $font-weight-medium;
   display: inline-flex;
   align-items: center;
@@ -14,12 +14,12 @@
   text-transform: uppercase;
   vertical-align: bottom;
   user-select: none;
-  background: var(--#{$variable-prefix}avatar-bg) no-repeat center/cover;
+  background: var(--#{$prefix}avatar-bg) no-repeat center/cover;
   border-radius: $avatar-border-radius;
 
   svg {
-    width: calc(var(--#{$variable-prefix}avatar-size) / #{divide(40, 24)});
-    height: calc(var(--#{$variable-prefix}avatar-size) / #{divide(40, 24)});
+    width: calc(var(--#{$prefix}avatar-size) / #{divide(40, 24)});
+    height: calc(var(--#{$prefix}avatar-size) / #{divide(40, 24)});
   }
 
   .badge {
@@ -41,7 +41,7 @@
 
 @each $avatar-size, $size in $avatar-sizes {
   .avatar-#{$avatar-size} {
-    --#{$variable-prefix}avatar-size: #{$size};
+    --#{$prefix}avatar-size: #{$size};
   }
 
   .avatar-#{$avatar-size} .badge:empty {
@@ -75,7 +75,7 @@
 .avatar-list-stacked {
   .avatar {
     margin-right: -.5rem !important;
-    box-shadow: 0 0 0 2px var(--#{$variable-prefix}card-bg);
+    box-shadow: 0 0 0 2px var(--#{$prefix}card-bg);
   }
 }
 
@@ -108,7 +108,7 @@
 
 .page-avatar {
   .page-cover ~ * & {
-    margin-top: calc(calc(-1 * calc(var(--#{$variable-prefix}avatar-size) * .5)) - #{$content-padding-y});
+    margin-top: calc(calc(-1 * calc(var(--#{$prefix}avatar-size) * .5)) - #{$content-padding-y});
     box-shadow: 0 0 0 .25rem $body-bg;
   }
 }

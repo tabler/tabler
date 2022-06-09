@@ -13,10 +13,9 @@ var __assign = (this && this.__assign) || function () {
 var CountUp = /** @class */ (function () {
     function CountUp(target, endVal, options) {
         var _this = this;
-        this.target = target;
         this.endVal = endVal;
         this.options = options;
-        this.version = '2.0.8';
+        this.version = '2.1.0';
         this.defaults = {
             startVal: 0,
             decimalPlaces: 0,
@@ -28,7 +27,9 @@ var CountUp = /** @class */ (function () {
             separator: ',',
             decimal: '.',
             prefix: '',
-            suffix: ''
+            suffix: '',
+            enableScrollSpy: false,
+            scrollSpyDelay: 200,
         };
         this.finalEndVal = null; // for smart easing
         this.useEasing = true;
@@ -135,7 +136,37 @@ var CountUp = /** @class */ (function () {
         else {
             this.error = '[CountUp] target is null or undefined';
         }
+        // scroll spy
+        if (window !== undefined && this.options.enableScrollSpy) {
+            if (!this.error) {
+                // set up global array of onscroll functions
+                window['onScrollFns'] = window['onScrollFns'] || [];
+                window['onScrollFns'].push(function () { return _this.handleScroll(_this); });
+                window.onscroll = function () {
+                    window['onScrollFns'].forEach(function (fn) { return fn(); });
+                };
+                this.handleScroll(this);
+            }
+            else {
+                console.error(this.error, target);
+            }
+        }
     }
+    CountUp.prototype.handleScroll = function (self) {
+        if (!self || !window)
+            return;
+        var bottomOfScroll = window.innerHeight + window.scrollY;
+        var bottomOfEl = self.el.offsetTop + self.el.offsetHeight;
+        if (bottomOfEl < bottomOfScroll && bottomOfEl > window.scrollY && self.paused) {
+            // in view
+            self.paused = false;
+            setTimeout(function () { return self.start(); }, self.options.scrollSpyDelay);
+        }
+        else if (window.scrollY > bottomOfEl && !self.paused) {
+            // scrolled past
+            self.reset();
+        }
+    };
     // determines where easing starts and whether to count down or up
     CountUp.prototype.determineDirectionAndSmartEasing = function () {
         var end = (this.finalEndVal) ? this.finalEndVal : this.endVal;
