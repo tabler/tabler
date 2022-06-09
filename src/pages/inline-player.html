@@ -1,0 +1,21 @@
+---
+title: Inline Player
+page-header: Inline Player
+menu: base.plyr
+libs: plyr
+---
+
+<div class="row row-cards">
+	{% for provider in site.data.inline-players %}
+
+	<div class="col-lg-6">
+		<div class="card">
+			<div class="card-body">
+				<h3 class="card-title">{{ provider.title }}</h3>
+
+				{% include ui/inline-player.html id=provider.id type=provider.type embed-id=provider.embed-id %}
+			</div>
+		</div>
+	</div>
+	{% endfor %}
+</div>
