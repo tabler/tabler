@@ -1,0 +1,38 @@
+---
+title: Popovers
+description: Popovers are used to provide additional information on elements where a simple tooltip is not sufficient.
+bootstrap-link: components/popovers
+menu: docs.components.popover
+---
+
+
+## Default markup
+
+To create a default popover.
+
+{% capture code %}
+<button type="button" class="btn btn-lg btn-danger" data-bs-toggle="popover" title="Popover title" data-bs-content="And here's some amazing content. It's very engaging. Right?">Click to toggle popover</button>
+{% endcapture %}
+{% include example.html code=code %}
+
+
+## Directions
+
+To create a default popover.
+
+{% capture code %}
+<button type="button" class="btn btn-secondary" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-content="Top popover">
+Popover on top
+</button>
+<button type="button" class="btn btn-secondary" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="right" data-bs-content="Right popover">
+Popover on right
+</button>
+<button type="button" class="btn btn-secondary" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content="Bottom popover">
+Popover on bottom
+</button>
+<button type="button" class="btn btn-secondary" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="left" data-bs-content="Left popover">
+Popover on left
+</button>
+{% endcapture %}
+{% include example.html code=code %}
+
