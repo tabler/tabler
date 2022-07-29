@@ -7,9 +7,11 @@ menu: docs.components.modals
 ## Default markup
 
 {% capture code %}
-<div class="modal-dialog" role="document">
-    <div class="modal-content">
-        {% include parts/modals/simple.html %}
+<div class="modal{% hide %} d-block position-relative{% endhide %}" tabindex="-1">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            {% include parts/modals/simple.html %}
+        </div>
     </div>
 </div>
 {% endcapture %}
@@ -19,18 +21,22 @@ menu: docs.components.modals
 ## Prompt and alert
 
 {% capture code %}
-<div class="modal-dialog modal-sm" role="document">
-    <div class="modal-content">
-        {% include parts/modals/danger.html %}
+<div class="modal{% hide %} d-block position-relative{% endhide %}" tabindex="-1">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            {% include parts/modals/danger.html %}
+        </div>
     </div>
 </div>
 {% endcapture %}
 {% include example.html code=code modal=true %}
 
 {% capture code %}
-<div class="modal-dialog modal-sm" role="document">
-    <div class="modal-content">
-        {% include parts/modals/success.html %}
+<div class="modal{% hide %} d-block position-relative{% endhide %}" tabindex="-1">
+    <div class="modal-dialog modal-sm" role="document">
+        <div class="modal-content">
+            {% include parts/modals/success.html %}
+        </div>
     </div>
 </div>
 {% endcapture %}
@@ -40,9 +46,11 @@ menu: docs.components.modals
 ## Modal with form
 
 {% capture code %}
-<div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-        {% include parts/modals/report.html %}
+<div class="modal{% hide %} d-block position-relative{% endhide %}" tabindex="-1">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            {% include parts/modals/report.html %}
+        </div>
     </div>
 </div>
 {% endcapture %}
