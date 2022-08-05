@@ -140,7 +140,7 @@ You can also expose the port 3001 to have access to BrowserSync
 docker run -p 3000:3000 -p 3001:3001 -v $(pwd)/src:/app/src -v $(pwd)/_config.yml:/app/_config.yml tabler
 ```
 
-Now open your browser to [http://localhost:3001](http://localhost:3001). Edit anything in the `src/` folder and watch your browser refresh the page after it has been rebuilt.
+Now open your browser to [http://localhost:3000](http://localhost:3000). Edit anything in the `src/` folder and watch your browser refresh the page after it has been rebuilt.
 
 ### CDN support
 
