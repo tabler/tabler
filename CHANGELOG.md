@@ -120,3 +120,19 @@ All notable changes to this project will be documented in this file.
 - new carousel indicators: dots, vertical, thumbs (#1101)
 - replace !important modifier with more specific selectors (#1100)
 - new 'FAQ' page
+
+
+## `1.0.0-beta11` - 2022-07-05
+
+- new 'Dropzone' component
+- new 'Lightbox' component
+- new 'TinyMCS' component
+- new 'Inline Player' component
+- new 'Pricing table' component
+- new 'Datagrid' compontent
+- new optgroup form examples
+- new settings page
+- update Tabler Icons to v1.78
+- added popover docs page
+- fix: #1125 incorrect chart display in the mobile version
+- update Bootstrap to 5.2.0
