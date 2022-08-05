@@ -6,7 +6,7 @@ const gulp = require('gulp'),
 	header = require('gulp-header'),
 	cleanCSS = require('gulp-clean-css'),
 	rtlcss = require('gulp-rtlcss'),
-	minifyJS = require('gulp-minify'),
+	minifyJS = require('gulp-terser'),
 	rename = require('gulp-rename'),
 	purgecss = require('gulp-purgecss'),
 	rollupStream = require('@rollup/stream'),
@@ -264,12 +264,10 @@ const compileJs = function (name, mjs = false) {
 		}))
 
 	if (BUILD) {
-		g.pipe(minifyJS({
-			ext: {
-				src: '.js',
-				min: '.min.js'
-			},
-		}))
+		g.pipe(minifyJS())
+			.pipe(rename((path) => {
+				path.extname = '.min.js'
+			}))
 			.pipe(gulp.dest(`${distDir}/js/`))
 	}
 
@@ -331,12 +329,10 @@ gulp.task('mjs', () => {
 		}))
 
 	if (BUILD) {
-		g.pipe(minifyJS({
-			ext: {
-				src: '.js',
-				min: '.min.js'
-			},
-		}))
+		g.pipe(minifyJS())
+			.pipe(rename((path) => {
+				path.extname = '.min.js'
+			}))
 			.pipe(gulp.dest(`${distDir}/js/`))
 	}
 
