@@ -123,6 +123,25 @@ Tabler is distributed via npm.
 npm install --save @tabler/core
 ```
 
+## Running with Docker
+
+If you don't want to install node/npm/ruby and the dependencies on your local environment, you can use the provided Dockerfile to build a docker image.
+This Dockerfile is provided as an example to spin-up a container running Tabler.
+
+Example of how to use this image:
+
+1. Build the tabler image : `docker build -t tabler .`
+2. Run the tabler image while mounting the `src` directory as well as the `_config.yml` file into the container.
+
+Don't forget to expose the port 3000 so you can browse the website locally.
+You can also expose the port 3001 to have access to BrowserSync
+
+```sh
+docker run -p 3000:3000 -p 3001:3001 -v $(pwd)/src:/app/src -v $(pwd)/_config.yml:/app/_config.yml tabler
+```
+
+Now open your browser to [http://localhost:3001](http://localhost:3001). Edit anything in the `src/` folder and watch your browser refresh the page after it has been rebuilt.
+
 ### CDN support
 
 All files included in `@tabler/core` npm package are available over a CDN.
