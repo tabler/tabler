@@ -1,4 +1,5 @@
 {% assign roles = 'User,Admin,Owner' | split: ',' %}
+{% assign limit = include.limit | default: 5 %}
 <div class="table-responsive">
 	<table
 		class="table table-vcenter{% if include.mobile %} table-mobile-md{% endif %}{% if include.card %} card-table{% endif %}{% if include.stripped %} table-striped{% endif %}{% if include.nowrap %} table-nowrap{% endif %}">
@@ -21,7 +22,7 @@
 		</tr>
 		</thead>
 		<tbody>
-		{% for person in site.data.people limit: 5 offset: include.offset %}
+		{% for person in site.data.people limit: limit offset: include.offset %}
 		<tr>
 			{% if include.avatars %}
 			<td {% if include.mobile %}data-label="Name" {% endif %}>
