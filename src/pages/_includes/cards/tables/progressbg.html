@@ -1,0 +1,27 @@
+<div class="card">
+	<div class="card-body">
+		<h3 class="card-title">Top Pages</h3>
+
+		<table class="table table-sm table-borderless">
+			<thead>
+			<tr>
+				<th>Page</th>
+				<th class="text-end">Visitors</th>
+			</tr>
+			</thead>
+			<tbody>
+			{% for page in site.data.pages %}
+			<tr>
+				<td>
+					<div class="progressbg">
+						{% include ui/progress.html value=page.bounce class="progressbg-progress" color="primary-lt" %}
+						<div class="progressbg-text">{{ page.uri }}</div>
+					</div>
+				</td>
+				<td class="w-1 fw-bold text-end">{{ page.visitors }}</td>
+			</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>

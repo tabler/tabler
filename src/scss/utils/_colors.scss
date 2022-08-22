@@ -1,4 +1,4 @@
-// stylelint-disable declaration-no-important
+@use "bootstrap";
 
 // All colors
 @each $color, $value in $theme-colors {
@@ -16,5 +16,15 @@
 @each $color, $value in $theme-colors {
   .text-#{"" + $color} {
     color: var(--#{$prefix}#{$color}) !important;
+  }
+}
+
+@each $color, $value in $gray-colors {
+  .bg-#{"" + $color} {
+    background-color: var(--#{$prefix}#{$color}) !important;
+  }
+
+  .text-#{"" + $color}-fg {
+    color: color-contrast($value) !important;
   }
 }
