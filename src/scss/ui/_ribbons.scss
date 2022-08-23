@@ -37,11 +37,11 @@
   @if $enable-extra-colors {
     @each $color, $value in $extra-colors {
       &.bg-#{$color} {
-        border-color: $value;
+        border-color: var(--#{$prefix}#{$color});
       }
 
       &.bg-#{$color}-lt {
-        border-color: theme-color-lighter($value) !important;
+        border-color: rgba(var(--#{$prefix}#{$color}-rgb), .1) !important;
       }
     }
   }
