@@ -67,56 +67,108 @@ Support this project by becoming a sponsor. Your logo will show up in this READM
 <a href="https://opencollective.com/tabler/tiers/sponsor/9/website" target="_blank"><img src="https://opencollective.com/tabler/tiers/sponsor/9/avatar.svg" /></a>
 
 
-## 📦 Setup environment
+## 📦 Getting Started
 
-To use our build system and run our documentation locally, you'll need a copy of Tabler's source files. Follow the steps below:
+To run this app locally, you'll first need a copy of Tabler's source files. Clone this repo and follow the steps below:
 
-1. [Install Node.js](https://nodejs.org/download/), which we use to manage our dependencies.
+### General
+
+1. [Install Node.js](https://nodejs.org/download/), which we use to manage our dependencies. We recommend using a version manager like [NVM](https://github.com/nvm-sh/nvm) to install Node.js.
 2. Navigate to the root `/tabler` directory and run `npm install` to install our local dependencies listed in `package.json`.
 3. [Install Ruby](https://www.ruby-lang.org/en/documentation/installation/) - the recommended version is [2.7.6](https://cache.ruby-lang.org/pub/ruby/2.7/ruby-2.7.6.tar.gz).
-4. [Install Bundler](https://bundler.io) with `gem install bundler` and finally run `bundle install`. It will install all Ruby dependencies, such as [Jekyll and plugins](https://jekyllrb.com).
+4. [Install Bundler](https://bundler.io) with `gem install bundler` and finally run `bundle install`. It will install all Ruby dependencies, including [Jekyll and plugins](https://jekyllrb.com).
 
-**OSX users**:
+### MacOS users
 
-1. NPM ```npm install```
-2. install Ruby (2.5.* recommended)
-	```brew install ruby @2.5```
-3. install bundler
-	```gem install bundler```
-4. install
-	```bundle install```
-- if bundler get any errors try
+1. Make sure you have Node.js installed. Enter the project directory and install local dependencies via NPM.
+
+```shell
+npm install
 ```
-sudo rm -rf /Library/Developer/CommandLineTools
-sudo xcode-select --install
+
+2. For security and ease of installation, avoid the pre-installed version of Ruby that comes with macOS. Use a version manager such as [rbenv](https://collectionbuilder.github.io/cb-docs/docs/software/ruby_mac/), or [RVM](https://rvm.io/rvm/install).
+
+- You can also install Ruby via Homebrew. The recommended Ruby version is 2.7.*
+
+```shell
+brew install ruby @2.7
 ```
-5. Run NPM
-	```npm run start```
 
+Don't forget to [apply ruby to your shell path](https://replayable.io/replay/62febe988c7631006765f9f3/?share=0loEq8x5fw5qeJyP9ALO8A) and restart the terminal.
 
-**Windows users**:
+Let's first do a [sanity check](https://replayable.io/replay/62feb54a8c7631006765f9f1/?share=jyhehNWV0geoVtfcx1fbzQ)!
 
-1. [Install Git](https://git-scm.com/download/win) in `C:\Program Files\git\bin` directory and run `npm config set script-shell "C:\\Program Files\\git\\bin\\bash.exe"` to change the default shell.
-2. [Install Ruby+Devkit](https://rubyinstaller.org/downloads/) - the recommended version is [2.7.6](https://github.com/oneclick/rubyinstaller2/releases/download/RubyInstaller-2.7.6-1/rubyinstaller-devkit-2.7.6-1-x64.exe).
-3. [Read guide](https://jekyllrb.com/docs/installation/windows/) to get Jekyll up and running without problems.
+```shell
+which ruby
+```
 
-Once you complete the setup, you'll be able to run the various commands provided from the command line.
+If you see `/usr/bin/ruby` when you use the which command, then the initial installation has failed. It is the pre-installed macOS system Ruby.
 
+3. Install the bundler gem.
 
-## Build locally
+```shell
+gem install bundler
+```
 
-You need to have `npm` and `bundler` installed.
+4. Install project gem dependencies via bundler.
 
-1. From the root `/tabler` directory, run installation in the command line:
-  - `npm install` 
-  - `bundler install` 
-2. Then execute `npm run start-plugins` to start up the application stack.
-3. Open [http://localhost:3000](http://localhost:3000) in your browser, and voilà.
-4. Any change in the `/src` directory will build the application and refresh the page.
+```shell
+bundle install
+```
 
-**Note**:
-Run `npm run build` for reforms a one off build application without refresh.
-Open [http://localhost:3001](http://localhost:3001) to configure the Web server.
+5. Finally, launch the app.
+
+```shell
+npm run start
+```
+
+Enter `http://localhost:3000` in your browser and [everything should work!](https://replayable.io/share/AlgdZGgYZooiVTbtoHg)
+
+### Windows users
+
+1. [Install Git SCM](https://git-scm.com/download/win) and take note of the installation directory. By default it's `C:\Program Files\Git`.
+2. Install [Node.js & NPM](https://nodejs.org/en/download/).
+3. By default, NPM run-scripts is set to CMD. [Configure NPM to use bash](https://replayable.io/replay/6301bdb7c417160066fb88e3/?share=jKEugkJ23Fe3dANIt2s8nA) which comes with Git SCM. Double-check the noted installation directory from step 1.
+
+```shell
+npm config set script-shell "C:\\Program Files\\git\\bin\\bash.exe"
+```
+4. [Install Ruby+Devkit](https://rubyinstaller.org/downloads/) - the recommended version is [2.7.6](https://github.com/oneclick/rubyinstaller2/releases/download/RubyInstaller-2.7.6-1/rubyinstaller-devkit-2.7.6-1-x64.exe).
+- On the last stage of the installation wizard, [rdk install should be checked](https://replayable.io/replay/6301cfb5c9b98e006759ec55/?share=lNypRQvCQBmwcOu8GFpdYQ) by default. Hit enter when prompted and don't specify which component to install.
+
+5. Install bundler and jekyll gems.
+
+```
+gem install jekyll bundler
+```
+
+- Check if Jekyll has been installed properly by entering `jekyll -v` in [your terminal](https://replayable.io/replay/6301d641c9b98e006759ec56/?share=Krqcj3vLWFSosyUgHzA4vA).
+
+6. Enter the project directory and install project gem dependencies via bundler.
+
+```shell
+bundle install
+```
+
+7. Install npm packages.
+
+```shell
+npm install
+```
+
+8. Finally, launch the app.
+
+```shell
+npm run start
+```
+
+Enter `http://localhost:3000` in your browser and [everything should work](https://replayable.io/replay/6301e1e414ebd00066b58470/?share=dBEQn0RalVkM16fxamUw)!
+
+### Building locally
+
+If you want to build locally, then execute `npm run start-plugins` to start up the application stack versus `npm run start`. That way any change in the `/src` directory will build the application and refresh the page. Open [http://localhost:3001](http://localhost:3001) if you want to configure the web server.
+
+Alternatively, running `npm run build` will [generate a local folder](https://replayable.io/replay/6301ea446a92ca00686c2470/?share=8BoFw4QCovXc4fFaY68v0w) called demo so you can run the app independently. Open the `index.html` inside the generated folder to get started.
 
 ## Installation
 
