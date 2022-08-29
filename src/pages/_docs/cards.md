@@ -44,7 +44,7 @@ Add a title to your card by including the `.card-title` class within `.card-body
 
 ## Card with title and image
 
-To create a more visually appealing card, add a title and an image. Thanks to that, the card will go well with your inteface design and draw users' attention.  
+To create a more visually appealing card, add a title and an image. Thanks to that, the card will go well with your interface design and draw users' attention.  
 
 {% capture code %}
 {% include cards/card.html img-top=true title="Card with title and image" %}
