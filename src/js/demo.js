@@ -1,6 +1,5 @@
 // Setting items
 const items = {
-	'theme': { localStorage: 'tablerTheme', default: 'light' },
 	'menu-position': { localStorage: 'tablerMenuPosition', default: 'top' },
 	'menu-behavior': { localStorage: 'tablerMenuBehavior', default: 'sticky' },
 	'container-layout': { localStorage: 'tablerContainerLayout', default: 'boxed' }
@@ -44,16 +43,6 @@ const toggleFormControls = (form) => {
 	}
 }
 
-// Update body classes
-const updateBodyClasses = () => {
-	document.body.classList.remove('theme-dark', 'theme-light');
-	document.body.classList.add(`theme-${config.theme}`);
-
-	// for (const [key, params] of Object.entries(items)) {
-	// 	document.body.setAttribute(`data-${key}`, config[key]);
-	// }
-}
-
 // Submit form
 const submitForm = (form) => {
 	// Save data to localStorage
@@ -66,9 +55,6 @@ const submitForm = (form) => {
 		config[key] = value
 	}
 
-	// Update body classes
-	updateBodyClasses();
-
 	window.dispatchEvent(new Event('resize'));
 
 	(new bootstrap.Offcanvas(form)).hide()
@@ -77,9 +63,6 @@ const submitForm = (form) => {
 
 // Parse url
 parseUrl()
-
-// Update body classes
-updateBodyClasses();
 
 // Elements
 const form = document.querySelector('#offcanvasSettings')

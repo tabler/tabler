@@ -251,454 +251,6 @@
     Object.assign(target.prototype, source);
   };
 
-  var Defaults = {
-    map: 'world',
-    backgroundColor: 'transparent',
-    draggable: true,
-    zoomButtons: true,
-    zoomOnScroll: true,
-    zoomOnScrollSpeed: 3,
-    zoomMax: 12,
-    zoomMin: 1,
-    zoomAnimate: true,
-    showTooltip: true,
-    zoomStep: 1.5,
-    bindTouchEvents: true,
-    // Line options
-    lineStyle: {
-      stroke: '#808080',
-      strokeWidth: 1,
-      strokeLinecap: 'round'
-    },
-    // Marker options
-    markersSelectable: false,
-    markersSelectableOne: false,
-    markerStyle: {
-      initial: {
-        r: 7,
-        fill: '#374151',
-        fillOpacity: 1,
-        stroke: '#FFF',
-        strokeWidth: 5,
-        strokeOpacity: .5
-      },
-      hover: {
-        fill: '#3cc0ff',
-        cursor: 'pointer'
-      },
-      selected: {
-        fill: 'blue'
-      },
-      selectedHover: {}
-    },
-    markerLabelStyle: {
-      initial: {
-        fontFamily: 'Verdana',
-        fontSize: 12,
-        fontWeight: 500,
-        cursor: 'default',
-        fill: '#374151'
-      },
-      hover: {
-        cursor: 'pointer'
-      },
-      selected: {},
-      selectedHover: {}
-    },
-    // Region options
-    regionsSelectable: false,
-    regionsSelectableOne: false,
-    regionStyle: {
-      initial: {
-        fill: '#dee2e8',
-        fillOpacity: 1,
-        stroke: 'none',
-        strokeWidth: 0
-      },
-      hover: {
-        fillOpacity: .7,
-        cursor: 'pointer'
-      },
-      selected: {
-        fill: '#9ca3af'
-      },
-      selectedHover: {}
-    },
-    regionLabelStyle: {
-      initial: {
-        fontFamily: 'Verdana',
-        fontSize: '12',
-        fontWeight: 'bold',
-        cursor: 'default',
-        fill: '#35373e'
-      },
-      hover: {
-        cursor: 'pointer'
-      }
-    }
-  };
-
-  function _inheritsLoose(subClass, superClass) {
-    subClass.prototype = Object.create(superClass.prototype);
-    subClass.prototype.constructor = subClass;
-
-    _setPrototypeOf(subClass, superClass);
-  }
-
-  function _setPrototypeOf(o, p) {
-    _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) {
-      o.__proto__ = p;
-      return o;
-    };
-    return _setPrototypeOf(o, p);
-  }
-
-  function _assertThisInitialized(self) {
-    if (self === void 0) {
-      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
-    }
-
-    return self;
-  }
-
-  function _unsupportedIterableToArray(o, minLen) {
-    if (!o) return;
-    if (typeof o === "string") return _arrayLikeToArray(o, minLen);
-    var n = Object.prototype.toString.call(o).slice(8, -1);
-    if (n === "Object" && o.constructor) n = o.constructor.name;
-    if (n === "Map" || n === "Set") return Array.from(o);
-    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
-  }
-
-  function _arrayLikeToArray(arr, len) {
-    if (len == null || len > arr.length) len = arr.length;
-
-    for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
-
-    return arr2;
-  }
-
-  function _createForOfIteratorHelperLoose(o, allowArrayLike) {
-    var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];
-    if (it) return (it = it.call(o)).next.bind(it);
-
-    if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {
-      if (it) o = it;
-      var i = 0;
-      return function () {
-        if (i >= o.length) return {
-          done: true
-        };
-        return {
-          done: false,
-          value: o[i++]
-        };
-      };
-    }
-
-    throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
-  }
-
-  /**
-   * ------------------------------------------------------------------------
-   * Class Definition
-   * ------------------------------------------------------------------------
-   */
-
-  var SVGElement = /*#__PURE__*/function () {
-    function SVGElement(name, config) {
-      this.node = this._createElement(name);
-
-      if (config) {
-        this.set(config);
-      }
-    } // Create new SVG element `svg`, `g`, `path`, `line`, `circle`, `image`, etc.
-    // https://developer.mozilla.org/en-US/docs/Web/API/Document/createElementNS#important_namespace_uris
-
-
-    var _proto = SVGElement.prototype;
-
-    _proto._createElement = function _createElement(tagName) {
-      return document.createElementNS('http://www.w3.org/2000/svg', tagName);
-    };
-
-    _proto.addClass = function addClass(className) {
-      this.node.setAttribute('class', className);
-    };
-
-    _proto.getBBox = function getBBox() {
-      return this.node.getBBox();
-    } // Apply attributes on the current node element
-    ;
-
-    _proto.set = function set(property, value) {
-      if (typeof property === 'object') {
-        for (var attr in property) {
-          this.applyAttr(attr, property[attr]);
-        }
-      } else {
-        this.applyAttr(property, value);
-      }
-    };
-
-    _proto.get = function get(property) {
-      return this.style.initial[property];
-    };
-
-    _proto.applyAttr = function applyAttr(property, value) {
-      this.node.setAttribute(hyphenate(property), value);
-    };
-
-    _proto.remove = function remove() {
-      removeElement(this.node);
-    };
-
-    return SVGElement;
-  }();
-
-  /**
-   * ------------------------------------------------------------------------
-   * Class Definition
-   * ------------------------------------------------------------------------
-   */
-
-  var SVGShapeElement = /*#__PURE__*/function (_SVGElement) {
-    _inheritsLoose(SVGShapeElement, _SVGElement);
-
-    function SVGShapeElement(name, config, style) {
-      var _this;
-
-      if (style === void 0) {
-        style = {};
-      }
-
-      _this = _SVGElement.call(this, name, config) || this;
-      _this.isHovered = false;
-      _this.isSelected = false;
-      _this.style = style;
-      _this.style.current = {};
-
-      _this.updateStyle();
-
-      return _this;
-    }
-
-    var _proto = SVGShapeElement.prototype;
-
-    _proto.setStyle = function setStyle(property, value) {
-      if (typeof property === 'object') {
-        merge(this.style.current, property);
-      } else {
-        var _merge;
-
-        merge(this.style.current, (_merge = {}, _merge[property] = value, _merge));
-      }
-
-      this.updateStyle();
-    };
-
-    _proto.updateStyle = function updateStyle() {
-      var attrs = {};
-      merge(attrs, this.style.initial);
-      merge(attrs, this.style.current);
-
-      if (this.isHovered) {
-        merge(attrs, this.style.hover);
-      }
-
-      if (this.isSelected) {
-        merge(attrs, this.style.selected);
-
-        if (this.isHovered) {
-          merge(attrs, this.style.selectedHover);
-        }
-      }
-
-      this.set(attrs);
-    };
-
-    return SVGShapeElement;
-  }(SVGElement);
-
-  /**
-   * ------------------------------------------------------------------------
-   * Class Definition
-   * ------------------------------------------------------------------------
-   */
-
-  var SVGTextElement = /*#__PURE__*/function (_SVGShapeElement) {
-    _inheritsLoose(SVGTextElement, _SVGShapeElement);
-
-    function SVGTextElement(config, style) {
-      return _SVGShapeElement.call(this, 'text', config, style) || this;
-    }
-
-    var _proto = SVGTextElement.prototype;
-
-    _proto.applyAttr = function applyAttr(attr, value) {
-      attr === 'text' ? this.node.textContent = value : _SVGShapeElement.prototype.applyAttr.call(this, attr, value);
-    };
-
-    return SVGTextElement;
-  }(SVGShapeElement);
-
-  /**
-   * ------------------------------------------------------------------------
-   * Class Definition
-   * ------------------------------------------------------------------------
-   */
-
-  var SVGImageElement = /*#__PURE__*/function (_SVGShapeElement) {
-    _inheritsLoose(SVGImageElement, _SVGShapeElement);
-
-    function SVGImageElement(config, style) {
-      return _SVGShapeElement.call(this, 'image', config, style) || this;
-    }
-
-    var _proto = SVGImageElement.prototype;
-
-    _proto.applyAttr = function applyAttr(attr, value) {
-      var imageUrl;
-
-      if (attr === 'image') {
-        // This get executed when we have url in series.markers[0].scale.someScale.url
-        if (typeof value === 'object') {
-          imageUrl = value.url;
-          this.offset = value.offset || [0, 0];
-        } else {
-          imageUrl = value;
-          this.offset = [0, 0];
-        }
-
-        this.node.setAttributeNS('http://www.w3.org/1999/xlink', 'href', imageUrl); // Set width and height then call this `applyAttr` again
-
-        this.width = 23;
-        this.height = 23;
-        this.applyAttr('width', this.width);
-        this.applyAttr('height', this.height);
-        this.applyAttr('x', this.cx - this.width / 2 + this.offset[0]);
-        this.applyAttr('y', this.cy - this.height / 2 + this.offset[1]);
-      } else if (attr == 'cx') {
-        this.cx = value;
-
-        if (this.width) {
-          this.applyAttr('x', value - this.width / 2 + this.offset[0]);
-        }
-      } else if (attr == 'cy') {
-        this.cy = value;
-
-        if (this.height) {
-          this.applyAttr('y', value - this.height / 2 + this.offset[1]);
-        }
-      } else {
-        // This time Call SVGElement
-        _SVGShapeElement.prototype.applyAttr.apply(this, arguments);
-      }
-    };
-
-    return SVGImageElement;
-  }(SVGShapeElement);
-
-  /**
-   * ------------------------------------------------------------------------
-   * Class Definition
-   * ------------------------------------------------------------------------
-   */
-
-  var SVGCanvasElement = /*#__PURE__*/function (_SVGElement) {
-    _inheritsLoose(SVGCanvasElement, _SVGElement);
-
-    function SVGCanvasElement(container) {
-      var _this;
-
-      _this = _SVGElement.call(this, 'svg') || this; // Create svg element for holding the whole map
-
-      _this._container = container; // Create the defs element
-
-      _this._defsElement = new SVGElement('defs'); // Create group element which will hold the paths (regions)
-
-      _this._rootElement = new SVGElement('g', {
-        id: 'jvm-regions-group'
-      }); // Append the defs element to the this.node (SVG tag)
-
-      _this.node.appendChild(_this._defsElement.node); // Append the group to this.node (SVG tag)
-
-
-      _this.node.appendChild(_this._rootElement.node); // Append this.node (SVG tag) to the container
-
-
-      _this._container.appendChild(_this.node);
-
-      return _this;
-    }
-
-    var _proto = SVGCanvasElement.prototype;
-
-    _proto.setSize = function setSize(width, height) {
-      this.node.setAttribute('width', width);
-      this.node.setAttribute('height', height);
-    };
-
-    _proto.applyTransformParams = function applyTransformParams(scale, transX, transY) {
-      this._rootElement.node.setAttribute('transform', "scale(" + scale + ") translate(" + transX + ", " + transY + ")");
-    } // Create `path` element
-    ;
-
-    _proto.createPath = function createPath(config, style) {
-      var path = new SVGShapeElement('path', config, style);
-      path.node.setAttribute('fill-rule', 'evenodd');
-      return this.add(path);
-    } // Create `circle` element
-    ;
-
-    _proto.createCircle = function createCircle(config, style, group) {
-      var circle = new SVGShapeElement('circle', config, style);
-      return this.add(circle, group);
-    } // Create `line` element
-    ;
-
-    _proto.createLine = function createLine(config, style, group) {
-      var line = new SVGShapeElement('line', config, style);
-      return this.add(line, group);
-    } // Create `text` element
-    ;
-
-    _proto.createText = function createText(config, style, group) {
-      var text = new SVGTextElement(config, style); // extends SVGShapeElement
-
-      return this.add(text, group);
-    } // Create `image` element
-    ;
-
-    _proto.createImage = function createImage(config, style, group) {
-      var image = new SVGImageElement(config, style); // extends SVGShapeElement
-
-      return this.add(image, group);
-    } // Create `g` element
-    ;
-
-    _proto.createGroup = function createGroup(id) {
-      var group = new SVGElement('g');
-      this.node.appendChild(group.node);
-
-      if (id) {
-        group.node.id = id;
-      }
-
-      group.canvas = this;
-      return group;
-    } // Add some element to a spcific group or the root element if the group isn't given
-    ;
-
-    _proto.add = function add(element, group) {
-      group = group || this._rootElement;
-      group.node.appendChild(element.node);
-      return element;
-    };
-
-    return SVGCanvasElement;
-  }(SVGElement);
-
   var eventRegistry = {};
   var eventUid = 1;
   /**
@@ -1003,6 +555,67 @@
     EventHandler.on(map.container, 'touchmove', handleTouchEvent);
   }
 
+  function _inheritsLoose(subClass, superClass) {
+    subClass.prototype = Object.create(superClass.prototype);
+    subClass.prototype.constructor = subClass;
+
+    _setPrototypeOf(subClass, superClass);
+  }
+
+  function _setPrototypeOf(o, p) {
+    _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) {
+      o.__proto__ = p;
+      return o;
+    };
+    return _setPrototypeOf(o, p);
+  }
+
+  function _assertThisInitialized(self) {
+    if (self === void 0) {
+      throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }
+
+    return self;
+  }
+
+  function _unsupportedIterableToArray(o, minLen) {
+    if (!o) return;
+    if (typeof o === "string") return _arrayLikeToArray(o, minLen);
+    var n = Object.prototype.toString.call(o).slice(8, -1);
+    if (n === "Object" && o.constructor) n = o.constructor.name;
+    if (n === "Map" || n === "Set") return Array.from(o);
+    if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen);
+  }
+
+  function _arrayLikeToArray(arr, len) {
+    if (len == null || len > arr.length) len = arr.length;
+
+    for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i];
+
+    return arr2;
+  }
+
+  function _createForOfIteratorHelperLoose(o, allowArrayLike) {
+    var it = typeof Symbol !== "undefined" && o[Symbol.iterator] || o["@@iterator"];
+    if (it) return (it = it.call(o)).next.bind(it);
+
+    if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") {
+      if (it) o = it;
+      var i = 0;
+      return function () {
+        if (i >= o.length) return {
+          done: true
+        };
+        return {
+          done: false,
+          value: o[i++]
+        };
+      };
+    }
+
+    throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+  }
+
   /**
    * ------------------------------------------------------------------------
    * Class Definition
@@ -1123,7 +736,7 @@
 
 
       if (label && text) {
-        var offsets = _this.getLabelOffsets(code);
+        var offsets = _this.getLabelOffsets(code, label);
 
         _this.labelX = bbox.x + bbox.width / 2 + offsets[0];
         _this.labelY = bbox.y + bbox.height / 2 + offsets[1];
@@ -1169,7 +782,7 @@
 
   function createRegions() {
     var code, region;
-    this.regionLabelsGroup = this.regionLabelsGroup || this.canvas.createGroup('jvm-regions-labels-group');
+    this._regionLabelsGroup = this._regionLabelsGroup || this.canvas.createGroup('jvm-regions-labels-group');
 
     for (code in this.mapData.paths) {
       region = new Region({
@@ -1178,7 +791,7 @@
         path: this.mapData.paths[code].path,
         style: merge({}, this.params.regionStyle),
         labelStyle: this.params.regionLabelStyle,
-        labelsGroup: this.regionLabelsGroup,
+        labelsGroup: this._regionLabelsGroup,
         label: this.params.labels && this.params.labels.regions
       });
       this.regions[code] = {
@@ -1311,7 +924,7 @@
         dataIndex: index,
         cx: cx,
         cy: cy
-      }, _this._getStyle(), group);
+      }, style, group);
 
       _this.shape.addClass('jvm-marker jvm-element');
 
@@ -1364,20 +977,6 @@
       }
     };
 
-    _proto._getStyle = function _getStyle() {
-      var style = {};
-
-      if (this._isImage) {
-        style.initial = {
-          image: this.config.style.initial.image
-        };
-      } else {
-        style = this.config.style;
-      }
-
-      return style;
-    };
-
     return Marker;
   }(BaseComponent);
 
@@ -1394,19 +993,24 @@
       isRecentlyCreated = false;
     }
 
-    var markerConfig, marker, point, uid; // Create groups for holding markers and markers labels
+    var config, marker, point, uid; // Create groups for holding markers and markers labels
     // We're checking if `markersGroup` exists or not becuase we may add markers after the map has loaded
     // So we will append the futured markers to this group as well.
 
-    this.markersGroup = this.markersGroup || this.canvas.createGroup('jvm-markers-group');
-    this.markerLabelsGroup = this.markerLabelsGroup || this.canvas.createGroup('jvm-markers-labels-group');
+    this._markersGroup = this._markersGroup || this.canvas.createGroup('jvm-markers-group');
+    this._markerLabelsGroup = this._markerLabelsGroup || this.canvas.createGroup('jvm-markers-labels-group');
 
     for (var index in markers) {
-      markerConfig = markers[index];
-      point = this.getMarkerPosition(markerConfig);
-      uid = markerConfig.coords.join(':'); // We're checking if recently created marker does already exist
+      config = markers[index];
+      point = this.getMarkerPosition(config);
+      uid = config.coords.join(':');
+
+      if (!point) {
+        continue;
+      } // We're checking if recently created marker does already exist
       // If exists we don't need to create it again, so we'll continute
-      // Becuase we may have more than one marker.
+      // Becuase we may have more than one marker submitted via `addMarkers` method.
+
 
       if (isRecentlyCreated) {
         if (Object.keys(this.markers).filter(function (i) {
@@ -1418,35 +1022,33 @@
         index = Object.keys(this.markers).length;
       }
 
-      if (point !== false) {
-        marker = new Marker({
-          index: index,
-          map: this,
-          // Merge the `markerStyle` object with the marker config `style` if presented.
-          style: merge(this.params.markerStyle, {
-            initial: markerConfig.style || {}
-          }, true),
-          label: this.params.labels && this.params.labels.markers,
-          labelsGroup: this.markerLabelsGroup,
-          cx: point.x,
-          cy: point.y,
-          group: this.markersGroup,
-          marker: markerConfig,
-          isRecentlyCreated: isRecentlyCreated
-        }); // Check for marker duplication
-        // this is useful when for example: a user clicks a button for creating marker two times
-        // so it will remove the old one and the new one will take its place.
+      marker = new Marker({
+        index: index,
+        map: this,
+        // Merge the `markerStyle` object with the marker config `style` if presented.
+        style: merge(this.params.markerStyle, {
+          initial: config.style || {}
+        }, true),
+        label: this.params.labels && this.params.labels.markers,
+        labelsGroup: this._markerLabelsGroup,
+        cx: point.x,
+        cy: point.y,
+        group: this._markersGroup,
+        marker: config,
+        isRecentlyCreated: isRecentlyCreated
+      }); // Check for marker duplication
+      // this is useful when for example: a user clicks a button for creating marker two times
+      // so it will remove the old one and the new one will take its place.
 
-        if (this.markers[index]) {
-          this.removeMarkers([index]);
-        }
-
-        this.markers[index] = {
-          _uid: uid,
-          config: markerConfig,
-          element: marker
-        };
+      if (this.markers[index]) {
+        this.removeMarkers([index]);
       }
+
+      this.markers[index] = {
+        _uid: uid,
+        config: config,
+        element: marker
+      };
     }
   }
 
@@ -2075,7 +1677,7 @@
     }
   }
 
-  var MapPrototypes = {
+  var core = {
     _setupContainerEvents: setupContainerEvents,
     _setupElementEvents: setupElementEvents,
     _setupZoomButtons: setupZoomButtons,
@@ -2096,6 +1698,393 @@
     _repositionMarkers: repositionMarkers,
     _repositionLabels: repositionLabels
   };
+
+  var Defaults = {
+    map: 'world',
+    backgroundColor: 'transparent',
+    draggable: true,
+    zoomButtons: true,
+    zoomOnScroll: true,
+    zoomOnScrollSpeed: 3,
+    zoomMax: 12,
+    zoomMin: 1,
+    zoomAnimate: true,
+    showTooltip: true,
+    zoomStep: 1.5,
+    bindTouchEvents: true,
+    // Line options
+    lineStyle: {
+      stroke: '#808080',
+      strokeWidth: 1,
+      strokeLinecap: 'round'
+    },
+    // Marker options
+    markersSelectable: false,
+    markersSelectableOne: false,
+    markerStyle: {
+      initial: {
+        r: 7,
+        fill: '#374151',
+        fillOpacity: 1,
+        stroke: '#FFF',
+        strokeWidth: 5,
+        strokeOpacity: .5
+      },
+      hover: {
+        fill: '#3cc0ff',
+        cursor: 'pointer'
+      },
+      selected: {
+        fill: 'blue'
+      },
+      selectedHover: {}
+    },
+    markerLabelStyle: {
+      initial: {
+        fontFamily: 'Verdana',
+        fontSize: 12,
+        fontWeight: 500,
+        cursor: 'default',
+        fill: '#374151'
+      },
+      hover: {
+        cursor: 'pointer'
+      },
+      selected: {},
+      selectedHover: {}
+    },
+    // Region options
+    regionsSelectable: false,
+    regionsSelectableOne: false,
+    regionStyle: {
+      initial: {
+        fill: '#dee2e8',
+        fillOpacity: 1,
+        stroke: 'none',
+        strokeWidth: 0
+      },
+      hover: {
+        fillOpacity: .7,
+        cursor: 'pointer'
+      },
+      selected: {
+        fill: '#9ca3af'
+      },
+      selectedHover: {}
+    },
+    regionLabelStyle: {
+      initial: {
+        fontFamily: 'Verdana',
+        fontSize: '12',
+        fontWeight: 'bold',
+        cursor: 'default',
+        fill: '#35373e'
+      },
+      hover: {
+        cursor: 'pointer'
+      }
+    }
+  };
+
+  /**
+   * ------------------------------------------------------------------------
+   * Class Definition
+   * ------------------------------------------------------------------------
+   */
+
+  var SVGElement = /*#__PURE__*/function () {
+    function SVGElement(name, config) {
+      this.node = this._createElement(name);
+
+      if (config) {
+        this.set(config);
+      }
+    } // Create new SVG element `svg`, `g`, `path`, `line`, `circle`, `image`, etc.
+    // https://developer.mozilla.org/en-US/docs/Web/API/Document/createElementNS#important_namespace_uris
+
+
+    var _proto = SVGElement.prototype;
+
+    _proto._createElement = function _createElement(tagName) {
+      return document.createElementNS('http://www.w3.org/2000/svg', tagName);
+    };
+
+    _proto.addClass = function addClass(className) {
+      this.node.setAttribute('class', className);
+    };
+
+    _proto.getBBox = function getBBox() {
+      return this.node.getBBox();
+    } // Apply attributes on the current node element
+    ;
+
+    _proto.set = function set(property, value) {
+      if (typeof property === 'object') {
+        for (var attr in property) {
+          this.applyAttr(attr, property[attr]);
+        }
+      } else {
+        this.applyAttr(property, value);
+      }
+    };
+
+    _proto.get = function get(property) {
+      return this.style.initial[property];
+    };
+
+    _proto.applyAttr = function applyAttr(property, value) {
+      this.node.setAttribute(hyphenate(property), value);
+    };
+
+    _proto.remove = function remove() {
+      removeElement(this.node);
+    };
+
+    return SVGElement;
+  }();
+
+  /**
+   * ------------------------------------------------------------------------
+   * Class Definition
+   * ------------------------------------------------------------------------
+   */
+
+  var SVGShapeElement = /*#__PURE__*/function (_SVGElement) {
+    _inheritsLoose(SVGShapeElement, _SVGElement);
+
+    function SVGShapeElement(name, config, style) {
+      var _this;
+
+      if (style === void 0) {
+        style = {};
+      }
+
+      _this = _SVGElement.call(this, name, config) || this;
+      _this.isHovered = false;
+      _this.isSelected = false;
+      _this.style = style;
+      _this.style.current = {};
+
+      _this.updateStyle();
+
+      return _this;
+    }
+
+    var _proto = SVGShapeElement.prototype;
+
+    _proto.setStyle = function setStyle(property, value) {
+      if (typeof property === 'object') {
+        merge(this.style.current, property);
+      } else {
+        var _merge;
+
+        merge(this.style.current, (_merge = {}, _merge[property] = value, _merge));
+      }
+
+      this.updateStyle();
+    };
+
+    _proto.updateStyle = function updateStyle() {
+      var attrs = {};
+      merge(attrs, this.style.initial);
+      merge(attrs, this.style.current);
+
+      if (this.isHovered) {
+        merge(attrs, this.style.hover);
+      }
+
+      if (this.isSelected) {
+        merge(attrs, this.style.selected);
+
+        if (this.isHovered) {
+          merge(attrs, this.style.selectedHover);
+        }
+      }
+
+      this.set(attrs);
+    };
+
+    return SVGShapeElement;
+  }(SVGElement);
+
+  /**
+   * ------------------------------------------------------------------------
+   * Class Definition
+   * ------------------------------------------------------------------------
+   */
+
+  var SVGTextElement = /*#__PURE__*/function (_SVGShapeElement) {
+    _inheritsLoose(SVGTextElement, _SVGShapeElement);
+
+    function SVGTextElement(config, style) {
+      return _SVGShapeElement.call(this, 'text', config, style) || this;
+    }
+
+    var _proto = SVGTextElement.prototype;
+
+    _proto.applyAttr = function applyAttr(attr, value) {
+      attr === 'text' ? this.node.textContent = value : _SVGShapeElement.prototype.applyAttr.call(this, attr, value);
+    };
+
+    return SVGTextElement;
+  }(SVGShapeElement);
+
+  /**
+   * ------------------------------------------------------------------------
+   * Class Definition
+   * ------------------------------------------------------------------------
+   */
+
+  var SVGImageElement = /*#__PURE__*/function (_SVGShapeElement) {
+    _inheritsLoose(SVGImageElement, _SVGShapeElement);
+
+    function SVGImageElement(config, style) {
+      return _SVGShapeElement.call(this, 'image', config, style) || this;
+    }
+
+    var _proto = SVGImageElement.prototype;
+
+    _proto.applyAttr = function applyAttr(attr, value) {
+      var imageUrl;
+
+      if (attr === 'image') {
+        // This get executed when we have url in series.markers[0].scale.someScale.url
+        if (typeof value === 'object') {
+          imageUrl = value.url;
+          this.offset = value.offset || [0, 0];
+        } else {
+          imageUrl = value;
+          this.offset = [0, 0];
+        }
+
+        this.node.setAttributeNS('http://www.w3.org/1999/xlink', 'href', imageUrl); // Set width and height then call this `applyAttr` again
+
+        this.width = 23;
+        this.height = 23;
+        this.applyAttr('width', this.width);
+        this.applyAttr('height', this.height);
+        this.applyAttr('x', this.cx - this.width / 2 + this.offset[0]);
+        this.applyAttr('y', this.cy - this.height / 2 + this.offset[1]);
+      } else if (attr == 'cx') {
+        this.cx = value;
+
+        if (this.width) {
+          this.applyAttr('x', value - this.width / 2 + this.offset[0]);
+        }
+      } else if (attr == 'cy') {
+        this.cy = value;
+
+        if (this.height) {
+          this.applyAttr('y', value - this.height / 2 + this.offset[1]);
+        }
+      } else {
+        // This time Call SVGElement
+        _SVGShapeElement.prototype.applyAttr.apply(this, arguments);
+      }
+    };
+
+    return SVGImageElement;
+  }(SVGShapeElement);
+
+  /**
+   * ------------------------------------------------------------------------
+   * Class Definition
+   * ------------------------------------------------------------------------
+   */
+
+  var SVGCanvasElement = /*#__PURE__*/function (_SVGElement) {
+    _inheritsLoose(SVGCanvasElement, _SVGElement);
+
+    function SVGCanvasElement(container) {
+      var _this;
+
+      _this = _SVGElement.call(this, 'svg') || this; // Create svg element for holding the whole map
+
+      _this._container = container; // Create the defs element
+
+      _this._defsElement = new SVGElement('defs'); // Create group element which will hold the paths (regions)
+
+      _this._rootElement = new SVGElement('g', {
+        id: 'jvm-regions-group'
+      }); // Append the defs element to the this.node (SVG tag)
+
+      _this.node.appendChild(_this._defsElement.node); // Append the group to this.node (SVG tag)
+
+
+      _this.node.appendChild(_this._rootElement.node); // Append this.node (SVG tag) to the container
+
+
+      _this._container.appendChild(_this.node);
+
+      return _this;
+    }
+
+    var _proto = SVGCanvasElement.prototype;
+
+    _proto.setSize = function setSize(width, height) {
+      this.node.setAttribute('width', width);
+      this.node.setAttribute('height', height);
+    };
+
+    _proto.applyTransformParams = function applyTransformParams(scale, transX, transY) {
+      this._rootElement.node.setAttribute('transform', "scale(" + scale + ") translate(" + transX + ", " + transY + ")");
+    } // Create `path` element
+    ;
+
+    _proto.createPath = function createPath(config, style) {
+      var path = new SVGShapeElement('path', config, style);
+      path.node.setAttribute('fill-rule', 'evenodd');
+      return this.add(path);
+    } // Create `circle` element
+    ;
+
+    _proto.createCircle = function createCircle(config, style, group) {
+      var circle = new SVGShapeElement('circle', config, style);
+      return this.add(circle, group);
+    } // Create `line` element
+    ;
+
+    _proto.createLine = function createLine(config, style, group) {
+      var line = new SVGShapeElement('line', config, style);
+      return this.add(line, group);
+    } // Create `text` element
+    ;
+
+    _proto.createText = function createText(config, style, group) {
+      var text = new SVGTextElement(config, style); // extends SVGShapeElement
+
+      return this.add(text, group);
+    } // Create `image` element
+    ;
+
+    _proto.createImage = function createImage(config, style, group) {
+      var image = new SVGImageElement(config, style); // extends SVGShapeElement
+
+      return this.add(image, group);
+    } // Create `g` element
+    ;
+
+    _proto.createGroup = function createGroup(id) {
+      var group = new SVGElement('g');
+      this.node.appendChild(group.node);
+
+      if (id) {
+        group.node.id = id;
+      }
+
+      group.canvas = this;
+      return group;
+    } // Add some element to a spcific group or the root element if the group isn't given
+    ;
+
+    _proto.add = function add(element, group) {
+      group = group || this._rootElement;
+      group.node.appendChild(element.node);
+      return element;
+    };
+
+    return SVGCanvasElement;
+  }(SVGElement);
 
   /**
    * ------------------------------------------------------------------------
@@ -2176,12 +2165,18 @@
       this._tooltip.classList.remove('active');
     };
 
-    _proto.text = function text(string) {
-      if (!string) {
-        return this._tooltip.textContent;
+    _proto.text = function text(string, html) {
+      if (html === void 0) {
+        html = false;
       }
 
-      this._tooltip.textContent = string;
+      var property = html ? 'innerHTML' : 'textContent';
+
+      if (!string) {
+        return this._tooltip[property];
+      }
+
+      this._tooltip[property] = string;
     };
 
     _proto.css = function css(_css) {
@@ -2622,7 +2617,7 @@
 
   Map.maps = {};
   Map.defaults = Defaults;
-  Object.assign(Map.prototype, MapPrototypes);
+  Object.assign(Map.prototype, core);
 
   /**
    * jsVectorMap
