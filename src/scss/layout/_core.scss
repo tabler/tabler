@@ -3,22 +3,20 @@
   font-size: 16px;
   height: 100%;
 
-  @each $name, $color in $gray-colors {
+  @each $name, $color in $theme-colors {
     --#{$prefix}#{$name}: #{$color};
-  }
-
-  @each $name, $color in $gray-colors {
-    --#{$prefix}#{$name}-rgb: #{to-rgb($color)};
+    --#{$prefix}#{$name}-darken: #{theme-color-darker($color)};
+    --#{$prefix}#{$name}-light: #{theme-color-lighter($color)};
+    //--#{$prefix}#{$name}-rgb: #{to-rgb($color)};
   }
 
   --#{$prefix}card-bg: #{$card-bg};
-  --#{$prefix}card-bg-rgb: #{to-rgb($card-bg)};
 
   --#{$prefix}border-color: #{$border-color};
-  --#{$prefix}border-color-rgb: #{to-rgb($border-color)};
-
   --#{$prefix}border-color-light: #{$border-color-light};
-  --#{$prefix}border-color-light-rgb: #{to-rgb($border-color-light)};
+
+  --#{$prefix}icon-color: #{$icon-color};
+  --#{$prefix}disabled-bg: #{$disabled-bg};
 }
 
 body {
