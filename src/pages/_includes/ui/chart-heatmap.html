@@ -34,28 +34,28 @@
 							from: 0,
 							to: 20,
 							name: "Low",
-							color: "{{ "green" | tabler_color }}"
+							color: tabler.getColor("green")
 						}, {
 							from: 21,
 							to: 50,
 							name: "Medium",
-							color: "{{ "blue" | tabler_color }}"
+							color: tabler.getColor("blue")
 						}, {
 							from: 51,
 							to: 75,
 							name: "High",
-							color: "{{ "yellow" | tabler_color }}"
+							color: tabler.getColor("yellow")
 						}, {
 							from: 76,
 							to: 100,
 							name: "Extreme",
-							color: "{{ "red" | tabler_color }}"
+							color: tabler.getColor("red")
 						}]
 					}
 	 			}
 			},
 			{% else %}
-			colors: [{% if include.color %}'{{ include.color }}'{% else %}{% for color in site.colors limit: colors %}"{{ color[0] | tabler_color }}", {% endfor %}{% endif %}],
+			colors: [{% if include.color %}'{{ include.color }}'{% else %}{% for color in site.colors limit: colors %}tabler.getColor("{{ color[0] }}"), {% endfor %}{% endif %}],
 			{% endif %}
 			series: [
 				{% for i in site.months-short limit: 12 %}
