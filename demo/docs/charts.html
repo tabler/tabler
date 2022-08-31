@@ -1,0 +1,1915 @@
+<!doctype html>
+<!--
+* Tabler - Premium and Open Source dashboard template with responsive and high quality UI.
+* @version 1.0.0-beta11
+* @link https://tabler.io
+* Copyright 2018-2022 The Tabler Authors
+* Copyright 2018-2022 codecalm.net Paweł Kuna
+* Licensed under MIT (https://github.com/tabler/tabler/blob/master/LICENSE)
+-->
+<html lang="en">
+  <head>
+    <meta charset="utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+    <meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+    <title>Charts - Tabler - Premium and Open Source dashboard template with responsive and high quality UI.</title>
+    <style>
+      @import url('https://rsms.me/inter/inter.css');
+      :root {
+      	--tblr-font-sans-serif: Inter,-apple-system,BlinkMacSystemFont,San Francisco,Segoe UI,Roboto,Helvetica Neue,sans-serif !important;
+      }
+    </style>
+    <!-- CSS files -->
+    <link href="../dist/css/tabler.min.css" rel="stylesheet"/>
+    <link href="../dist/css/tabler-flags.min.css" rel="stylesheet"/>
+    <link href="../dist/css/tabler-payments.min.css" rel="stylesheet"/>
+    <link href="../dist/css/tabler-vendors.min.css" rel="stylesheet"/>
+    <link href="../dist/css/demo.min.css" rel="stylesheet"/>
+  </head>
+  <body >
+    <div class="page">
+      <header class="navbar navbar-expand-md navbar-light d-print-none">
+        <div class="container-xl">
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar-menu">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
+            <a href="..">
+              <img src="../static/logo.svg" width="110" height="32" alt="Tabler" class="navbar-brand-image">
+            </a>
+          </h1>
+          <div class="navbar-nav flex-row order-md-last">
+            <div class="nav-item d-none d-md-flex me-3">
+              <div class="btn-list">
+                <a href="https://github.com/tabler/tabler" class="btn" target="_blank" rel="noreferrer">
+                  <!-- Download SVG icon from http://tabler-icons.io/i/brand-github -->
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5" /></svg>
+                  Source code
+                </a>
+                <a href="https://github.com/sponsors/codecalm" class="btn" target="_blank" rel="noreferrer">
+                  <!-- Download SVG icon from http://tabler-icons.io/i/heart -->
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon text-pink" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
+                  Sponsor
+                </a>
+              </div>
+            </div>
+            <div class="d-none d-md-flex">
+              <a href="?theme=dark" class="nav-link px-0 hide-theme-dark" title="Enable dark mode" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                <!-- Download SVG icon from http://tabler-icons.io/i/moon -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 3c.132 0 .263 0 .393 0a7.5 7.5 0 0 0 7.92 12.446a9 9 0 1 1 -8.313 -12.454z" /></svg>
+              </a>
+              <a href="?theme=light" class="nav-link px-0 hide-theme-light" title="Enable light mode" data-bs-toggle="tooltip" data-bs-placement="bottom">
+                <!-- Download SVG icon from http://tabler-icons.io/i/sun -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="4" /><path d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7" /></svg>
+              </a>
+              <div class="nav-item dropdown d-none d-md-flex me-3">
+                <a href="#" class="nav-link px-0" data-bs-toggle="dropdown" tabindex="-1" aria-label="Show notifications">
+                  <!-- Download SVG icon from http://tabler-icons.io/i/bell -->
+                  <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M10 5a2 2 0 0 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" /><path d="M9 17v1a3 3 0 0 0 6 0v-1" /></svg>
+                  <span class="badge bg-red"></span>
+                </a>
+                <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-end dropdown-menu-card">
+                  <div class="card">
+                    <div class="card-header">
+                      <h3 class="card-title">Last updates</h3>
+                    </div>
+                    <div class="list-group list-group-flush list-group-hoverable">
+                      <div class="list-group-item">
+                        <div class="row align-items-center">
+                          <div class="col-auto"><span class="status-dot status-dot-animated bg-red d-block"></span></div>
+                          <div class="col text-truncate">
+                            <a href="#" class="text-body d-block">Example 1</a>
+                            <div class="d-block text-muted text-truncate mt-n1">
+                              Change deprecated html tags to text decoration classes (#29604)
+                            </div>
+                          </div>
+                          <div class="col-auto">
+                            <a href="#" class="list-group-item-actions">
+                              <!-- Download SVG icon from http://tabler-icons.io/i/star -->
+                              <svg xmlns="http://www.w3.org/2000/svg" class="icon text-muted" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="list-group-item">
+                        <div class="row align-items-center">
+                          <div class="col-auto"><span class="status-dot d-block"></span></div>
+                          <div class="col text-truncate">
+                            <a href="#" class="text-body d-block">Example 2</a>
+                            <div class="d-block text-muted text-truncate mt-n1">
+                              justify-content:between ⇒ justify-content:space-between (#29734)
+                            </div>
+                          </div>
+                          <div class="col-auto">
+                            <a href="#" class="list-group-item-actions show">
+                              <!-- Download SVG icon from http://tabler-icons.io/i/star -->
+                              <svg xmlns="http://www.w3.org/2000/svg" class="icon text-yellow" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="list-group-item">
+                        <div class="row align-items-center">
+                          <div class="col-auto"><span class="status-dot d-block"></span></div>
+                          <div class="col text-truncate">
+                            <a href="#" class="text-body d-block">Example 3</a>
+                            <div class="d-block text-muted text-truncate mt-n1">
+                              Update change-version.js (#29736)
+                            </div>
+                          </div>
+                          <div class="col-auto">
+                            <a href="#" class="list-group-item-actions">
+                              <!-- Download SVG icon from http://tabler-icons.io/i/star -->
+                              <svg xmlns="http://www.w3.org/2000/svg" class="icon text-muted" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="list-group-item">
+                        <div class="row align-items-center">
+                          <div class="col-auto"><span class="status-dot status-dot-animated bg-green d-block"></span></div>
+                          <div class="col text-truncate">
+                            <a href="#" class="text-body d-block">Example 4</a>
+                            <div class="d-block text-muted text-truncate mt-n1">
+                              Regenerate package-lock.json (#29730)
+                            </div>
+                          </div>
+                          <div class="col-auto">
+                            <a href="#" class="list-group-item-actions">
+                              <!-- Download SVG icon from http://tabler-icons.io/i/star -->
+                              <svg xmlns="http://www.w3.org/2000/svg" class="icon text-muted" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="nav-item dropdown">
+              <a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
+                <span class="avatar avatar-sm" style="background-image: url(../static/avatars/000m.jpg)"></span>
+                <div class="d-none d-xl-block ps-2">
+                  <div>Paweł Kuna</div>
+                  <div class="mt-1 small text-muted">UI Designer</div>
+                </div>
+              </a>
+              <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                <a href="#" class="dropdown-item">Set status</a>
+                <a href="#" class="dropdown-item">Profile & account</a>
+                <a href="#" class="dropdown-item">Feedback</a>
+                <div class="dropdown-divider"></div>
+                <a href="#" class="dropdown-item">Settings</a>
+                <a href="#" class="dropdown-item">Logout</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </header>
+      <div class="navbar-expand-md">
+        <div class="collapse navbar-collapse" id="navbar-menu">
+          <div class="navbar navbar-light">
+            <div class="container-xl">
+              <ul class="navbar-nav">
+                <li class="nav-item">
+                  <a class="nav-link" href="../index.html" >
+                    <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/home -->
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="5 12 3 12 12 3 21 12 19 12" /><path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" /><path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" /></svg>
+                    </span>
+                    <span class="nav-link-title">
+                      Home
+                    </span>
+                  </a>
+                </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#navbar-base" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
+                    <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/package -->
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="12 3 20 7.5 20 16.5 12 21 4 16.5 4 7.5 12 3" /><line x1="12" y1="12" x2="20" y2="7.5" /><line x1="12" y1="12" x2="12" y2="21" /><line x1="12" y1="12" x2="4" y2="7.5" /><line x1="16" y1="5.25" x2="8" y2="9.75" /></svg>
+                    </span>
+                    <span class="nav-link-title">
+                      Interface
+                    </span>
+                  </a>
+                  <div class="dropdown-menu">
+                    <div class="dropdown-menu-columns">
+                      <div class="dropdown-menu-column">
+                        <a class="dropdown-item" href="../empty.html">
+                          Empty page
+                        </a>
+                        <a class="dropdown-item" href="../accordion.html">
+                          Accordion
+                        </a>
+                        <a class="dropdown-item" href="../blank.html">
+                          Blank page
+                        </a>
+                        <a class="dropdown-item" href="../buttons.html">
+                          Buttons
+                        </a>
+                        <div class="dropend">
+                          <a class="dropdown-item dropdown-toggle" href="#sidebar-cards" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
+                            Cards
+                            <span class="badge badge-sm bg-green text-uppercase ms-2">New</span>
+                          </a>
+                          <div class="dropdown-menu">
+                            <a href="../cards.html" class="dropdown-item">
+                              Sample cards
+                            </a>
+                            <a href="../card-actions.html" class="dropdown-item">
+                              Card actions
+                              <span class="badge badge-sm bg-green text-uppercase ms-2">New</span>
+                            </a>
+                            <a href="../cards-masonry.html" class="dropdown-item">
+                              Cards Masonry
+                            </a>
+                          </div>
+                        </div>
+                        <a class="dropdown-item" href="../colors.html">
+                          Colors
+                        </a>
+                        <a class="dropdown-item" href="../datagrid.html">
+                          Data grid
+                          <span class="badge badge-sm bg-green text-uppercase ms-2">New</span>
+                        </a>
+                        <a class="dropdown-item" href="../datatables.html">
+                          Datatables
+                          <span class="badge badge-sm bg-green text-uppercase ms-2">New</span>
+                        </a>
+                        <a class="dropdown-item" href="../dropdowns.html">
+                          Dropdowns
+                        </a>
+                        <a class="dropdown-item" href="../modals.html">
+                          Modals
+                        </a>
+                        <a class="dropdown-item" href="../maps.html">
+                          Maps
+                        </a>
+                        <a class="dropdown-item" href="../map-fullsize.html">
+                          Map fullsize
+                        </a>
+                        <a class="dropdown-item" href="../maps-vector.html">
+                          Vector maps
+                          <span class="badge badge-sm bg-green text-uppercase ms-2">New</span>
+                        </a>
+                        <a class="dropdown-item" href="../navigation.html">
+                          Navigation
+                        </a>
+                        <a class="dropdown-item" href="../charts.html">
+                          Charts
+                        </a>
+                      </div>
+                      <div class="dropdown-menu-column">
+                        <a class="dropdown-item" href="../pagination.html">
+                          <!-- Download SVG icon from http://tabler-icons.io/i/pie-chart -->
+                          Pagination
+                        </a>
+                        <a class="dropdown-item" href="../placeholder.html">
+                          Placeholder
+                        </a>
+                        <a class="dropdown-item" href="../tabs.html">
+                          Tabs
+                        </a>
+                        <a class="dropdown-item" href="../tables.html">
+                          Tables
+                        </a>
+                        <a class="dropdown-item" href="../carousel.html">
+                          Carousel
+                          <span class="badge badge-sm bg-green text-uppercase ms-2">New</span>
+                        </a>
+                        <a class="dropdown-item" href="../lists.html">
+                          Lists
+                        </a>
+                        <a class="dropdown-item" href="../typography.html">
+                          Typography
+                        </a>
+                        <a class="dropdown-item" href="../offcanvas.html">
+                          Offcanvas
+                        </a>
+                        <a class="dropdown-item" href="../markdown.html">
+                          Markdown
+                        </a>
+                        <a class="dropdown-item" href="../dropzone.html">
+                          Dropzone
+                          <span class="badge badge-sm bg-green text-uppercase ms-2">New</span>
+                        </a>
+                        <a class="dropdown-item" href="../lightbox.html">
+                          Lightbox
+                          <span class="badge badge-sm bg-green text-uppercase ms-2">New</span>
+                        </a>
+                        <a class="dropdown-item" href="../tinymce.html">
+                          TinyMCE
+                          <span class="badge badge-sm bg-green text-uppercase ms-2">New</span>
+                        </a>
+                        <a class="dropdown-item" href="../inline-player.html">
+                          Inline player
+                          <span class="badge badge-sm bg-green text-uppercase ms-2">New</span>
+                        </a>
+                        <div class="dropend">
+                          <a class="dropdown-item dropdown-toggle" href="#sidebar-authentication" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
+                            Authentication
+                          </a>
+                          <div class="dropdown-menu">
+                            <a href="../sign-in.html" class="dropdown-item">
+                              Sign in
+                            </a>
+                            <a href="../sign-up.html" class="dropdown-item">
+                              Sign up
+                            </a>
+                            <a href="../forgot-password.html" class="dropdown-item">
+                              Forgot password
+                            </a>
+                            <a href="../terms-of-service.html" class="dropdown-item">
+                              Terms of service
+                            </a>
+                            <a href="../auth-lock.html" class="dropdown-item">
+                              Lock screen
+                            </a>
+                          </div>
+                        </div>
+                        <div class="dropend">
+                          <a class="dropdown-item dropdown-toggle" href="#sidebar-error" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
+                            <!-- Download SVG icon from http://tabler-icons.io/i/file-minus -->
+                            <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-inline me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M14 3v4a1 1 0 0 0 1 1h4" /><path d="M17 21h-10a2 2 0 0 1 -2 -2v-14a2 2 0 0 1 2 -2h7l5 5v11a2 2 0 0 1 -2 2z" /><line x1="9" y1="14" x2="15" y2="14" /></svg>
+                            Error pages
+                          </a>
+                          <div class="dropdown-menu">
+                            <a href="../error-404.html" class="dropdown-item">
+                              404 page
+                            </a>
+                            <a href="../error-500.html" class="dropdown-item">
+                              500 page
+                            </a>
+                            <a href="../error-maintenance.html" class="dropdown-item">
+                              Maintenance page
+                            </a>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../form-elements.html" >
+                    <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/checkbox -->
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><polyline points="9 11 12 14 20 6" /><path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9" /></svg>
+                    </span>
+                    <span class="nav-link-title">
+                      Form elements
+                    </span>
+                  </a>
+                </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#navbar-extra" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
+                    <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/star -->
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z" /></svg>
+                    </span>
+                    <span class="nav-link-title">
+                      Extra
+                    </span>
+                  </a>
+                  <div class="dropdown-menu">
+                    <div class="dropdown-menu-columns">
+                      <div class="dropdown-menu-column">
+                        <a class="dropdown-item" href="../activity.html">
+                          Activity
+                        </a>
+                        <a class="dropdown-item" href="../gallery.html">
+                          Gallery
+                        </a>
+                        <a class="dropdown-item" href="../invoice.html">
+                          Invoice
+                        </a>
+                        <a class="dropdown-item" href="../search-results.html">
+                          Search results
+                        </a>
+                        <a class="dropdown-item" href="../pricing.html">
+                          Pricing cards
+                        </a>
+                        <a class="dropdown-item" href="../pricing-table.html">
+                          Pricing table
+                        </a>
+                        <a class="dropdown-item" href="../faq.html">
+                          FAQ
+                          <span class="badge badge-sm bg-green text-uppercase ms-2">New</span>
+                        </a>
+                        <a class="dropdown-item" href="../users.html">
+                          Users
+                        </a>
+                      </div>
+                      <div class="dropdown-menu-column">
+                        <a class="dropdown-item" href="../license.html">
+                          License
+                        </a>
+                        <a class="dropdown-item" href="../logs.html">
+                          Logs
+                          <span class="badge badge-sm bg-green text-uppercase ms-2">New</span>
+                        </a>
+                        <a class="dropdown-item" href="../music.html">
+                          Music
+                        </a>
+                        <a class="dropdown-item" href="../tasks.html">
+                          Tasks
+                          <span class="badge badge-sm bg-green text-uppercase ms-2">New</span>
+                        </a>
+                        <a class="dropdown-item" href="../uptime.html">
+                          Uptime monitor
+                        </a>
+                        <a class="dropdown-item" href="../widgets.html">
+                          Widgets
+                        </a>
+                        <a class="dropdown-item" href="../wizard.html">
+                          Wizard
+                        </a>
+                        <a class="dropdown-item" href="../settings.html">
+                          Settings
+                          <span class="badge badge-sm bg-green text-uppercase ms-2">New</span>
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#navbar-layout" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
+                    <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/layout-2 -->
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><rect x="4" y="4" width="6" height="5" rx="2" /><rect x="4" y="13" width="6" height="7" rx="2" /><rect x="14" y="4" width="6" height="7" rx="2" /><rect x="14" y="15" width="6" height="5" rx="2" /></svg>
+                    </span>
+                    <span class="nav-link-title">
+                      Layout
+                    </span>
+                  </a>
+                  <div class="dropdown-menu">
+                    <div class="dropdown-menu-columns">
+                      <div class="dropdown-menu-column">
+                        <a class="dropdown-item" href="../layout-horizontal.html">
+                          Horizontal
+                        </a>
+                        <a class="dropdown-item" href="../layout-boxed.html">
+                          Boxed
+                          <span class="badge badge-sm bg-green text-uppercase ms-2">New</span>
+                        </a>
+                        <a class="dropdown-item" href="../layout-vertical.html">
+                          Vertical
+                        </a>
+                        <a class="dropdown-item" href="../layout-vertical-transparent.html">
+                          Vertical transparent
+                        </a>
+                        <a class="dropdown-item" href="../layout-vertical-right.html">
+                          Right vertical
+                        </a>
+                        <a class="dropdown-item" href="../layout-condensed.html">
+                          Condensed
+                        </a>
+                        <a class="dropdown-item" href="../layout-combo.html">
+                          Combined
+                        </a>
+                      </div>
+                      <div class="dropdown-menu-column">
+                        <a class="dropdown-item" href="../layout-navbar-dark.html">
+                          Navbar dark
+                        </a>
+                        <a class="dropdown-item" href="../layout-navbar-sticky.html">
+                          Navbar sticky
+                        </a>
+                        <a class="dropdown-item" href="../layout-navbar-overlap.html">
+                          Navbar overlap
+                        </a>
+                        <a class="dropdown-item" href="../layout-rtl.html">
+                          RTL mode
+                        </a>
+                        <a class="dropdown-item" href="../layout-fluid.html">
+                          Fluid
+                        </a>
+                        <a class="dropdown-item" href="../layout-fluid-vertical.html">
+                          Fluid vertical
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="../icons.html" >
+                    <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/ghost -->
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M5 11a7 7 0 0 1 14 0v7a1.78 1.78 0 0 1 -3.1 1.4a1.65 1.65 0 0 0 -2.6 0a1.65 1.65 0 0 1 -2.6 0a1.65 1.65 0 0 0 -2.6 0a1.78 1.78 0 0 1 -3.1 -1.4v-7" /><line x1="10" y1="10" x2="10.01" y2="10" /><line x1="14" y1="10" x2="14.01" y2="10" /><path d="M10 14a3.5 3.5 0 0 0 4 0" /></svg>
+                    </span>
+                    <span class="nav-link-title">
+                      2320 icons
+                    </span>
+                  </a>
+                </li>
+                <li class="nav-item dropdown">
+                  <a class="nav-link dropdown-toggle" href="#navbar-help" data-bs-toggle="dropdown" data-bs-auto-close="outside" role="button" aria-expanded="false" >
+                    <span class="nav-link-icon d-md-none d-lg-inline-block"><!-- Download SVG icon from http://tabler-icons.io/i/lifebuoy -->
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="12" cy="12" r="4" /><circle cx="12" cy="12" r="9" /><line x1="15" y1="15" x2="18.35" y2="18.35" /><line x1="9" y1="15" x2="5.65" y2="18.35" /><line x1="5.65" y1="5.65" x2="9" y2="9" /><line x1="18.35" y1="5.65" x2="15" y2="9" /></svg>
+                    </span>
+                    <span class="nav-link-title">
+                      Help
+                    </span>
+                  </a>
+                  <div class="dropdown-menu">
+                    <a class="dropdown-item" href="../docs/index.html">
+                      Documentation
+                    </a>
+                    <a class="dropdown-item" href="../changelog.html">
+                      Changelog
+                    </a>
+                    <a class="dropdown-item" href="https://github.com/tabler/tabler" target="_blank" rel="noopener">
+                      Source code
+                    </a>
+                    <a class="dropdown-item text-pink" href="https://github.com/sponsors/codecalm" target="_blank" rel="noopener">
+                      <!-- Download SVG icon from http://tabler-icons.io/i/heart -->
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon icon-inline me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
+                      Sponsor project!
+                    </a>
+                  </div>
+                </li>
+              </ul>
+              <div class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last">
+                <form action="." method="get">
+                  <div class="input-icon">
+                    <span class="input-icon-addon">
+                      <!-- Download SVG icon from http://tabler-icons.io/i/search -->
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><circle cx="10" cy="10" r="7" /><line x1="21" y1="21" x2="15" y2="15" /></svg>
+                    </span>
+                    <input type="text" value="" class="form-control" placeholder="Search…" aria-label="Search in website">
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="page-wrapper">
+        <div class="container-xl">
+          <!-- Page title -->
+          <div class="page-header d-print-none">
+            <div class="row g-2 align-items-center">
+              <div class="col">
+                <h2 class="page-title">
+                  Documentation
+                </h2>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="page-body">
+          <div class="container-xl">
+            <div class="row gx-lg-5">
+              <div class="d-none d-lg-block col-lg-3">
+                <ul class="nav nav-pills nav-vertical">
+                  <li class="nav-item">
+                    <a href="../docs/" class="nav-link">
+                      Introduction
+                    </a>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#menu-base" class="nav-link" data-bs-toggle="collapse" aria-expanded="false">
+                      Getting started
+                      <span class="nav-link-toggle"></span>
+                    </a>
+                    <ul class="nav nav-pills collapse" id="menu-base">
+                      <li class="nav-item">
+                        <a href="../docs/getting-started.html" class="nav-link">
+                          Getting Started
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/download.html" class="nav-link">
+                          Download
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/browser-support.html" class="nav-link">
+                          Browser Support
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#menu-content" class="nav-link" data-bs-toggle="collapse" aria-expanded="false">
+                      Content
+                      <span class="nav-link-toggle"></span>
+                    </a>
+                    <ul class="nav nav-pills collapse" id="menu-content">
+                      <li class="nav-item">
+                        <a href="../docs/colors.html" class="nav-link">
+                          Colors
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/typography.html" class="nav-link">
+                          Typography
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/icons.html" class="nav-link">
+                          Icons
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/customize.html" class="nav-link">
+                          Customize Tabler
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#menu-layout" class="nav-link" data-bs-toggle="collapse" aria-expanded="false">
+                      Layout
+                      <span class="nav-link-toggle"></span>
+                    </a>
+                    <ul class="nav nav-pills collapse" id="menu-layout">
+                      <li class="nav-item">
+                        <a href="../docs/page-headers.html" class="nav-link">
+                          Page headers
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#menu-forms" class="nav-link" data-bs-toggle="collapse" aria-expanded="false">
+                      Form components
+                      <span class="nav-link-toggle"></span>
+                    </a>
+                    <ul class="nav nav-pills collapse" id="menu-forms">
+                      <li class="nav-item">
+                        <a href="../docs/form-elements.html" class="nav-link">
+                          Form elements
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/form-helpers.html" class="nav-link">
+                          Form helpers
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/form-validation.html" class="nav-link">
+                          Validation states
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/form-image-check.html" class="nav-link">
+                          Image check
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/form-color-check.html" class="nav-link">
+                          Color check
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/form-selectboxes.html" class="nav-link">
+                          Form selectboxes
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/form-fieldset.html" class="nav-link">
+                          Form fieldset
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#menu-components" class="nav-link" data-bs-toggle="collapse" aria-expanded="false">
+                      Components
+                      <span class="nav-link-toggle"></span>
+                    </a>
+                    <ul class="nav nav-pills collapse" id="menu-components">
+                      <li class="nav-item">
+                        <a href="../docs/alerts.html" class="nav-link">
+                          Alerts
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/avatars.html" class="nav-link">
+                          Avatars
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/badges.html" class="nav-link">
+                          Badges
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/breadcrumb.html" class="nav-link">
+                          Breadcrumb
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/buttons.html" class="nav-link">
+                          Buttons
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/cards.html" class="nav-link">
+                          Cards
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/carousel.html" class="nav-link">
+                          Carousel
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/datagrid.html" class="nav-link">
+                          Data grid
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/dropdowns.html" class="nav-link">
+                          Dropdowns
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/divider.html" class="nav-link">
+                          Divider
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/empty.html" class="nav-link">
+                          Empty states
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/modals.html" class="nav-link">
+                          Modals
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/page-headers.html" class="nav-link">
+                          Page headers
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/progress.html" class="nav-link">
+                          Progress
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/range-slider.html" class="nav-link">
+                          Range slider
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/ribbons.html" class="nav-link">
+                          Ribbons
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/placeholder.html" class="nav-link">
+                          Placeholder
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/spinners.html" class="nav-link">
+                          Spinners
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/statuses.html" class="nav-link">
+                          Statuses
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/steps.html" class="nav-link">
+                          Steps
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/switch-icon.html" class="nav-link">
+                          Switch icon
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/tables.html" class="nav-link">
+                          Tables
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/tabs.html" class="nav-link">
+                          Tabs
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/timelines.html" class="nav-link">
+                          Timelines
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/toasts.html" class="nav-link">
+                          Toasts
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/tooltips.html" class="nav-link">
+                          Tooltips
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/popover.html" class="nav-link">
+                          Popover
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#menu-utils" class="nav-link" data-bs-toggle="collapse" aria-expanded="false">
+                      Utilities
+                      <span class="nav-link-toggle"></span>
+                    </a>
+                    <ul class="nav nav-pills collapse" id="menu-utils">
+                      <li class="nav-item">
+                        <a href="../docs/borders.html" class="nav-link">
+                          Borders
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/cursors.html" class="nav-link">
+                          Cursors
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/interactions.html" class="nav-link">
+                          Interactions
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="nav-item">
+                    <a href="#menu-plugins" class="nav-link" data-bs-toggle="collapse" aria-expanded="true">
+                      Plugins
+                      <span class="nav-link-toggle"></span>
+                    </a>
+                    <ul class="nav nav-pills collapse show" id="menu-plugins">
+                      <li class="nav-item">
+                        <a href="../docs/autosize.html" class="nav-link">
+                          Autosize
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/input-mask.html" class="nav-link">
+                          Form input mask
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/flags.html" class="nav-link">
+                          Flags
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/payments.html" class="nav-link">
+                          Payments
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/charts.html" class="nav-link active">
+                          Charts
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/dropzone.html" class="nav-link">
+                          Dropzone
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/inline-player.html" class="nav-link">
+                          Inline player
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="../docs/tinymce.html" class="nav-link">
+                          TinyMCE
+                        </a>
+                      </li>
+                    </ul>
+                  </li>
+                  <li class="nav-item">
+                    <a href="../changelog.html" class="nav-link">
+                      Changelog
+                      <span class="badge bg-primary-lt ms-auto">1.0.0-beta11</span>
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-lg-9">
+                <div class="card card-lg">
+                  <div class="card-body">
+                    <div class="markdown">
+                      <div>
+                        <div class="d-flex mb-3">
+                          <h1 class="m-0">Charts</h1>
+                        </div>
+                        <p class="mb-4 text-muted">Tabler uses ApexCharts - a free and open-source modern charting library that helps developers to create beautiful and interactive visualizations for web pages.</p>
+                      </div>
+                      <p>To be able to use the charts in your application you will need to install the apexcharts dependency with <code class="language-plaintext highlighter-rouge">npm install apexcharts</code>.</p>
+                      <p>See also the <a href="https://apexcharts.com/">ApexCharts</a> documentation.</p>
+                      <h2 id="line-chart">Line Chart</h2>
+                      <p>Line charts are a typical pictorial representation that depicts trends and behaviors over time.</p>
+                      <div class="example no_toc_section example-bg">
+                        <div class="example-content">
+                          <div class="example-column example-column-1">
+                            <div class="card">
+                              <div class="card-body">
+                                <div id="chart-demo-line" class="chart-lg"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="example-code">
+                        <figure class="highlight">
+                          <pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"card"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"card-body"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"chart-demo-line"</span> <span class="na">class=</span><span class="s">"chart-lg"</span><span class="nt">&gt;&lt;/div&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;script&gt;</span>
+  <span class="nb">document</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="dl">"</span><span class="s2">DOMContentLoaded</span><span class="dl">"</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  	<span class="nb">window</span><span class="p">.</span><span class="nx">ApexCharts</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="k">new</span> <span class="nx">ApexCharts</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">chart-demo-line</span><span class="dl">'</span><span class="p">),</span> <span class="p">{</span>
+  		<span class="na">chart</span><span class="p">:</span> <span class="p">{</span>
+  			<span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">line</span><span class="dl">"</span><span class="p">,</span>
+  			<span class="na">fontFamily</span><span class="p">:</span> <span class="dl">'</span><span class="s1">inherit</span><span class="dl">'</span><span class="p">,</span>
+  			<span class="na">height</span><span class="p">:</span> <span class="mi">240</span><span class="p">,</span>
+  			<span class="na">parentHeightOffset</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  			<span class="na">toolbar</span><span class="p">:</span> <span class="p">{</span>
+  				<span class="na">show</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  			<span class="p">},</span>
+  			<span class="na">animations</span><span class="p">:</span> <span class="p">{</span>
+  				<span class="na">enabled</span><span class="p">:</span> <span class="kc">false</span>
+  			<span class="p">},</span>
+  		<span class="p">},</span>
+  		<span class="na">fill</span><span class="p">:</span> <span class="p">{</span>
+  			<span class="na">opacity</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  		<span class="p">},</span>
+  		<span class="na">stroke</span><span class="p">:</span> <span class="p">{</span>
+  			<span class="na">width</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+  			<span class="na">lineCap</span><span class="p">:</span> <span class="dl">"</span><span class="s2">round</span><span class="dl">"</span><span class="p">,</span>
+  			<span class="na">curve</span><span class="p">:</span> <span class="dl">"</span><span class="s2">straight</span><span class="dl">"</span><span class="p">,</span>
+  		<span class="p">},</span>
+  		<span class="na">series</span><span class="p">:</span> <span class="p">[{</span>
+  			<span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Session Duration</span><span class="dl">"</span><span class="p">,</span>
+  			<span class="na">data</span><span class="p">:</span> <span class="p">[</span><span class="mi">117</span><span class="p">,</span> <span class="mi">92</span><span class="p">,</span> <span class="mi">94</span><span class="p">,</span> <span class="mi">98</span><span class="p">,</span> <span class="mi">75</span><span class="p">,</span> <span class="mi">110</span><span class="p">,</span> <span class="mi">69</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">109</span><span class="p">,</span> <span class="mi">113</span><span class="p">,</span> <span class="mi">115</span><span class="p">,</span> <span class="mi">95</span><span class="p">]</span>
+  		<span class="p">},{</span>
+  			<span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Page Views</span><span class="dl">"</span><span class="p">,</span>
+  			<span class="na">data</span><span class="p">:</span> <span class="p">[</span><span class="mi">59</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="mi">61</span><span class="p">,</span> <span class="mi">66</span><span class="p">,</span> <span class="mi">70</span><span class="p">,</span> <span class="mi">84</span><span class="p">,</span> <span class="mi">87</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">94</span><span class="p">,</span> <span class="mi">56</span><span class="p">,</span> <span class="mi">55</span><span class="p">,</span> <span class="mi">67</span><span class="p">]</span>
+  		<span class="p">},{</span>
+  			<span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Total Visits</span><span class="dl">"</span><span class="p">,</span>
+  			<span class="na">data</span><span class="p">:</span> <span class="p">[</span><span class="mi">53</span><span class="p">,</span> <span class="mi">51</span><span class="p">,</span> <span class="mi">52</span><span class="p">,</span> <span class="mi">41</span><span class="p">,</span> <span class="mi">46</span><span class="p">,</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">45</span><span class="p">,</span> <span class="mi">43</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">50</span><span class="p">,</span> <span class="mi">58</span><span class="p">,</span> <span class="mi">59</span><span class="p">]</span>
+  		<span class="p">}],</span>
+  		<span class="na">grid</span><span class="p">:</span> <span class="p">{</span>
+  			<span class="na">padding</span><span class="p">:</span> <span class="p">{</span>
+  				<span class="na">top</span><span class="p">:</span> <span class="o">-</span><span class="mi">20</span><span class="p">,</span>
+  				<span class="na">right</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  				<span class="na">left</span><span class="p">:</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span>
+  				<span class="na">bottom</span><span class="p">:</span> <span class="o">-</span><span class="mi">4</span>
+  			<span class="p">},</span>
+  			<span class="na">strokeDashArray</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+  		<span class="p">},</span>
+  		<span class="na">xaxis</span><span class="p">:</span> <span class="p">{</span>
+  			<span class="na">labels</span><span class="p">:</span> <span class="p">{</span>
+  				<span class="na">padding</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  			<span class="p">},</span>
+  			<span class="na">tooltip</span><span class="p">:</span> <span class="p">{</span>
+  				<span class="na">enabled</span><span class="p">:</span> <span class="kc">false</span>
+  			<span class="p">},</span>
+  			<span class="na">type</span><span class="p">:</span> <span class="dl">'</span><span class="s1">datetime</span><span class="dl">'</span><span class="p">,</span>
+  		<span class="p">},</span>
+  		<span class="na">yaxis</span><span class="p">:</span> <span class="p">{</span>
+  			<span class="na">labels</span><span class="p">:</span> <span class="p">{</span>
+  				<span class="na">padding</span><span class="p">:</span> <span class="mi">4</span>
+  			<span class="p">},</span>
+  		<span class="p">},</span>
+  		<span class="na">labels</span><span class="p">:</span> <span class="p">[</span>
+  			<span class="dl">'</span><span class="s1">2020-06-20</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-06-21</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-06-22</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-06-23</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-06-24</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-06-25</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-06-26</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-06-27</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-06-28</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-06-29</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-06-30</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-07-01</span><span class="dl">'</span>
+  		<span class="p">],</span>
+  		<span class="na">colors</span><span class="p">:</span> <span class="p">[</span><span class="nx">tabler</span><span class="p">.</span><span class="nx">getColor</span><span class="p">(</span><span class="dl">"</span><span class="s2">yellow</span><span class="dl">"</span><span class="p">),</span> <span class="nx">tabler</span><span class="p">.</span><span class="nx">getColor</span><span class="p">(</span><span class="dl">"</span><span class="s2">green</span><span class="dl">"</span><span class="p">),</span> <span class="nx">tabler</span><span class="p">.</span><span class="nx">getColor</span><span class="p">(</span><span class="dl">"</span><span class="s2">primary</span><span class="dl">"</span><span class="p">)],</span>
+  		<span class="na">legend</span><span class="p">:</span> <span class="p">{</span>
+  			<span class="na">show</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  			<span class="na">position</span><span class="p">:</span> <span class="dl">'</span><span class="s1">bottom</span><span class="dl">'</span><span class="p">,</span>
+  			<span class="na">offsetY</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+  			<span class="na">markers</span><span class="p">:</span> <span class="p">{</span>
+  				<span class="na">width</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+  				<span class="na">height</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+  				<span class="na">radius</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+  			<span class="p">},</span>
+  			<span class="na">itemMargin</span><span class="p">:</span> <span class="p">{</span>
+  				<span class="na">horizontal</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+  				<span class="na">vertical</span><span class="p">:</span> <span class="mi">8</span>
+  			<span class="p">},</span>
+  		<span class="p">},</span>
+  	<span class="p">})).</span><span class="nx">render</span><span class="p">();</span>
+  <span class="p">});</span>
+<span class="nt">&lt;/script&gt;</span></code></pre>
+                        </figure>
+                      </div>
+                      <h2 id="area-chart">Area Chart</h2>
+                      <p>Area charts are used to represent quantitative variations.</p>
+                      <div class="example no_toc_section example-bg">
+                        <div class="example-content">
+                          <div class="example-column example-column-1">
+                            <div class="card">
+                              <div class="card-body">
+                                <div id="chart-demo-area" class="chart-lg"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="example-code">
+                        <figure class="highlight">
+                          <pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"card"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"card-body"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"chart-demo-area"</span> <span class="na">class=</span><span class="s">"chart-lg"</span><span class="nt">&gt;&lt;/div&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;script&gt;</span>
+  <span class="nb">document</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="dl">"</span><span class="s2">DOMContentLoaded</span><span class="dl">"</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  	<span class="nb">window</span><span class="p">.</span><span class="nx">ApexCharts</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="k">new</span> <span class="nx">ApexCharts</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">chart-demo-area</span><span class="dl">'</span><span class="p">),</span> <span class="p">{</span>
+  		<span class="na">chart</span><span class="p">:</span> <span class="p">{</span>
+  			<span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">area</span><span class="dl">"</span><span class="p">,</span>
+  			<span class="na">fontFamily</span><span class="p">:</span> <span class="dl">'</span><span class="s1">inherit</span><span class="dl">'</span><span class="p">,</span>
+  			<span class="na">height</span><span class="p">:</span> <span class="mi">240</span><span class="p">,</span>
+  			<span class="na">parentHeightOffset</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  			<span class="na">toolbar</span><span class="p">:</span> <span class="p">{</span>
+  				<span class="na">show</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  			<span class="p">},</span>
+  			<span class="na">animations</span><span class="p">:</span> <span class="p">{</span>
+  				<span class="na">enabled</span><span class="p">:</span> <span class="kc">false</span>
+  			<span class="p">},</span>
+  		<span class="p">},</span>
+  		<span class="na">dataLabels</span><span class="p">:</span> <span class="p">{</span>
+  			<span class="na">enabled</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  		<span class="p">},</span>
+  		<span class="na">fill</span><span class="p">:</span> <span class="p">{</span>
+  			<span class="na">opacity</span><span class="p">:</span> <span class="p">.</span><span class="mi">16</span><span class="p">,</span>
+  			<span class="na">type</span><span class="p">:</span> <span class="dl">'</span><span class="s1">solid</span><span class="dl">'</span>
+  		<span class="p">},</span>
+  		<span class="na">stroke</span><span class="p">:</span> <span class="p">{</span>
+  			<span class="na">width</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+  			<span class="na">lineCap</span><span class="p">:</span> <span class="dl">"</span><span class="s2">round</span><span class="dl">"</span><span class="p">,</span>
+  			<span class="na">curve</span><span class="p">:</span> <span class="dl">"</span><span class="s2">smooth</span><span class="dl">"</span><span class="p">,</span>
+  		<span class="p">},</span>
+  		<span class="na">series</span><span class="p">:</span> <span class="p">[{</span>
+  			<span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">series1</span><span class="dl">"</span><span class="p">,</span>
+  			<span class="na">data</span><span class="p">:</span> <span class="p">[</span><span class="mi">56</span><span class="p">,</span> <span class="mi">40</span><span class="p">,</span> <span class="mi">39</span><span class="p">,</span> <span class="mi">47</span><span class="p">,</span> <span class="mi">34</span><span class="p">,</span> <span class="mi">48</span><span class="p">,</span> <span class="mi">44</span><span class="p">]</span>
+  		<span class="p">},{</span>
+  			<span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">series2</span><span class="dl">"</span><span class="p">,</span>
+  			<span class="na">data</span><span class="p">:</span> <span class="p">[</span><span class="mi">45</span><span class="p">,</span> <span class="mi">43</span><span class="p">,</span> <span class="mi">30</span><span class="p">,</span> <span class="mi">23</span><span class="p">,</span> <span class="mi">38</span><span class="p">,</span> <span class="mi">39</span><span class="p">,</span> <span class="mi">54</span><span class="p">]</span>
+  		<span class="p">}],</span>
+  		<span class="na">grid</span><span class="p">:</span> <span class="p">{</span>
+  			<span class="na">padding</span><span class="p">:</span> <span class="p">{</span>
+  				<span class="na">top</span><span class="p">:</span> <span class="o">-</span><span class="mi">20</span><span class="p">,</span>
+  				<span class="na">right</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  				<span class="na">left</span><span class="p">:</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span>
+  				<span class="na">bottom</span><span class="p">:</span> <span class="o">-</span><span class="mi">4</span>
+  			<span class="p">},</span>
+  			<span class="na">strokeDashArray</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+  		<span class="p">},</span>
+  		<span class="na">xaxis</span><span class="p">:</span> <span class="p">{</span>
+  			<span class="na">labels</span><span class="p">:</span> <span class="p">{</span>
+  				<span class="na">padding</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  			<span class="p">},</span>
+  			<span class="na">tooltip</span><span class="p">:</span> <span class="p">{</span>
+  				<span class="na">enabled</span><span class="p">:</span> <span class="kc">false</span>
+  			<span class="p">},</span>
+  			<span class="na">axisBorder</span><span class="p">:</span> <span class="p">{</span>
+  				<span class="na">show</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  			<span class="p">},</span>
+  			<span class="na">type</span><span class="p">:</span> <span class="dl">'</span><span class="s1">datetime</span><span class="dl">'</span><span class="p">,</span>
+  		<span class="p">},</span>
+  		<span class="na">yaxis</span><span class="p">:</span> <span class="p">{</span>
+  			<span class="na">labels</span><span class="p">:</span> <span class="p">{</span>
+  				<span class="na">padding</span><span class="p">:</span> <span class="mi">4</span>
+  			<span class="p">},</span>
+  		<span class="p">},</span>
+  		<span class="na">labels</span><span class="p">:</span> <span class="p">[</span>
+  			<span class="dl">'</span><span class="s1">2020-06-20</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-06-21</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-06-22</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-06-23</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-06-24</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-06-25</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-06-26</span><span class="dl">'</span>
+  		<span class="p">],</span>
+  		<span class="na">colors</span><span class="p">:</span> <span class="p">[</span><span class="nx">tabler</span><span class="p">.</span><span class="nx">getColor</span><span class="p">(</span><span class="dl">"</span><span class="s2">primary</span><span class="dl">"</span><span class="p">),</span> <span class="nx">tabler</span><span class="p">.</span><span class="nx">getColor</span><span class="p">(</span><span class="dl">"</span><span class="s2">purple</span><span class="dl">"</span><span class="p">)],</span>
+  		<span class="na">legend</span><span class="p">:</span> <span class="p">{</span>
+  			<span class="na">show</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  			<span class="na">position</span><span class="p">:</span> <span class="dl">'</span><span class="s1">bottom</span><span class="dl">'</span><span class="p">,</span>
+  			<span class="na">offsetY</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+  			<span class="na">markers</span><span class="p">:</span> <span class="p">{</span>
+  				<span class="na">width</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+  				<span class="na">height</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+  				<span class="na">radius</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+  			<span class="p">},</span>
+  			<span class="na">itemMargin</span><span class="p">:</span> <span class="p">{</span>
+  				<span class="na">horizontal</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+  				<span class="na">vertical</span><span class="p">:</span> <span class="mi">8</span>
+  			<span class="p">},</span>
+  		<span class="p">},</span>
+  	<span class="p">})).</span><span class="nx">render</span><span class="p">();</span>
+  <span class="p">});</span>
+<span class="nt">&lt;/script&gt;</span></code></pre>
+                        </figure>
+                      </div>
+                      <h2 id="bar-chart">Bar Chart</h2>
+                      <p>A bar chart is the best tool for displaying comparisons between categories of data.</p>
+                      <div class="example no_toc_section example-bg">
+                        <div class="example-content">
+                          <div class="example-column example-column-2">
+                            <div class="card">
+                              <div class="card-body">
+                                <div id="chart-demo-bar" class="chart-lg"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="example-code">
+                        <figure class="highlight">
+                          <pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"card"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"card-body"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"chart-demo-bar"</span> <span class="na">class=</span><span class="s">"chart-lg"</span><span class="nt">&gt;&lt;/div&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;script&gt;</span>
+  <span class="nb">document</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="dl">"</span><span class="s2">DOMContentLoaded</span><span class="dl">"</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  	<span class="nb">window</span><span class="p">.</span><span class="nx">ApexCharts</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="k">new</span> <span class="nx">ApexCharts</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">chart-demo-bar</span><span class="dl">'</span><span class="p">),</span> <span class="p">{</span>
+  		<span class="na">chart</span><span class="p">:</span> <span class="p">{</span>
+  			<span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">bar</span><span class="dl">"</span><span class="p">,</span>
+  			<span class="na">fontFamily</span><span class="p">:</span> <span class="dl">'</span><span class="s1">inherit</span><span class="dl">'</span><span class="p">,</span>
+  			<span class="na">height</span><span class="p">:</span> <span class="mi">240</span><span class="p">,</span>
+  			<span class="na">parentHeightOffset</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  			<span class="na">toolbar</span><span class="p">:</span> <span class="p">{</span>
+  				<span class="na">show</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  			<span class="p">},</span>
+  			<span class="na">animations</span><span class="p">:</span> <span class="p">{</span>
+  				<span class="na">enabled</span><span class="p">:</span> <span class="kc">false</span>
+  			<span class="p">},</span>
+  			<span class="na">stacked</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  		<span class="p">},</span>
+  		<span class="na">plotOptions</span><span class="p">:</span> <span class="p">{</span>
+  			<span class="na">bar</span><span class="p">:</span> <span class="p">{</span>
+  				<span class="na">barHeight</span><span class="p">:</span> <span class="dl">'</span><span class="s1">50%</span><span class="dl">'</span><span class="p">,</span>
+  		 		<span class="na">horizontal</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  			<span class="p">}</span>
+  		<span class="p">},</span>
+  		<span class="na">dataLabels</span><span class="p">:</span> <span class="p">{</span>
+  			<span class="na">enabled</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  		<span class="p">},</span>
+  		<span class="na">fill</span><span class="p">:</span> <span class="p">{</span>
+  			<span class="na">opacity</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  		<span class="p">},</span>
+  		<span class="na">series</span><span class="p">:</span> <span class="p">[{</span>
+  			<span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Container for a Fanta</span><span class="dl">"</span><span class="p">,</span>
+  			<span class="na">data</span><span class="p">:</span> <span class="p">[</span><span class="mi">44</span><span class="p">,</span> <span class="mi">55</span><span class="p">,</span> <span class="mi">41</span><span class="p">,</span> <span class="mi">37</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">43</span><span class="p">,</span> <span class="mi">21</span><span class="p">]</span>
+  		<span class="p">},{</span>
+  			<span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Strange sunglasses</span><span class="dl">"</span><span class="p">,</span>
+  			<span class="na">data</span><span class="p">:</span> <span class="p">[</span><span class="mi">53</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">33</span><span class="p">,</span> <span class="mi">52</span><span class="p">,</span> <span class="mi">13</span><span class="p">,</span> <span class="mi">43</span><span class="p">,</span> <span class="mi">32</span><span class="p">]</span>
+  		<span class="p">},{</span>
+  			<span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Pen Pineapple Apple Pen</span><span class="dl">"</span><span class="p">,</span>
+  			<span class="na">data</span><span class="p">:</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">17</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">15</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">20</span><span class="p">]</span>
+  		<span class="p">},{</span>
+  			<span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Binoculars</span><span class="dl">"</span><span class="p">,</span>
+  			<span class="na">data</span><span class="p">:</span> <span class="p">[</span><span class="mi">9</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">9</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+  		<span class="p">},{</span>
+  			<span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Magical notebook</span><span class="dl">"</span><span class="p">,</span>
+  			<span class="na">data</span><span class="p">:</span> <span class="p">[</span><span class="mi">25</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">19</span><span class="p">,</span> <span class="mi">32</span><span class="p">,</span> <span class="mi">25</span><span class="p">,</span> <span class="mi">24</span><span class="p">,</span> <span class="mi">10</span><span class="p">]</span>
+  		<span class="p">}],</span>
+  		<span class="na">grid</span><span class="p">:</span> <span class="p">{</span>
+  			<span class="na">padding</span><span class="p">:</span> <span class="p">{</span>
+  				<span class="na">top</span><span class="p">:</span> <span class="o">-</span><span class="mi">20</span><span class="p">,</span>
+  				<span class="na">right</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  				<span class="na">left</span><span class="p">:</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span>
+  				<span class="na">bottom</span><span class="p">:</span> <span class="o">-</span><span class="mi">4</span>
+  			<span class="p">},</span>
+  			<span class="na">strokeDashArray</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+  		<span class="p">},</span>
+  		<span class="na">xaxis</span><span class="p">:</span> <span class="p">{</span>
+  			<span class="na">labels</span><span class="p">:</span> <span class="p">{</span>
+  				<span class="na">padding</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  				<span class="na">formatter</span><span class="p">:</span> <span class="kd">function</span><span class="p">(</span><span class="nx">val</span><span class="p">)</span> <span class="p">{</span>
+  					<span class="k">return</span> <span class="nx">val</span> <span class="o">+</span> <span class="dl">"</span><span class="s2">K</span><span class="dl">"</span>
+  				<span class="p">},</span>
+  			<span class="p">},</span>
+  			<span class="na">tooltip</span><span class="p">:</span> <span class="p">{</span>
+  				<span class="na">enabled</span><span class="p">:</span> <span class="kc">false</span>
+  			<span class="p">},</span>
+  			<span class="na">axisBorder</span><span class="p">:</span> <span class="p">{</span>
+  				<span class="na">show</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  			<span class="p">},</span>
+  			<span class="na">categories</span><span class="p">:</span> <span class="p">[</span><span class="dl">'</span><span class="s1">2008</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2009</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2010</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2011</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2012</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2013</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2014</span><span class="dl">'</span><span class="p">],</span>
+  		<span class="p">},</span>
+  		<span class="na">yaxis</span><span class="p">:</span> <span class="p">{</span>
+  			<span class="na">labels</span><span class="p">:</span> <span class="p">{</span>
+  				<span class="na">padding</span><span class="p">:</span> <span class="mi">4</span>
+  			<span class="p">},</span>
+  		<span class="p">},</span>
+  		<span class="na">colors</span><span class="p">:</span> <span class="p">[</span><span class="nx">tabler</span><span class="p">.</span><span class="nx">getColor</span><span class="p">(</span><span class="dl">"</span><span class="s2">purple</span><span class="dl">"</span><span class="p">),</span> <span class="nx">tabler</span><span class="p">.</span><span class="nx">getColor</span><span class="p">(</span><span class="dl">"</span><span class="s2">green</span><span class="dl">"</span><span class="p">),</span> <span class="nx">tabler</span><span class="p">.</span><span class="nx">getColor</span><span class="p">(</span><span class="dl">"</span><span class="s2">yellow</span><span class="dl">"</span><span class="p">),</span> <span class="nx">tabler</span><span class="p">.</span><span class="nx">getColor</span><span class="p">(</span><span class="dl">"</span><span class="s2">red</span><span class="dl">"</span><span class="p">),</span> <span class="nx">tabler</span><span class="p">.</span><span class="nx">getColor</span><span class="p">(</span><span class="dl">"</span><span class="s2">primary</span><span class="dl">"</span><span class="p">)],</span>
+  		<span class="na">legend</span><span class="p">:</span> <span class="p">{</span>
+  			<span class="na">show</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  			<span class="na">position</span><span class="p">:</span> <span class="dl">'</span><span class="s1">bottom</span><span class="dl">'</span><span class="p">,</span>
+  			<span class="na">offsetY</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+  			<span class="na">markers</span><span class="p">:</span> <span class="p">{</span>
+  				<span class="na">width</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+  				<span class="na">height</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+  				<span class="na">radius</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+  			<span class="p">},</span>
+  			<span class="na">itemMargin</span><span class="p">:</span> <span class="p">{</span>
+  				<span class="na">horizontal</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+  				<span class="na">vertical</span><span class="p">:</span> <span class="mi">8</span>
+  			<span class="p">},</span>
+  		<span class="p">},</span>
+  	<span class="p">})).</span><span class="nx">render</span><span class="p">();</span>
+  <span class="p">});</span>
+<span class="nt">&lt;/script&gt;</span></code></pre>
+                        </figure>
+                      </div>
+                      <h2 id="pie-chart">Pie Chart</h2>
+                      <p>Pie charts are an instrumental visualization tool useful in expressing data and information in terms of percentages, ratio.</p>
+                      <div class="example no_toc_section example-bg">
+                        <div class="example-content">
+                          <div class="example-column example-column-1">
+                            <div class="card">
+                              <div class="card-body">
+                                <div id="chart-demo-pie" class="chart-lg"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="example-code">
+                        <figure class="highlight">
+                          <pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"card"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"card-body"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"chart-demo-pie"</span> <span class="na">class=</span><span class="s">"chart-lg"</span><span class="nt">&gt;&lt;/div&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;script&gt;</span>
+  <span class="nb">document</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="dl">"</span><span class="s2">DOMContentLoaded</span><span class="dl">"</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  	<span class="nb">window</span><span class="p">.</span><span class="nx">ApexCharts</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="k">new</span> <span class="nx">ApexCharts</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">chart-demo-pie</span><span class="dl">'</span><span class="p">),</span> <span class="p">{</span>
+  		<span class="na">chart</span><span class="p">:</span> <span class="p">{</span>
+  			<span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">donut</span><span class="dl">"</span><span class="p">,</span>
+  			<span class="na">fontFamily</span><span class="p">:</span> <span class="dl">'</span><span class="s1">inherit</span><span class="dl">'</span><span class="p">,</span>
+  			<span class="na">height</span><span class="p">:</span> <span class="mi">240</span><span class="p">,</span>
+  			<span class="na">sparkline</span><span class="p">:</span> <span class="p">{</span>
+  				<span class="na">enabled</span><span class="p">:</span> <span class="kc">true</span>
+  			<span class="p">},</span>
+  			<span class="na">animations</span><span class="p">:</span> <span class="p">{</span>
+  				<span class="na">enabled</span><span class="p">:</span> <span class="kc">false</span>
+  			<span class="p">},</span>
+  		<span class="p">},</span>
+  		<span class="na">fill</span><span class="p">:</span> <span class="p">{</span>
+  			<span class="na">opacity</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  		<span class="p">},</span>
+  		<span class="na">series</span><span class="p">:</span> <span class="p">[</span><span class="mi">44</span><span class="p">,</span> <span class="mi">55</span><span class="p">,</span> <span class="mi">12</span><span class="p">,</span> <span class="mi">2</span><span class="p">],</span>
+  		<span class="na">labels</span><span class="p">:</span> <span class="p">[</span><span class="dl">"</span><span class="s2">Direct</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Affilliate</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">E-mail</span><span class="dl">"</span><span class="p">,</span> <span class="dl">"</span><span class="s2">Other</span><span class="dl">"</span><span class="p">],</span>
+  		<span class="na">grid</span><span class="p">:</span> <span class="p">{</span>
+  			<span class="na">strokeDashArray</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+  		<span class="p">},</span>
+  		<span class="na">colors</span><span class="p">:</span> <span class="p">[</span><span class="nx">tabler</span><span class="p">.</span><span class="nx">getColor</span><span class="p">(</span><span class="dl">"</span><span class="s2">primary</span><span class="dl">"</span><span class="p">),</span> <span class="nx">tabler</span><span class="p">.</span><span class="nx">getColor</span><span class="p">(</span><span class="dl">"</span><span class="s2">primary</span><span class="dl">"</span><span class="p">,</span> <span class="mf">0.8</span><span class="p">),</span> <span class="nx">tabler</span><span class="p">.</span><span class="nx">getColor</span><span class="p">(</span><span class="dl">"</span><span class="s2">primary</span><span class="dl">"</span><span class="p">,</span> <span class="mf">0.6</span><span class="p">),</span> <span class="nx">tabler</span><span class="p">.</span><span class="nx">getColor</span><span class="p">(</span><span class="dl">"</span><span class="s2">gray-300</span><span class="dl">"</span><span class="p">)],</span>
+  		<span class="na">legend</span><span class="p">:</span> <span class="p">{</span>
+  			<span class="na">show</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  			<span class="na">position</span><span class="p">:</span> <span class="dl">'</span><span class="s1">bottom</span><span class="dl">'</span><span class="p">,</span>
+  			<span class="na">offsetY</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+  			<span class="na">markers</span><span class="p">:</span> <span class="p">{</span>
+  				<span class="na">width</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+  				<span class="na">height</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+  				<span class="na">radius</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+  			<span class="p">},</span>
+  			<span class="na">itemMargin</span><span class="p">:</span> <span class="p">{</span>
+  				<span class="na">horizontal</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+  				<span class="na">vertical</span><span class="p">:</span> <span class="mi">8</span>
+  			<span class="p">},</span>
+  		<span class="p">},</span>
+  		<span class="na">tooltip</span><span class="p">:</span> <span class="p">{</span>
+  			<span class="na">fillSeriesColor</span><span class="p">:</span> <span class="kc">false</span>
+  		<span class="p">},</span>
+  	<span class="p">})).</span><span class="nx">render</span><span class="p">();</span>
+  <span class="p">});</span>
+<span class="nt">&lt;/script&gt;</span></code></pre>
+                        </figure>
+                      </div>
+                      <h1 id="heatmap-chart">Heatmap Chart</h1>
+                      <p>Heatmap is a visualization tool that employs color the way a bar chart employs height and width in representing data.</p>
+                      <div class="example no_toc_section example-bg">
+                        <div class="example-content">
+                          <div class="example-column example-column-2">
+                            <div class="card">
+                              <div class="card-body">
+                                <div id="chart-heatmap-basic"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="example-code">
+                        <figure class="highlight">
+                          <pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"card"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"card-body"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"chart-heatmap-basic"</span><span class="nt">&gt;&lt;/div&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;script&gt;</span>
+  <span class="kd">var</span> <span class="nx">options</span> <span class="o">=</span> <span class="p">{</span>
+  	<span class="na">chart</span><span class="p">:</span> <span class="p">{</span>
+  		<span class="na">height</span><span class="p">:</span> <span class="mi">400</span><span class="p">,</span>
+  		<span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">heatmap</span><span class="dl">"</span><span class="p">,</span>
+  		<span class="na">toolbar</span><span class="p">:</span> <span class="p">{</span>
+  			<span class="na">show</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  		<span class="p">},</span>
+  	<span class="p">},</span>
+  	<span class="na">dataLabels</span><span class="p">:</span> <span class="p">{</span>
+  		<span class="na">enabled</span><span class="p">:</span> <span class="kc">false</span>
+  	<span class="p">},</span>
+  	<span class="na">colors</span><span class="p">:</span> <span class="p">[</span><span class="nx">tabler</span><span class="p">.</span><span class="nx">getColor</span><span class="p">(</span><span class="dl">"</span><span class="s2">blue</span><span class="dl">"</span><span class="p">),</span> <span class="p">],</span>
+  	<span class="na">series</span><span class="p">:</span> <span class="p">[</span>
+  		<span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Jan</span><span class="dl">"</span><span class="p">,</span> <span class="na">data</span><span class="p">:</span> <span class="p">[{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">1</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">23</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">2</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">14</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">3</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">24</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">4</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">90</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">5</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">99</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">6</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">28</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">7</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">51</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">8</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">51</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">9</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">98</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">10</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">61</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">11</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">14</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">12</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">51</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">13</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">32</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">14</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">84</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">15</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">9</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">16</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">2</span><span class="p">},]</span> <span class="p">},</span>
+  		<span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Feb</span><span class="dl">"</span><span class="p">,</span> <span class="na">data</span><span class="p">:</span> <span class="p">[{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">1</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">82</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">2</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">87</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">3</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">48</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">4</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">15</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">5</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">21</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">6</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">23</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">7</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">80</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">8</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">34</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">9</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">46</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">10</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">8</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">11</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">87</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">12</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">80</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">13</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">23</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">14</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">81</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">15</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">24</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">16</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">51</span><span class="p">},]</span> <span class="p">},</span>
+  		<span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Mar</span><span class="dl">"</span><span class="p">,</span> <span class="na">data</span><span class="p">:</span> <span class="p">[{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">1</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">100</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">2</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">52</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">3</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">57</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">4</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">80</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">5</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">14</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">6</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">82</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">7</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">78</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">8</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">16</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">9</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">29</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">10</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">97</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">11</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">52</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">12</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">78</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">13</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">47</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">14</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">10</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">15</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">61</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">16</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">34</span><span class="p">},]</span> <span class="p">},</span>
+  		<span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Apr</span><span class="dl">"</span><span class="p">,</span> <span class="na">data</span><span class="p">:</span> <span class="p">[{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">1</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">60</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">2</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">33</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">3</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">42</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">4</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">20</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">5</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">87</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">6</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">100</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">7</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">100</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">8</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">16</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">9</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">57</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">10</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">80</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">11</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">33</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">12</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">100</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">13</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">6</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">14</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">51</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">15</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">35</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">16</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">16</span><span class="p">},]</span> <span class="p">},</span>
+  		<span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">May</span><span class="dl">"</span><span class="p">,</span> <span class="na">data</span><span class="p">:</span> <span class="p">[{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">1</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">91</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">2</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">81</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">3</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">54</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">4</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">98</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">5</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">52</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">6</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">60</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">7</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">61</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">8</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">99</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">9</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">91</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">10</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">36</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">11</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">81</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">12</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">61</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">13</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">99</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">14</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">80</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">15</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">72</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">16</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">16</span><span class="p">},]</span> <span class="p">},</span>
+  		<span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Jun</span><span class="dl">"</span><span class="p">,</span> <span class="na">data</span><span class="p">:</span> <span class="p">[{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">1</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">77</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">2</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">99</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">3</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">64</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">4</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">0</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">5</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">33</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">6</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">91</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">7</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">7</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">8</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">51</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">9</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">3</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">10</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">28</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">11</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">99</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">12</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">7</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">13</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">21</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">14</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">78</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">15</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">19</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">16</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">99</span><span class="p">},]</span> <span class="p">},</span>
+  		<span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Jul</span><span class="dl">"</span><span class="p">,</span> <span class="na">data</span><span class="p">:</span> <span class="p">[{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">1</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">67</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">2</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">84</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">3</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">90</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">4</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">4</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">5</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">81</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">6</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">77</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">7</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">3</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">8</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">39</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">9</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">24</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">10</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">23</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">11</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">84</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">12</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">3</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">13</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">14</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">14</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">100</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">15</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">98</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">16</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">51</span><span class="p">},]</span> <span class="p">},</span>
+  		<span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Aug</span><span class="dl">"</span><span class="p">,</span> <span class="na">data</span><span class="p">:</span> <span class="p">[{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">1</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">56</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">2</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">81</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">3</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">45</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">4</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">37</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">5</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">99</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">6</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">67</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">7</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">9</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">8</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">90</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">9</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">48</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">10</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">82</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">11</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">81</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">12</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">9</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">13</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">87</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">14</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">61</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">15</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">32</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">16</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">39</span><span class="p">},]</span> <span class="p">},</span>
+  		<span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Sep</span><span class="dl">"</span><span class="p">,</span> <span class="na">data</span><span class="p">:</span> <span class="p">[{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">1</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">17</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">2</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">10</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">3</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">59</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">4</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">67</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">5</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">84</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">6</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">56</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">7</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">24</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">8</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">15</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">9</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">57</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">10</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">100</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">11</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">10</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">12</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">24</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">13</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">52</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">14</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">7</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">15</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">82</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">16</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">90</span><span class="p">},]</span> <span class="p">},</span>
+  		<span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Oct</span><span class="dl">"</span><span class="p">,</span> <span class="na">data</span><span class="p">:</span> <span class="p">[{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">1</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">41</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">2</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">51</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">3</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">79</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">4</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">60</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">5</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">81</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">6</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">17</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">7</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">61</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">8</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">80</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">9</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">42</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">10</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">60</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">11</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">51</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">12</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">61</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">13</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">33</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">14</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">3</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">15</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">53</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">16</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">15</span><span class="p">},]</span> <span class="p">},</span>
+  		<span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Nov</span><span class="dl">"</span><span class="p">,</span> <span class="na">data</span><span class="p">:</span> <span class="p">[{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">1</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">90</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">2</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">80</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">3</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">30</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">4</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">74</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">5</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">10</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">6</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">41</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">7</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">35</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">8</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">20</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">9</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">54</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">10</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">91</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">11</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">80</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">12</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">35</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">13</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">81</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">14</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">9</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">15</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">12</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">16</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">80</span><span class="p">},]</span> <span class="p">},</span>
+  		<span class="p">{</span> <span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Dec</span><span class="dl">"</span><span class="p">,</span> <span class="na">data</span><span class="p">:</span> <span class="p">[{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">1</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">54</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">2</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">78</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">3</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">42</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">4</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">76</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">5</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">51</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">6</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">90</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">7</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">72</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">8</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">98</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">9</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">64</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">10</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">77</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">11</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">78</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">12</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">72</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">13</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">99</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">14</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">24</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">15</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">10</span><span class="p">},{</span><span class="na">x</span><span class="p">:</span> <span class="dl">'</span><span class="s1">16</span><span class="dl">'</span><span class="p">,</span> <span class="na">y</span><span class="p">:</span> <span class="mi">20</span><span class="p">},]</span> <span class="p">},</span>
+  	<span class="p">],</span>
+  	<span class="na">xaxis</span><span class="p">:</span> <span class="p">{</span>
+  		<span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">category</span><span class="dl">"</span>
+  	<span class="p">},</span>
+  	<span class="na">legend</span><span class="p">:</span> <span class="p">{</span>
+  		<span class="na">show</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  	<span class="p">},</span>
+  <span class="p">};</span>
+  <span class="p">(</span><span class="k">new</span> <span class="nx">ApexCharts</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">querySelector</span><span class="p">(</span><span class="dl">"</span><span class="s2">#chart-heatmap-basic</span><span class="dl">"</span><span class="p">),</span><span class="nx">options</span><span class="p">)).</span><span class="nx">render</span><span class="p">();</span>
+<span class="nt">&lt;/script&gt;</span></code></pre>
+                        </figure>
+                      </div>
+                      <h1 id="advanced-example">Advanced example</h1>
+                      <div class="example no_toc_section example-bg">
+                        <div class="example-content">
+                          <div class="example-column example-column-2">
+                            <div class="card">
+                              <div class="card-body">
+                                <div id="chart-social-referrals" class="chart-lg"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="example-code">
+                        <figure class="highlight">
+                          <pre><code class="language-html" data-lang="html"><span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"card"</span><span class="nt">&gt;</span>
+  <span class="nt">&lt;div</span> <span class="na">class=</span><span class="s">"card-body"</span><span class="nt">&gt;</span>
+    <span class="nt">&lt;div</span> <span class="na">id=</span><span class="s">"chart-social-referrals"</span> <span class="na">class=</span><span class="s">"chart-lg"</span><span class="nt">&gt;&lt;/div&gt;</span>
+  <span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;/div&gt;</span>
+<span class="nt">&lt;script&gt;</span>
+  <span class="nb">document</span><span class="p">.</span><span class="nx">addEventListener</span><span class="p">(</span><span class="dl">"</span><span class="s2">DOMContentLoaded</span><span class="dl">"</span><span class="p">,</span> <span class="kd">function</span> <span class="p">()</span> <span class="p">{</span>
+  	<span class="nb">window</span><span class="p">.</span><span class="nx">ApexCharts</span> <span class="o">&amp;&amp;</span> <span class="p">(</span><span class="k">new</span> <span class="nx">ApexCharts</span><span class="p">(</span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="dl">'</span><span class="s1">chart-social-referrals</span><span class="dl">'</span><span class="p">),</span> <span class="p">{</span>
+  		<span class="na">chart</span><span class="p">:</span> <span class="p">{</span>
+  			<span class="na">type</span><span class="p">:</span> <span class="dl">"</span><span class="s2">line</span><span class="dl">"</span><span class="p">,</span>
+  			<span class="na">fontFamily</span><span class="p">:</span> <span class="dl">'</span><span class="s1">inherit</span><span class="dl">'</span><span class="p">,</span>
+  			<span class="na">height</span><span class="p">:</span> <span class="mi">240</span><span class="p">,</span>
+  			<span class="na">parentHeightOffset</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  			<span class="na">toolbar</span><span class="p">:</span> <span class="p">{</span>
+  				<span class="na">show</span><span class="p">:</span> <span class="kc">false</span><span class="p">,</span>
+  			<span class="p">},</span>
+  			<span class="na">animations</span><span class="p">:</span> <span class="p">{</span>
+  				<span class="na">enabled</span><span class="p">:</span> <span class="kc">false</span>
+  			<span class="p">},</span>
+  		<span class="p">},</span>
+  		<span class="na">fill</span><span class="p">:</span> <span class="p">{</span>
+  			<span class="na">opacity</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+  		<span class="p">},</span>
+  		<span class="na">stroke</span><span class="p">:</span> <span class="p">{</span>
+  			<span class="na">width</span><span class="p">:</span> <span class="mi">2</span><span class="p">,</span>
+  			<span class="na">lineCap</span><span class="p">:</span> <span class="dl">"</span><span class="s2">round</span><span class="dl">"</span><span class="p">,</span>
+  			<span class="na">curve</span><span class="p">:</span> <span class="dl">"</span><span class="s2">smooth</span><span class="dl">"</span><span class="p">,</span>
+  		<span class="p">},</span>
+  		<span class="na">series</span><span class="p">:</span> <span class="p">[{</span>
+  			<span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Facebook</span><span class="dl">"</span><span class="p">,</span>
+  			<span class="na">data</span><span class="p">:</span> <span class="p">[</span><span class="mi">13281</span><span class="p">,</span> <span class="mi">8521</span><span class="p">,</span> <span class="mi">15038</span><span class="p">,</span> <span class="mi">9983</span><span class="p">,</span> <span class="mi">15417</span><span class="p">,</span> <span class="mi">8888</span><span class="p">,</span> <span class="mi">7052</span><span class="p">,</span> <span class="mi">14270</span><span class="p">,</span> <span class="mi">5214</span><span class="p">,</span> <span class="mi">9587</span><span class="p">,</span> <span class="mi">5950</span><span class="p">,</span> <span class="mi">16852</span><span class="p">,</span> <span class="mi">17836</span><span class="p">,</span> <span class="mi">12217</span><span class="p">,</span> <span class="mi">17406</span><span class="p">,</span> <span class="mi">12262</span><span class="p">,</span> <span class="mi">9147</span><span class="p">,</span> <span class="mi">14961</span><span class="p">,</span> <span class="mi">18292</span><span class="p">,</span> <span class="mi">15230</span><span class="p">,</span> <span class="mi">13435</span><span class="p">,</span> <span class="mi">10649</span><span class="p">,</span> <span class="mi">5140</span><span class="p">,</span> <span class="mi">13680</span><span class="p">,</span> <span class="mi">4508</span><span class="p">,</span> <span class="mi">13271</span><span class="p">,</span> <span class="mi">13413</span><span class="p">,</span> <span class="mi">5543</span><span class="p">,</span> <span class="mi">18727</span><span class="p">,</span> <span class="mi">18238</span><span class="p">,</span> <span class="mi">18175</span><span class="p">,</span> <span class="mi">6246</span><span class="p">,</span> <span class="mi">5864</span><span class="p">,</span> <span class="mi">17847</span><span class="p">,</span> <span class="mi">9170</span><span class="p">,</span> <span class="mi">6445</span><span class="p">,</span> <span class="mi">12945</span><span class="p">,</span> <span class="mi">8142</span><span class="p">,</span> <span class="mi">8980</span><span class="p">,</span> <span class="mi">10422</span><span class="p">,</span> <span class="mi">15535</span><span class="p">,</span> <span class="mi">11569</span><span class="p">,</span> <span class="mi">10114</span><span class="p">,</span> <span class="mi">17621</span><span class="p">,</span> <span class="mi">16138</span><span class="p">,</span> <span class="mi">13046</span><span class="p">,</span> <span class="mi">6652</span><span class="p">,</span> <span class="mi">9906</span><span class="p">,</span> <span class="mi">14100</span><span class="p">,</span> <span class="mi">16495</span><span class="p">,</span> <span class="mi">6749</span><span class="p">]</span>
+  		<span class="p">},{</span>
+  			<span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Twitter</span><span class="dl">"</span><span class="p">,</span>
+  			<span class="na">data</span><span class="p">:</span> <span class="p">[</span><span class="mi">3680</span><span class="p">,</span> <span class="mi">1862</span><span class="p">,</span> <span class="mi">3070</span><span class="p">,</span> <span class="mi">2252</span><span class="p">,</span> <span class="mi">5348</span><span class="p">,</span> <span class="mi">3091</span><span class="p">,</span> <span class="mi">3000</span><span class="p">,</span> <span class="mi">3984</span><span class="p">,</span> <span class="mi">5176</span><span class="p">,</span> <span class="mi">5325</span><span class="p">,</span> <span class="mi">2420</span><span class="p">,</span> <span class="mi">5474</span><span class="p">,</span> <span class="mi">3098</span><span class="p">,</span> <span class="mi">1893</span><span class="p">,</span> <span class="mi">3748</span><span class="p">,</span> <span class="mi">2879</span><span class="p">,</span> <span class="mi">4197</span><span class="p">,</span> <span class="mi">5186</span><span class="p">,</span> <span class="mi">4213</span><span class="p">,</span> <span class="mi">4334</span><span class="p">,</span> <span class="mi">2807</span><span class="p">,</span> <span class="mi">1594</span><span class="p">,</span> <span class="mi">4863</span><span class="p">,</span> <span class="mi">2030</span><span class="p">,</span> <span class="mi">3752</span><span class="p">,</span> <span class="mi">4856</span><span class="p">,</span> <span class="mi">5341</span><span class="p">,</span> <span class="mi">3954</span><span class="p">,</span> <span class="mi">3461</span><span class="p">,</span> <span class="mi">3097</span><span class="p">,</span> <span class="mi">3404</span><span class="p">,</span> <span class="mi">4949</span><span class="p">,</span> <span class="mi">2283</span><span class="p">,</span> <span class="mi">3227</span><span class="p">,</span> <span class="mi">3630</span><span class="p">,</span> <span class="mi">2360</span><span class="p">,</span> <span class="mi">3477</span><span class="p">,</span> <span class="mi">4675</span><span class="p">,</span> <span class="mi">1901</span><span class="p">,</span> <span class="mi">2252</span><span class="p">,</span> <span class="mi">3347</span><span class="p">,</span> <span class="mi">2954</span><span class="p">,</span> <span class="mi">5029</span><span class="p">,</span> <span class="mi">2079</span><span class="p">,</span> <span class="mi">2830</span><span class="p">,</span> <span class="mi">3292</span><span class="p">,</span> <span class="mi">4578</span><span class="p">,</span> <span class="mi">3401</span><span class="p">,</span> <span class="mi">4104</span><span class="p">,</span> <span class="mi">3749</span><span class="p">,</span> <span class="mi">4457</span><span class="p">,</span> <span class="mi">3734</span><span class="p">]</span>
+  		<span class="p">},{</span>
+  			<span class="na">name</span><span class="p">:</span> <span class="dl">"</span><span class="s2">Dribbble</span><span class="dl">"</span><span class="p">,</span>
+  			<span class="na">data</span><span class="p">:</span> <span class="p">[</span><span class="mi">722</span><span class="p">,</span> <span class="mi">1866</span><span class="p">,</span> <span class="mi">961</span><span class="p">,</span> <span class="mi">1108</span><span class="p">,</span> <span class="mi">1110</span><span class="p">,</span> <span class="mi">561</span><span class="p">,</span> <span class="mi">1753</span><span class="p">,</span> <span class="mi">1815</span><span class="p">,</span> <span class="mi">1985</span><span class="p">,</span> <span class="mi">776</span><span class="p">,</span> <span class="mi">859</span><span class="p">,</span> <span class="mi">547</span><span class="p">,</span> <span class="mi">1488</span><span class="p">,</span> <span class="mi">766</span><span class="p">,</span> <span class="mi">702</span><span class="p">,</span> <span class="mi">621</span><span class="p">,</span> <span class="mi">1599</span><span class="p">,</span> <span class="mi">1372</span><span class="p">,</span> <span class="mi">1620</span><span class="p">,</span> <span class="mi">963</span><span class="p">,</span> <span class="mi">759</span><span class="p">,</span> <span class="mi">764</span><span class="p">,</span> <span class="mi">739</span><span class="p">,</span> <span class="mi">789</span><span class="p">,</span> <span class="mi">1696</span><span class="p">,</span> <span class="mi">1454</span><span class="p">,</span> <span class="mi">1842</span><span class="p">,</span> <span class="mi">734</span><span class="p">,</span> <span class="mi">551</span><span class="p">,</span> <span class="mi">1689</span><span class="p">,</span> <span class="mi">1924</span><span class="p">,</span> <span class="mi">1875</span><span class="p">,</span> <span class="mi">908</span><span class="p">,</span> <span class="mi">1675</span><span class="p">,</span> <span class="mi">1541</span><span class="p">,</span> <span class="mi">1953</span><span class="p">,</span> <span class="mi">534</span><span class="p">,</span> <span class="mi">502</span><span class="p">,</span> <span class="mi">1524</span><span class="p">,</span> <span class="mi">1867</span><span class="p">,</span> <span class="mi">719</span><span class="p">,</span> <span class="mi">1472</span><span class="p">,</span> <span class="mi">1608</span><span class="p">,</span> <span class="mi">1025</span><span class="p">,</span> <span class="mi">889</span><span class="p">,</span> <span class="mi">1150</span><span class="p">,</span> <span class="mi">654</span><span class="p">,</span> <span class="mi">1695</span><span class="p">,</span> <span class="mi">1662</span><span class="p">,</span> <span class="mi">1285</span><span class="p">,</span> <span class="mi">1787</span><span class="p">]</span>
+  		<span class="p">}],</span>
+  		<span class="na">grid</span><span class="p">:</span> <span class="p">{</span>
+  			<span class="na">padding</span><span class="p">:</span> <span class="p">{</span>
+  				<span class="na">top</span><span class="p">:</span> <span class="o">-</span><span class="mi">20</span><span class="p">,</span>
+  				<span class="na">right</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  				<span class="na">left</span><span class="p">:</span> <span class="o">-</span><span class="mi">4</span><span class="p">,</span>
+  				<span class="na">bottom</span><span class="p">:</span> <span class="o">-</span><span class="mi">4</span>
+  			<span class="p">},</span>
+  			<span class="na">strokeDashArray</span><span class="p">:</span> <span class="mi">4</span><span class="p">,</span>
+  			<span class="na">xaxis</span><span class="p">:</span> <span class="p">{</span>
+  				<span class="na">lines</span><span class="p">:</span> <span class="p">{</span>
+  					<span class="na">show</span><span class="p">:</span> <span class="kc">true</span>
+  				<span class="p">}</span>
+  			<span class="p">},</span>
+  		<span class="p">},</span>
+  		<span class="na">xaxis</span><span class="p">:</span> <span class="p">{</span>
+  			<span class="na">labels</span><span class="p">:</span> <span class="p">{</span>
+  				<span class="na">padding</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+  			<span class="p">},</span>
+  			<span class="na">tooltip</span><span class="p">:</span> <span class="p">{</span>
+  				<span class="na">enabled</span><span class="p">:</span> <span class="kc">false</span>
+  			<span class="p">},</span>
+  			<span class="na">type</span><span class="p">:</span> <span class="dl">'</span><span class="s1">datetime</span><span class="dl">'</span><span class="p">,</span>
+  		<span class="p">},</span>
+  		<span class="na">yaxis</span><span class="p">:</span> <span class="p">{</span>
+  			<span class="na">labels</span><span class="p">:</span> <span class="p">{</span>
+  				<span class="na">padding</span><span class="p">:</span> <span class="mi">4</span>
+  			<span class="p">},</span>
+  		<span class="p">},</span>
+  		<span class="na">labels</span><span class="p">:</span> <span class="p">[</span>
+  			<span class="dl">'</span><span class="s1">2020-06-20</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-06-21</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-06-22</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-06-23</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-06-24</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-06-25</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-06-26</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-06-27</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-06-28</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-06-29</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-06-30</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-07-01</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-07-02</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-07-03</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-07-04</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-07-05</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-07-06</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-07-07</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-07-08</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-07-09</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-07-10</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-07-11</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-07-12</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-07-13</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-07-14</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-07-15</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-07-16</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-07-17</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-07-18</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-07-19</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-07-20</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-07-21</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-07-22</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-07-23</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-07-24</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-07-25</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-07-26</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-07-27</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-07-28</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-07-29</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-07-30</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-07-31</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-08-01</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-08-02</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-08-03</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-08-04</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-08-05</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-08-06</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-08-07</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-08-08</span><span class="dl">'</span><span class="p">,</span> <span class="dl">'</span><span class="s1">2020-08-09</span><span class="dl">'</span>
+  		<span class="p">],</span>
+  		<span class="na">colors</span><span class="p">:</span> <span class="p">[</span><span class="nx">tabler</span><span class="p">.</span><span class="nx">getColor</span><span class="p">(</span><span class="dl">"</span><span class="s2">facebook</span><span class="dl">"</span><span class="p">),</span> <span class="nx">tabler</span><span class="p">.</span><span class="nx">getColor</span><span class="p">(</span><span class="dl">"</span><span class="s2">twitter</span><span class="dl">"</span><span class="p">),</span> <span class="nx">tabler</span><span class="p">.</span><span class="nx">getColor</span><span class="p">(</span><span class="dl">"</span><span class="s2">dribbble</span><span class="dl">"</span><span class="p">)],</span>
+  		<span class="na">legend</span><span class="p">:</span> <span class="p">{</span>
+  			<span class="na">show</span><span class="p">:</span> <span class="kc">true</span><span class="p">,</span>
+  			<span class="na">position</span><span class="p">:</span> <span class="dl">'</span><span class="s1">bottom</span><span class="dl">'</span><span class="p">,</span>
+  			<span class="na">offsetY</span><span class="p">:</span> <span class="mi">12</span><span class="p">,</span>
+  			<span class="na">markers</span><span class="p">:</span> <span class="p">{</span>
+  				<span class="na">width</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+  				<span class="na">height</span><span class="p">:</span> <span class="mi">10</span><span class="p">,</span>
+  				<span class="na">radius</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span>
+  			<span class="p">},</span>
+  			<span class="na">itemMargin</span><span class="p">:</span> <span class="p">{</span>
+  				<span class="na">horizontal</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+  				<span class="na">vertical</span><span class="p">:</span> <span class="mi">8</span>
+  			<span class="p">},</span>
+  		<span class="p">},</span>
+  	<span class="p">})).</span><span class="nx">render</span><span class="p">();</span>
+  <span class="p">});</span>
+<span class="nt">&lt;/script&gt;</span></code></pre>
+                        </figure>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <footer class="footer footer-transparent d-print-none">
+          <div class="container-xl">
+            <div class="row text-center align-items-center flex-row-reverse">
+              <div class="col-lg-auto ms-lg-auto">
+                <ul class="list-inline list-inline-dots mb-0">
+                  <li class="list-inline-item"><a href="../docs/index.html" class="link-secondary">Documentation</a></li>
+                  <li class="list-inline-item"><a href="../license.html" class="link-secondary">License</a></li>
+                  <li class="list-inline-item"><a href="https://github.com/tabler/tabler" target="_blank" class="link-secondary" rel="noopener">Source code</a></li>
+                  <li class="list-inline-item">
+                    <a href="https://github.com/sponsors/codecalm" target="_blank" class="link-secondary" rel="noopener">
+                      <!-- Download SVG icon from http://tabler-icons.io/i/heart -->
+                      <svg xmlns="http://www.w3.org/2000/svg" class="icon text-pink icon-filled icon-inline" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><path stroke="none" d="M0 0h24v24H0z" fill="none"/><path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /></svg>
+                      Sponsor
+                    </a>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-12 col-lg-auto mt-3 mt-lg-0">
+                <ul class="list-inline list-inline-dots mb-0">
+                  <li class="list-inline-item">
+                    Copyright &copy; 2022
+                    <a href=".." class="link-secondary">Tabler</a>.
+                    All rights reserved.
+                  </li>
+                  <li class="list-inline-item">
+                    <a href="../changelog.html" class="link-secondary" rel="noopener">
+                      v1.0.0-beta11
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+    <!-- Libs JS -->
+    <script src="../dist/libs/apexcharts/dist/apexcharts.min.js" defer></script>
+    <!-- Tabler Core -->
+    <script src="../dist/js/tabler.min.js" defer></script>
+    <script src="../dist/js/demo.min.js" defer></script>
+    <script>
+      // @formatter:off
+      document.addEventListener("DOMContentLoaded", function () {
+      	window.ApexCharts && (new ApexCharts(document.getElementById('chart-demo-line'), {
+      		chart: {
+      			type: "line",
+      			fontFamily: 'inherit',
+      			height: 240,
+      			parentHeightOffset: 0,
+      			toolbar: {
+      				show: false,
+      			},
+      			animations: {
+      				enabled: false
+      			},
+      		},
+      		fill: {
+      			opacity: 1,
+      		},
+      		stroke: {
+      			width: 2,
+      			lineCap: "round",
+      			curve: "straight",
+      		},
+      		series: [{
+      			name: "Session Duration",
+      			data: [117, 92, 94, 98, 75, 110, 69, 80, 109, 113, 115, 95]
+      		},{
+      			name: "Page Views",
+      			data: [59, 80, 61, 66, 70, 84, 87, 64, 94, 56, 55, 67]
+      		},{
+      			name: "Total Visits",
+      			data: [53, 51, 52, 41, 46, 60, 45, 43, 30, 50, 58, 59]
+      		}],
+      		grid: {
+      			padding: {
+      				top: -20,
+      				right: 0,
+      				left: -4,
+      				bottom: -4
+      			},
+      			strokeDashArray: 4,
+      		},
+      		xaxis: {
+      			labels: {
+      				padding: 0,
+      			},
+      			tooltip: {
+      				enabled: false
+      			},
+      			type: 'datetime',
+      		},
+      		yaxis: {
+      			labels: {
+      				padding: 4
+      			},
+      		},
+      		labels: [
+      			'2020-06-20', '2020-06-21', '2020-06-22', '2020-06-23', '2020-06-24', '2020-06-25', '2020-06-26', '2020-06-27', '2020-06-28', '2020-06-29', '2020-06-30', '2020-07-01'
+      		],
+      		colors: [tabler.getColor("yellow"), tabler.getColor("green"), tabler.getColor("primary")],
+      		legend: {
+      			show: true,
+      			position: 'bottom',
+      			offsetY: 12,
+      			markers: {
+      				width: 10,
+      				height: 10,
+      				radius: 100,
+      			},
+      			itemMargin: {
+      				horizontal: 8,
+      				vertical: 8
+      			},
+      		},
+      	})).render();
+      });
+      // @formatter:on
+    </script>
+    <script>
+      // @formatter:off
+      document.addEventListener("DOMContentLoaded", function () {
+      	window.ApexCharts && (new ApexCharts(document.getElementById('chart-demo-area'), {
+      		chart: {
+      			type: "area",
+      			fontFamily: 'inherit',
+      			height: 240,
+      			parentHeightOffset: 0,
+      			toolbar: {
+      				show: false,
+      			},
+      			animations: {
+      				enabled: false
+      			},
+      		},
+      		dataLabels: {
+      			enabled: false,
+      		},
+      		fill: {
+      			opacity: .16,
+      			type: 'solid'
+      		},
+      		stroke: {
+      			width: 2,
+      			lineCap: "round",
+      			curve: "smooth",
+      		},
+      		series: [{
+      			name: "series1",
+      			data: [56, 40, 39, 47, 34, 48, 44]
+      		},{
+      			name: "series2",
+      			data: [45, 43, 30, 23, 38, 39, 54]
+      		}],
+      		grid: {
+      			padding: {
+      				top: -20,
+      				right: 0,
+      				left: -4,
+      				bottom: -4
+      			},
+      			strokeDashArray: 4,
+      		},
+      		xaxis: {
+      			labels: {
+      				padding: 0,
+      			},
+      			tooltip: {
+      				enabled: false
+      			},
+      			axisBorder: {
+      				show: false,
+      			},
+      			type: 'datetime',
+      		},
+      		yaxis: {
+      			labels: {
+      				padding: 4
+      			},
+      		},
+      		labels: [
+      			'2020-06-20', '2020-06-21', '2020-06-22', '2020-06-23', '2020-06-24', '2020-06-25', '2020-06-26'
+      		],
+      		colors: [tabler.getColor("primary"), tabler.getColor("purple")],
+      		legend: {
+      			show: true,
+      			position: 'bottom',
+      			offsetY: 12,
+      			markers: {
+      				width: 10,
+      				height: 10,
+      				radius: 100,
+      			},
+      			itemMargin: {
+      				horizontal: 8,
+      				vertical: 8
+      			},
+      		},
+      	})).render();
+      });
+      // @formatter:on
+    </script>
+    <script>
+      // @formatter:off
+      document.addEventListener("DOMContentLoaded", function () {
+      	window.ApexCharts && (new ApexCharts(document.getElementById('chart-demo-bar'), {
+      		chart: {
+      			type: "bar",
+      			fontFamily: 'inherit',
+      			height: 240,
+      			parentHeightOffset: 0,
+      			toolbar: {
+      				show: false,
+      			},
+      			animations: {
+      				enabled: false
+      			},
+      			stacked: true,
+      		},
+      		plotOptions: {
+      			bar: {
+      				barHeight: '50%',
+      		 		horizontal: true,
+      			}
+      		},
+      		dataLabels: {
+      			enabled: false,
+      		},
+      		fill: {
+      			opacity: 1,
+      		},
+      		series: [{
+      			name: "Container for a Fanta",
+      			data: [44, 55, 41, 37, 22, 43, 21]
+      		},{
+      			name: "Strange sunglasses",
+      			data: [53, 32, 33, 52, 13, 43, 32]
+      		},{
+      			name: "Pen Pineapple Apple Pen",
+      			data: [12, 17, 11, 9, 15, 11, 20]
+      		},{
+      			name: "Binoculars",
+      			data: [9, 7, 5, 8, 6, 9, 4]
+      		},{
+      			name: "Magical notebook",
+      			data: [25, 12, 19, 32, 25, 24, 10]
+      		}],
+      		grid: {
+      			padding: {
+      				top: -20,
+      				right: 0,
+      				left: -4,
+      				bottom: -4
+      			},
+      			strokeDashArray: 4,
+      		},
+      		xaxis: {
+      			labels: {
+      				padding: 0,
+      				formatter: function(val) {
+      					return val + "K"
+      				},
+      			},
+      			tooltip: {
+      				enabled: false
+      			},
+      			axisBorder: {
+      				show: false,
+      			},
+      			categories: ['2008', '2009', '2010', '2011', '2012', '2013', '2014'],
+      		},
+      		yaxis: {
+      			labels: {
+      				padding: 4
+      			},
+      		},
+      		colors: [tabler.getColor("purple"), tabler.getColor("green"), tabler.getColor("yellow"), tabler.getColor("red"), tabler.getColor("primary")],
+      		legend: {
+      			show: true,
+      			position: 'bottom',
+      			offsetY: 12,
+      			markers: {
+      				width: 10,
+      				height: 10,
+      				radius: 100,
+      			},
+      			itemMargin: {
+      				horizontal: 8,
+      				vertical: 8
+      			},
+      		},
+      	})).render();
+      });
+      // @formatter:on
+    </script>
+    <script>
+      // @formatter:off
+      document.addEventListener("DOMContentLoaded", function () {
+      	window.ApexCharts && (new ApexCharts(document.getElementById('chart-demo-pie'), {
+      		chart: {
+      			type: "donut",
+      			fontFamily: 'inherit',
+      			height: 240,
+      			sparkline: {
+      				enabled: true
+      			},
+      			animations: {
+      				enabled: false
+      			},
+      		},
+      		fill: {
+      			opacity: 1,
+      		},
+      		series: [44, 55, 12, 2],
+      		labels: ["Direct", "Affilliate", "E-mail", "Other"],
+      		grid: {
+      			strokeDashArray: 4,
+      		},
+      		colors: [tabler.getColor("primary"), tabler.getColor("primary", 0.8), tabler.getColor("primary", 0.6), tabler.getColor("gray-300")],
+      		legend: {
+      			show: true,
+      			position: 'bottom',
+      			offsetY: 12,
+      			markers: {
+      				width: 10,
+      				height: 10,
+      				radius: 100,
+      			},
+      			itemMargin: {
+      				horizontal: 8,
+      				vertical: 8
+      			},
+      		},
+      		tooltip: {
+      			fillSeriesColor: false
+      		},
+      	})).render();
+      });
+      // @formatter:on
+    </script>
+    <script>
+      var options = {
+      	chart: {
+      		height: 400,
+      		type: "heatmap",
+      		toolbar: {
+      			show: false,
+      		},
+      	},
+      	dataLabels: {
+      		enabled: false
+      	},
+      	colors: [tabler.getColor("blue"), ],
+      	series: [
+      		{ name: "Jan", data: [{x: '1', y: 23},{x: '2', y: 14},{x: '3', y: 24},{x: '4', y: 90},{x: '5', y: 99},{x: '6', y: 28},{x: '7', y: 51},{x: '8', y: 51},{x: '9', y: 98},{x: '10', y: 61},{x: '11', y: 14},{x: '12', y: 51},{x: '13', y: 32},{x: '14', y: 84},{x: '15', y: 9},{x: '16', y: 2},] },
+      		{ name: "Feb", data: [{x: '1', y: 82},{x: '2', y: 87},{x: '3', y: 48},{x: '4', y: 15},{x: '5', y: 21},{x: '6', y: 23},{x: '7', y: 80},{x: '8', y: 34},{x: '9', y: 46},{x: '10', y: 8},{x: '11', y: 87},{x: '12', y: 80},{x: '13', y: 23},{x: '14', y: 81},{x: '15', y: 24},{x: '16', y: 51},] },
+      		{ name: "Mar", data: [{x: '1', y: 100},{x: '2', y: 52},{x: '3', y: 57},{x: '4', y: 80},{x: '5', y: 14},{x: '6', y: 82},{x: '7', y: 78},{x: '8', y: 16},{x: '9', y: 29},{x: '10', y: 97},{x: '11', y: 52},{x: '12', y: 78},{x: '13', y: 47},{x: '14', y: 10},{x: '15', y: 61},{x: '16', y: 34},] },
+      		{ name: "Apr", data: [{x: '1', y: 60},{x: '2', y: 33},{x: '3', y: 42},{x: '4', y: 20},{x: '5', y: 87},{x: '6', y: 100},{x: '7', y: 100},{x: '8', y: 16},{x: '9', y: 57},{x: '10', y: 80},{x: '11', y: 33},{x: '12', y: 100},{x: '13', y: 6},{x: '14', y: 51},{x: '15', y: 35},{x: '16', y: 16},] },
+      		{ name: "May", data: [{x: '1', y: 91},{x: '2', y: 81},{x: '3', y: 54},{x: '4', y: 98},{x: '5', y: 52},{x: '6', y: 60},{x: '7', y: 61},{x: '8', y: 99},{x: '9', y: 91},{x: '10', y: 36},{x: '11', y: 81},{x: '12', y: 61},{x: '13', y: 99},{x: '14', y: 80},{x: '15', y: 72},{x: '16', y: 16},] },
+      		{ name: "Jun", data: [{x: '1', y: 77},{x: '2', y: 99},{x: '3', y: 64},{x: '4', y: 0},{x: '5', y: 33},{x: '6', y: 91},{x: '7', y: 7},{x: '8', y: 51},{x: '9', y: 3},{x: '10', y: 28},{x: '11', y: 99},{x: '12', y: 7},{x: '13', y: 21},{x: '14', y: 78},{x: '15', y: 19},{x: '16', y: 99},] },
+      		{ name: "Jul", data: [{x: '1', y: 67},{x: '2', y: 84},{x: '3', y: 90},{x: '4', y: 4},{x: '5', y: 81},{x: '6', y: 77},{x: '7', y: 3},{x: '8', y: 39},{x: '9', y: 24},{x: '10', y: 23},{x: '11', y: 84},{x: '12', y: 3},{x: '13', y: 14},{x: '14', y: 100},{x: '15', y: 98},{x: '16', y: 51},] },
+      		{ name: "Aug", data: [{x: '1', y: 56},{x: '2', y: 81},{x: '3', y: 45},{x: '4', y: 37},{x: '5', y: 99},{x: '6', y: 67},{x: '7', y: 9},{x: '8', y: 90},{x: '9', y: 48},{x: '10', y: 82},{x: '11', y: 81},{x: '12', y: 9},{x: '13', y: 87},{x: '14', y: 61},{x: '15', y: 32},{x: '16', y: 39},] },
+      		{ name: "Sep", data: [{x: '1', y: 17},{x: '2', y: 10},{x: '3', y: 59},{x: '4', y: 67},{x: '5', y: 84},{x: '6', y: 56},{x: '7', y: 24},{x: '8', y: 15},{x: '9', y: 57},{x: '10', y: 100},{x: '11', y: 10},{x: '12', y: 24},{x: '13', y: 52},{x: '14', y: 7},{x: '15', y: 82},{x: '16', y: 90},] },
+      		{ name: "Oct", data: [{x: '1', y: 41},{x: '2', y: 51},{x: '3', y: 79},{x: '4', y: 60},{x: '5', y: 81},{x: '6', y: 17},{x: '7', y: 61},{x: '8', y: 80},{x: '9', y: 42},{x: '10', y: 60},{x: '11', y: 51},{x: '12', y: 61},{x: '13', y: 33},{x: '14', y: 3},{x: '15', y: 53},{x: '16', y: 15},] },
+      		{ name: "Nov", data: [{x: '1', y: 90},{x: '2', y: 80},{x: '3', y: 30},{x: '4', y: 74},{x: '5', y: 10},{x: '6', y: 41},{x: '7', y: 35},{x: '8', y: 20},{x: '9', y: 54},{x: '10', y: 91},{x: '11', y: 80},{x: '12', y: 35},{x: '13', y: 81},{x: '14', y: 9},{x: '15', y: 12},{x: '16', y: 80},] },
+      		{ name: "Dec", data: [{x: '1', y: 54},{x: '2', y: 78},{x: '3', y: 42},{x: '4', y: 76},{x: '5', y: 51},{x: '6', y: 90},{x: '7', y: 72},{x: '8', y: 98},{x: '9', y: 64},{x: '10', y: 77},{x: '11', y: 78},{x: '12', y: 72},{x: '13', y: 99},{x: '14', y: 24},{x: '15', y: 10},{x: '16', y: 20},] },
+      	],
+      	xaxis: {
+      		type: "category"
+      	},
+      	legend: {
+      		show: false,
+      	},
+      };
+      (new ApexCharts(document.querySelector("#chart-heatmap-basic"),options)).render();
+    </script>
+    <script>
+      // @formatter:off
+      document.addEventListener("DOMContentLoaded", function () {
+      	window.ApexCharts && (new ApexCharts(document.getElementById('chart-social-referrals'), {
+      		chart: {
+      			type: "line",
+      			fontFamily: 'inherit',
+      			height: 240,
+      			parentHeightOffset: 0,
+      			toolbar: {
+      				show: false,
+      			},
+      			animations: {
+      				enabled: false
+      			},
+      		},
+      		fill: {
+      			opacity: 1,
+      		},
+      		stroke: {
+      			width: 2,
+      			lineCap: "round",
+      			curve: "smooth",
+      		},
+      		series: [{
+      			name: "Facebook",
+      			data: [13281, 8521, 15038, 9983, 15417, 8888, 7052, 14270, 5214, 9587, 5950, 16852, 17836, 12217, 17406, 12262, 9147, 14961, 18292, 15230, 13435, 10649, 5140, 13680, 4508, 13271, 13413, 5543, 18727, 18238, 18175, 6246, 5864, 17847, 9170, 6445, 12945, 8142, 8980, 10422, 15535, 11569, 10114, 17621, 16138, 13046, 6652, 9906, 14100, 16495, 6749]
+      		},{
+      			name: "Twitter",
+      			data: [3680, 1862, 3070, 2252, 5348, 3091, 3000, 3984, 5176, 5325, 2420, 5474, 3098, 1893, 3748, 2879, 4197, 5186, 4213, 4334, 2807, 1594, 4863, 2030, 3752, 4856, 5341, 3954, 3461, 3097, 3404, 4949, 2283, 3227, 3630, 2360, 3477, 4675, 1901, 2252, 3347, 2954, 5029, 2079, 2830, 3292, 4578, 3401, 4104, 3749, 4457, 3734]
+      		},{
+      			name: "Dribbble",
+      			data: [722, 1866, 961, 1108, 1110, 561, 1753, 1815, 1985, 776, 859, 547, 1488, 766, 702, 621, 1599, 1372, 1620, 963, 759, 764, 739, 789, 1696, 1454, 1842, 734, 551, 1689, 1924, 1875, 908, 1675, 1541, 1953, 534, 502, 1524, 1867, 719, 1472, 1608, 1025, 889, 1150, 654, 1695, 1662, 1285, 1787]
+      		}],
+      		grid: {
+      			padding: {
+      				top: -20,
+      				right: 0,
+      				left: -4,
+      				bottom: -4
+      			},
+      			strokeDashArray: 4,
+      			xaxis: {
+      				lines: {
+      					show: true
+      				}
+      			},
+      		},
+      		xaxis: {
+      			labels: {
+      				padding: 0,
+      			},
+      			tooltip: {
+      				enabled: false
+      			},
+      			type: 'datetime',
+      		},
+      		yaxis: {
+      			labels: {
+      				padding: 4
+      			},
+      		},
+      		labels: [
+      			'2020-06-20', '2020-06-21', '2020-06-22', '2020-06-23', '2020-06-24', '2020-06-25', '2020-06-26', '2020-06-27', '2020-06-28', '2020-06-29', '2020-06-30', '2020-07-01', '2020-07-02', '2020-07-03', '2020-07-04', '2020-07-05', '2020-07-06', '2020-07-07', '2020-07-08', '2020-07-09', '2020-07-10', '2020-07-11', '2020-07-12', '2020-07-13', '2020-07-14', '2020-07-15', '2020-07-16', '2020-07-17', '2020-07-18', '2020-07-19', '2020-07-20', '2020-07-21', '2020-07-22', '2020-07-23', '2020-07-24', '2020-07-25', '2020-07-26', '2020-07-27', '2020-07-28', '2020-07-29', '2020-07-30', '2020-07-31', '2020-08-01', '2020-08-02', '2020-08-03', '2020-08-04', '2020-08-05', '2020-08-06', '2020-08-07', '2020-08-08', '2020-08-09'
+      		],
+      		colors: [tabler.getColor("facebook"), tabler.getColor("twitter"), tabler.getColor("dribbble")],
+      		legend: {
+      			show: true,
+      			position: 'bottom',
+      			offsetY: 12,
+      			markers: {
+      				width: 10,
+      				height: 10,
+      				radius: 100,
+      			},
+      			itemMargin: {
+      				horizontal: 8,
+      				vertical: 8
+      			},
+      		},
+      	})).render();
+      });
+      // @formatter:on
+    </script>
+  </body>
+</html>
