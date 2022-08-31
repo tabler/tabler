@@ -7,4 +7,3 @@ import './src/tooltip';
 import './src/popover';
 import './src/switch-icon';
 import './src/toast';
-

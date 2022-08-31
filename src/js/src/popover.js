@@ -1,4 +1,4 @@
-import { Popover } from 'bootstrap';
+import {Popover} from 'bootstrap';
 
 
 /*
