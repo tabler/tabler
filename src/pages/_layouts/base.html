@@ -31,18 +31,19 @@
 		{% include layout/og.html %}
 	{% endif %}
 
+	{% include layout/css.html %}
+
 	<style>
 		@import url('https://rsms.me/inter/inter.css');
 		:root {
-			--tblr-font-sans-serif: Inter,-apple-system,BlinkMacSystemFont,San Francisco,Segoe UI,Roboto,Helvetica Neue,sans-serif !important;
+			--tblr-font-sans-serif: Inter,-apple-system,BlinkMacSystemFont,San Francisco,Segoe UI,Roboto,Helvetica Neue,sans-serif;
 		}
 	</style>
-
-	{% include layout/css.html %}
 </head>
 
 {% assign layout-dark = page.layout-dark | default: site.layout-dark %}
 <body {% if layout.body-class or page.body-class %} class="{% if layout.body-class %} {{ layout.body-class }}{% endif %}{% if page.body-class %} {{ page.body-class }}{% endif %}"{% endif %}>
+<script src="{{ site.base }}/dist/js/demo-theme{% if jekyll.environment != 'development' %}.min{% endif %}.js{% if jekyll.environment == 'preview' %}?{{ site.time | date: '%s' }}{% endif %}"></script>
 
 	{{ content }}
 

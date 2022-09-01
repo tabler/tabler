@@ -28,7 +28,7 @@
 
 			{% for marker in data.markers %}
 
-			new mapboxgl.Marker({ color: "{{ 'blue' | tabler_color }}" }).setLngLat([{{ marker.center[1] }}, {{ marker.center[0] }}]).addTo(map);
+			new mapboxgl.Marker({ color: tabler.getColor("{{ 'primary' }}") }).setLngLat([{{ marker.center[1] }}, {{ marker.center[0] }}]).addTo(map);
 			{% endfor %}
 
 			{% if jekyll.environment == 'development' %}window.tabler_map["map-{{ map-id }}"] = map;{% endif %}

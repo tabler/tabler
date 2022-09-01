@@ -9,5 +9,7 @@ import './src/switch-icon';
 import './src/tab';
 import './src/toast';
 import * as bootstrap from 'bootstrap';
+import * as tabler from './src/tabler';
 
 window.bootstrap = bootstrap;
+window.tabler = tabler;
