@@ -5,7 +5,19 @@ Form check
   user-select: none;
 
   &.form-check-highlight .form-check-input:not(:checked) ~ .form-check-label {
-    opacity: $text-muted-opacity;
+    color: var(--#{$prefix}muted);
+  }
+
+  .form-check-label-off {
+    color: var(--#{$prefix}muted);
+  }
+
+  .form-check-input:checked ~ .form-check-label-off {
+    display: none;
+  }
+
+  .form-check-input:not(:checked) ~ .form-check-label-on {
+    display: none;
   }
 }
 
@@ -57,9 +69,17 @@ Form switch
 }
 
 .form-switch-lg {
+  padding-left: 3.5rem;
+  min-height: 1.5rem;
+
   .form-check-input {
     height: 1.5rem;
     width: 2.75rem;
     background-size: 1.5rem;
+    margin-left: -3.5rem;
+  }
+
+  .form-check-label {
+    padding-top: .125rem;
   }
 }
