@@ -8,77 +8,84 @@
 {% capture script %}
 {% assign colors = include.colors | default: 1 %}
 <script>
-	var options = {
-		chart: {
-			height: {{ height | times: 16 }},
-			type: "heatmap",
-			toolbar: {
-				show: false,
-			},
-		},
-		dataLabels: {
-			enabled: {% if include.labels %}true{% else %}false{% endif %}
-		},
-		{% if include.scale %}
-		plotOptions: {
-			heatmap: {
-				enableShades: {% unless include.no-shades %}true{% else %}false{% endunless %},
-				colorScale: {
-					ranges: [{
-						from: 0,
-						to: 20,
-						name: "Low",
-						color: "{{ "green" | tabler_color }}"
-					}, {
-						from: 21,
-						to: 50,
-						name: "Medium",
-						color: "{{ "blue" | tabler_color }}"
-					}, {
-						from: 51,
-						to: 75,
-						name: "High",
-						color: "{{ "yellow" | tabler_color }}"
-					}, {
-						from: 76,
-						to: 100,
-						name: "Extreme",
-						color: "{{ "red" | tabler_color }}"
-					}]
-				}
-			}
-		},
-		{% else %}
-		colors: [{% if include.color %}'{{ include.color }}'{% else %}{% for color in site.colors limit: colors %}"{{ color[0] | tabler_color }}", {% endfor %}{% endif %}],
+	 // @formatter:off
+	 document.addEventListener("DOMContentLoaded", function () {
+		{% if jekyll.environment == 'development' %}
+		window.tabler_chart = window.tabler_chart || {};
 		{% endif %}
-		series: [
-		{% for i in site.months-short limit: 12 %}
-			{% assign month-i = forloop.index %}
-			{ name: "{{ i }}", data: [{% for j in (1..16) %}{x: '{{ j }}', y: {{ j | random_number: 0, 100  | plus: month-i | random_number: 0, 100 }}},{% endfor %}] },{% endfor %}
-		],
-		xaxis: {
-			type: "category"
-		},
-		legend: {
-			{% if include.legend %}
-			show: true,
-			position: 'bottom',
-			offsetY: 8,
-			markers: {
-				width: 10,
-				height: 10,
-				radius: 100,
+
+		window.ApexCharts && ({% if jekyll.environment == 'development' %}window.tabler_chart["chart-{{ include.chart-id }}"] = {% endif %}new ApexCharts(document.getElementById('chart-{{ id }}'), {
+			chart: {
+				height: {{ height | times: 16 }},
+				type: "heatmap",
+				toolbar: {
+					show: false,
+				},
 			},
-			itemMargin: {
-				horizontal: 8,
+			dataLabels: {
+				enabled: {% if include.labels %}true{% else %}false{% endif %}
+			},
+			{% if include.scale %}
+			plotOptions: {
+				heatmap: {
+					enableShades: {% unless include.no-shades %}true{% else %}false{% endunless %},
+					colorScale: {
+						ranges: [{
+							from: 0,
+							to: 20,
+							name: "Low",
+							color: tabler.getColor("green")
+						}, {
+							from: 21,
+							to: 50,
+							name: "Medium",
+							color: tabler.getColor("blue")
+						}, {
+							from: 51,
+							to: 75,
+							name: "High",
+							color: tabler.getColor("yellow")
+						}, {
+							from: 76,
+							to: 100,
+							name: "Extreme",
+							color: tabler.getColor("red")
+						}]
+					}
+	 			}
 			},
 			{% else %}
-			show: false,
+			colors: [{% if include.color %}'{{ include.color }}'{% else %}{% for color in site.colors limit: colors %}tabler.getColor("{{ color[0] }}"), {% endfor %}{% endif %}],
 			{% endif %}
-		},
-	};
-
-	(new ApexCharts(document.querySelector("#chart-{{ id }}"),options)).render();
+			series: [
+				{% for i in site.months-short limit: 12 %}
+				{% assign month-i = forloop.index %}
+		  		{ name: "{{ i }}", data: [{% for j in (1..16) %}{x: '{{ j }}', y: {{ j | random_number: 0, 100  | plus: month-i | random_number: 0, 100 }}},{% endfor %}] },
+				{% endfor %}
+			],
+			xaxis: {
+				type: "category"
+			},
+			legend: {
+				{% if include.legend %}
+				show: true,
+				position: 'bottom',
+				offsetY: 8,
+				markers: {
+					width: 10,
+					height: 10,
+					radius: 100,
+				},
+				itemMargin: {
+					horizontal: 8,
+				},
+				{% else %}
+				show: false,
+				{% endif %}
+			},
+		})).render();
+	 });
+	 // @formatter:on
 </script>
 {% endcapture %}
 

@@ -1,5 +1,6 @@
 .card {
-  --#{$prefix}card-border-radius: #{$card-border-radius};
+  --#{$prefix}card-border-radius: var(--#{$prefix}border-radius);
+
   box-shadow: $card-shadow;
   border: $card-border-width solid $card-border-color;
   background: var(--#{$prefix}card-bg, #{$card-bg});
@@ -107,7 +108,7 @@
 
 .card-active {
   position: relative;
-  background-color: rgba($primary, .03);
+  background-color: rgba(var(--#{$prefix}primary-rgb), .03);
   z-index: 1;
 
   &:before {
@@ -117,7 +118,7 @@
     bottom: -1px;
     left: -1px;
     content: "";
-    border: 1px solid $primary;
+    border: 1px solid var(--#{$prefix}primary);
     border-radius: inherit;
   }
 }
@@ -269,6 +270,10 @@
   padding-top: 0;
 }
 
+.card-footer-borderless {
+  border-top: none;
+}
+
 // Card progress
 .card-progress {
   height: .25rem;
@@ -304,7 +309,6 @@
 }
 
 .card-subtitle {
-  margin-top: divide(-$card-spacer-y, 2);
   margin-bottom: $card-title-spacer-y;
   color: $text-muted;
   font-weight: normal;
@@ -324,17 +328,17 @@
     margin-bottom: 0;
   }
 
-  .card-sm > & {
+  .card-sm & {
     padding: 1rem;
   }
 
-  .card-md > & {
+  .card-md & {
     @include media-breakpoint-up(md) {
       padding: 2.5rem;
     }
   }
 
-  .card-lg > & {
+  .card-lg & {
     @include media-breakpoint-up(md) {
       padding: 2rem;
     }
@@ -439,19 +443,10 @@ Card table
         }
       }
     }
-
-    tr:last-child {
-      border-bottom: 0;
-
-      td,
-      th {
-        border-bottom: 0;
-      }
-    }
   }
 
   .card-body + & {
-    border-top: 1px solid $border-color;
+    border-top: 1px solid var(--#{$prefix}table-border-color);
   }
 }
 

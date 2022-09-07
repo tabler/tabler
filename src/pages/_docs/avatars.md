@@ -63,7 +63,7 @@ Customize the color of the avatars' background. You can click [here]({% docs_url
 {% include ui/avatar.html placeholder="AB" color="green" %}
 {% include ui/avatar.html placeholder="CD" color="red" %}
 {% include ui/avatar.html placeholder="EF" color="yellow" %}
-{% include ui/avatar.html placeholder="GH" color="blue" %}
+{% include ui/avatar.html placeholder="GH" color="primary" %}
 {% include ui/avatar.html placeholder="IJ" color="purple" %}
 {% endcapture %}
 {% include example.html code=code centered=true %}

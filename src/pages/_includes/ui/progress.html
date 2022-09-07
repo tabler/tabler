@@ -1,5 +1,5 @@
-{% assign percentage = include.value | default: 38 %}
-{% assign colors = include.colors | default: 'blue,red,green,yellow,dark' | split: ',' %}
+{% assign percentage = include.value | replace: '%', '' | default: 38 %}
+{% assign colors = include.colors | default: include.color | default: 'blue,red,green,yellow,dark' | split: ',' %}
 <div class="progress{% if include['size'] %} progress-{{ include['size'] }}{% endif %}{% if include.class %} {{ include.class }}{% endif %}"{% if include.width %} style="width: {{ include.width }}"{% endif %}>
    {% if include.indeterminate %}
       <div class="progress-bar progress-bar-indeterminate{% if include.color %} bg-{{ include.color }}{% endif %}"></div>

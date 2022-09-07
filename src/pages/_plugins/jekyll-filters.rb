@@ -91,13 +91,13 @@ module Jekyll
       object
     end
 
-    def tabler_color(color, variation = false)
-      if variation
-        color = color + '-' + variation.to_s
-      end
-
-      Jekyll.sites.first.data['colors'][color]
-    end
+    # def tabler_color(color, variation = false)
+    #   if variation
+    #     color = color + '-' + variation.to_s
+    #   end
+    #
+    #   Jekyll.sites.first.data['colors'][color]
+    # end
 
     def seconds_to_minutes(seconds)
       seconds = seconds.to_i.round

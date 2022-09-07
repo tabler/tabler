@@ -13,15 +13,6 @@
   justify-content: center;
   white-space: nowrap;
 
-  //&:hover {
-  //  color: var(--#{$prefix}btn-color-text);
-  //  border-color: rgba(var(--#{$prefix}btn-color-text-rgb), #{$border-active-opacity});
-  //}
-  //
-  //&:focus:not([disabled]):not(.disabled) {
-  //  border-color: var(--#{$prefix}btn-color, #{$primary});
-  //}
-
   .icon {
     width: var(--#{$prefix}btn-icon-size);
     height: var(--#{$prefix}btn-icon-size);
@@ -72,7 +63,22 @@
 @each $color, $value in $theme-colors {
   .btn-#{$color} {
     --#{$prefix}btn-border-color: transparent;
-    --#{$prefix}btn-color: #{color-contrast($value)};
+    --#{$prefix}btn-color: var(--#{$prefix}#{$color}-fg);
+    --#{$prefix}btn-bg: var(--#{$prefix}#{$color});
+    --#{$prefix}btn-hover-border-color: transparent;
+    --#{$prefix}btn-hover-color: var(--#{$prefix}#{$color}-fg);
+    --#{$prefix}btn-hover-bg: rgba(var(--#{$prefix}#{$color}-rgb), .8);
+    --#{$prefix}btn-active-border-color: transparent;
+    --#{$prefix}btn-active-color: var(--#{$prefix}#{$color}-fg);
+    --#{$prefix}btn-active-bg: rgba(var(--#{$prefix}#{$color}-rgb), .8);
+    --#{$prefix}btn-disabled-bg: rgba(var(--#{$prefix}#{$color}-rgb), .5);
+    --#{$prefix}btn-disabled-color: var(--#{$prefix}#{$color}-fg);
+  }
+
+  .btn-outline-#{$color} {
+    --#{$prefix}btn-color: var(--#{$prefix}#{$color});
+    --#{$prefix}btn-border-color: var(--#{$prefix}#{$color});
+    --#{$prefix}btn-active-color: var(--#{$prefix}#{$color});
   }
 }
 
@@ -193,7 +199,7 @@
   height: 2rem;
   align-items: center;
   justify-content: center;
-  border-radius: $border-radius;
+  border-radius: var(--#{$prefix}border-radius);
 
   &:after {
     content: none;
@@ -211,7 +217,7 @@
   }
 
   &.show {
-    color: $primary;
+    color: var(--#{$prefix}primary);
   }
 
   .icon {
