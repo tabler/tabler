@@ -7,7 +7,7 @@ export const hexToRgba = (hex, opacity) => {
 }
 
 export const getColor = (color, opacity = 1) => {
-  const c = getComputedStyle(document.documentElement).getPropertyValue(`--${prefix}${color}`).trim()
+  const c = getComputedStyle(document.body).getPropertyValue(`--${prefix}${color}`).trim()
 
   if (opacity !== 1) {
 	 return hexToRgba(c, opacity)
