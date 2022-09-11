@@ -18,7 +18,7 @@ Now you just need to tell Tabler to use your favorite font:
 
 ```html
 <style>
-body {
+:root {
   --tblr-font-sans-serif: 'Inter';
 }
 </style>
