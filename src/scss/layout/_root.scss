@@ -1,0 +1,23 @@
+:root {
+  font-size: 16px;
+  height: 100%;
+
+  @each $name, $color in map-merge($theme-colors, $gray-colors) {
+    --#{$prefix}#{$name}: #{$color};
+    --#{$prefix}#{$name}-fg: #{if(contrast-ratio($color) > $min-contrast-ratio, var(--#{$prefix}light), var(--#{$prefix}dark))};
+    --#{$prefix}#{$name}-darken: #{theme-color-darker($color)};
+    --#{$prefix}#{$name}-rgb: #{to-rgb($color)};
+  }
+
+  --#{$prefix}card-bg: #{$card-bg};
+
+  --#{$prefix}border-color: #{$border-color};
+  --#{$prefix}border-color-light: #{$border-color-light};
+
+  --#{$prefix}icon-color: #{$icon-color};
+  --#{$prefix}disabled-bg: #{$disabled-bg};
+
+  @each $name, $value in $shadows {
+    --#{$prefix}#{$name}: #{$value};
+  }
+}
