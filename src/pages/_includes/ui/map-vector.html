@@ -4,17 +4,17 @@
 
 {% if data %}
 	{% if jekyll.environment == 'development' %}
-<div class="ratio ratio-{{ include.ratio | default: '4x3' }}">
-		{% include ui/svg.html width="590" height="252" ratio=true border=true %}
-</div>
-	{% else %}
-	<div class="ratio ratio-{{ include.ratio | default: '4x3' }}">
-		<div>
-			<div id="map-{{ id }}" class="w-100 h-100"></div>
+		<div class="ratio ratio-{{ include.ratio | default: '4x3' }}">
+			{% include ui/svg.html width="590" height="252" ratio=true border=true %}
 		</div>
-	</div>
+	{% else %}
+		<div class="ratio ratio-{{ include.ratio | default: '4x3' }}">
+			<div>
+				<div id="map-{{ id }}" class="w-100 h-100"></div>
+			</div>
+		</div>
 
-	{% capture script %}
+		{% capture script %}
 		<script>
 			// @formatter:on
 			{% if jekyll.environment == 'development' %}window.tabler_map_vector = window.tabler_map_vector || {};{% endif %}
