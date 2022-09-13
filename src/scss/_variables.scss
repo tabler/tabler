@@ -97,7 +97,7 @@ $gray-800: #1d273b !default;
 $gray-900: #0f172a !default;
 
 $light: $gray-50 !default;
-$dark: $gray-900 !default;
+$dark: $gray-800 !default;
 
 $body-bg: $gray-100 !default;
 $body-color: $dark !default;
@@ -136,8 +136,8 @@ $border-color-dark-translucent: rgba($text-muted, $border-dark-opacity) !default
 $border-color-active: mix($text-muted, #ffffff, percentage($border-active-opacity)) !default;
 $border-color-active-translucent: rgba($text-muted, $border-active-opacity) !default;
 
-$active-bg: rgba($blue, .04) !default;
-$hover-bg: rgba($text-muted, .04) !default;
+$active-bg: rgba(var(--#{$prefix}primary-rgb), .04) !default;
+$hover-bg: rgba(var(--#{$prefix}muted-rgb), .04) !default;
 $disabled-bg: var(--#{$prefix}gray-100) !default;
 
 $link-color: var(--#{$prefix}primary) !default;
@@ -315,7 +315,21 @@ $aspect-ratios: (
 ) !default;
 
 // Shadows
-$shadow: rgba($dark, .04) 0 2px 4px 0 !default;
+$shadow: rgba(var(--#{$prefix}body-color-rgb), .04) 0 2px 4px 0 !default;
+$shadow-transparent: 0 0 0 0 transparent !default;
+$shadow-button: 0 1px 0 rgba(var(--#{$prefix}body-color-rgb), .04) !default;
+$shadow-button-inset: inset 0 -1px 0 rgba(var(--#{$prefix}body-color-rgb), .2) !default;
+$shadow-card: 0 0 4px rgba(var(--#{$prefix}body-color-rgb), .04) !default;
+$shadow-card-hover: rgba(var(--#{$prefix}body-color-rgb), .16) 0 2px 16px 0 !default;
+
+$shadows: (
+  shadow: $shadow,
+  shadow-transparent: $shadow-transparent,
+  shadow-button: $shadow-button,
+  shadow-button-inset: $shadow-button-inset,
+  shadow-card: $shadow-card,
+  shadow-card-hover: $shadow-card-hover,
+) !default;
 
 // Transitions
 $transition-time: .3s !default;
@@ -392,6 +406,8 @@ $btn-border-radius: var(--#{$prefix}border-radius) !default;
 
 //cards
 $card-title-spacer-y: 1.25rem !default;
+$card-box-shadow: var(--#{$prefix}shadow-card) !default;
+$card-hover-box-shadow: var(--#{$prefix}shadow-card-hover) !default;
 
 $card-bg: #f8fafc !default;
 $card-bg-hover: $white !default;
@@ -401,19 +417,16 @@ $card-border-width: var(--#{$prefix}border-width) !default;
 $card-border-color: var(--#{$prefix}border-color) !default;
 $card-border-radius: var(--#{$prefix}border-radius) !default;
 
-$card-spacer-x: 1.25rem !default;
+$card-spacer-x: 1.5rem !default;
 $card-spacer-y: 1rem !default;
 
-$card-cap-bg: $gray-50 !default;
+$card-cap-bg: var(--#{$prefix}gray-50) !default;
 $card-cap-color: inherit !default;
 $card-cap-padding-x: $card-spacer-x !default;
 $card-cap-padding-y: $card-spacer-y !default;
 
 $card-status-size: $border-width-wide !default;
 $card-group-margin: 1.5rem !default;
-
-$card-shadow: $shadow !default;
-$card-shadow-hover: rgba($dark, .16) 0 2px 16px 0 !default;
 
 $card-stamp-opacity: .2 !default;
 

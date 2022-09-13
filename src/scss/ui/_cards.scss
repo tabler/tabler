@@ -3,10 +3,10 @@
   --#{$prefix}card-bg: var(--#{$prefix}card-bg);
   --#{$prefix}card-color: var(--#{$prefix}card-color);
 
-  box-shadow: $card-shadow;
   border: $card-border-width solid $card-border-color;
   background: var(--#{$prefix}card-bg, #{$card-bg});
   border-radius: var(--#{$prefix}card-border-radius);
+  box-shadow: var(--#{$prefix}card-box-shadow);
   @include transition(transform $transition-time ease-out, opacity $transition-time ease-out, box-shadow $transition-time ease-out);
 
   @media print {
@@ -19,7 +19,7 @@
 
     &:hover {
       text-decoration: none;
-      box-shadow: $card-shadow-hover;
+      box-shadow: $shadow-card-hover;
     }
   }
 
@@ -110,7 +110,7 @@
 
 .card-active {
   position: relative;
-  background-color: rgba($primary, .03);
+  background-color: rgba(var(--#{$prefix}primary-rgb), .03);
   z-index: 1;
 
   &:before {
@@ -311,7 +311,6 @@
 }
 
 .card-subtitle {
-  margin-top: divide(-$card-spacer-y, 2);
   margin-bottom: $card-title-spacer-y;
   color: $text-muted;
   font-weight: normal;
@@ -331,17 +330,17 @@
     margin-bottom: 0;
   }
 
-  .card-sm > & {
+  .card-sm & {
     padding: 1rem;
   }
 
-  .card-md > & {
+  .card-md & {
     @include media-breakpoint-up(md) {
       padding: 2.5rem;
     }
   }
 
-  .card-lg > & {
+  .card-lg & {
     @include media-breakpoint-up(md) {
       padding: 2rem;
     }
