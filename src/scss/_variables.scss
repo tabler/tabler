@@ -28,6 +28,27 @@ $icon-stroke-width: 1.5 !default;
 $icon-size: 1.25rem !default;
 
 //Fonts
+$font-size-75: .75rem !default;
+$font-size-100: .875rem !default;
+$font-size-200: 1rem !default;
+$font-size-300: 1.25rem !default;
+$font-size-400: 1.5rem !default;
+$font-size-500: 1.75rem !default;
+$font-size-600: 2rem !default;
+$font-size-700: 2.5rem !default;
+
+
+
+$line-height-100: 1rem !default;
+$line-height-200: 1.25rem !default;
+$line-height-300: 1.5rem !default;
+$line-height-400: 1.75rem !default;
+$line-height-500: 2rem !default;
+$line-height-600: 2.5rem !default;
+$line-height-700: 3rem !default;
+
+
+
 $font-size-base: .875rem !default;
 $body-letter-spacing: 0 !default;
 
@@ -35,6 +56,16 @@ $font-weight-light: 300 !default;
 $font-weight-normal: 400 !default;
 $font-weight-medium: 500 !default;
 $font-weight-bold: 600 !default;
+
+$headings-font-weight: var(--#{$prefix}font-weight-bold) !default;
+
+$font-weights: (
+  light: $font-weight-light,
+  normal: $font-weight-normal,
+  medium: $font-weight-medium,
+  bold: $font-weight-bold,
+  headings: $headings-font-weight,
+) !default;
 
 $line-height-base: divide(1.25rem, $font-size-base) !default;
 $line-height-sm: divide(1rem, $font-size-base) !default;
@@ -60,6 +91,24 @@ $h6-line-height: divide(1rem, $h6-font-size) !default;
 
 $small-font-size: percentage(divide($h5-font-size, $font-size-base)) !default;
 
+$font-sizes: (
+  h1: $h1-font-size,
+  h2: $h2-font-size,
+  h3: $h3-font-size,
+  h4: $h4-font-size,
+  h5: $h5-font-size,
+  h6: $h6-font-size,
+) !default;
+
+$line-heights: (
+  h1: $h1-line-height,
+  h2: $h2-line-height,
+  h3: $h3-line-height,
+  h4: $h4-line-height,
+  h5: $h5-line-height,
+  h6: $h6-line-height,
+) !default;
+
 $display-font-sizes: (
   1: 5rem,
   2: 4.5rem,
@@ -70,7 +119,7 @@ $display-font-sizes: (
 ) !default;
 
 $lead-font-size: $font-size-base !default;
-$lead-font-weight: $font-weight-normal !default;
+$lead-font-weight: var(--#{$prefix}font-weight-normal) !default;
 
 $blockquote-font-size: $font-size-base !default;
 
@@ -259,7 +308,6 @@ $link-decoration: none !default;
 $link-hover-decoration: underline !default;
 
 //Typography
-$headings-font-weight: $font-weight-bold !default;
 
 $hr-opacity: $border-opacity !default;
 $hr-margin-y: 2rem !default;
@@ -355,7 +403,7 @@ $accordion-button-focus-border-color: $accordion-border-color !default;
 //alerts
 $alert-padding-x: 1rem !default;
 $alert-padding-y: 1rem !default;
-$alert-link-font-weight: $font-weight-bold !default;
+$alert-link-font-weight: var(--#{$prefix}font-weight-bold) !default;
 
 $alert-border-width: 1px !default;
 $alert-border-color: var(--#{$prefix}border-color-translucent) !default;
@@ -374,7 +422,7 @@ $breadcrumb-variants: (
 //badges
 $badge-font-size: $code-font-size !default;
 $badge-line-height: $code-line-height !default;
-$badge-font-weight: $font-weight-medium !default;
+$badge-font-weight: var(--#{$prefix}font-weight-medium) !default;
 $badge-padding-y: .25em !default;
 $badge-padding-x: .5em !default;
 $badge-empty-size: .5rem !default;
@@ -405,7 +453,7 @@ $input-focus-color: inherit !default;
 
 // buttons
 $btn-padding-x: 1rem !default;
-$btn-font-weight: $font-weight-medium !default;
+$btn-font-weight: var(--#{$prefix}font-weight-medium) !default;
 $btn-border-radius: var(--#{$prefix}border-radius) !default;
 
 //cards
@@ -553,7 +601,7 @@ $navbar-brand-padding-y: $nav-link-padding-y !default;
 $navbar-brand-image-height: 2rem !default;
 $navbar-brand-margin-right: 0 !default;
 $navbar-brand-font-size: $h3-font-size !default;
-$navbar-brand-font-weight: $font-weight-bold !default;
+$navbar-brand-font-weight: var(--#{$prefix}font-weight-bold) !default;
 
 $navbar-toggler-font-size: 1rem !default;
 $navbar-toggler-padding-x: 0 !default;
@@ -666,7 +714,7 @@ $form-check-margin-bottom: .5rem !default;
 $form-check-input-width: 1rem !default;
 $form-check-padding-start: $form-check-input-width + .5rem !default;
 $form-check-input-bg: $white !default;
-$form-check-input-border: 1px solid $input-border-color-translucent !default;
+$form-check-input-border: var(--#{$prefix}border-width) solid $input-border-color-translucent !default;
 $form-check-input-border-radius: var(--#{$prefix}border-radius) !default;
 $form-check-input-checked-bg-size: 1rem !default;
 $form-check-input-checked-bg-color: var(--#{$prefix}primary) !default;
@@ -700,7 +748,7 @@ $form-feedback-icon-valid: str-replace(url("data:image/svg+xml,<svg xmlns='http:
 $form-feedback-icon-invalid: str-replace(url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='" + $red + "' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><line x1='18' y1='6' x2='6' y2='18'></line><line x1='6' y1='6' x2='18' y2='18'></line></svg>"), "#", "%23") !default;
 
 $form-label-font-size: $h4-font-size !default;
-$form-label-font-weight: $font-weight-medium !default;
+$form-label-font-weight: var(--#{$prefix}font-weight-medium) !default;
 
 $caret-width: .36em !default;
 
