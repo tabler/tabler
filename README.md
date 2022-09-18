@@ -9,7 +9,7 @@ A premium and open source dashboard template with a responsive and high-quality 
 <a href="https://preview.tabler.io" target="__blank"><img src="https://img.shields.io/static/v1?label=Demo&message=preview&color=228be6" alt="Tabler preview"></a>
 <a href="https://github.com/tabler/tabler/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/tabler.svg?label=License&message=MIT&color=1c7ed6" alt="License"></a>
 <a href="https://github.com/tabler/tabler/archive/dev.zip" target="__blank"><img src="https://img.shields.io/static/v1?label=Download&message=ZIP&color=339af0" alt="Tabler preview"></a>
-<a href="https://github.com/tabler/tabler/actions/workflows/preview.yml" target="__blank"><img alt="GitHub stars" src="https://github.com/tabler/tabler/actions/workflows/preview.yml/badge.svg"></a>
+<a href="https://github.com/tabler/tabler/actions/workflows/test.yml" target="__blank"><img alt="Test build" src="https://github.com/tabler/tabler/actions/workflows/test.yml/badge.svg"></a>
 <a href="https://github.com/tabler/tabler" target="__blank"><img alt="GitHub stars" src="https://img.shields.io/github/stars/tabler/tabler?style=social"></a>
 </p>
 
@@ -20,16 +20,16 @@ A premium and open source dashboard template with a responsive and high-quality 
 </p>
 
 
-## Preview
+## 🔎 Preview
 
 Tabler is fully responsive and compatible with all modern browsers. Thanks to its modern, user-friendly design you can create a fully functional interface that users will love! Choose the layouts and components you need and customize them to make your design consistent and eye-catching. Every component has been created with attention to detail to make your interface beautiful! <a href="https://preview.tabler.io">Show me demo</a>
 
 <a href="https://preview.tabler.io" target="_blank"><img src="https://raw.githubusercontent.com/tabler/tabler/dev/src/static/tabler-preview.png" alt="Tabler preview"></a>
 
 
-## Features
+## 🚀 Features
 
-We've created this admin panel for everyone who wants to create templates based on our pre-made components. Our mission is to deliver a user-friendly, clear and easy administration panel that can be used by both simple websites and sophisticated systems. The only requirement is basic HTML and CSS (and some [Liquid](https://github.com/Shopify/liquid/wiki)) knowledge — as a reward, you'll be able to manage and visualise different types of data in the easiest possible way!
+We've created this admin panel for everyone who wants to create templates based on our pre-made components. Our mission is to deliver a user-friendly, clear and easy administration panel that can be used by both simple websites and sophisticated systems. The only requirement is basic HTML and CSS (and some [Liquid](https://github.com/Shopify/liquid/wiki)) knowledge — as a reward, you'll be able to manage and visualize different types of data in the easiest possible way!
 
 * **Responsive:** With the support for mobile, tablet and desktop displays, it doesn’t matter what device you’re using. Tabler is responsive in all major browsers.
 * **Cross Browser:** Our theme works perfectly with the latest Chrome, Firefox+, latest Safari, Opera, Edge and mobile browsers. We work hard to to provide continuous support for them.
@@ -38,12 +38,15 @@ We've created this admin panel for everyone who wants to create templates based 
 * **Demo pages**: Tabler features over 20 individual pages using various components, which gives you the freedom to choose and combine. All components can vary in color and styling that you can easily modify using Sass. Sky is the limit!
 * **Single Page Application versions:** [Tabler React](https://github.com/tabler/tabler-react) has React components for Tabler.
 
-
-## Documentation
+## 📖 Documentation
 
 Documentation is available as a part of Tabler preview: https://preview.tabler.io/docs/
 
-## Sponsor Tabler
+## 🪴 Project Activity
+
+![Alt](https://repobeats.axiom.co/api/embed/61d1db34446967b0848af68198a392067e0f5870.svg "Repobeats analytics image")
+
+## 💕 Sponsor Tabler
 
 <a href="https://github.com/sponsors/codecalm" target="_blank"><img src="/src/static/sponsor-banner-readme.png?raw=true" alt="Sponsor Tabler" /></a>
 
@@ -64,7 +67,7 @@ Support this project by becoming a sponsor. Your logo will show up in this READM
 <a href="https://opencollective.com/tabler/tiers/sponsor/9/website" target="_blank"><img src="https://opencollective.com/tabler/tiers/sponsor/9/avatar.svg" /></a>
 
 
-## Setup environment
+## 📦 Setup environment
 
 To use our build system and run our documentation locally, you'll need a copy of Tabler's source files. Follow the steps below:
 
@@ -123,6 +126,26 @@ Tabler is distributed via npm.
 npm install --save @tabler/core
 ```
 
+## Running with Docker
+
+If you don't want to install node/npm/ruby and the dependencies on your local environment, you can use the provided Dockerfile to build a docker image.
+This Dockerfile is provided as an example to spin-up a container running Tabler.
+
+Example of how to use this image:
+
+1. Build the tabler image : `docker build -t tabler .`
+2. Run the tabler image while mounting the `src` directory as well as the `_config.yml` file into the container.
+
+Don't forget to expose the port 3000 so you can browse the website locally.
+You can also expose the port 3001 to have access to BrowserSync
+
+```sh
+docker run -p 3000:3000 -p 3001:3001 -v $(pwd)/src:/app/src -v $(pwd)/_config.yml:/app/_config.yml tabler
+```
+
+Now open your browser to [http://localhost:3000](http://localhost:3000). Edit anything in the `src/` folder and watch your browser refresh the page after it has been rebuilt.
+
+
 ### CDN support
 
 All files included in `@tabler/core` npm package are available over a CDN.
@@ -130,13 +153,13 @@ All files included in `@tabler/core` npm package are available over a CDN.
 #### Javascript
 
 ```html
-<script src="https://unpkg.com/@tabler/core@latest/dist/js/tabler.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/js/tabler.min.js"></script>
 ```
 
 #### Styles
 
 ```html
-<link rel="stylesheet" href="https://unpkg.com/@tabler/core@latest/dist/css/tabler.min.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/css/tabler.min.css">
 ```
 
 ## Feature requests
@@ -149,7 +172,7 @@ https://tabler.canny.io/feature-requests
 Found a bug or have a feature request? [Please open a new issue](https://github.com/tabler/tabler/issues/new).
 
 
-## Creators
+## 🤓 Creators
 
 **Paweł Kuna**
 
@@ -158,19 +181,19 @@ Found a bug or have a feature request? [Please open a new issue](https://github.
 - <https://codecalm.net>
 
 
-### Contributors
+## 👨‍🚀 Contributors
 
 This project exists thanks to all the people who contribute.
 
 <img src="https://opencollective.com/tabler/contributors.svg?width=890&button=false" />
 
-### Backers
+## 🌸 Backers
 
 Thank you to all our backers! 🙏 [Become a backer](https://opencollective.com/tabler#backer)
 
 <a href="https://opencollective.com/tabler#backers" target="_blank"><img src="https://opencollective.com/tabler/tiers/backer.svg?width=890&button=false" /></a>
 
-## Thanks
+## ❤️ Thanks
 
 <a href="https://www.chromatic.com/"><img src="https://user-images.githubusercontent.com/321738/84662277-e3db4f80-af1b-11ea-88f5-91d67a5e59f6.png" width="153" height="30" alt="Chromatic" /></a>
 

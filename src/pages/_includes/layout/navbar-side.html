@@ -6,11 +6,15 @@
 	<div class="nav-item d-none d-{{ include.breakpoint }}-flex me-3">
 		<div class="btn-list">
 			{% if include.dark %}
-				{% include ui/button.html color="dark" icon="brand-github" text="Source code" href=site.github-url external=true %}
-				{% include ui/button.html color="dark" icon="heart" icon-color="pink" text="Sponsor" href=site.github-sponsors-url external=true %}
+			{% include ui/button.html color="dark" icon="brand-github" text="Source code" href=site.github-url
+			external=true %}
+			{% include ui/button.html color="dark" icon="heart" icon-color="pink" text="Sponsor"
+			href=site.github-sponsors-url external=true %}
 			{% else %}
-				{% include ui/button.html icon="brand-github" outline=true text="Source code" href=site.github-url external=true %}
-				{% include ui/button.html icon="heart" icon-color="pink" outline=true text="Sponsor" href=site.github-sponsors-url external=true %}
+			{% include ui/button.html icon="brand-github" outline=true text="Source code" href=site.github-url
+			external=true %}
+			{% include ui/button.html icon="heart" icon-color="pink" outline=true text="Sponsor"
+			href=site.github-sponsors-url external=true %}
 			{% endif %}
 		</div>
 	</div>
@@ -61,7 +65,8 @@
 			{% include ui/icon.html icon="moon" %}
 		</a>
 
-		<a href="?theme=light" class="nav-link px-0 hide-theme-light" title="Enable light mode" data-bs-toggle="tooltip" data-bs-placement="bottom">
+		<a href="?theme=light" class="nav-link px-0 hide-theme-light" title="Enable light mode" data-bs-toggle="tooltip"
+		   data-bs-placement="bottom">
 			{% include ui/icon.html icon="sun" %}
 		</a>
 
@@ -87,6 +92,13 @@
 			</div>
 			{% endunless %}
 		</a>
-		{% include ui/dropdown-menu.html arrow=true right=true separated=true menu="Set status,Profile & account,Feedback,|,Settings,Logout" %}
+		<div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+			<a href="#" class="dropdown-item">Status</a>
+			<a href="#" class="dropdown-item">Profile</a>
+			<a href="#" class="dropdown-item">Feedback</a>
+			<div class="dropdown-divider"></div>
+			<a href="{{ site.base }}/settings.html" class="dropdown-item">Settings</a>
+			<a href="{{ site.base }}/sign-in.html" class="dropdown-item">Logout</a>
+		</div>
 	</div>
 </div>

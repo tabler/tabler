@@ -1,12 +1,12 @@
 const gulp = require('gulp'),
 	debug = require('gulp-debug'),
 	clean = require('gulp-clean'),
-	sass = require('gulp-sass')(require('sass')),
+	sass = require('gulp-sass')(require('node-sass')),
 	postcss = require('gulp-postcss'),
 	header = require('gulp-header'),
 	cleanCSS = require('gulp-clean-css'),
 	rtlcss = require('gulp-rtlcss'),
-	minifyJS = require('gulp-minify'),
+	minifyJS = require('gulp-terser'),
 	rename = require('gulp-rename'),
 	purgecss = require('gulp-purgecss'),
 	rollupStream = require('@rollup/stream'),
@@ -264,12 +264,10 @@ const compileJs = function (name, mjs = false) {
 		}))
 
 	if (BUILD) {
-		g.pipe(minifyJS({
-			ext: {
-				src: '.js',
-				min: '.min.js'
-			},
-		}))
+		g.pipe(minifyJS())
+			.pipe(rename((path) => {
+				path.extname = '.min.js'
+			}))
 			.pipe(gulp.dest(`${distDir}/js/`))
 	}
 
@@ -285,6 +283,10 @@ gulp.task('js', () => {
 
 gulp.task('js-demo', () => {
 	return compileJs('demo')
+})
+
+gulp.task('js-demo-theme', () => {
+	 return compileJs('demo-theme')
 })
 
 /**
@@ -331,12 +333,10 @@ gulp.task('mjs', () => {
 		}))
 
 	if (BUILD) {
-		g.pipe(minifyJS({
-			ext: {
-				src: '.js',
-				min: '.min.js'
-			},
-		}))
+		g.pipe(minifyJS())
+			.pipe(rename((path) => {
+				path.extname = '.min.js'
+			}))
 			.pipe(gulp.dest(`${distDir}/js/`))
 	}
 
@@ -420,7 +420,7 @@ gulp.task('build-critical', (cb) => {
  */
 gulp.task('watch', (cb) => {
 	gulp.watch('./src/scss/**/*.scss', gulp.series('sass'))
-	gulp.watch('./src/js/**/*.js', gulp.parallel('js', 'mjs', 'js-demo'))
+	gulp.watch('./src/js/**/*.js', gulp.parallel('js', 'mjs', gulp.parallel('js-demo', 'js-demo-theme')))
 	cb()
 })
 
@@ -520,8 +520,8 @@ gulp.task('add-banner', () => {
 
 gulp.task('clean', gulp.series('clean-dirs', 'clean-jekyll'))
 
-gulp.task('start', gulp.series('clean', 'sass', 'js', 'js-demo', 'mjs', 'build-jekyll', gulp.parallel('watch-jekyll', 'watch', 'browser-sync')))
+gulp.task('start', gulp.series('clean', 'sass', 'js', gulp.parallel('js-demo', 'js-demo-theme'), 'mjs', 'build-jekyll', gulp.parallel('watch-jekyll', 'watch', 'browser-sync')))
 
-gulp.task('build-core', gulp.series('build-on', 'clean', 'sass', 'css-rtl', 'css-minify', 'js', 'js-demo', 'mjs', 'copy-images', 'copy-libs', 'add-banner'))
+gulp.task('build-core', gulp.series('build-on', 'clean', 'sass', 'css-rtl', 'css-minify', 'js', gulp.parallel('js-demo', 'js-demo-theme'), 'mjs', 'copy-images', 'copy-libs', 'add-banner'))
 gulp.task('build-demo', gulp.series('build-on', 'build-jekyll', 'copy-static', 'copy-dist', 'build-cleanup', 'build-purgecss'/*, 'build-critical'*/))
 gulp.task('build', gulp.series('build-core', 'build-demo'))

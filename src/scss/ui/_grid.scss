@@ -74,15 +74,14 @@
   $name-prefixed: if($name == null, null, '-#{$name}');
 
   .space-y#{$name-prefixed} {
-    > :not(template) ~ :not(template) {
-      margin-top: $size !important;
-    }
+    display: flex;
+    flex-direction: column;
+    gap: $size;
   }
 
   .space-x#{$name-prefixed} {
-    > :not(template) ~ :not(template) {
-      margin-left: $size !important;
-    }
+    display: flex;
+    gap: $size;
   }
 }
 
@@ -91,7 +90,7 @@
 
   .divide-y#{$name-prefixed} {
     > :not(template) ~ :not(template) {
-      border-top: 1px solid $border-color-transparent !important;
+      border-top: 1px solid $border-color-translucent !important;
     }
 
     > :not(template):not(:first-child) {
@@ -105,7 +104,7 @@
 
   .divide-x#{$name-prefixed} {
     > :not(template) ~ :not(template) {
-      border-left: 1px solid $border-color-transparent !important;
+      border-left: 1px solid $border-color-translucent !important;
     }
 
     > :not(template):not(:first-child) {

@@ -1,0 +1,1 @@
+{"version":3,"file":"list.min.js","sources":["webpack://List/list.min.js"],"mappings":"AAAA","sourceRoot":""}

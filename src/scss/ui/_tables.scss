@@ -1,3 +1,18 @@
+@include dark-mode {
+  $table-variants: (
+    "primary":    shift-color($primary, $table-bg-scale-dark),
+    "secondary":  shift-color($secondary, $table-bg-scale-dark),
+    "success":    shift-color($success, $table-bg-scale-dark),
+    "info":       shift-color($info, $table-bg-scale-dark),
+    "warning":    shift-color($warning, $table-bg-scale-dark),
+    "danger":     shift-color($danger, $table-bg-scale-dark),
+  );
+
+  @each $color, $value in $table-variants {
+    @include table-variant($color, $value);
+  }
+}
+
 .table {
   thead {
     th {
@@ -13,15 +28,15 @@
       }
     }
   }
-
-  > :not(:first-child) {
-    border-top-width: $table-border-width;
-  }
 }
 
 .table-responsive {
   .table {
     margin-bottom: 0;
+  }
+
+  + .card-footer {
+    border-top: 0;
   }
 }
 
@@ -140,5 +155,11 @@
   &.desc:after {
     background: $table-sort-asc-bg-image no-repeat center;
     opacity: 1;
+  }
+}
+
+.table-borderless {
+  thead th {
+    background: transparent;
   }
 }

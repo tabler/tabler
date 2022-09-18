@@ -1,9 +1,12 @@
 .card {
-  --#{$prefix}card-border-radius: #{$card-border-radius};
-  box-shadow: $card-shadow;
+  --#{$prefix}card-border-radius: var(--#{$prefix}border-radius);
+  --#{$prefix}card-bg: var(--#{$prefix}bg-surface);
+  --#{$prefix}card-color: var(--#{$prefix}body-color);
+
   border: $card-border-width solid $card-border-color;
-  background: var(--#{$prefix}card-bg, #{$card-bg});
+  background: var(--#{$prefix}card-bg, var(--#{$prefix}bg-surface));
   border-radius: var(--#{$prefix}card-border-radius);
+  box-shadow: var(--#{$prefix}card-box-shadow);
   @include transition(transform $transition-time ease-out, opacity $transition-time ease-out, box-shadow $transition-time ease-out);
 
   @media print {
@@ -16,7 +19,7 @@
 
     &:hover {
       text-decoration: none;
-      box-shadow: $card-shadow-hover;
+      box-shadow: $shadow-card-hover;
     }
   }
 
@@ -55,7 +58,7 @@
 
 .card-stamp-icon {
   background: var(--#{$prefix}muted);
-  color: var(--#{$prefix}card-bg);
+  color: var(--#{$prefix}card-bg, var(--#{$prefix}bg-surface));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -107,7 +110,7 @@
 
 .card-active {
   position: relative;
-  background-color: rgba($primary, .03);
+  background-color: rgba(var(--#{$prefix}primary-rgb), .03);
   z-index: 1;
 
   &:before {
@@ -117,7 +120,7 @@
     bottom: -1px;
     left: -1px;
     content: "";
-    border: 1px solid $primary;
+    border: 1px solid var(--#{$prefix}primary);
     border-radius: inherit;
   }
 }
@@ -154,8 +157,8 @@
     left: 5px;
     height: 5px;
     content: "";
-    background: $card-bg;
-    border: 1px solid $card-border-color;
+    background: var(--#{$prefix}card-bg, var(--#{$prefix}bg-surface));
+    border: 1px solid var(--#{$prefix}card-border-color);
     border-radius: var(--#{$prefix}card-border-radius) var(--#{$prefix}card-border-radius) 0 0;
   }
 }
@@ -269,6 +272,10 @@
   padding-top: 0;
 }
 
+.card-footer-borderless {
+  border-top: none;
+}
+
 // Card progress
 .card-progress {
   height: .25rem;
@@ -304,7 +311,6 @@
 }
 
 .card-subtitle {
-  margin-top: divide(-$card-spacer-y, 2);
   margin-bottom: $card-title-spacer-y;
   color: $text-muted;
   font-weight: normal;
@@ -324,17 +330,17 @@
     margin-bottom: 0;
   }
 
-  .card-sm > & {
+  .card-sm & {
     padding: 1rem;
   }
 
-  .card-md > & {
+  .card-md & {
     @include media-breakpoint-up(md) {
       padding: 2.5rem;
     }
   }
 
-  .card-lg > & {
+  .card-lg & {
     @include media-breakpoint-up(md) {
       padding: 2rem;
     }
@@ -439,19 +445,10 @@ Card table
         }
       }
     }
-
-    tr:last-child {
-      border-bottom: 0;
-
-      td,
-      th {
-        border-bottom: 0;
-      }
-    }
   }
 
   .card-body + & {
-    border-top: 1px solid $border-color;
+    border-top: 1px solid var(--#{$prefix}table-border-color);
   }
 }
 
@@ -487,7 +484,7 @@ Card avatar
 .card-avatar {
   margin-left: auto;
   margin-right: auto;
-  box-shadow: 0 0 0 .25rem $card-bg;
+  box-shadow: 0 0 0 .25rem var(--#{$prefix}card-bg, var(--#{$prefix}bg-surface));
   margin-top: calc(-1 * calc(var(--#{$prefix}avatar-size) * .5));
 }
 
@@ -537,7 +534,7 @@ Card list group
 
       &.active {
         color: $headings-color;
-        background: $card-bg;
+        background: var(--#{$prefix}card-bg, var(--#{$prefix}bg-surface));
         border-bottom-color: transparent;
       }
     }

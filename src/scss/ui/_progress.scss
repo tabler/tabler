@@ -11,27 +11,29 @@
   }
 }
 
+/**
+Progress
+ */
 .progress {
   position: relative;
   width: 100%;
   line-height: $progress-height;
   appearance: none;
-  background: var(--#{$prefix}border-color-light);
 
   &::-webkit-progress-bar {
-    background: $gray-100;
+    background: var(--#{$prefix}progress-bg);
   }
 
   &::-webkit-progress-value {
-    background-color: $primary;
+    background-color: var(--#{$prefix}primary);
   }
 
   &::-moz-progress-bar {
-    background-color: $primary;
+    background-color: var(--#{$prefix}primary);
   }
 
   &::-ms-fill {
-    background-color: $primary;
+    background-color: var(--#{$prefix}primary);
     border: none;
   }
 }
@@ -40,6 +42,9 @@
   height: .25rem;
 }
 
+/**
+Progress bar
+ */
 .progress-bar {
   height: 100%;
 }
@@ -63,6 +68,40 @@
 
 .progress-separated {
   .progress-bar {
-    border-right: 2px solid var(--#{$prefix}card-bg, #{$card-bg});
+    border-right: 2px solid var(--#{$prefix}card-bg, var(--#{$prefix}bg-surface));
   }
+}
+
+
+/**
+Progressbg
+ */
+.progressbg {
+  position: relative;
+  padding: .25rem .5rem;
+  display: flex;
+}
+
+.progressbg-text {
+  position: relative;
+  z-index: 1;
+  @include text-truncate;
+}
+
+.progressbg-progress {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
+  height: 100%;
+  background: transparent;
+  pointer-events: none;
+}
+
+.progressbg-value {
+  font-weight: $font-weight-medium;
+  margin-left: auto;
+  padding-left: 2rem;
 }

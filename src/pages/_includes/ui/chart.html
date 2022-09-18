@@ -195,7 +195,7 @@
 			{% endif %}
 
 			{% if data.series %}
-			colors: [{% for serie in data.series %}{% assign color = serie.color | default: data.color | default: 'blue' %}"{{ color | tabler_color }}"{% unless forloop.last %}, {% endunless %}{% endfor %}],
+			colors: [{% for serie in data.series %}{% assign color = serie.color | default: data.color | default: 'primary' %}tabler.getColor("{{ color }}"{% if serie.color-opacity %}, {{ serie.color-opacity }}{% endif %}){% unless forloop.last %}, {% endunless %}{% endfor %}],
 			{% endif %}
 
 			legend: {
