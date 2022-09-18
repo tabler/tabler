@@ -101,7 +101,7 @@ All notable changes to this project will be documented in this file.
 ## `1.0.0-beta9` - 2022-02-26
 
 - fix: #1061 - list group item colors in light and dark modes
-- new 'tasks' dashboard
+- new `tasks` dashboard
 - fix: #1059 - upload button in form element in dark view has problem
 - fix: #1052 - card background icon is practically invisible
 - remove Inter font and use default font system stack
@@ -114,22 +114,22 @@ All notable changes to this project will be documented in this file.
 
 ## `1.0.0-beta10` - 2022-04-29
 
-- new 'datatable' component
+- new `datatable` component
 - update Tabler Icons to v1.67
 - fix: #1024 - fix Tom-select in dark mode
 - new carousel indicators: dots, vertical, thumbs (#1101)
 - replace !important modifier with more specific selectors (#1100)
-- new 'FAQ' page
+- new `FAQ` page
 
 
 ## `1.0.0-beta11` - 2022-07-05
 
-- new 'Dropzone' component
-- new 'Lightbox' component
-- new 'TinyMCS' component
-- new 'Inline Player' component
-- new 'Pricing table' component
-- new 'Datagrid' compontent
+- new `Dropzone` component
+- new `Lightbox` component
+- new `TinyMCS` component
+- new `Inline Player` component
+- new `Pricing table` component
+- new `Datagrid` compontent
 - new optgroup form examples
 - new settings page
 - update Tabler Icons to v1.78
