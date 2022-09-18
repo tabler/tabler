@@ -9,35 +9,36 @@
 {% if page.page-header-file %}
 	{% include layout/headers/{{ page.page-header-file }}.html %}
 {% elsif page-header %}
-<!-- Page title -->
-<div class="page-header{% if class %} {{ class }}{% endif %} d-print-none{% if page.layout-navbar-overlap and page.layout-navbar-dark %} text-white{% endif %}">
-
-	<div class="row g-2 align-items-center">
-		<div class="col">
-			{% if pretitle %}
-			<!-- Page pre-title -->
-			<div class="page-pretitle">
-				{{ pretitle }}
-			</div>
-			{% endif %}
-			<h2 class="page-title">
-				{% if icon %}
-					{% include ui/icon.html icon=icon %}
+<!-- Page header -->
+<div class="page-header page-header-border{% if class %} {{ class }}{% endif %} d-print-none{% if page.layout-navbar-overlap and page.layout-navbar-dark %} text-white{% endif %}">
+	<div class="container-xl">
+		<div class="row g-2 align-items-center">
+			<div class="col">
+				{% if pretitle %}
+				<!-- Page pre-title -->
+				<div class="page-pretitle">
+					{{ pretitle }}
+				</div>
 				{% endif %}
-				{{ page-header }}
-			</h2>
+				<h2 class="page-title">
+					{% if icon %}
+						{% include ui/icon.html icon=icon %}
+					{% endif %}
+					{{ page-header }}
+				</h2>
 
-			{% if description %}
-				<div class="text-muted mt-1">{{ description }}</div>
+				{% if description %}
+					<div class="text-muted mt-1">{{ description }}</div>
+				{% endif %}
+			</div>
+
+			{% if actions %}
+				<!-- Page title actions -->
+				<div class="col-12 col-md-auto ms-auto d-print-none">
+					{% include layout/header-actions/{{ actions }}.html %}
+				</div>
 			{% endif %}
 		</div>
-
-		{% if actions %}
-			<!-- Page title actions -->
-			<div class="col-12 col-md-auto ms-auto d-print-none">
-				{% include layout/header-actions/{{ actions }}.html %}
-			</div>
-		{% endif %}
 	</div>
 </div>
 {% endif %}
