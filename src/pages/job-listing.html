@@ -57,33 +57,33 @@ page-header-actions: add-job
 	<div class="col-9">
 		<div class="row row-cards">
 			<div class="space-y">
-				{% for i in (1..10) %}
+				{% for job in site.data.jobs %}
 				<div class="card">
 					<div class="row g-0">
 						<div class="col-auto">
 							<div class="card-body">
-								<div class="avatar avatar-md"></div>
+								<div class="avatar avatar-md" style="background-image: url({{ site.base }}/static/jobs/{{ job.image }})"></div>
 							</div>
 						</div>
 						<div class="col">
 							<div class="card-body ps-0">
 								<div class="row">
-									<div class="col"><h3 class="mb-0">Senior Frontend Engineer</h3></div>
-									<div class="col-auto fs-h3">5,250 - 7,160 USD</div>
+									<div class="col"><h3 class="mb-0"><a href="#">{{ job.title }}</a></h3></div>
+									{% if job.salary %}<div class="col-auto fs-h3 text-green">{{ job.salary }}</div>{% endif %}
 								</div>
 								<div class="row">
 									<div class="col">
 										<div class="mt-3 list-inline list-inline-dots mb-0 text-muted">
-											<div class="list-inline-item">{% include ui/icon.html icon="building-community" class="icon-inline" %} T-Mobile Polska S.A.</div>
-											<div class="list-inline-item">{% include ui/icon.html icon="license" class="icon-inline" %} Contract</div>
-											<div class="list-inline-item">{% include ui/icon.html icon="map-pin" class="icon-inline" %} New York, NYC</div>
+											<div class="list-inline-item">{% include ui/icon.html icon="building-community" class="icon-inline" %} {{ job.company }}</div>
+											<div class="list-inline-item">{% include ui/icon.html icon="license" class="icon-inline" %} {{ job.type }}</div>
+											<div class="list-inline-item">{% include ui/icon.html icon="map-pin" class="icon-inline" %} {{ job.location }}</div>
 										</div>
 									</div>
 									<div class="col-auto">
 										<div class="mt-3 badges">
-											<a href="#" class="badge badge-outline text-muted badge-pill">AWS</a>
-											<a href="#" class="badge badge-outline text-muted badge-pill">symfony</a>
-											<a href="#" class="badge badge-outline text-muted badge-pill">php 7</a>
+											{% for tag in job.tags %}
+											<a href="#" class="badge badge-outline text-muted border fw-normal badge-pill">{{ tag }}</a>
+											{% endfor %}
 										</div>
 									</div>
 								</div>
