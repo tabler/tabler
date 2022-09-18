@@ -1,10 +1,10 @@
 .card {
   --#{$prefix}card-border-radius: var(--#{$prefix}border-radius);
-  --#{$prefix}card-bg: var(--#{$prefix}card-bg);
-  --#{$prefix}card-color: var(--#{$prefix}card-color);
+  --#{$prefix}card-bg: var(--#{$prefix}bg-surface);
+  --#{$prefix}card-color: var(--#{$prefix}body-color);
 
   border: $card-border-width solid $card-border-color;
-  background: var(--#{$prefix}card-bg, #{$card-bg});
+  background: var(--#{$prefix}card-bg, var(--#{$prefix}bg-surface));
   border-radius: var(--#{$prefix}card-border-radius);
   box-shadow: var(--#{$prefix}card-box-shadow);
   @include transition(transform $transition-time ease-out, opacity $transition-time ease-out, box-shadow $transition-time ease-out);
@@ -58,7 +58,7 @@
 
 .card-stamp-icon {
   background: var(--#{$prefix}muted);
-  color: var(--#{$prefix}card-bg);
+  color: var(--#{$prefix}card-bg, var(--#{$prefix}bg-surface));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -157,8 +157,8 @@
     left: 5px;
     height: 5px;
     content: "";
-    background: $card-bg;
-    border: 1px solid $card-border-color;
+    background: var(--#{$prefix}card-bg, var(--#{$prefix}bg-surface));
+    border: 1px solid var(--#{$prefix}card-border-color);
     border-radius: var(--#{$prefix}card-border-radius) var(--#{$prefix}card-border-radius) 0 0;
   }
 }
@@ -484,7 +484,7 @@ Card avatar
 .card-avatar {
   margin-left: auto;
   margin-right: auto;
-  box-shadow: 0 0 0 .25rem $card-bg;
+  box-shadow: 0 0 0 .25rem var(--#{$prefix}card-bg, var(--#{$prefix}bg-surface));
   margin-top: calc(-1 * calc(var(--#{$prefix}avatar-size) * .5));
 }
 
@@ -534,7 +534,7 @@ Card list group
 
       &.active {
         color: $headings-color;
-        background: $card-bg;
+        background: var(--#{$prefix}card-bg, var(--#{$prefix}bg-surface));
         border-bottom-color: transparent;
       }
     }
