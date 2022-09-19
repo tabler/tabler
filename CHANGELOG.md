@@ -129,10 +129,36 @@ All notable changes to this project will be documented in this file.
 - new `TinyMCS` component
 - new `Inline Player` component
 - new `Pricing table` component
-- new `Datagrid` compontent
+- new `Datagrid` component
 - new optgroup form examples
 - new settings page
 - update Tabler Icons to v1.78
 - added popover docs page
 - fix: #1125 incorrect chart display in the mobile version
 - update Bootstrap to 5.2.0
+
+
+## `1.0.0-beta12` - 2022-09-19
+
+- new "Job listing" page
+- new "Sign in with cover" page
+- new "Logs" page
+- new `progressbg` component
+- add a lot of CSS variables
+- add Dockerfile with alpine base
+- add icon pulse/tada/rotate animations
+- use :host in selectors to support Web Components
+- use dark table variant colors in dark mode (#1200)
+- update Tabler Icons to v1.96
+- change `space-y` component
+- headings, shadows and borders unify
+- toggle TinyMCE dark mode and skin based on the set Tabler theme
+- fix `card-footer` background
+- fix headers weight
+- fix transparent hover background in pagination
+- fix dark mode card text color
+- fix `--#{$prefix}card-bg` is undefined
+- fix global variable for `.card` and `.btn`
+- fix code sample in the customize tabler docs
+- fix form elements demo page radio buttons
+- replace `gulp-minify` with `gulp-terser`
