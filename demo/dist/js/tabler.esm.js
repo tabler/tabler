@@ -1,6 +1,6 @@
 /*!
-* Tabler v1.0.0-beta11 (https://tabler.io)
-* @version 1.0.0-beta11
+* Tabler v1.0.0-beta12 (https://tabler.io)
+* @version 1.0.0-beta12
 * @link https://tabler.io
 * Copyright 2018-2022 The Tabler Authors
 * Copyright 2018-2022 codecalm.net Paweł Kuna
@@ -4653,7 +4653,7 @@ var Popper = /*#__PURE__*/Object.freeze({
 });
 
 /*!
-  * Bootstrap v5.2.0 (https://getbootstrap.com/)
+  * Bootstrap v5.2.1 (https://getbootstrap.com/)
   * Copyright 2011-2022 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
   */
@@ -5184,7 +5184,7 @@ class Config {
     }
   }
 }
-const VERSION = '5.2.0';
+const VERSION = '5.2.1';
 class BaseComponent extends Config {
   constructor(element, config) {
     super();
@@ -6028,7 +6028,7 @@ class Dropdown extends BaseComponent {
     super(element, config);
     this._popper = null;
     this._parent = this._element.parentNode;
-    this._menu = SelectorEngine.findOne(SELECTOR_MENU, this._parent);
+    this._menu = SelectorEngine.next(this._element, SELECTOR_MENU)[0] || SelectorEngine.prev(this._element, SELECTOR_MENU)[0];
     this._inNavbar = this._detectNavbar();
   }
   static get Default() {
@@ -6252,7 +6252,7 @@ class Dropdown extends BaseComponent {
       return;
     }
     event.preventDefault();
-    const getToggleButton = SelectorEngine.findOne(SELECTOR_DATA_TOGGLE$3, event.delegateTarget.parentNode);
+    const getToggleButton = this.matches(SELECTOR_DATA_TOGGLE$3) ? this : SelectorEngine.prev(this, SELECTOR_DATA_TOGGLE$3)[0] || SelectorEngine.next(this, SELECTOR_DATA_TOGGLE$3)[0];
     const instance = Dropdown.getOrCreateInstance(getToggleButton);
     if (isUpOrDownEvent) {
       event.stopPropagation();
@@ -6531,6 +6531,7 @@ const EVENT_HIDDEN$4 = `hidden${EVENT_KEY$4}`;
 const EVENT_SHOW$4 = `show${EVENT_KEY$4}`;
 const EVENT_SHOWN$4 = `shown${EVENT_KEY$4}`;
 const EVENT_RESIZE$1 = `resize${EVENT_KEY$4}`;
+const EVENT_CLICK_DISMISS = `click.dismiss${EVENT_KEY$4}`;
 const EVENT_MOUSEDOWN_DISMISS = `mousedown.dismiss${EVENT_KEY$4}`;
 const EVENT_KEYDOWN_DISMISS$1 = `keydown.dismiss${EVENT_KEY$4}`;
 const EVENT_CLICK_DATA_API$2 = `click${EVENT_KEY$4}${DATA_API_KEY$2}`;
@@ -6672,16 +6673,18 @@ class Modal extends BaseComponent {
       }
     });
     EventHandler.on(this._element, EVENT_MOUSEDOWN_DISMISS, event => {
-      if (event.target !== event.currentTarget) {
-        return;
-      }
-      if (this._config.backdrop === 'static') {
-        this._triggerBackdropTransition();
-        return;
-      }
-      if (this._config.backdrop) {
-        this.hide();
-      }
+      EventHandler.one(this._element, EVENT_CLICK_DISMISS, event2 => {
+        if (this._dialog.contains(event.target) || this._dialog.contains(event2.target)) {
+          return;
+        }
+        if (this._config.backdrop === 'static') {
+          this._triggerBackdropTransition();
+          return;
+        }
+        if (this._config.backdrop) {
+          this.hide();
+        }
+      });
     });
   }
   _hideModal() {
@@ -7223,7 +7226,7 @@ class Tooltip extends BaseComponent {
     super(element, config);
     this._isEnabled = true;
     this._timeout = 0;
-    this._isHovered = false;
+    this._isHovered = null;
     this._activeTrigger = {};
     this._popper = null;
     this._templateFactory = null;
@@ -7275,6 +7278,9 @@ class Tooltip extends BaseComponent {
     if (this.tip) {
       this.tip.remove();
     }
+    if (this._config.originalTitle) {
+      this._element.setAttribute('title', this._config.originalTitle);
+    }
     this._disposePopper();
     super.dispose();
   }
@@ -7316,12 +7322,11 @@ class Tooltip extends BaseComponent {
       }
     }
     const complete = () => {
-      const previousHoverState = this._isHovered;
-      this._isHovered = false;
       EventHandler.trigger(this._element, this.constructor.eventName(EVENT_SHOWN$2));
-      if (previousHoverState) {
+      if (this._isHovered === false) {
         this._leave();
       }
+      this._isHovered = false;
     };
     this._queueCallback(complete, this.tip, this._isAnimated());
   }
@@ -7343,7 +7348,7 @@ class Tooltip extends BaseComponent {
     this._activeTrigger[TRIGGER_CLICK] = false;
     this._activeTrigger[TRIGGER_FOCUS] = false;
     this._activeTrigger[TRIGGER_HOVER] = false;
-    this._isHovered = false;
+    this._isHovered = null;
     const complete = () => {
       if (this._isWithActiveTrigger()) {
         return;
@@ -7683,13 +7688,15 @@ const Default$1 = {
   offset: null,
   rootMargin: '0px 0px -25%',
   smoothScroll: false,
-  target: null
+  target: null,
+  threshold: [0.1, 0.5, 1]
 };
 const DefaultType$1 = {
   offset: '(number|null)',
   rootMargin: 'string',
   smoothScroll: 'boolean',
-  target: 'element'
+  target: 'element',
+  threshold: 'array'
 };
 class ScrollSpy extends BaseComponent {
   constructor(element, config) {
@@ -7732,6 +7739,10 @@ class ScrollSpy extends BaseComponent {
   }
   _configAfterMerge(config) {
     config.target = getElement(config.target) || document.body;
+    config.rootMargin = config.offset ? `${config.offset}px 0px -30%` : config.rootMargin;
+    if (typeof config.threshold === 'string') {
+      config.threshold = config.threshold.split(',').map(value => Number.parseFloat(value));
+    }
     return config;
   }
   _maybeEnableSmoothScroll() {
@@ -7759,8 +7770,8 @@ class ScrollSpy extends BaseComponent {
   _getNewObserver() {
     const options = {
       root: this._rootElement,
-      threshold: [0.1, 0.5, 1],
-      rootMargin: this._getRootMargin()
+      threshold: this._config.threshold,
+      rootMargin: this._config.rootMargin
     };
     return new IntersectionObserver(entries => this._observerCallback(entries), options);
   }
@@ -7791,9 +7802,6 @@ class ScrollSpy extends BaseComponent {
         activate(entry);
       }
     }
-  }
-  _getRootMargin() {
-    return this._config.offset ? `${this._config.offset}px 0px -30%` : this._config.rootMargin;
   }
   _initializeTargetsAndObservables() {
     this._targetLinks = new Map();
