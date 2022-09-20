@@ -1,7 +1,7 @@
 const gulp = require('gulp'),
 	debug = require('gulp-debug'),
 	clean = require('gulp-clean'),
-	sass = require('gulp-sass')(require('node-sass')),
+	sass = require('gulp-sass')(require('sass')),
 	postcss = require('gulp-postcss'),
 	header = require('gulp-header'),
 	cleanCSS = require('gulp-clean-css'),
