@@ -1,6 +1,6 @@
 /*!
-* Tabler v1.0.0-beta11 (https://tabler.io)
-* @version 1.0.0-beta11
+* Tabler v1.0.0-beta12 (https://tabler.io)
+* @version 1.0.0-beta12
 * @link https://tabler.io
 * Copyright 2018-2022 The Tabler Authors
 * Copyright 2018-2022 codecalm.net Paweł Kuna
@@ -71,10 +71,6 @@
   }
 
   var items = {
-    'theme': {
-      localStorage: 'tablerTheme',
-      default: 'light'
-    },
     'menu-position': {
       localStorage: 'tablerMenuPosition',
       default: 'top'
@@ -120,10 +116,6 @@
       }
     }
   };
-  var updateBodyClasses = function updateBodyClasses() {
-    document.body.classList.remove('theme-dark', 'theme-light');
-    document.body.classList.add("theme-".concat(config.theme));
-  };
   var submitForm = function submitForm(form) {
     for (var _i3 = 0, _Object$entries3 = Object.entries(items); _i3 < _Object$entries3.length; _i3++) {
       var _Object$entries3$_i = _slicedToArray(_Object$entries3[_i3], 2),
@@ -133,12 +125,10 @@
       localStorage.setItem(_params2.localStorage, value);
       config[_key3] = value;
     }
-    updateBodyClasses();
     window.dispatchEvent(new Event('resize'));
     new bootstrap.Offcanvas(form).hide();
   };
   parseUrl();
-  updateBodyClasses();
   var form = document.querySelector('#offcanvasSettings');
   if (form) {
     form.addEventListener('submit', function (e) {

@@ -3,15 +3,15 @@
 //
 .btn {
   --#{$prefix}btn-icon-size: #{$icon-size};
-  --#{$prefix}btn-color: var(--#{$prefix}color-text);
+  --#{$prefix}btn-color: var(--#{$prefix}body-color);
   --#{$prefix}btn-border-color: var(--#{$prefix}border-color);
-  //background-color: var(--#{$prefix}btn-color, var(--#{$prefix}card-bg));
-  //color: var(--#{$prefix}btn-color-text);
+  --#{$prefix}btn-box-shadow: var(--#{$prefix}shadow-button);
 
   display: inline-flex;
   align-items: center;
   justify-content: center;
   white-space: nowrap;
+  box-shadow: var(--#{$prefix}btn-box-shadow);
 
   .icon {
     width: var(--#{$prefix}btn-icon-size);
@@ -41,6 +41,7 @@
   color: $link-color;
   background-color: transparent;
   border-color: transparent;
+  box-shadow: none;
 
   .icon {
     color: inherit;
@@ -56,8 +57,8 @@
 // Button color variations
 //
 .btn-white {
-  --#{$prefix}btn-bg: var(--#{$prefix}card-bg);
-  --#{$prefix}btn-hover-bg: var(--#{$prefix}card-bg);
+  --#{$prefix}btn-bg: var(--#{$prefix}card-bg, var(--#{$prefix}bg-surface));
+  --#{$prefix}btn-hover-bg: var(--#{$prefix}card-bg-hover, var(--#{$prefix}bg-surface));
 }
 
 @each $color, $value in $theme-colors {
@@ -73,6 +74,7 @@
     --#{$prefix}btn-active-bg: rgba(var(--#{$prefix}#{$color}-rgb), .8);
     --#{$prefix}btn-disabled-bg: rgba(var(--#{$prefix}#{$color}-rgb), .5);
     --#{$prefix}btn-disabled-color: var(--#{$prefix}#{$color}-fg);
+    --#{$prefix}btn-box-shadow: var(--#{$prefix}shadow-button), var(--#{$prefix}shadow-button-inset);
   }
 
   .btn-outline-#{$color} {

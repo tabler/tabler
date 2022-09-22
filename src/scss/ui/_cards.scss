@@ -1,10 +1,12 @@
 .card {
   --#{$prefix}card-border-radius: var(--#{$prefix}border-radius);
+  --#{$prefix}card-bg: var(--#{$prefix}bg-surface);
+  --#{$prefix}card-color: var(--#{$prefix}body-color);
 
-  box-shadow: $card-shadow;
   border: $card-border-width solid $card-border-color;
-  background: var(--#{$prefix}card-bg, #{$card-bg});
+  background: var(--#{$prefix}card-bg, var(--#{$prefix}bg-surface));
   border-radius: var(--#{$prefix}card-border-radius);
+  box-shadow: var(--#{$prefix}card-box-shadow);
   @include transition(transform $transition-time ease-out, opacity $transition-time ease-out, box-shadow $transition-time ease-out);
 
   @media print {
@@ -17,7 +19,7 @@
 
     &:hover {
       text-decoration: none;
-      box-shadow: $card-shadow-hover;
+      box-shadow: $shadow-card-hover;
     }
   }
 
@@ -56,7 +58,7 @@
 
 .card-stamp-icon {
   background: var(--#{$prefix}muted);
-  color: var(--#{$prefix}card-bg);
+  color: var(--#{$prefix}card-bg, var(--#{$prefix}bg-surface));
   display: flex;
   align-items: center;
   justify-content: center;
@@ -118,7 +120,7 @@
     bottom: -1px;
     left: -1px;
     content: "";
-    border: 1px solid var(--#{$prefix}primary);
+    border: var(--#{$prefix}border-width) solid var(--#{$prefix}primary);
     border-radius: inherit;
   }
 }
@@ -130,10 +132,10 @@
   padding: $card-spacer-y $card-spacer-x;
   text-align: center;
   @include transition(background $transition-time);
-  border-top: 1px solid var(--#{$prefix}border-color);
+  border-top: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color);
   flex: 1;
   color: inherit;
-  font-weight: $font-weight-medium;
+  font-weight: var(--#{$prefix}font-weight-medium);
 
   &:hover {
     text-decoration: none;
@@ -141,7 +143,7 @@
   }
 
   & + & {
-    border-left: 1px solid var(--#{$prefix}border-color);
+    border-left: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color);
   }
 }
 
@@ -155,8 +157,8 @@
     left: 5px;
     height: 5px;
     content: "";
-    background: $card-bg;
-    border: 1px solid $card-border-color;
+    background: var(--#{$prefix}card-bg, var(--#{$prefix}bg-surface));
+    border: var(--#{$prefix}border-width) solid var(--#{$prefix}card-border-color);
     border-radius: var(--#{$prefix}card-border-radius) var(--#{$prefix}card-border-radius) 0 0;
   }
 }
@@ -295,7 +297,7 @@
   display: block;
   margin: 0 0 1rem;
   font-size: $h3-font-size;
-  font-weight: $font-weight-medium;
+  font-weight: var(--#{$prefix}font-weight-medium);
   color: $headings-color;
   line-height: 1.5rem;
 
@@ -353,7 +355,7 @@
   }
 
   & + & {
-    border-top: 1px solid $border-color;
+    border-top: var(--#{$prefix}border-width) solid $border-color;
   }
 }
 
@@ -446,7 +448,7 @@ Card table
   }
 
   .card-body + & {
-    border-top: 1px solid var(--#{$prefix}table-border-color);
+    border-top: var(--#{$prefix}border-width) solid var(--#{$prefix}table-border-color);
   }
 }
 
@@ -482,7 +484,7 @@ Card avatar
 .card-avatar {
   margin-left: auto;
   margin-right: auto;
-  box-shadow: 0 0 0 .25rem $card-bg;
+  box-shadow: 0 0 0 .25rem var(--#{$prefix}card-bg, var(--#{$prefix}bg-surface));
   margin-top: calc(-1 * calc(var(--#{$prefix}avatar-size) * .5));
 }
 
@@ -491,7 +493,7 @@ Card list group
  */
 .card-list-group {
   .card-body + & {
-    border-top: 1px solid $border-color;
+    border-top: var(--#{$prefix}border-width) solid $border-color;
   }
 
   .list-group-item {
@@ -532,7 +534,7 @@ Card list group
 
       &.active {
         color: $headings-color;
-        background: $card-bg;
+        background: var(--#{$prefix}card-bg, var(--#{$prefix}bg-surface));
         border-bottom-color: transparent;
       }
     }

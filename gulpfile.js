@@ -1,7 +1,7 @@
 const gulp = require('gulp'),
 	debug = require('gulp-debug'),
 	clean = require('gulp-clean'),
-	sass = require('gulp-sass')(require('node-sass')),
+	sass = require('gulp-sass')(require('sass')),
 	postcss = require('gulp-postcss'),
 	header = require('gulp-header'),
 	cleanCSS = require('gulp-clean-css'),
@@ -17,7 +17,6 @@ const gulp = require('gulp'),
 	rollupReplace = require('@rollup/plugin-replace'),
 	vinylSource = require('vinyl-source-stream'),
 	vinylBuffer = require('vinyl-buffer'),
-	critical = require('critical').stream,
 	browserSync = require('browser-sync'),
 	glob = require('glob'),
 	spawn = require('cross-spawn'),
@@ -389,31 +388,6 @@ gulp.task('build-purgecss', (cb) => {
 	cb()
 })
 
-gulp.task('build-critical', (cb) => {
-	if (argv.preview) {
-		return gulp
-			.src('demo/**/*.html')
-			.pipe(
-				critical({
-					base: 'demo/',
-					inline: true,
-					css: ['demo/dist/css/tabler.css'],
-					ignore: {
-						atrule: ['@font-face', '@import'],
-						decl: (node, value) => {
-							/url\(/.test(value)
-						},
-					},
-				})
-			)
-			.on('error', err => {
-				console.log(err.message)
-			})
-			.pipe(gulp.dest('demo'))
-	}
-
-	cb()
-})
 
 /**
  * Watch JS and SCSS files
@@ -523,5 +497,5 @@ gulp.task('clean', gulp.series('clean-dirs', 'clean-jekyll'))
 gulp.task('start', gulp.series('clean', 'sass', 'js', gulp.parallel('js-demo', 'js-demo-theme'), 'mjs', 'build-jekyll', gulp.parallel('watch-jekyll', 'watch', 'browser-sync')))
 
 gulp.task('build-core', gulp.series('build-on', 'clean', 'sass', 'css-rtl', 'css-minify', 'js', gulp.parallel('js-demo', 'js-demo-theme'), 'mjs', 'copy-images', 'copy-libs', 'add-banner'))
-gulp.task('build-demo', gulp.series('build-on', 'build-jekyll', 'copy-static', 'copy-dist', 'build-cleanup', 'build-purgecss'/*, 'build-critical'*/))
+gulp.task('build-demo', gulp.series('build-on', 'build-jekyll', 'copy-static', 'copy-dist', 'build-cleanup', 'build-purgecss'))
 gulp.task('build', gulp.series('build-core', 'build-demo'))
