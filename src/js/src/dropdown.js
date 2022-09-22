@@ -8,5 +8,5 @@ dropdownTriggerList.map(function (dropdownTriggerEl) {
 	let options = {
 		boundary: dropdownTriggerEl.getAttribute('data-bs-boundary') === 'viewport' ? document.querySelector('.btn') : 'clippingParents',
 	}
-	return new Dropdown(dropdownTriggerEl, oprions);
+	return new Dropdown(dropdownTriggerEl, options);
 });
