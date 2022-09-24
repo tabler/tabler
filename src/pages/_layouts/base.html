@@ -10,6 +10,8 @@
 	<title>{% if title %}{{ title }} - {% endif %}{% if site.title %}{{ site.title }} - {% endif %}{{ site.description }}</title>
 
 	{% if jekyll.environment == 'preview' %}
+		{% include layout/analytics.html %}
+
 		<meta name="msapplication-TileColor" content="{{ site.data.colors.blue }}"/>
 		<meta name="theme-color" content="{{ site.data.colors.blue }}"/>
 
@@ -25,7 +27,6 @@
 		<meta name="description" content="{{ page.description | default: 'Tabler comes with tons of well-designed components and features. Start your adventure with Tabler and make your dashboard great again. For free!' | escape }}"/>
 
 		{% include layout/og.html %}
-		{% include layout/analytics.html %}
 	{% endif %}
 
 	{% include layout/css.html %}
