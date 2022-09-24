@@ -3,10 +3,6 @@
 {% assign title = page.title | default: layout.title %}
 <html lang="en"{% if page.rtl or site.rtl %} dir="rtl" {% endif %}>
 <head>
-	{% if jekyll.environment == 'preview' %}
-		{% include layout/analytics.html %}
-	{% endif %}
-
 	<meta charset="utf-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
 	<meta http-equiv="X-UA-Compatible" content="ie=edge"/>
@@ -14,6 +10,8 @@
 	<title>{% if title %}{{ title }} - {% endif %}{% if site.title %}{{ site.title }} - {% endif %}{{ site.description }}</title>
 
 	{% if jekyll.environment == 'preview' %}
+		{% include layout/analytics.html %}
+
 		<meta name="msapplication-TileColor" content="{{ site.data.colors.blue }}"/>
 		<meta name="theme-color" content="{{ site.data.colors.blue }}"/>
 
@@ -49,9 +47,11 @@
 
 	{% include layout/modals-capture.html %}
 
+{% comment %}
 	{% if jekyll.environment == 'preview' %}
 		{% include layout/sentry.html %}
 	{% endif %}
+{% endcomment %}
 
 	{% include layout/js.html %}
 
