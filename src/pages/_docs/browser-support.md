@@ -1,6 +1,6 @@
 ---
 title: Browser Support
-menu: docs.base.browser-support
+menu: help.docs.base.browser-support
 ---
 
 As of this latest release, Tabler has launched many new features that may not be compatible with all browsers, especially older ones.

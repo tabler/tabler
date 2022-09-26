@@ -1,5 +1,5 @@
 ---
-menu: docs.content.customize
+menu: help.docs.content.customize
 title: Customize Tabler
 description: Tabler has been designed so that it can be adjusted to your needs and requirements as much as possible. You can customize your own fonts, colors, font sizes, etc in it.
 ---

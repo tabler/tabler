@@ -1,6 +1,6 @@
 ---
 title: Statuses
-menu: docs.components.statuses
+menu: help.docs.components.statuses
 description: Status dots are particularly useful if you want to make an interface element more noticeable regardless of limited space.
 ---
 

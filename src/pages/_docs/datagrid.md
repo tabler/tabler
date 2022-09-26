@@ -1,6 +1,6 @@
 ---
 title: Data grid
-menu: docs.components.datagrid
+menu: help.docs.components.datagrid
 description: Use the data grid component to display detailed information about your product. The data is displayed as a column of items consisting of a title and content.
 ---
 

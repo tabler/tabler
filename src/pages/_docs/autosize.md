@@ -1,6 +1,6 @@
 ---
 title: Autosize
-menu: docs.plugins.autosize
+menu: help.docs.plugins.autosize
 description: The autosize element will automatically adjust the textarea height and make it easier for users to follow as they type.
 libs: autosize
 ---

@@ -2,7 +2,7 @@
 title: Popovers
 description: Popovers are used to provide additional information on elements where a simple tooltip is not sufficient.
 bootstrap-link: components/popovers
-menu: docs.components.popover
+menu: help.docs.components.popover
 ---
 
 
