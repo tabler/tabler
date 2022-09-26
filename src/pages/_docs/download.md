@@ -1,6 +1,6 @@
 ---
 title: Download
-menu: docs.base.download
+menu: help.docs.base.download
 description: Download Tabler to get the compiled CSS and JavaScript, source code, or include it with your favorite package managers like npm, yarn and more.
 ---
 

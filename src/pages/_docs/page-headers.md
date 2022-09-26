@@ -1,6 +1,6 @@
 ---
 title: Page headers
-menu: docs.layout.headers
+menu: help.docs.layout.headers
 description: Page heading examples for Tabler
 ---
 

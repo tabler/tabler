@@ -2,7 +2,7 @@
 title: Dropdowns
 description: Use dropdowns to display lists of options or include more positions in a menu without overwhelming users with too many buttons and long lists. Dropdowns facilitate users' interaction with your website or software and make your design look clear.
 bootstrap-link: components/dropdowns
-menu: docs.components.dropdowns
+menu: help.docs.components.dropdowns
 ---
 
 

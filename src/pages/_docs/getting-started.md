@@ -1,6 +1,6 @@
 ---
 title: Getting started
-menu: docs.base.getting-started
+menu: help.docs.base.getting-started
 ---
 
 ## What are the benefits?

@@ -1,6 +1,6 @@
 ---
 title: Color check
-menu: docs.forms.color-check
+menu: help.docs.forms.color-check
 ---
 
 Your input controls can come in a variety of colors, depending on your preferences. Click [here]({% docs_url colors %}) to see the list of available colors.
