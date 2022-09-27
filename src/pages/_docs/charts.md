@@ -1,6 +1,6 @@
 ---
 title: Charts
-menu: docs.plugins.charts
+menu: help.docs.plugins.charts
 libs: apexcharts
 description: Tabler uses ApexCharts - a free and open-source modern charting library that helps developers to create beautiful and interactive visualizations for web pages.
 ---

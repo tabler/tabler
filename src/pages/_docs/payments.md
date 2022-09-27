@@ -1,6 +1,6 @@
 ---
 title: Payments
-menu: docs.plugins.payments
+menu: help.docs.plugins.payments
 description: The Tabler payments plug-in will let you use a set of payment provider icons to facilitate the payment process and make it more-user friendly.
 plugin: payments
 ---

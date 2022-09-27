@@ -1,6 +1,6 @@
 ---
 title: Form fieldset
-menu: docs.forms.fieldset
+menu: help.docs.forms.fieldset
 ---
 
 Group parts of your form to make it well-structured and clearer for users, using the ``fieldset`` element.

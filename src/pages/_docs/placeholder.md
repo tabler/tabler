@@ -1,6 +1,6 @@
 ---
 title: Placeholder
-menu: docs.components.placeholder
+menu: help.docs.components.placeholder
 description: Placeholder is used to reserve space for content that soon will appear in a layout.
 redirect_from:
     - /docs/skeleton.html

@@ -1,6 +1,6 @@
 ---
 title: Form selectboxes
-menu: docs.forms.selectboxes
+menu: help.docs.forms.selectboxes
 ---
 
 Add selectboxes to make your form more intuitive by providing users with a set of options to choose from. You can add simple selectboxes with a label, use icons only or icons with labels. Alternatively, you can use pill selectboxes if they go well with your design.

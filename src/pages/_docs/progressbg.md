@@ -1,6 +1,6 @@
 ---
 title: Progressbg
-menu: docs.components.progressbg
+menu: help.docs.components.progressbg
 ---
 
 {% capture code %}

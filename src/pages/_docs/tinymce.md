@@ -1,6 +1,6 @@
 ---
 title: TinyMCE
-menu: docs.plugins.tinymce
+menu: help.docs.plugins.tinymce
 libs: tinymce
 description: The WYSIWYG editor that is flexible, customizable, and designed with the user in mind. TinyMCE can handle any challenge, from the most simple implementation through to the most complex use case.
 ---

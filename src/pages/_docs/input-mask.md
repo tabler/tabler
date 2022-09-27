@@ -1,7 +1,7 @@
 ---
 title: Input mask
 description: An input mask is a used to clarify the input format required in a given field and is helpful for users, removing confusion and reducing the number of validation errors.
-menu: docs.plugins.input-mask
+menu: help.docs.plugins.input-mask
 ---
 
 To be able to use the input mask in your application you will need to install the imask dependency with `npm install imask`.

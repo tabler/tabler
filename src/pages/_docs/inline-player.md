@@ -1,6 +1,6 @@
 ---
 title: Inline player
-menu: docs.plugins.plyr
+menu: help.docs.plugins.plyr
 libs: plyr
 description: A simple, lightweight, accessible and customizable HTML5, YouTube and Vimeo media player that supports modern browsers.
 ---

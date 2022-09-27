@@ -1,6 +1,6 @@
 ---
 title: Image check
-menu: docs.forms.image-check
+menu: help.docs.forms.image-check
 ---
 
 Add an image check to your form and give users visually attractive options to choose from.
