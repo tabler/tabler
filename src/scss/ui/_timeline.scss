@@ -1,0 +1,48 @@
+//
+// Timeline
+//
+.timeline {
+  --#{$prefix}timeline-icon-size: #{$avatar-size};
+  position: relative;
+  list-style: none;
+  padding: 0;
+
+  &:before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 1.25rem;
+    height: 100%;
+    width: var(--#{$prefix}border-width);
+    background-color: var(--#{$prefix}border-color);
+    border-radius: var(--#{$prefix}border-radius);
+  }
+}
+
+//
+// Timeline event
+//
+.timeline-event {
+  position: relative;
+
+  &:not(:last-child) {
+    margin-bottom: var(--#{$prefix}content-padding);
+  }
+}
+
+.timeline-event-icon {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--#{$prefix}timeline-icon-size, $avatar-size);
+  height: var(--#{$prefix}timeline-icon-size, $avatar-size);
+  background: var(--#{$prefix}gray-400);
+  color: $white;
+  border-radius: var(--#{$prefix}border-radius);
+  z-index: 5
+}
+
+.timeline-event-card {
+  margin-left: calc(var(--#{$prefix}timeline-icon-size, $avatar-size) + var(--#{$prefix}content-padding));
+}

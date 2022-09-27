@@ -41,8 +41,27 @@ page-body-class: mt-0
 						{{ person.birth_date }}
 					</div>
 				</div>
+
+				<ul class="timeline mt-5">
+					{% for item in site.data.timeline %}
+					<li class="timeline-event">
+						<div class="timeline-event-icon bg-{{ item.icon-bg }}">
+							{% include ui/icon.html icon=item.icon %}
+						</div>
+						<div class="timeline-event-card card">
+							<div class="card-header card-header-light">
+								<h3 class="card-title">{{ item.title }}</h3>
+								<div class="card-options text-muted">{{ item.date }}</div>
+							</div>
+							<div class="card-body">
+								Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci corporis, deleniti, distinctio dolores esse fugit in magni maxime minus nisi nobis officia perspiciatis quasi quibusdam quo, repudiandae saepe ut voluptatibus!
+							</div>
+						</div>
+					</li>
+					{% endfor %}
+				</ul>
 			</div>
-			<div class="col-md-4">
+			<div class="col-lg-4">
 				{% include cards/user-info.html %}
 			</div>
 		</div>
