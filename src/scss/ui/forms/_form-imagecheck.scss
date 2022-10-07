@@ -42,9 +42,9 @@ Image check
     pointer-events: none;
     content: "";
     user-select: none;
-    background: $white;
-    border: var(--#{$prefix}border-width) solid $border-color;
-    border-radius: 3px;
+    background: $form-check-input-bg;
+    border: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color);
+    border-radius: $form-check-input-border-radius;
     @include transition(opacity $transition-time);
 
     .form-imagecheck-input:checked ~ & {
@@ -54,6 +54,11 @@ Image check
       background-position: center;
       background-size: $form-check-input-checked-bg-size;
       border-color: $form-check-input-checked-border-color;
+    }
+
+    .form-imagecheck-input[type="radio"] ~ & {
+      border-radius: $form-check-radio-border-radius;
+      background-image: escape-svg($form-check-radio-checked-bg-image);
     }
   }
 }

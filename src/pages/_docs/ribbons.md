@@ -1,6 +1,6 @@
 ---
 title: Ribbons
-menu: docs.components.ribbons
+menu: help.docs.components.ribbons
 description: Ribbons are graphical elements which attract users' attention to a given element of an interface and make it stand out. 
 ---
 

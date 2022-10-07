@@ -1,7 +1,7 @@
 ---
 title: Timelines
 description: A timeline is a perfect way to visualize processes and projects, as it's easy to read and attractive for users. You can use it to give an overview of events, present an agenda or point out important points in time.
-menu: docs.components.timelines
+menu: help.docs.components.timelines
 ---
 
 

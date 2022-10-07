@@ -1,6 +1,6 @@
 ---
 title: Carousel
-menu: docs.components.carousel
+menu: help.docs.components.carousel
 description: A carousel is used to display multiple pieces of visual content without taking up too much space. Carousels eliminate the need to scroll down the page to see all content and are a popular method of displaying marketing information.  
 bootstrap-link: components/carousel/
 ---

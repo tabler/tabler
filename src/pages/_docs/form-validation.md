@@ -1,6 +1,6 @@
 ---
 title: Validation states
-menu: docs.forms.validation-states
+menu: help.docs.forms.validation-states
 description: To inform users whether the entered value is correct or not, use either of the validation states. Thanks to that, users will immediately know which form elements they need to correct and, if the state displays as invalid, why the value is incorrect.
 ---
 

@@ -1,6 +1,6 @@
 ---
 title: Alerts
-menu: docs.components.alerts
+menu: help.docs.components.alerts
 description: Alert messages are used to inform users of the status of their action and help them solve any problems that might have occurred. Good design of alert modals is very important for the overall user experience of a website or app.
 bootstrap-link: components/alerts/
 ---

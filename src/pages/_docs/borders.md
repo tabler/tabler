@@ -1,6 +1,6 @@
 ---
 title: Borders
-menu: docs.utils.borders
+menu: help.docs.utils.borders
 description: Use border utilities to quickly style the border and border-radius of an element. Great for images, buttons, or any other element.
 ---
 

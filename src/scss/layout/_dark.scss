@@ -18,6 +18,9 @@ body:not(.theme-dark) .hide-theme-light {
     --#{$prefix}body-bg: #{$dark-mode-darken};
     --#{$prefix}body-bg-rgb: #{to-rgb($dark-mode-darken)};
 
+    --#{$prefix}bg-forms: #{$dark-mode-darken};
+    --#{$prefix}bg-surface: #{$dark};
+
     --#{$prefix}card-bg: #{$dark-mode-darken};
     --#{$prefix}card-bg-hover: #{$dark-mode-darken};
     --#{$prefix}card-bg-rgb: #{to-rgb($dark-mode-darken)};
@@ -27,6 +30,9 @@ body:not(.theme-dark) .hide-theme-light {
     --#{$prefix}border-color-light: #{$dark-mode-border-color-light};
 
     --#{$prefix}btn-color: #{$dark-mode-darken};
+
+    --#{$prefix}code-color: var(--#{$prefix}body-color);
+    --#{$prefix}code-bg: #{$dark-mode-border-color-light};
 
     color: $dark-mode-text;
     background-color: $dark-mode-darken;
@@ -54,8 +60,12 @@ body:not(.theme-dark) .hide-theme-light {
   .toast,
   .toast-header,
   .alert:not(.alert-important) {
-    background-color: $dark;
+    background-color: var(--#{$prefix}bg-surface);
     color: inherit;
+  }
+
+  .modal {
+    --#{$prefix}modal-border-color: var(--#{$prefix}border-color);
   }
 
   .bg-light {
@@ -117,10 +127,6 @@ body:not(.theme-dark) .hide-theme-light {
 
   .avatar {
     --#{$prefix}avatar-bg: #{$dark-mode-lighten};
-  }
-
-  .avatar-list-stacked .avatar {
-    box-shadow: 0 0 0 2px $dark;
   }
 
   .markdown,

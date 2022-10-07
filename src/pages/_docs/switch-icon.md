@@ -1,6 +1,6 @@
 ---
 title: Switch icon
-menu: docs.components.switch-icon
+menu: help.docs.components.switch-icon
 description: The Switch Icon component is used to create a transition between two icons. You can use any icon, both line and filled version.
 banner: icons
 ---

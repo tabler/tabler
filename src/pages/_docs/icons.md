@@ -1,6 +1,6 @@
 ---
 title: Icons
-menu: docs.content.icons
+menu: help.docs.content.icons
 description: Use one of over 1500 icons created specifically for Tabler and make your dashboard look even more attractive. All icons are under MIT license, so you can use them without any problem both in private and commercial projects.
 banner: icons
 ---

@@ -34,8 +34,8 @@
 {% assign html = html | replace_regex: "\n\n+", new_line %}
 
 {% unless include.show-svg %}
-{% assign html = html | replace_regex: '<svg[^>]*class="icon ([^"]+)"[^>]*>.*?<\/svg>', '<!-- SVG icon code with class="\1" -->' %}
-{% assign html = html | replace_regex: '<svg[^>]*>.*?<\/svg>', '<!-- SVG icon code -->' %}
+{% assign html = html | replace: '<svg', '<!-- SVG icon code -->
+<svg' %}
 {% endunless %}
 
 {% assign html = html | replace_regex: 'url\(([^\)]+)\)', 'url(...)' %}
