@@ -20,9 +20,7 @@ layout: none
 {% for page in pages %}
 <url>
 	<loc>{% if jekyll.environment == 'preview' %}{{ site.preview-url }}{% endif %}{{ page.url | replace: '/index.html', '/' | absolute_url | xml_escape }}</loc>
-	{% if page.last_modified_at %}
-	<lastmod>{{ page.last_modified_at | date_to_xmlschema }}</lastmod>
-	{% endif %}
+	<lastmod>{{ page.last_modified_at | default: site.time | date_to_xmlschema }}</lastmod>
 </url>
 {% endfor %}
 
