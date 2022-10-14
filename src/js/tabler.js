@@ -11,5 +11,5 @@ import './src/toast';
 import * as bootstrap from 'bootstrap';
 import * as tabler from './src/tabler';
 
-window.bootstrap = bootstrap;
-window.tabler = tabler;
+globalThis.bootstrap = bootstrap;
+globalThis.tabler = tabler;
