@@ -37,8 +37,6 @@ $font-size-500: 1.75rem !default;
 $font-size-600: 2rem !default;
 $font-size-700: 2.5rem !default;
 
-
-
 $line-height-100: 1rem !default;
 $line-height-200: 1.25rem !default;
 $line-height-300: 1.5rem !default;
@@ -46,8 +44,6 @@ $line-height-400: 1.75rem !default;
 $line-height-500: 2rem !default;
 $line-height-600: 2.5rem !default;
 $line-height-700: 3rem !default;
-
-
 
 $font-size-base: .875rem !default;
 $body-letter-spacing: 0 !default;
@@ -57,7 +53,7 @@ $font-weight-normal: 400 !default;
 $font-weight-medium: 500 !default;
 $font-weight-bold: 600 !default;
 
-$headings-font-weight: var(--#{$prefix}font-weight-bold) !default;
+$headings-font-weight: var(--#{$prefix}font-weight-medium) !default;
 
 $font-weights: (
   light: $font-weight-light,
@@ -71,25 +67,25 @@ $line-height-base: divide(1.25rem, $font-size-base) !default;
 $line-height-sm: divide(1rem, $font-size-base) !default;
 $line-height-lg: divide(1.5rem, $font-size-base) !default;
 
-$h1-font-size: divide(24rem, 16) !default;
-$h1-line-height: divide(2rem, $h1-font-size) !default;
+$h1-font-size: 1.5rem !default;
+$h1-line-height: 2rem !default;
 
-$h2-font-size: divide(20rem, 16) !default;
-$h2-line-height: divide(1.75rem, $h2-font-size) !default;
+$h2-font-size: 1.25rem !default;
+$h2-line-height: 1.75rem !default;
 
-$h3-font-size: divide(16rem, 16) !default;
-$h3-line-height: divide(1.5rem, $h3-font-size) !default;
+$h3-font-size: 1rem !default;
+$h3-line-height: 1.5rem !default;
 
-$h4-font-size: $font-size-base !default;
-$h4-line-height: divide(1.25rem, $h4-font-size) !default;
+$h4-font-size: .875rem !default;
+$h4-line-height: 1.25rem !default;
 
-$h5-font-size: divide(12rem, 16) !default;
-$h5-line-height: divide(1rem, $h5-font-size) !default;
+$h5-font-size: .75rem !default;
+$h5-line-height: 1rem !default;
 
-$h6-font-size: divide(10rem, 16) !default;
-$h6-line-height: divide(1rem, $h6-font-size) !default;
+$h6-font-size: .625rem !default;
+$h6-line-height: 1rem !default;
 
-$small-font-size: percentage(divide($h5-font-size, $font-size-base)) !default;
+$small-font-size: 85.714285% !default;
 
 $font-sizes: (
   h1: $h1-font-size,
@@ -190,9 +186,12 @@ $border-color-dark-translucent: rgba($text-muted, $border-dark-opacity) !default
 $border-color-active: mix($text-muted, #ffffff, percentage($border-active-opacity)) !default;
 $border-color-active-translucent: rgba($text-muted, $border-active-opacity) !default;
 
-$active-bg: rgba(var(--#{$prefix}primary-rgb), .04) !default;
+$active-bg: var(--#{$prefix}gray-100) !default;
+
 $hover-bg: rgba(var(--#{$prefix}muted-rgb), .04) !default;
+
 $disabled-bg: var(--#{$prefix}gray-100) !default;
+$disabled-color: var(--#{$prefix}gray-300) !default;
 
 $link-color: var(--#{$prefix}primary) !default;
 $link-hover-color: var(--#{$prefix}primary-darken) !default;
@@ -267,7 +266,7 @@ $theme-colors: map-merge($theme-colors, map-merge($extra-colors, $social-colors)
 // Dark mode
 $dark-mode-darken: darken($dark, 2%) !default;
 $dark-mode-lighten: lighten($dark, 2%) !default;
-$dark-mode-border-color: lighten($dark, 8%) !default;
+$dark-mode-border-color: lighten($dark, 4%) !default;
 $dark-mode-border-color-light: lighten($dark, 4%) !default;
 $dark-mode-text: $light;
 
@@ -291,6 +290,11 @@ $code-bg: var(--#{$prefix}gray-100) !default;
 
 $pre-padding: 1rem !default;
 $pre-bg: $code-bg !default;
+
+$kbd-padding-y: 2px !default;
+$kbd-color: var(--#{$prefix}muted) !default;
+$kbd-bg: transparent !default;
+$kbd-border-radius: var(--#{$prefix}border-radius) !default;
 
 // Avatars
 $avatar-size: 2.5rem !default;
@@ -464,7 +468,7 @@ $card-hover-box-shadow: var(--#{$prefix}shadow-card-hover) !default;
 
 $card-bg: var(--#{$prefix}bg-surface) !default;
 $card-bg-hover: $white !default;
-$card-color: var(--#{$prefix}bg-surface) !default;
+$card-color: inherit !default;
 
 $card-border-width: var(--#{$prefix}border-width) !default;
 $card-border-color: var(--#{$prefix}border-color) !default;
@@ -524,6 +528,9 @@ $dropdown-scrollable-height: 13rem !default;
 $dropdown-link-active-color: var(--#{$prefix}primary)  !default;
 $dropdown-link-active-bg: $active-bg !default;
 
+//tooltip
+$tooltip-bg: var(--#{$prefix}bg-surface-dark) !default;
+$tooltip-color: var(--#{$prefix}white) !default;
 
 //loader
 $loader-size: 2.5rem !default;
@@ -566,7 +573,8 @@ $modal-sm: 380px !default;
 //nav
 $nav-link-padding-y: .5rem !default;
 $nav-link-padding-x: .75rem !default;
-$nav-link-color: inherit !default;
+$nav-link-color: var(--#{$prefix}muted) !default;
+$nav-link-disabled-color: var(--#{$prefix}disabled-color) !default;
 $nav-link-icon-size: $icon-size !default;
 $nav-link-icon-color: var(--#{$prefix}icon-color) !default;
 
@@ -580,6 +588,11 @@ $nav-bordered-link-active-border-color: var(--#{$prefix}primary)  !default;
 $nav-bordered-link-active-border-width: 2 * $border-width !default;
 $nav-bordered-margin-x: 1.25rem !default;
 
+$nav-tabs-border-color: var(--#{$prefix}border-color) !default;
+$nav-tabs-link-hover-border-color: $nav-tabs-border-color $nav-tabs-border-color $nav-tabs-border-color !default;
+$nav-tabs-link-active-border-color: $nav-tabs-link-hover-border-color !default;
+$nav-tabs-link-active-color: var(--#{$prefix}body-color) !default;
+
 
 //navbar
 $navbar-height: 3.5rem !default;
@@ -591,12 +604,12 @@ $navbar-border-color: var(--#{$prefix}border-color) !default;
 $navbar-light-color: var(--#{$prefix}body-color) !default;
 $navbar-light-brand-color: var(--#{$prefix}body-color) !default;
 $navbar-light-active-color: var(--#{$prefix}body-color)color !default;
-$navbar-light-disabled-color: rgba($body-color, .3) !default;
+$navbar-light-disabled-color: var(--#{$prefix}disabled-color) !default;
 
 $navbar-dark-color: rgba($white, $text-muted-opacity) !default;
 $navbar-dark-brand-color: $white !default;
 $navbar-dark-active-color: $white !default;
-$navbar-dark-disabled-color: rgba($white, .3) !default;
+$navbar-dark-disabled-color: var(--#{$prefix}disabled-color) !default;
 
 $navbar-brand-padding-y: $nav-link-padding-y !default;
 $navbar-brand-image-height: 2rem !default;
@@ -636,7 +649,7 @@ $pagination-padding-x: .25rem !default;
 $pagination-color: var(--#{$prefix}muted) !default;
 $pagination-bg: transparent !default;
 $pagination-disabled-bg: transparent !default;
-$pagination-disabled-color: rgba($text-muted, .5) !default;
+$pagination-disabled-color: var(--#{$prefix}disabled-color) !default;
 
 $pagination-active-bg: var(--#{$prefix}primary) !default;
 $pagination-active-border-color: var(--#{$prefix}primary) !default;
@@ -715,7 +728,7 @@ $form-check-margin-bottom: .5rem !default;
 $form-check-input-width: 1rem !default;
 $form-check-padding-start: $form-check-input-width + .5rem !default;
 $form-check-input-bg: var(--#{$prefix}bg-forms) !default;
-$form-check-input-border: var(--#{$prefix}border-width) solid $input-border-color-translucent !default;
+$form-check-input-border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) $input-border-color-translucent !default;
 $form-check-input-border-radius: var(--#{$prefix}border-radius) !default;
 $form-check-input-checked-bg-size: 1rem !default;
 $form-check-input-checked-bg-color: var(--#{$prefix}primary) !default;
@@ -740,7 +753,7 @@ $form-switch-bg-size: auto !default;
 
 $form-range-track-height: .25rem !default;
 $form-range-track-bg: var(--#{$prefix}border-color) !default;
-$form-range-thumb-border: 2px solid $white !default;
+$form-range-thumb-border: 2px var(--#{$prefix}border-style) $white !default;
 $form-range-thumb-bg: var(--#{$prefix}primary) !default;
 $form-range-thumb-height: 1rem !default;
 $form-range-thumb-focus-box-shadow-width: .125rem !default;
