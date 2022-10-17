@@ -33,11 +33,6 @@
 {% endcapture %}
 {% assign html = html | replace_regex: "\n\n+", new_line %}
 
-{% unless include.show-svg %}
-{% assign html = html | replace: '<svg', '<!-- SVG icon code -->
-<svg' %}
-{% endunless %}
-
 {% assign html = html | replace_regex: 'url\(([^\)]+)\)', 'url(...)' %}
 {% assign html = html | replace_regex: 'src="([^"]+)"', 'src="..."' %}
 {% assign html = html | replace_regex: 'href="([^#][^"]+)"', 'href="#"' %}
