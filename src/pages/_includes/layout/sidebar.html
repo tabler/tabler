@@ -1,17 +1,30 @@
 {% assign breakpoint = include.breakpoint | default: 'lg' %}
 
-<aside class="navbar navbar-vertical{% if include.right %} navbar-right{% endif %} navbar-expand-{{ breakpoint }}{% if include.transparent %} navbar-transparent{% else %}{% if include.dark %} navbar-dark{% else %} navbar-light{% endif %}{% if include.background %} bg-{{ include.background }}{% endif %}{% endif %}{% if include.class %} {{ include.class }}{% endif %}"{% if include.background-color %} style="background: {{ include.background-color }}"{% endif %}>
+<aside id="sidebar" class="navbar navbar-vertical{% if include.collapsed %} navbar-vertical-collapsed{% endif %}{% if include.right %} navbar-right{% endif %} navbar-expand-{{ breakpoint }}{% if include.transparent %} navbar-transparent{% else %}{% if include.dark %} navbar-dark{% else %} navbar-light{% endif %}{% if include.background %} bg-{{ include.background }}{% endif %}{% endif %}{% if include.class %} {{ include.class }}{% endif %}"{% if include.background-color %} style="background: {{ include.background-color }}"{% endif %}>
 	<div class="container-fluid">
 		{% include layout/navbar-toggler.html target="navbar-menu" %}
 
 		{% unless include.hide-brand %}
-			{% include layout/navbar-logo.html dark=include.dark breakpoint=breakpoint header=true %}
+			{% include layout/navbar-logo.html breakpoint=breakpoint collapsed=true %}
 		{% endunless %}
 
 		{% include layout/navbar-side.html class="d-lg-none" hide-username=include.hide-username person-id=include.person-id breakpoint=breakpoint %}
 
 		<div class="collapse navbar-collapse" id="navbar-menu">
-			{% include layout/navbar-menu.html auto-open=true class="pt-lg-3" keep-open=true %}
+			{% include layout/navbar-menu.html auto-open=true keep-open=false collapsed=include.collapsed %}
 		</div>
+
+		<a href="#" class="navbar-aside navbar-aside-highlighted">
+			{% assign person = site.data.people[0] %}
+			<div class="row">
+				<div class="col-auto">
+					{% include ui/avatar.html person=person %}
+				</div>
+				<div class="col hide-sidebar-collapsed">
+					<div>{{ person.full_name }}</div>
+					<div class="text-muted">{{ person.job_title }}</div>
+				</div>
+			</div>
+		</a>
 	</div>
 </aside>

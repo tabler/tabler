@@ -1,7 +1,8 @@
 .dropdown-menu {
   box-shadow: $box-shadow;
   user-select: none;
-  margin: 0 !important;
+  margin: 0;
+  min-width: $dropdown-min-width;
 
   &.card {
     padding: 0;
@@ -15,7 +16,6 @@
 }
 
 .dropdown-item {
-  min-width: $dropdown-min-width;
   display: flex;
   align-items: center;
   margin: 0;
@@ -42,15 +42,29 @@
 }
 
 .dropdown-header {
-  @include subheader;
-  padding-bottom: .25rem;
+  @include subheader(false);
   pointer-events: none;
+
+  &:first-child {
+    padding-top: $dropdown-padding-y;
+  }
 }
 
+//
+// Dropdown menu scrollable
+//
 .dropdown-menu-scrollable {
   height: auto;
   max-height: $dropdown-scrollable-height;
   overflow-x: hidden;
+}
+
+//
+// Dropdown menu columns
+//
+.dropdown-menu-columns {
+  display: flex;
+  flex: 0 .25rem;
 }
 
 .dropdown-menu-column {
@@ -61,14 +75,12 @@
   }
 }
 
-.dropdown-menu-columns {
-  display: flex;
-  flex: 0 .25rem;
-}
 
+
+//
+// Dropdown menu arrow
+//
 .dropdown-menu-arrow {
-  //margin-top: .25rem;
-
   &:before {
     content: "";
     position: absolute;
@@ -91,6 +103,12 @@
       right: .75rem;
       left: auto;
     }
+  }
+}
+
+.dropdown-menu-lg {
+  @include media-breakpoint-up(sm) {
+    min-width: 20rem;
   }
 }
 

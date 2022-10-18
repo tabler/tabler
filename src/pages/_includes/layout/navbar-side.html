@@ -21,6 +21,46 @@
 	{% endunless %}
 
 	<div class="d-none d-{{ include.breakpoint }}-flex">
+		<div class="nav-item dropdown">
+			<a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" tabindex="-1">
+				{% include ui/flag.html flag="us" class="me-1" %} English
+			</a>
+			<div class="dropdown-menu dropdown-menu-arrow dropdown-menu-end">
+				<a href="#" class="dropdown-item">
+					{% include ui/flag.html flag="de" class="me-2" %} <span class="align-middle">German</span>
+				</a>
+				<a href="#" class="dropdown-item">
+					{% include ui/flag.html flag="it" class="me-2" %} <span class="align-middle">Italian</span>
+				</a>
+				<a href="#" class="dropdown-item">
+					{% include ui/flag.html flag="es" class="me-2" %} <span class="align-middle">Spanish</span>
+				</a>
+				<a href="#" class="dropdown-item">
+					{% include ui/flag.html flag="pl" class="me-2" %} <span class="align-middle">Polish</span>
+				</a>
+			</div>
+		</div>
+
+		<div class="nav-item dropdown">
+			<a href="#" class="nav-link" data-bs-toggle="dropdown" tabindex="-1">
+				{% include ui/icon.html icon="layout-grid" %}
+			</a>
+			<div class="dropdown-menu dropdown-menu-arrow dropdown-menu-end dropdown-menu-lg p-2">
+				<div class="row g-0">
+					{% for app in site.data.navbar-apps %}
+					<div class="col-4">
+						<a class="dropdown-item justify-content-center text-center rounded p-3" href="#">
+							<div>
+								<img src="{{ site.base }}/static/brands/{{ app.logo }}" alt="{{ app.name }}" width="24" height="24" />
+								<div class="mt-2">{{ app.name }}</div>
+							</div>
+						</a>
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+
 		<a href="?theme=dark" class="nav-link px-0 hide-theme-dark" title="Enable dark mode" data-bs-toggle="tooltip"
 		   data-bs-placement="bottom">
 			{% include ui/icon.html icon="moon" %}
