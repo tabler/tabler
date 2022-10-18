@@ -214,7 +214,7 @@ Add the `.btn-icon` class to remove unnecessary padding from your button and use
 {% include ui/button.html icon="star" color="warning" icon-only=true %}
 {% include ui/button.html icon="trash" color="danger" icon-only=true %}
 {% include ui/button.html icon="chart-bar" color="purple" icon-only=true %}
-{% include ui/button.html icon="git-merge" color="white" icon-only=true %}
+{% include ui/button.html icon="git-merge"  icon-only=true %}
 {% endcapture %}
 {% include example.html code=code wrapper="btn-list" centered=true %}
 
