@@ -1,0 +1,14 @@
+{% assign blocks = include.blocks | default: 30 %}
+<div class="tracking{% if include.squares %} tracking-squares{% endif %}">
+	{% for i in (1..blocks) %}
+	{% if i == 5 or i == 18 %}
+		<div class="tracking-block bg-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Downtime"></div>
+	{% elsif i == 22 or i == 23 %}
+		<div class="tracking-block" data-bs-toggle="tooltip" data-bs-placement="top" title="No data"></div>
+	{% elsif i == 14 %}
+		<div class="tracking-block bg-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Big load"></div>
+	{% else %}
+		<div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+	{% endif %}
+	{% endfor %}
+</div>

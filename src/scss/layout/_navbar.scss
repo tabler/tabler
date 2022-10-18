@@ -144,6 +144,7 @@ Navbar
  */
 .navbar {
   --#{$prefix}navbar-border-color: #{$navbar-border-color};
+  --#{$prefix}navbar-border-width: #{$navbar-border-width};
   --#{$prefix}navbar-active-border-color: #{$navbar-active-border-color};
   align-items: stretch;
   min-height: $navbar-height;
@@ -208,14 +209,14 @@ Navbar
           flex: 1 1 auto;
         }
 
-        &.navbar-dark,
-        .navbar-dark {
-          .nav-item.active {
-            .nav-link {
-              background-color: rgba($black, .1);
-            }
-          }
-        }
+        //&.navbar-dark,
+        //.navbar-dark {
+        //  .nav-item.active {
+        //    .nav-link {
+        //      background-color: rgba($black, .1);
+        //    }
+        //  }
+        //}
 
         &.navbar-light,
         .navbar-light {
@@ -228,17 +229,17 @@ Navbar
               left: 0;
               right: 0;
               bottom: -.25rem;
-              border: 0 solid var(--#{$prefix}navbar-active-border-color);
+              border: 0 var(--#{$prefix}border-style) var(--#{$prefix}navbar-active-border-color);
               border-bottom-width: 2px;
             }
           }
+        }
 
-          &.navbar-vertical {
-            box-shadow: inset calc(-1 * #{$navbar-border-width}) 0 0 0 var(--#{$prefix}navbar-border-color);
+        &.navbar-vertical {
+          box-shadow: inset calc(-1 * var(--#{$prefix}navbar-border-width)) 0 0 0 var(--#{$prefix}navbar-border-color);
 
-            &.navbar-right {
-              box-shadow: inset calc(1 * #{$navbar-border-width}) 0 0 0 var(--#{$prefix}navbar-border-color);
-            }
+          &.navbar-right {
+            box-shadow: inset calc(1 * var(--#{$prefix}navbar-border-width)) 0 0 0 var(--#{$prefix}navbar-border-color);
           }
         }
 
@@ -338,7 +339,7 @@ Navbar toggler
 Navbar light
  */
 .navbar-light {
-  box-shadow: inset 0 calc(-1 * #{$navbar-border-width}) 0 0 var(--#{$prefix}navbar-border-color);
+  box-shadow: inset 0 calc(-1 * var(--#{$prefix}navbar-border-width)) 0 0 var(--#{$prefix}navbar-border-color);
   background-color: $white;
 }
 
