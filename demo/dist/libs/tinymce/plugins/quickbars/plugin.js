@@ -1,5 +1,5 @@
 /**
- * TinyMCE version 6.1.2 (2022-07-29)
+ * TinyMCE version 6.2.0 (2022-09-08)
  */
 
 (function () {
@@ -130,8 +130,9 @@
       fileInput.addEventListener('change', changeHandler);
       const cancelHandler = e => {
         const cleanup = () => {
+          var _a;
           resolve([]);
-          fileInput.parentNode.removeChild(fileInput);
+          (_a = fileInput.parentNode) === null || _a === void 0 ? void 0 : _a.removeChild(fileInput);
         };
         if (global$1.os.isAndroid() && e.type !== 'remove') {
           global.setEditorTimeout(editor, cleanup, 0);
