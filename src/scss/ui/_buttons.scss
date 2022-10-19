@@ -61,13 +61,20 @@
 //
 @each $color, $value in $theme-colors {
   .btn-#{$color} {
-    --#{$prefix}btn-border-color: transparent;
+    @if $color == 'dark' {
+      --#{$prefix}btn-border-color: var(--#{$prefix}dark-mode-border-color);
+      --#{$prefix}btn-hover-border-color: var(--#{$prefix}dark-mode-border-color-active);
+      --#{$prefix}btn-active-border-color: var(--#{$prefix}dark-mode-border-color-active);
+    } @else {
+      --#{$prefix}btn-border-color: transparent;
+      --#{$prefix}btn-hover-border-color: transparent;
+      --#{$prefix}btn-active-border-color: transparent;
+    }
+
     --#{$prefix}btn-color: var(--#{$prefix}#{$color}-fg);
     --#{$prefix}btn-bg: var(--#{$prefix}#{$color});
-    --#{$prefix}btn-hover-border-color: transparent;
     --#{$prefix}btn-hover-color: var(--#{$prefix}#{$color}-fg);
     --#{$prefix}btn-hover-bg: rgba(var(--#{$prefix}#{$color}-rgb), .8);
-    --#{$prefix}btn-active-border-color: transparent;
     --#{$prefix}btn-active-color: var(--#{$prefix}#{$color}-fg);
     --#{$prefix}btn-active-bg: rgba(var(--#{$prefix}#{$color}-rgb), .8);
     --#{$prefix}btn-disabled-bg: var(--#{$prefix}#{$color});
