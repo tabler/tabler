@@ -1,12 +1,7 @@
-@mixin navbar-color($bg-color: transparent, $color: $navbar-light-color, $brand-color: $navbar-light-brand-color, $link-active-color: $navbar-light-active-color, $link-disabled-color: $navbar-light-disabled-color) {
-  background: $bg-color;
+@mixin navbar-color($bg-color: transparent, $color: $navbar-light-color, $brand-color: $navbar-light-brand-color, $link-active-color: $navbar-light-active-color, $link-disabled-color: $navbar-light-disabled-color, $link-active-bg: $navbar-light-active-bg) {
+  --#{$prefix}navbar-active-bg: #{$link-active-bg};
+  --#{$prefix}navbar-bg: #{$bg-color};
   color: $color;
-
-  @include scrollbar;
-
-  //.text-muted {
-  //  color: rgba($color, $text-muted-opacity) !important;
-  //}
 
   .navbar-brand {
     color: $brand-color;
@@ -57,21 +52,10 @@
 }
 
 @mixin navbar-dark {
-  @include navbar-color($dark, $navbar-dark-color, $navbar-dark-brand-color, $navbar-dark-active-color, $navbar-dark-disabled-color);
+  --#{$prefix}navbar-border-color: #{$dark-mode-border-color};
+  --#{$prefix}navbar-bg: #{$dark};
+  @include navbar-color($dark, $navbar-dark-color, $navbar-dark-brand-color, $navbar-dark-active-color, $navbar-dark-disabled-color, $navbar-dark-active-bg);
   @include scrollbar;
-
-  .input-icon-addon {
-    color: rgba($dark-mode-text, .64);
-  }
-
-  .form-control {
-    border-color: transparent;
-    background-color: rgba(0, 0, 0, .1);
-
-    &::placeholder {
-      color: rgba($dark-mode-text, .64);
-    }
-  }
 }
 
 @mixin navbar-vertical-nav {
@@ -114,6 +98,11 @@
         width: auto;
         padding-left: add(calc($container-padding-x / 2), 1.75rem);
         color: inherit;
+
+        &.active,
+        &:active {
+          background: var(--#{$prefix}navbar-active-bg);
+        }
       }
 
       .dropdown-menu .dropdown-item {
@@ -143,11 +132,14 @@
 Navbar
  */
 .navbar {
-  --#{$prefix}navbar-border-color: #{$navbar-border-color};
   --#{$prefix}navbar-border-width: #{$navbar-border-width};
   --#{$prefix}navbar-active-border-color: #{$navbar-active-border-color};
+  --#{$prefix}navbar-active-bg: #{$navbar-light-active-bg};
+  --#{$prefix}navbar-bg: transparent;
   align-items: stretch;
   min-height: $navbar-height;
+  box-shadow: inset 0 calc(-1 * var(--#{$prefix}navbar-border-width)) 0 0 var(--#{$prefix}navbar-border-color);
+  background: var(--#{$prefix}navbar-bg);
 
   .navbar-collapse & {
     flex-grow: 1;
@@ -208,15 +200,6 @@ Navbar
           width: auto;
           flex: 1 1 auto;
         }
-
-        //&.navbar-dark,
-        //.navbar-dark {
-        //  .nav-item.active {
-        //    .nav-link {
-        //      background-color: rgba($black, .1);
-        //    }
-        //  }
-        //}
 
         &.navbar-light,
         .navbar-light {
@@ -340,8 +323,8 @@ Navbar toggler
 Navbar light
  */
 .navbar-light {
-  box-shadow: inset 0 calc(-1 * var(--#{$prefix}navbar-border-width)) 0 0 var(--#{$prefix}navbar-border-color);
-  background-color: $white;
+  --#{$prefix}navbar-border-color: #{$navbar-border-color};
+  --#{$prefix}navbar-bg: var(--#{$prefix}bg-surface);
 }
 
 /**
@@ -349,6 +332,14 @@ Navbar dark
  */
 .navbar-dark {
   @include navbar-dark;
+}
+
+/**
+Navbar transparent
+ */
+.navbar-transparent {
+  --#{$prefix}navbar-border-color: transparent !important;
+  background: transparent !important;
 }
 
 /**
@@ -380,7 +371,6 @@ Navbar vertical
  */
 @if $enable-navbar-vertical {
   .navbar-vertical {
-
     &.navbar-expand {
       @each $breakpoint in map-keys($grid-breakpoints) {
         $next: breakpoint-next($breakpoint, $grid-breakpoints);
