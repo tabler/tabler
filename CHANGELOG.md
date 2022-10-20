@@ -193,3 +193,9 @@ All notable changes to this project will be documented in this file.
 - fix `$prefix` hard coded `layout/_dark.scss`
 - fix #1275 remove last border-right on progress bar
 - fix #1261: broken offcanvas bg
+
+
+## `1.0.0-beta14` - 2022-10-21
+
+- fix active items in dark mode
+- update Jekyll to newest version
