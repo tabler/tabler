@@ -358,11 +358,7 @@ gulp.task('build-jekyll', (cb) => {
 	var env = Object.create(process.env)
 
 	if (argv.preview) {
-		if (argv.dev) {
-			env.JEKYLL_ENV = 'preview-dev'
-		} else {
-			env.JEKYLL_ENV = 'preview'
-		}
+		env.JEKYLL_ENV = 'preview'
 	} else {
 		env.JEKYLL_ENV = 'production'
 	}
