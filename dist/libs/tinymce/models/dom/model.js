@@ -1,5 +1,5 @@
 /**
- * TinyMCE version 6.1.2 (2022-07-29)
+ * TinyMCE version 6.2.0 (2022-09-08)
  */
 
 (function () {
@@ -35,6 +35,7 @@
     const isArray = isType$1('array');
     const isNull = eq$2(null);
     const isBoolean = isSimpleType('boolean');
+    const isUndefined = eq$2(undefined);
     const isNullable = a => a === null || a === undefined;
     const isNonNullable = a => !isNullable(a);
     const isFunction = isSimpleType('function');
@@ -349,11 +350,9 @@
       r[i] = x;
     };
     const internalFilter = (obj, pred, onTrue, onFalse) => {
-      const r = {};
       each$1(obj, (x, i) => {
         (pred(x, i) ? onTrue : onFalse)(x, i);
       });
-      return r;
     };
     const filter$1 = (obj, pred) => {
       const t = {};
@@ -848,8 +847,13 @@
     const someIf = (b, a) => b ? Optional.some(a) : Optional.none();
 
     const checkRange = (str, substr, start) => substr === '' || str.length >= substr.length && str.substr(start, start + substr.length) === substr;
-    const contains = (str, substr) => {
-      return str.indexOf(substr) !== -1;
+    const contains = (str, substr, start = 0, end) => {
+      const idx = str.indexOf(substr, start);
+      if (idx !== -1) {
+        return isUndefined(end) ? true : idx + substr.length <= end;
+      } else {
+        return false;
+      }
     };
     const startsWith = (str, prefix) => {
       return checkRange(str, prefix, 0);
@@ -4742,8 +4746,8 @@
 
     const TableActions = (editor, resizeHandler, cellSelectionHandler) => {
       const isTableBody = editor => name(getBody(editor)) === 'table';
-      const lastRowGuard = table => isTableBody(editor) === false || getGridSize(table).rows > 1;
-      const lastColumnGuard = table => isTableBody(editor) === false || getGridSize(table).columns > 1;
+      const lastRowGuard = table => !isTableBody(editor) || getGridSize(table).rows > 1;
+      const lastColumnGuard = table => !isTableBody(editor) || getGridSize(table).columns > 1;
       const cloneFormats = getTableCloneElements(editor);
       const colMutationOp = isResizeTableColumnResizing(editor) ? noop : halve;
       const getTableSectionType = table => {
@@ -5242,7 +5246,7 @@
         fireEvents(editor, table);
         selectFirstCellInTable(editor, table);
         return table.dom;
-      }).getOr(null);
+      }).getOrNull();
     };
     const insertTable = (editor, rows, columns, options = {}) => {
       const checkInput = val => isNumber(val) && val > 0;
@@ -6939,7 +6943,7 @@
     const bind = (element, event, handler) => bind$1(element, event, filter, handler);
     const fromRawEvent = fromRawEvent$1;
 
-    const hasInternalTarget = e => has(SugarElement.fromDom(e.target), 'ephox-snooker-resizer-bar') === false;
+    const hasInternalTarget = e => !has(SugarElement.fromDom(e.target), 'ephox-snooker-resizer-bar');
     const TableCellSelectionHandler = (editor, resizeHandler) => {
       const cellSelection = Selections(() => SugarElement.fromDom(editor.getBody()), () => getSelectionCell(getSelectionStart(editor), getIsRoot(editor)), ephemera.selectedSelector);
       const onSelection = (cells, start, finish) => {
@@ -7811,7 +7815,7 @@
       }
     };
 
-    const isTable = node => isNonNullable(node) && node.tagName === 'TABLE';
+    const isTable = node => isNonNullable(node) && node.nodeName === 'TABLE';
     const barResizerPrefix = 'bar-';
     const isResizable = elm => get$b(elm, 'data-mce-resize') !== 'false';
     const syncPixels = table => {

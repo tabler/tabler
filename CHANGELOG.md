@@ -38,7 +38,7 @@ All notable changes to this project will be documented in this file.
 - upgrade required node.js version to 14
 - upgrade Bootstrap to 5.1
 - upgrade dependencies
-- fix #775  litepicker not initializing
+- fix #775 - litepicker not initializing
 - fix `nouislider` import in dev
 
 
@@ -48,7 +48,7 @@ All notable changes to this project will be documented in this file.
 
 - **Dark mode enabled!**
 - add more cursors (#947)
-- fix #892 - Media queries need to be nested when negating
+- fix #892 - media queries need to be nested when negating
 - update `@tabler/icons` to newest version
 - move optional dependencies to peerDependencies (#924)
 - move deployment to Github Actions (#934)
@@ -147,7 +147,7 @@ All notable changes to this project will be documented in this file.
 - add a lot of CSS variables
 - add Dockerfile with alpine base
 - add icon pulse/tada/rotate animations
-- use :host in selectors to support Web Components
+- use `:host` in selectors to support Web Components
 - use dark table variant colors in dark mode (#1200)
 - update Tabler Icons to v1.96
 - change `space-y` component
@@ -162,3 +162,34 @@ All notable changes to this project will be documented in this file.
 - fix code sample in the customize tabler docs
 - fix form elements demo page radio buttons
 - replace `gulp-minify` with `gulp-terser`
+
+
+## `1.0.0-beta13` - 2022-10-18
+
+- update Bootstrap to 5.2.1, update dependencies
+- new `tracking` component
+- new radio button version of `form-imagecheck`
+- update icons to v1.105.0
+- dark mode improvements
+- corrects the spelling of New Zealand (#1318)
+- remove `$border-color-dark`
+- fix #1301 - code snippets in docs look bad in dark mode
+- fix #1305 - different default link color for dark mode
+- fix popover background in dark mode
+- fix button default border color
+- fix `form-imagecheck` bg in dark mode
+- navbar logo fix
+- move card ribbons config to variables
+- navbar border fix
+- dark mode active fix
+- using globalThis instead of window (#1315)
+- fix #1210 - lastmod not generated for pages in `sitemap.xml`
+- fix card border in dark mode
+- fix #895 - background color overwrites background image
+- fix #1302 - wrong card header in dark mode
+- fix #1303 - wrong color when hovering over `selectgroup` in dark mode
+- fix #1308 - bad coloring in table in dark mode
+- fix #1273 - datepicker background color broken
+- fix `$prefix` hard coded `layout/_dark.scss`
+- fix #1275 remove last border-right on progress bar
+- fix #1261: broken offcanvas bg

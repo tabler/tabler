@@ -1,5 +1,5 @@
 /**
- * TinyMCE version 6.1.2 (2022-07-29)
+ * TinyMCE version 6.2.0 (2022-09-08)
  */
 
 (function () {
@@ -9,6 +9,7 @@
 
     const eq = t => a => t === a;
     const isNull = eq(null);
+    const isUndefined = eq(undefined);
     const isNullable = a => a === null || a === undefined;
     const isNonNullable = a => !isNullable(a);
 
@@ -256,8 +257,13 @@
     };
 
     const checkRange = (str, substr, start) => substr === '' || str.length >= substr.length && str.substr(start, start + substr.length) === substr;
-    const contains = (str, substr) => {
-      return str.indexOf(substr) !== -1;
+    const contains = (str, substr, start = 0, end) => {
+      const idx = str.indexOf(substr, start);
+      if (idx !== -1) {
+        return isUndefined(end) ? true : idx + substr.length <= end;
+      } else {
+        return false;
+      }
     };
     const startsWith = (str, prefix) => {
       return checkRange(str, prefix, 0);
@@ -530,7 +536,7 @@
 
     const init = (editor, database) => {
       editor.ui.registry.addAutocompleter('emoticons', {
-        ch: ':',
+        trigger: ':',
         columns: 'auto',
         minChars: 2,
         fetch: (pattern, maxResults) => database.waitForLoad().then(() => {
