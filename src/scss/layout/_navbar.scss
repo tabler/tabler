@@ -118,7 +118,7 @@
       margin-left: auto;
     }
 
-    .nav-item.active:after {
+    .nav-item.active .nav-link:after {
       border-bottom-width: 0;
       border-left-width: 3px;
       right: auto;
@@ -132,12 +132,14 @@
 Navbar
  */
 .navbar {
+  --#{$prefix}navbar-height: #{$navbar-height};
   --#{$prefix}navbar-border-width: #{$navbar-border-width};
   --#{$prefix}navbar-active-border-color: #{$navbar-active-border-color};
   --#{$prefix}navbar-active-bg: #{$navbar-light-active-bg};
+  --#{$prefix}navbar-hover-bg: #{$navbar-light-hover-bg};
   --#{$prefix}navbar-bg: transparent;
   align-items: stretch;
-  min-height: $navbar-height;
+  min-height: var(--#{$prefix}navbar-height);
   box-shadow: inset 0 calc(-1 * var(--#{$prefix}navbar-border-width)) 0 0 var(--#{$prefix}navbar-border-color);
   background: var(--#{$prefix}navbar-bg);
 
@@ -161,7 +163,7 @@ Navbar
   }
 
   .navbar-nav {
-    min-height: subtract($navbar-height, 2 * $navbar-padding-y);
+    align-self: stretch;
 
     .nav-link {
       position: relative;
@@ -169,6 +171,12 @@ Navbar
       min-height: 2rem;
       justify-content: center;
       border-radius: var(--#{$prefix}border-radius);
+      @include transition(background $transition-time ease-out);
+
+      &:hover,
+      &.show {
+        background: var(--#{$prefix}navbar-hover-bg);
+      }
 
       .badge {
         position: absolute;
@@ -178,11 +186,6 @@ Navbar
       }
     }
   }
-}
-
-.navbar-nav {
-  margin: 0;
-  padding: 0;
 }
 
 .navbar-expand {
@@ -201,19 +204,29 @@ Navbar
           flex: 1 1 auto;
         }
 
+        .navbar-nav {
+          .nav-item {
+            &:first-child {
+              margin-left: calc(-1 * var(--#{$prefix}navbar-nav-link-padding-x));
+            }
+          }
+        }
+
         &.navbar-light,
         .navbar-light {
           .nav-item.active {
-            position: relative;
+            .nav-link {
+              position: relative;
 
-            &:after {
-              content: "";
-              position: absolute;
-              left: 0;
-              right: 0;
-              bottom: -.25rem;
-              border: 0 var(--#{$prefix}border-style) var(--#{$prefix}navbar-active-border-color);
-              border-bottom-width: 2px;
+              &:after {
+                content: "";
+                position: absolute;
+                left: var(--#{$prefix}navbar-nav-link-padding-x);
+                right: var(--#{$prefix}navbar-nav-link-padding-x);
+                top: calc(100% + var(--#{$prefix}navbar-padding-y) * 2);
+                border: 0 var(--#{$prefix}border-style) var(--#{$prefix}navbar-active-border-color);
+                border-bottom-width: 2px;
+              }
             }
           }
         }
@@ -407,6 +420,10 @@ Navbar vertical
               flex-direction: column;
               flex-grow: 1;
               min-height: auto;
+
+              .nav-item {
+                margin: 0;
+              }
 
               .nav-link {
                 padding-top: .5rem;
