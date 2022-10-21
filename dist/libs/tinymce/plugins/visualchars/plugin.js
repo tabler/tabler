@@ -1,5 +1,5 @@
 /**
- * TinyMCE version 6.1.2 (2022-07-29)
+ * TinyMCE version 6.2.0 (2022-09-08)
  */
 
 (function () {
@@ -333,7 +333,7 @@
 
     const isMatch = n => {
       const value$1 = value(n);
-      return isText(n) && value$1 !== undefined && regExp.test(value$1);
+      return isText(n) && isString(value$1) && regExp.test(value$1);
     };
     const filterDescendants = (scope, predicate) => {
       let result = [];
@@ -350,26 +350,29 @@
     const findParentElm = (elm, rootElm) => {
       while (elm.parentNode) {
         if (elm.parentNode === rootElm) {
-          return elm;
+          return rootElm;
         }
         elm = elm.parentNode;
       }
+      return undefined;
     };
     const replaceWithSpans = text => text.replace(regExpGlobal, wrapCharWithSpan);
 
     const isWrappedNbsp = node => node.nodeName.toLowerCase() === 'span' && node.classList.contains('mce-nbsp-wrap');
     const show = (editor, rootElm) => {
+      const dom = editor.dom;
       const nodeList = filterDescendants(SugarElement.fromDom(rootElm), isMatch);
       each$1(nodeList, n => {
+        var _a;
         const parent = n.dom.parentNode;
         if (isWrappedNbsp(parent)) {
           add(SugarElement.fromDom(parent), nbspClass);
         } else {
-          const withSpans = replaceWithSpans(editor.dom.encode(value(n)));
-          const div = editor.dom.create('div', null, withSpans);
+          const withSpans = replaceWithSpans(dom.encode((_a = value(n)) !== null && _a !== void 0 ? _a : ''));
+          const div = dom.create('div', {}, withSpans);
           let node;
           while (node = div.lastChild) {
-            editor.dom.insertAfter(node, n.dom);
+            dom.insertAfter(node, n.dom);
           }
           editor.dom.remove(n.dom);
         }

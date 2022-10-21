@@ -116,7 +116,7 @@ Make your dropdown suit the dark mode of your website or software.
 Use a dropdown with card content to make it easy for users to get more information on a given subject and avoid ovewhelming them with too much content at once.
 
 {% capture code %}
-{% include ui/button.html color="white" text="Button" %}
+{% include ui/button.html  text="Button" %}
 <div class="dropdown{% hide %} show{% endhide %}">
     <a href="#" class="btn btn-primary dropdown-toggle">Dropdown</a>
     <div class="dropdown-menu dropdown-menu-card{% hide %} show position-static{% endhide %}" style="max-width: 20rem;">

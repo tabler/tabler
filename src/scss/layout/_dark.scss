@@ -24,15 +24,20 @@ body:not(.theme-dark) .hide-theme-light {
     --#{$prefix}bg-surface-dark: #{$dark-mode-darken};
     --#{$prefix}bg-surface-secondary: #{$dark-mode-darken};
 
+    --#{$prefix}link-color: #{lighten($primary, 8%)};
+    --#{$prefix}link-hover-color: #{$primary};
+
     --#{$prefix}active-bg: #{$dark-mode-lighten};
+    --#{$prefix}disabled-color: var(--#{$prefix}gray-700);
 
     --#{$prefix}card-bg: #{$dark-mode-darken};
     --#{$prefix}card-bg-hover: #{$dark-mode-darken};
     --#{$prefix}card-bg-rgb: #{to-rgb($dark-mode-darken)};
     --#{$prefix}card-color: #{$dark-mode-text};
 
-    --#{$prefix}border-color: #{$dark-mode-border-color};
-    --#{$prefix}border-color-light: #{$dark-mode-border-color-light};
+    --#{$prefix}border-color: var(--#{$prefix}dark-mode-border-color);
+    --#{$prefix}border-color-light: var(--#{$prefix}dark-mode-border-color-light);
+    --#{$prefix}border-color-active: var(--#{$prefix}dark-mode-border-color-active);
 
     --#{$prefix}btn-color: #{$dark-mode-darken};
 
@@ -87,18 +92,11 @@ body:not(.theme-dark) .hide-theme-light {
     color: inherit;
   }
 
-  .btn-white,
-  .form-file-button {
-    //@include button-variant($dark-mode-lighten, $border-color, $dark-mode-text, rgba($dark, 0), $border-color, $dark-mode-text);
-    background-image: none;
-  }
-
   .form-check-input:not(:checked),
   .form-select,
   .form-file-text,
   .form-control,
-  .form-selectgroup-check,
-  .form-imagecheck-figure:before {
+  .form-selectgroup-check {
     background-color: $dark-mode-darken;
     color: $dark-mode-text;
     border-color: $dark-mode-border-color;

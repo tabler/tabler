@@ -1,5 +1,5 @@
 /**
- * TinyMCE version 6.1.2 (2022-07-29)
+ * TinyMCE version 6.2.0 (2022-09-08)
  */
 
 (function () {
@@ -21,10 +21,21 @@
 
     var global$3 = tinymce.util.Tools.resolve('tinymce.PluginManager');
 
+    let unique = 0;
+    const generate = prefix => {
+      const date = new Date();
+      const time = date.getTime();
+      const random = Math.floor(Math.random() * 1000000000);
+      unique++;
+      return prefix + '_' + random + unique + String(time);
+    };
+
     const get$1 = customTabs => {
       const addTab = spec => {
+        var _a;
+        const name = (_a = spec.name) !== null && _a !== void 0 ? _a : generate('tab-name');
         const currentCustomTabs = customTabs.get();
-        currentCustomTabs[spec.name] = spec;
+        currentCustomTabs[name] = spec;
         customTabs.set(currentCustomTabs);
       };
       return { addTab };
@@ -56,10 +67,34 @@
       });
     };
 
+    const hasProto = (v, constructor, predicate) => {
+      var _a;
+      if (predicate(v, constructor.prototype)) {
+        return true;
+      } else {
+        return ((_a = v.constructor) === null || _a === void 0 ? void 0 : _a.name) === constructor.name;
+      }
+    };
+    const typeOf = x => {
+      const t = typeof x;
+      if (x === null) {
+        return 'null';
+      } else if (t === 'object' && Array.isArray(x)) {
+        return 'array';
+      } else if (t === 'object' && hasProto(x, String, (o, proto) => proto.isPrototypeOf(o))) {
+        return 'string';
+      } else {
+        return t;
+      }
+    };
+    const isType = type => value => typeOf(value) === type;
+    const isSimpleType = type => value => typeof value === type;
     const eq = t => a => t === a;
+    const isString = isType('string');
     const isUndefined = eq(undefined);
     const isNullable = a => a === null || a === undefined;
     const isNonNullable = a => !isNullable(a);
+    const isFunction = isSimpleType('function');
 
     const constant = value => {
       return () => {
@@ -161,6 +196,7 @@
     }
     Optional.singletonNone = new Optional(false);
 
+    const nativeSlice = Array.prototype.slice;
     const nativeIndexOf = Array.prototype.indexOf;
     const rawIndexOf = (ts, t) => nativeIndexOf.call(ts, t);
     const contains = (xs, x) => rawIndexOf(xs, x) > -1;
@@ -196,6 +232,11 @@
     };
     const find = (xs, pred) => {
       return findUntil(xs, pred, never);
+    };
+    const sort = (xs, comparator) => {
+      const copy = nativeSlice.call(xs, 0);
+      copy.sort(comparator);
+      return copy;
     };
 
     const keys = Object.keys;
@@ -587,11 +628,6 @@
         type: 'premium'
       },
       {
-        key: 'autocorrect',
-        name: 'Autocorrect',
-        type: 'premium'
-      },
-      {
         key: 'casechange',
         name: 'Case Change',
         type: 'premium'
@@ -604,6 +640,11 @@
       {
         key: 'editimage',
         name: 'Enhanced Image Editing',
+        type: 'premium'
+      },
+      {
+        key: 'footnotes',
+        name: 'Footnotes',
         type: 'premium'
       },
       {
@@ -630,6 +671,11 @@
       {
         key: 'mentions',
         name: 'Mentions',
+        type: 'premium'
+      },
+      {
+        key: 'mergetags',
+        name: 'Merge Tags',
         type: 'premium'
       },
       {
@@ -661,6 +707,11 @@
         slug: 'introduction-to-tiny-spellchecker'
       },
       {
+        key: 'autocorrect',
+        name: 'Spelling Autocorrect',
+        type: 'premium'
+      },
+      {
         key: 'tinycomments',
         name: 'Tiny Comments',
         type: 'premium',
@@ -685,24 +736,43 @@
 
     const tab$1 = editor => {
       const availablePlugins = () => {
-        const premiumPlugins = filter(urls, ({key, type}) => {
-          return key !== 'autocorrect' && type === 'premium';
+        const premiumPlugins = filter(urls, ({type}) => {
+          return type === 'premium';
         });
-        const premiumPluginList = map(premiumPlugins, plugin => '<li>' + global$1.translate(plugin.name) + '</li>').join('');
+        const sortedPremiumPlugins = sort(map(premiumPlugins, p => p.name), (s1, s2) => s1.localeCompare(s2));
+        const premiumPluginList = map(sortedPremiumPlugins, pluginName => `<li>${ pluginName }</li>`).join('');
         return '<div data-mce-tabstop="1" tabindex="-1">' + '<p><b>' + global$1.translate('Premium plugins:') + '</b></p>' + '<ul>' + premiumPluginList + '<li class="tox-help__more-link" "><a href="https://www.tiny.cloud/pricing/?utm_campaign=editor_referral&utm_medium=help_dialog&utm_source=tinymce" rel="noopener" target="_blank">' + global$1.translate('Learn more...') + '</a></li>' + '</ul>' + '</div>';
       };
       const makeLink = p => `<a href="${ p.url }" target="_blank" rel="noopener">${ p.name }</a>`;
-      const maybeUrlize = (editor, key) => find(urls, x => {
+      const identifyUnknownPlugin = (editor, key) => {
+        const getMetadata = editor.plugins[key].getMetadata;
+        if (isFunction(getMetadata)) {
+          const metadata = getMetadata();
+          return {
+            name: metadata.name,
+            html: makeLink(metadata)
+          };
+        } else {
+          return {
+            name: key,
+            html: key
+          };
+        }
+      };
+      const getPluginData = (editor, key) => find(urls, x => {
         return x.key === key;
       }).fold(() => {
-        const getMetadata = editor.plugins[key].getMetadata;
-        return typeof getMetadata === 'function' ? makeLink(getMetadata()) : key;
+        return identifyUnknownPlugin(editor, key);
       }, x => {
         const name = x.type === 'premium' ? `${ x.name }*` : x.name;
-        return makeLink({
+        const html = makeLink({
           name,
           url: `https://www.tiny.cloud/docs/tinymce/6/${ x.slug }/`
         });
+        return {
+          name,
+          html
+        };
       });
       const getPluginKeys = editor => {
         const keys$1 = keys(editor.plugins);
@@ -711,8 +781,9 @@
       };
       const pluginLister = editor => {
         const pluginKeys = getPluginKeys(editor);
-        const pluginLis = map(pluginKeys, key => {
-          return '<li>' + maybeUrlize(editor, key) + '</li>';
+        const sortedPluginData = sort(map(pluginKeys, k => getPluginData(editor, k)), (pd1, pd2) => pd1.name.localeCompare(pd2.name));
+        const pluginLis = map(sortedPluginData, key => {
+          return '<li>' + key.html + '</li>';
         });
         const count = pluginLis.length;
         const pluginsString = pluginLis.join('');
@@ -767,14 +838,16 @@
     const parseHelpTabsSetting = (tabsFromSettings, tabs) => {
       const newTabs = {};
       const names = map(tabsFromSettings, t => {
-        if (typeof t === 'string') {
+        var _a;
+        if (isString(t)) {
           if (has(tabs, t)) {
             newTabs[t] = tabs[t];
           }
           return t;
         } else {
-          newTabs[t.name] = t;
-          return t.name;
+          const name = (_a = t.name) !== null && _a !== void 0 ? _a : generate('tab-name');
+          newTabs[name] = t;
+          return name;
         }
       });
       return {

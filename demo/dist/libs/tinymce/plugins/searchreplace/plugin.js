@@ -1,5 +1,5 @@
 /**
- * TinyMCE version 6.1.2 (2022-07-29)
+ * TinyMCE version 6.2.0 (2022-09-08)
  */
 
 (function () {
@@ -361,7 +361,7 @@
 
     const isSimpleBoundary = (dom, node) => dom.isBlock(node) || has(dom.schema.getVoidElements(), node.nodeName);
     const isContentEditableFalse = (dom, node) => dom.getContentEditable(node) === 'false';
-    const isContentEditableTrueInCef = (dom, node) => dom.getContentEditable(node) === 'true' && dom.getContentEditableParent(node.parentNode) === 'false';
+    const isContentEditableTrueInCef = (dom, node) => dom.getContentEditable(node) === 'true' && node.parentNode && dom.getContentEditableParent(node.parentNode) === 'false';
     const isHidden = (dom, node) => !dom.isBlock(node) && has(dom.schema.getWhitespaceElements(), node.nodeName);
     const isBoundary = (dom, node) => isSimpleBoundary(dom, node) || isContentEditableFalse(dom, node) || isHidden(dom, node) || isContentEditableTrueInCef(dom, node);
     const isText = node => node.nodeType === 3;
@@ -398,10 +398,11 @@
       }
     };
     const collectTextToBoundary = (dom, section, node, rootNode, forwards) => {
+      var _a;
       if (isBoundary(dom, node)) {
         return;
       }
-      const rootBlock = dom.getParent(rootNode, dom.isBlock);
+      const rootBlock = (_a = dom.getParent(rootNode, dom.isBlock)) !== null && _a !== void 0 ? _a : dom.getRoot();
       const walker = new global(node, rootBlock);
       const walkerFn = forwards ? walker.next.bind(walker) : walker.prev.bind(walker);
       walk(dom, walkerFn, node, {
@@ -570,11 +571,7 @@
     };
 
     const getElmIndex = elm => {
-      const value = elm.getAttribute('data-mce-index');
-      if (typeof value === 'number') {
-        return '' + value;
-      }
-      return value;
+      return elm.getAttribute('data-mce-index');
     };
     const markAllMatches = (editor, currentSearchState, pattern, inSelection) => {
       const marker = editor.dom.create('span', { 'data-mce-bogus': 1 });
@@ -588,11 +585,12 @@
       }
     };
     const unwrap = node => {
+      var _a;
       const parentNode = node.parentNode;
       if (node.firstChild) {
         parentNode.insertBefore(node.firstChild, node);
       }
-      node.parentNode.removeChild(node);
+      (_a = node.parentNode) === null || _a === void 0 ? void 0 : _a.removeChild(node);
     };
     const findSpansByIndex = (editor, index) => {
       const spans = [];
@@ -614,7 +612,6 @@
       const searchState = currentSearchState.get();
       let testIndex = searchState.index;
       const dom = editor.dom;
-      forward = forward !== false;
       if (forward) {
         if (testIndex + 1 === searchState.count) {
           testIndex = 0;
@@ -640,7 +637,7 @@
     const removeNode = (dom, node) => {
       const parent = node.parentNode;
       dom.remove(node);
-      if (dom.isEmpty(parent)) {
+      if (parent && dom.isEmpty(parent)) {
         dom.remove(parent);
       }
     };
@@ -704,7 +701,7 @@
         let matchIndex = currentMatchIndex = parseInt(nodeIndex, 10);
         if (all || matchIndex === searchState.index) {
           if (text.length) {
-            nodes[i].firstChild.nodeValue = text;
+            nodes[i].innerText = text;
             unwrap(nodes[i]);
           } else {
             removeNode(editor.dom, nodes[i]);
@@ -738,7 +735,8 @@
       return !all && currentSearchState.get().count > 0;
     };
     const done = (editor, currentSearchState, keepEditorSelection) => {
-      let startContainer, endContainer;
+      let startContainer;
+      let endContainer;
       const searchState = currentSearchState.get();
       const nodes = global$1.toArray(editor.getBody().getElementsByTagName('span'));
       for (let i = 0; i < nodes.length; i++) {
@@ -767,6 +765,8 @@
           editor.selection.setRng(rng);
         }
         return rng;
+      } else {
+        return undefined;
       }
     };
     const hasNext = (editor, currentSearchState) => currentSearchState.get().count > 1;

@@ -1531,6 +1531,8 @@ body.tox-dialog__disable-scroll {
   overflow: hidden;
 }
 .tox .tox-editor-header {
+  display: grid;
+  grid-template-columns: 1fr min-content;
   z-index: 1;
 }
 .tox:not(.tox-tinymce-inline) .tox-editor-header {
@@ -1541,7 +1543,7 @@ body.tox-dialog__disable-scroll {
   transition: box-shadow 0.5s;
 }
 .tox:not(.tox-tinymce-inline).tox-tinymce--toolbar-bottom .tox-editor-header {
-  border-top: 1px solid #c1c1c1;
+  border-top: 1px solid #cccccc;
   box-shadow: none;
 }
 .tox:not(.tox-tinymce-inline).tox-tinymce--toolbar-sticky-on .tox-editor-header {
@@ -2127,10 +2129,39 @@ body.tox-dialog__disable-scroll {
   flex: 0 0 auto;
   flex-shrink: 0;
   flex-wrap: wrap;
+  grid-column: 1 / -1;
+  grid-row: 1;
   padding: 0 4px 0 4px;
 }
-.tox.tox-tinymce:not(.tox-tinymce-inline) .tox-editor-header:not(:first-child) .tox-menubar {
-  border-top: 1px solid #cccccc;
+.tox .tox-promotion + .tox-menubar {
+  grid-column: 1;
+}
+.tox .tox-promotion {
+  background: url("data:image/svg+xml;charset=utf8,%3Csvg height='39px' viewBox='0 0 40 39px' width='40' xmlns='http://www.w3.org/2000/svg'%3E%3Crect x='0' y='38px' width='100' height='1' fill='%23cccccc'/%3E%3C/svg%3E") left 0 top 0 #fff;
+  background-color: #fff;
+  grid-column: 2;
+  grid-row: 1;
+  padding-inline-end: 8px;
+  padding-inline-start: 4px;
+  padding-top: 5px;
+}
+.tox .tox-promotion-link {
+  align-items: unsafe center;
+  background-color: #E8F1F8;
+  border-radius: 5px;
+  color: #086BE6;
+  cursor: pointer;
+  display: flex;
+  font-size: 14px;
+  height: 26.6px;
+  padding: 4px 8px;
+  white-space: nowrap;
+}
+.tox .tox-promotion-link:hover {
+  background-color: #B4D7FF;
+}
+.tox .tox-promotion-link:focus {
+  background-color: #D9EDF7;
 }
 /* Deprecated. Remove in next major release */
 .tox .tox-mbtn {
@@ -2910,10 +2941,14 @@ body.tox-dialog__disable-scroll {
 .tox .tox-toolbar__overflow--shrinking {
   transition: opacity 0.3s ease, height 0.2s linear 0.1s, visibility 0s linear 0.3s;
 }
+.tox .tox-toolbar-overlord,
+.tox .tox-anchorbar {
+  grid-column: 1 / -1;
+}
 .tox .tox-menubar + .tox-toolbar,
 .tox .tox-menubar + .tox-toolbar-overlord {
   border-top: 1px solid #cccccc;
-  margin-top: 0;
+  margin-top: -1px;
   padding-bottom: 0px;
   padding-top: 0px;
 }
@@ -3122,6 +3157,12 @@ body.tox-dialog__disable-scroll {
 .tox.tox-tinymce-aux .tox-toolbar__overflow {
   border: 1px solid #cccccc;
   padding: 0;
+}
+.tox .tox-pop .tox-pop__dialog .tox-toolbar {
+  padding: 0;
+}
+.tox:not(.tox-tinymce-inline) .tox-editor-header:not(:first-child) .tox-menubar {
+  border-top: 1px solid #cccccc;
 }
 .tox:not(.tox-tinymce-inline) .tox-editor-header:not(:first-child) .tox-toolbar-overlord:first-child .tox-toolbar__primary,
 .tox:not(.tox-tinymce-inline) .tox-editor-header:not(:first-child) .tox-toolbar:first-child {

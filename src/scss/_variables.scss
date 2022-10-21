@@ -180,9 +180,6 @@ $border-color-translucent: rgba($text-muted, $border-opacity) !default;
 $border-color-light: mix($text-muted, #ffffff, percentage($border-light-opacity)) !default;
 $border-color-light-translucent: rgba($text-muted, $border-light-opacity) !default;
 
-$border-color-dark: mix($text-muted, #ffffff, percentage($border-dark-opacity)) !default;
-$border-color-dark-translucent: rgba($text-muted, $border-dark-opacity) !default;
-
 $border-color-active: mix($text-muted, #ffffff, percentage($border-active-opacity)) !default;
 $border-color-active-translucent: rgba($text-muted, $border-active-opacity) !default;
 
@@ -263,11 +260,14 @@ $gray-colors: (
 
 $theme-colors: map-merge($theme-colors, map-merge($extra-colors, $social-colors));
 
+//
 // Dark mode
+//
 $dark-mode-darken: darken($dark, 2%) !default;
 $dark-mode-lighten: lighten($dark, 2%) !default;
 $dark-mode-border-color: lighten($dark, 4%) !default;
 $dark-mode-border-color-light: lighten($dark, 4%) !default;
+$dark-mode-border-color-active: lighten($dark, 12%) !default;
 $dark-mode-text: $light;
 
 // Borders
@@ -313,17 +313,26 @@ $avatar-font-size: $h4-font-size;
 $link-decoration: none !default;
 $link-hover-decoration: underline !default;
 
-//Typography
-
+// Typography
 $hr-opacity: $border-opacity !default;
 $hr-margin-y: 2rem !default;
 
+// Caret
+$caret-width: .36em !default;
 $caret-spacing: .4em !default;
 
-//Sizing
+// Grid
 $grid-gutter-width: 1rem !default;
 $container-padding-x: 1.5rem !default;
 
+$container-variations: (
+  tight: 30rem,
+  narrow: 45rem,
+) !default;
+
+$content-padding-y: 1.25rem !default;
+
+// Spacers
 $spacer: 1rem !default;
 $spacers: (
   0: 0,
@@ -336,12 +345,12 @@ $spacers: (
 
 $negative-spacers: if($enable-negative-margins, negativify-map($spacers), null) !default;
 
+// Sizes
 $size-spacers: (
   auto: auto,
   px: 1px,
   full: 100%
 ) !default;
-
 
 $size-values: map-merge($spacers, (
   25: 25%,
@@ -352,14 +361,6 @@ $size-values: map-merge($spacers, (
   100: 100%,
   auto: auto
 )) !default;
-
-
-$container-variations: (
-  tight: 30rem,
-  narrow: 45rem,
-) !default;
-
-$content-padding-y: 1.25rem !default;
 
 // Aspect ratios
 $aspect-ratios: (
@@ -395,7 +396,7 @@ $transition-time: .3s !default;
 // Overlay
 $overlay-gradient: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, .6) 100%) !default;
 
-//accordion
+// Accordion
 $accordion-bg: transparent !default;
 $accordion-color: var(--#{$prefix}body-color) !default;
 $accordion-border-color: var(--#{$prefix}border-color-translucent) !default;
@@ -406,7 +407,7 @@ $accordion-button-active-bg: transparent !default;
 $accordion-button-active-color: inherit !default;
 $accordion-button-focus-border-color: $accordion-border-color !default;
 
-//alerts
+// Alerts
 $alert-padding-x: 1rem !default;
 $alert-padding-y: 1rem !default;
 $alert-link-font-weight: var(--#{$prefix}font-weight-bold) !default;
@@ -415,7 +416,7 @@ $alert-border-width: 1px !default;
 $alert-border-color: var(--#{$prefix}border-color-translucent) !default;
 $alert-shadow: rgba($dark, .04) 0 2px 4px 0 !default;
 
-//breadcrumb
+// Breadcrumb
 $breadcrumb-divider-color: var(--#{$prefix}muted) !default;
 $breadcrumb-active-color: inherit !default;
 
@@ -425,7 +426,7 @@ $breadcrumb-variants: (
   bullets: "\02022",
 ) !default;
 
-//badges
+// Badges
 $badge-font-size: $code-font-size !default;
 $badge-line-height: $code-line-height !default;
 $badge-font-weight: var(--#{$prefix}font-weight-medium) !default;
@@ -433,7 +434,7 @@ $badge-padding-y: .25em !default;
 $badge-padding-x: .5em !default;
 $badge-empty-size: .5rem !default;
 
-//buttons
+// Buttons
 $input-btn-line-height: $line-height-base !default;
 $input-btn-font-size: $font-size-base !default;
 $input-btn-font-family: var(--#{$prefix}font-sans-serif) !default;
@@ -449,7 +450,7 @@ $input-btn-padding-y-lg: .5rem !default;
 
 $input-btn-focus-width: .25rem !default;
 
-// inputs
+// Inputs
 $input-height: null !default;
 $input-height-sm: null !default;
 $input-height-lg: null !default;
@@ -457,12 +458,13 @@ $input-border-radius: var(--#{$prefix}border-radius) !default;
 $input-color: inherit !default;
 $input-focus-color: inherit !default;
 
-// buttons
+// Buttons
+$btn-disabled-opacity: .4 !default;
 $btn-padding-x: 1rem !default;
 $btn-font-weight: var(--#{$prefix}font-weight-medium) !default;
 $btn-border-radius: var(--#{$prefix}border-radius) !default;
 
-//cards
+// Cards
 $card-title-spacer-y: 1.25rem !default;
 $card-box-shadow: var(--#{$prefix}shadow-card) !default;
 $card-hover-box-shadow: var(--#{$prefix}shadow-card-hover) !default;
@@ -488,10 +490,17 @@ $card-group-margin: 1.5rem !default;
 
 $card-stamp-opacity: .2 !default;
 
+$card-ribbon-margin: .25rem !default;
+$card-ribbon-border-radius: var(--#{$prefix}border-radius) !default;
+$card-ribbon-font-size: $h6-font-size !default;
+
+$card-header-tabs-bg: var(--#{$prefix}bg-surface-secondary) !default;
+
 $cards-grid-gap: 1rem !default;
 $cards-grid-breakpoint: lg !default;
 
-//carousel
+
+// Carousel
 $carousel-control-color: $white !default;
 $carousel-control-icon-width: 1.5rem !default;
 $carousel-control-prev-icon-bg: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='#{$carousel-control-color}' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='15 18 9 12 15 6'></polyline></svg>") !default;
@@ -499,18 +508,17 @@ $carousel-control-next-icon-bg: url("data:image/svg+xml,<svg xmlns='http://www.w
 
 $carousel-indicator-thumb-opacity: .75 !default;
 $carousel-indicator-thumb-width: 4rem !default;
-
 $carousel-indicator-dot-width: .5rem !default;
 
-//close
+// Close
 $btn-close-width: .75rem !default;
 $btn-close-opacity: .3 !default;
 
-//datagrid
+// Datagrid
 $datagrid-padding: 1.5rem !default;
 $datagrid-item-width: 15rem !default;
 
-//dropdown
+// Dropdown
 $dropdown-item-padding-x: .75rem !default;
 $dropdown-item-padding-y: .5rem !default;
 $dropdown-font-size: $font-size-base !default;
@@ -523,20 +531,18 @@ $dropdown-link-hover-color: inherit !default;
 $dropdown-spacer: 1px !default;
 $dropdown-min-width: 11rem !default;
 $dropdown-max-width: 25rem !default;
-
 $dropdown-scrollable-height: 13rem !default;
-
 $dropdown-link-active-color: var(--#{$prefix}primary)  !default;
 $dropdown-link-active-bg: var(--#{$prefix}active-bg) !default;
 
-//tooltip
+// Tooltip
 $tooltip-bg: var(--#{$prefix}bg-surface-dark) !default;
 $tooltip-color: var(--#{$prefix}light) !default;
 
-//loader
+// Loader
 $loader-size: 2.5rem !default;
 
-//lists
+// Lists
 $list-group-header-bg: var(--#{$prefix}light) !default;
 $list-group-header-color: var(--#{$prefix}muted) !default;
 
@@ -544,7 +550,7 @@ $list-group-border-color: var(--#{$prefix}border-color) !default;
 $list-group-item-padding-y: $card-cap-padding-y !default;
 $list-group-item-padding-x: $card-cap-padding-x !default;
 
-//modals
+// Modals
 $modal-backdrop-opacity: .24 !default;
 $modal-backdrop-bg: $dark !default;
 $modal-backdrop-blur: 4px !default;
@@ -552,8 +558,9 @@ $modal-backdrop-blur: 4px !default;
 $modal-fade-transform: translate(0, -1rem) !default;
 
 $modal-content-border-color: transparent !default;
-$modal-content-bg: $gray-50 !default;
-$modal-content-border-radius: var(--#{$prefix}border-radius) !default;
+$modal-content-bg: var(--#{$prefix}bg-surface) !default;
+$modal-content-border-radius: var(--#{$prefix}border-radius-lg) !default;
+$modal-content-inner-border-radius: subtract(var(--#{$prefix}modal-border-radius), 1px) !default;
 
 $modal-header-padding: 1.5rem !default;
 $modal-header-height: 3.5rem !default;
@@ -571,7 +578,7 @@ $modal-lg: 720px !default;
 $modal-md: 540px !default;
 $modal-sm: 380px !default;
 
-//nav
+// Nav
 $nav-link-padding-y: .5rem !default;
 $nav-link-padding-x: .75rem !default;
 $nav-link-color: var(--#{$prefix}muted) !default;
@@ -590,12 +597,14 @@ $nav-bordered-link-active-border-width: 2 * $border-width !default;
 $nav-bordered-margin-x: 1.25rem !default;
 
 $nav-tabs-border-color: var(--#{$prefix}border-color) !default;
+$nav-tabs-border-radius: var(--#{$prefix}border-radius) !default;
 $nav-tabs-link-hover-border-color: $nav-tabs-border-color $nav-tabs-border-color $nav-tabs-border-color !default;
 $nav-tabs-link-active-border-color: $nav-tabs-link-hover-border-color !default;
 $nav-tabs-link-active-color: var(--#{$prefix}body-color) !default;
+$nav-tabs-bg: var(--#{$prefix}bg-surface-secondary) !default;
 
 
-//navbar
+// Navbar
 $navbar-height: 3.5rem !default;
 $navbar-padding-y: .25rem !default;
 
@@ -606,11 +615,13 @@ $navbar-light-color: var(--#{$prefix}body-color) !default;
 $navbar-light-brand-color: var(--#{$prefix}body-color) !default;
 $navbar-light-active-color: var(--#{$prefix}body-color)color !default;
 $navbar-light-disabled-color: var(--#{$prefix}disabled-color) !default;
+$navbar-light-active-bg: rgba(0, 0, 0, .06) !default;
 
 $navbar-dark-color: rgba($white, $text-muted-opacity) !default;
 $navbar-dark-brand-color: $white !default;
 $navbar-dark-active-color: $white !default;
 $navbar-dark-disabled-color: var(--#{$prefix}disabled-color) !default;
+$navbar-dark-active-bg: rgba(255, 255, 255, .06) !default;
 
 $navbar-brand-padding-y: $nav-link-padding-y !default;
 $navbar-brand-image-height: 2rem !default;
@@ -623,27 +634,30 @@ $navbar-toggler-padding-x: 0 !default;
 $navbar-toggler-padding-y: 0 !default;
 $navbar-toggler-animation-time: .2s !default;
 $navbar-toggler-focus-width: 0 !default;
+$navbar-overlap-height: 9rem !default;
 
 $navbar-nav-link-padding-x: $nav-link-padding-x !default;
 
 $navbar-active-border-color: var(--#{$prefix}primary) !default;
 
-$navbar-overlap-height: 9rem !default;
 
-//sidebar
+// Sidebar
 $sidebar-width: 15rem !default;
 
-//popover
+// Popover
+$popover-bg: var(--#{$prefix}bg-surface) !default;
+$popover-header-bg: transparent !default;
 $popover-border-color: var(--#{$prefix}border-color) !default;
+$popover-body-color: inherit !default;
 
-//footer
+// Footer
 $footer-padding-y: 2rem !default;
 $footer-bg: $white !default;
 $footer-border-color: var(--#{$prefix}border-color) !default;
 $footer-color: var(--#{$prefix}muted) !default;
 
 
-//pagination
+// Pagination
 $pagination-border-width: 0 !default;
 $pagination-padding-y: .25rem !default;
 $pagination-padding-x: .25rem !default;
@@ -655,15 +669,15 @@ $pagination-disabled-color: var(--#{$prefix}disabled-color) !default;
 $pagination-active-bg: var(--#{$prefix}primary) !default;
 $pagination-active-border-color: var(--#{$prefix}primary) !default;
 
-//statuses
+// Statuses
 $status-dot-size: .5rem !default;
 $status-height: 1.5rem !default;
 
-//steps
+// Steps
 $steps-border-width: 2px !default;
 $steps-color-inactive: #f3f5f5 !default;
 
-//spinner
+// Spinner
 $spinner-width: 1.5rem !default;
 $spinner-height: 1.5rem !default;
 $spinner-width-sm: 1rem !default;
@@ -671,7 +685,7 @@ $spinner-height-sm: 1rem !default;
 $spinner-border-width: 2px !default;
 $spinner-border-width-sm: 1px !default;
 
-//tables
+// Tables
 $table-bg-scale-dark: 40% !default;
 $table-color: inherit !default;
 $table-cell-padding-x: .75rem !default;
@@ -690,25 +704,22 @@ $table-sort-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000
 $table-sort-asc-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' width='16' height='16'><path fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='1' d='M5 7l3 3l3 -3'/></svg>") !default;
 $table-sort-desc-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' width='16' height='16'><path fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='1' d='M5 10l3 -3l3 3'/></svg>") !default;
 
-//toasts
+// Toasts
 $toast-border-color: var(--#{$prefix}border-color) !default;
 $toast-header-color: var(--#{$prefix}muted) !default;
 
-//tracking
+// Tracking
 $tracking-height: 1.5rem !default;
 $tracking-gap-width: .125rem !default;
 $tracking-border-radius: var(--#{$prefix}border-radius) !default;
 
-//progress
+// Progress
 $progress-bg: var(--#{$prefix}border-color) !default;
 $progress-border-radius: var(--#{$prefix}border-radius) !default;
 $progress-bar-bg: var(--#{$prefix}primary) !default;
 $progress-height: .5rem !default;
 
-//ribbons
-$ribbon-margin: .25rem !default;
-
-
+// Lists
 $list-group-bg: inherit !default;
 $list-group-border-color: var(--#{$prefix}border-color) !default;
 $list-group-action-color: inherit !default;
@@ -729,23 +740,24 @@ $input-group-addon-color: var(--#{$prefix}muted) !default;
 $input-border-radius: var(--#{$prefix}border-radius) !default;
 
 
-//Forms
+// Forms
 $form-check-margin-bottom: .5rem !default;
 $form-check-input-width: 1rem !default;
 $form-check-padding-start: $form-check-input-width + .5rem !default;
+
 $form-check-input-bg: var(--#{$prefix}bg-forms) !default;
 $form-check-input-border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) $input-border-color-translucent !default;
 $form-check-input-border-radius: var(--#{$prefix}border-radius) !default;
+
 $form-check-input-checked-bg-size: 1rem !default;
 $form-check-input-checked-bg-color: var(--#{$prefix}primary) !default;
-
 $form-check-input-checked-color: var(--#{$prefix}bg-forms) !default;
 $form-check-input-checked-bg-repeat: repeat !default;
 $form-check-input-checked-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' width='16' height='16'><path fill='none' stroke='#{$white}' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4 8.5l2.5 2.5l5.5 -5.5'/></svg>") !default;
 $form-check-input-checked-bg-image-dark: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' width='16' height='16'><path fill='none' stroke='#{$white}' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4 8.5l2.5 2.5l5.5 -5.5'/></svg>") !default;
-$form-check-radio-checked-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><circle r='3' fill='#{$white}' cx='8' cy='8' /></svg>") !default;
-
 $form-check-input-checked-border-color: $input-border-color-translucent !default;
+
+$form-check-radio-checked-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><circle r='3' fill='#{$white}' cx='8' cy='8' /></svg>") !default;
 
 $form-check-label-disabled-opacity: $text-muted-opacity;
 
@@ -770,25 +782,23 @@ $form-feedback-icon-invalid: str-replace(url("data:image/svg+xml,<svg xmlns='htt
 $form-label-font-size: $h4-font-size !default;
 $form-label-font-weight: var(--#{$prefix}font-weight-medium) !default;
 
-$caret-width: .36em !default;
-
 // Legend
 $legend-bg: var(--#{$prefix}border-color) !default;
 $legend-size: .75em !default;
 $legend-border-radius: var(--#{$prefix}border-radius-sm) !default;
 
-//Flags
+// Flags
 $flag-border-size: var(--#{$prefix}border-size) !default;
 $flag-border-color: var(--#{$prefix}border-color) !default;
 $flag-border-radius: var(--#{$prefix}border-radius) !default;
 $flag-sizes: $avatar-sizes !default;
 
-//Payments
+// Payments
 $payment-sizes: $avatar-sizes !default;
 
 // Offcanvas
 $offcanvas-bg-color: var(--#{$prefix}bg-surface) !default;
-$offcanvas-border-color: var(--#{$prefix}border-color-translucent) !default;
+$offcanvas-border-color: var(--#{$prefix}border-color) !default;
 
 // Placeholder
 $placeholder-opacity-min: .1 !default;
