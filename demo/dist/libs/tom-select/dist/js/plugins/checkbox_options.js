@@ -1,5 +1,5 @@
 /**
-* Tom Select v2.1.0
+* Tom Select v2.2.1
 * Licensed under the Apache License, Version 2.0 (the "License");
 */
 
@@ -46,13 +46,18 @@
 	  }
 	};
 
-	// @ts-ignore TS2691 "An import path cannot end with a '.ts' extension"
+	/*! @orchidjs/unicode-variants | https://github.com/orchidjs/unicode-variants | Apache License (v2) */
+	const accent_pat = '[\u0300-\u036F\u{b7}\u{2be}]'; // \u{2bc}
+	/** @type {TUnicodeMap} */
+
 	const latin_convert = {
 	  'æ': 'ae',
 	  'ⱥ': 'a',
-	  'ø': 'o'
+	  'ø': 'o',
+	  '⁄': '/',
+	  '∕': '/'
 	};
-	new RegExp(Object.keys(latin_convert).join('|'), 'gu');
+	new RegExp(Object.keys(latin_convert).join('|') + '|' + accent_pat, 'gu');
 
 	/**
 	 * Return a dom element from either a dom query string, jQuery object, a dom element or html string
@@ -71,10 +76,10 @@
 	  }
 
 	  if (isHtmlString(query)) {
-	    let div = document.createElement('div');
-	    div.innerHTML = query.trim(); // Never return a text node of whitespace as the result
+	    var tpl = document.createElement('template');
+	    tpl.innerHTML = query.trim(); // Never return a text node of whitespace as the result
 
-	    return div.firstChild;
+	    return tpl.content.firstChild;
 	  }
 
 	  return document.querySelector(query);

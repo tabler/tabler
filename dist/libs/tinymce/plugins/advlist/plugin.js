@@ -1,5 +1,5 @@
 /**
- * TinyMCE version 6.1.2 (2022-07-29)
+ * TinyMCE version 6.2.0 (2022-09-08)
  */
 
 (function () {
@@ -36,10 +36,10 @@
     const getNumberStyles = option('advlist_number_styles');
     const getBulletStyles = option('advlist_bullet_styles');
 
-    var global = tinymce.util.Tools.resolve('tinymce.util.Tools');
-
     const isNullable = a => a === null || a === undefined;
     const isNonNullable = a => !isNullable(a);
+
+    var global = tinymce.util.Tools.resolve('tinymce.util.Tools');
 
     class Optional {
       constructor(tag, value) {
@@ -138,15 +138,20 @@
       return editor.dom.isChildOf(elm, editor.getBody());
     };
     const isTableCellNode = node => {
-      return node && /^(TH|TD)$/.test(node.nodeName);
+      return isNonNullable(node) && /^(TH|TD)$/.test(node.nodeName);
     };
     const isListNode = editor => node => {
-      return node && /^(OL|UL|DL)$/.test(node.nodeName) && isChildOfBody(editor, node);
+      return isNonNullable(node) && /^(OL|UL|DL)$/.test(node.nodeName) && isChildOfBody(editor, node);
     };
     const getSelectedStyleType = editor => {
       const listElm = editor.dom.getParent(editor.selection.getNode(), 'ol,ul');
       const style = editor.dom.getStyle(listElm, 'listStyleType');
       return Optional.from(style);
+    };
+    const isWithinNonEditable = (editor, element) => element !== null && editor.dom.getContentEditableParent(element) === 'false';
+    const isWithinNonEditableList = (editor, element) => {
+      const parentList = editor.dom.getParent(element, 'ol,ul,dl');
+      return isWithinNonEditable(editor, parentList);
     };
 
     const findIndex = (list, predicate) => {
@@ -163,6 +168,7 @@
         return chr.toUpperCase();
       });
     };
+    const normalizeStyleValue = styleValue => isNullable(styleValue) || styleValue === 'default' ? '' : styleValue;
     const isWithinList = (editor, e, nodeName) => {
       const tableCellIndex = findIndex(e.parents, isTableCellNode);
       const parents = tableCellIndex !== -1 ? e.parents.slice(0, tableCellIndex) : e.parents;
@@ -172,6 +178,7 @@
     const makeSetupHandler = (editor, nodeName) => api => {
       const nodeChangeHandler = e => {
         api.setActive(isWithinList(editor, e, nodeName));
+        api.setEnabled(!isWithinNonEditableList(editor, e.element));
       };
       editor.on('NodeChange', nodeChangeHandler);
       return () => editor.off('NodeChange', nodeChangeHandler);
@@ -186,7 +193,7 @@
           const items = global.map(styles, styleValue => {
             const iconStyle = nodeName === 'OL' ? 'num' : 'bull';
             const iconName = styleValue === 'disc' || styleValue === 'decimal' ? 'default' : styleValue;
-            const itemValue = styleValue === 'default' ? '' : styleValue;
+            const itemValue = normalizeStyleValue(styleValue);
             const displayText = styleValueToText(styleValue);
             return {
               type: 'choiceitem',
@@ -208,20 +215,20 @@
         onSetup: makeSetupHandler(editor, nodeName)
       });
     };
-    const addButton = (editor, id, tooltip, cmd, nodeName, _styles) => {
+    const addButton = (editor, id, tooltip, cmd, nodeName, styleValue) => {
       editor.ui.registry.addToggleButton(id, {
         active: false,
         tooltip,
         icon: nodeName === 'OL' ? 'ordered-list' : 'unordered-list',
         onSetup: makeSetupHandler(editor, nodeName),
-        onAction: () => editor.execCommand(cmd)
+        onAction: () => editor.queryCommandState(cmd) || styleValue === '' ? editor.execCommand(cmd) : applyListFormat(editor, nodeName, styleValue)
       });
     };
     const addControl = (editor, id, tooltip, cmd, nodeName, styles) => {
       if (styles.length > 1) {
         addSplitButton(editor, id, tooltip, cmd, nodeName, styles);
       } else {
-        addButton(editor, id, tooltip, cmd, nodeName);
+        addButton(editor, id, tooltip, cmd, nodeName, normalizeStyleValue(styles[0]));
       }
     };
     const register = editor => {
