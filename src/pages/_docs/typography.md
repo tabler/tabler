@@ -181,6 +181,15 @@ Use the `.antialiased` utility to render text using subpixel antialiasing or use
 {% endcapture %}
 {% include example.html code=code %}
 
+## Keyboard input
+
+Use the `<kbd>` to indicate input that is typically entered via keyboard.
+
+{% capture code %}
+To edit settings, press <kbd>ctrl</kbd> + <kbd>,</kbd> or <kbd>ctrl</kbd> + <kbd>C</kbd>.
+{% endcapture %}
+{% include example.html code=code %}
+
 
 ## Markdown elements
 
