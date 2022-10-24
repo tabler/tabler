@@ -25,8 +25,11 @@ jobs:
           node-version: "${{ env.NODE }}"
           cache: npm
 
-      - name: Install ruby dependencies
-        run: bundle install
+      - name: Set up Bundler
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.0'
+          bundler-cache: true
 
       - name: Install npm dependencies
         run: npm install
