@@ -179,13 +179,13 @@ gulp.task('sass', () => {
 		.pipe(sass({
 			style: 'expanded',
 			precision: 7,
-			importer: (url, prev, done) => {
+			/*importer: (url, prev, done) => {
 				if (url[0] === '~') {
 					url = path.resolve('node_modules', url.substr(1))
 				}
 
 				return { file: url }
-			},
+			},*/
 		}).on('error', sass.logError))
 		.pipe(postcss([
 			require('autoprefixer'),
