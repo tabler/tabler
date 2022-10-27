@@ -48,8 +48,7 @@ async function downloadPhotos() {
 	 })
 
 	 photos[key]['file'] = filename
-	 photos[key]['horizontal'] = photo['type'] === 'horizontal'
-	 console.log('photo', photo)
+	 photos[key]['horizontal'] = photo['width'] > photo['height']
   }
 
   fs.writeFileSync(filePath, YAML.stringify(photos))
