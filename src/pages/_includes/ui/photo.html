@@ -8,7 +8,9 @@
 {% endif %}
 {% assign photo = photos[id] %}
 
-{% if include.ratio %}
+{% if include.background %}
+<div{% if include.class %} class="{{ include.class }}"{% endif %} style="background-image: url({{ site.base }}/static/photos/{{ photo.file }})"></div>
+{% elsif include.ratio %}
 <div class="img-responsive img-responsive-{{ include.ratio }}{% if include.class %} {{ include.class }}{% endif %}" style="background-image: url({{ site.base }}/static/photos/{{ photo.file }})"></div>
 {% else %}
 <img src="{{ site.base }}/static/photos/{{ photo.file }}"{% if include.class %} class="{{ include.class }}"{% endif %} alt="{{ photo.title }}" />
