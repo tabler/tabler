@@ -18,7 +18,8 @@
     "storybook": "start-storybook -p 6006",
     "changelog": "gulp changelog",
     "icons": "ncu -u @tabler/icons && npm install && gulp svg-icons && git add . && git commit -am \"update icons to v`npm info @tabler/icons version`\" && git push",
-    "download-images": "node build/download-images.js"
+    "download-images": "node build/download-images.js",
+    "optimize-images": "for i in ./src/static/photos/*.jpg; do convert \"$i\" -quality 80% \"${i%.jpg}.jpg\"; done"
   },
   "repository": {
     "type": "git",
@@ -148,6 +149,7 @@
     "gulp-rtlcss": "^2.0.0",
     "gulp-sass": "^5.1.0",
     "gulp-terser": "^2.1.0",
+    "imageoptim-cli": "^3.0.7",
     "imask": "^6.4.3",
     "jsvectormap": "^1.5.1",
     "list.js": "^2.3.1",

@@ -35,7 +35,7 @@ async function downloadPhotos() {
 	 let filename, i = 1;
 
 	 do {
-		filename = `${urlTitle(photo['title'])}${i > 1 ? `-${i}` : ''}.png`
+		filename = `${urlTitle(photo['title'])}${i > 1 ? `-${i}` : ''}.jpg`
 		i++
 	 } while (fs.existsSync(path.join(__dirname, `../src/static/photos/${filename}`)))
 
