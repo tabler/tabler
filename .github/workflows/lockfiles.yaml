@@ -1,0 +1,21 @@
+name: Check .lock files
+on:
+    pull_request: null
+    push:
+        branches:
+            - master
+jobs:
+    lockfiles:
+        runs-on: ubuntu-latest
+        name: Verify lock file integrity
+        steps:
+
+            - name: Clone Kimai
+              uses: actions/checkout@v2
+
+            - name: Prevent file change
+              uses: xalvarez/prevent-file-change-action@v1
+              with:
+                  githubToken: ${{ secrets.GITHUB_TOKEN }}
+                  pattern: Gemfile.lock|package-lock.json
+                  trustedAuthors: codecalm, dependabot
