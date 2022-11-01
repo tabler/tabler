@@ -1,9 +1,15 @@
-name: Check .lock files
+name: Check for changed lock files
 on:
     pull_request: null
     push:
         branches:
-            - master
+            - main
+            - dev
+
+permissions:
+    contents: read
+    pull-requests: read
+
 jobs:
     lockfiles:
         runs-on: ubuntu-latest
