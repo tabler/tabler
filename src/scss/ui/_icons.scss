@@ -1,7 +1,11 @@
+//
+// Icon component
+//
 .icon {
-  width: $font-size-base * $line-height-base;
-  height: $font-size-base * $line-height-base;
-  font-size: $font-size-base * $line-height-base;
+  --#{$prefix}icon-size: #{$font-size-base * $line-height-base};
+  width: var(--#{$prefix}icon-size);
+  height: var(--#{$prefix}icon-size);
+  font-size: var(--#{$prefix}icon-size);
   vertical-align: bottom;
 
   @if $icon-stroke-width {
@@ -13,91 +17,56 @@
   }
 }
 
+//
+// Inline icon
+//
 .icon-inline {
-  width: 1rem;
-  height: 1rem;
-  font-size: 1rem;
+  --#{$prefix}icon-size: 1rem;
   vertical-align: -.2rem;
 }
 
+//
+// Filled icon
+//
 .icon-filled {
   fill: currentColor;
 }
 
+//
+// Icon size
+//
 .icon-sm {
-  width: 1rem;
-  height: 1rem;
+  --#{$prefix}icon-size: 1rem;
   stroke-width: 1;
 }
 
 .icon-md {
-  width: 2.5rem;
-  height: 2.5rem;
+  --#{$prefix}icon-size: 2.5rem;
   stroke-width: 1;
 }
 
 .icon-lg {
-  width: 3.5rem;
-  height: 3.5rem;
+  --#{$prefix}icon-size: 3.5rem;
   stroke-width: 1;
 }
 
-@keyframes icon-pulse {
-  from {
-    opacity: 1;
-    transform: scale3d(.8, .8, .8)
-  }
-  50% {
-    transform: scale3d(1, 1, 1);
-    opacity: 1
-  }
-  to {
-    opacity: 1;
-    transform: scale3d(.8, .8, .8)
-  }
-}
-
+//
+// Icons animation
+//
 .icon-pulse {
-  @include transition(transform .15s ease 0s);
-  animation: icon-pulse 2s ease infinite;
+  @include transition(all .15s ease 0s);
+  animation: pulse 2s ease infinite;
   animation-fill-mode: both
-}
-
-@keyframes icon-tada {
-  0% {
-    transform: scale3d(1, 1, 1)
-  }
-  10%, 5% {
-    transform: scale3d(.9, .9, .9) rotate3d(0, 0, 1, -5deg)
-  }
-  15%, 25%, 35%, 45% {
-    transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, 5deg)
-  }
-  20%, 30%, 40% {
-    transform: scale3d(1.1, 1.1, 1.1) rotate3d(0, 0, 1, -5deg)
-  }
-  50% {
-    transform: scale3d(1, 1, 1)
-  }
 }
 
 .icon-tada {
-  @include transition(transform .15s ease 0s);
-  animation: icon-tada 3s ease infinite;
+  @include transition(all .15s ease 0s);
+  animation: tada 3s ease infinite;
   animation-fill-mode: both
 }
 
-@keyframes icon-rotate {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
-}
-
 .icon-rotate {
-  @include transition(transform .15s ease 0s);
-  animation: icon-rotate 3s linear infinite;
+  @include transition(all .15s ease 0s);
+  animation: rotate-360 3s linear infinite;
   animation-fill-mode: both
 }
