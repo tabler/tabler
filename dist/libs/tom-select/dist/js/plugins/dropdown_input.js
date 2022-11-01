@@ -1,5 +1,5 @@
 /**
-* Tom Select v2.2.1
+* Tom Select v2.2.2
 * Licensed under the Apache License, Version 2.0 (the "License");
 */
 
@@ -15,16 +15,65 @@
    // ctrl key or apple key for ma
 
   /*! @orchidjs/unicode-variants | https://github.com/orchidjs/unicode-variants | Apache License (v2) */
-  const accent_pat = '[\u0300-\u036F\u{b7}\u{2be}]'; // \u{2bc}
+  const accent_pat = '[\u0300-\u036F\u{b7}\u{2be}\u{2bc}]';
   /** @type {TUnicodeMap} */
 
-  const latin_convert = {
-    'æ': 'ae',
-    'ⱥ': 'a',
-    'ø': 'o',
-    '⁄': '/',
-    '∕': '/'
+  const latin_convert = {};
+  /** @type {TUnicodeMap} */
+
+  const latin_condensed = {
+    '/': '⁄∕',
+    '0': '߀',
+    "a": "ⱥɐɑ",
+    "aa": "ꜳ",
+    "ae": "æǽǣ",
+    "ao": "ꜵ",
+    "au": "ꜷ",
+    "av": "ꜹꜻ",
+    "ay": "ꜽ",
+    "b": "ƀɓƃ",
+    "c": "ꜿƈȼↄ",
+    "d": "đɗɖᴅƌꮷԁɦ",
+    "e": "ɛǝᴇɇ",
+    "f": "ꝼƒ",
+    "g": "ǥɠꞡᵹꝿɢ",
+    "h": "ħⱨⱶɥ",
+    "i": "ɨı",
+    "j": "ɉȷ",
+    "k": "ƙⱪꝁꝃꝅꞣ",
+    "l": "łƚɫⱡꝉꝇꞁɭ",
+    "m": "ɱɯϻ",
+    "n": "ꞥƞɲꞑᴎлԉ",
+    "o": "øǿɔɵꝋꝍᴑ",
+    "oe": "œ",
+    "oi": "ƣ",
+    "oo": "ꝏ",
+    "ou": "ȣ",
+    "p": "ƥᵽꝑꝓꝕρ",
+    "q": "ꝗꝙɋ",
+    "r": "ɍɽꝛꞧꞃ",
+    "s": "ßȿꞩꞅʂ",
+    "t": "ŧƭʈⱦꞇ",
+    "th": "þ",
+    "tz": "ꜩ",
+    "u": "ʉ",
+    "v": "ʋꝟʌ",
+    "vy": "ꝡ",
+    "w": "ⱳ",
+    "y": "ƴɏỿ",
+    "z": "ƶȥɀⱬꝣ",
+    "hv": "ƕ"
   };
+
+  for (let latin in latin_condensed) {
+    let unicode = latin_condensed[latin] || '';
+
+    for (let i = 0; i < unicode.length; i++) {
+      let char = unicode.substring(i, i + 1);
+      latin_convert[char] = latin;
+    }
+  }
+
   new RegExp(Object.keys(latin_convert).join('|') + '|' + accent_pat, 'gu');
 
   /**
@@ -156,7 +205,7 @@
     }
   };
   /**
-   * Prevent default
+   * Add event helper
    *
    */
 

@@ -846,16 +846,7 @@
   border-radius: 50%;
   border: 5px solid #d0d0d0;
   border-color: #d0d0d0 transparent #d0d0d0 transparent;
-  -webkit-animation: lds-dual-ring 1.2s linear infinite;
-          animation: lds-dual-ring 1.2s linear infinite;
-}
-@-webkit-keyframes lds-dual-ring {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+  animation: lds-dual-ring 1.2s linear infinite;
 }
 @keyframes lds-dual-ring {
   0% {
@@ -1011,11 +1002,11 @@
 }
 
 .ts-wrapper {
-  min-height: calc(1.4285714286em + 0.875rem + 2px);
+  min-height: calc(1.4285714286em + 0.875rem + calc(var(--tblr-border-width) * 2));
   display: flex;
 }
 .input-group-sm > .ts-wrapper, .ts-wrapper.form-select-sm, .ts-wrapper.form-control-sm {
-  min-height: calc(1.4285714286em + 0.25rem + 2px);
+  min-height: calc(1.4285714286em + 0.25rem + calc(var(--tblr-border-width) * 2));
 }
 .input-group-sm > .ts-wrapper .ts-control, .ts-wrapper.form-select-sm .ts-control, .ts-wrapper.form-control-sm .ts-control {
   border-radius: 2px;
@@ -1026,7 +1017,7 @@
   padding-bottom: 0;
 }
 .input-group-sm > .ts-wrapper.multi.has-items .ts-control, .ts-wrapper.form-select-sm.multi.has-items .ts-control, .ts-wrapper.form-control-sm.multi.has-items .ts-control {
-  padding-top: calc((calc(1.4285714286em + 0.25rem + 2px) - (1.4285714286 * 0.75rem) - 4px) / 2) !important;
+  padding-top: calc((calc(1.4285714286em + 0.25rem + calc(var(--tblr-border-width) * 2)) - (1.4285714286 * 0.75rem) - 4px) / 2) !important;
 }
 .ts-wrapper.multi.has-items .ts-control {
   padding-left: calc(0.75rem - 5px);
@@ -1036,7 +1027,7 @@
   border-radius: calc(var(--tblr-border-radius) - 1px);
 }
 .input-group-lg > .ts-wrapper, .ts-wrapper.form-control-lg, .ts-wrapper.form-select-lg {
-  min-height: calc(1.4285714286em + 1rem + 2px);
+  min-height: calc(1.4285714286em + 1rem + calc(var(--tblr-border-width) * 2));
 }
 .input-group-lg > .ts-wrapper .ts-control, .ts-wrapper.form-control-lg .ts-control, .ts-wrapper.form-select-lg .ts-control {
   border-radius: 8px;
@@ -1242,14 +1233,7 @@ image, text, .jvm-zoomin, .jvm-zoomout {
 }
 
 .jvm-line[animation=true] {
-  -webkit-animation: jvm-line-animation 10s linear forwards infinite;
   animation: jvm-line-animation 10s linear forwards infinite;
-}
-
-@-webkit-keyframes jvm-line-animation {
-  from {
-    stroke-dashoffset: 250;
-  }
 }
 @keyframes jvm-line-animation {
   from {
