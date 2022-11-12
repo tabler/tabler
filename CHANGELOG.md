@@ -191,11 +191,29 @@ All notable changes to this project will be documented in this file.
 - fix #1308 - bad coloring in table in dark mode
 - fix #1273 - datepicker background color broken
 - fix `$prefix` hard coded `layout/_dark.scss`
-- fix #1275 remove last border-right on progress bar
-- fix #1261: broken offcanvas bg
+- fix #1275 - remove last border-right on progress bar
+- fix #1261 - broken offcanvas bg
 
 
 ## `1.0.0-beta14` - 2022-10-21
 
 - fix active items in dark mode
 - update Jekyll to newest version
+
+
+## `1.0.0-beta15` - 2022-11-01
+
+- new `badges` page
+- `<kbd>` styling
+- update icons to v1.109.0
+- `tom-select` border fix
+- exclude `playgrounds` from build
+- update jekyll to v4.3.1
+- fix: facebook color update
+- navbar aria atributes fixes
+- fix #808 - `navbar-menu` and `sidebar-menu` has the same `id`
+- fix #1335 - missing color variables usage in `alert` and `btn-ghost-*`
+- move border style to CSS variables
+- add missing forms
+- `btn-actions` fixes
+- replace `$text-muted` to css variable

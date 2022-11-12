@@ -1,18 +1,22 @@
 // All colors
 @each $color, $value in map-merge($theme-colors, ( white: $white )) {
   .bg-#{"" + $color} {
-    background-color: var(--#{$prefix}#{$color}) !important;
+    --#{$prefix}bg-opacity: 1;
+    background-color: rgba(var(--#{$prefix}#{$color}-rgb), var(--#{$prefix}bg-opacity)) !important;
   }
 
   .bg-#{"" + $color}-lt {
-    color: var(--#{$prefix}#{$color}) !important;
-    background-color: rgba(var(--#{$prefix}#{$color}-rgb), .1) !important; //todo
+    --#{$prefix}bg-opacity: .1;
+    --#{$prefix}text-opacity: 1;
+    color: rgba(var(--#{$prefix}#{$color}-rgb, var(--#{$prefix}text-opacity))) !important;
+    background-color: rgba(var(--#{$prefix}#{$color}-rgb), var(--#{$prefix}bg-opacity)) !important;
   }
 }
 
 @each $color, $value in $theme-colors {
   .text-#{"" + $color} {
-    color: var(--#{$prefix}#{$color}) !important;
+    --#{$prefix}text-opacity: 1;
+    color: rgba(var(--#{$prefix}#{$color}-rgb), var(--#{$prefix}text-opacity)) !important;
   }
 
   .text-#{"" + $color}-fg {
@@ -22,10 +26,11 @@
 
 @each $color, $value in $gray-colors {
   .bg-#{"" + $color} {
-    background-color: var(--#{$prefix}#{$color}) !important;
+    --#{$prefix}bg-opacity: .1;
+    background-color: rgba(var(--#{$prefix}#{$color}-rgb), var(--#{$prefix}bg-opacity)) !important;
   }
 
   .text-#{"" + $color}-fg {
-    color: color-contrast($value ) !important;
+    color: color-contrast($value) !important;
   }
 }

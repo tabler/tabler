@@ -1,5 +1,5 @@
 /**
-* Tom Select v2.2.1
+* Tom Select v2.2.2
 * Licensed under the Apache License, Version 2.0 (the "License");
 */
 
@@ -337,8 +337,7 @@
 	/** @type {TCodePoints} */
 
 	const code_points = [[0, 65535]];
-	const accent_pat = '[\u0300-\u036F\u{b7}\u{2be}]'; // \u{2bc}
-
+	const accent_pat = '[\u0300-\u036F\u{b7}\u{2be}\u{2bc}]';
 	/** @type {TUnicodeMap} */
 
 	let unicode_map;
@@ -348,13 +347,62 @@
 	const max_char_length = 3;
 	/** @type {TUnicodeMap} */
 
-	const latin_convert = {
-	  'æ': 'ae',
-	  'ⱥ': 'a',
-	  'ø': 'o',
-	  '⁄': '/',
-	  '∕': '/'
+	const latin_convert = {};
+	/** @type {TUnicodeMap} */
+
+	const latin_condensed = {
+	  '/': '⁄∕',
+	  '0': '߀',
+	  "a": "ⱥɐɑ",
+	  "aa": "ꜳ",
+	  "ae": "æǽǣ",
+	  "ao": "ꜵ",
+	  "au": "ꜷ",
+	  "av": "ꜹꜻ",
+	  "ay": "ꜽ",
+	  "b": "ƀɓƃ",
+	  "c": "ꜿƈȼↄ",
+	  "d": "đɗɖᴅƌꮷԁɦ",
+	  "e": "ɛǝᴇɇ",
+	  "f": "ꝼƒ",
+	  "g": "ǥɠꞡᵹꝿɢ",
+	  "h": "ħⱨⱶɥ",
+	  "i": "ɨı",
+	  "j": "ɉȷ",
+	  "k": "ƙⱪꝁꝃꝅꞣ",
+	  "l": "łƚɫⱡꝉꝇꞁɭ",
+	  "m": "ɱɯϻ",
+	  "n": "ꞥƞɲꞑᴎлԉ",
+	  "o": "øǿɔɵꝋꝍᴑ",
+	  "oe": "œ",
+	  "oi": "ƣ",
+	  "oo": "ꝏ",
+	  "ou": "ȣ",
+	  "p": "ƥᵽꝑꝓꝕρ",
+	  "q": "ꝗꝙɋ",
+	  "r": "ɍɽꝛꞧꞃ",
+	  "s": "ßȿꞩꞅʂ",
+	  "t": "ŧƭʈⱦꞇ",
+	  "th": "þ",
+	  "tz": "ꜩ",
+	  "u": "ʉ",
+	  "v": "ʋꝟʌ",
+	  "vy": "ꝡ",
+	  "w": "ⱳ",
+	  "y": "ƴɏỿ",
+	  "z": "ƶȥɀⱬꝣ",
+	  "hv": "ƕ"
 	};
+
+	for (let latin in latin_condensed) {
+	  let unicode = latin_condensed[latin] || '';
+
+	  for (let i = 0; i < unicode.length; i++) {
+	    let char = unicode.substring(i, i + 1);
+	    latin_convert[char] = latin;
+	  }
+	}
+
 	const convert_pat = new RegExp(Object.keys(latin_convert).join('|') + '|' + accent_pat, 'gu');
 	/**
 	 * Initialize the unicode_map from the give code point ranges
@@ -375,38 +423,36 @@
 
 	const normalize = (str, form = 'NFKD') => str.normalize(form);
 	/**
-	 * Compatibility Decomposition without reordering string
+	 * Remove accents without reordering string
 	 * calling str.normalize('NFKD') on \u{594}\u{595}\u{596} becomes \u{596}\u{594}\u{595}
-	 * @param {string} str
-	 */
-
-	const decompose = str => {
-	  if (str.match(/[\u0f71-\u0f81]/)) {
-	    return toArray(str).reduce(
-	    /**
-	     * @param {string} result
-	     * @param {string} char
-	     */
-	    (result, char) => {
-	      return result + normalize(char);
-	    }, '');
-	  }
-
-	  return normalize(str);
-	};
-	/**
-	 * Remove accents
 	 * via https://github.com/krisk/Fuse/issues/133#issuecomment-318692703
 	 * @param {string} str
 	 * @return {string}
 	 */
 
 	const asciifold = str => {
-	  return decompose(str).toLowerCase().replace(convert_pat, (
+	  return toArray(str).reduce(
+	  /**
+	   * @param {string} result
+	   * @param {string} char
+	   */
+	  (result, char) => {
+	    return result + _asciifold(char);
+	  }, '');
+	};
+	/**
+	 * @param {string} str
+	 * @return {string}
+	 */
+
+	const _asciifold = str => {
+	  str = normalize(str).toLowerCase().replace(convert_pat, (
 	  /** @type {string} */
 	  char) => {
 	    return latin_convert[char] || '';
-	  });
+	  }); //return str;
+
+	  return normalize(str, 'NFC');
 	};
 	/**
 	 * Generate a list of unicode variants from the list of code points
@@ -434,13 +480,6 @@
 	      }
 
 	      if (folded.length == 0) {
-	        continue;
-	      }
-
-	      let decomposed = normalize(composed);
-	      let recomposed = normalize(decomposed, 'NFC');
-
-	      if (recomposed === composed && folded === decomposed) {
 	        continue;
 	      }
 
@@ -1764,7 +1803,7 @@
 	  }
 	};
 	/**
-	 * Prevent default
+	 * Add event helper
 	 *
 	 */
 
@@ -2242,7 +2281,6 @@
 
 	    addEvent(control_input, 'keypress', e => self.onKeyPress(e));
 	    addEvent(control_input, 'input', e => self.onInput(e));
-	    addEvent(focus_node, 'resize', () => self.positionDropdown(), passive_event);
 	    addEvent(focus_node, 'blur', e => self.onBlur(e));
 	    addEvent(focus_node, 'focus', e => self.onFocus(e));
 	    addEvent(control_input, 'paste', e => self.onPaste(e));
@@ -4501,8 +4539,8 @@
 
 	    html = self.settings.render[templateName].call(this, data, escape_html);
 
-	    if (html == null) {
-	      return html;
+	    if (!html) {
+	      return null;
 	    }
 
 	    html = getDom(html); // add mandatory attributes

@@ -363,7 +363,7 @@ gulp.task('build-jekyll', (cb) => {
 		env.JEKYLL_ENV = 'production'
 	}
 
-	return spawn('bundle', ['exec', 'jekyll', 'build', '--destination', demoDir, '--trace'], {
+	return spawn('bundle', ['exec', 'jekyll', 'build', '--destination', demoDir, '--trace', '--config', '_config.yml,_config_prod.yml'], {
 		env: env,
 		stdio: 'inherit'
 	})
