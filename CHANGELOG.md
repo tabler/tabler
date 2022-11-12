@@ -217,3 +217,18 @@ All notable changes to this project will be documented in this file.
 - add missing forms
 - `btn-actions` fixes
 - replace `$text-muted` to css variable
+
+
+## `1.0.0-beta16` - 2022-11
+
+- new `Photogrid` page
+- `Steps` component improvements
+- fix #1348: Make job listing responsive for smaller devices
+- fix #1357: buttons group not active
+- fix #1352: fix deprecation warning
+- fix #1180: number input with `form-control-sm` looks weird
+- fix #1328: color input should show different color for inner check symbol on white ellipse
+- fix #1355 - missing font sizes
+- update icons to v1.111.0
+- homepage navbar fix
+- fix #1262 - `.bg-opacity-xx` class is not functioning properly
