@@ -1,10 +1,15 @@
 .img-responsive {
+  --#{$prefix}img-responsive-ratio: #{percentage(.75)};
   background: no-repeat center/cover;
-  padding-top: percentage(.75);
+  padding-top: var(--#{$prefix}img-responsive-ratio);
+}
+
+.img-responsive-grid {
+  padding-top: calc(var(--#{$prefix}img-responsive-ratio) - calc(var(--#{$prefix}gutter-y) / 2));
 }
 
 @each $key, $ratio in $aspect-ratios {
   .img-responsive-#{$key} {
-    padding-top: $ratio;
+    --#{$prefix}img-responsive-ratio: #{$ratio};
   }
 }

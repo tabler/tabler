@@ -1,0 +1,21 @@
+<!-- Photo -->
+{% if include.id %}
+{% assign id = include.id | default: 1 %}
+{% if include.horizontal %}
+{% assign photos = site.data.photos | where: 'horizontal', true %}
+{% else %}
+{% assign photos = site.data.photos %}
+{% endif %}
+{% assign photo = photos[id] %}
+
+{% if include.background %}
+<div{% if include.class %} class="{{ include.class }}"{% endif %} style="background-image: url({{ site.base }}/static/photos/{{ photo.file }})"></div>
+{% elsif include.ratio %}
+<div class="img-responsive img-responsive-{{ include.ratio }}{% if include.class %} {{ include.class }}{% endif %}" style="background-image: url({{ site.base }}/static/photos/{{ photo.file }})"></div>
+{% else %}
+<img src="{{ site.base }}/static/photos/{{ photo.file }}"{% if include.class %} class="{{ include.class }}"{% endif %} alt="{{ photo.title }}" />
+{% endif %}
+
+{% else %}
+{% include ui/svg.html width=640 height=480 border=true class=include.class %}
+{% endif %}
