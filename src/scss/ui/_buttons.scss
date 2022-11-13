@@ -6,9 +6,12 @@
   --#{$prefix}btn-bg: var(--#{$prefix}bg-surface);
   --#{$prefix}btn-color: var(--#{$prefix}body-color);
   --#{$prefix}btn-border-color: var(--#{$prefix}border-color);
-  --#{$prefix}btn-hover-bg: var(--#{$prefix}bg-surface);
+  --#{$prefix}btn-hover-bg: var(--#{$prefix}btn-bg);
   --#{$prefix}btn-hover-border-color: var(--#{$prefix}border-color-active);
   --#{$prefix}btn-box-shadow: var(--#{$prefix}shadow-button);
+  --#{$prefix}btn-active-color: #{$active-color};
+  --#{$prefix}btn-active-bg: #{$active-bg};
+  --#{$prefix}btn-active-border-color: #{$active-border-color};
 
   display: inline-flex;
   align-items: center;
@@ -37,6 +40,12 @@
 
   .badge {
     top: auto;
+  }
+
+  .btn-check + &:hover {
+    color: var(--#{$prefix}btn-hover-color);
+    background-color: var(--#{$prefix}btn-hover-bg);
+    border-color: var(--#{$prefix}btn-hover-border-color);
   }
 }
 
@@ -96,9 +105,23 @@
   }
 }
 
-@each $color, $value in $theme-colors {
-  .btn-ghost-#{$color} {
-    @include button-ghost-variant($value);
+@each $name, $color in $theme-colors {
+  .btn-ghost-#{$name} {
+    --#{$prefix}btn-color: var(--#{$prefix}#{$name});
+    --#{$prefix}btn-bg: transparent;
+    --#{$prefix}btn-border-color: transparent;
+    --#{$prefix}btn-hover-color: var(--#{$prefix}#{$name}-fg);
+    --#{$prefix}btn-hover-bg: var(--#{$prefix}#{$name});
+    --#{$prefix}btn-hover-border-color: var(--#{$prefix}#{$name});
+    --#{$prefix}btn-active-color: var(--#{$prefix}#{$name}-fg);
+    --#{$prefix}btn-active-bg: var(--#{$prefix}#{$name});
+    --#{$prefix}btn-active-border-color: transparent;
+    --#{$prefix}btn-active-shadow: #{$btn-active-box-shadow};
+    --#{$prefix}btn-disabled-color: var(--#{$prefix}#{$name});
+    --#{$prefix}btn-disabled-bg: transparent;
+    --#{$prefix}btn-disabled-border-color: transparent;
+    --#{$prefix}gradient: none;
+    --#{$prefix}btn-box-shadow: none;
   }
 }
 

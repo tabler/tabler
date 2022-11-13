@@ -1,0 +1,26 @@
+name: Changed lock files
+on:
+    pull_request: null
+    push:
+        branches:
+            - main
+            - dev
+
+permissions:
+    pull-requests: read
+
+jobs:
+    lockfiles:
+        runs-on: ubuntu-latest
+        name: Verify lock file integrity
+        steps:
+
+            - name: Clone Tabler
+              uses: actions/checkout@v2
+
+            - name: Prevent lock file change
+              uses: xalvarez/prevent-file-change-action@v1
+              with:
+                  githubToken: ${{ secrets.GITHUB_TOKEN }}
+                  pattern: Gemfile.lock|package-lock.json
+                  trustedAuthors: codecalm, dependabot
