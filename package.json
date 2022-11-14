@@ -1,6 +1,6 @@
 {
   "name": "@tabler/core",
-  "version": "1.0.0-beta15",
+  "version": "1.0.0-beta16",
   "description": "Premium and Open Source dashboard template with responsive and high quality UI.",
   "homepage": "https://tabler.io",
   "scripts": {
@@ -17,7 +17,9 @@
     "chromatic": "chromatic --project-token=CHROMATIC_PROJECT_TOKEN",
     "storybook": "start-storybook -p 6006",
     "changelog": "gulp changelog",
-    "icons": "ncu -u @tabler/icons && npm install && gulp svg-icons && git add . && git commit -am \"update icons to v`npm info @tabler/icons version`\" && git push"
+    "icons": "ncu -u @tabler/icons && npm install && gulp svg-icons && git add . && git commit -am \"update icons to v`npm info @tabler/icons version`\" && git push",
+    "download-images": "node build/download-images.js",
+    "optimize-images": "for i in ./src/static/photos/*.jpg; do convert \"$i\" -quality 80% \"${i%.jpg}.jpg\"; done"
   },
   "repository": {
     "type": "git",
@@ -147,6 +149,7 @@
     "gulp-rtlcss": "^2.0.0",
     "gulp-sass": "^5.1.0",
     "gulp-terser": "^2.1.0",
+    "imageoptim-cli": "^3.0.7",
     "imask": "^6.4.3",
     "jsvectormap": "^1.5.1",
     "list.js": "^2.3.1",
@@ -155,6 +158,7 @@
     "plyr": "^3.7.2",
     "postcss": "^8.4.18",
     "release-it": "^15.5.0",
+    "request": "^2.88.2",
     "rollup": "^2.79.1",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-cleanup": "^3.2.1",
