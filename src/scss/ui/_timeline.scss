@@ -6,17 +6,6 @@
   position: relative;
   list-style: none;
   padding: 0;
-
-  &:before {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 1.25rem;
-    height: 100%;
-    width: var(--#{$prefix}border-width);
-    background-color: var(--#{$prefix}border-color);
-    border-radius: var(--#{$prefix}border-radius);
-  }
 }
 
 //
@@ -27,6 +16,17 @@
 
   &:not(:last-child) {
     margin-bottom: var(--#{$prefix}content-padding);
+
+    &:before {
+      content: "";
+      position: absolute;
+      top: var(--#{$prefix}timeline-icon-size);
+      left: calc(var(--#{$prefix}timeline-icon-size) / 2);
+      bottom: calc(-1 * var(--#{$prefix}content-padding));
+      width: var(--#{$prefix}border-width);
+      background-color: var(--#{$prefix}border-color);
+      border-radius: var(--#{$prefix}border-radius);
+    }
   }
 }
 
@@ -37,12 +37,25 @@
   justify-content: center;
   width: var(--#{$prefix}timeline-icon-size, $avatar-size);
   height: var(--#{$prefix}timeline-icon-size, $avatar-size);
-  background: var(--#{$prefix}gray-400);
-  color: $white;
+  background: var(--#{$prefix}gray-200);
+  color: var(--#{$prefix}muted);
   border-radius: var(--#{$prefix}border-radius);
   z-index: 5
 }
 
 .timeline-event-card {
   margin-left: calc(var(--#{$prefix}timeline-icon-size, $avatar-size) + var(--#{$prefix}content-padding));
+}
+
+//
+// Simple timeline
+//
+.timeline-simple {
+  .timeline-event-icon {
+    display: none;
+  }
+
+  .timeline-event-card {
+    margin-left: 0;
+  }
 }
