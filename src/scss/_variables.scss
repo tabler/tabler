@@ -122,9 +122,6 @@ $blockquote-font-size: $font-size-base !default;
 
 // COLORS
 $min-contrast-ratio: 1.5 !default;
-$text-muted-opacity: .7 !default;
-$text-muted-light-opacity: .4 !default;
-$text-muted-dark-opacity: .8 !default;
 
 $border-opacity: .16 !default;
 $border-light-opacity: .08 !default;
@@ -141,6 +138,7 @@ $gray-600: #49566c !default;
 $gray-700: #313c52 !default;
 $gray-800: #1d273b !default;
 $gray-900: #0f172a !default;
+
 
 $black: #000000 !default;
 $white: #ffffff !default;
@@ -171,18 +169,12 @@ $green: #2fb344 !default;
 $teal: #0ca678 !default;
 $cyan: #17a2b8 !default;
 
-$text-muted: mix($body-color, #ffffff, percentage($text-muted-opacity)) !default;
-$text-muted-light: mix($body-color, #ffffff, percentage($text-muted-light-opacity)) !default;
-$text-muted-dark: mix($body-color, #ffffff, percentage($text-muted-dark-opacity)) !default;
+$text-muted: $gray-500;
+$text-muted-light: $gray-300;
 
-$border-color: mix($text-muted, #ffffff, percentage($border-opacity)) !default;
-$border-color-translucent: rgba($text-muted, $border-opacity) !default;
-
-$border-color-light: mix($text-muted, #ffffff, percentage($border-light-opacity)) !default;
-$border-color-light-translucent: rgba($text-muted, $border-light-opacity) !default;
-
-$border-color-active: mix($text-muted, #ffffff, percentage($border-active-opacity)) !default;
-$border-color-active-translucent: rgba($text-muted, $border-active-opacity) !default;
+$border-color: $gray-200;
+$border-color-dark: $gray-300;
+$border-color-active: $gray-400;
 
 $active-bg: rgba(var(--#{$prefix}primary-rgb), .04) !default;
 $active-color: var(--#{$prefix}primary) !default;
@@ -272,6 +264,7 @@ $dark-mode-border-color: lighten($dark, 4%) !default;
 $dark-mode-border-color-light: lighten($dark, 4%) !default;
 $dark-mode-border-color-active: lighten($dark, 12%) !default;
 $dark-mode-text: $light;
+$dark-mode-muted: #999FA4;
 
 // Borders
 $border-width: 1px !default;
@@ -408,7 +401,7 @@ $overlay-gradient: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, .6
 // Accordion
 $accordion-bg: transparent !default;
 $accordion-color: var(--#{$prefix}body-color) !default;
-$accordion-border-color: var(--#{$prefix}border-color-translucent) !default;
+$accordion-border-color: var(--#{$prefix}border-color) !default;
 $accordion-icon-width: 1rem !default;
 
 $accordion-button-bg: transparent !default;
@@ -422,7 +415,7 @@ $alert-padding-y: 1rem !default;
 $alert-link-font-weight: var(--#{$prefix}font-weight-bold) !default;
 
 $alert-border-width: 1px !default;
-$alert-border-color: var(--#{$prefix}border-color-translucent) !default;
+$alert-border-color: var(--#{$prefix}border-color) !default;
 $alert-shadow: rgba($dark, .04) 0 2px 4px 0 !default;
 
 // Breadcrumb
@@ -471,6 +464,7 @@ $input-color: inherit !default;
 $input-focus-color: inherit !default;
 
 // Buttons
+$btn-border-color: var(--#{$prefix}border-color-dark) !default;
 $btn-disabled-opacity: .4 !default;
 $btn-padding-x: 1rem !default;
 $btn-font-weight: var(--#{$prefix}font-weight-medium) !default;
@@ -534,7 +528,7 @@ $datagrid-item-width: 15rem !default;
 $dropdown-item-padding-x: .75rem !default;
 $dropdown-item-padding-y: .5rem !default;
 $dropdown-font-size: $font-size-base !default;
-$dropdown-border-color: var(--#{$prefix}border-color-translucent) !default;
+$dropdown-border-color: var(--#{$prefix}border-color) !default;
 $dropdown-divider-bg: $dropdown-border-color !default;
 $dropdown-padding-y: .25rem !default;
 $dropdown-link-color: inherit !default;
@@ -629,9 +623,9 @@ $navbar-light-active-color: var(--#{$prefix}body-color)color !default;
 $navbar-light-disabled-color: var(--#{$prefix}disabled-color) !default;
 $navbar-light-active-bg: rgba(0, 0, 0, .06) !default;
 
-$navbar-dark-color: rgba($white, $text-muted-opacity) !default;
-$navbar-dark-brand-color: $white !default;
-$navbar-dark-active-color: $white !default;
+$navbar-dark-color: $dark-mode-text !default;
+$navbar-dark-brand-color: $dark-mode-text !default;
+$navbar-dark-active-color: $dark-mode-text !default;
 $navbar-dark-disabled-color: var(--#{$prefix}disabled-color) !default;
 $navbar-dark-active-bg: rgba(255, 255, 255, .06) !default;
 
@@ -704,15 +698,15 @@ $table-bg-scale-dark: 40% !default;
 $table-color: inherit !default;
 $table-cell-padding-x: .75rem !default;
 $table-cell-padding-y: .75rem !default;
-$table-border-color: var(--#{$prefix}border-color-translucent) !default;
-$table-th-border-color: var(--#{$prefix}border-color-translucent) !default;
+$table-border-color: var(--#{$prefix}border-color) !default;
+$table-th-border-color: var(--#{$prefix}border-color) !default;
 $table-th-padding-x: $table-cell-padding-x !default;
 $table-th-padding-y: .5rem !default;
 $table-th-color: var(--#{$prefix}muted) !default;
 $table-th-bg: var(--#{$prefix}gray-50) !default;
 $table-striped-order: even !default;
 $table-striped-bg: var(--#{$prefix}bg-surface-secondary) !default;
-$table-group-separator-color: var(--#{$prefix}border-color-translucent) !default;
+$table-group-separator-color: var(--#{$prefix}border-color) !default;
 
 $table-sort-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' width='16' height='16' fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='1'><path d='M5 7l3 -3l3 3'/><path d='M5 10l3 3l3 -3'/></svg>") !default;
 $table-sort-asc-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' width='16' height='16'><path fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='1' d='M5 7l3 3l3 -3'/></svg>") !default;
@@ -744,8 +738,8 @@ $list-group-active-color: inherit !default;
 
 $input-bg: var(--#{$prefix}bg-forms) !default;
 $input-disabled-bg: $disabled-bg !default;
-$input-border-color: var(--#{$prefix}border-color) !default;
-$input-border-color-translucent: var(--#{$prefix}border-color-translucent) !default;
+$input-border-color: var(--#{$prefix}border-color-dark) !default;
+$input-border-color-translucent: var(--#{$prefix}border-color) !default;
 $input-placeholder-color: $text-muted-light !default;
 
 $input-group-addon-bg: $light !default;
@@ -773,7 +767,7 @@ $form-check-input-checked-border-color: $input-border-color-translucent !default
 
 $form-check-radio-checked-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><circle r='3' fill='#{$white}' cx='8' cy='8' /></svg>") !default;
 
-$form-check-label-disabled-opacity: $text-muted-opacity;
+$form-check-label-disabled-opacity: .5;
 
 $form-select-indicator-color: $text-muted-light !default;
 
