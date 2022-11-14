@@ -1,10 +1,13 @@
 .breadcrumb {
+  --#{$prefix}breadcrumb-item-active-font-weight: #{$breadcrumb-active-font-weight};
+  --#{$prefix}breadcrumb-item-disabled-color: #{$breadcrumb-disabled-color};
+  --#{$prefix}breadcrumb-link-color: #{$breadcrumb-link-color};
   padding: 0;
   margin: 0;
   background: transparent;
 
   a {
-    color: $text-muted;
+    color: var(--#{$prefix}breadcrumb-link-color);
 
     &:hover {
       text-decoration: underline;
@@ -12,8 +15,27 @@
   }
 }
 
+.breadcrumb-muted {
+  --#{$prefix}breadcrumb-link-color: var(--#{$prefix}muted);
+}
+
 .breadcrumb-item {
   &.active {
+    font-weight: var(--#{$prefix}breadcrumb-item-active-font-weight);
+
+    a {
+      color: inherit;
+      pointer-events: none;
+    }
+  }
+
+  &.disabled {
+    color: var(--#{$prefix}breadcrumb-item-disabled-color);
+
+    &:before {
+      color: inherit;
+    }
+
     a {
       color: inherit;
       pointer-events: none;

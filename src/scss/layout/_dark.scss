@@ -14,20 +14,30 @@ body:not(.theme-dark) .hide-theme-light {
   & {
     --#{$prefix}body-color: #{$dark-mode-text};
     --#{$prefix}body-color-rgb: #{to-rgb($dark-mode-text)};
+    --#{$prefix}muted: rgba(153, 159, 164, 1);
 
     --#{$prefix}body-bg: #{$dark-mode-darken};
     --#{$prefix}body-bg-rgb: #{to-rgb($dark-mode-darken)};
 
     --#{$prefix}bg-forms: #{$dark-mode-darken};
     --#{$prefix}bg-surface: #{$dark};
+    --#{$prefix}bg-surface-dark: #{$dark-mode-darken};
+    --#{$prefix}bg-surface-secondary: #{$dark-mode-darken};
+
+    --#{$prefix}link-color: #{lighten($primary, 8%)};
+    --#{$prefix}link-hover-color: #{$primary};
+
+    --#{$prefix}active-bg: #{$dark-mode-lighten};
+    --#{$prefix}disabled-color: var(--#{$prefix}gray-700);
 
     --#{$prefix}card-bg: #{$dark-mode-darken};
     --#{$prefix}card-bg-hover: #{$dark-mode-darken};
     --#{$prefix}card-bg-rgb: #{to-rgb($dark-mode-darken)};
     --#{$prefix}card-color: #{$dark-mode-text};
 
-    --#{$prefix}border-color: #{$dark-mode-border-color};
-    --#{$prefix}border-color-light: #{$dark-mode-border-color-light};
+    --#{$prefix}border-color: var(--#{$prefix}dark-mode-border-color);
+    --#{$prefix}border-color-light: var(--#{$prefix}dark-mode-border-color-light);
+    --#{$prefix}border-color-active: var(--#{$prefix}dark-mode-border-color-active);
 
     --#{$prefix}btn-color: #{$dark-mode-darken};
 
@@ -60,7 +70,7 @@ body:not(.theme-dark) .hide-theme-light {
   .toast,
   .toast-header,
   .alert:not(.alert-important) {
-    background-color: var(--tblr-bg-surface);
+    background-color: var(--#{$prefix}bg-surface);
     color: inherit;
   }
 
@@ -72,18 +82,9 @@ body:not(.theme-dark) .hide-theme-light {
     background-color: $dark-mode-darken !important;
   }
 
-  .card {
-    border-color: transparent;
-  }
-
   .card-tabs .nav-tabs .nav-link {
     background-color: $dark-mode-darken;
     color: inherit;
-  }
-
-  pre {
-    background-color: $dark-mode-darken;
-    border-color: $dark-mode-border-color;
   }
 
   .card-tabs .nav-tabs .nav-link.active {
@@ -91,19 +92,11 @@ body:not(.theme-dark) .hide-theme-light {
     color: inherit;
   }
 
-  .btn-white,
-  .form-file-button {
-    //@include button-variant($dark-mode-lighten, $border-color, $dark-mode-text, rgba($dark, 0), $border-color, $dark-mode-text);
-    background-image: none;
-  }
-
   .form-check-input:not(:checked),
   .form-select,
   .form-file-text,
   .form-control,
-  .form-selectgroup-label,
-  .form-selectgroup-check,
-  .form-imagecheck-figure:before {
+  .form-selectgroup-check {
     background-color: $dark-mode-darken;
     color: $dark-mode-text;
     border-color: $dark-mode-border-color;
@@ -150,17 +143,6 @@ body:not(.theme-dark) .hide-theme-light {
 
   .apexcharts-legend-text {
     color: inherit !important;
-  }
-
-  .apexcharts-tooltip {
-    background: $dark !important;
-    border: var(--#{$prefix}border-width) solid $dark-mode-border-color !important;
-    box-shadow: 2px 2px 6px -4px $dark-mode-darken !important;
-
-    .apexcharts-tooltip-title {
-      background: $dark !important;
-      border-bottom: var(--#{$prefix}border-width) solid $dark-mode-border-color !important;
-    }
   }
 
   .navbar-brand-autodark {

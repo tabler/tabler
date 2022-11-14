@@ -1,6 +1,6 @@
 {
   "name": "@tabler/core",
-  "version": "1.0.0-beta12",
+  "version": "1.0.0-beta16",
   "description": "Premium and Open Source dashboard template with responsive and high quality UI.",
   "homepage": "https://tabler.io",
   "scripts": {
@@ -13,11 +13,13 @@
     "release": "release-it",
     "svg-icons": "gulp svg-icons",
     "percy": "gulp build && npx percy snapshot demo",
-    "bundlewatch": "bundlewatch --config .bundlewatch.config.json",
+    "bundlewatch": "bundlewatch",
     "chromatic": "chromatic --project-token=CHROMATIC_PROJECT_TOKEN",
     "storybook": "start-storybook -p 6006",
     "changelog": "gulp changelog",
-    "icons": "ncu -u @tabler/icons && npm install && gulp svg-icons && git add . && git commit -am \"update icons to v`npm info @tabler/icons version`\" && git push"
+    "icons": "ncu -u @tabler/icons && npm install && gulp svg-icons && git add . && git commit -am \"update icons to v`npm info @tabler/icons version`\" && git push",
+    "download-images": "node build/download-images.js",
+    "optimize-images": "for i in ./src/static/photos/*.jpg; do convert \"$i\" -quality 80% \"${i%.jpg}.jpg\"; done"
   },
   "repository": {
     "type": "git",
@@ -60,19 +62,19 @@
     "files": [
       {
         "path": "./dist/css/tabler.css",
-        "maxSize": "61 kB"
+        "maxSize": "65 kB"
       },
       {
         "path": "./dist/css/tabler.min.css",
-        "maxSize": "55 kB"
+        "maxSize": "60 kB"
       },
       {
         "path": "./dist/css/tabler.rtl.css",
-        "maxSize": "61 kB"
+        "maxSize": "65 kB"
       },
       {
         "path": "./dist/css/tabler.rtl.min.css",
-        "maxSize": "55 kB"
+        "maxSize": "60 kB"
       },
       {
         "path": "./dist/css/tabler-flags.css",
@@ -91,30 +93,46 @@
         "maxSize": "2 kB"
       },
       {
+        "path": "./dist/css/tabler-vendors.css",
+        "maxSize": "7 kB"
+      },
+      {
+        "path": "./dist/css/tabler-vendors.min.css",
+        "maxSize": "6 kB"
+      },
+      {
         "path": "./dist/js/tabler.js",
-        "maxSize": "100 kB"
+        "maxSize": "60 kB"
       },
       {
         "path": "./dist/js/tabler.min.js",
-        "maxSize": "50 kB"
+        "maxSize": "45 kB"
+      },
+      {
+        "path": "./dist/js/tabler.esm.js",
+        "maxSize": "60 kB"
+      },
+      {
+        "path": "./dist/js/tabler.esm.min.js",
+        "maxSize": "45 kB"
       }
     ]
   },
   "devDependencies": {
-    "@babel/core": "^7.19.1",
-    "@babel/preset-env": "^7.19.1",
-    "@rollup/plugin-commonjs": "^22.0.2",
-    "@rollup/plugin-node-resolve": "^14.1.0",
-    "@rollup/plugin-replace": "^4.0.0",
-    "@rollup/pluginutils": "^4.2.1",
+    "@babel/core": "^7.20.2",
+    "@babel/preset-env": "^7.20.2",
+    "@rollup/plugin-commonjs": "^23.0.2",
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "@rollup/plugin-replace": "^5.0.1",
+    "@rollup/pluginutils": "^5.0.2",
     "@rollup/stream": "^2.0.0",
-    "apexcharts": "^3.35.5",
-    "autoprefixer": "^10.4.12",
+    "apexcharts": "^3.36.3",
+    "autoprefixer": "^10.4.13",
     "autosize": "^5.0.1",
     "browser-sync": "^2.27.10",
     "bundlewatch": "^0.3.3",
     "choices.js": "^10.1.0",
-    "chromatic": "^6.10.0",
+    "chromatic": "^6.11.4",
     "countup.js": "^2.3.2",
     "cross-spawn": "^7.0.3",
     "dropzone": "^6.0.0-beta.2",
@@ -131,32 +149,34 @@
     "gulp-rtlcss": "^2.0.0",
     "gulp-sass": "^5.1.0",
     "gulp-terser": "^2.1.0",
+    "imageoptim-cli": "^3.0.7",
     "imask": "^6.4.3",
     "jsvectormap": "^1.5.1",
     "list.js": "^2.3.1",
     "litepicker": "^2.0.12",
     "nouislider": "^15.6.1",
     "plyr": "^3.7.2",
-    "postcss": "^8.4.16",
-    "release-it": "^15.4.2",
+    "postcss": "^8.4.18",
+    "release-it": "^15.5.0",
+    "request": "^2.88.2",
     "rollup": "^2.79.1",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-cleanup": "^3.2.1",
-    "sass": "^1.55.0",
+    "sass": "^1.56.1",
     "tinymce": "^6.2.0",
-    "tom-select": "^2.2.0",
+    "tom-select": "^2.2.2",
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^2.0.0",
-    "yaml": "^2.1.1",
-    "yargs": "^17.5.1"
+    "yaml": "^2.1.3",
+    "yargs": "^17.6.2"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.6",
-    "@tabler/icons": "^1.100.0",
-    "bootstrap": "~5.2.1"
+    "@tabler/icons": "^1.111.0",
+    "bootstrap": "~5.2.2"
   },
   "peerDependencies": {
-    "apexcharts": "^3.35.5",
+    "apexcharts": "^3.36.3",
     "autosize": "^5.0.1",
     "choices.js": "^10.1.0",
     "countup.js": "^2.3.2",
@@ -170,7 +190,7 @@
     "nouislider": "^15.6.1",
     "plyr": "^3.7.2",
     "tinymce": "^6.2.0",
-    "tom-select": "^2.2.0"
+    "tom-select": "^2.2.2"
   },
   "peerDependenciesMeta": {
     "apexcharts": {

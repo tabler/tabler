@@ -9,10 +9,10 @@ menu: extra.job-listing
 {% assign salaries = '$20K - $50K,$50K - $100K,> $100K,Drawing / Painting' | split: ',' %}
 
 <div class="row g-4">
-	<div class="col-3">
+	<div class="col-md-3">
 		<form action="./" method="get" autocomplete="off" novalidate class="sticky-top">
 
-			<div class="subheader mb-2">Job Types</div>
+			<div class="form-label">Job Types</div>
 			<div class="mb-4">
 				{% for type in types %}
 				<label class="form-check">
@@ -22,12 +22,12 @@ menu: extra.job-listing
 				{% endfor %}
 			</div>
 
-			<div class="subheader mb-2">Remote</div>
+			<div class="form-label">Remote</div>
 			<div class="mb-4">
 				{% include ui/form/check.html switch=true title-on="On" title-off="Off" %}
 			</div>
 
-			<div class="subheader mb-2">Salary Range</div>
+			<div class="form-label">Salary Range</div>
 			<div class="mb-4">
 				{% for salary in salaries %}
 				<label class="form-check">
@@ -37,11 +37,22 @@ menu: extra.job-listing
 				{% endfor %}
 			</div>
 
-			<div class="subheader mb-2">Immigration</div>
+			<div class="form-label">Immigration</div>
 			<div class="mb-4">
 				{% include ui/form/check.html switch=true title-on="On" title-off="Off" %}
 
 				<div class="small text-muted">Only show companies that can sponsor a visa</div>
+			</div>
+
+			<div class="form-label">Location</div>
+			<div class="mb-4">
+				<select class="form-select">
+					<option>Anywhere</option>
+					<option>London</option>
+					<option>San Francisco</option>
+					<option>New York</option>
+					<option>Berlin</option>
+				</select>
 			</div>
 
 			<div class="mt-5">
@@ -55,7 +66,7 @@ menu: extra.job-listing
 		</form>
 
 	</div>
-	<div class="col-9">
+	<div class="col-md-9">
 		<div class="row row-cards">
 			<div class="space-y">
 				{% for job in site.data.jobs %}
@@ -70,17 +81,22 @@ menu: extra.job-listing
 							<div class="card-body ps-0">
 								<div class="row">
 									<div class="col"><h3 class="mb-0"><a href="#">{{ job.title }}</a></h3></div>
-									{% if job.salary %}<div class="col-auto fs-h3 text-green">{{ job.salary }}</div>{% endif %}
+									{% if job.salary %}<div class="col-auto fs-3 text-green">{{ job.salary }}</div>{% endif %}
 								</div>
 								<div class="row">
-									<div class="col">
-										<div class="mt-3 list-inline list-inline-dots mb-0 text-muted">
+									<div class="col-md">
+										<div class="mt-3 list-inline list-inline-dots mb-0 text-muted d-sm-block d-none">
 											<div class="list-inline-item">{% include ui/icon.html icon="building-community" class="icon-inline" %} {{ job.company }}</div>
 											<div class="list-inline-item">{% include ui/icon.html icon="license" class="icon-inline" %} {{ job.type }}</div>
 											<div class="list-inline-item">{% include ui/icon.html icon="map-pin" class="icon-inline" %} {{ job.location }}</div>
 										</div>
+										<div class="mt-3 list mb-0 text-muted d-block d-sm-none">
+											<div class="list-item">{% include ui/icon.html icon="building-community" class="icon-inline" %} {{ job.company }}</div>
+											<div class="list-item">{% include ui/icon.html icon="license" class="icon-inline" %} {{ job.type }}</div>
+											<div class="list-item">{% include ui/icon.html icon="map-pin" class="icon-inline" %} {{ job.location }}</div>
+										</div>
 									</div>
-									<div class="col-auto">
+									<div class="col-md-auto">
 										<div class="mt-3 badges">
 											{% for tag in job.tags %}
 											<a href="#" class="badge badge-outline text-muted border fw-normal badge-pill">{{ tag }}</a>

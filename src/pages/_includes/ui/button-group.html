@@ -1,0 +1,44 @@
+{% assign items = include.items | split: ',' %}
+{% assign icons = include.icons | split: ',' %}
+
+{% assign id = include.id %}
+
+<div class="btn-group{% if include.vertical %}-vertical{% endif %}{% if include.fluid %} w-100{% endif %}"role="group">
+
+	{% for item in items %}
+	{% if include.radio %}
+	<input type="radio" class="btn-check" name="btn-radio-{{ id }}" id="btn-radio-{{ id }}-{{ forloop.index }}" autocomplete="off"{% if forloop.index == 1 %} checked{% endif %}>
+	{% endif %}
+	<{% if include.radio %}label for="btn-radio-{{ id }}-{{ forloop.index }}"{% else %}button{% endif %} type="button" class="btn{% if forloop.index == 1 %}{% unless include.radio %} active{% endunless %}{% endif %}">{{ item }}</{% if include.radio %}label{% else %}button{% endif %}>
+	{% endfor %}
+
+	{% for icon in icons %}
+	{% if include.radio %}
+	<input type="radio" class="btn-check" name="btn-radio-{{ id }}" id="btn-radio-{{ id }}-{{ forloop.index }}" autocomplete="off"{% if forloop.index == 1 %} checked{% endif %}>
+	{% endif %}
+	<{% if include.radio %}label for="btn-radio-{{ id }}-{{ forloop.index }}"{% else %}button{% endif %} class="btn btn-icon{% if forloop.index == 1 %}{% unless include.radio %} active{% endunless %}{% endif %}">{% include ui/icon.html icon=icon %}</{% if include.radio %}label{% else %}button{% endif %}>
+	{% endfor %}
+
+	{% if include.dropdown %}
+	<div class="btn-group" role="group">
+		{% if include.radio %}
+		<input type="radio" class="btn-check" name="btn-radio-{{ id }}" id="btn-radio-{{ id }}-dropdown" autocomplete="off"{% if forloop.index == 1 %} checked{% endif %}>
+		{% endif %}
+		<{% if include.radio %}label for="btn-radio-{{ id }}-dropdown"{% else %}button{% endif %} class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+			Other
+		</{% if include.radio %}label{% else %}button{% endif %}>
+		{% include ui/dropdown-menu.html %}
+		<div class="dropdown-menu dropdown-menu-end">
+			<a class="dropdown-item" href="#">
+				Option 4
+			</a>
+			<a class="dropdown-item" href="#">
+				Option 5
+			</a>
+			<a class="dropdown-item" href="#">
+				Option 6dropdown-menu
+			</a>
+		</div>
+	</div>
+	{% endif %}
+</div>

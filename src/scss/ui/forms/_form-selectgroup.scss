@@ -36,12 +36,12 @@ Select group
   padding: $input-btn-padding-y $input-btn-padding-x;
   font-size: $input-btn-font-size;
   line-height: $input-line-height;
-  color: $text-muted;
+  color: var(--#{$prefix}muted);
   background: $form-check-input-bg;
   text-align: center;
   cursor: pointer;
   user-select: none;
-  border: var(--#{$prefix}border-width) solid $input-border-color;
+  border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) $input-border-color;
   border-radius: 3px;
   @include transition(border-color $transition-time, background $transition-time, color $transition-time);
 
@@ -50,7 +50,7 @@ Select group
   }
 
   &:hover {
-    color: $body-color;
+    color: var(--#{$prefix}body-color);
   }
 }
 
@@ -94,9 +94,9 @@ Select group
 
 .form-selectgroup-input:checked + .form-selectgroup-label {
   z-index: 1;
-  color: var(--#{$prefix}primary);
-  background: rgba(var(--#{$prefix}primary-rgb), .04);
-  border-color: var(--#{$prefix}primary);
+  color: #{$active-color};
+  background: #{$active-bg};
+  border-color: #{$active-border-color};
 }
 
 .form-selectgroup-input:focus + .form-selectgroup-label {

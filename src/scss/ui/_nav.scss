@@ -7,7 +7,7 @@
 
   .nav {
     margin-left: 1.25rem;
-    border-left: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color);
+    border-left: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
     padding-left: .5rem;
   }
 
@@ -25,7 +25,7 @@
 // Nav bordered
 //
 .nav-bordered {
-  border-bottom: $nav-bordered-border-width solid $nav-bordered-border-color;
+  border-bottom: $nav-bordered-border-width var(--#{$prefix}border-style) $nav-bordered-border-color;
 
   .nav-item {
     + .nav-item {
@@ -36,10 +36,10 @@
   .nav-link {
     padding-left: 0;
     padding-right: 0;
-    margin: 0 0 (- $nav-bordered-border-width );
+    margin: 0 0 (- $nav-bordered-border-width);
     border: 0;
-    border-bottom: $nav-bordered-link-active-border-width solid transparent;
-    color: $text-muted;
+    border-bottom: $nav-bordered-link-active-border-width var(--#{$prefix}border-style) transparent;
+    color: var(--#{$prefix}muted);
   }
 
   .nav-link.active,
@@ -48,14 +48,6 @@
     border-color: $nav-bordered-link-active-border-color;
   }
 
-}
-
-.nav-tabs-alt {
-  .nav-link {
-    font-size: 13px;
-    font-weight: var(--#{$prefix}font-weight-bold);
-    text-transform: uppercase;
-  }
 }
 
 .nav-link {
@@ -88,5 +80,13 @@
   svg {
     display: block;
     height: 100%;
+  }
+}
+
+.nav-fill {
+  .nav-item {
+    .nav-link {
+      justify-content: center;
+    }
   }
 }

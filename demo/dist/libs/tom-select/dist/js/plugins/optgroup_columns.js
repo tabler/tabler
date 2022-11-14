@@ -1,117 +1,171 @@
 /**
-* Tom Select v2.1.0
+* Tom Select v2.2.2
 * Licensed under the Apache License, Version 2.0 (the "License");
 */
 
 (function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-	typeof define === 'function' && define.amd ? define(factory) :
-	(global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.optgroup_columns = factory());
+  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
+  typeof define === 'function' && define.amd ? define(factory) :
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.optgroup_columns = factory());
 })(this, (function () { 'use strict';
 
-	const KEY_LEFT = 37;
-	const KEY_RIGHT = 39;
-	typeof navigator === 'undefined' ? false : /Mac/.test(navigator.userAgent);
-	 // ctrl key or apple key for ma
+  const KEY_LEFT = 37;
+  const KEY_RIGHT = 39;
+  typeof navigator === 'undefined' ? false : /Mac/.test(navigator.userAgent);
+   // ctrl key or apple key for ma
 
-	// @ts-ignore TS2691 "An import path cannot end with a '.ts' extension"
-	const latin_convert = {
-	  'æ': 'ae',
-	  'ⱥ': 'a',
-	  'ø': 'o'
-	};
-	new RegExp(Object.keys(latin_convert).join('|'), 'gu');
+  /*! @orchidjs/unicode-variants | https://github.com/orchidjs/unicode-variants | Apache License (v2) */
+  const accent_pat = '[\u0300-\u036F\u{b7}\u{2be}\u{2bc}]';
+  /** @type {TUnicodeMap} */
 
-	/**
-	 * Get the closest node to the evt.target matching the selector
-	 * Stops at wrapper
-	 *
-	 */
+  const latin_convert = {};
+  /** @type {TUnicodeMap} */
 
-	const parentMatch = (target, selector, wrapper) => {
-	  if (wrapper && !wrapper.contains(target)) {
-	    return;
-	  }
+  const latin_condensed = {
+    '/': '⁄∕',
+    '0': '߀',
+    "a": "ⱥɐɑ",
+    "aa": "ꜳ",
+    "ae": "æǽǣ",
+    "ao": "ꜵ",
+    "au": "ꜷ",
+    "av": "ꜹꜻ",
+    "ay": "ꜽ",
+    "b": "ƀɓƃ",
+    "c": "ꜿƈȼↄ",
+    "d": "đɗɖᴅƌꮷԁɦ",
+    "e": "ɛǝᴇɇ",
+    "f": "ꝼƒ",
+    "g": "ǥɠꞡᵹꝿɢ",
+    "h": "ħⱨⱶɥ",
+    "i": "ɨı",
+    "j": "ɉȷ",
+    "k": "ƙⱪꝁꝃꝅꞣ",
+    "l": "łƚɫⱡꝉꝇꞁɭ",
+    "m": "ɱɯϻ",
+    "n": "ꞥƞɲꞑᴎлԉ",
+    "o": "øǿɔɵꝋꝍᴑ",
+    "oe": "œ",
+    "oi": "ƣ",
+    "oo": "ꝏ",
+    "ou": "ȣ",
+    "p": "ƥᵽꝑꝓꝕρ",
+    "q": "ꝗꝙɋ",
+    "r": "ɍɽꝛꞧꞃ",
+    "s": "ßȿꞩꞅʂ",
+    "t": "ŧƭʈⱦꞇ",
+    "th": "þ",
+    "tz": "ꜩ",
+    "u": "ʉ",
+    "v": "ʋꝟʌ",
+    "vy": "ꝡ",
+    "w": "ⱳ",
+    "y": "ƴɏỿ",
+    "z": "ƶȥɀⱬꝣ",
+    "hv": "ƕ"
+  };
 
-	  while (target && target.matches) {
-	    if (target.matches(selector)) {
-	      return target;
-	    }
+  for (let latin in latin_condensed) {
+    let unicode = latin_condensed[latin] || '';
 
-	    target = target.parentNode;
-	  }
-	};
-	/**
-	 * Get the index of an element amongst sibling nodes of the same type
-	 *
-	 */
+    for (let i = 0; i < unicode.length; i++) {
+      let char = unicode.substring(i, i + 1);
+      latin_convert[char] = latin;
+    }
+  }
 
-	const nodeIndex = (el, amongst) => {
-	  if (!el) return -1;
-	  amongst = amongst || el.nodeName;
-	  var i = 0;
+  new RegExp(Object.keys(latin_convert).join('|') + '|' + accent_pat, 'gu');
 
-	  while (el = el.previousElementSibling) {
-	    if (el.matches(amongst)) {
-	      i++;
-	    }
-	  }
+  /**
+   * Get the closest node to the evt.target matching the selector
+   * Stops at wrapper
+   *
+   */
 
-	  return i;
-	};
+  const parentMatch = (target, selector, wrapper) => {
+    if (wrapper && !wrapper.contains(target)) {
+      return;
+    }
 
-	/**
-	 * Plugin: "optgroup_columns" (Tom Select.js)
-	 * Copyright (c) contributors
-	 *
-	 * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
-	 * file except in compliance with the License. You may obtain a copy of the License at:
-	 * http://www.apache.org/licenses/LICENSE-2.0
-	 *
-	 * Unless required by applicable law or agreed to in writing, software distributed under
-	 * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
-	 * ANY KIND, either express or implied. See the License for the specific language
-	 * governing permissions and limitations under the License.
-	 *
-	 */
-	function plugin () {
-	  var self = this;
-	  var orig_keydown = self.onKeyDown;
-	  self.hook('instead', 'onKeyDown', evt => {
-	    var index, option, options, optgroup;
+    while (target && target.matches) {
+      if (target.matches(selector)) {
+        return target;
+      }
 
-	    if (!self.isOpen || !(evt.keyCode === KEY_LEFT || evt.keyCode === KEY_RIGHT)) {
-	      return orig_keydown.call(self, evt);
-	    }
+      target = target.parentNode;
+    }
+  };
+  /**
+   * Get the index of an element amongst sibling nodes of the same type
+   *
+   */
 
-	    self.ignoreHover = true;
-	    optgroup = parentMatch(self.activeOption, '[data-group]');
-	    index = nodeIndex(self.activeOption, '[data-selectable]');
+  const nodeIndex = (el, amongst) => {
+    if (!el) return -1;
+    amongst = amongst || el.nodeName;
+    var i = 0;
 
-	    if (!optgroup) {
-	      return;
-	    }
+    while (el = el.previousElementSibling) {
+      if (el.matches(amongst)) {
+        i++;
+      }
+    }
 
-	    if (evt.keyCode === KEY_LEFT) {
-	      optgroup = optgroup.previousSibling;
-	    } else {
-	      optgroup = optgroup.nextSibling;
-	    }
+    return i;
+  };
 
-	    if (!optgroup) {
-	      return;
-	    }
+  /**
+   * Plugin: "optgroup_columns" (Tom Select.js)
+   * Copyright (c) contributors
+   *
+   * Licensed under the Apache License, Version 2.0 (the "License"); you may not use this
+   * file except in compliance with the License. You may obtain a copy of the License at:
+   * http://www.apache.org/licenses/LICENSE-2.0
+   *
+   * Unless required by applicable law or agreed to in writing, software distributed under
+   * the License is distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF
+   * ANY KIND, either express or implied. See the License for the specific language
+   * governing permissions and limitations under the License.
+   *
+   */
+  function plugin () {
+    var self = this;
+    var orig_keydown = self.onKeyDown;
+    self.hook('instead', 'onKeyDown', evt => {
+      var index, option, options, optgroup;
 
-	    options = optgroup.querySelectorAll('[data-selectable]');
-	    option = options[Math.min(options.length - 1, index)];
+      if (!self.isOpen || !(evt.keyCode === KEY_LEFT || evt.keyCode === KEY_RIGHT)) {
+        return orig_keydown.call(self, evt);
+      }
 
-	    if (option) {
-	      self.setActiveOption(option);
-	    }
-	  });
-	}
+      self.ignoreHover = true;
+      optgroup = parentMatch(self.activeOption, '[data-group]');
+      index = nodeIndex(self.activeOption, '[data-selectable]');
 
-	return plugin;
+      if (!optgroup) {
+        return;
+      }
+
+      if (evt.keyCode === KEY_LEFT) {
+        optgroup = optgroup.previousSibling;
+      } else {
+        optgroup = optgroup.nextSibling;
+      }
+
+      if (!optgroup) {
+        return;
+      }
+
+      options = optgroup.querySelectorAll('[data-selectable]');
+      option = options[Math.min(options.length - 1, index)];
+
+      if (option) {
+        self.setActiveOption(option);
+      }
+    });
+  }
+
+  return plugin;
 
 }));
 //# sourceMappingURL=optgroup_columns.js.map

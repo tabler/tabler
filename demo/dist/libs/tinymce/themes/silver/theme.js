@@ -1,11 +1,11 @@
 /**
- * TinyMCE version 6.1.2 (2022-07-29)
+ * TinyMCE version 6.2.0 (2022-09-08)
  */
 
 (function () {
     'use strict';
 
-    const getPrototypeOf = Object.getPrototypeOf;
+    const getPrototypeOf$1 = Object.getPrototypeOf;
     const hasProto = (v, constructor, predicate) => {
       var _a;
       if (predicate(v, constructor.prototype)) {
@@ -29,7 +29,7 @@
     const isType$1 = type => value => typeOf(value) === type;
     const isSimpleType = type => value => typeof value === type;
     const eq$1 = t => a => t === a;
-    const is$2 = (value, constructor) => isObject(value) && hasProto(value, constructor, (o, proto) => getPrototypeOf(o) === proto);
+    const is$2 = (value, constructor) => isObject(value) && hasProto(value, constructor, (o, proto) => getPrototypeOf$1(o) === proto);
     const isString = isType$1('string');
     const isObject = isType$1('object');
     const isPlainObject = value => is$2(value, Object);
@@ -380,11 +380,9 @@
       r[i] = x;
     };
     const internalFilter = (obj, pred, onTrue, onFalse) => {
-      const r = {};
       each(obj, (x, i) => {
         (pred(x, i) ? onTrue : onFalse)(x, i);
       });
-      return r;
     };
     const bifilter = (obj, pred) => {
       const t = {};
@@ -470,8 +468,13 @@
     const ensureTrailing = (str, suffix) => {
       return endsWith(str, suffix) ? str : addToEnd(str, suffix);
     };
-    const contains$1 = (str, substr) => {
-      return str.indexOf(substr) !== -1;
+    const contains$1 = (str, substr, start = 0, end) => {
+      const idx = str.indexOf(substr, start);
+      if (idx !== -1) {
+        return isUndefined(end) ? true : idx + substr.length <= end;
+      } else {
+        return false;
+      }
     };
     const startsWith = (str, prefix) => {
       return checkRange(str, prefix, 0);
@@ -522,7 +525,39 @@
       fromPoint
     };
 
-    typeof window !== 'undefined' ? window : Function('return this;')();
+    const Global = typeof window !== 'undefined' ? window : Function('return this;')();
+
+    const path$1 = (parts, scope) => {
+      let o = scope !== undefined && scope !== null ? scope : Global;
+      for (let i = 0; i < parts.length && o !== undefined && o !== null; ++i) {
+        o = o[parts[i]];
+      }
+      return o;
+    };
+    const resolve = (p, scope) => {
+      const parts = p.split('.');
+      return path$1(parts, scope);
+    };
+
+    const unsafe = (name, scope) => {
+      return resolve(name, scope);
+    };
+    const getOrDie$1 = (name, scope) => {
+      const actual = unsafe(name, scope);
+      if (actual === undefined || actual === null) {
+        throw new Error(name + ' not available on this browser');
+      }
+      return actual;
+    };
+
+    const getPrototypeOf = Object.getPrototypeOf;
+    const sandHTMLElement = scope => {
+      return getOrDie$1('HTMLElement', scope);
+    };
+    const isPrototypeOf = x => {
+      const scope = resolve('ownerDocument.defaultView', x);
+      return isObject(x) && (sandHTMLElement(scope).prototype.isPrototypeOf(x) || /^HTML\w*Element$/.test(getPrototypeOf(x).constructor.name));
+    };
 
     const DOCUMENT = 9;
     const DOCUMENT_FRAGMENT = 11;
@@ -535,6 +570,7 @@
     };
     const type$1 = element => element.dom.nodeType;
     const isType = t => element => type$1(element) === t;
+    const isHTMLElement = element => isElement$1(element) && isPrototypeOf(element.dom);
     const isElement$1 = isType(ELEMENT);
     const isText = isType(TEXT);
     const isDocument = isType(DOCUMENT);
@@ -1757,13 +1793,17 @@
         toString
       };
     };
-    const oneOf = props => {
+    const oneOf = (props, rawF) => {
+      const f = rawF !== undefined ? rawF : identity;
       const extract = (path, val) => {
         const errors = [];
         for (const prop of props) {
           const res = prop.extract(path, val);
           if (res.stype === SimpleResultType.Value) {
-            return res;
+            return {
+              stype: SimpleResultType.Value,
+              svalue: f(res.svalue)
+            };
           }
           errors.push(res);
         }
@@ -2197,6 +2237,13 @@
         ...properties
       };
       component.getSystem().triggerEvent(event, target, data);
+    };
+    const retargetAndDispatchWith = (component, target, eventName, properties) => {
+      const data = {
+        ...properties,
+        target
+      };
+      component.getSystem().triggerEvent(eventName, target, data);
     };
     const dispatchEvent = (component, target, event, simulatedEvent) => {
       component.getSystem().triggerEvent(event, target, simulatedEvent.event);
@@ -5808,7 +5855,8 @@
     const dehighlightAllExcept = (component, hConfig, hState, skip) => {
       const highlighted = descendants(component.element, '.' + hConfig.highlightClass);
       each$1(highlighted, h => {
-        if (!exists(skip, skipComp => skipComp.element === h)) {
+        const shouldSkip = exists(skip, skipComp => eq(skipComp.element, h));
+        if (!shouldSkip) {
           remove$2(h, hConfig.highlightClass);
           component.getSystem().getByDom(h).each(target => {
             hConfig.onDehighlight(component, target);
@@ -7149,7 +7197,8 @@
       itemMarkers(),
       defaulted('fakeFocus', false),
       defaulted('focusManager', dom$2()),
-      onHandler('onHighlight')
+      onHandler('onHighlight'),
+      onHandler('onDehighlight')
     ]);
 
     const focus = constant$1('alloy.menu-focus');
@@ -7172,7 +7221,8 @@
         Highlighting.config({
           highlightClass: detail.markers.selectedItem,
           itemClass: detail.markers.item,
-          onHighlight: detail.onHighlight
+          onHighlight: detail.onHighlight,
+          onDehighlight: detail.onDehighlight
         }),
         Representing.config({
           store: {
@@ -7320,6 +7370,16 @@
       extractPreparedMenu
     };
 
+    const onMenuItemHighlightedEvent = generate$6('tiered-menu-item-highlight');
+    const onMenuItemDehighlightedEvent = generate$6('tiered-menu-item-dehighlight');
+
+    var HighlightOnOpen;
+    (function (HighlightOnOpen) {
+      HighlightOnOpen[HighlightOnOpen['HighlightMenuAndItem'] = 0] = 'HighlightMenuAndItem';
+      HighlightOnOpen[HighlightOnOpen['HighlightJustMenu'] = 1] = 'HighlightJustMenu';
+      HighlightOnOpen[HighlightOnOpen['HighlightNone'] = 2] = 'HighlightNone';
+    }(HighlightOnOpen || (HighlightOnOpen = {})));
+
     const make$6 = (detail, _rawUiSpec) => {
       const submenuParentItems = value$2();
       const buildMenus = (container, primaryName, menus) => map$1(menus, (spec, name) => {
@@ -7328,7 +7388,20 @@
           value: name,
           markers: detail.markers,
           fakeFocus: detail.fakeFocus,
-          onHighlight: detail.onHighlight,
+          onHighlight: (menuComp, itemComp) => {
+            const highlightData = {
+              menuComp,
+              itemComp
+            };
+            emitWith(menuComp, onMenuItemHighlightedEvent, highlightData);
+          },
+          onDehighlight: (menuComp, itemComp) => {
+            const dehighlightData = {
+              menuComp,
+              itemComp
+            };
+            emitWith(menuComp, onMenuItemDehighlightedEvent, dehighlightData);
+          },
           focusManager: detail.fakeFocus ? highlights() : dom$2()
         });
         return name === primaryName ? {
@@ -7355,10 +7428,15 @@
         return find$5(candidates, c => getItemValue(c) === itemValue);
       });
       const toDirectory = _container => map$1(detail.data.menus, (data, _menuName) => bind$3(data.items, item => item.type === 'separator' ? [] : [item.data.value]));
-      const setActiveMenu = (container, menu) => {
-        Highlighting.highlight(container, menu);
+      const setActiveMenu = Highlighting.highlight;
+      const setActiveMenuAndItem = (container, menu) => {
+        setActiveMenu(container, menu);
         Highlighting.getHighlighted(menu).orThunk(() => Highlighting.getFirst(menu)).each(item => {
-          dispatch(container, item.element, focusItem());
+          if (detail.fakeFocus) {
+            Highlighting.highlight(menu, item);
+          } else {
+            dispatch(container, item.element, focusItem());
+          }
         });
       };
       const getMenus = (state, menuValues) => cat(map$2(menuValues, mv => state.lookupMenu(mv).bind(prep => prep.type === 'prepared' ? Optional.some(prep.menu) : Optional.none())));
@@ -7404,7 +7482,7 @@
             Replacing.append(container, premade(activeMenu));
           }
           remove$1(activeMenu.element, [detail.markers.backgroundMenu]);
-          setActiveMenu(container, activeMenu);
+          setActiveMenuAndItem(container, activeMenu);
           closeOthers(container, state, path);
           return Optional.some(activeMenu);
         }
@@ -7467,15 +7545,17 @@
       const onRight = (container, item) => inside(item.element) ? Optional.none() : expandRight(container, item, ExpandHighlightDecision.HighlightSubmenu);
       const onLeft = (container, item) => inside(item.element) ? Optional.none() : collapseLeft(container, item);
       const onEscape = (container, item) => collapseLeft(container, item).orThunk(() => detail.onEscape(container, item).map(() => container));
-      const keyOnItem = f => (container, simulatedEvent) => closest$1(simulatedEvent.getSource(), '.' + detail.markers.item).bind(target => container.getSystem().getByDom(target).toOptional().bind(item => f(container, item).map(always)));
+      const keyOnItem = f => (container, simulatedEvent) => {
+        return closest$1(simulatedEvent.getSource(), `.${ detail.markers.item }`).bind(target => container.getSystem().getByDom(target).toOptional().bind(item => f(container, item).map(always)));
+      };
       const events = derive$2([
-        run$1(focus(), (sandbox, simulatedEvent) => {
+        run$1(focus(), (tmenu, simulatedEvent) => {
           const item = simulatedEvent.event.item;
           layeredState.lookupItem(getItemValue(item)).each(() => {
             const menu = simulatedEvent.event.menu;
-            Highlighting.highlight(sandbox, menu);
+            Highlighting.highlight(tmenu, menu);
             const value = getItemValue(simulatedEvent.event.item);
-            layeredState.refresh(value).each(path => closeOthers(sandbox, layeredState, path));
+            layeredState.refresh(value).each(path => closeOthers(tmenu, layeredState, path));
           });
         }),
         runOnExecute$1((component, simulatedEvent) => {
@@ -7494,17 +7574,26 @@
           setup(container).each(primary => {
             Replacing.append(container, premade(primary));
             detail.onOpenMenu(container, primary);
-            if (detail.highlightImmediately) {
+            if (detail.highlightOnOpen === HighlightOnOpen.HighlightMenuAndItem) {
+              setActiveMenuAndItem(container, primary);
+            } else if (detail.highlightOnOpen === HighlightOnOpen.HighlightJustMenu) {
               setActiveMenu(container, primary);
             }
           });
-        })
-      ].concat(detail.navigateOnHover ? [run$1(hover(), (sandbox, simulatedEvent) => {
-          const item = simulatedEvent.event.item;
-          updateView(sandbox, item);
-          expandRight(sandbox, item, ExpandHighlightDecision.HighlightParent);
-          detail.onHover(sandbox, item);
-        })] : []));
+        }),
+        run$1(onMenuItemHighlightedEvent, (tmenuComp, se) => {
+          detail.onHighlightItem(tmenuComp, se.event.menuComp, se.event.itemComp);
+        }),
+        run$1(onMenuItemDehighlightedEvent, (tmenuComp, se) => {
+          detail.onDehighlightItem(tmenuComp, se.event.menuComp, se.event.itemComp);
+        }),
+        ...detail.navigateOnHover ? [run$1(hover(), (tmenu, simulatedEvent) => {
+            const item = simulatedEvent.event.item;
+            updateView(tmenu, item);
+            expandRight(tmenu, item, ExpandHighlightDecision.HighlightParent);
+            detail.onHover(tmenu, item);
+          })] : []
+      ]);
       const getActiveItem = container => Highlighting.getHighlighted(container).bind(Highlighting.getHighlighted);
       const collapseMenuApi = container => {
         getActiveItem(container).each(currentItem => {
@@ -7513,7 +7602,7 @@
       };
       const highlightPrimary = container => {
         layeredState.getPrimary().each(primary => {
-          setActiveMenu(container, primary);
+          setActiveMenuAndItem(container, primary);
         });
       };
       const extractMenuFromContainer = container => Optional.from(container.components()[0]).filter(comp => get$f(comp.element, 'role') === 'menu');
@@ -7597,14 +7686,15 @@
         onStrictHandler('onOpenSubmenu'),
         onHandler('onRepositionMenu'),
         onHandler('onCollapseMenu'),
-        defaulted('highlightImmediately', true),
+        defaulted('highlightOnOpen', HighlightOnOpen.HighlightMenuAndItem),
         requiredObjOf('data', [
           required$1('primary'),
           required$1('menus'),
           required$1('expansions')
         ]),
         defaulted('fakeFocus', false),
-        onHandler('onHighlight'),
+        onHandler('onHighlightItem'),
+        onHandler('onDehighlightItem'),
         onHandler('onHover'),
         tieredMenuMarkers(),
         required$1('dom'),
@@ -7651,7 +7741,7 @@
         dom: { tag: 'div' },
         data: menuSpec.data,
         markers: menuSpec.menu.markers,
-        highlightImmediately: menuSpec.menu.highlightImmediately,
+        highlightOnOpen: menuSpec.menu.highlightOnOpen,
         fakeFocus: menuSpec.menu.fakeFocus,
         onEscape: () => {
           Sandboxing.close(menuSandbox);
@@ -8124,7 +8214,7 @@
       configFields: [
         option$3('level'),
         required$1('progress'),
-        required$1('icon'),
+        option$3('icon'),
         required$1('onAction'),
         required$1('text'),
         required$1('iconProvider'),
@@ -8167,7 +8257,7 @@
             'info'
           ], settings.type) ? settings.type : undefined,
           progress: settings.progressBar === true,
-          icon: Optional.from(settings.icon),
+          icon: settings.icon,
           closeButton: settings.closeButton,
           onAction: close,
           iconProvider: sharedBackstage.providers.icons,
@@ -8183,7 +8273,7 @@
           ...sharedBackstage.header.isPositionedAtTop() ? {} : { fireRepositionEventInstead: {} }
         }));
         uiMothership.add(notificationWrapper);
-        if (settings.timeout > 0) {
+        if (isNumber(settings.timeout) && settings.timeout > 0) {
           global$9.setEditorTimeout(editor, () => {
             close();
           }, settings.timeout);
@@ -8408,6 +8498,10 @@
         processor: 'boolean',
         default: true
       });
+      registerOption('promotion', {
+        processor: 'boolean',
+        default: true
+      });
       registerOption('resize', {
         processor: value => value === 'both' || isBoolean(value),
         default: !global$5.deviceType.isTouch()
@@ -8448,6 +8542,7 @@
     const getResize = option$2('resize');
     const getPasteAsText = option$2('paste_as_text');
     const getSidebarShow = option$2('sidebar_show');
+    const promotionEnabled = option$2('promotion');
     const isSkinDisabled = editor => editor.options.get('skin') === false;
     const isMenubarEnabled = editor => editor.options.get('menubar') !== false;
     const getSkinUrl = editor => {
@@ -8481,10 +8576,11 @@
     }, always);
     const isToolbarLocationBottom = editor => getToolbarLocation(editor) === ToolbarLocation$1.bottom;
     const fixedContainerTarget = editor => {
+      var _a;
       if (!editor.inline) {
         return Optional.none();
       }
-      const selector = fixedContainerSelector(editor);
+      const selector = (_a = fixedContainerSelector(editor)) !== null && _a !== void 0 ? _a : '';
       if (selector.length > 0) {
         return descendant(body(), selector);
       }
@@ -8558,6 +8654,7 @@
         getFilePickerValidatorHandler: getFilePickerValidatorHandler,
         useStatusBar: useStatusBar,
         useElementPath: useElementPath,
+        promotionEnabled: promotionEnabled,
         useBranding: useBranding,
         getResize: getResize,
         getPasteAsText: getPasteAsText,
@@ -8695,6 +8792,177 @@
       };
     };
 
+    const schema$l = constant$1([
+      option$3('data'),
+      defaulted('inputAttributes', {}),
+      defaulted('inputStyles', {}),
+      defaulted('tag', 'input'),
+      defaulted('inputClasses', []),
+      onHandler('onSetValue'),
+      defaulted('styles', {}),
+      defaulted('eventOrder', {}),
+      field('inputBehaviours', [
+        Representing,
+        Focusing
+      ]),
+      defaulted('selectOnFocus', true)
+    ]);
+    const focusBehaviours = detail => derive$1([Focusing.config({
+        onFocus: !detail.selectOnFocus ? noop : component => {
+          const input = component.element;
+          const value = get$6(input);
+          input.dom.setSelectionRange(0, value.length);
+        }
+      })]);
+    const behaviours = detail => ({
+      ...focusBehaviours(detail),
+      ...augment(detail.inputBehaviours, [Representing.config({
+          store: {
+            mode: 'manual',
+            ...detail.data.map(data => ({ initialValue: data })).getOr({}),
+            getValue: input => {
+              return get$6(input.element);
+            },
+            setValue: (input, data) => {
+              const current = get$6(input.element);
+              if (current !== data) {
+                set$5(input.element, data);
+              }
+            }
+          },
+          onSetValue: detail.onSetValue
+        })])
+    });
+    const dom = detail => ({
+      tag: detail.tag,
+      attributes: {
+        type: 'text',
+        ...detail.inputAttributes
+      },
+      styles: detail.inputStyles,
+      classes: detail.inputClasses
+    });
+
+    const factory$j = (detail, _spec) => ({
+      uid: detail.uid,
+      dom: dom(detail),
+      components: [],
+      behaviours: behaviours(detail),
+      eventOrder: detail.eventOrder
+    });
+    const Input = single({
+      name: 'Input',
+      configFields: schema$l(),
+      factory: factory$j
+    });
+
+    const refetchTriggerEvent = generate$6('refetch-trigger-event');
+    const redirectMenuItemInteractionEvent = generate$6('redirect-menu-item-interaction');
+
+    const menuSearcherClass = 'tox-menu__searcher';
+    const findWithinSandbox = sandboxComp => {
+      return descendant(sandboxComp.element, `.${ menuSearcherClass }`).bind(inputElem => sandboxComp.getSystem().getByDom(inputElem).toOptional());
+    };
+    const findWithinMenu = findWithinSandbox;
+    const restoreState = (inputComp, searcherState) => {
+      Representing.setValue(inputComp, searcherState.fetchPattern);
+      inputComp.element.dom.selectionStart = searcherState.selectionStart;
+      inputComp.element.dom.selectionEnd = searcherState.selectionEnd;
+    };
+    const saveState = inputComp => {
+      const fetchPattern = Representing.getValue(inputComp);
+      const selectionStart = inputComp.element.dom.selectionStart;
+      const selectionEnd = inputComp.element.dom.selectionEnd;
+      return {
+        fetchPattern,
+        selectionStart,
+        selectionEnd
+      };
+    };
+    const setActiveDescendant = (inputComp, active) => {
+      getOpt(active.element, 'id').each(id => set$9(inputComp.element, 'aria-activedescendant', id));
+    };
+    const renderMenuSearcher = spec => {
+      const handleByBrowser = (comp, se) => {
+        se.cut();
+        return Optional.none();
+      };
+      const handleByHighlightedItem = (comp, se) => {
+        const eventData = {
+          interactionEvent: se.event,
+          eventType: se.event.raw.type
+        };
+        emitWith(comp, redirectMenuItemInteractionEvent, eventData);
+        return Optional.some(true);
+      };
+      const customSearcherEventsName = 'searcher-events';
+      return {
+        dom: {
+          tag: 'div',
+          classes: [selectableClass]
+        },
+        components: [Input.sketch({
+            inputClasses: [
+              menuSearcherClass,
+              'tox-textfield'
+            ],
+            inputAttributes: {
+              ...spec.placeholder.map(placeholder => ({ placeholder: spec.i18n(placeholder) })).getOr({}),
+              'type': 'search',
+              'aria-autocomplete': 'list'
+            },
+            inputBehaviours: derive$1([
+              config(customSearcherEventsName, [
+                run$1(input(), inputComp => {
+                  emit(inputComp, refetchTriggerEvent);
+                }),
+                run$1(keydown(), (inputComp, se) => {
+                  if (se.event.raw.key === 'Escape') {
+                    se.stop();
+                  }
+                })
+              ]),
+              Keying.config({
+                mode: 'special',
+                onLeft: handleByBrowser,
+                onRight: handleByBrowser,
+                onSpace: handleByBrowser,
+                onEnter: handleByHighlightedItem,
+                onEscape: handleByHighlightedItem,
+                onUp: handleByHighlightedItem,
+                onDown: handleByHighlightedItem
+              })
+            ]),
+            eventOrder: {
+              keydown: [
+                customSearcherEventsName,
+                Keying.name()
+              ]
+            }
+          })]
+      };
+    };
+
+    const searchResultsClass = 'tox-collection--results__js';
+    const augmentWithAria = item => {
+      var _a;
+      if (item.dom) {
+        return {
+          ...item,
+          dom: {
+            ...item.dom,
+            attributes: {
+              ...(_a = item.dom.attributes) !== null && _a !== void 0 ? _a : {},
+              'id': generate$6('aria-item-search-result-id'),
+              'aria-selected': 'false'
+            }
+          }
+        };
+      } else {
+        return item;
+      }
+    };
+
     const chunk = (rowDom, numColumns) => items => {
       const chunks = chunk$1(items, numColumns);
       return map$2(chunks, c => ({
@@ -8749,7 +9017,7 @@
             allSplits.push(currentSplit);
           }
           currentSplit = [];
-          if (has$2(item.dom, 'innerHtml') || item.components.length > 0) {
+          if (has$2(item.dom, 'innerHtml') || item.components && item.components.length > 0) {
             currentSplit.push(item);
           }
         } else {
@@ -8767,6 +9035,21 @@
         components: s
       }));
     };
+    const insertItemsPlaceholder = (columns, initItems, onItem) => {
+      return Menu.parts.items({
+        preprocess: rawItems => {
+          const enrichedItems = map$2(rawItems, onItem);
+          if (columns !== 'auto' && columns > 1) {
+            return chunk({
+              tag: 'div',
+              classes: ['tox-collection__group']
+            }, columns)(enrichedItems);
+          } else {
+            return preprocessCollection(enrichedItems, (_item, i) => initItems[i].type === 'separator');
+          }
+        }
+      });
+    };
     const forCollection = (columns, initItems, _hasIcons = true) => ({
       dom: {
         tag: 'div',
@@ -8775,19 +9058,52 @@
           'tox-collection'
         ].concat(columns === 1 ? ['tox-collection--list'] : ['tox-collection--grid'])
       },
-      components: [Menu.parts.items({
-          preprocess: items => {
-            if (columns !== 'auto' && columns > 1) {
-              return chunk({
-                tag: 'div',
-                classes: ['tox-collection__group']
-              }, columns)(items);
-            } else {
-              return preprocessCollection(items, (_item, i) => initItems[i].type === 'separator');
-            }
-          }
-        })]
+      components: [insertItemsPlaceholder(columns, initItems, identity)]
     });
+    const forCollectionWithSearchResults = (columns, initItems, _hasIcons = true) => {
+      const ariaControlsSearchResults = generate$6('aria-controls-search-results');
+      return {
+        dom: {
+          tag: 'div',
+          classes: [
+            'tox-menu',
+            'tox-collection',
+            searchResultsClass
+          ].concat(columns === 1 ? ['tox-collection--list'] : ['tox-collection--grid']),
+          attributes: { id: ariaControlsSearchResults }
+        },
+        components: [insertItemsPlaceholder(columns, initItems, augmentWithAria)]
+      };
+    };
+    const forCollectionWithSearchField = (columns, initItems, searchField) => {
+      const ariaControlsSearchResults = generate$6('aria-controls-search-results');
+      return {
+        dom: {
+          tag: 'div',
+          classes: [
+            'tox-menu',
+            'tox-collection'
+          ].concat(columns === 1 ? ['tox-collection--list'] : ['tox-collection--grid'])
+        },
+        components: [
+          renderMenuSearcher({
+            i18n: global$8.translate,
+            placeholder: searchField.placeholder
+          }),
+          {
+            dom: {
+              tag: 'div',
+              classes: [
+                ...columns === 1 ? ['tox-collection--list'] : ['tox-collection--grid'],
+                searchResultsClass
+              ],
+              attributes: { id: ariaControlsSearchResults }
+            },
+            components: [insertItemsPlaceholder(columns, initItems, augmentWithAria)]
+          }
+        ]
+      };
+    };
     const forHorizontalCollection = (initItems, _hasIcons = true) => ({
       dom: {
         tag: 'div',
@@ -8805,7 +9121,7 @@
       console.log(error);
       return Optional.none();
     };
-    const createHorizontalPartialMenuWithAlloyItems = (value, _hasIcons, items, _columns, _presets) => {
+    const createHorizontalPartialMenuWithAlloyItems = (value, _hasIcons, items, _columns, _menuLayout) => {
       const structure = forHorizontalCollection(items);
       return {
         value,
@@ -8814,8 +9130,15 @@
         items
       };
     };
-    const createPartialMenuWithAlloyItems = (value, hasIcons, items, columns, presets) => {
-      if (presets === 'color') {
+    const createPartialMenuWithAlloyItems = (value, hasIcons, items, columns, menuLayout) => {
+      const getNormalStructure = () => {
+        if (menuLayout.menuType !== 'searchable') {
+          return forCollection(columns, items);
+        } else {
+          return menuLayout.searchMode.searchMode === 'search-with-field' ? forCollectionWithSearchField(columns, items, menuLayout.searchMode) : forCollectionWithSearchResults(columns, items);
+        }
+      };
+      if (menuLayout.menuType === 'color') {
         const structure = forSwatch(columns);
         return {
           value,
@@ -8823,8 +9146,7 @@
           components: structure.components,
           items
         };
-      }
-      if (presets === 'normal' && columns === 'auto') {
+      } else if (menuLayout.menuType === 'normal' && columns === 'auto') {
         const structure = forCollection(columns, items);
         return {
           value,
@@ -8832,26 +9154,15 @@
           components: structure.components,
           items
         };
-      }
-      if (presets === 'normal' && columns === 1) {
-        const structure = forCollection(1, items);
+      } else if (menuLayout.menuType === 'normal' || menuLayout.menuType === 'searchable') {
+        const structure = getNormalStructure();
         return {
           value,
           dom: structure.dom,
           components: structure.components,
           items
         };
-      }
-      if (presets === 'normal') {
-        const structure = forCollection(columns, items);
-        return {
-          value,
-          dom: structure.dom,
-          components: structure.components,
-          items
-        };
-      }
-      if (presets === 'listpreview' && columns !== 'auto') {
+      } else if (menuLayout.menuType === 'listpreview' && columns !== 'auto') {
         const structure = forToolbar(columns);
         return {
           value,
@@ -8859,13 +9170,14 @@
           components: structure.components,
           items
         };
+      } else {
+        return {
+          value,
+          dom: dom$1(hasIcons, columns, menuLayout.menuType),
+          components: components,
+          items
+        };
       }
-      return {
-        value,
-        dom: dom$1(hasIcons, columns, presets),
-        components: components,
-        items
-      };
     };
 
     const type = requiredString('type');
@@ -9373,7 +9685,7 @@
     };
 
     const componentRenderPipeline = cat;
-    const renderCommonItem = (spec, structure, itemResponse, providersbackstage) => {
+    const renderCommonItem = (spec, structure, itemResponse, providersBackstage) => {
       const editorOffCell = Cell(noop);
       return {
         type: 'item',
@@ -9388,7 +9700,7 @@
             onControlAttached(spec, editorOffCell),
             onControlDetached(spec, editorOffCell)
           ]),
-          DisablingConfigs.item(() => !spec.enabled || providersbackstage.isDisabled()),
+          DisablingConfigs.item(() => !spec.enabled || providersBackstage.isDisabled()),
           receivingConfig(),
           Replacing.config({})
         ].concat(spec.itemBehaviours))
@@ -9536,7 +9848,7 @@
             ],
             innerHtml: icon
           };
-        } else {
+        } else if (isNonNullable(itemValue)) {
           return {
             ...baseDom,
             attributes: {
@@ -9545,6 +9857,8 @@
             },
             styles: { 'background-color': itemValue }
           };
+        } else {
+          return baseDom;
         }
       };
       return {
@@ -9874,12 +10188,31 @@
     const toString = rgba => `rgba(${ rgba.red },${ rgba.green },${ rgba.blue },${ rgba.alpha })`;
     const red = rgbaColour(255, 0, 0, 1);
 
-    const fireSkinLoaded$1 = editor => editor.dispatch('SkinLoaded');
-    const fireSkinLoadError$1 = (editor, error) => editor.dispatch('SkinLoadError', error);
-    const fireResizeEditor = editor => editor.dispatch('ResizeEditor');
-    const fireResizeContent = (editor, e) => editor.dispatch('ResizeContent', e);
-    const fireScrollContent = (editor, e) => editor.dispatch('ScrollContent', e);
-    const fireTextColorChange = (editor, data) => editor.dispatch('TextColorChange', data);
+    const fireSkinLoaded$1 = editor => {
+      editor.dispatch('SkinLoaded');
+    };
+    const fireSkinLoadError$1 = (editor, error) => {
+      editor.dispatch('SkinLoadError', error);
+    };
+    const fireResizeEditor = editor => {
+      editor.dispatch('ResizeEditor');
+    };
+    const fireResizeContent = (editor, e) => {
+      editor.dispatch('ResizeContent', e);
+    };
+    const fireScrollContent = (editor, e) => {
+      editor.dispatch('ScrollContent', e);
+    };
+    const fireTextColorChange = (editor, data) => {
+      editor.dispatch('TextColorChange', data);
+    };
+    const fireAfterProgressState = (editor, state) => {
+      editor.dispatch('AfterProgressState', { state });
+    };
+    const fireResolveName = (editor, node) => editor.dispatch('ResolveName', {
+      name: node.nodeName.toLowerCase(),
+      target: node
+    });
 
     const hsvColour = (hue, saturation, value) => ({
       hue,
@@ -9929,7 +10262,7 @@
     var global$4 = tinymce.util.Tools.resolve('tinymce.util.LocalStorage');
 
     const storageName = 'tinymce-custom-colors';
-    var ColorCache = (max = 10) => {
+    const ColorCache = (max = 10) => {
       const storageString = global$4.getItem(storageName);
       const localstorage = isString(storageString) ? JSON.parse(storageString) : [];
       const prune = list => {
@@ -10054,11 +10387,12 @@
     };
 
     const fallbackColor = '#000000';
+    const hasStyleApi = node => isNonNullable(node.style);
     const getCurrentColor = (editor, format) => {
       let color;
       editor.dom.getParents(editor.selection.getStart(), elm => {
-        let value;
-        if (value = elm.style[format === 'forecolor' ? 'color' : 'background-color']) {
+        const value = hasStyleApi(elm) ? elm.style[format === 'forecolor' ? 'color' : 'backgroundColor'] : null;
+        if (value) {
           color = color ? color : value;
         }
       });
@@ -10074,7 +10408,7 @@
     const removeFormat = (editor, format) => {
       editor.undoManager.transact(() => {
         editor.focus();
-        editor.formatter.remove(format, { value: null }, null, true);
+        editor.formatter.remove(format, { value: null }, undefined, true);
         editor.nodeChanged();
       });
     };
@@ -10252,11 +10586,12 @@
       const hasIcons = menuHasIcons(items);
       const presetItemTypes = presets !== 'color' ? 'normal' : 'color';
       const alloyItems = createChoiceItems(items, onItemValueHandler, columns, presetItemTypes, itemResponse, select, providersBackstage);
-      return createPartialMenuWithAlloyItems(value, hasIcons, alloyItems, columns, presets);
+      const menuLayout = { menuType: presets };
+      return createPartialMenuWithAlloyItems(value, hasIcons, alloyItems, columns, menuLayout);
     };
     const createChoiceItems = (items, onItemValueHandler, columns, itemPresets, itemResponse, select, providersBackstage) => cat(map$2(items, item => {
       if (item.type === 'choiceitem') {
-        return createChoiceMenuItem(item).fold(handleError, d => Optional.some(renderChoiceItem(d, columns === 1, itemPresets, onItemValueHandler, select(item.value), itemResponse, providersBackstage, menuHasIcons(items))));
+        return createChoiceMenuItem(item).fold(handleError, d => Optional.some(renderChoiceItem(d, columns === 1, itemPresets, onItemValueHandler, select(d.value), itemResponse, providersBackstage, menuHasIcons(items))));
       } else {
         return Optional.none();
       }
@@ -10576,6 +10911,567 @@
     const fancy = renderFancyMenuItem;
     const card = renderCardMenuItem;
 
+    const getCoupled = (component, coupleConfig, coupleState, name) => coupleState.getOrCreate(component, coupleConfig, name);
+    const getExistingCoupled = (component, coupleConfig, coupleState, name) => coupleState.getExisting(component, coupleConfig, name);
+
+    var CouplingApis = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        getCoupled: getCoupled,
+        getExistingCoupled: getExistingCoupled
+    });
+
+    var CouplingSchema = [requiredOf('others', setOf(Result.value, anyValue()))];
+
+    const init$a = () => {
+      const coupled = {};
+      const lookupCoupled = (coupleConfig, coupledName) => {
+        const available = keys(coupleConfig.others);
+        if (available.length === 0) {
+          throw new Error('Cannot find any known coupled components');
+        } else {
+          return get$g(coupled, coupledName);
+        }
+      };
+      const getOrCreate = (component, coupleConfig, name) => {
+        return lookupCoupled(coupleConfig, name).getOrThunk(() => {
+          const builder = get$g(coupleConfig.others, name).getOrDie('No information found for coupled component: ' + name);
+          const spec = builder(component);
+          const built = component.getSystem().build(spec);
+          coupled[name] = built;
+          return built;
+        });
+      };
+      const getExisting = (component, coupleConfig, name) => {
+        return lookupCoupled(coupleConfig, name).orThunk(() => {
+          get$g(coupleConfig.others, name).getOrDie('No information found for coupled component: ' + name);
+          return Optional.none();
+        });
+      };
+      const readState = constant$1({});
+      return nu$8({
+        readState,
+        getExisting,
+        getOrCreate
+      });
+    };
+
+    var CouplingState = /*#__PURE__*/Object.freeze({
+        __proto__: null,
+        init: init$a
+    });
+
+    const Coupling = create$3({
+      fields: CouplingSchema,
+      name: 'coupling',
+      apis: CouplingApis,
+      state: CouplingState
+    });
+
+    const nu$3 = baseFn => {
+      let data = Optional.none();
+      let callbacks = [];
+      const map = f => nu$3(nCallback => {
+        get(data => {
+          nCallback(f(data));
+        });
+      });
+      const get = nCallback => {
+        if (isReady()) {
+          call(nCallback);
+        } else {
+          callbacks.push(nCallback);
+        }
+      };
+      const set = x => {
+        if (!isReady()) {
+          data = Optional.some(x);
+          run(callbacks);
+          callbacks = [];
+        }
+      };
+      const isReady = () => data.isSome();
+      const run = cbs => {
+        each$1(cbs, call);
+      };
+      const call = cb => {
+        data.each(x => {
+          setTimeout(() => {
+            cb(x);
+          }, 0);
+        });
+      };
+      baseFn(set);
+      return {
+        get,
+        map,
+        isReady
+      };
+    };
+    const pure$1 = a => nu$3(callback => {
+      callback(a);
+    });
+    const LazyValue = {
+      nu: nu$3,
+      pure: pure$1
+    };
+
+    const errorReporter = err => {
+      setTimeout(() => {
+        throw err;
+      }, 0);
+    };
+    const make$5 = run => {
+      const get = callback => {
+        run().then(callback, errorReporter);
+      };
+      const map = fab => {
+        return make$5(() => run().then(fab));
+      };
+      const bind = aFutureB => {
+        return make$5(() => run().then(v => aFutureB(v).toPromise()));
+      };
+      const anonBind = futureB => {
+        return make$5(() => run().then(() => futureB.toPromise()));
+      };
+      const toLazy = () => {
+        return LazyValue.nu(get);
+      };
+      const toCached = () => {
+        let cache = null;
+        return make$5(() => {
+          if (cache === null) {
+            cache = run();
+          }
+          return cache;
+        });
+      };
+      const toPromise = run;
+      return {
+        map,
+        bind,
+        anonBind,
+        toLazy,
+        toCached,
+        toPromise,
+        get
+      };
+    };
+    const nu$2 = baseFn => {
+      return make$5(() => new Promise(baseFn));
+    };
+    const pure = a => {
+      return make$5(() => Promise.resolve(a));
+    };
+    const Future = {
+      nu: nu$2,
+      pure
+    };
+
+    const suffix = constant$1('sink');
+    const partType$1 = constant$1(optional({
+      name: suffix(),
+      overrides: constant$1({
+        dom: { tag: 'div' },
+        behaviours: derive$1([Positioning.config({ useFixed: always })]),
+        events: derive$2([
+          cutter(keydown()),
+          cutter(mousedown()),
+          cutter(click())
+        ])
+      })
+    }));
+
+    const getAnchor = (detail, component) => {
+      const hotspot = detail.getHotspot(component).getOr(component);
+      const type = 'hotspot';
+      const overrides = detail.getAnchorOverrides();
+      return detail.layouts.fold(() => ({
+        type,
+        hotspot,
+        overrides
+      }), layouts => ({
+        type,
+        hotspot,
+        overrides,
+        layouts
+      }));
+    };
+    const fetch = (detail, mapFetch, component) => {
+      const fetcher = detail.fetch;
+      return fetcher(component).map(mapFetch);
+    };
+    const openF = (detail, mapFetch, anchor, component, sandbox, externals, highlightOnOpen) => {
+      const futureData = fetch(detail, mapFetch, component);
+      const getLazySink = getSink(component, detail);
+      return futureData.map(tdata => tdata.bind(data => Optional.from(tieredMenu.sketch({
+        ...externals.menu(),
+        uid: generate$5(''),
+        data,
+        highlightOnOpen,
+        onOpenMenu: (tmenu, menu) => {
+          const sink = getLazySink().getOrDie();
+          Positioning.position(sink, menu, { anchor });
+          Sandboxing.decloak(sandbox);
+        },
+        onOpenSubmenu: (tmenu, item, submenu) => {
+          const sink = getLazySink().getOrDie();
+          Positioning.position(sink, submenu, {
+            anchor: {
+              type: 'submenu',
+              item
+            }
+          });
+          Sandboxing.decloak(sandbox);
+        },
+        onRepositionMenu: (tmenu, primaryMenu, submenuTriggers) => {
+          const sink = getLazySink().getOrDie();
+          Positioning.position(sink, primaryMenu, { anchor });
+          each$1(submenuTriggers, st => {
+            Positioning.position(sink, st.triggeredMenu, {
+              anchor: {
+                type: 'submenu',
+                item: st.triggeringItem
+              }
+            });
+          });
+        },
+        onEscape: () => {
+          Focusing.focus(component);
+          Sandboxing.close(sandbox);
+          return Optional.some(true);
+        }
+      }))));
+    };
+    const open = (detail, mapFetch, hotspot, sandbox, externals, onOpenSync, highlightOnOpen) => {
+      const anchor = getAnchor(detail, hotspot);
+      const processed = openF(detail, mapFetch, anchor, hotspot, sandbox, externals, highlightOnOpen);
+      return processed.map(tdata => {
+        tdata.fold(() => {
+          if (Sandboxing.isOpen(sandbox)) {
+            Sandboxing.close(sandbox);
+          }
+        }, data => {
+          Sandboxing.cloak(sandbox);
+          Sandboxing.open(sandbox, data);
+          onOpenSync(sandbox);
+        });
+        return sandbox;
+      });
+    };
+    const close = (detail, mapFetch, component, sandbox, _externals, _onOpenSync, _highlightOnOpen) => {
+      Sandboxing.close(sandbox);
+      return Future.pure(sandbox);
+    };
+    const togglePopup = (detail, mapFetch, hotspot, externals, onOpenSync, highlightOnOpen) => {
+      const sandbox = Coupling.getCoupled(hotspot, 'sandbox');
+      const showing = Sandboxing.isOpen(sandbox);
+      const action = showing ? close : open;
+      return action(detail, mapFetch, hotspot, sandbox, externals, onOpenSync, highlightOnOpen);
+    };
+    const matchWidth = (hotspot, container, useMinWidth) => {
+      const menu = Composing.getCurrent(container).getOr(container);
+      const buttonWidth = get$c(hotspot.element);
+      if (useMinWidth) {
+        set$8(menu.element, 'min-width', buttonWidth + 'px');
+      } else {
+        set$7(menu.element, buttonWidth);
+      }
+    };
+    const getSink = (anyInSystem, sinkDetail) => anyInSystem.getSystem().getByUid(sinkDetail.uid + '-' + suffix()).map(internalSink => () => Result.value(internalSink)).getOrThunk(() => sinkDetail.lazySink.fold(() => () => Result.error(new Error('No internal sink is specified, nor could an external sink be found')), lazySinkFn => () => lazySinkFn(anyInSystem)));
+    const doRepositionMenus = sandbox => {
+      Sandboxing.getState(sandbox).each(tmenu => {
+        tieredMenu.repositionMenus(tmenu);
+      });
+    };
+    const makeSandbox$1 = (detail, hotspot, extras) => {
+      const ariaControls = manager();
+      const onOpen = (component, menu) => {
+        const anchor = getAnchor(detail, hotspot);
+        ariaControls.link(hotspot.element);
+        if (detail.matchWidth) {
+          matchWidth(anchor.hotspot, menu, detail.useMinWidth);
+        }
+        detail.onOpen(anchor, component, menu);
+        if (extras !== undefined && extras.onOpen !== undefined) {
+          extras.onOpen(component, menu);
+        }
+      };
+      const onClose = (component, menu) => {
+        ariaControls.unlink(hotspot.element);
+        if (extras !== undefined && extras.onClose !== undefined) {
+          extras.onClose(component, menu);
+        }
+      };
+      const lazySink = getSink(hotspot, detail);
+      return {
+        dom: {
+          tag: 'div',
+          classes: detail.sandboxClasses,
+          attributes: {
+            id: ariaControls.id,
+            role: 'listbox'
+          }
+        },
+        behaviours: SketchBehaviours.augment(detail.sandboxBehaviours, [
+          Representing.config({
+            store: {
+              mode: 'memory',
+              initialValue: hotspot
+            }
+          }),
+          Sandboxing.config({
+            onOpen,
+            onClose,
+            isPartOf: (container, data, queryElem) => {
+              return isPartOf$1(data, queryElem) || isPartOf$1(hotspot, queryElem);
+            },
+            getAttachPoint: () => {
+              return lazySink().getOrDie();
+            }
+          }),
+          Composing.config({
+            find: sandbox => {
+              return Sandboxing.getState(sandbox).bind(menu => Composing.getCurrent(menu));
+            }
+          }),
+          Receiving.config({
+            channels: {
+              ...receivingChannel$1({ isExtraPart: never }),
+              ...receivingChannel({ doReposition: doRepositionMenus })
+            }
+          })
+        ])
+      };
+    };
+    const repositionMenus = comp => {
+      const sandbox = Coupling.getCoupled(comp, 'sandbox');
+      doRepositionMenus(sandbox);
+    };
+
+    const sandboxFields = () => [
+      defaulted('sandboxClasses', []),
+      SketchBehaviours.field('sandboxBehaviours', [
+        Composing,
+        Receiving,
+        Sandboxing,
+        Representing
+      ])
+    ];
+
+    const schema$k = constant$1([
+      required$1('dom'),
+      required$1('fetch'),
+      onHandler('onOpen'),
+      onKeyboardHandler('onExecute'),
+      defaulted('getHotspot', Optional.some),
+      defaulted('getAnchorOverrides', constant$1({})),
+      schema$y(),
+      field('dropdownBehaviours', [
+        Toggling,
+        Coupling,
+        Keying,
+        Focusing
+      ]),
+      required$1('toggleClass'),
+      defaulted('eventOrder', {}),
+      option$3('lazySink'),
+      defaulted('matchWidth', false),
+      defaulted('useMinWidth', false),
+      option$3('role')
+    ].concat(sandboxFields()));
+    const parts$e = constant$1([
+      external({
+        schema: [
+          tieredMenuMarkers(),
+          defaulted('fakeFocus', false)
+        ],
+        name: 'menu',
+        defaults: detail => {
+          return { onExecute: detail.onExecute };
+        }
+      }),
+      partType$1()
+    ]);
+
+    const factory$i = (detail, components, _spec, externals) => {
+      const lookupAttr = attr => get$g(detail.dom, 'attributes').bind(attrs => get$g(attrs, attr));
+      const switchToMenu = sandbox => {
+        Sandboxing.getState(sandbox).each(tmenu => {
+          tieredMenu.highlightPrimary(tmenu);
+        });
+      };
+      const togglePopup$1 = (dropdownComp, onOpenSync, highlightOnOpen) => {
+        return togglePopup(detail, identity, dropdownComp, externals, onOpenSync, highlightOnOpen);
+      };
+      const action = component => {
+        const onOpenSync = switchToMenu;
+        togglePopup$1(component, onOpenSync, HighlightOnOpen.HighlightMenuAndItem).get(noop);
+      };
+      const apis = {
+        expand: comp => {
+          if (!Toggling.isOn(comp)) {
+            togglePopup$1(comp, noop, HighlightOnOpen.HighlightNone).get(noop);
+          }
+        },
+        open: comp => {
+          if (!Toggling.isOn(comp)) {
+            togglePopup$1(comp, noop, HighlightOnOpen.HighlightMenuAndItem).get(noop);
+          }
+        },
+        refetch: comp => {
+          const optSandbox = Coupling.getExistingCoupled(comp, 'sandbox');
+          return optSandbox.fold(() => {
+            return togglePopup$1(comp, noop, HighlightOnOpen.HighlightMenuAndItem).map(noop);
+          }, sandboxComp => {
+            return open(detail, identity, comp, sandboxComp, externals, noop, HighlightOnOpen.HighlightMenuAndItem).map(noop);
+          });
+        },
+        isOpen: Toggling.isOn,
+        close: comp => {
+          if (Toggling.isOn(comp)) {
+            togglePopup$1(comp, noop, HighlightOnOpen.HighlightMenuAndItem).get(noop);
+          }
+        },
+        repositionMenus: comp => {
+          if (Toggling.isOn(comp)) {
+            repositionMenus(comp);
+          }
+        }
+      };
+      const triggerExecute = (comp, _se) => {
+        emitExecute(comp);
+        return Optional.some(true);
+      };
+      return {
+        uid: detail.uid,
+        dom: detail.dom,
+        components,
+        behaviours: augment(detail.dropdownBehaviours, [
+          Toggling.config({
+            toggleClass: detail.toggleClass,
+            aria: { mode: 'expanded' }
+          }),
+          Coupling.config({
+            others: {
+              sandbox: hotspot => {
+                return makeSandbox$1(detail, hotspot, {
+                  onOpen: () => Toggling.on(hotspot),
+                  onClose: () => Toggling.off(hotspot)
+                });
+              }
+            }
+          }),
+          Keying.config({
+            mode: 'special',
+            onSpace: triggerExecute,
+            onEnter: triggerExecute,
+            onDown: (comp, _se) => {
+              if (Dropdown.isOpen(comp)) {
+                const sandbox = Coupling.getCoupled(comp, 'sandbox');
+                switchToMenu(sandbox);
+              } else {
+                Dropdown.open(comp);
+              }
+              return Optional.some(true);
+            },
+            onEscape: (comp, _se) => {
+              if (Dropdown.isOpen(comp)) {
+                Dropdown.close(comp);
+                return Optional.some(true);
+              } else {
+                return Optional.none();
+              }
+            }
+          }),
+          Focusing.config({})
+        ]),
+        events: events$a(Optional.some(action)),
+        eventOrder: {
+          ...detail.eventOrder,
+          [execute$5()]: [
+            'disabling',
+            'toggling',
+            'alloy.base.behaviour'
+          ]
+        },
+        apis,
+        domModification: {
+          attributes: {
+            'aria-haspopup': 'true',
+            ...detail.role.fold(() => ({}), role => ({ role })),
+            ...detail.dom.tag === 'button' ? { type: lookupAttr('type').getOr('button') } : {}
+          }
+        }
+      };
+    };
+    const Dropdown = composite({
+      name: 'Dropdown',
+      configFields: schema$k(),
+      partFields: parts$e(),
+      factory: factory$i,
+      apis: {
+        open: (apis, comp) => apis.open(comp),
+        refetch: (apis, comp) => apis.refetch(comp),
+        expand: (apis, comp) => apis.expand(comp),
+        close: (apis, comp) => apis.close(comp),
+        isOpen: (apis, comp) => apis.isOpen(comp),
+        repositionMenus: (apis, comp) => apis.repositionMenus(comp)
+      }
+    });
+
+    const identifyMenuLayout = searchMode => {
+      switch (searchMode.searchMode) {
+      case 'no-search': {
+          return { menuType: 'normal' };
+        }
+      default: {
+          return {
+            menuType: 'searchable',
+            searchMode
+          };
+        }
+      }
+    };
+    const handleRefetchTrigger = originalSandboxComp => {
+      const dropdown = Representing.getValue(originalSandboxComp);
+      const optSearcherState = findWithinSandbox(originalSandboxComp).map(saveState);
+      Dropdown.refetch(dropdown).get(() => {
+        const newSandboxComp = Coupling.getCoupled(dropdown, 'sandbox');
+        optSearcherState.each(searcherState => findWithinSandbox(newSandboxComp).each(inputComp => restoreState(inputComp, searcherState)));
+      });
+    };
+    const handleRedirectToMenuItem = (sandboxComp, se) => {
+      getActiveMenuItemFrom(sandboxComp).each(activeItem => {
+        retargetAndDispatchWith(sandboxComp, activeItem.element, se.event.eventType, se.event.interactionEvent);
+      });
+    };
+    const getActiveMenuItemFrom = sandboxComp => {
+      return Sandboxing.getState(sandboxComp).bind(Highlighting.getHighlighted).bind(Highlighting.getHighlighted);
+    };
+    const getSearchResults = activeMenuComp => {
+      return has(activeMenuComp.element, searchResultsClass) ? Optional.some(activeMenuComp.element) : descendant(activeMenuComp.element, '.' + searchResultsClass);
+    };
+    const updateAriaOnHighlight = (tmenuComp, menuComp, itemComp) => {
+      findWithinMenu(tmenuComp).each(inputComp => {
+        setActiveDescendant(inputComp, itemComp);
+        const optActiveResults = getSearchResults(menuComp);
+        optActiveResults.each(resultsElem => {
+          getOpt(resultsElem, 'id').each(controlledId => set$9(inputComp.element, 'aria-controls', controlledId));
+        });
+      });
+      set$9(itemComp.element, 'aria-selected', 'true');
+    };
+    const updateAriaOnDehighlight = (tmenuComp, menuComp, itemComp) => {
+      set$9(itemComp.element, 'aria-selected', 'false');
+    };
+    const focusSearchField = tmenuComp => {
+      findWithinMenu(tmenuComp).each(searcherComp => Focusing.focus(searcherComp));
+    };
+    const getSearchPattern = dropdownComp => {
+      const optSandboxComp = Coupling.getExistingCoupled(dropdownComp, 'sandbox');
+      return optSandboxComp.bind(findWithinSandbox).map(saveState).map(state => state.fetchPattern).getOr('');
+    };
+
     var FocusMode;
     (function (FocusMode) {
       FocusMode[FocusMode['ContentFocus'] = 0] = 'ContentFocus';
@@ -10598,7 +11494,7 @@
       case 'separator':
         return createSeparatorMenuItem(item).fold(handleError, d => Optional.some(separator$3(d)));
       case 'fancymenuitem':
-        return createFancyMenuItem(item).fold(handleError, d => fancy(parseForHorizontalMenu(d), backstage));
+        return createFancyMenuItem(item).fold(handleError, d => fancy(d, backstage));
       default: {
           console.error('Unknown item in general menu', item);
           return Optional.none();
@@ -10632,7 +11528,7 @@
         }
       }));
     };
-    const createPartialMenu = (value, items, itemResponse, backstage, isHorizontalMenu) => {
+    const createPartialMenu = (value, items, itemResponse, backstage, isHorizontalMenu, searchMode) => {
       const hasIcons = menuHasIcons(items);
       const alloyItems = cat(map$2(items, item => {
         const itemHasIcon = i => isHorizontalMenu ? !has$2(i, 'text') : hasIcons;
@@ -10646,8 +11542,9 @@
           return createItem(item);
         }
       }));
+      const menuLayout = identifyMenuLayout(searchMode);
       const createPartial = isHorizontalMenu ? createHorizontalPartialMenuWithAlloyItems : createPartialMenuWithAlloyItems;
-      return createPartial(value, hasIcons, alloyItems, 1, 'normal');
+      return createPartial(value, hasIcons, alloyItems, 1, menuLayout);
     };
     const createTieredDataFrom = partialMenu => tieredMenu.singleData(partialMenu.value, partialMenu);
     const createInlineMenuFrom = (partialMenu, columns, focusMode, presets) => {
@@ -10731,7 +11628,7 @@
               root: SugarElement.fromDom(editor.getBody()),
               node: Optional.from(element)
             }
-          }, createInlineMenuFrom(createPartialMenuWithAlloyItems('autocompleter-value', true, items, columns, 'normal'), columns, FocusMode.ContentFocus, 'normal'));
+          }, createInlineMenuFrom(createPartialMenuWithAlloyItems('autocompleter-value', true, items, columns, { menuType: 'normal' }), columns, FocusMode.ContentFocus, 'normal'));
         });
         getMenu().each(Highlighting.highlightFirst);
       };
@@ -11137,7 +12034,7 @@
       };
     };
 
-    const factory$j = detail => {
+    const factory$h = detail => {
       const {attributes, ...domWithoutAttributes} = detail.dom;
       return {
         uid: detail.uid,
@@ -11158,7 +12055,7 @@
     };
     const Container = single({
       name: 'Container',
-      factory: factory$j,
+      factory: factory$h,
       configFields: [
         defaulted('components', []),
         field('containerBehaviours', []),
@@ -11314,14 +12211,14 @@
       components: map$2(spec.items, backstage.interpreter)
     });
 
-    const schema$l = constant$1([
+    const schema$j = constant$1([
       defaulted('prefix', 'form-field'),
       field('fieldBehaviours', [
         Composing,
         Representing
       ])
     ]);
-    const parts$e = constant$1([
+    const parts$d = constant$1([
       optional({
         schema: [required$1('dom')],
         name: 'label'
@@ -11355,7 +12252,7 @@
       })
     ]);
 
-    const factory$i = (detail, components, _spec, _externals) => {
+    const factory$g = (detail, components, _spec, _externals) => {
       const behaviours = augment(detail.fieldBehaviours, [
         Composing.config({
           find: container => {
@@ -11410,9 +12307,9 @@
     };
     const FormField = composite({
       name: 'FormField',
-      configFields: schema$l(),
-      partFields: parts$e(),
-      factory: factory$i,
+      configFields: schema$j(),
+      partFields: parts$d(),
+      factory: factory$g,
       apis: {
         getField: (apis, comp) => apis.getField(comp),
         getLabel: (apis, comp) => apis.getLabel(comp)
@@ -11589,170 +12486,6 @@
       return renderFormFieldWith(pLabel, pField, extraClasses, []);
     };
 
-    const schema$k = constant$1([
-      option$3('data'),
-      defaulted('inputAttributes', {}),
-      defaulted('inputStyles', {}),
-      defaulted('tag', 'input'),
-      defaulted('inputClasses', []),
-      onHandler('onSetValue'),
-      defaulted('styles', {}),
-      defaulted('eventOrder', {}),
-      field('inputBehaviours', [
-        Representing,
-        Focusing
-      ]),
-      defaulted('selectOnFocus', true)
-    ]);
-    const focusBehaviours = detail => derive$1([Focusing.config({
-        onFocus: !detail.selectOnFocus ? noop : component => {
-          const input = component.element;
-          const value = get$6(input);
-          input.dom.setSelectionRange(0, value.length);
-        }
-      })]);
-    const behaviours = detail => ({
-      ...focusBehaviours(detail),
-      ...augment(detail.inputBehaviours, [Representing.config({
-          store: {
-            mode: 'manual',
-            ...detail.data.map(data => ({ initialValue: data })).getOr({}),
-            getValue: input => {
-              return get$6(input.element);
-            },
-            setValue: (input, data) => {
-              const current = get$6(input.element);
-              if (current !== data) {
-                set$5(input.element, data);
-              }
-            }
-          },
-          onSetValue: detail.onSetValue
-        })])
-    });
-    const dom = detail => ({
-      tag: detail.tag,
-      attributes: {
-        type: 'text',
-        ...detail.inputAttributes
-      },
-      styles: detail.inputStyles,
-      classes: detail.inputClasses
-    });
-
-    const factory$h = (detail, _spec) => ({
-      uid: detail.uid,
-      dom: dom(detail),
-      components: [],
-      behaviours: behaviours(detail),
-      eventOrder: detail.eventOrder
-    });
-    const Input = single({
-      name: 'Input',
-      configFields: schema$k(),
-      factory: factory$h
-    });
-
-    const nu$3 = baseFn => {
-      let data = Optional.none();
-      let callbacks = [];
-      const map = f => nu$3(nCallback => {
-        get(data => {
-          nCallback(f(data));
-        });
-      });
-      const get = nCallback => {
-        if (isReady()) {
-          call(nCallback);
-        } else {
-          callbacks.push(nCallback);
-        }
-      };
-      const set = x => {
-        if (!isReady()) {
-          data = Optional.some(x);
-          run(callbacks);
-          callbacks = [];
-        }
-      };
-      const isReady = () => data.isSome();
-      const run = cbs => {
-        each$1(cbs, call);
-      };
-      const call = cb => {
-        data.each(x => {
-          setTimeout(() => {
-            cb(x);
-          }, 0);
-        });
-      };
-      baseFn(set);
-      return {
-        get,
-        map,
-        isReady
-      };
-    };
-    const pure$1 = a => nu$3(callback => {
-      callback(a);
-    });
-    const LazyValue = {
-      nu: nu$3,
-      pure: pure$1
-    };
-
-    const errorReporter = err => {
-      setTimeout(() => {
-        throw err;
-      }, 0);
-    };
-    const make$5 = run => {
-      const get = callback => {
-        run().then(callback, errorReporter);
-      };
-      const map = fab => {
-        return make$5(() => run().then(fab));
-      };
-      const bind = aFutureB => {
-        return make$5(() => run().then(v => aFutureB(v).toPromise()));
-      };
-      const anonBind = futureB => {
-        return make$5(() => run().then(() => futureB.toPromise()));
-      };
-      const toLazy = () => {
-        return LazyValue.nu(get);
-      };
-      const toCached = () => {
-        let cache = null;
-        return make$5(() => {
-          if (cache === null) {
-            cache = run();
-          }
-          return cache;
-        });
-      };
-      const toPromise = run;
-      return {
-        map,
-        bind,
-        anonBind,
-        toLazy,
-        toCached,
-        toPromise,
-        get
-      };
-    };
-    const nu$2 = baseFn => {
-      return make$5(() => new Promise(baseFn));
-    };
-    const pure = a => {
-      return make$5(() => Promise.resolve(a));
-    };
-    const Future = {
-      nu: nu$2,
-      pure
-    };
-
     const ariaElements = [
       'input',
       'textarea'
@@ -11861,392 +12594,6 @@
             return Future.pure(validator(v));
           };
         }
-      }
-    });
-
-    const getCoupled = (component, coupleConfig, coupleState, name) => coupleState.getOrCreate(component, coupleConfig, name);
-
-    var CouplingApis = /*#__PURE__*/Object.freeze({
-        __proto__: null,
-        getCoupled: getCoupled
-    });
-
-    var CouplingSchema = [requiredOf('others', setOf(Result.value, anyValue()))];
-
-    const init$a = () => {
-      const coupled = {};
-      const getOrCreate = (component, coupleConfig, name) => {
-        const available = keys(coupleConfig.others);
-        if (!available) {
-          throw new Error('Cannot find coupled component: ' + name + '. Known coupled components: ' + JSON.stringify(available, null, 2));
-        } else {
-          return get$g(coupled, name).getOrThunk(() => {
-            const builder = get$g(coupleConfig.others, name).getOrDie('No information found for coupled component: ' + name);
-            const spec = builder(component);
-            const built = component.getSystem().build(spec);
-            coupled[name] = built;
-            return built;
-          });
-        }
-      };
-      const readState = constant$1({});
-      return nu$8({
-        readState,
-        getOrCreate
-      });
-    };
-
-    var CouplingState = /*#__PURE__*/Object.freeze({
-        __proto__: null,
-        init: init$a
-    });
-
-    const Coupling = create$3({
-      fields: CouplingSchema,
-      name: 'coupling',
-      apis: CouplingApis,
-      state: CouplingState
-    });
-
-    const suffix = constant$1('sink');
-    const partType$1 = constant$1(optional({
-      name: suffix(),
-      overrides: constant$1({
-        dom: { tag: 'div' },
-        behaviours: derive$1([Positioning.config({ useFixed: always })]),
-        events: derive$2([
-          cutter(keydown()),
-          cutter(mousedown()),
-          cutter(click())
-        ])
-      })
-    }));
-
-    var HighlightOnOpen;
-    (function (HighlightOnOpen) {
-      HighlightOnOpen[HighlightOnOpen['HighlightFirst'] = 0] = 'HighlightFirst';
-      HighlightOnOpen[HighlightOnOpen['HighlightNone'] = 1] = 'HighlightNone';
-    }(HighlightOnOpen || (HighlightOnOpen = {})));
-    const getAnchor = (detail, component) => {
-      const hotspot = detail.getHotspot(component).getOr(component);
-      const type = 'hotspot';
-      const overrides = detail.getAnchorOverrides();
-      return detail.layouts.fold(() => ({
-        type,
-        hotspot,
-        overrides
-      }), layouts => ({
-        type,
-        hotspot,
-        overrides,
-        layouts
-      }));
-    };
-    const fetch = (detail, mapFetch, component) => {
-      const fetcher = detail.fetch;
-      return fetcher(component).map(mapFetch);
-    };
-    const openF = (detail, mapFetch, anchor, component, sandbox, externals, highlightOnOpen) => {
-      const futureData = fetch(detail, mapFetch, component);
-      const getLazySink = getSink(component, detail);
-      return futureData.map(tdata => tdata.bind(data => Optional.from(tieredMenu.sketch({
-        ...externals.menu(),
-        uid: generate$5(''),
-        data,
-        highlightImmediately: highlightOnOpen === HighlightOnOpen.HighlightFirst,
-        onOpenMenu: (tmenu, menu) => {
-          const sink = getLazySink().getOrDie();
-          Positioning.position(sink, menu, { anchor });
-          Sandboxing.decloak(sandbox);
-        },
-        onOpenSubmenu: (tmenu, item, submenu) => {
-          const sink = getLazySink().getOrDie();
-          Positioning.position(sink, submenu, {
-            anchor: {
-              type: 'submenu',
-              item
-            }
-          });
-          Sandboxing.decloak(sandbox);
-        },
-        onRepositionMenu: (tmenu, primaryMenu, submenuTriggers) => {
-          const sink = getLazySink().getOrDie();
-          Positioning.position(sink, primaryMenu, { anchor });
-          each$1(submenuTriggers, st => {
-            Positioning.position(sink, st.triggeredMenu, {
-              anchor: {
-                type: 'submenu',
-                item: st.triggeringItem
-              }
-            });
-          });
-        },
-        onEscape: () => {
-          Focusing.focus(component);
-          Sandboxing.close(sandbox);
-          return Optional.some(true);
-        }
-      }))));
-    };
-    const open = (detail, mapFetch, hotspot, sandbox, externals, onOpenSync, highlightOnOpen) => {
-      const anchor = getAnchor(detail, hotspot);
-      const processed = openF(detail, mapFetch, anchor, hotspot, sandbox, externals, highlightOnOpen);
-      return processed.map(tdata => {
-        tdata.fold(() => {
-          if (Sandboxing.isOpen(sandbox)) {
-            Sandboxing.close(sandbox);
-          }
-        }, data => {
-          Sandboxing.cloak(sandbox);
-          Sandboxing.open(sandbox, data);
-          onOpenSync(sandbox);
-        });
-        return sandbox;
-      });
-    };
-    const close = (detail, mapFetch, component, sandbox, _externals, _onOpenSync, _highlightOnOpen) => {
-      Sandboxing.close(sandbox);
-      return Future.pure(sandbox);
-    };
-    const togglePopup = (detail, mapFetch, hotspot, externals, onOpenSync, highlightOnOpen) => {
-      const sandbox = Coupling.getCoupled(hotspot, 'sandbox');
-      const showing = Sandboxing.isOpen(sandbox);
-      const action = showing ? close : open;
-      return action(detail, mapFetch, hotspot, sandbox, externals, onOpenSync, highlightOnOpen);
-    };
-    const matchWidth = (hotspot, container, useMinWidth) => {
-      const menu = Composing.getCurrent(container).getOr(container);
-      const buttonWidth = get$c(hotspot.element);
-      if (useMinWidth) {
-        set$8(menu.element, 'min-width', buttonWidth + 'px');
-      } else {
-        set$7(menu.element, buttonWidth);
-      }
-    };
-    const getSink = (anyInSystem, sinkDetail) => anyInSystem.getSystem().getByUid(sinkDetail.uid + '-' + suffix()).map(internalSink => () => Result.value(internalSink)).getOrThunk(() => sinkDetail.lazySink.fold(() => () => Result.error(new Error('No internal sink is specified, nor could an external sink be found')), lazySinkFn => () => lazySinkFn(anyInSystem)));
-    const doRepositionMenus = sandbox => {
-      Sandboxing.getState(sandbox).each(tmenu => {
-        tieredMenu.repositionMenus(tmenu);
-      });
-    };
-    const makeSandbox$1 = (detail, hotspot, extras) => {
-      const ariaControls = manager();
-      const onOpen = (component, menu) => {
-        const anchor = getAnchor(detail, hotspot);
-        ariaControls.link(hotspot.element);
-        if (detail.matchWidth) {
-          matchWidth(anchor.hotspot, menu, detail.useMinWidth);
-        }
-        detail.onOpen(anchor, component, menu);
-        if (extras !== undefined && extras.onOpen !== undefined) {
-          extras.onOpen(component, menu);
-        }
-      };
-      const onClose = (component, menu) => {
-        ariaControls.unlink(hotspot.element);
-        if (extras !== undefined && extras.onClose !== undefined) {
-          extras.onClose(component, menu);
-        }
-      };
-      const lazySink = getSink(hotspot, detail);
-      return {
-        dom: {
-          tag: 'div',
-          classes: detail.sandboxClasses,
-          attributes: {
-            id: ariaControls.id,
-            role: 'listbox'
-          }
-        },
-        behaviours: SketchBehaviours.augment(detail.sandboxBehaviours, [
-          Representing.config({
-            store: {
-              mode: 'memory',
-              initialValue: hotspot
-            }
-          }),
-          Sandboxing.config({
-            onOpen,
-            onClose,
-            isPartOf: (container, data, queryElem) => {
-              return isPartOf$1(data, queryElem) || isPartOf$1(hotspot, queryElem);
-            },
-            getAttachPoint: () => {
-              return lazySink().getOrDie();
-            }
-          }),
-          Composing.config({
-            find: sandbox => {
-              return Sandboxing.getState(sandbox).bind(menu => Composing.getCurrent(menu));
-            }
-          }),
-          Receiving.config({
-            channels: {
-              ...receivingChannel$1({ isExtraPart: never }),
-              ...receivingChannel({ doReposition: doRepositionMenus })
-            }
-          })
-        ])
-      };
-    };
-    const repositionMenus = comp => {
-      const sandbox = Coupling.getCoupled(comp, 'sandbox');
-      doRepositionMenus(sandbox);
-    };
-
-    const sandboxFields = () => [
-      defaulted('sandboxClasses', []),
-      SketchBehaviours.field('sandboxBehaviours', [
-        Composing,
-        Receiving,
-        Sandboxing,
-        Representing
-      ])
-    ];
-
-    const schema$j = constant$1([
-      required$1('dom'),
-      required$1('fetch'),
-      onHandler('onOpen'),
-      onKeyboardHandler('onExecute'),
-      defaulted('getHotspot', Optional.some),
-      defaulted('getAnchorOverrides', constant$1({})),
-      schema$y(),
-      field('dropdownBehaviours', [
-        Toggling,
-        Coupling,
-        Keying,
-        Focusing
-      ]),
-      required$1('toggleClass'),
-      defaulted('eventOrder', {}),
-      option$3('lazySink'),
-      defaulted('matchWidth', false),
-      defaulted('useMinWidth', false),
-      option$3('role')
-    ].concat(sandboxFields()));
-    const parts$d = constant$1([
-      external({
-        schema: [tieredMenuMarkers()],
-        name: 'menu',
-        defaults: detail => {
-          return { onExecute: detail.onExecute };
-        }
-      }),
-      partType$1()
-    ]);
-
-    const factory$g = (detail, components, _spec, externals) => {
-      const lookupAttr = attr => get$g(detail.dom, 'attributes').bind(attrs => get$g(attrs, attr));
-      const switchToMenu = sandbox => {
-        Sandboxing.getState(sandbox).each(tmenu => {
-          tieredMenu.highlightPrimary(tmenu);
-        });
-      };
-      const action = component => {
-        const onOpenSync = switchToMenu;
-        togglePopup(detail, identity, component, externals, onOpenSync, HighlightOnOpen.HighlightFirst).get(noop);
-      };
-      const apis = {
-        expand: comp => {
-          if (!Toggling.isOn(comp)) {
-            togglePopup(detail, identity, comp, externals, noop, HighlightOnOpen.HighlightNone).get(noop);
-          }
-        },
-        open: comp => {
-          if (!Toggling.isOn(comp)) {
-            togglePopup(detail, identity, comp, externals, noop, HighlightOnOpen.HighlightFirst).get(noop);
-          }
-        },
-        isOpen: Toggling.isOn,
-        close: comp => {
-          if (Toggling.isOn(comp)) {
-            togglePopup(detail, identity, comp, externals, noop, HighlightOnOpen.HighlightFirst).get(noop);
-          }
-        },
-        repositionMenus: comp => {
-          if (Toggling.isOn(comp)) {
-            repositionMenus(comp);
-          }
-        }
-      };
-      const triggerExecute = (comp, _se) => {
-        emitExecute(comp);
-        return Optional.some(true);
-      };
-      return {
-        uid: detail.uid,
-        dom: detail.dom,
-        components,
-        behaviours: augment(detail.dropdownBehaviours, [
-          Toggling.config({
-            toggleClass: detail.toggleClass,
-            aria: { mode: 'expanded' }
-          }),
-          Coupling.config({
-            others: {
-              sandbox: hotspot => {
-                return makeSandbox$1(detail, hotspot, {
-                  onOpen: () => Toggling.on(hotspot),
-                  onClose: () => Toggling.off(hotspot)
-                });
-              }
-            }
-          }),
-          Keying.config({
-            mode: 'special',
-            onSpace: triggerExecute,
-            onEnter: triggerExecute,
-            onDown: (comp, _se) => {
-              if (Dropdown.isOpen(comp)) {
-                const sandbox = Coupling.getCoupled(comp, 'sandbox');
-                switchToMenu(sandbox);
-              } else {
-                Dropdown.open(comp);
-              }
-              return Optional.some(true);
-            },
-            onEscape: (comp, _se) => {
-              if (Dropdown.isOpen(comp)) {
-                Dropdown.close(comp);
-                return Optional.some(true);
-              } else {
-                return Optional.none();
-              }
-            }
-          }),
-          Focusing.config({})
-        ]),
-        events: events$a(Optional.some(action)),
-        eventOrder: {
-          ...detail.eventOrder,
-          [execute$5()]: [
-            'disabling',
-            'toggling',
-            'alloy.base.behaviour'
-          ]
-        },
-        apis,
-        domModification: {
-          attributes: {
-            'aria-haspopup': 'true',
-            ...detail.role.fold(() => ({}), role => ({ role })),
-            ...detail.dom.tag === 'button' ? { type: lookupAttr('type').getOr('button') } : {}
-          }
-        }
-      };
-    };
-    const Dropdown = composite({
-      name: 'Dropdown',
-      configFields: schema$j(),
-      partFields: parts$d(),
-      factory: factory$g,
-      apis: {
-        open: (apis, comp) => apis.open(comp),
-        expand: (apis, comp) => apis.expand(comp),
-        close: (apis, comp) => apis.close(comp),
-        isOpen: (apis, comp) => apis.isOpen(comp),
-        repositionMenus: (apis, comp) => apis.repositionMenus(comp)
       }
     });
 
@@ -12504,10 +12851,10 @@
 
     const _sliderChangeEvent = 'slider.change.value';
     const sliderChangeEvent = constant$1(_sliderChangeEvent);
-    const isTouchEvent$1 = evt => evt.type.indexOf('touch') !== -1;
+    const isTouchEvent$2 = evt => evt.type.indexOf('touch') !== -1;
     const getEventSource = simulatedEvent => {
       const evt = simulatedEvent.event.raw;
-      if (isTouchEvent$1(evt)) {
+      if (isTouchEvent$2(evt)) {
         const touchEvent = evt;
         return touchEvent.touches !== undefined && touchEvent.touches.length === 1 ? Optional.some(touchEvent.touches[0]).map(t => SugarPosition(t.clientX, t.clientY)) : Optional.none();
       } else {
@@ -13804,13 +14151,13 @@
             return optHex.map(hex => '#' + hex).getOr('');
           }, (comp, newValue) => {
             const pattern = /^#([a-fA-F0-9]{3}(?:[a-fA-F0-9]{3})?)/;
-            const m = pattern.exec(newValue);
+            const valOpt = Optional.from(pattern.exec(newValue)).bind(matches => get$h(matches, 1));
             const picker = memPicker.get(comp);
             const optRgbForm = Composing.getCurrent(picker);
             optRgbForm.fold(() => {
               console.log('Can not find form');
             }, rgbForm => {
-              Representing.setValue(rgbForm, { hex: Optional.from(m[1]).getOr('') });
+              Representing.setValue(rgbForm, { hex: valOpt.getOr('') });
               Form.getField(rgbForm, 'hex').each(hexField => {
                 emit(hexField, input());
               });
@@ -13871,9 +14218,10 @@
         });
       };
       const onDrop = (comp, se) => {
+        var _a;
         if (!Disabling.isDisabled(comp)) {
           const transferEvent = se.event.raw;
-          handleFiles(comp, transferEvent.dataTransfer.files);
+          handleFiles(comp, (_a = transferEvent.dataTransfer) === null || _a === void 0 ? void 0 : _a.files);
         }
       };
       const onSelect = (component, simulatedEvent) => {
@@ -13881,8 +14229,10 @@
         handleFiles(component, input.files);
       };
       const handleFiles = (component, files) => {
-        Representing.setValue(component, filterByExtension(files, providersBackstage));
-        emitWith(component, formChangeEvent, { name: spec.name });
+        if (files) {
+          Representing.setValue(component, filterByExtension(files, providersBackstage));
+          emitWith(component, formChangeEvent, { name: spec.name });
+        }
       };
       const memInput = record({
         dom: {
@@ -14141,16 +14491,17 @@
         data.cachedHeight.each(z => translatedData.cachedHeight = z);
         cachedData.set(translatedData);
         const applyFramePositioning = () => {
-          const imageWidth = translatedData.cachedWidth;
-          const imageHeight = translatedData.cachedHeight;
-          if (isUndefined(translatedData.zoom)) {
-            const z = zoomToFit(frameComponent.element, imageWidth, imageHeight);
-            translatedData.zoom = z;
+          const {cachedWidth, cachedHeight, zoom} = translatedData;
+          if (!isUndefined(cachedWidth) && !isUndefined(cachedHeight)) {
+            if (isUndefined(zoom)) {
+              const z = zoomToFit(frameComponent.element, cachedWidth, cachedHeight);
+              translatedData.zoom = z;
+            }
+            const position = calculateImagePosition(get$c(frameComponent.element), get$d(frameComponent.element), cachedWidth, cachedHeight, translatedData.zoom);
+            memContainer.getOpt(frameComponent).each(container => {
+              setAll(container.element, position);
+            });
           }
-          const position = calculateImagePosition(get$c(frameComponent.element), get$d(frameComponent.element), imageWidth, imageHeight, translatedData.zoom);
-          memContainer.getOpt(frameComponent).each(container => {
-            setAll(container.element, position);
-          });
         };
         memImage.getOpt(frameComponent).each(imageComponent => {
           const img = imageComponent.element;
@@ -14158,9 +14509,7 @@
             set$9(img, 'src', data.url);
             remove$2(frameComponent.element, 'tox-imagepreview__loaded');
           }
-          if (!isUndefined(translatedData.cachedWidth) && !isUndefined(translatedData.cachedHeight)) {
-            applyFramePositioning();
-          }
+          applyFramePositioning();
           image(img).then(img => {
             if (frameComponent.getSystem().isConnected()) {
               add$2(frameComponent.element, 'tox-imagepreview__loaded');
@@ -14246,7 +14595,7 @@
       behaviours
     }, iconsProvider);
     const renderIconFromPack = (iconName, iconsProvider) => renderIcon(iconName, iconsProvider, []);
-    const renderReplacableIconFromPack = (iconName, iconsProvider) => renderIcon(iconName, iconsProvider, [Replacing.config({})]);
+    const renderReplaceableIconFromPack = (iconName, iconsProvider) => renderIcon(iconName, iconsProvider, [Replacing.config({})]);
     const renderLabel = (text, prefix, providersBackstage) => ({
       dom: {
         tag: 'span',
@@ -14261,7 +14610,7 @@
     const renderCommonDropdown = (spec, prefix, sharedBackstage) => {
       const editorOffCell = Cell(noop);
       const optMemDisplayText = spec.text.map(text => record(renderLabel(text, prefix, sharedBackstage.providers)));
-      const optMemDisplayIcon = spec.icon.map(iconName => record(renderReplacableIconFromPack(iconName, sharedBackstage.providers.icons)));
+      const optMemDisplayIcon = spec.icon.map(iconName => record(renderReplaceableIconFromPack(iconName, sharedBackstage.providers.icons)));
       const onLeftOrRightInMenu = (comp, se) => {
         const dropdown = Representing.getValue(comp);
         Focusing.focus(dropdown);
@@ -14299,6 +14648,11 @@
         ]),
         matchWidth: true,
         useMinWidth: true,
+        onOpen: (anchor, dropdownComp, tmenuComp) => {
+          if (spec.searchable) {
+            focusSearchField(tmenuComp);
+          }
+        },
         dropdownBehaviours: derive$1([
           ...spec.dropdownBehaviours,
           DisablingConfigs.button(() => spec.disabled || sharedBackstage.providers.isDisabled()),
@@ -14317,7 +14671,7 @@
             }),
             run$1(updateMenuIcon, (comp, se) => {
               optMemDisplayIcon.bind(mem => mem.getOpt(comp)).each(displayIcon => {
-                Replacing.set(displayIcon, [renderReplacableIconFromPack(se.event.icon, sharedBackstage.providers.icons)]);
+                Replacing.set(displayIcon, [renderReplaceableIconFromPack(se.event.icon, sharedBackstage.providers.icons)]);
               });
             })
           ])
@@ -14330,21 +14684,45 @@
             'normal-dropdown-events'
           ]
         }),
-        sandboxBehaviours: derive$1([Keying.config({
+        sandboxBehaviours: derive$1([
+          Keying.config({
             mode: 'special',
             onLeft: onLeftOrRightInMenu,
             onRight: onLeftOrRightInMenu
-          })]),
+          }),
+          config('dropdown-sandbox-events', [
+            run$1(refetchTriggerEvent, (originalSandboxComp, se) => {
+              handleRefetchTrigger(originalSandboxComp);
+              se.stop();
+            }),
+            run$1(redirectMenuItemInteractionEvent, (sandboxComp, se) => {
+              handleRedirectToMenuItem(sandboxComp, se);
+              se.stop();
+            })
+          ])
+        ]),
         lazySink: sharedBackstage.getSink,
         toggleClass: `${ prefix }--active`,
-        parts: { menu: part(false, spec.columns, spec.presets) },
+        parts: {
+          menu: {
+            ...part(false, spec.columns, spec.presets),
+            fakeFocus: spec.searchable,
+            onHighlightItem: updateAriaOnHighlight,
+            onCollapseMenu: (tmenuComp, itemCompCausingCollapse, nowActiveMenuComp) => {
+              Highlighting.getHighlighted(nowActiveMenuComp).each(itemComp => {
+                updateAriaOnHighlight(tmenuComp, nowActiveMenuComp, itemComp);
+              });
+            },
+            onDehighlightItem: updateAriaOnDehighlight
+          }
+        },
         fetch: comp => Future.nu(curry(spec.fetch, comp))
       }));
       return memDropdown.asSpec();
     };
 
     const isMenuItemReference = item => isString(item);
-    const isSeparator$1 = item => item.type === 'separator';
+    const isSeparator$2 = item => item.type === 'separator';
     const isExpandingMenuItem = item => has$2(item, 'getSubmenuItems');
     const separator$2 = { type: 'separator' };
     const unwrapReferences = (items, menuItems) => {
@@ -14353,7 +14731,7 @@
           if (item === '') {
             return acc;
           } else if (item === '|') {
-            return acc.length > 0 && !isSeparator$1(acc[acc.length - 1]) ? acc.concat([separator$2]) : acc;
+            return acc.length > 0 && !isSeparator$2(acc[acc.length - 1]) ? acc.concat([separator$2]) : acc;
           } else if (has$2(menuItems, item.toLowerCase())) {
             return acc.concat([menuItems[item.toLowerCase()]]);
           } else {
@@ -14363,7 +14741,7 @@
           return acc.concat([item]);
         }
       }, []);
-      if (realItems.length > 0 && isSeparator$1(realItems[realItems.length - 1])) {
+      if (realItems.length > 0 && isSeparator$2(realItems[realItems.length - 1])) {
         realItems.pop();
       }
       return realItems;
@@ -14371,37 +14749,41 @@
     const getFromExpandingItem = (item, menuItems) => {
       const submenuItems = item.getSubmenuItems();
       const rest = expand(submenuItems, menuItems);
-      const newMenus = deepMerge(rest.menus, wrap$1(item.value, rest.items));
-      const newExpansions = deepMerge(rest.expansions, wrap$1(item.value, item.value));
+      const newMenus = deepMerge(rest.menus, { [item.value]: rest.items });
+      const newExpansions = deepMerge(rest.expansions, { [item.value]: item.value });
       return {
         item,
         menus: newMenus,
         expansions: newExpansions
       };
     };
-    const getFromItem = (item, menuItems) => isExpandingMenuItem(item) ? getFromExpandingItem(item, menuItems) : {
-      item,
-      menus: {},
-      expansions: {}
-    };
     const generateValueIfRequired = item => {
-      if (isSeparator$1(item)) {
-        return item;
-      } else {
-        const itemValue = get$g(item, 'value').getOrThunk(() => generate$6('generated-menu-item'));
-        return deepMerge({ value: itemValue }, item);
-      }
+      const itemValue = get$g(item, 'value').getOrThunk(() => generate$6('generated-menu-item'));
+      return deepMerge({ value: itemValue }, item);
     };
     const expand = (items, menuItems) => {
       const realItems = unwrapReferences(isString(items) ? items.split(' ') : items, menuItems);
       return foldr(realItems, (acc, item) => {
-        const itemWithValue = generateValueIfRequired(item);
-        const newData = getFromItem(itemWithValue, menuItems);
-        return {
-          menus: deepMerge(acc.menus, newData.menus),
-          items: [newData.item].concat(acc.items),
-          expansions: deepMerge(acc.expansions, newData.expansions)
-        };
+        if (isExpandingMenuItem(item)) {
+          const itemWithValue = generateValueIfRequired(item);
+          const newData = getFromExpandingItem(itemWithValue, menuItems);
+          return {
+            menus: deepMerge(acc.menus, newData.menus),
+            items: [
+              newData.item,
+              ...acc.items
+            ],
+            expansions: deepMerge(acc.expansions, newData.expansions)
+          };
+        } else {
+          return {
+            ...acc,
+            items: [
+              item,
+              ...acc.items
+            ]
+          };
+        }
       }, {
         menus: {},
         expansions: {},
@@ -14409,14 +14791,25 @@
       });
     };
 
-    const build = (items, itemResponse, backstage, isHorizontalMenu) => {
+    const getSearchModeForField = settings => {
+      return settings.search.fold(() => ({ searchMode: 'no-search' }), searchSettings => ({
+        searchMode: 'search-with-field',
+        placeholder: searchSettings.placeholder
+      }));
+    };
+    const getSearchModeForResults = settings => {
+      return settings.search.fold(() => ({ searchMode: 'no-search' }), _ => ({ searchMode: 'search-with-results' }));
+    };
+    const build = (items, itemResponse, backstage, settings) => {
       const primary = generate$6('primary-menu');
       const data = expand(items, backstage.shared.providers.menuItems());
       if (data.items.length === 0) {
         return Optional.none();
       }
-      const mainMenu = createPartialMenu(primary, data.items, itemResponse, backstage, isHorizontalMenu);
-      const submenus = map$1(data.menus, (menuItems, menuName) => createPartialMenu(menuName, menuItems, itemResponse, backstage, false));
+      const mainMenuSearchMode = getSearchModeForField(settings);
+      const mainMenu = createPartialMenu(primary, data.items, itemResponse, backstage, settings.isHorizontalMenu, mainMenuSearchMode);
+      const submenuSearchMode = getSearchModeForResults(settings);
+      const submenus = map$1(data.menus, (menuItems, menuName) => createPartialMenu(menuName, menuItems, itemResponse, backstage, false, submenuSearchMode));
       const menus = deepMerge(submenus, wrap$1(primary, mainMenu));
       return Optional.from(tieredMenu.tieredData(primary, menus, data.expansions));
     };
@@ -14466,7 +14859,10 @@
             role: Optional.none(),
             fetch: (comp, callback) => {
               const items = fetchItems(comp, spec.name, spec.items, Representing.getValue(comp));
-              callback(build(items, ItemResponse$1.CLOSE_ON_EXECUTE, backstage, false));
+              callback(build(items, ItemResponse$1.CLOSE_ON_EXECUTE, backstage, {
+                isHorizontalMenu: false,
+                search: Optional.none()
+              }));
             },
             onSetup: constant$1(noop),
             getApi: constant$1({}),
@@ -15292,7 +15688,7 @@
           const onOpenSync = sandbox => {
             Composing.getCurrent(sandbox).each(highlighter);
           };
-          open(detail, mapFetch(comp), comp, sandbox, externals, onOpenSync, HighlightOnOpen.HighlightFirst).get(noop);
+          open(detail, mapFetch(comp), comp, sandbox, externals, onOpenSync, HighlightOnOpen.HighlightMenuAndItem).get(noop);
         }
       };
       const focusBehaviours$1 = focusBehaviours(detail);
@@ -15303,6 +15699,8 @@
         repState.update(map$2(items, item => item.data));
         return data;
       });
+      const getActiveMenu = sandboxComp => Composing.getCurrent(sandboxComp);
+      const typeaheadCustomEvents = 'typeaheadevents';
       const behaviours = [
         Focusing.config({}),
         Representing.config({
@@ -15331,27 +15729,27 @@
             const focusInInput = Focusing.isFocused(component);
             if (focusInInput) {
               if (get$6(component.element).length >= detail.minChars) {
-                const previousValue = Composing.getCurrent(sandbox).bind(menu => Highlighting.getHighlighted(menu).map(Representing.getValue));
+                const previousValue = getActiveMenu(sandbox).bind(activeMenu => Highlighting.getHighlighted(activeMenu).map(Representing.getValue));
                 detail.previewing.set(true);
                 const onOpenSync = _sandbox => {
-                  Composing.getCurrent(sandbox).each(menu => {
+                  getActiveMenu(sandbox).each(activeMenu => {
                     previousValue.fold(() => {
                       if (detail.model.selectsOver) {
-                        Highlighting.highlightFirst(menu);
+                        Highlighting.highlightFirst(activeMenu);
                       }
                     }, pv => {
-                      Highlighting.highlightBy(menu, item => {
+                      Highlighting.highlightBy(activeMenu, item => {
                         const itemData = Representing.getValue(item);
                         return itemData.value === pv.value;
                       });
-                      Highlighting.getHighlighted(menu).orThunk(() => {
-                        Highlighting.highlightFirst(menu);
+                      Highlighting.getHighlighted(activeMenu).orThunk(() => {
+                        Highlighting.highlightFirst(activeMenu);
                         return Optional.none();
                       });
                     });
                   });
                 };
-                open(detail, mapFetch(component), component, sandbox, externals, onOpenSync, HighlightOnOpen.HighlightFirst).get(noop);
+                open(detail, mapFetch(component), component, sandbox, externals, onOpenSync, HighlightOnOpen.HighlightJustMenu).get(noop);
               }
             }
           },
@@ -15379,7 +15777,7 @@
             const sandbox = Coupling.getCoupled(comp, 'sandbox');
             const sandboxIsOpen = Sandboxing.isOpen(sandbox);
             if (sandboxIsOpen && !detail.previewing.get()) {
-              return Composing.getCurrent(sandbox).bind(menu => Highlighting.getHighlighted(menu)).map(item => {
+              return getActiveMenu(sandbox).bind(activeMenu => Highlighting.getHighlighted(activeMenu)).map(item => {
                 emitWith(comp, itemExecute(), { item });
                 return true;
               });
@@ -15408,10 +15806,16 @@
             }
           }
         }),
-        config('typeaheadevents', [
+        config(typeaheadCustomEvents, [
+          runOnAttached(typeaheadComp => {
+            detail.lazyTypeaheadComp.set(Optional.some(typeaheadComp));
+          }),
+          runOnDetached(_typeaheadComp => {
+            detail.lazyTypeaheadComp.set(Optional.none());
+          }),
           runOnExecute$1(comp => {
             const onOpenSync = noop;
-            togglePopup(detail, mapFetch(comp), comp, externals, onOpenSync, HighlightOnOpen.HighlightFirst).get(noop);
+            togglePopup(detail, mapFetch(comp), comp, externals, onOpenSync, HighlightOnOpen.HighlightMenuAndItem).get(noop);
           }),
           run$1(itemExecute(), (comp, se) => {
             const sandbox = Coupling.getCoupled(comp, 'sandbox');
@@ -15428,6 +15832,14 @@
             }
           })] : []))
       ];
+      const eventOrder = {
+        [detachedFromDom()]: [
+          Representing.name(),
+          Streaming.name(),
+          typeaheadCustomEvents
+        ],
+        ...detail.eventOrder
+      };
       return {
         uid: detail.uid,
         dom: dom(deepMerge(detail, {
@@ -15441,7 +15853,7 @@
           ...focusBehaviours$1,
           ...augment(detail.typeaheadBehaviours, behaviours)
         },
-        eventOrder: detail.eventOrder
+        eventOrder
       };
     };
 
@@ -15479,37 +15891,47 @@
         Toggling,
         Coupling
       ]),
+      customField('lazyTypeaheadComp', () => Cell(Optional.none)),
       customField('previewing', () => Cell(true))
-    ].concat(schema$k()).concat(sandboxFields()));
+    ].concat(schema$l()).concat(sandboxFields()));
     const parts$b = constant$1([external({
         schema: [tieredMenuMarkers()],
         name: 'menu',
         overrides: detail => {
           return {
             fakeFocus: true,
-            onHighlight: (menu, item) => {
+            onHighlightItem: (_tmenu, menu, item) => {
               if (!detail.previewing.get()) {
-                menu.getSystem().getByUid(detail.uid).each(input => {
+                detail.lazyTypeaheadComp.get().each(input => {
                   if (detail.model.populateFromBrowse) {
                     setValueFromItem(detail.model, input, item);
                   }
                 });
               } else {
-                menu.getSystem().getByUid(detail.uid).each(input => {
-                  attemptSelectOver(detail.model, input, item).fold(() => Highlighting.dehighlight(menu, item), fn => fn());
+                detail.lazyTypeaheadComp.get().each(input => {
+                  attemptSelectOver(detail.model, input, item).fold(() => {
+                    if (detail.model.selectsOver) {
+                      Highlighting.dehighlight(menu, item);
+                      detail.previewing.set(true);
+                    } else {
+                      detail.previewing.set(false);
+                    }
+                  }, selectOverTextInInput => {
+                    selectOverTextInInput();
+                    detail.previewing.set(false);
+                  });
                 });
               }
-              detail.previewing.set(false);
             },
-            onExecute: (menu, item) => {
-              return menu.getSystem().getByUid(detail.uid).toOptional().map(typeahead => {
+            onExecute: (_menu, item) => {
+              return detail.lazyTypeaheadComp.get().map(typeahead => {
                 emitWith(typeahead, itemExecute(), { item });
                 return true;
               });
             },
             onHover: (menu, item) => {
               detail.previewing.set(false);
-              menu.getSystem().getByUid(detail.uid).each(input => {
+              detail.lazyTypeaheadComp.get().each(input => {
                 if (detail.model.populateFromBrowse) {
                   setValueFromItem(detail.model, input, item);
                 }
@@ -15621,23 +16043,30 @@
       },
       isActive: () => has(component.element, 'tox-tbtn--enabled')
     });
-    const renderMenuButton = (spec, prefix, backstage, role) => renderCommonDropdown({
-      text: spec.text,
-      icon: spec.icon,
-      tooltip: spec.tooltip,
-      role,
-      fetch: (_comp, callback) => {
-        spec.fetch(items => {
-          callback(build(items, ItemResponse$1.CLOSE_ON_EXECUTE, backstage, false));
-        });
-      },
-      onSetup: spec.onSetup,
-      getApi: getMenuButtonApi,
-      columns: 1,
-      presets: 'normal',
-      classes: [],
-      dropdownBehaviours: [Tabstopping.config({})]
-    }, prefix, backstage.shared);
+    const renderMenuButton = (spec, prefix, backstage, role) => {
+      return renderCommonDropdown({
+        text: spec.text,
+        icon: spec.icon,
+        tooltip: spec.tooltip,
+        searchable: spec.search.isSome(),
+        role,
+        fetch: (dropdownComp, callback) => {
+          const fetchContext = { pattern: spec.search.isSome() ? getSearchPattern(dropdownComp) : '' };
+          spec.fetch(items => {
+            callback(build(items, ItemResponse$1.CLOSE_ON_EXECUTE, backstage, {
+              isHorizontalMenu: false,
+              search: spec.search
+            }));
+          }, fetchContext);
+        },
+        onSetup: spec.onSetup,
+        getApi: getMenuButtonApi,
+        columns: 1,
+        presets: 'normal',
+        classes: [],
+        dropdownBehaviours: [Tabstopping.config({})]
+      }, prefix, backstage.shared);
+    };
     const getFetch = (items, getButton, backstage) => {
       const getMenuItemAction = item => api => {
         const newValue = !api.isActive();
@@ -15770,6 +16199,8 @@
         const menuButtonSpec = spec;
         const fixedSpec = {
           ...spec,
+          type: 'menubutton',
+          search: Optional.none(),
           onSetup: api => {
             api.setEnabled(spec.enabled);
             return noop;
@@ -15787,6 +16218,7 @@
         return renderButton(buttonSpec, action, backstage.shared.providers, []);
       } else {
         console.error('Unknown footer button type: ', buttonType);
+        throw new Error('Unknown footer button type');
       }
     };
     const renderDialogButton = (spec, providersBackstage) => {
@@ -15832,8 +16264,10 @@
     const filterByQuery = (term, menuItems) => {
       const lowerCaseTerm = term.toLowerCase();
       return filter$2(menuItems, item => {
+        var _a;
         const text = item.meta !== undefined && item.meta.text !== undefined ? item.meta.text : item.text;
-        return contains$1(text.toLowerCase(), lowerCaseTerm) || contains$1(item.value.toLowerCase(), lowerCaseTerm);
+        const value = (_a = item.value) !== null && _a !== void 0 ? _a : '';
+        return contains$1(text.toLowerCase(), lowerCaseTerm) || contains$1(value.toLowerCase(), lowerCaseTerm);
       });
     };
 
@@ -15861,8 +16295,7 @@
         const urlEntry = Representing.getValue(component);
         urlBackstage.addToHistory(urlEntry.value, spec.filetype);
       };
-      const pField = FormField.parts.field({
-        factory: Typeahead,
+      const typeaheadSpec = {
         ...initialData.map(initialData => ({ initialData })).getOr({}),
         dismissOnBlur: true,
         inputClasses: ['tox-textfield'],
@@ -15875,7 +16308,10 @@
         responseTime: 0,
         fetch: input => {
           const items = getItems(spec.filetype, input, urlBackstage);
-          const tdata = build(items, ItemResponse$1.BUBBLE_TO_SANDBOX, backstage, false);
+          const tdata = build(items, ItemResponse$1.BUBBLE_TO_SANDBOX, backstage, {
+            isHorizontalMenu: false,
+            search: Optional.none()
+          });
           return Future.pure(tdata);
         },
         getHotspot: comp => memUrlBox.getOpt(comp),
@@ -15884,8 +16320,8 @@
             Invalidating.run(comp).get(noop);
           }
         },
-        typeaheadBehaviours: derive$1(flatten([
-          urlBackstage.getValidationHandler().map(handler => Invalidating.config({
+        typeaheadBehaviours: derive$1([
+          ...urlBackstage.getValidationHandler().map(handler => Invalidating.config({
             getRoot: comp => parentElement(comp.element),
             invalidClass: 'tox-control-wrap--status-invalid',
             notify: {
@@ -15916,26 +16352,29 @@
               validateOnLoad: false
             }
           })).toArray(),
-          [
-            Disabling.config({ disabled: () => !spec.enabled || providersBackstage.isDisabled() }),
-            Tabstopping.config({}),
-            config('urlinput-events', flatten([
-              spec.filetype === 'file' ? [run$1(input(), comp => {
-                  emitWith(comp, formChangeEvent, { name: spec.name });
-                })] : [],
-              [
-                run$1(change(), comp => {
-                  emitWith(comp, formChangeEvent, { name: spec.name });
-                  updateHistory(comp);
-                }),
-                run$1(postPaste(), comp => {
-                  emitWith(comp, formChangeEvent, { name: spec.name });
-                  updateHistory(comp);
-                })
-              ]
-            ]))
-          ]
-        ])),
+          Disabling.config({ disabled: () => !spec.enabled || providersBackstage.isDisabled() }),
+          Tabstopping.config({}),
+          config('urlinput-events', [
+            run$1(input(), comp => {
+              const currentValue = get$6(comp.element);
+              const trimmedValue = currentValue.trim();
+              if (trimmedValue !== currentValue) {
+                set$5(comp.element, trimmedValue);
+              }
+              if (spec.filetype === 'file') {
+                emitWith(comp, formChangeEvent, { name: spec.name });
+              }
+            }),
+            run$1(change(), comp => {
+              emitWith(comp, formChangeEvent, { name: spec.name });
+              updateHistory(comp);
+            }),
+            run$1(postPaste(), comp => {
+              emitWith(comp, formChangeEvent, { name: spec.name });
+              updateHistory(comp);
+            })
+          ])
+        ]),
         eventOrder: {
           [input()]: [
             'streaming',
@@ -15958,6 +16397,10 @@
           updateHistory(typeahead);
           emitWith(typeahead, formChangeEvent, { name: spec.name });
         }
+      };
+      const pField = FormField.parts.field({
+        ...typeaheadSpec,
+        factory: Typeahead
       });
       const pLabel = spec.label.map(label => renderLabel$2(label, providersBackstage));
       const makeIcon = (name, errId, icon = name, label = name) => render$3(icon, {
@@ -16344,7 +16787,7 @@
       const overrides = { maxHeightFunction: expandable$1() };
       const editableAreaAnchor = () => ({
         type: 'node',
-        root: getContentContainer(contentAreaElement()),
+        root: getContentContainer(getRootNode(contentAreaElement())),
         node: Optional.from(contentAreaElement()),
         bubble: nu$5(bubbleSize, bubbleSize, bubbleAlignments$2),
         layouts: {
@@ -16368,7 +16811,7 @@
     const getBannerAnchor = (contentAreaElement, lazyAnchorbar, lazyUseEditableAreaAnchor) => {
       const editableAreaAnchor = () => ({
         type: 'node',
-        root: getContentContainer(contentAreaElement()),
+        root: getContentContainer(getRootNode(contentAreaElement())),
         node: Optional.from(contentAreaElement()),
         layouts: {
           onRtl: () => [north],
@@ -16437,6 +16880,8 @@
       };
     };
 
+    const isNestedFormat = format => hasNonNullableKey(format, 'items');
+    const isFormatReference = format => hasNonNullableKey(format, 'format');
     const defaultStyleFormats = [
       {
         title: 'Headings',
@@ -16543,12 +16988,12 @@
         ]
       }
     ];
-    const isNestedFormat = format => has$2(format, 'items');
+    const isNestedFormats = format => has$2(format, 'items');
     const isBlockFormat = format => has$2(format, 'block');
     const isInlineFormat = format => has$2(format, 'inline');
     const isSelectorFormat = format => has$2(format, 'selector');
     const mapFormats = userFormats => foldl(userFormats, (acc, fmt) => {
-      if (isNestedFormat(fmt)) {
+      if (isNestedFormats(fmt)) {
         const result = mapFormats(fmt.items);
         return {
           customFormats: acc.customFormats.concat(result.customFormats),
@@ -16604,42 +17049,49 @@
       return shouldMergeStyleFormats(editor) ? defaultStyleFormats.concat(registeredUserFormats) : registeredUserFormats;
     }).getOr(defaultStyleFormats);
 
-    const processBasic = (item, isSelectedFor, getPreviewFor) => {
-      const formatterSpec = {
-        type: 'formatter',
-        isSelected: isSelectedFor(item.format),
-        getStylePreview: getPreviewFor(item.format)
-      };
-      return deepMerge(item, formatterSpec);
+    const isSeparator$1 = format => {
+      const keys$1 = keys(format);
+      return keys$1.length === 1 && contains$2(keys$1, 'title');
     };
+    const processBasic = (item, isSelectedFor, getPreviewFor) => ({
+      ...item,
+      type: 'formatter',
+      isSelected: isSelectedFor(item.format),
+      getStylePreview: getPreviewFor(item.format)
+    });
     const register$a = (editor, formats, isSelectedFor, getPreviewFor) => {
       const enrichSupported = item => processBasic(item, isSelectedFor, getPreviewFor);
       const enrichMenu = item => {
-        const submenuSpec = { type: 'submenu' };
-        return deepMerge(item, submenuSpec);
+        const newItems = doEnrich(item.items);
+        return {
+          ...item,
+          type: 'submenu',
+          getStyleItems: constant$1(newItems)
+        };
       };
       const enrichCustom = item => {
         const formatName = isString(item.name) ? item.name : generate$6(item.title);
         const formatNameWithPrefix = `custom-${ formatName }`;
-        const customSpec = {
+        const newItem = {
+          ...item,
           type: 'formatter',
           format: formatNameWithPrefix,
           isSelected: isSelectedFor(formatNameWithPrefix),
           getStylePreview: getPreviewFor(formatNameWithPrefix)
         };
-        const newItem = deepMerge(item, customSpec);
         editor.formatter.register(formatName, newItem);
         return newItem;
       };
       const doEnrich = items => map$2(items, item => {
-        const keys$1 = keys(item);
-        if (hasNonNullableKey(item, 'items')) {
-          const newItems = doEnrich(item.items);
-          return deepMerge(enrichMenu(item), { getStyleItems: constant$1(newItems) });
-        } else if (hasNonNullableKey(item, 'format')) {
+        if (isNestedFormat(item)) {
+          return enrichMenu(item);
+        } else if (isFormatReference(item)) {
           return enrichSupported(item);
-        } else if (keys$1.length === 1 && contains$2(keys$1, 'title')) {
-          return deepMerge(item, { type: 'separator' });
+        } else if (isSeparator$1(item)) {
+          return {
+            ...item,
+            type: 'separator'
+          };
         } else {
           return enrichCustom(item);
         }
@@ -16656,41 +17108,25 @@
           styles: editor.dom.parseStyle(editor.formatter.getCssText(format))
         }) : Optional.none();
       };
-      const flatten = fmt => {
-        const subs = fmt.items;
-        return subs !== undefined && subs.length > 0 ? bind$3(subs, flatten) : [fmt.format];
-      };
       const settingsFormats = Cell([]);
-      const settingsFlattenedFormats = Cell([]);
       const eventsFormats = Cell([]);
-      const eventsFlattenedFormats = Cell([]);
       const replaceSettings = Cell(false);
       editor.on('PreInit', _e => {
         const formats = getStyleFormats(editor);
         const enriched = register$a(editor, formats, isSelectedFor, getPreviewFor);
         settingsFormats.set(enriched);
-        settingsFlattenedFormats.set(bind$3(enriched, flatten));
       });
       editor.on('addStyleModifications', e => {
         const modifications = register$a(editor, e.items, isSelectedFor, getPreviewFor);
         eventsFormats.set(modifications);
         replaceSettings.set(e.replace);
-        eventsFlattenedFormats.set(bind$3(modifications, flatten));
       });
       const getData = () => {
         const fromSettings = replaceSettings.get() ? [] : settingsFormats.get();
         const fromEvents = eventsFormats.get();
         return fromSettings.concat(fromEvents);
       };
-      const getFlattenedKeys = () => {
-        const fromSettings = replaceSettings.get() ? [] : settingsFlattenedFormats.get();
-        const fromEvents = eventsFlattenedFormats.get();
-        return fromSettings.concat(fromEvents);
-      };
-      return {
-        getData,
-        getFlattenedKeys
-      };
+      return { getData };
     };
 
     const isElement = node => isNonNullable(node) && node.nodeType === 1;
@@ -16710,20 +17146,19 @@
     };
     const isContentEditableTrue = hasContentEditableState('true');
     const isContentEditableFalse = hasContentEditableState('false');
-    const create = (type, title, url, level, attach) => {
-      return {
-        type,
-        title,
-        url,
-        level,
-        attach
-      };
-    };
+    const create = (type, title, url, level, attach) => ({
+      type,
+      title,
+      url,
+      level,
+      attach
+    });
     const isChildOfContentEditableTrue = node => {
-      while (node = node.parentNode) {
-        const value = node.contentEditable;
+      let tempNode = node;
+      while (tempNode = tempNode.parentNode) {
+        const value = tempNode.contentEditable;
         if (value && value !== 'inherit') {
-          return isContentEditableTrue(node);
+          return isContentEditableTrue(tempNode);
         }
       }
       return false;
@@ -16758,11 +17193,12 @@
       return isHeader(elm) ? parseInt(elm.nodeName.substr(1), 10) : 0;
     };
     const headerTarget = elm => {
+      var _a;
       const headerId = getOrGenerateId(elm);
       const attach = () => {
         elm.id = headerId;
       };
-      return create('header', getElementText(elm), '#' + headerId, getLevel(elm), attach);
+      return create('header', (_a = getElementText(elm)) !== null && _a !== void 0 ? _a : '', '#' + headerId, getLevel(elm), attach);
     };
     const anchorTarget = elm => {
       const anchorId = elm.id || elm.name;
@@ -17401,7 +17837,8 @@
     const editorStickyOffClass = 'tox-tinymce--toolbar-sticky-off';
     const scrollFromBehindHeader = (e, containerHeader) => {
       const doc = owner$4(containerHeader);
-      const viewHeight = doc.dom.defaultView.innerHeight;
+      const win = defaultView(containerHeader);
+      const viewHeight = win.dom.innerHeight;
       const scrollPos = get$b(doc);
       const markerElement = SugarElement.fromDom(e.elm);
       const markerPos = absolute$2(markerElement);
@@ -17425,7 +17862,7 @@
     const updateIframeContentFlow = header => {
       const getOccupiedHeight = elm => getOuter$2(elm) + (parseInt(get$e(elm, 'margin-top'), 10) || 0) + (parseInt(get$e(elm, 'margin-bottom'), 10) || 0);
       const elm = header.element;
-      parent(elm).each(parentElem => {
+      parentElement(elm).each(parentElem => {
         const padding = 'padding-' + Docking.getModes(header)[0];
         if (Docking.isDocked(header)) {
           const parentWidth = get$c(parentElem);
@@ -17599,6 +18036,16 @@
       optionString('text'),
       optionString('tooltip'),
       optionString('icon'),
+      defaultedOf('search', false, oneOf([
+        boolean,
+        objOf([optionString('placeholder')])
+      ], x => {
+        if (isBoolean(x)) {
+          return x ? Optional.some({ placeholder: Optional.none() }) : Optional.none();
+        } else {
+          return Optional.some(x);
+        }
+      })),
       requiredFunction('fetch'),
       defaultedFunction('onSetup', () => noop)
     ];
@@ -17716,6 +18163,28 @@
         }
       }
     });
+
+    const promotionMessage = '\u26A1\ufe0fUpgrade';
+    const promotionLink = 'https://www.tiny.cloud/tinymce-self-hosted-premium-features/?utm_source=TinyMCE&utm_medium=SPAP&utm_campaign=SPAP&utm_id=editorreferral';
+    const renderPromotion = spec => {
+      return {
+        uid: spec.uid,
+        dom: spec.dom,
+        components: [{
+            dom: {
+              tag: 'a',
+              attributes: {
+                'href': promotionLink,
+                'rel': 'noopener',
+                'target': '_blank',
+                'aria-hidden': 'true'
+              },
+              classes: ['tox-promotion-link'],
+              innerHtml: promotionMessage
+            }
+          }]
+      };
+    };
 
     const getAnimationRoot = (component, slideConfig) => slideConfig.getAnimationRoot.fold(() => component.element, get => get(component));
 
@@ -18092,7 +18561,7 @@
       optSlider.each(slider => {
         Replacing.set(slider, [makeSidebar(panelConfigs)]);
         const configKey = showSidebar === null || showSidebar === void 0 ? void 0 : showSidebar.toLowerCase();
-        if (isString(showSidebar) && has$2(panelConfigs, configKey)) {
+        if (isString(configKey) && has$2(panelConfigs, configKey)) {
           Composing.getCurrent(slider).each(slotContainer => {
             SlotContainer.showSlot(slotContainer, configKey);
             Sliding.immediateGrow(slider);
@@ -18386,7 +18855,7 @@
         if (state !== throbberState.get()) {
           throbberState.set(state);
           toggleThrobber(editor, lazyThrobber(), state, sharedBackstage.providers);
-          editor.dispatch('AfterProgressState', { state });
+          fireAfterProgressState(editor, state);
         }
       };
       editor.on('ProgressState', e => {
@@ -18998,7 +19467,7 @@
       };
     };
     const renderToolbarGroup = toolbarGroup => ToolbarGroup.sketch(renderToolbarGroupCommon(toolbarGroup));
-    const getToolbarbehaviours = (toolbarSpec, modeName) => {
+    const getToolbarBehaviours = (toolbarSpec, modeName) => {
       const onAttached = runOnAttached(component => {
         const groups = map$2(toolbarSpec.initGroups, renderToolbarGroup);
         Toolbar.setGroups(component, groups);
@@ -19037,7 +19506,7 @@
             borderless: false
           }, Optional.none(), toolbarSpec.providers)
         },
-        splitToolbarBehaviours: getToolbarbehaviours(toolbarSpec, modeName)
+        splitToolbarBehaviours: getToolbarBehaviours(toolbarSpec, modeName)
       };
     };
     const renderFloatingMoreToolbar = toolbarSpec => {
@@ -19118,7 +19587,7 @@
           classes: ['tox-toolbar'].concat(toolbarSpec.type === ToolbarMode$1.scrolling ? ['tox-toolbar--scrolling'] : [])
         },
         components: [Toolbar.parts.groups({})],
-        toolbarBehaviours: getToolbarbehaviours(toolbarSpec, modeName)
+        toolbarBehaviours: getToolbarBehaviours(toolbarSpec, modeName)
       });
     };
 
@@ -19144,12 +19613,14 @@
         },
         setToolbar: (comp, groups) => {
           parts$a.getPart(comp, detail, 'toolbar').each(toolbar => {
-            toolbar.getApis().setGroups(toolbar, groups);
+            const renderedGroups = map$2(groups, renderToolbarGroup);
+            toolbar.getApis().setGroups(toolbar, renderedGroups);
           });
         },
         setToolbars: (comp, toolbars) => {
           parts$a.getPart(comp, detail, 'multiple-toolbar').each(mToolbar => {
-            CustomList.setItems(mToolbar, toolbars);
+            const renderedToolbars = map$2(toolbars, g => map$2(g, renderToolbarGroup));
+            CustomList.setItems(mToolbar, renderedToolbars);
           });
         },
         refreshToolbar: comp => {
@@ -19275,6 +19746,11 @@
       name: 'header',
       schema: [required$1('dom')]
     });
+    const partPromotion = partType.optional({
+      factory: { sketch: renderPromotion },
+      name: 'promotion',
+      schema: [required$1('dom')]
+    });
     const partSocket = partType.optional({
       name: 'socket',
       schema: [required$1('dom')]
@@ -19303,6 +19779,7 @@
         partMultipleToolbar,
         partSocket,
         partSidebar,
+        partPromotion,
         partThrobber
       ],
       apis: {
@@ -19324,15 +19801,11 @@
         getToolbar: (apis, comp) => {
           return apis.getToolbar(comp);
         },
-        setToolbar: (apis, comp, grps) => {
-          const groups = map$2(grps, grp => {
-            return renderToolbarGroup(grp);
-          });
+        setToolbar: (apis, comp, groups) => {
           apis.setToolbar(comp, groups);
         },
-        setToolbars: (apis, comp, ts) => {
-          const renderedToolbars = map$2(ts, g => map$2(g, renderToolbarGroup));
-          apis.setToolbars(comp, renderedToolbars);
+        setToolbars: (apis, comp, toolbars) => {
+          apis.setToolbars(comp, toolbars);
         },
         refreshToolbar: (apis, comp) => {
           return apis.refreshToolbar(comp);
@@ -19374,7 +19847,7 @@
       },
       insert: {
         title: 'Insert',
-        items: 'image link media addcomment pageembed template codesample inserttable | charmap emoticons hr | pagebreak nonbreaking anchor tableofcontents | insertdatetime'
+        items: 'image link media addcomment pageembed template codesample inserttable | charmap emoticons hr | pagebreak nonbreaking anchor tableofcontents footnotes | mergetags | insertdatetime'
       },
       format: {
         title: 'Format',
@@ -19382,7 +19855,7 @@
       },
       tools: {
         title: 'Tools',
-        items: 'spellchecker spellcheckerlanguage | a11ycheck code wordcount'
+        items: 'spellchecker spellcheckerlanguage | autocorrect capitalization | a11ycheck code wordcount'
       },
       table: {
         title: 'Table',
@@ -19414,10 +19887,7 @@
       };
     };
     const parseItemsString = items => {
-      if (typeof items === 'string') {
-        return items.split(' ');
-      }
-      return items;
+      return items.split(' ');
     };
     const identifyMenus = (editor, registry) => {
       const rawMenuData = {
@@ -19442,7 +19912,7 @@
         }, registry, editor);
       });
       return filter$2(menus, menu => {
-        const isNotSeparator = item => item.type !== 'separator';
+        const isNotSeparator = item => isString(item) || item.type !== 'separator';
         return menu.getItems().length > 0 && exists(menu.getItems(), isNotSeparator);
       });
     };
@@ -19577,7 +20047,10 @@
       const getFetch = (backstage, getStyleItems) => (comp, callback) => {
         const preItems = getStyleItems();
         const items = validateItems(preItems);
-        const menu = build(items, ItemResponse$1.CLOSE_ON_EXECUTE, backstage, false);
+        const menu = build(items, ItemResponse$1.CLOSE_ON_EXECUTE, backstage, {
+          isHorizontalMenu: false,
+          search: Optional.none()
+        });
         callback(menu);
       };
       return {
@@ -19726,10 +20199,14 @@
       const isSelectedFor = format => () => editor.formatter.match(format);
       const getPreviewFor = format => () => {
         const fmt = editor.formatter.get(format);
-        return Optional.some({
-          tag: fmt.length > 0 ? fmt[0].inline || fmt[0].block || 'div' : 'div',
-          styles: editor.dom.parseStyle(editor.formatter.getCssText(format))
-        });
+        if (fmt) {
+          return Optional.some({
+            tag: fmt.length > 0 ? fmt[0].inline || fmt[0].block || 'div' : 'div',
+            styles: editor.dom.parseStyle(editor.formatter.getCssText(format))
+          });
+        } else {
+          return Optional.none();
+        }
       };
       const updateSelectMenuText = comp => {
         const detectedFormat = findNearest(editor, () => dataset.data);
@@ -19943,11 +20420,16 @@
       };
       const updateSelectMenuText = comp => {
         const getFormatItems = fmt => {
-          const subs = fmt.items;
-          return subs !== undefined && subs.length > 0 ? bind$3(subs, getFormatItems) : [{
-              title: fmt.title,
-              format: fmt.format
-            }];
+          if (isNestedFormat(fmt)) {
+            return bind$3(fmt.items, getFormatItems);
+          } else if (isFormatReference(fmt)) {
+            return [{
+                title: fmt.title,
+                format: fmt.format
+              }];
+          } else {
+            return [];
+          }
         };
         const flattenedItems = bind$3(getStyleFormats(editor), getFormatItems);
         const detectedFormat = findNearest(editor, constant$1(flattenedItems));
@@ -20172,7 +20654,7 @@
       };
       const action = component => {
         const onOpenSync = switchToMenu;
-        togglePopup(detail, identity, component, externals, onOpenSync, HighlightOnOpen.HighlightFirst).get(noop);
+        togglePopup(detail, identity, component, externals, onOpenSync, HighlightOnOpen.HighlightMenuAndItem).get(noop);
       };
       const openMenu = comp => {
         action(comp);
@@ -20360,12 +20842,12 @@
     };
     const renderToolbarButton = (spec, providersBackstage) => renderToolbarButtonWith(spec, providersBackstage, []);
     const renderToolbarButtonWith = (spec, providersBackstage, bonusEvents) => renderCommonToolbarButton(spec, {
-      toolbarButtonBehaviours: [].concat(bonusEvents.length > 0 ? [config('toolbarButtonWith', bonusEvents)] : []),
+      toolbarButtonBehaviours: bonusEvents.length > 0 ? [config('toolbarButtonWith', bonusEvents)] : [],
       getApi: getButtonApi,
       onSetup: spec.onSetup
     }, providersBackstage);
     const renderToolbarToggleButton = (spec, providersBackstage) => renderToolbarToggleButtonWith(spec, providersBackstage, []);
-    const renderToolbarToggleButtonWith = (spec, providersBackstage, bonusEvents) => deepMerge(renderCommonToolbarButton(spec, {
+    const renderToolbarToggleButtonWith = (spec, providersBackstage, bonusEvents) => renderCommonToolbarButton(spec, {
       toolbarButtonBehaviours: [
         Replacing.config({}),
         Toggling.config({
@@ -20376,7 +20858,7 @@
       ].concat(bonusEvents.length > 0 ? [config('toolbarToggleButtonWith', bonusEvents)] : []),
       getApi: getToggleApi,
       onSetup: spec.onSetup
-    }, providersBackstage));
+    }, providersBackstage);
     const fetchChoices = (getApi, spec, providersBackstage) => comp => Future.nu(callback => spec.fetch(callback)).map(items => Optional.from(createTieredDataFrom(deepMerge(createPartialChoiceMenu(generate$6('menu-value'), items, value => {
       spec.onItemAction(getApi(comp), value);
     }, spec.columns, spec.presets, ItemResponse$1.CLOSE_ON_EXECUTE, spec.select.getOr(never), providersBackstage), {
@@ -20513,46 +20995,41 @@
         items: ['addcomment']
       }
     ];
-    const renderFromBridge = (bridgeBuilder, render) => (spec, extras, editor) => {
+    const renderFromBridge = (bridgeBuilder, render) => (spec, backstage, editor) => {
       const internal = bridgeBuilder(spec).mapError(errInfo => formatError(errInfo)).getOrDie();
-      return render(internal, extras, editor);
+      return render(internal, backstage, editor);
     };
     const types = {
-      button: renderFromBridge(createToolbarButton, (s, extras) => renderToolbarButton(s, extras.backstage.shared.providers)),
-      togglebutton: renderFromBridge(createToggleButton, (s, extras) => renderToolbarToggleButton(s, extras.backstage.shared.providers)),
-      menubutton: renderFromBridge(createMenuButton, (s, extras) => renderMenuButton(s, 'tox-tbtn', extras.backstage, Optional.none())),
-      splitbutton: renderFromBridge(createSplitButton, (s, extras) => renderSplitButton(s, extras.backstage.shared)),
-      grouptoolbarbutton: renderFromBridge(createGroupToolbarButton, (s, extras, editor) => {
+      button: renderFromBridge(createToolbarButton, (s, backstage) => renderToolbarButton(s, backstage.shared.providers)),
+      togglebutton: renderFromBridge(createToggleButton, (s, backstage) => renderToolbarToggleButton(s, backstage.shared.providers)),
+      menubutton: renderFromBridge(createMenuButton, (s, backstage) => renderMenuButton(s, 'tox-tbtn', backstage, Optional.none())),
+      splitbutton: renderFromBridge(createSplitButton, (s, backstage) => renderSplitButton(s, backstage.shared)),
+      grouptoolbarbutton: renderFromBridge(createGroupToolbarButton, (s, backstage, editor) => {
         const buttons = editor.ui.registry.getAll().buttons;
         const identify = toolbar => identifyButtons(editor, {
           buttons,
           toolbar,
           allowToolbarGroups: false
-        }, extras, Optional.none());
-        const attributes = { [Attribute]: extras.backstage.shared.header.isPositionedAtTop() ? AttributeValue.TopToBottom : AttributeValue.BottomToTop };
+        }, backstage, Optional.none());
+        const attributes = { [Attribute]: backstage.shared.header.isPositionedAtTop() ? AttributeValue.TopToBottom : AttributeValue.BottomToTop };
         switch (getToolbarMode(editor)) {
         case ToolbarMode$1.floating:
-          return renderFloatingToolbarButton(s, extras.backstage, identify, attributes);
+          return renderFloatingToolbarButton(s, backstage, identify, attributes);
         default:
           throw new Error('Toolbar groups are only supported when using floating toolbar mode');
         }
-      }),
-      styleSelectButton: (editor, extras) => createStylesButton(editor, extras.backstage),
-      fontsizeSelectButton: (editor, extras) => createFontSizeButton(editor, extras.backstage),
-      fontSelectButton: (editor, extras) => createFontFamilyButton(editor, extras.backstage),
-      formatButton: (editor, extras) => createBlocksButton(editor, extras.backstage),
-      alignMenuButton: (editor, extras) => createAlignButton(editor, extras.backstage)
+      })
     };
-    const extractFrom = (spec, extras, editor) => get$g(types, spec.type).fold(() => {
+    const extractFrom = (spec, backstage, editor) => get$g(types, spec.type).fold(() => {
       console.error('skipping button defined by', spec);
       return Optional.none();
-    }, render => Optional.some(render(spec, extras, editor)));
+    }, render => Optional.some(render(spec, backstage, editor)));
     const bespokeButtons = {
-      styles: types.styleSelectButton,
-      fontsize: types.fontsizeSelectButton,
-      fontfamily: types.fontSelectButton,
-      blocks: types.formatButton,
-      align: types.alignMenuButton
+      styles: createStylesButton,
+      fontsize: createFontSizeButton,
+      fontfamily: createFontFamilyButton,
+      blocks: createBlocksButton,
+      align: createAlignButton
     };
     const removeUnusedDefaults = buttons => {
       const filteredItemGroups = map$2(defaultToolbar, group => {
@@ -20585,18 +21062,20 @@
         return [];
       }
     };
-    const lookupButton = (editor, buttons, toolbarItem, allowToolbarGroups, extras, prefixes) => get$g(buttons, toolbarItem.toLowerCase()).orThunk(() => prefixes.bind(ps => findMap(ps, prefix => get$g(buttons, prefix + toolbarItem.toLowerCase())))).fold(() => get$g(bespokeButtons, toolbarItem.toLowerCase()).map(r => r(editor, extras)).orThunk(() => Optional.none()), spec => {
+    const lookupButton = (editor, buttons, toolbarItem, allowToolbarGroups, backstage, prefixes) => get$g(buttons, toolbarItem.toLowerCase()).orThunk(() => prefixes.bind(ps => findMap(ps, prefix => get$g(buttons, prefix + toolbarItem.toLowerCase())))).fold(() => get$g(bespokeButtons, toolbarItem.toLowerCase()).map(r => r(editor, backstage)), spec => {
       if (spec.type === 'grouptoolbarbutton' && !allowToolbarGroups) {
         console.warn(`Ignoring the '${ toolbarItem }' toolbar button. Group toolbar buttons are only supported when using floating toolbar mode and cannot be nested.`);
         return Optional.none();
       } else {
-        return extractFrom(spec, extras, editor);
+        return extractFrom(spec, backstage, editor);
       }
     });
-    const identifyButtons = (editor, toolbarConfig, extras, prefixes) => {
+    const identifyButtons = (editor, toolbarConfig, backstage, prefixes) => {
       const toolbarGroups = createToolbar(toolbarConfig);
       const groups = map$2(toolbarGroups, group => {
-        const items = bind$3(group.items, toolbarItem => toolbarItem.trim().length === 0 ? [] : lookupButton(editor, toolbarConfig.buttons, toolbarItem, toolbarConfig.allowToolbarGroups, extras, prefixes).toArray());
+        const items = bind$3(group.items, toolbarItem => {
+          return toolbarItem.trim().length === 0 ? [] : lookupButton(editor, toolbarConfig.buttons, toolbarItem, toolbarConfig.allowToolbarGroups, backstage, prefixes).toArray();
+        });
         return {
           title: Optional.from(editor.translate(group.name)),
           items
@@ -20616,11 +21095,11 @@
             buttons: toolbarButtonsConfig,
             allowToolbarGroups: rawUiConfig.allowToolbarGroups
           };
-          return identifyButtons(editor, config, { backstage }, Optional.none());
+          return identifyButtons(editor, config, backstage, Optional.none());
         });
         OuterContainer.setToolbars(comp, toolbars);
       } else {
-        OuterContainer.setToolbar(comp, identifyButtons(editor, rawUiConfig, { backstage }, Optional.none()));
+        OuterContainer.setToolbar(comp, identifyButtons(editor, rawUiConfig, backstage, Optional.none()));
       }
     };
 
@@ -20647,7 +21126,9 @@
           fireResizeContent(editor);
         }
       };
-      const scroll = e => fireScrollContent(editor, e);
+      const scroll = e => {
+        fireScrollContent(editor, e);
+      };
       dom.bind(contentWindow, 'resize', resizeWindow);
       dom.bind(contentWindow, 'scroll', scroll);
       const elementLoad = capture(SugarElement.fromDom(editor.getBody()), 'load', resizeDocument);
@@ -20698,7 +21179,10 @@
         OuterContainer.toggleSidebar(outerContainer, value);
         editor.dispatch('ToggleSidebar');
       });
-      editor.addQueryValueHandler('ToggleSidebar', () => OuterContainer.whichSidebar(outerContainer));
+      editor.addQueryValueHandler('ToggleSidebar', () => {
+        var _a;
+        return (_a = OuterContainer.whichSidebar(outerContainer)) !== null && _a !== void 0 ? _a : '';
+      });
       const toolbarMode = getToolbarMode(editor);
       const refreshDrawer = () => {
         OuterContainer.refreshToolbar(uiComponents.outerContainer);
@@ -20809,28 +21293,33 @@
         }
       };
       const setupMode = mode => {
-        const container = floatContainer.get();
-        Docking.setModes(container, [mode]);
-        headerBackstage.setDockingMode(mode);
-        const verticalDir = isPositionedAtTop() ? AttributeValue.TopToBottom : AttributeValue.BottomToTop;
-        set$9(container.element, Attribute, verticalDir);
+        floatContainer.on(container => {
+          Docking.setModes(container, [mode]);
+          headerBackstage.setDockingMode(mode);
+          const verticalDir = isPositionedAtTop() ? AttributeValue.TopToBottom : AttributeValue.BottomToTop;
+          set$9(container.element, Attribute, verticalDir);
+        });
       };
       const updateChromeWidth = () => {
-        const maxWidth = editorMaxWidthOpt.getOrThunk(() => {
-          const bodyMargin = parseToInt(get$e(body(), 'margin-left')).getOr(0);
-          return get$c(body()) - absolute$3(targetElm).left + bodyMargin;
+        floatContainer.on(container => {
+          const maxWidth = editorMaxWidthOpt.getOrThunk(() => {
+            const bodyMargin = parseToInt(get$e(body(), 'margin-left')).getOr(0);
+            return get$c(body()) - absolute$3(targetElm).left + bodyMargin;
+          });
+          set$8(container.element, 'max-width', maxWidth + 'px');
         });
-        set$8(floatContainer.get().element, 'max-width', maxWidth + 'px');
       };
       const updateChromePosition = () => {
-        const toolbar = OuterContainer.getToolbar(outerContainer);
-        const offset = calcToolbarOffset(toolbar);
-        const targetBounds = box$1(targetElm);
-        const top = isPositionedAtTop() ? Math.max(targetBounds.y - get$d(floatContainer.get().element) + offset, 0) : targetBounds.bottom;
-        setAll(outerContainer.element, {
-          position: 'absolute',
-          top: Math.round(top) + 'px',
-          left: Math.round(targetBounds.x) + 'px'
+        floatContainer.on(container => {
+          const toolbar = OuterContainer.getToolbar(outerContainer);
+          const offset = calcToolbarOffset(toolbar);
+          const targetBounds = box$1(targetElm);
+          const top = isPositionedAtTop() ? Math.max(targetBounds.y - get$d(container.element) + offset, 0) : targetBounds.bottom;
+          setAll(outerContainer.element, {
+            position: 'absolute',
+            top: Math.round(top) + 'px',
+            left: Math.round(targetBounds.x) + 'px'
+          });
         });
       };
       const repositionPopups$1 = () => {
@@ -20850,8 +21339,8 @@
           updateChromePosition();
         }
         if (isSticky) {
-          const floatContainerComp = floatContainer.get();
-          resetDocking ? Docking.reset(floatContainerComp) : Docking.refresh(floatContainerComp);
+          const action = resetDocking ? Docking.reset : Docking.refresh;
+          floatContainer.on(action);
         }
         repositionPopups$1();
       };
@@ -20859,14 +21348,16 @@
         if (useFixedToolbarContainer || !isSticky || !isVisible()) {
           return;
         }
-        const currentMode = headerBackstage.getDockingMode();
-        const newMode = calcMode(floatContainer.get());
-        if (newMode !== currentMode) {
-          setupMode(newMode);
-          if (updateUi) {
-            updateChromeUi(true);
+        floatContainer.on(container => {
+          const currentMode = headerBackstage.getDockingMode();
+          const newMode = calcMode(container);
+          if (newMode !== currentMode) {
+            setupMode(newMode);
+            if (updateUi) {
+              updateChromeUi(true);
+            }
           }
-        }
+        });
       };
       const show = () => {
         visible.set(true);
@@ -20937,20 +21428,20 @@
       });
       editor.on('ScrollWindow', () => ui.updateMode());
       const elementLoad = unbindable();
-      elementLoad.set(capture(SugarElement.fromDom(editor.getBody()), 'load', resizeContent));
+      elementLoad.set(capture(SugarElement.fromDom(editor.getBody()), 'load', e => resizeContent(e.raw)));
       editor.on('remove', () => {
         elementLoad.clear();
       });
     };
     const render = (editor, uiComponents, rawUiConfig, backstage, args) => {
       const {mothership, uiMothership, outerContainer} = uiComponents;
-      const floatContainer = Cell(null);
+      const floatContainer = value$2();
       const targetElm = SugarElement.fromDom(args.targetNode);
       const ui = InlineHeader(editor, targetElm, uiComponents, backstage, floatContainer);
       const toolbarPersist = isToolbarPersist(editor);
       inline(editor);
       const render = () => {
-        if (floatContainer.get()) {
+        if (floatContainer.isSet()) {
           ui.show();
           return;
         }
@@ -20977,12 +21468,8 @@
       });
       setupReadonlyModeSwitch(editor, uiComponents);
       const api = {
-        show: () => {
-          render();
-        },
-        hide: () => {
-          ui.hide();
-        },
+        show: render,
+        hide: ui.hide,
         setEnabled: state => {
           broadcastReadonly(uiComponents, !state);
         },
@@ -21011,30 +21498,30 @@
       const formApi = getFormApi(input);
       original.onAction(formApi, se.event.buttonApi);
     });
-    const renderContextButton = (memInput, button, extras) => {
+    const renderContextButton = (memInput, button, providers) => {
       const {primary, ...rest} = button.original;
       const bridged = getOrDie(createToolbarButton({
         ...rest,
         type: 'button',
         onAction: noop
       }));
-      return renderToolbarButtonWith(bridged, extras.backstage.shared.providers, [runOnExecute(memInput, button)]);
+      return renderToolbarButtonWith(bridged, providers, [runOnExecute(memInput, button)]);
     };
-    const renderContextToggleButton = (memInput, button, extras) => {
+    const renderContextToggleButton = (memInput, button, providers) => {
       const {primary, ...rest} = button.original;
       const bridged = getOrDie(createToggleButton({
         ...rest,
         type: 'togglebutton',
         onAction: noop
       }));
-      return renderToolbarToggleButtonWith(bridged, extras.backstage.shared.providers, [runOnExecute(memInput, button)]);
+      return renderToolbarToggleButtonWith(bridged, providers, [runOnExecute(memInput, button)]);
     };
+    const isToggleButton = button => button.type === 'contextformtogglebutton';
     const generateOne = (memInput, button, providersBackstage) => {
-      const extras = { backstage: { shared: { providers: providersBackstage } } };
-      if (button.type === 'contextformtogglebutton') {
-        return renderContextToggleButton(memInput, button, extras);
+      if (isToggleButton(button)) {
+        return renderContextToggleButton(memInput, button, providersBackstage);
       } else {
-        return renderContextButton(memInput, button, extras);
+        return renderContextButton(memInput, button, providersBackstage);
       }
     };
     const generate = (memInput, buttons, providersBackstage) => {
@@ -21126,7 +21613,7 @@
         return bounds(bodyPos.x + rect.left, bodyPos.y + rect.top, rect.width, rect.height);
       }
     };
-    const getAnchorElementBounds = (editor, lastElement) => lastElement.filter(inBody).map(absolute$2).getOrThunk(() => getSelectionBounds(editor));
+    const getAnchorElementBounds = (editor, lastElement) => lastElement.filter(elem => inBody(elem) && isHTMLElement(elem)).map(absolute$2).getOrThunk(() => getSelectionBounds(editor));
     const getHorizontalBounds = (contentAreaBox, viewportBounds, margin) => {
       const x = Math.max(contentAreaBox.x + margin, viewportBounds.x);
       const right = Math.min(contentAreaBox.right - margin, viewportBounds.right);
@@ -21603,7 +22090,7 @@
         buttons: allButtons,
         toolbar: ctx.items,
         allowToolbarGroups: false
-      }, extras, Optional.some(['form:']));
+      }, extras.backstage, Optional.some(['form:']));
       const buildContextFormGroups = (ctx, providers) => ContextForm.buildInitGroups(ctx, providers);
       const buildToolbar = toolbars => {
         const {buttons} = editor.ui.registry.getAll();
@@ -21879,10 +22366,13 @@
         getOptions: constant$1(settings),
         hash: input => isUndefined(input.customCode) ? input.code : `${ input.code }/${ input.customCode }`,
         display: input => input.title,
-        watcher: (editor, value, callback) => editor.formatter.formatChanged('lang', callback, false, {
-          value: value.code,
-          customValue: value.customCode
-        }).unbind,
+        watcher: (editor, value, callback) => {
+          var _a;
+          return editor.formatter.formatChanged('lang', callback, false, {
+            value: value.code,
+            customValue: (_a = value.customCode) !== null && _a !== void 0 ? _a : null
+          }).unbind;
+        },
         getCurrent: editor => {
           const node = SugarElement.fromDom(editor.selection.getNode());
           return closest$4(node, n => Optional.some(n).filter(isElement$1).bind(ele => {
@@ -22351,9 +22841,9 @@
     const transpose = (pos, dx, dy) => {
       return nu(pos.x + dx, pos.y + dy);
     };
-    const isTouchEvent = e => e.type === 'longpress' || e.type.indexOf('touch') === 0;
+    const isTouchEvent$1 = e => e.type === 'longpress' || e.type.indexOf('touch') === 0;
     const fromPageXY = e => {
-      if (isTouchEvent(e)) {
+      if (isTouchEvent$1(e)) {
         const touch = e.touches[0];
         return nu(touch.pageX, touch.pageY);
       } else {
@@ -22361,7 +22851,7 @@
       }
     };
     const fromClientXY = e => {
-      if (isTouchEvent(e)) {
+      if (isTouchEvent$1(e)) {
         const touch = e.touches[0];
         return nu(touch.clientX, touch.clientY);
       } else {
@@ -22408,7 +22898,10 @@
     const initAndShow$1 = (editor, e, buildMenu, backstage, contextmenu, anchorType) => {
       const items = buildMenu();
       const anchorSpec = getAnchorSpec$1(editor, e, anchorType);
-      build(items, ItemResponse$1.CLOSE_ON_EXECUTE, backstage, false).map(menuData => {
+      build(items, ItemResponse$1.CLOSE_ON_EXECUTE, backstage, {
+        isHorizontalMenu: false,
+        search: Optional.none()
+      }).map(menuData => {
         e.preventDefault();
         InlineView.showMenuAt(contextmenu, { anchor: anchorSpec }, {
           menu: { markers: markers('normal') },
@@ -22506,12 +22999,16 @@
     };
     const show = (editor, e, items, backstage, contextmenu, anchorType, highlightImmediately) => {
       const anchorSpec = getAnchorSpec(editor, e, anchorType);
-      build(items, ItemResponse$1.CLOSE_ON_EXECUTE, backstage, true).map(menuData => {
+      build(items, ItemResponse$1.CLOSE_ON_EXECUTE, backstage, {
+        isHorizontalMenu: true,
+        search: Optional.none()
+      }).map(menuData => {
         e.preventDefault();
+        const highlightOnOpen = highlightImmediately ? HighlightOnOpen.HighlightMenuAndItem : HighlightOnOpen.HighlightNone;
         InlineView.showMenuWithinBounds(contextmenu, { anchor: anchorSpec }, {
           menu: {
             markers: markers('normal'),
-            highlightImmediately
+            highlightOnOpen
           },
           data: menuData,
           type: 'horizontal'
@@ -22575,10 +23072,11 @@
             }
           };
         default:
+          const commonItem = item;
           return {
             type: 'menuitem',
-            ...commonMenuItem(item),
-            onAction: noarg(item.onAction)
+            ...commonMenuItem(commonItem),
+            onAction: noarg(commonItem.onAction)
           };
         }
       }
@@ -22611,7 +23109,8 @@
       return sections;
     };
     const isNativeOverrideKeyEvent = (editor, e) => e.ctrlKey && !shouldNeverUseNative(editor);
-    const isTriggeredByKeyboard = (editor, e) => e.type !== 'longpress' && (e.button !== 2 || e.target === editor.getBody() && e.pointerType === '');
+    const isTouchEvent = e => e.type === 'longpress' || has$2(e, 'touches');
+    const isTriggeredByKeyboard = (editor, e) => !isTouchEvent(e) && (e.button !== 2 || e.target === editor.getBody() && e.pointerType === '');
     const getSelectedElement = (editor, e) => isTriggeredByKeyboard(editor, e) ? editor.selection.getStart(true) : e.target;
     const getAnchorType = (editor, e) => {
       const selector = getAvoidOverlapSelector(editor);
@@ -22639,7 +23138,7 @@
               editor.focus();
             })])])
       }));
-      const hideContextMenu = _e => InlineView.hide(contextmenu);
+      const hideContextMenu = () => InlineView.hide(contextmenu);
       const showContextMenu = e => {
         if (shouldNeverUseNative(editor)) {
           e.preventDefault();
@@ -23373,10 +23872,7 @@
         while (i-- > 0) {
           const parent = parents[i];
           if (parent.nodeType === 1 && !isHidden(parent)) {
-            const args = editor.dispatch('ResolveName', {
-              name: parent.nodeName.toLowerCase(),
-              target: parent
-            });
+            const args = fireResolveName(editor, parent);
             if (!args.isDefaultPrevented()) {
               newPath.push({
                 name: args.name,
@@ -23425,8 +23921,7 @@
       ResizeTypes[ResizeTypes['Vertical'] = 2] = 'Vertical';
     }(ResizeTypes || (ResizeTypes = {})));
     const getDimensions = (editor, deltas, resizeType, originalHeight, originalWidth) => {
-      const dimensions = {};
-      dimensions.height = calcCappedSize(originalHeight + deltas.top, getMinHeightOption(editor), getMaxHeightOption(editor));
+      const dimensions = { height: calcCappedSize(originalHeight + deltas.top, getMinHeightOption(editor), getMaxHeightOption(editor)) };
       if (resizeType === ResizeTypes.Both) {
         dimensions.width = calcCappedSize(originalWidth + deltas.left, getMinWidthOption(editor), getMaxWidthOption(editor));
       }
@@ -23435,7 +23930,11 @@
     const resize = (editor, deltas, resizeType) => {
       const container = SugarElement.fromDom(editor.getContainer());
       const dimensions = getDimensions(editor, deltas, resizeType, get$d(container), get$c(container));
-      each(dimensions, (val, dim) => set$8(container, dim, numToPx(val)));
+      each(dimensions, (val, dim) => {
+        if (isNumber(val)) {
+          set$8(container, dim, numToPx(val));
+        }
+      });
       fireResizeEditor(editor);
     };
 
@@ -23673,6 +24172,8 @@
         const hasMultipleToolbar = isMultipleToolbars(editor);
         const hasToolbar = isToolbarEnabled(editor);
         const hasMenubar = isMenubarEnabled(editor);
+        const shouldHavePromotion = promotionEnabled(editor);
+        const partPromotion = makePromotion();
         const getPartToolbar = () => {
           if (hasMultipleToolbar) {
             return [partMultipleToolbar];
@@ -23682,6 +24183,10 @@
             return [];
           }
         };
+        const menubarCollection = shouldHavePromotion ? [
+          partPromotion,
+          partMenubar
+        ] : [partMenubar];
         return OuterContainer.parts.header({
           dom: {
             tag: 'div',
@@ -23689,13 +24194,21 @@
             ...verticalDirAttributes
           },
           components: flatten([
-            hasMenubar ? [partMenubar] : [],
+            hasMenubar ? menubarCollection : [],
             getPartToolbar(),
             useFixedContainer(editor) ? [] : [memAnchorBar.asSpec()]
           ]),
           sticky: isStickyToolbar(editor),
           editor,
           sharedBackstage: backstage.shared
+        });
+      };
+      const makePromotion = () => {
+        return OuterContainer.parts.promotion({
+          dom: {
+            tag: 'div',
+            classes: ['tox-promotion']
+          }
         });
       };
       const makeSidebarDefinition = () => {
@@ -24459,9 +24972,10 @@
     };
 
     const extract = structure => {
+      var _a;
       const internalDialog = getOrDie(createDialog(structure));
       const dataValidator = createDataValidator(structure);
-      const initialData = structure.initialData;
+      const initialData = (_a = structure.initialData) !== null && _a !== void 0 ? _a : {};
       return {
         internalDialog,
         dataValidator,
@@ -24826,73 +25340,59 @@
       });
     };
     const getTabview = dialog => descendant(dialog, '[role="tabpanel"]');
-    const setMode = allTabs => {
-      const smartTabHeight = (() => {
-        const maxTabHeight = value$2();
-        const extraEvents = [
-          runOnAttached(comp => {
-            const dialog = comp.element;
-            getTabview(dialog).each(tabview => {
-              set$8(tabview, 'visibility', 'hidden');
-              comp.getSystem().getByDom(tabview).toOptional().each(tabviewComp => {
-                const heights = measureHeights(allTabs, tabview, tabviewComp);
-                const maxTabHeightOpt = getMaxHeight(heights);
-                maxTabHeightOpt.fold(maxTabHeight.clear, maxTabHeight.set);
-              });
-              updateTabviewHeight(dialog, tabview, maxTabHeight);
-              remove$6(tabview, 'visibility');
-              showTab(allTabs, comp);
-              requestAnimationFrame(() => {
-                updateTabviewHeight(dialog, tabview, maxTabHeight);
-              });
+    const smartMode = allTabs => {
+      const maxTabHeight = value$2();
+      const extraEvents = [
+        runOnAttached(comp => {
+          const dialog = comp.element;
+          getTabview(dialog).each(tabview => {
+            set$8(tabview, 'visibility', 'hidden');
+            comp.getSystem().getByDom(tabview).toOptional().each(tabviewComp => {
+              const heights = measureHeights(allTabs, tabview, tabviewComp);
+              const maxTabHeightOpt = getMaxHeight(heights);
+              maxTabHeightOpt.fold(maxTabHeight.clear, maxTabHeight.set);
             });
-          }),
-          run$1(windowResize(), comp => {
-            const dialog = comp.element;
-            getTabview(dialog).each(tabview => {
+            updateTabviewHeight(dialog, tabview, maxTabHeight);
+            remove$6(tabview, 'visibility');
+            showTab(allTabs, comp);
+            requestAnimationFrame(() => {
               updateTabviewHeight(dialog, tabview, maxTabHeight);
             });
-          }),
-          run$1(formResizeEvent, (comp, _se) => {
-            const dialog = comp.element;
-            getTabview(dialog).each(tabview => {
-              const oldFocus = active$1(getRootNode(tabview));
-              set$8(tabview, 'visibility', 'hidden');
-              const oldHeight = getRaw(tabview, 'height').map(h => parseInt(h, 10));
-              remove$6(tabview, 'height');
-              remove$6(tabview, 'flex-basis');
-              const newHeight = tabview.dom.getBoundingClientRect().height;
-              const hasGrown = oldHeight.forall(h => newHeight > h);
-              if (hasGrown) {
-                maxTabHeight.set(newHeight);
-                updateTabviewHeight(dialog, tabview, maxTabHeight);
-              } else {
-                oldHeight.each(h => {
-                  setTabviewHeight(tabview, h);
-                });
-              }
-              remove$6(tabview, 'visibility');
-              oldFocus.each(focus$3);
-            });
-          })
-        ];
-        const selectFirst = false;
-        return {
-          extraEvents,
-          selectFirst
-        };
-      })();
-      const naiveTabHeight = (() => {
-        const extraEvents = [];
-        const selectFirst = true;
-        return {
-          extraEvents,
-          selectFirst
-        };
-      })();
+          });
+        }),
+        run$1(windowResize(), comp => {
+          const dialog = comp.element;
+          getTabview(dialog).each(tabview => {
+            updateTabviewHeight(dialog, tabview, maxTabHeight);
+          });
+        }),
+        run$1(formResizeEvent, (comp, _se) => {
+          const dialog = comp.element;
+          getTabview(dialog).each(tabview => {
+            const oldFocus = active$1(getRootNode(tabview));
+            set$8(tabview, 'visibility', 'hidden');
+            const oldHeight = getRaw(tabview, 'height').map(h => parseInt(h, 10));
+            remove$6(tabview, 'height');
+            remove$6(tabview, 'flex-basis');
+            const newHeight = tabview.dom.getBoundingClientRect().height;
+            const hasGrown = oldHeight.forall(h => newHeight > h);
+            if (hasGrown) {
+              maxTabHeight.set(newHeight);
+              updateTabviewHeight(dialog, tabview, maxTabHeight);
+            } else {
+              oldHeight.each(h => {
+                setTabviewHeight(tabview, h);
+              });
+            }
+            remove$6(tabview, 'visibility');
+            oldFocus.each(focus$3);
+          });
+        })
+      ];
+      const selectFirst = false;
       return {
-        smartTabHeight,
-        naiveTabHeight
+        extraEvents,
+        selectFirst
       };
     };
 
@@ -24953,7 +25453,7 @@
           }
         };
       });
-      const tabMode = setMode(allTabs).smartTabHeight;
+      const tabMode = smartMode(allTabs);
       return TabSection.sketch({
         dom: {
           tag: 'div',
@@ -25378,10 +25878,7 @@
         };
       };
       return map$2(buttons, button => {
-        if (button.type === 'menu') {
-          return mapItems(button);
-        }
-        return button;
+        return button.type === 'menu' ? mapItems(button) : button;
       });
     };
     const extractCellsToObject = buttons => foldl(buttons, (acc, button) => {
@@ -25654,9 +26151,9 @@
         body: internalDialog.body,
         initialData: internalDialog.initialData
       }, dialogId, backstage);
-      const storagedMenuButtons = mapMenuButtons(internalDialog.buttons);
-      const objOfCells = extractCellsToObject(storagedMenuButtons);
-      const footer = renderModalFooter({ buttons: storagedMenuButtons }, dialogId, backstage);
+      const storedMenuButtons = mapMenuButtons(internalDialog.buttons);
+      const objOfCells = extractCellsToObject(storedMenuButtons);
+      const footer = renderModalFooter({ buttons: storedMenuButtons }, dialogId, backstage);
       const dialogEvents = SilverDialogEvents.initDialog(() => instanceApi, getEventExtras(() => dialog, backstage.shared.providers, extra), backstage.shared.getSink);
       const dialogSize = getDialogSizeClasses(internalDialog.size);
       const spec = {
@@ -25904,7 +26401,9 @@
               onReceive: (comp, data) => {
                 descendant(comp.element, 'iframe').each(iframeEle => {
                   const iframeWin = iframeEle.dom.contentWindow;
-                  iframeWin.postMessage(data, iframeDomain);
+                  if (isNonNullable(iframeWin)) {
+                    iframeWin.postMessage(data, iframeDomain);
+                  }
                 });
               }
             }
@@ -25928,8 +26427,8 @@
       };
     };
 
-    const setup$2 = extras => {
-      const sharedBackstage = extras.backstage.shared;
+    const setup$2 = backstage => {
+      const sharedBackstage = backstage.shared;
       const open = (message, callback) => {
         const closeDialog = () => {
           ModalDialog.hide(alertDialog);
@@ -25943,7 +26442,7 @@
           align: 'end',
           enabled: true,
           icon: Optional.none()
-        }, 'cancel', extras.backstage));
+        }, 'cancel', backstage));
         const titleSpec = pUntitled();
         const closeSpec = pClose(closeDialog, sharedBackstage.providers);
         const alertDialog = build$1(renderDialog$1({
@@ -25965,8 +26464,8 @@
       return { open };
     };
 
-    const setup$1 = extras => {
-      const sharedBackstage = extras.backstage.shared;
+    const setup$1 = backstage => {
+      const sharedBackstage = backstage.shared;
       const open = (message, callback) => {
         const closeDialog = state => {
           ModalDialog.hide(confirmDialog);
@@ -25980,7 +26479,7 @@
           align: 'end',
           enabled: true,
           icon: Optional.none()
-        }, 'submit', extras.backstage));
+        }, 'submit', backstage));
         const footerNo = renderFooterButton({
           name: 'no',
           text: 'No',
@@ -25989,7 +26488,7 @@
           align: 'end',
           enabled: true,
           icon: Optional.none()
-        }, 'cancel', extras.backstage);
+        }, 'cancel', backstage);
         const titleSpec = pUntitled();
         const closeSpec = pClose(() => closeDialog(false), sharedBackstage.providers);
         const confirmDialog = build$1(renderDialog$1({
@@ -26038,8 +26537,8 @@
       const backstage = extras.backstage;
       const editor = extras.editor;
       const isStickyToolbar$1 = isStickyToolbar(editor);
-      const alertDialog = setup$2(extras);
-      const confirmDialog = setup$1(extras);
+      const alertDialog = setup$2(backstage);
+      const confirmDialog = setup$1(backstage);
       const open = (config, params, closeWindow) => {
         if (params !== undefined && params.inline === 'toolbar') {
           return openInlineDialog(config, backstage.shared.anchors.inlineDialog(), closeWindow, params.ariaAttrs);
@@ -26084,7 +26583,7 @@
         };
         return DialogManager.open(factory, config);
       };
-      const openInlineDialog = (config$1, anchor, closeWindow, ariaAttrs) => {
+      const openInlineDialog = (config$1, anchor, closeWindow, ariaAttrs = false) => {
         const factory = (contents, internalInitialData, dataValidator) => {
           const initialData = validateData(internalInitialData, dataValidator);
           const inlineDialog = value$2();
@@ -26136,14 +26635,10 @@
         return DialogManager.open(factory, config$1);
       };
       const confirm = (message, callback) => {
-        confirmDialog.open(message, state => {
-          callback(state);
-        });
+        confirmDialog.open(message, callback);
       };
       const alert = (message, callback) => {
-        alertDialog.open(message, () => {
-          callback();
-        });
+        alertDialog.open(message, callback);
       };
       const close = instanceApi => {
         instanceApi.close();

@@ -9,7 +9,7 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: $text-muted;
+  color: var(--#{$prefix}muted);
   text-align: center;
   text-transform: uppercase;
   vertical-align: bottom;
@@ -52,18 +52,7 @@
 
 
 .avatar-list {
-  display: inline-flex;
-  padding: 0;
-  margin: 0 0 -.5rem;
-  flex-wrap: wrap;
-
-  .avatar {
-    margin-bottom: .5rem;
-
-    &:not(:last-child) {
-      margin-right: .5rem;
-    }
-  }
+  @include elements-list;
 
   a.avatar {
     &:hover {
@@ -75,7 +64,7 @@
 .avatar-list-stacked {
   .avatar {
     margin-right: -.5rem !important;
-    box-shadow: 0 0 0 2px var(--#{$prefix}card-bg, var(--#{$prefix}bg-surface));
+    box-shadow: 0 0 0 2px 0 0 0 2px var(--#{$prefix}card-cap-bg, var(--#{$prefix}card-bg, var(--#{$prefix}bg-surface)));
   }
 }
 

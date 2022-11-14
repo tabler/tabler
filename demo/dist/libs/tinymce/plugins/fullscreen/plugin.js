@@ -1,5 +1,5 @@
 /**
- * TinyMCE version 6.1.2 (2022-07-29)
+ * TinyMCE version 6.2.0 (2022-09-08)
  */
 
 (function () {
@@ -50,6 +50,7 @@
     const isArray = isType$1('array');
     const isNull = eq$1(null);
     const isBoolean = isSimpleType('boolean');
+    const isUndefined = eq$1(undefined);
     const isNullable = a => a === null || a === undefined;
     const isNonNullable = a => !isNullable(a);
     const isFunction = isSimpleType('function');
@@ -295,8 +296,13 @@
       }
     };
 
-    const contains = (str, substr) => {
-      return str.indexOf(substr) !== -1;
+    const contains = (str, substr, start = 0, end) => {
+      const idx = str.indexOf(substr, start);
+      if (idx !== -1) {
+        return isUndefined(end) ? true : idx + substr.length <= end;
+      } else {
+        return false;
+      }
     };
 
     const isSupported$1 = dom => dom.style !== undefined && isFunction(dom.style.getPropertyValue);
@@ -1008,7 +1014,7 @@
       const clobberedEls = all('[' + attr + ']');
       each$1(clobberedEls, element => {
         const restore = get$3(element, attr);
-        if (restore !== 'no-styles') {
+        if (restore && restore !== 'no-styles') {
           setAll(element, dom.parseStyle(restore));
         } else {
           remove(element, 'style');
@@ -1074,7 +1080,7 @@
       const isTouch = global.deviceType.isTouch();
       const editorContainerStyle = editorContainer.style;
       const iframe = editor.iframeElement;
-      const iframeStyle = iframe.style;
+      const iframeStyle = iframe === null || iframe === void 0 ? void 0 : iframe.style;
       const handleClasses = handler => {
         handler(body, 'tox-fullscreen');
         handler(documentElement, 'tox-fullscreen');

@@ -1,5 +1,5 @@
 /**
-* Tom Select v2.1.0
+* Tom Select v2.2.2
 * Licensed under the Apache License, Version 2.0 (the "License");
 */
 
@@ -37,9 +37,9 @@
 
 	  on(events, fct) {
 	    forEvents(events, event => {
-	      this._events[event] = this._events[event] || [];
-
-	      this._events[event].push(fct);
+	      const event_array = this._events[event] || [];
+	      event_array.push(fct);
+	      this._events[event] = event_array;
 	    });
 	  }
 
@@ -52,21 +52,26 @@
 	    }
 
 	    forEvents(events, event => {
-	      if (n === 1) return delete this._events[event];
-	      if (event in this._events === false) return;
+	      if (n === 1) {
+	        delete this._events[event];
+	        return;
+	      }
 
-	      this._events[event].splice(this._events[event].indexOf(fct), 1);
+	      const event_array = this._events[event];
+	      if (event_array === undefined) return;
+	      event_array.splice(event_array.indexOf(fct), 1);
+	      this._events[event] = event_array;
 	    });
 	  }
 
 	  trigger(events, ...args) {
 	    var self = this;
 	    forEvents(events, event => {
-	      if (event in self._events === false) return;
-
-	      for (let fct of self._events[event]) {
+	      const event_array = self._events[event];
+	      if (event_array === undefined) return;
+	      event_array.forEach(fct => {
 	        fct.apply(self, args);
-	      }
+	      });
 	    });
 	  }
 
@@ -193,69 +198,124 @@
 	  };
 	}
 
-	// @ts-ignore TS2691 "An import path cannot end with a '.ts' extension"
-	// https://github.com/andrewrk/node-diacritics/blob/master/index.js
-	var latin_pat;
-	const accent_pat = '[\u0300-\u036F\u{b7}\u{2be}]'; // \u{2bc}
-
-	const accent_reg = new RegExp(accent_pat, 'gu');
-	var diacritic_patterns;
-	const latin_convert = {
-	  'æ': 'ae',
-	  'ⱥ': 'a',
-	  'ø': 'o'
-	};
-	const convert_pat = new RegExp(Object.keys(latin_convert).join('|'), 'gu');
-	const code_points = [[0, 65535]];
+	/*! @orchidjs/unicode-variants | https://github.com/orchidjs/unicode-variants | Apache License (v2) */
 	/**
-	 * Remove accents
-	 * via https://github.com/krisk/Fuse/issues/133#issuecomment-318692703
-	 *
+	 * Convert array of strings to a regular expression
+	 *	ex ['ab','a'] => (?:ab|a)
+	 * 	ex ['a','b'] => [ab]
+	 * @param {string[]} chars
+	 * @return {string}
+	 */
+	const arrayToPattern = chars => {
+	  chars = chars.filter(Boolean);
+
+	  if (chars.length < 2) {
+	    return chars[0] || '';
+	  }
+
+	  return maxValueLength(chars) == 1 ? '[' + chars.join('') + ']' : '(?:' + chars.join('|') + ')';
+	};
+	/**
+	 * @param {string[]} array
+	 * @return {string}
 	 */
 
-	const asciifold = str => {
-	  return str.normalize('NFKD').replace(accent_reg, '').toLowerCase().replace(convert_pat, function (foreignletter) {
-	    return latin_convert[foreignletter];
+	const sequencePattern = array => {
+	  if (!hasDuplicates(array)) {
+	    return array.join('');
+	  }
+
+	  let pattern = '';
+	  let prev_char_count = 0;
+
+	  const prev_pattern = () => {
+	    if (prev_char_count > 1) {
+	      pattern += '{' + prev_char_count + '}';
+	    }
+	  };
+
+	  array.forEach((char, i) => {
+	    if (char === array[i - 1]) {
+	      prev_char_count++;
+	      return;
+	    }
+
+	    prev_pattern();
+	    pattern += char;
+	    prev_char_count = 1;
 	  });
+	  prev_pattern();
+	  return pattern;
 	};
 	/**
 	 * Convert array of strings to a regular expression
 	 *	ex ['ab','a'] => (?:ab|a)
 	 * 	ex ['a','b'] => [ab]
+	 * @param {Set<string>} chars
+	 * @return {string}
+	 */
+
+	const setToPattern = chars => {
+	  let array = toArray(chars);
+	  return arrayToPattern(array);
+	};
+	/**
+	 *
+	 * https://stackoverflow.com/questions/7376598/in-javascript-how-do-i-check-if-an-array-has-duplicate-values
+	 * @param {any[]} array
+	 */
+
+	const hasDuplicates = array => {
+	  return new Set(array).size !== array.length;
+	};
+	/**
+	 * https://stackoverflow.com/questions/63006601/why-does-u-throw-an-invalid-escape-error
+	 * @param {string} str
+	 * @return {string}
+	 */
+
+	const escape_regex = str => {
+	  return (str + '').replace(/([\$\(\)\*\+\.\?\[\]\^\{\|\}\\])/gu, '\\$1');
+	};
+	/**
+	 * Return the max length of array values
+	 * @param {string[]} array
 	 *
 	 */
 
-	const arrayToPattern = (chars, glue = '|') => {
-	  if (chars.length == 1) {
-	    return chars[0];
-	  }
-
-	  var longest = 1;
-	  chars.forEach(a => {
-	    longest = Math.max(longest, a.length);
-	  });
-
-	  if (longest == 1) {
-	    return '[' + chars.join('') + ']';
-	  }
-
-	  return '(?:' + chars.join(glue) + ')';
+	const maxValueLength = array => {
+	  return array.reduce((longest, value) => Math.max(longest, unicodeLength(value)), 0);
 	};
-	const escapeToPattern = chars => {
-	  const escaped = chars.map(diacritic => escape_regex(diacritic));
-	  return arrayToPattern(escaped);
+	/**
+	 * @param {string} str
+	 */
+
+	const unicodeLength = str => {
+	  return toArray(str).length;
 	};
+	/**
+	 * @param {any} p
+	 * @return {any[]}
+	 */
+
+	const toArray = p => Array.from(p);
+
+	/*! @orchidjs/unicode-variants | https://github.com/orchidjs/unicode-variants | Apache License (v2) */
 	/**
 	 * Get all possible combinations of substrings that add up to the given string
 	 * https://stackoverflow.com/questions/30169587/find-all-the-combination-of-substrings-that-add-up-to-the-given-string
-	 *
+	 * @param {string} input
+	 * @return {string[][]}
 	 */
-
 	const allSubstrings = input => {
 	  if (input.length === 1) return [[input]];
-	  var result = [];
-	  allSubstrings(input.substring(1)).forEach(function (subresult) {
-	    var tmp = subresult.slice(0);
+	  /** @type {string[][]} */
+
+	  let result = [];
+	  const start = input.substring(1);
+	  const suba = allSubstrings(start);
+	  suba.forEach(function (subresult) {
+	    let tmp = subresult.slice(0);
 	    tmp[0] = input.charAt(0) + tmp[0];
 	    result.push(tmp);
 	    tmp = subresult.slice(0);
@@ -264,108 +324,539 @@
 	  });
 	  return result;
 	};
+
+	/*! @orchidjs/unicode-variants | https://github.com/orchidjs/unicode-variants | Apache License (v2) */
+
 	/**
-	 * Generate a list of diacritics from the list of code points
+	 * @typedef {{[key:string]:string}} TUnicodeMap
+	 * @typedef {{[key:string]:Set<string>}} TUnicodeSets
+	 * @typedef {[[number,number]]} TCodePoints
+	 * @typedef {{folded:string,composed:string,code_point:number}} TCodePointObj
+	 * @typedef {{start:number,end:number,length:number,substr:string}} TSequencePart
+	 */
+	/** @type {TCodePoints} */
+
+	const code_points = [[0, 65535]];
+	const accent_pat = '[\u0300-\u036F\u{b7}\u{2be}\u{2bc}]';
+	/** @type {TUnicodeMap} */
+
+	let unicode_map;
+	/** @type {RegExp} */
+
+	let multi_char_reg;
+	const max_char_length = 3;
+	/** @type {TUnicodeMap} */
+
+	const latin_convert = {};
+	/** @type {TUnicodeMap} */
+
+	const latin_condensed = {
+	  '/': '⁄∕',
+	  '0': '߀',
+	  "a": "ⱥɐɑ",
+	  "aa": "ꜳ",
+	  "ae": "æǽǣ",
+	  "ao": "ꜵ",
+	  "au": "ꜷ",
+	  "av": "ꜹꜻ",
+	  "ay": "ꜽ",
+	  "b": "ƀɓƃ",
+	  "c": "ꜿƈȼↄ",
+	  "d": "đɗɖᴅƌꮷԁɦ",
+	  "e": "ɛǝᴇɇ",
+	  "f": "ꝼƒ",
+	  "g": "ǥɠꞡᵹꝿɢ",
+	  "h": "ħⱨⱶɥ",
+	  "i": "ɨı",
+	  "j": "ɉȷ",
+	  "k": "ƙⱪꝁꝃꝅꞣ",
+	  "l": "łƚɫⱡꝉꝇꞁɭ",
+	  "m": "ɱɯϻ",
+	  "n": "ꞥƞɲꞑᴎлԉ",
+	  "o": "øǿɔɵꝋꝍᴑ",
+	  "oe": "œ",
+	  "oi": "ƣ",
+	  "oo": "ꝏ",
+	  "ou": "ȣ",
+	  "p": "ƥᵽꝑꝓꝕρ",
+	  "q": "ꝗꝙɋ",
+	  "r": "ɍɽꝛꞧꞃ",
+	  "s": "ßȿꞩꞅʂ",
+	  "t": "ŧƭʈⱦꞇ",
+	  "th": "þ",
+	  "tz": "ꜩ",
+	  "u": "ʉ",
+	  "v": "ʋꝟʌ",
+	  "vy": "ꝡ",
+	  "w": "ⱳ",
+	  "y": "ƴɏỿ",
+	  "z": "ƶȥɀⱬꝣ",
+	  "hv": "ƕ"
+	};
+
+	for (let latin in latin_condensed) {
+	  let unicode = latin_condensed[latin] || '';
+
+	  for (let i = 0; i < unicode.length; i++) {
+	    let char = unicode.substring(i, i + 1);
+	    latin_convert[char] = latin;
+	  }
+	}
+
+	const convert_pat = new RegExp(Object.keys(latin_convert).join('|') + '|' + accent_pat, 'gu');
+	/**
+	 * Initialize the unicode_map from the give code point ranges
 	 *
+	 * @param {TCodePoints=} _code_points
 	 */
 
-	const generateDiacritics = code_points => {
-	  var diacritics = {};
-	  code_points.forEach(code_range => {
-	    for (let i = code_range[0]; i <= code_range[1]; i++) {
-	      let diacritic = String.fromCharCode(i);
-	      let latin = asciifold(diacritic);
+	const initialize = _code_points => {
+	  if (unicode_map !== undefined) return;
+	  unicode_map = generateMap(_code_points || code_points);
+	};
+	/**
+	 * Helper method for normalize a string
+	 * https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/normalize
+	 * @param {string} str
+	 * @param {string} form
+	 */
 
-	      if (latin == diacritic.toLowerCase()) {
+	const normalize = (str, form = 'NFKD') => str.normalize(form);
+	/**
+	 * Remove accents without reordering string
+	 * calling str.normalize('NFKD') on \u{594}\u{595}\u{596} becomes \u{596}\u{594}\u{595}
+	 * via https://github.com/krisk/Fuse/issues/133#issuecomment-318692703
+	 * @param {string} str
+	 * @return {string}
+	 */
+
+	const asciifold = str => {
+	  return toArray(str).reduce(
+	  /**
+	   * @param {string} result
+	   * @param {string} char
+	   */
+	  (result, char) => {
+	    return result + _asciifold(char);
+	  }, '');
+	};
+	/**
+	 * @param {string} str
+	 * @return {string}
+	 */
+
+	const _asciifold = str => {
+	  str = normalize(str).toLowerCase().replace(convert_pat, (
+	  /** @type {string} */
+	  char) => {
+	    return latin_convert[char] || '';
+	  }); //return str;
+
+	  return normalize(str, 'NFC');
+	};
+	/**
+	 * Generate a list of unicode variants from the list of code points
+	 * @param {TCodePoints} code_points
+	 * @yield {TCodePointObj}
+	 */
+
+	function* generator(code_points) {
+	  for (const [code_point_min, code_point_max] of code_points) {
+	    for (let i = code_point_min; i <= code_point_max; i++) {
+	      let composed = String.fromCharCode(i);
+	      let folded = asciifold(composed);
+
+	      if (folded == composed.toLowerCase()) {
 	        continue;
-	      } // skip when latin is a string longer than 3 characters long
+	      } // skip when folded is a string longer than 3 characters long
 	      // bc the resulting regex patterns will be long
 	      // eg:
-	      // latin صلى الله عليه وسلم length 18 code point 65018
-	      // latin جل جلاله length 8 code point 65019
+	      // folded صلى الله عليه وسلم length 18 code point 65018
+	      // folded جل جلاله length 8 code point 65019
 
 
-	      if (latin.length > 3) {
+	      if (folded.length > max_char_length) {
 	        continue;
 	      }
 
-	      if (!(latin in diacritics)) {
-	        diacritics[latin] = [latin];
-	      }
-
-	      var patt = new RegExp(escapeToPattern(diacritics[latin]), 'iu');
-
-	      if (diacritic.match(patt)) {
+	      if (folded.length == 0) {
 	        continue;
 	      }
 
-	      diacritics[latin].push(diacritic);
+	      yield {
+	        folded: folded,
+	        composed: composed,
+	        code_point: i
+	      };
 	    }
-	  }); // filter out if there's only one character in the list
-
-	  let latin_chars = Object.keys(diacritics);
-
-	  for (let i = 0; i < latin_chars.length; i++) {
-	    const latin = latin_chars[i];
-
-	    if (diacritics[latin].length < 2) {
-	      delete diacritics[latin];
-	    }
-	  } // latin character pattern
-	  // match longer substrings first
-
-
-	  latin_chars = Object.keys(diacritics).sort((a, b) => b.length - a.length);
-	  latin_pat = new RegExp('(' + escapeToPattern(latin_chars) + accent_pat + '*)', 'gu'); // build diacritic patterns
-	  // ae needs:
-	  //	(?:(?:ae|Æ|Ǽ|Ǣ)|(?:A|Ⓐ|Ａ...)(?:E|ɛ|Ⓔ...))
-
-	  var diacritic_patterns = {};
-	  latin_chars.sort((a, b) => a.length - b.length).forEach(latin => {
-	    var substrings = allSubstrings(latin);
-	    var pattern = substrings.map(sub_pat => {
-	      sub_pat = sub_pat.map(l => {
-	        if (diacritics.hasOwnProperty(l)) {
-	          return escapeToPattern(diacritics[l]);
-	        }
-
-	        return l;
-	      });
-	      return arrayToPattern(sub_pat, '');
-	    });
-	    diacritic_patterns[latin] = arrayToPattern(pattern);
-	  });
-	  return diacritic_patterns;
-	};
+	  }
+	}
 	/**
-	 * Expand a regular expression pattern to include diacritics
-	 * 	eg /a/ becomes /aⓐａẚàáâầấẫẩãāăằắẵẳȧǡäǟảåǻǎȁȃạậặḁąⱥɐɑAⒶＡÀÁÂẦẤẪẨÃĀĂẰẮẴẲȦǠÄǞẢÅǺǍȀȂẠẬẶḀĄȺⱯ/
-	 *
+	 * Generate a unicode map from the list of code points
+	 * @param {TCodePoints} code_points
+	 * @return {TUnicodeSets}
 	 */
 
-	const diacriticRegexPoints = regex => {
-	  if (diacritic_patterns === undefined) {
-	    diacritic_patterns = generateDiacritics(code_points);
+	const generateSets = code_points => {
+	  /** @type {{[key:string]:Set<string>}} */
+	  const unicode_sets = {};
+	  /**
+	   * @param {string} folded
+	   * @param {string} to_add
+	   */
+
+	  const addMatching = (folded, to_add) => {
+	    /** @type {Set<string>} */
+	    const folded_set = unicode_sets[folded] || new Set();
+	    const patt = new RegExp('^' + setToPattern(folded_set) + '$', 'iu');
+
+	    if (to_add.match(patt)) {
+	      return;
+	    }
+
+	    folded_set.add(escape_regex(to_add));
+	    unicode_sets[folded] = folded_set;
+	  };
+
+	  for (let value of generator(code_points)) {
+	    addMatching(value.folded, value.folded);
+	    addMatching(value.folded, value.composed);
 	  }
 
-	  const decomposed = regex.normalize('NFKD').toLowerCase();
-	  return decomposed.split(latin_pat).map(part => {
-	    // "ﬄ" or "ffl"
-	    const no_accent = asciifold(part);
+	  return unicode_sets;
+	};
+	/**
+	 * Generate a unicode map from the list of code points
+	 * ae => (?:(?:ae|Æ|Ǽ|Ǣ)|(?:A|Ⓐ|Ａ...)(?:E|ɛ|Ⓔ...))
+	 *
+	 * @param {TCodePoints} code_points
+	 * @return {TUnicodeMap}
+	 */
 
-	    if (no_accent == '') {
-	      return '';
+	const generateMap = code_points => {
+	  /** @type {TUnicodeSets} */
+	  const unicode_sets = generateSets(code_points);
+	  /** @type {TUnicodeMap} */
+
+	  const unicode_map = {};
+	  /** @type {string[]} */
+
+	  let multi_char = [];
+
+	  for (let folded in unicode_sets) {
+	    let set = unicode_sets[folded];
+
+	    if (set) {
+	      unicode_map[folded] = setToPattern(set);
 	    }
 
-	    if (diacritic_patterns.hasOwnProperty(no_accent)) {
-	      return diacritic_patterns[no_accent];
+	    if (folded.length > 1) {
+	      multi_char.push(escape_regex(folded));
+	    }
+	  }
+
+	  multi_char.sort((a, b) => b.length - a.length);
+	  const multi_char_patt = arrayToPattern(multi_char);
+	  multi_char_reg = new RegExp('^' + multi_char_patt, 'u');
+	  return unicode_map;
+	};
+	/**
+	 * Map each element of an array from it's folded value to all possible unicode matches
+	 * @param {string[]} strings
+	 * @param {number} min_replacement
+	 * @return {string}
+	 */
+
+	const mapSequence = (strings, min_replacement = 1) => {
+	  let chars_replaced = 0;
+	  strings = strings.map(str => {
+	    if (unicode_map[str]) {
+	      chars_replaced += str.length;
 	    }
 
-	    return part;
-	  }).join('');
+	    return unicode_map[str] || str;
+	  });
+
+	  if (chars_replaced >= min_replacement) {
+	    return sequencePattern(strings);
+	  }
+
+	  return '';
+	};
+	/**
+	 * Convert a short string and split it into all possible patterns
+	 * Keep a pattern only if min_replacement is met
+	 *
+	 * 'abc'
+	 * 		=> [['abc'],['ab','c'],['a','bc'],['a','b','c']]
+	 *		=> ['abc-pattern','ab-c-pattern'...]
+	 *
+	 *
+	 * @param {string} str
+	 * @param {number} min_replacement
+	 * @return {string}
+	 */
+
+	const substringsToPattern = (str, min_replacement = 1) => {
+	  min_replacement = Math.max(min_replacement, str.length - 1);
+	  return arrayToPattern(allSubstrings(str).map(sub_pat => {
+	    return mapSequence(sub_pat, min_replacement);
+	  }));
+	};
+	/**
+	 * Convert an array of sequences into a pattern
+	 * [{start:0,end:3,length:3,substr:'iii'}...] => (?:iii...)
+	 *
+	 * @param {Sequence[]} sequences
+	 * @param {boolean} all
+	 */
+
+	const sequencesToPattern = (sequences, all = true) => {
+	  let min_replacement = sequences.length > 1 ? 1 : 0;
+	  return arrayToPattern(sequences.map(sequence => {
+	    let seq = [];
+	    const len = all ? sequence.length() : sequence.length() - 1;
+
+	    for (let j = 0; j < len; j++) {
+	      seq.push(substringsToPattern(sequence.substrs[j] || '', min_replacement));
+	    }
+
+	    return sequencePattern(seq);
+	  }));
+	};
+	/**
+	 * Return true if the sequence is already in the sequences
+	 * @param {Sequence} needle_seq
+	 * @param {Sequence[]} sequences
+	 */
+
+
+	const inSequences = (needle_seq, sequences) => {
+	  for (const seq of sequences) {
+	    if (seq.start != needle_seq.start || seq.end != needle_seq.end) {
+	      continue;
+	    }
+
+	    if (seq.substrs.join('') !== needle_seq.substrs.join('')) {
+	      continue;
+	    }
+
+	    let needle_parts = needle_seq.parts;
+	    /**
+	     * @param {TSequencePart} part
+	     */
+
+	    const filter = part => {
+	      for (const needle_part of needle_parts) {
+	        if (needle_part.start === part.start && needle_part.substr === part.substr) {
+	          return false;
+	        }
+
+	        if (part.length == 1 || needle_part.length == 1) {
+	          continue;
+	        } // check for overlapping parts
+	        // a = ['::=','==']
+	        // b = ['::','===']
+	        // a = ['r','sm']
+	        // b = ['rs','m']
+
+
+	        if (part.start < needle_part.start && part.end > needle_part.start) {
+	          return true;
+	        }
+
+	        if (needle_part.start < part.start && needle_part.end > part.start) {
+	          return true;
+	        }
+	      }
+
+	      return false;
+	    };
+
+	    let filtered = seq.parts.filter(filter);
+
+	    if (filtered.length > 0) {
+	      continue;
+	    }
+
+	    return true;
+	  }
+
+	  return false;
 	};
 
-	// @ts-ignore TS2691 "An import path cannot end with a '.ts' extension"
+	class Sequence {
+	  constructor() {
+	    /** @type {TSequencePart[]} */
+	    this.parts = [];
+	    /** @type {string[]} */
+
+	    this.substrs = [];
+	    this.start = 0;
+	    this.end = 0;
+	  }
+	  /**
+	   * @param {TSequencePart|undefined} part
+	   */
+
+
+	  add(part) {
+	    if (part) {
+	      this.parts.push(part);
+	      this.substrs.push(part.substr);
+	      this.start = Math.min(part.start, this.start);
+	      this.end = Math.max(part.end, this.end);
+	    }
+	  }
+
+	  last() {
+	    return this.parts[this.parts.length - 1];
+	  }
+
+	  length() {
+	    return this.parts.length;
+	  }
+	  /**
+	   * @param {number} position
+	   * @param {TSequencePart} last_piece
+	   */
+
+
+	  clone(position, last_piece) {
+	    let clone = new Sequence();
+	    let parts = JSON.parse(JSON.stringify(this.parts));
+	    let last_part = parts.pop();
+
+	    for (const part of parts) {
+	      clone.add(part);
+	    }
+
+	    let last_substr = last_piece.substr.substring(0, position - last_part.start);
+	    let clone_last_len = last_substr.length;
+	    clone.add({
+	      start: last_part.start,
+	      end: last_part.start + clone_last_len,
+	      length: clone_last_len,
+	      substr: last_substr
+	    });
+	    return clone;
+	  }
+
+	}
+	/**
+	 * Expand a regular expression pattern to include unicode variants
+	 * 	eg /a/ becomes /aⓐａẚàáâầấẫẩãāăằắẵẳȧǡäǟảåǻǎȁȃạậặḁąⱥɐɑAⒶＡÀÁÂẦẤẪẨÃĀĂẰẮẴẲȦǠÄǞẢÅǺǍȀȂẠẬẶḀĄȺⱯ/
+	 *
+	 * Issue:
+	 *  ﺊﺋ [ 'ﺊ = \\u{fe8a}', 'ﺋ = \\u{fe8b}' ]
+	 *	becomes:	ئئ [ 'ي = \\u{64a}', 'ٔ = \\u{654}', 'ي = \\u{64a}', 'ٔ = \\u{654}' ]
+	 *
+	 *	İĲ = IIJ = ⅡJ
+	 *
+	 * 	1/2/4
+	 *
+	 * @param {string} str
+	 * @return {string|undefined}
+	 */
+
+
+	const getPattern = str => {
+	  initialize();
+	  str = asciifold(str);
+	  let pattern = '';
+	  let sequences = [new Sequence()];
+
+	  for (let i = 0; i < str.length; i++) {
+	    let substr = str.substring(i);
+	    let match = substr.match(multi_char_reg);
+	    const char = str.substring(i, i + 1);
+	    const match_str = match ? match[0] : null; // loop through sequences
+	    // add either the char or multi_match
+
+	    let overlapping = [];
+	    let added_types = new Set();
+
+	    for (const sequence of sequences) {
+	      const last_piece = sequence.last();
+
+	      if (!last_piece || last_piece.length == 1 || last_piece.end <= i) {
+	        // if we have a multi match
+	        if (match_str) {
+	          const len = match_str.length;
+	          sequence.add({
+	            start: i,
+	            end: i + len,
+	            length: len,
+	            substr: match_str
+	          });
+	          added_types.add('1');
+	        } else {
+	          sequence.add({
+	            start: i,
+	            end: i + 1,
+	            length: 1,
+	            substr: char
+	          });
+	          added_types.add('2');
+	        }
+	      } else if (match_str) {
+	        let clone = sequence.clone(i, last_piece);
+	        const len = match_str.length;
+	        clone.add({
+	          start: i,
+	          end: i + len,
+	          length: len,
+	          substr: match_str
+	        });
+	        overlapping.push(clone);
+	      } else {
+	        // don't add char
+	        // adding would create invalid patterns: 234 => [2,34,4]
+	        added_types.add('3');
+	      }
+	    } // if we have overlapping
+
+
+	    if (overlapping.length > 0) {
+	      // ['ii','iii'] before ['i','i','iii']
+	      overlapping = overlapping.sort((a, b) => {
+	        return a.length() - b.length();
+	      });
+
+	      for (let clone of overlapping) {
+	        // don't add if we already have an equivalent sequence
+	        if (inSequences(clone, sequences)) {
+	          continue;
+	        }
+
+	        sequences.push(clone);
+	      }
+
+	      continue;
+	    } // if we haven't done anything unique
+	    // clean up the patterns
+	    // helps keep patterns smaller
+	    // if str = 'r₨㎧aarss', pattern will be 446 instead of 655
+
+
+	    if (i > 0 && added_types.size == 1 && !added_types.has('3')) {
+	      pattern += sequencesToPattern(sequences, false);
+	      let new_seq = new Sequence();
+	      const old_seq = sequences[0];
+
+	      if (old_seq) {
+	        new_seq.add(old_seq.last());
+	      }
+
+	      sequences = [new_seq];
+	    }
+	  }
+
+	  pattern += sequencesToPattern(sequences, true);
+	  return pattern;
+	};
+
+	/*! sifter.js | https://github.com/orchidjs/sifter.js | Apache License (v2) */
 
 	/**
 	 * A property getter resolving dot-notation
@@ -403,19 +894,12 @@
 	  var score, pos;
 	  if (!value) return 0;
 	  value = value + '';
+	  if (token.regex == null) return 0;
 	  pos = value.search(token.regex);
 	  if (pos === -1) return 0;
 	  score = token.string.length / value.length;
 	  if (pos === 0) score += 0.5;
 	  return score * weight;
-	};
-	/**
-	 *
-	 * https://stackoverflow.com/questions/63006601/why-does-u-throw-an-invalid-escape-error
-	 */
-
-	const escape_regex = str => {
-	  return (str + '').replace(/([\$\(-\+\.\?\[-\^\{-\}])/g, '\\$1');
 	};
 	/**
 	 * Cast object property to an array if it exists and has a value
@@ -441,7 +925,7 @@
 	 *
 	 */
 
-	const iterate = (object, callback) => {
+	const iterate$1 = (object, callback) => {
 	  if (Array.isArray(object)) {
 	    object.forEach(callback);
 	  } else {
@@ -463,6 +947,8 @@
 	  if (b > a) return -1;
 	  return 0;
 	};
+
+	/*! sifter.js | https://github.com/orchidjs/sifter.js | Apache License (v2) */
 
 	/**
 	 * sifter.js
@@ -525,12 +1011,12 @@
 
 	      if (word.length > 0) {
 	        if (this.settings.diacritics) {
-	          regex = diacriticRegexPoints(word);
+	          regex = getPattern(word) || null;
 	        } else {
 	          regex = escape_regex(word);
 	        }
 
-	        if (respect_word_boundaries) regex = "\\b" + regex;
+	        if (regex && respect_word_boundaries) regex = "\\b" + regex;
 	      }
 
 	      tokens.push({
@@ -548,12 +1034,17 @@
 	   * Good matches will have a higher score than poor matches.
 	   * If an item is not a match, 0 will be returned by the function.
 	   *
-	   * @returns {function}
+	   * @returns {T.ScoreFn}
 	   */
 	  getScoreFunction(query, options) {
 	    var search = this.prepareSearch(query, options);
 	    return this._getScoreFunction(search);
 	  }
+	  /**
+	   * @returns {T.ScoreFn}
+	   *
+	   */
+
 
 	  _getScoreFunction(search) {
 	    const tokens = search.tokens,
@@ -586,7 +1077,7 @@
 	      if (field_count === 1) {
 	        return function (token, data) {
 	          const field = fields[0].field;
-	          return scoreValue(getAttrFn(data, field), token, weights[field]);
+	          return scoreValue(getAttrFn(data, field), token, weights[field] || 1);
 	        };
 	      }
 
@@ -602,7 +1093,7 @@
 	            sum += scoreValue(value, token, 1);
 	          }
 	        } else {
-	          iterate(weights, (weight, field) => {
+	          iterate$1(weights, (weight, field) => {
 	            sum += scoreValue(getAttrFn(data, field), token, weight);
 	          });
 	        }
@@ -619,12 +1110,11 @@
 
 	    if (search.options.conjunction === 'and') {
 	      return function (data) {
-	        var i = 0,
-	            score,
+	        var score,
 	            sum = 0;
 
-	        for (; i < token_count; i++) {
-	          score = scoreObject(tokens[i], data);
+	        for (let token of tokens) {
+	          score = scoreObject(token, data);
 	          if (score <= 0) return 0;
 	          sum += score;
 	        }
@@ -634,7 +1124,7 @@
 	    } else {
 	      return function (data) {
 	        var sum = 0;
-	        iterate(tokens, token => {
+	        iterate$1(tokens, token => {
 	          sum += scoreObject(token, data);
 	        });
 	        return sum / token_count;
@@ -655,12 +1145,11 @@
 	  }
 
 	  _getSortFunction(search) {
-	    var i, n, implicit_score;
+	    var implicit_score,
+	        sort_flds = [];
 	    const self = this,
 	          options = search.options,
-	          sort = !search.query && options.sort_empty ? options.sort_empty : options.sort,
-	          sort_flds = [],
-	          multipliers = [];
+	          sort = !search.query && options.sort_empty ? options.sort_empty : options.sort;
 
 	    if (typeof sort == 'function') {
 	      return sort.bind(this);
@@ -679,9 +1168,9 @@
 
 
 	    if (sort) {
-	      for (i = 0, n = sort.length; i < n; i++) {
-	        if (search.query || sort[i].field !== '$score') {
-	          sort_flds.push(sort[i]);
+	      for (let s of sort) {
+	        if (search.query || s.field !== '$score') {
+	          sort_flds.push(s);
 	        }
 	      }
 	    } // the "$score" field is implied to be the primary
@@ -691,8 +1180,8 @@
 	    if (search.query) {
 	      implicit_score = true;
 
-	      for (i = 0, n = sort_flds.length; i < n; i++) {
-	        if (sort_flds[i].field === '$score') {
+	      for (let fld of sort_flds) {
+	        if (fld.field === '$score') {
 	          implicit_score = false;
 	          break;
 	        }
@@ -703,18 +1192,10 @@
 	          field: '$score',
 	          direction: 'desc'
 	        });
-	      }
-	    } else {
-	      for (i = 0, n = sort_flds.length; i < n; i++) {
-	        if (sort_flds[i].field === '$score') {
-	          sort_flds.splice(i, 1);
-	          break;
-	        }
-	      }
-	    }
+	      } // without a search.query, all items will have the same score
 
-	    for (i = 0, n = sort_flds.length; i < n; i++) {
-	      multipliers.push(sort_flds[i].direction === 'desc' ? -1 : 1);
+	    } else {
+	      sort_flds = sort_flds.filter(fld => fld.field !== '$score');
 	    } // build function
 
 
@@ -722,25 +1203,20 @@
 
 	    if (!sort_flds_count) {
 	      return null;
-	    } else if (sort_flds_count === 1) {
-	      const sort_fld = sort_flds[0].field;
-	      const multiplier = multipliers[0];
-	      return function (a, b) {
-	        return multiplier * cmp(get_field(sort_fld, a), get_field(sort_fld, b));
-	      };
-	    } else {
-	      return function (a, b) {
-	        var i, result, field;
-
-	        for (i = 0; i < sort_flds_count; i++) {
-	          field = sort_flds[i].field;
-	          result = multipliers[i] * cmp(get_field(field, a), get_field(field, b));
-	          if (result) return result;
-	        }
-
-	        return 0;
-	      };
 	    }
+
+	    return function (a, b) {
+	      var result, field;
+
+	      for (let sort_fld of sort_flds) {
+	        field = sort_fld.field;
+	        let multiplier = sort_fld.direction === 'desc' ? -1 : 1;
+	        result = multiplier * cmp(get_field(field, a), get_field(field, b));
+	        if (result) return result;
+	      }
+
+	      return 0;
+	    };
 	  }
 
 	  /**
@@ -799,7 +1275,7 @@
 
 
 	    if (query.length) {
-	      iterate(self.items, (item, id) => {
+	      iterate$1(self.items, (item, id) => {
 	        score = fn_score(item);
 
 	        if (options.filter === false || score > 0) {
@@ -810,7 +1286,7 @@
 	        }
 	      });
 	    } else {
-	      iterate(self.items, (_, id) => {
+	      iterate$1(self.items, (_, id) => {
 	        search.items.push({
 	          'score': 1,
 	          'id': id
@@ -834,6 +1310,29 @@
 	}
 
 	/**
+	 * Iterates over arrays and hashes.
+	 *
+	 * ```
+	 * iterate(this.items, function(item, id) {
+	 *    // invoked for each item
+	 * });
+	 * ```
+	 *
+	 */
+
+	const iterate = (object, callback) => {
+	  if (Array.isArray(object)) {
+	    object.forEach(callback);
+	  } else {
+	    for (var key in object) {
+	      if (object.hasOwnProperty(key)) {
+	        callback(object[key], key);
+	      }
+	    }
+	  }
+	};
+
+	/**
 	 * Return a dom element from either a dom query string, jQuery object, a dom element or html string
 	 * https://stackoverflow.com/questions/494143/creating-a-new-dom-element-from-an-html-string-using-built-in-dom-methods-or-pro/35385518#35385518
 	 *
@@ -850,10 +1349,10 @@
 	  }
 
 	  if (isHtmlString(query)) {
-	    let div = document.createElement('div');
-	    div.innerHTML = query.trim(); // Never return a text node of whitespace as the result
+	    var tpl = document.createElement('template');
+	    tpl.innerHTML = query.trim(); // Never return a text node of whitespace as the result
 
-	    return div.firstChild;
+	    return tpl.content.firstChild;
 	  }
 
 	  return document.querySelector(query);
@@ -1064,9 +1563,9 @@
 
 	  const highlightChildren = node => {
 	    if (node.nodeType === 1 && node.childNodes && !/(script|style)/i.test(node.tagName) && (node.className !== 'highlight' || node.tagName !== 'SPAN')) {
-	      for (var i = 0; i < node.childNodes.length; ++i) {
-	        i += highlightRecursive(node.childNodes[i]);
-	      }
+	      Array.from(node.childNodes).forEach(element => {
+	        highlightRecursive(element);
+	      });
 	    }
 	  };
 
@@ -1304,7 +1803,7 @@
 	  }
 	};
 	/**
-	 * Prevent default
+	 * Add event helper
 	 *
 	 */
 
@@ -1639,7 +2138,7 @@
 	      control_input = getDom(settings.controlInput); // set attributes
 
 	      var attrs = ['autocorrect', 'autocapitalize', 'autocomplete'];
-	      iterate(attrs, attr => {
+	      iterate$1(attrs, attr => {
 	        if (input.getAttribute(attr)) {
 	          setAttr(control_input, {
 	            [attr]: input.getAttribute(attr)
@@ -1743,6 +2242,9 @@
 	    }
 
 	    self.control_input.type = input.type;
+	    addEvent(dropdown, 'mousemove', () => {
+	      self.ignoreHover = false;
+	    });
 	    addEvent(dropdown, 'mouseenter', e => {
 	      var target_match = parentMatch(e.target, '[data-selectable]', dropdown);
 	      if (target_match) self.onOptionHover(e, target_match);
@@ -1779,7 +2281,6 @@
 
 	    addEvent(control_input, 'keypress', e => self.onKeyPress(e));
 	    addEvent(control_input, 'input', e => self.onInput(e));
-	    addEvent(focus_node, 'resize', () => self.positionDropdown(), passive_event);
 	    addEvent(focus_node, 'blur', e => self.onBlur(e));
 	    addEvent(focus_node, 'focus', e => self.onFocus(e));
 	    addEvent(control_input, 'paste', e => self.onPaste(e));
@@ -1815,18 +2316,12 @@
 	      }
 	    };
 
-	    const win_hover = () => {
-	      self.ignoreHover = false;
-	    };
-
 	    addEvent(document, 'mousedown', doc_mousedown);
 	    addEvent(window, 'scroll', win_scroll, passive_event);
 	    addEvent(window, 'resize', win_scroll, passive_event);
-	    addEvent(window, 'mousemove', win_hover, passive_event);
 
 	    this._destroy = () => {
 	      document.removeEventListener('mousedown', doc_mousedown);
-	      window.removeEventListener('mousemove', win_hover);
 	      window.removeEventListener('scroll', win_scroll);
 	      window.removeEventListener('resize', win_scroll);
 	      if (label) label.removeEventListener('click', label_click);
@@ -1844,7 +2339,7 @@
 	    settings.items = [];
 	    delete settings.optgroups;
 	    delete settings.options;
-	    addEvent(input, 'invalid', e => {
+	    addEvent(input, 'invalid', () => {
 	      if (self.isValid) {
 	        self.isValid = false;
 	        self.isInvalid = true;
@@ -1881,7 +2376,7 @@
 	    // build options table
 	    this.addOptions(options); // build optgroup table
 
-	    iterate(optgroups, optgroup => {
+	    iterate$1(optgroups, optgroup => {
 	      this.registerOptionGroup(optgroup);
 	    });
 	  }
@@ -2045,13 +2540,15 @@
 	      }
 
 	      var splitInput = pastedText.trim().split(self.settings.splitOn);
-	      iterate(splitInput, piece => {
-	        piece = hash_key(piece);
+	      iterate$1(splitInput, piece => {
+	        const hash = hash_key(piece);
 
-	        if (this.options[piece]) {
-	          self.addItem(piece);
-	        } else {
-	          self.createItem(piece);
+	        if (hash) {
+	          if (this.options[piece]) {
+	            self.addItem(piece);
+	          } else {
+	            self.createItem(piece);
+	          }
 	        }
 	      });
 	    }, 0);
@@ -2279,7 +2776,7 @@
 	    };
 
 	    if (self.settings.create && self.settings.createOnBlur) {
-	      self.createItem(null, false, deactivate);
+	      self.createItem(null, deactivate);
 	    } else {
 	      deactivate();
 	    }
@@ -2300,7 +2797,7 @@
 	    }
 
 	    if (option.classList.contains('create')) {
-	      self.createItem(null, true, () => {
+	      self.createItem(null, () => {
 	        if (self.settings.closeAfterSelect) {
 	          self.close();
 	        }
@@ -2669,7 +3166,7 @@
 	    self.hideInput();
 	    self.close();
 	    self.activeItems = activeItems;
-	    iterate(activeItems, item => {
+	    iterate$1(activeItems, item => {
 	      self.setActiveItemClass(item);
 	    });
 	  }
@@ -2805,7 +3302,7 @@
 
 
 	  search(query) {
-	    var i, result, calculateScore;
+	    var result, calculateScore;
 	    var self = this;
 	    var options = this.getSearchOptions(); // validate user-provided result scoring function
 
@@ -2830,13 +3327,10 @@
 
 
 	    if (self.settings.hideSelected) {
-	      for (i = result.items.length - 1; i >= 0; i--) {
-	        let hashed = hash_key(result.items[i].id);
-
-	        if (hashed && self.items.indexOf(hashed) !== -1) {
-	          result.items.splice(i, 1);
-	        }
-	      }
+	      result.items = result.items.filter(item => {
+	        let hashed = hash_key(item.id);
+	        return !(hashed && self.items.indexOf(hashed) !== -1);
+	      });
 	    }
 
 	    return result;
@@ -2849,21 +3343,24 @@
 
 
 	  refreshOptions(triggerDropdown = true) {
-	    var i, j, k, n, optgroup, optgroups, html, has_create_option, active_value, active_group;
+	    var i, j, k, n, optgroup, optgroups, html, has_create_option, active_group;
 	    var create;
 	    const groups = {};
 	    const groups_order = [];
 	    var self = this;
 	    var query = self.inputValue();
+	    const same_query = query === self.lastQuery || query == '' && self.lastQuery == null;
 	    var results = self.search(query);
-	    var active_option = null; //self.activeOption;
-
+	    var active_option = null;
 	    var show_dropdown = self.settings.shouldOpen || false;
 	    var dropdown_content = self.dropdown_content;
 
-	    if (self.activeOption) {
-	      active_value = self.activeOption.dataset.value;
-	      active_group = self.activeOption.closest('[data-group]');
+	    if (same_query) {
+	      active_option = self.activeOption;
+
+	      if (active_option) {
+	        active_group = active_option.closest('[data-group]');
+	      }
 	    } // build markup
 
 
@@ -2880,12 +3377,16 @@
 
 	    for (i = 0; i < n; i++) {
 	      // get option dom element
-	      let opt_value = results.items[i].id;
+	      let item = results.items[i];
+	      if (!item) continue;
+	      let opt_value = item.id;
 	      let option = self.options[opt_value];
-	      let option_el = self.getOption(opt_value, true); // toggle 'selected' class
+	      if (option === undefined) continue;
+	      let opt_hash = get_hash(opt_value);
+	      let option_el = self.getOption(opt_hash, true); // toggle 'selected' class
 
 	      if (!self.settings.hideSelected) {
-	        option_el.classList.toggle('selected', self.items.includes(opt_value));
+	        option_el.classList.toggle('selected', self.items.includes(opt_hash));
 	      }
 
 	      optgroup = option[self.settings.optgroupField] || '';
@@ -2898,8 +3399,10 @@
 	          optgroup = '';
 	        }
 
-	        if (!groups.hasOwnProperty(optgroup)) {
-	          groups[optgroup] = document.createDocumentFragment();
+	        let group_fragment = groups[optgroup];
+
+	        if (group_fragment === undefined) {
+	          group_fragment = document.createDocumentFragment();
 	          groups_order.push(optgroup);
 	        } // nodes can only have one parent, so if the option is in mutple groups, we need a clone
 
@@ -2911,48 +3414,50 @@
 	            'aria-selected': null
 	          });
 	          option_el.classList.add('ts-cloned');
-	          removeClasses(option_el, 'active');
-	        } // make sure we keep the activeOption in the same group
+	          removeClasses(option_el, 'active'); // make sure we keep the activeOption in the same group
 
-
-	        if (!active_option && active_value == opt_value) {
-	          if (active_group) {
-	            if (active_group.dataset.group === optgroup) {
+	          if (self.activeOption && self.activeOption.dataset.value == opt_value) {
+	            if (active_group && active_group.dataset.group === optgroup.toString()) {
 	              active_option = option_el;
 	            }
-	          } else {
-	            active_option = option_el;
 	          }
 	        }
 
-	        groups[optgroup].appendChild(option_el);
+	        group_fragment.appendChild(option_el);
+	        groups[optgroup] = group_fragment;
 	      }
 	    } // sort optgroups
 
 
-	    if (this.settings.lockOptgroupOrder) {
+	    if (self.settings.lockOptgroupOrder) {
 	      groups_order.sort((a, b) => {
-	        var a_order = self.optgroups[a] && self.optgroups[a].$order || 0;
-	        var b_order = self.optgroups[b] && self.optgroups[b].$order || 0;
+	        const grp_a = self.optgroups[a];
+	        const grp_b = self.optgroups[b];
+	        const a_order = grp_a && grp_a.$order || 0;
+	        const b_order = grp_b && grp_b.$order || 0;
 	        return a_order - b_order;
 	      });
 	    } // render optgroup headers & join groups
 
 
 	    html = document.createDocumentFragment();
-	    iterate(groups_order, optgroup => {
-	      if (self.optgroups.hasOwnProperty(optgroup) && groups[optgroup].children.length) {
+	    iterate$1(groups_order, optgroup => {
+	      let group_fragment = groups[optgroup];
+	      if (!group_fragment || !group_fragment.children.length) return;
+	      let group_heading = self.optgroups[optgroup];
+
+	      if (group_heading !== undefined) {
 	        let group_options = document.createDocumentFragment();
-	        let header = self.render('optgroup_header', self.optgroups[optgroup]);
+	        let header = self.render('optgroup_header', group_heading);
 	        append(group_options, header);
-	        append(group_options, groups[optgroup]);
+	        append(group_options, group_fragment);
 	        let group_html = self.render('optgroup', {
-	          group: self.optgroups[optgroup],
+	          group: group_heading,
 	          options: group_options
 	        });
 	        append(html, group_html);
 	      } else {
-	        append(html, groups[optgroup]);
+	        append(html, group_fragment);
 	      }
 	    });
 	    dropdown_content.innerHTML = '';
@@ -2962,7 +3467,7 @@
 	      removeHighlight(dropdown_content);
 
 	      if (results.query.length && results.tokens.length) {
-	        iterate(results.tokens, tok => {
+	        iterate$1(results.tokens, tok => {
 	          highlight(dropdown_content, tok.regex);
 	        });
 	      }
@@ -3003,7 +3508,7 @@
 
 	    if (show_dropdown) {
 	      if (results.items.length > 0) {
-	        if (!active_option && self.settings.mode === 'single' && self.items.length) {
+	        if (!active_option && self.settings.mode === 'single' && self.items[0] != undefined) {
 	          active_option = self.getOption(self.items[0]);
 	        }
 
@@ -3090,7 +3595,7 @@
 
 
 	  addOptions(data, user_created = false) {
-	    iterate(data, dat => {
+	    iterate$1(data, dat => {
 	      this.addOption(dat, user_created);
 	    });
 	  }
@@ -3170,11 +3675,12 @@
 	    const value_new = hash_key(data[self.settings.valueField]); // sanity checks
 
 	    if (value_old === null) return;
-	    if (!self.options.hasOwnProperty(value_old)) return;
+	    const data_old = self.options[value_old];
+	    if (data_old == undefined) return;
 	    if (typeof value_new !== 'string') throw new Error('Value must be set in option data');
 	    const option = self.getOption(value_old);
 	    const item = self.getItem(value_old);
-	    data.$order = data.$order || self.options[value_old].$order;
+	    data.$order = data.$order || data_old.$order;
 	    delete self.options[value_old]; // invalidate render cache
 	    // don't remove existing node yet, we'll remove it after replacing it
 
@@ -3238,9 +3744,9 @@
 	    this.userOptions = {};
 	    this.clearCache();
 	    const selected = {};
-	    iterate(this.options, (option, key) => {
+	    iterate$1(this.options, (option, key) => {
 	      if (boundFilter(option, key)) {
-	        selected[key] = this.options[key];
+	        selected[key] = option;
 	      }
 	    });
 	    this.options = this.sifter.items = selected;
@@ -3270,10 +3776,10 @@
 
 	  getOption(value, create = false) {
 	    const hashed = hash_key(value);
+	    if (hashed === null) return null;
+	    const option = this.options[hashed];
 
-	    if (hashed !== null && this.options.hasOwnProperty(hashed)) {
-	      const option = this.options[hashed];
-
+	    if (option != undefined) {
 	      if (option.$div) {
 	        return option.$div;
 	      }
@@ -3346,11 +3852,11 @@
 	    var self = this;
 	    var items = Array.isArray(values) ? values : [values];
 	    items = items.filter(x => self.items.indexOf(x) === -1);
-
-	    for (let i = 0, n = items.length; i < n; i++) {
-	      self.isPending = i < n - 1;
-	      self.addItem(items[i], silent);
-	    }
+	    const last_item = items[items.length - 1];
+	    items.forEach(item => {
+	      self.isPending = item !== last_item;
+	      self.addItem(item, silent);
+	    });
 	  }
 	  /**
 	   * "Selects" an item. Adds it to the list
@@ -3481,7 +3987,16 @@
 	   */
 
 
-	  createItem(input = null, triggerDropdown = true, callback = () => {}) {
+	  createItem(input = null, callback = () => {}) {
+	    // triggerDropdown parameter @deprecated 2.1.1
+	    if (arguments.length === 3) {
+	      callback = arguments[2];
+	    }
+
+	    if (typeof callback != 'function') {
+	      callback = () => {};
+	    }
+
 	    var self = this;
 	    var caret = self.caretPos;
 	    var output;
@@ -3757,7 +4272,7 @@
 	    var self = this;
 	    if (!self.items.length) return;
 	    var items = self.controlChildren();
-	    iterate(items, item => {
+	    iterate$1(items, item => {
 	      self.removeItem(item, true);
 	    });
 	    self.showInput();
@@ -3775,7 +4290,7 @@
 	    const self = this;
 	    const caret = self.caretPos;
 	    const target = self.control;
-	    target.insertBefore(el, target.children[caret]);
+	    target.insertBefore(el, target.children[caret] || null);
 	    self.setCaret(caret + 1);
 	  }
 	  /**
@@ -3800,14 +4315,19 @@
 	        caret++;
 	      }
 
-	      iterate(self.activeItems, item => rm_items.push(item));
+	      iterate$1(self.activeItems, item => rm_items.push(item));
 	    } else if ((self.isFocused || self.settings.mode === 'single') && self.items.length) {
 	      const items = self.controlChildren();
+	      let rm_item;
 
 	      if (direction < 0 && selection.start === 0 && selection.length === 0) {
-	        rm_items.push(items[self.caretPos - 1]);
+	        rm_item = items[self.caretPos - 1];
 	      } else if (direction > 0 && selection.start === self.inputValue().length) {
-	        rm_items.push(items[self.caretPos]);
+	        rm_item = items[self.caretPos];
+	      }
+
+	      if (rm_item !== undefined) {
+	        rm_items.push(rm_item);
 	      }
 	    }
 
@@ -4009,33 +4529,18 @@
 
 
 	  render(templateName, data) {
-	    if (typeof this.settings.render[templateName] !== 'function') {
-	      return null;
-	    }
-
-	    return this._render(templateName, data);
-	  }
-	  /**
-	   * _render() can be called directly when we know we don't want to hit the cache
-	   * return type could be null for some templates, we need https://github.com/microsoft/TypeScript/issues/33014
-	   */
-
-
-	  _render(templateName, data) {
-	    var value = '',
-	        id,
-	        html;
+	    var id, html;
 	    const self = this;
 
-	    if (templateName === 'option' || templateName == 'item') {
-	      value = get_hash(data[self.settings.valueField]);
+	    if (typeof this.settings.render[templateName] !== 'function') {
+	      return null;
 	    } // render markup
 
 
 	    html = self.settings.render[templateName].call(this, data, escape_html);
 
-	    if (html == null) {
-	      return html;
+	    if (!html) {
+	      return null;
 	    }
 
 	    html = getDom(html); // add mandatory attributes
@@ -4064,6 +4569,7 @@
 	    }
 
 	    if (templateName === 'option' || templateName === 'item') {
+	      const value = get_hash(data[self.settings.valueField]);
 	      setAttr(html, {
 	        'data-value': value
 	      }); // make sure we have some classes if a template is overwritten
@@ -4080,8 +4586,24 @@
 	          id: data.$id
 	        }); // update cache
 
-	        self.options[value].$div = html;
+	        data.$div = html;
+	        self.options[value] = data;
 	      }
+	    }
+
+	    return html;
+	  }
+	  /**
+	   * Type guarded rendering
+	   *
+	   */
+
+
+	  _render(templateName, data) {
+	    const html = this.render(templateName, data);
+
+	    if (html == null) {
+	      throw 'HTMLElement expected';
 	    }
 
 	    return html;
@@ -4095,7 +4617,7 @@
 
 
 	  clearCache() {
-	    iterate(this.options, (option, value) => {
+	    iterate$1(this.options, option => {
 	      if (option.$div) {
 	        option.$div.remove();
 	        delete option.$div;

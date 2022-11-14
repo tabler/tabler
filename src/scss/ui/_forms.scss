@@ -24,7 +24,7 @@ Form label
 .form-label-description {
   float: right;
   font-weight: var(--#{$prefix}font-weight-normal);
-  color: $text-muted;
+  color: var(--#{$prefix}muted);
 }
 
 /**
@@ -32,7 +32,7 @@ Form hint
  */
 .form-hint {
   display: block;
-  color: $text-muted;
+  color: var(--#{$prefix}muted);
 
   &:last-child {
     margin-bottom: 0;
@@ -73,28 +73,12 @@ Form control
 
   &:disabled,
   &.disabled {
-    color: $text-muted;
+    color: var(--#{$prefix}muted);
     user-select: none;
   }
 
   &[size] {
     width: auto;
-  }
-
-  &[type="number"] {
-    &::-webkit-inner-spin-button {
-      opacity: 1;
-      cursor: pointer;
-      height: subtract($input-height, 1px);
-      margin: 0 (-$input-padding-x) 0 0;
-    }
-
-    &::-moz-inner-spin-button {
-      opacity: 1;
-      cursor: pointer;
-      height: subtract($input-height, 1px);
-      margin: 0 (-$input-padding-x) 0 0;
-    }
   }
 }
 
@@ -140,7 +124,7 @@ Form control
   padding: 1rem;
   margin-bottom: 1rem;
   background: var(--#{$prefix}body-bg);
-  border: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color);
+  border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
   border-radius: var(--#{$prefix}border-radius);
 }
 
@@ -155,7 +139,7 @@ Form help
   width: 1.125rem;
   height: 1.125rem;
   font-size: .75rem;
-  color: $text-muted;
+  color: var(--#{$prefix}muted);
   text-align: center;
   text-decoration: none;
   cursor: pointer;

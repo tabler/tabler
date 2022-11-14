@@ -1,5 +1,5 @@
 /**
-* Tom Select v2.1.0
+* Tom Select v2.2.2
 * Licensed under the Apache License, Version 2.0 (the "License");
 */
 
@@ -46,13 +46,67 @@
 	  }
 	};
 
-	// @ts-ignore TS2691 "An import path cannot end with a '.ts' extension"
-	const latin_convert = {
-	  'æ': 'ae',
-	  'ⱥ': 'a',
-	  'ø': 'o'
+	/*! @orchidjs/unicode-variants | https://github.com/orchidjs/unicode-variants | Apache License (v2) */
+	const accent_pat = '[\u0300-\u036F\u{b7}\u{2be}\u{2bc}]';
+	/** @type {TUnicodeMap} */
+
+	const latin_convert = {};
+	/** @type {TUnicodeMap} */
+
+	const latin_condensed = {
+	  '/': '⁄∕',
+	  '0': '߀',
+	  "a": "ⱥɐɑ",
+	  "aa": "ꜳ",
+	  "ae": "æǽǣ",
+	  "ao": "ꜵ",
+	  "au": "ꜷ",
+	  "av": "ꜹꜻ",
+	  "ay": "ꜽ",
+	  "b": "ƀɓƃ",
+	  "c": "ꜿƈȼↄ",
+	  "d": "đɗɖᴅƌꮷԁɦ",
+	  "e": "ɛǝᴇɇ",
+	  "f": "ꝼƒ",
+	  "g": "ǥɠꞡᵹꝿɢ",
+	  "h": "ħⱨⱶɥ",
+	  "i": "ɨı",
+	  "j": "ɉȷ",
+	  "k": "ƙⱪꝁꝃꝅꞣ",
+	  "l": "łƚɫⱡꝉꝇꞁɭ",
+	  "m": "ɱɯϻ",
+	  "n": "ꞥƞɲꞑᴎлԉ",
+	  "o": "øǿɔɵꝋꝍᴑ",
+	  "oe": "œ",
+	  "oi": "ƣ",
+	  "oo": "ꝏ",
+	  "ou": "ȣ",
+	  "p": "ƥᵽꝑꝓꝕρ",
+	  "q": "ꝗꝙɋ",
+	  "r": "ɍɽꝛꞧꞃ",
+	  "s": "ßȿꞩꞅʂ",
+	  "t": "ŧƭʈⱦꞇ",
+	  "th": "þ",
+	  "tz": "ꜩ",
+	  "u": "ʉ",
+	  "v": "ʋꝟʌ",
+	  "vy": "ꝡ",
+	  "w": "ⱳ",
+	  "y": "ƴɏỿ",
+	  "z": "ƶȥɀⱬꝣ",
+	  "hv": "ƕ"
 	};
-	new RegExp(Object.keys(latin_convert).join('|'), 'gu');
+
+	for (let latin in latin_condensed) {
+	  let unicode = latin_condensed[latin] || '';
+
+	  for (let i = 0; i < unicode.length; i++) {
+	    let char = unicode.substring(i, i + 1);
+	    latin_convert[char] = latin;
+	  }
+	}
+
+	new RegExp(Object.keys(latin_convert).join('|') + '|' + accent_pat, 'gu');
 
 	/**
 	 * Return a dom element from either a dom query string, jQuery object, a dom element or html string
@@ -71,10 +125,10 @@
 	  }
 
 	  if (isHtmlString(query)) {
-	    let div = document.createElement('div');
-	    div.innerHTML = query.trim(); // Never return a text node of whitespace as the result
+	    var tpl = document.createElement('template');
+	    tpl.innerHTML = query.trim(); // Never return a text node of whitespace as the result
 
-	    return div.firstChild;
+	    return tpl.content.firstChild;
 	  }
 
 	  return document.querySelector(query);

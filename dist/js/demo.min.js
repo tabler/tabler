@@ -1,6 +1,6 @@
 /*!
-* Tabler v1.0.0-beta12 (https://tabler.io)
-* @version 1.0.0-beta12
+* Tabler v1.0.0-beta16 (https://tabler.io)
+* @version 1.0.0-beta16
 * @link https://tabler.io
 * Copyright 2018-2022 The Tabler Authors
 * Copyright 2018-2022 codecalm.net Paweł Kuna

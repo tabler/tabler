@@ -1,0 +1,97 @@
+---
+title: Badges
+page-header: Badges
+menu: base.badges
+---
+
+<div class="row row-cards">
+	<div class="col-4">
+		<div class="card">
+			<div class="card-body">
+				<h1>Example heading <span class="badge">New</span></h1>
+				<h2>Example heading <span class="badge">New</span></h2>
+				<h3>Example heading <span class="badge">New</span></h3>
+				<h4>Example heading <span class="badge">New</span></h4>
+				<h5>Example heading <span class="badge">New</span></h5>
+				<h6>Example heading <span class="badge">New</span></h6>
+			</div>
+		</div>
+	</div>
+	<div class="col-8">
+		<div class="row row-cards">
+			<div class="col-12">
+				<div class="card">
+					<div class="card-body">
+						<div class="badges-list">
+							{% for color in site.colors %}
+							<span class="badge bg-{{ color[0] }}">{{ color[1].title }}</span>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-12">
+				<div class="card">
+					<div class="card-body">
+						<div class="badges-list">
+							{% for color in site.colors %}
+							<span class="badge bg-{{ color[0] }}-lt">{{ color[1].title }}</span>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-12">
+				<div class="card">
+					<div class="card-body">
+						<div class="badges-list">
+							{% for color in site.colors %}
+							<span class="badge badge-outline text-{{ color[0] }}">{{ color[1].title }}</span>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-sm-6 col-lg-3">
+		{% include ui/dropdown-menu.html show=true badge=true arrow=true %}
+	</div>
+	<div class="col-sm-6 col-lg-9">
+		<div class="row row-cards">
+			<div class="col-12">
+				<div class="card">
+					<div class="card-body">
+						<div class="btn-list">
+							{% for color in site.colors %}
+							<button class="btn">{{ color[1].title }} badge <span class="badge bg-{{ color[0] }} ms-2">{{ forloop.index }}</span></button>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-12">
+				<div class="card">
+					<div class="card-body">
+						<div class="btn-list">
+							{% for color in site.colors %}
+							<button class="btn position-relative">{{ color[1].title }} badge <span class="badge bg-{{ color[0] }} badge-notification badge-pill">{{ forloop.index }}</span></button>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-12">
+				<div class="card">
+					<div class="card-body">
+						<div class="btn-list">
+							{% for color in site.colors %}
+							<button class="btn position-relative">{{ color[1].title }} badge <span class="badge bg-{{ color[0] }} badge-notification badge-blink"></span></button>
+							{% endfor %}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
