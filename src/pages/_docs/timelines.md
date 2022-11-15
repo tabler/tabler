@@ -12,7 +12,7 @@ The available timeline design is comprised of many components that will help you
 {% capture code %}
 {% include cards/timeline.html %}
 {% endcapture %}
-{% include example.html code=code %}
+{% include example.html code=code columns=2 %}
 
 
 ## Simple timeline
@@ -22,4 +22,4 @@ Use a simplified version of the timeline, if it suits your design better. You ca
 {% capture code %}
 {% include cards/timeline.html simple=true %}
 {% endcapture %}
-{% include example.html code=code %}
+{% include example.html code=code columns=2  %}

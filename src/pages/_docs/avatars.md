@@ -136,3 +136,12 @@ Make the list stack once a certain number of avatars is reached to make it look 
 </div>
 {% endcapture %}
 {% include example.html code=code centered=true %}
+
+{% capture code %}
+<div class="avatar-list avatar-list-stacked">
+  {% for person in site.data.people limit: 8 offset: 10 %}
+  {% include ui/avatar.html person=person element="a" class="rounded-circle" size="sm" %}
+  {% endfor %}
+</div>
+{% endcapture %}
+{% include example.html code=code centered=true %}
