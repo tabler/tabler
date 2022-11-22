@@ -54,8 +54,9 @@
 @mixin navbar-dark {
   --#{$prefix}navbar-border-color: #{$dark-mode-border-color};
   --#{$prefix}navbar-bg: #{$dark};
+  --#{$prefix}scrollbar-color: var(--#{$prefix}white-rgb);
   @include navbar-color($dark, $navbar-dark-color, $navbar-dark-brand-color, $navbar-dark-active-color, $navbar-dark-disabled-color, $navbar-dark-active-bg);
-  @include scrollbar;
+  //@include scrollbar;
 }
 
 @mixin navbar-vertical-nav {
@@ -386,7 +387,7 @@ Navbar vertical
             z-index: $zindex-fixed;
             align-items: flex-start;
             @include transition(transform $transition-time);
-            overflow-x: auto;
+            overflow-y: scroll;
             padding: 0;
 
             &.navbar-right {
