@@ -1,5 +1,5 @@
 /**
- * TinyMCE version 6.2.0 (2022-09-08)
+ * TinyMCE version 6.3.0 (2022-11-23)
  */
 
 (function () {
@@ -269,6 +269,20 @@
     }
     Optional.singletonNone = new Optional(false);
 
+    typeof window !== 'undefined' ? window : Function('return this;')();
+
+    const ELEMENT = 1;
+
+    const name = element => {
+      const r = element.dom.nodeName;
+      return r.toLowerCase();
+    };
+
+    const has = (element, key) => {
+      const dom = element.dom;
+      return dom && dom.hasAttribute ? dom.hasAttribute(key) : false;
+    };
+
     var ClosestOrAncestor = (is, ancestor, scope, a, isRoot) => {
       if (is(scope, a)) {
         return Optional.some(scope);
@@ -278,8 +292,6 @@
         return ancestor(scope, a, isRoot);
       }
     };
-
-    const ELEMENT = 1;
 
     const fromHtml = (html, scope) => {
       const doc = scope || document;
@@ -337,13 +349,6 @@
       }
     };
 
-    typeof window !== 'undefined' ? window : Function('return this;')();
-
-    const name = element => {
-      const r = element.dom.nodeName;
-      return r.toLowerCase();
-    };
-
     const ancestor$1 = (scope, predicate, isRoot) => {
       let element = scope.dom;
       const stop = isFunction(isRoot) ? isRoot : never;
@@ -358,10 +363,12 @@
       }
       return Optional.none();
     };
-    const closest$1 = (scope, predicate, isRoot) => {
+    const closest$2 = (scope, predicate, isRoot) => {
       const is = (s, test) => test(s);
       return ClosestOrAncestor(is, ancestor$1, scope, predicate, isRoot);
     };
+
+    const closest$1 = (scope, predicate, isRoot) => closest$2(scope, predicate, isRoot).isSome();
 
     const ancestor = (scope, selector, isRoot) => ancestor$1(scope, e => is(e, selector), isRoot);
     const closest = (scope, selector, isRoot) => {
@@ -377,7 +384,7 @@
             const sugarNode = SugarElement.fromDom(node);
             const textBlockElementsMap = editor.schema.getTextBlockElements();
             const isRoot = elem => elem.dom === editor.getBody();
-            return closest(sugarNode, 'table', isRoot).fold(() => closest$1(sugarNode, elem => name(elem) in textBlockElementsMap && editor.dom.isEmpty(elem.dom), isRoot).isSome(), never);
+            return !has(sugarNode, 'data-mce-bogus') && closest(sugarNode, 'table,[data-mce-bogus="all"]', isRoot).fold(() => closest$1(sugarNode, elem => name(elem) in textBlockElementsMap && editor.dom.isEmpty(elem.dom), isRoot), never);
           },
           items: insertToolbarItems,
           position: 'line',

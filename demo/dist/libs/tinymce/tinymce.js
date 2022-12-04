@@ -1,5 +1,5 @@
 /**
- * TinyMCE version 6.2.0 (2022-09-08)
+ * TinyMCE version 6.3.0 (2022-11-23)
  */
 
 (function () {
@@ -1346,13 +1346,13 @@
     };
     const siblings = element => {
       const filterSelf = elements => filter$5(elements, x => !eq(element, x));
-      return parent(element).map(children).map(filterSelf).getOr([]);
+      return parent(element).map(children$1).map(filterSelf).getOr([]);
     };
     const prevSibling = element => Optional.from(element.dom.previousSibling).map(SugarElement.fromDom);
     const nextSibling = element => Optional.from(element.dom.nextSibling).map(SugarElement.fromDom);
     const prevSiblings = element => reverse(toArray(element, prevSibling));
     const nextSiblings = element => toArray(element, nextSibling);
-    const children = element => map$3(element.dom.childNodes, SugarElement.fromDom);
+    const children$1 = element => map$3(element.dom.childNodes, SugarElement.fromDom);
     const child$1 = (element, index) => {
       const cs = element.dom.childNodes;
       return Optional.from(cs[index]).map(SugarElement.fromDom);
@@ -1508,7 +1508,7 @@
 
     const empty = element => {
       element.dom.textContent = '';
-      each$e(children(element), rogue => {
+      each$e(children$1(element), rogue => {
         remove$6(rogue);
       });
     };
@@ -1519,9 +1519,9 @@
       }
     };
     const unwrap = wrapper => {
-      const children$1 = children(wrapper);
-      if (children$1.length > 0) {
-        after$3(wrapper, children$1);
+      const children = children$1(wrapper);
+      if (children.length > 0) {
+        after$3(wrapper, children);
       }
       remove$6(wrapper);
     };
@@ -1530,7 +1530,7 @@
       const doc = scope || document;
       const div = doc.createElement('div');
       div.innerHTML = html;
-      return children(SugarElement.fromDom(div));
+      return children$1(SugarElement.fromDom(div));
     };
     const fromDom$1 = nodes => map$3(nodes, SugarElement.fromDom);
 
@@ -1680,6 +1680,153 @@
       }, visualViewport => bounds(Math.max(visualViewport.pageLeft, scroll.left), Math.max(visualViewport.pageTop, scroll.top), visualViewport.width, visualViewport.height));
     };
 
+    const children = (scope, predicate) => filter$5(children$1(scope), predicate);
+    const descendants$1 = (scope, predicate) => {
+      let result = [];
+      each$e(children$1(scope), x => {
+        if (predicate(x)) {
+          result = result.concat([x]);
+        }
+        result = result.concat(descendants$1(x, predicate));
+      });
+      return result;
+    };
+
+    var ClosestOrAncestor = (is, ancestor, scope, a, isRoot) => {
+      if (is(scope, a)) {
+        return Optional.some(scope);
+      } else if (isFunction(isRoot) && isRoot(scope)) {
+        return Optional.none();
+      } else {
+        return ancestor(scope, a, isRoot);
+      }
+    };
+
+    const ancestor$3 = (scope, predicate, isRoot) => {
+      let element = scope.dom;
+      const stop = isFunction(isRoot) ? isRoot : never;
+      while (element.parentNode) {
+        element = element.parentNode;
+        const el = SugarElement.fromDom(element);
+        if (predicate(el)) {
+          return Optional.some(el);
+        } else if (stop(el)) {
+          break;
+        }
+      }
+      return Optional.none();
+    };
+    const closest$4 = (scope, predicate, isRoot) => {
+      const is = (s, test) => test(s);
+      return ClosestOrAncestor(is, ancestor$3, scope, predicate, isRoot);
+    };
+    const sibling$1 = (scope, predicate) => {
+      const element = scope.dom;
+      if (!element.parentNode) {
+        return Optional.none();
+      }
+      return child(SugarElement.fromDom(element.parentNode), x => !eq(scope, x) && predicate(x));
+    };
+    const child = (scope, predicate) => {
+      const pred = node => predicate(SugarElement.fromDom(node));
+      const result = find$2(scope.dom.childNodes, pred);
+      return result.map(SugarElement.fromDom);
+    };
+    const descendant$1 = (scope, predicate) => {
+      const descend = node => {
+        for (let i = 0; i < node.childNodes.length; i++) {
+          const child = SugarElement.fromDom(node.childNodes[i]);
+          if (predicate(child)) {
+            return Optional.some(child);
+          }
+          const res = descend(node.childNodes[i]);
+          if (res.isSome()) {
+            return res;
+          }
+        }
+        return Optional.none();
+      };
+      return descend(scope.dom);
+    };
+
+    const ancestor$2 = (scope, selector, isRoot) => ancestor$3(scope, e => is$1(e, selector), isRoot);
+    const descendant = (scope, selector) => one(selector, scope);
+    const closest$3 = (scope, selector, isRoot) => {
+      const is = (element, selector) => is$1(element, selector);
+      return ClosestOrAncestor(is, ancestor$2, scope, selector, isRoot);
+    };
+
+    const ancestor$1 = (scope, selector, isRoot) => ancestor$2(scope, selector, isRoot).isSome();
+
+    class DomTreeWalker {
+      constructor(startNode, rootNode) {
+        this.node = startNode;
+        this.rootNode = rootNode;
+        this.current = this.current.bind(this);
+        this.next = this.next.bind(this);
+        this.prev = this.prev.bind(this);
+        this.prev2 = this.prev2.bind(this);
+      }
+      current() {
+        return this.node;
+      }
+      next(shallow) {
+        this.node = this.findSibling(this.node, 'firstChild', 'nextSibling', shallow);
+        return this.node;
+      }
+      prev(shallow) {
+        this.node = this.findSibling(this.node, 'lastChild', 'previousSibling', shallow);
+        return this.node;
+      }
+      prev2(shallow) {
+        this.node = this.findPreviousNode(this.node, shallow);
+        return this.node;
+      }
+      findSibling(node, startName, siblingName, shallow) {
+        if (node) {
+          if (!shallow && node[startName]) {
+            return node[startName];
+          }
+          if (node !== this.rootNode) {
+            let sibling = node[siblingName];
+            if (sibling) {
+              return sibling;
+            }
+            for (let parent = node.parentNode; parent && parent !== this.rootNode; parent = parent.parentNode) {
+              sibling = parent[siblingName];
+              if (sibling) {
+                return sibling;
+              }
+            }
+          }
+        }
+        return undefined;
+      }
+      findPreviousNode(node, shallow) {
+        if (node) {
+          const sibling = node.previousSibling;
+          if (this.rootNode && sibling === this.rootNode) {
+            return;
+          }
+          if (sibling) {
+            if (!shallow) {
+              for (let child = sibling.lastChild; child; child = child.lastChild) {
+                if (!child.lastChild) {
+                  return child;
+                }
+              }
+            }
+            return sibling;
+          }
+          const parent = node.parentNode;
+          if (parent && parent !== this.rootNode) {
+            return parent;
+          }
+        }
+        return undefined;
+      }
+    }
+
     const isNodeType = type => {
       return node => {
         return !!node && node.nodeType === type;
@@ -1776,344 +1923,37 @@
     ]);
     const isListItem$2 = matchNodeName('li');
 
-    const browser = detect$2().browser;
-    const firstElement = nodes => find$2(nodes, isElement$7);
-    const getTableCaptionDeltaY = elm => {
-      if (browser.isFirefox() && name(elm) === 'table') {
-        return firstElement(children(elm)).filter(elm => {
-          return name(elm) === 'caption';
-        }).bind(caption => {
-          return firstElement(nextSiblings(caption)).map(body => {
-            const bodyTop = body.dom.offsetTop;
-            const captionTop = caption.dom.offsetTop;
-            const captionHeight = caption.dom.offsetHeight;
-            return bodyTop <= captionTop ? -captionHeight : 0;
-          });
-        }).getOr(0);
-      } else {
-        return 0;
-      }
-    };
-    const hasChild = (elm, child) => elm.children && contains$2(elm.children, child);
-    const getPos = (body, elm, rootElm) => {
-      let x = 0, y = 0;
-      const doc = body.ownerDocument;
-      rootElm = rootElm ? rootElm : body;
-      if (elm) {
-        if (rootElm === body && elm.getBoundingClientRect && get$7(SugarElement.fromDom(body), 'position') === 'static') {
-          const pos = elm.getBoundingClientRect();
-          x = pos.left + (doc.documentElement.scrollLeft || body.scrollLeft) - doc.documentElement.clientLeft;
-          y = pos.top + (doc.documentElement.scrollTop || body.scrollTop) - doc.documentElement.clientTop;
-          return {
-            x,
-            y
-          };
-        }
-        let offsetParent = elm;
-        while (offsetParent && offsetParent !== rootElm && offsetParent.nodeType && !hasChild(offsetParent, rootElm)) {
-          const castOffsetParent = offsetParent;
-          x += castOffsetParent.offsetLeft || 0;
-          y += castOffsetParent.offsetTop || 0;
-          offsetParent = castOffsetParent.offsetParent;
-        }
-        offsetParent = elm.parentNode;
-        while (offsetParent && offsetParent !== rootElm && offsetParent.nodeType && !hasChild(offsetParent, rootElm)) {
-          x -= offsetParent.scrollLeft || 0;
-          y -= offsetParent.scrollTop || 0;
-          offsetParent = offsetParent.parentNode;
-        }
-        y += getTableCaptionDeltaY(SugarElement.fromDom(elm));
-      }
-      return {
-        x,
-        y
-      };
-    };
+    const zeroWidth = '\uFEFF';
+    const nbsp = '\xA0';
+    const isZwsp$1 = char => char === zeroWidth;
+    const removeZwsp = s => s.replace(/\uFEFF/g, '');
 
-    var ClosestOrAncestor = (is, ancestor, scope, a, isRoot) => {
-      if (is(scope, a)) {
-        return Optional.some(scope);
-      } else if (isFunction(isRoot) && isRoot(scope)) {
-        return Optional.none();
-      } else {
-        return ancestor(scope, a, isRoot);
-      }
-    };
+    const descendants = (scope, selector) => all(selector, scope);
 
-    const ancestor$3 = (scope, predicate, isRoot) => {
-      let element = scope.dom;
-      const stop = isFunction(isRoot) ? isRoot : never;
-      while (element.parentNode) {
-        element = element.parentNode;
-        const el = SugarElement.fromDom(element);
-        if (predicate(el)) {
-          return Optional.some(el);
-        } else if (stop(el)) {
-          break;
+    const NodeValue = (is, name) => {
+      const get = element => {
+        if (!is(element)) {
+          throw new Error('Can only get ' + name + ' value of a ' + name + ' node');
         }
-      }
-      return Optional.none();
-    };
-    const closest$4 = (scope, predicate, isRoot) => {
-      const is = (s, test) => test(s);
-      return ClosestOrAncestor(is, ancestor$3, scope, predicate, isRoot);
-    };
-    const sibling$1 = (scope, predicate) => {
-      const element = scope.dom;
-      if (!element.parentNode) {
-        return Optional.none();
-      }
-      return child(SugarElement.fromDom(element.parentNode), x => !eq(scope, x) && predicate(x));
-    };
-    const child = (scope, predicate) => {
-      const pred = node => predicate(SugarElement.fromDom(node));
-      const result = find$2(scope.dom.childNodes, pred);
-      return result.map(SugarElement.fromDom);
-    };
-    const descendant$1 = (scope, predicate) => {
-      const descend = node => {
-        for (let i = 0; i < node.childNodes.length; i++) {
-          const child = SugarElement.fromDom(node.childNodes[i]);
-          if (predicate(child)) {
-            return Optional.some(child);
-          }
-          const res = descend(node.childNodes[i]);
-          if (res.isSome()) {
-            return res;
-          }
-        }
-        return Optional.none();
+        return getOption(element).getOr('');
       };
-      return descend(scope.dom);
-    };
-
-    const ancestor$2 = (scope, selector, isRoot) => ancestor$3(scope, e => is$1(e, selector), isRoot);
-    const descendant = (scope, selector) => one(selector, scope);
-    const closest$3 = (scope, selector, isRoot) => {
-      const is = (element, selector) => is$1(element, selector);
-      return ClosestOrAncestor(is, ancestor$2, scope, selector, isRoot);
-    };
-
-    const StyleSheetLoader = (documentOrShadowRoot, settings = {}) => {
-      let idCount = 0;
-      const loadedStates = {};
-      const edos = SugarElement.fromDom(documentOrShadowRoot);
-      const doc = documentOrOwner(edos);
-      const maxLoadTime = settings.maxLoadTime || 5000;
-      const _setReferrerPolicy = referrerPolicy => {
-        settings.referrerPolicy = referrerPolicy;
-      };
-      const addStyle = element => {
-        append$1(getStyleContainer(edos), element);
-      };
-      const removeStyle = id => {
-        const styleContainer = getStyleContainer(edos);
-        descendant(styleContainer, '#' + id).each(remove$6);
-      };
-      const getOrCreateState = url => get$a(loadedStates, url).getOrThunk(() => ({
-        id: 'mce-u' + idCount++,
-        passed: [],
-        failed: [],
-        count: 0
-      }));
-      const load = url => new Promise((success, failure) => {
-        let link;
-        const urlWithSuffix = Tools._addCacheSuffix(url);
-        const state = getOrCreateState(urlWithSuffix);
-        loadedStates[urlWithSuffix] = state;
-        state.count++;
-        const resolve = (callbacks, status) => {
-          each$e(callbacks, call);
-          state.status = status;
-          state.passed = [];
-          state.failed = [];
-          if (link) {
-            link.onload = null;
-            link.onerror = null;
-            link = null;
-          }
-        };
-        const passed = () => resolve(state.passed, 2);
-        const failed = () => resolve(state.failed, 3);
-        const wait = (testCallback, waitCallback) => {
-          if (!testCallback()) {
-            if (Date.now() - startTime < maxLoadTime) {
-              setTimeout(waitCallback);
-            } else {
-              failed();
-            }
-          }
-        };
-        const waitForWebKitLinkLoaded = () => {
-          wait(() => {
-            const styleSheets = documentOrShadowRoot.styleSheets;
-            let i = styleSheets.length;
-            while (i--) {
-              const styleSheet = styleSheets[i];
-              const owner = styleSheet.ownerNode;
-              if (owner && link && owner.id === link.id) {
-                passed();
-                return true;
-              }
-            }
-            return false;
-          }, waitForWebKitLinkLoaded);
-        };
-        if (success) {
-          state.passed.push(success);
+      const getOption = element => is(element) ? Optional.from(element.dom.nodeValue) : Optional.none();
+      const set = (element, value) => {
+        if (!is(element)) {
+          throw new Error('Can only set raw ' + name + ' value of a ' + name + ' node');
         }
-        if (failure) {
-          state.failed.push(failure);
-        }
-        if (state.status === 1) {
-          return;
-        }
-        if (state.status === 2) {
-          passed();
-          return;
-        }
-        if (state.status === 3) {
-          failed();
-          return;
-        }
-        state.status = 1;
-        const linkElem = SugarElement.fromTag('link', doc.dom);
-        setAll$1(linkElem, {
-          rel: 'stylesheet',
-          type: 'text/css',
-          id: state.id
-        });
-        const startTime = Date.now();
-        if (settings.contentCssCors) {
-          set$2(linkElem, 'crossOrigin', 'anonymous');
-        }
-        if (settings.referrerPolicy) {
-          set$2(linkElem, 'referrerpolicy', settings.referrerPolicy);
-        }
-        link = linkElem.dom;
-        link.onload = waitForWebKitLinkLoaded;
-        link.onerror = failed;
-        addStyle(linkElem);
-        set$2(linkElem, 'href', urlWithSuffix);
-      });
-      const loadAll = urls => {
-        const loadedUrls = Promise.allSettled(map$3(urls, url => load(url).then(constant(url))));
-        return loadedUrls.then(results => {
-          const parts = partition$2(results, r => r.status === 'fulfilled');
-          if (parts.fail.length > 0) {
-            return Promise.reject(map$3(parts.fail, result => result.reason));
-          } else {
-            return map$3(parts.pass, result => result.value);
-          }
-        });
-      };
-      const unload = url => {
-        const urlWithSuffix = Tools._addCacheSuffix(url);
-        get$a(loadedStates, urlWithSuffix).each(state => {
-          const count = --state.count;
-          if (count === 0) {
-            delete loadedStates[urlWithSuffix];
-            removeStyle(state.id);
-          }
-        });
-      };
-      const unloadAll = urls => {
-        each$e(urls, url => {
-          unload(url);
-        });
+        element.dom.nodeValue = value;
       };
       return {
-        load,
-        loadAll,
-        unload,
-        unloadAll,
-        _setReferrerPolicy
+        get,
+        getOption,
+        set
       };
     };
 
-    const create$d = () => {
-      const map = new WeakMap();
-      const forElement = (referenceElement, settings) => {
-        const root = getRootNode(referenceElement);
-        const rootDom = root.dom;
-        return Optional.from(map.get(rootDom)).getOrThunk(() => {
-          const sl = StyleSheetLoader(rootDom, settings);
-          map.set(rootDom, sl);
-          return sl;
-        });
-      };
-      return { forElement };
-    };
-    const instance = create$d();
-
-    class DomTreeWalker {
-      constructor(startNode, rootNode) {
-        this.node = startNode;
-        this.rootNode = rootNode;
-        this.current = this.current.bind(this);
-        this.next = this.next.bind(this);
-        this.prev = this.prev.bind(this);
-        this.prev2 = this.prev2.bind(this);
-      }
-      current() {
-        return this.node;
-      }
-      next(shallow) {
-        this.node = this.findSibling(this.node, 'firstChild', 'nextSibling', shallow);
-        return this.node;
-      }
-      prev(shallow) {
-        this.node = this.findSibling(this.node, 'lastChild', 'previousSibling', shallow);
-        return this.node;
-      }
-      prev2(shallow) {
-        this.node = this.findPreviousNode(this.node, shallow);
-        return this.node;
-      }
-      findSibling(node, startName, siblingName, shallow) {
-        if (node) {
-          if (!shallow && node[startName]) {
-            return node[startName];
-          }
-          if (node !== this.rootNode) {
-            let sibling = node[siblingName];
-            if (sibling) {
-              return sibling;
-            }
-            for (let parent = node.parentNode; parent && parent !== this.rootNode; parent = parent.parentNode) {
-              sibling = parent[siblingName];
-              if (sibling) {
-                return sibling;
-              }
-            }
-          }
-        }
-        return undefined;
-      }
-      findPreviousNode(node, shallow) {
-        if (node) {
-          const sibling = node.previousSibling;
-          if (this.rootNode && sibling === this.rootNode) {
-            return;
-          }
-          if (sibling) {
-            if (!shallow) {
-              for (let child = sibling.lastChild; child; child = child.lastChild) {
-                if (!child.lastChild) {
-                  return child;
-                }
-              }
-            }
-            return sibling;
-          }
-          const parent = node.parentNode;
-          if (parent && parent !== this.rootNode) {
-            return parent;
-          }
-        }
-        return undefined;
-      }
-    }
+    const api$1 = NodeValue(isText$b, 'text');
+    const get$3 = element => api$1.get(element);
+    const getOption = element => api$1.getOption(element);
 
     const blocks = [
       'article',
@@ -2244,51 +2084,6 @@
     const isWsPreserveElement = lazyLookup(wsElements);
     const isWrapBlockElement = lazyLookup(wrapBlockElements);
     const isWrapElement = node => isWrapBlockElement(node) || isInline$1(node);
-
-    const ancestor$1 = (scope, selector, isRoot) => ancestor$2(scope, selector, isRoot).isSome();
-
-    const zeroWidth = '\uFEFF';
-    const nbsp = '\xA0';
-    const isZwsp$1 = char => char === zeroWidth;
-    const removeZwsp = s => s.replace(/\uFEFF/g, '');
-
-    const descendants$1 = (scope, predicate) => {
-      let result = [];
-      each$e(children(scope), x => {
-        if (predicate(x)) {
-          result = result.concat([x]);
-        }
-        result = result.concat(descendants$1(x, predicate));
-      });
-      return result;
-    };
-
-    const descendants = (scope, selector) => all(selector, scope);
-
-    const NodeValue = (is, name) => {
-      const get = element => {
-        if (!is(element)) {
-          throw new Error('Can only get ' + name + ' value of a ' + name + ' node');
-        }
-        return getOption(element).getOr('');
-      };
-      const getOption = element => is(element) ? Optional.from(element.dom.nodeValue) : Optional.none();
-      const set = (element, value) => {
-        if (!is(element)) {
-          throw new Error('Can only set raw ' + name + ' value of a ' + name + ' node');
-        }
-        element.dom.nodeValue = value;
-      };
-      return {
-        get,
-        getOption,
-        set
-      };
-    };
-
-    const api$1 = NodeValue(isText$b, 'text');
-    const get$3 = element => api$1.get(element);
-    const getOption = element => api$1.getOption(element);
 
     const getLastChildren$1 = elm => {
       const children = [];
@@ -2574,6 +2369,312 @@
     };
     const isEmpty$2 = (elm, skipBogus = true) => isEmptyNode(elm.dom, skipBogus);
 
+    const transparentBlockAttr = 'data-mce-block';
+    const elementNames = map => filter$5(keys(map), key => !/[A-Z]/.test(key));
+    const makeSelectorFromSchemaMap = map => elementNames(map).join(',');
+    const updateTransparent = (blocksSelector, transparent) => {
+      if (isNonNullable(transparent.querySelector(blocksSelector))) {
+        transparent.setAttribute(transparentBlockAttr, 'true');
+        if (transparent.getAttribute('data-mce-selected') === 'inline-boundary') {
+          transparent.removeAttribute('data-mce-selected');
+        }
+        return true;
+      } else {
+        transparent.removeAttribute(transparentBlockAttr);
+        return false;
+      }
+    };
+    const updateBlockStateOnChildren = (schema, scope) => {
+      const transparentSelector = makeSelectorFromSchemaMap(schema.getTransparentElements());
+      const blocksSelector = makeSelectorFromSchemaMap(schema.getBlockElements());
+      return filter$5(scope.querySelectorAll(transparentSelector), transparent => updateTransparent(blocksSelector, transparent));
+    };
+    const trimEdge = (el, leftSide) => {
+      var _a;
+      const childPropertyName = leftSide ? 'lastChild' : 'firstChild';
+      for (let child = el[childPropertyName]; child; child = child[childPropertyName]) {
+        if (isEmpty$2(SugarElement.fromDom(child))) {
+          (_a = child.parentNode) === null || _a === void 0 ? void 0 : _a.removeChild(child);
+          return;
+        }
+      }
+    };
+    const split$2 = (parentElm, splitElm) => {
+      const range = document.createRange();
+      const parentNode = parentElm.parentNode;
+      if (parentNode) {
+        range.setStartBefore(parentElm);
+        range.setEndBefore(splitElm);
+        const beforeFragment = range.extractContents();
+        trimEdge(beforeFragment, true);
+        range.setStartAfter(splitElm);
+        range.setEndAfter(parentElm);
+        const afterFragment = range.extractContents();
+        trimEdge(afterFragment, false);
+        if (!isEmpty$2(SugarElement.fromDom(beforeFragment))) {
+          parentNode.insertBefore(beforeFragment, parentElm);
+        }
+        if (!isEmpty$2(SugarElement.fromDom(splitElm))) {
+          parentNode.insertBefore(splitElm, parentElm);
+        }
+        if (!isEmpty$2(SugarElement.fromDom(afterFragment))) {
+          parentNode.insertBefore(afterFragment, parentElm);
+        }
+        parentNode.removeChild(parentElm);
+      }
+    };
+    const splitInvalidChildren = (schema, scope, transparentBlocks) => {
+      const blocksElements = schema.getBlockElements();
+      const rootNode = SugarElement.fromDom(scope);
+      const isBlock = el => name(el) in blocksElements;
+      const isRoot = el => eq(el, rootNode);
+      each$e(fromDom$1(transparentBlocks), transparentBlock => {
+        ancestor$3(transparentBlock, isBlock, isRoot).each(parentBlock => {
+          const invalidChildren = children(transparentBlock, el => isBlock(el) && !schema.isValidChild(name(parentBlock), name(el)));
+          if (invalidChildren.length > 0) {
+            const stateScope = parentElement(parentBlock);
+            each$e(invalidChildren, child => {
+              ancestor$3(child, isBlock, isRoot).each(parentBlock => {
+                split$2(parentBlock.dom, child.dom);
+              });
+            });
+            stateScope.each(scope => updateBlockStateOnChildren(schema, scope.dom));
+          }
+        });
+      });
+    };
+    const updateChildren = (schema, scope) => {
+      const transparentBlocks = updateBlockStateOnChildren(schema, scope);
+      splitInvalidChildren(schema, scope, transparentBlocks);
+    };
+    const updateElement = (schema, target) => {
+      if (isTransparentElement(schema, target)) {
+        const blocksSelector = makeSelectorFromSchemaMap(schema.getBlockElements());
+        updateTransparent(blocksSelector, target);
+      }
+    };
+    const updateCaret = (schema, root, caretParent) => {
+      const isRoot = el => eq(el, SugarElement.fromDom(root));
+      const parents = parents$1(SugarElement.fromDom(caretParent), isRoot);
+      get$b(parents, parents.length - 2).filter(isElement$7).fold(() => updateChildren(schema, root), scope => updateChildren(schema, scope.dom));
+    };
+    const hasBlockAttr = el => el.hasAttribute(transparentBlockAttr);
+    const isTransparentElementName = (schema, name) => has$2(schema.getTransparentElements(), name);
+    const isTransparentElement = (schema, node) => isElement$6(node) && isTransparentElementName(schema, node.nodeName);
+    const isTransparentBlock = (schema, node) => isTransparentElement(schema, node) && hasBlockAttr(node);
+    const isTransparentAstBlock = (schema, node) => node.type === 1 && isTransparentElementName(schema, node.name) && isString(node.attr(transparentBlockAttr));
+    const isTransparentAstInline = (schema, node) => node.type === 1 && isTransparentElementName(schema, node.name) && isUndefined(node.attr(transparentBlockAttr));
+
+    const browser = detect$2().browser;
+    const firstElement = nodes => find$2(nodes, isElement$7);
+    const getTableCaptionDeltaY = elm => {
+      if (browser.isFirefox() && name(elm) === 'table') {
+        return firstElement(children$1(elm)).filter(elm => {
+          return name(elm) === 'caption';
+        }).bind(caption => {
+          return firstElement(nextSiblings(caption)).map(body => {
+            const bodyTop = body.dom.offsetTop;
+            const captionTop = caption.dom.offsetTop;
+            const captionHeight = caption.dom.offsetHeight;
+            return bodyTop <= captionTop ? -captionHeight : 0;
+          });
+        }).getOr(0);
+      } else {
+        return 0;
+      }
+    };
+    const hasChild = (elm, child) => elm.children && contains$2(elm.children, child);
+    const getPos = (body, elm, rootElm) => {
+      let x = 0, y = 0;
+      const doc = body.ownerDocument;
+      rootElm = rootElm ? rootElm : body;
+      if (elm) {
+        if (rootElm === body && elm.getBoundingClientRect && get$7(SugarElement.fromDom(body), 'position') === 'static') {
+          const pos = elm.getBoundingClientRect();
+          x = pos.left + (doc.documentElement.scrollLeft || body.scrollLeft) - doc.documentElement.clientLeft;
+          y = pos.top + (doc.documentElement.scrollTop || body.scrollTop) - doc.documentElement.clientTop;
+          return {
+            x,
+            y
+          };
+        }
+        let offsetParent = elm;
+        while (offsetParent && offsetParent !== rootElm && offsetParent.nodeType && !hasChild(offsetParent, rootElm)) {
+          const castOffsetParent = offsetParent;
+          x += castOffsetParent.offsetLeft || 0;
+          y += castOffsetParent.offsetTop || 0;
+          offsetParent = castOffsetParent.offsetParent;
+        }
+        offsetParent = elm.parentNode;
+        while (offsetParent && offsetParent !== rootElm && offsetParent.nodeType && !hasChild(offsetParent, rootElm)) {
+          x -= offsetParent.scrollLeft || 0;
+          y -= offsetParent.scrollTop || 0;
+          offsetParent = offsetParent.parentNode;
+        }
+        y += getTableCaptionDeltaY(SugarElement.fromDom(elm));
+      }
+      return {
+        x,
+        y
+      };
+    };
+
+    const StyleSheetLoader = (documentOrShadowRoot, settings = {}) => {
+      let idCount = 0;
+      const loadedStates = {};
+      const edos = SugarElement.fromDom(documentOrShadowRoot);
+      const doc = documentOrOwner(edos);
+      const maxLoadTime = settings.maxLoadTime || 5000;
+      const _setReferrerPolicy = referrerPolicy => {
+        settings.referrerPolicy = referrerPolicy;
+      };
+      const _setContentCssCors = contentCssCors => {
+        settings.contentCssCors = contentCssCors;
+      };
+      const addStyle = element => {
+        append$1(getStyleContainer(edos), element);
+      };
+      const removeStyle = id => {
+        const styleContainer = getStyleContainer(edos);
+        descendant(styleContainer, '#' + id).each(remove$6);
+      };
+      const getOrCreateState = url => get$a(loadedStates, url).getOrThunk(() => ({
+        id: 'mce-u' + idCount++,
+        passed: [],
+        failed: [],
+        count: 0
+      }));
+      const load = url => new Promise((success, failure) => {
+        let link;
+        const urlWithSuffix = Tools._addCacheSuffix(url);
+        const state = getOrCreateState(urlWithSuffix);
+        loadedStates[urlWithSuffix] = state;
+        state.count++;
+        const resolve = (callbacks, status) => {
+          each$e(callbacks, call);
+          state.status = status;
+          state.passed = [];
+          state.failed = [];
+          if (link) {
+            link.onload = null;
+            link.onerror = null;
+            link = null;
+          }
+        };
+        const passed = () => resolve(state.passed, 2);
+        const failed = () => resolve(state.failed, 3);
+        const wait = (testCallback, waitCallback) => {
+          if (!testCallback()) {
+            if (Date.now() - startTime < maxLoadTime) {
+              setTimeout(waitCallback);
+            } else {
+              failed();
+            }
+          }
+        };
+        const waitForWebKitLinkLoaded = () => {
+          wait(() => {
+            const styleSheets = documentOrShadowRoot.styleSheets;
+            let i = styleSheets.length;
+            while (i--) {
+              const styleSheet = styleSheets[i];
+              const owner = styleSheet.ownerNode;
+              if (owner && link && owner.id === link.id) {
+                passed();
+                return true;
+              }
+            }
+            return false;
+          }, waitForWebKitLinkLoaded);
+        };
+        if (success) {
+          state.passed.push(success);
+        }
+        if (failure) {
+          state.failed.push(failure);
+        }
+        if (state.status === 1) {
+          return;
+        }
+        if (state.status === 2) {
+          passed();
+          return;
+        }
+        if (state.status === 3) {
+          failed();
+          return;
+        }
+        state.status = 1;
+        const linkElem = SugarElement.fromTag('link', doc.dom);
+        setAll$1(linkElem, {
+          rel: 'stylesheet',
+          type: 'text/css',
+          id: state.id
+        });
+        const startTime = Date.now();
+        if (settings.contentCssCors) {
+          set$2(linkElem, 'crossOrigin', 'anonymous');
+        }
+        if (settings.referrerPolicy) {
+          set$2(linkElem, 'referrerpolicy', settings.referrerPolicy);
+        }
+        link = linkElem.dom;
+        link.onload = waitForWebKitLinkLoaded;
+        link.onerror = failed;
+        addStyle(linkElem);
+        set$2(linkElem, 'href', urlWithSuffix);
+      });
+      const loadAll = urls => {
+        const loadedUrls = Promise.allSettled(map$3(urls, url => load(url).then(constant(url))));
+        return loadedUrls.then(results => {
+          const parts = partition$2(results, r => r.status === 'fulfilled');
+          if (parts.fail.length > 0) {
+            return Promise.reject(map$3(parts.fail, result => result.reason));
+          } else {
+            return map$3(parts.pass, result => result.value);
+          }
+        });
+      };
+      const unload = url => {
+        const urlWithSuffix = Tools._addCacheSuffix(url);
+        get$a(loadedStates, urlWithSuffix).each(state => {
+          const count = --state.count;
+          if (count === 0) {
+            delete loadedStates[urlWithSuffix];
+            removeStyle(state.id);
+          }
+        });
+      };
+      const unloadAll = urls => {
+        each$e(urls, url => {
+          unload(url);
+        });
+      };
+      return {
+        load,
+        loadAll,
+        unload,
+        unloadAll,
+        _setReferrerPolicy,
+        _setContentCssCors
+      };
+    };
+
+    const create$d = () => {
+      const map = new WeakMap();
+      const forElement = (referenceElement, settings) => {
+        const root = getRootNode(referenceElement);
+        const rootDom = root.dom;
+        return Optional.from(map.get(rootDom)).getOrThunk(() => {
+          const sl = StyleSheetLoader(rootDom, settings);
+          map.set(rootDom, sl);
+          return sl;
+        });
+      };
+      return { forElement };
+    };
+    const instance = create$d();
+
     const isSpan = node => node.nodeName.toLowerCase() === 'span';
     const isInlineContent = (node, root) => isNonNullable(node) && (isContent$1(node, root) || isInline$1(SugarElement.fromDom(node)));
     const surroundedByInlineContent = (node, root) => {
@@ -2808,8 +2909,9 @@
       blockContent = 'address blockquote div dl fieldset form h1 h2 h3 h4 h5 h6 hr menu ol p pre table ul';
       phrasingContent = 'a abbr b bdo br button cite code del dfn em embed i iframe img input ins kbd ' + 'label map noscript object q s samp script select small span strong sub sup ' + 'textarea u var #text #comment';
       if (type !== 'html4') {
+        const transparentContent = 'a ins del canvas map';
         globalAttributes += ' contenteditable contextmenu draggable dropzone ' + 'hidden spellcheck translate';
-        blockContent += ' article aside details dialog figure main header footer hgroup section nav';
+        blockContent += ' article aside details dialog figure main header footer hgroup section nav ' + transparentContent;
         phrasingContent += ' audio canvas command datalist mark meter output picture ' + 'progress time wbr video ruby bdi keygen';
       }
       if (type !== 'html5-strict') {
@@ -2855,7 +2957,7 @@
       add('ul', '', 'li');
       add('li', 'value', flowContent);
       add('dl', '', 'dt dd');
-      add('a', 'href target rel media hreflang type', phrasingContent);
+      add('a', 'href target rel media hreflang type', flowContent);
       add('q', 'cite', phrasingContent);
       add('ins del', 'cite datetime', flowContent);
       add('img', 'src sizes srcset alt usemap ismap width height');
@@ -3051,6 +3153,7 @@
       const textBlockElementsMap = createLookupTable('text_block_elements', 'h1 h2 h3 h4 h5 h6 p div address pre form ' + 'blockquote center dir fieldset header footer article section hgroup aside main nav figure');
       const blockElementsMap = createLookupTable('block_elements', 'hr table tbody thead tfoot ' + 'th tr td li ol ul caption dl dt dd noscript menu isindex option ' + 'datalist select optgroup figcaption details summary', textBlockElementsMap);
       const textInlineElementsMap = createLookupTable('text_inline_elements', 'span strong b em i font s strike u var cite ' + 'dfn code mark q sup sub samp');
+      const transparentElementsMap = createLookupTable('transparent_elements', 'a ins del canvas map');
       each$b('script noscript iframe noframes noembed title style textarea xmp plaintext'.split(' '), name => {
         specialElements[name] = new RegExp('</' + name + '[^>]*>', 'gi');
       });
@@ -3335,6 +3438,7 @@
       const getNonEmptyElements = constant(nonEmptyElementsMap);
       const getMoveCaretBeforeOnEnterElements = constant(moveCaretBeforeOnEnterElementsMap);
       const getWhitespaceElements = constant(whitespaceElementsMap);
+      const getTransparentElements = constant(transparentElementsMap);
       const getSpecialElements = constant(Object.seal(specialElements));
       const isValidChild = (name, child) => {
         const parent = children[name.toLowerCase()];
@@ -3380,6 +3484,7 @@
         getNonEmptyElements,
         getMoveCaretBeforeOnEnterElements,
         getWhitespaceElements,
+        getTransparentElements,
         getSpecialElements,
         isValidChild,
         isValid,
@@ -4033,7 +4138,7 @@
         if (isString(node)) {
           return has$2(blockElementsMap, node);
         } else {
-          return isElement$6(node) && has$2(blockElementsMap, node.nodeName);
+          return isElement$6(node) && (has$2(blockElementsMap, node.nodeName) || isTransparentBlock(schema, node));
         }
       };
       const get = elm => elm && doc && isString(elm) ? doc.getElementById(elm) : elm;
@@ -4303,7 +4408,7 @@
         return run(node, n => {
           const $node = SugarElement.fromDom(n);
           if (keepChildren) {
-            each$e(children($node), child => {
+            each$e(children$1($node), child => {
               if (isText$b(child) && child.dom.length === 0) {
                 remove$6(child);
               } else {
@@ -5343,8 +5448,8 @@
     const mutate = (original, tag) => {
       const nu = shallowAs(original, tag);
       after$4(original, nu);
-      const children$1 = children(original);
-      append(nu, children$1);
+      const children = children$1(original);
+      append(nu, children);
       remove$6(original);
       return nu;
     };
@@ -8299,12 +8404,7 @@
       }
       return undefined;
     };
-    const isTextBlock$1 = (editor, name) => {
-      if (isNode(name)) {
-        name = name.nodeName;
-      }
-      return !!editor.schema.getTextBlockElements()[name.toLowerCase()];
-    };
+    const isTextBlock$1 = (schema, node) => !!schema.getTextBlockElements()[node.nodeName.toLowerCase()] || isTransparentBlock(schema, node);
     const isValid = (ed, parent, child) => {
       return ed.schema.isValidChild(parent, child);
     };
@@ -8444,9 +8544,17 @@
     };
     const walkText = (start, node, offset, predicate) => {
       const str = node.data;
-      for (let i = offset; start ? i >= 0 : i < str.length; start ? i-- : i++) {
-        if (predicate(str.charAt(i))) {
-          return start ? i + 1 : i;
+      if (start) {
+        for (let i = offset; i > 0; i--) {
+          if (predicate(str.charAt(i - 1))) {
+            return i;
+          }
+        }
+      } else {
+        for (let i = offset; i < str.length; i++) {
+          if (predicate(str.charAt(i))) {
+            return i;
+          }
         }
       }
       return -1;
@@ -8493,10 +8601,9 @@
       }
       return container;
     };
-    const findBlockEndPoint = (editor, formatList, container, siblingName) => {
+    const findBlockEndPoint = (dom, formatList, container, siblingName) => {
       var _a;
       let node = container;
-      const dom = editor.dom;
       const root = dom.getRoot();
       const format = formatList[0];
       if (isBlockFormat(format)) {
@@ -8504,7 +8611,7 @@
       }
       if (!node) {
         const scopeRoot = (_a = dom.getParent(container, 'LI,TD,TH')) !== null && _a !== void 0 ? _a : root;
-        node = dom.getParent(isText$a(container) ? container.parentNode : container, node => node !== root && isTextBlock(editor, node), scopeRoot);
+        node = dom.getParent(isText$a(container) ? container.parentNode : container, node => node !== root && isTextBlock(dom.schema, node), scopeRoot);
       }
       if (node && isBlockFormat(format) && format.wrapper) {
         node = getParents$1(dom, node, 'ul,ol').reverse()[0] || node;
@@ -8558,9 +8665,8 @@
       return container;
     };
     const isSelfOrParentBookmark = container => isBookmarkNode(container.parentNode) || isBookmarkNode(container);
-    const expandRng = (editor, rng, formatList, includeTrailingSpace = false) => {
+    const expandRng = (dom, rng, formatList, includeTrailingSpace = false) => {
       let {startContainer, startOffset, endContainer, endOffset} = rng;
-      const dom = editor.dom;
       const format = formatList[0];
       if (isElement$6(startContainer) && startContainer.hasChildNodes()) {
         startContainer = getNode$1(startContainer, startOffset);
@@ -8599,12 +8705,12 @@
         }
       }
       if (rng.collapsed) {
-        const startPoint = findWordEndPoint(dom, editor.getBody(), startContainer, startOffset, true, includeTrailingSpace);
+        const startPoint = findWordEndPoint(dom, dom.getRoot(), startContainer, startOffset, true, includeTrailingSpace);
         startPoint.each(({container, offset}) => {
           startContainer = container;
           startOffset = offset;
         });
-        const endPoint = findWordEndPoint(dom, editor.getBody(), endContainer, endOffset, false, includeTrailingSpace);
+        const endPoint = findWordEndPoint(dom, dom.getRoot(), endContainer, endOffset, false, includeTrailingSpace);
         endPoint.each(({container, offset}) => {
           endContainer = container;
           endOffset = offset;
@@ -8623,8 +8729,8 @@
         endContainer = findSelectorEndPoint(dom, formatList, rng, endContainer, 'nextSibling');
       }
       if (isBlockFormat(format) || isSelectorFormat(format)) {
-        startContainer = findBlockEndPoint(editor, formatList, startContainer, 'previousSibling');
-        endContainer = findBlockEndPoint(editor, formatList, endContainer, 'nextSibling');
+        startContainer = findBlockEndPoint(dom, formatList, startContainer, 'previousSibling');
+        endContainer = findBlockEndPoint(dom, formatList, endContainer, 'nextSibling');
         if (isBlockFormat(format)) {
           if (!dom.isBlock(startContainer)) {
             startContainer = findParentContainer(dom, formatList, startContainer, startOffset, true);
@@ -8734,7 +8840,7 @@
     });
 
     const applyWordGrab = (editor, rng) => {
-      const r = expandRng(editor, rng, [{ inline: 'span' }]);
+      const r = expandRng(editor.dom, rng, [{ inline: 'span' }]);
       rng.setStart(r.startContainer, r.startOffset);
       rng.setEnd(r.endContainer, r.endOffset);
       editor.selection.setRng(rng);
@@ -8795,8 +8901,8 @@
         switch (ctx) {
         case 'invalid-child': {
             finishWrapper();
-            const children$1 = children(elem);
-            processElements(children$1);
+            const children = children$1(elem);
+            processElements(children);
             finishWrapper();
             break;
           }
@@ -9863,9 +9969,20 @@
           return true;
         });
       };
+      const expand = (rng, options = { type: 'word' }) => {
+        if (options.type === 'word') {
+          const rangeLike = expandRng(dom, rng, [{ inline: 'span' }]);
+          const newRange = dom.createRng();
+          newRange.setStart(rangeLike.startContainer, rangeLike.startOffset);
+          newRange.setEnd(rangeLike.endContainer, rangeLike.endOffset);
+          return newRange;
+        }
+        return rng;
+      };
       return {
         walk,
         split: split$1,
+        expand,
         normalize
       };
     };
@@ -9973,19 +10090,19 @@
       editor.dispatch('AfterScrollIntoView', data);
     };
     const descend = (element, offset) => {
-      const children$1 = children(element);
-      if (children$1.length === 0 || excludeFromDescend(element)) {
+      const children = children$1(element);
+      if (children.length === 0 || excludeFromDescend(element)) {
         return {
           element,
           offset
         };
-      } else if (offset < children$1.length && !excludeFromDescend(children$1[offset])) {
+      } else if (offset < children.length && !excludeFromDescend(children[offset])) {
         return {
-          element: children$1[offset],
+          element: children[offset],
           offset: 0
         };
       } else {
-        const last = children$1[children$1.length - 1];
+        const last = children[children.length - 1];
         if (excludeFromDescend(last)) {
           return {
             element,
@@ -10005,7 +10122,7 @@
           } else {
             return {
               element: last,
-              offset: children(last).length
+              offset: children$1(last).length
             };
           }
         }
@@ -10127,7 +10244,7 @@
     const search = element => active$1(getRootNode(element)).filter(e => element.dom.contains(e.dom));
 
     const clamp$1 = (offset, element) => {
-      const max = isText$b(element) ? get$3(element).length : children(element).length + 1;
+      const max = isText$b(element) ? get$3(element).length : children$1(element).length + 1;
       if (offset > max) {
         return max;
       } else if (offset < 0) {
@@ -10138,7 +10255,7 @@
     const normalizeRng = rng => SimSelection.range(rng.start, clamp$1(rng.soffset, rng.start), rng.finish, clamp$1(rng.foffset, rng.finish));
     const isOrContains = (root, elm) => !isRestrictedNode(elm.dom) && (contains(root, elm) || eq(root, elm));
     const isRngInRoot = root => rng => isOrContains(root, rng.start) && isOrContains(root, rng.finish);
-    const shouldStore = editor => editor.inline;
+    const shouldStore = editor => editor.inline || Env.browser.isFirefox();
     const nativeRangeToSelectionRange = r => SimSelection.range(SugarElement.fromDom(r.startContainer), r.startOffset, SugarElement.fromDom(r.endContainer), r.endOffset);
     const readRange = win => {
       const selection = win.getSelection();
@@ -10506,7 +10623,7 @@
       return evt.range !== range ? evt.range : range;
     });
 
-    const getEnd = element => name(element) === 'img' ? 1 : getOption(element).fold(() => children(element).length, v => v.length);
+    const getEnd = element => name(element) === 'img' ? 1 : getOption(element).fold(() => children$1(element).length, v => v.length);
     const isTextNodeWithCursorPosition = el => getOption(el).filter(text => text.trim().length !== 0 || text.indexOf(nbsp) > -1).isSome();
     const elementsWithCursorPosition = [
       'img',
@@ -10521,9 +10638,9 @@
     const last = element => descendantRtl(element, isCursorPosition);
     const descendantRtl = (scope, predicate) => {
       const descend = element => {
-        const children$1 = children(element);
-        for (let i = children$1.length - 1; i >= 0; i--) {
-          const child = children$1[i];
+        const children = children$1(element);
+        for (let i = children.length - 1; i >= 0; i--) {
+          const child = children[i];
           if (predicate(child)) {
             return Optional.some(child);
           }
@@ -10935,6 +11052,27 @@
     };
     const trimExternal = trimInternal;
 
+    const cleanupBogusElements = parent => {
+      const bogusElements = descendants(parent, '[data-mce-bogus]');
+      each$e(bogusElements, elem => {
+        const bogusValue = get$9(elem, 'data-mce-bogus');
+        if (bogusValue === 'all') {
+          remove$6(elem);
+        } else if (isBr$5(elem)) {
+          before$3(elem, SugarElement.fromText(zeroWidth));
+          remove$6(elem);
+        } else {
+          unwrap(elem);
+        }
+      });
+    };
+    const cleanupInputNames = parent => {
+      const inputs = descendants(parent, 'input');
+      each$e(inputs, input => {
+        remove$b(input, 'name');
+      });
+    };
+
     const trimEmptyContents = (editor, html) => {
       const blockName = getForcedRootBlock(editor);
       const emptyRegExp = new RegExp(`^(<${ blockName }[^>]*>(&nbsp;|&#160;|\\s|\u00a0|<br \\/>|)<\\/${ blockName }>[\r\n]*|<br \\/>[\r\n]*)$`);
@@ -10951,18 +11089,8 @@
         top: '0'
       });
       set(offscreenDiv, body.innerHTML);
-      const bogusElements = descendants(offscreenDiv, '[data-mce-bogus]');
-      each$e(bogusElements, elem => {
-        const bogusValue = get$9(elem, 'data-mce-bogus');
-        if (bogusValue === 'all') {
-          remove$6(elem);
-        } else if (isBr$5(elem)) {
-          before$3(elem, SugarElement.fromText(zeroWidth));
-          remove$6(elem);
-        } else {
-          unwrap(elem);
-        }
-      });
+      cleanupBogusElements(offscreenDiv);
+      cleanupInputNames(offscreenDiv);
       const root = getContentContainer(dos);
       append$1(root, offscreenDiv);
       const content = trim$1(offscreenDiv.dom.innerText);
@@ -11580,7 +11708,7 @@
     const strongRtl = /[\u0591-\u07FF\uFB1D-\uFDFF\uFE70-\uFEFC]/;
     const hasStrongRtl = text => strongRtl.test(text);
 
-    const isInlineTarget = (editor, elm) => is$1(SugarElement.fromDom(elm), getInlineBoundarySelector(editor));
+    const isInlineTarget = (editor, elm) => is$1(SugarElement.fromDom(elm), getInlineBoundarySelector(editor)) && !isTransparentBlock(editor.schema, elm);
     const isRtl = element => {
       var _a;
       return DOMUtils.DOM.getStyle(element, 'direction', true) === 'rtl' || hasStrongRtl((_a = element.textContent) !== null && _a !== void 0 ? _a : '');
@@ -11677,7 +11805,7 @@
       }
       if (!eq(root, lastBlock)) {
         const additionalCleanupNodes = is$2(parent(lastBlock), root) ? [] : siblings(lastBlock);
-        each$e(additionalCleanupNodes.concat(children(root)), node => {
+        each$e(additionalCleanupNodes.concat(children$1(root)), node => {
           if (!eq(node, lastBlock) && !contains(node, lastBlock) && isEmpty$2(node)) {
             remove$6(node);
           }
@@ -12087,8 +12215,8 @@
       runFilters(matches, args);
     };
 
-    const paddEmptyNode = (settings, args, blockElements, node) => {
-      if (args.insert && blockElements[node.name]) {
+    const paddEmptyNode = (args, isBlock, node) => {
+      if (args.insert && isBlock(node)) {
         const astNode = new AstNode('br', 1);
         astNode.attr('data-mce-bogus', '1');
         node.empty().append(astNode);
@@ -12109,7 +12237,7 @@
       return (rule === null || rule === void 0 ? void 0 : rule.paddEmpty) === true;
     };
     const isEmpty = (schema, nonEmptyElements, whitespaceElements, node) => node.isEmpty(nonEmptyElements, whitespaceElements, node => isPadded(schema, node));
-    const isLineBreakNode = (node, blockElements) => isNonNullable(node) && (node.name in blockElements || node.name === 'br');
+    const isLineBreakNode = (node, isBlock) => isNonNullable(node) && (isBlock(node) || node.name === 'br');
 
     const removeOrUnwrapInvalidNode = (node, schema, originalNodeParent = node.parent) => {
       if (schema.getSpecialElements()[node.name]) {
@@ -12216,6 +12344,25 @@
             removeOrUnwrapInvalidNode(node, schema);
           }
         }
+      }
+    };
+    const hasClosest = (node, parentName) => {
+      let tempNode = node;
+      while (tempNode) {
+        if (tempNode.name === parentName) {
+          return true;
+        }
+        tempNode = tempNode.parent;
+      }
+      return false;
+    };
+    const isInvalid = (schema, node, parent = node.parent) => {
+      if (parent && schema.children[node.name] && !schema.isValidChild(parent.name, node.name)) {
+        return true;
+      } else if (parent && node.name === 'a' && hasClosest(parent, 'a')) {
+        return true;
+      } else {
+        return false;
       }
     };
 
@@ -12525,12 +12672,14 @@
       const startCell = dom.getParent(rng.startContainer, isTableCell);
       if (isTableCellContentSelected(dom, rng, startCell)) {
         deleteCellContents(editor, rng, SugarElement.fromDom(startCell));
+      } else if (rng.startContainer === rng.endContainer && rng.endOffset - rng.startOffset === 1 && isText$a(rng.startContainer.childNodes[rng.startOffset])) {
+        rng.deleteContents();
       } else {
         editor.getDoc().execCommand('Delete', false);
       }
     };
     const insertHtmlAtCaret = (editor, value, details) => {
-      var _a, _b, _c;
+      var _a, _b;
       const selection = editor.selection;
       const dom = editor.dom;
       const parser = editor.parser;
@@ -12612,9 +12761,9 @@
           }
         }
         const toExtract = fragment.children();
-        const parent = (_c = (_b = fragment.parent) === null || _b === void 0 ? void 0 : _b.name) !== null && _c !== void 0 ? _c : root.name;
+        const parent = (_b = fragment.parent) !== null && _b !== void 0 ? _b : root;
         fragment.unwrap();
-        const invalidChildren = filter$5(toExtract, node => !editor.schema.isValidChild(parent, node.name));
+        const invalidChildren = filter$5(toExtract, node => isInvalid(editor.schema, node, parent));
         cleanInvalidNodes(invalidChildren, editor.schema);
         filter$2(parser.getNodeFilters(), parser.getAttributeFilters(), root);
         value = serializer.serialize(root);
@@ -12628,6 +12777,7 @@
       moveSelectionToMarker(editor, dom.get('mce_marker'));
       unmarkFragmentElements(editor.getBody());
       trimBrsFromTableCell(dom, selection.getStart());
+      updateCaret(editor.schema, editor.getBody(), selection.getStart());
       return value;
     };
 
@@ -12980,7 +13130,7 @@
     const insertCaretContainerNode = (editor, caretContainer, formatNode) => {
       var _a, _b;
       const dom = editor.dom;
-      const block = dom.getParent(formatNode, curry(isTextBlock$1, editor));
+      const block = dom.getParent(formatNode, curry(isTextBlock$1, editor.schema));
       if (block && dom.isEmpty(block)) {
         (_a = formatNode.parentNode) === null || _a === void 0 ? void 0 : _a.replaceChild(caretContainer, formatNode);
       } else {
@@ -13036,7 +13186,7 @@
       if (text && offset > 0 && offset < text.length && wordcharRegex.test(text.charAt(offset)) && wordcharRegex.test(text.charAt(offset - 1))) {
         const bookmark = selection.getBookmark();
         selectionRng.collapse(true);
-        let rng = expandRng(editor, selectionRng, formatList);
+        let rng = expandRng(editor.dom, selectionRng, formatList);
         rng = split(rng);
         editor.formatter.apply(name, vars, rng);
         selection.moveToBookmark(bookmark);
@@ -13091,7 +13241,7 @@
       if (hasContentAfter) {
         const bookmark = selection.getBookmark();
         rng.collapse(true);
-        let expandedRng = expandRng(editor, rng, formatList, true);
+        let expandedRng = expandRng(dom, rng, formatList, true);
         expandedRng = split(expandedRng);
         editor.formatter.remove(name, vars, expandedRng, similar);
         selection.moveToBookmark(bookmark);
@@ -13169,7 +13319,7 @@
         append(SugarElement.fromDom(pre1), [
           SugarElement.fromTag('br', doc),
           SugarElement.fromTag('br', doc),
-          ...children(sPre2)
+          ...children$1(sPre2)
         ]);
       };
       if (!rng.collapsed) {
@@ -13438,6 +13588,11 @@
     const removeFormatInternal = (ed, format, vars, node, compareNode) => {
       const dom = ed.dom;
       const elementUtils = ElementUtils(ed);
+      const schema = ed.schema;
+      if (isInlineFormat(format) && isTransparentElementName(schema, format.inline) && isTransparentBlock(schema, node) && node.parentElement === ed.getBody()) {
+        removeNode(ed, node, format);
+        return removeResult.removed();
+      }
       if (!format.ceFalseOverride && node && dom.getContentEditableParent(node) === 'false') {
         return removeResult.keep();
       }
@@ -13633,7 +13788,7 @@
       const removeRngStyle = rng => {
         let startContainer;
         let endContainer;
-        let expandedRng = expandRng(ed, rng, formatList, rng.collapsed);
+        let expandedRng = expandRng(dom, rng, formatList, rng.collapsed);
         if (format.split) {
           expandedRng = split(expandedRng);
           startContainer = getContainer(ed, expandedRng, true);
@@ -13855,8 +14010,8 @@
         const wrapName = format.inline || format.block;
         const wrapElm = createWrapElement(wrapName);
         const isMatchingWrappingBlock = node => isWrappingBlockFormat(format) && matchNode(ed, node, name, vars);
-        const canRenameBlock = (nodeName, parentName, isEditableDescendant) => {
-          const isValidBlockFormatForNode = isNonWrappingBlockFormat(format) && isTextBlock$1(ed, nodeName) && isValid(ed, parentName, wrapName);
+        const canRenameBlock = (node, parentName, isEditableDescendant) => {
+          const isValidBlockFormatForNode = isNonWrappingBlockFormat(format) && isTextBlock$1(ed.schema, node) && isValid(ed, parentName, wrapName);
           return isEditableDescendant && isValidBlockFormatForNode;
         };
         const canWrapNode = (node, parentName, isEditableDescendant, isWrappableNoneditableElm) => {
@@ -13873,7 +14028,6 @@
             let hasContentEditableState = false;
             let lastContentEditable = contentEditable;
             let isWrappableNoneditableElm = false;
-            const nodeName = node.nodeName.toLowerCase();
             const parentNode = node.parentNode;
             const parentName = parentNode.nodeName.toLowerCase();
             const contentEditableValue = dom.getContentEditable(node);
@@ -13895,7 +14049,7 @@
               currentWrapElm = null;
               return;
             }
-            if (canRenameBlock(nodeName, parentName, isEditableDescendant)) {
+            if (canRenameBlock(node, parentName, isEditableDescendant)) {
               const elm = dom.rename(node, wrapName);
               setElementFormat(elm);
               newWrappers.push(elm);
@@ -13996,7 +14150,7 @@
               const rng = dom.createRng();
               rng.setStartBefore(node);
               rng.setEndAfter(node);
-              applyRngStyle(dom, expandRng(ed, rng, formatList), true);
+              applyRngStyle(dom, expandRng(dom, rng, formatList), true);
             }
           } else {
             applyRngStyle(dom, node, true);
@@ -14006,7 +14160,7 @@
             selection.setRng(normalize(selection.getRng()));
             preserveSelection(ed, () => {
               runOnRanges(ed, (selectionRng, fake) => {
-                const expandedRng = fake ? selectionRng : expandRng(ed, selectionRng, formatList);
+                const expandedRng = fake ? selectionRng : expandRng(dom, selectionRng, formatList);
                 applyRngStyle(dom, expandedRng, false);
               });
             }, always);
@@ -15959,6 +16113,7 @@
           const nonEmptyElements = schema.getNonEmptyElements();
           const whitespaceElements = schema.getWhitespaceElements();
           blockElements.body = 1;
+          const isBlock = node => node.name in blockElements && isTransparentAstInline(schema, node);
           for (let i = 0, l = nodes.length; i < l; i++) {
             let node = nodes[i];
             let parent = node.parent;
@@ -15982,7 +16137,7 @@
                     if (elementRule.removeEmpty) {
                       parent.remove();
                     } else if (elementRule.paddEmpty) {
-                      paddEmptyNode(settings, args, blockElements, parent);
+                      paddEmptyNode(args, isBlock, parent);
                     }
                   }
                 }
@@ -16582,12 +16737,13 @@
         }
         return false;
       };
+      const isBlock = node => node.name in blockElements && !isTransparentAstInline(schema, node);
       const isAtEdgeOfBlock = (node, start) => {
         const neighbour = start ? node.prev : node.next;
         if (isNonNullable(neighbour) || isNullable(node.parent)) {
           return false;
         }
-        return node.parent.name in blockElements && (node.parent !== root || args.isRootContent === true);
+        return isBlock(node.parent) && (node.parent !== root || args.isRootContent === true);
       };
       const preprocess = node => {
         var _a;
@@ -16595,7 +16751,7 @@
           if (!hasWhitespaceParent(node)) {
             let text = (_a = node.value) !== null && _a !== void 0 ? _a : '';
             text = text.replace(allWhiteSpaceRegExp, ' ');
-            if (isLineBreakNode(node.prev, blockElements) || isAtEdgeOfBlock(node, true)) {
+            if (isLineBreakNode(node.prev, isBlock) || isAtEdgeOfBlock(node, true)) {
               text = text.replace(startWhiteSpaceRegExp, '');
             }
             if (text.length === 0) {
@@ -16613,21 +16769,21 @@
           if (validate && elementRule) {
             const isNodeEmpty = isEmpty(schema, nonEmptyElements, whitespaceElements, node);
             if (elementRule.paddInEmptyBlock && isNodeEmpty && isTextRootBlockEmpty(node)) {
-              paddEmptyNode(settings, args, blockElements, node);
+              paddEmptyNode(args, isBlock, node);
             } else if (elementRule.removeEmpty && isNodeEmpty) {
-              if (blockElements[node.name]) {
+              if (isBlock(node)) {
                 node.remove();
               } else {
                 node.unwrap();
               }
             } else if (elementRule.paddEmpty && (isNodeEmpty || isPaddedWithNbsp(node))) {
-              paddEmptyNode(settings, args, blockElements, node);
+              paddEmptyNode(args, isBlock, node);
             }
           }
         } else if (node.type === 3) {
           if (!hasWhitespaceParent(node)) {
             let text = (_a = node.value) !== null && _a !== void 0 ? _a : '';
-            if (node.next && blockElements[node.next.name] || isAtEdgeOfBlock(node, false)) {
+            if (node.next && isBlock(node.next) || isAtEdgeOfBlock(node, false)) {
               text = text.replace(endWhiteSpaceRegExp, '');
             }
             if (text.length === 0) {
@@ -16681,10 +16837,14 @@
       const getAttributeFilters = attributeFilterRegistry.getFilters;
       const removeAttributeFilter = attributeFilterRegistry.removeFilter;
       const findInvalidChildren = (node, invalidChildren) => {
-        const parent = node.parent;
-        if (parent && schema.children[node.name] && !schema.isValidChild(parent.name, node.name)) {
+        if (isInvalid(schema, node)) {
           invalidChildren.push(node);
         }
+      };
+      const isWrappableNode = (blockElements, node) => {
+        const isInternalElement = isString(node.attr(internalElementAttr));
+        const isInlineElement = node.type === 1 && (!has$2(blockElements, node.name) && !isTransparentAstBlock(schema, node));
+        return node.type === 3 || isInlineElement && !isInternalElement;
       };
       const addRootBlocks = (rootNode, rootBlockName) => {
         const blockElements = extend$1(makeMap('script,style,head,html,body,title,meta,param'), schema.getBlockElements());
@@ -16709,7 +16869,7 @@
         }
         while (node) {
           const next = node.next;
-          if (node.type === 3 || node.type === 1 && node.name !== 'p' && !blockElements[node.name] && !node.attr(internalElementAttr)) {
+          if (isWrappableNode(blockElements, node)) {
             if (!rootBlockNode) {
               rootBlockNode = new AstNode(rootBlockName, 1);
               rootBlockNode.attr(defaultedSettings.forced_root_block_attrs);
@@ -16731,8 +16891,10 @@
         const validate = defaultedSettings.validate;
         const rootName = (_a = args.context) !== null && _a !== void 0 ? _a : defaultedSettings.root_name;
         const element = parseAndSanitizeWithContext(html, rootName, args.format);
+        updateChildren(schema, element);
         const rootNode = new AstNode(rootName, 11);
         transferChildren(rootNode, element, schema.getSpecialElements());
+        element.innerHTML = '';
         const [whitespacePre, whitespacePost] = whitespaceCleaner(rootNode, schema, defaultedSettings, args);
         const invalidChildren = [];
         const invalidFinder = validate ? node => findInvalidChildren(node, invalidChildren) : noop;
@@ -17036,10 +17198,13 @@
       const parentBlockOpt = Optional.from(editor.dom.getParent(rng.commonAncestorContainer, editor.dom.isBlock));
       const body = editor.getBody();
       const contextNodeName = getContextNodeName(parentBlockOpt);
+      const rangeContentClone = SugarElement.fromDom(rng.cloneContents());
+      cleanupBogusElements(rangeContentClone);
+      cleanupInputNames(rangeContentClone);
       const bin = editor.dom.add(body, contextNodeName, {
         'data-mce-bogus': 'all',
         'style': 'overflow: hidden; opacity: 0;'
-      }, rng.cloneContents());
+      }, rangeContentClone.dom);
       const text = getInnerText(bin);
       const nonRenderedText = trim$1((_a = bin.textContent) !== null && _a !== void 0 ? _a : '');
       editor.dom.remove(bin);
@@ -17317,6 +17482,7 @@
       }
       if (bookmark) {
         editor.selection.moveToBookmark(bookmark);
+        editor.selection.scrollIntoView();
       }
     };
     const getLevelContent = level => {
@@ -18091,11 +18257,13 @@
         win = selectedRange = explicitRange = null;
         controlSelection.destroy();
       };
+      const expand = (options = { type: 'word' }) => setRng(RangeUtils(dom).expand(getRng$1(), options));
       const exports = {
         dom,
         win,
         serializer,
         editor,
+        expand,
         collapse,
         setCursorLocation,
         getContent,
@@ -18264,7 +18432,7 @@
           }
         });
       });
-      htmlParser.addAttributeFilter('data-mce-src,data-mce-href,data-mce-style,' + 'data-mce-selected,data-mce-expando,' + 'data-mce-type,data-mce-resize,data-mce-placeholder', (nodes, name) => {
+      htmlParser.addAttributeFilter('data-mce-src,data-mce-href,data-mce-style,' + 'data-mce-selected,data-mce-expando,data-mce-block,' + 'data-mce-type,data-mce-resize,data-mce-placeholder', (nodes, name) => {
         let i = nodes.length;
         while (i--) {
           nodes[i].attr(name, null);
@@ -20390,8 +20558,20 @@
       return getParentBlock$2(rootElm, containerElm).map(block => blockPosition(block, pos));
     };
     const isDifferentBlocks = blockBoundary => !eq(blockBoundary.from.block, blockBoundary.to.block);
-    const hasSameParent = blockBoundary => parent(blockBoundary.from.block).bind(parent1 => parent(blockBoundary.to.block).filter(parent2 => eq(parent1, parent2))).isSome();
+    const getClosestHost = (root, scope) => {
+      const isRoot = node => eq(node, root);
+      const isHost = node => isTableCell$2(node) || isContentEditableTrue$3(node.dom);
+      return closest$4(scope, isHost, isRoot).filter(isElement$7).getOr(root);
+    };
+    const hasSameHost = (rootNode, blockBoundary) => {
+      const root = SugarElement.fromDom(rootNode);
+      return eq(getClosestHost(root, blockBoundary.from.block), getClosestHost(root, blockBoundary.to.block));
+    };
     const isEditable$2 = blockBoundary => isContentEditableFalse$a(blockBoundary.from.block.dom) === false && isContentEditableFalse$a(blockBoundary.to.block.dom) === false;
+    const hasValidBlocks = blockBoundary => {
+      const isValidBlock = block => isTextBlock$2(block) || hasBlockAttr(block.dom);
+      return isValidBlock(blockBoundary.from.block) && isValidBlock(blockBoundary.to.block);
+    };
     const skipLastBr = (rootNode, forward, blockPosition) => {
       if (isBr$6(blockPosition.position.getNode()) && !isEmpty$2(blockPosition.block)) {
         return positionIn(false, blockPosition.block.dom).bind(lastPositionInBlock => {
@@ -20408,13 +20588,13 @@
     const readFromRange = (rootNode, forward, rng) => {
       const fromBlockPos = getBlockPosition(rootNode, CaretPosition.fromRangeStart(rng));
       const toBlockPos = fromBlockPos.bind(blockPos => fromPosition(forward, rootNode, blockPos.position).bind(to => getBlockPosition(rootNode, to).map(blockPos => skipLastBr(rootNode, forward, blockPos))));
-      return lift2(fromBlockPos, toBlockPos, blockBoundary).filter(blockBoundary => isDifferentBlocks(blockBoundary) && hasSameParent(blockBoundary) && isEditable$2(blockBoundary));
+      return lift2(fromBlockPos, toBlockPos, blockBoundary).filter(blockBoundary => isDifferentBlocks(blockBoundary) && hasSameHost(rootNode, blockBoundary) && isEditable$2(blockBoundary) && hasValidBlocks(blockBoundary));
     };
     const read$1 = (rootNode, forward, rng) => rng.collapsed ? readFromRange(rootNode, forward, rng) : Optional.none();
 
     const getChildrenUntilBlockBoundary = block => {
-      const children$1 = children(block);
-      return findIndex$2(children$1, isBlock$2).fold(constant(children$1), index => children$1.slice(0, index));
+      const children = children$1(block);
+      return findIndex$2(children, isBlock$2).fold(constant(children), index => children.slice(0, index));
     };
     const extractChildren = block => {
       const children = getChildrenUntilBlockBoundary(block);
@@ -21674,11 +21854,11 @@
     };
 
     const isBlockElement = (blockElements, node) => has$2(blockElements, node.nodeName);
-    const isValidTarget = (blockElements, node) => {
+    const isValidTarget = (schema, node) => {
       if (isText$a(node)) {
         return true;
       } else if (isElement$6(node)) {
-        return !isBlockElement(blockElements, node) && !isBookmarkNode$1(node);
+        return !isBlockElement(schema.getBlockElements(), node) && !isBookmarkNode$1(node) && !isTransparentBlock(schema, node);
       } else {
         return false;
       }
@@ -21701,7 +21881,8 @@
     const createRootBlock = editor => editor.dom.create(getForcedRootBlock(editor), getForcedRootBlockAttrs(editor));
     const addRootBlocks = editor => {
       const dom = editor.dom, selection = editor.selection;
-      const schema = editor.schema, blockElements = schema.getBlockElements();
+      const schema = editor.schema;
+      const blockElements = schema.getBlockElements();
       const startNode = selection.getStart();
       const rootNode = editor.getBody();
       let rootBlockNode;
@@ -21720,7 +21901,10 @@
       const restoreSelection = hasFocus(editor);
       let node = rootNode.firstChild;
       while (node) {
-        if (isValidTarget(blockElements, node)) {
+        if (isElement$6(node)) {
+          updateElement(schema, node);
+        }
+        if (isValidTarget(schema, node)) {
           if (shouldRemoveTextNode(blockElements, node)) {
             tempNode = node;
             node = node.nextSibling;
@@ -22028,7 +22212,7 @@
       return filterFirstLayer(scope, selector, always);
     };
     const filterFirstLayer = (scope, selector, predicate) => {
-      return bind$3(children(scope), x => {
+      return bind$3(children$1(scope), x => {
         if (is$1(x, selector)) {
           return predicate(x) ? [x] : [];
         } else {
@@ -25171,8 +25355,10 @@
     };
     const traverseUp = (rootElm, scope, clientX, clientY) => {
       const helper = (scope, prevScope) => {
-        return prevScope.fold(() => closestChildCaretCandidateNodeRect(from(scope.dom.childNodes), clientX, clientY), prevScope => {
-          const uncheckedChildren = filter$5(from(scope.dom.childNodes), node => node !== prevScope.dom);
+        const isDragGhostContainer = node => isElement$6(node) && node.classList.contains('mce-drag-container');
+        const childNodesWithoutGhost = filter$5(scope.dom.childNodes, not(isDragGhostContainer));
+        return prevScope.fold(() => closestChildCaretCandidateNodeRect(childNodesWithoutGhost, clientX, clientY), prevScope => {
+          const uncheckedChildren = filter$5(childNodesWithoutGhost, node => node !== prevScope.dom);
           return closestChildCaretCandidateNodeRect(uncheckedChildren, clientX, clientY);
         }).orThunk(() => {
           const parent = eq(scope, rootElm) ? Optional.none() : parentElement(scope);
@@ -25315,7 +25501,7 @@
     const scrollRight = scrollEditor('left', scrollPixelsPerInterval);
     const scrollUp = scrollEditor('top', -scrollPixelsPerInterval);
     const scrollDown = scrollEditor('top', scrollPixelsPerInterval);
-    const moveGhost = (ghostElm, position, width, height, maxX, maxY, mouseY, mouseX, contentAreaContainer, win, state) => {
+    const moveGhost = (ghostElm, position, width, height, maxX, maxY, mouseY, mouseX, contentAreaContainer, win, state, mouseEventOriginatedFromWithinTheEditor) => {
       let overflowX = 0, overflowY = 0;
       ghostElm.style.left = position.pageX + 'px';
       ghostElm.style.top = position.pageY + 'px';
@@ -25333,7 +25519,7 @@
       const outerMouseX = mouseX + contentAreaContainer.getBoundingClientRect().left;
       state.on(state => {
         state.intervalId.clear();
-        if (state.dragging) {
+        if (state.dragging && mouseEventOriginatedFromWithinTheEditor) {
           if (mouseY + mouseRangeToTriggerScrollInsideEditor >= clientHeight) {
             state.intervalId.set(scrollDown(win));
           } else if (mouseY - mouseRangeToTriggerScrollInsideEditor <= 0) {
@@ -25391,7 +25577,14 @@
     const move = (state, editor) => {
       const throttledPlaceCaretAt = first$1((clientX, clientY) => {
         editor._selectionOverrides.hideFakeCaret();
-        editor.selection.placeCaretAt(clientX, clientY);
+        closestFakeCaretCandidate(editor.getBody(), clientX, clientY).fold(() => editor.selection.placeCaretAt(clientX, clientY), caretInfo => {
+          const range = editor._selectionOverrides.showCaret(1, caretInfo.node, caretInfo.position === FakeCaretPosition.Before, false);
+          if (range) {
+            editor.selection.setRng(range);
+          } else {
+            editor.selection.placeCaretAt(clientX, clientY);
+          }
+        });
       }, 0);
       editor.on('remove', throttledPlaceCaretAt.cancel);
       const state_ = state;
@@ -25406,9 +25599,10 @@
           editor.focus();
         }
         if (state.dragging) {
+          const mouseEventOriginatedFromWithinTheEditor = e.currentTarget === editor.getDoc().documentElement;
           const targetPos = applyRelPos(state, calc(editor, e));
           appendGhostToBody(state.ghost, editor.getBody());
-          moveGhost(state.ghost, targetPos, state.width, state.height, state.maxX, state.maxY, e.clientY, e.clientX, editor.getContentAreaContainer(), editor.getWin(), state_);
+          moveGhost(state.ghost, targetPos, state.width, state.height, state.maxX, state.maxY, e.clientY, e.clientX, editor.getContentAreaContainer(), editor.getWin(), state_, mouseEventOriginatedFromWithinTheEditor);
           throttledPlaceCaretAt.throttle(e.clientX, e.clientY);
         }
       });
@@ -25781,12 +25975,28 @@
             const dir = forward ? 1 : -1;
             const caretPosition = getNormalizedRangeEndPoint(dir, rootNode, range);
             const beforeNode = caretPosition.getNode(!forward);
-            if (isFakeCaretTarget(beforeNode)) {
-              return showCaret(dir, beforeNode, forward ? !caretPosition.isAtEnd() : false, false);
+            if (isNonNullable(beforeNode)) {
+              if (isFakeCaretTarget(beforeNode)) {
+                return showCaret(dir, beforeNode, forward ? !caretPosition.isAtEnd() : false, false);
+              }
+              if (isCaretContainerInline(beforeNode) && isContentEditableFalse$a(beforeNode.nextSibling)) {
+                const rng = dom.createRng();
+                rng.setStart(beforeNode, 0);
+                rng.setEnd(beforeNode, 0);
+                return rng;
+              }
             }
             const afterNode = caretPosition.getNode(forward);
-            if (isFakeCaretTarget(afterNode)) {
-              return showCaret(dir, afterNode, forward ? false : !caretPosition.isAtEnd(), false);
+            if (isNonNullable(afterNode)) {
+              if (isFakeCaretTarget(afterNode)) {
+                return showCaret(dir, afterNode, forward ? false : !caretPosition.isAtEnd(), false);
+              }
+              if (isCaretContainerInline(afterNode) && isContentEditableFalse$a(afterNode.previousSibling)) {
+                const rng = dom.createRng();
+                rng.setStart(afterNode, 1);
+                rng.setEnd(afterNode, 1);
+                return rng;
+              }
             }
           }
           return null;
@@ -25975,9 +26185,9 @@
       });
       return true;
     };
-    const sortPatterns = patterns => sort(patterns, (a, b) => b.start.length - a.start.length);
+    const sortPatterns$1 = patterns => sort(patterns, (a, b) => b.start.length - a.start.length);
     const findPattern$1 = (patterns, text) => {
-      const sortedPatterns = sortPatterns(patterns);
+      const sortedPatterns = sortPatterns$1(patterns);
       const nuText = text.replace(nbsp, ' ');
       return find$2(sortedPatterns, pattern => text.indexOf(pattern.start) === 0 || nuText.indexOf(pattern.start) === 0);
     };
@@ -26055,7 +26265,10 @@
       const startPattern = pattern.start;
       const startSpot = repeatLeft(dom, spot.container, spot.offset, matchesPattern(startPattern), block);
       return startSpot.bind(spot => {
-        if (spot.offset >= startPattern.length) {
+        var _a, _b;
+        const startPatternIndex = (_b = (_a = block.textContent) === null || _a === void 0 ? void 0 : _a.indexOf(startPattern)) !== null && _b !== void 0 ? _b : -1;
+        const isCompleteMatch = startPatternIndex !== -1 && spot.offset >= startPatternIndex + startPattern.length;
+        if (isCompleteMatch) {
           const rng = dom.createRng();
           rng.setStart(spot.container, spot.offset - startPattern.length);
           rng.setEnd(spot.container, spot.offset);
@@ -26148,6 +26361,9 @@
             remainingPatterns: patternsWithoutCurrent,
             position: endSpot
           }, normalizedMatches);
+          if (result.isNone() && offset > 0) {
+            return findPatternsRec(editor, patterns, node, offset - 1, block, normalizedMatches);
+          }
           if (result.isSome()) {
             return result;
           }
@@ -26202,7 +26418,23 @@
           }]);
       }, []);
     };
-    const findPatterns = (editor, block, node, offset, patternSet, normalizedMatches) => findPatternsRec(editor, patternSet.inlinePatterns, node, offset, block, normalizedMatches).fold(() => [], result => result.matches);
+    const sortPatterns = patterns => sort(patterns, (a, b) => b.end.length - a.end.length);
+    const getBestMatches = (matches, matchesWithSortedPatterns) => {
+      const hasSameMatches = forall(matches, match => exists(matchesWithSortedPatterns, sortedMatch => match.pattern.start === sortedMatch.pattern.start && match.pattern.end === sortedMatch.pattern.end));
+      if (matches.length === matchesWithSortedPatterns.length) {
+        if (hasSameMatches) {
+          return matches;
+        } else {
+          return matchesWithSortedPatterns;
+        }
+      }
+      return matches.length > matchesWithSortedPatterns.length ? matches : matchesWithSortedPatterns;
+    };
+    const findPatterns = (editor, block, node, offset, patternSet, normalizedMatches) => {
+      const matches = findPatternsRec(editor, patternSet.inlinePatterns, node, offset, block, normalizedMatches).fold(() => [], result => result.matches);
+      const matchesWithSortedPatterns = findPatternsRec(editor, sortPatterns(patternSet.inlinePatterns), node, offset, block, normalizedMatches).fold(() => [], result => result.matches);
+      return getBestMatches(matches, matchesWithSortedPatterns);
+    };
     const applyMatches = (editor, matches) => {
       if (matches.length === 0) {
         return;
@@ -26546,7 +26778,7 @@
       };
       const addBrAfterLastLinks = () => {
         const fixLinks = () => {
-          each(dom.select('a'), node => {
+          each(dom.select('a:not([data-mce-block])'), node => {
             var _a;
             let parentNode = node.parentNode;
             const root = dom.getRoot();
@@ -28019,6 +28251,8 @@
       registerExecCommands(editor);
     };
 
+    const selectionSafeCommands = ['toggleview'];
+    const isSelectionSafeCommand = command => contains$2(selectionSafeCommands, command.toLowerCase());
     class EditorCommands {
       constructor(editor) {
         this.commands = {
@@ -28063,7 +28297,7 @@
         return false;
       }
       queryCommandState(command) {
-        if (this.editor.quirks.isHidden() || this.editor.removed) {
+        if (!isSelectionSafeCommand(command) && this.editor.quirks.isHidden() || this.editor.removed) {
           return false;
         }
         const lowerCaseCommand = command.toLowerCase();
@@ -28074,7 +28308,7 @@
         return false;
       }
       queryCommandValue(command) {
-        if (this.editor.quirks.isHidden() || this.editor.removed) {
+        if (!isSelectionSafeCommand(command) && this.editor.quirks.isHidden() || this.editor.removed) {
           return '';
         }
         const lowerCaseCommand = command.toLowerCase();
@@ -28913,6 +29147,7 @@
       const contextMenus = {};
       const contextToolbars = {};
       const sidebars = {};
+      const views = {};
       const add = (collection, type) => (name, spec) => {
         collection[name.toLowerCase()] = {
           ...spec,
@@ -28934,6 +29169,7 @@
         addContextToolbar: add(contextToolbars, 'contexttoolbar'),
         addContextForm: add(contextToolbars, 'contextform'),
         addSidebar: add(sidebars, 'sidebar'),
+        addView: add(views, 'views'),
         addIcon,
         getAll: () => ({
           buttons,
@@ -28942,7 +29178,8 @@
           popups,
           contextMenus,
           contextToolbars,
-          sidebars
+          sidebars,
+          views
         })
       };
     };
@@ -28964,6 +29201,7 @@
         addToggleButton: bridge.addToggleButton,
         addGroupToolbarButton: bridge.addGroupToolbarButton,
         addToggleMenuItem: bridge.addToggleMenuItem,
+        addView: bridge.addView,
         getAll: bridge.getAll
       };
     };
@@ -29014,6 +29252,10 @@
         if (referrerPolicy) {
           ScriptLoader.ScriptLoader._setReferrerPolicy(referrerPolicy);
           DOMUtils.DOM.styleSheetLoader._setReferrerPolicy(referrerPolicy);
+        }
+        const contentCssCors = hasContentCssCors(self);
+        if (isNonNullable(contentCssCors)) {
+          DOMUtils.DOM.styleSheetLoader._setContentCssCors(contentCssCors);
         }
         AddOnManager.languageLoad = getOption('language_load');
         AddOnManager.baseURL = editorManager.baseURL;
@@ -29385,8 +29627,8 @@
       documentBaseURL: null,
       suffix: null,
       majorVersion: '6',
-      minorVersion: '2.0',
-      releaseDate: '2022-09-08',
+      minorVersion: '3.0',
+      releaseDate: '2022-11-23',
       i18n: I18n,
       activeEditor: null,
       focusedEditor: null,
