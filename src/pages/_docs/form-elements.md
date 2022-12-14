@@ -186,12 +186,27 @@ Add text to your input control, either before or after the text which is to be e
 
 ## Input with appended link
 
-Include a link in your input control to add a clickable element within the control. 
+Include a link in your input control to add a clickable element within the control.
 
 {% capture code %}
 <div class="mb-3">
 	<label class="form-label">Input with appended link</label>
 	{% include ui/form/input-group.html append-link="Show password" flat=true type="password" value="ultrastrongpassword" %}
+</div>
+{% endcapture %}
+{% include example.html code=code %}
+
+## Input with appended `<kbd>`
+
+Include a `<kbd>` in your input control to add shortcut to the control.
+
+{% capture html %}
+<kbd>ctrl + K</kbd>
+{% endcapture %}
+{% capture code %}
+<div class="mb-3">
+	<label class="form-label">Input with appended link</label>
+	{% include ui/form/input-group.html append-html=html flat=true type="password" value="ultrastrongpassword" %}
 </div>
 {% endcapture %}
 {% include example.html code=code %}
