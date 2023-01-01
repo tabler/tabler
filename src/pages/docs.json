@@ -1,0 +1,17 @@
+---
+layout: null
+---
+{
+  "pages": [
+    {% for doc in site.docs %}
+    {
+      "title": "{{ doc.title }}",
+      "description": {{ doc.description | jsonify }},
+      "menu": {{ doc.menu | jsonify }},
+      "id": {{ doc.id | jsonify }},
+      "bootstrap-link": {{ doc['bootstrap-link'] | jsonify }},
+      "content": {{ doc.content | jsonify }}
+    }{% unless forloop.last %},{% endunless %}
+    {% endfor %}
+  ]
+}

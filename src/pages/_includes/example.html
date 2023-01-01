@@ -33,13 +33,16 @@
 {% endcapture %}
 {% assign html = html | replace_regex: "\n\n+", new_line %}
 
+{% comment %}
 {% assign html = html | replace_regex: 'url\(([^\)]+)\)', 'url(...)' %}
 {% assign html = html | replace_regex: 'src="([^"]+)"', 'src="..."' %}
 {% assign html = html | replace_regex: 'href="([^#][^"]+)"', 'href="#"' %}
+{% endcomment %}
+
 {% assign html = html | replace_regex: '\{% hide %\}.*?\{% endhide %\}', '' %}
 {% assign html = html | replace_regex: 'class=" ', 'class="' %}
 
-{% assign html = html | htmlbeautifier %}
+{% assign html = html | strip | htmlbeautifier %}
 
 <div class="example-code">
 	{% highlight html %}{{ html }}{% endhighlight %}

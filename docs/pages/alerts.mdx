@@ -1,0 +1,146 @@
+---
+title: Alerts
+menu: help.docs.components.alerts
+description: Alert messages are used to inform users of the status of their action and help them solve any problems that might have occurred. Good design of alert modals is very important for the overall user experience of a website or app.
+bootstrap-link: components/alerts/
+---
+
+
+[comment]: <> (## Default markup)
+
+[comment]: <> (Depending on the information you need to convey, you can use one of the following types of alert messages - **success**, **info**, **warning** or **danger**. Using the right type of alert modal will help draw users' attention to the message and prompt them to take action.)
+
+[comment]: <> ({% capture code %})
+
+[comment]: <> ({% for alert in site.data.alerts %})
+
+[comment]: <> (	{% include ui/alert.html type=alert.color text=alert.text description=alert.description %})
+
+[comment]: <> ({% endfor %})
+
+[comment]: <> ({% endcapture %})
+
+[comment]: <> ({% include example.html code=code %})
+
+
+[comment]: <> (## Alert links)
+
+[comment]: <> (Add a link to your alert message to redirect users to the details they need to complete or additional information they should read.)
+
+[comment]: <> ({% capture code %})
+
+[comment]: <> ({% for variant in site.variants %})
+
+[comment]: <> (	{% capture variant-text %})
+
+[comment]: <> (		This is a {{ variant.name }} alert — <a href="#" class="alert-link">check it out</a>!)
+
+[comment]: <> (	{% endcapture %})
+
+[comment]: <> (	{% include ui/alert.html type=variant.name text=variant-text %})
+
+[comment]: <> ({% endfor %})
+
+[comment]: <> ({% endcapture %})
+
+[comment]: <> ({% include example.html code=code %})
+
+
+[comment]: <> (## Dismissible alerts)
+
+[comment]: <> (Add the `x` close button to make an alert modal dismissible. Thanks to that, your alert modal will disappear only once the user closes it.)
+
+[comment]: <> ({% capture code %})
+
+[comment]: <> ({% for alert in site.data.alerts %})
+
+[comment]: <> ({% include ui/alert.html type=alert.color icon=alert.icon text=alert.text description=alert.description close=true %})
+
+[comment]: <> ({% endfor %})
+
+[comment]: <> ({% endcapture %})
+
+[comment]: <> ({% include example.html code=code %})
+
+
+[comment]: <> (## Alerts with icons)
+
+[comment]: <> (Add an icon to your alert modal to make it more user-friendly and help users easily identify the message.)
+
+[comment]: <> ({% capture code %})
+
+[comment]: <> ({% for alert in site.data.alerts %})
+
+[comment]: <> ({% include ui/alert.html type=alert.color icon=alert.icon text=alert.text description=alert.description %})
+
+[comment]: <> ({% endfor %})
+
+[comment]: <> ({% endcapture %})
+
+[comment]: <> ({% include example.html code=code %})
+
+
+[comment]: <> (## Alert with avatar)
+
+[comment]: <> (Add an avatar to your alert modal to make it more personalized.)
+
+[comment]: <> ({% capture code %})
+
+[comment]: <> ({% for variant in site.variants %})
+
+[comment]: <> (	{% capture variant-text %})
+
+[comment]: <> (		Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit.)
+
+[comment]: <> (	{% endcapture %})
+
+[comment]: <> (	{% include ui/alert.html type=variant.name text=variant-text person-id=forloop.index %})
+
+[comment]: <> ({% endfor %})
+
+[comment]: <> ({% endcapture %})
+
+[comment]: <> ({% include example.html code=code %})
+
+
+[comment]: <> (## Alert with buttons)
+
+[comment]: <> (Add primary and secondary buttons to your alert modals if you want users to take a particular action based on the information included in the modal message.)
+
+[comment]: <> ({% capture code %})
+
+[comment]: <> ({% capture variant-text %})
+
+[comment]: <> (	<h3 class="mb-1">Some Title</h3>)
+
+[comment]: <> (	<p>Lorem ipsum Minim ad pariatur eiusmod ea ut nulla aliqua est quis id dolore minim voluptate.</p>)
+
+[comment]: <> ({% endcapture %})
+
+[comment]: <> ({% for alert in site.data.alerts %})
+
+[comment]: <> ({% include ui/alert.html type=alert.color text=variant-text close=true buttons=true %})
+
+[comment]: <> ({% endfor %})
+
+[comment]: <> ({% endcapture %})
+
+[comment]: <> ({% include example.html code=code %})
+
+
+[comment]: <> (## Important alerts)
+
+[comment]: <> (If you want your alert to be really eye-catching, you can add a class `alert-important`.)
+
+[comment]: <> ({% capture code %})
+
+[comment]: <> ({% for alert in site.data.alerts %})
+
+[comment]: <> ({% include ui/alert.html type=alert.color text=alert.description close=true important=true icon=alert.icon %})
+
+[comment]: <> ({% endfor %})
+
+[comment]: <> ({% endcapture %})
+
+[comment]: <> ({% include example.html code=code %})
+
