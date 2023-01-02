@@ -1,3 +1,9 @@
+import Example from './components/Example'
+import Pre from './components/Pre'
+import ColorsTable from './components/ColorsTable'
+import FlagsTable from './components/FlagsTable'
+import PaymentsTable from './components/PaymentsTable'
+
 export default {
   logo: (
 		<>
@@ -9,4 +15,11 @@ export default {
   },
   primaryHue: 213,
   docsRepositoryBase: 'https://github.com/tabler/tabler/blob/docs/pages',
+  components: {
+	 Example,
+	 ColorsTable,
+	 pre: Pre,
+	 FlagsTable,
+	 PaymentsTable
+  }
 }

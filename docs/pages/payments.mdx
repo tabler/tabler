@@ -5,42 +5,35 @@ description: The Tabler payments plug-in will let you use a set of payment provi
 plugin: payments
 ---
 
+# Payments
+
+The Tabler payments plug-in will let you use a set of payment provider icons to facilitate the payment process and make it more-user friendly.
+
 ## Payment
 
 To create a payment provider icon, add the `payment` class to a component and specify the payment provider. The full list of payment providers can be found below.
 
-{% capture code %}
-{% include ui/payment.html class="me-3" payment="shopify"%}
-{% include ui/payment.html class="me-3" payment="visa" %}
-{% include ui/payment.html class="me-3" payment="paypal"%}
-{% endcapture %}
-{% include example.html code=code %}
+~~~html
+<span class="payment payment-provider-shopify me-3"></span>
+<span class="payment payment-provider-visa me-3"></span>
+<span class="payment payment-provider-paypal me-3"></span>
+~~~
 
 
 ## Payment sizes
 
 Using Bootstrap’s typical naming structure, you can create a standard payment, or scale it up or down to different sizes based on what’s needed.
 
-{% capture code %}
-{% include ui/payment.html class="me-3" payment="shopify" size="xl" %}
-{% include ui/payment.html class="me-3" payment="visa" size="lg" %}
-{% include ui/payment.html class="me-3" payment="paypal" size="md" %}
-{% include ui/payment.html class="me-3" payment="amazon" size="sm" %}
-{% endcapture %}
-{% include example.html code=code %}
+~~~html
+<span class="payment payment-xl payment-provider-shopify me-3"></span>
+<span class="payment payment-lg payment-provider-visa me-3"></span>
+<span class="payment payment-md payment-provider-paypal me-3"></span>
+<span class="payment payment-sm payment-provider-amazon me-3"></span>
+~~~
 
 
 ## Types
 
 Select an icon from the list of payment providers. Each icon comes in two color variants - light and dark, so you can choose the one that goes well with your design.
 
-<table class="table-vcenter">
-{% for payment in site.data.payments %}
-<tr>
-    <td>{{ payment.name }}</td>
-    <td><code>{{ payment.logo }}</code></td>
-    <td class="w-1">{% include ui/payment.html payment=payment.logo %}</td>
-    <td class="w-1">{% include ui/payment.html payment=payment.logo dark=true %}</td>
-</tr>
-{% endfor %}
-</table>
+<PaymentsTable />
