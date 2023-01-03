@@ -18,7 +18,7 @@ export default {
   components: {
 	 Example,
 	 ColorsTable,
-	 pre: Pre,
+	 // pre: Pre,
 	 FlagsTable,
 	 PaymentsTable
   }
