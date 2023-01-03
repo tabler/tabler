@@ -149,7 +149,8 @@ $light: $gray-50 !default;
 $dark: $gray-800 !default;
 
 $bg-surface: var(--#{$prefix}white) !default;
-$bg-surface-secondary: var(--#{$prefix}light) !default;
+$bg-surface-secondary: var(--#{$prefix}gray-100) !default;
+$bg-surface-tertiary: var(--#{$prefix}gray-50) !default;
 $bg-surface-dark: var(--#{$prefix}dark) !default;
 
 $body-bg: $gray-100 !default;
@@ -190,7 +191,7 @@ $active-border-color: var(--#{$prefix}primary) !default;
 
 $hover-bg: rgba(var(--#{$prefix}muted-rgb), .04) !default;
 
-$disabled-bg: var(--#{$prefix}gray-100) !default;
+$disabled-bg: var(--#{$prefix}bg-surface-secondary) !default;
 $disabled-color: var(--#{$prefix}gray-300) !default;
 
 $link-color: var(--#{$prefix}primary) !default;
@@ -289,26 +290,29 @@ $icon-color: var(--#{$prefix}gray-500) !default;
 $code-color: var(--#{$prefix}gray-600) !default;
 $code-font-size: $small-font-size !default;
 $code-line-height: 1.25rem !default;
-$code-bg: var(--#{$prefix}gray-100) !default;
+$code-bg: var(--#{$prefix}bg-surface-secondary) !default;
 
 $pre-padding: 1rem !default;
 $pre-bg: var(--#{$prefix}bg-surface-dark) !default;
 $pre-color: var(--#{$prefix}light) !default;
 
-$kbd-padding-x: 4px !default;
-$kbd-padding-y: 2px !default;
+$kbd-padding-x: .5rem !default;
+$kbd-padding-y: .25rem !default;
 $kbd-font-weight: var(--#{$prefix}font-weight-medium) !default;
-$kbd-color: var(--#{$prefix}muted) !default;
+$kbd-font-size: var(--#{$prefix}font-size-h5) !default;
+$kbd-border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color) !default;
+$kbd-color: var(--#{$prefix}muted-dark) !default;
 $kbd-bg: var(--#{$prefix}code-bg) !default;
 $kbd-border-radius: var(--#{$prefix}border-radius) !default;
 
 // Avatars
 $avatar-size: 2.5rem !default;
+$avatar-bg: var(--#{$prefix}bg-surface-secondary) !default;
 $avatar-sizes: (
   "xs": 1.5rem,
   "sm": 2rem,
   "md": 4rem,
-  "lg": 5rem,
+  "lg": 5.5rem,
   "xl": 7rem,
   "2xl": 11rem,
 ) !default;
@@ -325,6 +329,12 @@ $hr-margin-y: 2rem !default;
 // Caret
 $caret-width: .36em !default;
 $caret-spacing: .4em !default;
+
+//Sizing
+$content-padding: 1.25rem !default;
+
+$container-padding-x: var(--#{$prefix}content-padding) !default;
+$grid-gutter-width: var(--#{$prefix}content-padding) !default;
 
 // Grid
 $grid-gutter-width: 1rem !default;
@@ -366,6 +376,13 @@ $size-values: map-merge($spacers, (
   100: 100%,
   auto: auto
 )) !default;
+
+
+$container-variations: (
+  tight: 30rem,
+  narrow: 45rem,
+) !default;
+
 
 // Aspect ratios
 $aspect-ratios: (
@@ -422,7 +439,7 @@ $alert-padding-x: 1rem !default;
 $alert-padding-y: 1rem !default;
 $alert-link-font-weight: var(--#{$prefix}font-weight-bold) !default;
 
-$alert-border-width: 1px !default;
+$alert-border-width: var(--#{$prefix}border-width) !default;
 $alert-border-color: var(--#{$prefix}border-color-translucent) !default;
 $alert-shadow: rgba($dark, .04) 0 2px 4px 0 !default;
 
@@ -493,7 +510,7 @@ $card-border-radius: var(--#{$prefix}border-radius) !default;
 $card-spacer-x: 1.5rem !default;
 $card-spacer-y: 1rem !default;
 
-$card-cap-bg: var(--#{$prefix}bg-surface-secondary) !default;
+$card-cap-bg: var(--#{$prefix}bg-surface-tertiary) !default;
 $card-cap-color: inherit !default;
 $card-cap-padding-x: $card-spacer-x !default;
 $card-cap-padding-y: $card-spacer-y !default;
@@ -507,7 +524,7 @@ $card-ribbon-margin: .25rem !default;
 $card-ribbon-border-radius: var(--#{$prefix}border-radius) !default;
 $card-ribbon-font-size: $h6-font-size !default;
 
-$card-header-tabs-bg: var(--#{$prefix}bg-surface-secondary) !default;
+$card-header-tabs-bg: var(--#{$prefix}bg-surface-tertiary) !default;
 
 $cards-grid-gap: 1rem !default;
 $cards-grid-breakpoint: lg !default;
@@ -577,7 +594,7 @@ $modal-content-inner-border-radius: subtract(var(--#{$prefix}modal-border-radius
 
 $modal-header-padding: 1.5rem !default;
 $modal-header-height: 3.5rem !default;
-$modal-header-border-width: 1px !default;
+$modal-header-border-width: var(--#{$prefix}border-width) !default;
 $modal-header-border-color: var(--#{$prefix}border-color) !default;
 $modal-header-bg: $white !default;
 $modal-inner-padding: 1.5rem !default;
@@ -614,7 +631,7 @@ $nav-tabs-border-radius: var(--#{$prefix}border-radius) !default;
 $nav-tabs-link-hover-border-color: $nav-tabs-border-color $nav-tabs-border-color $nav-tabs-border-color !default;
 $nav-tabs-link-active-border-color: $nav-tabs-link-hover-border-color !default;
 $nav-tabs-link-active-color: var(--#{$prefix}body-color) !default;
-$nav-tabs-bg: var(--#{$prefix}bg-surface-secondary) !default;
+$nav-tabs-bg: var(--#{$prefix}bg-surface-tertiary) !default;
 
 
 // Navbar
@@ -710,9 +727,9 @@ $table-th-border-color: var(--#{$prefix}border-color-translucent) !default;
 $table-th-padding-x: $table-cell-padding-x !default;
 $table-th-padding-y: .5rem !default;
 $table-th-color: var(--#{$prefix}muted) !default;
-$table-th-bg: var(--#{$prefix}gray-50) !default;
+$table-th-bg: var(--#{$prefix}bg-surface-tertiary) !default;
 $table-striped-order: even !default;
-$table-striped-bg: var(--#{$prefix}bg-surface-secondary) !default;
+$table-striped-bg: var(--#{$prefix}bg-surface-tertiary) !default;
 $table-group-separator-color: var(--#{$prefix}border-color-translucent) !default;
 
 $table-sort-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' width='16' height='16' fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='1'><path d='M5 7l3 -3l3 3'/><path d='M5 10l3 3l3 -3'/></svg>") !default;

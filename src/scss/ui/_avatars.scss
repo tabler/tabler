@@ -1,6 +1,6 @@
 .avatar {
   --#{$prefix}avatar-size: #{$avatar-size};
-  --#{$prefix}avatar-bg: var(--#{$prefix}gray-100);
+  --#{$prefix}avatar-bg: #{$avatar-bg};
   --#{$prefix}avatar-shadow: #{$shadow-inset};
   position: relative;
   width: var(--#{$prefix}avatar-size);
@@ -81,7 +81,7 @@
 .avatar-upload {
   width: 4rem;
   height: 4rem;
-  border: 1px dashed var(--#{$prefix}border-color);
+  border: var(--#{$prefix}border-width) dashed var(--#{$prefix}border-color);
   background: $form-check-input-bg;
   flex-direction: column;
   @include transition(color $transition-time, background-color $transition-time);
@@ -105,9 +105,7 @@
   margin-top: .25rem;
 }
 
-.page-avatar {
-  .page-cover ~ * & {
-    margin-top: calc(calc(-1 * calc(var(--#{$prefix}avatar-size) * .5)) - #{$content-padding-y});
-    box-shadow: 0 0 0 .25rem $body-bg;
-  }
+.avatar-cover {
+  margin-top: calc(-.5 * var(--#{$prefix}avatar-size));
+  box-shadow: 0 0 0 .25rem var(--#{$prefix}card-bg, var(--#{$prefix}body-bg));
 }
