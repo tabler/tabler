@@ -33,7 +33,7 @@ declare type NormalizedEvent<E, T = any> = E & {
     readonly isImmediatePropagationStopped: () => boolean;
     readonly stopImmediatePropagation: () => void;
 };
-declare type MappedEvent<T, K extends string> = K extends keyof T ? T[K] : any;
+declare type MappedEvent<T extends {}, K extends string> = K extends keyof T ? T[K] : any;
 interface NativeEventMap {
     'beforepaste': Event;
     'blur': FocusEvent;
@@ -82,12 +82,12 @@ interface EventDispatcherSettings {
     toggleEvent?: (name: string, state: boolean) => void | boolean;
     beforeFire?: <T>(args: EditorEvent<T>) => void;
 }
-interface EventDispatcherConstructor<T extends NativeEventMap> {
+interface EventDispatcherConstructor<T extends {}> {
     readonly prototype: EventDispatcher<T>;
     new (settings?: EventDispatcherSettings): EventDispatcher<T>;
     isNative: (name: string) => boolean;
 }
-declare class EventDispatcher<T> {
+declare class EventDispatcher<T extends {}> {
     static isNative(name: string): boolean;
     private readonly settings;
     private readonly scope;
@@ -151,6 +151,7 @@ interface ElementSettings {
     text_inline_elements?: string;
     void_elements?: string;
     whitespace_elements?: string;
+    transparent_elements?: string;
 }
 interface SchemaSettings extends ElementSettings {
     custom_elements?: string;
@@ -218,6 +219,7 @@ interface Schema {
     getNonEmptyElements: () => SchemaMap;
     getMoveCaretBeforeOnEnterElements: () => SchemaMap;
     getWhitespaceElements: () => SchemaMap;
+    getTransparentElements: () => SchemaMap;
     getSpecialElements: () => SchemaRegExpMap;
     isValidChild: (name: string, child: string) => boolean;
     isValid: (name: string, attr?: string) => boolean;
@@ -287,6 +289,7 @@ interface SetContentArgs {
     paste?: boolean;
     load?: boolean;
     initial?: boolean;
+    [key: string]: any;
 }
 interface GetSelectionContentArgs extends GetContentArgs {
     selection?: boolean;
@@ -506,6 +509,7 @@ interface CollectionItem {
 }
 interface ColorInputSpec extends FormComponentWithLabelSpec {
     type: 'colorinput';
+    storageKey?: string;
 }
 interface ColorPickerSpec extends FormComponentWithLabelSpec {
     type: 'colorpicker';
@@ -699,12 +703,12 @@ interface DialogTabChangeDetails {
     newTabName: string;
     oldTabName: string;
 }
-declare type DialogActionHandler<T> = (api: DialogInstanceApi<T>, details: DialogActionDetails) => void;
-declare type DialogChangeHandler<T> = (api: DialogInstanceApi<T>, details: DialogChangeDetails<T>) => void;
-declare type DialogSubmitHandler<T> = (api: DialogInstanceApi<T>) => void;
+declare type DialogActionHandler<T extends DialogData> = (api: DialogInstanceApi<T>, details: DialogActionDetails) => void;
+declare type DialogChangeHandler<T extends DialogData> = (api: DialogInstanceApi<T>, details: DialogChangeDetails<T>) => void;
+declare type DialogSubmitHandler<T extends DialogData> = (api: DialogInstanceApi<T>) => void;
 declare type DialogCloseHandler = () => void;
-declare type DialogCancelHandler<T> = (api: DialogInstanceApi<T>) => void;
-declare type DialogTabChangeHandler<T> = (api: DialogInstanceApi<T>, details: DialogTabChangeDetails) => void;
+declare type DialogCancelHandler<T extends DialogData> = (api: DialogInstanceApi<T>) => void;
+declare type DialogTabChangeHandler<T extends DialogData> = (api: DialogInstanceApi<T>, details: DialogTabChangeDetails) => void;
 declare type DialogSize = 'normal' | 'medium' | 'large';
 interface DialogSpec<T extends DialogData> {
     title: string;
@@ -933,6 +937,7 @@ interface ColorSwatchMenuItemSpec extends BaseFancyMenuItemSpec<'colorswatch'> {
     initData?: {
         allowCustomColors?: boolean;
         colors?: ChoiceMenuItemSpec[];
+        storageKey?: string;
     };
 }
 declare type FancyMenuItemSpec = InsertTableMenuItemSpec | ColorSwatchMenuItemSpec;
@@ -978,11 +983,11 @@ type PublicDialog_d_CustomEditorInit = CustomEditorInit;
 type PublicDialog_d_CustomEditorInitFn = CustomEditorInitFn;
 type PublicDialog_d_DialogData = DialogData;
 type PublicDialog_d_DialogSize = DialogSize;
-type PublicDialog_d_DialogSpec<_0> = DialogSpec<_0>;
-type PublicDialog_d_DialogInstanceApi<_0> = DialogInstanceApi<_0>;
+type PublicDialog_d_DialogSpec<T extends DialogData> = DialogSpec<T>;
+type PublicDialog_d_DialogInstanceApi<T extends DialogData> = DialogInstanceApi<T>;
 type PublicDialog_d_DialogFooterButtonSpec = DialogFooterButtonSpec;
 type PublicDialog_d_DialogActionDetails = DialogActionDetails;
-type PublicDialog_d_DialogChangeDetails<_0> = DialogChangeDetails<_0>;
+type PublicDialog_d_DialogChangeDetails<T> = DialogChangeDetails<T>;
 type PublicDialog_d_DialogTabChangeDetails = DialogTabChangeDetails;
 type PublicDialog_d_DropZoneSpec = DropZoneSpec;
 type PublicDialog_d_GridSpec = GridSpec;
@@ -1148,6 +1153,26 @@ type PublicToolbar_d_GroupToolbarButtonInstanceApi = GroupToolbarButtonInstanceA
 declare namespace PublicToolbar_d {
     export { PublicToolbar_d_ToolbarButtonSpec as ToolbarButtonSpec, PublicToolbar_d_ToolbarButtonInstanceApi as ToolbarButtonInstanceApi, PublicToolbar_d_ToolbarSplitButtonSpec as ToolbarSplitButtonSpec, PublicToolbar_d_ToolbarSplitButtonInstanceApi as ToolbarSplitButtonInstanceApi, PublicToolbar_d_ToolbarMenuButtonSpec as ToolbarMenuButtonSpec, PublicToolbar_d_ToolbarMenuButtonInstanceApi as ToolbarMenuButtonInstanceApi, PublicToolbar_d_ToolbarToggleButtonSpec as ToolbarToggleButtonSpec, PublicToolbar_d_ToolbarToggleButtonInstanceApi as ToolbarToggleButtonInstanceApi, PublicToolbar_d_GroupToolbarButtonSpec as GroupToolbarButtonSpec, PublicToolbar_d_GroupToolbarButtonInstanceApi as GroupToolbarButtonInstanceApi, };
 }
+interface ViewNormalButtonSpec {
+    type: 'button';
+    text: string;
+    buttonType?: 'primary' | 'secondary';
+    onAction: () => void;
+}
+declare type ViewButtonSpec = ViewNormalButtonSpec;
+interface ViewInstanceApi {
+    getContainer: () => HTMLElement;
+}
+interface ViewSpec {
+    buttons?: ViewButtonSpec[];
+    onShow: (api: ViewInstanceApi) => void;
+    onHide: (api: ViewInstanceApi) => void;
+}
+type PublicView_d_ViewSpec = ViewSpec;
+type PublicView_d_ViewInstanceApi = ViewInstanceApi;
+declare namespace PublicView_d {
+    export { PublicView_d_ViewSpec as ViewSpec, PublicView_d_ViewInstanceApi as ViewInstanceApi, };
+}
 interface Registry$1 {
     addButton: (name: string, spec: ToolbarButtonSpec) => void;
     addGroupToolbarButton: (name: string, spec: GroupToolbarButtonSpec) => void;
@@ -1163,6 +1188,7 @@ interface Registry$1 {
     addIcon: (name: string, svgData: string) => void;
     addAutocompleter: (name: string, spec: AutocompleterSpec) => void;
     addSidebar: (name: string, spec: SidebarSpec) => void;
+    addView: (name: string, spec: ViewSpec) => void;
     getAll: () => {
         buttons: Record<string, ToolbarButtonSpec | GroupToolbarButtonSpec | ToolbarMenuButtonSpec | ToolbarSplitButtonSpec | ToolbarToggleButtonSpec>;
         menuItems: Record<string, MenuItemSpec | NestedMenuItemSpec | ToggleMenuItemSpec>;
@@ -1171,6 +1197,7 @@ interface Registry$1 {
         contextToolbars: Record<string, ContextToolbarSpec | ContextFormSpec>;
         icons: Record<string, string>;
         sidebars: Record<string, SidebarSpec>;
+        views: Record<string, ViewSpec>;
     };
 }
 interface AutocompleteLookupData {
@@ -1307,6 +1334,7 @@ interface StyleSheetLoader {
     unload: (url: string) => void;
     unloadAll: (urls: string[]) => void;
     _setReferrerPolicy: (referrerPolicy: ReferrerPolicy) => void;
+    _setContentCssCors: (contentCssCors: boolean) => void;
 }
 declare type Registry = Registry$1;
 interface EditorUiApi {
@@ -1323,22 +1351,22 @@ type Ui_d_Registry = Registry;
 type Ui_d_EditorUiApi = EditorUiApi;
 type Ui_d_EditorUi = EditorUi;
 declare namespace Ui_d {
-    export { Ui_d_Registry as Registry, PublicDialog_d as Dialog, PublicInlineContent_d as InlineContent, PublicMenu_d as Menu, PublicSidebar_d as Sidebar, PublicToolbar_d as Toolbar, Ui_d_EditorUiApi as EditorUiApi, Ui_d_EditorUi as EditorUi, };
+    export { Ui_d_Registry as Registry, PublicDialog_d as Dialog, PublicInlineContent_d as InlineContent, PublicMenu_d as Menu, PublicView_d as View, PublicSidebar_d as Sidebar, PublicToolbar_d as Toolbar, Ui_d_EditorUiApi as EditorUiApi, Ui_d_EditorUi as EditorUi, };
 }
 interface WindowParams {
     readonly inline?: 'cursor' | 'toolbar';
     readonly ariaAttrs?: boolean;
 }
-declare type InstanceApi<T> = UrlDialogInstanceApi | DialogInstanceApi<T>;
+declare type InstanceApi<T extends DialogData> = UrlDialogInstanceApi | DialogInstanceApi<T>;
 interface WindowManagerImpl {
-    open: <T>(config: DialogSpec<T>, params: WindowParams | undefined, closeWindow: (dialog: DialogInstanceApi<T>) => void) => DialogInstanceApi<T>;
+    open: <T extends DialogData>(config: DialogSpec<T>, params: WindowParams | undefined, closeWindow: (dialog: DialogInstanceApi<T>) => void) => DialogInstanceApi<T>;
     openUrl: (config: UrlDialogSpec, closeWindow: (dialog: UrlDialogInstanceApi) => void) => UrlDialogInstanceApi;
     alert: (message: string, callback: () => void) => void;
     confirm: (message: string, callback: (state: boolean) => void) => void;
     close: (dialog: InstanceApi<any>) => void;
 }
 interface WindowManager {
-    open: <T>(config: DialogSpec<T>, params?: WindowParams) => DialogInstanceApi<T>;
+    open: <T extends DialogData>(config: DialogSpec<T>, params?: WindowParams) => DialogInstanceApi<T>;
     openUrl: (config: UrlDialogSpec) => UrlDialogInstanceApi;
     alert: (message: string, callback?: () => void, scope?: any) => void;
     confirm: (message: string, callback?: (state: boolean) => void, scope?: any) => void;
@@ -1591,7 +1619,7 @@ type EventTypes_d_SwitchModeEvent = SwitchModeEvent;
 type EventTypes_d_ChangeEvent = ChangeEvent;
 type EventTypes_d_AddUndoEvent = AddUndoEvent;
 type EventTypes_d_UndoRedoEvent = UndoRedoEvent;
-type EventTypes_d_WindowEvent<_0> = WindowEvent<_0>;
+type EventTypes_d_WindowEvent<T extends DialogData> = WindowEvent<T>;
 type EventTypes_d_ProgressStateEvent = ProgressStateEvent;
 type EventTypes_d_AfterProgressStateEvent = AfterProgressStateEvent;
 type EventTypes_d_PlaceholderToggleEvent = PlaceholderToggleEvent;
@@ -1708,7 +1736,13 @@ interface BaseEditorOptions {
     branding?: boolean;
     cache_suffix?: string;
     color_cols?: number;
+    color_cols_foreground?: number;
+    color_cols_background?: number;
     color_map?: string[];
+    color_map_foreground?: string[];
+    color_map_background?: string[];
+    color_default_foreground?: string;
+    color_default_background?: string;
     content_css?: boolean | string | string[];
     content_css_cors?: boolean;
     content_security_policy?: string;
@@ -1896,7 +1930,12 @@ interface EditorOptions extends NormalizedEditorOptions {
     body_class: string;
     body_id: string;
     br_newline_selector: string;
+    color_map: string[];
     color_cols: number;
+    color_cols_foreground: number;
+    color_cols_background: number;
+    color_default_background: string;
+    color_default_foreground: string;
     content_css: string[];
     contextmenu: string[];
     custom_colors: boolean;
@@ -2286,6 +2325,9 @@ interface EditorSelection {
     placeCaretAt: (clientX: number, clientY: number) => void;
     getBoundingClientRect: () => ClientRect | DOMRect;
     destroy: () => void;
+    expand: (options?: {
+        type: 'word';
+    }) => void;
 }
 declare type EditorCommandCallback<S> = (this: S, ui: boolean, value: any) => void;
 declare type EditorCommandsCallback = (command: string, ui: boolean, value?: any) => void;
@@ -2337,7 +2379,7 @@ interface I18n {
     isRtl: () => boolean;
     hasCode: (code: string) => boolean;
 }
-interface Observable<T> {
+interface Observable<T extends {}> {
     fire<K extends string, U extends MappedEvent<T, K>>(name: K, args?: U, bubble?: boolean): EditorEvent<U>;
     dispatch<K extends string, U extends MappedEvent<T, K>>(name: K, args?: U, bubble?: boolean): EditorEvent<U>;
     on<K extends string>(name: K, callback: (event: EditorEvent<MappedEvent<T, K>>) => void, prepend?: boolean): EventDispatcher<T>;
@@ -2758,6 +2800,9 @@ interface RangeUtils {
     walk: (rng: Range, callback: (nodes: Node[]) => void) => void;
     split: (rng: Range) => RangeLikeObject;
     normalize: (rng: Range) => boolean;
+    expand: (rng: Range, options?: {
+        type: 'word';
+    }) => Range;
 }
 interface ScriptLoaderSettings {
     referrerPolicy?: ReferrerPolicy;

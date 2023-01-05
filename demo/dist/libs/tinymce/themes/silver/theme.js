@@ -1,5 +1,5 @@
 /**
- * TinyMCE version 6.2.0 (2022-09-08)
+ * TinyMCE version 6.3.0 (2022-11-23)
  */
 
 (function () {
@@ -7134,6 +7134,7 @@
         row: movementInfo.rowSelector,
         cell: '.' + detail.markers.item
       },
+      previousSelector: movementInfo.previousSelector,
       focusManager: detail.focusManager
     });
     const configureMenu = (detail, movementInfo) => ({
@@ -7187,7 +7188,8 @@
         ],
         matrix: [
           output$1('config', configureMatrix),
-          required$1('rowSelector')
+          required$1('rowSelector'),
+          defaulted('previousSelector', Optional.none)
         ],
         menu: [
           defaulted('moveOnTab', true),
@@ -7780,7 +7782,7 @@
         }
       });
     };
-    const factory$m = (detail, spec) => {
+    const factory$o = (detail, spec) => {
       const isPartOfRelated = (sandbox, queryElem) => {
         const related = detail.getRelated(sandbox);
         return related.exists(rel => isPartOf$1(rel, queryElem));
@@ -7907,7 +7909,7 @@
         defaulted('isExtraPart', never),
         defaulted('eventOrder', Optional.none)
       ],
-      factory: factory$m,
+      factory: factory$o,
       apis: {
         showAt: (apis, component, anchor, thing) => {
           apis.showAt(component, anchor, thing);
@@ -7940,7 +7942,7 @@
 
     var global$9 = tinymce.util.Tools.resolve('tinymce.util.Delay');
 
-    const factory$l = detail => {
+    const factory$n = detail => {
       const events = events$a(detail.action);
       const tag = detail.dom.tag;
       const lookupAttr = attr => get$g(detail.dom, 'attributes').bind(attrs => get$g(attrs, attr));
@@ -7976,7 +7978,7 @@
     };
     const Button = single({
       name: 'Button',
-      factory: factory$l,
+      factory: factory$n,
       configFields: [
         defaulted('uid', undefined),
         required$1('dom'),
@@ -8076,7 +8078,7 @@
       warn: 'warning',
       info: 'info'
     };
-    const factory$k = detail => {
+    const factory$m = detail => {
       const memBannerText = record({
         dom: {
           tag: 'p',
@@ -8210,7 +8212,7 @@
     };
     const Notification = single({
       name: 'Notification',
-      factory: factory$k,
+      factory: factory$m,
       configFields: [
         option$3('level'),
         required$1('progress'),
@@ -8843,7 +8845,7 @@
       classes: detail.inputClasses
     });
 
-    const factory$j = (detail, _spec) => ({
+    const factory$l = (detail, _spec) => ({
       uid: detail.uid,
       dom: dom(detail),
       components: [],
@@ -8853,7 +8855,7 @@
     const Input = single({
       name: 'Input',
       configFields: schema$l(),
-      factory: factory$j
+      factory: factory$l
     });
 
     const refetchTriggerEvent = generate$6('refetch-trigger-event');
@@ -9358,6 +9360,7 @@
     const insertTableFields = [defaulted('initData', {})].concat(baseFields);
     const colorSwatchFields = [defaultedObjOf('initData', {}, [
         defaultedBoolean('allowCustomColors', true),
+        defaultedString('storageKey', 'default'),
         optionArrayOf('colors', anyValue())
       ])].concat(baseFields);
     const fancyMenuItemSchema = choose$1('fancytype', {
@@ -9596,23 +9599,29 @@
 
     const ReadOnlyChannel = 'silver.readonly';
     const ReadOnlyDataSchema = objOf([requiredBoolean('readonly')]);
-    const broadcastReadonly = (uiComponents, readonly) => {
-      const outerContainer = uiComponents.outerContainer;
+    const broadcastReadonly = (uiRefs, readonly) => {
+      const outerContainer = uiRefs.mainUi.outerContainer;
       const target = outerContainer.element;
+      const motherships = [
+        uiRefs.mainUi.mothership,
+        ...uiRefs.uiMotherships
+      ];
       if (readonly) {
-        uiComponents.mothership.broadcastOn([dismissPopups()], { target });
-        uiComponents.uiMothership.broadcastOn([dismissPopups()], { target });
+        each$1(motherships, m => {
+          m.broadcastOn([dismissPopups()], { target });
+        });
       }
-      uiComponents.mothership.broadcastOn([ReadOnlyChannel], { readonly });
-      uiComponents.uiMothership.broadcastOn([ReadOnlyChannel], { readonly });
+      each$1(motherships, m => {
+        m.broadcastOn([ReadOnlyChannel], { readonly });
+      });
     };
-    const setupReadonlyModeSwitch = (editor, uiComponents) => {
+    const setupReadonlyModeSwitch = (editor, uiRefs) => {
       editor.on('init', () => {
         if (editor.mode.isReadOnly()) {
-          broadcastReadonly(uiComponents, true);
+          broadcastReadonly(uiRefs, true);
         }
       });
-      editor.on('SwitchMode', () => broadcastReadonly(uiComponents, editor.mode.isReadOnly()));
+      editor.on('SwitchMode', () => broadcastReadonly(uiRefs, editor.mode.isReadOnly()));
       if (isReadOnly(editor)) {
         editor.mode.set('readonly');
       }
@@ -9855,7 +9864,8 @@
               ...baseDom.attributes,
               'data-mce-color': itemValue
             },
-            styles: { 'background-color': itemValue }
+            styles: { 'background-color': itemValue },
+            innerHtml: icon
           };
         } else {
           return baseDom;
@@ -10213,6 +10223,58 @@
       name: node.nodeName.toLowerCase(),
       target: node
     });
+    const fireToggleToolbarDrawer = (editor, state) => {
+      editor.dispatch('ToggleToolbarDrawer', { state });
+    };
+
+    var global$4 = tinymce.util.Tools.resolve('tinymce.util.LocalStorage');
+
+    const cacheStorage = {};
+    const ColorCache = (storageId, max = 10) => {
+      const storageString = global$4.getItem(storageId);
+      const localstorage = isString(storageString) ? JSON.parse(storageString) : [];
+      const prune = list => {
+        const diff = max - list.length;
+        return diff < 0 ? list.slice(0, max) : list;
+      };
+      const cache = prune(localstorage);
+      const add = key => {
+        indexOf(cache, key).each(remove);
+        cache.unshift(key);
+        if (cache.length > max) {
+          cache.pop();
+        }
+        global$4.setItem(storageId, JSON.stringify(cache));
+      };
+      const remove = idx => {
+        cache.splice(idx, 1);
+      };
+      const state = () => cache.slice(0);
+      return {
+        add,
+        state
+      };
+    };
+    const getCacheForId = id => get$g(cacheStorage, id).getOrThunk(() => {
+      const storageId = `tinymce-custom-colors-${ id }`;
+      const currentData = global$4.getItem(storageId);
+      if (isNullable(currentData)) {
+        const legacyDefault = global$4.getItem('tinymce-custom-colors');
+        global$4.setItem(storageId, isNonNullable(legacyDefault) ? legacyDefault : '[]');
+      }
+      const storage = ColorCache(storageId, 10);
+      cacheStorage[id] = storage;
+      return storage;
+    });
+    const getCurrentColors = id => map$2(getCacheForId(id).state(), color => ({
+      type: 'choiceitem',
+      text: color,
+      icon: 'checkmark',
+      value: color
+    }));
+    const addColor = (id, color) => {
+      getCacheForId(id).add(color);
+    };
 
     const hsvColour = (hue, saturation, value) => ({
       hue,
@@ -10259,36 +10321,8 @@
       return fromRgba(rgbaColour(r, g, b, a));
     });
 
-    var global$4 = tinymce.util.Tools.resolve('tinymce.util.LocalStorage');
-
-    const storageName = 'tinymce-custom-colors';
-    const ColorCache = (max = 10) => {
-      const storageString = global$4.getItem(storageName);
-      const localstorage = isString(storageString) ? JSON.parse(storageString) : [];
-      const prune = list => {
-        const diff = max - list.length;
-        return diff < 0 ? list.slice(0, max) : list;
-      };
-      const cache = prune(localstorage);
-      const add = key => {
-        indexOf(cache, key).each(remove);
-        cache.unshift(key);
-        if (cache.length > max) {
-          cache.pop();
-        }
-        global$4.setItem(storageName, JSON.stringify(cache));
-      };
-      const remove = idx => {
-        cache.splice(idx, 1);
-      };
-      const state = () => cache.slice(0);
-      return {
-        add,
-        state
-      };
-    };
-
-    const colorCache = ColorCache(10);
+    const foregroundId = 'forecolor';
+    const backgroundId = 'hilitecolor';
     const calcCols = colors => Math.max(5, Math.ceil(Math.sqrt(colors)));
     const mapColors = colorMap => {
       const colors = [];
@@ -10296,28 +10330,31 @@
         colors.push({
           text: colorMap[i + 1],
           value: '#' + anyToHex(colorMap[i]).value,
+          icon: 'checkmark',
           type: 'choiceitem'
         });
       }
       return colors;
     };
     const option$1 = name => editor => editor.options.get(name);
+    const fallbackColor = '#000000';
     const register$d = editor => {
       const registerOption = editor.options.register;
+      const colorProcessor = value => {
+        if (isArrayOf(value, isString)) {
+          return {
+            value: mapColors(value),
+            valid: true
+          };
+        } else {
+          return {
+            valid: false,
+            message: 'Must be an array of strings.'
+          };
+        }
+      };
       registerOption('color_map', {
-        processor: value => {
-          if (isArrayOf(value, isString)) {
-            return {
-              value: mapColors(value),
-              valid: true
-            };
-          } else {
-            return {
-              valid: false,
-              message: 'Must be an array of strings.'
-            };
-          }
-        },
+        processor: colorProcessor,
         default: [
           '#BFEDD2',
           'Light Green',
@@ -10365,38 +10402,58 @@
           'White'
         ]
       });
+      registerOption('color_map_background', { processor: colorProcessor });
+      registerOption('color_map_foreground', { processor: colorProcessor });
       registerOption('color_cols', {
         processor: 'number',
-        default: calcCols(getColors$2(editor).length)
+        default: calcCols(getColors$2(editor, 'default').length)
+      });
+      registerOption('color_cols_foreground', {
+        processor: 'number',
+        default: calcCols(getColors$2(editor, foregroundId).length)
+      });
+      registerOption('color_cols_background', {
+        processor: 'number',
+        default: calcCols(getColors$2(editor, backgroundId).length)
       });
       registerOption('custom_colors', {
         processor: 'boolean',
         default: true
       });
-    };
-    const getColorCols$1 = option$1('color_cols');
-    const hasCustomColors$1 = option$1('custom_colors');
-    const getColors$2 = option$1('color_map');
-    const getCurrentColors = () => map$2(colorCache.state(), color => ({
-      type: 'choiceitem',
-      text: color,
-      value: color
-    }));
-    const addColor = color => {
-      colorCache.add(color);
-    };
-
-    const fallbackColor = '#000000';
-    const hasStyleApi = node => isNonNullable(node.style);
-    const getCurrentColor = (editor, format) => {
-      let color;
-      editor.dom.getParents(editor.selection.getStart(), elm => {
-        const value = hasStyleApi(elm) ? elm.style[format === 'forecolor' ? 'color' : 'backgroundColor'] : null;
-        if (value) {
-          color = color ? color : value;
-        }
+      registerOption('color_default_foreground', {
+        processor: 'string',
+        default: fallbackColor
       });
-      return Optional.from(color);
+      registerOption('color_default_background', {
+        processor: 'string',
+        default: fallbackColor
+      });
+    };
+    const getColorCols$1 = (editor, id) => {
+      if (id === foregroundId) {
+        return option$1('color_cols_foreground')(editor);
+      } else if (id === backgroundId) {
+        return option$1('color_cols_background')(editor);
+      } else {
+        return option$1('color_cols')(editor);
+      }
+    };
+    const hasCustomColors$1 = option$1('custom_colors');
+    const getColors$2 = (editor, id) => {
+      if (id === foregroundId && editor.options.isSet('color_map_foreground')) {
+        return option$1('color_map_foreground')(editor);
+      } else if (id === backgroundId && editor.options.isSet('color_map_background')) {
+        return option$1('color_map_background')(editor);
+      } else {
+        return option$1('color_map')(editor);
+      }
+    };
+    const getDefaultForegroundColor = option$1('color_default_foreground');
+    const getDefaultBackgroundColor = option$1('color_default_background');
+
+    const getCurrentColor = (editor, format) => {
+      const cssRgbValue = get$e(SugarElement.fromDom(editor.selection.getStart()), format === 'hilitecolor' ? 'background-color' : 'color');
+      return fromString(cssRgbValue).map(rgba => '#' + fromRgba(rgba).value);
     };
     const applyFormat = (editor, format, value) => {
       editor.undoManager.transact(() => {
@@ -10444,11 +10501,11 @@
         const dialog = colorPickerDialog(editor);
         dialog(colorOpt => {
           colorOpt.each(color => {
-            addColor(color);
+            addColor(format, color);
             editor.execCommand('mceApplyTextcolor', format, color);
             onChoice(color);
           });
-        }, fallbackColor);
+        }, getCurrentColor(editor, format).getOr(fallbackColor));
       } else if (value === 'remove') {
         onChoice('');
         editor.execCommand('mceRemoveTextcolor', format);
@@ -10457,9 +10514,9 @@
         editor.execCommand('mceApplyTextcolor', format, value);
       }
     };
-    const getColors$1 = (colors, hasCustom) => colors.concat(getCurrentColors().concat(getAdditionalColors(hasCustom)));
-    const getFetch$1 = (colors, hasCustom) => callback => {
-      callback(getColors$1(colors, hasCustom));
+    const getColors$1 = (colors, id, hasCustom) => colors.concat(getCurrentColors(id).concat(getAdditionalColors(hasCustom)));
+    const getFetch$1 = (colors, id, hasCustom) => callback => {
+      callback(getColors$1(colors, id, hasCustom));
     };
     const setIconColor = (splitButtonApi, name, newColor) => {
       const id = name === 'forecolor' ? 'tox-icon-text-color__color' : 'tox-icon-highlight-bg-color__color';
@@ -10471,14 +10528,11 @@
         presets: 'color',
         icon: name === 'forecolor' ? 'text-color' : 'highlight-bg-color',
         select: value => {
-          const optCurrentRgb = getCurrentColor(editor, format);
-          return optCurrentRgb.bind(currentRgb => fromString(currentRgb).map(rgba => {
-            const currentHex = fromRgba(rgba).value;
-            return contains$1(value.toLowerCase(), currentHex);
-          })).getOr(false);
+          const optCurrentHex = getCurrentColor(editor, format);
+          return is$1(optCurrentHex, value.toUpperCase());
         },
-        columns: getColorCols$1(editor),
-        fetch: getFetch$1(getColors$2(editor), hasCustomColors$1(editor)),
+        columns: getColorCols$1(editor, format),
+        fetch: getFetch$1(getColors$2(editor, format), format, hasCustomColors$1(editor)),
         onAction: _splitButtonApi => {
           applyColor(editor, format, lastColor.get(), noop);
         },
@@ -10512,6 +10566,7 @@
         getSubmenuItems: () => [{
             type: 'fancymenuitem',
             fancytype: 'colorswatch',
+            initData: { storageKey: format },
             onAction: data => {
               applyColor(editor, format, data.value, noop);
             }
@@ -10574,8 +10629,10 @@
     };
     const register$c = editor => {
       registerCommands(editor);
-      const lastForeColor = Cell(fallbackColor);
-      const lastBackColor = Cell(fallbackColor);
+      const fallbackColorForeground = getDefaultForegroundColor(editor);
+      const fallbackColorBackground = getDefaultBackgroundColor(editor);
+      const lastForeColor = Cell(fallbackColorForeground);
+      const lastBackColor = Cell(fallbackColorBackground);
       registerTextColorButton(editor, 'forecolor', 'forecolor', 'Text color', lastForeColor);
       registerTextColorButton(editor, 'backcolor', 'hilitecolor', 'Background color', lastBackColor);
       registerTextColorMenuItem(editor, 'forecolor', 'forecolor', 'Text color');
@@ -10617,7 +10674,10 @@
         const rowClass = presets === 'color' ? 'tox-swatches__row' : 'tox-collection__group';
         return {
           mode: 'matrix',
-          rowSelector: '.' + rowClass
+          rowSelector: '.' + rowClass,
+          previousSelector: menu => {
+            return presets === 'color' ? descendant(menu.element, '[aria-checked=true]') : Optional.none();
+          }
         };
       }
     };
@@ -10650,7 +10710,7 @@
 
     const renderColorSwatchItem = (spec, backstage) => {
       const items = getColorItems(spec, backstage);
-      const columns = backstage.colorinput.getColorCols();
+      const columns = backstage.colorinput.getColorCols(spec.initData.storageKey);
       const presets = 'color';
       const menuSpec = createPartialChoiceMenu(generate$6('menu-value'), items, value => {
         spec.onAction({ value });
@@ -10673,7 +10733,7 @@
     };
     const getColorItems = (spec, backstage) => {
       const useCustomColors = spec.initData.allowCustomColors && backstage.colorinput.hasCustomColors();
-      return spec.initData.colors.fold(() => getColors$1(backstage.colorinput.getColors(), useCustomColors), colors => colors.concat(getAdditionalColors(useCustomColors)));
+      return spec.initData.colors.fold(() => getColors$1(backstage.colorinput.getColors(spec.initData.storageKey), spec.initData.storageKey, useCustomColors), colors => colors.concat(getAdditionalColors(useCustomColors)));
     };
 
     const cellOverEvent = generate$6('cell-over');
@@ -11293,7 +11353,7 @@
       partType$1()
     ]);
 
-    const factory$i = (detail, components, _spec, externals) => {
+    const factory$k = (detail, components, _spec, externals) => {
       const lookupAttr = attr => get$g(detail.dom, 'attributes').bind(attrs => get$g(attrs, attr));
       const switchToMenu = sandbox => {
         Sandboxing.getState(sandbox).each(tmenu => {
@@ -11408,7 +11468,7 @@
       name: 'Dropdown',
       configFields: schema$k(),
       partFields: parts$e(),
-      factory: factory$i,
+      factory: factory$k,
       apis: {
         open: (apis, comp) => apis.open(comp),
         refetch: (apis, comp) => apis.refetch(comp),
@@ -12034,7 +12094,7 @@
       };
     };
 
-    const factory$h = detail => {
+    const factory$j = detail => {
       const {attributes, ...domWithoutAttributes} = detail.dom;
       return {
         uid: detail.uid,
@@ -12055,7 +12115,7 @@
     };
     const Container = single({
       name: 'Container',
-      factory: factory$h,
+      factory: factory$j,
       configFields: [
         defaulted('components', []),
         field('containerBehaviours', []),
@@ -12252,7 +12312,7 @@
       })
     ]);
 
-    const factory$g = (detail, components, _spec, _externals) => {
+    const factory$i = (detail, components, _spec, _externals) => {
       const behaviours = augment(detail.fieldBehaviours, [
         Composing.config({
           find: container => {
@@ -12309,7 +12369,7 @@
       name: 'FormField',
       configFields: schema$j(),
       partFields: parts$d(),
-      factory: factory$g,
+      factory: factory$i,
       apis: {
         getField: (apis, comp) => apis.getField(comp),
         getLabel: (apis, comp) => apis.getLabel(comp)
@@ -12689,7 +12749,7 @@
             colorInputBackstage.colorPicker(valueOpt => {
               valueOpt.fold(() => emit(colorBit, colorPickerCancelEvent), value => {
                 emitSwatchChange(colorBit, value);
-                addColor(value);
+                addColor(spec.storageKey, value);
               });
             }, '#ffffff');
           } else if (value === 'remove') {
@@ -12717,8 +12777,8 @@
           ]
         },
         components: [],
-        fetch: getFetch$1(colorInputBackstage.getColors(), colorInputBackstage.hasCustomColors()),
-        columns: colorInputBackstage.getColorCols(),
+        fetch: getFetch$1(colorInputBackstage.getColors(spec.storageKey), spec.storageKey, colorInputBackstage.hasCustomColors()),
+        columns: colorInputBackstage.getColorCols(spec.storageKey),
         presets: 'color',
         onItemAction
       }, sharedBackstage));
@@ -14917,7 +14977,7 @@
       components: map$2(spec.items, backstage.shared.interpreter)
     });
 
-    const factory$f = (detail, _spec) => {
+    const factory$h = (detail, _spec) => {
       const options = map$2(detail.options, option => ({
         dom: {
           tag: 'option',
@@ -14966,7 +15026,7 @@
         defaulted('selectAttributes', {}),
         option$3('data')
       ],
-      factory: factory$f
+      factory: factory$h
     });
 
     const renderSelectBox = (spec, providersBackstage, initialData) => {
@@ -15075,7 +15135,7 @@
       })
     ]);
 
-    const factory$e = (detail, components, _spec, _externals) => ({
+    const factory$g = (detail, components, _spec, _externals) => ({
       uid: detail.uid,
       dom: detail.dom,
       components,
@@ -15119,7 +15179,7 @@
       name: 'FormCoupledInputs',
       configFields: schema$h(),
       partFields: parts$c(),
-      factory: factory$e,
+      factory: factory$g,
       apis: {
         getField1: (apis, component) => apis.getField1(component),
         getField2: (apis, component) => apis.getField2(component),
@@ -16859,8 +16919,8 @@
       dialog(callback, value);
     };
     const hasCustomColors = editor => () => hasCustomColors$1(editor);
-    const getColors = editor => () => getColors$2(editor);
-    const getColorCols = editor => () => getColorCols$1(editor);
+    const getColors = editor => id => getColors$2(editor, id);
+    const getColorCols = editor => id => getColorCols$1(editor, id);
     const ColorInputBackstage = editor => ({
       colorPicker: colorPicker(editor),
       hasCustomColors: hasCustomColors(editor),
@@ -17327,48 +17387,72 @@
       getUrlPicker: filetype => getUrlPicker(editor, filetype)
     });
 
-    const init$7 = (lazySink, editor, lazyAnchorbar) => {
+    const init$7 = (lazySinks, editor, lazyAnchorbar) => {
       const contextMenuState = Cell(false);
       const toolbar = HeaderBackstage(editor);
-      const backstage = {
-        shared: {
-          providers: {
-            icons: () => editor.ui.registry.getAll().icons,
-            menuItems: () => editor.ui.registry.getAll().menuItems,
-            translate: global$8.translate,
-            isDisabled: () => editor.mode.isReadOnly() || !editor.ui.isEnabled(),
-            getOption: editor.options.get
-          },
-          interpreter: s => interpretWithoutForm(s, {}, backstage),
-          anchors: getAnchors(editor, lazyAnchorbar, toolbar.isPositionedAtTop),
-          header: toolbar,
-          getSink: lazySink
-        },
-        urlinput: UrlInputBackstage(editor),
-        styles: init$8(editor),
-        colorinput: ColorInputBackstage(editor),
-        dialog: DialogBackstage(editor),
-        isContextMenuOpen: () => contextMenuState.get(),
-        setContextMenuState: state => contextMenuState.set(state)
+      const providers = {
+        icons: () => editor.ui.registry.getAll().icons,
+        menuItems: () => editor.ui.registry.getAll().menuItems,
+        translate: global$8.translate,
+        isDisabled: () => editor.mode.isReadOnly() || !editor.ui.isEnabled(),
+        getOption: editor.options.get
       };
-      return backstage;
+      const urlinput = UrlInputBackstage(editor);
+      const styles = init$8(editor);
+      const colorinput = ColorInputBackstage(editor);
+      const dialogSettings = DialogBackstage(editor);
+      const isContextMenuOpen = () => contextMenuState.get();
+      const setContextMenuState = state => contextMenuState.set(state);
+      const commonBackstage = {
+        shared: {
+          providers,
+          anchors: getAnchors(editor, lazyAnchorbar, toolbar.isPositionedAtTop),
+          header: toolbar
+        },
+        urlinput,
+        styles,
+        colorinput,
+        dialog: dialogSettings,
+        isContextMenuOpen,
+        setContextMenuState
+      };
+      const popupBackstage = {
+        ...commonBackstage,
+        shared: {
+          ...commonBackstage.shared,
+          interpreter: s => interpretWithoutForm(s, {}, popupBackstage),
+          getSink: lazySinks.popup
+        }
+      };
+      const dialogBackstage = {
+        ...commonBackstage,
+        shared: {
+          ...commonBackstage.shared,
+          interpreter: s => interpretWithoutForm(s, {}, dialogBackstage),
+          getSink: lazySinks.dialog
+        }
+      };
+      return {
+        popup: popupBackstage,
+        dialog: dialogBackstage
+      };
     };
 
-    const setup$b = (editor, mothership, uiMothership) => {
+    const setup$b = (editor, mothership, uiMotherships) => {
       const broadcastEvent = (name, evt) => {
         each$1([
           mothership,
-          uiMothership
-        ], ship => {
-          ship.broadcastEvent(name, evt);
+          ...uiMotherships
+        ], m => {
+          m.broadcastEvent(name, evt);
         });
       };
       const broadcastOn = (channel, message) => {
         each$1([
           mothership,
-          uiMothership
-        ], ship => {
-          ship.broadcastOn([channel], message);
+          ...uiMotherships
+        ], m => {
+          m.broadcastOn([channel], message);
         });
       };
       const fireDismissPopups = evt => broadcastOn(dismissPopups(), { target: evt.target });
@@ -17437,10 +17521,14 @@
         onMouseup.unbind();
       });
       editor.on('detach', () => {
-        detachSystem(mothership);
-        detachSystem(uiMothership);
-        mothership.destroy();
-        uiMothership.destroy();
+        each$1([
+          mothership,
+          ...uiMotherships
+        ], detachSystem);
+        each$1([
+          mothership,
+          ...uiMotherships
+        ], m => m.destroy());
       });
     };
 
@@ -17461,7 +17549,7 @@
     const parts$9 = constant$1([itemsPart]);
     const name = constant$1('CustomList');
 
-    const factory$d = (detail, components, _spec, _external) => {
+    const factory$f = (detail, components, _spec, _external) => {
       const setItems = (list, items) => {
         getListContainer(list).fold(() => {
           console.error('Custom List was defined to not be a shell, but no item container was specified in components');
@@ -17500,7 +17588,7 @@
       name: name(),
       configFields: schema$f(),
       partFields: parts$9(),
-      factory: factory$d,
+      factory: factory$f,
       apis: {
         setItems: (apis, list, items) => {
           apis.setItems(list, items);
@@ -17519,7 +17607,7 @@
         overrides: enhanceGroups
       })]);
 
-    const factory$c = (detail, components, _spec, _externals) => {
+    const factory$e = (detail, components, _spec, _externals) => {
       const setGroups = (toolbar, groups) => {
         getGroupContainer(toolbar).fold(() => {
           console.error('Toolbar was defined to not be a shell, but no groups container was specified in components');
@@ -17549,7 +17637,7 @@
       name: 'Toolbar',
       configFields: schema$e(),
       partFields: parts$8(),
-      factory: factory$c,
+      factory: factory$e,
       apis: {
         setGroups: (apis, toolbar, groups) => {
           apis.setGroups(toolbar, groups);
@@ -18075,7 +18163,7 @@
     ]);
     const createSplitButton = spec => asRaw('SplitButton', splitButtonSchema, spec);
 
-    const factory$b = (detail, spec) => {
+    const factory$d = (detail, spec) => {
       const setMenus = (comp, menus) => {
         const newMenus = map$2(menus, m => {
           const buttonSpec = {
@@ -18145,7 +18233,7 @@
       };
     };
     var SilverMenubar = single({
-      factory: factory$b,
+      factory: factory$d,
       name: 'silver.Menubar',
       configFields: [
         required$1('dom'),
@@ -18977,7 +19065,9 @@
       markers$1(['overflowToggledClass']),
       optionFunction('getOverflowBounds'),
       required$1('lazySink'),
-      customField('overflowGroups', () => Cell([]))
+      customField('overflowGroups', () => Cell([])),
+      onHandler('onOpened'),
+      onHandler('onClosed')
     ].concat(schema$c()));
     const parts$7 = constant$1([
       required({
@@ -19003,7 +19093,8 @@
       requiredFunction('fetch'),
       optionFunction('getBounds'),
       optionObjOf('fireDismissalEventInstead', [defaulted('event', dismissRequested())]),
-      schema$y()
+      schema$y(),
+      onHandler('onToggled')
     ]);
     const parts$6 = constant$1([
       external({
@@ -19013,7 +19104,8 @@
           buttonBehaviours: derive$1([Toggling.config({
               toggleClass: detail.markers.toggledClass,
               aria: { mode: 'expanded' },
-              toggleOnExecute: false
+              toggleOnExecute: false,
+              onToggled: detail.onToggled
             })])
         })
       }),
@@ -19115,7 +19207,7 @@
         ])
       };
     };
-    const factory$a = (detail, components, spec, externals) => ({
+    const factory$c = (detail, components, spec, externals) => ({
       ...Button.sketch({
         ...externals.button(),
         action: button => {
@@ -19153,7 +19245,7 @@
     });
     const FloatingToolbarButton = composite({
       name: 'FloatingToolbarButton',
-      factory: factory$a,
+      factory: factory$c,
       configFields: schema$a(),
       partFields: parts$6(),
       apis: {
@@ -19181,7 +19273,7 @@
         unit: 'item'
       })]);
 
-    const factory$9 = (detail, components, _spec, _externals) => ({
+    const factory$b = (detail, components, _spec, _externals) => ({
       uid: detail.uid,
       dom: detail.dom,
       components,
@@ -19195,7 +19287,7 @@
       name: 'ToolbarGroup',
       configFields: schema$9(),
       partFields: parts$5(),
-      factory: factory$9
+      factory: factory$b
     });
 
     const buildGroups = comps => map$2(comps, g => premade(g));
@@ -19207,7 +19299,7 @@
         });
       });
     };
-    const factory$8 = (detail, components, spec, externals) => {
+    const factory$a = (detail, components, spec, externals) => {
       const memFloatingToolbarButton = record(FloatingToolbarButton.sketch({
         fetch: () => Future.nu(resolve => {
           resolve(buildGroups(detail.overflowGroups.get()));
@@ -19237,7 +19329,8 @@
         parts: {
           button: externals['overflow-button'](),
           toolbar: externals.overflow()
-        }
+        },
+        onToggled: (comp, state) => detail[state ? 'onOpened' : 'onClosed'](comp)
       }));
       return {
         uid: detail.uid,
@@ -19279,7 +19372,7 @@
       name: 'SplitFloatingToolbar',
       configFields: schema$b(),
       partFields: parts$7(),
-      factory: factory$8,
+      factory: factory$a,
       apis: {
         setGroups: (apis, toolbar, groups) => {
           apis.setGroups(toolbar, groups);
@@ -19388,7 +19481,7 @@
         Sliding.refresh(overflow);
       });
     };
-    const factory$7 = (detail, components, spec, externals) => {
+    const factory$9 = (detail, components, spec, externals) => {
       const toolbarToggleEvent = 'alloy.toolbar.toggle';
       const doSetGroups = (toolbar, groups) => {
         const built = map$2(groups, toolbar.getSystem().build);
@@ -19434,7 +19527,7 @@
       name: 'SplitSlidingToolbar',
       configFields: schema$8(),
       partFields: parts$4(),
-      factory: factory$7,
+      factory: factory$9,
       apis: {
         setGroups: (apis, toolbar, groups) => {
           apis.setGroups(toolbar, groups);
@@ -19540,7 +19633,9 @@
           }
         },
         components: [primary],
-        markers: { overflowToggledClass: 'tox-tbtn--enabled' }
+        markers: { overflowToggledClass: 'tox-tbtn--enabled' },
+        onOpened: comp => toolbarSpec.onToggled(comp, true),
+        onClosed: comp => toolbarSpec.onToggled(comp, false)
       });
     };
     const renderSlidingMoreToolbar = toolbarSpec => {
@@ -19572,9 +19667,11 @@
         },
         onOpened: comp => {
           comp.getSystem().broadcastOn([toolbarHeightChange()], { type: 'opened' });
+          toolbarSpec.onToggled(comp, true);
         },
         onClosed: comp => {
           comp.getSystem().broadcastOn([toolbarHeightChange()], { type: 'closed' });
+          toolbarSpec.onToggled(comp, false);
         }
       });
     };
@@ -19591,7 +19688,229 @@
       });
     };
 
+    const normalButtonFields = [
+      requiredStringEnum('type', ['button']),
+      text,
+      defaultedStringEnum('buttonType', 'secondary', [
+        'primary',
+        'secondary'
+      ]),
+      requiredFunction('onAction')
+    ];
+    const viewButtonSchema = choose$1('type', { button: normalButtonFields });
+
+    const viewSchema = objOf([
+      defaultedArrayOf('buttons', [], viewButtonSchema),
+      requiredFunction('onShow'),
+      requiredFunction('onHide')
+    ]);
+    const createView = spec => asRaw('view', viewSchema, spec);
+
+    const renderViewButton = (spec, providers) => {
+      return renderButton({
+        text: spec.text,
+        enabled: true,
+        primary: false,
+        name: 'name',
+        icon: Optional.none(),
+        borderless: false,
+        buttonType: Optional.some(spec.buttonType)
+      }, _comp => {
+        spec.onAction();
+      }, providers);
+    };
+    const renderViewHeader = spec => {
+      const endButtons = map$2(spec.buttons, btnspec => renderViewButton(btnspec, spec.providers));
+      return {
+        uid: spec.uid,
+        dom: {
+          tag: 'div',
+          classes: ['tox-view__header']
+        },
+        components: [
+          Container.sketch({
+            dom: {
+              tag: 'div',
+              classes: ['tox-view__header-start']
+            },
+            components: []
+          }),
+          Container.sketch({
+            dom: {
+              tag: 'div',
+              classes: ['tox-view__header-end']
+            },
+            components: endButtons
+          })
+        ]
+      };
+    };
+    const renderViewPane = spec => {
+      return {
+        uid: spec.uid,
+        dom: {
+          tag: 'div',
+          classes: ['tox-view__pane']
+        }
+      };
+    };
+    const factory$8 = (detail, components, _spec, _externals) => {
+      const apis = {
+        getPane: comp => parts$a.getPart(comp, detail, 'pane'),
+        getOnShow: _comp => detail.viewConfig.onShow,
+        getOnHide: _comp => detail.viewConfig.onHide
+      };
+      return {
+        uid: detail.uid,
+        dom: detail.dom,
+        components,
+        apis
+      };
+    };
+    var View = composite({
+      name: 'silver.View',
+      configFields: [required$1('viewConfig')],
+      partFields: [
+        optional({
+          factory: { sketch: renderViewHeader },
+          schema: [
+            required$1('buttons'),
+            required$1('providers')
+          ],
+          name: 'header'
+        }),
+        optional({
+          factory: { sketch: renderViewPane },
+          schema: [],
+          name: 'pane'
+        })
+      ],
+      factory: factory$8,
+      apis: {
+        getPane: (apis, comp) => apis.getPane(comp),
+        getOnShow: (apis, comp) => apis.getOnShow(comp),
+        getOnHide: (apis, comp) => apis.getOnHide(comp)
+      }
+    });
+
+    const makeViews = (parts, viewConfigs, providers) => {
+      return mapToArray(viewConfigs, (config, name) => {
+        const internalViewConfig = getOrDie(createView(config));
+        return parts.slot(name, View.sketch({
+          dom: {
+            tag: 'div',
+            classes: ['tox-view']
+          },
+          viewConfig: internalViewConfig,
+          components: [
+            ...internalViewConfig.buttons.length > 0 ? [View.parts.header({
+                buttons: internalViewConfig.buttons,
+                providers
+              })] : [],
+            View.parts.pane({})
+          ]
+        }));
+      });
+    };
+    const makeSlotContainer = (viewConfigs, providers) => SlotContainer.sketch(parts => ({
+      dom: {
+        tag: 'div',
+        classes: ['tox-view-wrap__slot-container']
+      },
+      components: makeViews(parts, viewConfigs, providers),
+      slotBehaviours: SimpleBehaviours.unnamedEvents([runOnAttached(slotContainer => SlotContainer.hideAllSlots(slotContainer))])
+    }));
+    const getCurrentName = slotContainer => {
+      return find$5(SlotContainer.getSlotNames(slotContainer), name => SlotContainer.isShowing(slotContainer, name));
+    };
+    const hideContainer = comp => {
+      const element = comp.element;
+      set$8(element, 'display', 'none');
+      set$9(element, 'aria-hidden', 'true');
+    };
+    const showContainer = comp => {
+      const element = comp.element;
+      remove$6(element, 'display');
+      remove$7(element, 'aria-hidden');
+    };
+    const makeViewInstanceApi = slot => ({ getContainer: constant$1(slot) });
+    const runOnPaneWithInstanceApi = (slotContainer, name, get) => {
+      SlotContainer.getSlot(slotContainer, name).each(view => {
+        View.getPane(view).each(pane => {
+          const onCallback = get(view);
+          onCallback(makeViewInstanceApi(pane.element.dom));
+        });
+      });
+    };
+    const runOnShow = (slotContainer, name) => runOnPaneWithInstanceApi(slotContainer, name, View.getOnShow);
+    const runOnHide = (slotContainer, name) => runOnPaneWithInstanceApi(slotContainer, name, View.getOnHide);
+    const factory$7 = (detail, spec) => {
+      const setViews = (comp, viewConfigs) => {
+        Replacing.set(comp, [makeSlotContainer(viewConfigs, spec.backstage.shared.providers)]);
+      };
+      const whichView = comp => {
+        return Composing.getCurrent(comp).bind(getCurrentName);
+      };
+      const toggleView = (comp, showMainView, hideMainView, name) => {
+        return Composing.getCurrent(comp).exists(slotContainer => {
+          const optCurrentSlotName = getCurrentName(slotContainer);
+          const isTogglingCurrentView = optCurrentSlotName.exists(current => name === current);
+          const exists = SlotContainer.getSlot(slotContainer, name).isSome();
+          if (exists) {
+            SlotContainer.hideAllSlots(slotContainer);
+            if (!isTogglingCurrentView) {
+              hideMainView();
+              showContainer(comp);
+              SlotContainer.showSlot(slotContainer, name);
+              runOnShow(slotContainer, name);
+            } else {
+              hideContainer(comp);
+              showMainView();
+            }
+            optCurrentSlotName.each(prevName => runOnHide(slotContainer, prevName));
+          }
+          return exists;
+        });
+      };
+      const apis = {
+        setViews,
+        whichView,
+        toggleView
+      };
+      return {
+        uid: detail.uid,
+        dom: {
+          tag: 'div',
+          classes: ['tox-view-wrap'],
+          attributes: { 'aria-hidden': 'true' },
+          styles: { display: 'none' }
+        },
+        components: [],
+        behaviours: derive$1([
+          Replacing.config({}),
+          Composing.config({
+            find: comp => {
+              const children = Replacing.contents(comp);
+              return head(children);
+            }
+          })
+        ]),
+        apis
+      };
+    };
+    var ViewWrapper = single({
+      factory: factory$7,
+      name: 'silver.ViewWrapper',
+      configFields: [required$1('backstage')],
+      apis: {
+        setViews: (apis, comp, views) => apis.setViews(comp, views),
+        toggleView: (apis, comp, outerContainer, editorCont, name) => apis.toggleView(comp, outerContainer, editorCont, name),
+        whichView: (apis, comp) => apis.whichView(comp)
+      }
+    });
+
     const factory$6 = (detail, components, _spec) => {
+      let toolbarDrawerOpenState = false;
       const apis = {
         getSocket: comp => {
           return parts$a.getPart(comp, detail, 'socket');
@@ -19652,6 +19971,38 @@
         focusMenubar: comp => {
           parts$a.getPart(comp, detail, 'menubar').each(menubar => {
             SilverMenubar.focus(menubar);
+          });
+        },
+        setViews: (comp, viewConfigs) => {
+          parts$a.getPart(comp, detail, 'viewWrapper').each(wrapper => {
+            ViewWrapper.setViews(wrapper, viewConfigs);
+          });
+        },
+        toggleView: (comp, name) => {
+          return parts$a.getPart(comp, detail, 'viewWrapper').exists(wrapper => ViewWrapper.toggleView(wrapper, () => apis.showMainView(comp), () => apis.hideMainView(comp), name));
+        },
+        whichView: comp => {
+          return parts$a.getPart(comp, detail, 'viewWrapper').bind(ViewWrapper.whichView).getOrNull();
+        },
+        hideMainView: comp => {
+          toolbarDrawerOpenState = apis.isToolbarDrawerToggled(comp);
+          if (toolbarDrawerOpenState) {
+            apis.toggleToolbarDrawer(comp);
+          }
+          parts$a.getPart(comp, detail, 'editorContainer').each(editorContainer => {
+            const element = editorContainer.element;
+            set$8(element, 'display', 'none');
+            set$9(element, 'aria-hidden', 'true');
+          });
+        },
+        showMainView: comp => {
+          if (toolbarDrawerOpenState) {
+            apis.toggleToolbarDrawer(comp);
+          }
+          parts$a.getPart(comp, detail, 'editorContainer').each(editorContainer => {
+            const element = editorContainer.element;
+            remove$6(element, 'display');
+            remove$7(element, 'aria-hidden');
           });
         }
       };
@@ -19720,6 +20071,7 @@
               spec.onEscape();
               return Optional.some(true);
             },
+            onToggled: (_comp, state) => spec.onToolbarToggled(state),
             cyclicKeying: false,
             initGroups: [],
             getSink: spec.getSink,
@@ -19765,6 +20117,24 @@
       name: 'throbber',
       schema: [required$1('dom')]
     });
+    const partViewWrapper = partType.optional({
+      factory: ViewWrapper,
+      name: 'viewWrapper',
+      schema: [required$1('backstage')]
+    });
+    const renderEditorContainer = spec => ({
+      uid: spec.uid,
+      dom: {
+        tag: 'div',
+        classes: ['tox-editor-container']
+      },
+      components: spec.components
+    });
+    const partEditorContainer = partType.optional({
+      factory: { sketch: renderEditorContainer },
+      name: 'editorContainer',
+      schema: []
+    });
     var OuterContainer = composite({
       name: 'OuterContainer',
       factory: factory$6,
@@ -19780,7 +20150,9 @@
         partSocket,
         partSidebar,
         partPromotion,
-        partThrobber
+        partThrobber,
+        partViewWrapper,
+        partEditorContainer
       ],
       apis: {
         getSocket: (apis, comp) => {
@@ -19827,6 +20199,15 @@
         },
         focusToolbar: (apis, comp) => {
           apis.focusToolbar(comp);
+        },
+        setViews: (apis, comp, views) => {
+          apis.setViews(comp, views);
+        },
+        toggleView: (apis, comp, name) => {
+          return apis.toggleView(comp, name);
+        },
+        whichView: (apis, comp) => {
+          return apis.whichView(comp);
         }
       }
     });
@@ -21084,8 +21465,8 @@
       return filter$2(groups, group => group.items.length > 0);
     };
 
-    const setToolbar = (editor, uiComponents, rawUiConfig, backstage) => {
-      const comp = uiComponents.outerContainer;
+    const setToolbar = (editor, uiRefs, rawUiConfig, backstage) => {
+      const outerContainer = uiRefs.mainUi.outerContainer;
       const toolbarConfig = rawUiConfig.toolbar;
       const toolbarButtonsConfig = rawUiConfig.buttons;
       if (isArrayOf(toolbarConfig, isString)) {
@@ -21097,15 +21478,16 @@
           };
           return identifyButtons(editor, config, backstage, Optional.none());
         });
-        OuterContainer.setToolbars(comp, toolbars);
+        OuterContainer.setToolbars(outerContainer, toolbars);
       } else {
-        OuterContainer.setToolbar(comp, identifyButtons(editor, rawUiConfig, backstage, Optional.none()));
+        OuterContainer.setToolbar(outerContainer, identifyButtons(editor, rawUiConfig, backstage, Optional.none()));
       }
     };
 
     const detection = detect$1();
     const isiOS12 = detection.os.isiOS() && detection.os.version.major <= 12;
-    const setupEvents$1 = (editor, uiComponents) => {
+    const setupEvents$1 = (editor, uiRefs) => {
+      const {uiMotherships} = uiRefs;
       const dom = editor.dom;
       let contentWindow = editor.getWin();
       const initialDocEle = editor.getDoc().documentElement;
@@ -21132,12 +21514,15 @@
       dom.bind(contentWindow, 'resize', resizeWindow);
       dom.bind(contentWindow, 'scroll', scroll);
       const elementLoad = capture(SugarElement.fromDom(editor.getBody()), 'load', resizeDocument);
-      const mothership = uiComponents.uiMothership.element;
       editor.on('hide', () => {
-        set$8(mothership, 'display', 'none');
+        each$1(uiMotherships, m => {
+          set$8(m.element, 'display', 'none');
+        });
       });
       editor.on('show', () => {
-        remove$6(mothership, 'display');
+        each$1(uiMotherships, m => {
+          remove$6(m.element, 'display');
+        });
       });
       editor.on('NodeChange', resizeDocument);
       editor.on('remove', () => {
@@ -21147,20 +21532,25 @@
         contentWindow = null;
       });
     };
-    const render$1 = (editor, uiComponents, rawUiConfig, backstage, args) => {
+    const attachUiMotherships$1 = (uiRoot, uiRefs) => {
+      attachSystem(uiRoot, uiRefs.dialogUi.mothership);
+    };
+    const render$1 = (editor, uiRefs, rawUiConfig, backstage, args) => {
+      const {mainUi, uiMotherships} = uiRefs;
       const lastToolbarWidth = Cell(0);
-      const outerContainer = uiComponents.outerContainer;
+      const outerContainer = mainUi.outerContainer;
       iframe(editor);
       const eTargetNode = SugarElement.fromDom(args.targetNode);
       const uiRoot = getContentContainer(getRootNode(eTargetNode));
-      attachSystemAfter(eTargetNode, uiComponents.mothership);
-      attachSystem(uiRoot, uiComponents.uiMothership);
+      attachSystemAfter(eTargetNode, mainUi.mothership);
+      attachUiMotherships$1(uiRoot, uiRefs);
       editor.on('PostRender', () => {
         OuterContainer.setSidebar(outerContainer, rawUiConfig.sidebar, getSidebarShow(editor));
-        setToolbar(editor, uiComponents, rawUiConfig, backstage);
+        setToolbar(editor, uiRefs, rawUiConfig, backstage);
         lastToolbarWidth.set(editor.getWin().innerWidth);
         OuterContainer.setMenubar(outerContainer, identifyMenus(editor, rawUiConfig));
-        setupEvents$1(editor, uiComponents);
+        OuterContainer.setViews(outerContainer, rawUiConfig.views);
+        setupEvents$1(editor, uiRefs);
       });
       const socket = OuterContainer.getSocket(outerContainer).getOrDie('Could not find expected socket element');
       if (isiOS12) {
@@ -21174,7 +21564,7 @@
         const unbinder = bind(socket.element, 'scroll', limit.throttle);
         editor.on('remove', unbinder.unbind);
       }
-      setupReadonlyModeSwitch(editor, uiComponents);
+      setupReadonlyModeSwitch(editor, uiRefs);
       editor.addCommand('ToggleSidebar', (_ui, value) => {
         OuterContainer.toggleSidebar(outerContainer, value);
         editor.dispatch('ToggleSidebar');
@@ -21183,9 +21573,26 @@
         var _a;
         return (_a = OuterContainer.whichSidebar(outerContainer)) !== null && _a !== void 0 ? _a : '';
       });
+      editor.addCommand('ToggleView', (_ui, value) => {
+        if (OuterContainer.toggleView(outerContainer, value)) {
+          const target = outerContainer.element;
+          mainUi.mothership.broadcastOn([dismissPopups()], { target });
+          each$1(uiMotherships, m => {
+            m.broadcastOn([dismissPopups()], { target });
+          });
+          if (isNull(OuterContainer.whichView(outerContainer))) {
+            editor.focus();
+            editor.nodeChanged();
+          }
+        }
+      });
+      editor.addQueryValueHandler('ToggleView', () => {
+        var _a;
+        return (_a = OuterContainer.whichView(outerContainer)) !== null && _a !== void 0 ? _a : '';
+      });
       const toolbarMode = getToolbarMode(editor);
       const refreshDrawer = () => {
-        OuterContainer.refreshToolbar(uiComponents.outerContainer);
+        OuterContainer.refreshToolbar(uiRefs.mainUi.outerContainer);
       };
       if (toolbarMode === ToolbarMode$1.sliding || toolbarMode === ToolbarMode$1.floating) {
         editor.on('ResizeWindow ResizeEditor ResizeContent', () => {
@@ -21198,7 +21605,7 @@
       }
       const api = {
         setEnabled: state => {
-          broadcastReadonly(uiComponents, !state);
+          broadcastReadonly(uiRefs, !state);
         },
         isEnabled: () => !Disabling.isDisabled(outerContainer)
       };
@@ -21250,8 +21657,8 @@
     };
 
     const {ToolbarLocation, ToolbarMode} = Options;
-    const InlineHeader = (editor, targetElm, uiComponents, backstage, floatContainer) => {
-      const {uiMothership, outerContainer} = uiComponents;
+    const InlineHeader = (editor, targetElm, uiRefs, backstage, floatContainer) => {
+      const {mainUi, uiMotherships} = uiRefs;
       const DOM = global$7.DOM;
       const useFixedToolbarContainer = useFixedContainer(editor);
       const isSticky = isStickyToolbar(editor);
@@ -21266,7 +21673,7 @@
       const calcMode = container => {
         switch (getToolbarLocation(editor)) {
         case ToolbarLocation.auto:
-          const toolbar = OuterContainer.getToolbar(outerContainer);
+          const toolbar = OuterContainer.getToolbar(mainUi.outerContainer);
           const offset = calcToolbarOffset(toolbar);
           const toolbarHeight = get$d(container.element) - offset;
           const targetBounds = box$1(targetElm);
@@ -21311,11 +21718,11 @@
       };
       const updateChromePosition = () => {
         floatContainer.on(container => {
-          const toolbar = OuterContainer.getToolbar(outerContainer);
+          const toolbar = OuterContainer.getToolbar(mainUi.outerContainer);
           const offset = calcToolbarOffset(toolbar);
           const targetBounds = box$1(targetElm);
           const top = isPositionedAtTop() ? Math.max(targetBounds.y - get$d(container.element) + offset, 0) : targetBounds.bottom;
-          setAll(outerContainer.element, {
+          setAll(mainUi.outerContainer.element, {
             position: 'absolute',
             top: Math.round(top) + 'px',
             left: Math.round(targetBounds.x) + 'px'
@@ -21323,7 +21730,9 @@
         });
       };
       const repositionPopups$1 = () => {
-        uiMothership.broadcastOn([repositionPopups()], {});
+        each$1(uiMotherships, m => {
+          m.broadcastOn([repositionPopups()], {});
+        });
       };
       const updateChromeUi = (resetDocking = false) => {
         if (!isVisible()) {
@@ -21333,7 +21742,7 @@
           updateChromeWidth();
         }
         if (isSplitToolbar) {
-          OuterContainer.refreshToolbar(outerContainer);
+          OuterContainer.refreshToolbar(mainUi.outerContainer);
         }
         if (!useFixedToolbarContainer) {
           updateChromePosition();
@@ -21361,19 +21770,21 @@
       };
       const show = () => {
         visible.set(true);
-        set$8(outerContainer.element, 'display', 'flex');
+        set$8(mainUi.outerContainer.element, 'display', 'flex');
         DOM.addClass(editor.getBody(), 'mce-edit-focus');
-        remove$6(uiMothership.element, 'display');
+        each$1(uiMotherships, m => {
+          remove$6(m.element, 'display');
+        });
         updateMode(false);
         updateChromeUi();
       };
       const hide = () => {
         visible.set(false);
-        if (uiComponents.outerContainer) {
-          set$8(outerContainer.element, 'display', 'none');
-          DOM.removeClass(editor.getBody(), 'mce-edit-focus');
-        }
-        set$8(uiMothership.element, 'display', 'none');
+        set$8(mainUi.outerContainer.element, 'display', 'none');
+        DOM.removeClass(editor.getBody(), 'mce-edit-focus');
+        each$1(uiMotherships, m => {
+          set$8(m.element, 'display', 'none');
+        });
       };
       return {
         isVisible,
@@ -21433,11 +21844,14 @@
         elementLoad.clear();
       });
     };
-    const render = (editor, uiComponents, rawUiConfig, backstage, args) => {
-      const {mothership, uiMothership, outerContainer} = uiComponents;
+    const attachUiMotherships = (uiRoot, uiRefs) => {
+      attachSystem(uiRoot, uiRefs.dialogUi.mothership);
+    };
+    const render = (editor, uiRefs, rawUiConfig, backstage, args) => {
+      const {mainUi} = uiRefs;
       const floatContainer = value$2();
       const targetElm = SugarElement.fromDom(args.targetNode);
-      const ui = InlineHeader(editor, targetElm, uiComponents, backstage, floatContainer);
+      const ui = InlineHeader(editor, targetElm, uiRefs, backstage, floatContainer);
       const toolbarPersist = isToolbarPersist(editor);
       inline(editor);
       const render = () => {
@@ -21445,12 +21859,12 @@
           ui.show();
           return;
         }
-        floatContainer.set(OuterContainer.getHeader(outerContainer).getOrDie());
+        floatContainer.set(OuterContainer.getHeader(mainUi.outerContainer).getOrDie());
         const uiContainer = getUiContainer(editor);
-        attachSystem(uiContainer, mothership);
-        attachSystem(uiContainer, uiMothership);
-        setToolbar(editor, uiComponents, rawUiConfig, backstage);
-        OuterContainer.setMenubar(outerContainer, identifyMenus(editor, rawUiConfig));
+        attachSystem(uiContainer, mainUi.mothership);
+        attachUiMotherships(uiContainer, uiRefs);
+        setToolbar(editor, uiRefs, rawUiConfig, backstage);
+        OuterContainer.setMenubar(mainUi.outerContainer, identifyMenus(editor, rawUiConfig));
         ui.show();
         setupEvents(editor, targetElm, ui, toolbarPersist);
         editor.nodeChanged();
@@ -21466,17 +21880,17 @@
           render();
         }
       });
-      setupReadonlyModeSwitch(editor, uiComponents);
+      setupReadonlyModeSwitch(editor, uiRefs);
       const api = {
         show: render,
         hide: ui.hide,
         setEnabled: state => {
-          broadcastReadonly(uiComponents, !state);
+          broadcastReadonly(uiRefs, !state);
         },
-        isEnabled: () => !Disabling.isDisabled(outerContainer)
+        isEnabled: () => !Disabling.isDisabled(mainUi.outerContainer)
       };
       return {
-        editorContainer: outerContainer.element.dom,
+        editorContainer: mainUi.outerContainer.element.dom,
         api
       };
     };
@@ -21485,6 +21899,24 @@
         __proto__: null,
         render: render
     });
+
+    const LazyUiReferences = () => {
+      const dialogUi = value$2();
+      const popupUi = value$2();
+      const mainUi = value$2();
+      const setupDialogUi = ui => {
+        dialogUi.set(ui);
+      };
+      const lazyGetInOuterOrDie = (label, f) => () => mainUi.get().bind(oc => f(oc.outerContainer)).getOrDie(`Could not find ${ label } element in OuterContainer`);
+      return {
+        dialogUi,
+        popupUi,
+        mainUi,
+        getUiMotherships: () => [...dialogUi.get().map(e => e.mothership).toArray()],
+        setupDialogUi,
+        lazyGetInOuterOrDie
+      };
+    };
 
     const showContextToolbarEvent = 'contexttoolbar-show';
     const hideContextToolbarEvent = 'contexttoolbar-hide';
@@ -21591,7 +22023,7 @@
       buildInitGroups
     };
 
-    const isVerticalOverlap = (a, b, threshold = 0.01) => b.bottom - a.y >= threshold && a.bottom - b.y >= threshold;
+    const isVerticalOverlap = (a, b, threshold) => b.bottom - a.y >= threshold && a.bottom - b.y >= threshold;
     const getRangeRect = rng => {
       const rect = rng.getBoundingClientRect();
       if (rect.height <= 0 && rect.width <= 0) {
@@ -21702,7 +22134,7 @@
         return isSameAnchorElement ? preserve : north;
       } else if (isSameAnchorElement) {
         return preservePosition(contextbar, data.getMode(), () => {
-          const isOverlapping = isVerticalOverlap(selectionBounds, box$1(contextbar));
+          const isOverlapping = isVerticalOverlap(selectionBounds, box$1(contextbar), -20);
           return isOverlapping && !data.isReposition() ? flip : preserve;
         });
       } else {
@@ -22043,7 +22475,7 @@
         } else {
           const contextToolbarBounds = getBounds();
           const anchorBounds = is$1(lastContextPosition.get(), 'node') ? getAnchorElementBounds(editor, lastElement.get()) : getSelectionBounds(editor);
-          return contextToolbarBounds.height <= 0 || !isVerticalOverlap(anchorBounds, contextToolbarBounds);
+          return contextToolbarBounds.height <= 0 || !isVerticalOverlap(anchorBounds, contextToolbarBounds, 0.01);
         }
       };
       const close = () => {
@@ -24104,15 +24536,14 @@
       };
     };
 
-    const getLazyMothership = singleton => singleton.get().getOrDie('UI has not been rendered');
+    const getLazyMothership = (label, singleton) => singleton.get().getOrDie(`UI for ${ label } has not been rendered`);
     const setup$3 = editor => {
       const isInline = editor.inline;
       const mode = isInline ? Inline : Iframe;
       const header = isStickyToolbar(editor) ? StickyHeader : StaticHeader;
-      const lazySink = value$2();
-      const lazyOuterContainer = value$2();
+      const lazyUiRefs = LazyUiReferences();
       const lazyMothership = value$2();
-      const lazyUiMothership = value$2();
+      const lazyDialogMothership = value$2();
       const platform = detect$1();
       const isTouch = platform.deviceType.isTouch();
       const touchPlatformClass = 'tox-platform-touch';
@@ -24125,12 +24556,16 @@
           classes: ['tox-anchorbar']
         }
       });
-      const lazyHeader = () => lazyOuterContainer.get().bind(OuterContainer.getHeader);
-      const lazySinkResult = () => Result.fromOption(lazySink.get(), 'UI has not been rendered');
-      const lazyAnchorBar = () => lazyOuterContainer.get().bind(container => memAnchorBar.getOpt(container)).getOrDie('Could not find a anchor bar element');
-      const lazyToolbar = () => lazyOuterContainer.get().bind(container => OuterContainer.getToolbar(container)).getOrDie('Could not find more toolbar element');
-      const lazyThrobber = () => lazyOuterContainer.get().bind(container => OuterContainer.getThrobber(container)).getOrDie('Could not find throbber element');
-      const backstage = init$7(lazySinkResult, editor, lazyAnchorBar);
+      const lazyHeader = () => lazyUiRefs.mainUi.get().map(ui => ui.outerContainer).bind(OuterContainer.getHeader);
+      const lazyDialogSinkResult = () => Result.fromOption(lazyUiRefs.dialogUi.get().map(ui => ui.sink), 'UI has not been rendered');
+      const lazyPopupSinkResult = () => Result.fromOption(lazyUiRefs.popupUi.get().map(ui => ui.sink), '(popup) UI has not been rendered');
+      const lazyAnchorBar = lazyUiRefs.lazyGetInOuterOrDie('anchor bar', memAnchorBar.getOpt);
+      const lazyToolbar = lazyUiRefs.lazyGetInOuterOrDie('toolbar', OuterContainer.getToolbar);
+      const lazyThrobber = lazyUiRefs.lazyGetInOuterOrDie('throbber', OuterContainer.getThrobber);
+      const backstages = init$7({
+        popup: lazyPopupSinkResult,
+        dialog: lazyDialogSinkResult
+      }, editor, lazyAnchorBar);
       const makeHeaderPart = () => {
         const verticalDirAttributes = { attributes: { [Attribute]: isToolbarBottom ? AttributeValue.BottomToTop : AttributeValue.TopToBottom } };
         const partMenubar = OuterContainer.parts.menubar({
@@ -24138,7 +24573,7 @@
             tag: 'div',
             classes: ['tox-menubar']
           },
-          backstage,
+          backstage: backstages.popup,
           onEscape: () => {
             editor.focus();
           }
@@ -24148,10 +24583,13 @@
             tag: 'div',
             classes: ['tox-toolbar']
           },
-          getSink: lazySinkResult,
-          providers: backstage.shared.providers,
+          getSink: backstages.popup.shared.getSink,
+          providers: backstages.popup.shared.providers,
           onEscape: () => {
             editor.focus();
+          },
+          onToolbarToggled: state => {
+            fireToggleToolbarDrawer(editor, state);
           },
           type: toolbarMode,
           lazyToolbar,
@@ -24163,7 +24601,7 @@
             tag: 'div',
             classes: ['tox-toolbar-overlord']
           },
-          providers: backstage.shared.providers,
+          providers: backstages.popup.shared.providers,
           onEscape: () => {
             editor.focus();
           },
@@ -24174,6 +24612,7 @@
         const hasMenubar = isMenubarEnabled(editor);
         const shouldHavePromotion = promotionEnabled(editor);
         const partPromotion = makePromotion();
+        const hasAnyContents = hasMultipleToolbar || hasToolbar || hasMenubar;
         const getPartToolbar = () => {
           if (hasMultipleToolbar) {
             return [partMultipleToolbar];
@@ -24190,7 +24629,7 @@
         return OuterContainer.parts.header({
           dom: {
             tag: 'div',
-            classes: ['tox-editor-header'],
+            classes: ['tox-editor-header'].concat(hasAnyContents ? [] : ['tox-editor-header--empty']),
             ...verticalDirAttributes
           },
           components: flatten([
@@ -24200,7 +24639,7 @@
           ]),
           sticky: isStickyToolbar(editor),
           editor,
-          sharedBackstage: backstage.shared
+          sharedBackstage: backstages.popup.shared
         });
       };
       const makePromotion = () => {
@@ -24235,7 +24674,7 @@
           ]
         };
       };
-      const renderSink = () => {
+      const renderDialogUi = () => {
         const uiContainer = getUiContainer(editor);
         const isGridUiContainer = eq(body(), uiContainer) && get$e(uiContainer, 'display') === 'grid';
         const sinkSpec = {
@@ -24258,14 +24697,14 @@
         };
         const sink = build$1(deepMerge(sinkSpec, isGridUiContainer ? reactiveWidthSpec : {}));
         const uiMothership = takeover(sink);
-        lazySink.set(sink);
-        lazyUiMothership.set(uiMothership);
+        lazyDialogMothership.set(uiMothership);
         return {
           sink,
-          uiMothership
+          mothership: uiMothership
         };
       };
-      const renderContainer = () => {
+      const renderPopupUi = identity;
+      const renderMainUi = () => {
         const partHeader = makeHeaderPart();
         const sidebarContainer = makeSidebarDefinition();
         const partThrobber = OuterContainer.parts.throbber({
@@ -24273,26 +24712,21 @@
             tag: 'div',
             classes: ['tox-throbber']
           },
-          backstage
+          backstage: backstages.popup
         });
-        const statusbar = useStatusBar(editor) && !isInline ? Optional.some(renderStatusbar(editor, backstage.shared.providers)) : Optional.none();
+        const partViewWrapper = OuterContainer.parts.viewWrapper({ backstage: backstages.popup });
+        const statusbar = useStatusBar(editor) && !isInline ? Optional.some(renderStatusbar(editor, backstages.popup.shared.providers)) : Optional.none();
         const editorComponents = flatten([
           isToolbarBottom ? [] : [partHeader],
           isInline ? [] : [sidebarContainer],
           isToolbarBottom ? [partHeader] : []
         ]);
-        const editorContainer = {
-          dom: {
-            tag: 'div',
-            classes: ['tox-editor-container']
-          },
-          components: editorComponents
-        };
-        const containerComponents = flatten([
-          [editorContainer],
-          isInline ? [] : statusbar.toArray(),
-          [partThrobber]
-        ]);
+        const editorContainer = OuterContainer.parts.editorContainer({
+          components: flatten([
+            editorComponents,
+            isInline ? [] : statusbar.toArray()
+          ])
+        });
         const isHidden = isDistractionFree(editor);
         const attributes = {
           role: 'application',
@@ -24315,7 +24749,11 @@
             },
             attributes
           },
-          components: containerComponents,
+          components: [
+            editorContainer,
+            ...isInline ? [] : [partViewWrapper],
+            partThrobber
+          ],
           behaviours: derive$1([
             receivingConfig(),
             Disabling.config({ disableClass: 'tox-tinymce--disabled' }),
@@ -24326,7 +24764,6 @@
           ])
         }));
         const mothership = takeover(outerContainer);
-        lazyOuterContainer.set(outerContainer);
         lazyMothership.set(mothership);
         return {
           mothership,
@@ -24360,13 +24797,12 @@
         });
         editor.addQueryStateHandler('ToggleToolbarDrawer', () => OuterContainer.isToolbarDrawerToggled(outerContainer));
       };
-      const renderUI = () => {
-        const {mothership, outerContainer} = renderContainer();
-        const {uiMothership, sink} = renderSink();
+      const renderUIWithRefs = uiRefs => {
+        const {mainUi, popupUi, uiMotherships} = uiRefs;
         map$1(getToolbarGroups(editor), (toolbarGroupButtonConfig, name) => {
           editor.ui.registry.addGroupToolbarButton(name, toolbarGroupButtonConfig);
         });
-        const {buttons, menuItems, contextToolbars, sidebars} = editor.ui.registry.getAll();
+        const {buttons, menuItems, contextToolbars, sidebars, views} = editor.ui.registry.getAll();
         const toolbarOpt = getMultipleToolbarsOption(editor);
         const rawUiConfig = {
           menuItems,
@@ -24375,37 +24811,50 @@
           toolbar: toolbarOpt.getOrThunk(() => getToolbar(editor)),
           allowToolbarGroups: toolbarMode === ToolbarMode$1.floating,
           buttons,
-          sidebar: sidebars
+          sidebar: sidebars,
+          views
         };
-        setupShortcutsAndCommands(outerContainer);
-        setup$b(editor, mothership, uiMothership);
-        header.setup(editor, backstage.shared, lazyHeader);
-        setup$6(editor, backstage);
-        setup$5(editor, lazySinkResult, backstage);
+        setupShortcutsAndCommands(mainUi.outerContainer);
+        setup$b(editor, mainUi.mothership, uiMotherships);
+        header.setup(editor, backstages.popup.shared, lazyHeader);
+        setup$6(editor, backstages.popup);
+        setup$5(editor, backstages.popup.shared.getSink, backstages.popup);
         setup$8(editor);
-        setup$7(editor, lazyThrobber, backstage.shared);
-        register$9(editor, contextToolbars, sink, { backstage });
-        setup$4(editor, sink);
+        setup$7(editor, lazyThrobber, backstages.popup.shared);
+        register$9(editor, contextToolbars, popupUi.sink, { backstage: backstages.popup });
+        setup$4(editor, popupUi.sink);
         const elm = editor.getElement();
-        const height = setEditorSize(outerContainer);
-        const uiComponents = {
-          mothership,
-          uiMothership,
-          outerContainer,
-          sink
-        };
+        const height = setEditorSize(mainUi.outerContainer);
         const args = {
           targetNode: elm,
           height
         };
-        return mode.render(editor, uiComponents, rawUiConfig, backstage, args);
+        return mode.render(editor, uiRefs, rawUiConfig, backstages.popup, args);
       };
-      const getMothership = () => getLazyMothership(lazyMothership);
-      const getUiMothership = () => getLazyMothership(lazyUiMothership);
+      const renderUI = () => {
+        const mainUi = renderMainUi();
+        const dialogUi = renderDialogUi();
+        const popupUi = renderPopupUi(dialogUi);
+        lazyUiRefs.dialogUi.set(dialogUi);
+        lazyUiRefs.popupUi.set(popupUi);
+        lazyUiRefs.mainUi.set(mainUi);
+        const uiRefs = {
+          popupUi,
+          dialogUi,
+          mainUi,
+          uiMotherships: lazyUiRefs.getUiMotherships()
+        };
+        return renderUIWithRefs(uiRefs);
+      };
       return {
-        getMothership,
-        getUiMothership,
-        backstage,
+        popups: {
+          backstage: backstages.popup,
+          getMothership: () => getLazyMothership('popups', lazyDialogMothership)
+        },
+        dialogs: {
+          backstage: backstages.dialog,
+          getMothership: () => getLazyMothership('dialogs', lazyDialogMothership)
+        },
         renderUI
       };
     };
@@ -24700,7 +25149,7 @@
       icon
     ]);
 
-    const colorInputFields = formComponentWithLabelFields;
+    const colorInputFields = formComponentWithLabelFields.concat([defaultedString('storageKey', 'default')]);
     const colorInputSchema = objOf(colorInputFields);
     const colorInputDataProcessor = string;
 
@@ -26534,16 +26983,15 @@
       }
     };
     const setup = extras => {
-      const backstage = extras.backstage;
       const editor = extras.editor;
       const isStickyToolbar$1 = isStickyToolbar(editor);
-      const alertDialog = setup$2(backstage);
-      const confirmDialog = setup$1(backstage);
+      const alertDialog = setup$2(extras.backstages.dialog);
+      const confirmDialog = setup$1(extras.backstages.dialog);
       const open = (config, params, closeWindow) => {
         if (params !== undefined && params.inline === 'toolbar') {
-          return openInlineDialog(config, backstage.shared.anchors.inlineDialog(), closeWindow, params.ariaAttrs);
+          return openInlineDialog(config, extras.backstages.popup.shared.anchors.inlineDialog(), closeWindow, params.ariaAttrs);
         } else if (params !== undefined && params.inline === 'cursor') {
-          return openInlineDialog(config, backstage.shared.anchors.cursor(), closeWindow, params.ariaAttrs);
+          return openInlineDialog(config, extras.backstages.popup.shared.anchors.cursor(), closeWindow, params.ariaAttrs);
         } else {
           return openModalDialog(config, closeWindow);
         }
@@ -26556,7 +27004,7 @@
               ModalDialog.hide(dialog.dialog);
               closeWindow(dialog.instanceApi);
             }
-          }, editor, backstage);
+          }, editor, extras.backstages.dialog);
           ModalDialog.show(dialog.dialog);
           return dialog.instanceApi;
         };
@@ -26576,7 +27024,7 @@
               ModalDialog.hide(dialog.dialog);
               closeWindow(dialog.instanceApi);
             }
-          }, backstage);
+          }, extras.backstages.dialog);
           ModalDialog.show(dialog.dialog);
           dialog.instanceApi.setData(initialData);
           return dialog.instanceApi;
@@ -26587,7 +27035,7 @@
         const factory = (contents, internalInitialData, dataValidator) => {
           const initialData = validateData(internalInitialData, dataValidator);
           const inlineDialog = value$2();
-          const isToolbarLocationTop = backstage.shared.header.isPositionedAtTop();
+          const isToolbarLocationTop = extras.backstages.popup.shared.header.isPositionedAtTop();
           const dialogInit = {
             dataValidator,
             initialData,
@@ -26605,9 +27053,9 @@
               inlineDialog.clear();
               closeWindow(dialogUi.instanceApi);
             }
-          }, backstage, ariaAttrs);
+          }, extras.backstages.popup, ariaAttrs);
           const inlineDialogComp = build$1(InlineView.sketch({
-            lazySink: backstage.shared.getSink,
+            lazySink: extras.backstages.popup.shared.getSink,
             dom: {
               tag: 'div',
               classes: []
@@ -26660,16 +27108,20 @@
     var Theme = () => {
       global$a.add('silver', editor => {
         registerOptions(editor);
-        const {getUiMothership, backstage, renderUI} = setup$3(editor);
-        Autocompleter.register(editor, backstage.shared);
+        const {dialogs, popups, renderUI} = setup$3(editor);
+        Autocompleter.register(editor, popups.backstage.shared);
         const windowMgr = setup({
           editor,
-          backstage
+          backstages: {
+            popup: popups.backstage,
+            dialog: dialogs.backstage
+          }
         });
+        const getNotificationManagerImpl = () => NotificationManagerImpl(editor, { backstage: popups.backstage }, popups.getMothership());
         return {
           renderUI,
           getWindowManagerImpl: constant$1(windowMgr),
-          getNotificationManagerImpl: () => NotificationManagerImpl(editor, { backstage }, getUiMothership())
+          getNotificationManagerImpl
         };
       });
     };
