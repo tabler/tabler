@@ -2,37 +2,60 @@ import { renderToString } from 'react-dom/server'
 import { useEffect, useRef, useState } from 'react'
 
 const previewHtml = (example, {
-  vertical = false
+  vertical = false,
+  background = false,
+  scrollable = false,
+  columns = false,
+  centered = false,
+  separated = false,
+  plugins = []
 }) => {
+  let assetsUrl = 'https://cdn.jsdelivr.net/npm/@tabler/core@latest'
+
+  if(process.env.TABLER_LOCAL) {
+	 assetsUrl = 'http://localhost:3000'
+  }
+
   return `<html lang="en">
 	<head>
 	<title>Example</title>
-	<script src="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/js/tabler.min.js"></script>
-	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/css/tabler.min.css">
+	<link rel="stylesheet" href="${assetsUrl}/dist/css/tabler.css">
+	${plugins.map(plugin => `	<link rel="stylesheet" href="${assetsUrl}/dist/css/tabler-${plugin}.css" />`)}
 </head>
-	<body class="auto-scroll h-100" style="background: #fbfcfd">
-		${vertical ? `
-			<main class="p-4 space-y">
-				${example}
-			</main>
-		` : `
-			<main class="py-4 px-2 h-100 justify-content-center align-items-center flex-wrap space-x">
-				${example}
-			</main>
-		`}
+	<body class="h-100${background ? ` bg-${background}` : ''}${scrollable ? ' auto-scroll' : ' no-scroll'}"${!background && ` style="background: #fbfcfd"`}>
+		 <main class="min-vh-100 ${vertical ? `p-4${separated ? ` space-y` : ''}` : `py-4 px-4`}${centered ? ` d-flex justify-content-center align-items-center flex-wrap` : ''}${separated ? ` space-x` : ''}">
+	
+			${columns ? `<div class="mx-auto w-100" style="max-width: ${columns * 20}rem">` : ''}
 		
+			 ${example}
+		
+			${columns ? '</div>' : ''}
+		 </main>
+	<script src="${assetsUrl}/dist/js/tabler.js"></script>
 	</body>
 </html>`
 }
 
-export default function Example ({
-	 height = 200,
-	 vertical = false,
-	 children
+export default function Example({
+  height = 200,
+  vertical = false,
+  background = null,
+  scrollable = false,
+  columns = false,
+  centered = false,
+  separated = false,
+  plugins = [],
+  children
 }) {
-  const [iframeHeight, setIframeHeight] = useState(height);
+  const [iframeHeight, setIframeHeight] = useState(height)
   const html = previewHtml(renderToString(children), {
-	 vertical
+	 vertical,
+	 background,
+	 scrollable,
+	 columns,
+	 centered,
+	 separated,
+	 plugins
   })
 
   return (

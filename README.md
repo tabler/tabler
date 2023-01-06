@@ -152,15 +152,23 @@ All files included in `@tabler/core` npm package are available over a CDN.
 
 #### Javascript
 
-```html
+<Example>
 <script src="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/js/tabler.min.js"></script>
-```
+</Example>
+
+~~~html
+<script src="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/js/tabler.min.js"></script>
+~~~
 
 #### Styles
 
-```html
+<Example>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/css/tabler.min.css">
-```
+</Example>
+
+~~~html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/css/tabler.min.css">
+~~~
 
 ## Feature requests
 
