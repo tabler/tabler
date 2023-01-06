@@ -1,5 +1,5 @@
 /**
- * TinyMCE version 6.2.0 (2022-09-08)
+ * TinyMCE version 6.3.0 (2022-11-23)
  */
 
 (function () {
@@ -648,6 +648,11 @@
         type: 'premium'
       },
       {
+        key: 'typography',
+        name: 'Advanced Typography',
+        type: 'premium'
+      },
+      {
         key: 'mediaembed',
         name: 'Enhanced Media Embed',
         type: 'premium',
@@ -661,6 +666,11 @@
       {
         key: 'formatpainter',
         name: 'Format Painter',
+        type: 'premium'
+      },
+      {
+        key: 'inlinecss',
+        name: 'Inline CSS',
         type: 'premium'
       },
       {
@@ -712,6 +722,11 @@
         type: 'premium'
       },
       {
+        key: 'tableofcontents',
+        name: 'Table of Contents',
+        type: 'premium'
+      },
+      {
         key: 'tinycomments',
         name: 'Tiny Comments',
         type: 'premium',
@@ -722,11 +737,6 @@
         name: 'Tiny Drive',
         type: 'premium',
         slug: 'tinydrive-introduction'
-      },
-      {
-        key: 'tableofcontents',
-        name: 'Table of Contents',
-        type: 'premium'
       }
     ], item => ({
       ...item,
