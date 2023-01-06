@@ -23,12 +23,14 @@ const previewHtml = (example, {
 	${plugins.map(plugin => `	<link rel="stylesheet" href="${assetsUrl}/dist/css/tabler-${plugin}.css" />`)}
 </head>
 	<body class="h-100${background ? ` bg-${background}` : ''}${scrollable ? ' auto-scroll' : ' no-scroll'}"${!background && ` style="background: #fbfcfd"`}>
-		 <main class="min-vh-100 ${vertical ? `p-4${separated ? ` space-y` : ''}` : `py-4 px-4`}${centered ? ` d-flex justify-content-center align-items-center flex-wrap` : ''}${separated ? ` space-x` : ''}">
+		 <main class="min-vh-100 ${vertical ? `p-4` : `py-4 px-4`}${centered ? ` d-flex justify-content-center align-items-center flex-wrap` : ''}">
 	
 			${columns ? `<div class="mx-auto w-100" style="max-width: ${columns * 20}rem">` : ''}
+			${separated ? (vertical ? `<div class="space-y">` : `<div class="space-x">`) : ''}
 		
 			 ${example}
 		
+			${separated ? '</div>' : ''}
 			${columns ? '</div>' : ''}
 		 </main>
 	<script src="${assetsUrl}/dist/js/tabler.js"></script>
