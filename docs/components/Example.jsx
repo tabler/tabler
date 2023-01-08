@@ -16,22 +16,19 @@ const previewHtml = (example, {
 	 assetsUrl = 'http://localhost:3000'
   }
 
+  example = example.replace(/href="#"/g, 'href="javascript:void(0)"')
+
   return `<html lang="en">
 	<head>
 	<title>Example</title>
 	<link rel="stylesheet" href="${assetsUrl}/dist/css/tabler.css">
 	${plugins.map(plugin => `	<link rel="stylesheet" href="${assetsUrl}/dist/css/tabler-${plugin}.css" />`)}
 </head>
-	<body class="h-100${background ? ` bg-${background}` : ''}${scrollable ? ' auto-scroll' : ' no-scroll'}"${!background && ` style="background: #fbfcfd"`}>
-		 <main class="min-vh-100 ${vertical ? `p-4` : `py-4 px-4`}${centered ? ` d-flex justify-content-center align-items-center flex-wrap` : ''}">
+	<body class="h-100 d-flex${background ? ` bg-${background}` : ''}${scrollable ? ' auto-scroll' : ' no-scroll'}"${!background && ` style="background: #fbfcfd"`}>
+		 <main class="my-auto w-100${vertical ? ` p-4` : ` py-4 px-4`}${centered ? ` d-flex justify-content-center align-items-center flex-wrap` : ''}${separated ? (vertical ? ` space-y` : ` space-x`) : ''}${columns ? ` mx-auto w-100` : ''}"${columns ? ` style="max-width: ${columns * 22}rem"` : ''}>
 	
-			${columns ? `<div class="mx-auto w-100" style="max-width: ${columns * 20}rem">` : ''}
-			${separated ? (vertical ? `<div class="space-y">` : `<div class="space-x">`) : ''}
-		
+			
 			 ${example}
-		
-			${separated ? '</div>' : ''}
-			${columns ? '</div>' : ''}
 		 </main>
 	<script src="${assetsUrl}/dist/js/tabler.js"></script>
 	</body>
