@@ -8,6 +8,8 @@
     "start-plugins": "gulp start --with-plugins",
     "build": "gulp build",
     "preview": "gulp build --preview",
+    "docs": "next dev scripts/docs",
+    "docs-build": "next build scripts/docs",
     "svg-optimize": "svgo -f svg/brand --pretty",
     "unused-files": "node build/unused-files.js",
     "release": "release-it",
@@ -18,7 +20,7 @@
     "storybook": "start-storybook -p 6006",
     "changelog": "gulp changelog",
     "icons": "ncu -u @tabler/icons && npm install && gulp svg-icons && git add . && git commit -am \"update icons to v`npm info @tabler/icons version`\" && git push",
-    "download-images": "node build/download-images.js",
+    "download-images": "node scripts/download-images.js",
     "optimize-images": "for i in ./src/static/photos/*.jpg; do convert \"$i\" -quality 80% \"${i%.jpg}.jpg\"; done"
   },
   "repository": {
@@ -169,7 +171,16 @@
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^2.0.0",
     "yaml": "^2.2.1",
-    "yargs": "^17.6.2"
+    "yargs": "^17.6.2",
+    "@next/mdx": "^13.1.2",
+    "next": "^13.1.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "remark-gfm": "^3.0.1",
+    "shiki": "^0.12.1",
+    "unist-util-visit": "^4.1.1",
+    "@mdx-js/loader": "^1.6.22",
+    "@mdx-js/react": "^1.6.22"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.6",
