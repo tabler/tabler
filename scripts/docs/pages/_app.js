@@ -1,5 +1,5 @@
-import BaseLayout from '@/layouts/BaseLayout'
-import Example from '@/components/Example'
+import BaseLayout from '../layouts/BaseLayout'
+import Example from '../components/Example'
 
 import { MDXProvider } from '@mdx-js/react'
 
@@ -9,11 +9,11 @@ const components = {
 
 function App({ Component, pageProps }) {
   return <>
-	 <BaseLayout>
-		<MDXProvider components={components}>
+	 <MDXProvider components={components}>
+		<BaseLayout>
 		  <Component {...pageProps} />
-		</MDXProvider>
-	 </BaseLayout>
+		</BaseLayout>
+	 </MDXProvider>
   </>
 }
 
