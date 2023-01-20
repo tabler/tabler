@@ -1,4 +1,4 @@
-import menu from '@/pages/docs/_menu.json'
+import menu from '../pages/docs/_menu.json'
 import Link from 'next/link'
 
 function getDocsMenu() {

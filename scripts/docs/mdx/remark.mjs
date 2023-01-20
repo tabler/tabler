@@ -5,7 +5,6 @@ const remarkExamples = () => {
 
   return (tree) => {
     let preTree = { children: [] }
-    let componentName
 
     tree.children = tree.children.map((node, index) => {
       if (node.type === 'jsx') {
@@ -14,11 +13,8 @@ const remarkExamples = () => {
 
         if (html) {
           let next = tree.children[index + 1]
-          if (!componentName) {
-            componentName = addImport(preTree, '@/components/Example', 'Example')
-          }
 
-          node.value = `<${componentName} ${props} containerClassName="${
+          node.value = `<Example ${props} containerClassName="${
               next?.type === 'code' ? 'mt-4 -mb-3' : 'my-6'
           }" html={${JSON.stringify(html)}} />`
         }
