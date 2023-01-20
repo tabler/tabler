@@ -9,7 +9,7 @@
     "build": "gulp build",
     "preview": "gulp build --preview",
     "docs": "next dev scripts/docs",
-    "docs-build": "next build scripts/docs",
+    "docs-build": "rm -rf scripts/docs/pages/docs && cp -R docs scripts/docs/pages && next build scripts/docs && rm -rf scripts/docs/pages/docs && ln -s docs/ scripts/docs/pages/docs",
     "svg-optimize": "svgo -f svg/brand --pretty",
     "unused-files": "node build/unused-files.js",
     "release": "release-it",
