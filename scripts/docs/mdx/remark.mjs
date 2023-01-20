@@ -14,9 +14,7 @@ const remarkExamples = () => {
         if (html) {
           let next = tree.children[index + 1]
 
-          node.value = `<Example ${props} containerClassName="${
-              next?.type === 'code' ? 'mt-4 -mb-3' : 'my-6'
-          }" html={${JSON.stringify(html)}} />`
+          node.value = `<Example ${props} html={${JSON.stringify(html)}} />`
         }
       }
 

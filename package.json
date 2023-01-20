@@ -4,12 +4,11 @@
   "description": "Premium and Open Source dashboard template with responsive and high quality UI.",
   "homepage": "https://tabler.io",
   "scripts": {
+    "postinstall": "cd scripts/docs && npm install",
     "start": "gulp start",
     "start-plugins": "gulp start --with-plugins",
     "build": "gulp build",
     "preview": "gulp build --preview",
-    "docs": "next dev scripts/docs",
-    "docs-build": "rm -rf scripts/docs/pages/docs && cp -R docs scripts/docs/pages && next build scripts/docs",
     "svg-optimize": "svgo -f svg/brand --pretty",
     "unused-files": "node build/unused-files.js",
     "release": "release-it",
@@ -171,20 +170,7 @@
     "vinyl-source-stream": "^2.0.0",
     "yaml": "^2.2.1",
     "yargs": "^17.6.2",
-    "@next/mdx": "^13.1.2",
-    "next": "^13.1.1",
-    "react": "^18.2.0",
-    "react-dom": "^18.2.0",
-    "remark-gfm": "^3.0.1",
-    "shiki": "^0.12.1",
-    "unist-util-visit": "^4.1.1",
-    "@mdx-js/loader": "^1.6.22",
-    "@mdx-js/react": "^1.6.22"
-  },
-  "overrides": {
-    "@mdx-js/react": {
-      "react": "$react"
-    }
+    "@next/mdx": "^13.1.2"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.6",
