@@ -7,21 +7,25 @@ const withMDX = nextMDX({
   options: {
 	 providerImportSource: '@mdx-js/react',
 	 remarkPlugins,
-	 rehypePlugins,
-  },
+	 rehypePlugins
+  }
 })
 
 const nextConfig = {
   pageExtensions: ['js', 'jsx', 'md', 'mdx', 'mdoc'],
+  reactStrictMode: true,
+  eslint: {
+	 ignoreDuringBuilds: true
+  },
   async redirects() {
 	 return [
 		{
 		  source: '/',
 		  destination: '/docs',
-		  permanent: false,
-		},
+		  permanent: false
+		}
 	 ]
-  },
+  }
 }
 
 export default withMDX(nextConfig)
