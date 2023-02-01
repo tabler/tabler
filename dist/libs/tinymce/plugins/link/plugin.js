@@ -1,5 +1,5 @@
 /**
- * TinyMCE version 6.2.0 (2022-09-08)
+ * TinyMCE version 6.3.0 (2022-11-23)
  */
 
 (function () {
@@ -424,8 +424,17 @@
     const isOnlyTextSelected = editor => {
       const inlineTextElements = editor.schema.getTextInlineElements();
       const isElement = elm => elm.nodeType === 1 && !isAnchor(elm) && !has(inlineTextElements, elm.nodeName.toLowerCase());
-      const elements = collectNodesInRange(editor.selection.getRng(), isElement);
-      return elements.length === 0;
+      const isInBlockAnchor = getAnchorElement(editor).exists(anchor => anchor.hasAttribute('data-mce-block'));
+      if (isInBlockAnchor) {
+        return false;
+      }
+      const rng = editor.selection.getRng();
+      if (!rng.collapsed) {
+        const elements = collectNodesInRange(rng, isElement);
+        return elements.length === 0;
+      } else {
+        return true;
+      }
     };
     const isImageFigure = elm => isNonNullable(elm) && elm.nodeName === 'FIGURE' && /\bimage\b/i.test(elm.className);
     const getLinkAttrs = data => {
