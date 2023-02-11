@@ -38,6 +38,10 @@ body:not(.theme-dark) .hide-theme-light {
     --#{$prefix}code-color: var(--#{$prefix}body-color);
     --#{$prefix}code-bg: #{$dark-mode-border-color-light};
 
+    @each $color, $value in $theme-colors {
+      --#{$prefix}#{$color}-lt-rgb: #{to-rgb(theme-color-lighter($value, $dark))};
+    }
+
     color: $dark-mode-text;
     background-color: $dark-mode-darken;
   }
