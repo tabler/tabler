@@ -1,0 +1,19 @@
+name: Add new issues and pr to project
+
+on:
+  pull_request:
+    types:
+      - opened
+  issues:
+    types:
+      - opened
+
+jobs:
+  add-to-project:
+    name: Add new issue and pr to project
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/add-to-project@v0.4.0
+        with:
+          project-url: https://github.com/users/SyntaxJoker/projects/1
+          github-token: ${{ secrets.SECRET }}
