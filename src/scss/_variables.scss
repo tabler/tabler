@@ -132,16 +132,16 @@ $border-light-opacity: .08 !default;
 $border-dark-opacity: .24 !default;
 $border-active-opacity: .48 !default;
 
-$gray-50:  #f8fafc !default;
-$gray-100: #f1f5f9 !default;
-$gray-200: #e2e8f0 !default;
-$gray-300: #c8d3e1 !default;
-$gray-400: #9ba9be !default;
-$gray-500: #6c7a91 !default;
-$gray-600: #49566c !default;
-$gray-700: #313c52 !default;
-$gray-800: #1d273b !default;
-$gray-900: #0f172a !default;
+$gray-50: #fafbfc !default;
+$gray-100: #f6f7f9 !default;
+$gray-200: #eaedf0 !default;
+$gray-300: #dce0e5 !default;
+$gray-400: #bbc3cd !default;
+$gray-500: #8491a1 !default;
+$gray-600: #667382 !default;
+$gray-700: #3a4859 !default;
+$gray-800: #182433 !default;
+$gray-900: #040a11 !default;
 
 $black: #000000 !default;
 $white: #ffffff !default;
@@ -157,7 +157,7 @@ $bg-surface-dark: var(--#{$prefix}dark) !default;
 $body-bg: $gray-100 !default;
 $body-color: $dark !default;
 
-$color-contrast-dark: $dark !default;
+$color-contrast-dark: $body-color !default;
 $color-contrast-light: $light !default;
 
 $blue: #206bc4 !default;
@@ -173,18 +173,32 @@ $green: #2fb344 !default;
 $teal: #0ca678 !default;
 $cyan: #17a2b8 !default;
 
-$text-muted: mix($body-color, #ffffff, percentage($text-muted-opacity)) !default;
-$text-muted-light: mix($body-color, #ffffff, percentage($text-muted-light-opacity)) !default;
-$text-muted-dark: mix($body-color, #ffffff, percentage($text-muted-dark-opacity)) !default;
+$color-blue: #206bc4;
+$color-azure: #3586c9;
+$color-indigo: #4263eb;
+$color-purple: #ae3ec9;
+$color-pink: #d6336c;
+$color-red: #e73f3f;
+$color-orange: #f76707;
+$color-yellow: #f59f00;
+$color-lime: #74b816;
+$color-green: #2fb344;
+$color-teal: #0ca678;
+$color-cyan: #17a2b8;
 
-$border-color: mix($text-muted, #ffffff, percentage($border-opacity)) !default;
-$border-color-translucent: rgba($text-muted, $border-opacity) !default;
+$text-muted: $gray-600 !default;
+$text-muted-light: $gray-500 !default;
+$text-muted-dark: $gray-700 !default;
 
-$border-color-light: mix($text-muted, #ffffff, percentage($border-light-opacity)) !default;
-$border-color-light-translucent: rgba($text-muted, $border-light-opacity) !default;
+$border-color: $gray-300 !default;
+$border-color-translucent: rgba(4, 32, 69, .14);
 
-$border-color-active: mix($text-muted, #ffffff, percentage($border-active-opacity)) !default;
-$border-color-active-translucent: rgba($text-muted, $border-active-opacity) !default;
+$border-dark-color: $gray-400 !default;
+$border-dark-color-translucent: rgba(4, 32, 69, .27);
+
+$border-active-color: mix($text-muted, #ffffff, percentage($border-active-opacity)) !default;
+$border-active-color-translucent: rgba($text-muted, $border-active-opacity) !default;
+
 
 $active-bg: rgba(var(--#{$prefix}primary-rgb), .04) !default;
 $active-color: var(--#{$prefix}primary) !default;
@@ -233,21 +247,21 @@ $extra-colors: (
 ) !default;
 
 $social-colors: (
-  //"facebook": #1877F2,
-  //"twitter": #1da1f2,
-  //"linkedin": #0a66c2,
-  //"google": #dc4e41,
-  //"youtube": #ff0000,
-  //"vimeo": #1ab7ea,
-  //"dribbble": #ea4c89,
-  //"github": #181717,
-  //"instagram": #e4405f,
-  //"pinterest": #bd081c,
-  //"vk": #6383a8,
-  //"rss": #ffa500,
-  //"flickr": #0063dc,
-  //"bitbucket": #0052cc,
-  //"tabler": #206bc4
+  "facebook": #1877f2,
+  "twitter": #1da1f2,
+  "linkedin": #0a66c2,
+  "google": #dc4e41,
+  "youtube": #ff0000,
+  "vimeo": #1ab7ea,
+  "dribbble": #ea4c89,
+  "github": #181717,
+  "instagram": #e4405f,
+  "pinterest": #bd081c,
+  "vk": #6383a8,
+  "rss": #ffa500,
+  "flickr": #0063dc,
+  "bitbucket": #0052cc,
+  "tabler": #206bc4
 ) !default;
 
 $gray-colors: (
@@ -271,7 +285,7 @@ $theme-colors: map-merge($theme-colors, map-merge($extra-colors, $social-colors)
 $dark-mode-darken: darken($dark, 2%) !default;
 $dark-mode-lighten: lighten($dark, 2%) !default;
 $dark-mode-border-color: lighten($dark, 4%) !default;
-$dark-mode-border-color-light: lighten($dark, 4%) !default;
+$dark-mode-border-dark-color: lighten($dark, 4%) !default;
 $dark-mode-border-color-active: lighten($dark, 12%) !default;
 $dark-mode-text: $light;
 
@@ -403,7 +417,7 @@ $aspect-ratios: (
 
 // Shadows
 $shadow: rgba(var(--#{$prefix}body-color-rgb), .04) 0 2px 4px 0 !default;
-$shadow-inset: inset rgba(var(--#{$prefix}body-color-rgb), .04) 0 0 0 1px !default;
+$shadow-inset: inset var(--#{$prefix}border-color-translucent) 0 0 0 1px !default;
 $shadow-transparent: 0 0 0 0 transparent !default;
 $shadow-button: 0 1px 0 rgba(var(--#{$prefix}body-color-rgb), .04) !default;
 $shadow-button-inset: inset 0 -1px 0 rgba(var(--#{$prefix}body-color-rgb), .2) !default;
@@ -497,6 +511,7 @@ $input-focus-color: inherit !default;
 $btn-disabled-opacity: .4 !default;
 $btn-padding-x: 1rem !default;
 $btn-font-weight: var(--#{$prefix}font-weight-medium) !default;
+$btn-border-color: var(--#{$prefix}border-dark-color) !default;
 $btn-border-radius: var(--#{$prefix}border-radius) !default;
 
 // Cards
@@ -509,7 +524,7 @@ $card-bg-hover: $white !default;
 $card-color: inherit !default;
 
 $card-border-width: var(--#{$prefix}border-width) !default;
-$card-border-color: var(--#{$prefix}border-color) !default;
+$card-border-color: var(--#{$prefix}border-color-translucent) !default;
 $card-border-radius: var(--#{$prefix}border-radius) !default;
 
 $card-spacer-x: 1.5rem !default;
@@ -568,7 +583,7 @@ $dropdown-spacer: 1px !default;
 $dropdown-min-width: 11rem !default;
 $dropdown-max-width: 25rem !default;
 $dropdown-scrollable-height: 13rem !default;
-$dropdown-link-active-color: var(--#{$prefix}primary)  !default;
+$dropdown-link-active-color: var(--#{$prefix}primary) !default;
 $dropdown-link-active-bg: var(--#{$prefix}active-bg) !default;
 $dropdown-box-shadow: var(--#{$prefix}shadow-dropdown) !default;
 
@@ -625,13 +640,13 @@ $nav-link-disabled-color: var(--#{$prefix}disabled-color) !default;
 $nav-link-icon-size: $icon-size !default;
 $nav-link-icon-color: var(--#{$prefix}icon-color) !default;
 
-$nav-pills-link-active-color: var(--#{$prefix}primary)  !default;
+$nav-pills-link-active-color: var(--#{$prefix}primary) !default;
 $nav-pills-link-active-bg: var(--#{$prefix}active-bg) !default;
 
 $nav-bordered-border-color: var(--#{$prefix}border-color) !default;
 $nav-bordered-border-width: var(--#{$prefix}border-width) !default;
-$nav-bordered-link-active-color: var(--#{$prefix}primary)  !default;
-$nav-bordered-link-active-border-color: var(--#{$prefix}primary)  !default;
+$nav-bordered-link-active-color: var(--#{$prefix}primary) !default;
+$nav-bordered-link-active-border-color: var(--#{$prefix}primary) !default;
 $nav-bordered-link-active-border-width: 2 * $border-width !default;
 $nav-bordered-margin-x: 1.25rem !default;
 
@@ -652,7 +667,7 @@ $navbar-border-color: var(--#{$prefix}border-color) !default;
 
 $navbar-light-color: var(--#{$prefix}body-color) !default;
 $navbar-light-brand-color: var(--#{$prefix}body-color) !default;
-$navbar-light-active-color: var(--#{$prefix}body-color)color !default;
+$navbar-light-active-color: var(--#{$prefix}body-color) color !default;
 $navbar-light-disabled-color: var(--#{$prefix}disabled-color) !default;
 $navbar-light-active-bg: rgba(0, 0, 0, .06) !default;
 
@@ -771,8 +786,8 @@ $list-group-active-color: inherit !default;
 
 $input-bg: var(--#{$prefix}bg-forms) !default;
 $input-disabled-bg: $disabled-bg !default;
-$input-border-color: var(--#{$prefix}border-color) !default;
-$input-border-color-translucent: var(--#{$prefix}border-color-translucent) !default;
+$input-border-color: var(--#{$prefix}border-dark-color) !default;
+$input-border-color-translucent: var(--#{$prefix}border-dark-color-translucent) !default;
 $input-placeholder-color: $text-muted-light !default;
 
 $input-group-addon-bg: $light !default;
