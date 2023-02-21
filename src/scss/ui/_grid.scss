@@ -6,17 +6,6 @@
   border-left: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
 }
 
-%container-common {
-  @include media-breakpoint-down($cards-grid-breakpoint) {
-    --#{$prefix}gutter-x: #{$grid-gutter-width};
-  }
-}
-
-.container,
-.container-fluid {
-  @extend %container-common;
-}
-
 .container {
   @each $variation, $size in $container-variations {
     &-#{$variation} {
@@ -62,11 +51,6 @@
 
   .row-cards {
     flex: 1;
-  }
-
-  @include media-breakpoint-down($cards-grid-breakpoint) {
-    --#{$prefix}gutter-x: #{$cards-grid-gap * .5};
-    --#{$prefix}gutter-y: #{$cards-grid-gap * .5};
   }
 }
 
