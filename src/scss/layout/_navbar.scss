@@ -1,62 +1,65 @@
-@mixin navbar-color($bg-color: transparent, $color: $navbar-light-color, $brand-color: $navbar-light-brand-color, $link-active-color: $navbar-light-active-color, $link-disabled-color: $navbar-light-disabled-color, $link-active-bg: $navbar-light-active-bg) {
-  --#{$prefix}navbar-active-bg: #{$link-active-bg};
-  --#{$prefix}navbar-bg: #{$bg-color};
-  color: $color;
-
-  .navbar-brand {
-    color: $brand-color;
-
-    &:hover,
-    &:focus {
-      color: $brand-color;
-      opacity: .8;
-    }
-  }
-
-  .navbar-nav {
-    .nav-link {
-      color: $color;
-
-      &:hover,
-      &:focus {
-        color: $link-active-color;
-      }
-
-      &.disabled {
-        color: $link-disabled-color;
-      }
-    }
-
-    .show > .nav-link,
-    .active > .nav-link,
-    .nav-link.show,
-    .nav-link.active {
-      color: $link-active-color;
-    }
-  }
-
-  .navbar-toggler {
-    color: $brand-color;
-    border-color: transparent;
-  }
-
-  .navbar-text {
-    color: $color;
-
-    a,
-    a:hover,
-    a:focus {
-      color: $color;
-    }
-  }
-}
+//@mixin navbar-color($bg-color: transparent, $color: $navbar-light-color, $brand-color: $navbar-light-brand-color, $link-active-color: $navbar-light-active-color, $link-disabled-color: $navbar-light-disabled-color, $link-active-bg: $navbar-light-active-bg) {
+//  --#{$prefix}navbar-active-bg: #{$link-active-bg};
+//  --#{$prefix}navbar-bg: #{$bg-color};
+//  color: $color;
+//
+//  .navbar-brand {
+//    color: $brand-color;
+//
+//    &:hover,
+//    &:focus {
+//      color: $brand-color;
+//      opacity: .8;
+//    }
+//  }
+//
+//  .navbar-nav {
+//    .nav-link {
+//      color: $color;
+//
+//      &:hover,
+//      &:focus {
+//        color: $link-active-color;
+//      }
+//
+//      &.disabled {
+//        color: $link-disabled-color;
+//      }
+//    }
+//
+//    .show > .nav-link,
+//    .active > .nav-link,
+//    .nav-link.show,
+//    .nav-link.active {
+//      color: $link-active-color;
+//    }
+//  }
+//
+//  .navbar-toggler {
+//    color: $brand-color;
+//    border-color: transparent;
+//  }
+//
+//  .navbar-text {
+//    color: $color;
+//
+//    a,
+//    a:hover,
+//    a:focus {
+//      color: $color;
+//    }
+//  }
+//}
 
 @mixin navbar-dark {
-  --#{$prefix}navbar-border-color: #{$dark-mode-border-color};
+  --#{$prefix}navbar-border-color: transparent;
   --#{$prefix}navbar-bg: #{$dark};
   --#{$prefix}scrollbar-color: var(--#{$prefix}white-rgb);
-  @include navbar-color($dark, $navbar-dark-color, $navbar-dark-brand-color, $navbar-dark-active-color, $navbar-dark-disabled-color, $navbar-dark-active-bg);
-  //@include scrollbar;
+  --#{$prefix}navbar-color: var(--#{$prefix}gray-400);
+
+  @each $color, $value in $theme-colors {
+    --#{$prefix}#{$color}-lt-rgb: #{to-rgb(theme-color-lighter($value, $dark))};
+  }
 }
 
 @mixin navbar-vertical-nav {
@@ -137,10 +140,12 @@ Navbar
   --#{$prefix}navbar-active-border-color: #{$navbar-active-border-color};
   --#{$prefix}navbar-active-bg: #{$navbar-light-active-bg};
   --#{$prefix}navbar-bg: transparent;
+  --#{$prefix}navbar-color: inherit;
   align-items: stretch;
   min-height: $navbar-height;
   box-shadow: inset 0 calc(-1 * var(--#{$prefix}navbar-border-width)) 0 0 var(--#{$prefix}navbar-border-color);
   background: var(--#{$prefix}navbar-bg);
+  color: var(--#{$prefix}navbar-color);
 
   .navbar-collapse & {
     flex-grow: 1;
@@ -150,7 +155,7 @@ Navbar
     min-height: 0;
   }
 
-  @include navbar-color();
+  //@include navbar-color();
 
   @include dark-mode {
     @include navbar-dark();
@@ -170,6 +175,7 @@ Navbar
       min-height: 2rem;
       justify-content: center;
       border-radius: var(--#{$prefix}border-radius);
+      color: inherit;
 
       .badge {
         position: absolute;
