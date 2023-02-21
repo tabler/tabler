@@ -177,6 +177,7 @@ gulp.task('sass', () => {
 		.src(argv.withPlugins || BUILD ? `${srcDir}/scss/!(_)*.scss` : `${srcDir}/scss/+(tabler|demo).scss`)
 		.pipe(debug())
 		.pipe(sass({
+			includePaths: ['node_modules'],
 			style: 'expanded',
 			precision: 7,
 			importer: (url, prev, done) => {
