@@ -1,9 +1,9 @@
 /*!
-* Tabler v1.0.0-beta14 (https://tabler.io)
-* @version 1.0.0-beta14
+* Tabler v1.0.0-beta17 (https://tabler.io)
+* @version 1.0.0-beta17
 * @link https://tabler.io
-* Copyright 2018-2022 The Tabler Authors
-* Copyright 2018-2022 codecalm.net Paweł Kuna
+* Copyright 2018-2023 The Tabler Authors
+* Copyright 2018-2023 codecalm.net Paweł Kuna
 * Licensed under MIT (https://github.com/tabler/tabler/blob/master/LICENSE)
 */
 (function (factory) {

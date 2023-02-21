@@ -1,9 +1,9 @@
 /*!
-* Tabler v1.0.0-beta14 (https://tabler.io)
-* @version 1.0.0-beta14
+* Tabler v1.0.0-beta17 (https://tabler.io)
+* @version 1.0.0-beta17
 * @link https://tabler.io
-* Copyright 2018-2022 The Tabler Authors
-* Copyright 2018-2022 codecalm.net Paweł Kuna
+* Copyright 2018-2023 The Tabler Authors
+* Copyright 2018-2023 codecalm.net Paweł Kuna
 * Licensed under MIT (https://github.com/tabler/tabler/blob/master/LICENSE)
 */
 pre.highlight,
@@ -13,32 +13,37 @@ pre.highlight,
   overflow: auto;
   border-radius: var(--tblr-border-radius);
 }
+pre.highlight,
+.highlight pre {
+  scrollbar-color: rgba(var(--tblr-scrollbar-color, var(--tblr-body-color-rgb)), 0.16) transparent;
+}
 pre.highlight::-webkit-scrollbar,
 .highlight pre::-webkit-scrollbar {
-  width: 0.5rem;
-  height: 0.5rem;
+  width: 1rem;
+  height: 1rem;
   -webkit-transition: background 0.3s;
   transition: background 0.3s;
 }
 @media (prefers-reduced-motion: reduce) {
   pre.highlight::-webkit-scrollbar,
-.highlight pre::-webkit-scrollbar {
+  .highlight pre::-webkit-scrollbar {
     -webkit-transition: none;
     transition: none;
   }
 }
 pre.highlight::-webkit-scrollbar-thumb,
 .highlight pre::-webkit-scrollbar-thumb {
-  border-radius: 5px;
-  background: rgba(var(--tblr-light-rgb), 0.16);
+  border-radius: 1rem;
+  border: 5px solid transparent;
+  box-shadow: inset 0 0 0 1rem rgba(var(--tblr-scrollbar-color, var(--tblr-body-color-rgb)), 0.16);
 }
 pre.highlight::-webkit-scrollbar-track,
 .highlight pre::-webkit-scrollbar-track {
-  background: rgba(var(--tblr-light-rgb), 0.06);
+  background: transparent;
 }
 pre.highlight:hover::-webkit-scrollbar-thumb,
 .highlight pre:hover::-webkit-scrollbar-thumb {
-  background: rgba(var(--tblr-light-rgb), 0.32);
+  box-shadow: inset 0 0 0 1rem rgba(var(--tblr-scrollbar-color, var(--tblr-body-color-rgb)), 0.32);
 }
 pre.highlight::-webkit-scrollbar-corner,
 .highlight pre::-webkit-scrollbar-corner {
@@ -93,7 +98,7 @@ pre.highlight::-webkit-scrollbar-corner,
 .example-content {
   font-size: 0.875rem;
   line-height: 1.4285714286;
-  color: #1d273b;
+  color: var(--tblr-body-color);
   flex: 1;
   max-width: 100%;
 }
@@ -207,7 +212,7 @@ body.no-transitions * {
 }
 @media (max-width: 575.98px) {
   .demo-icon-preview svg,
-.demo-icon-preview i {
+  .demo-icon-preview i {
     width: 10rem;
     height: 10rem;
     font-size: 10rem;

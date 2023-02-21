@@ -1,11 +1,11 @@
 /**
- * TinyMCE version 6.2.0 (2022-09-08)
+ * TinyMCE version 6.3.1 (2022-12-06)
  */
 
 (function () {
     'use strict';
 
-    const getPrototypeOf$1 = Object.getPrototypeOf;
+    const getPrototypeOf$2 = Object.getPrototypeOf;
     const hasProto = (v, constructor, predicate) => {
       var _a;
       if (predicate(v, constructor.prototype)) {
@@ -29,7 +29,7 @@
     const isType$1 = type => value => typeOf(value) === type;
     const isSimpleType = type => value => typeof value === type;
     const eq$1 = t => a => t === a;
-    const is$2 = (value, constructor) => isObject(value) && hasProto(value, constructor, (o, proto) => getPrototypeOf$1(o) === proto);
+    const is$2 = (value, constructor) => isObject(value) && hasProto(value, constructor, (o, proto) => getPrototypeOf$2(o) === proto);
     const isString = isType$1('string');
     const isObject = isType$1('object');
     const isPlainObject = value => is$2(value, Object);
@@ -85,7 +85,7 @@
         throw new Error(msg);
       };
     };
-    const apply = f => {
+    const apply$1 = f => {
       return f();
     };
     const never = constant$1(false);
@@ -353,7 +353,7 @@
     };
 
     const keys = Object.keys;
-    const hasOwnProperty = Object.hasOwnProperty;
+    const hasOwnProperty$1 = Object.hasOwnProperty;
     const each = (obj, f) => {
       const props = keys(obj);
       for (let k = 0, len = props.length; k < len; k++) {
@@ -422,7 +422,7 @@
     const get$g = (obj, key) => {
       return has$2(obj, key) ? Optional.from(obj[key]) : Optional.none();
     };
-    const has$2 = (obj, key) => hasOwnProperty.call(obj, key);
+    const has$2 = (obj, key) => hasOwnProperty$1.call(obj, key);
     const hasNonNullableKey = (obj, key) => has$2(obj, key) && obj[key] !== undefined && obj[key] !== null;
 
     const is$1 = (lhs, rhs, comparator = tripleEquals) => lhs.exists(left => comparator(left, rhs));
@@ -550,13 +550,13 @@
       return actual;
     };
 
-    const getPrototypeOf = Object.getPrototypeOf;
+    const getPrototypeOf$1 = Object.getPrototypeOf;
     const sandHTMLElement = scope => {
       return getOrDie$1('HTMLElement', scope);
     };
     const isPrototypeOf = x => {
       const scope = resolve('ownerDocument.defaultView', x);
-      return isObject(x) && (sandHTMLElement(scope).prototype.isPrototypeOf(x) || /^HTML\w*Element$/.test(getPrototypeOf(x).constructor.name));
+      return isObject(x) && (sandHTMLElement(scope).prototype.isPrototypeOf(x) || /^HTML\w*Element$/.test(getPrototypeOf$1(x).constructor.name));
     };
 
     const DOCUMENT = 9;
@@ -709,7 +709,7 @@
     const remove$7 = (element, key) => {
       element.dom.removeAttribute(key);
     };
-    const clone$1 = element => foldl(element.dom.attributes, (acc, attr) => {
+    const clone$2 = element => foldl(element.dom.attributes, (acc, attr) => {
       acc[attr.name] = attr.value;
       return acc;
     }, {});
@@ -1489,8 +1489,8 @@
         forall: always,
         getOr: identity,
         or: identity,
-        getOrThunk: apply,
-        orThunk: apply,
+        getOrThunk: apply$1,
+        orThunk: apply$1,
         getOrDie: die(String(error)),
         each: noop,
         toOptional: Optional.none
@@ -2369,8 +2369,8 @@
       return get$9(container);
     };
 
-    const clone = (original, isDeep) => SugarElement.fromDom(original.dom.cloneNode(isDeep));
-    const shallow = original => clone(original, false);
+    const clone$1 = (original, isDeep) => SugarElement.fromDom(original.dom.cloneNode(isDeep));
+    const shallow = original => clone$1(original, false);
 
     const getHtml = element => {
       if (isShadowRoot(element)) {
@@ -2900,7 +2900,7 @@
         class: clazz,
         style,
         ...existingAttributes
-      } = clone$1(obsoleted);
+      } = clone$2(obsoleted);
       const {
         toSet: attrsToSet,
         toRemove: attrsToRemove
@@ -3072,7 +3072,7 @@
       };
       return Result.value(build$2(completeSpec, obsoleted));
     };
-    const text$1 = textContent => {
+    const text$2 = textContent => {
       const element = SugarElement.fromText(textContent);
       return external$1({ element });
     };
@@ -3551,7 +3551,7 @@
     const loadEvent = (bConfig, bState, f) => runOnInit((component, _simulatedEvent) => {
       f(component, bConfig, bState);
     });
-    const create$4 = (schema, name, active, apis, extra, state) => {
+    const create$5 = (schema, name, active, apis, extra, state) => {
       const configSchema = objOfOnly(schema);
       const schemaSchema = optionObjOf(name, [optionObjOfOnly('config', schema)]);
       return doCreate(configSchema, schemaSchema, name, active, apis, extra, state);
@@ -3628,9 +3628,9 @@
       defaulted('state', NoState),
       defaulted('extra', {})
     ]);
-    const create$3 = data => {
+    const create$4 = data => {
       const value = asRawOrDie$1('Creating behaviour: ' + data.name, simpleSchema, data);
-      return create$4(value.fields, value.name, value.active, value.apis, value.extra, value.state);
+      return create$5(value.fields, value.name, value.active, value.apis, value.extra, value.state);
     };
     const modeSchema = objOfOnly([
       required$1('branchKey'),
@@ -3647,7 +3647,7 @@
     };
     const revoke = constant$1(undefined);
 
-    const Receiving = create$3({
+    const Receiving = create$4({
       fields: ReceivingSchema,
       name: 'receiving',
       active: ActiveReceiving
@@ -4385,13 +4385,13 @@
     const zeroWidth = '\uFEFF';
     const nbsp = '\xA0';
 
-    const create$2 = (start, soffset, finish, foffset) => ({
+    const create$3 = (start, soffset, finish, foffset) => ({
       start,
       soffset,
       finish,
       foffset
     });
-    const SimRange = { create: create$2 };
+    const SimRange = { create: create$3 };
 
     const adt$6 = Adt.generate([
       { before: ['element'] },
@@ -4870,7 +4870,7 @@
         init: init$g
     });
 
-    const Positioning = create$3({
+    const Positioning = create$4({
       fields: PositionSchema,
       name: 'positioning',
       active: ActivePosition,
@@ -5112,7 +5112,7 @@
         init: init$f
     });
 
-    const Sandboxing = create$3({
+    const Sandboxing = create$4({
       fields: SandboxSchema,
       name: 'sandboxing',
       active: ActiveSandbox,
@@ -5367,7 +5367,7 @@
       defaulted('resetOnDom', false)
     ];
 
-    const Representing = create$3({
+    const Representing = create$4({
       fields: RepresentSchema,
       name: 'representing',
       active: ActiveRepresenting,
@@ -5763,7 +5763,7 @@
 
     const ComposeSchema = [required$1('find')];
 
-    const Composing = create$3({
+    const Composing = create$4({
       fields: ComposeSchema,
       name: 'composing',
       apis: ComposeApis
@@ -5845,7 +5845,7 @@
       onHandler('onEnabled')
     ];
 
-    const Disabling = create$3({
+    const Disabling = create$4({
       fields: DisableSchema,
       name: 'disabling',
       active: ActiveDisable,
@@ -5957,7 +5957,7 @@
       onHandler('onDehighlight')
     ];
 
-    const Highlighting = create$3({
+    const Highlighting = create$4({
       fields: HighlightSchema,
       name: 'highlighting',
       apis: HighlightApis
@@ -6115,7 +6115,7 @@
       return me;
     };
 
-    const create$1 = cyclicField => {
+    const create$2 = cyclicField => {
       const schema = [
         option$3('onEscape'),
         option$3('onEnter'),
@@ -6176,9 +6176,9 @@
       return typical(schema, NoState.init, getKeydownRules, getKeyupRules, () => Optional.some(focusIn));
     };
 
-    var AcyclicType = create$1(customField('cyclic', never));
+    var AcyclicType = create$2(customField('cyclic', never));
 
-    var CyclicType = create$1(customField('cyclic', always));
+    var CyclicType = create$2(customField('cyclic', always));
 
     const doDefaultExecute = (component, _simulatedEvent, focused) => {
       dispatch(component, focused, execute$5());
@@ -6689,7 +6689,7 @@
         contents: contents
     });
 
-    const Replacing = create$3({
+    const Replacing = create$4({
       fields: [defaultedBoolean('reuseDom', true)],
       name: 'replacing',
       apis: ReplaceApis
@@ -6697,7 +6697,7 @@
 
     const events$d = (name, eventHandlers) => {
       const events = derive$2(eventHandlers);
-      return create$3({
+      return create$4({
         fields: [required$1('enabled')],
         name,
         active: { events: constant$1(events) }
@@ -6760,7 +6760,7 @@
       defaulted('ignore', false)
     ];
 
-    const Focusing = create$3({
+    const Focusing = create$4({
       fields: FocusSchema,
       name: 'focusing',
       active: ActiveFocus,
@@ -6879,7 +6879,7 @@
       }))
     ];
 
-    const Toggling = create$3({
+    const Toggling = create$4({
       fields: ToggleSchema,
       name: 'toggling',
       active: ActiveToggle,
@@ -7134,6 +7134,7 @@
         row: movementInfo.rowSelector,
         cell: '.' + detail.markers.item
       },
+      previousSelector: movementInfo.previousSelector,
       focusManager: detail.focusManager
     });
     const configureMenu = (detail, movementInfo) => ({
@@ -7187,7 +7188,8 @@
         ],
         matrix: [
           output$1('config', configureMatrix),
-          required$1('rowSelector')
+          required$1('rowSelector'),
+          defaulted('previousSelector', Optional.none)
         ],
         menu: [
           defaulted('moveOnTab', true),
@@ -7780,7 +7782,7 @@
         }
       });
     };
-    const factory$m = (detail, spec) => {
+    const factory$o = (detail, spec) => {
       const isPartOfRelated = (sandbox, queryElem) => {
         const related = detail.getRelated(sandbox);
         return related.exists(rel => isPartOf$1(rel, queryElem));
@@ -7907,7 +7909,7 @@
         defaulted('isExtraPart', never),
         defaulted('eventOrder', Optional.none)
       ],
-      factory: factory$m,
+      factory: factory$o,
       apis: {
         showAt: (apis, component, anchor, thing) => {
           apis.showAt(component, anchor, thing);
@@ -7940,7 +7942,7 @@
 
     var global$9 = tinymce.util.Tools.resolve('tinymce.util.Delay');
 
-    const factory$l = detail => {
+    const factory$n = detail => {
       const events = events$a(detail.action);
       const tag = detail.dom.tag;
       const lookupAttr = attr => get$g(detail.dom, 'attributes').bind(attrs => get$g(attrs, attr));
@@ -7976,7 +7978,7 @@
     };
     const Button = single({
       name: 'Button',
-      factory: factory$l,
+      factory: factory$n,
       configFields: [
         defaulted('uid', undefined),
         required$1('dom'),
@@ -8076,7 +8078,7 @@
       warn: 'warning',
       info: 'info'
     };
-    const factory$k = detail => {
+    const factory$m = detail => {
       const memBannerText = record({
         dom: {
           tag: 'p',
@@ -8137,7 +8139,7 @@
       const updateText = (comp, text) => {
         if (comp.getSystem().isConnected()) {
           const banner = memBannerText.get(comp);
-          Replacing.set(banner, [text$1(text)]);
+          Replacing.set(banner, [text$2(text)]);
         }
       };
       const apis = {
@@ -8210,7 +8212,7 @@
     };
     const Notification = single({
       name: 'Notification',
-      factory: factory$k,
+      factory: factory$m,
       configFields: [
         option$3('level'),
         required$1('progress'),
@@ -8843,7 +8845,7 @@
       classes: detail.inputClasses
     });
 
-    const factory$j = (detail, _spec) => ({
+    const factory$l = (detail, _spec) => ({
       uid: detail.uid,
       dom: dom(detail),
       components: [],
@@ -8853,7 +8855,7 @@
     const Input = single({
       name: 'Input',
       configFields: schema$l(),
-      factory: factory$j
+      factory: factory$l
     });
 
     const refetchTriggerEvent = generate$6('refetch-trigger-event');
@@ -9183,7 +9185,7 @@
     const type = requiredString('type');
     const name$1 = requiredString('name');
     const label = requiredString('label');
-    const text = requiredString('text');
+    const text$1 = requiredString('text');
     const title = requiredString('title');
     const icon = requiredString('icon');
     const value$1 = requiredString('value');
@@ -9307,7 +9309,7 @@
 
     const cardTextFields = [
       type,
-      text,
+      text$1,
       optionalName,
       defaultedArrayOf('classes', ['tox-collection__item-label'], string)
     ];
@@ -9358,6 +9360,7 @@
     const insertTableFields = [defaulted('initData', {})].concat(baseFields);
     const colorSwatchFields = [defaultedObjOf('initData', {}, [
         defaultedBoolean('allowCustomColors', true),
+        defaultedString('storageKey', 'default'),
         optionArrayOf('colors', anyValue())
       ])].concat(baseFields);
     const fancyMenuItemSchema = choose$1('fancytype', {
@@ -9584,7 +9587,7 @@
         init: init$b
     });
 
-    const Tooltipping = create$3({
+    const Tooltipping = create$4({
       fields: TooltippingSchema,
       name: 'tooltipping',
       active: ActiveTooltipping,
@@ -9596,23 +9599,29 @@
 
     const ReadOnlyChannel = 'silver.readonly';
     const ReadOnlyDataSchema = objOf([requiredBoolean('readonly')]);
-    const broadcastReadonly = (uiComponents, readonly) => {
-      const outerContainer = uiComponents.outerContainer;
+    const broadcastReadonly = (uiRefs, readonly) => {
+      const outerContainer = uiRefs.mainUi.outerContainer;
       const target = outerContainer.element;
+      const motherships = [
+        uiRefs.mainUi.mothership,
+        ...uiRefs.uiMotherships
+      ];
       if (readonly) {
-        uiComponents.mothership.broadcastOn([dismissPopups()], { target });
-        uiComponents.uiMothership.broadcastOn([dismissPopups()], { target });
+        each$1(motherships, m => {
+          m.broadcastOn([dismissPopups()], { target });
+        });
       }
-      uiComponents.mothership.broadcastOn([ReadOnlyChannel], { readonly });
-      uiComponents.uiMothership.broadcastOn([ReadOnlyChannel], { readonly });
+      each$1(motherships, m => {
+        m.broadcastOn([ReadOnlyChannel], { readonly });
+      });
     };
-    const setupReadonlyModeSwitch = (editor, uiComponents) => {
+    const setupReadonlyModeSwitch = (editor, uiRefs) => {
       editor.on('init', () => {
         if (editor.mode.isReadOnly()) {
-          broadcastReadonly(uiComponents, true);
+          broadcastReadonly(uiRefs, true);
         }
       });
-      editor.on('SwitchMode', () => broadcastReadonly(uiComponents, editor.mode.isReadOnly()));
+      editor.on('SwitchMode', () => broadcastReadonly(uiRefs, editor.mode.isReadOnly()));
       if (isReadOnly(editor)) {
         editor.mode.set('readonly');
       }
@@ -9745,7 +9754,7 @@
         tag: 'div',
         classes: [textClass]
       },
-      components: [text$1(global$8.translate(text))]
+      components: [text$2(global$8.translate(text))]
     });
     const renderHtml = (html, classes) => ({
       dom: {
@@ -9764,7 +9773,7 @@
             tag: style.tag,
             styles: style.styles
           },
-          components: [text$1(global$8.translate(text))]
+          components: [text$2(global$8.translate(text))]
         }]
     });
     const renderShortcut = shortcut => ({
@@ -9772,7 +9781,7 @@
         tag: 'div',
         classes: [accessoryClass]
       },
-      components: [text$1(convertText(shortcut))]
+      components: [text$2(convertText(shortcut))]
     });
     const renderCheckmark = icons => renderIcon$1('checkmark', icons, [checkmarkClass]);
     const renderSubmenuCaret = icons => renderIcon$1('chevron-right', icons, [caretClass]);
@@ -9855,7 +9864,8 @@
               ...baseDom.attributes,
               'data-mce-color': itemValue
             },
-            styles: { 'background-color': itemValue }
+            styles: { 'background-color': itemValue },
+            innerHtml: icon
           };
         } else {
           return baseDom;
@@ -10213,6 +10223,58 @@
       name: node.nodeName.toLowerCase(),
       target: node
     });
+    const fireToggleToolbarDrawer = (editor, state) => {
+      editor.dispatch('ToggleToolbarDrawer', { state });
+    };
+
+    var global$4 = tinymce.util.Tools.resolve('tinymce.util.LocalStorage');
+
+    const cacheStorage = {};
+    const ColorCache = (storageId, max = 10) => {
+      const storageString = global$4.getItem(storageId);
+      const localstorage = isString(storageString) ? JSON.parse(storageString) : [];
+      const prune = list => {
+        const diff = max - list.length;
+        return diff < 0 ? list.slice(0, max) : list;
+      };
+      const cache = prune(localstorage);
+      const add = key => {
+        indexOf(cache, key).each(remove);
+        cache.unshift(key);
+        if (cache.length > max) {
+          cache.pop();
+        }
+        global$4.setItem(storageId, JSON.stringify(cache));
+      };
+      const remove = idx => {
+        cache.splice(idx, 1);
+      };
+      const state = () => cache.slice(0);
+      return {
+        add,
+        state
+      };
+    };
+    const getCacheForId = id => get$g(cacheStorage, id).getOrThunk(() => {
+      const storageId = `tinymce-custom-colors-${ id }`;
+      const currentData = global$4.getItem(storageId);
+      if (isNullable(currentData)) {
+        const legacyDefault = global$4.getItem('tinymce-custom-colors');
+        global$4.setItem(storageId, isNonNullable(legacyDefault) ? legacyDefault : '[]');
+      }
+      const storage = ColorCache(storageId, 10);
+      cacheStorage[id] = storage;
+      return storage;
+    });
+    const getCurrentColors = id => map$2(getCacheForId(id).state(), color => ({
+      type: 'choiceitem',
+      text: color,
+      icon: 'checkmark',
+      value: color
+    }));
+    const addColor = (id, color) => {
+      getCacheForId(id).add(color);
+    };
 
     const hsvColour = (hue, saturation, value) => ({
       hue,
@@ -10259,36 +10321,8 @@
       return fromRgba(rgbaColour(r, g, b, a));
     });
 
-    var global$4 = tinymce.util.Tools.resolve('tinymce.util.LocalStorage');
-
-    const storageName = 'tinymce-custom-colors';
-    const ColorCache = (max = 10) => {
-      const storageString = global$4.getItem(storageName);
-      const localstorage = isString(storageString) ? JSON.parse(storageString) : [];
-      const prune = list => {
-        const diff = max - list.length;
-        return diff < 0 ? list.slice(0, max) : list;
-      };
-      const cache = prune(localstorage);
-      const add = key => {
-        indexOf(cache, key).each(remove);
-        cache.unshift(key);
-        if (cache.length > max) {
-          cache.pop();
-        }
-        global$4.setItem(storageName, JSON.stringify(cache));
-      };
-      const remove = idx => {
-        cache.splice(idx, 1);
-      };
-      const state = () => cache.slice(0);
-      return {
-        add,
-        state
-      };
-    };
-
-    const colorCache = ColorCache(10);
+    const foregroundId = 'forecolor';
+    const backgroundId = 'hilitecolor';
     const calcCols = colors => Math.max(5, Math.ceil(Math.sqrt(colors)));
     const mapColors = colorMap => {
       const colors = [];
@@ -10296,28 +10330,31 @@
         colors.push({
           text: colorMap[i + 1],
           value: '#' + anyToHex(colorMap[i]).value,
+          icon: 'checkmark',
           type: 'choiceitem'
         });
       }
       return colors;
     };
     const option$1 = name => editor => editor.options.get(name);
+    const fallbackColor = '#000000';
     const register$d = editor => {
       const registerOption = editor.options.register;
+      const colorProcessor = value => {
+        if (isArrayOf(value, isString)) {
+          return {
+            value: mapColors(value),
+            valid: true
+          };
+        } else {
+          return {
+            valid: false,
+            message: 'Must be an array of strings.'
+          };
+        }
+      };
       registerOption('color_map', {
-        processor: value => {
-          if (isArrayOf(value, isString)) {
-            return {
-              value: mapColors(value),
-              valid: true
-            };
-          } else {
-            return {
-              valid: false,
-              message: 'Must be an array of strings.'
-            };
-          }
-        },
+        processor: colorProcessor,
         default: [
           '#BFEDD2',
           'Light Green',
@@ -10365,38 +10402,58 @@
           'White'
         ]
       });
+      registerOption('color_map_background', { processor: colorProcessor });
+      registerOption('color_map_foreground', { processor: colorProcessor });
       registerOption('color_cols', {
         processor: 'number',
-        default: calcCols(getColors$2(editor).length)
+        default: calcCols(getColors$2(editor, 'default').length)
+      });
+      registerOption('color_cols_foreground', {
+        processor: 'number',
+        default: calcCols(getColors$2(editor, foregroundId).length)
+      });
+      registerOption('color_cols_background', {
+        processor: 'number',
+        default: calcCols(getColors$2(editor, backgroundId).length)
       });
       registerOption('custom_colors', {
         processor: 'boolean',
         default: true
       });
-    };
-    const getColorCols$1 = option$1('color_cols');
-    const hasCustomColors$1 = option$1('custom_colors');
-    const getColors$2 = option$1('color_map');
-    const getCurrentColors = () => map$2(colorCache.state(), color => ({
-      type: 'choiceitem',
-      text: color,
-      value: color
-    }));
-    const addColor = color => {
-      colorCache.add(color);
-    };
-
-    const fallbackColor = '#000000';
-    const hasStyleApi = node => isNonNullable(node.style);
-    const getCurrentColor = (editor, format) => {
-      let color;
-      editor.dom.getParents(editor.selection.getStart(), elm => {
-        const value = hasStyleApi(elm) ? elm.style[format === 'forecolor' ? 'color' : 'backgroundColor'] : null;
-        if (value) {
-          color = color ? color : value;
-        }
+      registerOption('color_default_foreground', {
+        processor: 'string',
+        default: fallbackColor
       });
-      return Optional.from(color);
+      registerOption('color_default_background', {
+        processor: 'string',
+        default: fallbackColor
+      });
+    };
+    const getColorCols$1 = (editor, id) => {
+      if (id === foregroundId) {
+        return option$1('color_cols_foreground')(editor);
+      } else if (id === backgroundId) {
+        return option$1('color_cols_background')(editor);
+      } else {
+        return option$1('color_cols')(editor);
+      }
+    };
+    const hasCustomColors$1 = option$1('custom_colors');
+    const getColors$2 = (editor, id) => {
+      if (id === foregroundId && editor.options.isSet('color_map_foreground')) {
+        return option$1('color_map_foreground')(editor);
+      } else if (id === backgroundId && editor.options.isSet('color_map_background')) {
+        return option$1('color_map_background')(editor);
+      } else {
+        return option$1('color_map')(editor);
+      }
+    };
+    const getDefaultForegroundColor = option$1('color_default_foreground');
+    const getDefaultBackgroundColor = option$1('color_default_background');
+
+    const getCurrentColor = (editor, format) => {
+      const cssRgbValue = get$e(SugarElement.fromDom(editor.selection.getStart()), format === 'hilitecolor' ? 'background-color' : 'color');
+      return fromString(cssRgbValue).map(rgba => '#' + fromRgba(rgba).value);
     };
     const applyFormat = (editor, format, value) => {
       editor.undoManager.transact(() => {
@@ -10444,11 +10501,11 @@
         const dialog = colorPickerDialog(editor);
         dialog(colorOpt => {
           colorOpt.each(color => {
-            addColor(color);
+            addColor(format, color);
             editor.execCommand('mceApplyTextcolor', format, color);
             onChoice(color);
           });
-        }, fallbackColor);
+        }, getCurrentColor(editor, format).getOr(fallbackColor));
       } else if (value === 'remove') {
         onChoice('');
         editor.execCommand('mceRemoveTextcolor', format);
@@ -10457,9 +10514,9 @@
         editor.execCommand('mceApplyTextcolor', format, value);
       }
     };
-    const getColors$1 = (colors, hasCustom) => colors.concat(getCurrentColors().concat(getAdditionalColors(hasCustom)));
-    const getFetch$1 = (colors, hasCustom) => callback => {
-      callback(getColors$1(colors, hasCustom));
+    const getColors$1 = (colors, id, hasCustom) => colors.concat(getCurrentColors(id).concat(getAdditionalColors(hasCustom)));
+    const getFetch$1 = (colors, id, hasCustom) => callback => {
+      callback(getColors$1(colors, id, hasCustom));
     };
     const setIconColor = (splitButtonApi, name, newColor) => {
       const id = name === 'forecolor' ? 'tox-icon-text-color__color' : 'tox-icon-highlight-bg-color__color';
@@ -10471,14 +10528,11 @@
         presets: 'color',
         icon: name === 'forecolor' ? 'text-color' : 'highlight-bg-color',
         select: value => {
-          const optCurrentRgb = getCurrentColor(editor, format);
-          return optCurrentRgb.bind(currentRgb => fromString(currentRgb).map(rgba => {
-            const currentHex = fromRgba(rgba).value;
-            return contains$1(value.toLowerCase(), currentHex);
-          })).getOr(false);
+          const optCurrentHex = getCurrentColor(editor, format);
+          return is$1(optCurrentHex, value.toUpperCase());
         },
-        columns: getColorCols$1(editor),
-        fetch: getFetch$1(getColors$2(editor), hasCustomColors$1(editor)),
+        columns: getColorCols$1(editor, format),
+        fetch: getFetch$1(getColors$2(editor, format), format, hasCustomColors$1(editor)),
         onAction: _splitButtonApi => {
           applyColor(editor, format, lastColor.get(), noop);
         },
@@ -10512,6 +10566,7 @@
         getSubmenuItems: () => [{
             type: 'fancymenuitem',
             fancytype: 'colorswatch',
+            initData: { storageKey: format },
             onAction: data => {
               applyColor(editor, format, data.value, noop);
             }
@@ -10574,8 +10629,10 @@
     };
     const register$c = editor => {
       registerCommands(editor);
-      const lastForeColor = Cell(fallbackColor);
-      const lastBackColor = Cell(fallbackColor);
+      const fallbackColorForeground = getDefaultForegroundColor(editor);
+      const fallbackColorBackground = getDefaultBackgroundColor(editor);
+      const lastForeColor = Cell(fallbackColorForeground);
+      const lastBackColor = Cell(fallbackColorBackground);
       registerTextColorButton(editor, 'forecolor', 'forecolor', 'Text color', lastForeColor);
       registerTextColorButton(editor, 'backcolor', 'hilitecolor', 'Background color', lastBackColor);
       registerTextColorMenuItem(editor, 'forecolor', 'forecolor', 'Text color');
@@ -10617,7 +10674,10 @@
         const rowClass = presets === 'color' ? 'tox-swatches__row' : 'tox-collection__group';
         return {
           mode: 'matrix',
-          rowSelector: '.' + rowClass
+          rowSelector: '.' + rowClass,
+          previousSelector: menu => {
+            return presets === 'color' ? descendant(menu.element, '[aria-checked=true]') : Optional.none();
+          }
         };
       }
     };
@@ -10650,7 +10710,7 @@
 
     const renderColorSwatchItem = (spec, backstage) => {
       const items = getColorItems(spec, backstage);
-      const columns = backstage.colorinput.getColorCols();
+      const columns = backstage.colorinput.getColorCols(spec.initData.storageKey);
       const presets = 'color';
       const menuSpec = createPartialChoiceMenu(generate$6('menu-value'), items, value => {
         spec.onAction({ value });
@@ -10673,7 +10733,7 @@
     };
     const getColorItems = (spec, backstage) => {
       const useCustomColors = spec.initData.allowCustomColors && backstage.colorinput.hasCustomColors();
-      return spec.initData.colors.fold(() => getColors$1(backstage.colorinput.getColors(), useCustomColors), colors => colors.concat(getAdditionalColors(useCustomColors)));
+      return spec.initData.colors.fold(() => getColors$1(backstage.colorinput.getColors(spec.initData.storageKey), spec.initData.storageKey, useCustomColors), colors => colors.concat(getAdditionalColors(useCustomColors)));
     };
 
     const cellOverEvent = generate$6('cell-over');
@@ -10733,7 +10793,7 @@
       }
     };
     const makeComponents = cells => bind$3(cells, cellRow => map$2(cellRow, premade));
-    const makeLabelText = (row, col) => text$1(`${ col }x${ row }`);
+    const makeLabelText = (row, col) => text$2(`${ col }x${ row }`);
     const renderInsertTableMenuItem = spec => {
       const numRows = 10;
       const numColumns = 10;
@@ -10863,7 +10923,7 @@
           groupHeadingClass
         ]
       },
-      components: spec.text.map(text$1).toArray()
+      components: spec.text.map(text$2).toArray()
     });
 
     const renderToggleMenuItem = (spec, itemResponse, providersBackstage, renderIcons = true) => {
@@ -10960,7 +11020,7 @@
         init: init$a
     });
 
-    const Coupling = create$3({
+    const Coupling = create$4({
       fields: CouplingSchema,
       name: 'coupling',
       apis: CouplingApis,
@@ -11293,7 +11353,7 @@
       partType$1()
     ]);
 
-    const factory$i = (detail, components, _spec, externals) => {
+    const factory$k = (detail, components, _spec, externals) => {
       const lookupAttr = attr => get$g(detail.dom, 'attributes').bind(attrs => get$g(attrs, attr));
       const switchToMenu = sandbox => {
         Sandboxing.getState(sandbox).each(tmenu => {
@@ -11408,7 +11468,7 @@
       name: 'Dropdown',
       configFields: schema$k(),
       partFields: parts$e(),
-      factory: factory$i,
+      factory: factory$k,
       apis: {
         open: (apis, comp) => apis.open(comp),
         refetch: (apis, comp) => apis.refetch(comp),
@@ -12034,7 +12094,7 @@
       };
     };
 
-    const factory$h = detail => {
+    const factory$j = detail => {
       const {attributes, ...domWithoutAttributes} = detail.dom;
       return {
         uid: detail.uid,
@@ -12055,7 +12115,7 @@
     };
     const Container = single({
       name: 'Container',
-      factory: factory$h,
+      factory: factory$j,
       configFields: [
         defaulted('components', []),
         field('containerBehaviours', []),
@@ -12252,7 +12312,7 @@
       })
     ]);
 
-    const factory$g = (detail, components, _spec, _externals) => {
+    const factory$i = (detail, components, _spec, _externals) => {
       const behaviours = augment(detail.fieldBehaviours, [
         Composing.config({
           find: container => {
@@ -12309,7 +12369,7 @@
       name: 'FormField',
       configFields: schema$j(),
       partFields: parts$d(),
-      factory: factory$g,
+      factory: factory$i,
       apis: {
         getField: (apis, comp) => apis.getField(comp),
         getLabel: (apis, comp) => apis.getLabel(comp)
@@ -12330,7 +12390,7 @@
 
     var TabstopSchema = [defaulted('tabAttr', 'data-alloy-tabstop')];
 
-    const Tabstopping = create$3({
+    const Tabstopping = create$4({
       fields: TabstopSchema,
       name: 'tabstopping',
       active: ActiveTabstopping
@@ -12358,7 +12418,7 @@
         tag: 'label',
         classes: ['tox-label']
       },
-      components: [text$1(providersBackstage.translate(label))]
+      components: [text$2(providersBackstage.translate(label))]
     });
 
     const formChangeEvent = generate$6('form-component-change');
@@ -12582,7 +12642,7 @@
       ])
     ];
 
-    const Invalidating = create$3({
+    const Invalidating = create$4({
       fields: InvalidateSchema,
       name: 'invalidating',
       active: ActiveInvalidate,
@@ -12614,7 +12674,7 @@
         exhibit: exhibit$1
     });
 
-    const Unselecting = create$3({
+    const Unselecting = create$4({
       fields: [],
       name: 'unselecting',
       active: ActiveUnselecting
@@ -12689,7 +12749,7 @@
             colorInputBackstage.colorPicker(valueOpt => {
               valueOpt.fold(() => emit(colorBit, colorPickerCancelEvent), value => {
                 emitSwatchChange(colorBit, value);
-                addColor(value);
+                addColor(spec.storageKey, value);
               });
             }, '#ffffff');
           } else if (value === 'remove') {
@@ -12717,8 +12777,8 @@
           ]
         },
         components: [],
-        fetch: getFetch$1(colorInputBackstage.getColors(), colorInputBackstage.hasCustomColors()),
-        columns: colorInputBackstage.getColorCols(),
+        fetch: getFetch$1(colorInputBackstage.getColors(spec.storageKey), spec.storageKey, colorInputBackstage.hasCustomColors()),
+        columns: colorInputBackstage.getColorCols(spec.storageKey),
         presets: 'color',
         onItemAction
       }, sharedBackstage));
@@ -13648,7 +13708,7 @@
             tag: 'label',
             attributes: { 'aria-label': description }
           },
-          components: [text$1(label)]
+          components: [text$2(label)]
         });
         const pField = FormField.parts.field({
           data,
@@ -14288,7 +14348,7 @@
             components: [
               {
                 dom: { tag: 'p' },
-                components: [text$1(providersBackstage.translate('Drop an image here'))]
+                components: [text$2(providersBackstage.translate('Drop an image here'))]
               },
               Button.sketch({
                 dom: {
@@ -14300,7 +14360,7 @@
                   ]
                 },
                 components: [
-                  text$1(providersBackstage.translate('Browse for an image')),
+                  text$2(providersBackstage.translate('Browse for an image')),
                   memInput.asSpec()
                 ],
                 action: comp => {
@@ -14549,7 +14609,7 @@
           tag: 'label',
           classes: ['tox-label']
         },
-        components: [text$1(backstageShared.providers.translate(spec.label))]
+        components: [text$2(backstageShared.providers.translate(spec.label))]
       };
       const comps = map$2(spec.items, backstageShared.interpreter);
       return {
@@ -14601,7 +14661,7 @@
         tag: 'span',
         classes: [`${ prefix }__select-label`]
       },
-      components: [text$1(providersBackstage.translate(text))],
+      components: [text$2(providersBackstage.translate(text))],
       behaviours: derive$1([Replacing.config({})])
     });
 
@@ -14666,7 +14726,7 @@
           config('menubutton-update-display-text', [
             run$1(updateMenuText, (comp, se) => {
               optMemDisplayText.bind(mem => mem.getOpt(comp)).each(displayText => {
-                Replacing.set(displayText, [text$1(sharedBackstage.providers.translate(se.event.text))]);
+                Replacing.set(displayText, [text$2(sharedBackstage.providers.translate(se.event.text))]);
               });
             }),
             run$1(updateMenuIcon, (comp, se) => {
@@ -14917,7 +14977,7 @@
       components: map$2(spec.items, backstage.shared.interpreter)
     });
 
-    const factory$f = (detail, _spec) => {
+    const factory$h = (detail, _spec) => {
       const options = map$2(detail.options, option => ({
         dom: {
           tag: 'option',
@@ -14966,7 +15026,7 @@
         defaulted('selectAttributes', {}),
         option$3('data')
       ],
-      factory: factory$f
+      factory: factory$h
     });
 
     const renderSelectBox = (spec, providersBackstage, initialData) => {
@@ -15075,7 +15135,7 @@
       })
     ]);
 
-    const factory$e = (detail, components, _spec, _externals) => ({
+    const factory$g = (detail, components, _spec, _externals) => ({
       uid: detail.uid,
       dom: detail.dom,
       components,
@@ -15119,7 +15179,7 @@
       name: 'FormCoupledInputs',
       configFields: schema$h(),
       partFields: parts$c(),
-      factory: factory$e,
+      factory: factory$g,
       apis: {
         getField1: (apis, component) => apis.getField1(component),
         getField2: (apis, component) => apis.getField2(component),
@@ -15258,7 +15318,7 @@
           tag: 'label',
           classes: ['tox-label']
         },
-        components: [text$1(providersBackstage.translate(label))]
+        components: [text$2(providersBackstage.translate(label))]
       });
       const widthField = FormCoupledInputs.parts.field1(formGroup([
         FormField.parts.label(getLabel('Width')),
@@ -15331,7 +15391,7 @@
           tag: 'label',
           classes: ['tox-label']
         },
-        components: [text$1(providerBackstage.translate(spec.label))]
+        components: [text$2(providerBackstage.translate(spec.label))]
       });
       const spectrum = Slider.parts.spectrum({
         dom: {
@@ -15629,7 +15689,7 @@
       onStrictHandler('onStream')
     ];
 
-    const Streaming = create$3({
+    const Streaming = create$4({
       fields: StreamingSchema,
       name: 'streaming',
       active: ActiveStreaming,
@@ -16157,7 +16217,7 @@
     const renderButtonSpec = (spec, action, providersBackstage, extraBehaviours = [], extraClasses = []) => {
       const translatedText = providersBackstage.translate(spec.text);
       const icon = spec.icon.map(iconName => renderIconFromPack(iconName, providersBackstage.icons));
-      const components = [icon.getOrThunk(() => text$1(translatedText))];
+      const components = [icon.getOrThunk(() => text$2(translatedText))];
       const buttonType = spec.buttonType.getOr(!spec.primary && !spec.borderless ? 'secondary' : 'primary');
       const baseClasses = calculateClassesFromButtonType(buttonType);
       const classes = [
@@ -16576,7 +16636,7 @@
           tag: 'span',
           classes: ['tox-checkbox__label']
         },
-        components: [text$1(providerBackstage.translate(spec.label))],
+        components: [text$2(providerBackstage.translate(spec.label))],
         behaviours: derive$1([Unselecting.config({})])
       });
       const makeIcon = className => {
@@ -16859,8 +16919,8 @@
       dialog(callback, value);
     };
     const hasCustomColors = editor => () => hasCustomColors$1(editor);
-    const getColors = editor => () => getColors$2(editor);
-    const getColorCols = editor => () => getColorCols$1(editor);
+    const getColors = editor => id => getColors$2(editor, id);
+    const getColorCols = editor => id => getColorCols$1(editor, id);
     const ColorInputBackstage = editor => ({
       colorPicker: colorPicker(editor),
       hasCustomColors: hasCustomColors(editor),
@@ -17146,7 +17206,7 @@
     };
     const isContentEditableTrue = hasContentEditableState('true');
     const isContentEditableFalse = hasContentEditableState('false');
-    const create = (type, title, url, level, attach) => ({
+    const create$1 = (type, title, url, level, attach) => ({
       type,
       title,
       url,
@@ -17198,12 +17258,12 @@
       const attach = () => {
         elm.id = headerId;
       };
-      return create('header', (_a = getElementText(elm)) !== null && _a !== void 0 ? _a : '', '#' + headerId, getLevel(elm), attach);
+      return create$1('header', (_a = getElementText(elm)) !== null && _a !== void 0 ? _a : '', '#' + headerId, getLevel(elm), attach);
     };
     const anchorTarget = elm => {
       const anchorId = elm.id || elm.name;
       const anchorText = getElementText(elm);
-      return create('anchor', anchorText ? anchorText : '#' + anchorId, '#' + anchorId, 0, noop);
+      return create$1('anchor', anchorText ? anchorText : '#' + anchorId, '#' + anchorId, 0, noop);
     };
     const getHeaderTargets = elms => {
       return map$2(filter$2(elms, isValidHeader), headerTarget);
@@ -17327,48 +17387,72 @@
       getUrlPicker: filetype => getUrlPicker(editor, filetype)
     });
 
-    const init$7 = (lazySink, editor, lazyAnchorbar) => {
+    const init$7 = (lazySinks, editor, lazyAnchorbar) => {
       const contextMenuState = Cell(false);
       const toolbar = HeaderBackstage(editor);
-      const backstage = {
-        shared: {
-          providers: {
-            icons: () => editor.ui.registry.getAll().icons,
-            menuItems: () => editor.ui.registry.getAll().menuItems,
-            translate: global$8.translate,
-            isDisabled: () => editor.mode.isReadOnly() || !editor.ui.isEnabled(),
-            getOption: editor.options.get
-          },
-          interpreter: s => interpretWithoutForm(s, {}, backstage),
-          anchors: getAnchors(editor, lazyAnchorbar, toolbar.isPositionedAtTop),
-          header: toolbar,
-          getSink: lazySink
-        },
-        urlinput: UrlInputBackstage(editor),
-        styles: init$8(editor),
-        colorinput: ColorInputBackstage(editor),
-        dialog: DialogBackstage(editor),
-        isContextMenuOpen: () => contextMenuState.get(),
-        setContextMenuState: state => contextMenuState.set(state)
+      const providers = {
+        icons: () => editor.ui.registry.getAll().icons,
+        menuItems: () => editor.ui.registry.getAll().menuItems,
+        translate: global$8.translate,
+        isDisabled: () => editor.mode.isReadOnly() || !editor.ui.isEnabled(),
+        getOption: editor.options.get
       };
-      return backstage;
+      const urlinput = UrlInputBackstage(editor);
+      const styles = init$8(editor);
+      const colorinput = ColorInputBackstage(editor);
+      const dialogSettings = DialogBackstage(editor);
+      const isContextMenuOpen = () => contextMenuState.get();
+      const setContextMenuState = state => contextMenuState.set(state);
+      const commonBackstage = {
+        shared: {
+          providers,
+          anchors: getAnchors(editor, lazyAnchorbar, toolbar.isPositionedAtTop),
+          header: toolbar
+        },
+        urlinput,
+        styles,
+        colorinput,
+        dialog: dialogSettings,
+        isContextMenuOpen,
+        setContextMenuState
+      };
+      const popupBackstage = {
+        ...commonBackstage,
+        shared: {
+          ...commonBackstage.shared,
+          interpreter: s => interpretWithoutForm(s, {}, popupBackstage),
+          getSink: lazySinks.popup
+        }
+      };
+      const dialogBackstage = {
+        ...commonBackstage,
+        shared: {
+          ...commonBackstage.shared,
+          interpreter: s => interpretWithoutForm(s, {}, dialogBackstage),
+          getSink: lazySinks.dialog
+        }
+      };
+      return {
+        popup: popupBackstage,
+        dialog: dialogBackstage
+      };
     };
 
-    const setup$b = (editor, mothership, uiMothership) => {
+    const setup$b = (editor, mothership, uiMotherships) => {
       const broadcastEvent = (name, evt) => {
         each$1([
           mothership,
-          uiMothership
-        ], ship => {
-          ship.broadcastEvent(name, evt);
+          ...uiMotherships
+        ], m => {
+          m.broadcastEvent(name, evt);
         });
       };
       const broadcastOn = (channel, message) => {
         each$1([
           mothership,
-          uiMothership
-        ], ship => {
-          ship.broadcastOn([channel], message);
+          ...uiMotherships
+        ], m => {
+          m.broadcastOn([channel], message);
         });
       };
       const fireDismissPopups = evt => broadcastOn(dismissPopups(), { target: evt.target });
@@ -17437,10 +17521,14 @@
         onMouseup.unbind();
       });
       editor.on('detach', () => {
-        detachSystem(mothership);
-        detachSystem(uiMothership);
-        mothership.destroy();
-        uiMothership.destroy();
+        each$1([
+          mothership,
+          ...uiMotherships
+        ], detachSystem);
+        each$1([
+          mothership,
+          ...uiMotherships
+        ], m => m.destroy());
       });
     };
 
@@ -17461,7 +17549,7 @@
     const parts$9 = constant$1([itemsPart]);
     const name = constant$1('CustomList');
 
-    const factory$d = (detail, components, _spec, _external) => {
+    const factory$f = (detail, components, _spec, _external) => {
       const setItems = (list, items) => {
         getListContainer(list).fold(() => {
           console.error('Custom List was defined to not be a shell, but no item container was specified in components');
@@ -17500,7 +17588,7 @@
       name: name(),
       configFields: schema$f(),
       partFields: parts$9(),
-      factory: factory$d,
+      factory: factory$f,
       apis: {
         setItems: (apis, list, items) => {
           apis.setItems(list, items);
@@ -17519,7 +17607,7 @@
         overrides: enhanceGroups
       })]);
 
-    const factory$c = (detail, components, _spec, _externals) => {
+    const factory$e = (detail, components, _spec, _externals) => {
       const setGroups = (toolbar, groups) => {
         getGroupContainer(toolbar).fold(() => {
           console.error('Toolbar was defined to not be a shell, but no groups container was specified in components');
@@ -17549,7 +17637,7 @@
       name: 'Toolbar',
       configFields: schema$e(),
       partFields: parts$8(),
-      factory: factory$c,
+      factory: factory$e,
       apis: {
         setGroups: (apis, toolbar, groups) => {
           apis.setGroups(toolbar, groups);
@@ -17818,7 +17906,7 @@
         init: init$6
     });
 
-    const Docking = create$3({
+    const Docking = create$4({
       fields: DockingSchema,
       name: 'docking',
       active: ActiveDocking,
@@ -18075,7 +18163,7 @@
     ]);
     const createSplitButton = spec => asRaw('SplitButton', splitButtonSchema, spec);
 
-    const factory$b = (detail, spec) => {
+    const factory$d = (detail, spec) => {
       const setMenus = (comp, menus) => {
         const newMenus = map$2(menus, m => {
           const buttonSpec = {
@@ -18145,7 +18233,7 @@
       };
     };
     var SilverMenubar = single({
-      factory: factory$b,
+      factory: factory$d,
       name: 'silver.Menubar',
       configFields: [
         required$1('dom'),
@@ -18386,7 +18474,7 @@
         init: init$5
     });
 
-    const Sliding = create$3({
+    const Sliding = create$4({
       fields: SlidingSchema,
       name: 'sliding',
       active: ActiveSliding,
@@ -18724,7 +18812,7 @@
         init: init$4
     });
 
-    const Blocking = create$3({
+    const Blocking = create$4({
       fields: BlockingSchema,
       name: 'blocking',
       apis: BlockingApis,
@@ -18977,7 +19065,9 @@
       markers$1(['overflowToggledClass']),
       optionFunction('getOverflowBounds'),
       required$1('lazySink'),
-      customField('overflowGroups', () => Cell([]))
+      customField('overflowGroups', () => Cell([])),
+      onHandler('onOpened'),
+      onHandler('onClosed')
     ].concat(schema$c()));
     const parts$7 = constant$1([
       required({
@@ -19003,7 +19093,8 @@
       requiredFunction('fetch'),
       optionFunction('getBounds'),
       optionObjOf('fireDismissalEventInstead', [defaulted('event', dismissRequested())]),
-      schema$y()
+      schema$y(),
+      onHandler('onToggled')
     ]);
     const parts$6 = constant$1([
       external({
@@ -19013,7 +19104,8 @@
           buttonBehaviours: derive$1([Toggling.config({
               toggleClass: detail.markers.toggledClass,
               aria: { mode: 'expanded' },
-              toggleOnExecute: false
+              toggleOnExecute: false,
+              onToggled: detail.onToggled
             })])
         })
       }),
@@ -19115,7 +19207,7 @@
         ])
       };
     };
-    const factory$a = (detail, components, spec, externals) => ({
+    const factory$c = (detail, components, spec, externals) => ({
       ...Button.sketch({
         ...externals.button(),
         action: button => {
@@ -19153,7 +19245,7 @@
     });
     const FloatingToolbarButton = composite({
       name: 'FloatingToolbarButton',
-      factory: factory$a,
+      factory: factory$c,
       configFields: schema$a(),
       partFields: parts$6(),
       apis: {
@@ -19181,7 +19273,7 @@
         unit: 'item'
       })]);
 
-    const factory$9 = (detail, components, _spec, _externals) => ({
+    const factory$b = (detail, components, _spec, _externals) => ({
       uid: detail.uid,
       dom: detail.dom,
       components,
@@ -19195,7 +19287,7 @@
       name: 'ToolbarGroup',
       configFields: schema$9(),
       partFields: parts$5(),
-      factory: factory$9
+      factory: factory$b
     });
 
     const buildGroups = comps => map$2(comps, g => premade(g));
@@ -19207,7 +19299,7 @@
         });
       });
     };
-    const factory$8 = (detail, components, spec, externals) => {
+    const factory$a = (detail, components, spec, externals) => {
       const memFloatingToolbarButton = record(FloatingToolbarButton.sketch({
         fetch: () => Future.nu(resolve => {
           resolve(buildGroups(detail.overflowGroups.get()));
@@ -19237,7 +19329,8 @@
         parts: {
           button: externals['overflow-button'](),
           toolbar: externals.overflow()
-        }
+        },
+        onToggled: (comp, state) => detail[state ? 'onOpened' : 'onClosed'](comp)
       }));
       return {
         uid: detail.uid,
@@ -19279,7 +19372,7 @@
       name: 'SplitFloatingToolbar',
       configFields: schema$b(),
       partFields: parts$7(),
-      factory: factory$8,
+      factory: factory$a,
       apis: {
         setGroups: (apis, toolbar, groups) => {
           apis.setGroups(toolbar, groups);
@@ -19388,7 +19481,7 @@
         Sliding.refresh(overflow);
       });
     };
-    const factory$7 = (detail, components, spec, externals) => {
+    const factory$9 = (detail, components, spec, externals) => {
       const toolbarToggleEvent = 'alloy.toolbar.toggle';
       const doSetGroups = (toolbar, groups) => {
         const built = map$2(groups, toolbar.getSystem().build);
@@ -19434,7 +19527,7 @@
       name: 'SplitSlidingToolbar',
       configFields: schema$8(),
       partFields: parts$4(),
-      factory: factory$7,
+      factory: factory$9,
       apis: {
         setGroups: (apis, toolbar, groups) => {
           apis.setGroups(toolbar, groups);
@@ -19540,7 +19633,9 @@
           }
         },
         components: [primary],
-        markers: { overflowToggledClass: 'tox-tbtn--enabled' }
+        markers: { overflowToggledClass: 'tox-tbtn--enabled' },
+        onOpened: comp => toolbarSpec.onToggled(comp, true),
+        onClosed: comp => toolbarSpec.onToggled(comp, false)
       });
     };
     const renderSlidingMoreToolbar = toolbarSpec => {
@@ -19572,9 +19667,11 @@
         },
         onOpened: comp => {
           comp.getSystem().broadcastOn([toolbarHeightChange()], { type: 'opened' });
+          toolbarSpec.onToggled(comp, true);
         },
         onClosed: comp => {
           comp.getSystem().broadcastOn([toolbarHeightChange()], { type: 'closed' });
+          toolbarSpec.onToggled(comp, false);
         }
       });
     };
@@ -19591,7 +19688,229 @@
       });
     };
 
+    const normalButtonFields = [
+      requiredStringEnum('type', ['button']),
+      text$1,
+      defaultedStringEnum('buttonType', 'secondary', [
+        'primary',
+        'secondary'
+      ]),
+      requiredFunction('onAction')
+    ];
+    const viewButtonSchema = choose$1('type', { button: normalButtonFields });
+
+    const viewSchema = objOf([
+      defaultedArrayOf('buttons', [], viewButtonSchema),
+      requiredFunction('onShow'),
+      requiredFunction('onHide')
+    ]);
+    const createView = spec => asRaw('view', viewSchema, spec);
+
+    const renderViewButton = (spec, providers) => {
+      return renderButton({
+        text: spec.text,
+        enabled: true,
+        primary: false,
+        name: 'name',
+        icon: Optional.none(),
+        borderless: false,
+        buttonType: Optional.some(spec.buttonType)
+      }, _comp => {
+        spec.onAction();
+      }, providers);
+    };
+    const renderViewHeader = spec => {
+      const endButtons = map$2(spec.buttons, btnspec => renderViewButton(btnspec, spec.providers));
+      return {
+        uid: spec.uid,
+        dom: {
+          tag: 'div',
+          classes: ['tox-view__header']
+        },
+        components: [
+          Container.sketch({
+            dom: {
+              tag: 'div',
+              classes: ['tox-view__header-start']
+            },
+            components: []
+          }),
+          Container.sketch({
+            dom: {
+              tag: 'div',
+              classes: ['tox-view__header-end']
+            },
+            components: endButtons
+          })
+        ]
+      };
+    };
+    const renderViewPane = spec => {
+      return {
+        uid: spec.uid,
+        dom: {
+          tag: 'div',
+          classes: ['tox-view__pane']
+        }
+      };
+    };
+    const factory$8 = (detail, components, _spec, _externals) => {
+      const apis = {
+        getPane: comp => parts$a.getPart(comp, detail, 'pane'),
+        getOnShow: _comp => detail.viewConfig.onShow,
+        getOnHide: _comp => detail.viewConfig.onHide
+      };
+      return {
+        uid: detail.uid,
+        dom: detail.dom,
+        components,
+        apis
+      };
+    };
+    var View = composite({
+      name: 'silver.View',
+      configFields: [required$1('viewConfig')],
+      partFields: [
+        optional({
+          factory: { sketch: renderViewHeader },
+          schema: [
+            required$1('buttons'),
+            required$1('providers')
+          ],
+          name: 'header'
+        }),
+        optional({
+          factory: { sketch: renderViewPane },
+          schema: [],
+          name: 'pane'
+        })
+      ],
+      factory: factory$8,
+      apis: {
+        getPane: (apis, comp) => apis.getPane(comp),
+        getOnShow: (apis, comp) => apis.getOnShow(comp),
+        getOnHide: (apis, comp) => apis.getOnHide(comp)
+      }
+    });
+
+    const makeViews = (parts, viewConfigs, providers) => {
+      return mapToArray(viewConfigs, (config, name) => {
+        const internalViewConfig = getOrDie(createView(config));
+        return parts.slot(name, View.sketch({
+          dom: {
+            tag: 'div',
+            classes: ['tox-view']
+          },
+          viewConfig: internalViewConfig,
+          components: [
+            ...internalViewConfig.buttons.length > 0 ? [View.parts.header({
+                buttons: internalViewConfig.buttons,
+                providers
+              })] : [],
+            View.parts.pane({})
+          ]
+        }));
+      });
+    };
+    const makeSlotContainer = (viewConfigs, providers) => SlotContainer.sketch(parts => ({
+      dom: {
+        tag: 'div',
+        classes: ['tox-view-wrap__slot-container']
+      },
+      components: makeViews(parts, viewConfigs, providers),
+      slotBehaviours: SimpleBehaviours.unnamedEvents([runOnAttached(slotContainer => SlotContainer.hideAllSlots(slotContainer))])
+    }));
+    const getCurrentName = slotContainer => {
+      return find$5(SlotContainer.getSlotNames(slotContainer), name => SlotContainer.isShowing(slotContainer, name));
+    };
+    const hideContainer = comp => {
+      const element = comp.element;
+      set$8(element, 'display', 'none');
+      set$9(element, 'aria-hidden', 'true');
+    };
+    const showContainer = comp => {
+      const element = comp.element;
+      remove$6(element, 'display');
+      remove$7(element, 'aria-hidden');
+    };
+    const makeViewInstanceApi = slot => ({ getContainer: constant$1(slot) });
+    const runOnPaneWithInstanceApi = (slotContainer, name, get) => {
+      SlotContainer.getSlot(slotContainer, name).each(view => {
+        View.getPane(view).each(pane => {
+          const onCallback = get(view);
+          onCallback(makeViewInstanceApi(pane.element.dom));
+        });
+      });
+    };
+    const runOnShow = (slotContainer, name) => runOnPaneWithInstanceApi(slotContainer, name, View.getOnShow);
+    const runOnHide = (slotContainer, name) => runOnPaneWithInstanceApi(slotContainer, name, View.getOnHide);
+    const factory$7 = (detail, spec) => {
+      const setViews = (comp, viewConfigs) => {
+        Replacing.set(comp, [makeSlotContainer(viewConfigs, spec.backstage.shared.providers)]);
+      };
+      const whichView = comp => {
+        return Composing.getCurrent(comp).bind(getCurrentName);
+      };
+      const toggleView = (comp, showMainView, hideMainView, name) => {
+        return Composing.getCurrent(comp).exists(slotContainer => {
+          const optCurrentSlotName = getCurrentName(slotContainer);
+          const isTogglingCurrentView = optCurrentSlotName.exists(current => name === current);
+          const exists = SlotContainer.getSlot(slotContainer, name).isSome();
+          if (exists) {
+            SlotContainer.hideAllSlots(slotContainer);
+            if (!isTogglingCurrentView) {
+              hideMainView();
+              showContainer(comp);
+              SlotContainer.showSlot(slotContainer, name);
+              runOnShow(slotContainer, name);
+            } else {
+              hideContainer(comp);
+              showMainView();
+            }
+            optCurrentSlotName.each(prevName => runOnHide(slotContainer, prevName));
+          }
+          return exists;
+        });
+      };
+      const apis = {
+        setViews,
+        whichView,
+        toggleView
+      };
+      return {
+        uid: detail.uid,
+        dom: {
+          tag: 'div',
+          classes: ['tox-view-wrap'],
+          attributes: { 'aria-hidden': 'true' },
+          styles: { display: 'none' }
+        },
+        components: [],
+        behaviours: derive$1([
+          Replacing.config({}),
+          Composing.config({
+            find: comp => {
+              const children = Replacing.contents(comp);
+              return head(children);
+            }
+          })
+        ]),
+        apis
+      };
+    };
+    var ViewWrapper = single({
+      factory: factory$7,
+      name: 'silver.ViewWrapper',
+      configFields: [required$1('backstage')],
+      apis: {
+        setViews: (apis, comp, views) => apis.setViews(comp, views),
+        toggleView: (apis, comp, outerContainer, editorCont, name) => apis.toggleView(comp, outerContainer, editorCont, name),
+        whichView: (apis, comp) => apis.whichView(comp)
+      }
+    });
+
     const factory$6 = (detail, components, _spec) => {
+      let toolbarDrawerOpenState = false;
       const apis = {
         getSocket: comp => {
           return parts$a.getPart(comp, detail, 'socket');
@@ -19652,6 +19971,38 @@
         focusMenubar: comp => {
           parts$a.getPart(comp, detail, 'menubar').each(menubar => {
             SilverMenubar.focus(menubar);
+          });
+        },
+        setViews: (comp, viewConfigs) => {
+          parts$a.getPart(comp, detail, 'viewWrapper').each(wrapper => {
+            ViewWrapper.setViews(wrapper, viewConfigs);
+          });
+        },
+        toggleView: (comp, name) => {
+          return parts$a.getPart(comp, detail, 'viewWrapper').exists(wrapper => ViewWrapper.toggleView(wrapper, () => apis.showMainView(comp), () => apis.hideMainView(comp), name));
+        },
+        whichView: comp => {
+          return parts$a.getPart(comp, detail, 'viewWrapper').bind(ViewWrapper.whichView).getOrNull();
+        },
+        hideMainView: comp => {
+          toolbarDrawerOpenState = apis.isToolbarDrawerToggled(comp);
+          if (toolbarDrawerOpenState) {
+            apis.toggleToolbarDrawer(comp);
+          }
+          parts$a.getPart(comp, detail, 'editorContainer').each(editorContainer => {
+            const element = editorContainer.element;
+            set$8(element, 'display', 'none');
+            set$9(element, 'aria-hidden', 'true');
+          });
+        },
+        showMainView: comp => {
+          if (toolbarDrawerOpenState) {
+            apis.toggleToolbarDrawer(comp);
+          }
+          parts$a.getPart(comp, detail, 'editorContainer').each(editorContainer => {
+            const element = editorContainer.element;
+            remove$6(element, 'display');
+            remove$7(element, 'aria-hidden');
           });
         }
       };
@@ -19720,6 +20071,7 @@
               spec.onEscape();
               return Optional.some(true);
             },
+            onToggled: (_comp, state) => spec.onToolbarToggled(state),
             cyclicKeying: false,
             initGroups: [],
             getSink: spec.getSink,
@@ -19765,6 +20117,24 @@
       name: 'throbber',
       schema: [required$1('dom')]
     });
+    const partViewWrapper = partType.optional({
+      factory: ViewWrapper,
+      name: 'viewWrapper',
+      schema: [required$1('backstage')]
+    });
+    const renderEditorContainer = spec => ({
+      uid: spec.uid,
+      dom: {
+        tag: 'div',
+        classes: ['tox-editor-container']
+      },
+      components: spec.components
+    });
+    const partEditorContainer = partType.optional({
+      factory: { sketch: renderEditorContainer },
+      name: 'editorContainer',
+      schema: []
+    });
     var OuterContainer = composite({
       name: 'OuterContainer',
       factory: factory$6,
@@ -19780,7 +20150,9 @@
         partSocket,
         partSidebar,
         partPromotion,
-        partThrobber
+        partThrobber,
+        partViewWrapper,
+        partEditorContainer
       ],
       apis: {
         getSocket: (apis, comp) => {
@@ -19827,6 +20199,15 @@
         },
         focusToolbar: (apis, comp) => {
           apis.focusToolbar(comp);
+        },
+        setViews: (apis, comp, views) => {
+          apis.setViews(comp, views);
+        },
+        toggleView: (apis, comp, name) => {
+          return apis.toggleView(comp, name);
+        },
+        whichView: (apis, comp) => {
+          return apis.whichView(comp);
         }
       }
     });
@@ -20536,7 +20917,7 @@
         init: init$3
     });
 
-    const Reflecting = create$3({
+    const Reflecting = create$4({
       fields: ReflectingSchema,
       name: 'reflecting',
       active: ActiveReflecting,
@@ -21084,8 +21465,8 @@
       return filter$2(groups, group => group.items.length > 0);
     };
 
-    const setToolbar = (editor, uiComponents, rawUiConfig, backstage) => {
-      const comp = uiComponents.outerContainer;
+    const setToolbar = (editor, uiRefs, rawUiConfig, backstage) => {
+      const outerContainer = uiRefs.mainUi.outerContainer;
       const toolbarConfig = rawUiConfig.toolbar;
       const toolbarButtonsConfig = rawUiConfig.buttons;
       if (isArrayOf(toolbarConfig, isString)) {
@@ -21097,15 +21478,16 @@
           };
           return identifyButtons(editor, config, backstage, Optional.none());
         });
-        OuterContainer.setToolbars(comp, toolbars);
+        OuterContainer.setToolbars(outerContainer, toolbars);
       } else {
-        OuterContainer.setToolbar(comp, identifyButtons(editor, rawUiConfig, backstage, Optional.none()));
+        OuterContainer.setToolbar(outerContainer, identifyButtons(editor, rawUiConfig, backstage, Optional.none()));
       }
     };
 
     const detection = detect$1();
     const isiOS12 = detection.os.isiOS() && detection.os.version.major <= 12;
-    const setupEvents$1 = (editor, uiComponents) => {
+    const setupEvents$1 = (editor, uiRefs) => {
+      const {uiMotherships} = uiRefs;
       const dom = editor.dom;
       let contentWindow = editor.getWin();
       const initialDocEle = editor.getDoc().documentElement;
@@ -21132,12 +21514,15 @@
       dom.bind(contentWindow, 'resize', resizeWindow);
       dom.bind(contentWindow, 'scroll', scroll);
       const elementLoad = capture(SugarElement.fromDom(editor.getBody()), 'load', resizeDocument);
-      const mothership = uiComponents.uiMothership.element;
       editor.on('hide', () => {
-        set$8(mothership, 'display', 'none');
+        each$1(uiMotherships, m => {
+          set$8(m.element, 'display', 'none');
+        });
       });
       editor.on('show', () => {
-        remove$6(mothership, 'display');
+        each$1(uiMotherships, m => {
+          remove$6(m.element, 'display');
+        });
       });
       editor.on('NodeChange', resizeDocument);
       editor.on('remove', () => {
@@ -21147,20 +21532,25 @@
         contentWindow = null;
       });
     };
-    const render$1 = (editor, uiComponents, rawUiConfig, backstage, args) => {
+    const attachUiMotherships$1 = (uiRoot, uiRefs) => {
+      attachSystem(uiRoot, uiRefs.dialogUi.mothership);
+    };
+    const render$1 = (editor, uiRefs, rawUiConfig, backstage, args) => {
+      const {mainUi, uiMotherships} = uiRefs;
       const lastToolbarWidth = Cell(0);
-      const outerContainer = uiComponents.outerContainer;
+      const outerContainer = mainUi.outerContainer;
       iframe(editor);
       const eTargetNode = SugarElement.fromDom(args.targetNode);
       const uiRoot = getContentContainer(getRootNode(eTargetNode));
-      attachSystemAfter(eTargetNode, uiComponents.mothership);
-      attachSystem(uiRoot, uiComponents.uiMothership);
+      attachSystemAfter(eTargetNode, mainUi.mothership);
+      attachUiMotherships$1(uiRoot, uiRefs);
       editor.on('PostRender', () => {
         OuterContainer.setSidebar(outerContainer, rawUiConfig.sidebar, getSidebarShow(editor));
-        setToolbar(editor, uiComponents, rawUiConfig, backstage);
+        setToolbar(editor, uiRefs, rawUiConfig, backstage);
         lastToolbarWidth.set(editor.getWin().innerWidth);
         OuterContainer.setMenubar(outerContainer, identifyMenus(editor, rawUiConfig));
-        setupEvents$1(editor, uiComponents);
+        OuterContainer.setViews(outerContainer, rawUiConfig.views);
+        setupEvents$1(editor, uiRefs);
       });
       const socket = OuterContainer.getSocket(outerContainer).getOrDie('Could not find expected socket element');
       if (isiOS12) {
@@ -21174,7 +21564,7 @@
         const unbinder = bind(socket.element, 'scroll', limit.throttle);
         editor.on('remove', unbinder.unbind);
       }
-      setupReadonlyModeSwitch(editor, uiComponents);
+      setupReadonlyModeSwitch(editor, uiRefs);
       editor.addCommand('ToggleSidebar', (_ui, value) => {
         OuterContainer.toggleSidebar(outerContainer, value);
         editor.dispatch('ToggleSidebar');
@@ -21183,9 +21573,26 @@
         var _a;
         return (_a = OuterContainer.whichSidebar(outerContainer)) !== null && _a !== void 0 ? _a : '';
       });
+      editor.addCommand('ToggleView', (_ui, value) => {
+        if (OuterContainer.toggleView(outerContainer, value)) {
+          const target = outerContainer.element;
+          mainUi.mothership.broadcastOn([dismissPopups()], { target });
+          each$1(uiMotherships, m => {
+            m.broadcastOn([dismissPopups()], { target });
+          });
+          if (isNull(OuterContainer.whichView(outerContainer))) {
+            editor.focus();
+            editor.nodeChanged();
+          }
+        }
+      });
+      editor.addQueryValueHandler('ToggleView', () => {
+        var _a;
+        return (_a = OuterContainer.whichView(outerContainer)) !== null && _a !== void 0 ? _a : '';
+      });
       const toolbarMode = getToolbarMode(editor);
       const refreshDrawer = () => {
-        OuterContainer.refreshToolbar(uiComponents.outerContainer);
+        OuterContainer.refreshToolbar(uiRefs.mainUi.outerContainer);
       };
       if (toolbarMode === ToolbarMode$1.sliding || toolbarMode === ToolbarMode$1.floating) {
         editor.on('ResizeWindow ResizeEditor ResizeContent', () => {
@@ -21198,7 +21605,7 @@
       }
       const api = {
         setEnabled: state => {
-          broadcastReadonly(uiComponents, !state);
+          broadcastReadonly(uiRefs, !state);
         },
         isEnabled: () => !Disabling.isDisabled(outerContainer)
       };
@@ -21250,8 +21657,8 @@
     };
 
     const {ToolbarLocation, ToolbarMode} = Options;
-    const InlineHeader = (editor, targetElm, uiComponents, backstage, floatContainer) => {
-      const {uiMothership, outerContainer} = uiComponents;
+    const InlineHeader = (editor, targetElm, uiRefs, backstage, floatContainer) => {
+      const {mainUi, uiMotherships} = uiRefs;
       const DOM = global$7.DOM;
       const useFixedToolbarContainer = useFixedContainer(editor);
       const isSticky = isStickyToolbar(editor);
@@ -21266,7 +21673,7 @@
       const calcMode = container => {
         switch (getToolbarLocation(editor)) {
         case ToolbarLocation.auto:
-          const toolbar = OuterContainer.getToolbar(outerContainer);
+          const toolbar = OuterContainer.getToolbar(mainUi.outerContainer);
           const offset = calcToolbarOffset(toolbar);
           const toolbarHeight = get$d(container.element) - offset;
           const targetBounds = box$1(targetElm);
@@ -21311,11 +21718,11 @@
       };
       const updateChromePosition = () => {
         floatContainer.on(container => {
-          const toolbar = OuterContainer.getToolbar(outerContainer);
+          const toolbar = OuterContainer.getToolbar(mainUi.outerContainer);
           const offset = calcToolbarOffset(toolbar);
           const targetBounds = box$1(targetElm);
           const top = isPositionedAtTop() ? Math.max(targetBounds.y - get$d(container.element) + offset, 0) : targetBounds.bottom;
-          setAll(outerContainer.element, {
+          setAll(mainUi.outerContainer.element, {
             position: 'absolute',
             top: Math.round(top) + 'px',
             left: Math.round(targetBounds.x) + 'px'
@@ -21323,7 +21730,9 @@
         });
       };
       const repositionPopups$1 = () => {
-        uiMothership.broadcastOn([repositionPopups()], {});
+        each$1(uiMotherships, m => {
+          m.broadcastOn([repositionPopups()], {});
+        });
       };
       const updateChromeUi = (resetDocking = false) => {
         if (!isVisible()) {
@@ -21333,7 +21742,7 @@
           updateChromeWidth();
         }
         if (isSplitToolbar) {
-          OuterContainer.refreshToolbar(outerContainer);
+          OuterContainer.refreshToolbar(mainUi.outerContainer);
         }
         if (!useFixedToolbarContainer) {
           updateChromePosition();
@@ -21361,19 +21770,21 @@
       };
       const show = () => {
         visible.set(true);
-        set$8(outerContainer.element, 'display', 'flex');
+        set$8(mainUi.outerContainer.element, 'display', 'flex');
         DOM.addClass(editor.getBody(), 'mce-edit-focus');
-        remove$6(uiMothership.element, 'display');
+        each$1(uiMotherships, m => {
+          remove$6(m.element, 'display');
+        });
         updateMode(false);
         updateChromeUi();
       };
       const hide = () => {
         visible.set(false);
-        if (uiComponents.outerContainer) {
-          set$8(outerContainer.element, 'display', 'none');
-          DOM.removeClass(editor.getBody(), 'mce-edit-focus');
-        }
-        set$8(uiMothership.element, 'display', 'none');
+        set$8(mainUi.outerContainer.element, 'display', 'none');
+        DOM.removeClass(editor.getBody(), 'mce-edit-focus');
+        each$1(uiMotherships, m => {
+          set$8(m.element, 'display', 'none');
+        });
       };
       return {
         isVisible,
@@ -21433,11 +21844,14 @@
         elementLoad.clear();
       });
     };
-    const render = (editor, uiComponents, rawUiConfig, backstage, args) => {
-      const {mothership, uiMothership, outerContainer} = uiComponents;
+    const attachUiMotherships = (uiRoot, uiRefs) => {
+      attachSystem(uiRoot, uiRefs.dialogUi.mothership);
+    };
+    const render = (editor, uiRefs, rawUiConfig, backstage, args) => {
+      const {mainUi} = uiRefs;
       const floatContainer = value$2();
       const targetElm = SugarElement.fromDom(args.targetNode);
-      const ui = InlineHeader(editor, targetElm, uiComponents, backstage, floatContainer);
+      const ui = InlineHeader(editor, targetElm, uiRefs, backstage, floatContainer);
       const toolbarPersist = isToolbarPersist(editor);
       inline(editor);
       const render = () => {
@@ -21445,12 +21859,12 @@
           ui.show();
           return;
         }
-        floatContainer.set(OuterContainer.getHeader(outerContainer).getOrDie());
+        floatContainer.set(OuterContainer.getHeader(mainUi.outerContainer).getOrDie());
         const uiContainer = getUiContainer(editor);
-        attachSystem(uiContainer, mothership);
-        attachSystem(uiContainer, uiMothership);
-        setToolbar(editor, uiComponents, rawUiConfig, backstage);
-        OuterContainer.setMenubar(outerContainer, identifyMenus(editor, rawUiConfig));
+        attachSystem(uiContainer, mainUi.mothership);
+        attachUiMotherships(uiContainer, uiRefs);
+        setToolbar(editor, uiRefs, rawUiConfig, backstage);
+        OuterContainer.setMenubar(mainUi.outerContainer, identifyMenus(editor, rawUiConfig));
         ui.show();
         setupEvents(editor, targetElm, ui, toolbarPersist);
         editor.nodeChanged();
@@ -21466,17 +21880,17 @@
           render();
         }
       });
-      setupReadonlyModeSwitch(editor, uiComponents);
+      setupReadonlyModeSwitch(editor, uiRefs);
       const api = {
         show: render,
         hide: ui.hide,
         setEnabled: state => {
-          broadcastReadonly(uiComponents, !state);
+          broadcastReadonly(uiRefs, !state);
         },
-        isEnabled: () => !Disabling.isDisabled(outerContainer)
+        isEnabled: () => !Disabling.isDisabled(mainUi.outerContainer)
       };
       return {
-        editorContainer: outerContainer.element.dom,
+        editorContainer: mainUi.outerContainer.element.dom,
         api
       };
     };
@@ -21485,6 +21899,24 @@
         __proto__: null,
         render: render
     });
+
+    const LazyUiReferences = () => {
+      const dialogUi = value$2();
+      const popupUi = value$2();
+      const mainUi = value$2();
+      const setupDialogUi = ui => {
+        dialogUi.set(ui);
+      };
+      const lazyGetInOuterOrDie = (label, f) => () => mainUi.get().bind(oc => f(oc.outerContainer)).getOrDie(`Could not find ${ label } element in OuterContainer`);
+      return {
+        dialogUi,
+        popupUi,
+        mainUi,
+        getUiMotherships: () => [...dialogUi.get().map(e => e.mothership).toArray()],
+        setupDialogUi,
+        lazyGetInOuterOrDie
+      };
+    };
 
     const showContextToolbarEvent = 'contexttoolbar-show';
     const hideContextToolbarEvent = 'contexttoolbar-hide';
@@ -21591,7 +22023,7 @@
       buildInitGroups
     };
 
-    const isVerticalOverlap = (a, b, threshold = 0.01) => b.bottom - a.y >= threshold && a.bottom - b.y >= threshold;
+    const isVerticalOverlap = (a, b, threshold) => b.bottom - a.y >= threshold && a.bottom - b.y >= threshold;
     const getRangeRect = rng => {
       const rect = rng.getBoundingClientRect();
       if (rect.height <= 0 && rect.width <= 0) {
@@ -21702,7 +22134,7 @@
         return isSameAnchorElement ? preserve : north;
       } else if (isSameAnchorElement) {
         return preservePosition(contextbar, data.getMode(), () => {
-          const isOverlapping = isVerticalOverlap(selectionBounds, box$1(contextbar));
+          const isOverlapping = isVerticalOverlap(selectionBounds, box$1(contextbar), -20);
           return isOverlapping && !data.isReposition() ? flip : preserve;
         });
       } else {
@@ -22043,7 +22475,7 @@
         } else {
           const contextToolbarBounds = getBounds();
           const anchorBounds = is$1(lastContextPosition.get(), 'node') ? getAnchorElementBounds(editor, lastElement.get()) : getSelectionBounds(editor);
-          return contextToolbarBounds.height <= 0 || !isVerticalOverlap(anchorBounds, contextToolbarBounds);
+          return contextToolbarBounds.height <= 0 || !isVerticalOverlap(anchorBounds, contextToolbarBounds, 0.01);
         }
       };
       const close = () => {
@@ -23836,7 +24268,7 @@
             'aria-level': index + 1
           }
         },
-        components: [text$1(name)],
+        components: [text$2(name)],
         action: _btn => {
           editor.focus();
           editor.selection.select(element);
@@ -23853,7 +24285,7 @@
           classes: ['tox-statusbar__path-divider'],
           attributes: { 'aria-hidden': true }
         },
-        components: [text$1(` ${ delimiter } `)]
+        components: [text$2(` ${ delimiter } `)]
       });
       const renderPathData = data => foldl(data, (acc, path, index) => {
         const element = renderElement(path.name, path.element, index);
@@ -23984,7 +24416,7 @@
     };
 
     const renderWordCount = (editor, providersBackstage) => {
-      const replaceCountText = (comp, count, mode) => Replacing.set(comp, [text$1(providersBackstage.translate([
+      const replaceCountText = (comp, count, mode) => Replacing.set(comp, [text$2(providersBackstage.translate([
           '{0} ' + mode,
           count[mode]
         ]))]);
@@ -24104,15 +24536,14 @@
       };
     };
 
-    const getLazyMothership = singleton => singleton.get().getOrDie('UI has not been rendered');
+    const getLazyMothership = (label, singleton) => singleton.get().getOrDie(`UI for ${ label } has not been rendered`);
     const setup$3 = editor => {
       const isInline = editor.inline;
       const mode = isInline ? Inline : Iframe;
       const header = isStickyToolbar(editor) ? StickyHeader : StaticHeader;
-      const lazySink = value$2();
-      const lazyOuterContainer = value$2();
+      const lazyUiRefs = LazyUiReferences();
       const lazyMothership = value$2();
-      const lazyUiMothership = value$2();
+      const lazyDialogMothership = value$2();
       const platform = detect$1();
       const isTouch = platform.deviceType.isTouch();
       const touchPlatformClass = 'tox-platform-touch';
@@ -24125,12 +24556,16 @@
           classes: ['tox-anchorbar']
         }
       });
-      const lazyHeader = () => lazyOuterContainer.get().bind(OuterContainer.getHeader);
-      const lazySinkResult = () => Result.fromOption(lazySink.get(), 'UI has not been rendered');
-      const lazyAnchorBar = () => lazyOuterContainer.get().bind(container => memAnchorBar.getOpt(container)).getOrDie('Could not find a anchor bar element');
-      const lazyToolbar = () => lazyOuterContainer.get().bind(container => OuterContainer.getToolbar(container)).getOrDie('Could not find more toolbar element');
-      const lazyThrobber = () => lazyOuterContainer.get().bind(container => OuterContainer.getThrobber(container)).getOrDie('Could not find throbber element');
-      const backstage = init$7(lazySinkResult, editor, lazyAnchorBar);
+      const lazyHeader = () => lazyUiRefs.mainUi.get().map(ui => ui.outerContainer).bind(OuterContainer.getHeader);
+      const lazyDialogSinkResult = () => Result.fromOption(lazyUiRefs.dialogUi.get().map(ui => ui.sink), 'UI has not been rendered');
+      const lazyPopupSinkResult = () => Result.fromOption(lazyUiRefs.popupUi.get().map(ui => ui.sink), '(popup) UI has not been rendered');
+      const lazyAnchorBar = lazyUiRefs.lazyGetInOuterOrDie('anchor bar', memAnchorBar.getOpt);
+      const lazyToolbar = lazyUiRefs.lazyGetInOuterOrDie('toolbar', OuterContainer.getToolbar);
+      const lazyThrobber = lazyUiRefs.lazyGetInOuterOrDie('throbber', OuterContainer.getThrobber);
+      const backstages = init$7({
+        popup: lazyPopupSinkResult,
+        dialog: lazyDialogSinkResult
+      }, editor, lazyAnchorBar);
       const makeHeaderPart = () => {
         const verticalDirAttributes = { attributes: { [Attribute]: isToolbarBottom ? AttributeValue.BottomToTop : AttributeValue.TopToBottom } };
         const partMenubar = OuterContainer.parts.menubar({
@@ -24138,7 +24573,7 @@
             tag: 'div',
             classes: ['tox-menubar']
           },
-          backstage,
+          backstage: backstages.popup,
           onEscape: () => {
             editor.focus();
           }
@@ -24148,10 +24583,13 @@
             tag: 'div',
             classes: ['tox-toolbar']
           },
-          getSink: lazySinkResult,
-          providers: backstage.shared.providers,
+          getSink: backstages.popup.shared.getSink,
+          providers: backstages.popup.shared.providers,
           onEscape: () => {
             editor.focus();
+          },
+          onToolbarToggled: state => {
+            fireToggleToolbarDrawer(editor, state);
           },
           type: toolbarMode,
           lazyToolbar,
@@ -24163,7 +24601,7 @@
             tag: 'div',
             classes: ['tox-toolbar-overlord']
           },
-          providers: backstage.shared.providers,
+          providers: backstages.popup.shared.providers,
           onEscape: () => {
             editor.focus();
           },
@@ -24174,6 +24612,7 @@
         const hasMenubar = isMenubarEnabled(editor);
         const shouldHavePromotion = promotionEnabled(editor);
         const partPromotion = makePromotion();
+        const hasAnyContents = hasMultipleToolbar || hasToolbar || hasMenubar;
         const getPartToolbar = () => {
           if (hasMultipleToolbar) {
             return [partMultipleToolbar];
@@ -24190,7 +24629,7 @@
         return OuterContainer.parts.header({
           dom: {
             tag: 'div',
-            classes: ['tox-editor-header'],
+            classes: ['tox-editor-header'].concat(hasAnyContents ? [] : ['tox-editor-header--empty']),
             ...verticalDirAttributes
           },
           components: flatten([
@@ -24200,7 +24639,7 @@
           ]),
           sticky: isStickyToolbar(editor),
           editor,
-          sharedBackstage: backstage.shared
+          sharedBackstage: backstages.popup.shared
         });
       };
       const makePromotion = () => {
@@ -24235,7 +24674,7 @@
           ]
         };
       };
-      const renderSink = () => {
+      const renderDialogUi = () => {
         const uiContainer = getUiContainer(editor);
         const isGridUiContainer = eq(body(), uiContainer) && get$e(uiContainer, 'display') === 'grid';
         const sinkSpec = {
@@ -24258,14 +24697,14 @@
         };
         const sink = build$1(deepMerge(sinkSpec, isGridUiContainer ? reactiveWidthSpec : {}));
         const uiMothership = takeover(sink);
-        lazySink.set(sink);
-        lazyUiMothership.set(uiMothership);
+        lazyDialogMothership.set(uiMothership);
         return {
           sink,
-          uiMothership
+          mothership: uiMothership
         };
       };
-      const renderContainer = () => {
+      const renderPopupUi = identity;
+      const renderMainUi = () => {
         const partHeader = makeHeaderPart();
         const sidebarContainer = makeSidebarDefinition();
         const partThrobber = OuterContainer.parts.throbber({
@@ -24273,26 +24712,21 @@
             tag: 'div',
             classes: ['tox-throbber']
           },
-          backstage
+          backstage: backstages.popup
         });
-        const statusbar = useStatusBar(editor) && !isInline ? Optional.some(renderStatusbar(editor, backstage.shared.providers)) : Optional.none();
+        const partViewWrapper = OuterContainer.parts.viewWrapper({ backstage: backstages.popup });
+        const statusbar = useStatusBar(editor) && !isInline ? Optional.some(renderStatusbar(editor, backstages.popup.shared.providers)) : Optional.none();
         const editorComponents = flatten([
           isToolbarBottom ? [] : [partHeader],
           isInline ? [] : [sidebarContainer],
           isToolbarBottom ? [partHeader] : []
         ]);
-        const editorContainer = {
-          dom: {
-            tag: 'div',
-            classes: ['tox-editor-container']
-          },
-          components: editorComponents
-        };
-        const containerComponents = flatten([
-          [editorContainer],
-          isInline ? [] : statusbar.toArray(),
-          [partThrobber]
-        ]);
+        const editorContainer = OuterContainer.parts.editorContainer({
+          components: flatten([
+            editorComponents,
+            isInline ? [] : statusbar.toArray()
+          ])
+        });
         const isHidden = isDistractionFree(editor);
         const attributes = {
           role: 'application',
@@ -24315,7 +24749,11 @@
             },
             attributes
           },
-          components: containerComponents,
+          components: [
+            editorContainer,
+            ...isInline ? [] : [partViewWrapper],
+            partThrobber
+          ],
           behaviours: derive$1([
             receivingConfig(),
             Disabling.config({ disableClass: 'tox-tinymce--disabled' }),
@@ -24326,7 +24764,6 @@
           ])
         }));
         const mothership = takeover(outerContainer);
-        lazyOuterContainer.set(outerContainer);
         lazyMothership.set(mothership);
         return {
           mothership,
@@ -24360,13 +24797,12 @@
         });
         editor.addQueryStateHandler('ToggleToolbarDrawer', () => OuterContainer.isToolbarDrawerToggled(outerContainer));
       };
-      const renderUI = () => {
-        const {mothership, outerContainer} = renderContainer();
-        const {uiMothership, sink} = renderSink();
+      const renderUIWithRefs = uiRefs => {
+        const {mainUi, popupUi, uiMotherships} = uiRefs;
         map$1(getToolbarGroups(editor), (toolbarGroupButtonConfig, name) => {
           editor.ui.registry.addGroupToolbarButton(name, toolbarGroupButtonConfig);
         });
-        const {buttons, menuItems, contextToolbars, sidebars} = editor.ui.registry.getAll();
+        const {buttons, menuItems, contextToolbars, sidebars, views} = editor.ui.registry.getAll();
         const toolbarOpt = getMultipleToolbarsOption(editor);
         const rawUiConfig = {
           menuItems,
@@ -24375,37 +24811,50 @@
           toolbar: toolbarOpt.getOrThunk(() => getToolbar(editor)),
           allowToolbarGroups: toolbarMode === ToolbarMode$1.floating,
           buttons,
-          sidebar: sidebars
+          sidebar: sidebars,
+          views
         };
-        setupShortcutsAndCommands(outerContainer);
-        setup$b(editor, mothership, uiMothership);
-        header.setup(editor, backstage.shared, lazyHeader);
-        setup$6(editor, backstage);
-        setup$5(editor, lazySinkResult, backstage);
+        setupShortcutsAndCommands(mainUi.outerContainer);
+        setup$b(editor, mainUi.mothership, uiMotherships);
+        header.setup(editor, backstages.popup.shared, lazyHeader);
+        setup$6(editor, backstages.popup);
+        setup$5(editor, backstages.popup.shared.getSink, backstages.popup);
         setup$8(editor);
-        setup$7(editor, lazyThrobber, backstage.shared);
-        register$9(editor, contextToolbars, sink, { backstage });
-        setup$4(editor, sink);
+        setup$7(editor, lazyThrobber, backstages.popup.shared);
+        register$9(editor, contextToolbars, popupUi.sink, { backstage: backstages.popup });
+        setup$4(editor, popupUi.sink);
         const elm = editor.getElement();
-        const height = setEditorSize(outerContainer);
-        const uiComponents = {
-          mothership,
-          uiMothership,
-          outerContainer,
-          sink
-        };
+        const height = setEditorSize(mainUi.outerContainer);
         const args = {
           targetNode: elm,
           height
         };
-        return mode.render(editor, uiComponents, rawUiConfig, backstage, args);
+        return mode.render(editor, uiRefs, rawUiConfig, backstages.popup, args);
       };
-      const getMothership = () => getLazyMothership(lazyMothership);
-      const getUiMothership = () => getLazyMothership(lazyUiMothership);
+      const renderUI = () => {
+        const mainUi = renderMainUi();
+        const dialogUi = renderDialogUi();
+        const popupUi = renderPopupUi(dialogUi);
+        lazyUiRefs.dialogUi.set(dialogUi);
+        lazyUiRefs.popupUi.set(popupUi);
+        lazyUiRefs.mainUi.set(mainUi);
+        const uiRefs = {
+          popupUi,
+          dialogUi,
+          mainUi,
+          uiMotherships: lazyUiRefs.getUiMotherships()
+        };
+        return renderUIWithRefs(uiRefs);
+      };
       return {
-        getMothership,
-        getUiMothership,
-        backstage,
+        popups: {
+          backstage: backstages.popup,
+          getMothership: () => getLazyMothership('popups', lazyDialogMothership)
+        },
+        dialogs: {
+          backstage: backstages.dialog,
+          getMothership: () => getLazyMothership('dialogs', lazyDialogMothership)
+        },
         renderUI
       };
     };
@@ -24619,7 +25068,7 @@
     ];
     const dialogFooterButtonFields = [
       ...baseFooterButtonFields,
-      text
+      text$1
     ];
     const normalFooterButtonFields = [
       requiredStringEnum('type', [
@@ -24646,7 +25095,7 @@
 
     const alertBannerFields = [
       type,
-      text,
+      text$1,
       requiredStringEnum('level', [
         'info',
         'warn',
@@ -24665,7 +25114,7 @@
 
     const buttonFields = [
       type,
-      text,
+      text$1,
       enabled,
       generatedName('button'),
       optionalIcon,
@@ -24696,11 +25145,11 @@
     const collectionSchema = objOf(collectionFields);
     const collectionDataProcessor = arrOfObj([
       value$1,
-      text,
+      text$1,
       icon
     ]);
 
-    const colorInputFields = formComponentWithLabelFields;
+    const colorInputFields = formComponentWithLabelFields.concat([defaultedString('storageKey', 'default')]);
     const colorInputSchema = objOf(colorInputFields);
     const colorInputDataProcessor = string;
 
@@ -24772,11 +25221,11 @@
     ];
 
     const listBoxSingleItemFields = [
-      text,
+      text$1,
       value$1
     ];
     const listBoxNestedItemFields = [
-      text,
+      text$1,
       requiredArrayOf('items', thunkOf('items', () => listBoxItemSchema))
     ];
     const listBoxItemSchema = oneOf([
@@ -24792,7 +25241,7 @@
 
     const selectBoxFields = formComponentWithLabelFields.concat([
       requiredArrayOfObj('items', [
-        text,
+        text$1,
         value$1
       ]),
       defaultedNumber('size', 1),
@@ -25419,7 +25868,7 @@
             tag: 'div',
             classes: ['tox-dialog__body-nav-item']
           },
-          components: [text$1(backstage.shared.providers.translate(tab.title))],
+          components: [text$2(backstage.shared.providers.translate(tab.title))],
           view: () => {
             return [Form.sketch(parts => ({
                 dom: {
@@ -25580,6 +26029,1571 @@
       return ModalDialog.parts.body(bodySpec);
     };
 
+    function _typeof(obj) {
+      '@babel/helpers - typeof';
+      return _typeof = 'function' == typeof Symbol && 'symbol' == typeof Symbol.iterator ? function (obj) {
+        return typeof obj;
+      } : function (obj) {
+        return obj && 'function' == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? 'symbol' : typeof obj;
+      }, _typeof(obj);
+    }
+    function _setPrototypeOf(o, p) {
+      _setPrototypeOf = Object.setPrototypeOf || function _setPrototypeOf(o, p) {
+        o.__proto__ = p;
+        return o;
+      };
+      return _setPrototypeOf(o, p);
+    }
+    function _isNativeReflectConstruct() {
+      if (typeof Reflect === 'undefined' || !Reflect.construct)
+        return false;
+      if (Reflect.construct.sham)
+        return false;
+      if (typeof Proxy === 'function')
+        return true;
+      try {
+        Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {
+        }));
+        return true;
+      } catch (e) {
+        return false;
+      }
+    }
+    function _construct(Parent, args, Class) {
+      if (_isNativeReflectConstruct()) {
+        _construct = Reflect.construct;
+      } else {
+        _construct = function _construct(Parent, args, Class) {
+          var a = [null];
+          a.push.apply(a, args);
+          var Constructor = Function.bind.apply(Parent, a);
+          var instance = new Constructor();
+          if (Class)
+            _setPrototypeOf(instance, Class.prototype);
+          return instance;
+        };
+      }
+      return _construct.apply(null, arguments);
+    }
+    function _toConsumableArray(arr) {
+      return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread();
+    }
+    function _arrayWithoutHoles(arr) {
+      if (Array.isArray(arr))
+        return _arrayLikeToArray(arr);
+    }
+    function _iterableToArray(iter) {
+      if (typeof Symbol !== 'undefined' && iter[Symbol.iterator] != null || iter['@@iterator'] != null)
+        return Array.from(iter);
+    }
+    function _unsupportedIterableToArray(o, minLen) {
+      if (!o)
+        return;
+      if (typeof o === 'string')
+        return _arrayLikeToArray(o, minLen);
+      var n = Object.prototype.toString.call(o).slice(8, -1);
+      if (n === 'Object' && o.constructor)
+        n = o.constructor.name;
+      if (n === 'Map' || n === 'Set')
+        return Array.from(o);
+      if (n === 'Arguments' || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))
+        return _arrayLikeToArray(o, minLen);
+    }
+    function _arrayLikeToArray(arr, len) {
+      if (len == null || len > arr.length)
+        len = arr.length;
+      for (var i = 0, arr2 = new Array(len); i < len; i++)
+        arr2[i] = arr[i];
+      return arr2;
+    }
+    function _nonIterableSpread() {
+      throw new TypeError('Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.');
+    }
+    var hasOwnProperty = Object.hasOwnProperty, setPrototypeOf = Object.setPrototypeOf, isFrozen = Object.isFrozen, getPrototypeOf = Object.getPrototypeOf, getOwnPropertyDescriptor = Object.getOwnPropertyDescriptor;
+    var freeze = Object.freeze, seal = Object.seal, create = Object.create;
+    var _ref = typeof Reflect !== 'undefined' && Reflect, apply = _ref.apply, construct = _ref.construct;
+    if (!apply) {
+      apply = function apply(fun, thisValue, args) {
+        return fun.apply(thisValue, args);
+      };
+    }
+    if (!freeze) {
+      freeze = function freeze(x) {
+        return x;
+      };
+    }
+    if (!seal) {
+      seal = function seal(x) {
+        return x;
+      };
+    }
+    if (!construct) {
+      construct = function construct(Func, args) {
+        return _construct(Func, _toConsumableArray(args));
+      };
+    }
+    var arrayForEach = unapply(Array.prototype.forEach);
+    var arrayPop = unapply(Array.prototype.pop);
+    var arrayPush = unapply(Array.prototype.push);
+    var stringToLowerCase = unapply(String.prototype.toLowerCase);
+    var stringMatch = unapply(String.prototype.match);
+    var stringReplace = unapply(String.prototype.replace);
+    var stringIndexOf = unapply(String.prototype.indexOf);
+    var stringTrim = unapply(String.prototype.trim);
+    var regExpTest = unapply(RegExp.prototype.test);
+    var typeErrorCreate = unconstruct(TypeError);
+    function unapply(func) {
+      return function (thisArg) {
+        for (var _len = arguments.length, args = new Array(_len > 1 ? _len - 1 : 0), _key = 1; _key < _len; _key++) {
+          args[_key - 1] = arguments[_key];
+        }
+        return apply(func, thisArg, args);
+      };
+    }
+    function unconstruct(func) {
+      return function () {
+        for (var _len2 = arguments.length, args = new Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+          args[_key2] = arguments[_key2];
+        }
+        return construct(func, args);
+      };
+    }
+    function addToSet(set, array) {
+      if (setPrototypeOf) {
+        setPrototypeOf(set, null);
+      }
+      var l = array.length;
+      while (l--) {
+        var element = array[l];
+        if (typeof element === 'string') {
+          var lcElement = stringToLowerCase(element);
+          if (lcElement !== element) {
+            if (!isFrozen(array)) {
+              array[l] = lcElement;
+            }
+            element = lcElement;
+          }
+        }
+        set[element] = true;
+      }
+      return set;
+    }
+    function clone(object) {
+      var newObject = create(null);
+      var property;
+      for (property in object) {
+        if (apply(hasOwnProperty, object, [property])) {
+          newObject[property] = object[property];
+        }
+      }
+      return newObject;
+    }
+    function lookupGetter(object, prop) {
+      while (object !== null) {
+        var desc = getOwnPropertyDescriptor(object, prop);
+        if (desc) {
+          if (desc.get) {
+            return unapply(desc.get);
+          }
+          if (typeof desc.value === 'function') {
+            return unapply(desc.value);
+          }
+        }
+        object = getPrototypeOf(object);
+      }
+      function fallbackValue(element) {
+        console.warn('fallback value for', element);
+        return null;
+      }
+      return fallbackValue;
+    }
+    var html$1 = freeze([
+      'a',
+      'abbr',
+      'acronym',
+      'address',
+      'area',
+      'article',
+      'aside',
+      'audio',
+      'b',
+      'bdi',
+      'bdo',
+      'big',
+      'blink',
+      'blockquote',
+      'body',
+      'br',
+      'button',
+      'canvas',
+      'caption',
+      'center',
+      'cite',
+      'code',
+      'col',
+      'colgroup',
+      'content',
+      'data',
+      'datalist',
+      'dd',
+      'decorator',
+      'del',
+      'details',
+      'dfn',
+      'dialog',
+      'dir',
+      'div',
+      'dl',
+      'dt',
+      'element',
+      'em',
+      'fieldset',
+      'figcaption',
+      'figure',
+      'font',
+      'footer',
+      'form',
+      'h1',
+      'h2',
+      'h3',
+      'h4',
+      'h5',
+      'h6',
+      'head',
+      'header',
+      'hgroup',
+      'hr',
+      'html',
+      'i',
+      'img',
+      'input',
+      'ins',
+      'kbd',
+      'label',
+      'legend',
+      'li',
+      'main',
+      'map',
+      'mark',
+      'marquee',
+      'menu',
+      'menuitem',
+      'meter',
+      'nav',
+      'nobr',
+      'ol',
+      'optgroup',
+      'option',
+      'output',
+      'p',
+      'picture',
+      'pre',
+      'progress',
+      'q',
+      'rp',
+      'rt',
+      'ruby',
+      's',
+      'samp',
+      'section',
+      'select',
+      'shadow',
+      'small',
+      'source',
+      'spacer',
+      'span',
+      'strike',
+      'strong',
+      'style',
+      'sub',
+      'summary',
+      'sup',
+      'table',
+      'tbody',
+      'td',
+      'template',
+      'textarea',
+      'tfoot',
+      'th',
+      'thead',
+      'time',
+      'tr',
+      'track',
+      'tt',
+      'u',
+      'ul',
+      'var',
+      'video',
+      'wbr'
+    ]);
+    var svg$1 = freeze([
+      'svg',
+      'a',
+      'altglyph',
+      'altglyphdef',
+      'altglyphitem',
+      'animatecolor',
+      'animatemotion',
+      'animatetransform',
+      'circle',
+      'clippath',
+      'defs',
+      'desc',
+      'ellipse',
+      'filter',
+      'font',
+      'g',
+      'glyph',
+      'glyphref',
+      'hkern',
+      'image',
+      'line',
+      'lineargradient',
+      'marker',
+      'mask',
+      'metadata',
+      'mpath',
+      'path',
+      'pattern',
+      'polygon',
+      'polyline',
+      'radialgradient',
+      'rect',
+      'stop',
+      'style',
+      'switch',
+      'symbol',
+      'text',
+      'textpath',
+      'title',
+      'tref',
+      'tspan',
+      'view',
+      'vkern'
+    ]);
+    var svgFilters = freeze([
+      'feBlend',
+      'feColorMatrix',
+      'feComponentTransfer',
+      'feComposite',
+      'feConvolveMatrix',
+      'feDiffuseLighting',
+      'feDisplacementMap',
+      'feDistantLight',
+      'feFlood',
+      'feFuncA',
+      'feFuncB',
+      'feFuncG',
+      'feFuncR',
+      'feGaussianBlur',
+      'feImage',
+      'feMerge',
+      'feMergeNode',
+      'feMorphology',
+      'feOffset',
+      'fePointLight',
+      'feSpecularLighting',
+      'feSpotLight',
+      'feTile',
+      'feTurbulence'
+    ]);
+    var svgDisallowed = freeze([
+      'animate',
+      'color-profile',
+      'cursor',
+      'discard',
+      'fedropshadow',
+      'font-face',
+      'font-face-format',
+      'font-face-name',
+      'font-face-src',
+      'font-face-uri',
+      'foreignobject',
+      'hatch',
+      'hatchpath',
+      'mesh',
+      'meshgradient',
+      'meshpatch',
+      'meshrow',
+      'missing-glyph',
+      'script',
+      'set',
+      'solidcolor',
+      'unknown',
+      'use'
+    ]);
+    var mathMl$1 = freeze([
+      'math',
+      'menclose',
+      'merror',
+      'mfenced',
+      'mfrac',
+      'mglyph',
+      'mi',
+      'mlabeledtr',
+      'mmultiscripts',
+      'mn',
+      'mo',
+      'mover',
+      'mpadded',
+      'mphantom',
+      'mroot',
+      'mrow',
+      'ms',
+      'mspace',
+      'msqrt',
+      'mstyle',
+      'msub',
+      'msup',
+      'msubsup',
+      'mtable',
+      'mtd',
+      'mtext',
+      'mtr',
+      'munder',
+      'munderover'
+    ]);
+    var mathMlDisallowed = freeze([
+      'maction',
+      'maligngroup',
+      'malignmark',
+      'mlongdiv',
+      'mscarries',
+      'mscarry',
+      'msgroup',
+      'mstack',
+      'msline',
+      'msrow',
+      'semantics',
+      'annotation',
+      'annotation-xml',
+      'mprescripts',
+      'none'
+    ]);
+    var text = freeze(['#text']);
+    var html = freeze([
+      'accept',
+      'action',
+      'align',
+      'alt',
+      'autocapitalize',
+      'autocomplete',
+      'autopictureinpicture',
+      'autoplay',
+      'background',
+      'bgcolor',
+      'border',
+      'capture',
+      'cellpadding',
+      'cellspacing',
+      'checked',
+      'cite',
+      'class',
+      'clear',
+      'color',
+      'cols',
+      'colspan',
+      'controls',
+      'controlslist',
+      'coords',
+      'crossorigin',
+      'datetime',
+      'decoding',
+      'default',
+      'dir',
+      'disabled',
+      'disablepictureinpicture',
+      'disableremoteplayback',
+      'download',
+      'draggable',
+      'enctype',
+      'enterkeyhint',
+      'face',
+      'for',
+      'headers',
+      'height',
+      'hidden',
+      'high',
+      'href',
+      'hreflang',
+      'id',
+      'inputmode',
+      'integrity',
+      'ismap',
+      'kind',
+      'label',
+      'lang',
+      'list',
+      'loading',
+      'loop',
+      'low',
+      'max',
+      'maxlength',
+      'media',
+      'method',
+      'min',
+      'minlength',
+      'multiple',
+      'muted',
+      'name',
+      'nonce',
+      'noshade',
+      'novalidate',
+      'nowrap',
+      'open',
+      'optimum',
+      'pattern',
+      'placeholder',
+      'playsinline',
+      'poster',
+      'preload',
+      'pubdate',
+      'radiogroup',
+      'readonly',
+      'rel',
+      'required',
+      'rev',
+      'reversed',
+      'role',
+      'rows',
+      'rowspan',
+      'spellcheck',
+      'scope',
+      'selected',
+      'shape',
+      'size',
+      'sizes',
+      'span',
+      'srclang',
+      'start',
+      'src',
+      'srcset',
+      'step',
+      'style',
+      'summary',
+      'tabindex',
+      'title',
+      'translate',
+      'type',
+      'usemap',
+      'valign',
+      'value',
+      'width',
+      'xmlns',
+      'slot'
+    ]);
+    var svg = freeze([
+      'accent-height',
+      'accumulate',
+      'additive',
+      'alignment-baseline',
+      'ascent',
+      'attributename',
+      'attributetype',
+      'azimuth',
+      'basefrequency',
+      'baseline-shift',
+      'begin',
+      'bias',
+      'by',
+      'class',
+      'clip',
+      'clippathunits',
+      'clip-path',
+      'clip-rule',
+      'color',
+      'color-interpolation',
+      'color-interpolation-filters',
+      'color-profile',
+      'color-rendering',
+      'cx',
+      'cy',
+      'd',
+      'dx',
+      'dy',
+      'diffuseconstant',
+      'direction',
+      'display',
+      'divisor',
+      'dur',
+      'edgemode',
+      'elevation',
+      'end',
+      'fill',
+      'fill-opacity',
+      'fill-rule',
+      'filter',
+      'filterunits',
+      'flood-color',
+      'flood-opacity',
+      'font-family',
+      'font-size',
+      'font-size-adjust',
+      'font-stretch',
+      'font-style',
+      'font-variant',
+      'font-weight',
+      'fx',
+      'fy',
+      'g1',
+      'g2',
+      'glyph-name',
+      'glyphref',
+      'gradientunits',
+      'gradienttransform',
+      'height',
+      'href',
+      'id',
+      'image-rendering',
+      'in',
+      'in2',
+      'k',
+      'k1',
+      'k2',
+      'k3',
+      'k4',
+      'kerning',
+      'keypoints',
+      'keysplines',
+      'keytimes',
+      'lang',
+      'lengthadjust',
+      'letter-spacing',
+      'kernelmatrix',
+      'kernelunitlength',
+      'lighting-color',
+      'local',
+      'marker-end',
+      'marker-mid',
+      'marker-start',
+      'markerheight',
+      'markerunits',
+      'markerwidth',
+      'maskcontentunits',
+      'maskunits',
+      'max',
+      'mask',
+      'media',
+      'method',
+      'mode',
+      'min',
+      'name',
+      'numoctaves',
+      'offset',
+      'operator',
+      'opacity',
+      'order',
+      'orient',
+      'orientation',
+      'origin',
+      'overflow',
+      'paint-order',
+      'path',
+      'pathlength',
+      'patterncontentunits',
+      'patterntransform',
+      'patternunits',
+      'points',
+      'preservealpha',
+      'preserveaspectratio',
+      'primitiveunits',
+      'r',
+      'rx',
+      'ry',
+      'radius',
+      'refx',
+      'refy',
+      'repeatcount',
+      'repeatdur',
+      'restart',
+      'result',
+      'rotate',
+      'scale',
+      'seed',
+      'shape-rendering',
+      'specularconstant',
+      'specularexponent',
+      'spreadmethod',
+      'startoffset',
+      'stddeviation',
+      'stitchtiles',
+      'stop-color',
+      'stop-opacity',
+      'stroke-dasharray',
+      'stroke-dashoffset',
+      'stroke-linecap',
+      'stroke-linejoin',
+      'stroke-miterlimit',
+      'stroke-opacity',
+      'stroke',
+      'stroke-width',
+      'style',
+      'surfacescale',
+      'systemlanguage',
+      'tabindex',
+      'targetx',
+      'targety',
+      'transform',
+      'transform-origin',
+      'text-anchor',
+      'text-decoration',
+      'text-rendering',
+      'textlength',
+      'type',
+      'u1',
+      'u2',
+      'unicode',
+      'values',
+      'viewbox',
+      'visibility',
+      'version',
+      'vert-adv-y',
+      'vert-origin-x',
+      'vert-origin-y',
+      'width',
+      'word-spacing',
+      'wrap',
+      'writing-mode',
+      'xchannelselector',
+      'ychannelselector',
+      'x',
+      'x1',
+      'x2',
+      'xmlns',
+      'y',
+      'y1',
+      'y2',
+      'z',
+      'zoomandpan'
+    ]);
+    var mathMl = freeze([
+      'accent',
+      'accentunder',
+      'align',
+      'bevelled',
+      'close',
+      'columnsalign',
+      'columnlines',
+      'columnspan',
+      'denomalign',
+      'depth',
+      'dir',
+      'display',
+      'displaystyle',
+      'encoding',
+      'fence',
+      'frame',
+      'height',
+      'href',
+      'id',
+      'largeop',
+      'length',
+      'linethickness',
+      'lspace',
+      'lquote',
+      'mathbackground',
+      'mathcolor',
+      'mathsize',
+      'mathvariant',
+      'maxsize',
+      'minsize',
+      'movablelimits',
+      'notation',
+      'numalign',
+      'open',
+      'rowalign',
+      'rowlines',
+      'rowspacing',
+      'rowspan',
+      'rspace',
+      'rquote',
+      'scriptlevel',
+      'scriptminsize',
+      'scriptsizemultiplier',
+      'selection',
+      'separator',
+      'separators',
+      'stretchy',
+      'subscriptshift',
+      'supscriptshift',
+      'symmetric',
+      'voffset',
+      'width',
+      'xmlns'
+    ]);
+    var xml = freeze([
+      'xlink:href',
+      'xml:id',
+      'xlink:title',
+      'xml:space',
+      'xmlns:xlink'
+    ]);
+    var MUSTACHE_EXPR = seal(/\{\{[\w\W]*|[\w\W]*\}\}/gm);
+    var ERB_EXPR = seal(/<%[\w\W]*|[\w\W]*%>/gm);
+    var DATA_ATTR = seal(/^data-[\-\w.\u00B7-\uFFFF]/);
+    var ARIA_ATTR = seal(/^aria-[\-\w]+$/);
+    var IS_ALLOWED_URI = seal(/^(?:(?:(?:f|ht)tps?|mailto|tel|callto|cid|xmpp):|[^a-z]|[a-z+.\-]+(?:[^a-z+.\-:]|$))/i);
+    var IS_SCRIPT_OR_DATA = seal(/^(?:\w+script|data):/i);
+    var ATTR_WHITESPACE = seal(/[\u0000-\u0020\u00A0\u1680\u180E\u2000-\u2029\u205F\u3000]/g);
+    var DOCTYPE_NAME = seal(/^html$/i);
+    var getGlobal = function getGlobal() {
+      return typeof window === 'undefined' ? null : window;
+    };
+    var _createTrustedTypesPolicy = function _createTrustedTypesPolicy(trustedTypes, document) {
+      if (_typeof(trustedTypes) !== 'object' || typeof trustedTypes.createPolicy !== 'function') {
+        return null;
+      }
+      var suffix = null;
+      var ATTR_NAME = 'data-tt-policy-suffix';
+      if (document.currentScript && document.currentScript.hasAttribute(ATTR_NAME)) {
+        suffix = document.currentScript.getAttribute(ATTR_NAME);
+      }
+      var policyName = 'dompurify' + (suffix ? '#' + suffix : '');
+      try {
+        return trustedTypes.createPolicy(policyName, {
+          createHTML: function createHTML(html) {
+            return html;
+          }
+        });
+      } catch (_) {
+        console.warn('TrustedTypes policy ' + policyName + ' could not be created.');
+        return null;
+      }
+    };
+    function createDOMPurify() {
+      var window = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : getGlobal();
+      var DOMPurify = function DOMPurify(root) {
+        return createDOMPurify(root);
+      };
+      DOMPurify.version = '2.3.8';
+      DOMPurify.removed = [];
+      if (!window || !window.document || window.document.nodeType !== 9) {
+        DOMPurify.isSupported = false;
+        return DOMPurify;
+      }
+      var originalDocument = window.document;
+      var document = window.document;
+      var DocumentFragment = window.DocumentFragment, HTMLTemplateElement = window.HTMLTemplateElement, Node = window.Node, Element = window.Element, NodeFilter = window.NodeFilter, _window$NamedNodeMap = window.NamedNodeMap, NamedNodeMap = _window$NamedNodeMap === void 0 ? window.NamedNodeMap || window.MozNamedAttrMap : _window$NamedNodeMap, HTMLFormElement = window.HTMLFormElement, DOMParser = window.DOMParser, trustedTypes = window.trustedTypes;
+      var ElementPrototype = Element.prototype;
+      var cloneNode = lookupGetter(ElementPrototype, 'cloneNode');
+      var getNextSibling = lookupGetter(ElementPrototype, 'nextSibling');
+      var getChildNodes = lookupGetter(ElementPrototype, 'childNodes');
+      var getParentNode = lookupGetter(ElementPrototype, 'parentNode');
+      if (typeof HTMLTemplateElement === 'function') {
+        var template = document.createElement('template');
+        if (template.content && template.content.ownerDocument) {
+          document = template.content.ownerDocument;
+        }
+      }
+      var trustedTypesPolicy = _createTrustedTypesPolicy(trustedTypes, originalDocument);
+      var emptyHTML = trustedTypesPolicy ? trustedTypesPolicy.createHTML('') : '';
+      var _document = document, implementation = _document.implementation, createNodeIterator = _document.createNodeIterator, createDocumentFragment = _document.createDocumentFragment, getElementsByTagName = _document.getElementsByTagName;
+      var importNode = originalDocument.importNode;
+      var documentMode = {};
+      try {
+        documentMode = clone(document).documentMode ? document.documentMode : {};
+      } catch (_) {
+      }
+      var hooks = {};
+      DOMPurify.isSupported = typeof getParentNode === 'function' && implementation && typeof implementation.createHTMLDocument !== 'undefined' && documentMode !== 9;
+      var MUSTACHE_EXPR$1 = MUSTACHE_EXPR, ERB_EXPR$1 = ERB_EXPR, DATA_ATTR$1 = DATA_ATTR, ARIA_ATTR$1 = ARIA_ATTR, IS_SCRIPT_OR_DATA$1 = IS_SCRIPT_OR_DATA, ATTR_WHITESPACE$1 = ATTR_WHITESPACE;
+      var IS_ALLOWED_URI$1 = IS_ALLOWED_URI;
+      var ALLOWED_TAGS = null;
+      var DEFAULT_ALLOWED_TAGS = addToSet({}, [].concat(_toConsumableArray(html$1), _toConsumableArray(svg$1), _toConsumableArray(svgFilters), _toConsumableArray(mathMl$1), _toConsumableArray(text)));
+      var ALLOWED_ATTR = null;
+      var DEFAULT_ALLOWED_ATTR = addToSet({}, [].concat(_toConsumableArray(html), _toConsumableArray(svg), _toConsumableArray(mathMl), _toConsumableArray(xml)));
+      var CUSTOM_ELEMENT_HANDLING = Object.seal(Object.create(null, {
+        tagNameCheck: {
+          writable: true,
+          configurable: false,
+          enumerable: true,
+          value: null
+        },
+        attributeNameCheck: {
+          writable: true,
+          configurable: false,
+          enumerable: true,
+          value: null
+        },
+        allowCustomizedBuiltInElements: {
+          writable: true,
+          configurable: false,
+          enumerable: true,
+          value: false
+        }
+      }));
+      var FORBID_TAGS = null;
+      var FORBID_ATTR = null;
+      var ALLOW_ARIA_ATTR = true;
+      var ALLOW_DATA_ATTR = true;
+      var ALLOW_UNKNOWN_PROTOCOLS = false;
+      var SAFE_FOR_TEMPLATES = false;
+      var WHOLE_DOCUMENT = false;
+      var SET_CONFIG = false;
+      var FORCE_BODY = false;
+      var RETURN_DOM = false;
+      var RETURN_DOM_FRAGMENT = false;
+      var RETURN_TRUSTED_TYPE = false;
+      var SANITIZE_DOM = true;
+      var KEEP_CONTENT = true;
+      var IN_PLACE = false;
+      var USE_PROFILES = {};
+      var FORBID_CONTENTS = null;
+      var DEFAULT_FORBID_CONTENTS = addToSet({}, [
+        'annotation-xml',
+        'audio',
+        'colgroup',
+        'desc',
+        'foreignobject',
+        'head',
+        'iframe',
+        'math',
+        'mi',
+        'mn',
+        'mo',
+        'ms',
+        'mtext',
+        'noembed',
+        'noframes',
+        'noscript',
+        'plaintext',
+        'script',
+        'style',
+        'svg',
+        'template',
+        'thead',
+        'title',
+        'video',
+        'xmp'
+      ]);
+      var DATA_URI_TAGS = null;
+      var DEFAULT_DATA_URI_TAGS = addToSet({}, [
+        'audio',
+        'video',
+        'img',
+        'source',
+        'image',
+        'track'
+      ]);
+      var URI_SAFE_ATTRIBUTES = null;
+      var DEFAULT_URI_SAFE_ATTRIBUTES = addToSet({}, [
+        'alt',
+        'class',
+        'for',
+        'id',
+        'label',
+        'name',
+        'pattern',
+        'placeholder',
+        'role',
+        'summary',
+        'title',
+        'value',
+        'style',
+        'xmlns'
+      ]);
+      var MATHML_NAMESPACE = 'http://www.w3.org/1998/Math/MathML';
+      var SVG_NAMESPACE = 'http://www.w3.org/2000/svg';
+      var HTML_NAMESPACE = 'http://www.w3.org/1999/xhtml';
+      var NAMESPACE = HTML_NAMESPACE;
+      var IS_EMPTY_INPUT = false;
+      var PARSER_MEDIA_TYPE;
+      var SUPPORTED_PARSER_MEDIA_TYPES = [
+        'application/xhtml+xml',
+        'text/html'
+      ];
+      var DEFAULT_PARSER_MEDIA_TYPE = 'text/html';
+      var transformCaseFunc;
+      var CONFIG = null;
+      var formElement = document.createElement('form');
+      var isRegexOrFunction = function isRegexOrFunction(testValue) {
+        return testValue instanceof RegExp || testValue instanceof Function;
+      };
+      var _parseConfig = function _parseConfig(cfg) {
+        if (CONFIG && CONFIG === cfg) {
+          return;
+        }
+        if (!cfg || _typeof(cfg) !== 'object') {
+          cfg = {};
+        }
+        cfg = clone(cfg);
+        ALLOWED_TAGS = 'ALLOWED_TAGS' in cfg ? addToSet({}, cfg.ALLOWED_TAGS) : DEFAULT_ALLOWED_TAGS;
+        ALLOWED_ATTR = 'ALLOWED_ATTR' in cfg ? addToSet({}, cfg.ALLOWED_ATTR) : DEFAULT_ALLOWED_ATTR;
+        URI_SAFE_ATTRIBUTES = 'ADD_URI_SAFE_ATTR' in cfg ? addToSet(clone(DEFAULT_URI_SAFE_ATTRIBUTES), cfg.ADD_URI_SAFE_ATTR) : DEFAULT_URI_SAFE_ATTRIBUTES;
+        DATA_URI_TAGS = 'ADD_DATA_URI_TAGS' in cfg ? addToSet(clone(DEFAULT_DATA_URI_TAGS), cfg.ADD_DATA_URI_TAGS) : DEFAULT_DATA_URI_TAGS;
+        FORBID_CONTENTS = 'FORBID_CONTENTS' in cfg ? addToSet({}, cfg.FORBID_CONTENTS) : DEFAULT_FORBID_CONTENTS;
+        FORBID_TAGS = 'FORBID_TAGS' in cfg ? addToSet({}, cfg.FORBID_TAGS) : {};
+        FORBID_ATTR = 'FORBID_ATTR' in cfg ? addToSet({}, cfg.FORBID_ATTR) : {};
+        USE_PROFILES = 'USE_PROFILES' in cfg ? cfg.USE_PROFILES : false;
+        ALLOW_ARIA_ATTR = cfg.ALLOW_ARIA_ATTR !== false;
+        ALLOW_DATA_ATTR = cfg.ALLOW_DATA_ATTR !== false;
+        ALLOW_UNKNOWN_PROTOCOLS = cfg.ALLOW_UNKNOWN_PROTOCOLS || false;
+        SAFE_FOR_TEMPLATES = cfg.SAFE_FOR_TEMPLATES || false;
+        WHOLE_DOCUMENT = cfg.WHOLE_DOCUMENT || false;
+        RETURN_DOM = cfg.RETURN_DOM || false;
+        RETURN_DOM_FRAGMENT = cfg.RETURN_DOM_FRAGMENT || false;
+        RETURN_TRUSTED_TYPE = cfg.RETURN_TRUSTED_TYPE || false;
+        FORCE_BODY = cfg.FORCE_BODY || false;
+        SANITIZE_DOM = cfg.SANITIZE_DOM !== false;
+        KEEP_CONTENT = cfg.KEEP_CONTENT !== false;
+        IN_PLACE = cfg.IN_PLACE || false;
+        IS_ALLOWED_URI$1 = cfg.ALLOWED_URI_REGEXP || IS_ALLOWED_URI$1;
+        NAMESPACE = cfg.NAMESPACE || HTML_NAMESPACE;
+        if (cfg.CUSTOM_ELEMENT_HANDLING && isRegexOrFunction(cfg.CUSTOM_ELEMENT_HANDLING.tagNameCheck)) {
+          CUSTOM_ELEMENT_HANDLING.tagNameCheck = cfg.CUSTOM_ELEMENT_HANDLING.tagNameCheck;
+        }
+        if (cfg.CUSTOM_ELEMENT_HANDLING && isRegexOrFunction(cfg.CUSTOM_ELEMENT_HANDLING.attributeNameCheck)) {
+          CUSTOM_ELEMENT_HANDLING.attributeNameCheck = cfg.CUSTOM_ELEMENT_HANDLING.attributeNameCheck;
+        }
+        if (cfg.CUSTOM_ELEMENT_HANDLING && typeof cfg.CUSTOM_ELEMENT_HANDLING.allowCustomizedBuiltInElements === 'boolean') {
+          CUSTOM_ELEMENT_HANDLING.allowCustomizedBuiltInElements = cfg.CUSTOM_ELEMENT_HANDLING.allowCustomizedBuiltInElements;
+        }
+        PARSER_MEDIA_TYPE = SUPPORTED_PARSER_MEDIA_TYPES.indexOf(cfg.PARSER_MEDIA_TYPE) === -1 ? PARSER_MEDIA_TYPE = DEFAULT_PARSER_MEDIA_TYPE : PARSER_MEDIA_TYPE = cfg.PARSER_MEDIA_TYPE;
+        transformCaseFunc = PARSER_MEDIA_TYPE === 'application/xhtml+xml' ? function (x) {
+          return x;
+        } : stringToLowerCase;
+        if (SAFE_FOR_TEMPLATES) {
+          ALLOW_DATA_ATTR = false;
+        }
+        if (RETURN_DOM_FRAGMENT) {
+          RETURN_DOM = true;
+        }
+        if (USE_PROFILES) {
+          ALLOWED_TAGS = addToSet({}, _toConsumableArray(text));
+          ALLOWED_ATTR = [];
+          if (USE_PROFILES.html === true) {
+            addToSet(ALLOWED_TAGS, html$1);
+            addToSet(ALLOWED_ATTR, html);
+          }
+          if (USE_PROFILES.svg === true) {
+            addToSet(ALLOWED_TAGS, svg$1);
+            addToSet(ALLOWED_ATTR, svg);
+            addToSet(ALLOWED_ATTR, xml);
+          }
+          if (USE_PROFILES.svgFilters === true) {
+            addToSet(ALLOWED_TAGS, svgFilters);
+            addToSet(ALLOWED_ATTR, svg);
+            addToSet(ALLOWED_ATTR, xml);
+          }
+          if (USE_PROFILES.mathMl === true) {
+            addToSet(ALLOWED_TAGS, mathMl$1);
+            addToSet(ALLOWED_ATTR, mathMl);
+            addToSet(ALLOWED_ATTR, xml);
+          }
+        }
+        if (cfg.ADD_TAGS) {
+          if (ALLOWED_TAGS === DEFAULT_ALLOWED_TAGS) {
+            ALLOWED_TAGS = clone(ALLOWED_TAGS);
+          }
+          addToSet(ALLOWED_TAGS, cfg.ADD_TAGS);
+        }
+        if (cfg.ADD_ATTR) {
+          if (ALLOWED_ATTR === DEFAULT_ALLOWED_ATTR) {
+            ALLOWED_ATTR = clone(ALLOWED_ATTR);
+          }
+          addToSet(ALLOWED_ATTR, cfg.ADD_ATTR);
+        }
+        if (cfg.ADD_URI_SAFE_ATTR) {
+          addToSet(URI_SAFE_ATTRIBUTES, cfg.ADD_URI_SAFE_ATTR);
+        }
+        if (cfg.FORBID_CONTENTS) {
+          if (FORBID_CONTENTS === DEFAULT_FORBID_CONTENTS) {
+            FORBID_CONTENTS = clone(FORBID_CONTENTS);
+          }
+          addToSet(FORBID_CONTENTS, cfg.FORBID_CONTENTS);
+        }
+        if (KEEP_CONTENT) {
+          ALLOWED_TAGS['#text'] = true;
+        }
+        if (WHOLE_DOCUMENT) {
+          addToSet(ALLOWED_TAGS, [
+            'html',
+            'head',
+            'body'
+          ]);
+        }
+        if (ALLOWED_TAGS.table) {
+          addToSet(ALLOWED_TAGS, ['tbody']);
+          delete FORBID_TAGS.tbody;
+        }
+        if (freeze) {
+          freeze(cfg);
+        }
+        CONFIG = cfg;
+      };
+      var MATHML_TEXT_INTEGRATION_POINTS = addToSet({}, [
+        'mi',
+        'mo',
+        'mn',
+        'ms',
+        'mtext'
+      ]);
+      var HTML_INTEGRATION_POINTS = addToSet({}, [
+        'foreignobject',
+        'desc',
+        'title',
+        'annotation-xml'
+      ]);
+      var COMMON_SVG_AND_HTML_ELEMENTS = addToSet({}, [
+        'title',
+        'style',
+        'font',
+        'a',
+        'script'
+      ]);
+      var ALL_SVG_TAGS = addToSet({}, svg$1);
+      addToSet(ALL_SVG_TAGS, svgFilters);
+      addToSet(ALL_SVG_TAGS, svgDisallowed);
+      var ALL_MATHML_TAGS = addToSet({}, mathMl$1);
+      addToSet(ALL_MATHML_TAGS, mathMlDisallowed);
+      var _checkValidNamespace = function _checkValidNamespace(element) {
+        var parent = getParentNode(element);
+        if (!parent || !parent.tagName) {
+          parent = {
+            namespaceURI: HTML_NAMESPACE,
+            tagName: 'template'
+          };
+        }
+        var tagName = stringToLowerCase(element.tagName);
+        var parentTagName = stringToLowerCase(parent.tagName);
+        if (element.namespaceURI === SVG_NAMESPACE) {
+          if (parent.namespaceURI === HTML_NAMESPACE) {
+            return tagName === 'svg';
+          }
+          if (parent.namespaceURI === MATHML_NAMESPACE) {
+            return tagName === 'svg' && (parentTagName === 'annotation-xml' || MATHML_TEXT_INTEGRATION_POINTS[parentTagName]);
+          }
+          return Boolean(ALL_SVG_TAGS[tagName]);
+        }
+        if (element.namespaceURI === MATHML_NAMESPACE) {
+          if (parent.namespaceURI === HTML_NAMESPACE) {
+            return tagName === 'math';
+          }
+          if (parent.namespaceURI === SVG_NAMESPACE) {
+            return tagName === 'math' && HTML_INTEGRATION_POINTS[parentTagName];
+          }
+          return Boolean(ALL_MATHML_TAGS[tagName]);
+        }
+        if (element.namespaceURI === HTML_NAMESPACE) {
+          if (parent.namespaceURI === SVG_NAMESPACE && !HTML_INTEGRATION_POINTS[parentTagName]) {
+            return false;
+          }
+          if (parent.namespaceURI === MATHML_NAMESPACE && !MATHML_TEXT_INTEGRATION_POINTS[parentTagName]) {
+            return false;
+          }
+          return !ALL_MATHML_TAGS[tagName] && (COMMON_SVG_AND_HTML_ELEMENTS[tagName] || !ALL_SVG_TAGS[tagName]);
+        }
+        return false;
+      };
+      var _forceRemove = function _forceRemove(node) {
+        arrayPush(DOMPurify.removed, { element: node });
+        try {
+          node.parentNode.removeChild(node);
+        } catch (_) {
+          try {
+            node.outerHTML = emptyHTML;
+          } catch (_) {
+            node.remove();
+          }
+        }
+      };
+      var _removeAttribute = function _removeAttribute(name, node) {
+        try {
+          arrayPush(DOMPurify.removed, {
+            attribute: node.getAttributeNode(name),
+            from: node
+          });
+        } catch (_) {
+          arrayPush(DOMPurify.removed, {
+            attribute: null,
+            from: node
+          });
+        }
+        node.removeAttribute(name);
+        if (name === 'is' && !ALLOWED_ATTR[name]) {
+          if (RETURN_DOM || RETURN_DOM_FRAGMENT) {
+            try {
+              _forceRemove(node);
+            } catch (_) {
+            }
+          } else {
+            try {
+              node.setAttribute(name, '');
+            } catch (_) {
+            }
+          }
+        }
+      };
+      var _initDocument = function _initDocument(dirty) {
+        var doc;
+        var leadingWhitespace;
+        if (FORCE_BODY) {
+          dirty = '<remove></remove>' + dirty;
+        } else {
+          var matches = stringMatch(dirty, /^[\r\n\t ]+/);
+          leadingWhitespace = matches && matches[0];
+        }
+        if (PARSER_MEDIA_TYPE === 'application/xhtml+xml') {
+          dirty = '<html xmlns="http://www.w3.org/1999/xhtml"><head></head><body>' + dirty + '</body></html>';
+        }
+        var dirtyPayload = trustedTypesPolicy ? trustedTypesPolicy.createHTML(dirty) : dirty;
+        if (NAMESPACE === HTML_NAMESPACE) {
+          try {
+            doc = new DOMParser().parseFromString(dirtyPayload, PARSER_MEDIA_TYPE);
+          } catch (_) {
+          }
+        }
+        if (!doc || !doc.documentElement) {
+          doc = implementation.createDocument(NAMESPACE, 'template', null);
+          try {
+            doc.documentElement.innerHTML = IS_EMPTY_INPUT ? '' : dirtyPayload;
+          } catch (_) {
+          }
+        }
+        var body = doc.body || doc.documentElement;
+        if (dirty && leadingWhitespace) {
+          body.insertBefore(document.createTextNode(leadingWhitespace), body.childNodes[0] || null);
+        }
+        if (NAMESPACE === HTML_NAMESPACE) {
+          return getElementsByTagName.call(doc, WHOLE_DOCUMENT ? 'html' : 'body')[0];
+        }
+        return WHOLE_DOCUMENT ? doc.documentElement : body;
+      };
+      var _createIterator = function _createIterator(root) {
+        return createNodeIterator.call(root.ownerDocument || root, root, NodeFilter.SHOW_ELEMENT | NodeFilter.SHOW_COMMENT | NodeFilter.SHOW_TEXT, null, false);
+      };
+      var _isClobbered = function _isClobbered(elm) {
+        return elm instanceof HTMLFormElement && (typeof elm.nodeName !== 'string' || typeof elm.textContent !== 'string' || typeof elm.removeChild !== 'function' || !(elm.attributes instanceof NamedNodeMap) || typeof elm.removeAttribute !== 'function' || typeof elm.setAttribute !== 'function' || typeof elm.namespaceURI !== 'string' || typeof elm.insertBefore !== 'function');
+      };
+      var _isNode = function _isNode(object) {
+        return _typeof(Node) === 'object' ? object instanceof Node : object && _typeof(object) === 'object' && typeof object.nodeType === 'number' && typeof object.nodeName === 'string';
+      };
+      var _executeHook = function _executeHook(entryPoint, currentNode, data) {
+        if (!hooks[entryPoint]) {
+          return;
+        }
+        arrayForEach(hooks[entryPoint], function (hook) {
+          hook.call(DOMPurify, currentNode, data, CONFIG);
+        });
+      };
+      var _sanitizeElements = function _sanitizeElements(currentNode) {
+        var content;
+        _executeHook('beforeSanitizeElements', currentNode, null);
+        if (_isClobbered(currentNode)) {
+          _forceRemove(currentNode);
+          return true;
+        }
+        if (regExpTest(/[\u0080-\uFFFF]/, currentNode.nodeName)) {
+          _forceRemove(currentNode);
+          return true;
+        }
+        var tagName = transformCaseFunc(currentNode.nodeName);
+        _executeHook('uponSanitizeElement', currentNode, {
+          tagName: tagName,
+          allowedTags: ALLOWED_TAGS
+        });
+        if (currentNode.hasChildNodes() && !_isNode(currentNode.firstElementChild) && (!_isNode(currentNode.content) || !_isNode(currentNode.content.firstElementChild)) && regExpTest(/<[/\w]/g, currentNode.innerHTML) && regExpTest(/<[/\w]/g, currentNode.textContent)) {
+          _forceRemove(currentNode);
+          return true;
+        }
+        if (tagName === 'select' && regExpTest(/<template/i, currentNode.innerHTML)) {
+          _forceRemove(currentNode);
+          return true;
+        }
+        if (!ALLOWED_TAGS[tagName] || FORBID_TAGS[tagName]) {
+          if (!FORBID_TAGS[tagName] && _basicCustomElementTest(tagName)) {
+            if (CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof RegExp && regExpTest(CUSTOM_ELEMENT_HANDLING.tagNameCheck, tagName))
+              return false;
+            if (CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof Function && CUSTOM_ELEMENT_HANDLING.tagNameCheck(tagName))
+              return false;
+          }
+          if (KEEP_CONTENT && !FORBID_CONTENTS[tagName]) {
+            var parentNode = getParentNode(currentNode) || currentNode.parentNode;
+            var childNodes = getChildNodes(currentNode) || currentNode.childNodes;
+            if (childNodes && parentNode) {
+              var childCount = childNodes.length;
+              for (var i = childCount - 1; i >= 0; --i) {
+                parentNode.insertBefore(cloneNode(childNodes[i], true), getNextSibling(currentNode));
+              }
+            }
+          }
+          _forceRemove(currentNode);
+          return true;
+        }
+        if (currentNode instanceof Element && !_checkValidNamespace(currentNode)) {
+          _forceRemove(currentNode);
+          return true;
+        }
+        if ((tagName === 'noscript' || tagName === 'noembed') && regExpTest(/<\/no(script|embed)/i, currentNode.innerHTML)) {
+          _forceRemove(currentNode);
+          return true;
+        }
+        if (SAFE_FOR_TEMPLATES && currentNode.nodeType === 3) {
+          content = currentNode.textContent;
+          content = stringReplace(content, MUSTACHE_EXPR$1, ' ');
+          content = stringReplace(content, ERB_EXPR$1, ' ');
+          if (currentNode.textContent !== content) {
+            arrayPush(DOMPurify.removed, { element: currentNode.cloneNode() });
+            currentNode.textContent = content;
+          }
+        }
+        _executeHook('afterSanitizeElements', currentNode, null);
+        return false;
+      };
+      var _isValidAttribute = function _isValidAttribute(lcTag, lcName, value) {
+        if (SANITIZE_DOM && (lcName === 'id' || lcName === 'name') && (value in document || value in formElement)) {
+          return false;
+        }
+        if (ALLOW_DATA_ATTR && !FORBID_ATTR[lcName] && regExpTest(DATA_ATTR$1, lcName));
+        else if (ALLOW_ARIA_ATTR && regExpTest(ARIA_ATTR$1, lcName));
+        else if (!ALLOWED_ATTR[lcName] || FORBID_ATTR[lcName]) {
+          if (_basicCustomElementTest(lcTag) && (CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof RegExp && regExpTest(CUSTOM_ELEMENT_HANDLING.tagNameCheck, lcTag) || CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof Function && CUSTOM_ELEMENT_HANDLING.tagNameCheck(lcTag)) && (CUSTOM_ELEMENT_HANDLING.attributeNameCheck instanceof RegExp && regExpTest(CUSTOM_ELEMENT_HANDLING.attributeNameCheck, lcName) || CUSTOM_ELEMENT_HANDLING.attributeNameCheck instanceof Function && CUSTOM_ELEMENT_HANDLING.attributeNameCheck(lcName)) || lcName === 'is' && CUSTOM_ELEMENT_HANDLING.allowCustomizedBuiltInElements && (CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof RegExp && regExpTest(CUSTOM_ELEMENT_HANDLING.tagNameCheck, value) || CUSTOM_ELEMENT_HANDLING.tagNameCheck instanceof Function && CUSTOM_ELEMENT_HANDLING.tagNameCheck(value)));
+          else {
+            return false;
+          }
+        } else if (URI_SAFE_ATTRIBUTES[lcName]);
+        else if (regExpTest(IS_ALLOWED_URI$1, stringReplace(value, ATTR_WHITESPACE$1, '')));
+        else if ((lcName === 'src' || lcName === 'xlink:href' || lcName === 'href') && lcTag !== 'script' && stringIndexOf(value, 'data:') === 0 && DATA_URI_TAGS[lcTag]);
+        else if (ALLOW_UNKNOWN_PROTOCOLS && !regExpTest(IS_SCRIPT_OR_DATA$1, stringReplace(value, ATTR_WHITESPACE$1, '')));
+        else if (!value);
+        else {
+          return false;
+        }
+        return true;
+      };
+      var _basicCustomElementTest = function _basicCustomElementTest(tagName) {
+        return tagName.indexOf('-') > 0;
+      };
+      var _sanitizeAttributes = function _sanitizeAttributes(currentNode) {
+        var attr;
+        var value;
+        var lcName;
+        var l;
+        _executeHook('beforeSanitizeAttributes', currentNode, null);
+        var attributes = currentNode.attributes;
+        if (!attributes) {
+          return;
+        }
+        var hookEvent = {
+          attrName: '',
+          attrValue: '',
+          keepAttr: true,
+          allowedAttributes: ALLOWED_ATTR
+        };
+        l = attributes.length;
+        while (l--) {
+          attr = attributes[l];
+          var _attr = attr, name = _attr.name, namespaceURI = _attr.namespaceURI;
+          value = name === 'value' ? attr.value : stringTrim(attr.value);
+          lcName = transformCaseFunc(name);
+          var initValue = value;
+          hookEvent.attrName = lcName;
+          hookEvent.attrValue = value;
+          hookEvent.keepAttr = true;
+          hookEvent.forceKeepAttr = undefined;
+          _executeHook('uponSanitizeAttribute', currentNode, hookEvent);
+          value = hookEvent.attrValue;
+          if (hookEvent.forceKeepAttr) {
+            continue;
+          }
+          if (!hookEvent.keepAttr) {
+            _removeAttribute(name, currentNode);
+            continue;
+          }
+          if (regExpTest(/\/>/i, value)) {
+            _removeAttribute(name, currentNode);
+            continue;
+          }
+          if (SAFE_FOR_TEMPLATES) {
+            value = stringReplace(value, MUSTACHE_EXPR$1, ' ');
+            value = stringReplace(value, ERB_EXPR$1, ' ');
+          }
+          var lcTag = transformCaseFunc(currentNode.nodeName);
+          if (!_isValidAttribute(lcTag, lcName, value)) {
+            _removeAttribute(name, currentNode);
+            continue;
+          }
+          if (value !== initValue) {
+            try {
+              if (namespaceURI) {
+                currentNode.setAttributeNS(namespaceURI, name, value);
+              } else {
+                currentNode.setAttribute(name, value);
+              }
+            } catch (_) {
+              _removeAttribute(name, currentNode);
+            }
+          }
+        }
+        _executeHook('afterSanitizeAttributes', currentNode, null);
+      };
+      var _sanitizeShadowDOM = function _sanitizeShadowDOM(fragment) {
+        var shadowNode;
+        var shadowIterator = _createIterator(fragment);
+        _executeHook('beforeSanitizeShadowDOM', fragment, null);
+        while (shadowNode = shadowIterator.nextNode()) {
+          _executeHook('uponSanitizeShadowNode', shadowNode, null);
+          if (_sanitizeElements(shadowNode)) {
+            continue;
+          }
+          if (shadowNode.content instanceof DocumentFragment) {
+            _sanitizeShadowDOM(shadowNode.content);
+          }
+          _sanitizeAttributes(shadowNode);
+        }
+        _executeHook('afterSanitizeShadowDOM', fragment, null);
+      };
+      DOMPurify.sanitize = function (dirty, cfg) {
+        var body;
+        var importedNode;
+        var currentNode;
+        var oldNode;
+        var returnNode;
+        IS_EMPTY_INPUT = !dirty;
+        if (IS_EMPTY_INPUT) {
+          dirty = '<!-->';
+        }
+        if (typeof dirty !== 'string' && !_isNode(dirty)) {
+          if (typeof dirty.toString !== 'function') {
+            throw typeErrorCreate('toString is not a function');
+          } else {
+            dirty = dirty.toString();
+            if (typeof dirty !== 'string') {
+              throw typeErrorCreate('dirty is not a string, aborting');
+            }
+          }
+        }
+        if (!DOMPurify.isSupported) {
+          if (_typeof(window.toStaticHTML) === 'object' || typeof window.toStaticHTML === 'function') {
+            if (typeof dirty === 'string') {
+              return window.toStaticHTML(dirty);
+            }
+            if (_isNode(dirty)) {
+              return window.toStaticHTML(dirty.outerHTML);
+            }
+          }
+          return dirty;
+        }
+        if (!SET_CONFIG) {
+          _parseConfig(cfg);
+        }
+        DOMPurify.removed = [];
+        if (typeof dirty === 'string') {
+          IN_PLACE = false;
+        }
+        if (IN_PLACE) {
+          if (dirty.nodeName) {
+            var tagName = transformCaseFunc(dirty.nodeName);
+            if (!ALLOWED_TAGS[tagName] || FORBID_TAGS[tagName]) {
+              throw typeErrorCreate('root node is forbidden and cannot be sanitized in-place');
+            }
+          }
+        } else if (dirty instanceof Node) {
+          body = _initDocument('<!---->');
+          importedNode = body.ownerDocument.importNode(dirty, true);
+          if (importedNode.nodeType === 1 && importedNode.nodeName === 'BODY') {
+            body = importedNode;
+          } else if (importedNode.nodeName === 'HTML') {
+            body = importedNode;
+          } else {
+            body.appendChild(importedNode);
+          }
+        } else {
+          if (!RETURN_DOM && !SAFE_FOR_TEMPLATES && !WHOLE_DOCUMENT && dirty.indexOf('<') === -1) {
+            return trustedTypesPolicy && RETURN_TRUSTED_TYPE ? trustedTypesPolicy.createHTML(dirty) : dirty;
+          }
+          body = _initDocument(dirty);
+          if (!body) {
+            return RETURN_DOM ? null : RETURN_TRUSTED_TYPE ? emptyHTML : '';
+          }
+        }
+        if (body && FORCE_BODY) {
+          _forceRemove(body.firstChild);
+        }
+        var nodeIterator = _createIterator(IN_PLACE ? dirty : body);
+        while (currentNode = nodeIterator.nextNode()) {
+          if (currentNode.nodeType === 3 && currentNode === oldNode) {
+            continue;
+          }
+          if (_sanitizeElements(currentNode)) {
+            continue;
+          }
+          if (currentNode.content instanceof DocumentFragment) {
+            _sanitizeShadowDOM(currentNode.content);
+          }
+          _sanitizeAttributes(currentNode);
+          oldNode = currentNode;
+        }
+        oldNode = null;
+        if (IN_PLACE) {
+          return dirty;
+        }
+        if (RETURN_DOM) {
+          if (RETURN_DOM_FRAGMENT) {
+            returnNode = createDocumentFragment.call(body.ownerDocument);
+            while (body.firstChild) {
+              returnNode.appendChild(body.firstChild);
+            }
+          } else {
+            returnNode = body;
+          }
+          if (ALLOWED_ATTR.shadowroot) {
+            returnNode = importNode.call(originalDocument, returnNode, true);
+          }
+          return returnNode;
+        }
+        var serializedHTML = WHOLE_DOCUMENT ? body.outerHTML : body.innerHTML;
+        if (WHOLE_DOCUMENT && ALLOWED_TAGS['!doctype'] && body.ownerDocument && body.ownerDocument.doctype && body.ownerDocument.doctype.name && regExpTest(DOCTYPE_NAME, body.ownerDocument.doctype.name)) {
+          serializedHTML = '<!DOCTYPE ' + body.ownerDocument.doctype.name + '>\n' + serializedHTML;
+        }
+        if (SAFE_FOR_TEMPLATES) {
+          serializedHTML = stringReplace(serializedHTML, MUSTACHE_EXPR$1, ' ');
+          serializedHTML = stringReplace(serializedHTML, ERB_EXPR$1, ' ');
+        }
+        return trustedTypesPolicy && RETURN_TRUSTED_TYPE ? trustedTypesPolicy.createHTML(serializedHTML) : serializedHTML;
+      };
+      DOMPurify.setConfig = function (cfg) {
+        _parseConfig(cfg);
+        SET_CONFIG = true;
+      };
+      DOMPurify.clearConfig = function () {
+        CONFIG = null;
+        SET_CONFIG = false;
+      };
+      DOMPurify.isValidAttribute = function (tag, attr, value) {
+        if (!CONFIG) {
+          _parseConfig({});
+        }
+        var lcTag = transformCaseFunc(tag);
+        var lcName = transformCaseFunc(attr);
+        return _isValidAttribute(lcTag, lcName, value);
+      };
+      DOMPurify.addHook = function (entryPoint, hookFunction) {
+        if (typeof hookFunction !== 'function') {
+          return;
+        }
+        hooks[entryPoint] = hooks[entryPoint] || [];
+        arrayPush(hooks[entryPoint], hookFunction);
+      };
+      DOMPurify.removeHook = function (entryPoint) {
+        if (hooks[entryPoint]) {
+          return arrayPop(hooks[entryPoint]);
+        }
+      };
+      DOMPurify.removeHooks = function (entryPoint) {
+        if (hooks[entryPoint]) {
+          hooks[entryPoint] = [];
+        }
+      };
+      DOMPurify.removeAllHooks = function () {
+        hooks = {};
+      };
+      return DOMPurify;
+    }
+    var purify = createDOMPurify();
+
+    const sanitizeHtmlString = html => purify().sanitize(html);
+
     const isTouch = global$5.deviceType.isTouch();
     const hiddenHeader = (title, close) => ({
       dom: {
@@ -25626,7 +27640,7 @@
             tag: 'div',
             classes: ['tox-dialog__body-content']
           },
-          components: [{ dom: fromHtml(`<p>${ providersBackstage.translate(message) }</p>`) }]
+          components: [{ dom: fromHtml(`<p>${ sanitizeHtmlString(providersBackstage.translate(message)) }</p>`) }]
         }]
     });
     const pFooter = buttons => ModalDialog.parts.footer({
@@ -25747,7 +27761,7 @@
       }
     });
     const renderTitle = (spec, dialogId, titleId, providersBackstage) => {
-      const renderComponents = data => [text$1(providersBackstage.translate(data.title))];
+      const renderComponents = data => [text$2(providersBackstage.translate(data.title))];
       return {
         dom: {
           tag: 'div',
@@ -26534,16 +28548,15 @@
       }
     };
     const setup = extras => {
-      const backstage = extras.backstage;
       const editor = extras.editor;
       const isStickyToolbar$1 = isStickyToolbar(editor);
-      const alertDialog = setup$2(backstage);
-      const confirmDialog = setup$1(backstage);
+      const alertDialog = setup$2(extras.backstages.dialog);
+      const confirmDialog = setup$1(extras.backstages.dialog);
       const open = (config, params, closeWindow) => {
         if (params !== undefined && params.inline === 'toolbar') {
-          return openInlineDialog(config, backstage.shared.anchors.inlineDialog(), closeWindow, params.ariaAttrs);
+          return openInlineDialog(config, extras.backstages.popup.shared.anchors.inlineDialog(), closeWindow, params.ariaAttrs);
         } else if (params !== undefined && params.inline === 'cursor') {
-          return openInlineDialog(config, backstage.shared.anchors.cursor(), closeWindow, params.ariaAttrs);
+          return openInlineDialog(config, extras.backstages.popup.shared.anchors.cursor(), closeWindow, params.ariaAttrs);
         } else {
           return openModalDialog(config, closeWindow);
         }
@@ -26556,7 +28569,7 @@
               ModalDialog.hide(dialog.dialog);
               closeWindow(dialog.instanceApi);
             }
-          }, editor, backstage);
+          }, editor, extras.backstages.dialog);
           ModalDialog.show(dialog.dialog);
           return dialog.instanceApi;
         };
@@ -26576,7 +28589,7 @@
               ModalDialog.hide(dialog.dialog);
               closeWindow(dialog.instanceApi);
             }
-          }, backstage);
+          }, extras.backstages.dialog);
           ModalDialog.show(dialog.dialog);
           dialog.instanceApi.setData(initialData);
           return dialog.instanceApi;
@@ -26587,7 +28600,7 @@
         const factory = (contents, internalInitialData, dataValidator) => {
           const initialData = validateData(internalInitialData, dataValidator);
           const inlineDialog = value$2();
-          const isToolbarLocationTop = backstage.shared.header.isPositionedAtTop();
+          const isToolbarLocationTop = extras.backstages.popup.shared.header.isPositionedAtTop();
           const dialogInit = {
             dataValidator,
             initialData,
@@ -26605,9 +28618,9 @@
               inlineDialog.clear();
               closeWindow(dialogUi.instanceApi);
             }
-          }, backstage, ariaAttrs);
+          }, extras.backstages.popup, ariaAttrs);
           const inlineDialogComp = build$1(InlineView.sketch({
-            lazySink: backstage.shared.getSink,
+            lazySink: extras.backstages.popup.shared.getSink,
             dom: {
               tag: 'div',
               classes: []
@@ -26660,16 +28673,20 @@
     var Theme = () => {
       global$a.add('silver', editor => {
         registerOptions(editor);
-        const {getUiMothership, backstage, renderUI} = setup$3(editor);
-        Autocompleter.register(editor, backstage.shared);
+        const {dialogs, popups, renderUI} = setup$3(editor);
+        Autocompleter.register(editor, popups.backstage.shared);
         const windowMgr = setup({
           editor,
-          backstage
+          backstages: {
+            popup: popups.backstage,
+            dialog: dialogs.backstage
+          }
         });
+        const getNotificationManagerImpl = () => NotificationManagerImpl(editor, { backstage: popups.backstage }, popups.getMothership());
         return {
           renderUI,
           getWindowManagerImpl: constant$1(windowMgr),
-          getNotificationManagerImpl: () => NotificationManagerImpl(editor, { backstage }, getUiMothership())
+          getNotificationManagerImpl
         };
       });
     };

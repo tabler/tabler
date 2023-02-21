@@ -1,10 +1,3 @@
-/*!
- * Tabler (v0.9.0): _dark.scss
- * Copyright 2018-2021 The Tabler Authors
- * Copyright 2018-2021 codecalm
- * Licensed under MIT (https://github.com/tabler/tabler/blob/master/LICENSE)
- */
-
 // stylelint-disable declaration-no-important
 body:not(.theme-dark) .hide-theme-light {
   display: none !important;
@@ -22,7 +15,8 @@ body:not(.theme-dark) .hide-theme-light {
     --#{$prefix}bg-forms: #{$dark-mode-darken};
     --#{$prefix}bg-surface: #{$dark};
     --#{$prefix}bg-surface-dark: #{$dark-mode-darken};
-    --#{$prefix}bg-surface-secondary: #{$dark-mode-darken};
+    --#{$prefix}bg-surface-secondary: #{$dark-mode-lighten};
+    --#{$prefix}bg-surface-tertiary: #{$dark-mode-darken};
 
     --#{$prefix}link-color: #{lighten($primary, 8%)};
     --#{$prefix}link-hover-color: #{$primary};
@@ -44,6 +38,10 @@ body:not(.theme-dark) .hide-theme-light {
 
     --#{$prefix}code-color: var(--#{$prefix}body-color);
     --#{$prefix}code-bg: #{$dark-mode-border-color-light};
+
+    @each $color, $value in $theme-colors {
+      --#{$prefix}#{$color}-lt-rgb: #{to-rgb(theme-color-lighter($value, $dark))};
+    }
 
     color: $dark-mode-text;
     background-color: $dark-mode-darken;
@@ -119,8 +117,8 @@ body:not(.theme-dark) .hide-theme-light {
     background-color: $dark-mode-darken;
   }
 
-  .avatar {
-    --#{$prefix}avatar-bg: #{$dark-mode-lighten};
+  .timeline-event-icon {
+    background-color: #{$dark-mode-lighten};
   }
 
   .markdown,

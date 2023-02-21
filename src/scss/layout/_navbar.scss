@@ -1,3 +1,56 @@
+@mixin navbar-color($bg-color: transparent, $color: $navbar-light-color, $brand-color: $navbar-light-brand-color, $link-active-color: $navbar-light-active-color, $link-disabled-color: $navbar-light-disabled-color, $link-active-bg: $navbar-light-active-bg) {
+  --#{$prefix}navbar-active-bg: #{$link-active-bg};
+  --#{$prefix}navbar-bg: #{$bg-color};
+  color: $color;
+
+  .navbar-brand {
+    color: $brand-color;
+
+    &:hover,
+    &:focus {
+      color: $brand-color;
+      opacity: .8;
+    }
+  }
+
+  .navbar-nav {
+    .nav-link {
+      color: $color;
+
+      &:hover,
+      &:focus {
+        color: $link-active-color;
+      }
+
+      &.disabled {
+        color: $link-disabled-color;
+      }
+    }
+
+    .show > .nav-link,
+    .active > .nav-link,
+    .nav-link.show,
+    .nav-link.active {
+      color: $link-active-color;
+    }
+  }
+
+  .navbar-toggler {
+    color: $brand-color;
+    border-color: transparent;
+  }
+
+  .navbar-text {
+    color: $color;
+
+    a,
+    a:hover,
+    a:focus {
+      color: $color;
+    }
+  }
+}
+
 @mixin navbar-dark {
   --#{$prefix}navbar-border-color: #{$dark-mode-border-color};
   --#{$prefix}navbar-bg: #{$dark};
@@ -27,7 +80,7 @@
       margin-right: 0;
 
       .nav-link {
-        padding: .5rem calc($container-padding-x / 2);
+        padding: .5rem calc(#{$container-padding-x} / 2);
         justify-content: flex-start;
       }
     }
@@ -60,17 +113,17 @@
 
       .dropdown-item,
       .dropdown-header {
-        padding-left: add(calc($container-padding-x / 2), 1.75rem);
+        padding-left: add(calc(#{$container-padding-x} / 2), 1.75rem);
       }
 
       .dropdown-menu .dropdown-item,
       .dropdown-menu .dropdown-header  {
-        padding-left: add(calc($container-padding-x / 2), 3.25rem);
+        padding-left: add(calc(#{$container-padding-x} / 2), 3.25rem);
       }
 
       .dropdown-menu .dropdown-menu .dropdown-item,
       .dropdown-menu .dropdown-menu .dropdown-header  {
-        padding-left: add(calc($container-padding-x / 2), 4.75rem);
+        padding-left: add(calc(#{$container-padding-x} / 2), 4.75rem);
       }
     }
 
@@ -347,7 +400,7 @@ Navbar vertical
             z-index: $zindex-fixed;
             align-items: flex-start;
             @include transition(transform $transition-time);
-            overflow-x: auto;
+            overflow-y: scroll;
             padding: 0;
 
             &.navbar-right {

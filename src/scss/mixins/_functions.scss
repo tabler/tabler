@@ -1,9 +1,5 @@
-@function theme-color-lighter($color, $transparent: false) {
-  @if ($transparent) {
-    @return rgba($color, .1);
-  } @else {
-    @return tint-color($color, 10%);
-  }
+@function theme-color-lighter($color, $background: #fff) {
+  @return mix($color, $background, 10%);
 }
 
 @function theme-color-darker($color) {
@@ -45,3 +41,4 @@
   }
   @return if($n > 1, nth($breakpoint-names, $n - 1), null);
 }
+

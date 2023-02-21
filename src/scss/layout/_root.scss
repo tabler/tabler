@@ -5,13 +5,16 @@
 
   @each $name, $color in map-merge($theme-colors, $gray-colors) {
     --#{$prefix}#{$name}: #{$color};
+    --#{$prefix}#{$name}-rgb: #{to-rgb($color)};
     --#{$prefix}#{$name}-fg: #{if(contrast-ratio($color) > $min-contrast-ratio, var(--#{$prefix}light), var(--#{$prefix}dark))};
     --#{$prefix}#{$name}-darken: #{theme-color-darker($color)};
-    --#{$prefix}#{$name}-rgb: #{to-rgb($color)};
+    --#{$prefix}#{$name}-lt: #{theme-color-lighter($color)};
+    --#{$prefix}#{$name}-lt-rgb: #{to-rgb(theme-color-lighter($color))};
   }
 
   --#{$prefix}bg-surface: #{$bg-surface};
   --#{$prefix}bg-surface-secondary: #{$bg-surface-secondary};
+  --#{$prefix}bg-surface-tertiary: #{$bg-surface-tertiary};
   --#{$prefix}bg-surface-dark: #{$bg-surface-dark};
   --#{$prefix}bg-forms: var(--#{$prefix}bg-surface);
 
@@ -30,6 +33,7 @@
 
   --#{$prefix}code-color: #{$code-color};
   --#{$prefix}code-bg: #{$code-bg};
+  --#{$prefix}content-padding: #{$content-padding};
 
   --#{$prefix}dark-mode-body-color: #{$dark-mode-text};
   --#{$prefix}dark-mode-muted: #{$dark-mode-muted};
@@ -45,7 +49,7 @@
   }
 
   @each $name, $value in $font-sizes {
-    --#{$prefix}font-size-#{$name}: #{$value};
+    --#{$prefix}font-size-h#{$name}: #{$value};
   }
 
   @each $name, $value in $line-heights {
