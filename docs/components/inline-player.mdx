@@ -1,21 +1,31 @@
 ---
 title: Inline player
-menu: help.docs.plugins.plyr
 libs: plyr
 description: A simple, lightweight, accessible and customizable HTML5, YouTube and Vimeo media player that supports modern browsers.
 ---
 
 ## Sample demo
 
-{% capture code %}
-{% include ui/inline-player.html id="youtube" embed-id="dQw4w9WgXcQ" %}
-{% endcapture %}
-{% include example.html code=code %}
+```html example code vendors
+<div id="player-youtube" data-plyr-provider="youtube" data-plyr-embed-id="dQw4w9WgXcQ"></div>
 
+<script src="$TABLER_CDN/dist/libs/plyr/dist/plyr.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    window.Plyr && (new Plyr('#player-youtube'));
+  });
+</script>
+```
 
 ## Vimeo file
 
-{% capture code %}
-{% include ui/inline-player.html id="vimeo" type="vimeo" embed-id="515937365" %}
-{% endcapture %}
-{% include example.html code=code %}
+```html example code vendors
+<div id="player-vimeo" data-plyr-provider="vimeo" data-plyr-embed-id="515937365"></div>
+
+<script src="$TABLER_CDN/dist/libs/plyr/dist/plyr.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    window.Plyr && (new Plyr('#player-vimeo'));
+  });
+</script>
+```

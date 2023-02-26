@@ -1,46 +1,45 @@
 ---
 title: Payments
-menu: help.docs.plugins.payments
 description: The Tabler payments plug-in will let you use a set of payment provider icons to facilitate the payment process and make it more-user friendly.
 plugin: payments
 ---
+
+import config from '../config.json'
+
+## Installation
+
+This part of Tabler is distributed as plugin. To enable it you should include `tabler-payments.css` or `tabler-payments.min.css` file to your page.
+
+You can also include plugin via CDN:
+
+```html
+<link rel="stylesheet" href="$TABLER_CDN/dist/css/tabler-payments.min.css">
+```
 
 ## Payment
 
 To create a payment provider icon, add the `payment` class to a component and specify the payment provider. The full list of payment providers can be found below.
 
-{% capture code %}
-{% include ui/payment.html class="me-3" payment="shopify"%}
-{% include ui/payment.html class="me-3" payment="visa" %}
-{% include ui/payment.html class="me-3" payment="paypal"%}
-{% endcapture %}
-{% include example.html code=code %}
-
+```html example code plugins="payments" separated centered
+<span class="payment payment-provider-shopify"></span>
+<span class="payment payment-provider-visa"></span>
+<span class="payment payment-provider-paypal"></span>
+```
 
 ## Payment sizes
 
 Using Bootstrap’s typical naming structure, you can create a standard payment, or scale it up or down to different sizes based on what’s needed.
 
-{% capture code %}
-{% include ui/payment.html class="me-3" payment="shopify" size="xl" %}
-{% include ui/payment.html class="me-3" payment="visa" size="lg" %}
-{% include ui/payment.html class="me-3" payment="paypal" size="md" %}
-{% include ui/payment.html class="me-3" payment="amazon" size="sm" %}
-{% endcapture %}
-{% include example.html code=code %}
+```html example code plugins="payments" separated centered
+<span class="payment payment-xl payment-provider-shopify"></span>
+<span class="payment payment-lg payment-provider-visa"></span>
+<span class="payment payment-md payment-provider-paypal"></span>
+<span class="payment payment-sm payment-provider-amazon"></span>
+<span class="payment payment-xs payment-provider-blik"></span>
+```
 
-
-## Types
+## List of available payment providers
 
 Select an icon from the list of payment providers. Each icon comes in two color variants - light and dark, so you can choose the one that goes well with your design.
 
-<table class="table-vcenter">
-{% for payment in site.data.payments %}
-<tr>
-    <td>{{ payment.name }}</td>
-    <td><code>{{ payment.logo }}</code></td>
-    <td class="w-1">{% include ui/payment.html payment=payment.logo %}</td>
-    <td class="w-1">{% include ui/payment.html payment=payment.logo dark=true %}</td>
-</tr>
-{% endfor %}
-</table>
+<PaymentsTable payments={config.payments} />
