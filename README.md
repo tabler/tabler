@@ -40,7 +40,7 @@ We've created this admin panel for everyone who wants to create templates based 
 
 ## 📖 Documentation
 
-Documentation is available as a part of Tabler preview: https://preview.tabler.io/docs/
+Documentation is available as a part of Tabler preview: https://tabler.io/docs/
 
 ## 🪴 Project Activity
 
