@@ -1,10 +1,11 @@
+{% capture url %}{% if include.url contains 'http://' or include.url contains 'https://' %}{{ include.url }}{% else %}{{ site.base }}{{ include.url }}{% endif %}{% endcapture %}
 <!DOCTYPE html>
 <html lang="en-US">
 <meta charset="utf-8">
 <title>Redirecting…</title>
-<link rel="canonical" href="{{ site.base }}{{ include.url }}">
-<meta http-equiv="refresh" content="0; url={{ site.base }}{{ include.url }}">
+<link rel="canonical" href="{{ url }}">
+<meta http-equiv="refresh" content="0; url={{ url }}">
 <meta name="robots" content="noindex">
-<noscript><a href="{{ site.base }}{{ include.url }}">Click here if you are not redirected.</a></noscript>
-<script>location="{{ site.base }}{{ include.url }}";</script>
+<noscript><a href="{{ url }}">Click here if you are not redirected.</a></noscript>
+<script>location="{{ url }}";</script>
 </html>
