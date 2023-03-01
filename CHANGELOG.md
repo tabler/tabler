@@ -257,7 +257,9 @@ All notable changes to this project will be documented in this file.
 - fix #1370: avatar stacked list is not stacked anymore
 
 
-## `1.0.0-beta18` - 2023-03-01
+## `1.0.0` - 2023-03-01
+
+**Version 1.0 of Tabler! 😍🤩**
 
 - new page: Cookie banner
 - update icons to v2.7.0
