@@ -219,7 +219,7 @@ All notable changes to this project will be documented in this file.
 - replace `$text-muted` to css variable
 
 
-## `1.0.0-beta16` - 2022-11
+## `1.0.0-beta16` - 2022-11-12
 
 - new `Photogrid` page
 - `Steps` component improvements
@@ -232,3 +232,52 @@ All notable changes to this project will be documented in this file.
 - update icons to v1.111.0
 - homepage navbar fix
 - fix #1262 - `.bg-opacity-xx` class is not functioning properly
+
+
+## `1.0.0-beta17` - 2023-01-28
+
+- update `bootstrap` to v5.3.0
+- update icons to v2.1.2
+- add 72 new brands, browsers logos update
+- new `Trial ended` page
+- new `Page loader` page
+- new `Profile` page
+- headings fix
+- dropdown background color fix
+- fix rgba conversion bug
+- fix autofill text color, not matching in dark mode
+- update license
+- header html5 tags
+- add input with appended `<kbd>`
+- `bootstrap` import fix
+- font improvements
+- change `$body-color` to CSS variable
+- scrollbars improvements
+- move `@tabler/icons` to `dev-dependencies`
+- fix #1370: avatar stacked list is not stacked anymore
+
+
+## `1.0.0` - 2023-03-01
+
+**Version 1.0 of Tabler! 😍🤩**
+
+- new page: Cookie banner
+- update icons to v2.7.0
+- optimise images with `calibre/image-actions`
+- new docs
+- spacers unify
+- fix non full width selects #1392
+- fix bootstrap imports (#1477)
+- update dependencies
+- images optimization
+- flags border fix
+- fix color variables
+- scss build fix
+- fix #1440: more symmetry between modals and cards
+- dropdown shadow fix, colors fix
+- feat: dark mode lite colors improvement
+- fix #1464: avatars overlap transparently
+- fix #1426: TinyMCE drop down icon list transparent
+- fix #1453: Term of service page is truncated
+- added epayco Latin America payment gateway
+- add canonical urls
