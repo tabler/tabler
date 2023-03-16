@@ -2,8 +2,10 @@
 {% assign value = include.value %}
 
 {% if id %}
+{% assign key = include.key | default: 'people' %}
+{% assign data = site.data.selects[key] %}
 
-<select type="text" class="form-select{% if include.class %} {{ include.class }}{% endif %}{% if include.state %} is-{{ include.state }}{% endif %}"{% if placeholder %} placeholder="{{ placeholder }}"{% endif %} id="select-{{ id }}" value="{{ value }}">
+<select type="text" class="form-select{% if include.class %} {{ include.class }}{% endif %}{% if include.state %} is-{{ include.state }}{% endif %}"{% if include.placeholder %} placeholder="{{ include.placeholder }}"{% endif %} id="select-{{ id }}" value="{{ value }}"{% if include.multiple or data.multiple %} multiple{% endif %}>
 	{% if include.values %}
 		{% assign values = include.values | split: ',' %}
 
@@ -11,8 +13,7 @@
 			<option value="{{ value }}">{{ value }}</option>
 		{% endfor %}
 	{% else %}
-		{% assign key = include.key | default: 'people' %}
-		{% assign data = site.data.selects[key] %}
+		
 		{% assign options = data.options %}
 
 		{% if data.data == 'people' %}
@@ -43,8 +44,7 @@
 							<span class="badge bg-primary-lt">{{ label }}</span>
 						{% endcapture %}
 					{% endif %}
-
-					<option value="{{ option[0] }}"{% if include.indicator %} data-custom-properties="{{ indicator-html | strip | escape }}"{% endif %}>{{ option[1].name }}</option>
+					<option value="{{ option[0] }}"{% if include.indicator %} data-custom-properties="{{ indicator-html | strip | escape }}"{% endif %}{% if option[1].selected %} selected{% endif %}>{{ option[1].name }}</option>
 				{% else %}
 					<option value="{{ option }}">{{ option }}</option>
 				{% endif %}
