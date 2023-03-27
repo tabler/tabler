@@ -448,9 +448,12 @@ gulp.task('copy-libs', (cb) => {
 	files.forEach((file) => {
 		if (!file.match(/^https?/)) {
 			let dirname = path.dirname(file).replace('@', '')
-			let cmd = `mkdir -p "${distDir}/libs/${dirname}" && cp -r node_modules/${dirname}/* ${distDir}/libs/${dirname}`
+			 //it don't work in my project,but I'm not sure it's just me
+			 //let cmd = `mkdir -p "${distDir}/libs/${dirname}" && cp -r node_modules/${dirname}/** ${distDir}/libs/${dirname}`
+			 //cp.exec(cmd)
 
-			cp.exec(cmd)
+			 //so i fix it
+			 gulp.src(`node_modules/${dirname}/**`,).pipe(gulp.dest(`${distDir}/libs/${dirname}`))
 		}
 	})
 
