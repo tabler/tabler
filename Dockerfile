@@ -1,6 +1,6 @@
 FROM ruby:2.7-alpine
 
-RUN apk add --no-cache nodejs npm && \
+RUN apk add --no-cache nodejs pnpm && \
     apk add --no-cache --virtual build-dependencies build-base
 
 WORKDIR /app
@@ -14,7 +14,7 @@ ADD _config.yml /app/
 ADD gulpfile.js /app/
 
 # RUN apk update && apk add --virtual build-dependencies build-base
-RUN npm install
+RUN pnpm install
 RUN bundle config --global silence_root_warning 1 && bundler install --verbose
 
 # website
@@ -24,4 +24,4 @@ EXPOSE 3000
 EXPOSE 3001
 
 # run tabler
-ENTRYPOINT [ "npm", "run", "start-plugins" ]
+ENTRYPOINT [ "pnpm", "run", "start-plugins" ]
