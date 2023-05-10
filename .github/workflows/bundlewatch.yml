@@ -23,7 +23,9 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "${{ env.NODE }}"
-          cache: npm
+     
+      - name: Install PNPM
+        run: npm i -g pnpm
 
       - name: Set up Bundler
         uses: ruby/setup-ruby@v1
@@ -31,14 +33,14 @@ jobs:
           ruby-version: 2.6
           bundler-cache: true
 
-      - name: Install npm dependencies
-        run: npm install
+      - name: Install pnpm dependencies
+        run: pnpm install
 
       - name: Run build
-        run: npm run build
+        run: pnpm run build
 
       - name: Run bundlewatch
-        run: npm run bundlewatch
+        run: pnpm run bundlewatch
         env:
           BUNDLEWATCH_GITHUB_TOKEN: "${{ secrets.BUNDLEWATCH_GITHUB_TOKEN }}"
           CI_BRANCH_BASE: dev

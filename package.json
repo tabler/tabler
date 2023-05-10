@@ -18,9 +18,11 @@
     "chromatic": "chromatic --project-token=CHROMATIC_PROJECT_TOKEN",
     "storybook": "start-storybook -p 6006",
     "changelog": "gulp changelog",
-    "icons": "ncu -u @tabler/icons && npm install && gulp svg-icons && git add . && git commit -am \"update icons to v`npm info @tabler/icons version`\" && git push",
+    "icons": "ncu -u @tabler/icons && pnpm install && gulp svg-icons && git add . && git commit -am \"update icons to v`pnpm info @tabler/icons version`\" && git push",
     "download-images": "node build/download-images.js",
-    "optimize-images": "for i in ./src/static/photos/*.jpg; do convert \"$i\" -quality 80% \"${i%.jpg}.jpg\"; done"
+    "optimize-images": "for i in ./src/static/photos/*.jpg; do convert \"$i\" -quality 80% \"${i%.jpg}.jpg\"; done",
+    "format:check": "prettier --check src/**/*.{js,scss} --cache",
+    "format:write": "prettier --write src/**/*.{js,scss} --cache"
   },
   "repository": {
     "type": "git",
@@ -130,11 +132,13 @@
   "devDependencies": {
     "@babel/core": "^7.21.8",
     "@babel/preset-env": "^7.21.5",
+    "@changesets/cli": "^2.26.1",
     "@rollup/plugin-commonjs": "^24.1.0",
     "@rollup/plugin-node-resolve": "^15.0.2",
     "@rollup/plugin-replace": "^5.0.2",
     "@rollup/pluginutils": "^5.0.2",
     "@rollup/stream": "^2.0.0",
+    "@shopify/prettier-plugin-liquid": "^1.0.6",
     "@tabler/icons": "^2.18.0",
     "all-contributors-cli": "^6.25.0",
     "apexcharts": "^3.40.0",
@@ -168,6 +172,7 @@
     "nouislider": "^15.7.0",
     "plyr": "^3.7.8",
     "postcss": "^8.4.23",
+    "prettier": "^2.8.8",
     "release-it": "^15.10.3",
     "request": "^2.88.2",
     "rollup": "2.79.1",
@@ -182,7 +187,6 @@
     "yargs": "^17.7.2"
   },
   "dependencies": {
-    "@changesets/cli": "^2.26.1",
     "@popperjs/core": "^2.11.7",
     "bootstrap": "5.3.0-alpha3"
   },
