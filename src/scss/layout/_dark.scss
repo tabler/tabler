@@ -1,6 +1,18 @@
 // stylelint-disable declaration-no-important
-body:not(.theme-dark):not([data-bs-theme="dark"]) .hide-theme-light {
-  display: none !important;
+
+body {
+  &:not(.theme-dark):not([data-bs-theme="dark"]) {
+    .hide-theme-light {
+      display: none !important;
+    }
+  }
+
+  &.theme-dark,
+  &[data-bs-theme="dark"] {
+    .hide-theme-dark {
+      display: none !important;
+    }
+  }
 }
 
 @include dark-mode {
@@ -32,9 +44,13 @@ body:not(.theme-dark):not([data-bs-theme="dark"]) .hide-theme-light {
     --#{$prefix}card-color: #{$text-dark};
 
     --#{$prefix}border-color: var(--#{$prefix}dark-mode-border-color);
-    --#{$prefix}border-color-translucent: var(--#{$prefix}dark-mode-border-color-translucent);
+    --#{$prefix}border-color-translucent: var(
+      --#{$prefix}dark-mode-border-color-translucent
+    );
     --#{$prefix}border-dark-color: var(--#{$prefix}dark-mode-border-dark-color);
-    --#{$prefix}border-color-active: var(--#{$prefix}dark-mode-border-color-active);
+    --#{$prefix}border-color-active: var(
+      --#{$prefix}dark-mode-border-color-active
+    );
 
     --#{$prefix}btn-color: #{$darken-dark};
 
@@ -42,7 +58,9 @@ body:not(.theme-dark):not([data-bs-theme="dark"]) .hide-theme-light {
     --#{$prefix}code-bg: #{$border-dark-color-dark};
 
     @each $color, $value in $theme-colors {
-      --#{$prefix}#{$color}-lt-rgb: #{to-rgb(theme-color-lighter($value, $dark))};
+      --#{$prefix}#{$color}-lt-rgb: #{to-rgb(
+          theme-color-lighter($value, $dark)
+        )};
     }
 
     color-scheme: dark;
@@ -54,12 +72,8 @@ body:not(.theme-dark):not([data-bs-theme="dark"]) .hide-theme-light {
     color: $text-dark;
   }
 
-  .hide-theme-dark {
-    display: none !important;
-  }
-
   .text-body {
-    color: $text-dark!important;
+    color: $text-dark !important;
   }
 
   .card,
@@ -94,7 +108,6 @@ body:not(.theme-dark):not([data-bs-theme="dark"]) .hide-theme-light {
     color: inherit;
   }
 
-
   .input-group-flat .input-group-text {
     background-color: $darken-dark;
   }
@@ -112,7 +125,7 @@ body:not(.theme-dark):not([data-bs-theme="dark"]) .hide-theme-light {
   }
 
   .markdown,
-  .markdown>*,
+  .markdown > *,
   .accordion-button {
     color: inherit;
   }
