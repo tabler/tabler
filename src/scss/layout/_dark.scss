@@ -1,5 +1,5 @@
 // stylelint-disable declaration-no-important
-body:not(.theme-dark) .hide-theme-light {
+body:not(.theme-dark):not([data-bs-theme="dark"]) .hide-theme-light {
   display: none !important;
 }
 
@@ -11,6 +11,8 @@ body:not(.theme-dark) .hide-theme-light {
 
     --#{$prefix}body-bg: #{$dark-mode-darken};
     --#{$prefix}body-bg-rgb: #{to-rgb($dark-mode-darken)};
+    --#{$prefix}emphasis-color: #{$body-emphasis-color-dark};
+    --#{$prefix}emphasis-color-rgb: #{to-rgb($body-emphasis-color-dark)};
 
     --#{$prefix}bg-forms: #{$dark-mode-darken};
     --#{$prefix}bg-surface: #{$dark};
@@ -30,6 +32,7 @@ body:not(.theme-dark) .hide-theme-light {
     --#{$prefix}card-color: #{$dark-mode-text};
 
     --#{$prefix}border-color: var(--#{$prefix}dark-mode-border-color);
+    --#{$prefix}border-color-translucent: var(--#{$prefix}dark-mode-border-color-translucent);
     --#{$prefix}border-dark-color: var(--#{$prefix}dark-mode-border-dark-color);
     --#{$prefix}border-color-active: var(--#{$prefix}dark-mode-border-color-active);
 
@@ -91,19 +94,6 @@ body:not(.theme-dark) .hide-theme-light {
     color: inherit;
   }
 
-  .form-check-input:not(:checked),
-  .form-select,
-  .form-file-text,
-  .form-control,
-  .form-selectgroup-check {
-    background-color: $dark-mode-darken;
-    color: $dark-mode-text;
-    border-color: $dark-mode-border-color;
-  }
-
-  .form-control-plaintext {
-    color: $dark-mode-text;
-  }
 
   .input-group-flat .input-group-text {
     background-color: $dark-mode-darken;
@@ -174,15 +164,5 @@ body:not(.theme-dark) .hide-theme-light {
 
   .apexcharts-radialbar-area {
     stroke: $dark-mode-border-color;
-  }
-
-  .form-control.is-invalid,
-  .was-validated .form-control:invalid {
-    border-color: var(--#{$prefix}danger);
-  }
-
-  .form-control.is-valid,
-  .was-validated .form-control:valid {
-    border-color: var(--#{$prefix}success);
   }
 }

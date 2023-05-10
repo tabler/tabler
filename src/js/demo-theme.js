@@ -21,5 +21,4 @@ if (!!params.theme) {
 	selectedTheme = storedTheme ? storedTheme : defaultTheme
 }
 
-document.body.classList.remove("theme-dark", "theme-light")
-document.body.classList.add(`theme-${selectedTheme}`)
+document.body.setAttribute("data-bs-theme", selectedTheme)
