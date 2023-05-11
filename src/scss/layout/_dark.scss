@@ -16,168 +16,53 @@ body {
 }
 
 @include dark-mode {
-  & {
-    --#{$prefix}body-color: #{$text-dark};
-    --#{$prefix}body-color-rgb: #{to-rgb($text-dark)};
-    --#{$prefix}muted: rgba(153, 159, 164, 1);
+  --#{$prefix}body-color: #{$text-dark};
+  --#{$prefix}body-color-rgb: #{to-rgb($text-dark)};
+  --#{$prefix}muted: rgba(153, 159, 164, 1);
 
-    --#{$prefix}body-bg: #{$darken-dark};
-    --#{$prefix}body-bg-rgb: #{to-rgb($darken-dark)};
-    --#{$prefix}emphasis-color: #{$body-emphasis-color-dark};
-    --#{$prefix}emphasis-color-rgb: #{to-rgb($body-emphasis-color-dark)};
+  --#{$prefix}body-bg: #{$darken-dark};
+  --#{$prefix}body-bg-rgb: #{to-rgb($darken-dark)};
+  --#{$prefix}emphasis-color: #{$body-emphasis-color-dark};
+  --#{$prefix}emphasis-color-rgb: #{to-rgb($body-emphasis-color-dark)};
 
-    --#{$prefix}bg-forms: #{$darken-dark};
-    --#{$prefix}bg-surface: #{$dark};
-    --#{$prefix}bg-surface-dark: #{$darken-dark};
-    --#{$prefix}bg-surface-secondary: #{$lighten-dark};
-    --#{$prefix}bg-surface-tertiary: #{$darken-dark};
+  --#{$prefix}bg-forms: #{$darken-dark};
+  --#{$prefix}bg-surface: #{$dark};
+  --#{$prefix}bg-surface-dark: #{$darken-dark};
+  --#{$prefix}bg-surface-secondary: #{$lighten-dark};
+  --#{$prefix}bg-surface-tertiary: #{$darken-dark};
 
-    --#{$prefix}link-color: #{lighten($primary, 8%)};
-    --#{$prefix}link-hover-color: #{$primary};
+  --#{$prefix}link-color: #{lighten($primary, 8%)};
+  --#{$prefix}link-hover-color: #{$primary};
 
-    --#{$prefix}active-bg: #{$lighten-dark};
-    --#{$prefix}disabled-color: var(--#{$prefix}gray-700);
+  --#{$prefix}active-bg: #{$lighten-dark};
+  --#{$prefix}disabled-color: var(--#{$prefix}gray-700);
 
-    --#{$prefix}card-bg: #{$darken-dark};
-    --#{$prefix}card-bg-hover: #{$darken-dark};
-    --#{$prefix}card-bg-rgb: #{to-rgb($darken-dark)};
-    --#{$prefix}card-color: #{$text-dark};
+  --#{$prefix}card-bg: #{$darken-dark};
+  --#{$prefix}card-bg-hover: #{$darken-dark};
+  --#{$prefix}card-bg-rgb: #{to-rgb($darken-dark)};
+  --#{$prefix}card-color: #{$text-dark};
 
-    --#{$prefix}border-color: var(--#{$prefix}dark-mode-border-color);
-    --#{$prefix}border-color-translucent: var(
-      --#{$prefix}dark-mode-border-color-translucent
-    );
-    --#{$prefix}border-dark-color: var(--#{$prefix}dark-mode-border-dark-color);
-    --#{$prefix}border-color-active: var(
-      --#{$prefix}dark-mode-border-color-active
-    );
+  --#{$prefix}border-color: var(--#{$prefix}dark-mode-border-color);
+  --#{$prefix}border-color-translucent: var(
+    --#{$prefix}dark-mode-border-color-translucent
+  );
+  --#{$prefix}border-dark-color: var(--#{$prefix}dark-mode-border-dark-color);
+  --#{$prefix}border-color-active: var(
+    --#{$prefix}dark-mode-border-color-active
+  );
 
-    --#{$prefix}btn-color: #{$darken-dark};
+  --#{$prefix}btn-color: #{$darken-dark};
 
-    --#{$prefix}code-color: var(--#{$prefix}body-color);
-    --#{$prefix}code-bg: #{$border-dark-color-dark};
+  --#{$prefix}code-color: var(--#{$prefix}body-color);
+  --#{$prefix}code-bg: #{$border-dark-color-dark};
 
-    @each $color, $value in $theme-colors {
-      --#{$prefix}#{$color}-lt-rgb: #{to-rgb(
-          theme-color-lighter($value, $dark)
-        )};
-    }
-
-    color-scheme: dark;
-    color: $text-dark;
-    background-color: $darken-dark;
-  }
-
-  .page {
-    color: $text-dark;
-  }
-
-  .text-body {
-    color: $text-dark !important;
-  }
-
-  .card,
-  .card-footer,
-  .card-stacked::after,
-  .footer:not(.footer-transparent),
-  .modal-content,
-  .modal-header,
-  .dropdown-menu,
-  .toast,
-  .toast-header,
-  .alert:not(.alert-important) {
-    background-color: var(--#{$prefix}bg-surface);
-    color: inherit;
-  }
-
-  .modal {
-    --#{$prefix}modal-border-color: var(--#{$prefix}border-color);
-  }
-
-  .bg-light {
-    background-color: $darken-dark !important;
-  }
-
-  .card-tabs .nav-tabs .nav-link {
-    background-color: $darken-dark;
-    color: inherit;
-  }
-
-  .card-tabs .nav-tabs .nav-link.active {
-    background-color: $dark;
-    color: inherit;
-  }
-
-  .input-group-flat .input-group-text {
-    background-color: $darken-dark;
-  }
-
-  .input-group-text {
-    border-color: $border-color-dark;
-  }
-
-  .highlight {
-    background-color: $darken-dark;
-  }
-
-  .timeline-event-icon {
-    background-color: #{$lighten-dark};
-  }
-
-  .markdown,
-  .markdown > *,
-  .accordion-button {
-    color: inherit;
-  }
-
-  .btn-close,
-  .accordion-button:after {
-    filter: $btn-close-white-filter;
-  }
-
-  .apexcharts-text {
-    fill: $text-dark;
-  }
-
-  .apexcharts-gridline {
-    stroke: var(--#{$prefix}border-color);
-  }
-
-  .apexcharts-legend-text {
-    color: inherit !important;
+  @each $color, $value in $theme-colors {
+    --#{$prefix}#{$color}-lt-rgb: #{to-rgb(theme-color-lighter($value, $dark))};
   }
 
   .navbar-brand-autodark {
     .navbar-brand-image {
       @include autodark-image;
     }
-  }
-
-  .table thead th,
-  .input-group-text {
-    background: transparent;
-  }
-
-  .list-group-header {
-    background: $darken-dark;
-  }
-
-  .list-group-item {
-    //border-color: $border-color-transparent;
-  }
-
-  .list-group-item:not(.disabled):not(:disabled) {
-    color: $text-dark;
-  }
-
-  .list-group-item {
-    &.disabled,
-    &:disabled {
-      color: $gray-600;
-    }
-  }
-
-  .apexcharts-radialbar-area {
-    stroke: $border-color-dark;
   }
 }
