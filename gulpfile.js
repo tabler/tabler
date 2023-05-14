@@ -102,7 +102,7 @@ gulp.task('svg-icons', (cb) => {
  * Generate CHANGELOG.md
  */
 gulp.task('changelog', (cb) => {
-	const content = YAML.parse(fs.readFileSync('./src/pages/_data/changelog.yml', 'utf8'))
+	const content = YAML.parse(fs.readFileSync('./src/pages/_data/changelog.yml', 'utf8')).reverse()
 	let readme = `# Changelog
 
 All notable changes to this project will be documented in this file.\n`
