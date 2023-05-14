@@ -1,0 +1,38 @@
+{% assign id = include.id | default: include.icon | default: 'default' %}
+{% assign icon = include.icon | default: 'star-filled' %}
+{% assign color = include.color %}
+{% assign size = include.size | default: false %}
+{% assign value = include.value %}
+
+<select id="rating-{{ id }}">
+	<option value="">Select a rating</option>
+	<option value="5"{% if value == 5 %} selected{% endif %}>Excellent</option>
+	<option value="4"{% if value == 4 %} selected{% endif %}>Very Good</option>
+	<option value="3"{% if value == 3 %} selected{% endif %}>Average</option>
+	<option value="2"{% if value == 2 %} selected{% endif %}>Poor</option>
+	<option value="1"{% if value == 1 %} selected{% endif %}>Terrible</option>
+</select>
+
+{% capture star %}
+{% include ui/icon.html class="gl-star-full" icon=icon color=color size=size %}
+{% endcapture %}
+{% assign star = star | strip | replace_regex: "\n\s+", "" %}
+
+{% capture_global scripts %}
+<script>
+  // @formatter:off
+  {% if jekyll.environment == 'development' %}window.tabler_rating = window.tabler_rating || {};{% endif %}
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const rating = new StarRating('#rating-{{ id }}', {
+		tooltip: false,
+		clearable: false,
+		stars: function (el, item, index) {
+			 el.innerHTML = `{{ star }}`; 
+		},
+	 })		
+    {% if jekyll.environment == 'development' %}window.tabler_rating["rating-{{ id }}"] = rating;{% endif %}
+  })
+  // @formatter:on
+</script>
+{% endcapture_global %}
