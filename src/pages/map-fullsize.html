@@ -17,14 +17,16 @@ menu: base.map-fullsize
 	let map;
 	{% if jekyll.environment == 'development' %}window.tabler_map = window.tabler_map || {};{% endif %}
 
-	document.addEventListener("DOMContentLoaded", function() {
+	function initMap() {
 		map = new google.maps.Map(document.getElementById("map-{{ map-id }}"), {
 			center: { lat: -34.397, lng: 150.644 },
 			zoom: 8,
 		});
+	}
+
+	window.initMap = initMap;
 
 		{% if jekyll.environment == 'development' %}window.tabler_map["map-{{ map-id }}"] = map;{% endif %}
-	});
 // @formatter:on
 </script>
 {% endcapture_global %}
