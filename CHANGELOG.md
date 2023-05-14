@@ -3,6 +3,15 @@
 All notable changes to this project will be documented in this file.
 
 
+## `1.0.0-beta19` - 2023-05-15
+
+- Add customizable Star Ratings component using `star-rating.js` library (#1571)
+- Add new "Filled" section to Icons page (#1574)
+- Fix form controls bugs in dark mode (#1573)
+- Fix text color in dark version of navbar (#1569)
+- Changelog update
+
+
 ## `1.0.0-beta18` - 2023-05-14
 
 - new page: Cookie banner
