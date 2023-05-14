@@ -135,11 +135,12 @@
 Navbar
  */
 .navbar {
+  --#{$prefix}navbar-bg: var(--#{$prefix}bg-surface);
   --#{$prefix}navbar-border-width: #{$navbar-border-width};
   --#{$prefix}navbar-active-border-color: #{$navbar-active-border-color};
   --#{$prefix}navbar-active-bg: #{$navbar-light-active-bg};
-  --#{$prefix}navbar-bg: transparent;
   --#{$prefix}navbar-color: inherit;
+  --#{$prefix}navbar-border-color: #{$navbar-border-color};
   align-items: stretch;
   min-height: $navbar-height;
   box-shadow: inset 0 calc(-1 * var(--#{$prefix}navbar-border-width)) 0 0 var(--#{$prefix}navbar-border-color);
@@ -152,12 +153,6 @@ Navbar
 
   &.collapsing {
     min-height: 0;
-  }
-
-  //@include navbar-color();
-
-  @include dark-mode {
-    @include navbar-dark();
   }
 
   .dropdown-menu {
@@ -206,20 +201,17 @@ Navbar
           flex: 1 1 auto;
         }
 
-        &.navbar-light,
-        .navbar-light {
-          .nav-item.active {
-            position: relative;
+        .nav-item.active {
+          position: relative;
 
-            &:after {
-              content: "";
-              position: absolute;
-              left: 0;
-              right: 0;
-              bottom: -.25rem;
-              border: 0 var(--#{$prefix}border-style) var(--#{$prefix}navbar-active-border-color);
-              border-bottom-width: 2px;
-            }
+          &:after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -.25rem;
+            border: 0 var(--#{$prefix}border-style) var(--#{$prefix}navbar-active-border-color);
+            border-bottom-width: 2px;
           }
         }
 
@@ -325,20 +317,12 @@ Navbar toggler
   }
 }
 
-/**
-Navbar light
- */
-.navbar-light {
-  --#{$prefix}navbar-border-color: #{$navbar-border-color};
-  --#{$prefix}navbar-bg: var(--#{$prefix}bg-surface);
-}
-
-/**
-Navbar dark
- */
-.navbar-dark {
-  @include navbar-dark;
-}
+// /**
+// Navbar dark
+//  */
+// .navbar-dark {
+//   @include navbar-dark;
+// }
 
 /**
 Navbar transparent

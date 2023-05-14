@@ -48,38 +48,6 @@
   filter: brightness(0) invert(1);
 }
 
-@mixin dark-mode {
-  @if $enable-dark-mode {
-    $selector: &;
-
-    @media not print {
-      @if ($selector) {
-        .theme-dark & {
-          @content
-        }
-      } @else {
-        .theme-dark {
-          @content
-        }
-      }
-    }
-
-    @media not print {
-      @media (prefers-color-scheme: dark) {
-        @if ($selector) {
-          .theme-dark-auto & {
-            @content
-          }
-        } @else {
-          .theme-dark-auto {
-            @content
-          }
-        }
-      }
-    }
-  }
-}
-
 //
 // Elements list
 //
