@@ -3,6 +3,7 @@ export interface CountUpOptions {
     decimalPlaces?: number;
     duration?: number;
     useGrouping?: boolean;
+    useIndianSeparators?: boolean;
     useEasing?: boolean;
     smartEasingThreshold?: number;
     smartEasingAmount?: number;
@@ -16,22 +17,26 @@ export interface CountUpOptions {
     enableScrollSpy?: boolean;
     scrollSpyDelay?: number;
     scrollSpyOnce?: boolean;
+    onCompleteCallback?: () => any;
+    plugin?: CountUpPlugin;
+}
+export declare interface CountUpPlugin {
+    render(elem: HTMLElement, formatted: string): void;
 }
 export declare class CountUp {
     private endVal;
     options?: CountUpOptions;
     version: string;
     private defaults;
-    private el;
     private rAF;
     private startTime;
     private remaining;
     private finalEndVal;
     private useEasing;
     private countDown;
+    el: HTMLElement | HTMLInputElement;
     formattingFn: (num: number) => string;
     easingFn?: (t: number, b: number, c: number, d: number) => number;
-    callback: (args?: any) => any;
     error: string;
     startVal: number;
     duration: number;
@@ -44,7 +49,7 @@ export declare class CountUp {
      * Smart easing works by breaking the animation into 2 parts, the second part being the
      * smartEasingAmount and first part being the total amount minus the smartEasingAmount. It works
      * by disabling easing for the first part and enabling it on the second part. It is used if
-     * usingEasing is true and the total animation amount exceeds the smartEasingThreshold.
+     * useEasing is true and the total animation amount exceeds the smartEasingThreshold.
      */
     private determineDirectionAndSmartEasing;
     start(callback?: (args?: any) => any): void;
