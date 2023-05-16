@@ -448,7 +448,7 @@ gulp.task('copy-libs', (cb) => {
 	files.forEach((file) => {
 		if (!file.match(/^https?/)) {
 			let dirname = path.dirname(file).replace('@', '')
-			let cmd = `mkdir -p "${distDir}/libs/${dirname}" && cp -r node_modules/${dirname}/* ${distDir}/libs/${dirname}`
+			let cmd = `mkdir -p "${distDir}/libs/${dirname}" && cp -r node_modules/${path.dirname(file)}/* ${distDir}/libs/${dirname}`
 
 			cp.exec(cmd)
 		}
