@@ -5,16 +5,17 @@ menu: base.colorpicker
 libs: coloris.js
 ---
 
-<p>
-	Lorem ipsum dolor sit amet consectetur adipisicing elit. Beatae voluptatibus
-quis voluptates neque earum magnam quasi ea fuga quidem quaerat ipsam, tenetur
-molestiae ullam iusto, eaque alias nobis facere obcaecati?
-</p>
-
 {% assign colors = "#206bc4,#45aaf2,#6574cd,#a55eea,#f66d9b,#fa4654,#fd9644,#f1c40f,#7bd235,#5eba00,#2bcbba,#17a2b8" | split: "," %}
 
-<div class="space-y">
-	{% for color in colors %}
-	<div>{% include ui/colorpicker.html value=color id=forloop.index class="w-100" %}</div>
-	{% endfor %}
+<div class="card">
+	<div class="card-body">
+		<h3 class="card-title">Basic</h3>
+		<div class="row g-3">
+			{% for color in colors %}
+			<div class="col-2">
+				<div>{% include ui/colorpicker.html value=color id=forloop.index format="hex" %}</div>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
 </div>
