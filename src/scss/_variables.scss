@@ -13,7 +13,6 @@ $enable-cssgrid: true !default;
 
 // DARK MODE
 $color-mode-type: data !default;
-
 // ASSETS BASE
 $assets-base: ".." !default;
 
@@ -435,24 +434,20 @@ $aspect-ratios: (
 ) !default;
 
 // Shadows
-$shadow: rgba(var(--#{$prefix}body-color-rgb), 0.04) 0 2px 4px 0 !default;
-$shadow-inset: inset var(--#{$prefix}border-color-translucent) 0 0 0 1px !default;
-$shadow-transparent: 0 0 0 0 transparent !default;
-$shadow-button: 0 1px 0 rgba(var(--#{$prefix}body-color-rgb), 0.04) !default;
-$shadow-button-inset: inset 0 -1px 0 rgba(var(--#{$prefix}body-color-rgb), 0.2) !default;
-$shadow-card: 0 0 4px rgba(var(--#{$prefix}body-color-rgb), 0.04) !default;
-$shadow-card-hover: rgba(var(--#{$prefix}body-color-rgb), 0.16) 0 2px 16px 0 !default;
-$shadow-dropdown: 0px 16px 24px 2px rgb(0, 0, 0, 0.07),
-  0px 6px 30px 5px rgb(0, 0, 0, 0.06), 0px 8px 10px -5px rgb(0, 0, 0, 0.1) !default;
+$box-shadow: rgba(var(--#{$prefix}body-color-rgb), 0.04) 0 2px 4px 0 !default;
+$box-shadow-transparent: 0 0 0 0 transparent !default;
+$box-shadow-input: 0 1px 1px rgba(var(--#{$prefix}body-color-rgb), 0.06) !default;
+$box-shadow-card: 0 0 4px rgba(var(--#{$prefix}body-color-rgb), 0.04) !default;
+$box-shadow-card-hover: rgba(var(--#{$prefix}body-color-rgb), 0.16) 0 2px 16px 0 !default;
+$box-shadow-dropdown: 0 16px 24px 2px rgb(0, 0, 0, 0.07), 0 6px 30px 5px rgb(0, 0, 0, 0.06), 0 8px 10px -5px rgb(0, 0, 0, 0.1) !default;
 
-$shadows: (
-  shadow: $shadow,
-  shadow-transparent: $shadow-transparent,
-  shadow-button: $shadow-button,
-  shadow-button-inset: $shadow-button-inset,
-  shadow-card: $shadow-card,
-  shadow-card-hover: $shadow-card-hover,
-  shadow-dropdown: $shadow-dropdown,
+$box-shadows: (
+  box-shadow: $box-shadow,
+  box-shadow-transparent: $box-shadow-transparent,
+  box-shadow-input: $box-shadow-input,
+  box-shadow-card: $box-shadow-card,
+  box-shadow-card-hover: $box-shadow-card-hover,
+  box-shadow-dropdown: $box-shadow-dropdown,
 ) !default;
 
 $box-shadow-inset: 0 0 transparent !default;
@@ -539,6 +534,7 @@ $input-height-lg: null !default;
 $input-border-radius: var(--#{$prefix}border-radius) !default;
 $input-color: var(--#{$prefix}body-color) !default;
 $input-focus-color: var(--#{$prefix}body-color) !default;
+$input-box-shadow: var(--#{$prefix}box-shadow-input) !default;
 
 // Buttons
 $btn-disabled-opacity: 0.4 !default;
@@ -546,6 +542,7 @@ $btn-padding-x: 1rem !default;
 $btn-font-weight: var(--#{$prefix}font-weight-medium) !default;
 $btn-border-color: var(--#{$prefix}border-color) !default;
 $btn-border-radius: var(--#{$prefix}border-radius) !default;
+$btn-box-shadow: var(--#{$prefix}box-shadow-input) !default;
 
 // Cards
 $card-title-spacer-y: 1.25rem !default;
@@ -838,13 +835,14 @@ $input-border-radius: var(--#{$prefix}border-radius) !default;
 
 // Forms
 $form-check-margin-bottom: 0.5rem !default;
-$form-check-input-width: 1rem !default;
-$form-check-padding-start: $form-check-input-width + 0.5rem !default;
+$form-check-padding-start: 1.5rem !default;
 
+$form-check-input-width: 1rem !default;
 $form-check-input-bg: var(--#{$prefix}bg-forms) !default;
 $form-check-input-border: var(--#{$prefix}border-width)
   var(--#{$prefix}border-style) $input-border-color-translucent !default;
 $form-check-input-border-radius: var(--#{$prefix}border-radius) !default;
+$form-check-input-box-shadow: $input-box-shadow !default;
 
 $form-check-input-checked-bg-size: 1rem !default;
 $form-check-input-checked-bg-color: var(--#{$prefix}primary) !default;
@@ -860,6 +858,7 @@ $form-check-radio-checked-bg-image: url("data:image/svg+xml,<svg xmlns='http://w
 $form-check-label-disabled-opacity: $text-muted-opacity;
 
 $form-select-indicator-color: $text-muted-light !default;
+$form-select-box-shadow: var(--#{$prefix}box-shadow-input) !default;
 
 $form-switch-width: 2rem !default;
 $form-switch-height: 1.125rem !default;
