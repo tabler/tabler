@@ -959,6 +959,7 @@
             else if (handleNumber === options.handles - 1) {
                 addClass(handle, options.cssClasses.handleUpper);
             }
+            origin.handle = handle;
             return origin;
         }
         // Insert nodes for connect elements
@@ -1021,6 +1022,31 @@
         function isHandleDisabled(handleNumber) {
             var handleOrigin = scope_Handles[handleNumber];
             return handleOrigin.hasAttribute("disabled");
+        }
+        function disable(handleNumber) {
+            if (handleNumber !== null && handleNumber !== undefined) {
+                scope_Handles[handleNumber].setAttribute("disabled", "");
+                scope_Handles[handleNumber].handle.removeAttribute("tabindex");
+            }
+            else {
+                scope_Target.setAttribute("disabled", "");
+                scope_Handles.forEach(function (handle) {
+                    handle.handle.removeAttribute("tabindex");
+                });
+            }
+        }
+        function enable(handleNumber) {
+            if (handleNumber !== null && handleNumber !== undefined) {
+                scope_Handles[handleNumber].removeAttribute("disabled");
+                scope_Handles[handleNumber].handle.setAttribute("tabindex", "0");
+            }
+            else {
+                scope_Target.removeAttribute("disabled");
+                scope_Handles.forEach(function (handle) {
+                    handle.removeAttribute("disabled");
+                    handle.handle.setAttribute("tabindex", "0");
+                });
+            }
         }
         function removeTooltips() {
             if (scope_Tooltips) {
@@ -2199,6 +2225,8 @@
             set: valueSet,
             setHandle: valueSetHandle,
             reset: valueReset,
+            disable: disable,
+            enable: enable,
             // Exposed for unit testing, don't use this in your application.
             __moveHandles: function (upward, proposal, handleNumbers) {
                 moveHandles(upward, proposal, scope_Locations, handleNumbers);

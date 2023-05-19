@@ -1,11 +1,11 @@
 /**
- * TinyMCE version 6.3.1 (2022-12-06)
+ * TinyMCE version 6.4.2 (2023-04-26)
  */
 
 (function () {
     'use strict';
 
-    var global$6 = tinymce.util.Tools.resolve('tinymce.PluginManager');
+    var global$7 = tinymce.util.Tools.resolve('tinymce.PluginManager');
 
     const hasProto = (v, constructor, predicate) => {
       var _a;
@@ -423,11 +423,11 @@
       }
     };
 
-    var global$5 = tinymce.util.Tools.resolve('tinymce.dom.RangeUtils');
+    var global$6 = tinymce.util.Tools.resolve('tinymce.dom.RangeUtils');
 
-    var global$4 = tinymce.util.Tools.resolve('tinymce.dom.TreeWalker');
+    var global$5 = tinymce.util.Tools.resolve('tinymce.dom.TreeWalker');
 
-    var global$3 = tinymce.util.Tools.resolve('tinymce.util.VK');
+    var global$4 = tinymce.util.Tools.resolve('tinymce.util.VK');
 
     const fromDom = nodes => map(nodes, SugarElement.fromDom);
 
@@ -490,13 +490,13 @@
       return nu;
     };
 
-    var global$2 = tinymce.util.Tools.resolve('tinymce.dom.DOMUtils');
+    var global$3 = tinymce.util.Tools.resolve('tinymce.dom.DOMUtils');
 
-    var global$1 = tinymce.util.Tools.resolve('tinymce.util.Tools');
+    var global$2 = tinymce.util.Tools.resolve('tinymce.util.Tools');
 
     const matchNodeName = name => node => isNonNullable(node) && node.nodeName.toLowerCase() === name;
     const matchNodeNames = regex => node => isNonNullable(node) && regex.test(node.nodeName);
-    const isTextNode = node => isNonNullable(node) && node.nodeType === 3;
+    const isTextNode$1 = node => isNonNullable(node) && node.nodeType === 3;
     const isElement = node => isNonNullable(node) && node.nodeType === 1;
     const isListNode = matchNodeNames(/^(OL|UL|DL)$/);
     const isOlUlNode = matchNodeNames(/^(OL|UL)$/);
@@ -511,13 +511,14 @@
     };
     const isTextBlock = (editor, node) => isNonNullable(node) && node.nodeName in editor.schema.getTextBlockElements();
     const isBlock = (node, blockElements) => isNonNullable(node) && node.nodeName in blockElements;
+    const isVoid = (editor, node) => isNonNullable(node) && node.nodeName in editor.schema.getVoidElements();
     const isBogusBr = (dom, node) => {
       if (!isBr(node)) {
         return false;
       }
       return dom.isBlock(node.nextSibling) && !isBr(node.previousSibling);
     };
-    const isEmpty$1 = (dom, elm, keepBookmarks) => {
+    const isEmpty$2 = (dom, elm, keepBookmarks) => {
       const empty = dom.isEmpty(elm);
       if (keepBookmarks && dom.select('span[data-mce-type=bookmark]', elm).length > 0) {
         return false;
@@ -573,12 +574,12 @@
       return fragment;
     };
 
-    const DOM$2 = global$2.DOM;
+    const DOM$2 = global$3.DOM;
     const splitList = (editor, list, li) => {
       const removeAndKeepBookmarks = targetNode => {
         const parent = targetNode.parentNode;
         if (parent) {
-          global$1.each(bookmarks, node => {
+          global$2.each(bookmarks, node => {
             parent.insertBefore(node, li.parentNode);
           });
         }
@@ -601,11 +602,11 @@
       }
       DOM$2.insertAfter(newBlock, list);
       const parent = li.parentElement;
-      if (parent && isEmpty$1(editor.dom, parent)) {
+      if (parent && isEmpty$2(editor.dom, parent)) {
         removeAndKeepBookmarks(parent);
       }
       DOM$2.remove(li);
-      if (isEmpty$1(editor.dom, list)) {
+      if (isEmpty$2(editor.dom, list)) {
         DOM$2.remove(list);
       }
     };
@@ -633,24 +634,24 @@
     };
 
     const getNormalizedPoint = (container, offset) => {
-      if (isTextNode(container)) {
+      if (isTextNode$1(container)) {
         return {
           container,
           offset
         };
       }
-      const node = global$5.getNode(container, offset);
-      if (isTextNode(node)) {
+      const node = global$6.getNode(container, offset);
+      if (isTextNode$1(node)) {
         return {
           container: node,
           offset: offset >= container.childNodes.length ? node.data.length : 0
         };
-      } else if (node.previousSibling && isTextNode(node.previousSibling)) {
+      } else if (node.previousSibling && isTextNode$1(node.previousSibling)) {
         return {
           container: node.previousSibling,
           offset: node.previousSibling.data.length
         };
-      } else if (node.nextSibling && isTextNode(node.nextSibling)) {
+      } else if (node.nextSibling && isTextNode$1(node.nextSibling)) {
         return {
           container: node.nextSibling,
           offset: 0
@@ -694,7 +695,7 @@
       }
     };
     const findParentListItemsNodes = (editor, elms) => {
-      const listItemsElms = global$1.map(elms, elm => {
+      const listItemsElms = global$2.map(elms, elm => {
         const parentLi = editor.dom.getParent(elm, 'li,dd,dt', getClosestListHost(editor, elm));
         return parentLi ? parentLi : elm;
       });
@@ -735,7 +736,7 @@
 
     const isCustomList = list => /\btox\-/.test(list.className);
     const inList = (parents, listName) => findUntil(parents, isListNode, isTableCellNode).exists(list => list.nodeName === listName && !isCustomList(list));
-    const isWithinNonEditable = (editor, element) => element !== null && editor.dom.getContentEditableParent(element) === 'false';
+    const isWithinNonEditable = (editor, element) => element !== null && !editor.dom.isEditable(element);
     const selectionIsWithinNonEditableList = editor => {
       const parentList = getParentList(editor);
       return isWithinNonEditable(editor, parentList);
@@ -744,6 +745,7 @@
       const parentList = editor.dom.getParent(element, 'ol,ul,dl');
       return isWithinNonEditable(editor, parentList);
     };
+    const hasNonEditableBlocksSelected = editor => exists(editor.selection.getSelectedBlocks(), not(editor.dom.isEditable));
     const setNodeChangeHandler = (editor, nodeChangeHandler) => {
       const initialNode = editor.selection.getNode();
       nodeChangeHandler({
@@ -771,7 +773,7 @@
     const blank = r => s => s.replace(r, '');
     const trim = blank(/^\s+|\s+$/g);
     const isNotEmpty = s => s.length > 0;
-    const isEmpty = s => !isNotEmpty(s);
+    const isEmpty$1 = s => !isNotEmpty(s);
 
     const isSupported = dom => dom.style !== undefined && isFunction(dom.style.getPropertyValue);
 
@@ -1024,9 +1026,12 @@
     const outdentListSelection = editor => handleIndentation(editor, 'Outdent');
     const flattenListSelection = editor => handleIndentation(editor, 'Flatten');
 
-    var global = tinymce.util.Tools.resolve('tinymce.dom.BookmarkManager');
+    const zeroWidth = '\uFEFF';
+    const isZwsp = char => char === zeroWidth;
 
-    const DOM$1 = global$2.DOM;
+    var global$1 = tinymce.util.Tools.resolve('tinymce.dom.BookmarkManager');
+
+    const DOM$1 = global$3.DOM;
     const createBookmark = rng => {
       const bookmark = {};
       const setupEndPoint = start => {
@@ -1116,13 +1121,13 @@
       dom.setStyle(el, 'list-style-type', type);
     };
     const setAttribs = (elm, attrs) => {
-      global$1.each(attrs, (value, key) => {
+      global$2.each(attrs, (value, key) => {
         elm.setAttribute(key, value);
       });
     };
     const updateListAttrs = (dom, el, detail) => {
       setAttribs(el, detail['list-attributes']);
-      global$1.each(dom.select('li', el), li => {
+      global$2.each(dom.select('li', el), li => {
         setAttribs(li, detail['list-item-attributes']);
       });
     };
@@ -1131,8 +1136,9 @@
       updateListAttrs(dom, el, detail);
     };
     const removeStyles = (dom, element, styles) => {
-      global$1.each(styles, style => dom.setStyle(element, style, ''));
+      global$2.each(styles, style => dom.setStyle(element, style, ''));
     };
+    const isInline = (editor, node) => isNonNullable(node) && !isBlock(node, editor.schema.getBlockElements());
     const getEndPointNode = (editor, rng, start, root) => {
       let container = rng[start ? 'startContainer' : 'endContainer'];
       const offset = rng[start ? 'startOffset' : 'endOffset'];
@@ -1141,6 +1147,42 @@
       }
       if (!start && isBr(container.nextSibling)) {
         container = container.nextSibling;
+      }
+      const findBetterContainer = (container, forward) => {
+        var _a;
+        const walker = new global$5(container, root);
+        const dir = forward ? 'next' : 'prev';
+        let node;
+        while (node = walker[dir]()) {
+          if (!(isVoid(editor, node) || isZwsp(node.textContent) || ((_a = node.textContent) === null || _a === void 0 ? void 0 : _a.length) === 0)) {
+            return Optional.some(node);
+          }
+        }
+        return Optional.none();
+      };
+      if (start && isTextNode$1(container)) {
+        if (isZwsp(container.textContent)) {
+          container = findBetterContainer(container, false).getOr(container);
+        } else {
+          if (container.parentNode !== null && isInline(editor, container.parentNode)) {
+            container = container.parentNode;
+          }
+          while (container.previousSibling !== null && (isInline(editor, container.previousSibling) || isTextNode$1(container.previousSibling))) {
+            container = container.previousSibling;
+          }
+        }
+      }
+      if (!start && isTextNode$1(container)) {
+        if (isZwsp(container.textContent)) {
+          container = findBetterContainer(container, true).getOr(container);
+        } else {
+          if (container.parentNode !== null && isInline(editor, container.parentNode)) {
+            container = container.parentNode;
+          }
+          while (container.nextSibling !== null && (isInline(editor, container.nextSibling) || isTextNode$1(container.nextSibling))) {
+            container = container.nextSibling;
+          }
+        }
       }
       while (container.parentNode !== root) {
         const parent = container.parentNode;
@@ -1167,7 +1209,7 @@
           break;
         }
       }
-      global$1.each(siblings, node => {
+      global$2.each(siblings, node => {
         var _a;
         if (isTextBlock(editor, node)) {
           textBlocks.push(node);
@@ -1182,7 +1224,7 @@
           return;
         }
         const nextSibling = node.nextSibling;
-        if (global.isBookmarkNode(node)) {
+        if (global$1.isBookmarkNode(node)) {
           if (isListNode(nextSibling) || isTextBlock(editor, nextSibling) || !nextSibling && node.parentNode === root) {
             block = null;
             return;
@@ -1217,7 +1259,7 @@
       }
       const bookmark = createBookmark(rng);
       const selectedTextBlocks = getSelectedTextBlocks(editor, rng, root);
-      global$1.each(selectedTextBlocks, block => {
+      global$2.each(selectedTextBlocks, block => {
         let listBlock;
         const sibling = block.previousSibling;
         const parent = block.parentNode;
@@ -1304,7 +1346,7 @@
           parentList,
           ...lists
         ] : lists;
-        global$1.each(allLists, elm => {
+        global$2.each(allLists, elm => {
           updateList$1(editor, elm, listName, detail);
         });
         editor.selection.setRng(resolveBookmark(bookmark));
@@ -1336,7 +1378,7 @@
     };
     const toggleList = (editor, listName, _detail) => {
       const parentList = getParentList(editor);
-      if (isWithinNonEditableList(editor, parentList)) {
+      if (isWithinNonEditableList(editor, parentList) || hasNonEditableBlocksSelected(editor)) {
         return;
       }
       const selectedSubLists = getSelectedSubLists(editor);
@@ -1348,14 +1390,14 @@
       }
     };
 
-    const DOM = global$2.DOM;
+    const DOM = global$3.DOM;
     const normalizeList = (dom, list) => {
       const parentNode = list.parentElement;
       if (parentNode && parentNode.nodeName === 'LI' && parentNode.firstChild === list) {
         const sibling = parentNode.previousSibling;
         if (sibling && sibling.nodeName === 'LI') {
           sibling.appendChild(list);
-          if (isEmpty$1(dom, parentNode)) {
+          if (isEmpty$2(dom, parentNode)) {
             DOM.remove(parentNode);
           }
         } else {
@@ -1370,8 +1412,8 @@
       }
     };
     const normalizeLists = (dom, element) => {
-      const lists = global$1.grep(dom.select('ol,ul', element));
-      global$1.each(lists, list => {
+      const lists = global$2.grep(dom.select('ol,ul', element));
+      global$2.each(lists, list => {
         normalizeList(dom, list);
       });
     };
@@ -1379,14 +1421,14 @@
     const findNextCaretContainer = (editor, rng, isForward, root) => {
       let node = rng.startContainer;
       const offset = rng.startOffset;
-      if (isTextNode(node) && (isForward ? offset < node.data.length : offset > 0)) {
+      if (isTextNode$1(node) && (isForward ? offset < node.data.length : offset > 0)) {
         return node;
       }
       const nonEmptyBlocks = editor.schema.getNonEmptyElements();
       if (isElement(node)) {
-        node = global$5.getNode(node, offset);
+        node = global$6.getNode(node, offset);
       }
-      const walker = new global$4(node, root);
+      const walker = new global$5(node, root);
       if (isForward) {
         if (isBogusBr(editor.dom, node)) {
           walker.next();
@@ -1400,7 +1442,7 @@
         if (nonEmptyBlocks[node.nodeName]) {
           return node;
         }
-        if (isTextNode(node) && node.data.length > 0) {
+        if (isTextNode$1(node) && node.data.length > 0) {
           return node;
         }
       }
@@ -1419,7 +1461,7 @@
       let node;
       const targetElm = hasOnlyOneBlockChild(dom, toElm) ? toElm.firstChild : toElm;
       unwrapSingleBlockChild(dom, fromElm);
-      if (!isEmpty$1(dom, fromElm, true)) {
+      if (!isEmpty$2(dom, fromElm, true)) {
         while (node = fromElm.firstChild) {
           targetElm.appendChild(node);
         }
@@ -1443,7 +1485,7 @@
       if (node && isBr(node) && fromElm.hasChildNodes()) {
         dom.remove(node);
       }
-      if (isEmpty$1(dom, toElm, true)) {
+      if (isEmpty$2(dom, toElm, true)) {
         empty(SugarElement.fromDom(toElm));
       }
       moveChildren(dom, fromElm, toElm);
@@ -1454,7 +1496,7 @@
       const nestedLists = contains$1 ? dom.getParents(fromElm, isListNode, toElm) : [];
       dom.remove(fromElm);
       each$1(nestedLists, list => {
-        if (isEmpty$1(dom, list) && list !== dom.getRoot()) {
+        if (isEmpty$2(dom, list) && list !== dom.getRoot()) {
           dom.remove(list);
         }
       });
@@ -1487,7 +1529,7 @@
       const li = dom.getParent(selection.getStart(), 'LI', root);
       if (li) {
         const ul = li.parentElement;
-        if (ul === editor.getBody() && isEmpty$1(dom, ul)) {
+        if (ul === editor.getBody() && isEmpty$2(dom, ul)) {
           return true;
         }
         const rng = normalizeRange(selection.getRng());
@@ -1577,7 +1619,7 @@
       const selection = editor.selection;
       return !isWithinNonEditableList(editor, selection.getNode()) && (selection.isCollapsed() ? backspaceDeleteCaret(editor, isForward) : backspaceDeleteRange(editor));
     };
-    const setup$1 = editor => {
+    const setup$2 = editor => {
       editor.on('ExecCommand', e => {
         const cmd = e.command.toLowerCase();
         if ((cmd === 'delete' || cmd === 'forwarddelete') && hasListSelection(editor)) {
@@ -1585,11 +1627,11 @@
         }
       });
       editor.on('keydown', e => {
-        if (e.keyCode === global$3.BACKSPACE) {
+        if (e.keyCode === global$4.BACKSPACE) {
           if (backspaceDelete(editor, false)) {
             e.preventDefault();
           }
-        } else if (e.keyCode === global$3.DELETE) {
+        } else if (e.keyCode === global$4.DELETE) {
           if (backspaceDelete(editor, true)) {
             e.preventDefault();
           }
@@ -1648,7 +1690,7 @@
         return 0;
       } else if (isLowercase(start)) {
         return 1;
-      } else if (isEmpty(start)) {
+      } else if (isEmpty$1(start)) {
         return 3;
       } else {
         return 4;
@@ -1780,9 +1822,48 @@
       editor.addQueryStateHandler('InsertDefinitionList', queryListCommandState(editor, 'DL'));
     };
 
+    var global = tinymce.util.Tools.resolve('tinymce.html.Node');
+
+    const isTextNode = node => node.type === 3;
+    const isEmpty = nodeBuffer => nodeBuffer.length === 0;
+    const wrapInvalidChildren = list => {
+      const insertListItem = (buffer, refNode) => {
+        const li = global.create('li');
+        each$1(buffer, node => li.append(node));
+        if (refNode) {
+          list.insert(li, refNode, true);
+        } else {
+          list.append(li);
+        }
+      };
+      const reducer = (buffer, node) => {
+        if (isTextNode(node)) {
+          return [
+            ...buffer,
+            node
+          ];
+        } else if (!isEmpty(buffer) && !isTextNode(node)) {
+          insertListItem(buffer, node);
+          return [];
+        } else {
+          return buffer;
+        }
+      };
+      const restBuffer = foldl(list.children(), reducer, []);
+      if (!isEmpty(restBuffer)) {
+        insertListItem(restBuffer);
+      }
+    };
+    const setup$1 = editor => {
+      editor.on('PreInit', () => {
+        const {parser} = editor;
+        parser.addNodeFilter('ul,ol', nodes => each$1(nodes, wrapInvalidChildren));
+      });
+    };
+
     const setupTabKey = editor => {
       editor.on('keydown', e => {
-        if (e.keyCode !== global$3.TAB || global$3.metaKeyPressed(e)) {
+        if (e.keyCode !== global$4.TAB || global$4.metaKeyPressed(e)) {
           return;
         }
         editor.undoManager.transact(() => {
@@ -1796,7 +1877,7 @@
       if (shouldIndentOnTab(editor)) {
         setupTabKey(editor);
       }
-      setup$1(editor);
+      setup$2(editor);
     };
 
     const setupToggleButtonHandler = (editor, listName) => api => {
@@ -1847,8 +1928,9 @@
     };
 
     var Plugin = () => {
-      global$6.add('lists', editor => {
+      global$7.add('lists', editor => {
         register$3(editor);
+        setup$1(editor);
         if (!editor.hasPlugin('rtc', true)) {
           setup(editor);
           register$2(editor);

@@ -1,5 +1,5 @@
 /**
- * TinyMCE version 6.3.1 (2022-12-06)
+ * TinyMCE version 6.4.2 (2023-04-26)
  */
 
 (function () {
@@ -56,6 +56,7 @@
     const isSimpleType = type => value => typeof value === type;
     const eq = t => a => t === a;
     const isString = isType$1('string');
+    const isObject = isType$1('object');
     const isNull = eq(null);
     const isBoolean = isSimpleType('boolean');
     const isNullable = a => a === null || a === undefined;
@@ -191,13 +192,48 @@
       }
     };
 
-    typeof window !== 'undefined' ? window : Function('return this;')();
+    const Global = typeof window !== 'undefined' ? window : Function('return this;')();
 
+    const path = (parts, scope) => {
+      let o = scope !== undefined && scope !== null ? scope : Global;
+      for (let i = 0; i < parts.length && o !== undefined && o !== null; ++i) {
+        o = o[parts[i]];
+      }
+      return o;
+    };
+    const resolve = (p, scope) => {
+      const parts = p.split('.');
+      return path(parts, scope);
+    };
+
+    const unsafe = (name, scope) => {
+      return resolve(name, scope);
+    };
+    const getOrDie = (name, scope) => {
+      const actual = unsafe(name, scope);
+      if (actual === undefined || actual === null) {
+        throw new Error(name + ' not available on this browser');
+      }
+      return actual;
+    };
+
+    const getPrototypeOf = Object.getPrototypeOf;
+    const sandHTMLElement = scope => {
+      return getOrDie('HTMLElement', scope);
+    };
+    const isPrototypeOf = x => {
+      const scope = resolve('ownerDocument.defaultView', x);
+      return isObject(x) && (sandHTMLElement(scope).prototype.isPrototypeOf(x) || /^HTML\w*Element$/.test(getPrototypeOf(x).constructor.name));
+    };
+
+    const ELEMENT = 1;
     const TEXT = 3;
 
     const type = element => element.dom.nodeType;
     const value = element => element.dom.nodeValue;
     const isType = t => element => type(element) === t;
+    const isHTMLElement = element => isElement(element) && isPrototypeOf(element.dom);
+    const isElement = isType(ELEMENT);
     const isText = isType(TEXT);
 
     const rawSet = (dom, key, value) => {
@@ -329,21 +365,37 @@
     const selector = charMapToSelector(charMap);
     const nbspClass = 'mce-nbsp';
 
+    const getRaw = element => element.dom.contentEditable;
+
     const wrapCharWithSpan = value => '<span data-mce-bogus="1" class="mce-' + charMap[value] + '">' + value + '</span>';
 
+    const isWrappedNbsp = node => node.nodeName.toLowerCase() === 'span' && node.classList.contains('mce-nbsp-wrap');
     const isMatch = n => {
       const value$1 = value(n);
       return isText(n) && isString(value$1) && regExp.test(value$1);
     };
-    const filterDescendants = (scope, predicate) => {
+    const isContentEditableFalse = node => isHTMLElement(node) && getRaw(node) === 'false';
+    const isChildEditable = (node, currentState) => {
+      if (isHTMLElement(node) && !isWrappedNbsp(node.dom)) {
+        const value = getRaw(node);
+        if (value === 'true') {
+          return true;
+        } else if (value === 'false') {
+          return false;
+        }
+      }
+      return currentState;
+    };
+    const filterEditableDescendants = (scope, predicate, editable) => {
       let result = [];
       const dom = scope.dom;
       const children = map(dom.childNodes, SugarElement.fromDom);
+      const isEditable = node => isWrappedNbsp(node.dom) || !isContentEditableFalse(node);
       each$1(children, x => {
-        if (predicate(x)) {
+        if (editable && isEditable(x) && predicate(x)) {
           result = result.concat([x]);
         }
-        result = result.concat(filterDescendants(x, predicate));
+        result = result.concat(filterEditableDescendants(x, predicate, isChildEditable(x, editable)));
       });
       return result;
     };
@@ -358,10 +410,9 @@
     };
     const replaceWithSpans = text => text.replace(regExpGlobal, wrapCharWithSpan);
 
-    const isWrappedNbsp = node => node.nodeName.toLowerCase() === 'span' && node.classList.contains('mce-nbsp-wrap');
     const show = (editor, rootElm) => {
       const dom = editor.dom;
-      const nodeList = filterDescendants(SugarElement.fromDom(rootElm), isMatch);
+      const nodeList = filterEditableDescendants(SugarElement.fromDom(rootElm), isMatch, editor.dom.isEditable(rootElm));
       each$1(nodeList, n => {
         var _a;
         const parent = n.dom.parentNode;

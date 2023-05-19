@@ -11,6 +11,9 @@ $enable-negative-margins: false !default;
 $enable-rfs: false !default;
 $enable-cssgrid: true !default;
 
+// DARK MODE
+$color-mode-type: data !default;
+
 // ASSETS BASE
 $assets-base: ".." !default;
 
@@ -20,7 +23,9 @@ $font-google-monospaced: null !default;
 $font-local: null !default;
 $font-icons: () !default;
 
+/* prettier-ignore */
 $font-family-sans-serif: unquote("#{if($font-local, "#{$font-local}, ", ' ')}#{if($font-google, "#{$font-google}, ", ' ')}") -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif !default;
+/* prettier-ignore */
 $font-family-monospace: unquote("#{if($font-google-monospaced, "#{$font-google-monospaced}, ", '')}") Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
 $font-family-serif: "Georgia", "Times New Roman", times, serif !default;
 
@@ -156,6 +161,7 @@ $bg-surface-dark: var(--#{$prefix}dark) !default;
 
 $body-bg: $gray-100 !default;
 $body-color: $dark !default;
+$body-emphasis-color: $dark !default;
 
 $color-contrast-dark: $body-color !default;
 $color-contrast-light: $light !default;
@@ -286,16 +292,6 @@ $theme-colors: map-merge(
   $theme-colors,
   map-merge($extra-colors, $social-colors)
 );
-
-//
-// Dark mode
-//
-$dark-mode-darken: darken($dark, 2%) !default;
-$dark-mode-lighten: lighten($dark, 2%) !default;
-$dark-mode-border-color: lighten($dark, 4%) !default;
-$dark-mode-border-dark-color: lighten($dark, 4%) !default;
-$dark-mode-border-color-active: lighten($dark, 12%) !default;
-$dark-mode-text: $light;
 
 // Borders
 $border-width: 1px !default;
@@ -461,6 +457,14 @@ $shadows: (
 
 $box-shadow-inset: 0 0 transparent !default;
 
+// Focus
+$focus-ring-width: 0.25rem !default;
+$focus-ring-opacity: 0.25 !default;
+$focus-ring-color: rgba(var(--#{$prefix}primary-rgb), $focus-ring-opacity) !default;
+$focus-ring-blur: 0 !default;
+$focus-ring-border-color: rgba(var(--#{$prefix}primary-rgb), 50%) !default;
+$focus-ring-box-shadow: 0 0 $focus-ring-blur $focus-ring-width $focus-ring-color !default;
+
 // Transitions
 $transition-time: 0.3s !default;
 
@@ -533,8 +537,8 @@ $input-height: null !default;
 $input-height-sm: null !default;
 $input-height-lg: null !default;
 $input-border-radius: var(--#{$prefix}border-radius) !default;
-$input-color: inherit !default;
-$input-focus-color: inherit !default;
+$input-color: var(--#{$prefix}body-color) !default;
+$input-focus-color: var(--#{$prefix}body-color) !default;
 
 // Buttons
 $btn-disabled-opacity: 0.4 !default;
@@ -627,7 +631,7 @@ $tooltip-padding-x: var(--#{$prefix}spacer-2) !default;
 $loader-size: 2.5rem !default;
 
 // Lists
-$list-group-header-bg: var(--#{$prefix}light) !default;
+$list-group-header-bg: var(--#{$prefix}bg-surface-tertiary) !default;
 $list-group-header-color: var(--#{$prefix}muted) !default;
 
 $list-group-border-color: var(--#{$prefix}border-color) !default;
@@ -653,7 +657,7 @@ $modal-header-padding: 1.5rem !default;
 $modal-header-height: 3.5rem !default;
 $modal-header-border-width: var(--#{$prefix}border-width) !default;
 $modal-header-border-color: var(--#{$prefix}border-color) !default;
-$modal-header-bg: $white !default;
+$modal-header-bg: transparent !default;
 $modal-inner-padding: 1.5rem !default;
 
 $modal-footer-border-width: var(--#{$prefix}border-width) !default;
@@ -827,7 +831,7 @@ $input-border-color-translucent: var(
 ) !default;
 $input-placeholder-color: $text-muted-light !default;
 
-$input-group-addon-bg: $light !default;
+$input-group-addon-bg: var(--#{$prefix}bg-surface-secondary) !default;
 $input-group-addon-color: var(--#{$prefix}muted) !default;
 
 $input-border-radius: var(--#{$prefix}border-radius) !default;

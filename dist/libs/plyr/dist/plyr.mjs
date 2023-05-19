@@ -1,4 +1,5 @@
 function _defineProperty$1(obj, key, value) {
+  key = _toPropertyKey(key);
   if (key in obj) {
     Object.defineProperty(obj, key, {
       value: value,
@@ -10,6 +11,20 @@ function _defineProperty$1(obj, key, value) {
     obj[key] = value;
   }
   return obj;
+}
+function _toPrimitive(input, hint) {
+  if (typeof input !== "object" || input === null) return input;
+  var prim = input[Symbol.toPrimitive];
+  if (prim !== undefined) {
+    var res = prim.call(input, hint || "default");
+    if (typeof res !== "object") return res;
+    throw new TypeError("@@toPrimitive must return a primitive value.");
+  }
+  return (hint === "string" ? String : Number)(input);
+}
+function _toPropertyKey(arg) {
+  var key = _toPrimitive(arg, "string");
+  return typeof key === "symbol" ? key : String(key);
 }
 
 function _classCallCheck(e, t) {
@@ -312,12 +327,20 @@ function repaint(element, delay) {
 // Unfortunately, due to mixed support, UA sniffing is required
 // ==========================================================================
 
-const browser = {
-  isIE: Boolean(window.document.documentMode),
-  isEdge: /Edge/g.test(navigator.userAgent),
-  isWebkit: 'WebkitAppearance' in document.documentElement.style && !/Edge/g.test(navigator.userAgent),
-  isIPhone: /iPhone|iPod/gi.test(navigator.userAgent) && navigator.maxTouchPoints > 1,
-  isIos: /iPad|iPhone|iPod/gi.test(navigator.userAgent) && navigator.maxTouchPoints > 1
+const isIE = Boolean(window.document.documentMode);
+const isEdge = /Edge/g.test(navigator.userAgent);
+const isWebKit = 'WebkitAppearance' in document.documentElement.style && !/Edge/g.test(navigator.userAgent);
+const isIPhone = /iPhone|iPod/gi.test(navigator.userAgent) && navigator.maxTouchPoints > 1;
+// navigator.platform may be deprecated but this check is still required
+const isIPadOS = navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1;
+const isIos = /iPad|iPhone|iPod/gi.test(navigator.userAgent) && navigator.maxTouchPoints > 1;
+var browser = {
+  isIE,
+  isEdge,
+  isWebKit,
+  isIPhone,
+  isIPadOS,
+  isIos
 };
 
 // ==========================================================================
@@ -390,9 +413,7 @@ function wrap(elements, wrapper) {
 
 // Set attributes
 function setAttributes(element, attributes) {
-  if (!is.element(element) || is.empty(attributes)) {
-    return;
-  }
+  if (!is.element(element) || is.empty(attributes)) return;
 
   // Assume null and undefined attributes should be left out,
   // Setting them would otherwise convert them to "null" and "undefined"
@@ -418,19 +439,15 @@ function createElement(type, attributes, text) {
   return element;
 }
 
-// Inaert an element after another
+// Insert an element after another
 function insertAfter(element, target) {
-  if (!is.element(element) || !is.element(target)) {
-    return;
-  }
+  if (!is.element(element) || !is.element(target)) return;
   target.parentNode.insertBefore(element, target.nextSibling);
 }
 
 // Insert a DocumentFragment
 function insertElement(type, parent, attributes, text) {
-  if (!is.element(parent)) {
-    return;
-  }
+  if (!is.element(parent)) return;
   parent.appendChild(createElement(type, attributes, text));
 }
 
@@ -448,9 +465,7 @@ function removeElement(element) {
 
 // Remove all child elements
 function emptyElement(element) {
-  if (!is.element(element)) {
-    return;
-  }
+  if (!is.element(element)) return;
   let {
     length
   } = element.childNodes;
@@ -462,9 +477,7 @@ function emptyElement(element) {
 
 // Replace element
 function replaceElement(newChild, oldChild) {
-  if (!is.element(oldChild) || !is.element(oldChild.parentNode) || !is.element(newChild)) {
-    return null;
-  }
+  if (!is.element(oldChild) || !is.element(oldChild.parentNode) || !is.element(newChild)) return null;
   oldChild.parentNode.replaceChild(newChild, oldChild);
   return newChild;
 }
@@ -476,9 +489,7 @@ function getAttributesFromSelector(sel, existingAttributes) {
   // '#test' to { id: 'test' }
   // '[data-test="test"]' to { 'data-test': 'test' }
 
-  if (!is.string(sel) || is.empty(sel)) {
-    return {};
-  }
+  if (!is.string(sel) || is.empty(sel)) return {};
   const attributes = {};
   const existing = extend({}, existingAttributes);
   sel.split(',').forEach(s => {
@@ -516,9 +527,7 @@ function getAttributesFromSelector(sel, existingAttributes) {
 
 // Toggle hidden
 function toggleHidden(element, hidden) {
-  if (!is.element(element)) {
-    return;
-  }
+  if (!is.element(element)) return;
   let hide = hidden;
   if (!is.boolean(hide)) {
     hide = !element.hidden;
@@ -591,20 +600,14 @@ function getElement(selector) {
 }
 
 // Set focus and tab focus class
-function setFocus(element = null, tabFocus = false) {
-  if (!is.element(element)) {
-    return;
-  }
+function setFocus(element = null, focusVisible = false) {
+  if (!is.element(element)) return;
 
   // Set regular focus
   element.focus({
-    preventScroll: true
+    preventScroll: true,
+    focusVisible
   });
-
-  // If we want to mimic keyboard focus via tab
-  if (tabFocus) {
-    toggleClass(element, this.config.classNames.tabFocus);
-  }
 }
 
 // ==========================================================================
@@ -625,10 +628,9 @@ const support = {
   video: 'canPlayType' in document.createElement('video'),
   // Check for support
   // Basic functionality vs full UI
-  check(type, provider, playsinline) {
-    const canPlayInline = browser.isIPhone && playsinline && support.playsinline;
+  check(type, provider) {
     const api = support[type] || provider !== 'html5';
-    const ui = api && support.rangeInput && (type !== 'video' || !browser.isIPhone || canPlayInline);
+    const ui = api && support.rangeInput;
     return {
       api,
       ui
@@ -1125,7 +1127,7 @@ function generateId(prefix) {
 // Format string
 function format(input, ...args) {
   if (is.empty(input)) return input;
-  return input.toString().replace(/{(\d+)}/g, (match, i) => args[i].toString());
+  return input.toString().replace(/{(\d+)}/g, (_, i) => args[i].toString());
 }
 
 // Get percentage
@@ -1706,7 +1708,8 @@ const controls = {
     const attributes = getAttributesFromSelector(this.config.selectors.display[type], attrs);
     const container = createElement('div', extend(attributes, {
       class: `${attributes.class ? attributes.class : ''} ${this.config.classNames.display.time} `.trim(),
-      'aria-label': i18n.get(type, this.config)
+      'aria-label': i18n.get(type, this.config),
+      role: 'timer'
     }), '00:00');
 
     // Reference for updates
@@ -1720,7 +1723,7 @@ const controls = {
     // Navigate through menus via arrow keys and space
     on.call(this, menuItem, 'keydown keyup', event => {
       // We only care about space and ⬆️ ⬇️️ ➡️
-      if (!['Space', 'ArrowUp', 'ArrowDown', 'ArrowRight'].includes(event.key)) {
+      if (![' ', 'ArrowUp', 'ArrowDown', 'ArrowRight'].includes(event.key)) {
         return;
       }
 
@@ -1735,11 +1738,11 @@ const controls = {
       const isRadioButton = matches(menuItem, '[role="menuitemradio"]');
 
       // Show the respective menu
-      if (!isRadioButton && ['Space', 'ArrowRight'].includes(event.key)) {
+      if (!isRadioButton && [' ', 'ArrowRight'].includes(event.key)) {
         controls.showMenuPanel.call(this, type, true);
       } else {
         let target;
-        if (event.key !== 'Space') {
+        if (event.key !== ' ') {
           if (event.key === 'ArrowDown' || isRadioButton && event.key === 'ArrowRight') {
             target = menuItem.nextElementSibling;
             if (!is.element(target)) {
@@ -1804,7 +1807,7 @@ const controls = {
       }
     });
     this.listeners.bind(menuItem, 'click keyup', event => {
-      if (is.keyboardEvent(event) && event.key !== 'Space') {
+      if (is.keyboardEvent(event) && event.key !== ' ') {
         return;
       }
       event.preventDefault();
@@ -1944,7 +1947,7 @@ const controls = {
     }
 
     // WebKit only
-    if (!browser.isWebkit) {
+    if (!browser.isWebKit && !browser.isIPadOS) {
       return;
     }
 
@@ -2327,7 +2330,7 @@ const controls = {
     toggleHidden(this.elements.settings.menu, !visible);
   },
   // Focus the first menu item in a given (or visible) menu
-  focusFirstMenuItem(pane, tabFocus = false) {
+  focusFirstMenuItem(pane, focusVisible = false) {
     if (this.elements.settings.popup.hidden) {
       return;
     }
@@ -2336,7 +2339,7 @@ const controls = {
       target = Object.values(this.elements.settings.panels).find(p => !p.hidden);
     }
     const firstItem = target.querySelector('[role^="menuitem"]');
-    setFocus.call(this, firstItem, tabFocus);
+    setFocus.call(this, firstItem, focusVisible);
   },
   // Show/hide menu
   toggleMenu(input) {
@@ -2412,7 +2415,7 @@ const controls = {
     };
   },
   // Show a panel in the menu
-  showMenuPanel(type = '', tabFocus = false) {
+  showMenuPanel(type = '', focusVisible = false) {
     const target = this.elements.container.querySelector(`#plyr-settings-${this.id}-${type}`);
 
     // Nothing to show, bail
@@ -2463,7 +2466,7 @@ const controls = {
     toggleHidden(target, false);
 
     // Focus the first item
-    controls.focusFirstMenuItem.call(this, target, tabFocus);
+    controls.focusFirstMenuItem.call(this, target, focusVisible);
   },
   // Set the download URL
   setDownloadUrl() {
@@ -2590,7 +2593,7 @@ const controls = {
         // Volume range control
         // Ignored on iOS as it's handled globally
         // https://developer.apple.com/library/safari/documentation/AudioVideo/Conceptual/Using_HTML5_Audio_Video/Device-SpecificConsiderations/Device-SpecificConsiderations.html
-        if (control === 'volume' && !browser.isIos) {
+        if (control === 'volume' && !browser.isIos && !browser.isIPadOS) {
           // Set the attributes
           const attributes = {
             max: 1,
@@ -3382,8 +3385,7 @@ const defaults = {
   autoplay: false,
   // Only allow one media playing at once (vimeo only)
   autopause: true,
-  // Allow inline playback on iOS (this effects YouTube/Vimeo - HTML5 requires the attribute present)
-  // TODO: Remove iosNative fullscreen option in favour of this (logic needs work)
+  // Allow inline playback on iOS
   playsinline: true,
   // Default time to skip when rewind/fast forward
   seekTime: 10,
@@ -3413,7 +3415,7 @@ const defaults = {
   // Sprite (for icons)
   loadSprite: true,
   iconPrefix: 'plyr',
-  iconUrl: 'https://cdn.plyr.io/3.7.3/plyr.svg',
+  iconUrl: 'https://cdn.plyr.io/3.7.8/plyr.svg',
   // Blank video (used to prevent errors on source change)
   blankVideo: 'https://cdn.plyr.io/static/blank.mp4',
   // Quality default
@@ -3646,7 +3648,6 @@ const defaults = {
     marker: 'plyr__progress__marker',
     hidden: 'plyr__sr-only',
     hideControls: 'plyr--hide-controls',
-    isIos: 'plyr--is-ios',
     isTouch: 'plyr--is-touch',
     uiSupported: 'plyr--full-ui',
     noTransition: 'plyr--no-transition',
@@ -3674,7 +3675,6 @@ const defaults = {
       supported: 'plyr--airplay-supported',
       active: 'plyr--airplay-active'
     },
-    tabFocus: 'plyr__tab-focus',
     previewThumbnails: {
       // Tooltip thumbs
       thumbContainer: 'plyr__preview-thumb',
@@ -3819,9 +3819,7 @@ class Console {
 class Fullscreen {
   constructor(player) {
     _defineProperty$1(this, "onChange", () => {
-      if (!this.enabled) {
-        return;
-      }
+      if (!this.supported) return;
 
       // Update toggle button
       const button = this.player.elements.buttons.fullscreen;
@@ -3838,8 +3836,8 @@ class Fullscreen {
       // Store or restore scroll position
       if (toggle) {
         this.scrollPosition = {
-          x: window.scrollX || 0,
-          y: window.scrollY || 0
+          x: window.scrollX ?? 0,
+          y: window.scrollY ?? 0
         };
       } else {
         window.scrollTo(this.scrollPosition.x, this.scrollPosition.y);
@@ -3866,9 +3864,7 @@ class Fullscreen {
         const hasProperty = is.string(viewport.content) && viewport.content.includes(property);
         if (toggle) {
           this.cleanupViewport = !hasProperty;
-          if (!hasProperty) {
-            viewport.content += `,${property}`;
-          }
+          if (!hasProperty) viewport.content += `,${property}`;
         } else if (this.cleanupViewport) {
           viewport.content = viewport.content.split(',').filter(part => part.trim() !== property).join(',');
         }
@@ -3877,11 +3873,10 @@ class Fullscreen {
       // Toggle button and fire events
       this.onChange();
     });
+    // Trap focus inside container
     _defineProperty$1(this, "trapFocus", event => {
-      // Bail if iOS, not active, not the tab key
-      if (browser.isIos || !this.active || event.key !== 'Tab') {
-        return;
-      }
+      // Bail if iOS/iPadOS, not active, not the tab key
+      if (browser.isIos || browser.isIPadOS || !this.active || event.key !== 'Tab') return;
 
       // Get the current focused element
       const focused = document.activeElement;
@@ -3898,28 +3893,22 @@ class Fullscreen {
         event.preventDefault();
       }
     });
+    // Update UI
     _defineProperty$1(this, "update", () => {
-      if (this.enabled) {
+      if (this.supported) {
         let mode;
-        if (this.forceFallback) {
-          mode = 'Fallback (forced)';
-        } else if (Fullscreen.native) {
-          mode = 'Native';
-        } else {
-          mode = 'Fallback';
-        }
+        if (this.forceFallback) mode = 'Fallback (forced)';else if (Fullscreen.nativeSupported) mode = 'Native';else mode = 'Fallback';
         this.player.debug.log(`${mode} fullscreen enabled`);
       } else {
         this.player.debug.log('Fullscreen not supported and fallback disabled');
       }
 
       // Add styling hook to show button
-      toggleClass(this.player.elements.container, this.player.config.classNames.fullscreen.enabled, this.enabled);
+      toggleClass(this.player.elements.container, this.player.config.classNames.fullscreen.enabled, this.supported);
     });
+    // Make an element fullscreen
     _defineProperty$1(this, "enter", () => {
-      if (!this.enabled) {
-        return;
-      }
+      if (!this.supported) return;
 
       // iOS native fullscreen doesn't need the request step
       if (browser.isIos && this.player.config.fullscreen.iosNative) {
@@ -3928,7 +3917,7 @@ class Fullscreen {
         } else {
           this.target.webkitEnterFullscreen();
         }
-      } else if (!Fullscreen.native || this.forceFallback) {
+      } else if (!Fullscreen.nativeSupported || this.forceFallback) {
         this.toggleFallback(true);
       } else if (!this.prefix) {
         this.target.requestFullscreen({
@@ -3938,16 +3927,19 @@ class Fullscreen {
         this.target[`${this.prefix}Request${this.property}`]();
       }
     });
+    // Bail from fullscreen
     _defineProperty$1(this, "exit", () => {
-      if (!this.enabled) {
-        return;
-      }
+      if (!this.supported) return;
 
       // iOS native fullscreen
       if (browser.isIos && this.player.config.fullscreen.iosNative) {
-        this.target.webkitExitFullscreen();
+        if (this.player.isVimeo) {
+          this.player.embed.exitFullscreen();
+        } else {
+          this.target.webkitEnterFullscreen();
+        }
         silencePromise(this.player.play());
-      } else if (!Fullscreen.native || this.forceFallback) {
+      } else if (!Fullscreen.nativeSupported || this.forceFallback) {
         this.toggleFallback(false);
       } else if (!this.prefix) {
         (document.cancelFullScreen || document.exitFullscreen).call(document);
@@ -3956,12 +3948,9 @@ class Fullscreen {
         document[`${this.prefix}${action}${this.property}`]();
       }
     });
+    // Toggle state
     _defineProperty$1(this, "toggle", () => {
-      if (!this.active) {
-        this.enter();
-      } else {
-        this.exit();
-      }
+      if (!this.active) this.enter();else this.exit();
     });
     // Keep reference to parent
     this.player = player;
@@ -4004,26 +3993,22 @@ class Fullscreen {
 
     // Update the UI
     this.update();
-
-    // this.toggle = this.toggle.bind(this);
   }
 
   // Determine if native supported
-  static get native() {
+  static get nativeSupported() {
     return !!(document.fullscreenEnabled || document.webkitFullscreenEnabled || document.mozFullScreenEnabled || document.msFullscreenEnabled);
   }
 
   // If we're actually using native
-  get usingNative() {
-    return Fullscreen.native && !this.forceFallback;
+  get useNative() {
+    return Fullscreen.nativeSupported && !this.forceFallback;
   }
 
   // Get the prefix for handlers
   static get prefix() {
     // No prefix
-    if (is.function(document.exitFullscreen)) {
-      return '';
-    }
+    if (is.function(document.exitFullscreen)) return '';
 
     // Check for fullscreen support by vendor prefix
     let value = '';
@@ -4041,19 +4026,26 @@ class Fullscreen {
     return this.prefix === 'moz' ? 'FullScreen' : 'Fullscreen';
   }
 
-  // Determine if fullscreen is enabled
-  get enabled() {
-    return (Fullscreen.native || this.player.config.fullscreen.fallback) && this.player.config.fullscreen.enabled && this.player.supported.ui && this.player.isVideo;
+  // Determine if fullscreen is supported
+  get supported() {
+    return [
+    // Fullscreen is enabled in config
+    this.player.config.fullscreen.enabled,
+    // Must be a video
+    this.player.isVideo,
+    // Either native is supported or fallback enabled
+    Fullscreen.nativeSupported || this.player.config.fullscreen.fallback,
+    // YouTube has no way to trigger fullscreen, so on devices with no native support, playsinline
+    // must be enabled and iosNative fullscreen must be disabled to offer the fullscreen fallback
+    !this.player.isYouTube || Fullscreen.nativeSupported || !browser.isIos || this.player.config.playsinline && !this.player.config.fullscreen.iosNative].every(Boolean);
   }
 
   // Get active state
   get active() {
-    if (!this.enabled) {
-      return false;
-    }
+    if (!this.supported) return false;
 
     // Fallback using classname
-    if (!Fullscreen.native || this.forceFallback) {
+    if (!Fullscreen.nativeSupported || this.forceFallback) {
       return hasClass(this.target, this.player.config.classNames.fullscreen.fallback);
     }
     const element = !this.prefix ? this.target.getRootNode().fullscreenElement : this.target.getRootNode()[`${this.prefix}${this.property}Element`];
@@ -4062,7 +4054,7 @@ class Fullscreen {
 
   // Get target element
   get target() {
-    return browser.isIos && this.player.config.fullscreen.iosNative ? this.player.media : this.player.elements.fullscreen || this.player.elements.container;
+    return browser.isIos && this.player.config.fullscreen.iosNative ? this.player.media : this.player.elements.fullscreen ?? this.player.elements.container;
   }
 }
 
@@ -4168,9 +4160,6 @@ const ui = {
 
     // Check for airplay support
     toggleClass(this.elements.container, this.config.classNames.airplay.supported, support.airplay && this.isHTML5);
-
-    // Add iOS class
-    toggleClass(this.elements.container, this.config.classNames.isIos, browser.isIos);
 
     // Add touch class
     toggleClass(this.elements.container, this.config.classNames.isTouch, this.touch);
@@ -4350,6 +4339,7 @@ const ui = {
 
 class Listeners {
   constructor(_player) {
+    // Device is touch enabled
     _defineProperty$1(this, "firstTouch", () => {
       const {
         player
@@ -4362,62 +4352,7 @@ class Listeners {
       // Add touch class
       toggleClass(elements.container, player.config.classNames.isTouch, true);
     });
-    _defineProperty$1(this, "setTabFocus", event => {
-      const {
-        player
-      } = this;
-      const {
-        elements
-      } = player;
-      const {
-        key,
-        type,
-        timeStamp
-      } = event;
-      clearTimeout(this.focusTimer);
-
-      // Ignore any key other than tab
-      if (type === 'keydown' && key !== 'Tab') {
-        return;
-      }
-
-      // Store reference to event timeStamp
-      if (type === 'keydown') {
-        this.lastKeyDown = timeStamp;
-      }
-
-      // Remove current classes
-      const removeCurrent = () => {
-        const className = player.config.classNames.tabFocus;
-        const current = getElements.call(player, `.${className}`);
-        toggleClass(current, className, false);
-      };
-
-      // Determine if a key was pressed to trigger this event
-      const wasKeyDown = timeStamp - this.lastKeyDown <= 20;
-
-      // Ignore focus events if a key was pressed prior
-      if (type === 'focus' && !wasKeyDown) {
-        return;
-      }
-
-      // Remove all current
-      removeCurrent();
-
-      // Delay the adding of classname until the focus has changed
-      // This event fires before the focusin event
-      if (type !== 'focusout') {
-        this.focusTimer = setTimeout(() => {
-          const focused = document.activeElement;
-
-          // Ignore if current focus element isn't inside the player
-          if (!elements.container.contains(focused)) {
-            return;
-          }
-          toggleClass(document.activeElement, player.config.classNames.tabFocus, true);
-        }, 10);
-      }
-    });
+    // Global window & document listeners
     _defineProperty$1(this, "global", (toggle = true) => {
       const {
         player
@@ -4433,10 +4368,8 @@ class Listeners {
 
       // Detect touch by events
       once.call(player, document.body, 'touchstart', this.firstTouch);
-
-      // Tab focus detection
-      toggleListener.call(player, document.body, 'keydown focus blur focusout', this.setTabFocus, toggle, false, true);
     });
+    // Container listeners
     _defineProperty$1(this, "container", () => {
       const {
         player
@@ -4544,6 +4477,7 @@ class Listeners {
         method.call(player, window, 'resize', resized);
       });
     });
+    // Listen for media events
     _defineProperty$1(this, "media", () => {
       const {
         player
@@ -4671,6 +4605,7 @@ class Listeners {
         triggerEvent.call(player, elements.container, event.type, true, detail);
       });
     });
+    // Run default and custom handlers
     _defineProperty$1(this, "proxy", (event, defaultHandler, customHandlerKey) => {
       const {
         player
@@ -4689,6 +4624,7 @@ class Listeners {
         defaultHandler.call(player, event);
       }
     });
+    // Trigger custom and default handlers
     _defineProperty$1(this, "bind", (element, type, defaultHandler, customHandlerKey, passive = true) => {
       const {
         player
@@ -4697,6 +4633,7 @@ class Listeners {
       const hasCustomHandler = is.function(customHandler);
       on.call(player, element, type, event => this.proxy(event, defaultHandler, customHandlerKey), passive && !hasCustomHandler);
     });
+    // Listen for control events
     _defineProperty$1(this, "controls", () => {
       const {
         player
@@ -4771,7 +4708,7 @@ class Listeners {
       // We have to bind to keyup otherwise Firefox triggers a click when a keydown event handler shifts focus
       // https://bugzilla.mozilla.org/show_bug.cgi?id=1220143
       this.bind(elements.buttons.settings, 'keyup', event => {
-        if (!['Space', 'Enter'].includes(event.key)) {
+        if (![' ', 'Enter'].includes(event.key)) {
           return;
         }
 
@@ -4895,7 +4832,7 @@ class Listeners {
       });
 
       // Polyfill for lower fill in <input type="range"> for webkit
-      if (browser.isWebkit) {
+      if (browser.isWebKit) {
         Array.from(getElements.call(player, 'input[type="range"]')).forEach(element => {
           this.bind(element, 'input', event => controls.updateRangeFill.call(player, event.target));
         });
@@ -4996,7 +4933,6 @@ class Listeners {
     this.lastKeyDown = null;
     this.handleKey = this.handleKey.bind(this);
     this.toggleMenu = this.toggleMenu.bind(this);
-    this.setTabFocus = this.setTabFocus.bind(this);
     this.firstTouch = this.firstTouch.bind(this);
   }
 
@@ -5053,13 +4989,13 @@ class Listeners {
         if (focused !== seek && matches(focused, editable)) {
           return;
         }
-        if (event.key === 'Space' && matches(focused, 'button, [role^="menuitem"]')) {
+        if (event.key === ' ' && matches(focused, 'button, [role^="menuitem"]')) {
           return;
         }
       }
 
       // Which keys should we prevent default
-      const preventDefault = ['Space', 'ArrowLeft', 'ArrowUp', 'ArrowRight', 'ArrowDown', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'c', 'f', 'k', 'l', 'm'];
+      const preventDefault = [' ', 'ArrowLeft', 'ArrowUp', 'ArrowRight', 'ArrowDown', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', 'c', 'f', 'k', 'l', 'm'];
 
       // If the key is found prevent default (e.g. prevent scrolling for arrows)
       if (preventDefault.includes(key)) {
@@ -5081,7 +5017,7 @@ class Listeners {
             seekByIncrement(parseInt(key, 10));
           }
           break;
-        case 'Space':
+        case ' ':
         case 'k':
           if (!repeat) {
             silencePromise(player.togglePlay());
@@ -5134,8 +5070,6 @@ class Listeners {
   toggleMenu(event) {
     controls.toggleMenu.call(this.player, event);
   }
-
-  // Device is touch enabled
 }
 
 var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
@@ -5547,7 +5481,7 @@ const vimeo = {
       autoplay: player.autoplay,
       muted: player.muted,
       gesture: 'media',
-      playsinline: !this.config.fullscreen.iosNative,
+      playsinline: player.config.playsinline,
       // hash has to be added to iframe-URL
       ...hashParam,
       ...frameParams
@@ -5698,7 +5632,7 @@ const vimeo = {
       },
       set(input) {
         const toggle = is.boolean(input) ? input : false;
-        player.embed.setVolume(toggle ? 0 : player.config.volume).then(() => {
+        player.embed.setMuted(toggle ? true : player.config.muted).then(() => {
           muted = toggle;
           triggerEvent.call(player, player.media, 'volumechange');
         });
@@ -5971,7 +5905,7 @@ const youtube = {
       const posterSrc = s => `https://i.ytimg.com/vi/${videoId}/${s}default.jpg`;
 
       // Check thumbnail images in order of quality, but reject fallback thumbnails (120px wide)
-      loadImage(posterSrc('maxres'), 121) // Higest quality and unpadded
+      loadImage(posterSrc('maxres'), 121) // Highest quality and un-padded
       .catch(() => loadImage(posterSrc('sd'), 121)) // 480p padded 4:3
       .catch(() => loadImage(posterSrc('hq'))) // 360p padded 4:3. Always exists
       .then(image => ui.setPoster.call(player, image.src)).then(src => {
@@ -5997,7 +5931,7 @@ const youtube = {
         // Disable keyboard as we handle it
         disablekb: 1,
         // Allow iOS inline playback
-        playsinline: !player.config.fullscreen.iosNative ? 1 : 0,
+        playsinline: player.config.playsinline && !player.config.fullscreen.iosNative ? 1 : 0,
         // Captions are flaky on YouTube
         cc_load_policy: player.captions.active ? 1 : 0,
         cc_lang_pref: player.config.captions.language,
@@ -6016,7 +5950,7 @@ const youtube = {
               100: 'The video requested was not found. This error occurs when a video has been removed (for any reason) or has been marked as private.',
               101: 'The owner of the requested video does not allow it to be played in embedded players.',
               150: 'The owner of the requested video does not allow it to be played in embedded players.'
-            }[code] || 'An unknown error occured';
+            }[code] || 'An unknown error occurred';
             player.media.error = {
               code,
               message
@@ -6328,6 +6262,9 @@ class Ads {
    * @return {Ads}
    */
   constructor(player) {
+    /**
+     * Load the IMA SDK
+     */
     _defineProperty$1(this, "load", () => {
       if (!this.enabled) {
         return;
@@ -6345,6 +6282,9 @@ class Ads {
         this.ready();
       }
     });
+    /**
+     * Get the ads instance ready
+     */
     _defineProperty$1(this, "ready", () => {
       // Double check we're enabled
       if (!this.enabled) {
@@ -6366,6 +6306,14 @@ class Ads {
       // Setup the IMA SDK
       this.setupIMA();
     });
+    /**
+     * In order for the SDK to display ads for our video, we need to tell it where to put them,
+     * so here we define our ad container. This div is set up to render on top of the video player.
+     * Using the code below, we tell the SDK to render ads within that div. We also provide a
+     * handle to the content video player - the SDK will poll the current time of our player to
+     * properly place mid-rolls. After we create the ad display container, we initialize it. On
+     * mobile devices, this initialization is done as the result of a user action.
+     */
     _defineProperty$1(this, "setupIMA", () => {
       // Create the container for our advertisements
       this.elements.container = createElement('div', {
@@ -6395,6 +6343,9 @@ class Ads {
       // Request video ads to be pre-loaded
       this.requestAds();
     });
+    /**
+     * Request advertisements
+     */
     _defineProperty$1(this, "requestAds", () => {
       const {
         container
@@ -6421,6 +6372,10 @@ class Ads {
         this.onAdError(error);
       }
     });
+    /**
+     * Update the ad countdown
+     * @param {Boolean} start
+     */
     _defineProperty$1(this, "pollCountdown", (start = false) => {
       if (!start) {
         clearInterval(this.countdownTimer);
@@ -6434,6 +6389,10 @@ class Ads {
       };
       this.countdownTimer = setInterval(update, 100);
     });
+    /**
+     * This method is called whenever the ads are ready inside the AdDisplayContainer
+     * @param {Event} event - adsManagerLoadedEvent
+     */
     _defineProperty$1(this, "onAdsManagerLoaded", event => {
       // Load could occur after a source change (race condition)
       if (!this.enabled) {
@@ -6484,6 +6443,12 @@ class Ads {
         });
       }
     });
+    /**
+     * This is where all the event handling takes place. Retrieve the ad from the event. Some
+     * events (e.g. ALL_ADS_COMPLETED) don't have the ad object associated
+     * https://developers.google.com/interactive-media-ads/docs/sdks/html5/v3/apis#ima.AdEvent.Type
+     * @param {Event} event
+     */
     _defineProperty$1(this, "onAdEvent", event => {
       const {
         container
@@ -6579,10 +6544,19 @@ class Ads {
           break;
       }
     });
+    /**
+     * Any ad error handling comes through here
+     * @param {Event} event
+     */
     _defineProperty$1(this, "onAdError", event => {
       this.cancel();
       this.player.debug.warn('Ads error', event);
     });
+    /**
+     * Setup hooks for Plyr and window events. This ensures
+     * the mid- and post-roll launch at the correct time. And
+     * resize the advertisement when the player resizes
+     */
     _defineProperty$1(this, "listeners", () => {
       const {
         container
@@ -6618,6 +6592,9 @@ class Ads {
         }
       });
     });
+    /**
+     * Initialize the adsManager and start playing advertisements
+     */
     _defineProperty$1(this, "play", () => {
       const {
         container
@@ -6650,6 +6627,9 @@ class Ads {
         }
       }).catch(() => {});
     });
+    /**
+     * Resume our video
+     */
     _defineProperty$1(this, "resumeContent", () => {
       // Hide the advertisement container
       this.elements.container.style.zIndex = '';
@@ -6660,6 +6640,9 @@ class Ads {
       // Play video
       silencePromise(this.player.media.play());
     });
+    /**
+     * Pause our video
+     */
     _defineProperty$1(this, "pauseContent", () => {
       // Show the advertisement container
       this.elements.container.style.zIndex = 3;
@@ -6670,6 +6653,12 @@ class Ads {
       // Pause our video.
       this.player.media.pause();
     });
+    /**
+     * Destroy the adsManager so we can grab new ads after this. If we don't then we're not
+     * allowed to call new ads based on google policies, as they interpret this as an accidental
+     * video requests. https://developers.google.com/interactive-
+     * media-ads/docs/sdks/android/faq#8
+     */
     _defineProperty$1(this, "cancel", () => {
       // Pause our video
       if (this.initialized) {
@@ -6682,6 +6671,9 @@ class Ads {
       // Re-create our adsManager
       this.loadAds();
     });
+    /**
+     * Re-create our adsManager
+     */
     _defineProperty$1(this, "loadAds", () => {
       // Tell our adsManager to go bye bye
       this.managerPromise.then(() => {
@@ -6702,6 +6694,11 @@ class Ads {
         this.requestAds();
       }).catch(() => {});
     });
+    /**
+     * Handles callbacks after an ad event was invoked
+     * @param {String} event - Event type
+     * @param args
+     */
     _defineProperty$1(this, "trigger", (event, ...args) => {
       const handlers = this.events[event];
       if (is.array(handlers)) {
@@ -6712,6 +6709,12 @@ class Ads {
         });
       }
     });
+    /**
+     * Add event listeners
+     * @param {String} event - Event type
+     * @param {Function} callback - Callback for when event occurs
+     * @return {Ads}
+     */
     _defineProperty$1(this, "on", (event, callback) => {
       if (!is.array(this.events[event])) {
         this.events[event] = [];
@@ -6719,6 +6722,14 @@ class Ads {
       this.events[event].push(callback);
       return this;
     });
+    /**
+     * Setup a safety timer for when the ad network doesn't respond for whatever reason.
+     * The advertisement has 12 seconds to get its things together. We stop this timer when the
+     * advertisement is playing, or when a user action is required to start, then we clear the
+     * timer on ad ready
+     * @param {Number} time
+     * @param {String} from
+     */
     _defineProperty$1(this, "startSafetyTimer", (time, from) => {
       this.player.debug.log(`Safety timer invoked from: ${from}`);
       this.safetyTimer = setTimeout(() => {
@@ -6726,6 +6737,10 @@ class Ads {
         this.clearSafetyTimer('startSafetyTimer()');
       }, time);
     });
+    /**
+     * Clear our safety timer(s)
+     * @param {String} from
+     */
     _defineProperty$1(this, "clearSafetyTimer", from => {
       if (!is.nullOrUndefined(this.safetyTimer)) {
         this.player.debug.log(`Safety timer cleared from: ${from}`);
@@ -6764,11 +6779,6 @@ class Ads {
     } = this;
     return this.player.isHTML5 && this.player.isVideo && config.enabled && (!is.empty(config.publisherId) || is.url(config.tagUrl));
   }
-
-  /**
-   * Load the IMA SDK
-   */
-
   // Build the tag URL
   get tagUrl() {
     const {
@@ -6789,15 +6799,6 @@ class Ads {
     const base = 'https://go.aniview.com/api/adserver6/vast/';
     return `${base}?${buildUrlParams(params)}`;
   }
-
-  /**
-   * In order for the SDK to display ads for our video, we need to tell it where to put them,
-   * so here we define our ad container. This div is set up to render on top of the video player.
-   * Using the code below, we tell the SDK to render ads within that div. We also provide a
-   * handle to the content video player - the SDK will poll the current time of our player to
-   * properly place mid-rolls. After we create the ad display container, we initialize it. On
-   * mobile devices, this initialization is done as the result of a user action.
-   */
 }
 
 /**
@@ -6896,9 +6897,13 @@ class PreviewThumbnails {
 
         // Check to see if thumb container size was specified manually in CSS
         this.determineContainerAutoSizing();
+
+        // Set up listeners
+        this.listeners();
         this.loaded = true;
       });
     });
+    // Download VTT files and parse them
     _defineProperty$1(this, "getThumbnails", () => {
       return new Promise(resolve => {
         const {
@@ -6934,6 +6939,7 @@ class PreviewThumbnails {
         }
       });
     });
+    // Process individual VTT file
     _defineProperty$1(this, "getThumbnail", url => {
       return new Promise(resolve => {
         fetch(url).then(response => {
@@ -7040,6 +7046,9 @@ class PreviewThumbnails {
         });
       }
     });
+    /**
+     * Setup hooks for Plyr and window events
+     */
     _defineProperty$1(this, "listeners", () => {
       // Hide thumbnail preview - on mouse click, mouse leave (in listeners.js for now), and video play/seek. All four are required, e.g., for buffering
       this.player.on('play', () => {
@@ -7052,6 +7061,9 @@ class PreviewThumbnails {
         this.lastTime = this.player.media.currentTime;
       });
     });
+    /**
+     * Create HTML elements for image containers
+     */
     _defineProperty$1(this, "render", () => {
       // Create HTML element: plyr__preview-thumbnail-container
       this.elements.thumb.container = createElement('div', {
@@ -7127,6 +7139,7 @@ class PreviewThumbnails {
         this.loadImage(qualityIndex);
       }
     });
+    // Show the image that's currently specified in this.showingThumb
     _defineProperty$1(this, "loadImage", (qualityIndex = 0) => {
       const thumbNum = this.showingThumb;
       const thumbnail = this.thumbnails[qualityIndex];
@@ -7180,6 +7193,7 @@ class PreviewThumbnails {
       // Each step here has a short time delay, and only continues if still hovering/seeking the same spot. This is to protect slow connections from overloading
       this.preloadNearby(thumbNum, true).then(this.preloadNearby(thumbNum, false)).then(this.getHigherQuality(qualityIndex, previewImage, frame, thumbFilename));
     });
+    // Remove all preview images that aren't the designated current image
     _defineProperty$1(this, "removeOldImages", currentImage => {
       // Get a list of all images, convert it from a DOM list to an array
       Array.from(this.currentImageContainer.children).forEach(image => {
@@ -7204,6 +7218,8 @@ class PreviewThumbnails {
         }
       });
     });
+    // Preload images before and after the current one. Only if the user is still hovering/seeking the same frame
+    // This will only preload the lowest quality
     _defineProperty$1(this, "preloadNearby", (thumbNum, forward = true) => {
       return new Promise(resolve => {
         setTimeout(() => {
@@ -7249,6 +7265,7 @@ class PreviewThumbnails {
         }, 300);
       });
     });
+    // If user has been hovering current image for half a second, look for a higher quality one
     _defineProperty$1(this, "getHigherQuality", (currentQualityIndex, previewImage, frame, thumbFilename) => {
       if (currentQualityIndex < this.thumbnails.length - 1) {
         // Only use the higher quality version if it's going to look any better - if the current thumb is of a lower pixel density than the thumbnail container
@@ -7290,6 +7307,7 @@ class PreviewThumbnails {
         this.sizeSpecifiedInCSS = true;
       }
     });
+    // Set the size to be about a quarter of the size of video. Unless option dynamicSize === false, in which case it needs to be set in CSS
     _defineProperty$1(this, "setThumbContainerSizeAndPos", () => {
       const {
         imageContainer
@@ -7326,6 +7344,7 @@ class PreviewThumbnails {
       // The arrow can follow the cursor
       container.style.setProperty('--preview-arrow-offset', `${position - clamped}px`);
     });
+    // Can't use 100% width, in case the video is a different aspect ratio to the video container
     _defineProperty$1(this, "setScrubbingContainerSize", () => {
       const {
         width,
@@ -7337,6 +7356,7 @@ class PreviewThumbnails {
       this.elements.scrubbing.container.style.width = `${width}px`;
       this.elements.scrubbing.container.style.height = `${height}px`;
     });
+    // Sprites need to be offset to the correct location
     _defineProperty$1(this, "setImageSizeAndOffset", (previewImage, frame) => {
       if (!this.usingSprites) return;
 
@@ -7561,6 +7581,9 @@ const source = {
 // Plyr instance
 class Plyr {
   constructor(target, options) {
+    /**
+     * Play the media, or play the advertisement (if they are not blocked)
+     */
     _defineProperty$1(this, "play", () => {
       if (!is.function(this.media.play)) {
         return null;
@@ -7574,12 +7597,19 @@ class Plyr {
       // Return the promise (for HTML5)
       return this.media.play();
     });
+    /**
+     * Pause the media
+     */
     _defineProperty$1(this, "pause", () => {
       if (!this.playing || !is.function(this.media.pause)) {
         return null;
       }
       return this.media.pause();
     });
+    /**
+     * Toggle playback based on current status
+     * @param {Boolean} input
+     */
     _defineProperty$1(this, "togglePlay", input => {
       // Toggle based on current state if nothing passed
       const toggle = is.boolean(input) ? input : !this.playing;
@@ -7588,6 +7618,9 @@ class Plyr {
       }
       return this.pause();
     });
+    /**
+     * Stop playback
+     */
     _defineProperty$1(this, "stop", () => {
       if (this.isHTML5) {
         this.pause();
@@ -7596,28 +7629,55 @@ class Plyr {
         this.media.stop();
       }
     });
+    /**
+     * Restart playback
+     */
     _defineProperty$1(this, "restart", () => {
       this.currentTime = 0;
     });
+    /**
+     * Rewind
+     * @param {Number} seekTime - how far to rewind in seconds. Defaults to the config.seekTime
+     */
     _defineProperty$1(this, "rewind", seekTime => {
       this.currentTime -= is.number(seekTime) ? seekTime : this.config.seekTime;
     });
+    /**
+     * Fast forward
+     * @param {Number} seekTime - how far to fast forward in seconds. Defaults to the config.seekTime
+     */
     _defineProperty$1(this, "forward", seekTime => {
       this.currentTime += is.number(seekTime) ? seekTime : this.config.seekTime;
     });
+    /**
+     * Increase volume
+     * @param {Boolean} step - How much to decrease by (between 0 and 1)
+     */
     _defineProperty$1(this, "increaseVolume", step => {
       const volume = this.media.muted ? 0 : this.volume;
       this.volume = volume + (is.number(step) ? step : 0);
     });
+    /**
+     * Decrease volume
+     * @param {Boolean} step - How much to decrease by (between 0 and 1)
+     */
     _defineProperty$1(this, "decreaseVolume", step => {
       this.increaseVolume(-step);
     });
+    /**
+     * Trigger the airplay dialog
+     * TODO: update player with state, support, enabled
+     */
     _defineProperty$1(this, "airplay", () => {
       // Show dialog if supported
       if (support.airplay) {
         this.media.webkitShowPlaybackTargetPicker();
       }
     });
+    /**
+     * Toggle the player controls
+     * @param {Boolean} [toggle] - Whether to show the controls
+     */
     _defineProperty$1(this, "toggleControls", toggle => {
       // Don't toggle if missing UI support or if it's audio
       if (this.supported.ui && !this.isAudio) {
@@ -7642,15 +7702,37 @@ class Plyr {
       }
       return false;
     });
+    /**
+     * Add event listeners
+     * @param {String} event - Event type
+     * @param {Function} callback - Callback for when event occurs
+     */
     _defineProperty$1(this, "on", (event, callback) => {
       on.call(this, this.elements.container, event, callback);
     });
+    /**
+     * Add event listeners once
+     * @param {String} event - Event type
+     * @param {Function} callback - Callback for when event occurs
+     */
     _defineProperty$1(this, "once", (event, callback) => {
       once.call(this, this.elements.container, event, callback);
     });
+    /**
+     * Remove event listeners
+     * @param {String} event - Event type
+     * @param {Function} callback - Callback for when event occurs
+     */
     _defineProperty$1(this, "off", (event, callback) => {
       off(this.elements.container, event, callback);
     });
+    /**
+     * Destroy an instance
+     * Event listeners are removed when elements are removed
+     * http://stackoverflow.com/questions/12528049/if-a-dom-element-is-removed-are-its-listeners-also-removed-from-memory
+     * @param {Function} callback - Callback for when destroy is complete
+     * @param {Boolean} soft - Whether it's a soft destroy (for source changes etc)
+     */
     _defineProperty$1(this, "destroy", (callback, soft = false) => {
       if (!this.ready) {
         return;
@@ -7749,6 +7831,10 @@ class Plyr {
         setTimeout(done, 200);
       }
     });
+    /**
+     * Check for support for a mime type (HTML5 only)
+     * @param {String} type - Mime type
+     */
     _defineProperty$1(this, "supports", type => support.mime.call(this, type));
     this.timers = {};
 
@@ -7946,7 +8032,7 @@ class Plyr {
     }
 
     // Check for support again but with type
-    this.supported = support.check(this.type, this.provider, this.config.playsinline);
+    this.supported = support.check(this.type, this.provider);
 
     // If no support for even API, bail
     if (!this.supported.api) {
@@ -7966,9 +8052,7 @@ class Plyr {
 
     // Wrap media
     if (!is.element(this.elements.container)) {
-      this.elements.container = createElement('div', {
-        tabindex: 0
-      });
+      this.elements.container = createElement('div');
       wrap(this.media, this.elements.container);
     }
 
@@ -8047,11 +8131,6 @@ class Plyr {
   get isAudio() {
     return this.type === types.audio;
   }
-
-  /**
-   * Play the media, or play the advertisement (if they are not blocked)
-   */
-
   /**
    * Get playing state
    */
@@ -8079,12 +8158,6 @@ class Plyr {
   get ended() {
     return Boolean(this.media.ended);
   }
-
-  /**
-   * Toggle playback based on current status
-   * @param {Boolean} input
-   */
-
   /**
    * Seek to a time
    * @param {Number} input - where to seek to in seconds. Defaults to 0 (the start)
@@ -8206,12 +8279,6 @@ class Plyr {
   get volume() {
     return Number(this.media.volume);
   }
-
-  /**
-   * Increase volume
-   * @param {Boolean} step - How much to decrease by (between 0 and 1)
-   */
-
   /**
    * Set muted state
    * @param {Boolean} mute
@@ -8625,7 +8692,7 @@ class Plyr {
   }
 
   /**
-   * Sets the preview thubmnails for the current source
+   * Sets the preview thumbnails for the current source
    */
   setPreviewThumbnails(thumbnailSource) {
     if (this.previewThumbnails && this.previewThumbnails.loaded) {
@@ -8639,20 +8706,13 @@ class Plyr {
       this.previewThumbnails = new PreviewThumbnails(this);
     }
   }
-
-  /**
-   * Trigger the airplay dialog
-   * TODO: update player with state, support, enabled
-   */
-
   /**
    * Check for support
    * @param {String} type - Player type (audio/video)
    * @param {String} provider - Provider (html5/youtube/vimeo)
-   * @param {Boolean} inline - Where player has `playsinline` sttribute
    */
-  static supported(type, provider, inline) {
-    return support.check(type, provider, inline);
+  static supported(type, provider) {
+    return support.check(type, provider);
   }
 
   /**

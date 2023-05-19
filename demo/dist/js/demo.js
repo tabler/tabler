@@ -1,6 +1,6 @@
 /*!
-* Tabler v1.0.0-beta17 (https://tabler.io)
-* @version 1.0.0-beta17
+* Tabler v1.0.0-beta19 (https://tabler.io)
+* @version 1.0.0-beta19
 * @link https://tabler.io
 * Copyright 2018-2023 The Tabler Authors
 * Copyright 2018-2023 codecalm.net Paweł Kuna
@@ -62,17 +62,17 @@
   }
 
   var items = {
-    'menu-position': {
-      localStorage: 'tablerMenuPosition',
-      default: 'top'
+    "menu-position": {
+      localStorage: "tablerMenuPosition",
+      default: "top"
     },
-    'menu-behavior': {
-      localStorage: 'tablerMenuBehavior',
-      default: 'sticky'
+    "menu-behavior": {
+      localStorage: "tablerMenuBehavior",
+      default: "sticky"
     },
-    'container-layout': {
-      localStorage: 'tablerContainerLayout',
-      default: 'boxed'
+    "container-layout": {
+      localStorage: "tablerContainerLayout",
+      default: "boxed"
     }
   };
   var config = {};
@@ -85,9 +85,9 @@
   }
   var parseUrl = function parseUrl() {
     var search = window.location.search.substring(1);
-    var params = search.split('&');
+    var params = search.split("&");
     for (var i = 0; i < params.length; i++) {
-      var arr = params[i].split('=');
+      var arr = params[i].split("=");
       var _key = arr[0];
       var value = arr[1];
       if (!!items[_key]) {
@@ -116,13 +116,13 @@
       localStorage.setItem(_params2.localStorage, value);
       config[_key3] = value;
     }
-    window.dispatchEvent(new Event('resize'));
+    window.dispatchEvent(new Event("resize"));
     new bootstrap.Offcanvas(form).hide();
   };
   parseUrl();
-  var form = document.querySelector('#offcanvasSettings');
+  var form = document.querySelector("#offcanvasSettings");
   if (form) {
-    form.addEventListener('submit', function (e) {
+    form.addEventListener("submit", function (e) {
       e.preventDefault();
       submitForm(form);
     });

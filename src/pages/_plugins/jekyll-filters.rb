@@ -119,6 +119,10 @@ module Jekyll
     def htmlbeautifier(output)
       HtmlBeautifier.beautify output
     end
+
+    def hex_to_rgb(hex)
+      hex.match(/^#(..)(..)(..)$/).captures.map(&:hex)
+    end
   end
 end
 

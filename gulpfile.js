@@ -102,7 +102,7 @@ gulp.task('svg-icons', (cb) => {
  * Generate CHANGELOG.md
  */
 gulp.task('changelog', (cb) => {
-	const content = YAML.parse(fs.readFileSync('./src/pages/_data/changelog.yml', 'utf8'))
+	const content = YAML.parse(fs.readFileSync('./src/pages/_data/changelog.yml', 'utf8')).reverse()
 	let readme = `# Changelog
 
 All notable changes to this project will be documented in this file.\n`
@@ -448,7 +448,7 @@ gulp.task('copy-libs', (cb) => {
 	files.forEach((file) => {
 		if (!file.match(/^https?/)) {
 			let dirname = path.dirname(file).replace('@', '')
-			let cmd = `mkdir -p "${distDir}/libs/${dirname}" && cp -r node_modules/${dirname}/* ${distDir}/libs/${dirname}`
+			let cmd = `mkdir -p "${distDir}/libs/${dirname}" && cp -r node_modules/${path.dirname(file)}/* ${distDir}/libs/${dirname}`
 
 			cp.exec(cmd)
 		}

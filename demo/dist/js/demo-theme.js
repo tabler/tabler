@@ -1,6 +1,6 @@
 /*!
-* Tabler v1.0.0-beta17 (https://tabler.io)
-* @version 1.0.0-beta17
+* Tabler v1.0.0-beta19 (https://tabler.io)
+* @version 1.0.0-beta19
 * @link https://tabler.io
 * Copyright 2018-2023 The Tabler Authors
 * Copyright 2018-2023 codecalm.net Paweł Kuna
@@ -11,8 +11,8 @@
 	factory();
 })((function () { 'use strict';
 
-	var themeStorageKey = 'tablerTheme';
-	var defaultTheme = 'light';
+	var themeStorageKey = "tablerTheme";
+	var defaultTheme = "light";
 	var selectedTheme;
 	var params = new Proxy(new URLSearchParams(window.location.search), {
 	  get: function get(searchParams, prop) {
@@ -26,7 +26,10 @@
 	  var storedTheme = localStorage.getItem(themeStorageKey);
 	  selectedTheme = storedTheme ? storedTheme : defaultTheme;
 	}
-	document.body.classList.remove('theme-dark', 'theme-light');
-	document.body.classList.add("theme-".concat(selectedTheme));
+	if (selectedTheme === 'dark') {
+	  document.body.setAttribute("data-bs-theme", selectedTheme);
+	} else {
+	  document.body.removeAttribute("data-bs-theme");
+	}
 
 }));
