@@ -22,7 +22,7 @@ layout: single
 					<div class="row g-2">
 						{% for i in (1..3) %}
 						<div class="col">
-							<input type="text" class="form-control form-control-lg text-center" maxlength="1" />
+							<input type="text" class="form-control form-control-lg text-center py-3" maxlength="1" inputmode="numeric" pattern="[0-9]*" data-code-input />
 						</div>
 						{% endfor %}
 					</div>
@@ -51,3 +51,28 @@ layout: single
 <div class="text-center text-muted mt-3">
 	It may take a minute to receive your code. Haven't received it? <a href="{{ site.base }}/">Resend a new code.</a>
 </div>
+
+{% capture_global scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+	var inputs = document.querySelectorAll('[data-code-input]');
+
+	// Attach an event listener to each input element
+	for(let i = 0; i < inputs.length; i++) {
+		inputs[i].addEventListener('input', function(e) {
+			// If the input field has a character, and there is a next input field, focus it
+			if(e.target.value.length === e.target.maxLength && i + 1 < inputs.length) {
+				inputs[i + 1].focus();
+			}
+		});
+
+		inputs[i].addEventListener('keydown', function(e) {
+			// If the input field is empty and the keyCode for Backspace (8) is detected, and there is a previous input field, focus it
+			if(e.target.value.length === 0 && e.keyCode === 8 && i > 0) {
+				inputs[i - 1].focus();
+			}
+		});
+	}
+});
+</script>
+{% endcapture_global %}
