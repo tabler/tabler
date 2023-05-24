@@ -127,9 +127,9 @@ $blockquote-font-size: $font-size-base !default;
 
 // COLORS
 $min-contrast-ratio: 1.5 !default;
-$text-muted-opacity: 0.7 !default;
-$text-muted-light-opacity: 0.4 !default;
-$text-muted-dark-opacity: 0.8 !default;
+$text-secondary-opacity: 0.7 !default;
+$text-secondary-light-opacity: 0.4 !default;
+$text-secondary-dark-opacity: 0.8 !default;
 
 $border-opacity: 0.16 !default;
 $border-light-opacity: 0.08 !default;
@@ -191,9 +191,9 @@ $color-green: #2fb344;
 $color-teal: #0ca678;
 $color-cyan: #17a2b8;
 
-$text-muted: $gray-600 !default;
-$text-muted-light: $gray-500 !default;
-$text-muted-dark: $gray-700 !default;
+$text-secondary: $gray-600 !default;
+$text-secondary-light: $gray-500 !default;
+$text-secondary-dark: $gray-700 !default;
 
 $border-color: $gray-300 !default;
 $border-color-translucent: rgba(4, 32, 69, 0.14);
@@ -202,12 +202,12 @@ $border-dark-color: $gray-400 !default;
 $border-dark-color-translucent: rgba(4, 32, 69, 0.27);
 
 $border-active-color: mix(
-  $text-muted,
+  $text-secondary,
   #ffffff,
   percentage($border-active-opacity)
 ) !default;
 $border-active-color-translucent: rgba(
-  $text-muted,
+  $text-secondary,
   $border-active-opacity
 ) !default;
 
@@ -215,13 +215,13 @@ $active-bg: rgba(var(--#{$prefix}primary-rgb), 0.04) !default;
 $active-color: var(--#{$prefix}primary) !default;
 $active-border-color: var(--#{$prefix}primary) !default;
 
-$hover-bg: rgba(var(--#{$prefix}muted-rgb), 0.04) !default;
+$hover-bg: rgba(var(--#{$prefix}text-secondary-rgb), 0.04) !default;
 
 $disabled-bg: var(--#{$prefix}bg-surface-secondary) !default;
 $disabled-color: var(--#{$prefix}gray-300) !default;
 
 $primary: $blue !default;
-$secondary: $text-muted !default;
+$secondary: $text-secondary !default;
 $success: $green !default;
 $info: $azure !default;
 $warning: $orange !default;
@@ -231,14 +231,14 @@ $link-color: $primary !default;
 
 $theme-colors: (
   "primary": $primary,
-  "secondary": $text-muted,
+  "secondary": $text-secondary,
   "success": $success,
   "info": $info,
   "warning": $warning,
   "danger": $danger,
   "light": $light,
   "dark": $dark,
-  "muted": $text-muted,
+  "muted": $text-secondary,
 ) !default;
 
 $extra-colors: (
@@ -320,7 +320,7 @@ $kbd-font-weight: var(--#{$prefix}font-weight-medium) !default;
 $kbd-font-size: var(--#{$prefix}font-size-h5) !default;
 $kbd-border: var(--#{$prefix}border-width) var(--#{$prefix}border-style)
   var(--#{$prefix}border-color) !default;
-$kbd-color: var(--#{$prefix}muted-dark) !default;
+$kbd-color: var(--#{$prefix}text-secondary-dark) !default;
 $kbd-bg: var(--#{$prefix}code-bg) !default;
 $kbd-border-radius: var(--#{$prefix}border-radius) !default;
 
@@ -491,7 +491,7 @@ $alert-border-color: var(--#{$prefix}border-color-translucent) !default;
 $alert-shadow: rgba($dark, 0.04) 0 2px 4px 0 !default;
 
 // Breadcrumb
-$breadcrumb-divider-color: var(--#{$prefix}muted) !default;
+$breadcrumb-divider-color: var(--#{$prefix}text-secondary) !default;
 $breadcrumb-link-color: var(--#{$prefix}link-color) !default;
 $breadcrumb-active-color: inherit !default;
 $breadcrumb-active-font-weight: var(--#{$prefix}font-weight-bold) !default;
@@ -557,8 +557,8 @@ $card-border-width: var(--#{$prefix}border-width) !default;
 $card-border-color: var(--#{$prefix}border-color-translucent) !default;
 $card-border-radius: var(--#{$prefix}border-radius) !default;
 
-$card-spacer-x: 1.5rem !default;
-$card-spacer-y: 1.5rem !default;
+$card-spacer-x: 1.25rem !default;
+$card-spacer-y: 1.25rem !default;
 
 $card-cap-bg: var(--#{$prefix}bg-surface-tertiary) !default;
 $card-cap-color: inherit !default;
@@ -629,7 +629,7 @@ $loader-size: 2.5rem !default;
 
 // Lists
 $list-group-header-bg: var(--#{$prefix}bg-surface-tertiary) !default;
-$list-group-header-color: var(--#{$prefix}muted) !default;
+$list-group-header-color: var(--#{$prefix}text-secondary) !default;
 
 $list-group-border-color: var(--#{$prefix}border-color) !default;
 $list-group-item-padding-y: $card-cap-padding-y !default;
@@ -671,7 +671,7 @@ $modal-sm: 380px !default;
 // Nav
 $nav-link-padding-y: 0.5rem !default;
 $nav-link-padding-x: 0.75rem !default;
-$nav-link-color: var(--#{$prefix}muted) !default;
+$nav-link-color: var(--#{$prefix}text-secondary) !default;
 $nav-link-disabled-color: var(--#{$prefix}disabled-color) !default;
 $nav-link-icon-size: $icon-size !default;
 $nav-link-icon-color: var(--#{$prefix}icon-color) !default;
@@ -707,7 +707,7 @@ $navbar-light-active-color: var(--#{$prefix}body-color) color !default;
 $navbar-light-disabled-color: var(--#{$prefix}disabled-color) !default;
 $navbar-light-active-bg: rgba(0, 0, 0, 0.06) !default;
 
-$navbar-dark-color: rgba($white, $text-muted-opacity) !default;
+$navbar-dark-color: rgba($white, $text-secondary-opacity) !default;
 $navbar-dark-brand-color: $white !default;
 $navbar-dark-active-color: $white !default;
 $navbar-dark-disabled-color: var(--#{$prefix}disabled-color) !default;
@@ -733,6 +733,11 @@ $navbar-active-border-color: var(--#{$prefix}primary) !default;
 // Sidebar
 $sidebar-width: 15rem !default;
 
+// Page
+$page-title-font-size: var(--#{$prefix}font-size-h2) !default;
+$page-title-line-height: var(--#{$prefix}line-height-h4) !default;
+$page-title-font-weight: var(--#{$prefix}font-weight-headings) !default;
+
 // Popover
 $popover-bg: var(--#{$prefix}bg-surface) !default;
 $popover-header-bg: transparent !default;
@@ -743,13 +748,13 @@ $popover-body-color: inherit !default;
 $footer-padding-y: 2rem !default;
 $footer-bg: $white !default;
 $footer-border-color: var(--#{$prefix}border-color) !default;
-$footer-color: var(--#{$prefix}muted) !default;
+$footer-color: var(--#{$prefix}text-secondary) !default;
 
 // Pagination
 $pagination-border-width: 0 !default;
 $pagination-padding-y: 0.25rem !default;
 $pagination-padding-x: 0.25rem !default;
-$pagination-color: var(--#{$prefix}muted) !default;
+$pagination-color: var(--#{$prefix}text-secondary) !default;
 $pagination-bg: transparent !default;
 $pagination-disabled-bg: transparent !default;
 $pagination-disabled-color: var(--#{$prefix}disabled-color) !default;
@@ -784,7 +789,7 @@ $table-border-color: var(--#{$prefix}border-color-translucent) !default;
 $table-th-border-color: var(--#{$prefix}border-color-translucent) !default;
 $table-th-padding-x: $table-cell-padding-x !default;
 $table-th-padding-y: 0.5rem !default;
-$table-th-color: var(--#{$prefix}muted) !default;
+$table-th-color: var(--#{$prefix}text-secondary) !default;
 $table-th-bg: var(--#{$prefix}bg-surface-tertiary) !default;
 $table-striped-order: even !default;
 $table-striped-bg: var(--#{$prefix}bg-surface-tertiary) !default;
@@ -798,7 +803,7 @@ $table-sort-desc-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org
 
 // Toasts
 $toast-border-color: var(--#{$prefix}border-color) !default;
-$toast-header-color: var(--#{$prefix}muted) !default;
+$toast-header-color: var(--#{$prefix}text-secondary) !default;
 
 // Tracking
 $tracking-height: 1.5rem !default;
@@ -826,10 +831,10 @@ $input-border-color: var(--#{$prefix}border-color) !default;
 $input-border-color-translucent: var(
   --#{$prefix}border-color-translucent
 ) !default;
-$input-placeholder-color: $text-muted-light !default;
+$input-placeholder-color: $text-secondary-light !default;
 
 $input-group-addon-bg: var(--#{$prefix}bg-surface-secondary) !default;
-$input-group-addon-color: var(--#{$prefix}muted) !default;
+$input-group-addon-color: var(--#{$prefix}text-secondary) !default;
 
 $input-border-radius: var(--#{$prefix}border-radius) !default;
 
@@ -855,9 +860,9 @@ $form-check-input-indeterminate-bg-color: var(--#{$prefix}primary) !default;
 
 $form-check-radio-checked-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><circle r='3' fill='#{$white}' cx='8' cy='8' /></svg>") !default;
 
-$form-check-label-disabled-opacity: $text-muted-opacity;
+$form-check-label-disabled-opacity: $text-secondary-opacity;
 
-$form-select-indicator-color: $text-muted-light !default;
+$form-select-indicator-color: $text-secondary-light !default;
 $form-select-box-shadow: var(--#{$prefix}box-shadow-input) !default;
 
 $form-switch-width: 2rem !default;
