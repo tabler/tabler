@@ -73,12 +73,13 @@
 Navbar
  */
 .navbar {
-  --#{$prefix}navbar-bg: var(--#{$prefix}bg-surface);
-  --#{$prefix}navbar-border-width: #{$navbar-border-width};
-  --#{$prefix}navbar-active-border-color: #{$navbar-active-border-color};
+  --#{$prefix}navbar-bg: #{$navbar-light-bg};
+  --#{$prefix}navbar-border-width: #{$navbar-light-border-width};
+  --#{$prefix}navbar-active-border-color: #{$navbar-light-active-border-color};
   --#{$prefix}navbar-active-bg: #{$navbar-light-active-bg};
-  --#{$prefix}navbar-color: var(--#{$prefix}body-color);
-  --#{$prefix}navbar-border-color: #{$navbar-border-color};
+  --#{$prefix}navbar-hover-bg: #{$navbar-light-hover-bg};
+  --#{$prefix}navbar-border-color: #{$navbar-light-border-color};
+  --#{$prefix}navbar-nav-gap: #{$navbar-nav-gap};
   align-items: stretch;
   min-height: $navbar-height;
   box-shadow: inset 0 calc(-1 * var(--#{$prefix}navbar-border-width)) 0 0 var(--#{$prefix}navbar-border-color);
@@ -118,9 +119,34 @@ Navbar
   }
 }
 
+/**
+Navbar nav
+*/
 .navbar-nav {
+  gap: var(--#{$prefix}navbar-nav-gap);
   margin: 0;
   padding: 0;
+  align-items: stretch;
+
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .nav-link {
+    transition: $transition-time background-color;
+    
+    &.active {
+      background-color: var(--#{$prefix}navbar-active-bg);
+    }
+
+    &:hover,
+    &:focus,
+    &.show {
+      background-color: var(--#{$prefix}navbar-hover-bg);
+    }
+  }
 }
 
 .navbar-expand {
@@ -139,19 +165,19 @@ Navbar
           flex: 1 1 auto;
         }
 
-        .nav-item.active {
-          position: relative;
+        // .nav-item.active {
+        //   position: relative;
 
-          &:after {
-            content: "";
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: -.25rem;
-            border: 0 var(--#{$prefix}border-style) var(--#{$prefix}navbar-active-border-color);
-            border-bottom-width: 2px;
-          }
-        }
+        //   &:after {
+        //     content: "";
+        //     position: absolute;
+        //     left: 0;
+        //     right: 0;
+        //     bottom: -.25rem;
+        //     border: 0 var(--#{$prefix}border-style) var(--#{$prefix}navbar-active-border-color);
+        //     border-bottom-width: 2px;
+        //   }
+        // }
 
         &.navbar-vertical {
           box-shadow: inset calc(-1 * var(--#{$prefix}navbar-border-width)) 0 0 0 var(--#{$prefix}navbar-border-color);
@@ -261,19 +287,6 @@ Navbar transparent
 .navbar-transparent {
   --#{$prefix}navbar-border-color: transparent !important;
   background: transparent !important;
-}
-
-/**
-Navbar nav
- */
-.navbar-nav {
-  align-items: stretch;
-
-  .nav-item {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
 }
 
 /**

@@ -60,6 +60,7 @@ $font-weight-bold: 600 !default;
 
 $headings-font-weight: var(--#{$prefix}font-weight-bold) !default;
 $headings-margin-bottom: var(--#{$prefix}spacer) !default;
+$headings-color: var(--#{$prefix}body-color) color !default;
 
 $font-weights: (
   light: $font-weight-light,
@@ -350,13 +351,12 @@ $caret-width: 0.36em !default;
 $caret-spacing: 0.4em !default;
 
 //Sizing
-$page-padding: var(--#{$prefix}spacer-3) !default;
-$page-padding-sm: var(--#{$prefix}spacer-2) !default;
+$page-padding-x: var(--#{$prefix}spacer-3) !default;
 $page-padding-y: var(--#{$prefix}spacer-4) !default;
 
 // Sizing
-$container-padding-x: calc(var(--#{$prefix}page-padding) * 2) !default;
-$grid-gutter-width: var(--#{$prefix}page-padding) !default;
+$container-padding-x: calc(var(--#{$prefix}page-padding-x) * 2) !default;
+$grid-gutter-width: var(--#{$prefix}page-padding-x) !default;
 
 // Grid
 $grid-gutter-width: 1rem !default;
@@ -576,7 +576,7 @@ $card-ribbon-font-size: $h6-font-size !default;
 
 $card-header-tabs-bg: var(--#{$prefix}bg-surface-tertiary) !default;
 
-$cards-grid-gap: var(--#{$prefix}page-padding) !default;
+$cards-grid-gap: var(--#{$prefix}page-padding-x) !default;
 $cards-grid-breakpoint: lg !default;
 
 // Carousel
@@ -674,10 +674,12 @@ $nav-link-padding-x: 0.75rem !default;
 $nav-link-color: var(--#{$prefix}muted) !default;
 $nav-link-disabled-color: var(--#{$prefix}disabled-color) !default;
 $nav-link-icon-size: $icon-size !default;
-$nav-link-icon-color: var(--#{$prefix}icon-color) !default;
+$nav-link-icon-color: inherit !default;
 
 $nav-pills-link-active-color: var(--#{$prefix}primary) !default;
 $nav-pills-link-active-bg: var(--#{$prefix}active-bg) !default;
+
+$nav-underline-link-active-color: var(--#{$prefix}primary) !default;
 
 $nav-bordered-border-color: var(--#{$prefix}border-color) !default;
 $nav-bordered-border-width: var(--#{$prefix}border-width) !default;
@@ -698,14 +700,17 @@ $nav-tabs-bg: var(--#{$prefix}bg-surface-tertiary) !default;
 $navbar-height: 3.5rem !default;
 $navbar-padding-y: 0.25rem !default;
 
-$navbar-border-width: var(--#{$prefix}border-width) !default;
-$navbar-border-color: var(--#{$prefix}border-color) !default;
-
-$navbar-light-color: var(--#{$prefix}body-color) !default;
+$navbar-light-bg: var(--#{$prefix}bg-surface) !default;
+$navbar-light-color: var(--#{$prefix}muted) !default;
 $navbar-light-brand-color: var(--#{$prefix}body-color) !default;
-$navbar-light-active-color: var(--#{$prefix}body-color) color !default;
+$navbar-light-border-color: var(--#{$prefix}border-color) !default;
+$navbar-light-border-width: var(--#{$prefix}border-width) !default;
+$navbar-light-active-color: var(--#{$prefix}body-color) !default;
 $navbar-light-disabled-color: var(--#{$prefix}disabled-color) !default;
-$navbar-light-active-bg: rgba(0, 0, 0, 0.06) !default;
+$navbar-light-hover-bg: $hover-bg !default;
+$navbar-light-active-bg: null !default;
+$navbar-light-active-border-color: var(--#{$prefix}primary) !default;
+$navbar-light-active-color: red !default;
 
 $navbar-dark-color: rgba($white, $text-muted-opacity) !default;
 $navbar-dark-brand-color: $white !default;
@@ -726,9 +731,10 @@ $navbar-toggler-animation-time: 0.2s !default;
 $navbar-toggler-focus-width: 0 !default;
 $navbar-overlap-height: 9rem !default;
 
-$navbar-nav-link-padding-x: $nav-link-padding-x !default;
-
-$navbar-active-border-color: var(--#{$prefix}primary) !default;
+// Navbar nav
+$navbar-nav-gap: .25rem !default;
+$navbar-nav-link-padding-x: .5rem !default;
+$navbar-nav-link-padding-y: .5rem !default;
 
 // Sidebar
 $sidebar-width: 15rem !default;
