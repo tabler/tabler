@@ -1,14 +1,14 @@
 // stylelint-disable declaration-no-important
 
 body {
-  &:not(.theme-dark):not([data-bs-theme="dark"]) {
+  &:not(.theme-dark):not([data-bs-theme=dark]) {
     .hide-theme-light {
       display: none !important;
     }
   }
 
   &.theme-dark,
-  &[data-bs-theme="dark"] {
+  &[data-bs-theme=dark] {
     .hide-theme-dark {
       display: none !important;
     }
@@ -64,5 +64,9 @@ body {
         @include autodark-image;
       }
     }
+  }
+
+  body[data-bs-theme=dark] [data-bs-theme=light] {
+    @extend [data-bs-theme=dark];
   }
 }
