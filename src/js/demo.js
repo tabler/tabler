@@ -1,24 +1,27 @@
 // Setting items
 const items = {
-	'menu-position': { localStorage: 'tablerMenuPosition', default: 'top' },
-	'menu-behavior': { localStorage: 'tablerMenuBehavior', default: 'sticky' },
-	'container-layout': { localStorage: 'tablerContainerLayout', default: 'boxed' }
+	"menu-position": { localStorage: "tablerMenuPosition", default: "top" },
+	"menu-behavior": { localStorage: "tablerMenuBehavior", default: "sticky" },
+	"container-layout": {
+		localStorage: "tablerContainerLayout",
+		default: "boxed",
+	},
 }
 
 // Theme config
 const config = {}
 for (const [key, params] of Object.entries(items)) {
-   const lsParams = localStorage.getItem(params.localStorage)
-   config[key] = lsParams ? lsParams : params.default
+	const lsParams = localStorage.getItem(params.localStorage)
+	config[key] = lsParams ? lsParams : params.default
 }
 
 // Parse url params
 const parseUrl = () => {
 	const search = window.location.search.substring(1)
-	const params = search.split('&')
+	const params = search.split("&")
 
 	for (let i = 0; i < params.length; i++) {
-		const arr = params[i].split('=')
+		const arr = params[i].split("=")
 		const key = arr[0]
 		const value = arr[1]
 
@@ -35,7 +38,9 @@ const parseUrl = () => {
 // Toggle form controls
 const toggleFormControls = (form) => {
 	for (const [key, params] of Object.entries(items)) {
-		const elem = form.querySelector(`[name="settings-${key}"][value="${config[key]}"]`)
+		const elem = form.querySelector(
+			`[name="settings-${key}"][value="${config[key]}"]`,
+		)
 
 		if (elem) {
 			elem.checked = true
@@ -55,22 +60,20 @@ const submitForm = (form) => {
 		config[key] = value
 	}
 
-	window.dispatchEvent(new Event('resize'));
+	window.dispatchEvent(new Event("resize"))
 
-	(new bootstrap.Offcanvas(form)).hide()
+	new bootstrap.Offcanvas(form).hide()
 }
-
 
 // Parse url
 parseUrl()
 
 // Elements
-const form = document.querySelector('#offcanvasSettings')
+const form = document.querySelector("#offcanvasSettings")
 
 // Toggle form controls
 if (form) {
-
-	form.addEventListener('submit', function (e) {
+	form.addEventListener("submit", function (e) {
 		e.preventDefault()
 
 		submitForm(form)

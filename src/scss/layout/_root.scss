@@ -2,7 +2,11 @@
 :host {
   font-size: 16px;
   height: 100%;
+}
 
+:root,
+:host,
+[data-bs-theme="light"] {
   @each $name, $color in map-merge($theme-colors, $gray-colors) {
     --#{$prefix}#{$name}: #{$color};
     --#{$prefix}#{$name}-rgb: #{to-rgb($color)};
@@ -39,9 +43,10 @@
   --#{$prefix}code-color: #{$code-color};
   --#{$prefix}code-bg: #{$code-bg};
 
-  --#{$prefix}dark-mode-border-color: #{$dark-mode-border-color};
-  --#{$prefix}dark-mode-border-dark-color: #{$dark-mode-border-dark-color};
-  --#{$prefix}dark-mode-border-color-active: #{$dark-mode-border-color-active};
+  --#{$prefix}dark-mode-border-color: #{$border-color-dark};
+  --#{$prefix}dark-mode-border-color-translucent: #{$border-color-translucent-dark};
+  --#{$prefix}dark-mode-border-color-active: #{$border-color-active-dark};
+  --#{$prefix}dark-mode-border-dark-color: #{$border-dark-color-dark};
 
   --#{$prefix}page-padding: #{$page-padding};
   --#{$prefix}page-padding-y: #{$page-padding-y};
@@ -61,7 +66,7 @@
     --#{$prefix}line-height-#{$name}: #{$value};
   }
 
-  @each $name, $value in $shadows {
+  @each $name, $value in $box-shadows {
     --#{$prefix}#{$name}: #{$value};
   }
 }

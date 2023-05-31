@@ -1,7 +1,7 @@
 {% capture addon %}
 	{% if include.loader %}
 		<span class="input-icon-addon{% if include.icon-class %} {{ include.icon-class }}{% endif %}">
-			{% include ui/spinner.html class="text-muted" size="sm" %}
+			{% include ui/spinner.html class="text-secondary" size="sm" %}
 		</span>
 	{% else %}
 		{% assign icon = include.icon | default: 'search' %}
@@ -16,7 +16,7 @@
 		{{ addon }}
 	{% endif %}
 
-	<input type="text" value="{{ include.value }}" class="form-control{% if include.light %} form-control-light{% endif %}{% if include.rounded %} form-control-rounded{% endif %}{% if include.dark %} form-control-dark{% endif %}{% if include.input-class %} {{ include.input-class }}{% endif %}" placeholder="{{ include.placeholder | default: 'Search…' }}"{% if include['aria-label'] %} aria-label="{{ include['aria-label'] }}"{% endif %}{% if include.readonly %} readonly{% endif %}>
+	<input type="text" value="{{ include.value }}" class="form-control{% if include.light %} form-control-light{% endif %}{% if include.rounded %} form-control-rounded{% endif %}{% if include.input-class %} {{ include.input-class }}{% endif %}" placeholder="{{ include.placeholder | default: 'Search…' }}"{% if include['aria-label'] %} aria-label="{{ include['aria-label'] }}"{% endif %}{% if include.readonly %} readonly{% endif %}>
 
 	{% unless include.prepend %}
 		{{ addon }}

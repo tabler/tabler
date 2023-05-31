@@ -1,9 +1,10 @@
 {
   "name": "@tabler/core",
-  "version": "1.0.0-beta17",
+  "version": "1.0.0-beta19",
   "description": "Premium and Open Source dashboard template with responsive and high quality UI.",
   "homepage": "https://tabler.io",
   "scripts": {
+    "dev": "pnpm run start-plugins",
     "start": "gulp start",
     "start-plugins": "gulp start --with-plugins",
     "build": "gulp build",
@@ -18,9 +19,11 @@
     "chromatic": "chromatic --project-token=CHROMATIC_PROJECT_TOKEN",
     "storybook": "start-storybook -p 6006",
     "changelog": "gulp changelog",
-    "icons": "ncu -u @tabler/icons && npm install && gulp svg-icons && git add . && git commit -am \"update icons to v`npm info @tabler/icons version`\" && git push",
+    "icons": "ncu -u @tabler/icons && pnpm install && gulp svg-icons && git add . && git commit -am \"update icons to v`pnpm info @tabler/icons version`\" && git push",
     "download-images": "node build/download-images.js",
-    "optimize-images": "for i in ./src/static/photos/*.jpg; do convert \"$i\" -quality 80% \"${i%.jpg}.jpg\"; done"
+    "optimize-images": "for i in ./src/static/photos/*.jpg; do convert \"$i\" -quality 80% \"${i%.jpg}.jpg\"; done",
+    "format:check": "prettier --check src/**/*.{js,scss} --cache",
+    "format:write": "prettier --write src/**/*.{js,scss} --cache"
   },
   "repository": {
     "type": "git",
@@ -45,7 +48,7 @@
     "url": "https://github.com/sponsors/codecalm"
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=18"
   },
   "files": [
     "dist/**/*",
@@ -63,19 +66,19 @@
     "files": [
       {
         "path": "./dist/css/tabler.css",
-        "maxSize": "71 kB"
+        "maxSize": "75 kB"
       },
       {
         "path": "./dist/css/tabler.min.css",
-        "maxSize": "66 kB"
+        "maxSize": "70 kB"
       },
       {
         "path": "./dist/css/tabler.rtl.css",
-        "maxSize": "71 kB"
+        "maxSize": "75 kB"
       },
       {
         "path": "./dist/css/tabler.rtl.min.css",
-        "maxSize": "66 kB"
+        "maxSize": "70 kB"
       },
       {
         "path": "./dist/css/tabler-flags.css",
@@ -91,6 +94,14 @@
       },
       {
         "path": "./dist/css/tabler-payments.min.css",
+        "maxSize": "2 kB"
+      },
+      {
+        "path": "./dist/css/tabler-social.css",
+        "maxSize": "2 kB"
+      },
+      {
+        "path": "./dist/css/tabler-social.min.css",
         "maxSize": "2 kB"
       },
       {
@@ -120,22 +131,25 @@
     ]
   },
   "devDependencies": {
-    "@babel/core": "^7.21.0",
-    "@babel/preset-env": "^7.20.2",
-    "@rollup/plugin-commonjs": "^24.0.1",
-    "@rollup/plugin-node-resolve": "^15.0.1",
+    "@melloware/coloris": "^0.19.1",
+    "@babel/core": "^7.21.8",
+    "@babel/preset-env": "^7.21.5",
+    "@changesets/cli": "^2.26.1",
+    "@rollup/plugin-commonjs": "^24.1.0",
+    "@rollup/plugin-node-resolve": "^15.0.2",
     "@rollup/plugin-replace": "^5.0.2",
     "@rollup/pluginutils": "^5.0.2",
     "@rollup/stream": "^2.0.0",
-    "@tabler/icons": "^2.17.0",
-    "apexcharts": "^3.37.1",
+    "@shopify/prettier-plugin-liquid": "^1.0.6",
+    "all-contributors-cli": "^6.25.0",
+    "apexcharts": "^3.40.0",
     "autoprefixer": "^10.4.14",
     "autosize": "^6.0.1",
-    "browser-sync": "^2.28.3",
+    "browser-sync": "^2.29.1",
     "bundlewatch": "^0.3.3",
     "choices.js": "^10.2.0",
-    "chromatic": "^6.17.1",
-    "countup.js": "^2.5.0",
+    "chromatic": "^6.17.4",
+    "countup.js": "^2.6.2",
     "cross-spawn": "^7.0.3",
     "dropzone": "^6.0.0-beta.2",
     "flatpickr": "^4.6.13",
@@ -152,48 +166,56 @@
     "gulp-sass": "^5.1.0",
     "gulp-terser": "^2.1.0",
     "imageoptim-cli": "^3.0.7",
-    "imask": "^6.4.3",
-    "jsvectormap": "^1.5.1",
+    "imask": "^6.6.1",
+    "jsvectormap": "^1.5.3",
     "list.js": "^2.3.1",
     "litepicker": "^2.0.12",
     "nouislider": "^15.7.0",
-    "plyr": "^3.7.7",
-    "postcss": "^8.4.21",
-    "release-it": "^15.8.0",
+    "plyr": "^3.7.8",
+    "postcss": "^8.4.23",
+    "prettier": "^2.8.8",
+    "release-it": "^15.10.3",
     "request": "^2.88.2",
     "rollup": "2.79.1",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-cleanup": "^3.2.1",
-    "sass": "^1.59.2",
-    "tinymce": "^6.3.2",
+    "sass": "^1.62.1",
+    "star-rating.js": "^4.3.0",
+    "tinymce": "^6.4.2",
     "tom-select": "^2.2.2",
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^2.0.0",
-    "yaml": "^2.2.1",
-    "yargs": "^17.7.1"
+    "yaml": "^2.2.2",
+    "yargs": "^17.7.2"
   },
   "dependencies": {
-    "@popperjs/core": "^2.11.6",
-    "bootstrap": "5.3.0-alpha1"
+    "@popperjs/core": "^2.11.7",
+    "@tabler/icons": "^2.20.0",
+    "bootstrap": "5.3.0-alpha3"
   },
   "peerDependencies": {
-    "apexcharts": "^3.37.1",
+    "apexcharts": "^3.40.0",
     "autosize": "^6.0.1",
     "choices.js": "^10.2.0",
-    "countup.js": "^2.5.0",
+    "countup.js": "^2.6.2",
     "dropzone": "^6.0.0-beta.2",
     "flatpickr": "^4.6.13",
     "fslightbox": "^3.4.1",
-    "imask": "^6.4.3",
-    "jsvectormap": "^1.5.1",
+    "imask": "^6.6.1",
+    "jsvectormap": "^1.5.3",
     "list.js": "^2.3.1",
     "litepicker": "^2.0.12",
     "nouislider": "^15.7.0",
-    "plyr": "^3.7.7",
-    "tinymce": "^6.3.2",
-    "tom-select": "^2.2.2"
+    "plyr": "^3.7.8",
+    "star-rating.js": "^4.3.0",
+    "tinymce": "^6.4.2",
+    "tom-select": "^2.2.2",
+    "@melloware/coloris": "^0.19.1"
   },
   "peerDependenciesMeta": {
+    "@melloware/coloris": {
+      "optional": true
+    },
     "apexcharts": {
       "optional": true
     },
@@ -237,6 +259,9 @@
       "optional": true
     },
     "tom-select": {
+      "optional": true
+    },
+    "star-rating.js": {
       "optional": true
     }
   },

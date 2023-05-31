@@ -230,6 +230,31 @@ button::-moz-focus-inner {
 .tox[dir=rtl] .tox-dialog__body-content .accessibility-issue__description {
   padding: 4px 8px 4px 4px;
 }
+.tox .tox-advtemplate .tox-form__grid {
+  flex: 1;
+}
+.tox .tox-advtemplate .tox-form__grid > div:first-child {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+}
+.tox .tox-advtemplate .tox-form__grid > div:first-child > div:nth-child(2) {
+  flex-basis: 0;
+  flex-grow: 1;
+  overflow: auto;
+}
+@media only screen and (max-width: 767px ) {
+  body:not(.tox-force-desktop) .tox .tox-advtemplate .tox-form__grid > div:first-child {
+    width: 100%;
+  }
+}
+.tox .tox-advtemplate iframe {
+  border-color: #cccccc;
+  border-radius: 0;
+  border-style: solid;
+  border-width: 1px;
+  margin: 0 10px;
+}
 .tox .tox-anchorbar {
   display: flex;
   flex: 0 0 auto;
@@ -311,6 +336,54 @@ button::-moz-focus-inner {
   box-shadow: none;
   color: #fff;
 }
+.tox .tox-button.tox-button--enabled {
+  background-color: #185d8c;
+  background-image: none;
+  border-color: #185d8c;
+  box-shadow: none;
+  color: #fff;
+}
+.tox .tox-button.tox-button--enabled[disabled] {
+  background-color: #185d8c;
+  background-image: none;
+  border-color: #185d8c;
+  box-shadow: none;
+  color: rgba(255, 255, 255, 0.5);
+  cursor: not-allowed;
+}
+.tox .tox-button.tox-button--enabled:focus:not(:disabled) {
+  background-color: #154f76;
+  background-image: none;
+  border-color: #154f76;
+  box-shadow: none;
+  color: #fff;
+}
+.tox .tox-button.tox-button--enabled:hover:not(:disabled) {
+  background-color: #154f76;
+  background-image: none;
+  border-color: #154f76;
+  box-shadow: none;
+  color: #fff;
+}
+.tox .tox-button.tox-button--enabled:active:not(:disabled) {
+  background-color: #114060;
+  background-image: none;
+  border-color: #114060;
+  box-shadow: none;
+  color: #fff;
+}
+.tox .tox-button--icon-and-text,
+.tox .tox-button.tox-button--icon-and-text,
+.tox .tox-button.tox-button--secondary.tox-button--icon-and-text {
+  display: flex;
+  padding: 5px 4px;
+}
+.tox .tox-button--icon-and-text .tox-icon svg,
+.tox .tox-button.tox-button--icon-and-text .tox-icon svg,
+.tox .tox-button.tox-button--secondary.tox-button--icon-and-text .tox-icon svg {
+  display: block;
+  fill: currentColor;
+}
 .tox .tox-button--secondary {
   background-color: #f0f0f0;
   background-image: none;
@@ -356,6 +429,41 @@ button::-moz-focus-inner {
   background-color: #d6d6d6;
   background-image: none;
   border-color: #d6d6d6;
+  box-shadow: none;
+  color: #222f3e;
+}
+.tox .tox-button--secondary.tox-button--enabled {
+  background-color: #b1ccdf;
+  background-image: none;
+  border-color: #b1ccdf;
+  box-shadow: none;
+  color: #222f3e;
+}
+.tox .tox-button--secondary.tox-button--enabled[disabled] {
+  background-color: #b1ccdf;
+  background-image: none;
+  border-color: #b1ccdf;
+  box-shadow: none;
+  color: rgba(34, 47, 62, 0.5);
+}
+.tox .tox-button--secondary.tox-button--enabled:focus:not(:disabled) {
+  background-color: #9fc1d7;
+  background-image: none;
+  border-color: #9fc1d7;
+  box-shadow: none;
+  color: #222f3e;
+}
+.tox .tox-button--secondary.tox-button--enabled:hover:not(:disabled) {
+  background-color: #9fc1d7;
+  background-image: none;
+  border-color: #9fc1d7;
+  box-shadow: none;
+  color: #222f3e;
+}
+.tox .tox-button--secondary.tox-button--enabled:active:not(:disabled) {
+  background-color: #8db5d0;
+  background-image: none;
+  border-color: #8db5d0;
   box-shadow: none;
   color: #222f3e;
 }
@@ -943,7 +1051,7 @@ button::-moz-focus-inner {
   stroke: #222f3e;
   stroke-width: 2px;
 }
-.tox div.tox-swatch:not(.tox-swatch--remove)[aria-checked="true"] svg {
+.tox div.tox-swatch:not(.tox-swatch--remove).tox-collection__item--enabled svg {
   display: block;
 }
 .tox:not([dir=rtl]) .tox-swatches__picker-btn {
@@ -1391,6 +1499,13 @@ button::-moz-focus-inner {
   height: 650px;
   max-width: 1200px;
 }
+.tox .tox-dialog--fullscreen {
+  height: 100%;
+  max-width: 100%;
+}
+.tox .tox-dialog--fullscreen .tox-dialog__body-content {
+  max-height: 100%;
+}
 .tox .tox-dialog--width-md {
   max-width: 800px;
 }
@@ -1432,8 +1547,11 @@ button::-moz-focus-inner {
   font-weight: bold;
   padding-bottom: 8px;
 }
+.tox .tox-dialog__table thead th:first-child {
+  padding-right: 8px;
+}
 .tox .tox-dialog__table tbody tr {
-  border-bottom: 1px solid #cccccc;
+  border-bottom: 1px solid #404040;
 }
 .tox .tox-dialog__table tbody tr:last-child {
   border-bottom: none;
@@ -1441,6 +1559,9 @@ button::-moz-focus-inner {
 .tox .tox-dialog__table td {
   padding-bottom: 8px;
   padding-top: 8px;
+}
+.tox .tox-dialog__table td:first-child {
+  padding-right: 8px;
 }
 .tox .tox-dialog__iframe.tox-dialog__iframe--opaque {
   background: #fff;
@@ -1537,6 +1658,17 @@ body.tox-dialog__disable-scroll {
   overflow: hidden;
   position: relative;
 }
+.tox .tox-edit-area::before {
+  border: 2px solid #2D6ADF;
+  border-radius: 4px;
+  content: '';
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  transition: opacity 0.15s;
+  z-index: 1;
+}
 .tox .tox-edit-area__iframe {
   background-color: #fff;
   border: 0;
@@ -1545,6 +1677,9 @@ body.tox-dialog__disable-scroll {
   height: 100%;
   position: absolute;
   width: 100%;
+}
+.tox.tox-edit-focus .tox-edit-area::before {
+  opacity: 1;
 }
 .tox.tox-inline-edit-area {
   border: 1px dotted #cccccc;
@@ -1558,13 +1693,15 @@ body.tox-dialog__disable-scroll {
 .tox .tox-editor-header {
   display: grid;
   grid-template-columns: 1fr min-content;
-  z-index: 1;
+  z-index: 2;
 }
 .tox:not(.tox-tinymce-inline) .tox-editor-header {
   background-color: #fff;
   border-bottom: none;
   box-shadow: none;
   padding: 4px 0;
+}
+.tox:not(.tox-tinymce-inline) .tox-editor-header:not(.tox-editor-dock-transition) {
   transition: box-shadow 0.5s;
 }
 .tox:not(.tox-tinymce-inline).tox-tinymce--toolbar-bottom .tox-editor-header {
@@ -1800,7 +1937,8 @@ body.tox-dialog__disable-scroll {
 .tox .tox-textfield,
 .tox .tox-toolbar-textfield,
 .tox .tox-listboxfield .tox-listbox--select,
-.tox .tox-textarea {
+.tox .tox-textarea,
+.tox .tox-textarea-wrap .tox-textarea:focus {
   -webkit-appearance: none;
      -moz-appearance: none;
           appearance: none;
@@ -1830,7 +1968,9 @@ body.tox-dialog__disable-scroll {
 }
 .tox .tox-textfield:focus,
 .tox .tox-listboxfield .tox-listbox--select:focus,
-.tox .tox-textarea:focus {
+.tox .tox-textarea-wrap:focus-within,
+.tox .tox-textarea:focus,
+.tox .tox-custom-editor:focus-within {
   background-color: #fff;
   border-color: #207ab7;
   box-shadow: none;
@@ -1956,11 +2096,26 @@ body.tox-dialog__disable-scroll {
 .tox[dir=rtl] .tox-selectfield svg {
   left: 8px;
 }
+.tox .tox-textarea-wrap {
+  border-color: #cccccc;
+  border-radius: 3px;
+  border-style: solid;
+  border-width: 1px;
+  display: flex;
+  flex: 1;
+  overflow: hidden;
+}
 .tox .tox-textarea {
   -webkit-appearance: textarea;
      -moz-appearance: textarea;
           appearance: textarea;
   white-space: pre-wrap;
+}
+.tox .tox-textarea-wrap .tox-textarea {
+  border: none;
+}
+.tox .tox-textarea-wrap .tox-textarea:focus {
+  border: none;
 }
 .tox-fullscreen {
   border: 0;
@@ -2859,6 +3014,82 @@ body.tox-dialog__disable-scroll {
   margin-bottom: 4px;
   white-space: nowrap;
 }
+.tox .tox-number-input {
+  border-radius: 3px;
+  display: flex;
+  margin: 3px 0 2px 0;
+  padding: 0 4px;
+  width: auto;
+}
+.tox .tox-number-input .tox-input-wrapper {
+  background: transparent;
+  display: flex;
+  pointer-events: none;
+  text-align: center;
+}
+.tox .tox-number-input .tox-input-wrapper:focus {
+  background: #dee0e2;
+}
+.tox .tox-number-input input {
+  border-radius: 3px;
+  color: #222f3e;
+  font-size: 14px;
+  margin: 2px 0;
+  pointer-events: all;
+  width: 60px;
+}
+.tox .tox-number-input input:hover {
+  background: #dee0e2;
+  color: #222f3e;
+}
+.tox .tox-number-input input:focus {
+  background: #fff;
+  color: #222f3e;
+}
+.tox .tox-number-input button {
+  background: transparent;
+  color: #222f3e;
+  height: 34px;
+  text-align: center;
+  width: 24px;
+}
+.tox .tox-number-input button svg {
+  display: block;
+  fill: #222f3e;
+  margin: 0 auto;
+  transform: scale(0.67);
+}
+.tox .tox-number-input button:focus {
+  background: #dee0e2;
+}
+.tox .tox-number-input button:hover {
+  background: #dee0e2;
+  border: 0;
+  box-shadow: none;
+  color: #222f3e;
+}
+.tox .tox-number-input button:hover svg {
+  fill: #222f3e;
+}
+.tox .tox-number-input button:active {
+  background: #c8cbcf;
+  border: 0;
+  box-shadow: none;
+  color: #222f3e;
+}
+.tox .tox-number-input button:active svg {
+  fill: #222f3e;
+}
+.tox .tox-number-input button.minus {
+  border-radius: 3px 0 0 3px;
+}
+.tox .tox-number-input button.plus {
+  border-radius: 0 3px 3px 0;
+}
+.tox .tox-number-input:focus:not(:active) > button,
+.tox .tox-number-input:focus:not(:active) > .tox-input-wrapper {
+  background: #dee0e2;
+}
 .tox .tox-tbtn--select {
   margin: 3px 0 2px 0;
   padding: 0 4px;
@@ -2867,7 +3098,11 @@ body.tox-dialog__disable-scroll {
 .tox .tox-tbtn__select-label {
   cursor: default;
   font-weight: normal;
+  height: initial;
   margin: 0 4px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .tox .tox-tbtn__select-chevron {
   align-items: center;
@@ -3095,6 +3330,197 @@ body.tox-dialog__disable-scroll {
   top: 50%;
   transform: translateY(-50%);
 }
+.tox .tox-tree {
+  display: flex;
+  flex-direction: column;
+}
+.tox .tox-tree .tox-trbtn {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  border-radius: 4px;
+  box-shadow: none;
+  color: #222f3e;
+  display: flex;
+  flex: 0 0 auto;
+  font-size: 14px;
+  font-style: normal;
+  font-weight: normal;
+  height: 28px;
+  margin-bottom: 4px;
+  margin-top: 4px;
+  outline: none;
+  overflow: hidden;
+  padding: 0;
+  padding-left: 8px;
+  text-transform: none;
+}
+.tox .tox-tree .tox-trbtn .tox-tree__label {
+  cursor: default;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.tox .tox-tree .tox-trbtn svg {
+  display: block;
+  fill: #222f3e;
+}
+.tox .tox-tree .tox-trbtn:focus {
+  background: #dee0e2;
+  border: 0;
+  box-shadow: none;
+}
+.tox .tox-tree .tox-trbtn:hover {
+  background: #dee0e2;
+  border: 0;
+  box-shadow: none;
+  color: #222f3e;
+}
+.tox .tox-tree .tox-trbtn:hover svg {
+  fill: #222f3e;
+}
+.tox .tox-tree .tox-trbtn:active {
+  background: #b1d0e6;
+  border: 0;
+  box-shadow: none;
+  color: #222f3e;
+}
+.tox .tox-tree .tox-trbtn:active svg {
+  fill: #222f3e;
+}
+.tox .tox-tree .tox-trbtn--disabled,
+.tox .tox-tree .tox-trbtn--disabled:hover,
+.tox .tox-tree .tox-trbtn:disabled,
+.tox .tox-tree .tox-trbtn:disabled:hover {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  color: rgba(34, 47, 62, 0.5);
+  cursor: not-allowed;
+}
+.tox .tox-tree .tox-trbtn--disabled svg,
+.tox .tox-tree .tox-trbtn--disabled:hover svg,
+.tox .tox-tree .tox-trbtn:disabled svg,
+.tox .tox-tree .tox-trbtn:disabled:hover svg {
+  /* stylelint-disable-line no-descending-specificity */
+  fill: rgba(34, 47, 62, 0.5);
+}
+.tox .tox-tree .tox-trbtn--enabled,
+.tox .tox-tree .tox-trbtn--enabled:hover {
+  background: #b1d0e6;
+  border: 0;
+  box-shadow: none;
+  color: #222f3e;
+}
+.tox .tox-tree .tox-trbtn--enabled > *,
+.tox .tox-tree .tox-trbtn--enabled:hover > * {
+  transform: none;
+}
+.tox .tox-tree .tox-trbtn--enabled svg,
+.tox .tox-tree .tox-trbtn--enabled:hover svg {
+  /* stylelint-disable-line no-descending-specificity */
+  fill: #222f3e;
+}
+.tox .tox-tree .tox-trbtn:focus:not(.tox-trbtn--disabled) {
+  color: #222f3e;
+}
+.tox .tox-tree .tox-trbtn:focus:not(.tox-trbtn--disabled) svg {
+  fill: #222f3e;
+}
+.tox .tox-tree .tox-trbtn:active > * {
+  transform: none;
+}
+.tox .tox-tree .tox-trbtn--return {
+  align-self: stretch;
+  height: unset;
+  width: 16px;
+}
+.tox .tox-tree .tox-trbtn--labeled {
+  padding: 0 4px;
+  width: unset;
+}
+.tox .tox-tree .tox-trbtn__vlabel {
+  display: block;
+  font-size: 10px;
+  font-weight: normal;
+  letter-spacing: -0.025em;
+  margin-bottom: 4px;
+  white-space: nowrap;
+}
+.tox .tox-tree .tox-tree--directory {
+  display: flex;
+  flex-direction: column;
+  /* stylelint-disable no-descending-specificity */
+}
+.tox .tox-tree .tox-tree--directory.tox-tree--directory--expanded > .tox-tree--directory__label .tox-chevron {
+  transform: rotate(90deg);
+}
+.tox .tox-tree .tox-tree--directory .tox-tree--directory__label {
+  font-weight: bold;
+}
+.tox .tox-tree .tox-tree--directory .tox-tree--directory__label .tox-mbtn {
+  margin-left: auto;
+}
+.tox .tox-tree .tox-tree--directory .tox-tree--directory__label .tox-mbtn svg {
+  fill: transparent;
+}
+.tox .tox-tree .tox-tree--directory .tox-tree--directory__label .tox-mbtn.tox-mbtn--active svg,
+.tox .tox-tree .tox-tree--directory .tox-tree--directory__label .tox-mbtn:focus svg {
+  fill: #222f3e;
+}
+.tox .tox-tree .tox-tree--directory .tox-tree--directory__label:hover .tox-mbtn svg,
+.tox .tox-tree .tox-tree--directory .tox-tree--directory__label:focus .tox-mbtn svg {
+  fill: #222f3e;
+}
+.tox .tox-tree .tox-tree--directory .tox-tree--directory__label:hover:has(.tox-mbtn:hover) {
+  background-color: transparent;
+  color: #222f3e;
+}
+.tox .tox-tree .tox-tree--directory .tox-tree--directory__label:hover:has(.tox-mbtn:hover) .tox-chevron svg {
+  fill: #222f3e;
+}
+.tox .tox-tree .tox-tree--directory .tox-tree--directory__label .tox-chevron {
+  margin-right: 6px;
+  transition: transform 0.5s ease-in-out;
+}
+.tox .tox-tree .tox-tree--directory .tox-tree--directory__label.tox-tree--directory__label--active .tox-chevron {
+  transform: rotate(90deg);
+}
+.tox .tox-tree .tox-tree--leaf__label {
+  font-weight: normal;
+}
+.tox .tox-tree .tox-tree--leaf__label .tox-mbtn {
+  margin-left: auto;
+}
+.tox .tox-tree .tox-tree--leaf__label .tox-mbtn svg {
+  fill: transparent;
+}
+.tox .tox-tree .tox-tree--leaf__label .tox-mbtn.tox-mbtn--active svg,
+.tox .tox-tree .tox-tree--leaf__label .tox-mbtn:focus svg {
+  fill: #222f3e;
+}
+.tox .tox-tree .tox-tree--leaf__label:hover .tox-mbtn svg {
+  fill: #222f3e;
+}
+.tox .tox-tree .tox-tree--leaf__label:hover:has(.tox-mbtn:hover) {
+  background-color: transparent;
+  color: #222f3e;
+}
+.tox .tox-tree .tox-tree--leaf__label:hover:has(.tox-mbtn:hover) .tox-chevron svg {
+  fill: #222f3e;
+}
+.tox .tox-tree .tox-tree--directory__children {
+  overflow: hidden;
+  padding-left: 16px;
+}
+.tox .tox-tree .tox-tree--directory__children.tox-tree--directory__children--growing,
+.tox .tox-tree .tox-tree--directory__children.tox-tree--directory__children--shrinking {
+  transition: height 0.5s ease-in-out;
+}
+.tox .tox-tree .tox-trbtn.tox-tree--leaf__label {
+  display: flex;
+  justify-content: space-between;
+}
 .tox .tox-view-wrap,
 .tox .tox-view-wrap__slot-container {
   background-color: #fff;
@@ -3104,8 +3530,9 @@ body.tox-dialog__disable-scroll {
 }
 .tox .tox-view {
   display: flex;
-  flex: 1;
+  flex: 1 1 auto;
   flex-direction: column;
+  overflow: hidden;
 }
 .tox .tox-view__header {
   align-items: center;
@@ -3114,6 +3541,26 @@ body.tox-dialog__disable-scroll {
   justify-content: space-between;
   padding: 8px 8px 0 8px;
   position: relative;
+}
+.tox .tox-view--mobile.tox-view__header,
+.tox .tox-view--mobile.tox-view__toolbar {
+  padding: 8px;
+}
+.tox .tox-view--scrolling {
+  flex-wrap: nowrap;
+  overflow-x: auto;
+}
+.tox .tox-view__toolbar {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  justify-content: space-between;
+  padding: 8px 8px 0 8px;
+}
+.tox .tox-view__toolbar__group {
+  display: flex;
+  flex-direction: row;
+  gap: 12px;
 }
 .tox .tox-view__header-start,
 .tox .tox-view__header-end {
@@ -3156,6 +3603,7 @@ body.tox-dialog__disable-scroll {
   border-radius: 3px;
   display: flex;
   flex: 1;
+  overflow: hidden;
   position: relative;
 }
 /* stylelint-disable */
@@ -3214,6 +3662,7 @@ body.tox-dialog__disable-scroll {
   box-shadow: none;
 }
 .tox .tox-tbtn,
+.tox .tox-number-input,
 .tox .tox-tbtn--select,
 .tox .tox-split-button {
   margin: 2px 0 3px 0;

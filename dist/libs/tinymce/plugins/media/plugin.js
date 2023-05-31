@@ -1,5 +1,5 @@
 /**
- * TinyMCE version 6.3.1 (2022-12-06)
+ * TinyMCE version 6.4.2 (2023-04-26)
  */
 
 (function () {
@@ -1051,8 +1051,13 @@
     };
 
     const parseAndSanitize = (editor, context, html) => {
+      const getEditorOption = editor.options.get;
+      const sanitize = getEditorOption('xss_sanitization');
       const validate = shouldFilterHtml(editor);
-      return Parser(editor.schema, { validate }).parse(html, { context });
+      return Parser(editor.schema, {
+        sanitize,
+        validate
+      }).parse(html, { context });
     };
 
     const setup$1 = editor => {

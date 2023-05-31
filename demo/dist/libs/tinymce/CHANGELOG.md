@@ -6,6 +6,117 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Unreleased
 
+## 6.4.2 - 2023-04-26
+
+### Fixed
+- The editor would display a notification error when it fails to retirieve a blob image uri. #TINY-9604
+- Menu buttons would have the Tabstopping behaviour in toolbar. #TINY-9723
+- The `urlinput` dialog component would not open the typeahead dropdown when the input value was reset to an empty string. #TINY-9717
+- Redial would in some situations cause select elements not to have an initial value selected when they should have. #TINY-9679
+- Fixed the mouse pointer style from a text cursor to a default arrow pointer when hovering over the tree dialog component items. #TINY-9692
+- Enabled variant of togglable `tox-button` and `tox-button--secondary` now supports `hover`/`active`/`focus`/`disabled` states. #TINY-9713
+- Setting an invalid unit in the `fontsizeinput` would change it do the default value instead of reverting it back to the previous valid value. #TINY-9754
+- Selection was not correctly scrolled horizontally into view when using the `selection.scrollIntoView` API. #TINY-9747
+- Context toolbars displayed the incorrect status for the `advlist` plugin buttons. #TINY-9680
+- The image would not be inserted when using the `quickimage` button on Chrome. #TINY-9769
+
+## 6.4.1 - 2023-03-29
+
+### Fixed
+- The `fontsizeinput` increase and decrease size buttons now work on TinyMCE mobile. #TINY-9725
+- The TinyMCE editor toolbar is now accessible for all screen widths; it no longer collapses into an inaccessible vertical line when the screen is scrolled horizontally. #TINY-9646
+- Reverted the changes made, in TinyMCE 6.4.0, to UI button colors in focus, active, and enabled states. #TINY-9176
+
+## 6.4.0 - 2023-03-15
+
+### Added
+- New `tree` component that can be used in dialog body panel. #TINY-9532
+- `renderUI` property in the `Theme` type can now return a `Promise<RenderResult>` instead of `RenderResult`. #TINY-9556
+- New `isEditable` API to `editor.selection` that returns true or false if the current selection is editable. #TINY-9462
+- New `isEditable` API to `editor.dom` that returns true or false if the specified node is editable. #TINY-9462
+- New `setText` and `setIcon` methods added to menu button and toolbar button API. #TINY-9268
+- New `highlight_on_focus` option which enables highlighting the content area on focus. #TINY-9277
+- New `fontsizeinput` toolbar item which allows the user to set the size via input and also increase and decrease it with `+` and `-` buttons. #TINY-9429
+- Added `skipFocus` option to the `ToggleToolbarDrawer` command to preserve focus. #TINY-9337
+- New `font_size_input_default_unit` option allows entry of numbers without a unit in `fontsizeinput`. They are then parsed as the set unit. If `font_size_input_default_unit` is not set the default is `pt`. #TINY-9585
+- New `group` and `togglebutton` in view. #TINY-9523
+- New `togglebutton` in dialog footer buttons. #TINY-9523
+- Added `toggleFullscreen` to dialog API. #TINY-9528
+- New `text-size-increase` and `text-size-decrease` icons. #TINY-9530
+- New `xss_sanitization` option to allow disabling of XSS sanitization. #TINY-9600
+- Added the top right close button of modal dialogs to the tabbing order. The 'x' button in these dialogs can now be accessed using keyboard navigation. #TINY-9520
+- New `ui_mode` option for editor in scrollable containers support. #TINY-9414
+- The sidebar element now has the accessibility role `region` when visible and the accessibility role `presentation` when hidden. #TINY-9517
+- The `tox-custom-editor` class now has a border highlight when it is selected. #TINY-9673
+- An element could be dropped onto the decendants of an element with a `contenteditable="false"` attribute. #TINY-9364
+- Checkmark did not show in menu color swatches. #TINY-9395
+- Add support for navigating inside the tree component using arrow keys and shift key. #TINY-9614
+
+### Improved
+- Direct invalid child text nodes of list elements are now wrapped in list item elements. #TINY-4818
+- Templates are now be parsed before preview and insertion to make preview consistent with inserted template content and prevent XSS. #TINY-9244
+- Pressing backspace on an empty line now preserves formatting on the previous empty line. #TINY-9454
+- Pressing enter inside the `inputfontsize` input field now moves focus back into the editor content. #TINY-9598
+- Drag and drop events for elements with a `contenteditable="false"` attribute now includes target element details. #TINY-9599
+- Updated focus, active, and enabled colors of UI buttons for improved contrast against the UI color. #TINY-9176
+
+### Changed
+- The `link` plugins context menu items no longer appears for links that include elements with a `contenteditable="false"` attribute. #TINY-9491
+- The formatting of elements with a `contenteditable="false"` attribute are no longer cloned to new cells when new table rows are created. #TINY-9449
+- Changed the color of `@dialog-table-border-color`, and added right padding to the first cell of dialog table. #TINY-9380
+
+### Fixed
+- Sometimes the editor would finish initializing before the silver theme would have finished loading. #TINY-9556
+- The `searchreplace` modal closed incorrectly when clicking outside of the alert that pops up when no match is found. #TINY-9443
+- The text color or background color picker toolbar buttons did not update when the text color or background color was changed using the equivalent commands in the Format menu. #TINY-9439
+- The `onSetup` api function would not run when defining custom group toolbar button. #TINY-9496
+- The foreground and background menu icons would not properly update to display the last used color. #TINY-9497
+- Added new `setIconFill` function to `NestedMenuItemInstanceApi`. #TINY-9497
+- Pasting links to text would sometimes not generate the correct undo stack in Safari. #TINY-9489
+- Toolbar split buttons in `advlist` plugin now show the correct state when the cursor is in a checklist. #TINY-5167
+- Dragging transparent elements into transparent block elements could produce invalid nesting of transparents. #TINY-9231
+- The `editor.insertContent` API would insert contents inside elements with a `contenteditable="false"` attribute if the selection was inside the element. #TINY-9462
+- Closing a dialog would scroll down the document in Safari. #TINY-9148
+- Inline headers would not work in some situations when the editor was moved too far right horizontally. #TINY-8977
+- Quick toolbars were incorrectly rendered during the dragging of elements with a `contenteditable="false"` attribute. #TINY-9305
+- Selection of images, horizontal rules, tables or elements with a `contenteditable="false"` attribute was possible if they were within an element with a `contenteditable="false"` attribute. #TINY-9473
+- Ranged deletion of formatted text using selection or a keyboard shortcut would sometimes cause Blink- and Webkit-based browsers to insert interpreted tags upon typing. This could result in inconsistent tags. #TINY-9302
+- Visual characters were rendered inside elements with a `contenteditable="false"` attribute. #TINY-9474
+- Lists with an element with a `contenteditable="false"` attribute as their root were incorrectly editable using list API commands, toolbar buttons and menu items. #TINY-9458
+- Color picker dialog would not update the preview color if the hex input value was prefixed with the `#` character. #TINY-9457
+- Table cell selection was possible even if the element being selected was within an element with a `contenteditable="false"` attribute. #TINY-9459
+- Table commands were modifying tables that were within an element with a `contenteditable="false"` attribute. #TINY-9459
+- Fake carets were rendered for elements with a `contenteditable="false"` attribute and for tables within an element with a `contenteditable="false"` attribute. #TINY-9459
+- Textareas with scrollbars in dialogs would not render rounded corners correctly on some browsers. #TINY-9331
+- It was possible to open links inside the editor if the editor root was an element with a `contenteditable="false"` attribute. #TINY-9470
+- Inline boundary was rendered for boundary elements that had a `contenteditable="false"` attribute. #TINY-9471
+- Clicking on a disabled split button will no longer call the `onAction` callback. #TINY-9504
+- The *Edit Link* dialog incorrectly retrieved the URL value when opened immediately after the link insertion. #TINY-7993
+- The `ForwardDelete` and `Delete` editor commands were deleting content within elements with a `contenteditable="false"` attribute. #TINY-9477
+- The Backspace and Forward Delete keys were deleting content within elements with a `contenteditable="false"` attribute. #TINY-9477
+- Inserting newlines inside an editable element that was inside an element with a `contenteditable="false"` attribute root would sometimes try to split the editable element. #TINY-9461
+- Creating a list in a table cell when the caret is in front of an anchor element would not properly include the anchor in the list. #TINY-6853
+- Dragging and dropping elements with a `contenteditable="false"` attribute on table borders would remove the element on drop. #TINY-9021
+- Elements with a `contenteditable="false"` attribute would be removed when dragged and dropped within a root element with a `contenteditable="false"` attribute. #TINY-9558
+- Formatting could be applied or removed to list items with a `contenteditable="false"` attribute that were inside an element with a `contenteditable="false"` attribute. #TINY-9563
+- Annotation were not removed if the annotation was deleted immediately after being created. #TINY-9399
+- Inserting a link for a selection from quickbars did not preserve formatting. #TINY-9593
+- Inline dialog position was not correct when the editor was not inline and was contained in a `fixed` or `absolute` positioned element. #TINY-9554
+- Sticky toolbars did not fade transition when undocking in classic iframe mode. #TINY-9408
+- Inserting elements that were not valid within the closest editing host would incorrectly split the editing host. #TINY-9595
+- The `color_cols` option was not respected in the `forecolor` or `backcolor` color swatches. #TINY-9560
+- Drag and dropping the last element with a `contenteditable="false"` attribute out of its parent block would not properly pad the parent block element. #TINY-9606
+- Applying heading formats from `text_patterns` produced an invisible space before a word. #TINY-9603
+- Opening color swatches caused the browser tab to crash when `color_cols` or other column option was set to 0. #TINY-9649
+- Opening a menu button in the footer of a dialog after a redial threw an error. #TINY-9686
+- After closing a view, the `more...` toolbar button disappeared if the editor had `toolbar_mode: 'sliding'` and the toolbar was opened. #TINY-9419
+- Inline dialogs would open partially off screen when the toolbar had a small width. #TINY-9588
+
+## 6.3.2 - 2023-02-22
+
+### Fixed
+- Removed a workaround for ensuring stylesheets are loaded in an outdated version of webkit. #TINY-9433
+
 ## 6.3.1 - 2022-12-06
 
 ### Fixed
@@ -54,6 +165,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - A newline could not be inserted when the selection was restored from a bookmark after an inline element with a `contenteditable="false"` attribute. #TINY-9194
 - The global `tinymce.dom.styleSheetLoader` was not affected by the `content_css_cors` option. #TINY-6037
 - The caret was moved to the previous line when a text pattern executed a `mceInsertContent` command on Enter key when running on Firefox. #TINY-9193
+- The `autoresize` plugin used to cause infinite resize when `content_css` is set to `document`. #TINY-8872
 
 ## 6.2.0 - 2022-09-08
 

@@ -1,5 +1,5 @@
 /**
- * TinyMCE version 6.3.1 (2022-12-06)
+ * TinyMCE version 6.4.2 (2023-04-26)
  */
 
 (function () {
@@ -407,7 +407,7 @@
     };
     const trimCaretContainers = text => text.replace(/\uFEFF/g, '');
     const getAnchorElement = (editor, selectedElm) => {
-      selectedElm = selectedElm || editor.selection.getNode();
+      selectedElm = selectedElm || getLinksInSelection(editor.selection.getRng())[0] || editor.selection.getNode();
       if (isImageFigure(selectedElm)) {
         return Optional.from(editor.dom.select('a[href]', selectedElm)[0]);
       } else {
@@ -419,8 +419,10 @@
       const text = anchorElm.fold(() => selection.getContent({ format: 'text' }), anchorElm => anchorElm.innerText || anchorElm.textContent || '');
       return trimCaretContainers(text);
     };
-    const hasLinks = elements => global$4.grep(elements, isLink).length > 0;
-    const hasLinksInSelection = rng => collectNodesInRange(rng, isLink).length > 0;
+    const getLinksInSelection = rng => collectNodesInRange(rng, isLink);
+    const getLinks$1 = elements => global$4.grep(elements, isLink);
+    const hasLinks = elements => getLinks$1(elements).length > 0;
+    const hasLinksInSelection = rng => getLinksInSelection(rng).length > 0;
     const isOnlyTextSelected = editor => {
       const inlineTextElements = editor.schema.getTextInlineElements();
       const isElement = elm => elm.nodeType === 1 && !isAnchor(elm) && !has(inlineTextElements, elm.nodeName.toLowerCase());
@@ -1046,8 +1048,12 @@
       updateState();
       return toggleState(editor, updateState);
     };
+    const hasExactlyOneLinkInSelection = editor => {
+      const links = editor.selection.isCollapsed() ? getLinks$1(editor.dom.getParents(editor.selection.getStart())) : getLinksInSelection(editor.selection.getRng());
+      return links.length === 1;
+    };
     const toggleEnabledState = editor => api => {
-      const updateState = () => api.setEnabled(isInAnchor(editor, editor.selection.getNode()));
+      const updateState = () => api.setEnabled(hasExactlyOneLinkInSelection(editor));
       updateState();
       return toggleState(editor, updateState);
     };
@@ -1107,7 +1113,15 @@
     const setupContextMenu = editor => {
       const inLink = 'link unlink openlink';
       const noLink = 'link';
-      editor.ui.registry.addContextMenu('link', { update: element => hasLinks(editor.dom.getParents(element, 'a')) ? inLink : noLink });
+      editor.ui.registry.addContextMenu('link', {
+        update: element => {
+          const isEditable = editor.dom.isEditable(element);
+          if (!isEditable) {
+            return '';
+          }
+          return hasLinks(editor.dom.getParents(element, 'a')) ? inLink : noLink;
+        }
+      });
     };
     const setupContextToolbars = editor => {
       const collapseSelectionToEnd = editor => {
@@ -1123,7 +1137,7 @@
         const onlyText = isOnlyTextSelected(editor);
         if (anchor.isNone() && onlyText) {
           const text = getAnchorText(editor.selection, anchor);
-          return Optional.some(text.length > 0 ? text : value);
+          return someIf(text.length === 0, value);
         } else {
           return Optional.none();
         }

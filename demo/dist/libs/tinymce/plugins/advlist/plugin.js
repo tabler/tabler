@@ -1,5 +1,5 @@
 /**
- * TinyMCE version 6.3.1 (2022-12-06)
+ * TinyMCE version 6.4.2 (2023-04-26)
  */
 
 (function () {
@@ -134,54 +134,60 @@
     }
     Optional.singletonNone = new Optional(false);
 
+    const findUntil = (xs, pred, until) => {
+      for (let i = 0, len = xs.length; i < len; i++) {
+        const x = xs[i];
+        if (pred(x, i)) {
+          return Optional.some(x);
+        } else if (until(x, i)) {
+          break;
+        }
+      }
+      return Optional.none();
+    };
+
+    const isCustomList = list => /\btox\-/.test(list.className);
     const isChildOfBody = (editor, elm) => {
       return editor.dom.isChildOf(elm, editor.getBody());
     };
-    const isTableCellNode = node => {
-      return isNonNullable(node) && /^(TH|TD)$/.test(node.nodeName);
-    };
-    const isListNode = editor => node => {
-      return isNonNullable(node) && /^(OL|UL|DL)$/.test(node.nodeName) && isChildOfBody(editor, node);
-    };
+    const matchNodeNames = regex => node => isNonNullable(node) && regex.test(node.nodeName);
+    const isListNode = matchNodeNames(/^(OL|UL|DL)$/);
+    const isTableCellNode = matchNodeNames(/^(TH|TD)$/);
+    const inList = (editor, parents, nodeName) => findUntil(parents, parent => isListNode(parent) && !isCustomList(parent), isTableCellNode).exists(list => list.nodeName === nodeName && isChildOfBody(editor, list));
     const getSelectedStyleType = editor => {
       const listElm = editor.dom.getParent(editor.selection.getNode(), 'ol,ul');
       const style = editor.dom.getStyle(listElm, 'listStyleType');
       return Optional.from(style);
     };
-    const isWithinNonEditable = (editor, element) => element !== null && editor.dom.getContentEditableParent(element) === 'false';
+    const isWithinNonEditable = (editor, element) => element !== null && !editor.dom.isEditable(element);
     const isWithinNonEditableList = (editor, element) => {
       const parentList = editor.dom.getParent(element, 'ol,ul,dl');
       return isWithinNonEditable(editor, parentList);
     };
-
-    const findIndex = (list, predicate) => {
-      for (let index = 0; index < list.length; index++) {
-        const element = list[index];
-        if (predicate(element)) {
-          return index;
-        }
-      }
-      return -1;
+    const setNodeChangeHandler = (editor, nodeChangeHandler) => {
+      const initialNode = editor.selection.getNode();
+      nodeChangeHandler({
+        parents: editor.dom.getParents(initialNode),
+        element: initialNode
+      });
+      editor.on('NodeChange', nodeChangeHandler);
+      return () => editor.off('NodeChange', nodeChangeHandler);
     };
+
     const styleValueToText = styleValue => {
       return styleValue.replace(/\-/g, ' ').replace(/\b\w/g, chr => {
         return chr.toUpperCase();
       });
     };
     const normalizeStyleValue = styleValue => isNullable(styleValue) || styleValue === 'default' ? '' : styleValue;
-    const isWithinList = (editor, e, nodeName) => {
-      const tableCellIndex = findIndex(e.parents, isTableCellNode);
-      const parents = tableCellIndex !== -1 ? e.parents.slice(0, tableCellIndex) : e.parents;
-      const lists = global.grep(parents, isListNode(editor));
-      return lists.length > 0 && lists[0].nodeName === nodeName;
-    };
     const makeSetupHandler = (editor, nodeName) => api => {
-      const nodeChangeHandler = e => {
-        api.setActive(isWithinList(editor, e, nodeName));
-        api.setEnabled(!isWithinNonEditableList(editor, e.element));
+      const updateButtonState = (editor, parents) => {
+        const element = editor.selection.getStart(true);
+        api.setActive(inList(editor, parents, nodeName));
+        api.setEnabled(!isWithinNonEditableList(editor, element));
       };
-      editor.on('NodeChange', nodeChangeHandler);
-      return () => editor.off('NodeChange', nodeChangeHandler);
+      const nodeChangeHandler = e => updateButtonState(editor, e.parents);
+      return setNodeChangeHandler(editor, nodeChangeHandler);
     };
     const addSplitButton = (editor, id, tooltip, cmd, nodeName, styles) => {
       editor.ui.registry.addSplitButton(id, {
