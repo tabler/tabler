@@ -1,68 +1,61 @@
-.tag-container {
+.tags-list {
     display: flex;
+    justify-content: space-around;
     flex-wrap: wrap;
 
     .tag {
-        background-color: $tag-bg-color;
-        height: 23px;
-        border: 1px solid gray;
-        padding: 0 .2rem;
-        margin: 0 1rem;
-        border-radius: 5px;
-    }
-
-    .cross-icon-tag {
+        border: $border-width solid $gray-300;
         display: flex;
         align-items: center;
-        gap: $tag-gap;
+        height: 1.5rem;
+        border-radius: $border-radius;
+        font-size: 1rem;
+        padding-left: .25rem;
+        padding-right: .25rem;
+        background: $white;
+        box-shadow: .06rem .06rem $gray-300;
 
-        .icon {
+        .tag-close {
+            margin-left: .5rem;
             display: flex;
-            justify-content: center;
             align-items: center;
-            padding: 0;
-            margin: 0;
-            height: 16px;
-            font-size: 14px;
-            transition: .5 all;
+            height: 1rem;
+            border-radius: $border-radius;
+
 
             &:hover {
-                background-color: $tag-icon-hover-color;
-                cursor: pointer;
+                background-color: $gray-200;
+            }
+
+            > :nth-child(1) {
+                height: auto;
+                max-height: .5rem;
             }
         }
-    }
 
-    .number {
-        background: $tag-icon-hover-color;
-        height: 16px;
-    }
-
-    .status-tag {
-        display: flex;
-        align-items: center;
-        gap: $tag-gap;
-
-        .status-circle {
-
-            height: 8px;
-            width: 8px;
-            border-radius: 50%;
-            background-color: $tag-status-online;
+        .tag-number {
+            margin-left: .5rem;
         }
-    }
 
-    .box-status-tag {
-        display: flex;
-        align-items: center;
-        gap: $tag-gap;
 
-        .box-status {
-            height: 15px;
-            width: 16px;
-            border: 1px solid gray;
-            background-color: white;
-            border-radius: 4px;
+        .tag-checkbox,
+        .tag-status,
+        .tag-avatar {
+            margin-right: .5rem;
+        }
+
+        .tag-avatar {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            max-height: .5rem;
+
+            img {
+                height: auto;
+                max-height: 100%;
+                max-width: 100%;
+
+            }
         }
     }
 }
