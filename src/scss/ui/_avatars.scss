@@ -1,7 +1,7 @@
 .avatar {
   --#{$prefix}avatar-size: #{$avatar-size};
   --#{$prefix}avatar-bg: #{$avatar-bg};
-  --#{$prefix}avatar-shadow: #{$box-shadow-inset};
+  --#{$prefix}avatar-box-shadow: #{$avatar-box-shadow};
   position: relative;
   width: var(--#{$prefix}avatar-size);
   height: var(--#{$prefix}avatar-size);
@@ -10,14 +10,14 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--#{$prefix}text-secondary);
+  color: var(--#{$prefix}secondary);
   text-align: center;
   text-transform: uppercase;
   vertical-align: bottom;
   user-select: none;
   background: var(--#{$prefix}avatar-bg) no-repeat center/cover;
   border-radius: $avatar-border-radius;
-  box-shadow: var(--#{$prefix}avatar-shadow);
+  box-shadow: var(--#{$prefix}avatar-box-shadow);
 
   svg {
     width: calc(var(--#{$prefix}avatar-size) / #{divide(40, 24)});
@@ -70,8 +70,8 @@
   --#{$prefix}list-gap: 0;
 
   .avatar {
-    margin-right: calc(-.5 * var(--#{$prefix}avatar-size)) !important;
-    box-shadow: var(--#{$prefix}avatar-shadow), 0 0 0 2px var(--#{$prefix}card-cap-bg, var(--#{$prefix}card-bg, var(--#{$prefix}bg-surface)));
+    margin-right: calc(#{$avatar-list-spacing} * var(--#{$prefix}avatar-size)) !important;
+    box-shadow: var(--#{$prefix}avatar-box-shadow), 0 0 0 2px var(--#{$prefix}card-cap-bg, var(--#{$prefix}card-bg, var(--#{$prefix}bg-surface)));
   }
 }
 
