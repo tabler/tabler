@@ -1,0 +1,19 @@
+<span class="tag">
+	{% if include.flag %}
+		{% include ui/flag.html flag=include.flag size="xs" class="tag-flag" %}
+	{% elsif include.icon %}
+		{% include ui/icon.html icon=include.icon size="xs" class="tag-icon" %}
+	{% elsif include.person %}
+		{% include ui/avatar.html person=include.person size="xs" class="tag-avatar" %}
+	{% elsif include.status %}
+		{% include ui/badge.html color=include.status class="tag-status badge-empty" text="" %}
+	{% elsif include.legend %}
+		<span class="legend bg-{{ include.legend }}"></span>
+	{% elsif include.checkbox %}
+		<input type="checkbox" class="form-check-input tag-check"{% if include.checked %} checked{% endif %}/>
+	{% endif %}
+	{{ include.text }}
+	{% if include.badge %}
+		{% include ui/badge.html color=include.status class="tag-badge" text=include.badge size="sm" %}
+	{% endif %}
+</span>
