@@ -1,68 +1,12 @@
-@mixin navbar-vertical {
-  width: $sidebar-width;
-  position: fixed;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  z-index: $zindex-fixed;
-  align-items: flex-start;
-  overflow-y: scroll;
-  padding: 0;
-  @include transition(transform $transition-time);
 
-  &.navbar-right {
-    left: auto;
-    right: 0;
-  }
-
-  .navbar-brand {
-    padding: (($navbar-height - $navbar-brand-image-height) * 0.5) 0;
-    justify-content: center;
-  }
-
-  .navbar-collapse {
-    align-items: stretch;
-  }
-
-  .navbar-nav {
-    flex-direction: column;
-    flex-grow: 1;
-    min-height: auto;
-
-    .nav-link {
-      padding-top: 0.5rem;
-      padding-bottom: 0.5rem;
-    }
-  }
-
-  > [class^="container"] {
-    flex-direction: column;
-    align-items: stretch;
-    min-height: 100%;
-    justify-content: flex-start;
-    padding: 0;
-  }
-
-  ~ .page {
-    padding-left: $sidebar-width;
-
-    [class^="container"] {
-      padding-left: 1.5rem;
-      padding-right: 1.5rem;
-    }
-  }
-
-  &.navbar-right ~ .page {
-    padding-left: 0;
-    padding-right: $sidebar-width;
-  }
-  
+@mixin navbar-vertical-nav {
   .navbar-collapse {
     flex-direction: column;
 
     [class^="container"] {
       flex-direction: column;
       align-items: stretch;
+      padding: 0;
     }
 
     .navbar-nav {
@@ -70,7 +14,7 @@
       margin-right: 0;
 
       .nav-link {
-        padding: 0.5rem calc(#{$container-padding-x} / 2);
+        padding: .5rem calc(#{$container-padding-x} / 2);
         justify-content: flex-start;
       }
     }
@@ -129,16 +73,14 @@
 Navbar
  */
 .navbar {
-  --#{$prefix}navbar-bg: #{$navbar-light-bg};
-  --#{$prefix}navbar-border-width: #{$navbar-light-border-width};
-  --#{$prefix}navbar-active-border-color: #{$navbar-light-active-border-color};
+  --#{$prefix}navbar-bg: var(--#{$prefix}bg-surface);
+  --#{$prefix}navbar-border-width: #{$navbar-border-width};
+  --#{$prefix}navbar-active-border-color: #{$navbar-active-border-color};
   --#{$prefix}navbar-active-bg: #{$navbar-light-active-bg};
-  --#{$prefix}navbar-hover-bg: #{$navbar-light-hover-bg};
-  --#{$prefix}navbar-border-color: #{$navbar-light-border-color};
-  --#{$prefix}navbar-nav-gap: #{$navbar-nav-gap};
-  --#{$prefix}navbar-height: #{$navbar-height};
+  --#{$prefix}navbar-color: var(--#{$prefix}body-color);
+  --#{$prefix}navbar-border-color: #{$navbar-border-color};
   align-items: stretch;
-  min-height: var(--#{$prefix}navbar-height);
+  min-height: $navbar-height;
   box-shadow: inset 0 calc(-1 * var(--#{$prefix}navbar-border-width)) 0 0 var(--#{$prefix}navbar-border-color);
   background: var(--#{$prefix}navbar-bg);
   color: var(--#{$prefix}navbar-color);
@@ -155,47 +97,30 @@ Navbar
     position: absolute;
     z-index: $zindex-fixed;
   }
+
+  .navbar-nav {
+    min-height: subtract($navbar-height, 2 * $navbar-padding-y);
+
+    .nav-link {
+      position: relative;
+      min-width: 2rem;
+      min-height: 2rem;
+      justify-content: center;
+      border-radius: var(--#{$prefix}border-radius);
+
+      .badge {
+        position: absolute;
+        top: .375rem;
+        right: .375rem;
+        transform: translate(50%, -50%);
+      }
+    }
+  }
 }
 
-/**
-Navbar nav
-*/
 .navbar-nav {
-  gap: var(--#{$prefix}navbar-nav-gap);
   margin: 0;
   padding: 0;
-  align-items: stretch;
-
-  .nav-item {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  .nav-link {
-    transition: $transition-time background-color;
-    position: relative;
-    min-width: 2rem;
-    min-height: 2rem;
-    border-radius: var(--#{$prefix}border-radius);
-
-    .badge {
-      position: absolute;
-      top: 0.375rem;
-      right: 0.375rem;
-      transform: translate(50%, -50%);
-    }
-
-    &.active {
-      background-color: var(--#{$prefix}navbar-active-bg);
-    }
-
-    &:hover,
-    &:focus,
-    &.show {
-      background-color: var(--#{$prefix}navbar-hover-bg);
-    }
-  }
 }
 
 .navbar-expand {
@@ -204,14 +129,28 @@ Navbar nav
     $infix: breakpoint-infix($next, $grid-breakpoints);
 
     &#{$infix} {
-      // @include media-breakpoint-down(breakpoint-next($breakpoint)) {
-      //   @include navbar-vertical;
-      // }
+      @include media-breakpoint-down(breakpoint-next($breakpoint)) {
+        @include navbar-vertical-nav;
+      }
 
       @include media-breakpoint-up($next) {
         .navbar-collapse {
           width: auto;
           flex: 1 1 auto;
+        }
+
+        .nav-item.active {
+          position: relative;
+
+          &:after {
+            content: "";
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: -.25rem;
+            border: 0 var(--#{$prefix}border-style) var(--#{$prefix}navbar-active-border-color);
+            border-bottom-width: 2px;
+          }
         }
 
         &.navbar-vertical {
@@ -220,50 +159,20 @@ Navbar nav
           &.navbar-right {
             box-shadow: inset calc(1 * var(--#{$prefix}navbar-border-width)) 0 0 0 var(--#{$prefix}navbar-border-color);
           }
+        }
 
+        &.navbar-vertical {
           ~ .navbar,
           ~ .page-wrapper {
             margin-left: $sidebar-width;
           }
-
-          &.navbar-right {
-            ~ .navbar,
-            ~ .page-wrapper {
-              margin-left: 0;
-              margin-right: $sidebar-width;
-            }
-          }
         }
 
-        .navbar-nav {
-          .nav-link {
-            &:before {
-              content: "";
-              height: 100%;
-              left: 50%;
-              min-height: var(--#{$prefix}navbar-height);
-              position: absolute;
-              top: 50%;
-              transform: translateX(-50%) translateY(-50%);
-              width: 100%;
-            }
-
-            &.active {
-              background-color: var(--#{$prefix}navbar-active-bg);
-
-              &:after {
-                content: "";
-                background: var(--#{$prefix}navbar-active-border-color);
-                border-radius: var(--#{$prefix}border-radius);
-                bottom: calc(50% - calc(var(--tblr-navbar-height) / 2));
-                height: 2px;
-                position: absolute;
-                right: 50%;
-                transform: translate(50%, -50%);
-                width: 100%;
-                z-index: 1;
-              }
-            }
+        &.navbar-vertical.navbar-right {
+          ~ .navbar,
+          ~ .page-wrapper {
+            margin-left: 0;
+            margin-right: $sidebar-width;
           }
         }
       }
@@ -306,12 +215,7 @@ Navbar toggler
   width: 1.25em;
   background: currentColor;
   border-radius: 10px;
-  @include transition(
-    top $navbar-toggler-animation-time $navbar-toggler-animation-time,
-    bottom $navbar-toggler-animation-time $navbar-toggler-animation-time,
-    transform $navbar-toggler-animation-time,
-    opacity 0s $navbar-toggler-animation-time
-  );
+  @include transition(top $navbar-toggler-animation-time $navbar-toggler-animation-time, bottom $navbar-toggler-animation-time $navbar-toggler-animation-time, transform $navbar-toggler-animation-time, opacity 0s $navbar-toggler-animation-time);
   position: relative;
 
   &:before,
@@ -328,11 +232,11 @@ Navbar toggler
   }
 
   &:before {
-    top: -0.45em;
+    top: -.45em;
   }
 
   &:after {
-    bottom: -0.45em;
+    bottom: -.45em;
   }
 
   .navbar-toggler[aria-expanded="true"] & {
@@ -360,6 +264,19 @@ Navbar transparent
 }
 
 /**
+Navbar nav
+ */
+.navbar-nav {
+  align-items: stretch;
+
+  .nav-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+}
+
+/**
 Navbar side
  */
 .navbar-side {
@@ -382,13 +299,72 @@ Navbar vertical
 
         &#{$infix} {
           @include media-breakpoint-up($next) {
-            @include navbar-vertical;
+            width: $sidebar-width;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: $zindex-fixed;
+            align-items: flex-start;
+            @include transition(transform $transition-time);
+            overflow-y: scroll;
+            padding: 0;
+
+            &.navbar-right {
+              left: auto;
+              right: 0;
+            }
+
+            .navbar-brand {
+              padding: (($navbar-height - $navbar-brand-image-height) * .5) 0;
+              justify-content: center;
+            }
+
+            .navbar-collapse {
+              align-items: stretch;
+            }
+
+            .navbar-nav {
+              flex-direction: column;
+              flex-grow: 1;
+              min-height: auto;
+
+              .nav-link {
+                padding-top: .5rem;
+                padding-bottom: .5rem;
+              }
+            }
+
+            > [class^="container"] {
+              flex-direction: column;
+              align-items: stretch;
+              min-height: 100%;
+              justify-content: flex-start;
+              padding: 0;
+            }
+
+            ~ .page {
+              padding-left: $sidebar-width;
+
+              [class^="container"] {
+                padding-left: 1.5rem;
+                padding-right: 1.5rem;
+              }
+            }
+
+            &.navbar-right ~ .page {
+              padding-left: 0;
+              padding-right: $sidebar-width;
+            }
+
+            @include navbar-vertical-nav;
           }
         }
       }
     }
   }
 }
+
 
 .navbar-overlap {
   &:after {
