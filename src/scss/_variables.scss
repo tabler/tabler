@@ -61,6 +61,7 @@ $font-weight-bold: 600 !default;
 
 $headings-font-weight: var(--#{$prefix}font-weight-bold) !default;
 $headings-margin-bottom: var(--#{$prefix}spacer) !default;
+$headings-color: var(--#{$prefix}body-color) color !default;
 
 $font-weights: (
   light: $font-weight-light,
@@ -179,19 +180,6 @@ $green: #2fb344 !default;
 $teal: #0ca678 !default;
 $cyan: #17a2b8 !default;
 
-$color-blue: #0054a6;
-$color-azure: #3586c9;
-$color-indigo: #4263eb;
-$color-purple: #ae3ec9;
-$color-pink: #d6336c;
-$color-red: #e73f3f;
-$color-orange: #f76707;
-$color-yellow: #f59f00;
-$color-lime: #74b816;
-$color-green: #2fb344;
-$color-teal: #0ca678;
-$color-cyan: #17a2b8;
-
 $text-secondary: $gray-600 !default;
 $text-secondary-light: $gray-500 !default;
 $text-secondary-dark: $gray-700 !default;
@@ -202,21 +190,14 @@ $border-color-translucent: rgba(4, 32, 69, 0.14);
 $border-dark-color: $gray-400 !default;
 $border-dark-color-translucent: rgba(4, 32, 69, 0.27);
 
-$border-active-color: mix(
-  $text-secondary,
-  #ffffff,
-  percentage($border-active-opacity)
-) !default;
-$border-active-color-translucent: rgba(
-  $text-secondary,
-  $border-active-opacity
-) !default;
+$border-active-color: mix($text-secondary, #ffffff, percentage($border-active-opacity)) !default;
+$border-active-color-translucent: rgba($text-secondary, $border-active-opacity) !default;
 
 $active-bg: rgba(var(--#{$prefix}primary-rgb), 0.04) !default;
 $active-color: var(--#{$prefix}primary) !default;
 $active-border-color: var(--#{$prefix}primary) !default;
 
-$hover-bg: rgba(var(--#{$prefix}text-secondary-rgb), 0.04) !default;
+$hover-bg: rgba(var(--#{$prefix}secondary-rgb), 0.04) !default;
 
 $disabled-bg: var(--#{$prefix}bg-surface-secondary) !default;
 $disabled-color: var(--#{$prefix}gray-300) !default;
@@ -288,10 +269,7 @@ $gray-colors: (
   gray-900: $gray-900,
 ) !default;
 
-$theme-colors: map-merge(
-  $theme-colors,
-  map-merge($extra-colors, $social-colors)
-);
+$theme-colors: map-merge($theme-colors, map-merge($extra-colors, $social-colors));
 
 // Borders
 $border-width: 1px !default;
@@ -319,9 +297,8 @@ $kbd-padding-x: 0.5rem !default;
 $kbd-padding-y: 0.25rem !default;
 $kbd-font-weight: var(--#{$prefix}font-weight-medium) !default;
 $kbd-font-size: var(--#{$prefix}font-size-h5) !default;
-$kbd-border: var(--#{$prefix}border-width) var(--#{$prefix}border-style)
-  var(--#{$prefix}border-color) !default;
-$kbd-color: var(--#{$prefix}text-secondary-dark) !default;
+$kbd-border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color) !default;
+$kbd-color: var(--#{$prefix}secondary-dark) !default;
 $kbd-bg: var(--#{$prefix}code-bg) !default;
 $kbd-border-radius: var(--#{$prefix}border-radius) !default;
 
@@ -338,8 +315,8 @@ $avatar-sizes: (
 ) !default;
 $avatar-border-radius: var(--#{$prefix}border-radius) !default;
 $avatar-font-size: $h4-font-size !default;
-$avatar-box-shadow: var(--#{$prefix}box-shadow-border) !default;
 $avatar-list-spacing: -.5;
+$avatar-box-shadow: var(--#{$prefix}box-shadow-border) !default;
 
 $link-decoration: none !default;
 $link-hover-decoration: underline !default;
@@ -353,13 +330,12 @@ $caret-width: 0.36em !default;
 $caret-spacing: 0.4em !default;
 
 //Sizing
-$page-padding: var(--#{$prefix}spacer-3) !default;
-$page-padding-sm: var(--#{$prefix}spacer-2) !default;
+$page-padding-x: var(--#{$prefix}spacer-3) !default;
 $page-padding-y: var(--#{$prefix}spacer-4) !default;
 
 // Sizing
-$container-padding-x: calc(var(--#{$prefix}page-padding) * 2) !default;
-$grid-gutter-width: var(--#{$prefix}page-padding) !default;
+$container-padding-x: calc(var(--#{$prefix}page-padding-x) * 2) !default;
+$grid-gutter-width: var(--#{$prefix}page-padding-x) !default;
 
 // Grid
 $grid-gutter-width: 1rem !default;
@@ -395,11 +371,7 @@ $spacers: (
   8: $spacer-8,
 ) !default;
 
-$negative-spacers: if(
-  $enable-negative-margins,
-  negativify-map($spacers),
-  null
-) !default;
+$negative-spacers: if($enable-negative-margins, negativify-map($spacers), null) !default;
 
 // Sizes
 $size-spacers: (
@@ -438,6 +410,7 @@ $aspect-ratios: (
 
 // Shadows
 $box-shadow: rgba(var(--#{$prefix}body-color-rgb), 0.04) 0 2px 4px 0 !default;
+$box-shadow-border: inset 0 0 0 1px var(--#{$prefix}border-color-translucent) !default;
 $box-shadow-transparent: 0 0 0 0 transparent !default;
 $box-shadow-border: inset 0 0 0 1px var(--#{$prefix}border-color-translucent) !default;
 $box-shadow-input: 0 1px 1px rgba(var(--#{$prefix}body-color-rgb), 0.06) !default;
@@ -469,11 +442,7 @@ $focus-ring-box-shadow: 0 0 $focus-ring-blur $focus-ring-width $focus-ring-color
 $transition-time: 0.3s !default;
 
 // Overlay
-$overlay-gradient: linear-gradient(
-  180deg,
-  rgba(0, 0, 0, 0) 0%,
-  rgba(0, 0, 0, 0.6) 100%
-) !default;
+$overlay-gradient: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 100%) !default;
 
 // Accordion
 $accordion-bg: transparent !default;
@@ -581,7 +550,7 @@ $card-ribbon-font-size: $h6-font-size !default;
 
 $card-header-tabs-bg: var(--#{$prefix}bg-surface-tertiary) !default;
 
-$cards-grid-gap: var(--#{$prefix}page-padding) !default;
+$cards-grid-gap: var(--#{$prefix}page-padding-x) !default;
 $cards-grid-breakpoint: lg !default;
 
 // Carousel
@@ -650,10 +619,7 @@ $modal-fade-transform: translate(0, -1rem) !default;
 $modal-content-border-color: transparent !default;
 $modal-content-bg: var(--#{$prefix}bg-surface) !default;
 $modal-content-border-radius: var(--#{$prefix}border-radius-lg) !default;
-$modal-content-inner-border-radius: subtract(
-  var(--#{$prefix}modal-border-radius),
-  1px
-) !default;
+$modal-content-inner-border-radius: subtract(var(--#{$prefix}modal-border-radius), 1px) !default;
 
 $modal-header-padding: 1.5rem !default;
 $modal-header-height: 3.5rem !default;
@@ -679,10 +645,12 @@ $nav-link-padding-x: 0.75rem !default;
 $nav-link-color: var(--#{$prefix}secondary) !default;
 $nav-link-disabled-color: var(--#{$prefix}disabled-color) !default;
 $nav-link-icon-size: $icon-size !default;
-$nav-link-icon-color: var(--#{$prefix}icon-color) !default;
+$nav-link-icon-color: inherit !default;
 
 $nav-pills-link-active-color: var(--#{$prefix}primary) !default;
 $nav-pills-link-active-bg: var(--#{$prefix}active-bg) !default;
+
+$nav-underline-link-active-color: var(--#{$prefix}primary) !default;
 
 $nav-bordered-border-color: var(--#{$prefix}border-color) !default;
 $nav-bordered-border-width: var(--#{$prefix}border-width) !default;
@@ -693,8 +661,7 @@ $nav-bordered-margin-x: 1.25rem !default;
 
 $nav-tabs-border-color: var(--#{$prefix}border-color) !default;
 $nav-tabs-border-radius: var(--#{$prefix}border-radius) !default;
-$nav-tabs-link-hover-border-color: $nav-tabs-border-color $nav-tabs-border-color
-  $nav-tabs-border-color !default;
+$nav-tabs-link-hover-border-color: $nav-tabs-border-color $nav-tabs-border-color $nav-tabs-border-color !default;
 $nav-tabs-link-active-border-color: $nav-tabs-link-hover-border-color !default;
 $nav-tabs-link-active-color: var(--#{$prefix}body-color) !default;
 $nav-tabs-bg: var(--#{$prefix}bg-surface-tertiary) !default;
@@ -703,14 +670,17 @@ $nav-tabs-bg: var(--#{$prefix}bg-surface-tertiary) !default;
 $navbar-height: 3.5rem !default;
 $navbar-padding-y: 0.25rem !default;
 
-$navbar-border-width: var(--#{$prefix}border-width) !default;
-$navbar-border-color: var(--#{$prefix}border-color) !default;
-
-$navbar-light-color: var(--#{$prefix}body-color) !default;
+$navbar-light-bg: var(--#{$prefix}bg-surface) !default;
+$navbar-light-color: var(--#{$prefix}secondary) !default;
 $navbar-light-brand-color: var(--#{$prefix}body-color) !default;
-$navbar-light-active-color: var(--#{$prefix}body-color) color !default;
+$navbar-light-border-color: var(--#{$prefix}border-color) !default;
+$navbar-light-border-width: var(--#{$prefix}border-width) !default;
+$navbar-light-active-color: var(--#{$prefix}body-color) !default;
 $navbar-light-disabled-color: var(--#{$prefix}disabled-color) !default;
-$navbar-light-active-bg: rgba(0, 0, 0, 0.06) !default;
+$navbar-light-hover-bg: $hover-bg !default;
+$navbar-light-active-bg: null !default;
+$navbar-light-active-border-color: var(--#{$prefix}primary) !default;
+$navbar-light-active-color: red !default;
 
 $navbar-dark-color: rgba($white, $text-secondary-opacity) !default;
 $navbar-dark-brand-color: $white !default;
@@ -731,9 +701,10 @@ $navbar-toggler-animation-time: 0.2s !default;
 $navbar-toggler-focus-width: 0 !default;
 $navbar-overlap-height: 9rem !default;
 
-$navbar-nav-link-padding-x: $nav-link-padding-x !default;
-
-$navbar-active-border-color: var(--#{$prefix}primary) !default;
+// Navbar nav
+$navbar-nav-gap: 0.25rem !default;
+$navbar-nav-link-padding-x: 0.5rem !default;
+$navbar-nav-link-padding-y: 0.5rem !default;
 
 // Sidebar
 $sidebar-width: 15rem !default;
@@ -798,9 +769,7 @@ $table-th-color: var(--#{$prefix}secondary) !default;
 $table-th-bg: var(--#{$prefix}bg-surface-tertiary) !default;
 $table-striped-order: even !default;
 $table-striped-bg: var(--#{$prefix}bg-surface-tertiary) !default;
-$table-group-separator-color: var(
-  --#{$prefix}border-color-translucent
-) !default;
+$table-group-separator-color: var(--#{$prefix}border-color-translucent) !default;
 
 $table-sort-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' width='16' height='16' fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='1'><path d='M5 7l3 -3l3 3'/><path d='M5 10l3 3l3 -3'/></svg>") !default;
 $table-sort-asc-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' width='16' height='16'><path fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='1' d='M5 7l3 3l3 -3'/></svg>") !default;
@@ -833,9 +802,7 @@ $list-group-active-color: inherit !default;
 $input-bg: var(--#{$prefix}bg-forms) !default;
 $input-disabled-bg: $disabled-bg !default;
 $input-border-color: var(--#{$prefix}border-color) !default;
-$input-border-color-translucent: var(
-  --#{$prefix}border-color-translucent
-) !default;
+$input-border-color-translucent: var(--#{$prefix}border-color-translucent) !default;
 $input-placeholder-color: $text-secondary-light !default;
 
 $input-group-addon-bg: var(--#{$prefix}bg-surface-secondary) !default;
@@ -844,13 +811,12 @@ $input-group-addon-color: var(--#{$prefix}secondary) !default;
 $input-border-radius: var(--#{$prefix}border-radius) !default;
 
 // Forms
-$form-check-margin-bottom: .75rem !default;
+$form-check-margin-bottom: 0.75rem !default;
 $form-check-padding-start: 2rem !default;
 
 $form-check-input-width: 1.25rem !default;
 $form-check-input-bg: var(--#{$prefix}bg-forms) !default;
-$form-check-input-border: var(--#{$prefix}border-width)
-  var(--#{$prefix}border-style) $input-border-color-translucent !default;
+$form-check-input-border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) $input-border-color-translucent !default;
 $form-check-input-border-radius: var(--#{$prefix}border-radius) !default;
 $form-check-input-box-shadow: $input-box-shadow !default;
 
