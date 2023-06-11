@@ -1,16 +1,23 @@
 .shape {
+  --shape-size: #{$avatar-size};
   background-color: var(--#{$prefix}primary-lt);
   color: var(--#{$prefix}primary);
   border-radius: 35%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 3rem;
-  width: 3rem;
+  height: var(--shape-size);
+  width: var(--shape-size);
 
   .icon {
     width: 1.5rem;
     height: 1.5rem;
     stroke-width: 1.5;
+  }
+}
+
+@each $avatar-size, $size in $avatar-sizes {
+  .shape-#{$avatar-size} {
+    --shape-size: #{$size};
   }
 }
