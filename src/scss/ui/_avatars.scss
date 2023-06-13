@@ -1,12 +1,16 @@
 .avatar {
   --#{$prefix}avatar-size: #{$avatar-size};
+  --#{$prefix}avatar-status-size: #{$avatar-status-size};
   --#{$prefix}avatar-bg: #{$avatar-bg};
   --#{$prefix}avatar-box-shadow: #{$avatar-box-shadow};
+  --#{$prefix}avatar-font-size: #{$avatar-font-size};
+  --#{$prefix}avatar-icon-size: #{$avatar-icon-size};
   position: relative;
   width: var(--#{$prefix}avatar-size);
   height: var(--#{$prefix}avatar-size);
-  font-size: calc(var(--#{$prefix}avatar-size) / #{$line-height-base * 2});
+  font-size: var(--#{$prefix}avatar-font-size);
   font-weight: var(--#{$prefix}font-weight-medium);
+  line-height: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
@@ -19,9 +23,9 @@
   border-radius: $avatar-border-radius;
   box-shadow: var(--#{$prefix}avatar-box-shadow);
 
-  svg {
-    width: calc(var(--#{$prefix}avatar-size) / #{divide(40, 24)});
-    height: calc(var(--#{$prefix}avatar-size) / #{divide(40, 24)});
+  .icon {
+    width: var(--#{$prefix}avatar-icon-size);
+    height: var(--#{$prefix}avatar-icon-size);
   }
 
   .badge {
@@ -29,7 +33,7 @@
     right: 0;
     bottom: 0;
     border-radius: $border-radius-pill;
-    box-shadow: 0 0 0 2px $card-bg;
+    box-shadow: 0 0 0 calc(var(--#{$prefix}avatar-status-size) / 4) $card-bg;
   }
 
   @at-root a#{&} {
@@ -43,12 +47,15 @@
 
 @each $avatar-size, $size in $avatar-sizes {
   .avatar-#{$avatar-size} {
-    --#{$prefix}avatar-size: #{$size};
+    --#{$prefix}avatar-size: #{map-get($size, size)};
+    --#{$prefix}avatar-status-size: #{map-get($size, status-size)};
+    --#{$prefix}avatar-font-size: #{map-get($size, font-size)};
+    --#{$prefix}avatar-icon-size: #{map-get($size, icon-size)};
   }
 
   .avatar-#{$avatar-size} .badge:empty {
-    width: $size * .25;
-    height: $size * .25;
+    width: map-get($size, status-size);
+    height: map-get($size, status-size);
   }
 }
 
