@@ -1,0 +1,115 @@
+$pricing-card-width: 22rem;
+
+.pricing {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  justify-content: center;
+
+  @include media-breakpoint-up(md) {
+    flex-direction: row;
+  }
+}
+
+.pricing-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: $color-white;
+  border: 1px solid $color-border;
+  padding: $gap-5;
+  margin: 0 0 $gap-4;
+  position: relative;
+  box-shadow: $shadow-card;
+  text-align: center;
+  border-radius: $border-radius-lg;
+
+  @include media-breakpoint-up(md) {
+    margin: $gap-4 -1px;
+    max-width: $pricing-card-width;
+
+    &:first-child {
+      border-radius: $border-radius-lg 0 0 $border-radius-lg;
+    }
+
+    &:last-child {
+      border-radius: 0 $border-radius-lg $border-radius-lg 0;
+    }
+  }
+
+  &.featured {
+    z-index: 1;
+    border: 2px solid $color-primary;
+    order: -1;
+
+    @include media-breakpoint-up(md) {
+      order: unset;
+      margin-top: 0;
+      margin-bottom: 0;
+      box-shadow: $shadow-card-lg;
+      border-radius: $border-radius-lg;
+    }
+  }
+}
+
+.pricing-title {
+  font-size: $font-size-h3;
+  line-height: $line-height-h3;
+}
+
+.pricing-label {
+  height: $gap-4;
+  margin-top: -$gap-3;
+  margin-bottom: $gap-3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pricing-btn {
+  margin-top: auto;
+  padding-top: $gap-4;
+}
+
+.pricing-price {
+  display: flex;
+  justify-content: center;
+  font-size: $font-size-h0;
+  line-height: 1;
+  font-weight: $font-weight-black;
+  margin: $gap-3 0;
+}
+
+.pricing-price-currency {
+  font-size: $font-size-h2;
+  line-height: 1.5;
+  margin-right: $gap-1;
+  font-weight: $font-weight-bold;
+}
+
+.pricing-price-description {
+  font-size: $font-size-h5;
+  line-height: $line-height-h5;
+  font-weight: $font-weight-normal;
+  color: $color-muted;
+  align-self: center;
+  margin-left: $gap-2;
+}
+
+.pricing-features {
+  margin: $gap-4 0 0;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+
+  >li:not(:first-child) {
+    margin-top: $gap-1;
+  }
+}
+
+.pricing-banner {
+  background: $color-gray;
+  margin: 0 auto;
+  padding: $gap-4;
+  border-radius: $border-radius-lg;
+}

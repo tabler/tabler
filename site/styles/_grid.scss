@@ -1,0 +1,75 @@
+.container,
+.container-fluid {
+  width: 100%;
+  max-width: $container-max-width;
+  margin: 0 auto;
+  padding: 0 1rem;
+
+  @include media-breakpoint-up(lg) {
+    padding: 0 2rem;
+  }
+}
+
+.container-narrow {
+  max-width: $container-narrow-max-width;
+}
+
+.container-fluid {
+  max-width: 100%;
+}
+
+.row {
+  @include make-row();
+
+  > * {
+    @include make-col-ready();
+  }
+}
+
+@include make-grid-columns();
+
+.col-separator {
+  border-top: 1px solid $color-border-light;
+  border-right: 1px solid $color-border-light;
+  flex: 0 0 0%;
+  padding: 0;
+}
+
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: $gap-3;
+}
+
+@each $name, $size in map-merge((null: $gap-3), $gaps) {
+  $suffix: if($name == null, null, '-#{$name}');
+
+  .stack#{$suffix} {
+    gap: $size;
+  }
+
+  .space-y#{$suffix} {
+    > * ~ * {
+      margin-top: $size !important;
+    }
+  }
+
+  .space-x#{$suffix} {
+    > * ~ * {
+      margin-left: $size !important;
+    }
+  }
+
+  .divider-y#{$suffix} {
+    > * {
+      &:not(:first-child) {
+        padding-top: divide($size, 2) !important;
+        border-top: 1px solid $color-border-light;
+      }
+
+      &:not(:last-child) {
+        padding-bottom: divide($size, 2) !important;
+      }
+    }
+  }
+}

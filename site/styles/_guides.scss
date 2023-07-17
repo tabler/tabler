@@ -1,0 +1,92 @@
+.guides {
+  position: relative;
+  display: grid;
+  gap: var(--gutter-y, 2rem) var(--gutter-x, 2rem);
+
+  @include media-breakpoint-up(sm) {
+    padding-left: $gap-6;
+
+    &:after {
+      content: '';
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: #{$gap-6 * .5};
+      border-right: 1px solid $color-border;
+    }
+  }
+
+  @include media-breakpoint-up(lg) {
+    grid-template-columns: repeat(2, 1fr);
+    padding: 0;
+
+    &:after {
+      left: 50%;
+    }
+  }
+}
+
+.guide {
+  position: relative;
+
+  @include media-breakpoint-up(sm) {
+    .guide-date {
+      display: block;
+      position: absolute;
+      top: 2rem;
+      z-index: 1;
+      background: $color-gray;
+      color: $color-muted-light;
+      left: calc(4rem / -2 - 1rem);
+      text-transform: uppercase;
+      line-height: 1.5;
+      font-size: 12px;
+      text-align: center;
+      width: 2rem;
+      padding: 1rem 0;
+    }
+
+    &:after {
+      content: '';
+      width: 1rem;
+      height: 1rem;
+      background: $color-white;
+      z-index: 1;
+      position: absolute;
+      top: 3.5rem;
+      left: calc(-.5rem + 1px);
+      border: 1px solid $color-border-light;
+      transform: rotate(45deg);
+      clip-path: polygon(0 0, 100% 100%, 0 100%);
+    }
+  }
+
+  @include media-breakpoint-up(lg) {
+    @for $i from 1 to 10 {
+      &:nth-child(#{$i}) {
+        grid-row: $i / #{$i + 2};
+      }
+    }
+
+    .guide-date {
+      left: calc(100% + calc(var(--gutter-x, 2rem) / 2) - 1rem);
+    }
+
+    &:nth-child(even) {
+      .guide-date {
+        left: calc(var(--gutter-x, 2rem) / -2 - 1rem);
+      }
+    }
+
+    &:nth-child(odd) {
+      &:after {
+        transform: rotate(-135deg);
+        left: calc(100% - .5rem - 1px);
+      }
+    }
+  }
+}
+
+.guide-date {
+  display: none;
+}

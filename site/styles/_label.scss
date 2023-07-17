@@ -1,0 +1,23 @@
+@mixin label-color($color) {
+  color: $color;
+  background: rgba($color, .04);
+}
+
+.label {
+  display: inline-flex;
+  @include label-color($color-muted);
+  text-transform: uppercase;
+  font-size: $font-size-h6;
+  line-height: $line-height-h6;
+  font-weight: $font-weight-medium;
+  letter-spacing: $tracking-wide;
+  padding: $gap-1 $gap-2;
+  border-radius: $border-radius;
+}
+
+@each $name, $color in $colors {
+  .label-#{$name} {
+    @include label-color($color);
+  }
+}
+

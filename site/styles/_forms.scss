@@ -1,0 +1,348 @@
+$form-range-track-width:          100%;
+$form-range-track-height:         .25rem;
+$form-range-track-cursor:         pointer;
+$form-range-track-bg:             $color-border;
+$form-range-track-border-radius:  1rem;
+$form-range-track-box-shadow:     none;
+
+$form-range-thumb-width:                   1rem;
+$form-range-thumb-height:                  $form-range-thumb-width;
+$form-range-thumb-bg:                      $color-primary;
+$form-range-thumb-border:                  0;
+$form-range-thumb-border-radius:           1rem;
+$form-range-thumb-box-shadow:              0 0 0 .125rem $color-background;
+$form-range-thumb-focus-box-shadow:        0 0 0 1px #fff, 0 0 0 4px rgba($color-primary, .2);
+$form-range-thumb-focus-box-shadow-width:  .25rem;
+$form-range-thumb-active-bg:               darken($form-range-thumb-bg, 10%);
+$form-range-thumb-disabled-bg:             #eee;
+$form-range-thumb-transition:              background-color .3s ease-in-out, border-color .3s ease-in-out;
+
+
+%form-common {
+  appearance: none;
+  border-radius: $border-radius;
+  border: 1px solid $color-border;
+  background: $color-white;
+  color: inherit;
+
+  &:focus {
+    border-color: $color-primary;
+    box-shadow: 0 0 0 3px rgba($color-primary, .2);
+  }
+}
+
+
+.form-control {
+  @extend %form-common;
+  display: block;
+  width: 100%;
+  height: $form-btn-height;
+  padding: subtract($gap-2, 1px) $gap-3;
+
+  &::placeholder {
+    color: rgba($color-muted, .75);
+  }
+
+  @at-root textarea#{&} {
+    resize: vertical;
+    min-height: add(4rem, 2px);
+
+    &[rows] {
+      height: auto;
+    }
+  }
+
+  &[type="search"] {
+    background: $color-white url-svg('<svg width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="#{$color-muted}" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="10" cy="10" r="7" /><line x1="21" y1="21" x2="15" y2="15" /></svg>') no-repeat .75rem center/1.25rem;
+    padding-left: 2.5rem;
+  }
+
+  &[type="search"]::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    height: 2rem;
+    width: 2rem;
+    margin-right: -.5rem;
+    background: url-svg('<svg width="24" height="24" viewBox="0 0 24 24" stroke-width="1.5" stroke="#{$color-text}" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" /></svg>') no-repeat center/1.25rem;
+    opacity: .64;
+    cursor: pointer;
+
+    &:hover {
+      opacity: 1;
+    }
+  }
+}
+
+
+.form-check {
+  @extend %form-common;
+  width: $form-check-size;
+  height: $form-check-size;
+  cursor: pointer;
+
+  &:checked,
+  &.checked {
+    background-image: url-svg('<svg viewBox="0 0 16 16"><polyline points="3 7 7 11 13 4" fill="none" stroke="#{$form-focus-color}" stroke-width="3" /></svg>');
+    background-repeat: no-repeat;
+
+    &:disabled,
+    &.disabled {
+      background-image: url-svg('<svg viewBox="0 0 16 16"><polyline points="3 7 7 11 13 4" fill="none" stroke="#{rgba($color-muted, .64)}" stroke-width="3" /></svg>');
+    }
+  }
+
+  &[type="radio"] {
+    border-radius: 50%;
+
+    &:checked,
+    &.checked {
+      background-image: url-svg('<svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="4" fill="#{$form-focus-color}" /></svg>');
+
+      &:disabled,
+      &.disabled {
+        background-image: url-svg('<svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="4" fill="#{rgba($color-muted, .64)}" /></svg>');
+      }
+    }
+  }
+}
+
+.form-check-label {
+  display: inline-flex;
+  align-items: center;
+  user-select: none;
+  cursor: pointer;
+}
+
+.form-check-text {
+  margin-left: $gap-2;
+  @include text-truncate(100%);
+}
+
+.form-check-list {
+  display: flex;
+  flex-direction: column;
+
+  >:not(:first-child) {
+    margin-top: $gap-1;
+  }
+
+  .form-check-text {
+    color: $color-muted;
+    transition: .3s color;
+  }
+
+  .form-check:checked + .form-check-text {
+    color: $color-text;
+  }
+}
+
+
+
+
+.form-range {
+  width: 100%;
+  height: add($form-range-thumb-height, $form-range-thumb-focus-box-shadow-width * 2);
+  padding: 0;
+  background-color: transparent;
+  appearance: none;
+  vertical-align: bottom;
+
+  &:focus {
+    outline: none;
+
+    &::-webkit-slider-thumb { box-shadow: $form-range-thumb-focus-box-shadow; }
+    &::-moz-range-thumb     { box-shadow: $form-range-thumb-focus-box-shadow; }
+    &::-ms-thumb            { box-shadow: $form-range-thumb-focus-box-shadow; }
+  }
+
+  &::-moz-focus-outer {
+    border: 0;
+  }
+
+  &::-webkit-slider-thumb {
+    width: $form-range-thumb-width;
+    height: $form-range-thumb-height;
+    margin-top: ($form-range-track-height - $form-range-thumb-height) * .5;
+    background: $form-range-thumb-bg;
+    border: $form-range-thumb-border;
+    border-radius: $form-range-thumb-border-radius;
+    box-shadow: $form-range-thumb-box-shadow;
+    transition: $form-range-thumb-transition;
+    appearance: none;
+
+    &:active {
+      background: $form-range-thumb-active-bg;
+    }
+  }
+
+  &::-webkit-slider-runnable-track {
+    width: $form-range-track-width;
+    height: $form-range-track-height;
+    color: transparent;
+    cursor: $form-range-track-cursor;
+    background-color: $form-range-track-bg;
+    border-color: transparent;
+    border-radius: $form-range-track-border-radius;
+    box-shadow: $form-range-track-box-shadow;
+  }
+
+  &::-moz-range-thumb {
+    width: $form-range-thumb-width;
+    height: $form-range-thumb-height;
+    background: $form-range-thumb-bg;
+    border: $form-range-thumb-border;
+    border-radius: $form-range-thumb-border-radius;
+    box-shadow: $form-range-thumb-box-shadow;
+    transition: $form-range-thumb-transition;
+    cursor: $form-range-track-cursor;
+    appearance: none;
+
+    &:active {
+      background: $form-range-thumb-active-bg;
+    }
+  }
+
+  &::-moz-range-progress {
+    background-color: $form-range-thumb-bg;
+  }
+
+  &::-moz-range-track {
+    width: $form-range-track-width;
+    height: $form-range-track-height;
+    color: transparent;
+    cursor: $form-range-track-cursor;
+    background-color: $form-range-track-bg;
+    border-color: transparent;
+    border-radius: $form-range-track-border-radius;
+    box-shadow: $form-range-track-box-shadow;
+  }
+
+  &::-ms-thumb {
+    width: $form-range-thumb-width;
+    height: $form-range-thumb-height;
+    margin-top: 0;
+    margin-right: $form-range-thumb-focus-box-shadow-width;
+    margin-left: $form-range-thumb-focus-box-shadow-width;
+    background: $form-range-thumb-bg;
+    border: $form-range-thumb-border;
+    border-radius: $form-range-thumb-border-radius;
+    box-shadow: $form-range-thumb-box-shadow;
+    transition: $form-range-thumb-transition;
+    appearance: none;
+
+    &:active {
+      background: $form-range-thumb-active-bg;
+    }
+  }
+
+  &::-ms-track {
+    width: $form-range-track-width;
+    height: $form-range-track-height;
+    color: transparent;
+    cursor: $form-range-track-cursor;
+    background-color: transparent;
+    border-color: transparent;
+    border-width: $form-range-thumb-height * .5;
+    box-shadow: $form-range-track-box-shadow;
+  }
+
+  &::-ms-fill-lower {
+    background-color: $form-range-track-bg;
+    border-radius: $form-range-track-border-radius;
+  }
+
+  &::-ms-fill-upper {
+    margin-right: 15px;
+    background-color: $form-range-track-bg;
+    border-radius: $form-range-track-border-radius;
+  }
+
+  &:disabled {
+    pointer-events: none;
+
+    &::-webkit-slider-thumb {
+      background-color: $form-range-thumb-disabled-bg;
+    }
+
+    &::-moz-range-thumb {
+      background-color: $form-range-thumb-disabled-bg;
+    }
+
+    &::-ms-thumb {
+      background-color: $form-range-thumb-disabled-bg;
+    }
+  }
+}
+
+
+.form-value {
+  text-align: center;
+  font-weight: $font-weight-bold;
+  width: 3rem;
+}
+
+.form-color {
+  display: inline-block;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: $border-radius;
+}
+
+.form-selector {
+  position: relative;
+
+  select {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    display: block;
+    background: transparent;
+  }
+}
+
+
+
+.input-color {
+  display: inline-block;
+  width: 1.25rem;
+  height: 1.25rem;
+  border-radius: $border-radius;
+  background: $color-muted;
+  border: 1px solid $color-border;
+  cursor: pointer;
+
+  &.checked {
+    background-image: url-svg('<svg width="24" height="24" viewBox="0 0 24 24" stroke-width="3" stroke="#fff" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5l10 -10"></path></svg>');
+    background-size: 1rem 1rem;
+    background-position: center;
+  }
+}
+
+.input-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: $border-radius;
+  background: $color-white;
+  color: $color-text;
+  border: 1px solid $color-border;
+  cursor: pointer;
+
+  .icon {
+    width: 1.25rem;
+    height: 1.25rem;
+  }
+
+  &:hover {
+    border-color: $color-border-hover;
+    color: $color-text;
+  }
+
+  &.checked {
+    border-color: $color-primary;
+  }
+}

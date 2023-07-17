@@ -1,0 +1,17 @@
+@each $breakpoint in map-keys($grid-breakpoints) {
+  @include media-breakpoint-up($breakpoint) {
+    @each $key, $utility in $utilities {
+      @if type-of($utility) == "map" and (map-get($utility, responsive) or $breakpoint == 0) {
+        @include generate-utility($utility, $breakpoint);
+      }
+    }
+  }
+}
+
+@media print {
+  @each $key, $utility in $utilities {
+    @if type-of($utility) == "map" and map-get($utility, print) == true {
+      @include generate-utility($utility, null, "print");
+    }
+  }
+}

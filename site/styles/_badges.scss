@@ -1,0 +1,43 @@
+.badge {
+  display: inline-flex;
+  align-items: center;
+  font-size: $font-size-h7;
+  text-decoration: none;
+  color: $color-muted;
+  background: rgba($color-muted, .05);
+  line-height: 1;
+  border-radius: $border-radius;
+  padding: $gap-1 $gap-2;
+  user-select: none;
+  transition: .3s color, .3s background-color;
+
+  svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    margin: 0 .5rem 0 -.25rem;
+    stroke-width: 1.5;
+  }
+
+  @at-root a#{&}:hover,
+  &.active {
+    color: $color-text;
+    background: theme-lighten($color-text);
+  }
+}
+
+@each $name, $color in $colors {
+  .badge-#{$name} {
+    color: $color;
+    background-color: theme-lighten($color)
+  }
+}
+
+.badges-list {
+  display: inline-flex;
+  flex-wrap: wrap;
+  margin: 0 -.25rem -.25rem 0;
+
+  > * {
+    margin: 0 .25rem .25rem 0;
+  }
+}

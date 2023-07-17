@@ -1,0 +1,68 @@
+/**
+Cards
+ */
+.card {
+  display: flex;
+  background: $color-white;
+  border: 1px solid $color-border-light;
+  border-radius: $border-radius-lg;
+  color: inherit;
+  transition: $transition-duration border-color,  $transition-duration background-color;
+
+  @at-root a#{&} {
+    &:hover {
+      color: inherit;
+      border-color: $color-border;
+      background-color: $color-gray-light;
+    }
+  }
+}
+
+.card-body {
+  padding: $gap-4;
+  flex: 1;
+}
+
+.card-title {
+  font-weight: $font-weight-bold;
+}
+
+.card-icon {
+  color: $color-primary;
+  width: 1.5rem;
+  height: 1.5rem;
+  stroke-width: 1.5;
+}
+
+.cards {
+  margin: 1.5rem 0;
+  display: grid;
+  gap: $gap-4;
+  grid-template-columns: repeat( auto-fill, minmax(270px, 1fr) );
+}
+
+.card-chevron {
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: $color-muted-light;
+  transition: $transition-duration transform;
+
+  .icon {
+    width: 2rem;
+    height: 2rem;
+    stroke-width: 1;
+  }
+
+  @at-root .card:hover & {
+    transform: translateX(.25rem);
+    color: $color-headers;
+  }
+}
+
+.card-chevron-left {
+  @at-root .card:hover & {
+    transform: translateX(-.25rem);
+  }
+}
