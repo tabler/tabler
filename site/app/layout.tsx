@@ -73,7 +73,7 @@ export default function RootLayout({
         <script
           defer
           data-api="/stats/api/event"
-          data-domain="tabler.io"
+          data-domain="tabler.io,tabler"
           src="/stats/js/script.js"
         />
         <script>
