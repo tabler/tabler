@@ -14,3 +14,113 @@ menu: base.tabs
 	<div class="col-md-4">{% include cards/tabs.html justified=true icons=true activity=true %}</div>
 	<div class="col-md-4">{% include cards/tabs.html animation=true activity=true %}</div>
 </div>
+<body>
+<style>
+	* {
+		box-sizing: border-box
+	}
+
+	body {
+		font-family: Arial, Helvetica, sans-serif;
+	}
+
+	/* Style the tab */
+	.tab {
+		float: left;
+		background-color: #f1f1f1;
+		width: auto;
+		height: 108px;
+
+	}
+
+	/* Style the buttons inside the tab */
+	.tab button {
+		display: block;
+		background-color: #030d64;
+		color: white;
+		width: 130px;
+		height: 36px;
+		border: none;
+		outline: none;
+		text-align: left;
+		cursor: pointer;
+		transition: 0.3s;
+		font-size: 17px;
+	}
+
+
+	.tab button:hover {
+		background-color: #000322;
+		color: #ccc;
+	}
+
+	.tab button.active {
+		background-color: #303b9a;
+		
+	}
+
+
+	.tabcontent {
+		float: left;
+		padding: 0px 12px;
+		width: 416px;
+		border-left: none;
+		height: 108px;
+		background-color: #303b9a;
+		color: #ffffff;
+	}
+
+	p {
+		font-size: 14px;
+	}
+
+	h3 {
+		font-size: 14px;
+	}
+</style>
+</head>
+
+<body>
+	<div class="tab">
+		<button class="tablinks" onclick="openCity(event, 'Home')" id="defaultOpen">Home</button>
+		<button class="tablinks" onclick="openCity(event, 'Profile')">Profile</button>
+		<button class="tablinks" onclick="openCity(event, 'Activity')">Activity</button>
+	</div>
+
+	<div id="Home" class="tabcontent">
+		<h3>Home Tab</h3>
+		<p>Cursus turpis vestibulum, dui in pharetra vulputate id sed non turpis ultricies fringilla at sed
+			facilisis lacus pellentesque purus nibh</p>
+	</div>
+
+	<div id="Profile" class="tabcontent">
+		<h3>Profile tab</h3>
+		<p>Fringilla egestas nunc quis tellus diam rhoncus ultricies tristique enim at diam, sem nunc amet,
+			pellentesque id egestas velit sed</p>
+	</div>
+
+	<div id="Activity" class="tabcontent">
+		<h3>Activity Tab</h3>
+		<p>Donec ac vitae diam amet vel leo egestas consequat rhoncus in luctus amet, facilisi sit mauris accumsan
+			nibh habitant senectus</p>
+	</div>
+
+	<script>
+		function openCity(evt, cityName) {
+			var i, tabcontent, tablinks;
+			tabcontent = document.getElementsByClassName("tabcontent");
+			for (i = 0; i < tabcontent.length; i++) {
+				tabcontent[i].style.display = "none";
+			}
+			tablinks = document.getElementsByClassName("tablinks");
+			for (i = 0; i < tablinks.length; i++) {
+				tablinks[i].className = tablinks[i].className.replace(" active", "");
+			}
+			document.getElementById(cityName).style.display = "block";
+			evt.currentTarget.className += " active";
+		}
+
+		// Get the element with id="defaultOpen" and click on it
+		document.getElementById("defaultOpen").click();
+	</script>
+</body>
