@@ -26,6 +26,8 @@ const gulp = require('gulp'),
 	yargs = require('yargs/yargs'),
 	cp = require('child_process'),
 	pkg = require('./package.json'),
+	iconsTags = require('./node_modules/@tabler/icons/tags.json'),
+	iconsPkg = require('./node_modules/@tabler/icons/package.json'),
 	year = new Date().getFullYear(),
 	argv = yargs(process.argv).argv
 
@@ -81,19 +83,36 @@ gulp.task('svg-icons', (cb) => {
 		return svg.replace(/\n/g, '').replace(/>\s+</g, '><')
 	}
 
-	const generateIconsYml = (dir, filename) => {
-		const files = glob.sync(dir)
-		let svgList = {}
+	let svgList = {}
+	for (let iconName in iconsTags) {
+		let iconData = iconsTags[iconName]
+		svgList[iconName] = {
+			name: iconName,
+			version: iconData.version,
+			category: iconData.category,
+			tags: iconData.tags,
+			unicode: iconData.unicode,
+			svg: prepareSvgFile(fs
+				.readFileSync(
+					path.join(
+						__dirname,
+						`./node_modules/@tabler/icons/icons/${iconName}.svg`
+					)
+				)
+				.toString())
 
-		files.forEach((file) => {
-			const basename = path.basename(file, '.svg')
-			svgList[basename] = prepareSvgFile(fs.readFileSync(file).toString())
-		})
-
-		fs.writeFileSync(filename, YAML.stringify(svgList))
+		}
 	}
 
-	generateIconsYml("./node_modules/@tabler/icons/icons/*.svg", `${srcDir}/pages/_data/icons.yml`)
+	fs.writeFileSync(
+		path.join(__dirname, `${srcDir}/pages/_data/icons-info.json`),
+		JSON.stringify({
+			version: iconsPkg.version,
+			count: Object.keys(svgList).length,
+		})
+	)
+
+	fs.writeFileSync(`${srcDir}/pages/_data/icons.json`, JSON.stringify(svgList))
 
 	cb()
 })
@@ -110,7 +129,7 @@ All notable changes to this project will be documented in this file.\n`
 	content.forEach((change) => {
 		readme += `\n\n## \`${change.version}\` - ${change.date}\n\n`
 
-		if(change.description) {
+		if (change.description) {
 			readme += `**${change.description}**\n\n`
 		}
 
@@ -286,7 +305,7 @@ gulp.task('js-demo', () => {
 })
 
 gulp.task('js-demo-theme', () => {
-	 return compileJs('demo-theme')
+	return compileJs('demo-theme')
 })
 
 /**
@@ -439,9 +458,9 @@ gulp.task('copy-libs', (cb) => {
 		files.push(Array.isArray(allLibs.css[lib]) ? allLibs.css[lib] : [allLibs.css[lib]])
 	})
 
-  Object.keys(allLibs['js-copy']).forEach((lib) => {
-	 files.push(allLibs['js-copy'][lib])
-  })
+	Object.keys(allLibs['js-copy']).forEach((lib) => {
+		files.push(allLibs['js-copy'][lib])
+	})
 
 	files = files.flat()
 

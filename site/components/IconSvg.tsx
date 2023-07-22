@@ -1,4 +1,3 @@
-import icons from '@/data/icons.json';
 import clsx from 'clsx';
 
 export default function IconSvg({ svg, className }) {

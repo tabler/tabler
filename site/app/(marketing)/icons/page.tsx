@@ -1,5 +1,5 @@
 import React from 'react';
-import icons from '@/data/icons.json';
+import { icons } from '@/config/icons';
 import { groupBy, sortByKeys } from '@/helpers';
 import { IconType, IconsType } from '@/types';
 
@@ -12,9 +12,6 @@ import IconSvg from '@/components/IconSvg';
 import ResponsiveImage from '@/components/ResponsiveImage';
 import SectionDivider from '@/components/SectionDivider';
 import HeroIcons from '@/components/layout/hero/UiIcons';
-
-
-
 
 
 // const IconsInstallation = () => {
@@ -154,7 +151,7 @@ const IconsFeatures = () => {
 
 const IconsCategories = () => {
   const iconsGroupedByCategory = ((icons) => {
-    return sortByKeys(groupBy(icons, 'category'));
+    return sortByKeys(groupBy(Object.values(icons), 'category'));
   })(icons);
 
   delete iconsGroupedByCategory[''];
