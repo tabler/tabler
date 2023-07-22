@@ -1,9 +1,7 @@
 import React from 'react';
-import { icons } from '@/config/icons';
+import { icons } from '@/config/tabler';
 import { groupBy, sortByKeys } from '@/helpers';
 import { IconType, IconsType } from '@/types';
-
-
 
 import { figmaPluginUrl, iconsCount, iconsCountRounded, iconsUrl } from '@/config/site';
 import Features from '@/components/Features';
@@ -12,7 +10,6 @@ import IconSvg from '@/components/IconSvg';
 import ResponsiveImage from '@/components/ResponsiveImage';
 import SectionDivider from '@/components/SectionDivider';
 import HeroIcons from '@/components/layout/hero/UiIcons';
-
 
 // const IconsInstallation = () => {
 //   return (
@@ -70,32 +67,18 @@ const IconsFigma = () => {
       <div className="container">
         <div className="row xl:g-7 items-center">
           <div className="md:col-6">
-            <ResponsiveImage
-              src="/img/tabler-icons/features/figma.png"
-              width="564"
-              height="448"
-            />
+            <ResponsiveImage src="/img/tabler-icons/features/figma.png" width="564" height="448" />
           </div>
           <div className="md:col-6">
             <div className="section-header text-left">
-              <h2 className="section-title">
-                Do you need Figma plugin? No problem!
-              </h2>
+              <h2 className="section-title">Do you need Figma plugin? No problem!</h2>
               <p className="section-description">
-                Tabler Icons offers a plugin for Figma, with which you can
-                easily find and customize the icons you just need. You will
-                always find the newest icons that you can quickly add to your
-                project!
+                Tabler Icons offers a plugin for Figma, with which you can easily find and customize the icons you just need. You will always find the newest icons that you can quickly add to your project!
               </p>
             </div>
 
             <div className="btn-list mt-6">
-              <a
-                href={figmaPluginUrl}
-                className="btn btn-lg"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
+              <a href={figmaPluginUrl} className="btn btn-lg" target="_blank" rel="noopener noreferrer">
                 <Icon name="brand-figma" /> Get Figma plugin
               </a>
             </div>
@@ -111,26 +94,22 @@ const IconsFeatures = () => {
     {
       icon: 'check',
       title: 'Ready-to-use',
-      description:
-        'You can use the icons as HTML images, embed them in your HTML code, create an SVG sprite or render them in React.',
+      description: 'You can use the icons as HTML images, embed them in your HTML code, create an SVG sprite or render them in React.',
     },
     {
       icon: 'brand-sketch',
       title: 'Multiple formats',
-      description:
-        'Icons can be used in Sketch, Illustrator, XD and Figma - choose the tool you feel the most comfortable working with.',
+      description: 'Icons can be used in Sketch, Illustrator, XD and Figma - choose the tool you feel the most comfortable working with.',
     },
     {
       icon: 'edit',
       title: 'Customizable',
-      description:
-        'Every icon is designed on a 24x24 grid and a 2px stroke. You can easily customize them, changing the size, stroke or color.',
+      description: 'Every icon is designed on a 24x24 grid and a 2px stroke. You can easily customize them, changing the size, stroke or color.',
     },
     {
       icon: 'brand-github',
       title: 'Free and open source',
-      description:
-        'Tabler Icons is a free and open source solution, which is continuously developed. Feel free to request an icon you need!',
+      description: 'Tabler Icons is a free and open source solution, which is continuously developed. Feel free to request an icon you need!',
     },
   ];
 
@@ -167,56 +146,25 @@ const IconsCategories = () => {
       <div className="container">
         <div className="section-header">
           <div className="section-title">Wide choice of categories</div>
-          <div className="section-description">
-            Search for icons by categories to find what you need easier and
-            faster. Tabler icons will help you make your design consistent and
-            eye-catching.
-          </div>
+          <div className="section-description">Search for icons by categories to find what you need easier and faster. Tabler icons will help you make your design consistent and eye-catching.</div>
         </div>
 
         <div className="row" data-aos-id-blocks-icons>
-          {Object.entries<IconsType>(iconsGroupedByCategory).map(
-            ([category, icons], i) => (
-              <div
-                className="sm:col-6 md:col-4 lg:col-3"
-                key={category}
-                data-aos="fade-up"
-                data-aos-anchor="[data-aos-id-blocks-icons]"
-                data-aos-delay={i * 50}
-              >
-                <a
-                  href={`${iconsUrl}?category=${encodeURIComponent(category)}`}
-                  className="icons-card"
-                  target="_blank"
-                >
-                  <strong className="icons-card-title">{category}</strong>
-                  <div className="icons-card-list">
-                    {icons
-                      .filter((icon) => !icon.name.endsWith('-off'))
-                      .map(
-                        (icon, i) =>
-                          i < 14 && (
-                            <IconSvg
-                              svg={icon.svg}
-                              key={icon.name}
-                              className="icons-card-icon"
-                            />
-                          )
-                      )}
+          {Object.entries<IconsType>(iconsGroupedByCategory).map(([category, icons], i) => (
+            <div className="sm:col-6 md:col-4 lg:col-3" key={category} data-aos="fade-up" data-aos-anchor="[data-aos-id-blocks-icons]" data-aos-delay={i * 50}>
+              <a href={`${iconsUrl}?category=${encodeURIComponent(category)}`} className="icons-card" target="_blank">
+                <strong className="icons-card-title">{category}</strong>
+                <div className="icons-card-list">
+                  {icons.filter((icon) => !icon.name.endsWith('-off')).map((icon, i) => i < 14 && <IconSvg svg={icon.svg} key={icon.name} className="icons-card-icon" />)}
 
-                    {icons.length > 15 && (
-                      <div className="icons-card-placeholder">
-                        +{icons.length - 14}
-                      </div>
-                    )}
-                  </div>
-                  <span className="icons-card-layer">
-                    <Icon name="search" /> Browse {icons.length} icons
-                  </span>
-                </a>
-              </div>
-            )
-          )}
+                  {icons.length > 15 && <div className="icons-card-placeholder">+{icons.length - 14}</div>}
+                </div>
+                <span className="icons-card-layer">
+                  <Icon name="search" /> Browse {icons.length} icons
+                </span>
+              </a>
+            </div>
+          ))}
         </div>
       </div>
     </section>

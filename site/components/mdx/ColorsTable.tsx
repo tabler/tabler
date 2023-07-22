@@ -7,6 +7,7 @@ type Color = {
 }
 
 export default function ColorsTable({ name }: { name: string }) {
+  console.log(colors, name);
   if (!colors[name]) {
     return null;
   }
@@ -18,10 +19,7 @@ export default function ColorsTable({ name }: { name: string }) {
           <div className="col-3" key={i}>
             <div className="row g-3 items-center">
               <div className="col-auto">
-                <div
-                  className="avatar avatar-lg"
-                  style={{ backgroundColor: color.value }}
-                ></div>
+                <div className="avatar avatar-lg" style={{ backgroundColor: color.value }}></div>
               </div>
               <div className="col">
                 <div className="font-bold">{color.name}</div>

@@ -1,4 +1,4 @@
-import { iconsInfo } from '@/config/icons';
+import { iconsInfo } from '@/config/tabler';
 import uiConfig from '@/data/ui.json';
 
 export const color = '#0054a6';
