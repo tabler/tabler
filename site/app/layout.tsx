@@ -8,7 +8,6 @@ export const metadata = {
     default: name,
     template: `%s - ${name}`,
   },
-  metadataBase: new URL(uiUrl),
   description: description,
   keywords: [
     'css',
