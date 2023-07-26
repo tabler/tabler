@@ -2,6 +2,11 @@ import { pricingPlansPersonal, pricingPlanTeam } from '@/config/pricing';
 import clsx from 'clsx';
 import Icon from '@/components/Icon';
 
+export const metadata = {
+  title: 'Tabler Pricing',
+  description: 'Check out our pricing plans and choose the best option for your needs. Find affordable and flexible solutions for our products and services.',
+};
+
 const PricingCards = () => {
   return (
     <div className="pricing">

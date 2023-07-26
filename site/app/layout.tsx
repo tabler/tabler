@@ -6,8 +6,9 @@ import PageProgress from '@/components/PageProgress';
 export const metadata = {
   title: {
     default: name,
-    template: `%s | ${name}`,
+    template: `%s - ${name}`,
   },
+  metadataBase: new URL(uiUrl),
   description: description,
   keywords: [
     'css',
@@ -51,7 +52,7 @@ export const metadata = {
   },
   twitter: {
     card: 'summary_large_image',
-    images: [`${uiUrl}/og.jpg`],
+    images: ['og.jpg'],
     creator: `@${creator}`,
   },
   icons: {
@@ -59,34 +60,23 @@ export const metadata = {
     shortcut: '/favicon-16x16.png',
     apple: '/apple-touch-icon.png',
   },
-  // manifest: `${uiUrl}/site.webmanifest`,
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode; }) {
   return (
     <html lang="en">
       <head>
-        <script
-          defer
-          data-api="/stats/api/event"
-          data-domain="tabler.io,tabler"
-          src="/stats/js/script.js"
-        />
-        <script>
-          {
-            'window.plausible=window.plausible||function(){(window.plausible.q=window.plausible.q||[]).push(arguments)}'
-          }
-        </script>
+        {process.env.NODE_ENV !== 'development' && (
+          <>
+            <script defer data-api="/stats/api/event" data-domain="tabler.io,tabler" src="/stats/js/script.js" />
+            <script>{'window.plausible=window.plausible||function(){(window.plausible.q=window.plausible.q||[]).push(arguments)}'}</script>
+          </>
+        )}
       </head>
-      <body className="body-gradient">
+      <body>
         <PageProgress />
         {children}
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
-        {/* <script src="https://cdn.paritydeals.com/banner.js" defer /> */}
         <script src="https://assets.lemonsqueezy.com/lemon.js" defer />
       </body>
     </html>

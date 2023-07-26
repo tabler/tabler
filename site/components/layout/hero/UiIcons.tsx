@@ -1,4 +1,4 @@
-import { iconsCountRounded, iconsGithubUrl, iconsUrl } from '@/config/site';
+import { iconsCount, iconsGithubUrl, iconsUrl } from '@/config/site';
 import ResponsiveImage from '@/components/ResponsiveImage';
 import Icon from '@/components/Icon';
 import React from 'react';
@@ -13,7 +13,7 @@ export default function LayoutHeroUiIcons() {
             <div className="hero-subheader">Tabler Icons</div>
             <h1 className="hero-title">Pixel-perfect icons that match your design</h1>
             <p className="hero-description mt-4">
-              Over {iconsCountRounded} free, open source icons designed to make your website or app attractive, visually
+              {iconsCount} free, open source icons designed to make your website or app attractive, visually
               consistent and simply beautiful.
             </p>
             <div className="mt-5 lg:mt-7">

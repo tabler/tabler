@@ -1,5 +1,10 @@
 import Shape from '@/components/Shape';
 
+export const metadata = {
+  title: 'Support',
+  description: 'Get help and assistance on our Support page. Find answers to your queries and resolve issues quickly. We\'re here to support you.',
+};
+
 export default function Support() {
   return (
     <section className="section">
@@ -62,15 +67,3 @@ export default function Support() {
     </section>
   );
 }
-
-// export async function getStaticProps() {
-//   return {
-//     props: {
-//       menu: 'ui',
-//       meta: {
-//         bodyClassName: 'body-gradient',
-//         title: 'Support',
-//       },
-//     },
-//   }
-// }

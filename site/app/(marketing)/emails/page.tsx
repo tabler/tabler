@@ -9,7 +9,7 @@ import React from 'react';
 import Slider from '@/components/Slider';
 
 export const metadata = {
-  title: 'Tabler Emails',
+  title: '54 eye-catching, customizable and responsive email templates',
   description: 'Tabler Emails is a set of responsive email templates for marketing, transactional and automated emails.',
 };
 
@@ -295,18 +295,3 @@ export default function EmailsPage() {
     </>
   );
 }
-
-// export async function getStaticProps() {
-//   return {
-//     props: {
-//       brand: 'tabler-emails',
-//       menu: 'emails',
-//       meta: {
-//         bodyClassName: 'body-gradient',
-//         title: 'Tabler Emails: Responsive Newsletters and Email templates design',
-//         description:
-//           'Look great in every inbox! Compose newsletter, e-commerce messages, reset password and any other email in less than 5 minutes',
-//       },
-//     },
-//   }
-// }

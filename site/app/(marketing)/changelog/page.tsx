@@ -2,6 +2,11 @@ import { allChangelogs } from '@/.contentlayer/generated';
 import Mdx from '@/components/MDX';
 import { dateTemplate, distanceToNow, format } from '@/lib/date';
 
+export const metadata = {
+  title: 'Changelog',
+  description: 'Discover the latest Tabler app updates and enhancements on our Changelog page. Stay informed and experience the best features!',
+};
+
 export default function ChangelogPage() {
   const changelogs = allChangelogs
     .sort((a, b) => {

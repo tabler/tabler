@@ -17,7 +17,8 @@ import IconsCount from '@/components/mdx/IconsCount';
 import Image from '@/components/mdx/Image';
 import PaymentsTable from '@/components/mdx/PaymentsTable';
 import TablerLogos from '@/components/mdx/TablerLogos';
-import { Tab, Tabs, TabsPackage } from '@/components/mdx/Tabs';
+import { Tab, Tabs } from '@/components/mdx/Tabs';
+import { TabsPackage } from '@/components/mdx/TabsPackage';
 import { TipBad, TipGood, TipChanges } from '@/components/mdx/Tips';
 import { OptionDescription, OptionTitle, OptionsTable } from '@/components/mdx/OptionsTable';
 

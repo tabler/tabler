@@ -7,6 +7,11 @@ import { emailsCount } from '@/config/site';
 import CTABannerEmails from '@/components/CTABAnnerEmails';
 import clsx from 'clsx';
 
+export const metadata = {
+  title: 'Emails Gallery',
+  description: 'Tabler Emails is a set of responsive email templates for marketing, transactional and automated emails.',
+};
+
 export default function EmailsGalleryPage() {
   return (
     <>
@@ -62,17 +67,3 @@ export default function EmailsGalleryPage() {
     </>
   );
 }
-
-// export async function getStaticProps() {
-//   return {
-//     props: {
-//       brand: 'tabler-emails',
-//       menu: 'emails',
-//       meta: {
-//         bodyClassName: 'body-gradient',
-//         title: `Tabler Emails: ${emailsCount} unique HTML email designs`,
-//         description: `See how our emails look. Choose your favorite from among ${emailsCount} carefully prepared emails.`,
-//       },
-//     },
-//   }
-// }

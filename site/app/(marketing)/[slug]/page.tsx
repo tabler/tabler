@@ -1,12 +1,26 @@
 import { notFound } from 'next/navigation';
 import { allPages } from 'contentlayer/generated';
-
+import { Metadata } from 'next';
 import Mdx from '@/components/MDX';
 
 interface PageProps {
   params: {
     slug: string
   }
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const page = await getPageFromParams(params);
+
+  if (!page) {
+    return {};
+  }
+
+  return {
+    title: `${page.title}`,
+    description: page.description,
+    robots: page.robots,
+  };
 }
 
 async function getPageFromParams(params) {

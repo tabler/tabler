@@ -3,6 +3,11 @@ import { allGuides } from 'contentlayer/generated';
 import { format } from '@/lib/date';
 import Link from '@/components/Link';
 
+export const metadata = {
+  title: 'Guides',
+  description: 'Learn how to use Tabler effectively with our comprehensive guides. Master the app and streamline your workflow today.',
+};
+
 export default async function GuidesPage() {
   return (
     <section className="section">

@@ -1,8 +1,4 @@
 import { defineDocumentType, makeSource } from "contentlayer/source-files"
-// import rehypeAutolinkHeadings from "rehype-autolink-headings"
-// import rehypePrettyCode from "rehype-pretty-code"
-// import rehypeSlug from "rehype-slug"
-// import remarkGfm from "remark-gfm"
 
 import { remarkPlugins } from './mdx/remark'
 import { rehypePlugins } from './mdx/rehype'
@@ -214,6 +210,10 @@ export const Page = defineDocumentType(() => ({
     bodyClassName: {
       type: "string",
     },
+    robots: {
+      type: "string",
+      default: null
+    },
     hidden: {
       type: "boolean",
       default: false,
@@ -224,6 +224,7 @@ export const Page = defineDocumentType(() => ({
 
 export default makeSource({
   contentDirPath: "./content",
+  contentDirExclude: ["docs/menu.json", "docs/.DS_Store"],
   documentTypes: [
     Page,
     Doc,

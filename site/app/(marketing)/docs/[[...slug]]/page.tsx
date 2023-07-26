@@ -1,17 +1,13 @@
-// import { DocsPageHeader } from "@/components/page-header"
-// import { DocsPager } from "@/components/pager"
-// import { DashboardTableOfContents } from "@/components/toc"
 
 import { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { allDocs } from 'contentlayer/generated';
+import { name } from '@/config/site';
 
-// import { getTableOfContents } from "@/lib/toc"
 import Mdx from '@/components/MDX';
 import TablerSponsorsBanner from '@/components/TablerSponsorsBanner';
+import Link from 'next/link';
 
-// import { env } from "@/env.mjs"
-// import { absoluteUrl } from "@/lib/utils"
 
 interface DocPageProps {
   params: {
@@ -39,35 +35,11 @@ export async function generateMetadata({
     return {};
   }
 
-  // const url = env.NEXT_PUBLIC_APP_URL
-
-  // const ogUrl = new URL(`${url}/api/og`)
-  // ogUrl.searchParams.set("heading", doc.description ?? doc.title)
-  // ogUrl.searchParams.set("type", "Documentation")
-  // ogUrl.searchParams.set("mode", "dark")
-
   return {
-    title: doc.title,
+    title: `${doc.title} - Documentation - ${name}`,
     description: doc.description,
     openGraph: {
-      title: doc.title,
-      description: doc.description,
       type: 'article',
-      // url: absoluteUrl(doc.slug),
-      // images: [
-      //   {
-      //     url: ogUrl.toString(),
-      //     width: 1200,
-      //     height: 630,
-      //     alt: doc.title,
-      //   },
-      // ],
-    },
-    twitter: {
-      card: 'summary_large_image',
-      title: doc.title,
-      description: doc.description,
-      // images: [ogUrl.toString()],
     },
   };
 }
@@ -91,6 +63,25 @@ export default async function DocPage({ params }: DocPageProps) {
 
   return (
     <>
+      <nav aria-label="breadcrumbs" className="breadcrumb mb-6">
+        <ul className="breadcrumb-list">
+          <li className="breadcrumb-item">
+            <Link href="/" className="breadcrumb-link">
+              Home
+            </Link>
+          </li>
+          <li className="breadcrumb-item">
+            <Link href="/docs" className="breadcrumb-link">
+              Documentation
+            </Link>
+          </li>
+          <li className="breadcrumb-item">
+            <Link href={`/docs/${params.slug.join('/')}`} className="breadcrumb-link">
+              {doc.title}
+            </Link>
+          </li>
+        </ul>
+      </nav>
       <div className="markdown">
         {/* {category && (
         <div className="h-subheader text-primary">{category}</div>

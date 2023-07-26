@@ -6,6 +6,12 @@ import DocsMenu from '@/components/DocsMenu';
 
 // import Icon from "@/components/Icon";
 
+export const metadata = {
+  title: 'Documentation',
+  template: '%s - Documentation',
+  description: 'Get started with Tabler, the one of world’s most popular framework for building responsive, mobile-first dashboards.',
+};
+
 export default function DocsLayout({ children /*, meta = {}, pageProps*/ }) {
   // const docsMenu = getDocsMenu(),
   //   router = useRouter(),

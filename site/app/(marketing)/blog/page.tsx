@@ -2,7 +2,7 @@ import Link from 'components/Link';
 import { allPosts } from 'contentlayer/generated';
 
 export const metadata = {
-  title: 'Blog - Tabler',
+  title: 'Blog',
   description: 'Stay in the loop with all things Tabler. We provide regular updates on new features, changelogs, and news, ensuring you never miss any of our software developments.',
 };
 

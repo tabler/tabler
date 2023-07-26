@@ -1,5 +1,3 @@
-'use client';
-
 import { notFound, useRouter } from 'next/navigation';
 import { useClipboard } from '@/hooks';
 import clsx from 'clsx';

@@ -1,18 +1,20 @@
-'use client';
-
-import React, { useState } from 'react';
+import React from 'react';
 import Link from 'next/link';
 import questions from '@/data/faq.json';
 
-import { componentsCount, emailsPrice, iconsUrl } from '@/config/site';
+import { componentsCount, iconsUrl } from '@/config/site';
 import Features from '@/components/Features';
-import Icon from '@/components/Icon';
 import ResponsiveImage from '@/components/ResponsiveImage';
 import SectionDivider from '@/components/SectionDivider';
 import Shape from '@/components/Shape';
 import Testimonials from '@/components/layout/Testimonials';
 import TestimonialsShare from '@/components/layout/TestimonialsShare';
 import HeroUi from '@/components/layout/hero/Ui';
+
+export const metadata = {
+  title: 'Premium dashboard template with responsive and high quality UI',
+  description: 'Tabler comes with tons of well-designed components and features. Start your adventure with Tabler and make your dashboard great again. For free!',
+};
 
 const benefits = [
   'Fully responsive',
@@ -27,54 +29,6 @@ const benefits = [
   'Premium vector icons',
 ];
 
-const Modal = () => {
-  const [modalVisible, setModalVisible] = useState(true);
-
-  return (
-    modalVisible && (
-      <div className="modal-backdrop">
-        <div className="modal modal-wide">
-          <div
-            className="modal-close"
-            onClick={() => setModalVisible(false)}
-          >
-            <Icon name="x" />
-          </div>
-          <div className="row g-0">
-            <div className="col-6">
-              <div
-                className="ratio ratio-1x1 rounded-left"
-                style={{
-                  backgroundColor: '#fff',
-                  backgroundImage: 'url(https://source.unsplash.com/random/478x478/?landscape)',
-                }}
-              />
-            </div>
-            <div className="col">
-              <div className="modal-body d-flex flex-column h-100">
-                <h3 className="modal-title">Modal title</h3>
-                <div className="text-muted">
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Cum
-                  eius eligendi error facilis fugiat laboriosam omnis quam
-                  soluta? Adipisci aliquam iste numquam, optio perferendis
-                  possimus quae ratione rerum soluta voluptatibus.
-                </div>
-                <a
-                  href="#"
-                  className="mt-auto btn btn-primary btn-block"
-                  onClick={() => setModalVisible(false)}
-                >
-                  Buy for $$
-                  {emailsPrice}
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
-  );
-};
 
 const FAQ = () => {
   return (
@@ -699,18 +653,3 @@ export default async function HomePage() {
     </>
   );
 }
-
-// export async function getStaticProps() {
-//   return {
-//     props: {
-//       menu: "ui",
-//       meta: {
-//         bodyClassName: "body-gradient",
-//         title:
-//           "Tabler: Premium dashboard template with responsive and high quality UI",
-//         description:
-//           "Tabler comes with tons of well-designed components and features. Start your adventure with Tabler and make your dashboard great again. For free!",
-//       },
-//     },
-//   }
-// }

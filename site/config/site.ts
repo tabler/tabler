@@ -11,7 +11,7 @@ export const companyGithubUrl = 'https://github.com/tabler';
 export const companyTwitterUrl = 'https://twitter.com/codecalm';
 export const companyDribbbleUrl = 'https://dribbble.com/codecalm';
 
-export const uiUrl = process.env.NODE_ENV === 'development' ? 'http://localhost:3010' : 'https://tabler.io';
+export const uiUrl = 'https://tabler.io';
 
 export const uiVersion = uiConfig.version;
 export const uiPackageName = '@tabler/core';
@@ -35,8 +35,8 @@ export const uiCdnJS = `${uiCdnUrl}${uiVersion}/dist/js/tabler.min.js`;
 
 export const emailsCount = 54;
 export const emailsPrice = 29;
-export const emailsDownloadUrl = 'https://gum.co/tabler-email?wanted=true';
-export const emailsSampleDownloadUrl = 'https://gum.co/tabler-email-sample';
+export const emailsDownloadUrl = 'https://tabler.lemonsqueezy.com/checkout/buy/44fd4bdb-6ca0-49eb-b887-ebafd080c7bc?embed=1&desc=0&discount=0&media=0';
+export const emailsSampleDownloadUrl = 'https://tabler.lemonsqueezy.com/checkout/buy/2b777bc1-09f3-4465-b2a5-50ba14dcbe49?embed=1&desc=0&discount=0&media=0';
 
 export const componentsCount = 100; //getAllComponents().length
 export const componentsRounded = (() => {
@@ -123,3 +123,16 @@ export const footerMenu = [
 ];
 
 export const colors = ['muted', 'red', 'pink', 'grape', 'violet', 'indigo', 'blue', 'cyan', 'teal', 'green', 'lime', 'yellow', 'orange'];
+
+//
+// Banner
+//
+export const banner = {
+  show: true,
+  id: 'tabler-icons-v2-2',
+  text: '🎉 Tabler Icons v2.0 has been released: filled icons, new packages: React, Vue, Preact, Svelte, SolidJS and more!',
+  link: {
+    href: 'https://tabler-icons.io',
+    text: 'Learn more →',
+  },
+};

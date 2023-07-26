@@ -1,21 +1,15 @@
 'use client';
 
-import { Fragment, PropsWithChildren, useEffect, useState } from 'react';
+import { Fragment, MutableRefObject, PropsWithChildren, RefObject, useCallback, useEffect, useRef, useState } from 'react';
 import { Dialog, Popover } from '@headlessui/react';
 import clsx from 'clsx';
 
-
-
-import { componentsRounded, iconsCountRounded, sponsorsUrl, uiGithubUrl } from '@/config/site';
+import { banner, componentsRounded, iconsCountRounded, sponsorsUrl, uiGithubUrl } from '@/config/site';
 import Icon from '@/components/Icon';
 import GoToTop from '@/components/layout/GoToTop';
 import Link from '@/components/Link';
 import NavLink from '@/components/NavLink';
 import Shape from '@/components/Shape';
-
-
-
-
 
 // import { useRouter } from 'next/router'
 
@@ -100,11 +94,7 @@ const menuLinks = [
   {
     href: '/blog',
     menu: 'blog',
-    title: (
-      <>
-        Blog
-      </>
-    ),
+    title: <>Blog</>,
   },
   {
     href: '/docs',
@@ -145,14 +135,7 @@ const NavbarLink = (link, menu) => {
     return (
       <NavDropdown title={link.title} active={menu === link.menu}>
         {link.children.map((link) => (
-          <Popover.Button
-            as={Link}
-            href={link.href || ''}
-            className="navbar-dropdown-menu-link"
-            key={link.title}
-            onClick={() => true}
-            {...link.props}
-          >
+          <Popover.Button as={Link} href={link.href || ''} className="navbar-dropdown-menu-link" key={link.title} onClick={() => true} {...link.props}>
             <div className="row g-3">
               <div className="col-auto">
                 <Shape icon={link.icon} />
@@ -208,37 +191,52 @@ const SidebarLink = (link, menu, onClick) => {
   );
 };
 
-const Navbar = ({
-  menu,
-  opened,
-  onClick,
-  ...props
-}: {
-  menu?: string
-  opened?: boolean
-  onClick?: (event: React.MouseEvent) => void,
-  className?: string,
-}) => {
+const Navbar = ({ menu, opened, onClick, ...props }: { menu?: string; opened?: boolean; onClick?: (event: React.MouseEvent) => void; className?: string }) => {
   return (
     <div className={clsx('navbar', opened && 'opened', props.className)}>
       {menuLinks.map((link) => (
-        <Fragment key={link.menu}>
-          {NavbarLink(link, menu)}
-        </Fragment>
+        <Fragment key={link.menu}>{NavbarLink(link, menu)}</Fragment>
       ))}
     </div>
   );
 };
 
-export default function Header({ headerStatic, className, pageProps, ...props }:{
-  headerStatic?: boolean,
-  className?: string,
-  pageProps?: any,
-}) {
-  const bannerId = 'tabler-icons-v2';
+const Banner = () => {
+  const [showBanner, setShowBanner] = useState(false);
+
+  useEffect(() => {
+    if (window.localStorage.getItem(`banner-${banner.id}`) !== '1') {
+      setShowBanner(true);
+    }
+  }, []);
+
+  function closeBanner() {
+    localStorage.setItem(`banner-${banner.id}`, '1');
+    setShowBanner(false);
+  }
+
+  return (
+    banner.show &&
+    showBanner && (
+      <div className="banner">
+        <div className="container">
+          <div className="text-truncate">{banner.text}</div>
+          <a href={banner.link.href} className="ml-5 banner-link" target="_blank">
+            {banner.link.text}
+          </a>
+        </div>
+
+        <a onClick={closeBanner} className="banner-close">
+          <Icon name="x" />
+        </a>
+      </div>
+    )
+  );
+};
+
+export default function Header({ headerStatic, className, pageProps, ...props }: { headerStatic?: boolean; className?: string; pageProps?: any }) {
   const [sticky, setSticky] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const [showBanner, setShowBanner] = useState(false);
 
   const pop = () => {
     setSticky(window.pageYOffset > 0);
@@ -252,59 +250,22 @@ export default function Header({ headerStatic, className, pageProps, ...props }:
     setIsOpen(!isOpen);
   }
 
-  function closeBanner() {
-    localStorage.setItem(`banner-${bannerId}`, '1');
-    setShowBanner(false);
-  }
-
-  useEffect(() => {
-    window.addEventListener('scroll', pop);
-
-    if (window.localStorage.getItem(`banner-${bannerId}`) !== '1') {
-      setShowBanner(true);
-    }
-
-    return () => window.removeEventListener('scroll', pop);
-  }, []);
-
-  // const router = useRouter()
-
   return (
     <>
-      {/* {showBanner && (
-        <div className="banner">
-          <div className="container">
-            <div className="text-truncate">
-              🎉 Tabler Icons v2.0 has been released: filled icons, new packages: React, Vue, Preact, Svelte, SolidJS
-              and more!
-            </div>
-            <a href="https://tabler-icons.io" className="ml-5 banner-link">
-              Learn more →
-            </a>
-          </div>
-
-          <a onClick={closeBanner} className="banner-close">
-            <Icon name="x" />
-          </a>
-        </div>
-      )} */}
+      <Banner />
       <header
         className={clsx(
           'header',
           // router.pathname.startsWith('/docs') && 'header-bordered',
-          headerStatic ? 'header-static' : '',
-          sticky && 'header-sticky',
-          className
+          // headerStatic ? 'header-static' : '',
+          // isVisible && 'header-sticky',
+          className,
         )}
       >
         <div className="container" data-aos="fade-down">
           <nav className="row items-center">
             <div className="col-auto">
-              <Link
-                href="/"
-                className={clsx('logo'/*, pageProps.brand ? `logo-${pageProps.brand}` : ''*/)}
-                aria-label="Tabler"
-              />
+              <Link href="/" className={clsx('logo' /*, pageProps.brand ? `logo-${pageProps.brand}` : ''*/)} aria-label="Tabler" />
             </div>
             <div className="col-auto ml-auto">
               <div className="d-none md:d-block">

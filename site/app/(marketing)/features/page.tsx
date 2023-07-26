@@ -1,6 +1,11 @@
 import ResponsiveImage from '@/components/ResponsiveImage';
 import features from '@/data/features';
 
+export const metadata = {
+  title: 'Tabler Features',
+  description: 'Explore the powerful and versatile features of Tabler. Simplify tasks, boost productivity, and enhance your experience. Discover Tabler today!',
+};
+
 export default function FeaturesPage() {
   return (
     <section className="section">
@@ -39,14 +44,3 @@ export default function FeaturesPage() {
     </section>
   );
 }
-
-// export async function getStaticProps() {
-//   return {
-//     props: {
-//       menu: 'ui',
-//       meta: {
-//         bodyClassName: 'body-gradient',
-//       },
-//     },
-//   }
-// }

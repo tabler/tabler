@@ -7,7 +7,6 @@ type Color = {
 }
 
 export default function ColorsTable({ name }: { name: string }) {
-  console.log(colors, name);
   if (!colors[name]) {
     return null;
   }

@@ -11,6 +11,11 @@ import ResponsiveImage from '@/components/ResponsiveImage';
 import SectionDivider from '@/components/SectionDivider';
 import HeroIcons from '@/components/layout/hero/UiIcons';
 
+export const metadata = {
+  title: 'Tabler Icons',
+  description: 'Explore our Tabler Icons package. Enhance your designs with a diverse collection of stunning icons.',
+};
+
 // const IconsInstallation = () => {
 //   return (
 //     <section className="section section-light">
@@ -139,6 +144,7 @@ const IconsCategories = () => {
   delete iconsGroupedByCategory['Database'];
   delete iconsGroupedByCategory['Building'];
   delete iconsGroupedByCategory['Logic'];
+  delete iconsGroupedByCategory['Currency'];
   delete iconsGroupedByCategory['Animals'];
 
   return (
@@ -183,17 +189,3 @@ export default function IconsPage() {
     </>
   );
 }
-
-// export async function getStaticProps() {
-//   return {
-//     props: {
-//       brand: 'tabler-icons',
-//       menu: 'icons',
-//       meta: {
-//         bodyClassName: 'body-gradient',
-//         title: `Tabler Icons: over ${iconsCountRounded} free and open source vector icons for web design`,
-//         description: `${iconsCount} free and open source SVG icons designed with attention to detail to make your design stand out. Highly customizable. No attribution required. For commercial use.`,
-//       },
-//     },
-//   }
-// }
