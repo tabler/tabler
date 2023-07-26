@@ -62,7 +62,7 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode; }) {
+export default function RootLayout({ children, bodyClass }: { children: React.ReactNode; bodyClass?: string }) {
   return (
     <html lang="en">
       <head>
@@ -74,6 +74,7 @@ export default function RootLayout({ children }: { children: React.ReactNode; })
         )}
       </head>
       <body>
+        {bodyClass}
         <PageProgress />
         {children}
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />

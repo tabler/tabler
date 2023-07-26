@@ -5,7 +5,7 @@ import { uiDownloadUrl } from '@/config/site';
 export default function LayoutHeroUi() {
   return (
     <>
-      <header className="hero pt-10 pb-0">
+      <header className="hero pt-10 pb-0 bg-gradient">
         <div className="container">
           <h1 className="hero-title" data-aos="zoom-y-out">
             Develop beautiful web apps with&nbsp;Tabler

@@ -4,10 +4,13 @@ import { notFound } from 'next/navigation';
 import { allDocs } from 'contentlayer/generated';
 import { name } from '@/config/site';
 
+import { getTableOfContents } from '@/lib/toc';
 import Mdx from '@/components/MDX';
 import TablerSponsorsBanner from '@/components/TablerSponsorsBanner';
 import Link from 'next/link';
-
+import TOC from '@/components/TOC';
+import DocsMenu from '@/components/DocsMenu';
+import Icon from '@/components/Icon';
 
 interface DocPageProps {
   params: {
@@ -59,100 +62,62 @@ export default async function DocPage({ params }: DocPageProps) {
     notFound();
   }
 
-  // const toc = await getTableOfContents(doc.body.raw)
+  const toc = await getTableOfContents(doc.body.raw);
 
   return (
-    <>
-      <nav aria-label="breadcrumbs" className="breadcrumb mb-6">
-        <ul className="breadcrumb-list">
-          <li className="breadcrumb-item">
-            <Link href="/" className="breadcrumb-link">
-              Home
-            </Link>
-          </li>
-          <li className="breadcrumb-item">
-            <Link href="/docs" className="breadcrumb-link">
-              Documentation
-            </Link>
-          </li>
-          <li className="breadcrumb-item">
-            <Link href={`/docs/${params.slug.join('/')}`} className="breadcrumb-link">
-              {doc.title}
-            </Link>
-          </li>
-        </ul>
-      </nav>
-      <div className="markdown">
-        {/* {category && (
+    <div className="row g-0">
+      <div className="md:col-auto docs-side">
+        {/*<input type="search" className="form-control w-100 mb-5" placeholder="Search&hellip;" />*/}
+        <DocsMenu />
+      </div>
+      <div className="md:col">
+        <div className="py-6 md:pl-6">
+          <nav aria-label="breadcrumbs" className="breadcrumb mb-6">
+            <ul className="breadcrumb-list">
+              <li className="breadcrumb-item">
+                <Link href="/" className="breadcrumb-link">
+                  Home
+                </Link>
+              </li>
+              <li className="breadcrumb-item">
+                <Link href="/docs" className="breadcrumb-link">
+                  Documentation
+                </Link>
+              </li>
+              <li className="breadcrumb-item">
+                <Link href={`/docs/${params.slug.join('/')}`} className="breadcrumb-link">
+                  {doc.title}
+                </Link>
+              </li>
+            </ul>
+          </nav>
+          <div className="markdown">
+            {/* {category && (
         <div className="h-subheader text-primary">{category}</div>
       )} */}
-        {doc.title && <h1>{doc.title}</h1>}
-        {doc.description && <p className="lead">{doc.description}</p>}
+            {doc.title && <h1>{doc.title}</h1>}
+            {doc.description && <p className="lead">{doc.description}</p>}
 
-        <Mdx code={doc.body.code} />
-      </div>
-
-      <TablerSponsorsBanner className="mt-7" />
-
-      <div className="pt-7">
-        <div className="row">
-          <div className="md:col">
-            {/* {prev && (
-            <Link href={prev.url} className="card">
-              <div className="card-body p-3">
-                <div className="row items-center g-3">
-                  <div className="col-auto">
-                    <div className="card-chevron card-chevron-left">
-                      <Icon name="chevron-left" />
-                    </div>
-                  </div>
-                  <div className="col">
-                    <div className="h-subheader mb-1">
-                      {prev.category}
-                    </div>
-                    <div className="h5 m-0">{prev.title}</div>
-                  </div>
-                </div>
-              </div>
-            </Link>
-          )} */}
+            <Mdx code={doc.body.code} />
           </div>
-          <div className="md:col">
-            {/* {next && (
-            <Link href={next.url} className="card text-right">
-              <div className="card-body p-3">
-                <div className="row items-center g-3">
-                  <div className="col">
-                    <div className="h-subheader mb-1">
-                      {next.category}
-                    </div>
-                    <div className="h5 m-0">{next.title}</div>
-                  </div>
-                  <div className="col-auto">
-                    <div className="card-chevron">
-                      <Icon name="chevron-right" />
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </Link>
-          )} */}
+
+          <TablerSponsorsBanner className="mt-7" />
+        </div>
+      </div>
+      <div className="docs-side-toc">
+        <div className="pl-6 font-h6 pt-6">
+          <div className="h6 mb-3">On this page</div>
+          <div>
+            <TOC toc={toc} />
+          </div>
+          <div className="mt-4 border-top pt-4">
+            <a href={`https://github.com/tabler/tabler/blob/main/docs/${doc.slugAsParams.split(',').join('/')}.mdx`} className="link-muted">
+              Improve this page
+              <Icon name="edit" className="icon-inline ml-2" />
+            </a>
           </div>
         </div>
       </div>
-      {/* // <main className="relative py-6 lg:gap-10 lg:py-10 xl:grid xl:grid-cols-[1fr_300px]">
-    //   <div className="mx-auto w-full min-w-0">
-    //     {/* <DocsPageHeader heading={doc.title} text={doc.description} />
-    //     <Mdx code={doc.body.code} />
-    //     <hr className="my-4 md:my-6" />
-    //     {/* <DocsPager doc={doc} />
-    //   </div>
-    //   <div className="hidden text-sm xl:block">
-    //     <div className="sticky top-16 -mt-10 max-h-[calc(var(--vh)-4rem)] overflow-y-auto pt-10">
-    //       {/* <DashboardTableOfContents toc={toc} />
-    //     </div>
-    //   </div>
-    // </main> */}
-    </>
+    </div>
   );
 }

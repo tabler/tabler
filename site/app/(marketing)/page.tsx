@@ -653,3 +653,5 @@ export default async function HomePage() {
     </>
   );
 }
+
+HomePage.bodyClass = 'xxx';
