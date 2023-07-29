@@ -1,0 +1,96 @@
+.docs-side {
+  background: $color-gray;
+  border-right: 1px solid $color-border;
+  font-size: $font-size-h6;
+  z-index: 1;
+  position: sticky;
+  top: calc(#{$header-height} + 1px);
+  height: calc(100vh - #{$header-height});
+  display: flex;
+  flex-direction: column;
+  width: 13rem;
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 50vw;
+    z-index: -1;
+    background: inherit;
+  }
+}
+
+.docs-side-toc {
+  width: 15rem;
+  position: sticky;
+  top: calc(#{$header-height} + 1px);
+  height: calc(100vh - #{$header-height});
+  display: none;
+
+  @include media-breakpoint-up(xl) {
+    display: block;
+  }
+}
+
+.docs-menu,
+.docs-menu-group,
+.docs-menu-submenu {
+  display: flex;
+  flex-direction: column;
+}
+
+.docs-menu {
+  gap: $gap-4;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  max-height: 100%;
+  padding: 2rem 0;
+}
+
+.docs-menu-item {
+  color: $color-muted;
+  padding: .25rem 1rem;
+  border-left: 1px solid $color-border;
+  transition: $transition-duration border-color, $transition-duration color;
+
+  &:hover {
+    color: $color-headers;
+    border-left-color: $color-headers;
+  }
+
+  &.active {
+    color: $color-primary;
+    border-left-color: $color-primary;
+  }
+}
+
+.docs-menu-header {
+  font-weight: $font-weight-medium;
+  color: $color-headers;
+  display: flex;
+  align-items: center;
+  margin-bottom: $gap-2;
+}
+
+.docs-menu-icon {
+  background: $color-gray-dark;
+  border-radius: $border-radius;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  margin-right: $gap-3;
+
+  .icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    stroke-width: 1.5;
+  }
+}
+
+
+

@@ -1,0 +1,78 @@
+---
+title: 2-Step Verification
+layout: single
+---
+
+<form
+	class="card card-md"
+	action="{{ site.base }}/"
+	method="get"
+	autocomplete="off"
+	novalidate
+>
+	<div class="card-body">
+		<h2 class="card-title card-title-lg text-center mb-4">Authenticate Your Account</h2>
+
+		<p class="my-4 text-center">Please confirm your account by entering the authorization code sent to <strong>+1 856-672-8552</strong>.</p>
+
+		<div class="my-5">
+			<div class="row g-4">
+				{% for i in (1..2) %}
+				<div class="col">
+					<div class="row g-2">
+						{% for i in (1..3) %}
+						<div class="col">
+							<input type="text" class="form-control form-control-lg text-center py-3" maxlength="1" inputmode="numeric" pattern="[0-9]*" data-code-input />
+						</div>
+						{% endfor %}
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+
+		<div class="my-4">
+			<label class="form-check">
+				<input type="checkbox" class="form-check-input" />
+				Dont't ask for codes again on this device
+			</label>
+		</div>
+
+
+		<div class="form-footer">
+			<div class="btn-list flex-nowrap">
+				{% include ui/button.html text="Cancel" block=true href="2-step-verification.html" %}
+				{% include ui/button.html text="Verify" block=true color="primary" %}
+			</div>
+		</div>
+	</div>
+</form>
+
+<div class="text-center text-secondary mt-3">
+	It may take a minute to receive your code. Haven't received it? <a href="{{ site.base }}/">Resend a new code.</a>
+</div>
+
+{% capture_global scripts %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+	var inputs = document.querySelectorAll('[data-code-input]');
+
+	// Attach an event listener to each input element
+	for(let i = 0; i < inputs.length; i++) {
+		inputs[i].addEventListener('input', function(e) {
+			// If the input field has a character, and there is a next input field, focus it
+			if(e.target.value.length === e.target.maxLength && i + 1 < inputs.length) {
+				inputs[i + 1].focus();
+			}
+		});
+
+		inputs[i].addEventListener('keydown', function(e) {
+			// If the input field is empty and the keyCode for Backspace (8) is detected, and there is a previous input field, focus it
+			if(e.target.value.length === 0 && e.keyCode === 8 && i > 0) {
+				inputs[i - 1].focus();
+			}
+		});
+	}
+});
+</script>
+{% endcapture_global %}

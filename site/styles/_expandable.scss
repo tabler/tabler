@@ -1,0 +1,56 @@
+.expandable {
+  --expandable-shadow-start: 50%;
+  position: relative;
+  height: 35rem;
+  overflow: hidden;
+  background: repeat-x top center;
+
+  &:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+    background: linear-gradient(to bottom, rgba(var(--section-bg-rgb), 0) var(--expandable-shadow-start), rgba(var(--section-bg-rgb), 1) 100%);
+    pointer-events: none;
+  }
+
+  &:hover {
+    .expandable-hover {
+      opacity: 1;
+    }
+  }
+}
+
+.expandable-hover {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  backdrop-filter: blur(4px);
+  opacity: 0;
+  transition: $transition-duration opacity;
+}
+
+.expandable-lg {
+  height: 50rem;
+}
+
+.expandable-emails {
+  --expandable-shadow-start: 50%;
+  background-image: url(../public/img/tabler-emails/emails-bg.png);
+  background-size: 2176px auto;
+  background-repeat: no-repeat;
+
+  @include media-retina {
+    background-image: url(../public/img/tabler-emails/emails-bg.png);
+  }
+
+  @include media-breakpoint-down(lg) {
+    background-size: (2176px / 2) auto;
+    height: 20rem;
+  }
+}

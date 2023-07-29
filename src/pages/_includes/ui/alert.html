@@ -1,23 +1,44 @@
-<div class="alert{% if include.important %} alert-important{% endif %} alert-{{ include.type | default: 'primary'}}{%if include.close %} alert-dismissible{% endif %}{% if include.avatar %} alert-avatar{% endif %}" role="alert">
+{% assign icon = include.icon %}
+{% unless icon %}
+	{% if include.type == 'success' %}
+		{% assign icon = 'check' %}
+		{% assign title = 'Wow! Everything worked!' %}
+		{% assign description = 'Your account has been saved!' %}
+	{% elsif include.type == 'warning' %}
+		{% assign icon = 'alert-triangle' %}
+		{% assign title = 'Uh oh, something went wrong' %}
+		{% assign description = 'Sorry! There was a problem with your request.' %}
+	{% elsif include.type == 'danger' %}
+		{% assign icon = 'alert-circle' %}
+		{% assign title = "I'm so sorry…" %}
+		{% assign description = 'Something went wrong. Please try again.' %}
+	{% elsif include.type == 'info' %}
+		{% assign icon = 'info-circle' %}
+		{% assign title = 'Did you know?' %}
+		{% assign description = 'Here is something that you might like to know.' %}
+	{% endif %}
+{% endunless %}
 
-	{% if include.icon or include.person-id %}
+<div class="alert{% if include.important %} alert-important{% endif %} alert-{{ include.type | default: 'primary'}}{%if include.show-close %} alert-dismissible{% endif %}{% if include.avatar %} alert-avatar{% endif %}" role="alert">
+
+	{% if include.show-icon or include.person-id %}
 		<div class="d-flex">
 		<div>
 			{% if include.person-id %}{% include ui/avatar.html person-id=include.person-id class="float-start me-3" %}{% endif %}
 
-			{% if include.icon %}
-			{% include ui/icon.html icon=include.icon class="alert-icon" %}
+			{% if include.show-icon %}
+			{% include ui/icon.html icon=icon class="alert-icon" %}
 			{% endif %}
 		</div>
 		<div>
 	{% endif %}
 
 
-	{% if include.description %}
+	{% if include.show-description or include.description %}
 		<h4 class="alert-title">{{ include.text | default: "This is a custom alert box!" }}</h4>
-		<div class="text-muted">{{ include.description }}</div>
+		<div class="text-secondary">{{ include.description | default: description }}</div>
 	{% else %}
-		{{ include.text | default: "This is a custom alert box!" }}
+		{{ include.title | default: title }}
 	{% endif %}
 
 	{% if include.buttons %}
@@ -27,10 +48,10 @@
 	</div>
 	{% endif %}
 
-	{% if include.icon or include.person-id %}
+	{% if include.show-icon or include.person-id %}
 		</div>
 		</div>
 	{% endif %}
 
-	{% if include.close %}<a class="btn-close{% if include.important %} btn-close-white{% endif %}" data-bs-dismiss="alert" aria-label="close"></a>{% endif %}
+	{% if include.show-close %}<a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>{% endif %}
 </div>

@@ -1,0 +1,59 @@
+@mixin shape-color($color: $color-muted) {
+  background: rgba($color, .1);
+  color: $color;
+}
+
+.shape {
+  --shape-size: 2.5rem;
+  --shape-icon-size: 1.5rem;
+  --shape-icon-stroke: 1.5;
+  width: var(--shape-size);
+  height: var(--shape-size);
+  font-size: var(--shape-icon-size);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: $font-weight-medium;
+  color: $color-muted;
+  background: $color-gray;
+  border-radius: 35%;
+  vertical-align: bottom;
+
+  .icon {
+    stroke-width: var(--shape-icon-stroke);
+    width: var(--shape-icon-size);
+    height: var(--shape-icon-size);
+  }
+}
+
+/*! purgecss start ignore */
+@each $name, $color in $colors {
+  .shape-#{$name} {
+    @include shape-color($color);
+  }
+}
+
+.shape-square {
+  border-radius: $border-radius-lg;
+}
+
+.shape-rounded {
+  border-radius: 50%;
+}
+
+.shape-sm {
+  --shape-size: 1.5rem;
+  --shape-icon-size: 1rem;
+}
+
+.shape-md {
+  --shape-size: 3rem;
+  --shape-icon-size: 1.75rem;
+}
+
+.shape-lg {
+  --shape-size: 4rem;
+  --shape-icon-size: 2.25rem;
+}
+
+/*! purgecss end ignore */

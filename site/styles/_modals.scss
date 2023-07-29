@@ -1,0 +1,92 @@
+.modal-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba($color-text, .4);
+  z-index: $zindex-modal;
+  backdrop-filter: blur(2px);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+
+  @include media-breakpoint-up(md) {
+    align-items: center;
+    padding: $gap-8;
+  }
+}
+
+.modal {
+  background: $color-background;
+  width: 40rem;
+  max-width: 100%;
+  border-radius: $border-radius;
+  box-shadow: 0 20px 40px 0 rgba($color-text, .1), 0 0 2px 0 rgba($color-text, .06);
+  position: relative;
+  margin: $gap-4;
+}
+
+.modal-side {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 25rem;
+  max-width: calc(100% - 6rem);
+  border-radius: 0;
+  margin: 0;
+  padding: 1rem;
+  padding-top: 4rem;
+}
+
+.modal-close {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 3rem;
+  height: 3rem;
+  color: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: .5;
+  transition: .3s opacity;
+  cursor: pointer;
+
+  svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    stroke-width: 1.5;
+  }
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+.modal-body {
+  padding: 1rem;
+
+  @include media-breakpoint-up(md) {
+    padding: 2rem;
+  }
+
+  & + & {
+    border-top: 1px solid $color-border;
+  }
+}
+
+.modal-title {
+  margin-bottom: $gap-3;
+}
+
+.modal-more {
+  display: block;
+  text-decoration: none;
+  border-top: 1px solid $color-border-light;
+}
+
+.modal-wide {
+  width: 60rem;
+}

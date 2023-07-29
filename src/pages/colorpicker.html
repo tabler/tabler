@@ -1,0 +1,21 @@
+---
+title: Color picker
+page-header: Color picker
+menu: base.colorpicker
+libs: coloris.js
+---
+
+{% assign colors = "#0054a6,#45aaf2,#6574cd,#a55eea,#f66d9b,#fa4654,#fd9644,#f1c40f,#7bd235,#5eba00,#2bcbba,#17a2b8" | split: "," %}
+
+<div class="card">
+	<div class="card-body">
+		<h3 class="card-title">Basic</h3>
+		<div class="row g-3">
+			{% for color in colors %}
+			<div class="col-2">
+				<div>{% include ui/colorpicker.html value=color id=forloop.index format="hex" %}</div>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+</div>

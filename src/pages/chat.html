@@ -1,0 +1,52 @@
+---
+title: Playground
+page-header: Chat
+menu: extra.chat
+---
+
+{% assign person = site.data.people[4] %}
+
+<div class="card">
+	<div class="row g-0">
+		<div class="col-12 col-lg-5 col-xl-3 border-end">
+			<div class="card-header d-none d-md-block">
+				<div class="input-icon">
+					<span class="input-icon-addon"> {% include ui/icon.html icon="search" %} </span>
+					<input type="text" value="" class="form-control" placeholder="Search…" aria-label="Search" />
+				</div>
+			</div>
+			<div class="card-body p-0 scrollable" style="max-height: 35rem">
+				<div class="nav flex-column nav-pills" role="tablist">
+					{% for person in site.data.people limit: 10 %}
+					<a href="#chat-1" class="nav-link text-start mw-100 p-3{% if forloop.index == 1 %} active{% endif %}" id="chat-1-tab" data-bs-toggle="pill" role="tab" aria-selected="true">
+						<div class="row align-items-center flex-fill">
+							<div class="col-auto">{% include ui/avatar.html person=person %}</div>
+							<div class="col text-body">
+								<div>{{ person.full_name }}</div>
+								<div class="text-secondary text-truncate w-100">{{ site.data.chat[forloop.index].message }}</div>
+							</div>
+							{% if forloop.index == 7 %}
+							<div class="col-auto">🌴</div>
+							{% endif %}
+						</div>
+					</a>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+		<div class="col-12 col-lg-7 col-xl-9 d-flex flex-column">
+			<div class="card-body scrollable" style="height: 35rem">{% include ui/chat.html wide=true %}</div>
+			<div class="card-footer">
+				<div class="input-group input-group-flat">
+					<input type="text" class="form-control" autocomplete="off" placeholder="Type message" />
+
+					<span class="input-group-text">
+						<a href="#" class="link-secondary" data-bs-toggle="tooltip" aria-label="Clear search" title="Clear search"> {% include ui/icon.html icon="mood-smile" %} </a>
+
+						<a href="#" class="link-secondary ms-2" data-bs-toggle="tooltip" aria-label="Add notification" title="Add notification"> {% include ui/icon.html icon="paperclip" %} </a>
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

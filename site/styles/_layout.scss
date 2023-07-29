@@ -1,0 +1,342 @@
+@function section-divider($color) {
+  @return url-svg(
+    '<svg viewBox="0 0 1920 60"><path fill="#{$color}" d="M1920,60H0V0S387,59,960,59,1920,0,1920,0Z"/></svg>'
+  );
+}
+
+.section {
+  --section-bg: transparent;
+  --section-bg-rgb: 255, 255, 255;
+  background: var(--section-bg);
+  position: relative;
+  padding: $gap-6 0;
+
+  @include media-breakpoint-up(lg) {
+    padding: $gap-7 0;
+  }
+}
+
+.section-sm {
+  padding: $gap-6 0;
+}
+
+.section-white {
+  --section-bg: #{$color-white};
+  --section-bg-rgb: #{to-rgb($color-white)};
+}
+
+.section-light {
+  --section-bg: #{$color-gray};
+  --section-bg-rgb: #{to-rgb($color-gray)};
+}
+
+.section-primary {
+  --section-bg: #{$color-primary};
+  --section-bg-rgb: #{to-rgb($color-primary)};
+}
+
+.section-primary-light {
+  --section-bg: #{mix($color-primary, #fff, 8%)};
+  --section-bg-rgb: #{to-rgb(mix($color-primary, #fff, 8%))};
+}
+
+.section-dark {
+  --section-bg-rgb: #{to-rgb($color-dark)};
+  color: $color-white;
+  background: $color-dark;
+
+  --color-headings: #{$color-white};
+  --color-muted: #{mix($color-dark, $color-white, 40%)};
+}
+
+@keyframes move-forever1 {
+  0% {
+    transform: translate(85px, 0%);
+  }
+
+  100% {
+    transform: translate(-90px, 0%);
+  }
+}
+
+@keyframes move-forever2 {
+  0% {
+    transform: translate(-90px, 0%);
+  }
+
+  100% {
+    transform: translate(85px, 0%);
+  }
+}
+
+@keyframes move-forever3 {
+  0% {
+    transform: translate(-90px, 0%);
+  }
+
+  100% {
+    transform: translate(85px, 0%);
+  }
+}
+
+//
+// Section divider
+//
+.section-divider {
+  position: absolute;
+  bottom: 100%;
+  pointer-events: none;
+  height: 5rem;
+  width: 100%;
+
+  path {
+    fill: var(--section-bg);
+  }
+
+  .wave-1 {
+    animation: move-forever1 30s linear infinite;
+    animation-delay: -2s;
+  }
+
+  .wave-2 {
+    animation: move-forever2 24s linear infinite;
+    opacity: .5;
+    animation-delay: -2s;
+  }
+
+  .wave-3 {
+    animation: move-forever3 18s linear infinite;
+    opacity: .3;
+    animation-delay: -2s;
+  }
+}
+
+.section-divider-auto {
+  height: auto;
+}
+
+//
+// Section header
+//
+.section-header,
+.page-header {
+  text-align: center;
+  max-width: 45rem;
+  margin: 0 auto $gap-6;
+}
+
+.page-header {
+  margin-bottom: $gap-7;
+}
+
+.page-title {
+  font-size: $font-size-h1;
+  line-height: $line-height-h1;
+  margin-bottom: $gap-3;
+  font-weight: $font-weight-bold;
+
+  + .page-description {
+    margin-top: -$gap-2;
+  }
+}
+
+.section-title {
+  font-size: $font-size-h2;
+  font-weight: $font-weight-bold;
+  line-height: $line-height-h2;
+
+  &-lg {
+    font-size: $font-size-h1;
+    line-height: $line-height-h1;
+    font-weight: $font-weight-black;
+  }
+}
+
+.section-description,
+.page-description {
+  color: $color-muted;
+  margin: 1rem auto 0;
+  font-weight: normal;
+
+  .section-header & {
+    max-width: 40rem;
+  }
+}
+
+//
+// Footer
+//
+.footer {
+  margin-top: auto;
+  color: $color-muted;
+  background: $color-white;
+}
+
+//
+// Content
+//
+.content {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+//
+// Header
+//
+.header {
+  height: $header-height;
+  position: sticky;
+  top: 0;
+  left: 0;
+  right: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  transition: .3s background-color, .3s height, .6s box-shadow, .3s background;
+  z-index: $zindex-header + 30;
+  background: $color-white;
+}
+
+.header-static,
+.header-bordered {
+  box-shadow: 0 0 0 1px $color-border;
+}
+
+.header-docs {
+  background-color: $color-white;
+  box-shadow: 0 0 0 1px $color-border;
+}
+
+.header-sticky {
+  box-shadow: 0 0 0 1px $color-border, 0 0.375rem 1.25rem -0.25rem rgba($color-text, 0.06);
+
+  &:not(.header-docs) {
+    background-color: rgba($color-white, .9);
+    backdrop-filter: blur(3px);
+  }
+}
+
+//
+// Main
+//
+.main {
+}
+
+//
+// Side
+//
+.side {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: $aside-width;
+  background: $color-white;
+  border-right: 1px solid $color-border;
+
+  ~ .main {
+    margin-left: $aside-width;
+  }
+}
+
+//
+// Hero
+//
+.hero {
+  text-align: center;
+  padding: $gap-5 0;
+
+  @include media-breakpoint-up(md) {
+    padding: $gap-7 0;
+  }
+}
+
+.hero-subheader {
+  text-transform: uppercase;
+  color: $color-muted;
+  font-weight: $font-weight-medium;
+  font-size: $font-size-h7;
+  margin-bottom: $gap-3;
+  letter-spacing: $tracking-wide;
+}
+
+.hero-title {
+  font-size: $font-size-h2;
+  line-height: $line-height-h2;
+  font-weight: $font-weight-black;
+  letter-spacing: $tracking-tight;
+
+  @include media-breakpoint-up(sm) {
+    font-size: $font-size-h1;
+    line-height: $line-height-h1;
+  }
+
+  @include media-breakpoint-up(lg) {
+    font-size: $font-size-h0;
+    line-height: $line-height-h0;
+  }
+}
+
+.hero-description {
+  color: $color-muted;
+  font-size: $font-size-h5;
+  line-height: 1.5;
+  margin: 0 auto;
+  max-width: 47rem;
+
+  @include media-breakpoint-up(sm) {
+    font-size: $font-size-h4;
+  }
+
+  @include media-breakpoint-up(lg) {
+    font-size: $font-size-h3;
+  }
+}
+
+.hero-img {
+  margin: $gap-7 auto;
+  max-width: 65rem;
+  border-radius: $border-radius-lg;
+  position: relative;
+  z-index: 1;
+  box-shadow: 0 10px 15px -3px rgba($color-text, 0.1),
+    0 4px 6px -2px rgba($color-text, 0.05);
+
+  img,
+  svg {
+    max-width: 100%;
+    height: auto;
+    display: block;
+    position: relative;
+  }
+}
+
+.hero-img-side {
+  img,
+  svg {
+    max-width: 100%;
+    height: auto;
+    display: block;
+  }
+}
+
+.sticky-top {
+  position: sticky;
+  top: $header-height + 1rem;
+}
+
+$img-overlap-space: 8rem;
+.img-overlap-margin {
+  margin-bottom: -($img-overlap-space);
+}
+
+.img-overlap-padding {
+  padding-top: $img-overlap-space;
+}
+
+.img-gradient {
+  background-color: #f6f7fb;
+  mask: url('data:image/svg+xml;charset=utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100"><defs><linearGradient id="a" x1="0" x2="0" y1="0" y2="1"><stop stop-color="black" offset="0%" /><stop stop-color="rgba(0, 0, 0, 1)" offset="50%" /><stop stop-color="rgba(0, 0, 0, .6)" offset="80%" /><stop stop-color="transparent" offset="100%" /></linearGradient></defs><rect x="0" y="0" width="100" height="100" fill="url(%23a)" /></svg>') no-repeat;
+  mask-size: 100% 100%;
+}

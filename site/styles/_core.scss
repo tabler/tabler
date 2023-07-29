@@ -1,0 +1,54 @@
+*,
+*::before,
+*::after {
+  margin: 0;
+  border: 0;
+  padding: 0;
+  outline: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+  -webkit-tap-highlight-color: transparent;
+  height: 100%;
+  scroll-padding-top: 5rem;
+  overflow-y: scroll;
+
+  @include css-variables;
+}
+
+body {
+  text-rendering: optimizeSpeed;
+  color: $color-text;
+  font-family: $font-family-base;
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+  background: $color-white;
+  font-feature-settings: 'cv03', 'cv04', 'cv11';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  --grid-gap: #{$grid-padding * .5};
+
+  @include media-breakpoint-up(md) {
+    --grid-gap: #{$grid-padding}
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms;
+    animation-iteration-count: 1;
+    transition-duration: 0.01ms;
+    scroll-behavior: auto;
+  }
+}
+
+.body-gradient {
+  background: linear-gradient(180deg, $color-gray 12%, rgba($color-white, .08) 99%) repeat-x top center/100% 80vh
+}
+
+.scrollbar {
+  @include scrollbar;
+}

@@ -1,14 +1,14 @@
 // stylelint-disable declaration-no-important
 
 body {
-  &:not(.theme-dark):not([data-bs-theme="dark"]) {
+  &:not(.theme-dark):not([data-bs-theme=dark]) {
     .hide-theme-light {
       display: none !important;
     }
   }
 
   &.theme-dark,
-  &[data-bs-theme="dark"] {
+  &[data-bs-theme=dark] {
     .hide-theme-dark {
       display: none !important;
     }
@@ -19,7 +19,7 @@ body {
   @include color-mode(dark, true) {
     --#{$prefix}body-color: #{$body-color-dark};
     --#{$prefix}body-color-rgb: #{to-rgb($body-color-dark)};
-    --#{$prefix}muted: #{$text-muted-dark};
+    --#{$prefix}muted: #{$text-secondary-dark};
 
     --#{$prefix}body-bg: #{$darken-dark};
     --#{$prefix}body-bg-rgb: #{to-rgb($darken-dark)};
@@ -64,5 +64,9 @@ body {
         @include autodark-image;
       }
     }
+  }
+
+  body[data-bs-theme=dark] [data-bs-theme=light] {
+    @extend [data-bs-theme=dark];
   }
 }

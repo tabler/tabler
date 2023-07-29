@@ -1,0 +1,167 @@
+.btn {
+  --btn-bg: #{$color-white};
+  --btn-text-color: #{$color-text};
+  --btn-border-color: #{$color-border};
+  --btn-padding-x: #{$gap-3};
+  --btn-hover-bg: var(--btn-bg);
+  --btn-hover-border-color: #{$color-border-hover};
+  --btn-focus-color: #{rgba($color-text, .3)};
+
+  --btn-height: 2.5rem;
+
+  &.disabled {
+    --btn-text-color: #{$color-muted};
+    cursor: not-allowed;
+  }
+
+  background: var(--btn-bg);
+  color: var(--btn-text-color);
+  border: 1px solid var(--btn-border-color);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: $border-radius-lg;
+  text-decoration: none;
+  font-weight: $font-weight-medium;
+  font-size: $font-size-h6;
+  height: var(--btn-height);
+  min-width: var(--btn-height);
+  padding: 0 var(--btn-padding-x);
+  box-shadow: rgba(0, 0, 0, 0.04) 0px 10px 15px -3px, rgba(0, 0, 0, 0.02) 0px 4px 6px -2px;
+  user-select: none;
+  transition: .3s opacity, .3s transform, .3s border-color, .3s background-color;
+  cursor: pointer;
+  white-space: nowrap;
+
+  @at-root a#{&}:hover {
+    color: var(--btn-hover-color, var(--btn-text-color));
+    border-color: var(--btn-hover-border-color);
+    background-color: var(--btn-hover-bg, var(--btn-bg));
+  }
+
+  &:focus-visible {
+    box-shadow: 0 0 0 3px var(--btn-focus-color);
+    outline: none;
+  }
+
+  .icon {
+    width: divide(20, 16) * 1em;
+    height: divide(20, 16) * 1em;
+    vertical-align: bottom;
+    margin-right: $gap-2;
+    margin-left: -$gap-1;
+  }
+}
+
+.btn-block {
+  width: 100%;
+}
+
+.btn-icon {
+  padding-left: 0;
+  padding-right: 0;
+
+  .icon {
+    margin: 0;
+  }
+}
+
+.btn-sm {
+  --btn-height: 1.75rem;
+  --btn-padding-x: #{$gap-2};
+  font-size: $font-size-h6;
+
+  svg {
+    width: 1rem;
+    height: 1rem;
+    stroke-width: 2;
+    margin-right: $gap-1;
+  }
+}
+
+.btn-lg {
+  @include media-breakpoint-up(md) {
+    height: 3.25rem;
+    --btn-padding-x: #{$gap-4};
+    font-size: $font-size-h4;
+    font-weight: $font-weight-medium;
+
+    svg {
+      width: 1.5rem;
+      height: 1.5rem;
+      margin-right: $gap-3;
+      margin-left: -$gap-1;
+      stroke-width: 2;
+    }
+  }
+}
+
+.btn-circle {
+  border-radius: 50%;
+}
+
+.btn-link {
+  background: transparent;
+  color: $color-muted;
+
+  svg {
+    stroke-width: 1.5;
+  }
+
+  &:hover {
+    color: $color-text;
+  }
+}
+
+
+.btn-outline {
+  border-color: var(--btn-color);
+  color: var(--btn-color);
+  background: transparent;
+}
+
+@each $name, $color in map-merge($colors, $extra-colors) {
+  .btn-#{$name} {
+    --btn-color: #{$color};
+    --btn-color-darken: #{darken($color, 5%)};
+    --btn-bg: #{$color};
+    --btn-text-color: #{contrast-color($color)};
+    --btn-border-color: #{$color};
+    --btn-hover-bg: #{darken($color, 5%)};
+    --btn-hover-border-color: #{darken($color, 5%)};
+
+    &.disabled {
+      --btn-bg: #{$color-muted};
+      --btn-text-color: #{$color-white};
+      --btn-border-color: #{$color-muted};
+    }
+  }
+}
+
+.btn-list {
+  --btn-list-margin: .5rem;
+  display: flex;
+  margin: 0 calc(var(--btn-list-margin) * -1) calc(var(--btn-list-margin) * -1) 0;
+
+  > * {
+    margin: 0 var(--btn-list-margin) var(--btn-list-margin) 0;
+  }
+}
+
+
+@each $breakpoint in map-keys($grid-breakpoints) {
+  @if $breakpoint != 0 {
+    .btn-responsive-#{$breakpoint} {
+      @include media-breakpoint-down($breakpoint) {
+        .icon {
+          margin-left: -.5rem;
+          margin-right: -.5rem;
+        }
+
+        .btn-responsive-text {
+          display: none;
+        }
+      }
+    }
+  }
+}

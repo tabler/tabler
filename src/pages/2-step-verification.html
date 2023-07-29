@@ -1,0 +1,42 @@
+---
+title: 2-Step Verification
+layout: single
+---
+
+<form
+	class="card card-md"
+	action="{{ site.base }}/2-step-verification-code.html"
+	method="get"
+	autocomplete="off"
+	novalidate
+>
+	<div class="card-body">
+		<h2 class="card-title text-center mb-4">2-Step Verification</h2>
+
+		<div class="mb-3">
+			<label class="form-label">Country</label>
+			<select class="form-select">
+				{% for country in site.data.flags %}
+				<option value="{{ country.code }}"{% if country.code == 'US' %} selected{% endif %}>{{ country.name }}</option>
+				{% endfor %}
+			</select>	
+		</div>
+
+		<div class="mb-4">
+			<label class="form-label">Your Phone Number</label>
+			<div class="input-group">
+				<span class="input-group-text">+1</span>
+				<input type="text" class="form-control" placeholder="Enter phone number" />
+			</div>
+		</div>
+
+		<div class="text-secondary">
+			Security is critical in Tabler. to help keep your account safe, we'll
+			text you a verification code when you sign in on a new device
+		</div>
+
+		<div class="form-footer">
+			{% include ui/button.html element="button" type="submit" text="Send code" block=true color="primary" %}
+		</div>
+	</div>
+</form>

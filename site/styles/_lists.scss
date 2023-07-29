@@ -1,0 +1,30 @@
+.list-inline-dots {
+  display: inline-flex;
+  flex-wrap: wrap;
+
+  > * {
+    + * {
+      &:before {
+        content: '·';
+        color: $color-muted;
+        margin-right: .5rem;
+      }
+    }
+
+    &:not(:last-child) {
+      margin-right: .5rem;
+    }
+  }
+}
+
+.list-unstyled {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.list-separated {
+  >* + * {
+    margin-top: $gap-2;
+  }
+}

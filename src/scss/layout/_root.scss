@@ -2,7 +2,11 @@
 :host {
   font-size: 16px;
   height: 100%;
+}
 
+:root,
+:host,
+[data-bs-theme="light"] {
   @each $name, $color in map-merge($theme-colors, $gray-colors) {
     --#{$prefix}#{$name}: #{$color};
     --#{$prefix}#{$name}-rgb: #{to-rgb($color)};
@@ -62,7 +66,7 @@
     --#{$prefix}line-height-#{$name}: #{$value};
   }
 
-  @each $name, $value in $shadows {
+  @each $name, $value in $box-shadows {
     --#{$prefix}#{$name}: #{$value};
   }
 }

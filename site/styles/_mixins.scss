@@ -1,0 +1,366 @@
+@use "sass:math";
+
+@function divide($number1, $number2) {
+  @return math.div($number1, $number2);
+}
+
+@function theme-darken($color) {
+  @return darken($color, 20%);
+}
+
+@function theme-lighten($color) {
+  @return rgba($color, .08);
+}
+
+@function str-replace($string, $search, $replace: '') {
+  $index: str-index($string, $search);
+
+  @if $index {
+    @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+  }
+
+  @return $string;
+}
+
+@function url-svg($svg) {
+  $svg: str-replace($svg, '#', '%23');
+  $svg: str-replace($svg, '<svg', '<svg xmlns="http://www.w3.org/2000/svg"');
+
+  @return url('data:image/svg+xml;charset=UTF-8,#{$svg}');
+}
+
+@function add($value1, $value2, $return-calc: true) {
+  @if $value1 == null {
+    @return $value2;
+  }
+
+  @if $value2 == null {
+    @return $value1;
+  }
+
+  @if type-of($value1) == number and type-of($value2) == number and comparable($value1, $value2) {
+    @return $value1 + $value2;
+  }
+
+  @return if($return-calc == true, calc(#{$value1} + #{$value2}), $value1 + unquote(" + ") + $value2);
+}
+
+@function subtract($value1, $value2, $return-calc: true) {
+  @if $value1 == null and $value2 == null {
+    @return null;
+  }
+
+  @if $value1 == null {
+    @return -$value2;
+  }
+
+  @if $value2 == null {
+    @return $value1;
+  }
+
+  @if type-of($value1) == number and type-of($value2) == number and comparable($value1, $value2) {
+    @return $value1 - $value2;
+  }
+
+  @return if($return-calc == true, calc(#{$value1} - #{$value2}), $value1 + unquote(" - ") + $value2);
+}
+
+@function px2rem($px) {
+  @return divide($px, 16px) * 1rem;
+}
+
+@function str-replace($string, $search, $replace: '') {
+  $index: str-index($string, $search);
+
+  @if $index {
+    @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+  }
+
+  @return $string;
+}
+
+@function to-rgb($color) {
+  @return "#{red($color)}, #{green($color)}, #{blue($color)}";
+}
+
+@function breakpoint-prefix($name) {
+  @return media-prefix(if(media-breakpoint-min($name), $name, ''));
+}
+
+@function media-breakpoint-min($name, $breakpoints: $grid-breakpoints) {
+  $min: map-get($breakpoints, $name);
+  @return if($min != 0, $min, null);
+}
+
+@function media-prefix($name) {
+  @return if($name == '', "", "#{$name}\\:");
+}
+
+@function breakpoint-min($name) {
+  $min: map-get($grid-breakpoints, $name);
+  @return if($min != 0, $min, null);
+}
+
+@function breakpoint-max($name, $breakpoints: $grid-breakpoints) {
+  $max: map-get($breakpoints, $name);
+  @return if($max and $max > 0, $max - .02, null);
+}
+
+@mixin media-breakpoint-up($name) {
+  $min: breakpoint-min($name);
+
+  @if type-of($name) == 'number' and $name != 0 {
+    $min: $name;
+  }
+
+  @if $min {
+    @media (min-width: $min) {
+      @content;
+    }
+  } @else {
+    @content;
+  }
+}
+
+@mixin media-breakpoint-down($name, $breakpoints: $grid-breakpoints) {
+  $max: breakpoint-max($name, $breakpoints);
+  @if $max {
+    @media (max-width: $max) {
+      @content;
+    }
+  } @else {
+    @content;
+  }
+}
+
+@mixin media-retina {
+  @media
+  only screen and (-webkit-min-device-pixel-ratio: 2)      and (min-width: 320px),
+  only screen and (   min--moz-device-pixel-ratio: 2)      and (min-width: 320px),
+  only screen and (     -o-min-device-pixel-ratio: 2/1)    and (min-width: 320px),
+  only screen and (        min-device-pixel-ratio: 2)      and (min-width: 320px),
+  only screen and (                min-resolution: 192dpi) and (min-width: 320px),
+  only screen and (                min-resolution: 2dppx)  and (min-width: 320px) {
+    @content;
+  }
+}
+
+@mixin generate-utility($utility, $breakpoint, $breakpoint-prefix: null) {
+  $values: map-get($utility, values);
+  $media-prefix: media-prefix($breakpoint-prefix);
+
+  @if ($breakpoint) {
+    $media-prefix: breakpoint-prefix($breakpoint);
+  }
+
+  @if type-of($values) == "string" or type-of(nth($values, 1)) != "list" {
+    $values: zip($values, $values);
+  }
+
+  @each $key, $value in $values {
+    $properties: map-get($utility, property);
+
+    @if type-of($properties) == "string" {
+      $properties: append((), $properties);
+    }
+
+    $property-class: if(map-has-key($utility, class), map-get($utility, class), nth($properties, 1));
+    $property-class: if($property-class == null, "", $property-class);
+
+    $property-class-modifier: if($key, if($property-class == "" and $breakpoint-prefix == "", "", "-") + $key, "");
+
+    @if $value != null {
+      .#{$media-prefix + $property-class + $property-class-modifier} {
+        @each $property in $properties {
+          #{$property}: $value !important;
+
+          @if map-get($utility, extra) {
+            @each $extra-prop, $extra-value in map-get($utility, extra) {
+              #{$extra-prop}: $extra-value !important;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+@mixin make-row($gutter: $grid-padding) {
+  --gutter-x: #{$gutter};
+  --gutter-y: #{$gutter};
+  display: flex;
+  flex-wrap: wrap;
+  margin-top: calc(var(--gutter-y) * -1);
+  margin-right: calc(var(--gutter-x) / -2);
+  margin-left: calc(var(--gutter-x) / -2);
+}
+
+@mixin make-col-ready($gutter: $grid-padding) {
+  flex-shrink: 0;
+  width: 100%;
+  max-width: 100%;
+  padding-right: calc(var(--gutter-x) / 2);
+  padding-left: calc(var(--gutter-x) / 2);
+  margin-top: var(--gutter-y);
+}
+
+@mixin make-col($size, $columns: $grid-columns) {
+  flex: 0 0 auto;
+  width: percentage(divide($size, $columns));
+}
+
+@mixin make-col-auto() {
+  flex: 0 0 auto;
+  width: auto;
+}
+
+@mixin make-col-offset($size, $columns: $grid-columns) {
+  $num: divide($size, $columns);
+  margin-left: if($num == 0, 0, percentage($num));
+}
+
+
+@mixin row-cols($count) {
+  > * {
+    flex: 0 0 auto;
+    width: 100% / $count;
+  }
+}
+
+
+@mixin make-grid-columns($columns: $grid-columns, $gutter: $grid-padding, $breakpoints: $grid-breakpoints) {
+  @each $breakpoint in map-keys($breakpoints) {
+    $prefix: breakpoint-prefix($breakpoint);
+
+    @include media-breakpoint-up($breakpoint) {
+
+      .#{$prefix}col {
+        flex: 1 0 0%;
+      }
+
+      //.row-cols#{$prefix}-auto > * {
+      //  @include make-col-auto();
+      //}
+
+      //@if $grid-row-columns > 0 {
+      //  @for $i from 1 through $grid-row-columns {
+      //    .row-cols#{$infix}-#{$i} {
+      //      @include row-cols($i);
+      //    }
+      //  }
+      //}
+
+      .#{$prefix}col-auto {
+        @include make-col-auto();
+      }
+
+      @if $columns > 0 {
+        @for $i from 1 through $columns {
+          .#{$prefix}col-#{$i} {
+            @include make-col($i, $columns);
+          }
+        }
+
+
+        @for $i from 0 through ($columns - 1) {
+          @if not ($prefix == "" and $i == 0) {
+            .#{$prefix}offset-#{$i} {
+              @include make-col-offset($i, $columns);
+            }
+
+            .#{$prefix}offset-n#{$i} {
+              @include make-col-offset(-$i, $columns);
+            }
+          }
+        }
+      }
+
+      .#{$prefix}gy {
+        --gutter-y: #{$grid-padding};
+      }
+
+      .#{$prefix}gx {
+        --gutter-x: #{$grid-padding};
+      }
+
+      .#{$prefix}g {
+        --gutter-y: #{$grid-padding};
+        --gutter-x: #{$grid-padding};
+      }
+
+      @each $key, $value in $gaps {
+        .#{$prefix}g-#{$key},
+        .#{$prefix}gx-#{$key} {
+          --gutter-x: #{$value};
+        }
+
+        .#{$prefix}g-#{$key},
+        .#{$prefix}gy-#{$key} {
+          --gutter-y: #{$value};
+        }
+      }
+    }
+  }
+}
+
+@mixin text-truncate($size: 100%) {
+  max-width: $size;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+@function contrast-color($color, $dark: $color-primary, $light: $color-white) {
+  $threshold: 55%;
+
+  @return if(lightness($color) < $threshold, $light, $dark)
+}
+
+
+@mixin css-variables() {
+  @each $name, $value in $css-variables {
+    @if type-of($value) == 'map' {
+      @each $variant-name, $variant-value in $value {
+        --#{$name}#{if($variant-name != null, '-#{$variant-name}', '')}: #{$variant-value};
+      }
+    } @else {
+      --#{$name}: #{$value};
+    }
+  }
+}
+
+@mixin scrollbar($color: $color-text) {
+  &::-webkit-scrollbar {
+    width: 16px;
+    cursor: pointer;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: transparent;
+    border: 3px solid transparent
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba($color, .1);
+    border-radius: 100vh;
+    background-clip: padding-box;
+    border: 5px solid transparent;
+    box-shadow: inset 0 0 15px 15px transparent;
+    transition: $transition-duration box-shadow;
+
+    &:hover {
+      box-shadow: inset 0 0 15px 15px rgba($color, .4)
+    }
+  }
+
+  &:hover {
+    &::-webkit-scrollbar-thumb {
+      box-shadow: inset 0 0 15px 15px rgba($color, .2)
+    }
+  }
+}
+
+@mixin scrollbar-dark {
+  @include scrollbar($color-white);
+}

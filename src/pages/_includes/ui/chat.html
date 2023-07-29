@@ -1,0 +1,40 @@
+<div class="chat">
+	<div class="chat-bubbles">
+		{% for message in site.data.chat %}
+		{% assign person = site.data.people[message.person-id] %}
+		{% capture chat-avatar %}
+		<div class="col-auto">{% include ui/avatar.html person=person %}</div>
+		{% endcapture %}
+		{% capture chat-message %}
+		<div class="{% if message.loading %}col-auto{% else %}col{% if include.wide %} col-lg-6{% endif %}{% endif %}">
+			<div class="chat-bubble{% if message.person-id == 0 %} chat-bubble-me{% endif %}">
+				{% unless message.loading %}
+				<div class="chat-bubble-title">
+					<div class="row">
+						<div class="col chat-bubble-author">{{ person.full_name }}</div>
+						<div class="col-auto chat-bubble-date">{{ message.timestamp }}</div>
+					</div>
+				</div>
+				{% endunless %}
+				<div class="chat-bubble-body">
+					{% if message.loading %}
+					<p class="text-secondary text-italic">typing<span class="animated-dots"></span></p>
+					{% else %}
+					<p>{{ message.message }}</p>
+					{% endif %}
+
+					{% if message.gif %}
+					<div class="mt-2">
+						<img src="{{ message.gif }}" alt="" class="rounded img-fluid" />
+					</div>
+					{% endif %}
+				</div>
+			</div>
+		</div>
+		{% endcapture %}
+		<div class="chat-item">
+			<div class="row align-items-end{% if message.person-id == 0 %} justify-content-end{% endif %}">{% if message.person-id == 0 %} {{ chat-message }} {{ chat-avatar }} {% else %} {{ chat-avatar }} {{ chat-message }} {% endif %}</div>
+		</div>
+		{% endfor %}
+	</div>
+</div>

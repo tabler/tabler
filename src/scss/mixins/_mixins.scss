@@ -9,7 +9,7 @@
   }
 
   @if ($include-color) {
-    color: var(--#{$prefix}muted);
+    color: var(--#{$prefix}secondary);
   }
 }
 
@@ -56,4 +56,13 @@
   display: flex;
   flex-wrap: wrap;
   gap: var(--#{$prefix}list-gap);
+}
+
+@mixin focus-ring($show-border: false) {
+  outline: 0;
+  box-shadow: 0 0 $focus-ring-blur $focus-ring-width rgba(var(--tblr-primary-rgb), 0.25);
+
+  @if($show-border) {
+    border-color: rgba(var(--tblr-primary-rgb), 0.25);
+  }
 }

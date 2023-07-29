@@ -20,10 +20,26 @@ jobs:
         with:
           node-version: 18
 
+      - name: Install PNPM
+        uses: pnpm/action-setup@v2
+        with:
+          version: 7
+
       - name: Install Dependencies
-        run: yarn
+        run: pnpm install
+
+      - name: Creating .npmrc
+        run: |
+          cat << EOF > "$HOME/.npmrc"
+            //registry.npmjs.org/:_authToken=$NPM_TOKEN
+          EOF
+        env:
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       - name: Create Release Pull Request
         uses: changesets/action@v1
+        with:
+          publish: pnpm release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}

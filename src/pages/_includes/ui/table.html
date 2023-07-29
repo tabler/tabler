@@ -30,7 +30,7 @@
 					{% include ui/avatar.html person-id=person.id class="me-2" %}
 					<div class="flex-fill">
 						<div class="font-weight-medium">{{ person.full_name }}</div>
-						<div class="text-muted"><a href="#" class="text-reset">{{ person.email }}</a></div>
+						<div class="text-secondary"><a href="#" class="text-reset">{{ person.email }}</a></div>
 					</div>
 				</div>
 			</td>
@@ -42,21 +42,21 @@
 			{% if include.avatars %}
 			<td {% if include.mobile %}data-label="Title" {% endif %}>
 				<div>{{ person.job_title }}</div>
-				<div class="text-muted">{{ person.department }}</div>
+				<div class="text-secondary">{{ person.department }}</div>
 			</td>
 			{% else %}
-			<td class="text-muted" {% if include.mobile %}data-label="Title" {% endif %}>
+			<td class="text-secondary" {% if include.mobile %}data-label="Title" {% endif %}>
 				{{ person.job_title }}, {{ person.department }}
 			</td>
 			{% endif %}
 
 			{% unless include.avatars %}
-			<td class="text-muted" {% if include.mobile %}data-label="Email" {% endif %}><a href="#" class="text-reset">{{
+			<td class="text-secondary" {% if include.mobile %}data-label="Email" {% endif %}><a href="#" class="text-reset">{{
 				person.email }}</a></td>
 			{% endunless %}
 
 
-			<td class="text-muted" {% if include.mobile %}data-label="Role" {% endif %}>
+			<td class="text-secondary" {% if include.mobile %}data-label="Role" {% endif %}>
 				{% assign role-id = forloop.index | random_number: 0, 2 %}
 				{{ roles[role-id] }}
 			</td>

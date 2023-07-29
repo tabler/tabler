@@ -1,0 +1,25 @@
+---
+title: Flags
+page-header: Flags
+menu: base.flags
+---
+
+<div class="card">
+	<div class="card-header">
+		<div class="card-title">List of all flags</div>
+	</div>
+	<div class="card-body p-0">
+		<div class="demo-icons-list-wrap">
+			<div class="demo-icons-list">
+				{% for country in site.data.flags %}
+				<span class="demo-icons-list-item" title="{{ country.name }}" data-bs-toggle="tooltip" data-bs-placement="top">
+					<span class="flag flag-country-{{ country.code | downcase }}"></span>
+				</span>
+				{% endfor %}
+				{% for icon in (0..20) %}
+				<div></div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</div>

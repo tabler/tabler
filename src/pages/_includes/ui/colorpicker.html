@@ -1,0 +1,39 @@
+{% assign id = include.id | default: 'default' %}
+{% assign alpha = include.alpha | default: false %}
+{% assign format = include.format | default: false %}
+
+<input type="text" class="form-control d-block{% if include.class %} {{ include.class }}{% endif %}" id="colorpicker-{{ id }}" value="{{ include.value }}" />
+
+{% capture_global scripts %}
+<script>
+	// @formatter:off
+	document.addEventListener("DOMContentLoaded", function () {
+		{% if jekyll.environment == 'development' %}
+		window.tabler_colorpicker = window.tabler_colorpicker || {};
+		{% endif %}
+		
+		window.Coloris && ({% if jekyll.environment == 'development' %}window.tabler_colorpicker["colorpicker-{{ id }}"] = {% endif %}Coloris({
+			el:  "#colorpicker-{{ id }}",
+			selectInput: false,
+			alpha: {% if alpha %}true{% else %}false{% endif %},
+			{% if format %}format: "{{ format }}",{% endif %}
+			{% if include['swatches-only'] %}swatchesOnly: true,{% endif %}
+			swatches: [
+				"#0054a6",
+				"#45aaf2",
+				"#6574cd",
+				"#a55eea",
+				"#f66d9b",
+				"#fa4654",
+				"#fd9644",
+				"#f1c40f",
+				"#7bd235",
+				"#5eba00",
+				"#2bcbba",
+				"#17a2b8",
+			],
+		}))
+	})
+	// @formatter:on
+</script>
+{% endcapture_global %}
