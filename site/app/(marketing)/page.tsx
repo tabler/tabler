@@ -194,7 +194,7 @@ const Sponsors = () => {
       </div>
     </div>
   );
-}
+};
 
 export default async function HomePage() {
   const features = [
