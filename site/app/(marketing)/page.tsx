@@ -10,6 +10,7 @@ import Shape from '@/components/Shape';
 import Testimonials from '@/components/layout/Testimonials';
 import TestimonialsShare from '@/components/layout/TestimonialsShare';
 import HeroUi from '@/components/layout/hero/Ui';
+import { sponsors } from '@/config/sponsors';
 
 export const metadata = {
   title: 'Premium dashboard template with responsive and high quality UI',
@@ -174,6 +175,27 @@ const Projects = () => {
   );
 };
 
+const Sponsors = () => {
+  return (
+    <div className="section section-light pt-6 pb-5">
+      <SectionDivider />
+      <div className="container img-overlap-padding text-center">
+        <div className="mb-6">
+          <h2 className="h4 font-normal text-muted mb-6">The project was made possible thanks to wonderful sponsors:</h2>
+
+          <div className="row gx-6 md:gx-7 gy-4 items-center justify-center">
+            {sponsors.map((sponsor, i) => (
+              <div className="col-auto" key={i}>
+                <a href={sponsor.url} className="link-brand" dangerouslySetInnerHTML={{ __html: sponsor.logo }} target="_blank" rel="nofollow"></a>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export default async function HomePage() {
   const features = [
     {
@@ -218,21 +240,21 @@ export default async function HomePage() {
       {/*<Modal />*/}
       <HeroUi />
 
-      <div className="section section-light pt-6 pb-6">
+      <Sponsors />
+
+      {/* <div className="section section-light pt-6 pb-6">
         <SectionDivider />
         <div className="container img-overlap-padding">
           <Features list={features} />
         </div>
-      </div>
+      </div> */}
 
       <section className="section" id="features">
         <div className="container">
           <div className="row items-center">
             <div className="lg:col-6" data-aos="fade-up">
               <div className="section-header w-100">
-                <h2 className="section-title text-center lg:text-left">
-                  Benefit from Tabler’s top-notch features
-                </h2>
+                <h2 className="section-title text-center lg:text-left">Benefit from Tabler’s top-notch features</h2>
               </div>
 
               {/*<p className="section-description mb-5">*/}
@@ -244,25 +266,14 @@ export default async function HomePage() {
               <div className="row">
                 {benefits.map((benefit, i) => (
                   <div className="sm:col-6 md:col-4 lg:col-6" key={i}>
-                    <Shape
-                      icon="check"
-                      color="green"
-                      className="mr-3"
-                      size="sm"
-                      rounded
-                    />
+                    <Shape icon="check" color="green" className="mr-3" size="sm" rounded />
                     {benefit}
                   </div>
                 ))}
               </div>
             </div>
             <div className="lg:col-6" data-aos="fade-up">
-              <ResponsiveImage
-                src="/img/tabler/features/charts.png"
-                width="510"
-                height="524"
-                className="mx-auto"
-              />
+              <ResponsiveImage src="/img/tabler/features/charts.png" width="510" height="524" className="mx-auto" />
             </div>
           </div>
         </div>
@@ -272,48 +283,18 @@ export default async function HomePage() {
         <div className="container">
           <div className="section-header">
             <h2 className="section-title">Multiple Demos</h2>
-            <p className="section-description">
-              6 Pre-built layout options to cater needs of modern web
-              applications. Ready-to-use UI elements enable to develop modern
-              web application with great speed
-            </p>
+            <p className="section-description">6 Pre-built layout options to cater needs of modern web applications. Ready-to-use UI elements enable to develop modern web application with great speed</p>
           </div>
           <div className="row" data-aos-id-blocks-previews>
             <div className="col-6 md:col-4">
-              <a
-                href="https://preview.tabler.io?theme=light"
-                className="d-block text-center link text-reset"
-                data-aos="fade-up"
-                data-aos-anchor="[data-aos-id-blocks-previews]"
-                data-aos-delay={0}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <ResponsiveImage
-                  src="/img/tabler/preview.png"
-                  width="389"
-                  height="243"
-                  className="mx-auto rounded link-img"
-                />
+              <a href="https://preview.tabler.io?theme=light" className="d-block text-center link text-reset" data-aos="fade-up" data-aos-anchor="[data-aos-id-blocks-previews]" data-aos-delay={0} target="_blank" rel="noopener noreferrer">
+                <ResponsiveImage src="/img/tabler/preview.png" width="389" height="243" className="mx-auto rounded link-img" />
                 <div className="mt-3">Modern dashboard</div>
               </a>
             </div>
             <div className="col-6 md:col-4">
-              <a
-                href="https://preview.tabler.io?theme=dark"
-                className="d-block text-center link text-reset"
-                data-aos="fade-up"
-                data-aos-anchor="[data-aos-id-blocks-previews]"
-                data-aos-delay={150}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <ResponsiveImage
-                  src="/img/tabler/preview-dark.png"
-                  width="389"
-                  height="243"
-                  className="mx-auto rounded link-img"
-                />
+              <a href="https://preview.tabler.io?theme=dark" className="d-block text-center link text-reset" data-aos="fade-up" data-aos-anchor="[data-aos-id-blocks-previews]" data-aos-delay={150} target="_blank" rel="noopener noreferrer">
+                <ResponsiveImage src="/img/tabler/preview-dark.png" width="389" height="243" className="mx-auto rounded link-img" />
                 <div className="mt-3">Dark mode</div>
               </a>
             </div>
@@ -327,12 +308,7 @@ export default async function HomePage() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <ResponsiveImage
-                  src="/img/tabler/preview-sidebar.png"
-                  width="389"
-                  height="243"
-                  className="mx-auto rounded link-img"
-                />
+                <ResponsiveImage src="/img/tabler/preview-sidebar.png" width="389" height="243" className="mx-auto rounded link-img" />
                 <div className="mt-3">With sidebar navigation</div>
               </a>
             </div>
@@ -346,12 +322,7 @@ export default async function HomePage() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <ResponsiveImage
-                  src="/img/tabler/preview-navbar-overlap.png"
-                  width="389"
-                  height="243"
-                  className="mx-auto rounded link-img"
-                />
+                <ResponsiveImage src="/img/tabler/preview-navbar-overlap.png" width="389" height="243" className="mx-auto rounded link-img" />
                 <div className="mt-3">With overlap navbar</div>
               </a>
             </div>
@@ -365,12 +336,7 @@ export default async function HomePage() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <ResponsiveImage
-                  src="/img/tabler/preview-sidebar-transparent.png"
-                  width="389"
-                  height="243"
-                  className="mx-auto rounded link-img"
-                />
+                <ResponsiveImage src="/img/tabler/preview-sidebar-transparent.png" width="389" height="243" className="mx-auto rounded link-img" />
                 <div className="mt-3">With transparent navigation</div>
               </a>
             </div>
@@ -384,12 +350,7 @@ export default async function HomePage() {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <ResponsiveImage
-                  src="/img/tabler/preview-rtl.png"
-                  width="389"
-                  height="243"
-                  className="mx-auto rounded link-img"
-                />
+                <ResponsiveImage src="/img/tabler/preview-rtl.png" width="389" height="243" className="mx-auto rounded link-img" />
                 <div className="mt-3">RTL mode</div>
               </a>
             </div>
@@ -400,19 +361,12 @@ export default async function HomePage() {
       <section className="section">
         <div className="container">
           <div className="section-header">
-            <h2 className="section-title">
-              Create a perfect interface. Make your life easier.
-            </h2>
+            <h2 className="section-title">Create a perfect interface. Make your life easier.</h2>
           </div>
 
           <div className="row items-center">
             <div className="lg:col-6" data-aos="fade-up">
-              <ResponsiveImage
-                src="/img/tabler/features/forms.png"
-                width={510}
-                height={524}
-                className="mx-auto"
-              />
+              <ResponsiveImage src="/img/tabler/features/forms.png" width={510} height={524} className="mx-auto" />
             </div>
             <div className="lg:col-6">
               <div className="space-y-5">
@@ -424,10 +378,7 @@ export default async function HomePage() {
                     <div className="col">
                       <h3>Designed with users in mind</h3>
                       <p className="text-muted m-0">
-                        Tabler is fully responsive and compatible with all
-                        modern browsers. Thanks to its modern, user-friendly
-                        design you can create a fully functional interface that
-                        users will love. Every UI element has been created with
+                        Tabler is fully responsive and compatible with all modern browsers. Thanks to its modern, user-friendly design you can create a fully functional interface that users will love. Every UI element has been created with
                         attention to detail to make your interface beautiful!
                       </p>
                     </div>
@@ -441,11 +392,8 @@ export default async function HomePage() {
                     <div className="col">
                       <h3>Built for developers</h3>
                       <p className="text-muted m-0">
-                        Having in mind what it takes to write high-quality code,
-                        we want to help you speed up the development process and
-                        keep your code clean. Based on Bootstrap 5, Tabler is a
-                        cutting-edge solution, compatible with all modern
-                        browsers and fully responsive.
+                        Having in mind what it takes to write high-quality code, we want to help you speed up the development process and keep your code clean. Based on Bootstrap 5, Tabler is a cutting-edge solution, compatible with all
+                        modern browsers and fully responsive.
                       </p>
                     </div>
                   </div>
@@ -457,12 +405,7 @@ export default async function HomePage() {
                     </div>
                     <div className="col">
                       <h3>Fully customizable</h3>
-                      <p className="text-muted m-0">
-                        You can easily customize the UI elements to make them
-                        fit the needs of your project. And don’t worry if you
-                        don’t have much experience - Tabler is easy to get
-                        started!
-                      </p>
+                      <p className="text-muted m-0">You can easily customize the UI elements to make them fit the needs of your project. And don’t worry if you don’t have much experience - Tabler is easy to get started!</p>
                     </div>
                   </div>
                 </div>
@@ -475,9 +418,7 @@ export default async function HomePage() {
       <section className="section section-dark">
         <div className="container">
           <div className="section-header">
-            <h2 className="section-title">
-              Dark theme whenever you need it ✨
-            </h2>
+            <h2 className="section-title">Dark theme whenever you need it ✨</h2>
           </div>
 
           <div className="row items-center">
@@ -491,12 +432,8 @@ export default async function HomePage() {
                     <div className="col">
                       <h3>Change default variant when you need</h3>
                       <p className="text-muted m-0">
-                        Tabler is a beautiful dashboard that comes in 2
-                        versions: Dark and Light Mode. If you are looking for a
-                        tool to manage and visualize data about your business,
-                        this dashboard is the thing for you. It combines colors
-                        that are easy on the eye, spacious cards, beautiful
-                        typography, and graphics.
+                        Tabler is a beautiful dashboard that comes in 2 versions: Dark and Light Mode. If you are looking for a tool to manage and visualize data about your business, this dashboard is the thing for you. It combines colors
+                        that are easy on the eye, spacious cards, beautiful typography, and graphics.
                       </p>
                     </div>
                   </div>
@@ -508,11 +445,7 @@ export default async function HomePage() {
                     </div>
                     <div className="col">
                       <h3>All components available in dark mode</h3>
-                      <p className="text-muted m-0">
-                        Tabler contains a vast collection of assorted reusable
-                        dark UI components, page layouts, charts, tables, UI
-                        elements, and icons.
-                      </p>
+                      <p className="text-muted m-0">Tabler contains a vast collection of assorted reusable dark UI components, page layouts, charts, tables, UI elements, and icons.</p>
                     </div>
                   </div>
                 </div>
@@ -525,11 +458,8 @@ export default async function HomePage() {
                     <div className="col">
                       <h3>A lot of reasons why dark theme are used widely</h3>
                       <p className="text-muted m-0">
-                        Dark mode saves battery life and can reduce eye fatigue
-                        in low-light conditions. The high contrast between text
-                        and background reduces eye fatigue, and the dark screen
-                        helps you focus your eyes longer and helps your brain
-                        keep more attention on the screen.
+                        Dark mode saves battery life and can reduce eye fatigue in low-light conditions. The high contrast between text and background reduces eye fatigue, and the dark screen helps you focus your eyes longer and helps your
+                        brain keep more attention on the screen.
                       </p>
                     </div>
                   </div>
@@ -537,12 +467,7 @@ export default async function HomePage() {
               </div>
             </div>
             <div className="lg:col-6" data-aos="fade-up">
-              <ResponsiveImage
-                src="/img/tabler/features/dark.png"
-                width={510}
-                height={524}
-                className="mx-auto"
-              />
+              <ResponsiveImage src="/img/tabler/features/dark.png" width={510} height={524} className="mx-auto" />
             </div>
           </div>
         </div>
@@ -552,10 +477,7 @@ export default async function HomePage() {
         <div className="container">
           <div className="section-header">
             <h2 className="section-title">Trusted by hundreds</h2>
-            <p className="section-description">
-              Our Users send us bunch of smilies with our services, and we love
-              them 😍
-            </p>
+            <p className="section-description">Our Users send us bunch of smilies with our services, and we love them 😍</p>
           </div>
 
           <div className="expandable">
