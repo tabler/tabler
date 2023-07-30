@@ -1,6 +1,7 @@
 import Browser from '@/components/Browser';
 import ResponsiveImage from '@/components/ResponsiveImage';
 import { uiDownloadUrl } from '@/config/site';
+import React from 'react';
 
 export default function LayoutHeroUi() {
   return (
@@ -11,8 +12,7 @@ export default function LayoutHeroUi() {
             Develop beautiful web apps with&nbsp;Tabler
           </h1>
           <p className="hero-description mt-4" data-aos="zoom-y-out" data-aos-delay="150">
-            Tabler is a free and open source web application UI kit based on Bootstrap&nbsp;5, with hundreds responsive
-            components and multiple layouts.
+            Tabler is a free and open source web application UI kit based on Bootstrap&nbsp;5, with hundreds responsive components and multiple layouts.
           </p>
 
           <div className="mt-5" data-aos="zoom-y-out" data-aos-delay="300">
@@ -30,8 +30,8 @@ export default function LayoutHeroUi() {
             </div>
           </div>
 
-          <div className="hero-img img-overlap-margin">
-            <Browser data-aos="zoom-y-out" data-aos-delay="450">
+          <div className="hero-img img-overlap-margin" data-aos="zoom-y-out" data-aos-delay="450">
+            <Browser>
               <ResponsiveImage src="/img/tabler/preview.png" width={1040} height={760} priority />
             </Browser>
           </div>

@@ -1,5 +1,6 @@
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
+import AOS from '@/components/AOS';
 
 export default function CoreLayout({
   children
@@ -8,9 +9,11 @@ export default function CoreLayout({
 }) {
   return (
     <>
-      <Header />
-      <main className="main">{children}</main>
-      <Footer />
+      <AOS>
+        <Header />
+        <main className="main">{children}</main>
+        <Footer />
+      </AOS>
     </>
   );
 }
