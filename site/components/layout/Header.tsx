@@ -262,7 +262,7 @@ export default function Header({ headerStatic, className, pageProps, ...props }:
           className,
         )}
       >
-        <div className="container" data-aos="fade-down">
+        <div className="container">
           <nav className="row items-center">
             <div className="col-auto">
               <Link href="/" className={clsx('logo' /*, pageProps.brand ? `logo-${pageProps.brand}` : ''*/)} aria-label="Tabler" />
