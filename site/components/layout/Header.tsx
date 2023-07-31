@@ -10,8 +10,7 @@ import GoToTop from '@/components/layout/GoToTop';
 import Link from '@/components/Link';
 import NavLink from '@/components/NavLink';
 import Shape from '@/components/Shape';
-
-// import { useRouter } from 'next/router'
+import { usePathname } from 'next/navigation';
 
 const NavDropdown = ({ title, children, active, footer = false }) => {
   return (
@@ -237,10 +236,7 @@ const Banner = () => {
 export default function Header({ headerStatic, className, pageProps, ...props }: { headerStatic?: boolean; className?: string; pageProps?: any }) {
   const [sticky, setSticky] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-
-  const pop = () => {
-    setSticky(window.pageYOffset > 0);
-  };
+  const pathname = usePathname();
 
   function closeModal() {
     setIsOpen(false);
@@ -250,15 +246,27 @@ export default function Header({ headerStatic, className, pageProps, ...props }:
     setIsOpen(!isOpen);
   }
 
+  useEffect(() => {
+    const handleScroll = () => {
+      setSticky(window.pageYOffset > 0);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    handleScroll();
+
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, []);
+
   return (
     <>
       <Banner />
       <header
         className={clsx(
           'header',
-          // router.pathname.startsWith('/docs') && 'header-bordered',
-          // headerStatic ? 'header-static' : '',
-          // isVisible && 'header-sticky',
+          sticky && 'header-sticky',
+          pathname.startsWith('/docs') && 'header-docs',
           className,
         )}
       >

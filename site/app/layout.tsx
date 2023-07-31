@@ -61,7 +61,7 @@ export const metadata = {
   },
 };
 
-export default function RootLayout({ children, bodyClass }: { children: React.ReactNode; bodyClass?: string }) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <head>
@@ -72,8 +72,7 @@ export default function RootLayout({ children, bodyClass }: { children: React.Re
           </>
         )}
       </head>
-      <body>
-        {bodyClass}
+      <body className="body-gradient">
         <PageProgress />
         {children}
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />

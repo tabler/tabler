@@ -6,10 +6,8 @@ export const metadata = {
 
 export default function DocsLayout({ children /*, meta = {}, pageProps*/ }) {
   return (
-    <div className="border-bottom border-top">
-      <div className="container">
-        {children}
-      </div>
+    <div className="border-bottom bg-white">
+      <div className="container">{children}</div>
     </div>
   );
 }
