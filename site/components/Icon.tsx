@@ -4,10 +4,7 @@ const icons = {
   plus: ({ className }) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={clsx(
-        'icon icon-tabler icon icon-tabler icon-tabler-plus',
-        className
-      )}
+      className={clsx('icon icon-tabler icon icon-tabler icon-tabler-plus', className)}
       width="24"
       height="24"
       viewBox="0 0 24 24"
@@ -212,10 +209,7 @@ const icons = {
   'brand-bootstrap': ({ className }) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={clsx(
-        'icon icon-tabler icon-tabler-brand-bootstrap',
-        className
-      )}
+      className={clsx('icon icon-tabler icon-tabler-brand-bootstrap', className)}
       width={24}
       height={24}
       viewBox="0 0 24 24"
@@ -339,10 +333,7 @@ const icons = {
   'arrow-down-circle': ({ className }) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={clsx(
-        'icon icon-tabler icon-tabler-arrow-down-circle',
-        className
-      )}
+      className={clsx('icon icon-tabler icon-tabler-arrow-down-circle', className)}
       width="24"
       height="24"
       viewBox="0 0 24 24"
@@ -356,6 +347,24 @@ const icons = {
       <line x1="8" y1="12" x2="12" y2="16" />
       <line x1="12" y1="8" x2="12" y2="16" />
       <line x1="16" y1="12" x2="12" y2="16" />
+    </svg>
+  ),
+  'arrow-right': ({ className }) => (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={clsx('icon icon-tabler icon-tabler-arrow-right', className)}
+      width="24"
+      height="24"
+      viewBox="0 0 24 24"
+      strokWidth="2"
+      stroke="currentColor"
+      fill="none"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path d="M5 12l14 0" />
+      <path d="M13 18l6 -6" />
+      <path d="M13 6l6 6" />
     </svg>
   ),
   'thumb-up': ({ className }) => (
@@ -836,10 +845,7 @@ const icons = {
   'layout-dashboard': ({ className }) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={clsx(
-        'icon icon-tabler icon-tabler-layout-dashboard',
-        className
-      )}
+      className={clsx('icon icon-tabler icon-tabler-layout-dashboard', className)}
       width="24"
       height="24"
       viewBox="0 0 24 24"
@@ -879,10 +885,7 @@ const icons = {
   'circle-x-filled': ({ className }) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={clsx(
-        'icon icon-tabler icon-tabler-circle-x-filled',
-        className
-      )}
+      className={clsx('icon icon-tabler icon-tabler-circle-x-filled', className)}
       width="24"
       height="24"
       viewBox="0 0 24 24"
@@ -902,10 +905,7 @@ const icons = {
   'circle-check-filled': ({ className }) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={clsx(
-        'icon icon-tabler icon-tabler-circle-check-filled',
-        className
-      )}
+      className={clsx('icon icon-tabler icon-tabler-circle-check-filled', className)}
       width="24"
       height="24"
       viewBox="0 0 24 24"
@@ -925,10 +925,7 @@ const icons = {
   'alert-circle-filled': ({ className }) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      className={clsx(
-        'icon icon-tabler icon-tabler-alert-circle-filled',
-        className
-      )}
+      className={clsx('icon icon-tabler icon-tabler-alert-circle-filled', className)}
       width="24"
       height="24"
       viewBox="0 0 24 24"

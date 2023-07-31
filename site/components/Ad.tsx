@@ -1,12 +1,15 @@
 'use client';
 
+import clsx from 'clsx';
 import { useRef, useEffect } from 'react';
 
-export const Ad = () => {
+export default function Ad({ className, horizontal }: { className?: string; horizontal?: boolean }) {
   const ad = useRef<any>(null);
 
   useEffect(() => {
     if (ad.current) {
+      ad.current.innerHTML = '';
+
       const script = document.createElement('script');
       script.async = true;
       script.src = '//cdn.carbonads.com/carbon.js?serve=CWYDCKQE&placement=tabler-iconsio';
@@ -15,7 +18,5 @@ export const Ad = () => {
     }
   }, []);
 
-  return (
-    <div ref={ad} className="ads"></div>
-  );
+  return <div ref={ad} className={clsx('carbon', className, horizontal && 'carbon-horizontal')}></div>;
 };
