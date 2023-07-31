@@ -15,27 +15,20 @@ export default function CTABanner({
         </div>
         <div className="lg:col-auto">
           <div className="row g-2">
-            {buttonText &&
-              buttonHref && (
-                <div className="col-auto">
-                  <a href={buttonHref} className="btn btn-lg btn-white" target="_blank" rel="noopener noreferrer">
-                    {buttonText}
-                  </a>
-                </div>
-              )}
-            {buttonSecondaryText &&
-              buttonSecondaryHref && (
-                <div className="col-auto">
-                  <a
-                    href={buttonSecondaryHref}
-                    className="btn btn-lg btn-white btn-outline"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                  >
-                    {buttonSecondaryText}
-                  </a>
-                </div>
-              )}
+            {buttonText && buttonHref && (
+              <div className="col-auto">
+                <a href={buttonHref} className="btn btn-lg btn-white lemonsqueezy-button">
+                  {buttonText}
+                </a>
+              </div>
+            )}
+            {buttonSecondaryText && buttonSecondaryHref && (
+              <div className="col-auto">
+                <a href={buttonSecondaryHref} className="btn btn-lg btn-white btn-outline" target="_blank" rel="noopener noreferrer">
+                  {buttonSecondaryText}
+                </a>
+              </div>
+            )}
           </div>
         </div>
       </div>

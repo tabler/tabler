@@ -32,7 +32,7 @@ export default function LayoutHeroUi() {
 
           <div className="hero-img img-overlap-margin" data-aos="zoom-y-out" data-aos-delay="450">
             <Browser>
-              <ResponsiveImage src="/img/tabler/preview.png" width={1040} height={760} priority />
+              <ResponsiveImage src="/img/tabler/preview.png" width={1080} height={760} priority />
             </Browser>
           </div>
         </div>
