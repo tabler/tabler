@@ -1,6 +1,8 @@
 import { allChangelogs } from '@/.contentlayer/generated';
 import Mdx from '@/components/MDX';
+import { changelogEnabled } from '@/config/site';
 import { dateTemplate, distanceToNow, format } from '@/lib/date';
+import { notFound } from 'next/navigation';
 
 export const metadata = {
   title: 'Changelog',
@@ -8,6 +10,10 @@ export const metadata = {
 };
 
 export default function ChangelogPage() {
+  if (!changelogEnabled) {
+    notFound();
+  }
+
   const changelogs = allChangelogs
     .sort((a, b) => {
       return new Date(a.date).getTime() - new Date(b.date).getTime();

@@ -4,7 +4,7 @@ import { Fragment, MutableRefObject, PropsWithChildren, RefObject, useCallback, 
 import { Dialog, Popover } from '@headlessui/react';
 import clsx from 'clsx';
 
-import { banner, componentsRounded, iconsCountRounded, sponsorsUrl, uiGithubUrl } from '@/config/site';
+import { banner, blogEnabled, componentsRounded, iconsCountRounded, sponsorsUrl, uiGithubUrl } from '@/config/site';
 import Icon from '@/components/Icon';
 import GoToTop from '@/components/layout/GoToTop';
 import Link from '@/components/Link';
@@ -90,11 +90,11 @@ const menuLinks = [
       </>
     ),
   },
-  {
+  ...(blogEnabled ? [{
     href: '/blog',
     menu: 'blog',
     title: <>Blog</>,
-  },
+  }] : []),
   {
     href: '/docs',
     menu: 'docs',
@@ -191,13 +191,7 @@ const SidebarLink = (link, menu, onClick) => {
 };
 
 const Navbar = ({ menu, opened, onClick, ...props }: { menu?: string; opened?: boolean; onClick?: (event: React.MouseEvent) => void; className?: string }) => {
-  return (
-    <div className={clsx('navbar', opened && 'opened', props.className)}>
-      {menuLinks.map((link) => (
-        <Fragment key={link.menu}>{NavbarLink(link, menu)}</Fragment>
-      ))}
-    </div>
-  );
+  return <div className={clsx('navbar', opened && 'opened', props.className)}>{menuLinks.map((link) => (<Fragment key={link.menu}>{NavbarLink(link, menu)}</Fragment>))}</div>;
 };
 
 const Banner = () => {

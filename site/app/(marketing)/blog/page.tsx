@@ -1,8 +1,9 @@
 import Icon from '@/components/Icon';
-import { iconsUrl } from '@/config/site';
+import { iconsUrl, blogEnabled } from '@/config/site';
 import Link from 'components/Link';
 import { allPosts } from 'contentlayer/generated';
 import { format } from 'date-fns';
+import { notFound } from 'next/navigation';
 
 export const metadata = {
   title: 'Blog',
@@ -10,6 +11,10 @@ export const metadata = {
 };
 
 export default async function BlogPage() {
+  if(! blogEnabled) {
+    notFound();
+  }
+
   return (
     <>
       <section className="section">

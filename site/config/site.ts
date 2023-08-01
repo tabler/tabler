@@ -43,6 +43,9 @@ export const componentsRounded = (() => {
   return Math.floor(componentsCount / 10) * 10;
 })();
 
+export const blogEnabled = false;
+export const changelogEnabled = false;
+
 export const getAbsoluteURL = (path) => {
   const baseURL = process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : `http://localhost:3010`;
   return baseURL + path;
@@ -100,7 +103,7 @@ export const footerMenu = [
   {
     title: 'Support',
     items: [
-      { title: 'Blog', route: '/blog' },
+      ...(blogEnabled ? [{ title: 'Blog', route: '/blog' }] : []),
       { title: 'Documentation', route: '/docs' },
       { title: 'Support', route: '/support' },
       { title: 'Guides', route: '/guides' },
@@ -114,8 +117,7 @@ export const footerMenu = [
       { title: 'About', route: '/about' },
       { title: 'Testimonials', route: '/testimonials' },
       { title: 'FAQ', route: '/docs/getting-started/faq' },
-      // { title: 'Blog', route: '/blog' },
-      { title: 'Changelog', route: '/changelog' },
+      ...(changelogEnabled ? [{ title: 'Changelog', route: '/changelog' }] : []),
       { title: 'Releases', href: uiGithubReleasesUrl },
       { title: 'Github', href: companyGithubUrl },
     ],
@@ -136,3 +138,4 @@ export const banner = {
     text: 'Learn more →',
   },
 };
+

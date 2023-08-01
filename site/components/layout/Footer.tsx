@@ -1,20 +1,10 @@
 import clsx from 'clsx';
 
-
-
 import { footerMenu, socialLinks } from '@/config/site';
 import Icon from '@/components/Icon';
 import Link from '@/components/Link';
 
-
-
-
-
-const FooterMenu = ({
-  border = false
-}: {
-  border?: boolean
-}) => (
+const FooterMenu = ({ border = false }: { border?: boolean }) => (
   <footer className="footer">
     <div className="container">
       <div className={clsx('py-6', border && 'border-top')}>
@@ -46,22 +36,13 @@ const FooterMenu = ({
           <div className="lg:col-4 ml-auto">
             <div className="logo logo-gray mb-4" />
 
-            <div className="text-muted">
-              Tabler comes with tons of well-designed components and features. Start your adventure with Tabler and make
-              your dashboard great again. For free!
-            </div>
+            <div className="text-muted">Tabler comes with tons of well-designed components and features. Start your adventure with Tabler and make your dashboard great again. For free!</div>
 
             <div className="mt-4 lg:mt-6">
               <div className="row gx-3">
                 {socialLinks.map((social) => (
                   <div className="col-auto" key={social.icon}>
-                    <a
-                      href={social.url}
-                      className="link-muted"
-                      aria-label="social.label"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                    >
+                    <a href={social.url} className="link-muted" aria-label="social.label" target="_blank" rel="noopener noreferrer">
                       <Icon name={social.icon} className="icon-md" />
                     </a>
                   </div>
@@ -84,29 +65,16 @@ const FooterMain = () => (
             <div className="row justify-center">
               <div className="col-auto">
                 ©
-                <a
-                  href="https://codecalm.net"
-                  className="link-muted"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
+                <a href="https://codecalm.net" className="link-muted" target="_blank" rel="noopener noreferrer">
                   codecalm.net
                 </a>
               </div>
               <div className="col-auto">
                 <div className="list-inline-dots">
-                  <Link
-                    href="/terms-of-service"
-                    className="link-muted"
-                    prefetch={false}
-                  >
+                  <Link href="/terms-of-service" className="link-muted" prefetch={false}>
                     Terms of service
                   </Link>
-                  <Link
-                    href="/privacy-policy"
-                    className="link-muted"
-                    prefetch={false}
-                  >
+                  <Link href="/privacy-policy" className="link-muted" prefetch={false}>
                     Privacy policy
                   </Link>
                 </div>

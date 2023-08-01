@@ -5,6 +5,7 @@ import Mdx from '@/components/MDX';
 import Ad from '@/components/Ad';
 import Link from '@/components/Link';
 import Icon from '@/components/Icon';
+import { blogEnabled } from '@/config/site';
 
 interface PageProps {
   params: {
@@ -32,7 +33,7 @@ export async function generateStaticParams(): Promise<PageProps['params'][]> {
 export default async function PostPage({ params }: PageProps) {
   const post = await getPageFromParams(params);
 
-  if (!post) {
+  if (!post || !blogEnabled) {
     notFound();
   }
 
