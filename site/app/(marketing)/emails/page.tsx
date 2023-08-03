@@ -178,27 +178,16 @@ const EmailsGallery = () => {
 
 const EmailsDark = () => {
   return (
-    <section className="section">
+    <section className="section section-dark">
       <div className="container">
         <div className="row xl:g-7 items-center">
           <div className="lg:col-6">
-            <Slider
-              slides={[
-                <ResponsiveImage
-                  src="/img/tabler-emails/features/dark.png"
-                  width="564"
-                  height="585"
-                  key="img-1"
-                  className="mx-auto"
-                />,
-                <ResponsiveImage
-                  src="/img/tabler-emails/features/dark-light.png"
-                  width="564"
-                  height="585"
-                  key="img-2"
-                  className="mx-auto"
-                />,
-              ]}
+            <ResponsiveImage
+              src="/img/tabler-emails/features/dark.png"
+              width="564"
+              height="585"
+              key="img-1"
+              className="mx-auto"
             />
           </div>
           <div className="lg:col-6">
