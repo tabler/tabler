@@ -27,7 +27,6 @@ export const statusUrl = 'https://status.tabler.io';
 export const figmaPluginUrl = 'https://www.figma.com/community/plugin/1169807996149376642/Tabler-Icons';
 export const figmaIconsUrl = 'https://www.figma.com/community/file/1042928259792594757';
 
-// export const uiDownloadUrl = `https://gum.co/tabler?wanted=true`
 export const uiDownloadUrl = `https://tabler.lemonsqueezy.com/checkout/buy/ac0d11e7-86fb-4fcf-ad9e-3d89e8dfbb24?embed=1&desc=0&discount=0&media=0`;
 export const uiCdnUrl = `https://cdn.jsdelivr.net/npm/@tabler/core@${uiVersion}`;
 export const uiCdnCSS = `${uiCdnUrl}${uiVersion}/dist/css/tabler.min.css`;
