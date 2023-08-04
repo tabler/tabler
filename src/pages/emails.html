@@ -1,0 +1,101 @@
+---
+page-header: Email templates
+menu: emails
+libs: masonry, fslightbox
+---
+
+
+
+<div class="row row-cards">
+	<div class="col-lg-4">
+		<div class="card card-md">
+			<div class="card-stamp card-stamp-lg">
+				<div class="card-stamp-icon bg-primary">
+					{% include ui/icon.html icon="mail" %}
+				</div>
+			</div>
+			<div class="card-body">
+				<div class="row align-items-center">
+					<div class="col-10">
+						<h3 class="h1">Tabler Emails</h3>
+						<div class="markdown text-secondary">
+							{{ site.emails.count }} eye-catching, customizable and responsive email templates to improve your email communication. No coding skills needed.
+						</div>
+						<div class="mt-3">
+							<a href="{{ site.emails.buy_link }}" class="btn btn-primary" target="_blank">Buy all emails for {{ site.emails.price }}</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col">
+		<div class="row row-cards" data-masonry='{"percentPosition": true }'>
+			{% for email in site.data.emails %}
+			<div class="col-4">
+				<a
+					href="{{ site.base }}/static/emails/{{ email.image }}"
+					data-bs-toggle="modal"
+					data-bs-target="#email-modal"
+					data-bs-title="{{ email.descriptionShort }}"
+					data-bs-description="{{ email.descriptionLong }}"
+					data-bs-image="{{ site.base }}/static/emails/{{ email.image }}"
+				>
+					<img src="{{ site.base }}/static/emails/{{ email.image }}" class="img-fluid rounded" alt="{{ email.descriptionShort }}" width="{{ email.width }}" height="{{ email.height }}" />
+				</a>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="email-modal" aria-hidden="true" aria-labelledby="email-modal-label" tabindex="-1">
+	<div class="modal-dialog modal-xl modal-dialog-centered">
+		<div class="modal-content">
+			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			<div class="modal-body p-0">
+				<div class="row g-0">
+					<div class="col-6">
+						<div class="p-6 bg-body rounded-start">
+							<img src="" class="img-fluid rounded-left" data-email-image />
+						</div>
+					</div>
+					<div class="col-6">
+						<div class="p-7">
+							<div class="markdown">
+								<h3 data-email-title></h3>
+								<p data-email-description></p>
+							</div>
+
+							<div class="mt-6">
+								<a href="{{ site.emails.buy_link }}" class="btn btn-primary w-100" target="_blank">Buy {{ site.emails.count }} emails for {{ site.emails.price }}</a>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% capture_global scripts %}
+<script>
+	const emailModal = document.getElementById("email-modal")
+	if (emailModal) {
+		emailModal.addEventListener("show.bs.modal", function (e) {
+			const button = e.relatedTarget
+
+			const image = button.getAttribute("data-bs-image"),
+				title = button.getAttribute("data-bs-title"),
+				description = button.getAttribute("data-bs-description")
+
+			emailModal.querySelector("[data-email-title]").textContent = title
+			emailModal.querySelector("[data-email-description]").textContent = description
+			emailModal.querySelector("[data-email-image]").src = image
+
+			modalTitle.textContent = `New message to ${recipient}`
+			modalBodyInput.value = recipient
+		})
+	}
+</script>
+{% endcapture_global %}
