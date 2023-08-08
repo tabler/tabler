@@ -1,10 +1,19 @@
 'use client';
 
-import { Fragment, MutableRefObject, PropsWithChildren, RefObject, useCallback, useEffect, useRef, useState } from 'react';
+import {
+  Fragment,
+  useEffect,
+  useState,
+} from 'react';
 import { Dialog, Popover } from '@headlessui/react';
 import clsx from 'clsx';
 
-import { banner, blogEnabled, componentsRounded, iconsCountRounded, sponsorsUrl, uiGithubUrl } from '@/config/site';
+import { banner,
+  blogEnabled,
+  iconsCountRounded,
+  sponsorsUrl,
+  uiGithubUrl,
+} from '@/config/site';
 import Icon from '@/components/Icon';
 import GoToTop from '@/components/layout/GoToTop';
 import Link from '@/components/Link';
@@ -115,6 +124,15 @@ const menuLinks = [
       </span>
     ),
     icon: <Icon name="heart" filled color="red" />,
+  },
+  {
+    menu: 'singup',
+    type: 'button',
+    title: (
+      <span>
+        Sing up
+      </span>
+    ),
   },
 ];
 
