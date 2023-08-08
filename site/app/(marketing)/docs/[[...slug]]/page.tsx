@@ -11,6 +11,8 @@ import Link from 'next/link';
 import TOC from '@/components/TOC';
 import DocsMenu from '@/components/DocsMenu';
 import Icon from '@/components/Icon';
+import Ad from '@/components/Ad';
+
 
 interface DocPageProps {
   params: {
@@ -115,6 +117,10 @@ export default async function DocPage({ params }: DocPageProps) {
               Improve this page
               <Icon name="edit" className="icon-inline ml-2" />
             </a>
+          </div>
+
+          <div className="mt-5">
+            <Ad />
           </div>
         </div>
       </div>
