@@ -117,7 +117,7 @@ const menuLinks = [
   {
     menu: 'sponsors',
     href: sponsorsUrl,
-    type: 'button',
+    type: 'blankButton',
     title: (
       <span>
         Sponsor<span className="d-none lg:d-inline"> project</span>
@@ -126,20 +126,30 @@ const menuLinks = [
     icon: <Icon name="heart" filled color="red" />,
   },
   {
-    menu: 'singup',
+    menu: 'signin',
+    href: '/signin',
     type: 'button',
     title: (
       <span>
-        Sing up
+        Login
       </span>
     ),
-  },
+  },  
 ];
 
 const NavbarLink = (link, menu) => {
   // const router = useRouter()
 
   if (link.type === 'button') {
+    return (
+      <div className="navbar-item">
+        <a href={link.href} className="btn">
+          {link.icon}
+          {link.title}
+        </a>
+      </div>
+    );
+  } else if (link.type === 'blankButton') {
     return (
       <div className="navbar-item">
         <a href={link.href} className="btn" target="_blank" rel="noopener noreferrer">
@@ -170,7 +180,7 @@ const NavbarLink = (link, menu) => {
 
   return (
     // router.pathname.replace(/^\//, '').startsWith(link.menu)
-    <NavLink href={link.href} className="navbar-link" active={false}>
+    <NavLink href={link.href} className="navbar-link">
       {link.title}
     </NavLink>
   );
@@ -208,8 +218,20 @@ const SidebarLink = (link, menu, onClick) => {
   );
 };
 
-const Navbar = ({ menu, opened, onClick, ...props }: { menu?: string; opened?: boolean; onClick?: (event: React.MouseEvent) => void; className?: string }) => {
-  return <div className={clsx('navbar', opened && 'opened', props.className)}>{menuLinks.map((link) => (<Fragment key={link.menu}>{NavbarLink(link, menu)}</Fragment>))}</div>;
+const Navbar = ({ 
+  menu,
+  opened,
+  onClick,
+  ...props
+ }: { 
+  menu?: string;
+  opened?: boolean;
+  onClick?: (event: React.MouseEvent) => void; 
+  className?: string
+ }) => {
+  return <div className={clsx('navbar', opened && 'opened', props.className)}>
+    {menuLinks.map((link) => (<Fragment key={link.menu}>{NavbarLink(link, menu)}</Fragment>))}
+  </div>;
 };
 
 const Banner = () => {

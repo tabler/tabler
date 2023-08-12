@@ -1,13 +1,6 @@
 import { MetadataRoute } from 'next';
 import { allDocs, allGuides, allPages, allPosts } from '@/.contentlayer/generated';
-
-
-
 import { uiUrl } from '@/config/site';
-
-
-
-
 
 const pages = [
   'testimonials',

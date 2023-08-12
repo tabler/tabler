@@ -1,7 +1,7 @@
 import Link from '@/components/Link';
 import clsx from 'clsx';
 
-function NavLink({ href, active, children, ...props }) {
+function NavLink({ href, active = false, children, ...props }) {
   if (active) {
     props.className = clsx(props.className, 'active');
   }
