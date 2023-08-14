@@ -20,6 +20,7 @@ import Link from '@/components/Link';
 import NavLink from '@/components/NavLink';
 import Shape from '@/components/Shape';
 import { usePathname } from 'next/navigation';
+import { signOut, useSession } from 'next-auth/react';
 
 const NavDropdown = ({ title, children, active, footer = false }) => {
   return (
@@ -117,7 +118,7 @@ const menuLinks = [
   {
     menu: 'sponsors',
     href: sponsorsUrl,
-    type: 'blankButton',
+    type: 'button',
     title: (
       <span>
         Sponsor<span className="d-none lg:d-inline"> project</span>
@@ -125,31 +126,12 @@ const menuLinks = [
     ),
     icon: <Icon name="heart" filled color="red" />,
   },
-  {
-    menu: 'signin',
-    href: '/signin',
-    type: 'button',
-    title: (
-      <span>
-        Login
-      </span>
-    ),
-  },  
 ];
 
 const NavbarLink = (link, menu) => {
   // const router = useRouter()
 
   if (link.type === 'button') {
-    return (
-      <div className="navbar-item">
-        <a href={link.href} className="btn">
-          {link.icon}
-          {link.title}
-        </a>
-      </div>
-    );
-  } else if (link.type === 'blankButton') {
     return (
       <div className="navbar-item">
         <a href={link.href} className="btn" target="_blank" rel="noopener noreferrer">
@@ -229,8 +211,28 @@ const Navbar = ({
   onClick?: (event: React.MouseEvent) => void; 
   className?: string
  }) => {
+  const { data: session, status } = useSession();
+
   return <div className={clsx('navbar', opened && 'opened', props.className)}>
     {menuLinks.map((link) => (<Fragment key={link.menu}>{NavbarLink(link, menu)}</Fragment>))}
+    <div className="navbar-item">
+      {
+        !session && 
+        <a href="/api/auth/signin" className="btn">
+          {
+            status === 'loading' 
+            ? 'Validating session ...'
+            : 'Log in'
+          }
+        </a>
+      }
+      {
+        session && 
+        <a onClick={() => signOut()} className="btn">
+          Log out
+        </a>
+      }  
+    </div>
   </div>;
 };
 

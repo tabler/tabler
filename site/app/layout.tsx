@@ -2,6 +2,7 @@ import '@/styles/website.scss';
 
 import { creator, description, name, uiUrl } from '@/config/site';
 import PageProgress from '@/components/PageProgress';
+import { NextAuthProvider } from '@/components/NextAuthProvider';
 
 export const metadata = {
   title: {
@@ -74,7 +75,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="body-gradient">
         <PageProgress />
-        {children}
+        <NextAuthProvider>{children}</NextAuthProvider>
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
         <script src="https://assets.lemonsqueezy.com/lemon.js" defer />
       </body>

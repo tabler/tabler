@@ -31,7 +31,7 @@ export default function Signup() {
       </form>
       <div className="text-center text-secondary mt-3">
         Already have account?
-        <a className="ml-2" onClick={() => router.push('/signin')}>
+        <a className="ml-2" onClick={() => router.push('/api/auth/signin')}>
         Sign in</a>
       </div>
     </>

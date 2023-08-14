@@ -3,9 +3,14 @@
 import Link from '@/components/Link';
 import { useRouter } from 'next/navigation';
 import Icon from '@/components/Icon';
+import { signIn } from 'next-auth/react';
 
 export default function Signin() {
-  const router = useRouter();
+  const router = useRouter();'/';
+
+  const handleLogin = async (provider: 'github'): Promise<void> => {
+    await signIn(provider, {callbackUrl: '/'});
+  };
 
   return (
     <>
@@ -37,12 +42,12 @@ export default function Signin() {
         <div className="card-body">
           <div className="row">
             <div className="col">
-              <a href="#" className="btn w-100">
+              <a onClick={() => handleLogin('github')} className="btn w-100">
                 <Icon name="brand-github"/>
                 Login with Github
               </a>
             </div>
-          </div>
+          </div>       
         </div>
       </div>
       <div className="text-center text-secondary mt-3">
