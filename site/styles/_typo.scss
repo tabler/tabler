@@ -8,6 +8,40 @@ hr {
   border-top: 1px solid $color-border-light;
 }
 
+.hr-text {
+  display: flex;
+  align-items: center;
+  margin: $hr-margin-y 0;
+  height: 1px;
+
+  &:after,
+  &:before {
+    flex: 1 1 auto;
+    height: 1px;
+    background-color: $color-border;
+  }
+
+  &:before {
+    content: "";
+    margin-right: .5rem;
+  }
+
+  &:after {
+    content: "";
+    margin-left: .5rem;
+  }
+
+  > *:first-child {
+    padding-right: .5rem;
+    padding-left: 0;
+    color: $color-border;
+  }
+
+  .card > & {
+    margin: 0;
+  }
+}
+
 a {
   color: $color-primary;
   text-decoration: none;

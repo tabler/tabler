@@ -17,7 +17,7 @@ export default function Signin() {
       <div className="text-center mb-4">
         <Link href="/" className="mx-auto d-inline-block logo" aria-label="Tabler" />
       </div>
-      <div className="card card-md">
+      <div className="flex-column card card-md">
         <div className="card-body">
           <h2 className="h2 text-center mb-4">Login to your account</h2>
           <form>

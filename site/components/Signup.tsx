@@ -11,7 +11,7 @@ export default function Signup() {
       <div className="text-center mb-4">
         <Link href="/" className="mx-auto d-inline-block logo" aria-label="Tabler" />
       </div>
-      <form className="card card-md">
+      <form className="flex-column card card-md">
         <div className="card-body">
           <h2 className="card-title text-center mb-4">Create new account</h2>
           <div className="mb-3">
