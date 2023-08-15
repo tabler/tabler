@@ -1,4 +1,4 @@
-import Signup from '@/components/layout/Signup';
+import Signup from '@/components/Signup';
 
 export const metadata = {
   title: 'Tabler Sign up',

@@ -1,4 +1,4 @@
-import Signin from '@/components/layout/Signin';
+import Signin from '@/components/Signin';
 
 export const metadata = {
   title: 'Tabler Sign in',

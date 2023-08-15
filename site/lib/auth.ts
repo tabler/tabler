@@ -1,6 +1,7 @@
+import prisma from '@/lib/prisma';
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import GitHubProvider from 'next-auth/providers/github';
-import prisma from '@/lib/prisma';
+import GoogleProvider from 'next-auth/providers/google';
 
 export const authConfig = {
   providers: [
@@ -8,6 +9,10 @@ export const authConfig = {
       clientId: process.env.GITHUB_ID as string,
       clientSecret: process.env.GITHUB_SECRET as string,
       }),
+      GoogleProvider({
+        clientId: process.env.GOOGLE_ID as string,
+        clientSecret: process.env.GOOGLE_SECRET as string,
+      }), 
   ],
   pages: {
     signIn: '/signin',

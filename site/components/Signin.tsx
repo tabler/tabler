@@ -8,7 +8,7 @@ import { signIn } from 'next-auth/react';
 export default function Signin() {
   const router = useRouter();'/';
 
-  const handleLogin = async (provider: 'github'): Promise<void> => {
+  const handleLogin = async (provider: 'github' | 'google'): Promise<void> => {
     await signIn(provider, {callbackUrl: '/'});
   };
 
@@ -47,6 +47,12 @@ export default function Signin() {
                 Login with Github
               </a>
             </div>
+            <div className="col">
+              <a onClick={() => handleLogin('google')} className="btn w-100">
+                {/* <Icon name="brand-google"/> */}
+                Login with Google
+              </a>
+            </div>            
           </div>       
         </div>
       </div>
