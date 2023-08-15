@@ -49,7 +49,7 @@ export default function Signin() {
             </div>
             <div className="col">
               <a onClick={() => handleLogin('google')} className="btn w-100">
-                {/* <Icon name="brand-google"/> */}
+                <Icon name="brand-google"/>
                 Login with Google
               </a>
             </div>            
