@@ -72,55 +72,62 @@ export default async function DocPage({ params }: DocPageProps) {
         {/*<input type="search" className="form-control w-100 mb-5" placeholder="Search&hellip;" />*/}
         <DocsMenu />
       </div>
-      <div className="md:col">
-        <div className="py-6 md:pl-6">
-          <nav aria-label="breadcrumbs" className="breadcrumb mb-6">
-            <ul className="breadcrumb-list">
-              <li className="breadcrumb-item">
-                <Link href="/" className="breadcrumb-link">
-                  Home
-                </Link>
-              </li>
-              <li className="breadcrumb-item">
-                <Link href="/docs" className="breadcrumb-link">
-                  Documentation
-                </Link>
-              </li>
-              <li className="breadcrumb-item">
-                <Link href={`/docs/${params.slug.join('/')}`} className="breadcrumb-link">
-                  {doc.title}
-                </Link>
-              </li>
-            </ul>
-          </nav>
-          <div className="markdown">
-            {/* {category && (
+      <div className="col">
+        <div className="row">
+          <div className="md:col">
+            <div className="py-6 md:pl-6">
+              <nav aria-label="breadcrumbs" className="breadcrumb mb-6">
+                <ul className="breadcrumb-list">
+                  <li className="breadcrumb-item">
+                    <Link href="/" className="breadcrumb-link">
+                      Home
+                    </Link>
+                  </li>
+                  <li className="breadcrumb-item">
+                    <Link href="/docs" className="breadcrumb-link">
+                      Documentation
+                    </Link>
+                  </li>
+                  <li className="breadcrumb-item">
+                    <Link href={`/docs/${params.slug.join('/')}`} className="breadcrumb-link">
+                      {doc.title}
+                    </Link>
+                  </li>
+                </ul>
+              </nav>
+              <div className="markdown">
+                {/* {category && (
         <div className="h-subheader text-primary">{category}</div>
       )} */}
-            {doc.title && <h1>{doc.title}</h1>}
-            {doc.description && <p className="lead">{doc.description}</p>}
+                {doc.title && <h1>{doc.title}</h1>}
+                {doc.description && <p className="lead">{doc.description}</p>}
 
-            <Mdx code={doc.body.code} />
+                <Mdx code={doc.body.code} />
+              </div>
+            </div>
           </div>
+          <div className="docs-side-toc">
+            <div className="pl-6 font-h6 pt-6">
+              <div className="h6 mb-3">On this page</div>
+              <div>
+                <TOC toc={toc} />
+              </div>
+              <div className="mt-4 border-top pt-4">
+                <a href={`https://github.com/tabler/tabler/blob/main/docs/${doc.slugAsParams.split(',').join('/')}.mdx`} className="link-muted">
+                  Improve this page
+                  <Icon name="edit" className="icon-inline ml-2" />
+                </a>
+              </div>
 
-          <TablerSponsorsBanner className="mt-7" />
-        </div>
-      </div>
-      <div className="docs-side-toc">
-        <div className="pl-6 font-h6 pt-6">
-          <div className="h6 mb-3">On this page</div>
-          <div>
-            <TOC toc={toc} />
+              <div className="mt-5">
+                <Ad />
+              </div>
+            </div>
           </div>
-          <div className="mt-4 border-top pt-4">
-            <a href={`https://github.com/tabler/tabler/blob/main/docs/${doc.slugAsParams.split(',').join('/')}.mdx`} className="link-muted">
-              Improve this page
-              <Icon name="edit" className="icon-inline ml-2" />
-            </a>
-          </div>
-
-          <div className="mt-5">
-            <Ad />
+          <div className="col-12">
+            <div className="pl-6 mt-7">
+              <TablerSponsorsBanner />
+            </div>
           </div>
         </div>
       </div>

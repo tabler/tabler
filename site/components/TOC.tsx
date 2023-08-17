@@ -31,7 +31,7 @@ export default function TOC({ toc }: TocProps) {
 
   return mounted ? (
     <Tree tree={toc} activeItem={activeHeading} />
-  ) : null;
+  ) : <Tree tree={toc} />;
 }
 
 function useActiveItem(itemIds: (string | undefined)[]) {

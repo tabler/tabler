@@ -2,7 +2,11 @@ import { sponsorsUrl } from '@/config/site';
 import clsx from 'clsx';
 import Icon from './Icon';
 
-export default function TablerSponsorsBanner({ className }) {
+export default function TablerSponsorsBanner({
+  className
+ }: {
+    className?: string;
+}) {
    return <a href={sponsorsUrl} target="_blank" className={clsx('sponsors', className )}>
       <div
          className="logo logo-gray mb-5"
