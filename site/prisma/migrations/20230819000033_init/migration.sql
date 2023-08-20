@@ -33,6 +33,7 @@ CREATE TABLE "users" (
     "name" TEXT,
     "email" TEXT,
     "email_verified" TIMESTAMP(3),
+    "password" TEXT,
     "image" TEXT,
 
     CONSTRAINT "users_pkey" PRIMARY KEY ("id")
