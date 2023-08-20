@@ -8,14 +8,14 @@ import { ChangeEvent, useState } from 'react';
 
 export default function Signin() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [loading, setLoading] = useState(false);
   const [formValues, setFormValues] = useState({
     email: '',
     password: '',
   });
-  const [error, setError] = useState('');
+  const [error, setError] = useState(searchParams.get('error') || '/');
 
-  const searchParams = useSearchParams();
   const callbackUrl = searchParams.get('callbackUrl') || '/';
 
   const onSubmit = async (e: React.FormEvent) => {

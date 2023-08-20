@@ -5,8 +5,9 @@ import GoogleProvider from 'next-auth/providers/google';
 import CredentialsProvider from 'next-auth/providers/credentials';
 import { User } from '@prisma/client';
 import { compare } from 'bcrypt';
+import { NextAuthOptions } from 'next-auth';
 
-export const authConfig = {
+export const authConfig: NextAuthOptions = {
   providers: [
     CredentialsProvider({
       name: 'Login to your account',
@@ -63,7 +64,6 @@ export const authConfig = {
   },
   adapter: PrismaAdapter(prisma),
   secret: process.env.NEXTAUTH_SECRET,
-  database: process.env.POSTGRES_PRISMA_URL,
   session: {
     strategy: 'jwt',
   },
@@ -74,7 +74,6 @@ export const authConfig = {
         user: {
           ...session.user,
           id: token.id,
-          randomKey: token.randomKey,
         },
       };
     },
@@ -84,7 +83,6 @@ export const authConfig = {
         return {
           ...token,
           id: u.id,
-          randomKey: u.randomKey,
         };
       }
       return token;
