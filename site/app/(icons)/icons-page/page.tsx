@@ -1,5 +1,5 @@
 import { icons } from '@/config/tabler';
-import IconSvg from "@/components/IconSvg"
+import IconSvg from '@/components/IconSvg';
 
 const IconsList = () => {
   return (
@@ -7,7 +7,7 @@ const IconsList = () => {
       <div className="container">
 
         <div className="row" data-aos-id-icons>
-          {Object.values(icons).map((icon, i) => (
+          {Object.values(icons).map((icon) => (
             <div className="sm:col-4 md:col-3 lg:col-2" key={icon.name}>
               {/*TODO AOS data-aos="fade-up" data-aos-anchor="[data-aos-id-icons]"*/}
               <span className="icon-card text-centered">
@@ -21,12 +21,12 @@ const IconsList = () => {
       </div>
     </section>
   );
-}
+};
 
 export default function IconsPage() {
   return (
     <>
       <IconsList />
     </>
-  )
+  );
 }
