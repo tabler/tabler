@@ -14,7 +14,7 @@ export default function Signin() {
     email: '',
     password: '',
   });
-  const [error, setError] = useState(searchParams.get('error') || '/');
+  const [error, setError] = useState(searchParams.get('error') || '');
 
   const callbackUrl = searchParams.get('callbackUrl') || '/';
 
