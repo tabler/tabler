@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 
 
+## `1.0.0-beta20` - 2023-08-24
+
+- Update `bootstrap` to v5.3.1
+- Add new `Chat` component
+- Add new `Tag` component
+- Add customizable Star Ratings component using `star-rating.js` library
+- Add new color picker component using `coloris.js` library
+- Add `alerts.html` page with example of alerts.
+- Add `flags.html` page with list of all flags
+- Add Two-Step Verification Pages
+- Add variable to configure `avatar-list` spacing
+- Unify dark mode with latest Bootstrap API and improve dark mode elements
+- Unify Box Shadows with Bootstrap Compatibility
+- Avoid SCSS color dependency on `:focus`
+- Update CSS class from `text-muted` to `text-secondary` for better Bootstrap compatibility
+- Fix text color in dark version of navbar
+- Adjusting form element sizes for enhanced mobile devices compatibility
+- Resolved light dropdown issue on dark theme
+- Update Tabler Icons to version 2.32 with 48 new icons added
+- Fix table default background color
+- Fix responsiveness issue in Settings menu
+- Update required Node.js version to 18 and add `.nvmrc` file
+- Add support for changeset tool for more efficient and organized code changes
+- `Dockerfile` fix
+- Switch from `npm` to `pnpm` for faster package installation
+
+
 ## `1.0.0-beta19` - 2023-05-15
 
 - Add customizable Star Ratings component using `star-rating.js` library (#1571)
