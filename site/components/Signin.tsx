@@ -5,6 +5,7 @@ import { useSearchParams, useRouter } from 'next/navigation';
 import Icon from '@/components/Icon';
 import { signIn } from 'next-auth/react';
 import { ChangeEvent, useState } from 'react';
+import { getNextAuthErrorMessage } from '@/helpers/index';
 
 export default function Signin() {
   const router = useRouter();
@@ -14,8 +15,8 @@ export default function Signin() {
     email: '',
     password: '',
   });
-  const [error, setError] = useState(searchParams.get('error') || '');
-
+  const nextAuthError = searchParams.get('error');
+  const [error, setError] = useState(nextAuthError ? getNextAuthErrorMessage(nextAuthError) : '');
   const callbackUrl = searchParams.get('callbackUrl') || '/';
 
   const onSubmit = async (e: React.FormEvent) => {
@@ -36,7 +37,7 @@ export default function Signin() {
       if (!res?.error) {
         router.push(callbackUrl);
       } else {
-        setError('invalid email or password');
+        setError('Invalid email or password');
       }
     } catch (error: any) {
       setLoading(false);
