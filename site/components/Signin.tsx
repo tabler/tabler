@@ -1,54 +1,54 @@
 'use client';
 
 import Link from '@/components/Link';
-import { useSearchParams, useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import Icon from '@/components/Icon';
 import { signIn } from 'next-auth/react';
-import { ChangeEvent, useState } from 'react';
+import { useState } from 'react';
 import { getNextAuthErrorMessage } from '@/helpers/index';
 
 export default function Signin() {
-  const router = useRouter();
+  // const router = useRouter();
   const searchParams = useSearchParams();
-  const [loading, setLoading] = useState(false);
-  const [formValues, setFormValues] = useState({
-    email: '',
-    password: '',
-  });
+  // const [loading, setLoading] = useState(false);
+  // const [formValues, setFormValues] = useState({
+  //   email: '',
+  //   password: '',
+  // });
   const nextAuthError = searchParams.get('error');
-  const [error, setError] = useState(nextAuthError ? getNextAuthErrorMessage(nextAuthError) : '');
+  const [error] = useState(nextAuthError ? getNextAuthErrorMessage(nextAuthError) : '');
   const callbackUrl = searchParams.get('callbackUrl') || '/';
 
-  const onSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    try {
-      setLoading(true);
-      setFormValues({ email: '', password: '' });
+  // const onSubmit = async (e: React.FormEvent) => {
+  //   e.preventDefault();
+  //   try {
+  //     setLoading(true);
+  //     setFormValues({ email: '', password: '' });
 
-      const res = await signIn('credentials', {
-        redirect: false,
-        email: formValues.email,
-        password: formValues.password,
-        callbackUrl,
-      });
+  //     const res = await signIn('credentials', {
+  //       redirect: false,
+  //       email: formValues.email,
+  //       password: formValues.password,
+  //       callbackUrl,
+  //     });
 
-      setLoading(false);
+  //     setLoading(false);
 
-      if (!res?.error) {
-        router.push(callbackUrl);
-      } else {
-        setError('Invalid email or password');
-      }
-    } catch (error: any) {
-      setLoading(false);
-      setError(error);
-    }
-  };
+  //     if (!res?.error) {
+  //       router.push(callbackUrl);
+  //     } else {
+  //       setError('Invalid email or password');
+  //     }
+  //   } catch (error: any) {
+  //     setLoading(false);
+  //     setError(error);
+  //   }
+  // };
 
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setFormValues({ ...formValues, [name]: value });
-  };  
+  // const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
+  //   const { name, value } = event.target;
+  //   setFormValues({ ...formValues, [name]: value });
+  // };  
 
   return (
     <>
@@ -56,7 +56,7 @@ export default function Signin() {
         <Link href="/" className="mx-auto d-inline-block logo" aria-label="Tabler" />
       </div>
       <div className="flex-column card card-md">
-        <div className="card-body">
+        {/* <div className="card-body">
           <h2 className="h2 text-center mb-4">Login to your account</h2>
           {
             error && 
@@ -101,6 +101,26 @@ export default function Signin() {
               </button>
             </div>
           </form>
+        </div>*/}
+          <div className="card-body">
+            <h2 className="h2 text-center mb-4">Login to your account</h2>
+            {
+              error && 
+              <p className="text-center" style={{color: 'red'}}>{error}</p>
+            }
+            <div className="mb-2">
+              <label className="form-label text-center">
+                Sign in with email and password
+              </label>
+              <div className="form-footer">
+                <button
+                  className="btn btn-primary w-100"
+                  onClick={() => signIn('auth0', { callbackUrl })}
+                >
+                  Sign In
+                </button>
+              </div>
+            </div>
         </div>
         <div className="hr-text">or</div>
         <div className="card-body">
@@ -116,16 +136,16 @@ export default function Signin() {
                 <Icon name="brand-google"/>
                 Login with Google
               </a>
-            </div>            
+            </div>                         
           </div>       
         </div>
       </div>
-      <div className="text-center text-secondary mt-3">
+      {/* <div className="text-center text-secondary mt-3">
         Don't have account yet? 
         <a className="ml-2" onClick={() => router.push('/signup')}>
           Sign up
         </a>
-      </div>
+      </div> */}
     </>
   );
 }
