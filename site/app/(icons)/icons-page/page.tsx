@@ -4,6 +4,7 @@ import { icons } from '@/config/tabler';
 import IconSvg from '@/components/IconSvg';
 import { ModalContext, ModalProvider } from '@/contexts/ModalContext';
 import { useContext } from 'react';
+import IconModal from '@/components/IconModal';
 
 const IconsList = () => {
   return (
@@ -13,7 +14,7 @@ const IconsList = () => {
           {Object.values(icons)
             .slice(0, 100)
             .map((icon) => (
-              <ModalProvider modalContent={<div>{icon.name}</div>} key={icon.name}>
+              <ModalProvider modalContent={<IconModal {...icon}/>} key={icon.name}>
                 <IconBox name={icon.name} svg={icon.svg} />
               </ModalProvider>
             ))}
