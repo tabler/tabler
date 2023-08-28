@@ -74,7 +74,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       </head>
       <body className="body-gradient">
         <PageProgress />
-        <div id="modal-root"></div>
+        {/*<div id="modal-root"></div>*/}
         {children}
         <link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
         <script src="https://assets.lemonsqueezy.com/lemon.js" defer />
