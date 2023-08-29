@@ -6,6 +6,11 @@ import IconSvg from '@/components/IconSvg';
 import { ModalContext, ModalProvider } from '@/contexts/ModalContext';
 import { useContext, useState } from 'react';
 import IconModal from '@/components/IconModal';
+import Fuse from 'fuse.js';
+
+const fuseOptions = {
+  keys: ['name', 'category', 'tags'],
+};
 
 const IconsList = ({ filteredIcons }) => {
   return (
@@ -23,10 +28,17 @@ const IconsList = ({ filteredIcons }) => {
   );
 };
 
-const Search = ({ setFilteredIcons }) => {
+const Search = ({ availableIcons, setFilteredIcons }) => {
+  const fuse = new Fuse(availableIcons, fuseOptions);
+
   const filterIcons = (searchPattern: string) => {
-    setFilteredIcons(Object.values(icons).filter((icon) => icon.name.includes(searchPattern)));
+    if (searchPattern) {
+      setFilteredIcons(fuse.search(searchPattern).map((searchResult) => searchResult.item));
+    } else {
+      setFilteredIcons(availableIcons);
+    }
   };
+
 
   return (
     <section className="section section-light">
@@ -39,7 +51,7 @@ const Search = ({ setFilteredIcons }) => {
             <input
               type="text"
               className="icon-search-input"
-              placeholder={'Search ' + Object.values(icons).length + ' icons'}
+              placeholder={'Search ' + availableIcons.length + ' icons'}
               onChange={(e) => filterIcons(e.target.value.toLowerCase())}
             />
           </div>
@@ -65,11 +77,12 @@ const IconBox = ({ name, svg }) => {
 };
 
 export default function IconsPage() {
-  const [filteredIcons, setFilteredIcons] = useState(Object.values(icons));
+  const availableIcons = Object.values(icons);
+  const [filteredIcons, setFilteredIcons] = useState(availableIcons);
 
   return (
     <>
-      <Search setFilteredIcons={setFilteredIcons} />
+      <Search availableIcons={availableIcons} setFilteredIcons={setFilteredIcons} />
       <IconsList filteredIcons={filteredIcons} />
     </>
   );
