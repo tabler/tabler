@@ -1,7 +1,7 @@
 import IconSvg from '@/components/IconSvg';
 import { useClipboard } from '@/hooks';
 
-const IconModal = ({ name, category, tags, svg, unicode }) => {
+const IconModal = ({ name, tags, svg, unicode }) => {
   const clipboard = useClipboard();
 
   const subNames = [
