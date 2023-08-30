@@ -1,16 +1,11 @@
 'use client';
 
-import Icon from '@/components/Icon';
+import IconsSearch from '@/components/IconsSearch';
 import { icons } from '@/config/tabler';
 import IconSvg from '@/components/IconSvg';
 import { ModalContext, ModalProvider } from '@/contexts/ModalContext';
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useState } from 'react';
 import IconModal from '@/components/IconModal';
-import Fuse from 'fuse.js';
-
-const fuseOptions = {
-  keys: ['name', 'tags'],
-};
 
 const IconsList = ({ filteredIcons, stroke, size }) => {
   return (
@@ -22,103 +17,6 @@ const IconsList = ({ filteredIcons, stroke, size }) => {
               <IconBox name={icon.name} svg={icon.svg} iconStroke={stroke} iconSize={size} />
             </ModalProvider>
           ))}
-        </div>
-      </div>
-    </section>
-  );
-};
-
-const Search = ({ availableIcons, setFilteredIcons, stroke, setStroke, size, setSize }) => {
-  const categories = [
-    ...new Set(
-      Object.values(icons)
-        .map((icon) => icon.category)
-        .filter((category) => category !== ''),
-    ),
-  ].sort();
-  const strokes = [1, 1.25, 1.5, 1.75, 2];
-  const sizes = [16, 20, 24, 28, 32, 36, 40];
-
-  let [searchPattern, setSearchPattern] = useState('');
-  let [selectedCategory, setSelectedCategory] = useState('All');
-
-  useEffect(() => filterIcons(), [searchPattern, selectedCategory]);
-
-  const filterIcons = () => {
-    if (searchPattern) {
-      const fuse = new Fuse(
-        selectedCategory === 'All'
-          ? availableIcons
-          : availableIcons.filter((icon) => icon.category === selectedCategory),
-        fuseOptions,
-      );
-      setFilteredIcons(fuse.search(searchPattern).map((searchResult) => searchResult.item));
-    } else {
-      setFilteredIcons(
-        selectedCategory === 'All'
-          ? availableIcons
-          : availableIcons.filter((icon) => icon.category === selectedCategory),
-      );
-    }
-  };
-
-  return (
-    <section className="section section-light">
-      <div className="container icon-search">
-        <div className="row gx-3 items-center">
-          <div className="col-auto d-flex">
-            <Icon name="search" />
-          </div>
-          <div className="col">
-            <input
-              type="text"
-              className="icon-search-input"
-              placeholder={'Search ' + availableIcons.length + ' icons'}
-              onChange={(e) => setSearchPattern(e.target.value.toLowerCase())}
-            />
-          </div>
-          <div className="col-auto d-flex items-center">
-            <div className="form-selector m-1">
-              <span className="text-muted">Category:&nbsp;</span>
-              <span>{selectedCategory}</span>
-              <select
-                className="icon-search-select"
-                defaultValue={'All'}
-                onChange={(e) => setSelectedCategory(e.target.value)}
-              >
-                <option value={'All'}>All</option>
-                {categories.map((category: string) => (
-                  <option value={category} key={category}>
-                    {category}
-                  </option>
-                ))}
-              </select>
-            </div>
-          </div>
-          <div className="col-auto d-none md:d-flex items-center">
-            <span className="text-muted">Stroke:&nbsp;</span>
-            <select
-              className="icon-search-select m1-1"
-              defaultValue={stroke}
-              onChange={(e) => setStroke(e.target.value)}
-            >
-              {strokes.map((stroke: number) => (
-                <option value={stroke} key={stroke}>
-                  {stroke}
-                </option>
-              ))}
-            </select>
-          </div>
-          <div className="col-auto d-none md:d-flex items-center">
-            <span className="text-muted">Size:&nbsp;</span>
-            <select className="icon-search-select m1-1" defaultValue={size} onChange={(e) => setSize(e.target.value)}>
-              {sizes.map((size: number) => (
-                <option value={size} key={size}>
-                  {size}
-                </option>
-              ))}
-            </select>
-          </div>
         </div>
       </div>
     </section>
@@ -149,7 +47,7 @@ export default function IconsPage() {
 
   return (
     <>
-      <Search
+      <IconsSearch
         availableIcons={availableIcons}
         setFilteredIcons={setFilteredIcons}
         stroke={stroke}
