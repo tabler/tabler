@@ -11,16 +11,15 @@ import Fuse from 'fuse.js';
 const fuseOptions = {
   keys: ['name', 'tags'],
 };
-let categories: string[] = [];
 
-const IconsList = ({ filteredIcons }) => {
+const IconsList = ({ filteredIcons, stroke, size }) => {
   return (
     <section className="section section-light">
       <div className="container">
         <div className="row" data-aos-id-icons>
           {filteredIcons.slice(0, 100).map((icon) => (
             <ModalProvider modalContent={<IconModal {...icon} />} key={icon.name}>
-              <IconBox name={icon.name} svg={icon.svg} />
+              <IconBox name={icon.name} svg={icon.svg} iconStroke={stroke} iconSize={size} />
             </ModalProvider>
           ))}
         </div>
@@ -29,7 +28,17 @@ const IconsList = ({ filteredIcons }) => {
   );
 };
 
-const Search = ({ availableIcons, setFilteredIcons, categories }) => {
+const Search = ({ availableIcons, setFilteredIcons, stroke, setStroke, size, setSize }) => {
+  const categories = [
+    ...new Set(
+      Object.values(icons)
+        .map((icon) => icon.category)
+        .filter((category) => category !== ''),
+    ),
+  ].sort();
+  const strokes = [1, 1.25, 1.5, 1.75, 2];
+  const sizes = [16, 20, 24, 28, 32, 36, 40];
+
   let [searchPattern, setSearchPattern] = useState('');
   let [selectedCategory, setSelectedCategory] = useState('All');
 
@@ -86,20 +95,44 @@ const Search = ({ availableIcons, setFilteredIcons, categories }) => {
               </select>
             </div>
           </div>
+          <div className="col-auto d-none md:d-flex items-center">
+            <span className="text-muted">Stroke:&nbsp;</span>
+            <select
+              className="icon-search-select m1-1"
+              defaultValue={stroke}
+              onChange={(e) => setStroke(e.target.value)}
+            >
+              {strokes.map((stroke: number) => (
+                <option value={stroke} key={stroke}>
+                  {stroke}
+                </option>
+              ))}
+            </select>
+          </div>
+          <div className="col-auto d-none md:d-flex items-center">
+            <span className="text-muted">Size:&nbsp;</span>
+            <select className="icon-search-select m1-1" defaultValue={size} onChange={(e) => setSize(e.target.value)}>
+              {sizes.map((size: number) => (
+                <option value={size} key={size}>
+                  {size}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
       </div>
     </section>
   );
 };
 
-const IconBox = ({ name, svg }) => {
+const IconBox = ({ name, svg, iconStroke, iconSize }) => {
   let { handleModal } = useContext(ModalContext);
 
   return (
     <div className="sm:col-4 md:col-3 lg:col-2" key={name} onClick={handleModal}>
       {/*TODO AOS data-aos="fade-up" data-aos-anchor="[data-aos-id-icons]"*/}
       <span className="icon-card text-centered">
-        <IconSvg svg={svg} key={name} className="icon-md" />
+        <IconSvg svg={svg} key={name} className={'s-w-' + iconStroke * 100 + ' size-' + iconSize} />
         {/*TODO Change size of icon*/}
         <div className="icon-name">{name}</div>
       </span>
@@ -109,13 +142,22 @@ const IconBox = ({ name, svg }) => {
 
 export default function IconsPage() {
   const availableIcons = Object.values(icons);
-  categories = [...new Set(availableIcons.map((icon) => icon.category).filter((category) => category !== ''))].sort();
+
   const [filteredIcons, setFilteredIcons] = useState(availableIcons);
+  const [stroke, setStroke] = useState(1.25);
+  const [size, setSize] = useState(24);
 
   return (
     <>
-      <Search availableIcons={availableIcons} setFilteredIcons={setFilteredIcons} categories={categories} />
-      <IconsList filteredIcons={filteredIcons} />
+      <Search
+        availableIcons={availableIcons}
+        setFilteredIcons={setFilteredIcons}
+        stroke={stroke}
+        setStroke={setStroke}
+        size={size}
+        setSize={setSize}
+      />
+      <IconsList filteredIcons={filteredIcons} stroke={stroke} size={size} />
     </>
   );
 }
