@@ -4,13 +4,14 @@ import Icon from '@/components/Icon';
 import { icons } from '@/config/tabler';
 import IconSvg from '@/components/IconSvg';
 import { ModalContext, ModalProvider } from '@/contexts/ModalContext';
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import IconModal from '@/components/IconModal';
 import Fuse from 'fuse.js';
 
 const fuseOptions = {
-  keys: ['name', 'category', 'tags'],
+  keys: ['name', 'tags'],
 };
+let categories: string[] = [];
 
 const IconsList = ({ filteredIcons }) => {
   return (
@@ -28,17 +29,29 @@ const IconsList = ({ filteredIcons }) => {
   );
 };
 
-const Search = ({ availableIcons, setFilteredIcons }) => {
-  const fuse = new Fuse(availableIcons, fuseOptions);
+const Search = ({ availableIcons, setFilteredIcons, categories }) => {
+  let [searchPattern, setSearchPattern] = useState('');
+  let [selectedCategory, setSelectedCategory] = useState('All');
 
-  const filterIcons = (searchPattern: string) => {
+  useEffect(() => filterIcons(), [searchPattern, selectedCategory]);
+
+  const filterIcons = () => {
     if (searchPattern) {
+      const fuse = new Fuse(
+        selectedCategory === 'All'
+          ? availableIcons
+          : availableIcons.filter((icon) => icon.category === selectedCategory),
+        fuseOptions,
+      );
       setFilteredIcons(fuse.search(searchPattern).map((searchResult) => searchResult.item));
     } else {
-      setFilteredIcons(availableIcons);
+      setFilteredIcons(
+        selectedCategory === 'All'
+          ? availableIcons
+          : availableIcons.filter((icon) => icon.category === selectedCategory),
+      );
     }
   };
-
 
   return (
     <section className="section section-light">
@@ -52,8 +65,26 @@ const Search = ({ availableIcons, setFilteredIcons }) => {
               type="text"
               className="icon-search-input"
               placeholder={'Search ' + availableIcons.length + ' icons'}
-              onChange={(e) => filterIcons(e.target.value.toLowerCase())}
+              onChange={(e) => setSearchPattern(e.target.value.toLowerCase())}
             />
+          </div>
+          <div className="col-auto d-flex items-center">
+            <div className="form-selector m-1">
+              <span className="text-muted">Category:&nbsp;</span>
+              <span>{selectedCategory}</span>
+              <select
+                className="icon-search-select"
+                defaultValue={'All'}
+                onChange={(e) => setSelectedCategory(e.target.value)}
+              >
+                <option value={'All'}>All</option>
+                {categories.map((category: string) => (
+                  <option value={category} key={category}>
+                    {category}
+                  </option>
+                ))}
+              </select>
+            </div>
           </div>
         </div>
       </div>
@@ -78,11 +109,12 @@ const IconBox = ({ name, svg }) => {
 
 export default function IconsPage() {
   const availableIcons = Object.values(icons);
+  categories = [...new Set(availableIcons.map((icon) => icon.category).filter((category) => category !== ''))].sort();
   const [filteredIcons, setFilteredIcons] = useState(availableIcons);
 
   return (
     <>
-      <Search availableIcons={availableIcons} setFilteredIcons={setFilteredIcons} />
+      <Search availableIcons={availableIcons} setFilteredIcons={setFilteredIcons} categories={categories} />
       <IconsList filteredIcons={filteredIcons} />
     </>
   );
