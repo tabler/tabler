@@ -5,7 +5,7 @@ const IconModal = ({ name, tags, svg, unicode }) => {
   const clipboard = useClipboard();
 
   const subNames = [
-    { name: 'Icon' + name.replace('-', ''), tooltip: 'Copy React name' }, // TODO How to get React name?
+    { name: 'Icon' + name.replaceAll('-', ''), tooltip: 'Copy React name' }, // TODO How to get React name?
     { name: '&#x' + unicode + ';', tooltip: 'Copy HTML char' },
     { name: unicode, tooltip: 'Copy hex' },
   ];
@@ -51,6 +51,7 @@ const IconModal = ({ name, tags, svg, unicode }) => {
           </div>
         </div>
       </div>
+      <a className="modal-more text-center py-3" href={'/icons-page/' + name}>See more icon variants</a>
     </div>
   );
 };
