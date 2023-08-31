@@ -878,6 +878,44 @@ const icons = {
       <path d="M14 4h6v4h-6z" />
     </svg>
   ),
+  'logout': ({ className }) => (  
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={clsx('icon icon-tabler icon-tabler-logout', className)}
+      width={24}
+      height={24}
+      viewBox="0 0 24 24"
+      strokeWidth="2"
+      stroke="currentColor"
+      fill="none"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <path d="M14 8v-2a2 2 0 0 0 -2 -2h-7a2 2 0 0 0 -2 2v12a2 2 0 0 0 2 2h7a2 2 0 0 0 2 -2v-2"></path>
+      <path d="M9 12h12l-3 -3"></path>
+      <path d="M18 15l3 -3"></path>
+    </svg>
+  ),
+  'rocket': ({ className }) => (  
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      className={clsx('icon icon-tabler icon-tabler-rocket', className)}
+      width={24}
+      height={24}
+      viewBox="0 0 24 24"
+      strokeWidth="2"
+      stroke="currentColor"
+      fill="none"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+    >
+      <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
+      <path d="M4 13a8 8 0 0 1 7 7a6 6 0 0 0 3 -5a9 9 0 0 0 6 -8a3 3 0 0 0 -3 -3a9 9 0 0 0 -8 6a6 6 0 0 0 -5 3"></path>
+      <path d="M7 14a6 6 0 0 0 -3 6a6 6 0 0 0 6 -3"></path>
+      <path d="M15 9m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0"></path>
+    </svg>
+  ),  
   'sun-moon': ({ className }) => (
     <svg
       xmlns="http://www.w3.org/2000/svg"

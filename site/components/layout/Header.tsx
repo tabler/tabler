@@ -200,6 +200,81 @@ const SidebarLink = (link, menu, onClick) => {
   );
 };
 
+const NavigationAuth = () => {
+  const { data: session, status } = useSession();
+  const image = session?.user?.image;
+  const name = session?.user?.name;
+  const email = session?.user?.email;
+
+  const signIn = () => {
+    if (status === 'loading') return;
+    window.location.href = '/api/auth/signin';
+  };
+
+  return <div className="navbar-item d-flex items-center">
+    {
+      !session && 
+      <a onClick={() => signIn()} className={clsx('btn', { disabled: status === 'loading'})}>
+        Log in
+      </a>
+    }
+    {
+      session && 
+      <Popover className="navbar-dropdown">
+        {({ open }) => (
+          <>
+            <Popover.Button className={clsx('navbar-link d-flex items-center lh-1 text-reset p-0')}>
+              {
+                image
+                ? <span
+                    className="avatar avatar" 
+                    style={{
+                      backgroundImage: `url(${image})`,
+                    }}
+                  /> 
+                : <span className="avatar avatar text-center"> 
+                    {name ? name.toUpperCase().substring(0, 1) : 'T'}
+                  </span>
+              }
+              <div className="pl-2">
+                <small className="d-block">{name}</small>
+                {
+                  email && 
+                  <small className="mt-1 small text-muted">{session.user?.email}</small>
+                }
+              </div>        
+            </Popover.Button>
+            <Popover.Panel className="navbar-dropdown-menu">
+              <div className="navbar-dropdown-menu-content">
+                <div className="navbar-dropdown-menu-link">
+                  <div className="row items-center g-3">
+                    <div className="col-auto">
+                      <Shape icon='rocket'/>
+                    </div>
+                    <div className="col">
+                      <h5>Subscription</h5>
+                    </div>
+                  </div>
+                </div>  
+                <div onClick={() => signOut()} className="navbar-dropdown-menu-link">
+                  <div className="row items-center g-3">
+                    <div className="col-auto">
+                      <Shape icon='logout'/>
+                    </div>
+                    <div className="col">
+                      <h5>Log out</h5>
+                    </div>
+                  </div>  
+                </div>                              
+              </div>
+            </Popover.Panel>
+          </>
+        )}
+      </Popover>
+    }  
+  </div>;
+ };
+
 const Navbar = ({ 
   menu,
   opened,
@@ -211,28 +286,9 @@ const Navbar = ({
   onClick?: (event: React.MouseEvent) => void; 
   className?: string
  }) => {
-  const { data: session, status } = useSession();
-
   return <div className={clsx('navbar', opened && 'opened', props.className)}>
     {menuLinks.map((link) => (<Fragment key={link.menu}>{NavbarLink(link, menu)}</Fragment>))}
-    <div className="navbar-item">
-      {
-        !session && 
-        <a href="/api/auth/signin" className="btn">
-          {
-            status === 'loading' 
-            ? 'Validating session ...'
-            : 'Log in'
-          }
-        </a>
-      }
-      {
-        session && 
-        <a onClick={() => signOut()} className="btn">
-          Log out
-        </a>
-      }  
-    </div>
+    <NavigationAuth/>
   </div>;
 };
 

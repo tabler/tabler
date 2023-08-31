@@ -110,7 +110,7 @@ export default function Signin() {
             }
             <div className="mb-2">
               <label className="form-label text-center">
-                Sign in with email and password
+                Using email and password
               </label>
               <div className="form-footer">
                 <button
