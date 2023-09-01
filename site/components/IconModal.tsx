@@ -1,12 +1,14 @@
+import Icon from '@/components/Icon';
 import IconSvg from '@/components/IconSvg';
+import { getHtmlChar, getIconReactName } from '@/helpers';
 import { useClipboard } from '@/hooks';
 
-const IconModal = ({ name, tags, svg, unicode }) => {
+const IconModal = ({ name, tags, svg, unicode }: { name: string; tags: string[]; svg: string; unicode: string }) => {
   const clipboard = useClipboard();
 
   const subNames = [
-    { name: 'Icon' + name.replaceAll('-', ''), tooltip: 'Copy React name' }, // TODO How to get React name?
-    { name: '&#x' + unicode + ';', tooltip: 'Copy HTML char' },
+    { name: getIconReactName(name), tooltip: 'Copy React name' },
+    { name: getHtmlChar(unicode), tooltip: 'Copy HTML char' },
     { name: unicode, tooltip: 'Copy hex' },
   ];
 
@@ -41,9 +43,14 @@ const IconModal = ({ name, tags, svg, unicode }) => {
             <div className="col-12 md:col-auto">
               <div className="btn-list flex-column md:flex-row">
                 {/* TODO Add icons */}
-                <a className="btn">SVG</a>
-                <a className="btn">PNG</a>
+                <a className="btn">
+                  <Icon name="download" /> SVG {/* TODO Download SVG */}
+                </a>
+                <a className="btn">
+                  <Icon name="download" /> PNG {/* TODO Download PNG */}
+                </a>
                 <a className="btn btn-primary" onClick={() => clipboard.copy(svg)}>
+                  <Icon name="copy" />
                   Copy SVG
                 </a>
               </div>
@@ -51,7 +58,9 @@ const IconModal = ({ name, tags, svg, unicode }) => {
           </div>
         </div>
       </div>
-      <a className="modal-more text-center py-3" href={'/icons-page/' + name}>See more icon variants</a>
+      <a className="modal-more text-center py-3" href={'/icons-page/' + name}>
+        See more icon variants
+      </a>
     </div>
   );
 };

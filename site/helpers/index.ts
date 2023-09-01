@@ -26,6 +26,15 @@ export const toPascalCase = function (text: string) {
     .replace(new RegExp(/\w/), (s) => s.toUpperCase())
 }
 
+export const getIconReactName = (iconName: string) =>
+  'Icon' +
+  iconName
+    .split('-')
+    .map((word) => word[0].toUpperCase() + word.slice(1))
+    .join('');
+
+export const getHtmlChar = (iconUnicode: string) => '&#x' + iconUnicode + ';'
+
 export const baseUrl = {
   development: "http://localhost:3000",
   production: "https://tabler-icons.io",

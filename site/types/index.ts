@@ -3,7 +3,8 @@ export type IconType = {
   tags: string[]
   svg: string
   version: string
-  category: string
+  category: string,
+  unicode: string
 }
 
 export type IconsType = IconType[]

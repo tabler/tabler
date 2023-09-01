@@ -4,10 +4,11 @@ import IconsSearch from '@/components/IconsSearch';
 import { icons } from '@/config/tabler';
 import IconSvg from '@/components/IconSvg';
 import { ModalContext, ModalProvider } from '@/contexts/ModalContext';
+import { IconsType } from '@/types';
 import { useContext, useState } from 'react';
 import IconModal from '@/components/IconModal';
 
-const IconsList = ({ filteredIcons, stroke, size }) => {
+const IconsList = ({ filteredIcons, stroke, size }: { filteredIcons: IconsType; stroke: number; size: number }) => {
   return (
     <section className="section section-light">
       <div className="container">
@@ -23,7 +24,17 @@ const IconsList = ({ filteredIcons, stroke, size }) => {
   );
 };
 
-const IconBox = ({ name, svg, iconStroke, iconSize }) => {
+const IconBox = ({
+  name,
+  svg,
+  iconStroke,
+  iconSize,
+}: {
+  name: string;
+  svg: string;
+  iconStroke: number;
+  iconSize: number;
+}) => {
   let { handleModal } = useContext(ModalContext);
 
   return (
@@ -39,7 +50,7 @@ const IconBox = ({ name, svg, iconStroke, iconSize }) => {
 };
 
 export default function IconsPage() {
-  const availableIcons = Object.values(icons);
+  const availableIcons: IconsType = Object.values(icons);
 
   const [filteredIcons, setFilteredIcons] = useState(availableIcons);
   const [stroke, setStroke] = useState(1.25);
