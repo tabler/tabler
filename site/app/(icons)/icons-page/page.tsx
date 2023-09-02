@@ -41,7 +41,11 @@ const IconBox = ({
     <div className="sm:col-4 md:col-3 lg:col-2" key={name} onClick={handleModal}>
       {/*TODO AOS data-aos="fade-up" data-aos-anchor="[data-aos-id-icons]"*/}
       <span className="icon-card text-centered">
-        <IconSvg svg={svg} key={name} className={'s-w-' + iconStroke * 100 + ' size-' + iconSize} />
+        <IconSvg
+          svg={svg}
+          key={name}
+          className={'icon-demo-stroke-' + iconStroke * 100 + ' icon-demo-size-' + iconSize}
+        />
         {/*TODO Change size of icon*/}
         <div className="icon-name">{name}</div>
       </span>
