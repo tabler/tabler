@@ -129,7 +129,7 @@ export default function IconDemo({ name, svg }: { name: string; svg: string }) {
             <div className="font-bold lh-1 font-h3">
               <div className="row items-center icon-demo-size-24 icon-demo-stroke-200"> {/* gx-8 omitted */}
                 {socials.map((social) => (
-                  <div className="col-auto d-flex items-center">
+                  <div className="col-auto d-flex items-center" key={'icon-' + social.number}>
                     <span className="mr-2">{social.icon}</span>
                     &nbsp;{social.number}
                   </div>
