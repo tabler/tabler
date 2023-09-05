@@ -46,7 +46,6 @@ const IconBox = ({
           key={name}
           className={'icon-demo-stroke-' + iconStroke * 100 + ' icon-demo-size-' + iconSize}
         />
-        {/*TODO Change size of icon*/}
         <div className="icon-name">{name}</div>
       </span>
     </div>

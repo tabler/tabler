@@ -1,9 +1,12 @@
-'use client';
-
 import IconSvg from '@/components/IconSvg';
 import { icons } from '@/config/tabler';
 import { groupBy, sortByKeys } from '@/helpers';
 import { IconsType } from '@/types';
+
+export const metadata = {
+  title: 'Tabler Icons changelog',
+  description: 'Discover the latest Tabler Icons',
+}
 
 export default function ChangelogPage() {
   const iconsGroupedByVersion = ((icons) => {
