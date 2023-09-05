@@ -7,7 +7,7 @@ export default function Ad({ className, horizontal }: { className?: string; hori
   const ad = useRef<any>(null);
 
   useEffect(() => {
-    if (ad.current) {
+    if (ad.current && process.env.NODE_ENV !== 'development') {
       ad.current.innerHTML = '';
 
       const script = document.createElement('script');

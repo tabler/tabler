@@ -1,6 +1,8 @@
 import { withContentlayer } from "next-contentlayer"
 import fs from 'fs-extra'
 
+import "./env.mjs"
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,

@@ -3,13 +3,7 @@
 import { useState } from 'react';
 import clsx from 'clsx';
 
-
-
 import { uiCdnUrl, uiUrl } from '@/config/site';
-
-
-
-
 
 const previewHtml = (
   example,
@@ -27,46 +21,32 @@ const previewHtml = (
     plugins = [],
     libs = [],
   }: {
-    vertical?: boolean
-    background?: string
-    scrollable?: boolean
-    columns?: number
-    centered?: boolean
-    vcentered?: boolean
-    separated?: boolean
-    vendors?: boolean
-    overview?: boolean
-    fullpage?: boolean
-    plugins?: string[]
-    libs?: string[]
-  }
+    vertical?: boolean;
+    background?: string;
+    scrollable?: boolean;
+    columns?: number;
+    centered?: boolean;
+    vcentered?: boolean;
+    separated?: boolean;
+    vendors?: boolean;
+    overview?: boolean;
+    fullpage?: boolean;
+    plugins?: string[];
+    libs?: string[];
+  },
 ) => {
   let assetsUrl = uiCdnUrl;
 
   if (process.env.TABLER_LOCAL) {
-    assetsUrl = uiUrl;
+    assetsUrl = 'http://localhost:3000';
   }
 
   let content = example;
   if (!fullpage) {
-    content = `<main class="min-vh-100 ${vertical ? 'p-4' : 'py-4 px-4'}${
-      centered
-        ? ' d-flex justify-content-center align-items-center flex-wrap'
-        : ''
-    }${vcentered ? ' d-flex justify-content-center flex-column' : ''}">
+    content = `<main class="min-vh-100 ${vertical ? 'p-4' : 'py-4 px-4'}${centered ? ' d-flex justify-content-center align-items-center flex-wrap' : ''}${vcentered ? ' d-flex justify-content-center flex-column' : ''}">
 
-			${
-        columns
-          ? `<div class="mx-auto w-100" style="max-width: ${columns * 20}rem">`
-          : ''
-      }
-			${
-        separated
-          ? vertical
-            ? '<div class="space-y">'
-            : '<div class="space-x">'
-          : ''
-      }
+			${columns ? `<div class="mx-auto w-100" style="max-width: ${columns * 20}rem">` : ''}
+			${separated ? (vertical ? '<div class="space-y">' : '<div class="space-x">') : ''}
 
 			 ${example}
 
@@ -75,32 +55,17 @@ const previewHtml = (
 		 </main>`;
   }
 
-  example = example
-    .replace(/a href="[^"]+"/g, 'a href="javascript:void(0)"')
-    .replace(/action="[^"]+"/g, 'action="javascript:void(0)"');
+  example = example.replace(/a href="[^"]+"/g, 'a href="javascript:void(0)"').replace(/action="[^"]+"/g, 'action="javascript:void(0)"');
 
   return `<html lang="en">
 	<head>
 	<title>Example</title>
 	<link rel="stylesheet" href="${assetsUrl}/dist/css/tabler.css">
-	${
-    plugins
-      ? plugins.map(
-          (plugin) =>
-            `	<link rel="stylesheet" href="${assetsUrl}/dist/css/tabler-${plugin}.css" />`
-        )
-      : ''
-  }
+	${plugins ? plugins.map((plugin) => `	<link rel="stylesheet" href="${assetsUrl}/dist/css/tabler-${plugin}.css" />`) : ''}
 </head>
-	<body class="h-100${background ? ` bg-${background}` : ''}${
-    scrollable || fullpage ? ' auto-scroll' : ' no-scroll'
-  }"${!background && ' style="--tblr-body-bg: #fbfcfd"'}>
+	<body class="h-100${background ? ` bg-${background}` : ''}${scrollable || fullpage ? ' auto-scroll' : ' no-scroll'}"${!background && ' style="--tblr-body-bg: #fbfcfd"'}>
 		 ${content}
-	${
-    vendors
-      ? `<link rel="stylesheet" href="${assetsUrl}/dist/css/tabler-vendors.css" />`
-      : ''
-  }
+	${vendors ? `<link rel="stylesheet" href="${assetsUrl}/dist/css/tabler-vendors.css" />` : ''}
 	<script src="${assetsUrl}/dist/js/tabler.js"></script>
 	</body>
 </html>`;
@@ -141,9 +106,13 @@ export default function Example({
 
   return (
     <div className="example">
-      <iframe className={clsx('example-frame', {
-        'example-frame-resizable': resizable,
-      })} srcDoc={srcDoc} style={{ height: iframeHeight }} />
+      <iframe
+        className={clsx('example-frame', {
+          'example-frame-resizable': resizable,
+        })}
+        srcDoc={srcDoc}
+        style={{ height: iframeHeight }}
+      />
     </div>
   );
 }
