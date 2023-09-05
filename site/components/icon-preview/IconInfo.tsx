@@ -1,9 +1,9 @@
-import { getHtmlChar, getIconReactName } from '@/helpers';
+import { getHtmlChar, toPascalCase } from '@/helpers';
 import { IconType } from '@/types';
 import React from 'react';
 
 export default function IconInfo({ icon, clipboard }: { icon: IconType; clipboard: any }) {
-  const reactName = getIconReactName(icon.name);
+  const reactName = 'Icon' + toPascalCase(icon.name);
   const htmlChar = getHtmlChar(icon.unicode);
   const webfont = '<i class="ti ti-' + icon.name + '"></i>';
 
@@ -61,7 +61,7 @@ export default function IconInfo({ icon, clipboard }: { icon: IconType; clipboar
             </div>
             <div>
               <span className="text-muted">Added:&nbsp;</span>
-              <a className="link-muted" href={'/changelog#' + icon.version}>
+              <a className="link-muted" href={'./changelog#' + icon.version}>
                 {' '}
                 {/* Add changelog site */}
                 {icon.version}

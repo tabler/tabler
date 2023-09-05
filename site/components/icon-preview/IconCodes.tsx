@@ -1,6 +1,6 @@
 import Icon from '@/components/Icon';
 import IconSvg from '@/components/IconSvg';
-import { getIconReactName } from '@/helpers';
+import { toPascalCase } from '@/helpers';
 import { IconType } from '@/types';
 import React, { useState } from 'react';
 
@@ -117,7 +117,7 @@ const ReactCode = ({ iconName }: { iconName: string }) => (
       <code>
         <span className="k">import&nbsp;</span>
         <span className="p">{'{ '}</span>
-        <span className="nx">{getIconReactName(iconName)}</span>
+        <span className="nx">{'Icon' + toPascalCase(iconName)}</span>
         <span className="p">{' } '}</span>
         <span className="k">from&nbsp;</span>
         <span className="dl">'</span>
@@ -142,7 +142,7 @@ const VueCode = ({ iconName }: { iconName: string }) => (
       <code>
         <span className="k">import&nbsp;</span>
         <span className="p">{'{ '}</span>
-        <span className="nx">{getIconReactName(iconName)}</span>
+        <span className="nx">{'Icon' + toPascalCase(iconName)}</span>
         <span className="p">{' } '}</span>
         <span className="k">from&nbsp;</span>
         <span className="dl">'</span>

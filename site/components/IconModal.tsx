@@ -1,13 +1,13 @@
 import Icon from '@/components/Icon';
 import IconSvg from '@/components/IconSvg';
-import { getHtmlChar, getIconReactName } from '@/helpers';
+import { getHtmlChar, toPascalCase } from '@/helpers';
 import { useClipboard } from '@/hooks';
 
 const IconModal = ({ name, tags, svg, unicode }: { name: string; tags: string[]; svg: string; unicode: string }) => {
   const clipboard = useClipboard();
 
   const subNames = [
-    { name: getIconReactName(name), tooltip: 'Copy React name' },
+    { name: 'Icon' + toPascalCase(name), tooltip: 'Copy React name' },
     { name: getHtmlChar(unicode), tooltip: 'Copy HTML char' },
     { name: unicode, tooltip: 'Copy hex' },
   ];

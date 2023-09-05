@@ -5,10 +5,12 @@ export const groupBy = function (xs, key) {
   }, {})
 }
 
-export const sortByKeys = function (xs) {
-  return Object.keys(xs)
-    .sort()
-    .reduce((obj, key) => {
+export const sortByKeys = function (xs, order: 'asc' | 'desc' = 'asc') {
+  const sorted = Object.keys(xs).sort();
+  if (order === 'desc') {
+    sorted.reverse();
+  }
+  return sorted.reduce((obj, key) => {
       obj[key] = xs[key]
       return obj
     }, {})
@@ -25,13 +27,6 @@ export const toPascalCase = function (text: string) {
     .replace(new RegExp(/\s/, "g"), "")
     .replace(new RegExp(/\w/), (s) => s.toUpperCase())
 }
-
-export const getIconReactName = (iconName: string) =>
-  'Icon' +
-  iconName
-    .split('-')
-    .map((word) => word[0].toUpperCase() + word.slice(1))
-    .join('');
 
 export const getHtmlChar = (iconUnicode: string) => '&#x' + iconUnicode + ';'
 
