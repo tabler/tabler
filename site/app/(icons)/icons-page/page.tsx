@@ -4,6 +4,7 @@ import IconModal from '@/components/IconModal';
 import IconsSearch from '@/components/IconsSearch';
 import IconSvg from '@/components/IconSvg';
 import { ModalContext, ModalProvider } from '@/contexts/ModalContext';
+import { useLocalStorage } from '@/hooks';
 import { IconsType } from '@/types';
 import { useContext, useState } from 'react';
 
@@ -53,8 +54,8 @@ const IconBox = ({
 
 export default function IconsPage() {
   const [filteredIcons, setFilteredIcons] = useState<IconsType>([]);
-  const [stroke, setStroke] = useState(1.25);
-  const [size, setSize] = useState(24);
+  const [stroke, setStroke] = useLocalStorage<number>('icon-stroke', 1.25);
+  const [size, setSize] = useLocalStorage<number>('icon-size', 24);
 
   return (
     <>
