@@ -1,12 +1,11 @@
 'use client';
 
+import IconModal from '@/components/IconModal';
 import IconsSearch from '@/components/IconsSearch';
-import { icons } from '@/config/tabler';
 import IconSvg from '@/components/IconSvg';
 import { ModalContext, ModalProvider } from '@/contexts/ModalContext';
 import { IconsType } from '@/types';
 import { useContext, useState } from 'react';
-import IconModal from '@/components/IconModal';
 
 const IconsList = ({ filteredIcons, stroke, size }: { filteredIcons: IconsType; stroke: number; size: number }) => {
   return (
@@ -53,16 +52,13 @@ const IconBox = ({
 };
 
 export default function IconsPage() {
-  const availableIcons: IconsType = Object.values(icons);
-
-  const [filteredIcons, setFilteredIcons] = useState(availableIcons);
+  const [filteredIcons, setFilteredIcons] = useState<IconsType>([]);
   const [stroke, setStroke] = useState(1.25);
   const [size, setSize] = useState(24);
 
   return (
     <>
       <IconsSearch
-        availableIcons={availableIcons}
         setFilteredIcons={setFilteredIcons}
         stroke={stroke}
         setStroke={setStroke}
