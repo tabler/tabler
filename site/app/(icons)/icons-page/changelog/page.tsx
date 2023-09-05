@@ -6,7 +6,7 @@ import { IconsType } from '@/types';
 export const metadata = {
   title: 'Tabler Icons changelog',
   description: 'Discover the latest Tabler Icons',
-}
+};
 
 export default function ChangelogPage() {
   const iconsGroupedByVersion = ((icons) => {
