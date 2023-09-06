@@ -10,5 +10,5 @@ export interface ContainerProps {
 export const Container: FC<ContainerProps> = ({ children, size, className }) => {
 	return <div className={clsx("container", {
 		[`container-${size}`]: !!size,
-	}, className)} style={{ outline: '1px solid red'}}>{children}</div>
+	}, className)}>{children}</div>
 }
