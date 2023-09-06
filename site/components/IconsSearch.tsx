@@ -95,25 +95,14 @@ export default function IconsSearch({ setFilteredIcons, stroke, setStroke, size,
     }
   }, [selectedCategory]);
 
-  useEffect(() => filterIcons(), [searchPattern, availableIcons]);
-
-  const filterIcons = () => {
+  useEffect(() => {
     if (searchPattern) {
-      const fuse = new Fuse(
-        selectedCategory === 'All'
-          ? availableIcons
-          : availableIcons.filter((icon) => icon.category === selectedCategory),
-        fuseOptions,
-      );
+      const fuse = new Fuse(availableIcons, fuseOptions);
       setFilteredIcons(fuse.search(searchPattern).map((searchResult) => searchResult.item));
     } else {
-      setFilteredIcons(
-        selectedCategory === 'All'
-          ? availableIcons
-          : availableIcons.filter((icon) => icon.category === selectedCategory),
-      );
+      setFilteredIcons(availableIcons);
     }
-  };
+  }, [searchPattern, availableIcons, setFilteredIcons]);
 
   return (
     <section className="section section-light">
