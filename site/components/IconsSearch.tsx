@@ -82,7 +82,6 @@ export default function IconsSearch({ setFilteredIcons, stroke, setStroke, size,
 
   useEffect(() => {
     getIcons(selectedCategory).then((data) => {
-      console.log(data);
       setAvailableIcons(data.icons);
     });
   }, [selectedCategory]);

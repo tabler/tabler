@@ -1,11 +1,14 @@
 import { IconsType } from '@/types';
-import process from 'process';
 
 export const getIcons = async (
   category: string = 'all',
-  limit: number = Infinity,
+  limit: number | undefined = undefined,
 ): Promise<{ limit: number; icons: IconsType }> => {
-  const response = await fetch(`${process.env.NEXT_PUBLIC_VERCEL_URL}/api/icons?limit=${limit}&category=${category}`, {
+  let url = `api/icons?category=${category}`;
+  if (limit) {
+    url += `&limit=${limit}`;
+  }
+  const response = await fetch(url, {
     method: 'GET',
   });
   return response.json();
