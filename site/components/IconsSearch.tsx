@@ -81,18 +81,9 @@ export default function IconsSearch({ setFilteredIcons, stroke, setStroke, size,
   let [selectedCategory, setSelectedCategory] = useState('All');
 
   useEffect(() => {
-    try {
-      getIcons(selectedCategory).then((data) => {
-        setAvailableIcons(data.icons);
-      });
-    } catch (error) {
-      console.log('Error in getIcons', error);
-      setAvailableIcons(
-        Object.values(icons).filter(
-          (icon) => selectedCategory === 'all' || icon.category.toLowerCase() === selectedCategory.toLowerCase(),
-        ) as IconsType,
-      );
-    }
+    getIcons(selectedCategory).then((data) => {
+      setAvailableIcons(data.icons);
+    });
   }, [selectedCategory]);
 
   useEffect(() => {
