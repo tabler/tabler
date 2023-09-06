@@ -1,4 +1,5 @@
 import Shape from '@/components/Shape';
+import { Container } from '@tabler/react';
 
 export const metadata = {
   title: 'Support',

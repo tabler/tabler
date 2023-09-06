@@ -2,6 +2,7 @@ import { componentsCount, componentsRounded, emailsCount, emailsPrice } from '@/
 import Svg from '@/components/Svg';
 import Link from '@/components/Link';
 import ResponsiveImage from '@/components/ResponsiveImage';
+import { Container } from '@tabler/react';
 
 export default function LayoutHeroUiComponents() {
   return (
@@ -11,10 +12,7 @@ export default function LayoutHeroUiComponents() {
           <div className="col text-left" data-aos="fade-up">
             <div className="hero-subheader">Tabler Components</div>
             <h1 className="hero-title">{componentsRounded}+ responsive components built with Tabler</h1>
-            <p className="hero-description mt-4">
-              Build your next website even faster with premade responsive components designed and built by Tabler
-              maintainers and community. All components are free forever for everyone.
-            </p>
+            <p className="hero-description mt-4">Build your next website even faster with premade responsive components designed and built by Tabler maintainers and community. All components are free forever for everyone.</p>
 
             <div className="mt-7">
               <div className="row g-3">
@@ -37,7 +35,7 @@ export default function LayoutHeroUiComponents() {
             </div>
           </div>
         </div>
-      </div>
+      </Container>
     </header>
   );
 }

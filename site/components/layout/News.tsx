@@ -1,6 +1,7 @@
 import Link from '@/components/Link';
 import tinytime from 'tinytime';
 import CTABannerEmails from '@/components/CTABAnnerEmails';
+import { Container } from '@tabler/react';
 
 export default function News() {
   const changelogs = [];

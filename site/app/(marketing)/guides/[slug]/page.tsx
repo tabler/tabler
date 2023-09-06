@@ -8,6 +8,7 @@ import CTABannerEmails from '@/components/CTABAnnerEmails';
 import Icon from '@/components/Icon';
 import TablerSponsorsBanner from '@/components/TablerSponsorsBanner';
 import Mdx from '@/components/MDX';
+import { Container } from '@tabler/react';
 
 interface GuidePageProps {
   params: {

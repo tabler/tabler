@@ -2,6 +2,7 @@ import { allChangelogs } from '@/.contentlayer/generated';
 import Mdx from '@/components/MDX';
 import { changelogEnabled } from '@/config/site';
 import { dateTemplate, distanceToNow, format } from '@/lib/date';
+import { Container } from '@tabler/react';
 import { notFound } from 'next/navigation';
 
 export const metadata = {

@@ -1,3 +1,5 @@
+import { Container } from '@tabler/react';
+
 export const metadata = {
   title: 'Documentation',
   template: '%s - Documentation',

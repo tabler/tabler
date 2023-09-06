@@ -1,5 +1,6 @@
 import Icon from '@/components/Icon';
 import { escapeHtml, iconsCountRounded, iconsUrl } from '@/config/site';
+import { Container } from '@tabler/react';
 
 const twitterUrl = `https://twitter.com/intent/tweet?url=${escapeHtml(
   iconsUrl
@@ -13,10 +14,7 @@ export default function LayoutHeroIcons() {
       <header className="hero pb-8">
         <Container>
           <h1 className="hero-title">Over {iconsCountRounded} pixel-perfect icons for web design</h1>
-          <p className="hero-description mt-4">
-            Free and open source icons designed to make your website or app attractive, visually consistent and simply
-            beautiful.
-          </p>
+          <p className="hero-description mt-4">Free and open source icons designed to make your website or app attractive, visually consistent and simply beautiful.</p>
 
           <div className="mt-5">
             <div className="row g-3 justify-center">
@@ -34,7 +32,7 @@ export default function LayoutHeroIcons() {
               </div>
             </div>
           </div>
-        </div>
+        </Container>
       </header>
     </div>
   );

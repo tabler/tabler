@@ -2,6 +2,7 @@ import { allGuides } from 'contentlayer/generated';
 
 import { format } from '@/lib/date';
 import Link from '@/components/Link';
+import { Container } from '@tabler/react';
 
 export const metadata = {
   title: 'Guides',

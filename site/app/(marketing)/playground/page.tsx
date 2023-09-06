@@ -1,4 +1,4 @@
-import { Alert, Button } from '@tabler/react';
+import { Alert, Button, Container } from '@tabler/react';
 
 export default function PlaygroundPage() {
   return (

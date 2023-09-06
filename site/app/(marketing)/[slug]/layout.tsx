@@ -1,4 +1,4 @@
-import { Container } from "@tabler/react";
+import { Container } from '@tabler/react';
 
 export default function SingleLayout({
   children

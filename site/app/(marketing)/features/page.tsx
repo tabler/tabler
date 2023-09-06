@@ -1,5 +1,6 @@
 import ResponsiveImage from '@/components/ResponsiveImage';
 import features from '@/data/features';
+import { Container } from '@tabler/react';
 
 export const metadata = {
   title: 'Tabler Features',
