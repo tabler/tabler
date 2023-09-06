@@ -24,7 +24,7 @@ export default async function BlogPage() {
             Stay in the loop with all things <Link href="/">Tabler</Link> and <a href={iconsUrl}>Tabler Icons</a>. Regular updates on new features, changelogs, and news, ensuring you never miss any of our software developments.
           </p>
         </div>
-        <div className="container">
+        <Container>
           <div className="row justify-center">
             <div className="col-slim">
               <div className="divider-y-8">
@@ -69,14 +69,14 @@ export default async function BlogPage() {
               </div>
             </div>
           </div>
-        </div>
+        </Container>
       </section>
 
       <section className="section section-light">
-        <div className="container">
+        <Container>
           Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perferendis quibusdam quos est repellat rerum molestias, autem ullam, exercitationem magni non eos sunt, voluptates laboriosam dignissimos mollitia tempora ipsum illo
           adipisci.
-        </div>
+        </Container>
       </section>
     </>
   );

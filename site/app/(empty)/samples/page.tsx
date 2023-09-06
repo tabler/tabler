@@ -39,7 +39,7 @@ export default function SamplesPage() {
     <>
       {types.map((type, i) => (
         <section className={clsx('section', i % 2 === 0 ? '' : 'section-light')} key={type.title}>
-          <div className="container">
+          <Container>
             <div>
               <h3 className="mb-4">{type.title}</h3>
               <div className="row">
@@ -58,7 +58,7 @@ export default function SamplesPage() {
                 ))}
               </div>
             </div>
-          </div>
+          </Container>
         </section>
       ))}
     </>

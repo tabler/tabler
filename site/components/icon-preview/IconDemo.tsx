@@ -1,5 +1,6 @@
 import Icon from '@/components/Icon';
 import IconSvg from '@/components/IconSvg';
+import { Container } from '@tabler/react';
 import React from 'react';
 
 export default function IconDemo({ name, svg }: { name: string; svg: string }) {
@@ -16,17 +17,13 @@ export default function IconDemo({ name, svg }: { name: string; svg: string }) {
   ];
 
   return (
-    <div className="container">
+    <Container>
       <div className="mb-9">
         <h2 className="h3 mt-0 mb-4">Icon demo</h2>
         <div className="icon-demos-grid">
           <div className="icon-demo px-2">
             {sizes.map((size) => (
-              <div
-                key={name + size}
-                className={'icon-demo-icon icon-demo-stroke-200 icon-demo-size-' + size + ' tooltip tooltip-monospaced'}
-                data-title={'width="' + size + '" height="' + size + '"'}
-              >
+              <div key={name + size} className={'icon-demo-icon icon-demo-stroke-200 icon-demo-size-' + size + ' tooltip tooltip-monospaced'} data-title={'width="' + size + '" height="' + size + '"'}>
                 <CurrentIconSvg />
               </div>
             ))}
@@ -34,13 +31,7 @@ export default function IconDemo({ name, svg }: { name: string; svg: string }) {
 
           <div className="icon-demo px-2">
             {strokes.map((stroke) => (
-              <div
-                key={name + stroke}
-                className={
-                  'icon-demo-icon icon-demo-size-32 icon-demo-stroke-' + stroke + ' tooltip tooltip-monospaced'
-                }
-                data-title={'stroke-width="' + stroke + '"'}
-              >
+              <div key={name + stroke} className={'icon-demo-icon icon-demo-size-32 icon-demo-stroke-' + stroke + ' tooltip tooltip-monospaced'} data-title={'stroke-width="' + stroke + '"'}>
                 <CurrentIconSvg />
               </div>
             ))}
@@ -118,16 +109,16 @@ export default function IconDemo({ name, svg }: { name: string; svg: string }) {
                 <div className="icon-demo-message-icon">
                   <CurrentIconSvg />
                 </div>
-                <div className="icon-demo-message-text">
-                  Oh! Come and see the violence inherent in the system! Help, help, I'm being repressed!
-                </div>
+                <div className="icon-demo-message-text">Oh! Come and see the violence inherent in the system! Help, help, I'm being repressed!</div>
               </div>
             </div>
           </div>
 
           <div className="icon-demo">
             <div className="font-bold lh-1 font-h3">
-              <div className="row items-center icon-demo-size-24 icon-demo-stroke-200"> {/* gx-8 omitted */}
+              <div className="row items-center icon-demo-size-24 icon-demo-stroke-200">
+                {' '}
+                {/* gx-8 omitted */}
                 {socials.map((social) => (
                   <div className="col-auto d-flex items-center" key={'icon-' + social.number}>
                     <span className="mr-2">{social.icon}</span>
@@ -139,6 +130,6 @@ export default function IconDemo({ name, svg }: { name: string; svg: string }) {
           </div>
         </div>
       </div>
-    </div>
+    </Container>
   );
 };

@@ -1,14 +1,14 @@
 import Browser from '@/components/Browser';
 import ResponsiveImage from '@/components/ResponsiveImage';
 import { uiDownloadUrl } from '@/config/site';
-import { Button } from '@tabler/react';
+import { Button, Container } from '@tabler/react';
 import React from 'react';
 
 export default function LayoutHeroUi() {
   return (
     <>
       <header className="hero pt-10 pb-0 bg-gradient">
-        <div className="container">
+        <Container>
           <h1 className="hero-title" data-aos="zoom-y-out">
             Develop beautiful web apps with&nbsp;Tabler
           </h1>
@@ -36,7 +36,7 @@ export default function LayoutHeroUi() {
               <ResponsiveImage src="/img/tabler/preview.png" width={1080} height={760} priority />
             </Browser>
           </div>
-        </div>
+        </Container>
       </header>
     </>
   );

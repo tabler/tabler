@@ -1,8 +1,9 @@
 import Icon from '@/components/Icon';
 import { icons } from '@/config/tabler';
 import { getIcons } from '@/data/icons-api';
-import Fuse from '@/node_modules/.pnpm/fuse.js@6.6.2/node_modules/fuse.js';
+import Fuse from 'fuse.js';
 import { IconsType } from '@/types';
+import { Container } from '@tabler/react';
 import { useEffect, useState } from 'react';
 
 const fuseOptions = {
@@ -108,24 +109,19 @@ export default function IconsSearch({ setFilteredIcons, stroke, setStroke, size,
 
   return (
     <section className="section section-light">
-      <div className="container icon-search">
+      <Container className="icon-search">
         <div className="row gx-3 items-center">
           <div className="col-auto d-flex">
             <Icon name="search" />
           </div>
           <div className="col">
-            <input
-              type="text"
-              className="icon-search-input"
-              placeholder={'Search ' + availableIcons.length + ' icons'}
-              onChange={(e) => setSearchPattern(e.target.value.toLowerCase())}
-            />
+            <input type="text" className="icon-search-input" placeholder={'Search ' + availableIcons.length + ' icons'} onChange={(e) => setSearchPattern(e.target.value.toLowerCase())} />
           </div>
           <CategorySelect selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
           <StrokeSelect stroke={stroke} setStroke={setStroke} />
           <SizeSelect size={size} setSize={setSize} />
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

@@ -10,6 +10,7 @@ import IconSvg from '@/components/IconSvg';
 import ResponsiveImage from '@/components/ResponsiveImage';
 import SectionDivider from '@/components/SectionDivider';
 import HeroIcons from '@/components/layout/hero/UiIcons';
+import { Container } from '@tabler/react';
 
 export const metadata = {
   title: 'Tabler Icons',
@@ -19,7 +20,7 @@ export const metadata = {
 // const IconsInstallation = () => {
 //   return (
 //     <section className="section section-light">
-//       <div className="container">
+//       <Container>
 //         <div className="section-header">
 //           <h2 className="section-title">Installation</h2>
 //         </div>
@@ -40,7 +41,7 @@ export const metadata = {
 //
 //   return (
 //       <section className="section section-sm section-light">
-//         <div className="container">
+//         <Container>
 //           <div className="section-header">
 //             <h2 className="section-title">Frameworks</h2>
 //           </div>
@@ -69,7 +70,7 @@ export const metadata = {
 const IconsFigma = () => {
   return (
     <section className="section">
-      <div className="container">
+      <Container>
         <div className="row xl:g-7 items-center">
           <div className="md:col-6">
             <ResponsiveImage src="/img/tabler-icons/features/figma.png" width="564" height="448" />
@@ -89,7 +90,7 @@ const IconsFigma = () => {
             </div>
           </div>
         </div>
-      </div>
+      </Container>
     </section>
   );
 };
@@ -121,14 +122,14 @@ const IconsFeatures = () => {
   return (
     <section className="section section-sm section-light">
       <SectionDivider wave />
-      <div className="container">
+      <Container>
         {/*<div className="section-header">*/}
         {/*  <h2 className="section-title">*/}
         {/*    Icons tailored to your needs*/}
         {/*  </h2>*/}
         {/*</div>*/}
         <Features list={features} />
-      </div>
+      </Container>
     </section>
   );
 };
@@ -149,7 +150,7 @@ const IconsCategories = () => {
 
   return (
     <section className="section section-light">
-      <div className="container">
+      <Container>
         <div className="section-header">
           <div className="section-title">Wide choice of categories</div>
           <div className="section-description">Search for icons by categories to find what you need easier and faster. Tabler icons will help you make your design consistent and eye-catching.</div>
@@ -172,7 +173,7 @@ const IconsCategories = () => {
             </div>
           ))}
         </div>
-      </div>
+      </Container>
     </section>
   );
 };

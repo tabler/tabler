@@ -6,7 +6,7 @@ import ResponsiveImage from '@/components/ResponsiveImage';
 export default function LayoutHeroUiComponents() {
   return (
     <header className="hero pb-8">
-      <div className="container">
+      <Container>
         <div className="row items-center">
           <div className="col text-left" data-aos="fade-up">
             <div className="hero-subheader">Tabler Components</div>

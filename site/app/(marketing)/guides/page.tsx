@@ -11,27 +11,17 @@ export const metadata = {
 export default async function GuidesPage() {
   return (
     <section className="section">
-      <div className="container">
+      <Container>
         <div className="section-header">
           <h2 className="section-title section-title-lg">Guides</h2>
-          <p className="section-description">
-            The most interesting articles to help you build better applications
-          </p>
+          <p className="section-description">The most interesting articles to help you build better applications</p>
         </div>
 
         <div className="guides sm:gx-6 xl:gx-7">
           {allGuides.map((guide, i) => (
-            <div
-              className="guide"
-              key={guide.slug}
-              itemScope={true}
-              itemType="https://schema.org/NewsArticle"
-            >
+            <div className="guide" key={guide.slug} itemScope={true} itemType="https://schema.org/NewsArticle">
               <div className="guide-date">
-                <meta
-                  itemProp="datePublished"
-                  content={format(guide.date, 'yyyy-MM-dd')}
-                />
+                <meta itemProp="datePublished" content={format(guide.date, 'yyyy-MM-dd')} />
                 <div>{format(guide.date, 'd')}</div>
                 <div>{format(guide.date, 'MMM')}</div>
               </div>
@@ -39,14 +29,7 @@ export default async function GuidesPage() {
                 {guide.image && (
                   <Link href={guide.slug} className="d-block mb-4">
                     <div className="border-light rounded lh-1">
-                      <img
-                        src={guide.image}
-                        width={660}
-                        height={361}
-                        className="rounded"
-                        alt={guide.title}
-                        itemProp="image"
-                      />
+                      <img src={guide.image} width={660} height={361} className="rounded" alt={guide.title} itemProp="image" />
                     </div>
                   </Link>
                 )}
@@ -67,12 +50,7 @@ export default async function GuidesPage() {
                 <div className="mt-4">
                   <div className="row items-center">
                     <div className="col">
-                      <div
-                        className="d-flex items-center"
-                        itemProp="author"
-                        itemScope={true}
-                        itemType="https://schema.org/Person"
-                      >
+                      <div className="d-flex items-center" itemProp="author" itemScope={true} itemType="https://schema.org/Person">
                         <div
                           className="avatar mr-3"
                           style={{
@@ -84,11 +62,7 @@ export default async function GuidesPage() {
                       </div>
                     </div>
                     <div className="col-auto">
-                      <Link
-                        href={guide.slug}
-                        className="btn"
-                        aria-label={`Read more about "${guide.title}"`}
-                      >
+                      <Link href={guide.slug} className="btn" aria-label={`Read more about "${guide.title}"`}>
                         Read more
                       </Link>
                     </div>
@@ -98,7 +72,7 @@ export default async function GuidesPage() {
             </div>
           ))}
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

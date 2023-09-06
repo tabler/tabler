@@ -6,12 +6,13 @@ import IconSvg from '@/components/IconSvg';
 import { ModalContext, ModalProvider } from '@/contexts/ModalContext';
 import { useLocalStorage } from '@/hooks';
 import { IconsType } from '@/types';
+import { Container } from '@tabler/react';
 import { useContext, useState } from 'react';
 
 const IconsList = ({ filteredIcons, stroke, size }: { filteredIcons: IconsType; stroke: number; size: number }) => {
   return (
     <section className="section section-light">
-      <div className="container">
+      <Container>
         <div className="row" data-aos-id-icons>
           {filteredIcons.slice(0, 100).map((icon) => (
             <ModalProvider modalContent={<IconModal {...icon} />} key={icon.name}>
@@ -19,7 +20,7 @@ const IconsList = ({ filteredIcons, stroke, size }: { filteredIcons: IconsType; 
             </ModalProvider>
           ))}
         </div>
-      </div>
+      </Container>
     </section>
   );
 };

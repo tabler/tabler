@@ -2,24 +2,18 @@ import Link from 'next/link';
 import Script from 'next/script';
 
 import Icon from '@/components/Icon';
+import { Container } from '@tabler/react';
 
 export default function Custom404Page() {
   return (
     <>
       <section className="section">
-        <div className="container">
+        <Container>
           <div className="py-6 text-center">
-            <img
-              src="/img/404.svg"
-              alt="404 - not found"
-              height={200}
-              className="mb-6 mx-auto"
-            />
+            <img src="/img/404.svg" alt="404 - not found" height={200} className="mb-6 mx-auto" />
 
             <div className="section-header">
-              <h1 className="section-title section-title-lg">
-                Oooops! Page Not Found
-              </h1>
+              <h1 className="section-title section-title-lg">Oooops! Page Not Found</h1>
               <p className="section-description">
                 This page doesn&apos;t exist or was removed!
                 <br />
@@ -34,7 +28,7 @@ export default function Custom404Page() {
               </div>
             </div>
           </div>
-        </div>
+        </Container>
       </section>
       {/* <Script id="plausible">
         {'window.plausible && window.plausible("404",{props:{path:document.location.pathname}})'}

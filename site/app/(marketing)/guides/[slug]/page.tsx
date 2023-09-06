@@ -50,12 +50,8 @@ export default async function GuidePage({ params }: GuidePageProps) {
 
   return (
     <>
-      <section
-        className="section"
-        itemScope={true}
-        itemType="https://schema.org/NewsArticle"
-      >
-        <div className="container">
+      <section className="section" itemScope={true} itemType="https://schema.org/NewsArticle">
+        <Container>
           {/* {meta.date && (
             <div
               className="text-muted mb-3 font-h6"
@@ -108,11 +104,7 @@ export default async function GuidePage({ params }: GuidePageProps) {
                   </div>
                 )}
 
-                <div
-                  itemProp="author"
-                  itemScope={true}
-                  itemType="https://schema.org/Person"
-                >
+                <div itemProp="author" itemScope={true} itemType="https://schema.org/Person">
                   <div
                     className="avatar avatar-xl avatar-rounded mb-3"
                     style={{
@@ -130,7 +122,7 @@ export default async function GuidePage({ params }: GuidePageProps) {
                   <button
                     type="button"
                     className={clsx(
-                      'btn btn-icon btn-circle'
+                      'btn btn-icon btn-circle',
                       // clipboard.copied ? "btn-green" : ""
                     )}
                     aria-label="Copy the Canonical link"
@@ -142,46 +134,25 @@ export default async function GuidePage({ params }: GuidePageProps) {
                       <Icon name="link" />
                     )} */}
                   </button>
-                  <a
-                    className="btn btn-icon btn-circle"
-                    target="_blank"
-                    rel="noopener"
-                    href={`https://twitter.com/share?url=${escapeHtml(
-                      url
-                    )}&text=${escapeHtml(guide.title)}`}
-                  >
+                  <a className="btn btn-icon btn-circle" target="_blank" rel="noopener" href={`https://twitter.com/share?url=${escapeHtml(url)}&text=${escapeHtml(guide.title)}`}>
                     <Icon name="brand-twitter" />
                   </a>
-                  <a
-                    className="btn btn-icon btn-circle"
-                    target="_blank"
-                    rel="noopener"
-                    href={`https://www.facebook.com/sharer/sharer.php?u=${escapeHtml(
-                      url
-                    )}`}
-                  >
+                  <a className="btn btn-icon btn-circle" target="_blank" rel="noopener" href={`https://www.facebook.com/sharer/sharer.php?u=${escapeHtml(url)}`}>
                     <Icon name="brand-facebook" />
                   </a>
-                  <a
-                    className="btn btn-icon btn-circle"
-                    target="_blank"
-                    rel="noopener"
-                    href={`https://www.linkedin.com/share?url=${escapeHtml(
-                      url
-                    )}`}
-                  >
+                  <a className="btn btn-icon btn-circle" target="_blank" rel="noopener" href={`https://www.linkedin.com/share?url=${escapeHtml(url)}`}>
                     <Icon name="brand-linkedin" />
                   </a>
                 </div>
               </div>
             </div>
           </div>
-        </div>
+        </Container>
       </section>
       <section className="section bg-light">
-        <div className="container">
+        <Container>
           <CTABannerEmails />
-        </div>
+        </Container>
       </section>
     </>
   );

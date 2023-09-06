@@ -4,11 +4,12 @@ import { emailsCount, emailsDownloadUrl, emailsPrice } from '@/config/site';
 import Link from '@/components/Link';
 import Slider from '@/components/Slider';
 import ResponsiveImage from '@/components/ResponsiveImage';
+import { Container } from '@tabler/react';
 
 export default function LayoutHeroUiEmails() {
   return (
     <header className="hero pb-8">
-      <div className="container">
+      <Container>
         <div className="row items-center">
           <div className="md:col-6 text-center md:text-left" data-aos="fade-up">
             <div className="hero-subheader">Tabler Emails</div>
@@ -49,7 +50,7 @@ export default function LayoutHeroUiEmails() {
             </div>
           </div>
         </div>
-      </div>
+      </Container>
     </header>
   );
 }

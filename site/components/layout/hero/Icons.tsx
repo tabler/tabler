@@ -11,7 +11,7 @@ export default function LayoutHeroIcons() {
   return (
     <div>
       <header className="hero pb-8">
-        <div className="container">
+        <Container>
           <h1 className="hero-title">Over {iconsCountRounded} pixel-perfect icons for web design</h1>
           <p className="hero-description mt-4">
             Free and open source icons designed to make your website or app attractive, visually consistent and simply

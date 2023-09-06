@@ -6,6 +6,7 @@ import IconInfo from '@/components/icon-preview/IconInfo';
 import SectionDivider from '@/components/SectionDivider';
 import { icons } from '@/config/tabler';
 import { useClipboard } from '@/hooks';
+import { Container } from '@tabler/react';
 import React from 'react';
 
 const IconPreviewPage = ({ params }: { params: { slug: string } }) => {
@@ -16,9 +17,9 @@ const IconPreviewPage = ({ params }: { params: { slug: string } }) => {
     return (
       <>
         <section className="section section-light">
-          <div className="container">
+          <Container>
             <h1>Icon {params.slug} does not exist!</h1>
-          </div>
+          </Container>
         </section>
       </>
     );
@@ -27,10 +28,10 @@ const IconPreviewPage = ({ params }: { params: { slug: string } }) => {
   return (
     <>
       <section className="section pb-0">
-        <div className="container icon-preview-container">
+        <Container className="icon-preview-container">
           <IconInfo icon={icon} clipboard={clipboard} />
           <IconCodes icon={icon} clipboard={clipboard} />
-        </div>
+        </Container>
       </section>
       <section className="section section-white pt-4">
         <SectionDivider /> {/* TODO Not visible*/}

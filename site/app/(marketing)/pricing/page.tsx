@@ -1,6 +1,7 @@
 import { pricingPlansPersonal, pricingPlanTeam } from '@/config/pricing';
 import clsx from 'clsx';
 import Icon from '@/components/Icon';
+import { Container } from '@tabler/react';
 
 export const metadata = {
   title: 'Tabler Pricing',
@@ -101,22 +102,20 @@ export default function Page() {
   return (
     <>
       <section className="section">
-        <div className="container">
+        <Container>
           <div className="section-header">
             <h2 className="page-title">Simple, transparent pricing</h2>
-            <p className="section-description">
-              Get early access to 100+ components and free updates every month. Make it yours today!
-            </p>
+            <p className="section-description">Get early access to 100+ components and free updates every month. Make it yours today!</p>
           </div>
 
           <PricingCards />
 
           <PricingTeam className="mt-5" />
-        </div>
+        </Container>
       </section>
 
       <section className="section section-light">
-        <div className="container">
+        <Container>
           <div className="section-header">
             <h2 className="section-title">Frequently Asked Questions</h2>
           </div>
@@ -125,24 +124,16 @@ export default function Page() {
             <div className="md:col-4 markdown">
               <h3>How is Tabler UI Pro different from Tabler UI?</h3>
               <p>
-                Tabler UI provides the basic functional components you&apos;ll need to compose together to create your
-                app or website. Pro components are assembled, building blocks and page templates you can drop-in your
-                app to save time.
+                Tabler UI provides the basic functional components you&apos;ll need to compose together to create your app or website. Pro components are assembled, building blocks and page templates you can drop-in your app to save time.
               </p>
             </div>
             <div className="md:col-4 markdown">
               <h3>Is this a yearly subscription?</h3>
-              <p>
-                No, you have a lifetime access to all our components. This means that you&apos;ll get new components and
-                updates every month till we&apos;ve exhausted our component inspiration.
-              </p>
+              <p>No, you have a lifetime access to all our components. This means that you&apos;ll get new components and updates every month till we&apos;ve exhausted our component inspiration.</p>
             </div>
             <div className="md:col-4 markdown">
               <h3>I want to buy this but I can&apos;t afford it. Is there a discount?</h3>
-              <p>
-                If you&apos;re a student or if the price in your local currency is too high, kindly send an email to
-                support@tabler.io stating your situation and we&apos;ll consider giving you a discount.
-              </p>
+              <p>If you&apos;re a student or if the price in your local currency is too high, kindly send an email to support@tabler.io stating your situation and we&apos;ll consider giving you a discount.</p>
             </div>
             <div className="md:col-4 markdown">
               <h3>What can I do with this license?</h3>
@@ -153,24 +144,18 @@ export default function Page() {
             </div>
             <div className="md:col-4 markdown">
               <h3>What version of Tabler UI is used?</h3>
-              <p>
-                The components in PRO are authored using Tabler UI v1.2+. If you&apos;re on v0.8, we recommend upgrading
-                to the most recent version to use Pro components.
-              </p>
+              <p>The components in PRO are authored using Tabler UI v1.2+. If you&apos;re on v0.8, we recommend upgrading to the most recent version to use Pro components.</p>
             </div>
             <div className="md:col-4 markdown">
               <h3>What restrictions does this license have?</h3>
               <ul>
                 <li>Create a clone of Tabler UI pro to sell</li>
-                <li>
-                  Create products like templates, themes, Figma or Sketch UI kits, page builders based on the PRO
-                  components
-                </li>
+                <li>Create products like templates, themes, Figma or Sketch UI kits, page builders based on the PRO components</li>
                 <li>Recreate the components for other UI libraries or CSS frameworks</li>
               </ul>
             </div>
           </div>
-        </div>
+        </Container>
       </section>
     </>
   );

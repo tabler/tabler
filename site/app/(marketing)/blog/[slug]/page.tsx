@@ -40,7 +40,7 @@ export default async function PostPage({ params }: PageProps) {
   return (
     <>
       <section className="section pt-0">
-        <div className="container">
+        <Container>
           <div>
             {post && post.title && (
               <div className="py-7 text-center">
@@ -76,7 +76,7 @@ export default async function PostPage({ params }: PageProps) {
               </div>
             </div>
           </div>
-        </div>
+        </Container>
       </section>
     </>
   );

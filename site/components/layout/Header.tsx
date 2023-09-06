@@ -212,12 +212,12 @@ const Banner = () => {
     banner.show &&
     showBanner && (
       <div className="banner">
-        <div className="container">
+        <Container>
           <div className="text-truncate">{banner.text}</div>
           <a href={banner.link.href} className="ml-5 banner-link" target="_blank">
             {banner.link.text}
           </a>
-        </div>
+        </Container>
 
         <a onClick={closeBanner} className="banner-close">
           <Icon name="x" />
@@ -256,15 +256,8 @@ export default function Header({ headerStatic, className, pageProps, ...props }:
   return (
     <>
       <Banner />
-      <header
-        className={clsx(
-          'header',
-          sticky && 'header-sticky',
-          pathname.startsWith('/docs') && 'header-docs',
-          className,
-        )}
-      >
-        <div className="container">
+      <header className={clsx('header', sticky && 'header-sticky', pathname.startsWith('/docs') && 'header-docs', className)}>
+        <Container>
           <nav className="row items-center">
             <div className="col-auto">
               <Link href="/" className={clsx('logo' /*, pageProps.brand ? `logo-${pageProps.brand}` : ''*/)} aria-label="Tabler" />
@@ -290,7 +283,7 @@ export default function Header({ headerStatic, className, pageProps, ...props }:
               </div>
             </div>
           </nav>
-        </div>
+        </Container>
       </header>
 
       <Dialog open={isOpen} onClose={closeModal} className="modal-backdrop">

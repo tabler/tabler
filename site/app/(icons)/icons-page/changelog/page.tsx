@@ -2,6 +2,7 @@ import IconSvg from '@/components/IconSvg';
 import { icons } from '@/config/tabler';
 import { groupBy, sortByKeys } from '@/helpers';
 import { IconsType } from '@/types';
+import { Container } from '@tabler/react';
 
 export const metadata = {
   title: 'Tabler Icons changelog',
@@ -15,7 +16,7 @@ export default function ChangelogPage() {
 
   return (
     <section className="section">
-      <div className="container">
+      <Container>
         <div className="section-header">
           <div className="section-title">Tabler Icons Changelog</div>
         </div>
@@ -32,12 +33,7 @@ export default function ChangelogPage() {
               <div className="col">
                 <div>
                   {icons.map((icon) => (
-                    <a
-                      key={icon.name}
-                      className="text-reset icon-demo-icon icon-demo-size-32 icon-demo-stroke-150 tooltip"
-                      href={'./' + icon.name}
-                      data-title={icon.name}
-                    >
+                    <a key={icon.name} className="text-reset icon-demo-icon icon-demo-size-32 icon-demo-stroke-150 tooltip" href={'./' + icon.name} data-title={icon.name}>
                       <IconSvg svg={icon.svg} />
                     </a>
                   ))}
@@ -46,7 +42,7 @@ export default function ChangelogPage() {
             </div>
           ))}
         </div>
-      </div>
+      </Container>
     </section>
   );
 }

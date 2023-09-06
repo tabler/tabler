@@ -1,3 +1,4 @@
+import { Container } from "@tabler/react";
 
 export default function SingleLayout({
   children
@@ -6,9 +7,7 @@ export default function SingleLayout({
 }) {
   return (
     <section className="section">
-      <div className="container container-narrow">
-        {children}
-      </div>
+      <Container size="narrow">{children}</Container>
     </section>
   );
 }

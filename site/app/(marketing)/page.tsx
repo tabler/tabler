@@ -11,6 +11,7 @@ import Testimonials from '@/components/layout/Testimonials';
 import TestimonialsShare from '@/components/layout/TestimonialsShare';
 import HeroUi from '@/components/layout/hero/Ui';
 import { sponsors } from '@/config/sponsors';
+import { Container } from '@tabler/react';
 
 export const metadata = {
   title: 'Premium dashboard template with responsive and high quality UI',
@@ -34,15 +35,12 @@ const benefits = [
 const FAQ = () => {
   return (
     <section className="section section-light">
-      <div className="container">
+      <Container>
         <div className="row xl:g-6">
           <div className="md:col-4" data-aos="fade-up">
             <div className="section-header text-left sticky-top">
               <div className="section-title">Frequently asked questions</div>
-              <p className="section-description">
-                Can’t find the answer you’re looking for? Reach out to our
-                customer support team.
-              </p>
+              <p className="section-description">Can’t find the answer you’re looking for? Reach out to our customer support team.</p>
             </div>
           </div>
           <div className="col">
@@ -62,7 +60,7 @@ const FAQ = () => {
             </div>
           </div>
         </div>
-      </div>
+      </Container>
     </section>
   );
 };
@@ -70,12 +68,10 @@ const FAQ = () => {
 const Projects = () => {
   return (
     <section className="section">
-      <div className="container">
+      <Container>
         <div className="section-header">
           <h3 className="section-title">Section title</h3>
-          <p className="section-description">
-            Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-          </p>
+          <p className="section-description">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
         </div>
 
         <div className="row">
@@ -85,25 +81,16 @@ const Projects = () => {
                 <div className="col">
                   <div className="card-body h-100 d-flex flex-column pr-0">
                     <div className="h-subheader text-primary">Tabler Icons</div>
-                    <h3 className="section-title mb-4">
-                      Brilliant Toolkit to Build Nextgen Website Faster.
-                    </h3>
+                    <h3 className="section-title mb-4">Brilliant Toolkit to Build Nextgen Website Faster.</h3>
                     <div className="text-muted markdown">
                       <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing
-                        elit. Illo perferendis, repellat! Asperiores ducimus
-                        esse nobis quaerat sed! Delectus eius illum incidunt
-                        minus neque, quos ratione reiciendis voluptatum. Odio
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo perferendis, repellat! Asperiores ducimus esse nobis quaerat sed! Delectus eius illum incidunt minus neque, quos ratione reiciendis voluptatum. Odio
                         quia, similique.
                       </p>
                     </div>
                     <div className="mt-auto pt-5">
                       <div className="btn-list">
-                        <a
-                          href={iconsUrl}
-                          className="btn btn-primary"
-                          target="_blank"
-                        >
+                        <a href={iconsUrl} className="btn btn-primary" target="_blank">
                           Browse icons
                         </a>
                         <Link href="/icons" className="btn">
@@ -130,18 +117,11 @@ const Projects = () => {
               <div className="row g-0">
                 <div className="col">
                   <div className="card-body h-100 d-flex flex-column pr-0">
-                    <div className="h-subheader text-primary">
-                      Tabler Emails
-                    </div>
-                    <h3 className="section-title mb-4">
-                      Brilliant Toolkit to Build Nextgen Website Faster.
-                    </h3>
+                    <div className="h-subheader text-primary">Tabler Emails</div>
+                    <h3 className="section-title mb-4">Brilliant Toolkit to Build Nextgen Website Faster.</h3>
                     <div className="text-muted markdown">
                       <p>
-                        Lorem ipsum dolor sit amet, consectetur adipisicing
-                        elit. Illo perferendis, repellat! Asperiores ducimus
-                        esse nobis quaerat sed! Delectus eius illum incidunt
-                        minus neque, quos ratione reiciendis voluptatum. Odio
+                        Lorem ipsum dolor sit amet, consectetur adipisicing elit. Illo perferendis, repellat! Asperiores ducimus esse nobis quaerat sed! Delectus eius illum incidunt minus neque, quos ratione reiciendis voluptatum. Odio
                         quia, similique.
                       </p>
                     </div>
@@ -170,7 +150,7 @@ const Projects = () => {
             </div>
           </div>
         </div>
-      </div>
+      </Container>
     </section>
   );
 };
@@ -179,7 +159,7 @@ const Sponsors = () => {
   return (
     <div className="section section-light pt-6 pb-5">
       <SectionDivider />
-      <div className="container img-overlap-padding text-center">
+      <Container className="img-overlap-padding text-center">
         <div className="mb-6">
           <h2 className="h4 font-normal text-muted mb-6">The project was made possible thanks to wonderful sponsors:</h2>
 
@@ -191,7 +171,7 @@ const Sponsors = () => {
             ))}
           </div>
         </div>
-      </div>
+      </Container>
     </div>
   );
 };
@@ -244,13 +224,13 @@ export default async function HomePage() {
 
       {/* <div className="section section-light pt-6 pb-6">
         <SectionDivider />
-        <div className="container img-overlap-padding">
+        <Container className="img-overlap-padding">
           <Features list={features} />
-        </div>
+        </Container>
       </div> */}
 
       <section className="section" id="features">
-        <div className="container">
+        <Container>
           <div className="row items-center">
             <div className="lg:col-6" data-aos="fade-up">
               <div className="section-header w-100">
@@ -276,11 +256,11 @@ export default async function HomePage() {
               <ResponsiveImage src="/img/tabler/features/charts.png" width="510" height="524" className="mx-auto" />
             </div>
           </div>
-        </div>
+        </Container>
       </section>
 
       <section className="section section-light">
-        <div className="container">
+        <Container>
           <div className="section-header">
             <h2 className="section-title">Multiple Demos</h2>
             <p className="section-description">6 Pre-built layout options to cater needs of modern web applications. Ready-to-use UI elements enable to develop modern web application with great speed</p>
@@ -355,11 +335,11 @@ export default async function HomePage() {
               </a>
             </div>
           </div>
-        </div>
+        </Container>
       </section>
 
       <section className="section">
-        <div className="container">
+        <Container>
           <div className="section-header">
             <h2 className="section-title">Create a perfect interface. Make your life easier.</h2>
           </div>
@@ -412,11 +392,11 @@ export default async function HomePage() {
               </div>
             </div>
           </div>
-        </div>
+        </Container>
       </section>
 
       <section className="section section-dark">
-        <div className="container">
+        <Container>
           <div className="section-header">
             <h2 className="section-title">Dark theme whenever you need it ✨</h2>
           </div>
@@ -470,11 +450,11 @@ export default async function HomePage() {
               <ResponsiveImage src="/img/tabler/features/dark.png" width={510} height={524} className="mx-auto" />
             </div>
           </div>
-        </div>
+        </Container>
       </section>
 
       <section className="section">
-        <div className="container">
+        <Container>
           <div className="section-header">
             <h2 className="section-title">Trusted by hundreds</h2>
             <p className="section-description">Our Users send us bunch of smilies with our services, and we love them 😍</p>
@@ -485,11 +465,11 @@ export default async function HomePage() {
           </div>
 
           <TestimonialsShare />
-        </div>
+        </Container>
       </section>
 
       {/*<section className="section section-light">*/}
-      {/*  <div className="container">*/}
+      {/*  <Container>*/}
       {/*    <div className="row items-center">*/}
       {/*      <div className="col" data-aos="fade-up">*/}
       {/*        <ResponsiveImage*/}
@@ -515,11 +495,11 @@ export default async function HomePage() {
       {/*        </div>*/}
       {/*      </div>*/}
       {/*    </div>*/}
-      {/*  </div>*/}
+      {/*  </Container>*/}
       {/*</section>*/}
 
       {/*<section className="section">*/}
-      {/*  <div className="container text-center">*/}
+      {/*  <Container className="text-center">*/}
       {/*    <blockquote className="font-h2 lh-h2 mb-5 font-medium">*/}
       {/*      “UI Prep has been instrumental in our agency work. UI Prep helps us start at 60% instead of 0%. It’s comprehensive, organized, and very*/}
       {/*      thoughtfully designed. I could not recommend this more.”*/}
@@ -537,11 +517,11 @@ export default async function HomePage() {
       {/*      <Icon name="star" filled color="yellow" />*/}
       {/*      <Icon name="star" filled color="yellow" />*/}
       {/*    </div>*/}
-      {/*  </div>*/}
+      {/*  </Container>*/}
       {/*</section>*/}
 
       {/*<section className="section section-light">*/}
-      {/*  <div className="container">*/}
+      {/*  <Container>*/}
       {/*    <div className="row items-center">*/}
       {/*      <div className="col-6" data-aos="fade-up">*/}
       {/*        <h2 className="section-title">*/}
@@ -567,7 +547,7 @@ export default async function HomePage() {
       {/*        </div>*/}
       {/*      </div>*/}
       {/*    </div>*/}
-      {/*  </div>*/}
+      {/*  </Container>*/}
       {/*</section>*/}
       {/*<News />*/}
       {/*<Projects />*/}
@@ -575,5 +555,3 @@ export default async function HomePage() {
     </>
   );
 }
-
-HomePage.bodyClass = 'xxx';

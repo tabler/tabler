@@ -3,10 +3,11 @@ import clsx from 'clsx';
 import { footerMenu, socialLinks } from '@/config/site';
 import Icon from '@/components/Icon';
 import Link from '@/components/Link';
+import { Container } from '@tabler/react';
 
 const FooterMenu = ({ border = false }: { border?: boolean }) => (
   <footer className="footer">
-    <div className="container">
+    <Container>
       <div className={clsx('py-6', border && 'border-top')}>
         <div className="row">
           <div className="lg:col-7">
@@ -52,13 +53,13 @@ const FooterMenu = ({ border = false }: { border?: boolean }) => (
           </div>
         </div>
       </div>
-    </div>
+    </Container>
   </footer>
 );
 
 const FooterMain = () => (
   <footer className="footer">
-    <div className="container">
+    <Container>
       <div className="py-5 text-center lg:text-left border-top">
         <div className="row">
           <div className="lg:col-auto lg:text-right lg:order-last">
@@ -86,7 +87,7 @@ const FooterMain = () => (
           </div>
         </div>
       </div>
-    </div>
+    </Container>
   </footer>
 );
 

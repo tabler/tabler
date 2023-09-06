@@ -8,7 +8,7 @@ export default function News() {
 
   return (
     <section className="section section-light">
-      <div className="container">
+      <Container>
         <div className="section-header">
           <h2 className="section-title">Refreshing posts from our blog</h2>
         </div>
@@ -51,7 +51,7 @@ export default function News() {
         <div className="mt-7">
           <CTABannerEmails />
         </div>
-      </div>
+      </Container>
     </section>
   );
 }
