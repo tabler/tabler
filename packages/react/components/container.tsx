@@ -1,4 +1,4 @@
-import { clsx } from "../utils"
+import clsx from "clsx"
 import React, { FC, ReactNode, ReactElement } from "react"
 
 export interface ContainerProps {

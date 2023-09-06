@@ -1,5 +1,5 @@
 import React, { FC, ReactNode, MouseEventHandler, AnchorHTMLAttributes } from "react"
-import { clsx } from "../utils"
+import clsx from "clsx"
 
 export interface ButtonProps extends AnchorHTMLAttributes<HTMLAnchorElement> {
 	href?: string
