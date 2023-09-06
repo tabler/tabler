@@ -6,6 +6,7 @@ import Ad from '@/components/Ad';
 import Link from '@/components/Link';
 import Icon from '@/components/Icon';
 import { blogEnabled } from '@/config/site';
+import { Container } from '@tabler/react';
 
 interface PageProps {
   params: {
