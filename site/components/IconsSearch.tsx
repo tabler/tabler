@@ -81,9 +81,18 @@ export default function IconsSearch({ setFilteredIcons, stroke, setStroke, size,
   let [selectedCategory, setSelectedCategory] = useState('All');
 
   useEffect(() => {
-    getIcons(selectedCategory).then((data) => {
-      setAvailableIcons(data.icons);
-    });
+    try {
+      getIcons(selectedCategory).then((data) => {
+        setAvailableIcons(data.icons);
+      });
+    } catch (error) {
+      console.log('Error in getIcons', error);
+      setAvailableIcons(
+        Object.values(icons).filter(
+          (icon) => selectedCategory === 'all' || icon.category.toLowerCase() === selectedCategory.toLowerCase(),
+        ) as IconsType,
+      );
+    }
   }, [selectedCategory]);
 
   useEffect(() => filterIcons(), [searchPattern, availableIcons]);
@@ -114,7 +123,12 @@ export default function IconsSearch({ setFilteredIcons, stroke, setStroke, size,
             <Icon name="search" />
           </div>
           <div className="col">
-            <input type="text" className="icon-search-input" placeholder={'Search ' + availableIcons.length + ' icons'} onChange={(e) => setSearchPattern(e.target.value.toLowerCase())} />
+            <input
+              type="text"
+              className="icon-search-input"
+              placeholder={'Search ' + availableIcons.length + ' icons'}
+              onChange={(e) => setSearchPattern(e.target.value.toLowerCase())}
+            />
           </div>
           <CategorySelect selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
           <StrokeSelect stroke={stroke} setStroke={setStroke} />
