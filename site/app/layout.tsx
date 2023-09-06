@@ -8,6 +8,7 @@ export const metadata = {
     default: name,
     template: `%s - ${name}`,
   },
+  metadataBase: process.env.NEXT_PUBLIC_APP_URL,
   description: description,
   keywords: [
     'css',

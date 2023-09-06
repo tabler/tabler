@@ -17,19 +17,11 @@ export default function IconCodes({ icon, clipboard }: { icon: IconType; clipboa
           <label className="icon-preview-slider">
             <div className="row">
               <div className="col-6">
-                <input
-                  type="range"
-                  className="form-range"
-                  min="1"
-                  max="2"
-                  step=".25"
-                  onChange={(e) => setStroke(+e.target.value)}
-                  defaultValue={stroke}
-                />
+                <input type="range" className="form-range" min="1" max="2" step=".25" onChange={(e) => setStroke(+e.target.value)} defaultValue={stroke} />
               </div>
               <div className="col-auto">
                 <code className="code-dark">
-                  stroke-width="<strong>{stroke}</strong>"
+                  strokeWidth="<strong>{stroke}</strong>"
                 </code>
               </div>
             </div>
@@ -60,11 +52,7 @@ export default function IconCodes({ icon, clipboard }: { icon: IconType; clipboa
       <div>
         <nav className="tabs">
           {tabs.map((tab, index) => (
-            <a
-              className={'tab' + (selectedTabIndex === index ? ' active' : '')}
-              onClick={() => setSelectedTabIndex(index)}
-              key={tab}
-            >
+            <a className={'tab' + (selectedTabIndex === index ? ' active' : '')} onClick={() => setSelectedTabIndex(index)} key={tab}>
               {tab}
             </a>
           ))}

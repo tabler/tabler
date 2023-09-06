@@ -1,6 +1,7 @@
 import Browser from '@/components/Browser';
 import ResponsiveImage from '@/components/ResponsiveImage';
 import { uiDownloadUrl } from '@/config/site';
+import { Button } from '@tabler/react';
 import React from 'react';
 
 export default function LayoutHeroUi() {
@@ -18,14 +19,14 @@ export default function LayoutHeroUi() {
           <div className="mt-5" data-aos="zoom-y-out" data-aos-delay="300">
             <div className="row g-3 justify-center">
               <div className="col-auto">
-                <a href={uiDownloadUrl} className="btn btn-lg btn-primary lemonsqueezy-button">
+                <Button href={uiDownloadUrl} size="lg" primary className="lemonsqueezy-button">
                   Download template
-                </a>
+                </Button>
               </div>
               <div className="col-auto">
-                <a href="/preview" className="btn btn-lg" target="_blank" rel="noopener noreferrer">
+                <Button href="/preview" size="lg" target="_blank" rel="noopener noreferrer">
                   Preview template
-                </a>
+                </Button>
               </div>
             </div>
           </div>
