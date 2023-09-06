@@ -1,5 +1,6 @@
 import Icon from '@/components/Icon';
 import { iconsUrl, blogEnabled } from '@/config/site';
+import { Container } from '@tabler/react';
 import Link from 'components/Link';
 import { allPosts } from 'contentlayer/generated';
 import { format } from 'date-fns';
