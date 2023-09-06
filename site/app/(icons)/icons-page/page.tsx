@@ -5,20 +5,41 @@ import IconsSearch from '@/components/IconsSearch';
 import IconSvg from '@/components/IconSvg';
 import { ModalContext, ModalProvider } from '@/contexts/ModalContext';
 import { useLocalStorage } from '@/hooks';
+import usePagination from '@/hooks/use-pagination';
 import { IconsType } from '@/types';
-import { Container } from '@tabler/react';
+import { Button, Container } from '@tabler/react';
 import { useContext, useState } from 'react';
 
 const IconsList = ({ filteredIcons, stroke, size }: { filteredIcons: IconsType; stroke: number; size: number }) => {
+  const { next, prev, jump, currentData, currentPage, maxPage } = usePagination(filteredIcons, 60);
+
   return (
     <section className="section section-light">
       <Container>
         <div className="row" data-aos-id-icons>
-          {filteredIcons.slice(0, 100).map((icon) => (
+          {currentData().map((icon) => (
             <ModalProvider modalContent={<IconModal {...icon} />} key={icon.name}>
               <IconBox name={icon.name} svg={icon.svg} iconStroke={stroke} iconSize={size} />
             </ModalProvider>
           ))}
+        </div>
+        {/* TODO Set styles */}
+        <div className="row mt-2">
+          <Button className="col-2" onClick={() => jump(1)} disabled={currentPage <= 1}>
+            First
+          </Button>
+          <Button className="col-2" onClick={() => prev()} disabled={currentPage <= 1}>
+            Previous
+          </Button>
+          <span className="col-4 text-center">
+            Page {currentPage} of {maxPage}
+          </span>
+          <Button className="col-2" onClick={() => next()} disabled={currentPage >= maxPage}>
+            Next
+          </Button>
+          <Button className="col-2" onClick={() => jump(maxPage)} disabled={currentPage >= maxPage}>
+            Last
+          </Button>
         </div>
       </Container>
     </section>
