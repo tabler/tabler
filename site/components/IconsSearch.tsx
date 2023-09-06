@@ -1,6 +1,8 @@
 import Icon from '@/components/Icon';
 import { icons } from '@/config/tabler';
+import { getIcons } from '@/data/icons-api';
 import Fuse from '@/node_modules/.pnpm/fuse.js@6.6.2/node_modules/fuse.js';
+import { IconsType } from '@/types';
 import { useEffect, useState } from 'react';
 
 const fuseOptions = {
@@ -72,11 +74,19 @@ const SizeSelect = ({ size, setSize }) => {
   );
 };
 
-export default function IconsSearch({ availableIcons, setFilteredIcons, stroke, setStroke, size, setSize }) {
+export default function IconsSearch({ setFilteredIcons, stroke, setStroke, size, setSize }) {
+  let [availableIcons, setAvailableIcons] = useState<IconsType>([]);
   let [searchPattern, setSearchPattern] = useState('');
   let [selectedCategory, setSelectedCategory] = useState('All');
 
-  useEffect(() => filterIcons(), [searchPattern, selectedCategory]);
+  useEffect(() => {
+    getIcons(selectedCategory).then((data) => {
+      console.log(data);
+      setAvailableIcons(data.icons);
+    });
+  }, [selectedCategory]);
+
+  useEffect(() => filterIcons(), [searchPattern, availableIcons]);
 
   const filterIcons = () => {
     if (searchPattern) {
