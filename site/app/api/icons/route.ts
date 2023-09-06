@@ -4,7 +4,7 @@ import { NextResponse } from 'next/server';
 
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
-  const limit = parseInt(searchParams.get('limit') || '0') || Infinity;
+  const limit = +(searchParams.get('limit') || Infinity);
   const category = (searchParams.get('category') || 'all').toLowerCase();
 
   return NextResponse.json({
