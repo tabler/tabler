@@ -1,8 +1,8 @@
 import Icon from '@/components/Icon';
 import * as IconsApi from '@/data/icons-api';
-import Fuse from 'fuse.js';
 import { IconsType } from '@/types';
 import { Container } from '@tabler/react';
+import Fuse from 'fuse.js';
 import { useEffect, useState } from 'react';
 
 const fuseOptions = {
@@ -17,22 +17,24 @@ const CategorySelect = ({ selectedCategory, setSelectedCategory }) => {
 
   return (
     <div className="col-auto d-flex items-center">
-      <div className="form-selector m-1">
-        <span className="text-muted">Category:&nbsp;</span>
-        <span>{selectedCategory}</span>
-        <select
-          className="icon-search-select"
-          defaultValue={'All'}
-          onChange={(e) => setSelectedCategory(e.target.value)}
-        >
-          <option value={'All'}>All</option>
-          {categories.map((category: string) => (
-            <option value={category} key={category}>
-              {category}
-            </option>
-          ))}
-        </select>
-      </div>
+      {categories && (
+        <div className="form-selector m-1">
+          <span className="text-muted">Category:&nbsp;</span>
+          <span>{selectedCategory}</span>
+          <select
+            className="icon-search-select"
+            defaultValue={'All'}
+            onChange={(e) => setSelectedCategory(e.target.value)}
+          >
+            <option value={'All'}>All</option>
+            {categories.map((category: string) => (
+              <option value={category} key={category}>
+                {category}
+              </option>
+            ))}
+          </select>
+        </div>
+      )}
     </div>
   );
 };
@@ -72,7 +74,7 @@ const SizeSelect = ({ size, setSize }) => {
 };
 
 export default function IconsSearch({ setFilteredIcons, stroke, setStroke, size, setSize }) {
-  let [availableIcons, setAvailableIcons] = useState<IconsType>([]);
+  let [availableIcons, setAvailableIcons] = useState<IconsType | undefined>(undefined);
   let [searchPattern, setSearchPattern] = useState('');
   let [selectedCategory, setSelectedCategory] = useState('All');
 
@@ -83,7 +85,7 @@ export default function IconsSearch({ setFilteredIcons, stroke, setStroke, size,
   }, [selectedCategory]);
 
   useEffect(() => {
-    if (searchPattern) {
+    if (searchPattern && availableIcons) {
       const fuse = new Fuse(availableIcons, fuseOptions);
       setFilteredIcons(fuse.search(searchPattern).map((searchResult) => searchResult.item));
     } else {
@@ -93,24 +95,26 @@ export default function IconsSearch({ setFilteredIcons, stroke, setStroke, size,
 
   return (
     <section className="section section-light">
-      <Container className="icon-search">
-        <div className="row gx-3 items-center">
-          <div className="col-auto d-flex">
-            <Icon name="search" />
+      {availableIcons && (
+        <Container className="icon-search">
+          <div className="row gx-3 items-center">
+            <div className="col-auto d-flex">
+              <Icon name="search" />
+            </div>
+            <div className="col">
+              <input
+                type="text"
+                className="icon-search-input"
+                placeholder={'Search ' + availableIcons.length + ' icons'}
+                onChange={(e) => setSearchPattern(e.target.value.toLowerCase())}
+              />
+            </div>
+            <CategorySelect selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
+            <StrokeSelect stroke={stroke} setStroke={setStroke} />
+            <SizeSelect size={size} setSize={setSize} />
           </div>
-          <div className="col">
-            <input
-              type="text"
-              className="icon-search-input"
-              placeholder={'Search ' + availableIcons.length + ' icons'}
-              onChange={(e) => setSearchPattern(e.target.value.toLowerCase())}
-            />
-          </div>
-          <CategorySelect selectedCategory={selectedCategory} setSelectedCategory={setSelectedCategory} />
-          <StrokeSelect stroke={stroke} setStroke={setStroke} />
-          <SizeSelect size={size} setSize={setSize} />
-        </div>
-      </Container>
+        </Container>
+      )}
     </section>
   );
 }

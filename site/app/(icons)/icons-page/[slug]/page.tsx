@@ -11,13 +11,13 @@ import { Container } from '@tabler/react';
 import React, { useEffect, useState } from 'react';
 
 const IconPreviewPage = ({ params }: { params: { slug: string } }) => {
-  const [icon, setIcon] = useState<IconType | null>(null);
+  const [icon, setIcon] = useState<IconType | undefined>(undefined);
   useEffect(() => {
     IconsApi.getIcon(params.slug).then((icon: IconType) => setIcon(icon));
   }, [params.slug]);
   const clipboard = useClipboard();
 
-  if (!icon) {
+  if (icon === null) {
     return (
       <>
         <section className="section section-light">
@@ -31,16 +31,20 @@ const IconPreviewPage = ({ params }: { params: { slug: string } }) => {
 
   return (
     <>
-      <section className="section pb-0">
-        <Container className="icon-preview-container">
-          <IconInfo icon={icon} clipboard={clipboard} />
-          <IconCodes icon={icon} clipboard={clipboard} />
-        </Container>
-      </section>
-      <section className="section section-white pt-4">
-        <SectionDivider /> {/* TODO Not visible*/}
-        <IconDemo name={icon.name} svg={icon.svg} />
-      </section>
+      {icon !== undefined && (
+        <>
+          <section className="section pb-0">
+            <Container className="icon-preview-container">
+              <IconInfo icon={icon} clipboard={clipboard} />
+              <IconCodes icon={icon} clipboard={clipboard} />
+            </Container>
+          </section>
+          <section className="section section-white pt-4">
+            <SectionDivider /> {/* TODO Not visible*/}
+            <IconDemo name={icon.name} svg={icon.svg} />
+          </section>
+        </>
+      )}
     </>
   );
 };

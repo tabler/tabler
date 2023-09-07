@@ -1,18 +1,21 @@
+'use client';
+
 import IconSvg from '@/components/IconSvg';
-import { icons } from '@/config/tabler';
 import { groupBy, sortByKeys } from '@/helpers';
 import { IconsType } from '@/types';
 import { Container } from '@tabler/react';
-
-export const metadata = {
-  title: 'Tabler Icons changelog',
-  description: 'Discover the latest Tabler Icons',
-};
+import { useEffect, useState } from 'react';
+import * as IconsApi from '@/data/icons-api';
 
 export default function ChangelogPage() {
-  const iconsGroupedByVersion = ((icons) => {
-    return sortByKeys(groupBy(Object.values(icons), 'version'), 'desc');
-  })(icons);
+  const [groupedIcons, setGroupedIcons] = useState({});
+  useEffect(() => {
+    IconsApi.getIcons().then((data) => {
+      if (data) {
+        setGroupedIcons(sortByKeys(groupBy(data.icons, 'version'), 'desc'));
+      }
+    });
+  }, []);
 
   return (
     <section className="section">
@@ -22,7 +25,7 @@ export default function ChangelogPage() {
         </div>
         <div className="divider-y11">
           {/* TODO Add styles for divider-y-11 class */}
-          {Object.entries<IconsType>(iconsGroupedByVersion).map(([version, icons]) => (
+          {Object.entries<IconsType>(groupedIcons).map(([version, icons]) => (
             <div className="row" key={version}>
               <div className="sm:col-3">
                 <h4 id={version}>
@@ -33,7 +36,12 @@ export default function ChangelogPage() {
               <div className="col">
                 <div>
                   {icons.map((icon) => (
-                    <a key={icon.name} className="text-reset icon-demo-icon icon-demo-size-32 icon-demo-stroke-150 tooltip" href={'./' + icon.name} data-title={icon.name}>
+                    <a
+                      key={icon.name}
+                      className="text-reset icon-demo-icon icon-demo-size-32 icon-demo-stroke-150 tooltip"
+                      href={'./' + icon.name}
+                      data-title={icon.name}
+                    >
                       <IconSvg svg={icon.svg} />
                     </a>
                   ))}

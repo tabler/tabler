@@ -75,7 +75,7 @@ const IconBox = ({
 };
 
 export default function IconsPage() {
-  const [filteredIcons, setFilteredIcons] = useState<IconsType>([]);
+  const [filteredIcons, setFilteredIcons] = useState<IconsType | undefined>(undefined);
   const [stroke, setStroke] = useLocalStorage<number>('icon-stroke', 1.25);
   const [size, setSize] = useLocalStorage<number>('icon-size', 24);
 
@@ -88,7 +88,7 @@ export default function IconsPage() {
         size={size}
         setSize={setSize}
       />
-      <IconsList filteredIcons={filteredIcons} stroke={stroke} size={size} />
+      {filteredIcons && <IconsList filteredIcons={filteredIcons} stroke={stroke} size={size} />}
     </>
   );
 }
