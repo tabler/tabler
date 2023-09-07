@@ -1,18 +1,18 @@
 'use client';
 
 import IconSvg from '@/components/IconSvg';
-import { groupBy, sortByKeys } from '@/helpers';
+import * as IconsApi from '@/data/icons-api';
+import { groupBy } from '@/helpers';
 import { IconsType } from '@/types';
 import { Container } from '@tabler/react';
 import { useEffect, useState } from 'react';
-import * as IconsApi from '@/data/icons-api';
 
 export default function ChangelogPage() {
   const [groupedIcons, setGroupedIcons] = useState({});
   useEffect(() => {
     IconsApi.getIcons().then((data) => {
       if (data) {
-        setGroupedIcons(sortByKeys(groupBy(data.icons, 'version'), 'desc'));
+        setGroupedIcons(sortByVersionDesc(groupBy(data.icons, 'version')));
       }
     });
   }, []);
@@ -54,3 +54,16 @@ export default function ChangelogPage() {
     </section>
   );
 }
+
+const sortByVersionDesc = function (xs: {}) {
+  const sorted = Object.keys(xs).sort((a, b) => {
+    const valueA = a.split('.').map((a) => +a);
+    const valueB = b.split('.').map((b) => +b);
+
+    return valueA[0] === valueB[0] ? valueA[1] - valueB[1] : valueA[0] - valueB[0];
+  });
+  return sorted.reverse().reduce((obj, key) => {
+    obj[key] = xs[key];
+    return obj;
+  }, {});
+};
