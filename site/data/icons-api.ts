@@ -15,7 +15,7 @@ export const getIcons = async (
 };
 
 export const getIcon = async (name: string): Promise<IconType | null> => {
-  const response = await fetch(`api/icons/${name}`, { method: 'GET' });
+  const response = await fetch(`../api/icons/${name}`, { method: 'GET' });
   if (response.status === 200) {
     return response.json();
   }
