@@ -13,3 +13,8 @@ export const getIcons = async (
   });
   return response.json();
 };
+
+export const getCategories = async (): Promise<string[]> => {
+  const response = await fetch('api/icons/categories', { method: 'GET' });
+  return response.json();
+};

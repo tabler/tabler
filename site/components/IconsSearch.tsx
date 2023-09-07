@@ -1,6 +1,5 @@
 import Icon from '@/components/Icon';
-import { icons } from '@/config/tabler';
-import { getIcons } from '@/data/icons-api';
+import * as IconsApi from '@/data/icons-api';
 import Fuse from 'fuse.js';
 import { IconsType } from '@/types';
 import { Container } from '@tabler/react';
@@ -11,13 +10,10 @@ const fuseOptions = {
 };
 
 const CategorySelect = ({ selectedCategory, setSelectedCategory }) => {
-  const categories = [
-    ...new Set(
-      Object.values(icons)
-        .map((icon) => icon.category)
-        .filter((category) => category !== ''),
-    ),
-  ].sort();
+  const [categories, setCategories] = useState<string[]>([]);
+  IconsApi.getCategories().then((categories: string[]) => {
+    setCategories(categories);
+  });
 
   return (
     <div className="col-auto d-flex items-center">
@@ -81,7 +77,7 @@ export default function IconsSearch({ setFilteredIcons, stroke, setStroke, size,
   let [selectedCategory, setSelectedCategory] = useState('All');
 
   useEffect(() => {
-    getIcons(selectedCategory).then((data) => {
+    IconsApi.getIcons(selectedCategory).then((data) => {
       setAvailableIcons(data.icons);
     });
   }, [selectedCategory]);
