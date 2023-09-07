@@ -4,13 +4,17 @@ import IconCodes from '@/components/icon-preview/IconCodes';
 import IconDemo from '@/components/icon-preview/IconDemo';
 import IconInfo from '@/components/icon-preview/IconInfo';
 import SectionDivider from '@/components/SectionDivider';
-import { icons } from '@/config/tabler';
+import * as IconsApi from '@/data/icons-api';
 import { useClipboard } from '@/hooks';
+import { IconType } from '@/types';
 import { Container } from '@tabler/react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 const IconPreviewPage = ({ params }: { params: { slug: string } }) => {
-  const icon = Object.values(icons).find((i) => i.name == params.slug);
+  const [icon, setIcon] = useState<IconType | null>(null);
+  useEffect(() => {
+    IconsApi.getIcon(params.slug).then((icon: IconType) => setIcon(icon));
+  }, [params.slug]);
   const clipboard = useClipboard();
 
   if (!icon) {

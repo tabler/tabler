@@ -11,9 +11,9 @@ const fuseOptions = {
 
 const CategorySelect = ({ selectedCategory, setSelectedCategory }) => {
   const [categories, setCategories] = useState<string[]>([]);
-  IconsApi.getCategories().then((categories: string[]) => {
-    setCategories(categories);
-  });
+  useEffect(() => {
+    IconsApi.getCategories().then((categories: string[]) => setCategories(categories));
+  }, []);
 
   return (
     <div className="col-auto d-flex items-center">
