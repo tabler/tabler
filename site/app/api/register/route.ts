@@ -1,8 +1,8 @@
 // import prisma from '@/lib/prisma';
 // import { hash } from 'bcrypt';
-// import { NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 
-// export async function POST(req: Request) {
+export async function POST(req: Request) {
 //   try {
 //     const { name, email, password } = (await req.json()) as {
 //       name: string;
@@ -31,12 +31,12 @@
 //       },
 //     });
 //   } catch (error: any) {
-//     return new NextResponse(
-//       JSON.stringify({
-//         status: 'error',
-//         message: error.message,
-//       }),
-//       { status: 500 }
-//     );
+    return new NextResponse(
+      JSON.stringify({
+        status: 'error',
+        // message: error.message,
+      }),
+      { status: 500 }
+    );
 //   }
-// }
+}
