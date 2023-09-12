@@ -63,7 +63,6 @@ export default function IconInfo({ icon, clipboard }: { icon: IconType; clipboar
               <span className="text-muted">Added:&nbsp;</span>
               <a className="link-muted" href={'./changelog#' + icon.version}>
                 {' '}
-                {/* Add changelog site */}
                 {icon.version}
               </a>
             </div>
