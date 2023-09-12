@@ -16,8 +16,8 @@ export async function GET(request: Request, { params }: { params: { slug: string
 
     const { searchParams } = new URL(request.url);
     const size = +(searchParams.get('size') ?? 200);
-    const withName = searchParams.get('withName') === 'true';
-    const withTags = searchParams.get('withTags') === 'true';
+    const withName = searchParams.get('withName') !== 'false';
+    const withTags = searchParams.get('withTags') !== 'false';
 
     return new ImageResponse(
       (
