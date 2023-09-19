@@ -1,0 +1,59 @@
+.alert {
+  --#{$prefix}alert-color: #{var(--#{$prefix}secondary)};
+  --tblr-alert-bg: #{var(--#{$prefix}surface)};
+  border: $alert-border-width var(--#{$prefix}border-style) $alert-border-color;
+  border-left: .25rem var(--#{$prefix}border-style) var(--#{$prefix}alert-color);
+  box-shadow: $alert-shadow;
+
+  >:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.alert-important {
+  border-color: transparent;
+  background: var(--#{$prefix}alert-color);
+  color: #fff;
+
+  .alert-icon,
+  .alert-link,
+  .alert-title {
+    color: inherit;
+  }
+
+  .alert-link:hover {
+    color: inherit;
+  }
+
+  .btn-close {
+    filter: var(--#{$prefix}btn-close-white-filter);
+  }
+}
+
+.alert-link, {
+  &,
+  &:hover {
+    color: var(--#{$prefix}alert-color);
+  }
+}
+
+@each $name, $color in $theme-colors {
+  .alert-#{$name} {
+    --#{$prefix}alert-color: var(--#{$prefix}#{$name});
+  }
+}
+
+.alert-icon {
+  color: var(--#{$prefix}alert-color);
+  width: 1.5rem !important;
+  height: 1.5rem !important;
+  margin: -.125rem $alert-padding-x -.125rem 0;
+}
+
+.alert-title {
+  font-size: $h4-font-size;
+  line-height: $h4-line-height;
+  font-weight: var(--#{$prefix}font-weight-bold);
+  margin-bottom: .25rem;
+  color: var(--#{$prefix}alert-color);
+}

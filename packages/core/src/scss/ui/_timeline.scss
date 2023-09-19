@@ -1,0 +1,61 @@
+//
+// Timeline
+//
+.timeline {
+  --#{$prefix}timeline-icon-size: #{$avatar-size};
+  position: relative;
+  list-style: none;
+  padding: 0;
+}
+
+//
+// Timeline event
+//
+.timeline-event {
+  position: relative;
+
+  &:not(:last-child) {
+    margin-bottom: var(--#{$prefix}page-padding);
+
+    &:before {
+      content: "";
+      position: absolute;
+      top: var(--#{$prefix}timeline-icon-size);
+      left: calc(var(--#{$prefix}timeline-icon-size) / 2);
+      bottom: calc(-1 * var(--#{$prefix}page-padding));
+      width: var(--#{$prefix}border-width);
+      background-color: var(--#{$prefix}border-color);
+      border-radius: var(--#{$prefix}border-radius);
+    }
+  }
+}
+
+.timeline-event-icon {
+  position: absolute;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: var(--#{$prefix}timeline-icon-size, $avatar-size);
+  height: var(--#{$prefix}timeline-icon-size, $avatar-size);
+  background: var(--#{$prefix}gray-200);
+  color: var(--#{$prefix}secondary);
+  border-radius: var(--#{$prefix}border-radius);
+  z-index: 5
+}
+
+.timeline-event-card {
+  margin-left: calc(var(--#{$prefix}timeline-icon-size, $avatar-size) + var(--#{$prefix}page-padding));
+}
+
+//
+// Simple timeline
+//
+.timeline-simple {
+  .timeline-event-icon {
+    display: none;
+  }
+
+  .timeline-event-card {
+    margin-left: 0;
+  }
+}

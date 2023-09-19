@@ -1,0 +1,128 @@
+.list-group {
+  margin-left: 0;
+  margin-right: 0;
+}
+
+.list-group-header {
+  background: $list-group-header-bg;
+  padding: .5rem $list-group-item-padding-x;
+  font-size: $h5-font-size;
+  font-weight: var(--#{$prefix}font-weight-medium);
+  line-height: 1;
+  text-transform: uppercase;
+  color: $list-group-header-color;
+  border-bottom: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
+
+  .list-group-flush > & {
+    &:last-child {
+      border-bottom-width: 0;
+    }
+  }
+}
+
+.list-group-item {
+  background-color: inherit;
+}
+
+.list-group-item.active {
+  background-color: $dropdown-link-hover-bg;
+  border-left-color: $component-active-bg;
+  border-left-width: $border-width-wide;
+}
+
+.list-group-item {
+  &:active,
+  &:focus,
+  &:hover {
+    background-color: $dropdown-link-hover-bg;
+  }
+}
+
+.list-group-item {
+  &.disabled,
+  &:disabled {
+    color: $gray-500;
+    background-color: $dropdown-link-hover-bg;
+  }
+}
+
+.list-bordered {
+  .list-item {
+    border-top: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
+    margin-top: -1px;
+
+    &:first-child {
+      border-top: none;
+    }
+  }
+}
+
+.list-group-hoverable {
+  .list-group-item-actions {
+    opacity: 0;
+    @include transition(opacity $transition-time);
+  }
+
+  .list-group-item:hover .list-group-item-actions,
+  .list-group-item-actions.show {
+    opacity: 1;
+  }
+}
+
+
+
+.list-group-transparent {
+  --#{$prefix}list-group-border-radius: 0;
+  margin: 0 (- $list-group-item-padding-x);
+
+  .list-group-item {
+    background: none;
+    border: 0;
+
+    .icon {
+      color: var(--#{$prefix}secondary);
+    }
+
+    &.active {
+      font-weight: var(--#{$prefix}font-weight-bold);
+      color: inherit;
+      background: $list-group-active-bg;
+
+      .icon {
+        color: inherit;
+      }
+    }
+  }
+}
+
+
+.list-separated-item {
+  padding: 1rem 0;
+
+  &:first-child {
+    padding-top: 0;
+  }
+
+  &:last-child {
+    padding-bottom: 0;
+  }
+
+  & + & {
+    border-top: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
+  }
+}
+
+/**
+Inline list
+ */
+.list-inline-item:not(:last-child) {
+  margin-right: auto;
+  margin-inline-end: $list-inline-padding;
+}
+
+.list-inline-dots {
+  .list-inline-item + .list-inline-item:before {
+    content: ' · ';
+    margin-inline-end: $list-inline-padding;
+  }
+}

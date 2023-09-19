@@ -1,0 +1,72 @@
+// stylelint-disable declaration-no-important
+
+body {
+  &:not(.theme-dark):not([data-bs-theme=dark]) {
+    .hide-theme-light {
+      display: none !important;
+    }
+  }
+
+  &.theme-dark,
+  &[data-bs-theme=dark] {
+    .hide-theme-dark {
+      display: none !important;
+    }
+  }
+}
+
+@if $enable-dark-mode {
+  @include color-mode(dark, true) {
+    --#{$prefix}body-color: #{$body-color-dark};
+    --#{$prefix}body-color-rgb: #{to-rgb($body-color-dark)};
+    --#{$prefix}muted: #{$text-secondary-dark};
+
+    --#{$prefix}body-bg: #{$darken-dark};
+    --#{$prefix}body-bg-rgb: #{to-rgb($darken-dark)};
+    --#{$prefix}emphasis-color: #{$body-emphasis-color-dark};
+    --#{$prefix}emphasis-color-rgb: #{to-rgb($body-emphasis-color-dark)};
+
+    --#{$prefix}bg-forms: #{$darken-dark};
+    --#{$prefix}bg-surface: #{$dark};
+    --#{$prefix}bg-surface-dark: #{$darken-dark};
+    --#{$prefix}bg-surface-secondary: #{$lighten-dark};
+    --#{$prefix}bg-surface-tertiary: #{$darken-dark};
+
+    --#{$prefix}link-color: #{lighten($primary, 8%)};
+    --#{$prefix}link-hover-color: #{$primary};
+
+    --#{$prefix}active-bg: #{$lighten-dark};
+    --#{$prefix}disabled-color: var(--#{$prefix}gray-700);
+
+    --#{$prefix}border-color: var(--#{$prefix}dark-mode-border-color);
+    --#{$prefix}border-color-translucent: var(
+      --#{$prefix}dark-mode-border-color-translucent
+    );
+    --#{$prefix}border-dark-color: var(--#{$prefix}dark-mode-border-dark-color);
+    --#{$prefix}border-color-active: var(
+      --#{$prefix}dark-mode-border-color-active
+    );
+
+    --#{$prefix}btn-color: #{$darken-dark};
+
+    --#{$prefix}code-color: var(--#{$prefix}body-color);
+    --#{$prefix}code-bg: #{$border-dark-color-dark};
+
+    @each $color, $value in $theme-colors {
+      --#{$prefix}#{$color}-lt: #{theme-color-lighter($value, $dark)};
+      --#{$prefix}#{$color}-lt-rgb: #{to-rgb(
+          theme-color-lighter($value, $dark)
+        )};
+    }
+
+    .navbar-brand-autodark {
+      .navbar-brand-image {
+        @include autodark-image;
+      }
+    }
+  }
+
+  body[data-bs-theme=dark] [data-bs-theme=light] {
+    @extend [data-bs-theme=dark];
+  }
+}

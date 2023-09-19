@@ -1,0 +1,40 @@
+// All colors
+@each $color, $value in map-merge($theme-colors, ( white: $white )) {
+  .bg-#{"" + $color} {
+    --#{$prefix}bg-opacity: 1;
+    background-color: rgba(var(--#{$prefix}#{$color}-rgb), var(--#{$prefix}bg-opacity)) !important;
+  }
+
+  .bg-#{"" + $color}-lt {
+    --#{$prefix}bg-opacity: 1;
+    --#{$prefix}text-opacity: 1;
+    color: rgba(var(--#{$prefix}#{$color}-rgb), var(--#{$prefix}text-opacity)) !important;
+    background-color: rgba(var(--#{$prefix}#{$color}-lt-rgb), var(--#{$prefix}bg-opacity)) !important;
+  }
+
+  .border-#{"" + $color} {
+    border-color: $value !important;
+  }
+}
+
+@each $color, $value in $theme-colors {
+  .text-#{"" + $color} {
+    --#{$prefix}text-opacity: 1;
+    color: rgba(var(--#{$prefix}#{$color}-rgb), var(--#{$prefix}text-opacity)) !important;
+  }
+
+  .text-#{"" + $color}-fg {
+    color: var(--#{$prefix}#{$color}-fg) !important;
+  }
+}
+
+@each $color, $value in $gray-colors {
+  .bg-#{"" + $color} {
+    --#{$prefix}bg-opacity: .1;
+    background-color: rgba(var(--#{$prefix}#{$color}-rgb), var(--#{$prefix}bg-opacity)) !important;
+  }
+
+  .text-#{"" + $color}-fg {
+    color: color-contrast($value) !important;
+  }
+}

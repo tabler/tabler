@@ -1,0 +1,118 @@
+.avatar {
+  --#{$prefix}avatar-size: #{$avatar-size};
+  --#{$prefix}avatar-status-size: #{$avatar-status-size};
+  --#{$prefix}avatar-bg: #{$avatar-bg};
+  --#{$prefix}avatar-box-shadow: #{$avatar-box-shadow};
+  --#{$prefix}avatar-font-size: #{$avatar-font-size};
+  --#{$prefix}avatar-icon-size: #{$avatar-icon-size};
+  position: relative;
+  width: var(--#{$prefix}avatar-size);
+  height: var(--#{$prefix}avatar-size);
+  font-size: var(--#{$prefix}avatar-font-size);
+  font-weight: var(--#{$prefix}font-weight-medium);
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--#{$prefix}secondary);
+  text-align: center;
+  text-transform: uppercase;
+  vertical-align: bottom;
+  user-select: none;
+  background: var(--#{$prefix}avatar-bg) no-repeat center/cover;
+  border-radius: $avatar-border-radius;
+  box-shadow: var(--#{$prefix}avatar-box-shadow);
+
+  .icon {
+    width: var(--#{$prefix}avatar-icon-size);
+    height: var(--#{$prefix}avatar-icon-size);
+  }
+
+  .badge {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    border-radius: $border-radius-pill;
+    box-shadow: 0 0 0 calc(var(--#{$prefix}avatar-status-size) / 4) $card-bg;
+  }
+
+  @at-root a#{&} {
+    cursor: pointer;
+  }
+}
+
+.avatar-rounded {
+  border-radius: $border-radius-pill;
+}
+
+@each $avatar-size, $size in $avatar-sizes {
+  .avatar-#{$avatar-size} {
+    --#{$prefix}avatar-size: #{map-get($size, size)};
+    --#{$prefix}avatar-status-size: #{map-get($size, status-size)};
+    --#{$prefix}avatar-font-size: #{map-get($size, font-size)};
+    --#{$prefix}avatar-icon-size: #{map-get($size, icon-size)};
+  }
+
+  .avatar-#{$avatar-size} .badge:empty {
+    width: map-get($size, status-size);
+    height: map-get($size, status-size);
+  }
+}
+
+//
+// Avatar list
+//
+.avatar-list {
+  @include elements-list;
+
+  a.avatar {
+    &:hover {
+      z-index: 1;
+    }
+  }
+}
+
+.avatar-list-stacked {
+  display: block;
+  --#{$prefix}list-gap: 0;
+
+  .avatar {
+    margin-right: calc(#{$avatar-list-spacing} * var(--#{$prefix}avatar-size)) !important;
+    box-shadow: var(--#{$prefix}avatar-box-shadow), 0 0 0 2px var(--#{$prefix}card-cap-bg, var(--#{$prefix}card-bg, var(--#{$prefix}bg-surface)));
+  }
+}
+
+//
+// Avatar upload
+//
+.avatar-upload {
+  width: 4rem;
+  height: 4rem;
+  border: var(--#{$prefix}border-width) dashed var(--#{$prefix}border-color);
+  background: $form-check-input-bg;
+  flex-direction: column;
+  @include transition(color $transition-time, background-color $transition-time);
+
+  svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    stroke-width: 1;
+  }
+
+  &:hover {
+    border-color: var(--#{$prefix}primary);
+    color: var(--#{$prefix}primary);
+    text-decoration: none;
+  }
+}
+
+.avatar-upload-text {
+  font-size: $h6-font-size;
+  line-height: 1;
+  margin-top: .25rem;
+}
+
+.avatar-cover {
+  margin-top: calc(-.5 * var(--#{$prefix}avatar-size));
+  box-shadow: 0 0 0 .25rem var(--#{$prefix}card-bg, var(--#{$prefix}body-bg));
+}

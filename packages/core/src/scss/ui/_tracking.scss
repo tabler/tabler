@@ -1,0 +1,29 @@
+.tracking {
+  --#{$prefix}tracking-height: #{$tracking-height};
+  --#{$prefix}tracking-gap-width: #{$tracking-gap-width};
+  --#{$prefix}tracking-block-border-radius: #{$tracking-border-radius};
+  display: flex;
+  gap: var(--#{$prefix}tracking-gap-width);
+}
+
+.tracking-squares {
+  --#{$prefix}tracking-block-border-radius: var(--#{$prefix}border-radius-sm);
+
+  .tracking-block {
+    height: auto;
+
+    &:before {
+      content: "";
+      display: block;
+      padding-top: 100%;
+    }
+  }
+}
+
+.tracking-block {
+  flex: 1;
+  border-radius: var(--#{$prefix}tracking-block-border-radius);
+  height: var(--#{$prefix}tracking-height);
+  min-width: .25rem;
+  background: var(--#{$prefix}border-color);
+}

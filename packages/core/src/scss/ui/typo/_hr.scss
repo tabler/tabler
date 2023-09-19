@@ -1,0 +1,75 @@
+
+/**
+Horizontal rules
+ */
+.hr {
+  @extend hr;
+}
+
+/**
+Hr text
+ */
+.hr-text {
+  display: flex;
+  align-items: center;
+  margin: $hr-margin-y 0;
+  @include subheader;
+  height: 1px;
+
+  &:after,
+  &:before {
+    flex: 1 1 auto;
+    height: 1px;
+    background-color: var(--#{$prefix}border-color);
+  }
+
+  &:before {
+    content: "";
+    margin-right: .5rem;
+  }
+
+  &:after {
+    content: "";
+    margin-left: .5rem;
+  }
+
+  > *:first-child {
+    padding-right: .5rem;
+    padding-left: 0;
+    color: var(--#{$prefix}secondary);
+  }
+
+  &.hr-text-left {
+    &:before {
+      content: none;
+    }
+
+    & > *:first-child {
+      padding-right: .5rem;
+      padding-left: .5rem;
+    }
+  }
+
+  &.hr-text-right {
+    &:before {
+      content: "";
+    }
+
+    &:after {
+      content: none;
+    }
+
+    & > *:first-child {
+      padding-right: 0;
+      padding-left: .5rem;
+    }
+  }
+
+  .card > & {
+    margin: 0;
+  }
+}
+
+.hr-text-spaceless {
+  margin: -.5rem 0;
+}

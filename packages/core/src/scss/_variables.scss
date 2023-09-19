@@ -1,0 +1,932 @@
+$prefix: "tblr-" !default;
+
+// BASE CONFIG
+$enable-social-colors: true !default;
+$enable-extra-colors: true !default;
+$enable-gradients: false !default;
+$enable-shadows: true !default;
+$enable-navbar-vertical: true !default;
+$enable-dark-mode: true !default;
+$enable-negative-margins: false !default;
+$enable-rfs: false !default;
+$enable-cssgrid: true !default;
+
+// DARK MODE
+$color-mode-type: data !default;
+
+// ASSETS BASE
+$assets-base: ".." !default;
+
+// FONTS
+$font-google: null !default;
+$font-google-monospaced: null !default;
+$font-local: null !default;
+$font-icons: () !default;
+
+/* prettier-ignore */
+$font-family-sans-serif: unquote("#{if($font-local, "#{$font-local}, ", ' ')}#{if($font-google, "#{$font-google}, ", ' ')}") -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif !default;
+/* prettier-ignore */
+$font-family-monospace: unquote("#{if($font-google-monospaced, "#{$font-google-monospaced}, ", '')}") Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace;
+$font-family-serif: "Georgia", "Times New Roman", times, serif !default;
+
+//Icons
+$icon-stroke-width: 1.5 !default;
+$icon-size: 1.25rem !default;
+
+//Fonts
+$font-size-75: 0.75rem !default;
+$font-size-100: 0.875rem !default;
+$font-size-200: 1rem !default;
+$font-size-300: 1.25rem !default;
+$font-size-400: 1.5rem !default;
+$font-size-500: 1.75rem !default;
+$font-size-600: 2rem !default;
+$font-size-700: 2.5rem !default;
+
+$line-height-100: 1rem !default;
+$line-height-200: 1.25rem !default;
+$line-height-300: 1.5rem !default;
+$line-height-400: 1.75rem !default;
+$line-height-500: 2rem !default;
+$line-height-600: 2.5rem !default;
+$line-height-700: 3rem !default;
+
+$font-size-base: 0.875rem !default;
+$body-letter-spacing: 0 !default;
+
+$font-weight-light: 300 !default;
+$font-weight-normal: 400 !default;
+$font-weight-medium: 500 !default;
+$font-weight-bold: 600 !default;
+
+$headings-font-weight: var(--#{$prefix}font-weight-bold) !default;
+$headings-margin-bottom: var(--#{$prefix}spacer) !default;
+
+$font-weights: (
+  light: $font-weight-light,
+  normal: $font-weight-normal,
+  medium: $font-weight-medium,
+  bold: $font-weight-bold,
+  headings: $headings-font-weight,
+) !default;
+
+$line-height-base: divide(1.25rem, $font-size-base) !default;
+$line-height-sm: divide(1rem, $font-size-base) !default;
+$line-height-lg: divide(1.5rem, $font-size-base) !default;
+
+$h1-font-size: 1.5rem !default;
+$h1-line-height: 2rem !default;
+
+$h2-font-size: 1.25rem !default;
+$h2-line-height: 1.75rem !default;
+
+$h3-font-size: 1rem !default;
+$h3-line-height: 1.5rem !default;
+
+$h4-font-size: 0.875rem !default;
+$h4-line-height: 1.25rem !default;
+
+$h5-font-size: 0.75rem !default;
+$h5-line-height: 1rem !default;
+
+$h6-font-size: 0.625rem !default;
+$h6-line-height: 1rem !default;
+
+$small-font-size: 85.714285% !default;
+
+$font-sizes: (
+  1: $h1-font-size,
+  2: $h2-font-size,
+  3: $h3-font-size,
+  4: $h4-font-size,
+  5: $h5-font-size,
+  6: $h6-font-size,
+) !default;
+
+$line-heights: (
+  h1: $h1-line-height,
+  h2: $h2-line-height,
+  h3: $h3-line-height,
+  h4: $h4-line-height,
+  h5: $h5-line-height,
+  h6: $h6-line-height,
+) !default;
+
+$display-font-sizes: (
+  1: 5rem,
+  2: 4.5rem,
+  3: 4rem,
+  4: 3.5rem,
+  5: 3rem,
+  6: 2rem,
+) !default;
+
+$lead-font-size: $font-size-base !default;
+$lead-font-weight: var(--#{$prefix}font-weight-normal) !default;
+
+$blockquote-font-size: $font-size-base !default;
+
+// COLORS
+$min-contrast-ratio: 1.5 !default;
+$text-secondary-opacity: 0.7 !default;
+$text-secondary-light-opacity: 0.4 !default;
+$text-secondary-dark-opacity: 0.8 !default;
+
+$border-opacity: 0.16 !default;
+$border-light-opacity: 0.08 !default;
+$border-dark-opacity: 0.24 !default;
+$border-active-opacity: 0.48 !default;
+
+$gray-50: #fcfdfe !default;
+$gray-100: #f6f8fb !default;
+$gray-200: #eef1f4 !default;
+$gray-300: #dadfe5 !default;
+$gray-400: #bbc3cd !default;
+$gray-500: #929dab !default;
+$gray-600: #667382 !default;
+$gray-700: #3a4859 !default;
+$gray-800: #182433 !default;
+$gray-900: #040a11 !default;
+
+$black: #000000 !default;
+$white: #ffffff !default;
+
+$light: $gray-50 !default;
+$dark: $gray-800 !default;
+
+$bg-surface: var(--#{$prefix}white) !default;
+$bg-surface-secondary: var(--#{$prefix}gray-100) !default;
+$bg-surface-tertiary: var(--#{$prefix}gray-50) !default;
+$bg-surface-dark: var(--#{$prefix}dark) !default;
+
+$body-bg: $gray-100 !default;
+$body-color: $dark !default;
+$body-emphasis-color: $dark !default;
+
+$color-contrast-dark: $body-color !default;
+$color-contrast-light: $light !default;
+
+$blue: #0054a6 !default;
+$azure: #4299e1 !default;
+$indigo: #4263eb !default;
+$purple: #ae3ec9 !default;
+$pink: #d6336c !default;
+$red: #d63939 !default;
+$orange: #f76707 !default;
+$yellow: #f59f00 !default;
+$lime: #74b816 !default;
+$green: #2fb344 !default;
+$teal: #0ca678 !default;
+$cyan: #17a2b8 !default;
+
+$color-blue: #0054a6;
+$color-azure: #3586c9;
+$color-indigo: #4263eb;
+$color-purple: #ae3ec9;
+$color-pink: #d6336c;
+$color-red: #e73f3f;
+$color-orange: #f76707;
+$color-yellow: #f59f00;
+$color-lime: #74b816;
+$color-green: #2fb344;
+$color-teal: #0ca678;
+$color-cyan: #17a2b8;
+
+$text-secondary: $gray-600 !default;
+$text-secondary-light: $gray-500 !default;
+$text-secondary-dark: $gray-700 !default;
+
+$border-color: $gray-300 !default;
+$border-color-translucent: rgba(4, 32, 69, 0.14);
+
+$border-dark-color: $gray-400 !default;
+$border-dark-color-translucent: rgba(4, 32, 69, 0.27);
+
+$border-active-color: mix($text-secondary, #ffffff, percentage($border-active-opacity)) !default;
+$border-active-color-translucent: rgba($text-secondary, $border-active-opacity) !default;
+
+$active-bg: rgba(var(--#{$prefix}primary-rgb), 0.04) !default;
+$active-color: var(--#{$prefix}primary) !default;
+$active-border-color: var(--#{$prefix}primary) !default;
+
+$hover-bg: rgba(var(--#{$prefix}text-secondary-rgb), 0.04) !default;
+
+$disabled-bg: var(--#{$prefix}bg-surface-secondary) !default;
+$disabled-color: var(--#{$prefix}gray-300) !default;
+
+$primary: $blue !default;
+$secondary: $text-secondary !default;
+$success: $green !default;
+$info: $azure !default;
+$warning: $orange !default;
+$danger: $red !default;
+
+$link-color: $primary !default;
+
+$theme-colors: (
+  "primary": $primary,
+  "secondary": $text-secondary,
+  "success": $success,
+  "info": $info,
+  "warning": $warning,
+  "danger": $danger,
+  "light": $light,
+  "dark": $dark,
+  "muted": $text-secondary,
+) !default;
+
+$extra-colors: (
+  "blue": $blue,
+  "azure": $azure,
+  "indigo": $indigo,
+  "purple": $purple,
+  "pink": $pink,
+  "red": $red,
+  "orange": $orange,
+  "yellow": $yellow,
+  "lime": $lime,
+  "green": $green,
+  "teal": $teal,
+  "cyan": $cyan,
+) !default;
+
+$social-colors: (
+  "facebook": #1877f2,
+  "twitter": #1da1f2,
+  "linkedin": #0a66c2,
+  "google": #dc4e41,
+  "youtube": #ff0000,
+  "vimeo": #1ab7ea,
+  "dribbble": #ea4c89,
+  "github": #181717,
+  "instagram": #e4405f,
+  "pinterest": #bd081c,
+  "vk": #6383a8,
+  "rss": #ffa500,
+  "flickr": #0063dc,
+  "bitbucket": #0052cc,
+  "tabler": #0054a6,
+) !default;
+
+$gray-colors: (
+  gray-50: $gray-50,
+  gray-100: $gray-100,
+  gray-200: $gray-200,
+  gray-300: $gray-300,
+  gray-400: $gray-400,
+  gray-500: $gray-500,
+  gray-600: $gray-600,
+  gray-700: $gray-700,
+  gray-800: $gray-800,
+  gray-900: $gray-900,
+) !default;
+
+$theme-colors: map-merge($theme-colors, map-merge($extra-colors, $social-colors));
+
+// Borders
+$border-width: 1px !default;
+$border-width-wide: 2px !default;
+
+$border-radius-sm: 2px !default;
+$border-radius: 4px !default;
+$border-radius-lg: 8px !default;
+$border-radius-pill: 100rem !default;
+
+// Icons
+$icon-color: var(--#{$prefix}gray-500) !default;
+
+// Code
+$code-color: var(--#{$prefix}gray-600) !default;
+$code-font-size: $small-font-size !default;
+$code-line-height: 1.25rem !default;
+$code-bg: var(--#{$prefix}bg-surface-secondary) !default;
+
+$pre-padding: 1rem !default;
+$pre-bg: var(--#{$prefix}bg-surface-dark) !default;
+$pre-color: var(--#{$prefix}light) !default;
+
+$kbd-padding-x: 0.5rem !default;
+$kbd-padding-y: 0.25rem !default;
+$kbd-font-weight: var(--#{$prefix}font-weight-medium) !default;
+$kbd-font-size: var(--#{$prefix}font-size-h5) !default;
+$kbd-border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color) !default;
+$kbd-color: var(--#{$prefix}text-secondary-dark) !default;
+$kbd-bg: var(--#{$prefix}code-bg) !default;
+$kbd-border-radius: var(--#{$prefix}border-radius) !default;
+
+// Avatars
+$avatar-size: 2.5rem !default;
+$avatar-status-size: .75rem !default;
+$avatar-font-size: 1rem !default;
+$avatar-icon-size: 1.5rem !default;
+$avatar-bg: var(--#{$prefix}bg-surface-secondary) !default;
+$avatar-sizes: (
+  "xxs": (
+    size: 1rem,
+    font-size: .5rem,
+    icon-size: .75rem,
+    status-size: .25rem
+  ),
+  "xs": (
+    size: 1.25rem,
+    font-size: $h6-font-size,
+    icon-size: 1rem,
+    status-size: .375rem
+  ),
+  "sm": (
+    size: 2rem,
+    font-size: $h5-font-size,
+    icon-size: 1.25rem,
+    status-size: .5rem
+  ),
+  "md": (
+    size: 2.5rem,
+    font-size: $h4-font-size,
+    icon-size: 1.5rem,
+    status-size: .75rem
+  ),
+  "lg": (
+    size: 3rem,
+    font-size: $h2-font-size,
+    icon-size: 2rem,
+    status-size: .75rem
+  ),
+  "xl": (
+    size: 5rem,
+    font-size: 2rem,
+    icon-size: 3rem,
+    status-size: 1rem
+  ),
+  "2xl": (
+    size: 7rem,
+    font-size: 3rem,
+    icon-size: 5rem,
+    status-size: 1rem
+  ),
+) !default;
+$avatar-border-radius: var(--#{$prefix}border-radius) !default;
+$avatar-font-size: $h4-font-size !default;
+$avatar-box-shadow: var(--#{$prefix}box-shadow-border) !default;
+$avatar-list-spacing: -0.5;
+
+$link-decoration: none !default;
+$link-hover-decoration: underline !default;
+
+// Typography
+$hr-opacity: $border-opacity !default;
+$hr-margin-y: 2rem !default;
+
+// Caret
+$caret-width: 0.36em !default;
+$caret-spacing: 0.4em !default;
+
+//Sizing
+$page-padding: var(--#{$prefix}spacer-3) !default;
+$page-padding-sm: var(--#{$prefix}spacer-2) !default;
+$page-padding-y: var(--#{$prefix}spacer-4) !default;
+
+// Sizing
+$container-padding-x: calc(var(--#{$prefix}page-padding) * 2) !default;
+$grid-gutter-width: var(--#{$prefix}page-padding) !default;
+
+// Grid
+$grid-gutter-width: 1rem !default;
+
+$container-variations: (
+  slim: 16rem,
+  tight: 30rem,
+  narrow: 45rem,
+) !default;
+
+// Spacers
+$spacer-0: 0 !default;
+$spacer-1: 0.25rem !default;
+$spacer-2: 0.5rem !default;
+$spacer-3: 1rem !default;
+$spacer-4: 1.5rem !default;
+$spacer-5: 2rem !default;
+$spacer-6: 3rem !default;
+$spacer-7: 5rem !default;
+$spacer-8: 8rem !default;
+
+$spacer: $spacer-3 !default;
+
+$spacers: (
+  0: 0,
+  1: $spacer-1,
+  2: $spacer-2,
+  3: $spacer-3,
+  4: $spacer-4,
+  5: $spacer-5,
+  6: $spacer-6,
+  7: $spacer-7,
+  8: $spacer-8,
+) !default;
+
+$negative-spacers: if($enable-negative-margins, negativify-map($spacers), null) !default;
+
+// Sizes
+$size-spacers: (
+  auto: auto,
+  px: 1px,
+  full: 100%,
+) !default;
+
+$size-values: map-merge(
+  $spacers,
+  (
+    25: 25%,
+    33: 33.33333%,
+    50: 50%,
+    66: 66.66666%,
+    75: 75%,
+    100: 100%,
+    auto: auto,
+  )
+) !default;
+
+// Aspect ratios
+$aspect-ratios: (
+  "1x1": 100%,
+  "2x1": calc(1 / 2 * 100%),
+  "1x2": calc(2 / 1 * 100%),
+  "3x1": calc(1 / 3 * 100%),
+  "1x3": calc(3 / 1 * 100%),
+  "4x3": calc(3 / 4 * 100%),
+  "3x4": calc(4 / 3 * 100%),
+  "16x9": calc(9 / 16 * 100%),
+  "9x16": calc(16 / 9 * 100%),
+  "21x9": calc(9 / 21 * 100%),
+  "9x21": calc(21 / 9 * 100%),
+) !default;
+
+// Shadows
+$box-shadow: rgba(var(--#{$prefix}body-color-rgb), 0.04) 0 2px 4px 0 !default;
+$box-shadow-transparent: 0 0 0 0 transparent !default;
+$box-shadow-border: inset 0 0 0 1px var(--#{$prefix}border-color-translucent) !default;
+$box-shadow-input: 0 1px 1px rgba(var(--#{$prefix}body-color-rgb), 0.06) !default;
+$box-shadow-card: 0 0 4px rgba(var(--#{$prefix}body-color-rgb), 0.04) !default;
+$box-shadow-card-hover: rgba(var(--#{$prefix}body-color-rgb), 0.16) 0 2px 16px 0 !default;
+$box-shadow-dropdown: 0 16px 24px 2px rgba(0, 0, 0, 0.07), 0 6px 30px 5px rgba(0, 0, 0, 0.06), 0 8px 10px -5px rgba(0, 0, 0, 0.1) !default;
+
+$box-shadows: (
+  box-shadow: $box-shadow,
+  box-shadow-border: $box-shadow-border,
+  box-shadow-transparent: $box-shadow-transparent,
+  box-shadow-input: $box-shadow-input,
+  box-shadow-card: $box-shadow-card,
+  box-shadow-card-hover: $box-shadow-card-hover,
+  box-shadow-dropdown: $box-shadow-dropdown,
+) !default;
+
+$box-shadow-inset: 0 0 transparent !default;
+
+// Focus
+$focus-ring-width: 0.25rem !default;
+$focus-ring-opacity: 0.25 !default;
+$focus-ring-color: rgba(var(--#{$prefix}primary-rgb), $focus-ring-opacity) !default;
+$focus-ring-blur: 0 !default;
+
+// Transitions
+$transition-time: 0.3s !default;
+
+// Overlay
+$overlay-gradient: linear-gradient(180deg, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.6) 100%) !default;
+
+// Accordion
+$accordion-bg: transparent !default;
+$accordion-color: var(--#{$prefix}body-color) !default;
+$accordion-border-color: var(--#{$prefix}border-color-translucent) !default;
+$accordion-icon-width: 1rem !default;
+
+$accordion-button-bg: transparent !default;
+$accordion-button-active-bg: transparent !default;
+$accordion-button-active-color: inherit !default;
+$accordion-button-focus-border-color: $accordion-border-color !default;
+
+// Alerts
+$alert-padding-x: 1rem !default;
+$alert-padding-y: 0.75rem !default;
+$alert-link-font-weight: var(--#{$prefix}font-weight-bold) !default;
+
+$alert-border-width: var(--#{$prefix}border-width) !default;
+$alert-border-color: var(--#{$prefix}border-color-translucent) !default;
+$alert-shadow: rgba($dark, 0.04) 0 2px 4px 0 !default;
+
+// Breadcrumb
+$breadcrumb-divider-color: var(--#{$prefix}secondary) !default;
+$breadcrumb-link-color: var(--#{$prefix}link-color) !default;
+$breadcrumb-active-color: inherit !default;
+$breadcrumb-active-font-weight: var(--#{$prefix}font-weight-bold) !default;
+$breadcrumb-disabled-color: var(--#{$prefix}disabled-color) !default;
+
+$breadcrumb-variants: (
+  dots: "·",
+  arrows: "›",
+  bullets: "\02022",
+) !default;
+
+// Badges
+$badge-font-size: $code-font-size !default;
+$badge-line-height: $code-line-height !default;
+$badge-font-weight: var(--#{$prefix}font-weight-medium) !default;
+$badge-padding-y: 0.25em !default;
+$badge-padding-x: 0.5em !default;
+$badge-empty-size: 0.5rem !default;
+$badge-color: var(--#{$prefix}secondary) !default;
+$badge-bg-color: var(--#{$prefix}bg-surface-secondary) !default;
+
+// Buttons
+$input-btn-line-height: $line-height-base !default;
+$input-btn-font-size: $font-size-base !default;
+$input-btn-font-family: var(--#{$prefix}font-sans-serif) !default;
+$input-btn-padding-y: 0.625rem - 0.0625rem !default;
+
+$input-btn-font-size-sm: $h5-font-size !default;
+$input-btn-padding-x-sm: 0.25rem !default;
+$input-btn-padding-y-sm: 0.125rem !default;
+
+$input-btn-font-size-lg: $h2-font-size !default;
+$input-btn-padding-x-lg: 0.75rem !default;
+$input-btn-padding-y-lg: 0.5rem !default;
+
+$input-btn-focus-width: 0.25rem !default;
+
+// Inputs
+$input-height: null !default;
+$input-height-sm: null !default;
+$input-height-lg: null !default;
+$input-border-radius: var(--#{$prefix}border-radius) !default;
+$input-color: var(--#{$prefix}body-color) !default;
+$input-focus-color: var(--#{$prefix}body-color) !default;
+$input-box-shadow: var(--#{$prefix}box-shadow-input) !default;
+
+// Buttons
+$btn-disabled-opacity: 0.4 !default;
+$btn-padding-x: 1rem !default;
+$btn-font-weight: var(--#{$prefix}font-weight-medium) !default;
+$btn-border-color: var(--#{$prefix}border-color) !default;
+$btn-border-radius: var(--#{$prefix}border-radius) !default;
+$btn-box-shadow: var(--#{$prefix}box-shadow-input) !default;
+
+// Cards
+$card-title-spacer-y: 1.25rem !default;
+$card-box-shadow: var(--#{$prefix}shadow-card) !default;
+$card-hover-box-shadow: var(--#{$prefix}shadow-card-hover) !default;
+
+$card-bg: var(--#{$prefix}bg-surface) !default;
+$card-bg-hover: $white !default;
+$card-color: inherit !default;
+
+$card-border-width: var(--#{$prefix}border-width) !default;
+$card-border-color: var(--#{$prefix}border-color-translucent) !default;
+$card-border-radius: var(--#{$prefix}border-radius) !default;
+
+$card-spacer-x: 1.25rem !default;
+$card-spacer-y: 1.25rem !default;
+
+$card-cap-bg: var(--#{$prefix}bg-surface-tertiary) !default;
+$card-cap-color: inherit !default;
+$card-cap-padding-x: $card-spacer-x !default;
+$card-cap-padding-y: $card-spacer-y !default;
+
+$card-status-size: $border-width-wide !default;
+$card-group-margin: 1.5rem !default;
+
+$card-stamp-opacity: 0.2 !default;
+
+$card-ribbon-margin: 0.25rem !default;
+$card-ribbon-border-radius: var(--#{$prefix}border-radius) !default;
+$card-ribbon-font-size: $h6-font-size !default;
+
+$card-header-tabs-bg: var(--#{$prefix}bg-surface-tertiary) !default;
+
+$cards-grid-gap: var(--#{$prefix}page-padding) !default;
+$cards-grid-breakpoint: lg !default;
+
+// Carousel
+$carousel-control-color: $white !default;
+$carousel-control-icon-width: 1.5rem !default;
+$carousel-control-prev-icon-bg: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='#{$carousel-control-color}' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='15 18 9 12 15 6'></polyline></svg>") !default;
+$carousel-control-next-icon-bg: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='#{$carousel-control-color}' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='9 18 15 12 9 6'></polyline></svg>") !default;
+
+$carousel-indicator-thumb-opacity: 0.75 !default;
+$carousel-indicator-thumb-width: 4rem !default;
+$carousel-indicator-dot-width: 0.5rem !default;
+
+// Close
+$btn-close-width: 1em !default;
+$btn-close-opacity: 0.4 !default;
+$btn-close-color: $body-color !default;
+
+// Datagrid
+$datagrid-padding: 1.5rem !default;
+$datagrid-item-width: 15rem !default;
+
+// Dropdown
+$dropdown-bg: var(--#{$prefix}bg-surface) !default;
+$dropdown-item-padding-x: 0.75rem !default;
+$dropdown-item-padding-y: 0.5rem !default;
+$dropdown-font-size: $font-size-base !default;
+$dropdown-border-color: var(--#{$prefix}border-color-translucent) !default;
+$dropdown-padding-y: 0.25rem !default;
+$dropdown-link-color: inherit !default;
+$dropdown-link-hover-bg: $hover-bg !default;
+$dropdown-link-hover-color: inherit !default;
+$dropdown-spacer: 1px !default;
+$dropdown-min-width: 11rem !default;
+$dropdown-max-width: 25rem !default;
+$dropdown-scrollable-height: 13rem !default;
+$dropdown-link-active-color: var(--#{$prefix}primary) !default;
+$dropdown-link-active-bg: var(--#{$prefix}active-bg) !default;
+$dropdown-box-shadow: var(--#{$prefix}box-shadow-dropdown) !default;
+
+$dropdown-divider-bg: $dropdown-border-color !default;
+$dropdown-divider-margin-y: var(--#{$prefix}spacer) !default;
+
+// Tooltip
+$tooltip-bg: var(--#{$prefix}bg-surface-dark) !default;
+$tooltip-color: var(--#{$prefix}light) !default;
+$tooltip-padding-y: var(--#{$prefix}spacer-2) !default;
+$tooltip-padding-x: var(--#{$prefix}spacer-2) !default;
+
+// Loader
+$loader-size: 2.5rem !default;
+
+// Lists
+$list-group-header-bg: var(--#{$prefix}bg-surface-tertiary) !default;
+$list-group-header-color: var(--#{$prefix}secondary) !default;
+
+$list-group-border-color: var(--#{$prefix}border-color) !default;
+$list-group-item-padding-y: $card-cap-padding-y !default;
+$list-group-item-padding-x: $card-cap-padding-x !default;
+
+// Modals
+$modal-backdrop-opacity: 0.24 !default;
+$modal-backdrop-bg: $dark !default;
+$modal-backdrop-blur: 4px !default;
+
+$modal-fade-transform: translate(0, -1rem) !default;
+
+$modal-content-border-color: transparent !default;
+$modal-content-bg: var(--#{$prefix}bg-surface) !default;
+$modal-content-border-radius: var(--#{$prefix}border-radius-lg) !default;
+$modal-content-inner-border-radius: subtract(var(--#{$prefix}modal-border-radius), 1px) !default;
+
+$modal-header-padding: 1.5rem !default;
+$modal-header-height: 3.5rem !default;
+$modal-header-border-width: var(--#{$prefix}border-width) !default;
+$modal-header-border-color: var(--#{$prefix}border-color) !default;
+$modal-header-bg: transparent !default;
+$modal-inner-padding: 1.5rem !default;
+
+$modal-footer-border-width: var(--#{$prefix}border-width) !default;
+$modal-footer-margin-between: 0.75rem !default;
+$modal-footer-bg: var(--#{$prefix}bg-surface-tertiary) !default;
+
+$modal-status-size: $border-width-wide !default;
+
+$modal-xl: 1140px !default;
+$modal-lg: 720px !default;
+$modal-md: 540px !default;
+$modal-sm: 380px !default;
+
+// Nav
+$nav-link-padding-y: 0.5rem !default;
+$nav-link-padding-x: 0.75rem !default;
+$nav-link-color: var(--#{$prefix}secondary) !default;
+$nav-link-disabled-color: var(--#{$prefix}disabled-color) !default;
+$nav-link-icon-size: $icon-size !default;
+$nav-link-icon-color: var(--#{$prefix}icon-color) !default;
+
+$nav-pills-link-active-color: var(--#{$prefix}primary) !default;
+$nav-pills-link-active-bg: var(--#{$prefix}active-bg) !default;
+
+$nav-bordered-border-color: var(--#{$prefix}border-color) !default;
+$nav-bordered-border-width: var(--#{$prefix}border-width) !default;
+$nav-bordered-link-active-color: var(--#{$prefix}primary) !default;
+$nav-bordered-link-active-border-color: var(--#{$prefix}primary) !default;
+$nav-bordered-link-active-border-width: 2 * $border-width !default;
+$nav-bordered-margin-x: 1.25rem !default;
+
+$nav-tabs-border-color: var(--#{$prefix}border-color) !default;
+$nav-tabs-border-radius: var(--#{$prefix}border-radius) !default;
+$nav-tabs-link-hover-border-color: $nav-tabs-border-color $nav-tabs-border-color $nav-tabs-border-color !default;
+$nav-tabs-link-active-border-color: $nav-tabs-link-hover-border-color !default;
+$nav-tabs-link-active-color: var(--#{$prefix}body-color) !default;
+$nav-tabs-bg: var(--#{$prefix}bg-surface-tertiary) !default;
+
+// Navbar
+$navbar-height: 3.5rem !default;
+$navbar-padding-y: 0.25rem !default;
+
+$navbar-border-width: var(--#{$prefix}border-width) !default;
+$navbar-border-color: var(--#{$prefix}border-color) !default;
+
+$navbar-light-color: var(--#{$prefix}body-color) !default;
+$navbar-light-brand-color: var(--#{$prefix}body-color) !default;
+$navbar-light-active-color: var(--#{$prefix}body-color) color !default;
+$navbar-light-disabled-color: var(--#{$prefix}disabled-color) !default;
+$navbar-light-active-bg: rgba(0, 0, 0, 0.06) !default;
+
+$navbar-dark-color: rgba($white, $text-secondary-opacity) !default;
+$navbar-dark-brand-color: $white !default;
+$navbar-dark-active-color: $white !default;
+$navbar-dark-disabled-color: var(--#{$prefix}disabled-color) !default;
+$navbar-dark-active-bg: rgba(255, 255, 255, 0.06) !default;
+
+$navbar-brand-padding-y: $nav-link-padding-y !default;
+$navbar-brand-image-height: 2rem !default;
+$navbar-brand-margin-right: 0 !default;
+$navbar-brand-font-size: $h2-font-size !default;
+$navbar-brand-font-weight: var(--#{$prefix}font-weight-bold) !default;
+
+$navbar-toggler-font-size: 1rem !default;
+$navbar-toggler-padding-x: 0 !default;
+$navbar-toggler-padding-y: 0 !default;
+$navbar-toggler-animation-time: 0.2s !default;
+$navbar-toggler-focus-width: 0 !default;
+$navbar-overlap-height: 9rem !default;
+
+$navbar-nav-link-padding-x: $nav-link-padding-x !default;
+
+$navbar-active-border-color: var(--#{$prefix}primary) !default;
+
+// Sidebar
+$sidebar-width: 15rem !default;
+
+// Page
+$page-title-font-size: var(--#{$prefix}font-size-h2) !default;
+$page-title-line-height: var(--#{$prefix}line-height-h4) !default;
+$page-title-font-weight: var(--#{$prefix}font-weight-headings) !default;
+
+// Popover
+$popover-bg: var(--#{$prefix}bg-surface) !default;
+$popover-header-bg: transparent !default;
+$popover-border-color: var(--#{$prefix}border-color) !default;
+$popover-body-color: inherit !default;
+
+// Footer
+$footer-padding-y: 2rem !default;
+$footer-bg: $white !default;
+$footer-border-color: var(--#{$prefix}border-color) !default;
+$footer-color: var(--#{$prefix}secondary) !default;
+
+// Pagination
+$pagination-border-width: 0 !default;
+$pagination-padding-y: 0.25rem !default;
+$pagination-padding-x: 0.25rem !default;
+$pagination-color: var(--#{$prefix}secondary) !default;
+$pagination-bg: transparent !default;
+$pagination-disabled-bg: transparent !default;
+$pagination-disabled-color: var(--#{$prefix}disabled-color) !default;
+
+$pagination-active-bg: var(--#{$prefix}primary) !default;
+$pagination-active-border-color: var(--#{$prefix}primary) !default;
+
+// Statuses
+$status-dot-size: 0.5rem !default;
+$status-height: 1.5rem !default;
+
+// Steps
+$steps-border-width: 2px !default;
+$steps-color: var(--#{$prefix}primary) !default;
+$steps-inactive-color: var(--#{$prefix}border-color) !default;
+$steps-margin: 2rem 0 !default;
+
+// Spinner
+$spinner-width: 1.5rem !default;
+$spinner-height: 1.5rem !default;
+$spinner-width-sm: 1rem !default;
+$spinner-height-sm: 1rem !default;
+$spinner-border-width: 2px !default;
+$spinner-border-width-sm: 1px !default;
+
+// Tables
+$table-bg: transparent !default;
+$table-bg-scale-dark: 40% !default;
+$table-color: inherit !default;
+$table-cell-padding-x: 0.75rem !default;
+$table-cell-padding-y: 0.75rem !default;
+$table-border-color: var(--#{$prefix}border-color-translucent) !default;
+$table-th-border-color: var(--#{$prefix}border-color-translucent) !default;
+$table-th-padding-x: $table-cell-padding-x !default;
+$table-th-padding-y: 0.5rem !default;
+$table-th-color: var(--#{$prefix}secondary) !default;
+$table-th-bg: var(--#{$prefix}bg-surface-tertiary) !default;
+$table-striped-order: even !default;
+$table-striped-bg: var(--#{$prefix}bg-surface-tertiary) !default;
+$table-group-separator-color: var(--#{$prefix}border-color-translucent) !default;
+
+$table-sort-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' width='16' height='16' fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='1'><path d='M5 7l3 -3l3 3'/><path d='M5 10l3 3l3 -3'/></svg>") !default;
+$table-sort-asc-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' width='16' height='16'><path fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='1' d='M5 7l3 3l3 -3'/></svg>") !default;
+$table-sort-desc-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' width='16' height='16'><path fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='1' d='M5 10l3 -3l3 3'/></svg>") !default;
+
+// Toasts
+$toast-border-color: var(--#{$prefix}border-color) !default;
+$toast-header-color: var(--#{$prefix}secondary) !default;
+
+// Tracking
+$tracking-height: 1.5rem !default;
+$tracking-gap-width: 0.125rem !default;
+$tracking-border-radius: var(--#{$prefix}border-radius) !default;
+
+// Progress
+$progress-bg: var(--#{$prefix}border-color) !default;
+$progress-border-radius: var(--#{$prefix}border-radius) !default;
+$progress-bar-bg: var(--#{$prefix}primary) !default;
+$progress-height: 0.5rem !default;
+
+// Lists
+$list-group-bg: inherit !default;
+$list-group-border-color: var(--#{$prefix}border-color) !default;
+$list-group-action-color: inherit !default;
+$list-group-hover-bg: $hover-bg !default;
+$list-group-active-bg: var(--#{$prefix}active-bg) !default;
+$list-group-active-border-color: $list-group-border-color !default;
+$list-group-active-color: inherit !default;
+
+$input-bg: var(--#{$prefix}bg-forms) !default;
+$input-disabled-bg: $disabled-bg !default;
+$input-border-color: var(--#{$prefix}border-color) !default;
+$input-border-color-translucent: var(--#{$prefix}border-color-translucent) !default;
+$input-placeholder-color: $text-secondary-light !default;
+
+$input-group-addon-bg: var(--#{$prefix}bg-surface-secondary) !default;
+$input-group-addon-color: var(--#{$prefix}secondary) !default;
+
+$input-border-radius: var(--#{$prefix}border-radius) !default;
+
+// Forms
+$form-check-margin-bottom: 0.75rem !default;
+$form-check-padding-start: 2rem !default;
+
+$form-check-input-width: 1.25rem !default;
+$form-check-input-bg: var(--#{$prefix}bg-forms) !default;
+$form-check-input-border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) $input-border-color-translucent !default;
+$form-check-input-border-radius: var(--#{$prefix}border-radius) !default;
+$form-check-input-box-shadow: $input-box-shadow !default;
+
+$form-check-input-checked-bg-size: 1.25rem !default;
+$form-check-input-checked-bg-color: var(--#{$prefix}primary) !default;
+$form-check-input-checked-color: var(--#{$prefix}bg-forms) !default;
+$form-check-input-checked-bg-repeat: repeat !default;
+$form-check-input-checked-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' width='16' height='16'><path fill='none' stroke='#{$white}' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4 8.5l2.5 2.5l5.5 -5.5'/></svg>") !default;
+$form-check-input-checked-bg-image-dark: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' width='16' height='16'><path fill='none' stroke='#{$body-color}' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4 8.5l2.5 2.5l5.5 -5.5'/></svg>") !default;
+$form-check-input-checked-border-color: $input-border-color-translucent !default;
+$form-check-input-indeterminate-bg-color: var(--#{$prefix}primary) !default;
+
+$form-check-radio-checked-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'><circle r='3' fill='#{$white}' cx='8' cy='8' /></svg>") !default;
+
+$form-check-label-disabled-opacity: $text-secondary-opacity;
+
+$form-select-indicator-color: $text-secondary-light !default;
+$form-select-box-shadow: var(--#{$prefix}box-shadow-input) !default;
+
+$form-switch-width: 2rem !default;
+$form-switch-height: 1.25rem !default;
+$form-switch-padding-start: $form-switch-width + 0.5rem !default;
+$form-switch-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='#{$border-color}'/></svg>") !default;
+$form-switch-bg-size: auto !default;
+
+$form-range-track-height: 0.25rem !default;
+$form-range-track-bg: var(--#{$prefix}border-color) !default;
+$form-range-thumb-border: 2px var(--#{$prefix}border-style) $white !default;
+$form-range-thumb-bg: var(--#{$prefix}primary) !default;
+$form-range-thumb-height: 1rem !default;
+$form-range-thumb-focus-box-shadow-width: 0.125rem !default;
+
+$form-feedback-icon-valid: str-replace(
+  url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='" + $green + "' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><polyline points='20 6 9 17 4 12'></polyline></svg>"),
+  "#",
+  "%23"
+) !default;
+$form-feedback-icon-invalid: str-replace(
+  url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' width='24' height='24' viewBox='0 0 24 24' fill='none' stroke='" + $red + "' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'><line x1='18' y1='6' x2='6' y2='18'></line><line x1='6' y1='6' x2='18' y2='18'></line></svg>"),
+  "#",
+  "%23"
+) !default;
+
+$form-label-font-size: $h4-font-size !default;
+$form-label-font-weight: var(--#{$prefix}font-weight-medium) !default;
+
+// Legend
+$legend-bg: var(--#{$prefix}border-color) !default;
+$legend-size: 0.75em !default;
+$legend-border-radius: var(--#{$prefix}border-radius-sm) !default;
+
+// Flags
+$flag-box-shadow: var(--#{$prefix}box-shadow-border) !default;
+$flag-border-radius: var(--#{$prefix}border-radius) !default;
+$flag-sizes: $avatar-sizes !default;
+
+// Payments
+$payment-sizes: $avatar-sizes !default;
+
+// Offcanvas
+$offcanvas-bg-color: var(--#{$prefix}bg-surface) !default;
+$offcanvas-border-color: var(--#{$prefix}border-color) !default;
+
+// Placeholder
+$placeholder-opacity-min: 0.1 !default;
+$placeholder-opacity-max: 0.2 !default;

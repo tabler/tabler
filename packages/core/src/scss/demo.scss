@@ -1,0 +1,143 @@
+@import "config";
+@import "demo/highlight";
+@import "demo/examples";
+
+.card-sponsor {
+  background: var(--#{$prefix}primary-lt) no-repeat center/100% 100%;
+  border-color: var(--#{$prefix}primary);
+  min-height: 316px;
+}
+
+.dropdown-menu-demo {
+  display: inline-block;
+  width: 100%;
+  position: relative;
+  top: 0;
+  margin-bottom: 1rem !important;
+}
+
+.demo-icon-preview {
+  position: sticky;
+  top: 0;
+
+  svg,
+  i {
+    width: 15rem;
+    height: 15rem;
+    font-size: 15rem;
+    stroke-width: 1.5;
+    margin: 0 auto;
+    display: block;
+
+    @include media-breakpoint-down(sm) {
+      width: 10rem;
+      height: 10rem;
+      font-size: 10rem;
+    }
+  }
+}
+
+.demo-icon-preview-icon {
+  pre {
+    margin: 0;
+    user-select: all;
+  }
+}
+
+.demo-dividers {
+  > p {
+    opacity: 0.2;
+    user-select: none;
+  }
+}
+
+$demo-icon-size: 4rem;
+.demo-icons-list {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 0 -2px -1px 0;
+  list-style: none;
+
+  > * {
+    flex: 1 0 $demo-icon-size;
+  }
+}
+
+.demo-icons-list-wrap {
+  overflow: hidden;
+}
+
+.demo-icons-list-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1;
+  text-align: center;
+  padding: 0.5rem;
+  border-right: var(--#{$prefix}border-width) var(--#{$prefix}border-style)
+    var(--#{$prefix}border-color);
+  border-bottom: var(--#{$prefix}border-width) var(--#{$prefix}border-style)
+    var(--#{$prefix}border-color);
+  color: inherit;
+  cursor: pointer;
+
+  .icon {
+    width: 1.5rem;
+    height: 1.5rem;
+    font-size: 1.5rem;
+  }
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+//
+// Settings
+//
+.settings-btn {
+  position: fixed;
+  right: -1px;
+  top: 10rem;
+
+  border-top-right-radius: 0;
+  border-bottom-right-radius: 0;
+  box-shadow: $box-shadow;
+}
+
+.settings-scheme {
+  display: inline-block;
+  border-radius: 50%;
+  height: 3rem;
+  width: 3rem;
+  position: relative;
+  border: var(--#{$prefix}border-width) var(--#{$prefix}border-style)
+    var(--#{$prefix}border-color);
+  box-shadow: $box-shadow;
+
+  &-light {
+    background: linear-gradient(135deg, $white 50%, $light 50%);
+  }
+
+  &-mixed {
+    background-image: linear-gradient(135deg, $dark 50%, #fff 50%);
+  }
+
+  &-transparent {
+    background: $light;
+  }
+
+  &-dark {
+    background: $dark;
+  }
+  
+  &-colored {
+    background-image: linear-gradient(
+      135deg,
+      var(--#{$prefix}primary) 50%,
+      $light 50%
+    );
+  }
+}

@@ -1,0 +1,44 @@
+@function theme-color-lighter($color, $background: #fff) {
+  @return mix($color, $background, 10%);
+}
+
+@function theme-color-darker($color) {
+  @return shade-color($color, 10%);
+}
+
+@function str-replace($string, $search, $replace: "") {
+  $index: str-index($string, $search);
+
+  @if $index {
+    @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+  }
+
+  @return $string;
+}
+
+@mixin media-breakpoint-down-than($name, $breakpoints: $grid-breakpoints) {
+  $prev: breakpoint-prev($name);
+
+  @if $prev == null {
+    @content;
+  } @else {
+    $max: breakpoint-max($prev, $breakpoints);
+
+    @if $max {
+      @media (max-width: $max) {
+        @content;
+      }
+    } @else {
+      @content;
+    }
+  }
+}
+
+@function breakpoint-prev($name, $breakpoints: $grid-breakpoints, $breakpoint-names: map-keys($breakpoints)) {
+  $n: index($breakpoint-names, $name);
+  @if not $n {
+    @error "breakpoint `#{$name}` not found in `#{$breakpoints}`";
+  }
+  @return if($n > 1, nth($breakpoint-names, $n - 1), null);
+}
+
