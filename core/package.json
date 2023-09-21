@@ -1,0 +1,244 @@
+{
+  "name": "@tabler/core",
+  "version": "1.0.0-beta20",
+  "description": "Premium and Open Source dashboard template with responsive and high quality UI.",
+  "homepage": "https://tabler.io",
+  "scripts": {
+    "dev": "pnpm run clean && pnpm run watch & pnpm run serve",
+    "build": "pnpm run clean && pnpm run css && pnpm run js && pnpm run img:copy && pnpm run demo:build && pnpm run copy",
+    "clean": "rm -rf dist/{css,img,js}/* && mkdir -p dist/{css,img,js} && rm -rf demo && mkdir -p demo",
+    "css": "pnpm run css:compile && pnpm run css:prefix && pnpm run css:rtl && pnpm run css:minify",
+    "css:compile": "pnpm sass --no-source-map src/scss:dist/css -I node_modules --quiet-deps",
+    "css:lint": "stylelint \"**/*.{css,scss}\" --cache --cache-location .cache/.stylelintcache",
+    "css:minify": "pnpm run css:minify:main && pnpm run css:minify:rtl",
+    "css:minify:main": "cleancss -O1 --format breakWith=lf --with-rebase --output dist/css/ --batch --batch-suffix \".min\" \"dist/css/*.css\" \"!dist/css/*.min.css\" \"!dist/css/*rtl*.css\"",
+    "css:minify:rtl": "cleancss -O1 --format breakWith=lf --with-rebase --output dist/css/ --batch --batch-suffix \".min\" \"dist/css/*rtl.css\" \"!dist/css/*.min.css\"",
+    "css:prefix": "postcss --config build/postcss.config.mjs --replace \"dist/css/*.css\" \"!dist/css/*.rtl*.css\" \"!dist/css/*.min.css\"",
+    "css:rtl": "cross-env NODE_ENV=RTL postcss --config build/postcss.config.mjs --dir \"dist/css\" --ext \".rtl.css\" \"dist/css/*.css\" \"!dist/css/*.min.css\" \"!dist/css/*.rtl.css\"",
+    "js": "pnpm run js:compile && pnpm run js:minify",
+    "js:compile": "pnpm run js:compile:umd & pnpm run js:compile:esm & pnpm run js:compile:bundle",
+    "js:compile:umd": "rollup --environment BUNDLE:false --config build/rollup.config.mjs",
+    "js:compile:esm": "rollup --environment ESM:true,BUNDLE:false --config build/rollup.config.mjs",
+    "js:compile:bundle": "rollup --environment BUNDLE:true --config build/rollup.config.mjs",
+    "js:minify": "pnpm run js:minify:umd & pnpm run js:minify:esm & pnpm run js:minify:bundle",
+    "js:minify:umd": "terser --compress passes=2 --mangle --comments \"/^!/\" --output dist/js/tabler.min.js dist/js/tabler.js",
+    "js:minify:esm": "terser --compress passes=2 --mangle --comments \"/^!/\" --output dist/js/tabler.esm.min.js dist/js/tabler.esm.js",
+    "js:minify:bundle": "terser --compress passes=2 --mangle --comments \"/^!/\" --output dist/js/tabler.bundle.min.js dist/js/tabler.bundle.js",
+    "img:copy": "cp -r src/img/* dist/img/",
+    "watch": "pnpm run watch:css & pnpm run watch:js & pnpm run watch:img & pnpm run watch:demo",
+    "watch:css": "pnpm run css:compile && nodemon --watch src/scss/ --ext scss --exec \"pnpm run css:compile\"",
+    "watch:js": "pnpm run js:compile && nodemon --watch src/js --ext js --exec \"pnpm run js:compile\"",
+    "watch:img": "pnpm run img:copy && nodemon --watch src/img --ext svg --exec \"pnpm run img:copy\"",
+    "watch:demo": "pnpm run demo:dev && nodemon --watch pages --exec \"pnpm run demo:dev\"",
+    "serve": "node build/browser-sync.mjs",
+    "demo:dev": "bundle exec jekyll build --config _config.yml --destination demo",
+    "demo:build": "JEKYLL_ENV=production bundle exec jekyll build --config _config.yml,_config.prod.yml --destination demo",
+    "copy": "pnpm run copy:dist && pnpm run copy:static",
+    "copy:dist": "mkdir -p demo/dist && cp -r dist/* demo/dist/",
+    "copy:static": "mkdir -p demo/static && cp -r static/* demo/static/"
+  },
+  "files": [
+    "dist/**/*",
+    "src/js/**/*.{js,map}",
+    "src/img/**/*.{svg}",
+    "src/scss/**/*.scss"
+  ],
+  "style": "dist/css/tabler.css",
+  "sass": "src/scss/tabler.scss",
+  "unpkg": "dist/js/tabler.min.js",
+  "umd:main": "dist/js/tabler.min.js",
+  "module": "dist/js/tabler.esm.js",
+  "main": "dist/js/tabler.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tabler/tabler.git"
+  },
+  "keywords": [
+    "css",
+    "sass",
+    "mobile-first",
+    "responsive",
+    "front-end",
+    "framework",
+    "web"
+  ],
+  "author": "codecalm",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tabler/tabler/issues"
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/codecalm"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "@popperjs/core": "^2.11.8",
+    "@tabler/icons": "^2.34.0",
+    "bootstrap": "5.3.1"
+  },
+  "devDependencies": {
+    "@melloware/coloris": "^0.19.1",
+    "@rollup/plugin-babel": "^6.0.3",
+    "@rollup/plugin-node-resolve": "^15.2.1",
+    "@rollup/plugin-replace": "^5.0.2",
+    "apexcharts": "^3.40.0",
+    "autosize": "^6.0.1",
+    "browser-sync": "^2.29.3",
+    "choices.js": "^10.2.0",
+    "clean-css-cli": "^5.6.2",
+    "countup.js": "^2.6.2",
+    "cross-env": "^7.0.3",
+    "dropzone": "^6.0.0-beta.2",
+    "flatpickr": "^4.6.13",
+    "fslightbox": "^3.4.1",
+    "imask": "^6.6.1",
+    "jsvectormap": "^1.5.3",
+    "list.js": "^2.3.1",
+    "litepicker": "^2.0.12",
+    "nodemon": "^3.0.1",
+    "nouislider": "^15.7.0",
+    "plyr": "^3.7.8",
+    "postcss-cli": "^10.1.0",
+    "rollup": "^3.29.2",
+    "rtlcss": "^4.1.1",
+    "sass": "^1.67.0",
+    "star-rating.js": "^4.3.0",
+    "stylelint": "^15.10.3",
+    "stylelint-config-twbs-bootstrap": "^11.0.1",
+    "terser": "^5.20.0",
+    "tinymce": "^6.4.2",
+    "tom-select": "^2.2.2"
+  },
+  "peerDependencies": {
+    "@melloware/coloris": "^0.19.1",
+    "apexcharts": "^3.40.0",
+    "autosize": "^6.0.1",
+    "choices.js": "^10.2.0",
+    "countup.js": "^2.6.2",
+    "dropzone": "^6.0.0-beta.2",
+    "flatpickr": "^4.6.13",
+    "fslightbox": "^3.4.1",
+    "imask": "^6.6.1",
+    "jsvectormap": "^1.5.3",
+    "list.js": "^2.3.1",
+    "litepicker": "^2.0.12",
+    "nouislider": "^15.7.0",
+    "plyr": "^3.7.8",
+    "star-rating.js": "^4.3.0",
+    "tinymce": "^6.4.2",
+    "tom-select": "^2.2.2"
+  },
+  "peerDependenciesMeta": {
+    "@melloware/coloris": {
+      "optional": true
+    },
+    "apexcharts": {
+      "optional": true
+    },
+    "autosize": {
+      "optional": true
+    },
+    "choices.js": {
+      "optional": true
+    },
+    "countup.js": {
+      "optional": true
+    },
+    "dropzone": {
+      "optional": true
+    },
+    "flatpickr": {
+      "optional": true
+    },
+    "fslightbox": {
+      "optional": true
+    },
+    "imask": {
+      "optional": true
+    },
+    "jsvectormap": {
+      "optional": true
+    },
+    "list.js": {
+      "optional": true
+    },
+    "litepicker": {
+      "optional": true
+    },
+    "nouislider": {
+      "optional": true
+    },
+    "plyr": {
+      "optional": true
+    },
+    "tinymce": {
+      "optional": true
+    },
+    "tom-select": {
+      "optional": true
+    },
+    "star-rating.js": {
+      "optional": true
+    }
+  },
+  "_devDependencies": {
+    "@babel/core": "^7.21.8",
+    "@babel/preset-env": "^7.21.5",
+    "@changesets/cli": "^2.26.1",
+    "@rollup/plugin-commonjs": "^24.1.0",
+    "@rollup/plugin-node-resolve": "^15.0.2",
+    "@rollup/plugin-replace": "^5.0.2",
+    "@rollup/pluginutils": "^5.0.2",
+    "@rollup/stream": "^2.0.0",
+    "@shopify/prettier-plugin-liquid": "^1.0.6",
+    "all-contributors-cli": "^6.25.0",
+    "autoprefixer": "^10.4.14",
+    "autosize": "^6.0.1",
+    "browser-sync": "^2.29.1",
+    "bundlewatch": "^0.3.3",
+    "choices.js": "^10.2.0",
+    "chromatic": "^6.17.4",
+    "countup.js": "^2.6.2",
+    "cross-spawn": "^7.0.3",
+    "dropzone": "^6.0.0-beta.2",
+    "flatpickr": "^4.6.13",
+    "fslightbox": "^3.4.1",
+    "gulp": "^4.0.2",
+    "gulp-clean": "^0.4.0",
+    "gulp-clean-css": "^4.3.0",
+    "gulp-debug": "^4.0.0",
+    "gulp-header": "^2.0.9",
+    "gulp-postcss": "^9.0.1",
+    "gulp-purgecss": "^5.0.0",
+    "gulp-rename": "^2.0.0",
+    "gulp-rtlcss": "^2.0.0",
+    "gulp-sass": "^5.1.0",
+    "gulp-terser": "^2.1.0",
+    "imageoptim-cli": "^3.0.7",
+    "imask": "^6.6.1",
+    "jsvectormap": "^1.5.3",
+    "list.js": "^2.3.1",
+    "litepicker": "^2.0.12",
+    "nouislider": "^15.7.0",
+    "plyr": "^3.7.8",
+    "postcss": "^8.4.23",
+    "prettier": "^2.8.8",
+    "release-it": "^15.10.3",
+    "request": "^2.88.2",
+    "rollup": "2.79.1",
+    "rollup-plugin-babel": "^4.4.0",
+    "rollup-plugin-cleanup": "^3.2.1",
+    "sass": "^1.62.1",
+    "star-rating.js": "^4.3.0",
+    "tinymce": "^6.4.2",
+    "tom-select": "^2.2.2",
+    "vinyl-buffer": "^1.0.1",
+    "vinyl-source-stream": "^2.0.0",
+    "yaml": "^2.2.2",
+    "yargs": "^17.7.2",
+    "zod": "^3.21.4"
+  }
+}
