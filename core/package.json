@@ -5,7 +5,7 @@
   "homepage": "https://tabler.io",
   "scripts": {
     "dev": "pnpm run clean && pnpm run watch & pnpm run serve",
-    "build": "pnpm run clean && pnpm run css && pnpm run js && pnpm run img:copy && pnpm run demo:build && pnpm run copy",
+    "build": "pnpm run clean && pnpm run css && pnpm run js && pnpm run img:copy && pnpm run release:sri && pnpm run demo:build && pnpm run copy",
     "clean": "rm -rf dist/{css,img,js}/* && mkdir -p dist/{css,img,js} && rm -rf demo && mkdir -p demo",
     "css": "pnpm run css:compile && pnpm run css:prefix && pnpm run css:rtl && pnpm run css:minify",
     "css:compile": "pnpm sass --no-source-map src/scss:dist/css -I node_modules --quiet-deps",
@@ -27,7 +27,9 @@
     "img:copy": "cp -r src/img/* dist/img/",
     "watch": "pnpm run watch:css & pnpm run watch:js & pnpm run watch:img & pnpm run watch:demo",
     "watch:css": "pnpm run css:compile && nodemon --watch src/scss/ --ext scss --exec \"pnpm run css:compile\"",
+    "watch:css:demo": "pnpm run css:compile && nodemon --watch src/scss/ --ext scss --exec \"pnpm run css:compile\"",
     "watch:js": "pnpm run js:compile && nodemon --watch src/js --ext js --exec \"pnpm run js:compile\"",
+    "watch:js:demo": "pnpm run js:compile && nodemon --watch src/js --ext js --exec \"pnpm run js:compile\"",
     "watch:img": "pnpm run img:copy && nodemon --watch src/img --ext svg --exec \"pnpm run img:copy\"",
     "watch:demo": "pnpm run demo:dev && nodemon --watch pages --exec \"pnpm run demo:dev\"",
     "serve": "node build/browser-sync.mjs",
@@ -35,7 +37,8 @@
     "demo:build": "JEKYLL_ENV=production bundle exec jekyll build --config _config.yml,_config.prod.yml --destination demo",
     "copy": "pnpm run copy:dist && pnpm run copy:static",
     "copy:dist": "mkdir -p demo/dist && cp -r dist/* demo/dist/",
-    "copy:static": "mkdir -p demo/static && cp -r static/* demo/static/"
+    "copy:static": "mkdir -p demo/static && cp -r static/* demo/static/",
+    "release:sri": "node build/generate-sri.mjs"
   },
   "files": [
     "dist/**/*",
@@ -105,6 +108,7 @@
     "rollup": "^3.29.2",
     "rtlcss": "^4.1.1",
     "sass": "^1.67.0",
+    "shelljs": "^0.8.5",
     "star-rating.js": "^4.3.0",
     "stylelint": "^15.10.3",
     "stylelint-config-twbs-bootstrap": "^11.0.1",
