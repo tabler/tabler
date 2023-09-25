@@ -42,6 +42,10 @@ const previewHtml = (
   }
 
   let content = example;
+  example = example
+    .replace(/ href="[^"]+"/g, ' href="javascript:void(0)"')
+    .replace(/action="[^"]+"/g, 'action="javascript:void(0)"');
+
   if (!fullpage) {
     content = `<main class="min-vh-100 ${vertical ? 'p-4' : 'py-4 px-4'}${centered ? ' d-flex justify-content-center align-items-center flex-wrap' : ''}${vcentered ? ' d-flex justify-content-center flex-column' : ''}">
 
@@ -54,8 +58,6 @@ const previewHtml = (
 			${columns ? '</div>' : ''}
 		 </main>`;
   }
-
-  example = example.replace(/a href="[^"]+"/g, 'a href="javascript:void(0)"').replace(/action="[^"]+"/g, 'action="javascript:void(0)"');
 
   return `<html lang="en">
 	<head>
