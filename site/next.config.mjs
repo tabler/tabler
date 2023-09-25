@@ -10,7 +10,6 @@ const nextConfig = {
     domains: ["avatars.githubusercontent.com"],
   },
   experimental: {
-    appDir: true
   },
   async redirects() {
     return JSON.parse(fs.readFileSync('./redirects.json'))

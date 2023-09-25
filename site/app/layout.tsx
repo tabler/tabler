@@ -4,6 +4,7 @@ import { creator, description, name, uiUrl } from '@/config/site';
 import PageProgress from '@/components/PageProgress';
 
 export const metadata = {
+  metadataBase: uiUrl,
   title: {
     default: name,
     template: `%s - ${name}`,
