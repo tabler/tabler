@@ -46,8 +46,9 @@ const IconModal = ({ name, tags, svg, unicode }: { name: string; tags: string[];
                 <a className="btn">
                   <Icon name="download" /> SVG {/* TODO Download SVG */}
                 </a>
-                <a className="btn">
-                  <Icon name="download" /> PNG {/* TODO Download PNG */}
+                <a className="btn" href={'api/icon-image/' + name + '?withName=false&withTags=false&size=240'} download>
+                  <Icon name="download" />
+                  PNG
                 </a>
                 <a className="btn btn-primary" onClick={() => clipboard.copy(svg)}>
                   <Icon name="copy" />

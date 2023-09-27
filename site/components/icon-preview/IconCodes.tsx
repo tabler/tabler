@@ -17,7 +17,15 @@ export default function IconCodes({ icon, clipboard }: { icon: IconType; clipboa
           <label className="icon-preview-slider">
             <div className="row">
               <div className="col-6">
-                <input type="range" className="form-range" min="1" max="2" step=".25" onChange={(e) => setStroke(+e.target.value)} defaultValue={stroke} />
+                <input
+                  type="range"
+                  className="form-range"
+                  min="1"
+                  max="2"
+                  step=".25"
+                  onChange={(e) => setStroke(+e.target.value)}
+                  defaultValue={stroke}
+                />
               </div>
               <div className="col-auto">
                 <code className="code-dark">
@@ -42,8 +50,12 @@ export default function IconCodes({ icon, clipboard }: { icon: IconType; clipboa
               </a>
             </div>
             <div className="col-6 lg:col-auto">
-              <a className="btn w-100 lg:w-auto">
-                <Icon name="download" /> Download PNG {/* TODO Download PNG */}
+              <a
+                className="btn w-100 lg:w-auto"
+                href={'../api/icon-image/' + icon.name + '?withName=false&withTags=false&size=240'}
+                download
+              >
+                <Icon name="download" /> Download PNG
               </a>
             </div>
           </div>
@@ -52,7 +64,11 @@ export default function IconCodes({ icon, clipboard }: { icon: IconType; clipboa
       <div>
         <nav className="tabs">
           {tabs.map((tab, index) => (
-            <a className={'tab' + (selectedTabIndex === index ? ' active' : '')} onClick={() => setSelectedTabIndex(index)} key={tab}>
+            <a
+              className={'tab' + (selectedTabIndex === index ? ' active' : '')}
+              onClick={() => setSelectedTabIndex(index)}
+              key={tab}
+            >
               {tab}
             </a>
           ))}
