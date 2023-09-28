@@ -5,6 +5,14 @@ title: "[BUG] "
 labels: bug
 assignees: ''
 body:
+- type: markdown
+  attributes:
+    value: "## Thank you for making a bug report!"
+- type: markdown
+  attributes:
+    value: |
+      Thanks for taking the time to fill out this bug! It's really important to fill this form out completely as
+      not filling it out will make the bug reports hard to replicate.
 - type: input
   id: browser
   attributes:
