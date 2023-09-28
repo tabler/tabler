@@ -37,24 +37,46 @@ body:
     placeholder: "e.g. 800x600, 1920x1080"
   validations:
     required: true
+- type: textarea
+  id: description
+  attributes:
+    label: Describe the bug
+    description: "A clear and concise description of what the bug is."
+    value: |
+      1.
+      2.
+      3.
+      ...
+    render: bash
+  validations:
+    required: true
+- type: textarea
+  id: reproduce
+  attributes:
+    label: How to reproduce
+    description: "How do you trigger this bug? Please walk us through it step by step."
+    value: |
+      1. Go to '...'
+      2. Click on '...'
+      3. Scroll down to '...'
+      4. See error
+      ...
+    render: bash
+  validations:
+    required: true
+- type: textarea
+  id: screenshots
+  attributes:
+    label: Screenshots
+    description: "If applicable, add screenshots to help explain this problem."
+    render: bash
+  validations:
+    required: false
+- type: input
+  id: jsfiddle
+  attributes:
+    label: JSFiddle
+    description: "Please add a jsFiddle replicating the bug. Without the jsFiddle most bug reports cannot be solved and will be closed."
+  validations:
+    required: false
 ---
-
-**Describe the bug**
-
-A clear and concise description of what the bug is.
-
-**To reproduce**
-
-Steps to reproduce the behavior:
-1. Go to '...'
-2. Click on '...'
-3. Scroll down to '...'
-4. See error
-
-**Screenshots**
-
-If applicable, add screenshots to help explain this problem.
-
-**JSFiddle**
-
-Please add a jsFiddle replicating the bug. Without the jsFiddle most bug reports cannot be solved and will be closed.
