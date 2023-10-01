@@ -1,6 +1,6 @@
 import Icon from '@/components/Icon';
 import IconSvg from '@/components/IconSvg';
-import { getHtmlChar, toPascalCase } from '@/helpers';
+import { download, getHtmlChar, toPascalCase } from '@/helpers';
 import { useClipboard } from '@/hooks';
 
 const IconModal = ({ name, tags, svg, unicode }: { name: string; tags: string[]; svg: string; unicode: string }) => {
@@ -42,9 +42,8 @@ const IconModal = ({ name, tags, svg, unicode }: { name: string; tags: string[];
             <div className="col"></div>
             <div className="col-12 md:col-auto">
               <div className="btn-list flex-column md:flex-row">
-                {/* TODO Add icons */}
-                <a className="btn">
-                  <Icon name="download" /> SVG {/* TODO Download SVG */}
+                <a className="btn" onClick={() => download(svg, `${name}.svg`, 'image/svg+xml')}>
+                  <Icon name="download" /> SVG
                 </a>
                 <a className="btn" href={'api/icon-image/' + name + '?withName=false&withTags=false&size=240'} download>
                   <Icon name="download" />

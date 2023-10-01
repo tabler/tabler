@@ -39,3 +39,13 @@ export const getCurrentBrand = (hostname: string) => {
 
   return 'tabler-ui';
 };
+
+export const download = (content: string, filename: string, contentType: string | undefined = undefined) => {
+  contentType ??= 'application/octet-stream';
+
+  const a = document.createElement('a');
+  const blob = new Blob([content], { type: contentType });
+  a.href = window.URL.createObjectURL(blob);
+  a.download = filename;
+  a.click();
+};

@@ -1,6 +1,6 @@
 import Icon from '@/components/Icon';
 import IconSvg from '@/components/IconSvg';
-import { toPascalCase } from '@/helpers';
+import { download, toPascalCase } from '@/helpers';
 import { IconType } from '@/types';
 import React, { useState } from 'react';
 
@@ -45,8 +45,11 @@ export default function IconCodes({ icon, clipboard }: { icon: IconType; clipboa
               </a>
             </div>
             <div className="col-6 lg:col-auto">
-              <a className="btn w-100 lg:w-auto">
-                <Icon name="download" /> Download SVG {/* TODO Download SVG */}
+              <a
+                className="btn w-100 lg:w-auto"
+                onClick={() => download(icon.svg, `${icon.name}.svg`, 'image/svg+xml')}
+              >
+                <Icon name="download" /> Download SVG
               </a>
             </div>
             <div className="col-6 lg:col-auto">
