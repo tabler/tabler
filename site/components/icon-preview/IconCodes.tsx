@@ -87,9 +87,9 @@ export default function IconCodes({ icon, clipboard }: { icon: IconType; clipboa
 const switchTab = (tabIndex: number, icon: IconType) => {
   switch (tabIndex) {
     case 0:
-      return <SvgCode icon={icon}></SvgCode>;
+      return <SvgCode iconSvg={icon.svg}></SvgCode>;
     case 1:
-      return <div>JSX</div>; // TODO
+      return <JsxCode iconSvg={icon.svg}></JsxCode>;
     case 2:
       return <div>URI</div>; // TODO
     case 3:
@@ -103,10 +103,25 @@ const switchTab = (tabIndex: number, icon: IconType) => {
   }
 };
 
-const SvgCode = ({ icon }: { icon: IconType }) => (
+const SvgCode = ({ iconSvg }: { iconSvg: string }) => (
   <div>
     <pre className="highlight m-0">
-      <code>{icon.svg}</code>
+      <code>{iconSvg}</code>
+    </pre>
+  </div>
+);
+
+const JsxCode = ({ iconSvg }: { iconSvg: string }) => (
+  <div>
+    <pre>
+      <code>
+        {iconSvg
+          .replaceAll('"24"', '{24}')
+          .replace('class', 'className')
+          .replace('stroke-width', 'strokeWidth')
+          .replace('stroke-linecap', 'strokeLinecap')
+          .replace('stroke-linejoin', 'strokeLinejoin')}
+      </code>
     </pre>
   </div>
 );
