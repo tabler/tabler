@@ -1,3 +1,4 @@
+import CodeBlock from '@/components/CodeBlock';
 import Icon from '@/components/Icon';
 import IconSvg from '@/components/IconSvg';
 import { download, toPascalCase } from '@/helpers';
@@ -87,9 +88,20 @@ export default function IconCodes({ icon, clipboard }: { icon: IconType; clipboa
 const switchTab = (tabIndex: number, icon: IconType) => {
   switch (tabIndex) {
     case 0:
-      return <SvgCode iconSvg={icon.svg}></SvgCode>;
+      return <CodeBlock html={addEscapeCharsToSvg(icon.svg)} />;
     case 1:
-      return <JsxCode iconSvg={icon.svg}></JsxCode>;
+      return (
+        <CodeBlock
+          html={addEscapeCharsToSvg(
+            icon.svg
+              .replaceAll('"24"', '{24}')
+              .replace('class', 'className')
+              .replace('stroke-width', 'strokeWidth')
+              .replace('stroke-linecap', 'strokeLinecap')
+              .replace('stroke-linejoin', 'strokeLinejoin'),
+          )}
+        />
+      );
     case 2:
       return <div>URI</div>; // TODO
     case 3:
@@ -103,41 +115,14 @@ const switchTab = (tabIndex: number, icon: IconType) => {
   }
 };
 
-const SvgCode = ({ iconSvg }: { iconSvg: string }) => (
-  <div>
-    <pre className="highlight m-0">
-      <code>{iconSvg}</code>
-    </pre>
-  </div>
-);
-
-const JsxCode = ({ iconSvg }: { iconSvg: string }) => (
-  <div>
-    <pre>
-      <code>
-        {iconSvg
-          .replaceAll('"24"', '{24}')
-          .replace('class', 'className')
-          .replace('stroke-width', 'strokeWidth')
-          .replace('stroke-linecap', 'strokeLinecap')
-          .replace('stroke-linejoin', 'strokeLinejoin')}
-      </code>
-    </pre>
-  </div>
-);
-
 const ReactCode = ({ iconName }: { iconName: string }) => (
   <div>
     <p className="mb-2">
       Install <code>@tabler/icons-react</code>:
     </p>
-    <pre className="highlight">
-      <code>npm install @tabler/icons-react</code>
-    </pre>
+    <CodeBlock html="npm install @tabler/icons-react" />
     <p className="mb-2">Import icon:</p>
-    <pre className="highlight m-0">
-      <code>{`import { Icon${toPascalCase(iconName)} } from '@tabler/icons-react';`}</code>
-    </pre>
+    <CodeBlock html={`import { Icon${toPascalCase(iconName)} } from '@tabler/icons-react';`} language="typescript" />
   </div>
 );
 
@@ -146,50 +131,34 @@ const VueCode = ({ iconName }: { iconName: string }) => (
     <p className="mb-2">
       Install <code>@tabler/icons-vue</code>:
     </p>
-    <pre className="highlight">
-      <code>npm install @tabler/icons-vue</code>
-    </pre>
+    <CodeBlock html="npm install @tabler/icons-vue" />
     <p className="mb-2">Import icon:</p>
-    <pre className="highlight m-0">
-      <code>
-        <code>{`import { Icon${toPascalCase(iconName)} } from '@tabler/icons-vue';`}</code>
-      </code>
-    </pre>
+    <CodeBlock html={`import { Icon${toPascalCase(iconName)} } from '@tabler/icons-vue';`} language="typescript" />
   </div>
 );
 
 const WebfontCode = ({ iconName, iconUnicode }: { iconName: string; iconUnicode: string }) => (
   <div>
     <p className="mb-2">Stylesheet url:</p>
-    <pre className="highlight">
-      <code>
-        {
-          '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">'
-        }
-      </code>
-    </pre>
+    <CodeBlock
+      html={
+        '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">'
+      }
+    />
     <p className="mb-2">Usage in HTML:</p>
-    <pre className="highlight">
-      <code>{`<i class="ti ti-${iconName}"></i>`}</code>
-    </pre>
+    <CodeBlock html={`<i class="ti ti-${iconName}"></i>`} />
     <p className="mb-2">Usage in CSS:</p>
-    <pre className="mb-0">
-      <code>content: '\{iconUnicode}';</code>
-    </pre>
+    <CodeBlock html={`content: '\\${iconUnicode}';`} />
   </div>
 );
 
 const ScssCode = ({ iconName }: { iconName: string }) => (
   <div>
     <p className="mb-2">SCSS file:</p>
-    <pre className="highlight">
-      <code>
-        @import 'node_modules/@tabler/icons-webfont/tabler-icons.scss';
-      </code>
-    </pre>
+    <CodeBlock html="@import 'node_modules/@tabler/icons-webfont/tabler-icons.scss';" language="scss" />
     <p className="mb-2">Usage in SCSS:</p>
-    <pre>
-      <code>content: $ti-icon-{iconName}</code>
-    </pre>
+    <CodeBlock html={`content: $ti-icon-${iconName}`} />
   </div>
 );
+
+const addEscapeCharsToSvg = (svg: string) => svg.replaceAll('<path', '\n\t<path').replace('</svg>', '\n</svg>');

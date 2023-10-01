@@ -6,13 +6,7 @@ import clsx from 'clsx';
 import { html as beautifyHtml } from 'js-beautify';
 import SyntaxHighlighter from 'react-syntax-highlighter';
 
-
-
 import Icon from '@/components/Icon';
-
-
-
-
 
 export default function CodeBlock({
   html,
@@ -82,7 +76,7 @@ export default function CodeBlock({
       )}
 
       <SyntaxHighlighter
-        className={clsx(`language-${language}`, className)}
+        className={clsx(`language-${language}`, className, 'ps-6')}
         language={language}
         useInlineStyles={false}
       >
