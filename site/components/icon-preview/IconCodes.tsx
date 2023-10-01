@@ -136,17 +136,7 @@ const ReactCode = ({ iconName }: { iconName: string }) => (
     </pre>
     <p className="mb-2">Import icon:</p>
     <pre className="highlight m-0">
-      <code>
-        <span className="k">import&nbsp;</span>
-        <span className="p">{'{ '}</span>
-        <span className="nx">{'Icon' + toPascalCase(iconName)}</span>
-        <span className="p">{' } '}</span>
-        <span className="k">from&nbsp;</span>
-        <span className="dl">'</span>
-        <span className="s1">@tabler/icons-react</span>
-        <span className="dl">'</span>
-        <span className="p">;</span>
-      </code>
+      <code>{`import { Icon${toPascalCase(iconName)} } from '@tabler/icons-react';`}</code>
     </pre>
   </div>
 );
@@ -162,15 +152,7 @@ const VueCode = ({ iconName }: { iconName: string }) => (
     <p className="mb-2">Import icon:</p>
     <pre className="highlight m-0">
       <code>
-        <span className="k">import&nbsp;</span>
-        <span className="p">{'{ '}</span>
-        <span className="nx">{'Icon' + toPascalCase(iconName)}</span>
-        <span className="p">{' } '}</span>
-        <span className="k">from&nbsp;</span>
-        <span className="dl">'</span>
-        <span className="s1">@tabler/icons-vue</span>
-        <span className="dl">'</span>
-        <span className="p">;</span>
+        <code>{`import { Icon${toPascalCase(iconName)} } from '@tabler/icons-vue';`}</code>
       </code>
     </pre>
   </div>
@@ -181,22 +163,14 @@ const WebfontCode = ({ iconName, iconUnicode }: { iconName: string; iconUnicode:
     <p className="mb-2">Stylesheet url:</p>
     <pre className="highlight">
       <code>
-        <span className="nt">{'<link '}</span>
-        <span className="na">rel=</span>
-        <span className="s">"stylesheet"&nbsp;</span>
-        <span className="na">href=</span>
-        <span className="s">"https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"</span>
-        <span className="nt">{'>'}</span>
+        {
+          '<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">'
+        }
       </code>
     </pre>
     <p className="mb-2">Usage in HTML:</p>
     <pre className="highlight">
-      <code>
-        <span className="nt">{'<i '}</span>
-        <span className="na">class=</span>
-        <span className="s">"ti ti-{iconName}"</span>
-        <span className="nt">{'></i>'}</span>
-      </code>
+      <code>{`<i class="ti ti-${iconName}"></i>`}</code>
     </pre>
     <p className="mb-2">Usage in CSS:</p>
     <pre className="mb-0">
@@ -210,9 +184,7 @@ const ScssCode = ({ iconName }: { iconName: string }) => (
     <p className="mb-2">SCSS file:</p>
     <pre className="highlight">
       <code>
-        <span className="k">@import </span>
-        <span className="s2">'node_modules/@tabler/icons-webfont/tabler-icons.scss'</span>
-        <span className="p">;</span>
+        @import 'node_modules/@tabler/icons-webfont/tabler-icons.scss';
       </code>
     </pre>
     <p className="mb-2">Usage in SCSS:</p>
