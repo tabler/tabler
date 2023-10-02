@@ -10,5 +10,6 @@ export async function GET(_: Request, { params }: { params: { slug: string } }) 
     return new Response(`Icon ${params.slug} not found`, { status: 404 });
   }
 
+  icon.tags = [... new Set(icon.tags)];
   return NextResponse.json(icon as IconType);
 }

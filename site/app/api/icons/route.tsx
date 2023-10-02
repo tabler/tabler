@@ -14,6 +14,10 @@ export async function GET(request: Request) {
       limit,
       icons: Object.values(icons)
         .filter((icon) => category === 'all' || icon.category.toLowerCase() === category)
+        .map((icon) => {
+          icon.tags = [...new Set(icon.tags)];
+          return icon;
+        })
         .slice(0, limit) as IconsType,
     });
   } catch (error) {
