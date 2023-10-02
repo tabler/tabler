@@ -2,12 +2,13 @@ import CodeBlock from '@/components/CodeBlock';
 import Icon from '@/components/Icon';
 import IconSvg from '@/components/IconSvg';
 import { download, toPascalCase } from '@/helpers';
+import { useLocalStorage } from '@/hooks';
 import { IconType } from '@/types';
 import React, { useState } from 'react';
 
 export default function IconCodes({ icon, clipboard }: { icon: IconType; clipboard: any }) {
   const [stroke, setStroke] = useState(2);
-  const [selectedTabIndex, setSelectedTabIndex] = useState(0);
+  const [selectedTabIndex, setSelectedTabIndex] = useLocalStorage<number>('icon-preview-selected-tab', 0);
   const tabs = ['SVG Code', 'JSX code', 'Data URI', 'React', 'Vue', 'Webfont', 'SCSS'];
 
   return (
