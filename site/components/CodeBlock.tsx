@@ -76,7 +76,7 @@ export default function CodeBlock({
       )}
 
       <SyntaxHighlighter
-        className={clsx(`language-${language}`, className, 'ps-6')}
+        className={clsx(`language-${language}`, className, 'pr-6')}
         language={language}
         useInlineStyles={false}
       >
