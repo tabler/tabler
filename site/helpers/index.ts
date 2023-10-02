@@ -49,3 +49,5 @@ export const download = (content: string, filename: string, contentType: string 
   a.download = filename;
   a.click();
 };
+
+export const replaceStrokeInSvg = (svg: string, stroke: number) => svg.replace('stroke-width="2"', `stroke-width="${stroke}"`);

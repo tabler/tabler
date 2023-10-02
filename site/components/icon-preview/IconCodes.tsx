@@ -1,13 +1,13 @@
 import CodeBlock from '@/components/CodeBlock';
 import Icon from '@/components/Icon';
 import IconSvg from '@/components/IconSvg';
-import { download, toPascalCase } from '@/helpers';
+import { download, replaceStrokeInSvg, toPascalCase } from '@/helpers';
 import { useLocalStorage } from '@/hooks';
 import { IconType } from '@/types';
 import React, { useState } from 'react';
 
 export default function IconCodes({ icon, clipboard }: { icon: IconType; clipboard: any }) {
-  const [stroke, setStroke] = useState(2);
+  const [stroke, setStroke] = useLocalStorage<number>('icon-preview-stroke', 2);
   const [selectedTabIndex, setSelectedTabIndex] = useLocalStorage<number>('icon-preview-selected-tab', 0);
   const tabs = ['SVG Code', 'JSX code', 'Data URI', 'React', 'Vue', 'Webfont', 'SCSS'];
 
@@ -42,14 +42,17 @@ export default function IconCodes({ icon, clipboard }: { icon: IconType; clipboa
         <div>
           <div className="row g-2">
             <div className="col-12 lg:col-auto order-last lg:order-first">
-              <a className="btn btn-primary w-100 lg:w-auto" onClick={() => clipboard.copy(icon.svg)}>
+              <a
+                className="btn btn-primary w-100 lg:w-auto"
+                onClick={() => clipboard.copy(replaceStrokeInSvg(icon.svg, stroke))}
+              >
                 <Icon name="copy" /> Copy SVG
               </a>
             </div>
             <div className="col-6 lg:col-auto">
               <a
                 className="btn w-100 lg:w-auto"
-                onClick={() => download(icon.svg, `${icon.name}.svg`, 'image/svg+xml')}
+                onClick={() => download(replaceStrokeInSvg(icon.svg, stroke), `${icon.name}.svg`, 'image/svg+xml')}
               >
                 <Icon name="download" /> Download SVG
               </a>
@@ -57,7 +60,7 @@ export default function IconCodes({ icon, clipboard }: { icon: IconType; clipboa
             <div className="col-6 lg:col-auto">
               <a
                 className="btn w-100 lg:w-auto"
-                href={'../api/icon-image/' + icon.name + '?withName=false&withTags=false&size=240'}
+                href={`../api/icon-image/${icon.name}?withName=false&withTags=false&size=240&stroke=${stroke}`}
                 download
               >
                 <Icon name="download" /> Download PNG
@@ -79,32 +82,29 @@ export default function IconCodes({ icon, clipboard }: { icon: IconType; clipboa
           ))}
         </nav>
         <div className="row">
-          <div className="col">{switchTab(selectedTabIndex, icon)}</div>
+          <div className="col">{switchTab(selectedTabIndex, icon, stroke)}</div>
         </div>
       </div>
     </div>
   );
 }
 
-const switchTab = (tabIndex: number, icon: IconType) => {
+const switchTab = (tabIndex: number, icon: IconType, stroke: number) => {
   switch (tabIndex) {
     case 0:
-      return <CodeBlock html={addEscapeCharsToSvg(icon.svg)} />;
+      return <CodeBlock html={addEscapeCharsToSvg(replaceStrokeInSvg(icon.svg, stroke))} />;
     case 1:
-      return (
-        <CodeBlock
-          html={addEscapeCharsToSvg(
-            icon.svg
-              .replaceAll('"24"', '{24}')
-              .replace('class', 'className')
-              .replace('stroke-width', 'strokeWidth')
-              .replace('stroke-linecap', 'strokeLinecap')
-              .replace('stroke-linejoin', 'strokeLinejoin'),
-          )}
-        />
+      const html = addEscapeCharsToSvg(
+        icon.svg
+          .replaceAll(/="([0-9]+)"/g, '={$1}')
+          .replace('class', 'className')
+          .replace('stroke-width={2}', `strokeWidth={${stroke}}`)
+          .replace('stroke-linecap', 'strokeLinecap')
+          .replace('stroke-linejoin', 'strokeLinejoin'),
       );
+      return <CodeBlock html={html} />;
     case 2:
-      return <UriCode iconSvg={icon.svg} />;
+      return <UriCode iconSvg={icon.svg} stroke={stroke} />;
     case 3:
       return <ReactCode iconName={icon.name} />;
     case 4:
@@ -116,19 +116,22 @@ const switchTab = (tabIndex: number, icon: IconType) => {
   }
 };
 
-const UriCode = ({ iconSvg }: { iconSvg: string }) => (
-  <div>
-    <p className="mb-2">Data URI:</p>
-    <CodeBlock
-      html={
-        'data:image/svg+xml,' +
-        iconSvg.replace(/\n/g, '').replace(/</g, '%3C').replace(/>/g, '%3E').replace(/"/g, '\'').replace(/#/g, '%23')
-      }
-    />
-    <p className="mb-2">Base64 Data URI:</p>
-    <CodeBlock html={'data:image/svg+xml;base64,' + btoa(iconSvg.replace(/\n/g, '').replace(/\s{2,}/g, ''))} />
-  </div>
-);
+const UriCode = ({ iconSvg, stroke }: { iconSvg: string; stroke: number }) => {
+  const svgFormatted = replaceStrokeInSvg(iconSvg, stroke).replace(/\n/g, '');
+  return (
+    <div>
+      <p className="mb-2">Data URI:</p>
+      <CodeBlock
+        html={
+          'data:image/svg+xml,' +
+          svgFormatted.replace(/</g, '%3C').replace(/>/g, '%3E').replace(/"/g, '\'').replace(/#/g, '%23')
+        }
+      />
+      <p className="mb-2">Base64 Data URI:</p>
+      <CodeBlock html={'data:image/svg+xml;base64,' + btoa(svgFormatted.replace(/\s{2,}/g, ''))} />
+    </div>
+  );
+};
 
 const ReactCode = ({ iconName }: { iconName: string }) => (
   <div>

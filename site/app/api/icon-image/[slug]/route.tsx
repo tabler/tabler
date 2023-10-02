@@ -1,4 +1,5 @@
 import { icons } from '@/config/tabler';
+import { replaceStrokeInSvg } from '@/helpers';
 import { ImageResponse } from 'next/server';
 import React from 'react';
 
@@ -18,6 +19,7 @@ export async function GET(request: Request, { params }: { params: { slug: string
     const size = +(searchParams.get('size') ?? 200);
     const withName = searchParams.get('withName') !== 'false';
     const withTags = searchParams.get('withTags') !== 'false';
+    const stroke = +(searchParams.get('stroke') ?? 2);
 
     return new ImageResponse(
       (
@@ -33,7 +35,7 @@ export async function GET(request: Request, { params }: { params: { slug: string
           >
             <div style={{ display: 'flex', width: '100%', alignContent: 'center' }}>
               <img
-                src={`data:image/svg+xml;utf8,${encodeURIComponent(icon.svg)}`}
+                src={`data:image/svg+xml;utf8,${encodeURIComponent(replaceStrokeInSvg(icon.svg, stroke))}`}
                 alt={`icon${icon.name}`}
                 style={{ width: size, height: size, margin: '0 auto' }}
               />
