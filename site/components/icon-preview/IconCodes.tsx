@@ -104,7 +104,7 @@ const switchTab = (tabIndex: number, icon: IconType) => {
         />
       );
     case 2:
-      return <div>URI</div>; // TODO
+      return <UriCode iconSvg={icon.svg} />;
     case 3:
       return <ReactCode iconName={icon.name} />;
     case 4:
@@ -115,6 +115,20 @@ const switchTab = (tabIndex: number, icon: IconType) => {
       return <ScssCode iconName={icon.name} />;
   }
 };
+
+const UriCode = ({ iconSvg }: { iconSvg: string }) => (
+  <div>
+    <p className="mb-2">Data URI:</p>
+    <CodeBlock
+      html={
+        'data:image/svg+xml,' +
+        iconSvg.replace(/\n/g, '').replace(/</g, '%3C').replace(/>/g, '%3E').replace(/"/g, '\'').replace(/#/g, '%23')
+      }
+    />
+    <p className="mb-2">Base64 Data URI:</p>
+    <CodeBlock html={'data:image/svg+xml;base64,' + btoa(iconSvg.replace(/\n/g, '').replace(/\s{2,}/g, ''))} />
+  </div>
+);
 
 const ReactCode = ({ iconName }: { iconName: string }) => (
   <div>
