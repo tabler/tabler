@@ -21,6 +21,7 @@ import NavLink from '@/components/NavLink';
 import Shape from '@/components/Shape';
 import { usePathname } from 'next/navigation';
 import { signOut, useSession } from 'next-auth/react';
+import { useRouter } from 'next/navigation';
 
 const NavDropdown = ({ title, children, active, footer = false }) => {
   return (
@@ -202,13 +203,14 @@ const SidebarLink = (link, menu, onClick) => {
 
 const NavigationAuth = () => {
   const { data: session, status } = useSession();
+  const router = useRouter();
   const image = session?.user?.image;
   const name = session?.user?.name;
   const email = session?.user?.email;
 
   const signIn = () => {
     if (status === 'loading') return;
-    window.location.href = '/api/auth/signin';
+    router.push('/api/auth/signin');
   };
 
   return <div className="navbar-item d-flex items-center">
@@ -246,7 +248,7 @@ const NavigationAuth = () => {
             </Popover.Button>
             <Popover.Panel className="navbar-dropdown-menu">
               <div className="navbar-dropdown-menu-content">
-                <div className="navbar-dropdown-menu-link">
+                <div onClick={() => router.push('subscription')} className="navbar-dropdown-menu-link">
                   <div className="row items-center g-3">
                     <div className="col-auto">
                       <Shape icon='rocket'/>

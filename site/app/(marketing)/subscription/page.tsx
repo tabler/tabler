@@ -1,3 +1,5 @@
+import Products from '@/components/Products';
+
 export const metadata = {
   title: 'Subscription',
   description: 'Tabler subscription',
@@ -18,7 +20,7 @@ export default function Subscription() {
       </section>
       <section className="section">
         <div className="container container-narrow">
-          content
+          <Products/>
         </div>
       </section>
     </>
