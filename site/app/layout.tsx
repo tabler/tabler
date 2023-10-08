@@ -5,6 +5,7 @@ import PageProgress from '@/components/PageProgress';
 import { NextAuthProvider } from '@/components/NextAuthProvider';
 
 export const metadata = {
+  metadataBase: uiUrl,
   title: {
     default: name,
     template: `%s - ${name}`,

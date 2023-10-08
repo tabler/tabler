@@ -1,6 +1,8 @@
 import { withContentlayer } from "next-contentlayer"
 import fs from 'fs-extra'
 
+import "./env.mjs"
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: false,
@@ -8,7 +10,6 @@ const nextConfig = {
     domains: ["avatars.githubusercontent.com"],
   },
   experimental: {
-    appDir: true
   },
   async redirects() {
     return JSON.parse(fs.readFileSync('./redirects.json'))
