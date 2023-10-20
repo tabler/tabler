@@ -68,6 +68,22 @@
 			},
 			{% endif %}
 
+			{% if chart-type == 'radialBar' %}
+			plotOptions: {
+				radialBar: {
+					dataLabels: {
+						total: {
+							show: true,
+							label: 'Totals',
+							formatter: function (val) {
+								return "44%";
+							},
+						},
+					},
+				},
+			},
+			{% endif %}
+
 			{% if chart-type == 'bar' or chart-type == 'area' %}
 			dataLabels: {
 				enabled: {% if data.datalabels %}true{% else %}false{% endif %},
