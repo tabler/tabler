@@ -42,6 +42,8 @@ We've created this admin panel for everyone who wants to create templates based 
 
 Documentation is available as a part of Tabler preview: https://tabler.io/docs/
 
+To run the documentation site locally, follow instructions in the [Documentation README](https://github.com/tabler/tabler/blob/dev/site/README.md).
+
 ## 🪴 Project Activity
 
 ![Alt](https://repobeats.axiom.co/api/embed/61d1db34446967b0848af68198a392067e0f5870.svg "Repobeats analytics image")
