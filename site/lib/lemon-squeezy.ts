@@ -1,8 +1,6 @@
 "use server"
 
-import { revalidatePath } from "next/cache";
 import { SLemonSqueezyRequest, TLemonSqueezyRequest } from "./zod-lemon-squeezy";
-
 
 const lemonSqueezyBaseUrl = 'https://api.lemonsqueezy.com/v1';
 const lemonSqueezyApiKey = process.env.LEMON_SQUEEZY_API_KEY;
@@ -26,7 +24,6 @@ function createRequestOptions(method: string, headers: Headers): RequestInit {
   };
 }
 
-
 export async function getProductVariants(productId: string): Promise<TLemonSqueezyRequest> {
   const url = `${lemonSqueezyBaseUrl}/variants?filter[product_id]=${productId}`;
   const headers = createHeaders();
@@ -44,21 +41,6 @@ export async function getProductVariants(productId: string): Promise<TLemonSquee
 
 export async function getProducts(): Promise<TLemonSqueezyRequest> {
   const url = `${lemonSqueezyBaseUrl}/products`;
-  const headers = createHeaders();
-  const requestOptions = createRequestOptions('GET', headers);
-
-  const response: Response = await fetch(url, requestOptions);
-  if (!response.ok) throw new Error(`HTTP error! status: ${response.status}`);
-
-  const data = await response.json();
-
-  const parsedData = SLemonSqueezyRequest.parse(data);
-
-  return parsedData;
-}
-
-export async function getVariants(): Promise<TLemonSqueezyRequest> {
-  const url = `${lemonSqueezyBaseUrl}/variants`;
   const headers = createHeaders();
   const requestOptions = createRequestOptions('GET', headers);
 

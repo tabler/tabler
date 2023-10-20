@@ -102,6 +102,7 @@ export default function Signin() {
             </div>
           </form>
         </div>*/}
+
           <div className="card-body">
             <h2 className="h2 text-center mb-4">Login to your account</h2>
             {
@@ -122,7 +123,9 @@ export default function Signin() {
               </div>
             </div>
         </div>
+
         <div className="hr-text">or</div>
+
         <div className="card-body">
           <div className="row">
             <div className="col">

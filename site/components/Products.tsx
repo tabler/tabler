@@ -1,38 +1,44 @@
 'use client';
 
-import { getProductVariants, getProducts, getVariants } from '@/lib/lemon-squeezy';
+import { getProducts } from '@/lib/lemon-squeezy';
 import { useState, useEffect } from 'react';
+import ProductVariants from './ProductVariants';
 
 export default function Products() {
-  const [products, setProducts] = useState(null)  
-
+  const [products, setProducts] = useState<any>(null)  
 
   useEffect(() => {
     fetchProducts()
   }, []);  
 
   const fetchProducts = async () => {
-    //const productVariants = await getProductVariants('111125')
-    //console.log(productVariants)
-
     const products = await getProducts()
     setProducts(products)   
-    console.log(products)
-    
-    // const variants = await getVariants()
-    // console.log(variants)
-    //console.log(productVariants)
-  };  
+  };
 
-  return (
-    <div>
-      {
-        products && 
-        products.data.map(product => {
-          return <div>{product.attributes.name}</div>
-        })
-      }
-    </div>
-  );
+  const formatLemonProductDescription = (description: string) => {
+    if (!description) return;
+    return description
+      .replaceAll('<p>','')
+      .replaceAll('</p>','')
+  }    
+
+  return (<>{
+    products && 
+    products.data.map(product => {
+      return <section key={product.id} className="section">
+        <div className="container">
+          <div className="section-header">
+            <h2 className="page-title">{product.attributes.name}</h2>
+            <p className="section-description">
+              {formatLemonProductDescription(product.attributes.description)}
+            </p>
+          </div>
+
+          <ProductVariants productId={product.id}/>
+        </div>
+      </section>
+    })
+  }</>);
 }
 
