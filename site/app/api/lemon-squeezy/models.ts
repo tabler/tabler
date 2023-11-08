@@ -1,40 +1,21 @@
 import { z } from 'zod'
  
-const Urls = z
-  .object({
-    updatePaymentMethod: z.string(),
-  })
- 
 const Attributes = z
   .object({
-    urls: z
-      .object({
-        updatePaymentMethod: z.string(),
-      }),
-    pause: z.null().optional(),
+    pause: z.any().optional(),
     status: z.enum(['ON_TRIAL',  'ACTIVE',  'PAUSED',  'PAST_DUE',  'UNPAID',  'CANCELLED',  'EXPIRED']),
-    endsAt: z.coerce.date().optional(),
     orderId: z.number(),
     storeId: z.number(),
-    cancelled: z.boolean(),
-    renewsAt: z.coerce.date(),
-    testMode: z.boolean(),
+    cancelled: z.date().nullable().optional(),
     userName: z.string(),
-    cardBrand: z
-      .enum(['VISA',  'MASTERCARD',  'AMERICAN_EXPRESS',  'DISCOVER',  'JCB',  'DINERS_CLUB'])
-      .nullable(),
-    createdAt: z.coerce.date(),
+    cardBrand: z.enum(['VISA',  'MASTERCARD',  'AMERICAN_EXPRESS',  'DISCOVER',  'JCB',  'DINERS_CLUB']),
     productId: z.number(),
-    updatedAt: z.coerce.date(),
-    userEmail: z.string(),
     variantId: z.number(),
     customerId: z.number(),
     productName: z.string(),
     variantName: z.string(),
     orderItemId: z.number(),
-    trialEndsAt: z.coerce.date().optional(),
-    billingAnchor: z.number(),
-    cardLastFour: z.string().nullable(),
+    cardLastFour: z.string(),
     statusFormatted: z.string(),
   })
  

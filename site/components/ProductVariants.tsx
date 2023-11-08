@@ -4,8 +4,10 @@ import { useState, useEffect } from 'react';
 import clsx from 'clsx';
 import { getProductVariants } from '@/lib/lemon-squeezy';
 import Icon from '@/components/Icon';
+import { useSession } from 'next-auth/react';
 
 export default function ProductVariants({ productId }: { productId: string }) {
+  const { data: session } = useSession();
   const [productVariants, setProductVariants] = useState<any>(null)  
 
   useEffect(() => {
@@ -47,9 +49,21 @@ export default function ProductVariants({ productId }: { productId: string }) {
     return variant.attributes.interval === 'year' && variant.attributes.is_subscription
   }   
   
-  const handleVariantPick = (id) => {
-    console.log(id)
-  }  
+  const createCheckoutLink = (variantSlug) => {
+    const url = new URL(`https://buy.tabler.io/checkout/buy/${variantSlug}?embed=1`)
+ 
+    if (!session?.user) return ''
+ 
+    const email = session?.user?.email
+    const name = session?.user?.name
+    //const userId = session?.user?.id
+ 
+    //url.searchParams.append('checkout[custom][user_id]', userId)
+    if (email) url.searchParams.append('checkout[email]', email)
+    if (name) url.searchParams.append('checkout[name]', name)
+ 
+    return url.toString()
+  }
   
   return (
     <div className="pricing">
@@ -81,11 +95,10 @@ export default function ProductVariants({ productId }: { productId: string }) {
 
           <div className="pricing-btn">
             <a
-              href="#"
+              href={createCheckoutLink(variant.attributes.slug)}
               className={clsx('btn btn-block', {
                 'btn-primary': isFeatured(variant) || productVariants.data.length === 1
               })}
-              onClick={() => handleVariantPick(variant.id)}
             >
               Get started
             </a>
