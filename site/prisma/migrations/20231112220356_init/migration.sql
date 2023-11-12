@@ -1,3 +1,9 @@
+-- CreateEnum
+CREATE TYPE "SubscriptionStatus" AS ENUM ('on_trial', 'active', 'paused', 'past_due', 'unpaid', 'cancelled', 'expired');
+
+-- CreateEnum
+CREATE TYPE "CardBrand" AS ENUM ('visa', 'mastercard', 'american_express', 'discover', 'jcb', 'diners_club');
+
 -- CreateTable
 CREATE TABLE "accounts" (
     "id" TEXT NOT NULL,
@@ -43,6 +49,29 @@ CREATE TABLE "verificationtokens" (
     "identifier" TEXT NOT NULL,
     "token" TEXT NOT NULL,
     "expires" TIMESTAMP(3) NOT NULL
+);
+
+-- CreateTable
+CREATE TABLE "Subscription" (
+    "id" SERIAL NOT NULL,
+    "store_id" INTEGER,
+    "customer_id" INTEGER,
+    "order_id" INTEGER,
+    "order_item_id" INTEGER,
+    "product_id" INTEGER,
+    "variant_id" INTEGER,
+    "product_name" TEXT,
+    "variant_name" TEXT,
+    "user_name" TEXT,
+    "user_email" TEXT,
+    "status" "SubscriptionStatus" NOT NULL,
+    "status_formatted" TEXT,
+    "card_brand" "CardBrand" NOT NULL,
+    "card_last_four" TEXT NOT NULL,
+    "pause" JSONB,
+    "cancelled" BOOLEAN,
+
+    CONSTRAINT "Subscription_pkey" PRIMARY KEY ("id")
 );
 
 -- CreateIndex

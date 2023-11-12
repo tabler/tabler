@@ -60,186 +60,40 @@ model VerificationToken {
 }
 
 enum SubscriptionStatus {
-  ON_TRIAL
-  ACTIVE
-  PAUSED
-  PAST_DUE
-  UNPAID
-  CANCELLED
-  EXPIRED
-}
-
-enum PauseMode {
-  VOID
-  FREE
+  on_trial
+  active
+  paused
+  past_due
+  unpaid
+  cancelled
+  expired
 }
 
 enum CardBrand {
-  VISA
-  MASTERCARD
-  AMERICAN_EXPRESS
-  DISCOVER
-  JCB
-  DINERS_CLUB
+  visa
+  mastercard
+  american_express
+  discover
+  jcb
+  diners_club
 }
 
 model Subscription {
   id             Int      @id @default(autoincrement())
-  userId         String   @map("user_id")
-  storeId        Int?     @map("store_id")
-  customerId     Int?     @map("customer_id")
-  orderId        Int?     @map("order_id")
-  orderItemId    Int?     @map("order_item_id")
-  productId      Int?     @map("product_id")
-  variantId      Int?     @map("variant_id")
-  productName    String?  @map("product_name")
-  variantName    String?  @map("variant_name")
-  userName       String?  @map("user_name")
-  userEmail      String?  @map("user_email")
-  status         SubscriptionStatus @map("status")
-  statusFormatted String?  @map("status_formatted")
-  cardBrand      CardBrand @map("card_brand")
-  cardLastFour   String   @map("card_last_four")
+  store_id        Int?
+  customer_id     Int?
+  order_id        Int?
+  order_item_id    Int?
+  product_id      Int?
+  variant_id      Int?
+  product_name    String?
+  variant_name    String?
+  user_name       String?
+  user_email      String?
+  status         SubscriptionStatus
+  status_formatted String?
+  card_brand      CardBrand
+  card_last_four   String
   pause          Json?
-  cancelled      DateTime?
-}
- 
-enum BillingReason {
-  INITIAL
-  RENEWAL
-  UPDATED
-}
-
-enum InvoiceStatus {
-  PAID
-  OPEN
-  VOID
-  UNCOLLECTIBLE
-  DRAFT
-}
-
-model SubscriptionInvoice {
-  id             Int      @id @default(autoincrement())
-  storeId        Int?     @map("store_id")
-  subscriptionId Int?     @map("subscription_id")
-  billingReason  BillingReason @map("billing_reason")
-  cardBrand      CardBrand @map("card_brand")
-  cardLastFour   String   @map("card_last_four")
-  currency       String   @map("currency")
-  currencyRate   Decimal  @map("currency_rate")
-  subtotal       Int      @map("subtotal")
-  discountTotal  Int      @map("discount_total")
-  tax            Int      @map("tax")
-  total          Int      @map("total")
-  subtotalUsd    Int      @map("subtotal_usd")
-  discountTotalUsd Int   @map("discount_total_usd")
-  taxUsd         Int      @map("tax_usd")
-  totalUsd       Int      @map("total_usd")
-  status         InvoiceStatus @map("status")
-  statusFormatted String?  @map("status_formatted")
-  refunded       Boolean  @map("refunded")
-  refundedAt     DateTime? @map("refunded_at")
-  urls           Json?    @map("urls")
-  createdAt      DateTime @map("created_at")
-  updatedAt      DateTime @map("updated_at")
-  testMode       Boolean  @map("test_mode")
-}
-
- enum StorePlan {
-  FRESH
-  SWEET
-  FREE
-}
-
-model Store {
-  id              String    @id @map("id")
-  name            String    @map("name")
-  slug            String    @map("slug")
-  domain          String    @map("domain")
-  url             String    @map("url")
-  avatarUrl       String    @map("avatar_url")
-  plan            StorePlan @map("plan")
-  country         String    @map("country")
-  countryNicename String    @map("country_nicename")
-  currency        String    @map("currency")
-  totalSales      Int       @map("total_sales")
-  totalRevenue    Int       @map("total_revenue")
-  thirtyDaySales  Int       @map("thirty_day_sales")
-  thirtyDayRevenue Int      @map("thirty_day_revenue")
-  createdAt       DateTime  @map("created_at")
-  updatedAt       DateTime  @map("updated_at")
-}
-
-enum ProductStatus {
-  DRAFT
-  PUBLISHED
-}
-
-model Product {
-  id               String     @id @map("id")
-  storeId          Int        @map("store_id")
-  name             String     @map("name")
-  slug             String     @map("slug")
-  description      String     @map("description")
-  status           ProductStatus @map("status")
-  statusFormatted  String     @map("status_formatted")
-  thumbUrl         String?    @map("thumb_url")
-  largeThumbUrl    String?    @map("large_thumb_url")
-  price            Int        @map("price")
-  payWhatYouWant   Boolean    @map("pay_what_you_want")
-  fromPrice        Int?       @map("from_price") 
-  toPrice          Int?       @map("to_price")
-  buyNowUrl        String     @map("buy_now_url")
-  priceFormatted   String     @map("price_formatted")
-  createdAt        DateTime   @map("created_at")
-  updatedAt        DateTime   @map("updated_at")
-  testMode         Boolean    @map("test_mode")
-}
-
-enum VariantStatus {
-  PENDING
-  DRAFT
-  PUBLISHED
-}
-
-enum VariantInterval {
-  DAY
-  WEEK
-  MONTH
-  YEAR
-}
-
-enum LicenseLengthUnit {
-  DAYS
-  MONTHS
-  YEARS
-}
-
-model ProductVariant {
-  id                      String            @id @map("id")
-  productId               Int               @map("product_id")
-  name                    String            @map("name")
-  slug                    String            @map("slug")
-  description             String            @map("description")
-  price                   Int               @map("price")
-  isSubscription          Boolean           @map("is_subscription")
-  interval                VariantInterval?   @map("interval")
-  intervalCount           Int?              @map("interval_count")
-  hasFreeTrial            Boolean           @map("has_free_trial")
-  trialInterval           VariantInterval    @map("trial_interval")
-  trialIntervalCount      Int                @map("trial_interval_count")
-  payWhatYouWant          Boolean           @map("pay_what_you_want")
-  minPrice                Int?              @map("min_price")
-  suggestedPrice          Int?              @map("suggested_price")
-  hasLicenseKeys          Boolean           @map("has_license_keys")
-  licenseActivationLimit  Int?              @map("license_activation_limit")
-  isLicenseLimitUnlimited Boolean           @map("is_license_limit_unlimited")
-  licenseLengthValue      Int?              @map("license_length_value")
-  licenseLengthUnit       LicenseLengthUnit @map("license_length_unit")
-  isLicenseLengthUnlimited Boolean           @map("is_license_length_unlimited")
-  sort                    Int               @map("sort")
-  status                  VariantStatus     @map("status")
-  statusFormatted         String            @map("status_formatted")
-  createdAt               DateTime          @map("created_at")
-  updatedAt               DateTime          @map("updated_at")
+  cancelled      Boolean?
 }

@@ -37,10 +37,9 @@ export async function POST(request: Request) {
   if (type === 'subscriptions') {
     const parsedBody = SLemonSqueezyWebhookRequest.parse(body)
 
-    if (parsedBody.meta.eventName === 'subscription_created') {
+    if (parsedBody.meta.event_name === 'subscription_created') {
       const createdSubscription = await prisma.subscription.create({
         data: {
-          userId: parsedBody.meta.customData.userId,
           id: parsedBody.data.id,
           ...parsedBody.data.attributes,
         },
@@ -56,13 +55,12 @@ export async function POST(request: Request) {
       })
     }
  
-    if (parsedBody.meta.eventName === 'subscription_updated') {
+    if (parsedBody.meta.event_name === 'subscription_updated') {
       const updatedSubscription = await prisma.subscription.update({
         where: {
           id: parsedBody.data.id,
         },
         data: {
-          userId: parsedBody.meta.customData.userId,
           id: parsedBody.data.id,
           ...parsedBody.data.attributes,
         },

@@ -56,9 +56,9 @@ export default function ProductVariants({ productId }: { productId: string }) {
  
     const email = session?.user?.email
     const name = session?.user?.name
-    //const userId = session?.user?.id
+    // const userId = session?.userId
  
-    //url.searchParams.append('checkout[custom][user_id]', userId)
+    // url.searchParams.append('checkout[custom][user_id]', userId)
     if (email) url.searchParams.append('checkout[email]', email)
     if (name) url.searchParams.append('checkout[name]', name)
  

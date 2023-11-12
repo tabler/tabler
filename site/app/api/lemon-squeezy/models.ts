@@ -3,20 +3,20 @@ import { z } from 'zod'
 const Attributes = z
   .object({
     pause: z.any().optional(),
-    status: z.enum(['ON_TRIAL',  'ACTIVE',  'PAUSED',  'PAST_DUE',  'UNPAID',  'CANCELLED',  'EXPIRED']),
-    orderId: z.number(),
-    storeId: z.number(),
-    cancelled: z.date().nullable().optional(),
-    userName: z.string(),
-    cardBrand: z.enum(['VISA',  'MASTERCARD',  'AMERICAN_EXPRESS',  'DISCOVER',  'JCB',  'DINERS_CLUB']),
-    productId: z.number(),
-    variantId: z.number(),
-    customerId: z.number(),
-    productName: z.string(),
-    variantName: z.string(),
-    orderItemId: z.number(),
-    cardLastFour: z.string(),
-    statusFormatted: z.string(),
+    status: z.enum(['on_trial', 'active', 'paused', 'past_due', 'unpaid', 'cancelled', 'expired']),
+    order_id: z.number(),
+    store_id: z.number(),
+    cancelled: z.boolean().nullable().optional(),
+    user_name: z.string(),
+    card_brand: z.enum(['visa', 'mastercard', 'american_express', 'discover', 'jcb', 'diners_club']),
+    product_id: z.number(),
+    variant_id: z.number(),
+    customer_id: z.number(),
+    product_name: z.string(),
+    variant_name: z.string(),
+    order_item_id: z.number(),
+    card_last_four: z.string(),
+    status_formatted: z.string(),
   })
  
 const Links = z
@@ -37,8 +37,8 @@ const Relationships = z
     product: Order,
     variant: Order,
     customer: Order,
-    orderItem: Order,
-    subscriptionInvoices: Order,
+    'order-item': Order,
+    'subscription-invoices': Order,
   })
  
 const Data = z
@@ -52,12 +52,8 @@ const Data = z
  
 const Meta = z
   .object({
-    testMode: z.boolean(),
-    eventName: z.string(),
-    customData: z
-      .object({
-        userId: z.string(),
-      })
+    test_mode: z.boolean(),
+    event_name: z.string(),
   })
  
 export const SLemonSqueezyWebhookRequest = z
