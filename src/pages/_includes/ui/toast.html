@@ -1,6 +1,7 @@
+{% assign toast-id = include.toast-id | default: 'simple' %}
 {% assign person-id = include.person-id | default: 2 %}
 {% assign person = site.data.people[person-id] %}
-<div class="toast show" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false" data-bs-toggle="toast">
+<div class="toast {% if include.show %}show{% endif %}" id="toast-{{ toast-id }}" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
 	{% unless include.hide-header %}
 	<div class="toast-header">
 		{% include ui/avatar.html person=person class="me-2" size="xs" %}
@@ -11,7 +12,11 @@
 	{% endunless %}
 	<div class="toast-body">
 		{% if include.cookies %}
-		🍪&nbsp;Our site uses cookies. By continuing to use our site, you agree to our Cookie Policy. <a href="#" class="btn btn-primary btn-sm">I understand</a>
+		🍪&nbsp;Our site uses cookies. By continuing to use our site, you agree to our Cookie Policy.
+
+		<div class="mt-2 pt-2 border-top">
+			<a href="#" class="btn btn-primary btn-sm">I understand</a>
+		</div>
 		{% else %}
 		{{ include.text | default: 'Hello, world! This is a toast message.' }}
 		{% endif %}
