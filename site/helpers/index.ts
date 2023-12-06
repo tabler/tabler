@@ -1,3 +1,5 @@
+import { Plan } from "@/types";
+
 export const groupBy = function (xs, key) {
   return xs.reduce(function (rv, x) {
     ;(rv[x[key]] = rv[x[key]] || []).push(x);
@@ -73,3 +75,7 @@ export const getNextAuthErrorMessage = (error: string): string => {
       return 'Unable to sign in.';
   }  
 };
+
+export const isPlanFeatured = (plan: Plan) => {
+  return plan.variantName === 'Advanced'
+}

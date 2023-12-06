@@ -3,9 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider          = "postgresql"
-  url               = env("POSTGRES_PRISMA_URL")
-  directUrl         = env("POSTGRES_URL_NON_POOLING")
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL")
+  directUrl = env("POSTGRES_URL_NON_POOLING")
 }
 
 model Account {
@@ -39,13 +39,14 @@ model Session {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String         @id @default(cuid())
   name          String?
-  email         String?   @unique
-  emailVerified DateTime? @map("email_verified")
+  email         String?        @unique
+  emailVerified DateTime?      @map("email_verified")
   image         String?
   accounts      Account[]
   sessions      Session[]
+  subscription  Subscription[]
 
   @@map("users")
 }
@@ -59,41 +60,48 @@ model VerificationToken {
   @@map("verificationtokens")
 }
 
-enum SubscriptionStatus {
-  on_trial
-  active
-  paused
-  past_due
-  unpaid
-  cancelled
-  expired
-}
-
-enum CardBrand {
-  visa
-  mastercard
-  american_express
-  discover
-  jcb
-  diners_club
-}
-
 model Subscription {
-  id             Int      @id @default(autoincrement())
-  store_id        Int?
-  customer_id     Int?
-  order_id        Int?
-  order_item_id    Int?
-  product_id      Int?
-  variant_id      Int?
-  product_name    String?
-  variant_name    String?
-  user_name       String?
-  user_email      String?
-  status         SubscriptionStatus
-  status_formatted String?
-  card_brand      CardBrand
-  card_last_four   String
-  pause          Json?
-  cancelled      Boolean?
+  id                 Int       @id @default(autoincrement())
+  lemonSqueezyId     Int       @unique @map("lemon_squeezy_id")
+  orderId            Int       @unique @map("order_id")
+  name               String
+  email              String
+  status             String
+  renewsAt           DateTime? @map("renews_at")
+  endsAt             DateTime? @map("ends_at")
+  trialEndsAt        DateTime? @map("trial_ends_at")
+  resumesAt          DateTime? @map("resumes_at")
+  price              Int
+  plan               Plan      @relation(fields: [planId], references: [id])
+  planId             Int       @map("plan_id")
+  user               User      @relation(fields: [userId], references: [id])
+  userId             String    @map("user_id")
+  isUsageBased       Boolean   @default(false) @map("is_usage_based")
+  subscriptionItemId Int?      @unique @map("subscription_item_id")
+
+  @@index([planId, lemonSqueezyId])
+}
+
+model Plan {
+  id            Int            @id @default(autoincrement())
+  productId     Int            @map("product_id")
+  variantId     Int            @unique @map("variant_id")
+  name          String? // Need to get from Product
+  description   String?
+  variantName   String         @map("variant_name")
+  sort          Int
+  status        String
+  price         Int
+  interval      String
+  intervalCount Int            @default(1) @map("interval_count")
+  subscriptions Subscription[]
+}
+
+model WebhookEvent {
+  id              Int      @id @default(autoincrement())
+  createdAt       DateTime @default(now()) @map("created_at")
+  eventName       String   @map("event_name")
+  processed       Boolean  @default(false)
+  body            Json
+  processingError String?  @map("processing_error")
 }

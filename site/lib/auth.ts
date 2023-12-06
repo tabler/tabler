@@ -1,9 +1,11 @@
-import prisma from '@/lib/prisma';
-import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import GitHubProvider from 'next-auth/providers/github';
-import GoogleProvider from 'next-auth/providers/google';
-import { NextAuthOptions } from 'next-auth';
-import Auth0Provider from 'next-auth/providers/auth0';
+import prisma from '@/lib/prisma'
+import { PrismaAdapter } from '@next-auth/prisma-adapter'
+import GitHubProvider from 'next-auth/providers/github'
+import GoogleProvider from 'next-auth/providers/google'
+import { NextAuthOptions } from 'next-auth'
+import Auth0Provider from 'next-auth/providers/auth0'
+import { getServerSession } from 'next-auth/next'
+import type { ExtendedSession } from '@/types'
 
 export const authConfig: NextAuthOptions = {
   providers: [
@@ -70,6 +72,18 @@ export const authConfig: NextAuthOptions = {
   session: {
     strategy: 'jwt',
   },
+  callbacks: {
+    // Add user ID to session from token
+    session: async ({ session, token }) => {
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: token.sub,
+        },
+      }
+    }
+  }  
   // callbacks: {
   //   session: ({ session, token }) => {
   //     return {
@@ -92,3 +106,7 @@ export const authConfig: NextAuthOptions = {
   //   },
   // },  
 };
+
+export function getSession(): Promise<ExtendedSession> {
+  return getServerSession(authConfig) as Promise<ExtendedSession>
+}
