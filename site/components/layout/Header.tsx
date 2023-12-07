@@ -248,13 +248,13 @@ const NavigationAuth = () => {
             </Popover.Button>
             <Popover.Panel className="navbar-dropdown-menu">
               <div className="navbar-dropdown-menu-content">
-                <div onClick={() => router.push('subscription')} className="navbar-dropdown-menu-link">
+                <div onClick={() => router.push('billing')} className="navbar-dropdown-menu-link">
                   <div className="row items-center g-3">
                     <div className="col-auto">
                       <Shape icon='rocket'/>
                     </div>
                     <div className="col">
-                      <h5>Subscription</h5>
+                      <h5>Billing</h5>
                     </div>
                   </div>
                 </div>  
