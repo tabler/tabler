@@ -26,17 +26,16 @@ Tabler is fully responsive and compatible with all modern browsers. Thanks to it
 
 <a href="https://preview.tabler.io" target="_blank"><img src="https://raw.githubusercontent.com/tabler/tabler/dev/src/static/tabler-preview.png" alt="Tabler preview"></a>
 
-
 ## 🚀 Features
 
-We've created this admin panel for everyone who wants to create templates based on our pre-made components. Our mission is to deliver a user-friendly, clear and easy administration panel that can be used by both simple websites and sophisticated systems. The only requirement is basic HTML and CSS (and some [Liquid](https://github.com/Shopify/liquid/wiki)) knowledge — as a reward, you'll be able to manage and visualize different types of data in the easiest possible way!
+Welcome to our advanced admin panel, designed for users who aim to craft templates using our pre-made components. Our mission is to deliver a user-friendly, clear, and easily navigable administration panel suitable for both simple websites and sophisticated systems. The only prerequisite is basic HTML and CSS knowledge, along with some [Liquid](https://github.com/Shopify/liquid/wiki) expertise. As a reward, you'll gain the ability to effortlessly manage and visualize various types of data.
 
-* **Responsive:** With the support for mobile, tablet and desktop displays, it doesn’t matter what device you’re using. Tabler is responsive in all major browsers.
-* **Cross Browser:** Our theme works perfectly with the latest Chrome, Firefox+, Safari, Opera, Edge and mobile browsers. We work hard to provide continuous support for them.
-* **HTML5 & CSS3:** We use only modern web technologies, such as HTML5 and CSS3. Our theme includes some subtle CSS3 animations, which will help you attract attention.
-* **Clean Code:** We followed Bootstrap’s guidelines carefully to make your integration as easy as possible. All code is handwritten and W3C valid.
-* **Demo pages**: Tabler features over 20 individual pages using various components, which gives you the freedom to choose and combine. All components can vary in color and styling that you can easily modify using Sass. Sky is the limit!
-* **Single Page Application versions:** [Tabler React](https://github.com/tabler/tabler-react) has React components for Tabler.
+* **Responsive Design:** Whether you're on a mobile, tablet, or desktop, Tabler ensures a seamless experience. Our theme is responsive across all major browsers.
+* **Cross-Browser Compatibility:** Our theme seamlessly integrates with the latest versions of Chrome, Firefox, Safari, Opera, Edge, and mobile browsers. We work diligently to provide continuous support for them.
+* **Modern Web Technologies:** Embrace modern web technologies with HTML5 and CSS3. Our theme incorporates subtle CSS3 animations to help you attract attention.
+* **Clean Code:** We meticulously adhered to Bootstrap’s guidelines to simplify your integration process. All code is handwritten and W3C valid.
+* **Demo Pages:** Tabler boasts over 20 individual pages utilizing various components, granting you the freedom to choose and combine. All components offer flexibility in color and styling, easily modifiable using Sass. The sky is the limit!
+* **Single Page Application Versions:** Explore [Tabler React](https://github.com/tabler/tabler-react) for React components tailored for Tabler.
 
 ## 📖 Documentation
 
