@@ -109,7 +109,7 @@ All notable changes to this project will be documented in this file.
 - exclude `playgrounds` from build
 - update jekyll to v4.3.1
 - fix: facebook color update
-- navbar aria atributes fixes
+- navbar aria attributes fixes
 - fix #808 - `navbar-menu` and `sidebar-menu` has the same `id`
 - fix #1335 - missing color variables usage in `alert` and `btn-ghost-*`
 - move border style to CSS variables

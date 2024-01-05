@@ -42,6 +42,8 @@ We've created this admin panel for everyone who wants to create templates based 
 
 Documentation is available as a part of Tabler preview: https://tabler.io/docs/
 
+To run the documentation site locally, follow instructions in the [Documentation README](https://github.com/tabler/tabler/blob/dev/site/README.md).
+
 ## 🪴 Project Activity
 
 ![Alt](https://repobeats.axiom.co/api/embed/61d1db34446967b0848af68198a392067e0f5870.svg "Repobeats analytics image")
@@ -192,12 +194,6 @@ This project exists thanks to all the people who contribute.
 Thank you to all our backers! 🙏 [Become a backer](https://opencollective.com/tabler#backer)
 
 <a href="https://opencollective.com/tabler#backers" target="_blank"><img src="https://opencollective.com/tabler/tiers/backer.svg?width=890&button=false" /></a>
-
-## ❤️ Thanks
-
-<a href="https://www.chromatic.com/"><img src="https://user-images.githubusercontent.com/321738/84662277-e3db4f80-af1b-11ea-88f5-91d67a5e59f6.png" width="153" height="30" alt="Chromatic" /></a>
-
-Thanks to [Chromatic](https://www.chromatic.com/) for providing the visual testing platform that helps us review UI changes and catch visual regressions.
 
 ## License
 

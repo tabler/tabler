@@ -367,7 +367,7 @@ gulp.task('mjs', () => {
  */
 gulp.task('watch-jekyll', (cb) => {
 	browserSync.notify('Building Jekyll')
-	return spawn('bundle', ['exec', 'jekyll', 'build', '--watch', '--incremental', '--destination', demoDir, '--trace'], { stdio: 'inherit' })
+	return spawn('bundle', ['exec', 'jekyll', 'build', '--watch', '--destination', demoDir, '--trace'], { stdio: 'inherit' })
 		.on('close', cb)
 })
 
