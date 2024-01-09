@@ -1,5 +1,57 @@
 # Changelog
 
+## 1.0.0
+
+### Minor Changes
+
+- c276a8b: Add new `Tag` component
+- d380224: Add customizable Star Ratings component using `star-rating.js` library
+- 47cd6c1: Add `flags.html` page with list of all flags
+- be67ab6: Update CSS class from `text-muted` to `text-secondary` for better Bootstrap compatibility
+- 080c746: Adding `alerts.html` page with example of alerts.
+- b381273: Change primary color value to new Tabler branding
+- 75619dd: Unify dark mode with latest Bootstrap API and improve dark mode elements
+- cc82dbf: New Chat component
+- 5a03643: Adjusting form element sizes for enhanced mobile devices compatibility
+- be14607: Add new color picker component using `coloris.js` library
+- d046570: Update Tabler Icons to version 2.23 with 18 new icons added
+
+### Patch Changes
+
+- fd0935a: Updated link to icons documentation
+- 2f5fad6: Dependencies update
+- 056df18: Fix text color in dark version of navbar
+- 4ff077a: Update Tabler Icons to version 2.21 with 18 new icons added
+- 89c6234: Adding Two-Step Verification Pages
+- 7fe30a1: `Dockerfile` fix
+- 72f868b: Update Tabler Icons to version 2.20 with 37 new icons added
+- e0443c0: Add Tabler Illustrations
+- 7896562: Unify size of avatar, flag and payment components
+- 1587905: Update icons to v2.42.0
+- d9e00b2: Update Bootstrap to v5.3.0
+- 3f516ea: Fix `rgba` color values in `_variables.scss`
+- 45c83ac: Resolve map page issues
+- cb4a681: Update `_navbar.scss` with disabled dropdown menu items color
+- 4b4b4f6: Adding punctuation to `SECURITY.md`
+- a0a2d52: Fix form controls bugs in dark mode
+- 4de166d: Unified Box Shadows with Bootstrap Compatibility
+- 0625f5f: Update Tabler Icons to version 2.22 with 18 new icons added
+- a43ded4: Add All Contributions package to project for easy contribution tracking
+- 5ec7f05: Resolved light dropdown issue on dark theme
+- 0f129b1: Update Tabler Icons to version 2.19 with 18 new icons added
+- 8552a46: Switch from `npm` to `pnpm` for faster package installation
+- 4c88481: Add variable to configure `avatar-list` spacing
+- 650d84c: Update required Node.js version to 18 and add `.nvmrc` file
+- fb659d4: Fix table default background color
+- f77c712: Avoid SCSS color dependency on `:focus`
+- 7bb947b: Update Tabler Icons to version 2.18 with 18 new icons added
+- 289dd3b: Add Prettier to project for consistent code formatting
+- b885852: Update Tabler Icons to version 2.25 with 48 new icons added
+- 53a5117: Fix responsiveness issue in Settings menu
+- 35ee14d: Add new Filled section to Icons page
+- d32f242: Update `bootstrap` to v5.3.1
+- 94b83d4: Add support for changeset tool for more efficient and organized code changes
+
 All notable changes to this project will be documented in this file.
 
 ## `1.0.0-beta20` - 2023-08-24
@@ -28,7 +80,6 @@ All notable changes to this project will be documented in this file.
 - `Dockerfile` fix
 - Switch from `npm` to `pnpm` for faster package installation
 
-
 ## `1.0.0-beta19` - 2023-05-15
 
 - Add customizable Star Ratings component using `star-rating.js` library (#1571)
@@ -36,7 +87,6 @@ All notable changes to this project will be documented in this file.
 - Fix form controls bugs in dark mode (#1573)
 - Fix text color in dark version of navbar (#1569)
 - Changelog update
-
 
 ## `1.0.0-beta18` - 2023-05-14
 
@@ -61,7 +111,6 @@ All notable changes to this project will be documented in this file.
 - Dark mode lite colors improvement
 - Fix non full width selects (#1392)
 
-
 ## `1.0.0-beta17` - 2023-01-28
 
 - update `bootstrap` to v5.3.0
@@ -84,7 +133,6 @@ All notable changes to this project will be documented in this file.
 - move `@tabler/icons` to `dev-dependencies`
 - fix #1370: avatar stacked list is not stacked anymore
 
-
 ## `1.0.0-beta16` - 2022-11-12
 
 - new `Photogrid` page
@@ -98,7 +146,6 @@ All notable changes to this project will be documented in this file.
 - update icons to v1.111.0
 - homepage navbar fix
 - fix #1262 - `.bg-opacity-xx` class is not functioning properly
-
 
 ## `1.0.0-beta15` - 2022-11-01
 
@@ -117,12 +164,10 @@ All notable changes to this project will be documented in this file.
 - `btn-actions` fixes
 - replace `$text-muted` to css variable
 
-
 ## `1.0.0-beta14` - 2022-10-21
 
 - fix active items in dark mode
 - update Jekyll to newest version
-
 
 ## `1.0.0-beta13` - 2022-10-18
 
@@ -154,7 +199,6 @@ All notable changes to this project will be documented in this file.
 - fix #1275 - remove last border-right on progress bar
 - fix #1261 - broken offcanvas bg
 
-
 ## `1.0.0-beta12` - 2022-09-19
 
 - new "Job listing" page
@@ -180,7 +224,6 @@ All notable changes to this project will be documented in this file.
 - fix form elements demo page radio buttons
 - replace `gulp-minify` with `gulp-terser`
 
-
 ## `1.0.0-beta11` - 2022-07-05
 
 - new `Dropzone` component
@@ -196,7 +239,6 @@ All notable changes to this project will be documented in this file.
 - fix: #1125 incorrect chart display in the mobile version
 - update Bootstrap to 5.2.0
 
-
 ## `1.0.0-beta10` - 2022-04-29
 
 - new `datatable` component
@@ -205,7 +247,6 @@ All notable changes to this project will be documented in this file.
 - new carousel indicators: dots, vertical, thumbs (#1101)
 - replace !important modifier with more specific selectors (#1100)
 - new `FAQ` page
-
 
 ## `1.0.0-beta9` - 2022-02-26
 
@@ -220,7 +261,6 @@ All notable changes to this project will be documented in this file.
 - add `font-display: swap;` to improve font loading
 - new `Boxed` layout
 
-
 ## `1.0.0-beta8` - 2022-02-05
 
 - update dependencies
@@ -229,7 +269,6 @@ All notable changes to this project will be documented in this file.
 - docs improvement
 - replace `badge` with `status-dot` in `navbar-notifications.html`
 - map tooltip fixes
-
 
 ## `1.0.0-beta7` - 2022-02-05
 
@@ -244,7 +283,6 @@ All notable changes to this project will be documented in this file.
 - RTL stylesheet fixes
 - new card action demos
 
-
 ## `1.0.0-beta6` - 2022-01-18
 
 - pricing cards fix
@@ -257,7 +295,6 @@ All notable changes to this project will be documented in this file.
 - fix #960 - Badges not honoring font sizes
 - fix #959 - `node-sass` does not properly compile nested media queries
 - update package dependencies to newest version
-
 
 ## `1.0.0-beta5` - 2021-12-07
 
@@ -276,7 +313,6 @@ All notable changes to this project will be documented in this file.
 - colors unify
 - add `tom-select` and remove `choices.js`
 
-
 ## `1.0.0-beta4` - 2021-10-24
 
 - upgrade required node.js version to 14
@@ -285,14 +321,12 @@ All notable changes to this project will be documented in this file.
 - fix #775 - litepicker not initializing
 - fix `nouislider` import in dev
 
-
 ## `1.0.0-beta3` - 2021-05-08
 
 - upgrade Bootstrap to 5.0
 - upgrade dependencies
 - change `$border-radius-pill` variable
 - badge vertical align fix
-
 
 ## `1.0.0-beta2` - 2021-03-29
 
@@ -306,7 +340,6 @@ All notable changes to this project will be documented in this file.
 - ribbon fix
 - charts label fixes
 - charts docs
-
 
 ## `1.0.0-beta` - 2021-02-17
 
