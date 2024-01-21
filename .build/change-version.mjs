@@ -10,8 +10,11 @@ const VERBOSE = process.argv.includes('--verbose')
 const DRY_RUN = process.argv.includes('--dry') || process.argv.includes('--dry-run')
 
 const FILES = [
+	'README.md',
 	'test.md',
-	'preview/_config.yml'
+	'preview/_config.yml',
+	'core/scss/_banner.scss',
+	'core/js/base.js'
 ]
 
 function regExpQuote(string) {
@@ -63,12 +66,14 @@ function bumpPnpmVersion(newVersion) {
 		return
 	}
 
-	execFile('pnpm', ['version', '-r', newVersion, '--no-git-tag'], { shell: true }, error => {
-		if (error) {
-			console.error(error)
-			process.exit(1)
-		}
-	})
+	if (process.env.npm_package_version !== newVersion) {
+		execFile('pnpm', ['version', '-r', newVersion, '--no-git-tag'], { shell: true }, error => {
+			if (error) {
+				console.error(error)
+				process.exit(1)
+			}
+		})
+	}
 }
 
 async function main(args) {
