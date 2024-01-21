@@ -1,27 +1,20 @@
 {
-  "name": "@tabler/core",
-  "version": "1.0.0-beta20",
+  "version": "1.0.0",
   "description": "Premium and Open Source dashboard template with responsive and high quality UI.",
   "homepage": "https://tabler.io",
   "scripts": {
-    "dev": "pnpm run start-plugins",
-    "start": "gulp start",
-    "start-plugins": "gulp start --with-plugins",
-    "build": "gulp build",
-    "build-docs": "mkdir public && touch public/index.html && echo 'ok'",
-    "preview": "gulp build --preview",
-    "svg-optimize": "svgo -f svg/brand --pretty",
-    "unused-files": "node build/unused-files.js",
+    "_dev": "pnpm run start-plugins",
+    "_start": "gulp start",
+    "_svg-optimize": "svgo -f svg/brand --pretty",
+    "_unused-files": "node build/unused-files.js",
+    "_svg-icons": "gulp svg-icons",
+    "_changelog": "gulp changelog",
+    "_format:check": "prettier --check core/**/*.{js,scss} --cache",
+    "_format:write": "prettier --write core/**/*.{js,scss} --cache",
     "release": "release-it",
-    "svg-icons": "gulp svg-icons",
-    "bundlewatch": "bundlewatch",
-    "storybook": "start-storybook -p 6006",
-    "changelog": "gulp changelog",
-    "icons": "ncu -u @tabler/icons && pnpm install && gulp svg-icons && git add . && git commit -am \"update icons to v`pnpm info @tabler/icons version`\" && git push",
-    "download-images": "node build/download-images.js",
-    "optimize-images": "for i in ./src/static/photos/*.jpg; do convert \"$i\" -quality 80% \"${i%.jpg}.jpg\"; done",
-    "format:check": "prettier --check src/**/*.{js,scss} --cache",
-    "format:write": "prettier --write src/**/*.{js,scss} --cache"
+    "icons": "cd preview && ncu -u @tabler/icons && pnpm install && gulp svg-icons && git add . && git commit -am \"update icons to v`pnpm info @tabler/icons version`\" && git push",
+    "download-images": "node .build/download-images.mjs",
+    "change-version": "node .build/change-version.mjs"
   },
   "repository": {
     "type": "git",
@@ -60,74 +53,6 @@
   "umd:main": "dist/js/tabler.min.js",
   "module": "dist/js/tabler.esm.js",
   "main": "dist/js/tabler.js",
-  "bundlewatch": {
-    "files": [
-      {
-        "path": "./dist/css/tabler.css",
-        "maxSize": "75 kB"
-      },
-      {
-        "path": "./dist/css/tabler.min.css",
-        "maxSize": "70 kB"
-      },
-      {
-        "path": "./dist/css/tabler.rtl.css",
-        "maxSize": "75 kB"
-      },
-      {
-        "path": "./dist/css/tabler.rtl.min.css",
-        "maxSize": "70 kB"
-      },
-      {
-        "path": "./dist/css/tabler-flags.css",
-        "maxSize": "2 kB"
-      },
-      {
-        "path": "./dist/css/tabler-flags.min.css",
-        "maxSize": "2 kB"
-      },
-      {
-        "path": "./dist/css/tabler-payments.css",
-        "maxSize": "2 kB"
-      },
-      {
-        "path": "./dist/css/tabler-payments.min.css",
-        "maxSize": "2 kB"
-      },
-      {
-        "path": "./dist/css/tabler-social.css",
-        "maxSize": "2 kB"
-      },
-      {
-        "path": "./dist/css/tabler-social.min.css",
-        "maxSize": "2 kB"
-      },
-      {
-        "path": "./dist/css/tabler-vendors.css",
-        "maxSize": "7 kB"
-      },
-      {
-        "path": "./dist/css/tabler-vendors.min.css",
-        "maxSize": "6 kB"
-      },
-      {
-        "path": "./dist/js/tabler.js",
-        "maxSize": "60 kB"
-      },
-      {
-        "path": "./dist/js/tabler.min.js",
-        "maxSize": "45 kB"
-      },
-      {
-        "path": "./dist/js/tabler.esm.js",
-        "maxSize": "60 kB"
-      },
-      {
-        "path": "./dist/js/tabler.esm.min.js",
-        "maxSize": "45 kB"
-      }
-    ]
-  },
   "devDependencies": {
     "@babel/core": "^7.23.7",
     "@babel/preset-env": "^7.23.7",
@@ -184,83 +109,6 @@
     "yaml": "^2.3.4",
     "yargs": "^17.7.2",
     "zod": "^3.22.4"
-  },
-  "dependencies": {
-    "@popperjs/core": "^2.11.8",
-    "@tabler/icons": "^2.45.0",
-    "bootstrap": "5.3.2"
-  },
-  "peerDependencies": {
-    "@melloware/coloris": "^0.19.1",
-    "apexcharts": "^3.40.0",
-    "autosize": "^6.0.1",
-    "choices.js": "^10.2.0",
-    "countup.js": "^2.6.2",
-    "dropzone": "^6.0.0-beta.2",
-    "flatpickr": "^4.6.13",
-    "fslightbox": "^3.4.1",
-    "imask": "^6.6.1",
-    "jsvectormap": "^1.5.3",
-    "list.js": "^2.3.1",
-    "litepicker": "^2.0.12",
-    "nouislider": "^15.7.0",
-    "plyr": "^3.7.8",
-    "star-rating.js": "^4.3.0",
-    "tinymce": "^6.4.2",
-    "tom-select": "^2.2.2"
-  },
-  "peerDependenciesMeta": {
-    "@melloware/coloris": {
-      "optional": true
-    },
-    "apexcharts": {
-      "optional": true
-    },
-    "autosize": {
-      "optional": true
-    },
-    "choices.js": {
-      "optional": true
-    },
-    "countup.js": {
-      "optional": true
-    },
-    "dropzone": {
-      "optional": true
-    },
-    "flatpickr": {
-      "optional": true
-    },
-    "fslightbox": {
-      "optional": true
-    },
-    "imask": {
-      "optional": true
-    },
-    "jsvectormap": {
-      "optional": true
-    },
-    "list.js": {
-      "optional": true
-    },
-    "litepicker": {
-      "optional": true
-    },
-    "nouislider": {
-      "optional": true
-    },
-    "plyr": {
-      "optional": true
-    },
-    "tinymce": {
-      "optional": true
-    },
-    "tom-select": {
-      "optional": true
-    },
-    "star-rating.js": {
-      "optional": true
-    }
   },
   "release-it": {
     "hooks": {

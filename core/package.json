@@ -1,0 +1,186 @@
+{
+  "name": "@tabler/core",
+  "version": "1.0.0",
+  "description": "Premium and Open Source dashboard template with responsive and high quality UI.",
+  "scripts": {
+    "dev": "",
+    "clean": "rm -rf dist",
+    "bundlewatch": "bundlewatch --config .bundlewatch.config.json",
+    "build": "pnpm run js && pnpm run css && pnpm run img",
+    "js": "pnpm run js-compile && pnpm run js-minify",
+    "js-compile": "echo 'compile'",
+    "js-minify": "echo 'minify'",
+    "css": "pnpm run css-compile && pnpm run css-rtl && pnpm run css-minify",
+    "css-compile": "sass --style expanded --source-map --embed-sources --no-error-css scss/:dist/css/ --load-path=node_modules",
+    "css-rtl": "cross-env NODE_ENV=RTL postcss --config .build/postcss.config.mjs --dir \"dist/css\" --ext \".rtl.css\" \"dist/css/*.css\" \"!dist/css/*.min.css\" \"!dist/css/*.rtl.css\"",
+    "css-minify": "pnpm run css-minify-main && pnpm run css-minify-rtl",
+    "css-minify-main": "cleancss -O1 --format breakWith=lf --with-rebase --source-map --source-map-inline-sources --output dist/css/ --batch --batch-suffix \".min\" \"dist/css/*.css\" \"!dist/css/*.min.css\" \"!dist/css/*rtl*.css\"",
+    "css-minify-rtl": "cleancss -O1 --format breakWith=lf --with-rebase --source-map --source-map-inline-sources --output dist/css/ --batch --batch-suffix \".min\" \"dist/css/*rtl.css\" \"!dist/css/*.min.css\"",
+    "img": "rm -rf dist/img && cp -r img dist/img",
+    "lint": "eslint --ext .js,.ts,.tsx --ignore-path .gitignore ."
+  },
+  "main": "dist/js/bootstrap.js",
+  "module": "dist/js/bootstrap.esm.js",
+  "sass": "scss/bootstrap.scss",
+  "style": "dist/css/bootstrap.css",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tabler/tabler.git"
+  },
+  "author": "codecalm",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/tabler/tabler/issues"
+  },
+  "homepage": "https://github.com/tabler/tabler#readme",
+  "dependencies": {
+    "@popperjs/core": "^2.11.8",
+    "@tabler/icons": "^2.45.0",
+    "bootstrap": "5.3.2"
+  },
+  "peerDependencies": {
+    "@melloware/coloris": "^0.19.1",
+    "apexcharts": "^3.40.0",
+    "autosize": "^6.0.1",
+    "choices.js": "^10.2.0",
+    "countup.js": "^2.6.2",
+    "dropzone": "^6.0.0-beta.2",
+    "flatpickr": "^4.6.13",
+    "fslightbox": "^3.4.1",
+    "imask": "^6.6.1",
+    "jsvectormap": "^1.5.3",
+    "list.js": "^2.3.1",
+    "litepicker": "^2.0.12",
+    "nouislider": "^15.7.0",
+    "plyr": "^3.7.8",
+    "star-rating.js": "^4.3.0",
+    "tinymce": "^6.4.2",
+    "tom-select": "^2.2.2"
+  },
+  "peerDependenciesMeta": {
+    "@melloware/coloris": {
+      "optional": true
+    },
+    "apexcharts": {
+      "optional": true
+    },
+    "autosize": {
+      "optional": true
+    },
+    "choices.js": {
+      "optional": true
+    },
+    "countup.js": {
+      "optional": true
+    },
+    "dropzone": {
+      "optional": true
+    },
+    "flatpickr": {
+      "optional": true
+    },
+    "fslightbox": {
+      "optional": true
+    },
+    "imask": {
+      "optional": true
+    },
+    "jsvectormap": {
+      "optional": true
+    },
+    "list.js": {
+      "optional": true
+    },
+    "litepicker": {
+      "optional": true
+    },
+    "nouislider": {
+      "optional": true
+    },
+    "plyr": {
+      "optional": true
+    },
+    "tinymce": {
+      "optional": true
+    },
+    "tom-select": {
+      "optional": true
+    },
+    "star-rating.js": {
+      "optional": true
+    }
+  },
+  "bundlewatch": {
+    "files": [
+      {
+        "path": "./dist/css/tabler.css",
+        "maxSize": "75 kB"
+      },
+      {
+        "path": "./dist/css/tabler.min.css",
+        "maxSize": "70 kB"
+      },
+      {
+        "path": "./dist/css/tabler.rtl.css",
+        "maxSize": "75 kB"
+      },
+      {
+        "path": "./dist/css/tabler.rtl.min.css",
+        "maxSize": "70 kB"
+      },
+      {
+        "path": "./dist/css/tabler-flags.css",
+        "maxSize": "2 kB"
+      },
+      {
+        "path": "./dist/css/tabler-flags.min.css",
+        "maxSize": "2 kB"
+      },
+      {
+        "path": "./dist/css/tabler-payments.css",
+        "maxSize": "2 kB"
+      },
+      {
+        "path": "./dist/css/tabler-payments.min.css",
+        "maxSize": "2 kB"
+      },
+      {
+        "path": "./dist/css/tabler-social.css",
+        "maxSize": "2 kB"
+      },
+      {
+        "path": "./dist/css/tabler-social.min.css",
+        "maxSize": "2 kB"
+      },
+      {
+        "path": "./dist/css/tabler-vendors.css",
+        "maxSize": "7 kB"
+      },
+      {
+        "path": "./dist/css/tabler-vendors.min.css",
+        "maxSize": "6 kB"
+      },
+      {
+        "path": "./dist/js/tabler.js",
+        "maxSize": "60 kB"
+      },
+      {
+        "path": "./dist/js/tabler.min.js",
+        "maxSize": "45 kB"
+      },
+      {
+        "path": "./dist/js/tabler.esm.js",
+        "maxSize": "60 kB"
+      },
+      {
+        "path": "./dist/js/tabler.esm.min.js",
+        "maxSize": "45 kB"
+      }
+    ]
+  },
+  "devDependencies": {
+    "clean-css-cli": "^5.6.3",
+    "cross-env": "^7.0.3",
+    "postcss-cli": "^11.0.0"
+  }
+}
