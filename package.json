@@ -15,7 +15,8 @@
     "icons": "cd preview && ncu -u @tabler/icons && pnpm install && node .build/import-icons.mjs && git add . && git commit -am \"update icons to v`pnpm info @tabler/icons version`\" && git push",
     "download-images": "node .build/download-images.mjs",
     "change-version": "node .build/change-version.mjs",
-    "changelog": "node .build/changelog.mjs"
+    "changelog": "node .build/changelog.mjs",
+    "generate-sri": "node .build/generate-sri.mjs"
   },
   "repository": {
     "type": "git",
@@ -55,6 +56,17 @@
   "module": "dist/js/tabler.esm.js",
   "main": "dist/js/tabler.js",
   "devDependencies": {
+    "@rollup/plugin-babel": "^6.0.4",
+    "@rollup/plugin-node-resolve": "^15.2.3",
+    "@rollup/plugin-replace": "^5.0.5",
+    "clean-css-cli": "^5.6.3",
+    "cross-env": "^7.0.3",
+    "nodemon": "^3.0.3",
+    "postcss-cli": "^11.0.0",
+    "rollup": "^4.9.6",
+    "terser": "^5.27.0"
+  },
+  "_devDependencies": {
     "@babel/core": "^7.23.7",
     "@babel/preset-env": "^7.23.7",
     "@changesets/cli": "^2.27.1",

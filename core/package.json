@@ -3,10 +3,9 @@
   "version": "1.0.0",
   "description": "Premium and Open Source dashboard template with responsive and high quality UI.",
   "scripts": {
-    "dev": "",
+    "dev": "pnpm run watch",
+    "build": "pnpm run clean && pnpm run js && pnpm run css && pnpm run img",
     "clean": "rm -rf dist",
-    "bundlewatch": "bundlewatch --config .bundlewatch.config.json",
-    "build": "pnpm run js && pnpm run css && pnpm run img",
     "js": "pnpm run js-compile && pnpm run js-minify",
     "js-compile": "pnpm run js-compile-standalone && pnpm run js-compile-standalone-esm && pnpm run js-compile-bundle",
     "js-compile-standalone": "rollup --environment BUNDLE:false --config .build/rollup.config.mjs --sourcemap",
@@ -22,8 +21,12 @@
     "css-minify": "pnpm run css-minify-main && pnpm run css-minify-rtl",
     "css-minify-main": "cleancss -O1 --format breakWith=lf --with-rebase --source-map --source-map-inline-sources --output dist/css/ --batch --batch-suffix \".min\" \"dist/css/*.css\" \"!dist/css/*.min.css\" \"!dist/css/*rtl*.css\"",
     "css-minify-rtl": "cleancss -O1 --format breakWith=lf --with-rebase --source-map --source-map-inline-sources --output dist/css/ --batch --batch-suffix \".min\" \"dist/css/*rtl.css\" \"!dist/css/*.min.css\"",
+    "watch": "pnpm run watch-css & pnpm run watch-js",
+    "watch-css": "nodemon --watch scss/ --ext scss --exec \"pnpm run css-compile\"",
+    "watch-js": "nodemon --watch js/ --ext js --exec \"pnpm run js-compile\"",
     "img": "rm -rf dist/img && cp -r img dist/img",
-    "lint": "eslint --ext .js,.ts,.tsx --ignore-path .gitignore ."
+    "lint": "eslint --ext .js,.ts,.tsx --ignore-path .gitignore .",
+    "bundlewatch": "bundlewatch --config .bundlewatch.config.json"
   },
   "main": "dist/js/tabler.js",
   "module": "dist/js/tabler.esm.js",
@@ -183,15 +186,5 @@
         "maxSize": "45 kB"
       }
     ]
-  },
-  "devDependencies": {
-    "@rollup/plugin-babel": "^6.0.4",
-    "@rollup/plugin-node-resolve": "^15.2.3",
-    "@rollup/plugin-replace": "^5.0.5",
-    "clean-css-cli": "^5.6.3",
-    "cross-env": "^7.0.3",
-    "postcss-cli": "^11.0.0",
-    "rollup": "^4.9.6",
-    "terser": "^5.27.0"
   }
 }

@@ -2,16 +2,25 @@
   "name": "@tabler/preview",
   "private": true,
   "scripts": {
-    "dev": "pnpm run serve",
+    "dev": "pnpm run watch",
+    "clean": "rm -rf dist && rm -rf pages/dist",
     "images": "for i in ./static/photos/*.jpg; do convert \"$i\" -quality 80% \"${i%.jpg}.jpg\"; done",
-    "build": "bundle exec jekyll build --destination dist --trace --config _config.yml,_config_prod.yml",
-    "serve": "bundle exec jekyll serve --config _config.yml,_config_dev.yml",
-    "unused-files": "node .build/unused-files.mjs" 
+    "build": "pnpm run build-jekyll",
+    "build-jekyll": "JEKYLL_ENV=production bundle exec jekyll build --destination dist --trace --config _config.yml,_config_prod.yml",
+    "js-compile": "pnpm run js-compile-standalone && pnpm run js-compile-standalone-esm",
+    "js-compile-standalone": "rollup --config .build/rollup.config.mjs --sourcemap",
+    "js-compile-standalone-esm": "rollup --environment ESM:true --config .build/rollup.config.mjs --sourcemap",
+    "watch": "pnpm run watch-jekyll & pnpm run watch-js & pnpm run watch-browsersync",
+    "watch-jekyll": "JEKYLL_ENV=development bundle exec jekyll build --watch --destination dist --config _config.yml",
+    "watch-browsersync": "node .build/browser-sync.mjs",
+    "watch-js": "nodemon --watch js/ --ext js --exec \"pnpm run js-compile\"",
+    "unused-files": "node .build/unused-files.mjs"
   },
   "dependencies": {
     "@tabler/core": "workspace:*"
   },
   "devDependencies": {
+    "browser-sync": "^3.0.2",
     "glob": "^10.3.10"
   }
 }
