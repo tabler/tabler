@@ -12,9 +12,10 @@
     "_format:check": "prettier --check core/**/*.{js,scss} --cache",
     "_format:write": "prettier --write core/**/*.{js,scss} --cache",
     "release": "release-it",
-    "icons": "cd preview && ncu -u @tabler/icons && pnpm install && gulp svg-icons && git add . && git commit -am \"update icons to v`pnpm info @tabler/icons version`\" && git push",
+    "icons": "cd preview && ncu -u @tabler/icons && pnpm install && node .build/import-icons.mjs && git add . && git commit -am \"update icons to v`pnpm info @tabler/icons version`\" && git push",
     "download-images": "node .build/download-images.mjs",
-    "change-version": "node .build/change-version.mjs"
+    "change-version": "node .build/change-version.mjs",
+    "changelog": "node .build/changelog.mjs"
   },
   "repository": {
     "type": "git",
@@ -126,5 +127,8 @@
   },
   "directories": {
     "doc": "docs"
+  },
+  "dependencies": {
+    "@tabler/icons": "^2.45.0"
   }
 }

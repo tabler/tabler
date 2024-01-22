@@ -2,10 +2,16 @@
   "name": "@tabler/preview",
   "private": true,
   "scripts": {
+    "dev": "pnpm run serve",
     "images": "for i in ./static/photos/*.jpg; do convert \"$i\" -quality 80% \"${i%.jpg}.jpg\"; done",
-    "build": "bundle exec jekyll build --destination build --trace --config _config.yml,_config_prod.yml"
+    "build": "bundle exec jekyll build --destination dist --trace --config _config.yml,_config_prod.yml",
+    "serve": "bundle exec jekyll serve --config _config.yml,_config_dev.yml",
+    "unused-files": "node .build/unused-files.mjs" 
   },
   "dependencies": {
     "@tabler/core": "workspace:*"
+  },
+  "devDependencies": {
+    "glob": "^10.3.10"
   }
 }

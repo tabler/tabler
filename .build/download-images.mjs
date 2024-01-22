@@ -2,12 +2,15 @@
 
 'use strict'
 
-const YAML = require('yaml')
-const fs = require('node:fs')
-const path = require('node:path')
-const request = require('request')
-const filePath = path.join(__dirname, '../preview/pages/_data/photos.yml')
+import YAML from 'yaml'
+import fs from 'node:fs'
+import path from 'node:path'
+import request from 'request'
+import { fileURLToPath } from 'node:url'
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+
+const filePath = path.join(__dirname, '../preview/pages/_data/photos.yml')
 const photos = YAML.parse(fs.readFileSync(filePath, 'utf8'))
 
 const urlTitle = (str) => {
@@ -51,7 +54,7 @@ async function downloadPhotos() {
 	 photos[key]['horizontal'] = photo['width'] > photo['height']
   }
 
-  fs.writeFileSync(filePath, YAML.stringify(photos))
+	fs.writeFileSync(filePath, YAML.stringify(photos))
 }
 
 downloadPhotos();
