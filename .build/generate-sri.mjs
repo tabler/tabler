@@ -17,6 +17,26 @@ const files = [
 		configPropertyName: 'css_hash'
 	},
 	{
+		file: 'dist/css/tabler.rtl.min.css',
+		configPropertyName: 'css_rtl_hash'
+	},
+	{
+		file: 'dist/css/tabler-flags.min.css',
+		configPropertyName: 'css_flags_hash'
+	},
+	{
+		file: 'dist/css/tabler-payments.min.css',
+		configPropertyName: 'css_payments_hash'
+	},
+	{
+		file: 'dist/css/tabler-social.min.css',
+		configPropertyName: 'css_social_hash'
+	},
+	{
+		file: 'dist/css/tabler-vendors.min.css',
+		configPropertyName: 'css_vendors_hash'
+	},
+	{
 		file: 'dist/js/tabler.min.js',
 		configPropertyName: 'js_hash'
 	},
