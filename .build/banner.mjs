@@ -12,7 +12,7 @@ const year = new Date().getFullYear()
 function getBanner(pluginFilename) {
 	return `/*!
   * Tabler${pluginFilename ? ` ${pluginFilename}` : ''} v${pkg.version} (${pkg.homepage})
-  * Copyright 2011-${year} ${pkg.author}
+  * Copyright 2018-${year} ${pkg.author}
   * Licensed under MIT (https://github.com/tabler/tabler/blob/main/LICENSE)
   */`
 }
