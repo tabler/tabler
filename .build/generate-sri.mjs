@@ -9,7 +9,7 @@ import { fileURLToPath } from 'node:url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
-const configFile = path.join(__dirname, '../preview/_config.yml')
+const configFile = path.join(__dirname, '../_config.yml')
 
 const files = [
 	{
