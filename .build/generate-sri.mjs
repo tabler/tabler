@@ -3,13 +3,15 @@
 'use strict'
 
 import crypto from 'crypto'
-import { readFileSync, write, writeFileSync } from 'fs'
+import { readFileSync, writeFileSync } from 'fs'
 import path from 'path'
 import { fileURLToPath } from 'node:url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
-const configFile = path.join(__dirname, '../_config.yml')
+const configFile = path.join(__dirname, '../pages/_data/site.json')
+
+console.log(configFile)
 
 const files = [
 	{
@@ -47,19 +49,17 @@ const files = [
 ]
 
 files.forEach((file) => {
-	const data = readFileSync(path.join(__dirname, '../core', file.file), 'utf8')
+	const data = readFileSync(path.join(__dirname, '..', file.file), 'utf8')
 
 	const algo = 'sha384'
 	const hash = crypto.createHash(algo).update(data, 'utf8').digest('base64')
 	const integrity = `${algo}-${hash}`
 
-	console.log(`${file.configPropertyName}: ${integrity}`)
-
 	let config = readFileSync(configFile, 'utf8')
 
-	const regex = new RegExp(`${file.configPropertyName}\\:\\s+("|')(\\S+)(\\1)`, 'gm')
+	const regex = new RegExp(`"${file.configPropertyName}"\\:\\s+("|')(\\S+)(\\1)`, 'gm')
 	config = config.replace(regex, function() {
-		return `${file.configPropertyName}: ${arguments[1]}${integrity}${arguments[3]}`
+		return `"${file.configPropertyName}": ${arguments[1]}${integrity}${arguments[3]}`
 	})
 
 	writeFileSync(configFile, config, 'utf8')
