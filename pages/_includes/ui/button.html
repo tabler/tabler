@@ -1,11 +1,12 @@
 {% assign spinner-class = false %}
+{% assign e = element | default: 'a' %}
 
-{% assign color = include.color %}
-{% if include.color == false %}
+{% assign color = color %}
+{% if color == false %}
 {% assign color = null %}
 {% endif %}
 
-{% assign provider = include.provider | default: 'fe' %}
+{% assign provider = provider | default: 'fe' %}
 {% if include.text %}{% assign spinner-class="me-2" %}{% endif %}
 
 {% assign href = '#' %}
@@ -17,13 +18,12 @@
 	{% endif %}
 {% endif %}
 
-{% assign e = include.element | default: 'a' %}
-<{{ e }}{% if e == 'a' %} href="{{ href }}"{% endif %}{% if include.type %} type="{{ include.type }}"{% endif %} class="btn{% if include.height %} btn-{{ include.height }}{% endif %}{% if color %} btn-{% if include.outline %}outline-{% elsif include.ghost %}ghost-{% endif %}{{ color }}{% endif %}{% if include.disabled %} disabled{% endif %}{% if include.square %} btn-square{% endif %}{% if include.loading %} btn-loading{% endif %}{% if include.pill %} btn-pill{% endif %}{% if include['size'] %} btn-{{ include['size'] }}{% endif %}{% if include.class %} {{ include.class }}{% endif %}{% if include.block %} w-100{% endif %}{% if include.link %} btn-link{% endif %}{% if include.icon-only %} btn-icon{% endif %}"{% if include.external %} target="_blank" rel="noreferrer"{% endif %}{% if include.modal-id %} data-bs-toggle="modal" data-bs-target="#modal-{{ include.modal-id }}"{% endif %}{% if include.toast-id %} data-bs-toggle="toast" data-bs-target="#toast-{{ include.toast-id }}"{% endif %}{% if include.icon-only %} aria-label="{{ include.text | default: "Button" }}"{% endif %}{% if include.dismiss %} data-bs-dismiss="modal"{% endif %}>
-{% if include.spinner %}
+<{{ e }}{% if e == 'a' %} href="{{ href }}"{% endif %}{% if type %} type="{{ type }}"{% endif %} class="btn{% if height %} btn-{{ height }}{% endif %}{% if color %} btn-{% if outline %}outline-{% elsif ghost %}ghost-{% endif %}{{ color }}{% endif %}{% if disabled %} disabled{% endif %}{% if square %} btn-square{% endif %}{% if loading %} btn-loading{% endif %}{% if pill %} btn-pill{% endif %}{% if size %} btn-{{ size }}{% endif %}{% if class %} {{ class }}{% endif %}{% if block %} w-100{% endif %}{% if link %} btn-link{% endif %}{% if icon-only %} btn-icon{% endif %}"{% if external %} target="_blank" rel="noreferrer"{% endif %}{% if modal-id %} data-bs-toggle="modal" data-bs-target="#modal-{{ modal-id }}"{% endif %}{% if toast-id %} data-bs-toggle="toast" data-bs-target="#toast-{{ toast-id }}"{% endif %}{% if icon-only %} aria-label="{{ text | default: "Button" }}"{% endif %}{% if dismiss %} data-bs-dismiss="modal"{% endif %}>
+{% if spinner %}
 {% include "ui/spinner.html" color=false size="sm" class=spinner-class element="span" %}{% endif %}
-{% if include.icon %}{% include "ui/icon.html" icon=include.icon use-svg=true color=include.icon-color %}{% endif %}
-{% unless include.icon-only %}
-{{ include.text | default: "Button" }}{% if include.dots %}<span class="animated-dots"></span>{% endif %}
-{% if include.icon-right %}{% include "ui/icon.html" icon=include.icon-right use-svg=true class="icon-right" %}{% endif %}
+{% if icon %}{% include "ui/icon.html" icon=icon use-svg=true color=icon-color %}{% endif %}
+{% unless icon-only %}
+{{ text | default: "Button" }}{% if dots %}<span class="animated-dots"></span>{% endif %}
+{% if icon-right %}{% include "ui/icon.html" icon=icon-right use-svg=true class="icon-right" %}{% endif %}
 {% endunless %}
 </{{ e }}>
