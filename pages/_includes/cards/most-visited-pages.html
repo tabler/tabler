@@ -14,19 +14,19 @@
 			</tr>
 			</thead>
 
-			{% for page in site.data.pages limit: 6 %}
+			{% for page in pages limit: 6 %}
 			{% assign data = page.data | join: ',' %}
 			{% assign id = "bounce-rate-" | append: forloop.index %}
 			<tr>
 				<td>
 					{{ page.uri }}
-					<a href="#" class="ms-1" aria-label="Open website">{% include "ui/icon.html" icon:"link" %}</a>
+					<a href="#" class="ms-1" aria-label="Open website">{% include "ui/icon.html" icon="link" %}</a>
 				</td>
 				<td class="text-secondary">{{ page.visitors | format_number }}</td>
 				<td class="text-secondary">{{ page.unique | format_number }}</td>
 				<td class="text-secondary">{{ page.bounce }}</td>
 				<td class="text-end w-1">
-					{% include "ui/chart-sparkline.html" type:"line" data:data id:id small:true color:"primary" %}
+					{% include "ui/chart-sparkline.html" type="line" data=data id=id small=true color="primary" %}
 				</td>
 			</tr>
 			{% endfor %}

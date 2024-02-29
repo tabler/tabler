@@ -9,7 +9,7 @@
 	</div>
 	<div class="list-group list-group-flush{% if hoverable %} list-group-hoverable{% endif %}">
 		{% assign colors = 'green,red,yellow,x,x' | split: ',' %}
-		{% for person in site.data.people limit: limit offset: offset %}
+		{% for person in people limit: limit offset: offset %}
 			{% assign color = forloop.index | plus: 5 | random_item: colors %}
 			<div class="list-group-item{% if checked-ids contains forloop.index %} active{% endif %}">
 				<div class="row align-items-center">
@@ -20,14 +20,14 @@
 					{% endif %}
 					<div class="col-auto">
 						<a href="#">
-							{% include "ui/avatar.html" person:person %}
+							{% include "ui/avatar.html" person=person %}
 						</a>
 					</div>
 
 					<div class="col text-truncate">
 						<a href="#" class="text-reset d-block">{{ person.full_name }}</a>
 						{% assign i = forloop.index | plus: offset %}
-						<div class="d-block text-secondary text-truncate mt-n1">{{ site.data.commits[i].description }}</div>
+						<div class="d-block text-secondary text-truncate mt-n1">{{ commits[i].description }}</div>
 					</div>
 					{% if hoverable %}
 					{% if checked-ids contains forloop.index %}
@@ -36,7 +36,7 @@
 					{% assign star-color = 'text-secondary' %}
 					{% endif %}
 					<div class="col-auto">
-						<a href="#" class="list-group-item-actions{% if checked-ids contains forloop.index %} show{% endif %}">{% include "ui/icon.html" icon:"star" class:star-color %}</a>
+						<a href="#" class="list-group-item-actions{% if checked-ids contains forloop.index %} show{% endif %}">{% include "ui/icon.html" icon="star" class=star-color %}</a>
 					</div>
 					{% endif %}
 				</div>

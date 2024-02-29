@@ -5,7 +5,7 @@
 
 	<div class="list-group list-group-flush overflow-auto" style="max-height: 35rem">
 		{% assign prev-letter = '' %}
-		{% assign people = site.data.people | sort: 'last_name' %}
+		{% assign people = people | sort: 'last_name' %}
 
 		{% for person in people %}
 			{% assign first-letter = person.last_name | slice: 0 %}
@@ -17,13 +17,13 @@
 				<div class="row">
 					<div class="col-auto">
 						<a href="#">
-							{% include "ui/avatar.html" person:person %}
+							{% include "ui/avatar.html" person=person %}
 						</a>
 					</div>
 					<div class="col text-truncate">
 						<a href="#" class="text-body d-block">{{ person.full_name }}</a>
 						{% assign i = forloop.index | plus: offset %}
-						<div class="text-secondary text-truncate mt-n1">{{ site.data.commits[i].description }}</div>
+						<div class="text-secondary text-truncate mt-n1">{{ commits[i].description }}</div>
 					</div>
 				</div>
 			</div>

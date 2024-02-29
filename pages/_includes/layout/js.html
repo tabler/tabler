@@ -6,18 +6,18 @@
 	{% assign google-maps-key = site.google-maps-key %}
 {% endif %}
 
-{% for lib in site.data.libs.js %}
-	{% if libs contains lib[0] or site.data.libs.global-libs contains lib[0] %}
+{% for lib in libs.js %}
+	{% if libs contains lib[0] or libs.global-libs contains lib[0] %}
 		{% for file in lib[1] %}
-		<script src="{% if file contains 'http://' or file contains 'https://' %}{{ file | replace: 'GOOGLE_MAPS_KEY', google-maps-key }}{% else %}{{ site.base }}/{% if env != 'development' %}dist/libs{% else %}node_modules{% endif %}/{% if env != 'development' %}{{ file | replace: '@', '' }}{% else %}{{ file }}{% endif %}{% if env != 'development' %}?{{ site.time | date: '%s' }}{% endif %}{% endif %}" defer></script>
+		<script src="{% if file contains 'http://' or file contains 'https://' %}{{ file | replace: 'GOOGLE_MAPS_KEY', google-maps-key }}{% else %}{{ base }}/{% if env != 'development' %}dist/libs{% else %}node_modules{% endif %}/{% if env != 'development' %}{{ file | replace: '@', '' }}{% else %}{{ file }}{% endif %}{% if env != 'development' %}?{{ site.time | date: '%s' }}{% endif %}{% endif %}" defer></script>
 		{% endfor %}
 	{% endif %}
 {% endfor %}
 
 <!-- Tabler Core -->
 
-<script src="{{ site.base }}/dist/js/tabler.bundle{% if env != 'development' %}.min{% endif %}.js{% if env != 'development' %}?{{ site.time | date: '%s' }}{% endif %}" defer></script>
-<script src="{{ site.base }}/dist/js/demo{% if env != 'development' %}.min{% endif %}.js{% if env != 'development' %}?{{ site.time | date: '%s' }}{% endif %}" defer></script>
+<script src="{{ base }}/dist/js/tabler.bundle{% if env != 'development' %}.min{% endif %}.js{% if env != 'development' %}?{{ site.time | date: '%s' }}{% endif %}" defer></script>
+<script src="{{ base }}/dist/js/demo{% if env != 'development' %}.min{% endif %}.js{% if env != 'development' %}?{{ site.time | date: '%s' }}{% endif %}" defer></script>
 
 {% comment %}
 {% removeemptylines %}
@@ -31,8 +31,8 @@
 {% endremoveemptylines %}
 
 {% assign libs = page.libs | default: layout.libs %}
-{% for lib in site.data.libs.js-files %}
-{% if libs contains lib[0] or site.data.libs.global-libs contains lib[0] %}
+{% for lib in libs.js-files %}
+{% if libs contains lib[0] or libs.global-libs contains lib[0] %}
 {% for file in lib[1] %}
 
 {% assign filename = 'js/' | append: file | append: '.html' %}

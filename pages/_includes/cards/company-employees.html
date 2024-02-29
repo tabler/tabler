@@ -12,9 +12,9 @@
 		</tr>
 		</thead>
 
-		{% for person in site.data.people limit: 5 offset: 20 %}
+		{% for person in people limit: 5 offset: 20 %}
 		<tr>
-			<td class="w-1">{% include "ui/avatar.html" src:person.photo %}</td>
+			<td class="w-1">{% include "ui/avatar.html" src=person.photo %}</td>
 			<td><a href="#" class="text-reset">{{ person.full_name }}</a></td>
 			<td>{{ person.department }}</td>
 			<td class="w-1 pe-0">{{ forloop.index | random_number: 30, 90 }}%</td>
@@ -23,7 +23,7 @@
 					<div class="progress-bar bg-{{ forloop.index | random_number: 30, 90 | number_color }}" role="progressbar" style="width: {{ forloop.index | random_number: 30, 90 }}%"></div>
 				</div>
 			</td>
-			<td><a href="{{ site.base }}" class="text-secondary">{% include "ui/icon.html" icon:"dots" %}</a></td>
+			<td><a href="{{ base }}" class="text-secondary">{% include "ui/icon.html" icon="dots" %}</a></td>
 		</tr>
 		{% endfor %}
 	</table>

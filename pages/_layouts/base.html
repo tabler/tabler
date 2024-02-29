@@ -1,7 +1,7 @@
 <!doctype html>
 {% include "layout/banner.html" %}
-{% assign title = page.title | default: layout.title %}
-<html lang="en"{% if page.rtl or site.rtl %} dir="rtl" {% endif %}>
+{% assign title = title | default: layout.title %}
+<html lang="en"{% if rtl or site.rtl %} dir="rtl" {% endif %}>
 <head>
 	<meta charset="utf-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
@@ -21,8 +21,8 @@
 		<meta name="HandheldFriendly" content="True"/>
 		<meta name="MobileOptimized" content="320"/>
 
-		<link rel="icon" href="{{ site.base }}/favicon.ico" type="image/x-icon"/>
-		<link rel="shortcut icon" href="{{ site.base }}/favicon.ico" type="image/x-icon"/>
+		<link rel="icon" href="{{ base }}/favicon.ico" type="image/x-icon"/>
+		<link rel="shortcut icon" href="{{ base }}/favicon.ico" type="image/x-icon"/>
 
 		<meta name="description" content="{{ page.description | default: 'Tabler comes with tons of well-designed components and features. Start your adventure with Tabler and make your dashboard great again. For free!' | escape }}"/>
 
@@ -42,9 +42,9 @@
 	</style>
 </head>
 
-{% assign layout-dark = page.layout-dark | default: site.layout-dark %}
-<body {% if layout.body-class or page.body-class %} class="{% if layout.body-class %} {{ layout.body-class }}{% endif %}{% if page.body-class %} {{ page.body-class }}{% endif %}"{% endif %}>
-<script src="{{ site.base }}/dist/js/demo-theme{% if env != 'development' %}.min{% endif %}.js{% if env != 'development' %}?{{ site.time | date: '%s' }}{% endif %}"></script>
+{% assign layout-dark = layout-dark %}
+<body {% if body-class %} class="{{ body-class }}"{% endif %}>
+<script src="{{ base }}/dist/js/demo-theme{% if env != 'development' %}.min{% endif %}.js{% if env != 'development' %}?{{ site.time | date: '%s' }}{% endif %}"></script>
 
 	{{ content }}
 

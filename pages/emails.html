@@ -1,5 +1,4 @@
 ---
-layout: default
 page-header: Email templates
 menu: emails
 libs: masonry, fslightbox
@@ -10,7 +9,7 @@ libs: masonry, fslightbox
 		<div class="card card-md">
 			<div class="card-stamp card-stamp-lg">
 				<div class="card-stamp-icon bg-primary">
-					{% include "ui/icon.html" icon:"mail" %}
+					{% include "ui/icon.html" icon="mail" %}
 				</div>
 			</div>
 			<div class="card-body">
@@ -30,17 +29,17 @@ libs: masonry, fslightbox
 	</div>
 	<div class="col">
 		<div class="row row-cards" data-masonry='{"percentPosition": true }'>
-			{% for email in site.data.emails %}
+			{% for email in emails %}
 			<div class="col-4">
 				<a
-					href="{{ site.base }}/static/emails/{{ email.image }}"
+					href="{{ base }}/assets/static/emails/{{ email.image }}"
 					data-bs-toggle="modal"
 					data-bs-target="#email-modal"
 					data-bs-title="{{ email.descriptionShort }}"
 					data-bs-description="{{ email.descriptionLong }}"
-					data-bs-image="{{ site.base }}/static/emails/{{ email.image }}"
+					data-bs-image="{{ base }}/assets/static/emails/{{ email.image }}"
 				>
-					<img src="{{ site.base }}/static/emails/{{ email.image }}" class="img-fluid rounded" alt="{{ email.descriptionShort }}" width="{{ email.width }}" height="{{ email.height }}" />
+					<img src="{{ base }}/assets/static/emails/{{ email.image }}" class="img-fluid rounded" alt="{{ email.descriptionShort }}" width="{{ email.width }}" height="{{ email.height }}" />
 				</a>
 			</div>
 			{% endfor %}

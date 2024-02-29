@@ -1,5 +1,4 @@
 ---
-layout: default
 title: Tags
 page-header: Tags
 menu: base.tags
@@ -15,7 +14,7 @@ menu: base.tags
 				<div class="tags-list">   
 					{% for i in (1..14) %}     
 					{% capture text %}Label {{ i }}{% endcapture %}
-					{% include "ui/tag.html" text:text %}
+					{% include "ui/tag.html" text=text %}
 					{% endfor %}
 				</div>
 			</div>
@@ -27,8 +26,8 @@ menu: base.tags
 			<div class="card-body">
 				<h3 class="card-title">Tags with flag</h3>
 				<div class="tags-list">   
-					{% for country in site.data.flags limit: 9 %}     
-					{% include "ui/tag.html" text:country.name flag:country.code %}
+					{% for country in flags limit: 9 %}     
+					{% include "ui/tag.html" text=country.name flag=country.code %}
 					{% endfor %}
 				</div>
 			</div>
@@ -41,7 +40,7 @@ menu: base.tags
 				<h3 class="card-title">Tags with icon</h3>
 				<div class="tags-list">   
 					{% for icon in icons %}     
-					{% include "ui/tag.html" text:icon icon:icon %}
+					{% include "ui/tag.html" text=icon icon=icon %}
 					{% endfor %}
 				</div>
 			</div>
@@ -53,8 +52,8 @@ menu: base.tags
 			<div class="card-body">
 				<h3 class="card-title">Tags with avatar</h3>
 				<div class="tags-list">   
-					{% for person in site.data.people limit: 8 %}     
-					{% include "ui/tag.html" text:person.full_name person:person %}
+					{% for person in people limit: 8 %}     
+					{% include "ui/tag.html" text=person.full_name person=person %}
 					{% endfor %}
 				</div>
 			</div>
@@ -69,7 +68,7 @@ menu: base.tags
 					{% for color in site.colors %}
 					{% capture status %}{{ color[1].class }}{% endcapture %}
 					{% capture text %}{{ color[1].title }}{% endcapture %}
-					{% include "ui/tag.html" text:text status:status %}
+					{% include "ui/tag.html" text=text status=status %}
 					{% endfor %}
 				</div>
 			</div>
@@ -84,7 +83,7 @@ menu: base.tags
 					{% for color in site.colors %}
 					{% capture status %}{{ color[1].class }}{% endcapture %}
 					{% capture text %}{{ color[1].title }}{% endcapture %}
-					{% include "ui/tag.html" text:text legend:status %}
+					{% include "ui/tag.html" text=text legend=status %}
 					{% endfor %}
 				</div>
 			</div>
@@ -98,11 +97,11 @@ menu: base.tags
 				<div class="tags-list">   
 					{% for i in (1..6) %}     
 					{% capture text %}Label {{ i }}{% endcapture %}
-					{% include "ui/tag.html" text:text checkbox:true %}
+					{% include "ui/tag.html" text=text checkbox=true %}
 					{% endfor %}
 					{% for i in (7..12) %}     
 					{% capture text %}Label {{ i }}{% endcapture %}
-					{% include "ui/tag.html" text:text checkbox:true checked:true %}
+					{% include "ui/tag.html" text=text checkbox=true checked=true %}
 					{% endfor %}
 				</div>
 			</div>
@@ -115,7 +114,7 @@ menu: base.tags
 				<h3 class="card-title">Default tags</h3>
 				<div class="tags-list">   
 					{% for i in (1..12) %}     
-					{% include "ui/tag.html" text:"Label" badge:i %}
+					{% include "ui/tag.html" text="Label" badge=i %}
 					{% endfor %}
 				</div>
 			</div>

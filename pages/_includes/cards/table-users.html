@@ -12,7 +12,7 @@
 			</thead>
 			<tbody>
 
-			{% for person in site.data.people limit: 8 offset: 50 %}
+			{% for person in people limit: 8 offset: 50 %}
 			{% assign percentage = forloop.index | random_number %}
 			{% assign time_offset = forloop.index | random_number: 0, 800 %}
 			{% assign register_offset = forloop.index | random_number: 0, 8000000 %}
@@ -20,7 +20,7 @@
 
 			<tr>
 				<td class="text-center w-1">
-					{% include "ui/avatar.html" person-id:person.id %}
+					{% include "ui/avatar.html" person-id=person.id %}
 				</td>
 				<td>
 					<div>{{ person.full_name }}</div>
@@ -37,14 +37,14 @@
 							<small class="text-secondary">Jun 11, 2015 - Jul 10, 2015</small>
 						</div>
 					</div>
-					{% include "ui/progress.html" value:percentage size:"sm" color:percentage_color %}
+					{% include "ui/progress.html" value=percentage size="sm" color=percentage_color %}
 
 				</td>
 				<td class="text-center">
 					{% capture payment %}
 					{%- cycle 'visa', 'googlewallet', 'mastercard', 'shopify', 'ebay', 'paypal' -%}
 					{% endcapture %}
-					{% include "ui/payment.html" payment:payment %}
+					{% include "ui/payment.html" payment=payment %}
 				</td>
 				<td>
 					<div class="small text-secondary">Last login</div>
@@ -56,7 +56,7 @@
 <!--					     data-thickness="3" data-color="primary">-->
 <!--						<div class="chart-circle-value">{{ percentage }}%</div>-->
 <!--					</div>-->
-					{% include "ui/chart-sparkline.html" percentage:percentage type:"donut" %}
+					{% include "ui/chart-sparkline.html" percentage=percentage type="donut" %}
 				</td>
 			</tr>
 			{% endfor %}

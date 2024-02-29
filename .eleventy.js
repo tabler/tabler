@@ -1,18 +1,39 @@
 /** @param {import("@11ty/eleventy").UserConfig} eleventyConfig */
+const env = process.env.ELEVENTY_ENV || "development"
+
 module.exports = function (config) {
 	config.addWatchTarget("./dist/css/*");
 	config.addWatchTarget("./dist/js/*");
 	config.addWatchTarget("./scss/*");
-
+	
 	config.addPassthroughCopy("dist");
+	config.addPassthroughCopy("pages/assets");
+	
+	config.addGlobalData('env', env);
+	config.addGlobalData('time', new Date());
+	config.addGlobalData('base', '.');
 
-	config.addGlobalData('env', process.env.ELEVENTY_ENV || "development");
+	config.setLiquidOptions({
+		dynamicPartials: true,
+		strictVariables: false,
+		strictFilters: true,
+		jekyllInclude: true,
+		extname: ".html",
+	});
 
-	const filters = ["timeago", "random_date_ago", "replace_regex", "first_letters", "timestamp_to_date", "random_number", "random_date", "markdownify", "random_item", "extract", "format_number", "divide", "number_color", "svg_icon", "hex_to_rgb", "concat_objects", "seconds_to_minutes", "miliseconds_to_minutes", "htmlbeautifier", "hex_to_rgb", "random_id", "date_to_string"]
+	const filters = ["timeago", "random_date_ago", "replace_regex", "timestamp_to_date", "random_number", "random_date", "markdownify", "random_item", "extract", "format_number", "divide", "number_color", "svg_icon", "hex_to_rgb", "concat_objects", "seconds_to_minutes", "miliseconds_to_minutes", "htmlbeautifier", "hex_to_rgb", "random_id", "date_to_string"]
 	filters.forEach((filter) => {
 		config.addFilter(filter, (a) => {
 			return a;
 		});
+	});
+
+	config.addFilter("first_letters", (text) => {
+		return (text || '').split(" ").map((word) => word.charAt(0)).join("");
+	})
+
+	config.addFilter('jsonify', function (variable) {
+		return JSON.stringify(variable);
 	});
 
 	const tags = ["removeemptylines", "endremoveemptylines", "capture_global", "endcapture_global", "highlight", "endhighlight"]
@@ -33,7 +54,6 @@ module.exports = function (config) {
 		});
 	});
 
-	config.addGlobalData('time', new Date());
 
 	return {
 		dir: {
