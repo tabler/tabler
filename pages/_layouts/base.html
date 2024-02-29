@@ -9,7 +9,7 @@
 
 	<title>{% if title %}{{ title }} - {% endif %}{% if site.title %}{{ site.title }} - {% endif %}{{ site.description }}</title>
 
-	{% if jekyll.environment == 'preview' %}
+	{% if env == 'preview' %}
 		{% include "layout/analytics.html" %}
 
 		<meta name="msapplication-TileColor" content="{{ site.theme-color }}"/>
@@ -44,7 +44,7 @@
 
 {% assign layout-dark = page.layout-dark | default: site.layout-dark %}
 <body {% if layout.body-class or page.body-class %} class="{% if layout.body-class %} {{ layout.body-class }}{% endif %}{% if page.body-class %} {{ page.body-class }}{% endif %}"{% endif %}>
-<script src="{{ site.base }}/dist/js/demo-theme{% if jekyll.environment != 'development' %}.min{% endif %}.js{% if jekyll.environment != 'development' %}?{{ site.time | date: '%s' }}{% endif %}"></script>
+<script src="{{ site.base }}/dist/js/demo-theme{% if env != 'development' %}.min{% endif %}.js{% if env != 'development' %}?{{ site.time | date: '%s' }}{% endif %}"></script>
 
 	{{ content }}
 
@@ -52,7 +52,7 @@
 
 	{% include "layout/js.html" %}
 
-	{% if site.debug and jekyll.environment == 'development' %}
+	{% if site.debug and env == 'development' %}
 		{% include "layout/debug.html" %}
 	{% endif %}
 </body>

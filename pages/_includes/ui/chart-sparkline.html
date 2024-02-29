@@ -19,11 +19,11 @@
 	<script>
 		// @formatter:off
 		document.addEventListener("DOMContentLoaded", function () {
-			{% if jekyll.environment == 'development' %}
+			{% if env == 'development' %}
 			window.tabler_chart = window.tabler_chart || {};
 			{% endif %}
 
-			window.ApexCharts && ({% if jekyll.environment == 'development' %}window.tabler_chart["sparkline-{{ id }}"] = {% endif %}new ApexCharts(document.getElementById('sparkline-{{ id }}'), {
+			window.ApexCharts && ({% if env == 'development' %}window.tabler_chart["sparkline-{{ id }}"] = {% endif %}new ApexCharts(document.getElementById('sparkline-{{ id }}'), {
 				chart: {
 					type: "{% if type == 'donut' %}radialBar{% else %}{{ type }}{% endif %}",
 					fontFamily: 'inherit',

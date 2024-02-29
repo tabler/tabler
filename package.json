@@ -30,22 +30,14 @@
     "watch": "pnpm run watch-css & pnpm run watch-js & pnpm run watch-demo",
     "watch-css": "nodemon --watch scss/ --ext scss --exec \"pnpm run css-compile\"",
     "watch-js": "nodemon --watch js/ --ext js --exec \"pnpm run js-compile\"",
-    "watch-jekyll": "JEKYLL_ENV=development bundle exec jekyll build --watch --config _config.yml",
     "img": "pnpm run img-copy",
     "img-copy": "rm -rf dist/css/img && cp -r scss/img dist/css/img",
     "lint": "eslint --ext .js,.ts,.tsx --ignore-path .gitignore .",
     "unused-files": "node .build/unused-files.mjs",
     "bundlewatch": "pnpm run build && bundlewatch",
-    "preview": "pnpm run build && pnpm run eleventy",
+    "preview": "pnpm run build && pnpm run demo",
     "watch-demo": "eleventy --watch --serve --port 3000",
-    "_demo-build": "pnpm run demo-build-jekyll",
-    "_demo-serve": "bundle exec jekyll serve",
-    "_demo-production": "cross-env JEKYLL_ENV=production npm run demo-build --config _config.yml,_config.production.yml",
-    "_demo-preview": "cross-env JEKYLL_ENV=preview npm run demo-build",
-    "_demo-dev": "pnpm run watch",
-    "_demo-images": "for i in ./static/photos/*.jpg; do convert \"$i\" -quality 80% \"${i%.jpg}.jpg\"; done",
-    "_demo-build-jekyll": "JEKYLL_ENV=production bundle exec jekyll build --destination dist --trace --config _config.yml,_config_prod.yml",
-    "eleventy": "eleventy"
+    "demo": "ELEVENTY_ENV=production eleventy"
   },
   "repository": {
     "type": "git",
@@ -70,7 +62,7 @@
     "url": "https://github.com/sponsors/codecalm"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "files": [
     "dist/**/*",

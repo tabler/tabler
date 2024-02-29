@@ -22,7 +22,7 @@
 {% capture_global scripts %}
 <script>
   // @formatter:off
-  {% if jekyll.environment == 'development' %}window.tabler_rating = window.tabler_rating || {};{% endif %}
+  {% if env == 'development' %}window.tabler_rating = window.tabler_rating || {};{% endif %}
 
   document.addEventListener("DOMContentLoaded", function () {
     const rating = new StarRating('#rating-{{ id }}', {
@@ -32,7 +32,7 @@
 			 el.innerHTML = `{{ star }}`; 
 		},
 	 })		
-    {% if jekyll.environment == 'development' %}window.tabler_rating["rating-{{ id }}"] = rating;{% endif %}
+    {% if env == 'development' %}window.tabler_rating["rating-{{ id }}"] = rating;{% endif %}
   })
   // @formatter:on
 </script>
