@@ -33,6 +33,8 @@ module.exports = function (config) {
 		});
 	});
 
+	config.addGlobalData('time', new Date());
+
 	return {
 		dir: {
 			input: "pages",
