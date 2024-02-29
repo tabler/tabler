@@ -1,0 +1,30 @@
+{% assign person-id = include.person-id | default: 0 %}
+{% assign person = people[person-id] %}
+<div class="card">
+	<div class="card-body">
+		<div class="row g-2 align-items-center">
+			<div class="col-auto">
+				{% include "ui/avatar.html" person=person size="lg" %}
+			</div>
+			<div class="col">
+				<h4 class="card-title m-0">
+					<a href="#">{{ person.full_name }}</a>
+				</h4>
+				<div class="text-secondary">
+					Working in {{ person.company }}
+				</div>
+				<div class="small mt-1">
+					<span class="badge bg-green"></span> Online
+				</div>
+			</div>
+			<div class="col-auto">
+				<a href="#" class="btn">
+					Subscribe
+				</a>
+			</div>
+			<div class="col-auto">
+				{% include "ui/card-dropdown.html" %}
+			</div>
+		</div>
+	</div>
+</div>

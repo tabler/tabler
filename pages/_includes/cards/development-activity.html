@@ -1,0 +1,45 @@
+<div class="card">
+	<div class="card-header border-0">
+		<div class="card-title">Development activity</div>
+	</div>
+	<div class="position-relative">
+		<div class="position-absolute top-0 left-0 px-3 mt-1 w-75">
+			<div class="row g-2">
+				<div class="col-auto">{% include "ui/chart-sparkline.html" id="activity" percentage=35 type="donut" %}</div>
+				<div class="col">
+					<div>Today's Earning: $4,262.40</div>
+					<div class="text-secondary">{% include "ui/icon.html" icon="trending-up" color="green" class="icon-inline" %} +5% more than yesterday</div>
+				</div>
+			</div>
+		</div>
+		{% include "ui/chart.html" chart-id="development-activity" height=12 %}
+	</div>
+
+	<div class="card-table table-responsive">
+		<table class="table table-vcenter">
+			<thead>
+			<tr>
+				<th>User</th>
+				<th>Commit</th>
+				<th>Date</th>
+			</tr>
+			</thead>
+			<tbody>
+			{% for commit in commits limit: 5 %}
+			<tr>
+				<td class="w-1">
+					{% include "ui/avatar.html" person-id=forloop.index size="sm" %}
+				</td>
+				<td class="td-truncate">
+					<div class="text-truncate">
+						{{ commit.description }}
+					</div>
+				</td>
+				<td class="text-nowrap text-secondary">{{ commit.date | date_to_string }}</td>
+			</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
+

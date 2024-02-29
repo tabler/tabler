@@ -1,0 +1,24 @@
+<!-- CSS files -->
+{% if site.use-iconfont %}
+<link href="https://cdn.statically.io/gh/tabler/tabler-icons/master/iconfont/tabler-icons.min.css" rel="stylesheet" />
+{% endif %}
+
+{% assign libs = page.libs | default: layout.libs %}
+
+{% if libs %}
+	{% for lib in libs.css %}
+		{% if libs contains lib[0] %}
+			{% for file in lib[1] %}
+				<link href="{% if file contains 'http://' or file contains 'https://' %}{{ file }}{% else %}{{ base }}/{% if env != 'development' %}dist/libs{% else %}node_modules{% endif %}/{% if env != 'development' %}{{ file | replace: '@', '' }}{% else %}{{ file }}{% endif %}{% if env != 'development' %}?{{ site.time | date: '%s' }}{% endif %}{% endif %}" rel="stylesheet"/>
+			{% endfor %}
+		{% endif %}
+	{% endfor %}
+{% endif %}
+
+<link href="{{ base }}/dist/css/tabler{% if rtl or site.rtl %}.rtl{% endif %}{% if env != 'development' %}.min{% endif %}.css{% if env != 'development' %}?{{ site.time | date: '%s' }}{% endif %}" rel="stylesheet"/>
+
+{% for plugin in site.tabler-css-plugins %}
+	<link href="{{ base }}/dist/css/{{ plugin }}{% if rtl or site.rtl %}.rtl{% endif %}{% if env != 'development' %}.min{% endif %}.css{% if env != 'development' %}?{{ site.time | date: '%s' }}{% endif %}" rel="stylesheet"/>
+{% endfor %}
+
+<link href="{{ base }}/dist/css/demo{% if rtl or site.rtl %}.rtl{% endif %}{% if env != 'development' %}.min{% endif %}.css{% if env != 'development' %}?{{ site.time | date: '%s' }}{% endif %}" rel="stylesheet"/>

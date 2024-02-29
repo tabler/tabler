@@ -1,27 +1,44 @@
 {
+  "version": "1.0.0",
   "name": "@tabler/core",
-  "version": "1.0.0-beta20",
   "description": "Premium and Open Source dashboard template with responsive and high quality UI.",
   "homepage": "https://tabler.io",
   "scripts": {
-    "dev": "pnpm run start-plugins",
-    "start": "gulp start",
-    "start-plugins": "gulp start --with-plugins",
-    "build": "gulp build",
-    "build-docs": "mkdir public && touch public/index.html && echo 'ok'",
-    "preview": "gulp build --preview",
-    "svg-optimize": "svgo -f svg/brand --pretty",
-    "unused-files": "node build/unused-files.js",
-    "release": "release-it",
-    "svg-icons": "gulp svg-icons",
-    "bundlewatch": "bundlewatch",
-    "storybook": "start-storybook -p 6006",
-    "changelog": "gulp changelog",
-    "icons": "ncu -u @tabler/icons && pnpm install && gulp svg-icons && git add . && git commit -am \"update icons to v`pnpm info @tabler/icons version`\" && git push",
-    "download-images": "node build/download-images.js",
-    "optimize-images": "for i in ./src/static/photos/*.jpg; do convert \"$i\" -quality 80% \"${i%.jpg}.jpg\"; done",
-    "format:check": "prettier --check src/**/*.{js,scss} --cache",
-    "format:write": "prettier --write src/**/*.{js,scss} --cache"
+    "release": "pnpm run build && pnpm run generate-sri && pnpm run demo-production",
+    "icons": "cd preview && ncu -u @tabler/icons && pnpm install && node .build/import-icons.mjs && git add . && git commit -am \"update icons to v`pnpm info @tabler/icons version`\" && git push",
+    "download-images": "node .build/download-images.mjs",
+    "change-version": "node .build/change-version.mjs",
+    "changelog": "node .build/changelog.mjs",
+    "generate-sri": "node .build/generate-sri.mjs",
+    "dev": "pnpm run watch",
+    "clean": "rm -rf dist",
+    "build": "pnpm run clean && pnpm run js && pnpm run css && pnpm run img",
+    "js": "pnpm run js-compile && pnpm run js-minify",
+    "js-compile": "pnpm run js-compile-standalone && pnpm run js-compile-standalone-esm && pnpm run js-compile-bundle",
+    "js-compile-standalone": "rollup --environment BUNDLE:false --config .build/rollup.config.mjs --sourcemap",
+    "js-compile-standalone-esm": "rollup --environment ESM:true,BUNDLE:false --config .build/rollup.config.mjs --sourcemap",
+    "js-compile-bundle": "rollup --environment BUNDLE:true --config .build/rollup.config.mjs --sourcemap",
+    "js-minify": "pnpm run js-minify-standalone && pnpm run js-minify-standalone-esm && pnpm run js-minify-bundle",
+    "js-minify-standalone": "terser --compress passes=2 --mangle --comments \"/^!/\" --source-map \"content=dist/js/tabler.js.map,includeSources,url=tabler.min.js.map\" --output dist/js/tabler.min.js dist/js/tabler.js",
+    "js-minify-standalone-esm": "terser --compress passes=2 --mangle --comments \"/^!/\" --source-map \"content=dist/js/tabler.esm.js.map,includeSources,url=tabler.esm.min.js.map\" --output dist/js/tabler.esm.min.js dist/js/tabler.esm.js",
+    "js-minify-bundle": "terser --compress passes=2 --mangle --comments \"/^!/\" --source-map \"content=dist/js/tabler.bundle.js.map,includeSources,url=tabler.bundle.min.js.map\" --output dist/js/tabler.bundle.min.js dist/js/tabler.bundle.js",
+    "css": "pnpm run css-compile && pnpm run css-rtl && pnpm run css-minify",
+    "css-compile": "sass --style expanded --source-map --embed-sources --no-error-css scss/:dist/css/ --load-path=node_modules",
+    "css-rtl": "cross-env NODE_ENV=RTL postcss --config .build/postcss.config.mjs --dir \"dist/css\" --ext \".rtl.css\" \"dist/css/*.css\" \"!dist/css/*.min.css\" \"!dist/css/*.rtl.css\"",
+    "css-minify": "pnpm run css-minify-main && pnpm run css-minify-rtl",
+    "css-minify-main": "cleancss -O1 --format breakWith=lf --with-rebase --source-map --source-map-inline-sources --output dist/css/ --batch --batch-suffix \".min\" \"dist/css/*.css\" \"!dist/css/*.min.css\" \"!dist/css/*rtl*.css\"",
+    "css-minify-rtl": "cleancss -O1 --format breakWith=lf --with-rebase --source-map --source-map-inline-sources --output dist/css/ --batch --batch-suffix \".min\" \"dist/css/*rtl.css\" \"!dist/css/*.min.css\"",
+    "watch": "pnpm run watch-css & pnpm run watch-js & pnpm run watch-demo",
+    "watch-css": "nodemon --watch scss/ --ext scss --exec \"pnpm run css-compile\"",
+    "watch-js": "nodemon --watch js/ --ext js --exec \"pnpm run js-compile\"",
+    "img": "pnpm run img-copy",
+    "img-copy": "rm -rf dist/css/img && cp -r scss/img dist/css/img",
+    "lint": "eslint --ext .js,.ts,.tsx --ignore-path .gitignore .",
+    "unused-files": "node .build/unused-files.mjs",
+    "bundlewatch": "pnpm run build && bundlewatch",
+    "preview": "pnpm run build && pnpm run demo",
+    "watch-demo": "eleventy --watch --serve --port 3000",
+    "demo": "ELEVENTY_ENV=production eleventy"
   },
   "repository": {
     "type": "git",
@@ -60,130 +77,25 @@
   "umd:main": "dist/js/tabler.min.js",
   "module": "dist/js/tabler.esm.js",
   "main": "dist/js/tabler.js",
-  "bundlewatch": {
-    "files": [
-      {
-        "path": "./dist/css/tabler.css",
-        "maxSize": "75 kB"
-      },
-      {
-        "path": "./dist/css/tabler.min.css",
-        "maxSize": "70 kB"
-      },
-      {
-        "path": "./dist/css/tabler.rtl.css",
-        "maxSize": "75 kB"
-      },
-      {
-        "path": "./dist/css/tabler.rtl.min.css",
-        "maxSize": "70 kB"
-      },
-      {
-        "path": "./dist/css/tabler-flags.css",
-        "maxSize": "2 kB"
-      },
-      {
-        "path": "./dist/css/tabler-flags.min.css",
-        "maxSize": "2 kB"
-      },
-      {
-        "path": "./dist/css/tabler-payments.css",
-        "maxSize": "2 kB"
-      },
-      {
-        "path": "./dist/css/tabler-payments.min.css",
-        "maxSize": "2 kB"
-      },
-      {
-        "path": "./dist/css/tabler-social.css",
-        "maxSize": "2 kB"
-      },
-      {
-        "path": "./dist/css/tabler-social.min.css",
-        "maxSize": "2 kB"
-      },
-      {
-        "path": "./dist/css/tabler-vendors.css",
-        "maxSize": "7 kB"
-      },
-      {
-        "path": "./dist/css/tabler-vendors.min.css",
-        "maxSize": "6 kB"
-      },
-      {
-        "path": "./dist/js/tabler.js",
-        "maxSize": "60 kB"
-      },
-      {
-        "path": "./dist/js/tabler.min.js",
-        "maxSize": "45 kB"
-      },
-      {
-        "path": "./dist/js/tabler.esm.js",
-        "maxSize": "60 kB"
-      },
-      {
-        "path": "./dist/js/tabler.esm.min.js",
-        "maxSize": "45 kB"
-      }
-    ]
-  },
   "devDependencies": {
-    "@babel/core": "^7.23.7",
-    "@babel/preset-env": "^7.23.7",
-    "@changesets/cli": "^2.27.1",
-    "@rollup/plugin-commonjs": "^24.1.0",
+    "@11ty/eleventy": "^2.0.1",
+    "@babel/preset-env": "^7.23.9",
+    "@rollup/plugin-babel": "^6.0.4",
     "@rollup/plugin-node-resolve": "^15.2.3",
     "@rollup/plugin-replace": "^5.0.5",
-    "@rollup/pluginutils": "^5.1.0",
-    "@rollup/stream": "^2.0.0",
-    "@shopify/prettier-plugin-liquid": "^1.4.0",
-    "all-contributors-cli": "^6.26.1",
-    "apexcharts": "^3.45.1",
-    "autoprefixer": "^10.4.16",
-    "autosize": "^6.0.1",
-    "browser-sync": "^2.29.3",
+    "autoprefixer": "^10.4.17",
+    "browser-sync": "^3.0.2",
     "bundlewatch": "^0.3.3",
-    "choices.js": "^10.2.0",
-    "countup.js": "^2.8.0",
-    "cross-spawn": "^7.0.3",
-    "dropzone": "^6.0.0-beta.2",
-    "flatpickr": "^4.6.13",
-    "fslightbox": "^3.4.1",
-    "gulp": "^4.0.2",
-    "gulp-clean": "^0.4.0",
-    "gulp-clean-css": "^4.3.0",
-    "gulp-debug": "^4.0.0",
-    "gulp-header": "^2.0.9",
-    "gulp-postcss": "^9.0.1",
-    "gulp-purgecss": "^5.0.0",
-    "gulp-rename": "^2.0.0",
-    "gulp-rtlcss": "^2.0.0",
-    "gulp-sass": "^5.1.0",
-    "gulp-terser": "^2.1.0",
-    "imageoptim-cli": "^3.1.9",
-    "imask": "^7.3.0",
-    "jsvectormap": "^1.5.3",
-    "list.js": "^2.3.1",
-    "litepicker": "^2.0.12",
-    "nouislider": "^15.7.1",
-    "plyr": "^3.7.8",
-    "postcss": "^8.4.32",
-    "prettier": "^2.8.8",
-    "release-it": "^15.11.0",
-    "request": "^2.88.2",
-    "rollup": "2.79.1",
-    "rollup-plugin-babel": "^4.4.0",
-    "rollup-plugin-cleanup": "^3.2.1",
-    "sass": "^1.69.6",
-    "star-rating.js": "^4.3.0",
-    "tinymce": "^6.8.2",
-    "tom-select": "^2.3.1",
-    "vinyl-buffer": "^1.0.1",
-    "vinyl-source-stream": "^2.0.0",
-    "yaml": "^2.3.4",
-    "yargs": "^17.7.2",
-    "zod": "^3.22.4"
+    "clean-css-cli": "^5.6.3",
+    "cross-env": "^7.0.3",
+    "glob": "^10.3.10",
+    "nodemon": "^3.0.3",
+    "postcss-cli": "^11.0.0",
+    "rollup": "^4.9.6",
+    "rtlcss": "^4.1.1",
+    "sass": "^1.70.0",
+    "terser": "^5.27.0",
+    "yaml": "^2.4.0"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
@@ -262,21 +174,72 @@
       "optional": true
     }
   },
-  "release-it": {
-    "hooks": {
-      "after:bump": "gulp build --latest-version ${latestVersion} --new-version ${version} && gulp build-demo",
-      "after:release": "echo Successfully released ${name} v${latestVersion} to ${repo.repository}."
-    },
-    "git": {
-      "requireCleanWorkingDir": false,
-      "addUntrackedFiles": true,
-      "tagName": "v${version}"
-    },
-    "github": {
-      "release": true
-    }
-  },
-  "directories": {
-    "doc": "docs"
+  "bundlewatch": {
+    "files": [
+      {
+        "path": "./dist/css/tabler.css",
+        "maxSize": "75 kB"
+      },
+      {
+        "path": "./dist/css/tabler.min.css",
+        "maxSize": "70 kB"
+      },
+      {
+        "path": "./dist/css/tabler.rtl.css",
+        "maxSize": "75 kB"
+      },
+      {
+        "path": "./dist/css/tabler.rtl.min.css",
+        "maxSize": "70 kB"
+      },
+      {
+        "path": "./dist/css/tabler-flags.css",
+        "maxSize": "2 kB"
+      },
+      {
+        "path": "./dist/css/tabler-flags.min.css",
+        "maxSize": "2 kB"
+      },
+      {
+        "path": "./dist/css/tabler-payments.css",
+        "maxSize": "2 kB"
+      },
+      {
+        "path": "./dist/css/tabler-payments.min.css",
+        "maxSize": "2 kB"
+      },
+      {
+        "path": "./dist/css/tabler-social.css",
+        "maxSize": "2 kB"
+      },
+      {
+        "path": "./dist/css/tabler-social.min.css",
+        "maxSize": "2 kB"
+      },
+      {
+        "path": "./dist/css/tabler-vendors.css",
+        "maxSize": "7 kB"
+      },
+      {
+        "path": "./dist/css/tabler-vendors.min.css",
+        "maxSize": "6 kB"
+      },
+      {
+        "path": "./dist/js/tabler.js",
+        "maxSize": "60 kB"
+      },
+      {
+        "path": "./dist/js/tabler.min.js",
+        "maxSize": "45 kB"
+      },
+      {
+        "path": "./dist/js/tabler.esm.js",
+        "maxSize": "60 kB"
+      },
+      {
+        "path": "./dist/js/tabler.esm.min.js",
+        "maxSize": "45 kB"
+      }
+    ]
   }
 }

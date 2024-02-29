@@ -1,0 +1,29 @@
+<div class="card">
+	<div class="card-body">
+
+		<div>Total orders</div>
+
+		<div class="d-flex align-items-baseline mb-3">
+			<div class="h1 mb-0 me-2">2,137</div>
+			<div class="me-auto">{% include "ui/trending.html" value=7 %}</div>
+		</div>
+
+		{% include "ui/progress.html" values="40,15,25,15,5" class="mb-4" %}
+
+		<ul class="list-unstyled">
+			{% for item in orders %}
+			<li class="row g-2 align-items-center mb-2">
+				<div class="col-auto"><span class="legend bg-{{ item.color }}"></span></div>
+				<div class="col">
+					{{ item.title }}
+					<div class="fs-6 text-secondary">{{ item.subtitle }}</div>
+				</div>
+				<div class="col-auto small text-secondary"><strong class="text-body">{{ forloop.index | random_number: 500, 2000
+					| intcomma }}</strong> orders
+				</div>
+			</li>
+			{% endfor %}
+		</ul>
+	</div>
+
+</div>

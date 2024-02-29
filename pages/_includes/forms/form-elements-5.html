@@ -1,0 +1,99 @@
+{% include "parts/form/input-radios.html" %}
+{% include "parts/form/input-radios-inline.html" %}
+
+{% include "parts/form/input-checkboxes.html" %}
+{% include "parts/form/input-checkboxes-inline.html" %}
+
+<div class="mb-3">
+	<label class="form-label">Checkboxes with description</label>
+
+	<label class="form-check">
+		<input class="form-check-input" type="checkbox">
+		<span class="form-check-label">
+			Default checkbox
+		</span>
+		<span class="form-check-description">
+			Lorem ipsum dolor sit amet, consectetur adipisicing elit.
+		</span>
+	</label>
+	<label class="form-check">
+		<input class="form-check-input" type="checkbox">
+		<span class="form-check-label">
+			Longer checkbox item that wraps on to two separate lines
+		</span>
+		<span class="form-check-description">
+			Ab alias aut, consequuntur cumque esse eveniet incidunt laborum minus molestiae.
+		</span>
+	</label>
+	<label class="form-check">
+		<input class="form-check-input" type="checkbox">
+		<span class="form-check-label">
+			Default checkbox without description
+		</span>
+	</label>
+</div>
+
+{% include "parts/form/input-toggle.html" %}
+{% include "parts/form/input-toggle-single.html" %}
+
+<div class="mb-3">
+	<label class="form-label">Notification</label>
+	{% include "parts/form/checkboxes-list.html" %}
+</div>
+
+{% include "parts/form/input-file.html" %}
+
+
+<div class="mb-3">
+	<label class="form-label">Date of birth</label>
+	<div class="row g-2">
+		<div class="col-5">
+			<select name="user[month]" class="form-select">
+				<option value="">Month</option>
+				<option value="1">January</option>
+				<option value="2">February</option>
+				<option value="3">March</option>
+				<option value="4">April</option>
+				<option value="5">May</option>
+				<option selected="selected" value="6">June</option>
+				<option value="7">July</option>
+				<option value="8">August</option>
+				<option value="9">September</option>
+				<option value="10">October</option>
+				<option value="11">November</option>
+				<option value="12">December</option>
+			</select>
+		</div>
+		<div class="col-3">
+			<select name="user[day]" class="form-select">
+				<option value="">Day</option>
+				{% for i in (1..31) %}
+				<option value="{{ i }}" {% if i== 20 %} selected{% endif %}>{{ i }}</option>
+				{% endfor %}
+			</select>
+		</div>
+		<div class="col-4">
+			<select name="user[year]" class="form-select">
+				<option value="">Year</option>
+				{% for i in (1897..2014) reversed %}
+				<option value="{{ i }}" {% if i== 1989 %} selected{% endif %}>{{ i }}</option>
+				{% endfor %}
+			</select>
+		</div>
+	</div>
+</div>
+
+
+<div class="mb-3">
+	<label class="form-label">Text mask</label>
+	{% include "ui/form/input-mask.html" mask="00/00/0000" placeholder="00/00/0000" visible=true %}
+</div>
+<div class="mb-3">
+	<label class="form-label">Telephone mask</label>
+	{% include "ui/form/input-mask.html" mask="(00) 0000-0000" placeholder="(00) 0000-0000" visible=true %}
+</div>
+
+<div class="mb-3">
+	<label class="form-label">Autosize textarea</label>
+	{% include "ui/form/textarea-autosize.html" %}
+</div>
