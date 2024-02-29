@@ -19,7 +19,7 @@
 <script src="{{ site.base }}/dist/js/tabler.bundle{% if jekyll.environment != 'development' %}.min{% endif %}.js{% if jekyll.environment != 'development' %}?{{ site.time | date: '%s' }}{% endif %}" defer></script>
 <script src="{{ site.base }}/dist/js/demo{% if jekyll.environment != 'development' %}.min{% endif %}.js{% if jekyll.environment != 'development' %}?{{ site.time | date: '%s' }}{% endif %}" defer></script>
 
-
+{% comment %}
 {% removeemptylines %}
 {% for script in site.captured_global.scripts %}
 {{ script }}
@@ -36,8 +36,9 @@
 {% for file in lib[1] %}
 
 {% assign filename = 'js/' | append: file | append: '.html' %}
-{% include {{filename }} %}
+{% include filename %}
 
 {% endfor %}
 {% endif %}
 {% endfor %}
+{% endcomment %}

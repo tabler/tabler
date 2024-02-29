@@ -27,7 +27,7 @@
 			<thead>
 			<tr>
 				<th class="w-1"><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select all invoices"></th>
-				<th class="w-1">No. {% include ui/icon.html icon="chevron-up" class="icon-sm icon-thick" %}</th>
+				<th class="w-1">No. {% include "ui/icon.html" icon="chevron-up" class="icon-sm icon-thick" %}</th>
 				<th>Invoice Subject</th>
 				<th>Client</th>
 				<th>VAT No.</th>
@@ -45,7 +45,7 @@
 				<td><span class="text-secondary">00{{ forloop.index | plus: 1400 }}</span></td>
 				<td><a href="invoice.html" class="text-reset" tabindex="-1">{{ invoice.name }}</a></td>
 				<td>
-					{% include ui/flag.html flag=invoice.country size="xs" class="me-2" %}{{ invoice.client }}
+					{% include "ui/flag.html" flag=invoice.country size="xs" class="me-2" %}{{ invoice.client }}
 				</td>
 				<td>
 					{{ invoice.vat-no }}
@@ -61,7 +61,7 @@
 				<td class="text-end">
 					<span class="dropdown">
 						<button class="btn dropdown-toggle align-text-top" data-bs-boundary="viewport" data-bs-toggle="dropdown">Actions</button>
-						{% include ui/dropdown-menu.html right=true %}
+						{% include "ui/dropdown-menu.html" right=true %}
 					</span>
 				</td>
 			</tr>
@@ -71,6 +71,6 @@
 	</div>
 	<div class="card-footer d-flex align-items-center">
 		<p class="m-0 text-secondary">Showing <span>1</span> to <span>8</span> of <span>16</span> entries</p>
-		{% include ui/pagination.html class="m-0 ms-auto" %}
+		{% include "ui/pagination.html" class="m-0 ms-auto" %}
 	</div>
 </div>

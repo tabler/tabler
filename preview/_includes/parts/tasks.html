@@ -16,7 +16,7 @@
 
 						{% if task.starred %}
 						<div class="ribbon ribbon-top ribbon-bookmark bg-yellow">
-							{% include ui/icon.html icon="star" %}
+							{% include "ui/icon.html" icon="star" %}
 						</div>
 						{% endif %}
 
@@ -37,39 +37,39 @@
 								<div class="row">
 									<div class="col">
 										{% if task.users %}
-										{% include ui/avatar-list.html limit=task.users offset=task.users-offset stacked=true size="xs" %}
+										{% include "ui/avatar-list.html" limit=task.users offset=task.users-offset stacked=true size="xs" %}
 										{% endif %}
 									</div>
 
 									{% if task.due-date %}
 									<div class="col-auto">
 										<a href="#" class="link-warning">
-											{% include ui/icon.html icon="calendar" %}
+											{% include "ui/icon.html" icon="calendar" %}
 											{{ task.due-date }}
 										</a>
 									</div>
 									{% endif %}
 
 									<div class="col-auto text-secondary">
-										{% include ui/switch-icon.html icon="heart" icon-b-color="red" variant="scale" active=task.favorite %}
+										{% include "ui/switch-icon.html" icon="heart" icon-b-color="red" variant="scale" active=task.favorite %}
 										{% if task.likes %}{{ task.likes }}{% endif %}
 									</div>
 
 									{% if task.subtasks %}
 									<div class="col-auto">
 										<a href="#" class="link-muted">
-											{% include ui/icon.html icon="activity" %}
+											{% include "ui/icon.html" icon="activity" %}
 											1/{{ task.subtasks.size }}
 										</a>
 									</div>
 									{% endif %}
 									{% if task.comments %}
 									<div class="col-auto">
-										<a href="#" class="link-muted">{% include ui/icon.html icon="message" %} {{ task.comments }}</a>
+										<a href="#" class="link-muted">{% include "ui/icon.html" icon="message" %} {{ task.comments }}</a>
 									</div>
 									{% endif %}
 									<div class="col-auto">
-										<a href="#" class="link-muted">{% include ui/icon.html icon="share" %}</a>
+										<a href="#" class="link-muted">{% include "ui/icon.html" icon="share" %}</a>
 									</div>
 								</div>
 							</div>
@@ -79,10 +79,10 @@
 								{% for subtask in task.subtasks %}
 								<div>
 									{% if subtask.done %}
-									{% include ui/icon.html icon="check" color="muted" %}
+									{% include "ui/icon.html" icon="check" color="muted" %}
 									<span class="text-secondary text-decoration-line-through">{{ subtask.name }}</span>
 									{% else %}
-									{% include ui/icon.html icon="check" color="green" %}
+									{% include "ui/icon.html" icon="check" color="green" %}
 									{{ subtask.name }}
 									{% endif %}
 								</div>

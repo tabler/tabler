@@ -4,6 +4,7 @@
 {% assign hide-labels = include.hide-labels | default: false %}
 {% assign variants = include.variants | default: site.theme-colors %}
 
+{% comment %}
 {% for state in site.button-states %}
    {% if show-states or (state.class != 'active' and state.class != 'disabled') %}
       <div class="row g-2 align-items-center">
@@ -25,10 +26,11 @@
 
                   {% assign text = type[1].title %}
                   {% assign color = type[0] %}
-                  {% include ui/button.html block=true color=false class=class icon=icon icon-only=include.icon-only text=text %}
+                  {% include "ui/button.html" block=true color=false class=class icon=icon icon-only=include.icon-only text=text %}
                </div>
                {% endif %}
          {% endfor %}
       </div>
    {% endif %}
 {% endfor %}
+{% endcomment %}

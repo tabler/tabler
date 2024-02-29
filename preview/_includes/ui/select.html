@@ -18,7 +18,7 @@
 
 		{% if data.data == 'people' %}
 			{% for person in site.data.people limit: 20 %}
-				<option value="{{ person.id }}"{% if include.indicator == 'avatar' %} data-custom-properties="{% capture indicator %}{% include ui/avatar.html size='xs' person=person %}{% endcapture %}{{ indicator | strip | escape }}"{% endif %}>{{ person.full_name }}</option>
+				<option value="{{ person.id }}"{% if include.indicator == 'avatar' %} data-custom-properties="{% capture indicator %}{% include "ui/avatar.html" size='xs' person=person %}{% endcapture %}{{ indicator | strip | escape }}"{% endif %}>{{ person.full_name }}</option>
 			{% endfor %}
 
 		{% elsif data.data == 'optgroup' %}
@@ -36,7 +36,7 @@
 					{% if include.indicator == 'flag' %}
 						{% capture indicator-html %}
 							{% assign country = option[1].flag %}
-							{% include ui/flag.html size="xs" flag=country %}
+							{% include "ui/flag.html" size="xs" flag=country %}
 						{% endcapture %}
 					{% elsif include.indicator == 'label' %}
 						{% capture indicator-html %}
@@ -53,7 +53,7 @@
 	{% endif %}
 </select>
 
-
+{% comment %}
 {% capture script %}
 <script>
 	// @formatter:off
@@ -91,14 +91,16 @@
 	// @formatter:on
 </script>
 {% endcapture %}
-
+{% endcomment %}
 
 {% if include.show-scripts %}
 {{ script }}
 {% else %}
+{% comment %}
 {% capture_global scripts %}
 {{ script }}
 {% endcapture_global %}
+{% endcomment %}
 {% endif %}
 
 {% endif %}

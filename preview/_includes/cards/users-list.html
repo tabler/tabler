@@ -2,6 +2,7 @@
 {% assign offset = include.offset | default: 0 %}
 {% assign hoverable = include.hoverable | default: false %}
 {% assign checked-ids = include.checked-ids | default: '' | extract: ',' %}
+
 <div class="card{% if include.class %} {{ include.class }}{% endif %}">
 	<div class="card-header">
 		<h3 class="card-title">{{ include.title | default: 'Last commits' }}</h3>
@@ -19,7 +20,7 @@
 					{% endif %}
 					<div class="col-auto">
 						<a href="#">
-							{% include ui/avatar.html person=person %}
+							{% include "ui/avatar.html" person=person %}
 						</a>
 					</div>
 
@@ -35,7 +36,7 @@
 					{% assign star-color = 'text-secondary' %}
 					{% endif %}
 					<div class="col-auto">
-						<a href="#" class="list-group-item-actions{% if checked-ids contains forloop.index %} show{% endif %}">{% include ui/icon.html icon="star" class=star-color %}</a>
+						<a href="#" class="list-group-item-actions{% if checked-ids contains forloop.index %} show{% endif %}">{% include "ui/icon.html" icon="star" class=star-color %}</a>
 					</div>
 					{% endif %}
 				</div>
