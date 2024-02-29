@@ -21,7 +21,7 @@ module.exports = function (config) {
 		extname: ".html",
 	});
 
-	const filters = ["timeago", "random_date_ago", "replace_regex", "timestamp_to_date", "random_number", "random_date", "markdownify", "random_item", "extract", "format_number", "divide", "number_color", "svg_icon", "hex_to_rgb", "concat_objects", "seconds_to_minutes", "miliseconds_to_minutes", "htmlbeautifier", "hex_to_rgb", "random_id", "date_to_string"]
+	const filters = ["timeago", "random_date_ago", "replace_regex", "timestamp_to_date", "random_date", "markdownify", "random_item", "extract", "format_number", "divide", "number_color", "svg_icon", "hex_to_rgb", "concat_objects", "seconds_to_minutes", "miliseconds_to_minutes", "htmlbeautifier", "hex_to_rgb", "random_id", "date_to_string"]
 	filters.forEach((filter) => {
 		config.addFilter(filter, (a) => {
 			return a;
@@ -34,6 +34,10 @@ module.exports = function (config) {
 
 	config.addFilter('jsonify', function (variable) {
 		return JSON.stringify(variable);
+	});
+
+	config.addFilter('random_number', function (value) {
+		return 123;
 	});
 
 	const tags = ["removeemptylines", "endremoveemptylines", "capture_global", "endcapture_global", "highlight", "endhighlight"]

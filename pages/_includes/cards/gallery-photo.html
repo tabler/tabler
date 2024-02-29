@@ -7,7 +7,7 @@
 				<div>{{ include.person.full_name }}</div>
 				<div class="text-secondary">{{ forloop.index | random_date_ago: 10 | timeago }}</div>
 			</div>
-			{% unless include.hide-likes %}
+			{% if include.likes %}
 			<div class="ms-auto">
 				<a href="#" class="text-secondary">
 					{% include "ui/icon.html" icon="eye" %}
@@ -22,7 +22,7 @@
 					{{ forloop.index | random_number: 20, 100 }}
 				</a>
 			</div>
-			{% endunless %}
+			{% endif %}
 		</div>
 	</div>
 </div>
