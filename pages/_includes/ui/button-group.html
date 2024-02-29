@@ -1,7 +1,6 @@
-{% assign items = include.items | split: ',' %}
-{% assign icons = include.icons | split: ',' %}
+{% assign items = items | split: ',' %}
+{% assign icons = icons | split: ',' %}
 
-{% assign id = include.id %}
 
 <div class="btn-group{% if include.vertical %}-vertical{% endif %}{% if include.fluid %} w-100{% endif %}"role="group">
 
@@ -16,7 +15,7 @@
 	{% if include.radio %}
 	<input type="radio" class="btn-check" name="btn-radio-{{ id }}" id="btn-radio-{{ id }}-{{ forloop.index }}" autocomplete="off"{% if forloop.index == 1 %} checked{% endif %}>
 	{% endif %}
-	<{% if include.radio %}label for="btn-radio-{{ id }}-{{ forloop.index }}"{% else %}button{% endif %} class="btn btn-icon{% if forloop.index == 1 %}{% unless include.radio %} active{% endunless %}{% endif %}">{% include "ui/icon.html" icon=icon %}</{% if include.radio %}label{% else %}button{% endif %}>
+	<{% if include.radio %}label for="btn-radio-{{ id }}-{{ forloop.index }}"{% else %}button{% endif %} class="btn btn-icon{% if forloop.index == 1 %}{% unless include.radio %} active{% endunless %}{% endif %}">{% include "ui/icon.html" icon:icon %}</{% if include.radio %}label{% else %}button{% endif %}>
 	{% endfor %}
 
 	{% if include.dropdown %}
