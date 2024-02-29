@@ -31,7 +31,7 @@ module.exports = function (config) {
 
 	return {
 		dir: {
-			input: "preview",
+			input: "pages",
 			output: "_site",
 			includes: "_includes",
 			layouts: "_layouts",
