@@ -1,5 +1,5 @@
 /**
- * TinyMCE version 6.4.2 (2023-04-26)
+ * TinyMCE version 6.8.2 (2023-12-11)
  */
 
 (function () {
@@ -19,7 +19,7 @@
       };
     };
 
-    var global$3 = tinymce.util.Tools.resolve('tinymce.PluginManager');
+    var global$4 = tinymce.util.Tools.resolve('tinymce.PluginManager');
 
     let unique = 0;
     const generate = prefix => {
@@ -257,73 +257,23 @@
       return r;
     };
 
-    const description = `<h1>Editor UI keyboard navigation</h1>
+    var global$3 = tinymce.util.Tools.resolve('tinymce.Resource');
 
-<h2>Activating keyboard navigation</h2>
+    var global$2 = tinymce.util.Tools.resolve('tinymce.util.I18n');
 
-<p>The sections of the outer UI of the editor - the menubar, toolbar, sidebar and footer - are all keyboard navigable. As such, there are multiple ways to activate keyboard navigation:</p>
-<ul>
-  <li>Focus the menubar: Alt + F9 (Windows) or &#x2325;F9 (MacOS)</li>
-  <li>Focus the toolbar: Alt + F10 (Windows) or &#x2325;F10 (MacOS)</li>
-  <li>Focus the footer: Alt + F11 (Windows) or &#x2325;F11 (MacOS)</li>
-</ul>
+    const pLoadHtmlByLangCode = (baseUrl, langCode) => global$3.load(`tinymce.html-i18n.help-keynav.${ langCode }`, `${ baseUrl }/js/i18n/keynav/${ langCode }.js`);
+    const pLoadI18nHtml = baseUrl => pLoadHtmlByLangCode(baseUrl, global$2.getCode()).catch(() => pLoadHtmlByLangCode(baseUrl, 'en'));
+    const initI18nLoad = (editor, baseUrl) => {
+      editor.on('init', () => {
+        pLoadI18nHtml(baseUrl);
+      });
+    };
 
-<p>Focusing the menubar or toolbar will start keyboard navigation at the first item in the menubar or toolbar, which will be highlighted with a gray background. Focusing the footer will start keyboard navigation at the first item in the element path, which will be highlighted with an underline. </p>
-
-<h2>Moving between UI sections</h2>
-
-<p>When keyboard navigation is active, pressing tab will move the focus to the next major section of the UI, where applicable. These sections are:</p>
-<ul>
-  <li>the menubar</li>
-  <li>each group of the toolbar </li>
-  <li>the sidebar</li>
-  <li>the element path in the footer </li>
-  <li>the wordcount toggle button in the footer </li>
-  <li>the branding link in the footer </li>
-  <li>the editor resize handle in the footer</li>
-</ul>
-
-<p>Pressing shift + tab will move backwards through the same sections, except when moving from the footer to the toolbar. Focusing the element path then pressing shift + tab will move focus to the first toolbar group, not the last.</p>
-
-<h2>Moving within UI sections</h2>
-
-<p>Keyboard navigation within UI sections can usually be achieved using the left and right arrow keys. This includes:</p>
-<ul>
-  <li>moving between menus in the menubar</li>
-  <li>moving between buttons in a toolbar group</li>
-  <li>moving between items in the element path</li>
-</ul>
-
-<p>In all these UI sections, keyboard navigation will cycle within the section. For example, focusing the last button in a toolbar group then pressing right arrow will move focus to the first item in the same toolbar group. </p>
-
-<h1>Executing buttons</h1>
-
-<p>To execute a button, navigate the selection to the desired button and hit space or enter.</p>
-
-<h1>Opening, navigating and closing menus</h1>
-
-<p>When focusing a menubar button or a toolbar button with a menu, pressing space, enter or down arrow will open the menu. When the menu opens the first item will be selected. To move up or down the menu, press the up or down arrow key respectively. This is the same for submenus, which can also be opened and closed using the left and right arrow keys.</p>
-
-<p>To close any active menu, hit the escape key. When a menu is closed the selection will be restored to its previous selection. This also works for closing submenus.</p>
-
-<h1>Context toolbars and menus</h1>
-
-<p>To focus an open context toolbar such as the table context toolbar, press Ctrl + F9 (Windows) or &#x2303;F9 (MacOS).</p>
-
-<p>Context toolbar navigation is the same as toolbar navigation, and context menu navigation is the same as standard menu navigation.</p>
-
-<h1>Dialog navigation</h1>
-
-<p>There are two types of dialog UIs in TinyMCE: tabbed dialogs and non-tabbed dialogs.</p>
-
-<p>When a non-tabbed dialog is opened, the first interactive component in the dialog will be focused. Users can navigate between interactive components by pressing tab. This includes any footer buttons. Navigation will cycle back to the first dialog component if tab is pressed while focusing the last component in the dialog. Pressing shift + tab will navigate backwards.</p>
-
-<p>When a tabbed dialog is opened, the first button in the tab menu is focused. Pressing tab will navigate to the first interactive component in that tab, and will cycle through the tab\u2019s components, the footer buttons, then back to the tab button. To switch to another tab, focus the tab button for the current tab, then use the arrow keys to cycle through the tab buttons.</p>`;
-    const tab$3 = () => {
+    const pTab = async pluginUrl => {
       const body = {
         type: 'htmlpanel',
         presets: 'document',
-        html: description
+        html: await pLoadI18nHtml(pluginUrl)
       };
       return {
         name: 'keyboardnav',
@@ -332,10 +282,10 @@
       };
     };
 
-    var global$2 = tinymce.util.Tools.resolve('tinymce.Env');
+    var global$1 = tinymce.util.Tools.resolve('tinymce.Env');
 
     const convertText = source => {
-      const isMac = global$2.os.isMacOS() || global$2.os.isiOS();
+      const isMac = global$1.os.isMacOS() || global$1.os.isiOS();
       const mac = {
         alt: '&#x2325;',
         ctrl: '&#x2303;',
@@ -485,9 +435,11 @@
       };
     };
 
-    var global$1 = tinymce.util.Tools.resolve('tinymce.util.I18n');
-
     const urls = map([
+      {
+        key: 'accordion',
+        name: 'Accordion'
+      },
       {
         key: 'advlist',
         name: 'Advanced List'
@@ -634,6 +586,11 @@
         slug: 'advanced-templates'
       },
       {
+        key: 'ai',
+        name: 'AI Assistant',
+        type: 'premium'
+      },
+      {
         key: 'casechange',
         name: 'Case Change',
         type: 'premium'
@@ -759,9 +716,9 @@
         });
         const sortedPremiumPlugins = sort(map(premiumPlugins, p => p.name), (s1, s2) => s1.localeCompare(s2));
         const premiumPluginList = map(sortedPremiumPlugins, pluginName => `<li>${ pluginName }</li>`).join('');
-        return '<div data-mce-tabstop="1" tabindex="-1">' + '<p><b>' + global$1.translate('Premium plugins:') + '</b></p>' + '<ul>' + premiumPluginList + '<li class="tox-help__more-link" "><a href="https://www.tiny.cloud/pricing/?utm_campaign=editor_referral&utm_medium=help_dialog&utm_source=tinymce" rel="noopener" target="_blank">' + global$1.translate('Learn more...') + '</a></li>' + '</ul>' + '</div>';
+        return '<div>' + '<p><b>' + global$2.translate('Premium plugins:') + '</b></p>' + '<ul>' + premiumPluginList + '<li class="tox-help__more-link" ">' + '<a href="https://www.tiny.cloud/pricing/?utm_campaign=editor_referral&utm_medium=help_dialog&utm_source=tinymce" rel="noopener" target="_blank"' + ' data-alloy-tabstop="true" tabindex="-1">' + global$2.translate('Learn more...') + '</a></li>' + '</ul>' + '</div>';
       };
-      const makeLink = p => `<a href="${ p.url }" target="_blank" rel="noopener">${ p.name }</a>`;
+      const makeLink = p => `<a data-alloy-tabstop="true" tabindex="-1" href="${ p.url }" target="_blank" rel="noopener">${ p.name }</a>`;
       const identifyUnknownPlugin = (editor, key) => {
         const getMetadata = editor.plugins[key].getMetadata;
         if (isFunction(getMetadata)) {
@@ -805,7 +762,7 @@
         });
         const count = pluginLis.length;
         const pluginsString = pluginLis.join('');
-        const html = '<p><b>' + global$1.translate([
+        const html = '<p><b>' + global$2.translate([
           'Plugins installed ({0}):',
           count
         ]) + '</b></p>' + '<ul>' + pluginsString + '</ul>';
@@ -815,7 +772,7 @@
         if (editor == null) {
           return '';
         }
-        return '<div data-mce-tabstop="1" tabindex="-1">' + pluginLister(editor) + '</div>';
+        return '<div>' + pluginLister(editor) + '</div>';
       };
       const htmlPanel = {
         type: 'htmlpanel',
@@ -837,10 +794,10 @@
     const tab = () => {
       const getVersion = (major, minor) => major.indexOf('@') === 0 ? 'X.X.X' : major + '.' + minor;
       const version = getVersion(global.majorVersion, global.minorVersion);
-      const changeLogLink = '<a href="https://www.tiny.cloud/docs/tinymce/6/changelog/?utm_campaign=editor_referral&utm_medium=help_dialog&utm_source=tinymce" rel="noopener" target="_blank">TinyMCE ' + version + '</a>';
+      const changeLogLink = '<a data-alloy-tabstop="true" tabindex="-1" href="https://www.tiny.cloud/docs/tinymce/6/changelog/?utm_campaign=editor_referral&utm_medium=help_dialog&utm_source=tinymce" rel="noopener" target="_blank">TinyMCE ' + version + '</a>';
       const htmlPanel = {
         type: 'htmlpanel',
-        html: '<p>' + global$1.translate([
+        html: '<p>' + global$2.translate([
           'You are using {0}',
           changeLogLink
         ]) + '</p>',
@@ -885,9 +842,9 @@
         names
       };
     };
-    const parseCustomTabs = (editor, customTabs) => {
+    const pParseCustomTabs = async (editor, customTabs, pluginUrl) => {
       const shortcuts = tab$2();
-      const nav = tab$3();
+      const nav = await pTab(pluginUrl);
       const plugins = tab$1(editor);
       const versions = tab();
       const tabs = {
@@ -899,37 +856,39 @@
       };
       return Optional.from(getHelpTabs(editor)).fold(() => getNamesFromTabs(tabs), tabsFromSettings => parseHelpTabsSetting(tabsFromSettings, tabs));
     };
-    const init = (editor, customTabs) => () => {
-      const {tabs, names} = parseCustomTabs(editor, customTabs);
-      const foundTabs = map(names, name => get(tabs, name));
-      const dialogTabs = cat(foundTabs);
-      const body = {
-        type: 'tabpanel',
-        tabs: dialogTabs
-      };
-      editor.windowManager.open({
-        title: 'Help',
-        size: 'normal',
-        body,
-        buttons: [{
-            type: 'cancel',
-            name: 'close',
-            text: 'Close',
-            primary: true
-          }],
-        initialData: {}
+    const init = (editor, customTabs, pluginUrl) => () => {
+      pParseCustomTabs(editor, customTabs, pluginUrl).then(({tabs, names}) => {
+        const foundTabs = map(names, name => get(tabs, name));
+        const dialogTabs = cat(foundTabs);
+        const body = {
+          type: 'tabpanel',
+          tabs: dialogTabs
+        };
+        editor.windowManager.open({
+          title: 'Help',
+          size: 'medium',
+          body,
+          buttons: [{
+              type: 'cancel',
+              name: 'close',
+              text: 'Close',
+              primary: true
+            }],
+          initialData: {}
+        });
       });
     };
 
     var Plugin = () => {
-      global$3.add('help', editor => {
+      global$4.add('help', (editor, pluginUrl) => {
         const customTabs = Cell({});
         const api = get$1(customTabs);
         register$1(editor);
-        const dialogOpener = init(editor, customTabs);
+        const dialogOpener = init(editor, customTabs, pluginUrl);
         register(editor, dialogOpener);
         register$2(editor, dialogOpener);
         editor.shortcuts.add('Alt+0', 'Open help dialog', 'mceHelp');
+        initI18nLoad(editor, pluginUrl);
         return api;
       });
     };

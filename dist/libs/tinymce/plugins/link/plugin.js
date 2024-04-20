@@ -1,5 +1,5 @@
 /**
- * TinyMCE version 6.4.2 (2023-04-26)
+ * TinyMCE version 6.8.2 (2023-12-11)
  */
 
 (function () {
@@ -903,7 +903,8 @@
           name: 'url',
           type: 'urlinput',
           filetype: 'file',
-          label: 'URL'
+          label: 'URL',
+          picker_text: 'Browse links'
         }];
       const displayText = settings.anchor.text.map(() => ({
         name: 'text',
@@ -1043,8 +1044,18 @@
       editor.on('NodeChange', toggler);
       return () => editor.off('NodeChange', toggler);
     };
-    const toggleActiveState = editor => api => {
-      const updateState = () => api.setActive(!editor.mode.isReadOnly() && isInAnchor(editor, editor.selection.getNode()));
+    const toggleLinkState = editor => api => {
+      const updateState = () => {
+        api.setActive(!editor.mode.isReadOnly() && isInAnchor(editor, editor.selection.getNode()));
+        api.setEnabled(editor.selection.isEditable());
+      };
+      updateState();
+      return toggleState(editor, updateState);
+    };
+    const toggleLinkMenuState = editor => api => {
+      const updateState = () => {
+        api.setEnabled(editor.selection.isEditable());
+      };
       updateState();
       return toggleState(editor, updateState);
     };
@@ -1052,7 +1063,7 @@
       const links = editor.selection.isCollapsed() ? getLinks$1(editor.dom.getParents(editor.selection.getStart())) : getLinksInSelection(editor.selection.getRng());
       return links.length === 1;
     };
-    const toggleEnabledState = editor => api => {
+    const toggleGotoLinkState = editor => api => {
       const updateState = () => api.setEnabled(hasExactlyOneLinkInSelection(editor));
       updateState();
       return toggleState(editor, updateState);
@@ -1060,8 +1071,11 @@
     const toggleUnlinkState = editor => api => {
       const hasLinks$1 = parents => hasLinks(parents) || hasLinksInSelection(editor.selection.getRng());
       const parents = editor.dom.getParents(editor.selection.getStart());
-      api.setEnabled(hasLinks$1(parents));
-      return toggleState(editor, e => api.setEnabled(hasLinks$1(e.parents)));
+      const updateEnabled = parents => {
+        api.setEnabled(hasLinks$1(parents) && editor.selection.isEditable());
+      };
+      updateEnabled(parents);
+      return toggleState(editor, e => updateEnabled(e.parents));
     };
 
     const setup = editor => {
@@ -1075,13 +1089,13 @@
         icon: 'link',
         tooltip: 'Insert/edit link',
         onAction: openDialog(editor),
-        onSetup: toggleActiveState(editor)
+        onSetup: toggleLinkState(editor)
       });
       editor.ui.registry.addButton('openlink', {
         icon: 'new-tab',
         tooltip: 'Open link',
         onAction: gotoSelectedLink(editor),
-        onSetup: toggleEnabledState(editor)
+        onSetup: toggleGotoLinkState(editor)
       });
       editor.ui.registry.addButton('unlink', {
         icon: 'unlink',
@@ -1095,12 +1109,13 @@
         text: 'Open link',
         icon: 'new-tab',
         onAction: gotoSelectedLink(editor),
-        onSetup: toggleEnabledState(editor)
+        onSetup: toggleGotoLinkState(editor)
       });
       editor.ui.registry.addMenuItem('link', {
         icon: 'link',
         text: 'Link...',
         shortcut: 'Meta+K',
+        onSetup: toggleLinkMenuState(editor),
         onAction: openDialog(editor)
       });
       editor.ui.registry.addMenuItem('unlink', {
@@ -1147,7 +1162,7 @@
           type: 'contextformtogglebutton',
           icon: 'link',
           tooltip: 'Link',
-          onSetup: toggleActiveState(editor)
+          onSetup: toggleLinkState(editor)
         },
         label: 'Link',
         predicate: node => hasContextToolbar(editor) && isInAnchor(editor, node),
@@ -1164,7 +1179,7 @@
             onSetup: buttonApi => {
               const node = editor.selection.getNode();
               buttonApi.setActive(isInAnchor(editor, node));
-              return toggleActiveState(editor)(buttonApi);
+              return toggleLinkState(editor)(buttonApi);
             },
             onAction: formApi => {
               const value = formApi.getValue();

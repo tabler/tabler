@@ -1,5 +1,5 @@
 /**
- * TinyMCE version 6.4.2 (2023-04-26)
+ * TinyMCE version 6.8.2 (2023-12-11)
  */
 
 (function () {
@@ -162,7 +162,7 @@
     const isWithinNonEditable = (editor, element) => element !== null && !editor.dom.isEditable(element);
     const isWithinNonEditableList = (editor, element) => {
       const parentList = editor.dom.getParent(element, 'ol,ul,dl');
-      return isWithinNonEditable(editor, parentList);
+      return isWithinNonEditable(editor, parentList) && editor.selection.isEditable();
     };
     const setNodeChangeHandler = (editor, nodeChangeHandler) => {
       const initialNode = editor.selection.getNode();
@@ -184,7 +184,7 @@
       const updateButtonState = (editor, parents) => {
         const element = editor.selection.getStart(true);
         api.setActive(inList(editor, parents, nodeName));
-        api.setEnabled(!isWithinNonEditableList(editor, element));
+        api.setEnabled(!isWithinNonEditableList(editor, element) && editor.selection.isEditable());
       };
       const nodeChangeHandler = e => updateButtonState(editor, e.parents);
       return setNodeChangeHandler(editor, nodeChangeHandler);

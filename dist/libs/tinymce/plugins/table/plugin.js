@@ -1,5 +1,5 @@
 /**
- * TinyMCE version 6.4.2 (2023-04-26)
+ * TinyMCE version 6.8.2 (2023-12-11)
  */
 
 (function () {
@@ -199,6 +199,14 @@
     };
     const has = (obj, key) => hasOwnProperty.call(obj, key);
     const hasNonNullableKey = (obj, key) => has(obj, key) && obj[key] !== undefined && obj[key] !== null;
+    const isEmpty$1 = r => {
+      for (const x in r) {
+        if (hasOwnProperty.call(r, x)) {
+          return false;
+        }
+      }
+      return true;
+    };
 
     const nativeIndexOf = Array.prototype.indexOf;
     const nativePush = Array.prototype.push;
@@ -2566,20 +2574,22 @@
         }
       }
     };
-    const applyDataToElement = (editor, tableElm, data) => {
+    const applyDataToElement = (editor, tableElm, data, shouldApplyOnCell) => {
       const dom = editor.dom;
       const attrs = {};
       const styles = {};
+      const shouldStyleWithCss$1 = shouldStyleWithCss(editor);
+      const hasAdvancedTableTab$1 = hasAdvancedTableTab(editor);
       if (!isUndefined(data.class)) {
         attrs.class = data.class;
       }
       styles.height = addPxSuffix(data.height);
-      if (shouldStyleWithCss(editor)) {
+      if (shouldStyleWithCss$1) {
         styles.width = addPxSuffix(data.width);
       } else if (dom.getAttrib(tableElm, 'width')) {
         attrs.width = removePxSuffix(data.width);
       }
-      if (shouldStyleWithCss(editor)) {
+      if (shouldStyleWithCss$1) {
         styles['border-width'] = addPxSuffix(data.border);
         styles['border-spacing'] = addPxSuffix(data.cellspacing);
       } else {
@@ -2587,24 +2597,30 @@
         attrs.cellpadding = data.cellpadding;
         attrs.cellspacing = data.cellspacing;
       }
-      if (shouldStyleWithCss(editor) && tableElm.children) {
-        for (let i = 0; i < tableElm.children.length; i++) {
-          styleTDTH(dom, tableElm.children[i], {
-            'border-width': addPxSuffix(data.border),
-            'padding': addPxSuffix(data.cellpadding)
-          });
-          if (hasAdvancedTableTab(editor)) {
-            styleTDTH(dom, tableElm.children[i], { 'border-color': data.bordercolor });
+      if (shouldStyleWithCss$1 && tableElm.children) {
+        const cellStyles = {};
+        if (shouldApplyOnCell.border) {
+          cellStyles['border-width'] = addPxSuffix(data.border);
+        }
+        if (shouldApplyOnCell.cellpadding) {
+          cellStyles.padding = addPxSuffix(data.cellpadding);
+        }
+        if (hasAdvancedTableTab$1 && shouldApplyOnCell.bordercolor) {
+          cellStyles['border-color'] = data.bordercolor;
+        }
+        if (!isEmpty$1(cellStyles)) {
+          for (let i = 0; i < tableElm.children.length; i++) {
+            styleTDTH(dom, tableElm.children[i], cellStyles);
           }
         }
       }
-      if (hasAdvancedTableTab(editor)) {
+      if (hasAdvancedTableTab$1) {
         const advData = data;
         styles['background-color'] = advData.backgroundcolor;
         styles['border-color'] = advData.bordercolor;
         styles['border-style'] = advData.borderstyle;
       }
-      attrs.style = dom.serializeStyle({
+      dom.setStyles(tableElm, {
         ...getDefaultStyles(editor),
         ...styles
       });
@@ -2632,7 +2648,12 @@
           tableElm = getSelectionCell(getSelectionStart(editor), getIsRoot(editor)).bind(cell => table(cell, getIsRoot(editor))).map(table => table.dom).getOrDie();
         }
         if (size(modifiedData) > 0) {
-          applyDataToElement(editor, tableElm, data);
+          const applicableCellProperties = {
+            border: has(modifiedData, 'border'),
+            bordercolor: has(modifiedData, 'bordercolor'),
+            cellpadding: has(modifiedData, 'cellpadding')
+          };
+          applyDataToElement(editor, tableElm, data, applicableCellProperties);
           const captionElm = dom.select('caption', tableElm)[0];
           if (captionElm && !data.caption || !captionElm && data.caption) {
             editor.execCommand('mceTableToggleCaption');
@@ -2830,13 +2851,13 @@
       const onSetup = (api, isDisabled) => setupHandler(() => targets.get().fold(() => {
         api.setEnabled(false);
       }, targets => {
-        api.setEnabled(!isDisabled(targets));
+        api.setEnabled(!isDisabled(targets) && editor.selection.isEditable());
       }));
       const onSetupWithToggle = (api, isDisabled, isActive) => setupHandler(() => targets.get().fold(() => {
         api.setEnabled(false);
         api.setActive(false);
       }, targets => {
-        api.setEnabled(!isDisabled(targets));
+        api.setEnabled(!isDisabled(targets) && editor.selection.isEditable());
         api.setActive(isActive(targets));
       }));
       const isDisabledFromLocked = lockedDisable => selectionDetails.exists(details => details.locked[lockedDisable]);
@@ -2888,10 +2909,21 @@
     const getRows = () => getData(tableTypeRow);
     const getColumns = () => getData(tableTypeColumn);
 
+    const onSetupEditable$1 = editor => api => {
+      const nodeChanged = () => {
+        api.setEnabled(editor.selection.isEditable());
+      };
+      editor.on('NodeChange', nodeChanged);
+      nodeChanged();
+      return () => {
+        editor.off('NodeChange', nodeChanged);
+      };
+    };
     const addButtons = (editor, selectionTargets) => {
       editor.ui.registry.addMenuButton('table', {
         tooltip: 'Table',
         icon: 'table',
+        onSetup: onSetupEditable$1(editor),
         fetch: callback => callback('inserttable | cell row column | advtablesort | tableprops deletetable')
       });
       const cmd = command => () => editor.execCommand(command);
@@ -3034,7 +3066,8 @@
       addButtonIfRegistered('tableinsertdialog', {
         tooltip: 'Insert table',
         command: 'mceInsertTableDialog',
-        icon: 'table'
+        icon: 'table',
+        onSetup: onSetupEditable$1(editor)
       });
       const tableClassList = filterNoneItem(getTableClassList(editor));
       if (tableClassList.length !== 0 && editor.queryCommandSupported('mceTableToggleClass')) {
@@ -3108,11 +3141,11 @@
       });
     };
     const addToolbars = editor => {
-      const isTable = table => editor.dom.is(table, 'table') && editor.getBody().contains(table);
+      const isEditableTable = table => editor.dom.is(table, 'table') && editor.getBody().contains(table) && editor.dom.isEditable(table.parentNode);
       const toolbar = getToolbar(editor);
       if (toolbar.length > 0) {
         editor.ui.registry.addContextToolbar('table', {
-          predicate: isTable,
+          predicate: isEditableTable,
           items: toolbar,
           scope: 'node',
           position: 'node'
@@ -3120,6 +3153,16 @@
       }
     };
 
+    const onSetupEditable = editor => api => {
+      const nodeChanged = () => {
+        api.setEnabled(editor.selection.isEditable());
+      };
+      editor.on('NodeChange', nodeChanged);
+      nodeChanged();
+      return () => {
+        editor.off('NodeChange', nodeChanged);
+      };
+    };
     const addMenuItems = (editor, selectionTargets) => {
       const cmd = command => () => editor.execCommand(command);
       const addMenuIfRegistered = (name, spec) => {
@@ -3265,7 +3308,8 @@
         editor.ui.registry.addMenuItem('inserttable', {
           text: 'Table',
           icon: 'table',
-          onAction: cmd('mceInsertTableDialog')
+          onAction: cmd('mceInsertTableDialog'),
+          onSetup: onSetupEditable(editor)
         });
       } else {
         editor.ui.registry.addNestedMenuItem('inserttable', {
@@ -3275,13 +3319,15 @@
               type: 'fancymenuitem',
               fancytype: 'inserttable',
               onAction: insertTableAction
-            }]
+            }],
+          onSetup: onSetupEditable(editor)
         });
       }
       editor.ui.registry.addMenuItem('inserttabledialog', {
         text: 'Insert table',
         icon: 'table',
-        onAction: cmd('mceInsertTableDialog')
+        onAction: cmd('mceInsertTableDialog'),
+        onSetup: onSetupEditable(editor)
       });
       addMenuIfRegistered('tableprops', {
         text: 'Table properties',

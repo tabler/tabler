@@ -1,5 +1,5 @@
 /**
- * TinyMCE version 6.4.2 (2023-04-26)
+ * TinyMCE version 6.8.2 (2023-12-11)
  */
 
 (function () {
@@ -2356,6 +2356,140 @@
     };
     const fromDom = nodes => map$1(nodes, SugarElement.fromDom);
 
+    const option = name => editor => editor.options.get(name);
+    const defaultWidth = '100%';
+    const getPixelForcedWidth = editor => {
+      var _a;
+      const dom = editor.dom;
+      const parentBlock = (_a = dom.getParent(editor.selection.getStart(), dom.isBlock)) !== null && _a !== void 0 ? _a : editor.getBody();
+      return getInner(SugarElement.fromDom(parentBlock)) + 'px';
+    };
+    const determineDefaultTableStyles = (editor, defaultStyles) => {
+      if (isTableResponsiveForced(editor) || !shouldStyleWithCss(editor)) {
+        return defaultStyles;
+      } else if (isTablePixelsForced(editor)) {
+        return {
+          ...defaultStyles,
+          width: getPixelForcedWidth(editor)
+        };
+      } else {
+        return {
+          ...defaultStyles,
+          width: defaultWidth
+        };
+      }
+    };
+    const determineDefaultTableAttributes = (editor, defaultAttributes) => {
+      if (isTableResponsiveForced(editor) || shouldStyleWithCss(editor)) {
+        return defaultAttributes;
+      } else if (isTablePixelsForced(editor)) {
+        return {
+          ...defaultAttributes,
+          width: getPixelForcedWidth(editor)
+        };
+      } else {
+        return {
+          ...defaultAttributes,
+          width: defaultWidth
+        };
+      }
+    };
+    const register = editor => {
+      const registerOption = editor.options.register;
+      registerOption('table_clone_elements', { processor: 'string[]' });
+      registerOption('table_use_colgroups', {
+        processor: 'boolean',
+        default: true
+      });
+      registerOption('table_header_type', {
+        processor: value => {
+          const valid = contains$2([
+            'section',
+            'cells',
+            'sectionCells',
+            'auto'
+          ], value);
+          return valid ? {
+            value,
+            valid
+          } : {
+            valid: false,
+            message: 'Must be one of: section, cells, sectionCells or auto.'
+          };
+        },
+        default: 'section'
+      });
+      registerOption('table_sizing_mode', {
+        processor: 'string',
+        default: 'auto'
+      });
+      registerOption('table_default_attributes', {
+        processor: 'object',
+        default: { border: '1' }
+      });
+      registerOption('table_default_styles', {
+        processor: 'object',
+        default: { 'border-collapse': 'collapse' }
+      });
+      registerOption('table_column_resizing', {
+        processor: value => {
+          const valid = contains$2([
+            'preservetable',
+            'resizetable'
+          ], value);
+          return valid ? {
+            value,
+            valid
+          } : {
+            valid: false,
+            message: 'Must be preservetable, or resizetable.'
+          };
+        },
+        default: 'preservetable'
+      });
+      registerOption('table_resize_bars', {
+        processor: 'boolean',
+        default: true
+      });
+      registerOption('table_style_by_css', {
+        processor: 'boolean',
+        default: true
+      });
+      registerOption('table_merge_content_on_paste', {
+        processor: 'boolean',
+        default: true
+      });
+    };
+    const getTableCloneElements = editor => {
+      return Optional.from(editor.options.get('table_clone_elements'));
+    };
+    const hasTableObjectResizing = editor => {
+      const objectResizing = editor.options.get('object_resizing');
+      return contains$2(objectResizing.split(','), 'table');
+    };
+    const getTableHeaderType = option('table_header_type');
+    const getTableColumnResizingBehaviour = option('table_column_resizing');
+    const isPreserveTableColumnResizing = editor => getTableColumnResizingBehaviour(editor) === 'preservetable';
+    const isResizeTableColumnResizing = editor => getTableColumnResizingBehaviour(editor) === 'resizetable';
+    const getTableSizingMode = option('table_sizing_mode');
+    const isTablePercentagesForced = editor => getTableSizingMode(editor) === 'relative';
+    const isTablePixelsForced = editor => getTableSizingMode(editor) === 'fixed';
+    const isTableResponsiveForced = editor => getTableSizingMode(editor) === 'responsive';
+    const hasTableResizeBars = option('table_resize_bars');
+    const shouldStyleWithCss = option('table_style_by_css');
+    const shouldMergeContentOnPaste = option('table_merge_content_on_paste');
+    const getTableDefaultAttributes = editor => {
+      const options = editor.options;
+      const defaultAttributes = options.get('table_default_attributes');
+      return options.isSet('table_default_attributes') ? defaultAttributes : determineDefaultTableAttributes(editor, defaultAttributes);
+    };
+    const getTableDefaultStyles = editor => {
+      const options = editor.options;
+      const defaultStyles = options.get('table_default_styles');
+      return options.isSet('table_default_styles') ? defaultStyles : determineDefaultTableStyles(editor, defaultStyles);
+    };
+    const tableUseColumnGroup = option('table_use_colgroups');
+
     const closest = target => closest$1(target, '[contenteditable]');
     const isEditable$1 = (element, assumeEditable = false) => {
       if (inBody(element)) {
@@ -2904,7 +3038,7 @@
                 return name(content) !== 'meta';
               });
               const isTable = isTag('table');
-              if (elements.length === 1 && isTable(elements[0])) {
+              if (shouldMergeContentOnPaste(editor) && elements.length === 1 && isTable(elements[0])) {
                 e.preventDefault();
                 const doc = SugarElement.fromDom(editor.getDoc());
                 const generators = paste$1(doc);
@@ -4638,135 +4772,6 @@
       structure: true,
       style: true
     };
-
-    const option = name => editor => editor.options.get(name);
-    const defaultWidth = '100%';
-    const getPixelForcedWidth = editor => {
-      var _a;
-      const dom = editor.dom;
-      const parentBlock = (_a = dom.getParent(editor.selection.getStart(), dom.isBlock)) !== null && _a !== void 0 ? _a : editor.getBody();
-      return getInner(SugarElement.fromDom(parentBlock)) + 'px';
-    };
-    const determineDefaultTableStyles = (editor, defaultStyles) => {
-      if (isTableResponsiveForced(editor) || !shouldStyleWithCss(editor)) {
-        return defaultStyles;
-      } else if (isTablePixelsForced(editor)) {
-        return {
-          ...defaultStyles,
-          width: getPixelForcedWidth(editor)
-        };
-      } else {
-        return {
-          ...defaultStyles,
-          width: defaultWidth
-        };
-      }
-    };
-    const determineDefaultTableAttributes = (editor, defaultAttributes) => {
-      if (isTableResponsiveForced(editor) || shouldStyleWithCss(editor)) {
-        return defaultAttributes;
-      } else if (isTablePixelsForced(editor)) {
-        return {
-          ...defaultAttributes,
-          width: getPixelForcedWidth(editor)
-        };
-      } else {
-        return {
-          ...defaultAttributes,
-          width: defaultWidth
-        };
-      }
-    };
-    const register = editor => {
-      const registerOption = editor.options.register;
-      registerOption('table_clone_elements', { processor: 'string[]' });
-      registerOption('table_use_colgroups', {
-        processor: 'boolean',
-        default: true
-      });
-      registerOption('table_header_type', {
-        processor: value => {
-          const valid = contains$2([
-            'section',
-            'cells',
-            'sectionCells',
-            'auto'
-          ], value);
-          return valid ? {
-            value,
-            valid
-          } : {
-            valid: false,
-            message: 'Must be one of: section, cells, sectionCells or auto.'
-          };
-        },
-        default: 'section'
-      });
-      registerOption('table_sizing_mode', {
-        processor: 'string',
-        default: 'auto'
-      });
-      registerOption('table_default_attributes', {
-        processor: 'object',
-        default: { border: '1' }
-      });
-      registerOption('table_default_styles', {
-        processor: 'object',
-        default: { 'border-collapse': 'collapse' }
-      });
-      registerOption('table_column_resizing', {
-        processor: value => {
-          const valid = contains$2([
-            'preservetable',
-            'resizetable'
-          ], value);
-          return valid ? {
-            value,
-            valid
-          } : {
-            valid: false,
-            message: 'Must be preservetable, or resizetable.'
-          };
-        },
-        default: 'preservetable'
-      });
-      registerOption('table_resize_bars', {
-        processor: 'boolean',
-        default: true
-      });
-      registerOption('table_style_by_css', {
-        processor: 'boolean',
-        default: true
-      });
-    };
-    const getTableCloneElements = editor => {
-      return Optional.from(editor.options.get('table_clone_elements'));
-    };
-    const hasTableObjectResizing = editor => {
-      const objectResizing = editor.options.get('object_resizing');
-      return contains$2(objectResizing.split(','), 'table');
-    };
-    const getTableHeaderType = option('table_header_type');
-    const getTableColumnResizingBehaviour = option('table_column_resizing');
-    const isPreserveTableColumnResizing = editor => getTableColumnResizingBehaviour(editor) === 'preservetable';
-    const isResizeTableColumnResizing = editor => getTableColumnResizingBehaviour(editor) === 'resizetable';
-    const getTableSizingMode = option('table_sizing_mode');
-    const isTablePercentagesForced = editor => getTableSizingMode(editor) === 'relative';
-    const isTablePixelsForced = editor => getTableSizingMode(editor) === 'fixed';
-    const isTableResponsiveForced = editor => getTableSizingMode(editor) === 'responsive';
-    const hasTableResizeBars = option('table_resize_bars');
-    const shouldStyleWithCss = option('table_style_by_css');
-    const getTableDefaultAttributes = editor => {
-      const options = editor.options;
-      const defaultAttributes = options.get('table_default_attributes');
-      return options.isSet('table_default_attributes') ? defaultAttributes : determineDefaultTableAttributes(editor, defaultAttributes);
-    };
-    const getTableDefaultStyles = editor => {
-      const options = editor.options;
-      const defaultStyles = options.get('table_default_styles');
-      return options.isSet('table_default_styles') ? defaultStyles : determineDefaultTableStyles(editor, defaultStyles);
-    };
-    const tableUseColumnGroup = option('table_use_colgroups');
 
     const get$5 = (editor, table) => {
       if (isTablePercentagesForced(editor)) {

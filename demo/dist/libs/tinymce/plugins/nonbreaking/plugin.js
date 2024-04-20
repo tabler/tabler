@@ -1,5 +1,5 @@
 /**
- * TinyMCE version 6.4.2 (2023-04-26)
+ * TinyMCE version 6.8.2 (2023-12-11)
  */
 
 (function () {
@@ -83,17 +83,29 @@
       }
     };
 
+    const onSetupEditable = editor => api => {
+      const nodeChanged = () => {
+        api.setEnabled(editor.selection.isEditable());
+      };
+      editor.on('NodeChange', nodeChanged);
+      nodeChanged();
+      return () => {
+        editor.off('NodeChange', nodeChanged);
+      };
+    };
     const register = editor => {
       const onAction = () => editor.execCommand('mceNonBreaking');
       editor.ui.registry.addButton('nonbreaking', {
         icon: 'non-breaking',
         tooltip: 'Nonbreaking space',
-        onAction
+        onAction,
+        onSetup: onSetupEditable(editor)
       });
       editor.ui.registry.addMenuItem('nonbreaking', {
         icon: 'non-breaking',
         text: 'Nonbreaking space',
-        onAction
+        onAction,
+        onSetup: onSetupEditable(editor)
       });
     };
 

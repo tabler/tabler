@@ -1,5 +1,5 @@
 /**
- * TinyMCE version 6.4.2 (2023-04-26)
+ * TinyMCE version 6.8.2 (2023-12-11)
  */
 
 (function () {
@@ -76,17 +76,29 @@
       });
     };
 
+    const onSetupEditable = editor => api => {
+      const nodeChanged = () => {
+        api.setEnabled(editor.selection.isEditable());
+      };
+      editor.on('NodeChange', nodeChanged);
+      nodeChanged();
+      return () => {
+        editor.off('NodeChange', nodeChanged);
+      };
+    };
     const register = editor => {
       const onAction = () => editor.execCommand('mcePageBreak');
       editor.ui.registry.addButton('pagebreak', {
         icon: 'page-break',
         tooltip: 'Page break',
-        onAction
+        onAction,
+        onSetup: onSetupEditable(editor)
       });
       editor.ui.registry.addMenuItem('pagebreak', {
         text: 'Page break',
         icon: 'page-break',
-        onAction
+        onAction,
+        onSetup: onSetupEditable(editor)
       });
     };
 

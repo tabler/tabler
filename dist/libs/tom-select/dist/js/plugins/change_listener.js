@@ -1,5 +1,5 @@
 /**
-* Tom Select v2.2.2
+* Tom Select v2.3.1
 * Licensed under the Apache License, Version 2.0 (the "License");
 */
 
@@ -23,11 +23,11 @@
 	 *   1         -> '1'
 	 *
 	 */
+
 	/**
 	 * Add event helper
 	 *
 	 */
-
 	const addEvent = (target, type, callback, options) => {
 	  target.addEventListener(type, callback, options);
 	};
@@ -46,6 +46,7 @@
 	 * governing permissions and limitations under the License.
 	 *
 	 */
+
 	function plugin () {
 	  addEvent(this.input, 'change', () => {
 	    this.sync();

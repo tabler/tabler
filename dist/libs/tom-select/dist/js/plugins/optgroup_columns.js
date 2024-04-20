@@ -1,5 +1,5 @@
 /**
-* Tom Select v2.2.2
+* Tom Select v2.3.1
 * Licensed under the Apache License, Version 2.0 (the "License");
 */
 
@@ -11,7 +11,6 @@
 
   const KEY_LEFT = 37;
   const KEY_RIGHT = 39;
-  typeof navigator === 'undefined' ? false : /Mac/.test(navigator.userAgent);
    // ctrl key or apple key for ma
 
   /*! @orchidjs/unicode-variants | https://github.com/orchidjs/unicode-variants | Apache License (v2) */
@@ -81,36 +80,31 @@
    * Stops at wrapper
    *
    */
-
   const parentMatch = (target, selector, wrapper) => {
     if (wrapper && !wrapper.contains(target)) {
       return;
     }
-
     while (target && target.matches) {
       if (target.matches(selector)) {
         return target;
       }
-
       target = target.parentNode;
     }
   };
+
   /**
    * Get the index of an element amongst sibling nodes of the same type
    *
    */
-
   const nodeIndex = (el, amongst) => {
     if (!el) return -1;
     amongst = amongst || el.nodeName;
     var i = 0;
-
     while (el = el.previousElementSibling) {
       if (el.matches(amongst)) {
         i++;
       }
     }
-
     return i;
   };
 
@@ -128,37 +122,31 @@
    * governing permissions and limitations under the License.
    *
    */
+
   function plugin () {
     var self = this;
     var orig_keydown = self.onKeyDown;
     self.hook('instead', 'onKeyDown', evt => {
       var index, option, options, optgroup;
-
       if (!self.isOpen || !(evt.keyCode === KEY_LEFT || evt.keyCode === KEY_RIGHT)) {
         return orig_keydown.call(self, evt);
       }
-
       self.ignoreHover = true;
       optgroup = parentMatch(self.activeOption, '[data-group]');
       index = nodeIndex(self.activeOption, '[data-selectable]');
-
       if (!optgroup) {
         return;
       }
-
       if (evt.keyCode === KEY_LEFT) {
         optgroup = optgroup.previousSibling;
       } else {
         optgroup = optgroup.nextSibling;
       }
-
       if (!optgroup) {
         return;
       }
-
       options = optgroup.querySelectorAll('[data-selectable]');
       option = options[Math.min(options.length - 1, index)];
-
       if (option) {
         self.setActiveOption(option);
       }

@@ -15,7 +15,7 @@ var CountUp = /** @class */ (function () {
         var _this = this;
         this.endVal = endVal;
         this.options = options;
-        this.version = '2.6.2';
+        this.version = '2.8.0';
         this.defaults = {
             startVal: 0,
             decimalPlaces: 0,
@@ -205,6 +205,9 @@ var CountUp = /** @class */ (function () {
     CountUp.prototype.start = function (callback) {
         if (this.error) {
             return;
+        }
+        if (this.options.onStartCallback) {
+            this.options.onStartCallback();
         }
         if (callback) {
             this.options.onCompleteCallback = callback;

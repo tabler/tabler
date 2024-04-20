@@ -1,5 +1,5 @@
 /**
- * TinyMCE version 6.4.2 (2023-04-26)
+ * TinyMCE version 6.8.2 (2023-12-11)
  */
 
 (function () {
@@ -551,17 +551,29 @@
       });
     };
 
+    const onSetupEditable = editor => api => {
+      const nodeChanged = () => {
+        api.setEnabled(editor.selection.isEditable());
+      };
+      editor.on('NodeChange', nodeChanged);
+      nodeChanged();
+      return () => {
+        editor.off('NodeChange', nodeChanged);
+      };
+    };
     const register = editor => {
       const onAction = () => editor.execCommand('mceEmoticons');
       editor.ui.registry.addButton('emoticons', {
         tooltip: 'Emojis',
         icon: 'emoji',
-        onAction
+        onAction,
+        onSetup: onSetupEditable(editor)
       });
       editor.ui.registry.addMenuItem('emoticons', {
         text: 'Emojis...',
         icon: 'emoji',
-        onAction
+        onAction,
+        onSetup: onSetupEditable(editor)
       });
     };
 

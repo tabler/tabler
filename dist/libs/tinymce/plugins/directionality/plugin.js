@@ -1,5 +1,5 @@
 /**
- * TinyMCE version 6.4.2 (2023-04-26)
+ * TinyMCE version 6.8.2 (2023-12-11)
  */
 
 (function () {
@@ -315,27 +315,36 @@
       return normalizedElement.getOr(element);
     };
     const isListItem = isTag('li');
-    const setDir = (editor, dir) => {
-      const selectedBlocks = editor.selection.getSelectedBlocks();
-      if (selectedBlocks.length > 0) {
-        each(selectedBlocks, block => {
-          const blockElement = SugarElement.fromDom(block);
-          const isBlockElementListItem = isListItem(blockElement);
-          const normalizedBlock = getNormalizedBlock(blockElement, isBlockElementListItem);
-          const normalizedBlockParent = getParentElement(normalizedBlock);
-          normalizedBlockParent.each(parent => {
-            const parentDirection = getDirection(parent);
-            if (parentDirection !== dir) {
-              set(normalizedBlock, 'dir', dir);
-            } else if (getDirection(normalizedBlock) !== dir) {
-              remove(normalizedBlock, 'dir');
-            }
-            if (isBlockElementListItem) {
-              const listItems = children(normalizedBlock, 'li[dir]');
-              each(listItems, listItem => remove(listItem, 'dir'));
-            }
-          });
+    const setDirOnElements = (dom, blocks, dir) => {
+      each(blocks, block => {
+        const blockElement = SugarElement.fromDom(block);
+        const isBlockElementListItem = isListItem(blockElement);
+        const normalizedBlock = getNormalizedBlock(blockElement, isBlockElementListItem);
+        const normalizedBlockParent = getParentElement(normalizedBlock);
+        normalizedBlockParent.each(parent => {
+          dom.setStyle(normalizedBlock.dom, 'direction', null);
+          const parentDirection = getDirection(parent);
+          if (parentDirection === dir) {
+            remove(normalizedBlock, 'dir');
+          } else {
+            set(normalizedBlock, 'dir', dir);
+          }
+          if (getDirection(normalizedBlock) !== dir) {
+            dom.setStyle(normalizedBlock.dom, 'direction', dir);
+          }
+          if (isBlockElementListItem) {
+            const listItems = children(normalizedBlock, 'li[dir],li[style]');
+            each(listItems, listItem => {
+              remove(listItem, 'dir');
+              dom.setStyle(listItem.dom, 'direction', null);
+            });
+          }
         });
+      });
+    };
+    const setDir = (editor, dir) => {
+      if (editor.selection.isEditable()) {
+        setDirOnElements(editor.dom, editor.selection.getSelectedBlocks(), dir);
         editor.nodeChanged();
       }
     };
@@ -353,8 +362,10 @@
       const nodeChangeHandler = e => {
         const element = SugarElement.fromDom(e.element);
         api.setActive(getDirection(element) === dir);
+        api.setEnabled(editor.selection.isEditable());
       };
       editor.on('NodeChange', nodeChangeHandler);
+      api.setEnabled(editor.selection.isEditable());
       return () => editor.off('NodeChange', nodeChangeHandler);
     };
     const register = editor => {

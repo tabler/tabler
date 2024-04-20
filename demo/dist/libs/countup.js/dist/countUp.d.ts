@@ -18,6 +18,7 @@ export interface CountUpOptions {
     scrollSpyDelay?: number;
     scrollSpyOnce?: boolean;
     onCompleteCallback?: () => any;
+    onStartCallback?: () => any;
     plugin?: CountUpPlugin;
 }
 export declare interface CountUpPlugin {

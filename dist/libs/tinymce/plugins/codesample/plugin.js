@@ -1,5 +1,5 @@
 /**
- * TinyMCE version 6.4.2 (2023-04-26)
+ * TinyMCE version 6.8.2 (2023-12-11)
  */
 
 (function () {
@@ -10,6 +10,8 @@
     const isNullable = a => a === null || a === undefined;
     const isNonNullable = a => !isNullable(a);
 
+    const noop = () => {
+    };
     const constant = value => {
       return () => {
         return value;
@@ -1222,7 +1224,7 @@
         Prism.languages.css = {
           'comment': /\/\*[\s\S]*?\*\//,
           'atrule': {
-            pattern: /@[\w-](?:[^;{\s]|\s+(?![\s{]))*(?:;|(?=\s*\{))/,
+            pattern: RegExp('@[\\w-](?:' + /[^;{\s"']|\s+(?!\s)/.source + '|' + string.source + ')*?' + /(?:;|(?=\s*\{))/.source),
             inside: {
               'rule': /^@[\w-]+/,
               'selector-function-argument': {
@@ -1319,7 +1321,8 @@
           'operator': {
             pattern: /(^|[^.])(?:<<=?|>>>?=?|->|--|\+\+|&&|\|\||::|[?:~]|[-+*/%&|^!=<>]=?)/m,
             lookbehind: true
-          }
+          },
+          'constant': /\b[A-Z][A-Z_\d]+\b/
         });
         Prism.languages.insertBefore('java', 'string', {
           'triple-quoted-string': {
@@ -1549,7 +1552,10 @@
                     pattern: /^=/,
                     alias: 'attr-equals'
                   },
-                  /"|'/
+                  {
+                    pattern: /^(\s*)["']|["']$/,
+                    lookbehind: true
+                  }
                 ]
               }
             },
@@ -2300,7 +2306,7 @@
           type: 'panel',
           items: [
             {
-              type: 'selectbox',
+              type: 'listbox',
               name: 'language',
               label: 'Language',
               items: languages
@@ -2405,6 +2411,17 @@
       });
     };
 
+    const onSetupEditable = (editor, onChanged = noop) => api => {
+      const nodeChanged = () => {
+        api.setEnabled(editor.selection.isEditable());
+        onChanged(api);
+      };
+      editor.on('NodeChange', nodeChanged);
+      nodeChanged();
+      return () => {
+        editor.off('NodeChange', nodeChanged);
+      };
+    };
     const isCodeSampleSelection = editor => {
       const node = editor.selection.getStart();
       return editor.dom.is(node, 'pre[class*="language-"]');
@@ -2415,18 +2432,15 @@
         icon: 'code-sample',
         tooltip: 'Insert/edit code sample',
         onAction,
-        onSetup: api => {
-          const nodeChangeHandler = () => {
-            api.setActive(isCodeSampleSelection(editor));
-          };
-          editor.on('NodeChange', nodeChangeHandler);
-          return () => editor.off('NodeChange', nodeChangeHandler);
-        }
+        onSetup: onSetupEditable(editor, api => {
+          api.setActive(isCodeSampleSelection(editor));
+        })
       });
       editor.ui.registry.addMenuItem('codesample', {
         text: 'Code sample...',
         icon: 'code-sample',
-        onAction
+        onAction,
+        onSetup: onSetupEditable(editor)
       });
     };
 
