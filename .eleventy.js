@@ -1,7 +1,10 @@
 /** @param {import("@11ty/eleventy").UserConfig} eleventyConfig */
 const env = process.env.ELEVENTY_ENV || "development"
+const { EleventyRenderPlugin } = require("@11ty/eleventy");
 
 module.exports = function (config) {
+	config.addPlugin(EleventyRenderPlugin);
+
 	config.addWatchTarget("./dist/css/*");
 	config.addWatchTarget("./dist/js/*");
 	config.addWatchTarget("./scss/*");
@@ -21,12 +24,42 @@ module.exports = function (config) {
 		extname: ".html",
 	});
 
-	const filters = ["timeago", "random_date_ago", "replace_regex", "timestamp_to_date", "random_date", "markdownify", "random_item", "extract", "format_number", "divide", "number_color", "svg_icon", "hex_to_rgb", "concat_objects", "seconds_to_minutes", "miliseconds_to_minutes", "htmlbeautifier", "hex_to_rgb", "random_id", "date_to_string"]
+	const filters = ["timeago", "random_date_ago", "random_date", "markdownify", "random_item", "extract", "format_number", "divide", "number_color", "htmlbeautifier", "hex_to_rgb", "random_id", "date_to_string"]
 	filters.forEach((filter) => {
 		config.addFilter(filter, (a) => {
 			return a;
 		});
 	});
+
+	config.addFilter("size", (obj) => {
+		if(obj instanceof Array) {
+			return obj.length;
+		} else if(obj instanceof Object) {
+			return Object.keys(obj).length;
+		} else {
+			return 0;
+		}
+	})
+
+	config.addFilter("replace_regex", (text, regex, replace) => {
+		return text.replace(new RegExp(regex, "g"), replace);
+	})
+
+	config.addFilter("timestamp_to_date", (timestamp) => {
+		return new Date(timestamp);
+	})
+
+	config.addFilter("concat_objects", (obj1, obj2) => {
+		return {...obj1, ...obj2};
+	})
+
+	config.addFilter("miliseconds_to_minutes", (miliseconds) => {
+		return miliseconds / 60000;
+	})
+
+	config.addFilter("seconds_to_minutes", (seconds) => {
+		return seconds / 60;
+	})
 
 	config.addFilter("first_letters", (text) => {
 		return (text || '').split(" ").map((word) => word.charAt(0)).join("");
