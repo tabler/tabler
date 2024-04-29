@@ -1,5 +1,7 @@
 {% assign id = include.map-id %}
-{% assign data = site.data.maps[id] %}
+{% assign data = maps[id] %}
+
+{{ id }}
 
 {% if data %}
 	<div class="ratio ratio-{{ data.ratio | default: include.ratio | default: '16x9' }}">
@@ -8,6 +10,7 @@
 		</div>
 	</div>
 
+	{% comment %}	
 	{% capture_global scripts %}
 	<script>
 		// @formatter:off
@@ -36,4 +39,5 @@
 		// @formatter:on
 	</script>
 	{% endcapture_global %}
+	{% endcomment %}
 {% endif %}

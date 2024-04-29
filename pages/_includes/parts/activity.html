@@ -1,6 +1,10 @@
 {% assign limit = include.limit | default: false %}
 <div class="divide-y">
-	{% for item in activity limit:limit %}
+	{% if limit %}
+	{% assign activity = activity | slice: 0, limit %}
+	{% endif %}
+	
+	{% for item in activity %}
 	{% assign person = people[forloop.index] %}
 		<div>
 			<div class="row">
