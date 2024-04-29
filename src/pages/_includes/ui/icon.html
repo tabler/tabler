@@ -1,6 +1,7 @@
 {% removeemptylines %}
 
 {% assign icon-name = include.icon %}
+{% assign type = type | default: "outline" %}
 
 {% assign replace-to = "icon" %}
 
@@ -30,7 +31,7 @@
 	<i class="icon ti ti-{{ icon-name }}{% if include.color %} {{ include.color }}{% endif %}{% if include.filled %} icon-filled{% endif %}{% if include.class %} {{ include.class }}{% endif %}"></i>
 {% else %}
 	<!-- Download SVG icon from http://tabler-icons.io/i/{{ icon-name }} -->
-	{% assign svg-icon = site.data.icons[icon-name].svg | default: '' %}
+	{% assign svg-icon = site.data.icons[icon-name].svg[type] | default: '' %}
 	{{ svg-icon | replace_regex: 'class=\"[^"]+\"', replace-to }}
 {% endif %}
 
