@@ -1,8 +1,11 @@
-{% assign icons = include.icons %}
-{% assign limit = 20 %}
-{% if jekyll.environment != 'development' %}
-	{% assign limit = null %}
+{% assign type = include.type | default: "outline" %}
+{% assign icons = site.data.icons %}
+
+{% assign limit = null %}
+{% if jekyll.environment == 'development' %}
+	{% assign limit = 20 %}
 {% endif %}
+
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">{{ include.title }}</div>
@@ -10,10 +13,13 @@
 	<div class="card-body p-0">
 		<div class="demo-icons-list-wrap">
 			<div class="demo-icons-list">
-				{% for icon in icons limit: limit %}
-				<a href="https://tabler-icons.io/i/{{ icon }}" target="_blank" rel="noopener" class="demo-icons-list-item" title="{{ icon }}" data-bs-toggle="tooltip" data-bs-placement="top">
-					{% include ui/icon.html icon=icon %}
+				{% for icon in site.data.icons %}
+				{% assign icon-name = icon[0] %}
+				{% if icon[1].svg[type] %}
+				<a href="https://tabler-icons.io/i/{{ icon-name }}" target="_blank" rel="noopener" class="demo-icons-list-item" title="{{ icon-name }}" data-bs-toggle="tooltip" data-bs-placement="top">
+					{% include ui/icon.html icon=icon-name type=type %}
 				</a>
+				{% endif %}
 				{% endfor %}
 				{% for icon in (0..20) %}
 				<div></div>

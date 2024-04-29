@@ -26,8 +26,6 @@ const gulp = require('gulp'),
 	yargs = require('yargs/yargs'),
 	cp = require('child_process'),
 	pkg = require('./package.json'),
-	iconsTags = require('./node_modules/@tabler/icons/tags.json'),
-	iconsPkg = require('./node_modules/@tabler/icons/package.json'),
 	year = new Date().getFullYear(),
 	argv = yargs(process.argv).argv
 
@@ -74,48 +72,6 @@ if (!Array.prototype.flat) {
 		}
 	})
 }
-
-/**
- * Import tabler-icons form npm and generate Jekyll `.yml` data files
- */
-gulp.task('svg-icons', (cb) => {
-	const prepareSvgFile = (svg) => {
-		return svg.replace(/\n/g, '').replace(/>\s+</g, '><')
-	}
-
-	let svgList = {}
-	for (let iconName in iconsTags) {
-		let iconData = iconsTags[iconName]
-		svgList[iconName] = {
-			name: iconName,
-			version: iconData.version,
-			category: iconData.category,
-			tags: iconData.tags,
-			unicode: iconData.unicode,
-			svg: prepareSvgFile(fs
-				.readFileSync(
-					path.join(
-						__dirname,
-						`./node_modules/@tabler/icons/icons/${iconName}.svg`
-					)
-				)
-				.toString())
-
-		}
-	}
-
-	fs.writeFileSync(
-		path.join(__dirname, `${srcDir}/pages/_data/icons-info.json`),
-		JSON.stringify({
-			version: iconsPkg.version,
-			count: Object.keys(svgList).length,
-		})
-	)
-
-	fs.writeFileSync(`${srcDir}/pages/_data/icons.json`, JSON.stringify(svgList))
-
-	cb()
-})
 
 /**
  * Generate CHANGELOG.md
