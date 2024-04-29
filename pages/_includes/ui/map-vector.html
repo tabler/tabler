@@ -1,13 +1,8 @@
 {% assign id = include.map-id %}
-{% assign data = site.data.maps-vector[id] %}
+{% assign data = maps-vector[id] %}
 {% assign color = include.color | default: data.color | default: 'green' %}
 
 {% if data %}
-	{% if env == 'development' %}
-		<div class="ratio ratio-{{ include.ratio | default: '4x3' }}">
-			{% include "ui/svg.html" width="590" height="252" ratio=true border=true %}
-		</div>
-	{% else %}
 		<div class="ratio ratio-{{ include.ratio | default: '4x3' }}">
 			<div>
 				<div id="map-{{ id }}" class="w-100 h-100"></div>
@@ -20,7 +15,7 @@
 			{% if env == 'development' %}window.tabler_map_vector = window.tabler_map_vector || {};{% endif %}
 
 			document.addEventListener("DOMContentLoaded", function() {
-				const map = {% if env == 'development' %}window.tabler_map_vector["map-{{ id }}"] = {% endif %}new jsVectorMap({
+				const map = window.jsVectorMap && ({% if env == 'development' %}window.tabler_map_vector["map-{{ id }}"] = {% endif %}new jsVectorMap({
 					selector: '#map-{{ id }}',
 					map: '{{ data.map }}',
 					backgroundColor: 'transparent',
@@ -45,15 +40,15 @@
 						scale: [tabler.getColor('bg-surface'), tabler.getColor('{{ data.color }}')],
 						values: {{ data.values }},
 					},
-					{% endif %}
-					{% if data.markers %}
+					{% endif -%}
+					{% if data.markers -%}
 					markers: [
-						{% for marker in data.markers %}
+						{% for marker in data.markers -%}
 						{
 							coords: [{{ marker.coords }}],
 							name: "{{ marker.name }}",
 						},
-						{% endfor %}
+						{% endfor -%}
 					],
 					markerStyle: {
 						initial: {
@@ -82,7 +77,7 @@
 						},
 					},
 					{% endif %}
-					{% if data.lines %}
+					{% if data.lines -%}
 					lines: [
 						{% for line in data.lines %}
 						{
@@ -97,8 +92,8 @@
 						stroke: "rgba(98, 105, 118, .75)",
 						strokeWidth: .5,
 					},
-					{% endif %}
-				});
+					{%- endif %}
+				}));
 
 				window.addEventListener("resize", () => {
 					map.updateSize();
@@ -108,12 +103,5 @@
 		</script>
 		{% endcapture %}
 
-		{% if include.show-scripts %}
-			{{ script }}
-		{% else %}
-			{% capture_global scripts %}
-				{{ script }}
-			{% endcapture_global %}
-		{% endif %}
-	{% endif %}
+		{{ script }}
 {% endif %}

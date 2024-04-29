@@ -3,11 +3,11 @@
 <link href="https://cdn.statically.io/gh/tabler/tabler-icons/master/iconfont/tabler-icons.min.css" rel="stylesheet" />
 {% endif %}
 
-{% assign libs = page.libs | default: layout.libs %}
+{% assign page-libs = page-libs | default: layout.page-libs %}
 
-{% if libs %}
+{% if page-libs %}
 	{% for lib in libs.css %}
-		{% if libs contains lib[0] %}
+		{% if page-libs contains lib[0] %}
 			{% for file in lib[1] %}
 				<link href="{% if file contains 'http://' or file contains 'https://' %}{{ file }}{% else %}{{ base }}/{% if env != 'development' %}dist/libs{% else %}node_modules{% endif %}/{% if env != 'development' %}{{ file | replace: '@', '' }}{% else %}{{ file }}{% endif %}{% if env != 'development' %}?{{ site.time | date: '%s' }}{% endif %}{% endif %}" rel="stylesheet"/>
 			{% endfor %}

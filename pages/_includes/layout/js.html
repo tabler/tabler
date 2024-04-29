@@ -1,5 +1,5 @@
 <!-- Libs JS -->
-{% assign libs = page.libs | default: layout.libs %}
+{% assign page-libs = page-libs | default: layout.page-libs %}
 
 {% assign google-maps-key = site.google-maps-dev-key %}
 {% if env != 'development' %}
@@ -7,7 +7,7 @@
 {% endif %}
 
 {% for lib in libs.js %}
-	{% if libs contains lib[0] or libs.global-libs contains lib[0] %}
+	{% if page-libs contains lib[0] or libs.global-libs contains lib[0] %}
 		{% for file in lib[1] %}
 		<script src="{% if file contains 'http://' or file contains 'https://' %}{{ file | replace: 'GOOGLE_MAPS_KEY', google-maps-key }}{% else %}{{ base }}/{% if env != 'development' %}dist/libs{% else %}node_modules{% endif %}/{% if env != 'development' %}{{ file | replace: '@', '' }}{% else %}{{ file }}{% endif %}{% if env != 'development' %}?{{ site.time | date: '%s' }}{% endif %}{% endif %}" defer></script>
 		{% endfor %}

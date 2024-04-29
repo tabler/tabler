@@ -1,4 +1,4 @@
-{% assign data = site.data.charts[include.chart-id] %}
+{% assign data = charts[include.chart-id] %}
 {% assign id = include.id | default: include.chart-id %}
 {% assign height = include.height | default: data.height | default: 10 %}
 {% assign class = include.class %}
@@ -11,15 +11,9 @@
 	{% assign height = 15 %}
 {% endif %}
 
-{{ include.chart-id | jsonify }}
-{{ data.charts | jsonify }}
-
 {% if data %}
 {% if data.extend %}
-{% comment %}
-{% assign data = site.data.charts[data.extend] | concat_objects: site.data.charts[include.chart-id] %}
-{% endcomment %}
-
+{% assign data = charts[data.extend] | concat_objects: charts[include.chart-id] %}
 {% endif %}
 
 <div id="chart-{{ id }}"{% if class %} class="{{ class }}"{% endif %}></div>
@@ -272,8 +266,6 @@
 </script>
 {% endcapture %}
 
-{% capture_global scripts %}
 {{ script }}
-{% endcapture_global %}
 
 {% endif %}
