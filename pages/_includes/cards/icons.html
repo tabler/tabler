@@ -1,8 +1,9 @@
 {% assign icons = include.icons %}
-{% assign limit = 20 %}
-{% if env != 'development' %}
-	{% assign limit = null %}
+
+{% if env == 'development' %}
+	{% assign icons = icons | slice: 0, 20 %}
 {% endif %}
+
 <div class="card">
 	<div class="card-header">
 		<div class="card-title">{{ include.title }}</div>
@@ -10,9 +11,9 @@
 	<div class="card-body p-0">
 		<div class="demo-icons-list-wrap">
 			<div class="demo-icons-list">
-				{% for icon in icons limit: limit %}
+				{% for icon in icons %}
 				<a href="https://tabler-icons.io/i/{{ icon }}" target="_blank" rel="noopener" class="demo-icons-list-item" title="{{ icon }}" data-bs-toggle="tooltip" data-bs-placement="top">
-					{% include "ui/icon.html" icon=icon %}
+					{% include "ui/icon.html" icon={{ icon }} %}
 				</a>
 				{% endfor %}
 				{% for icon in (0..20) %}

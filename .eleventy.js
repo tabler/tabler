@@ -1,6 +1,8 @@
 /** @param {import("@11ty/eleventy").UserConfig} eleventyConfig */
 const env = process.env.ELEVENTY_ENV || "development"
+
 const { EleventyRenderPlugin } = require("@11ty/eleventy");
+const eleventySass = require("eleventy-sass");
 
 function random_number(x, min = 0, max = 100, round = 0) {
 	let value = ((x * x * Math.PI * Math.E * (max + 1) * (Math.sin(x) / Math.cos(x * x))) % (max + 1 - min)) + min;
@@ -20,6 +22,12 @@ function random_number(x, min = 0, max = 100, round = 0) {
 
 module.exports = function (config) {
 	config.addPlugin(EleventyRenderPlugin);
+	config.addPlugin(eleventySass, {
+		sass: {
+			style: env === "production" ? "compressed" : "expanded",
+			sourceMap: false
+		}
+	});
 
 	config.addWatchTarget("./dist/css/*");
 	config.addWatchTarget("./dist/js/*");
