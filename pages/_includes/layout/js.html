@@ -20,7 +20,6 @@
 <script src="{{ base }}/dist/js/demo{% if env != 'development' %}.min{% endif %}.js{% if env != 'development' %}?{{ site.time | date: '%s' }}{% endif %}" defer></script>
 
 {% comment %}
-{% removeemptylines %}
 {% for script in site.captured_global.scripts %}
 {{ script }}
 {% endfor %}
@@ -28,7 +27,6 @@
 {% for script in site.captured_once.scripts %}
 {{ script }}
 {% endfor %}
-{% endremoveemptylines %}
 
 {% assign libs = page.libs | default: layout.libs %}
 {% for lib in libs.js-files %}

@@ -2,6 +2,22 @@
 const env = process.env.ELEVENTY_ENV || "development"
 const { EleventyRenderPlugin } = require("@11ty/eleventy");
 
+function random_number(x, min = 0, max = 100, round = 0) {
+	let value = ((x * x * Math.PI * Math.E * (max + 1) * (Math.sin(x) / Math.cos(x * x))) % (max + 1 - min)) + min;
+
+	value = value > max ? max : value;
+	value = value < min ? min : value;
+
+	if (round !== 0) {
+		value = parseFloat(value.toFixed(round));
+	} else {
+		value = Math.floor(value);
+	}
+
+	return value;
+}
+
+
 module.exports = function (config) {
 	config.addPlugin(EleventyRenderPlugin);
 
@@ -24,7 +40,7 @@ module.exports = function (config) {
 		extname: ".html",
 	});
 
-	const filters = ["timeago", "random_date_ago", "random_date", "markdownify", "random_item", "extract", "format_number", "divide", "number_color", "htmlbeautifier", "hex_to_rgb", "random_id", "date_to_string"]
+	const filters = ["timeago", "markdownify", "extract", "number_color", "htmlbeautifier",  "random_id"]
 	filters.forEach((filter) => {
 		config.addFilter(filter, (a) => {
 			return a;
@@ -69,11 +85,41 @@ module.exports = function (config) {
 		return JSON.stringify(variable);
 	});
 
-	config.addFilter('random_number', function (value) {
-		return 123;
+	config.addFilter('random_number', random_number);
+
+	config.addFilter('random_item', function (x, items) {
+		var index = random_number(x, 0, items.length);
+		return items[index];
 	});
 
-	const tags = ["removeemptylines", "endremoveemptylines", "capture_global", "endcapture_global", "highlight", "endhighlight"]
+	config.addFilter('random_date', function (x, start_date = false, end_date = false) {
+		const now = new Date();
+		const oneDay = 24 * 60 * 60 * 1000; // milliseconds in a day
+
+		start_date = start_date ? new Date(start_date) : new Date(now - (100 * oneDay)); // default 100 days ago
+		end_date = end_date ? new Date(end_date) : now;
+
+		const randomTime = random_number(x, start_date.getTime(), end_date.getTime());
+
+		return new Date(randomTime);
+	});
+
+	config.addFilter('random_date_ago', function (x, days_ago = 100) {
+		const today = new Date();
+		const randomDays = random_number(x, 0, days_ago);
+		const randomDate = new Date(today.getTime() - randomDays * 24 * 60 * 60 * 1000);
+		return randomDate;
+	});
+
+	config.addFilter('format_number', function (value) {
+		return value.toString().split('').reverse().join('').match(/.{1,3}/g).join(',').split('').reverse().join('');
+	});
+
+	config.addFilter('date_to_string', function (date) {
+		return new Date(date).toDateString();
+	});
+
+	const tags = ["capture_global", "endcapture_global", "highlight", "endhighlight"]
 	tags.forEach((tag) => {
 		config.addLiquidTag(tag, (liquidEngine) => {
 			return {
