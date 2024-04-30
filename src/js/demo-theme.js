@@ -1,28 +1,29 @@
 /**
- * demo-theme is specifically loaded right after the body and not deferred
- * to ensure we switch to the chosen dark/light theme as fast as possible.
- * This will prevent any flashes of the light theme (default) before switching.
+ * 
+ * This will allow you to load dark/light theme wihtout reloading the page
+ * and without depending on the link variables 
+ * default theme is light and can be default dark by changing the specified code below
  */
 
-const themeStorageKey = "tablerTheme"
-const defaultTheme = "light"
-let selectedTheme
+var themeStorageKey = "tablerTheme";
+var storedTheme = localStorage.getItem(themeStorageKey);
 
-// https://stackoverflow.com/a/901144
-const params = new Proxy(new URLSearchParams(window.location.search), {
-	get: (searchParams, prop) => searchParams.get(prop),
+// Change "light" to "dark" to set default theme dark 
+var defaultTheme = "light";
+
+selectedTheme = storedTheme ? storedTheme : defaultTheme;
+
+setTheme(selectedTheme)
+$(".switchMode").on('click', function (e) {
+  let body = document.querySelector("body")
+  let currentMode = body.getAttribute('data-bs-theme');
+  let mode = currentMode == 'dark' ? "light" : 'dark';
+  setTheme(mode);
 })
 
-if (!!params.theme) {
-	localStorage.setItem(themeStorageKey, params.theme)
-	selectedTheme = params.theme
-} else {
-	const storedTheme = localStorage.getItem(themeStorageKey)
-	selectedTheme = storedTheme ? storedTheme : defaultTheme
-}
 
-if (selectedTheme === 'dark') {
-	document.body.setAttribute("data-bs-theme", selectedTheme)
-} else {
-	document.body.removeAttribute("data-bs-theme")
+function setTheme(mode) {
+  let body = document.querySelector("body")
+  body.setAttribute('data-bs-theme', mode)
+  localStorage.setItem(themeStorageKey, mode);
 }
