@@ -133,7 +133,10 @@ gulp.task('sass', () => {
 
 				return { file: url }
 			},
-		}).on('error', sass.logError))
+		}))
+			.on('error', function (err) {
+				throw err;
+			})
 		.pipe(postcss([
 			require('autoprefixer'),
 		]))
