@@ -130,6 +130,8 @@ npm install --save @tabler/core
 
 ## Running with Docker
 
+**Plain Docker**
+
 If you don't want to install node/npm/ruby and the dependencies on your local environment, you can use the provided Dockerfile to build a docker image.
 This Dockerfile is provided as an example to spin-up a container running Tabler.
 
@@ -147,6 +149,9 @@ docker run -p 3000:3000 -p 3001:3001 -v $(pwd)/src:/app/src -v $(pwd)/_config.ym
 
 Now open your browser to [http://localhost:3000](http://localhost:3000). Edit anything in the `src/` folder and watch your browser refresh the page after it has been rebuilt.
 
+**Docker Compose**
+
+You can also use the docker compose config from this repo. Use `docker compose build && docker compose up` or `docker compose up --build` to build and start the container. Edit anything in the `src/` folder the same way as with plain docker and access the same URLs and ports in your browser.
 
 ### CDN support
 
