@@ -14,45 +14,48 @@ illustrations = illustrations | push: illustration %} {% endif %} {% endfor %} {
 					<div class="card">
 						<div class="card-body d-flex align-items-center">
 							<div id="current-illustration">{{ first_illustration }}</div>
-							<!-- <pre><code id="current-illustration-code">{{ first_illustration | escape | trim }}</code></pre> -->
 						</div>
 					</div>
 				</div>
 				<div class="col-md-5">
-					<div class="card">
-						<div class="card-body">
-							<div>
-								<div class="form-label">Primary color</div>
-								<div class="row g-2">
-									{% for color in site.colors %}
-									<div class="col-auto">
-										<label class="form-colorinput">
-											<input name="color" type="radio" value="{{ color[1].hex }}" class="form-colorinput-input js-select-color" {% if forloop.first %} checked{% endif %} />
-											<span class="form-colorinput-color bg-{{ color[1].class }}"></span>
-										</label>
-									</div>
-									{% endfor %}
-								</div>
+					<div class="row">
+						<div class="col-12">
+							<div class="card">
+								<div class="card-body">
+									<div>
+										<div class="form-label">Primary color</div>
+										<div class="row g-2">
+											{% for color in site.colors %}
+											<div class="col-auto">
+												<label class="form-colorinput">
+													<input name="color" type="radio" value="{{ color[1].hex }}" class="form-colorinput-input js-select-color" {% if forloop.first %} checked{% endif %} />
+													<span class="form-colorinput-color bg-{{ color[1].class }}"></span>
+												</label>
+											</div>
+											{% endfor %}
+										</div>
 
-								<div class="form-label mt-4">Skin color</div>
-								<div class="row g-2">
-									{% for color in site.skin-colors %}
-									<div class="col-auto">
-										<label class="form-colorinput">
-											<input name="skin-color" type="radio" value="{{ color[1].hex }}" class="form-colorinput-input js-select-skin-color" {% if forloop.first %} checked{% endif %} />
-											<span class="form-colorinput-color" style="background-color: {{ color[1].hex }}"></span>
-										</label>
-									</div>
-									{% endfor %}
-								</div>
+										<div class="form-label mt-4">Skin color</div>
+										<div class="row g-2">
+											{% for color in site.skin-colors %}
+											<div class="col-auto">
+												<label class="form-colorinput">
+													<input name="skin-color" type="radio" value="{{ color[1].hex }}" class="form-colorinput-input js-select-skin-color" {% if forloop.first %} checked{% endif %} />
+													<span class="form-colorinput-color" style="background-color: {{ color[1].hex }}"></span>
+												</label>
+											</div>
+											{% endfor %}
+										</div>
 
-								<div class="form-label mt-4">Select illustration</div>
-								<div class="row g-2">
-									{% for illustration in illustrations %}
-									<div class="col-3 col-md-6">
-										<a class="d-block cursor-pointer rounded{% if forloop.first %} bg-body{% endif %} js-select-illustration" data-id="{{ illustration.slug }}"> {{ illustration | replace: '<svg ', '<svg class="w-100 h-auto" ' }} </a>
+										<div class="form-label mt-4">Select SVG illustration</div>
+										<div class="row g-2">
+											{% for illustration in illustrations %}
+											<div class="col-3">
+												<a class="d-block cursor-pointer rounded{% if forloop.first %} bg-body{% endif %} js-select-illustration" data-id="{{ illustration.slug }}"> {{ illustration | replace: '<svg ', '<svg class="w-100 h-auto" ' }} </a>
+											</div>
+											{% endfor %}
+										</div>
 									</div>
-									{% endfor %}
 								</div>
 							</div>
 						</div>
