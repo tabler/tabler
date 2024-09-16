@@ -1,6 +1,6 @@
 {
-  "name": "@tabler/core",
-  "version": "1.0.0-beta21",
+  "name": "codecalm-tabler",
+  "version": "0.0.1",
   "description": "Premium and Open Source dashboard template with responsive and high quality UI.",
   "homepage": "https://tabler.io",
   "scripts": {
@@ -12,8 +12,7 @@
     "preview": "gulp build --preview",
     "svg-optimize": "svgo -f svg/brand --pretty",
     "unused-files": "node .build/unused-files.js",
-    "prerelease": "pnpm run build",
-    "release": "release-it",
+    "release": "changeset publish",
     "svg-icons": "node .build/import-icons.js",
     "bundlewatch": "bundlewatch",
     "storybook": "start-storybook -p 6006",
@@ -174,7 +173,6 @@
     "plyr": "^3.7.8",
     "postcss": "^8.4.45",
     "prettier": "^2.8.8",
-    "release-it": "^15.11.0",
     "request": "^2.88.2",
     "rollup": "2.79.1",
     "rollup-plugin-babel": "^4.4.0",
@@ -264,20 +262,6 @@
     },
     "star-rating.js": {
       "optional": true
-    }
-  },
-  "release-it": {
-    "hooks": {
-      "after:bump": "gulp build --latest-version ${latestVersion} --new-version ${version} && gulp build-demo",
-      "after:release": "echo Successfully released ${name} v${latestVersion} to ${repo.repository}."
-    },
-    "git": {
-      "requireCleanWorkingDir": false,
-      "addUntrackedFiles": true,
-      "tagName": "v${version}"
-    },
-    "github": {
-      "release": true
     }
   },
   "directories": {
