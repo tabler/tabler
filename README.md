@@ -216,3 +216,13 @@ Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/d
 <!-- ALL-CONTRIBUTORS-LIST:END -->
 
 This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
+
+https://medium.com/@GemmieHolyman/attractions-closing-for-refurbishment-78d9b4105b12
+https://medium.com/@GemmieHolyman/followers
+https://medium.com/@GemmieHolyman/following
+https://medium.com/@GemmieHolyman/list/reading-list
+https://medium.com/@GemmieHolyman/lists
+https://medium.com/@GemmieHolyman/princess-beatrice-s-christmas-plans-and-family-celebrations-6e52d2df1033
+https://medium.com/@GemmieHolyman/the-christmas-quest-filming-locations-and-cast-overview-75a6018ebba2
+https://medium.com/@GemmieHolyman/transitioning-from-wordpress-to-ghost-assessing-the-seo-impact-c2ff5ef031a2
+https://medium.com/@GemmieHolyman/worcester-victorian-christmas-fayre-brings-festive-cheer-74ca7d65da5e
