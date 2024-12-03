@@ -19,18 +19,25 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v4
 
+      - uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Enable corepack
+        run: corepack enable pnpm
+
       - name: Setup Node.js 18
         uses: actions/setup-node@v4
         with:
+          cache: 'pnpm'
           node-version: 18
-
-      - name: Install PNPM
-        uses: pnpm/action-setup@v4
-        with:
-          version: 8
+          registry-url: 'https://registry.npmjs.org'
 
       - name: Install Dependencies
         run: pnpm install
+
+      - name: Build Package
+        run: pnpm run build
 
       - name: Creating .npmrc
         run: |
