@@ -3,7 +3,7 @@ def get_changelog()
   changelog_path = File.join(Dir.pwd, 'CHANGELOG.md')
 
   if File.exist?(changelog_path)
-    File.read(changelog_path)
+    File.read(changelog_path, encoding: 'utf-8')
   else
     ''
   end
