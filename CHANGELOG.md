@@ -1,8 +1,5 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
-
-
 ## `1.0.0-beta20` - 2023-08-24
 
 - Update `bootstrap` to v5.3.1
