@@ -1,0 +1,145 @@
+@each $color, $value in $extra-colors {
+  html[data-accent="#{'' + $color}"]
+  {
+    /* Accent text and background */
+    .bg-accent {
+      --#{$prefix}bg-opacity: 1;
+      background-color: rgba(var(--#{$prefix}#{$color}-rgb), var(--#{$prefix}bg-opacity)) !important;
+    }
+    .bg-accent-lt {
+      --#{$prefix}bg-opacity: 1;
+      --#{$prefix}text-opacity: 1;
+      color: rgba(var(--#{$prefix}#{$color}-rgb), var(--#{$prefix}text-opacity)) !important;
+      background-color: rgba(var(--#{$prefix}#{$color}-lt-rgb), var(--#{$prefix}bg-opacity)) !important;
+    }
+    .border-accent {
+      border-color: $value !important;
+    }
+    .text-accent {
+      --#{$prefix}text-opacity: 1;
+      color: rgba(var(--#{$prefix}#{$color}-rgb), var(--#{$prefix}text-opacity)) !important;
+    }
+    .text-accent-fg {
+      color: var(--#{$prefix}#{$color}-fg) !important;
+    }
+    
+    /* Accent selection */
+    ::-moz-selection {
+      background-color: rgba(var(--#{$prefix}#{$color}-rgb), 0.16);
+    }
+    ::selection {
+      background-color: rgba(var(--#{$prefix}#{$color}-rgb), 0.16);
+    }
+    .focus-ring-accent {
+      --tblr-focus-ring-color: rgba(var(--#{$prefix}#{$color}-rgb), var(--tblr-focus-ring-opacity));
+    }
+    
+    /* Accent buttons */
+    .btn-accent {
+      @if $color == 'dark' {
+        --#{$prefix}btn-border-color: var(--#{$prefix}dark-mode-border-color);
+        --#{$prefix}btn-hover-border-color: var(--#{$prefix}dark-mode-border-active-color);
+        --#{$prefix}btn-active-border-color: var(--#{$prefix}dark-mode-border-active-color);
+      } @else {
+        --#{$prefix}btn-border-color: transparent;
+        --#{$prefix}btn-hover-border-color: transparent;
+        --#{$prefix}btn-active-border-color: transparent;
+      }
+      
+      --#{$prefix}btn-color: var(--#{$prefix}#{$color}-fg);
+      --#{$prefix}btn-bg: var(--#{$prefix}#{$color});
+      --#{$prefix}btn-hover-color: var(--#{$prefix}#{$color}-fg);
+      --#{$prefix}btn-hover-bg: rgba(var(--#{$prefix}#{$color}-rgb), .8);
+      --#{$prefix}btn-active-color: var(--#{$prefix}#{$color}-fg);
+      --#{$prefix}btn-active-bg: rgba(var(--#{$prefix}#{$color}-rgb), .8);
+      --#{$prefix}btn-disabled-bg: var(--#{$prefix}#{$color});
+      --#{$prefix}btn-disabled-color: var(--#{$prefix}#{$color}-fg);
+      --#{$prefix}btn-box-shadow: var(--#{$prefix}box-shadow-input);
+    }
+    .btn-outline-accent {
+      --#{$prefix}btn-color: var(--#{$prefix}#{$color});
+      --#{$prefix}btn-bg: transparent;
+      --#{$prefix}btn-border-color: var(--#{$prefix}#{$color});
+      --#{$prefix}btn-hover-color: var(--#{$prefix}#{$color}-fg);
+      --#{$prefix}btn-hover-border-color: transparent;
+      --#{$prefix}btn-hover-bg: var(--#{$prefix}#{$color});
+      --#{$prefix}btn-active-color: var(--#{$prefix}#{$color}-fg);
+      --#{$prefix}btn-active-bg: var(--#{$prefix}#{$color});
+      --#{$prefix}btn-disabled-color: var(--#{$prefix}#{$color});
+      --#{$prefix}btn-disabled-border-color: var(--#{$prefix}#{$color});
+    }
+    
+    /* Accent range */
+    .form-range.range-accent
+    {
+      &::-moz-range-thumb { background-color: var(--#{$prefix}#{$color}); }
+      &::-webkit-slider-thumb { background-color: var(--#{$prefix}#{$color}); }
+    }
+    
+    /* Accent progress-bar */
+    .progress-bar.progress-accent
+    {
+      background-color: var(--#{$prefix}#{$color});
+    }
+    
+    /* Accent check, radio and switch */
+    .check-accent {
+      &:focus {
+        box-shadow: 0 0 0 0.25rem rgba(var(--#{$prefix}#{$color}-rgb), 0.25);
+      }
+      
+      &:checked {
+        background-color: var(--#{$prefix}#{$color});
+      }
+    }
+    .switch-accent {
+      .form-check-input {
+        &:checked {
+          background-color: var(--#{$prefix}#{$color});
+        }
+      }
+    }
+    
+    /* Accent advanced check */
+    .form-selectgroup.check-accent
+    {
+      .form-selectgroup-input:checked + .form-selectgroup-label
+      {
+        border-color: var(--#{$prefix}#{$color});
+        color: var(--#{$prefix}#{$color});
+        background-color: rgba(var(--#{$prefix}#{$color}-rgb), 0.04);
+        
+        .form-selectgroup-check
+        {
+          background-color: var(--#{$prefix}#{$color});
+        }
+      }
+    }
+    .btn-group,.btn-group-vertical
+    {
+      &.btn-group-accent{
+        .btn-check:checked + .btn
+        {
+          color: var(--#{$prefix}#{$color});
+          border-color: var(--#{$prefix}#{$color});
+          background-color: rgba(var(--#{$prefix}#{$color}-rgb), 0.04);
+        }
+      }
+    }
+    .form-imagecheck.imagecheck-accent
+    {
+      .form-imagecheck-input:checked
+      {
+        & ~ .form-imagecheck-figure
+        {
+          border-color: var(--#{$prefix}#{$color});
+          
+          &::before {
+            background-color: var(--#{$prefix}#{$color});
+          }
+        }
+      }
+    }
+    
+  }
+}
