@@ -13,12 +13,29 @@ A premium and open source dashboard template with a responsive and high-quality 
 <a href="https://github.com/tabler/tabler" target="__blank"><img alt="GitHub stars" src="https://img.shields.io/github/stars/tabler/tabler?style=social"></a>
 </p>
 
+## Sponsors
+
+**If you want to support our project and help me grow it, you can [become a sponsor on GitHub](https://github.com/sponsors/codecalm) or just [donate on PayPal](https://paypal.me/codecalm) :)**
+
 <p align="center">
   <a href="https://github.com/sponsors/codecalm">
     <img src='https://raw.githubusercontent.com/tabler/static/main/sponsors.svg'>
   </a>
 </p>
 
+## Testing
+
+<p align="center">Browser testing via:</p>
+
+<p align="center">
+  <a href="https://www.lambdatest.com/" target="_blank">
+    <picture>
+      <source media="(prefers-color-scheme: dark)" srcset="https://github.com/user-attachments/assets/14dd2a0a-bafe-436e-a6cb-29636278c781">
+      <source media="(prefers-color-scheme: light)" srcset="https://github.com/user-attachments/assets/d3dede5a-d702-47c3-bb66-4d887948ed83">
+      <img src="https://github.com/user-attachments/assets/d3dede5a-d702-47c3-bb66-4d887948ed83" alt="Tabler Icons preview" width="296">
+    </picture>
+  </a>
+</p>
 
 ## 🔎 Preview
 
@@ -67,20 +84,6 @@ Support this project by becoming a sponsor. Your logo will show up in this READM
 <a href="https://opencollective.com/tabler/tiers/sponsor/7/website" target="_blank"><img src="https://opencollective.com/tabler/tiers/sponsor/7/avatar.svg" /></a>
 <a href="https://opencollective.com/tabler/tiers/sponsor/8/website" target="_blank"><img src="https://opencollective.com/tabler/tiers/sponsor/8/avatar.svg" /></a>
 <a href="https://opencollective.com/tabler/tiers/sponsor/9/website" target="_blank"><img src="https://opencollective.com/tabler/tiers/sponsor/9/avatar.svg" /></a>
-
-## Testing
-
-<p align="center">Browser testing via:</p>
-
-<p align="center">
-  <a href="https://www.lambdatest.com/" target="_blank">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://github.com/user-attachments/assets/14dd2a0a-bafe-436e-a6cb-29636278c781">
-      <source media="(prefers-color-scheme: light)" srcset="https://github.com/user-attachments/assets/d3dede5a-d702-47c3-bb66-4d887948ed83">
-      <img src="https://github.com/user-attachments/assets/d3dede5a-d702-47c3-bb66-4d887948ed83" alt="Tabler Icons preview" width="296">
-    </picture>
-  </a>
-</p>
 
 ## 📦 Setup environment
 
