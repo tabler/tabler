@@ -26,6 +26,7 @@ const gulp = require('gulp'),
 	cp = require('child_process'),
 	pkg = require('./package.json'),
 	year = new Date().getFullYear(),
+	replace = require('gulp-replace'),
 	argv = yargs(process.argv).argv
 
 let BUILD = false,
@@ -439,6 +440,7 @@ gulp.task('copy-dist', () => {
 gulp.task('add-banner', () => {
 	return gulp.src(`${distDir}/{css,js}/**/*.{js,css}`)
 		.pipe(header(getBanner()))
+		.pipe(replace(/^([\s\S]+)(@charset "UTF-8";)\n?/, '$2\n$1'))
 		.pipe(gulp.dest(`${distDir}`))
 })
 
