@@ -2,4 +2,4 @@
 "@tabler/core": patch
 ---
 
-Remove duplicated setting of color in th
+Remove duplicated setting of color in `th` element
