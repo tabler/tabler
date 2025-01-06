@@ -8,6 +8,7 @@ import "./src/popover"
 import "./src/switch-icon"
 import "./src/tab"
 import "./src/toast"
+import "./src/sidebar"
 import * as bootstrap from "bootstrap"
 import * as tabler from "./src/tabler"
 

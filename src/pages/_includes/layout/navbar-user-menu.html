@@ -1,0 +1,20 @@
+<div class="nav-item {% if include.direction == 'up' %}dropup{% else %}dropdown{% endif %}">
+	<a href="#" class="nav-link d-flex lh-1 text-reset {% if include.no-padding %}p-0{% endif %}" data-bs-toggle="dropdown" aria-label="Open user menu">
+		{% include ui/avatar.html person-id=person-id size="sm" %}
+
+		{% unless include.hide-username %}
+		<div class="nav-link-title {% if include.auto-hide-username %}d-none d-xl-block{% endif %} ps-2">
+			<div>{{ person.full_name }}</div>
+			<div class="mt-1 small text-secondary">{{ person.job_title }}</div>
+		</div>
+		{% endunless %}
+	</a>
+	<div class="dropdown-menu {% if include.direction == 'up' %}dropdown-menu-direction-top{% else %}dropdown-menu-end dropdown-menu-arrow{% endif %}"{% if include.dark %} data-bs-theme="light"{% endif %}>
+		<a href="#" class="dropdown-item">Status</a>
+		<a href="{{ site.base }}/profile.html" class="dropdown-item">Profile</a>
+		<a href="#" class="dropdown-item">Feedback</a>
+		<div class="dropdown-divider"></div>
+		<a href="{{ site.base }}/settings.html" class="dropdown-item">Settings</a>
+		<a href="{{ site.base }}/sign-in.html" class="dropdown-item">Logout</a>
+	</div>
+</div>
