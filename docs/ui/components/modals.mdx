@@ -4,7 +4,31 @@ summary: Use Bootstrap’s JavaScript modal plugin to add dialogs to your site f
 description: Dialogs for notifications and content.
 ---
 
+Modals are built with HTML, CSS, and JavaScript. They’re positioned over everything else in the document and remove scroll from the `<body>` so that modal content scrolls instead.
+
 ## Default markup
+
+To create a modal, you need to add a `.modal` element to the document. Inside the `.modal`, you need to add a `.modal-dialog` element, which contains a `.modal-content` element. The `.modal-content` element contains the modal’s header, body, and footer.
+
+```html
+<div class="modal" tabindex="-1">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        ...
+      </div>
+      <div class="modal-body">
+        ...
+		</div>
+      <div class="modal-footer">
+        ...
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+Look at the example below to see how the modal looks.
 
 ```html example centered height="30rem"
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
@@ -32,11 +56,9 @@ description: Dialogs for notifications and content.
 
 ## Prompt and alert
 
-```html example centered height="30rem"
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  Launch alert modal
-</button>
+You can use the modal to create a prompt or alert. Look at the example below to see how the prompt and alert look.
 
+```html example centered height="30rem"
 <div class="modal" id="exampleModal" tabindex="-1">
   <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">
@@ -70,13 +92,16 @@ description: Dialogs for notifications and content.
     </div>
   </div>
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  var myModal = new bootstrap.Modal(document.getElementById('exampleModal'))
+  myModal.show()
+})
+</script>
 ```
 
 ```html example centered height="30rem"
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  Launch demo modal
-</button>
-
 <div class="modal" id="exampleModal" tabindex="-1">
   <div class="modal-dialog modal-sm" role="document">
     <div class="modal-content">
@@ -110,9 +135,18 @@ description: Dialogs for notifications and content.
     </div>
   </div>
 </div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  var myModal = new bootstrap.Modal(document.getElementById('exampleModal'))
+  myModal.show()
+})
+</script>
 ```
 
 ## Modal with form
+
+You can use the modal to create a form. Look at the example below to see how the form looks.
 
 ```html example centered height="30rem"
 <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
