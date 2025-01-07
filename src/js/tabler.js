@@ -1,6 +1,7 @@
 //Vendor
 
 import "./src/autosize"
+import "./src/countup"
 import "./src/input-mask"
 import "./src/dropdown"
 import "./src/tooltip"
