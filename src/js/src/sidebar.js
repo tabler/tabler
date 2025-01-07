@@ -10,27 +10,25 @@ function sidebarIsCollapsed(sidebar) {
 	return sidebar.classList.contains('collapse') && !sidebar.classList.contains('show');
 }
 
+function createTooltip(tooltipElement, textElement) {
+	let options = {
+		delay: {show: 50, hide: 50},
+		html: textElement.getAttribute("data-bs-html") === "true" ?? false,
+		placement: textElement.getAttribute('data-bs-placement') ?? 'auto',
+		title: textElement.getAttribute('title') ?? textElement.textContent
+	};
+	return new Tooltip(tooltipElement, options);
+}
+
 function registerTooltips(sidebar) {
 	let tooltips = [];
 	sidebar.querySelectorAll('.nav-item .nav-link .nav-link-icon').forEach(function (navLinkIcon) {
 		let navLinkTitle = navLinkIcon.nextElementSibling;
-		let options = {
-			delay: {show: 50, hide: 50},
-			html: navLinkTitle.getAttribute("data-bs-html") === "true" ?? false,
-			placement: navLinkTitle.getAttribute('data-bs-placement') ?? 'auto',
-			title: navLinkTitle.getAttribute('title') ?? navLinkTitle.textContent
-		};
-		tooltips.push(new Tooltip(navLinkIcon, options));
+		tooltips.push(createTooltip(navLinkIcon, navLinkTitle));
 	});
 
 	sidebar.querySelectorAll('.nav-item .dropdown-menu .dropdown-item:not(.nav-link)').forEach(function (dropdownItem) {
-		let options = {
-			delay: {show: 50, hide: 50},
-			html: dropdownItem.getAttribute("data-bs-html") === "true" ?? false,
-			placement: dropdownItem.getAttribute('data-bs-placement') ?? 'auto',
-			title: dropdownItem.getAttribute('title') ?? dropdownItem.textContent
-		};
-		tooltips.push(new Tooltip(dropdownItem, options));
+		tooltips.push(createTooltip(dropdownItem, dropdownItem));
 	});
 	return tooltips;
 }
