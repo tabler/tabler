@@ -123,6 +123,10 @@ module Jekyll
     def hex_to_rgb(hex)
       hex.match(/^#(..)(..)(..)$/).captures.map(&:hex)
     end
+
+    def split_to_n(a, n)
+      a.each_slice( (a.size/n.to_f).round ).to_a
+    end
   end
 end
 
