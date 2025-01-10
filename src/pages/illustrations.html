@@ -14,7 +14,7 @@ illustrations = illustrations | push: illustration %} {% endif %} {% endfor %} {
 				<div class="col-md-7">
 					<div class="card">
 						<div class="card-body d-flex align-items-center">
-							<div id="current-illustration">{{ first_illustration }}</div>
+							<div id="current-illustration">{{ first_illustration | replace: '<svg ', '<svg class="w-100 h-auto" ' }}</div>
 						</div>
 					</div>
 				</div>
@@ -55,7 +55,7 @@ illustrations = illustrations | push: illustration %} {% endif %} {% endfor %} {
 												<label class="form-imagecheck mb-2">
 													<input name="form-imagecheck" type="radio" value="{{ illustration.slug }}" class="form-imagecheck-input js-select-illustration" {% if forloop.first %} checked{% endif %}>
 													<span class="form-imagecheck-figure">
-														{{ illustration }}
+														{{ illustration | replace: '<svg ', '<svg class="w-100 h-auto" ' }}
 													</span>
 												</label>
 											</div>
@@ -73,7 +73,7 @@ illustrations = illustrations | push: illustration %} {% endif %} {% endfor %} {
 </div>
 
 <h2 class="page-title my-5">
-	{{ site.illustrations.count | minus: 4 }} more SVG Illustrations
+	{{ site.data.illustrations | size | minus: 4 }} more SVG Illustrations
 </h2>
 
 <div class="row row-cards">
@@ -129,7 +129,7 @@ illustrations = illustrations | push: illustration %} {% endif %} {% endfor %} {
 	const illustrations = {
 	{% for illustration in illustrations %}
 		"{{ illustration.slug }}": {
-	      svg: '{{ illustration.content | quote | replace_regex: "\n", "\n" }}',
+	      svg: '{{ illustration.content | replace: '<svg ', '<svg class="w-100 h-auto" ' | quote | replace_regex: "\n", "\n" }}',
 		},
 	{% endfor %}
 	}

@@ -12,7 +12,6 @@ const illustrations = glob
 		return path.basename(file, '.png')
 	})
 
-
 fs.writeFileSync(
 	path.join(__dirname, `../src/pages/_data/illustrations.json`),
 	JSON.stringify(illustrations)
