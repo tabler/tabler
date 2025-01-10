@@ -1,5 +1,102 @@
 # Changelog
 
+## `1.0.0-beta23` - 2025-01-07
+
+- Documentation improvements.
+- Added countup functionality and updated documentation example.
+- Do not display empty `<fieldset>`.
+- Set font-size of webfont icon inside a button.
+- Ordered menu items alphabetically.
+- Marked value of `$font-family-monospace` as `!default`.
+- Fixed unpkg links to static-files icons.
+- Fixed description of alerts with a description.
+- Fixed layout of search results for small and medium screens.
+- Removed invalid z-index setting for dropdown.
+- Fixed IDs of custom size star ratings.
+- Removed text-decoration on hover for elements with child icons.
+- Fixed link to webfont icons.
+- Updated color reference links in UI component documentation.
+- Fixed typo in browser support documentation summary.
+- Enhanced Figma plugin documentation with detailed usage instructions.
+- Added documentation for Tabler Illustrations and updated index with a link.
+- Enhanced documentation for various UI and icon sections.
+- Added new documentation files for icons and UI components; restructured existing files.
+- Updated documentation structure and content for icons and UI components.
+- Removed outdated `menu.json` and added `index.mdx` files for UI documentation structure.
+- General docs update.
+- Increased contrast of active dropdown-item in vertical layout.
+- Removed duplicated color setting in table headers.
+- Increased `z-index` of `ts-dropdown`.
+- Added social icons plugin.
+- Described variables for datagrid in docs.
+- Fixed multiple documentation issues.
+- Removed unused config from the code.
+- Fixed links to Tabler Icons.
+- Updated dark image.
+- Updated screenshot.
+- Fixed icon issues.
+- Fixed URL in documentation.
+
+## `1.0.0-beta22` - 2025-01-02
+
+- Fixed `@charset` CSS declaration in bundle.
+- Fixed cells with inline icons.
+- Fixed padding in code blocks.
+- Fixed colors in date range datepicker.
+- Fixed icon display issues in the Star Ratings component.
+- Fixed `z-index` value of the `nav-tab` inside `card-tab`.
+- Fixed wrong gray colors.
+- Fixed incorrect CDN URL in `webfont.mdx`.
+- Ensured border color works in dark mode.
+- Replaced `.page-center` with `.my-auto` in single-page layouts.
+- Updated Tabler Emails to v2.0.
+- Updated Tabler Icons to v3.26.0.
+- Updated docs structure.
+- Updated `download.mdx`.
+- Updated Node.js to version 20.
+- Improved base font family.
+- Made horizontal rule direction-aware.
+- Added new payment providers.
+- Read changelog from `CHANGELOG.md` file.
+- Initialized VS Code configuration.
+
+## `1.0.0-beta21` - 2024-09-8
+
+- Updated dependencies.
+- Updated Tabler Icons to v3.14.0 and the import script.
+- Fixed invisible scrollbar in dark mode when navigating the preview.
+- Styled `btn-close` specifically for `.modal-header`.
+- Added proper borders to the ribbon start class.
+- Changed brand color.
+- Included `docs` in the `npm` package.
+- Added Tabler Illustrations.
+- Fixed use of the secondary color in specific form elements.
+- Introduced Docker Compose Config for local Tabler builds.
+- Allowed usage of `tinymce` v7.x as a peer dependency.
+- Updated TinyMCE to v7.0.
+- Rebranded Twitter to X.
+- Replaced undraw illustrations with Tabler Illustrations.
+- Added punctuation to `SECURITY.md`.
+- Updated `_navbar.scss` to correct disabled dropdown menu item colors.
+- Removed unused packages.
+- Fixed map pages.
+- Resolved issues with toasts in dark mode.
+- Fixed alert background prefix.
+- Corrected a typo in CHANGELOG.md.
+- Fixed radial chart issue.
+- Added documentation on running the site locally in Site README.
+- Updated colors in `colors.mdx`.
+- Fixed dynamic SCSS prefix in mixins.
+- Changed `<h1>` to `<div>` in `navbar-logo.html`.
+- Resolved vertical centering on error pages.
+- Fixed navbar menu issues.
+- Added `background-clip: border-box` to `.dropdown-menu` class.
+- Replaced `href="#"` with `href="javascript:void(0)"`.
+- Fixed disabled CSS class for links.
+- Addressed missing variables and minor color adjustments.
+- Improved heights, scrolls, and layouts in Docs examples.
+- Fixed flags display in preview. 
+
 ## `1.0.0-beta20` - 2023-08-24
 
 - Update `bootstrap` to v5.3.1
