@@ -5,15 +5,23 @@ libs: countup
 description: Display numbers dynamically with countups.
 ---
 
+The countup component is used to display numbers dynamically. It is a great way to make the interface more interactive and engaging. The countup component is a simple and easy way to animate numbers in your application.
+
 To be able to use the countup in your application you will need to install the countup.js dependency with `npm install countup.js`.
 
-## Default countup
+For more advanced features of countups, click [here](https://inorganik.github.io/countUp.js/) and see what more you can do.
+
+## Basic usage
 
 To create a countup, add `data-countup` to any HTML text tag and specify the number which is to be reached. The animation will be triggered as soon as the number enters the viewport.
 
-```html example
-<script src="$TABLER_CDN/dist/libs/countup.js/dist/countUp.js"></script>
+```html
+<h1 data-countup>30000</h1>
+```
 
+The results can be seen in the example below.
+
+```html example libs="countup" centered
 <h1 data-countup>30000</h1>
 ```
 
@@ -21,9 +29,13 @@ To create a countup, add `data-countup` to any HTML text tag and specify the num
 
 Set the `duration` to determine how long the animation should take. By default, the duration is set to 2 seconds, but you can modify it as you wish.
 
-```html example
-<script src="$TABLER_CDN/dist/libs/countup.js/dist/countUp.js"></script>
+```html
+<h1 data-countup='{"duration":4}'>30000</h1>
+```
 
+Look at the example below to see how the duration affects the animation.
+
+```html example libs="countup" centered vertical separated
 <h1 data-countup>30000</h1>
 <h1 data-countup='{"duration":4}'>30000</h1>
 <h1 data-countup='{"duration":6}'>30000</h1>
@@ -34,20 +46,28 @@ Set the `duration` to determine how long the animation should take. By default, 
 By default the countup will start from zero. If you want to set a different start value use `startVal`.
 You can also set the start value to be greater than the final value, so that it counts down instead of up.
 
-```html example
-<script src="$TABLER_CDN/dist/libs/countup.js/dist/countUp.js"></script>
+```html
+<h1 data-countup='{"startVal":12345}'>30000</h1>
+```
 
+To see how the starting value affects the animation, look at the example below.
+
+```html example libs="countup" centered vertical separated
 <h1 data-countup='{"startVal":12345}'>30000</h1>
 <h1 data-countup='{"startVal":47655}'>30000</h1>
 ```
 
 ## Decimal places
 
-Set how many decimal numbers should be displayed using `decimalPlaces`.
+Set how many decimal numbers should be displayed using `decimalPlaces`. By default, the number of decimal places is set to 0.
 
-```html example
-<script src="$TABLER_CDN/dist/libs/countup.js/dist/countUp.js"></script>
+```html
+<h1 data-countup='{"decimalPlaces":1}'>3.123</h1>
+```
 
+Look at the example below to see how the number of decimal places affects the animation.
+
+```html example libs="countup" centered vertical separated height="20rem"
 <h1 data-countup>3.123</h1>
 <h1 data-countup='{"decimalPlaces":1}'>3.123</h1>
 <h1 data-countup='{"decimalPlaces":2}'>3.123</h1>
@@ -56,82 +76,90 @@ Set how many decimal numbers should be displayed using `decimalPlaces`.
 
 ## Easing
 
-Disable easing using `"useEasing": false`. Easing is set to `true` by default, so that the animation speed changes over the course of its duration.
+Disable easing using `"useEasing": false`. Easing is set to `true` by default, so that the animation speed changes over the course of its duration. Easing can be disabled to make the animation linear.
 
-```html example
-<script src="$TABLER_CDN/dist/libs/countup.js/dist/countUp.js"></script>
+```html
+<h1 data-countup='{"useEasing": false}'>30000</h1>
+```
 
+Look at the example below to see how easing affects the animation.
+
+```html example libs="countup" centered vertical separated
 <h1 data-countup>30000</h1>
 <h1 data-countup='{"useEasing": false}'>30000</h1>
 ```
 
 ## Use grouping
 
-Disable grouping using `"useGrouping": false`. Grouping is set to `true` by default and the default group separator is a comma.
+Disable grouping using `"useGrouping": false`. Grouping is set to `true` by default, so that the number is displayed with a separator.
 
-```html example
-<script src="$TABLER_CDN/dist/libs/countup.js/dist/countUp.js"></script>
+```html
+<h1 data-countup='{"useGrouping": false}'>30000</h1>
+```
 
+Example below shows how grouping affects the animation.
+
+```html example libs="countup" centered vertical separated
 <h1 data-countup>30000</h1>
 <h1 data-countup='{"useGrouping": false}'>30000</h1>
 ```
 
 ## Separator
 
-You can change the default comma group separator using `separator` and specifying the one you wish to use.
+You can change the default separator using `separator` and specifying the one you wish to use.
 
-```html example
-<script src="$TABLER_CDN/dist/libs/countup.js/dist/countUp.js"></script>
+```html
+<h1 data-countup='{"separator":" "}'>3000000</h1>
+```
 
+This example shows how the separator affects the animation.
+
+```html example libs="countup" centered vertical separated
 <h1 data-countup>3000000</h1>
 <h1 data-countup='{"separator":" "}'>3000000</h1>
-<h1 data-countup='{"separator":"-"}'>3000000</h1>
-<h1 data-countup='{"separator":":"}'>3000000</h1>
 ```
 
 ## Decimal separator
 
-You can also change the decimal separator which is set to a full stop by default. To do it, use `decimal` and specify the decimal separator of your choice.
+You can change the default decimal separator using `decimal` and specifying the one you wish to use.
 
-```html example
-<script src="$TABLER_CDN/dist/libs/countup.js/dist/countUp.js"></script>
+```html
+<h1 data-countup='{"decimal":","}'>3.12</h1>
+```
 
+Look at the example below to see how the decimal separator affects the animation.
+
+```html example libs="countup" centered vertical separated
 <h1 data-countup='{"decimalPlaces":2}'>3.12</h1>
-<h1 data-countup='{"decimalPlaces":2,"decimal":".."}'>3.12</h1>
-<h1 data-countup='{"decimalPlaces":2,"decimal":"^"}'>3.12</h1>
-<h1 data-countup='{"decimalPlaces":2,"decimal":":"}'>3.12</h1>
+<h1 data-countup='{"decimalPlaces":2,"decimal":","}'>3.12</h1>
 ```
 
 ## Prefix
 
 Set the countup prefix using `prefix` and specifying the prefix you want to add, for instance a currency symbol.
 
-```html example
-<script src="$TABLER_CDN/dist/libs/countup.js/dist/countUp.js"></script>
+```html
+<h1 data-countup='{"prefix":"$"}'>30000</h1>
+```
 
+Look at the example below to see how the prefix affects the animation.
+
+```html example libs="countup" centered vertical separated
 <h1 data-countup='{"prefix":"$"}'>30000</h1>
 <h1 data-countup='{"prefix":"€"}'>30000</h1>
-<h1 data-countup='{"prefix":"£"}'>30000</h1>
 ```
 
 ## Suffix
 
-Set the countup suffix using `suffix`.
+Set the countup suffix using `suffix` and specifying the suffix you want to add, for instance a percentage symbol.
 
-```html example
-<script src="$TABLER_CDN/dist/libs/countup.js/dist/countUp.js"></script>
-
-<h1 data-countup='{"suffix":"%"}'>30</h1>
-<h1 data-countup='{"suffix":"‰"}'>30</h1>
-<h1 data-countup='{"suffix":"k"}'>30</h1>
+```html
+<h1 data-countup='{"suffix":"%"}'>300</h1>
 ```
 
-Of course you can mix all of these:
+Look at the example below to see how the suffix affects the animation.
 
-```html example
-<script src="$TABLER_CDN/dist/libs/countup.js/dist/countUp.js"></script>
-
-<h1 data-countup='{"duration":6,"startVal":12345,"decimalPlaces":2,"separator":" ","prefix":"$"}'>64547834.76</h1>
+```html example libs="countup" centered vertical separated
+<h1 data-countup='{"suffix":"%"}'>300</h1>
+<h1 data-countup='{"suffix":"‰"}'>300</h1>
 ```
-
-For more advanced features of countups, click [**here**](https://inorganik.github.io/countUp.js/) and see what more you can do.
