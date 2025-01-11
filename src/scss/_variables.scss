@@ -23,9 +23,7 @@ $font-google-monospaced: null !default;
 $font-local: null !default;
 $font-icons: () !default;
 
-/* prettier-ignore */
 $font-family-sans-serif: unquote("#{if($font-local, "#{$font-local}, ", ' ')}#{if($font-google, "#{$font-google}, ", ' ')}") 'Inter Var', Inter, -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif !default;
-/* prettier-ignore */
 $font-family-monospace: unquote("#{if($font-google-monospaced, "#{$font-google-monospaced}, ", '')}") Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace !default;
 $font-family-serif: "Georgia", "Times New Roman", times, serif !default;
 
@@ -133,6 +131,14 @@ $lead-font-weight: var(--#{$prefix}font-weight-normal) !default;
 
 $blockquote-font-size: $font-size-base !default;
 
+// BACKDROPS
+$backdrop-opacity: 24% !default;
+$backdrop-blur: 4px !default;
+$backdrops: (
+  dark: color-mix(in srgb, var(--#{$prefix}color-black), transparent var(--#{$prefix}backdrop-opacity)),
+  light: color-mix(in srgb, var(--#{$prefix}color-white), transparent var(--#{$prefix}backdrop-opacity)),
+) !default;
+
 // COLORS
 $min-contrast-ratio: 1.5 !default;
 $text-secondary-opacity: 0.7 !default;
@@ -185,19 +191,6 @@ $lime: #74b816 !default;
 $green: #2fb344 !default;
 $teal: #0ca678 !default;
 $cyan: #17a2b8 !default;
-
-$color-blue: #066fd1;
-$color-azure: #3586c9;
-$color-indigo: #4263eb;
-$color-purple: #ae3ec9;
-$color-pink: #d6336c;
-$color-red: #e73f3f;
-$color-orange: #f76707;
-$color-yellow: #f59f00;
-$color-lime: #74b816;
-$color-green: #2fb344;
-$color-teal: #0ca678;
-$color-cyan: #17a2b8;
 
 $text-secondary: $gray-500 !default;
 $text-secondary-light: $gray-400 !default;
@@ -289,7 +282,7 @@ $gray-colors: (
   gray-900: $gray-900,
 ) !default;
 
-$theme-colors: map-merge($theme-colors, map-merge($extra-colors, $social-colors));
+$theme-colors: map-merge($theme-colors, map-merge($extra-colors, ()));
 
 // Borders
 $border-width: 1px !default;
@@ -380,7 +373,7 @@ $avatar-sizes: (
 ) !default;
 $avatar-border-radius: var(--#{$prefix}border-radius) !default;
 $avatar-font-size: $h4-font-size !default;
-$avatar-box-shadow: var(--#{$prefix}box-shadow-border) !default;
+$avatar-box-shadow: var(--#{$prefix}shadow-border) !default;
 $avatar-list-spacing: -0.5;
 
 $link-decoration: none !default;
@@ -498,13 +491,13 @@ $box-shadow-card-hover: rgba(var(--#{$prefix}body-color-rgb), 0.16) 0 2px 16px 0
 $box-shadow-dropdown: 0 16px 24px 2px rgba(0, 0, 0, 0.07), 0 6px 30px 5px rgba(0, 0, 0, 0.06), 0 8px 10px -5px rgba(0, 0, 0, 0.1) !default;
 
 $box-shadows: (
-  box-shadow: $box-shadow,
-  box-shadow-border: $box-shadow-border,
-  box-shadow-transparent: $box-shadow-transparent,
-  box-shadow-input: $box-shadow-input,
-  box-shadow-card: $box-shadow-card,
-  box-shadow-card-hover: $box-shadow-card-hover,
-  box-shadow-dropdown: $box-shadow-dropdown,
+  null: $box-shadow,
+  border: $box-shadow-border,
+  transparent: $box-shadow-transparent,
+  input: $box-shadow-input,
+  card: $box-shadow-card,
+  card-hover: $box-shadow-card-hover,
+  dropdown: $box-shadow-dropdown,
 ) !default;
 
 $box-shadow-inset: 0 0 transparent !default;
@@ -592,7 +585,7 @@ $input-height-lg: null !default;
 $input-border-radius: var(--#{$prefix}border-radius) !default;
 $input-color: var(--#{$prefix}body-color) !default;
 $input-focus-color: var(--#{$prefix}body-color) !default;
-$input-box-shadow: var(--#{$prefix}box-shadow-input) !default;
+$input-box-shadow: var(--#{$prefix}shadow-input) !default;
 
 // Buttons
 $btn-border-radius-sm: var(--#{$prefix}border-radius-sm) !default;
@@ -603,7 +596,7 @@ $btn-padding-x: 1rem !default;
 $btn-font-weight: var(--#{$prefix}font-weight-medium) !default;
 $btn-border-color: var(--#{$prefix}border-color) !default;
 $btn-border-radius: var(--#{$prefix}border-radius) !default;
-$btn-box-shadow: var(--#{$prefix}box-shadow-input) !default;
+$btn-box-shadow: var(--#{$prefix}shadow-input) !default;
 
 // Cards
 $card-title-spacer-y: 1.25rem !default;
@@ -675,7 +668,7 @@ $dropdown-max-width: 25rem !default;
 $dropdown-scrollable-height: 13rem !default;
 $dropdown-link-active-color: var(--#{$prefix}primary) !default;
 $dropdown-link-active-bg: var(--#{$prefix}active-bg) !default;
-$dropdown-box-shadow: var(--#{$prefix}box-shadow-dropdown) !default;
+$dropdown-box-shadow: var(--#{$prefix}shadow-dropdown) !default;
 
 $dropdown-divider-bg: $dropdown-border-color !default;
 $dropdown-divider-margin-y: var(--#{$prefix}spacer-2) !default;
@@ -921,7 +914,7 @@ $form-check-radio-checked-bg-image: url("data:image/svg+xml,<svg xmlns='http://w
 $form-check-label-disabled-opacity: $text-secondary-opacity;
 
 $form-select-indicator-color: $text-secondary-light !default;
-$form-select-box-shadow: var(--#{$prefix}box-shadow-input) !default;
+$form-select-box-shadow: var(--#{$prefix}shadow-input) !default;
 
 $form-switch-width: 2rem !default;
 $form-switch-height: 1.25rem !default;
@@ -958,7 +951,7 @@ $legend-size: 0.75em !default;
 $legend-border-radius: var(--#{$prefix}border-radius-sm) !default;
 
 // Flags
-$flag-box-shadow: var(--#{$prefix}box-shadow-border) !default;
+$flag-box-shadow: var(--#{$prefix}shadow-border) !default;
 $flag-border-radius: var(--#{$prefix}border-radius) !default;
 $flag-sizes: $avatar-sizes !default;
 

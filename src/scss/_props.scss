@@ -1,21 +1,45 @@
 @import "config";
 
 :root,
-:host,
-[data-bs-theme="light"] {
-  @each $name, $color in map-merge($theme-colors, $gray-colors) {
-    --#{$prefix}#{$name}: #{$color};
-    --#{$prefix}#{$name}-rgb: #{to-rgb($color)};
-    --#{$prefix}#{$name}-fg: #{if(contrast-ratio($color) > $min-contrast-ratio, var(--#{$prefix}light), var(--#{$prefix}dark))};
-    --#{$prefix}#{$name}-darken: #{theme-color-darker($color)};
-    --#{$prefix}#{$name}-lt: #{theme-color-lighter($color)};
-    --#{$prefix}#{$name}-lt-rgb: #{to-rgb(theme-color-lighter($color))};
+:host {
+  /** Gray colors */
+  --#{$prefix}color-gray-50: #{$gray-50};
+  --#{$prefix}color-gray-100: #{$gray-100};
+  --#{$prefix}color-gray-200: #{$gray-200};
+  --#{$prefix}color-gray-300: #{$gray-300};
+  --#{$prefix}color-gray-400: #{$gray-400};
+  --#{$prefix}color-gray-500: #{$gray-500};
+  --#{$prefix}color-gray-600: #{$gray-600};
+  --#{$prefix}color-gray-700: #{$gray-700};
+  --#{$prefix}color-gray-800: #{$gray-800};
+  --#{$prefix}color-gray-900: #{$gray-900};
+  --#{$prefix}color-white: #{$white};
+  --#{$prefix}color-black: #{$black};
+
+  /** Brand colors */
+  --#{$prefix}color-brand: #{$primary};
+  
+  /** Theme colors */
+  @each $name, $color in map-merge($theme-colors, ()) {
+    --#{$prefix}color-#{$name}: #{$color};
+    --#{$prefix}color-#{$name}-rgb: #{to-rgb($color)};
+    --#{$prefix}color-#{$name}-fg: #{if(contrast-ratio($color) > $min-contrast-ratio, var(--#{$prefix}light), var(--#{$prefix}dark))};
+    --#{$prefix}color-#{$name}-darken: #{theme-color-darker($color)};
+    --#{$prefix}color-#{$name}-lt: #{theme-color-lighter($color)};
+    --#{$prefix}color-#{$name}-lt-rgb: #{to-rgb(theme-color-lighter($color))};
   }
 
+  /** Social colors */
+  @each $name, $color in $social-colors {
+    --#{$prefix}color-#{$name}: #{$color};
+  }
+
+  /** Spacers */
   @each $name, $value in $spacers {
     --#{$prefix}spacer-#{$name}: #{$value};
   }
 
+  /** Font sizes */
   @each $name, $value in $font-weights {
     --#{$prefix}font-weight-#{$name}: #{$value};
   }
@@ -28,7 +52,17 @@
     --#{$prefix}line-height-#{$name}: #{$value};
   }
 
+  /** Shadows */
   @each $name, $value in $box-shadows {
-    --#{$prefix}#{$name}: #{$value};
+    --#{$prefix}shadow#{if($name, '-#{$name}', '')}: #{$value};
   }
+
+  /** Backdrops */
+  --#{$prefix}backdrop-opacity: #{$backdrop-opacity};
+  --#{$prefix}backdrop-bg: var(--#{$prefix}bg-surface-dark);
+  @each $name, $value in $backdrops {
+    --#{$prefix}backdrop-bg#{if($name, '-#{$name}', '')}: #{$value};
+  }
+  --#{$prefix}backdrop-blur: #{$backdrop-blur};
+  --#{$prefix}backdrop-filter: blur(var(--#{$prefix}backdrop-blur));
 }
