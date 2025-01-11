@@ -1,5 +1,12 @@
 # Changelog
 
+## `1.0.0-beta24` - 2025-01-11
+
+- Enhanced documentation.
+- Updated illustrations and improved SVG handling in HTML.
+- Updated copyright year in LICENSE file to 2025.
+- Added marketing pages plugin.
+
 ## `1.0.0-beta23` - 2025-01-07
 
 - Documentation improvements.
