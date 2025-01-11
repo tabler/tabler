@@ -7,18 +7,6 @@
 :root,
 :host,
 [data-bs-theme="light"] {
-  @each $name, $color in map-merge($theme-colors, $gray-colors) {
-    --#{$prefix}#{$name}: #{$color};
-    --#{$prefix}#{$name}-rgb: #{to-rgb($color)};
-    --#{$prefix}#{$name}-fg: #{if(contrast-ratio($color) > $min-contrast-ratio, var(--#{$prefix}light), var(--#{$prefix}dark))};
-    --#{$prefix}#{$name}-darken: #{theme-color-darker($color)};
-    --#{$prefix}#{$name}-lt: #{theme-color-lighter($color)};
-    --#{$prefix}#{$name}-lt-rgb: #{to-rgb(theme-color-lighter($color))};
-  }
-
-  @each $name, $value in $spacers {
-    --#{$prefix}spacer-#{$name}: #{$value};
-  }
   --#{$prefix}spacer: #{$spacer};
 
   --#{$prefix}bg-surface: #{$bg-surface};
@@ -52,21 +40,5 @@
   --#{$prefix}page-padding-y: #{$page-padding-y};
   @include media-breakpoint-down($cards-grid-breakpoint) {
     --#{$prefix}page-padding: #{$page-padding-sm};
-  }
-
-  @each $name, $value in $font-weights {
-    --#{$prefix}font-weight-#{$name}: #{$value};
-  }
-
-  @each $name, $value in $font-sizes {
-    --#{$prefix}font-size-h#{$name}: #{$value};
-  }
-
-  @each $name, $value in $line-heights {
-    --#{$prefix}line-height-#{$name}: #{$value};
-  }
-
-  @each $name, $value in $box-shadows {
-    --#{$prefix}#{$name}: #{$value};
   }
 }
