@@ -131,14 +131,6 @@ $lead-font-weight: var(--#{$prefix}font-weight-normal) !default;
 
 $blockquote-font-size: $font-size-base !default;
 
-// BACKDROPS
-$backdrop-opacity: 24% !default;
-$backdrop-blur: 4px !default;
-$backdrops: (
-  dark: color-mix(in srgb, var(--#{$prefix}color-black), transparent var(--#{$prefix}backdrop-opacity)),
-  light: color-mix(in srgb, var(--#{$prefix}color-white), transparent var(--#{$prefix}backdrop-opacity)),
-) !default;
-
 // COLORS
 $min-contrast-ratio: 1.5 !default;
 $text-secondary-opacity: 0.7 !default;
@@ -160,6 +152,7 @@ $gray-600: #49566c !default;
 $gray-700: #3a4859 !default;
 $gray-800: #182433 !default;
 $gray-900: #040a11 !default;
+$gray-950: #020506 !default;
 
 $black: #000000 !default;
 $white: #ffffff !default;
@@ -284,6 +277,14 @@ $gray-colors: (
 
 $theme-colors: map-merge($theme-colors, map-merge($extra-colors, ()));
 
+// BACKDROPS
+$backdrop-opacity: 24% !default;
+$backdrop-blur: 4px !default;
+$backdrops: (
+  dark: color-mix(in srgb, var(--#{$prefix}color-dark), transparent var(--#{$prefix}backdrop-opacity)),
+  light: color-mix(in srgb, var(--#{$prefix}color-light), transparent var(--#{$prefix}backdrop-opacity)),
+) !default;
+
 // Borders
 $border-width: 1px !default;
 $border-width-wide: 2px !default;
@@ -292,6 +293,15 @@ $border-radius-sm: 2px !default;
 $border-radius: 4px !default;
 $border-radius-lg: 8px !default;
 $border-radius-pill: 100rem !default;
+
+$border-radiuses: (
+  0: 0,
+  sm: $border-radius-sm,
+  md: $border-radius,
+  lg: $border-radius-lg,
+  pill: $border-radius-pill,
+  null: var(--#{$prefix}border-radius-md),
+) !default;
 
 $border-values: (
   null: var(--#{$prefix}border-width) var(--#{$prefix}border-style) $border-color-translucent,
@@ -748,7 +758,7 @@ $nav-tabs-bg: var(--#{$prefix}bg-surface-tertiary) !default;
 // Navbar
 $navbar-height: 3.5rem !default;
 $navbar-padding-y: 0.25rem !default;
-$navbar-light-color: var(--#{$prefix}muted) !default;
+$navbar-light-color: var(--#{$prefix}secondary) !default;
 
 $navbar-hover-color: $white !default;
 

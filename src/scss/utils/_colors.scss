@@ -38,3 +38,14 @@
     color: $value !important;
   }
 }
+
+@each $color, $value in $social-colors {
+  .bg-#{"" + $color} {
+    --#{$prefix}bg-opacity: .1;
+    background-color: rgba(var(--#{$prefix}#{$color}-rgb), var(--#{$prefix}bg-opacity)) !important;
+  }
+
+  .text-#{"" + $color}-fg {
+    color: $value !important;
+  }
+}
