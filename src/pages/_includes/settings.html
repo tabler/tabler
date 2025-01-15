@@ -13,7 +13,7 @@
 				{% assign modes = 'light,dark' | split: ',' %} {% for mode in modes %}
 				<label class="form-check">
 					<div class="form-selectgroup-item">
-						<input type="radio" name="theme-mode" value="{{ mode }}" class="form-check-input" />
+						<input type="radio" name="theme-mode" value="{{ mode }}" class="form-check-input"{% if mode == 'light' %} checked{% endif %} />
 						<div class="form-check-label">{{ mode | capitalize }}</div>
 					</div>
 				</label>
@@ -27,14 +27,14 @@
 				<div class="row g-2">
 					<div class="col-auto">
 						<label class="form-colorinput">
-							<input name="color" type="radio" value="inverted" class="form-colorinput-input" />
+							<input name="theme-primary" type="radio" value="inverted" class="form-colorinput-input" checked />
 							<span class="form-colorinput-color bg-dark"></span>
 						</label>
 					</div>
 					{% for color in site.colors %}
 					<div class="col-auto">
 						<label class="form-colorinput">
-							<input name="color" type="radio" value="{{ color[0] }}" class="form-colorinput-input" />
+							<input name="theme-primary" type="radio" value="{{ color[0] }}" class="form-colorinput-input" />
 							<span class="form-colorinput-color bg-{{ color[0] }}"></span>
 						</label>
 					</div>
@@ -50,7 +50,7 @@
 					{% assign fonts = 'sans-serif,serif,monospace' | split: ',' %} {% for font in fonts %}
 					<label class="form-check">
 						<div class="form-selectgroup-item">
-							<input type="radio" name="theme-font-family" value="{{ scheme }}" class="form-check-input" />
+							<input type="radio" name="theme-font" value="{{ font }}" class="form-check-input"{% if font == 'sans-serif' %} checked{% endif %} />
 							<div class="form-check-label">{{ font | capitalize }}</div>
 						</div>
 					</label>
@@ -59,15 +59,15 @@
 			</div>
 
 			<div class="mb-4">
-				<label class="form-label">Gray shade</label>
+				<label class="form-label">Theme base</label>
 				<p class="form-hint">Choose the gray shade for your app.</p>
 
 				<div>
-					{% assign grays = 'slate,gray,zinc,neutral,stone' | split: ',' %} {% for gray in grays %}
+					{% assign bases = 'slate,gray,zinc,neutral,stone' | split: ',' %} {% for base in bases %}
 					<label class="form-check">
 						<div class="form-selectgroup-item">
-							<input type="radio" name="theme-shade" value="{{ gray }}" class="form-check-input" />
-							<div class="form-check-label">{{ gray | capitalize }}</div>
+							<input type="radio" name="theme-base" value="{{ base }}" class="form-check-input"{% if base == 'gray' %} checked{% endif %} />
+							<div class="form-check-label">{{ base | capitalize }}</div>
 						</div>
 					</label>
 					{% endfor %}
@@ -145,31 +145,30 @@
 
 <script>
 	document.addEventListener("DOMContentLoaded", function () {
-		// var offcanvas = new bootstrap.Offcanvas(document.getElementById("offcanvasSettings"))
-		// offcanvas.show()
+		var offcanvas = new bootstrap.Offcanvas(document.getElementById("offcanvasSettings"))
+		offcanvas.show()
 
 		// handle form values
 		var form = document.getElementById("offcanvasSettings")
 		form.addEventListener("change", function (event) {
-			var target = event.target
-			var name = target.name
-			var value = target.value
-
-			console.log((new FormData(form)).entries())
+			const target = event.target,
+				name = target.name,
+				value = target.value
 
 			if (name === "theme-mode") {
-				document.documentElement.classList.remove("theme-light", "theme-dark")
-				document.documentElement.classList.add("theme-" + value)
+				document.documentElement.dataset.bsTheme = value
 			}
 
-			if (name === "theme-font-family") {
-				document.documentElement.classList.remove("theme-sans-serif", "theme-serif", "theme-monospace")
-				document.documentElement.classList.add("theme-" + value)
+			if (name === "theme-primary") {
+				document.documentElement.dataset.bsPrimary = value
 			}
 
-			if (name === "theme-shade") {
-				document.documentElement.classList.remove("theme-slate", "theme-gray", "theme-zinc", "theme-neutral", "theme-stone")
-				document.documentElement.classList.add("theme-" + value)
+			if (name === "theme-font") {
+				document.documentElement.dataset.bsFont = value
+			}
+
+			if (name === "theme-base") {
+				document.documentElement.dataset.bsBase = value
 			}
 		})
 	})
