@@ -77,11 +77,18 @@
   }
 }
 
-@each $name, $value in (
-  monospace: $font-family-monospace,
-  sans-serif: $font-family-sans-serif,
-  serif: $font-family-serif,
-) {
+.theme-inverted {
+  --#{$prefix}primary: var(--#{$prefix}gray-800);
+  --#{$prefix}primary-rgb: #{to-rgb($dark)};
+
+  &[data-bs-theme="dark"],
+  [data-bs-theme="dark"] {
+    --#{$prefix}primary: #{$light};
+    --#{$prefix}primary-rgb: #{to-rgb($light)};
+  }
+}
+
+@each $name, $value in (monospace: $font-family-monospace, sans-serif: $font-family-sans-serif, serif: $font-family-serif) {
   .theme-#{$name} {
     --#{$prefix}body-font-family: var(--#{$prefix}font-#{$name});
   }

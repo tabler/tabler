@@ -91,7 +91,7 @@
 			{% endif %}
 
 			fill: {
-				opacity: {% if chart-type == 'area' %}.16{% else %}1{% endif %},
+				colors: ['color-mix(in srgb, transparent, var(--tblr-primary) {% if chart-type == 'area' %}16%{% else %}100%{% endif %})'],
 				{% if chart-type == 'area' %}type: 'solid'{% endif %}
 			},
 
@@ -215,7 +215,8 @@
 			{% endif %}
 
 			{% if data.series %}
-			colors: [{% for serie in data.series %}{% assign color = serie.color | default: data.color | default: 'primary' %}tabler.getColor("{{ color }}"{% if serie.color-opacity %}, {{ serie.color-opacity }}{% endif %}){% unless forloop.last %}, {% endunless %}{% endfor %}],
+			colors: [{% for serie in data.series %}{% assign color = serie.color | default: data.color | default: 'primary' %}'var(--tblr-{{ color }})'{% if serie.color-opacity %}, {{ serie.color-opacity }}{% endif %}{% unless forloop.last %}, {% endunless %}{% endfor %}],
+			//colors: ['var(--tblr-primary)'],
 			{% endif %}
 
 			legend: {

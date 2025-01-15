@@ -25,11 +25,12 @@ body {
 
 @if $enable-dark-mode {
   @include color-mode(dark, true) {
+    color-scheme: dark;
     --#{$prefix}body-color: #{$body-color-dark};
     --#{$prefix}body-color-rgb: #{to-rgb($body-color-dark)};
-    --#{$prefix}secondary: #{$text-secondary-dark};
+    --#{$prefix}secondary: var(--#{$prefix}gray-500);
 
-    --#{$prefix}body-bg: #{$darken-dark};
+    --#{$prefix}body-bg: var(--#{$prefix}gray-900);
     --#{$prefix}body-bg-rgb: #{to-rgb($darken-dark)};
     --#{$prefix}emphasis-color: #{$body-emphasis-color-dark};
     --#{$prefix}emphasis-color-rgb: #{to-rgb($body-emphasis-color-dark)};
@@ -45,13 +46,10 @@ body {
     --#{$prefix}bg-surface-secondary: var(--#{$prefix}gray-900);
     --#{$prefix}bg-surface-tertiary: var(--#{$prefix}gray-950);
 
-    --#{$prefix}link-color: #{lighten($primary, 8%)};
-    --#{$prefix}link-hover-color: #{$primary};
-
     --#{$prefix}active-bg: #{$lighten-dark};
     --#{$prefix}disabled-color: var(--#{$prefix}gray-700);
 
-    --#{$prefix}border-color: var(--#{$prefix}dark-mode-border-color);
+    --#{$prefix}border-color: var(--#{$prefix}gray-700);
     --#{$prefix}border-color-translucent: var(
       --#{$prefix}dark-mode-border-color-translucent
     );

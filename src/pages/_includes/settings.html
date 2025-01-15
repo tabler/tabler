@@ -1,17 +1,80 @@
 <div class="settings">
+	<a href="#" class="btn btn-floating btn-icon btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSettings"> {% include ui/icon.html icon="settings" %} </a>
 
-	<a href="#" class="btn btn-icon btn-lg settings-btn" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSettings">
-		{% include ui/icon.html icon="settings" %}
-	</a>
-
-
-	<form class="offcanvas offcanvas-end offcanvas-narrow" tabindex="-1" id="offcanvasSettings">
+	<form class="offcanvas offcanvas-start offcanvas-narrow" tabindex="-1" id="offcanvasSettings">
 		<div class="offcanvas-header">
 			<h2 class="offcanvas-title">Theme Builder</h2>
 			<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 		</div>
 		<div class="offcanvas-body">
 			<div class="mb-4">
+				<label class="form-label">Color mode</label>
+				<p class="form-hint">Choose the color mode for your app.</p>
+				{% assign modes = 'light,dark' | split: ',' %} {% for mode in modes %}
+				<label class="form-check">
+					<div class="form-selectgroup-item">
+						<input type="radio" name="theme-mode" value="{{ mode }}" class="form-check-input" />
+						<div class="form-check-label">{{ mode | capitalize }}</div>
+					</div>
+				</label>
+				{% endfor %}
+			</div>
+
+			<div class="mb-4">
+				<label class="form-label">Color scheme</label>
+				<p class="form-hint">The perfect color mode for your app.</p>
+
+				<div class="row g-2">
+					<div class="col-auto">
+						<label class="form-colorinput">
+							<input name="color" type="radio" value="inverted" class="form-colorinput-input" />
+							<span class="form-colorinput-color bg-dark"></span>
+						</label>
+					</div>
+					{% for color in site.colors %}
+					<div class="col-auto">
+						<label class="form-colorinput">
+							<input name="color" type="radio" value="{{ color[0] }}" class="form-colorinput-input" />
+							<span class="form-colorinput-color bg-{{ color[0] }}"></span>
+						</label>
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+
+			<div class="mb-4">
+				<label class="form-label">Font family</label>
+				<p class="form-hint">Choose the font family that fits your app.</p>
+
+				<div>
+					{% assign fonts = 'sans-serif,serif,monospace' | split: ',' %} {% for font in fonts %}
+					<label class="form-check">
+						<div class="form-selectgroup-item">
+							<input type="radio" name="theme-font-family" value="{{ scheme }}" class="form-check-input" />
+							<div class="form-check-label">{{ font | capitalize }}</div>
+						</div>
+					</label>
+					{% endfor %}
+				</div>
+			</div>
+
+			<div class="mb-4">
+				<label class="form-label">Gray shade</label>
+				<p class="form-hint">Choose the gray shade for your app.</p>
+
+				<div>
+					{% assign grays = 'slate,gray,zinc,neutral,stone' | split: ',' %} {% for gray in grays %}
+					<label class="form-check">
+						<div class="form-selectgroup-item">
+							<input type="radio" name="theme-shade" value="{{ gray }}" class="form-check-input" />
+							<div class="form-check-label">{{ gray | capitalize }}</div>
+						</div>
+					</label>
+					{% endfor %}
+				</div>
+			</div>
+
+			<!--<div class="mb-4">
 				<label class="form-label">Color scheme</label>
 				<p class="form-hint">The perfect color mode for your app.</p>
 
@@ -75,14 +138,39 @@
 					</label>
 					{% endfor %}
 				</div>
-			</div>
-
-		</div>
-		<div class="offcanvas-footer">
-			<button type="submit" class="btn btn-primary w-100">
-				{% include ui/icon.html icon="settings" %}
-				Save settings
-			</button>
+			</div>-->
 		</div>
 	</form>
 </div>
+
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		var offcanvas = new bootstrap.Offcanvas(document.getElementById("offcanvasSettings"))
+		offcanvas.show()
+
+		// handle form values
+		var form = document.getElementById("offcanvasSettings")
+		form.addEventListener("change", function (event) {
+			var target = event.target
+			var name = target.name
+			var value = target.value
+
+			console.log((new FormData(form)).entries())
+
+			if (name === "theme-mode") {
+				document.documentElement.classList.remove("theme-light", "theme-dark")
+				document.documentElement.classList.add("theme-" + value)
+			}
+
+			if (name === "theme-font-family") {
+				document.documentElement.classList.remove("theme-sans-serif", "theme-serif", "theme-monospace")
+				document.documentElement.classList.add("theme-" + value)
+			}
+
+			if (name === "theme-shade") {
+				document.documentElement.classList.remove("theme-slate", "theme-gray", "theme-zinc", "theme-neutral", "theme-stone")
+				document.documentElement.classList.add("theme-" + value)
+			}
+		})
+	})
+</script>

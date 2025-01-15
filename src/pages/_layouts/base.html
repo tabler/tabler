@@ -1,7 +1,8 @@
+{% assign layout-dark = page.layout-dark | default: site.layout-dark -%}
 <!doctype html>
 {% include layout/banner.html %}
 {% assign title = page.title | default: layout.title %}
-<html lang="en"{% if page.rtl or site.rtl %} dir="rtl" {% endif %}>
+<html lang="en"{% if page.rtl or site.rtl %} dir="rtl" {% endif %}{% if layout.html-class or page.html-class %} class="{{ page.html-class | default: layout.html-class }}"{% endif %}>
 <head>
 	<meta charset="utf-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
@@ -36,7 +37,6 @@
 	</style>
 </head>
 
-{% assign layout-dark = page.layout-dark | default: site.layout-dark %}
 <body{% if layout.body-class or page.body-class %} class="{% if layout.body-class %} {{ layout.body-class }}{% endif %}{% if page.body-class %} {{ page.body-class }}{% endif %}"{% endif %}>
 <script src="{{ site.base }}/dist/js/demo-theme{% if jekyll.environment != 'development' %}.min{% endif %}.js{% if jekyll.environment != 'development' %}?{{ site.time | date: '%s' }}{% endif %}"></script>
 

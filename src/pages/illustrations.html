@@ -7,7 +7,7 @@ menu: illustrations
 {% assign illustrations = "" | split: "," %} {% assign first_illustration = '' %} {% for illustration in site.free-illustrations reversed %} {% if illustration.id contains 'autodark' %} {% assign first_illustration = illustration %} {% assign
 illustrations = illustrations | push: illustration %} {% endif %} {% endfor %} {% assign illustrations = illustrations | reverse %} {% assign skin_color = site.skin-colors | first %} {% assign color = site.colors | first %}
 
-<div class="mb-7" style="--tblr-illustrations-primary: {{ color[1].hex }}; --tblr-illustrations-skin: {{ skin_color[1].hex }};" id="current-illustration-style">
+<div class="mb-7" style="--tblr-illustrations-primary: var(--tblr-color-primary); --tblr-illustrations-skin: {{ skin_color[1].hex }};" id="current-illustration-style">
 	<div class="row row-cards">
 		<div class="col-12">
 			<div class="row row-cards row-deck g-4">
@@ -26,10 +26,16 @@ illustrations = illustrations | push: illustration %} {% endif %} {% endfor %} {
 									<div>
 										<div class="form-label">Primary color</div>
 										<div class="row g-2">
+											<div class="col-auto">
+												<label class="form-colorinput">
+													<input name="color" type="radio" value="var(--tblr-color-primary)" class="form-colorinput-input js-select-color" checked />
+													<span class="form-colorinput-color bg-primary"></span>
+												</label>
+											</div>
 											{% for color in site.colors %}
 											<div class="col-auto">
 												<label class="form-colorinput">
-													<input name="color" type="radio" value="{{ color[1].hex }}" class="form-colorinput-input js-select-color" {% if forloop.first %} checked{% endif %} />
+													<input name="color" type="radio" value="{{ color[1].hex }}" class="form-colorinput-input js-select-color" />
 													<span class="form-colorinput-color bg-{{ color[1].class }}"></span>
 												</label>
 											</div>

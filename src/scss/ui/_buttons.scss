@@ -69,7 +69,7 @@
 //
 // Button color variations
 //
-@each $color, $value in $theme-colors {
+@each $color, $value in map-merge($theme-colors, $social-colors) {
   .btn-#{$color} {
     @if $color == 'dark' {
       --#{$prefix}btn-border-color: var(--#{$prefix}dark-mode-border-color);
@@ -81,7 +81,7 @@
       --#{$prefix}btn-active-border-color: transparent;
     }
 
-    --#{$prefix}btn-color: var(--#{$prefix}#{$color}-fg);
+    --#{$prefix}btn-color: var(--#{$prefix}#{$color}-fg, #{$white});
     --#{$prefix}btn-bg: var(--#{$prefix}#{$color});
     --#{$prefix}btn-hover-color: var(--#{$prefix}#{$color}-fg);
     --#{$prefix}btn-hover-bg: var(--#{$prefix}#{$color}-darken);
@@ -104,21 +104,19 @@
     --#{$prefix}btn-disabled-color: var(--#{$prefix}#{$color});
     --#{$prefix}btn-disabled-border-color: var(--#{$prefix}#{$color});
   }
-}
 
-@each $name, $color in $theme-colors {
-  .btn-ghost-#{$name} {
-    --#{$prefix}btn-color: var(--#{$prefix}#{$name});
+  .btn-ghost-#{$color} {
+    --#{$prefix}btn-color: var(--#{$prefix}#{$color});
     --#{$prefix}btn-bg: transparent;
     --#{$prefix}btn-border-color: transparent;
-    --#{$prefix}btn-hover-color: var(--#{$prefix}#{$name}-fg);
-    --#{$prefix}btn-hover-bg: var(--#{$prefix}#{$name});
-    --#{$prefix}btn-hover-border-color: var(--#{$prefix}#{$name});
-    --#{$prefix}btn-active-color: var(--#{$prefix}#{$name}-fg);
-    --#{$prefix}btn-active-bg: var(--#{$prefix}#{$name});
+    --#{$prefix}btn-hover-color: var(--#{$prefix}#{$color}-fg);
+    --#{$prefix}btn-hover-bg: var(--#{$prefix}#{$color});
+    --#{$prefix}btn-hover-border-color: var(--#{$prefix}#{$color});
+    --#{$prefix}btn-active-color: var(--#{$prefix}#{$color}-fg);
+    --#{$prefix}btn-active-bg: var(--#{$prefix}#{$color});
     --#{$prefix}btn-active-border-color: transparent;
     --#{$prefix}btn-active-shadow: #{$btn-active-box-shadow};
-    --#{$prefix}btn-disabled-color: var(--#{$prefix}#{$name});
+    --#{$prefix}btn-disabled-color: var(--#{$prefix}#{$color});
     --#{$prefix}btn-disabled-bg: transparent;
     --#{$prefix}btn-disabled-border-color: transparent;
     --#{$prefix}gradient: none;
@@ -183,9 +181,9 @@
 .btn-floating {
   position: fixed;
   z-index: $zindex-fixed;
-  bottom: 1.5rem;
-  right: 1.5rem;
-  border-radius: $border-radius-pill;
+  bottom: 1rem;
+  left: 1rem;
+  box-shadow: var(--#{$prefix}shadow-dropdown);
 }
 
 //

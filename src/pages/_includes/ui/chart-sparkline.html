@@ -1,6 +1,6 @@
 {% assign type = include.type | default: 'bar' %}
 {% assign id = include.id %}
-{% assign color = include.color | default: 'blue' %}
+{% assign color = include.color | default: 'primary' %}
 {% assign height = include.height | default: 2.5 %}
 {% if include.small %}
 	{% assign height = include.height | default: 1.5 %}
@@ -71,11 +71,11 @@
 				{% endif %}
 
 				{% if type == 'donut' %}
-				colors: [tabler.getColor("{{ color | default: 'primary' }}")],
+				colors: ['var(--tblr-{{ color }})'],
 				series: [{{ data }}],
 				{% else %}
 				series: [{
-					color: tabler.getColor("{{ color | default: 'primary' }}"),
+					color: 'var(--tblr-{{ color }})',
 					data: [{{ data }}]
 				}],
 				{% endif %}
