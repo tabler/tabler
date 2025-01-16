@@ -4,25 +4,34 @@
  * This will prevent any flashes of the light theme (default) before switching.
  */
 
-const themeStorageKey = "tablerTheme"
-const defaultTheme = "light"
-let selectedTheme
+const themeConfig = {
+	"theme": "light",
+	"theme-base": "gray",
+	"theme-font": "sans-serif",
+	"theme-primary": "blue",
+}
 
 // https://stackoverflow.com/a/901144
 const params = new Proxy(new URLSearchParams(window.location.search), {
 	get: (searchParams, prop) => searchParams.get(prop),
 })
 
-if (!!params.theme) {
-	localStorage.setItem(themeStorageKey, params.theme)
-	selectedTheme = params.theme
-} else {
-	const storedTheme = localStorage.getItem(themeStorageKey)
-	selectedTheme = storedTheme ? storedTheme : defaultTheme
-}
 
-if (selectedTheme === 'dark') {
-	document.body.setAttribute("data-bs-theme", selectedTheme)
-} else {
-	document.body.removeAttribute("data-bs-theme")
+for (const key in themeConfig) {
+	const param = params[key]
+	let selectedValue
+
+	if (!!param) {
+		localStorage.setItem('tabler-' + key, param)
+		selectedValue = param
+	} else {
+		const storedTheme = localStorage.getItem('tabler-' + key)
+		selectedValue = storedTheme ? storedTheme : themeConfig[key]
+	}
+
+	if (selectedValue !== themeConfig[key]) {
+		document.documentElement.setAttribute('data-bs-' + key, selectedValue)
+	} else {
+		document.documentElement.removeAttribute('data-bs-' + key)
+	}
 }

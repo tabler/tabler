@@ -1,175 +1,146 @@
 <div class="settings">
-	<a href="#" class="btn btn-floating btn-icon btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSettings"> {% include ui/icon.html icon="settings" %} </a>
+	<a href="#" class="btn btn-floating btn-icon btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSettings"> {% include ui/icon.html icon="brush" %} </a>
 
 	<form class="offcanvas offcanvas-start offcanvas-narrow" tabindex="-1" id="offcanvasSettings">
 		<div class="offcanvas-header">
 			<h2 class="offcanvas-title">Theme Builder</h2>
 			<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 		</div>
-		<div class="offcanvas-body">
-			<div class="mb-4">
-				<label class="form-label">Color mode</label>
-				<p class="form-hint">Choose the color mode for your app.</p>
-				{% assign modes = 'light,dark' | split: ',' %} {% for mode in modes %}
-				<label class="form-check">
-					<div class="form-selectgroup-item">
-						<input type="radio" name="theme-mode" value="{{ mode }}" class="form-check-input"{% if mode == 'light' %} checked{% endif %} />
-						<div class="form-check-label">{{ mode | capitalize }}</div>
-					</div>
-				</label>
-				{% endfor %}
-			</div>
-
-			<div class="mb-4">
-				<label class="form-label">Color scheme</label>
-				<p class="form-hint">The perfect color mode for your app.</p>
-
-				<div class="row g-2">
-					<div class="col-auto">
-						<label class="form-colorinput">
-							<input name="theme-primary" type="radio" value="inverted" class="form-colorinput-input" checked />
-							<span class="form-colorinput-color bg-dark"></span>
-						</label>
-					</div>
-					{% for color in site.colors %}
-					<div class="col-auto">
-						<label class="form-colorinput">
-							<input name="theme-primary" type="radio" value="{{ color[0] }}" class="form-colorinput-input" />
-							<span class="form-colorinput-color bg-{{ color[0] }}"></span>
-						</label>
-					</div>
-					{% endfor %}
-				</div>
-			</div>
-
-			<div class="mb-4">
-				<label class="form-label">Font family</label>
-				<p class="form-hint">Choose the font family that fits your app.</p>
-
-				<div>
-					{% assign fonts = 'sans-serif,serif,monospace' | split: ',' %} {% for font in fonts %}
+		<div class="offcanvas-body d-flex flex-column">
+			<div>
+				<div class="mb-4">
+					<label class="form-label">Color mode</label>
+					<p class="form-hint">Choose the color mode for your app.</p>
+					{% assign modes = 'light,dark' | split: ',' %} {% for mode in modes %}
 					<label class="form-check">
 						<div class="form-selectgroup-item">
-							<input type="radio" name="theme-font" value="{{ font }}" class="form-check-input"{% if font == 'sans-serif' %} checked{% endif %} />
-							<div class="form-check-label">{{ font | capitalize }}</div>
+							<input type="radio" name="theme" value="{{ mode }}" class="form-check-input"{% if mode == 'light' %} checked{% endif %} />
+							<div class="form-check-label">{{ mode | capitalize }}</div>
 						</div>
 					</label>
 					{% endfor %}
 				</div>
-			</div>
 
-			<div class="mb-4">
-				<label class="form-label">Theme base</label>
-				<p class="form-hint">Choose the gray shade for your app.</p>
+				<div class="mb-4">
+					<label class="form-label">Color scheme</label>
+					<p class="form-hint">The perfect color mode for your app.</p>
 
-				<div>
-					{% assign bases = 'slate,gray,zinc,neutral,stone' | split: ',' %} {% for base in bases %}
-					<label class="form-check">
-						<div class="form-selectgroup-item">
-							<input type="radio" name="theme-base" value="{{ base }}" class="form-check-input"{% if base == 'gray' %} checked{% endif %} />
-							<div class="form-check-label">{{ base | capitalize }}</div>
+					<div class="row g-2">
+						<div class="col-auto">
+							<label class="form-colorinput">
+								<input name="theme-primary" type="radio" value="inverted" class="form-colorinput-input" checked />
+								<span class="form-colorinput-color bg-dark"></span>
+							</label>
 						</div>
-					</label>
-					{% endfor %}
+						{% for color in site.colors %}
+						<div class="col-auto">
+							<label class="form-colorinput">
+								<input name="theme-primary" type="radio" value="{{ color[0] }}" class="form-colorinput-input" />
+								<span class="form-colorinput-color bg-{{ color[0] }}"></span>
+							</label>
+						</div>
+						{% endfor %}
+					</div>
 				</div>
-			</div>
 
-			<!--<div class="mb-4">
-				<label class="form-label">Color scheme</label>
-				<p class="form-hint">The perfect color mode for your app.</p>
+				<div class="mb-4">
+					<label class="form-label">Font family</label>
+					<p class="form-hint">Choose the font family that fits your app.</p>
 
-				<div class="row g-2">
-					{% assign schemes = 'light,mixed,colored,dark,transparent' | split: ',' %}
-					{% for scheme in schemes %}
-					<div class="col-6">
-						<label class="form-selectgroup-item">
-							<input type="radio" name="settings-theme" value="{{ scheme }}" class="form-selectgroup-input" />
-							<div class="form-selectgroup-label text-center">
-								<span class="form-selectgroup-check form-selectgroup-check-floated"></span>
-								<div class="settings-scheme settings-scheme-{{ scheme }}"></div>
-								<div>{{ scheme | capitalize }}</div>
+					<div>
+						{% assign fonts = 'sans-serif,serif,monospace,comic' | split: ',' %} {% for font in fonts %}
+						<label class="form-check">
+							<div class="form-selectgroup-item">
+								<input type="radio" name="theme-font" value="{{ font }}" class="form-check-input"{% if font == 'sans-serif' %} checked{% endif %} />
+								<div class="form-check-label">{{ font | capitalize }}</div>
 							</div>
 						</label>
+						{% endfor %}
 					</div>
-					{% endfor %}
+				</div>
+
+				<div class="mb-4">
+					<label class="form-label">Theme base</label>
+					<p class="form-hint">Choose the gray shade for your app.</p>
+
+					<div>
+						{% assign bases = 'slate,gray,zinc,neutral,stone' | split: ',' %} {% for base in bases %}
+						<label class="form-check">
+							<div class="form-selectgroup-item">
+								<input type="radio" name="theme-base" value="{{ base }}" class="form-check-input"{% if base == 'gray' %} checked{% endif %} />
+								<div class="form-check-label">{{ base | capitalize }}</div>
+							</div>
+						</label>
+						{% endfor %}
+					</div>
 				</div>
 			</div>
 
-			<div class="mb-4">
-				<div class="form-label">Menu position</div>
-				<p class="form-hint">Toggle the position of the menu.</p>
-
-				<div>
-					{% assign positions = 'top,top-condensed,top-overlap,combo,left,right' | split: ',' %}
-					{% for position in positions %}
-					<label class="form-check">
-						<input class="form-check-input" name="settings-menu-position" value="{{ position }}" type="radio" />
-						<span class="form-check-label">{{ position | capitalize }}</span>
-					</label>
-					{% endfor %}
-				</div>
+			<div class="mt-auto">
+				<button type="button" class="btn w-100p" id="reset-changes">Reset changes</button>
 			</div>
-
-			<div class="mb-4">
-				<div class="form-label">Menu behavior</div>
-				<p class="form-hint">Change the behavior of the menu.</p>
-
-				<div>
-					{% assign behaviors = 'sticky,fixed,compact' | split: ',' %}
-					{% for behavior in behaviors %}
-					<label class="form-check">
-						<input class="form-check-input" name="settings-menu-behavior" value="{{ behavior }}" type="radio" />
-						<span class="form-check-label">{{ behavior | capitalize }}</span>
-					</label>
-					{% endfor %}
-				</div>
-			</div>
-
-			<div class="mb-4">
-				<div class="form-label">Layout</div>
-				<p class="form-hint">Toggle container layout system.</p>
-
-				<div>
-					{% assign systems = 'boxed,fluid' | split: ',' %}
-					{% for system in systems %}
-					<label class="form-check">
-						<input class="form-check-input" name="settings-container-layout" value="{{ system }}" type="radio" />
-						<span class="form-check-label">{{ system | capitalize }}</span>
-					</label>
-					{% endfor %}
-				</div>
-			</div>-->
 		</div>
 	</form>
 </div>
 
 <script>
 	document.addEventListener("DOMContentLoaded", function () {
-		var offcanvas = new bootstrap.Offcanvas(document.getElementById("offcanvasSettings"))
-		offcanvas.show()
+		var themeConfig = {
+			theme: "light",
+			"theme-base": "gray",
+			"theme-font": "sans-serif",
+			"theme-primary": "blue",
+		}
 
-		// handle form values
+		var url = new URL(window.location)
 		var form = document.getElementById("offcanvasSettings")
+		var resetButton = document.getElementById("reset-changes")
+
+		var checkItems = function () {
+			for (var key in themeConfig) {
+				var value = window.localStorage["tabler-" + key] || themeConfig[key]
+
+				if (!!value) {
+					var radios = form.querySelectorAll(`[name="${key}"]`)
+
+					if (!!radios) {
+						radios.forEach((radio) => {
+							radio.checked = radio.value === value
+						})
+					}
+				}
+			}
+		}
+
 		form.addEventListener("change", function (event) {
-			const target = event.target,
+			var target = event.target,
 				name = target.name,
 				value = target.value
 
-			if (name === "theme-mode") {
-				document.documentElement.dataset.bsTheme = value
+			for (var key in themeConfig) {
+				if (name === key) {
+					document.documentElement.setAttribute("data-bs-" + key, value)
+					window.localStorage.setItem("tabler-" + key, value)
+					url.searchParams.set(key, value)
+				}
 			}
 
-			if (name === "theme-primary") {
-				document.documentElement.dataset.bsPrimary = value
-			}
-
-			if (name === "theme-font") {
-				document.documentElement.dataset.bsFont = value
-			}
-
-			if (name === "theme-base") {
-				document.documentElement.dataset.bsBase = value
-			}
+			window.history.pushState({}, "", url)
 		})
+
+		resetButton.addEventListener("click", function () {
+			for (var key in themeConfig) {
+				var value = themeConfig[key]
+				document.documentElement.removeAttribute("data-bs-" + key)
+				window.localStorage.removeItem("tabler-" + key)
+				url.searchParams.delete(key)
+			}
+
+			checkItems()
+
+			window.history.pushState({}, "", url)
+		})
+
+		checkItems()
 	})
 </script>
