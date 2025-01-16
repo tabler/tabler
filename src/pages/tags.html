@@ -27,7 +27,7 @@ menu: base.tags
 				<h3 class="card-title">Tags with flag</h3>
 				<div class="tags-list">   
 					{% for country in site.data.flags limit: 9 %}     
-					{% include ui/tag.html text=country.name flag=country.code %}
+					{% include ui/tag.html text=country.name flag=country.flag %}
 					{% endfor %}
 				</div>
 			</div>
@@ -66,9 +66,7 @@ menu: base.tags
 				<h3 class="card-title">Tags with status</h3>
 				<div class="tags-list">   
 					{% for color in site.colors %}
-					{% capture status %}{{ color[1].class }}{% endcapture %}
-					{% capture text %}{{ color[1].title }}{% endcapture %}
-					{% include ui/tag.html text=text status=status %}
+					{% include ui/tag.html text=color status=color %}
 					{% endfor %}
 				</div>
 			</div>
@@ -81,9 +79,7 @@ menu: base.tags
 				<h3 class="card-title">Tags with legend</h3>
 				<div class="tags-list">   
 					{% for color in site.colors %}
-					{% capture status %}{{ color[1].class }}{% endcapture %}
-					{% capture text %}{{ color[1].title }}{% endcapture %}
-					{% include ui/tag.html text=text legend=status %}
+					{% include ui/tag.html text=color legend=color %}
 					{% endfor %}
 				</div>
 			</div>
@@ -93,7 +89,7 @@ menu: base.tags
 	<div class="col">
 		<div class="card">
 			<div class="card-body">
-				<h3 class="card-title">Default tags</h3>
+				<h3 class="card-title">Tags with checkbox</h3>
 				<div class="tags-list">   
 					{% for i in (1..6) %}     
 					{% capture text %}Label {{ i }}{% endcapture %}
@@ -111,7 +107,7 @@ menu: base.tags
 	<div class="col">
 		<div class="card">
 			<div class="card-body">
-				<h3 class="card-title">Default tags</h3>
+				<h3 class="card-title">Tags with badge</h3>
 				<div class="tags-list">   
 					{% for i in (1..12) %}     
 					{% include ui/tag.html text="Label" badge=i %}
