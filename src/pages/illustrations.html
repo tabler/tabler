@@ -6,8 +6,21 @@ layout: default
 permalink: illustrations.html
 ---
 
-{% assign illustrations = "" | split: "," %} {% assign first_illustration = '' %} {% for illustration in site.free-illustrations reversed %} {% if illustration.id contains 'autodark' %} {% assign first_illustration = illustration %} {% assign
-illustrations = illustrations | push: illustration %} {% endif %} {% endfor %} {% assign illustrations = illustrations | reverse %} {% assign skin_color = site.skin-colors | first %} {% assign color = site.colors | first %}
+{% comment %}
+{% assign illustrations = "" | split: "," %}
+{% assign first_illustration = '' %}
+{% for illustration in site.free-illustrations reversed %}
+	{% if illustration.id contains 'autodark' %}
+		{% assign first_illustration = illustration %}
+		{% assign illustrations = illustrations | push: illustration %}
+	{% endif %}
+{% endfor %}
+
+{% assign illustrations = illustrations | reverse %}
+{% endcomment %}
+
+{% assign skin_color = site.skin-colors | first %} 
+{% assign color = site.colors | first %}
 
 <div class="mb-7" style="--tblr-illustrations-primary: {{ color[1].hex }}; --tblr-illustrations-skin: {{ skin_color[1].hex }};" id="current-illustration-style">
 	<div class="row row-cards">
@@ -75,7 +88,7 @@ illustrations = illustrations | push: illustration %} {% endif %} {% endfor %} {
 </div>
 
 <h2 class="page-title my-5">
-	{{ site.data.illustrations | size | minus: 4 }} more SVG Illustrations
+	{{ illustrations | size | minus: 4 }} more SVG Illustrations
 </h2>
 
 <div class="row row-cards">
