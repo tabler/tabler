@@ -6,7 +6,7 @@
 {% assign libs = page.libs | default: layout.libs %}
 
 {% if libs %}
-	{% for lib in site.data.libs.css %}
+	{% for lib in libs.css %}
 		{% if libs contains lib[0] %}
 			{% for file in lib[1] %}
 				<link href="{% if file contains 'http://' or file contains 'https://' %}{{ file }}{% else %}{{ page | relative }}/{% if environment != 'development' %}dist/libs{% else %}node_modules{% endif %}/{% if environment != 'development' %}{{ file | replace: '@', '' }}{% else %}{{ file }}{% endif %}{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}{% endif %}" rel="stylesheet"/>
