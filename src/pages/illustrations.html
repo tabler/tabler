@@ -144,7 +144,7 @@ permalink: illustrations.html
 	const illustrations = {
 	{% for illustration in illustrations %}
 		"{{ illustration.slug }}": {
-	      svg: '{{ illustration.content | replace: '<svg ', '<svg class="w-100 h-auto" ' | quote | replace_regex: "\n", "\n" }}',
+	      svg: '{{ illustration.content | replace: '<svg ', '<svg class="w-100 h-auto" ' | escape | replace_regex: "\n", "\n" }}',
 		},
 	{% endfor %}
 	}

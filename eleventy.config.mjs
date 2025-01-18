@@ -17,8 +17,7 @@ export default function (eleventyConfig) {
 	eleventyConfig.setWatchThrottleWaitTime(100);
 
 	eleventyConfig.setLiquidOptions({
-		timezoneOffset: 0,
-		dynamicPartials: true
+		timezoneOffset: 0
 	});
 
 	if (isDevelopment) {
@@ -71,7 +70,7 @@ export default function (eleventyConfig) {
 	 * Filters
 	 */
 	eleventyConfig.addFilter("markdownify", function (value) { return value });
-	eleventyConfig.addFilter("quote", function (value) { return value });
+	
 	eleventyConfig.addFilter("extract", function (value) { return value });
 	eleventyConfig.addFilter("miliseconds_to_minutes", function (value) { return value });
 	eleventyConfig.addFilter("random_id", function (value) { return value });
