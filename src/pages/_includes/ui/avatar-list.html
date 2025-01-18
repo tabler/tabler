@@ -2,7 +2,7 @@
 {% assign offset = include.offset | default: 0 %}
 {% assign size = include['size'] | default: 'sm' %}
 <div class="avatar-list{% if include.stacked %} avatar-list-stacked{% endif %}{% if include.class %} {{ include.class }}{% endif %}">
-    {% for person in site.data.people limit: limit offset: offset %}
+    {% for person in people limit: limit offset: offset %}
         {% include "ui/avatar.html" person=person size=size rounded=true %}
     {% endfor %}
     {% if include.text %}

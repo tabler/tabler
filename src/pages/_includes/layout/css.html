@@ -9,16 +9,16 @@
 	{% for lib in site.data.libs.css %}
 		{% if libs contains lib[0] %}
 			{% for file in lib[1] %}
-				<link href="{% if file contains 'http://' or file contains 'https://' %}{{ file }}{% else %}{{ site.base }}/{% if environment != 'development' %}dist/libs{% else %}node_modules{% endif %}/{% if environment != 'development' %}{{ file | replace: '@', '' }}{% else %}{{ file }}{% endif %}{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}{% endif %}" rel="stylesheet"/>
+				<link href="{% if file contains 'http://' or file contains 'https://' %}{{ file }}{% else %}{{ page | relative }}/{% if environment != 'development' %}dist/libs{% else %}node_modules{% endif %}/{% if environment != 'development' %}{{ file | replace: '@', '' }}{% else %}{{ file }}{% endif %}{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}{% endif %}" rel="stylesheet"/>
 			{% endfor %}
 		{% endif %}
 	{% endfor %}
 {% endif %}
 
-<link href="{{ site.base }}/dist/css/tabler{% if page.rtl or site.rtl %}.rtl{% endif %}{% if environment != 'development' %}.min{% endif %}.css{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}" rel="stylesheet"/>
+<link href="{{ page | relative }}/dist/css/tabler{% if page.rtl or site.rtl %}.rtl{% endif %}{% if environment != 'development' %}.min{% endif %}.css{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}" rel="stylesheet"/>
 
 {% for plugin in site.tabler-css-plugins %}
-	<link href="{{ site.base }}/dist/css/{{ plugin }}{% if page.rtl or site.rtl %}.rtl{% endif %}{% if environment != 'development' %}.min{% endif %}.css{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}" rel="stylesheet"/>
+	<link href="{{ page | relative }}/dist/css/{{ plugin }}{% if page.rtl or site.rtl %}.rtl{% endif %}{% if environment != 'development' %}.min{% endif %}.css{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}" rel="stylesheet"/>
 {% endfor %}
 
-<link href="{{ site.base }}/dist/css/demo{% if page.rtl or site.rtl %}.rtl{% endif %}{% if environment != 'development' %}.min{% endif %}.css{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}" rel="stylesheet"/>
+<link href="{{ page | relative }}/dist/css/demo{% if page.rtl or site.rtl %}.rtl{% endif %}{% if environment != 'development' %}.min{% endif %}.css{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}" rel="stylesheet"/>

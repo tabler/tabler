@@ -39,9 +39,6 @@ let BUILD = false,
  */
 gulp.task('build-on', (cb) => {
 	BUILD = true
-	distDir = './dist'
-	demoDir = './demo'
-
 	cb()
 })
 

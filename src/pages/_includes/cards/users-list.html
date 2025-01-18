@@ -8,7 +8,7 @@
 	</div>
 	<div class="list-group list-group-flush{% if hoverable %} list-group-hoverable{% endif %}">
 		{% assign colors = 'green,red,yellow,x,x' | split: ',' %}
-		{% for person in site.data.people limit: limit offset: offset %}
+		{% for person in people limit: limit offset: offset %}
 			{% assign color = forloop.index | plus: 5 | random_item: colors %}
 			<div class="list-group-item{% if checked-ids contains forloop.index %} active{% endif %}">
 				<div class="row align-items-center">

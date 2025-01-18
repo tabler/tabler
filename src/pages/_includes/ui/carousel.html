@@ -6,7 +6,7 @@
    {% if include.indicators %}
    <div class="carousel-indicators{% if include.indicators-vertical %} carousel-indicators-vertical{% endif %}{% if include.indicators-dot %} carousel-indicators-dot{% elsif include.indicators-thumb %} carousel-indicators-thumb{% endif %}">
 	   {% for photo in photos limit: limit offset: offset %}
-      <button type="button" data-bs-target="#{{ id }}" data-bs-slide-to="{{ forloop.index | minus: 1 }}" class="{%if include.indicators-thumb-ratio %} ratio ratio-4x3{% endif %}{% if forloop.first %} active{% endif %}"{% if include.indicators-thumb %} style="background-image: url({{ site.base }}/static/photos/{{ photo.file }})"{% endif %}></button>
+      <button type="button" data-bs-target="#{{ id }}" data-bs-slide-to="{{ forloop.index | minus: 1 }}" class="{%if include.indicators-thumb-ratio %} ratio ratio-4x3{% endif %}{% if forloop.first %} active{% endif %}"{% if include.indicators-thumb %} style="background-image: url({{ page | relative }}/static/photos/{{ photo.file }})"{% endif %}></button>
       {% endfor %}
    </div>
    {% endif %}
@@ -14,7 +14,7 @@
    <div class="carousel-inner">
       {% for photo in photos limit: limit offset: offset %}
       <div class="carousel-item{% if forloop.first %} active{% endif %}">
-         <img class="d-block w-100" alt="" src="{{ site.base }}/static/photos/{{ photo.file }}">
+         <img class="d-block w-100" alt="" src="{{ page | relative }}/static/photos/{{ photo.file }}">
 
          {% if include.captions %}
          <div class="carousel-caption-background d-none d-md-block"></div>

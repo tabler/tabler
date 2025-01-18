@@ -2,17 +2,17 @@
 {% assign hide-icons = include.hide-icons %}
 {% assign icons-count = site.data.icons-info.count %}
 
-{% assign menu = site.data.menu %}
+{% assign menu = menu %}
 
 {% if include.sample %}
-	{% assign menu = site.data.menu-sample %}
+	{% assign menu = menu-sample %}
 {% endif %}
 
 <ul class="navbar-nav{% if include.class %} {{ include.class }}{% endif %}">
 	{% for level-1 in menu %}
 		{% assign icon = level-1[1].icon %}
 		<li class="nav-item{% if level-1[0] == current-page[0] or level-1[1].active %} active{% endif %}{% if level-1[1].children %} dropdown{% endif %}">
-			<a class="nav-link{% if level-1[1].children %} dropdown-toggle{% endif %}{% if level-1[1].disabled %} disabled{% endif %}" {% if level-1[1].children %}href="#navbar-{{ level-1[0] }}" data-bs-toggle="dropdown" data-bs-auto-close="{% if include.keep-open %}false{% else %}outside{% endif %}" role="button" aria-expanded="{% if include.auto-open and level-1[0] == current-page[0] %}true{% else %}false{% endif %}" {% else %}href="{{ site.base }}/{{ level-1[1].url }}" {% endif %}>
+			<a class="nav-link{% if level-1[1].children %} dropdown-toggle{% endif %}{% if level-1[1].disabled %} disabled{% endif %}" {% if level-1[1].children %}href="#navbar-{{ level-1[0] }}" data-bs-toggle="dropdown" data-bs-auto-close="{% if include.keep-open %}false{% else %}outside{% endif %}" role="button" aria-expanded="{% if include.auto-open and level-1[0] == current-page[0] %}true{% else %}false{% endif %}" {% else %}href="{{ page | relative }}/{{ level-1[1].url }}" {% endif %}>
 				{% unless hide-icons %}
 				<span class="nav-link-icon d-md-none d-lg-inline-block">{% include "ui/icon.html" icon=icon %}</span>
 				{% endunless %}
@@ -48,7 +48,7 @@
 
 					{% if level-2[1].children %}<div class="dropend">{% endif %}
 
-					<a class="dropdown-item{% if level-2[1].children %} dropdown-toggle{% endif %}{% if level-1[0] == current-page[0] and level-2[0] == current-page[1] and current-page.size == 2 %} active{% endif %}{% if level-2[1].color %} text-{{ level-2[1].color }}{% endif %}" {% if level-2[1].children %}href="#sidebar-{{ level-2[0] }}" data-bs-toggle="dropdown" data-bs-auto-close="{% if include.keep-open %}false{% else %}outside{% endif %}" role="button" aria-expanded="false" {% else %}href="{% if level-2[1].url contains 'http://' or level-2[1].url contains 'https://'%}{{ level-2[1].url }}{% else %}{{ site.base }}/{{ level-2[1].url }}{% endif %}"{% endif %}{% if level-2[1].url contains 'http://' or level-2[1].url contains 'https://'%} target="_blank" rel="noopener"{% endif %}>
+					<a class="dropdown-item{% if level-2[1].children %} dropdown-toggle{% endif %}{% if level-1[0] == current-page[0] and level-2[0] == current-page[1] and current-page.size == 2 %} active{% endif %}{% if level-2[1].color %} text-{{ level-2[1].color }}{% endif %}" {% if level-2[1].children %}href="#sidebar-{{ level-2[0] }}" data-bs-toggle="dropdown" data-bs-auto-close="{% if include.keep-open %}false{% else %}outside{% endif %}" role="button" aria-expanded="false" {% else %}href="{% if level-2[1].url contains 'http://' or level-2[1].url contains 'https://'%}{{ level-2[1].url }}{% else %}{{ page | relative }}/{{ level-2[1].url }}{% endif %}"{% endif %}{% if level-2[1].url contains 'http://' or level-2[1].url contains 'https://'%} target="_blank" rel="noopener"{% endif %}>
 						{% if level-2[1].icon %}
 							{% assign icon = level-2[1].icon %}
 							{% include "ui/icon.html" icon=icon class="icon-inline me-1" %}
@@ -64,7 +64,7 @@
 					{% if level-2[1].children %}
 					<div class="dropdown-menu">
 						{% for level-3 in level-2[1].children %}
-						<a href="{% if level-3[1].url contains 'http://' or level-3[1].url contains 'https://'%}{{ level-3[1].url }}{% else %}{{ site.base }}/{{ level-3[1].url }}{% endif %}" class="dropdown-item">
+						<a href="{% if level-3[1].url contains 'http://' or level-3[1].url contains 'https://'%}{{ level-3[1].url }}{% else %}{{ page | relative }}/{{ level-3[1].url }}{% endif %}" class="dropdown-item">
 							{{ level-3[1].title }}
 
 							{% if level-3[1].badge %}

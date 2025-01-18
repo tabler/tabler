@@ -17,7 +17,7 @@
 		{% assign options = data.options %}
 
 		{% if data.data == 'people' %}
-			{% for person in site.data.people limit: 20 %}
+			{% for person in people limit: 20 %}
 				<option value="{{ person.id }}"{% if include.indicator == 'avatar' %} data-custom-properties="{% capture indicator %}{% include "ui/avatar.html" size='xs' person=person %}{% endcapture %}{{ indicator | strip | escape }}"{% endif %}>{{ person.full_name }}</option>
 			{% endfor %}
 

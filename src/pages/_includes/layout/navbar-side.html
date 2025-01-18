@@ -1,5 +1,5 @@
 {% assign person-id = include.person-id | default: 1 %}
-{% assign person = site.data.people[person-id] %}
+{% assign person = people[person-id] %}
 <div class="navbar-nav flex-row{% if include.class %} {{ include.class }}{% endif %}">
 
 	{% unless include.condensed %}
@@ -48,11 +48,11 @@
 		</a>
 		<div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow"{% if include.dark %} data-bs-theme="light"{% endif %}>
 			<a href="#" class="dropdown-item">Status</a>
-			<a href="{{ site.base }}/profile.html" class="dropdown-item">Profile</a>
+			<a href="{{ page | relative }}/profile.html" class="dropdown-item">Profile</a>
 			<a href="#" class="dropdown-item">Feedback</a>
 			<div class="dropdown-divider"></div>
-			<a href="{{ site.base }}/settings.html" class="dropdown-item">Settings</a>
-			<a href="{{ site.base }}/sign-in.html" class="dropdown-item">Logout</a>
+			<a href="{{ page | relative }}/settings.html" class="dropdown-item">Settings</a>
+			<a href="{{ page | relative }}/sign-in.html" class="dropdown-item">Logout</a>
 		</div>
 	</div>
 </div>
