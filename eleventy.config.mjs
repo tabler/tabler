@@ -1,4 +1,5 @@
 import { relative } from 'path';
+import htmlmin from 'html-minifier';
 
 /** @type {import('@11ty/eleventy').LocalConfig} */
 export default function (eleventyConfig) {
@@ -28,8 +29,43 @@ export default function (eleventyConfig) {
 		"dist": "dist"
 	});
 
+	/**
+	 * Data
+	 */
 	eleventyConfig.addGlobalData("environment", env);
 
+	eleventyConfig.addGlobalData("site", {
+		title: "Tabler",
+		description: "Premium and Open Source dashboard template with responsive and high quality UI.",
+		themeColor: "#066fd1",
+
+		email: "support@tabler.io",
+		homepage: "https://tabler.io",
+		githubUrl: "https://github.com/tabler/tabler",
+		githubSponsorsUrl: "https://github.com/sponsors/codecalm",
+		changelogUrl: "https://github.com/tabler/tabler/releases",
+		sponsorUrl: "https://github.com/sponsors/codecalm",
+		previewUrl: "https://tabler.io/demo",
+		docsUrl: "https://tabler.io/docs",
+
+		mapboxKey: "pk.eyJ1IjoidGFibGVyIiwiYSI6ImNscHh3dnhndjB2M3QycW85bGd0NXRmZ3YifQ.9LfHPsNoEXQH-xzz-81Ffw",
+		googleMapsKey: "AIzaSyAr5mRB4U1KRkVznIrDWEvZjroYcD202DI",
+		googleMapsDevKey: "AIzaSyCL-BY8-sq12m0S9H-S_yMqDmcun3A9znw",
+		npmPackage: "@tabler/core",
+
+		icons: {
+			link: "https://tabler.io/icons"
+		},
+		emails: {
+			price: "$29",
+			buy_link: "https://r.tabler.io/buy-emails"
+		},
+		illustrations: {
+			price: "$59",
+			count: 50,
+			buy_link: "https://r.tabler.io/buy-illustrations"
+		}
+	});
 
 	/**
 	 * Filters
@@ -190,37 +226,26 @@ export default function (eleventyConfig) {
 		});
 	});
 
-	eleventyConfig.addGlobalData("site", {
-		title: "Tabler",
-		description: "Premium and Open Source dashboard template with responsive and high quality UI.",
-		themeColor: "#066fd1",
+	/**
+	 * Transforms
+	 */
+	function minifyHTML(content, outputPath) {
+		return outputPath.endsWith('.html')
+			? htmlmin.minify(content, {
+				collapseBooleanAttributes: true,
+				collapseWhitespace: true,
+				conservativeCollapse: true,
+				minifyCSS: true,
+				minifyJS: true,
+				removeComments: true,
+				sortAttributes: true,
+				sortClassName: true,
+				useShortDoctype: true,
+			})
+			: content
+	}
 
-		email: "support@tabler.io",
-		homepage: "https://tabler.io",
-		githubUrl: "https://github.com/tabler/tabler",
-		githubSponsorsUrl: "https://github.com/sponsors/codecalm",
-		changelogUrl: "https://github.com/tabler/tabler/releases",
-		sponsorUrl: "https://github.com/sponsors/codecalm",
-		previewUrl: "https://tabler.io/demo",
-		docsUrl: "https://tabler.io/docs",
-
-		mapboxKey: "pk.eyJ1IjoidGFibGVyIiwiYSI6ImNscHh3dnhndjB2M3QycW85bGd0NXRmZ3YifQ.9LfHPsNoEXQH-xzz-81Ffw",
-		googleMapsKey: "AIzaSyAr5mRB4U1KRkVznIrDWEvZjroYcD202DI",
-		googleMapsDevKey: "AIzaSyCL-BY8-sq12m0S9H-S_yMqDmcun3A9znw",
-		npmPackage: "@tabler/core",
-
-		icons: {
-			link: "https://tabler.io/icons"
-		},
-		emails: {
-			price: "$29",
-			buy_link: "https://r.tabler.io/buy-emails"
-		},
-		illustrations: {
-			price: "$59",
-			count: 50,
-			buy_link: "https://r.tabler.io/buy-illustrations"
-		}
-	});
-
+	if (env !== 'development') {
+		config.addTransform('htmlmin', minifyHTML)
+	}
 };
