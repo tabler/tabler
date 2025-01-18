@@ -4,7 +4,7 @@
 {% assign percentage-color = include.percentage-color | default: "green" %}
 {% assign due = include.due | default: "2 days" %}
 <div class="card">
-	{% include ui/progress.html value=percentage class="card-progress" color=percentage-color %}
+	{% include "ui/progress.html" value=percentage class="card-progress" color=percentage-color %}
 	<div class="card-body">
 
 		<h3 class="card-title">
@@ -12,11 +12,11 @@
 			{% if include.badge %} <span class="badge ms-2">{{ include.badge }}</span>{% endif %}
 		</h3>
 
-		{% include ui/avatar-list.html offset=offset limit=limit stacked=true class="mb-3" %}
+		{% include "ui/avatar-list.html" offset=offset limit=limit stacked=true class="mb-3" %}
 
 		<div class="card-meta d-flex justify-content-between">
 			<div class="d-flex align-items-center">
-				{% include ui/icon.html icon="check" class="me-2" %}
+				{% include "ui/icon.html" icon="check" class="me-2" %}
 				<span>5/10</span>
 			</div>
 			<span>Due {{ due }}</span>

@@ -16,7 +16,7 @@
 	{% if include.radio %}
 	<input type="radio" class="btn-check" name="btn-radio-{{ id }}" id="btn-radio-{{ id }}-{{ forloop.index }}" autocomplete="off"{% if forloop.index == 1 %} checked{% endif %}>
 	{% endif %}
-	<{% if include.radio %}label for="btn-radio-{{ id }}-{{ forloop.index }}"{% else %}button{% endif %} class="btn btn-icon{% if forloop.index == 1 %}{% unless include.radio %} active{% endunless %}{% endif %}">{% include ui/icon.html icon=icon %}</{% if include.radio %}label{% else %}button{% endif %}>
+	<{% if include.radio %}label for="btn-radio-{{ id }}-{{ forloop.index }}"{% else %}button{% endif %} class="btn btn-icon{% if forloop.index == 1 %}{% unless include.radio %} active{% endunless %}{% endif %}">{% include "ui/icon.html" icon=icon %}</{% if include.radio %}label{% else %}button{% endif %}>
 	{% endfor %}
 
 	{% if include.dropdown %}
@@ -27,7 +27,7 @@
 		<{% if include.radio %}label for="btn-radio-{{ id }}-dropdown"{% else %}button{% endif %} class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
 			Other
 		</{% if include.radio %}label{% else %}button{% endif %}>
-		{% include ui/dropdown-menu.html %}
+		{% include "ui/dropdown-menu.html" %}
 		<div class="dropdown-menu dropdown-menu-end">
 			<a class="dropdown-item" href="#">
 				Option 4

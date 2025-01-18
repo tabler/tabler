@@ -14,11 +14,11 @@
 {% elsif include.layout == 'icon' %}
 	<div class="input-icon{% if include.class %} {{ include.class }}{% endif %}">
 		{{ input | replace: include.class, '' }}
-		<span class="input-icon-addon">{% include ui/icon.html icon="calendar" %}</span>
+		<span class="input-icon-addon">{% include "ui/icon.html" icon="calendar" %}</span>
 	</div>
 {% elsif include.layout == 'icon-prepend' %}
 	<div class="input-icon{% if include.class %} {{ include.class }}{% endif %}">
-		<span class="input-icon-addon">{% include ui/icon.html icon="calendar" %}</span>
+		<span class="input-icon-addon">{% include "ui/icon.html" icon="calendar" %}</span>
 		{{ input | replace: include.class, ''  }}
 	</div>
 {% else %}
@@ -36,8 +36,8 @@
 		window.Litepicker && ({% if jekyll.environment == 'development' %}window.tabler_datepicker["datepicker-{{ id }}"] = {% endif %}new Litepicker({
 			element: document.getElementById('datepicker-{{ id }}'),
 			buttonText: {
-				previousMonth: `{% capture icon %}{% include ui/icon.html icon="chevron-left" %}{% endcapture %}{{ icon | strip }}`,
-				nextMonth: `{% capture icon %}{% include ui/icon.html icon="chevron-right" %}{% endcapture %}{{ icon | strip }}`,
+				previousMonth: `{% capture icon %}{% include "ui/icon.html" icon="chevron-left" %}{% endcapture %}{{ icon | strip }}`,
+				nextMonth: `{% capture icon %}{% include "ui/icon.html" icon="chevron-right" %}{% endcapture %}{{ icon | strip }}`,
 			},
 			{% if include.inline %}inlineMode: true,{% endif %}
 		}));

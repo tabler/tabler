@@ -4,10 +4,11 @@ export default function (eleventyConfig) {
 	const env = process.env.NODE_ENV || "development";
 	const isDevelopment = env === "development";
 
-	eleventyConfig.setInputDirectory("src");
+	eleventyConfig.setInputDirectory("src/pages");
 	eleventyConfig.setOutputDirectory("dist");
 
 	eleventyConfig.setLayoutsDirectory("_layouts");
+	eleventyConfig.setIncludesDirectory("_includes");
 
 	if (isDevelopment) {
 		eleventyConfig.addWatchTarget("../../packages/core/dist/**");

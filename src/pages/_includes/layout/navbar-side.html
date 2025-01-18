@@ -5,9 +5,9 @@
 	{% unless include.condensed %}
 	<div class="nav-item d-none d-{{ include.breakpoint }}-flex me-3">
 		<div class="btn-list">
-			{% include ui/button.html icon="brand-github" outline=true text="Source code" href=site.github-url
+			{% include "ui/button.html" icon="brand-github" outline=true text="Source code" href=site.github-url
 			external=true %}
-			{% include ui/button.html icon="heart" icon-color="pink" outline=true text="Sponsor"
+			{% include "ui/button.html" icon="heart" icon-color="pink" outline=true text="Sponsor"
 			href=site.github-sponsors-url external=true %}
 		</div>
 	</div>
@@ -16,28 +16,28 @@
 	<div class="d-none d-{{ include.breakpoint }}-flex">
 		<a href="?theme=dark" class="nav-link px-0 hide-theme-dark" title="Enable dark mode" data-bs-toggle="tooltip"
 		   data-bs-placement="bottom">
-			{% include ui/icon.html icon="moon" %}
+			{% include "ui/icon.html" icon="moon" %}
 		</a>
 
 		<a href="?theme=light" class="nav-link px-0 hide-theme-light" title="Enable light mode" data-bs-toggle="tooltip"
 		   data-bs-placement="bottom">
-			{% include ui/icon.html icon="sun" %}
+			{% include "ui/icon.html" icon="sun" %}
 		</a>
 
 		<div class="nav-item dropdown d-none d-md-flex me-3">
 			<a href="#" class="nav-link px-0" data-bs-toggle="dropdown" tabindex="-1" aria-label="Show notifications">
-				{% include ui/icon.html icon="bell" %}
+				{% include "ui/icon.html" icon="bell" %}
 				<span class="badge bg-red"></span>
 			</a>
 			<div class="dropdown-menu dropdown-menu-arrow dropdown-menu-end dropdown-menu-card">
-				{% include cards/navbar-notifications.html %}
+				{% include "cards/navbar-notifications.html" %}
 			</div>
 		</div>
 	</div>
 
 	<div class="nav-item dropdown">
 		<a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
-			{% include ui/avatar.html person-id=person-id size="sm" %}
+			{% include "ui/avatar.html" person-id=person-id size="sm" %}
 
 			{% unless include.hide-username %}
 			<div class="d-none d-xl-block ps-2">
