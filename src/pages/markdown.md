@@ -2,6 +2,7 @@
 title: Markdown
 page-header: Markdown
 menu: base.markdown
+layout: default
 ---
 
 # Who's that then?
