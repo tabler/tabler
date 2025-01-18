@@ -3,6 +3,7 @@ title: Markdown
 page-header: Markdown
 menu: base.markdown
 layout: default
+permalink: markdown.html
 ---
 
 # Who's that then?

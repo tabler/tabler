@@ -10,8 +10,12 @@ export default function (eleventyConfig) {
 	eleventyConfig.setLayoutsDirectory("_layouts");
 	eleventyConfig.setIncludesDirectory("_includes");
 
+	eleventyConfig.setLiquidOptions({
+		timezoneOffset: 0,
+	});
+
 	if (isDevelopment) {
-		eleventyConfig.addWatchTarget("src/pages/**");
+		// eleventyConfig.addWatchTarget("src/pages/**");
 	}
 
 	eleventyConfig.addPassthroughCopy({
