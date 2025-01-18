@@ -24,6 +24,37 @@ export default function (eleventyConfig) {
 		return relative(page.url, '/') || '.';
 	});
 
+	eleventyConfig.addFilter("random_date_ago", function (value) { return value });
+	eleventyConfig.addFilter("timeago", function (value) { return value });
+	eleventyConfig.addFilter("replace_regex", function (value) { return value });
+	eleventyConfig.addFilter("timestamp_to_date", function (value) { return value });
+	eleventyConfig.addFilter("concat_objects", function (value) { return value });
+	eleventyConfig.addFilter("first_letters", function (value) { return value });
+	eleventyConfig.addFilter("random_number", function (value) { return value });
+	eleventyConfig.addFilter("random_item", function (value) { return value });
+	eleventyConfig.addFilter("random_date", function (value) { return value });
+	eleventyConfig.addFilter("markdownify", function (value) { return value });
+	eleventyConfig.addFilter("quote", function (value) { return value });
+	eleventyConfig.addFilter("extract", function (value) { return value });
+	eleventyConfig.addFilter("miliseconds_to_minutes", function (value) { return value });
+	eleventyConfig.addFilter("random_id", function (value) { return value });
+	eleventyConfig.addFilter("split_to_n", function (value) { return value });
+	eleventyConfig.addFilter("format_number", function (value) { return value });
+
+	const tags = ["removeemptylines", "endremoveemptylines", "capture_global", "endcapture_global", "highlight", "endhighlight" ];
+	tags.forEach(tag => {
+		eleventyConfig.addLiquidTag(tag, function (liquidEngine) {
+			return {
+				parse: function (tagToken, remainingTokens) {
+					this.str = tagToken.args;
+				},
+				render: function (scope, hash) {
+					return "";
+				},
+			};
+		});
+	});
+
 	eleventyConfig.addGlobalData("site", {
 		title: "Tabler",
 		description: "Premium and Open Source dashboard template with responsive and high quality UI.",
