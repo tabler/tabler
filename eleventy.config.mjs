@@ -246,6 +246,6 @@ export default function (eleventyConfig) {
 	}
 
 	if (env !== 'development') {
-		config.addTransform('htmlmin', minifyHTML)
+		eleventyConfig.addTransform('htmlmin', minifyHTML)
 	}
 };
