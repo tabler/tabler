@@ -31,7 +31,7 @@ const gulp = require('gulp'),
 
 let BUILD = false,
 	distDir = './dist',
-	demoDir = './demo',
+	demoDir = './dist',
 	srcDir = './src'
 
 /**
