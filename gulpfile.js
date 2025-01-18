@@ -31,7 +31,7 @@ const gulp = require('gulp'),
 
 let BUILD = false,
 	distDir = './dist',
-	demoDir = './dist',
+	demoDir = './demo',
 	srcDir = './src'
 
 /**
@@ -354,8 +354,6 @@ gulp.task('browser-sync', () => {
 			baseDir: demoDir,
 			routes: {
 				'/node_modules': 'node_modules',
-				'/dist/css': `${distDir}/css`,
-				'/dist/js': `${distDir}/js`,
 				'/dist/img': `${srcDir}/img`,
 				'/static': `${srcDir}/static`,
 			},

@@ -11,7 +11,7 @@
 	{% capture_global scripts %}
 	<script>
 		// @formatter:off
-		{% if jekyll.environment == 'development' %}window.tabler_map = window.tabler_map || {};{% endif %}
+		{% if environment == 'development' %}window.tabler_map = window.tabler_map || {};{% endif %}
 
 		document.addEventListener("DOMContentLoaded", function() {
 			mapboxgl.accessToken = '{{ site.mapbox-key }}';
@@ -31,7 +31,7 @@
 			new mapboxgl.Marker({ color: tabler.getColor("{{ 'primary' }}") }).setLngLat([{{ marker.center[1] }}, {{ marker.center[0] }}]).addTo(map);
 			{% endfor %}
 
-			{% if jekyll.environment == 'development' %}window.tabler_map["map-{{ map-id }}"] = map;{% endif %}
+			{% if environment == 'development' %}window.tabler_map["map-{{ map-id }}"] = map;{% endif %}
 		});
 		// @formatter:on
 	</script>

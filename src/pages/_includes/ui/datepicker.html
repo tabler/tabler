@@ -29,11 +29,11 @@
 <script>
 	// @formatter:off
 	document.addEventListener("DOMContentLoaded", function () {
-		{% if jekyll.environment == 'development' %}
+		{% if environment == 'development' %}
 		window.tabler_datepicker = window.tabler_datepicker || {};
 		{% endif %}
 
-		window.Litepicker && ({% if jekyll.environment == 'development' %}window.tabler_datepicker["datepicker-{{ id }}"] = {% endif %}new Litepicker({
+		window.Litepicker && ({% if environment == 'development' %}window.tabler_datepicker["datepicker-{{ id }}"] = {% endif %}new Litepicker({
 			element: document.getElementById('datepicker-{{ id }}'),
 			buttonText: {
 				previousMonth: `{% capture icon %}{% include "ui/icon.html" icon="chevron-left" %}{% endcapture %}{{ icon | strip }}`,

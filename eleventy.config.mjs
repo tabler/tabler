@@ -5,17 +5,17 @@ export default function (eleventyConfig) {
 	const isDevelopment = env === "development";
 
 	eleventyConfig.setInputDirectory("src/pages");
-	eleventyConfig.setOutputDirectory("dist");
+	eleventyConfig.setOutputDirectory(process.env.DIST_DIR || "demo");
 
 	eleventyConfig.setLayoutsDirectory("_layouts");
 	eleventyConfig.setIncludesDirectory("_includes");
 
 	if (isDevelopment) {
-		eleventyConfig.addWatchTarget("../../packages/core/dist/**");
+		eleventyConfig.addWatchTarget("src/pages/**");
 	}
 
 	eleventyConfig.addPassthroughCopy({
-		"node_modules/@tabler/core/dist": "lib"
+		"dist": "dist"
 	});
 
 	eleventyConfig.addGlobalData("environment", env);
