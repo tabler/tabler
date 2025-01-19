@@ -366,7 +366,12 @@ export default function (eleventyConfig) {
 	/**
 	 * Filters
 	 */
-	eleventyConfig.addFilter("miliseconds_to_minutes", function (value) { return value });
+	eleventyConfig.addFilter("miliseconds_to_minutes", function (value) { 
+		// Raturn 3:45 time format
+		const minutes = Math.floor(value / 60000);
+		const seconds = ((value % 60000) / 1000).toFixed(0);
+		return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+	 });
 
 	eleventyConfig.addFilter("relative", (page) => {
 		return relative(page.url, '/') || '.';

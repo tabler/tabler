@@ -1,18 +1,18 @@
 <!-- Libs JS -->
-{% assign libs = include-libs | default: layout.include-libs %}
+{% assign google-maps-key = site.googleMapsDevKey -%}
+{% if environment != 'development' -%}
+	{% assign google-maps-key = site.googleMapsKey -%}
+{% endif -%}
 
-{% assign google-maps-key = site.googleMapsDevKey %}
-{% if environment != 'development' %}
-	{% assign google-maps-key = site.googleMapsKey %}
-{% endif %}
-
-{% for lib in libs.js %}
-	{% if libs contains lib[0] or libs.global-libs contains lib[0] %}
-		{% for file in lib[1] %}
-		<script src="{% if file contains 'http://' or file contains 'https://' %}{{ file | replace: 'GOOGLE_MAPS_KEY', google-maps-key }}{% else %}{{ page | relative }}/{% if environment != 'development' %}dist/libs{% else %}node_modules{% endif %}/{% if environment != 'development' %}{{ file | replace: '@', '' }}{% else %}{{ file }}{% endif %}{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}{% endif %}" defer></script>
-		{% endfor %}
-	{% endif %}
-{% endfor %}
+{% if page-libs -%}
+	{% for lib in libs.js -%}
+		{% if page-libs contains lib[0] or libs.global-libs contains lib[0] -%}
+			{% for file in lib[1] -%}
+			<script src="{% if file contains 'http://' or file contains 'https://' %}{{ file | replace: 'GOOGLE_MAPS_KEY', google-maps-key }}{% else %}{{ page | relative }}/{% if environment != 'development' %}dist/libs{% else %}node_modules{% endif %}/{% if environment != 'development' %}{{ file | replace: '@', '' }}{% else %}{{ file }}{% endif %}{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}{% endif %}" defer></script>
+			{% endfor -%}
+		{% endif -%}
+	{% endfor -%}
+{% endif -%}
 
 <!-- Tabler Core -->
 
@@ -28,7 +28,7 @@
 {{ script }}
 {% endfor %}
 
-{% assign libs = include-libs | default: layout.include-libs %}
+{% assign libs = page-libs | default: layout.page-libs %}
 {% for lib in libs.js-files %}
 {% if libs contains lib[0] or libs.global-libs contains lib[0] %}
 {% for file in lib[1] %}

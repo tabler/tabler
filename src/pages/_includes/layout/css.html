@@ -3,11 +3,10 @@
 <link href="https://www.unpkg.com/@tabler/icons-webfont@latest/dist/tabler-icons.min.css" rel="stylesheet" />
 {% endif %}
 
-{% assign libs = include-libs | default: layout.libs %}
 
-{% if libs %}
+{% if page-libs %}
 	{% for lib in libs.css %}
-		{% if libs contains lib[0] %}
+		{% if page-libs contains lib[0] %}
 			{% for file in lib[1] %}
 				<link href="{% if file contains 'http://' or file contains 'https://' %}{{ file }}{% else %}{{ page | relative }}/{% if environment != 'development' %}dist/libs{% else %}node_modules{% endif %}/{% if environment != 'development' %}{{ file | replace: '@', '' }}{% else %}{{ file }}{% endif %}{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}{% endif %}" rel="stylesheet"/>
 			{% endfor %}
