@@ -1,5 +1,7 @@
 import { relative } from 'path';
 import htmlmin from 'html-minifier';
+import { readFileSync } from 'fs';
+import { EleventyRenderPlugin } from "@11ty/eleventy";
 
 /** @type {import('@11ty/eleventy').LocalConfig} */
 export default function (eleventyConfig) {
@@ -15,6 +17,10 @@ export default function (eleventyConfig) {
 	eleventyConfig.addPassthroughCopy("favicon.ico");
 
 	eleventyConfig.setWatchThrottleWaitTime(100);
+
+	eleventyConfig.addPlugin(EleventyRenderPlugin, {
+		accessGlobalData: true,
+	});
 
 	eleventyConfig.setLiquidOptions({
 		timezoneOffset: 0,
@@ -35,6 +41,11 @@ export default function (eleventyConfig) {
 	 * Data
 	 */
 	eleventyConfig.addGlobalData("environment", env);
+
+	eleventyConfig.addGlobalData("package", JSON.parse(readFileSync("package.json", "utf-8")));
+	eleventyConfig.addGlobalData("readme", readFileSync("README.md", "utf-8"));
+	eleventyConfig.addGlobalData("license", readFileSync("LICENSE", "utf-8"));
+	eleventyConfig.addGlobalData("changelog", readFileSync("CHANGELOG.md", "utf-8"));
 
 	eleventyConfig.addGlobalData("site", {
 		title: "Tabler",
@@ -355,10 +366,7 @@ export default function (eleventyConfig) {
 	/**
 	 * Filters
 	 */
-	eleventyConfig.addFilter("markdownify", function (value) { return value });
-
 	eleventyConfig.addFilter("miliseconds_to_minutes", function (value) { return value });
-	eleventyConfig.addFilter("random_id", function (value) { return value });
 
 	eleventyConfig.addFilter("relative", (page) => {
 		return relative(page.url, '/') || '.';
