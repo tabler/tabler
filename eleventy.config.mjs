@@ -1,5 +1,5 @@
 import { relative } from 'path';
-import htmlmin from 'html-minifier';
+import prettify from 'html-prettify';
 import { readFileSync } from 'fs';
 import { EleventyRenderPlugin } from "@11ty/eleventy";
 
@@ -529,23 +529,13 @@ export default function (eleventyConfig) {
 	/**
 	 * Transforms
 	 */
-	function minifyHTML(content, outputPath) {
+	function prettifyHTML(content, outputPath) {
 		return outputPath.endsWith('.html')
-			? htmlmin.minify(content, {
-				collapseBooleanAttributes: true,
-				collapseWhitespace: true,
-				conservativeCollapse: true,
-				minifyCSS: true,
-				minifyJS: true,
-				removeComments: true,
-				sortAttributes: true,
-				sortClassName: true,
-				useShortDoctype: true,
-			})
+			? prettify(content)
 			: content
 	}
 
 	if (env !== 'development') {
-		eleventyConfig.addTransform('htmlmin', minifyHTML)
+		eleventyConfig.addTransform('htmlformat', prettifyHTML)
 	}
 };
