@@ -12,8 +12,8 @@
 	{% if environment == 'preview' %}
 		{% include "layout/analytics.html" %}
 
-		<meta name="msapplication-TileColor" content="{{ site.theme-color }}"/>
-		<meta name="theme-color" content="{{ site.theme-color }}"/>
+		<meta name="msapplication-TileColor" content="{{ site.themeColor }}"/>
+		<meta name="theme-color" content="{{ site.themeColor }}"/>
 
 		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
 		<meta name="apple-mobile-web-app-capable" content="yes"/>
@@ -36,7 +36,7 @@
 	</style>
 </head>
 
-{% assign layout-dark = page.layout-dark | default: site.layout-dark %}
+{% assign layout-dark = page.layout-dark | default: site.layoutDark %}
 <body{% if layout.body-class or page.body-class %} class="{% if layout.body-class %} {{ layout.body-class }}{% endif %}{% if page.body-class %} {{ page.body-class }}{% endif %}"{% endif %}>
 <script src="{{ page | relative }}/dist/js/demo-theme{% if environment != 'development' %}.min{% endif %}.js{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}"></script>
 

@@ -55,6 +55,14 @@ export default function (eleventyConfig) {
 		googleMapsDevKey: "AIzaSyCL-BY8-sq12m0S9H-S_yMqDmcun3A9znw",
 		npmPackage: "@tabler/core",
 
+		tablerCssPlugins: [
+			"tabler-flags",
+			"tabler-socials",
+			"tabler-payments",
+			"tabler-vendors",
+			"tabler-marketing"
+		],
+
 		icons: {
 			link: "https://tabler.io/icons"
 		},
