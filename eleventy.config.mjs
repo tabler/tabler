@@ -1,5 +1,5 @@
 import { relative } from 'path';
-import prettify from 'html-prettify';
+import beautify from 'simply-beautiful';
 import { readFileSync } from 'fs';
 import { EleventyRenderPlugin } from "@11ty/eleventy";
 
@@ -531,7 +531,7 @@ export default function (eleventyConfig) {
 	 */
 	function prettifyHTML(content, outputPath) {
 		return outputPath.endsWith('.html')
-			? prettify(content)
+			? beautify.html(content)
 			: content
 	}
 
