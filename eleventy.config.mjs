@@ -70,8 +70,7 @@ export default function (eleventyConfig) {
 	 * Filters
 	 */
 	eleventyConfig.addFilter("markdownify", function (value) { return value });
-	
-	eleventyConfig.addFilter("extract", function (value) { return value });
+
 	eleventyConfig.addFilter("miliseconds_to_minutes", function (value) { return value });
 	eleventyConfig.addFilter("random_id", function (value) { return value });
 
@@ -211,7 +210,7 @@ export default function (eleventyConfig) {
 	/**
 	 * Shortcodes
 	 */
-	const tags = ["removeemptylines", "endremoveemptylines", "capture_global", "endcapture_global", "highlight", "endhighlight"];
+	const tags = ["capture_global", "endcapture_global", "highlight", "endhighlight"];
 	tags.forEach(tag => {
 		eleventyConfig.addLiquidTag(tag, function (liquidEngine) {
 			return {

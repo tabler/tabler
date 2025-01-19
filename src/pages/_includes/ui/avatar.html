@@ -1,4 +1,3 @@
-{% removeemptylines %}
 {% assign src = include.src %}
 {% assign placeholder = include.placeholder %}
 {% if include.person-id %}
@@ -23,4 +22,3 @@
 {% if link %}{% assign el = 'a' %}{% endif %}
 <{{ el }} class="avatar{% if include['size'] %} avatar-{{ include['size'] }}{% endif %}{% if include.thumb %} avatar-thumb{% endif %}{% if include.class %} {{ include.class }}{% endif %}{% if include.shape %} {{ include.shape }}{% endif %}{% if include.color %} bg-{{ include.color }}-lt{% endif %}{% if include.rounded %} rounded{% endif %}"{% if src %} style="background-image: url({{ page | relative }}/{{ src }})"{% endif %}{% if include.dropdown %} data-bs-toggle="dropdown"{% endif %}>{% if include.status %}
 	<span class="badge bg-{{ include.status }}">{% if include.status-text %}{{ include.status-text }}{% elsif include.status-icon %}{% include "ui/icon.html" icon=include.status-icon class="avatar-status-icon" %}{% endif %}</span>{% endif %}{% if placeholder %}{{ placeholder }}{% elsif include.icon %}{% include "ui/icon.html" icon=include.icon class="avatar-icon" %}{% endif %}</{{ el }}>
-{% endremoveemptylines %}
