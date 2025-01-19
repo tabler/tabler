@@ -531,7 +531,10 @@ export default function (eleventyConfig) {
 	 */
 	function prettifyHTML(content, outputPath) {
 		return outputPath.endsWith('.html')
-			? beautify.html(content)
+			? beautify.html(content, {
+				indent_size: 2,
+			})
+				.replace(/^\s*[\r\n]/gm, '')
 			: content
 	}
 
