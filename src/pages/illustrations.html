@@ -6,30 +6,22 @@ layout: default
 permalink: illustrations.html
 ---
 
-{% comment %}
-{% assign illustrations = "" | split: "," %}
-{% assign first_illustration = '' %}
-{% for illustration in site.free-illustrations reversed %}
-	{% if illustration.id contains 'autodark' %}
-		{% assign first_illustration = illustration %}
-		{% assign illustrations = illustrations | push: illustration %}
-	{% endif %}
+{% assign first-illustration = '' %}
+{% for illustration in free-illustrations.autodark %}
+	{% assign first-illustration = illustration[1] %}
 {% endfor %}
 
-{% assign illustrations = illustrations | reverse %}
-{% endcomment %}
-
-{% assign skin_color = site.skinColors | first %} 
+{% assign skinColor = site.skinColors | first %} 
 {% assign color = site.colors | first %}
 
-<div class="mb-7" style="--tblr-illustrations-primary: {{ color[1].hex }}; --tblr-illustrations-skin: {{ skin_color[1].hex }};" id="current-illustration-style">
+<div class="mb-7" style="--tblr-illustrations-primary: {{ color.hex }}; --tblr-illustrations-skin: {{ skinColor.hex }};" id="current-illustration-style">
 	<div class="row row-cards">
 		<div class="col-12">
 			<div class="row row-cards row-deck g-4">
 				<div class="col-md-7">
 					<div class="card">
 						<div class="card-body d-flex align-items-center">
-							<div id="current-illustration">{{ first_illustration | replace: '<svg ', '<svg class="w-100 h-auto" ' }}</div>
+							<div id="current-illustration">{{ first-illustration | replace: '<svg ', '<svg class="w-100 h-auto" ' }}</div>
 						</div>
 					</div>
 				</div>
@@ -65,12 +57,12 @@ permalink: illustrations.html
 
 										<div class="form-label mt-4">Select SVG illustration</div>
 										<div class="row">
-											{% for illustration in illustrations %}
+											{% for illustration in free-illustrations.autodark %}
 											<div class="col-3">
 												<label class="form-imagecheck mb-2">
-													<input name="form-imagecheck" type="radio" value="{{ illustration.slug }}" class="form-imagecheck-input js-select-illustration" {% if forloop.first %} checked{% endif %}>
+													<input name="form-imagecheck" type="radio" value="{{ illustration[0] }}" class="form-imagecheck-input js-select-illustration" {% if forloop.last %} checked{% endif %}>
 													<span class="form-imagecheck-figure">
-														{{ illustration | replace: '<svg ', '<svg class="w-100 h-auto" ' }}
+														{{ illustration[1] | replace: '<svg ', '<svg class="w-100 h-auto" ' }}
 													</span>
 												</label>
 											</div>

@@ -76,7 +76,7 @@ export default function (eleventyConfig) {
 			buy_link: "https://r.tabler.io/buy-illustrations"
 		},
 
-		"colors": {
+		colors: {
 			"blue": {
 				"class": "blue",
 				"hex": "#066fd1",
@@ -138,7 +138,7 @@ export default function (eleventyConfig) {
 				"title": "Cyan"
 			}
 		},
-		"skin-colors": {
+		skinColors: {
 			"rose": {
 				"hex": "#FFCB9D",
 				"title": "Rose",
@@ -180,7 +180,7 @@ export default function (eleventyConfig) {
 				"class": "gray"
 			}
 		},
-		"colors-extra": {
+		colorsExtra: {
 			"white": {
 				"hex": "#ffffff",
 				"title": "White"
@@ -194,7 +194,7 @@ export default function (eleventyConfig) {
 				"title": "Gray"
 			}
 		},
-		"variants": [
+		variants: [
 			{
 				"name": "success",
 				"icon": "check"
@@ -246,7 +246,7 @@ export default function (eleventyConfig) {
 				"title": "Light"
 			}
 		},
-		"button-states": [
+		"buttonStates": [
 			{
 				"class": null,
 				"title": "Normal"
@@ -459,6 +459,14 @@ export default function (eleventyConfig) {
 		}
 
 		return elem.length;
+	})
+
+	eleventyConfig.addFilter("first", function (elem) {
+		if (elem instanceof Object) {
+			return elem[Object.keys(elem)[0]];
+		}
+
+		return elem[0];
 	})
 
 	// time ago from today
