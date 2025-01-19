@@ -17,7 +17,10 @@ export default function (eleventyConfig) {
 	eleventyConfig.setWatchThrottleWaitTime(100);
 
 	eleventyConfig.setLiquidOptions({
-		timezoneOffset: 0
+		timezoneOffset: 0,
+		jekyllInclude: true,
+		dynamicPartials: true,
+		jekyllWhere: true,
 	});
 
 	if (isDevelopment) {
@@ -63,7 +66,282 @@ export default function (eleventyConfig) {
 			price: "$59",
 			count: 50,
 			buy_link: "https://r.tabler.io/buy-illustrations"
-		}
+		},
+
+		"colors": {
+			"blue": {
+				"class": "blue",
+				"hex": "#066fd1",
+				"title": "Blue"
+			},
+			"azure": {
+				"class": "azure",
+				"hex": "#45aaf2",
+				"title": "Azure"
+			},
+			"indigo": {
+				"class": "indigo",
+				"hex": "#6574cd",
+				"title": "Indigo"
+			},
+			"purple": {
+				"class": "purple",
+				"hex": "#a55eea",
+				"title": "Purple"
+			},
+			"pink": {
+				"class": "pink",
+				"hex": "#f66d9b",
+				"title": "Pink"
+			},
+			"red": {
+				"class": "red",
+				"hex": "#fa4654",
+				"title": "Red"
+			},
+			"orange": {
+				"class": "orange",
+				"hex": "#fd9644",
+				"title": "Orange"
+			},
+			"yellow": {
+				"class": "yellow",
+				"hex": "#f1c40f",
+				"title": "Yellow"
+			},
+			"lime": {
+				"class": "lime",
+				"hex": "#7bd235",
+				"title": "Lime"
+			},
+			"green": {
+				"class": "green",
+				"hex": "#5eba00",
+				"title": "Green"
+			},
+			"teal": {
+				"class": "teal",
+				"hex": "#2bcbba",
+				"title": "Teal"
+			},
+			"cyan": {
+				"class": "cyan",
+				"hex": "#17a2b8",
+				"title": "Cyan"
+			}
+		},
+		"skin-colors": {
+			"rose": {
+				"hex": "#FFCB9D",
+				"title": "Rose",
+				"class": "rose"
+			},
+			"yellow": {
+				"hex": "#F0BA60",
+				"title": "Yellow",
+				"class": "yellow"
+			},
+			"skin-1": {
+				"hex": "#e2c6a7",
+				"title": "Skin 1",
+				"class": "skin-1"
+			},
+			"skin-2": {
+				"hex": "#c7a786",
+				"title": "Skin 2",
+				"class": "skin-2"
+			},
+			"skin-3": {
+				"hex": "#a68063",
+				"title": "Skin 3",
+				"class": "skin-3"
+			},
+			"skin-4": {
+				"hex": "#926241",
+				"title": "Skin 4",
+				"class": "skin-4"
+			},
+			"skin-5": {
+				"hex": "#654c45",
+				"title": "Skin 5",
+				"class": "skin-5"
+			},
+			"gray": {
+				"hex": "#d5d7dd",
+				"title": "Gray",
+				"class": "gray"
+			}
+		},
+		"colors-extra": {
+			"white": {
+				"hex": "#ffffff",
+				"title": "White"
+			},
+			"dark": {
+				"hex": "#303645",
+				"title": "Dark"
+			},
+			"gray": {
+				"hex": "#868e96",
+				"title": "Gray"
+			}
+		},
+		"variants": [
+			{
+				"name": "success",
+				"icon": "check"
+			},
+			{
+				"name": "info",
+				"icon": "info-circle"
+			},
+			{
+				"name": "warning",
+				"icon": "alert-triangle"
+			},
+			{
+				"name": "danger",
+				"icon": "alert-circle"
+			}
+		],
+		"theme-colors": {
+			"primary": {
+				"class": "primary",
+				"title": "Primary"
+			},
+			"secondary": {
+				"class": "secondary",
+				"title": "Secondary"
+			},
+			"success": {
+				"class": "success",
+				"title": "Success"
+			},
+			"warning": {
+				"class": "warning",
+				"title": "Warning"
+			},
+			"danger": {
+				"class": "danger",
+				"title": "Danger"
+			},
+			"info": {
+				"class": "info",
+				"title": "Info"
+			},
+			"dark": {
+				"class": "dark",
+				"title": "Dark"
+			},
+			"light": {
+				"class": "light",
+				"title": "Light"
+			}
+		},
+		"button-states": [
+			{
+				"class": null,
+				"title": "Normal"
+			},
+			{
+				"class": "active",
+				"title": "Active state"
+			},
+			{
+				"class": "disabled",
+				"title": "Disabled"
+			}
+		],
+		"socials": {
+			"x": {
+				"icon": "brand-x",
+				"title": "X"
+			},
+			"facebook": {
+				"icon": "brand-facebook",
+				"title": "Facebook"
+			},
+			"twitter": {
+				"icon": "brand-twitter",
+				"title": "Twitter"
+			},
+			"google": {
+				"icon": "brand-google",
+				"title": "Google"
+			},
+			"youtube": {
+				"icon": "brand-youtube",
+				"title": "Youtube"
+			},
+			"vimeo": {
+				"icon": "brand-vimeo",
+				"title": "Vimeo"
+			},
+			"dribbble": {
+				"icon": "brand-dribbble",
+				"title": "Dribbble"
+			},
+			"github": {
+				"icon": "brand-github",
+				"title": "Github"
+			},
+			"instagram": {
+				"icon": "brand-instagram",
+				"title": "Instagram"
+			},
+			"pinterest": {
+				"icon": "brand-pinterest",
+				"title": "Pinterest"
+			},
+			"vk": {
+				"icon": "brand-vk",
+				"title": "VK"
+			},
+			"rss": {
+				"icon": "rss",
+				"title": "RSS"
+			},
+			"flickr": {
+				"icon": "brand-flickr",
+				"title": "Flickr"
+			},
+			"bitbucket": {
+				"icon": "brand-bitbucket",
+				"title": "Bitbucket"
+			},
+			"tabler": {
+				"icon": "brand-tabler",
+				"title": "Tabler"
+			}
+		},
+		"months-short": [
+			"Jan",
+			"Feb",
+			"Mar",
+			"Apr",
+			"May",
+			"Jun",
+			"Jul",
+			"Aug",
+			"Sep",
+			"Oct",
+			"Nov",
+			"Dec"
+		],
+		"months-long": [
+			"January",
+			"February",
+			"March",
+			"April",
+			"May",
+			"June",
+			"July",
+			"August",
+			"September",
+			"October",
+			"November",
+			"December"
+		]
 	});
 
 	/**
