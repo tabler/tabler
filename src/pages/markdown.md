@@ -1,7 +1,7 @@
 ---
 title: Markdown
 page-header: Markdown
-menu: base.markdown
+page-menu: base.markdown
 layout: default
 permalink: markdown.html
 ---
