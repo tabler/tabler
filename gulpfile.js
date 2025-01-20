@@ -353,6 +353,7 @@ gulp.task('browser-sync', () => {
 				'/node_modules': 'node_modules',
 				'/dist/img': `${srcDir}/img`,
 				'/static': `${srcDir}/static`,
+				'/dist': `${distDir}`,
 			},
 		},
 		port: 3000,

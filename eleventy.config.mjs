@@ -1,4 +1,3 @@
-import { relative } from 'path';
 import beautify from 'simply-beautiful';
 import { readFileSync } from 'fs';
 import { EleventyRenderPlugin } from "@11ty/eleventy";
@@ -14,8 +13,6 @@ export default function (eleventyConfig) {
 	eleventyConfig.setLayoutsDirectory("_layouts");
 	eleventyConfig.setIncludesDirectory("_includes");
 
-	eleventyConfig.addPassthroughCopy("favicon.ico");
-
 	eleventyConfig.setWatchThrottleWaitTime(100);
 
 	eleventyConfig.addPlugin(EleventyRenderPlugin, {
@@ -30,12 +27,10 @@ export default function (eleventyConfig) {
 	});
 
 	if (isDevelopment) {
-		// eleventyConfig.addWatchTarget("src/pages/**");
+		eleventyConfig.addWatchTarget("dist");
 	}
 
-	eleventyConfig.addPassthroughCopy({
-		"dist": "dist"
-	});
+	eleventyConfig.addPassthroughCopy("favicon.ico");
 
 	/**
 	 * Data
@@ -374,7 +369,12 @@ export default function (eleventyConfig) {
 	 });
 
 	eleventyConfig.addFilter("relative", (page) => {
-		return relative(page.url, '/') || '.';
+		const segments = (page.url || '').replace(/^\//).split('/');
+		if (segments.length === 1) {
+			return '.';
+		} else {
+			return '../'.repeat(segments.length - 1).slice(0, -1);
+		}
 	});
 
 	eleventyConfig.addFilter("concat_objects", function (object, object2) {
