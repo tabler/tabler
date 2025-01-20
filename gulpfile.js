@@ -18,9 +18,7 @@ const gulp = require('gulp'),
 	vinylSource = require('vinyl-source-stream'),
 	vinylBuffer = require('vinyl-buffer'),
 	browserSync = require('browser-sync'),
-	glob = require('glob'),
 	spawn = require('cross-spawn'),
-	fs = require('fs'),
 	path = require('path'),
 	yargs = require('yargs/yargs'),
 	cp = require('child_process'),
@@ -56,48 +54,6 @@ const getBanner = () => {
 */
 `
 }
-
-/**
- * Array.flat polyfill
- */
-if (!Array.prototype.flat) {
-	Object.defineProperty(Array.prototype, 'flat', {
-		value: function (depth = 1) {
-			return this.reduce(function (flat, toFlatten) {
-				return flat.concat((Array.isArray(toFlatten) && (depth > 1)) ? toFlatten.flat(depth - 1) : toFlatten)
-			}, [])
-		}
-	})
-}
-
-/**
- * Check unused eleventy partials
- */
-gulp.task('unused-files', (cb) => {
-	let foundFiles = []
-
-	glob.sync(`${srcDir}/pages/**/*.{html,md}`).forEach((file) => {
-		let fileContent = fs.readFileSync(file)
-
-		fileContent.toString().replace(/\{% include(_cached)? ([a-z0-9\/_-]+\.html)/g, (f, c, filename) => {
-			filename = `${srcDir}/pages/_includes/${filename}`
-
-			if (!foundFiles.includes(filename)) {
-				foundFiles.push(filename)
-			}
-		})
-	})
-
-	let includeFiles = glob.sync(`${srcDir}/pages/_includes/**/*.html`)
-
-	includeFiles.forEach((file) => {
-		if (!foundFiles.includes(file)) {
-			console.log('file', file)
-		}
-	})
-
-	cb()
-})
 
 /**
  * Clean `dist` folder before build
