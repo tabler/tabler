@@ -14,15 +14,7 @@
 	{% endunless %}
 
 	<div class="d-none d-{{ include.breakpoint }}-flex">
-		<a href="?theme=dark" class="nav-link px-0 hide-theme-dark" title="Enable dark mode" data-bs-toggle="tooltip"
-		   data-bs-placement="bottom">
-			{% include ui/icon.html icon="moon" %}
-		</a>
-
-		<a href="?theme=light" class="nav-link px-0 hide-theme-light" title="Enable light mode" data-bs-toggle="tooltip"
-		   data-bs-placement="bottom">
-			{% include ui/icon.html icon="sun" %}
-		</a>
+		{% include layout/theme-mode.html %}
 
 		<div class="nav-item dropdown d-none d-md-flex me-3">
 			<a href="#" class="nav-link px-0" data-bs-toggle="dropdown" tabindex="-1" aria-label="Show notifications">
@@ -35,24 +27,5 @@
 		</div>
 	</div>
 
-	<div class="nav-item dropdown">
-		<a href="#" class="nav-link d-flex lh-1 text-reset p-0" data-bs-toggle="dropdown" aria-label="Open user menu">
-			{% include ui/avatar.html person-id=person-id size="sm" %}
-
-			{% unless include.hide-username %}
-			<div class="d-none d-xl-block ps-2">
-				<div>{{ person.full_name }}</div>
-				<div class="mt-1 small text-secondary">{{ person.job_title }}</div>
-			</div>
-			{% endunless %}
-		</a>
-		<div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow"{% if include.dark %} data-bs-theme="light"{% endif %}>
-			<a href="#" class="dropdown-item">Status</a>
-			<a href="{{ site.base }}/profile.html" class="dropdown-item">Profile</a>
-			<a href="#" class="dropdown-item">Feedback</a>
-			<div class="dropdown-divider"></div>
-			<a href="{{ site.base }}/settings.html" class="dropdown-item">Settings</a>
-			<a href="{{ site.base }}/sign-in.html" class="dropdown-item">Logout</a>
-		</div>
-	</div>
+	{% include layout/navbar-user-menu.html no-padding=true auto-hide-username=true %}
 </div>
