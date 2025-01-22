@@ -91,32 +91,19 @@ To use our build system and run our documentation locally, you'll need a copy of
 
 1. [Install Node.js](https://nodejs.org/download/), which we use to manage our dependencies.
 2. Navigate to the root `/tabler` directory and run `pnpm install` to install our local dependencies listed in `package.json`.
-3. [Install Ruby](https://www.ruby-lang.org/en/documentation/installation/) - the recommended version is [2.7.6](https://cache.ruby-lang.org/pub/ruby/2.7/ruby-2.7.6.tar.gz).
-4. [Install Bundler](https://bundler.io) with `gem install bundler` and finally run `bundle install`. It will install all Ruby dependencies, such as [Jekyll and plugins](https://jekyllrb.com).
 
 **OSX users**:
 
-1. NPM ```pnpm install```
-2. install Ruby (2.5.* recommended)
-	```brew install ruby @2.5```
-3. install bundler
-	```gem install bundler```
-4. install
-	```bundle install```
-- if bundler get any errors try
-```
-sudo rm -rf /Library/Developer/CommandLineTools
-sudo xcode-select --install
-```
-5. Run NPM
-	```npm run start```
+```pnpm install```
+
+and then 
+
+```npm run start```
 
 
 **Windows users**:
 
-1. [Install Git](https://git-scm.com/download/win) in `C:\Program Files\git\bin` directory and run `npm config set script-shell "C:\\Program Files\\git\\bin\\bash.exe"` to change the default shell.
-2. [Install Ruby+Devkit](https://rubyinstaller.org/downloads/) - the recommended version is [2.7.6](https://github.com/oneclick/rubyinstaller2/releases/download/RubyInstaller-2.7.6-1/rubyinstaller-devkit-2.7.6-1-x64.exe).
-3. [Read guide](https://jekyllrb.com/docs/installation/windows/) to get Jekyll up and running without problems.
+[Install Git](https://git-scm.com/download/win) in `C:\Program Files\git\bin` directory and run `npm config set script-shell "C:\\Program Files\\git\\bin\\bash.exe"` to change the default shell.
 
 Once you complete the setup, you'll be able to run the various commands provided from the command line.
 
@@ -125,10 +112,8 @@ Once you complete the setup, you'll be able to run the various commands provided
 
 You need to have `pnpm` and `bundler` installed.
 
-1. From the root `/tabler` directory, run installation in the command line:
-  - `pnpm install` 
-  - `bundler install` 
-2. Then execute `pnpm run start-plugins` to start up the application stack.
+1. From the root `/tabler` directory, run installation in the command line: `pnpm install` 
+2. Then execute `pnpm run start` to start up the application stack.
 3. Open [http://localhost:3000](http://localhost:3000) in your browser, and voilà.
 4. Any change in the `/src` directory will build the application and refresh the page.
 
@@ -148,7 +133,7 @@ npm install --save @tabler/core
 
 **Plain Docker**
 
-If you don't want to install node/npm/ruby and the dependencies on your local environment, you can use the provided Dockerfile to build a docker image.
+If you don't want to install node/npm and the dependencies on your local environment, you can use the provided Dockerfile to build a docker image.
 This Dockerfile is provided as an example to spin-up a container running Tabler.
 
 Example of how to use this image:
