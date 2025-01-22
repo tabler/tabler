@@ -1,5 +1,5 @@
 {% assign id = include.map-id %}
-{% assign data = site.data.maps[id] %}
+{% assign data = maps[id] %}
 
 {% if data %}
 	<div class="ratio ratio-{{ data.ratio | default: include.ratio | default: '16x9' }}">
@@ -11,10 +11,10 @@
 	{% capture_global scripts %}
 	<script>
 		// @formatter:off
-		{% if jekyll.environment == 'development' %}window.tabler_map = window.tabler_map || {};{% endif %}
+		{% if environment == 'development' %}window.tabler_map = window.tabler_map || {};{% endif %}
 
 		document.addEventListener("DOMContentLoaded", function() {
-			mapboxgl.accessToken = '{{ site.mapbox-key }}';
+			mapboxgl.accessToken = '{{ site.mapboxKey }}';
 			var map = new mapboxgl.Map({
 				container: 'map-{{ id }}',
 				style: 'mapbox://styles/mapbox/{{ data.style | default: "streets-v11" }}',
@@ -31,7 +31,7 @@
 			new mapboxgl.Marker({ color: tabler.getColor("{{ 'primary' }}") }).setLngLat([{{ marker.center[1] }}, {{ marker.center[0] }}]).addTo(map);
 			{% endfor %}
 
-			{% if jekyll.environment == 'development' %}window.tabler_map["map-{{ map-id }}"] = map;{% endif %}
+			{% if environment == 'development' %}window.tabler_map["map-{{ map-id }}"] = map;{% endif %}
 		});
 		// @formatter:on
 	</script>

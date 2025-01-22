@@ -6,7 +6,7 @@ A license grants you a non-exclusive and non-transferable right to use and incor
 
 Tabler Free is available under MIT License
 
-Copyright {{ site.time | date: '%Y' }} Tabler
+Copyright {{ 'now' | date: '%Y' }} Tabler
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

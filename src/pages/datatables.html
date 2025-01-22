@@ -1,8 +1,10 @@
 ---
 title: Datatables
 page-header: Datatables
-libs: lists
-menu: base.datatables
+page-libs: [lists]
+page-menu: base.datatables
+layout: default
+permalink: datatables.html
 ---
 
 {% assign id = include.map-id | default: 'default' %}
@@ -24,19 +26,19 @@ menu: base.datatables
 			</tr>
 			</thead>
 			<tbody class="table-tbody">
-			{% for rc in site.data.rollercoasters %}
+			{% for rc in rollercoasters %}
 			{% assign progress = forloop.index | random_number %}
 			<tr>
 				<td class="sort-name">{{ rc.name }}</td>
 				<td class="sort-city">{{ rc.city }}</td>
 				<td class="sort-type">{{ rc.type }}</td>
 				<td class="sort-score">{{ rc.score }}</td>
-				<td class="sort-date" data-date="{{ forloop.index | random_date: site.random-date-from, site.random-date-to | date: '%s' }}">{{ forloop.index | random_date: site.random-date-from, site.random-date-to | date: '%B %d, %Y' }}</td>
+				<td class="sort-date" data-date="{{ forloop.index | random_date: site.randomDateFrom, site.randomDateTo | date: '%s' }}">{{ forloop.index | random_date: site.randomDateFrom, site.randomDateTo | date: '%B %d, %Y' }}</td>
 				<td class="sort-quantity">{{ forloop.index | random_number: 1, 200 }}</td>
 				<td class="sort-progress" data-progress="{{ progress }}">
 					<div class="row align-items-center">
 						<div class="col-12 col-lg-auto">{{ progress }}%</div>
-						<div class="col">{% include ui/progress.html value=progress width="5rem" %}</div>
+						<div class="col">{% include "ui/progress.html" value=progress width="5rem" %}</div>
 					</div>
 				</td>
 			</tr>
@@ -49,10 +51,10 @@ menu: base.datatables
 
 {% capture_global scripts %}
 <script>
-{% if jekyll.environment == 'development' %}window.tabler_list = window.tabler_list || {};{% endif %}
+{% if environment == 'development' %}window.tabler_list = window.tabler_list || {};{% endif %}
 
 	document.addEventListener("DOMContentLoaded", function() {
-	const list = {% if jekyll.environment == 'development' %}window.tabler_list["table-{{ id }}"] = {% endif %}new List('table-{{ id }}', {
+	const list = {% if environment == 'development' %}window.tabler_list["table-{{ id }}"] = {% endif %}new List('table-{{ id }}', {
 		sortClass: 'table-sort',
 		listClass: 'table-tbody',
 		valueNames: [ 'sort-name', 'sort-type', 'sort-city', 'sort-score',

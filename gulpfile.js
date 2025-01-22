@@ -18,9 +18,7 @@ const gulp = require('gulp'),
 	vinylSource = require('vinyl-source-stream'),
 	vinylBuffer = require('vinyl-buffer'),
 	browserSync = require('browser-sync'),
-	glob = require('glob'),
 	spawn = require('cross-spawn'),
-	fs = require('fs'),
 	path = require('path'),
 	yargs = require('yargs/yargs'),
 	cp = require('child_process'),
@@ -30,8 +28,8 @@ const gulp = require('gulp'),
 	argv = yargs(process.argv).argv
 
 let BUILD = false,
-	distDir = './.tmp',
-	demoDir = './.tmp',
+	distDir = './dist',
+	demoDir = './demo',
 	srcDir = './src'
 
 /**
@@ -39,9 +37,6 @@ let BUILD = false,
  */
 gulp.task('build-on', (cb) => {
 	BUILD = true
-	distDir = './dist'
-	demoDir = './demo'
-
 	cb()
 })
 
@@ -61,59 +56,12 @@ const getBanner = () => {
 }
 
 /**
- * Array.flat polyfill
- */
-if (!Array.prototype.flat) {
-	Object.defineProperty(Array.prototype, 'flat', {
-		value: function (depth = 1) {
-			return this.reduce(function (flat, toFlatten) {
-				return flat.concat((Array.isArray(toFlatten) && (depth > 1)) ? toFlatten.flat(depth - 1) : toFlatten)
-			}, [])
-		}
-	})
-}
-
-/**
- * Check unused Jekyll partials
- */
-gulp.task('unused-files', (cb) => {
-	let foundFiles = []
-
-	glob.sync(`${srcDir}/pages/**/*.{html,md}`).forEach((file) => {
-		let fileContent = fs.readFileSync(file)
-
-		fileContent.toString().replace(/\{% include(_cached)? ([a-z0-9\/_-]+\.html)/g, (f, c, filename) => {
-			filename = `${srcDir}/pages/_includes/${filename}`
-
-			if (!foundFiles.includes(filename)) {
-				foundFiles.push(filename)
-			}
-		})
-	})
-
-	let includeFiles = glob.sync(`${srcDir}/pages/_includes/**/*.html`)
-
-	includeFiles.forEach((file) => {
-		if (!foundFiles.includes(file)) {
-			console.log('file', file)
-		}
-	})
-
-	cb()
-})
-
-/**
  * Clean `dist` folder before build
  */
 gulp.task('clean-dirs', () => {
 	return gulp
 		.src(`{${distDir}/*,${demoDir}/*}`, { read: false })
 		.pipe(clean())
-})
-
-gulp.task('clean-jekyll', (cb) => {
-	return spawn('bundle', ['exec', 'jekyll', 'clean'], { stdio: 'inherit' })
-		.on('close', cb)
 })
 
 /**
@@ -294,27 +242,27 @@ gulp.task('mjs', () => {
 })
 
 /**
- * Watch Jekyll files and build it to demo directory
+ * Watch eleventy files and build it to demo directory
  */
-gulp.task('watch-jekyll', (cb) => {
-	browserSync.notify('Building Jekyll')
-	return spawn('bundle', ['exec', 'jekyll', 'build', '--watch', '--destination', demoDir, '--trace'], { stdio: 'inherit' })
+gulp.task('watch-eleventy', (cb) => {
+	browserSync.notify('Building eleventy')
+	return spawn('pnpm', ['run', 'watch:html'], { stdio: 'inherit' })
 		.on('close', cb)
 })
 
 /**
- * Build Jekyll files do demo directory
+ * Build eleventy files do demo directory
  */
-gulp.task('build-jekyll', (cb) => {
+gulp.task('build-eleventy', (cb) => {
 	var env = Object.create(process.env)
 
 	if (argv.preview) {
-		env.JEKYLL_ENV = 'preview'
+		env.eleventy_ENV = 'preview'
 	} else {
-		env.JEKYLL_ENV = 'production'
+		env.eleventy_ENV = 'production'
 	}
 
-	return spawn('bundle', ['exec', 'jekyll', 'build', '--destination', demoDir, '--trace', '--config', '_config.yml,_config_prod.yml'], {
+	return spawn('pnpm', ['run', 'build:html'], {
 		env: env,
 		stdio: 'inherit'
 	})
@@ -359,10 +307,9 @@ gulp.task('browser-sync', () => {
 			baseDir: demoDir,
 			routes: {
 				'/node_modules': 'node_modules',
-				'/dist/css': `${distDir}/css`,
-				'/dist/js': `${distDir}/js`,
 				'/dist/img': `${srcDir}/img`,
 				'/static': `${srcDir}/static`,
+				'/dist': `${distDir}`,
 			},
 		},
 		port: 3000,
@@ -444,10 +391,10 @@ gulp.task('add-banner', () => {
 		.pipe(gulp.dest(`${distDir}`))
 })
 
-gulp.task('clean', gulp.series('clean-dirs', 'clean-jekyll'))
+gulp.task('clean', gulp.series('clean-dirs'))
 
-gulp.task('start', gulp.series('clean', 'sass', 'js', gulp.parallel('js-demo', 'js-demo-theme'), 'mjs', 'build-jekyll', gulp.parallel('watch-jekyll', 'watch', 'browser-sync')))
+gulp.task('start', gulp.series('clean', 'sass', 'js', gulp.parallel('js-demo', 'js-demo-theme'), 'mjs', 'build-eleventy', gulp.parallel('watch-eleventy', 'watch', 'browser-sync')))
 
 gulp.task('build-core', gulp.series('build-on', 'clean', 'sass', 'css-rtl', 'css-minify', 'js', gulp.parallel('js-demo', 'js-demo-theme'), 'mjs', 'copy-images', 'copy-libs', 'add-banner'))
-gulp.task('build-demo', gulp.series('build-on', 'build-jekyll', 'copy-static', 'copy-dist', 'build-cleanup', 'build-purgecss'))
+gulp.task('build-demo', gulp.series('build-on', 'build-eleventy', 'copy-static', 'copy-dist', 'build-cleanup', 'build-purgecss'))
 gulp.task('build', gulp.series('build-core', 'build-demo'))

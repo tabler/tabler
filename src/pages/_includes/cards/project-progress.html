@@ -1,5 +1,5 @@
 {% assign project-id = include.project-id | default: 0 %}
-{% assign project = site.data.projects[project-id] %}
+{% assign project = projects[project-id] %}
 {% assign progress = include.progress | default: 25 %}
 {% assign days-ago = include.days-ago | default: 2 %}
 
@@ -23,13 +23,13 @@
 							{{ progress }}%
 						</div>
 						<div class="col">
-							{% include ui/progress.html value=progress size="sm" %}
+							{% include "ui/progress.html" value=progress size="sm" %}
 						</div>
 					</div>
 				</div>
 			</div>
 			<div class="col-auto">
-				{% include ui/card-dropdown.html %}
+				{% include "ui/card-dropdown.html" %}
 			</div>
 		</div>
 	</div>

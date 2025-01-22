@@ -4,7 +4,7 @@
 	</div>
 	<div class="table-responsive">
 		<table class="table card-table table-vcenter">
-			{% for task in site.data.tasks-list %}
+			{% for task in tasks-list %}
 			<tr>
 				<td class="w-1 pe-0">
 					<input type="checkbox" class="form-check-input m-0 align-middle" aria-label="Select task"{% if task.checked %} checked{% endif %} >
@@ -13,21 +13,21 @@
 					<a href="#" class="text-reset">{{ task.name }}</a>
 				</td>
 				<td class="text-nowrap text-secondary">
-					{% include ui/icon.html icon="calendar" %}
-					{{ forloop.index | random_date: site.random-date-from, site.random-date-to | date: '%B %d, %Y' }}
+					{% include "ui/icon.html" icon="calendar" %}
+					{{ forloop.index | random_date: site.randomDateFrom, site.randomDateTo | date: '%B %d, %Y' }}
 				</td>
 				<td class="text-nowrap">
 					<a href="#" class="text-secondary">
-						{% include ui/icon.html icon="check" %}
+						{% include "ui/icon.html" icon="check" %}
 						{{ forloop.index | random_number: 0, 6 }}/{{ forloop.index | random_number: 5, 10 }}
 					</a>
 				</td>
 				<td class="text-nowrap">
 					<a href="#" class="text-secondary">
-						{% include ui/icon.html icon="message" %} {{ forloop.index | random_number: 0, 12 }}</a>
+						{% include "ui/icon.html" icon="message" %} {{ forloop.index | random_number: 0, 12 }}</a>
 				</td>
 				<td>
-					{% include ui/avatar.html size="sm" person-id=forloop.index %}
+					{% include "ui/avatar.html" size="sm" person-id=forloop.index %}
 				</td>
 			</tr>
 			{% endfor %}

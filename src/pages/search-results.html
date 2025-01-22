@@ -1,21 +1,23 @@
 ---
 page-header: Search results
 page-header-description: About 2,410 result (0.19 seconds)
-menu: extra.search-results
+page-menu: extra.search-results
+layout: default
+permalink: search-results.html
 ---
 
 <div class="row g-4">
 	<div class="col-md-3">
-		{% include parts/nav/nav-aside.html %}
+		{% include "parts/nav/nav-aside.html" %}
 	</div>
 	<div class="col-md-9">
 		<div class="row row-cards">
-			{% assign photos = site.data.photos | where: "horizontal", true %}
+			{% assign filtered-photos = photos | where: "horizontal", true %}
 
-			{% for photo in photos %}
-				{% assign person = site.data.people[forloop.index0] %}
+			{% for photo in filtered-photos limit: 18 %}
+				{% assign person = people[forloop.index0] %}
 				<div class="col-sm-6 col-lg-4">
-					{% include cards/gallery-photo.html person=person hide-likes=true %}
+					{% include "cards/gallery-photo.html" person=person hide-likes=true %}
 				</div>
 			{% endfor %}
 		</div>

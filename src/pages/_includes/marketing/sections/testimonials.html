@@ -11,16 +11,17 @@
 
 		<div class="row g-6">
 			{% assign i = 1 %}
-			{% assign testimonials = site.data.testimonials | slice: 0, limit | split_to_n: 3 %} {% for group in testimonials %}
+			{% assign filtered-testimonials = testimonials | slice: 0, limit | split_to_n: 3 %}
+			{% for group in filtered-testimonials %}
 			<div class="col-md-6 col-lg-4">
 				<div class="row g-6">
 					{% for testimonial in group %}
-					{% assign person = site.data.people[i] %}
+					{% assign person = people[i] %}
 					<div class="col-12">
 						<a href="#" class="card bg-light">
 							<div class="card-body">
 								<div class="row mb-3">
-									<div class="col-auto">{% include ui/avatar.html person=person size="md" %}</div>
+									<div class="col-auto">{% include "ui/avatar.html" person=person size="md" %}</div>
 									<div class="col">
 										<h3 class="h3 m-0">{{ person.full_name }}</h3>
 										<div class="text-secondary">{{ person.job_title }}</div>

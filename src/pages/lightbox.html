@@ -1,17 +1,19 @@
 ---
 title: Lightbox
 page-header: Lightbox
-libs: fslightbox
-menu: base.lightbox
+page-libs: [fslightbox]
+page-menu: base.lightbox
+layout: default
+permalink: lightbox.html
 ---
 
-{% assign photos = site.data.photos | where: "horizontal", true %}
+{% assign filtered-photos = photos | where: "horizontal", true %}
 
 <div class="row row-cols-3 row-cols-md-4 row-cols-lg-6 g-3">
-	{% for photo in photos %}
+	{% for photo in filtered-photos %}
 	<div class="col">
-		<a data-fslightbox="gallery" href="{{ site.base }}/static/photos/{{ photo.file }}">
-			{% include ui/photo.html id=forloop.index0 class="rounded border" ratio="1x1" %}
+		<a data-fslightbox="gallery" href="{{ page | relative }}/static/photos/{{ photo.file }}">
+			{% include "ui/photo.html" id=forloop.index0 class="rounded border" ratio="1x1" %}
 		</a>
 	</div>
 	{% endfor %}

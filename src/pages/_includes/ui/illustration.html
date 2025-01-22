@@ -1,9 +1,8 @@
-{% removeemptylines %}
 {% assign image = include.image | replace: '.svg', '' %}
 {% assign height = include.height | default: 128 %}
 {% assign src = "/free-illustrations/autodark/" | append: image %}
 
-{% assign illustration = site.free-illustrations | where: "id", src | first %}
+{% assign illustration = free-illustrations.autodark[image] %}
 
 {% assign replace-to = '<svg class="img' %}
 {% if include.class %}{% assign replace-to = replace-to | append: ' ' | append: include.class %}{% endif %}
@@ -14,4 +13,3 @@
 {% assign illustration = illustration | replace: 'width="800" height="600"', replace-to-height %}
 
 {{ illustration }}
-{% endremoveemptylines %}
