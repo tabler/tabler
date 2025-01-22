@@ -1,12 +1,12 @@
 {% assign limit = include.limit | default: 5 %}
 {% assign offset = include.offset | default: 0 %}
 {% assign filtered-photos = photos | where: "horizontal", true %}
-{% assign id = include.id | default: "carousel" %}
-<div id="{{ id }}" class="carousel slide{% if include.fade %} carousel-fade{% endif %}" data-bs-ride="carousel">
+{% assign carousel-id = include.id | default: "carousel" %}
+<div id="carousel-{{ carousel-id }}" class="carousel slide{% if include.fade %} carousel-fade{% endif %}" data-bs-ride="carousel">
    {% if include.indicators %}
    <div class="carousel-indicators{% if include.indicators-vertical %} carousel-indicators-vertical{% endif %}{% if include.indicators-dot %} carousel-indicators-dot{% elsif include.indicators-thumb %} carousel-indicators-thumb{% endif %}">
 	   {% for photo in filtered-photos limit: limit offset: offset %}
-      <button type="button" data-bs-target="#{{ id }}" data-bs-slide-to="{{ forloop.index | minus: 1 }}" class="{%if include.indicators-thumb-ratio %} ratio ratio-4x3{% endif %}{% if forloop.first %} active{% endif %}"{% if include.indicators-thumb %} style="background-image: url({{ page | relative }}/static/photos/{{ photo.file }})"{% endif %}></button>
+      <button type="button" data-bs-target="#carousel-{{ carousel-id }}" data-bs-slide-to="{{ forloop.index | minus: 1 }}" class="{%if include.indicators-thumb-ratio %} ratio ratio-4x3{% endif %}{% if forloop.first %} active{% endif %}"{% if include.indicators-thumb %} style="background-image: url({{ page | relative }}/static/photos/{{ photo.file }})"{% endif %}></button>
       {% endfor %}
    </div>
    {% endif %}
@@ -28,11 +28,11 @@
    </div>
 
    {% if include.controls %}
-   <a class="carousel-control-prev" href="#{{ id }}" role="button" data-bs-slide="prev">
+   <a class="carousel-control-prev" href="#carousel-{{ carousel-id }}" role="button" data-bs-slide="prev">
       <span class="carousel-control-prev-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Previous</span>
    </a>
-   <a class="carousel-control-next" href="#{{ id }}" role="button" data-bs-slide="next">
+   <a class="carousel-control-next" href="#carousel-{{ carousel-id }}" role="button" data-bs-slide="next">
       <span class="carousel-control-next-icon" aria-hidden="true"></span>
       <span class="visually-hidden">Next</span>
    </a>
