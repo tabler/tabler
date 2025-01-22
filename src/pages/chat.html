@@ -4,20 +4,21 @@ page-header: Chat
 page-menu: extra.chat
 layout: default
 permalink: chat.html
+page-container-class: flex-fill d-flex flex-column
 ---
 
 {% assign person = people[4] %}
 
-<div class="card">
-	<div class="row g-0">
-		<div class="col-12 col-lg-5 col-xl-3 border-end">
+<div class="card flex-fill">
+	<div class="row g-0 flex-fill">
+		<div class="col-12 col-lg-5 col-xl-3 border-end d-flex flex-column">
 			<div class="card-header d-none d-md-block">
 				<div class="input-icon">
 					<span class="input-icon-addon"> {% include "ui/icon.html" icon="search" %} </span>
 					<input type="text" value="" class="form-control" placeholder="Search…" aria-label="Search" />
 				</div>
 			</div>
-			<div class="card-body p-0 scrollable" style="max-height: 35rem">
+			<div class="card-body p-0 scrollable flex-fill">
 				<div class="nav flex-column nav-pills" role="tablist">
 					{% for person in people limit: 10 %}
 					<a href="#chat-1" class="nav-link text-start mw-100 p-3{% if forloop.index == 1 %} active{% endif %}" id="chat-1-tab" data-bs-toggle="pill" role="tab" aria-selected="true">
@@ -37,7 +38,7 @@ permalink: chat.html
 			</div>
 		</div>
 		<div class="col-12 col-lg-7 col-xl-9 d-flex flex-column">
-			<div class="card-body scrollable" style="height: 35rem">{% include "ui/chat.html" wide=true %}</div>
+			<div class="card-body scrollable">{% include "ui/chat.html" wide=true %}</div>
 			<div class="card-footer">
 				<div class="input-group input-group-flat">
 					<input type="text" class="form-control" autocomplete="off" placeholder="Type message" />
