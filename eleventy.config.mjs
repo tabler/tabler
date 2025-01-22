@@ -218,7 +218,7 @@ export default function (eleventyConfig) {
 				"icon": "alert-circle"
 			}
 		],
-		"theme-colors": {
+		"themeColors": {
 			"primary": {
 				"class": "primary",
 				"title": "Primary"
