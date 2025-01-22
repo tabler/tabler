@@ -1,14 +1,13 @@
-{% removeemptylines %}
 {% assign link = include.link | default: false %}
 <{% if link %}a href="#"{% else %}div{% endif %} class="card{% if include.active %} card-active{% endif %}{% if include.inactive %} card-inactive{% endif %}{% if include.class %} {{ include.class }}{% endif %}">
 
 	{% if include['empty'] %}
-		{% include ui/empty.html illustration=true %}
+		{% include "ui/empty.html" illustration=true %}
 
 	{% else %}
 
 		{% if include.img-top %}
-		{% include ui/photo.html id=img-id class="card-img-top" ratio="21x9" id=7 %}
+		{% include "ui/photo.html" id=img-id class="card-img-top" ratio="21x9" id=7 %}
 		{% endif %}
 
 		{% if include.status-top %}
@@ -22,7 +21,7 @@
 		{% if include.header or include.header-title or include.header-tabs or include.header-pills %}
 		<div class="card-header">
 			{% if include.header-tabs or include.header-pills %}
-				{% include ui/nav.html header=true pills=include.header-pills tabs=include.header-tabs %}
+				{% include "ui/nav.html" header=true pills=include.header-pills tabs=include.header-tabs %}
 
 			{% else %}
 				<h3 class="card-title">{{ include.header-title | default: 'Header title' }}</h3>
@@ -75,11 +74,11 @@
 					<div class="col-auto{% if right %} ms-auto{% endif %}">
 						{% case el %}
 							{% when "switch" %}
-								{% include ui/form/check.html switch=true empty=true checked=true class="m-0" %}
+								{% include "ui/form/check.html" switch=true empty=true checked=true class="m-0" %}
 							{% when "check" %}
-								{% include ui/form/check.html empty=true checked=true class="m-0" %}
+								{% include "ui/form/check.html" empty=true checked=true class="m-0" %}
 							{% when "avatars" %}
-								{% include ui/avatar-list.html stacked=true text="+3" %}
+								{% include "ui/avatar-list.html" stacked=true text="+3" %}
 							{% when "more" %}
 								<a href="#">More information</a>
 						{% endcase %}
@@ -105,12 +104,11 @@
 
 		{% if include.img-bottom %}
 
-		{% include ui/photo.html id=img-id class="card-img-bottom" ratio="21x9" id=11 %}
+		{% include "ui/photo.html" id=img-id class="card-img-bottom" ratio="21x9" id=11 %}
 		{% endif %}
 
 		{% if include.progress %}
-			{% include ui/progress.html class="progress-sm card-progress" %}
+			{% include "ui/progress.html" class="progress-sm card-progress" %}
 		{% endif %}
 	{% endif %}
 </{% if link %}a{% else %}div{% endif %}>
-{% endremoveemptylines %}

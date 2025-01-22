@@ -10,11 +10,11 @@
 <script>
 	 // @formatter:off
 	 document.addEventListener("DOMContentLoaded", function () {
-		{% if jekyll.environment == 'development' %}
+		{% if environment == 'development' %}
 		window.tabler_chart = window.tabler_chart || {};
 		{% endif %}
 
-		window.ApexCharts && ({% if jekyll.environment == 'development' %}window.tabler_chart["chart-{{ include.chart-id }}"] = {% endif %}new ApexCharts(document.getElementById('chart-{{ id }}'), {
+		window.ApexCharts && ({% if environment == 'development' %}window.tabler_chart["chart-{{ include.chart-id }}"] = {% endif %}new ApexCharts(document.getElementById('chart-{{ id }}'), {
 			chart: {
 				height: {{ height | times: 16 }},
 				type: "heatmap",
@@ -58,7 +58,7 @@
 			colors: [{% if include.color %}'{{ include.color }}'{% else %}{% for color in site.colors limit: colors %}tabler.getColor("{{ color[0] }}"), {% endfor %}{% endif %}],
 			{% endif %}
 			series: [
-				{% for i in site.months-short limit: 12 %}
+				{% for i in site.monthsShort limit: 12 %}
 				{% assign month-i = forloop.index %}
 		  		{ name: "{{ i }}", data: [{% for j in (1..16) %}{x: '{{ j }}', y: {{ j | random_number: 0, 100  | plus: month-i | random_number: 0, 100 }}},{% endfor %}] },
 				{% endfor %}

@@ -22,7 +22,9 @@
     "optimize-images": "for i in ./src/static/photos/*.jpg; do convert \"$i\" -quality 80% \"${i%.jpg}.jpg\"; done",
     "format:check": "prettier --check src/**/*.{js,scss} --cache",
     "format:write": "prettier --write src/**/*.{js,scss} --cache",
-    "illustrations": "node .build/import-illustrations.js"
+    "illustrations": "node .build/import-illustrations.js",
+    "build:html": "eleventy",
+    "watch:html": "eleventy --watch"
   },
   "repository": {
     "type": "git",
@@ -47,7 +49,7 @@
     "url": "https://github.com/sponsors/codecalm"
   },
   "engines": {
-    "node": "20"
+    "node": ">=20"
   },
   "files": [
     "docs/**/*",
@@ -131,21 +133,20 @@
     ]
   },
   "devDependencies": {
+    "@11ty/eleventy": "^3.0.0",
     "@babel/core": "^7.26.0",
     "@babel/preset-env": "^7.26.0",
     "@changesets/cli": "^2.27.11",
     "@rollup/plugin-commonjs": "^24.1.0",
     "@rollup/plugin-node-resolve": "^15.3.1",
     "@rollup/plugin-replace": "^5.0.7",
-    "@rollup/pluginutils": "^5.1.4",
     "@rollup/stream": "^2.0.0",
-    "@shopify/prettier-plugin-liquid": "^1.6.3",
-    "apexcharts": "^3.54.1",
+    "apexcharts": "^4.3.0",
     "autoprefixer": "^10.4.20",
     "autosize": "^6.0.1",
     "browser-sync": "^2.29.3",
     "bundlewatch": "^0.4.0",
-    "choices.js": "^10.2.0",
+    "choices.js": "^11.0.3",
     "countup.js": "^2.8.0",
     "cross-spawn": "^7.0.6",
     "dropzone": "^6.0.0-beta.2",
@@ -157,13 +158,14 @@
     "gulp-clean-css": "^4.3.0",
     "gulp-debug": "^4.0.0",
     "gulp-header": "^2.0.9",
-    "gulp-postcss": "^9.0.1",
+    "gulp-postcss": "^9.1.0",
     "gulp-purgecss": "^5.0.0",
     "gulp-rename": "^2.0.0",
     "gulp-replace": "^1.1.4",
     "gulp-rtlcss": "^2.0.0",
     "gulp-sass": "^5.1.0",
     "gulp-terser": "^2.1.0",
+    "html-minifier": "^4.0.0",
     "imageoptim-cli": "^3.1.9",
     "imask": "^7.6.1",
     "js-beautify": "^1.15.1",
@@ -172,27 +174,25 @@
     "litepicker": "^2.0.12",
     "nouislider": "^15.8.1",
     "plyr": "^3.7.8",
-    "postcss": "^8.4.49",
+    "postcss": "^8.5.1",
     "prettier": "^2.8.8",
     "release-it": "^15.11.0",
     "request": "^2.88.2",
     "rollup": "2.79.2",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-cleanup": "^3.2.1",
-    "sass": "1.71.1",
+    "sass": "1.71.0",
     "star-rating.js": "^4.3.1",
-    "tinymce": "^7.5.1",
+    "tinymce": "^7.6.0",
     "tom-select": "^2.4.1",
     "typed.js": "^2.1.0",
     "vinyl-buffer": "^1.0.1",
     "vinyl-source-stream": "^2.0.0",
-    "yaml": "^2.6.1",
-    "yargs": "^17.7.2",
-    "zod": "^3.23.8"
+    "yargs": "^17.7.2"
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
-    "@tabler/icons": "^3.26.0",
+    "@tabler/icons": "^3.29.0",
     "bootstrap": "5.3.3"
   },
   "peerDependencies": {

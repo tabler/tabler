@@ -1,4 +1,4 @@
-{% assign data = site.data.charts[include.chart-id] %}
+{% assign data = charts[include.chart-id] %}
 {% assign id = include.id | default: include.chart-id %}
 {% assign height = include.height | default: data.height | default: 10 %}
 {% assign class = include.class %}
@@ -13,7 +13,7 @@
 
 {% if data %}
 {% if data.extend %}
-{% assign data = site.data.charts[data.extend] | concat_objects: site.data.charts[include.chart-id] %}
+{% assign data = charts[data.extend] | concat_objects: charts[include.chart-id] %}
 {% endif %}
 
 <div id="chart-{{ id }}"{% if class %} class="{{ class }}"{% endif %}></div>
@@ -23,11 +23,11 @@
 <script>
 	// @formatter:off
 	document.addEventListener("DOMContentLoaded", function () {
-		{% if jekyll.environment == 'development' %}
+		{% if environment == 'development' %}
 		window.tabler_chart = window.tabler_chart || {};
 		{% endif %}
 
-		window.ApexCharts && ({% if jekyll.environment == 'development' %}window.tabler_chart["chart-{{ include.chart-id }}"] = {% endif %}new ApexCharts(document.getElementById('chart-{{ id }}'), {
+		window.ApexCharts && ({% if environment == 'development' %}window.tabler_chart["chart-{{ include.chart-id }}"] = {% endif %}new ApexCharts(document.getElementById('chart-{{ id }}'), {
 			chart: {
 				type: "{{ chart-type }}",
 				fontFamily: 'inherit',
