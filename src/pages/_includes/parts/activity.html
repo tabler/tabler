@@ -1,11 +1,12 @@
 {% assign limit = include.limit | default: false %}
+
 <div class="divide-y">
-	{% for item in site.data.activity limit:limit %}
-	{% assign person = site.data.people[forloop.index] %}
+	{% for item in activity %}
+	{% assign person = people[forloop.index] %}
 		<div>
 			<div class="row">
 				<div class="col-auto">
-					{% include ui/avatar.html person=person %}
+					{% include "ui/avatar.html" person=person %}
 				</div>
 				<div class="col">
 					<div class="text-truncate">

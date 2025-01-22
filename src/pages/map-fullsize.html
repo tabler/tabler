@@ -1,10 +1,11 @@
 ---
 layout: default
-libs: google-maps
+page-libs: [google-maps]
 layout-wrapper-full: true
 layout-sidebar: true
 layout-hide-topbar: true
-menu: base.map-fullsize
+page-menu: base.map-fullsize 
+permalink: map-fullsize.html
 ---
 
 {% assign map-id = 'google' %}
@@ -15,7 +16,7 @@ menu: base.map-fullsize
 <script>
 	// @formatter:off
 	let map;
-	{% if jekyll.environment == 'development' %}window.tabler_map = window.tabler_map || {};{% endif %}
+	{% if environment == 'development' %}window.tabler_map = window.tabler_map || {};{% endif %}
 
 	document.addEventListener("DOMContentLoaded", function() {
 		map = new google.maps.Map(document.getElementById("map-{{ map-id }}"), {
@@ -23,7 +24,7 @@ menu: base.map-fullsize
 			zoom: 8,
 		});
 
-		{% if jekyll.environment == 'development' %}window.tabler_map["map-{{ map-id }}"] = map;{% endif %}
+		{% if environment == 'development' %}window.tabler_map["map-{{ map-id }}"] = map;{% endif %}
 	});
 // @formatter:on
 </script>

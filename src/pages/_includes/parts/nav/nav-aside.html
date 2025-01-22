@@ -1,4 +1,4 @@
-<form action="{{ site.base }}/" method="get" autocomplete="off" novalidate>
+<form action="{{ page | relative }}/" method="get" autocomplete="off" novalidate>
 
 	<div class="subheader mb-2">Category</div>
 	{% assign items = "Games,Clothing,Jewelery,Toys" | split:  "," %}
@@ -36,11 +36,11 @@
 	<div class="subheader mb-2">Price</div>
 	<div class="row g-2 align-items-center mb-3">
 		<div class="col">
-			{% include ui/form/input-group.html prepend="$" placeholder="from" value="3" %}
+			{% include "ui/form/input-group.html" prepend="$" placeholder="from" value="3" %}
 		</div>
 		<div class="col-auto">—</div>
 		<div class="col">
-			{% include ui/form/input-group.html prepend="$" placeholder="to" %}
+			{% include "ui/form/input-group.html" prepend="$" placeholder="to" %}
 		</div>
 	</div>
 
@@ -56,7 +56,7 @@
 	</div>
 
 	<div class="mt-5">
-		{% include ui/button.html text="Confirm changes" color="primary" block=true element="button" %}
-		{% include ui/button.html text="Reset to defaults" color="link" block=true %}
+		{% include "ui/button.html" text="Confirm changes" color="primary" block=true element="button" %}
+		{% include "ui/button.html" text="Reset to defaults" color="link" block=true %}
 	</div>
 </form>
