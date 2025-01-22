@@ -1,4 +1,3 @@
-import beautify from 'simply-beautiful';
 import { readFileSync } from 'fs';
 import { EleventyRenderPlugin } from "@11ty/eleventy";
 
