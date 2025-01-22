@@ -1,7 +1,7 @@
 <!doctype html>
 {% include "layout/banner.html" %}
 {% assign title = page.title | default: layout.title %}
-<html lang="en"{% if page.rtl or site.rtl %} dir="rtl" {% endif %}>
+<html lang="en"{% if layout-rtl %} dir="rtl" {% endif %}>
 <head>
 	<meta charset="utf-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
@@ -36,7 +36,7 @@
 	</style>
 </head>
 
-{% assign layout-dark = page.layout-dark | default: site.layoutDark %}
+{% assign layout-dark = layout-dark | default: site.layoutDark %}
 <body{% if layout.body-class or body-class %} class="{% if layout.body-class %} {{ layout.body-class }}{% endif %}{% if body-class %} {{ body-class }}{% endif %}"{% endif %}>
 <script src="{{ page | relative }}/dist/js/demo-theme{% if environment != 'development' %}.min{% endif %}.js{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}"></script>
 
