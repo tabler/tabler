@@ -134,9 +134,9 @@ permalink: illustrations.html
 	   primaryColor = "{{ color[1].hex }}";
 
 	const illustrations = {
-	{% for illustration in illustrations %}
-		"{{ illustration.slug }}": {
-	      svg: '{{ illustration.content | replace: '<svg ', '<svg class="w-100 h-auto" ' | escape | replace_regex: "\n", "\n" }}',
+	{% for illustration in free-illustrations.autodark %}
+		"{{ illustration[0] }}": {
+	      svg: '{{ illustration[1] | replace: '<svg ', '<svg class="w-100 h-auto" ' | replace_regex: "\n", "\n" }}',
 		},
 	{% endfor %}
 	}
