@@ -1,20 +1,27 @@
 ---
 title: SVG Illustrations
 page-header: SVG Illustrations
-menu: illustrations
+page-menu: illustrations
+layout: default
+permalink: illustrations.html
 ---
 
-{% assign illustrations = "" | split: "," %} {% assign first_illustration = '' %} {% for illustration in site.free-illustrations reversed %} {% if illustration.id contains 'autodark' %} {% assign first_illustration = illustration %} {% assign
-illustrations = illustrations | push: illustration %} {% endif %} {% endfor %} {% assign illustrations = illustrations | reverse %} {% assign skin_color = site.skin-colors | first %} {% assign color = site.colors | first %}
+{% assign first-illustration = '' %}
+{% for illustration in free-illustrations.autodark %}
+	{% assign first-illustration = illustration[1] %}
+{% endfor %}
 
-<div class="mb-7" style="--tblr-illustrations-primary: {{ color[1].hex }}; --tblr-illustrations-skin: {{ skin_color[1].hex }};" id="current-illustration-style">
+{% assign skinColor = site.skinColors | first %} 
+{% assign color = site.colors | first %}
+
+<div class="mb-7" style="--tblr-illustrations-primary: {{ color.hex }}; --tblr-illustrations-skin: {{ skinColor.hex }};" id="current-illustration-style">
 	<div class="row row-cards">
 		<div class="col-12">
 			<div class="row row-cards row-deck g-4">
 				<div class="col-md-7">
 					<div class="card">
 						<div class="card-body d-flex align-items-center">
-							<div id="current-illustration">{{ first_illustration | replace: '<svg ', '<svg class="w-100 h-auto" ' }}</div>
+							<div id="current-illustration">{{ first-illustration | replace: '<svg ', '<svg class="w-100 h-auto" ' }}</div>
 						</div>
 					</div>
 				</div>
@@ -38,7 +45,7 @@ illustrations = illustrations | push: illustration %} {% endif %} {% endfor %} {
 
 										<div class="form-label mt-4">Skin color</div>
 										<div class="row g-2">
-											{% for color in site.skin-colors %}
+											{% for color in site.skinColors %}
 											<div class="col-auto">
 												<label class="form-colorinput">
 													<input name="skin-color" type="radio" value="{{ color[1].hex }}" class="form-colorinput-input js-select-skin-color" {% if forloop.first %} checked{% endif %} />
@@ -50,12 +57,12 @@ illustrations = illustrations | push: illustration %} {% endif %} {% endfor %} {
 
 										<div class="form-label mt-4">Select SVG illustration</div>
 										<div class="row">
-											{% for illustration in illustrations %}
+											{% for illustration in free-illustrations.autodark %}
 											<div class="col-3">
 												<label class="form-imagecheck mb-2">
-													<input name="form-imagecheck" type="radio" value="{{ illustration.slug }}" class="form-imagecheck-input js-select-illustration" {% if forloop.first %} checked{% endif %}>
+													<input name="form-imagecheck" type="radio" value="{{ illustration[0] }}" class="form-imagecheck-input js-select-illustration" {% if forloop.last %} checked{% endif %}>
 													<span class="form-imagecheck-figure">
-														{{ illustration | replace: '<svg ', '<svg class="w-100 h-auto" ' }}
+														{{ illustration[1] | replace: '<svg ', '<svg class="w-100 h-auto" ' }}
 													</span>
 												</label>
 											</div>
@@ -73,7 +80,7 @@ illustrations = illustrations | push: illustration %} {% endif %} {% endfor %} {
 </div>
 
 <h2 class="page-title my-5">
-	{{ site.data.illustrations | size | minus: 4 }} more SVG Illustrations
+	{{ illustrations | size | minus: 4 }} more SVG Illustrations
 </h2>
 
 <div class="row row-cards">
@@ -81,7 +88,7 @@ illustrations = illustrations | push: illustration %} {% endif %} {% endfor %} {
 		<div class="card card-md sticky-top">
 			<div class="card-stamp card-stamp-lg">
 				<div class="card-stamp-icon bg-primary">
-					{% include ui/icon.html icon="brand-figma" %}
+					{% include "ui/icon.html" icon="brand-figma" %}
 				</div>
 			</div>
 			<div class="card-body">
@@ -93,7 +100,7 @@ illustrations = illustrations | push: illustration %} {% endif %} {% endfor %} {
 						</div>
 						<div class="mt-3">
 							<a href="{{ site.illustrations.buy_link }}" class="btn btn-primary" target="_blank" rel="noopener">
-								{% include ui/icon.html icon="download" %}
+								{% include "ui/icon.html" icon="download" %}
 								Get lifetime access
 							</a>
 						</div>
@@ -104,13 +111,13 @@ illustrations = illustrations | push: illustration %} {% endif %} {% endfor %} {
 	</div>
 	<div class="col-lg-8">
 		<div class="row row-cards">
-			{% for illustration in site.data.illustrations %}
+			{% for illustration in illustrations %}
 			<div class="col-6 col-md-3">
 				<div class="card">
 					<div class="card-body">
 						<a href="{{ site.illustrations.buy_link }}" target="_blank">
-							<img src="{{ site.base }}/static/illustrations/light/{{ illustration }}.png" alt="{{ illustration }}" class="img-light" />
-							<img src="{{ site.base }}/static/illustrations/dark/{{ illustration }}.png" alt="{{ illustration }}" class="img-dark" />
+							<img src="{{ page | relative }}/static/illustrations/light/{{ illustration }}.png" alt="{{ illustration }}" class="img-light" />
+							<img src="{{ page | relative }}/static/illustrations/dark/{{ illustration }}.png" alt="{{ illustration }}" class="img-dark" />
 						</a>
 					</div>
 				</div>
@@ -127,9 +134,9 @@ illustrations = illustrations | push: illustration %} {% endif %} {% endfor %} {
 	   primaryColor = "{{ color[1].hex }}";
 
 	const illustrations = {
-	{% for illustration in illustrations %}
-		"{{ illustration.slug }}": {
-	      svg: '{{ illustration.content | replace: '<svg ', '<svg class="w-100 h-auto" ' | quote | replace_regex: "\n", "\n" }}',
+	{% for illustration in free-illustrations.autodark %}
+		"{{ illustration[0] }}": {
+	      svg: '{{ illustration[1] | replace: '<svg ', '<svg class="w-100 h-auto" ' | replace_regex: "\n", "\n" }}',
 		},
 	{% endfor %}
 	}

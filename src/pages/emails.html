@@ -1,17 +1,17 @@
 ---
 page-header: Email templates
-menu: emails
-libs: masonry, fslightbox
+page-menu: emails
+page-libs: [masonry, fslightbox]
+layout: default
+permalink: emails.html
 ---
-
-
 
 <div class="row row-cards">
 	<div class="col-12">
 		<div class="card card-md">
 			<div class="card-stamp card-stamp-lg">
 				<div class="card-stamp-icon bg-primary">
-					{% include ui/icon.html icon="mail" %}
+					{% include "ui/icon.html" icon="mail" %}
 				</div>
 			</div>
 			<div class="card-body">
@@ -19,7 +19,7 @@ libs: masonry, fslightbox
 					<div class="col-10">
 						<h3 class="h1">Tabler Emails</h3>
 						<div class="markdown text-secondary fs-3">
-							{{ site.data.emails | size }} eye-catching, customizable and responsive email templates to improve your email communication. No coding skills needed.
+							{{ emails | size }} eye-catching, customizable and responsive email templates to improve your email communication. No coding skills needed.
 						</div>
 						<div class="mt-3">
 							<a href="{{ site.emails.buy_link }}" class="btn btn-primary" target="_blank">Buy all emails for {{ site.emails.price }}</a>
@@ -31,17 +31,17 @@ libs: masonry, fslightbox
 	</div>
 	<div class="col-12">
 		<div class="row row-cards" data-masonry='{"percentPosition": true }'>
-			{% for email in site.data.emails %}
+			{% for email in emails %}
 			<div class="col-4">
 				<a
-					href="{{ site.base }}/static/emails/{{ email[0] }}.jpg"
+					href="{{ page | relative }}/static/emails/{{ email[0] }}.jpg"
 					data-bs-toggle="modal"
 					data-bs-target="#email-modal"
-					data-bs-title="{{ email[1].descriptionShort }}"
-					data-bs-description="{{ email[1].descriptionLong }}"
-					data-bs-image="{{ site.base }}/static/emails/{{ email[0] }}.jpg"
+					data-bs-title="{{ email[1].descriptionShort | escape  }}"
+					data-bs-description="{{ email[1].descriptionLong | escape }}"
+					data-bs-image="{{ page | relative }}/static/emails/{{ email[0] }}.jpg"
 				>
-					<img src="{{ site.base }}/static/emails/{{ email[0] }}.jpg" class="img-fluid rounded" alt="{{ email[1].descriptionShort }}" width="{{ email[1].width }}" height="{{ email[1].height }}" />
+					<img src="{{ page | relative }}/static/emails/{{ email[0] }}.jpg" class="img-fluid rounded" alt="{{ email[1].descriptionShort }}" width="{{ email[1].width }}" height="{{ email[1].height }}" />
 				</a>
 			</div>
 			{% endfor %}

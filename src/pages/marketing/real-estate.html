@@ -1,8 +1,9 @@
 ---
 layout: marketing
+permalink: marketing/real-estate.html
 ---
 
-<header class="img-bg" style="background-image: url({{ site.base }}/static/marketing/photo-1564013799919-ab600027ffc6.jpg)">
+<header class="img-bg" style="background-image: url({{ page | relative }}/static/marketing/photo-1564013799919-ab600027ffc6.jpg)">
 	<div class="hero position-relative bg-primary py-12" style="--tblr-bg-opacity: 0.9">
 		<div class="container-narrow">
 			<h1 class="hero-title text-white">Find your forever home</h1>
@@ -22,14 +23,14 @@ layout: marketing
 </header>
 
 <section class="section section-white">
-	{% include marketing/section-divider.html divider="arc" %}
+	{% include "marketing/section-divider.html" divider="arc" %}
 	<div class="container">
 		<div class="row g-6">
-			{% for building in site.data.real-estate %}
+			{% for building in real-estate %}
 			<div class="col-md-6 col-lg-4">
 				<div class="card">
 					<a href="#">
-						<div class="img-bg ratio ratio-4x3 card-img-top" style="background-image: url({{ site.base }}/static/marketing/{{ building.image }})"></div>
+						<div class="img-bg ratio ratio-4x3 card-img-top" style="background-image: url({{ page | relative }}/static/marketing/{{ building.image }})"></div>
 					</a>
 
 					<div class="card-body">
@@ -39,11 +40,11 @@ layout: marketing
 
 							<div class="d-flex mb-4 text-secondary">
 								<div class="d-block d-flex align-items-center me-3">
-									{% include ui/icon.html icon="bed" class="me-1" %}
+									{% include "ui/icon.html" icon="bed" class="me-1" %}
 									{{ building.bedrooms }} beds
 								</div>
 								<div class="d-block d-flex align-items-center">
-									{% include ui/icon.html icon="bath" class="me-1" %}
+									{% include "ui/icon.html" icon="bath" class="me-1" %}
 									{{ building.baths }} baths
 								</div>
 							</div>

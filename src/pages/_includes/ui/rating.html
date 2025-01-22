@@ -14,14 +14,16 @@
 </select>
 
 {% capture star %}
-{% include ui/icon.html class="gl-star-full" icon=icon color=color type="filled" size=size %}
+{% include "ui/icon.html" class="gl-star-full" icon=icon color=color type="filled" size=size %}
 {% endcapture %}
-{% assign star = star | strip | replace_regex: "\n\s+", "" %}
+{% assign star = star | replace_regex: "[\t\s]+\n", "" | strip %}
+{% assign star = star | replace_regex: "[\n\t]{2,}", " " | strip %}
+{% assign star = star | replace_regex: "<!--[^-]*-->", "" | strip %}
 
 {% capture_global scripts %}
 <script>
   // @formatter:off
-  {% if jekyll.environment == 'development' %}window.tabler_rating = window.tabler_rating || {};{% endif %}
+  {% if environment == 'development' %}window.tabler_rating = window.tabler_rating || {};{% endif %}
 
   document.addEventListener("DOMContentLoaded", function () {
     const rating = new StarRating('#rating-{{ id }}', {
@@ -33,7 +35,7 @@
 		classNames: {
 		}
 	 })		
-    {% if jekyll.environment == 'development' %}window.tabler_rating["rating-{{ id }}"] = rating;{% endif %}
+    {% if environment == 'development' %}window.tabler_rating["rating-{{ id }}"] = rating;{% endif %}
   })
   // @formatter:on
 </script>

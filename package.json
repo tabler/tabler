@@ -22,7 +22,9 @@
     "optimize-images": "for i in ./src/static/photos/*.jpg; do convert \"$i\" -quality 80% \"${i%.jpg}.jpg\"; done",
     "format:check": "prettier --check src/**/*.{js,scss} --cache",
     "format:write": "prettier --write src/**/*.{js,scss} --cache",
-    "illustrations": "node .build/import-illustrations.js"
+    "illustrations": "node .build/import-illustrations.js",
+    "build:html": "eleventy",
+    "watch:html": "eleventy --watch"
   },
   "repository": {
     "type": "git",
@@ -131,6 +133,7 @@
     ]
   },
   "devDependencies": {
+    "@11ty/eleventy": "^3.0.0",
     "@babel/core": "^7.26.0",
     "@babel/preset-env": "^7.26.0",
     "@changesets/cli": "^2.27.11",
@@ -162,6 +165,7 @@
     "gulp-rtlcss": "^2.0.0",
     "gulp-sass": "^5.1.0",
     "gulp-terser": "^2.1.0",
+    "html-minifier": "^4.0.0",
     "imageoptim-cli": "^3.1.9",
     "imask": "^7.6.1",
     "js-beautify": "^1.15.1",
@@ -177,7 +181,7 @@
     "rollup": "2.79.2",
     "rollup-plugin-babel": "^4.4.0",
     "rollup-plugin-cleanup": "^3.2.1",
-    "sass": "1.78.0",
+    "sass": "1.71.0",
     "star-rating.js": "^4.3.1",
     "tinymce": "^7.6.0",
     "tom-select": "^2.4.1",
@@ -189,7 +193,8 @@
   "dependencies": {
     "@popperjs/core": "^2.11.8",
     "@tabler/icons": "^3.28.1",
-    "bootstrap": "5.3.3"
+    "bootstrap": "5.3.3",
+    "simply-beautiful": "^1.0.1"
   },
   "peerDependencies": {
     "@melloware/coloris": "^0.19.1",
