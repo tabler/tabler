@@ -26,6 +26,7 @@
 {% else %}
 	<!-- Download SVG icon from http://tabler.io/icons/icon/{{ icon-name }} -->
 	{% assign svg-icon = icons[icon-name].svg[type] | default: '' %}
+	{% assign svg-icon = svg-icon | replace: '<path stroke="none" d="M0 0h24v24H0z" fill="none"/>', '' %}
 	{{ svg-icon | replace_regex: 'class=\"[^"]+\"', replace-to }}
 {% endif %}
 

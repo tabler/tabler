@@ -536,14 +536,10 @@ export default function (eleventyConfig) {
 	 */
 	function prettifyHTML(content, outputPath) {
 		return outputPath.endsWith('.html')
-			? beautify.html(content, {
-				indent_size: 2,
-			})
-				.replace(/^\s*[\r\n]/gm, '')
+			? content
+				.replace(/\/\/ @formatter:(on|off)\n+/gm, '')
 			: content
 	}
 
-	if (env !== 'development') {
-		eleventyConfig.addTransform('htmlformat', prettifyHTML)
-	}
+	eleventyConfig.addTransform('htmlformat', prettifyHTML)
 };
