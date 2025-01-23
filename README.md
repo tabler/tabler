@@ -110,7 +110,7 @@ Once you complete the setup, you'll be able to run the various commands provided
 
 ## Build locally
 
-You need to have `pnpm` and `bundler` installed.
+You need to have `pnpm` installed.
 
 1. From the root `/tabler` directory, run installation in the command line: `pnpm install` 
 2. Then execute `pnpm run start` to start up the application stack.
