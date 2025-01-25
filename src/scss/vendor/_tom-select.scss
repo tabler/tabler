@@ -60,16 +60,19 @@ $input-border-width: 1px;
   }
 }
 
-.ts-wrapper.multi .ts-control > div {
-  background: var(--#{$prefix}bg-surface-secondary);
-  border: 1px solid var(--#{$prefix}border-color);
-  color: var(--#{$prefix}body-color);
+.ts-wrapper.multi,
+.ts-wrapper.multi.disabled {
+  .ts-control > div {
+    background: var(--#{$prefix}bg-surface-secondary);
+    border: 1px solid var(--#{$prefix}border-color);
+    color: var(--#{$prefix}body-color);
+  }
 }
 
-.disabled .ts-control {
+.ts-wrapper.disabled .ts-control {
   opacity: 1;
 
-  .item {
-    opacity: 0.7;
+  &> div.item {
+    color: var(--#{$prefix}gray-500);
   }
 }
