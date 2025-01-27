@@ -69,7 +69,7 @@ gulp.task('clean-dirs', () => {
  */
 gulp.task('sass', () => {
 	return gulp
-		.src(argv.withPlugins || BUILD ? `${srcDir}/scss/!(_)*.scss` : `${srcDir}/scss/+(tabler|demo).scss`)
+		.src(`${srcDir}/scss/!(_)*.scss`)
 		.pipe(debug())
 		.pipe(sass({
 			includePaths: ['node_modules'],

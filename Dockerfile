@@ -17,4 +17,4 @@ EXPOSE 3000
 # website management (browser auto reload)
 EXPOSE 3001
 # run tabler
-ENTRYPOINT [ "pnpm", "run", "start-plugins" ]
+ENTRYPOINT [ "pnpm", "run", "start" ]
