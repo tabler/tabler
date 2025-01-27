@@ -6,6 +6,7 @@ export default function (eleventyConfig) {
 	const env = process.env.NODE_ENV || "development";
 	const isDevelopment = env === "development";
 
+	eleventyConfig.setUseGitIgnore(false);
 	eleventyConfig.setInputDirectory("src/pages");
 	eleventyConfig.setOutputDirectory(process.env.DIST_DIR || "demo");
 
@@ -28,7 +29,6 @@ export default function (eleventyConfig) {
 	if (isDevelopment) {
 		eleventyConfig.addWatchTarget("dist");
 	}
-
 	eleventyConfig.addPassthroughCopy("favicon.ico");
 
 	/**
