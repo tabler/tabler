@@ -38,9 +38,7 @@ const parseUrl = () => {
 // Toggle form controls
 const toggleFormControls = (form) => {
 	for (const [key, params] of Object.entries(items)) {
-		const elem = form.querySelector(
-			`[name="settings-${key}"][value="${config[key]}"]`,
-		)
+		const elem = form.querySelector(`[name="settings-${key}"][value="${config[key]}"]`)
 
 		if (elem) {
 			elem.checked = true

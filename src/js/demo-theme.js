@@ -21,7 +21,7 @@ if (!!params.theme) {
 	selectedTheme = storedTheme ? storedTheme : defaultTheme
 }
 
-if (selectedTheme === 'dark') {
+if (selectedTheme === "dark") {
 	document.body.setAttribute("data-bs-theme", selectedTheme)
 } else {
 	document.body.removeAttribute("data-bs-theme")
