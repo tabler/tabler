@@ -357,15 +357,31 @@ export default function (eleventyConfig) {
 		]
 	});
 
+	eleventyConfig.addGlobalData("sri", {
+		"css-flags-rtl-hash": "sha384-pyPIUUzl3ihMh/Soc0cX/ytLylBiU0K+g8EWmeDVnLR6QkrAsHcOGehOffLG19t5",
+		"css-marketing-hash": "sha384-xtswiyYvkn30pwQanIC7fLNoXLUTPJoo0/VevYIWw2PHUXjVyhibnid19Bzo4fnP",
+		"css-flags-hash": "sha384-pyPIUUzl3ihMh/Soc0cX/ytLylBiU0K+g8EWmeDVnLR6QkrAsHcOGehOffLG19t5",
+		"css-payments-rtl-hash": "sha384-cp6pMaF85f8bRADXNb55+643IaU3eVkxCcvTcUPzV56C24zq1pFSK/SNDfOZ1XNr",
+		"css-socials-hash": "sha384-RNz6i9B2zB8bLNfdG34OmayEIvSFYCPovYYZebkDJf6l6drBVfm9FPmoWHasyaUz",
+		"css-marketing-rtl-hash": "sha384-dSeYfYFDOz00AUT2Po+SELUDHixM+Qv2whYHtJtH0SC3dQL0DFaHVqXuW6unncv+",
+		"css-payments-hash": "sha384-cp6pMaF85f8bRADXNb55+643IaU3eVkxCcvTcUPzV56C24zq1pFSK/SNDfOZ1XNr",
+		"css-socials-rtl-hash": "sha384-RNz6i9B2zB8bLNfdG34OmayEIvSFYCPovYYZebkDJf6l6drBVfm9FPmoWHasyaUz",
+		"css-rtl-hash": "sha384-xJaddD8d0lNiF2lmKxub9uWOGHpUMcHJzw/F5g7ikM8rPHLj9IWH1MwSibuSJAX+",
+		"css-hash": "sha384-anrzUYCd0msxXiEJRrb2PDJRk070WI/z1nRWndATF3ls2sIWSHMI6l/grX625viM",
+		"css-vendors-rtl-hash": "sha384-5wy2rI8a18XT4g7Zn/riZg0kPUGQm3EzGhlaPcne8YvwmiMR++ns+XtlO3ZPmyBp",
+		"css-vendors-hash": "sha384-vCMaMQTQttXNVZtTZHpgrXqajb77YHPmldMvC680DBW5rf8wemoJyhjMCSFMb5hC",
+		"js-hash": "sha384-gQY8IHXmWA4xT6ygJrbdFeIGkA4DytGYMKMdcNucY8IuB2BLqpW68jw9pcx0Ls4E",
+	});
+
 	/**
 	 * Filters
 	 */
-	eleventyConfig.addFilter("miliseconds_to_minutes", function (value) { 
+	eleventyConfig.addFilter("miliseconds_to_minutes", function (value) {
 		// Raturn 3:45 time format
 		const minutes = Math.floor(value / 60000);
 		const seconds = ((value % 60000) / 1000).toFixed(0);
 		return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-	 });
+	});
 
 	eleventyConfig.addFilter("relative", (page) => {
 		const segments = (page.url || '').replace(/^\//).split('/');

@@ -391,10 +391,15 @@ gulp.task('add-banner', () => {
 		.pipe(gulp.dest(`${distDir}`))
 })
 
+gulp.task('generate-sri', (cb) => {
+	return spawn('pnpm', ['run', 'generate-sri'], { stdio: 'inherit' })
+		.on('close', cb)
+})
+
 gulp.task('clean', gulp.series('clean-dirs'))
 
 gulp.task('start', gulp.series('clean', 'sass', 'js', gulp.parallel('js-demo', 'js-demo-theme'), 'mjs', 'build-eleventy', gulp.parallel('watch-eleventy', 'watch', 'browser-sync')))
 
 gulp.task('build-core', gulp.series('build-on', 'clean', 'sass', 'css-rtl', 'css-minify', 'js', gulp.parallel('js-demo', 'js-demo-theme'), 'mjs', 'copy-images', 'copy-libs', 'add-banner'))
-gulp.task('build-demo', gulp.series('build-on', 'build-eleventy', 'copy-static', 'copy-dist', 'build-cleanup', 'build-purgecss'))
+gulp.task('build-demo', gulp.series('build-on', 'generate-sri', 'build-eleventy', 'copy-static', 'copy-dist', 'build-cleanup', 'build-purgecss'))
 gulp.task('build', gulp.series('build-core', 'build-demo'))
