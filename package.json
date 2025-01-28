@@ -11,7 +11,8 @@
     "preview": "gulp build --preview",
     "svg-optimize": "svgo -f svg/brand --pretty",
     "unused-files": "node .build/unused-files.js",
-    "release": "release-it",
+    "version": "changeset version",
+    "publish": "changeset publish",
     "svg-icons": "node .build/import-icons.js",
     "bundlewatch": "bundlewatch",
     "storybook": "start-storybook -p 6006",
@@ -135,6 +136,7 @@
     "@11ty/eleventy": "^3.0.0",
     "@babel/core": "^7.26.7",
     "@babel/preset-env": "^7.26.7",
+    "@changesets/changelog-github": "^0.5.0",
     "@changesets/cli": "^2.27.12",
     "@rollup/plugin-commonjs": "^24.1.0",
     "@rollup/plugin-node-resolve": "^15.3.1",
@@ -175,7 +177,6 @@
     "plyr": "^3.7.8",
     "postcss": "^8.5.1",
     "prettier": "^2.8.8",
-    "release-it": "^15.11.0",
     "request": "^2.88.2",
     "rollup": "2.79.2",
     "rollup-plugin-babel": "^4.4.0",
@@ -265,20 +266,6 @@
     },
     "star-rating.js": {
       "optional": true
-    }
-  },
-  "release-it": {
-    "hooks": {
-      "after:bump": "gulp build --latest-version ${latestVersion} --new-version ${version} && gulp build-demo",
-      "after:release": "echo Successfully released ${name} v${latestVersion} to ${repo.repository}."
-    },
-    "git": {
-      "requireCleanWorkingDir": false,
-      "addUntrackedFiles": true,
-      "tagName": "v${version}"
-    },
-    "github": {
-      "release": true
     }
   },
   "directories": {
