@@ -16,6 +16,10 @@ jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
+    permissions:
+      contents: write # to create release 
+      issues: write # to post issue comments
+      pull-requests: write # to create pull request
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v4
@@ -39,7 +43,10 @@ jobs:
       - name: Create release Pull Request or publish to NPM
         uses: changesets/action@v1
         with:
-          publish: pnpm release
+          version: pnpm run version
+          publish: pnpm run publish
+          commit: "chore: update versions"
+          title: "chore: update versions"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
