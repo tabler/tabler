@@ -44,7 +44,7 @@ export default function (eleventyConfig) {
 	eleventyConfig.addGlobalData("site", {
 		title: "Tabler",
 		description: "Premium and Open Source dashboard template with responsive and high quality UI.",
-		themeColor: "#066fd1",
+		themeColor: "#2563EB",
 
 		email: "support@tabler.io",
 		homepage: "https://tabler.io",
