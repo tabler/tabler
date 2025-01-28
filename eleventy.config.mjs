@@ -537,6 +537,8 @@ export default function (eleventyConfig) {
 		return outputPath.endsWith('.html')
 			? content
 				.replace(/\/\/ @formatter:(on|off)\n+/gm, '')
+				// remove empty lines
+				.replace(/^\s*[\r\n]/gm, '')
 			: content
 	}
 
