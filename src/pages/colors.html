@@ -6,63 +6,51 @@ layout: default
 permalink: colors.html
 ---
 
-{% assign colors = '' | split: '' %}
-{% for color in site.colors %}
-{% assign colors = colors | push: color[0] %}
-{% endfor %}
-{% assign colors = colors | push: 'dark' %}
-{% assign colors = colors | push: 'muted' %}
-
 <div class="card">
 	<div class="card-body">
 		<div class="table-responsive">
-			<table class="table text-center">
+			<table class="table">
+				<thead>
+					<tr>
+						<th>Name</th>
+						<th>Swatch</th>
+						<th>CSS variables</th>
+						<th colspan="2">CSS class</th>
+					</tr>
+				</thead>
+				{% for category in css-props.colors %}
+				{% for prop in category.props %}
 				<tr>
-					{% for color in colors %}
+					{% if forloop.first %}
+					<th class="text-left" rowspan="{{ category.props | size }}">{{ category.name }}</th>
+					{% endif %}
 					<td>
-						<div class="avatar bg-{{ color }} text-{{ color }}-fg" data-demo-color>{{ color | slice: 0, 2 }}
+						<div class="d-flex justify-content-center">
+							<div class="w-100 h-7 p-1 rounded border{% if prop.todo %} border-danger text-danger{% endif %}" style="background-color: var({{ prop.variable }})">{% if prop.todo %}{% include "ui/icon.html" icon="alert-square-rounded" type="filled" %}{% endif %}</div>
 						</div>
 					</td>
-					{% endfor %}
-				</tr>
-				<tr>
-					{% for color in colors %}
 					<td>
-						<div class="avatar bg-{{ color }}-lt" data-demo-color>{{ color | slice: 0, 2 }}</div>
+						<code>{{ prop.variable }}</code>
 					</td>
-					{% endfor %}
-				</tr>
-				<tr>
-					{% for color in colors %}
 					<td>
-						<div class="avatar text-{{ color }} bg-transparent" data-demo-color>{{ color | slice: 0, 2 }}</div>
+						<div class="space-y">
+						{% for class in prop.classes %}
+							<div><code>{{ class }}</code></div>
+						{% endfor %}
+						</div>
 					</td>
-					{% endfor %}
-				</tr>
-				<tr class="bg-light">
-					{% for color in colors %}
+					{% if environment == 'development' %}
 					<td>
-						<div class="avatar text-{{ color }} bg-transparent" data-demo-color>{{ color | slice: 0, 2 }}</div>
+						<div class="space-y">
+						{% for class in prop.classes %}
+							<div class="{{ class }} border p-2 rounded">123</div>
+						{% endfor %}
+						</div>
 					</td>
-					{% endfor %}
+					{% endif %}
 				</tr>
-				<tr class="bg-dark text-white">
-					{% for color in colors %}
-					<td>
-						{% if color == 'dark' %}{% assign c = 'white' %}{% else %}{% assign c = color %}{% endif %}
-						<div class="avatar text-{{ c }} bg-transparent" data-demo-color>{{ c | slice: 0, 2 }}</div>
-					</td>
-					{% endfor %}
-				</tr>
-				<tr class="bg-dark text-white">
-					{% for color in colors %}
-					<td>
-						{% if color == 'dark' %}{% assign c = 'white' %}{% else %}{% assign c = color %}{% endif %}
-						<div class="avatar bg-{{ c }}-lt" data-demo-color>{{ c | slice: 0, 2 }}</div>
-						<div class="mt-2" data-demo-color-contrast></div>
-					</td>
-					{% endfor %}
-				</tr>
+				{% endfor %}
+				{% endfor %}
 			</table>
 		</div>
 	</div>
