@@ -14,6 +14,8 @@ export default function (eleventyConfig) {
 
 	eleventyConfig.setWatchThrottleWaitTime(100);
 
+	eleventyConfig.addPassthroughCopy("src/pages/favicon.ico");
+
 	eleventyConfig.addPlugin(EleventyRenderPlugin, {
 		accessGlobalData: true,
 	});
@@ -28,8 +30,6 @@ export default function (eleventyConfig) {
 	if (isDevelopment) {
 		eleventyConfig.addWatchTarget("dist");
 	}
-
-	eleventyConfig.addPassthroughCopy("favicon.ico");
 
 	/**
 	 * Data
@@ -537,6 +537,8 @@ export default function (eleventyConfig) {
 		return outputPath.endsWith('.html')
 			? content
 				.replace(/\/\/ @formatter:(on|off)\n+/gm, '')
+				// remove empty lines
+				.replace(/^\s*[\r\n]/gm, '')
 			: content
 	}
 

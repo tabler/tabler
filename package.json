@@ -1,18 +1,18 @@
 {
   "name": "@tabler/core",
-  "version": "1.0.0-beta24",
+  "version": "1.0.0",
   "description": "Premium and Open Source dashboard template with responsive and high quality UI.",
   "homepage": "https://tabler.io",
   "scripts": {
-    "dev": "pnpm run start-plugins",
+    "dev": "pnpm run start",
     "start": "gulp start",
-    "start-plugins": "gulp start --with-plugins",
     "build": "gulp build",
     "build-docs": "mkdir public && touch public/index.html && echo 'ok'",
     "preview": "gulp build --preview",
     "svg-optimize": "svgo -f svg/brand --pretty",
     "unused-files": "node .build/unused-files.js",
-    "release": "release-it",
+    "version": "changeset version",
+    "publish": "changeset publish",
     "svg-icons": "node .build/import-icons.js",
     "bundlewatch": "bundlewatch",
     "storybook": "start-storybook -p 6006",
@@ -24,7 +24,8 @@
     "format:write": "prettier --write src/**/*.{js,scss} --cache",
     "illustrations": "node .build/import-illustrations.js",
     "build:html": "eleventy",
-    "watch:html": "eleventy --watch"
+    "watch:html": "eleventy --watch --incremental",
+    "zip": "mkdir -p packages-zip && zip -r packages-zip/tabler-$(node -p \"require('./package.json').version\").zip demo/*"
   },
   "repository": {
     "type": "git",
@@ -134,14 +135,15 @@
   },
   "devDependencies": {
     "@11ty/eleventy": "^3.0.0",
-    "@babel/core": "^7.26.0",
-    "@babel/preset-env": "^7.26.0",
-    "@changesets/cli": "^2.27.11",
+    "@babel/core": "^7.26.7",
+    "@babel/preset-env": "^7.26.7",
+    "@changesets/changelog-github": "^0.5.0",
+    "@changesets/cli": "^2.27.12",
     "@rollup/plugin-commonjs": "^24.1.0",
     "@rollup/plugin-node-resolve": "^15.3.1",
     "@rollup/plugin-replace": "^5.0.7",
     "@rollup/stream": "^2.0.0",
-    "apexcharts": "^4.3.0",
+    "apexcharts": "^4.4.0",
     "autoprefixer": "^10.4.20",
     "autosize": "^6.0.1",
     "browser-sync": "^2.29.3",
@@ -176,7 +178,6 @@
     "plyr": "^3.7.8",
     "postcss": "^8.5.1",
     "prettier": "^2.8.8",
-    "release-it": "^15.11.0",
     "request": "^2.88.2",
     "rollup": "2.79.2",
     "rollup-plugin-babel": "^4.4.0",
@@ -266,20 +267,6 @@
     },
     "star-rating.js": {
       "optional": true
-    }
-  },
-  "release-it": {
-    "hooks": {
-      "after:bump": "gulp build --latest-version ${latestVersion} --new-version ${version} && gulp build-demo",
-      "after:release": "echo Successfully released ${name} v${latestVersion} to ${repo.repository}."
-    },
-    "git": {
-      "requireCleanWorkingDir": false,
-      "addUntrackedFiles": true,
-      "tagName": "v${version}"
-    },
-    "github": {
-      "release": true
     }
   },
   "directories": {

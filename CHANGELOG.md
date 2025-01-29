@@ -1,5 +1,127 @@
 # Changelog
 
+## 1.0.0 - 2025-01-28
+
+### Minor Changes
+
+- c276a8b: Add new `Tag` component
+- d380224: Add customizable Star Ratings component using `star-rating.js` library
+- 47cd6c1: Add `flags.html` page with list of all flags
+- be67ab6: Update CSS class from `text-muted` to `text-secondary` for better Bootstrap compatibility
+- 080c746: Adding `alerts.html` page with example of alerts.
+- b381273: Change primary color value to new Tabler branding
+- 75619dd: Unify dark mode with latest Bootstrap API and improve dark mode elements
+- cc82dbf: New Chat component
+- 5a03643: Adjusting form element sizes for enhanced mobile devices compatibility
+- be14607: Add new color picker component using `coloris.js` library
+- d046570: Update Tabler Icons to version 2.23 with 18 new icons added
+- 5488c50: New page with payment providers: `payment-providers.html`
+- 5488c50: Add support for new payment providers: 2c2p, Adyen, Affirm, Alipay Plus, Allegro Pay, Amazon Pay, Apple Pay, Autopay, Binance USD, Bkash, Cash App, Chime, EasyPaisa, Ethereum, Google Pay, HubSpot, iDeal, Litecoin, Mercado Pago,
+  MetaMask, MoneyGram, OpenSea, Payconiq, Payka, Payline, PayPo, Paysafe, Poli, Revolut Pay, Samsung Pay, Shop Pay, Solana, Spingo, Stax, Tether, True USD, Venmo, WeChat Pay, Wise, Zelle
+
+### Patch Changes
+
+- 293d0a4: Change Twitter to X brand
+- fd0935a: Updated link to icons documentation
+- 1cf27dc: Dependencies update
+- 041f4e4: Order menu items alphabetically
+- 20cad01: Automatically retrieve and display the changelog from the CHANGELOG.md file.
+- 34f3efc: Initialize Visual Studio Code config
+- 7ba7717: Make horizontal rule direction aware
+- 063ef58: Update Tabler Illustrations to v1.5
+- 5e2c975: Update Tabler Icons to v3.29.0
+- 9d5f7ca: Remove unused dependencies from `package.json`
+- be69fd6: Replace Jekyll with Eleventy
+- 2f5fad6: Dependencies update
+- dfd7c88: Update TinyMCE to v7.0
+- 056df18: Fix text color in dark version of navbar
+- 17327dc: Remove invalid `z-index` setting for dropdowns
+- 4ff077a: Update Tabler Icons to version 2.21 with 18 new icons added
+- 867c8dd: Update Tabler Emails to v2.0
+- d8605f2: Init changelog script
+- 89c6234: Adding Two-Step Verification Pages
+- f6e885b: Replace `.page-center` with `.my-auto` in single page layouts
+- 7aa216f: Add border-opacity variable for improved color utility
+- 88eb413: Fix icon display issues in the Star Ratings component
+- 78392b6: Fix `color` of disabled `dropdown-item` in Navbar component
+- 4deb8f4: Bump pnpm/action-setup from 2 to 3
+- 9015472: Add social icons plugin
+- 7fe30a1: `Dockerfile` fix
+- e53942f: Update Jekyll to version 4.3.4
+- 72f868b: Update Tabler Icons to version 2.20 with 37 new icons added
+- e0443c0: Add Tabler Illustrations
+- 5cca710: Update illustrations and enhance SVG handling in HTML
+- 3a4f10f: Fix ids of custom size star ratings
+- 7896562: Unify size of avatar, flag and payment components
+- 1587905: Update icons to v2.42.0
+- d9e00b2: Update Bootstrap to v5.3.0
+- bc1d1a3: Set `font-size` of an `i` element with `icon` class in a `button` element
+- 0195f9b: Dependencies update
+- a5bf5d3: Fix icons in `form-elements.html`
+- 736410c: Update Tabler Icons to v3.28.1
+- 3f516ea: Fix `rgba` color values in `_variables.scss`
+- e91884e: Fix description of alerts with a description
+- 90cc744: Fix colors of disabled `.ts-control`
+- 1801e41: Center content on error and single page layouts
+- 45c83ac: Resolve map page issues
+- faee63c: Improve base font family loading
+- 5e7e0dd: Introduce Docker Compose Config to build and run Ttabler locally
+- c293a66: Fix `@charset` CSS declaration in bundle.
+- cb4a681: Update `_navbar.scss` with disabled dropdown menu items color
+- af41fb3: Update Tabler Icons to v3.17.0
+- 6cbe888: Update `@tabler/icons` to v3.0
+- 0e4bf5f: Refactor data structure by converting YAML files to JSON
+- 82cf257: Increase `z-index` of `ts-dropdown` to prevent overlapping by buttons
+- 4b4b4f6: Adding punctuation to `SECURITY.md`
+- a0a2d52: Fix form controls bugs in dark mode
+- f45b697: Fix padding in code blocks
+- 4de166d: Unified Box Shadows with Bootstrap Compatibility
+- 87bf2f5: Remove duplicated setting of color in `th` element
+- 5dc45aa: Fix layout of search results for small and medium screens
+- 4ae0358: Remove `text-decoration` on hovering `a` element with class having `icon` class
+- e798eb6: Fix small typo in tables docs
+- 1c1d0c9: Improve documentation for alerts
+- 371ef84: Bump `pnpm/action-setup` from 3 to 4
+- 8421fc2: Update dependencies
+- 0625f5f: Update Tabler Icons to version 2.22 with 18 new icons added
+- ba65fc3: Update devDependencies
+- a43ded4: Add All Contributions package to project for easy contribution tracking
+- 2f622c9: Set value of `$font-family-monospace` as default
+- 2c7c448: Refactor Dockerfile and package.json
+- 5ec7f05: Resolved light dropdown issue on dark theme
+- b0b07b9: Enhance documentation
+- 0f129b1: Update Tabler Icons to version 2.19 with 18 new icons added
+- 507df7b: Fix cells with inline icons
+- 0e5b44a: Fix `color` of disabled `nav-link` in `nav-bordered`
+- 65c1300: Fix the `z-index` value of the `nav-tab` inside `card-tab` #1933
+- 8552a46: Switch from `npm` to `pnpm` for faster package installation
+- 4a9e40d: Increase contrast of active `dropdown-item` in vertical layout
+- 17ebdf4: Update documentation for Tabler components
+- 4c88481: Add variable to configure `avatar-list` spacing
+- df46ee7: Do not display empty `fieldset` element
+- 875cafa: Refactor SCSS variables to use `color.adjust` for improved color manipulation
+- eb28546: Add Tabler Illustrations
+- 650d84c: Update required Node.js version to 18 and add `.nvmrc` file
+- fb659d4: Fix table default background color
+- f77c712: Avoid SCSS color dependency on `:focus`
+- 71c68ce: Update changelog configuration and release scripts
+- 34d124d: Update Tabler Icons to v3.26.0
+- 4cd9215: Updated Tabler Icons to v3.24.0
+- 7bb947b: Update Tabler Icons to version 2.18 with 18 new icons added
+- c75cf55: Update Node.js engine requirement to allow versions >=20
+- 1c34e8e: Update Tabler Icons to v3.14.0
+- 289dd3b: Add Prettier to project for consistent code formatting
+- f83e36c: Upgrade Node.js from version 18 to version 20 for improved performance, security, and feature updates.
+- b885852: Update Tabler Icons to version 2.25 with 48 new icons added
+- 53a5117: Fix responsiveness issue in Settings menu
+- 38504e5: Added 3 new payments from Nepal: Esewa, FonePay, Khalti and Imepay
+- 35ee14d: Add new Filled section to Icons page
+- d32f242: Update `bootstrap` to v5.3.1
+- d82f94e: Update package dependencies to latest versions
+- 54c5ad0: Fix link to webfont version of Tabler Icons
+- 94b83d4: Add support for changeset tool for more efficient and organized code changes
+- c51ff28: Fix colors in date range datepicker
+
 ## `1.0.0-beta24` - 2025-01-11
 
 - Enhanced documentation.
@@ -102,7 +224,7 @@
 - Fixed disabled CSS class for links.
 - Addressed missing variables and minor color adjustments.
 - Improved heights, scrolls, and layouts in Docs examples.
-- Fixed flags display in preview. 
+- Fixed flags display in preview.
 
 ## `1.0.0-beta20` - 2023-08-24
 
@@ -130,7 +252,6 @@
 - `Dockerfile` fix
 - Switch from `npm` to `pnpm` for faster package installation
 
-
 ## `1.0.0-beta19` - 2023-05-15
 
 - Add customizable Star Ratings component using `star-rating.js` library (#1571)
@@ -138,7 +259,6 @@
 - Fix form controls bugs in dark mode (#1573)
 - Fix text color in dark version of navbar (#1569)
 - Changelog update
-
 
 ## `1.0.0-beta18` - 2023-05-14
 
@@ -163,7 +283,6 @@
 - Dark mode lite colors improvement
 - Fix non full width selects (#1392)
 
-
 ## `1.0.0-beta17` - 2023-01-28
 
 - update `bootstrap` to v5.3.0
@@ -186,7 +305,6 @@
 - move `@tabler/icons` to `dev-dependencies`
 - fix #1370: avatar stacked list is not stacked anymore
 
-
 ## `1.0.0-beta16` - 2022-11-12
 
 - new `Photogrid` page
@@ -200,7 +318,6 @@
 - update icons to v1.111.0
 - homepage navbar fix
 - fix #1262 - `.bg-opacity-xx` class is not functioning properly
-
 
 ## `1.0.0-beta15` - 2022-11-01
 
@@ -219,12 +336,10 @@
 - `btn-actions` fixes
 - replace `$text-muted` to css variable
 
-
 ## `1.0.0-beta14` - 2022-10-21
 
 - fix active items in dark mode
 - update Jekyll to newest version
-
 
 ## `1.0.0-beta13` - 2022-10-18
 
@@ -256,7 +371,6 @@
 - fix #1275 - remove last border-right on progress bar
 - fix #1261 - broken offcanvas bg
 
-
 ## `1.0.0-beta12` - 2022-09-19
 
 - new "Job listing" page
@@ -282,7 +396,6 @@
 - fix form elements demo page radio buttons
 - replace `gulp-minify` with `gulp-terser`
 
-
 ## `1.0.0-beta11` - 2022-07-05
 
 - new `Dropzone` component
@@ -298,7 +411,6 @@
 - fix: #1125 incorrect chart display in the mobile version
 - update Bootstrap to 5.2.0
 
-
 ## `1.0.0-beta10` - 2022-04-29
 
 - new `datatable` component
@@ -307,7 +419,6 @@
 - new carousel indicators: dots, vertical, thumbs (#1101)
 - replace !important modifier with more specific selectors (#1100)
 - new `FAQ` page
-
 
 ## `1.0.0-beta9` - 2022-02-26
 
@@ -322,7 +433,6 @@
 - add `font-display: swap;` to improve font loading
 - new `Boxed` layout
 
-
 ## `1.0.0-beta8` - 2022-02-05
 
 - update dependencies
@@ -331,7 +441,6 @@
 - docs improvement
 - replace `badge` with `status-dot` in `navbar-notifications.html`
 - map tooltip fixes
-
 
 ## `1.0.0-beta7` - 2022-02-05
 
@@ -346,7 +455,6 @@
 - RTL stylesheet fixes
 - new card action demos
 
-
 ## `1.0.0-beta6` - 2022-01-18
 
 - pricing cards fix
@@ -359,7 +467,6 @@
 - fix #960 - Badges not honoring font sizes
 - fix #959 - `node-sass` does not properly compile nested media queries
 - update package dependencies to newest version
-
 
 ## `1.0.0-beta5` - 2021-12-07
 
@@ -378,7 +485,6 @@
 - colors unify
 - add `tom-select` and remove `choices.js`
 
-
 ## `1.0.0-beta4` - 2021-10-24
 
 - upgrade required node.js version to 14
@@ -387,14 +493,12 @@
 - fix #775 - litepicker not initializing
 - fix `nouislider` import in dev
 
-
 ## `1.0.0-beta3` - 2021-05-08
 
 - upgrade Bootstrap to 5.0
 - upgrade dependencies
 - change `$border-radius-pill` variable
 - badge vertical align fix
-
 
 ## `1.0.0-beta2` - 2021-03-29
 
@@ -408,7 +512,6 @@
 - ribbon fix
 - charts label fixes
 - charts docs
-
 
 ## `1.0.0-beta` - 2021-02-17
 
