@@ -2,9 +2,11 @@
   "name": "preview",
   "private": true,
   "scripts": {
-    "build": "eleventy",
+    "build": "pnpm run clean && pnpm run html",
     "dev": "eleventy --serve --port=3000",
     "clean": "rm -rf dist/* demo",
+    "html": "eleventy",
+    "copy-libs": "node build/copy-libs.mjs",
     "svg-optimize": "svgo -f svg/brand --pretty",
     "unused-files": "node build/unused-files.mjs",
     "download-images": "node build/download-images.mjs",
@@ -16,10 +18,28 @@
   },
   "dependencies": {
     "@tabler/icons": "^3.29.0",
-    "@tabler/core": "workspace:*"
+    "apexcharts": "^4.4.0",
+    "@tabler/core": "workspace:*",
+    "star-rating.js": "^4.3.1",
+    "tinymce": "^7.6.0",
+    "tom-select": "^2.4.1",
+    "typed.js": "^2.1.0",
+    "imask": "^7.6.1",
+    "jsvectormap": "^1.6.0",
+    "list.js": "^2.3.1",
+    "litepicker": "^2.0.12",
+    "nouislider": "^15.8.1",
+    "plyr": "^3.7.8",
+    "dropzone": "^6.0.0-beta.2",
+    "flatpickr": "^4.6.13",
+    "fslightbox": "^3.4.2",
+    "choices.js": "^11.0.3",
+    "countup.js": "^2.8.0",
+    "autosize": "^6.0.1"
   },
   "devDependencies": {
     "request": "^2.88.2",
+    "imageoptim-cli": "^3.1.9",
     "@11ty/eleventy": "^3.0.0"
   }
 }
