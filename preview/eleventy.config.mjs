@@ -41,13 +41,12 @@ export default function (eleventyConfig) {
 	const env = process.env.NODE_ENV || "development";
 
 	eleventyConfig.setInputDirectory("pages");
-	eleventyConfig.setOutputDirectory(process.env.DIST_DIR || "dist");
+	eleventyConfig.setOutputDirectory("dist");
 
 	eleventyConfig.setLayoutsDirectory("_layouts");
 	eleventyConfig.setIncludesDirectory("_includes");
 
 	eleventyConfig.addWatchTarget("../core/dist/**");
-
 	eleventyConfig.setWatchThrottleWaitTime(100);
 
 	eleventyConfig.addPassthroughCopy(getCopyList());
