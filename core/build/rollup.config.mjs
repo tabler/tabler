@@ -8,7 +8,6 @@ import banner from './banner.mjs'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
-const BUNDLE = process.env.BUNDLE === 'true'
 const ESM = process.env.ESM === 'true'
 
 let destinationFile = `tabler${ESM ? '.esm' : ''}`
@@ -20,16 +19,13 @@ const plugins = [
 	})
 ]
 
-if (BUNDLE) {
-	destinationFile += '.bundle'
-	plugins.push(
-		replace({
-			'process.env.NODE_ENV': '"production"',
-			preventAssignment: true
-		}),
-		nodeResolve()
-	)
-}
+plugins.push(
+	replace({
+		'process.env.NODE_ENV': '"production"',
+		preventAssignment: true
+	}),
+	nodeResolve()
+)
 
 const rollupConfig = {
 	input: path.resolve(__dirname, `../js/tabler.${ESM ? 'esm' : 'umd'}.js`),

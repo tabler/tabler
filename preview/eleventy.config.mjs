@@ -4,7 +4,7 @@ import { join, dirname } from 'node:path';
 
 const getCopyList = () => {
 	let copy = {
-		"node_modules/@tabler/core/dist": "dist",
+		"node_modules/@tabler/core/dist": "core",
 		"pages/favicon.ico": "favicon.ico",
 		"static": "static",
 	}
@@ -27,17 +27,11 @@ const getCopyList = () => {
 
 	files = files.flat()
 
-	console.log(files);
-	
 	files.forEach((file) => {
 		if (!file.match(/^https?/)) {
-			let dir = dirname(file)
-
-			copy[`node_modules/${dirname(file)}`] = `dist/libs/${dir}`;
+			copy[`node_modules/${dirname(file)}`] = `libs/${dirname(file) }`;
 		}
 	})
-
-	console.log(copy);
 
 	return copy;
 }
