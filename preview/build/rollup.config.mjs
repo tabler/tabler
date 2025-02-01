@@ -31,7 +31,7 @@ const rollupConfig = {
 	output: {
 		name: 'demo',
 		banner: banner('Demo'),
-		dir: path.resolve(__dirname, `../dist/demo/js`),
+		dir: path.resolve(__dirname, `../dist/preview/js`),
 		format: 'esm',
 		generatedCode: 'es2015'
 	},
