@@ -4,7 +4,9 @@ if (elements.length) {
 	elements.forEach(function (element) {
 		let options = {};
 		try {
-			options = element.getAttribute('data-countup') ? JSON.parse(element.getAttribute('data-countup')) : {};
+			const dataOptions = element.getAttribute('data-countup') ? JSON.parse(element.getAttribute('data-countup')) : {};
+			options = Object.assign({'enableScrollSpy': true}, dataOptions);
+			
 		} catch (error) {}
 
 		const value = parseInt(element.innerHTML, 10);
