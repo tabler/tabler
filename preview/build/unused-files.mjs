@@ -1,8 +1,13 @@
-import { sync } from 'glob';
-import { readFileSync } from 'fs';
-import { join } from 'path';
+#!/usr/bin/env node
 
-const srcDir = join(__dirname, '../src')
+import { sync } from 'glob';
+import { readFileSync } from 'node:fs';
+import { join, dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
+
+const srcDir = join(__dirname, '..')
 
 let foundFiles = []
 sync(`${srcDir}/pages/**/*.{html,md}`).forEach((file) => {
