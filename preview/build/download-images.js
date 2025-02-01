@@ -5,7 +5,7 @@
 const fs = require('node:fs')
 const path = require('node:path')
 const request = require('request')
-const filePath = path.join(__dirname, '../src/pages/_data/photos.json')
+const filePath = path.join(__dirname, '..', 'preview', 'pages', '_data', 'photos.json')
 
 const photos = JSON.parse(fs.readFileSync(filePath, 'utf8'))
 
@@ -36,10 +36,10 @@ async function downloadPhotos() {
 		do {
 			filename = `${urlTitle(photo['title'])}${i > 1 ? `-${i}` : ''}.jpg`
 			i++
-		} while (fs.existsSync(path.join(__dirname, `../src/static/photos/${filename}`)))
+		} while (fs.existsSync(path.join(__dirname, `../preview/static/photos/${filename}`)))
 
 		await new Promise((resolve, reject) => {
-			download(photo['path'], path.join(__dirname, `../src/static/photos/${filename}`), function () {
+			download(photo['path'], path.join(__dirname, `../preview/static/photos/${filename}`), function () {
 				resolve()
 			}, function () {
 				reject()
