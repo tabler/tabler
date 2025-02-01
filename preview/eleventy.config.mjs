@@ -6,7 +6,7 @@ export default function (eleventyConfig) {
 	const env = process.env.NODE_ENV || "development";
 	const isDevelopment = env === "development";
 
-	eleventyConfig.setInputDirectory("src/pages");
+	eleventyConfig.setInputDirectory("pages");
 	eleventyConfig.setOutputDirectory(process.env.DIST_DIR || "demo");
 
 	eleventyConfig.setLayoutsDirectory("_layouts");
@@ -14,7 +14,7 @@ export default function (eleventyConfig) {
 
 	eleventyConfig.setWatchThrottleWaitTime(100);
 
-	eleventyConfig.addPassthroughCopy("src/pages/favicon.ico");
+	eleventyConfig.addPassthroughCopy("pages/favicon.ico");
 
 	eleventyConfig.addPlugin(EleventyRenderPlugin, {
 		accessGlobalData: true,
