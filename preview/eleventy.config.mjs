@@ -2,6 +2,9 @@ import { readFileSync } from 'node:fs';
 import { EleventyRenderPlugin } from "@11ty/eleventy";
 import { join, dirname } from 'node:path';
 
+/*
+ * Copy list
+ */
 const getCopyList = () => {
 	let copy = {
 		"node_modules/@tabler/core/dist": "core",
