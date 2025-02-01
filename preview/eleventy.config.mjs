@@ -39,7 +39,6 @@ const getCopyList = () => {
 /** @type {import('@11ty/eleventy').LocalConfig} */
 export default function (eleventyConfig) {
 	const env = process.env.NODE_ENV || "development";
-	const isDevelopment = env === "development";
 
 	eleventyConfig.setInputDirectory("pages");
 	eleventyConfig.setOutputDirectory(process.env.DIST_DIR || "dist");
@@ -47,9 +46,7 @@ export default function (eleventyConfig) {
 	eleventyConfig.setLayoutsDirectory("_layouts");
 	eleventyConfig.setIncludesDirectory("_includes");
 
-	if (isDevelopment) {
-		eleventyConfig.addWatchTarget("../core/dist/**");
-	}
+	eleventyConfig.addWatchTarget("../core/dist/**");
 
 	eleventyConfig.setWatchThrottleWaitTime(100);
 
