@@ -1,12 +1,12 @@
-const glob = require('glob');
-const fs = require('fs')
-const path = require('path')
+import { sync } from 'glob';
+import { readFileSync } from 'fs';
+import { join } from 'path';
 
-const srcDir = path.join(__dirname, '../src')
+const srcDir = join(__dirname, '../src')
 
 let foundFiles = []
-glob.sync(`${srcDir}/pages/**/*.{html,md}`).forEach((file) => {
-	let fileContent = fs.readFileSync(file)
+sync(`${srcDir}/pages/**/*.{html,md}`).forEach((file) => {
+	let fileContent = readFileSync(file)
 
 	fileContent.toString().replace(/\{% include(_cached)? "([a-z0-9\/_-]+\.html)"/g, (f, c, filename) => {
 		filename = `${srcDir}/pages/_includes/${filename}`
@@ -17,7 +17,7 @@ glob.sync(`${srcDir}/pages/**/*.{html,md}`).forEach((file) => {
 	})
 })
 
-let includeFiles = glob.sync(`${srcDir}/pages/_includes/**/*.html`)
+let includeFiles = sync(`${srcDir}/pages/_includes/**/*.html`)
 
 includeFiles.forEach((file) => {
 	if (!foundFiles.includes(file)) {
