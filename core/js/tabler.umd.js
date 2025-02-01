@@ -1,5 +1,3 @@
-//Vendor
-
 import "./src/autosize"
 import "./src/countup"
 import "./src/input-mask"
@@ -9,6 +7,7 @@ import "./src/popover"
 import "./src/switch-icon"
 import "./src/tab"
 import "./src/toast"
+
 import * as bootstrap from "bootstrap"
 import * as tabler from "./src/tabler"
 

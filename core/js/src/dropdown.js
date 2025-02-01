@@ -1,4 +1,4 @@
-import { Dropdown } from 'bootstrap';
+import { Dropdown } from './bootstrap';
 
 /*
 Core dropdowns

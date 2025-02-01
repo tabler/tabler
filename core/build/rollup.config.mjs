@@ -11,7 +11,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ESM = process.env.ESM === 'true'
 
 let destinationFile = `tabler${ESM ? '.esm' : ''}`
-const external = ['@popperjs/core']
+const external = []
 const plugins = [
 	babel({
 		exclude: 'node_modules/**',
