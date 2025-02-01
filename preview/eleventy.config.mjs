@@ -13,11 +13,17 @@ export default function (eleventyConfig) {
 	eleventyConfig.setLayoutsDirectory("_layouts");
 	eleventyConfig.setIncludesDirectory("_includes");
 
+	if (isDevelopment) {
+		eleventyConfig.addWatchTarget("../core/dist/**");
+	}
+
 	eleventyConfig.setWatchThrottleWaitTime(100);
 
-	eleventyConfig.addPassthroughCopy("pages/favicon.ico");
-	eleventyConfig.addPassthroughCopy("static/*");
-	eleventyConfig.addPassthroughCopy("node_modules/@tabler/core/dist");
+	eleventyConfig.addPassthroughCopy({
+		"node_modules/@tabler/core/dist": "dist",
+		"pages/favicon.ico": "favicon.ico",
+		"static": "static",
+	});
 
 	eleventyConfig.addPlugin(EleventyRenderPlugin, {
 		accessGlobalData: true,
@@ -29,10 +35,6 @@ export default function (eleventyConfig) {
 		dynamicPartials: true,
 		jekyllWhere: true,
 	});
-
-	if (isDevelopment) {
-		eleventyConfig.addWatchTarget("dist");
-	}
 
 	/**
 	 * Data
