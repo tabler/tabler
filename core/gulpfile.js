@@ -324,43 +324,47 @@ gulp.task('browser-sync', () => {
  * Copy libs used in tabler from npm to dist directory
  */
 gulp.task('copy-libs', (cb) => {
-	const allLibs = require(`${srcDir}/pages/_data/libs`)
-
-	let files = []
-
-	Object.keys(allLibs.js).forEach((lib) => {
-		files.push(Array.isArray(allLibs.js[lib]) ? allLibs.js[lib] : [allLibs.js[lib]])
-	})
-
-	Object.keys(allLibs.css).forEach((lib) => {
-		files.push(Array.isArray(allLibs.css[lib]) ? allLibs.css[lib] : [allLibs.css[lib]])
-	})
-
-	Object.keys(allLibs['js-copy']).forEach((lib) => {
-		files.push(allLibs['js-copy'][lib])
-	})
-
-	files = files.flat()
-
-	files.forEach((file) => {
-		if (!file.match(/^https?/)) {
-			let dirname = path.dirname(file).replace('@', '')
-			let cmd = `mkdir -p "${distDir}/libs/${dirname}" && cp -r node_modules/${path.dirname(file)}/* ${distDir}/libs/${dirname}`
-
-			cp.exec(cmd)
-		}
-	})
-
 	cb()
+
+	// const allLibs = require(`${srcDir}/pages/_data/libs`)
+
+	// let files = []
+
+	// Object.keys(allLibs.js).forEach((lib) => {
+	// 	files.push(Array.isArray(allLibs.js[lib]) ? allLibs.js[lib] : [allLibs.js[lib]])
+	// })
+
+	// Object.keys(allLibs.css).forEach((lib) => {
+	// 	files.push(Array.isArray(allLibs.css[lib]) ? allLibs.css[lib] : [allLibs.css[lib]])
+	// })
+
+	// Object.keys(allLibs['js-copy']).forEach((lib) => {
+	// 	files.push(allLibs['js-copy'][lib])
+	// })
+
+	// files = files.flat()
+
+	// files.forEach((file) => {
+	// 	if (!file.match(/^https?/)) {
+	// 		let dirname = path.dirname(file).replace('@', '')
+	// 		let cmd = `mkdir -p "${distDir}/libs/${dirname}" && cp -r node_modules/${path.dirname(file)}/* ${distDir}/libs/${dirname}`
+
+	// 		cp.exec(cmd)
+	// 	}
+	// })
+
+	// cb()
 })
 
 /**
  * Copy static files (flags, payments images, etc) to dist directory
  */
-gulp.task('copy-images', () => {
-	return gulp
-		.src(`${srcDir}/img/**/*`)
-		.pipe(gulp.dest(`${distDir}/img`))
+gulp.task('copy-images', (cb) => {
+	cb()
+
+	// return gulp
+	// 	.src(`${srcDir}/img/**/*`)
+	// 	.pipe(gulp.dest(`${distDir}/img`))
 })
 
 /**
@@ -395,6 +399,6 @@ gulp.task('clean', gulp.series('clean-dirs'))
 
 gulp.task('start', gulp.series('clean', 'sass', 'js', gulp.parallel('js-demo', 'js-demo-theme'), 'mjs', 'build-eleventy', gulp.parallel('watch-eleventy', 'watch', 'browser-sync')))
 
-gulp.task('build-core', gulp.series('build-on', 'clean', 'sass', 'css-rtl', 'css-minify', 'js', gulp.parallel('js-demo', 'js-demo-theme'), 'mjs', 'copy-images', 'copy-libs', 'add-banner'))
+gulp.task('build-core', gulp.series('build-on', 'clean', 'sass', 'css-rtl', 'css-minify', 'js', gulp.parallel('js-demo', 'js-demo-theme'), 'mjs', 'copy-libs', 'add-banner'))
 gulp.task('build-demo', gulp.series('build-on', /*'build-eleventy', 'copy-static', 'copy-dist', */'build-cleanup', 'build-purgecss'))
 gulp.task('build', gulp.series('build-core'/*, 'build-demo'*/))

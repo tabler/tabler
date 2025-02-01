@@ -1,5 +1,6 @@
 import { readFileSync } from 'fs';
 import { EleventyRenderPlugin } from "@11ty/eleventy";
+import { join } from 'path';
 
 /** @type {import('@11ty/eleventy').LocalConfig} */
 export default function (eleventyConfig) {
@@ -7,7 +8,7 @@ export default function (eleventyConfig) {
 	const isDevelopment = env === "development";
 
 	eleventyConfig.setInputDirectory("pages");
-	eleventyConfig.setOutputDirectory(process.env.DIST_DIR || "demo");
+	eleventyConfig.setOutputDirectory(process.env.DIST_DIR || "dist");
 
 	eleventyConfig.setLayoutsDirectory("_layouts");
 	eleventyConfig.setIncludesDirectory("_includes");
@@ -15,6 +16,8 @@ export default function (eleventyConfig) {
 	eleventyConfig.setWatchThrottleWaitTime(100);
 
 	eleventyConfig.addPassthroughCopy("pages/favicon.ico");
+	eleventyConfig.addPassthroughCopy("static/*");
+	eleventyConfig.addPassthroughCopy("node_modules/@tabler/core/dist");
 
 	eleventyConfig.addPlugin(EleventyRenderPlugin, {
 		accessGlobalData: true,
@@ -37,9 +40,9 @@ export default function (eleventyConfig) {
 	eleventyConfig.addGlobalData("environment", env);
 
 	eleventyConfig.addGlobalData("package", JSON.parse(readFileSync("package.json", "utf-8")));
-	eleventyConfig.addGlobalData("readme", readFileSync("README.md", "utf-8"));
-	eleventyConfig.addGlobalData("license", readFileSync("LICENSE", "utf-8"));
-	eleventyConfig.addGlobalData("changelog", readFileSync("CHANGELOG.md", "utf-8"));
+	eleventyConfig.addGlobalData("readme", readFileSync(join("..", "README.md"), "utf-8"));
+	eleventyConfig.addGlobalData("license", readFileSync(join("..", "LICENSE"), "utf-8"));
+	eleventyConfig.addGlobalData("changelog", readFileSync(join("..", "CHANGELOG.md"), "utf-8"));
 
 	eleventyConfig.addGlobalData("site", {
 		title: "Tabler",
