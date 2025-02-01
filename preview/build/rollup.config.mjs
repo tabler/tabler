@@ -1,14 +1,12 @@
 import path from 'node:path'
-import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 import { babel } from '@rollup/plugin-babel'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
 import replace from '@rollup/plugin-replace'
-import banner from './banner.mjs'
+import banner from '@repo/banner'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
-let destinationFile = `demo`
 const external = []
 const plugins = [
 	babel({
@@ -32,7 +30,7 @@ const rollupConfig = {
 	],
 	output: {
 		name: 'demo',
-		banner: banner(),
+		banner: banner('Demo'),
 		dir: path.resolve(__dirname, `../dist/demo/js`),
 		format: 'esm',
 		generatedCode: 'es2015'
