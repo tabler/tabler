@@ -1,0 +1,52 @@
+$apps: (
+  "apple",
+  "discord",
+  "dribbble",
+  "facebook",
+  "figma",
+  "github",
+  "google",
+  "instagram",
+  "linkedin",
+  "medium",
+  "meta",
+  "metamask",
+  "pinterest",
+  "reddit",
+  "signal",
+  "skype",
+  "snapchat",
+  "spotify",
+  "telegram",
+  "tiktok",
+  "tumblr",
+  "twitch",
+  "vk",
+  "x",
+  "youtube"
+);
+
+.social {
+  position: relative;
+  display: inline-block;
+  height: $avatar-size;
+  aspect-ratio: 1;
+  background: no-repeat center/cover;
+  vertical-align: bottom;
+}
+
+@each $app in $apps {
+  .social-app-#{$app} {
+    background-image: url("#{$assets-base}/img/social/#{$app}.svg");
+
+    &.social-gray {
+      background-image: url("#{$assets-base}/img/social/#{$app}-gray.svg");
+    }
+  }
+}
+
+@each $flag-size, $size in $flag-sizes {
+  .social-#{$flag-size} {
+    height: map-get($size, size);
+  }
+}

@@ -1,0 +1,29 @@
+{% assign type = include.type | default: "outline" %}
+
+{% assign limit = Infinity %}
+{% if environment == 'development' %}
+	{% assign limit = 20 %}
+{% endif %}
+
+<div class="card">
+	<div class="card-header">
+		<div class="card-title">{{ include.title }}</div>
+	</div>
+	<div class="card-body p-0">
+		<div class="demo-icons-list-wrap">
+			<div class="demo-icons-list">
+				{% for icon in icons limit: limit %}
+				{% assign icon-name = icon[0] %}
+				{% if icon[1].svg[type] %}
+				<a href="https://tabler.io/icons/icon/{{ icon-name }}" target="_blank" rel="noopener" class="demo-icons-list-item" title="{{ icon-name }}" data-bs-toggle="tooltip" data-bs-placement="top">
+					{% include "ui/icon.html" icon=icon-name type=type %}
+				</a>
+				{% endif %}
+				{% endfor %}
+				{% for icon in (0..20) %}
+				<div></div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,46 @@
+---
+title: Wizard
+layout: single
+page-menu: extra.wizard
+permalink: wizard.html
+---
+
+<div class="card card-md">
+	<div class="card-body text-center py-4 p-sm-5">
+		{% include "ui/illustration.html" image="boy-girl.svg" height="200" class="mb-n2" %}
+		<h1 class="mt-5">Welcome to Tabler!</h1>
+		<p class="text-secondary">Tabler comes with tons of well-designed components and features. Start your adventure with Tabler and make your dashboard great again.</p>
+	</div>
+
+	{% include "ui/hr.html" text="your data" position="center" class="hr-text-spaceless" %}
+
+	<div class="card-body">
+		<div class="mb-3">
+			<label class="form-label">Create your Tabler URL</label>
+			{% include "ui/form/input-group.html" prepend="https://tabler.io/" input-class="ps-1" flat=true %}
+			<div class="form-hint">Choose a URL that describes you or your business in a concise way. Make it short and easy to remember so you can share links with ease.</div>
+		</div>
+
+		<div>
+			<label class="form-label">Timezone</label>
+			<select class="form-select mb-0">
+				{% for timezone in timezones %}
+				<option value="{{ timezone.abbr }}"{% if timezone.abbr == 'CEDT' %} selected{% endif %}>{{ timezone.text }}</option>
+				{% endfor %}
+			</select>
+		</div>
+	</div>
+</div>
+
+<div class="row align-items-center mt-3">
+	<div class="col-4">
+		{% include "ui/progress.html" value=25 %}
+	</div>
+	<div class="col">
+		<div class="btn-list justify-content-end">
+			{% include "ui/button.html" text="Set up later" color="link link-secondary" %}
+			{% include "ui/button.html" text="Continue" color="primary" %}
+		</div>
+	</div>
+</div>
+

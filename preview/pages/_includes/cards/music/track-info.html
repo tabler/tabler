@@ -1,0 +1,19 @@
+{% assign track-id = include.track-id | default: 5 %}
+{% assign track = tracks[track-id] %}
+<div class="card">
+	<div class="row row-0">
+		<div class="col-auto">
+			<img src="{{ page | relative }}/static/tracks/{{ track.album.images[1].path }}" class="rounded-start" alt="{{ track.name | escape }}" width="80" height="80">
+		</div>
+		<div class="col">
+			<div class="card-body">
+				{{ track.name }}
+				<div class="text-secondary">
+					{% for artist in track.artists %}
+					{{ artist.name }}{% unless forloop.last %},{% endunless %}
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
