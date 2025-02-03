@@ -1,0 +1,79 @@
+{% include "ui/modal/header.html" title="New report" %}
+{% assign reports = "Simple:Provide only basic data needed for the report,Advanced:Insert charts and additional advanced analyses to be inserted in the report" | split: "," %}
+
+<div class="modal-body">
+	<div class="mb-3">
+		<label class="form-label">Name</label>
+		<input type="text" class="form-control" name="example-text-input" placeholder="Your report name">
+	</div>
+
+	<label class="form-label">Report type</label>
+	<div class="form-selectgroup-boxes row mb-3">
+		{% for report in reports %}
+		{% assign r = report | split: ':' %}
+		<div class="col-lg-6">
+			<label class="form-selectgroup-item">
+				<input type="radio" name="report-type" value="1" class="form-selectgroup-input"{% if forloop.index == 1 %} checked{% endif %}>
+				<span class="form-selectgroup-label d-flex align-items-center p-3">
+					<span class="me-3">
+						<span class="form-selectgroup-check"></span>
+					</span>
+					<span class="form-selectgroup-label-content">
+						<span class="form-selectgroup-title strong mb-1">{{ r[0] }}</span>
+						<span class="d-block text-secondary">{{ r[1] }}</span>
+					</span>
+				</span>
+			</label>
+		</div>
+		{% endfor %}
+	</div>
+
+	<div class="row">
+		<div class="col-lg-8">
+			<div class="mb-3">
+				<label class="form-label">Report url</label>
+				{% include "ui/form/input-group.html" prepend="https://tabler.io/reports/" flat=true input-class="ps-0" value="report-01" %}
+			</div>
+		</div>
+		<div class="col-lg-4">
+			<div class="mb-3">
+				<label class="form-label">Visibility</label>
+				{% assign options = "Private,Public,Hidden" | split: "," %}
+				<select class="form-select">
+					{% for option in options %}
+					<option value="{{ forloop.index }}"{% if forloop.index == 1 %} selected{% endif %}>{{ option }}</option>
+					{% endfor %}
+				</select>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+<div class="modal-body">
+	<div class="row">
+		<div class="col-lg-6">
+			<div class="mb-3">
+				<label class="form-label">Client name</label>
+				<input type="text" class="form-control">
+			</div>
+		</div>
+		<div class="col-lg-6">
+			<div class="mb-3">
+				<label class="form-label">Reporting period</label>
+				<input type="date" class="form-control">
+			</div>
+		</div>
+		<div class="col-lg-12">
+			<div>
+				<label class="form-label">Additional information</label>
+				<textarea class="form-control" rows="3"></textarea>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal-footer">
+	{% include "ui/button.html" text="Cancel" color="link link-secondary" dismiss=true %}
+	{% include "ui/button.html" text="Create new report" icon="plus" color="primary" dismiss=true class="ms-auto" %}
+</div>

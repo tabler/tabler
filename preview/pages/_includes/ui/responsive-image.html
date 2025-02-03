@@ -1,0 +1,5 @@
+{% assign src = include.src %}
+{% assign width = include.width | default: 507 %}
+<picture>
+	<img src="{{ page | relative }}/{{ src }}" srcset="{{ page | relative }}/{{ src }} 1x, {{ page | relative }}/{{ src | replace: '.png', '@2x.png' }} 2x" alt="{{ include.alt }}" class="img-fluid {{ include.class }}" width="{{ width }}"{% if include.height %} height="{{ include.height }}"{% endif %} loading="lazy">
+</picture>

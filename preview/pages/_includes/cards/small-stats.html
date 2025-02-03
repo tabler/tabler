@@ -1,0 +1,44 @@
+{% assign chart-type = include.chart-type | default: 'line' %}
+{% assign chart-position = include.chart-position | default: 'right' %}
+<div class="card card-sm">
+	<div class="card-body">
+		<div class="row align-items-center">
+			{% if include.icon %}
+				<div class="col-auto">
+					<span class="{% if include.color %}bg-{{ include.color }}{% if include.lt %}-lt{% else %} text-white{% endif %}{% endif %} avatar">{% include "ui/icon.html" icon=include.icon %}</span>
+				</div>
+			{% elsif include.person-id %}
+				<div class="col-auto">
+				{% include "ui/avatar.html" person-id=include.person-id %}
+				</div>
+			{% elsif include.chart-data and chart-position == "left" %}
+				<div class="col-auto">
+					{% include "ui/chart-sparkline.html" id=include.id data=include.chart-data type=chart-type color=include.color label=include.chart-label label-icon=include.chart-label-icon %}
+				</div>
+			{% endif %}
+
+
+			<div class="col">
+				<div class="font-weight-medium">
+					{{ include.title | default: 1700 }}
+					{% if include.small-icon %}
+						{% include "ui/icon.html" icon=include.small-icon color=include.color class="icon-sm ms-1" %}
+					{% endif %}
+					{% if include.description-value %}
+					<span class="float-right font-weight-medium text-{{ include.description-value-color | default: 'green' }}">{{ include.description-value }}</span>
+					{% endif %}
+				</div>
+				<div class="text-secondary">
+					{{ include.description | default: "Users" }}
+
+				</div>
+			</div>
+
+			{% if include.chart-data and chart-position=="right" %}
+			<div class="col-auto">
+				{% include "ui/chart-sparkline.html" id=include.id data=include.chart-data type=chart-type color=include.color label=include.chart-label label-icon=include.chart-label-icon %}
+			</div>
+			{% endif %}
+		</div>
+	</div>
+</div>

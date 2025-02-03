@@ -1,0 +1,38 @@
+<div class="card">
+   <div class="card-header">
+      <div class="card-title">Comments</div>
+   </div>
+   <div class="card-body">
+
+      {% for person in people limit: 3 %}
+      <div class="d-flex{% unless forloop.last %} mb-5{% endunless %}">
+         <div class="me-4">
+            {% include "ui/avatar.html" person=person status="green" %}
+         </div>
+         <div class="flex-fill">
+            <div class="d-flex mt-n1">
+               <h5 class="m-0">
+                  {{ person.full_name }}
+               </h5>
+               <div class="ms-auto small text-secondary">{{ forloop.index | random_date_ago: 23 | timeago }}</div>
+            </div>
+            <p class="mb-2">
+               {{ comments[forloop.index] }}
+            </p>
+            <div class="small">
+               <span class="text-success me-1">+{{ forloop.index | random_number: 20, 50 }}</span>
+               <a href="#" data-bs-toggle="tooltip" data-bs-placement="top" title="Vote Up">{% include "ui/icon.html" icon="chevron-up" %}</a>
+               <a href="#" class="me-1" data-bs-toggle="tooltip" data-bs-placement="top" title="Vote Down">
+                  {% include "ui/icon.html" icon="chevron-down" %}
+               </a>
+               <span class="me-1">·</span>
+               <a href="#" class="me-1 text-secondary">Reply</a>
+               <span class="me-1">·</span>
+               <a href="#" class="text-secondary">Edit</a>
+            </div>
+         </div>
+      </div>
+      {% endfor %}
+
+   </div>
+</div>
