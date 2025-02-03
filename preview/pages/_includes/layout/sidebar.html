@@ -1,0 +1,17 @@
+{% assign breakpoint = include.breakpoint | default: 'lg' %}
+
+<aside class="navbar navbar-vertical{% if include.right %} navbar-right{% endif %} navbar-expand-{{ breakpoint }}{% if include.transparent %} navbar-transparent{% endif %}{% if include.background %} bg-{{ include.background }}{% endif %}{% if include.class %} {{ include.class }}{% endif %}"{% if include.background-color %} style="background: {{ include.background-color }}"{% endif %}{% if include.dark %} data-bs-theme="dark"{% endif %}>
+	<div class="container-fluid">
+		{% include "layout/navbar-toggler.html" target="sidebar-menu" %}
+
+		{% unless include.hide-brand %}
+			{% include "layout/navbar-logo.html" breakpoint=breakpoint header=true %}
+		{% endunless %}
+
+		{% include "layout/navbar-side.html" class="d-lg-none" hide-username=include.hide-username person-id=include.person-id breakpoint=breakpoint %}
+
+		<div class="collapse navbar-collapse" id="sidebar-menu">
+			{% include "layout/navbar-menu.html" auto-open=true class="pt-lg-3" keep-open=true %}
+		</div>
+	</div>
+</aside>

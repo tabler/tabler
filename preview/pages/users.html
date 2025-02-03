@@ -1,0 +1,41 @@
+---
+layout: default
+title: Users list
+page-header: Users
+page-header-actions: users
+page-header-description: 1-18 of 413 people
+page-menu: extra.users
+permalink: users.html
+---
+
+<div class="row row-cards">
+	{% for person in people limit: 18 %}
+	{% assign progress = forloop.index | random_number: 4, 95 %}
+	{% assign online_counter = forloop.index | random_number: 1, 10 %}
+	<div class="col-md-6 col-lg-3">
+		<div class="card">
+			<div class="card-body p-4 text-center">
+				{% include "ui/avatar.html" size="xl" rounded=true person=person class="mb-3" %}
+				<h3 class="m-0 mb-1"><a href="#">{{ person.full_name }}</a></h3>
+				<div class="text-secondary">{{ person.job_title }}</div>
+
+				<div class="mt-3">
+					{% if forloop.index == 1 %}
+						<span class="badge bg-purple-lt">Owner</span>
+					{% elsif forloop.index < 5 %}
+						<span class="badge bg-green-lt">Admin</span>
+					{% endif %}
+				</div>
+			</div>
+			<div class="d-flex">
+				<a href="#" class="card-btn">{% include "ui/icon.html" icon="mail" color="muted" class="me-2" %} Email</a>
+				<a href="#" class="card-btn">{% include "ui/icon.html" icon="phone" color="muted" class="me-2" %} Call</a>
+			</div>
+		</div>
+	</div>
+	{% endfor %}
+</div>
+
+<div class="d-flex mt-4">
+	{% include "ui/pagination.html" class="ms-auto" %}
+</div>

@@ -1,0 +1,60 @@
+---
+layout: marketing
+permalink: marketing/real-estate.html
+---
+
+<header class="img-bg" style="background-image: url({{ page | relative }}/static/marketing/photo-1564013799919-ab600027ffc6.jpg)">
+	<div class="hero position-relative bg-primary py-12" style="--tblr-bg-opacity: 0.9">
+		<div class="container-narrow">
+			<h1 class="hero-title text-white">Find your forever home</h1>
+			<p class="hero-description mb-5 text-white text-opacity-50">It's time to find the home of your dreams, and you search begins here. We make it easy to find the property that fits your needs and budget.</p>
+			<div class="row gx-5 justify-content-center">
+				<div class="col-xl-6 col-lg-8 text-center">
+					<form novalidate="" class="row row-cols-1 row-cols-md-auto g-3 align-items-center">
+						<div class="col flex-grow-1">
+							<input id="inputEmail" type="text" placeholder="Search properties near you..." class="form-control form-control-solid" />
+						</div>
+						<div class="col"><button type="submit" class="btn btn-teal fw-500">Search</button></div>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</header>
+
+<section class="section section-white">
+	{% include "marketing/section-divider.html" divider="arc" %}
+	<div class="container">
+		<div class="row g-6">
+			{% for building in real-estate %}
+			<div class="col-md-6 col-lg-4">
+				<div class="card">
+					<a href="#">
+						<div class="img-bg ratio ratio-4x3 card-img-top" style="background-image: url({{ page | relative }}/static/marketing/{{ building.image }})"></div>
+					</a>
+
+					<div class="card-body">
+						<div class="h1 mb-2 fw-bold">{{ building.price }}</div>
+						<div>
+							<div class="text-secondary">{{ building.address }}, California USA</div>
+
+							<div class="d-flex mb-4 text-secondary">
+								<div class="d-block d-flex align-items-center me-3">
+									{% include "ui/icon.html" icon="bed" class="me-1" %}
+									{{ building.bedrooms }} beds
+								</div>
+								<div class="d-block d-flex align-items-center">
+									{% include "ui/icon.html" icon="bath" class="me-1" %}
+									{{ building.baths }} baths
+								</div>
+							</div>
+
+							<a href="#" class="btn btn-primary py-2 px-3">See details</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+</section>

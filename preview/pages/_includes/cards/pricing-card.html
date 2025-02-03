@@ -1,0 +1,31 @@
+{% assign features = "Sharing Tools|Design Tools|Private Messages|Twitter API" | split: '|' %}
+{% assign available-features = include.features | default: '1000' | split: '' %}
+<div class="card card-md">
+	{% if include.featured-color %}
+		{% include "ui/ribbon.html" color=include.featured-color bookmark=true top=true filled=true %}
+	{% endif %}
+
+	<div class="card-body text-center">
+		<div class="text-uppercase text-secondary font-weight-medium">{{ include.category | default: 'Enterprise' }}</div>
+
+		<div class="display-5 fw-bold my-3">${{ include.price | default: '79' }}</div>
+
+		<ul class="list-unstyled lh-lg">
+			<li><strong>{{ include.users | default: 10 }}</strong> Users</li>
+			{% for feature in features %}
+			<li>
+				{% if available-features[forloop.index0] == '1' %}
+				{% include "ui/icon.html" icon="check" class="me-1 text-success" %}
+				{% else %}
+				{% include "ui/icon.html" icon="x" class="me-1 text-danger" %}
+				{% endif %}
+				{{ feature }}
+			</li>
+			{% endfor %}
+		</ul>
+
+		<div class="text-center mt-4">
+			<a href="#" class="btn{% if include.featured-color %} btn-{{ include.featured-color }}{% endif %} w-100">Choose plan</a>
+		</div>
+	</div>
+</div>

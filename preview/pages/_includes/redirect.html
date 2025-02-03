@@ -1,0 +1,11 @@
+{% capture url %}{% if include.url contains 'http://' or include.url contains 'https://' %}{{ include.url }}{% else %}{{ page | relative }}{{ include.url }}{% endif %}{% endcapture %}
+<!DOCTYPE html>
+<html lang="en-US">
+<meta charset="utf-8">
+<title>Redirecting…</title>
+<link rel="canonical" href="{{ url }}">
+<meta http-equiv="refresh" content="0; url={{ url }}">
+<meta name="robots" content="noindex">
+<noscript><a href="{{ url }}">Click here if you are not redirected.</a></noscript>
+<script>location="{{ url }}";</script>
+</html>
