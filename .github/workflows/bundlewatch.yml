@@ -36,11 +36,8 @@ jobs:
       - name: Install pnpm dependencies
         run: pnpm install --no-frozen-lockfile
 
-      - name: Run build
-        run: turbo build
-
       - name: Run bundlewatch
-        run: turbo bundlewatch
+        run: pnpm run bundlewatch
         env:
           BUNDLEWATCH_GITHUB_TOKEN: "${{ secrets.BUNDLEWATCH_GITHUB_TOKEN }}"
           CI_BRANCH_BASE: dev
