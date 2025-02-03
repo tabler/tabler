@@ -19,6 +19,14 @@ jobs:
       - name: Clone repository
         uses: actions/checkout@v4
 
+      - name: Cache turbo build setup
+        uses: actions/cache@v4
+        with: 
+          path: .turbo
+          key: ${{ runner.os }}-turbo-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-
+
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
@@ -26,8 +34,6 @@ jobs:
      
       - name: Install PNPM
         uses: pnpm/action-setup@v4
-        with:
-          version: 8
 
       - name: Set up Bundler
         uses: ruby/setup-ruby@v1
@@ -37,9 +43,6 @@ jobs:
 
       - name: Install pnpm dependencies
         run: pnpm install --no-frozen-lockfile
-
-      - name: Run build
-        run: pnpm run build
 
       - name: Run bundlewatch
         run: pnpm run bundlewatch
