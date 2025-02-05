@@ -1,0 +1,14 @@
+---
+layout: null
+permalink: sitemap.xml
+---
+<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd" xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+
+{% for page in pages %}
+<url>
+	<loc>{% if environment != 'development' %}{{ site.previewUrl }}{% endif %}{{ page.url | replace: 'index.html', '' | xml_escape }}</loc>
+	<lastmod>{{ page.last_modified_at | default: 'now' | date_to_xmlschema }}</lastmod>
+</url>
+{% endfor %}
+</urlset>
