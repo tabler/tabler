@@ -1,6 +1,7 @@
 import { readFileSync } from 'node:fs';
 import { EleventyRenderPlugin } from "@11ty/eleventy";
 import { join, dirname } from 'node:path';
+import { sync } from 'glob';
 
 /*
  * Copy list
@@ -75,6 +76,16 @@ export default function (eleventyConfig) {
 	eleventyConfig.addGlobalData("license", readFileSync(join("..", "LICENSE"), "utf-8"));
 	eleventyConfig.addGlobalData("changelog", readFileSync(join("..", "CHANGELOG.md"), "utf-8"));
 
+	eleventyConfig.addGlobalData("pages", () => {
+		return sync('pages/**/*.html').filter((file) => {
+			return !file.includes('pages/_') && !file.includes('pages/docs/index.html');
+		}).map((file) => {
+			return {
+				url: file.replace(/^pages\//, '/')
+			}
+});
+	});
+
 	eleventyConfig.addGlobalData("site", {
 		title: "Tabler",
 		description: "Premium and Open Source dashboard template with responsive and high quality UI.",
@@ -86,7 +97,7 @@ export default function (eleventyConfig) {
 		githubSponsorsUrl: "https://github.com/sponsors/codecalm",
 		changelogUrl: "https://github.com/tabler/tabler/releases",
 		sponsorUrl: "https://github.com/sponsors/codecalm",
-		previewUrl: "https://tabler.io/demo",
+		previewUrl: "https://preview.tabler.io",
 		docsUrl: "https://tabler.io/docs",
 
 		mapboxKey: "pk.eyJ1IjoidGFibGVyIiwiYSI6ImNscHh3dnhndjB2M3QycW85bGd0NXRmZ3YifQ.9LfHPsNoEXQH-xzz-81Ffw",
