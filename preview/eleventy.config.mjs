@@ -42,7 +42,7 @@ const getCopyList = () => {
 
 /** @type {import('@11ty/eleventy').LocalConfig} */
 export default function (eleventyConfig) {
-	const env = process.env.NODE_ENV || "development";
+	const environment = process.env.NODE_ENV || "production";
 
 	eleventyConfig.setInputDirectory("pages");
 	eleventyConfig.setOutputDirectory("dist");
@@ -69,7 +69,7 @@ export default function (eleventyConfig) {
 	/**
 	 * Data
 	 */
-	eleventyConfig.addGlobalData("environment", env);
+	eleventyConfig.addGlobalData("environment", environment);
 
 	eleventyConfig.addGlobalData("package", JSON.parse(readFileSync(join("..", "core", "package.json"), "utf-8")));
 	eleventyConfig.addGlobalData("readme", readFileSync(join("..", "README.md"), "utf-8"));
