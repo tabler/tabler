@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.0.1
+
+### Patch Changes
+
+- 11f4487: Use the full license agreement for illustrations in docs
+
 ## 1.0.0 - 2025-01-28
 
 ### Minor Changes
