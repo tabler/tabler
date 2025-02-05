@@ -54,6 +54,7 @@ export default function (eleventyConfig) {
 	eleventyConfig.setWatchThrottleWaitTime(100);
 
 	eleventyConfig.addPassthroughCopy(getCopyList());
+	eleventyConfig.setServerPassthroughCopyBehavior("passthrough");
 
 	eleventyConfig.addPlugin(EleventyRenderPlugin, {
 		accessGlobalData: true,
