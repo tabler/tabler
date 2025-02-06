@@ -76,13 +76,13 @@
 				</div>
 
 				<div class="mb-4">
-					<label class="form-label">Radius</label>
+					<label class="form-label">Corner Radius</label>
 					<p class="form-hint">
 						Choose the border radius factory for your app.
 					</p>
 
 					<div>
-						{% assign radiuses = '0,.5,1,1.5,2' | split: ',' %} {% for radius in radiuses %}
+						{% assign radiuses = '0,0.5,1,1.5,2' | split: ',' %} {% for radius in radiuses %}
 						<label class="form-check">
 							<div class="form-selectgroup-item">
 								<input type="radio" name="theme-radius" value="{{ radius }}" class="form-check-input"{% if radius == 1 %} checked{% endif %} />
@@ -94,19 +94,17 @@
 				</div>
 			</div>
 
-			<div class="mt-auto">
+			<div class="mt-auto space-y">
 				<button type="button" class="btn w-100" id="reset-changes">
 					{% include "ui/icon.html" icon="rotate" %}
 					Reset changes
 				</button>
+				<a href="#" class="btn btn-primary w-100" data-bs-dismiss="offcanvas">
+					{% include "ui/icon.html" icon="settings" %}
+					Save settings
+				</a>
 			</div>
 
-		</div>
-		<div class="offcanvas-footer">
-			<button type="submit" class="btn btn-primary w-100">
-				{% include "ui/icon.html" icon="settings" %}
-				Save settings
-			</button>
 		</div>
 	</form>
 </div>
