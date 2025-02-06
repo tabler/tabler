@@ -74,6 +74,24 @@
 						{% endfor %}
 					</div>
 				</div>
+
+				<div class="mb-4">
+					<label class="form-label">Radius</label>
+					<p class="form-hint">
+						Choose the border radius factory for your app.
+					</p>
+
+					<div>
+						{% assign radiuses = '0,.5,1,1.5,2' | split: ',' %} {% for radius in radiuses %}
+						<label class="form-check">
+							<div class="form-selectgroup-item">
+								<input type="radio" name="theme-radius" value="{{ radius }}" class="form-check-input"{% if radius == 1 %} checked{% endif %} />
+								<div class="form-check-label">{{ radius }}</div>
+							</div>
+						</label>
+						{% endfor %}
+					</div>
+				</div>
 			</div>
 
 			<div class="mt-auto">
@@ -100,6 +118,7 @@
 			"theme-base": "gray",
 			"theme-font": "sans-serif",
 			"theme-primary": "blue",
+			"theme-radius": "1",
 		}
 
 		var url = new URL(window.location)

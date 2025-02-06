@@ -71,8 +71,9 @@
   }
 
   /** Border radiuses */
+  --#{$prefix}border-radius-scale: 1;
   @each $name, $value in $border-radiuses {
-    --#{$prefix}border-radius#{if($name, '-#{$name}', '')}: #{$value};
+    --#{$prefix}border-radius#{if($name, '-#{$name}', '')}: calc(#{$value} * var(--#{$prefix}border-radius-scale, 1));
   }
 
   /** Backdrops */

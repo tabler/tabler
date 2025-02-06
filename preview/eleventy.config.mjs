@@ -51,7 +51,6 @@ export default function (eleventyConfig) {
 	eleventyConfig.setIncludesDirectory("_includes");
 
 	eleventyConfig.addWatchTarget("../core/dist/**");
-	eleventyConfig.setWatchThrottleWaitTime(100);
 
 	eleventyConfig.addPassthroughCopy(getCopyList());
 	eleventyConfig.setServerPassthroughCopyBehavior("passthrough");
