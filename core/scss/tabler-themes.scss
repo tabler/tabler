@@ -113,5 +113,9 @@
 @each $name, $value in (monospace: $font-family-monospace, sans-serif: $font-family-sans-serif, serif: $font-family-serif, comic: $font-family-comic) {
   [data-bs-theme-font="#{$name}"] {
     --#{$prefix}body-font-family: var(--#{$prefix}font-#{$name});
+
+    @if $name == "monospace" {
+      --#{$prefix}body-font-size: 80%;
+    }
   }
 }

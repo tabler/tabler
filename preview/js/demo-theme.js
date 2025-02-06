@@ -9,6 +9,7 @@ const themeConfig = {
 	"theme-base": "gray",
 	"theme-font": "sans-serif",
 	"theme-primary": "blue",
+	"theme-radius": "1",
 }
 
 // https://stackoverflow.com/a/901144

@@ -50,7 +50,7 @@ export default function (eleventyConfig) {
 	eleventyConfig.setLayoutsDirectory("_layouts");
 	eleventyConfig.setIncludesDirectory("_includes");
 
-	eleventyConfig.addWatchTarget("../core/dist/**");
+	// eleventyConfig.addWatchTarget("../core/dist/**");
 
 	eleventyConfig.addPassthroughCopy(getCopyList());
 	eleventyConfig.setServerPassthroughCopyBehavior("passthrough");
