@@ -8,7 +8,7 @@ import { sync } from 'glob';
  */
 const getCopyList = () => {
 	let copy = {
-		"node_modules/@tabler/core/dist": "core",
+		"node_modules/@tabler/core/dist": "dist",
 		"pages/favicon.ico": "favicon.ico",
 		"static": "static",
 	}
@@ -51,6 +51,7 @@ export default function (eleventyConfig) {
 	eleventyConfig.setIncludesDirectory("_includes");
 
 	// eleventyConfig.addWatchTarget("../core/dist/**");
+	// eleventyConfig.setWatchThrottleWaitTime(100);
 
 	eleventyConfig.addPassthroughCopy(getCopyList());
 	eleventyConfig.setServerPassthroughCopyBehavior("passthrough");
@@ -65,6 +66,13 @@ export default function (eleventyConfig) {
 		dynamicPartials: true,
 		jekyllWhere: true,
 	});
+	/**
+	 * Server
+	 */
+	if (process.env.ELEVENTY_RUN_MODE === "serve") {
+		eleventyConfig.setServerPassthroughCopyBehavior("passthrough");
+	}
+
 
 	/**
 	 * Data
@@ -420,6 +428,10 @@ export default function (eleventyConfig) {
 		} else {
 			return '../'.repeat(segments.length - 1).slice(0, -1);
 		}
+	});
+
+	eleventyConfig.addFilter("contains", (items, item) => {
+		return items && Array.isArray(items) && items.includes(item);
 	});
 
 	eleventyConfig.addFilter("concat_objects", function (object, object2) {
