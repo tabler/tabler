@@ -1,5 +1,5 @@
 // All colors
-@each $color, $value in map-merge($theme-colors, ( white: $white )) {
+@each $color, $value in map-merge($theme-colors, ( white: $white)) {
   .bg-#{"" + $color} {
     --#{$prefix}bg-opacity: 1;
     background-color: color-mix(in srgb, var(--#{$prefix}#{$color}) calc(var(--#{$prefix}bg-opacity) * 100%), transparent) !important;
@@ -49,4 +49,9 @@
   .text-#{"" + $color}-fg {
     color: $value !important;
   }
+}
+
+.bg-inverted {
+  --#{$prefix}bg-opacity: 1;
+  background-color: color-mix(in srgb, var(--#{$prefix}bg-surface-inverted) calc(var(--#{$prefix}bg-opacity) * 100%), transparent) !important;
 }
