@@ -8,7 +8,7 @@ import { sync } from 'glob';
  */
 const getCopyList = () => {
 	let copy = {
-		"node_modules/@tabler/core/dist": "core",
+		"node_modules/@tabler/core/dist": "dist",
 		"pages/favicon.ico": "favicon.ico",
 		"static": "static",
 	}
