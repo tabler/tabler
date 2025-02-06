@@ -1,15 +1,15 @@
 {% assign value = include.value | default: 25 %}
 {% if value > 0 %}
-   {% assign color = 'green' %}
-   {% assign icon = 'trending-up' %}
+   {% assign trending-color = 'green' %}
+   {% assign trending-icon = 'trending-up' %}
 {% elsif value == 0 %}
-   {% assign color = 'yellow' %}
-   {% assign icon = 'minus' %}
+   {% assign trending-color = 'yellow' %}
+   {% assign trending-icon = 'minus' %}
 {% else %}
-   {% assign color = 'red' %}
-   {% assign icon = 'trending-down' %}
+   {% assign trending-color = 'red' %}
+   {% assign trending-icon = 'trending-down' %}
 {% endif %}
 
-<span class="text-{{ color }} d-inline-flex align-items-center lh-1{% if include.class %} {{ include.class }}{% endif %}">
-   {{ value }}% {% include "ui/icon.html" icon=icon class="ms-1" %}
+<span class="text-{{ trending-color }} d-inline-flex align-items-center lh-1{% if include.class %} {{ include.class }}{% endif %}">
+   {{ value }}% {% include "ui/icon.html" icon=trending-icon class="ms-1" %}
 </span>
