@@ -1,0 +1,20 @@
+{% assign person-id = include.person-id | default: 0 %}
+{% assign person = people[person-id] %}
+{% capture col-avatar %}
+	<div class="col-auto">
+		{% include "ui/avatar.html" person=person class="rounded" %}
+	</div>
+{% endcapture %}
+
+<a class="card card-link" href="#">
+	<div class="card-body">
+		<div class="row">
+			{% unless include.right %}{{ col-avatar }}{% endunless %}
+			<div class="col">
+				<div class="font-weight-medium">{{ person.full_name }}</div>
+				<div class="text-secondary">{{ person.job_title }}</div>
+			</div>
+			{% if include.right %}{{ col-avatar }}{% endif %}
+		</div>
+	</div>
+</a>

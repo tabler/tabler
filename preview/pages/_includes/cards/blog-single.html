@@ -1,0 +1,53 @@
+{% assign article-id = include.article-id | default: 2 %}
+{% assign article = include.article | default: articles[article-id] %}
+{% assign type = include.type | default: 'none' %}
+{% assign author = people[article.author] %}
+{% assign liked = include.liked | default: false %}
+{% assign truncate = include.truncate | default: 100 %}
+{% assign avatar = article.author %}
+
+{% capture card-content %}
+   <h3 class="card-title"><a href="#">{{ article.title }}</a></h3>
+
+   <div class="text-secondary">{{ article.description | truncate: truncate }}</div>
+
+   <div class="d-flex align-items-center pt-4 mt-auto">
+      {% include "ui/avatar.html" person-id=avatar %}
+      <div class="ms-3">
+         <a href="{{ page | relative }}/profile.html" class="text-body">{{ author.first_name }} {{ author.last_name }}</a>
+         <div class="text-secondary">3 days ago</div>
+      </div>
+      <div class="ms-auto">
+         <a href="#" class="icon d-none d-md-inline-block ms-3 {% if liked %}text-red{% else %}text-secondary{% endif %}">
+            {% include "ui/icon.html" icon="heart" use-svg=true  %}
+         </a>
+      </div>
+   </div>
+{% endcapture %}
+
+<div class="card d-flex flex-column">
+
+   {% if type == 'aside' %}
+   <div class="row row-0 flex-fill">
+      <div class="col-md-3">
+         <a href="#">
+            <img src="{{ page | relative }}/static/photos/{{ photos[article.image].file }}" class="w-100 h-100 object-cover" alt="Card side image">
+         </a>
+      </div>
+      <div class="col">
+         <div class="card-body">
+            {{ card-content }}
+         </div>
+      </div>
+   </div>
+   {% else %}
+      {% if type == 'image' %}
+      <a href="#">
+         <img class="card-img-top" src="{{ page | relative }}/static/photos/{{ photos[article.image].file }}" alt="{{ article.title | escape}}">
+      </a>
+      {% endif %}
+      <div class="card-body d-flex flex-column">
+         {{ card-content }}
+      </div>
+   {% endif %}
+</div>

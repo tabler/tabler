@@ -1,0 +1,41 @@
+<!-- Libs JS -->
+{% assign google-maps-key = site.googleMapsDevKey -%}
+{% if environment != 'development' -%}
+	{% assign google-maps-key = site.googleMapsKey -%}
+{% endif -%}
+
+{% if page-libs -%}
+	{% for lib in libs.js -%}
+		{% if page-libs contains lib[0] or libs.global-libs contains lib[0] -%}
+			{% for file in lib[1] -%}
+			<script src="{% if file contains 'http://' or file contains 'https://' %}{{ file | replace: 'GOOGLE_MAPS_KEY', google-maps-key }}{% else %}{{ page | relative }}/libs/{% if environment != 'development' %}{{ file | replace: '@', '' }}{% else %}{{ file }}{% endif %}{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}{% endif %}" defer></script>
+			{% endfor -%}
+		{% endif -%}
+	{% endfor -%}
+{% endif -%}
+
+<!-- Tabler Core -->
+
+<script src="{{ page | relative }}/dist/js/tabler{% if environment != 'development' %}.min{% endif %}.js{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}" defer></script>
+<script src="{{ page | relative }}/preview/js/demo{% if environment != 'development' %}.min{% endif %}.js{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}" defer></script>
+
+
+{% for script in site.captured_global.scripts %}
+{{ script }}
+{% endfor %}
+
+{% for script in site.captured_once.scripts %}
+{{ script }}
+{% endfor %}
+
+{% assign libs = page-libs | default: layout.page-libs %}
+{% for lib in libs.js-files %}
+{% if libs contains lib[0] or libs.global-libs contains lib[0] %}
+{% for file in lib[1] %}
+
+{% assign filename = 'js/' | append: file | append: '.html' %}
+{% include "{{ filename }}" %}
+
+{% endfor %}
+{% endif %}
+{% endfor %}

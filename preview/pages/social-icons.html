@@ -1,0 +1,74 @@
+---
+title: Social icons
+page-header: Social icons
+page-menu: base.social
+plugins: ['social']
+layout: default
+permalink: social-icons.html
+---
+
+<div class="row row-cards">
+	<div class="col-12">
+		<div class="row g-3">
+			{% for tile in social-tiles %}
+			<div class="col-3">
+				<div class="card">
+					<div class="card-body">
+						<div class="row align-items-center">
+							<div class="col-auto">
+								<span class="social social-md social-app-{{ tile.icon }}"></span>
+							</div>
+							<div class="col">
+								<div>{{ tile.title }}</div>
+								<div class="text-secondary">{{ tile.description }}</div>
+							</div>
+							<div class="col-auto">
+								{% include "ui/trending.html" value=tile.trending %}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+	<div class="col-12">
+		<div class="card">
+			<div class="card-header">
+				<div class="card-title">Sign in with social media</div>
+			</div>
+			<div class="card-body">
+				<div class="btn-list">
+					{% for social in social %}
+						<button class="btn">
+							<span class="icon social social-app-{{ social.file }}"></span>
+							Sign in with {{ social.name }}
+						</button>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-12">
+		<div class="card">
+			<div class="card-header">
+				<div class="card-title">List of all social media icons</div>
+			</div>
+			<div class="card-body p-0">
+				<div class="demo-icons-list-wrap">
+					<div class="demo-icons-list">
+						{% for social in social %}
+							<span class="demo-icons-list-item" title="{{ social.name }}" data-bs-toggle="tooltip" data-bs-placement="top">
+								<span class="social social-app-{{ social.file }}"></span>
+							</span>
+						{% endfor %}
+						{% for icon in (0..20) %}
+							<div></div>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
