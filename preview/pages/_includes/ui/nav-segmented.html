@@ -1,0 +1,28 @@
+{% assign segmented-items = include.items | default: "" | split: "," %}
+{% assign segmented-icons = include.icons | default: "" | split: "," %}
+{% assign segmented-disabled = include.disabled | default: "" | split: "," %}
+{% assign segmented-hover = include.hover | default: "" %}
+
+{% assign segmented-items-count = segmented-items | size %}
+{% assign segmented-icons-count = segmented-icons | size %}
+{% assign segmented-all-count = segmented-items-count %}
+
+{% if segmented-icons-count > segmented-all-count %}{% assign segmented-all-count = segmented-icons-count %}{% endif %}
+
+<nav class="nav nav-segmented{% if include.vertical %} nav-segmented-vertical{% endif %}{% if include.size %} nav-{{ include.size }}{% endif %}{% if include.full-width %} w-100{% endif %}{% if include.class %} {{ include.class }}{% endif %}" role="tablist">
+	{% for i in (1..segmented-all-count) %}
+		{% assign index = forloop.index | append: "" %}
+		{% assign disabled = segmented-disabled | contains: index %}
+
+		{% if include.name %}<input type="radio" class="nav-link-input" name="segmented" id="segmented-{{include.name }}-{{ index }}" {% if forloop.index == 1 %}checked{% endif %} />{% endif %}
+
+		<{% if include.name %}label for="segmented-{{include.name }}-{{ index }}"{% else %}button{% endif %} class="nav-link{% if forloop.index == 1 %}{% unless include.name %} active{% endunless %}{% endif %}{% if disabled %} disabled{% endif %}{% if segmented-hover == index %} hover{% endif %}" role="tab"{% unless include.name %} data-bs-toggle="tab"{% endunless %} aria-selected="{% if forloop.index == 1 %}true{% else %}false{% endif %}" {% if disabled %} aria-disabled="true"{% endif %}{% if forloop.index == 1 %} aria-current="page"{% endif %}>
+			{% if segmented-icons[forloop.index0] %}
+				{% include "ui/icon.html" icon=segmented-icons[forloop.index0] class="nav-link-icon" %}
+			{% endif %}
+			{% if segmented-items[forloop.index0] %}
+				{{ segmented-items[forloop.index0] }}
+			{% endif %}
+		</{% if include.name %}label{% else %}button{% endif %}>
+	{% endfor %}
+</nav>
