@@ -1,0 +1,16 @@
+---
+title: PDF version
+description: Download Tabler Icons in PDF format.
+layout: default
+---
+
+![](/docs/icons/package-pdf.png)
+
+
+## Installation
+
+<TabsPackage name="@tabler/icons-pdf" />
+
+or just [download from Github](https://github.com/tabler/tabler-icons/releases).
+
+All PDF files are stored in `icons` subdirectory.

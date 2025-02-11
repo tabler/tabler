@@ -1,7 +1,7 @@
 ---
-layout: default
 title: Welcome to Tabler Documentation
 summary: Tabler Docs provides a comprehensive guide to help you get started with the Tabler ecosystem, including its UI components, plugins, and icons. Explore detailed documentation to understand and leverage the full potential of Tabler in your projects.
+layout: default
 ---
 
 <ResponsiveImage src="/docs/tabler.png" src-dark="/docs/tabler-dark.png" alt="Tabler" width="816" height="620" className="mb-4" />

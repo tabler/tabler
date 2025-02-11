@@ -13,4 +13,17 @@ export default function (eleventyConfig) {
 		dynamicPartials: true,
 		jekyllWhere: true,
 	});
+
+	return {
+		dir: {
+			output: "dist",
+			includes: "_includes",
+			data: "_data",
+			layouts: "_layouts",
+		},
+		passthroughFileCopy: true,
+		templateFormats: ["html", "md", "liquid"],
+		htmlTemplateEngine: "liquid",
+		markdownTemplateEngine: "liquid",
+	}
 };
