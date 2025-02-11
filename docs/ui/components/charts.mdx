@@ -352,10 +352,7 @@ Pie charts are a simple and effective way to visualize proportions and ratios. T
           horizontal: 8,
           vertical: 8
         },
-      },
-      tooltip: {
-        fillSeriesColor: false
-      },
+      }
     })).render();
   });
 </script>
@@ -368,51 +365,45 @@ Heatmaps provide a graphical representation of data where individual values are 
 ```html example centered columns={2} height="25rem" libs="apexcharts"
 <div class="card">
   <div class="card-body">
-    <div id="chart-demo-pie" class="chart-lg"></div>
+    <div id="chart-demo-heatmap" class="chart-lg"></div>
   </div>
 </div>
 <script>
   document.addEventListener("DOMContentLoaded", function() {
-    window.ApexCharts && (new ApexCharts(document.getElementById('chart-demo-pie'), {
+    window.ApexCharts && (new ApexCharts(document.getElementById('chart-demo-heatmap'), {
       chart: {
-        type: "donut",
+        type: "heatmap",
         fontFamily: 'inherit',
         height: 240,
-        sparkline: {
-          enabled: true
-        },
         animations: {
           enabled: false
         },
       },
-      fill: {
-        opacity: 1,
-      },
-      series: [44, 55, 12, 2],
-      labels: ["Direct", "Affilliate", "E-mail", "Other"],
       tooltip: {
         theme: 'dark'
       },
-      grid: {
-        strokeDashArray: 4,
+      fill: {
+        opacity: 1,
       },
-      colors: [tabler.getColor("primary"), tabler.getColor("primary", 0.8), tabler.getColor("primary", 0.6), tabler.getColor("gray-300")],
-      legend: {
-        show: true,
-        position: 'bottom',
-        offsetY: 12,
-        markers: {
-          width: 10,
-          height: 10,
-          radius: 100,
-        },
-        itemMargin: {
-          horizontal: 8,
-          vertical: 8
+       series: [
+        { name: 'New York', data: [{ x: 'Monday', y: 22 }, { x: 'Tuesday', y: 24 }, { x: 'Wednesday', y: 19 }, { x: 'Thursday', y: 23 }, { x: 'Friday', y: 25 }, { x: 'Saturday', y: 27 }, { x: 'Sunday', y: 26 }] },
+        { name: 'Los Angeles', data: [{ x: 'Monday', y: 28 }, { x: 'Tuesday', y: 30 }, { x: 'Wednesday', y: 27 }, { x: 'Thursday', y: 29 }, { x: 'Friday', y: 31 }, { x: 'Saturday', y: 32 }, { x: 'Sunday', y: 33 }] },
+        { name: 'Chicago', data: [{ x: 'Monday', y: 18 }, { x: 'Tuesday', y: 20 }, { x: 'Wednesday', y: 17 }, { x: 'Thursday', y: 19 }, { x: 'Friday', y: 21 }, { x: 'Saturday', y: 22 }, { x: 'Sunday', y: 23 }] },
+        { name: 'Houston', data: [{ x: 'Monday', y: 25 }, { x: 'Tuesday', y: 27 }, { x: 'Wednesday', y: 24 }, { x: 'Thursday', y: 26 }, { x: 'Friday', y: 28 }, { x: 'Saturday', y: 29 }, { x: 'Sunday', y: 30 }] },
+        { name: 'Phoenix', data: [{ x: 'Monday', y: 33 }, { x: 'Tuesday', y: 35 }, { x: 'Wednesday', y: 32 }, { x: 'Thursday', y: 34 }, { x: 'Friday', y: 36 }, { x: 'Saturday', y: 37 }, { x: 'Sunday', y: 38 }] },
+        { name: 'Philadelphia', data: [{ x: 'Monday', y: 20 }, { x: 'Tuesday', y: 22 }, { x: 'Wednesday', y: 19 }, { x: 'Thursday', y: 21 }, { x: 'Friday', y: 23 }, { x: 'Saturday', y: 24 }, { x: 'Sunday', y: 25 }] }
+      ],
+      colors: [tabler.getColor("primary")],
+      dataLabels: {
+        enabled: false
+      },
+      xaxis: {
+        tooltip: {
+          enabled: false
         },
       },
-      tooltip: {
-        fillSeriesColor: false
+      title: {
+        text: 'Average Temperature by Day and City',
       },
     })).render();
   });
