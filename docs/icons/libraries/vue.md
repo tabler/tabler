@@ -18,7 +18,7 @@ or just [download from Github](https://github.com/tabler/tabler-icons/releases).
 
 All icons are Vue components that contain SVG elements. So any icon can be imported and used as a component. It also helps to use threeshaking, so you only import the icons you use.
 
-```vue
+```html
 <template>
   <IconHome />
 </template>

@@ -200,14 +200,14 @@ export function appConfig(eleventyConfig) {
 	/**
 	 * Transforms
 	 */
-	function prettifyHTML(content, outputPath) {
-		return outputPath.endsWith('.html')
-			? content
-				.replace(/\/\/ @formatter:(on|off)\n+/gm, '')
-				// remove empty lines
-				.replace(/^\s*[\r\n]/gm, '')
-			: content
-	}
+	// function prettifyHTML(content, outputPath) {
+	// 	return outputPath.endsWith('.html')
+	// 		? content
+	// 			.replace(/\/\/ @formatter:(on|off)\n+/gm, '')
+	// 			// remove empty lines
+	// 			.replace(/^\s*[\r\n]/gm, '')
+	// 		: content
+	// }
 
-	eleventyConfig.addTransform('htmlformat', prettifyHTML)
+	// eleventyConfig.addTransform('htmlformat', prettifyHTML)
 }

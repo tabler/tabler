@@ -9,6 +9,6 @@ test
 {% include "ui/avatar.html" %}
 {% endexample %}
 
-```
+```html
 {% include "ui/avatar.html" %}
 ```

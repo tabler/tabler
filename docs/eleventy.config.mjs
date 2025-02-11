@@ -1,5 +1,8 @@
 
 import { appConfig } from "@repo/e11ty"
+import { createHash } from 'crypto';
+import flatCache from 'flat-cache';
+import { resolve } from 'node:path';
 
 /** @type {import('@11ty/eleventy').LocalConfig} */
 export default function (eleventyConfig) {
@@ -18,6 +21,59 @@ export default function (eleventyConfig) {
 	eleventyConfig.addPairedShortcode("example", function (content) {
 		return '<div class="example">' + content + '</div>';
 	})
+
+	eleventyConfig.amendLibrary('md', () => { });
+
+	eleventyConfig.on('eleventy.before', async () => {
+
+		const shiki = await import('shiki');
+		const highlighter = await shiki.createHighlighter({
+			themes: ['github-dark', 'github-light'],
+			langs: [
+				'html',
+				'svelte',
+				'blade',
+				'php',
+				'yaml',
+				'js',
+				'jsx',
+				'ts',
+				'shell',
+				'diff',
+				'vue',
+				'scss',
+				'css'
+			],
+		});
+
+		eleventyConfig.amendLibrary('md', function (mdLib) {
+			return mdLib.set({
+				highlight: function (code, lang) {
+					// const hash = createHash('md5').update(code).digest('hex');
+					// const cache = flatCache.load(hash, resolve('./.cache/shiki'));
+					// const cachedValue = cache.getKey(hash);
+
+					// if (cachedValue) {
+					// 	return cachedValue;
+					// }
+
+					let highlightedCode = highlighter.codeToHtml(code.trim(), {
+						lang: lang,
+						themes: {
+							light: 'github-dark',
+							dark: 'github-dark',
+						}
+					});
+
+					// cache.setKey(hash, highlightedCode);
+					// cache.save();
+
+					return highlightedCode;
+				},
+			});
+		}
+		);
+	});
 
 	return {}
 };

@@ -18,7 +18,7 @@ or just [download from Github](https://github.com/tabler/tabler-icons/releases).
 
 It's build with ESmodules so it's completely tree-shakable. Each icon can be imported as a component.
 
-```sveltehtml
+```jsx
 <script lang="ts">
 import { IconHeart } from '@tabler/icons-svelte';
 </script>
