@@ -1,0 +1,16 @@
+---
+title: EPS version
+description: Download Tabler Icons in EPS format.	
+layout: default
+---
+
+![](/docs/icons/package-eps.png)
+
+
+## Installation
+
+<TabsPackage name="@tabler/icons-eps" />
+
+or just [download from Github](https://github.com/tabler/tabler-icons/releases).
+
+All EPS files are stored in `icons` subdirectory.
