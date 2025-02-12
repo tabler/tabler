@@ -24,7 +24,7 @@
     "js-minify-standalone-esm": "terser --compress passes=2 --mangle --comments \"/^!/\" --source-map \"content=dist/js/tabler.esm.js.map,includeSources,url=tabler.esm.min.js.map\" --output dist/js/tabler.esm.min.js dist/js/tabler.esm.js",
     "copy": "pnpm run copy-img",
     "copy-img": "cp -r img dist/img",
-    "watch": "pnpm run watch-css & pnpm run watch-js",
+    "watch": "concurrently \"pnpm run watch-css\" \"pnpm run watch-js\"",
     "watch-css": "nodemon --watch scss/ --ext scss --exec \"pnpm run css-compile && pnpm run css-prefix\"",
     "watch-js": "nodemon --watch js/ --ext js --exec \"pnpm run js-compile\"",
     "bundlewatch": "bundlewatch",

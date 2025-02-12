@@ -4,7 +4,7 @@
   "scripts": {
     "build": "pnpm run clean && pnpm run css && pnpm run js && pnpm run html",
     "dev": "pnpm run clean && pnpm run watch",
-    "watch": "pnpm run watch-html & pnpm run watch-css & pnpm run watch-js",
+    "watch": "concurrently \"pnpm run watch-html\" \"pnpm run watch-css\" \"pnpm run watch-js\"",
     "watch-html": "cross-env NODE_ENV=development eleventy --serve --port=3000 --incremental",
     "watch-js": "nodemon --watch js/ --ext js --exec \"pnpm run js\"",
     "watch-css": "nodemon --watch scss/ --ext scss --exec \"pnpm run css\"",
