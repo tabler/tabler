@@ -5,10 +5,12 @@ layout: default
 
 test
 
-{% example %}
+{% capture html %}
+{% include "ui/avatar.html" icon="heart" color="red" placeholder="as" %}
 {% include "ui/avatar.html" %}
-{% endexample %}
+{% endcapture %}
+{% include "example.html" html=html %}
 
 ```html
-{% include "ui/avatar.html" %}
+{% include "ui/avatar.html" icon="heart" color="red" placeholder="as" %}
 ```

@@ -18,8 +18,8 @@ export default function (eleventyConfig) {
 	eleventyConfig.setOutputDirectory("dist");
 	eleventyConfig.setLayoutsDirectory("_e11ty/layouts");
 
-	eleventyConfig.addPairedShortcode("example", function (content) {
-		return '<div class="example">' + content + '</div>';
+	eleventyConfig.addPairedLiquidShortcode("example", function (content, ...params) {
+		return '<div class="example p-5 border mb-6 rounded">' + params + content + '</div>';
 	})
 
 	eleventyConfig.amendLibrary('md', () => { });
@@ -60,7 +60,7 @@ export default function (eleventyConfig) {
 					let highlightedCode = highlighter.codeToHtml(code.trim(), {
 						lang: lang,
 						themes: {
-							light: 'github-dark',
+							light: 'github-light',
 							dark: 'github-dark',
 						}
 					});
