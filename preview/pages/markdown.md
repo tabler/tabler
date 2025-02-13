@@ -2,7 +2,7 @@
 title: Markdown
 page-header: Markdown
 page-menu: base.markdown
-layout: default
+layout: markdown
 permalink: markdown.html
 ---
 
