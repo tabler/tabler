@@ -2,4 +2,4 @@
 "@tabler/core": minor
 ---
 
-New text features page
+Add new text features page with mentions: user, color and app.

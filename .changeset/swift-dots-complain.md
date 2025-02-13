@@ -2,4 +2,4 @@
 "@tabler/core": minor
 ---
 
-New payment provider (Troy)
+Add new payment provider (Troy)
