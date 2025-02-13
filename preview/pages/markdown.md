@@ -60,7 +60,7 @@ You can't expect to wield supreme power just 'cause some watery tart threw a swo
 
 What do you mean? Listen. Strange women lying in ponds distributing swords is no basis for a system of government. Supreme executive power derives from a mandate from the masses, not from some farcical aquatic ceremony.
 
-![Image Alt]({{ page | relative }}/static/photos/{{ site.data.photos[4].file }})
+![Image Alt]({{ page | relative }}/static/photos/{{ photos[5].file }})
 
 Well, how'd you become king, then? You can't expect to wield supreme power just 'cause some watery tart threw a sword at you! The Lady of the Lake, her arm clad in the purest shimmering samite, held aloft Excalibur from the bosom of the water, signifying by divine providence that I, Arthur, was to carry Excalibur. That is why I am your king.
 
