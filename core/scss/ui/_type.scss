@@ -72,7 +72,7 @@ b {
 }
 
 blockquote {
-  padding-left: 1rem;
+  padding: 1rem 1rem 1rem;
   border-left: 2px var(--#{$prefix}border-style) var(--#{$prefix}border-color);
 
   p {
@@ -89,7 +89,8 @@ blockquote {
   }
 }
 
-ul, ol {
+ul,
+ol {
   padding-left: 1.5rem;
 }
 
@@ -123,6 +124,12 @@ code {
   border-radius: var(--#{$prefix}border-radius);
 }
 
+abbr {
+  text-decoration: underline dotted;
+  cursor: help;
+  text-decoration-skip-ink: none;
+}
+
 kbd,
 .kbd {
   border: $kbd-border;
@@ -145,18 +152,23 @@ img {
   margin-left: 0;
 }
 
-
 /**
 Selection
  */
-::selection {
-  background-color: rgba(var(--#{$prefix}primary-rgb), .16);
+::selection,
+.text-selected {
+  background-color: color-transparent(var(--#{$prefix}primary), .1);
+}
+
+.text-selected {
+  display: inline-block;
 }
 
 /**
 Links
  */
-[class^="link-"], [class*=" link-"] {
+[class^="link-"],
+[class*=" link-"] {
   &.disabled {
     color: $nav-link-disabled-color !important;
     pointer-events: none;
@@ -172,4 +184,69 @@ Subheader
  */
 .subheader {
   @include subheader;
+}
+
+/**
+Mentions
+ */
+.mention {
+  display: inline-block;
+  box-shadow: var(--tblr-box-shadow-border);
+  border-radius: var(--#{$prefix}border-radius-pill);
+  line-height: calc(16em / 12);
+  font-size: calc(12em / 14);
+  color: var(--#{$prefix}body-color);
+  background: var(--#{$prefix}bg-surface-tertiary);
+  padding: calc(2em / 12) calc(8em / 12);
+  font-weight: var(--#{$prefix}font-weight-medium);
+  
+  @at-root a#{&} {
+    cursor: pointer;
+
+    &:hover, 
+    &.hover {
+      background: var(--#{$prefix}bg-surface-secondary);
+      text-decoration: underline;
+    }
+  }
+}
+
+.mention-avatar,
+.mention-app,
+.mention-color {
+  width: calc(14em / 12);
+  height: calc(14em / 12);
+  border-radius: var(--#{$prefix}border-radius-pill);
+  margin: calc(-2em / 12) calc(4em / 12) 0 calc(-4em / 12);
+  display: inline-flex;
+  background: no-repeat center center/cover;
+  box-shadow: var(--#{$prefix}box-shadow-border);
+  vertical-align: middle;
+  text-align: center;
+}
+
+.mention-app {
+  box-shadow: none;
+  background: none;
+  border-radius: 0;
+}
+
+.mention-count {
+  color: var(--#{$prefix}secondary);
+  margin-left: calc(8em / 12);
+}
+
+$text-variants: (
+  incorrect: var(--#{$prefix}red),
+  correct: var(--#{$prefix}green),
+);
+
+@each $variant, $color in $text-variants {
+  .text-#{$variant} {
+    background: color-transparent($color, .04);
+    background: color-transparent($color, 4%);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-decoration-color: $color;
+  }
 }

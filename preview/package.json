@@ -18,7 +18,9 @@
     "js-minify-demo": "terser --compress passes=2 --mangle --comments \"/^!/\" --source-map \"content=dist/preview/js/demo.js.map,includeSources,url=demo.min.js.map\" --output dist/preview/js/demo.min.js dist/preview/js/demo.js",
     "js-minify-theme": "terser --compress passes=2 --mangle --comments \"/^!/\" --source-map \"content=dist/preview/js/demo-theme.js.map,includeSources,url=demo-theme.min.js.map\" --output dist/preview/js/demo-theme.min.js dist/preview/js/demo-theme.js", 
     "clean": "shx rm -rf dist demo",
-    "html": "eleventy",
+    "html": "pnpm run html-build && pnpm run html-prettify",
+    "html-build": "eleventy",
+    "html-prettify": "prettier --write \"dist/**/*.html\"",
     "svg-optimize": "svgo -f svg/brand --pretty",
     "unused-files": "node build/unused-files.mjs",
     "download-images": "node build/download-images.mjs",
@@ -55,5 +57,10 @@
     "imageoptim-cli": "^3.1.9",
     "@11ty/eleventy": "^3.0.0",
     "@repo/banner": "workspace:*"
+  },
+  "prettier": {
+    "tabWidth": 2,
+    "useTabs": false,
+    "printWidth": 160
   }
 }
