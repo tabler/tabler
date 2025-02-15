@@ -62,8 +62,6 @@ We've created this admin panel for everyone who wants to create templates based 
 
 Documentation is available as a part of Tabler preview: https://tabler.io/docs/
 
-To run the documentation site locally, follow instructions in the [Documentation README](https://github.com/tabler/tabler/blob/dev/site/README.md).
-
 ## 🪴 Project Activity
 
 ![Alt](https://repobeats.axiom.co/api/embed/61d1db34446967b0848af68198a392067e0f5870.svg "Repobeats analytics image")
@@ -91,81 +89,19 @@ Support this project by becoming a sponsor. Your logo will show up in this READM
 <a href="https://opencollective.com/tabler/tiers/sponsor/8/website" target="_blank"><img src="https://opencollective.com/tabler/tiers/sponsor/8/avatar.svg" /></a>
 <a href="https://opencollective.com/tabler/tiers/sponsor/9/website" target="_blank"><img src="https://opencollective.com/tabler/tiers/sponsor/9/avatar.svg" /></a>
 
-## 📦 Setup environment
-
-To use our build system and run our documentation locally, you'll need a copy of Tabler's source files. Follow the steps below:
-
-1. [Install Node.js](https://nodejs.org/download/), which we use to manage our dependencies.
-2. Navigate to the root `/tabler` directory and run `pnpm install` to install our local dependencies listed in `package.json`.
-
-**OSX users**:
-
-```sh
-pnpm install
-```
-
-and then 
-
-```sh
-npm run start
-```
-
-**Windows users**:
-
-[Install Git](https://git-scm.com/download/win) in `C:\Program Files\git\bin` directory and run `npm config set script-shell "C:\\Program Files\\git\\bin\\bash.exe"` to change the default shell.
-
-Once you complete the setup, you'll be able to run the various commands provided from the command line.
-
-
-## Build locally
-
-You need to have `pnpm` installed.
-
-1. From the root `/tabler` directory, run installation in the command line: `pnpm install` 
-2. Then execute `pnpm run start` to start up the application stack.
-3. Open [http://localhost:3000](http://localhost:3000) in your browser, and voilà.
-4. Any change in the `/src` directory will build the application and refresh the page.
-
-**Note**:
-Run `pnpm run build` for reforms a one off build application without refresh.
-Open [http://localhost:3001](http://localhost:3001) to configure the Web server.
-
 ## Installation
 
-Tabler is distributed via npm.
+### Package Managers
+
+Tabler is distributed via npm. You can install it with this or your preferred JavaScript package manager:
 
 ```sh
 npm install --save @tabler/core
 ```
 
-## Running with Docker
-
-**Plain Docker**
-
-If you don't want to install node/npm and the dependencies on your local environment, you can use the provided Dockerfile to build a docker image.
-This Dockerfile is provided as an example to spin-up a container running Tabler.
-
-Example of how to use this image:
-
-1. Build the tabler image : `docker build -t tabler .`
-2. Run the tabler image while mounting the `src` directory as well as the `_config.yml` file into the container.
-
-Don't forget to expose the port 3000 so you can browse the website locally.
-You can also expose the port 3001 to have access to BrowserSync
-
-```sh
-docker run -p 3000:3000 -p 3001:3001 -v $(pwd)/src:/app/src -v $(pwd)/_config.yml:/app/_config.yml tabler
-```
-
-Now open your browser to [http://localhost:3000](http://localhost:3000). Edit anything in the `src/` folder and watch your browser refresh the page after it has been rebuilt.
-
-**Docker Compose**
-
-You can also use the docker compose config from this repo. Use `docker compose build && docker compose up` or `docker compose up --build` to build and start the container. Edit anything in the `src/` folder the same way as with plain docker and access the same URLs and ports in your browser.
-
 ### CDN support
 
-All files included in `@tabler/core` npm package are available over a CDN.
+All files included in `@tabler/core` npm package are also available over a CDN.
 
 #### Javascript
 
@@ -179,21 +115,77 @@ All files included in `@tabler/core` npm package are available over a CDN.
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/css/tabler.min.css">
 ```
 
-## Feature requests
+## Building locally
 
-https://tabler.canny.io/feature-requests
+To build a copy of Tabler locally, you have two options. You can either set up your device directly with the development tools required to build Tabler, or if you would prefer not to install all the development dependencies directly onto your device, you can use a Dockerfile that Tabler provides to build a docker image. Instructions follow below.
 
+### First steps: Downloading the Tabler source files
+
+With either method, the first thing you'll want to do is download a copy of the Tabler source files to your device.
+
+#### From the Tabler GitHub releases page
+
+If you don't want to edit the source code once you've downloaded it, and aren't interested in merging future project updates into your copy, you can just download the source files straight from the [Tabler releases on GitHub](https://github.com/tabler/tabler/releases) and extract the contents to a directory called `tabler`.
+
+#### Cloning with Git
+
+If you **do** wish to edit the source code after downloading it, for example to contribute changes back to the Tabler project, you'll want to do this by cloning it with Git:
+1. If you don't have Git installed on your device, download and install it. You can find instructions at [https://git-scm.com/downloads](https://git-scm.com/downloads).
+2. (Optional) **Windows users:** you could optionally install Git in the `C:\Program Files\git\bin` directory and run `npm config set script-shell "C:\\Program Files\\git\\bin\\bash.exe"` to change the default shell.
+3. Clone the Tabler project into a folder on your device. Instructions can be found at [cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository).
+
+### Installing and running development tools directly
+
+1. [Install Node.js](https://nodejs.org/download/), which we use to manage our dependencies.
+2. [Install pnpm](https://pnpm.io/installation). (We recommend either by [Using Corepack](https://pnpm.io/installation#using-corepack) or by [Using npm](https://pnpm.io/installation#using-npm))
+3. From the root `/tabler` directory where you downloaded the Tabler source files, run installation on the command line:
+```sh
+pnpm install
+```
+4. Then execute the following to start up the application stack:
+```sh
+npm run start
+```
+5. Open [http://localhost:3000](http://localhost:3000) in your browser, and voilà.
+Any change in the `/src` directory will rebuild the application and refresh the page.
+
+**Note**:
+If you wish to perform a one-off build without auto-refresh on any changes, you can run:
+```sh
+pnpm run build
+```
+You can open [http://localhost:3001](http://localhost:3001) to configure the Web server.
+
+
+### Installing and running development tools with Docker
+
+**Plain Docker**
+
+Here is an example of how to use this image:
+
+1. From the root `/tabler` directory where you downloaded the Tabler source files, build the tabler image:
+```sh
+docker build -t tabler .
+```
+2. Run the tabler image. The following command mounts the `src` directory into the container, exposes port 3000 to browse the website locally, and exposes port 3001 to automatically sync changes:
+```sh
+docker run -p 3000:3000 -p 3001:3001 -v $(pwd)/src:/app/src tabler
+```
+3. Open your browser to [http://localhost:3000](http://localhost:3000). Edit anything in the `src/` folder and watch your browser refresh the page after it has been rebuilt.
+
+**Docker Compose**
+
+You can also use the docker compose config from this repo. From the root `/tabler` directory where you downloaded the Tabler source files, use `docker compose build && docker compose up` or `docker compose up --build` to build and start the container. Edit anything in the `src/` folder the same way as with plain docker and access the same URLs and ports in your browser.
 
 ## Bugs and feature requests
 
 Found a bug or have a feature request? [Please open a new issue](https://github.com/tabler/tabler/issues/new).
 
-
 ## 🤓 Creators
 
 **Paweł Kuna**
 
-- <https://twitter.com/codecalm>
+- <https://x.com/codecalm>
 - <https://github.com/codecalm>
 - <https://codecalm.net>
 
