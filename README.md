@@ -1,5 +1,5 @@
 <p align="center">
-<a href="https://github.com/tabler/tabler"><img src="https://raw.githubusercontent.com/tabler/tabler/dev/src/static/logo.svg" alt="A premium and open source dashboard template with a responsive and high-quality UI." width="300"></a><br><br>
+<a href="https://github.com/tabler/tabler"><img src="https://raw.githubusercontent.com/tabler/tabler/refs/heads/dev/preview/static/logo.svg" alt="A premium and open source dashboard template with a responsive and high-quality UI." width="300"></a><br><br>
 A premium and open source dashboard template with a responsive and high-quality UI.
 </p>
 
@@ -18,9 +18,9 @@ A premium and open source dashboard template with a responsive and high-quality 
 **If you want to support our project and help me grow it, you can [become a sponsor on GitHub](https://github.com/sponsors/codecalm) or just [donate on PayPal](https://paypal.me/codecalm) :)**
 
 <p align="center">
-  <a href="https://github.com/sponsors/codecalm">
-    <img src="https://cdn.jsdelivr.net/gh/tabler/sponsors@latest/sponsors.svg" alt="Tabler sponsors">
-  </a>
+	<a href="https://github.com/sponsors/codecalm">
+		<img src="https://cdn.jsdelivr.net/gh/tabler/sponsors@latest/sponsors.svg" alt="Tabler sponsors">
+	</a>
 </p>
 
 ## Testing
@@ -28,21 +28,24 @@ A premium and open source dashboard template with a responsive and high-quality 
 <p align="center">Browser testing via:</p>
 
 <p align="center">
-  <a href="https://www.lambdatest.com/" target="_blank">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://github.com/user-attachments/assets/14dd2a0a-bafe-436e-a6cb-29636278c781">
-      <source media="(prefers-color-scheme: light)" srcset="https://github.com/user-attachments/assets/d3dede5a-d702-47c3-bb66-4d887948ed83">
-      <img src="https://github.com/user-attachments/assets/d3dede5a-d702-47c3-bb66-4d887948ed83" alt="Tabler Icons preview" width="296">
-    </picture>
-  </a>
+	<a href="https://www.lambdatest.com/" target="_blank">
+		<picture>
+			<source media="(prefers-color-scheme: dark)" srcset="https://github.com/user-attachments/assets/14dd2a0a-bafe-436e-a6cb-29636278c781">
+			<source media="(prefers-color-scheme: light)" srcset="https://github.com/user-attachments/assets/d3dede5a-d702-47c3-bb66-4d887948ed83">
+			<img src="https://github.com/user-attachments/assets/d3dede5a-d702-47c3-bb66-4d887948ed83" alt="Tabler Icons preview" width="296">
+		</picture>
+	</a>
 </p>
 
 ## 🔎 Preview
 
 Tabler is fully responsive and compatible with all modern browsers. Thanks to its modern and user-friendly design you can create a fully functional interface that users will love! Choose the layouts and components you need and customize them to make your design consistent and eye-catching. Every component has been created with attention to detail to make your interface beautiful! <a href="https://preview.tabler.io">Show me a demo</a>
 
-<a href="https://preview.tabler.io" target="_blank"><img src="https://raw.githubusercontent.com/tabler/tabler/dev/src/static/tabler-preview.png" alt="Tabler preview"></a>
-
+<p align="center">
+	<a href="https://preview.tabler.io" target="_blank">
+			<img src="https://raw.githubusercontent.com/tabler/tabler/dev/preview/static/tabler-preview.png" alt="Tabler Preview">
+	</a>
+</p>
 
 ## 🚀 Features
 
@@ -67,8 +70,11 @@ To run the documentation site locally, follow instructions in the [Documentation
 
 ## 💕 Sponsor Tabler
 
-<a href="https://github.com/sponsors/codecalm" target="_blank"><img src="/src/static/sponsor-banner-readme.png?raw=true" alt="Sponsor Tabler" /></a>
-
+<p align="center">
+	<a href="https://github.com/sponsors/codecalm" target="_blank">
+			<img src="https://raw.githubusercontent.com/tabler/tabler/dev/preview/static/sponsor-banner-homepage.svg" alt="Sponsor Banner">
+	</a>
+</p>
 
 ### Sponsors
 
@@ -94,12 +100,15 @@ To use our build system and run our documentation locally, you'll need a copy of
 
 **OSX users**:
 
-```pnpm install```
+```sh
+pnpm install
+```
 
 and then 
 
-```npm run start```
-
+```sh
+npm run start
+```
 
 **Windows users**:
 
