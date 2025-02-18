@@ -1,0 +1,41 @@
+name: Playwright Tests
+
+on:
+  pull_request: null
+
+env:
+  NODE: 20
+
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    steps:
+    - name: Clone repository
+      uses: actions/checkout@v4
+
+    - name: Cache turbo build setup
+      uses: actions/cache@v4
+      with: 
+        path: .turbo
+        key: ${{ runner.os }}-turbo-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-turbo-
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: "${{ env.NODE }}"
+
+    - name: Install PNPM
+      uses: pnpm/action-setup@v4
+
+    - name: Run Playwright tests
+      run: pnpm run playwright
+      
+    - uses: actions/upload-artifact@v4
+      if: ${{ !cancelled() }}
+      with:
+        name: playwright-report
+        path: playwright-report/
+        retention-days: 30
