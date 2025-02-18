@@ -7,6 +7,7 @@ permalink: badges.html
 ---
 
 {% assign colors = "" | split: "," %}
+{% assign colors = colors | push: "default" %}
 {% for color in site.colors %}
   {% assign colors = colors | push: color[0] %}
 {% endfor %}
@@ -56,7 +57,7 @@ permalink: badges.html
             <h3 class="card-title">Basic badges</h3>
             <div class="badges-list">
               {% for color in colors %}
-              <span class="badge bg-{{ color }} text-{{ color }}-fg">{{ color }}</span>
+              <span class="badge bg-{{ color }} text-{{ color }}-fg">{{ color | uc_first }}</span>
               {% endfor %}
             </div>
           </div>
@@ -68,7 +69,7 @@ permalink: badges.html
             <h3 class="card-title">Light badges</h3>
             <div class="badges-list">
               {% for color in colors %}
-              <span class="badge bg-{{ color }}-lt">{{ color }}</span>
+              <span class="badge bg-{{ color }}-lt">{{ color | uc_first }}</span>
               {% endfor %}
             </div>
           </div>
@@ -80,7 +81,7 @@ permalink: badges.html
             <h3 class="card-title">Outline badges</h3>
             <div class="badges-list">
               {% for color in colors %}
-              <span class="badge badge-outline text-{{ color }}">{{ color }}</span>
+              <span class="badge badge-outline text-{{ color }}">{{ color | uc_first }}</span>
               {% endfor %}
             </div>
           </div>
@@ -92,7 +93,7 @@ permalink: badges.html
             <h3 class="card-title">Badges with icons</h3>
             <div class="badges-list">
               {% for color in colors %}
-              <span class="badge bg-{{ color }} text-{{ color }}-fg"> {% include "ui/icon.html" icon="star" %} {{ color }} </span>
+              <span class="badge bg-{{ color }} text-{{ color }}-fg"> {% include "ui/icon.html" icon="star" type="filled" %} {{ color | uc_first }} </span>
               {% endfor %}
             </div>
           </div>
@@ -109,7 +110,7 @@ permalink: badges.html
             <div class="btn-list">
               {% for color in colors %}
               <button class="btn">
-                {{ color }} badge <span class="badge bg-{{ color }} text-{{ color }}-fg ms-2">{{ forloop.index }}</span>
+                {{ color | uc_first }} badge <span class="badge bg-{{ color }} text-{{ color }}-fg ms-2">{{ forloop.index }}</span>
               </button>
               {% endfor %}
             </div>
@@ -122,7 +123,7 @@ permalink: badges.html
             <div class="btn-list">
               {% for color in colors %}
               <button class="btn position-relative">
-                {{ color }} badge <span class="badge bg-{{ color }} text-{{ color }}-fg badge-notification badge-pill">{{ forloop.index }}</span>
+                {{ color | uc_first }} badge <span class="badge bg-{{ color }} text-{{ color }}-fg badge-notification badge-pill">{{ forloop.index }}</span>
               </button>
               {% endfor %}
             </div>
@@ -135,7 +136,7 @@ permalink: badges.html
             <div class="btn-list">
               {% for color in colors %}
               <button class="btn position-relative">
-                {{ color }} badge <span class="badge bg-{{ color }} badge-notification badge-blink"></span>
+                {{ color | uc_first }} badge <span class="badge bg-{{ color }} badge-notification badge-blink"></span>
               </button>
               {% endfor %}
             </div>
