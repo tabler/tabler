@@ -3,4 +3,4 @@
 "preview": patch
 ---
 
-Refactor alert component styles and markup
+Refactor alert component styles and markup, remove Bootstrap styles
