@@ -7,10 +7,10 @@ const previewDir = path.join(__dirname, "../preview/dist")
 
 const htmlFiles = fs.readdirSync(previewDir).filter((file) => file.endsWith(".html"))
 
-for (const file of htmlFiles.slice(0, 10)) {
+for (const file of htmlFiles) {
 	test(`Compare ${file}`, async ({ page }) => {
 		await page.goto(`file://${path.join(previewDir, file)}`)
 		await page.waitForLoadState("networkidle")
-		await argosScreenshot(page, `${page}`)
+		await argosScreenshot(page, `${file}`)
 	})
 }
