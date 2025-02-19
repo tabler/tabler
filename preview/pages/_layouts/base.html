@@ -31,23 +31,23 @@
 
 	{% include "layout/css.html" %}
 
+	<!-- BEGIN CUSTOM FONT -->
 	<style>
 		@import url('https://rsms.me/inter/inter.css');
 	</style>
+	<!-- END CUSTOM FONT -->
 </head>
 
 {% assign layout-dark = layout-dark | default: site.layoutDark %}
 <body{% if layout.body-class or body-class %} class="{% if layout.body-class %} {{ layout.body-class }}{% endif %}{% if body-class %} {{ body-class }}{% endif %}"{% endif %}>
-<script src="{{ page | relative }}/preview/js/demo-theme{% if environment != 'development' %}.min{% endif %}.js{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}"></script>
+	<!-- BEGIN DEMO THEME SCRIPT -->
+	<script src="{{ page | relative }}/preview/js/demo-theme{% if environment != 'development' %}.min{% endif %}.js{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}"></script>
+	<!-- END DEMO THEME SCRIPT -->
 
 	{{ content }}
 
 	{% include "layout/modals-capture.html" %}
 
 	{% include "layout/js.html" %}
-
-	{% if site.debug and environment == 'development' %}
-		{% include "layout/debug.html" %}
-	{% endif %}
 </body>
 </html>

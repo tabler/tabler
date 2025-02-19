@@ -61,4 +61,34 @@
   }
 
   @return $string;
+/**
+ * Converts a given value to a percentage string.
+ *
+ * @param {Number} $value - The value to be converted to a percentage.
+ * @return {String} - The percentage representation of the value.
+ */
+@function to-percentage($value) {
+  @return if(unitless($value), percentage($value), $value);
+}
+
+/**
+ * Generates a transparent version of the given color.
+ *
+ * @param {Color} $color - The base color to be made transparent.
+ * @param {Number} $alpha - The level of transparency, ranging from 0 (fully transparent) to 1 (fully opaque). Default is 1.
+ * @return {Color} - The resulting color with the specified transparency.
+ */
+@function color-transparent($color, $alpha: 1, $background: transparent) {
+  @if $alpha == 1 {
+    @return $color;
+  } @else {
+    @return color-mix(in srgb, #{$color} #{to-percentage($alpha)}, $background);
+  }
+}
+
+@function url-svg($svg) {
+  $svg: str-replace($svg, '#', '%23');
+  $svg: str-replace($svg, '<svg', '<svg xmlns="http://www.w3.org/2000/svg"');
+
+  @return url('data:image/svg+xml;charset=UTF-8,#{$svg}');
 }
