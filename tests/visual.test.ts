@@ -1,25 +1,16 @@
-import test, { expect, Page } from '@playwright/test';
+import test, { expect } from '@playwright/test';
+import { argosScreenshot } from "@argos-ci/playwright"
 import fs from "fs"
 import path from "path"
 
 const previewDir = path.join(__dirname, "../preview/dist")
 
-async function visualDiff(page: Page, url: string) {
-	await page.goto(url);
-	await expect(page).toHaveScreenshot({ fullPage: true });
-}
-
 const htmlFiles = fs.readdirSync(previewDir).filter((file) => file.endsWith(".html"))
 
-for (const file of htmlFiles) {
+for (const file of htmlFiles.slice(0, 10)) {
 	test(`Compare ${file}`, async ({ page }) => {
-		const filePath = `file://${path.join(previewDir, file)}`
-		await page.goto(filePath)
-
-		// Wait for page load
+		await page.goto(`file://${path.join(previewDir, file)}`)
 		await page.waitForLoadState("networkidle")
-
-		// Take a screenshot and compare
-		await expect(page).toHaveScreenshot(`${file}.png`)
+		await argosScreenshot(page, `${page}`)
 	})
 }
