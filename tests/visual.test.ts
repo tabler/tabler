@@ -11,6 +11,6 @@ for (const file of htmlFiles) {
 	test(`Compare ${file}`, async ({ page }) => {
 		await page.goto(`file://${path.join(previewDir, file)}`)
 		await page.waitForLoadState("networkidle")
-		await argosScreenshot(page, `${page}`)
+		await argosScreenshot(page, `${file}`)
 	})
 }
