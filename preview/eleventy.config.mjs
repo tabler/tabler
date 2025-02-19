@@ -522,6 +522,10 @@ export default function (eleventyConfig) {
 		return string.split(' ').map(word => word.charAt(0)).join('');
 	})
 
+	eleventyConfig.addFilter("uc_first", function capitalizeFirstLetter(string) {
+		return string.charAt(0).toUpperCase() + string.slice(1);
+	})
+
 	eleventyConfig.addFilter("size", function (elem) {
 		if (elem instanceof Object) {
 			return Object.keys(elem).length;
