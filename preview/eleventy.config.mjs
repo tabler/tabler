@@ -504,11 +504,11 @@ export default function (eleventyConfig) {
 	});
 
 	eleventyConfig.addFilter("random_date", function (x, startDate = null, endDate = null) {
-		const start = startDate ? new Date(startDate).getTime() : Date.now() - 100 * 24 * 60 * 60 * 1000;
-		const end = endDate ? new Date(endDate).getTime() : Date.now();
+		const start = new Date(startDate ? startDate : '2024-01-01').getTime() / 1000;
+		const end = new Date(endDate ? endDate : '2024-12-30').getTime() / 1000;
 
 		const randomTimestamp = randomNumber(x, start, end);
-		return new Date(randomTimestamp);
+		return new Date(randomTimestamp * 1000);
 	});
 
 	eleventyConfig.addFilter("random_item", function (x, items) {
