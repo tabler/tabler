@@ -60,7 +60,7 @@ We've created this admin panel for everyone who wants to create templates based 
 
 ## 📖 Documentation
 
-Documentation is available as a part of Tabler preview: https://tabler.io/docs/
+The documentation is available at https://tabler.io/docs/
 
 ## 🪴 Project Activity
 
@@ -137,7 +137,7 @@ If you **do** wish to edit the source code after downloading it, for example to 
 ### Installing and running development tools directly
 
 1. [Install Node.js](https://nodejs.org/download/), which we use to manage our dependencies.
-2. [Install pnpm](https://pnpm.io/installation). (We recommend either by [Using Corepack](https://pnpm.io/installation#using-corepack) or by [Using npm](https://pnpm.io/installation#using-npm))
+2. [Install pnpm](https://pnpm.io/installation) (We recommend either by [Using Corepack](https://pnpm.io/installation#using-corepack) or by [Using npm](https://pnpm.io/installation#using-npm))
 3. From the root `/tabler` directory where you downloaded the Tabler source files, run installation on the command line:
 ```sh
 pnpm install
@@ -189,7 +189,6 @@ Found a bug or have a feature request? [Please open a new issue](https://github.
 - <https://github.com/codecalm>
 - <https://codecalm.net>
 
-
 ## 👨‍🚀 Contributors
 
 This project exists thanks to all the people who contribute.
@@ -200,7 +199,11 @@ This project exists thanks to all the people who contribute.
 
 Thank you to all our backers! 🙏 [Become a backer](https://opencollective.com/tabler#backer)
 
-<a href="https://opencollective.com/tabler#backers" target="_blank"><img src="https://opencollective.com/tabler/tiers/backer.svg?width=890&button=false" /></a>
+<a href="https://opencollective.com/tabler#backers" target="_blank"><img src="https://opencollective.com/tabler/tiers/backer.svg?width=890&button=false" />
+
+## Social media
+
+Stay up to date by joining our community on <a href="https://x.com/tabler_io" >X</a> and <a href="https://www.facebook.com/tabler.io">Facebook</a>
 
 ## License
 
