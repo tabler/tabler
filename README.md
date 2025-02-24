@@ -144,7 +144,7 @@ pnpm install
 ```
 4. Then execute the following to start up the application stack:
 ```sh
-npm run start
+pnpm run start
 ```
 5. Open [http://localhost:3000](http://localhost:3000) in your browser, and voilà.
 Any change in the `/src` directory will rebuild the application and refresh the page.
