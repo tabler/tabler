@@ -6,6 +6,9 @@
   @return shade-color($color, 10%);
 }
 
+//
+// Replace all occurrences of a substring within a string.
+//
 @function str-replace($string, $search, $replace: "") {
   $index: str-index($string, $search);
 
@@ -40,6 +43,24 @@
     @error "breakpoint `#{$name}` not found in `#{$breakpoints}`";
   }
   @return if($n > 1, nth($breakpoint-names, $n - 1), null);
+}
+
+//
+// Escape SVG strings.
+//
+@function escape-svg($string) {
+  @if str-index($string, "data:image/svg+xml") {
+    @each $char, $encoded in $escaped-characters {
+      // Do not escape the url brackets
+      @if str-index($string, "url(") == 1 {
+        $string: url("#{str-replace(str-slice($string, 6, -3), $char, $encoded)}");
+      } @else {
+        $string: str-replace($string, $char, $encoded);
+      }
+    }
+  }
+
+  @return $string;
 }
 
 /**
