@@ -48,8 +48,6 @@ for (const file of docs) {
 		if (m2 === 'html') {
 			m3 = await formatHTML(m3);
 
-			console.log(m3);
-
 			// remove empty lines
 			m3 = m3.replace(/^\s*[\r\n]/gm, '');
 
