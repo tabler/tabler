@@ -592,7 +592,6 @@ export default function (eleventyConfig) {
 	});
 
 	['script', 'modal'].forEach((tag) => {
-		let scripts = {};
 		eleventyConfig.addPairedShortcode(`capture_${tag}`, function (content) {
 			if (!this.page[tag]) {
 				this.page[tag] = []
