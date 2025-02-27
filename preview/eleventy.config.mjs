@@ -33,7 +33,7 @@ const getCopyList = () => {
 
 	files.forEach((file) => {
 		if (!file.match(/^https?/)) {
-			copy[`node_modules/${dirname(file)}`] = `libs/${dirname(file) }`;
+			copy[`node_modules/${dirname(file)}`] = `libs/${dirname(file)}`;
 		}
 	})
 
@@ -91,7 +91,7 @@ export default function (eleventyConfig) {
 			return {
 				url: file.replace(/^pages\//, '/')
 			}
-});
+		});
 	});
 
 	eleventyConfig.addGlobalData("site", {
@@ -413,12 +413,12 @@ export default function (eleventyConfig) {
 	/**
 	 * Filters
 	 */
-	eleventyConfig.addFilter("miliseconds_to_minutes", function (value) { 
+	eleventyConfig.addFilter("miliseconds_to_minutes", function (value) {
 		// Raturn 3:45 time format
 		const minutes = Math.floor(value / 60000);
 		const seconds = ((value % 60000) / 1000).toFixed(0);
 		return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-	 });
+	});
 
 	eleventyConfig.addFilter("relative", (page) => {
 		const segments = (page.url || '').replace(/^\//).split('/');
@@ -594,20 +594,26 @@ export default function (eleventyConfig) {
 	['script', 'modal'].forEach((tag) => {
 		let scripts = {};
 		eleventyConfig.addPairedShortcode(`capture_${tag}`, function (content) {
-			if (!scripts[this.page.url]) {
-				scripts[this.page.url] = [];
+			if (!this.page[tag]) {
+				this.page[tag] = []
 			}
 			
-			// add if not exists
-			if (!scripts[this.page.url].includes(content)) {
-				scripts[this.page.url].push(content);
+			if (!this.page[tag][this.page.url]) {
+				this.page[tag][this.page.url] = [];
 			}
+
+			this.page[tag][this.page.url].push(content);
 
 			return ''
 		})
 
 		eleventyConfig.addShortcode(`${tag}s`, function () {
-			return scripts[this.page.url] ? `<!-- BEGIN PAGE ${tag.toUpperCase()}S -->\n${scripts[this.page.url].join('\n').trim()}\n<!-- END PAGE ${tag.toUpperCase()}S -->` : '';
+
+			if (this.page[tag]) {
+				return this.page[tag][this.page.url] ? `<!-- BEGIN PAGE ${tag.toUpperCase()}S -->\n${this.page[tag][this.page.url].join('\n').trim()}\n<!-- END PAGE ${tag.toUpperCase()}S -->` : '';
+			}
+
+			return ''
 		});
 	});
 
