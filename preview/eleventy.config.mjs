@@ -577,7 +577,7 @@ export default function (eleventyConfig) {
 	/**
 	 * Shortcodes
 	 */
-	const tags = ["capture_global", "endcapture_global", "highlight", "endhighlight"];
+	const tags = ["highlight", "endhighlight"];
 	tags.forEach(tag => {
 		eleventyConfig.addLiquidTag(tag, function (liquidEngine) {
 			return {
@@ -588,6 +588,26 @@ export default function (eleventyConfig) {
 					return "";
 				},
 			};
+		});
+	});
+
+	['script', 'modal'].forEach((tag) => {
+		let scripts = {};
+		eleventyConfig.addPairedShortcode(`capture_${tag}`, function (content) {
+			if (!scripts[this.page.url]) {
+				scripts[this.page.url] = [];
+			}
+			
+			// add if not exists
+			if (!scripts[this.page.url].includes(content)) {
+				scripts[this.page.url].push(content);
+			}
+
+			return ''
+		})
+
+		eleventyConfig.addShortcode(`${tag}s`, function () {
+			return scripts[this.page.url] ? `<!-- BEGIN PAGE ${tag.toUpperCase()}S -->\n${scripts[this.page.url].join('\n').trim()}\n<!-- END PAGE ${tag.toUpperCase()}S -->` : '';
 		});
 	});
 
