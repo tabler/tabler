@@ -33,7 +33,7 @@ const getCopyList = () => {
 
 	files.forEach((file) => {
 		if (!file.match(/^https?/)) {
-			copy[`node_modules/${dirname(file)}`] = `libs/${dirname(file) }`;
+			copy[`node_modules/${dirname(file)}`] = `libs/${dirname(file)}`;
 		}
 	})
 
@@ -91,7 +91,7 @@ export default function (eleventyConfig) {
 			return {
 				url: file.replace(/^pages\//, '/')
 			}
-});
+		});
 	});
 
 	eleventyConfig.addGlobalData("site", {
@@ -413,12 +413,12 @@ export default function (eleventyConfig) {
 	/**
 	 * Filters
 	 */
-	eleventyConfig.addFilter("miliseconds_to_minutes", function (value) { 
+	eleventyConfig.addFilter("miliseconds_to_minutes", function (value) {
 		// Raturn 3:45 time format
 		const minutes = Math.floor(value / 60000);
 		const seconds = ((value % 60000) / 1000).toFixed(0);
 		return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
-	 });
+	});
 
 	eleventyConfig.addFilter("relative", (page) => {
 		const segments = (page.url || '').replace(/^\//).split('/');
@@ -504,11 +504,11 @@ export default function (eleventyConfig) {
 	});
 
 	eleventyConfig.addFilter("random_date", function (x, startDate = null, endDate = null) {
-		const start = startDate ? new Date(startDate).getTime() : Date.now() - 100 * 24 * 60 * 60 * 1000;
-		const end = endDate ? new Date(endDate).getTime() : Date.now();
+		const start = new Date(startDate ? startDate : '2024-01-01').getTime() / 1000;
+		const end = new Date(endDate ? endDate : '2024-12-30').getTime() / 1000;
 
 		const randomTimestamp = randomNumber(x, start, end);
-		return new Date(randomTimestamp);
+		return new Date(randomTimestamp * 1000);
 	});
 
 	eleventyConfig.addFilter("random_item", function (x, items) {
@@ -520,6 +520,10 @@ export default function (eleventyConfig) {
 
 	eleventyConfig.addFilter("first_letters", function capitalizeFirstLetter(string) {
 		return string.split(' ').map(word => word.charAt(0)).join('');
+	})
+
+	eleventyConfig.addFilter("uc_first", function capitalizeFirstLetter(string) {
+		return string.charAt(0).toUpperCase() + string.slice(1);
 	})
 
 	eleventyConfig.addFilter("size", function (elem) {
@@ -573,7 +577,7 @@ export default function (eleventyConfig) {
 	/**
 	 * Shortcodes
 	 */
-	const tags = ["capture_global", "endcapture_global", "highlight", "endhighlight"];
+	const tags = ["highlight", "endhighlight"];
 	tags.forEach(tag => {
 		eleventyConfig.addLiquidTag(tag, function (liquidEngine) {
 			return {
@@ -587,17 +591,44 @@ export default function (eleventyConfig) {
 		});
 	});
 
+	['script', 'modal'].forEach((tag) => {
+		eleventyConfig.addPairedShortcode(`capture_${tag}`, function (content) {
+			if (!this.page[tag]) {
+				this.page[tag] = []
+			}
+			
+			if (!this.page[tag][this.page.url]) {
+				this.page[tag][this.page.url] = [];
+			}
+
+			this.page[tag][this.page.url].push(content);
+
+			return ''
+		})
+
+		eleventyConfig.addShortcode(`${tag}s`, function () {
+
+			if (this.page[tag]) {
+				return this.page[tag][this.page.url] ? `<!-- BEGIN PAGE ${tag.toUpperCase()}S -->\n${this.page[tag][this.page.url].join('\n').trim()}\n<!-- END PAGE ${tag.toUpperCase()}S -->` : '';
+			}
+
+			return ''
+		});
+	});
+
 	/**
 	 * Transforms
 	 */
-	function prettifyHTML(content, outputPath) {
-		return outputPath.endsWith('.html')
-			? content
-				.replace(/\/\/ @formatter:(on|off)\n+/gm, '')
-				// remove empty lines
-				.replace(/^\s*[\r\n]/gm, '')
-			: content
-	}
+	if (environment !== "development") {
+		function prettifyHTML(content, outputPath) {
+			return outputPath.endsWith('.html')
+				? content
+					.replace(/\/\/ @formatter:(on|off)\n+/gm, '')
+					// remove empty lines
+					.replace(/^\s*[\r\n]/gm, '')
+				: content
+		}
 
-	eleventyConfig.addTransform('htmlformat', prettifyHTML)
+		eleventyConfig.addTransform('htmlformat', prettifyHTML)
+	}
 };

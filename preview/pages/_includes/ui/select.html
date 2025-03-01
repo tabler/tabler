@@ -56,7 +56,6 @@
 
 {% capture script %}
 <script>
-	// @formatter:off
 	document.addEventListener("DOMContentLoaded", function () {
 		{% if environment == 'development' %}
 		window.tabler_select = window.tabler_select || {};
@@ -88,7 +87,6 @@
 		}));
 
 	});
-	// @formatter:on
 </script>
 {% endcapture %}
 
@@ -96,9 +94,9 @@
 {% if include.show-scripts %}
 {{ script }}
 {% else %}
-{% capture_global scripts %}
+{% capture_script %}
 {{ script }}
-{% endcapture_global %}
+{% endcapture_script %}
 {% endif %}
 
 {% endif %}

@@ -1,0 +1,162 @@
+---
+title: Signatures
+layout: default
+permalink: signatures.html
+page-header: Signatures
+page-libs: [signature_pad]
+page-menu: extra.signatures
+---
+
+{% capture simple-js %}
+signaturePad.fromDataURL("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGZpbGw9Im5vbmUiIHZpZXdCb3g9IjAgMCA1OTIgMjAwIj4KICA8ZyBjbGlwLXBhdGg9InVybCgjYSkiPgogICAgPHBhdGggZmlsbD0iIzAwMCIgZD0iTTEzMi4wOTIgNzkuMDY1YzAgLjMwNC0uMzU1IDEuNDAzLTEuMDYzIDMuMjk4LS42OTQgMS44OTQtMS4xNDIgMy4wMjItMS4zNDUgMy4zODQtMi4zNDIgMy44NDctNi43NiA3LjE4LTEzLjI1MiAxMC4wMDEtNS4zNjUgMi4yMjctMTMuNDU1IDUuNTktMjQuMjcgMTAuMDg4YTE0OC4xOSAxNDguMTkgMCAwIDAtMTAuMzQ3IDMuMTI0Yy0yLjY5Ljg4Mi02LjU4NiAyLjk1LTExLjY5IDYuMjA0YTE4Ny42NiAxODcuNjYgMCAwIDAtMS4wNjMgMTAuMTk2IDQwNy40OSA0MDcuNDkgMCAwIDEtMS40MzIgMTUuMzM4Yy0uODgyIDEuMTg2LTEuOTg4IDEuNzc5LTMuMzE4IDEuNzc5LjExNSAwIC4xNzMtLjAxNS4xNzMtLjA0NC0uMjAyLS4xMDEtLjg5Ni0uMjgyLTIuMDgyLS41NDJ2LTIuODg1YzAtMi43MDUuMjMxLTUuNDYuNjk0LTguMjY2IDAtLjA1Ny4yNTMtLjc3My43Ni0yLjE0Ny41MDUtMS4zMzEuNzU4LTIuMTQxLjc1OC0yLjQzIDAtMS42MDUtLjI5Ni0zLjI0LS44ODktNC45MDMtLjM5IDEuMTI4LTEuMTEzIDEuODU5LTIuMTY5IDIuMTkxLTEuMjQ0LS43MjMtMS44NjUtMS45ODgtMS44NjUtMy43OTYgMC0uMjAzIDEuMDQ4LTEuNzI5IDMuMTQ1LTQuNTc4IDIuMTQtMi45NjUgMy4zODMtNS4wMDQgMy43My02LjExNy4yNzUtLjgxLjc2Ny0zLjQ1IDEuNDc1LTcuOTE5IDEuMDQxLTYuNjEgMS45Ni0xMS40NCAyLjc1NS0xNC40OTEgMS42OTItNi42MzkgMy42OTQtMTAuODYyIDYuMDA4LTEyLjY3bDIuNDMgMS44MjN2MS44NjVjLTEuNTA1IDEuMTU3LTIuNTY3IDMuMjYyLTMuMTkgNi4zMTMtLjE4Ny45NC0uNjM2IDMuMzQxLTEuMzQ0IDcuMjAzLS4xNDUuNzA4LS43MjMgMi41NDUtMS43MzUgNS41MS0uOTExIDIuNjAzLTEuMzY3IDQuMTg3LTEuMzY3IDQuNzUxdjUuNDI0Yy4yNi4yNDUuNS4zNjguNzE2LjM2OCAxLjIxNSAwIDMuMTA5LS41MDYgNS42ODMtMS41MTggMy4wOC0xLjE1NyA1LjAxNy0xLjg1MSA1LjgxMy0yLjA4MyAxMy4wNzEtMy4zODQgMjMuMTUtNy4yMzggMzAuMjM1LTExLjU2MyA2LjIxOC0zLjc0NiA5Ljk5Mi02LjI5OCAxMS4zMjItNy42NTggMS41NzYtMS41NjIgMi4zNjQtMy42NjYgMi4zNjQtNi4zMTMgMC00LjY3MS0yLjEwNC04LjU2OS02LjMxMi0xMS42OTMtMy44Ni0yLjkwNy04LjE5MS00LjM2LTEyLjk5Mi00LjM2LTMuNzg4IDAtOC4yNzEuNDYyLTEzLjQ0NyAxLjM4OC02LjY2NiAxLjIxNS0xMi45MiAyLjkwNy0xOC43NjIgNS4wNzYtOC44NjQgMy4yODQtMTMuNzM2IDYuODM0LTE0LjYxOCAxMC42NTJsLTEuMDg1LjgwM0M1OC44MzkgNzguNDIyIDU4IDc3LjA2MiA1OCA3NS43OWMwLTEuODA4IDEuODgtNC4wMTQgNS42NC02LjYxNyAzLjA4LTIuMTQgNS44Mi0zLjU2NSA4LjIyLTQuMjc0IDE1Ljk0OS00LjkxNyAyNy44NjQtNy4zNzYgMzUuNzQ0LTcuMzc2IDcuNDYxIDAgMTMuNDEyIDEuOTUzIDE3Ljg1MSA1Ljg1NyA0LjQyNCAzLjg2MiA2LjYzNyA5LjA5IDYuNjM3IDE1LjY4NVptMzIuMjk1IDU1LjQwN3YxLjkwOWMtLjU5Mi44MjQtMS4yNDMgMS4yMzYtMS45NTIgMS4yMzYtLjQ0OCAwLTEuOTczLTEuMzU5LTQuNTc2LTQuMDc4LTIuNjAzLTIuNzMzLTQuMzM4LTQuMS01LjIwNi00LjEgMCAuMDU4LTMuMDggMS4yNDQtOS4yMzkgMy41NTgtNi4zMDUgMi4zNDMtMTAuMzE3IDMuNTE0LTEyLjAzOCAzLjUxNC0xLjQxNyAwLTIuOTg2LS42OTQtNC43MDctMi4wODMtMS43Mi0xLjM3NC0yLjU4MS0yLjY2OC0yLjU4MS0zLjg4MyAwLTMuMTM4IDMuNDM0LTYuNzk3IDEwLjMwMy0xMC45NzcgNi40MzQtMy45NjMgMTEuMzQzLTUuOTQ0IDE0LjcyNy01Ljk0NCAxLjQxNyAwIDIuNjkuODEgMy44MTcgMi40M3YxLjgyMmMtLjU2NC44MS0xLjIxNCAxLjIxNS0xLjk1MiAxLjIxNS0uMTMgMC0uNjE0LS4xODEtMS40NTMtLjU0My0uODM5LS4zNzYtMS4zMzctLjU2NC0xLjQ5Ni0uNTY0LTEuMTI4IDAtMy43MTcgMS4xNjUtNy43NjUgMy40OTMtMy44MzIgMi4xNjktNi4zOTkgMy43ODktNy43IDQuODYtMS4zMDIgMS4xMjgtMi4xMzMgMi40MTUtMi40OTQgMy44NjEuOTgzLjkyNiAyLjE1NCAxLjM4OCAzLjUxMyAxLjM4OC43MDkgMCA0LjEwNy0xLjE3MSAxMC4xOTQtMy41MTQgNi4wNzMtMi4zNzIgOS43NDYtMy41NTggMTEuMDE5LTMuNTU4IDEuODY1IDAgMy4yMS40NyA0LjAzNCAxLjQxLjE4OC4yMTcuOTA0IDEuNDkgMi4xNDcgMy44MThhMjEuOTAyIDIxLjkwMiAwIDAgMCAzLjQwNSA0LjczWm02OS44ODQtMTkuNzQydjEuOTUzYy0yLjk5MyAyLjQ1OC01Ljg5OSA1LjIxMy04LjcxOSA4LjI2NS04Ljc2MiA5LjQ1OS0xNC42NjIgMTQuMTg4LTE3LjY5OSAxNC4xODgtMi40NTggMC01LjE5OC0yLjIyLTguMjItNi42NmwtNi41MjgtOS42NTRjLTEuMjQ0LjIwMy0zLjQ5MiAyLjQ2Ni02Ljc0NiA2Ljc5LTMuMDUxIDQuMTIyLTUuODQyIDYuMTgzLTguMzcyIDYuMTgzbC0xLjE5My0uNjI5Yy0uODgyLTEuNjItMi41MzgtNS4xNy00Ljk2Ny0xMC42NTItMi42NDYtNS45MjktMy45NjktOS4zMDYtMy45NjktMTAuMTMxIDAtMS40MzIuODQ2LTIuNjE4IDIuNTM4LTMuNTU4IDEuNjkxIDIuMDQgMy4zNTQgNC44NjcgNC45ODggOC40ODMgMi40NTggNS4zMzYgMy44NzUgOC4zMyA0LjI1MSA4Ljk4MWgyLjA2MWMuNTY0LTEuMDQxIDEuODk0LTIuNjU0IDMuOTkxLTQuODM4LjczNy0xLjEyOCAxLjgyMi0yLjY5IDMuMjUzLTQuNjg2IDEuNjc3LTIuMzcyIDMuMDk1LTMuNTU3IDQuMjUxLTMuNTU3IDEuMDcgMCAxLjk3NC41OTIgMi43MTEgMS43NzggMS4wNzEgMS42OTMgMi45ODYgNC43MyA1Ljc0OCA5LjExMiAzLjA1MSA0Ljc0NCA1LjMgNy4xMTYgNi43NDYgNy4xMTYgMS4wNyAwIDUuMDgyLTMuMDgxIDEyLjAzNy05LjI0MiA2Ljk3LTYuMTYxIDEwLjc5NS05LjI0MiAxMS40NzQtOS4yNDJoMi4zNjRabTQ0LjU3MyAxOS41MjVjLTEuMDQyIDEuMjQ0LTIuNDAxIDEuODY2LTQuMDc4IDEuODY2aC0xNC45ODhjLTMuNDcgMC03LjMzOC0uNTIxLTExLjYwNC0xLjU2Mi01LjU5NS0xLjM2LTguNzYyLTMuMDY3LTkuNS01LjEyLS44MDktMi4zMTQtMS4yMTQtNC41MzQtMS4yMTQtNi42NiAwLTQuMjY3IDEuODM2LTcuNTQzIDUuNTA5LTkuODI4IDMuMDk0LTEuOTgxIDYuODc2LTIuOTcyIDExLjM0NC0yLjk3MiAzLjg0NiAwIDYuODk3LjgzMiA5LjE1MyAyLjQ5NSAyLjI1NSAxLjY0OSAzLjM4MyAzLjg5OCAzLjM4MyA2Ljc0NyAwIDEuNTkxLTIuNzExIDMuMzI2LTguMTMzIDUuMjA2LTQuNDgzIDEuNjItNy43NDQgMi40My05Ljc4MiAyLjQzYTQuNDkgNC40OSAwIDAgMS0uNjczLS4wNDNjMCAuMzktLjMxMS44NjgtLjkzMiAxLjQzMi4zMzIuNTY0IDEuOTgxIDEuMjE0IDQuOTQ1IDEuOTUyIDIuNjYuNjggNC41NTUgMS4wMiA1LjY4MiAxLjAyaDEzLjQ3YzAgLjAyOSAxLjY5OS4yODIgNS4wOTcuNzU5IDEuMDcuNjggMS44NDMgMS40MzkgMi4zMjEgMi4yNzhabS0xNy40NjEtMTYuOWMtMS41NzYtMS42MDUtNC4xMTMtMi40MDgtNy42MTMtMi40MDgtMi40NTggMC00LjczNS40NzctNi44MzIgMS40MzItMi43MDQgMS4yNDQtNC4wNTYgMi45MjktNC4wNTYgNS4wNTUgMCAuNzUyLjI1MyAxLjI4Ny43NTkgMS42MDVoMi43MTFjLjk1NSAwIDMuNTUtLjgwMyA3Ljc4Ny0yLjQwOCA0LjIzNy0xLjYyIDYuNjUyLTIuNzEyIDcuMjQ0LTMuMjc2Wm0zMi40OTEtNTMuMzAyLTIuNDA3IDUzLjU2M2MtLjE0NS4xMTUtLjIxNy40NTUtLjIxNyAxLjAxOSAwIC41NjQuMDcyIDEuMzM4LjIxNyAyLjMyMS4zMDQgMi42NjIgMS4wNDEgNy42OTUgMi4yMTIgMTUuMDk5LS4wNTguMjQ2LS41NDIuNTI4LTEuNDUzLjg0N2EyLjkyIDIuOTIgMCAwIDEtLjQ1NS4wNDNjLTIuOTY1IDAtNC44ODgtMy40MjEtNS43Ny0xMC4yNjEtLjAyOS0uMTQ1LS4wNDMtLjQyNy0uMDQzLS44NDYgMC0xLjMzMS4wNzItNC4wNTcuMjE3LTguMTc5LjIwMi01LjMwOC40NDEtMTAuODYyLjcxNS0xNi42NjEuMDg3LTIuMTk4LjQxMi02LjI5MS45NzYtMTIuMjc5LjUzNS01LjQ4MS44MDMtOS41NTIuODAzLTEyLjIxNCAwLTguMDk5LjUzNS0xMy43NiAxLjYwNS0xNi45ODZsLjY1MS0uMDQzaC4xOTVjLjk2OSAwIDEuNjE5LjUzNSAxLjk1MiAxLjYwNS4yNi43MDkuNTI4IDEuNy44MDIgMi45NzJabTExNC4yMTggNjguMTg0Yy0uNjggMS4zMDItMS41MTEgMS45NTMtMi40OTQgMS45NTMtLjQ5MiAwLTEuNjQyLS4zNjktMy40NDktMS4xMDctMi4xNjktLjg4Mi0zLjQzNC0xLjM4MS0zLjc5Ni0xLjQ5Ny0xLjU5LS4zOS0zLjk3Ni0uNzM3LTcuMTU3LTEuMDQxLTMuODQ3LS4zNzYtNi4yMzItLjY4Ny03LjE1OC0uOTMzLTQuNDk3LTEuMTEzLTEwLjAyLTIuNC0xNi41NzEtMy44NjEtMy4wOC0uNjgtNy4wMi0yLjMyMS0xMS44MjEtNC45MjUtNS44Ny0zLjE4Mi04LjgwNi01LjgwNy04LjgwNi03Ljg3NSAwLS40MTkgMy42OC0zLjgxMSAxMS4wNC0xMC4xNzQgOC4wMjYtNi45MTMgMTIuMjc3LTEwLjYwOSAxMi43NTQtMTEuMDg2LjQ2My0uNzA5IDEuMi0xLjcxNCAyLjIxMi0zLjAxNS4yNzUtLjI2IDIuNTc0LTIuMzY1IDYuODk4LTYuMzEzIDMuNDg0LTMuMTk3IDYuMzY5LTUuNzEzIDguNjU0LTcuNTUgMy41NTctMi44NzggNi43MTYtNC45NjggOS40NzgtNi4yNy40MDUuMzc3Ljg0Ni41ODYgMS4zMjMuNjN2My4xMDJsLS4zOS4yMTdhNTkuMDEgNTkuMDEgMCAwIDAtNi4zMTIgNC40NDdjLTYuOTEyIDUuNjI2LTE5LjczIDE3LjgwNC0zOC40NTYgMzYuNTMzIDUuNTM4IDMuOTQ4IDEzLjE3MyA2Ljg4NCAyMi45MDUgOC44MDggMS4wMjYuMTg4IDcuMTg2IDEuNzI4IDE4LjQ3OSA0LjYyMSAxLjM4OC4zMzIgNC4wNDIuOTc2IDcuOTYgMS45My4yODkuMDg3IDEuODU4IDEuMjIyIDQuNzA3IDMuNDA2Wm0tNTguNTQtNTMuMzQ1LTYuNjU5IDU3LjIyOWMtLjQ0OC40NjItMS4yNjUuNjk0LTIuNDUxLjY5NC0yLjAxIDAtMy4wMTUtLjcyMy0zLjAxNS0yLjE3IDAtLjU2NC40NDEtNC4yODEgMS4zMjMtMTEuMTUuMzYyLTIuNTYgMS40NDYtOS45NzIgMy4yNTQtMjIuMjM3LjMxOC0yLjUxNi45MTEtNy4wMjEgMS43NzgtMTMuNTE1LjczOC01LjEyIDEuOC05LjUxIDMuMTg5LTEzLjE2OCAxLjc0OS4zNjEgMi42MjQgMS41MTggMi42MjQgMy40NyAwIC4zMDQtLjAxNC41ODYtLjA0My44NDdabTk5LjQyNSAzMy43MTJjMCAxLjE4Ni0yLjE0NyA0LjE1OC02LjQ0MiA4LjkxNi0zLjc4OCA0LjE4LTYuNjAxIDYuOTQzLTguNDM3IDguMjg4LS45MjYuNjc5LTIuOTE0IDIuMTU1LTUuOTY1IDQuNDI1LTEuMjcyLjg5Ny0zLjIyNCAxLjc4Ni01Ljg1NiAyLjY2OS0yLjY3NS44NjctNC43NzkgMS4zMDEtNi4zMTIgMS4zMDEtMi44NzcgMC01LjI2My0xLjg1MS03LjE1Ny01LjU1NC0xLjU0OC0zLjAyMi0yLjMyMS02LjE2OC0yLjMyMS05LjQzNiAwLTIuNzE5LjU2NC01LjUwMyAxLjY5Mi04LjM1My40MTkgMCAuODUzLS4xOTUgMS4zMDEtLjU4NS41MzUuMzAzIDEuMjcyLjg5NiAyLjIxMiAxLjc3OS0uMjg5IDIuMjI3LS40MzMgNC4xNzItLjQzMyA1LjgzNSAwIDYuODQxIDIuMjE5IDEwLjI2MiA2LjY1OCAxMC4yNjIgNC4yOTUgMCA5LjQ1LTIuNjY5IDE1LjQ2NS04LjAwNi45NTQtLjg1MyA1LjQ3My01LjA3NiAxMy41NTYtMTIuNjY5aC42NzJjLjkxMSAwIDEuMzY3LjM3NiAxLjM2NyAxLjEyOFptMzguNDEyIDEuMDJjMCAuNTkzLS4yOTYgMy45Ny0uODg5IDEwLjEzMWE3MjIuMzI4IDcyMi4zMjggMCAwIDEtMS44NjUgMTYuNzA0Yy0uMDU4LjQ0OS0uNTA3LjY3My0xLjM0NS42NzMtMS4wOTkgMC0yLjAwMy0xLjM4OS0yLjcxMS00LjE2NS0uNTM1LTIuMTEyLS44MDMtMy45ODUtLjgwMy01LjYxOSAwLS42MjIuMzU0LTIuODU3IDEuMDYzLTYuNzA0LjcyMy0zLjgzMiAxLjA4NC02LjA1MiAxLjA4NC02LjY2IDAtMS42NjMtLjQ0OC0yLjQ5NC0xLjM0NC0yLjQ5NC0xLjE1NyAwLTMuNjMgMS4wMDUtNy40MTggMy4wMTUtMy4yODMgMS43NS01LjY2OSAzLjE3NS03LjE1OCA0LjI3NC0yLjg0OCAyLjA5Ny02LjA4IDUuMjUtOS42OTUgOS40NTgtLjU5My42OC0xLjc1NyAxLjk3NC0zLjQ5MiAzLjg4NC0uNjY1LjcwOC0yLjAwMyAxLjA3Ny00LjAxMyAxLjEwNnYtMi44NDJjMC0xLjMxNiAyLjU5Ni00LjIzOCA3Ljc4Ny04Ljc2NGExMTMuMjg2IDExMy4yODYgMCAwIDEgMTMuMDU3LTkuODI4YzYuMzc3LTQuMTUxIDExLjEyLTYuMjI2IDE0LjIyOC02LjIyNi44MjUgMCAxLjYxMy40NDggMi4zNjUgMS4zNDUuNzY2LjkxMSAxLjE0OSAxLjgxNSAxLjE0OSAyLjcxMlpNNTM0IDEzNC40NzJ2MS45MDljLS41OTMuODI0LTEuMjQzIDEuMjM2LTEuOTUyIDEuMjM2LS40NDggMC0xLjk3NC0xLjM1OS00LjU3Ny00LjA3OC0yLjYwMi0yLjczMy00LjMzNy00LjEtNS4yMDUtNC4xIDAgLjA1OC0zLjA4IDEuMjQ0LTkuMjQgMy41NTgtNi4zMDQgMi4zNDMtMTAuMzE3IDMuNTE0LTEyLjAzOCAzLjUxNC0xLjQxNyAwLTIuOTg1LS42OTQtNC43MDYtMi4wODMtMS43MjEtMS4zNzQtMi41ODEtMi42NjgtMi41ODEtMy44ODMgMC0zLjEzOCAzLjQzNC02Ljc5NyAxMC4zMDItMTAuOTc3IDYuNDM1LTMuOTYzIDExLjM0NC01Ljk0NCAxNC43MjgtNS45NDQgMS40MTcgMCAyLjY4OS44MSAzLjgxNyAyLjQzdjEuODIyYy0uNTY0LjgxLTEuMjE1IDEuMjE1LTEuOTUyIDEuMjE1LS4xMyAwLS42MTUtLjE4MS0xLjQ1My0uNTQzLS44MzktLjM3Ni0xLjMzOC0uNTY0LTEuNDk3LS41NjQtMS4xMjggMC0zLjcxNiAxLjE2NS03Ljc2NSAzLjQ5My0zLjgzMiAyLjE2OS02LjM5OCAzLjc4OS03LjcgNC44Ni0xLjMwMSAxLjEyOC0yLjEzMiAyLjQxNS0yLjQ5NCAzLjg2MS45ODMuOTI2IDIuMTU1IDEuMzg4IDMuNTE0IDEuMzg4LjcwOCAwIDQuMTA2LTEuMTcxIDEwLjE5NC0zLjUxNCA2LjA3My0yLjM3MiA5Ljc0Ni0zLjU1OCAxMS4wMTgtMy41NTggMS44NjYgMCAzLjIxLjQ3IDQuMDM1IDEuNDEuMTg3LjIxNy45MDMgMS40OSAyLjE0NyAzLjgxOGEyMS45MDIgMjEuOTAyIDAgMCAwIDMuNDA1IDQuNzNaIi8+CiAgPC9nPgogIDxkZWZzPgogICAgPGNsaXBQYXRoIGlkPSJhIj4KICAgICAgPHBhdGggZmlsbD0iI2ZmZiIgZD0iTTU4IDQ5aDQ3NnYxMDJINTh6Ii8+CiAgICA8L2NsaXBQYXRoPgogIDwvZGVmcz4KPC9zdmc+");
+{% endcapture %}
+
+
+{% capture advanced-js %}
+function randomColor() {
+  const r = Math.round(Math.random() * 255);
+  const g = Math.round(Math.random() * 255);
+  const b = Math.round(Math.random() * 255);
+  return `rgb(${r},${g},${b})`;
+}
+
+function download(dataURL, filename) {
+  const blob = dataURLToBlob(dataURL);
+  const url = window.URL.createObjectURL(blob);
+
+  const a = document.createElement("a");
+  a.style = "display: none";
+  a.href = url;
+  a.download = filename;
+
+  document.body.appendChild(a);
+  a.click();
+
+  window.URL.revokeObjectURL(url);
+}
+
+function dataURLToBlob(dataURL) {
+  const parts = dataURL.split(';base64,');
+  const contentType = parts[0].split(":")[1];
+  const raw = window.atob(parts[1]);
+  const rawLength = raw.length;
+  const uInt8Array = new Uint8Array(rawLength);
+
+  for (let i = 0; i < rawLength; ++i) {
+    uInt8Array[i] = raw.charCodeAt(i);
+  }
+
+  return new Blob([uInt8Array], { type: contentType });
+}
+
+
+document.querySelector("#signature-advanced-color").addEventListener("click", function () {
+  signaturePad.penColor = randomColor();
+});
+
+document.querySelector("#signature-advanced-svg").addEventListener("click", function () {
+  const dataURL = signaturePad.toDataURL('image/svg+xml');
+  download(dataURL, "signature.svg");
+});
+
+document.querySelector("#signature-advanced-png").addEventListener("click", function () {
+  const dataURL = signaturePad.toDataURL();
+  download(dataURL, "signature.png");
+});
+{% endcapture %}
+
+<div class="row row-cards">
+  <div class="col-lg-6">
+    <div class="card">
+      <div class="card-body">
+        <h3 class="card-title">Confirm transfer</h3>
+        <p class="card-subtitle">Please confirm the transfer of funds by signing below.</p>
+        <form action="">
+          <div class="mb-3">
+            <label class="form-label required">First name</label>
+            <input type="text" class="form-control" />
+          </div>
+          <div class="mb-3">
+            <label class="form-label required">Last name</label>
+            <input type="text" class="form-control" />
+          </div>
+          <div class="mb-3">
+            <label class="form-label required">Signature</label>
+            {% include "ui/signature.html" sample clear extra-js=simple-js %}
+          </div>
+        </form>
+        <div class="text-secondary fs-5">
+          I agree that the signature and initials will be the electronic representation of my signature and initials for all purposes when I (or my agent) use
+          them on documents, including legally binding contracts - just the same as a pen-and-paper signature or initial.
+        </div>
+
+        <div class="mt-4">
+          <div class="btn-list">
+            <button type="button" class="btn">Cancel</button>
+            <button type="button" class="btn btn-primary ms-auto">Confirm transfer</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="col-lg-6">
+    <div class="row row-cards">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-body">
+					<h3 class="card-title">Advanced demo</h3>
+			
+					{% include "ui/signature.html" id="advanced" clear extra-js=advanced-js %}
+			
+					<div class="mt-4">
+						<div class="row">
+							<div class="col">
+								<button href="" class="btn w-100" id="signature-advanced-color">Change color</button>
+							</div>
+							<div class="col">
+								<button href="" class="btn w-100" id="signature-advanced-svg">Download SVG</button>
+							</div>
+							<div class="col">
+								<button href="" class="btn w-100" id="signature-advanced-png">Download PNG</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-12">
+			<div class="card">
+				<div class="card-body">
+					{% include "ui/button.html" text="Open signature modal" modal-id="signature" %}
+				</div>
+			</div>
+		</div>
+	 </div>
+  </div>
+</div>
+
+
+{% capture_modal %}
+<div class="modal" tabindex="-1" id="modal-signature">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<h5 class="modal-title">Save your signature</h5>
+				{% include "ui/signature.html" id="modal" clear event="shown.bs.modal" %}
+
+				<div class="text-secondary fs-5 mt-4">
+					I agree that the signature and initials will be the electronic representation of my signature and initials for all
+					purposes when I (or my agent) use
+					them on documents, including legally binding contracts - just the same as a pen-and-paper signature or initial.
+				</div>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn" data-bs-dismiss="modal">Close</button>
+				<button type="button" class="btn btn-primary ms-auto" data-bs-dismiss="modal">Save my signature</button>
+			</div>
+		</div>
+	</div>
+</div>
+{% endcapture_modal %}

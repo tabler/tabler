@@ -1,10 +1,12 @@
-<!-- CSS files -->
 {% if site.useIconfont %}
+<!-- BEGIN ICONFONT STYLES -->
 <link href="https://www.unpkg.com/@tabler/icons-webfont@latest/dist/tabler-icons.min.css" rel="stylesheet" />
+<!-- END ICON FONT STYLES -->
 {% endif %}
 
 
 {% if page-libs %}
+<!-- BEGIN PAGE LEVEL STYLES -->
 	{% for lib in libs.css %}
 		{% if page-libs contains lib[0] %}
 			{% for file in lib[1] %}
@@ -12,12 +14,19 @@
 			{% endfor %}
 		{% endif %}
 	{% endfor %}
+<!-- END PAGE LEVEL STYLES -->
 {% endif %}
 
+<!-- BEGIN GLOBAL MANDATORY STYLES -->
 <link href="{{ page | relative }}/dist/css/tabler{% if layout-rtl %}.rtl{% endif %}{% if environment != 'development' %}.min{% endif %}.css{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}" rel="stylesheet"/>
+<!-- END GLOBAL MANDATORY STYLES -->
 
+<!-- BEGIN PLUGINS STYLES -->
 {% for plugin in site.tablerCssPlugins %}
 	<link href="{{ page | relative }}/dist/css/{{ plugin }}{% if layout-rtl %}.rtl{% endif %}{% if environment != 'development' %}.min{% endif %}.css{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}" rel="stylesheet"/>
 {% endfor %}
+<!-- END PLUGINS STYLES -->
 
+<!-- BEGIN DEMO STYLES -->
 <link href="{{ page | relative }}/preview/css/demo{% if layout-rtl %}.rtl{% endif %}{% if environment != 'development' %}.min{% endif %}.css{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}" rel="stylesheet"/>
+<!-- END DEMO STYLES -->
