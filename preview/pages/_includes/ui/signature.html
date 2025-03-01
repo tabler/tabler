@@ -1,6 +1,6 @@
 {% assign id = include.id | default: 'default' %}
 
-<div class="form-control p-0 position-relative{% if include.class %} {{ include.class }}{% endif %}">
+<div class="signature position-relative{% if include.class %} {{ include.class }}{% endif %}">
 	{% if include.clear %}
 	<div class="position-absolute top-0 end-0 p-2">
 		<div class="btn btn-icon" id="signature-{{ id }}-clear" title="Clear signature" data-bs-toggle="tooltip">
@@ -8,7 +8,7 @@
 		</div>
 	</div>
 	{% endif %}
-  <canvas id="signature-{{ id }}" width="{{ include.width | default: 400 }}" height="{{ include.height | default: 200 }}" class="rounded d-block w-100 cursor-crosshair"></canvas>
+  <canvas id="signature-{{ id }}" width="{{ include.width | default: 400 }}" height="{{ include.height | default: 400 }}" class="signature-canvas"></canvas>
 </div>
 
 {% capture_script %}
