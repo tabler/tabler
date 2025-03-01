@@ -56,7 +56,6 @@ We've created this admin panel for everyone who wants to create templates based 
 * **HTML5 & CSS3:** We use only modern web technologies, such as HTML5 and CSS3. Our theme includes some subtle CSS3 animations, which will help you attract attention.
 * **Clean Code:** We followed Bootstrap’s guidelines carefully to make your integration as easy as possible. All code is handwritten and W3C valid.
 * **Demo pages**: Tabler features over 20 individual pages using various components, which gives you the freedom to choose and combine. All components can vary in color and styling that you can easily modify using Sass. Sky is the limit!
-* **Single Page Application versions:** [Tabler React](https://github.com/tabler/tabler-react) has React components for Tabler.
 
 ## 📖 Documentation
 
