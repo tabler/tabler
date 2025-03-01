@@ -1,0 +1,121 @@
+@import "config";
+
+[data-bs-theme-base="slate"] {
+  --#{$prefix}gray-50: #f8fafc;
+  --#{$prefix}gray-100: #f1f5f9;
+  --#{$prefix}gray-200: #e2e8f0;
+  --#{$prefix}gray-300: #cbd5e1;
+  --#{$prefix}gray-400: #94a3b8;
+  --#{$prefix}gray-500: #64748b;
+  --#{$prefix}gray-600: #475569;
+  --#{$prefix}gray-700: #334155;
+  --#{$prefix}gray-800: #1e293b;
+  --#{$prefix}gray-900: #0f172a;
+  --#{$prefix}gray-950: #020617;
+}
+
+[data-bs-theme-base="gray"] {
+  --#{$prefix}gray-50: #f9fafb;
+  --#{$prefix}gray-100: #f3f4f6;
+  --#{$prefix}gray-200: #e5e7eb;
+  --#{$prefix}gray-300: #d1d5db;
+  --#{$prefix}gray-400: #9ca3af;
+  --#{$prefix}gray-500: #6b7280;
+  --#{$prefix}gray-600: #4b5563;
+  --#{$prefix}gray-700: #374151;
+  --#{$prefix}gray-800: #1f2937;
+  --#{$prefix}gray-900: #111827;
+  --#{$prefix}gray-950: #030712;
+}
+
+[data-bs-theme-base="zinc"] {
+  --#{$prefix}gray-50: #fafafa;
+  --#{$prefix}gray-100: #f4f4f5;
+  --#{$prefix}gray-200: #e4e4e7;
+  --#{$prefix}gray-300: #d4d4d8;
+  --#{$prefix}gray-400: #a1a1aa;
+  --#{$prefix}gray-500: #71717a;
+  --#{$prefix}gray-600: #52525b;
+  --#{$prefix}gray-700: #3f3f46;
+  --#{$prefix}gray-800: #27272a;
+  --#{$prefix}gray-900: #18181b;
+  --#{$prefix}gray-950: #09090b;
+}
+
+[data-bs-theme-base="neutral"] {
+  --#{$prefix}gray-50: #fafafa;
+  --#{$prefix}gray-100: #f5f5f5;
+  --#{$prefix}gray-200: #e5e5e5;
+  --#{$prefix}gray-300: #d4d4d4;
+  --#{$prefix}gray-400: #a3a3a3;
+  --#{$prefix}gray-500: #737373;
+  --#{$prefix}gray-600: #525252;
+  --#{$prefix}gray-700: #404040;
+  --#{$prefix}gray-800: #262626;
+  --#{$prefix}gray-900: #171717;
+  --#{$prefix}gray-950: #0a0a0a;
+}
+
+[data-bs-theme-base="stone"] {
+  --#{$prefix}gray-50: #fafaf9;
+  --#{$prefix}gray-100: #f5f5f4;
+  --#{$prefix}gray-200: #e7e5e4;
+  --#{$prefix}gray-300: #d6d3d1;
+  --#{$prefix}gray-400: #a8a29e;
+  --#{$prefix}gray-500: #78716c;
+  --#{$prefix}gray-600: #57534e;
+  --#{$prefix}gray-700: #44403c;
+  --#{$prefix}gray-800: #292524;
+  --#{$prefix}gray-900: #1c1917;
+  --#{$prefix}gray-950: #0c0a09;
+}
+
+[data-bs-theme-base="pink"] {
+  --#{$prefix}gray-50: #fdf2f8;
+  --#{$prefix}gray-100: #fce7f3;
+  --#{$prefix}gray-200: #fbcfe8;
+  --#{$prefix}gray-300: #f9a8d4;
+  --#{$prefix}gray-400: #f472b6;
+  --#{$prefix}gray-500: #ec4899;
+  --#{$prefix}gray-600: #db2777;
+  --#{$prefix}gray-700: #be185d;
+  --#{$prefix}gray-800: #9d174d;
+  --#{$prefix}gray-900: #831843;
+  --#{$prefix}gray-950: #500724;
+}
+
+@each $name, $value in $extra-colors {
+  [data-bs-theme-primary="#{$name}"] {
+    --#{$prefix}primary: #{$value};
+    --#{$prefix}primary-rgb: #{to-rgb($value)};
+  }
+}
+
+@each $value in (0, .5, 1, 1.5, 2) {
+  [data-bs-theme-radius="#{$value}"] {
+    --#{$prefix}border-radius-scale: #{$value};
+  }
+}
+
+[data-bs-theme-primary="inverted"] {
+  --#{$prefix}primary: var(--#{$prefix}gray-800);
+  --#{$prefix}primary-fg: var(--#{$prefix}light);
+  --#{$prefix}primary-rgb: #{to-rgb($dark)};
+
+  &[data-bs-theme="dark"],
+  [data-bs-theme="dark"] {
+    --#{$prefix}primary: #{$light};
+    --#{$prefix}primary-fg: var(--#{$prefix}dark);
+    --#{$prefix}primary-rgb: #{to-rgb($light)};
+  }
+}
+
+@each $name, $value in (monospace: $font-family-monospace, sans-serif: $font-family-sans-serif, serif: $font-family-serif, comic: $font-family-comic) {
+  [data-bs-theme-font="#{$name}"] {
+    --#{$prefix}body-font-family: var(--#{$prefix}font-#{$name});
+
+    @if $name == "monospace" {
+      --#{$prefix}body-font-size: 80%;
+    }
+  }
+}

@@ -1,27 +1,27 @@
 // All colors
-@each $color, $value in map-merge($theme-colors, ( white: $white )) {
+@each $color, $value in map-merge($theme-colors, ( white: $white)) {
   .bg-#{"" + $color} {
     --#{$prefix}bg-opacity: 1;
-    background-color: rgba(var(--#{$prefix}#{$color}-rgb), var(--#{$prefix}bg-opacity)) !important;
+    background-color: color-mix(in srgb, var(--#{$prefix}#{$color}) calc(var(--#{$prefix}bg-opacity) * 100%), transparent) !important;
   }
 
   .bg-#{"" + $color}-lt {
     --#{$prefix}bg-opacity: 1;
     --#{$prefix}text-opacity: 1;
-    color: rgba(var(--#{$prefix}#{$color}-rgb), var(--#{$prefix}text-opacity)) !important;
-    background-color: rgba(var(--#{$prefix}#{$color}-lt-rgb), var(--#{$prefix}bg-opacity)) !important;
+    color: color-mix(in srgb, var(--#{$prefix}#{$color}) calc(var(--#{$prefix}text-opacity) * 100%), transparent) !important;
+    background-color: color-mix(in srgb, var(--#{$prefix}#{$color}-lt) calc(var(--#{$prefix}bg-opacity) * 100%), transparent) !important;
   }
 
   .border-#{"" + $color} {
     --#{$prefix}border-opacity: 1;
-    border-color: rgba(var(--#{$prefix}#{$color}-rgb), var(--#{$prefix}border-opacity)) !important;
+    border-color: color-mix(in srgb, var(--#{$prefix}#{$color}) calc(var(--#{$prefix}border-opacity) * 100%), transparent) !important;
   }
 }
 
 @each $color, $value in $theme-colors {
   .text-#{"" + $color} {
     --#{$prefix}text-opacity: 1;
-    color: rgba(var(--#{$prefix}#{$color}-rgb), var(--#{$prefix}text-opacity)) !important;
+    color: color-mix(in srgb, var(--#{$prefix}#{$color}) calc(var(--#{$prefix}text-opacity) * 100%), transparent) !important;
   }
 
   .text-#{"" + $color}-fg {
@@ -32,7 +32,7 @@
 @each $color, $value in $gray-colors {
   .bg-#{"" + $color} {
     --#{$prefix}bg-opacity: 1;
-    background-color: rgba(var(--#{$prefix}#{$color}-rgb), var(--#{$prefix}bg-opacity)) !important;
+    background-color: color-mix(in srgb, var(--#{$prefix}#{$color}) calc(var(--#{$prefix}bg-opacity) * 100%), transparent) !important;
   }
 
   .text-#{"" + $color}-fg {
@@ -40,6 +40,21 @@
   }
 }
 
+@each $color, $value in $social-colors {
+  .bg-#{"" + $color} {
+    --#{$prefix}bg-opacity: 1;
+    background-color: color-mix(in srgb, var(--#{$prefix}#{$color}) calc(var(--#{$prefix}bg-opacity) * 100%), transparent) !important;
+  }
+
+  .text-#{"" + $color}-fg {
+    color: $value !important;
+  }
+}
+
+.bg-inverted {
+  --#{$prefix}bg-opacity: 1;
+  background-color: color-mix(in srgb, var(--#{$prefix}bg-surface-inverted) calc(var(--#{$prefix}bg-opacity) * 100%), transparent) !important;
+}
 .bg-surface {
   background-color: var(--#{$prefix}bg-surface) !important;
 }

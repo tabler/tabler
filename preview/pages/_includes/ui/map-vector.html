@@ -22,11 +22,11 @@
 				regionStyle: {
 					initial: {
 						{% unless data.filled %}
-						fill: tabler.getColor('body-bg'),
-						stroke: tabler.getColor('border-color'),
+						fill: 'var(--tblr-body-bg)',
+						stroke: 'var(--tblr-border-color)',
 						strokeWidth: 2,
 						{% else %}
-						fill: tabler.getColor('body-bg'),
+						fill: 'var(--tblr-body-bg)',
 						stroke: '#fff',
 						strokeWidth: 1,
 						{% endunless %}
@@ -35,11 +35,17 @@
 				zoomOnScroll: {% if data.zoom %}true{% else %}false{% endif %},
 				zoomButtons: {% if data.zoom %}true{% else %}false{% endif %},
 				{% if data.values %}
-				// -------- Series --------
-				visualizeData: {
-					scale: [tabler.getColor('bg-surface'), tabler.getColor('{{ data.color }}')],
-					values: {{ data.values }},
-				},
+				series: {
+					regions: [{
+						attribute: "fill",
+						scale: {
+							{% for i in (1..10) %}
+							scale{{ i }}: 'color-mix(in srgb, transparent, var(--tblr-primary) {{ i | times: 10 }}%)',
+							{% endfor %}
+						},
+						values: {{ data.values | json }},
+					}]
+				}
 				{% endif %}
 				{% if data.markers %}
 				markers: [
@@ -57,11 +63,11 @@
 						opacity: 1,
 						strokeWidth: 3,
 						stokeOpacity: .5,
-						fill: tabler.getColor('{{ color }}')
+						fill: 'var(--tblr-{{ color }})'
 					},
 					hover: {
-						fill: tabler.getColor('{{ color }}'),
-						stroke: tabler.getColor('{{ color }}')
+						fill: 'var(--tblr-{{ color }})',
+						stroke: 'var(--tblr-{{ color }})'
 					}
 				},
 				markerLabelStyle: {

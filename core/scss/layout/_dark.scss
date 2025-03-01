@@ -2,8 +2,8 @@
 
 // stylelint-disable declaration-no-important
 
-body {
-  &:not(.theme-dark):not([data-bs-theme=dark]) {
+:root {
+  &:not(.theme-dark):not([data-bs-theme="dark"]) {
     .hide-theme-light {
       display: none !important;
     }
@@ -14,7 +14,7 @@ body {
   }
 
   &.theme-dark,
-  &[data-bs-theme=dark] {
+  &[data-bs-theme="dark"] {
     .hide-theme-dark {
       display: none !important;
     }
@@ -27,28 +27,31 @@ body {
 
 @if $enable-dark-mode {
   @include color-mode(dark, true) {
-    --#{$prefix}body-color: #{$body-color-dark};
+    color-scheme: dark;
+    --#{$prefix}body-color: var(--#{$prefix}gray-200);
     --#{$prefix}body-color-rgb: #{to-rgb($body-color-dark)};
-    --#{$prefix}muted: #{$text-secondary-dark};
+    --#{$prefix}secondary: var(--#{$prefix}gray-500);
 
-    --#{$prefix}body-bg: #{$darken-dark};
+    --#{$prefix}body-bg: var(--#{$prefix}gray-900);
     --#{$prefix}body-bg-rgb: #{to-rgb($darken-dark)};
     --#{$prefix}emphasis-color: #{$body-emphasis-color-dark};
     --#{$prefix}emphasis-color-rgb: #{to-rgb($body-emphasis-color-dark)};
 
-    --#{$prefix}bg-forms: #{$darken-dark};
-    --#{$prefix}bg-surface: #{$dark};
-    --#{$prefix}bg-surface-dark: #{$darken-dark};
-    --#{$prefix}bg-surface-secondary: #{$lighten-dark};
-    --#{$prefix}bg-surface-tertiary: #{$darken-dark};
+    --#{$prefix}bg-forms: var(--#{$prefix}gray-900);
+    --#{$prefix}bg-surface: var(--#{$prefix}gray-800);
+    --#{$prefix}bg-surface-inverted: var(--#{$prefix}gray-100);
+    --#{$prefix}bg-surface-secondary: var(--#{$prefix}gray-900);
+    --#{$prefix}bg-surface-tertiary: var(--#{$prefix}gray-800);
 
-    --#{$prefix}link-color: #{color.adjust($primary, $lightness: 8%)};
-    --#{$prefix}link-hover-color: #{$primary};
+    --#{$prefix}text-inverted: var(--#{$prefix}gray-800);
+
+    --#{$prefix}link-color: var(--#{$prefix}primary);
+    --#{$prefix}link-hover-color: color-mix(in srgb, var(--#{$prefix}primary), black 20%);
 
     --#{$prefix}active-bg: #{$lighten-dark};
     --#{$prefix}disabled-color: var(--#{$prefix}gray-700);
 
-    --#{$prefix}border-color: var(--#{$prefix}dark-mode-border-color);
+    --#{$prefix}border-color: var(--#{$prefix}gray-700);
     --#{$prefix}border-color-translucent: var(
       --#{$prefix}dark-mode-border-color-translucent
     );
