@@ -1,5 +1,11 @@
 # @tabler/core
 
+## 1.1.1
+
+### Patch Changes
+
+- f29c911: Fix Documentation structure
+
 ## 1.1.0
 
 ### Minor Changes
