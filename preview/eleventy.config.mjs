@@ -592,7 +592,11 @@ export default function (eleventyConfig) {
 	});
 
 	['script', 'modal'].forEach((tag) => {
-		eleventyConfig.addPairedShortcode(`capture_${tag}`, function (content) {
+		eleventyConfig.addPairedShortcode(`capture_${tag}`, function (content, inline) {
+			if (inline) {
+				return content;
+			}
+
 			if (!this.page[tag]) {
 				this.page[tag] = []
 			}
