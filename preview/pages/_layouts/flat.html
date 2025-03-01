@@ -1,0 +1,425 @@
+---
+title: Dashboard Flat
+<!--layout: default-->
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Dashboard Flat</title>
+
+    <!-- Tabler CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0/dist/css/tabler.min.css"
+    />
+    <!-- Tabler Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css"
+    />
+
+    <style>
+      /* Keep hover style for anchors */
+      a:hover {
+        text-decoration: none;
+      }
+
+      /* CSS Variables for configuration */
+      :root {
+        --header-height: 60px;
+        --sidebar-width: 250px;
+        --bg-color: #f8f9fa;
+        --primary-bg: #fff;
+        --border-color: #e5e7eb;
+        --text-color: #111827;
+        --transition-speed: 0.3s; /* for smooth sidebar toggling */
+      }
+
+      /* Reset & Base Styles */
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      html,
+      body {
+        overflow-x: hidden;
+        background-color: var(--bg-color);
+        color: var(--text-color);
+        height: 100%;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+          Helvetica, Arial, sans-serif;
+      }
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      /* Fixed Header */
+      header.header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: var(--header-height);
+        background-color: var(--primary-bg);
+        border-bottom: 1px solid var(--border-color);
+        display: flex;
+        align-items: center;
+        padding: 0 1rem;
+        z-index: 1000;
+      }
+      header .left,
+      header .right {
+        display: flex;
+        align-items: center;
+      }
+      header .right {
+        margin-left: auto;
+      }
+
+      /* Updated Separator */
+      .separator {
+        /* Make this look like a continued border rather than a separate line */
+        border-left: 1px solid var(--border-color);
+        align-self: stretch;      /* So it fills the entire header height */
+        margin: 0 4.3rem;         /* Slight horizontal spacing */
+      }
+
+      /* Make this container flex so we can center the search */
+      .items-center {
+        display: flex;
+        flex: 1; /* Let it fill remaining space */
+        justify-content: center; /* Center horizontally */
+        align-items: center;     /* Keep items aligned vertically */
+      }
+
+      /* Fixed Sidebar Navigation */
+      nav.sidebar {
+        position: fixed;
+        top: var(--header-height);
+        left: 0;
+        bottom: 0;
+        width: var(--sidebar-width);
+        background-color: var(--primary-bg);
+        border-right: 1px solid var(--border-color);
+        overflow-y: auto;
+        padding-bottom: 80px;
+        transition: transform var(--transition-speed) ease, width var(--transition-speed) ease;
+      }
+      /* Collapsed Sidebar State: show only icons */
+      nav.sidebar.collapsed {
+        transform: none !important;
+        width: 60px; /* Narrower sidebar */
+      }
+
+      nav.sidebar .list-group-item {
+        padding: 0.75rem 1rem;
+        border: none;
+        color: var(--text-color);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+      }
+      nav.sidebar .list-group-item:hover {
+        background-color: #f0f0f0;
+      }
+      nav.sidebar .list-group-item.active {
+        background-color: var(--border-color);
+      }
+
+      /* Hide the text when collapsed, keep the icon */
+      nav.sidebar.collapsed .list-group-item i {
+        margin-right: 0;
+      }
+      nav.sidebar.collapsed .list-group-item:not(.active) span {
+        display: none;
+      }
+      nav.sidebar.collapsed .list-group-item.active span {
+        display: none;
+      }
+
+      /* Submenu Styles */
+      .submenu-toggle {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        width: 100%;
+      }
+      .submenu {
+        display: none;
+        flex-direction: column;
+        margin-left: 1.5rem; /* Indentation to indicate submenu */
+      }
+      .submenu.show {
+        display: flex;
+      }
+      .submenu-item {
+        padding: 0.5rem 0;
+        display: flex;
+        align-items: center;
+      }
+      .submenu-item span {
+        margin-left: 1.5rem;
+      }
+
+      /* Hide submenus entirely if sidebar is collapsed */
+      nav.sidebar.collapsed .submenu {
+        display: none !important;
+      }
+
+      /* Sidebar Bottom User Dropdown */
+      .sidebar-bottom {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        border-top: 1px solid var(--border-color);
+        padding: 0.75rem 1rem;
+        background-color: var(--primary-bg);
+      }
+      .sidebar-bottom .dropdown-menu {
+        width: 100%;
+        left: 0 !important;
+        right: auto !important;
+        box-sizing: border-box;
+      }
+      nav.sidebar.collapsed .sidebar-bottom .ms-2 {
+        display: none;
+      }
+
+      /* Main Content Area */
+      main.main {
+        margin-top: var(--header-height);
+        margin-left: var(--sidebar-width);
+        padding: 1rem;
+        transition: margin-left var(--transition-speed) ease;
+      }
+      main.main.full-width {
+        margin-left: 60px;
+      }
+
+      /* Minimal button style (kept from original code) */
+      .btn-none {
+        background: none;
+        border: none;
+        cursor: pointer;
+      }
+
+      /* Make search box wider */
+      @media (min-width: 992px) {
+        .items-center form {
+          max-width: 500px; /* Wider than before */
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Fixed Header -->
+    <header class="header">
+      <div class="left">
+        <div class="dropdown">
+          <button
+            class="btn btn-ghost"
+            data-bs-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <a href="#" class="navbar-brand me-3"><img src="{{ page | relative }}/favicon.ico" style="height: 20px" alt="logo"></a>
+            <i class="ti ti-users"></i> Switch Team
+          </button>
+          <div class="dropdown-menu">
+            <a href="#" class="dropdown-item">Team Alpha</a>
+            <a href="#" class="dropdown-item">Team Beta</a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item">Create New Team</a>
+          </div>
+        </div>
+      </div>
+
+      <!-- Aligned Separator -->
+      <div class="separator" aria-hidden="true"></div>
+
+      <!-- Toggle Sidebar Button -->
+      <button
+        class="btn btn-none me-3"
+        aria-label="Toggle Sidebar"
+        onclick="toggleSidebar()"
+      >
+        <i class="ti ti-menu-2"></i>
+      </button>
+
+      <!-- Centered Search -->
+      <div class="items-center">
+        <form class="d-none d-lg-flex w-100" style="max-width: 500px;">
+          <div class="input-icon w-100">
+            <span class="input-icon-addon">
+              <i class="ti ti-search"></i>
+            </span>
+            <input
+              type="search"
+              class="form-control"
+              placeholder="Search..."
+              aria-label="Search"
+            />
+          </div>
+        </form>
+      </div>
+
+      <div class="right">
+        <!-- Buttons with text on header -->
+        <button class="btn btn-ghost me-2" aria-label="Pick a date">
+          <i class="ti ti-calendar-event"></i>
+          <span class="ms-1">Calendar</span>
+        </button>
+        <button class="btn btn-ghost me-2" aria-label="Share">
+          <i class="ti ti-share"></i>
+          <span class="ms-1">Share</span>
+        </button>
+        <button class="btn btn-ghost" aria-label="Download">
+          <i class="ti ti-download"></i>
+          <span class="ms-1">Download</span>
+        </button>
+        <div class="dropdown ms-3">
+          <a
+            href="#"
+            class="d-flex align-items-center"
+            data-bs-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <span
+              class="avatar avatar-sm"
+              style="background-image: url('https://placehold.co/40x40'); width: 40px; height: 40px;"
+              aria-hidden="true"
+            ></span>
+            <span class="ms-2">Admin</span>
+          </a>
+          <div class="dropdown-menu dropdown-menu-end">
+            <a href="#" class="dropdown-item">Profile</a>
+            <a href="#" class="dropdown-item">Settings</a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item">Logout</a>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Fixed Sidebar Navigation -->
+    <nav class="sidebar py-2" aria-label="Sidebar Navigation">
+      <span class="text-muted p-3"><small>Navbar</small></Span>
+      <div class="list-group">
+        <a href="#" class="list-group-item active">
+          <i class="ti ti-layout-dashboard me-2"></i>
+          <span>Dashboard</span>
+        </a>
+
+        <a href="#" class="list-group-item">
+          <i class="ti ti-shopping-cart me-2"></i>
+          <span>Orders</span>
+        </a>
+
+        <a href="#" class="list-group-item">
+          <i class="ti ti-user me-2"></i>
+          <span>Customers</span>
+        </a>
+
+        <!-- Submenu Toggle -->
+        <div class="list-group-item submenu-toggle">
+          <div>
+            <i class="ti ti-briefcase me-2"></i>
+            <span>Projects</span>
+          </div>
+          <button class="btn-none" onclick="toggleSubmenu('projectsSubmenu')">
+            <i class="ti ti-chevron-right" id="projectsArrow"></i>
+          </button>
+        </div>
+        <!-- Submenu -->
+        <div id="projectsSubmenu" class="submenu">
+          <a href="#" class="submenu-item">
+            <i class="ti ti-circle-plus"></i>
+            <span>Project A</span>
+          </a>
+          <a href="#" class="submenu-item">
+            <i class="ti ti-circle-plus"></i>
+            <span>Project B</span>
+          </a>
+        </div>
+
+        <a href="#" class="list-group-item">
+          <i class="ti ti-folder me-2"></i>
+          <span>Files</span>
+        </a>
+        <a href="#" class="list-group-item">
+          <i class="ti ti-users me-2"></i>
+          <span>Reports</span>
+        </a>
+      </div>
+
+      <!-- Sidebar Bottom User Dropdown -->
+      <div class="sidebar-bottom">
+        <div class="dropdown">
+          <a
+            href="#"
+            class="d-flex align-items-center"
+            data-bs-toggle="dropdown"
+            aria-haspopup="true"
+            aria-expanded="false"
+          >
+            <span
+              class="avatar avatar-sm"
+              style="background-image: url('https://placehold.co/40x40'); width: 40px; height: 40px;"
+              aria-hidden="true"
+            ></span>
+            <span class="ms-2">Admin</span>
+          </a>
+          <div class="dropdown-menu">
+            <a href="#" class="dropdown-item">Profile</a>
+            <a href="#" class="dropdown-item">Settings</a>
+            <div class="dropdown-divider"></div>
+            <a href="#" class="dropdown-item">Logout</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Main Content Area (Empty for Navigation/Header Focus) -->
+    <main class="main" aria-label="Main Content">
+      <p>Content goes here...</p>
+    </main>
+
+    <!-- Tabler JS (Optional) -->
+    <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.0.0/dist/js/tabler.min.js"></script>
+
+    <!-- Sidebar & Submenu Toggle Script -->
+    <script>
+      function toggleSidebar() {
+        const sidebar = document.querySelector('.sidebar');
+        const main = document.querySelector('.main');
+        // Toggle the "collapsed" class on the sidebar
+        sidebar.classList.toggle('collapsed');
+        // Toggle the "full-width" class on the main content
+        main.classList.toggle('full-width');
+      }
+
+      function toggleSubmenu(submenuId) {
+        const submenu = document.getElementById(submenuId);
+        const arrow = document.getElementById('projectsArrow');
+        // Toggle 'show' class on the submenu
+        submenu.classList.toggle('show');
+        // Toggle arrow icon
+        if (submenu.classList.contains('show')) {
+          arrow.classList.remove('ti-chevron-right');
+          arrow.classList.add('ti-chevron-down');
+        } else {
+          arrow.classList.remove('ti-chevron-down');
+          arrow.classList.add('ti-chevron-right');
+        }
+      }
+    </script>
+  </body>
+</html>
