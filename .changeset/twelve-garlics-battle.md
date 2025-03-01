@@ -1,5 +1,5 @@
 ---
-"@tabler/core": patch
+"@tabler/core": minor
 ---
 
 Refactor badge styles, remove Bootstrap styles
