@@ -2,4 +2,4 @@
 "@tabler/core": minor
 ---
 
-Add segmented control component
+Add Segmented Control component
