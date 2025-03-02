@@ -21,7 +21,6 @@
 {% capture script %}
 {% assign chart-type = data.type | default: 'bar' %}
 <script>
-	// @formatter:off
 	document.addEventListener("DOMContentLoaded", function () {
 		{% if environment == 'development' %}
 		window.tabler_chart = window.tabler_chart || {};
@@ -262,12 +261,11 @@
 			{% endif %}
 		})).render();
 	});
-	// @formatter:on
 </script>
 {% endcapture %}
 
-{% capture_global scripts %}
+{% capture_script %}
 {{ script }}
-{% endcapture_global %}
+{% endcapture_script %}
 
 {% endif %}

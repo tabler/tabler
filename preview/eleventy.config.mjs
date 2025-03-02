@@ -1,13 +1,14 @@
 import { readFileSync } from 'node:fs';
 import { EleventyRenderPlugin } from "@11ty/eleventy";
 import { join, dirname } from 'node:path';
+import { sync } from 'glob';
 
 /*
  * Copy list
  */
 const getCopyList = () => {
 	let copy = {
-		"node_modules/@tabler/core/dist": "core",
+		"node_modules/@tabler/core/dist": "dist",
 		"pages/favicon.ico": "favicon.ico",
 		"static": "static",
 	}
@@ -32,7 +33,7 @@ const getCopyList = () => {
 
 	files.forEach((file) => {
 		if (!file.match(/^https?/)) {
-			copy[`node_modules/${dirname(file)}`] = `libs/${dirname(file) }`;
+			copy[`node_modules/${dirname(file)}`] = `libs/${dirname(file)}`;
 		}
 	})
 
@@ -41,7 +42,7 @@ const getCopyList = () => {
 
 /** @type {import('@11ty/eleventy').LocalConfig} */
 export default function (eleventyConfig) {
-	const env = process.env.NODE_ENV || "development";
+	const environment = process.env.NODE_ENV || "production";
 
 	eleventyConfig.setInputDirectory("pages");
 	eleventyConfig.setOutputDirectory("dist");
@@ -49,10 +50,11 @@ export default function (eleventyConfig) {
 	eleventyConfig.setLayoutsDirectory("_layouts");
 	eleventyConfig.setIncludesDirectory("_includes");
 
-	eleventyConfig.addWatchTarget("../core/dist/**");
-	eleventyConfig.setWatchThrottleWaitTime(100);
+	// eleventyConfig.addWatchTarget("../core/dist/**");
+	// eleventyConfig.setWatchThrottleWaitTime(100);
 
 	eleventyConfig.addPassthroughCopy(getCopyList());
+	eleventyConfig.setServerPassthroughCopyBehavior("passthrough");
 
 	eleventyConfig.addPlugin(EleventyRenderPlugin, {
 		accessGlobalData: true,
@@ -64,16 +66,33 @@ export default function (eleventyConfig) {
 		dynamicPartials: true,
 		jekyllWhere: true,
 	});
+	/**
+	 * Server
+	 */
+	if (process.env.ELEVENTY_RUN_MODE === "serve") {
+		eleventyConfig.setServerPassthroughCopyBehavior("passthrough");
+	}
+
 
 	/**
 	 * Data
 	 */
-	eleventyConfig.addGlobalData("environment", env);
+	eleventyConfig.addGlobalData("environment", environment);
 
 	eleventyConfig.addGlobalData("package", JSON.parse(readFileSync(join("..", "core", "package.json"), "utf-8")));
 	eleventyConfig.addGlobalData("readme", readFileSync(join("..", "README.md"), "utf-8"));
 	eleventyConfig.addGlobalData("license", readFileSync(join("..", "LICENSE"), "utf-8"));
 	eleventyConfig.addGlobalData("changelog", readFileSync(join("..", "CHANGELOG.md"), "utf-8"));
+
+	eleventyConfig.addGlobalData("pages", () => {
+		return sync('pages/**/*.html').filter((file) => {
+			return !file.includes('pages/_') && !file.includes('pages/docs/index.html');
+		}).map((file) => {
+			return {
+				url: file.replace(/^pages\//, '/')
+			}
+		});
+	});
 
 	eleventyConfig.addGlobalData("site", {
 		title: "Tabler",
@@ -86,7 +105,7 @@ export default function (eleventyConfig) {
 		githubSponsorsUrl: "https://github.com/sponsors/codecalm",
 		changelogUrl: "https://github.com/tabler/tabler/releases",
 		sponsorUrl: "https://github.com/sponsors/codecalm",
-		previewUrl: "https://tabler.io/demo",
+		previewUrl: "https://preview.tabler.io",
 		docsUrl: "https://tabler.io/docs",
 
 		mapboxKey: "pk.eyJ1IjoidGFibGVyIiwiYSI6ImNscHh3dnhndjB2M3QycW85bGd0NXRmZ3YifQ.9LfHPsNoEXQH-xzz-81Ffw",
@@ -426,6 +445,10 @@ export default function (eleventyConfig) {
 		}
 	});
 
+	eleventyConfig.addFilter("contains", (items, item) => {
+		return items && Array.isArray(items) && items.includes(item);
+	});
+
 	eleventyConfig.addFilter("concat_objects", function (object, object2) {
 		if (
 			object &&
@@ -497,11 +520,11 @@ export default function (eleventyConfig) {
 	});
 
 	eleventyConfig.addFilter("random_date", function (x, startDate = null, endDate = null) {
-		const start = startDate ? new Date(startDate).getTime() : Date.now() - 100 * 24 * 60 * 60 * 1000;
-		const end = endDate ? new Date(endDate).getTime() : Date.now();
+		const start = new Date(startDate ? startDate : '2024-01-01').getTime() / 1000;
+		const end = new Date(endDate ? endDate : '2024-12-30').getTime() / 1000;
 
 		const randomTimestamp = randomNumber(x, start, end);
-		return new Date(randomTimestamp);
+		return new Date(randomTimestamp * 1000);
 	});
 
 	eleventyConfig.addFilter("random_item", function (x, items) {
@@ -513,6 +536,10 @@ export default function (eleventyConfig) {
 
 	eleventyConfig.addFilter("first_letters", function capitalizeFirstLetter(string) {
 		return string.split(' ').map(word => word.charAt(0)).join('');
+	})
+
+	eleventyConfig.addFilter("uc_first", function capitalizeFirstLetter(string) {
+		return string.charAt(0).toUpperCase() + string.slice(1);
 	})
 
 	eleventyConfig.addFilter("size", function (elem) {
@@ -566,7 +593,7 @@ export default function (eleventyConfig) {
 	/**
 	 * Shortcodes
 	 */
-	const tags = ["capture_global", "endcapture_global", "highlight", "endhighlight"];
+	const tags = ["highlight", "endhighlight"];
 	tags.forEach(tag => {
 		eleventyConfig.addLiquidTag(tag, function (liquidEngine) {
 			return {
@@ -580,17 +607,48 @@ export default function (eleventyConfig) {
 		});
 	});
 
+	['script', 'modal'].forEach((tag) => {
+		eleventyConfig.addPairedShortcode(`capture_${tag}`, function (content, inline) {
+			if (inline) {
+				return content;
+			}
+
+			if (!this.page[tag]) {
+				this.page[tag] = []
+			}
+			
+			if (!this.page[tag][this.page.url]) {
+				this.page[tag][this.page.url] = [];
+			}
+
+			this.page[tag][this.page.url].push(content);
+
+			return ''
+		})
+
+		eleventyConfig.addShortcode(`${tag}s`, function () {
+
+			if (this.page[tag]) {
+				return this.page[tag][this.page.url] ? `<!-- BEGIN PAGE ${tag.toUpperCase()}S -->\n${this.page[tag][this.page.url].join('\n').trim()}\n<!-- END PAGE ${tag.toUpperCase()}S -->` : '';
+			}
+
+			return ''
+		});
+	});
+
 	/**
 	 * Transforms
 	 */
-	function prettifyHTML(content, outputPath) {
-		return outputPath.endsWith('.html')
-			? content
-				.replace(/\/\/ @formatter:(on|off)\n+/gm, '')
-				// remove empty lines
-				.replace(/^\s*[\r\n]/gm, '')
-			: content
-	}
+	if (environment !== "development") {
+		function prettifyHTML(content, outputPath) {
+			return outputPath.endsWith('.html')
+				? content
+					.replace(/\/\/ @formatter:(on|off)\n+/gm, '')
+					// remove empty lines
+					.replace(/^\s*[\r\n]/gm, '')
+				: content
+		}
 
-	eleventyConfig.addTransform('htmlformat', prettifyHTML)
+		eleventyConfig.addTransform('htmlformat', prettifyHTML)
+	}
 };

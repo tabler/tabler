@@ -97,7 +97,9 @@ $h5-line-height: 1rem !default;
 $h6-font-size: 0.625rem !default;
 $h6-line-height: 1rem !default;
 
-$small-font-size: 85.714285% !default;
+$font-size-reative-xs: .71428571em !default;
+$font-size-reative-sm: .85714285em !default;
+$font-size-reative-md: 1em !default;
 
 $font-sizes: (
   1: $h1-font-size,
@@ -293,8 +295,8 @@ $theme-colors: map-merge($theme-colors, map-merge($extra-colors, $social-colors)
 $border-width: 1px !default;
 $border-width-wide: 2px !default;
 
-$border-radius-sm: 2px !default;
-$border-radius: 4px !default;
+$border-radius-sm: 4px !default;
+$border-radius: 6px !default;
 $border-radius-lg: 8px !default;
 $border-radius-pill: 100rem !default;
 
@@ -309,7 +311,7 @@ $icon-color: var(--#{$prefix}gray-400) !default;
 
 // Code
 $code-color: var(--#{$prefix}gray-600) !default;
-$code-font-size: $small-font-size !default;
+$code-font-size: $font-size-reative-sm !default;
 $code-line-height: 1.25rem !default;
 $code-bg: var(--#{$prefix}bg-surface-secondary) !default;
 
@@ -553,13 +555,15 @@ $breadcrumb-variants: (
 ) !default;
 
 // Badges
-$badge-font-size: $code-font-size !default;
+$badge-font-size: $font-size-reative-sm !default;
+$badge-font-size-sm: $font-size-reative-xs !default;
+$badge-font-size-lg: $font-size-reative-md !default;
 $badge-line-height: $code-line-height !default;
 $badge-font-weight: var(--#{$prefix}font-weight-medium) !default;
 $badge-padding-y: 0.25em !default;
 $badge-padding-x: 0.5em !default;
-$badge-empty-size: 0.5rem !default;
-$badge-color: var(--#{$prefix}gray-500) !default;
+$badge-empty-size: 10px !default;
+$badge-color: var(--#{$prefix}secondary) !default;
 $badge-bg-color: var(--#{$prefix}bg-surface-secondary) !default;
 
 // Buttons
@@ -605,8 +609,8 @@ $btn-box-shadow: var(--#{$prefix}box-shadow-input) !default;
 
 // Cards
 $card-title-spacer-y: 1.25rem !default;
-$card-box-shadow: var(--#{$prefix}shadow-card) !default;
-$card-hover-box-shadow: var(--#{$prefix}shadow-card-hover) !default;
+$card-box-shadow: var(--#{$prefix}box-shadow-card) !default;
+$card-hover-box-shadow: var(--#{$prefix}box-shadow-card-hover) !default;
 
 $card-bg: var(--#{$prefix}bg-surface) !default;
 $card-bg-hover: $white !default;
@@ -614,7 +618,7 @@ $card-color: inherit !default;
 
 $card-border-width: var(--#{$prefix}border-width) !default;
 $card-border-color: var(--#{$prefix}border-color-translucent) !default;
-$card-border-radius: var(--#{$prefix}border-radius) !default;
+$card-border-radius: var(--#{$prefix}border-radius-lg) !default;
 
 $card-spacer-x: 1.25rem !default;
 $card-spacer-y: 1rem !default;
@@ -681,7 +685,7 @@ $dropdown-divider-margin-y: var(--#{$prefix}spacer-2) !default;
 // Tooltip
 $tooltip-bg: var(--#{$prefix}bg-surface-dark) !default;
 $tooltip-color: var(--#{$prefix}light) !default;
-$tooltip-padding-y: var(--#{$prefix}spacer-2) !default;
+$tooltip-padding-y: var(--#{$prefix}spacer-1) !default;
 $tooltip-padding-x: var(--#{$prefix}spacer-2) !default;
 
 // Loader
@@ -729,9 +733,10 @@ $modal-sm: 380px !default;
 $nav-link-padding-y: 0.5rem !default;
 $nav-link-padding-x: 0.75rem !default;
 $nav-link-color: var(--#{$prefix}gray-500) !default;
+$nav-link-active-color: var(--#{$prefix}body-color) !default;
 $nav-link-disabled-color: var(--#{$prefix}disabled-color) !default;
 $nav-link-icon-size: $icon-size !default;
-$nav-link-icon-color: var(--#{$prefix}icon-color) !default;
+$nav-link-icon-color: inherit !default;
 
 $nav-pills-link-active-color: var(--#{$prefix}primary) !default;
 $nav-pills-link-active-bg: var(--#{$prefix}active-bg) !default;
@@ -753,7 +758,7 @@ $nav-tabs-bg: var(--#{$prefix}bg-surface-tertiary) !default;
 // Navbar
 $navbar-height: 3.5rem !default;
 $navbar-padding-y: 0.25rem !default;
-$navbar-light-color: var(--#{$prefix}muted) !default;
+$navbar-light-color: var(--#{$prefix}secondary) !default;
 
 $navbar-hover-color: $white !default;
 
@@ -762,8 +767,8 @@ $navbar-border-color: var(--#{$prefix}border-color) !default;
 
 $navbar-light-color: var(--#{$prefix}body-color) !default;
 $navbar-light-brand-color: var(--#{$prefix}body-color) !default;
-$navbar-light-active-color: var(--#{$prefix}body-color) color !default;
-$navbar-light-hover-color: var(--#{$prefix}body-color) color !default;
+$navbar-light-active-color: var(--#{$prefix}body-color) !default;
+$navbar-light-hover-color: var(--#{$prefix}body-color) !default;
 $navbar-light-disabled-color: var(--#{$prefix}disabled-color) !default;
 $navbar-light-active-bg: rgba(0, 0, 0, 0.2) !default;
 
@@ -787,6 +792,7 @@ $navbar-toggler-focus-width: 0 !default;
 $navbar-overlap-height: 9rem !default;
 
 $navbar-nav-link-padding-x: $nav-link-padding-x !default;
+$navbar-nav-link-hover-bg: rgba(0, 0, 0, .04) !default;
 
 $navbar-active-border-color: var(--#{$prefix}primary) !default;
 
@@ -803,6 +809,9 @@ $popover-bg: var(--#{$prefix}bg-surface) !default;
 $popover-header-bg: transparent !default;
 $popover-border-color: var(--#{$prefix}border-color) !default;
 $popover-body-color: inherit !default;
+$popover-body-padding-x: .5rem !default;
+$popover-body-padding-y: .5rem !default;
+$popover-box-shadow: var(--#{$prefix}box-shadow-lg) !default;
 
 // Footer
 $footer-padding-y: 2rem !default;
@@ -855,6 +864,7 @@ $table-th-bg: var(--#{$prefix}bg-surface-tertiary) !default;
 $table-striped-order: even !default;
 $table-striped-bg: var(--#{$prefix}bg-surface-tertiary) !default;
 $table-group-separator-color: var(--#{$prefix}border-color-translucent) !default;
+$table-active-bg: var(--#{$prefix}active-bg) !default;
 
 $table-sort-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' width='16' height='16' fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='1'><path d='M5 7l3 -3l3 3'/><path d='M5 10l3 3l3 -3'/></svg>") !default;
 $table-sort-asc-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' width='16' height='16'><path fill='none' stroke='currentColor' stroke-linecap='round' stroke-linejoin='round' stroke-width='1' d='M5 7l3 3l3 -3'/></svg>") !default;

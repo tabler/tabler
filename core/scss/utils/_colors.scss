@@ -31,11 +31,27 @@
 
 @each $color, $value in $gray-colors {
   .bg-#{"" + $color} {
-    --#{$prefix}bg-opacity: .1;
+    --#{$prefix}bg-opacity: 1;
     background-color: rgba(var(--#{$prefix}#{$color}-rgb), var(--#{$prefix}bg-opacity)) !important;
   }
 
   .text-#{"" + $color}-fg {
     color: $value !important;
   }
+}
+
+.bg-surface {
+  background-color: var(--#{$prefix}bg-surface) !important;
+}
+
+.bg-surface-secondary {
+  background-color: var(--#{$prefix}bg-surface-secondary) !important;
+}
+
+.bg-surface-tertiary {
+  background-color: var(--#{$prefix}bg-surface-tertiary) !important;
+}
+
+.bg-surface-backdrop {
+  background-color: rgba($modal-backdrop-bg, $modal-backdrop-opacity) !important;
 }
