@@ -19,7 +19,7 @@ You can also include additional Tabler plugins:
 ```html
 <link rel="stylesheet" href="$TABLER_CDN/dist/css/tabler-flags.min.css">
 <link rel="stylesheet" href="$TABLER_CDN/dist/css/tabler-payments.min.css">
-<link rel="stylesheet" href="$TABLER_CDN/dist/css/tabler-social.min.css">
+<link rel="stylesheet" href="$TABLER_CDN/dist/css/tabler-socials.min.css">
 <link rel="stylesheet" href="$TABLER_CDN/dist/css/tabler-vendors.min.css">
 ```
 
