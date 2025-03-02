@@ -15,11 +15,17 @@ A premium and open source dashboard template with a responsive and high-quality 
 
 ## Sponsors
 
-**If you want to support our project and help me grow it, you can [become a sponsor on GitHub](https://github.com/sponsors/codecalm) or just [donate on PayPal](https://paypal.me/codecalm) :)**
+**If you want to support our project and help us grow it, you can [become a sponsor on GitHub](https://github.com/sponsors/codecalm) or just [donate on PayPal](https://paypal.me/codecalm) :)**
 
 <p align="center">
 	<a href="https://github.com/sponsors/codecalm">
 		<img src="https://cdn.jsdelivr.net/gh/tabler/sponsors@latest/sponsors.svg" alt="Tabler sponsors">
+	</a>
+</p>
+
+<p align="center">
+	<a href="https://github.com/sponsors/codecalm" target="_blank">
+			<img src="https://raw.githubusercontent.com/tabler/tabler/dev/preview/static/sponsor-banner-homepage.svg" alt="Sponsor Banner">
 	</a>
 </p>
 
@@ -63,30 +69,9 @@ The documentation is available at https://tabler.io/docs/
 
 ## 🪴 Project Activity
 
-![Alt](https://repobeats.axiom.co/api/embed/61d1db34446967b0848af68198a392067e0f5870.svg "Repobeats analytics image")
-
-## 💕 Sponsor Tabler
-
 <p align="center">
-	<a href="https://github.com/sponsors/codecalm" target="_blank">
-			<img src="https://raw.githubusercontent.com/tabler/tabler/dev/preview/static/sponsor-banner-homepage.svg" alt="Sponsor Banner">
-	</a>
+	<img src="https://repobeats.axiom.co/api/embed/61d1db34446967b0848af68198a392067e0f5870.svg" alt="Repobeats analytics image" />
 </p>
-
-### Sponsors
-
-Support this project by becoming a sponsor. Your logo will show up in this README with a link to your website. [Become a sponsor!](https://opencollective.com/tabler#sponsor)
-
-<a href="https://opencollective.com/tabler/tiers/sponsor/0/website" target="_blank"><img src="https://opencollective.com/tabler/tiers/sponsor/0/avatar.svg" /></a>
-<a href="https://opencollective.com/tabler/tiers/sponsor/1/website" target="_blank"><img src="https://opencollective.com/tabler/tiers/sponsor/1/avatar.svg" /></a>
-<a href="https://opencollective.com/tabler/tiers/sponsor/2/website" target="_blank"><img src="https://opencollective.com/tabler/tiers/sponsor/2/avatar.svg" /></a>
-<a href="https://opencollective.com/tabler/tiers/sponsor/3/website" target="_blank"><img src="https://opencollective.com/tabler/tiers/sponsor/3/avatar.svg" /></a>
-<a href="https://opencollective.com/tabler/tiers/sponsor/4/website" target="_blank"><img src="https://opencollective.com/tabler/tiers/sponsor/4/avatar.svg" /></a>
-<a href="https://opencollective.com/tabler/tiers/sponsor/5/website" target="_blank"><img src="https://opencollective.com/tabler/tiers/sponsor/5/avatar.svg" /></a>
-<a href="https://opencollective.com/tabler/tiers/sponsor/6/website" target="_blank"><img src="https://opencollective.com/tabler/tiers/sponsor/6/avatar.svg" /></a>
-<a href="https://opencollective.com/tabler/tiers/sponsor/7/website" target="_blank"><img src="https://opencollective.com/tabler/tiers/sponsor/7/avatar.svg" /></a>
-<a href="https://opencollective.com/tabler/tiers/sponsor/8/website" target="_blank"><img src="https://opencollective.com/tabler/tiers/sponsor/8/avatar.svg" /></a>
-<a href="https://opencollective.com/tabler/tiers/sponsor/9/website" target="_blank"><img src="https://opencollective.com/tabler/tiers/sponsor/9/avatar.svg" /></a>
 
 ## Installation
 
@@ -188,17 +173,16 @@ Found a bug or have a feature request? [Please open a new issue](https://github.
 - <https://github.com/codecalm>
 - <https://codecalm.net>
 
+**Bartłomiej Gawęda**
+
+- <https://x.com/B_Gaweda>
+- <https://github.com/BG-Software-BG>
+
 ## 👨‍🚀 Contributors
 
 This project exists thanks to all the people who contribute.
 
 <img src="https://opencollective.com/tabler/contributors.svg?width=890&button=false" />
-
-## 🌸 Backers
-
-Thank you to all our backers! 🙏 [Become a backer](https://opencollective.com/tabler#backer)
-
-<a href="https://opencollective.com/tabler#backers" target="_blank"><img src="https://opencollective.com/tabler/tiers/backer.svg?width=890&button=false" />
 
 ## Social media
 
@@ -208,15 +192,3 @@ Stay up to date by joining our community on <a href="https://x.com/tabler_io" >X
 
 See the [LICENSE](https://github.com/tabler/tabler/blob/master/LICENSE) file.
 
-## Contributors ✨
-
-Thanks goes to these wonderful people ([emoji key](https://allcontributors.org/docs/en/emoji-key)):
-
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-<!-- markdownlint-restore -->
-<!-- prettier-ignore-end -->
-<!-- ALL-CONTRIBUTORS-LIST:END -->
-
-This project follows the [all-contributors](https://github.com/all-contributors/all-contributors) specification. Contributions of any kind welcome!
