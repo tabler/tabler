@@ -31,6 +31,16 @@ A premium and open source dashboard template with a responsive and high-quality 
 
 ## Testing
 
+<p align="center">Visual testing with:</p>
+
+<p align="center">
+	<a href="https://argos-ci.com/" target="_blank">
+		<picture>
+			<img src="https://github.com/user-attachments/assets/7d231a26-eff5-4fc5-8392-b2a679a7c572" alt="Argos-CI" height="164" />
+		</picture>
+	</a>
+</p>
+
 <p align="center">Browser testing via:</p>
 
 <p align="center">
@@ -38,7 +48,7 @@ A premium and open source dashboard template with a responsive and high-quality 
 		<picture>
 			<source media="(prefers-color-scheme: dark)" srcset="https://github.com/user-attachments/assets/14dd2a0a-bafe-436e-a6cb-29636278c781">
 			<source media="(prefers-color-scheme: light)" srcset="https://github.com/user-attachments/assets/d3dede5a-d702-47c3-bb66-4d887948ed83">
-			<img src="https://github.com/user-attachments/assets/d3dede5a-d702-47c3-bb66-4d887948ed83" alt="Tabler Icons preview" width="296">
+			<img src="https://github.com/user-attachments/assets/d3dede5a-d702-47c3-bb66-4d887948ed83" alt="labmdatest" width="296">
 		</picture>
 	</a>
 </p>
