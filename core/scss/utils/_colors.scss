@@ -16,6 +16,19 @@
     --#{$prefix}border-opacity: 1;
     border-color: rgba(var(--#{$prefix}#{$color}-rgb), var(--#{$prefix}border-opacity)) !important;
   }
+
+  .bg-gradient-from-#{"" + $color} {
+    --#{$prefix}gradient-from: var(--#{$prefix}#{$color});
+  }
+
+  .bg-gradient-to-#{"" + $color} {
+    --#{$prefix}gradient-to: var(--#{$prefix}#{$color});
+  }
+
+  .bg-gradient-via-#{"" + $color} {
+    --#{$prefix}gradient-via: var(--#{$prefix}#{$color});
+    --#{$prefix}gradient-stops: var(--#{$prefix}gradient-from, transparent), var(--#{$prefix}gradient-via, transparent), var(--#{$prefix}gradient-to, transparent);
+  }
 }
 
 @each $color, $value in $theme-colors {
