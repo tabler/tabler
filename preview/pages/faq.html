@@ -17,9 +17,9 @@ permalink: faq.html
 					{% for question in category.questions %}
 					{% assign questions-loop = forloop %}
 					<div class="accordion-item">
-						<div class="accordion-header" role="tab">
-							<button class="accordion-button{% unless questions-loop.index == 1 %} collapsed{% endunless %}" data-bs-toggle="collapse" data-bs-target="#faq-{{ categories-loop.index }}-{{ questions-loop.index }}">{{ question.question }}</button>
-						</div>
+						<button class="accordion-header{% unless questions-loop.index == 1 %} collapsed{% endunless %}" data-bs-toggle="collapse" data-bs-target="#faq-{{ categories-loop.index }}-{{ questions-loop.index }}" role="tab">
+							<h4 class="accordion-header-text">{{ question.question }}</h4>
+						</button>
 						<div id="faq-{{ categories-loop.index }}-{{ questions-loop.index }}" class="accordion-collapse collapse{% if questions-loop.index == 1 %} show{% endif %}" role="tabpanel" data-bs-parent="#faq-{{ categories-loop.index }}">
 							<div class="accordion-body pt-0">
 								<div>

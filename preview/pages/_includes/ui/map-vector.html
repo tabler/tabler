@@ -11,7 +11,6 @@
 
 	{% capture script %}
 	<script>
-		// @formatter:on
 		{% if environment == 'development' %}window.tabler_map_vector = window.tabler_map_vector || {};{% endif %}
 
 		document.addEventListener("DOMContentLoaded", function() {
@@ -105,15 +104,14 @@
 				map.updateSize();
 			});
 		});
-		// @formatter:off
 	</script>
 	{% endcapture %}
 
 	{% if include.show-scripts %}
 		{{ script }}
 	{% else %}
-		{% capture_global scripts %}
+		{% capture_script %}
 			{{ script }}
-		{% endcapture_global %}
+		{% endcapture_script %}
 	{% endif %}
 {% endif %}

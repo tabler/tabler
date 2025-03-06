@@ -16,6 +16,19 @@
     --#{$prefix}border-opacity: 1;
     border-color: color-mix(in srgb, var(--#{$prefix}#{$color}) calc(var(--#{$prefix}border-opacity) * 100%), transparent) !important;
   }
+
+  .bg-gradient-from-#{"" + $color} {
+    --#{$prefix}gradient-from: var(--#{$prefix}#{$color});
+  }
+
+  .bg-gradient-to-#{"" + $color} {
+    --#{$prefix}gradient-to: var(--#{$prefix}#{$color});
+  }
+
+  .bg-gradient-via-#{"" + $color} {
+    --#{$prefix}gradient-via: var(--#{$prefix}#{$color});
+    --#{$prefix}gradient-stops: var(--#{$prefix}gradient-from, transparent), var(--#{$prefix}gradient-via, transparent), var(--#{$prefix}gradient-to, transparent);
+  }
 }
 
 @each $color, $value in $theme-colors {
@@ -65,4 +78,8 @@
 
 .bg-surface-tertiary {
   background-color: var(--#{$prefix}bg-surface-tertiary) !important;
+}
+
+.bg-surface-backdrop {
+  background-color: rgba($modal-backdrop-bg, $modal-backdrop-opacity) !important;
 }

@@ -12,9 +12,8 @@ permalink: map-fullsize.html
 
 <div class="map flex-fill" id="map-{{ map-id }}"></div>
 
-{% capture_global scripts %}
+{% capture_script %}
 <script>
-	// @formatter:off
 	let map;
 	{% if environment == 'development' %}window.tabler_map = window.tabler_map || {};{% endif %}
 
@@ -26,6 +25,5 @@ permalink: map-fullsize.html
 
 		{% if environment == 'development' %}window.tabler_map["map-{{ map-id }}"] = map;{% endif %}
 	});
-// @formatter:on
 </script>
-{% endcapture_global %}
+{% endcapture_script %}

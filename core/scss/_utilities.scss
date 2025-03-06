@@ -43,8 +43,9 @@ $utilities: (
       v-text: vertical-text,
       grab: grab,
       grabbing: grabbing,
+      crosshair: crosshair,
     ),
-  ),
+  ), 
   "border": (
     property: border,
     values: $border-values,
@@ -101,5 +102,34 @@ $utilities: (
         '<svg width="16" height="16" viewBox="0 0 16 16"><rect x="0" y="0" width="8" height="8" fill="rgba(130, 130, 130, .1)" /><rect x="8" y="8" width="8" height="8" fill="rgba(130, 130, 130, .1)" /></svg>'
       )} repeat center/16px 16px,
     )
-  )
+  ),
+  "bg-gradient": (
+    property: background,
+    class: bg-gradient,
+    values: (
+      null: linear-gradient(var(--#{$prefix}gradient-direction, to right), var(--#{$prefix}gradient-stops, var(--#{$prefix}gradient-from, transparent), var(--#{$prefix}gradient-to, transparent))) no-repeat,
+    ),
+  ),
+  "bg-gradient-direction": (
+    property: --#{$prefix}gradient-direction,
+    class: bg-gradient,
+    values: (
+      to-t: to top,
+      to-te: to top right,
+      to-e: to right,
+      to-be: to bottom right,
+      to-b: to bottom,
+      to-bs: to bottom left,
+      to-s: to left,
+      to-ts: to top left,
+    ),
+  ),
+  "table-layout": (
+    property: table-layout,
+    class: table,
+    values: (
+      auto: auto,
+      fixed: fixed,
+    ),
+  ),
 ) !default;
