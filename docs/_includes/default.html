@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Tabler Documentation - {{ title }}</title>
+
+	<link rel="stylesheet" href="/core/css/tabler{% if environment != 'development' %}.min{% endif %}.css" />
+	{% for plugin in plugins %}
+	<link
+		href="/core/css/tabler-{{ plugin }}{% if environment != 'development' %}.min{% endif %}.css{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}"
+		rel="stylesheet" />
+	{% endfor %}
+
+	<link rel="stylesheet" href="/docs.css" />
+</head>
+
+<body class="d-flex flex-column" style="background: var(--tblr-bg-surface)">
+	{% include "navbar.html" %}
+	<div class="flex-fill">
+		<div class="container h-full">
+			<div class="row g-0 h-full">
+				<div class="col-3">
+					<div class="p-4">
+						<div class="space-y">
+							<div class="input-icon">
+								<span class="input-icon-addon">
+									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+										stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
+										<path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path>
+										<path d="M21 21l-6 -6"></path>
+									</svg>
+								</span>
+								<input type="search" class="form-control" placeholder="Quick search..." />
+								<span class="input-icon-addon pe-2">
+									<kbd>⌘K</kbd>
+								</span>
+							</div>
+							{% include "menu.html" %}
+						</div>
+					</div>
+				</div>
+				<div class="col border-start docs-bg-gradient">
+					<div class="p-6">
+						<div class="p-6">
+							<div class="markdown fs-3">
+								<h1>
+									{{ title }}
+								</h1>
+
+								<p class="lead">{{ summary }}</p>
+
+								{{ content }}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer class="footer">
+		<div class="container">
+			<div class="row align-items-center">
+				<div class="col">
+					Copyright &copy; {{ 'now' | date: '%Y' }}. All rights reserved.
+				</div>
+				<div class="col-auto ml-auto">
+					<nav class="nav nav-segmented nav-sm" role="tablist">
+						<button class="nav-link active" role="tab" data-bs-toggle="tab" aria-selected="true"
+							aria-current="page">system</button>
+						<button class="nav-link" role="tab" data-bs-toggle="tab" aria-selected="false"
+							tabindex="-1">light</button>
+						<button class="nav-link" role="tab" data-bs-toggle="tab" aria-selected="false"
+							tabindex="-1">dark</button>
+					</nav>
+				</div>
+			</div>
+
+		</div>
+	</footer>
+
+	<script src="/core/js/tabler.esm.js"></script>
+</body>
+
+</html>
