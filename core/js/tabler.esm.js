@@ -9,3 +9,18 @@ import "./src/toast"
 
 export * as bootstrap from "bootstrap"
 export * as tabler from "./src/tabler"
+
+export {
+	Alert,
+	Modal,
+	Toast,
+	Tooltip,
+	Tab,
+	Button,
+	Carousel,
+	Collapse,
+	Dropdown,
+	Popover,
+	ScrollSpy,
+	Offcanvas
+} from 'bootstrap'
