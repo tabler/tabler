@@ -2,6 +2,7 @@
 import { appConfig } from "@repo/e11ty"
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import eleventyNavigationPlugin from '@11ty/eleventy-navigation';
 
 export default function (eleventyConfig) {
 	const environment = process.env.NODE_ENV || "production"; 
@@ -11,6 +12,14 @@ export default function (eleventyConfig) {
 	eleventyConfig.addPassthroughCopy({
 		"node_modules/@tabler/core/dist": "core",
 		"public": "/"
+	});
+
+	eleventyConfig.addPlugin(eleventyNavigationPlugin);
+
+	eleventyConfig.addCollection('docs', collection => {
+		return [...collection.getFilteredByGlob('./content/**/*.mdx')].sort((a, b) => {
+			return a.data.title - b.data.title;
+		});
 	});
 
 	/**
@@ -69,11 +78,6 @@ export default function (eleventyConfig) {
 			});
 		}
 		);
-	});
-
-	// Docs
-	eleventyConfig.addCollection("docs", function (collection) {
-		return collection.getFilteredByGlob("docs/*.mdx");
 	});
 
 	/**

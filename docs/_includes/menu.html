@@ -1,8 +1,5 @@
-<ul>
-	{%- for post in collections.all -%}
-	<li><a href="{{ post.url }}" class="{% if page.url == post.url %}strong{% endif %}">{{ post.data.title }}</a></li>
-	{%- endfor -%}
-</ul>
+{% assign navPages = collections.all | eleventyNavigation %}
+{{ navPages | json }}
 
 {{ collections.docs | size }}
 
