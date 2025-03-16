@@ -2,7 +2,7 @@
 {% assign id = include.id | default: "typed" %}
 <span class="text-primary" id="{{ id }}">{{ strings | first }}</span>
 
-{% block sctript %}
+{% capture_script %}
 <script>
 document.addEventListener("DOMContentLoaded", function() {
 	var typed = new Typed('#{{ id }}', {
@@ -16,4 +16,4 @@ document.addEventListener("DOMContentLoaded", function() {
 	});
 });
 </script>
-{% endblock %}
+{% endcapture_script %}

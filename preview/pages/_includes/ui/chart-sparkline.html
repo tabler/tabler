@@ -14,7 +14,7 @@
 {% if id %}
 	<div class="chart-sparkline{% if type == 'pie' or type == 'donut' %} chart-sparkline-square{% endif %}{% if include.wide %} chart-sparkline-wide{% endif %}{% if include.small %} chart-sparkline-sm{% endif %}" id="sparkline-{{ id }}"></div>
 
-	{% block sctript %}
+	{% capture_script %}
 	<script>
 		document.addEventListener("DOMContentLoaded", function () {
 			{% if environment == 'development' %}
@@ -81,5 +81,5 @@
 			})).render();
 		});
 	</script>
-	{% endblock %}
+	{% endcapture_script %}
 {% endif %}
