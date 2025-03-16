@@ -3,7 +3,7 @@
 {% if id and include.embed-id %}
 <div id="player-{{ id }}" data-plyr-provider="{{ include.type | default: 'youtube' }}" data-plyr-embed-id="{{ include.embed-id }}"></div>
 
-{% capture_script %}
+{% block sctript %}
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     {% if environment == 'development' %}
@@ -12,6 +12,6 @@
     window.Plyr && ({% if environment == 'development' %}window.tabler_player["player-{{ id }}"] = {% endif %}new Plyr('#player-{{ id }}'));
   });
 </script>
-{% endcapture_script %}
+{% endblock %}
 
 {% endif %}

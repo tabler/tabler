@@ -7,7 +7,7 @@
 {% if id %}
 	<div class="form-range mb-2{% if include.class %} {{ include.class }}{% endif %}" id="range-{{ id }}"></div>
 
-	{% capture_script %}
+	{% block sctript %}
 	<script>
 		{% assign value = value | split: ',' %}
 
@@ -25,7 +25,7 @@
 			 }));
 		});
 	</script>
-	{% endcapture_script %}
+	{% endblock %}
 {% else %}
 	<input type="range" class="form-range mb-2{% if include.class %} {{ include.class }}{% endif %}" value="{{ value }}" min="{{ min }}" max="{{ max }}" step="{{ step }}">
 {% endif %}

@@ -20,7 +20,7 @@
 {% assign star = star | replace_regex: "[\n\t]{2,}", " " | strip %}
 {% assign star = star | replace_regex: "<!--[^-]*-->", "" | strip %}
 
-{% capture_script %}
+{% block sctript %}
 <script>
   {% if environment == 'development' %}window.tabler_rating = window.tabler_rating || {};{% endif %}
 
@@ -37,4 +37,4 @@
     {% if environment == 'development' %}window.tabler_rating["rating-{{ id }}"] = rating;{% endif %}
   })
 </script>
-{% endcapture_script %}
+{% endblock %}

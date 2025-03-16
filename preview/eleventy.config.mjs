@@ -591,35 +591,6 @@ export default function (eleventyConfig) {
 		});
 	});
 
-	['script', 'modal'].forEach((tag) => {
-		eleventyConfig.addPairedShortcode(`capture_${tag}`, function (content, inline) {
-			if (inline) {
-				return content;
-			}
-
-			if (!this.page[tag]) {
-				this.page[tag] = []
-			}
-			
-			if (!this.page[tag][this.page.url]) {
-				this.page[tag][this.page.url] = [];
-			}
-
-			this.page[tag][this.page.url].push(content);
-
-			return ''
-		})
-
-		eleventyConfig.addShortcode(`${tag}s`, function () {
-
-			if (this.page[tag]) {
-				return this.page[tag][this.page.url] ? `<!-- BEGIN PAGE ${tag.toUpperCase()}S -->\n${this.page[tag][this.page.url].join('\n').trim()}\n<!-- END PAGE ${tag.toUpperCase()}S -->` : '';
-			}
-
-			return ''
-		});
-	});
-
 	/**
 	 * Transforms
 	 */
