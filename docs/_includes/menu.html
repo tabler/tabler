@@ -1,17 +1,28 @@
-{% assign navPages = collections.all | eleventyNavigation %}
-{{ navPages | json }}
+{% assign menu = collections.docs | collection-tree %}
 
-{{ collections.docs | size }}
-
-<div class="space-y">
-	{% for i in (0..5) %}
+<nav class="space-y">
+	{% for level1 in menu %}
 	<div>
-		<div class="h4 mb-0">Tabler UI</div>
-		<nav class="nav nav-pills nav-vertical">
-			<a class="nav-link" href="234">234</a>
-			<a class="nav-link" href="234">234</a>
-			<a class="nav-link" href="234">234</a>
+		<div class="h4 mb-0">{{ level1.data.title }}</div>
+		{% if level1.children %}
+		<nav class="nav nav-vertical">
+			{% for level2 in level1.children %}
+			<div>
+				<a class="nav-link" href="{{ level2.url }}">{{ level2.data.title }}</a>
+
+				{% if level2.children %}
+				<nav class="nav nav-vertical">
+					{% for level3 in level2.children %}
+					<div>
+						<a class="nav-link" href="{{ level3.url }}">{{ level3.data.title }}</a>
+					</div>
+					{% endfor %}
+				</nav>
+				{% endif %}
+			</div>
+			{% endfor %}
 		</nav>
+		{% endif %}
 	</div>
 	{% endfor %}
-</div>
+</nav>

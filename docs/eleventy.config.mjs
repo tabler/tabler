@@ -1,20 +1,18 @@
 
 import { appConfig } from "@repo/e11ty"
 import { readFileSync } from 'node:fs';
+import { url } from 'node:inspector';
 import { join } from 'node:path';
-import eleventyNavigationPlugin from '@11ty/eleventy-navigation';
 
 export default function (eleventyConfig) {
-	const environment = process.env.NODE_ENV || "production"; 
-	
-	appConfig(eleventyConfig); 
-	
+	const environment = process.env.NODE_ENV || "production";
+
+	appConfig(eleventyConfig);
+
 	eleventyConfig.addPassthroughCopy({
 		"node_modules/@tabler/core/dist": "core",
 		"public": "/"
 	});
-
-	eleventyConfig.addPlugin(eleventyNavigationPlugin);
 
 	eleventyConfig.addCollection('docs', collection => {
 		return [...collection.getFilteredByGlob('./content/**/*.mdx')].sort((a, b) => {
@@ -79,6 +77,53 @@ export default function (eleventyConfig) {
 		}
 		);
 	});
+	/**
+	 *  Filters
+	 */
+
+	function buildCollectionTree(flatData) {
+		const tree = [];
+		const lookup = {};
+
+		flatData
+			.filter(item => item.url !== '/')
+			.forEach(item => {
+				lookup[item.url] = { ...item, children: [] };
+			});
+
+		flatData.forEach(item => {
+			const parts = item.url.split('/').filter(Boolean);
+			if (parts.length === 1) {
+				tree.push(lookup[item.url]);
+			} else {
+				const parentUrl = '/' + parts.slice(0, -1).join('/') + '/';
+				if (lookup[parentUrl]) {
+					lookup[parentUrl].children.push(lookup[item.url]);
+				} else {
+					tree.push(lookup[item.url]);
+				}
+			}
+		});
+
+		return tree;
+	}
+
+	eleventyConfig.addFilter("collection-tree", function (collection) {
+		console.log(collection.slice(0, 1));
+
+		const a = collection.map(item => {
+			return {
+				data: item.data,
+				page: item.page,
+				url: item.url,
+				children: []
+			}
+		}).sort((a, b) => {
+			return (a.data.order || 999) - (b.data.order || 999);
+		});
+
+		return buildCollectionTree(a);
+	});
 
 	/**
 	 * Data
@@ -97,7 +142,7 @@ export default function (eleventyConfig) {
 		illustrationsCount: 1234,
 	};
 
-	for(const [key, value] of Object.entries(data)) {
+	for (const [key, value] of Object.entries(data)) {
 		eleventyConfig.addGlobalData(key, value);
 	}
 
