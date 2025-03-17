@@ -1,5 +1,6 @@
 <div
-	class="border p-6 rounded mb-4{% unless include.raw %} d-flex justify-content-center align-items-center{% if include.vertical %} flex-column{% endif %} gap-2{% endunless %} fs-4"
-	style="background:url('data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 16 16\' width=\'16\' height=\'16\'><path d=\'M0 16h16V0h-1v15H0Z\' fill=\'rgba(128, 128, 128, .04)\'/></svg>') repeat center">
-	{{ html }}
+	class="d-flex justify-content-center border rounded mb-4 fs-4 {% if include.bg %} bg-{{ include.bg }}{% endif %}" style="background:url('data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' viewBox=\'0 0 16 16\' width=\'16\' height=\'16\'><path d=\'M0 16h16V0h-1v15H0Z\' fill=\'rgba(128, 128, 128, .04)\'/></svg>') repeat center;">
+	<div class="{% unless include.raw %} p-6 d-flex justify-content-center align-items-center flex-fill{% if include.vertical %} flex-column{% endif %} gap-2{% endunless %}" {% if include.column %}style="max-width: 25rem;"{% endif %}>
+		{{ html }}
+	</div>
 </div>
