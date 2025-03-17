@@ -2,38 +2,37 @@
 
 // stylelint-disable declaration-no-important
 
-:root {
-  &:not(.theme-dark):not([data-bs-theme="dark"]) {
-    .hide-theme-light {
-      display: none !important;
-    }
-
-    .img-dark {
-      display: none !important;
-    }
-  }
-
-  &.theme-dark,
-  &[data-bs-theme="dark"] {
-    .hide-theme-dark {
-      display: none !important;
-    }
-
-    .img-light {
-      display: none !important;
-    }
-  }
-}
-
 @if $enable-dark-mode {
+  :root {
+    &:not(.theme-dark):not([data-bs-theme="dark"]) {
+      .hide-theme-light {
+        display: none !important;
+      }
+
+      .img-dark {
+        display: none !important;
+      }
+    }
+
+    &.theme-dark,
+    &[data-bs-theme="dark"] {
+      .hide-theme-dark {
+        display: none !important;
+      }
+
+      .img-light {
+        display: none !important;
+      }
+    }
+  }
+
+
   @include color-mode(dark, true) {
     color-scheme: dark;
     --#{$prefix}body-color: var(--#{$prefix}gray-200);
-    --#{$prefix}body-color-rgb: #{to-rgb($body-color-dark)};
-    --#{$prefix}secondary: var(--#{$prefix}gray-500);
+    --#{$prefix}secondary: var(--#{$prefix}gray-400);
 
     --#{$prefix}body-bg: var(--#{$prefix}gray-900);
-    --#{$prefix}body-bg-rgb: #{to-rgb($darken-dark)};
     --#{$prefix}emphasis-color: #{$body-emphasis-color-dark};
     --#{$prefix}emphasis-color-rgb: #{to-rgb($body-emphasis-color-dark)};
 
@@ -64,13 +63,6 @@
 
     --#{$prefix}code-color: var(--#{$prefix}body-color);
     --#{$prefix}code-bg: #{$border-dark-color-dark};
-
-    @each $color, $value in $theme-colors {
-      --#{$prefix}#{$color}-lt: #{theme-color-lighter($value, $dark)};
-      --#{$prefix}#{$color}-lt-rgb: #{to-rgb(
-          theme-color-lighter($value, $dark)
-        )};
-    }
 
     .navbar-brand-autodark {
       .navbar-brand-image {
