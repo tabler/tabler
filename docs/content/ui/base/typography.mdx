@@ -21,14 +21,15 @@ The `h1` tag is the highest level and the `h6` tag is the lowest level.
 
 Below are examples of headings with different levels:
 
-```html example vertical columns={1}
+{% capture html -%}
 <h1>H1 Heading</h1>
 <h2>H2 Heading</h2>
 <h3>H3 Heading</h3>
 <h4>H4 Heading</h4>
 <h5>H5 Heading</h5>
 <h6>H6 Heading</h6>
-```
+{%- endcapture %}
+{% include "example.html" html=html vertical %}
 
 ## Paragraphs
 
@@ -40,15 +41,14 @@ Organize longer pieces of text into paragraphs using the `p` tag. It is the most
 
 If you use a second paragraph, it will be separated from the first one by a blank line.
 
-```html example vertical centered columns={2}
-<div>
-  <p>
-    Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt
-    ut labore et dolore magna aliquyam erat, sed diam voluptua.
-  </p>
-  <p>At vero eos et accusam et justo duo dolores et ea rebum.</p>
-</div>
-```
+{% capture html -%}
+<p>
+	Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt
+	ut labore et dolore magna aliquyam erat, sed diam voluptua.
+</p>
+<p>At vero eos et accusam et justo duo dolores et ea rebum.</p>
+{%- endcapture %}
+{% include "example.html" html=html vertical %}
 
 
 ## Semantic text elements
@@ -76,7 +76,7 @@ Text <sub>Subscripted</sub> Text <sup>Superscripted</sup>
 
 Here are examples of semantic text elements:
 
-```html example vertical separated columns={1}
+{% capture html -%}
 <div>
   <abbr title="Internationalization">I18N</abbr>
 </div>
@@ -120,7 +120,8 @@ Here are examples of semantic text elements:
   <u>Underline</u>
 </div>
 <div><var>x</var> = <var>y</var> + 2</div>
-```
+{%- endcapture %}
+{% include "example.html" html=html vertical %}
 
 
 
@@ -128,7 +129,7 @@ Here are examples of semantic text elements:
 
 Use the `hr` tag to represent a thematic break between paragraphs within one section.
 
-```html example vertical centered columns={2}
+{% capture html -%}
 <div>
   <p>
     Lorem ipsum dolor sit amet, consectetur adipisicing elit. A atque ex excepturi fuga magnam nam
@@ -142,7 +143,8 @@ Use the `hr` tag to represent a thematic break between paragraphs within one sec
     quibusdam veniam?
   </p>
 </div>
-```
+{%- endcapture %}
+{% include "example.html" html=html vertical %}
 
 ```html
 <hr />
@@ -152,7 +154,7 @@ Use the `hr` tag to represent a thematic break between paragraphs within one sec
 
 You can also add a label to a horizontal rule and align it as you see fit.
 
-```html example vertical centered columns={2}
+{% capture html -%}
 <p>
   Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
   labore et dolore magna aliquyam erat, sed diam voluptua.
@@ -178,13 +180,14 @@ You can also add a label to a horizontal rule and align it as you see fit.
   At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
   takimata sanctus est Lorem ipsum dolor sit amet.
 </p>
-```
+{%- endcapture %}
+{% include "example.html" html=html raw %}
 
 ## Optimized for different alphabets
 
 Tabler has been optimized to correctly display content in any language. It supports most Asian, African and Middle Eastern languages.
 
-```html example vertical centered columns={2}
+{% capture html -%}
 <p>汉字</p>
 <p>日本語の表記体系</p>
 <p>Кириллица</p>
@@ -194,17 +197,19 @@ Tabler has been optimized to correctly display content in any language. It suppo
 <p>الحروف العربية</p>
 <p>אלפבית עברי</p>
 <p>อักษรไทย</p>
-```
+{%- endcapture %}
+{% include "example.html" html=html raw %}
 
 ## Text transform
 
 Transform the content of components with text capitalization classes.
 
-```html example vertical centered separated columns={1}
+{% capture html -%}
 <div class="text-lowercase">Lowercased text.</div>
 <div class="text-uppercase">Uppercased text.</div>
 <div class="text-capitalize">Capitalized text.</div>
-```
+{%- endcapture %}
+{% include "example.html" html=html raw %}
 
 ```html
 <p class="text-lowercase">Lowercased text.</p>
@@ -216,11 +221,12 @@ Transform the content of components with text capitalization classes.
 
 Control the tracking (letter spacing) of an element and make it tight, wide or normal.
 
-```html example vertical centered separated columns={1}
+{% capture html -%}
 <div class="tracking-tight">Lorem ipsum dolor sit amet. Tight letter spacing.</div>
 <div class="tracking-normal">Lorem ipsum dolor sit amet. Normal letter spacing.</div>
 <div class="tracking-wide">Lorem ipsum dolor sit amet. Wide letter spacing.</div>
-```
+{%- endcapture %}
+{% include "example.html" html=html raw %}
 
 ```html
 <p class="tracking-tight">Lorem ipsum dolor sit amet. Tight letter spacing.</p>
@@ -232,7 +238,7 @@ Control the tracking (letter spacing) of an element and make it tight, wide or n
 
 Control the leading (line height) of an element.
 
-```html example vertical centered separated columns={1} height="20rem"
+{% capture html -%}
 <p class="lh-1">
   This is the long text with line height 1. Lorem ipsum dolor sit amet. Dolor sit amet.
 </p>
@@ -245,7 +251,8 @@ Control the leading (line height) of an element.
 <p class="lh-lg">
   This is the long text with large line height. Lorem ipsum dolor sit amet. Dolor sit amet.
 </p>
-```
+{%- endcapture %}
+{% include "example.html" html=html %}
 
 To control the line height of an element, use the following classes:
 
@@ -262,18 +269,20 @@ Control the font smoothing of an element.
 
 Use the `.antialiased` utility to render text using subpixel antialiasing or use the `.subpixel-antialiased` utility to remove antialiasing.
 
-```html example vertical centered separated columns={1}
+{% capture html -%}
 <div class="antialiased">Text with antialiasing</div>
 <div class="subpixel-antialiased">Text without antialiasing</div>
-```
+{%- endcapture %}
+{% include "example.html" html=html raw %}
 
 ## Keyboard input
 
 Use the `<kbd>` to indicate input that is typically entered via keyboard.
 
-```html example vertical centered
+{% capture html -%}
 <div>To edit settings, press <kbd>ctrl</kbd> + <kbd>,</kbd> or <kbd>ctrl</kbd> + <kbd>C</kbd>.</div>
-```
+{%- endcapture %}
+{% include "example.html" html=html %}
 
 ```html
 To edit settings, press <kbd>ctrl</kbd> + <kbd>,</kbd> or <kbd>ctrl</kbd> + <kbd>C</kbd>.
@@ -283,7 +292,7 @@ To edit settings, press <kbd>ctrl</kbd> + <kbd>,</kbd> or <kbd>ctrl</kbd> + <kbd
 
 If you can't use the CSS classes you want, or you just want to use HTML tags, use the `.markdown` class in a container. It will apply the default styles for markdown elements.
 
-```html example centered background="white" columns={2} height="30rem"
+{% capture html -%}
 <div class="markdown">
   <h1>Hello World</h1>
   <p>
@@ -308,4 +317,5 @@ If you can't use the CSS classes you want, or you just want to use HTML tags, us
     <li>Ut non enim metus.</li>
   </ul>
 </div>
-```
+{%- endcapture %}
+{% include "example.html" html=html %}

@@ -81,7 +81,20 @@
 		</div>
 	</footer>
 
-	<script src="/core/js/tabler.esm.js"></script>
+	<script src="/core/js/tabler.js"></script>
 	<script src="/js/theme-switcher.js" defer></script>
+
+	{% if docs-libs -%}
+	{{ docs-libs | inspect }}
+	{% for lib in libs.js -%}
+	{% if docs-libs contains lib[0] or libs.global-libs contains lib[0] -%}
+	{% for file in lib[1] -%}
+	<script
+		src="{% if file contains 'http://' or file contains 'https://' %}{{ file | replace: 'GOOGLE_MAPS_KEY', google-maps-key }}{% else %}{{ page | relative }}/libs/{% if environment != 'development' %}{{ file | replace: '@', '' }}{% else %}{{ file }}{% endif %}{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}{% endif %}"
+		defer></script>
+	{% endfor -%}
+	{% endif -%}
+	{% endfor -%}
+	{% endif -%}
 </body>
 </html>

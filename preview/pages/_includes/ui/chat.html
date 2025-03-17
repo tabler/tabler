@@ -4,7 +4,7 @@
 		{% assign person = people[message.person-id] %}
 		{% capture chat-avatar %}
 		<div class="col-auto">{% include "ui/avatar.html" person=person %}</div>
-		{% endcapture %}
+		{%- endcapture %}
 		{% capture chat-message %}
 		<div class="{% if message.loading %}col-auto{% else %}col{% if include.wide %} col-lg-6{% endif %}{% endif %}">
 			<div class="chat-bubble{% if message.person-id == 0 %} chat-bubble-me{% endif %}">
@@ -31,7 +31,7 @@
 				</div>
 			</div>
 		</div>
-		{% endcapture %}
+		{%- endcapture %}
 		<div class="chat-item">
 			<div class="row align-items-end{% if message.person-id == 0 %} justify-content-end{% endif %}">{% if message.person-id == 0 %} {{ chat-message }} {{ chat-avatar }} {% else %} {{ chat-avatar }} {{ chat-message }} {% endif %}</div>
 		</div>

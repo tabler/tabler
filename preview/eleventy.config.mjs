@@ -87,43 +87,6 @@ export default function (eleventyConfig) {
 	});
 
 	/**
-	 * Shortcodes
-	 */
-	let _CAPTURES = {};
-
-	eleventyConfig.on('beforeBuild', () => {
-		_CAPTURES = {};
-	});
-
-	['script', 'modal'].forEach((tag) => {
-		eleventyConfig.addPairedShortcode(`capture_${tag}`, function (content, inline) {
-			if (inline) {
-				return content;
-			}
-
-			if (!_CAPTURES[tag]) {
-				_CAPTURES[tag] = []
-			}
-			
-			if (!_CAPTURES[tag][this.page.inputPath]) {
-				_CAPTURES[tag][this.page.inputPath] = [];
-			}
-
-			_CAPTURES[tag][this.page.inputPath].push(content);
-
-			return ''
-		})
-
-		eleventyConfig.addShortcode(`${tag}s`, function () {
-			if (_CAPTURES[tag] && _CAPTURES[tag][this.page.inputPath]) {
-				return _CAPTURES[tag][this.page.inputPath] ? `<!-- BEGIN PAGE ${tag.toUpperCase()}S -->\n${_CAPTURES[tag][this.page.inputPath].join('\n').trim()}\n<!-- END PAGE ${tag.toUpperCase()}S -->` : '';
-			}
-
-			return ''
-		});
-	});
-
-	/**
 	 * Transforms
 	 */
 	if (environment !== "development") {

@@ -5,7 +5,7 @@
 
 {% capture input %}
 <input class="form-control{% if include.class %} {{ include.class }}{% endif %}"{% if placeholder %} placeholder="{{ placeholder }}"{% endif %} id="datepicker-{{ include.id }}" value="{{ value }}"/>
-{% endcapture %}
+{%- endcapture %}
 
 
 {% if include.inline %}
@@ -34,14 +34,14 @@
 		window.Litepicker && ({% if environment == 'development' %}window.tabler_datepicker["datepicker-{{ include.id }}"] = {% endif %}new Litepicker({
 			element: document.getElementById('datepicker-{{ include.id }}'),
 			buttonText: {
-				previousMonth: `{% capture icon %}{% include "ui/icon.html" icon="chevron-left" %}{% endcapture %}{{ icon | strip }}`,
-				nextMonth: `{% capture icon %}{% include "ui/icon.html" icon="chevron-right" %}{% endcapture %}{{ icon | strip }}`,
+				previousMonth: `{% capture icon %}{% include "ui/icon.html" icon="chevron-left" %}{%- endcapture %}{{ icon | strip }}`,
+				nextMonth: `{% capture icon %}{% include "ui/icon.html" icon="chevron-right" %}{%- endcapture %}{{ icon | strip }}`,
 			},
 			{% if include.inline %}inlineMode: true,{% endif %}
 		}));
 	});
 </script>
-{% endcapture %}
+{%- endcapture %}
 
 {% if include.show-scripts %}
 {{ script }}

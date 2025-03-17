@@ -33,7 +33,7 @@ Integrating the Inline Player into your website is straightforward. Below is a s
 
 Look at the example below to see how the Inline Player works with a YouTube video.
 
-```html example vendors height="500px" libs="plyr"
+{% capture html -%}
 <div id="player-youtube" data-plyr-provider="youtube" data-plyr-embed-id="dQw4w9WgXcQ"></div>
 <script src="{{ cdnUrl }}/dist/libs/plyr/dist/plyr.min.js"></script>
 <script>
@@ -41,13 +41,14 @@ Look at the example below to see how the Inline Player works with a YouTube vide
     window.Plyr && new Plyr("#player-youtube");
   });
 </script>
-```
+{%- endcapture %}
+{% include "example.html" html=html %}
 
 ## Vimeo file
 
 Here’s how to embed a Vimeo video using the Inline Player:
 
-```html example vendors height="500px" libs="plyr"
+{% capture html -%}
 <div id="player-vimeo" data-plyr-provider="vimeo" data-plyr-embed-id="515937365"></div>
 <script src="{{ cdnUrl }}/dist/libs/plyr/dist/plyr.min.js"></script>
 <script>
@@ -55,4 +56,5 @@ Here’s how to embed a Vimeo video using the Inline Player:
     window.Plyr && new Plyr("#player-vimeo");
   });
 </script>
-```
+{%- endcapture %}
+{% include "example.html" html=html %}
