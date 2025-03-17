@@ -109,8 +109,6 @@ export default function (eleventyConfig) {
 	}
 
 	eleventyConfig.addFilter("collection-tree", function (collection) {
-		console.log(collection.slice(0, 1));
-
 		const a = collection.map(item => {
 			return {
 				data: item.data,
