@@ -592,29 +592,34 @@ export default function (eleventyConfig) {
 		});
 	});
 
+	let _CAPTURES = {};
+
+	eleventyConfig.on('beforeBuild', () => {
+		_CAPTURES = {};
+	});
+
 	['script', 'modal'].forEach((tag) => {
 		eleventyConfig.addPairedShortcode(`capture_${tag}`, function (content, inline) {
 			if (inline) {
 				return content;
 			}
 
-			if (!this.page[tag]) {
-				this.page[tag] = []
+			if (!_CAPTURES[tag]) {
+				_CAPTURES[tag] = []
 			}
 			
-			if (!this.page[tag][this.page.url]) {
-				this.page[tag][this.page.url] = [];
+			if (!_CAPTURES[tag][this.page.inputPath]) {
+				_CAPTURES[tag][this.page.inputPath] = [];
 			}
 
-			this.page[tag][this.page.url].push(content);
+			_CAPTURES[tag][this.page.inputPath].push(content);
 
 			return ''
 		})
 
 		eleventyConfig.addShortcode(`${tag}s`, function () {
-
-			if (this.page[tag]) {
-				return this.page[tag][this.page.url] ? `<!-- BEGIN PAGE ${tag.toUpperCase()}S -->\n${this.page[tag][this.page.url].join('\n').trim()}\n<!-- END PAGE ${tag.toUpperCase()}S -->` : '';
+			if (_CAPTURES[tag] && _CAPTURES[tag][this.page.inputPath]) {
+				return _CAPTURES[tag][this.page.inputPath] ? `<!-- BEGIN PAGE ${tag.toUpperCase()}S -->\n${_CAPTURES[tag][this.page.inputPath].join('\n').trim()}\n<!-- END PAGE ${tag.toUpperCase()}S -->` : '';
 			}
 
 			return ''
