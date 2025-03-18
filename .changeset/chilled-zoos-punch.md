@@ -1,5 +1,5 @@
 ---
-"@tabler/core": patch
+"@tabler/core": minor
 ---
 
-Replaced TinyMCE with Hugerte to address license violation
+Replaced TinyMCE with HugeRTE to address license violation
