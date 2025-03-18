@@ -1,0 +1,43 @@
+<div class="input-group{% if include.flat %} input-group-flat{% endif %}{% if include.class %} {{ include.class }}{% endif %}">
+	{% if include.prepend %}
+	<span class="input-group-text">
+		{% if include.prepend == "checkbox" or include.prepend == "radio" %}
+			<input class="form-check-input m-0" type="{{ include.prepend }}" checked>
+		{% else %}
+			{{ include.prepend }}
+		{% endif %}
+	</span>
+	{% endif %}
+	<input type="{{ include.type | default: 'text' }}" class="form-control{% if include.input-class %} {{ include.input-class }}{% endif %}" {% if include.placeholder %} placeholder="{{ include.placeholder }}" {% endif %}{% if include.value %} value="{{ include.value }}"{% endif %} autocomplete="off">
+	{% if include.append %}
+	<span class="input-group-text">
+		{% if include.append == "checkbox" or include.append == "radio" %}
+			<input class="form-check-input m-0" type="{{ include.append }}" checked>
+		{% else %}
+			{{ include.append }}
+		{% endif %}
+	</span>
+	{% endif %}
+	{% if include.append-link %}
+	<span class="input-group-text">
+		<a href="#" class="input-group-link">{{ include.append-link }}</a>
+	</span>
+	{% endif %}
+	{% if include.append-html %}
+	<span class="input-group-text">
+		{{ include.append-html }}
+	</span>
+	{% endif %}
+	{% if include.append-button %}
+	{% assign buttons = include.append-button | split: ',' %}
+	<span class="input-group-text">
+		{% for button in buttons %}
+		{% assign b = button | split: ':' %}
+		{% assign icon = b[0] %}
+		{% assign description = b[1] %}
+
+		<a href="#" class="link-secondary{% unless forloop.first %} ms-2{% endunless %}{% if forloop.index == 3 %} disabled{% endif %}" title="{{ description }}" data-bs-toggle="tooltip">{% include "ui/icon.html" icon=icon %}</a>
+		{% endfor %}
+	</span>
+	{% endif %}
+</div>

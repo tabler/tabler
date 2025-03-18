@@ -1,0 +1,54 @@
+---
+title: Charts
+page-header: Charts
+page-menu: plugins.charts
+page-libs: [apexcharts]
+layout: default
+permalink: charts.html
+---
+
+<div class="row row-cards">
+	<div class="col-lg-12">
+		{% include "parts/charts/activity.html" %}
+	</div>
+
+	<div class="col-12">
+		<div class="card">
+			<div class="card-body">
+				<div class="d-flex">
+					<h3 class="card-title">Social referrals</h3>
+					<div class="ms-auto">
+						{% include "parts/dropdown/days.html" %}
+					</div>
+				</div>
+				{% include "ui/chart.html" chart-id="social-referrals" legend=true %}
+			</div>
+		</div>
+	</div>
+
+	<div class="col-12">
+		<div class="card">
+			<div class="card-body">
+				{% include "ui/chart.html" chart-id="tasks-overview" height=20 %}
+			</div>
+		</div>
+	</div>
+
+	{% for chart in charts %}
+	{% if chart[1].demo %}
+	{% assign chart-id = chart[0] %}
+	<div class="col-lg-6 col-xl-4">
+		<div class="card">
+			{% if chart[1].name %}
+			<div class="card-header">
+				<h3 class="card-title">{{ chart[1].name }}</h3>
+			</div>
+			{% endif %}
+			<div class="card-body">
+				{% include "ui/chart.html" chart-id=chart-id height=15 %}
+			</div>
+		</div>
+	</div>
+	{% endif %}
+	{% endfor %}
+</div>

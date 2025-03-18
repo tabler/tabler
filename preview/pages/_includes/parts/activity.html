@@ -1,0 +1,25 @@
+{% assign limit = include.limit | default: false %}
+
+<div class="divide-y">
+	{% for item in activity %}
+	{% assign person = people[forloop.index] %}
+		<div>
+			<div class="row">
+				<div class="col-auto">
+					{% include "ui/avatar.html" person=person %}
+				</div>
+				<div class="col">
+					<div class="text-truncate">
+						{{ item.text | replace: '%p', person.full_name | replace: '%c', person.company }}
+					</div>
+					<div class="text-secondary">{{ forloop.index | random_date_ago: 4 | timeago }}</div>
+				</div>
+				{% if forloop.index < 5 %}
+				<div class="col-auto align-self-center">
+					<div class="badge bg-primary"></div>
+				</div>
+				{% endif %}
+			</div>
+		</div>
+	{% endfor %}
+</div>

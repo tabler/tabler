@@ -1,0 +1,38 @@
+---
+page-header: Frequently Asked Questions
+page-header-actions: breadcrumb
+page-menu: extra.faq
+layout: default
+permalink: faq.html
+---
+
+<div class="card card-lg">
+	<div class="card-body">
+		<div class="space-y-4">
+			{% for category in faq %}
+			{% assign categories-loop = forloop %}
+			<div>
+				<h2 class="mb-3">{{ categories-loop.index }}. {{ category.name }}</h2>
+				<div id="faq-{{ categories-loop.index }}" class="accordion" role="tablist" aria-multiselectable="true">
+					{% for question in category.questions %}
+					{% assign questions-loop = forloop %}
+					<div class="accordion-item">
+						<button class="accordion-header{% unless questions-loop.index == 1 %} collapsed{% endunless %}" data-bs-toggle="collapse" data-bs-target="#faq-{{ categories-loop.index }}-{{ questions-loop.index }}" role="tab">
+							<h4 class="accordion-header-text">{{ question.question }}</h4>
+						</button>
+						<div id="faq-{{ categories-loop.index }}-{{ questions-loop.index }}" class="accordion-collapse collapse{% if questions-loop.index == 1 %} show{% endif %}" role="tabpanel" data-bs-parent="#faq-{{ categories-loop.index }}">
+							<div class="accordion-body pt-0">
+								<div>
+									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium alias dignissimos dolorum ea est eveniet, excepturi illum in iste iure maiores nemo recusandae rerum saepe sed, sunt totam! Explicabo, ipsa?</p>
+									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium alias dignissimos dolorum ea est eveniet, excepturi illum in iste iure maiores nemo recusandae rerum saepe sed, sunt totam! Explicabo, ipsa?</p>
+								</div>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+</div>

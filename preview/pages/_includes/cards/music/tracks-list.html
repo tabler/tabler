@@ -1,0 +1,38 @@
+<div class="card">
+	<div class="list-group card-list-group">
+		{% for track in tracks limit: 12 %}
+		<div class="list-group-item">
+			<div class="row g-2 align-items-center">
+				<div class="col-auto fs-3">
+					{{ forloop.index }}
+				</div>
+				<div class="col-auto">
+					<img src="{{ page | relative }}/static/tracks/{{ track.album.images[1].path }}" class="rounded" alt="{{ track.name | escape }}" width="40" height="40">
+				</div>
+				<div class="col">
+					{{ track.name }}
+					<div class="text-secondary">
+						{% for artist in track.artists %}
+						{{ artist.name }}{% unless forloop.last %},{% endunless %}
+						{% endfor %}
+					</div>
+				</div>
+				<div class="col-auto text-secondary">
+					{{ track.duration_ms | miliseconds_to_minutes }}
+				</div>
+				<div class="col-auto">
+					<a href="#" class="link-secondary">
+						{% include "ui/switch-icon.html" icon="heart" %}
+					</a>
+				</div>
+				<div class="col-auto lh-1">
+					<div class="dropdown">
+						<a href="#" class="link-secondary" data-bs-toggle="dropdown">{% include "ui/icon.html" icon="dots" %}</a>
+						{% include "ui/dropdown-menu.html" right=true %}
+					</div>
+				</div>
+			</div>
+		</div>
+		{% endfor %}
+	</div>
+</div>

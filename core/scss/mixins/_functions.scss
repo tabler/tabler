@@ -1,0 +1,96 @@
+@function theme-color-lighter($color, $background: #fff) {
+  @return mix($color, $background, 10%);
+}
+
+@function theme-color-darker($color) {
+  @return shade-color($color, 10%);
+}
+
+//
+// Replace all occurrences of a substring within a string.
+//
+@function str-replace($string, $search, $replace: "") {
+  $index: str-index($string, $search);
+
+  @if $index {
+    @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+  }
+
+  @return $string;
+}
+
+@mixin media-breakpoint-down-than($name, $breakpoints: $grid-breakpoints) {
+  $prev: breakpoint-prev($name);
+
+  @if $prev == null {
+    @content;
+  } @else {
+    $max: breakpoint-max($prev, $breakpoints);
+
+    @if $max {
+      @media (max-width: $max) {
+        @content;
+      }
+    } @else {
+      @content;
+    }
+  }
+}
+
+@function breakpoint-prev($name, $breakpoints: $grid-breakpoints, $breakpoint-names: map-keys($breakpoints)) {
+  $n: index($breakpoint-names, $name);
+  @if not $n {
+    @error "breakpoint `#{$name}` not found in `#{$breakpoints}`";
+  }
+  @return if($n > 1, nth($breakpoint-names, $n - 1), null);
+}
+
+//
+// Escape SVG strings.
+//
+@function escape-svg($string) {
+  @if str-index($string, "data:image/svg+xml") {
+    @each $char, $encoded in $escaped-characters {
+      // Do not escape the url brackets
+      @if str-index($string, "url(") == 1 {
+        $string: url("#{str-replace(str-slice($string, 6, -3), $char, $encoded)}");
+      } @else {
+        $string: str-replace($string, $char, $encoded);
+      }
+    }
+  }
+
+  @return $string;
+}
+
+/**
+ * Converts a given value to a percentage string.
+ *
+ * @param {Number} $value - The value to be converted to a percentage.
+ * @return {String} - The percentage representation of the value.
+ */
+@function to-percentage($value) {
+  @return if(unitless($value), percentage($value), $value);
+}
+
+/**
+ * Generates a transparent version of the given color.
+ *
+ * @param {Color} $color - The base color to be made transparent.
+ * @param {Number} $alpha - The level of transparency, ranging from 0 (fully transparent) to 1 (fully opaque). Default is 1.
+ * @return {Color} - The resulting color with the specified transparency.
+ */
+@function color-transparent($color, $alpha: 1, $background: transparent) {
+  @if $alpha == 1 {
+    @return $color;
+  } @else {
+    @return color-mix(in srgb, #{$color} #{to-percentage($alpha)}, $background);
+  }
+}
+
+@function url-svg($svg) {
+  $svg: str-replace($svg, '#', '%23');
+  $svg: str-replace($svg, '<svg', '<svg xmlns="http://www.w3.org/2000/svg"');
+
+  @return url('data:image/svg+xml;charset=UTF-8,#{$svg}');
+}

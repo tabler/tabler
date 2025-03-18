@@ -1,0 +1,49 @@
+<div class="dropdown-menu{% if include.right %} dropdown-menu-end{% endif %}{% if include.show %} dropdown-menu-demo{% endif %}{% if include.arrow %} dropdown-menu-arrow{% endif %}{% if include.class %} {{ include.class }}{% endif %}"{% if include.dark %} data-bs-theme="dark"{% endif %}>
+	{% if include.menu %}
+		{% assign menu = include.menu | split: ',' %}
+
+		{% for item in menu %}
+			{% if item == '|' %}
+				<div class="dropdown-divider"></div>
+			{% elsif item contains 'h:' %}
+				<h3 class="dropdown-header">{{ item | replace: 'h:', '' }}</h3>
+			{% elsif item contains 'a:' %}
+				<a href="#" class="dropdown-item active">{{ item | replace: 'a:', '' }}</a>
+			{% elsif item contains 'd:' %}
+				<a href="#" class="dropdown-item text-danger">{{ item | replace: 'd:', '' }}</a>
+			{% else %}
+				<a href="#" class="dropdown-item">{{ item }}</a>
+			{% endif %}
+		{% endfor %}
+
+
+
+	{% elsif include.check or include.radio %}
+		{% for i in (1..3) %}
+		<label class="dropdown-item"><input class="form-check-input m-0 me-2" type="{% if include.radio %}radio{% else %}checkbox{% endif %}"> Option {{ i }}</label>
+		{% endfor %}
+	{% elsif include.people %}
+		{% for person in people limit: 5 %}
+		<a href="#" class="dropdown-item">{% include "ui/avatar.html" person-id=person.id class="rounded me-2" size="xs" %} {{ person.full_name }}</a>
+		{% endfor %}
+	{% elsif include.type == 'text' %}
+
+	{% else %}
+		{% if include.header %}<span class="dropdown-header">Dropdown header</span>{% endif %}
+		<a class="dropdown-item" href="#">
+			{% if include.icons %}{% include "ui/icon.html" icon="settings" class="dropdown-item-icon" %} {% endif %}
+			Action
+			{% if include.badge %}<span class="badge bg-primary text-primary-fg ms-auto">12</span>{% endif %}
+		</a>
+		<a class="dropdown-item" href="#">
+			{% if include.icons %}{% include "ui/icon.html" icon="edit" class="dropdown-item-icon" %} {% endif %}Another action
+			{% if include.badge %}<span class="badge bg-green ms-auto"></span>{% endif %}
+		</a>
+		{% if include.active %}<a class="dropdown-item active" href="#">{% if include.icons %}{% include "ui/icon.html" icon="activity" class="dropdown-item-icon" %} {% endif %}Active action</a>{% endif %}
+		{% if include.disabled %}<a class="dropdown-item disabled" href="#">{% if include.icons %}{% include "ui/icon.html" icon="user-x" class="dropdown-item-icon" %} {% endif %}Disabled action</a>{% endif %}
+		{% if include.separated %}
+		<div class="dropdown-divider"></div>
+		<a class="dropdown-item" href="#">{% if include.icons %}{% include "ui/icon.html" icon="plus" class="dropdown-icon" class="dropdown-item-icon" %} {% endif %}Separated link</a>
+		{% endif %}
+	{% endif %}
+</div>

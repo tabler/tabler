@@ -1,0 +1,28 @@
+{% assign id = include.id | default: 'default' %}
+{% assign alpha = include.alpha | default: false %}
+{% assign format = include.format | default: false %}
+
+<input type="text" class="form-control d-block{% if include.class %} {{ include.class }}{% endif %}" id="colorpicker-{{ id }}" value="{{ include.value }}" />
+
+{% capture_script %}
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		{% if environment == 'development' %}
+		window.tabler_colorpicker = window.tabler_colorpicker || {};
+		{% endif %}
+		
+		window.Coloris && ({% if environment == 'development' %}window.tabler_colorpicker["colorpicker-{{ id }}"] = {% endif %}Coloris({
+			el:  "#colorpicker-{{ id }}",
+			selectInput: false,
+			alpha: {% if alpha %}true{% else %}false{% endif %},
+			{% if format %}format: "{{ format }}",{% endif %}
+			{% if include['swatches-only'] %}swatchesOnly: true,{% endif %}
+			swatches: [
+				{% for color in site.colors %}
+				"{{ color[1].hex }}",
+				{% endfor %}
+			],
+		}))
+	})
+</script>
+{% endcapture_script %}

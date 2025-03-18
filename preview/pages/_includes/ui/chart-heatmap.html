@@ -1,0 +1,92 @@
+{% assign id = include.chart-id %}
+{% assign class = include.class %}
+{% assign height = include.height | default: data.height | default: 25 %}
+{% assign class = include.class %}
+
+<div id="chart-{{ id }}"{% if class %} class="{{ class }}"{% endif %}></div>
+
+{% capture script %}
+{% assign colors = include.colors | default: 1 %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+	{% if environment == 'development' %}
+	window.tabler_chart = window.tabler_chart || {};
+	{% endif %}
+
+	window.ApexCharts && ({% if environment == 'development' %}window.tabler_chart["chart-{{ include.chart-id }}"] = {% endif %}new ApexCharts(document.getElementById('chart-{{ id }}'), {
+		chart: {
+			height: {{ height | times: 16 }},
+			type: "heatmap",
+			toolbar: {
+				show: false,
+			},
+		},
+		dataLabels: {
+			enabled: {% if include.labels %}true{% else %}false{% endif %}
+		},
+		{% if include.scale %}
+		plotOptions: {
+			heatmap: {
+				enableShades: {% unless include.no-shades %}true{% else %}false{% endunless %},
+				colorScale: {
+					ranges: [{
+						from: 0,
+						to: 20,
+						name: "Low",
+						color: tabler.getColor("green")
+					}, {
+						from: 21,
+						to: 50,
+						name: "Medium",
+						color: tabler.getColor("blue")
+					}, {
+						from: 51,
+						to: 75,
+						name: "High",
+						color: tabler.getColor("yellow")
+					}, {
+						from: 76,
+						to: 100,
+						name: "Extreme",
+						color: tabler.getColor("red")
+					}]
+				}
+			}
+		},
+		{% else %}
+		colors: [{% if include.color %}'{{ include.color }}'{% else %}{% for color in site.colors limit: colors %}tabler.getColor("{{ color[0] }}"), {% endfor %}{% endif %}],
+		{% endif %}
+		series: [
+			{% for i in site.monthsShort limit: 12 %}
+			{% assign month-i = forloop.index %}
+			{ name: "{{ i }}", data: [{% for j in (1..16) %}{x: '{{ j }}', y: {{ j | random_number: 0, 100  | plus: month-i | random_number: 0, 100 }}},{% endfor %}] },
+			{% endfor %}
+		],
+		xaxis: {
+			type: "category"
+		},
+		legend: {
+			{% if include.legend %}
+			show: true,
+			position: 'bottom',
+			offsetY: 8,
+			markers: {
+				width: 10,
+				height: 10,
+				radius: 100,
+			},
+			itemMargin: {
+				horizontal: 8,
+			},
+			{% else %}
+			show: false,
+			{% endif %}
+		},
+	})).render();
+});
+</script>
+{% endcapture %}
+
+{% capture_script %}
+{{ script }}
+{% endcapture_script %}

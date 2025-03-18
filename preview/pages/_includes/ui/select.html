@@ -1,0 +1,102 @@
+{% assign id = include.id | default: include.key %}
+{% assign value = include.value %}
+
+{% if id %}
+{% assign key = include.key | default: 'people' %}
+{% assign data = selects[key] %}
+
+<select type="text" class="form-select{% if include.class %} {{ include.class }}{% endif %}{% if include.state %} is-{{ include.state }}{% endif %}"{% if include.placeholder %} placeholder="{{ include.placeholder }}"{% endif %} id="select-{{ id }}" value="{{ value }}"{% if include.multiple or data.multiple %} multiple{% endif %}>
+	{% if include.values %}
+		{% assign values = include.values | split: ',' %}
+
+		{% for value in values %}
+			<option value="{{ value }}">{{ value }}</option>
+		{% endfor %}
+	{% else %}
+		
+		{% assign options = data.options %}
+
+		{% if data.data == 'people' %}
+			{% for person in people limit: 20 %}
+				<option value="{{ person.id }}"{% if include.indicator == 'avatar' %} data-custom-properties="{% capture indicator %}{% include "ui/avatar.html" size='xs' person=person %}{% endcapture %}{{ indicator | strip | escape }}"{% endif %}>{{ person.full_name }}</option>
+			{% endfor %}
+
+		{% elsif data.data == 'optgroup' %}
+			{% for group in options %}
+	 			<optgroup label="{{ group.title }}">
+					{% for option in group.options %}
+					<option value="{{ option }}">{{ option }}</option>
+					{% endfor %}
+				</optgroup>
+			{% endfor %}
+
+		{% else %}
+			{% for option in options %}
+				{% if option.first %}
+					{% if include.indicator == 'flag' %}
+						{% capture indicator-html %}
+							{% assign country = option[1].flag %}
+							{% include "ui/flag.html" size="xs" flag=country %}
+						{% endcapture %}
+					{% elsif include.indicator == 'label' %}
+						{% capture indicator-html %}
+							{% assign label = option[1].label %}
+							<span class="badge bg-primary-lt">{{ label }}</span>
+						{% endcapture %}
+					{% endif %}
+					<option value="{{ option[0] }}"{% if include.indicator %} data-custom-properties="{{ indicator-html | strip | escape }}"{% endif %}{% if option[1].selected %} selected{% endif %}>{{ option[1].name }}</option>
+				{% else %}
+					<option value="{{ option }}">{{ option }}</option>
+				{% endif %}
+			{% endfor %}
+		{% endif %}
+	{% endif %}
+</select>
+
+
+{% capture script %}
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		{% if environment == 'development' %}
+		window.tabler_select = window.tabler_select || {};
+		{% endif %}
+
+		var el;
+		window.TomSelect && ({% if environment == 'development' %}window.tabler_select["select-{{ id }}"] = {% endif %}new TomSelect(el = document.getElementById('select-{{ id }}'), {
+			copyClassesToDropdown: false,
+			dropdownParent: 'body',
+
+			{% unless include.show-search %}
+			controlInput: '<input>',
+			{% endunless %}
+
+			render:{
+				item: function(data,escape) {
+					if( data.customProperties ){
+						return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+					}
+					return '<div>' + escape(data.text) + '</div>';
+				},
+				option: function(data,escape){
+					if( data.customProperties ){
+						return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+					}
+					return '<div>' + escape(data.text) + '</div>';
+				},
+			},
+		}));
+
+	});
+</script>
+{% endcapture %}
+
+
+{% if include.show-scripts %}
+{{ script }}
+{% else %}
+{% capture_script %}
+{{ script }}
+{% endcapture_script %}
+{% endif %}
+
+{% endif %}

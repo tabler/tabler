@@ -1,0 +1,29 @@
+---
+layout: default
+page-libs: [google-maps]
+layout-wrapper-full: true
+layout-sidebar: true
+layout-hide-topbar: true
+page-menu: plugins.map-fullsize 
+permalink: map-fullsize.html
+---
+
+{% assign map-id = 'google' %}
+
+<div class="map flex-fill" id="map-{{ map-id }}"></div>
+
+{% capture_script %}
+<script>
+	let map;
+	{% if environment == 'development' %}window.tabler_map = window.tabler_map || {};{% endif %}
+
+	document.addEventListener("DOMContentLoaded", function() {
+		map = new google.maps.Map(document.getElementById("map-{{ map-id }}"), {
+			center: { lat: -34.397, lng: 150.644 },
+			zoom: 8,
+		});
+
+		{% if environment == 'development' %}window.tabler_map["map-{{ map-id }}"] = map;{% endif %}
+	});
+</script>
+{% endcapture_script %}

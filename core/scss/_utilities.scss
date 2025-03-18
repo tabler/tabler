@@ -1,0 +1,135 @@
+$border-values: (
+  null: var(--#{$prefix}border-width) var(--#{$prefix}border-style)
+    var(--#{$prefix}border-color-translucent),
+  wide: $border-width-wide var(--#{$prefix}border-style)
+    var(--#{$prefix}border-color-translucent),
+  0: 0,
+);
+
+$utilities-border-colors: map-loop((
+  "red": red,
+  "green": green,
+), rgba-css-var, "$key", "border") !default;
+
+//Utilities
+$utilities: (
+  "object": (
+    property: object-fit,
+    class: object,
+    values: (
+      contain: contain,
+      cover: cover,
+      fill: fill,
+      scale-down: scale-down,
+      none: none,
+    ),
+  ),
+  "cursor": (
+    property: cursor,
+    class: cursor,
+    values: (
+      auto: auto,
+      pointer: pointer,
+      move: move,
+      not-allowed: not-allowed,
+      zoom-in: zoom-in,
+      zoom-out: zoom-out,
+      default: default,
+      none: none,
+      help: help,
+      progress: progress,
+      wait: wait,
+      text: text,
+      v-text: vertical-text,
+      grab: grab,
+      grabbing: grabbing,
+      crosshair: crosshair,
+    ),
+  ), 
+  "border": (
+    property: border,
+    values: $border-values,
+  ),
+  "border-top": (
+    property: border-top,
+    values: $border-values,
+  ),
+  "border-end": (
+    class: border-end,
+    property: border-right,
+    values: $border-values,
+  ),
+  "border-bottom": (
+    property: border-bottom,
+    values: $border-values,
+  ),
+  "border-start": (
+    class: border-start,
+    property: border-left,
+    values: $border-values,
+  ),
+  "border-x": (
+    class: border-x,
+    property: border-left border-right,
+    values: $border-values,
+  ),
+  "border-y": (
+    class: border-y,
+    property: border-top border-bottom,
+    values: $border-values,
+  ),
+  "width": (
+    property: width,
+    class: w,
+    values: $size-values,
+  ),
+  "height": (
+    property: height,
+    class: h,
+    values: $size-values,
+  ),
+  "columns": (
+    property: columns,
+    class: columns,
+    responsive: true,
+    values: 2 3 4,
+  ),
+  "bg-pattern": (
+    property: background,
+    class: bg-pattern,
+    values: (
+      transparent: #{url-svg(
+        '<svg width="16" height="16" viewBox="0 0 16 16"><rect x="0" y="0" width="8" height="8" fill="rgba(130, 130, 130, .1)" /><rect x="8" y="8" width="8" height="8" fill="rgba(130, 130, 130, .1)" /></svg>'
+      )} repeat center/16px 16px,
+    )
+  ),
+  "bg-gradient": (
+    property: background,
+    class: bg-gradient,
+    values: (
+      null: linear-gradient(var(--#{$prefix}gradient-direction, to right), var(--#{$prefix}gradient-stops, var(--#{$prefix}gradient-from, transparent), var(--#{$prefix}gradient-to, transparent))) no-repeat,
+    ),
+  ),
+  "bg-gradient-direction": (
+    property: --#{$prefix}gradient-direction,
+    class: bg-gradient,
+    values: (
+      to-t: to top,
+      to-te: to top right,
+      to-e: to right,
+      to-be: to bottom right,
+      to-b: to bottom,
+      to-bs: to bottom left,
+      to-s: to left,
+      to-ts: to top left,
+    ),
+  ),
+  "table-layout": (
+    property: table-layout,
+    class: table,
+    values: (
+      auto: auto,
+      fixed: fixed,
+    ),
+  ),
+) !default;

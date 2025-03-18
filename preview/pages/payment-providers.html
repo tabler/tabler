@@ -1,0 +1,58 @@
+---
+title: Payment Providers
+page-header: Payment Providers
+page-menu: addons.payments
+layout: default
+permalink: payment-providers.html
+---
+
+<div class="row row-cards">
+	<div class="col-12">
+		<div class="card">
+			<div class="card-header">
+				<div class="card-title">Light version</div>
+			</div>
+			<div class="card-body">
+				<div class="row g-5 row-cols-5">
+					{% for provider in payments %}
+					<div class="col">
+						<div class="row">
+							<div class="col-auto">{% include "ui/payment.html" payment=provider.logo %}</div>
+							<div class="col">
+								<strong class="d-block">{{ provider.name }}</strong>
+								<div class="mt-1">
+									<code>{{ provider.logo }}</code>
+								</div>
+							</div>
+						</div>
+					</div>			
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-12">
+		<div class="card">
+			<div class="card-header">
+				<div class="card-title">Dark version</div>
+			</div>
+			<div class="card-body">
+				<div class="row g-5 row-cols-5">
+					{% for provider in payments %}
+					<div class="col">
+						<div class="row">
+							<div class="col-auto">{% include "ui/payment.html" payment=provider.logo dark=true %}</div>
+							<div class="col">
+								<strong class="d-block">{{ provider.name }}</strong>
+								<div class="mt-1">
+									<code>{{ provider.logo }}-dark</code>
+								</div>
+							</div>
+						</div>
+					</div>			
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

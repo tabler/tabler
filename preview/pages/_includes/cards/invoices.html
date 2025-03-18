@@ -1,0 +1,76 @@
+<div class="card">
+	<div class="card-header">
+		<h3 class="card-title">Invoices</h3>
+	</div>
+	<div class="card-body border-bottom py-3">
+
+		<div class="d-flex">
+			<div class="text-secondary">
+				Show
+				<div class="mx-2 d-inline-block">
+					<input type="text" class="form-control form-control-sm" value="8" size="3" aria-label="Invoices count">
+				</div>
+				entries
+			</div>
+
+			<div class="ms-auto text-secondary">
+				Search:
+				<div class="ms-2 d-inline-block">
+					<input type="text" class="form-control form-control-sm" aria-label="Search invoice">
+				</div>
+			</div>
+		</div>
+
+	</div>
+	<div class="table-responsive">
+		<table class="table table-selectable card-table table-vcenter text-nowrap datatable">
+			<thead>
+			<tr>
+				<th class="w-1"><input class="form-check-input m-0 align-middle" type="checkbox" aria-label="Select all invoices"></th>
+				<th class="w-1">No. {% include "ui/icon.html" icon="chevron-up" class="icon-sm icon-thick" %}</th>
+				<th>Invoice Subject</th>
+				<th>Client</th>
+				<th>VAT No.</th>
+				<th>Created</th>
+				<th>Status</th>
+				<th>Price</th>
+				<th></th>
+			</tr>
+			</thead>
+
+			<tbody>
+			{% for invoice in invoices limit: 8 %}
+			<tr>
+				<td><input class="form-check-input m-0 align-middle table-selectable-check" type="checkbox" aria-label="Select invoice"></td>
+				<td><span class="text-secondary">00{{ forloop.index | plus: 1400 }}</span></td>
+				<td><a href="invoice.html" class="text-reset" tabindex="-1">{{ invoice.name }}</a></td>
+				<td>
+					{% include "ui/flag.html" flag=invoice.country size="xs" class="me-2" %}{{ invoice.client }}
+				</td>
+				<td>
+					{{ invoice.vat-no }}
+				</td>
+				<td>
+					{{ invoice.date }}
+				</td>
+				<td>
+					<span class="badge bg-{{ invoice.status }} me-1"></span> {{ invoice.status-name }}
+				</td>
+				<td>{{ invoice.price }}</td>
+
+				<td class="text-end">
+					<span class="dropdown">
+						<button class="btn dropdown-toggle align-text-top" data-bs-boundary="viewport" data-bs-toggle="dropdown">Actions</button>
+						{% include "ui/dropdown-menu.html" right=true %}
+					</span>
+				</td>
+			</tr>
+			{% endfor %}
+			</tbody>
+		</table>
+	</div>
+	<div class="card-footer d-flex align-items-center">
+		<p class="m-0 text-secondary">Showing <span>1</span> to <span>8</span> of <span>16</span> entries</p>
+		{% include "ui/pagination.html" class="m-0 ms-auto" %}
+	</div>
+</div>

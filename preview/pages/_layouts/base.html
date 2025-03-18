@@ -1,0 +1,53 @@
+<!doctype html>
+{% include "layout/banner.html" %}
+{% assign title = page.title | default: layout.title %}
+<html lang="en"{% if layout-rtl %} dir="rtl" {% endif %}>
+<head>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+	<meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+
+	<title>{% if title %}{{ title }} - {% endif %}{% if site.title %}{{ site.title }} - {% endif %}{{ site.description }}</title>
+
+	{% if environment == 'preview' %}
+		{% include "layout/analytics.html" %}
+
+		<meta name="msapplication-TileColor" content="{{ site.themeColor }}"/>
+		<meta name="theme-color" content="{{ site.themeColor }}"/>
+
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+		<meta name="apple-mobile-web-app-capable" content="yes"/>
+		<meta name="mobile-web-app-capable" content="yes"/>
+		<meta name="HandheldFriendly" content="True"/>
+		<meta name="MobileOptimized" content="320"/>
+
+		<link rel="icon" href="{{ page | relative }}/favicon.ico" type="image/x-icon"/>
+		<link rel="shortcut icon" href="{{ page | relative }}/favicon.ico" type="image/x-icon"/>
+
+		<meta name="description" content="{{ page.description | default: 'Tabler comes with tons of well-designed components and features. Start your adventure with Tabler and make your dashboard great again. For free!' | escape }}"/>
+
+		{% include "layout/og.html" %}
+	{% endif %}
+
+	{% include "layout/css.html" %}
+
+	<!-- BEGIN CUSTOM FONT -->
+	<style>
+		@import url('https://rsms.me/inter/inter.css');
+	</style>
+	<!-- END CUSTOM FONT -->
+</head>
+
+{% assign layout-dark = layout-dark | default: site.layoutDark %}
+<body{% if layout.body-class or body-class %} class="{% if layout.body-class %} {{ layout.body-class }}{% endif %}{% if body-class %} {{ body-class }}{% endif %}"{% endif %}>
+	<!-- BEGIN DEMO THEME SCRIPT -->
+	<script src="{{ page | relative }}/preview/js/demo-theme{% if environment != 'development' %}.min{% endif %}.js{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}"></script>
+	<!-- END DEMO THEME SCRIPT -->
+
+	{{ content }}
+
+	{% modals %}
+
+	{% include "layout/js.html" %}
+</body>
+</html>

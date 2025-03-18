@@ -1,0 +1,37 @@
+{% assign id = include.map-id %}
+{% assign data = maps[id] %}
+
+{% if data %}
+	<div class="ratio ratio-{{ data.ratio | default: include.ratio | default: '16x9' }}">
+		<div>
+			<div id="map-{{ id }}" class="w-100 h-100{% if data.card %} rounded{% endif %}"></div>
+		</div>
+	</div>
+
+	{% capture_script %}
+	<script>
+		{% if environment == 'development' %}window.tabler_map = window.tabler_map || {};{% endif %}
+
+		document.addEventListener("DOMContentLoaded", function() {
+			mapboxgl.accessToken = '{{ site.mapboxKey }}';
+			var map = new mapboxgl.Map({
+				container: 'map-{{ id }}',
+				style: 'mapbox://styles/mapbox/{{ data.style | default: "streets-v11" }}',
+				zoom: {{ data.zoom | default: 13 }},
+				{% if data.center %}
+				center: [{{ data.center[1] }}, {{ data.center[0] }}],
+				{% else %}
+				center: [13.404900, 52.518827],
+				{% endif %}
+			});
+
+			{% for marker in data.markers %}
+
+			new mapboxgl.Marker({ color: tabler.getColor("{{ 'primary' }}") }).setLngLat([{{ marker.center[1] }}, {{ marker.center[0] }}]).addTo(map);
+			{% endfor %}
+
+			{% if environment == 'development' %}window.tabler_map["map-{{ map-id }}"] = map;{% endif %}
+		});
+	</script>
+	{% endcapture_script %}
+{% endif %}

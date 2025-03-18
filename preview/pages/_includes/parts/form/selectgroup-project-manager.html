@@ -1,0 +1,24 @@
+<div class="mb-3">
+	<label class="form-label">Project Manager</label>
+
+	<div class="form-selectgroup form-selectgroup-boxes d-flex flex-column">
+		{% for person in people limit: 5 %}
+		<label class="form-selectgroup-item flex-fill">
+			<input type="checkbox" name="form-project-manager[]" value="{{ person.id }}" class="form-selectgroup-input" {%
+			       if forloop.index== 2 %} checked{% endif %}>
+			<div class="form-selectgroup-label d-flex align-items-center p-3">
+				<div class="me-3">
+					<span class="form-selectgroup-check"></span>
+				</div>
+				<div class="form-selectgroup-label-content d-flex align-items-center">
+					{% include "ui/avatar.html" person=person class="me-3" %}
+					<div>
+						<div class="font-weight-medium">{{ person.full_name }}</div>
+						<div class="text-secondary">{{ person.job_title }}</div>
+					</div>
+				</div>
+			</div>
+		</label>
+		{% endfor %}
+	</div>
+</div>

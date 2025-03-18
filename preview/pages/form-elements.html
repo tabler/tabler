@@ -1,0 +1,426 @@
+---
+title: Form elements
+page-header: Form elements
+page-menu: forms
+page-libs: [nouislider, autosize, tabler-flags, tabler-payments, litepicker, tom-select, imask]
+layout: default
+permalink: form-elements.html
+---
+
+<div class="row row-cards">
+	<div class="col-12">
+		<form action="https://httpbin.org/post" method="post" class="card">
+			<div class="card-header">
+				<h4 class="card-title">Form elements</h4>
+			</div>
+			<div class="card-body">
+				<div class="row g-5">
+					<div class="col-xl-4">
+						<div class="row">
+							<div class="col-md-6 col-xl-12">{% include "forms/form-elements-1.html" %}</div>
+							<div class="col-md-6 col-xl-12">{% include "forms/form-elements-2.html" %}</div>
+						</div>
+					</div>
+					<div class="col-xl-4">
+						<div class="row">
+							<div class="col-md-6 col-xl-12">{% include "forms/form-elements-3.html" %}</div>
+							<div class="col-md-6 col-xl-12">{% include "forms/form-elements-4.html" %}</div>
+						</div>
+					</div>
+					<div class="col-xl-4">
+						<div class="row">
+							<div class="col-md-6 col-xl-12">{% include "forms/form-elements-5.html" %}</div>
+							<div class="col-md-6 col-xl-12">{% include "forms/form-elements-6.html" %}</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="card-footer text-end">
+				<div class="d-flex">
+					<a href="#" class="btn btn-link">Cancel</a>
+					<button type="submit" class="btn btn-primary ms-auto">Send data</button>
+				</div>
+			</div>
+		</form>
+	</div>
+
+	<div class="col-md-6">
+		<div class="card">
+			<div class="card-body">
+				<h3 class="card-title">Project ID</h3>
+				<p class="card-subtitle">Used when interacting with the API.</p>
+				{% include "ui/form/input-icon.html" icon="files" value="prj_5ae74426fe935327a8fa178b07d84ad9" readonly=true
+				%}
+			</div>
+			<div class="card-footer">
+				<div class="row align-items-center">
+					<div class="col">Learn more about <a href="#">Project ID</a></div>
+					<div class="col-auto">
+						{% include "ui/button.html" text="Save" color="primary" %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		<div class="card">
+			<div class="card-body">
+				<h3 class="card-title">Node.js Version</h3>
+				<p class="card-subtitle">The version of Node.js that is used in the Build Step and for Serverless Functions.
+					A new Deployment is required for your changes to take effect.</p>
+				<select class="form-select">
+					<option>14.x</option>
+					<option>12.x</option>
+				</select>
+			</div>
+			<div class="card-footer">
+				Learn more about <a href="#">Node.js Version</a>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-md-6">
+		{% include "cards/form/layout.html" %}
+	</div>
+
+	<div class="col-md-6">
+		{% include "cards/form/layout.html" horizontal=true title="Horizontal form" %}
+	</div>
+
+	<div class="col-lg-4">
+		<div class="row row-cards">
+			<div class="col-12">
+				<div class="card">
+					<div class="card-header">
+						<h3 class="card-title">Input mask</h3>
+					</div>
+					<div class="card-body">
+						<div class="mb-3">
+							<label class="form-label">Date</label>
+							{% include "ui/form/input-mask.html" mask="00/00/0000" visible=true %}
+						</div>
+						<div class="mb-3">
+							<label class="form-label">Hour</label>
+							{% include "ui/form/input-mask.html" mask="00:00:00" visible=true %}
+						</div>
+						<div class="mb-3">
+							<label class="form-label">Date &amp; Hour</label>
+							{% include "ui/form/input-mask.html" mask="00/00/0000 00:00:00" visible=true %}
+						</div>
+						<div class="mb-3">
+							<label class="form-label">ZIP Code</label>
+							{% include "ui/form/input-mask.html" mask="00000-000" visible=true %}
+						</div>
+						<div class="mb-3">
+							<label class="form-label">Money</label>
+							{% include "ui/form/input-mask.html" mask="000.000.000.000.000,00" visible=true reverse=true %}
+						</div>
+						<div class="mb-3">
+							<label class="form-label">Telephone</label>
+							{% include "ui/form/input-mask.html" mask="0000-0000" visible=true %}
+						</div>
+						<div class="mb-3">
+							<label class="form-label">Telephone with Code Area</label>
+							{% include "ui/form/input-mask.html" mask="(00) 0000-0000" visible=true %}
+						</div>
+						<div class="mb-3">
+							<label class="form-label">IP Address</label>
+							{% include "ui/form/input-mask.html" mask="099.099.099.099" placeholder="000.000.000.000" visible=true %}
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col-12">
+				<form class="card">
+					<div class="card-header">
+						<h3 class="card-title">My Profile</h3>
+					</div>
+					<div class="card-body">
+						<div class="mb-3">
+							<div class="row">
+								<div class="col-auto">
+									{% include "ui/avatar.html" person-id=3 size="md" %}
+								</div>
+								<div class="col">
+									<div class="mb-3">
+										<label class="form-label">Email-Address</label>
+										<input class="form-control" placeholder="your-email@domain.com">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="mb-3">
+							<label class="form-label">Bio</label>
+							<textarea class="form-control"
+							          rows="5">Big belly rude boy, million dollar hustler. Unemployed.</textarea>
+						</div>
+						<div class="mb-3">
+							<label class="form-label">Email-Address</label>
+							<input class="form-control" placeholder="your-email@domain.com">
+						</div>
+						<div class="mb-3">
+							<label class="form-label">Password</label>
+							<input type="password" class="form-control" value="password">
+						</div>
+					</div>
+					<div class="card-footer text-end">
+						{% include "ui/button.html" text="Save" color="primary" %}
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+
+	<div class="col-lg-8">
+		<div class="row row-cards">
+			<div class="col-12">
+				<form class="card">
+					<div class="card-body">
+						<h3 class="card-title">Edit Profile</h3>
+						<div class="row row-cards">
+							<div class="col-md-5">
+								<div class="mb-3">
+									<label class="form-label">Company</label>
+									<input type="text" class="form-control" disabled="" placeholder="Company"
+									       value="Creative Code Inc.">
+								</div>
+							</div>
+							<div class="col-sm-6 col-md-3">
+								<div class="mb-3">
+									<label class="form-label">Username</label>
+									<input type="text" class="form-control" placeholder="Username" value="michael23">
+								</div>
+							</div>
+							<div class="col-sm-6 col-md-4">
+								<div class="mb-3">
+									<label class="form-label">Email address</label>
+									<input type="email" class="form-control" placeholder="Email">
+								</div>
+							</div>
+							<div class="col-sm-6 col-md-6">
+								<div class="mb-3">
+									<label class="form-label">First Name</label>
+									<input type="text" class="form-control" placeholder="Company" value="Chet">
+								</div>
+							</div>
+							<div class="col-sm-6 col-md-6">
+								<div class="mb-3">
+									<label class="form-label">Last Name</label>
+									<input type="text" class="form-control" placeholder="Last Name" value="Faker">
+								</div>
+							</div>
+							<div class="col-md-12">
+								<div class="mb-3">
+									<label class="form-label">Address</label>
+									<input type="text" class="form-control" placeholder="Home Address"
+									       value="Melbourne, Australia">
+								</div>
+							</div>
+							<div class="col-sm-6 col-md-4">
+								<div class="mb-3">
+									<label class="form-label">City</label>
+									<input type="text" class="form-control" placeholder="City" value="Melbourne">
+								</div>
+							</div>
+							<div class="col-sm-6 col-md-3">
+								<div class="mb-3">
+									<label class="form-label">Postal Code</label>
+									<input type="test" class="form-control" placeholder="ZIP Code">
+								</div>
+							</div>
+							<div class="col-md-5">
+								<div class="mb-3">
+									<label class="form-label">Country</label>
+									<select class="form-control form-select">
+										<option value="">Germany</option>
+									</select>
+								</div>
+							</div>
+							<div class="col-md-12">
+								<div class="mb-3 mb-0">
+									<label class="form-label">About Me</label>
+									<textarea rows="5" class="form-control" placeholder="Here can be your description"
+									          value="Mike">Oh so, your weak rhyme
+You doubt I'll bother, reading into it
+I'll probably won't, left to my own devices
+But that's the difference in our opinions.</textarea>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="card-footer text-end">
+						<button type="submit" class="btn btn-primary">Update Profile</button>
+					</div>
+				</form>
+			</div>
+			<div class="col-12">
+				<div class="card">
+					<div class="card-header">
+						<h3 class="card-title">HTTP Request</h3>
+					</div>
+					<div class="card-body">
+						<div class="row row-cards">
+							<div class="mb-3 col-sm-4 col-md-2">
+								<label class="form-label required">Method</label>
+								<select class="form-select">
+									<option value="GET">GET</option>
+									<option value="POST">POST</option>
+									<option value="PUT">PUT</option>
+									<option value="HEAD">HEAD</option>
+									<option value="DELETE">DELETE</option>
+									<option value="PATCH">PATCH</option>
+								</select>
+							</div>
+							<div class="mb-3 col-sm-8 col-md-10">
+								<label class="form-label required">URL</label>
+								<input name="url" type="text" class="form-control"
+								       value="https://content.googleapis.com/discovery/v1/apis/surveys/v2/rest">
+							</div>
+						</div>
+						<div class="form-label">Assertions</div>
+						<div class="table-responsive">
+							<table class="table mb-0">
+								<thead>
+								<tr>
+									<th>Source</th>
+									<th>Property</th>
+									<th>Comparison</th>
+									<th>Target</th>
+								</tr>
+								</thead>
+								<tbody>
+								<tr>
+									<td>
+										<select class="form-select">
+											<option value="STATUS_CODE" selected="">Status code</option>
+											<option value="JSON_BODY">JSON body</option>
+											<option value="HEADERS">Headers</option>
+											<option value="TEXT_BODY">Text body</option>
+											<option value="RESPONSE_TIME">Response time</option>
+										</select>
+									</td>
+									<td>
+										<input type="text" class="form-control"></td>
+									<td>
+										<select class="form-select">
+											<option value="EQUALS" selected="">Equals</option>
+											<option value="NOT_EQUALS">Not equals</option>
+											<option value="HAS_KEY">Has key</option>
+											<option value="NOT_HAS_KEY">Not has key</option>
+											<option value="HAS_VALUE">Has value</option>
+											<option value="NOT_HAS_VALUE">Not has value</option>
+											<option value="IS_EMPTY">Is empty</option>
+											<option value="NOT_EMPTY">Is not empty</option>
+											<option value="GREATER_THAN">Greater than</option>
+											<option value="LESS_THAN">Less than</option>
+										</select>
+									</td>
+									<td>
+										<input type="text" class="form-control" value="200">
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<select class="form-select">
+											<option value="STATUS_CODE">Status code</option>
+											<option value="JSON_BODY" selected="">JSON body</option>
+											<option value="HEADERS">Headers</option>
+											<option value="TEXT_BODY">Text body</option>
+											<option value="RESPONSE_TIME">Response time</option>
+										</select>
+									</td>
+									<td>
+										<input type="text" class="form-control" value="parameters.alt.type">
+									</td>
+									<td>
+										<select class="form-select">
+											<option value="EQUALS">Equals</option>
+											<option value="NOT_EQUALS">Not equals</option>
+											<option value="HAS_KEY">Has key</option>
+											<option value="NOT_HAS_KEY">Not has key</option>
+											<option value="HAS_VALUE" selected="">Has value</option>
+											<option value="NOT_HAS_VALUE">Not has value</option>
+											<option value="IS_EMPTY">Is empty</option>
+											<option value="NOT_EMPTY">Is not empty</option>
+											<option value="GREATER_THAN">Greater than</option>
+											<option value="LESS_THAN">Less than</option>
+										</select>
+									</td>
+									<td>
+										<input type="text" class="form-control" value="string">
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<select class="form-select">
+											<option value="STATUS_CODE">Status code</option>
+											<option value="JSON_BODY">JSON body</option>
+											<option value="HEADERS">Headers</option>
+											<option value="TEXT_BODY">Text body</option>
+											<option value="RESPONSE_TIME" selected="">Response time</option>
+										</select>
+									</td>
+									<td>
+										<input type="text" class="form-control"></td>
+									<td>
+										<select class="form-select">
+											<option value="EQUALS">Equals</option>
+											<option value="NOT_EQUALS">Not equals</option>
+											<option value="HAS_KEY">Has key</option>
+											<option value="NOT_HAS_KEY">Not has key</option>
+											<option value="HAS_VALUE">Has value</option>
+											<option value="NOT_HAS_VALUE">Not has value</option>
+											<option value="IS_EMPTY">Is empty</option>
+											<option value="NOT_EMPTY">Is not empty</option>
+											<option value="GREATER_THAN">Greater than</option>
+											<option value="LESS_THAN" selected="">Less than</option>
+										</select>
+									</td>
+									<td>
+										<input type="text" class="form-control" value="500">
+									</td>
+								</tr>
+								<tr>
+									<td>
+										<select class="form-select">
+											<option value="STATUS_CODE">Status code</option>
+											<option value="JSON_BODY">JSON body</option>
+											<option value="HEADERS" selected="">Headers</option>
+											<option value="TEXT_BODY">Text body</option>
+											<option value="RESPONSE_TIME">Response time</option>
+										</select>
+									</td>
+									<td>
+										<input type="text" class="form-control" value="content-type">
+									</td>
+									<td>
+										<select class="form-select">
+											<option value="EQUALS" selected="">Equals</option>
+											<option value="NOT_EQUALS">Not equals</option>
+											<option value="HAS_KEY">Has key</option>
+											<option value="NOT_HAS_KEY">Not has key</option>
+											<option value="HAS_VALUE">Has value</option>
+											<option value="NOT_HAS_VALUE">Not has value</option>
+											<option value="IS_EMPTY">Is empty</option>
+											<option value="NOT_EMPTY">Is not empty</option>
+											<option value="GREATER_THAN">Greater than</option>
+											<option value="LESS_THAN">Less than</option>
+										</select>
+									</td>
+									<td>
+										<input type="text" class="form-control" value="application/json; charset=UTF-8">
+									</td>
+								</tr>
+								</tbody>
+							</table>
+						</div>
+					</div>
+					<div class="card-footer text-end">
+						<button type="submit" class="btn btn-primary">Make request</button>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

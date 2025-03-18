@@ -1,0 +1,20 @@
+---
+title: Lightbox
+page-header: Lightbox
+page-libs: [fslightbox]
+page-menu: plugins.lightbox
+layout: default
+permalink: lightbox.html
+---
+
+{% assign filtered-photos = photos | where: "horizontal", true %}
+
+<div class="row row-cols-3 row-cols-md-4 row-cols-lg-6 g-3">
+	{% for photo in filtered-photos %}
+	<div class="col">
+		<a data-fslightbox="gallery" href="{{ page | relative }}/static/photos/{{ photo.file }}">
+			{% include "ui/photo.html" id=forloop.index0 class="rounded border" ratio="1x1" %}
+		</a>
+	</div>
+	{% endfor %}
+</div>

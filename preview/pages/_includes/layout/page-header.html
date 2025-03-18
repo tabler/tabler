@@ -1,0 +1,44 @@
+<!-- BEGIN PAGE HEADER -->
+{% assign page-header = page-header | default: layout.page-header %}
+{% assign description = page-header-description | default: layout.page-header-description %}
+{% assign actions = page-header-actions | default: layout.page-header-actions %}
+{% assign pretitle = page-header-pretitle | default: layout.page-header-pretitle %}
+{% assign class = page-header-class | default: layout.page-header-class %}
+{% assign page-icon = page-header-icon | default: layout.page-header-icon %}
+
+{% if page-header-file %}
+	{% include "layout/headers/{{ page-header-file }}.html" %}
+{% elsif page-header %}
+<div class="page-header{% if class %} {{ class }}{% endif %} d-print-none{% if layout-navbar-overlap and layout-navbar-dark %} text-white{% endif %}">
+	<div class="container-xl">
+		<div class="row g-2 align-items-center">
+			<div class="col">
+				{% if pretitle %}
+				<!-- Page pre-title -->
+				<div class="page-pretitle">
+					{{ pretitle }}
+				</div>
+				{% endif %}
+				<h2 class="page-title">
+					{% if page-icon %}
+						{% include "ui/icon.html" icon=page-icon %}
+					{% endif %}
+					{{ page-header }}
+				</h2>
+
+				{% if description %}
+					<div class="text-secondary mt-1">{{ description }}</div>
+				{% endif %}
+			</div>
+
+			{% if actions %}
+				<!-- Page title actions -->
+				<div class="col-auto ms-auto d-print-none">
+					{% include "layout/header-actions/{{ actions }}.html" %}
+				</div>
+			{% endif %}
+		</div>
+	</div>
+</div>
+{% endif %}
+<!-- END PAGE HEADER -->

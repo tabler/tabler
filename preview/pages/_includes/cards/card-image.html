@@ -1,0 +1,20 @@
+{% assign img-id = include.img-id | default: 1 %}
+<div class="card">
+	<div class="row row-0">
+		<div class="col-3{% if include.right %} order-md-last{% endif %}">
+			{% assign class = "w-100 h-100 object-cover" %}
+			{% if include.right %}{% assign class = class | append: " card-img-end" %}{% else %}{% assign class = class | append: " card-img-start" %}{% endif %}
+			{% include "ui/photo.html" id=img-id class=class %}
+		</div>
+		<div class="col">
+			<div class="card-body">
+				{% if include.title %}
+				<h3 class="card-title">{{ include.title }}</h3>
+				{% endif %}
+				<p class="text-secondary">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit
+					incidunt, iste, itaque minima
+					neque pariatur perferendis sed suscipit velit vitae voluptatem.</p>
+			</div>
+		</div>
+	</div>
+</div>

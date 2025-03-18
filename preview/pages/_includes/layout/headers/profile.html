@@ -1,0 +1,38 @@
+{% assign person = people[3] %}
+
+<div class="page-header">
+	<div class="container">
+		<div class="row align-items-center">
+			<div class="col-auto">
+				{% include "ui/avatar.html" person=person rounded=true size="lg" %}
+			</div>
+			<div class="col">
+				<h1 class="fw-bold m-0">{{ person.full_name }}</h1>
+				<div class="my-2">Unemployed. Building a $1M solo business while traveling the world. Currently at $400k/yr.
+				</div>
+
+				<div class="list-inline list-inline-dots text-secondary">
+					<div class="list-inline-item">
+						{% include "ui/icon.html" icon="map" inline=true %}
+						{{ person.university }}, {{ person.country }}
+					</div>
+					<div class="list-inline-item">
+						{% include "ui/icon.html" icon="mail" inline=true %}
+						<a href="#" class="text-reset">{{ person.email }}</a>
+					</div>
+					<div class="list-inline-item">
+						{% include "ui/icon.html" icon="cake" inline=true %}
+						{{ person.birth_date }}
+					</div>
+				</div>
+			</div>
+			<div class="col-auto ms-auto">
+				<div class="btn-list">
+					{% include "ui/button.html" icon="dots" icon-only=true %}
+					{% include "ui/button.html" icon="message" icon-only=true %}
+					{% include "ui/button.html" icon="check" color="primary" text="Following" %}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
