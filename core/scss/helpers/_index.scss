@@ -1,0 +1,143 @@
+//
+// Clearfix
+//
+.clearfix {
+  @include clearfix();
+}
+
+//
+// Text truncation
+//
+.text-truncate {
+  @include text-truncate();
+}
+
+//
+// Vertical rule
+//
+.vr {
+  display: inline-block;
+  align-self: stretch;
+  width: $vr-border-width;
+  min-height: 1em;
+  background-color: currentcolor;
+  opacity: $hr-opacity;
+}
+
+//
+// Stretched link
+//
+.stretched-link {
+  &::#{$stretched-link-pseudo-element} {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: $stretched-link-z-index;
+    content: "";
+  }
+}
+
+//
+// Visually hidden
+//
+.visually-hidden,
+.visually-hidden-focusable:not(:focus):not(:focus-within) {
+  @include visually-hidden();
+}
+
+//
+// Stacks
+//
+.hstack {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  align-self: stretch;
+}
+
+.vstack {
+  display: flex;
+  flex: 1 1 auto;
+  flex-direction: column;
+  align-self: stretch;
+}
+
+//
+// Position
+//
+// Shorthand
+
+.fixed-top {
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: $zindex-fixed;
+}
+
+.fixed-bottom {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: $zindex-fixed;
+}
+
+// Responsive sticky top and bottom
+@each $breakpoint in map-keys($grid-breakpoints) {
+  @include media-breakpoint-up($breakpoint) {
+    $infix: breakpoint-infix($breakpoint, $grid-breakpoints);
+
+    .sticky#{$infix}-top {
+      position: sticky;
+      top: 0;
+      z-index: $zindex-sticky;
+    }
+
+    .sticky#{$infix}-bottom {
+      position: sticky;
+      bottom: 0;
+      z-index: $zindex-sticky;
+    }
+  }
+}
+
+//
+// Aspect ratio
+//
+.ratio {
+  position: relative;
+  width: 100%;
+
+  &::before {
+    display: block;
+    padding-top: var(--#{$prefix}aspect-ratio);
+    content: "";
+  }
+
+  > * {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+}
+
+@each $key, $ratio in $aspect-ratios {
+  .ratio-#{$key} {
+    --#{$prefix}aspect-ratio: #{$ratio};
+  }
+}
+
+//
+// Focus ring
+//
+.focus-ring:focus {
+  outline: 0;
+  // By default, there is no `--bs-focus-ring-x`, `--bs-focus-ring-y`, or `--bs-focus-ring-blur`, but we provide CSS variables with fallbacks to initial `0` values
+  box-shadow: var(--#{$prefix}focus-ring-x, 0) var(--#{$prefix}focus-ring-y, 0) var(--#{$prefix}focus-ring-blur, 0) var(--#{$prefix}focus-ring-width) var(--#{$prefix}focus-ring-color);
+}
+
