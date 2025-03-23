@@ -1,7 +1,8 @@
+{% assign layout-dark = page.layout-dark | default: site.layout-dark -%}
 <!doctype html>
 {% include "layout/banner.html" %}
 {% assign title = page.title | default: layout.title %}
-<html lang="en"{% if layout-rtl %} dir="rtl" {% endif %}>
+<html lang="en"{% if layout-rtl %} dir="rtl" {% endif %}{% if layout.html-class or page.html-class %} class="{{ page.html-class | default: layout.html-class }}"{% endif %}>
 <head>
 	<meta charset="utf-8"/>
 	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
@@ -30,6 +31,7 @@
 	{% endif %}
 
 	{% include "layout/css.html" %}
+	{% include "layout/js-libs.html" libs=libs.js-head %}
 
 	<!-- BEGIN CUSTOM FONT -->
 	<style>
@@ -49,5 +51,7 @@
 	{% modals %}
 
 	{% include "layout/js.html" %}
+
+	{% include "settings.html" %}
 </body>
 </html>

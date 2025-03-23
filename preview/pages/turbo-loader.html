@@ -1,0 +1,62 @@
+---
+permalink: turbo-loader.html
+layout: default
+page-libs: [turbo]
+---
+
+<div class="card">
+	<div class="card-body">
+		<div class="btn-list">
+			<button class="btn" id="show-loader">Show loader</button>
+			<button class="btn" id="hide-loader">Hide loader</button>
+			<button class="btn" id="set-10">Set 10%</button>
+			<button class="btn" id="set-50">Set 50%</button>
+			<button class="btn" id="set-100">Set 100%</button>
+		</div>
+	</div>
+</div>
+
+{% capture_script %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+	Turbo.session.drive = false
+	
+	if(window.Turbo) {
+		var loader = Turbo.navigator.delegate.adapter.progressBar
+
+		console.log(loader);
+
+		document.getElementById("show-loader").addEventListener("click", function(e) {
+			loader.show()
+			e.preventDefault()
+		})
+
+		document.getElementById("hide-loader").addEventListener("click", function(e) {
+			loader.hide()
+			e.preventDefault()
+		})
+
+		document.getElementById("set-10").addEventListener("click", function(e) {
+			loader.show() 
+			loader.setValue(.1)
+			e.preventDefault()
+		})
+
+		document.getElementById("set-50").addEventListener("click", function(e) {
+			loader.show() 
+			loader.setValue(.5)
+			e.preventDefault()
+		})
+
+		document.getElementById("set-100").addEventListener("click", function(e) {
+			loader.show() 
+			loader.setValue(1)
+			setTimeout(function() {
+				loader.hide()
+			}, 1000)
+			e.preventDefault()
+		})
+	}
+});
+</script>
+{% endcapture_script %}
