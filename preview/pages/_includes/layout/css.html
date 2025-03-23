@@ -28,9 +28,9 @@
 <!-- BEGIN PLUGINS STYLES -->
 {% for plugin in site.tablerCssPlugins %}
 	{% if layout-rtl %}
-	<link href="{{ page | relative }}/dist/css/{{ plugin.name }}.rtl{% if environment != 'development' %}.min{% endif %}.css{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}" rel="stylesheet"{% if environment == 'development' %} integrity="{{ sri[`${plugin.sri}-rtl`] }}"{% endif %}/>
+	<link href="{{ page | relative }}/dist/css/{{ plugin.name }}.rtl{% if environment != 'development' %}.min{% endif %}.css{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}" rel="stylesheet"{% if environment != 'development' %} integrity="{{ sri[`${plugin.sri}-rtl`] }}"{% endif %}/>
 	{% else %}
-	<link href="{{ page | relative }}/dist/css/{{ plugin.name }}{% if environment != 'development' %}.min{% endif %}.css{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}" rel="stylesheet"{% if environment == 'development' %} integrity="{{ sri[plugin.sri] }}"{% endif %}/>
+	<link href="{{ page | relative }}/dist/css/{{ plugin.name }}{% if environment != 'development' %}.min{% endif %}.css{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}" rel="stylesheet"{% if environment != 'development' %} integrity="{{ sri[plugin.sri] }}"{% endif %}/>
 	{% endif %}
 {% endfor %}
 <!-- END PLUGINS STYLES -->

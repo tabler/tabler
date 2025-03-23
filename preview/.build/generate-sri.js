@@ -77,6 +77,10 @@ const files = [
 		configPropertyName: 'js'
 	},
 	{
+		file: '../core/dist/js/tabler.min.js',
+		configPropertyName: 'js-theme'
+	},
+	{
 		file: 'dist/preview/css/demo.min.css',
 		configPropertyName: 'demo-css'
 	},

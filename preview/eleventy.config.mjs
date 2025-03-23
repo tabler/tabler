@@ -429,6 +429,9 @@ export default function (eleventyConfig) {
 		"css-vendors-rtl": "sha384-bO98lLX+Ldg6g5nwEiyrECPhkSytviXXblROAGrjND8u+AM4zbk8gjQsCDK7zifX",
 		"css-vendors": "sha384-oxt7C0fn5FehJqUxTGaDMUo+IiNNM7wVIqvuv7aHn4hnfLyc0TxI2xXo6bMK1pyb",
 		"js": "sha384-uSpys8fjyVTPrXxPMi+NhnEMIp1YSGFZSCDrRHjYIUVdInIvlHft8JHLm6Oiw3vA",
+		"js-theme": "sha384-uSpys8fjyVTPrXxPMi+NhnEMIp1YSGFZSCDrRHjYIUVdInIvlHft8JHLm6Oiw3vA",
+		"demo-css": "sha384-BUDq2P684xwRBf0GDlySvob+KJg4ko8y2K7njgvYBscmEuqoVVqJ75zcTDozwkFA",
+		"demo-js": "sha384-UcTgbM9IZSOPHHuFa0R9H4TegQWoZkJKpeTjLV5hjem2k0CZ67Q4/bW2rT/Edf4Z",
 	});
 
 	/**
