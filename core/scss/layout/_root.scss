@@ -2,30 +2,33 @@
 :host {
   font-size: 16px;
   height: 100%;
+
 }
 
 :root,
 :host,
 [data-bs-theme="light"] {
-  @each $name, $color in map-merge($theme-colors, $gray-colors) {
-    --#{$prefix}#{$name}: #{$color};
-    --#{$prefix}#{$name}-rgb: #{to-rgb($color)};
-    --#{$prefix}#{$name}-fg: #{if(contrast-ratio($color) > $min-contrast-ratio, var(--#{$prefix}light), var(--#{$prefix}dark))};
-    --#{$prefix}#{$name}-darken: #{theme-color-darker($color)};
-    --#{$prefix}#{$name}-lt: #{theme-color-lighter($color)};
-    --#{$prefix}#{$name}-lt-rgb: #{to-rgb(theme-color-lighter($color))};
-  }
+  color-scheme: light;
+  --#{$prefix}spacer: var(--#{$prefix}spacer-2);
 
-  @each $name, $value in $spacers {
-    --#{$prefix}spacer-#{$name}: #{$value};
-  }
-  --#{$prefix}spacer: #{$spacer};
-
-  --#{$prefix}bg-surface: #{$bg-surface};
-  --#{$prefix}bg-surface-secondary: #{$bg-surface-secondary};
-  --#{$prefix}bg-surface-tertiary: #{$bg-surface-tertiary};
-  --#{$prefix}bg-surface-dark: #{$bg-surface-dark};
+  --#{$prefix}bg-surface: var(--#{$prefix}bg-surface-primary);
+  --#{$prefix}bg-surface-primary: var(--#{$prefix}white);
+  --#{$prefix}bg-surface-secondary: var(--#{$prefix}gray-50);
+  --#{$prefix}bg-surface-tertiary: var(--#{$prefix}gray-50);
+  --#{$prefix}bg-surface-dark: var(--#{$prefix}gray-900);
+  --#{$prefix}bg-surface-inverted: var(--#{$prefix}gray-900);
   --#{$prefix}bg-forms: var(--#{$prefix}bg-surface);
+
+  --#{$prefix}text-inverted: var(--#{$prefix}gray-100);
+
+  --#{$prefix}body-color: var(--#{$prefix}gray-700);
+  --#{$prefix}body-bg: var(--#{$prefix}bg-surface-secondary);
+
+  --#{$prefix}link-color: var(--#{$prefix}primary);
+  --#{$prefix}link-hover-color: color-mix(in srgb, var(--#{$prefix}primary), #000 20%);
+
+  --#{$prefix}secondary: var(--#{$prefix}gray-500);
+  --#{$prefix}tertiary: var(--#{$prefix}gray-400);
 
   --#{$prefix}border-color: #{$border-color};
   --#{$prefix}border-color-translucent: #{$border-color-translucent};
@@ -50,23 +53,8 @@
 
   --#{$prefix}page-padding: #{$page-padding};
   --#{$prefix}page-padding-y: #{$page-padding-y};
+
   @include media-breakpoint-down($cards-grid-breakpoint) {
     --#{$prefix}page-padding: #{$page-padding-sm};
-  }
-
-  @each $name, $value in $font-weights {
-    --#{$prefix}font-weight-#{$name}: #{$value};
-  }
-
-  @each $name, $value in $font-sizes {
-    --#{$prefix}font-size-h#{$name}: #{$value};
-  }
-
-  @each $name, $value in $line-heights {
-    --#{$prefix}line-height-#{$name}: #{$value};
-  }
-
-  @each $name, $value in $box-shadows {
-    --#{$prefix}#{$name}: #{$value};
   }
 }
