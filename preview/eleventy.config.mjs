@@ -118,7 +118,8 @@ export default function (eleventyConfig) {
 			"tabler-socials",
 			"tabler-payments",
 			"tabler-vendors",
-			"tabler-marketing"
+			"tabler-marketing",
+			"tabler-themes",
 		],
 
 		icons: {
