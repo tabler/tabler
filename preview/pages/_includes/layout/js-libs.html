@@ -1,5 +1,5 @@
 {% if page-libs -%}
-<!-- BEGIN PAGE LIBRARIES -->
+{% capture libs -%}
 {% for lib in include.libs -%}
 {% if page-libs contains lib[0] -%}
 {% for file in lib[1] -%}
@@ -9,5 +9,11 @@
 {% endfor -%}
 {% endif -%}
 {% endfor -%}
+{% endcapture -%}
+{% assign libs = libs | strip -%}
+{% if libs != "" -%}
+<!-- BEGIN PAGE LIBRARIES -->
+{{ libs }}
 <!-- END PAGE LIBRARIES -->
+{% endif -%}
 {% endif -%}
