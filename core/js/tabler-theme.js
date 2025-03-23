@@ -3,7 +3,6 @@
  * to ensure we switch to the chosen dark/light theme as fast as possible.
  * This will prevent any flashes of the light theme (default) before switching.
  */
-
 const themeConfig = {
 	"theme": "light",
 	"theme-base": "gray",
@@ -12,11 +11,9 @@ const themeConfig = {
 	"theme-radius": "1",
 }
 
-// https://stackoverflow.com/a/901144
 const params = new Proxy(new URLSearchParams(window.location.search), {
 	get: (searchParams, prop) => searchParams.get(prop),
 })
-
 
 for (const key in themeConfig) {
 	const param = params[key]
