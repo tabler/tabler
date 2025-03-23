@@ -11,5 +11,20 @@ import "./src/toast"
 import * as bootstrap from "bootstrap"
 import * as tabler from "./src/tabler"
 
+export {
+	Alert,
+	Modal,
+	Toast,
+	Tooltip,
+	Tab,
+	Button,
+	Carousel,
+	Collapse,
+	Dropdown,
+	Popover,
+	ScrollSpy,
+	Offcanvas
+} from 'bootstrap'
+
 globalThis.bootstrap = bootstrap
 globalThis.tabler = tabler
