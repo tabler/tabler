@@ -10,55 +10,79 @@ const configFile = path.join(__dirname, '../eleventy.config.mjs')
 const files = [
 	{
 		file: '../core/dist/css/tabler.min.css',
-		configPropertyName: 'css-hash'
+		configPropertyName: 'css'
 	},
 	{
 		file: '../core/dist/css/tabler.rtl.min.css',
-		configPropertyName: 'css-rtl-hash'
+		configPropertyName: 'css-rtl'
 	},
 	{
 		file: '../core/dist/css/tabler-flags.min.css',
-		configPropertyName: 'css-flags-hash'
+		configPropertyName: 'css-flags'
 	},
 	{
 		file: '../core/dist/css/tabler-flags.rtl.min.css',
-		configPropertyName: 'css-flags-rtl-hash'
+		configPropertyName: 'css-flags-rtl'
 	},
 	{
 		file: '../core/dist/css/tabler-marketing.min.css',
-		configPropertyName: 'css-marketing-hash'
+		configPropertyName: 'css-marketing'
 	},
 	{
 		file: '../core/dist/css/tabler-marketing.rtl.min.css',
-		configPropertyName: 'css-marketing-rtl-hash'
+		configPropertyName: 'css-marketing-rtl'
 	},
 	{
 		file: '../core/dist/css/tabler-payments.min.css',
-		configPropertyName: 'css-payments-hash'
+		configPropertyName: 'css-payments'
 	},
 	{
 		file: '../core/dist/css/tabler-payments.rtl.min.css',
-		configPropertyName: 'css-payments-rtl-hash'
+		configPropertyName: 'css-payments-rtl'
+	},
+	{
+		file: '../core/dist/css/tabler-props.min.css',
+		configPropertyName: 'css-props'
+	},
+	{
+		file: '../core/dist/css/tabler-props.rtl.min.css',
+		configPropertyName: 'css-props-rtl'
+	},
+	{
+		file: '../core/dist/css/tabler-themes.min.css',
+		configPropertyName: 'css-themes'
+	},
+	{
+		file: '../core/dist/css/tabler-themes.rtl.min.css',
+		configPropertyName: 'css-themes-rtl'
 	},
 	{
 		file: '../core/dist/css/tabler-socials.min.css',
-		configPropertyName: 'css-socials-hash'
+		configPropertyName: 'css-socials'
 	},
 	{
 		file: '../core/dist/css/tabler-socials.rtl.min.css',
-		configPropertyName: 'css-socials-rtl-hash'
+		configPropertyName: 'css-socials-rtl'
 	},
 	{
 		file: '../core/dist/css/tabler-vendors.min.css',
-		configPropertyName: 'css-vendors-hash'
+		configPropertyName: 'css-vendors'
 	},
 	{
 		file: '../core/dist/css/tabler-vendors.rtl.min.css',
-		configPropertyName: 'css-vendors-rtl-hash'
+		configPropertyName: 'css-vendors-rtl'
 	},
 	{
 		file: '../core/dist/js/tabler.min.js',
-		configPropertyName: 'js-hash'
+		configPropertyName: 'js'
+	},
+	{
+		file: 'dist/preview/css/demo.min.css',
+		configPropertyName: 'demo-css'
+	},
+	{
+		file: 'dist/preview/js/demo.min.js',
+		configPropertyName: 'demo-js'
 	},
 ]
 

@@ -114,12 +114,12 @@ export default function (eleventyConfig) {
 		npmPackage: "@tabler/core",
 
 		tablerCssPlugins: [
-			"tabler-flags",
-			"tabler-socials",
-			"tabler-payments",
-			"tabler-vendors",
-			"tabler-marketing",
-			"tabler-themes",
+			{ name: "tabler-flags", sri: "css-flags" },
+			{ name: "tabler-socials", sri: "css-socials" },
+			{ name: "tabler-payments", sri: "css-payments" },
+			{ name: "tabler-vendors", sri: "css-vendors" },
+			{ name: "tabler-marketing", sri: "css-marketing" },
+			{ name: "tabler-themes", sri: "css-themes" },
 		],
 
 		icons: {
@@ -412,19 +412,23 @@ export default function (eleventyConfig) {
 	});
 
 	eleventyConfig.addGlobalData("sri", {
-		"css-flags-rtl-hash": "sha384-2UlRgokzcZfmjyW0x+SNVn3fu6xExzF0gmMfVhve7uCfCsAYM2r4R5/qsdxRZjgx",
-		"css-marketing-hash": "sha384-OGXzeFPtPmIgTFesRLFbG3GVdbmpi24DMR67MZPLFBy4S9uEgbXO0NbgyxvTm0lB",
-		"css-flags-hash": "sha384-7/feRzsvcXLoekacUe8Zdh8IVYe4MhwmIqkGDWCz40EAeHz+0HXHdq8PpJFcQjB6",
-		"css-payments-rtl-hash": "sha384-Q4l/ifByqwn1hoc3bhCrbL1gVlNylsTFOuXpJsZ2vJco2/guecr1jRLR1GYvSBOO",
-		"css-socials-hash": "sha384-H0UDKEvQGa4M1NufG2tXN8Uz6PInvFGjUxsq5P0clF7QXMfjS8xzyUSrFCx2abhb",
-		"css-marketing-rtl-hash": "sha384-zcFcjrVtF2rlVIxzp9dWLwa8hyRgBpqzcwvqGynKhVUSjH4EVEmdAFh8EbO3LOEy",
-		"css-payments-hash": "sha384-2OoEea3pUNbhYpSTGbCqyzn+/3Qi8hx0CTPj9HAJzXHYanxfoRj5GUEkOYGz26Am",
-		"css-socials-rtl-hash": "sha384-5erqHqlzeGmWoxd3dfTWUGEbfrGV2IqswRnhhaRYbq7yMAG6kDNbVGccbkTWLjwK",
-		"css-rtl-hash": "sha384-g7ilU8mfjElwM3wFkbN4XwRgQe8mWEaHqPwjolEXfjuv7+HuHwd5SjwyGcJulb7P",
-		"css-hash": "sha384-3jmGD4xr/AdCRfuCTuY6QH98wWH+u++GE+5gzH419DsTyizIScZccrZhpgydI6Nh",
-		"css-vendors-rtl-hash": "sha384-32bCtg/Rpb4JoilpCQswTsDtPkwwlrITzrvn2LGd4E4Vr+F8ukSH9EzMmCHoli/y",
-		"css-vendors-hash": "sha384-cQ1fIS+uNbWJSvIPm/jePK1w9TnL/6EDHD31EJVZfP7udIs95enNzsjEcDA8eC8f",
-		"js-hash": "sha384-7Oqwx/aDuCEVoEJ/t9jXvlDp0CUD1LOHruVEavlnchYUu9Vsds8mhTj7HkPZ4Bd/",
+		"css": "sha384-3jmGD4xr/AdCRfuCTuY6QH98wWH+u++GE+5gzH419DsTyizIScZccrZhpgydI6Nh",
+		"css-rtl": "sha384-g7ilU8mfjElwM3wFkbN4XwRgQe8mWEaHqPwjolEXfjuv7+HuHwd5SjwyGcJulb7P",
+		"css-flags": "sha384-7/feRzsvcXLoekacUe8Zdh8IVYe4MhwmIqkGDWCz40EAeHz+0HXHdq8PpJFcQjB6",
+		"css-flags-rtl": "sha384-2UlRgokzcZfmjyW0x+SNVn3fu6xExzF0gmMfVhve7uCfCsAYM2r4R5/qsdxRZjgx",
+		"css-marketing": "sha384-OGXzeFPtPmIgTFesRLFbG3GVdbmpi24DMR67MZPLFBy4S9uEgbXO0NbgyxvTm0lB",
+		"css-marketing-rtl": "sha384-zcFcjrVtF2rlVIxzp9dWLwa8hyRgBpqzcwvqGynKhVUSjH4EVEmdAFh8EbO3LOEy",
+		"css-payments": "sha384-2OoEea3pUNbhYpSTGbCqyzn+/3Qi8hx0CTPj9HAJzXHYanxfoRj5GUEkOYGz26Am",
+		"css-payments-rtl": "sha384-Q4l/ifByqwn1hoc3bhCrbL1gVlNylsTFOuXpJsZ2vJco2/guecr1jRLR1GYvSBOO",
+		"css-socials": "sha384-H0UDKEvQGa4M1NufG2tXN8Uz6PInvFGjUxsq5P0clF7QXMfjS8xzyUSrFCx2abhb",
+		"css-socials-rtl": "sha384-5erqHqlzeGmWoxd3dfTWUGEbfrGV2IqswRnhhaRYbq7yMAG6kDNbVGccbkTWLjwK",
+		"css-props": "sha384-q0DadIfnMt9gywBcaBeyePNpE0eJg1Fq06nswRSTVmM02qfGy6k9BrnQlhy0oESc",
+		"css-props-rtl": "sha384-80LVO7yE7xcy11PlTs8P5Coo3uZO+q75l2D7j0qxtChpDXnEzZxWx6Dutlg8/obx",
+		"css-themes": "sha384-pHDz6+jwBW5ITz8PcaR5ZjoU+rXCVGCvnU76UKlR/Z0hb8lzHw0xr1WSMxMHnHMh",
+		"css-themes-rtl": "sha384-AEpXW6fRgRxC1dY0xI55P5mp3wD4JeV18uwZhGcb9RVRFA//rrgMm+f1IbZ4lgny",
+		"css-vendors-rtl": "sha384-32bCtg/Rpb4JoilpCQswTsDtPkwwlrITzrvn2LGd4E4Vr+F8ukSH9EzMmCHoli/y",
+		"css-vendors": "sha384-cQ1fIS+uNbWJSvIPm/jePK1w9TnL/6EDHD31EJVZfP7udIs95enNzsjEcDA8eC8f",
+		"js": "sha384-7Oqwx/aDuCEVoEJ/t9jXvlDp0CUD1LOHruVEavlnchYUu9Vsds8mhTj7HkPZ4Bd/",
 	});
 
 	/**
