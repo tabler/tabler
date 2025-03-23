@@ -412,19 +412,19 @@ export default function (eleventyConfig) {
 	});
 
 	eleventyConfig.addGlobalData("sri", {
-		"css-flags-rtl-hash": "sha384-pyPIUUzl3ihMh/Soc0cX/ytLylBiU0K+g8EWmeDVnLR6QkrAsHcOGehOffLG19t5",
-		"css-marketing-hash": "sha384-xtswiyYvkn30pwQanIC7fLNoXLUTPJoo0/VevYIWw2PHUXjVyhibnid19Bzo4fnP",
-		"css-flags-hash": "sha384-pyPIUUzl3ihMh/Soc0cX/ytLylBiU0K+g8EWmeDVnLR6QkrAsHcOGehOffLG19t5",
-		"css-payments-rtl-hash": "sha384-cp6pMaF85f8bRADXNb55+643IaU3eVkxCcvTcUPzV56C24zq1pFSK/SNDfOZ1XNr",
-		"css-socials-hash": "sha384-RNz6i9B2zB8bLNfdG34OmayEIvSFYCPovYYZebkDJf6l6drBVfm9FPmoWHasyaUz",
-		"css-marketing-rtl-hash": "sha384-dSeYfYFDOz00AUT2Po+SELUDHixM+Qv2whYHtJtH0SC3dQL0DFaHVqXuW6unncv+",
-		"css-payments-hash": "sha384-cp6pMaF85f8bRADXNb55+643IaU3eVkxCcvTcUPzV56C24zq1pFSK/SNDfOZ1XNr",
-		"css-socials-rtl-hash": "sha384-RNz6i9B2zB8bLNfdG34OmayEIvSFYCPovYYZebkDJf6l6drBVfm9FPmoWHasyaUz",
-		"css-rtl-hash": "sha384-xJaddD8d0lNiF2lmKxub9uWOGHpUMcHJzw/F5g7ikM8rPHLj9IWH1MwSibuSJAX+",
-		"css-hash": "sha384-anrzUYCd0msxXiEJRrb2PDJRk070WI/z1nRWndATF3ls2sIWSHMI6l/grX625viM",
-		"css-vendors-rtl-hash": "sha384-5wy2rI8a18XT4g7Zn/riZg0kPUGQm3EzGhlaPcne8YvwmiMR++ns+XtlO3ZPmyBp",
-		"css-vendors-hash": "sha384-vCMaMQTQttXNVZtTZHpgrXqajb77YHPmldMvC680DBW5rf8wemoJyhjMCSFMb5hC",
-		"js-hash": "sha384-gQY8IHXmWA4xT6ygJrbdFeIGkA4DytGYMKMdcNucY8IuB2BLqpW68jw9pcx0Ls4E",
+		"css-flags-rtl-hash": "sha384-2UlRgokzcZfmjyW0x+SNVn3fu6xExzF0gmMfVhve7uCfCsAYM2r4R5/qsdxRZjgx",
+		"css-marketing-hash": "sha384-OGXzeFPtPmIgTFesRLFbG3GVdbmpi24DMR67MZPLFBy4S9uEgbXO0NbgyxvTm0lB",
+		"css-flags-hash": "sha384-7/feRzsvcXLoekacUe8Zdh8IVYe4MhwmIqkGDWCz40EAeHz+0HXHdq8PpJFcQjB6",
+		"css-payments-rtl-hash": "sha384-Q4l/ifByqwn1hoc3bhCrbL1gVlNylsTFOuXpJsZ2vJco2/guecr1jRLR1GYvSBOO",
+		"css-socials-hash": "sha384-H0UDKEvQGa4M1NufG2tXN8Uz6PInvFGjUxsq5P0clF7QXMfjS8xzyUSrFCx2abhb",
+		"css-marketing-rtl-hash": "sha384-zcFcjrVtF2rlVIxzp9dWLwa8hyRgBpqzcwvqGynKhVUSjH4EVEmdAFh8EbO3LOEy",
+		"css-payments-hash": "sha384-2OoEea3pUNbhYpSTGbCqyzn+/3Qi8hx0CTPj9HAJzXHYanxfoRj5GUEkOYGz26Am",
+		"css-socials-rtl-hash": "sha384-5erqHqlzeGmWoxd3dfTWUGEbfrGV2IqswRnhhaRYbq7yMAG6kDNbVGccbkTWLjwK",
+		"css-rtl-hash": "sha384-g7ilU8mfjElwM3wFkbN4XwRgQe8mWEaHqPwjolEXfjuv7+HuHwd5SjwyGcJulb7P",
+		"css-hash": "sha384-3jmGD4xr/AdCRfuCTuY6QH98wWH+u++GE+5gzH419DsTyizIScZccrZhpgydI6Nh",
+		"css-vendors-rtl-hash": "sha384-32bCtg/Rpb4JoilpCQswTsDtPkwwlrITzrvn2LGd4E4Vr+F8ukSH9EzMmCHoli/y",
+		"css-vendors-hash": "sha384-cQ1fIS+uNbWJSvIPm/jePK1w9TnL/6EDHD31EJVZfP7udIs95enNzsjEcDA8eC8f",
+		"js-hash": "sha384-7Oqwx/aDuCEVoEJ/t9jXvlDp0CUD1LOHruVEavlnchYUu9Vsds8mhTj7HkPZ4Bd/",
 	});
 
 	/**

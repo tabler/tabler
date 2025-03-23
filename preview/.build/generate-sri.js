@@ -9,55 +9,55 @@ const configFile = path.join(__dirname, '../eleventy.config.mjs')
 
 const files = [
 	{
-		file: 'dist/css/tabler.min.css',
+		file: '../core/dist/css/tabler.min.css',
 		configPropertyName: 'css-hash'
 	},
 	{
-		file: 'dist/css/tabler.rtl.min.css',
+		file: '../core/dist/css/tabler.rtl.min.css',
 		configPropertyName: 'css-rtl-hash'
 	},
 	{
-		file: 'dist/css/tabler-flags.min.css',
+		file: '../core/dist/css/tabler-flags.min.css',
 		configPropertyName: 'css-flags-hash'
 	},
 	{
-		file: 'dist/css/tabler-flags.rtl.min.css',
+		file: '../core/dist/css/tabler-flags.rtl.min.css',
 		configPropertyName: 'css-flags-rtl-hash'
 	},
 	{
-		file: 'dist/css/tabler-marketing.min.css',
+		file: '../core/dist/css/tabler-marketing.min.css',
 		configPropertyName: 'css-marketing-hash'
 	},
 	{
-		file: 'dist/css/tabler-marketing.rtl.min.css',
+		file: '../core/dist/css/tabler-marketing.rtl.min.css',
 		configPropertyName: 'css-marketing-rtl-hash'
 	},
 	{
-		file: 'dist/css/tabler-payments.min.css',
+		file: '../core/dist/css/tabler-payments.min.css',
 		configPropertyName: 'css-payments-hash'
 	},
 	{
-		file: 'dist/css/tabler-payments.rtl.min.css',
+		file: '../core/dist/css/tabler-payments.rtl.min.css',
 		configPropertyName: 'css-payments-rtl-hash'
 	},
 	{
-		file: 'dist/css/tabler-socials.min.css',
+		file: '../core/dist/css/tabler-socials.min.css',
 		configPropertyName: 'css-socials-hash'
 	},
 	{
-		file: 'dist/css/tabler-socials.rtl.min.css',
+		file: '../core/dist/css/tabler-socials.rtl.min.css',
 		configPropertyName: 'css-socials-rtl-hash'
 	},
 	{
-		file: 'dist/css/tabler-vendors.min.css',
+		file: '../core/dist/css/tabler-vendors.min.css',
 		configPropertyName: 'css-vendors-hash'
 	},
 	{
-		file: 'dist/css/tabler-vendors.rtl.min.css',
+		file: '../core/dist/css/tabler-vendors.rtl.min.css',
 		configPropertyName: 'css-vendors-rtl-hash'
 	},
 	{
-		file: 'dist/js/tabler.min.js',
+		file: '../core/dist/js/tabler.min.js',
 		configPropertyName: 'js-hash'
 	},
 ]
