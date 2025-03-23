@@ -1,0 +1,16 @@
+#!/bin/sh
+
+if git diff --quiet --cached package.json; then
+  if git diff --quiet --cached pnpm-lock.yaml; then
+    echo "pnpm-lock.yaml not changed, nothing to do."
+  else
+    echo "pnpm-lock.yaml changed, restore..."
+    git restore --staged pnpm-lock.yaml
+    git checkout pnpm-lock.yaml
+    echo "Restored pnpm-lock.yaml."
+  fi
+else
+  echo "package.json changed, pnpm-lock.yaml change"
+fi
+
+exit 0
