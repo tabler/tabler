@@ -1,5 +1,5 @@
 ---
-"@tabler/core": patch
+"@tabler/core": minor
 ---
 
 Add steps light colors
