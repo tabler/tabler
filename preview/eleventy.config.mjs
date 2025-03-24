@@ -114,12 +114,12 @@ export default function (eleventyConfig) {
 		npmPackage: "@tabler/core",
 
 		tablerCssPlugins: [
-			"tabler-flags",
-			"tabler-socials",
-			"tabler-payments",
-			"tabler-vendors",
-			"tabler-marketing",
-			"tabler-themes",
+			{ name: "tabler-flags", sri: "css-flags" },
+			{ name: "tabler-socials", sri: "css-socials" },
+			{ name: "tabler-payments", sri: "css-payments" },
+			{ name: "tabler-vendors", sri: "css-vendors" },
+			{ name: "tabler-marketing", sri: "css-marketing" },
+			{ name: "tabler-themes", sri: "css-themes" },
 		],
 
 		icons: {
@@ -409,6 +409,29 @@ export default function (eleventyConfig) {
 			"November",
 			"December"
 		]
+	});
+
+	eleventyConfig.addGlobalData("sri", {
+		"css": "sha384-+ysCwUILnDsnHwK+rITa6QNp8mGFdEXZMfZ/WBpY13iTiCwas5Ah0GIagDbU8Ocy",
+		"css-rtl": "sha384-kQMcoyzrq1HEu2/rW78iuKRreSYzdUb1KQhPweqwUyH8Gnydy+vaMP4MpFx2+z07",
+		"css-flags": "sha384-J4S9gTOgB6a60d8OIMRu7vveDJCqxLAcDfzDN24CQxXmfi1iIFoU3uelSShCMfAD",
+		"css-flags-rtl": "sha384-Rh33piKJ6K8C1b07vnxSLBK5RJSnp4UhH37XTfJxWlnVUl3FqH3mW14kOy6nU1Bd",
+		"css-marketing": "sha384-RFTn6c3X2MHvEcQwCc/w1n8IBV4B/GeFHms5KPCiMkSc+tCDtZe5F6aJ+dJYu7mI",
+		"css-marketing-rtl": "sha384-HZqaZjtszSlyS975Oe9Z9U9gVmMxvTBU1XziOLE3R4N/pKTmWiznOzHszVqoSufe",
+		"css-payments": "sha384-YnhOMEPyU5QfErzSK9sD18FMXdRCn/HB4a+88mFXbd45fFRNWKWeARptNw1k16+/",
+		"css-payments-rtl": "sha384-v6XNJfLEVre0G8WOfEeFRSDFItjdOvNGFZTlS6HpoKkkxYe/vbkJBfzhOnePD2dY",
+		"css-socials": "sha384-M/p2rVRhhVGWQaE5KAPB4+/uWqFtmb6ag3/NXG8E3SL2MAROPCfB5YJvDHmS5Rms",
+		"css-socials-rtl": "sha384-5h8LiZ8sjd3+w3/waxyu3/vTW2kdx90LLYaik7pugCUOR7YRQXbyP13dhp1mUrcW",
+		"css-props": "sha384-D9/OSlhkMpd/Nf7168lDKk/Tg/slS3Zu8+alAFMMKXmFkoPazXHR7kiSMKKgu5D6",
+		"css-props-rtl": "sha384-4v5rbYBY7WUjemTcFeoBDmH+qZUndtmwamnzHdqcUpAdopNjpVsG/+1IQOpKHNly",
+		"css-themes": "sha384-Bj8pP2O3iJP6JH/ZdDBnxIH/3XOJF8DSyYUUHs8wTxb0PRUe5DU01llAmog5ybpg",
+		"css-themes-rtl": "sha384-+bJhK3cbUPk0SGCLUskjOBARViddapb+MJA1CbWjerZ46uyZbm6L1Gar3Ggs4c8h",
+		"css-vendors-rtl": "sha384-bO98lLX+Ldg6g5nwEiyrECPhkSytviXXblROAGrjND8u+AM4zbk8gjQsCDK7zifX",
+		"css-vendors": "sha384-oxt7C0fn5FehJqUxTGaDMUo+IiNNM7wVIqvuv7aHn4hnfLyc0TxI2xXo6bMK1pyb",
+		"js": "sha384-uSpys8fjyVTPrXxPMi+NhnEMIp1YSGFZSCDrRHjYIUVdInIvlHft8JHLm6Oiw3vA",
+		"js-theme": "sha384-uSpys8fjyVTPrXxPMi+NhnEMIp1YSGFZSCDrRHjYIUVdInIvlHft8JHLm6Oiw3vA",
+		"demo-css": "sha384-BUDq2P684xwRBf0GDlySvob+KJg4ko8y2K7njgvYBscmEuqoVVqJ75zcTDozwkFA",
+		"demo-js": "sha384-UcTgbM9IZSOPHHuFa0R9H4TegQWoZkJKpeTjLV5hjem2k0CZ67Q4/bW2rT/Edf4Z",
 	});
 
 	/**
