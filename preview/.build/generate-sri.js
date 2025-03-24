@@ -77,7 +77,7 @@ const files = [
 		configPropertyName: 'js'
 	},
 	{
-		file: '../core/dist/js/tabler.min.js',
+		file: '../core/dist/js/tabler-theme.min.js',
 		configPropertyName: 'js-theme'
 	},
 	{
