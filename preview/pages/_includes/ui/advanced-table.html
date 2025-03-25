@@ -1,0 +1,142 @@
+<div class="card">
+	<div class="card-table">
+		<div class="card-header d-flex align-items-center">
+			<div>
+				<h3 class="card-title mb-0">
+					Suppliers
+				</h3>
+				<p class="text-secondary m-0">
+					Table description.
+				</p>
+			</div>
+			<div class="ms-auto d-flex flex-wrap btn-list">
+				<div class="input-icon">
+					<span class="input-icon-addon">
+						<svg
+							xmlns="http://www.w3.org/2000/svg"
+							class="icon"
+							width="24"
+							height="24"
+							viewBox="0 0 24 24"
+							stroke-width="2"
+							stroke="currentColor"
+							fill="none"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+						>
+						  <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+						  <circle cx="10" cy="10" r="7"/>
+						  <line x1="21" y1="21" x2="15" y2="15"/>
+						</svg>
+					 </span>
+					<input type="text" value="" class="form-control" placeholder="Search…"/>
+					<span class="input-icon-addon badge">
+						{% include "ui/icon.html" icon="command" %}
+					 </span>
+				</div>
+
+				<a href="#" class="btn btn-icon" aria-label="Button">
+					<svg  xmlns="http://www.w3.org/2000/svg"  width="24"  height="24"  viewBox="0 0 24 24"  fill="none"  stroke="currentColor"  stroke-width="2"  stroke-linecap="round"  stroke-linejoin="round"  class="icon icon-tabler icons-tabler-outline icon-tabler-dots">
+						<path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+						<path d="M5 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+						<path d="M12 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+						<path d="M19 12m-1 0a1 1 0 1 0 2 0a1 1 0 1 0 -2 0" />
+					</svg>
+				</a>
+				<div class="dropdown">
+					<a href="#" class="btn dropdown-toggle" data-bs-toggle="dropdown">Download</a>
+					<div class="dropdown-menu">
+						<a class="dropdown-item" href="#">Action</a>
+						<a class="dropdown-item" href="#">Another action</a>
+						<a class="dropdown-item" href="#">Third action</a>
+					</div>
+				</div>
+				{% include "ui/button.html" %}
+			</div>
+		</div>
+
+		<div id="table-{{ id }}" class="table-responsive">
+			<table class="table table-selectable card-table table-vcenter text-nowrap datatable">
+				<thead>
+					<tr>
+						<th></th>
+						<th>
+							<button class="table-sort d-flex justify-content-between" data-sort="sort-name">
+								Name
+							</button>
+						</th>
+						<th><button class="table-sort d-flex justify-content-between" data-sort="sort-content">Content</button></th>
+						<th><button class="table-sort d-flex justify-content-between" data-sort="sort-status">Status</button></th>
+						<th><button class="table-sort d-flex justify-content-between" data-sort="sort-date">Date</button></th>
+						<th><button class="table-sort d-flex justify-content-between" data-sort="sort-tags">Tags</button></th>
+						<th><button class="table-sort d-flex justify-content-between" data-sort="sort-category">Category</button></th>
+					</tr>
+				</thead>
+
+				<tbody class="table-tbody">
+					{% for person in people limit: 8 %}
+					<tr>
+						<td>
+							<input class="form-check-input m-0 align-middle table-selectable-check" type="checkbox" aria-label="Select invoice">
+						</td>
+						<td class="sort-name">
+							<span class="text-secondary">{{ person.full_name }}</span>
+						</td>
+						<td class="sort-content">
+							<span class="text-secondary">Content</span>
+						</td>
+						<td class="sort-status">
+							<span class="text-secondary">
+								{% if forloop.index == 1 %}
+									<span class="badge">Active</span>
+								{% elsif forloop.index == 2 %}
+									<span class="badge">Inactive</span>
+								{% elsif forloop.index == 3 %}
+									<span class="badge">Requested</span>
+								{% else %}
+								Content
+								{% endif %}
+							</span>
+						</td>
+						<td class="sort-date">
+							<span class="text-secondary">{{ invoices[forloop.index].date }}</span>
+						</td>
+						<td class="sort-tags">
+							{% if forloop.index == 1%}
+								<span class="badge">QTA</span>
+								<span class="badge">Event</span>
+								<span class="badge">Tickets</span>
+								<span class="badge">...</span>
+							{% else %}
+								<span class="text-secondary">Content</span>
+							{% endif %}
+						</td>
+						<td class="sort-category">
+							{% if forloop.index == 1%}
+								<span class="text-secondary">Agencies</span>
+							{% else %}
+								<span class="text-secondary">Content</span>
+							{% endif %}
+						</td>
+					</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+	</div>
+		<div class="card-footer d-flex align-items-center">
+			<p class="m-0 text-secondary">Showing <span>1</span> to <span>8</span> of <span>16</span> entries</p>
+			{% include "ui/pagination.html" class="m-0 ms-auto" no-words="true" %}
+		</div>
+</div>
+	{% capture_script %}
+	<script>
+		{% if environment == 'development' %}window.tabler_list = window.tabler_list || {};{% endif %}
+		document.addEventListener("DOMContentLoaded", function() {
+			const list = {% if environment == 'development' %}window.tabler_list["table-{{ id }}"] = {% endif %}new List('table-{{ id }}', {
+				sortClass: 'table-sort',
+				listClass: 'table-tbody',
+				valueNames: [ 'sort-name', 'sort-content', 'sort-status', 'sort-date', 'sort-tags', 'sort-category'],
+			});
+		})
+	</script>
+	{% endcapture_script %}
