@@ -1,13 +1,14 @@
 
 import { appConfig } from "@repo/e11ty"
+import { appData } from "@repo/data"
 import { readFileSync } from 'node:fs';
-import { url } from 'node:inspector';
 import { join } from 'node:path';
 
 export default function (eleventyConfig) {
 	const environment = process.env.NODE_ENV || "production";
 
 	appConfig(eleventyConfig);
+	appData(eleventyConfig);
 
 	eleventyConfig.addPassthroughCopy({
 		"node_modules/@tabler/core/dist": "core",

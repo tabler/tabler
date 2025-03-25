@@ -3,6 +3,7 @@ import { EleventyRenderPlugin } from "@11ty/eleventy";
 import { join, dirname } from 'node:path';
 import { sync } from 'glob';
 import { appConfig } from "@repo/e11ty"
+import { appData } from "@repo/data"
 
 /*
  * Copy list
@@ -46,6 +47,7 @@ export default function (eleventyConfig) {
 	const environment = process.env.NODE_ENV || "production";
 
 	appConfig(eleventyConfig);
+	appData(eleventyConfig);
 
 	eleventyConfig.setInputDirectory("pages");
 	eleventyConfig.setOutputDirectory("dist");
