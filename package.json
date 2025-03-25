@@ -10,10 +10,9 @@
     "version": "changeset version",
     "publish": "changeset publish",
     "playwright": "pnpm run build && pnpm run vt",
-    "vt": "playwright test tests",
     "reformat-mdx": "node .build/reformat-mdx.mjs",
     "start": "pnpm dev",
-    "zip": "mkdir -p packages-zip && zip -qr9 packages-zip/tabler-$(node -p \"require('./core/package.json').version\").zip ./preview/dist/*"
+    "zip": "mkdir -p packages-zip && zip -r packages-zip/tabler-$(node -p \"require('./package.json').version\").zip preview/dist/*"
   },
   "packageManager": "pnpm@10.6.4",
   "devDependencies": {
@@ -41,6 +40,7 @@
     "sass": "1.71.0",
     "shx": "^0.4.0",
     "terser": "^5.39.0",
-    "turbo": "^2.4.4"
+    "turbo": "^2.4.4",
+    "shelljs": "^0.9.2"
   }
 }

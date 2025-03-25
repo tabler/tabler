@@ -1,10 +1,10 @@
 .alert {
-  --#{$prefix}alert-bg: transparent;
+  --#{$prefix}alert-color: var(--#{$prefix}body-color);
+  --#{$prefix}alert-bg: #{color-transparent(var(--#{$prefix}alert-color), .1)};
   --#{$prefix}alert-padding-x: #{$alert-padding-x};
   --#{$prefix}alert-padding-y: #{$alert-padding-y};
   --#{$prefix}alert-margin-bottom: #{$alert-margin-bottom};
-  --#{$prefix}alert-color: inherit;
-  --#{$prefix}alert-border-color: var(--#{$prefix}border-color);
+  --#{$prefix}alert-border-color: #{color-transparent(var(--#{$prefix}alert-color), .2)};
   --#{$prefix}alert-border: var(--#{$prefix}border-width) solid var(--#{$prefix}alert-border-color);
   --#{$prefix}alert-border-radius: var(--#{$prefix}border-radius);
   --#{$prefix}alert-link-color: inherit;
@@ -66,8 +66,8 @@
 
   .btn-close {
     position: absolute;
-    top: 0;
-    right: 0;
+    top: calc(var(--#{$prefix}alert-padding-x) / 2 - 1px);
+    right: calc(var(--#{$prefix}alert-padding-y) / 2 - 1px);
     z-index: 1;
     padding: calc(var(--#{$prefix}alert-padding-y) * 1.25) var(--#{$prefix}alert-padding-x);
   }
@@ -75,12 +75,21 @@
 
 .alert-important {
   border-color: var(--#{$prefix}alert-color);
-  color: var(--#{$prefix}alert-color);
+  background-color: var(--#{$prefix}alert-color);
+  color: var(--#{$prefix}white);
 
-  .btn-close,
   .alert-description {
     color: inherit;
   }
+
+  .alert-icon {
+    color: inherit;
+  }
+}
+
+.alert-minor {
+  background: transparent;
+  border-color: var(--tblr-border-color);
 }
 
 @each $name, $color in $theme-colors {

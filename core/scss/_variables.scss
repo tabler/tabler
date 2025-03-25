@@ -24,8 +24,9 @@ $font-local: null !default;
 $font-icons: () !default;
 
 $font-family-sans-serif: unquote("#{if($font-local, "#{$font-local}, ", ' ')}#{if($font-google, "#{$font-google}, ", ' ')}") 'Inter Var', Inter, -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif !default;
-$font-family-monospace: unquote("#{if($font-google-monospaced, "#{$font-google-monospaced}, ", '')}") Menlo, Monaco, Consolas, Liberation Mono, Courier New, monospace !default;
+$font-family-monospace: unquote("#{if($font-google-monospaced, "#{$font-google-monospaced}, ", '')}") Monaco, Consolas, Liberation Mono, Courier New, monospace !default;
 $font-family-serif: "Georgia", "Times New Roman", times, serif !default;
+$font-family-comic: "Comic Sans MS", "Comic Sans", 'Chalkboard SE', 'Comic Neue', sans-serif, cursive !default;
 
 //Icons
 $icon-stroke-width: 1.5 !default;
@@ -145,16 +146,17 @@ $border-light-opacity: 0.08 !default;
 $border-dark-opacity: 0.24 !default;
 $border-active-opacity: 0.58 !default;
 
-$gray-50:  #f6f8fb !default;
-$gray-100: #eef3f6 !default;
-$gray-200: #dce1e7 !default;
-$gray-300: #b8c4d4 !default;
-$gray-400: #8a97ab !default;
-$gray-500: #6c7a91 !default;
-$gray-600: #49566c !default;
-$gray-700: #3a4859 !default;
-$gray-800: #182433 !default;
-$gray-900: #040a11 !default;
+$gray-50:  #f9fafb !default;
+$gray-100: #f3f4f6 !default;
+$gray-200: #e5e7eb !default;
+$gray-300: #d1d5db !default;
+$gray-400: #9ca3af !default;
+$gray-500: #6b7280 !default;
+$gray-600: #4b5563 !default;
+$gray-700: #374151 !default;
+$gray-800: #1f2937 !default;
+$gray-900: #111827 !default;
+$gray-950: #030712 !default;
 
 $black: #000000 !default;
 $white: #ffffff !default;
@@ -187,19 +189,7 @@ $green: #2fb344 !default;
 $teal: #0ca678 !default;
 $cyan: #17a2b8 !default;
 
-$color-blue: #066fd1;
-$color-azure: #3586c9;
-$color-indigo: #4263eb;
-$color-purple: #ae3ec9;
-$color-pink: #d6336c;
-$color-red: #e73f3f;
-$color-orange: #f76707;
-$color-yellow: #f59f00;
-$color-lime: #74b816;
-$color-green: #2fb344;
-$color-teal: #0ca678;
-$color-cyan: #17a2b8;
-
+$text-muted: $gray-500 !default;
 $text-secondary: $gray-500 !default;
 $text-secondary-light: $gray-400 !default;
 $text-secondary-dark: $gray-600 !default;
@@ -220,27 +210,28 @@ $active-border-color: var(--#{$prefix}primary) !default;
 $hover-bg: rgba(var(--#{$prefix}secondary-rgb), 0.08) !default;
 
 $disabled-bg: var(--#{$prefix}bg-surface-secondary) !default;
-$disabled-color: var(--#{$prefix}gray-300) !default;
+$disabled-color: color-transparent(var(--#{$prefix}body-color), .4) !default;
 
 $primary: $blue !default;
 $secondary: $text-secondary !default;
+$muted: $text-secondary !default;
 $success: $green !default;
 $info: $azure !default;
-$warning: $orange !default;
+$warning: $yellow !default;
 $danger: $red !default;
 
 $link-color: $primary !default;
 
 $theme-colors: (
   "primary": $primary,
-  "secondary": $text-secondary,
+  "secondary": $secondary,
   "success": $success,
   "info": $info,
   "warning": $warning,
   "danger": $danger,
   "light": $light,
   "dark": $dark,
-  "muted": $text-secondary,
+  "muted": $muted,
 ) !default;
 
 $extra-colors: (
@@ -290,7 +281,16 @@ $gray-colors: (
   gray-900: $gray-900,
 ) !default;
 
-$theme-colors: map-merge($theme-colors, map-merge($extra-colors, $social-colors));
+$theme-colors: map-merge($theme-colors, map-merge($extra-colors, ()));
+
+// BACKDROPS
+$backdrop-opacity: 24% !default;
+$backdrop-blur: 4px !default;
+$backdrop-bg: var(--#{$prefix}gray-800) !default;
+$backdrops: (
+  dark: color-mix(in srgb, var(--#{$prefix}color-dark), transparent var(--#{$prefix}backdrop-opacity)),
+  light: color-mix(in srgb, var(--#{$prefix}color-light), transparent var(--#{$prefix}backdrop-opacity)),
+) !default;
 
 // Borders
 $border-width: 1px !default;
@@ -300,6 +300,15 @@ $border-radius-sm: 4px !default;
 $border-radius: 6px !default;
 $border-radius-lg: 8px !default;
 $border-radius-pill: 100rem !default;
+
+$border-radiuses: (
+  0: 0,
+  sm: $border-radius-sm,
+  md: $border-radius,
+  lg: $border-radius-lg,
+  pill: $border-radius-pill,
+  null: var(--#{$prefix}border-radius-md),
+) !default;
 
 $border-values: (
   null: var(--#{$prefix}border-width) var(--#{$prefix}border-style) $border-color-translucent,
@@ -381,7 +390,7 @@ $avatar-sizes: (
 ) !default;
 $avatar-border-radius: var(--#{$prefix}border-radius) !default;
 $avatar-font-size: $h4-font-size !default;
-$avatar-box-shadow: var(--#{$prefix}box-shadow-border) !default;
+$avatar-box-shadow: var(--#{$prefix}shadow-border) !default;
 $avatar-list-spacing: -0.5;
 
 $link-decoration: none !default;
@@ -499,13 +508,13 @@ $box-shadow-card-hover: rgba(var(--#{$prefix}body-color-rgb), 0.16) 0 2px 16px 0
 $box-shadow-dropdown: 0 16px 24px 2px rgba(0, 0, 0, 0.07), 0 6px 30px 5px rgba(0, 0, 0, 0.06), 0 8px 10px -5px rgba(0, 0, 0, 0.1) !default;
 
 $box-shadows: (
-  box-shadow: $box-shadow,
-  box-shadow-border: $box-shadow-border,
-  box-shadow-transparent: $box-shadow-transparent,
-  box-shadow-input: $box-shadow-input,
-  box-shadow-card: $box-shadow-card,
-  box-shadow-card-hover: $box-shadow-card-hover,
-  box-shadow-dropdown: $box-shadow-dropdown,
+  null: $box-shadow,
+  border: $box-shadow-border,
+  transparent: $box-shadow-transparent,
+  input: $box-shadow-input,
+  card: $box-shadow-card,
+  card-hover: $box-shadow-card-hover,
+  dropdown: $box-shadow-dropdown,
 ) !default;
 
 $box-shadow-inset: 0 0 transparent !default;
@@ -570,7 +579,7 @@ $badge-bg-color: var(--#{$prefix}bg-surface-secondary) !default;
 // Buttons
 $input-btn-line-height: $line-height-base !default;
 $input-btn-font-size: $font-size-base !default;
-$input-btn-font-family: var(--#{$prefix}font-sans-serif) !default;
+$input-btn-font-family: var(--#{$prefix}body-font-face) !default;
 $input-btn-padding-y: 0.5rem - 0.0625rem !default;
 $input-btn-icon-size: $icon-size !default;
 
@@ -595,7 +604,7 @@ $input-height-lg: null !default;
 $input-border-radius: var(--#{$prefix}border-radius) !default;
 $input-color: var(--#{$prefix}body-color) !default;
 $input-focus-color: var(--#{$prefix}body-color) !default;
-$input-box-shadow: var(--#{$prefix}box-shadow-input) !default;
+$input-box-shadow: var(--#{$prefix}shadow-input) !default;
 
 // Buttons
 $btn-border-radius-sm: var(--#{$prefix}border-radius-sm) !default;
@@ -606,7 +615,7 @@ $btn-padding-x: 1rem !default;
 $btn-font-weight: var(--#{$prefix}font-weight-medium) !default;
 $btn-border-color: var(--#{$prefix}border-color) !default;
 $btn-border-radius: var(--#{$prefix}border-radius) !default;
-$btn-box-shadow: var(--#{$prefix}box-shadow-input) !default;
+$btn-box-shadow: var(--#{$prefix}shadow-input) !default;
 
 // Cards
 $card-title-spacer-y: 1.25rem !default;
@@ -678,16 +687,16 @@ $dropdown-max-width: 25rem !default;
 $dropdown-scrollable-height: 13rem !default;
 $dropdown-link-active-color: var(--#{$prefix}primary) !default;
 $dropdown-link-active-bg: var(--#{$prefix}active-bg) !default;
-$dropdown-box-shadow: var(--#{$prefix}box-shadow-dropdown) !default;
+$dropdown-box-shadow: var(--#{$prefix}shadow-dropdown) !default;
 
 $dropdown-divider-bg: $dropdown-border-color !default;
 $dropdown-divider-margin-y: var(--#{$prefix}spacer-2) !default;
 
 // Tooltip
-$tooltip-bg: var(--#{$prefix}bg-surface-dark) !default;
-$tooltip-color: var(--#{$prefix}light) !default;
+$tooltip-bg: var(--#{$prefix}bg-surface-inverted) !default;
+$tooltip-color: var(--#{$prefix}text-inverted) !default;
 $tooltip-padding-y: var(--#{$prefix}spacer-1) !default;
-$tooltip-padding-x: var(--#{$prefix}spacer-2) !default;
+$tooltip-padding-x: var(--#{$prefix}spacer-3) !default;
 
 // Loader
 $loader-size: 2.5rem !default;
@@ -702,7 +711,7 @@ $list-group-item-padding-x: $card-cap-padding-x !default;
 
 // Modals
 $modal-backdrop-opacity: 0.24 !default;
-$modal-backdrop-bg: $dark !default;
+$modal-backdrop-bg: $backdrop-bg !default;
 $modal-backdrop-blur: 4px !default;
 
 $modal-fade-transform: translate(0, -1rem) !default;
@@ -761,7 +770,7 @@ $navbar-height: 3.5rem !default;
 $navbar-padding-y: 0.25rem !default;
 $navbar-light-color: var(--#{$prefix}secondary) !default;
 
-$navbar-hover-color: $white !default;
+$navbar-hover-color: var(--#{$prefix}body-color) !default;
 
 $navbar-border-width: var(--#{$prefix}border-width) !default;
 $navbar-border-color: var(--#{$prefix}border-color) !default;
@@ -900,7 +909,7 @@ $input-bg: var(--#{$prefix}bg-forms) !default;
 $input-disabled-bg: $disabled-bg !default;
 $input-border-color: var(--#{$prefix}border-color) !default;
 $input-border-color-translucent: var(--#{$prefix}border-color-translucent) !default;
-$input-placeholder-color: $text-secondary-light !default;
+$input-placeholder-color: var(--#{$prefix}tertiary) !default;
 
 $input-group-addon-bg: var(--#{$prefix}bg-surface-secondary) !default;
 $input-group-addon-color: var(--#{$prefix}gray-500) !default;
@@ -931,7 +940,7 @@ $form-check-radio-checked-bg-image: url("data:image/svg+xml,<svg xmlns='http://w
 $form-check-label-disabled-opacity: $text-secondary-opacity;
 
 $form-select-indicator-color: $text-secondary-light !default;
-$form-select-box-shadow: var(--#{$prefix}box-shadow-input) !default;
+$form-select-box-shadow: var(--#{$prefix}shadow-input) !default;
 
 $form-switch-width: 2rem !default;
 $form-switch-height: 1.25rem !default;
@@ -960,7 +969,7 @@ $form-feedback-icon-invalid: str-replace(
 $form-label-font-size: $h4-font-size !default;
 $form-label-font-weight: var(--#{$prefix}font-weight-medium) !default;
 
-$form-secondary-color: var(--#{$prefix}gray-500) !default;
+$form-secondary-color: var(--#{$prefix}secondary) !default;
 
 // Legend
 $legend-bg: var(--#{$prefix}border-color) !default;
@@ -968,7 +977,7 @@ $legend-size: 0.75em !default;
 $legend-border-radius: var(--#{$prefix}border-radius-sm) !default;
 
 // Flags
-$flag-box-shadow: var(--#{$prefix}box-shadow-border) !default;
+$flag-box-shadow: var(--#{$prefix}shadow-border) !default;
 $flag-border-radius: var(--#{$prefix}border-radius) !default;
 $flag-sizes: $avatar-sizes !default;
 
@@ -978,6 +987,7 @@ $payment-sizes: $avatar-sizes !default;
 // Offcanvas
 $offcanvas-bg-color: var(--#{$prefix}bg-surface) !default;
 $offcanvas-border-color: var(--#{$prefix}border-color) !default;
+$offcanvas-backdrop-bg: $backdrop-bg !default;
 
 // Placeholder
 $placeholder-opacity-min: 0.1 !default;
