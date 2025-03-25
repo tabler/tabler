@@ -160,6 +160,52 @@ export function appData(eleventyConfig) {
 			"bitbucket": { title: "Bitbucket", hex: "#0052cc" },
 			"tabler": { title: "Tabler", hex: "#066fd1" }
 		},
+		grayColors: {
+			"gray-50": {
+				hex: "#f9fafb",
+				title: "Gray 50"
+			},
+			"gray-100": {
+				hex: "#f3f4f6",
+				title: "Gray 100"
+			},
+			"gray-200": {
+				hex: "#e5e7eb",
+				title: "Gray 200"
+			},
+			"gray-300": {
+				hex: "#d1d5db",
+				title: "Gray 300"
+			},
+			"gray-400": {
+				hex: "#9ca3af",
+				title: "Gray 400"
+			},
+			"gray-500": {
+				hex: "#6b7280",
+				title: "Gray 500"
+			},
+			"gray-600": {
+				hex: "#4b5563",
+				title: "Gray 600"
+			},
+			"gray-700": {
+				hex: "#374151",
+				title: "Gray 700"
+			},
+			"gray-800": {
+				hex: "#1f2937",
+				title: "Gray 800"
+			},
+			"gray-900": {
+				hex: "#111827",
+				title: "Gray 900"
+			},
+			"gray-950": {
+				hex: "#030712",
+				title: "Gray 950"
+			}
+		},
 		colorsExtra: {
 			"white": {
 				hex: "#ffffff",
