@@ -1,10 +1,7 @@
 // Autosize plugin
-
-import autosize from 'autosize';
-
 const elements = document.querySelectorAll('[data-bs-toggle="autosize"]');
 if (elements.length) {
 	elements.forEach(function (element) {
-		autosize && autosize(element);
+		window.autosize && window.autosize(element);
 	});
 }

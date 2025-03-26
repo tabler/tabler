@@ -25,8 +25,7 @@ plugins.push(
 
 const rollupConfig = {
 	input: [
-		path.resolve(__dirname, `../js/demo.js`),
-		path.resolve(__dirname, `../js/demo-theme.js`)
+		path.resolve(__dirname, `../js/demo.js`)
 	],
 	output: {
 		name: 'demo',

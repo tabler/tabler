@@ -9,8 +9,8 @@ import banner from '@repo/banner'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const ESM = process.env.ESM === 'true'
+const THEME = process.env.THEME === 'true'
 
-let destinationFile = `tabler${ESM ? '.esm' : ''}`
 const external = []
 const plugins = [
 	babel({
@@ -27,8 +27,9 @@ plugins.push(
 	nodeResolve()
 )
 
+const destinationFile = `tabler${THEME ? '-theme' : ''}${ESM ? '.esm' : ''}`
 const rollupConfig = {
-	input: path.resolve(__dirname, `../js/tabler.${ESM ? 'esm' : 'umd'}.js`),
+	input: path.resolve(__dirname, `../js/tabler${THEME ? '-theme' : ''}.js`),
 	output: {
 		banner: banner(),
 		file: path.resolve(__dirname, `../dist/js/${destinationFile}.js`),
@@ -40,7 +41,7 @@ const rollupConfig = {
 }
 
 if (!ESM) {
-	rollupConfig.output.name = 'tabler'
+	rollupConfig.output.name = `tabler${THEME ? '-theme' : ''}`
 }
 
 export default rollupConfig
