@@ -143,9 +143,9 @@
 		document.querySelector("#page-count").innerHTML = e.target.dataset.value
 	}
 
-	{% if environment == 'development' %}window.tabler_list = window.tabler_list || {};{% endif %}
+	window.tabler_list = window.tabler_list || {}
 	document.addEventListener("DOMContentLoaded", function() {
-		const list = {% if environment == 'development' %}window.tabler_list["table-{{ id }}"] = {% endif %}new List('table-{{ id }}', {
+		const list = window.tabler_list["table-{{ id }}"] = new List('table-{{ id }}', {
 			sortClass: 'table-sort',
 			listClass: 'table-tbody',
 			page: 10,
