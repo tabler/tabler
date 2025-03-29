@@ -1,21 +1,19 @@
 ---
 title: Color picker
 page-header: Color picker
-page-menu: base.colorpicker
+page-menu: plugins.colorpicker
 page-libs: [coloris.js]
 layout: default
 permalink: colorpicker.html
 ---
 
-{% assign colors = "#066fd1,#45aaf2,#6574cd,#a55eea,#f66d9b,#fa4654,#fd9644,#f1c40f,#7bd235,#5eba00,#2bcbba,#17a2b8" | split: "," %}
-
 <div class="card">
 	<div class="card-body">
 		<h3 class="card-title">Basic</h3>
 		<div class="row g-3">
-			{% for color in colors %}
+			{% for color in site.colors %}
 			<div class="col-2">
-				<div>{% include "ui/colorpicker.html" value=color id=forloop.index format="hex" %}</div>
+				<div>{% include "ui/colorpicker.html" value=color[1].hex id=forloop.index format="hex" %}</div>
 			</div>
 			{% endfor %}
 		</div>

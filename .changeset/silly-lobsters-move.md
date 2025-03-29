@@ -1,5 +1,0 @@
----
-
----
-
-Improve documentation for buttons

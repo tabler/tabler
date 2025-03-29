@@ -1,0 +1,52 @@
+{% assign id = include.id | default: 'default' %}
+
+<div class="signature position-relative{% if include.class %} {{ include.class }}{% endif %}">
+	{% if include.clear %}
+	<div class="position-absolute top-0 end-0 p-2">
+		<div class="btn btn-icon" id="signature-{{ id }}-clear" title="Clear signature" data-bs-toggle="tooltip">
+			{% include "ui/icon.html" icon="trash" %} 
+		</div>
+	</div>
+	{% endif %}
+  <canvas id="signature-{{ id }}" width="{{ include.width | default: 400 }}" height="{{ include.height | default: 400 }}" class="signature-canvas"></canvas>
+</div>
+
+{% capture_script %}
+<!-- BEGIN SIGNATURE PAD -->
+<script>  
+  document.addEventListener("{{ include.event | default: 'DOMContentLoaded' }}", function () {
+    const canvas = document.getElementById("signature-{{ id }}");
+
+    if (canvas) {
+      const signaturePad = new SignaturePad(canvas, {
+        backgroundColor: "transparent",
+		  penColor: getComputedStyle(canvas).color
+      });
+
+		{% if include.clear %}
+		document.querySelector("#signature-{{ id }}-clear").addEventListener("click", function () {
+		  signaturePad.clear();
+		});
+		{% endif %}
+
+		function resizeCanvas() {
+        const ratio = Math.max(window.devicePixelRatio || 1, 1);
+
+		  console.log(canvas.offsetWidth, canvas.offsetHeight);
+
+        canvas.width = canvas.offsetWidth * ratio;
+        canvas.height = canvas.offsetHeight * ratio;
+        canvas.getContext("2d").scale(ratio, ratio);
+        signaturePad.fromData(signaturePad.toData()); 
+      }  
+
+		window.addEventListener("resize", resizeCanvas);
+		resizeCanvas();
+
+		{% if include.extra-js %}
+		{{ include.extra-js }}
+		{% endif %}
+    }
+  });
+</script>
+{% endcapture_script %}

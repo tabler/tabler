@@ -1,0 +1,18 @@
+{% if page-libs -%}
+{% capture libs-code -%}
+{% for lib in include.libs -%}
+{% if page-libs contains lib[0] -%}
+{% for file in lib[1] -%}
+<script src="{% if file contains 'http://' or file contains 'https://' %}{{ file | replace: 'GOOGLE_MAPS_KEY', google-maps-key }}{% else %}{{ page | relative }}/libs/{% if environment != 'development' %}{{ file | replace: '@', '' }}{% else %}{{ file }}{% endif %}{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}{% endif %}" defer></script>
+{% endfor -%}
+{% endif -%}
+{% endfor -%}
+{% endcapture -%}
+
+{% assign libs-code = libs-code | strip -%}
+{% if libs-code != "" -%}
+<!-- BEGIN PAGE LIBRARIES -->
+{{ libs-code }}
+<!-- END PAGE LIBRARIES -->
+{% endif -%}
+{% endif -%}

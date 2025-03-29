@@ -16,8 +16,7 @@
 - be14607: Add new color picker component using `coloris.js` library
 - d046570: Update Tabler Icons to version 2.23 with 18 new icons added
 - 5488c50: New page with payment providers: `payment-providers.html`
-- 5488c50: Add support for new payment providers: 2c2p, Adyen, Affirm, Alipay Plus, Allegro Pay, Amazon Pay, Apple Pay, Autopay, Binance USD, Bkash, Cash App, Chime, EasyPaisa, Ethereum, Google Pay, HubSpot, iDeal, Litecoin, Mercado Pago,
-  MetaMask, MoneyGram, OpenSea, Payconiq, Payka, Payline, PayPo, Paysafe, Poli, Revolut Pay, Samsung Pay, Shop Pay, Solana, Spingo, Stax, Tether, True USD, Venmo, WeChat Pay, Wise, Zelle
+- 5488c50: Add support for new payment providers: 2c2p, Adyen, Affirm, Alipay Plus, Allegro Pay, Amazon Pay, Apple Pay, Autopay, Binance USD, Bkash, Cash App, Chime, EasyPaisa, Ethereum, Google Pay, HubSpot, iDeal, Litecoin, Mercado Pago, MetaMask, MoneyGram, OpenSea, Payconiq, Payka, Payline, PayPo, Paysafe, Poli, Revolut Pay, Samsung Pay, Shop Pay, Solana, Spingo, Stax, Tether, True USD, Venmo, WeChat Pay, Wise, Zelle
 
 ### Patch Changes
 

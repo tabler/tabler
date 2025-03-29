@@ -14,13 +14,12 @@
 	{% endif %}
 </form>
 
-{% capture_global scripts %}
+{% capture_script %}
 <script>
-  // @formatter:off
   {% if environment == 'development' %}window.tabler_dropzone = window.tabler_dropzone || {};{% endif %}
 
   document.addEventListener("DOMContentLoaded", function() {
     {% if environment == 'development' %}window.tabler_dropzone["dropzone-{{ id }}"] = {% endif %}new Dropzone("#dropzone-{{ id }}")
   })
 </script>
-{% endcapture_global %}
+{% endcapture_script %}

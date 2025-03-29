@@ -1,7 +1,7 @@
 ---
 title: SVG Illustrations
 page-header: SVG Illustrations
-page-menu: illustrations
+page-menu: addons.illustrations
 layout: default
 permalink: illustrations.html
 ---
@@ -14,7 +14,7 @@ permalink: illustrations.html
 {% assign skinColor = site.skinColors | first %} 
 {% assign color = site.colors | first %}
 
-<div class="mb-7" style="--tblr-illustrations-primary: {{ color.hex }}; --tblr-illustrations-skin: {{ skinColor.hex }};" id="current-illustration-style">
+<div class="mb-7" style="--tblr-illustrations-primary: var(--tblr-color-primary); --tblr-illustrations-skin: {{ skinColor.hex }};" id="current-illustration-style">
 	<div class="row row-cards">
 		<div class="col-12">
 			<div class="row row-cards row-deck g-4">
@@ -33,10 +33,22 @@ permalink: illustrations.html
 									<div>
 										<div class="form-label">Primary color</div>
 										<div class="row g-2">
+											<div class="col-auto">
+												<label class="form-colorinput">
+													<input name="color" type="radio" value="var(--tblr-color-primary)" class="form-colorinput-input js-select-color" checked />
+													<span class="form-colorinput-color bg-primary"></span>
+												</label>
+											</div>
+											<div class="col-auto">
+												<label class="form-colorinput">
+													<input name="color" type="radio" value="var(--tblr-bg-surface-inverted)" class="form-colorinput-input js-select-color" />
+													<span class="form-colorinput-color bg-inverted"></span>
+												</label>
+											</div>
 											{% for color in site.colors %}
 											<div class="col-auto">
 												<label class="form-colorinput">
-													<input name="color" type="radio" value="{{ color[1].hex }}" class="form-colorinput-input js-select-color" {% if forloop.first %} checked{% endif %} />
+													<input name="color" type="radio" value="{{ color[1].hex }}" class="form-colorinput-input js-select-color" />
 													<span class="form-colorinput-color bg-{{ color[1].class }}"></span>
 												</label>
 											</div>
@@ -128,7 +140,7 @@ permalink: illustrations.html
 </div>
 
 
-{% capture_global scripts %}
+{% capture_script %}
 <script>
 	let skinColor = "{{ skin_color[1].hex }}",
 	   primaryColor = "{{ color[1].hex }}";
@@ -169,4 +181,4 @@ permalink: illustrations.html
 		})
 	})
 </script>
-{% endcapture_global %}
+{% endcapture_script %}
