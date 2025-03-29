@@ -20,7 +20,7 @@ page-header: Avatars
 		<div class="card">
 			<div class="card-body">
 				<h2 class="card-title">Avatar with icon</h2>
-	
+
 				{% assign icon-icons = "user,settings,car,balloon,users,users-group,apps,ghost" | split: "," %}
 				<div class="avatar-list">
 					{% for icon in icon-icons %}
@@ -34,7 +34,7 @@ page-header: Avatars
 		<div class="card">
 			<div class="card-body">
 				<h2 class="card-title">Avatar with icon</h2>
-	
+
 				<div class="avatar-list">
 					{% for color in site.colors %}
 					{% include "ui/avatar.html" icon="user" color=color[0] %}
@@ -84,14 +84,27 @@ page-header: Avatars
 		<div class="card">
 			<div class="card-body">
 				<h2 class="card-title">Avatar sizes</h2>
-				<div class="avatar-list">
-					{% include "ui/avatar.html" size="xxs" %}
-					{% include "ui/avatar.html" size="xs" %}
-					{% include "ui/avatar.html" size="sm" %}
-					{% include "ui/avatar.html" size="md" %}
-					{% include "ui/avatar.html" size="lg" %}
-					{% include "ui/avatar.html" size="xl" %}
-					{% include "ui/avatar.html" size="2xl" %}
+				<div class="row">
+					<div class="col-6">
+						<div class="avatar-list">
+							{% include "ui/avatar.html" size="xxs" %}
+							{% include "ui/avatar.html" size="xs" %}
+							{% include "ui/avatar.html" size="sm" %}
+							{% include "ui/avatar.html" size="md" %}
+							{% include "ui/avatar.html" size="lg" %}
+							{% include "ui/avatar.html" size="xl" %}
+						</div>
+					</div>
+					<div class="col-6">
+						<div class="avatar-list">
+							{% include "ui/avatar.html" placeholder="PK" size="xxs" %}
+							{% include "ui/avatar.html" placeholder="PK" size="xs" %}
+							{% include "ui/avatar.html" placeholder="PK" size="sm" %}
+							{% include "ui/avatar.html" placeholder="PK" size="md" %}
+							{% include "ui/avatar.html" placeholder="PK" size="lg" %}
+							{% include "ui/avatar.html" placeholder="PK" size="xl" %}
+						</div>
+					</div>
 				</div>
 			</div>
 		</div>
@@ -100,8 +113,8 @@ page-header: Avatars
 		<div class="card">
 			<div class="card-body">
 				<h2 class="card-title">Avatar lists</h2>
-				<div class="row g-5">
-					{% assign sizes = "xxs,xs,sm,md,lg,xl,2xl" | split: "," %}
+				<div class="row g-3">
+					{% assign sizes = "xxs,xs,sm,md,lg" | split: "," %}
 					{% for size in sizes %}
 					<div class="col-6">
 						<div class="avatar-list avatar-list-stacked avatar-list-{{ size }}">
@@ -112,11 +125,11 @@ page-header: Avatars
 						</div>
 					</div>
 					<div class="col-6">
-						<div class="avatar-list avatar-list-stacked">
+						<div class="avatar-list avatar-list-stacked avatar-list-{{ size }}">
 							{% for person in people limit: 5 %}
-							{% include "ui/avatar.html" person=person circled %}
+							{% include "ui/avatar.html" person=person class="rounded-circle" %}
 							{% endfor %}
-							{% include "ui/avatar.html" icon="plus" link circled %}
+							{% include "ui/avatar.html" icon="plus" link class="rounded-circle" %}
 						</div>
 					</div>
 					{% endfor %}
@@ -128,8 +141,21 @@ page-header: Avatars
 		<div class="card">
 			<div class="card-body">
 				<h2 class="card-title">Avatar placeholder</h2>
-				{% include "ui/avatar-upload.html" %}
-				</div>
+				{% assign sizes = "xxs,xs,sm,md,lg,xl,2xl" | split: "," %}
+				{% for size in sizes %}
+				{% include "ui/avatar-upload.html" size=size %}
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+	<div class="col-4">
+		<div class="card">
+			<div class="card-body">
+				<h2 class="card-title">Avatar statuses</h2>
+				{% assign colors = "red,green,blue,yellow,secondary" | split: "," %}
+				{% for color in colors %}
+				{% include "ui/avatar.html" person-id=forloop.index class="rounded-circle" status=color %}
+				{% endfor %}
 			</div>
 		</div>
 	</div>

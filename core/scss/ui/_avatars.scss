@@ -23,6 +23,7 @@
   background: var(--#{$prefix}avatar-bg) no-repeat center/cover;
   border-radius: $avatar-border-radius;
   box-shadow: var(--#{$prefix}avatar-box-shadow);
+  transition: color $transition-time, background-color $transition-time, box-shadow $transition-time;
 
   .icon {
     width: var(--#{$prefix}avatar-icon-size);
@@ -39,6 +40,11 @@
 
   @at-root a#{&} {
     cursor: pointer;
+    
+    &:hover {
+      color: var(--#{$prefix}primary);
+      --#{$prefix}avatar-box-shadow-color: var(--#{$prefix}primary);
+    }
   }
 }
 
@@ -65,7 +71,6 @@
 //
 .avatar-list {
   --#{$prefix}avatar-list-size: 3rem;
-
   @include elements-list;
 
   a.avatar {
@@ -85,12 +90,16 @@
   }
 }
 
+@each $avatar-size, $size in $avatar-sizes {
+  .avatar-list-#{$avatar-size} {
+    --#{$prefix}avatar-list-size: #{map-get($size, size)};
+  }
+}
+
 //
 // Avatar upload
 //
 .avatar-upload {
-  width: 4rem;
-  height: 4rem;
   border: var(--#{$prefix}border-width) dashed var(--#{$prefix}border-color);
   background: $form-check-input-bg;
   box-shadow: none;
