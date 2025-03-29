@@ -8,11 +8,70 @@ permalink: colors.html
 
 {% assign colors = '' | split: '' %}
 {% for color in site.colors %}
-{% assign colors = colors | push: color[0] %}
+{% assign colors = colors | push: color.class %}
 {% endfor %}
 {% assign colors = colors | push: 'dark' %}
 
 <div class="row row-cards">
+	<div class="col-12">
+		<div class="card">
+			<div class="card-body text-center">
+				<div class="row g-3">
+					<div class="col-12">
+						<div class="row g-0 rounded overflow-hidden">
+							{% for color in site.colors %}
+							<div class="col">
+								<div class="bg-{{ color.class }} text-{{ color.class }}-fg py-5">{{ color.class }}</div>
+							</div>
+							{% endfor %}
+						</div>
+					</div>
+					<div class="col-12">
+						<div class="row g-0 rounded overflow-hidden">
+							{% for color in site.colors %}
+							<div class="col">
+								<div class="bg-{{ color.class }}-darker text-{{ color.class }}-fg py-5">{{ color.class }}</div>
+							</div>
+							{% endfor %}
+						</div>
+					</div>
+					<div class="col-12">
+						<div class="row g-0 rounded overflow-hidden">
+							{% for color in site.colors %}
+							<div class="col">
+								<div class="bg-{{ color.class }}-lighter text-{{ color.class }} py-5">{{ color.class }}</div>
+							</div>
+							{% endfor %}
+						</div>
+					</div>
+					<div class="col-12">
+						<div class="row g-0 rounded overflow-hidden">
+							{% for color in site.colors %}
+							<div class="col">
+								<div class="bg-{{ color.class }}-lightest text-{{ color.class }} py-5">{{ color.class }}</div>
+							</div>
+							{% endfor %}
+						</div>
+					</div>
+					<div class="col-12">
+						<div class="row g-0 rounded overflow-hidden">
+							<div class="col">
+								<div class="bg-white text-white-fg py-5">white</div>
+							</div>
+							{% for color in site.grayColors %}
+							<div class="col">
+								<div class="bg-{{ color.class }} text-{{ color.class }}-fg py-5">{{ color.class }}</div>
+							</div>
+							{% endfor %}
+							<div class="col">
+								<div class="bg-black text-black-fg py-5">black</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 	<div class="col-12">
 		<div class="card">
 			<div class="card-body">
@@ -29,7 +88,7 @@ permalink: colors.html
 						<tr>
 							{% for color in colors %}
 							<td>
-								<div class="avatar bg-{{ color }}-lt" data-demo-color>{{ color | slice: 0, 2 }}</div>
+								<div class="avatar bg-{{ color }}-lightest" data-demo-color>{{ color | slice: 0, 2 }}</div>
 							</td>
 							{% endfor %}
 						</tr>
@@ -61,7 +120,7 @@ permalink: colors.html
 							{% for color in colors %}
 							<td>
 								{% if color == 'dark' %}{% assign c = 'white' %}{% else %}{% assign c = color %}{% endif %}
-								<div class="avatar bg-{{ c }}-lt" data-demo-color>{{ c | slice: 0, 2 }}</div>
+								<div class="avatar bg-{{ c }}-lightest" data-demo-color>{{ c | slice: 0, 2 }}</div>
 								<div class="mt-2" data-demo-color-contrast></div>
 							</td>
 							{% endfor %}

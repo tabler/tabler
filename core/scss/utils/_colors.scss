@@ -4,9 +4,18 @@
     background-color: color-mix(in srgb, var(--#{$prefix}#{$color}) calc(var(--#{$prefix}bg-opacity, 1) * 100%), transparent) !important;
   }
 
-  .bg-#{"" + $color}-lt {
+  .bg-#{"" + $color}-darker {
+    background-color: color-mix(in srgb, var(--#{$prefix}#{$color}-darker) calc(var(--#{$prefix}bg-opacity, 1) * 100%), transparent) !important;
+  }
+
+  .bg-#{"" + $color}-lightest {
     color: color-mix(in srgb, var(--#{$prefix}#{$color}) calc(var(--#{$prefix}text-opacity, 1) * 100%), transparent) !important;
-    background-color: color-mix(in srgb, var(--#{$prefix}#{$color}-lt) calc(var(--#{$prefix}bg-opacity, 1) * 100%), transparent) !important;
+    background-color: color-mix(in srgb, var(--#{$prefix}#{$color}-lightest) calc(var(--#{$prefix}bg-opacity, 1) * 100%), transparent) !important;
+  }
+  
+  .bg-#{"" + $color}-lighter {
+    color: color-mix(in srgb, var(--#{$prefix}#{$color}) calc(var(--#{$prefix}text-opacity, 1) * 100%), transparent) !important;
+    background-color: color-mix(in srgb, var(--#{$prefix}#{$color}-lighter) calc(var(--#{$prefix}bg-opacity, 1) * 100%), transparent) !important;
   }
 
   .border-#{"" + $color} {
@@ -74,6 +83,12 @@
     background-color: color-mix(in srgb, var(--#{$prefix}#{$color}) calc(var(--#{$prefix}bg-opacity) * 100%), transparent) !important;
   }
 
+  .text-#{"" + $color}-fg {
+    color: $value !important;
+  }
+}
+
+@each $color, $value in $foreground-colors {
   .text-#{"" + $color}-fg {
     color: $value !important;
   }

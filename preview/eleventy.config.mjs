@@ -135,68 +135,125 @@ export default function (eleventyConfig) {
 			buy_link: "https://r.tabler.io/buy-illustrations"
 		},
 
-		colors: {
-			"blue": {
+		colors: [
+			{
 				"class": "blue",
 				"hex": "#066fd1",
 				"title": "Blue"
 			},
-			"azure": {
+			{
 				"class": "azure",
 				"hex": "#45aaf2",
 				"title": "Azure"
 			},
-			"indigo": {
+			{
 				"class": "indigo",
 				"hex": "#6574cd",
 				"title": "Indigo"
 			},
-			"purple": {
+			{
 				"class": "purple",
 				"hex": "#a55eea",
 				"title": "Purple"
 			},
-			"pink": {
+			{
 				"class": "pink",
 				"hex": "#f66d9b",
 				"title": "Pink"
 			},
-			"red": {
+			{
 				"class": "red",
 				"hex": "#fa4654",
 				"title": "Red"
 			},
-			"orange": {
+			{
 				"class": "orange",
 				"hex": "#fd9644",
 				"title": "Orange"
 			},
-			"yellow": {
+			{
 				"class": "yellow",
 				"hex": "#f1c40f",
 				"title": "Yellow"
 			},
-			"lime": {
+			{
 				"class": "lime",
 				"hex": "#7bd235",
 				"title": "Lime"
 			},
-			"green": {
+			{
 				"class": "green",
 				"hex": "#5eba00",
 				"title": "Green"
 			},
-			"teal": {
+			{
 				"class": "teal",
 				"hex": "#2bcbba",
 				"title": "Teal"
 			},
-			"cyan": {
+			{
 				"class": "cyan",
 				"hex": "#17a2b8",
 				"title": "Cyan"
 			}
-		},
+		],
+		grayColors: [
+			{
+				"class": "gray-50",
+				"value": "var(--tb-gray-50)",
+				"title": "Gray 50"
+			},
+			{
+				"class": "gray-100",
+				"value": "var(--tb-gray-100)",
+				"title": "Gray 100"
+			},
+			{
+				"class": "gray-200",
+				"value": "var(--tb-gray-200)",
+				"title": "Gray 200"
+			},
+			{
+				"class": "gray-300",
+				"value": "var(--tb-gray-300)",
+				"title": "Gray 300"
+			},
+			{
+				"class": "gray-400",
+				"value": "var(--tb-gray-400)",
+				"title": "Gray 400"
+			},
+			{
+				"class": "gray-500",
+				"value": "var(--tb-gray-500)",
+				"title": "Gray 500"
+			},
+			{
+				"class": "gray-600",
+				"value": "var(--tb-gray-600)",
+				"title": "Gray 600"
+			},
+			{
+				"class": "gray-700",
+				"value": "var(--tb-gray-700)",
+				"title": "Gray 700"
+			},
+			{
+				"class": "gray-800",
+				"value": "var(--tb-gray-800)",
+				"title": "Gray 800"
+			},
+			{
+				"class": "gray-900",
+				"value": "var(--tb-gray-900)",
+				"title": "Gray 900"
+			},
+			{
+				"class": "gray-950",
+				"value": "var(--tb-gray-950)",
+				"title": "Gray 950"
+			}
+		],
 		skinColors: {
 			"rose": {
 				"hex": "#FFCB9D",
