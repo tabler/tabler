@@ -1,6 +1,6 @@
 
 import { appConfig } from "@repo/e11ty"
-import { appData } from "@repo/data"
+import { appData, getCopyList } from "@repo/data"
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
@@ -10,8 +10,10 @@ export default function (eleventyConfig) {
 	appConfig(eleventyConfig);
 	appData(eleventyConfig);
 
+	console.log(getCopyList());
+
 	eleventyConfig.addPassthroughCopy({
-		"node_modules/@tabler/core/dist": "core",
+		...getCopyList(), 
 		"public": "/"
 	});
 
@@ -20,13 +22,6 @@ export default function (eleventyConfig) {
 			return a.data.title - b.data.title;
 		});
 	});
-
-	/**
-	 * Server
-	 */
-	if (process.env.ELEVENTY_RUN_MODE === "serve") {
-		eleventyConfig.setServerPassthroughCopyBehavior("passthrough");
-	}
 
 	eleventyConfig.addTemplateFormats("mdx");
 	eleventyConfig.addExtension("mdx", {

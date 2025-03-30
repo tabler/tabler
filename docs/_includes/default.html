@@ -7,10 +7,10 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Tabler Documentation - {{ title }}</title>
 
-	<link rel="stylesheet" href="/core/css/tabler{% if environment != 'development' %}.min{% endif %}.css" />
+	<link rel="stylesheet" href="/dist/css/tabler{% if environment != 'development' %}.min{% endif %}.css" />
 	{% for plugin in plugins %}
 	<link
-		href="/core/css/tabler-{{ plugin }}{% if environment != 'development' %}.min{% endif %}.css{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}"
+		href="/dist/css/tabler-{{ plugin }}{% if environment != 'development' %}.min{% endif %}.css{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}"
 		rel="stylesheet" />
 	{% endfor %}
 
@@ -63,16 +63,15 @@
 		</div>
 	</div>
 
-	<script src="/core/js/tabler.js"></script>
+	<script src="/dist/js/tabler.js"></script>
 	<script src="/js/theme-switcher.js" defer></script>
 
 	{% if docs-libs -%}
-	{{ docs-libs | inspect }}
 	{% for lib in libs.js -%}
 	{% if docs-libs contains lib[0] or libs.global-libs contains lib[0] -%}
 	{% for file in lib[1] -%}
 	<script
-		src="{% if file contains 'http://' or file contains 'https://' %}{{ file | replace: 'GOOGLE_MAPS_KEY', google-maps-key }}{% else %}{{ page | relative }}/libs/{% if environment != 'development' %}{{ file | replace: '@', '' }}{% else %}{{ file }}{% endif %}{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}{% endif %}"
+		src="{% if file contains 'http://' or file contains 'https://' %}{{ file | replace: 'GOOGLE_MAPS_KEY', google-maps-key }}{% else %}/libs/{% if environment != 'development' %}{{ file | replace: '@', '' }}{% else %}{{ file }}{% endif %}{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}{% endif %}"
 		defer></script>
 	{% endfor -%}
 	{% endif -%}

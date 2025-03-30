@@ -1,46 +1,9 @@
 import { readFileSync } from 'node:fs';
 import { EleventyRenderPlugin } from "@11ty/eleventy";
-import { join, dirname } from 'node:path';
+import { join } from 'node:path';
 import { sync } from 'glob';
 import { appConfig } from "@repo/e11ty"
-import { appData } from "@repo/data"
-
-/*
- * Copy list
- */
-const getCopyList = () => {
-	let copy = {
-		"node_modules/@tabler/core/dist": "dist",
-		"pages/favicon.ico": "favicon.ico",
-		"static": "static",
-	}
-
-	const libs = JSON.parse(readFileSync('./pages/_data/libs.json'));
-
-	let files = []
-
-	Object.keys(libs.js).forEach((lib) => {
-		files.push(Array.isArray(libs.js[lib]) ? libs.js[lib] : [libs.js[lib]])
-	})
-
-	Object.keys(libs.css).forEach((lib) => {
-		files.push(Array.isArray(libs.css[lib]) ? libs.css[lib] : [libs.css[lib]])
-	})
-
-	Object.keys(libs['js-copy']).forEach((lib) => {
-		files.push(libs['js-copy'][lib])
-	})
-
-	files = files.flat()
-
-	files.forEach((file) => {
-		if (!file.match(/^https?/)) {
-			copy[`node_modules/${dirname(file)}`] = `libs/${dirname(file)}`;
-		}
-	})
-
-	return copy;
-}
+import { appData, getCopyList } from "@repo/data"
 
 /** @type {import('@11ty/eleventy').LocalConfig} */
 export default function (eleventyConfig) {
@@ -55,18 +18,15 @@ export default function (eleventyConfig) {
 	eleventyConfig.setLayoutsDirectory("_layouts");
 	eleventyConfig.setIncludesDirectory("_includes");
 
-	eleventyConfig.addPassthroughCopy(getCopyList());
+	eleventyConfig.addPassthroughCopy({
+		...getCopyList(),
+		"pages/favicon.ico": "favicon.ico",
+		"static": "static",
+	});
 
 	eleventyConfig.addPlugin(EleventyRenderPlugin, {
 		accessGlobalData: true,
 	});
-
-	/**
-	 * Server
-	 */
-	if (process.env.ELEVENTY_RUN_MODE === "serve") {
-		eleventyConfig.setServerPassthroughCopyBehavior("passthrough");
-	}
 
 	/**
 	 * Data
@@ -406,24 +366,24 @@ export default function (eleventyConfig) {
 	});
 
 	eleventyConfig.addGlobalData("sri", {
-		"css": "sha384-+ysCwUILnDsnHwK+rITa6QNp8mGFdEXZMfZ/WBpY13iTiCwas5Ah0GIagDbU8Ocy",
-		"css-rtl": "sha384-kQMcoyzrq1HEu2/rW78iuKRreSYzdUb1KQhPweqwUyH8Gnydy+vaMP4MpFx2+z07",
+		"css": "sha384-sFsI0e1AbJFSv7QeizkQVdE+DuYIvlrBioLvlsga4s8rk2Iiqj/ruBgDx3R4jooe",
+		"css-rtl": "sha384-0wW091ZSmLzNVtqdyILjD/HYpYUFw+oX5IWmxtdD2f30v543Ppz7tLpEBVI8T+4j",
 		"css-flags": "sha384-J4S9gTOgB6a60d8OIMRu7vveDJCqxLAcDfzDN24CQxXmfi1iIFoU3uelSShCMfAD",
 		"css-flags-rtl": "sha384-Rh33piKJ6K8C1b07vnxSLBK5RJSnp4UhH37XTfJxWlnVUl3FqH3mW14kOy6nU1Bd",
-		"css-marketing": "sha384-RFTn6c3X2MHvEcQwCc/w1n8IBV4B/GeFHms5KPCiMkSc+tCDtZe5F6aJ+dJYu7mI",
-		"css-marketing-rtl": "sha384-HZqaZjtszSlyS975Oe9Z9U9gVmMxvTBU1XziOLE3R4N/pKTmWiznOzHszVqoSufe",
+		"css-marketing": "sha384-0B7WRnNUoK4F4KsXMgsGPmUAKWpfPhAZhoPhzYREYqvThJY24XMJzs3bcH24fv7d",
+		"css-marketing-rtl": "sha384-swoQ0TcfUrvniYn5PeZjvTidXUnjehcBNHh+TP1DZ5SVcdW+bc4ckVMV/9MYAZew",
 		"css-payments": "sha384-YnhOMEPyU5QfErzSK9sD18FMXdRCn/HB4a+88mFXbd45fFRNWKWeARptNw1k16+/",
 		"css-payments-rtl": "sha384-v6XNJfLEVre0G8WOfEeFRSDFItjdOvNGFZTlS6HpoKkkxYe/vbkJBfzhOnePD2dY",
 		"css-socials": "sha384-M/p2rVRhhVGWQaE5KAPB4+/uWqFtmb6ag3/NXG8E3SL2MAROPCfB5YJvDHmS5Rms",
 		"css-socials-rtl": "sha384-5h8LiZ8sjd3+w3/waxyu3/vTW2kdx90LLYaik7pugCUOR7YRQXbyP13dhp1mUrcW",
-		"css-props": "sha384-D9/OSlhkMpd/Nf7168lDKk/Tg/slS3Zu8+alAFMMKXmFkoPazXHR7kiSMKKgu5D6",
-		"css-props-rtl": "sha384-4v5rbYBY7WUjemTcFeoBDmH+qZUndtmwamnzHdqcUpAdopNjpVsG/+1IQOpKHNly",
+		"css-props": "sha384-uS4AF/9OqmHFLRAxp/daxvUu/g4QVxW+UAW1xxL1yqegYnT53IMG0ojilN5vE0KQ",
+		"css-props-rtl": "sha384-Iakh3oDlTbinQ9Ck7NFrqoEv/uqjvrvAtji1UNGWEcIy1doY6ymtts6GeeBUU0iu",
 		"css-themes": "sha384-Bj8pP2O3iJP6JH/ZdDBnxIH/3XOJF8DSyYUUHs8wTxb0PRUe5DU01llAmog5ybpg",
 		"css-themes-rtl": "sha384-+bJhK3cbUPk0SGCLUskjOBARViddapb+MJA1CbWjerZ46uyZbm6L1Gar3Ggs4c8h",
-		"css-vendors-rtl": "sha384-bO98lLX+Ldg6g5nwEiyrECPhkSytviXXblROAGrjND8u+AM4zbk8gjQsCDK7zifX",
-		"css-vendors": "sha384-oxt7C0fn5FehJqUxTGaDMUo+IiNNM7wVIqvuv7aHn4hnfLyc0TxI2xXo6bMK1pyb",
+		"css-vendors-rtl": "sha384-xr+kIN4I9zenh4uC7LAOtXhj6eyFUn567Yr23QyaIq4OGRdPNcQ0e52f8T1wTSYh",
+		"css-vendors": "sha384-cFz/XfWTmyCb5jkPFO3b51Vgc16vyrRzL3LLD2Ah7yFnpVjxN6nalaCc02Xg2vh4",
 		"js": "sha384-uSpys8fjyVTPrXxPMi+NhnEMIp1YSGFZSCDrRHjYIUVdInIvlHft8JHLm6Oiw3vA",
-		"js-theme": "sha384-uSpys8fjyVTPrXxPMi+NhnEMIp1YSGFZSCDrRHjYIUVdInIvlHft8JHLm6Oiw3vA",
+		"js-theme": "sha384-xCA/37z74Ws4TlN18VkTDQ/T5bWJpvhV8k5y5Qp8qMKqKMHSHdAOcQ9qGPn0pUJj",
 		"demo-css": "sha384-BUDq2P684xwRBf0GDlySvob+KJg4ko8y2K7njgvYBscmEuqoVVqJ75zcTDozwkFA",
 		"demo-js": "sha384-UcTgbM9IZSOPHHuFa0R9H4TegQWoZkJKpeTjLV5hjem2k0CZ67Q4/bW2rT/Edf4Z",
 	});
