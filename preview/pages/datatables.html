@@ -49,20 +49,4 @@ permalink: datatables.html
 	</div>
 </div>
 
-{% capture_script %}
-<script>
-{% if environment == 'development' %}window.tabler_list = window.tabler_list || {};{% endif %}
-
-	document.addEventListener("DOMContentLoaded", function() {
-	const list = {% if environment == 'development' %}window.tabler_list["table-{{ id }}"] = {% endif %}new List('table-{{ id }}', {
-		sortClass: 'table-sort',
-		listClass: 'table-tbody',
-		valueNames: [ 'sort-name', 'sort-type', 'sort-city', 'sort-score',
-			{ attr: 'data-date', name: 'sort-date' },
-			{ attr: 'data-progress', name: 'sort-progress' },
-			'sort-quantity'
-		]
-	});
-})
-</script>
-{% endcapture_script %}
+{% include "js/tabler-list.html", parameters="[ 'sort-name', 'sort-type', 'sort-city', 'sort-score', { attr: 'data-date', name: 'sort-date' }, { attr: 'data-progress', name: 'sort-progress' }, 'sort-quantity' ]" %}
