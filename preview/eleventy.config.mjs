@@ -366,8 +366,8 @@ export default function (eleventyConfig) {
 	});
 
 	eleventyConfig.addGlobalData("sri", {
-		"css": "sha384-sFsI0e1AbJFSv7QeizkQVdE+DuYIvlrBioLvlsga4s8rk2Iiqj/ruBgDx3R4jooe",
-		"css-rtl": "sha384-0wW091ZSmLzNVtqdyILjD/HYpYUFw+oX5IWmxtdD2f30v543Ppz7tLpEBVI8T+4j",
+		"css": "sha384-N1s5kG0owk4MIaNFcxeMyWj0SC8Tdk5DgR9iBog70j4/ouZ6s3WuAXMnL6Kic8Ih",
+		"css-rtl": "sha384-dN0/zBG2+Sh1vD4U2sGzbtb4tl7Y3NIB/+18p5ZFA2gqMo8kfswn6L3dBXTCSmHS",
 		"css-flags": "sha384-J4S9gTOgB6a60d8OIMRu7vveDJCqxLAcDfzDN24CQxXmfi1iIFoU3uelSShCMfAD",
 		"css-flags-rtl": "sha384-Rh33piKJ6K8C1b07vnxSLBK5RJSnp4UhH37XTfJxWlnVUl3FqH3mW14kOy6nU1Bd",
 		"css-marketing": "sha384-0B7WRnNUoK4F4KsXMgsGPmUAKWpfPhAZhoPhzYREYqvThJY24XMJzs3bcH24fv7d",
