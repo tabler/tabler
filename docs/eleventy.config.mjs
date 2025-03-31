@@ -10,11 +10,10 @@ export default function (eleventyConfig) {
 	appConfig(eleventyConfig);
 	appData(eleventyConfig);
 
-	console.log(getCopyList());
-
 	eleventyConfig.addPassthroughCopy({
 		...getCopyList(), 
-		"public": "/"
+		"public": "/",
+		"static": "../preview/static",
 	});
 
 	eleventyConfig.addCollection('docs', collection => {
@@ -104,7 +103,10 @@ export default function (eleventyConfig) {
 		return tree;
 	}
 
-	eleventyConfig.addFilter("collection-tree", function (collection) {
+	eleventyConfig.addGlobalData("docs-menu", function () {
+		console.log('docs', eleventyConfig.collections.docs);
+		const collection = [];
+
 		const a = collection.map(item => {
 			return {
 				data: item.data,
@@ -139,6 +141,12 @@ export default function (eleventyConfig) {
 	for (const [key, value] of Object.entries(data)) {
 		eleventyConfig.addGlobalData(key, value);
 	}
+
+	eleventyConfig.addGlobalData("docs-links", [
+		{ title: 'Website', url: 'https://tabler.io', icon: 'world' },
+		{ title: 'Forum', url: '/', icon: 'messages' },
+		{ title: 'Support', url: 'https://tabler.io/support', icon: 'headset' },
+	]);
 
 	/** 
 	 * Tags

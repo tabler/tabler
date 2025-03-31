@@ -1,5 +1,8 @@
 import { readFileSync } from "fs";
-import { dirname } from "path";
+import { dirname, join } from "path";
+import { fileURLToPath } from "url";
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 export function getCopyList () {
 	let copy = {
@@ -34,6 +37,15 @@ export function getCopyList () {
 }
 
 export function appData(eleventyConfig) {
+	// Data files
+	const dataFiles = ['icons', 'icons-info'];
+	
+	dataFiles.forEach((file) => {
+		eleventyConfig.addGlobalData(file, () => {
+			return JSON.parse(readFileSync(join(__dirname, `./data/${file}.json`), "utf-8"));
+		});
+	})
+
 	eleventyConfig.addGlobalData("site", {
 		title: "Tabler",
 		description: "Premium and Open Source dashboard template with responsive and high quality UI.",

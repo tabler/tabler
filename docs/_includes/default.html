@@ -18,25 +18,21 @@
 </head>
 
 <body class="d-flex flex-column h-full" style="background: var(--tblr-bg-surface)">
+	<script src="/dist/js/tabler-theme.js"></script>
 	{% include "navbar.html" %}
 	<div class="flex-fill h-full">
 		<div class="container h-full">
 			<div class="row g-0 h-full">
-				<div class="col-3 h-full">
-					<div class="p-4 h-full">
+				<div class="col-3 h-full d-none d-lg-block border-end">
+					<div class="py-4 h-full">
 						<div class="space-y h-full">
-							<div class="input-icon">
-								<span class="input-icon-addon">
-									<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-										stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="icon icon-1">
-										<path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path>
-										<path d="M21 21l-6 -6"></path>
-									</svg>
-								</span>
-								<input type="search" class="form-control" placeholder="Quick search..." />
-								<span class="input-icon-addon pe-2">
-									<kbd>⌘K</kbd>
-								</span>
+							<div class="nav nav-vertical">
+								{% for link in docs-links %}
+								<a href="{{ link.url }}" class="nav-link" target="_blank">
+									<span class="border me-2 rounded p-1">{% include "ui/icon.html" icon=link.icon %}</span>
+									{{ link.title }}
+								</a>
+								{% endfor %}
 							</div>
 							<div class="flex-fill overflow-auto">
 								{% include "menu.html" %}
@@ -44,9 +40,9 @@
 						</div>
 					</div>
 				</div>
-				<div class="col border-start docs-bg-gradient">
-					<div class="p-6">
-						<div class="p-6">
+				<div class="col">
+					<div class="p-lg-6">
+						<div class="py-6 p-lg-6">
 							<div class="markdown fs-3">
 								<h1>
 									{{ title }}
