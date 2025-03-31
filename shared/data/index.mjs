@@ -38,7 +38,7 @@ export function getCopyList () {
 
 export function appData(eleventyConfig) {
 	// Data files
-	const dataFiles = ['icons', 'icons-info'];
+	const dataFiles = ['icons', 'icons-info', 'emails', 'illustrations'];
 	
 	dataFiles.forEach((file) => {
 		eleventyConfig.addGlobalData(file, () => {

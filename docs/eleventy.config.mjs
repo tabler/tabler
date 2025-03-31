@@ -11,7 +11,7 @@ export default function (eleventyConfig) {
 	appData(eleventyConfig);
 
 	eleventyConfig.addPassthroughCopy({
-		...getCopyList(), 
+		...getCopyList(),
 		"public": "/",
 		"static": "../preview/static",
 	});
@@ -103,10 +103,7 @@ export default function (eleventyConfig) {
 		return tree;
 	}
 
-	eleventyConfig.addGlobalData("docs-menu", function () {
-		console.log('docs', eleventyConfig.collections.docs);
-		const collection = [];
-
+	eleventyConfig.addFilter("collection-tree", function (collection) {
 		const a = collection.map(item => {
 			return {
 				data: item.data,
@@ -133,9 +130,9 @@ export default function (eleventyConfig) {
 	eleventyConfig.addGlobalData("libs", libs);
 
 	const data = {
-		iconsCount: 1234,
-		emailsCount: 1234,
-		illustrationsCount: 1234,
+		iconsCount: () => eleventyConfig.globalData['icons-info']().count,
+		emailsCount: () => Object.keys(eleventyConfig.globalData.emails()).length,
+		illustrationsCount: () => eleventyConfig.globalData.illustrations().length
 	};
 
 	for (const [key, value] of Object.entries(data)) {
