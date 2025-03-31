@@ -118,6 +118,46 @@ export default function (eleventyConfig) {
 		return buildCollectionTree(a);
 	});
 
+	eleventyConfig.addFilter("collection-children", function (collection, page) {
+		const url = page.url.split('/').filter(Boolean).join('/');
+
+		const filteredCollection = collection.filter(item => {
+			const parts = item.url.split('/').filter(Boolean);
+			return parts.length > 1 && parts.slice(0, -1).join('/') === url;
+		});
+
+		return filteredCollection.sort((a, b) => {
+			return (a.data?.order || 999) - (b.data?.order || 999);
+		});
+	});
+
+	eleventyConfig.addFilter("next-prev", function (collection, page) {
+		const items = collection
+			.filter(item => {
+				const parts = item.url.split('/').filter(Boolean);
+				return parts.length > 1 && parts.slice(0, -1).join('/') === page.url.split('/').filter(Boolean).slice(0, -1).join('/');
+			})
+			.sort((a, b) => {
+				return a.data.title.localeCompare(b.data.title);
+			})
+			.sort((a, b) => {
+				return (a.data?.order || 999) - (b.data?.order || 999);
+			});
+		const index = items.findIndex(item => item.url === page.url);
+
+		const prevPost = index > 0 ? items[index - 1] : null;
+		const nextPost = index < items.length - 1 ? items[index + 1] : null;
+
+		return {
+			prev: prevPost ? prevPost : null,
+			next: nextPost ? nextPost : null,
+		};
+	});
+
+	eleventyConfig.addFilter("collection-prev", function (collection, page) {
+		return '';
+	})
+
 	/**
 	 * Data
 	 */

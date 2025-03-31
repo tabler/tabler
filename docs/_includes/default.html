@@ -51,6 +51,29 @@
 								<p class="text-secondary fs-3 lh-3">{{ summary }}</p>
 
 								{{ content }}
+
+								{% assign children = collections.docs | collection-children: page %}
+								{% if children.size > 0 %}
+									<div class="mt-6 pt-6">
+										<div class="row row-deck row-cards">
+											{% for c in children %}
+											{% include "docs-card.html" href=c.url title=c.data.title description=c.data.description icon=c.data.icon %}
+											{% endfor %}
+										</div>
+									</div>
+								{% else %}
+									{% assign next-prev = collections.docs | next-prev: page %}
+									<div class="mt-6 pt-6">
+										<div class="row">
+											<div class="col">
+												<a href="{{ next-prev.prev.url }}">{{ next-prev.prev.data.title }}</a>
+											</div>
+											<div class="col text-end">
+												<a href="{{ next-prev.next.url }}">{{ next-prev.next.data.title }}</a>
+											</div>
+										</div>
+									</div>
+								{% endif %}
 							</div>
 						</div>
 					</div>

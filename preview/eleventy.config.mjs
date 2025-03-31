@@ -36,7 +36,7 @@ export default function (eleventyConfig) {
 	eleventyConfig.addGlobalData("package", JSON.parse(readFileSync(join("..", "core", "package.json"), "utf-8")));
 	eleventyConfig.addGlobalData("readme", readFileSync(join("..", "README.md"), "utf-8"));
 	eleventyConfig.addGlobalData("license", readFileSync(join("..", "LICENSE"), "utf-8"));
-	eleventyConfig.addGlobalData("changelog", readFileSync(join("..", "CHANGELOG.md"), "utf-8"));
+	eleventyConfig.addGlobalData("changelog", readFileSync(join("..", "core", "CHANGELOG.md"), "utf-8"));
 
 	eleventyConfig.addGlobalData("pages", () => {
 		return sync('pages/**/*.html').filter((file) => {
