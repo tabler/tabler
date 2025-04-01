@@ -13,7 +13,7 @@ export default function (eleventyConfig) {
 	eleventyConfig.addPassthroughCopy({
 		...getCopyList(),
 		"public": "/",
-		"static": "../preview/static",
+		"static": "static",
 	});
 
 	eleventyConfig.addCollection('docs', collection => {
@@ -30,9 +30,9 @@ export default function (eleventyConfig) {
 	eleventyConfig.setInputDirectory("content");
 	eleventyConfig.setOutputDirectory("dist");
 
-	eleventyConfig.setLayoutsDirectory("../../shared/_layouts");
-	eleventyConfig.setIncludesDirectory("../../shared/_includes");
-	eleventyConfig.setDataDirectory("../../shared/_data");
+	eleventyConfig.setLayoutsDirectory("../../shared/layouts");
+	eleventyConfig.setIncludesDirectory("../../shared/includes");
+	eleventyConfig.setDataDirectory("../../shared/data");
 
 	eleventyConfig.amendLibrary('md', () => { });
 
@@ -164,7 +164,7 @@ export default function (eleventyConfig) {
 	 * Data
 	 */
 	const pkg = JSON.parse(readFileSync(join("..", "core", "package.json"), "utf-8"))
-	const libs = JSON.parse(readFileSync(join("..", "shared", "_data", "libs.json"), "utf-8"))
+	const libs = JSON.parse(readFileSync(join("..", "shared", "data", "libs.json"), "utf-8"))
 
 	eleventyConfig.addGlobalData("environment", environment);
 	eleventyConfig.addGlobalData("package", pkg);

@@ -5,7 +5,7 @@ const sh = require('shelljs');
 
 sh.config.fatal = true
 
-const configFile = path.join(__dirname, '../../shared/_data/sri.json')
+const configFile = path.join(__dirname, '../../shared/data/sri.json')
 
 const files = [
 	{
