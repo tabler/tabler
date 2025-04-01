@@ -43,7 +43,7 @@
 				<div class="col">
 					<div class="py-lg-5 ps-lg-5">
 						<div class="py-6 ps-lg-6 p-xxl-6">
-							<div class="markdown fs-3">
+							<div class="markdown">
 								<h1>
 									{{ title }}
 								</h1>
@@ -64,14 +64,24 @@
 								{% else %}
 									{% assign next-prev = collections.docs | next-prev: page %}
 									<div class="mt-6 pt-6">
-										<div class="row">
-											<div class="col">
-												<a href="{{ next-prev.prev.url }}">{{ next-prev.prev.data.title }}</a>
-											</div>
-											<div class="col text-end">
-												<a href="{{ next-prev.next.url }}">{{ next-prev.next.data.title }}</a>
-											</div>
-										</div>
+										<ul class="pagination">
+											{% if next-prev.prev %}
+											<li class="page-item page-prev">
+												<a class="page-link" href="{{ next-prev.prev.url }}">
+													<div class="page-item-subtitle">previous</div>
+													<div class="page-item-title">{{ next-prev.prev.data.title }}</div>
+												</a>
+											</li>
+											{% endif %}
+											{% if next-prev.next %}
+											<li class="page-item page-next">
+												<a class="page-link" href="{{ next-prev.next.url }}">
+													<div class="page-item-subtitle">next</div>
+													<div class="page-item-title">{{ next-prev.next.data.title }}</div>
+												</a>
+											</li>
+											{% endif %}
+										</ul>
 									</div>
 								{% endif %}
 							</div>

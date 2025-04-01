@@ -204,4 +204,4 @@ Example below shows how tabs with dropdown menus are displayed.
   </li>
 </ul>
 {%- endcapture %}
-{% include "docs/example.html" html=html %}
+{% include "docs/example.html" html=html overflow="visible" %}

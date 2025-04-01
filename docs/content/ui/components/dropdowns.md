@@ -265,7 +265,7 @@ Use a dropdown with card content to make it easy for users to get more informati
       <a href="#">
         <img
           class="card-img-top"
-          src="/samples/photos/friends-at-a-restaurant-drinking-wine.jpg"
+          src="/static/photos/friends-at-a-restaurant-drinking-wine.jpg"
           alt="How do you know she is a witch?"
         />
       </a>
@@ -278,7 +278,7 @@ Use a dropdown with card content to make it easy for users to get more informati
           wart. You ...
         </div>
         <div class="d-flex align-items-center pt-4 mt-auto">
-          <span class="avatar" style="background-image: url(/samples/avatars/013m.jpg)"></span>
+          <span class="avatar" style="background-image: url(/static/avatars/013m.jpg)"></span>
           <div class="ms-3">
             <a href="#" class="text-body">Maryjo Lebarree</a>
             <div class="text-secondary">3 days ago</div>

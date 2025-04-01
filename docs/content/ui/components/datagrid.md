@@ -28,7 +28,7 @@ description: Detailed product information in grids.
       <div class="d-flex align-items-center">
         <span
           class="avatar avatar-xs me-2 rounded"
-          style="background-image: url(/samples/avatars/027m.jpg)"
+          style="background-image: url(/static/avatars/027m.jpg)"
         ></span>
         Paweł Kuna
       </div>
@@ -50,20 +50,20 @@ description: Detailed product information in grids.
       <div class="avatar-list avatar-list-stacked">
         <span
           class="avatar avatar-xs rounded"
-          style="background-image: url(/samples/avatars/029f.jpg)"
+          style="background-image: url(/static/avatars/029f.jpg)"
         ></span>
         <span class="avatar avatar-xs rounded">JL</span>
         <span
           class="avatar avatar-xs rounded"
-          style="background-image: url(/samples/avatars/015f.jpg)"
+          style="background-image: url(/static/avatars/015f.jpg)"
         ></span>
         <span
           class="avatar avatar-xs rounded"
-          style="background-image: url(/samples/avatars/004m.jpg)"
+          style="background-image: url(/static/avatars/004m.jpg)"
         ></span>
         <span
           class="avatar avatar-xs rounded"
-          style="background-image: url(/samples/avatars/037m.jpg)"
+          style="background-image: url(/static/avatars/037m.jpg)"
         ></span>
         <span class="avatar avatar-xs rounded">+3</span>
       </div>

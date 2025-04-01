@@ -81,7 +81,7 @@ description: Examples of Tabler page headers.
     <div class="col-auto">
       <span
         class="avatar avatar-md"
-        style="background-image: url(/samples/avatars/023m.jpg)"
+        style="background-image: url(/static/avatars/023m.jpg)"
       ></span>
     </div>
     <div class="col">
@@ -134,21 +134,7 @@ description: Examples of Tabler page headers.
             <a href="#" class="text-reset">194 friends</a>
           </div>
           <div class="col-auto text-success">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              class="icon icon-tabler icon-tabler-check"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              stroke-width="2"
-              stroke="currentColor"
-              fill="none"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-              <path d="M5 12l5 5l10 -10"></path>
-            </svg>
+            {% include "ui/icon.html" icon="check" %}
             Verified
           </div>
         </div>
@@ -196,42 +182,12 @@ description: Examples of Tabler page headers.
           <div class="input-icon">
             <input type="text" class="form-control" placeholder="Search…" />
             <span class="input-icon-addon">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="icon icon-tabler icon-tabler-search"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                stroke-width="2"
-                stroke="currentColor"
-                fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-                <path d="M10 10m-7 0a7 7 0 1 0 14 0a7 7 0 1 0 -14 0"></path>
-                <path d="M21 21l-6 -6"></path>
-              </svg>
+              {% include "ui/icon.html" icon="search" %}
             </span>
           </div>
         </div>
         <a href="#" class="btn btn-primary">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="icon icon-tabler icon-tabler-plus"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            stroke-width="2"
-            stroke="currentColor"
-            fill="none"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-            <path d="M12 5l0 14"></path>
-            <path d="M5 12l14 0"></path>
-          </svg>
+          {% include "ui/icon.html" icon="plus" %}
           Add photo
         </a>
       </div>

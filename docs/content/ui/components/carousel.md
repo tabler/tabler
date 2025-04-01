@@ -28,32 +28,32 @@ Use a carousel to make your website design more visually appealing for users. In
       <img
         class="d-block w-100"
         alt=""
-        src="/samples/photos/city-lights-reflected-in-the-water-at-night.jpg"
+        src="/static/photos/city-lights-reflected-in-the-water-at-night.jpg"
       />
     </div>
     <div class="carousel-item">
       <img
         class="d-block w-100"
         alt=""
-        src="/samples/photos/color-palette-guide-sample-colors-catalog-.jpg"
+        src="/static/photos/color-palette-guide-sample-colors-catalog-.jpg"
       />
     </div>
     <div class="carousel-item">
       <img
         class="d-block w-100"
         alt=""
-        src="/samples/photos/finances-us-dollars-and-bitcoins-currency-money.jpg"
+        src="/static/photos/finances-us-dollars-and-bitcoins-currency-money.jpg"
       />
     </div>
     <div class="carousel-item">
       <img
         class="d-block w-100"
         alt=""
-        src="/samples/photos/tropical-palm-leaves-floral-pattern-background.jpg"
+        src="/static/photos/tropical-palm-leaves-floral-pattern-background.jpg"
       />
     </div>
     <div class="carousel-item">
-      <img class="d-block w-100" alt="" src="/samples/photos/young-woman-working-in-a-cafe.jpg" />
+      <img class="d-block w-100" alt="" src="/static/photos/young-woman-working-in-a-cafe.jpg" />
     </div>
   </div>
   <a
@@ -101,31 +101,31 @@ You can replace the standard indicators with dots. Just add the `carousel-indica
       <img
         class="d-block w-100"
         alt=""
-        src="/samples/photos/stylish-workspace-with-macbook-pro.jpg"
+        src="/static/photos/stylish-workspace-with-macbook-pro.jpg"
       />
     </div>
     <div class="carousel-item">
       <img
         class="d-block w-100"
         alt=""
-        src="/samples/photos/coffee-on-a-table-with-other-items.jpg"
+        src="/static/photos/coffee-on-a-table-with-other-items.jpg"
       />
     </div>
     <div class="carousel-item">
-      <img class="d-block w-100" alt="" src="/samples/photos/book-on-the-grass.jpg" />
+      <img class="d-block w-100" alt="" src="/static/photos/book-on-the-grass.jpg" />
     </div>
     <div class="carousel-item">
       <img
         class="d-block w-100"
         alt=""
-        src="/samples/photos/a-woman-works-at-a-desk-with-a-laptop-and-a-cup-of-coffee.jpg"
+        src="/static/photos/a-woman-works-at-a-desk-with-a-laptop-and-a-cup-of-coffee.jpg"
       />
     </div>
     <div class="carousel-item">
       <img
         class="d-block w-100"
         alt=""
-        src="/samples/photos/people-by-a-banquet-table-full-with-food.jpg"
+        src="/static/photos/people-by-a-banquet-table-full-with-food.jpg"
       />
     </div>
   </div>
@@ -145,14 +145,14 @@ The syntax is similar for thumbnails. Add class `carousel-indicators-thumb` and 
       data-bs-target="#carousel-indicators-thumb"
       data-bs-slide-to="0"
       class="ratio ratio-4x3 active"
-      style="background-image: url(/samples/photos/group-of-people-sightseeing-in-the-city.jpg)"
+      style="background-image: url(/static/photos/group-of-people-sightseeing-in-the-city.jpg)"
     ></button>
     <button
       type="button"
       data-bs-target="#carousel-indicators-thumb"
       data-bs-slide-to="1"
       class="ratio ratio-4x3"
-      style="background-image: url(/samples/photos/young-woman-working-in-a-cafe.jpg)"
+      style="background-image: url(/static/photos/young-woman-working-in-a-cafe.jpg)"
     ></button>
     <button
       type="button"
@@ -160,7 +160,7 @@ The syntax is similar for thumbnails. Add class `carousel-indicators-thumb` and 
       data-bs-slide-to="2"
       class="ratio ratio-4x3"
       style="
-        background-image: url(/samples/photos/soft-photo-of-woman-on-the-bed-with-the-book-and-cup-of-coffee-in-hands.jpg);
+        background-image: url(/static/photos/soft-photo-of-woman-on-the-bed-with-the-book-and-cup-of-coffee-in-hands.jpg);
       "
     ></button>
     <button
@@ -168,14 +168,14 @@ The syntax is similar for thumbnails. Add class `carousel-indicators-thumb` and 
       data-bs-target="#carousel-indicators-thumb"
       data-bs-slide-to="3"
       class="ratio ratio-4x3"
-      style="background-image: url(/samples/photos/stylish-workplace-with-computer-at-home.jpg)"
+      style="background-image: url(/static/photos/stylish-workplace-with-computer-at-home.jpg)"
     ></button>
     <button
       type="button"
       data-bs-target="#carousel-indicators-thumb"
       data-bs-slide-to="4"
       class="ratio ratio-4x3"
-      style="background-image: url(/samples/photos/stylish-workspace-with-macbook-pro.jpg)"
+      style="background-image: url(/static/photos/stylish-workspace-with-macbook-pro.jpg)"
     ></button>
   </div>
   <div class="carousel-inner">
@@ -183,31 +183,31 @@ The syntax is similar for thumbnails. Add class `carousel-indicators-thumb` and 
       <img
         class="d-block w-100"
         alt=""
-        src="/samples/photos/group-of-people-sightseeing-in-the-city.jpg"
+        src="/static/photos/group-of-people-sightseeing-in-the-city.jpg"
       />
     </div>
     <div class="carousel-item">
-      <img class="d-block w-100" alt="" src="/samples/photos/young-woman-working-in-a-cafe.jpg" />
+      <img class="d-block w-100" alt="" src="/static/photos/young-woman-working-in-a-cafe.jpg" />
     </div>
     <div class="carousel-item">
       <img
         class="d-block w-100"
         alt=""
-        src="/samples/photos/soft-photo-of-woman-on-the-bed-with-the-book-and-cup-of-coffee-in-hands.jpg"
-      />
-    </div>
-    <div class="carousel-item">
-      <img
-        class="d-block w-100"
-        alt=""
-        src="/samples/photos/stylish-workplace-with-computer-at-home.jpg"
+        src="/static/photos/soft-photo-of-woman-on-the-bed-with-the-book-and-cup-of-coffee-in-hands.jpg"
       />
     </div>
     <div class="carousel-item">
       <img
         class="d-block w-100"
         alt=""
-        src="/samples/photos/stylish-workspace-with-macbook-pro.jpg"
+        src="/static/photos/stylish-workplace-with-computer-at-home.jpg"
+      />
+    </div>
+    <div class="carousel-item">
+      <img
+        class="d-block w-100"
+        alt=""
+        src="/static/photos/stylish-workspace-with-macbook-pro.jpg"
       />
     </div>
   </div>
@@ -255,30 +255,30 @@ To make the indicators go to the right side, add the `carousel-indicators-vertic
   </div>
   <div class="carousel-inner">
     <div class="carousel-item active">
-      <img class="d-block w-100" alt="" src="/samples/photos/man-looking-out-to-sea.jpg" />
+      <img class="d-block w-100" alt="" src="/static/photos/man-looking-out-to-sea.jpg" />
     </div>
     <div class="carousel-item">
-      <img class="d-block w-100" alt="" src="/samples/photos/making-magic-with-fairy-lights.jpg" />
+      <img class="d-block w-100" alt="" src="/static/photos/making-magic-with-fairy-lights.jpg" />
     </div>
     <div class="carousel-item">
       <img
         class="d-block w-100"
         alt=""
-        src="/samples/photos/finances-us-dollars-and-bitcoins-currency-money-5.jpg"
+        src="/static/photos/finances-us-dollars-and-bitcoins-currency-money-5.jpg"
       />
     </div>
     <div class="carousel-item">
       <img
         class="d-block w-100"
         alt=""
-        src="/samples/photos/cup-of-coffee-on-table-in-cafe-2.jpg"
+        src="/static/photos/cup-of-coffee-on-table-in-cafe-2.jpg"
       />
     </div>
     <div class="carousel-item">
       <img
         class="d-block w-100"
         alt=""
-        src="/samples/photos/young-woman-sitting-on-the-sofa-and-working-on-her-laptop-2.jpg"
+        src="/static/photos/young-woman-sitting-on-the-sofa-and-working-on-her-laptop-2.jpg"
       />
     </div>
   </div>
@@ -301,7 +301,7 @@ An example of adding thumbnails on the right side:
       data-bs-slide-to="0"
       class="ratio ratio-4x3 active"
       style="
-        background-image: url(/samples/photos/finances-us-dollars-and-bitcoins-currency-money.jpg);
+        background-image: url(/static/photos/finances-us-dollars-and-bitcoins-currency-money.jpg);
       "
     ></button>
     <button
@@ -309,14 +309,14 @@ An example of adding thumbnails on the right side:
       data-bs-target="#carousel-indicators-thumb-vertical"
       data-bs-slide-to="1"
       class="ratio ratio-4x3"
-      style="background-image: url(/samples/photos/businesswoman-working-at-her-laptop.jpg)"
+      style="background-image: url(/static/photos/businesswoman-working-at-her-laptop.jpg)"
     ></button>
     <button
       type="button"
       data-bs-target="#carousel-indicators-thumb-vertical"
       data-bs-slide-to="2"
       class="ratio ratio-4x3"
-      style="background-image: url(/samples/photos/color-palette-guide-sample-colors-catalog-.jpg)"
+      style="background-image: url(/static/photos/color-palette-guide-sample-colors-catalog-.jpg)"
     ></button>
     <button
       type="button"
@@ -324,7 +324,7 @@ An example of adding thumbnails on the right side:
       data-bs-slide-to="3"
       class="ratio ratio-4x3"
       style="
-        background-image: url(/samples/photos/blue-sofa-with-pillows-in-a-designer-living-room-interior.jpg);
+        background-image: url(/static/photos/blue-sofa-with-pillows-in-a-designer-living-room-interior.jpg);
       "
     ></button>
     <button
@@ -333,7 +333,7 @@ An example of adding thumbnails on the right side:
       data-bs-slide-to="4"
       class="ratio ratio-4x3"
       style="
-        background-image: url(/samples/photos/beautiful-blonde-woman-on-a-wooden-pier-by-the-lake.jpg);
+        background-image: url(/static/photos/beautiful-blonde-woman-on-a-wooden-pier-by-the-lake.jpg);
       "
     ></button>
   </div>
@@ -342,35 +342,35 @@ An example of adding thumbnails on the right side:
       <img
         class="d-block w-100"
         alt=""
-        src="/samples/photos/finances-us-dollars-and-bitcoins-currency-money.jpg"
+        src="/static/photos/finances-us-dollars-and-bitcoins-currency-money.jpg"
       />
     </div>
     <div class="carousel-item">
       <img
         class="d-block w-100"
         alt=""
-        src="/samples/photos/businesswoman-working-at-her-laptop.jpg"
+        src="/static/photos/businesswoman-working-at-her-laptop.jpg"
       />
     </div>
     <div class="carousel-item">
       <img
         class="d-block w-100"
         alt=""
-        src="/samples/photos/color-palette-guide-sample-colors-catalog-.jpg"
+        src="/static/photos/color-palette-guide-sample-colors-catalog-.jpg"
       />
     </div>
     <div class="carousel-item">
       <img
         class="d-block w-100"
         alt=""
-        src="/samples/photos/blue-sofa-with-pillows-in-a-designer-living-room-interior.jpg"
+        src="/static/photos/blue-sofa-with-pillows-in-a-designer-living-room-interior.jpg"
       />
     </div>
     <div class="carousel-item">
       <img
         class="d-block w-100"
         alt=""
-        src="/samples/photos/beautiful-blonde-woman-on-a-wooden-pier-by-the-lake.jpg"
+        src="/static/photos/beautiful-blonde-woman-on-a-wooden-pier-by-the-lake.jpg"
       />
     </div>
   </div>
@@ -389,7 +389,7 @@ Add captions to your slides easily with the `.carousel-caption` element within a
       <img
         class="d-block w-100"
         alt=""
-        src="/samples/photos/workplace-with-laptop-on-table-at-home-4.jpg"
+        src="/static/photos/workplace-with-laptop-on-table-at-home-4.jpg"
       />
       <div class="carousel-caption-background d-none d-md-block"></div>
       <div class="carousel-caption d-none d-md-block">
@@ -401,7 +401,7 @@ Add captions to your slides easily with the `.carousel-caption` element within a
       <img
         class="d-block w-100"
         alt=""
-        src="/samples/photos/people-watching-a-presentation-in-a-room.jpg"
+        src="/static/photos/people-watching-a-presentation-in-a-room.jpg"
       />
       <div class="carousel-caption-background d-none d-md-block"></div>
       <div class="carousel-caption d-none d-md-block">
@@ -413,7 +413,7 @@ Add captions to your slides easily with the `.carousel-caption` element within a
       <img
         class="d-block w-100"
         alt=""
-        src="/samples/photos/people-by-a-banquet-table-full-with-food.jpg"
+        src="/static/photos/people-by-a-banquet-table-full-with-food.jpg"
       />
       <div class="carousel-caption-background d-none d-md-block"></div>
       <div class="carousel-caption d-none d-md-block">
@@ -425,7 +425,7 @@ Add captions to your slides easily with the `.carousel-caption` element within a
       <img
         class="d-block w-100"
         alt=""
-        src="/samples/photos/books-and-purple-flowers-on-a-wooden-stool-by-the-bed.jpg"
+        src="/static/photos/books-and-purple-flowers-on-a-wooden-stool-by-the-bed.jpg"
       />
       <div class="carousel-caption-background d-none d-md-block"></div>
       <div class="carousel-caption d-none d-md-block">
@@ -434,7 +434,7 @@ Add captions to your slides easily with the `.carousel-caption` element within a
       </div>
     </div>
     <div class="carousel-item">
-      <img class="d-block w-100" alt="" src="/samples/photos/cup-of-coffee-and-an-open-book.jpg" />
+      <img class="d-block w-100" alt="" src="/static/photos/cup-of-coffee-and-an-open-book.jpg" />
       <div class="carousel-caption-background d-none d-md-block"></div>
       <div class="carousel-caption d-none d-md-block">
         <h3>Slide label</h3>

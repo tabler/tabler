@@ -32,7 +32,7 @@ To create a sample version of the dashboard, you can use the following code snip
           <a href="#" class="nav-link d-flex lh-1 text-reset p-0">
             <span
               class="avatar avatar-sm"
-              style="background-image: url(/samples/avatars/002m.jpg)"
+              style="background-image: url(/static/avatars/002m.jpg)"
             ></span>
             <div class="d-none d-xl-block ps-2">
               <div>Paweł Kuna</div>

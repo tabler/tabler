@@ -129,95 +129,19 @@ You can also use icons in the segmented control. To do this, add the icon inside
     aria-selected="true"
     aria-current="page"
   >
-    <!-- Download SVG icon from http://tabler.io/icons/icon/list -->
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      class="icon nav-link-icon icon-2"
-    >
-      <path d="M9 6l11 0"></path>
-      <path d="M9 12l11 0"></path>
-      <path d="M9 18l11 0"></path>
-      <path d="M5 6l0 .01"></path>
-      <path d="M5 12l0 .01"></path>
-      <path d="M5 18l0 .01"></path>
-    </svg>
+    {% include "ui/icon.html" icon="list" %}
     List
   </button>
   <button class="nav-link" role="tab" data-bs-toggle="tab" aria-selected="false" tabindex="-1">
-    <!-- Download SVG icon from http://tabler.io/icons/icon/layout -->
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      class="icon nav-link-icon icon-2"
-    >
-      <path d="M4 4m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v1a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z"></path>
-      <path
-        d="M4 13m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v3a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z"
-      ></path>
-      <path
-        d="M14 4m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z"
-      ></path>
-    </svg>
+    {% include "ui/icon.html" icon="layout" %}
     Kanban
   </button>
   <button class="nav-link" role="tab" data-bs-toggle="tab" aria-selected="false" tabindex="-1">
-    <!-- Download SVG icon from http://tabler.io/icons/icon/calendar -->
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      class="icon nav-link-icon icon-2"
-    >
-      <path
-        d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z"
-      ></path>
-      <path d="M16 3v4"></path>
-      <path d="M8 3v4"></path>
-      <path d="M4 11h16"></path>
-      <path d="M11 15h1"></path>
-      <path d="M12 15v3"></path>
-    </svg>
+    {% include "ui/icon.html" icon="calendar" %}
     Calendar
   </button>
   <button class="nav-link" role="tab" data-bs-toggle="tab" aria-selected="false" tabindex="-1">
-    <!-- Download SVG icon from http://tabler.io/icons/icon/files -->
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      class="icon nav-link-icon icon-2"
-    >
-      <path d="M15 3v4a1 1 0 0 0 1 1h4"></path>
-      <path d="M18 17h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h4l5 5v7a2 2 0 0 1 -2 2z"></path>
-      <path d="M16 17v2a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h2"></path>
-    </svg>
+    {% include "ui/icon.html" icon="files" %}
     Files
   </button>
 </nav>
@@ -243,95 +167,19 @@ The results can be seen in the example below.
     aria-selected="true"
     aria-current="page"
   >
-    <!-- Download SVG icon from http://tabler.io/icons/icon/list -->
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      class="icon nav-link-icon icon-2"
-    >
-      <path d="M9 6l11 0"></path>
-      <path d="M9 12l11 0"></path>
-      <path d="M9 18l11 0"></path>
-      <path d="M5 6l0 .01"></path>
-      <path d="M5 12l0 .01"></path>
-      <path d="M5 18l0 .01"></path>
-    </svg>
+    {% include "ui/icon.html" icon="list" %}
     List
   </button>
   <button class="nav-link" role="tab" data-bs-toggle="tab" aria-selected="false" tabindex="-1">
-    <!-- Download SVG icon from http://tabler.io/icons/icon/layout -->
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      class="icon nav-link-icon icon-2"
-    >
-      <path d="M4 4m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v1a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z"></path>
-      <path
-        d="M4 13m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v3a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z"
-      ></path>
-      <path
-        d="M14 4m0 2a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-2a2 2 0 0 1 -2 -2z"
-      ></path>
-    </svg>
+    {% include "ui/icon.html" icon="layout" %}
     Kanban
   </button>
   <button class="nav-link" role="tab" data-bs-toggle="tab" aria-selected="false" tabindex="-1">
-    <!-- Download SVG icon from http://tabler.io/icons/icon/calendar -->
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      class="icon nav-link-icon icon-2"
-    >
-      <path
-        d="M4 7a2 2 0 0 1 2 -2h12a2 2 0 0 1 2 2v12a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12z"
-      ></path>
-      <path d="M16 3v4"></path>
-      <path d="M8 3v4"></path>
-      <path d="M4 11h16"></path>
-      <path d="M11 15h1"></path>
-      <path d="M12 15v3"></path>
-    </svg>
+    {% include "ui/icon.html" icon="calendar" %}
     Calendar
   </button>
   <button class="nav-link" role="tab" data-bs-toggle="tab" aria-selected="false" tabindex="-1">
-    <!-- Download SVG icon from http://tabler.io/icons/icon/files -->
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      class="icon nav-link-icon icon-2"
-    >
-      <path d="M15 3v4a1 1 0 0 0 1 1h4"></path>
-      <path d="M18 17h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h4l5 5v7a2 2 0 0 1 -2 2z"></path>
-      <path d="M16 17v2a2 2 0 0 1 -2 2h-7a2 2 0 0 1 -2 -2v-10a2 2 0 0 1 2 -2h2"></path>
-    </svg>
+    {% include "ui/icon.html" icon="files" %}
     Files
   </button>
 </nav>

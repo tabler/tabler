@@ -15,20 +15,7 @@ Choose one of the available colors from the basic color palette and make your de
 
 All available colors can come in pastel shades, which are perfect for more subtle designs and can be easily combined with the basic palette to create eye-catching designs.
 
-<ColorsTable colors={[
-  { name: "blue-lt", value: "#e9f0f9" },
-  { name: "azure-lt", value: "#ecf5fc" },
-  { name: "indigo-lt", value: "#eceffd" },
-  { name: "purple-lt", value: "#f7ecfa" },
-  { name: "pink-lt", value: "#fbebf0" },
-  { name: "red-lt", value: "#fbebeb" },
-  { name: "orange-lt", value: "#fef0e6" },
-  { name: "yellow-lt", value: "#fef5e6" },
-  { name: "lime-lt", value: "#f1f8e8" },
-  { name: "green-lt", value: "#eaf7ec" },
-  { name: "teal-lt", value: "#e7f6f2" },
-  { name: "cyan-lt", value: "#e8f6f8" }
-]}/>
+{% include "docs/colors.html" colors=site.lightColors %}
 
 ## Gray palette
 

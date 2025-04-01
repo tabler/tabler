@@ -9,22 +9,22 @@ description: Personalize UI with user avatars.
 Use the `avatar` class to add an avatar to your interface design for greater customization.
 
 {% capture html -%}
-<span class="avatar" style="background-image: url(/samples/avatars/002f.jpg)"></span>
+<span class="avatar" style="background-image: url(/static/avatars/002f.jpg)"></span>
 <span class="avatar">JL</span>
-<span class="avatar" style="background-image: url(/samples/avatars/004f.jpg)"></span>
+<span class="avatar" style="background-image: url(/static/avatars/004f.jpg)"></span>
 {%- endcapture %}
-{% include "docs/example.html" html=html %}
+{% include "docs/example.html" html=html centered %}
 
 ## Avatar image
 
 Set an image as the background to make users easy to indentify and create a personalized experience.
 
 {% capture html -%}
-<span class="avatar" style="background-image: url(/samples/avatars/016f.jpg)"></span>
-<span class="avatar" style="background-image: url(/samples/avatars/022m.jpg)"></span>
-<span class="avatar" style="background-image: url(/samples/avatars/036m.jpg)"></span>
+<span class="avatar" style="background-image: url(/static/avatars/016f.jpg)"></span>
+<span class="avatar" style="background-image: url(/static/avatars/022m.jpg)"></span>
+<span class="avatar" style="background-image: url(/static/avatars/036m.jpg)"></span>
 {%- endcapture %}
-{% include "docs/example.html" html=html %}
+{% include "docs/example.html" html=html centered %}
 
 ## Initials
 
@@ -37,7 +37,7 @@ You can also use initials instead of pictures.
 <span class="avatar">GH</span>
 <span class="avatar">IJ</span>
 {%- endcapture %}
-{% include "docs/example.html" html=html %}
+{% include "docs/example.html" html=html centered %}
 
 ## Avatar icons
 
@@ -45,62 +45,16 @@ Besides pictures and initials, you can also use icons to make the avatars more u
 
 {% capture html -%}
 <span class="avatar">
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="icon avatar-icon"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="currentColor"
-    fill="none"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <circle cx="12" cy="7" r="4" />
-    <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-  </svg>
+  {% include "ui/icon.html" icon="user" %}
 </span>
 <span class="avatar">
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="icon avatar-icon"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="currentColor"
-    fill="none"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <line x1="12" y1="5" x2="12" y2="19" />
-    <line x1="5" y1="12" x2="19" y2="12" />
-  </svg>
+  {% include "ui/icon.html" icon="plus" %}
 </span>
 <span class="avatar">
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="icon avatar-icon"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="currentColor"
-    fill="none"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <circle cx="9" cy="7" r="4" />
-    <path d="M3 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-    <path d="M16 11h6m-3 -3v6" />
-  </svg>
+  {% include "ui/icon.html" icon="settings" %}
 </span>
 {%- endcapture %}
-{% include "docs/example.html" html=html %}
+{% include "docs/example.html" html=html centered %}
 
 ```html
 <span class="avatar">
@@ -120,56 +74,55 @@ Customize the color of the avatars' background. You can click [here](/docs/ui/ba
 <span class="avatar bg-primary-lt">GH</span>
 <span class="avatar bg-purple-lt">IJ</span>
 {%- endcapture %}
-{% include "docs/example.html" html=html %}
+{% include "docs/example.html" html=html centered %}
 
 ## Avatar size
 
 Using Bootstrap’s typical naming structure, you can create a standard avatar or scale it up or down to different sizes based on what you need.
 
 {% capture html -%}
-<span class="avatar avatar-xl" style="background-image: url(/samples/avatars/000m.jpg)"></span>
-<span class="avatar avatar-lg" style="background-image: url(/samples/avatars/000m.jpg)"></span>
-<span class="avatar avatar-md" style="background-image: url(/samples/avatars/000m.jpg)"></span>
-<span class="avatar" style="background-image: url(/samples/avatars/000m.jpg)"></span>
-<span class="avatar avatar-sm" style="background-image: url(/samples/avatars/000m.jpg)"></span>
-<span class="avatar avatar-xs" style="background-image: url(/samples/avatars/000m.jpg)"></span>
+<span class="avatar avatar-xl" style="background-image: url(/static/avatars/000m.jpg)"></span>
+<span class="avatar avatar-lg" style="background-image: url(/static/avatars/000m.jpg)"></span>
+<span class="avatar" style="background-image: url(/static/avatars/000m.jpg)"></span>
+<span class="avatar avatar-sm" style="background-image: url(/static/avatars/000m.jpg)"></span>
+<span class="avatar avatar-xs" style="background-image: url(/static/avatars/000m.jpg)"></span>
 {%- endcapture %}
-{% include "docs/example.html" html=html %}
+{% include "docs/example.html" html=html centered %}
 
 ## Avatar status
 
 Add a status indicator to your avatar to show, for instance, if a user is online or offline or indicate the number of messages they have received.
 
 {% capture html -%}
-<span class="avatar" style="background-image: url(/samples/avatars/018m.jpg)"></span>
-<span class="avatar" style="background-image: url(/samples/avatars/015m.jpg)">
+<span class="avatar" style="background-image: url(/static/avatars/018m.jpg)"></span>
+<span class="avatar" style="background-image: url(/static/avatars/015m.jpg)">
   <span class="badge bg-danger"></span>
 </span>
-<span class="avatar" style="background-image: url(/samples/avatars/022m.jpg)">
+<span class="avatar" style="background-image: url(/static/avatars/022m.jpg)">
   <span class="badge bg-success"></span>
 </span>
 <span class="avatar"> <span class="badge bg-warning"></span>SA </span>
-<span class="avatar" style="background-image: url(/samples/avatars/022m.jpg)">
+<span class="avatar" style="background-image: url(/static/avatars/022m.jpg)">
   <span class="badge bg-info"></span>
 </span>
-<span class="avatar" style="background-image: url(/samples/avatars/048m.jpg)">
+<span class="avatar" style="background-image: url(/static/avatars/048m.jpg)">
   <span class="badge bg-gray">5</span>
 </span>
 {%- endcapture %}
-{% include "docs/example.html" html=html %}
+{% include "docs/example.html" html=html centered %}
 
 ## Avatar shape
 
 Change the shape of an avatar with the default Bootstrap image classes. You can make them round or square and change their border radius.
 
 {% capture html -%}
-<span class="avatar" style="background-image: url(/samples/avatars/019m.jpg)"></span>
-<span class="avatar rounded" style="background-image: url(/samples/avatars/039f.jpg)"></span>
+<span class="avatar" style="background-image: url(/static/avatars/019m.jpg)"></span>
+<span class="avatar rounded" style="background-image: url(/static/avatars/039f.jpg)"></span>
 <span class="avatar rounded-circle">AA</span>
-<span class="avatar rounded-0" style="background-image: url(/samples/avatars/043f.jpg)"></span>
-<span class="avatar rounded-3" style="background-image: url(/samples/avatars/044f.jpg)"></span>
+<span class="avatar rounded-0" style="background-image: url(/static/avatars/043f.jpg)"></span>
+<span class="avatar rounded-3" style="background-image: url(/static/avatars/044f.jpg)"></span>
 {%- endcapture %}
-{% include "docs/example.html" html=html %}
+{% include "docs/example.html" html=html centered %}
 
 ## Avatars list
 
@@ -177,14 +130,14 @@ Create a list of avatars within one parent container.
 
 {% capture html -%}
 <div class="avatar-list">
-  <span class="avatar rounded" style="background-image: url(/samples/avatars/031f.jpg)"></span>
+  <span class="avatar rounded" style="background-image: url(/static/avatars/031f.jpg)"></span>
   <span class="avatar rounded">JL</span>
-  <span class="avatar rounded" style="background-image: url(/samples/avatars/033f.jpg)"></span>
-  <span class="avatar rounded" style="background-image: url(/samples/avatars/017m.jpg)"></span>
-  <span class="avatar rounded" style="background-image: url(/samples/avatars/024m.jpg)"></span>
+  <span class="avatar rounded" style="background-image: url(/static/avatars/033f.jpg)"></span>
+  <span class="avatar rounded" style="background-image: url(/static/avatars/017m.jpg)"></span>
+  <span class="avatar rounded" style="background-image: url(/static/avatars/024m.jpg)"></span>
 </div>
 {%- endcapture %}
-{% include "docs/example.html" html=html %}
+{% include "docs/example.html" html=html centered %}
 
 ## Stacked list
 
@@ -193,46 +146,46 @@ Make the list stack once a certain number of avatars is reached to make it look 
 {% capture html -%}
 <div class="avatar-list avatar-list-stacked">
   <span class="avatar">EB</span>
-  <span class="avatar" style="background-image: url(/samples/avatars/026m.jpg)"></span>
-  <span class="avatar" style="background-image: url(/samples/avatars/016f.jpg)"></span>
-  <span class="avatar" style="background-image: url(/samples/avatars/028m.jpg)"></span>
-  <span class="avatar" style="background-image: url(/samples/avatars/030m.jpg)"></span>
+  <span class="avatar" style="background-image: url(/static/avatars/026m.jpg)"></span>
+  <span class="avatar" style="background-image: url(/static/avatars/016f.jpg)"></span>
+  <span class="avatar" style="background-image: url(/static/avatars/028m.jpg)"></span>
+  <span class="avatar" style="background-image: url(/static/avatars/030m.jpg)"></span>
   <span class="avatar">+8</span>
 </div>
 {%- endcapture %}
-{% include "docs/example.html" html=html %}
+{% include "docs/example.html" html=html centered %}
 
 {% capture html -%}
 <div class="avatar-list avatar-list-stacked">
   <span
     class="avatar avatar-sm rounded-circle"
-    style="background-image: url(/samples/avatars/035m.jpg)"
+    style="background-image: url(/static/avatars/035m.jpg)"
   ></span>
   <span
     class="avatar avatar-sm rounded-circle"
-    style="background-image: url(/samples/avatars/027f.jpg)"
+    style="background-image: url(/static/avatars/027f.jpg)"
   ></span>
   <span
     class="avatar avatar-sm rounded-circle"
-    style="background-image: url(/samples/avatars/036f.jpg)"
+    style="background-image: url(/static/avatars/036f.jpg)"
   ></span>
   <span class="avatar avatar-sm rounded-circle">SA</span>
   <span
     class="avatar avatar-sm rounded-circle"
-    style="background-image: url(/samples/avatars/034f.jpg)"
+    style="background-image: url(/static/avatars/034f.jpg)"
   ></span>
   <span
     class="avatar avatar-sm rounded-circle"
-    style="background-image: url(/samples/avatars/043f.jpg)"
+    style="background-image: url(/static/avatars/043f.jpg)"
   ></span>
   <span
     class="avatar avatar-sm rounded-circle"
-    style="background-image: url(/samples/avatars/039f.jpg)"
+    style="background-image: url(/static/avatars/039f.jpg)"
   ></span>
   <span
     class="avatar avatar-sm rounded-circle"
-    style="background-image: url(/samples/avatars/020m.jpg)"
+    style="background-image: url(/static/avatars/020m.jpg)"
   ></span>
 </div>
 {%- endcapture %}
-{% include "docs/example.html" html=html %}
+{% include "docs/example.html" html=html centered %}

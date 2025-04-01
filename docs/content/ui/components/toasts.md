@@ -21,7 +21,7 @@ Use the default toast message to inform users of the outcome of their action and
   <div class="toast-header">
     <span
       class="avatar avatar-xs me-2"
-      style="background-image: url(/samples/avatars/018f.jpg)"
+      style="background-image: url(/static/avatars/018f.jpg)"
     ></span>
     <strong class="me-auto">Mallory Hulme</strong>
     <small>11 mins ago</small>
@@ -53,7 +53,7 @@ Toasts blend over the elements they appear over. If a browser supports the `back
   <div class="toast-header">
     <span
       class="avatar avatar-xs me-2"
-      style="background-image: url(/samples/avatars/029m.jpg)"
+      style="background-image: url(/static/avatars/029m.jpg)"
     ></span>
     <strong class="me-auto">Mallory Hulme</strong>
     <small>11 mins ago</small>
@@ -86,7 +86,7 @@ Stack multiple toasts together by putting them within one `.toast-container`.
     <div class="toast-header">
       <span
         class="avatar avatar-xs me-2"
-        style="background-image: url(/samples/avatars/008m.jpg)"
+        style="background-image: url(/static/avatars/008m.jpg)"
       ></span>
       <strong class="me-auto">Dunn Slane</strong>
       <small>11 mins ago</small>
@@ -110,7 +110,7 @@ Stack multiple toasts together by putting them within one `.toast-container`.
     <div class="toast-header">
       <span
         class="avatar avatar-xs me-2"
-        style="background-image: url(/samples/avatars/020m.jpg)"
+        style="background-image: url(/static/avatars/020m.jpg)"
       ></span>
       <strong class="me-auto">Mallory Hulme</strong>
       <small>7 mins ago</small>

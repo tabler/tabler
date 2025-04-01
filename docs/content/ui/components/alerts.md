@@ -211,7 +211,7 @@ Add an avatar to your alert modal to make it more personalized.
     <div>
       <span
         class="avatar me-3"
-        style="background-image: url(/static/samples/avatars/039m.jpg)"
+        style="background-image: url(/static/static/avatars/039m.jpg)"
       ></span>
     </div>
     <div>
@@ -236,7 +236,7 @@ Add an avatar to your alert modal to make it more personalized.
     <div>
       <span
         class="avatar me-3"
-        style="background-image: url(/static/samples/avatars/035f.jpg)"
+        style="background-image: url(/static/static/avatars/035f.jpg)"
       ></span>
     </div>
     <div>
@@ -250,7 +250,7 @@ Add an avatar to your alert modal to make it more personalized.
     <div>
       <span
         class="avatar me-3"
-        style="background-image: url(/static/samples/avatars/056f.jpg)"
+        style="background-image: url(/static/static/avatars/056f.jpg)"
       ></span>
     </div>
     <div>
@@ -400,7 +400,7 @@ You're not limited to the 4 default alert colors. You can use any [base or socia
     <div>
       <span
         class="avatar me-3"
-        style="background-image: url(/static/samples/avatars/035f.jpg)"
+        style="background-image: url(/static/static/avatars/035f.jpg)"
       ></span>
     </div>
     <div>

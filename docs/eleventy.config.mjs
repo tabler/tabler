@@ -187,6 +187,10 @@ export default function (eleventyConfig) {
 		return toc;
 	})
 
+	eleventyConfig.addFilter("remove-href", function (content) {
+		return content.replace(/href="#"/g, 'href="javascript:void(0)"');
+	})
+
 	/**
 	 * Data
 	 */

@@ -78,7 +78,7 @@ To create a more visually appealing card, add a title and an image. Thanks to th
   <!-- Photo -->
   <div
     class="img-responsive img-responsive-21x9 card-img-top"
-    style="background-image: url(/samples/photos/cup-of-coffee-and-an-open-book.jpg)"
+    style="background-image: url(/static/photos/cup-of-coffee-and-an-open-book.jpg)"
   ></div>
   <div class="card-body">
     <h3 class="card-title">Card with title and image</h3>
@@ -98,7 +98,7 @@ Add an image to your blog post card to make it eye-catching. You can do it by ad
 {% capture html -%}
 <div class="card d-flex flex-column">
   <a href="#">
-    <img class="card-img-top" src="/samples/photos/book-on-the-grass.jpg" alt="" />
+    <img class="card-img-top" src="/static/photos/book-on-the-grass.jpg" alt="" />
   </a>
   <div class="card-body d-flex flex-column">
     <h3 class="card-title">
@@ -109,29 +109,14 @@ Add an image to your blog post card to make it eye-catching. You can do it by ad
       You ...
     </div>
     <div class="d-flex align-items-center pt-4 mt-auto">
-      <span class="avatar" style="background-image: url(/samples/avatars/023m.jpg)"></span>
+      <span class="avatar" style="background-image: url(/static/avatars/023m.jpg)"></span>
       <div class="ms-3">
         <a href="#" class="text-body">Maryjo Lebarree</a>
         <div class="text-secondary">3 days ago</div>
       </div>
       <div class="ms-auto">
         <a href="#" class="icon d-none d-md-inline-block ms-3 text-secondary">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            class="icon icon-tabler icon-tabler-heart"
-            width="24"
-            height="24"
-            viewBox="0 0 24 24"
-            stroke-width="2"
-            stroke="currentColor"
-            fill="none"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <path
-              d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572"
-            ></path>
-          </svg>
+          {% include "ui/icon.html" icon="heart" %}
         </a>
       </div>
     </div>
@@ -177,7 +162,7 @@ You can also add an image on the left side of the card. To do it, add the `.card
     <div class="col-md-3">
       <a href="#">
         <img
-          src="/samples/photos/a-woman-works-on-a-laptop-at-home.jpg"
+          src="/static/photos/a-woman-works-on-a-laptop-at-home.jpg"
           class="w-100 h-100 object-cover"
           alt="Card side image"
         />
@@ -193,29 +178,14 @@ You can also add an image on the left side of the card. To do it, add the `.card
           boil yo...
         </div>
         <div class="d-flex align-items-center pt-4 mt-auto">
-          <span class="avatar" style="background-image: url(/samples/avatars/029m.jpg)"></span>
+          <span class="avatar" style="background-image: url(/static/avatars/029m.jpg)"></span>
           <div class="ms-3">
             <a href="#" class="text-body">Egan Poetz</a>
             <div class="text-secondary">3 days ago</div>
           </div>
           <div class="ms-auto">
             <a href="#" class="icon d-none d-md-inline-block ms-3 text-red">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="icon icon-tabler icon-tabler-heart"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                stroke-width="2"
-                stroke="currentColor"
-                fill="none"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path
-                  d="M19.5 12.572l-7.5 7.428l-7.5 -7.428a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572"
-                ></path>
-              </svg>
+              {% include "ui/icon.html" icon="heart" %}
             </a>
           </div>
         </div>

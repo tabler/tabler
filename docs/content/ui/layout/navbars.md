@@ -61,24 +61,7 @@ The navbar can contain links, buttons, and other elements. You can customize the
       <li class="nav-item active">
         <a class="nav-link" href="javascript:void(0)">
           <span class="nav-link-icon">
-            <!-- Download SVG icon from http://tabler.io/icons/icon/home -->
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="icon icon-tabler icons-tabler-outline icon-tabler-home"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M5 12l-2 0l9 -9l9 9l-2 0" />
-              <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" />
-              <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" />
-            </svg>
+            {% include "ui/icon.html" icon="home" %}
           </span>
           <span class="nav-link-title"> Home </span>
         </a>
@@ -86,23 +69,7 @@ The navbar can contain links, buttons, and other elements. You can customize the
       <li class="nav-item">
         <a class="nav-link" href="javascript:void(0)">
           <span class="nav-link-icon"
-            ><!-- Download SVG icon from http://tabler.io/icons/icon/checkbox -->
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="icon icon-tabler icons-tabler-outline icon-tabler-user"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-              <path d="M8 7a4 4 0 1 0 8 0a4 4 0 0 0 -8 0" />
-              <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" />
-            </svg>
+            >{% include "ui/icon.html" icon="checkbox" %}
           </span>
           <span class="nav-link-title"> Profile </span>
         </a>
@@ -110,23 +77,7 @@ The navbar can contain links, buttons, and other elements. You can customize the
       <li class="nav-item">
         <a class="nav-link" href="javascript:void(0)">
           <span class="nav-link-icon"
-            ><!-- Download SVG icon from http://tabler.io/icons/icon/checkbox -->
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-              class="icon"
-            >
-              <path stroke="none" d="M0 0h24v24H0z" fill="none"></path>
-              <path d="M9 11l3 3l8 -8"></path>
-              <path d="M20 12v6a2 2 0 0 1 -2 2h-12a2 2 0 0 1 -2 -2v-12a2 2 0 0 1 2 -2h9"></path>
-            </svg>
+            >{% include "ui/icon.html" icon="checkbox" %}
           </span>
           <span class="nav-link-title"> Settings </span>
         </a>
@@ -142,7 +93,7 @@ The navbar can contain links, buttons, and other elements. You can customize the
         >
           <span
             class="avatar avatar-sm"
-            style="background-image: url(/static/samples/avatars/044m.jpg)"
+            style="background-image: url(/static/static/avatars/044m.jpg)"
           ></span>
           <div class="d-none d-xl-block ps-2">
             <div>Paweł Kuna</div>
