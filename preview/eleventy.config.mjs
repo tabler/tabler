@@ -15,8 +15,9 @@ export default function (eleventyConfig) {
 	eleventyConfig.setInputDirectory("pages");
 	eleventyConfig.setOutputDirectory("dist");
 
-	eleventyConfig.setLayoutsDirectory("_layouts");
-	eleventyConfig.setIncludesDirectory("_includes");
+	eleventyConfig.setLayoutsDirectory("../../shared/_layouts");
+	eleventyConfig.setIncludesDirectory("../../shared/_includes");
+	eleventyConfig.setDataDirectory("../../shared/_data");
 
 	eleventyConfig.addPassthroughCopy({
 		...getCopyList(),
@@ -363,29 +364,6 @@ export default function (eleventyConfig) {
 			"November",
 			"December"
 		]
-	});
-
-	eleventyConfig.addGlobalData("sri", {
-		"css": "sha384-N1s5kG0owk4MIaNFcxeMyWj0SC8Tdk5DgR9iBog70j4/ouZ6s3WuAXMnL6Kic8Ih",
-		"css-rtl": "sha384-dN0/zBG2+Sh1vD4U2sGzbtb4tl7Y3NIB/+18p5ZFA2gqMo8kfswn6L3dBXTCSmHS",
-		"css-flags": "sha384-J4S9gTOgB6a60d8OIMRu7vveDJCqxLAcDfzDN24CQxXmfi1iIFoU3uelSShCMfAD",
-		"css-flags-rtl": "sha384-Rh33piKJ6K8C1b07vnxSLBK5RJSnp4UhH37XTfJxWlnVUl3FqH3mW14kOy6nU1Bd",
-		"css-marketing": "sha384-0B7WRnNUoK4F4KsXMgsGPmUAKWpfPhAZhoPhzYREYqvThJY24XMJzs3bcH24fv7d",
-		"css-marketing-rtl": "sha384-swoQ0TcfUrvniYn5PeZjvTidXUnjehcBNHh+TP1DZ5SVcdW+bc4ckVMV/9MYAZew",
-		"css-payments": "sha384-YnhOMEPyU5QfErzSK9sD18FMXdRCn/HB4a+88mFXbd45fFRNWKWeARptNw1k16+/",
-		"css-payments-rtl": "sha384-v6XNJfLEVre0G8WOfEeFRSDFItjdOvNGFZTlS6HpoKkkxYe/vbkJBfzhOnePD2dY",
-		"css-socials": "sha384-M/p2rVRhhVGWQaE5KAPB4+/uWqFtmb6ag3/NXG8E3SL2MAROPCfB5YJvDHmS5Rms",
-		"css-socials-rtl": "sha384-5h8LiZ8sjd3+w3/waxyu3/vTW2kdx90LLYaik7pugCUOR7YRQXbyP13dhp1mUrcW",
-		"css-props": "sha384-uS4AF/9OqmHFLRAxp/daxvUu/g4QVxW+UAW1xxL1yqegYnT53IMG0ojilN5vE0KQ",
-		"css-props-rtl": "sha384-Iakh3oDlTbinQ9Ck7NFrqoEv/uqjvrvAtji1UNGWEcIy1doY6ymtts6GeeBUU0iu",
-		"css-themes": "sha384-Bj8pP2O3iJP6JH/ZdDBnxIH/3XOJF8DSyYUUHs8wTxb0PRUe5DU01llAmog5ybpg",
-		"css-themes-rtl": "sha384-+bJhK3cbUPk0SGCLUskjOBARViddapb+MJA1CbWjerZ46uyZbm6L1Gar3Ggs4c8h",
-		"css-vendors-rtl": "sha384-xr+kIN4I9zenh4uC7LAOtXhj6eyFUn567Yr23QyaIq4OGRdPNcQ0e52f8T1wTSYh",
-		"css-vendors": "sha384-cFz/XfWTmyCb5jkPFO3b51Vgc16vyrRzL3LLD2Ah7yFnpVjxN6nalaCc02Xg2vh4",
-		"js": "sha384-uSpys8fjyVTPrXxPMi+NhnEMIp1YSGFZSCDrRHjYIUVdInIvlHft8JHLm6Oiw3vA",
-		"js-theme": "sha384-xCA/37z74Ws4TlN18VkTDQ/T5bWJpvhV8k5y5Qp8qMKqKMHSHdAOcQ9qGPn0pUJj",
-		"demo-css": "sha384-BUDq2P684xwRBf0GDlySvob+KJg4ko8y2K7njgvYBscmEuqoVVqJ75zcTDozwkFA",
-		"demo-js": "sha384-UcTgbM9IZSOPHHuFa0R9H4TegQWoZkJKpeTjLV5hjem2k0CZ67Q4/bW2rT/Edf4Z",
 	});
 
 	/**

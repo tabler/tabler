@@ -1,7 +1,7 @@
 {
   "name": "@tabler/preview",
   "scripts": {
-    "build": "pnpm run clean && pnpm run css && pnpm run js && pnpm run generate-sri && pnpm run html",
+    "build": "pnpm run clean && pnpm run css && pnpm run js && pnpm run html",
     "dev": "pnpm run clean && pnpm run watch",
     "watch": "concurrently \"pnpm run watch-html\" \"pnpm run watch-css\" \"pnpm run watch-js\"",
     "watch-html": "cross-env NODE_ENV=development eleventy --serve --port=3000 --incremental",
@@ -26,7 +26,6 @@
     "svg-icons": "node .build/import-icons.mjs",
     "import-illustrations": "node .build/import-illustrations.mjs",
     "import-icons": "git checkout dev && BRANCH_NAME=\"dev-tabler-icons-`pnpm info @tabler/icons version`\" && git branch $BRANCH_NAME && git checkout $BRANCH_NAME && ncu -u @tabler/icons && pnpm install && pnpm run svg-icons && git add . && git commit -am \"update icons to v`pnpm info @tabler/icons version`\" && git push origin $BRANCH_NAME && git checkout dev",
-    "generate-sri": "node .build/generate-sri.js",
     "zip": "mkdir -p packages-zip && zip -r packages-zip/tabler-$(node -p \"require('./package.json').version\").zip demo/*"
   },
   "dependencies": {

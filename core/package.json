@@ -5,7 +5,7 @@
   "homepage": "https://tabler.io",
   "scripts": {
     "dev": "pnpm run watch",
-    "build": "pnpm run clean && pnpm run css && pnpm run js && pnpm run copy",
+    "build": "pnpm run clean && pnpm run css && pnpm run js && pnpm run copy && pnpm run generate-sri",
     "clean": "shx rm -rf dist demo",
     "css": "pnpm run css-compile && pnpm run css-prefix && pnpm run css-rtl && pnpm run css-minify && pnpm run css-banner",
     "css-compile": "sass scss/:dist/css/ --no-source-map --load-path=node_modules",
@@ -32,6 +32,7 @@
     "watch-css": "nodemon --watch scss/ --ext scss --exec \"pnpm run css-compile && pnpm run css-prefix\"",
     "watch-js": "nodemon --watch js/ --ext js --exec \"pnpm run js-compile\"",
     "bundlewatch": "bundlewatch",
+    "generate-sri": "node .build/generate-sri.js",
     "format:check": "prettier --check src/**/*.{js,scss} --cache",
     "format:write": "prettier --write src/**/*.{js,scss} --cache"
   },

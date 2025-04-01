@@ -1,15 +1,12 @@
 import { readFileSync } from "fs";
-import { dirname, join } from "path";
-import { fileURLToPath } from "url";
-
-const __dirname = dirname(fileURLToPath(import.meta.url))
+import { dirname } from "path";
 
 export function getCopyList () {
 	let copy = {
 		"node_modules/@tabler/core/dist": "dist",
 	}
 
-	const libs = JSON.parse(readFileSync('../preview/pages/_data/libs.json'));
+	const libs = JSON.parse(readFileSync('../shared/_data/libs.json'));
 
 	let files = []
 
@@ -37,15 +34,6 @@ export function getCopyList () {
 }
 
 export function appData(eleventyConfig) {
-	// Data files
-	const dataFiles = ['icons', 'icons-info', 'emails', 'illustrations'];
-	
-	dataFiles.forEach((file) => {
-		eleventyConfig.addGlobalData(file, () => {
-			return JSON.parse(readFileSync(join(__dirname, `./data/${file}.json`), "utf-8"));
-		});
-	})
-
 	eleventyConfig.addGlobalData("site", {
 		title: "Tabler",
 		description: "Premium and Open Source dashboard template with responsive and high quality UI.",

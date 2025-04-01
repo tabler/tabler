@@ -27,10 +27,12 @@ export default function (eleventyConfig) {
 		key: "md",
 	});
 
-	// eleventyConfig.setInputDirectory("pages");
+	eleventyConfig.setInputDirectory("content");
 	eleventyConfig.setOutputDirectory("dist");
-	eleventyConfig.setLayoutsDirectory("_includes");
-	eleventyConfig.setIncludesDirectory("_includes");
+
+	eleventyConfig.setLayoutsDirectory("../../shared/_layouts");
+	eleventyConfig.setIncludesDirectory("../../shared/_includes");
+	eleventyConfig.setDataDirectory("../../shared/_data");
 
 	eleventyConfig.amendLibrary('md', () => { });
 
@@ -162,17 +164,16 @@ export default function (eleventyConfig) {
 	 * Data
 	 */
 	const pkg = JSON.parse(readFileSync(join("..", "core", "package.json"), "utf-8"))
-	const libs = JSON.parse(readFileSync(join("..", "preview", "pages", "_data", "libs.json"), "utf-8"))
+	const libs = JSON.parse(readFileSync(join("..", "shared", "_data", "libs.json"), "utf-8"))
 
 	eleventyConfig.addGlobalData("environment", environment);
 	eleventyConfig.addGlobalData("package", pkg);
 	eleventyConfig.addGlobalData("cdnUrl", `https://cdn.jsdelivr.net/npm/@tabler/core@${pkg.version}`);
-	eleventyConfig.addGlobalData("libs", libs);
 
 	const data = {
-		iconsCount: () => eleventyConfig.globalData['icons-info']().count,
-		emailsCount: () => Object.keys(eleventyConfig.globalData.emails()).length,
-		illustrationsCount: () => eleventyConfig.globalData.illustrations().length
+		iconsCount: () => 123,
+		emailsCount: () => 123,
+		illustrationsCount: () => 123
 	};
 
 	for (const [key, value] of Object.entries(data)) {
