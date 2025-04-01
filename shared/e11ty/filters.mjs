@@ -1,4 +1,4 @@
-export function appConfig(eleventyConfig) {
+export function appFilters(eleventyConfig) {
 	/**
 	 * Server
 	 */

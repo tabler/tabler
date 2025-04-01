@@ -2,14 +2,14 @@ import { readFileSync } from 'node:fs';
 import { EleventyRenderPlugin } from "@11ty/eleventy";
 import { join } from 'node:path';
 import { sync } from 'glob';
-import { appConfig } from "@repo/e11ty"
-import { appData, getCopyList } from "@repo/data"
+import { appFilters } from "../shared/e11ty/filters.mjs";
+import { appData, getCopyList } from "../shared/e11ty/data.mjs"
 
 /** @type {import('@11ty/eleventy').LocalConfig} */
 export default function (eleventyConfig) {
 	const environment = process.env.NODE_ENV || "production";
 
-	appConfig(eleventyConfig);
+	appFilters(eleventyConfig);
 	appData(eleventyConfig);
 
 	eleventyConfig.setInputDirectory("pages");

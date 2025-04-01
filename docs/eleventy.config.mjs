@@ -1,13 +1,13 @@
 
-import { appConfig } from "@repo/e11ty"
-import { appData, getCopyList } from "@repo/data"
+import { appFilters } from "../shared/e11ty/filters.mjs"
+import { appData, getCopyList } from "../shared/e11ty/data.mjs";
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 export default function (eleventyConfig) {
 	const environment = process.env.NODE_ENV || "production";
 
-	appConfig(eleventyConfig);
+	appFilters(eleventyConfig);
 	appData(eleventyConfig);
 
 	eleventyConfig.addPassthroughCopy({
