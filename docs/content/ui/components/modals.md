@@ -48,7 +48,7 @@ Look at the example below to see how the modal looks.
   </div>
 </div>
 {%- endcapture %}
-{% include "docs/example.html" html=html %}
+{% include "docs/example.html" html=html centered bg="surface-secondary" %}
 
 ## Prompt and alert
 
@@ -99,14 +99,8 @@ You can use the modal to create a prompt or alert. Look at the example below to 
     </div>
   </div>
 </div>
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    var myModal = new bootstrap.Modal(document.getElementById("exampleModal"));
-    myModal.show();
-  });
-</script>
 {%- endcapture %}
-{% include "docs/example.html" html=html %}
+{% include "docs/example.html" html=html raw bg="surface-secondary" %}
 
 {% capture html -%}
 <div class="modal" id="exampleModal" tabindex="-1">
@@ -152,23 +146,14 @@ You can use the modal to create a prompt or alert. Look at the example below to 
     </div>
   </div>
 </div>
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    var myModal = new bootstrap.Modal(document.getElementById("exampleModal"));
-    myModal.show();
-  });
-</script>
 {%- endcapture %}
-{% include "docs/example.html" html=html %}
+{% include "docs/example.html" html=html raw bg="surface-secondary" %}
 
 ## Modal with form
 
 You can use the modal to create a form. Look at the example below to see how the form looks.
 
 {% capture html -%}
-<button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
-  Launch modal with form
-</button>
 <div class="modal" id="exampleModal" tabindex="-1">
   <div class="modal-dialog modal-lg" role="document">
     <div class="modal-content">
@@ -298,4 +283,4 @@ You can use the modal to create a form. Look at the example below to see how the
   </div>
 </div>
 {%- endcapture %}
-{% include "docs/example.html" html=html %}
+{% include "docs/example.html" html=html raw bg="surface-secondary" class="px-5" %}

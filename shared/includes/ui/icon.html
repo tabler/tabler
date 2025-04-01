@@ -25,7 +25,7 @@
 	<i class="icon ti ti-{{ icon-name }}{% if include.color %} {{ include.color }}{% endif %}{% if include.class %} {{ include.class }}{% endif %}"></i>
 {%- elsif icons[icon-name] -%}
 	<!-- Download SVG icon from http://tabler.io/icons/icon/{{ icon-name }} -->
-	{% assign svg-icon = icons[icon-name].svg[icon-type] | default: '' %}
-	{% assign svg-icon = svg-icon | replace: '<path stroke="none" d="M0 0h24v24H0z" fill="none"/>', '' %}
+	{% assign svg-icon = icons[icon-name].svg[icon-type] | default: '' -%}
+	{%- assign svg-icon = svg-icon | replace: '<path stroke="none" d="M0 0h24v24H0z" fill="none"/>', '' -%}
 	{{ svg-icon | replace_regex: 'class=\"[^"]+\"', replace-to }}
 {%- endif -%}

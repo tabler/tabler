@@ -151,15 +151,46 @@ export default function (eleventyConfig) {
 		};
 	});
 
-	eleventyConfig.addFilter("collection-prev", function (collection, page) {
-		return '';
+	const generateUniqueId = (text) => {
+		return text
+			.replace(/<[^>]+>/g, "")
+			.replace(/\s/g, "-")
+			.replace(/[^\w-]+/g, "")
+			.replace(/--+/g, "-")
+			.replace(/^-+|-+$/g, "")
+			.toLowerCase();
+	}
+
+	eleventyConfig.addFilter("headings-id", function (content) {
+		return content.replace(/<h([1-6])>([^<]+)<\/h\1>/g, (match, level, text) => {
+			const headingId = generateUniqueId(text);
+
+			return `<h${level} id="${headingId}">${text}</h${level}>`;
+		});
+	})
+
+	eleventyConfig.addFilter("toc", function (name) {
+		const toc = [];
+
+		const headings = name.match(/<h([2-3])>([^<]+)<\/h\1>/g);
+
+		if (headings) {
+			headings.forEach(heading => {
+				const level = parseInt(heading.match(/<h([1-6])>/)[1]);
+				const text = heading.replace(/<[^>]+>/g, "");
+				const id = generateUniqueId(text);
+
+				toc.push({ level, text, id });
+			});
+		}
+
+		return toc;
 	})
 
 	/**
 	 * Data
 	 */
 	const pkg = JSON.parse(readFileSync(join("..", "core", "package.json"), "utf-8"))
-	const libs = JSON.parse(readFileSync(join("..", "shared", "data", "libs.json"), "utf-8"))
 
 	eleventyConfig.addGlobalData("environment", environment);
 	eleventyConfig.addGlobalData("package", pkg);

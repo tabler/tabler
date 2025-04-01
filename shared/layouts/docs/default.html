@@ -41,8 +41,8 @@
 					</div>
 				</div>
 				<div class="col">
-					<div class="p-lg-5">
-						<div class="py-6 p-lg-5">
+					<div class="py-lg-5 ps-lg-5">
+						<div class="py-6 ps-lg-6 p-xxl-6">
 							<div class="markdown fs-3">
 								<h1>
 									{{ title }}
@@ -50,7 +50,7 @@
 
 								<p class="text-secondary fs-3 lh-3">{{ summary }}</p>
 
-								{{ content }}
+								{{ content | headings-id }}
 
 								{% assign children = collections.docs | collection-children: page %}
 								{% if children.size > 0 %}
@@ -78,9 +78,22 @@
 						</div>
 					</div>
 				</div>
-				<div class="col-2">
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi hic aperiam ad aliquid et explicabo dolorem dolorum cumque eveniet harum a eum, saepe pariatur neque veniam repellendus earum quas sit.
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Modi hic aperiam ad aliquid et explicabo dolorem dolorum cumque eveniet harum a eum, saepe pariatur neque veniam repellendus earum quas sit.
+				<div class="col-2 d-none d-xxl-block">
+					<div class="py-6 sticky-top">
+						{% assign toc = content | toc %}
+						{% if toc.size > 0 %}
+							<h3>
+								Table of Contents
+							</h3>
+							<div class="nav nav-vertical">
+								{% for item in toc %}
+								<a href="#{{ item.id }}" class="nav-link{% if item.level == 3 %} ms-3{% endif %}">
+									{{ item.text }}
+								</a>
+								{% endfor %}
+							</div>
+						{% endif %}
+					</div>
 				</div>
 			</div>
 		</div>
