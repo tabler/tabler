@@ -17,14 +17,9 @@ export default function (eleventyConfig) {
 	});
 
 	eleventyConfig.addCollection('docs', collection => {
-		return [...collection.getFilteredByGlob('./content/**/*.mdx')].sort((a, b) => {
+		return [...collection.getFilteredByGlob('./content/**/*.md')].sort((a, b) => {
 			return a.data.title - b.data.title;
 		});
-	});
-
-	eleventyConfig.addTemplateFormats("mdx");
-	eleventyConfig.addExtension("mdx", {
-		key: "md",
 	});
 
 	eleventyConfig.setInputDirectory("content");

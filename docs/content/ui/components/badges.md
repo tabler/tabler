@@ -23,7 +23,7 @@ The default badges are square and come in the basic set of colors.
 <span class="badge bg-teal-lt">Teal</span>
 <span class="badge bg-cyan-lt">Cyan</span>
 {%- endcapture %}
-{% include "docs/example.html" html=html %}
+{% include "docs/example.html" html=html centered %}
 
 ## Headings
 
@@ -55,7 +55,7 @@ The default badges are square and come in the basic set of colors.
 <span class="badge badge-outline text-teal">teal</span>
 <span class="badge badge-outline text-cyan">cyan</span>
 {%- endcapture %}
-{% include "docs/example.html" html=html %}
+{% include "docs/example.html" html=html centered %}
 
 ## Pill badges
 
@@ -75,7 +75,7 @@ Use the `.badge-pill` class if you want to create a badge with rounded corners. 
 <span class="badge badge-pill bg-teal-lt">11</span>
 <span class="badge badge-pill bg-cyan-lt">12</span>
 {%- endcapture %}
-{% include "docs/example.html" html=html %}
+{% include "docs/example.html" html=html centered %}
 
 ## Links
 
@@ -95,7 +95,7 @@ Place the badge within an `<a>` element if you want it to perform the function o
 <a href="#" class="badge bg-teal-lt">Teal</a>
 <a href="#" class="badge bg-cyan-lt">Cyan</a>
 {%- endcapture %}
-{% include "docs/example.html" html=html %}
+{% include "docs/example.html" html=html centered %}
 
 ## Button with badge
 
@@ -115,4 +115,4 @@ The results can be seen in the example below.
   Notifications <span class="badge bg-green-lt ms-2">4</span>
 </button>
 {%- endcapture %}
-{% include "docs/example.html" html=html %}
+{% include "docs/example.html" html=html centered %}
