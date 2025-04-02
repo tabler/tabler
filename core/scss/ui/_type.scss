@@ -167,7 +167,7 @@ Selection
  */
 ::selection,
 .text-selected {
-  background-color: color-transparent(var(--#{$prefix}primary), .1);
+  background-color: color-transparent(var(--#{$prefix}primary), 0.1);
 }
 
 .text-selected {
@@ -191,12 +191,12 @@ a:hover:has(.icon) {
 
 .link-hoverable {
   border-radius: var(--#{$prefix}border-radius);
-  transition: background-color .15s ease-in-out;
+  transition: background-color 0.15s ease-in-out;
 
   &:hover {
     text-decoration: none;
     color: var(--#{$prefix}primary);
-    background: color-transparent(var(--#{$prefix}secondary), .04);
+    background: color-transparent(var(--#{$prefix}secondary), 0.04);
   }
 }
 
@@ -212,7 +212,7 @@ Mentions
  */
 .mention {
   display: inline-block;
-  box-shadow: var(--tblr-box-shadow-border);
+  box-shadow: var(--#{$prefix}box-shadow-border);
   border-radius: var(--#{$prefix}border-radius-pill);
   line-height: calc(16em / 12);
   font-size: calc(12em / 14);
@@ -220,11 +220,11 @@ Mentions
   background: var(--#{$prefix}bg-surface-tertiary);
   padding: calc(2em / 12) calc(8em / 12);
   font-weight: var(--#{$prefix}font-weight-medium);
-  
+
   @at-root a#{&} {
     cursor: pointer;
 
-    &:hover, 
+    &:hover,
     &.hover {
       background: var(--#{$prefix}bg-surface-secondary);
       text-decoration: underline;
@@ -264,10 +264,51 @@ $text-variants: (
 
 @each $variant, $color in $text-variants {
   .text-#{$variant} {
-    background: color-transparent($color, .04);
+    background: color-transparent($color, 0.04);
     background: color-transparent($color, 4%);
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-decoration-color: $color;
+  }
+}
+
+.steps {
+  --#{$prefix}steps-padding: 2rem;
+  --#{$prefix}steps-item-size: 1.5rem;
+  margin-left: 1rem;
+  padding-left: var(--#{$prefix}steps-padding);
+  counter-reset: step;
+  border-left: 1px solid var(--#{$prefix}border-color);
+  margin-bottom: 2rem;
+  flex-direction: column;
+
+  h3 {
+    counter-increment: step;
+
+    &:not(:first-child) {
+      margin-top: 2.5rem !important;
+    }
+
+    &:before {
+      content: counter(step);
+      display: inline-block;
+      position: absolute;
+      margin-top: 1px;
+      margin-left: calc(-1 * var(--#{$prefix}steps-padding) - var(--#{$prefix}steps-item-size) / 2);
+      width: var(--#{$prefix}steps-item-size);
+      height: var(--#{$prefix}steps-item-size);
+      text-align: center;
+      color: var(--#{$prefix}body-color);
+      border: 1px solid var(--#{$prefix}border-color);
+      background: var(--#{$prefix}bg-surface-primary);
+      border-radius: var(--#{$prefix}border-radius);
+      line-height: calc(var(--#{$prefix}steps-item-size) - 2px);
+      font-size: var(--#{$prefix}font-size-h4);
+      font-weight: var(--#{$prefix}font-weight-bold);
+    }
+  }
+
+  >:last-child {
+    margin-bottom: 0;
   }
 }

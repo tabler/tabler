@@ -14,14 +14,14 @@ For the best experience, we recommend using one of the latest supported browsers
 
 Browser|Version
 ---|----------
-<img src="/docs/browsers/edge.svg" width="48" height="48" alt="Edge Logo"/>|last 3 versions
-<img src="/docs/browsers/firefox.svg" width="48" height="48" alt="Firefox Logo"/>|last 3 versions, ESR
-<img src="/docs/browsers/chrome.svg" width="48" height="48" alt="Chrome Logo"/>|last 3 versions
-<img src="/docs/browsers/safari.svg" width="48" height="48" alt="Safari Logo"/>|last 3 versions
-<img src="/docs/browsers/opera.svg" width="48" height="48" alt="Opera Logo"/>|last 3 versions
-<img src="/docs/browsers/electron.svg" width="48" height="48" alt="Electron Logo"/>|last 3 versions
-<img src="/docs/browsers/brave.svg" width="48" height="48" alt="Brave Logo"/>|last 3 versions
-<img src="/docs/browsers/vivaldi.svg" width="48" height="48" alt="Vivaldi Logo"/>|last 3 versions
+<img src="/img/browsers/edge.svg" width="48" height="48" alt="Edge Logo"/>|last 3 versions
+<img src="/img/browsers/firefox.svg" width="48" height="48" alt="Firefox Logo"/>|last 3 versions, ESR
+<img src="/img/browsers/chrome.svg" width="48" height="48" alt="Chrome Logo"/>|last 3 versions
+<img src="/img/browsers/safari.svg" width="48" height="48" alt="Safari Logo"/>|last 3 versions
+<img src="/img/browsers/opera.svg" width="48" height="48" alt="Opera Logo"/>|last 3 versions
+<img src="/img/browsers/electron.svg" width="48" height="48" alt="Electron Logo"/>|last 3 versions
+<img src="/img/browsers/brave.svg" width="48" height="48" alt="Brave Logo"/>|last 3 versions
+<img src="/img/browsers/vivaldi.svg" width="48" height="48" alt="Vivaldi Logo"/>|last 3 versions
 
 ## Internet Explorer
 

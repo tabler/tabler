@@ -37,7 +37,7 @@ Follow these steps to set up Tabler for development:
 
 To set up Tabler for development, follow these steps:
 
-<div className="steps">
+<div class="steps">
 
 ### Ensure Node.js and npm are installed
 

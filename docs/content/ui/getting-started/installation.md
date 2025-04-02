@@ -7,9 +7,9 @@ description: "Set up Tabler: HTML, CSS, JS, and build stunning UIs."
 
 This guide will take you through the essential steps to set up Tabler in your project, from creating a basic HTML file to incorporating Tabler’s styles and scripts. Let’s dive in!
 
-<div className="steps">
+<div class="steps">
 
-### Step 1: Create a Basic HTML File
+### Create a Basic HTML File
 
 Begin by creating a new `index.html` file in the root of your project. This file will serve as the foundation for your Tabler-based interface. Include the basic HTML structure and a `<meta name="viewport">` tag for proper responsiveness:
 
@@ -27,7 +27,7 @@ Begin by creating a new `index.html` file in the root of your project. This file
 </html>
 ```
 
-### Step 2: Add Tabler CSS and JavaScript
+### Add Tabler CSS and JavaScript
 
 Enhance your page by including Tabler's CSS and JavaScript files. Use the following links to load the core Tabler styles and scripts from the CDN:
 
@@ -58,7 +58,7 @@ This setup includes the Tabler CSS and JavaScript via a CDN, providing a respons
 
 You can also download the files and include them locally in your project. For more information, see the [Download](/docs/ui/getting-started/download) page.
 
-### 3. Open in Your Browser
+### Open in Your Browser
 
 Save the file and open it in your browser. You should see your first Tabler-powered page! From here, you can start adding layouts and components to create a fully functional and visually appealing web application.
 
