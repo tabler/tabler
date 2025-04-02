@@ -109,8 +109,7 @@ Use the `form-control-rounded` class if you prefer form controls with rounded co
   <div class="input-icon">
     <input type="text" value="" class="form-control form-control-rounded" placeholder="Search…" />
     <span class="input-icon-addon">
-      <!-- SVG icon from http://tabler.io/icons/icon/search -->
-      <svg>...</svg>
+      {% include "ui/icon.html" icon="search" %}
     </span>
   </div>
 </div>

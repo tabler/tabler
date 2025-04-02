@@ -49,8 +49,7 @@ To change the color of the icon, you need to add the `text-` class to the parent
 
 ```html
 <span class="text-red">
-  <!-- SVG icon from http://tabler.io/icons/icon/heart -->
-  <svg>...</svg>
+  {% include "ui/icon.html" icon="heart" %}
 </span>
 ```
 
@@ -77,12 +76,9 @@ Look at the example below to see how the color of the icon changes.
 To add an animation to the icon, you need to add the `icon-pulse`, `icon-tada`, or `icon-rotate` class to the SVG element. 
 
 ```html
-<!-- SVG icon from http://tabler.io/icons/icon/heart -->
-<svg class="icon-pulse" ...>...</svg>
-<!-- SVG icon from http://tabler.io/icons/icon/bell -->
-<svg class="icon-tada" ...>...</svg>
-<!-- SVG icon from http://tabler.io/icons/icon/rotate-clockwise -->
-<svg class="icon-rotate" ...>...</svg>
+{% include "ui/icon.html" icon="heart" %}
+{% include "ui/icon.html" icon="bell" %}
+{% include "ui/icon.html" icon="rotate-clockwise" %}
 ```
 
 Look at the example below to see the animated icons.

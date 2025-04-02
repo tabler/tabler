@@ -12,34 +12,17 @@ Use the `ribbon` class to add the default ribbon to any section of your interfac
 <div class="card">
   <div class="card-body" style="height: 5rem"></div>
   <div class="ribbon">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      class="icon"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      stroke-width="2"
-      stroke="currentColor"
-      fill="none"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    >
-      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path
-        d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"
-      />
-    </svg>
+    {% include "ui/icon.html" icon="star" %}
   </div>
 </div>
 {%- endcapture %}
-{% include "docs/example.html" html=html card %}
+{% include "docs/example.html" html=html card column %}
 
 ```html
 <div class="card">
   <div class="card-body"></div>
   <div class="ribbon">
-    <!-- SVG icon from http://tabler.io/icons/icon/star -->
-    <svg>...</svg>
+    {% include "ui/icon.html" icon="star" %}
   </div>
 </div>
 ```
@@ -59,34 +42,17 @@ Using multiple classes at once will give you more position options. For example,
 <div class="card">
   <div class="card-body" style="height: 5rem"></div>
   <div class="ribbon ribbon-top ribbon-start">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      class="icon"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      stroke-width="2"
-      stroke="currentColor"
-      fill="none"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    >
-      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path
-        d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"
-      />
-    </svg>
+    {% include "ui/icon.html" icon="star" %}
   </div>
 </div>
 {%- endcapture %}
-{% include "docs/example.html" html=html %}
+{% include "docs/example.html" html=html column %}
 
 ```html
 <div class="card">
   <div class="card-body"></div>
   <div class="ribbon ribbon-top ribbon-start">
-    <!-- SVG icon from http://tabler.io/icons/icon/star -->
-    <svg>...</svg>
+    {% include "ui/icon.html" icon="star" %}
   </div>
 </div>
 ```
@@ -99,34 +65,17 @@ Customize the ribbon's background color. You can click [here](/docs/ui/base/colo
 <div class="card">
   <div class="card-body" style="height: 5rem"></div>
   <div class="ribbon bg-red">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      class="icon"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      stroke-width="2"
-      stroke="currentColor"
-      fill="none"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    >
-      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path
-        d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"
-      />
-    </svg>
+    {% include "ui/icon.html" icon="star" %}
   </div>
 </div>
 {%- endcapture %}
-{% include "docs/example.html" html=html %}
+{% include "docs/example.html" html=html column %}
 
 ```html
 <div class="card">
   <div class="card-body"></div>
   <div class="ribbon bg-red">
-    <!-- SVG icon from http://tabler.io/icons/icon/star -->
-    <svg>...</svg>
+    {% include "ui/icon.html" icon="star" %}
   </div>
 </div>
 ```
@@ -139,34 +88,17 @@ Add your own text to a ribbon to display any additional information and make it 
 <div class="card">
   <div class="card-body" style="height: 5rem"></div>
   <div class="ribbon bg-green">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      class="icon"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      stroke-width="2"
-      stroke="currentColor"
-      fill="none"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    >
-      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path
-        d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"
-      />
-    </svg>
+    {% include "ui/icon.html" icon="star" %}
   </div>
 </div>
 {%- endcapture %}
-{% include "docs/example.html" html=html %}
+{% include "docs/example.html" html=html column %}
 
 ```html
 <div class="card">
   <div class="card-body"></div>
   <div class="ribbon bg-green">
-    <!-- SVG icon from http://tabler.io/icons/icon/star -->
-    <svg>...</svg>
+    {% include "ui/icon.html" icon="star" %}
   </div>
 </div>
 ```
@@ -179,34 +111,17 @@ Change the style of a ribbon to make it go well with your interface design.
 <div class="card w-100">
   <div class="card-body" style="height: 5rem"></div>
   <div class="ribbon ribbon-bookmark bg-orange">
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      class="icon"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      stroke-width="2"
-      stroke="currentColor"
-      fill="none"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    >
-      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <path
-        d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"
-      />
-    </svg>
+    {% include "ui/icon.html" icon="star" %}
   </div>
 </div>
 {%- endcapture %}
-{% include "docs/example.html" html=html %}
+{% include "docs/example.html" html=html column %}
 
 ```html
 <div class="card">
   <div class="card-body"></div>
   <div class="ribbon ribbon-bookmark bg-orange">
-    <!-- SVG icon from http://tabler.io/icons/icon/star -->
-    <svg>...</svg>
+    {% include "ui/icon.html" icon="star" %}
   </div>
 </div>
 ```

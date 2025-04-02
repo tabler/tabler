@@ -236,8 +236,7 @@ The available timeline design is composed of many components that will help you 
 <ul class="timeline">
   <li class="timeline-event">
     <div class="timeline-event-icon bg-twitter-lt">
-      <!-- SVG icon from http://tabler.io/icons/icon/brand-twitter -->
-      <svg>...</svg>
+      {% include "ui/icon.html" icon="brand-twitter" %}
     </div>
     <div class="card timeline-event-card">
       <div class="card-body">
@@ -249,8 +248,7 @@ The available timeline design is composed of many components that will help you 
   </li>
   <li class="timeline-event">
     <div class="timeline-event-icon">
-      <!-- SVG icon from http://tabler.io/icons/icon/briefcase -->
-      <svg>...</svg>
+      {% include "ui/icon.html" icon="briefcase" %}
     </div>
     <div class="card timeline-event-card">
       <div class="card-body">
@@ -262,8 +260,7 @@ The available timeline design is composed of many components that will help you 
   </li>
   <li class="timeline-event">
     <div class="timeline-event-icon">
-      <!-- SVG icon from http://tabler.io/icons/icon/check -->
-      <svg>...</svg>
+      {% include "ui/icon.html" icon="check" %}
     </div>
     <div class="card timeline-event-card">
       <div class="card-body">
@@ -275,8 +272,7 @@ The available timeline design is composed of many components that will help you 
   </li>
   <li class="timeline-event">
     <div class="timeline-event-icon bg-facebook-lt">
-      <!-- SVG icon from http://tabler.io/icons/icon/brand-facebook -->
-      <svg>...</svg>
+      {% include "ui/icon.html" icon="brand-facebook" %}
     </div>
     <div class="card timeline-event-card">
       <div class="card-body">
@@ -288,8 +284,7 @@ The available timeline design is composed of many components that will help you 
   </li>
   <li class="timeline-event">
     <div class="timeline-event-icon">
-      <!-- SVG icon from http://tabler.io/icons/icon/user-plus -->
-      <svg>...</svg>
+      {% include "ui/icon.html" icon="user-plus" %}
     </div>
     <div class="card timeline-event-card">
       <div class="card-body">
@@ -309,8 +304,7 @@ The available timeline design is composed of many components that will help you 
   </li>
   <li class="timeline-event">
     <div class="timeline-event-icon">
-      <!-- SVG icon from http://tabler.io/icons/icon/photo -->
-      <svg>...</svg>
+      {% include "ui/icon.html" icon="photo" %}
     </div>
     <div class="card timeline-event-card">
       <div class="card-body">
@@ -335,8 +329,7 @@ The available timeline design is composed of many components that will help you 
   </li>
   <li class="timeline-event">
     <div class="timeline-event-icon">
-      <!-- SVG icon from http://tabler.io/icons/icon/settings -->
-      <svg>...</svg>
+      {% include "ui/icon.html" icon="settings" %}
     </div>
     <div class="card timeline-event-card">
       <div class="card-body">
@@ -583,8 +576,7 @@ Use a simplified version of the timeline, if it suits your design better. You ca
 <ul class="timeline timeline-simple">
   <li class="timeline-event">
     <div class="timeline-event-icon bg-twitter-lt">
-      <!-- SVG icon from http://tabler.io/icons/icon/brand-twitter -->
-      <svg>...</svg>
+      {% include "ui/icon.html" icon="brand-twitter" %}
     </div>
     <div class="card timeline-event-card">
       <div class="card-body">
@@ -596,8 +588,7 @@ Use a simplified version of the timeline, if it suits your design better. You ca
   </li>
   <li class="timeline-event">
     <div class="timeline-event-icon">
-      <!-- SVG icon from http://tabler.io/icons/icon/briefcase -->
-      <svg>...</svg>
+      {% include "ui/icon.html" icon="briefcase" %}
     </div>
     <div class="card timeline-event-card">
       <div class="card-body">
@@ -609,8 +600,7 @@ Use a simplified version of the timeline, if it suits your design better. You ca
   </li>
   <li class="timeline-event">
     <div class="timeline-event-icon">
-      <!-- SVG icon from http://tabler.io/icons/icon/check -->
-      <svg>...</svg>
+      {% include "ui/icon.html" icon="check" %}
     </div>
     <div class="card timeline-event-card">
       <div class="card-body">
@@ -622,8 +612,7 @@ Use a simplified version of the timeline, if it suits your design better. You ca
   </li>
   <li class="timeline-event">
     <div class="timeline-event-icon bg-facebook-lt">
-      <!-- SVG icon from http://tabler.io/icons/icon/brand-facebook -->
-      <svg>...</svg>
+      {% include "ui/icon.html" icon="brand-facebook" %}
     </div>
     <div class="card timeline-event-card">
       <div class="card-body">
@@ -635,8 +624,7 @@ Use a simplified version of the timeline, if it suits your design better. You ca
   </li>
   <li class="timeline-event">
     <div class="timeline-event-icon">
-      <!-- SVG icon from http://tabler.io/icons/icon/user-plus -->
-      <svg>...</svg>
+      {% include "ui/icon.html" icon="user-plus" %}
     </div>
     <div class="card timeline-event-card">
       <div class="card-body">
@@ -656,8 +644,7 @@ Use a simplified version of the timeline, if it suits your design better. You ca
   </li>
   <li class="timeline-event">
     <div class="timeline-event-icon">
-      <!-- SVG icon from http://tabler.io/icons/icon/photo -->
-      <svg>...</svg>
+      {% include "ui/icon.html" icon="photo" %}
     </div>
     <div class="card timeline-event-card">
       <div class="card-body">
@@ -682,8 +669,7 @@ Use a simplified version of the timeline, if it suits your design better. You ca
   </li>
   <li class="timeline-event">
     <div class="timeline-event-icon">
-      <!-- SVG icon from http://tabler.io/icons/icon/settings -->
-      <svg>...</svg>
+      {% include "ui/icon.html" icon="settings" %}
     </div>
     <div class="card timeline-event-card">
       <div class="card-body">

@@ -8,13 +8,13 @@
 		<nav class="nav nav-vertical">
 			{% for level2 in level1.children %}
 			<div>
-				<a class="nav-link" href="{{ level2.url }}">{{ level2.data.title }}</a>
+				<a class="nav-link{% if page.url == level2.url %} active{% endif %}" href="{{ level2.url }}">{{ level2.data.title }}</a>
 
 				{% if level2.children %}
 				<nav class="nav nav-vertical">
 					{% for level3 in level2.children %}
 					<div>
-						<a class="nav-link" href="{{ level3.url }}">{{ level3.data.title }}</a>
+						<a class="nav-link{% if page.url == level3.url %} active{% endif %}" href="{{ level3.url }}">{{ level3.data.title }}</a>
 					</div>
 					{% endfor %}
 				</nav>

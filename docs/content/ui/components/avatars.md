@@ -58,8 +58,7 @@ Besides pictures and initials, you can also use icons to make the avatars more u
 
 ```html
 <span class="avatar">
-  <!-- SVG icon from http://tabler.io/icons/icon/user -->
-  <svg>...</svg>
+  {% include "ui/icon.html" icon="user" %}
 </span>
 ```
 

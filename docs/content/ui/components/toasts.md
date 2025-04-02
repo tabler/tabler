@@ -125,5 +125,5 @@ Stack multiple toasts together by putting them within one `.toast-container`.
   </div>
 </div>
 {%- endcapture %}
-{% include "docs/example.html" html=html %}
+{% include "docs/example.html" html=html height="25rem" centered bg="surface-secondary" %}
 

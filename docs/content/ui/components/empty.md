@@ -143,8 +143,7 @@ Instead of adding an icon or illustration you can simply give the text:
   </p>
   <div class="empty-action">
     <a href="#" class="btn btn-primary">
-      <!-- SVG icon from http://tabler.io/icons/icon/arrow-left -->
-      <svg>...</svg>
+      {% include "ui/icon.html" icon="arrow-left" %}
       Take me home
     </a>
   </div>

@@ -15,8 +15,8 @@ As one of the most common elements of UI design, buttons have a very important f
 <input type="button" class="btn" value="Input" />
 <input type="submit" class="btn" value="Submit" />
 <input type="reset" class="btn" value="Reset" />
-{%- endcapture %}
-{% include "docs/example.html" html=html separated vertical %}
+{%- endcapture -%}
+{%- include "docs/example.html" html=html centered -%}
 
 ## Default button
 
@@ -24,8 +24,8 @@ The standard button creates a white background and subtle hover animation. It's 
 
 {% capture html -%}
 <a href="#" class="btn" role="button">Link</a>
-{%- endcapture %}
-{% include "docs/example.html" html=html separated vertical %}
+{%- endcapture -%}
+{%- include "docs/example.html" html=html centered -%}
 
 ## Button variations
 
@@ -40,8 +40,8 @@ Use the button classes that correspond to the function of your button. The big r
 <a href="#" class="btn btn-info">Info</a>
 <a href="#" class="btn btn-dark">Dark</a>
 <a href="#" class="btn btn-light">Light</a>
-{%- endcapture %}
-{% include "docs/example.html" html=html separated vertical %}
+{%- endcapture -%}
+{%- include "docs/example.html" html=html separated centered -%}
 
 ## Disabled buttons
 
@@ -56,8 +56,8 @@ Make buttons look inactive to show that an action is possible once the user meet
 <a href="#" class="btn btn-info disabled">Info</a>
 <a href="#" class="btn btn-dark disabled">Dark</a>
 <a href="#" class="btn btn-light disabled">Light</a>
-{%- endcapture %}
-{% include "docs/example.html" html=html separated vertical %}
+{%- endcapture -%}
+{%- include "docs/example.html" html=html separated centered -%}
 
 ## Color variations
 
@@ -76,8 +76,8 @@ Choose the right color for your button to make it go well with your design and d
 <a href="#" class="btn btn-green">Green</a>
 <a href="#" class="btn btn-teal">Teal</a>
 <a href="#" class="btn btn-cyan">Cyan</a>
-{%- endcapture %}
-{% include "docs/example.html" html=html separated vertical %}
+{%- endcapture -%}
+{%- include "docs/example.html" html=html separated centered -%}
 
 ## Ghost buttons
 
@@ -94,8 +94,8 @@ Use the `.btn-ghost-*` class to make your button look simple yet aesthetically a
 <div class="p-2 bg-dark">
   <a href="#" class="btn btn-ghost-light">Light</a>
 </div>
-{%- endcapture %}
-{% include "docs/example.html" html=html separated vertical %}
+{%- endcapture -%}
+{%- include "docs/example.html" html=html separated vertical -%}
 
 ## Square buttons
 
@@ -103,8 +103,8 @@ Use the `.btn-square` class to remove the border radius, if you want the corners
 
 {% capture html -%}
 <a href="#" class="btn btn-square">Square button</a>
-{%- endcapture %}
-{% include "docs/example.html" html=html %}
+{%- endcapture -%}
+{%- include "docs/example.html" html=html centered -%}
 
 ## Pill buttons
 
@@ -112,8 +112,8 @@ Add the `.btn-pill` class to your button to make it rounded and give it a modern
 
 {% capture html -%}
 <a href="#" class="btn btn-pill">Pill button</a>
-{%- endcapture %}
-{% include "docs/example.html" html=html %}
+{%- endcapture -%}
+{%- include "docs/example.html" html=html centered -%}
 
 ## Outline buttons
 
@@ -128,8 +128,8 @@ Replace the default modifier class with the `.btn-outline-*` class, if you want 
 <a href="#" class="btn btn-outline-info">Info</a>
 <a href="#" class="btn btn-outline-dark">Dark</a>
 <a href="#" class="btn btn-outline-light">Light</a>
-{%- endcapture %}
-{% include "docs/example.html" html=html %}
+{%- endcapture -%}
+{%- include "docs/example.html" html=html centered -%}
 
 ## Button size
 
@@ -138,14 +138,14 @@ Add `.btn-lg` or `.btn-sm` to change the size of your button and differentiate t
 {% capture html -%}
 <button type="button" class="btn btn-primary btn-lg">Large button</button>
 <button type="button" class="btn btn-lg">Large button</button>
-{%- endcapture %}
-{% include "docs/example.html" html=html %}
+{%- endcapture -%}
+{%- include "docs/example.html" html=html centered -%}
 
 {% capture html -%}
 <button type="button" class="btn btn-primary btn-sm">Small button</button>
 <button type="button" class="btn btn-sm">Small button</button>
-{%- endcapture %}
-{% include "docs/example.html" html=html %}
+{%- endcapture -%}
+{%- include "docs/example.html" html=html centered -%}
 
 ## Buttons with icons
 
@@ -155,130 +155,31 @@ Icons can be found [**here**](/docs/components/icons)
 
 {% capture html -%}
 <button type="button" class="btn">
-  <!-- SVG icon from http://tabler.io/icons/icon/upload -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="icon"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="currentColor"
-    fill="none"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <path d="M4 17v2a2 2 0 0 0 2 2h12a2 2 0 0 0 2 -2v-2" />
-    <polyline points="7 9 12 4 17 9" />
-    <line x1="12" y1="4" x2="12" y2="16" />
-  </svg>
+  {% include "ui/icon.html" icon="upload" -%}
   Upload
 </button>
 <button type="button" class="btn btn-warning">
-  <!-- SVG icon from http://tabler.io/icons/icon/heart -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="icon"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="currentColor"
-    fill="none"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
-  </svg>
+  {% include "ui/icon.html" icon="heart" -%}
   I like
 </button>
 <button type="button" class="btn btn-success">
-  <!-- SVG icon from http://tabler.io/icons/icon/check -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="icon"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="currentColor"
-    fill="none"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <path d="M5 12l5 5l10 -10" />
-  </svg>
+  {% include "ui/icon.html" icon="check" -%}
   I agree
 </button>
 <button type="button" class="btn btn-primary">
-  <!-- SVG icon from http://tabler.io/icons/icon/plus -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="icon"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="currentColor"
-    fill="none"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <line x1="12" y1="5" x2="12" y2="19" />
-    <line x1="5" y1="12" x2="19" y2="12" />
-  </svg>
+  {% include "ui/icon.html" icon="plus" -%}
   More
 </button>
 <button type="button" class="btn btn-danger">
-  <!-- SVG icon from http://tabler.io/icons/icon/link -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    class="icon icon-tabler icons-tabler-outline icon-tabler-link"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <path d="M9 15l6 -6" />
-    <path d="M11 6l.463 -.536a5 5 0 0 1 7.071 7.072l-.534 .464" />
-    <path d="M13 18l-.397 .534a5.068 5.068 0 0 1 -7.127 0a4.972 4.972 0 0 1 0 -7.071l.524 -.463" />
-  </svg>
+  {% include "ui/icon.html" icon="link" -%}
   Link
 </button>
 <button type="button" class="btn btn-info">
-  <!-- SVG icon from http://tabler.io/icons/icon/message -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    class="icon icon-tabler icons-tabler-outline icon-tabler-message"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <path d="M8 9h8" />
-    <path d="M8 13h6" />
-    <path
-      d="M18 4a3 3 0 0 1 3 3v8a3 3 0 0 1 -3 3h-5l-5 3v-3h-2a3 3 0 0 1 -3 -3v-8a3 3 0 0 1 3 -3h12z"
-    />
-  </svg>
+  {% include "ui/icon.html" icon="message" -%}
   Comment
 </button>
-{%- endcapture %}
-{% include "docs/example.html" html=html %}
+{%- endcapture -%}
+{%- include "docs/example.html" html=html centered -%}
 
 ## Social buttons
 
@@ -286,297 +187,63 @@ You can use the icons of popular social networking sites, which users are famili
 
 {% capture html -%}
 <a href="#" class="btn btn-facebook">
-  <!-- SVG icon from http://tabler.io/icons/icon/brand-facebook -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="icon"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="currentColor"
-    fill="none"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <path d="M7 10v4h3v7h4v-7h3l1 -4h-4v-2a1 1 0 0 1 1 -1h3v-4h-3a5 5 0 0 0 -5 5v2h-3" />
-  </svg>
+  {%- include "ui/icon.html" icon="brand-facebook" -%}
   Facebook
 </a>
 <a href="#" class="btn btn-twitter">
-  <!-- SVG icon from http://tabler.io/icons/icon/brand-twitter -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="icon"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="currentColor"
-    fill="none"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <path
-      d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z"
-    />
-  </svg>
+  {%- include "ui/icon.html" icon="brand-twitter" -%}
   Twitter
 </a>
 <a href="#" class="btn btn-google">
-  <!-- SVG icon from http://tabler.io/icons/icon/brand-google -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="icon"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="currentColor"
-    fill="none"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <path d="M17.788 5.108a9 9 0 1 0 3.212 6.892h-8" />
-  </svg>
+  {%- include "ui/icon.html" icon="brand-google" -%}
   Google
 </a>
 <a href="#" class="btn btn-youtube">
-  <!-- SVG icon from http://tabler.io/icons/icon/brand-youtube -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="icon"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="currentColor"
-    fill="none"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <rect x="3" y="5" width="18" height="14" rx="4" />
-    <path d="M10 9l5 3l-5 3z" />
-  </svg>
+  {%- include "ui/icon.html" icon="brand-youtube" -%}
   Youtube
 </a>
 <a href="#" class="btn btn-vimeo">
-  <!-- SVG icon from http://tabler.io/icons/icon/brand-vimeo -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="icon"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="currentColor"
-    fill="none"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <path
-      d="M3 8.5l1 1s1.5 -1.102 2 -.5c.509 .609 1.863 7.65 2.5 9c.556 1.184 1.978 2.89 4 1.5c2 -1.5 7.5 -5.5 8.5 -11.5c.444 -2.661 -1 -4 -2.5 -4c-2 0 -4.047 1.202 -4.5 4c2.05 -1.254 2.551 1.003 1.5 3c-1.052 2.005 -2 3 -2.5 3c-.49 0 -.924 -1.165 -1.5 -3.5c-.59 -2.42 -.5 -6.5 -3 -6.5s-5.5 4.5 -5.5 4.5z"
-    />
-  </svg>
+  {%- include "ui/icon.html" icon="brand-vimeo" -%}
   Vimeo
 </a>
 <a href="#" class="btn btn-dribbble">
-  <!-- SVG icon from http://tabler.io/icons/icon/brand-dribbble -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="icon"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="currentColor"
-    fill="none"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <circle cx="12" cy="12" r="9" />
-    <path d="M9 3.6c5 6 7 10.5 7.5 16.2" />
-    <path d="M6.4 19c3.5 -3.5 6 -6.5 14.5 -6.4" />
-    <path d="M3.1 10.75c5 0 9.814 -.38 15.314 -5" />
-  </svg>
+  {%- include "ui/icon.html" icon="brand-dribbble" -%}
   Dribbble
 </a>
 <a href="#" class="btn btn-github">
-  <!-- SVG icon from http://tabler.io/icons/icon/brand-github -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="icon"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="currentColor"
-    fill="none"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <path
-      d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"
-    />
-  </svg>
+  {%- include "ui/icon.html" icon="brand-github" -%}
   Github
 </a>
 <a href="#" class="btn btn-instagram">
-  <!-- SVG icon from http://tabler.io/icons/icon/brand-instagram -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="icon"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="currentColor"
-    fill="none"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <rect x="4" y="4" width="16" height="16" rx="4" />
-    <circle cx="12" cy="12" r="3" />
-    <line x1="16.5" y1="7.5" x2="16.5" y2="7.501" />
-  </svg>
+  {%- include "ui/icon.html" icon="brand-instagram" -%}
   Instagram
 </a>
 <a href="#" class="btn btn-pinterest">
-  <!-- SVG icon from http://tabler.io/icons/icon/brand-pinterest -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="icon"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="currentColor"
-    fill="none"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <line x1="8" y1="20" x2="12" y2="11" />
-    <path d="M10.7 14c.437 1.263 1.43 2 2.55 2c2.071 0 3.75 -1.554 3.75 -4a5 5 0 1 0 -9.7 1.7" />
-    <circle cx="12" cy="12" r="9" />
-  </svg>
+  {%- include "ui/icon.html" icon="brand-pinterest" -%}
   Pinterest
 </a>
 <a href="#" class="btn btn-vk">
-  <!-- SVG icon from http://tabler.io/icons/icon/brand-vk -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="icon"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="currentColor"
-    fill="none"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <path
-      d="M14 19h-4a8 8 0 0 1 -8 -8v-5h4v5a4 4 0 0 0 4 4h0v-9h4v4.5l.03 -.004a4.531 4.531 0 0 0 3.97 -4.496h4l-.342 1.711a6.858 6.858 0 0 1 -3.658 4.789h0a5.34 5.34 0 0 1 3.566 4.111l.434 2.389h0h-4a4.531 4.531 0 0 0 -3.97 -4.496v4.5z"
-    />
-  </svg>
+  {%- include "ui/icon.html" icon="brand-vk" -%}
   VK
 </a>
 <a href="#" class="btn btn-rss">
-  <!-- SVG icon from http://tabler.io/icons/icon/brand-rss -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="icon"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="currentColor"
-    fill="none"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <circle cx="5" cy="19" r="1" />
-    <path d="M4 4a16 16 0 0 1 16 16" />
-    <path d="M4 11a9 9 0 0 1 9 9" />
-  </svg>
+  {%- include "ui/icon.html" icon="brand-rss" -%}
   RSS
 </a>
 <a href="#" class="btn btn-flickr">
-  <!-- SVG icon from http://tabler.io/icons/icon/brand-flickr -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="icon"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="currentColor"
-    fill="none"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <circle cx="7" cy="12" r="3" />
-    <circle cx="17" cy="12" r="3" />
-  </svg>
+  {%- include "ui/icon.html" icon="brand-flickr" -%}
   Flickr
 </a>
 <a href="#" class="btn btn-bitbucket">
-  <!-- SVG icon from http://tabler.io/icons/icon/brand-bitbucket -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="icon"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="currentColor"
-    fill="none"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <path
-      d="M3.648 4a0.64 .64 0 0 0 -.64 .744l3.14 14.528c.07 .417 .43 .724 .852 .728h10a0.644 .644 0 0 0 .642 -.539l3.35 -14.71a0.641 .641 0 0 0 -.64 -.744l-16.704 -.007z"
-    />
-    <path d="M14 15h-4l-1 -6h6z" />
-  </svg>
+  {%- include "ui/icon.html" icon="brand-bitbucket" -%}
   Bitbucket
 </a>
 <a href="#" class="btn btn-tabler">
-  <!-- SVG icon from http://tabler.io/icons/icon/brand-tabler -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="icon"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="currentColor"
-    fill="none"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <path d="M8 9l3 3l-3 3" />
-    <line x1="13" y1="15" x2="16" y2="15" />
-    <rect x="4" y="4" width="16" height="16" rx="4" />
-  </svg>
+  {%- include "ui/icon.html" icon="brand-tabler" -%}
   Tabler
 </a>
-{%- endcapture %}
-{% include "docs/example.html" html=html separated vertical %}
+{%- endcapture -%}
+{%- include "docs/example.html" html=html separated centered hide-code -%}
 
 ```html
 <a href="#" class="btn btn-facebook">
@@ -589,282 +256,49 @@ You can also add an icon without the name of a social networking site, if you wa
 
 {% capture html -%}
 <a href="#" class="btn btn-facebook btn-icon" aria-label="Button">
-  <!-- SVG icon from http://tabler.io/icons/icon/brand-facebook -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="icon"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="currentColor"
-    fill="none"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <path d="M7 10v4h3v7h4v-7h3l1 -4h-4v-2a1 1 0 0 1 1 -1h3v-4h-3a5 5 0 0 0 -5 5v2h-3" />
-  </svg>
+  {%- include "ui/icon.html" icon="brand-facebook" -%}
 </a>
 <a href="#" class="btn btn-x btn-icon" aria-label="Button">
-  <!-- SVG icon from http://tabler.io/icons/icon/brand-x -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    class="icon icon-tabler icons-tabler-outline icon-tabler-brand-x"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <path d="M4 4l11.733 16h4.267l-11.733 -16z" />
-    <path d="M4 20l6.768 -6.768m2.46 -2.46l6.772 -6.772" />
-  </svg>
+  {%- include "ui/icon.html" icon="brand-x" -%}
 </a>
 <a href="#" class="btn btn-google btn-icon" aria-label="Button">
-  <!-- SVG icon from http://tabler.io/icons/icon/brand-google -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="icon"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="currentColor"
-    fill="none"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <path d="M17.788 5.108a9 9 0 1 0 3.212 6.892h-8" />
-  </svg>
+  {%- include "ui/icon.html" icon="brand-google" -%}
 </a>
 <a href="#" class="btn btn-youtube btn-icon" aria-label="Button">
-  <!-- SVG icon from http://tabler.io/icons/icon/brand-youtube -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="icon"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="currentColor"
-    fill="none"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <rect x="3" y="5" width="18" height="14" rx="4" />
-    <path d="M10 9l5 3l-5 3z" />
-  </svg>
+  {%- include "ui/icon.html" icon="brand-youtube" -%}
 </a>
 <a href="#" class="btn btn-vimeo btn-icon" aria-label="Button">
-  <!-- SVG icon from http://tabler.io/icons/icon/brand-vimeo -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="icon"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="currentColor"
-    fill="none"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <path
-      d="M3 8.5l1 1s1.5 -1.102 2 -.5c.509 .609 1.863 7.65 2.5 9c.556 1.184 1.978 2.89 4 1.5c2 -1.5 7.5 -5.5 8.5 -11.5c.444 -2.661 -1 -4 -2.5 -4c-2 0 -4.047 1.202 -4.5 4c2.05 -1.254 2.551 1.003 1.5 3c-1.052 2.005 -2 3 -2.5 3c-.49 0 -.924 -1.165 -1.5 -3.5c-.59 -2.42 -.5 -6.5 -3 -6.5s-5.5 4.5 -5.5 4.5z"
-    />
-  </svg>
+  {%- include "ui/icon.html" icon="brand-vimeo" -%}
 </a>
 <a href="#" class="btn btn-dribbble btn-icon" aria-label="Button">
-  <!-- SVG icon from http://tabler.io/icons/icon/brand-dribbble -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="icon"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="currentColor"
-    fill="none"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <circle cx="12" cy="12" r="9" />
-    <path d="M9 3.6c5 6 7 10.5 7.5 16.2" />
-    <path d="M6.4 19c3.5 -3.5 6 -6.5 14.5 -6.4" />
-    <path d="M3.1 10.75c5 0 9.814 -.38 15.314 -5" />
-  </svg>
+  {%- include "ui/icon.html" icon="brand-dribbble" -%}
 </a>
 <a href="#" class="btn btn-github btn-icon" aria-label="Button">
-  <!-- SVG icon from http://tabler.io/icons/icon/brand-github -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="icon"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="currentColor"
-    fill="none"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <path
-      d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"
-    />
-  </svg>
+  {%- include "ui/icon.html" icon="brand-github" -%}
 </a>
 <a href="#" class="btn btn-instagram btn-icon" aria-label="Button">
-  <!-- SVG icon from http://tabler.io/icons/icon/brand-instagram -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="icon"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="currentColor"
-    fill="none"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <rect x="4" y="4" width="16" height="16" rx="4" />
-    <circle cx="12" cy="12" r="3" />
-    <line x1="16.5" y1="7.5" x2="16.5" y2="7.501" />
-  </svg>
+  {%- include "ui/icon.html" icon="brand-instagram" -%}
 </a>
 <a href="#" class="btn btn-pinterest btn-icon" aria-label="Button">
-  <!-- SVG icon from http://tabler.io/icons/icon/brand-pinterest -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="icon"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="currentColor"
-    fill="none"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <line x1="8" y1="20" x2="12" y2="11" />
-    <path d="M10.7 14c.437 1.263 1.43 2 2.55 2c2.071 0 3.75 -1.554 3.75 -4a5 5 0 1 0 -9.7 1.7" />
-    <circle cx="12" cy="12" r="9" />
-  </svg>
+  {%- include "ui/icon.html" icon="brand-pinterest" -%}
 </a>
 <a href="#" class="btn btn-vk btn-icon" aria-label="Button">
-  <!-- SVG icon from http://tabler.io/icons/icon/brand-vk -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="icon"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="currentColor"
-    fill="none"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <path
-      d="M14 19h-4a8 8 0 0 1 -8 -8v-5h4v5a4 4 0 0 0 4 4h0v-9h4v4.5l.03 -.004a4.531 4.531 0 0 0 3.97 -4.496h4l-.342 1.711a6.858 6.858 0 0 1 -3.658 4.789h0a5.34 5.34 0 0 1 3.566 4.111l.434 2.389h0h-4a4.531 4.531 0 0 0 -3.97 -4.496v4.5z"
-    />
-  </svg>
+  {%- include "ui/icon.html" icon="brand-vk" -%}
 </a>
 <a href="#" class="btn btn-rss btn-icon" aria-label="Button">
-  <!-- SVG icon from http://tabler.io/icons/icon/rss -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="icon"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="currentColor"
-    fill="none"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <circle cx="5" cy="19" r="1" />
-    <path d="M4 4a16 16 0 0 1 16 16" />
-    <path d="M4 11a9 9 0 0 1 9 9" />
-  </svg>
+  {%- include "ui/icon.html" icon="rss" -%}
 </a>
 <a href="#" class="btn btn-flickr btn-icon" aria-label="Button">
-  <!-- SVG icon from http://tabler.io/icons/icon/brand-flickr -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="icon"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="currentColor"
-    fill="none"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <circle cx="7" cy="12" r="3" />
-    <circle cx="17" cy="12" r="3" />
-  </svg>
+  {%- include "ui/icon.html" icon="brand-flickr" -%}
 </a>
 <a href="#" class="btn btn-bitbucket btn-icon" aria-label="Button">
-  <!-- SVG icon from http://tabler.io/icons/icon/brand-bitbucket -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="icon"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="currentColor"
-    fill="none"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <path
-      d="M3.648 4a0.64 .64 0 0 0 -.64 .744l3.14 14.528c.07 .417 .43 .724 .852 .728h10a0.644 .644 0 0 0 .642 -.539l3.35 -14.71a0.641 .641 0 0 0 -.64 -.744l-16.704 -.007z"
-    />
-    <path d="M14 15h-4l-1 -6h6z" />
-  </svg>
+  {%- include "ui/icon.html" icon="brand-bitbucket" -%}
 </a>
 <a href="#" class="btn btn-tabler btn-icon" aria-label="Button">
-  <!-- SVG icon from http://tabler.io/icons/icon/brand-tabler -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="icon"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="currentColor"
-    fill="none"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <path d="M8 9l3 3l-3 3" />
-    <line x1="13" y1="15" x2="16" y2="15" />
-    <rect x="4" y="4" width="16" height="16" rx="4" />
-  </svg>
+  {%- include "ui/icon.html" icon="brand-tabler" -%}
 </a>
-{%- endcapture %}
-{% include "docs/example.html" html=html separated vertical %}
+{%- endcapture -%}
+{%- include "docs/example.html" html=html separated vertical hide-code -%}
 
 ```html
 <a href="#" class="btn btn-facebook btn-icon" aria-label="Button">
@@ -878,151 +312,28 @@ Add the `.btn-icon` class to remove unnecessary padding from your button and use
 
 {% capture html -%}
 <a href="#" class="btn btn-primary btn-icon" aria-label="Button">
-  <!-- SVG icon from http://tabler.io/icons/icon/activity -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="icon"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="currentColor"
-    fill="none"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <path d="M3 12h4l3 8l4 -16l3 8h4" />
-  </svg>
+  {%- include "ui/icon.html" icon="activity" -%}
 </a>
 <a href="#" class="btn btn-github btn-icon" aria-label="Button">
-  <!-- SVG icon from http://tabler.io/icons/icon/brand-github -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="icon"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="currentColor"
-    fill="none"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <path
-      d="M9 19c-4.3 1.4 -4.3 -2.5 -6 -3m12 5v-3.5c0 -1 .1 -1.4 -.5 -2c2.8 -.3 5.5 -1.4 5.5 -6a4.6 4.6 0 0 0 -1.3 -3.2a4.2 4.2 0 0 0 -.1 -3.2s-1.1 -.3 -3.5 1.3a12.3 12.3 0 0 0 -6.2 0c-2.4 -1.6 -3.5 -1.3 -3.5 -1.3a4.2 4.2 0 0 0 -.1 3.2a4.6 4.6 0 0 0 -1.3 3.2c0 4.6 2.7 5.7 5.5 6c-.6 .6 -.6 1.2 -.5 2v3.5"
-    />
-  </svg>
+  {%- include "ui/icon.html" icon="brand-github" -%}
 </a>
 <a href="#" class="btn btn-success btn-icon" aria-label="Button">
-  <!-- SVG icon from http://tabler.io/icons/icon/bell -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="icon"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="currentColor"
-    fill="none"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <path
-      d="M10 5a2 2 0 0 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6"
-    />
-    <path d="M9 17v1a3 3 0 0 0 6 0v-1" />
-  </svg>
+  {%- include "ui/icon.html" icon="bell" -%}
 </a>
 <a href="#" class="btn btn-warning btn-icon" aria-label="Button">
-  <!-- SVG icon from http://tabler.io/icons/icon/star -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="icon"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="currentColor"
-    fill="none"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <path
-      d="M12 17.75l-6.172 3.245l1.179 -6.873l-5 -4.867l6.9 -1l3.086 -6.253l3.086 6.253l6.9 1l-5 4.867l1.179 6.873z"
-    />
-  </svg>
+  {%- include "ui/icon.html" icon="star" -%}
 </a>
 <a href="#" class="btn btn-danger btn-icon" aria-label="Button">
-  <!-- SVG icon from http://tabler.io/icons/icon/trash -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="icon"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="currentColor"
-    fill="none"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <line x1="4" y1="7" x2="20" y2="7" />
-    <line x1="10" y1="11" x2="10" y2="17" />
-    <line x1="14" y1="11" x2="14" y2="17" />
-    <path d="M5 7l1 12a2 2 0 0 0 2 2h8a2 2 0 0 0 2 -2l1 -12" />
-    <path d="M9 7v-3a1 1 0 0 1 1 -1h4a1 1 0 0 1 1 1v3" />
-  </svg>
+  {%- include "ui/icon.html" icon="trash" -%}
 </a>
 <a href="#" class="btn btn-purple btn-icon" aria-label="Button">
-  <!-- SVG icon from http://tabler.io/icons/icon/chart-bar -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="icon"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="currentColor"
-    fill="none"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <rect x="3" y="12" width="6" height="8" rx="1" />
-    <rect x="9" y="8" width="6" height="12" rx="1" />
-    <rect x="15" y="4" width="6" height="16" rx="1" />
-    <line x1="4" y1="20" x2="18" y2="20" />
-  </svg>
+  {%- include "ui/icon.html" icon="chart-bar" -%}
 </a>
 <a href="#" class="btn btn-icon" aria-label="Button">
-  <!-- SVG icon from http://tabler.io/icons/icon/git-merge -->
-  <svg
-    xmlns="http://www.w3.org/2000/svg"
-    class="icon"
-    width="24"
-    height="24"
-    viewBox="0 0 24 24"
-    stroke-width="2"
-    stroke="currentColor"
-    fill="none"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-  >
-    <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-    <circle cx="7" cy="18" r="2" />
-    <circle cx="7" cy="6" r="2" />
-    <circle cx="17" cy="12" r="2" />
-    <line x1="7" y1="8" x2="7" y2="16" />
-    <path d="M7 8a4 4 0 0 0 4 4h4" />
-  </svg>
+  {%- include "ui/icon.html" icon="git-merge" -%}
 </a>
-{%- endcapture %}
-{% include "docs/example.html" html=html separated vertical %}
+{%- endcapture -%}
+{%- include "docs/example.html" html=html separated centered hide-code -%}
 
 ```html
 <a href="#" class="btn btn-primary btn-icon" aria-label="Button">
@@ -1037,27 +348,7 @@ Create a dropdown button that will encourage users to click for more options. Yo
 {% capture html -%}
 <div class="dropdown">
   <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown">
-    <!-- SVG icon from http://tabler.io/icons/icon/calendar -->
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      class="icon"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      stroke-width="2"
-      stroke="currentColor"
-      fill="none"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    >
-      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <rect x="4" y="5" width="16" height="16" rx="2" />
-      <line x1="16" y1="3" x2="16" y2="7" />
-      <line x1="8" y1="3" x2="8" y2="7" />
-      <line x1="4" y1="11" x2="20" y2="11" />
-      <line x1="11" y1="15" x2="12" y2="15" />
-      <line x1="12" y1="15" x2="12" y2="18" />
-    </svg>
+    {%- include "ui/icon.html" icon="calendar" -%}
   </button>
   <div class="dropdown-menu">
     <a class="dropdown-item" href="#">Action</a>
@@ -1066,27 +357,7 @@ Create a dropdown button that will encourage users to click for more options. Yo
 </div>
 <div class="dropdown">
   <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown">
-    <!-- SVG icon from http://tabler.io/icons/icon/calendar -->
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      class="icon"
-      width="24"
-      height="24"
-      viewBox="0 0 24 24"
-      stroke-width="2"
-      stroke="currentColor"
-      fill="none"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-    >
-      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-      <rect x="4" y="5" width="16" height="16" rx="2" />
-      <line x1="16" y1="3" x2="16" y2="7" />
-      <line x1="8" y1="3" x2="8" y2="7" />
-      <line x1="4" y1="11" x2="20" y2="11" />
-      <line x1="11" y1="15" x2="12" y2="15" />
-      <line x1="12" y1="15" x2="12" y2="18" />
-    </svg>
+    {%- include "ui/icon.html" icon="calendar" -%}
     Show calendar
   </button>
   <div class="dropdown-menu">
@@ -1101,8 +372,8 @@ Create a dropdown button that will encourage users to click for more options. Yo
     <a class="dropdown-item" href="#">Another action</a>
   </div>
 </div>
-{%- endcapture %}
-{% include "docs/example.html" html=html %}
+{%- endcapture -%}
+{%- include "docs/example.html" html=html centered hide-code -%}
 
 ```html
 <div class="dropdown">
@@ -1121,18 +392,22 @@ Create a dropdown button that will encourage users to click for more options. Yo
 Add the `.btn-loading` class to show a button's loading state, which can be useful in the case of operations that take longer to process. Thanks to that, users will be aware of the current state of their action and won't give it up before it's finished.
 
 {% capture html -%}
-<a href="#" class="btn btn-primary btn-loading"> Button </a>
-<a href="#" class="btn btn-primary btn-loading"> Loading button with loooong content </a>
-{%- endcapture %}
-{% include "docs/example.html" html=html %}
+<a href="#" class="btn btn-primary btn-loading">
+	Button
+</a>
+<a href="#" class="btn btn-primary btn-loading">
+	Loading button with loooong content
+</a>
+{%- endcapture -%}
+{%- include "docs/example.html" html=html centered -%}
 
 {% capture html -%}
 <a href="#" class="btn btn-primary">
   <span class="spinner-border spinner-border-sm me-2" role="status"></span>
   Button
 </a>
-{%- endcapture %}
-{% include "docs/example.html" html=html %}
+{%- endcapture -%}
+{%- include "docs/example.html" html=html centered -%}
 
 ## List of buttons
 
@@ -1144,8 +419,8 @@ Create a list of buttons using the `.btn-list` container to display different ac
   <a href="#" class="btn">Save and continue</a>
   <a href="#" class="btn btn-danger">Cancel</a>
 </div>
-{%- endcapture %}
-{% include "docs/example.html" html=html %}
+{%- endcapture -%}
+{%- include "docs/example.html" html=html centered -%}
 
 If the list is long, it will be wrapped and some buttons will be moved to the next line, keeping them all evenly spaced.
 
@@ -1171,8 +446,8 @@ If the list is long, it will be wrapped and some buttons will be moved to the ne
   <a href="#" class="btn">Eighteen</a>
   <a href="#" class="btn">Nineteen</a>
 </div>
-{%- endcapture %}
-{% include "docs/example.html" html=html %}
+{%- endcapture -%}
+{%- include "docs/example.html" html=html centered -%}
 
 Use the `.text-center` or the `.text-end` modifiers to change the buttons' alignment and place them where they suit best.
 
@@ -1181,16 +456,16 @@ Use the `.text-center` or the `.text-end` modifiers to change the buttons' align
   <a href="#" class="btn">Save and continue</a>
   <a href="#" class="btn btn-primary">Save changes</a>
 </div>
-{%- endcapture %}
-{% include "docs/example.html" html=html %}
+{%- endcapture -%}
+{%- include "docs/example.html" html=html -%}
 
 {% capture html -%}
 <div class="btn-list justify-content-end">
   <a href="#" class="btn">Save and continue</a>
   <a href="#" class="btn btn-primary">Save changes</a>
 </div>
-{%- endcapture %}
-{% include "docs/example.html" html=html %}
+{%- endcapture -%}
+{%- include "docs/example.html" html=html -%}
 
 {% capture html -%}
 <div class="btn-list">
@@ -1198,8 +473,8 @@ Use the `.text-center` or the `.text-end` modifiers to change the buttons' align
   <a href="#" class="btn">Save and continue</a>
   <a href="#" class="btn btn-primary">Save changes</a>
 </div>
-{%- endcapture %}
-{% include "docs/example.html" html=html %}
+{%- endcapture -%}
+{%- include "docs/example.html" html=html -%}
 
 ## Buttons with avatars
 
@@ -1209,8 +484,15 @@ Use buttons with avatars to simplify the process of interaction and make your de
 <a href="#" class="btn">
   <span
     class="avatar"
+    style="background-image: url(/static/avatars/002f.jpg);"
+  ></span>
+  Avatar
+</a>
+<a href="#" class="btn">
+  <span
+    class="avatar"
     style="
-      background-image: url(https://images.unsplash.com/photo-1542534759-05f6c34a9e63?q=80&fm=jpg&crop=faces&fit=crop&h=100&w=100);
+      background-image: url(/static/avatars/002m.jpg);
     "
   ></span>
   Avatar
@@ -1219,19 +501,10 @@ Use buttons with avatars to simplify the process of interaction and make your de
   <span
     class="avatar"
     style="
-      background-image: url(https://images.unsplash.com/photo-1546539782-6fc531453083?q=80&fm=jpg&crop=faces&fit=crop&h=100&w=100);
+      background-image: url(/static/avatars/004f.jpg);
     "
   ></span>
   Avatar
 </a>
-<a href="#" class="btn">
-  <span
-    class="avatar"
-    style="
-      background-image: url(https://images.unsplash.com/photo-1541585452861-0375331f10bf?q=80&fm=jpg&crop=faces&fit=crop&h=100&w=100);
-    "
-  ></span>
-  Avatar
-</a>
-{%- endcapture %}
-{% include "docs/example.html" html=html %}
+{%- endcapture -%}
+{%- include "docs/example.html" html=html centered -%}
