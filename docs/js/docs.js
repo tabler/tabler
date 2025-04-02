@@ -1,14 +1,8 @@
-import { searchClient } from "@algolia/client-search";
+import docsearch from '@docsearch/js';
 
-const client = searchClient(
-	"ALGOLIA_APPLICATION_ID",
-	"ALGOLIA_API_KEY",
-	{
-		// Adjust timeouts
-		timeouts: {
-			read: 10000,
-			write: 10000,
-			connect: 10000,
-		},
-	},
-);
+docsearch({
+	container: '#docsearch',
+	appId: process.env.DOCSEARCH_APP_ID,
+	indexName: process.env.DOCSEARCH_INDEX_NAME,
+	apiKey: process.env.DOCSEARCH_API_KEY,
+});
