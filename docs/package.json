@@ -4,17 +4,25 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "pnpm run clean && eleventy",
-    "dev": "pnpm run clean && cross-env NODE_ENV=development eleventy --serve --port=3010",
-    "clean": "shx rm -rf dist demo"
+    "build": "pnpm run clean && pnpm run js && pnpm run html ",
+    "html": "eleventy",
+    "js": "pnpm run js-compile && pnpm run js-minify",
+    "js-compile": "rollup --config .build/rollup.config.mjs --sourcemap",
+    "js-minify": "pnpm run js-minify-docs",
+    "js-minify-docs": "terser --compress passes=2 --mangle --comments \"/^!/\" --source-map \"content=dist/js/docs.js.map,includeSources,url=docs.min.js.map\" --output dist/js/docs.min.js dist/js/docs.js",
+    "dev": "pnpm run clean && pnpm run watch",
+    "watch": "concurrently \"pnpm run watch-html\" \"pnpm run watch-js\"",
+    "watch-html": "cross-env NODE_ENV=development eleventy --serve --port=3010",
+    "watch-js": "nodemon --watch js/ --ext js --exec \"pnpm run js\"",
+    "clean": "shx rm -rf dist"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@tabler/core": "workspace:*",
     "@hotwired/turbo": "^8.0.13",
     "@melloware/coloris": "^0.24.0",
+    "@tabler/core": "workspace:*",
     "@tabler/icons": "^3.31.0",
     "apexcharts": "3.54.1",
     "autosize": "^6.0.1",
@@ -38,6 +46,7 @@
   "devDependencies": {
     "@11ty/eleventy": "^3.0.0",
     "@11ty/eleventy-navigation": "^0.3.5",
+    "@algolia/client-search": "^5.23.1",
     "flat-cache": "^6.1.6",
     "shiki": "^2.3.2"
   }

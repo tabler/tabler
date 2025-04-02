@@ -2,7 +2,6 @@
 <html lang="en">
 
 <head>
-	<script src="/js/theme-detection.js"></script>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<title>Tabler Documentation - {{ title }}</title>
@@ -26,11 +25,11 @@
 	{% endfor -%}
 	{% endif %}
 
-	<link rel="stylesheet" href="/docs.css" />
+	<link rel="stylesheet" href="/docs{% if environment != 'development' %}.min{% endif %}.css" />
 </head>
 
 <body class="d-flex flex-column h-full" style="background: var(--tblr-bg-surface)">
-	<script src="/dist/js/tabler-theme.js"></script>
+	<script src="/dist/js/tabler-theme{% if environment != 'development' %}.min{% endif %}.js"></script>
 	{% include "docs/navbar.html" %}
 	<div class="flex-fill h-full">
 		<div class="container h-full">
@@ -121,8 +120,8 @@
 		</div>
 	</div>
 
-	<script src="/dist/js/tabler.js"></script>
-	<script src="/js/theme-switcher.js" defer></script>
+	<script src="/dist/js/tabler{% if environment != 'development' %}.min{% endif %}.js"></script>
+	<script src="/js/docs{% if environment != 'development' %}.min{% endif %}.js" defer></script>
 
 	{% if docs-libs -%}
 	{% for lib in libs.js -%}
