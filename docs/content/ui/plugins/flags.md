@@ -2,7 +2,7 @@
 title: Flags
 summary: Thanks to the Tabler flags plugin, you can create flags to visually represent countries or languages. Flags are often used in forms, as an element of a delivery address, phone number dialling code and many more.
 plugin: flags
-libs: tabler-flags
+docs-libs: tabler-flags
 description: Visual representation of countries/languages.
 ---
 

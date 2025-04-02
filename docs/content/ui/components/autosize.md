@@ -1,7 +1,7 @@
 ---
 title: Autosize
 summary: The autosize element will automatically adjust the textarea height and make it easier for users to follow as they type.
-libs: autosize
+docs-libs: autosize
 description: Auto-adjusting textarea for better usability.
 ---
 

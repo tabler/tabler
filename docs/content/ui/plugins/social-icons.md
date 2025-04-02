@@ -2,7 +2,7 @@
 title: Social Icons
 summary: Social icons are a great way to make your website more engaging and user-friendly. You can use social icons to help users quickly find your social media profiles and connect with you.
 plugin: socials
-libs: tabler-socials
+docs-libs: tabler-socials
 description: Connect users to your social profiles.
 ---
 

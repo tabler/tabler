@@ -19,7 +19,7 @@ To create a sample version of the dashboard, you can use the following code snip
       <h1 class="navbar-brand navbar-brand-autodark d-none-navbar-horizontal pe-0 pe-md-3">
         <a href="#">
           <img
-            src="https://preview.tabler.io/static/logo.svg"
+            src="/static/logo.svg"
             width="110"
             height="32"
             alt="Tabler"
@@ -90,7 +90,7 @@ To create a sidebar layout, you can use the following code snippet. This code sn
       <h1 class="navbar-brand navbar-brand-autodark">
         <a href="#">
           <img
-            src="https://preview.tabler.io/static/logo-white.svg"
+            src="/static/logo-white.svg"
             width="110"
             height="32"
             alt="Tabler"

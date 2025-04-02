@@ -1,6 +1,6 @@
 ---
 title: TinyMCE
-libs: tinymce
+docs-libs: tinymce
 summary: The WYSIWYG editor that is flexible, customizable, and designed with the user in mind. TinyMCE can handle any challenge, from the most simple implementation through to the most complex use case.
 description: Flexible WYSIWYG editor for content.
 ---

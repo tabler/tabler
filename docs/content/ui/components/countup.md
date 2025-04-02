@@ -1,7 +1,7 @@
 ---
 title: Countup
 summary: A countup element is used to display numerical data in an interesting way and make the interface more interactive.
-libs: countup
+docs-libs: countup
 description: Display numbers dynamically with countups.
 ---
 

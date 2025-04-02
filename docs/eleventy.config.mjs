@@ -3,6 +3,7 @@ import { appFilters } from "../shared/e11ty/filters.mjs"
 import { appData, getCopyList } from "../shared/e11ty/data.mjs";
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
+import beautify from 'js-beautify';
 
 export default function (eleventyConfig) {
 	const environment = process.env.NODE_ENV || "production";
@@ -55,7 +56,15 @@ export default function (eleventyConfig) {
 		eleventyConfig.amendLibrary('md', function (mdLib) {
 			return mdLib.set({
 				highlight: function (code, lang) {
-					let highlightedCode = highlighter.codeToHtml(code.trim(), {
+					// prettify code
+					if(lang === 'html') {
+						code = beautify.html(code, {
+							indent_size: 2,
+							wrap_line_length: 80,
+						});
+					}
+
+					let highlightedCode = highlighter.codeToHtml(code, {
 						lang: lang,
 						themes: {
 							light: 'github-dark',
