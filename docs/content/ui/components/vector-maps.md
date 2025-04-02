@@ -1,5 +1,6 @@
 ---
 title: Vector Maps
+docs-libs: [jsvectormap, jsvectormap-world, jsvectormap-world-merc]
 description: Interactive guide to creating vector maps with jsVectorMap.
 summary: Vector maps are a great way to display geographical data in an interactive and visually appealing way. Learn how to create vector maps with jsVectorMap.
 ---
@@ -49,8 +50,8 @@ Look at the example below to see how the vector map works with a world map.
       backgroundColor: "transparent",
       regionStyle: {
         initial: {
-          fill: tabler.getColor("body-bg"),
-          stroke: tabler.getColor("border-color"),
+          fill: "var(--tblr-body-bg)",
+          stroke: "var(--tblr-border-color)",
           strokeWidth: 2,
         },
       },
@@ -87,8 +88,8 @@ You can add markers to the map to highlight specific locations. Below is a sampl
       backgroundColor: "transparent",
       regionStyle: {
         initial: {
-          fill: tabler.getColor("body-bg"),
-          stroke: tabler.getColor("border-color"),
+          fill: "var(--tblr-body-bg)",
+          stroke: "var(--tblr-border-color)",
           strokeWidth: 2,
         },
       },
@@ -139,11 +140,11 @@ You can add markers to the map to highlight specific locations. Below is a sampl
           opacity: 1,
           strokeWidth: 3,
           stokeOpacity: 0.5,
-          fill: tabler.getColor("blue"),
+          fill: "var(--tblr-primary)",
         },
         hover: {
-          fill: tabler.getColor("blue"),
-          stroke: tabler.getColor("blue"),
+          fill: "var(--tblr-primary)",
+          stroke: "var(--tblr-primary)",
         },
       },
       markerLabelStyle: {

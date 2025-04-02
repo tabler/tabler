@@ -33,28 +33,28 @@ document.addEventListener("DOMContentLoaded", function () {
 						from: 0,
 						to: 20,
 						name: "Low",
-						color: tabler.getColor("green")
+						color: "var(--tblr-green)"
 					}, {
 						from: 21,
 						to: 50,
 						name: "Medium",
-						color: tabler.getColor("blue")
+						color: "var(--tblr-blue)"
 					}, {
 						from: 51,
 						to: 75,
 						name: "High",
-						color: tabler.getColor("yellow")
+						color: "var(--tblr-yellow)"
 					}, {
 						from: 76,
 						to: 100,
 						name: "Extreme",
-						color: tabler.getColor("red")
+						color: "var(--tblr-red)"
 					}]
 				}
 			}
 		},
 		{% else %}
-		colors: [{% if include.color %}'{{ include.color }}'{% else %}{% for color in site.colors limit: colors %}tabler.getColor("{{ color[0] }}"), {% endfor %}{% endif %}],
+		colors: [{% if include.color %}'{{ include.color }}'{% else %}{% for color in site.colors limit: colors %} "var(--tblr-{{ color }})", {% endfor %}{% endif %}],
 		{% endif %}
 		series: [
 			{% for i in site.monthsShort limit: 12 %}
