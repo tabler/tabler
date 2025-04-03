@@ -5,6 +5,9 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import beautify from 'js-beautify';
 
+const shiki = await import('shiki');
+import { createCssVariablesTheme } from 'shiki/core'
+
 export default function (eleventyConfig) {
 	const environment = process.env.NODE_ENV || "production";
 
@@ -34,9 +37,15 @@ export default function (eleventyConfig) {
 
 	// Shiki
 	eleventyConfig.on('eleventy.before', async () => {
-		const shiki = await import('shiki');
+		const myTheme = createCssVariablesTheme({
+			name: 'css-variables',
+			variablePrefix: '--shiki-',
+			variableDefaults: {},
+			fontStyle: true
+		})
+
 		const highlighter = await shiki.createHighlighter({
-			themes: ['github-dark', 'github-light'],
+			themes: ['github-dark', myTheme],
 			langs: [
 				'html',
 				'blade',
@@ -66,10 +75,7 @@ export default function (eleventyConfig) {
 
 					let highlightedCode = highlighter.codeToHtml(code, {
 						lang: lang,
-						themes: {
-							light: 'github-dark',
-							dark: 'github-dark',
-						}
+						theme: 'github-dark'
 					});
 
 					return highlightedCode;

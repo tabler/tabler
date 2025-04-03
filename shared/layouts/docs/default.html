@@ -25,6 +25,7 @@
 	{% endfor -%}
 	{% endif %}
 
+	<style>@import url('https://rsms.me/inter/inter.css');</style>
 	<link rel="stylesheet" href="/css/docs{% if environment != 'development' %}.min{% endif %}.css" />
 </head>
 
@@ -36,8 +37,8 @@
 			<div class="row g-0 h-full">
 				<div class="col-3 h-full d-none d-lg-block border-end">
 					<div class="py-4 h-full">
-						<div class="space-y h-full">
-							<div class="nav nav-vertical">
+						<div class="space-y h-full overflow-auto">
+							<div class="nav nav-vertical nav-pills">
 								{% for link in docs-links %}
 								<a href="{{ link.url }}" class="nav-link" target="_blank">
 									<span class="border me-2 rounded p-1">{% include "ui/icon.html" icon=link.icon %}</span>
@@ -45,7 +46,7 @@
 								</a>
 								{% endfor %}
 							</div>
-							<div class="flex-fill overflow-auto">
+							<div class="flex-fill">
 								{% include "docs/menu.html" %}
 							</div>
 						</div>
@@ -54,7 +55,7 @@
 				<div class="col">
 					<div class="py-lg-5 ps-lg-5">
 						<div class="py-6 ps-lg-6 p-xxl-6">
-							<div class="markdown">
+							<div class="markdown" data-bs-spy="scroll" data-bs-target="#toc" data-bs-root-margin="50px 0px -0%" data-bs-smooth-scroll="true" tabindex="0">
 								<h1>
 									{{ title }}
 								</h1>
@@ -106,7 +107,7 @@
 							<h3>
 								Table of Contents
 							</h3>
-							<div class="nav nav-vertical">
+							<div class="nav nav-vertical" id="toc">
 								{% for item in toc %}
 								<a href="#{{ item.id }}" class="nav-link{% if item.level == 3 %} ms-3{% endif %}">
 									{{ item.text }}

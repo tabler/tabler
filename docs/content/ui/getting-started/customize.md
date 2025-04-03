@@ -26,3 +26,15 @@ Now you just need to tell Tabler to use your favorite font:
   }
 </style>
 ```
+
+## Custom primary color
+
+To change the primary color of Tabler you need to set the `--tblr-primary` variable in your CSS. You can use any color format you like (hex, rgb, hsl, etc). In this example we will use a custom red color:
+
+```html
+<style>
+  :root {
+	 --tblr-primary: #F11D46;
+  }
+</style>
+```
