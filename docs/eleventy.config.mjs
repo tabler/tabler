@@ -1,12 +1,15 @@
 
 import { appFilters } from "../shared/e11ty/filters.mjs"
 import { appData, getCopyList } from "../shared/e11ty/data.mjs";
-import { readFileSync } from 'node:fs';
-import { join } from 'node:path';
+import { readFileSync, existsSync } from 'node:fs';
+import { fileURLToPath } from 'node:url'
+import { join, dirname } from 'node:path';
 import beautify from 'js-beautify';
 
 const shiki = await import('shiki');
 import { createCssVariablesTheme } from 'shiki/core'
+
+const __dirname = dirname(fileURLToPath(import.meta.url))
 
 export default function (eleventyConfig) {
 	const environment = process.env.NODE_ENV || "production";
@@ -34,6 +37,45 @@ export default function (eleventyConfig) {
 	eleventyConfig.setDataDirectory("../../shared/data");
 
 	eleventyConfig.amendLibrary('md', () => { });
+
+	eleventyConfig.addShortcode('scss-docs', function (name, filename) {
+		const file = join(__dirname, `../core/scss/${filename}`)
+
+		if (existsSync(file)) {
+			const content = readFileSync(file, 'utf8');
+			const regex = new RegExp(`\/\/\\sscss-docs-start\\s${name}\\n(.+?)\/\/\\sscss-docs-end`, 'gs')
+
+			const m = content.matchAll(regex)
+
+			if (m) {
+				const matches = [...m]
+
+				console.log(matches);
+
+				if (matches[0] && matches[0][1]) {
+					const lines = matches[0][1].split('\n');
+
+					// Find minimum number of leading spaces in non-empty lines
+					const minIndent = lines
+						.filter(line => line.trim().length > 0)
+						.reduce((min, line) => {
+							const match = line.match(/^(\s*)/);
+							const leadingSpaces = match ? match[1].length : 0;
+							return Math.min(min, leadingSpaces);
+						}, Infinity);
+
+					// Remove that many spaces from the start of each line
+					const result = lines.map(line => line.startsWith(' '.repeat(minIndent))
+						? line.slice(minIndent)
+						: line).join('\n');
+
+					return "\n```scss\n" + result.trimRight() + "\n```\n"
+				}
+			}
+		}
+
+		return ''
+	})
 
 	// Shiki
 	eleventyConfig.on('eleventy.before', async () => {

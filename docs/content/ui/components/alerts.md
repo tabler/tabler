@@ -412,3 +412,7 @@ You're not limited to the 4 default alert colors. You can use any [base or socia
 </div>
 {%- endcapture %}
 {% include "docs/example.html" html=html %}
+
+## SASS variables
+
+{% scss-docs "alert-variables" "ui/_alerts.scss" %}
