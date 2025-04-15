@@ -50,8 +50,6 @@ export default function (eleventyConfig) {
 			if (m) {
 				const matches = [...m]
 
-				console.log(matches);
-
 				if (matches[0] && matches[0][1]) {
 					const lines = matches[0][1].split('\n');
 
