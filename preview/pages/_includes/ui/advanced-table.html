@@ -1,0 +1,168 @@
+{% assign table-id = include.id | default: "advanced-table" %}
+{% assign statuses = 'Active,Inactive,Requested' | split: ',' %}
+{% assign per-page = '10,20,50,100' | split: "," %}
+{% assign categories = 'Agencies,Individual,Event,Ticket' | split: "," %}
+{% assign tags = 'QTA,Event,Tickets,TODO|Event,Tickets|QTA,Event|Tickets' | split: "|" %}
+<!--{% include "js/tabler-list.html", parameters="[ 'sort-name', 'sort-content', 'sort-status', 'sort-date', 'sort-tags', 'sort-category']" %}-->
+<div class="card">
+	<div class="card-table">
+		<div class="card-header">
+			<div class="row w-full">
+				<div class="col">
+					<h3 class="card-title mb-0">
+						Employee
+					</h3>
+					<p class="text-secondary m-0">
+						Table description.
+					</p>
+				</div>
+				<div class="col-md-auto col-sm-12">
+					{% capture html %}
+						<kbd>ctrl + K</kbd>
+					{% endcapture %}
+
+					<div class="ms-auto d-flex flex-wrap btn-list">
+						<div class="input-group input-group-flat w-auto">
+							<span class="input-group-text">
+								{% include "ui/icon.html" icon="search" %}
+							</span>
+
+							<input id="{{ table-id }}-search" type="text" class="form-control" autocomplete="off">
+
+							<span class="input-group-text">
+								<kbd>ctrl + K</kbd>
+							</span>
+						</div>
+
+						<a href="#" class="btn btn-icon" aria-label="Button">
+							{% include "ui/icon.html" icon="dots" %}
+						</a>
+						{% include "ui/dropdown.html" main-btn="Download" options="Action, Another action, Third action" %}
+						{% include "ui/button.html" %}
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id="{{ table-id }}">
+			<div class="table-responsive">
+				<table class="table table-vcenter table-selectable">
+					<thead>
+						<tr>
+							<th class="w-1"></th>
+							{% assign headers = table-properties.advanced-table.headers %}
+							{% for header in headers %}
+								<th>
+									<button class="table-sort d-flex justify-content-between" data-sort="{{ header.data-sort}}">
+										{{ header.name }}
+									</button>
+								</th>
+							{% endfor %}
+						</tr>
+					</thead>
+
+					<tbody class="table-tbody">
+						{% for person in people %}
+							<tr>
+								<td>
+									<input class="form-check-input m-0 align-middle table-selectable-check" type="checkbox" aria-label="Select invoice" value="true">
+								</td>
+								<td class="{{ headers[0].data-sort }}">
+									{% include "ui/avatar.html" person=person size="xs" class="me-2" %}
+									{{ person.full_name }}
+								</td>
+								<td class="{{ headers[1].data-sort }}">
+									{{ person.city }}, {{ person.country }}
+								</td>
+								<td class="{{ headers[2].data-sort }}">
+									{% assign status = forloop.index | plus: 5 | random_item: statuses %}
+									{% if status == "Active" %}
+										<span class="badge bg-success-lt">Active</span>
+									{% elsif status == "Inactive" %}
+										<span class="badge bg-danger-lt">Inactive</span>
+									{% else %}
+										<span class="badge">Requested</span>
+									{% endif %}
+								</td>
+								<td class="{{ headers[3].data-sort }}">
+									{{ forloop.index | random_date | date: '%B %d, %Y' }}
+								</td>
+								<td class="{{ headers[4].data-sort }}">
+									{% assign item-tags = forloop.index | plus: 5 | random_item: tags %}
+									{% assign item-tags = item-tags | split: "," %}
+									<div class="badges-list">
+										{% for tag in item-tags %}
+										<span class="badge">{{ tag }}</span>
+										{% endfor %}
+									</div>
+								</td>
+								<td class="{{ headers[5].data-sort }} py-0">
+									<span class="on-unchecked">
+										{{ forloop.index | random_item: categories }}
+									</span>
+									<div class="on-checked">
+										<div class="d-flex justify-content-end">
+											{% include "ui/button.html" icon="dots" icon-only %}
+										</div>
+									</div>
+								</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+			<div class="card-footer d-flex align-items-center">
+				<div class="dropdown">
+					<a class="btn dropdown-toggle" data-bs-toggle="dropdown">
+						<span id="page-count" class="me-1">{{ per-page[1] }}</span>
+						<span>records</span>
+					</a>
+					<div class="dropdown-menu">
+						{% for record in per-page %}
+							<a class="dropdown-item" onclick="setPageListItems(event)" data-value="{{ record }}">{{ record }} records</a>
+						{% endfor %}
+					</div>
+				</div>
+
+				{% include "ui/pagination.html" class="m-0 ms-auto" no-words="true" count=10 %}
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	const advancedTable = {{ table-properties.advanced-table | json}}
+	const setPageListItems = e => {
+		window.tabler_list["{{ table-id }}"].page = parseInt(e.target.dataset.value)
+		window.tabler_list["{{ table-id }}"].update()
+
+		document.querySelector("#page-count").innerHTML = e.target.dataset.value
+	}
+
+	window.tabler_list = window.tabler_list || {}
+	document.addEventListener("DOMContentLoaded", function() {
+		const list = window.tabler_list["{{ table-id }}"] = new List('{{ table-id }}', {
+			sortClass: 'table-sort',
+			listClass: 'table-tbody',
+			page: parseInt("{{ per-page[1] }}"),
+			pagination: {
+				item: value => {
+					return `<li class="page-item"><a class="page-link cursor-pointer">${value.page}</a></li>`
+				},
+				innerWindow: 1,
+				outerWindow: 1,
+				left: 0,
+				right: 0,
+			},
+			valueNames: advancedTable.headers.map(header => header['data-sort'])
+		});
+
+		const searchInput = document.querySelector('#{{ table-id }}-search');
+
+		if (searchInput) {
+			searchInput.addEventListener('input', () => {
+				list.search(searchInput.value)
+			})
+		}
+	})
+</script>
