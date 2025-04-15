@@ -1,0 +1,82 @@
+{% assign breakpoint = include.breakpoint | default: 'md' %}
+{% assign condensed = include.condensed | default: false %}
+
+{% if include.sticky %}
+<div class="sticky-top">
+{% endif %}
+
+	<header class="navbar navbar-expand-{{ breakpoint }}{% if include.transparent %} navbar-transparent{% else %}{% if include.background %} bg-{{ include.background }}{% endif %}{% endif %}{% if include.sticky %} sticky-top{% endif %}{% if include.overlap %} navbar-overlap{% endif %}{% if include.class %} {{ include.class }}{% endif %} d-print-none"{% if include.background-color %} style="background: {{ include.background-color }}"{% endif %} {% if include.dark %} data-bs-theme="dark"{% endif %}>
+		<div class="container-xl">
+			{% include "layout/navbar-toggler.html" target="navbar-menu" %}
+
+			{% unless include.hide-brand %}
+				{% include "layout/navbar-logo.html" small-logo=include.small-logo hide-logo=include.hide-logo class="d-none-navbar-horizontal pe-0 pe-md-3" breakpoint=breakpoint show-title=include.show-title header=true %}
+			{% endunless %}
+
+			{% include "layout/navbar-side.html" class="order-md-last" hide-username=include.hide-username condensed=condensed person-id=include.person-id breakpoint=breakpoint dark=include.dark %}
+
+			{% if condensed %}
+			<div class="collapse navbar-collapse" id="navbar-menu">
+				{% if include.hide-search %}
+					{% include "layout/navbar-menu.html" sample=include.sample hide-icons=include.hide-icons %}
+				{% elsif include.hide-menu %}
+					{% include "layout/navbar-search.html" rounded=include.transparent %}
+				{% else %}
+					<div class="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center">
+						{% include "layout/navbar-menu.html" sample=include.sample hide-icons=include.hide-icons %}
+
+						{% unless condensed %}
+							{% assign search-class = "ms-md-auto ps-md-4 py-2 py-md-0 me-md-4 order-first order-md-last flex-grow-1" %}
+							{% unless include.fluid-search %}
+								{% assign search-class = search-class | append: " flex-md-grow-0" %}
+							{% endunless %}
+
+							{% include "layout/navbar-search.html" breakpoint=breakpoint rounded=include.transparent class=search-class %}
+						{% endunless %}
+					</div>
+				{% endif %}
+			</div>
+			{% endif %}
+		</div>
+	</header>
+
+	{% unless condensed %}
+	<header class="navbar-expand-{{ breakpoint }}">
+		<div class="collapse navbar-collapse" id="navbar-menu">
+			<div class="navbar"{% if include.dark-secondary %} data-bs-theme="dark"{% endif %}>
+				<div class="container-xl">
+					<div class="row flex-column flex-md-row flex-fill align-items-center">
+						<div class="col">
+							{% include "layout/navbar-menu.html" sample=include.sample hide-icons=include.hide-icons long-titles=true %}
+						</div>
+						{% unless include.hide-search %}
+						<div class="col-2 d-none d-xxl-block">
+							{% include "layout/navbar-search.html" breakpoint=breakpoint class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last" %}
+						</div>
+						{% endunless %}
+
+						<div class="col col-md-auto">
+							<ul class="navbar-nav">
+								<li class="nav-item">
+									<a class="nav-link" href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSettings">
+										<span class="badge badge-sm bg-red text-red-fg">New</span>
+										<span class="nav-link-icon d-md-none d-lg-inline-block">
+											{% include "ui/icon.html" icon="settings" %}
+										</span>
+										<span class="nav-link-title">
+											Settings
+										</span>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</header>
+	{% endunless %}
+
+{% if include.sticky %}
+</div>
+{% endif %}

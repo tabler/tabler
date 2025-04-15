@@ -1,0 +1,28 @@
+{% assign menu = collections.docs | collection-tree %}
+
+<nav class="space-y" id="menu">
+	{% for level1 in menu %}
+	<div>
+		<div class="h4 mb-2 cursor-pointer" data-bs-toggle="collapse" data-bs-target="#collapse-{{ level1.url | slug }}" aria-expanded="true">{{ level1.data.title }}</div>
+		{% if level1.children %}
+		<nav class="nav nav-vertical nav-pills collapse{% if forloop.index == 1 %} show{% endif %}" id="collapse-{{ level1.url | slug }}" data-bs-parent="#menu">
+			{% for level2 in level1.children %}
+			<div>
+				<a class="nav-link{% if page.url == level2.url %} active{% endif %}"{% if level2.children %} href="{{ level2.url }}" data-bs-toggle="collapse" data-bs-target="#collapse-{{ level2.url | slug }}" aria-expanded="false"{% endif %}>{{ level2.data.title }}</a>
+
+				{% if level2.children %}
+				<nav class="nav nav-vertical collapse" id="collapse-{{ level2.url | slug }}">
+					{% for level3 in level2.children %}
+					<div>
+						<a class="nav-link{% if page.url == level3.url %} active{% endif %}" href="{{ level3.url }}">{{ level3.data.title }}</a>
+					</div>
+					{% endfor %}
+				</nav>
+				{% endif %}
+			</div>
+			{% endfor %}
+		</nav>
+		{% endif %}
+	</div>
+	{% endfor %}
+</nav>

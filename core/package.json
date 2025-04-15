@@ -5,7 +5,7 @@
   "homepage": "https://tabler.io",
   "scripts": {
     "dev": "pnpm run watch",
-    "build": "pnpm run clean && pnpm run css && pnpm run js && pnpm run copy",
+    "build": "pnpm run clean && pnpm run css && pnpm run js && pnpm run copy && pnpm run generate-sri",
     "clean": "shx rm -rf dist demo",
     "css": "pnpm run css-compile && pnpm run css-prefix && pnpm run css-rtl && pnpm run css-minify && pnpm run css-banner",
     "css-compile": "sass scss/:dist/css/ --no-source-map --load-path=node_modules",
@@ -16,18 +16,23 @@
     "css-minify-main": "cleancss -O1 --format breakWith=lf --with-rebase --source-map --source-map-inline-sources --output dist/css/ --batch --batch-suffix \".min\" \"dist/css/*.css\" \"!dist/css/*.min.css\" \"!dist/css/*rtl*.css\"",
     "css-minify-rtl": "cleancss -O1 --format breakWith=lf --with-rebase --source-map --source-map-inline-sources --output dist/css/ --batch --batch-suffix \".min\" \"dist/css/*rtl.css\" \"!dist/css/*.min.css\"",
     "js": "pnpm run js-compile && pnpm run js-minify",
-    "js-compile": "pnpm run js-compile-standalone && pnpm run js-compile-standalone-esm",
+    "js-compile": "pnpm run js-compile-standalone && pnpm run js-compile-standalone-esm && pnpm run js-compile-theme && pnpm run js-compile-theme-esm",
+    "js-compile-theme-esm": "rollup --environment THEME:true --environment ESM:true --config .build/rollup.config.mjs --sourcemap",
+    "js-compile-theme": "rollup --environment THEME:true --config .build/rollup.config.mjs --sourcemap",
     "js-compile-standalone": "rollup --config .build/rollup.config.mjs --sourcemap",
     "js-compile-standalone-esm": "rollup --environment ESM:true --config .build/rollup.config.mjs --sourcemap",
-    "js-minify": "pnpm run js-minify-standalone && pnpm run js-minify-standalone-esm",
+    "js-minify": "pnpm run js-minify-standalone && pnpm run js-minify-standalone-esm && pnpm run js-minify-theme && pnpm run js-minify-theme-esm",
     "js-minify-standalone": "terser --compress passes=2 --mangle --comments \"/^!/\" --source-map \"content=dist/js/tabler.js.map,includeSources,url=tabler.min.js.map\" --output dist/js/tabler.min.js dist/js/tabler.js",
     "js-minify-standalone-esm": "terser --compress passes=2 --mangle --comments \"/^!/\" --source-map \"content=dist/js/tabler.esm.js.map,includeSources,url=tabler.esm.min.js.map\" --output dist/js/tabler.esm.min.js dist/js/tabler.esm.js",
+    "js-minify-theme": "terser --compress passes=2 --mangle --comments \"/^!/\" --source-map \"content=dist/js/tabler-theme.js.map,includeSources,url=tabler-theme.min.js.map\" --output dist/js/tabler-theme.min.js dist/js/tabler-theme.js",
+    "js-minify-theme-esm": "terser --compress passes=2 --mangle --comments \"/^!/\" --source-map \"content=dist/js/tabler-theme.esm.js.map,includeSources,url=tabler-theme.esm.min.js.map\" --output dist/js/tabler-theme.esm.min.js dist/js/tabler-theme.esm.js",
     "copy": "pnpm run copy-img",
     "copy-img": "shx mkdir -p dist/img && shx cp -rf img/* dist/img",
     "watch": "concurrently \"pnpm run watch-css\" \"pnpm run watch-js\"",
     "watch-css": "nodemon --watch scss/ --ext scss --exec \"pnpm run css-compile && pnpm run css-prefix\"",
     "watch-js": "nodemon --watch js/ --ext js --exec \"pnpm run js-compile\"",
     "bundlewatch": "bundlewatch",
+    "generate-sri": "node .build/generate-sri.js",
     "format:check": "prettier --check src/**/*.{js,scss} --cache",
     "format:write": "prettier --write src/**/*.{js,scss} --cache"
   },
@@ -139,10 +144,7 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
-    "bootstrap": "5.3.3"
-  },
-  "devDependencies": {
-    "@repo/banner": "workspace:*"
+    "bootstrap": "5.3.5"
   },
   "directories": {
     "doc": "docs"

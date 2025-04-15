@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Tabler Documentation - {{ title }}</title>
+
+	<link rel="stylesheet" href="/dist/css/tabler{% if environment != 'development' %}.min{% endif %}.css{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}" />
+	{% for plugin in site.tablerCssPlugins %}
+	<link
+		href="/dist/css/{{ plugin }}{% if environment != 'development' %}.min{% endif %}.css{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}"
+		rel="stylesheet" />
+	{% endfor %}
+
+	{% if docs-libs -%}
+	{% for lib in libs.css -%}
+	{% if docs-libs contains lib[0] -%}
+	{% for file in lib[1] -%}
+	<link
+		href="{% if file contains 'http://' or file contains 'https://' %}{{ file }}{% else %}{{ page | relative }}/libs/{% if environment != 'development' %}{{ file | replace: '@', '' }}{% else %}{{ file }}{% endif %}{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}{% endif %}"
+		rel="stylesheet" />
+	{% endfor -%}
+	{% endif -%}
+	{% endfor -%}
+	{% endif %}
+
+	<style>@import url('https://rsms.me/inter/inter.css');</style>
+	<link rel="stylesheet" href="/css/docs{% if environment != 'development' %}.min{% endif %}.css" />
+</head>
+
+<body class="d-flex flex-column h-full" style="background: var(--tblr-bg-surface)">
+	<script src="/dist/js/tabler-theme{% if environment != 'development' %}.min{% endif %}.js"></script>
+	{% include "docs/navbar.html" %}
+	<div class="flex-fill h-full">
+		<div class="container h-full">
+			<div class="row g-0 h-full">
+				<div class="col-3 h-full d-none d-lg-block border-end">
+					<div class="py-4 h-full">
+						<div class="space-y h-full overflow-auto">
+							<div class="nav nav-vertical nav-pills">
+								{% for link in docs-links %}
+								<a href="{{ link.url }}" class="nav-link" target="_blank">
+									<span class="border me-2 rounded p-1">{% include "ui/icon.html" icon=link.icon %}</span>
+									{{ link.title }}
+								</a>
+								{% endfor %}
+							</div>
+							<div class="flex-fill">
+								{% include "docs/menu.html" %}
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col">
+					<div class="py-lg-5 ps-lg-5">
+						<div class="py-6 ps-lg-6 p-xxl-6">
+							<div class="markdown" data-bs-spy="scroll" data-bs-target="#toc" data-bs-root-margin="50px 0px -0%" data-bs-smooth-scroll="true" tabindex="0">
+								<h1>
+									{{ title }}
+								</h1>
+
+								<p class="text-secondary fs-3 lh-3">{{ summary }}</p>
+
+								{{ content | headings-id }}
+
+								{% assign children = collections.docs | collection-children: page %}
+								{% if children.size > 0 %}
+									<div class="mt-6 pt-6">
+										<div class="row row-deck row-cards">
+											{% for c in children %}
+											{% include "docs/docs-card.html" href=c.url title=c.data.title description=c.data.description icon=c.data.icon %}
+											{% endfor %}
+										</div>
+									</div>
+								{% else %}
+									{% assign next-prev = collections.docs | next-prev: page %}
+									<div class="mt-6 pt-6">
+										<ul class="pagination">
+											{% if next-prev.prev %}
+											<li class="page-item page-prev">
+												<a class="page-link" href="{{ next-prev.prev.url }}">
+													<div class="page-item-subtitle">previous</div>
+													<div class="page-item-title">{{ next-prev.prev.data.title }}</div>
+												</a>
+											</li>
+											{% endif %}
+											{% if next-prev.next %}
+											<li class="page-item page-next">
+												<a class="page-link" href="{{ next-prev.next.url }}">
+													<div class="page-item-subtitle">next</div>
+													<div class="page-item-title">{{ next-prev.next.data.title }}</div>
+												</a>
+											</li>
+											{% endif %}
+										</ul>
+									</div>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-2 d-none d-xxl-block">
+					<div class="py-6 sticky-top">
+						{% assign toc = content | toc %}
+						{% if toc.size > 0 %}
+							<h3>
+								Table of Contents
+							</h3>
+							<div class="nav nav-vertical" id="toc">
+								{% for item in toc %}
+								<a href="#{{ item.id }}" class="nav-link{% if item.level == 3 %} ms-3{% endif %}">
+									{{ item.text }}
+								</a>
+								{% endfor %}
+							</div>
+						{% endif %}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<script src="/dist/js/tabler{% if environment != 'development' %}.min{% endif %}.js"></script>
+	<script src="/js/docs{% if environment != 'development' %}.min{% endif %}.js" defer></script>
+
+	{% if docs-libs -%}
+	{% for lib in libs.js -%}
+	{% if docs-libs contains lib[0] or libs.global-libs contains lib[0] -%}
+	{% for file in lib[1] -%}
+	<script
+		src="{% if file contains 'http://' or file contains 'https://' %}{{ file | replace: 'GOOGLE_MAPS_KEY', google-maps-key }}{% else %}/libs/{% if environment != 'development' %}{{ file | replace: '@', '' }}{% else %}{{ file }}{% endif %}{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}{% endif %}"
+		defer></script>
+	{% endfor -%}
+	{% endif -%}
+	{% endfor -%}
+	{% endif -%}
+</body>
+</html>

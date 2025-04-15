@@ -1,0 +1,15 @@
+{% assign google-maps-key = site.googleMapsDevKey -%}
+{% if environment != 'development' -%}
+{% assign google-maps-key = site.googleMapsKey -%}
+{% endif -%}
+
+{% include "layout/js-libs.html" libs=libs.js %}
+
+<!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
+<script src="{{ page | relative }}/dist/js/tabler{% if environment != 'development' %}.min{% endif %}.js{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}" defer{% if environment != 'development' %} integrity="{{ sri.js }}"{% endif %}></script>
+<!-- END GLOBAL MANDATORY SCRIPTS -->
+
+<!-- BEGIN DEMO SCRIPTS -->
+<script src="{{ page | relative }}/preview/js/demo{% if environment != 'development' %}.min{% endif %}.js{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}" defer{% if environment != 'development' %} integrity="{{ sri.demo-js }}"{% endif %}></script>
+<!-- END DEMO SCRIPTS -->
+{% scripts %}

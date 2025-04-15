@@ -6,7 +6,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { join, dirname, basename } from 'node:path';
 import { fileURLToPath } from 'node:url'
 import { sync } from 'glob';
-import banner from '@repo/banner';
+import banner from '../../shared/banner/index.mjs';
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 

@@ -10,7 +10,7 @@ import * as prettier from "prettier";
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
-const docs = sync(join(__dirname, '..', 'docs', '**', '*.mdx'))
+const docs = sync(join(__dirname, '..', 'docs', '**', '*.md'))
 
 async function formatHTML(htmlString) {
 	try {

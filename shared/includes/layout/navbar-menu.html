@@ -1,0 +1,95 @@
+<!-- BEGIN NAVBAR MENU -->
+{% assign current-page = page-menu | default: layout.menu | split: '.' %}
+{% assign hide-icons = include.hide-icons %}
+{% assign icons-count = icons-info.count %}
+
+{% if include.sample %}
+	{% assign menu = menu-sample %}
+{% endif %}
+
+<ul class="navbar-nav{% if include.class %} {{ include.class }}{% endif %}">
+	{% for level-1 in menu %}
+		{% assign icon = level-1[1].icon %}
+		<li class="nav-item{% if level-1[0] == current-page[0] or level-1[1].active %} active{% endif %}{% if level-1[1].children %} dropdown{% endif %}">
+			<a class="nav-link{% if level-1[1].children %} dropdown-toggle{% endif %}{% if level-1[1].disabled %} disabled{% endif %}" {% if level-1[1].children %}href="#navbar-{{ level-1[0] }}" data-bs-toggle="dropdown" data-bs-auto-close="{% if include.keep-open %}false{% else %}outside{% endif %}" role="button" aria-expanded="{% if include.auto-open and level-1[0] == current-page[0] %}true{% else %}false{% endif %}" {% else %}href="{{ page | relative }}/{{ level-1[1].url }}" {% endif %}>
+				{% unless hide-icons %}
+				<span class="nav-link-icon d-md-none d-lg-inline-block">{% include "ui/icon.html" icon=icon %}</span>
+				{% endunless %}
+
+				<span class="nav-link-title">
+					{% if include.long-titles %}
+					{{ level-1[1].title-long | default: level-1[1].title | replace: '%ICONS_COUNT%', icons-count }}
+					{% else %}
+					{{ level-1[1].title | replace: '%ICONS_COUNT%', icons-count   }}
+					{% endif %}
+				</span>
+
+				{% if level-1[1].badge %}
+				<span class="badge badge-sm bg-red text-red-fg">{{ level-1[1].badge }}</span>
+				{% endif %}
+			</a>
+
+			{% if level-1[1].children %}
+			<div class="dropdown-menu{% if level-1[1].right %} dropdown-menu-end{% endif %}{% if include.auto-open and level-1[0] == current-page[0] %} show{% endif %}">
+
+				{% if level-1[1].columns %}
+					<div class="dropdown-menu-columns">
+					{% assign per-column = level-1[1].children | size | times: 1.0 | divided_by: level-1[1].columns | ceil %}
+					<div class="dropdown-menu-column">
+				{% endif %}
+
+				{% for level-2 in level-1[1].children %}
+
+					{% if level-1[1].columns %}
+						{% assign modulo = forloop.index0 | modulo: per-column %}
+						{% if forloop.index > 1 and modulo == 0 %}</div><div class="dropdown-menu-column">{% endif %}
+					{% endif %}
+
+					{% if level-2[1].children %}<div class="dropend">{% endif %}
+
+					<a class="dropdown-item{% if level-2[1].children %} dropdown-toggle{% endif %}{% if level-1[0] == current-page[0] and level-2[0] == current-page[1] and current-page.size == 2 %} active{% endif %}{% if level-2[1].color %} text-{{ level-2[1].color }}{% endif %}" {% if level-2[1].children %}href="#sidebar-{{ level-2[0] }}" data-bs-toggle="dropdown" data-bs-auto-close="{% if include.keep-open %}false{% else %}outside{% endif %}" role="button" aria-expanded="false" {% else %}href="{% if level-2[1].url contains 'http://' or level-2[1].url contains 'https://'%}{{ level-2[1].url }}{% else %}{{ page | relative }}/{{ level-2[1].url }}{% endif %}"{% endif %}{% if level-2[1].url contains 'http://' or level-2[1].url contains 'https://'%} target="_blank" rel="noopener"{% endif %}>
+						{% if level-2[1].icon %}
+							{% assign icon = level-2[1].icon %}
+							{% include "ui/icon.html" icon=icon class="icon-inline me-1" %}
+						{% endif %}
+
+						{{ level-2[1].title }}
+
+						{% if level-2[1].badge %}
+						<span class="badge badge-sm bg-green-lt text-uppercase ms-auto">{{ level-2[1].badge }}</span>
+						{% endif %}
+					</a>
+
+					{% if level-2[1].children %}
+					<div class="dropdown-menu">
+						{% for level-3 in level-2[1].children %}
+						<a href="{% if level-3[1].url contains 'http://' or level-3[1].url contains 'https://'%}{{ level-3[1].url }}{% else %}{{ page | relative }}/{{ level-3[1].url }}{% endif %}" class="dropdown-item">
+							{{ level-3[1].title }}
+
+							{% if level-3[1].badge %}
+							<span class="badge badge-sm bg-green-lt text-uppercase ms-auto">{{ level-3[1].badge }}</span>
+							{% endif %}
+						</a>
+						{% endfor %}
+					</div>
+					{% endif %}
+
+					{% if level-2[1].children %}</div>{% endif %}
+				{% endfor %}
+
+				{% if level-1[1].columns %}</div></div>{% endif %}
+				</div>
+			{% endif %}
+		</li>
+	{% endfor %}
+
+	{% comment %}
+	<li class="nav-item d-none-navbar-vertical">
+		<a href="#" class="nav-link" data-bs-toggle="modal" data-bs-target="#modal-customize">
+			<span class="nav-link-icon">{% include "ui/icon.html" icon="adjustments" %}</span>
+			<span class="nav-link-title">Customize</span>
+		</a>
+	</li>
+	{% endcomment %}
+</ul>
+<!-- END NAVBAR MENU -->

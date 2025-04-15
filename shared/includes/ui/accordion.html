@@ -1,0 +1,32 @@
+
+{% assign accordion-count = include.count | default: 4 %}
+{% assign accordion-id = include.id | default: "default" %}
+{% assign accordion-toggle-icon = include.toggle-icon | default: "chevron-down" %}
+{% assign accordion-types = include.type | default: "" | split: "," %}
+
+<div class="accordion{% for type in accordion-types %} accordion-{{ type }}{% endfor %}" id="accordion-{{ accordion-id }}">
+	{% for question in questions limit: accordion-count %}
+	<div class="accordion-item">
+		<div class="accordion-header">
+			<button class="accordion-button{% unless forloop.index == 1 %} collapsed{% endunless %}" type="button" data-bs-toggle="collapse" data-bs-target="#collapse-{{ forloop.index }}-{{ accordion-id }}" aria-expanded="{% if forloop.index == 1 %}true{% else %}false{% endif %}">
+				{% if include.show-icon %}
+				<div class="accordion-button-icon">
+					{% include "ui/icon.html" icon="link" %}
+				</div>
+				{% endif %}
+				
+				{{ question.question }}
+
+				<div class="accordion-button-toggle{% if include.toggle-icon %} accordion-button-toggle-plus{% endif %}">
+					{% include "ui/icon.html" icon=accordion-toggle-icon %}
+				</div>
+			</button>
+		</div>
+		<div id="collapse-{{ forloop.index }}-{{ accordion-id }}" class="accordion-collapse collapse{% if forloop.index == 1 %} show{% endif %}" data-bs-parent="#accordion-{{ accordion-id }}">
+			<div class="accordion-body">
+				{{ question.answer }}
+			</div>
+		</div>
+	</div>
+	{% endfor %}
+</div>

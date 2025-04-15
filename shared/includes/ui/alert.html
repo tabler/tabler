@@ -1,0 +1,54 @@
+{% assign icon = include.icon %}
+{% unless icon %}
+	{% if include.type == 'success' %}
+		{% assign icon = 'check' %}
+	{% elsif include.type == 'warning' %}
+		{% assign icon = 'alert-triangle' %}
+	{% elsif include.type == 'danger' %}
+		{% assign icon = 'alert-circle' %}
+	{% elsif include.type == 'info' %}
+		{% assign icon = 'info-circle' %}
+	{% endif %}
+{% endunless %}
+
+<div class="alert{% if include.important %} alert-important{% elsif include.minor %} alert-minor{% endif %} alert-{{ include.type | default: 'primary'}}{%if include.show-close %} alert-dismissible{% endif %}{% if include.avatar %} alert-avatar{% endif %}" role="alert">
+
+	<div class="alert-icon">
+		{% include "ui/icon.html" icon=icon class="alert-icon" %}
+	</div>
+
+	{% if include.description or include.list %}
+		<div>
+			<h4 class="alert-heading">{{ include.title | default: "This is a custom alert box!" }}</h4>
+			<div class="alert-description">
+				{{ include.description | default: description }}
+				{% if include.list %}
+				{% assign items = include.list | split: ',' %}
+				<ul class="alert-list">
+					{% for item in items %}
+					<li>{{ item }}</li>
+					{% endfor %}
+				</ul>
+				{% endif %}
+			</div>
+		</div>
+	{% else %}
+		{{ include.title | default: "This is a custom alert box!" }}
+
+		{% if include.action %}
+		<a href="#" class="alert-action">
+			Link
+		</a>
+		{% endif %}
+	{% endif %}
+
+	{% if include.buttons %}
+	<div class="btn-list">
+		<a href="#" class="btn btn-{{ include.type | default: 'primary'}}">Okay</a>
+		<a href="#" class="btn">Cancel</a>
+	</div>
+	{% endif %}
+
+
+	{% if include.show-close %}<a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>{% endif %}
+</div>

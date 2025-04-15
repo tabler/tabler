@@ -1,0 +1,169 @@
+<div class="settings">
+	<a href="#" class="btn btn-floating btn-icon btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSettings"> {% include "ui/icon.html" icon="brush" %} </a>
+
+	<form class="offcanvas offcanvas-start offcanvas-narrow" tabindex="-1" id="offcanvasSettings">
+		<div class="offcanvas-header">
+			<h2 class="offcanvas-title">Theme Builder</h2>
+			<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+		</div>
+		<div class="offcanvas-body d-flex flex-column">
+			<div>
+				<div class="mb-4">
+					<label class="form-label">Color mode</label>
+					<p class="form-hint">Choose the color mode for your app.</p>
+					{% assign modes = 'light,dark' | split: ',' %} {% for mode in modes %}
+					<label class="form-check">
+						<div class="form-selectgroup-item">
+							<input type="radio" name="theme" value="{{ mode }}" class="form-check-input"{% if mode == 'light' %} checked{% endif %} />
+							<div class="form-check-label">{{ mode | capitalize }}</div>
+						</div>
+					</label>
+					{% endfor %}
+				</div>
+
+				<div class="mb-4">
+					<label class="form-label">Color scheme</label>
+					<p class="form-hint">The perfect color mode for your app.</p>
+
+					<div class="row g-2">
+						{% for color in site.colors %}
+						<div class="col-auto">
+							<label class="form-colorinput">
+								<input name="theme-primary" type="radio" value="{{ color[0] }}" class="form-colorinput-input" />
+								<span class="form-colorinput-color bg-{{ color[0] }}"></span>
+							</label>
+						</div>
+						{% endfor %}
+					</div>
+				</div>
+
+				<div class="mb-4">
+					<label class="form-label">Font family</label>
+					<p class="form-hint">Choose the font family that fits your app.</p>
+
+					<div>
+						{% assign fonts = 'sans-serif,serif,monospace,comic' | split: ',' %} {% for font in fonts %}
+						<label class="form-check">
+							<div class="form-selectgroup-item">
+								<input type="radio" name="theme-font" value="{{ font }}" class="form-check-input"{% if font == 'sans-serif' %} checked{% endif %} />
+								<div class="form-check-label">{{ font | capitalize }}</div>
+							</div>
+						</label>
+						{% endfor %}
+					</div>
+				</div>
+
+				<div class="mb-4">
+					<label class="form-label">Theme base</label>
+					<p class="form-hint">Choose the gray shade for your app.</p>
+
+					<div>
+						{% assign bases = 'slate,gray,zinc,neutral,stone' | split: ',' %} {% for base in bases %}
+						<label class="form-check">
+							<div class="form-selectgroup-item">
+								<input type="radio" name="theme-base" value="{{ base }}" class="form-check-input"{% if base == 'gray' %} checked{% endif %} />
+								<div class="form-check-label">{{ base | capitalize }}</div>
+							</div>
+						</label>
+						{% endfor %}
+					</div>
+				</div>
+
+				<div class="mb-4">
+					<label class="form-label">Corner Radius</label>
+					<p class="form-hint">
+						Choose the border radius factory for your app.
+					</p>
+
+					<div>
+						{% assign radiuses = '0,0.5,1,1.5,2' | split: ',' %} {% for radius in radiuses %}
+						<label class="form-check">
+							<div class="form-selectgroup-item">
+								<input type="radio" name="theme-radius" value="{{ radius }}" class="form-check-input"{% if radius == "1" %} checked{% endif %} />
+								<div class="form-check-label">{{ radius }}</div>
+							</div>
+						</label>
+						{% endfor %}
+					</div>
+				</div>
+			</div>
+
+			<div class="mt-auto space-y">
+				<button type="button" class="btn w-100" id="reset-changes">
+					{% include "ui/icon.html" icon="rotate" %}
+					Reset changes
+				</button>
+				<a href="#" class="btn btn-primary w-100" data-bs-dismiss="offcanvas">
+					{% include "ui/icon.html" icon="settings" %}
+					Save settings
+				</a>
+			</div>
+
+		</div>
+	</form>
+</div>
+
+{% capture_script %}
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		var themeConfig = {
+			theme: "light",
+			"theme-base": "gray",
+			"theme-font": "sans-serif",
+			"theme-primary": "blue",
+			"theme-radius": "1",
+		}
+
+		var url = new URL(window.location)
+		var form = document.getElementById("offcanvasSettings")
+		var resetButton = document.getElementById("reset-changes")
+
+		var checkItems = function () {
+			for (var key in themeConfig) {
+				var value = window.localStorage["tabler-" + key] || themeConfig[key]
+
+				if (!!value) {
+					var radios = form.querySelectorAll(`[name="${key}"]`)
+
+					if (!!radios) {
+						radios.forEach((radio) => {
+							radio.checked = radio.value === value
+						})
+					}
+				}
+			}
+		}
+
+		form.addEventListener("change", function (event) {
+			var target = event.target,
+				name = target.name,
+				value = target.value
+
+			for (var key in themeConfig) {
+				if (name === key) {
+					document.documentElement.setAttribute("data-bs-" + key, value)
+					window.localStorage.setItem("tabler-" + key, value)
+					url.searchParams.set(key, value)
+				}
+			}
+
+			window.history.pushState({}, "", url)
+		})
+
+		resetButton.addEventListener("click", function () {
+			for (var key in themeConfig) {
+				var value = themeConfig[key]
+				document.documentElement.removeAttribute("data-bs-" + key)
+				window.localStorage.removeItem("tabler-" + key)
+				url.searchParams.delete(key)
+			}
+
+			checkItems()
+
+			window.history.pushState({}, "", url)
+		})
+
+		checkItems()
+	})
+</script>
+{% endcapture_script %}

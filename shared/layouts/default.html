@@ -1,0 +1,42 @@
+---
+layout: base
+---
+
+{% assign no-container = page.no-container | default: layout.no-container %}
+
+<div class="page">
+	{% if layout-sidebar %}
+		<!--  BEGIN SIDEBAR  -->
+		{% include "layout/sidebar.html" dark=layout-sidebar-dark right=layout-sidebar-right transparent=layout-navbar-transparent breakpoint="lg" %}
+		<!--  END SIDEBAR  -->
+	{% endif %}
+
+	{% unless layout-hide-topbar %}
+		<!-- BEGIN NAVBAR  -->
+		{% include "layout/navbar.html" condensed=layout-navbar-condensed overlap=layout-navbar-overlap dark=layout-navbar-dark hide-brand=layout-navbar-hide-brand hide-menu=layout-navbar-hide-menu sticky=layout-navbar-sticky transparent=layout-topbar-transparent class=layout-navbar-class hide-search=true %}
+		<!-- END NAVBAR  -->
+	{% endunless %}
+
+	<div class="page-wrapper{% if layout-wrapper-full %} page-wrapper-full{% endif %}">
+		{% include "layout/page-header.html" %}
+
+		<!-- BEGIN PAGE BODY -->
+		<div class="page-body">
+			{% if layout-wrapper-full %}
+			{{ content }}
+			{% else %}
+			{% unless no-container %}
+			<div class="container-xl{% if page-container-centered %} my-auto{% endif %}{% if page-container-class %} {{ page-container-class }}{% endif %}">
+			{% endunless %}
+				{{ content }}
+			{% unless no-container %}
+			</div>
+			{% endunless %}
+
+			{% endif %}
+		</div>
+		<!-- END PAGE BODY -->
+
+		{% include "layout/footer.html" %}
+	</div>
+</div>

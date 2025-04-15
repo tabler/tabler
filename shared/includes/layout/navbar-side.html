@@ -1,0 +1,68 @@
+{% assign person-id = include.person-id | default: 1 %}
+{% assign person = people[person-id] %}
+<div class="navbar-nav flex-row{% if include.class %} {{ include.class }}{% endif %}">
+
+	{% unless include.condensed %}
+	<div class="nav-item d-none d-{{ include.breakpoint }}-flex me-3">
+		<div class="btn-list">
+			{% include "ui/button.html" icon="brand-github" outline=true text="Source code" href=site.githubUrl
+			external=true %}
+			{% include "ui/button.html" icon="heart" icon-color="pink" outline=true text="Sponsor"
+			href=site.githubSponsorsUrl external=true %}
+		</div>
+	</div>
+	{% endunless %}
+
+	<div class="d-none d-{{ include.breakpoint }}-flex">
+		<div class="nav-item">
+			<a href="?theme=dark" class="nav-link px-0 hide-theme-dark" title="Enable dark mode" data-bs-toggle="tooltip"
+				data-bs-placement="bottom">
+				{% include "ui/icon.html" icon="moon" %}
+			</a>
+
+			<a href="?theme=light" class="nav-link px-0 hide-theme-light" title="Enable light mode" data-bs-toggle="tooltip"
+				data-bs-placement="bottom">
+				{% include "ui/icon.html" icon="sun" %}
+			</a>
+		</div>
+		<div class="nav-item dropdown d-none d-md-flex">
+			<a href="#" class="nav-link px-0" data-bs-toggle="dropdown" tabindex="-1" aria-label="Show notifications" data-bs-auto-close="outside" aria-expanded="false">
+				{% include "ui/icon.html" icon="bell" %}
+				<span class="badge bg-red"></span>
+			</a>
+			<div class="dropdown-menu dropdown-menu-arrow dropdown-menu-end dropdown-menu-card">
+				{% include "cards/navbar-notifications.html" %}
+			</div>
+		</div>
+
+		<div class="nav-item dropdown d-none d-md-flex me-3">
+			<a href="#" class="nav-link px-0" data-bs-toggle="dropdown" tabindex="-1" aria-label="Show app menu" data-bs-auto-close="outside" aria-expanded="false">
+				{% include "ui/icon.html" icon="apps" %}
+			</a>
+			<div class="dropdown-menu dropdown-menu-arrow dropdown-menu-end dropdown-menu-card">
+				{% include "cards/navbar-apps.html" %}
+			</div>
+		</div>
+	</div>
+
+	<div class="nav-item dropdown">
+		<a href="#" class="nav-link d-flex lh-1 p-0 px-2" data-bs-toggle="dropdown" aria-label="Open user menu">
+			{% include "ui/avatar.html" person-id=person-id size="sm" %}
+
+			{% unless include.hide-username %}
+			<div class="d-none d-xl-block ps-2">
+				<div>{{ person.full_name }}</div>
+				<div class="mt-1 small text-secondary">{{ person.job_title }}</div>
+			</div>
+			{% endunless %}
+		</a>
+		<div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow"{% if include.dark %} data-bs-theme="light"{% endif %}>
+			<a href="#" class="dropdown-item">Status</a>
+			<a href="{{ page | relative }}/profile.html" class="dropdown-item">Profile</a>
+			<a href="#" class="dropdown-item">Feedback</a>
+			<div class="dropdown-divider"></div>
+			<a href="{{ page | relative }}/settings.html" class="dropdown-item">Settings</a>
+			<a href="{{ page | relative }}/sign-in.html" class="dropdown-item">Logout</a>
+		</div>
+	</div>
+</div>

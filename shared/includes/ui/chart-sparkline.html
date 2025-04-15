@@ -1,0 +1,85 @@
+{% assign type = include.type | default: 'bar' %}
+{% assign id = include.id %}
+{% assign color = include.color | default: 'primary' %}
+{% assign height = include.height | default: 2.5 %}
+{% if include.small %}
+	{% assign height = include.height | default: 1.5 %}
+{% endif %}
+
+{% assign data = include.data %}
+{% if include.percentage %}
+	{% assign data = include.percentage %}
+{% endif %}
+
+{% if id %}
+	<div class="chart-sparkline{% if type == 'pie' or type == 'donut' %} chart-sparkline-square{% endif %}{% if include.wide %} chart-sparkline-wide{% endif %}{% if include.small %} chart-sparkline-sm{% endif %}" id="sparkline-{{ id }}"></div>
+
+	{% capture_script %}
+	<script>
+		document.addEventListener("DOMContentLoaded", function () {
+			{% if environment == 'development' %}
+			window.tabler_chart = window.tabler_chart || {};
+			{% endif %}
+
+			window.ApexCharts && ({% if environment == 'development' %}window.tabler_chart["sparkline-{{ id }}"] = {% endif %}new ApexCharts(document.getElementById('sparkline-{{ id }}'), {
+				chart: {
+					type: "{% if type == 'donut' %}radialBar{% else %}{{ type }}{% endif %}",
+					fontFamily: 'inherit',
+					height: {{ height | times: 16 | round }},
+					{% if type == 'pie' or type == 'donut' %}
+					width: {{ height | times: 16 | round }},
+					{% endif %}
+					animations: {
+						enabled: false
+					},
+					sparkline: {
+						enabled: true
+					},
+				},
+				tooltip: {
+					enabled: false,
+				},
+				{% if type == 'donut' %}
+				plotOptions: {
+					radialBar: {
+						hollow: {
+							margin: 0,
+							size: '75%'
+						},
+						track: {
+							margin: 0
+						},
+						dataLabels: {
+							show: false
+						}
+					}
+				},
+				{% endif %}
+				{% if type == 'area' %}
+				fill: {
+					gradient: {
+						opacityFrom: [.1, .1]
+					}
+				},
+				{% endif %}
+				{% if type == 'area' or type == 'line' %}
+				stroke: {
+					width: 2,
+					lineCap: "round",
+				},
+				{% endif %}
+
+				{% if type == 'donut' %}
+				colors: ['var(--tblr-{{ color }})'],
+				series: [{{ data }}],
+				{% else %}
+				series: [{
+					color: 'var(--tblr-{{ color }})',
+					data: [{{ data }}]
+				}],
+				{% endif %}
+			})).render();
+		});
+	</script>
+	{% endcapture_script %}
+{% endif %}
