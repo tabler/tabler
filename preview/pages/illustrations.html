@@ -48,8 +48,8 @@ permalink: illustrations.html
 											{% for color in site.colors %}
 											<div class="col-auto">
 												<label class="form-colorinput">
-													<input name="color" type="radio" value="{{ color[1].hex }}" class="form-colorinput-input js-select-color" />
-													<span class="form-colorinput-color bg-{{ color[1].class }}"></span>
+													<input name="color" type="radio" value="{{ color.hex }}" class="form-colorinput-input js-select-color" />
+													<span class="form-colorinput-color bg-{{ color.class }}"></span>
 												</label>
 											</div>
 											{% endfor %}
@@ -60,8 +60,8 @@ permalink: illustrations.html
 											{% for color in site.skinColors %}
 											<div class="col-auto">
 												<label class="form-colorinput">
-													<input name="skin-color" type="radio" value="{{ color[1].hex }}" class="form-colorinput-input js-select-skin-color" {% if forloop.first %} checked{% endif %} />
-													<span class="form-colorinput-color" style="background-color: {{ color[1].hex }}"></span>
+													<input name="skin-color" type="radio" value="{{ color.hex }}" class="form-colorinput-input js-select-skin-color" {% if forloop.first %} checked{% endif %} />
+													<span class="form-colorinput-color" style="background-color: {{ color.hex }}"></span>
 												</label>
 											</div>
 											{% endfor %}
@@ -142,8 +142,8 @@ permalink: illustrations.html
 
 {% capture_script %}
 <script>
-	let skinColor = "{{ skin_color[1].hex }}",
-	   primaryColor = "{{ color[1].hex }}";
+	let skinColor = "{{ skin_color.hex }}",
+	   primaryColor = "{{ color.hex }}";
 
 	const illustrations = {
 	{% for illustration in free-illustrations.autodark %}

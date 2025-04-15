@@ -1,9 +1,13 @@
-@function theme-color-lighter($color, $background: #fff) {
-  @return mix($color, $background, 10%);
+@function theme-color-lightest($color) {
+  @return color-mix(in oklab, $color 8%, transparent);
+}
+
+@function theme-color-lighter($color) {
+  @return color-mix(in oklab, $color 24%, transparent);
 }
 
 @function theme-color-darker($color) {
-  @return shade-color($color, 10%);
+  @return color-mix(in oklab, #{$color}, #000 20%)
 }
 
 //

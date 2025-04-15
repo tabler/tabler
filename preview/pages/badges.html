@@ -6,7 +6,7 @@ layout: default
 permalink: badges.html
 ---
 
-{% assign colors = "" | split: "," %} {% assign colors = colors | push: "default" %} {% for color in site.colors %} {% assign colors = colors | push: color[0]
+{% assign colors = "" | split: "," %} {% assign colors = colors | push: "default" %} {% for color in site.colors %} {% assign colors = colors | push: color.class
 %} {% endfor %} {% assign colors = colors | push: "dark" | push: "light" %}
 
 <div class="row row-cards">
@@ -105,7 +105,7 @@ permalink: badges.html
             <h3 class="card-title">Light badges</h3>
             <div class="badges-list">
               {% for color in colors %}
-              <span class="badge bg-{{ color }}-lt">{{ color | uc_first }}</span>
+              <span class="badge bg-{{ color }}-lightest">{{ color | uc_first }}</span>
               {% endfor %}
             </div>
           </div>
