@@ -26,10 +26,12 @@
 
 <!-- BEGIN PLUGINS STYLES -->
 {% for plugin in site.cssPlugins -%}
+	{% assign sriKey = "css-" | append: plugin -%}
 	{% if layout-rtl -%}
-	<link href="{{ page | relative }}/dist/css/tabler-{{ plugin }}.rtl{% if environment != 'development' %}.min{% endif %}.css{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}" rel="stylesheet"{% if environment != 'development' %} integrity="{{ sri[`css-${plugin}-rtl`] }}"{% endif %}/>
+	{% assign sriKey = "css-" | append: plugin | append: "-rtl" -%}
+	<link href="{{ page | relative }}/dist/css/tabler-{{ plugin }}.rtl{% if environment != 'development' %}.min{% endif %}.css{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}" rel="stylesheet"{% if environment != 'development' %} integrity="{{ sri[sriKey] }}"{% endif %}/>
 	{% else -%}
-	<link href="{{ page | relative }}/dist/css/tabler-{{ plugin }}{% if environment != 'development' %}.min{% endif %}.css{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}" rel="stylesheet"{% if environment != 'development' %} integrity="{{ sri[`css-${plugin}`] }}"{% endif %}/>
+	<link href="{{ page | relative }}/dist/css/tabler-{{ plugin }}{% if environment != 'development' %}.min{% endif %}.css{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}" rel="stylesheet"{% if environment != 'development' %} integrity="{{ sri[sriKey] }}"{% endif %}/>
 	{% endif -%}
 {% endfor -%}
 <!-- END PLUGINS STYLES -->
