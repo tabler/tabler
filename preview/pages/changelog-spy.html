@@ -1,0 +1,31 @@
+---
+title: Changelog scroll
+layout: default
+permalink: changelog-spy.html
+page-header: Changelog scroll
+---
+
+{% assign headers = "1.0.0,1.0.0-beta24,1.0.0-beta24,1.0.0-beta24" | split: "," %}
+
+<div class="row g-5">
+	<div class="col-sm-2">
+		<div class="sticky-top">
+			<h3>Menu</h3>
+			<nav class="nav nav-vertical nav-pills" id="pills">
+				{% for header in headers %}
+				<a class="nav-link" href="#pills-{{ header | slugify }}">v{{ header }}</a>
+				{% endfor %}
+			</nav>
+		</div>
+	</div>
+	<div class="col-sm" data-bs-spy="scroll" data-bs-target="#pills" data-bs-offset="0">
+		<div class="card card-lg">
+			<div class="card-body">
+				{% for header in headers %}
+				<h3 id="pills-{{ header | slugify }}">v{{ header }}</h3>
+				{{ changelog | renderContent: "md" }}
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</div>
