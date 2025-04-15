@@ -13,6 +13,6 @@ const illustrations = sync(join(__dirname, `../static/illustrations/light/*.png`
 	})
 
 writeFileSync(
-	join(__dirname, `../pages/_data/illustrations.json`),
+	join(__dirname, `../shared/data/illustrations.json`),
 	JSON.stringify(illustrations)
 )

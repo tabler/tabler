@@ -1,0 +1,12 @@
+{%- assign icon-name = include.icon -%}
+{%- assign replace-to = "icon" -%}
+
+{%- if include.class -%}
+{%- assign replace-to = replace-to | append: ' ' | append: include.class -%}
+{%- endif -%}
+
+{%- assign replace-to = 'class="' | append: replace-to | append: '"' -%}
+
+{%- assign svg-icon = icons[icon-name].svg.outline | default: '' -%}
+{%- assign svg-icon = svg-icon | replace: '<path stroke="none" d="M0 0h24v24H0z" fill="none" />', '' -%}
+{{ svg-icon | replace_regex: 'class=\"[^"]+\"', replace-to }}

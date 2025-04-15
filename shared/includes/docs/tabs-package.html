@@ -1,0 +1,22 @@
+{% assign packages = 'npm,pnpm,yarn' | split: ',' -%}
+<ul class="nav" id="myTab" role="tablist">
+	{%- for package in packages -%}
+	<li class="nav-item" role="presentation">
+		<button class="nav-link{% if forloop.index == 1 %} active{% endif %}" id="{{ package }}-tab" data-bs-toggle="tab" data-bs-target="#{{ package }}" type="button" role="tab"
+			aria-controls="home" aria-selected="{% if forloop.index == 1 %}true{% else %}false{% endif %}">
+			{{ package }}
+		</button>
+	</li>
+	{%- endfor -%}
+</ul>
+<div class="tab-content">
+{%- for package in packages -%}
+<div class="tab-pane{% if forloop.index == 1 %} show active{% endif %}" id="{{ package }}" role="tabpanel" aria-labelledby="{{ package }}-tab">
+
+```bash
+{{ package }} install {{ include.name }}
+```
+
+</div>
+{%- endfor -%}
+</div>

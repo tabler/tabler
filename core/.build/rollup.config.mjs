@@ -4,7 +4,7 @@ import { fileURLToPath } from 'node:url'
 import { babel } from '@rollup/plugin-babel'
 import { nodeResolve } from '@rollup/plugin-node-resolve'
 import replace from '@rollup/plugin-replace'
-import banner from '@repo/banner'
+import banner from '../../shared/banner/index.mjs'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 

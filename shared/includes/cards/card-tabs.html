@@ -1,0 +1,39 @@
+{% assign tabs-count = include.count | default: 3 %}
+{% assign id = include.id | default: 'top' %}
+{% assign tabs = (1..tabs-count) %}
+
+{% capture tabs-html %}
+<!-- Cards navigation -->
+<ul class="nav nav-tabs{% if include.bottom %} nav-tabs-bottom{% endif %}">
+   {% for tab in tabs %}
+   <li class="nav-item"><a href="#tab-{{ id }}-{{ tab }}" class="nav-link{% if forloop.first %} active{% endif %}" data-bs-toggle="tab">Tab {{ tab }}</a></li>
+   {% endfor %}
+</ul>
+{%- endcapture %}
+
+{% capture tabs-content-html %}
+<div class="tab-content">
+   {% for tab in tabs %}
+   <!-- Content of card #{{ tab }} -->
+   <div id="tab-{{ id }}-{{ tab }}" class="card tab-pane{% if forloop.first %} active show{% endif %}">
+      <div class="card-body">
+         <div class="card-title">Content of tab #{{ tab }}</div>
+         <p class="text-secondary">
+            Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci, alias aliquid distinctio dolorem expedita, fugiat hic magni molestiae molestias odit.
+         </p>
+      </div>
+   </div>
+   {% endfor %}
+</div>
+{%- endcapture %}
+
+<!-- Cards with tabs component -->
+<div class="card-tabs{% if include.borderless %} border-0{% endif %}">
+   {% if include.bottom %}
+      {{ tabs-content-html }}
+      {{ tabs-html }}
+   {% else %}
+      {{ tabs-html }}
+      {{ tabs-content-html }}
+   {% endif %}
+</div>

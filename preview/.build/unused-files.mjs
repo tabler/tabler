@@ -14,7 +14,7 @@ sync(`${srcDir}/pages/**/*.{html,md}`).forEach((file) => {
 	let fileContent = readFileSync(file)
 
 	fileContent.toString().replace(/\{% include(_cached)? "([a-z0-9\/_-]+\.html)"/g, (f, c, filename) => {
-		filename = `${srcDir}/pages/_includes/${filename}`
+		filename = `${srcDir}/pages/includes/${filename}`
 
 		if (!foundFiles.includes(filename)) {
 			foundFiles.push(filename)
@@ -22,7 +22,7 @@ sync(`${srcDir}/pages/**/*.{html,md}`).forEach((file) => {
 	})
 })
 
-let includeFiles = sync(`${srcDir}/pages/_includes/**/*.html`)
+let includeFiles = sync(`${srcDir}/pages/includes/**/*.html`)
 
 includeFiles.forEach((file) => {
 	if (!foundFiles.includes(file)) {

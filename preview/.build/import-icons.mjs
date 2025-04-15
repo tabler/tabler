@@ -26,7 +26,7 @@ for (let iconName in iconsTags) {
 }
 
 writeFileSync(
-	join(__dirname, `../pages/_data/icons-info.json`),
+	join(__dirname, `../shared/data/icons-info.json`),
 	JSON.stringify({
 		version,
 		count: Object.values(svgList).reduce((acc, icon) => {
@@ -35,4 +35,4 @@ writeFileSync(
 	})
 )
 
-writeFileSync(join(__dirname, `../pages/_data/icons.json`), JSON.stringify(svgList))
+writeFileSync(join(__dirname, `../shared/data/icons.json`), JSON.stringify(svgList))
