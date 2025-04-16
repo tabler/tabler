@@ -3,7 +3,7 @@
   "description": "Premium and Open Source dashboard template with responsive and high quality UI.",
   "homepage": "https://tabler.io",
   "scripts": {
-    "build": "turbo build && pnpm run zip",
+    "build": "turbo build && pnpm run zip-package",
     "dev": "turbo dev",
     "clean": "turbo clean",
     "bundlewatch": "turbo bundlewatch",
@@ -11,8 +11,8 @@
     "publish": "changeset publish",
     "playwright": "pnpm run build && pnpm run vt",
     "reformat-md": "node .build/reformat-md.mjs",
-    "start": "pnpm dev",
-    "zip": "mkdir -p packages-zip && zip -r packages-zip/tabler-$(node -p \"require('./core/package.json').version\").zip preview/dist/*"
+    "zip-package": "node .build/zip-package.mjs",
+    "start": "pnpm dev"
   },
   "packageManager": "pnpm@10.6.5",
   "devDependencies": {
@@ -24,6 +24,7 @@
     "@rollup/plugin-commonjs": "^28.0.3",
     "@rollup/plugin-node-resolve": "^16.0.1",
     "@rollup/plugin-replace": "^6.0.2",
+    "adm-zip": "^0.5.16",
     "autoprefixer": "^10.4.21",
     "bundlewatch": "^0.4.0",
     "clean-css-cli": "^5.6.3",
