@@ -1,4 +1,0 @@
----
----
-
-Update modal examples

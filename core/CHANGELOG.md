@@ -1,5 +1,40 @@
 # @tabler/core
 
+## 1.2.0
+
+### Minor Changes
+
+- c59bc9d: Add gradient background utilities
+- f9e4da2: Add new apps card with brand icons in navbar
+- 92a3afe: Replaced TinyMCE with HugeRTE to address license violation
+- 199f39a: Update Bootstrap to version 5.3.5
+- 9bbcb99: Add theme settings wizard
+- b17b488: Add steps light colors
+- 215eaa4: Add Turbo library integration
+
+### Patch Changes
+
+- aea3b0a: Rollback accordion component structure
+- 3fc7b84: Add space between page numbers in pagination
+- 2f8a372: Add Bootstrap components to Tabler JS
+- 9fceadd: Fix tooltip colors in vector maps
+- 44250db: Update avatar size variable to support list size configuration
+- be1f3d1: Fix broken shape in South Korea flag
+- c20d076: Refactor `border-radius` in components to use CSS variables
+- 042e50f: Update disabled color variables in navbars
+- 473fa38: Apply border radius to `tom-select` on focus
+- 8646192: Add avatars page with various demos of avatars
+- 922bb03: Minor spelling and grammar improvements to emails docs
+- 44250db: Update avatar size variable to support list size configuration
+- ddcd3a7: Refactor SCSS for alerts and close button styles
+- e3d68d6: Fix `autosize` and `input mask` plugins to use window scope
+- 4846828: Fix scrollbar color mixin to use body color variable
+- 6b6617a: Improve README
+- 94bea00: Make scrollbar track transparent
+- e14e492: Fix scrollbar jumps when content is higher than screen
+- 6d6d1bd: Add responsive font size for form controls on mobile devices
+- 6c566cf: Add new advanced table example
+
 ## 1.1.1
 
 ### Patch Changes
@@ -54,7 +89,8 @@
 - be14607: Add new color picker component using `coloris.js` library
 - d046570: Update Tabler Icons to version 2.23 with 18 new icons added
 - 5488c50: New page with payment providers: `payment-providers.html`
-- 5488c50: Add support for new payment providers: 2c2p, Adyen, Affirm, Alipay Plus, Allegro Pay, Amazon Pay, Apple Pay, Autopay, Binance USD, Bkash, Cash App, Chime, EasyPaisa, Ethereum, Google Pay, HubSpot, iDeal, Litecoin, Mercado Pago, MetaMask, MoneyGram, OpenSea, Payconiq, Payka, Payline, PayPo, Paysafe, Poli, Revolut Pay, Samsung Pay, Shop Pay, Solana, Spingo, Stax, Tether, True USD, Venmo, WeChat Pay, Wise, Zelle
+- 5488c50: Add support for new payment providers: 2c2p, Adyen, Affirm, Alipay Plus, Allegro Pay, Amazon Pay, Apple Pay, Autopay, Binance USD, Bkash, Cash App, Chime, EasyPaisa, Ethereum, Google Pay, HubSpot, iDeal, Litecoin, Mercado Pago, MetaMask, MoneyGram, OpenSea, Payconiq, Payka, Payline, PayPo, Paysafe, Poli,
+  Revolut Pay, Samsung Pay, Shop Pay, Solana, Spingo, Stax, Tether, True USD, Venmo, WeChat Pay, Wise, Zelle
 
 ### Patch Changes
 
