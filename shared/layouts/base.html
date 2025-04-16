@@ -8,7 +8,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
 	<meta http-equiv="X-UA-Compatible" content="ie=edge"/>
 
-	<title>{% if title %}{{ title }} - {% endif %}{% if site.title %}{{ site.title }} - {% endif %}{{ site.description }}</title>
+	<title>{% if title %}{{ title }} - {% endif %}{% if site.title %}{{ site.title }} - {% endif %}{{ site.descriptionShort }}</title>
 
 	{% if environment == 'preview' %}
 		{% include "layout/analytics.html" %}
@@ -25,7 +25,7 @@
 		<link rel="icon" href="{{ page | relative }}/favicon.ico" type="image/x-icon"/>
 		<link rel="shortcut icon" href="{{ page | relative }}/favicon.ico" type="image/x-icon"/>
 
-		<meta name="description" content="{{ page.description | default: 'Tabler comes with tons of well-designed components and features. Start your adventure with Tabler and make your dashboard great again. For free!' | escape }}"/>
+		<meta name="description" content="{{ description | default: site.description | escape }}"/>
 
 		{% include "layout/og.html" %}
 	{% endif %}
