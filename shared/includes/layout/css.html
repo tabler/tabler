@@ -9,7 +9,7 @@
 	{% for lib in libs.css -%}
 		{% if page-libs contains lib[0] -%}
 			{% for file in lib[1] -%}
-				<link href="{% if file contains 'http://' or file contains 'https://' %}{{ file }}{% else %}{{ page | relative }}/libs/{% if environment != 'development' %}{{ file | replace: '@', '' }}{% else %}{{ file }}{% endif %}{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}{% endif %}" rel="stylesheet"/>
+				<link href="{% if file contains 'http://' or file contains 'https://' %}{{ file }}{% else %}{{ page | relative }}/libs/{% if environment == 'preview' %}{{ file | replace: '@', '' }}{% else %}{{ file }}{% endif %}{% if environment != 'development %}?{{ 'now' | date: '%s' }}{% endif %}{% endif %}" rel="stylesheet"/>
 			{% endfor -%}
 		{% endif -%}
 	{% endfor -%}
@@ -18,9 +18,9 @@
 
 <!-- BEGIN GLOBAL MANDATORY STYLES -->
 {% if layout-rtl -%}
-<link href="{{ page | relative }}/dist/css/tabler-rtl{% if environment != 'development' %}.min{% endif %}.css{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}" rel="stylesheet"{% if environment != 'development' %} integrity="{{ sri.css-rtl }}"{% endif %} />
+<link href="{{ page | relative }}/dist/css/tabler-rtl{% if environment == 'preview' %}.min{% endif %}.css{% if environment != 'development %}?{{ 'now' | date: '%s' }}{% endif %}" rel="stylesheet"{% if environment == 'preview' %} integrity="{{ sri.css-rtl }}"{% endif %} />
 {% else -%}
-<link href="{{ page | relative }}/dist/css/tabler{% if environment != 'development' %}.min{% endif %}.css{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}" rel="stylesheet"{% if environment != 'development' %} integrity="{{ sri.css }}"{% endif %} />
+<link href="{{ page | relative }}/dist/css/tabler{% if environment == 'preview' %}.min{% endif %}.css{% if environment != 'development %}?{{ 'now' | date: '%s' }}{% endif %}" rel="stylesheet"{% if environment == 'preview' %} integrity="{{ sri.css }}"{% endif %} />
 {% endif -%}
 <!-- END GLOBAL MANDATORY STYLES -->
 
@@ -29,13 +29,13 @@
 	{% assign sriKey = "css-" | append: plugin -%}
 	{% if layout-rtl -%}
 	{% assign sriKey = "css-" | append: plugin | append: "-rtl" -%}
-	<link href="{{ page | relative }}/dist/css/tabler-{{ plugin }}.rtl{% if environment != 'development' %}.min{% endif %}.css{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}" rel="stylesheet"{% if environment != 'development' %} integrity="{{ sri[sriKey] }}"{% endif %}/>
+	<link href="{{ page | relative }}/dist/css/tabler-{{ plugin }}.rtl{% if environment == 'preview' %}.min{% endif %}.css{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}" rel="stylesheet"{% if environment == 'preview' %} integrity="{{ sri[sriKey] }}"{% endif %}/>
 	{% else -%}
-	<link href="{{ page | relative }}/dist/css/tabler-{{ plugin }}{% if environment != 'development' %}.min{% endif %}.css{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}" rel="stylesheet"{% if environment != 'development' %} integrity="{{ sri[sriKey] }}"{% endif %}/>
+	<link href="{{ page | relative }}/dist/css/tabler-{{ plugin }}{% if environment == 'preview' %}.min{% endif %}.css{% if environment != 'development %}?{{ 'now' | date: '%s' }}{% endif %}" rel="stylesheet"{% if environment == 'preview' %} integrity="{{ sri[sriKey] }}"{% endif %}/>
 	{% endif -%}
 {% endfor -%}
 <!-- END PLUGINS STYLES -->
 
 <!-- BEGIN DEMO STYLES -->
-<link href="{{ page | relative }}/preview/css/demo{% if environment != 'development' %}.min{% endif %}.css{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}" rel="stylesheet"{% if environment != 'development' %} integrity="{{ sri.demo-css }}"{% endif %}/>
+<link href="{{ page | relative }}/preview/css/demo{% if environment == 'preview' %}.min{% endif %}.css{% if environment != 'development %}?{{ 'now' | date: '%s' }}{% endif %}" rel="stylesheet"{% if environment == 'preview' %} integrity="{{ sri.demo-css }}"{% endif %}/>
 <!-- END DEMO STYLES -->
