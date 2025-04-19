@@ -23,7 +23,7 @@ Look at the example below to see how the spinner works:
 
 ## Colors
 
-Choose one of the available colors to customize the spinner and make it suit your design. Full list of available colors can be found in the [Colors](/docs/ui/base/colors) section.
+Choose one of the available colors to customize the spinner and make it suit your design. Full list of available colors can be found in the [Colors](/img/ui/base/colors) section.
 
 {% capture html -%}
 <div class="spinner-border text-blue" role="status"></div>

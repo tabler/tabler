@@ -89,7 +89,7 @@ This is how it looks:
 
 You can change the color of the progress bar by adding a color class to the `.progress-bar` element. You can use the color classes like `.bg-primary`, `.bg-success`, etc. to change the color of the progress bar.
 
-Full list of available colors can be found [here](/docs/ui/base/colors).
+Full list of available colors can be found [here](/img/ui/base/colors).
 
 {% capture html -%}
 <div class="progress">

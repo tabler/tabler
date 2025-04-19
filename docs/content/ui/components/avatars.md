@@ -64,7 +64,7 @@ Besides pictures and initials, you can also use icons to make the avatars more u
 
 ## Avatar initials color
 
-Customize the color of the avatars' background. You can click [here](/docs/ui/base/colors) to see the list of available colors.
+Customize the color of the avatars' background. You can click [here](/img/ui/base/colors) to see the list of available colors.
 
 {% capture html -%}
 <span class="avatar bg-green-lt">AB</span>

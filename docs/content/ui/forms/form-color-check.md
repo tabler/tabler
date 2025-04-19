@@ -4,7 +4,7 @@ summary: The color check is a great way to make your form more user-friendly and
 description: Enhance forms with color checks.
 ---
 
-Your input controls can come in a variety of colors, depending on your preferences. Click [here](/docs/ui/base/colors) to see the list of available colors.
+Your input controls can come in a variety of colors, depending on your preferences. Click [here](/img/ui/base/colors) to see the list of available colors.
 
 ```html
 <label class="form-colorinput">

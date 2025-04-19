@@ -5,7 +5,7 @@ description: Learn to design dashboard layouts.
 ---
 
 <Callout>
-   Before you start with this section, make sure you have followed the [installation guideline](/docs/ui/getting-started/installation). 
+   Before you start with this section, make sure you have followed the [installation guideline](/img/ui/getting-started/installation). 
 </Callout>
 
 ## Sample layout

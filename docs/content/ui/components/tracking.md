@@ -219,7 +219,7 @@ description: Monitor data activity visually.
 
 ## Tracking inside a card
 
-You can add a tracking component inside the cards to give your reports a fresh look and visualize the status of your system in an attractive way. If you want to read how to add other elements to a card it is worth reading [documentation of card](/docs/components/cards).
+You can add a tracking component inside the cards to give your reports a fresh look and visualize the status of your system in an attractive way. If you want to read how to add other elements to a card it is worth reading [documentation of card](/img/components/cards).
 
 {% capture html -%}
 <div class="card">

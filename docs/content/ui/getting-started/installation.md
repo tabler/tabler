@@ -56,7 +56,7 @@ Update your HTML file to include these resources:
 
 This setup includes the Tabler CSS and JavaScript via a CDN, providing a responsive and functional base for your project.
 
-You can also download the files and include them locally in your project. For more information, see the [Download](/docs/ui/getting-started/download) page.
+You can also download the files and include them locally in your project. For more information, see the [Download](/img/ui/getting-started/download) page.
 
 ### Open in Your Browser
 

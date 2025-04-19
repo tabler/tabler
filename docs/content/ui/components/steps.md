@@ -95,7 +95,7 @@ The example below demonstrates a progress tracker with tooltips for each step.
 
 ## Color
 
-You can customize the default progress indicator by changing the color to one that better suits your design. Click [here](/docs/ui/base/colors) to see the range of available colors.
+You can customize the default progress indicator by changing the color to one that better suits your design. Click [here](/img/ui/base/colors) to see the range of available colors.
 
 ```html
 <div class="steps steps-green">...</div>

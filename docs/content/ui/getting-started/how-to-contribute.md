@@ -13,7 +13,7 @@ When contributing to Tabler, please adhere to the following guidelines:
 1. By submitting a contribution, you grant a non-exclusive license to the Tabler project to use your contribution in any context deemed appropriate.
 2. If your contribution includes content from other sources, it must be appropriately licensed under an open source license.
 3. Contributions must be submitted via GitHub pull requests.
-4. Ensure your code works in all supported browsers (refer to our [browser support documentation](/docs/ui/getting-started/browser-support)).
+4. Ensure your code works in all supported browsers (refer to our [browser support documentation](/img/ui/getting-started/browser-support)).
 
 ## Installation
 

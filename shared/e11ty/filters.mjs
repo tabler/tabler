@@ -229,4 +229,12 @@ export function appFilters(eleventyConfig) {
 			return ''
 		});
 	});
+
+	eleventyConfig.addPairedShortcode(`removeemptylines`, function (content) {
+		if (content) {
+			return content.split('\n').filter(line => line.trim() !== '').join('\n');
+		}
+
+		return '';
+	})
 }

@@ -267,7 +267,6 @@ export default function (eleventyConfig) {
 
 	eleventyConfig.addGlobalData("docs-links", [
 		{ title: 'Website', url: 'https://tabler.io', icon: 'world' },
-		{ title: 'Forum', url: '/', icon: 'messages' },
 		{ title: 'Support', url: 'https://tabler.io/support', icon: 'headset' },
 	]);
 

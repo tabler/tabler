@@ -120,15 +120,13 @@ Use the `form-control-rounded` class if you prefer form controls with rounded co
 You can remove borders from your form control by adding the `form-control-flush` class.
 
 {% capture html -%}
-<div class="mb-3">
-  <label class="form-label">Form control flush</label>
-  <input
-    type="text"
-    class="form-control form-control-flush"
-    name="Form control flush"
-    placeholder="Text.."
-  />
-</div>
+<label class="form-label">Form control flush</label>
+<input
+	type="text"
+	class="form-control form-control-flush"
+	name="Form control flush"
+	placeholder="Text.."
+/>
 {%- endcapture %}
 {% include "docs/example.html" html=html %}
 
