@@ -21,6 +21,9 @@ const plugins = [
 plugins.push(
 	replace({
 		'process.env.NODE_ENV': '"production"',
+		'process.env.DOCSEARCH_APP_ID': process.env.DOCSEARCH_APP_ID,
+		'process.env.DOCSEARCH_INDEX_NAME': process.env.DOCSEARCH_INDEX_NAME,
+		'process.env.DOCSEARCH_API_KEY': process.env.DOCSEARCH_API_KEY,
 		preventAssignment: true
 	}),
 	nodeResolve()

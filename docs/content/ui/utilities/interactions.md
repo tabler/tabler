@@ -20,9 +20,9 @@ Change the way in which the content is selected when the user interacts with it.
 Tabler provides `.pe-none` and `.pe-auto` classes to prevent or add element interactions.
 
 {% capture html -%}
-<p>
+<div>
   <a href="#" class="pe-none" tabindex="-1" aria-disabled="true">This link</a> can not be clicked.
-</p>
-<p><a href="#" class="pe-auto">This link</a> can be clicked (this is default behavior).</p>
+</div>
+<div><a href="#" class="pe-auto">This link</a> can be clicked (this is default behavior).</div>
 {%- endcapture %}
 {% include "docs/example.html" html=html %}
