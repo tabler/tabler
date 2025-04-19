@@ -2,7 +2,7 @@ import docsearch from '@docsearch/js';
 
 docsearch({
 	container: '#docsearch',
-	appId: process.env.DOCSEARCH_APP_ID,
-	indexName: process.env.DOCSEARCH_INDEX_NAME,
-	apiKey: process.env.DOCSEARCH_API_KEY,
+	appId: "NE1EGTYLS9",
+	indexName: "tabler",
+	apiKey: "016353235ef1dd32a6c392be0e939058",
 });
