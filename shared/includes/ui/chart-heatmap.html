@@ -1,3 +1,4 @@
+{% removeemptylines %}
 {% assign id = include.chart-id %}
 {% assign class = include.class %}
 {% assign height = include.height | default: data.height | default: 25 %}
@@ -5,8 +6,9 @@
 
 <div id="chart-{{ id }}"{% if class %} class="{{ class }}"{% endif %}></div>
 
-{% capture script %}
+{% capture script -%}
 {% assign colors = include.colors | default: 1 %}
+{% removeemptylines %}
 <script>
 document.addEventListener("DOMContentLoaded", function () {
 	{% if environment == 'development' %}
@@ -54,10 +56,10 @@ document.addEventListener("DOMContentLoaded", function () {
 			}
 		},
 		{% else %}
-		colors: [{% if include.color %}'{{ include.color }}'{% else %}{% for color in site.colors limit: colors %} "var(--tblr-{{ color }})", {% endfor %}{% endif %}],
+		colors: [{% if include.color %}'{{ include.color }}'{% else %}{% for color in site.colors limit: colors %}"{{ color[1].hex }}", {% endfor %}{% endif %}],
 		{% endif %}
 		series: [
-			{% for i in site.monthsShort limit: 12 %}
+			{% for i in site.months-short limit: 12 %}
 			{% assign month-i = forloop.index %}
 			{ name: "{{ i }}", data: [{% for j in (1..16) %}{x: '{{ j }}', y: {{ j | random_number: 0, 100  | plus: month-i | random_number: 0, 100 }}},{% endfor %}] },
 			{% endfor %}
@@ -85,8 +87,10 @@ document.addEventListener("DOMContentLoaded", function () {
 	})).render();
 });
 </script>
+{% endremoveemptylines %}
 {%- endcapture %}
 
 {% capture_script %}
 {{ script }}
 {% endcapture_script %}
+{% endremoveemptylines %}

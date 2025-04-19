@@ -237,4 +237,13 @@ export function appFilters(eleventyConfig) {
 
 		return '';
 	})
+
+
+	eleventyConfig.addPairedShortcode(`callout`, function (content) {
+		if (content) {
+			return `<div class="callout">\n${content}\n</div>`;
+		}
+
+		return '';
+	})
 }

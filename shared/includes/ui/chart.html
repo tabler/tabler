@@ -1,3 +1,4 @@
+{% removeemptylines %}
 {% assign data = charts[include.chart-id] %}
 {% assign id = include.id | default: include.chart-id %}
 {% assign height = include.height | default: data.height | default: 10 %}
@@ -17,9 +18,9 @@
 {% endif %}
 
 <div id="chart-{{ id }}"{% if class %} class="{{ class }}"{% endif %}></div>
-
 {% capture script %}
-{% assign chart-type = data.type | default: 'bar' %}
+{% assign chart-type = data.type | default: 'bar' -%}
+{% removeemptylines %}
 <script>
 	document.addEventListener("DOMContentLoaded", function () {
 		{% if environment == 'development' %}
@@ -269,6 +270,7 @@
 		})).render();
 	});
 </script>
+{% endremoveemptylines %}
 {%- endcapture %}
 
 {% capture_script %}
@@ -276,3 +278,4 @@
 {% endcapture_script %}
 
 {% endif %}
+{% endremoveemptylines %}

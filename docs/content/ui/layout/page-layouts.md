@@ -4,9 +4,9 @@ summary: Learn how to build a sample version of the dashboard
 description: Learn to design dashboard layouts.
 ---
 
-<Callout>
-   Before you start with this section, make sure you have followed the [installation guideline](/img/ui/getting-started/installation). 
-</Callout>
+{% callout %}
+   Before you start with this section, make sure you have followed the [installation guideline](/ui/getting-started/installation). 
+{% endcallout %}
 
 ## Sample layout
 

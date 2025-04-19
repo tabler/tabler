@@ -45,20 +45,22 @@ Use one of the available cursor utilities depending on the action you want to in
 The results can be seen in the example below.
 
 {% capture html -%}
-<div class="cursor-auto bg-light p-3">auto</div>
-<div class="cursor-pointer bg-light p-3">pointer</div>
-<div class="cursor-move bg-light p-3">move</div>
-<div class="cursor-not-allowed bg-light p-3">not-allowed</div>
-<div class="cursor-zoom-in bg-light p-3">zoom-in</div>
-<div class="cursor-zoom-out bg-light p-3">zoom-out</div>
-<div class="cursor-default bg-light p-3">default</div>
-<div class="cursor-none bg-light p-3">none</div>
-<div class="cursor-help bg-light p-3">help</div>
-<div class="cursor-progress bg-light p-3">progress</div>
-<div class="cursor-wait bg-light p-3">wait</div>
-<div class="cursor-text bg-light p-3">text</div>
-<div class="cursor-v-text bg-light p-3">vertical-text</div>
-<div class="cursor-grab bg-light p-3">grab</div>
-<div class="cursor-grabbing bg-light p-3">grabbing</div>
+<div class="row g-4 row-cols-4">
+	<div><div class="cursor-auto bg-surface-secondary p-3">auto</div></div>
+	<div><div class="cursor-pointer bg-surface-secondary p-3">pointer</div></div>
+	<div><div class="cursor-move bg-surface-secondary p-3">move</div></div>
+	<div><div class="cursor-not-allowed bg-surface-secondary p-3">not-allowed</div></div>
+	<div><div class="cursor-zoom-in bg-surface-secondary p-3">zoom-in</div></div>
+	<div><div class="cursor-zoom-out bg-surface-secondary p-3">zoom-out</div></div>
+	<div><div class="cursor-default bg-surface-secondary p-3">default</div></div>
+	<div><div class="cursor-none bg-surface-secondary p-3">none</div></div>
+	<div><div class="cursor-help bg-surface-secondary p-3">help</div></div>
+	<div><div class="cursor-progress bg-surface-secondary p-3">progress</div></div>
+	<div><div class="cursor-wait bg-surface-secondary p-3">wait</div></div>
+	<div><div class="cursor-text bg-surface-secondary p-3">text</div></div>
+	<div><div class="cursor-v-text bg-surface-secondary p-3">vertical-text</div></div>
+	<div><div class="cursor-grab bg-surface-secondary p-3">grab</div></div>
+	<div><div class="cursor-grabbing bg-surface-secondary p-3">grabbing</div></div>
+</div>
 {%- endcapture %}
-{% include "docs/example.html" html=html %}
+{% include "docs/example.html" html=html hide-code %}
