@@ -16,7 +16,7 @@ Use the `.card` and `.card-body` classes to create a card and use it as the basi
   </div>
 </div>
 {%- endcapture %}
-{% include "docs/example.html" html=html bg="surface-secondary" %}
+{% include "docs/example.html" html=html bg="surface-secondary" column %}
 
 ## Card padding
 
@@ -38,7 +38,7 @@ Cards with the `.card-sm` class are well suited for small items such as widgets,
   <div class="card-body">This is some text within a card body.</div>
 </div>
 {%- endcapture %}
-{% include "docs/example.html" html=html bg="surface-secondary" %}
+{% include "docs/example.html" html=html bg="surface-secondary" column %}
 
 ```html
 <div class="card card-sm">...</div>
@@ -67,7 +67,7 @@ Add a title to your card by including the `.card-title` class within `.card-body
   </div>
 </div>
 {%- endcapture %}
-{% include "docs/example.html" html=html bg="surface-secondary" column vertical %}
+{% include "docs/example.html" html=html bg="surface-secondary" column %}
 
 ## Card with title and image
 
@@ -89,7 +89,7 @@ To create a more visually appealing card, add a title and an image. Thanks to th
   </div>
 </div>
 {%- endcapture %}
-{% include "docs/example.html" html=html bg="surface-secondary" %}
+{% include "docs/example.html" html=html bg="surface-secondary" column %}
 
 ## Blog post card
 
@@ -230,29 +230,6 @@ Add a status color to your card, either at the top or on the side of the card, t
 {%- endcapture %}
 {% include "docs/example.html" html=html bg="surface-secondary" %}
 
-```html
-<div class="card">
-  <div class="card-status-top bg-danger"></div>
-  <div class="card-body">
-    <h3 class="card-title">Card with top status</h3>
-    <p class="text-secondary">
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit incidunt,
-      iste, itaque minima neque pariatur perferendis sed suscipit velit vitae voluptatem.
-    </p>
-  </div>
-</div>
-<div class="card">
-  <div class="card-status-start bg-green"></div>
-  <div class="card-body">
-    <h3 class="card-title">Card with side status</h3>
-    <p class="text-secondary">
-      Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit incidunt,
-      iste, itaque minima neque pariatur perferendis sed suscipit velit vitae voluptatem.
-    </p>
-  </div>
-</div>
-```
-
 ## Stacked card
 
 Use the `card-stacked` class to stack up multiple cards, if you want to save screen space or create a visually appealing effect.
@@ -331,67 +308,4 @@ Organize multiple cards into tabs to be able to display more content in a well-o
 </div>
 {%- endcapture %}
 {% include "docs/example.html" html=html bg="surface-secondary" column %}
-
-```html
-<!-- Cards with tabs component -->
-<div class="card-tabs">
-  <!-- Cards navigation -->
-  <ul class="nav nav-tabs">
-    <li class="nav-item">
-      <a href="#tab-top-1" class="nav-link active" data-bs-toggle="tab">Tab 1</a>
-    </li>
-    <li class="nav-item">
-      <a href="#tab-top-2" class="nav-link" data-bs-toggle="tab">Tab 2</a>
-    </li>
-    <li class="nav-item">
-      <a href="#tab-top-3" class="nav-link" data-bs-toggle="tab">Tab 3</a>
-    </li>
-    <li class="nav-item">
-      <a href="#tab-top-4" class="nav-link" data-bs-toggle="tab">Tab 4</a>
-    </li>
-  </ul>
-  <div class="tab-content">
-    <!-- Content of card #1 -->
-    <div id="tab-top-1" class="card tab-pane active show">
-      <div class="card-body">
-        <div class="card-title">Content of tab #1</div>
-        <p class="text-secondary">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci, alias aliquid
-          distinctio dolorem expedita, fugiat hic magni molestiae molestias odit.
-        </p>
-      </div>
-    </div>
-    <!-- Content of card #2 -->
-    <div id="tab-top-2" class="card tab-pane">
-      <div class="card-body">
-        <div class="card-title">Content of tab #2</div>
-        <p class="text-secondary">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci, alias aliquid
-          distinctio dolorem expedita, fugiat hic magni molestiae molestias odit.
-        </p>
-      </div>
-    </div>
-    <!-- Content of card #3 -->
-    <div id="tab-top-3" class="card tab-pane">
-      <div class="card-body">
-        <div class="card-title">Content of tab #3</div>
-        <p class="text-secondary">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci, alias aliquid
-          distinctio dolorem expedita, fugiat hic magni molestiae molestias odit.
-        </p>
-      </div>
-    </div>
-    <!-- Content of card #4 -->
-    <div id="tab-top-4" class="card tab-pane">
-      <div class="card-body">
-        <div class="card-title">Content of tab #4</div>
-        <p class="text-secondary">
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci, alias aliquid
-          distinctio dolorem expedita, fugiat hic magni molestiae molestias odit.
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
-```
 

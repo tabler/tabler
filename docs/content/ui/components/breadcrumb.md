@@ -35,7 +35,7 @@ Look at the example below to see how breadcrumbs work in practice.
   </li>
 </ol>
 {%- endcapture %}
-{% include "docs/example.html" html=html %}
+{% include "docs/example.html" html=html vertical separated %}
 
 ## Different separators
 
@@ -105,7 +105,7 @@ You can use icons in breadcrumbs to make them more visually appealing. The examp
   </li>
 </ol>
 {%- endcapture %}
-{% include "docs/example.html" html=html %}
+{% include "docs/example.html" html=html vertical separated %}
 
 ## Muted breadcrumbs
 

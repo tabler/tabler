@@ -57,7 +57,7 @@ Use the default empty state to engage users in the critical moments of their exp
   </div>
 </div>
 {%- endcapture %}
-{% include "docs/example.html" html=html %}
+{% include "docs/example.html" html=html bg="surface-secondary" %}
 
 ## Empty state with illustration
 
@@ -66,7 +66,7 @@ Make your empty state screen more attractive and engaging by adding an illustrat
 {% capture html -%}
 <div class="empty">
   <div class="empty-img">
-    <img src="..." height="128" alt="" />
+    {% include "ui/illustration.html" image="boy-with-key" alt="Empty state illustration" %}
   </div>
   <p class="empty-title">Invoices are managed from here</p>
   <p class="empty-subtitle text-secondary">
@@ -95,7 +95,7 @@ Make your empty state screen more attractive and engaging by adding an illustrat
   </div>
 </div>
 {%- endcapture %}
-{% include "docs/example.html" html=html %}
+{% include "docs/example.html" html=html bg="surface-secondary" %}
 
 ## Empty state with header
 
@@ -132,20 +132,5 @@ Instead of adding an icon or illustration you can simply give the text:
   </div>
 </div>
 {%- endcapture %}
-{% include "docs/example.html" html=html %}
+{% include "docs/example.html" html=html bg="surface-secondary" %}
 
-```html
-<div class="empty">
-  <div class="empty-header">404</div>
-  <p class="empty-title">Oops… You just found an error page</p>
-  <p class="empty-subtitle text-secondary">
-    Try adjusting your search or filter to find what you're looking for.
-  </p>
-  <div class="empty-action">
-    <a href="#" class="btn btn-primary">
-      {% include "ui/icon.html" icon="arrow-left" %}
-      Take me home
-    </a>
-  </div>
-</div>
-```
