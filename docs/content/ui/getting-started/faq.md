@@ -19,7 +19,7 @@ Yes, absolutely.
 
 ## Can I use Tabler in commercial projects?
 
-Of course! Tabler is under MIT license, so you can confidently use it in commercial projects. However, remember to include a note that your project uses Tabler. You can read about our license here: [License](/license)
+Of course! Tabler is under MIT license, so you can confidently use it in commercial projects. However, remember to include a note that your project uses Tabler. You can read about our license here: [License]({{ site.homepage }}/license).
 
 ## Can Tabler be used with WordPress?
 
@@ -27,4 +27,4 @@ Tabler is an HTML template that can be used for any purpose. However, it is not 
 
 ## How do I get notified of new Tabler versions?
 
-You may watch the releases on GitHub or follow me on Twitter.
+You may watch the releases on GitHub, follow us on [X](https://x.com/tabler_io) or stay up to date with our [changelog]({{ site.homepage }}/changelog).
