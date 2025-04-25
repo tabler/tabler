@@ -169,7 +169,7 @@ You can also add an image on the left side of the card. To do it, add the `.card
       </a>
     </div>
     <div class="col">
-      <div class="card-body">
+      <div class="card-body h-full d-flex flex-column">
         <h3 class="card-title">
           <a href="#">Shut up!</a>
         </h3>
