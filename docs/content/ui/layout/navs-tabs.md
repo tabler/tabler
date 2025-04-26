@@ -10,29 +10,12 @@ Navigation bars are essential components of modern web applications, providing u
 
 If you want to create a horizontal navigation bar, you can use the `.nav` class. The `.nav-item` class is used to style each item within the navigation bar, and `.nav-link` is applied to the links. The `.active` class highlights the current active link, while the `.disabled` class styles non-clickable links.
 
-```html
-<ul class="nav">
-  <li class="nav-item">
-    <a class="nav-link active" aria-current="page" href="#">Active</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="#">Link</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link disabled" aria-disabled="true">Disabled</a>
-  </li>
-</ul>
-```
-
 Look at the example below to see how the horizontal navigation bar is displayed.
  
 {% capture html -%}
 <ul class="nav">
   <li class="nav-item">
     <a class="nav-link active" aria-current="page" href="#">Active</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="#">Link</a>
   </li>
   <li class="nav-item">
     <a class="nav-link" href="#">Link</a>
@@ -65,9 +48,6 @@ There is an example below to see how the vertical navigation bar is displayed.
     <a class="nav-link" href="#">Link</a>
   </li>
   <li class="nav-item">
-    <a class="nav-link" href="#">Link</a>
-  </li>
-  <li class="nav-item">
     <a class="nav-link disabled" aria-disabled="true">Disabled</a>
   </li>
 </ul>
@@ -84,15 +64,12 @@ To create a tabbed navigation interface, use the `.nav-tabs` class. This is idea
 </ul>
 ```
 
-Example below shows how the tabbed navigation interface is displayed.
+The example below shows how the tabbed navigation interface is displayed.
 
 {% capture html -%}
 <ul class="nav nav-tabs">
   <li class="nav-item">
     <a class="nav-link active" aria-current="page" href="#">Active</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="#">Link</a>
   </li>
   <li class="nav-item">
     <a class="nav-link" href="#">Link</a>
@@ -106,15 +83,12 @@ Example below shows how the tabbed navigation interface is displayed.
 
 ## Pills
 
-For a pill-shaped navigation style, use the `.nav-pills` class. This is a great choice for a sleek, modern look, especially in interactive UI components.
+For a pill-shaped navigation style, use the `.nav-pills` class. This is a great choice for a sleek, modern look, especially in the interactive UI components.
 
 {% capture html -%}
 <ul class="nav nav-pills">
   <li class="nav-item">
     <a class="nav-link active" aria-current="page" href="#">Active</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="#">Link</a>
   </li>
   <li class="nav-item">
     <a class="nav-link" href="#">Link</a>
@@ -134,9 +108,6 @@ To create a navigation bar with an underline effect for active links, use the `.
 <ul class="nav nav-underline">
   <li class="nav-item">
     <a class="nav-link active" aria-current="page" href="#">Active</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="#">Link</a>
   </li>
   <li class="nav-item">
     <a class="nav-link" href="#">Link</a>
