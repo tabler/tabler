@@ -17,7 +17,7 @@ You can also include the plugin via CDN:
 
 ## Payment
 
-To create a payment provider icon, add the `payment` class to a component and specify the payment provider. The full list of payment providers can be found below.
+To create a payment provider icon, add the `payment` class to a component and specify the payment provider with the `payment-provider-*` class. The full list of payment providers can be found at the end of this page.
 
 {% capture html -%}
 <span class="payment payment-provider-shopify"></span>
