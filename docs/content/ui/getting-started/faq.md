@@ -27,4 +27,4 @@ Tabler is an HTML template that can be used for any purpose. However, it is not 
 
 ## How do I get notified of new Tabler versions?
 
-You may watch the releases on GitHub, follow us on [X](https://x.com/tabler_io) or stay up to date with our [changelog]({{ site.homepage }}/changelog).
+You may watch [the releases on GitHub](https://github.com/tabler/tabler/releases), follow us on [X](https://x.com/tabler_io) or stay up to date with our [changelog]({{ site.homepage }}/changelog).

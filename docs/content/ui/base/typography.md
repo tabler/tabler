@@ -10,15 +10,6 @@ description: Role of typography in interface design.
 Use HTML headings to organize content on your website and make the structure clear and user-friendly. The `h1` to `h6` tags are used to define HTML headings.
 The `h1` tag is the highest level and the `h6` tag is the lowest level.
 
-```html
-<h1>H1 Heading</h1>
-<h2>H2 Heading</h2>
-<h3>H3 Heading</h3>
-<h4>H4 Heading</h4>
-<h5>H5 Heading</h5>
-<h6>H6 Heading</h6>
-```
-
 Below are examples of headings with different levels:
 
 {% capture html -%}
@@ -29,7 +20,7 @@ Below are examples of headings with different levels:
 <h5>H5 Heading</h5>
 <h6>H6 Heading</h6>
 {%- endcapture %}
-{% include "docs/example.html" html=html vertical %}
+{% include "docs/example.html" html=html %}
 
 ## Paragraphs
 
@@ -55,32 +46,15 @@ If you use a second paragraph, it will be separated from the first one by a blan
 
 Use a variety of semantic text elements, depending on how you want to display particular fragments of content.
 
-```html
-<abbr title="Internationalization">I18N</abbr>
-<strong>Bold</strong>
-<cite>Citation</cite>
-<code>Hello World!</code>
-<del>Deleted</del>
-<em>Emphasis</em>
-<i>Italic</i>
-<ins>Inserted</ins>
-<kbd>Ctrl + S</kbd>
-<mark>Highlighted</mark>
-<s>Strikethrough</s>
-<samp>Sample</samp>
-Text <sub>Subscripted</sub> Text <sup>Superscripted</sup>
-<time>20:00</time>
-<u>Underline</u>
-<var>x</var> = <var>y</var> + 2
-```
-
 Here are examples of semantic text elements:
 
 {% capture html -%}
 <div>
   <abbr title="Internationalization">I18N</abbr>
 </div>
-<div><strong>Bold</strong></div>
+<div>
+	<strong>Bold</strong>
+</div>
 <div>
   <cite>Citation</cite>
 </div>
@@ -111,19 +85,23 @@ Here are examples of semantic text elements:
 <div>
   <samp>Sample</samp>
 </div>
-<div>Text <sub>Subscripted</sub></div>
-<div>Text <sup>Superscripted</sup></div>
+<div>
+	Text <sub>Subscript</sub>
+</div>
+<div>
+	Text <sup>Superscript</sup>
+</div>
 <div>
   <time>20:00</time>
 </div>
 <div>
   <u>Underline</u>
 </div>
-<div><var>x</var> = <var>y</var> + 2</div>
+<div>
+	<var>x</var> = <var>y</var> + 2
+</div>
 {%- endcapture %}
-{% include "docs/example.html" html=html vertical %}
-
-
+{% include "docs/example.html" html=html %}
 
 ## Horizontal rules
 
@@ -144,15 +122,11 @@ Use the `hr` tag to represent a thematic break between paragraphs within one sec
   </p>
 </div>
 {%- endcapture %}
-{% include "docs/example.html" html=html vertical %}
-
-```html
-<hr />
-```
+{% include "docs/example.html" html=html %}
 
 ## Horizontal rules with label
 
-You can also add a label to a horizontal rule and align it as you see fit.
+You can also add a label to a horizontal rule and align it as you see fit. Centered label is the default.
 
 {% capture html -%}
 <p>
@@ -173,15 +147,22 @@ You can also add a label to a horizontal rule and align it as you see fit.
   Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
   labore et dolore magna aliquyam erat, sed diam voluptua.
 </p>
-<div class="hr-text hr-text-end">
+<div class="hr-text hr-text-start">
   <span>Rule text</span>
 </div>
 <p>
   At vero eos et accusam et justo duo dolores et ea rebum. Stet clita kasd gubergren, no sea
   takimata sanctus est Lorem ipsum dolor sit amet.
 </p>
+<div class="hr-text hr-text-end">
+  <span>Rule text</span>
+</div>
+<p>
+  Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut
+  labore et dolore magna aliquyam erat, sed diam voluptua.
+</p>
 {%- endcapture %}
-{% include "docs/example.html" html=html raw %}
+{% include "docs/example.html" html=html %}
 
 ## Optimized for different alphabets
 
@@ -198,45 +179,33 @@ Tabler has been optimized to correctly display content in any language. It suppo
 <p>אלפבית עברי</p>
 <p>อักษรไทย</p>
 {%- endcapture %}
-{% include "docs/example.html" html=html raw %}
+{% include "docs/example.html" html=html %}
 
 ## Text transform
 
 Transform the content of components with text capitalization classes.
 
 {% capture html -%}
-<div class="text-lowercase">Lowercased text.</div>
-<div class="text-uppercase">Uppercased text.</div>
-<div class="text-capitalize">Capitalized text.</div>
-{%- endcapture %}
-{% include "docs/example.html" html=html raw %}
-
-```html
 <p class="text-lowercase">Lowercased text.</p>
 <p class="text-uppercase">Uppercased text.</p>
 <p class="text-capitalize">Capitalized text.</p>
-```
+{%- endcapture %}
+{% include "docs/example.html" html=html %}
 
 ## Letter spacing
 
 Control the tracking (letter spacing) of an element and make it tight, wide or normal.
 
 {% capture html -%}
-<div class="tracking-tight">Lorem ipsum dolor sit amet. Tight letter spacing.</div>
-<div class="tracking-normal">Lorem ipsum dolor sit amet. Normal letter spacing.</div>
-<div class="tracking-wide">Lorem ipsum dolor sit amet. Wide letter spacing.</div>
-{%- endcapture %}
-{% include "docs/example.html" html=html raw %}
-
-```html
 <p class="tracking-tight">Lorem ipsum dolor sit amet. Tight letter spacing.</p>
 <p class="tracking-normal">Lorem ipsum dolor sit amet. Normal letter spacing.</p>
 <p class="tracking-wide">Lorem ipsum dolor sit amet. Wide letter spacing.</p>
-```
+{%- endcapture %}
+{% include "docs/example.html" html=html %}
 
 ## Line height
 
-Control the leading (line height) of an element.
+Control the leading (line height) of an element using the `.lh-*` classes. The line height is the vertical space between lines of text.
 
 {% capture html -%}
 <p class="lh-1">
@@ -254,15 +223,6 @@ Control the leading (line height) of an element.
 {%- endcapture %}
 {% include "docs/example.html" html=html %}
 
-To control the line height of an element, use the following classes:
-
-```html
-<p class="lh-1">...</p>
-<p class="lh-sm">...</p>
-<p class="lh-base">...</p>
-<p class="lh-lg">...</p>
-```
-
 ## Antialiasing
 
 Control the font smoothing of an element.
@@ -273,20 +233,16 @@ Use the `.antialiased` utility to render text using subpixel antialiasing or use
 <div class="antialiased">Text with antialiasing</div>
 <div class="subpixel-antialiased">Text without antialiasing</div>
 {%- endcapture %}
-{% include "docs/example.html" html=html raw %}
+{% include "docs/example.html" html=html %}
 
 ## Keyboard input
 
 Use the `<kbd>` to indicate input that is typically entered via keyboard.
 
 {% capture html -%}
-<div>To edit settings, press <kbd>ctrl</kbd> + <kbd>,</kbd> or <kbd>ctrl</kbd> + <kbd>C</kbd>.</div>
+To edit settings, press <kbd>ctrl</kbd> + <kbd>,</kbd> or <kbd>ctrl</kbd> + <kbd>C</kbd>.
 {%- endcapture %}
 {% include "docs/example.html" html=html %}
-
-```html
-To edit settings, press <kbd>ctrl</kbd> + <kbd>,</kbd> or <kbd>ctrl</kbd> + <kbd>C</kbd>.
-```
 
 ## Markdown elements
 

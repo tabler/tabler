@@ -18,7 +18,7 @@ You can also include the plugin via CDN:
 
 ## Social icons
 
-To create a social icon, add the `social` class to a component and also add the class for the specific social app whose icon you want to use.
+To create a social icon, add the `social` class to a component and provide the class `social-app-*` with the social app whose icon you want to use.
 
 {% capture html -%}
 <span class="social social-app-facebook"></span>
