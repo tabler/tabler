@@ -28,12 +28,7 @@ To create a flag, add the `flag` class to a component and choose the country who
 
 ## Country flags
 
-To use the flag of a particular country, add the `flag-country-(country name)` class. For example, to create a flag of Andorra, you should use the following class: `.flag-country-ad`. The full list of countries can be found below.
-
-```html
-<span class="flag flag-country-ad"></span>
-<span class="flag flag-country-ae"></span>
-```
+To use the flag of a particular country, add the `flag-country-(country name)` class. For example, to create a flag of Andorra, you should use the following class: `.flag-country-ad`. The full list of countries can be found at the end of this page.
 
 {% capture html -%}
 <span class="flag flag-country-tg"></span>
@@ -54,14 +49,6 @@ Using Bootstrap’s typical naming structure, you can create a standard flag, or
 <span class="flag flag-xs flag-country-us"></span>
 {%- endcapture %}
 {% include "docs/example.html" html=html %}
-
-```html
-<span class="flag flag-xl ..."></span>
-<span class="flag flag-lg ..."></span>
-<span class="flag flag-md ..."></span>
-<span class="flag flag-sm ..."></span>
-<span class="flag flag-xs ..."></span>
-```
 
 ## Flags list
 
