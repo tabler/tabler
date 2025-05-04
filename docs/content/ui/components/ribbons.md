@@ -41,7 +41,7 @@ Using multiple classes at once will give you more position options. For example,
 
 ## Ribbon color
 
-Customize the ribbon's background color. You can click [here](/img/ui/base/colors) to see the list of available colors.
+Customize the ribbon's background color. You can click [here](/ui/base/colors) to see the list of available colors.
 
 {% capture html -%}
 <div class="card">
