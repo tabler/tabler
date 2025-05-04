@@ -87,21 +87,10 @@ Add your own text to a ribbon to display any additional information and make it 
 {% capture html -%}
 <div class="card">
   <div class="card-body" style="height: 5rem"></div>
-  <div class="ribbon bg-green">
-    {% include "ui/icon.html" icon="star" %}
-  </div>
+  <div class="ribbon bg-green">NEW</div>
 </div>
 {%- endcapture %}
 {% include "docs/example.html" html=html column %}
-
-```html
-<div class="card">
-  <div class="card-body"></div>
-  <div class="ribbon bg-green">
-    {% include "ui/icon.html" icon="star" %}
-  </div>
-</div>
-```
 
 ## Ribbon style
 
