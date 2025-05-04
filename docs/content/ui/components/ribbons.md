@@ -18,15 +18,6 @@ Use the `ribbon` class to add the default ribbon to any section of your interfac
 {%- endcapture %}
 {% include "docs/example.html" html=html card column %}
 
-```html
-<div class="card">
-  <div class="card-body"></div>
-  <div class="ribbon">
-    {% include "ui/icon.html" icon="star" %}
-  </div>
-</div>
-```
-
 ## Ribbon position
 
 You can change the position of a ribbon by adding one of the following classes to the element:
@@ -48,15 +39,6 @@ Using multiple classes at once will give you more position options. For example,
 {%- endcapture %}
 {% include "docs/example.html" html=html column %}
 
-```html
-<div class="card">
-  <div class="card-body"></div>
-  <div class="ribbon ribbon-top ribbon-start">
-    {% include "ui/icon.html" icon="star" %}
-  </div>
-</div>
-```
-
 ## Ribbon color
 
 Customize the ribbon's background color. You can click [here](/img/ui/base/colors) to see the list of available colors.
@@ -70,15 +52,6 @@ Customize the ribbon's background color. You can click [here](/img/ui/base/color
 </div>
 {%- endcapture %}
 {% include "docs/example.html" html=html column %}
-
-```html
-<div class="card">
-  <div class="card-body"></div>
-  <div class="ribbon bg-red">
-    {% include "ui/icon.html" icon="star" %}
-  </div>
-</div>
-```
 
 ## Ribbon text
 
@@ -105,12 +78,3 @@ Change the style of a ribbon to make it go well with your interface design.
 </div>
 {%- endcapture %}
 {% include "docs/example.html" html=html column %}
-
-```html
-<div class="card">
-  <div class="card-body"></div>
-  <div class="ribbon ribbon-bookmark bg-orange">
-    {% include "ui/icon.html" icon="star" %}
-  </div>
-</div>
-```
