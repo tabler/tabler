@@ -65,9 +65,9 @@ Add your own text to a ribbon to display any additional information and make it 
 {%- endcapture %}
 {% include "docs/example.html" html=html column %}
 
-## Ribbon style
+## Bookmark ribbon
 
-Change the style of a ribbon to make it go well with your interface design.
+Use the `.ribbon-bookmark` class to create a bookmark ribbon. It is a special style of ribbon that is used to highlight important elements in your interface.
 
 {% capture html -%}
 <div class="card w-100">
