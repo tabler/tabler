@@ -551,7 +551,7 @@ Include a `<kbd>` in your input control to add a shortcut hint to the control.
 
 {% capture html -%}
 <div class="mb-3">
-  <label class="form-label">Input with appended link</label>
+  <label class="form-label">Input with appended kbd</label>
   <div class="input-group input-group-flat">
     <input type="password" class="form-control" value="ultrastrongpassword" autocomplete="off" />
     <span class="input-group-text">
