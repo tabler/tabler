@@ -545,7 +545,7 @@ Include a link in your input control to add a clickable element within the contr
 {%- endcapture %}
 {% include "docs/example.html" html=html %}
 
-## Input with appended `<kbd>`
+## Input with appended kbd
 
 Include a `<kbd>` in your input control to add a shortcut hint to the control.
 
