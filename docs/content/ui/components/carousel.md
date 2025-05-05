@@ -381,6 +381,7 @@ An example of adding thumbnails on the right side:
 ## Carousel with captions
 
 Add captions to your slides easily with the `.carousel-caption` element within any `.carousel-item`. To make the text more readable on the image you can add `carousel-caption-background` which will add a black overlay over the image.
+Below the `md` responsive breakpoint, the captions on the following example will be hidden as they have the `d-none` class applied to them.
 
 {% capture html -%}
 <div id="carousel-captions" class="carousel slide" data-bs-ride="carousel">
