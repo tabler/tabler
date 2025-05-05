@@ -13,12 +13,6 @@ Add the autosize element to your input to make it automatically adjust to the le
 
 To create autosize textarea, add the `data-bs-toggle="autosize"` attribute to the textarea element:
 
-```html
-<textarea class="form-control" data-bs-toggle="autosize" placeholder="Type something…"></textarea>
-```
-
-Look at the example below to see how the autosize element works:
-
 {% capture html -%}
 <label class="form-label">Autosize example</label>
 <textarea class="form-control" data-bs-toggle="autosize" placeholder="Type something…"></textarea>
