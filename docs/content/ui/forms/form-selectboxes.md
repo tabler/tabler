@@ -380,25 +380,3 @@ Use more advanced selectboxes to display the range of available options. You can
 </div>
 {%- endcapture %}
 {% include "docs/example.html" html=html column %}
-
-```html
-<label class="form-selectgroup-item flex-fill">
-  <input
-    type="radio"
-    name="form-payment"
-    value="mastercard"
-    class="form-selectgroup-input"
-    checked
-  />
-  <div class="form-selectgroup-label d-flex align-items-center p-3">
-    <div class="me-3">
-      <span class="form-selectgroup-check"></span>
-    </div>
-    <div>
-      <span class="payment payment-provider-mastercard payment-xs me-2"></span>
-      ending in <strong>2807</strong>
-    </div>
-  </div>
-</label>
-```
-
