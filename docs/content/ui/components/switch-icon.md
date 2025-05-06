@@ -15,7 +15,7 @@ The icon transition is triggered by adding an `.active` class to the `switch-ico
     {% include "ui/icon.html" icon="heart" %}
   </span>
   <span class="switch-icon-b text-red">
-    {% include "ui/icon.html" icon="heart-filled" %}
+    {% include "ui/icon.html" icon="heart" type="filled" %}
   </span>
 </button>
 {%- endcapture %}
@@ -31,7 +31,7 @@ You can also add a fancy animation to add variety to your button. See demo below
     {% include "ui/icon.html" icon="circle" %}
   </span>
   <span class="switch-icon-b text-primary">
-    {% include "ui/icon.html" icon="circle-filled" %}
+    {% include "ui/icon.html" icon="circle" type="filled" %}
   </span>
 </button>
 <button class="switch-icon switch-icon-fade" data-bs-toggle="switch-icon">
@@ -39,7 +39,7 @@ You can also add a fancy animation to add variety to your button. See demo below
     {% include "ui/icon.html" icon="heart" %}
   </span>
   <span class="switch-icon-b text-red">
-    {% include "ui/icon.html" icon="heart-filled" %}
+    {% include "ui/icon.html" icon="heart" type="filled" %}
   </span>
 </button>
 <button class="switch-icon switch-icon-scale" data-bs-toggle="switch-icon">
@@ -47,7 +47,7 @@ You can also add a fancy animation to add variety to your button. See demo below
     {% include "ui/icon.html" icon="star" %}
   </span>
   <span class="switch-icon-b text-yellow">
-    {% include "ui/icon.html" icon="star-filled" %}
+    {% include "ui/icon.html" icon="star" type="filled" %}
   </span>
 </button>
 <button class="switch-icon switch-icon-flip" data-bs-toggle="switch-icon">
@@ -55,7 +55,7 @@ You can also add a fancy animation to add variety to your button. See demo below
     {% include "ui/icon.html" icon="thumb-up" %}
   </span>
   <span class="switch-icon-b text-facebook">
-    {% include "ui/icon.html" icon="thumb-up-filled" %}
+    {% include "ui/icon.html" icon="thumb-up" type="filled" %}
   </span>
 </button>
 <button class="switch-icon switch-icon-slide-up" data-bs-toggle="switch-icon">
