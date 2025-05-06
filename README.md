@@ -140,8 +140,8 @@ pnpm install
 ```sh
 pnpm run start
 ```
-5. Open [http://localhost:3000](http://localhost:3000) in your browser, and voilà.
-Any change in the `/src` directory will rebuild the application and refresh the page.
+5. Open [http://localhost:3000](http://localhost:3000) to view the preview website in your browser, or [http://localhost:3010](http://localhost:3010) to view the documentation website - and voilà.
+Changes to most of the source files of Tabler core, preview and docs will rebuild the application and refresh the page.
 
 **Note**:
 If you wish to perform a one-off build without auto-refresh on any changes, you can run:

@@ -396,7 +396,52 @@ If you don't want the table cell content to wrap to another line, use the `table
       <td>Cell</td>
       <td>Cell</td>
     </tr>
+    <tr>
+      <th scope="row">Default</th>
+      <td>Cell</td>
+      <td>Cell</td>
+    </tr>
+    <tr>
+      <th scope="row">Primary</th>
+      <td>Cell</td>
+      <td>Cell</td>
+    </tr>
+    <tr>
+      <th scope="row">Secondary</th>
+      <td>Cell</td>
+      <td>Cell</td>
+    </tr>
+    <tr>
+      <th scope="row">Success</th>
+      <td>Cell</td>
+      <td>Cell</td>
+    </tr>
+    <tr>
+      <th scope="row">Danger</th>
+      <td>Cell</td>
+      <td>Cell</td>
+    </tr>
+    <tr>
+      <th scope="row">Warning</th>
+      <td>Cell</td>
+      <td>Cell</td>
+    </tr>
+    <tr>
+      <th scope="row">Info</th>
+      <td>Cell</td>
+      <td>Cell</td>
+    </tr>
+    <tr>
+      <th scope="row">Light</th>
+      <td>Cell</td>
+      <td>Cell</td>
+    </tr>
+    <tr class="table-dark">
+      <th scope="row">Dark</th>
+      <td>Cell</td>
+      <td>Cell</td>
+    </tr>
   </tbody>
 </table>
 {%- endcapture %}
-{% include "docs/example.html" html=html %}
+{% include "docs/example.html" html=html height="42rem" %}
