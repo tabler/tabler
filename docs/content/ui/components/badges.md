@@ -99,18 +99,12 @@ Place the badge within an `<a>` element if you want it to perform the function o
 
 ## Button with badge
 
-Badges can be used as part of links or buttons to provide a counter.
-
-```
-<button type="button" class="btn">
-  Notifications <span class="badge bg-red-lt ms-2">4</span>
-</button>
-```
-
-The results can be seen in the example below.
+Badges can be used as part of links or buttons to provide, for example, a counter.
 
 {% capture html -%}
-<button type="button" class="btn">Notifications <span class="badge bg-red-lt ms-2">4</span></button>
+<button type="button" class="btn">
+	Notifications <span class="badge bg-red-lt ms-2">4</span>
+</button>
 <button type="button" class="btn">
   Notifications <span class="badge bg-green-lt ms-2">4</span>
 </button>

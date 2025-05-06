@@ -8,14 +8,6 @@ description: Highlight interface elements with status dots.
 
 Use the default status to notify users about the status of a component or page, helping them avoid confusion. Full list of available colors can be found in the [Colors](/img/ui/base/colors) section.
 
-```html
-<span class="status status-blue">Blue</span>
-<span class="status status-azure">Azure</span>
-...
-```
-
-Look at the example below to see how the status works:
-
 {% capture html -%}
 <span class="status status-blue">Blue</span>
 <span class="status status-azure">Azure</span>
@@ -36,15 +28,6 @@ Look at the example below to see how the status works:
 ## Status with dot
 
 You can add a dot to the status to make it more noticeable. To do this, use the `.status-dot` element inside the `.status` element.
-
-```html
-<span class="status status-blue">
-  <span class="status-dot"></span>
-  Blue
-</span>
-```
-
-Look at the example below to see how the status with a dot works:
 
 {% capture html -%}
 <span class="status status-blue">
@@ -213,12 +196,6 @@ Use the lite status to make the status less noticeable. To do this, add a `.stat
 ## Status dots
 
 If you need only dot status, you can use the `.status-dot` class.
-
-```html
-<span class="status-dot status-blue"></span>
-```
-
-Look at the example below to see how the status dots work:
 
 {% capture html -%}
 <span class="status-dot status-blue"></span>
