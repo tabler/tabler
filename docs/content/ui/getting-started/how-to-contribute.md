@@ -4,7 +4,7 @@ summary: This guide explains how to contribute to Tabler, from setting up a deve
 description: Guide to contributing to Tabler and setting up for development.
 ---
 
-Contributions are always welcome and highly encouraged! Whether you're new to open source or a seasoned contributor, your input helps make Tabler better for everyone. If you're new to open source, [start here](https://opensource.guide/how-to-contribute/) to learn more about contributing.
+Contributions are always welcome and highly encouraged! Whether you're new to open source or a seasoned contributor, your input helps make Tabler better for everyone. If you're new to open source, we recommend reading a [how to contribute](https://opensource.guide/how-to-contribute/) guide to learn more about contributing.
 
 ## Contribution Requirements
 
@@ -13,7 +13,7 @@ When contributing to Tabler, please adhere to the following guidelines:
 1. By submitting a contribution, you grant a non-exclusive license to the Tabler project to use your contribution in any context deemed appropriate.
 2. If your contribution includes content from other sources, it must be appropriately licensed under an open source license.
 3. Contributions must be submitted via GitHub pull requests.
-4. Ensure your code works in all supported browsers (refer to our [browser support documentation](/img/ui/getting-started/browser-support)).
+4. Ensure your code works in all supported browsers (refer to our [browser support documentation](/ui/getting-started/browser-support)).
 
 ## Installation
 

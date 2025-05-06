@@ -46,7 +46,7 @@ You can modify the position of the text which is to be included in a separator a
 
 ## Divider color
 
-Customize the color of dividers to make them go well with your design. Click [here](/img/ui/base/colors) to see the list of available colors.
+Customize the color of dividers to make them go well with your design. See the [full list of available colors](/ui/base/colors) for more details.
 
 {% capture html -%}
 <p>

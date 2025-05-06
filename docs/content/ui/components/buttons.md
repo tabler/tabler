@@ -151,7 +151,7 @@ Add `.btn-lg` or `.btn-sm` to change the size of your button and differentiate t
 
 Label your button with text and add an icon to communicate the action and make it easy to identify for users. Icons are easily recognized and improve the aesthetics of your button design, giving it a modern and attractive look.
 
-Icons can be found [**here**](/img/components/icons)
+See all icons at [tabler.io/icons]({{ site.icons.link }}).
 
 {% capture html -%}
 <button type="button" class="btn">
