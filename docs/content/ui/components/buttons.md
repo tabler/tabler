@@ -373,7 +373,7 @@ Create a dropdown button that will encourage users to click for more options. Yo
   </div>
 </div>
 {%- endcapture -%}
-{%- include "docs/example.html" html=html centered hide-code -%}
+{%- include "docs/example.html" html=html centered hide-code height="260px" -%}
 
 ```html
 <div class="dropdown">
