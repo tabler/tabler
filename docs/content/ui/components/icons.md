@@ -5,7 +5,7 @@ banner: icons
 description: Enhance dashboards with custom icons.
 ---
 
-If you need to add icons to your website, you can use the [Tabler Icons library]({{ site.icons.link }}). It contains over 5000 icons that you can use in your projects. All icons are under the MIT license, so you can use them without any problem both in private and commercial projects.
+If you need to add icons to your website, you can use the Tabler Icons library. It contains over 5000 icons that you can use in your projects. All icons are under the MIT license, so you can use them without any problem both in private and commercial projects. You can find the Tabler Icons library [here](https://tabler-icons.io/).
 
 ## Base icon
 
@@ -27,7 +27,7 @@ Results can be seen in the example below.
 
 ## Filled icons
 
-To use filled icons, you need to copy the SVG code of the selected filled Icon from the [Tabler Icons website]({{ site.homepage }}/icons) and paste it into your HTML file.
+To use filled icons, you need to copy the SVG code from the Tabler Icons website and paste it into your HTML file.
 
 {% capture html -%}
 {% include "ui/icon.html" icon="heart" type="filled" %}
@@ -42,7 +42,7 @@ To use filled icons, you need to copy the SVG code of the selected filled Icon f
 To change the color of the icon, you need to add the `text-*` class to the parent element of the icon. See the [full list of available colors](/ui/base/colors) for more details. Color classes can be used with any HTML element.
 
 ```html
-<span class="text-red">~~~~
+<span class="text-red">
   <!-- Icon code here -->
 </span>
 ```
