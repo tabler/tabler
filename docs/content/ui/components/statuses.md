@@ -6,7 +6,7 @@ description: Highlight interface elements with status dots.
 
 ## Default markup
 
-Use the default status to notify users about the status of a component or page, helping them avoid confusion. Full list of available colors can be found in the [Colors](/img/ui/base/colors) section.
+Use the default status to notify users about the status of a component or page, helping them avoid confusion. Full list of available colors can be found in the [Colors](/ui/base/colors) section.
 
 {% capture html -%}
 <span class="status status-blue">Blue</span>

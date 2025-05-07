@@ -9,7 +9,7 @@ The countup component is used to display numbers dynamically. It is a great way 
 
 To be able to use the countup in your application you will need to install the countup.js dependency with `npm install countup.js`.
 
-For more advanced features of countups, click [here](https://inorganik.github.io/countUp.js/) and see what more you can do.
+For more advanced features of countups, see the demo on the [countUp.js website](https://inorganik.github.io/countUp.js/).
 
 ## Basic usage
 

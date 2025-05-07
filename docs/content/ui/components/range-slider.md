@@ -7,8 +7,6 @@ summary: Range sliders allow users to select a range of values by adjusting two 
 
 To be able to use the range slider in your application you will need to install the noUiSlider dependency with `npm install nouislider`.
 
-All options and features can be found [here](https://refreshless.com/nouislider/).
-
 ## Basic range slider
 
 {% capture html -%}
@@ -30,4 +28,4 @@ All options and features can be found [here](https://refreshless.com/nouislider/
 {%- endcapture %}
 {% include "docs/example.html" html=html %}
 
-That's only the basic features and options of range slider. More possibilities can be found [here](https://refreshless.com/nouislider/).
+For more details on customizing a noUiSlider element, see the documentation on the [noUiSlider website](https://refreshless.com/nouislider/).
