@@ -144,7 +144,7 @@ If you want to use the image check as a radio button, you can change the input t
 
 ## Avatars
 
-If you want to use the image check with avatars, you can use an [avatar component](/img/ui/components/avatars) instead of an image.
+If you want to use the image check with avatars, you can use an [avatar component](/ui/components/avatars) instead of an image.
 
 {% capture html -%}
 <div class="mb-3">
