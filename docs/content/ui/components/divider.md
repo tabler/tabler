@@ -8,7 +8,7 @@ description: Separate content with clear dividers.
 
 Use dividers to visually separate content into parts. You can use a line only or add text that will be centered by default.
 
-```html example
+{% capture html -%}
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias, dolore dolores doloribus est ex.
 </p>
@@ -17,7 +17,8 @@ Use dividers to visually separate content into parts. You can use a line only or
   Dicta error hic illo iure necessitatibus nihil officiis omnis perferendis, praesentium repellendus
   rerum, saepe sed, sit!
 </p>
-```
+{%- endcapture %}
+{% include "docs/example.html" html=html %}
 
 ## Text position
 

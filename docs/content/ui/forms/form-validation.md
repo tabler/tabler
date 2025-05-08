@@ -20,13 +20,6 @@ To apply the validation state to the form control, use the `.is-valid` and `.is-
 
 To provide users with additional information about the validation state, you can use the `.valid-feedback` and `.invalid-feedback` classes.
 
-```html
-<input type="text" class="form-control is-valid" placeholder="Valid State..." />
-<div class="valid-feedback">Looks good!</div>
-```
-
-This is how it works in the example below:
-
 {% capture html -%}
 <div>
   <label class="form-label required">City</label>
@@ -52,12 +45,6 @@ You can also use the `.valid-feedback` to provide users with positive feedback.
 If you prefer a more subtle manner of informing users of the input control validation state, you can use tick and cross symbols and refrain from using colored control frames and the validation feedback.
 
 To do this, use the `.is-valid-lite` and `.is-invalid-lite` classes.
-
-```html
-<input type="text" class="form-control is-valid is-valid-lite" placeholder="Valid State..." />
-```
-
-Look how it works in the example below:
 
 {% capture html -%}
 <input type="text" class="form-control is-valid is-valid-lite" placeholder="Valid State..." />

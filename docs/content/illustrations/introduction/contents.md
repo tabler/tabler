@@ -75,3 +75,5 @@ This folder contains SVG files using CSS variables for flexible theming.
 - `light/`: Light-themed illustrations.
 
 This structure ensures easy access to various formats and themes, making Tabler Illustrations a versatile tool for developers and designers alike.
+
+**Find out more and purchase Tabler Illustrations at [our website]({{ site.homepage }}/illustrations)**.

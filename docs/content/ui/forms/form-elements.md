@@ -97,24 +97,6 @@ Use the `form-control-rounded` class if you prefer form controls with rounded co
 {%- endcapture %}
 {% include "docs/example.html" html=html %}
 
-```html
-<div class="mb-3">
-  <label class="form-label">Form control rounded</label>
-  <input
-    type="text"
-    class="form-control form-control-rounded mb-2"
-    name="Form control rounded"
-    placeholder="Text.."
-  />
-  <div class="input-icon">
-    <input type="text" value="" class="form-control form-control-rounded" placeholder="Search…" />
-    <span class="input-icon-addon">
-      {% include "ui/icon.html" icon="search" %}
-    </span>
-  </div>
-</div>
-```
-
 ## Form control flush
 
 You can remove borders from your form control by adding the `form-control-flush` class.

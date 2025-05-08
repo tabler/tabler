@@ -3,18 +3,7 @@ title: Segmented Control
 summary: A segmented control is a set of two or more segments, each of which functions as a mutually exclusive button. A segmented control is used to display a set of mutually exclusive options.
 ---
 
-To create a segmented control, use the `nav` element with the `nav-segmented` class. Inside the `nav` element, add `button` or `a` elements with the `nav-link` class. The `nav-link` class is used to style the buttons as links. 
-
-```html
-<nav class="nav nav-segmented" role="tablist">
-  <button class="nav-link" role="tab" data-bs-toggle="tab" aria-selected="true" aria-current="page">
-    First
-  </button>
-  ...
-</nav>
-```
-
-See the example below to see how the segmented control looks.
+To create a segmented control, use the `nav` element with the `nav-segmented` class. Inside the `nav` element, add `button` or `a` elements with the `nav-link` class. The `nav-link` class is used to style the buttons as links.
 
 {% capture html -%}
 <nav class="nav nav-segmented" role="tablist">

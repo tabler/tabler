@@ -9,17 +9,6 @@ description: Navigation aid for better structure.
 
 Use the `breadcrumb` class to add a breadcrumb to your interface design for better navigation. The `active` modifier in a `li` tag will help you indicate the current page location and facilitate navigation within your website or app.
 
-```html
-<ol class="breadcrumb">
-  <li class="breadcrumb-item">
-    <a href="#">...</a>
-  </li>
-  <li class="breadcrumb-item active">
-    <a href="#">...</a>
-  </li>
-</ol>
-```
-
 Look at the example below to see how breadcrumbs work in practice.
 
 {% capture html -%}
@@ -40,12 +29,6 @@ Look at the example below to see how breadcrumbs work in practice.
 ## Different separators
 
 You can use different breadcrumb styles to match your website or app design. Choose between `breadcrumb-dots`, `breadcrumb-arrows`, and `breadcrumb-bullets` to create a unique look.
-
-```html
-<ol class="breadcrumb breadcrumb-dots">
-  ...
-</ol>
-```
 
 This example shows how to use different breadcrumb styles.
 

@@ -43,12 +43,6 @@ Look at the example below to see how the input help works:
 
 Use the `.required` class to indicate that a field is required. It will add a red asterisk to the label.
 
-```html
-<label class="form-label required">Required</label>
-```
-
-Look at the example below to see how the required field works:
-
 {% capture html -%}
 <div>
   <label class="form-label required">Required</label>
@@ -79,12 +73,6 @@ Look at the example below to see how the form hint works:
 ## Additional info inside label
 
 Use the `.form-label-description` class to add additional information to the label. The text will appear next to the label. You can use it to add for example a character counter.
-
-```html
-<label class="form-label">Textarea <span class="form-label-description">56/100</span> </label>
-```
-
-This example shows how to use the additional info inside the label:
 
 {% capture html -%}
 <div>

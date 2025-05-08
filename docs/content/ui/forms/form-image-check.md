@@ -133,15 +133,6 @@ If you want to use the image check as a radio button, you can change the input t
 {%- endcapture %}
 {% include "docs/example.html" html=html %}
 
-```html
-<label class="form-imagecheck">
-  <input name="..." type="radio" value="1" class="form-imagecheck-input" />
-  <span class="form-imagecheck-figure">
-    <img src="..." alt="" class="form-imagecheck-image" />
-  </span>
-</label>
-```
-
 ## Avatars
 
 If you want to use the image check with avatars, you can use an [avatar component](/ui/components/avatars) instead of an image.
@@ -203,14 +194,3 @@ If you want to use the image check with avatars, you can use an [avatar componen
 </div>
 {%- endcapture %}
 {% include "docs/example.html" html=html %}
-
-```html
-<label class="form-imagecheck">
-  <input name="..." type="checkbox" value="..." class="form-imagecheck-input" />
-  <span class="form-imagecheck-figure">
-    <span class="form-imagecheck-image">
-      <span class="avatar avatar-md" style="background-image: url(...)"></span>
-    </span>
-  </span>
-</label>
-```

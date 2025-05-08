@@ -167,7 +167,7 @@ Use tabs without label names to save space and make the tab content easy to reco
       </li>
       <li class="nav-item ms-auto">
         <a href="#tabs-settings-ex3" class="nav-link" title="Settings" data-bs-toggle="tab">
-          {% include "ui/icon.html" icon="setings" %}
+          {% include "ui/icon.html" icon="settings" %}
         </a>
       </li>
     </ul>

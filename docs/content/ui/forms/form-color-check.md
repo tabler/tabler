@@ -98,7 +98,6 @@ There is also an example of a color input:
 
 If you need to select only one color, you can use the radio input type:
 
-
 {% capture html -%}
 <div class="mb-3">
   <label class="form-label">Color Input</label>
@@ -186,27 +185,9 @@ If you need to select only one color, you can use the radio input type:
 {%- endcapture %}
 {% include "docs/example.html" html=html %}
 
-```html
-<label class="form-colorinput">
-  <input name="..." type="radio" value="..." class="form-colorinput-input" />
-  <span class="form-colorinput-color bg-dark rounded-circle"></span>
-</label>
-```
-
 ## Input color picker
 
 Add an color picker to your form to let users customize it according to their preferences.
-
-```html
-<input
-  type="color"
-  class="form-control form-control-color"
-  value="#066fd1"
-  title="Choose your color"
-/>
-```
-
-There is also an example of a color picker input:
 
 {% capture html -%}
 <div class="mb-3">

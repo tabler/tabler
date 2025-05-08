@@ -40,13 +40,6 @@ Cards with the `.card-sm` class are well suited for small items such as widgets,
 {%- endcapture %}
 {% include "docs/example.html" html=html bg="surface-secondary" column %}
 
-```html
-<div class="card card-sm">...</div>
-<div class="card">...</div>
-<div class="card card-md">...</div>
-<div class="card card-lg">...</div>
-```
-
 ## Card with title
 
 Add a title to your card by including the `.card-title` class within `.card-body`. You can also place the title inside the `.card-header` element to separate the title from the content with a horizontal line.
@@ -198,7 +191,7 @@ You can also add an image on the left side of the card. To do it, add the `.card
 
 ## Color variations
 
-Add a status color to your card, either at the top or on the side of the card, to customize it and make it more eye-catching.
+Add a status color to your card, either at the top or on the side of the card, to customize it and make it more eye-catching. Use `card-status-*` and `bg-*` classes to change the placement and color of the status border.
 
 {% capture html -%}
 <div class="row row-deck">
