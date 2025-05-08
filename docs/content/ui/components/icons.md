@@ -27,7 +27,7 @@ Results can be seen in the example below.
 
 ## Filled icons
 
-To use filled icons, you need to copy the SVG code of the selected filled Icon from the [Tabler Icons website]({{ site.homepage }}/icons) and paste it into your HTML file.
+To use filled icons, you need to copy the SVG code of the selected filled Icon from the [Tabler Icons website]({{ site.icons.link }}) and paste it into your HTML file.
 
 {% capture html -%}
 {% include "ui/icon.html" icon="heart" type="filled" %}

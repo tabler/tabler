@@ -60,6 +60,6 @@ It contains 4 subfolders with images used across the different email templates:
 This file contains the license information for the Tabler Emails package.
 
 ### 4. Readme: `readme.html`
-This file with the main information about the Tabler Emails package. It contains a brief description of the package and instructions on how to use it.
+This file contains the main information about the Tabler Emails package, including a brief description and instructions on how to use it.
 
 Do you like our templates? **Find out more and purchase on [our website]({{ site.homepage }}/emails)**.

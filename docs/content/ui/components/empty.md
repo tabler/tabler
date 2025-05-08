@@ -63,7 +63,7 @@ Use the default empty state to engage users in the critical moments of their exp
 
 Make your empty state screen more attractive and engaging by adding an illustration. Thanks to a more personalized design, you will improve your brand image and make your website or app more user friendly.
 
-Do you need an illustration to enhance your web designs? We got something for you! Check out our premium SVG [illustrations]({{ site.homepage }}/illustrations).
+Do you need an illustration to enhance your web designs? We've got something for you! Check out our premium SVG [illustrations]({{ site.homepage }}/illustrations).
 
 {% capture html -%}
 <div class="empty">

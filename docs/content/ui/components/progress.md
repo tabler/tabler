@@ -56,7 +56,7 @@ You can create a progress bar which shows indeterminate progress by adding `.pro
 
 ## Native progress element
 
-You can also use native HTML5 `<progress>` element. It is a great way to create a progress bar without the need for additional HTML elements. This is how it looks like:
+You can also use the native HTML5 `<progress>` element. It is a great way to create a progress bar without the need for additional HTML elements. This is what it looks like:
 
 {% capture html -%}
 <progress class="progress progress-sm" value="15" max="100" />
