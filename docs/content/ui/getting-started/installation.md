@@ -7,7 +7,7 @@ description: "Set up Tabler: HTML, CSS, JS, and build stunning UIs."
 
 This guide will take you through the essential steps to set up Tabler in your project, from creating a basic HTML file to incorporating Tabler’s styles and scripts. Let’s dive in!
 
-<div class="steps">
+<div class="steps steps-vertical">
 
 ### Create a Basic HTML File
 
