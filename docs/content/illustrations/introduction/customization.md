@@ -511,7 +511,7 @@ Look at the example below to see how you can change the color of the skin.
 
 Tabler Illustrations uses `--tblr-primary` as a fallback color if `--tblr-illustrations-primary` is not set, so if you have a primary color set in your design system, you can use that to ensure consistency across your project.
 
-```html example columns={1} centered vertical separated height="30rem"
+{% capture html -%}
 <div class="card">
   <div class="card-body">
     <div>
@@ -785,8 +785,8 @@ Tabler Illustrations uses `--tblr-primary` as a fallback color if `--tblr-illust
     });
   });
 </script>
-```
-
+{%- endcapture %}
+{% include "docs/example.html" html=html %}
 
 ## Dark version of the illustration
 
