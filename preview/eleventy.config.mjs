@@ -23,6 +23,8 @@ export default function (eleventyConfig) {
 		...getCopyList(),
 		"pages/favicon.ico": "favicon.ico",
 		"static": "static",
+		"node_modules/@melloware/coloris/dist/umd/coloris.min.js": "libs/melloware/coloris/dist/umd/coloris.min.js",
+		"node_modules/@melloware/coloris/dist/coloris.min.css": "libs/melloware/coloris/dist/coloris.min.css"
 	});
 
 	eleventyConfig.addPlugin(EleventyRenderPlugin, {
