@@ -1,5 +1,5 @@
 <p align="center">
-<a href="https://github.com/tabler/tabler"><img src="https://raw.githubusercontent.com/tabler/tabler/refs/heads/dev/preview/static/logo.svg" alt="A premium and open source dashboard template with a responsive and high-quality UI." width="300"></a><br><br>
+<a href="https://github.com/tabler/tabler"><img src="https://raw.githubusercontent.com/tabler/tabler/refs/heads/dev/shared/static/logo.svg" alt="A premium and open source dashboard template with a responsive and high-quality UI." width="300"></a><br><br>
 A premium and open source dashboard template with a responsive and high-quality UI.
 </p>
 
@@ -25,7 +25,7 @@ A premium and open source dashboard template with a responsive and high-quality 
 
 <p align="center">
 	<a href="https://github.com/sponsors/codecalm" target="_blank">
-			<img src="https://raw.githubusercontent.com/tabler/tabler/dev/preview/static/sponsor-banner-homepage.svg" alt="Sponsor Banner">
+			<img src="https://raw.githubusercontent.com/tabler/tabler/dev/shared/static/sponsor-banner-homepage.svg" alt="Sponsor Banner">
 	</a>
 </p>
 
@@ -59,7 +59,7 @@ Tabler is fully responsive and compatible with all modern browsers. Thanks to it
 
 <p align="center">
 	<a href="https://preview.tabler.io" target="_blank">
-			<img src="https://raw.githubusercontent.com/tabler/tabler/dev/preview/static/tabler-preview.png" alt="Tabler Preview">
+			<img src="https://raw.githubusercontent.com/tabler/tabler/dev/shared/static/tabler-preview.png" alt="Tabler Preview">
 	</a>
 </p>
 
