@@ -75,7 +75,7 @@ We've created this admin panel for everyone who wants to create templates based 
 
 ## 📖 Documentation
 
-The documentation is available at https://tabler.io/docs/
+The documentation is available at https://docs.tabler.io/
 
 ## 🪴 Project Activity
 

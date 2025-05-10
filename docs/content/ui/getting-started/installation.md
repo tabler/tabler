@@ -64,4 +64,4 @@ Save the file and open it in your browser. You should see your first Tabler-powe
 
 </div>
 
-With these simple steps, you're ready to explore Tabler's features and build stunning web interfaces. For inspiration and guidance, you can view live demos at [preview.tabler.io](https://preview.tabler.io) and consult our [official documentation](https://tabler.io/docs) for detailed instructions and examples.
+With these simple steps, you're ready to explore Tabler's features and build stunning web interfaces. For inspiration and guidance, you can view live demos at [preview.tabler.io](https://preview.tabler.io) and consult our [official documentation](https://docs.tabler.io) for detailed instructions and examples.
