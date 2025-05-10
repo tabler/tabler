@@ -18,20 +18,9 @@ To use the Inline Player, you need to include the Plyr library in your project. 
 <script src="{{ cdnUrl }}/dist/libs/plyr/dist/plyr.min.js"></script>
 ```
 
-## Sample demo
+## YouTube video
 
 Integrating the Inline Player into your website is straightforward. Below is a sample implementation for a YouTube video:
-
-```html
-<div id="player-youtube" data-plyr-provider="youtube" data-plyr-embed-id="dQw4w9WgXcQ"></div>
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    window.Plyr && new Plyr("#player-youtube");
-  });
-</script>
-```
-
-Look at the example below to see how the Inline Player works with a YouTube video.
 
 {% capture html -%}
 <div id="player-youtube" data-plyr-provider="youtube" data-plyr-embed-id="dQw4w9WgXcQ"></div>
@@ -46,7 +35,7 @@ Look at the example below to see how the Inline Player works with a YouTube vide
 
 ## Vimeo file
 
-Here’s how to embed a Vimeo video using the Inline Player:
+For the Vimeo video you just need to change the `data-plyr-provider`.
 
 {% capture html -%}
 <div id="player-vimeo" data-plyr-provider="vimeo" data-plyr-embed-id="707012696"></div>
@@ -58,3 +47,17 @@ Here’s how to embed a Vimeo video using the Inline Player:
 </script>
 {%- endcapture %}
 {% include "docs/example.html" html=html %}
+
+## HTML5 video and audio
+
+Check out the [Plyr documentation](https://github.com/sampotts/plyr) for more options and examples, including HTML5 video and audio support.
+
+## Customization
+
+The Inline Player uses the primary color as the default color scheme. You can customize the player by modifying the CSS variables in your stylesheet. For example, to change the primary color, you can add the following CSS:
+
+```scss
+--plyr-color-main: #ff0000; /* Change to your desired color */
+```
+
+For more customization options, refer to the [Customizing the CSS](https://github.com/sampotts/plyr?tab=readme-ov-file#customizing-the-css) section in the Plyr documentation.
