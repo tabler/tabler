@@ -49,7 +49,7 @@ Look at the example below to see how the Inline Player works with a YouTube vide
 Here’s how to embed a Vimeo video using the Inline Player:
 
 {% capture html -%}
-<div id="player-vimeo" data-plyr-provider="vimeo" data-plyr-embed-id="515937365"></div>
+<div id="player-vimeo" data-plyr-provider="vimeo" data-plyr-embed-id="707012696"></div>
 <script src="{{ cdnUrl }}/dist/libs/plyr/dist/plyr.min.js"></script>
 <script>
   document.addEventListener("DOMContentLoaded", function () {
