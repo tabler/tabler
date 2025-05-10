@@ -5,7 +5,7 @@ export function appFilters(eleventyConfig) {
 	if (process.env.ELEVENTY_RUN_MODE === "serve") {
 		eleventyConfig.setServerPassthroughCopyBehavior("passthrough");
 	} 
-	
+
 	eleventyConfig.setLiquidOptions({
 		timezoneOffset: 0,
 		jekyllInclude: true,
@@ -145,6 +145,19 @@ export function appFilters(eleventyConfig) {
 		}
 
 		return elem[0];
+	})
+
+	// Convert a URL path to an absolute URL
+	eleventyConfig.addFilter("absolute_url", function (url) {
+		// Base URL for the site - change this to your production domain
+		const baseUrl = "https://docs.tabler.io";
+
+		// Ensure url starts with a slash
+		if (!url.startsWith('/')) {
+			url = '/' + url;
+		}
+
+		return baseUrl + url;
 	})
 
 	// time ago from today

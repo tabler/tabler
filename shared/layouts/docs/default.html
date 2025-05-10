@@ -4,7 +4,47 @@
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Tabler Documentation - {{ title }}</title>
+
+	{% assign pageSection = "" %}
+	{% if page.url contains "/ui/" %}
+	  {% assign pageSection = "UI" %}
+	{% elsif page.url contains "/icons/" %}
+	  {% assign pageSection = "Icons" %}
+	{% elsif page.url contains "/illustrations/" %}
+	  {% assign pageSection = "Illustrations" %}
+	{% elsif page.url contains "/emails/" %}
+	  {% assign pageSection = "Emails" %}
+	{% endif %}
+
+	{% assign metaTitle = title %}
+	{% if seoTitle %}
+	  {% assign metaTitle = seoTitle %}
+	{% endif %}
+
+	{% assign metaDescription = description %}
+	{% if seoDescription %}
+	  {% assign metaDescription = seoDescription %}
+	{% endif %}
+
+	{% assign siteName = "Tabler Documentation" %}
+	{% if pageSection != "" %}
+	  {% assign siteName = "Tabler " | append: pageSection | append: " Documentation" %}
+	{% endif %}
+
+	<title>{{ metaTitle }} | {{ siteName }}</title>
+	{% if metaDescription %}<meta name="description" content="{{ metaDescription }}">{% endif %}
+	<link rel="canonical" href="{{ page.url | absolute_url }}">
+
+	<!-- Open Graph / Social Media Meta Tags -->
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="{{ metaTitle }}">
+	{% if metaDescription %}<meta property="og:description" content="{{ metaDescription }}">{% endif %}
+	<meta property="og:site_name" content="{{ siteName }}">
+
+	<!-- Twitter Card data -->
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="{{ metaTitle }}">
+	{% if metaDescription %}<meta name="twitter:description" content="{{ metaDescription }}">{% endif %}
 
 	<script defer data-api="/stats/event" data-domain="docs.tabler.io" src="/stats/js/script.js"></script>
 
@@ -15,7 +55,7 @@
 		rel="stylesheet" />
 	{% endfor %}
 
-	
+
 	{% if docs-libs -%}
 	{% for lib in libs.css -%}
 	{% if docs-libs contains lib[0] -%}
