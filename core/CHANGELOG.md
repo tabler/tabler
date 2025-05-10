@@ -1,5 +1,11 @@
 # @tabler/core
 
+## 1.2.1
+
+### Patch Changes
+
+- e675389: Fix missing border-radius to `.card-header-tabs`
+
 ## 1.2.0
 
 ### Minor Changes
