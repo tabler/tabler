@@ -1,4 +1,3 @@
-
 import { appFilters } from "../shared/e11ty/filters.mjs"
 import { appData, getCopyList } from "../shared/e11ty/data.mjs";
 import { readFileSync, existsSync } from 'node:fs';
@@ -227,7 +226,8 @@ export default function (eleventyConfig) {
 	eleventyConfig.addFilter("toc", function (name) {
 		const toc = [];
 
-		const headings = name.match(/<h([2-3])>([^<]+)<\/h\1>/g);
+		const contentWithoutExamples = name.replace(/<div[^>]*\bclass=["'][^"']*\bexample\b[^"']*".*?>.*?<\/div>/gs, '');
+		const headings = contentWithoutExamples.match(/<h([23])>([^<]+)<\/h\1>/g);
 
 		if (headings) {
 			headings.forEach(heading => {
