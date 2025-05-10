@@ -1,4 +1,3 @@
-
 import { appFilters } from "../shared/e11ty/filters.mjs"
 import { appData, getCopyList } from "../shared/e11ty/data.mjs";
 import { readFileSync, existsSync } from 'node:fs';
