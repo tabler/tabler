@@ -54,7 +54,7 @@ Check out the [Plyr documentation](https://github.com/sampotts/plyr) for more op
 
 ## Customization
 
-The Inline Player uses the primary color as the default color scheme. You can customize the player by modifying the CSS variables in your stylesheet. For example, to change the primary color, you can add the following CSS:
+The Inline Player uses the primary color as the default color scheme. You can customize the player by modifying the CSS variables in your stylesheet. For example, to change the main color, you can add the following CSS:
 
 ```scss
 --plyr-color-main: #ff0000; /* Change to your desired color */
