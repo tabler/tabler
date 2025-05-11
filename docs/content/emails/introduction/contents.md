@@ -44,8 +44,8 @@ The **Tabler Emails** package is organized into a clear and efficient folder str
 
 ### 1. Email Templates: `emails/`
 This folder contains {{ emailsCount }} email subfolders, each with a specific template. Each email folder contains the following files:
-* Compiled HTML files for light and dark themes. Read more about their usage in the [Compiled HTML](/img/emails/compiled-html) section.
-* Source HTML files for light and dark themes. Find more information in the [Source HTML](/img/emails/source-html) section.
+* Compiled HTML files for light and dark themes. Read more about their usage in the [Compiled HTML](/emails/introduction/compiled-html) section.
+* Source HTML files for light and dark themes. Find more information in the [Source HTML](/emails/introduction/source-html) section.
 * Screenshot images for desktop and mobile views.
 * Assets folder with images used in the email template and the CSS file with styles.
 

@@ -39,16 +39,16 @@ To set up Tabler for development, follow these steps:
 
 <div class="steps steps-vertical">
 
-### Ensure Node.js and npm are installed
+### Ensure Node.js and pnpm are installed
 
 You’ll need Node.js (v20 or higher) and pnpm to compile Tabler’s files. If you don’t have them installed, download and install them from the official websites:
 
 - [Node.js](https://nodejs.org/)
-- [pnpm](https://pnpm.io/)
+- [pnpm](https://pnpm.io/) (we use pnpm over other package managers for faster installation).
 
 ### Install dependencies
 
-Run the following command to install all required npm packages. We recommend using pnpm for faster installation:
+Run the following command to install all required npm packages:
 
 ```bash
 pnpm install
@@ -56,7 +56,7 @@ pnpm install
 
 ### Start developer mode
 
-Use the following command to enable autocompilation with live reload. This will start a local server at `http://localhost:3000/`:
+Use the following command to enable autocompilation with live reload. This will start up the preview website at `http://localhost:3000/`, and the documentation website at `http://localhost:3010/`:
 
 ```bash
 pnpm run dev
@@ -64,7 +64,7 @@ pnpm run dev
 
 ### Make changes
 
-Make your changes in the appropriate folders, such as `./src/` or `./docs/`. Avoid modifying files in `./dist/`, as they are auto-generated during the build process and will be overwritten.
+Make your changes in the appropriate folders, such as `./core/`, `./preview/` or `./docs/`. Avoid modifying files in any `dist` folders, as they are auto-generated during the build process and will be overwritten.
 </div>
 
 ## Compiling for Production
