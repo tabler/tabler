@@ -38,4 +38,8 @@ export function getCopyList () {
 }
 
 export function appData(eleventyConfig) {
+	eleventyConfig.addGlobalData("package", JSON.parse(readFileSync(join("..", "core", "package.json"), "utf-8")));
+	eleventyConfig.addGlobalData("readme", readFileSync(join("..", "README.md"), "utf-8"));
+	eleventyConfig.addGlobalData("license", readFileSync(join("..", "LICENSE"), "utf-8"));
+	eleventyConfig.addGlobalData("changelog", readFileSync(join("..", "core", "CHANGELOG.md"), "utf-8"));
 }

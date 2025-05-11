@@ -1,199 +1,182 @@
-# @tabler/core
+# Changelog
 
-## 1.2.0
+## `1.2.0` - 2025-04-16
 
-### Minor Changes
+- Add gradient background utilities
+- Add new apps card with brand icons in navbar
+- Replaced TinyMCE with HugeRTE to address license violation
+- Update Bootstrap to version 5.3.5
+- Add theme settings wizard
+- Add steps light colors
+- Add Turbo library integration
+- Rollback accordion component structure
+- Add space between page numbers in pagination
+- Add Bootstrap components to Tabler JS
+- Fix tooltip colors in vector maps
+- Update avatar size variable to support list size configuration
+- Fix broken shape in South Korea flag
+- Refactor `border-radius` in components to use CSS variables
+- Update disabled color variables in navbars
+- Apply border radius to `tom-select` on focus
+- Add avatars page with various demos of avatars
+- Minor spelling and grammar improvements to emails docs
+- Update avatar size variable to support list size configuration
+- Refactor SCSS for alerts and close button styles
+- Fix `autosize` and `input mask` plugins to use window scope
+- Fix scrollbar color mixin to use body color variable
+- Improve README
+- Make scrollbar track transparent
+- Fix scrollbar jumps when content is higher than screen
+- Add responsive font size for form controls on mobile devices
+- Add new advanced table example
 
-- c59bc9d: Add gradient background utilities
-- f9e4da2: Add new apps card with brand icons in navbar
-- 92a3afe: Replaced TinyMCE with HugeRTE to address license violation
-- 199f39a: Update Bootstrap to version 5.3.5
-- 9bbcb99: Add theme settings wizard
-- b17b488: Add steps light colors
-- 215eaa4: Add Turbo library integration
+## `1.1.1` - 2025-03-01
 
-### Patch Changes
+- Fix Documentation structure
 
-- aea3b0a: Rollback accordion component structure
-- 3fc7b84: Add space between page numbers in pagination
-- 2f8a372: Add Bootstrap components to Tabler JS
-- 9fceadd: Fix tooltip colors in vector maps
-- 44250db: Update avatar size variable to support list size configuration
-- be1f3d1: Fix broken shape in South Korea flag
-- c20d076: Refactor `border-radius` in components to use CSS variables
-- 042e50f: Update disabled color variables in navbars
-- 473fa38: Apply border radius to `tom-select` on focus
-- 8646192: Add avatars page with various demos of avatars
-- 922bb03: Minor spelling and grammar improvements to emails docs
-- 44250db: Update avatar size variable to support list size configuration
-- ddcd3a7: Refactor SCSS for alerts and close button styles
-- e3d68d6: Fix `autosize` and `input mask` plugins to use window scope
-- 4846828: Fix scrollbar color mixin to use body color variable
-- 6b6617a: Improve README
-- 94bea00: Make scrollbar track transparent
-- e14e492: Fix scrollbar jumps when content is higher than screen
-- 6d6d1bd: Add responsive font size for form controls on mobile devices
-- 6c566cf: Add new advanced table example
+## `1.1.0` - 2025-03-01
 
-## 1.1.1
+- Add Playwright configuration and visual regression tests
+- Enable `scrollSpy` in `countup` module
+- Refactor SCSS files to replace divide function with calc
+- Add Segmented Control component
+- Add new text features page with mentions: user, color and app.
+- Add Scroll Spy page
+- Update border radius variables for consistency across components
+- Add Signature Pad feature and signatures page
+- Update color utility classes and replace background colors in pricing table
+- Refactored the project into a monorepo, removed Gulp, and introduced a new, more efficient build process.
+- Add documentation for segmented control component
+- Add new payment provider (Troy)
+- Add selectable table functionality with active background color
+- Refactor badge styles, remove Bootstrap styles
+- Refactor alert component styles and markup, remove Bootstrap styles
+- Refactor accordion component styles and markup, remove Bootstrap styles
+- Fix overflow of `label` in a `floating-input`
+- Fix size of `apexcharts` tooltip marker
+- Fix apexcharts heatmap example in docs
+- Fix negative margins in `.navbar-bordered` variant
+- Use the full license agreement for illustrations in docs
+- Fix vertical alignment in single page and error layouts
+- Fix `.avatar-upload` double borders
+- Fixes navbar styles with new hover effects and color variables
 
-### Patch Changes
+## `1.0.0` - 2025-01-28
 
-- f29c911: Fix Documentation structure
-
-## 1.1.0
-
-### Minor Changes
-
-- a2640e2: Add Playwright configuration and visual regression tests
-- d3ae77c: Enable `scrollSpy` in `countup` module
-- bd3d959: Refactor SCSS files to replace divide function with calc
-- cb278c7: Add Segmented Control component
-- b47725d: Add new text features page with mentions: user, color and app.
-- b4b4d1a: Add Scroll Spy page
-- 9cd5327: Update border radius variables for consistency across components
-- 4376968: Add Signature Pad feature and signatures page
-- f95f250: Update color utility classes and replace background colors in pricing table
-- eaa7f81: Refactored the project into a monorepo, removed Gulp, and introduced a new, more efficient build process.
-- ea14462: Add documentation for segmented control component
-- 1edaff4: Add new payment provider (Troy)
-- edbaa1e: Add selectable table functionality with active background color
-- 378fba8: Refactor badge styles, remove Bootstrap styles
-- f3c409f: Refactor alert component styles and markup, remove Bootstrap styles
-- c240b5a: Refactor accordion component styles and markup, remove Bootstrap styles
-
-### Patch Changes
-
-- 687267d: Fix overflow of `label` in a `floating-input`
-- 06b1dec: Fix size of `apexcharts` tooltip marker
-- afd0700: Fix apexcharts heatmap example in docs
-- 78383ef: Fix negative margins in `.navbar-bordered` variant
-- 11f4487: Use the full license agreement for illustrations in docs
-- b28ce9f: Fix vertical alignment in single page and error layouts
-- 24b944c: Fix `.avatar-upload` double borders
-- ca4ba14: Fixes navbar styles with new hover effects and color variables
-
-## 1.0.0 - 2025-01-28
-
-### Minor Changes
-
-- c276a8b: Add new `Tag` component
-- d380224: Add customizable Star Ratings component using `star-rating.js` library
-- 47cd6c1: Add `flags.html` page with list of all flags
-- be67ab6: Update CSS class from `text-muted` to `text-secondary` for better Bootstrap compatibility
-- 080c746: Adding `alerts.html` page with example of alerts.
-- b381273: Change primary color value to new Tabler branding
-- 75619dd: Unify dark mode with latest Bootstrap API and improve dark mode elements
-- cc82dbf: New Chat component
-- 5a03643: Adjusting form element sizes for enhanced mobile devices compatibility
-- be14607: Add new color picker component using `coloris.js` library
-- d046570: Update Tabler Icons to version 2.23 with 18 new icons added
-- 5488c50: New page with payment providers: `payment-providers.html`
-- 5488c50: Add support for new payment providers: 2c2p, Adyen, Affirm, Alipay Plus, Allegro Pay, Amazon Pay, Apple Pay, Autopay, Binance USD, Bkash, Cash App, Chime, EasyPaisa, Ethereum, Google Pay, HubSpot, iDeal, Litecoin, Mercado Pago, MetaMask, MoneyGram, OpenSea, Payconiq, Payka, Payline, PayPo, Paysafe, Poli,
+- Add new `Tag` component
+- Add customizable Star Ratings component using `star-rating.js` library
+- Add `flags.html` page with list of all flags
+- Update CSS class from `text-muted` to `text-secondary` for better Bootstrap compatibility
+- Adding `alerts.html` page with example of alerts.
+- Change primary color value to new Tabler branding
+- Unify dark mode with latest Bootstrap API and improve dark mode elements
+- New Chat component
+- Adjusting form element sizes for enhanced mobile devices compatibility
+- Add new color picker component using `coloris.js` library
+- Update Tabler Icons to version 2.23 with 18 new icons added
+- New page with payment providers: `payment-providers.html`
+- Add support for new payment providers: 2c2p, Adyen, Affirm, Alipay Plus, Allegro Pay, Amazon Pay, Apple Pay, Autopay, Binance USD, Bkash, Cash App, Chime, EasyPaisa, Ethereum, Google Pay, HubSpot, iDeal, Litecoin, Mercado Pago, MetaMask, MoneyGram, OpenSea, Payconiq, Payka, Payline, PayPo, Paysafe, Poli,
   Revolut Pay, Samsung Pay, Shop Pay, Solana, Spingo, Stax, Tether, True USD, Venmo, WeChat Pay, Wise, Zelle
-
-### Patch Changes
-
-- 293d0a4: Change Twitter to X brand
-- fd0935a: Updated link to icons documentation
-- 1cf27dc: Dependencies update
-- 041f4e4: Order menu items alphabetically
-- 20cad01: Automatically retrieve and display the changelog from the CHANGELOG.md file.
-- 34f3efc: Initialize Visual Studio Code config
-- 7ba7717: Make horizontal rule direction aware
-- 063ef58: Update Tabler Illustrations to v1.5
-- 5e2c975: Update Tabler Icons to v3.29.0
-- 9d5f7ca: Remove unused dependencies from `package.json`
-- be69fd6: Replace Jekyll with Eleventy
-- 2f5fad6: Dependencies update
-- dfd7c88: Update TinyMCE to v7.0
-- 056df18: Fix text color in dark version of navbar
-- 17327dc: Remove invalid `z-index` setting for dropdowns
-- 4ff077a: Update Tabler Icons to version 2.21 with 18 new icons added
-- 867c8dd: Update Tabler Emails to v2.0
-- d8605f2: Init changelog script
-- 89c6234: Adding Two-Step Verification Pages
-- f6e885b: Replace `.page-center` with `.my-auto` in single page layouts
-- 7aa216f: Add border-opacity variable for improved color utility
-- 88eb413: Fix icon display issues in the Star Ratings component
-- 78392b6: Fix `color` of disabled `dropdown-item` in Navbar component
-- 4deb8f4: Bump pnpm/action-setup from 2 to 3
-- 9015472: Add social icons plugin
-- 7fe30a1: `Dockerfile` fix
-- e53942f: Update Jekyll to version 4.3.4
-- 72f868b: Update Tabler Icons to version 2.20 with 37 new icons added
-- e0443c0: Add Tabler Illustrations
-- 5cca710: Update illustrations and enhance SVG handling in HTML
-- 3a4f10f: Fix ids of custom size star ratings
-- 7896562: Unify size of avatar, flag and payment components
-- 1587905: Update icons to v2.42.0
-- d9e00b2: Update Bootstrap to v5.3.0
-- bc1d1a3: Set `font-size` of an `i` element with `icon` class in a `button` element
-- 0195f9b: Dependencies update
-- a5bf5d3: Fix icons in `form-elements.html`
-- 736410c: Update Tabler Icons to v3.28.1
-- 3f516ea: Fix `rgba` color values in `_variables.scss`
-- e91884e: Fix description of alerts with a description
-- 90cc744: Fix colors of disabled `.ts-control`
-- 1801e41: Center content on error and single page layouts
-- 45c83ac: Resolve map page issues
-- faee63c: Improve base font family loading
-- 5e7e0dd: Introduce Docker Compose Config to build and run Ttabler locally
-- c293a66: Fix `@charset` CSS declaration in bundle.
-- cb4a681: Update `_navbar.scss` with disabled dropdown menu items color
-- af41fb3: Update Tabler Icons to v3.17.0
-- 6cbe888: Update `@tabler/icons` to v3.0
-- 0e4bf5f: Refactor data structure by converting YAML files to JSON
-- 82cf257: Increase `z-index` of `ts-dropdown` to prevent overlapping by buttons
-- 4b4b4f6: Adding punctuation to `SECURITY.md`
-- a0a2d52: Fix form controls bugs in dark mode
-- f45b697: Fix padding in code blocks
-- 4de166d: Unified Box Shadows with Bootstrap Compatibility
-- 87bf2f5: Remove duplicated setting of color in `th` element
-- 5dc45aa: Fix layout of search results for small and medium screens
-- 4ae0358: Remove `text-decoration` on hovering `a` element with class having `icon` class
-- e798eb6: Fix small typo in tables docs
-- 1c1d0c9: Improve documentation for alerts
-- 371ef84: Bump `pnpm/action-setup` from 3 to 4
-- 8421fc2: Update dependencies
-- 0625f5f: Update Tabler Icons to version 2.22 with 18 new icons added
-- ba65fc3: Update devDependencies
-- a43ded4: Add All Contributions package to project for easy contribution tracking
-- 2f622c9: Set value of `$font-family-monospace` as default
-- 2c7c448: Refactor Dockerfile and package.json
-- 5ec7f05: Resolved light dropdown issue on dark theme
-- b0b07b9: Enhance documentation
-- 0f129b1: Update Tabler Icons to version 2.19 with 18 new icons added
-- 507df7b: Fix cells with inline icons
-- 0e5b44a: Fix `color` of disabled `nav-link` in `nav-bordered`
-- 65c1300: Fix the `z-index` value of the `nav-tab` inside `card-tab` #1933
-- 8552a46: Switch from `npm` to `pnpm` for faster package installation
-- 4a9e40d: Increase contrast of active `dropdown-item` in vertical layout
-- 17ebdf4: Update documentation for Tabler components
-- 4c88481: Add variable to configure `avatar-list` spacing
-- df46ee7: Do not display empty `fieldset` element
-- 875cafa: Refactor SCSS variables to use `color.adjust` for improved color manipulation
-- eb28546: Add Tabler Illustrations
-- 650d84c: Update required Node.js version to 18 and add `.nvmrc` file
-- fb659d4: Fix table default background color
-- f77c712: Avoid SCSS color dependency on `:focus`
-- 71c68ce: Update changelog configuration and release scripts
-- 34d124d: Update Tabler Icons to v3.26.0
-- 4cd9215: Updated Tabler Icons to v3.24.0
-- 7bb947b: Update Tabler Icons to version 2.18 with 18 new icons added
-- c75cf55: Update Node.js engine requirement to allow versions >=20
-- 1c34e8e: Update Tabler Icons to v3.14.0
-- 289dd3b: Add Prettier to project for consistent code formatting
-- f83e36c: Upgrade Node.js from version 18 to version 20 for improved performance, security, and feature updates.
-- b885852: Update Tabler Icons to version 2.25 with 48 new icons added
-- 53a5117: Fix responsiveness issue in Settings menu
-- 38504e5: Added 3 new payments from Nepal: Esewa, FonePay, Khalti and Imepay
-- 35ee14d: Add new Filled section to Icons page
-- d32f242: Update `bootstrap` to v5.3.1
-- d82f94e: Update package dependencies to latest versions
-- 54c5ad0: Fix link to webfont version of Tabler Icons
-- 94b83d4: Add support for changeset tool for more efficient and organized code changes
-- c51ff28: Fix colors in date range datepicker
+- Change Twitter to X brand
+- Updated link to icons documentation
+- Dependencies update
+- Order menu items alphabetically
+- Automatically retrieve and display the changelog from the CHANGELOG.md file.
+- Initialize Visual Studio Code config
+- Make horizontal rule direction aware
+- Update Tabler Illustrations to v1.5
+- Update Tabler Icons to v3.29.0
+- Remove unused dependencies from `package.json`
+- Replace Jekyll with Eleventy
+- Dependencies update
+- Update TinyMCE to v7.0
+- Fix text color in dark version of navbar
+- Remove invalid `z-index` setting for dropdowns
+- Update Tabler Icons to version 2.21 with 18 new icons added
+- Update Tabler Emails to v2.0
+- Init changelog script
+- Adding Two-Step Verification Pages
+- Replace `.page-center` with `.my-auto` in single page layouts
+- Add border-opacity variable for improved color utility
+- Fix icon display issues in the Star Ratings component
+- Fix `color` of disabled `dropdown-item` in Navbar component
+- Bump pnpm/action-setup from 2 to 3
+- Add social icons plugin
+- `Dockerfile` fix
+- Update Jekyll to version 4.3.4
+- Update Tabler Icons to version 2.20 with 37 new icons added
+- Add Tabler Illustrations
+- Update illustrations and enhance SVG handling in HTML
+- Fix ids of custom size star ratings
+- Unify size of avatar, flag and payment components
+- Update icons to v2.42.0
+- Update Bootstrap to v5.3.0
+- Set `font-size` of an `i` element with `icon` class in a `button` element
+- Dependencies update
+- Fix icons in `form-elements.html`
+- Update Tabler Icons to v3.28.1
+- Fix `rgba` color values in `_variables.scss`
+- Fix description of alerts with a description
+- Fix colors of disabled `.ts-control`
+- Center content on error and single page layouts
+- Resolve map page issues
+- Improve base font family loading
+- Introduce Docker Compose Config to build and run Ttabler locally
+- Fix `@charset` CSS declaration in bundle.
+- Update `_navbar.scss` with disabled dropdown menu items color
+- Update Tabler Icons to v3.17.0
+- Update `@tabler/icons` to v3.0
+- Refactor data structure by converting YAML files to JSON
+- Increase `z-index` of `ts-dropdown` to prevent overlapping by buttons
+- Adding punctuation to `SECURITY.md`
+- Fix form controls bugs in dark mode
+- Fix padding in code blocks
+- Unified Box Shadows with Bootstrap Compatibility
+- Remove duplicated setting of color in `th` element
+- Fix layout of search results for small and medium screens
+- Remove `text-decoration` on hovering `a` element with class having `icon` class
+- Fix small typo in tables docs
+- Improve documentation for alerts
+- Bump `pnpm/action-setup` from 3 to 4
+- Update dependencies
+- Update Tabler Icons to version 2.22 with 18 new icons added
+- Update devDependencies
+- Add All Contributions package to project for easy contribution tracking
+- Set value of `$font-family-monospace` as default
+- Refactor Dockerfile and package.json
+- Resolved light dropdown issue on dark theme
+- Enhance documentation
+- Update Tabler Icons to version 2.19 with 18 new icons added
+- Fix cells with inline icons
+- Fix `color` of disabled `nav-link` in `nav-bordered`
+- Fix the `z-index` value of the `nav-tab` inside `card-tab` #1933
+- Switch from `npm` to `pnpm` for faster package installation
+- Increase contrast of active `dropdown-item` in vertical layout
+- Update documentation for Tabler components
+- Add variable to configure `avatar-list` spacing
+- Do not display empty `fieldset` element
+- Refactor SCSS variables to use `color.adjust` for improved color manipulation
+- Add Tabler Illustrations
+- Update required Node.js version to 18 and add `.nvmrc` file
+- Fix table default background color
+- Avoid SCSS color dependency on `:focus`
+- Update changelog configuration and release scripts
+- Update Tabler Icons to v3.26.0
+- Updated Tabler Icons to v3.24.0
+- Update Tabler Icons to version 2.18 with 18 new icons added
+- Update Node.js engine requirement to allow versions >=20
+- Update Tabler Icons to v3.14.0
+- Add Prettier to project for consistent code formatting
+- Upgrade Node.js from version 18 to version 20 for improved performance, security, and feature updates.
+- Update Tabler Icons to version 2.25 with 48 new icons added
+- Fix responsiveness issue in Settings menu
+- Added 3 new payments from Nepal: Esewa, FonePay, Khalti and Imepay
+- Add new Filled section to Icons page
+- Update `bootstrap` to v5.3.1
+- Update package dependencies to latest versions
+- Fix link to webfont version of Tabler Icons
+- Add support for changeset tool for more efficient and organized code changes
+- Fix colors in date range datepicker
 
 ## `1.0.0-beta24` - 2025-01-11
 

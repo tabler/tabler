@@ -4,6 +4,7 @@ import { readFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url'
 import { join, dirname } from 'node:path';
 import beautify from 'js-beautify';
+import { EleventyRenderPlugin } from "@11ty/eleventy";
 
 const shiki = await import('shiki');
 import { createCssVariablesTheme } from 'shiki/core'
@@ -15,6 +16,10 @@ export default function (eleventyConfig) {
 
 	appFilters(eleventyConfig);
 	appData(eleventyConfig);
+
+	eleventyConfig.addPlugin(EleventyRenderPlugin, {
+		accessGlobalData: true,
+	});
 
 	eleventyConfig.addPassthroughCopy({
 		...getCopyList(),
@@ -227,7 +232,7 @@ export default function (eleventyConfig) {
 		const toc = [];
 
 		const contentWithoutExamples = name.replace(/<div[^>]*\bclass=["'][^"']*\bexample\b[^"']*".*?>.*?<\/div>/gs, '');
-		const headings = contentWithoutExamples.match(/<h([23])>([^<]+)<\/h\1>/g);
+		const headings = contentWithoutExamples.match(/<h([23])>(.*?)<\/h\1>/g);
 
 		if (headings) {
 			headings.forEach(heading => {
