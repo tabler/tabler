@@ -1,10 +1,11 @@
+{% removeemptylines %}
 {% assign id = include.id | default: 'mytextarea' %}
-
 <form method="post">
 	<textarea id="hugerte-{{ id }}">Hello, <b>Tabler</b>!</textarea>
 </form>
 
-{% capture_script %}
+{% capture script %}
+{% removeemptylines %}
 <script>
   document.addEventListener("DOMContentLoaded", function () {
     let options = {
@@ -33,4 +34,10 @@
     hugeRTE.init(options);
   })
 </script>
+{% endremoveemptylines %}
+{% endcapture -%}
+
+{%- capture_script %}
+{{ script }}
 {% endcapture_script %}
+{% endremoveemptylines %}
