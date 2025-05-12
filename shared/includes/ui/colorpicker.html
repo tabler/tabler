@@ -19,7 +19,7 @@
 			{% if include['swatches-only'] %}swatchesOnly: true,{% endif %}
 			swatches: [
 				{% for color in site.colors %}
-				"{{ color[1].hex }}",
+				window.getComputedStyle(document.body).getPropertyValue('{{ color[1].prop }}'),
 				{% endfor %}
 			],
 		}))
