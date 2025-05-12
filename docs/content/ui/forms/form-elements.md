@@ -418,8 +418,6 @@ Add a range slider to make it possible for users to set a value or range, such a
 <div class="mb-3">
   <label class="form-label">Range input</label>
   <input type="range" class="form-range mb-2" value="40" min="0" max="100" step="10" />
-  <div class="form-range mb-2" id="range-simple"></div>
-  <div class="form-range mb-2" id="range-connect"></div>
   <div class="form-range mb-2 text-green" id="range-color"></div>
 </div>
 <script>
