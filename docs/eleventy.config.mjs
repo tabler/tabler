@@ -226,7 +226,7 @@ export default function (eleventyConfig) {
 	eleventyConfig.addFilter("toc", function (name) {
 		const toc = [];
 
-		const contentWithoutExamples = name.replace(/<div[^>]*\bclass=["'][^"']*\b(example|modal-body|carousel-caption)\b[^"']*".*?>.*?<\/div>/gs, '');
+		const contentWithoutExamples = name.replace(/<!--EXAMPLE-->[\s\S]*?<!--\/EXAMPLE-->/g, '');
 		const headings = contentWithoutExamples.match(/<h([23])>([^<]+)<\/h\1>/g);
 
 		if (headings) {
