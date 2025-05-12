@@ -57,12 +57,6 @@ A placeholder can also contain an element that looks like a header:
 
 You can use a placeholder that will look like an avatar. You can use the `avatar` component, and get the image in the right proportions.
 
-```html
-<div class="avatar placeholder"></div>
-```
-
-Look at the example below to see how the avatar placeholder looks.
-
 {% capture html -%}
 <div class="row">
   <div class="col-auto">
@@ -110,12 +104,6 @@ You can use a placeholder that will look like a picture. You can use the `ratio`
 ## Placeholder color
 
 By default, the placeholder uses `currentColor`. This can be overridden with a custom color or utility class. Full color classes are available for background colors.
-
-```html
-<span class="placeholder col-12 bg-dark"></span>
-```
-
-Look at the example below to see how the color affects the placeholder.
 
 {% capture html -%}
 <span class="placeholder col-12"></span>

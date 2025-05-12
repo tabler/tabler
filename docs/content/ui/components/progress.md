@@ -16,22 +16,6 @@ To create a default progress bar, add a `.progress` class to a `<div>` element. 
 {%- endcapture %}
 {% include "docs/example.html" html=html %}
 
-```html
-<div class="progress">
-  <div
-    class="progress-bar"
-    style="width: 38%"
-    role="progressbar"
-    aria-valuenow="38"
-    aria-valuemin="0"
-    aria-valuemax="100"
-    aria-label="38% Complete"
-  >
-    <span class="visually-hidden">38% Complete</span>
-  </div>
-</div>
-```
-
 ## Progress size
 
 Using Bootstrap’s typical naming structure, you can create a standard progress bar or scale it up or down to different sizes based on what’s needed.
@@ -72,13 +56,7 @@ You can create a progress bar which shows indeterminate progress by adding `.pro
 
 ## Native progress element
 
-You can also use native HTML5 `<progress>` element. It is a great way to create a progress bar without the need for additional HTML elements.
-
-```html
-<progress class="progress progress-sm" value="15" max="100" />
-```
-
-This is how it looks:
+You can also use the native HTML5 `<progress>` element. It is a great way to create a progress bar without the need for additional HTML elements. This is what it looks like:
 
 {% capture html -%}
 <progress class="progress progress-sm" value="15" max="100" />
@@ -89,7 +67,7 @@ This is how it looks:
 
 You can change the color of the progress bar by adding a color class to the `.progress-bar` element. You can use the color classes like `.bg-primary`, `.bg-success`, etc. to change the color of the progress bar.
 
-Full list of available colors can be found [here](/img/ui/base/colors).
+See the [full list of available colors](/ui/base/colors) for more details.
 
 {% capture html -%}
 <div class="progress">
@@ -178,14 +156,6 @@ This is how it looks:
 
 You can create a striped progress bar by adding the `.progress-bar-striped` class to the `.progress-bar` element.
 
-```html
-<div class="progress">
-  <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 60%"></div>
-</div>
-```
-
-This is how it looks:
-
 {% capture html -%}
 <div class="progress">
   <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 60%"></div>
@@ -196,16 +166,6 @@ This is how it looks:
 ## Progress background
 
 By using a progress bar component as a background element, designers can create a dynamic and engaging visual experience for users. For example, the progress bar could be used to represent the completion of a long-term goal or project, such as a fundraising campaign or construction project. As users interact with the page, the progress bar could gradually fill up, creating a sense of momentum and progress.
-
-```html
-<div class="progressbg">
-  <div class="progress progressbg-progress">
-    <div class="progress-bar bg-primary-lt" style="width: 65%"></div>
-  </div>
-  <div class="progressbg-text">Poland</div>
-  <div class="progressbg-value">65%</div>
-</div>
-```
 
 Thanks to this you can create a nice looking statistics section:
 

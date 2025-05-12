@@ -1,5 +1,5 @@
 <p align="center">
-<a href="https://github.com/tabler/tabler"><img src="https://raw.githubusercontent.com/tabler/tabler/refs/heads/dev/preview/static/logo.svg" alt="A premium and open source dashboard template with a responsive and high-quality UI." width="300"></a><br><br>
+<a href="https://github.com/tabler/tabler"><img src="https://raw.githubusercontent.com/tabler/tabler/refs/heads/dev/shared/static/logo.svg" alt="A premium and open source dashboard template with a responsive and high-quality UI." width="300"></a><br><br>
 A premium and open source dashboard template with a responsive and high-quality UI.
 </p>
 
@@ -25,7 +25,7 @@ A premium and open source dashboard template with a responsive and high-quality 
 
 <p align="center">
 	<a href="https://github.com/sponsors/codecalm" target="_blank">
-			<img src="https://raw.githubusercontent.com/tabler/tabler/dev/preview/static/sponsor-banner-homepage.svg" alt="Sponsor Banner">
+			<img src="https://raw.githubusercontent.com/tabler/tabler/dev/shared/static/sponsor-banner-homepage.svg" alt="Sponsor Banner">
 	</a>
 </p>
 
@@ -59,7 +59,7 @@ Tabler is fully responsive and compatible with all modern browsers. Thanks to it
 
 <p align="center">
 	<a href="https://preview.tabler.io" target="_blank">
-			<img src="https://raw.githubusercontent.com/tabler/tabler/dev/preview/static/tabler-preview.png" alt="Tabler Preview">
+			<img src="https://raw.githubusercontent.com/tabler/tabler/dev/shared/static/tabler-preview.png" alt="Tabler Preview">
 	</a>
 </p>
 
@@ -75,7 +75,7 @@ We've created this admin panel for everyone who wants to create templates based 
 
 ## 📖 Documentation
 
-The documentation is available at https://tabler.io/docs/
+The documentation is available at https://docs.tabler.io/
 
 ## 🪴 Project Activity
 
@@ -140,8 +140,8 @@ pnpm install
 ```sh
 pnpm run start
 ```
-5. Open [http://localhost:3000](http://localhost:3000) in your browser, and voilà.
-Any change in the `/src` directory will rebuild the application and refresh the page.
+5. Open [http://localhost:3000](http://localhost:3000) to view the preview website in your browser, or [http://localhost:3010](http://localhost:3010) to view the documentation website - and voilà.
+Changes to most of the source files of Tabler core, preview and docs will rebuild the application and refresh the page.
 
 **Note**:
 If you wish to perform a one-off build without auto-refresh on any changes, you can run:

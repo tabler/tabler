@@ -8,7 +8,7 @@ description: Separate content with clear dividers.
 
 Use dividers to visually separate content into parts. You can use a line only or add text that will be centered by default.
 
-```html example
+{% capture html -%}
 <p>
   Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias, dolore dolores doloribus est ex.
 </p>
@@ -17,7 +17,8 @@ Use dividers to visually separate content into parts. You can use a line only or
   Dicta error hic illo iure necessitatibus nihil officiis omnis perferendis, praesentium repellendus
   rerum, saepe sed, sit!
 </p>
-```
+{%- endcapture %}
+{% include "docs/example.html" html=html %}
 
 ## Text position
 
@@ -46,7 +47,7 @@ You can modify the position of the text which is to be included in a separator a
 
 ## Divider color
 
-Customize the color of dividers to make them go well with your design. Click [here](/img/ui/base/colors) to see the list of available colors.
+Customize the color of dividers to make them go well with your design. See the [full list of available colors](/ui/base/colors) for more details.
 
 {% capture html -%}
 <p>

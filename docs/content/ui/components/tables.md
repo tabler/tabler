@@ -178,105 +178,6 @@ If you don't want the table cell content to wrap to another line, use the `table
 {%- endcapture %}
 {% include "docs/example.html" html=html %}
 
-```html
-<div class="table-responsive">
-  <table class="table table-vcenter table-nowrap">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Title</th>
-        <th>Email</th>
-        <th>Role</th>
-        <th></th>
-        <th class="w-1"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        <td>Paweł Kuna</td>
-        <td class="text-secondary">UI Designer, Training</td>
-        <td class="text-secondary">
-          <a href="#" class="text-reset">paweluna@howstuffworks.com</a>
-        </td>
-        <td class="text-secondary">User</td>
-        <td>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, commodi cupiditate
-          debitis deserunt expedita hic incidunt iste modi molestiae nesciunt non nostrum
-          perferendis perspiciatis placeat praesentium quaerat quo repellendus, voluptates.
-        </td>
-        <td>
-          <a href="#">Edit</a>
-        </td>
-      </tr>
-      <tr>
-        <td>Jeffie Lewzey</td>
-        <td class="text-secondary">Chemical Engineer, Support</td>
-        <td class="text-secondary">
-          <a href="#" class="text-reset">jlewzey1@seesaa.net</a>
-        </td>
-        <td class="text-secondary">Admin</td>
-        <td>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, commodi cupiditate
-          debitis deserunt expedita hic incidunt iste modi molestiae nesciunt non nostrum
-          perferendis perspiciatis placeat praesentium quaerat quo repellendus, voluptates.
-        </td>
-        <td>
-          <a href="#">Edit</a>
-        </td>
-      </tr>
-      <tr>
-        <td>Mallory Hulme</td>
-        <td class="text-secondary">Geologist IV, Support</td>
-        <td class="text-secondary">
-          <a href="#" class="text-reset">mhulme2@domainmarket.com</a>
-        </td>
-        <td class="text-secondary">User</td>
-        <td>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, commodi cupiditate
-          debitis deserunt expedita hic incidunt iste modi molestiae nesciunt non nostrum
-          perferendis perspiciatis placeat praesentium quaerat quo repellendus, voluptates.
-        </td>
-        <td>
-          <a href="#">Edit</a>
-        </td>
-      </tr>
-      <tr>
-        <td>Dunn Slane</td>
-        <td class="text-secondary">Research Nurse, Sales</td>
-        <td class="text-secondary">
-          <a href="#" class="text-reset">dslane3@epa.gov</a>
-        </td>
-        <td class="text-secondary">Owner</td>
-        <td>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, commodi cupiditate
-          debitis deserunt expedita hic incidunt iste modi molestiae nesciunt non nostrum
-          perferendis perspiciatis placeat praesentium quaerat quo repellendus, voluptates.
-        </td>
-        <td>
-          <a href="#">Edit</a>
-        </td>
-      </tr>
-      <tr>
-        <td>Emmy Levet</td>
-        <td class="text-secondary">VP Product Management, Accounting</td>
-        <td class="text-secondary">
-          <a href="#" class="text-reset">elevet4@senate.gov</a>
-        </td>
-        <td class="text-secondary">Admin</td>
-        <td>
-          Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, commodi cupiditate
-          debitis deserunt expedita hic incidunt iste modi molestiae nesciunt non nostrum
-          perferendis perspiciatis placeat praesentium quaerat quo repellendus, voluptates.
-        </td>
-        <td>
-          <a href="#">Edit</a>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-</div>
-```
-
 ## Table Variants
 
 {% capture html -%}
@@ -396,7 +297,52 @@ If you don't want the table cell content to wrap to another line, use the `table
       <td>Cell</td>
       <td>Cell</td>
     </tr>
+    <tr>
+      <th scope="row">Default</th>
+      <td>Cell</td>
+      <td>Cell</td>
+    </tr>
+    <tr>
+      <th scope="row">Primary</th>
+      <td>Cell</td>
+      <td>Cell</td>
+    </tr>
+    <tr>
+      <th scope="row">Secondary</th>
+      <td>Cell</td>
+      <td>Cell</td>
+    </tr>
+    <tr>
+      <th scope="row">Success</th>
+      <td>Cell</td>
+      <td>Cell</td>
+    </tr>
+    <tr>
+      <th scope="row">Danger</th>
+      <td>Cell</td>
+      <td>Cell</td>
+    </tr>
+    <tr>
+      <th scope="row">Warning</th>
+      <td>Cell</td>
+      <td>Cell</td>
+    </tr>
+    <tr>
+      <th scope="row">Info</th>
+      <td>Cell</td>
+      <td>Cell</td>
+    </tr>
+    <tr>
+      <th scope="row">Light</th>
+      <td>Cell</td>
+      <td>Cell</td>
+    </tr>
+    <tr class="table-dark">
+      <th scope="row">Dark</th>
+      <td>Cell</td>
+      <td>Cell</td>
+    </tr>
   </tbody>
 </table>
 {%- endcapture %}
-{% include "docs/example.html" html=html %}
+{% include "docs/example.html" html=html height="42rem" %}

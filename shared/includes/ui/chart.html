@@ -17,7 +17,7 @@
 {% assign data = charts[data.extend] | concat_objects: charts[include.chart-id] %}
 {% endif %}
 
-<div id="chart-{{ id }}"{% if class %} class="{{ class }}"{% endif %}></div>
+<div id="chart-{{ id }}" class="position-relative {% if class %} {{ class }}{% endif %}"></div>
 {% capture script %}
 {% assign chart-type = data.type | default: 'bar' -%}
 {% removeemptylines %}
@@ -71,14 +71,18 @@
 			{% if chart-type == 'radialBar' %}
 			plotOptions: {
 				radialBar: {
+					startAngle: -120,
+					endAngle: 120,
+					hollow: {
+						margin: 16,
+						size: "50%"
+					},
 					dataLabels: {
-						total: {
-							show: true,
-							label: 'Totals',
-							formatter: function (val) {
-								return "44%";
-							},
-						},
+						show: true,
+						value: {
+							offsetY: -8,
+							fontSize: '24px',
+						}
 					},
 				},
 			},

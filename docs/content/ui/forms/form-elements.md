@@ -97,24 +97,6 @@ Use the `form-control-rounded` class if you prefer form controls with rounded co
 {%- endcapture %}
 {% include "docs/example.html" html=html %}
 
-```html
-<div class="mb-3">
-  <label class="form-label">Form control rounded</label>
-  <input
-    type="text"
-    class="form-control form-control-rounded mb-2"
-    name="Form control rounded"
-    placeholder="Text.."
-  />
-  <div class="input-icon">
-    <input type="text" value="" class="form-control form-control-rounded" placeholder="Search…" />
-    <span class="input-icon-addon">
-      {% include "ui/icon.html" icon="search" %}
-    </span>
-  </div>
-</div>
-```
-
 ## Form control flush
 
 You can remove borders from your form control by adding the `form-control-flush` class.
@@ -436,8 +418,6 @@ Add a range slider to make it possible for users to set a value or range, such a
 <div class="mb-3">
   <label class="form-label">Range input</label>
   <input type="range" class="form-range mb-2" value="40" min="0" max="100" step="10" />
-  <div class="form-range mb-2" id="range-simple"></div>
-  <div class="form-range mb-2" id="range-connect"></div>
   <div class="form-range mb-2 text-green" id="range-color"></div>
 </div>
 <script>
@@ -545,13 +525,13 @@ Include a link in your input control to add a clickable element within the contr
 {%- endcapture %}
 {% include "docs/example.html" html=html %}
 
-## Input with appended `<kbd>`
+## Input with appended kbd
 
 Include a `<kbd>` in your input control to add a shortcut hint to the control.
 
 {% capture html -%}
 <div class="mb-3">
-  <label class="form-label">Input with appended link</label>
+  <label class="form-label">Input with appended kbd</label>
   <div class="input-group input-group-flat">
     <input type="password" class="form-control" value="ultrastrongpassword" autocomplete="off" />
     <span class="input-group-text">

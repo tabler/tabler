@@ -56,15 +56,9 @@ Besides pictures and initials, you can also use icons to make the avatars more u
 {%- endcapture %}
 {% include "docs/example.html" html=html centered %}
 
-```html
-<span class="avatar">
-  {% include "ui/icon.html" icon="user" %}
-</span>
-```
-
 ## Avatar initials color
 
-Customize the color of the avatars' background. You can click [here](/img/ui/base/colors) to see the list of available colors.
+Customize the color of the avatars' background. See the [full list of available colors](/ui/base/colors) for more details.
 
 {% capture html -%}
 <span class="avatar bg-green-lt">AB</span>

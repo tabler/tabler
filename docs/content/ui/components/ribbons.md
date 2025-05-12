@@ -18,15 +18,6 @@ Use the `ribbon` class to add the default ribbon to any section of your interfac
 {%- endcapture %}
 {% include "docs/example.html" html=html card column %}
 
-```html
-<div class="card">
-  <div class="card-body"></div>
-  <div class="ribbon">
-    {% include "ui/icon.html" icon="star" %}
-  </div>
-</div>
-```
-
 ## Ribbon position
 
 You can change the position of a ribbon by adding one of the following classes to the element:
@@ -48,18 +39,9 @@ Using multiple classes at once will give you more position options. For example,
 {%- endcapture %}
 {% include "docs/example.html" html=html column %}
 
-```html
-<div class="card">
-  <div class="card-body"></div>
-  <div class="ribbon ribbon-top ribbon-start">
-    {% include "ui/icon.html" icon="star" %}
-  </div>
-</div>
-```
-
 ## Ribbon color
 
-Customize the ribbon's background color. You can click [here](/img/ui/base/colors) to see the list of available colors.
+Customize the ribbon's background color. See the [full list of available colors](/ui/base/colors) for more details.
 
 {% capture html -%}
 <div class="card">
@@ -70,15 +52,6 @@ Customize the ribbon's background color. You can click [here](/img/ui/base/color
 </div>
 {%- endcapture %}
 {% include "docs/example.html" html=html column %}
-
-```html
-<div class="card">
-  <div class="card-body"></div>
-  <div class="ribbon bg-red">
-    {% include "ui/icon.html" icon="star" %}
-  </div>
-</div>
-```
 
 ## Ribbon text
 
@@ -87,25 +60,14 @@ Add your own text to a ribbon to display any additional information and make it 
 {% capture html -%}
 <div class="card">
   <div class="card-body" style="height: 5rem"></div>
-  <div class="ribbon bg-green">
-    {% include "ui/icon.html" icon="star" %}
-  </div>
+  <div class="ribbon bg-green">NEW</div>
 </div>
 {%- endcapture %}
 {% include "docs/example.html" html=html column %}
 
-```html
-<div class="card">
-  <div class="card-body"></div>
-  <div class="ribbon bg-green">
-    {% include "ui/icon.html" icon="star" %}
-  </div>
-</div>
-```
+## Bookmark ribbon
 
-## Ribbon style
-
-Change the style of a ribbon to make it go well with your interface design.
+Use the `.ribbon-bookmark` class to create a bookmark ribbon. It is a special style of ribbon that is used to highlight important elements in your interface.
 
 {% capture html -%}
 <div class="card w-100">
@@ -116,12 +78,3 @@ Change the style of a ribbon to make it go well with your interface design.
 </div>
 {%- endcapture %}
 {% include "docs/example.html" html=html column %}
-
-```html
-<div class="card">
-  <div class="card-body"></div>
-  <div class="ribbon ribbon-bookmark bg-orange">
-    {% include "ui/icon.html" icon="star" %}
-  </div>
-</div>
-```

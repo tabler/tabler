@@ -2,6 +2,7 @@
 title: Input mask
 summary: An input mask is used to clarify the input format required in a given field and is helpful for users, removing confusion and reducing the number of validation errors.
 description: Clarify input formats for users.
+docs-libs: imask
 ---
 
 ## Installation

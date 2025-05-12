@@ -8,17 +8,6 @@ Offcanvas is a sidebar component that can be toggled via JavaScript to appear fr
 
 To create an offcanvas, add the `.offcanvas` class to a container element. You can also add the `.offcanvas-start`, `.offcanvas-end`, `.offcanvas-top`, or `.offcanvas-bottom` class to specify the position of the offcanvas. The `.show` class is used to display the offcanvas.
 
-```html
-<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvas">
-  <div class="offcanvas-body">
-    Content for the offcanvas goes here. You can place just about any Tabler component or custom
-    elements here.
-  </div>
-</div>
-```
-
-Look at the example below to see how the offcanvas works.
-
 {% capture html -%}
 <div
   class="offcanvas offcanvas-start show"

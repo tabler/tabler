@@ -33,14 +33,3 @@ Group parts of your form to make it well-structured and clearer for users, using
 </fieldset>
 {%- endcapture %}
 {% include "docs/example.html" html=html %}
-
-```html
-<fieldset class="form-fieldset">
-  ...
-  <div class="mb-3">
-    <label class="form-label required">Company</label>
-    <input type="text" class="form-control" autocomplete="off" />
-  </div>
-  ...
-</fieldset>
-```

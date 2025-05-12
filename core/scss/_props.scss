@@ -42,9 +42,9 @@
     --#{$prefix}#{$name}-lt-rgb: #{to-rgb(theme-color-lighter($color))};
   }
 
-  /** Social colors */
-  @each $name, $color in $social-colors {
-    --#{$prefix}#{$name}: #{$color};
+  /** Gray colors */
+  @each $name, $color in $gray-colors {
+    --#{$prefix}#{$name}-fg: #{if(contrast-ratio($color, white) > $min-contrast-ratio, var(--#{$prefix}white), var(--#{$prefix}body-color))};
   }
 
   /** Spacers */

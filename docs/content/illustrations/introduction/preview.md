@@ -3,7 +3,7 @@ title: Preview
 summary: "Tabler Illustrations offers 80 illustrations in two themes: light and dark. You can use them in your projects to enhance the visual appeal and convey messages effectively."
 ---
 
-Look at full list of illustrations below and see how they look.
+Look at full list of illustrations below and see how they look. Find out more and purchase Tabler Illustrations at [our website]({{ site.homepage }}/illustrations).
 
 {% assign all-illustrations = illustrations | sort %}
 <div class="row g-2 gy-6">

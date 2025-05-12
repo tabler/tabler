@@ -9,12 +9,6 @@ description: Indicate loading state with spinners.
 
 Use the default spinner to notify users that an action they have taken is in progress, helping them avoid confusion.
 
-```html
-<div class="spinner-border"></div>
-```
-
-Look at the example below to see how the spinner works:
-
 {% capture html -%}
 <div class="spinner-border"></div>
 {%- endcapture %}
@@ -23,7 +17,7 @@ Look at the example below to see how the spinner works:
 
 ## Colors
 
-Choose one of the available colors to customize the spinner and make it suit your design. Full list of available colors can be found in the [Colors](/img/ui/base/colors) section.
+Choose one of the available colors to customize the spinner and make it suit your design. Full list of available colors can be found in the [Colors](/ui/base/colors) section.
 
 {% capture html -%}
 <div class="spinner-border text-blue" role="status"></div>
@@ -40,11 +34,6 @@ Choose one of the available colors to customize the spinner and make it suit you
 <div class="spinner-border text-cyan" role="status"></div>
 {%- endcapture %}
 {% include "docs/example.html" html=html centered %}
-
-```html
-<div class="spinner-border text-blue" role="status"></div>
-<div class="spinner-border text-red" role="status"></div>
-```
 
 ## Size
 
@@ -83,23 +72,9 @@ Growing spinners also come in a variety of colors to choose from.
 {%- endcapture %}
 {% include "docs/example.html" html=html centered %}
 
-```html
-<div class="spinner-grow text-blue" role="status"></div>
-<div class="spinner-grow text-azure" role="status"></div>
-```
-
 ## Button with spinner
 
 Use buttons with spinners to notify users that an action they have taken by clicking the button is in progress and prevent them from clicking multiple times or giving up.
-
-```html
-<a href="#" class="btn btn-primary">
-  <span class="spinner-border spinner-border-sm me-2" role="status"></span>
-  Button
-</a>
-```
-
-Look at the example below to see how the button with a spinner works:
 
 {% capture html -%}
 <a href="#" class="btn btn-primary">
