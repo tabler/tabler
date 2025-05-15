@@ -163,7 +163,17 @@ export default function (eleventyConfig) {
 				children: []
 			}
 		}).sort((a, b) => {
-			return (a.data.order || 999) - (b.data.order || 999);
+			const orderA = a.data.order ?? 999;
+			const orderB = b.data.order ?? 999;
+
+			if (orderA !== orderB) {
+				return orderA - orderB;
+			}
+
+			const titleA = a.data.title ?? '';
+			const titleB = b.data.title ?? '';
+
+			return titleA.localeCompare(titleB);
 		});
 
 		return buildCollectionTree(a);
