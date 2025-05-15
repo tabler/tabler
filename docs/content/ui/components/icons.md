@@ -5,7 +5,7 @@ banner: icons
 description: Enhance dashboards with custom icons.
 ---
 
-If you need to add icons to your website, you can use the [Tabler Icons library]({{ site.icons.link }}). It contains over 5000 icons that you can use in your projects. All icons are under the MIT license, so you can use them without any problem both in private and commercial projects. You can find the Tabler Icons library [here](https://tabler-icons.io/).
+If you need to add icons to your website, you can use the [Tabler Icons library]({{ site.icons.link }}). It contains over 5000 icons that you can use in your projects. All icons are under the MIT license, so you can use them without any problem both in private and commercial projects.
 
 ## Base icon
 
