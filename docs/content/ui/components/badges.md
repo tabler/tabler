@@ -74,7 +74,7 @@ Use the `.badge-pill` class if you want to create a badge with rounded corners. 
 {%- endcapture %}
 {% include "docs/example.html" html=html centered %}
 
-Yu can use it to create a pill with numbers, for example, to show the number of unread messages. The badge will adjust its width to the number of digits.
+You can use it to create a pill with numbers, for example, to show the number of unread messages. The badge will adjust its width to the number of digits.
 
 {% capture html -%}
 {%- for color in site.colors -%}
