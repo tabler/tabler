@@ -161,7 +161,7 @@ You can use the `.badge-blink` class to create a blinking effect. This class wil
 
 ## Size Options
 
-Use `.badge-sm` or `.badge-lg` to change Badge size according to your needs. The default size is `.badge` and it is used in the examples above.
+Use `.badge-sm` or `.badge-lg` to change badge size according to your needs. The default size is `.badge` and it is used in the examples above.
 
 {% capture html -%}
 <div>
