@@ -12,19 +12,9 @@ Use the `breadcrumb` class to add a breadcrumb to your interface design for bett
 Look at the example below to see how breadcrumbs work in practice.
 
 {% capture html -%}
-<ol class="breadcrumb">
-  <li class="breadcrumb-item">
-    <a href="#">Home</a>
-  </li>
-  <li class="breadcrumb-item">
-    <a href="#">Library</a>
-  </li>
-  <li class="breadcrumb-item active">
-    <a href="#">Data</a>
-  </li>
-</ol>
+{% include "ui/breadcrumb.html" pages="Home,Library,Data" %}
 {%- endcapture %}
-{% include "docs/example.html" html=html vertical separated %}
+{% include "docs/example.html" html=html centered %}
 
 ## Different separators
 
@@ -33,60 +23,18 @@ You can use different breadcrumb styles to match your website or app design. Cho
 This example shows how to use different breadcrumb styles.
 
 {% capture html -%}
-<ol class="breadcrumb breadcrumb-dots">
-  <li class="breadcrumb-item">
-    <a href="#">Home</a>
-  </li>
-  <li class="breadcrumb-item">
-    <a href="#">Library</a>
-  </li>
-  <li class="breadcrumb-item active">
-    <a href="#">Data</a>
-  </li>
-</ol>
-<ol class="breadcrumb breadcrumb-arrows">
-  <li class="breadcrumb-item">
-    <a href="#">Home</a>
-  </li>
-  <li class="breadcrumb-item">
-    <a href="#">Library</a>
-  </li>
-  <li class="breadcrumb-item active">
-    <a href="#">Data</a>
-  </li>
-</ol>
-<ol class="breadcrumb breadcrumb-bullets">
-  <li class="breadcrumb-item">
-    <a href="#">Home</a>
-  </li>
-  <li class="breadcrumb-item">
-    <a href="#">Library</a>
-  </li>
-  <li class="breadcrumb-item active">
-    <a href="#">Data</a>
-  </li>
-</ol>
+{% include "ui/breadcrumb.html" pages="Home,Library,Data" separator="dots" %}
+{% include "ui/breadcrumb.html" pages="Home,Library,Data" separator="arrows" %}
+{% include "ui/breadcrumb.html" pages="Home,Library,Data" separator="bullets" %}
 {%- endcapture %}
-{% include "docs/example.html" html=html vertical separated %}
+{% include "docs/example.html" html=html vertical separated centered %}
 
 ## With icon
 
 You can use icons in breadcrumbs to make them more visually appealing. The example below demonstrates how to use icons in breadcrumbs.
 
 {% capture html -%}
-<ol class="breadcrumb">
-  <li class="breadcrumb-item">
-    <a href="#">
-	 	{% include "ui/icon.html" icon="home" %}
-    </a>
-  </li>
-  <li class="breadcrumb-item">
-    <a href="#">Library</a>
-  </li>
-  <li class="breadcrumb-item active">
-    <a href="#">Data</a>
-  </li>
-</ol>
+{% include "ui/breadcrumb.html" pages="Home,Library,Data" home-icon %}
 {%- endcapture %}
 {% include "docs/example.html" html=html vertical separated %}
 
@@ -95,19 +43,7 @@ You can use icons in breadcrumbs to make them more visually appealing. The examp
 You can use the `breadcrumb-muted` class to create a muted breadcrumb style. This style is perfect for breadcrumbs that are not the main focus of your website or app.
 
 {% capture html -%}
-<nav aria-label="breadcrumb">
-  <ol class="breadcrumb breadcrumb-muted">
-    <li class="breadcrumb-item">
-      <a href="#">Home</a>
-    </li>
-    <li class="breadcrumb-item">
-      <a href="#">Library</a>
-    </li>
-    <li class="breadcrumb-item active">
-      <a href="#">Data</a>
-    </li>
-  </ol>
-</nav>
+{% include "ui/breadcrumb.html" pages="Home,Library,Data" class="breadcrumb-muted" %}
 {%- endcapture %}
 {% include "docs/example.html" html=html %}
 
@@ -119,24 +55,9 @@ You can use breadcrumbs in headers to show the current page location and provide
 <div class="page-header">
   <div class="row align-items-center mw-100">
     <div class="col">
-      <div class="mb-1">
-        <ol class="breadcrumb">
-          <li class="breadcrumb-item">
-            <a href="#">Home</a>
-          </li>
-          <li class="breadcrumb-item">
-            <a href="#">Library</a>
-          </li>
-          <li class="breadcrumb-item active">
-            <a href="#">Articles</a>
-          </li>
-        </ol>
-      </div>
+		{% include "ui/breadcrumb.html" pages="Home,Library,Articles" -%}
       <h2 class="page-title">
-        <span class="text-truncate"
-          >Knights of Ni, we are but simple travelers who seek the enchanter who lives beyond these
-          woods.</span
-        >
+        <span class="text-truncate">How to Build a Modern Dashboard with Tabler</span>
       </h2>
     </div>
     <div class="col-auto">
@@ -151,5 +72,5 @@ You can use breadcrumbs in headers to show the current page location and provide
   </div>
 </div>
 {%- endcapture %}
-{% include "docs/example.html" html=html %}
+{% include "docs/example.html" html=html centered vertical %}
 

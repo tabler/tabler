@@ -16,7 +16,7 @@ As one of the most common elements of UI design, buttons have a very important f
 <input type="submit" class="btn" value="Submit" />
 <input type="reset" class="btn" value="Reset" />
 {%- endcapture -%}
-{%- include "docs/example.html" html=html centered -%}
+{%- include "docs/example.html" html=html centered %}
 
 ## Default button
 
@@ -25,7 +25,7 @@ The standard button creates a white background and subtle hover animation. It's 
 {% capture html -%}
 <a href="#" class="btn" role="button">Link</a>
 {%- endcapture -%}
-{%- include "docs/example.html" html=html centered -%}
+{%- include "docs/example.html" html=html centered %}
 
 ## Button variations
 
@@ -41,7 +41,7 @@ Use the button classes that correspond to the function of your button. The big r
 <a href="#" class="btn btn-dark">Dark</a>
 <a href="#" class="btn btn-light">Light</a>
 {%- endcapture -%}
-{%- include "docs/example.html" html=html separated centered -%}
+{%- include "docs/example.html" html=html separated centered %}
 
 ## Disabled buttons
 
@@ -57,7 +57,7 @@ Make buttons look inactive to show that an action is possible once the user meet
 <a href="#" class="btn btn-dark disabled">Dark</a>
 <a href="#" class="btn btn-light disabled">Light</a>
 {%- endcapture -%}
-{%- include "docs/example.html" html=html separated centered -%}
+{%- include "docs/example.html" html=html separated centered %}
 
 ## Color variations
 
@@ -77,7 +77,7 @@ Choose the right color for your button to make it go well with your design and d
 <a href="#" class="btn btn-teal">Teal</a>
 <a href="#" class="btn btn-cyan">Cyan</a>
 {%- endcapture -%}
-{%- include "docs/example.html" html=html separated centered -%}
+{%- include "docs/example.html" html=html separated centered %}
 
 ## Ghost buttons
 
@@ -95,7 +95,7 @@ Use the `.btn-ghost-*` class to make your button look simple yet aesthetically a
   <a href="#" class="btn btn-ghost-light">Light</a>
 </div>
 {%- endcapture -%}
-{%- include "docs/example.html" html=html separated vertical -%}
+{%- include "docs/example.html" html=html separated vertical %}
 
 ## Square buttons
 
@@ -104,7 +104,7 @@ Use the `.btn-square` class to remove the border radius, if you want the corners
 {% capture html -%}
 <a href="#" class="btn btn-square">Square button</a>
 {%- endcapture -%}
-{%- include "docs/example.html" html=html centered -%}
+{%- include "docs/example.html" html=html centered %}
 
 ## Pill buttons
 
@@ -113,7 +113,7 @@ Add the `.btn-pill` class to your button to make it rounded and give it a modern
 {% capture html -%}
 <a href="#" class="btn btn-pill">Pill button</a>
 {%- endcapture -%}
-{%- include "docs/example.html" html=html centered -%}
+{%- include "docs/example.html" html=html centered %}
 
 ## Outline buttons
 
@@ -129,7 +129,7 @@ Replace the default modifier class with the `.btn-outline-*` class, if you want 
 <a href="#" class="btn btn-outline-dark">Dark</a>
 <a href="#" class="btn btn-outline-light">Light</a>
 {%- endcapture -%}
-{%- include "docs/example.html" html=html centered -%}
+{%- include "docs/example.html" html=html centered %}
 
 ## Button size
 
@@ -139,13 +139,13 @@ Add `.btn-lg` or `.btn-sm` to change the size of your button and differentiate t
 <button type="button" class="btn btn-primary btn-lg">Large button</button>
 <button type="button" class="btn btn-lg">Large button</button>
 {%- endcapture -%}
-{%- include "docs/example.html" html=html centered -%}
+{%- include "docs/example.html" html=html centered %}
 
 {% capture html -%}
 <button type="button" class="btn btn-primary btn-sm">Small button</button>
 <button type="button" class="btn btn-sm">Small button</button>
 {%- endcapture -%}
-{%- include "docs/example.html" html=html centered -%}
+{%- include "docs/example.html" html=html centered %}
 
 ## Buttons with icons
 
@@ -179,7 +179,7 @@ See all icons at [tabler.io/icons]({{ site.icons.link }}).
   Comment
 </button>
 {%- endcapture -%}
-{%- include "docs/example.html" html=html centered -%}
+{%- include "docs/example.html" html=html centered %}
 
 ## Social buttons
 
@@ -243,7 +243,7 @@ You can use the icons of popular social networking sites, which users are famili
   Tabler
 </a>
 {%- endcapture -%}
-{%- include "docs/example.html" html=html separated centered hide-code -%}
+{%- include "docs/example.html" html=html separated centered hide-code %}
 
 ```html
 <a href="#" class="btn btn-facebook">
@@ -298,7 +298,7 @@ You can also add an icon without the name of a social networking site, if you wa
   {%- include "ui/icon.html" icon="brand-tabler" -%}
 </a>
 {%- endcapture -%}
-{%- include "docs/example.html" html=html separated vertical hide-code -%}
+{%- include "docs/example.html" html=html separated vertical hide-code %}
 
 ```html
 <a href="#" class="btn btn-facebook btn-icon" aria-label="Button">
@@ -333,7 +333,7 @@ Add the `.btn-icon` class to remove unnecessary padding from your button and use
   {%- include "ui/icon.html" icon="git-merge" -%}
 </a>
 {%- endcapture -%}
-{%- include "docs/example.html" html=html separated centered hide-code -%}
+{%- include "docs/example.html" html=html separated centered hide-code %}
 
 ```html
 <a href="#" class="btn btn-primary btn-icon" aria-label="Button">
@@ -373,7 +373,7 @@ Create a dropdown button that will encourage users to click for more options. Yo
   </div>
 </div>
 {%- endcapture -%}
-{%- include "docs/example.html" html=html centered hide-code height="260px" -%}
+{%- include "docs/example.html" html=html centered hide-code height="260px" %}
 
 ```html
 <div class="dropdown">
@@ -399,7 +399,7 @@ Add the `.btn-loading` class to show a button's loading state, which can be usef
 	Loading button with loooong content
 </a>
 {%- endcapture -%}
-{%- include "docs/example.html" html=html centered -%}
+{%- include "docs/example.html" html=html centered %}
 
 {% capture html -%}
 <a href="#" class="btn btn-primary">
@@ -407,7 +407,7 @@ Add the `.btn-loading` class to show a button's loading state, which can be usef
   Button
 </a>
 {%- endcapture -%}
-{%- include "docs/example.html" html=html centered -%}
+{%- include "docs/example.html" html=html centered %}
 
 ## List of buttons
 
@@ -420,7 +420,7 @@ Create a list of buttons using the `.btn-list` container to display different ac
   <a href="#" class="btn btn-danger">Cancel</a>
 </div>
 {%- endcapture -%}
-{%- include "docs/example.html" html=html centered -%}
+{%- include "docs/example.html" html=html centered %}
 
 If the list is long, it will be wrapped and some buttons will be moved to the next line, keeping them all evenly spaced.
 
@@ -447,7 +447,7 @@ If the list is long, it will be wrapped and some buttons will be moved to the ne
   <a href="#" class="btn">Nineteen</a>
 </div>
 {%- endcapture -%}
-{%- include "docs/example.html" html=html centered -%}
+{%- include "docs/example.html" html=html centered %}
 
 Use the `.text-center` or the `.text-end` modifiers to change the buttons' alignment and place them where they suit best.
 
@@ -457,7 +457,7 @@ Use the `.text-center` or the `.text-end` modifiers to change the buttons' align
   <a href="#" class="btn btn-primary">Save changes</a>
 </div>
 {%- endcapture -%}
-{%- include "docs/example.html" html=html -%}
+{%- include "docs/example.html" html=html %}
 
 {% capture html -%}
 <div class="btn-list justify-content-end">
@@ -465,7 +465,7 @@ Use the `.text-center` or the `.text-end` modifiers to change the buttons' align
   <a href="#" class="btn btn-primary">Save changes</a>
 </div>
 {%- endcapture -%}
-{%- include "docs/example.html" html=html -%}
+{%- include "docs/example.html" html=html %}
 
 {% capture html -%}
 <div class="btn-list">
@@ -474,7 +474,7 @@ Use the `.text-center` or the `.text-end` modifiers to change the buttons' align
   <a href="#" class="btn btn-primary">Save changes</a>
 </div>
 {%- endcapture -%}
-{%- include "docs/example.html" html=html -%}
+{%- include "docs/example.html" html=html %}
 
 ## Buttons with avatars
 
@@ -507,4 +507,4 @@ Use buttons with avatars to simplify the process of interaction and make your de
   Avatar
 </a>
 {%- endcapture -%}
-{%- include "docs/example.html" html=html centered -%}
+{%- include "docs/example.html" html=html centered %}

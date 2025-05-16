@@ -178,9 +178,8 @@
 		</div>
 	</div>
 
-	{% if docs-libs -%}
 	{% for lib in libs.js -%}
-	{% if docs-libs contains lib[0] or libs.global-libs contains lib[0] -%}
+	{% if docs-libs contains lib[0] or libs.global-libs contains lib[0] or lib[0] == "clipboard" -%}
 	{% for file in lib[1] -%}
 	<script
 		src="{% if file contains 'http://' or file contains 'https://' %}{{ file | replace: 'GOOGLE_MAPS_KEY', google-maps-key }}{% else %}/libs/{% if environment != 'development' %}{{ file | replace: '@', '' }}{% else %}{{ file }}{% endif %}{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}{% endif %}"
@@ -188,7 +187,41 @@
 	{% endfor -%}
 	{% endif -%}
 	{% endfor -%}
-	{% endif -%}
+	
+	<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		const elements = document.querySelectorAll('[data-clipboard-text]');
+
+		elements.forEach(function (element) {
+			const clipboard = new ClipboardJS(element, {
+				text: function (trigger) {
+					return element.getAttribute('data-clipboard-text');
+				}
+			});
+
+			clipboard.on('success', function (e) {
+				e.clearSelection();
+				e.trigger.classList.add('btn-success');
+				e.trigger.classList.remove('btn-dark');
+				e.trigger.children[0].classList.add('d-none');
+				e.trigger.children[1].classList.remove('d-none');
+
+				setTimeout(function () {
+					e.trigger.classList.remove('btn-success');
+					e.trigger.classList.add('btn-dark');
+					
+					e.trigger.children[0].classList.remove('d-none');
+					e.trigger.children[1].classList.add('d-none');
+				}, 2000);
+			});
+
+			clipboard.on('error', function (e) {
+				console.error('Error copying text: ', e);
+			});
+		});
+		
+	})
+	</script>
 
 	<script src="/dist/js/tabler{% if environment != 'development' %}.min{% endif %}.js"></script>
 	<script src="/js/docs{% if environment != 'development' %}.min{% endif %}.js" defer></script>
