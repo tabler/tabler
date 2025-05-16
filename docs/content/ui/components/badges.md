@@ -133,7 +133,7 @@ Place the badge within an `<a>` element if you want it to perform the function o
 
 Badges can be used as part of links or buttons to provide, for example, a counter. Use the `.badge-notification` class to create a notification badge. This class will add a notification positioning to the badge, so it will be placed in the top right corner of the button.
 
-If you dont provide a text to the badge, it will be hidden. This is useful for creating a notification button with a red dot.
+If you don't provide text for the badge, you end up with a small dot. This is useful for creating a simple notification button.
 
 {% capture html -%}
 <button type="button" class="btn">
