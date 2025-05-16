@@ -97,7 +97,7 @@ You can use icons in badges to make them more visually appealing. The example be
 {%- endcapture %}
 {% include "docs/example.html" html=html centered %}
 
-You can also use icon on the right side of the badge. The example below demonstrates how to use icons on the right side of badges.
+You can also use an icon on the right side of the badge. The example below demonstrates how to use icons on the right side of badges.
 
 {% capture html -%}
 {% include "ui/badge.html" text="Star" icon-right="arrow-right" -%}
