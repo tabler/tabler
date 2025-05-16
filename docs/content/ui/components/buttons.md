@@ -95,7 +95,7 @@ Use the `.btn-ghost-*` class to make your button look simple yet aesthetically a
   <a href="#" class="btn btn-ghost-light">Light</a>
 </div>
 {%- endcapture -%}
-{%- include "docs/example.html" html=html separated vertical -%}
+{%- include "docs/example.html" html=html separated vertical %}
 
 ## Square buttons
 
@@ -243,7 +243,7 @@ You can use the icons of popular social networking sites, which users are famili
   Tabler
 </a>
 {%- endcapture -%}
-{%- include "docs/example.html" html=html separated centered hide-code -%}
+{%- include "docs/example.html" html=html separated centered hide-code %}
 
 ```html
 <a href="#" class="btn btn-facebook">
@@ -298,7 +298,7 @@ You can also add an icon without the name of a social networking site, if you wa
   {%- include "ui/icon.html" icon="brand-tabler" -%}
 </a>
 {%- endcapture -%}
-{%- include "docs/example.html" html=html separated vertical hide-code -%}
+{%- include "docs/example.html" html=html separated vertical hide-code %}
 
 ```html
 <a href="#" class="btn btn-facebook btn-icon" aria-label="Button">
@@ -333,7 +333,7 @@ Add the `.btn-icon` class to remove unnecessary padding from your button and use
   {%- include "ui/icon.html" icon="git-merge" -%}
 </a>
 {%- endcapture -%}
-{%- include "docs/example.html" html=html separated centered hide-code -%}
+{%- include "docs/example.html" html=html separated centered hide-code %}
 
 ```html
 <a href="#" class="btn btn-primary btn-icon" aria-label="Button">
@@ -373,7 +373,7 @@ Create a dropdown button that will encourage users to click for more options. Yo
   </div>
 </div>
 {%- endcapture -%}
-{%- include "docs/example.html" html=html centered hide-code height="260px" -%}
+{%- include "docs/example.html" html=html centered hide-code height="260px" %}
 
 ```html
 <div class="dropdown">
@@ -457,7 +457,7 @@ Use the `.text-center` or the `.text-end` modifiers to change the buttons' align
   <a href="#" class="btn btn-primary">Save changes</a>
 </div>
 {%- endcapture -%}
-{%- include "docs/example.html" html=html -%}
+{%- include "docs/example.html" html=html %}
 
 {% capture html -%}
 <div class="btn-list justify-content-end">
@@ -465,7 +465,7 @@ Use the `.text-center` or the `.text-end` modifiers to change the buttons' align
   <a href="#" class="btn btn-primary">Save changes</a>
 </div>
 {%- endcapture -%}
-{%- include "docs/example.html" html=html -%}
+{%- include "docs/example.html" html=html %}
 
 {% capture html -%}
 <div class="btn-list">
@@ -474,7 +474,7 @@ Use the `.text-center` or the `.text-end` modifiers to change the buttons' align
   <a href="#" class="btn btn-primary">Save changes</a>
 </div>
 {%- endcapture -%}
-{%- include "docs/example.html" html=html -%}
+{%- include "docs/example.html" html=html %}
 
 ## Buttons with avatars
 
