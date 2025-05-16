@@ -50,7 +50,7 @@ Badges can be used in headings to draw attention to new or important information
 {%- endcapture %}
 {% include "docs/example.html" html=html %}
 
-## Light version of badges
+## Light versions of badges
 
 You can use the `-lt` classes to create a light version of the badge. This is useful for creating a more subtle look.
 
