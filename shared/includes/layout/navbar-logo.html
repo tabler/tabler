@@ -1,12 +1,12 @@
 <!-- BEGIN NAVBAR LOGO -->
 {%- assign prefix = include.prefix | default: 'navbar' -%}
 {%- assign breakpoint = include.breakpoint | default: 'lg' -%}
-{%- capture class-attr %}class="{{ prefix }}-brand {{ prefix }}-brand-autodark{% if include.class %} {{ include.class }}{% endif %}"{%- endcapture -%}
+{%- capture class-attr %} class="{{ prefix }}-brand {{ prefix }}-brand-autodark{% if include.class %} {{ include.class }}{% endif %}"{%- endcapture -%}
 {%- if include.header -%}
 <div {{ class-attr }}>
-	<a href="{{ page | relative }}{% if include.href %}/{{ include.href }}{% endif %}">
+	<a href="{{ page | relative }}{% if include.href %}/{{ include.href }}{% endif %}" aria-label="{{ site.title }}">
 {%- else -%}
-	<a href="{{ page | relative }}{% if include.href %}/{{ include.href }}{% endif %}" {{ class-attr }}>
+	<a href="{{ page | relative }}{% if include.href %}/{{ include.href }}{% endif %}" aria-label="{{ site.title }}"{{ class-attr }}>
 {%- endif -%}
 	{%- unless include.hide-logo -%}
 	{%- if include.small-logo -%}
