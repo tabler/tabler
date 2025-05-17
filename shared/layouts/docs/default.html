@@ -107,52 +107,7 @@
 
 								{{ content | headings-id }}
 
-								{% assign children = collections.docs | collection-children: page %}
-								{% if children.size > 0 %}
-									<div class="mt-6 pt-6">
-										<div class="row row-deck row-cards">
-											{% for c in children %}
-											{% include "docs/docs-card.html" href=c.url title=c.data.title description=c.data.description icon=c.data.icon %}
-											{% endfor %}
-										</div>
-									</div>
-								{% else %}
-									{% assign next-prev = collections.docs | next-prev: page %}
-									<div class="mt-6 pt-6">
-										<ul class="pagination">
-											{% if next-prev.prev %}
-											<li class="page-item page-prev">
-												<a class="page-link" href="{{ next-prev.prev.url }}">
-													<div class="row align-items-center">
-														<div class="col-auto">
-															{% include "ui/icon.html" icon="chevron-left" %}
-														</div>
-														<div class="col">
-															<div class="page-item-subtitle">previous</div>
-															<div class="page-item-title">{{ next-prev.prev.data.title }}</div>
-														</div>
-													</div>
-												</a>
-											</li>
-											{% endif %}
-											{% if next-prev.next %}
-											<li class="page-item page-next">
-												<a class="page-link" href="{{ next-prev.next.url }}">
-													<div class="row align-items-center">
-														<div class="col">
-															<div class="page-item-subtitle">next</div>
-															<div class="page-item-title">{{ next-prev.next.data.title }}</div>
-														</div>
-														<div class="col-auto">
-															{% include "ui/icon.html" icon="chevron-right" %}
-														</div>
-													</div>
-												</a>
-											</li>
-											{% endif %}
-										</ul>
-									</div>
-								{% endif %}
+								{% include "docs/pagination.html" %}
 
 								<div class="mt-7">
 									<div>
@@ -187,19 +142,7 @@
 				</div>
 				<div class="col-2 d-none d-xxl-block">
 					<div class="py-6 sticky-top">
-						{% assign toc = content | toc %}
-						{% if toc.size > 0 %}
-							<h3>
-								Table of Contents
-							</h3>
-							<div class="nav nav-vertical" id="toc">
-								{% for item in toc %}
-								<a href="#{{ item.id }}" class="nav-link{% if item.level == 3 %} ms-3{% endif %}">
-									{{ item.text }}
-								</a>
-								{% endfor %}
-							</div>
-						{% endif %}
+						{% include "docs/toc.html" %} 
 					</div>
 				</div>
 			</div>

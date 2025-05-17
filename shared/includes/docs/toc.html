@@ -1,0 +1,21 @@
+{% assign toc = content | toc %}
+{% if toc.size > 0 %}
+<h3>
+	Table of Contents
+</h3>
+<div class="nav nav-vertical" id="toc">
+	{% for item in toc %}
+	<a href="#{{ item.id }}" class="nav-link{% if item.level == 3 %} ms-3{% endif %}">
+		{{ item.text }}
+	</a>
+	{% endfor %}
+</div>
+{% endif %}
+
+<a href="https://r.tabler.io/illustrations" class="card card-sm mt-6 shadow-none" target="_blank">
+	<div class="card-body">
+		<img src="/img/banner-carbon.png" class="mb-3" alt="">
+
+		<h4>{{ illustrations | size }} sleek illustrations for your startup's visual identity.</h4>
+	</div>
+</a>
