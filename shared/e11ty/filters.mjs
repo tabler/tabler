@@ -34,6 +34,17 @@ export function appFilters(eleventyConfig) {
 		}
 	});
 
+	eleventyConfig.addFilter("escape_attribute", (text) => {
+		return text
+			.replace(/&/g, '&amp;')
+			.replace(/'/g, '&apos;')
+			.replace(/"/g, '&quot;')
+			.replace(/</g, '&lt;')
+			.replace(/>/g, '&gt;')
+			.replace(/\r\n/g, '&#13;')
+			.replace(/[\r\n]/g, '&#13;');
+	});
+
 	eleventyConfig.addFilter("contains", (items, item) => {
 		return items && Array.isArray(items) && items.includes(item);
 	});
@@ -149,7 +160,6 @@ export function appFilters(eleventyConfig) {
 
 	// Convert a URL path to an absolute URL
 	eleventyConfig.addFilter("absolute_url", function (url) {
-		// Base URL for the site - change this to your production domain
 		const baseUrl = "https://docs.tabler.io";
 
 		// Ensure url starts with a slash

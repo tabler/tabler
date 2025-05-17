@@ -1,5 +1,9 @@
 {%- assign el = 'span' -%}
-<{{ el }} class="badge{% if include['size'] %} badge-{{ include['size'] }}{% endif %}{% if include.color %} bg-{{ include.color }} text-{{ include.color }}-fg{% endif %}{% if include.class %} {{ include.class }}{% endif %}">
+<{{ el }} class="badge{% if include.scale %} badge-{{ include.scale }}{% endif %}{% if include.color %} bg-{{ include.color }}{% if include.light %}-lt{% endif %} text-{{ include.color }}{% if include.light %}-lt{% endif %}-fg{% endif %}{% if include.class %} {{ include.class }}{% endif %}">
+{%- if include.icon -%}
+	 {%- assign icon = include.icon -%}
+	 {% include "ui/icon.html" icon=icon %}
+{%- endif -%}
 {%- if include.person-id -%}
     {%- assign person-id = include.person-id | minus: 1 -%}
     {%- assign person = people[person-id] -%}
