@@ -269,4 +269,6 @@ export function appFilters(eleventyConfig) {
 
 		return '';
 	})
+
+	eleventyConfig.addShortcode("year", () => `${new Date().getFullYear()}`);
 }
