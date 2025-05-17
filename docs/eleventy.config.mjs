@@ -1,5 +1,5 @@
 import { appFilters } from "../shared/e11ty/filters.mjs"
-import { appData, getCopyList } from "../shared/e11ty/data.mjs";
+import { appData } from "../shared/e11ty/data.mjs";
 import { readFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url'
 import { join, dirname } from 'node:path';
@@ -17,7 +17,7 @@ export default function (eleventyConfig) {
 	appData(eleventyConfig);
 
 	eleventyConfig.addPassthroughCopy({
-		...getCopyList(),
+		"node_modules/@tabler/core/dist": "dist",
 		"public": "/",
 		"static": "static",
 	});

@@ -4,7 +4,7 @@
   "description": "Premium and Open Source dashboard template with responsive and high quality UI.",
   "homepage": "https://tabler.io",
   "scripts": {
-    "dev": "pnpm run watch",
+    "dev": "pnpm run clean && pnpm run copy && pnpm run watch",
     "build": "pnpm run clean && pnpm run css && pnpm run js && pnpm run copy && pnpm run generate-sri",
     "clean": "shx rm -rf dist demo",
     "css": "pnpm run css-compile && pnpm run css-prefix && pnpm run css-rtl && pnpm run css-minify && pnpm run css-banner",
@@ -26,8 +26,9 @@
     "js-minify-standalone-esm": "terser --compress passes=2 --mangle --comments \"/^!/\" --source-map \"content=dist/js/tabler.esm.js.map,includeSources,url=tabler.esm.min.js.map\" --output dist/js/tabler.esm.min.js dist/js/tabler.esm.js",
     "js-minify-theme": "terser --compress passes=2 --mangle --comments \"/^!/\" --source-map \"content=dist/js/tabler-theme.js.map,includeSources,url=tabler-theme.min.js.map\" --output dist/js/tabler-theme.min.js dist/js/tabler-theme.js",
     "js-minify-theme-esm": "terser --compress passes=2 --mangle --comments \"/^!/\" --source-map \"content=dist/js/tabler-theme.esm.js.map,includeSources,url=tabler-theme.esm.min.js.map\" --output dist/js/tabler-theme.esm.min.js dist/js/tabler-theme.esm.js",
-    "copy": "pnpm run copy-img",
+    "copy": "pnpm run copy-img && pnpm run copy-libs",
     "copy-img": "shx mkdir -p dist/img && shx cp -rf img/* dist/img",
+    "copy-libs": "node .build/copy-libs.mjs",
     "watch": "concurrently \"pnpm run watch-css\" \"pnpm run watch-js\"",
     "watch-css": "nodemon --watch scss/ --ext scss --exec \"pnpm run css-compile && pnpm run css-prefix\"",
     "watch-js": "nodemon --watch js/ --ext js --exec \"pnpm run js-compile\"",
@@ -66,7 +67,8 @@
     "dist/**/*",
     "js/**/*.{js,map}",
     "img/**/*.{svg}",
-    "scss/**/*.scss"
+    "scss/**/*.scss",
+    "libs.json"
   ],
   "style": "dist/css/tabler.css",
   "sass": "scss/tabler.scss",
@@ -145,6 +147,30 @@
   "dependencies": {
     "@popperjs/core": "^2.11.8",
     "bootstrap": "5.3.6"
+  },
+  "devDependencies": {
+    "@hotwired/turbo": "^8.0.13",
+    "@melloware/coloris": "^0.24.2",
+    "apexcharts": "3.54.1",
+    "autosize": "^6.0.1",
+    "choices.js": "^11.1.0",
+    "clipboard": "^2.0.11",
+    "countup.js": "^2.8.2",
+    "dropzone": "^6.0.0-beta.2",
+    "flatpickr": "^4.6.13",
+    "fslightbox": "^3.6.0",
+    "fullcalendar": "^6.1.17",
+    "hugerte": "^1.0.9",
+    "imask": "^7.6.1",
+    "jsvectormap": "^1.6.0",
+    "list.js": "^2.3.1",
+    "litepicker": "^2.0.12",
+    "nouislider": "^15.8.1",
+    "plyr": "^3.7.8",
+    "signature_pad": "^5.0.7",
+    "star-rating.js": "^4.3.1",
+    "tom-select": "^2.4.3",
+    "typed.js": "^2.1.0"
   },
   "directories": {
     "doc": "docs"

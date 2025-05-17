@@ -1,6 +1,6 @@
 ---
 title: Vector Maps
-docs-libs: [jsvectormap, jsvectormap-world, jsvectormap-world-merc]
+docs-libs: [jsvectormap]
 description: Interactive guide to creating vector maps with jsVectorMap.
 summary: Vector maps are a great way to display geographical data in an interactive and visually appealing way. Learn how to create vector maps with jsVectorMap.
 ---

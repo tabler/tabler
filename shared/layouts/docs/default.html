@@ -149,11 +149,11 @@
 		</div>
 	</div>
 
-	{% for lib in libs.js -%}
+	{% for lib in libs -%}
 	{% if docs-libs contains lib[0] or libs.global-libs contains lib[0] or lib[0] == "clipboard" -%}
-	{% for file in lib[1] -%}
+	{% for file in lib[1].js -%}
 	<script
-		src="{% if file contains 'http://' or file contains 'https://' %}{{ file | replace: 'GOOGLE_MAPS_KEY', google-maps-key }}{% else %}/libs/{% if environment != 'development' %}{{ file | replace: '@', '' }}{% else %}{{ file }}{% endif %}{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}{% endif %}"
+		src="{% if file contains 'http://' or file contains 'https://' %}{{ file | replace: 'GOOGLE_MAPS_KEY', google-maps-key }}{% else %}/dist/libs/{{ lib[1].npm }}/{% if environment != 'development' %}{{ file | replace: '@', '' }}{% else %}{{ file }}{% endif %}{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}{% endif %}"
 	></script>
 	{% endfor -%}
 	{% endif -%}

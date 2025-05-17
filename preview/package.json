@@ -20,7 +20,7 @@
     "clean": "shx rm -rf dist demo",
     "html": "pnpm run html-build && pnpm run html-prettify",
     "html-build": "eleventy",
-    "html-prettify": "prettier --write \"dist/**/*.html\"",
+    "html-prettify": "prettier --write \"dist/**/*.html\" \"!dist/dist/**\"",
     "svg-optimize": "svgo -f svg/brand --pretty",
     "unused-files": "node .build/unused-files.mjs",
     "download-images": "node .build/download-images.mjs",
@@ -30,36 +30,14 @@
     "import-icons": "git checkout dev && BRANCH_NAME=\"dev-tabler-icons-`pnpm info @tabler/icons version`\" && git branch $BRANCH_NAME && git checkout $BRANCH_NAME && ncu -u @tabler/icons && pnpm install && pnpm run svg-icons && git add . && git commit -am \"update icons to v`pnpm info @tabler/icons version`\" && git push origin $BRANCH_NAME && git checkout dev",
     "zip": "mkdir -p packages-zip && zip -r packages-zip/tabler-$(node -p \"require('./package.json').version\").zip demo/*"
   },
-  "dependencies": {
-    "@hotwired/turbo": "^8.0.13",
-    "@melloware/coloris": "^0.24.2",
-    "@tabler/core": "workspace:*",
-    "@tabler/icons": "^3.31.0",
-    "apexcharts": "3.54.1",
-    "autosize": "^6.0.1",
-    "choices.js": "^11.1.0",
-    "clipboard": "^2.0.11",
-    "countup.js": "^2.8.2",
-    "dropzone": "^6.0.0-beta.2",
-    "flatpickr": "^4.6.13",
-    "fslightbox": "^3.6.0",
-    "fullcalendar": "^6.1.17",
-    "hugerte": "^1.0.9",
-    "imask": "^7.6.1",
-    "jsvectormap": "^1.6.0",
-    "list.js": "^2.3.1",
-    "litepicker": "^2.0.12",
-    "nouislider": "^15.8.1",
-    "plyr": "^3.7.8",
-    "signature_pad": "^5.0.7",
-    "star-rating.js": "^4.3.1",
-    "tom-select": "^2.4.3",
-    "typed.js": "^2.1.0"
-  },
   "devDependencies": {
     "@11ty/eleventy": "^3.1.0",
     "imageoptim-cli": "^3.1.9",
     "request": "^2.88.2"
+  },
+  "dependencies": {
+    "@tabler/core": "workspace:*",
+    "@tabler/icons": "^3.31.0"
   },
   "prettier": {
     "tabWidth": 2,
