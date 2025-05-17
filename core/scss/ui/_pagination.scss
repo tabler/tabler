@@ -1,4 +1,5 @@
 .pagination {
+  margin: 0;
   --#{$prefix}pagination-gap: .25rem;
   user-select: none;
   gap: var(--#{$prefix}pagination-gap);
@@ -6,20 +7,21 @@
 }
 
 .page-link {
-  min-width: 1.75rem;
-  border-radius: var(--#{$prefix}border-radius);
+  min-width: 2rem;
+  border-radius: var(--#{$prefix}pagination-border-radius);
+
+  &:hover {
+    background: var(--#{$prefix}pagination-hover-bg);
+  }
+}
+
+.page-text {
+  padding-left: .5rem;
+  padding-right: .5rem;
 }
 
 .page-item {
   text-align: center;
-
-  &:not(.active) {
-    .page-link {
-      &:hover {
-        background: transparent;
-      }
-    }
-  }
 
   &.page-prev,
   &.page-next {
@@ -56,4 +58,14 @@
   .page-item.disabled & {
     color: $pagination-disabled-color;
   }
+}
+
+.pagination-outline {
+  --#{$prefix}pagination-border-color: var(--#{$prefix}border-color);
+  --#{$prefix}pagination-disabled-border-color: var(--#{$prefix}border-color);
+  --#{$prefix}pagination-border-width: 1px;
+}
+
+.pagination-circle {
+  --#{$prefix}pagination-border-radius: var(--tblr-border-radius-pill);
 }
