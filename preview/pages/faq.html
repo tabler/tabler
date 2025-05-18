@@ -12,19 +12,31 @@ permalink: faq.html
 			{% for category in faq %}
 			{% assign categories-loop = forloop %}
 			<div>
-				<h2 class="mb-3">{{ categories-loop.index }}. {{ category.name }}</h2>
-				<div id="faq-{{ categories-loop.index }}" class="accordion" role="tablist" aria-multiselectable="true">
+				<h2 class="mb-4 font-bold text-primary">
+					<span class="me-2 rounded-pill bg-primary bg-opacity-10 px-3 py-1 text-primary">{{ categories-loop.index }}</span>
+					{{ category.name }}
+				</h2>
+				<div id="faq-{{ categories-loop.index }}" class="accordion accordion-flush" role="tablist" aria-multiselectable="true">
 					{% for question in category.questions %}
 					{% assign questions-loop = forloop %}
-					<div class="accordion-item">
-						<button class="accordion-header{% unless questions-loop.index == 1 %} collapsed{% endunless %}" data-bs-toggle="collapse" data-bs-target="#faq-{{ categories-loop.index }}-{{ questions-loop.index }}" role="tab">
-							<h4 class="accordion-header-text">{{ question.question }}</h4>
+					<div class="accordion-item border rounded-2 mb-3">
+						<button class="accordion-header w-100 border-0 bg-transparent p-4{% unless questions-loop.index == 1 %} collapsed{% endunless %}" 
+							data-bs-toggle="collapse" 
+							data-bs-target="#faq-{{ categories-loop.index }}-{{ questions-loop.index }}" 
+							role="tab"
+							aria-expanded="{% if questions-loop.index == 1 %}true{% else %}false{% endif %}">
+							<h4 class="accordion-header-text d-flex align-items-center justify-content-between m-0">
+								<span>{{ question.question }}</span>
+							</h4>
 						</button>
-						<div id="faq-{{ categories-loop.index }}-{{ questions-loop.index }}" class="accordion-collapse collapse{% if questions-loop.index == 1 %} show{% endif %}" role="tabpanel" data-bs-parent="#faq-{{ categories-loop.index }}">
-							<div class="accordion-body pt-0">
-								<div>
+						<div id="faq-{{ categories-loop.index }}-{{ questions-loop.index }}" 
+							class="accordion-collapse collapse{% if questions-loop.index == 1 %} show{% endif %}" 
+							role="tabpanel" 
+							data-bs-parent="#faq-{{ categories-loop.index }}">
+							<div class="accordion-body pt-0 px-4 pb-4">
+								<div class="text-muted">
 									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium alias dignissimos dolorum ea est eveniet, excepturi illum in iste iure maiores nemo recusandae rerum saepe sed, sunt totam! Explicabo, ipsa?</p>
-									<p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium alias dignissimos dolorum ea est eveniet, excepturi illum in iste iure maiores nemo recusandae rerum saepe sed, sunt totam! Explicabo, ipsa?</p>
+									<p class="mb-0">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusantium alias dignissimos dolorum ea est eveniet, excepturi illum in iste iure maiores nemo recusandae rerum saepe sed, sunt totam! Explicabo, ipsa?</p>
 								</div>
 							</div>
 						</div>
