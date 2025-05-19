@@ -1,5 +1,11 @@
 # @tabler/core
 
+## 1.3.2
+
+### Patch Changes
+
+- 446c34e: Fix README file in core package
+
 ## 1.3.1
 
 ### Patch Changes

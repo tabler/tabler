@@ -1,5 +1,12 @@
 # @tabler/preview
 
+## 1.3.2
+
+### Patch Changes
+
+- Updated dependencies [446c34e]
+  - @tabler/core@1.3.2
+
 ## 1.3.1
 
 ### Patch Changes
