@@ -6,13 +6,13 @@
 
 {% if page-libs -%}
 <!-- BEGIN PAGE LEVEL STYLES -->
-	{% for lib in libs.css -%}
-		{% if page-libs contains lib[0] -%}
-			{% for file in lib[1] -%}
-				<link href="{% if file contains 'http://' or file contains 'https://' %}{{ file }}{% else %}{{ page | relative }}/libs/{% if environment == 'preview' %}{{ file | replace: '@', '' }}{% else %}{{ file }}{% endif %}{% if environment != 'development %}?{{ 'now' | date: '%s' }}{% endif %}{% endif %}" rel="stylesheet"/>
-			{% endfor -%}
-		{% endif -%}
-	{% endfor -%}
+{% for lib in libs -%}
+{% if page-libs contains lib[0] -%}
+{% for file in lib[1].css -%}
+<link href="{% if file contains 'http://' or file contains 'https://' %}{{ file }}{% else %}{{ page | relative }}/dist/libs/{{ lib[1].npm }}/{{ file }}{% if environment != 'development %}?{{ 'now' | date: '%s' }}{% endif %}{% endif %}" rel="stylesheet"/>
+{% endfor -%}
+{% endif -%}
+{% endfor -%}
 <!-- END PAGE LEVEL STYLES -->
 {% endif %}
 

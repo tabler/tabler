@@ -3,7 +3,7 @@ import { EleventyRenderPlugin } from "@11ty/eleventy";
 import { join } from 'node:path';
 import { sync } from 'glob';
 import { appFilters } from "../shared/e11ty/filters.mjs";
-import { appData, getCopyList } from "../shared/e11ty/data.mjs"
+import { appData } from "../shared/e11ty/data.mjs"
 
 /** @type {import('@11ty/eleventy').LocalConfig} */
 export default function (eleventyConfig) {
@@ -20,7 +20,7 @@ export default function (eleventyConfig) {
 	eleventyConfig.setDataDirectory("../../shared/data");
 
 	eleventyConfig.addPassthroughCopy({
-		...getCopyList(),
+		"node_modules/@tabler/core/dist": "dist",
 		"pages/favicon.ico": "favicon.ico",
 		"static": "static",
 	});
@@ -33,11 +33,8 @@ export default function (eleventyConfig) {
 	 * Data
 	 */
 	eleventyConfig.addGlobalData("environment", environment);
-
-	eleventyConfig.addGlobalData("package", JSON.parse(readFileSync(join("..", "core", "package.json"), "utf-8")));
 	eleventyConfig.addGlobalData("readme", readFileSync(join("..", "README.md"), "utf-8"));
 	eleventyConfig.addGlobalData("license", readFileSync(join("..", "LICENSE"), "utf-8"));
-	eleventyConfig.addGlobalData("changelog", readFileSync(join("..", "core", "CHANGELOG.md"), "utf-8"));
 
 	eleventyConfig.addGlobalData("pages", () => {
 		return sync('pages/**/*.html').filter((file) => {
