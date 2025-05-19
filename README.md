@@ -23,23 +23,7 @@ A premium and open source dashboard template with a responsive and high-quality 
 	</a>
 </p>
 
-<p align="center">
-	<a href="https://github.com/sponsors/codecalm" target="_blank">
-			<img src="https://raw.githubusercontent.com/tabler/tabler/dev/shared/static/sponsor-banner-homepage.svg" alt="Sponsor Banner">
-	</a>
-</p>
-
 ## Testing
-
-<p align="center">Visual testing with:</p>
-
-<p align="center">
-	<a href="https://argos-ci.com/" target="_blank">
-		<picture>
-			<img src="https://github.com/user-attachments/assets/7d231a26-eff5-4fc5-8392-b2a679a7c572" alt="Argos-CI" height="164" />
-		</picture>
-	</a>
-</p>
 
 <p align="center">Browser testing via:</p>
 
