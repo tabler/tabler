@@ -1,5 +1,35 @@
 # @tabler/core
 
+## 1.3.0
+
+### Minor Changes
+
+- a1af801: Add FullCalendar integration
+- b9d434d: Add new charts to dashboard pages
+- 79bd867: Add new form layout page
+
+### Patch Changes
+
+- cac5d92: Update illustrations to v1.7
+- f94b153: Add SRI hashes to scripts and styles
+- c127d65: Fix colour picker preview page not displaying correctly
+- b6e9b18: Update icons to v3.31.0
+- 8850f61: Enhance pagination component with new styles
+- 9910dd0: Add "text features" menu item
+- 638f36c: Refactor SCSS variable names for shadows
+- 0d501e9: Correct `aria-label` of app menu link
+- 3a02ef9: Fix some marketing site rows overflowing on mobile
+- fd0fd47: Improve card footer layout and enhance entry display format in invoices
+- 74e5d26: Fix color badge in navbar menu
+- 72a1d67: Add clipboard functionality to Tabler documentation
+- bb617b8: Fix colour swatches on small screens
+- d73d78e: Add missing `tw` entry in `flags.json`
+- 19a3d20: Delete missing demo RTL style
+- b5e2f54: Enhance dropdown components for better accessibility
+- a41c956: Remove unnecessary `!important` from body padding
+- e675389: Fix missing border-radius to `.card-header-tabs`
+- 9007e73: Fix FAQ accordion structure
+
 ## 1.2.0
 
 ### Minor Changes
