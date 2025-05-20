@@ -5,30 +5,32 @@
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
+	{% if environment == 'preview' %}
+	
 	{% assign pageSection = "" %}
 	{% if page.url contains "/ui/" %}
-	  {% assign pageSection = "UI" %}
+	{% assign pageSection = "UI" %}
 	{% elsif page.url contains "/icons/" %}
-	  {% assign pageSection = "Icons" %}
+	{% assign pageSection = "Icons" %}
 	{% elsif page.url contains "/illustrations/" %}
-	  {% assign pageSection = "Illustrations" %}
+	{% assign pageSection = "Illustrations" %}
 	{% elsif page.url contains "/emails/" %}
-	  {% assign pageSection = "Emails" %}
+	{% assign pageSection = "Emails" %}
 	{% endif %}
 
 	{% assign metaTitle = title %}
 	{% if seoTitle %}
-	  {% assign metaTitle = seoTitle %}
+	{% assign metaTitle = seoTitle %}
 	{% endif %}
 
 	{% assign metaDescription = description %}
 	{% if seoDescription %}
-	  {% assign metaDescription = seoDescription %}
+	{% assign metaDescription = seoDescription %}
 	{% endif %}
 
 	{% assign siteName = "Tabler Documentation" %}
 	{% if pageSection != "" %}
-	  {% assign siteName = "Tabler " | append: pageSection | append: " Documentation" %}
+	{% assign siteName = "Tabler " | append: pageSection | append: " Documentation" %}
 	{% endif %}
 
 	<title>{{ metaTitle }} | {{ siteName }}</title>
@@ -47,6 +49,11 @@
 	{% if metaDescription %}<meta name="twitter:description" content="{{ metaDescription }}">{% endif %}
 
 	<script defer data-api="/stats/event" data-domain="docs.tabler.io" src="/stats/js/script.js"></script>
+
+	{% elsif environment == 'development' %}
+	<link rel="icon" href="{{ page | relative }}/favicon-dev.ico" type="image/x-icon" />
+	<link rel="shortcut icon" href="{{ page | relative }}/favicon-dev.ico" type="image/x-icon" />
+	{% endif %}
 
 	<link rel="stylesheet" href="/dist/css/tabler{% if environment != 'development' %}.min{% endif %}.css{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}" />
 	{% for plugin in site.cssPlugins %}

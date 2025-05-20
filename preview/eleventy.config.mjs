@@ -22,6 +22,7 @@ export default function (eleventyConfig) {
 	eleventyConfig.addPassthroughCopy({
 		"node_modules/@tabler/core/dist": "dist",
 		"pages/favicon.ico": "favicon.ico",
+		"pages/favicon-dev.ico": "favicon-dev.ico",
 		"static": "static",
 	});
 
