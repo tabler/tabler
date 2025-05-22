@@ -1,7 +1,23 @@
 .breadcrumb {
+  --#{$prefix}breadcrumb-padding-x: #{$breadcrumb-padding-x};
+  --#{$prefix}breadcrumb-padding-y: #{$breadcrumb-padding-y};
+  --#{$prefix}breadcrumb-margin-bottom: #{$breadcrumb-margin-bottom};
+  --#{$prefix}breadcrumb-font-size: #{$breadcrumb-font-size};
+  --#{$prefix}breadcrumb-bg: #{$breadcrumb-bg};
+  --#{$prefix}breadcrumb-border-radius: #{$breadcrumb-border-radius};
+  --#{$prefix}breadcrumb-divider-color: #{$breadcrumb-divider-color};
+  --#{$prefix}breadcrumb-item-padding-x: #{$breadcrumb-item-padding-x};
+  --#{$prefix}breadcrumb-item-active-color: #{$breadcrumb-active-color};
   --#{$prefix}breadcrumb-item-active-font-weight: #{$breadcrumb-active-font-weight};
   --#{$prefix}breadcrumb-item-disabled-color: #{$breadcrumb-disabled-color};
   --#{$prefix}breadcrumb-link-color: #{$breadcrumb-link-color};
+
+  display: flex;
+  flex-wrap: wrap;
+  @include font-size(var(--#{$prefix}breadcrumb-font-size));
+  list-style: none;
+  background-color: var(--#{$prefix}breadcrumb-bg);
+  @include border-radius(var(--#{$prefix}breadcrumb-border-radius));
   padding: 0;
   margin: 0;
   background: transparent;
@@ -21,6 +37,7 @@
 
 .breadcrumb-item {
   &.active {
+    color: var(--#{$prefix}breadcrumb-item-active-color);
     font-weight: var(--#{$prefix}breadcrumb-item-active-font-weight);
 
     a {
@@ -39,6 +56,20 @@
     a {
       color: inherit;
       pointer-events: none;
+    }
+  }
+
+  & + & {
+    padding-left: var(--#{$prefix}breadcrumb-item-padding-x);
+
+    &::before {
+      float: left;
+      padding-right: var(--#{$prefix}breadcrumb-item-padding-x);
+      color: var(--#{$prefix}breadcrumb-divider-color);
+      content: var(--#{$prefix}breadcrumb-divider, escape-svg($breadcrumb-divider));
+      /*rtl:raw:
+      transform: scaleX(-1);
+      */
     }
   }
 }
