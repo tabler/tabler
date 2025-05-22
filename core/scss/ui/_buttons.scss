@@ -38,7 +38,8 @@
     margin: 0 calc(var(--#{$prefix}btn-padding-x) / 2) 0 calc(var(--#{$prefix}btn-padding-x) / -4);
   }
 
-  .icon-right {
+  .icon-right,
+  .icon-end {
     margin: 0 calc(var(--#{$prefix}btn-padding-x) / -4) 0 calc(var(--#{$prefix}btn-padding-x) / 2);
   }
 
@@ -74,7 +75,7 @@
 //
 @each $color, $value in map-merge($theme-colors, $social-colors) {
   .btn-#{$color} {
-    @if $color == 'dark' {
+    @if $color == "dark" {
       --#{$prefix}btn-border-color: var(--#{$prefix}dark-mode-border-color);
       --#{$prefix}btn-hover-border-color: var(--#{$prefix}dark-mode-border-active-color);
       --#{$prefix}btn-active-border-color: var(--#{$prefix}dark-mode-border-active-color);
@@ -95,7 +96,8 @@
     --#{$prefix}btn-box-shadow: var(--#{$prefix}shadow-input);
   }
 
-  .btn-outline-#{$color} {
+  .btn-outline-#{$color},
+  .btn-outline.btn-#{$color} {
     --#{$prefix}btn-color: var(--#{$prefix}#{$color});
     --#{$prefix}btn-bg: transparent;
     --#{$prefix}btn-border-color: var(--#{$prefix}#{$color});
@@ -104,11 +106,13 @@
     --#{$prefix}btn-hover-bg: var(--#{$prefix}#{$color});
     --#{$prefix}btn-active-color: var(--#{$prefix}#{$color}-fg);
     --#{$prefix}btn-active-bg: var(--#{$prefix}#{$color});
+    --#{$prefix}btn-active-border-color: var(--#{$prefix}#{$color});
     --#{$prefix}btn-disabled-color: var(--#{$prefix}#{$color});
     --#{$prefix}btn-disabled-border-color: var(--#{$prefix}#{$color});
   }
 
-  .btn-ghost-#{$color} {
+  .btn-ghost-#{$color},
+  .btn-ghost.btn-#{$color} {
     --#{$prefix}btn-color: var(--#{$prefix}#{$color});
     --#{$prefix}btn-bg: transparent;
     --#{$prefix}btn-border-color: transparent;
@@ -130,12 +134,14 @@
 //
 // Button sizes
 //
-.btn-sm, .btn-group-sm > .btn {
+.btn-sm,
+.btn-group-sm > .btn {
   --#{$prefix}btn-line-height: #{$input-btn-line-height-sm};
   --#{$prefix}btn-icon-size: #{$input-btn-icon-size-sm};
 }
 
-.btn-lg, .btn-group-lg > .btn {
+.btn-lg,
+.btn-group-lg > .btn {
   --#{$prefix}btn-line-height: #{$input-btn-line-height-lg};
   --#{$prefix}btn-icon-size: #{$input-btn-icon-size-lg};
 }
@@ -160,7 +166,8 @@
 //
 // Icon button
 //
-.btn-icon {
+.btn-icon,
+.btn-action {
   min-width: calc((var(--#{$prefix}btn-line-height) * var(--#{$prefix}btn-font-size)) + (var(--#{$prefix}btn-padding-y) * 2) + (var(--#{$prefix}btn-border-width) * 2));
   min-height: calc((var(--#{$prefix}btn-line-height) * var(--#{$prefix}btn-font-size)) + (var(--#{$prefix}btn-padding-y) * 2) + (var(--#{$prefix}btn-border-width) * 2));
   padding-left: 0;
@@ -215,7 +222,7 @@
     height: var(--#{$prefix}btn-icon-size);
     left: calc(50% - var(--#{$prefix}btn-icon-size) / 2);
     top: calc(50% - var(--#{$prefix}btn-icon-size) / 2);
-    animation: spinner-border .75s linear infinite;
+    animation: spinner-border 0.75s linear infinite;
   }
 }
 
@@ -224,14 +231,7 @@
 //
 .btn-action {
   --#{$prefix}border-color: transparent;
-  padding: 0;
-  border: 0;
   color: var(--#{$prefix}secondary);
-  display: inline-flex;
-  width: 2rem;
-  height: 2rem;
-  align-items: center;
-  justify-content: center;
   border-radius: var(--#{$prefix}border-radius);
   background: transparent;
   box-shadow: none;
@@ -249,6 +249,7 @@
   &.show {
     color: var(--#{$prefix}body-color);
     background: var(--#{$prefix}active-bg);
+    border-color: transparent;
   }
 
   &.show {
@@ -258,4 +259,65 @@
 
 .btn-actions {
   display: flex;
+}
+
+.btn-animate-icon {
+  .icon {
+    transition: transform 0.3s ease;
+  }
+
+  &:hover,
+  &:focus-visible {
+    .icon {
+      transform: translateX(4px);
+    }
+  }
+
+  &.btn-animate-icon-rotate {
+    &:hover,
+    &:focus-visible {
+      .icon {
+        transform: rotate(90deg);
+      }
+    }
+  }
+
+  &.btn-animate-icon-move-start {
+    &:hover,
+    &:focus-visible {
+      .icon {
+        transform: translateX(-4px);
+      }
+    }
+  }
+
+  &.btn-animate-icon-pulse {
+    &:hover,
+    &:focus-visible {
+      .icon {
+        transform: none;
+        animation: pulse 0.9s;
+      }
+    }
+  }
+
+  &.btn-animate-icon-shake {
+    &:hover,
+    &:focus-visible {
+      .icon {
+        transform: none;
+        animation: shake 0.9s;
+      }
+    }
+  }
+
+  &.btn-animate-icon-tada {
+    &:hover,
+    &:focus-visible {
+      .icon {
+        transform: none;
+        animation: tada 0.9s;
+      }
+    }
+  }
 }
