@@ -17,7 +17,7 @@
     "js-compile": "rollup --config .build/rollup.config.mjs --sourcemap",
     "js-minify": "pnpm run js-minify-demo",
     "js-minify-demo": "terser --compress passes=2 --mangle --comments \"/^!/\" --source-map \"content=dist/preview/js/demo.js.map,includeSources,url=demo.min.js.map\" --output dist/preview/js/demo.min.js dist/preview/js/demo.js",
-    "clean": "rm -rf dist demo",
+    "clean": "shx rm -rf dist demo",
     "html": "pnpm run html-build && pnpm run html-prettify",
     "html-build": "eleventy",
     "html-prettify": "prettier --write \"dist/**/*.html\" \"!dist/dist/**\"",
