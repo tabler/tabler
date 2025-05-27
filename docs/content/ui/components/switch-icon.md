@@ -175,7 +175,7 @@ You can also add a fancy animation to add variety to your button. See demo below
     </svg>
   </span>
 </button>
-<button class="switch-icon switch-icon-slide-right" data-bs-toggle="switch-icon">
+<button class="switch-icon switch-icon-slide-end" data-bs-toggle="switch-icon">
   <span class="switch-icon-a text-secondary">
     <svg
       xmlns="http://www.w3.org/2000/svg"
