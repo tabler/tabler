@@ -22,13 +22,16 @@
 		<meta name="HandheldFriendly" content="True"/>
 		<meta name="MobileOptimized" content="320"/>
 
-		<link rel="icon" href="{{ page | relative }}/favicon.ico" type="image/x-icon"/>
+		<link rel="icon" href="{{ page | relative }}/favicon.ico" type="image/x-icon" />
 		<link rel="shortcut icon" href="{{ page | relative }}/favicon.ico" type="image/x-icon"/>
-
 		<meta name="description" content="{{ description | default: site.description | escape }}"/>
 
 		{% include "layout/og.html" %}
+	{% elsif environment == 'development' %}
+		<link rel="icon" href="{{ page | relative }}/favicon-dev.ico" type="image/x-icon" />
+		<link rel="shortcut icon" href="{{ page | relative }}/favicon-dev.ico" type="image/x-icon" />
 	{% endif %}
+
 
 	{% include "layout/css.html" %}
 	{% include "layout/js-libs.html" head %}
