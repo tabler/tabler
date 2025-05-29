@@ -1,5 +1,16 @@
 # @tabler/docs
 
+## 1.4.0
+
+### Patch Changes
+
+- 70a41e4: Replace a package list in `download.md` with a link to the 3rd-party libraries page
+- Updated dependencies [db6200a]
+- Updated dependencies [e96f055]
+- Updated dependencies [a200d30]
+- Updated dependencies [666a296]
+  - @tabler/core@1.4.0
+
 ## 1.3.2
 
 ### Patch Changes
