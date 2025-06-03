@@ -33,4 +33,4 @@ Install Tabler in your Node.js powered apps with the npm package:
 Tabler uses other packages to enhance its functionality - for example, charts and input masks. These are not automatically installed to avoid huge
 dependency trees and need to be installed by using `npm install`. The full list of recommended libraries is available on the 
 [3rd-party Libraries & Resources](/ui/getting-started/references) page. 
-For the most recent list of supported packages you can also check the `peerDependencies` section in our [package.json](https://github.com/tabler/tabler/blob/dev/package.json)
+For the most recent list of supported packages, you can also check the [libs.json](https://github.com/tabler/tabler/blob/dev/core/libs.json) file.
