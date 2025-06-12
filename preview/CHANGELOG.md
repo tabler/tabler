@@ -1,5 +1,15 @@
 # @tabler/preview
 
+## 1.4.0
+
+### Patch Changes
+
+- Updated dependencies [db6200a]
+- Updated dependencies [e96f055]
+- Updated dependencies [a200d30]
+- Updated dependencies [666a296]
+  - @tabler/core@1.4.0
+
 ## 1.3.2
 
 ### Patch Changes

@@ -1,5 +1,17 @@
 # @tabler/core
 
+## 1.4.0
+
+### Minor Changes
+
+- a200d30: Improve breadcrumb styles
+
+### Patch Changes
+
+- db6200a: Remove `license_key` option from HugeRTE init object
+- e96f055: Add different favicon to development environment
+- 666a296: Fix list group item hoverable only with `.list-group-hoverable` class
+
 ## 1.3.2
 
 ### Patch Changes
