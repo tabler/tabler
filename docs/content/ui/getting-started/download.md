@@ -28,17 +28,9 @@ Install Tabler in your Node.js powered apps with the npm package:
 
 {% include "docs/tabs-package.html" name="@tabler/core" %}
 
+## 3rd-party Libraries
+
 Tabler uses other packages to enhance its functionality - for example, charts and input masks. These are not automatically installed to avoid huge
-dependency trees and need to be installed by using npm install. We support the following packages as of writing.
-
-- [apexcharts](https://apexcharts.com/)
-- [autosize](http://www.jacklmoore.com/autosize/)
-- [choices.js](https://github.com/Choices-js/Choices)
-- [countup.js](https://inorganik.github.io/countUp.js/)
-- [flatpickr](https://flatpickr.js.org/)
-- [imask](https://imask.js.org/)
-- [litepicker](https://litepicker.com/)
-- [nouislider](https://refreshless.com/nouislider/)
-- [tom-select](https://tom-select.js.org/)
-
-For the complete list of supported packages you can check the peerDependencies section in our [package.json](https://github.com/tabler/tabler/blob/dev/package.json)
+dependency trees and need to be installed by using `npm install`. The full list of recommended libraries is available on the 
+[3rd-party Libraries & Resources](/ui/getting-started/references) page. 
+For the most recent list of supported packages, you can also check the [libs.json](https://github.com/tabler/tabler/blob/dev/core/libs.json) file.
