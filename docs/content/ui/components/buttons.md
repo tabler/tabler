@@ -587,7 +587,7 @@ Use size modifiers to change the size of your buttons. Available sizes: `.btn-xs
 <button type="button" class="btn btn-primary btn-lg">Large button</button>
 <button type="button" class="btn btn-primary btn-xl">Extra large button</button>
 {%- endcapture -%}
-{%- include "docs/example.html" html=html separated centered %}
+{%- include "docs/example.html" html=html separated centered vertical %}
 
 ## Link buttons
 
