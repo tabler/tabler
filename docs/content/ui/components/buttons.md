@@ -581,11 +581,10 @@ Add a subtle animation effect to your buttons when users hover over them. This c
 Use size modifiers to change the size of your buttons. Available sizes: `.btn-xs`, `.btn-sm`, default, `.btn-lg`, `.btn-xl`.
 
 {% capture html -%}
-<button type="button" class="btn btn-primary btn-xs">Extra small button</button>
-<button type="button" class="btn btn-primary btn-sm">Small button</button>
-<button type="button" class="btn btn-primary">Default button</button>
-<button type="button" class="btn btn-primary btn-lg">Large button</button>
-<button type="button" class="btn btn-primary btn-xl">Extra large button</button>
+<button type="button" class="btn btn-sm">Small button</button>
+<button type="button" class="btn">Default button</button>
+<button type="button" class="btn btn-lg">Large button</button>
+<button type="button" class="btn btn-xl">Extra large button</button>
 {%- endcapture -%}
 {%- include "docs/example.html" html=html separated centered vertical %}
 
