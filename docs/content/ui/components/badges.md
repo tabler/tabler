@@ -100,12 +100,12 @@ You can use icons in badges to make them more visually appealing. The example be
 You can also use an icon on the right side of the badge. The example below demonstrates how to use icons on the right side of badges.
 
 {% capture html -%}
-{% include "ui/badge.html" text="Star" icon-right="arrow-right" -%}
-{% include "ui/badge.html" text="Heart" icon-right="arrow-right" -%}
-{% include "ui/badge.html" text="Check" icon-right="arrow-right" -%}
-{% include "ui/badge.html" text="X" icon-right="arrow-right" -%}
-{% include "ui/badge.html" text="Plus" icon-right="arrow-right" -%}
-{% include "ui/badge.html" text="Minus" icon-right="arrow-right" -%}
+{% include "ui/badge.html" text="Star" icon-end="arrow-right" -%}
+{% include "ui/badge.html" text="Heart" icon-end="arrow-right" -%}
+{% include "ui/badge.html" text="Check" icon-end="arrow-right" -%}
+{% include "ui/badge.html" text="X" icon-end="arrow-right" -%}
+{% include "ui/badge.html" text="Plus" icon-end="arrow-right" -%}
+{% include "ui/badge.html" text="Minus" icon-end="arrow-right" -%}
 {%- endcapture %}
 {% include "docs/example.html" html=html centered %}
 
