@@ -409,6 +409,16 @@ Add the `.btn-loading` class to show a button's loading state, which can be usef
 {%- endcapture -%}
 {%- include "docs/example.html" html=html centered %}
 
+## Full width buttons
+
+Add the `.w-100` class to make buttons span the full width of their container. This is useful for mobile-first designs or when you want buttons to take up the entire available space.
+
+{% capture html -%}
+<a href="#" class="btn btn-primary w-100">Full width button</a>
+<a href="#" class="btn btn-outline-secondary w-100">Full width outline button</a>
+{%- endcapture -%}
+{%- include "docs/example.html" html=html separated %}
+
 ## List of buttons
 
 Create a list of buttons using the `.btn-list` container to display different actions a user can take. If you add additional styling, such as colors, you will be able to focus users' attention on a particular action or suggest the result.
@@ -475,6 +485,26 @@ Use the `.text-center` or the `.text-end` modifiers to change the buttons' align
 </div>
 {%- endcapture -%}
 {%- include "docs/example.html" html=html %}
+
+## Buttons with badges
+
+Add badges to buttons to display additional information like counts, notifications, or status indicators. Badges automatically position themselves within the button layout.
+
+{% capture html -%}
+<a href="#" class="btn">
+  Notifications
+  <span class="badge ms-2">14</span>
+</a>
+<a href="#" class="btn">
+  Messages
+  <span class="badge ms-2">3</span>
+</a>
+<a href="#" class="btn">
+  Alerts
+  <span class="badge ms-2">7</span>
+</a>
+{%- endcapture -%}
+{%- include "docs/example.html" html=html centered %}
 
 ## Buttons with avatars
 
@@ -545,3 +575,106 @@ Add a subtle animation effect to your buttons when users hover over them. This c
 </div>
 {%- endcapture -%} 
 {%- include "docs/example.html" html=html %}
+
+## Button sizes
+
+Use size modifiers to change the size of your buttons. Available sizes: `.btn-xs`, `.btn-sm`, default, `.btn-lg`, `.btn-xl`.
+
+{% capture html -%}
+<button type="button" class="btn btn-primary btn-xs">Extra small button</button>
+<button type="button" class="btn btn-primary btn-sm">Small button</button>
+<button type="button" class="btn btn-primary">Default button</button>
+<button type="button" class="btn btn-primary btn-lg">Large button</button>
+<button type="button" class="btn btn-primary btn-xl">Extra large button</button>
+{%- endcapture -%}
+{%- include "docs/example.html" html=html separated centered %}
+
+## Link buttons
+
+Use the `.btn-link` class to create buttons that look like links but maintain button functionality. These are useful for secondary actions that shouldn't compete with primary buttons for attention.
+
+{% capture html -%}
+<a href="#" class="btn btn-link">Link button</a>
+<button type="button" class="btn btn-link">Link button</button>
+{%- endcapture -%}
+{%- include "docs/example.html" html=html centered %}
+
+## Action buttons
+
+Use the `.btn-action` class to create subtle action buttons that are perfect for card headers, toolbars, or other interface elements where you want minimal visual impact.
+
+{% capture html -%}
+<div class="btn-actions">
+  <a href="#" class="btn btn-action" aria-label="Edit">
+    {%- include "ui/icon.html" icon="edit" -%}
+  </a>
+  <a href="#" class="btn btn-action" aria-label="Copy">
+    {%- include "ui/icon.html" icon="copy" -%}
+  </a>
+  <a href="#" class="btn btn-action" aria-label="Settings">
+    {%- include "ui/icon.html" icon="settings" -%}
+  </a>
+  <a href="#" class="btn btn-action" aria-label="Delete">
+    {%- include "ui/icon.html" icon="trash" -%}
+  </a>
+</div>
+{%- endcapture -%}
+{%- include "docs/example.html" html=html centered %}
+
+## Action button groups
+
+Use the `.btn-actions` container to group multiple action buttons together. This creates a cohesive set of related actions that work well in card headers, toolbars, or other interface elements.
+
+{% capture html -%}
+<div class="btn-actions">
+  <a href="#" class="btn btn-action">
+    {%- include "ui/icon.html" icon="refresh" -%}
+  </a>
+  <a href="#" class="btn btn-action">
+    {%- include "ui/icon.html" icon="chevron-up" -%}
+  </a>
+  <a href="#" class="btn btn-action">
+    {%- include "ui/icon.html" icon="dots-vertical" -%}
+  </a>
+  <a href="#" class="btn btn-action">
+    {%- include "ui/icon.html" icon="x" -%}
+  </a>
+</div>
+{%- endcapture -%}
+{%- include "docs/example.html" html=html centered %}
+
+## Button groups
+
+Use button groups to combine related buttons together. Button groups are perfect for creating toolbars, segmented controls, or any interface where multiple related actions should be visually grouped.
+
+{% capture html -%}
+<div class="btn-group" role="group">
+  <button type="button" class="btn">Left</button>
+  <button type="button" class="btn">Middle</button>
+  <button type="button" class="btn">Right</button>
+</div>
+{%- endcapture -%}
+{%- include "docs/example.html" html=html centered %}
+
+{% capture html -%}
+<div class="btn-group" role="group">
+  <input type="radio" class="btn-check" name="btn-radio" id="btn-radio-1" autocomplete="off" checked>
+  <label class="btn" for="btn-radio-1">Radio 1</label>
+  
+  <input type="radio" class="btn-check" name="btn-radio" id="btn-radio-2" autocomplete="off">
+  <label class="btn" for="btn-radio-2">Radio 2</label>
+  
+  <input type="radio" class="btn-check" name="btn-radio" id="btn-radio-3" autocomplete="off">
+  <label class="btn" for="btn-radio-3">Radio 3</label>
+</div>
+{%- endcapture -%}
+{%- include "docs/example.html" html=html centered %}
+
+{% capture html -%}
+<div class="btn-group-vertical" role="group">
+  <button type="button" class="btn">Top</button>
+  <button type="button" class="btn">Middle</button>
+  <button type="button" class="btn">Bottom</button>
+</div>
+{%- endcapture -%}
+{%- include "docs/example.html" html=html centered %}
