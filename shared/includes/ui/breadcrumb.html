@@ -1,0 +1,20 @@
+{% assign breadcrumb-pages = include.pages | default: "Home,Library,Data" | split: "," -%}
+<ol class="breadcrumb{% if include.class %} {{ include.class }}{% endif %}{% if include.separator %} breadcrumb-{{ include.separator }}{% endif %}" aria-label="breadcrumbs">
+   {%- for page in breadcrumb-pages -%}
+   {%- if forloop.last -%}
+   <li class="breadcrumb-item active" aria-current="page">
+		<a href="#">{{ page }}</a>
+   </li>
+   {%- else -%}
+   <li class="breadcrumb-item">
+		{% if forloop.first and include.home-icon-%}
+		<a href="{{ site.baseurl }}/">
+			{% include "ui/icon.html" icon="home" %}
+		</a>
+		{%- else -%}
+		<a href="#">{{ page }}</a>
+		{%- endif -%}
+	</li>
+   {%- endif -%}
+   {%- endfor -%}
+</ol>

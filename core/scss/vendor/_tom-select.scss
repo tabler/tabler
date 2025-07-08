@@ -1,0 +1,81 @@
+$select-color-dropdown: #fff;
+$select-color-dropdown-border-top: red;
+$input-border-width: 1px;
+
+:root {
+  --ts-pr-clear-button: 0rem;
+  --ts-pr-caret: 0rem;
+}
+
+.ts-input {
+  color: inherit;
+}
+
+.focus .ts-control {
+  border-radius: var(--#{$prefix}border-radius);
+}
+  
+
+.ts-control {
+  color: inherit;
+
+  .dropdown-menu {
+    width: 100%;
+    height: auto;
+  }
+}
+
+.ts-wrapper {
+  .form-control, 
+  .form-select,
+  &.form-control, 
+  &.form-select {
+    box-shadow: $input-box-shadow; 
+  }
+
+  &.is-invalid,
+  &.is-valid {
+    .ts-control {
+      --ts-pr-clear-button: 1.5rem;
+    }
+  }
+}
+
+.ts-dropdown {
+  background: var(--#{$prefix}bg-surface);
+  color: var(--#{$prefix}body-color);
+  box-shadow: var(--#{$prefix}shadow-dropdown);
+  z-index: $zindex-dropdown;
+
+  .option {
+    padding: $dropdown-item-padding-y $dropdown-item-padding-x;
+  }
+}
+
+.ts-control,
+.ts-control input {
+  color: var(--#{$prefix}body-color);
+}
+
+.ts-control input {
+  &::placeholder{
+    color: $input-placeholder-color;
+  }
+}
+
+.ts-wrapper.multi,
+.ts-wrapper.multi.disabled {
+  .ts-control > div {
+    background: var(--#{$prefix}bg-surface-secondary);
+    border: 1px solid var(--#{$prefix}border-color);
+    color: var(--#{$prefix}body-color);
+  }
+}
+
+.ts-wrapper.disabled .ts-control {
+  opacity: 1;
+
+  &> div.item {
+    color: var(--#{$prefix}gray-500);
+  }
+}

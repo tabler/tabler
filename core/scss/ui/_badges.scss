@@ -1,0 +1,113 @@
+.badge {
+  --#{$prefix}badge-padding-x: #{$badge-padding-x};
+  --#{$prefix}badge-padding-y: #{$badge-padding-y};
+  --#{$prefix}badge-font-size: #{$badge-font-size};
+  --#{$prefix}badge-font-weight: #{$badge-font-weight};
+  --#{$prefix}badge-color: #{$badge-color};
+  --#{$prefix}badge-border-radius: #{$badge-border-radius};
+  --#{$prefix}badge-icon-size: 1em;
+  --#{$prefix}badge-line-height: 1;
+  display: inline-flex;
+  padding: var(--#{$prefix}badge-padding-y) var(--#{$prefix}badge-padding-x);
+  font-weight: var(--#{$prefix}badge-font-weight);
+  font-size: var(--#{$prefix}badge-font-size);
+  color: var(--#{$prefix}badge-color);
+  text-align: center;
+  white-space: nowrap;
+  justify-content: center;
+  align-items: center;
+  gap: .25rem;
+  background: $badge-bg-color;
+  overflow: hidden;
+  user-select: none;
+  border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) transparent;
+  border-radius: var(--#{$prefix}badge-border-radius);
+  min-width: calc(1em + var(--#{$prefix}badge-padding-y) * 2 + 2px);
+  letter-spacing: 0.04em;
+  vertical-align: bottom;
+  line-height: var(--#{$prefix}badge-line-height);
+
+  @at-root a#{&} {
+    background: var(--#{$prefix}bg-surface-secondary);
+  }
+
+  .icon {
+    width: 1em;
+    height: 1em;
+    font-size: var(--#{$prefix}badge-icon-size);
+    stroke-width: 2;
+  }
+}
+
+.badge:empty,
+.badge-dot {
+  display: inline-block;
+  width: $badge-empty-size;
+  height: $badge-empty-size;
+  min-width: 0;
+  min-height: auto;
+  padding: 0;
+  border-radius: $border-radius-pill;
+  vertical-align: baseline;
+}
+
+//
+// Outline badge
+//
+.badge-outline {
+  background-color: transparent;
+  border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) currentColor;
+}
+
+//
+// Pill badge
+//
+.badge-pill {
+  border-radius: $border-radius-pill;
+}
+
+//
+// Badges list
+//
+.badges-list {
+  @include elements-list;
+}
+
+//
+// Notification badge
+//
+.badge-notification {
+  position: absolute !important;
+  top: 0 !important;
+  right: 0 !important;
+  transform: translate(50%, -50%);
+  z-index: 1;
+}
+
+.badge-blink {
+  animation: blink 2s infinite;
+}
+
+//
+// Badge sizes
+//
+.badge-sm {
+  --#{$prefix}badge-font-size: #{$badge-font-size-sm};
+  --#{$prefix}badge-icon-size: 1em;
+  --#{$prefix}badge-padding-y: 2px;
+  --#{$prefix}badge-padding-x: 0.25rem;
+}
+
+.badge-lg {
+  --#{$prefix}badge-font-size: #{$badge-font-size-lg};
+  --#{$prefix}badge-icon-size: 1em;
+  --#{$prefix}badge-padding-y: 0.25rem;
+  --#{$prefix}badge-padding-x: 0.5rem;
+}
+
+//
+// Badge with only icon
+//
+.badge-icononly {
+  --#{$prefix}badge-padding-x: 0;
+}

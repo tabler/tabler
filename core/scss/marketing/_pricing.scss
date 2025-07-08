@@ -1,0 +1,111 @@
+$pricing-card-width: 22rem;
+
+.pricing {
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  justify-content: center;
+
+  @include media-breakpoint-up(md) {
+    flex-direction: row;
+  }
+}
+
+.pricing-card {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: var(--#{$prefix}bg-surface);
+  border: 1px solid $border-color;
+  padding: 2rem;
+  margin: 0 0 1rem;
+  position: relative;
+  box-shadow: $box-shadow-card;
+  text-align: center;
+  border-radius: $border-radius-lg;
+
+  @include media-breakpoint-up(md) {
+    margin: 1rem -1px;
+    max-width: $pricing-card-width;
+
+    &:first-child {
+      border-radius: $border-radius-lg 0 0 $border-radius-lg;
+    }
+
+    &:last-child {
+      border-radius: 0 $border-radius-lg $border-radius-lg 0;
+    }
+  }
+
+  &.featured {
+    z-index: 1;
+    border: 2px solid var(--#{$prefix}primary);
+    order: -1;
+
+    @include media-breakpoint-up(md) {
+      order: unset;
+      margin-top: 0;
+      margin-bottom: 0;
+      box-shadow: $box-shadow-card;
+      border-radius: $border-radius-lg;
+    }
+  }
+}
+
+.pricing-title {
+  font-size: $h2-font-size;
+  line-height: $h2-line-height;
+}
+
+.pricing-label {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translateY(-50%);
+  vertical-align: bottom;
+  right: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pricing-btn {
+  margin-top: auto;
+  padding-top: 2rem;
+}
+
+.pricing-price {
+  display: flex;
+  justify-content: center;
+  font-size: 2.5rem;
+  line-height: 1;
+  font-weight: $font-weight-black;
+  margin: 0.75rem 0;
+}
+
+.pricing-price-currency {
+  font-size: $h2-font-size;
+  line-height: 1.5;
+  margin-right: 0.25rem;
+  font-weight: $font-weight-bold;
+}
+
+.pricing-price-description {
+  font-size: $h4-font-size;
+  line-height: $h4-line-height;
+  font-weight: $font-weight-normal;
+  color: $text-secondary;
+  align-self: center;
+  margin-left: 0.5rem;
+}
+
+.pricing-features {
+  margin: 1rem 0 0;
+  padding: 0;
+  list-style: none;
+  text-align: left;
+
+  > li:not(:first-child) {
+    margin-top: 0.25rem;
+  }
+}

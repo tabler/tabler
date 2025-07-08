@@ -1,0 +1,22 @@
+<!--EXAMPLE-->
+<div
+	class="example fs-base border rounded my-5{% unless include.raw %} d-flex flex-wrap justify-content-center{% endunless %} overflow-{{ include.overflow | default: 'auto' }} position-relative {% if include.bg %}bg-{{ include.bg }}{% endif %}{% if include.class %} {{ include.class }}{% endif %}"{% if include.height %} style="height: {{ include.height }}"{% endif %}{% unless include.bg %} style="background: url('data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'20\' height=\'20\' viewBox=\'0 0 20 20\'><rect fill=\'rgba(0, 0, 0, .01)\' x=\'0\' y=\'0\' width=\'10\' height=\'10\' /><rect fill=\'rgba(0, 0, 0, .01)\' x=\'10\' y=\'10\' width=\'10\' height=\'10\' /></svg>')"{% endunless %}}>
+	{%- unless include.raw -%}<div class="p-6 w-full{% if include.column %} d-flex gap-3 flex-column{% elsif include.centered %} d-flex flex-fill flex-wrap gap-2 justify-content-center{% if include.vertical %} align-items-center flex-column{% else %} justify-content-center{% endif %}{% endif %}" {% if include.column %}style="max-width: 25rem;"{% endif %}>{%- endunless -%}
+		{{ include.html | remove-href }}
+	{%- unless include.raw -%}</div>{%- endunless -%}
+</div>
+
+{% unless include.hide-code %}
+<div class="position-relative">
+<a class="btn btn-icon btn-dark position-absolute m-2 top-0 end-0 z-3" data-clipboard-text="{{ include.html | escape_attribute }}">
+	{% include "ui/icon.html" icon="clipboard" %}
+	{% include "ui/icon.html" icon="check" class="d-none" %}
+</a>
+
+```html
+{{ include.html }}
+```
+
+</div>
+{% endunless %}
+<!--/EXAMPLE-->

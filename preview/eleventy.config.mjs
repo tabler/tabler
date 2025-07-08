@@ -1,0 +1,280 @@
+import { readFileSync } from 'node:fs';
+import { EleventyRenderPlugin } from "@11ty/eleventy";
+import { join } from 'node:path';
+import { sync } from 'glob';
+import { appFilters } from "../shared/e11ty/filters.mjs";
+import { appData } from "../shared/e11ty/data.mjs"
+
+/** @type {import('@11ty/eleventy').LocalConfig} */
+export default function (eleventyConfig) {
+	const environment = process.env.NODE_ENV || "production";
+
+	appFilters(eleventyConfig);
+	appData(eleventyConfig);
+
+	eleventyConfig.setInputDirectory("pages");
+	eleventyConfig.setOutputDirectory("dist");
+
+	eleventyConfig.setLayoutsDirectory("../../shared/layouts");
+	eleventyConfig.setIncludesDirectory("../../shared/includes");
+	eleventyConfig.setDataDirectory("../../shared/data");
+
+	eleventyConfig.addPassthroughCopy({
+		"node_modules/@tabler/core/dist": "dist",
+		"pages/favicon.ico": "favicon.ico",
+		"pages/favicon-dev.ico": "favicon-dev.ico",
+		"static": "static",
+	});
+
+	eleventyConfig.addPlugin(EleventyRenderPlugin, {
+		accessGlobalData: true,
+	});
+
+	/**
+	 * Data
+	 */
+	eleventyConfig.addGlobalData("environment", environment);
+	eleventyConfig.addGlobalData("readme", readFileSync(join("..", "README.md"), "utf-8"));
+	eleventyConfig.addGlobalData("license", readFileSync(join("..", "LICENSE"), "utf-8"));
+
+	eleventyConfig.addGlobalData("pages", () => {
+		return sync('pages/**/*.html').filter((file) => {
+			return !file.includes('pages/_') && !file.includes('pages/docs/index.html');
+		}).map((file) => {
+			return {
+				url: file.replace(/^pages\//, '/')
+			}
+		});
+	});
+
+	/**
+	 * Filters
+	 */
+	eleventyConfig.addFilter("miliseconds_to_minutes", function (value) {
+		// Raturn 3:45 time format
+		const minutes = Math.floor(value / 60000);
+		const seconds = ((value % 60000) / 1000).toFixed(0);
+		return `${minutes}:${seconds < 10 ? '0' : ''}${seconds}`;
+	});
+
+	eleventyConfig.addFilter("relative", (page) => {
+		const segments = (page.url || '').replace(/^\//).split('/');
+		if (segments.length === 1) {
+			return '.';
+		} else {
+			return '../'.repeat(segments.length - 1).slice(0, -1);
+		}
+	});
+
+	eleventyConfig.addFilter("contains", (items, item) => {
+		return items && Array.isArray(items) && items.includes(item);
+	});
+
+	eleventyConfig.addFilter("concat_objects", function (object, object2) {
+		if (
+			object &&
+			object2 &&
+			typeof object === 'object' &&
+			typeof object2 === 'object' &&
+			!Array.isArray(object) &&
+			!Array.isArray(object2)
+		) {
+			return { ...object, ...object2 };
+		}
+		return object;
+	});
+
+	eleventyConfig.addFilter("replace_regex", function (input, regStr, replStr) {
+		const regex = new RegExp(regStr, 'gm');
+		return input.replace(regex, replStr);
+	});
+
+	eleventyConfig.addFilter("timestamp_to_date", function (timestamp) {
+		const date = new Date(timestamp * 1000); // Convert timestamp to milliseconds
+		return date.toISOString().split('T')[0]; // Extract the date in 'YYYY-MM-DD' format
+	});
+
+	eleventyConfig.addFilter("split_to_n", function (arr, n) {
+		const chunkSize = Math.round(arr.length / n);
+		const result = [];
+		for (let i = 0; i < arr.length; i += chunkSize) {
+			result.push(arr.slice(i, i + chunkSize));
+		}
+		return result;
+	})
+
+	eleventyConfig.addFilter("format_number", function (value) {
+		return value.toString()
+			.split('')
+			.reverse()
+			.reduce((acc, char, index) => {
+				if (index > 0 && index % 3 === 0) {
+					acc.push(',');
+				}
+				acc.push(char);
+				return acc;
+			}, [])
+			.reverse()
+			.join('');
+	});
+
+	function randomNumber(x, min = 0, max = 100, round = 0) {
+		let value = ((x * x * Math.PI * Math.E * (max + 1) * (Math.sin(x) / Math.cos(x * x))) % (max + 1 - min)) + min;
+
+		value = value > max ? max : value;
+		value = value < min ? min : value;
+
+		if (round !== 0) {
+			value = parseFloat(value.toFixed(round));
+		} else {
+			value = Math.floor(value);
+		}
+
+		return value;
+	}
+
+	eleventyConfig.addFilter("random_date_ago", function (x, daysAgo = 100) {
+		const today = new Date();
+		const randomDaysAgo = randomNumber(x, 0, daysAgo);
+		today.setDate(today.getDate() - randomDaysAgo);
+		return today;
+	});
+
+	eleventyConfig.addFilter("random_date", function (x, startDate = null, endDate = null) {
+		const start = new Date(startDate ? startDate : '2024-01-01').getTime() / 1000;
+		const end = new Date(endDate ? endDate : '2024-12-30').getTime() / 1000;
+
+		const randomTimestamp = randomNumber(x, start, end);
+		return new Date(randomTimestamp * 1000);
+	});
+
+	eleventyConfig.addFilter("random_item", function (x, items) {
+		const index = randomNumber(x, 0, items.length - 1);
+		return items[index];
+	});
+
+	eleventyConfig.addFilter("random_number", randomNumber);
+
+	eleventyConfig.addFilter("first_letters", function capitalizeFirstLetter(string) {
+		return string.split(' ').map(word => word.charAt(0)).join('');
+	})
+
+	eleventyConfig.addFilter("uc_first", function capitalizeFirstLetter(string) {
+		return string.charAt(0).toUpperCase() + string.slice(1);
+	})
+
+	eleventyConfig.addFilter("size", function (elem) {
+		if (elem instanceof Object) {
+			return Object.keys(elem).length;
+		}
+
+		return elem.length;
+	})
+
+	eleventyConfig.addFilter("first", function (elem) {
+		if (elem instanceof Object) {
+			return elem[Object.keys(elem)[0]];
+		}
+
+		return elem[0];
+	})
+
+	// time ago from today
+	eleventyConfig.addFilter("timeago", function (date) {
+		const seconds = Math.floor((new Date() - date) / 1000);
+
+		let interval = Math.floor(seconds / 31536000);
+
+		if (interval > 1) {
+			return interval + " years ago";
+		}
+		interval = Math.floor(seconds / 2592000);
+		if (interval > 1) {
+			return interval + " months ago";
+		}
+		interval = Math.floor(seconds / 86400);
+		if (interval > 1) {
+			return interval + " days ago";
+		}
+		interval = Math.floor(seconds / 3600);
+		if (interval > 1) {
+			return interval + " hours ago";
+		}
+		interval = Math.floor(seconds / 60);
+		if (interval > 1) {
+			return interval + " minutes ago";
+		}
+		if (seconds > 0) {
+			return Math.floor(seconds) + " seconds ago";
+		}
+
+		return "now";
+	})
+
+	/**
+	 * Shortcodes
+	 */
+	const tags = ["highlight", "endhighlight"];
+	tags.forEach(tag => {
+		eleventyConfig.addLiquidTag(tag, function (liquidEngine) {
+			return {
+				parse: function (tagToken, remainingTokens) {
+					this.str = tagToken.args;
+				},
+				render: function (scope, hash) {
+					return "";
+				},
+			};
+		});
+	});
+
+	let _CAPTURES = {};
+
+	eleventyConfig.on('beforeBuild', () => {
+		_CAPTURES = {};
+	});
+
+	['script', 'modal'].forEach((tag) => {
+		eleventyConfig.addPairedShortcode(`capture_${tag}`, function (content, inline) {
+			if (inline) {
+				return content;
+			}
+
+			if (!_CAPTURES[tag]) {
+				_CAPTURES[tag] = []
+			}
+			
+			if (!_CAPTURES[tag][this.page.inputPath]) {
+				_CAPTURES[tag][this.page.inputPath] = [];
+			}
+
+			_CAPTURES[tag][this.page.inputPath].push(content);
+
+			return ''
+		})
+
+		eleventyConfig.addShortcode(`${tag}s`, function () {
+			if (_CAPTURES[tag] && _CAPTURES[tag][this.page.inputPath]) {
+				return _CAPTURES[tag][this.page.inputPath] ? `<!-- BEGIN PAGE ${tag.toUpperCase()}S -->\n${_CAPTURES[tag][this.page.inputPath].join('\n').trim()}\n<!-- END PAGE ${tag.toUpperCase()}S -->` : '';
+			}
+
+			return ''
+		});
+	});
+
+	/**
+	 * Transforms
+	 */
+	if (environment !== "development") {
+		function prettifyHTML(content, outputPath) {
+			return outputPath.endsWith('.html')
+				? content
+					.replace(/\/\/ @formatter:(on|off)\n+/gm, '')
+					// remove empty lines
+					.replace(/^\s*[\r\n]/gm, '')
+				: content
+		}
+
+		eleventyConfig.addTransform('htmlformat', prettifyHTML)
+	}
+};

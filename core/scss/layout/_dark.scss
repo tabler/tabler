@@ -1,0 +1,74 @@
+@use "sass:color";
+
+// stylelint-disable declaration-no-important
+
+@if $enable-dark-mode {
+  :root {
+    &:not(.theme-dark):not([data-bs-theme="dark"]) {
+      .hide-theme-light {
+        display: none !important;
+      }
+
+      .img-dark {
+        display: none !important;
+      }
+    }
+
+    &.theme-dark,
+    &[data-bs-theme="dark"] {
+      .hide-theme-dark {
+        display: none !important;
+      }
+
+      .img-light {
+        display: none !important;
+      }
+    }
+  }
+
+
+  @include color-mode(dark, true) {
+    color-scheme: dark;
+    --#{$prefix}body-color: var(--#{$prefix}gray-200);
+    --#{$prefix}secondary: var(--#{$prefix}gray-400);
+
+    --#{$prefix}body-bg: var(--#{$prefix}gray-900);
+    --#{$prefix}emphasis-color: #{$body-emphasis-color-dark};
+    --#{$prefix}emphasis-color-rgb: #{to-rgb($body-emphasis-color-dark)};
+
+    --#{$prefix}bg-forms: var(--#{$prefix}gray-900);
+    --#{$prefix}bg-surface: var(--#{$prefix}gray-800);
+    --#{$prefix}bg-surface-inverted: var(--#{$prefix}gray-100);
+    --#{$prefix}bg-surface-secondary: var(--#{$prefix}gray-900);
+    --#{$prefix}bg-surface-tertiary: var(--#{$prefix}gray-800);
+
+    --#{$prefix}text-inverted: var(--#{$prefix}gray-800);
+
+    --#{$prefix}link-color: var(--#{$prefix}primary);
+    --#{$prefix}link-hover-color: color-mix(in srgb, var(--#{$prefix}primary), black 20%);
+
+    --#{$prefix}active-bg: #{$lighten-dark};
+    --#{$prefix}disabled-color: #{color-transparent(var(--#{$prefix}body-color), .4)};
+
+    --#{$prefix}border-color: var(--#{$prefix}gray-700);
+    --#{$prefix}border-color-translucent: var(
+      --#{$prefix}dark-mode-border-color-translucent
+    );
+    --#{$prefix}border-dark-color: var(--#{$prefix}dark-mode-border-dark-color);
+    --#{$prefix}border-active-color: var(
+      --#{$prefix}dark-mode-border-active-color
+    );
+
+    --#{$prefix}btn-color: #{$darken-dark};
+
+    .navbar-brand-autodark {
+      .navbar-brand-image {
+        @include autodark-image;
+      }
+    }
+  }
+
+  body[data-bs-theme=dark] [data-bs-theme=light] {
+    @extend [data-bs-theme=dark];
+  }
+}

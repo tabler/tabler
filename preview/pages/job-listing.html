@@ -1,0 +1,117 @@
+---
+title: Search for Jobs
+page-header: Search for Jobs
+page-header-actions: add-job
+page-menu: extra.job-listing
+layout: default
+permalink: job-listing.html
+---
+
+{% assign types = 'Programming,Design,Management / Finance,Customer Support,Sales / Marketing' | split: ',' %}
+{% assign salaries = '$20K - $50K,$50K - $100K,> $100K,Drawing / Painting' | split: ',' %}
+
+<div class="row g-4">
+	<div class="col-md-3">
+		<form action="./" method="get" autocomplete="off" novalidate class="sticky-top">
+
+			<div class="form-label">Job Types</div>
+			<div class="mb-4">
+				{% for type in types %}
+				<label class="form-check">
+					<input type="checkbox" class="form-check-input" name="form-type[]" value="{{ forloop.index  }}"{% if forloop.index <= 2 %} checked{% endif %}>
+					<span class="form-check-label">{{ type }}</span>
+				</label>
+				{% endfor %}
+			</div>
+
+			<div class="form-label">Remote</div>
+			<div class="mb-4">
+				{% include "ui/form/check.html" switch=true title-on="On" title-off="Off" %}
+			</div>
+
+			<div class="form-label">Salary Range</div>
+			<div class="mb-4">
+				{% for salary in salaries %}
+				<label class="form-check">
+					<input type="radio" class="form-check-input" name="form-salary" value="{{ forloop.index  }}"{% if forloop.index <= 2 %} checked{% endif %}>
+					<span class="form-check-label">{{ salary }}</span>
+				</label>
+				{% endfor %}
+			</div>
+
+			<div class="form-label">Immigration</div>
+			<div class="mb-4">
+				{% include "ui/form/check.html" switch=true title-on="On" title-off="Off" %}
+
+				<div class="small text-secondary">Only show companies that can sponsor a visa</div>
+			</div>
+
+			<div class="form-label">Location</div>
+			<div class="mb-4">
+				<select class="form-select">
+					<option>Anywhere</option>
+					<option>London</option>
+					<option>San Francisco</option>
+					<option>New York</option>
+					<option>Berlin</option>
+				</select>
+			</div>
+
+			<div class="mt-5">
+				<button class="btn btn-primary w-100">
+					Confirm changes
+				</button>
+				<a href="#" class="btn btn-link w-100">
+					Reset to defaults
+				</a>
+			</div>
+		</form>
+
+	</div>
+	<div class="col-md-9">
+		<div class="row row-cards">
+			<div class="space-y">
+				{% for job in jobs %}
+				<div class="card">
+					<div class="row g-0">
+						<div class="col-auto">
+							<div class="card-body">
+								<div class="avatar avatar-md" style="background-image: url({{ page | relative }}/static/jobs/{{ job.image }})"></div>
+							</div>
+						</div>
+						<div class="col">
+							<div class="card-body ps-0">
+								<div class="row">
+									<div class="col"><h3 class="mb-0"><a href="#">{{ job.title }}</a></h3></div>
+									{% if job.salary %}<div class="col-auto fs-3 text-green">{{ job.salary }}</div>{% endif %}
+								</div>
+								<div class="row">
+									<div class="col-md">
+										<div class="mt-3 list-inline list-inline-dots mb-0 text-secondary d-sm-block d-none">
+											<div class="list-inline-item">{% include "ui/icon.html" icon="building-community" class="icon-inline" %} {{ job.company }}</div>
+											<div class="list-inline-item">{% include "ui/icon.html" icon="license" class="icon-inline" %} {{ job.type }}</div>
+											<div class="list-inline-item">{% include "ui/icon.html" icon="map-pin" class="icon-inline" %} {{ job.location }}</div>
+										</div>
+										<div class="mt-3 list mb-0 text-secondary d-block d-sm-none">
+											<div class="list-item">{% include "ui/icon.html" icon="building-community" class="icon-inline" %} {{ job.company }}</div>
+											<div class="list-item">{% include "ui/icon.html" icon="license" class="icon-inline" %} {{ job.type }}</div>
+											<div class="list-item">{% include "ui/icon.html" icon="map-pin" class="icon-inline" %} {{ job.location }}</div>
+										</div>
+									</div>
+									<div class="col-md-auto">
+										<div class="mt-3 badges">
+											{% for tag in job.tags %}
+											<a href="#" class="badge badge-outline text-secondary fw-normal badge-pill">{{ tag }}</a>
+											{% endfor %}
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</div>

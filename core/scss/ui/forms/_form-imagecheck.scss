@@ -1,0 +1,105 @@
+/**
+Image check
+ */
+.form-imagecheck {
+  --#{$prefix}form-imagecheck-radius: var(--#{$prefix}border-radius);
+  position: relative;
+  margin: 0;
+  cursor: pointer;
+}
+
+.form-imagecheck-input {
+  position: absolute;
+  z-index: -1;
+  opacity: 0;
+}
+
+.form-imagecheck-figure {
+  position: relative;
+  display: block;
+  margin: 0;
+  user-select: none;
+  border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
+  border-radius: var(--#{$prefix}form-imagecheck-radius);
+
+  .form-imagecheck-input:focus ~ & {
+    border-color: var(--#{$prefix}primary);
+    box-shadow: $input-btn-focus-box-shadow;
+  }
+
+  .form-imagecheck-input:checked ~ & {
+    border-color: var(--#{$prefix}primary);
+  }
+
+  &:before {
+    position: absolute;
+    top: .25rem;
+    left: .25rem;
+    z-index: 1;
+    display: block;
+    width: $form-check-input-width;
+    height: $form-check-input-width;
+    color: $white;
+    pointer-events: none;
+    content: "";
+    user-select: none;
+    background: $form-check-input-bg;
+    border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
+    border-radius: $form-check-input-border-radius;
+    @include transition(opacity $transition-time);
+
+    .form-imagecheck-input:checked ~ & {
+      background-color: $form-check-input-checked-bg-color;
+      background-image: escape-svg($form-check-input-checked-bg-image);
+      background-repeat: $form-check-input-checked-bg-repeat;
+      background-position: center;
+      background-size: $form-check-input-checked-bg-size;
+      border-color: $form-check-input-checked-border-color;
+    }
+
+    .form-imagecheck-input[type="radio"] ~ & {
+      border-radius: $form-check-radio-border-radius;
+    }
+
+    .form-imagecheck-input[type="radio"]:checked ~ & {
+      background-image: escape-svg($form-check-radio-checked-bg-image);
+    }
+  }
+}
+
+.form-imagecheck-image {
+  max-width: 100%;
+  display: block;
+  opacity: .64;
+  @include transition(opacity $transition-time);
+
+  &:first-child {
+    border-top-left-radius: calc(var(--#{$prefix}form-imagecheck-radius) - 1px);
+    border-top-right-radius: calc(var(--#{$prefix}form-imagecheck-radius) - 1px);
+  }
+
+  &:last-child {
+    border-bottom-right-radius: calc(var(--#{$prefix}form-imagecheck-radius) - 1px);
+    border-bottom-left-radius: calc(var(--#{$prefix}form-imagecheck-radius) - 1px);
+  }
+
+  .form-imagecheck:hover &,
+  .form-imagecheck-input:focus ~ .form-imagecheck-figure &,
+  .form-imagecheck-input:checked ~ .form-imagecheck-figure & {
+    opacity: 1;
+  }
+}
+
+.form-imagecheck-caption {
+  padding: .25rem;
+  font-size: $font-size-sm;
+  color: var(--#{$prefix}secondary);
+  text-align: center;
+  @include transition(color $transition-time);
+
+  .form-imagecheck:hover &,
+  .form-imagecheck-input:focus ~ .form-imagecheck-figure &,
+  .form-imagecheck-input:checked ~ .form-imagecheck-figure & {
+    color: var(--#{$prefix}body-color);
+  }
+}

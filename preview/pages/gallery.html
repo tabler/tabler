@@ -1,0 +1,24 @@
+---
+title: Gallery
+page-header: Gallery
+page-header-description: 1-15 of 241 photos
+page-header-actions: photos
+page-menu: extra.gallery
+layout: default
+permalink: gallery.html
+---
+
+{% assign filtered-photos = photos | where: "horizontal", true %}
+
+<div class="row row-cards">
+	{% for photo in filtered-photos limit: 15 %}
+	{% assign person = people[forloop.index0] %}
+	<div class="col-sm-6 col-lg-4">
+		{% include "cards/gallery-photo.html" person=person %}
+	</div>
+	{% endfor %}
+</div>
+
+<div class="d-flex mt-5">
+   {% include "ui/pagination.html" class="ms-auto" %}
+</div>

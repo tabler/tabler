@@ -1,0 +1,110 @@
+.nav {
+  --#{$prefix}nav-link-hover-bg: #{color-transparent(var(--#{$prefix}nav-link-color), 0.04)};
+}
+
+.nav-vertical {
+  &,
+  .nav {
+    flex-direction: column;
+    flex-wrap: nowrap;
+  }
+
+  .nav {
+    margin-left: 1.25rem;
+    border-left: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
+    padding-left: .5rem;
+  }
+
+  .nav-link.active,
+  .nav-item.show .nav-link {
+    font-weight: var(--#{$prefix}font-weight-bold);
+    color: var(--#{$prefix}nav-link-active-color);
+  }
+
+  &.nav-pills {
+    margin: 0 calc(-1 * $nav-link-padding-x);
+  }
+}
+
+//
+// Nav bordered
+//
+.nav-bordered {
+  border-bottom: $nav-bordered-border-width var(--#{$prefix}border-style) $nav-bordered-border-color;
+
+  .nav-item {
+    + .nav-item {
+      margin-left: $nav-bordered-margin-x;
+    }
+  }
+
+  .nav-link {
+    padding-left: 0;
+    padding-right: 0;
+    margin: 0 0 calc(-1 * #{$nav-bordered-border-width});
+    border: 0;
+    border-bottom: $nav-bordered-link-active-border-width var(--#{$prefix}border-style) transparent;
+
+    &:hover {
+      background-color: transparent;
+    }
+  }
+
+  .nav-link.active,
+  .nav-item.show .nav-link {
+    color: $nav-bordered-link-active-color;
+    border-color: $nav-bordered-link-active-border-color;
+  }
+}
+
+.nav-underline {
+  .nav-link {
+    border-radius: 0;
+  }
+}
+
+.nav-link {
+  display: flex;
+  @include transition(color $transition-time, background-color $transition-time);
+  align-items: center;
+
+  &:hover,
+  &:focus {
+    background-color: var(--#{$prefix}nav-link-hover-bg);
+  }
+}
+
+.nav-link-toggle {
+  margin-left: auto;
+  padding: 0 .25rem;
+  @include transition(transform $transition-time);
+  @include caret();
+
+  &:after {
+    margin: 0;
+  }
+
+  @at-root .nav-link[aria-expanded="true"] & {
+    transform: rotate(180deg);
+  }
+}
+
+.nav-link-icon {
+  width: $nav-link-icon-size;
+  height: $nav-link-icon-size;
+  margin-right: .5rem;
+  color: $nav-link-icon-color;
+
+  svg {
+    display: block;
+    height: 100%;
+  }
+}
+
+.nav-fill {
+  .nav-item {
+    .nav-link {
+      justify-content: center;
+    }
+  }
+}

@@ -1,0 +1,46 @@
+{% assign limit = include.limit | default: 8 %}
+{% assign offset = include.offset | default: 0 %}
+{% assign hoverable = include.hoverable | default: false %}
+{% assign checked-ids = include.checked-ids | default: '' | split: ',' %}
+<div class="card{% if include.class %} {{ include.class }}{% endif %}">
+	<div class="card-header">
+		<h3 class="card-title">{{ include.title | default: 'Last commits' }}</h3>
+	</div>
+	<div class="list-group list-group-flush{% if hoverable %} list-group-hoverable{% endif %}">
+		{% assign colors = 'green,red,yellow,x,x' | split: ',' %}
+		{% for person in people limit: limit offset: offset %}
+			{% assign color = forloop.index | plus: 5 | random_item: colors %}
+			{% assign index = '' | append: forloop.index %}
+			<div class="list-group-item{% if checked-ids contains index %} active{% endif %}">
+				<div class="row align-items-center">
+					{% if include.checkbox %}
+					<div class="col-auto"><input type="checkbox" class="form-check-input"{% if checked-ids contains index %} checked{% endif %}></div>
+					{% else %}
+					<div class="col-auto"><span class="badge{% if color != 'x' %} bg-{{ color }}{% endif %}"></span></div>
+					{% endif %}
+					<div class="col-auto">
+						<a href="#">
+							{% include "ui/avatar.html" person=person %}
+						</a>
+					</div>
+
+					<div class="col text-truncate">
+						<a href="#" class="text-reset d-block">{{ person.full_name }}</a>
+						{% assign i = forloop.index | plus: offset %}
+						<div class="d-block text-secondary text-truncate mt-n1">{{ commits[i].description }}</div>
+					</div>
+					{% if hoverable %}
+					{% if checked-ids contains index %}
+					{% assign star-color = 'text-yellow' %}
+					{% else %}
+					{% assign star-color = 'text-secondary' %}
+					{% endif %}
+					<div class="col-auto">
+						<a href="#" class="list-group-item-actions{% if checked-ids contains index %} show{% endif %}">{% include "ui/icon.html" icon="star" class=star-color %}</a>
+					</div>
+					{% endif %}
+				</div>
+			</div>
+		{% endfor %}
+	</div>
+</div>

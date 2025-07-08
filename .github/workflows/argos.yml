@@ -1,0 +1,67 @@
+name: Argos Tests
+
+on:
+  push: 
+    branches:
+      - dev
+  pull_request: 
+    paths:
+      - 'preview/**/*.js'
+      - 'preview/**/*.html'
+      - 'preview/**/*.scss'
+      - 'core/**/*.js'
+      - 'core/**/*.scss'
+
+env:
+  NODE: 20
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    timeout-minutes: 60
+    runs-on: ubuntu-latest
+    # if: github.event.pull_request.draft == false
+    if: false
+    steps:
+      - name: Clone repository
+        uses: actions/checkout@v4
+
+      - name: Cache turbo build setup
+        uses: actions/cache@v4
+        with: 
+          path: .turbo
+          key: ${{ runner.os }}-turbo-${{ github.sha }}
+          restore-keys: |
+            ${{ runner.os }}-turbo-
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "${{ env.NODE }}"
+
+      - name: Install PNPM
+        uses: pnpm/action-setup@v4
+
+      - name: Get installed Playwright version
+        id: playwright-version
+        run: echo "PLAYWRIGHT_VERSION=$(node -e "console.log(require('./package.json').devDependencies['@playwright/test'])")" >> $GITHUB_ENV
+
+      - name: Cache playwright binaries
+        uses: actions/cache@v4
+        id: playwright-cache
+        with:
+          path: |
+            ~/.cache/ms-playwright
+          key: ${{ runner.os }}-playwright-${{ env.PLAYWRIGHT_VERSION }}
+
+      - name: Install pnpm dependencies
+        run: pnpm install
+
+      - name: Install Playwright Browsers
+        run: pnpm exec playwright install --with-deps
+        if: steps.playwright-cache.outputs.cache-hit != 'true'
+
+      - name: Run Playwright tests
+        run: pnpm run playwright

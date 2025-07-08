@@ -1,0 +1,28 @@
+<div class="card card-sm">
+	<a href="#" class="d-block"><img src="{{ page | relative }}/static/photos/{{ photo.file }}" class="card-img-top"></a>
+	<div class="card-body">
+		<div class="d-flex align-items-center">
+			{% include "ui/avatar.html" person=include.person class="me-3 rounded" %}
+			<div>
+				<div>{{ include.person.full_name }}</div>
+				<div class="text-secondary">{{ forloop.index | random_date_ago: 10 | timeago }}</div>
+			</div>
+			{% unless include.hide-likes %}
+			<div class="ms-auto">
+				<a href="#" class="text-secondary">
+					{% include "ui/icon.html" icon="eye" %}
+					{{ forloop.index | random_number: 300, 600 }}
+				</a>
+				<a href="#" class="ms-3 text-secondary">
+					{% assign class = false %}
+					{% if forloop.index > 2 and forloop.index < 9 or forloop.index == 10 %}
+						{% assign class = "icon-filled text-red" %}
+					{% endif %}
+					{% include "ui/icon.html" icon="heart" class=class %}
+					{{ forloop.index | random_number: 20, 100 }}
+				</a>
+			</div>
+			{% endunless %}
+		</div>
+	</div>
+</div>

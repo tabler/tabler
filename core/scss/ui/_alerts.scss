@@ -1,0 +1,101 @@
+.alert {
+  // scss-docs-start alert-variables
+  --#{$prefix}alert-color: var(--#{$prefix}body-color);
+  --#{$prefix}alert-bg: #{color-transparent(var(--#{$prefix}alert-color), .1)};
+  --#{$prefix}alert-padding-x: #{$alert-padding-x};
+  --#{$prefix}alert-padding-y: #{$alert-padding-y};
+  --#{$prefix}alert-margin-bottom: #{$alert-margin-bottom};
+  --#{$prefix}alert-border-color: #{color-transparent(var(--#{$prefix}alert-color), .2)};
+  --#{$prefix}alert-border: var(--#{$prefix}border-width) solid var(--#{$prefix}alert-border-color);
+  --#{$prefix}alert-border-radius: var(--#{$prefix}border-radius);
+  --#{$prefix}alert-link-color: inherit;
+  --#{$prefix}alert-heading-font-weight: var(--#{$prefix}font-weight-medium);
+  // scss-docs-end
+  
+  position: relative;
+  padding: var(--#{$prefix}alert-padding-y) var(--#{$prefix}alert-padding-x);
+  margin-bottom: var(--#{$prefix}alert-margin-bottom);
+  background-color: color-mix(in srgb, var(--#{$prefix}alert-bg), var(--#{$prefix}bg-surface));
+  border-radius: var(--#{$prefix}alert-border-radius);
+  border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}alert-border-color);
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+}
+
+.alert-heading {
+  color: inherit;
+  margin-bottom: .25rem; // todo: use variable
+  font-weight: var(--#{$prefix}alert-heading-font-weight);
+}
+
+.alert-description {
+  color: var(--#{$prefix}secondary);
+}
+
+.alert-icon {
+  color: var(--#{$prefix}alert-color);
+  width: 1.25rem !important; // todo: use variable
+  height: 1.25rem !important;
+}
+
+.alert-action {
+  color: var(--#{$prefix}alert-color);
+  text-decoration: underline;
+
+  &:hover {
+    text-decoration: none;
+  }
+}
+
+.alert-list {
+  margin: 0;
+}
+
+.alert-link {
+  font-weight: $alert-link-font-weight;
+  color: var(--#{$prefix}alert-link-color);
+
+  &,
+  &:hover {
+    color: var(--#{$prefix}alert-color);
+  }
+}
+
+
+.alert-dismissible {
+  padding-right: 3rem; //todo: use variable
+
+  .btn-close {
+    position: absolute;
+    top: calc(var(--#{$prefix}alert-padding-x) / 2 - 1px);
+    right: calc(var(--#{$prefix}alert-padding-y) / 2 - 1px);
+    z-index: 1;
+    padding: calc(var(--#{$prefix}alert-padding-y) * 1.25) var(--#{$prefix}alert-padding-x);
+  }
+}
+
+.alert-important {
+  border-color: var(--#{$prefix}alert-color);
+  background-color: var(--#{$prefix}alert-color);
+  color: var(--#{$prefix}white);
+
+  .alert-description {
+    color: inherit;
+  }
+
+  .alert-icon {
+    color: inherit;
+  }
+}
+
+.alert-minor {
+  background: transparent;
+  border-color: var(--tblr-border-color);
+}
+
+@each $name, $color in $theme-colors {
+  .alert-#{$name} {
+    --#{$prefix}alert-color: var(--#{$prefix}#{$name});
+  }
+}

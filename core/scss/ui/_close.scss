@@ -1,0 +1,60 @@
+.btn-close {
+  --#{$prefix}btn-close-color: currentColor;
+  --#{$prefix}btn-close-bg: #{ escape-svg($btn-close-bg) };
+  --#{$prefix}btn-close-opacity: #{$btn-close-opacity};
+  --#{$prefix}btn-close-hover-opacity: #{$btn-close-hover-opacity};
+  --#{$prefix}btn-close-focus-shadow: #{$btn-close-focus-shadow};
+  --#{$prefix}btn-close-focus-opacity: #{$btn-close-focus-opacity};
+  --#{$prefix}btn-close-disabled-opacity: #{$btn-close-disabled-opacity};
+  --#{$prefix}btn-close-size: #{$btn-close-width};
+
+  width: var(--#{$prefix}btn-close-size);
+  height: var(--#{$prefix}btn-close-size);
+  padding: $btn-close-padding-y $btn-close-padding-x;
+  color: var(--#{$prefix}btn-close-color);
+  mask: var(--#{$prefix}btn-close-bg) no-repeat center/calc(var(--#{$prefix}btn-close-size) * .75);
+  background-color: var(--#{$prefix}btn-close-color);
+  border: 0;
+  border-radius: var(--tblr-border-radius);
+  opacity: var(--#{$prefix}btn-close-opacity);
+  cursor: pointer;
+  display: block;
+
+  &:hover {
+    color: var(--#{$prefix}btn-close-color);
+    text-decoration: none;
+    opacity: var(--#{$prefix}btn-close-hover-opacity);
+  }
+
+  &:focus {
+    outline: 0;
+    box-shadow: var(--#{$prefix}btn-close-focus-shadow);
+    opacity: var(--#{$prefix}btn-close-focus-opacity);
+  }
+
+  &:disabled,
+  &.disabled {
+    pointer-events: none;
+    user-select: none;
+    opacity: var(--#{$prefix}btn-close-disabled-opacity);
+  }
+}
+
+// @mixin btn-close-white() {
+//   --#{$prefix}btn-close-filter: #{$btn-close-filter-dark};
+// }
+
+// .btn-close-white {
+//   @include btn-close-white();
+// }
+
+// :root,
+// [data-bs-theme="light"] {
+//   --#{$prefix}btn-close-filter: #{$btn-close-filter};
+// }
+
+// @if $enable-dark-mode {
+//   @include color-mode(dark, true) {
+//     @include btn-close-white();
+//   }
+// }

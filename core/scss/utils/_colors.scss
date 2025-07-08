@@ -1,0 +1,100 @@
+// All colors
+@each $color, $value in map-merge($theme-colors, ( white: $white)) {
+  .bg-#{"" + $color} {
+    background-color: color-mix(in srgb, var(--#{$prefix}#{$color}) calc(var(--#{$prefix}bg-opacity, 1) * 100%), transparent) !important;
+  }
+
+  .bg-#{"" + $color}-lt {
+    color: color-mix(in srgb, var(--#{$prefix}#{$color}) calc(var(--#{$prefix}text-opacity, 1) * 100%), transparent) !important;
+    background-color: color-mix(in srgb, var(--#{$prefix}#{$color}-lt) calc(var(--#{$prefix}bg-opacity, 1) * 100%), transparent) !important;
+  }
+
+  .border-#{"" + $color} {
+    border-color: color-mix(in srgb, var(--#{$prefix}#{$color}) calc(var(--#{$prefix}border-opacity, 1) * 100%), transparent) !important;
+  }
+
+  .bg-gradient-from-#{"" + $color} {
+    --#{$prefix}gradient-from: var(--#{$prefix}#{$color});
+  }
+
+  .bg-gradient-to-#{"" + $color} {
+    --#{$prefix}gradient-to: var(--#{$prefix}#{$color});
+  }
+
+  .bg-gradient-via-#{"" + $color} {
+    --#{$prefix}gradient-via: var(--#{$prefix}#{$color});
+    --#{$prefix}gradient-stops: var(--#{$prefix}gradient-from, transparent), var(--#{$prefix}gradient-via, transparent), var(--#{$prefix}gradient-to, transparent);
+  }
+
+  .text-bg-#{"" + $color} {
+    color: color-contrast($value) if($enable-important-utilities, !important, null);
+    background-color: RGBA(var(--#{$prefix}#{$color}-rgb), var(--#{$prefix}bg-opacity, 1)) if($enable-important-utilities, !important, null);
+  }
+
+  .link-#{"" + $color} {
+    color: color-mix(in srgb, var(--#{$prefix}#{$color}) calc(var(--#{$prefix}link-opacity, 1) * 100%), transparent) !important;
+    text-decoration-color: color-mix(in srgb, var(--#{$prefix}#{$color}) calc(var(--#{$prefix}link-underline-opacity, 1) * 100%), transparent) !important;
+
+    @if $link-shade-percentage != 0 {
+      &:hover,
+      &:focus {
+        $hover-color: if(color-contrast($value) == $color-contrast-light, shade-color($value, $link-shade-percentage), tint-color($value, $link-shade-percentage));
+        color: RGBA(#{to-rgb($hover-color)}, var(--#{$prefix}link-opacity, 1)) if($enable-important-utilities, !important, null);
+        text-decoration-color: RGBA(to-rgb($hover-color), var(--#{$prefix}link-underline-opacity, 1)) if($enable-important-utilities, !important, null);
+      }
+    }
+  }
+}
+
+@each $color, $value in $theme-colors {
+  .text-#{"" + $color} {
+    --#{$prefix}text-opacity: 1;
+    color: color-mix(in srgb, var(--#{$prefix}#{$color}) calc(var(--#{$prefix}text-opacity) * 100%), transparent) !important;
+  }
+
+  .text-#{"" + $color}-fg {
+    color: var(--#{$prefix}#{$color}-fg) !important;
+  }
+}
+
+@each $color, $value in $gray-colors {
+  .bg-#{"" + $color} {
+    --#{$prefix}bg-opacity: 1;
+    background-color: color-mix(in srgb, var(--#{$prefix}#{$color}) calc(var(--#{$prefix}bg-opacity) * 100%), transparent) !important;
+  }
+
+  .text-#{"" + $color}-fg {
+    color: var(--#{$prefix}#{$color}-fg) !important;
+  }
+}
+
+@each $color, $value in $social-colors {
+  .bg-#{"" + $color} {
+    --#{$prefix}bg-opacity: 1;
+    background-color: color-mix(in srgb, var(--#{$prefix}#{$color}) calc(var(--#{$prefix}bg-opacity) * 100%), transparent) !important;
+  }
+
+  .text-#{"" + $color}-fg {
+    color: var(--#{$prefix}#{$color}-fg) !important;
+  }
+}
+
+.bg-inverted {
+  --#{$prefix}bg-opacity: 1;
+  background-color: color-mix(in srgb, var(--#{$prefix}bg-surface-inverted) calc(var(--#{$prefix}bg-opacity) * 100%), transparent) !important;
+}
+.bg-surface {
+  background-color: var(--#{$prefix}bg-surface) !important;
+}
+
+.bg-surface-secondary {
+  background-color: var(--#{$prefix}bg-surface-secondary) !important;
+}
+
+.bg-surface-tertiary {
+  background-color: var(--#{$prefix}bg-surface-tertiary) !important;
+}
+
+.bg-surface-backdrop {
+  background-color: color-transparent($modal-backdrop-bg, $modal-backdrop-opacity) !important;
+}

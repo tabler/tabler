@@ -1,0 +1,153 @@
+/*
+Select group
+ */
+.form-selectgroup {
+  display: inline-flex;
+  margin: 0 -.5rem -.5rem 0;
+  flex-wrap: wrap;
+
+  .form-selectgroup-item {
+    margin: 0 .5rem .5rem 0;
+  }
+}
+
+.form-selectgroup-vertical {
+  flex-direction: column;
+}
+
+.form-selectgroup-item {
+  display: block;
+  position: relative;
+}
+
+.form-selectgroup-input {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1;
+  opacity: 0;
+}
+
+.form-selectgroup-label {
+  position: relative;
+  display: block;
+  min-width: $input-height;
+  margin: 0;
+  padding: $input-btn-padding-y $input-btn-padding-x;
+  font-size: $input-btn-font-size;
+  line-height: $input-line-height;
+  color: var(--#{$prefix}secondary);
+  background: $form-check-input-bg;
+  text-align: center;
+  cursor: pointer;
+  user-select: none;
+  border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) $input-border-color;
+  border-radius: var(--#{$prefix}border-radius);
+  box-shadow: $input-box-shadow;
+  @include transition(border-color $transition-time, background $transition-time, color $transition-time);
+
+  .icon:only-child {
+    margin: 0 -.25rem;
+  }
+
+  &:hover {
+    color: var(--#{$prefix}body-color);
+  }
+}
+
+.form-selectgroup-check {
+  display: inline-block;
+  width: $form-check-input-width;
+  height: $form-check-input-width;
+  border: $form-check-input-border;
+  vertical-align: middle;
+  box-shadow: $form-check-input-box-shadow;
+
+  .form-selectgroup-input[type="checkbox"] + .form-selectgroup-label & {
+    border-radius: $form-check-input-border-radius;
+  }
+
+  .form-selectgroup-input[type="radio"] + .form-selectgroup-label & {
+    border-radius: $form-check-radio-border-radius;
+  }
+
+  .form-selectgroup-input:checked + .form-selectgroup-label & {
+    background-color: $form-check-input-checked-bg-color;
+    background-repeat: $form-check-input-checked-bg-repeat;
+    background-position: center;
+    background-size: $form-check-input-checked-bg-size;
+    border-color: $form-check-input-checked-border-color;
+  }
+
+  .form-selectgroup-input[type="checkbox"]:checked + .form-selectgroup-label & {
+    background-image: escape-svg($form-check-input-checked-bg-image);
+  }
+
+  .form-selectgroup-input[type="radio"]:checked + .form-selectgroup-label & {
+    background-image: escape-svg($form-check-radio-checked-bg-image);
+  }
+}
+
+.form-selectgroup-check-floated {
+  position: absolute;
+  top: $input-btn-padding-y;
+  right: $input-btn-padding-y;
+}
+
+.form-selectgroup-input:checked + .form-selectgroup-label {
+  z-index: 1;
+  color: #{$active-color};
+  background: #{$active-bg};
+  border-color: #{$active-border-color};
+}
+
+.form-selectgroup-input:focus + .form-selectgroup-label {
+  z-index: 2;
+  color: var(--#{$prefix}primary);
+  border-color: var(--#{$prefix}primary);
+  box-shadow: $input-btn-focus-box-shadow;
+}
+
+.form-selectgroup-label-content {
+}
+
+/**
+Alternate version of form select group
+ */
+.form-selectgroup-boxes {
+  .form-selectgroup-label {
+    text-align: left;
+    padding: $card-spacer-x $card-spacer-y;
+    color: inherit;
+  }
+
+  .form-selectgroup-input:checked {
+    + .form-selectgroup-label {
+      color: inherit;
+
+      .form-selectgroup-title {
+        color: var(--#{$prefix}primary);
+      }
+
+      .form-selectgroup-label-content {
+        opacity: 1;
+      }
+    }
+  }
+}
+
+/**
+Select group
+ */
+.form-selectgroup-pills {
+  flex-wrap: wrap;
+  align-items: flex-start;
+
+  .form-selectgroup-item {
+    flex-grow: 0;
+  }
+
+  .form-selectgroup-label {
+    border-radius: 50px;
+  }
+}

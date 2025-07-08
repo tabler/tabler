@@ -1,0 +1,19 @@
+{% assign strings = include.strings | split: '|' %}
+{% assign id = include.id | default: "typed" %}
+<span class="text-primary" id="{{ id }}">{{ strings | first }}</span>
+
+{% capture_script %}
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+	var typed = new Typed('#{{ id }}', {
+		strings: [{% for string in strings %}'{{ string }}'{% unless forloop.last %}, {% endunless %}{% endfor %}],
+		typeSpeed: 100,
+		backSpeed: 50,
+		backDelay: 1000,
+		startDelay: 1000,
+		loop: true,
+		fade: true
+	});
+});
+</script>
+{% endcapture_script %}

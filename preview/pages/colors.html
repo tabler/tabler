@@ -1,0 +1,240 @@
+---
+title: Colors
+page-header: Colors
+page-menu: base.colors
+layout: default
+permalink: colors.html
+---
+
+{% assign colors = '' | split: '' %}
+{% for color in site.colors %}
+{% assign colors = colors | push: color[0] %}
+{% endfor %}
+
+
+<div class="row row-cards">
+	<div class="col-3">
+		<div class="card">
+			<div class="card-body">
+				<div class="row g-3">
+					{% for color in site.colors %}
+					<div class="col-12">
+						<div class="row align-items-center">
+							<div class="col-auto">
+								<div class="avatar bg-{{ color[0] }} text-{{ color[0] }}-fg">
+									{{ color[1].abbr }}
+								</div>
+							</div>
+							<div class="col">
+								{{ color[1].title }}<br />
+								<code>{{ color[1].hex }}</code>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-3">
+		<div class="card">
+			<div class="card-body">
+				<div class="row g-3">
+					{% for color in site.lightColors %}
+					<div class="col-12">
+						<div class="row align-items-center">
+							<div class="col-auto">
+								<div class="avatar bg-{{ color[0] }}-lt text-{{ color[0] }}-lt-fg">
+									{{ color[1].abbr }}
+								</div>
+							</div>
+							<div class="col">
+								{{ color[1].title }}<br />
+								<code>{{ color[1].hex }}</code>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-3">
+		<div class="card">
+			<div class="card-body">
+				<div class="row g-3">
+					{% for color in site.grayColors %}
+					<div class="col-12">
+						<div class="row align-items-center">
+							<div class="col-auto">
+								<div class="avatar bg-{{ color[0] }} text-{{ color[0] }}-fg">
+									{{ color[1].abbr }}
+								</div>
+							</div>
+							<div class="col">
+								{{ color[1].title }}<br />
+								<code>{{ color[1].hex }}</code>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-3">
+		<div class="card">
+			<div class="card-body">
+				<div class="row g-3">
+					{% for color in site.socialColors %}
+					<div class="col-12">
+						<div class="row align-items-center">
+							<div class="col-auto">
+								<div class="avatar bg-{{ color[0] }} text-{{ color[0] }}-fg">
+									{% include "ui/icon.html" icon=color[1].icon %}
+								</div>
+							</div>
+							<div class="col">
+								{{ color[1].title }}<br />
+								<code>{{ color[1].hex }}</code>
+							</div>
+						</div>
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-12">
+		{% assign colors = colors | push: 'inverted' %}
+		{% assign colors = colors | push: 'white' %}
+		{% assign colors = colors | push: 'transparent' %}
+		<div class="row">
+			<div class="col-6">
+				<div class="card">
+					<div class="card-body">
+						<h3 class="card-title">
+							Gradient
+						</h3>
+						<form action="">
+							<div class="row g-4">
+								<div class="col">
+									<div>
+										<label class="form-label">From</label>
+										<select class="form-select" name="color-from">
+											{% for color in colors %}
+											<option value="{{ color }}">{{ color }}</option>
+											{% endfor %}
+										</select>
+									</div>
+									<div class="mt-3">
+										<label class="form-label">To</label>
+										<select class="form-select" name="color-to">
+											{% for color in colors %}
+											<option value="{{ color }}" {% if color=='transparent' %} selected{% endif %}>
+												{{ color }}
+											</option>
+											{% endfor %}
+										</select>
+									</div>
+								</div>
+								<div class="col">
+									<div>
+										<label class="form-label">Via</label>
+										<select class="form-select" name="color-via">
+											<option></option>
+											{% for color in colors %}
+											<option value="{{ color }}">{{ color }}</option>
+											{% endfor %}
+										</select>
+									</div>
+									<div class="mt-3">
+										<label class="form-label">Direction</label>
+										<select class="form-select" name="color-direction">
+											<option value="to-t">to top</option>
+											<option value="to-te">to top right</option>
+											<option value="to-r" selected>to right</option>
+											<option value="to-be">to bottom right</option>
+											<option value="to-b">to bottom</option>
+											<option value="to-bs">to bottom left</option>
+											<option value="to-s">to left</option>
+											<option value="to-ts">to top left</option>
+										</select>
+									</div>
+								</div>
+								<div class="col-12">
+									<div class="border rounded bg-pattern-transparent overflow-hidden">
+										<div id="gradient-preview"
+											class="border rounded bg-gradient bg-gradient-from-primary bg-gradient-to-transparent">
+											<div class=" px-4 py-5"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="col-6">
+				<div class="card">
+					<div class="card-body">
+						<div class="row">
+							<div class="col">
+								<div class="space-y">
+									{% for color in colors %}
+									<div
+										class="border rounded bg-gradient bg-gradient-from-{{ color }} bg-gradient-to-transparent px-4 py-2">
+									</div>
+									{% endfor %}
+								</div>
+							</div>
+							<div class="col">
+								<div class="space-y">
+									{% for color in colors %}
+									<div
+										class="border rounded bg-gradient bg-gradient-to-{{ color }} bg-gradient-from-transparent px-4 py-2">
+									</div>
+									{% endfor %}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		var gradientPreview = document.getElementById('gradient-preview');
+		var colorFrom = document.querySelector('[name="color-from"]');
+		var colorTo = document.querySelector('[name="color-to"]');
+		var colorVia = document.querySelector('[name="color-via"]');
+		var colorDirection = document.querySelector('[name="color-direction"]');
+
+		function updateGradient() {
+			var from = colorFrom.value;
+			var to = colorTo.value;
+			var via = colorVia.value;
+			var direction = colorDirection.value;
+
+			var gradient = 'bg-gradient bg-gradient-from-' + from + ' bg-gradient-to-' + to;
+
+			if (via) {
+				gradient += ' bg-gradient-via-' + via;
+			}
+
+			gradient += ' bg-gradient-' + direction;
+
+			gradientPreview.className = gradient;
+		}
+
+		colorFrom.addEventListener('change', updateGradient);
+		colorTo.addEventListener('change', updateGradient);
+		colorVia.addEventListener('change', updateGradient);
+		colorDirection.addEventListener('change', updateGradient);
+
+		updateGradient();
+	});
+</script>

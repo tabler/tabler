@@ -1,0 +1,30 @@
+{% assign menu = collections.docs | collection-tree %}
+
+<nav class="space-y space-y-5" id="menu">
+	{% for level1 in menu %}
+	<div>
+		<div class="subheader mb-2">
+			{{ level1.data.title }}
+		</div>
+		{% if level1.children %}
+		<nav class="nav nav-vertical">
+			{% for level2 in level1.children %}
+			<div>
+				<a class="nav-link{% if page.url contains level2.url %} active{% endif %}"{% if level2.children %} href="{{ level2.url }}" data-bs-toggle="collapse" data-bs-target="#collapse-{{ level2.url | slug }}" aria-expanded="{% if page.url contains level2.url %}true{% else %}false{% endif %}"{% endif %}>{{ level2.data.title }}{% if level2.children %} <span class="nav-link-toggle"></span>{% endif %}</a>
+
+				{% if level2.children %}
+				<nav class="nav nav-vertical collapse{% if page.url contains level2.url %} show{% endif %}" id="collapse-{{ level2.url | slug }}">
+					{% for level3 in level2.children %}
+					<div>
+						<a class="nav-link{% if page.url == level3.url %} active{% endif %}" href="{{ level3.url }}">{{ level3.data.title }}</a>
+					</div>
+					{% endfor %}
+				</nav>
+				{% endif %}
+			</div>
+			{% endfor %}
+		</nav>
+		{% endif %}
+	</div>
+	{% endfor %}
+</nav>

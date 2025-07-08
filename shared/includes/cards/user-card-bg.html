@@ -1,0 +1,11 @@
+{% assign person-id = include.person-id | default: 0 %}
+{% assign person = people[person-id] %}
+<a class="card card-link" href="#">
+	<div class="card-cover card-cover-blurred text-center{% if include.blurred %} card-cover-blurred{% endif %}" style="background-image: url({{ page | relative }}/static/photos/{{ photos[person-id].file }})">
+		{% include "ui/avatar.html" size="xl" person=person thumb=true rounded=true %}
+	</div>
+	<div class="card-body text-center">
+		<div class="card-title mb-1">{{ person.full_name }}</div>
+		<div class="text-secondary">{{ person.job_title }}</div>
+	</div>
+</a>

@@ -1,0 +1,69 @@
+.litepicker {
+  --litepicker-month-weekday-color: #{var(--#{$prefix}secondary)};
+  --litepicker-button-prev-month-color: #{var(--#{$prefix}secondary)};
+  --litepicker-button-next-month-color: #{var(--#{$prefix}secondary)};
+  --litepicker-button-prev-month-color-hover: #{ var(--#{$prefix}primary) };
+  --litepicker-button-next-month-color-hover: #{ var(--#{$prefix}primary) };
+  --litepicker-day-color: var(--#{$prefix}body-color);
+  --litepicker-day-color-hover: #{ var(--#{$prefix}primary) };
+  --litepicker-is-start-color-bg: #{ var(--#{$prefix}primary) };
+  --litepicker-is-end-color-bg: #{ var(--#{$prefix}primary) };
+  --litepicker-is-in-range-color: #{ var(--#{$prefix}info) };
+  --litepicker-is-today-color: #{ var(--#{$prefix}primary) };
+  --litepicker-month-header-color: var(--#{$prefix}body-color);
+  --litepicker-container-months-color-bg: var(--#{$prefix}bg-surface);
+  font: inherit;
+  user-select: none;
+
+  .day-item.is-in-range {
+    --litepicker-day-color: var(--#{$prefix}light);
+  }
+
+  svg {
+    fill: none !important;
+  }
+
+  .container__main {
+    border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
+    border-radius: var(--#{$prefix}border-radius);
+    box-shadow: none;
+  }
+
+  .container__months {
+    .month-item-name,
+    .month-item-year {
+      font-weight: var(--#{$prefix}font-weight-medium) !important;
+    }
+
+    .button-next-month,
+    .button-previous-month {
+      cursor: pointer !important;
+    }
+
+    .month-item-weekdays-row {
+      > div {
+        padding: .5rem 0 !important;
+        font-size: $h5-font-size;
+      }
+    }
+  }
+
+  .container__days {
+    .day-item {
+      cursor: pointer !important;
+      padding: .5rem 0 !important;
+      @include transition(color $transition-time, background-color $transition-time, border-color $transition-time);
+    }
+  }
+
+  .datepicker-inline & {
+    box-shadow: $input-box-shadow;
+    
+    .container__months {
+      box-shadow: none;
+      background-color: var(--#{$prefix}bg-forms);
+      border-radius: calc(var(--#{$prefix}border-radius) - 1px);
+    }
+  }
+}
+

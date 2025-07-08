@@ -1,0 +1,28 @@
+$payment-icons: ("2c2p", "2checkout", "adyen", "affirm", "alipay-plus", "alipay", "allegro-pay", "amazon-pay", "amazon", "americanexpress", "applepay", "authorize", "autopay", "bancontact", "binance-usd", "bitcoin", "bitpay", "bkash", "blik", "braintree", "cash-app", "chime", "cirrus", "clickandbuy", "coinkite", "dinersclub", "directdebit", "discover", "dotpay", "dwolla", "easypaisa", "ebay", "elo", "epayco", "esewa", "ethereum", "eway", "fonepay", "giropay", "google-pay", "googlewallet", "hubspot", "ingenico", "ideal", "imepay", "jcb", "khalti", "klarna", "laser", "litecoin", "maestro", "mastercard", "mercado-pago", "metamask", "mir", "monero", "moneygram", "neteller", "ogone", "okpay", "opensea", "paybox", "payconiq", "payka", "payline", "paymill", "payone", "payoneer", "paypal", "paypo", "paysafe", "paysafecard", "payu", "payza", "poli", "przelewy24", "revolut-pay", "ripple", "sage", "samsung-pay", "sepa", "shop-pay", "shopify", "skrill", "solana", "solo", "spingo", "square", "stax", "stripe", "switch", "tether", "tpay", "troy", "true-usd", "ukash", "unionpay", "venmo", "verifone", "verisign", "visa", "we-chat-pay", "webmoney", "westernunion", "wise", "worldpay", "zelle");
+
+.payment {
+  height: $avatar-size;
+  aspect-ratio: 1.66666;
+  display: inline-block;
+  background: no-repeat center/100% 100%;
+  vertical-align: bottom;
+  font-style: normal;
+  box-shadow: 0 0 1px 1px rgba(0, 0, 0, .1);
+  border-radius: 2px;
+}
+
+@each $payment in $payment-icons {
+  .payment-provider-#{$payment} {
+    background-image: url("#{$assets-base}/img/payments/#{$payment}.svg");
+  }
+
+  .payment-provider-#{$payment}-dark {
+    background-image: url("#{$assets-base}/img/payments/#{$payment}-dark.svg");
+  }
+}
+
+@each $payment-size, $size in $payment-sizes {
+  .payment-#{$payment-size} {
+    height: map-get($size, size);
+  }
+}

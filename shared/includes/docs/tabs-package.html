@@ -1,0 +1,22 @@
+<ul class="nav nav-bordered mb-2" role="tablist">
+	{%- for manager in package-managers -%}
+	<li class="nav-item" role="presentation">
+		<button class="nav-link{% if forloop.index == 1 %} active{% endif %}" id="{{ manager.name }}-tab" data-bs-toggle="tab" data-bs-target="#{{ manager.name }}" type="button" role="tab"
+			aria-controls="home" aria-selected="{% if forloop.index == 1 %}true{% else %}false{% endif %}">
+			{{ manager.icon | replace: '<svg ', '<svg class="me-2" ' }}
+			{{ manager.name }}
+		</button>
+	</li>
+	{%- endfor -%}
+</ul>
+<div class="tab-content">
+{%- for manager in package-managers -%}
+<div class="tab-pane{% if forloop.index == 1 %} show active{% endif %}" id="{{ manager.name }}" role="tabpanel" aria-labelledby="{{ manager.name }}-tab">
+
+```bash
+{{ manager.command }} install {{ include.name }}
+```
+
+</div>
+{%- endfor -%}
+</div>

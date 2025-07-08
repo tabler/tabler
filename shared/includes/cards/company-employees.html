@@ -1,0 +1,30 @@
+<div class="card">
+	<div class="card-header">
+		<h4 class="card-title">Company Employees</h4>
+	</div>
+	<table class="table card-table table-vcenter">
+		<thead>
+		<tr>
+			<th colspan="2">Name</th>
+			<th>Department</th>
+			<th colspan="2" class="w-25">Progress</th>
+			<th></th>
+		</tr>
+		</thead>
+
+		{% for person in people limit: 5 offset: 20 %}
+		<tr>
+			<td class="w-1">{% include "ui/avatar.html" src=person.photo %}</td>
+			<td><a href="#" class="text-reset">{{ person.full_name }}</a></td>
+			<td>{{ person.department }}</td>
+			<td class="w-1 pe-0">{{ forloop.index | random_number: 30, 90 }}%</td>
+			<td>
+				<div class="progress progress-xs">
+					<div class="progress-bar bg-{{ forloop.index | random_number: 30, 90 | number_color }}" role="progressbar" style="width: {{ forloop.index | random_number: 30, 90 }}%"></div>
+				</div>
+			</td>
+			<td><a href="{{ page | relative }}" class="text-secondary">{% include "ui/icon.html" icon="dots" %}</a></td>
+		</tr>
+		{% endfor %}
+	</table>
+</div>

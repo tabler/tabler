@@ -1,0 +1,31 @@
+{% assign min = include.min | default: 0 %}
+{% assign max = include.max | default: 100 %}
+{% assign step = include.step | default: 10 %}
+{% assign value = include.value | default: 50 %}
+{% assign id = include.id %}
+
+{% if id %}
+	<div class="form-range mb-2{% if include.class %} {{ include.class }}{% endif %}" id="range-{{ id }}"></div>
+
+	{% capture_script %}
+	<script>
+		{% assign value = value | split: ',' %}
+
+		document.addEventListener("DOMContentLoaded", function () {
+			 window.noUiSlider && (noUiSlider.create(document.getElementById('range-{{ id }}'), {
+					  start: {% if value.size > 1 %}[{{ value | join: ', ' }}]{% else %}{{ value }}{% endif %},
+					  {% if value.size > 1 or include.connect %}
+					  connect: [{% for i in (2..value.size) %}{% cycle 'false', 'true' %}, {% endfor %}true, false],
+					  {% endif %}
+					  step: {{ step }},
+					  range: {
+						  min: {{ min }},
+						  max: {{ max }}
+					  }
+			 }));
+		});
+	</script>
+	{% endcapture_script %}
+{% else %}
+	<input type="range" class="form-range mb-2{% if include.class %} {{ include.class }}{% endif %}" value="{{ value }}" min="{{ min }}" max="{{ max }}" step="{{ step }}">
+{% endif %}

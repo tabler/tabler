@@ -1,0 +1,104 @@
+.calendar {
+  display: block;
+  font-size: $font-size-sm;
+  border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
+  border-radius: var(--#{$prefix}border-radius);
+}
+
+.calendar-nav {
+  display: flex;
+  align-items: center;
+}
+
+.calendar-title {
+  flex: 1;
+  text-align: center;
+}
+
+.calendar-body,
+.calendar-header {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  padding: .5rem 0;
+}
+
+.calendar-header {
+  color: var(--#{$prefix}secondary);
+}
+
+.calendar-date {
+  flex: 0 0 calc(100% / 7);
+  max-width: calc(100% / 7);
+  padding: .2rem;
+  text-align: center;
+  border: 0;
+
+  &.prev-month,
+  &.next-month {
+    opacity: .25;
+  }
+
+  .date-item {
+    position: relative;
+    display: inline-block;
+    width: 1.4rem;
+    height: 1.4rem;
+    line-height: 1.4rem;
+    color: #66758c;
+    text-align: center;
+    text-decoration: none;
+    white-space: nowrap;
+    vertical-align: middle;
+    cursor: pointer;
+    background: 0 0;
+    border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) transparent;
+    border-radius: $border-radius-pill;
+    outline: 0;
+    @include transition(background $transition-time, border $transition-time, box-shadow .32s, color $transition-time);
+
+    &:hover {
+      color: var(--#{$prefix}primary);
+      text-decoration: none;
+      background: #fefeff;
+      border-color: var(--#{$prefix}border-color);
+    }
+  }
+
+  .date-today {
+    color: var(--#{$prefix}primary);
+    border-color: var(--#{$prefix}border-color);
+  }
+}
+
+.calendar-range {
+  position: relative;
+
+  &:before {
+    position: absolute;
+    top: 50%;
+    right: 0;
+    left: 0;
+    height: 1.4rem;
+    content: "";
+    background: rgba(var(--#{$prefix}primary-rgb), .1);
+    transform: translateY(-50%);
+  }
+
+  &.range-start,
+  &.range-end {
+    .date-item {
+      color: $white;
+      background: var(--#{$prefix}primary);
+      border-color: var(--#{$prefix}primary);
+    }
+  }
+
+  &.range-start:before {
+    left: 50%;
+  }
+
+  &.range-end:before {
+    right: 50%;
+  }
+}

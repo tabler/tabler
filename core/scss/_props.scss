@@ -1,0 +1,91 @@
+@import "config";
+
+:root,
+:host {
+  /** Fonts */
+  --#{$prefix}font-monospace: #{$font-family-monospace};
+  --#{$prefix}font-sans-serif: #{$font-family-sans-serif};
+  --#{$prefix}font-serif: #{$font-family-serif};
+  --#{$prefix}font-comic: #{$font-family-comic};
+
+  /** Gray colors */
+  --#{$prefix}gray-50: #{$gray-50};
+  --#{$prefix}gray-100: #{$gray-100};
+  --#{$prefix}gray-200: #{$gray-200};
+  --#{$prefix}gray-300: #{$gray-300};
+  --#{$prefix}gray-400: #{$gray-400};
+  --#{$prefix}gray-500: #{$gray-500};
+  --#{$prefix}gray-600: #{$gray-600};
+  --#{$prefix}gray-700: #{$gray-700};
+  --#{$prefix}gray-800: #{$gray-800};
+  --#{$prefix}gray-900: #{$gray-900};
+  --#{$prefix}gray-950: #{$gray-950};
+
+  --#{$prefix}white: #{$white};
+  --#{$prefix}black: #{$black};
+  --#{$prefix}dark: #{$dark};
+  --#{$prefix}light: #{$light};
+
+  /** Brand colors */
+  --#{$prefix}brand: #{$primary};
+
+  /** Theme colors */
+  @each $name, $color in map-merge($theme-colors, $social-colors) {
+    --#{$prefix}#{$name}: #{$color};
+    --#{$prefix}#{$name}-rgb: #{to-rgb($color)};
+    --#{$prefix}#{$name}-fg: #{if(contrast-ratio($color) > $min-contrast-ratio, var(--#{$prefix}light), var(--#{$prefix}dark))};
+    --#{$prefix}#{$name}-darken: #{theme-color-darker($color)};
+    --#{$prefix}#{$name}-darken: color-mix(in oklab, var(--#{$prefix}#{$name}), transparent 20%);
+    --#{$prefix}#{$name}-lt: #{theme-color-lighter($color)};
+    --#{$prefix}#{$name}-lt: color-mix(in oklab, var(--#{$prefix}#{$name}) 10%, transparent);
+    --#{$prefix}#{$name}-200: color-mix(in oklab, var(--#{$prefix}#{$name}) 20%, transparent);
+    --#{$prefix}#{$name}-lt-rgb: #{to-rgb(theme-color-lighter($color))};
+  }
+
+  /** Gray colors */
+  @each $name, $color in $gray-colors {
+    --#{$prefix}#{$name}-fg: #{if(contrast-ratio($color, white) > $min-contrast-ratio, var(--#{$prefix}white), var(--#{$prefix}body-color))};
+  }
+
+  /** Spacers */
+  @each $name, $value in $spacers {
+    --#{$prefix}spacer-#{$name}: #{$value};
+  }
+
+  /** Font sizes */
+  @each $name, $value in $font-weights {
+    --#{$prefix}font-weight-#{$name}: #{$value};
+  }
+
+  @each $name, $value in $font-sizes {
+    --#{$prefix}font-size-h#{$name}: #{$value};
+  }
+
+  @each $name, $value in $line-heights {
+    --#{$prefix}line-height-#{$name}: #{$value};
+  }
+
+  /** Shadows */
+  @each $name, $value in $box-shadows {
+    --#{$prefix}shadow#{if($name, '-#{$name}', '')}: #{$value};
+  }
+
+  /** Border radiuses */
+  --#{$prefix}border-radius-scale: 1;
+  @each $name, $value in $border-radiuses {
+    @if $name {
+      --#{$prefix}border-radius-#{$name}: calc(#{$value} * var(--#{$prefix}border-radius-scale, 1));
+    } @else {
+      --#{$prefix}border-radius: #{$value};
+    }
+  }
+
+  /** Backdrops */
+  --#{$prefix}backdrop-opacity: #{$backdrop-opacity};
+  --#{$prefix}backdrop-bg: var(--#{$prefix}bg-surface-dark);
+  @each $name, $value in $backdrops {
+    --#{$prefix}backdrop-bg#{if($name, '-#{$name}', '')}: #{$value};
+  }
+  --#{$prefix}backdrop-blur: #{$backdrop-blur};
+  --#{$prefix}backdrop-filter: blur(var(--#{$prefix}backdrop-blur));
+}

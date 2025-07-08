@@ -1,0 +1,333 @@
+@use "sass:color";
+
+//
+// Button
+//
+.btn {
+  --#{$prefix}btn-icon-size: #{$input-btn-icon-size};
+  --#{$prefix}btn-icon-color: inherit;
+  --#{$prefix}btn-bg: var(--#{$prefix}bg-surface);
+  --#{$prefix}btn-color: var(--#{$prefix}body-color);
+  --#{$prefix}btn-border-color: #{$btn-border-color};
+  --#{$prefix}btn-hover-bg: var(--#{$prefix}btn-bg);
+  --#{$prefix}btn-hover-border-color: var(--#{$prefix}border-active-color);
+  --#{$prefix}btn-active-color: #{$active-color};
+  --#{$prefix}btn-active-bg: #{$active-bg};
+  --#{$prefix}btn-active-border-color: #{$active-border-color};
+
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  white-space: nowrap;
+  box-shadow: var(--#{$prefix}btn-box-shadow);
+  position: relative;
+  min-width: calc((var(--#{$prefix}btn-line-height) * 1) + (var(--#{$prefix}btn-padding-y) * 2) + (var(--#{$prefix}btn-border-width) * 2));
+  min-height: calc((var(--#{$prefix}btn-line-height) * 1) + (var(--#{$prefix}btn-padding-y) * 2) + (var(--#{$prefix}btn-border-width) * 2));
+  
+
+  .icon {
+    width: var(--#{$prefix}btn-icon-size);
+    height: var(--#{$prefix}btn-icon-size);
+    min-width: var(--#{$prefix}btn-icon-size);
+    font-size: var(--#{$prefix}btn-icon-size);
+    margin: 0 calc(var(--#{$prefix}btn-padding-x) / 2) 0 calc(var(--#{$prefix}btn-padding-x) / -4);
+    vertical-align: bottom;
+    color: var(--#{$prefix}btn-icon-color);
+  }
+
+  .avatar {
+    width: var(--#{$prefix}btn-icon-size);
+    height: var(--#{$prefix}btn-icon-size);
+    margin: 0 calc(var(--#{$prefix}btn-padding-x) / 2) 0 calc(var(--#{$prefix}btn-padding-x) / -4);
+  }
+
+  .icon-right,
+  .icon-end {
+    margin: 0 calc(var(--#{$prefix}btn-padding-x) / -4) 0 calc(var(--#{$prefix}btn-padding-x) / 2);
+  }
+
+  .badge {
+    top: auto;
+  }
+
+  .btn-check + &:hover {
+    color: var(--#{$prefix}btn-hover-color);
+    background-color: var(--#{$prefix}btn-hover-bg);
+    border-color: var(--#{$prefix}btn-hover-border-color);
+  }
+}
+
+.btn-link {
+  color: #{color.adjust($primary, $lightness: 5%)};
+  background-color: transparent;
+  border-color: transparent;
+  box-shadow: none;
+
+  .icon {
+    color: inherit;
+  }
+
+  &:hover {
+    color: $link-hover-color;
+    border-color: transparent;
+  }
+}
+
+//
+// Button color variations
+//
+@each $color, $value in map-merge($theme-colors, $social-colors) {
+  .btn-#{$color} {
+    @if $color == "dark" {
+      --#{$prefix}btn-border-color: var(--#{$prefix}dark-mode-border-color);
+      --#{$prefix}btn-hover-border-color: var(--#{$prefix}dark-mode-border-active-color);
+      --#{$prefix}btn-active-border-color: var(--#{$prefix}dark-mode-border-active-color);
+    } @else {
+      --#{$prefix}btn-border-color: transparent;
+      --#{$prefix}btn-hover-border-color: transparent;
+      --#{$prefix}btn-active-border-color: transparent;
+    }
+
+    --#{$prefix}btn-color: var(--#{$prefix}#{$color}-fg, #{$white});
+    --#{$prefix}btn-bg: var(--#{$prefix}#{$color});
+    --#{$prefix}btn-hover-color: var(--#{$prefix}#{$color}-fg);
+    --#{$prefix}btn-hover-bg: var(--#{$prefix}#{$color}-darken);
+    --#{$prefix}btn-active-color: var(--#{$prefix}#{$color}-fg);
+    --#{$prefix}btn-active-bg: var(--#{$prefix}#{$color}-darken);
+    --#{$prefix}btn-disabled-bg: var(--#{$prefix}#{$color});
+    --#{$prefix}btn-disabled-color: var(--#{$prefix}#{$color}-fg);
+    --#{$prefix}btn-box-shadow: var(--#{$prefix}shadow-input);
+  }
+
+  .btn-outline-#{$color},
+  .btn-outline.btn-#{$color} {
+    --#{$prefix}btn-color: var(--#{$prefix}#{$color});
+    --#{$prefix}btn-bg: transparent;
+    --#{$prefix}btn-border-color: var(--#{$prefix}#{$color});
+    --#{$prefix}btn-hover-color: var(--#{$prefix}#{$color}-fg);
+    --#{$prefix}btn-hover-border-color: transparent;
+    --#{$prefix}btn-hover-bg: var(--#{$prefix}#{$color});
+    --#{$prefix}btn-active-color: var(--#{$prefix}#{$color}-fg);
+    --#{$prefix}btn-active-bg: var(--#{$prefix}#{$color});
+    --#{$prefix}btn-active-border-color: var(--#{$prefix}#{$color});
+    --#{$prefix}btn-disabled-color: var(--#{$prefix}#{$color});
+    --#{$prefix}btn-disabled-border-color: var(--#{$prefix}#{$color});
+  }
+
+  .btn-ghost-#{$color},
+  .btn-ghost.btn-#{$color} {
+    --#{$prefix}btn-color: var(--#{$prefix}#{$color});
+    --#{$prefix}btn-bg: transparent;
+    --#{$prefix}btn-border-color: transparent;
+    --#{$prefix}btn-hover-color: var(--#{$prefix}#{$color}-fg);
+    --#{$prefix}btn-hover-bg: var(--#{$prefix}#{$color});
+    --#{$prefix}btn-hover-border-color: var(--#{$prefix}#{$color});
+    --#{$prefix}btn-active-color: var(--#{$prefix}#{$color}-fg);
+    --#{$prefix}btn-active-bg: var(--#{$prefix}#{$color});
+    --#{$prefix}btn-active-border-color: transparent;
+    --#{$prefix}btn-active-shadow: #{$btn-active-box-shadow};
+    --#{$prefix}btn-disabled-color: var(--#{$prefix}#{$color});
+    --#{$prefix}btn-disabled-bg: transparent;
+    --#{$prefix}btn-disabled-border-color: transparent;
+    --#{$prefix}gradient: none;
+    --#{$prefix}btn-box-shadow: none;
+  }
+}
+
+//
+// Button sizes
+//
+.btn-sm,
+.btn-group-sm > .btn {
+  --#{$prefix}btn-line-height: #{$input-btn-line-height-sm};
+  --#{$prefix}btn-icon-size: #{$input-btn-icon-size-sm};
+}
+
+.btn-lg,
+.btn-group-lg > .btn {
+  --#{$prefix}btn-line-height: #{$input-btn-line-height-lg};
+  --#{$prefix}btn-icon-size: #{$input-btn-icon-size-lg};
+}
+
+.btn-xl,
+.btn-group-xl > .btn {
+  --#{$prefix}btn-line-height: #{$input-btn-line-height-xl};
+  --#{$prefix}btn-icon-size: #{$input-btn-icon-size-xl};
+  --#{$prefix}btn-padding-y: #{$input-btn-padding-y-xl};
+  --#{$prefix}btn-padding-x: #{$input-btn-padding-x-xl};
+  --#{$prefix}btn-font-size: #{$input-btn-font-size-xl};
+}
+
+//
+// Button shapes
+//
+.btn-pill {
+  padding-right: 1.5em;
+  padding-left: 1.5em;
+  border-radius: 10rem;
+
+  &[class*="btn-icon"] {
+    padding: 0.375rem 15px;
+  }
+}
+
+.btn-square {
+  border-radius: 0;
+}
+
+//
+// Icon button
+//
+.btn-icon,
+.btn-action {
+  padding-left: 0;
+  padding-right: 0;
+
+  .icon {
+    margin: calc(-1 * var(--#{$prefix}btn-padding-x));
+  }
+}
+
+//
+// Button list
+//
+.btn-list {
+  @include elements-list;
+}
+
+//
+// Button floating
+//
+.btn-floating {
+  position: fixed;
+  z-index: $zindex-fixed;
+  bottom: 1rem;
+  left: 1rem;
+  box-shadow: var(--#{$prefix}shadow-dropdown);
+}
+
+//
+// Button loading
+//
+.btn-loading {
+  position: relative;
+  color: transparent !important;
+  text-shadow: none !important;
+  pointer-events: none;
+
+  > * {
+    opacity: 0;
+  }
+
+  &:after {
+    content: "";
+    display: inline-block;
+    vertical-align: text-bottom;
+    border: $spinner-border-width var(--#{$prefix}border-style) currentColor;
+    border-right-color: transparent;
+    border-radius: $border-radius-pill;
+    color: var(--#{$prefix}btn-color);
+    position: absolute;
+    width: var(--#{$prefix}btn-icon-size);
+    height: var(--#{$prefix}btn-icon-size);
+    left: calc(50% - var(--#{$prefix}btn-icon-size) / 2);
+    top: calc(50% - var(--#{$prefix}btn-icon-size) / 2);
+    animation: spinner-border 0.75s linear infinite;
+  }
+}
+
+//
+// Action button
+//
+.btn-action {
+  --#{$prefix}border-color: transparent;
+  color: var(--#{$prefix}secondary);
+  border-radius: var(--#{$prefix}border-radius);
+  background: transparent;
+  box-shadow: none;
+
+  &:after {
+    content: none;
+  }
+
+  &:focus {
+    outline: none;
+    box-shadow: none;
+  }
+
+  &:hover,
+  &.show {
+    color: var(--#{$prefix}body-color);
+    background: var(--#{$prefix}active-bg);
+    border-color: transparent;
+  }
+
+  &.show {
+    color: var(--#{$prefix}primary);
+  }
+}
+
+.btn-actions {
+  display: flex;
+}
+
+.btn-animate-icon {
+  .icon {
+    transition: transform 0.3s ease;
+  }
+
+  &:hover,
+  &:focus-visible {
+    .icon {
+      transform: translateX(4px);
+    }
+  }
+
+  &.btn-animate-icon-rotate {
+    &:hover,
+    &:focus-visible {
+      .icon {
+        transform: rotate(90deg);
+      }
+    }
+  }
+
+  &.btn-animate-icon-move-start {
+    &:hover,
+    &:focus-visible {
+      .icon {
+        transform: translateX(-4px);
+      }
+    }
+  }
+
+  &.btn-animate-icon-pulse {
+    &:hover,
+    &:focus-visible {
+      .icon {
+        transform: none;
+        animation: pulse 0.9s;
+      }
+    }
+  }
+
+  &.btn-animate-icon-shake {
+    &:hover,
+    &:focus-visible {
+      .icon {
+        transform: none;
+        animation: shake 0.9s;
+      }
+    }
+  }
+
+  &.btn-animate-icon-tada {
+    &:hover,
+    &:focus-visible {
+      .icon {
+        transform: none;
+        animation: tada 0.9s;
+      }
+    }
+  }
+}

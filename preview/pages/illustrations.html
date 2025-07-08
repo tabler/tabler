@@ -1,0 +1,184 @@
+---
+title: SVG Illustrations
+page-header: SVG Illustrations
+page-menu: addons.illustrations
+layout: default
+permalink: illustrations.html
+---
+
+{% assign first-illustration = '' %}
+{% for illustration in free-illustrations.autodark %}
+	{% assign first-illustration = illustration[1] %}
+{% endfor %}
+
+{% assign skinColor = site.skinColors | first %} 
+{% assign color = site.colors | first %}
+
+<div class="mb-7" style="--tblr-illustrations-primary: var(--tblr-color-primary); --tblr-illustrations-skin: {{ skinColor.hex }};" id="current-illustration-style">
+	<div class="row row-cards">
+		<div class="col-12">
+			<div class="row row-cards row-deck g-4">
+				<div class="col-md-7">
+					<div class="card">
+						<div class="card-body d-flex align-items-center">
+							<div id="current-illustration">{{ first-illustration | replace: '<svg ', '<svg class="w-100 h-auto" ' }}</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-md-5">
+					<div class="row">
+						<div class="col-12">
+							<div class="card">
+								<div class="card-body">
+									<div>
+										<div class="form-label">Primary color</div>
+										<div class="row g-2">
+											<div class="col-auto">
+												<label class="form-colorinput">
+													<input name="color" type="radio" value="var(--tblr-color-primary)" class="form-colorinput-input js-select-color" checked />
+													<span class="form-colorinput-color bg-primary"></span>
+												</label>
+											</div>
+											<div class="col-auto">
+												<label class="form-colorinput">
+													<input name="color" type="radio" value="var(--tblr-bg-surface-inverted)" class="form-colorinput-input js-select-color" />
+													<span class="form-colorinput-color bg-inverted"></span>
+												</label>
+											</div>
+											{% for color in site.colors %}
+											<div class="col-auto">
+												<label class="form-colorinput">
+													<input name="color" type="radio" value="{{ color[1].hex }}" class="form-colorinput-input js-select-color" />
+													<span class="form-colorinput-color bg-{{ color[1].class }}"></span>
+												</label>
+											</div>
+											{% endfor %}
+										</div>
+
+										<div class="form-label mt-4">Skin color</div>
+										<div class="row g-2">
+											{% for color in site.skinColors %}
+											<div class="col-auto">
+												<label class="form-colorinput">
+													<input name="skin-color" type="radio" value="{{ color[1].hex }}" class="form-colorinput-input js-select-skin-color" {% if forloop.first %} checked{% endif %} />
+													<span class="form-colorinput-color" style="background-color: {{ color[1].hex }}"></span>
+												</label>
+											</div>
+											{% endfor %}
+										</div>
+
+										<div class="form-label mt-4">Select SVG illustration</div>
+										<div class="row">
+											{% for illustration in free-illustrations.autodark %}
+											<div class="col-3">
+												<label class="form-imagecheck mb-2">
+													<input name="form-imagecheck" type="radio" value="{{ illustration[0] }}" class="form-imagecheck-input js-select-illustration" {% if forloop.last %} checked{% endif %}>
+													<span class="form-imagecheck-figure">
+														{{ illustration[1] | replace: '<svg ', '<svg class="w-100 h-auto" ' }}
+													</span>
+												</label>
+											</div>
+											{% endfor %}
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<h2 class="page-title my-5">
+	{{ illustrations | size | minus: 4 }} more SVG Illustrations
+</h2>
+
+<div class="row row-cards">
+	<div class="col-lg-4">
+		<div class="card card-md sticky-top">
+			<div class="card-stamp card-stamp-lg">
+				<div class="card-stamp-icon bg-primary">
+					{% include "ui/icon.html" icon="brand-figma" %}
+				</div>
+			</div>
+			<div class="card-body">
+				<div class="row align-items-center">
+					<div class="col-10">
+						<h3 class="h1">Tabler Illustrations</h3>
+						<div class="markdown text-secondary">
+							Access a wide range of SVG illustrations for various projects. Effortlessly customize any illustration to align perfectly with your chosen color scheme!
+						</div>
+						<div class="mt-3">
+							<a href="{{ site.illustrations.buy_link }}" class="btn btn-primary" target="_blank" rel="noopener">
+								{% include "ui/icon.html" icon="download" %}
+								Get lifetime access
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-lg-8">
+		<div class="row row-cards">
+			{% for illustration in illustrations %}
+			<div class="col-6 col-md-3">
+				<div class="card">
+					<div class="card-body">
+						<a href="{{ site.illustrations.buy_link }}" target="_blank">
+							<img src="{{ page | relative }}/static/illustrations/light/{{ illustration }}.png" alt="{{ illustration }}" class="img-light" />
+							<img src="{{ page | relative }}/static/illustrations/dark/{{ illustration }}.png" alt="{{ illustration }}" class="img-dark" />
+						</a>
+					</div>
+				</div>
+			</div>
+			{% endfor %}
+		</div>
+	</div>
+</div>
+
+
+{% capture_script %}
+<script>
+	let skinColor = "var({{ skin_color[1].prop }})",
+	   primaryColor = "var({{ color[1].prop }})";
+
+	const illustrations = {
+	{% for illustration in free-illustrations.autodark %}
+		"{{ illustration[0] }}": {
+	      svg: '{{ illustration[1] | replace: '<svg ', '<svg class="w-100 h-auto" ' | replace_regex: "\n", "\n" }}',
+		},
+	{% endfor %}
+	}
+
+	const selectIllustrations = document.querySelectorAll(".js-select-illustration"),
+		currentIllustration = document.getElementById("current-illustration"),
+		currentIllustrationCode = document.getElementById("current-illustration-code");
+
+	document.querySelectorAll(".js-select-illustration").forEach((elem) => {
+		elem.addEventListener("change", (e) => {
+			const selectedId = e.target.value,
+				selectedIllustration = illustrations[selectedId]
+
+			currentIllustration.innerHTML = selectedIllustration.svg
+
+		})
+	})
+
+	document.querySelectorAll(".js-select-color").forEach((elem) => {
+		elem.addEventListener("change", (e) => {
+			primaryColor = e.target.value
+			document.getElementById("current-illustration-style").style.setProperty("--tblr-illustrations-primary", primaryColor)
+		})
+	})
+
+	document.querySelectorAll(".js-select-skin-color").forEach((elem) => {
+		elem.addEventListener("change", (e) => {
+			skinColor = e.target.value
+			document.getElementById("current-illustration-style").style.setProperty("--tblr-illustrations-skin", skinColor)
+		})
+	})
+</script>
+{% endcapture_script %}

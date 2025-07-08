@@ -1,0 +1,36 @@
+<div class="card">
+	<div class="card-header">
+		<h3 class="card-title">Most Visited Pages</h3>
+	</div>
+	<div class="card-table table-responsive">
+		<table class="table table-vcenter">
+
+			<thead>
+			<tr>
+				<th>Page name</th>
+				<th>Visitors</th>
+				<th>Unique</th>
+				<th colspan="2">Bounce rate</th>
+			</tr>
+			</thead>
+
+			{% for url in urls limit: 6 %}
+			{% assign data = url.data | join: ',' %}
+			{% assign id = "bounce-rate-" | append: forloop.index %}
+			<tr>
+				<td>
+					{{ url.uri }}
+					<a href="#" class="ms-1" aria-label="Open website">{% include "ui/icon.html" icon="link" %}</a>
+				</td>
+				<td class="text-secondary">{{ url.visitors | format_number }}</td>
+				<td class="text-secondary">{{ url.unique | format_number }}</td>
+				<td class="text-secondary">{{ url.bounce }}</td>
+				<td class="text-end w-1">
+					{% include "ui/chart-sparkline.html" type="line" data=data id=id small=true color="primary" %}
+				</td>
+			</tr>
+			{% endfor %}
+
+		</table>
+	</div>
+</div>

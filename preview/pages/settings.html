@@ -1,0 +1,67 @@
+---
+layout: settings
+permalink: settings.html
+---
+
+<div class="card-body">
+	<h2 class="mb-4">My Account</h2>
+
+	<h3 class="card-title">Profile Details</h3>
+
+	<div class="row align-items-center">
+		<div class="col-auto">{% include "ui/avatar.html" size="xl" person-id="1" %}</div>
+		<div class="col-auto">{% include "ui/button.html" text="Change avatar" %}</div>
+		<div class="col-auto">{% include "ui/button.html" text="Delete avatar" color="danger" ghost=true %}</div>
+	</div>
+
+
+	<h3 class="card-title mt-4">Business Profile</h3>
+
+	<div class="row g-3">
+		<div class="col-md">
+			<div class="form-label">Business Name</div>
+			<input type="text" class="form-control" value="{{ people[0].company }}">
+		</div>
+		<div class="col-md">
+			<div class="form-label">Business ID</div>
+			<input type="text" class="form-control" value="560afc32">
+		</div>
+		<div class="col-md">
+			<div class="form-label">Location</div>
+			<input type="text" class="form-control"
+			       value="{{ people[0].city }}, {{ people[0].country }}">
+		</div>
+	</div>
+
+	<h3 class="card-title mt-4">Email</h3>
+	<p class="card-subtitle">This contact will be shown to others publicly, so choose it carefully.</p>
+
+	<div>
+		<div class="row g-2">
+			<div class="col-auto">
+				<input type="text" class="form-control w-auto" value="{{ people[0].email }}">
+			</div>
+			<div class="col-auto">{% include "ui/button.html" text="Change" %}</div>
+		</div>
+	</div>
+
+	<h3 class="card-title mt-4">Password</h3>
+	<p class="card-subtitle">You can set a permanent password if you don't want to use temporary login codes.</p>
+	<div>
+		{% include "ui/button.html" text="Set new password" %}
+	</div>
+
+	<h3 class="card-title mt-4">Public profile</h3>
+	<p class="card-subtitle">Making your profile public means that anyone on the Dashkit network will be able to find
+		you.</p>
+	<div>
+		{% include "ui/form/check.html" switch=true size="lg" title-on="You're currently visible" title-off="You're
+		currently invisible" %}
+	</div>
+</div>
+<div class="card-footer bg-transparent mt-auto">
+	<div class="btn-list justify-content-end">
+		{% include "ui/button.html" text="Cancel" %}
+		{% include "ui/button.html" text="Submit" color="primary" %}
+	</div>
+</div>

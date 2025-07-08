@@ -1,0 +1,170 @@
+.page {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-height: 100%;
+}
+
+.page-center {
+  justify-content: center;
+}
+
+.page-wrapper {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+
+  @media print {
+    margin: 0 !important;
+  }
+}
+
+.page-wrapper-full {
+  .page-body:first-child {
+    margin: 0;
+    border-top: 0;
+  }
+}
+
+// Content body
+.page-body {
+  margin-top: var(--#{$prefix}page-padding-y);
+  margin-bottom: var(--#{$prefix}page-padding-y);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.page-body-card {
+  background: var(--#{$prefix}bg-surface);
+  border-top: var(--#{$prefix}border-width) var(--#{$prefix}border-style) $card-border-color;
+  padding: var(--#{$prefix}page-padding) 0;
+  margin-bottom: 0;
+  flex: 1;
+
+  .page-body ~ & {
+    margin-top: 0;
+  }
+}
+
+.page-cover {
+  background: no-repeat center/cover;
+  min-height: 9rem;
+
+  @include media-breakpoint-up(md) {
+    min-height: 12rem;
+  }
+
+  @include media-breakpoint-up(lg) {
+    min-height: 15rem;
+  }
+}
+
+.page-cover-overlay {
+  position: relative;
+
+  &:after {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-image: $overlay-gradient;
+  }
+}
+
+
+.page-header {
+  display: flex;
+  flex-wrap: wrap;
+  min-height: 2.25rem;
+  flex-direction: column;
+  justify-content: center;
+  max-width: 100%;
+
+  .page-wrapper & {
+    margin: var(--#{$prefix}page-padding-y) 0 0;
+  }
+}
+
+.page-header-border {
+  border-bottom: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
+  padding: var(--#{$prefix}page-padding-y) 0;
+  margin: 0 !important;
+  background-color: var(--#{$prefix}bg-surface);
+}
+
+.page-pretitle {
+  @include subheader;
+}
+
+.page-title {
+  margin: 0;
+  font-size: $page-title-font-size;
+  line-height: $page-title-line-height;
+  font-weight: $page-title-font-weight;
+  color: inherit;
+  display: flex;
+  align-items: center;
+
+  svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-right: .25rem;
+  }
+}
+
+.page-title-lg {
+  font-size: $h1-font-size;
+  line-height: $h1-line-height;
+}
+
+.page-subtitle {
+  margin-top: .25rem;
+  color: var(--#{$prefix}secondary);
+}
+
+//
+// Page cover
+//
+.page-cover {
+  --#{$prefix}page-cover-blur: 20px;
+  --#{$prefix}page-cover-padding: 1rem;
+  min-height: 6rem;
+  padding: var(--#{$prefix}page-cover-padding) 0;
+  position: relative;
+  overflow: hidden;
+}
+
+.page-cover-img {
+  position: absolute;
+  top: calc(-2 * var(--#{$prefix}page-cover-blur, 0));
+  left: calc(-2 * var(--#{$prefix}page-cover-blur, 0));
+  right: calc(-2 * var(--#{$prefix}page-cover-blur, 0));
+  bottom: calc(-2 * var(--#{$prefix}page-cover-blur, 0));
+  pointer-events: none;
+  filter: blur(var(--#{$prefix}page-cover-blur));
+  object-fit: cover;
+  background-size: cover;
+  background-position: center;
+  z-index: -1;
+}
+
+//
+// Page tabs
+//
+.page-tabs {
+  margin-top: .5rem;
+  position: relative;
+}
+
+.page-header-tabs {
+  .nav-bordered {
+    border: 0;
+  }
+
+  + .page-body-card {
+    margin-top: 0;
+  }
+}

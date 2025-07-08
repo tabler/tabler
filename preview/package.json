@@ -1,0 +1,47 @@
+{
+  "name": "@tabler/preview",
+  "version": "1.3.2",
+  "private": true,
+  "scripts": {
+    "build": "pnpm run clean && pnpm run css && pnpm run js && pnpm run html",
+    "dev": "pnpm run clean && pnpm run watch",
+    "watch": "concurrently \"pnpm run watch-html\" \"pnpm run watch-css\" \"pnpm run watch-js\"",
+    "watch-html": "cross-env NODE_ENV=development eleventy --serve --port=3000 --incremental",
+    "watch-js": "nodemon --watch js/ --ext js --exec \"pnpm run js\"",
+    "watch-css": "nodemon --watch scss/ --ext scss --exec \"pnpm run css\"",
+    "css": "pnpm run css-compile && pnpm run css-prefix && pnpm run css-minify",
+    "css-compile": "sass scss/:dist/preview/css/ --no-source-map --load-path=node_modules",
+    "css-prefix": "postcss --config .build/postcss.config.mjs --replace \"dist/preview/css/*.css\" \"!dist/preview/css/*.rtl*.css\" \"!dist/preview/css/*.min.css\"",
+    "css-minify": "cleancss -O1 --format breakWith=lf --with-rebase --source-map --source-map-inline-sources --output dist/preview/css/ --batch --batch-suffix \".min\" \"dist/preview/css/*.css\" \"!dist/preview/css/*.min.css\" \"!dist/preview/css/*rtl*.css\"",
+    "js": "pnpm run js-compile && pnpm run js-minify",
+    "js-compile": "rollup --config .build/rollup.config.mjs --sourcemap",
+    "js-minify": "pnpm run js-minify-demo",
+    "js-minify-demo": "terser --compress passes=2 --mangle --comments \"/^!/\" --source-map \"content=dist/preview/js/demo.js.map,includeSources,url=demo.min.js.map\" --output dist/preview/js/demo.min.js dist/preview/js/demo.js",
+    "clean": "shx rm -rf dist demo",
+    "html": "pnpm run html-build && pnpm run html-prettify",
+    "html-build": "eleventy",
+    "html-prettify": "prettier --write \"dist/**/*.html\" \"!dist/dist/**\"",
+    "svg-optimize": "svgo -f svg/brand --pretty",
+    "unused-files": "node .build/unused-files.mjs",
+    "download-images": "node .build/download-images.mjs",
+    "optimize-images": "for i in ./src/static/photos/*.jpg; do convert \"$i\" -quality 80% \"${i%.jpg}.jpg\"; done",
+    "svg-icons": "node .build/import-icons.mjs",
+    "import-illustrations": "node .build/import-illustrations.mjs",
+    "import-icons": "git checkout dev && BRANCH_NAME=\"dev-tabler-icons-`pnpm info @tabler/icons version`\" && git branch $BRANCH_NAME && git checkout $BRANCH_NAME && ncu -u @tabler/icons && pnpm install && pnpm run svg-icons && git add . && git commit -am \"update icons to v`pnpm info @tabler/icons version`\" && git push origin $BRANCH_NAME && git checkout dev",
+    "zip": "mkdir -p packages-zip && zip -r packages-zip/tabler-$(node -p \"require('./package.json').version\").zip demo/*"
+  },
+  "devDependencies": {
+    "@11ty/eleventy": "^3.1.1",
+    "imageoptim-cli": "^3.1.9",
+    "request": "^2.88.2"
+  },
+  "dependencies": {
+    "@tabler/core": "workspace:*",
+    "@tabler/icons": "^3.31.0"
+  },
+  "prettier": {
+    "tabWidth": 2,
+    "useTabs": false,
+    "printWidth": 160
+  }
+}

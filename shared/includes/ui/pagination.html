@@ -1,0 +1,55 @@
+{% assign count = include.count | default: 5 -%}
+{% assign offset = include.offset | default: count -%}
+{% assign count-offset = count | minus: offset | plus: 1 -%}
+{% assign active-item = include.active-item | default: 3 -%}
+<ul class="pagination{% if include.class %} {{ include.class }}{% endif %}">
+	{% if include.first-last -%}
+	<li class="page-item disabled">
+		<a class="page-link{% if include.text %} page-text{% endif %}" href="#" tabindex="-1" aria-disabled="true">
+			{% unless include.text %}{% include "ui/icon.html" icon="chevrons-left" %}{% else %}Previous{% endunless -%}
+		</a>
+	</li>
+	{% endif -%}
+	<li class="page-item{% if include.prev-description %} page-prev{% endif %} disabled">
+		<a class="page-link{% if include.text %} page-text{% endif %}" href="#" tabindex="-1" aria-disabled="true">
+			{% if include.prev-description -%}
+			<div class="page-item-subtitle">previous</div>
+			<div class="page-item-title">{{ include.prev-description }}</div>
+			{% else -%}
+			{% unless include.text %}{% include "ui/icon.html" icon="chevron-left" %}{% else %}Previous{% endunless -%}
+			{% endif %}
+		</a>
+	</li>
+	{% for i in (1..offset) -%}
+	<li class="page-item{% if i == active-item %} active{% endif %}">
+		<a class="page-link" href="#">{{ i }}</a>
+	</li>
+	{% endfor -%}
+	{% if offset < count -%}
+	<li class="page-item">
+		<span class="page-link disabled">&hellip;</span>
+	</li>
+	{% for i in (count-offset..count) -%}
+	<li class="page-item{% if i == active-item %} active{% endif %}">
+		<a class="page-link" href="#">{{ i }}</a>
+	</li>
+	{% endfor -%}
+	{% endif %}
+   <li class="page-item{% if include.prev-description %} page-next{% endif %}">
+      <a class="page-link{% if include.text %} page-text{% endif %}" href="#">
+         {% if include.next-description -%}
+            <div class="page-item-subtitle">next</div>
+            <div class="page-item-title">{{ include.next-description }}</div>
+         {% else -%}
+            {% unless include.text %}{% include "ui/icon.html" icon="chevron-right" %}{% else %}Next{% endunless %}
+         {% endif -%}
+      </a>
+   </li>
+	{% if include.first-last -%}
+	<li class="page-item">
+		<a class="page-link{% if include.text %} page-text{% endif %}" href="#">
+			{% unless include.text %}{% include "ui/icon.html" icon="chevrons-right" %}{% else %}Next{% endunless %}
+		</a>
+	</li>
+	{% endif -%}
+</ul>

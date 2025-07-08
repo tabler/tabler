@@ -1,0 +1,90 @@
+{% assign roles = 'User,Admin,Owner' | split: ',' %}
+{% assign limit = include.limit | default: 5 %}
+<div class="table-responsive">
+	<table
+		class="table table-vcenter{% if include.mobile %} table-mobile-md{% endif %}{% if include.card %} card-table{% endif %}{% if include.stripped %} table-striped{% endif %}{% if include.nowrap %} table-nowrap{% endif %}">
+		<thead>
+		<tr>
+			<th>Name</th>
+			<th>Title</th>
+
+			{% unless include.avatars %}
+			<th>Email</th>
+			{% endunless %}
+
+			<th>Role</th>
+
+			{% if include.nowrap %}
+			<th></th>
+			{% endif %}
+
+			<th class="w-1"></th>
+		</tr>
+		</thead>
+		<tbody>
+		{% for person in people limit: limit offset: include.offset %}
+		<tr>
+			{% if include.avatars %}
+			<td {% if include.mobile %}data-label="Name" {% endif %}>
+				<div class="d-flex py-1 align-items-center">
+					{% include "ui/avatar.html" person-id=person.id class="me-2" %}
+					<div class="flex-fill">
+						<div class="font-weight-medium">{{ person.full_name }}</div>
+						<div class="text-secondary"><a href="#" class="text-reset">{{ person.email }}</a></div>
+					</div>
+				</div>
+			</td>
+			{% else %}
+			<td {% if include.mobile %}data-label="Name" {% endif %}>{{ person.full_name }}</td>
+			{% endif %}
+
+
+			{% if include.avatars %}
+			<td {% if include.mobile %}data-label="Title" {% endif %}>
+				<div>{{ person.job_title }}</div>
+				<div class="text-secondary">{{ person.department }}</div>
+			</td>
+			{% else %}
+			<td class="text-secondary" {% if include.mobile %}data-label="Title" {% endif %}>
+				{{ person.job_title }}, {{ person.department }}
+			</td>
+			{% endif %}
+
+			{% unless include.avatars %}
+			<td class="text-secondary" {% if include.mobile %}data-label="Email" {% endif %}><a href="#" class="text-reset">{{
+				person.email }}</a></td>
+			{% endunless %}
+
+
+			<td class="text-secondary" {% if include.mobile %}data-label="Role" {% endif %}>
+				{% assign role-id = forloop.index | random_number: 0, 2 %}
+				{{ roles[role-id] }}
+			</td>
+
+			{% if include.nowrap %}
+			<td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, commodi cupiditate debitis deserunt
+				expedita hic incidunt iste modi molestiae nesciunt non nostrum perferendis perspiciatis placeat praesentium
+				quaerat quo repellendus, voluptates.
+			</td>
+			{% endif %}
+
+			<td>
+				{% if include.buttons %}
+				<div class="btn-list flex-nowrap">
+					{% include "ui/button.html" text="Edit" %}
+					<div class="dropdown">
+						<button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown">
+							Actions
+						</button>
+						{% include "ui/dropdown-menu.html" right=true %}
+					</div>
+				</div>
+				{% else %}
+				<a href="#">Edit</a>
+				{% endif %}
+			</td>
+		</tr>
+		{% endfor %}
+		</tbody>
+	</table>
+</div>

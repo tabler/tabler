@@ -1,0 +1,31 @@
+.shape {
+  --#{$prefix}shape-size: #{$avatar-size};
+  --#{$prefix}shape-icon-size: #{$avatar-icon-size};
+  background-color: var(--#{$prefix}primary-lt);
+  color: var(--#{$prefix}primary);
+  border-radius: 35%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: var(--#{$prefix}shape-size);
+  width: var(--#{$prefix}shape-size);
+
+  .icon {
+    width: var(--#{$prefix}shape-icon-size);
+    height: var(--#{$prefix}shape-icon-size);
+  }
+}
+
+@each $avatar-size, $size in $avatar-sizes {
+  .shape-#{$avatar-size} {
+    --#{$prefix}shape-size: #{map-get($size, size)};
+    --#{$prefix}shape-icon-size: #{map-get($size, icon-size)};
+  }
+}
+
+@each $name, $color in $colors {
+  .shape-#{$name} {
+    background: var(--#{$prefix}#{$name}-lt);
+    color: var(--#{$prefix}#{$name});
+  }
+}

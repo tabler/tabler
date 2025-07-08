@@ -1,0 +1,60 @@
+{% assign layout-dark = page.layout-dark | default: site.layout-dark -%}
+<!doctype html>
+{% include "layout/banner.html" %}
+{% assign title = title | default: layout.title %}
+<html lang="en"{% if layout-rtl %} dir="rtl" {% endif %}{% if layout.html-class or page.html-class %} class="{{ page.html-class | default: layout.html-class }}"{% endif %}>
+<head>
+	<meta charset="utf-8"/>
+	<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"/>
+	<meta http-equiv="X-UA-Compatible" content="ie=edge"/>
+
+	<title>{% if title %}{{ title }} - {% endif %}{% if site.title %}{{ site.title }} - {% endif %}{{ site.descriptionShort }}</title>
+
+	{% if environment == 'preview' %}
+		{% include "layout/analytics.html" %}
+
+		<meta name="msapplication-TileColor" content="{{ site.themeColor }}"/>
+		<meta name="theme-color" content="{{ site.themeColor }}"/>
+
+		<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent"/>
+		<meta name="apple-mobile-web-app-capable" content="yes"/>
+		<meta name="mobile-web-app-capable" content="yes"/>
+		<meta name="HandheldFriendly" content="True"/>
+		<meta name="MobileOptimized" content="320"/>
+
+		<link rel="icon" href="{{ page | relative }}/favicon.ico" type="image/x-icon" />
+		<link rel="shortcut icon" href="{{ page | relative }}/favicon.ico" type="image/x-icon"/>
+		<meta name="description" content="{{ description | default: site.description | escape }}"/>
+
+		{% include "layout/og.html" %}
+	{% elsif environment == 'development' %}
+		<link rel="icon" href="{{ page | relative }}/favicon-dev.ico" type="image/x-icon" />
+		<link rel="shortcut icon" href="{{ page | relative }}/favicon-dev.ico" type="image/x-icon" />
+	{% endif %}
+
+
+	{% include "layout/css.html" %}
+	{% include "layout/js-libs.html" head %}
+
+	<!-- BEGIN CUSTOM FONT -->
+	<style>
+		@import url('https://rsms.me/inter/inter.css');
+	</style>
+	<!-- END CUSTOM FONT -->
+</head>
+
+{% assign layout-dark = layout-dark | default: site.layoutDark %}
+<body{% if layout.body-class or body-class %} class="{% if layout.body-class %} {{ layout.body-class }}{% endif %}{% if body-class %} {{ body-class }}{% endif %}"{% endif %}>
+	<!-- BEGIN GLOBAL THEME SCRIPT -->
+	<script src="{{ page | relative }}/dist/js/tabler-theme{% if environment != 'development' %}.min{% endif %}.js{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}"{% if environment == 'preview' %} integrity="{{ sri.js-theme }}"{% endif %}></script>
+	<!-- END GLOBAL THEME SCRIPT -->
+
+	{{ content }}
+
+	{% modals %}
+	
+	{% include "settings.html" %}
+	
+	{% include "layout/js.html" %}
+</body>
+</html>

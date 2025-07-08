@@ -1,0 +1,36 @@
+<div class="card">
+	<div class="card-header">
+		<h3 class="card-title">Tasks</h3>
+	</div>
+	<div class="table-responsive">
+		<table class="table table-selectable card-table table-vcenter">
+			{% for task in tasks-list %}
+			<tr>
+				<td class="w-1 pe-0">
+					<input type="checkbox" class="form-check-input m-0 align-middle table-selectable-check" aria-label="Select task"{% if task.checked %} checked{% endif %} >
+				</td>
+				<td class="w-100">
+					<a href="#" class="text-reset">{{ task.name }}</a>
+				</td>
+				<td class="text-nowrap text-secondary">
+					{% include "ui/icon.html" icon="calendar" %}
+					{{ forloop.index | random_date | date: '%B %d, %Y' }}
+				</td>
+				<td class="text-nowrap">
+					<a href="#" class="text-secondary">
+						{% include "ui/icon.html" icon="check" %}
+						{{ forloop.index | random_number: 0, 6 }}/{{ forloop.index | random_number: 5, 10 }}
+					</a>
+				</td>
+				<td class="text-nowrap">
+					<a href="#" class="text-secondary">
+						{% include "ui/icon.html" icon="message" %} {{ forloop.index | random_number: 0, 12 }}</a>
+				</td>
+				<td>
+					{% include "ui/avatar.html" size="sm" person-id=forloop.index %}
+				</td>
+			</tr>
+			{% endfor %}
+		</table>
+	</div>
+</div>

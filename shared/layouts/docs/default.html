@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+	{% if environment == 'preview' %}
+	
+	{% assign pageSection = "" %}
+	{% if page.url contains "/ui/" %}
+	{% assign pageSection = "UI" %}
+	{% elsif page.url contains "/icons/" %}
+	{% assign pageSection = "Icons" %}
+	{% elsif page.url contains "/illustrations/" %}
+	{% assign pageSection = "Illustrations" %}
+	{% elsif page.url contains "/emails/" %}
+	{% assign pageSection = "Emails" %}
+	{% endif %}
+
+	{% assign metaTitle = title %}
+	{% if seoTitle %}
+	{% assign metaTitle = seoTitle %}
+	{% endif %}
+
+	{% assign metaDescription = description %}
+	{% if seoDescription %}
+	{% assign metaDescription = seoDescription %}
+	{% endif %}
+
+	{% assign siteName = "Tabler Documentation" %}
+	{% if pageSection != "" %}
+	{% assign siteName = "Tabler " | append: pageSection | append: " Documentation" %}
+	{% endif %}
+
+	<title>{{ metaTitle }} | {{ siteName }}</title>
+	{% if metaDescription %}<meta name="description" content="{{ metaDescription }}">{% endif %}
+	<link rel="canonical" href="{{ page.url | absolute_url }}">
+
+	<!-- Open Graph / Social Media Meta Tags -->
+	<meta property="og:type" content="website">
+	<meta property="og:title" content="{{ metaTitle }}">
+	{% if metaDescription %}<meta property="og:description" content="{{ metaDescription }}">{% endif %}
+	<meta property="og:site_name" content="{{ siteName }}">
+
+	<!-- Twitter Card data -->
+	<meta name="twitter:card" content="summary">
+	<meta name="twitter:title" content="{{ metaTitle }}">
+	{% if metaDescription %}<meta name="twitter:description" content="{{ metaDescription }}">{% endif %}
+
+	<script defer data-api="/stats/event" data-domain="docs.tabler.io" src="/stats/js/script.js"></script>
+
+	{% elsif environment == 'development' %}
+	<link rel="icon" href="{{ page | relative }}/favicon-dev.ico" type="image/x-icon" />
+	<link rel="shortcut icon" href="{{ page | relative }}/favicon-dev.ico" type="image/x-icon" />
+	{% endif %}
+
+	<link rel="stylesheet" href="/dist/css/tabler{% if environment != 'development' %}.min{% endif %}.css{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}" />
+	{% for plugin in site.cssPlugins %}
+	<link
+		href="/dist/css/tabler-{{ plugin }}{% if environment != 'development' %}.min{% endif %}.css{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}"
+		rel="stylesheet" />
+	{% endfor %}
+
+
+	{% if docs-libs -%}
+	{% for lib in libs.css -%}
+	{% if docs-libs contains lib[0] -%}
+	{% for file in lib[1] -%}
+	<link
+		href="{% if file contains 'http://' or file contains 'https://' %}{{ file }}{% else %}{{ page | relative }}/libs/{% if environment != 'development' %}{{ file | replace: '@', '' }}{% else %}{{ file }}{% endif %}{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}{% endif %}"
+		rel="stylesheet" />
+	{% endfor -%}
+	{% endif -%}
+	{% endfor -%}
+	{% endif %}
+
+	<style>@import url('https://rsms.me/inter/inter.css');</style>
+	<link rel="stylesheet" href="/css/docs{% if environment != 'development' %}.min{% endif %}.css" />
+</head>
+
+<body class="d-flex flex-column" style="background: var(--tblr-bg-surface)">
+	<script src="/dist/js/tabler-theme{% if environment != 'development' %}.min{% endif %}.js"></script>
+	{% include "docs/navbar.html" %}
+	<div class="flex-fill">
+		<div class="container">
+			<div class="row g-0">
+				<div class="col-docs d-none d-lg-block border-end">
+					<div class="py-4">
+						<div class="space-y space-y-5">
+							<div class="nav nav-vertical">
+								{% for link in docs-links %}
+								<a href="{{ link.url }}" class="nav-link" target="_blank">
+									<span class="border me-2 rounded p-1">{% include "ui/icon.html" icon=link.icon %}</span>
+									{{ link.title }}
+								</a>
+								{% endfor %}
+							</div>
+							<div class="flex-fill">
+								{% include "docs/menu.html" %}
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col bg-docs-gradient">
+					<div class="py-lg-5 ps-lg-5">
+						<div class="py-6 ps-lg-6 p-xxl-6">
+							<div class="markdown" data-bs-spy="scroll" data-bs-target="#toc" data-bs-root-margin="50px 0px -0%" data-bs-smooth-scroll="true" tabindex="0">
+								<h1>
+									{{ title }}
+								</h1>
+
+								<p class="text-secondary fs-3 lh-3">{{ summary }}</p>
+
+								{{ content | headings-id }}
+
+								{% include "docs/pagination.html" %}
+
+								<div class="mt-7">
+									<div>
+										<a href="{{ site.githubUrl }}/tree/dev/docs/{{ page.inputPath }}" class="link-primary" target="_blank">{% include
+											"ui/icon.html" icon="edit" class="icon-inline" %} Edit this page on GitHub</a>
+									</div>
+									
+									<div class="mt-5">
+										<div class="row">
+											<div class="col text-secondary">
+												© {% year %} Tabler. All rights reserved.
+											</div>
+									
+											<div class="col text-end">
+												<a href="{{ site.githubUrl }}" class="link-secondary" target="_blank">{% include "ui/icon.html"
+													icon="brand-github" %}</a>
+												<a href="{{ site.githubSponsorsUrl }}" class="link-secondary" target="_blank">{% include "ui/icon.html"
+													icon="heart" %}</a>
+												<a href="{{ site.opencollectiveUrl }}" class="link-secondary" target="_blank">{% include "ui/icon.html"
+													icon="hearts" %}</a>
+												<a href="{{ site.xUrl }}" class="link-secondary" target="_blank">{% include "ui/icon.html" icon="brand-x"
+													%}</a>
+												<a href="{{ site.linkedinUrl }}" class="link-secondary" target="_blank">{% include "ui/icon.html"
+													icon="brand-linkedin" %}</a>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="col-2 d-none d-xxl-block">
+					<div class="py-6 sticky-top">
+						{% include "docs/toc.html" %} 
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	{% for lib in libs -%}
+	{% if docs-libs contains lib[0] or libs.global-libs contains lib[0] or lib[0] == "clipboard" -%}
+	{% for file in lib[1].js -%}
+	<script
+		src="{% if file contains 'http://' or file contains 'https://' %}{{ file | replace: 'GOOGLE_MAPS_KEY', google-maps-key }}{% else %}/dist/libs/{{ lib[1].npm }}/{% if environment != 'development' %}{{ file | replace: '@', '' }}{% else %}{{ file }}{% endif %}{% if environment != 'development' %}?{{ 'now' | date: '%s' }}{% endif %}{% endif %}"
+	></script>
+	{% endfor -%}
+	{% endif -%}
+	{% endfor -%}
+	
+	<script>
+	document.addEventListener('DOMContentLoaded', function () {
+		const elements = document.querySelectorAll('[data-clipboard-text]');
+
+		elements.forEach(function (element) {
+			const clipboard = new ClipboardJS(element, {
+				text: function (trigger) {
+					return element.getAttribute('data-clipboard-text');
+				}
+			});
+
+			clipboard.on('success', function (e) {
+				e.clearSelection();
+				e.trigger.classList.add('btn-success');
+				e.trigger.classList.remove('btn-dark');
+				e.trigger.children[0].classList.add('d-none');
+				e.trigger.children[1].classList.remove('d-none');
+
+				setTimeout(function () {
+					e.trigger.classList.remove('btn-success');
+					e.trigger.classList.add('btn-dark');
+					
+					e.trigger.children[0].classList.remove('d-none');
+					e.trigger.children[1].classList.add('d-none');
+				}, 2000);
+			});
+
+			clipboard.on('error', function (e) {
+				console.error('Error copying text: ', e);
+			});
+		});
+		
+	})
+	</script>
+
+	<script src="/dist/js/tabler{% if environment != 'development' %}.min{% endif %}.js"></script>
+	<script src="/js/docs{% if environment != 'development' %}.min{% endif %}.js" defer></script>
+
+	{% if environment == 'production' %}
+	<script src="https://scripts.tabler.io/banner.js" defer data-tblr-ref="tabler-docs"></script>
+	{% endif %}
+</body>
+</html>

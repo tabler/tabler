@@ -1,0 +1,285 @@
+{% removeemptylines %}
+{% assign data = charts[include.chart-id] %}
+{% assign id = include.id | default: include.chart-id %}
+{% assign height = include.height | default: data.height | default: 10 %}
+{% assign class = include.class %}
+
+{% if include['size'] == 'sm' %}
+	{% assign class = class | append: ' chart-sm' | strip %}
+	{% assign height = 2.5 %}
+{% elsif include['size'] == 'lg' %}
+	{% assign class = class | append: ' chart-lg' | strip %}
+	{% assign height = 15 %}
+{% endif %}
+
+{% if data %}
+{% if data.extend %}
+{% assign data = charts[data.extend] | concat_objects: charts[include.chart-id] %}
+{% endif %}
+
+<div id="chart-{{ id }}" class="position-relative {% if class %} {{ class }}{% endif %}"></div>
+{% capture script %}
+{% assign chart-type = data.type | default: 'bar' -%}
+{% removeemptylines %}
+<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		{% if environment == 'development' %}
+		window.tabler_chart = window.tabler_chart || {};
+		{% endif %}
+
+		window.ApexCharts && ({% if environment == 'development' %}window.tabler_chart["chart-{{ include.chart-id }}"] = {% endif %}new ApexCharts(document.getElementById('chart-{{ id }}'), {
+			chart: {
+				type: "{{ chart-type }}",
+				fontFamily: 'inherit',
+				height: {{ height | times: 16 }},
+
+				{% if data.sparkline %}
+				sparkline: {
+					enabled: true
+				},
+				{% else %}
+				parentHeightOffset: 0,
+				toolbar: {
+					show: false,
+				},
+				{% endif %}
+
+				{% unless data.animations %}
+				animations: {
+					enabled: false
+				},
+				{% endunless %}
+
+				{% if data.stacked %}
+				stacked: true,
+				{% endif %}
+			},
+
+			{% if chart-type == 'bar' %}
+			plotOptions: {
+				bar: {
+					{% if data.horizontal %}
+					barHeight: '50%',
+			 		horizontal: true,
+					{% else %}
+					columnWidth: '50%',
+					{% endif %}
+				}
+			},
+			{% endif %}
+
+			{% if chart-type == 'radialBar' %}
+			plotOptions: {
+				radialBar: {
+					startAngle: -120,
+					endAngle: 120,
+					hollow: {
+						margin: 16,
+						size: "50%"
+					},
+					dataLabels: {
+						show: true,
+						value: {
+							offsetY: -8,
+							fontSize: '24px',
+						}
+					},
+				},
+			},
+			{% endif %}
+
+			{% if chart-type == 'bar' or chart-type == 'area' %}
+			dataLabels: {
+				enabled: {% if data.datalabels %}true{% else %}false{% endif %},
+			},
+			{% endif %}
+
+			{% if chart-type == 'area' %}
+			fill: {
+				colors: [
+					'color-mix(in srgb, transparent, var(--tblr-primary) {% if chart-type == 'area' %}16%{% else %}100%{% endif %})',
+					'color-mix(in srgb, transparent, var(--tblr-primary) {% if chart-type == 'area' %}16%{% else %}80%{% endif %})',
+				],
+				type: 'solid'
+			},
+			{% endif %}
+
+			{% if data.title %}
+			title: {
+				text: "{{ data.title | escape }}",
+				margin: 0,
+				floating: true,
+				offsetX: 10,
+				style: {
+					fontSize: '18px',
+				},
+			},
+			{% endif %}
+
+			{% if chart-type == 'area' or chart-type == 'line' %}
+			stroke: {
+				width: {% if data.stroke-width %}[{{ data.stroke-width | join: ', '}}]{% else %}2{% endif %},
+				{% if data.stroke-dash %}dashArray: [{{ data.stroke-dash | join: ', '}}],{% endif %}
+				lineCap: "round",
+				curve: "{{ data.stroke-curve | default: 'smooth' }}",
+			},
+			{% endif %}
+
+			{% if data.series %}
+			{% if chart-type == 'pie' or chart-type == 'donut' or chart-type == 'radialBar' %}
+			series: [{% for serie in data.series %}{{ serie.data }}{% unless forloop.last %}, {% endunless %}{% endfor %}],
+			labels: [{% for serie in data.series %}"{{ serie.name }}"{% unless forloop.last %}, {% endunless %}{% endfor %}],
+
+			{% else %}series: [{% for serie in data.series %}{
+				name: "{{ serie.name }}",
+				data: [{{ serie.data | join: ', ' }}]
+			}{% unless forloop.last %},{% endunless %}{% endfor %}],
+			{% endif %}
+			{% endif %}
+
+			tooltip: {
+				theme: 'dark'
+			},
+
+			grid: {
+				{% unless data.sparkline %}
+				padding: {
+					top: -20,
+					right: 0,
+					left: -4,
+					bottom: -4
+				},
+				{% endunless %}
+				{% if data.hide-grid %}
+				show: false,
+				{% else %}
+				strokeDashArray: 4,
+				{% if data.show-x %}
+				xaxis: {
+					lines: {
+						show: true
+					}
+				},
+				{% endif %}
+				{% endif %}
+			},
+
+			{% if data.show-data-labels %}
+			dataLabels: {
+				enabled: true,
+			},
+			{% endif %}
+
+			{% if data.categories or data.datetime %}
+			xaxis: {
+				labels: {
+					padding: 0,
+					{% if data.x-formatter %}
+					formatter: function(val) {
+						return {{ data.x-formatter }}
+					},
+					{% endif %}
+				},
+				tooltip: {
+					enabled: false
+				},
+				{% if chart-type == 'area' or chart-type == 'bar' %}
+				axisBorder: {
+					show: false,
+				},
+				{% endif %}
+				{% if data.categories %}
+				categories: [{% for category in data.categories %}'{{ category }}'{% unless forloop.last %}, {% endunless %}{% endfor %}],
+				{% endif %}
+
+				{% if data.datetime %}
+				type: 'datetime',
+				{% endif %}
+			},
+			{% endif %}
+
+			{% unless chart-type == 'pie' or chart-type == 'donut' or chart-type == 'radialBar' %}
+			yaxis: {
+				labels: {
+					padding: 4
+				},
+				{% if data.y-max %}
+				max: {{ data.y-max }},
+				{% endif %}
+				{% if data.y-title %}
+				title: {
+					text: '{{ data.y-title | escape }}'
+				}
+				{% endif %}
+			},
+			{% endunless %}
+
+			{% if data.datetime %}
+			{% assign date = data.start-date | default: '2020-06-20' | date: "%s" %}
+			{% assign days-count = data.series[0].data.size %}
+
+			labels: [
+				{% for i in (1..days-count) %}{% assign date = date | plus: 86400 %}'{{ date | timestamp_to_date }}'{% unless forloop.last %}, {% endunless %}{% endfor %}
+			],
+			{% endif %}
+
+			{% if data.series %}
+			colors: [{% for serie in data.series %}{% assign color = serie.color | default: data.color | default: 'primary' %}
+				'color-mix(in srgb, transparent, var(--tblr-{{ color }}) {% if serie.color-opacity %}{{ serie.color-opacity }}{% else %}100%{% endif %})'{% unless forloop.last %}, {% endunless %}{% endfor %}
+			],
+			{% endif %}
+
+			legend: {
+				{% if data.legend %}
+				show: true,
+				position: 'bottom',
+				offsetY: 12,
+				markers: {
+					width: 10,
+					height: 10,
+					radius: 100,
+				},
+				itemMargin: {
+					horizontal: 8,
+					vertical: 8
+				},
+				{% else %}
+				show: false,
+				{% endif %}
+			},
+
+			{% if data.hide-tooltip or chart-type == 'pie' or chart-type == 'donut' %}
+			tooltip: {
+				{% if data.hide-tooltip %}
+				enabled: false,
+				{% endif %}
+
+				{% if chart-type == 'pie' or chart-type == 'donut' %}
+				fillSeriesColor: false
+				{% endif %}
+			},
+			{% endif %}
+
+			{% if data.hide-points %}
+			point: {
+				show: false
+			},
+			{% endif %}
+
+			{% if data.show-markers %}
+			markers: {
+				size: 2
+			},
+			{% endif %}
+		})).render();
+	});
+</script>
+{% endremoveemptylines %}
+{%- endcapture %}
+
+{% capture_script %}
+{{ script }}
+{% endcapture_script %}
+
+{% endif %}
+{% endremoveemptylines %}

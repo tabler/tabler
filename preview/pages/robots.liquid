@@ -1,0 +1,13 @@
+---
+layout: null
+permalink: robots.txt
+---
+Sitemap: {% if environment != 'development' %}{{ site.previewUrl }}{% endif %}/sitemap.xml
+
+{% if environment == 'preview' %}
+User-agent: *
+Disallow:
+{% else %}
+User-agent: *
+Disallow: /
+{% endif %}

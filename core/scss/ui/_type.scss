@@ -1,0 +1,330 @@
+@import "typo/hr";
+
+.lead {
+  color: var(--#{$prefix}secondary);
+  font-size: inherit;
+}
+
+a {
+  text-decoration-skip-ink: auto;
+  color: color-mix(in srgb, transparent, var(--#{$prefix}link-color) var(--#{$prefix}link-opacity, 100%));
+
+  &:hover {
+    color: color-mix(in srgb, transparent, var(--#{$prefix}link-hover-color) var(--#{$prefix}link-opacity, 100%));
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+.h1,
+.h2,
+.h3,
+.h4,
+.h5,
+.h6 {
+  a {
+    color: inherit;
+
+    &:hover {
+      color: inherit;
+    }
+  }
+}
+
+h1,
+.h1 {
+  font-size: var(--#{$prefix}font-size-h1);
+  line-height: var(--#{$prefix}line-height-h1);
+}
+
+h2,
+.h2 {
+  font-size: var(--#{$prefix}font-size-h2);
+  line-height: var(--#{$prefix}line-height-h2);
+}
+
+h3,
+.h3 {
+  font-size: var(--#{$prefix}font-size-h3);
+  line-height: var(--#{$prefix}line-height-h3);
+}
+
+h4,
+.h4 {
+  font-size: var(--#{$prefix}font-size-h4);
+  line-height: var(--#{$prefix}line-height-h4);
+}
+
+h5,
+.h5 {
+  font-size: var(--#{$prefix}font-size-h5);
+  line-height: var(--#{$prefix}line-height-h5);
+}
+
+h6,
+.h6 {
+  font-size: var(--#{$prefix}font-size-h6);
+  line-height: var(--#{$prefix}line-height-h6);
+}
+
+.fs-base {
+  font-size: var(--#{$prefix}body-font-size);
+}
+
+strong,
+.strong,
+b {
+  font-weight: $headings-font-weight;
+}
+
+blockquote {
+  padding: 1rem 1rem 1rem;
+  border-left: 2px var(--#{$prefix}border-style) var(--#{$prefix}border-color);
+
+  p {
+    margin-bottom: 1rem;
+  }
+
+  cite {
+    display: block;
+    text-align: right;
+
+    &:before {
+      content: "— ";
+    }
+  }
+}
+
+ul,
+ol {
+  padding-left: 1.5rem;
+}
+
+hr {
+  margin: 2rem 0;
+}
+
+dl {
+  dd {
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+pre {
+  --#{$prefix}scrollbar-color: #{$pre-color};
+  padding: $pre-padding;
+  background: $pre-bg;
+  color: $pre-color;
+  border-radius: var(--#{$prefix}border-radius);
+  line-height: $line-height-base;
+
+  @include scrollbar;
+
+  code {
+    background: transparent;
+    padding: 0;
+  }
+}
+
+code {
+  background: var(--#{$prefix}code-bg);
+  padding: 2px 4px;
+  border-radius: var(--#{$prefix}border-radius);
+}
+
+abbr {
+  text-decoration: underline dotted;
+  cursor: help;
+  text-decoration-skip-ink: none;
+}
+
+kbd,
+.kbd {
+  border: $kbd-border;
+  display: inline-block;
+  box-sizing: border-box;
+  max-width: 100%;
+  font-size: $kbd-font-size;
+  font-weight: $kbd-font-weight;
+  line-height: 1;
+  vertical-align: baseline;
+  border-radius: $kbd-border-radius;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+}
+
+.list-unstyled {
+  margin-left: 0;
+}
+
+/**
+Selection
+ */
+::selection,
+.text-selected {
+  background-color: color-transparent(var(--#{$prefix}primary), 0.1);
+}
+
+.text-selected {
+  display: inline-block;
+}
+
+/**
+Links
+ */
+[class^="link-"],
+[class*=" link-"] {
+  &.disabled {
+    color: $nav-link-disabled-color !important;
+    pointer-events: none;
+  }
+}
+
+a:hover:has(.icon) {
+  text-decoration: none;
+}
+
+.link-hoverable {
+  border-radius: var(--#{$prefix}border-radius);
+  transition: background-color 0.15s ease-in-out;
+
+  &:hover {
+    text-decoration: none;
+    color: var(--#{$prefix}primary);
+    background: color-transparent(var(--#{$prefix}secondary), 0.04);
+  }
+}
+
+/**
+Subheader
+ */
+.subheader {
+  @include subheader;
+}
+
+/**
+Mentions
+ */
+.mention {
+  display: inline-block;
+  box-shadow: var(--#{$prefix}shadow-border);
+  border-radius: var(--#{$prefix}border-radius-pill);
+  line-height: calc(16em / 12);
+  font-size: calc(12em / 14);
+  color: var(--#{$prefix}body-color);
+  background: var(--#{$prefix}bg-surface-tertiary);
+  padding: calc(2em / 12) calc(8em / 12);
+  font-weight: var(--#{$prefix}font-weight-medium);
+
+  @at-root a#{&} {
+    cursor: pointer;
+
+    &:hover,
+    &.hover {
+      background: var(--#{$prefix}bg-surface-secondary);
+      text-decoration: underline;
+    }
+  }
+}
+
+.mention-avatar,
+.mention-app,
+.mention-color {
+  width: calc(14em / 12);
+  height: calc(14em / 12);
+  border-radius: var(--#{$prefix}border-radius-pill);
+  margin: calc(-2em / 12) calc(4em / 12) 0 calc(-4em / 12);
+  display: inline-flex;
+  background: no-repeat center center/cover;
+  box-shadow: var(--#{$prefix}shadow-border);
+  vertical-align: middle;
+  text-align: center;
+}
+
+.mention-app {
+  box-shadow: none;
+  background: none;
+  border-radius: 0;
+}
+
+.mention-count {
+  color: var(--#{$prefix}secondary);
+  margin-left: calc(8em / 12);
+}
+
+$text-variants: (
+  incorrect: var(--#{$prefix}red),
+  correct: var(--#{$prefix}green),
+);
+
+@each $variant, $color in $text-variants {
+  .text-#{$variant} {
+    background: color-transparent($color, 0.04);
+    background: color-transparent($color, 4%);
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-decoration-color: $color;
+  }
+}
+
+.steps {
+  --#{$prefix}steps-padding: 2rem;
+  --#{$prefix}steps-item-size: 1.5rem;
+  margin-left: 1rem;
+  padding-left: var(--#{$prefix}steps-padding);
+  counter-reset: step;
+  border-left: 1px solid var(--#{$prefix}border-color);
+  margin-bottom: 2rem;
+
+  h3 {
+    counter-increment: step;
+
+    &:not(:first-child) {
+      margin-top: 2.5rem !important;
+    }
+
+    &:before {
+      content: counter(step);
+      display: inline-block;
+      position: absolute;
+      margin-top: 1px;
+      margin-left: calc(-1 * var(--#{$prefix}steps-padding) - var(--#{$prefix}steps-item-size) / 2);
+      width: var(--#{$prefix}steps-item-size);
+      height: var(--#{$prefix}steps-item-size);
+      text-align: center;
+      color: var(--#{$prefix}body-color);
+      border: 1px solid var(--#{$prefix}border-color);
+      background: var(--#{$prefix}bg-surface);
+      border-radius: var(--#{$prefix}border-radius);
+      line-height: calc(var(--#{$prefix}steps-item-size) - 2px);
+      font-size: var(--#{$prefix}font-size-h4);
+      font-weight: var(--#{$prefix}font-weight-bold);
+    }
+  }
+
+  >:last-child {
+    margin-bottom: 0;
+  }
+}
+
+
+.callout {
+  margin-bottom: 1.5rem;
+  border: 1px solid var(--#{$prefix}primary-200);
+  border-radius: var(--#{$prefix}border-radius);
+  padding: .5rem 1rem;
+  background: var(--#{$prefix}primary-lt);
+
+  &>:last-child {
+    margin-bottom: 0;
+  }
+}
