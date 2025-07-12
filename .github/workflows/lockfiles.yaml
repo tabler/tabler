@@ -13,10 +13,9 @@ jobs:
     steps:
       - name: Clone Tabler
         uses: actions/checkout@v4
-
       - name: Prevent lock file change
         uses: xalvarez/prevent-file-change-action@v2
         with:
           githubToken: ${{ secrets.GITHUB_TOKEN }}
-          pattern: Gemfile.lock|pnpm-lock.json
-          trustedAuthors: codecalm, dependabot
+          pattern: Gemfile.lock|pnpm-lock.json|pnpm-lock.yaml
+          trustedAuthors: codecalm, BG-Software-BG, dependabot
