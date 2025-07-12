@@ -1,5 +1,5 @@
 ---
-"@tabler/core": patch
+"@tabler/core": minor
 ---
 
 Enhance button and hover animations
