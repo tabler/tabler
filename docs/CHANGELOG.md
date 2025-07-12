@@ -1,5 +1,25 @@
 # Tabler Documentation Changelog
 
+## 1.4.0
+
+### Patch Changes
+
+- 6c38a48: Update Bootstrap to v5.3.7
+- 6c47b5f: Change `package.json` to `core/libs.json` as a source of libraries
+- 70a41e4: Replace a package list in `download.md` with a link to the 3rd-party libraries page
+- Updated dependencies [6c4dd36]
+- Updated dependencies [6fec73a]
+- Updated dependencies [9951fe9]
+- Updated dependencies [db6200a]
+- Updated dependencies [e96f055]
+- Updated dependencies [a200d30]
+- Updated dependencies [6c38a48]
+- Updated dependencies [2a12f72]
+- Updated dependencies [49ab9ea]
+- Updated dependencies [666a296]
+- Updated dependencies [cfd4cb6]
+  - @tabler/core@1.4.0
+
 ## 1.3.0
 
 ### Patch Changes
