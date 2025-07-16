@@ -13,12 +13,6 @@ signaturePad.fromDataURL("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3
 
 
 {% capture advanced-js %}
-function randomColor() {
-  const r = Math.round(Math.random() * 255);
-  const g = Math.round(Math.random() * 255);
-  const b = Math.round(Math.random() * 255);
-  return `rgb(${r},${g},${b})`;
-}
 
 function download(dataURL, filename) {
   const blob = dataURLToBlob(dataURL);
@@ -49,9 +43,8 @@ function dataURLToBlob(dataURL) {
   return new Blob([uInt8Array], { type: contentType });
 }
 
-
-document.querySelector("#signature-advanced-color").addEventListener("click", function () {
-  signaturePad.penColor = randomColor();
+document.querySelector("#signature-advanced-color").addEventListener("input", function (e) {
+  signaturePad.penColor = e.target.value;
 });
 
 document.querySelector("#signature-advanced-svg").addEventListener("click", function () {
@@ -112,7 +105,7 @@ document.querySelector("#signature-advanced-png").addEventListener("click", func
 					<div class="mt-4">
 						<div class="row">
 							<div class="col">
-								<button href="" class="btn w-100" id="signature-advanced-color">Change color</button>
+                <input href="" type="color" id="signature-advanced-color" class="w-100 form-control form-control-color" />
 							</div>
 							<div class="col">
 								<button href="" class="btn w-100" id="signature-advanced-svg">Download SVG</button>
