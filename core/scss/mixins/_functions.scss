@@ -1,4 +1,4 @@
-@use "sass:color";
+@use "sass:math";
 
 @function theme-color-lighter($color, $background: #fff) {
   @return mix($color, $background, 10%);
@@ -72,7 +72,7 @@
  * @return {String} - The percentage representation of the value.
  */
 @function to-percentage($value) {
-  @return if(unitless($value), percentage($value), $value);
+  @return if(math.is-unitless($value), math.percentage($value), $value);
 }
 
 /**
@@ -95,9 +95,4 @@
   $svg: str-replace($svg, '<svg', '<svg xmlns="http://www.w3.org/2000/svg"');
 
   @return url('data:image/svg+xml;charset=UTF-8,#{$svg}');
-}
-
-
-@function to-rgb($value) {
-  @return color.red($value), color.green($value), color.blue($value);
 }
