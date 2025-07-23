@@ -1,5 +1,11 @@
 # @tabler/core
 
+## 1.5.0
+
+### Patch Changes
+
+- b8b63d7: Fix mixed declarations in SCSS
+
 ## 1.4.0
 
 ### Minor Changes

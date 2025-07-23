@@ -1,5 +1,19 @@
 # @tabler/preview
 
+## 1.5.0
+
+### Minor Changes
+
+- ad22d04: Add a color palette in the signing component
+
+### Patch Changes
+
+- 399a5c5: Update icons to v3.34.1 (75 new icons)
+- 8947d7c: Update activity messages
+- bd35fd3: Fix responsive layputs in 'Form Elements' page
+- Updated dependencies [b8b63d7]
+  - @tabler/core@1.5.0
+
 ## 1.4.0
 
 ### Patch Changes
