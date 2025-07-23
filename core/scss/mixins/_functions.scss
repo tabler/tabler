@@ -1,26 +1,46 @@
 @use "sass:math";
 
+/**
+ * Creates a lighter version of a theme color by mixing it with a background color
+ * 
+ * @param {Color} $color - The base color to lighten
+ * @param {Color} $background - The background color to mix with (default: #fff)
+ * @return {Color} - The lighter version of the color (10% mix)
+ * 
+ * @example
+ *   theme-color-lighter(#007bff) // Returns lighter blue
+ *   theme-color-lighter(#dc3545, #f8f9fa) // Returns lighter red mixed with light gray
+ */
 @function theme-color-lighter($color, $background: #fff) {
   @return mix($color, $background, 10%);
 }
 
+/**
+ * Creates a darker version of a theme color by shading it
+ * 
+ * @param {Color} $color - The base color to darken
+ * @return {Color} - The darker version of the color (10% shade)
+ * 
+ * @example
+ *   theme-color-darker(#007bff) // Returns darker blue
+ *   theme-color-darker(#28a745) // Returns darker green
+ */
 @function theme-color-darker($color) {
   @return shade-color($color, 10%);
 }
 
-//
-// Replace all occurrences of a substring within a string.
-//
-@function str-replace($string, $search, $replace: "") {
-  $index: str-index($string, $search);
-
-  @if $index {
-    @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
-  }
-
-  @return $string;
-}
-
+/**
+ * Media query mixin for breakpoints smaller than the specified breakpoint
+ * 
+ * @param {String} $name - The breakpoint name to target
+ * @param {Map} $breakpoints - The breakpoints map (default: $grid-breakpoints)
+ * @content - The CSS content to apply within the media query
+ * 
+ * @example
+ *   @include media-breakpoint-down-than(lg) {
+ *     .container { max-width: 100%; }
+ *   }
+ */
 @mixin media-breakpoint-down-than($name, $breakpoints: $grid-breakpoints) {
   $prev: breakpoint-prev($name);
 
@@ -39,6 +59,19 @@
   }
 }
 
+/**
+ * Gets the previous breakpoint name in the breakpoints map
+ * 
+ * @param {String} $name - The current breakpoint name
+ * @param {Map} $breakpoints - The breakpoints map (default: $grid-breakpoints)
+ * @param {List} $breakpoint-names - List of breakpoint names (default: map-keys($breakpoints))
+ * @return {String|null} - The previous breakpoint name or null if none exists
+ * 
+ * @example
+ *   breakpoint-prev(lg) // Returns: md
+ *   breakpoint-prev(sm) // Returns: xs
+ *   breakpoint-prev(xs) // Returns: null
+ */
 @function breakpoint-prev($name, $breakpoints: $grid-breakpoints, $breakpoint-names: map-keys($breakpoints)) {
   $n: index($breakpoint-names, $name);
   @if not $n {
@@ -47,9 +80,15 @@
   @return if($n > 1, nth($breakpoint-names, $n - 1), null);
 }
 
-//
-// Escape SVG strings.
-//
+/**
+ * Escapes special characters in SVG strings for use in CSS
+ * 
+ * @param {String} $string - The SVG string to escape
+ * @return {String} - The escaped SVG string
+ * 
+ * @example
+ *   escape-svg("data:image/svg+xml,<svg>...</svg>") // Returns escaped SVG
+ */
 @function escape-svg($string) {
   @if str-index($string, "data:image/svg+xml") {
     @each $char, $encoded in $escaped-characters {
@@ -70,6 +109,10 @@
  *
  * @param {Number} $value - The value to be converted to a percentage.
  * @return {String} - The percentage representation of the value.
+ * 
+ * @example
+ *   to-percentage(0.5) // Returns: 50%
+ *   to-percentage(0.25) // Returns: 25%
  */
 @function to-percentage($value) {
   @return if(math.is-unitless($value), math.percentage($value), $value);
@@ -80,7 +123,12 @@
  *
  * @param {Color} $color - The base color to be made transparent.
  * @param {Number} $alpha - The level of transparency, ranging from 0 (fully transparent) to 1 (fully opaque). Default is 1.
+ * @param {Color} $background - The background color to mix with (default: transparent)
  * @return {Color} - The resulting color with the specified transparency.
+ * 
+ * @example
+ *   color-transparent(#007bff, 0.5) // Returns semi-transparent blue
+ *   color-transparent(#dc3545, 0.8) // Returns mostly opaque red
  */
 @function color-transparent($color, $alpha: 1, $background: transparent) {
   @if $alpha == 1 {
@@ -90,6 +138,15 @@
   }
 }
 
+/**
+ * Converts an SVG string to a data URL format for use in CSS
+ * 
+ * @param {String} $svg - The SVG markup to convert
+ * @return {String} - The data URL formatted SVG
+ * 
+ * @example
+ *   url-svg('<svg>...</svg>') // Returns: url('data:image/svg+xml;charset=UTF-8,...')
+ */
 @function url-svg($svg) {
   $svg: str-replace($svg, '#', '%23');
   $svg: str-replace($svg, '<svg', '<svg xmlns="http://www.w3.org/2000/svg"');

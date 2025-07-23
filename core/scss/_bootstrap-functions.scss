@@ -1,6 +1,258 @@
-
 @use "sass:color";
+@use "sass:map";
+@use "sass:math";
+@use "sass:meta";
+@use "sass:string";
+@use "sass:list";
 
+/**
+ * Converts a color value to RGB format
+ * 
+ * @param {Color} $value - The color value to convert
+ * @return {List} - RGB values as a list (red, green, blue)
+ * 
+ * @example
+ *   to-rgb(#ff0000) // Returns: (255, 0, 0)
+ */
 @function to-rgb($value) {
-  @return color.red($value), color.green($value), color.blue($value);
+  @return color.channel($value, "red", $space: rgb), color.channel($value, "green", $space: rgb), color.channel($value, "blue", $space: rgb);
+}
+
+/**
+ * Creates an opaque color by mixing a foreground color with a background color
+ * 
+ * @param {Color} $background - The background color
+ * @param {Color} $foreground - The foreground color to make opaque
+ * @return {Color} - The resulting opaque color
+ * 
+ * @example
+ *   opaque(#ffffff, rgba(255, 0, 0, 0.5)) // Returns solid red color
+ */
+@function opaque($background, $foreground) {
+  @return color.mix(rgba($foreground, 1), $background, opacity($foreground) * 100%);
+}
+
+/**
+ * Adjusts a color channel value for luminance calculation
+ * 
+ * @param {Number} $channel - The color channel value (0-1)
+ * @return {Number} - The adjusted channel value
+ * 
+ * @example
+ *   adjust(0.5) // Returns adjusted value for luminance calculation
+ */
+@function adjust($channel) {
+  @return if($channel < 0.03928, math.div($channel, 12.92), pow(($channel + 0.055) / 1.055, 2.4));
+}
+
+/**
+ * Calculates the relative luminance of a color using WCAG formula
+ * 
+ * @param {Color} $color - The color to calculate luminance for
+ * @return {Number} - The luminance value (0-1)
+ * 
+ * @example
+ *   luminance(#ffffff) // Returns: 1
+ *   luminance(#000000) // Returns: 0
+ */
+@function luminance($color) {
+  $r: math.div(color.channel($color, "red", $space: rgb), 255);
+  $g: math.div(color.channel($color, "green", $space: rgb), 255);
+  $b: math.div(color.channel($color, "blue", $space: rgb), 255);
+
+  $r: adjust($r);
+  $g: adjust($g);
+  $b: adjust($b);
+
+  @return 0.2126 * $r + 0.7152 * $g + 0.0722 * $b;
+}
+
+/**
+ * Determines the best contrasting color for a given background
+ * 
+ * @param {Color} $background - The background color
+ * @param {Color} $light - The light color option (default: #ffffff)
+ * @param {Color} $dark - The dark color option (default: #000000)
+ * @return {Color} - The contrasting color (light or dark)
+ * 
+ * @example
+ *   color-contrast(#000000) // Returns: #ffffff
+ *   color-contrast(#ffffff) // Returns: #000000
+ */
+@function color-contrast($background, $light: #ffffff, $dark: #000000) {
+  // Get relative luminance using WCAG formula
+
+  $bg-luminance: luminance($background);
+
+  // If background is dark, return light color, otherwise dark
+  @return if($bg-luminance > 0.179, $dark, $light);
+}
+
+/**
+ * Adds two values together, handling different data types
+ * 
+ * @param {*} $value1 - First value to add
+ * @param {*} $value2 - Second value to add
+ * @param {Boolean} $return-calc - Whether to return calc() function (default: true)
+ * @return {*} - The result of addition or calc() expression
+ * 
+ * @example
+ *   add(10px, 5px) // Returns: 15px
+ *   add(10px, 5px, false) // Returns: 10px + 5px
+ */
+@function add($value1, $value2, $return-calc: true) {
+  @if $value1 == null {
+    @return $value2;
+  }
+
+  @if $value2 == null {
+    @return $value1;
+  }
+
+  @if meta.type-of($value1) == number and meta.type-of($value2) == number and math.compatible($value1, $value2) {
+    @return $value1 + $value2;
+  }
+
+  @return if($return-calc == true, calc(#{$value1} + #{$value2}), $value1 + string.unquote(" + ") + $value2);
+}
+
+/**
+ * Subtracts the second value from the first value
+ * 
+ * @param {*} $value1 - The value to subtract from
+ * @param {*} $value2 - The value to subtract
+ * @param {Boolean} $return-calc - Whether to return calc() function (default: true)
+ * @return {*} - The result of subtraction or calc() expression
+ * 
+ * @example
+ *   subtract(10px, 5px) // Returns: 5px
+ *   subtract(10px, 5px, false) // Returns: 10px - 5px
+ */
+@function subtract($value1, $value2, $return-calc: true) {
+  @if $value1 == null and $value2 == null {
+    @return null;
+  }
+
+  @if $value1 == null {
+    @return -$value2;
+  }
+
+  @if $value2 == null {
+    @return $value1;
+  }
+
+  @if meta.type-of($value1) == number and meta.type-of($value2) == number and math.compatible($value1, $value2) {
+    @return $value1 - $value2;
+  }
+
+  @if meta.type-of($value2) != number {
+    $value2: string.unquote("(") + $value2 + string.unquote(")");
+  }
+
+  @return if($return-calc == true, calc(#{$value1} - #{$value2}), $value1 + unquote(" - ") + $value2);
+}
+
+/**
+ * Divides the dividend by the divisor with specified precision
+ * 
+ * @param {Number} $dividend - The number to be divided
+ * @param {Number} $divisor - The number to divide by
+ * @param {Number} $precision - The number of decimal places (default: 10)
+ * @return {Number} - The result of division
+ * 
+ * @example
+ *   divide(10, 2) // Returns: 5
+ *   divide(10px, 2) // Returns: 5px
+ *   divide(10, 3) // Returns: 3.3333333333
+ */
+@function divide($dividend, $divisor, $precision: 10) {
+  $sign: if($dividend > 0 and $divisor > 0 or $dividend < 0 and $divisor < 0, 1, -1);
+  $dividend: abs($dividend);
+  $divisor: abs($divisor);
+  @if $dividend == 0 {
+    @return 0;
+  }
+  @if $divisor == 0 {
+    @error "Cannot divide by 0";
+  }
+  $remainder: $dividend;
+  $result: 0;
+  $factor: 10;
+  @while ($remainder > 0 and $precision >= 0) {
+    $quotient: 0;
+    @while ($remainder >= $divisor) {
+      $remainder: $remainder - $divisor;
+      $quotient: $quotient + 1;
+    }
+    $result: $result * 10 + $quotient;
+    $factor: $factor * 0.1;
+    $remainder: $remainder * 10;
+    $precision: $precision - 1;
+    @if ($precision < 0 and $remainder >= $divisor * 5) {
+      $result: $result + 1;
+    }
+  }
+  $result: $result * $factor * $sign;
+  $dividend-unit: math.unit($dividend);
+  $divisor-unit: math.unit($divisor);
+  $unit-map: (
+    "px": 1px,
+    "rem": 1rem,
+    "em": 1em,
+    "%": 1%,
+  );
+  @if ($dividend-unit != $divisor-unit and map.has-key($unit-map, $dividend-unit)) {
+    $result: $result * map.get($unit-map, $dividend-unit);
+  }
+  @return $result;
+}
+
+/**
+ * Replaces all occurrences of a search string with a replace string
+ * 
+ * @param {String} $string - The string to search in
+ * @param {String} $search - The string to search for
+ * @param {String} $replace - The string to replace with (default: "")
+ * @return {String} - The string with replacements made
+ * 
+ * @example
+ *   str-replace("hello world", "world", "universe") // Returns: "hello universe"
+ *   str-replace("hello world", "o") // Returns: "hell wrld"
+ */
+@function str-replace($string, $search, $replace: "") {
+  $index: string.index($string, $search);
+
+  @if $index {
+    @return string.slice($string, 1, $index - 1) + $replace + str-replace(string.slice($string, $index + string.length($search)), $search, $replace);
+  }
+
+  @return $string;
+}
+
+/**
+ * Applies a function to each key-value pair in a map
+ * 
+ * @param {Map} $map - The map to iterate over
+ * @param {String} $func - The name of the function to apply
+ * @param {*} $args... - Additional arguments to pass to the function
+ * @return {Map} - A new map with the function applied to each value
+ * 
+ * @example
+ *   $colors: (primary: #007bff, secondary: #6c757d);
+ *   map-loop($colors, darken, 10%) // Returns map with darkened colors
+ */
+@function map-loop($map, $func, $args...) {
+  $_map: ();
+
+  @each $key, $value in $map {
+    // allow to pass the $key and $value of the map as an function argument
+    $_args: ();
+    @each $arg in $args {
+      $_args: list.append($_args, if($arg == "$key", $key, if($arg == "$value", $value, $arg)));
+    }
+
+    $_map: map.merge($_map, ($key: meta.call(meta.get-function($func), $_args...)));
+  }
+
+  @return $_map;
 }
