@@ -9,7 +9,10 @@ export default context => {
 			autoprefixer: {
 				cascade: false
 			},
-			rtlcss: context.env === 'RTL'
+			rtlcss: context.env === 'RTL',
+			'postcss-discard-comments': {
+				removeAll: true
+			},
 		}
 	}
 }
