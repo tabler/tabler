@@ -1,3 +1,5 @@
+@use "sass:color";
+
 @function theme-color-lighter($color, $background: #fff) {
   @return mix($color, $background, 10%);
 }
@@ -93,4 +95,9 @@
   $svg: str-replace($svg, '<svg', '<svg xmlns="http://www.w3.org/2000/svg"');
 
   @return url('data:image/svg+xml;charset=UTF-8,#{$svg}');
+}
+
+
+@function to-rgb($value) {
+  @return color.red($value), color.green($value), color.blue($value);
 }
