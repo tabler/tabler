@@ -1,0 +1,34 @@
+﻿version: '3.8'
+services:
+  tabler-dev:
+    build:
+      context: .
+      dockerfile: Dockerfile.enhanced
+      target: development
+    container_name: tabler-dev
+    ports:
+      - "3000:3000"
+      - "3001:3001"  
+      - "3010:3010"
+    volumes:
+      - ./src:/app/src:ro
+      - ./core:/app/core
+      - ./preview:/app/preview
+      - ./docs:/app/docs
+      - ./shared:/app/shared
+      - /app/node_modules
+      - /app/core/node_modules
+      - /app/preview/node_modules
+      - /app/docs/node_modules
+    environment:
+      - NODE_ENV=development
+      - CHOKIDAR_USEPOLLING=true
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
+    networks:
+      - tabler-network
+
+networks:
+  tabler-network:
+    driver: bridge

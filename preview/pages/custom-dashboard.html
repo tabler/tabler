@@ -1,0 +1,366 @@
+---
+title: Custom Dashboard
+page-header: Custom Dashboard with Data
+---
+
+<div class="page-wrapper">
+  <!-- Page header -->
+  <div class="page-header d-print-none">
+    <div class="container-xl">
+      <div class="row g-2 align-items-center">
+        <div class="col">
+          <h2 class="page-title">
+            {{ page-header }}
+          </h2>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Page body -->
+  <div class="page-body">
+    <div class="container-xl">
+      
+      <!-- Stats Cards Row -->
+      <div class="row row-deck row-cards">
+        <div class="col-sm-6 col-lg-3">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex align-items-center">
+                <div class="subheader">Total Leads</div>
+              </div>
+              <div class="h1 mb-3" id="totalLeads">-</div>
+              <div class="d-flex mb-2">
+                <div class="flex-fill">
+                  <div class="progress progress-sm">
+                    <div class="progress-bar bg-primary" style="width: 75%" role="progressbar"></div>
+                  </div>
+                </div>
+                <div class="ms-2">
+                  <span class="text-green d-inline-flex align-items-center lh-1">
+                    Active <svg xmlns="http://www.w3.org/2000/svg" class="icon ms-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path stroke="none" d="m0 0h24v24H0z" fill="none"/><path d="m3 17 6 -6 4 4 8 -8"/><path d="m14 7 7 0 0 7"/></svg>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        <div class="col-sm-6 col-lg-3">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex align-items-center">
+                <div class="subheader">Hot Leads</div>
+              </div>
+              <div class="h1 mb-3" id="hotLeads">-</div>
+              <div class="d-flex mb-2">
+                <div class="flex-fill">
+                  <div class="progress progress-sm">
+                    <div class="progress-bar bg-success" style="width: 60%" role="progressbar"></div>
+                  </div>
+                </div>
+                <div class="ms-2">
+                  <span class="text-green d-inline-flex align-items-center lh-1">
+                    High Priority <svg xmlns="http://www.w3.org/2000/svg" class="icon ms-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path stroke="none" d="m0 0h24v24H0z" fill="none"/><path d="m3 17 6 -6 4 4 8 -8"/><path d="m14 7 7 0 0 7"/></svg>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-3">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex align-items-center">
+                <div class="subheader">Warm Leads</div>
+              </div>
+              <div class="h1 mb-3" id="warmLeads">-</div>
+              <div class="d-flex mb-2">
+                <div class="flex-fill">
+                  <div class="progress progress-sm">
+                    <div class="progress-bar bg-warning" style="width: 45%" role="progressbar"></div>
+                  </div>
+                </div>
+                <div class="ms-2">
+                  <span class="text-yellow d-inline-flex align-items-center lh-1">
+                    Medium Priority
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-sm-6 col-lg-3">
+          <div class="card">
+            <div class="card-body">
+              <div class="d-flex align-items-center">
+                <div class="subheader">Total Value</div>
+              </div>
+              <div class="h1 mb-3" id="totalValue">-</div>
+              <div class="d-flex mb-2">
+                <div class="flex-fill">
+                  <div class="progress progress-sm">
+                    <div class="progress-bar bg-info" style="width: 85%" role="progressbar"></div>
+                  </div>
+                </div>
+                <div class="ms-2">
+                  <span class="text-green d-inline-flex align-items-center lh-1">
+                    Potential Revenue <svg xmlns="http://www.w3.org/2000/svg" class="icon ms-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none"><path stroke="none" d="m0 0h24v24H0z" fill="none"/><path d="m3 17 6 -6 4 4 8 -8"/><path d="m14 7 7 0 0 7"/></svg>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Leads Data Table Row -->
+      <div class="row row-cards mt-4">
+        <div class="col-12">
+          <div class="card">
+            <div class="card-header">
+              <h3 class="card-title">Leads Dashboard (leads123 data)</h3>
+              <div class="card-actions">
+                <button class="btn btn-primary" onclick="loadLeadsData()">Refresh Data</button>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <table class="table table-vcenter card-table" id="leadsTable">
+                <thead>
+                  <tr>
+                    <th>Lead ID</th>
+                    <th>Contact</th>
+                    <th>Company</th>
+                    <th>Value</th>
+                    <th>Status</th>
+                    <th>Source</th>
+                    <th>Last Contact</th>
+                  </tr>
+                </thead>
+                <tbody id="leadsTableBody">
+                  <!-- Dynamic content will be loaded here -->
+                  <tr>
+                    <td colspan="7" class="text-center">
+                      <div class="spinner-border spinner-border-sm me-2" role="status"></div>
+                      Loading leads data...
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Charts Row -->
+      <div class="row row-cards mt-4">
+        <div class="col-lg-6">
+          <div class="card">
+            <div class="card-body">
+              <h3 class="card-title">Sales Chart</h3>
+              <div id="chart-sales"></div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-6">
+          <div class="card">
+            <div class="card-body">
+              <h3 class="card-title">Traffic Sources</h3>
+              <div id="chart-traffic"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+// Global variable to store leads data
+let leadsData = [];
+
+// Function to load leads data from JSON file
+async function loadLeadsData() {
+  try {
+    const response = await fetch('/data/leads123.json');
+    if (!response.ok) {
+      throw new Error('Failed to load leads data');
+    }
+    leadsData = await response.json();
+    updateDashboard();
+  } catch (error) {
+    console.error('Error loading leads data:', error);
+    document.getElementById('leadsTableBody').innerHTML = `
+      <tr>
+        <td colspan="7" class="text-center text-danger">
+          Error loading leads data. Please check the file path and try again.
+        </td>
+      </tr>
+    `;
+  }
+}
+
+// Function to update dashboard with leads data
+function updateDashboard() {
+  updateStatistics();
+  updateLeadsTable();
+  updateCharts();
+}
+
+// Function to update statistics cards
+function updateStatistics() {
+  const totalLeads = leadsData.length;
+  const newLeads = leadsData.filter(lead => lead.status === 'NEW').length;
+  const attemptLeads = leadsData.filter(lead => lead.status === 'ATTEMPT').length;
+  const contactedLeads = leadsData.filter(lead => lead.status === 'CONTACTED').length;
+  const customerLeads = leadsData.filter(lead => lead.status === 'CUSTOMER').length;
+  
+  // Update the statistics
+  document.getElementById('totalLeads').textContent = totalLeads;
+  document.getElementById('hotLeads').textContent = newLeads + ' New';
+  document.getElementById('warmLeads').textContent = contactedLeads + ' Contacted';
+  document.getElementById('totalValue').textContent = customerLeads + ' Customers';
+}
+
+// Function to get status badge color
+function getStatusBadge(status) {
+  switch(status) {
+    case 'NEW': return 'bg-primary';
+    case 'CONTACTED': return 'bg-success';
+    case 'ATTEMPT': return 'bg-warning';
+    case 'OPTIONS SENT': return 'bg-info';
+    case 'CUSTOMER': return 'bg-success';
+    case 'UNSUCCESSFUL': return 'bg-danger';
+    case 'Junk Lead': return 'bg-secondary';
+    case 'IDLE': return 'bg-light';
+    default: return 'bg-secondary';
+  }
+}
+
+// Function to get avatar initials
+function getInitials(name) {
+  if (!name) return '??';
+  const names = name.split(' ');
+  if (names.length >= 2) {
+    return names[0].charAt(0) + names[1].charAt(0);
+  }
+  return name.charAt(0) + (name.charAt(1) || '');
+}
+
+// Function to update leads table
+function updateLeadsTable() {
+  const tableBody = document.getElementById('leadsTableBody');
+  
+  if (leadsData.length === 0) {
+    tableBody.innerHTML = `
+      <tr>
+        <td colspan="7" class="text-center">No leads data available</td>
+      </tr>
+    `;
+    return;
+  }
+
+  // Display first 20 leads for better performance
+  const displayData = leadsData.slice(0, 20);
+  
+  const rows = displayData.map(lead => `
+    <tr>
+      <td class="text-muted">#${lead.id}</td>
+      <td>
+        <div class="d-flex py-1 align-items-center">
+          <span class="avatar me-2 avatar-sm" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white;">
+            ${getInitials(lead.name)}
+          </span>
+          <div class="flex-fill">
+            <div class="font-weight-medium">${lead.name || 'N/A'}</div>
+            <div class="text-muted">${lead.responsible || 'Unassigned'}</div>
+          </div>
+        </div>
+      </td>
+      <td>${lead.source || 'N/A'}</td>
+      <td>-</td>
+      <td>
+        <span class="badge ${getStatusBadge(lead.status)} me-1"></span>
+        ${lead.status}
+      </td>
+      <td>${lead.source || 'N/A'}</td>
+      <td class="text-muted">${lead.lastContact || 'N/A'}</td>
+    </tr>
+  `).join('');
+
+  tableBody.innerHTML = rows;
+}
+
+// Function to update charts with leads data
+function updateCharts() {
+  // Count leads by status for pie chart
+  const statusCounts = {};
+  leadsData.forEach(lead => {
+    statusCounts[lead.status] = (statusCounts[lead.status] || 0) + 1;
+  });
+
+  // Count leads by source for source chart
+  const sourceCounts = {};
+  leadsData.forEach(lead => {
+    const source = lead.source || 'Unknown';
+    sourceCounts[source] = (sourceCounts[source] || 0) + 1;
+  });
+
+  // Update Status Distribution Chart
+  if (window.ApexCharts && document.getElementById('chart-sales')) {
+    new ApexCharts(document.getElementById('chart-sales'), {
+      chart: {
+        type: "donut",
+        fontFamily: 'inherit',
+        height: 240,
+      },
+      fill: {
+        opacity: 1,
+      },
+      series: Object.values(statusCounts),
+      labels: Object.keys(statusCounts),
+      colors: [tabler.getColor("primary"), tabler.getColor("success"), tabler.getColor("warning"), tabler.getColor("danger"), tabler.getColor("info")],
+      legend: {
+        position: 'bottom',
+      },
+      title: {
+        text: 'Lead Status Distribution'
+      }
+    }).render();
+  }
+
+  // Update Lead Sources Chart
+  if (window.ApexCharts && document.getElementById('chart-traffic')) {
+    const topSources = Object.entries(sourceCounts)
+      .sort(([,a], [,b]) => b - a)
+      .slice(0, 5);
+    
+    new ApexCharts(document.getElementById('chart-traffic'), {
+      chart: {
+        type: "bar",
+        fontFamily: 'inherit',
+        height: 240,
+      },
+      series: [{
+        name: 'Leads',
+        data: topSources.map(([,count]) => count)
+      }],
+      xaxis: {
+        categories: topSources.map(([source,]) => source)
+      },
+      colors: [tabler.getColor("primary")],
+      title: {
+        text: 'Top Lead Sources'
+      }
+    }).render();
+  }
+}
+
+// Load data when page loads
+document.addEventListener("DOMContentLoaded", function () {
+  loadLeadsData();
+});
+</script>
