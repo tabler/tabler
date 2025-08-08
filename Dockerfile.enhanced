@@ -1,0 +1,22 @@
+﻿FROM node:20-alpine AS base
+RUN npm install -g pnpm@10.12.4
+WORKDIR /app
+RUN apk add --no-cache python3 make g++ libc6-compat
+
+FROM base AS deps
+COPY package.json pnpm-lock.yaml pnpm-workspace.yaml ./
+COPY turbo.json ./
+COPY core/package.json ./core/
+COPY preview/package.json ./preview/
+COPY docs/package.json ./docs/
+RUN pnpm install --frozen-lockfile --prefer-offline
+
+FROM base AS development
+COPY --from=deps /app/node_modules ./node_modules
+COPY --from=deps /app/core/node_modules ./core/node_modules
+COPY --from=deps /app/preview/node_modules ./preview/node_modules
+COPY --from=deps /app/docs/node_modules ./docs/node_modules
+COPY . .
+EXPOSE 3000 3001 3010
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 CMD wget --no-verbose --tries=1 --spider http://localhost:3000 || exit 1
+CMD ["pnpm", "run", "dev"]
