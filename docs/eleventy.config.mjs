@@ -1,5 +1,6 @@
 import { appFilters } from "../shared/e11ty/filters.mjs"
 import { appData } from "../shared/e11ty/data.mjs";
+import { appConfig } from "../shared/e11ty/config.mjs";
 import { readFileSync, existsSync } from 'node:fs';
 import { fileURLToPath } from 'node:url'
 import { join, dirname } from 'node:path';
@@ -13,6 +14,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 export default function (eleventyConfig) {
 	const environment = process.env.NODE_ENV || "production";
 
+	appConfig(eleventyConfig);
 	appFilters(eleventyConfig);
 	appData(eleventyConfig);
 
@@ -29,11 +31,6 @@ export default function (eleventyConfig) {
 	});
 
 	eleventyConfig.setInputDirectory("content");
-	eleventyConfig.setOutputDirectory("dist");
-
-	eleventyConfig.setLayoutsDirectory("../../shared/layouts");
-	eleventyConfig.setIncludesDirectory("../../shared/includes");
-	eleventyConfig.setDataDirectory("../../shared/data");
 
 	eleventyConfig.amendLibrary('md', () => { });
 

@@ -1,21 +1,5 @@
 export function appFilters(eleventyConfig) {
 	/**
-	 * Server
-	 */
-	if (process.env.ELEVENTY_RUN_MODE === "serve") {
-		eleventyConfig.setServerPassthroughCopyBehavior("passthrough");
-	} 
-
-	eleventyConfig.setLiquidOptions({
-		timezoneOffset: 0,
-		jekyllInclude: true,
-		dynamicPartials: true,
-		jekyllWhere: true,
-	});
-
-	eleventyConfig.setServerPassthroughCopyBehavior("passthrough");
-
-	/**
 	 * Filters
 	 */
 	eleventyConfig.addFilter("miliseconds_to_minutes", function (value) {

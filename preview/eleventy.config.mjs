@@ -4,20 +4,18 @@ import { join } from 'node:path';
 import { sync } from 'glob';
 import { appFilters } from "../shared/e11ty/filters.mjs";
 import { appData } from "../shared/e11ty/data.mjs"
+import { appConfig } from "../shared/e11ty/config.mjs"
 
 /** @type {import('@11ty/eleventy').LocalConfig} */
 export default function (eleventyConfig) {
 	const environment = process.env.NODE_ENV || "production";
+	const currentDir = process.cwd();
 
+	appConfig(eleventyConfig);
 	appFilters(eleventyConfig);
 	appData(eleventyConfig);
 
-	eleventyConfig.setInputDirectory("pages");
-	eleventyConfig.setOutputDirectory("dist");
-
-	eleventyConfig.setLayoutsDirectory("../../shared/layouts");
-	eleventyConfig.setIncludesDirectory("../../shared/includes");
-	eleventyConfig.setDataDirectory("../../shared/data");
+	eleventyConfig.setInputDirectory(join(currentDir, "pages"));
 
 	eleventyConfig.addPassthroughCopy({
 		"node_modules/@tabler/core/dist": "dist",
