@@ -119,7 +119,7 @@ export function appFilters(eleventyConfig) {
 	eleventyConfig.addFilter("random_number", randomNumber);
 
 	eleventyConfig.addFilter("first_letters", function capitalizeFirstLetter(string) {
-		return string.split(' ').map(word => word.charAt(0)).join('');
+		return (string || '').split(' ').map(word => word.charAt(0)).join('');
 	})
 
 	eleventyConfig.addFilter("uc_first", function capitalizeFirstLetter(string) {
@@ -131,7 +131,11 @@ export function appFilters(eleventyConfig) {
 			return Object.keys(elem).length;
 		}
 
-		return elem.length;
+		if (elem) {
+			return elem.length;
+		}
+
+		return 0;
 	})
 
 	eleventyConfig.addFilter("first", function (elem) {
@@ -139,7 +143,7 @@ export function appFilters(eleventyConfig) {
 			return elem[Object.keys(elem)[0]];
 		}
 
-		return elem[0];
+		return elem ? elem[0] : null;
 	})
 
 	// Convert a URL path to an absolute URL
