@@ -1,9 +1,6 @@
-import { join } from 'node:path';
-
 export function appConfig(eleventyConfig) {
-	const currentDir = process.cwd();
-
-	eleventyConfig.setOutputDirectory(join(currentDir, "dist"));
+	eleventyConfig.setOutputDirectory("dist");
+	eleventyConfig.setInputDirectory("pages");
 
 	eleventyConfig.setLayoutsDirectory("../../shared/layouts");
 	eleventyConfig.setIncludesDirectory("../../shared/includes");

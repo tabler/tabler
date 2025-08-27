@@ -15,8 +15,6 @@ export default function (eleventyConfig) {
 	appFilters(eleventyConfig);
 	appData(eleventyConfig);
 
-	eleventyConfig.setInputDirectory(join(currentDir, "pages"));
-
 	eleventyConfig.addPassthroughCopy({
 		"node_modules/@tabler/core/dist": "dist",
 		"pages/favicon.ico": "favicon.ico",
