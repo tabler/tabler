@@ -1,6 +1,6 @@
 ---
-description: Tabler Project Cursor Rules
-globs:
+description: Tabler Project HTML Elements Guidelines
+globs: ["**/*.html", "**/*.liquid", "**/*.md"]
 alwaysApply: true
 ---
 
@@ -76,3 +76,79 @@ All pages are statically generated to HTML using Eleventy (11ty). Keep this in m
 - Use semantic HTML elements
 - Ensure proper heading hierarchy
 - Add alt text for images
+
+### 5. Component Usage
+
+#### Cards
+
+- Use `card` class for main containers
+- Use `card-body` for content areas
+- Use `card-header` for card headers
+- Use `card-title` for card title
+
+#### Buttons
+
+- Use `btn` class for all buttons
+- Use `btn-primary` for primary actions
+- Use `btn-outline-secondary` for secondary actions
+- Use `btn-sm` for smaller buttons
+- Use `w-100` for full-width buttons
+
+#### Forms
+
+- Use `form-control` for input fields
+- Use `form-label` for labels
+- Use `form-check` for checkboxes/radio buttons
+- Use `form-select` for dropdowns
+
+#### Layout
+
+- Use Bootstrap grid system (`row`, `col-*`)
+- Use `container-xl` for main containers
+- Use `page-wrapper` for page structure
+- Use `page-body` for main content area
+
+### 6. Data Integration
+
+#### Using JSON Data
+
+```liquid
+{% for item in items %}
+  <div>{{ item.name }}</div>
+{% endfor %}
+```
+
+#### Conditional Rendering
+
+```liquid
+{% if condition %}
+  <div>Content</div>
+{% endif %}
+```
+
+#### Including Components
+
+```liquid
+{% include "ui/button.html" color="primary" text="Click me" %}
+```
+
+### 7. Best Practices
+
+#### Performance
+
+- Minimize nested loops
+- Use `limit` filters when iterating large datasets
+- Optimize images for web use
+
+#### Code Organization
+
+- Keep components modular and reusable
+- Use consistent naming conventions
+- Comment complex logic
+- Group related functionality together
+
+#### Error Handling
+
+- Always check if data exists before using it
+- Provide fallback content for missing data
+- Use `{% if %}` guards for optional content
