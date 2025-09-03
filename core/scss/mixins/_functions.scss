@@ -1,3 +1,4 @@
+@use "sass:math";
 @function theme-color-lighter($color, $background: #fff) {
   @return mix($color, $background, 10%);
 }
@@ -70,7 +71,7 @@
  * @return {String} - The percentage representation of the value.
  */
 @function to-percentage($value) {
-  @return if(unitless($value), percentage($value), $value);
+  @return if(math.is-unitless($value), math.percentage($value), $value);
 }
 
 /**

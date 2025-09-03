@@ -1,3 +1,5 @@
+@use "sass:string";
+@use "sass:math";
 $prefix: "tblr-" !default;
 
 // BASE CONFIG
@@ -23,8 +25,8 @@ $font-google-monospaced: null !default;
 $font-local: null !default;
 $font-icons: () !default;
 
-$font-family-sans-serif: unquote("#{if($font-local, "#{$font-local}, ", ' ')}#{if($font-google, "#{$font-google}, ", ' ')}") 'Inter Var', Inter, -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif !default;
-$font-family-monospace: unquote("#{if($font-google-monospaced, "#{$font-google-monospaced}, ", '')}") Monaco, Consolas, Liberation Mono, Courier New, monospace !default;
+$font-family-sans-serif: string.unquote("#{if($font-local, "#{$font-local}, ", ' ')}#{if($font-google, "#{$font-google}, ", ' ')}") 'Inter Var', Inter, -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif !default;
+$font-family-monospace: string.unquote("#{if($font-google-monospaced, "#{$font-google-monospaced}, ", '')}") Monaco, Consolas, Liberation Mono, Courier New, monospace !default;
 $font-family-serif: "Georgia", "Times New Roman", times, serif !default;
 $font-family-comic: "Comic Sans MS", "Comic Sans", "Chalkboard SE", "Comic Neue", sans-serif, cursive !default;
 
@@ -200,7 +202,7 @@ $border-color-translucent: rgba(4, 32, 69, 0.1);
 $border-dark-color: $gray-400 !default;
 $border-dark-color-translucent: rgba(4, 32, 69, 0.27);
 
-$border-active-color: mix($text-secondary, #ffffff, percentage($border-active-opacity)) !default;
+$border-active-color: mix($text-secondary, #ffffff, math.percentage($border-active-opacity)) !default;
 $border-active-color-translucent: rgba($text-secondary, $border-active-opacity) !default;
 
 $active-bg: rgba(var(--#{$prefix}primary-rgb), 0.04) !default;
