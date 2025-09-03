@@ -1,0 +1,106 @@
+---
+title: Pay
+page-header: Pay
+layout: pay
+permalink: pay.html
+page-libs: [tabler-payments, imask]
+---
+
+<div class="bg-dark bg-cover" style="background-image: url({{ page | relative }}/static/bg-cover.jpg)">
+	<div class="bg-dark bg-opacity-75 pt-5 bg-blur">
+		<div class="container container-tight bg-overlay">
+			<img src="{{ page | relative }}/static/bg-cover.jpg" alt="" class="img-fluid rounded-lg rounded-top">
+		</div>
+	</div>
+</div>
+
+<div class="container container-tight">
+
+   <div class="card rounded-top-0 border-top-0">
+      <div class="card-body pt-0">
+         <div class="mb-3 text-center">
+            {% include "ui/avatar.html" person-id=1 size="xl" rounded class="avatar-cover rounded-circle mb-3" %}
+            <div class="mb-4">
+               <h2 class="h2">Front-End Learning</h2>
+               <div class="text-secondary">Learn to build web apps with HTML & CSS. Get started quickly with included templates.
+               </div>
+            </div>
+         </div>
+			
+
+         <nav class="nav nav-segmented w-100 mb-4" role="tablist">
+				<button href="#tab-card" class="nav-link active" data-bs-toggle="tab" role="tab" aria-controls="tab-card"
+					aria-selected="true">
+					{% include "ui/icon.html" icon="credit-card" %}
+					<span>Pay With Card</span>
+				</button>
+				<button href="#tab-paypal" class="nav-link" data-bs-toggle="tab" role="tab" aria-controls="tab-paypal"
+					aria-selected="false">
+					{% include "ui/icon.html" icon="brand-paypal" %}
+					<span>Pay With PayPal</span>
+				</button>
+         </nav>
+
+         <div class="tab-content">
+            <div class="tab-pane active show" id="tab-card" role="tabpanel">
+               <form>
+                  <div class="space-y">
+                     <div>
+                        <label class="form-label" for="card-number">Card Number</label>
+								{% capture html -%}
+								{% include "ui/payment.html" payment="visa" size="xs" %}
+								{%- endcapture %}
+
+								{% include "ui/form/input-group.html" id="card-number-addon" prepend-html=html flat=true placeholder="0000 0000 0000 0000" %}
+                     </div>
+
+                     <div class="row g-3">
+                        <div class="col-sm-6">
+                           <label class="form-label" for="card-expiry">Expiry Date</label>
+                           <input type="text" class="form-control" id="card-expiry" placeholder="MM/YY"
+                              inputmode="numeric" aria-required="true" maxlength="5"/>
+                        </div>
+                        <div class="col-sm-6">
+                           <label class="form-label" for="card-cvc">CVC</label>
+                           <input type="text" class="form-control" id="card-cvc" placeholder="CVC" inputmode="numeric"
+                              aria-required="true" maxlength="3"/>
+                        </div>
+                     </div>
+
+                     <div>
+                        <label class="form-label" for="card-name">Name on Card</label>
+                        <input type="text" class="form-control" id="card-name" placeholder="Full name"
+                           aria-required="true" />
+                     </div>
+
+                     <div>
+                        <label class="form-label" for="card-email">Email</label>
+                        <input type="email" class="form-control" id="card-email" placeholder="you@example.com"
+                           aria-required="true" />
+                     </div>
+
+                     <div>
+                        <button type="button" class="btn btn-primary w-100">
+                           Pay $253
+                        </button>
+                        <div class="text-secondary text-center small mt-3">You'll be charged $253, including
+                           $48 for VAT in Poland</div>
+                     </div>
+                  </div>
+               </form>
+            </div>
+
+            <div class="tab-pane" id="tab-paypal" role="tabpanel">
+               <button type="button" class="btn btn-primary w-100">
+                  {% include "ui/icon.html" icon="brand-paypal" %}
+                  <span class="ms-2">Pay with PayPal - $253</span>
+               </button>
+               <div class="text-secondary text-center small mt-3">You'll be charged $253, including $48 for VAT in
+                  Poland</div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+
+</div>
