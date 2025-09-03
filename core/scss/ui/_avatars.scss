@@ -1,3 +1,5 @@
+@use "sass:map";
+
 .avatar {
   --#{$prefix}avatar-size: var(--#{$prefix}avatar-list-size, #{$avatar-size});
   --#{$prefix}avatar-status-size: #{$avatar-status-size};
@@ -55,15 +57,15 @@
 
 @each $avatar-size, $size in $avatar-sizes {
   .avatar-#{$avatar-size} {
-    --#{$prefix}avatar-size: #{map-get($size, size)};
-    --#{$prefix}avatar-status-size: #{map-get($size, status-size)};
-    --#{$prefix}avatar-font-size: #{map-get($size, font-size)};
-    --#{$prefix}avatar-icon-size: #{map-get($size, icon-size)};
-    --#{$prefix}avatar-brand-size: #{map-get($size, brand-size)};
+    --#{$prefix}avatar-size: #{map.get($size, size)};
+    --#{$prefix}avatar-status-size: #{map.get($size, status-size)};
+    --#{$prefix}avatar-font-size: #{map.get($size, font-size)};
+    --#{$prefix}avatar-icon-size: #{map.get($size, icon-size)};
+    --#{$prefix}avatar-brand-size: #{map.get($size, brand-size)};
 
     .badge:empty {
-      width: map-get($size, status-size);
-      height: map-get($size, status-size);
+      width: map.get($size, status-size);
+      height: map.get($size, status-size);
     }
   }
 }
@@ -94,7 +96,7 @@
 
 @each $avatar-size, $size in $avatar-sizes {
   .avatar-list-#{$avatar-size} {
-    --#{$prefix}avatar-list-size: #{map-get($size, size)};
+    --#{$prefix}avatar-list-size: #{map.get($size, size)};
   }
 }
 

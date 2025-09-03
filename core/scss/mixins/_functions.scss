@@ -1,4 +1,7 @@
 @use "sass:math";
+@use "sass:string";
+@use "sass:list";
+@use "sass:map";
 @function theme-color-lighter($color, $background: #fff) {
   @return mix($color, $background, 10%);
 }
@@ -11,10 +14,10 @@
 // Replace all occurrences of a substring within a string.
 //
 @function str-replace($string, $search, $replace: "") {
-  $index: str-index($string, $search);
+  $index: string.index($string, $search);
 
   @if $index {
-    @return str-slice($string, 1, $index - 1) + $replace + str-replace(str-slice($string, $index + str-length($search)), $search, $replace);
+    @return string.slice($string, 1, $index - 1) + $replace + str-replace(string.slice($string, $index + string.length($search)), $search, $replace);
   }
 
   @return $string;
@@ -38,23 +41,23 @@
   }
 }
 
-@function breakpoint-prev($name, $breakpoints: $grid-breakpoints, $breakpoint-names: map-keys($breakpoints)) {
+@function breakpoint-prev($name, $breakpoints: $grid-breakpoints, $breakpoint-names: map.keys($breakpoints)) {
   $n: index($breakpoint-names, $name);
   @if not $n {
     @error "breakpoint `#{$name}` not found in `#{$breakpoints}`";
   }
-  @return if($n > 1, nth($breakpoint-names, $n - 1), null);
+  @return if($n > 1, list.nth($breakpoint-names, $n - 1), null);
 }
 
 //
 // Escape SVG strings.
 //
 @function escape-svg($string) {
-  @if str-index($string, "data:image/svg+xml") {
+  @if string.index($string, "data:image/svg+xml") {
     @each $char, $encoded in $escaped-characters {
       // Do not escape the url brackets
-      @if str-index($string, "url(") == 1 {
-        $string: url("#{str-replace(str-slice($string, 6, -3), $char, $encoded)}");
+      @if string.index($string, "url(") == 1 {
+        $string: url("#{str-replace(string.slice($string, 6, -3), $char, $encoded)}");
       } @else {
         $string: str-replace($string, $char, $encoded);
       }
