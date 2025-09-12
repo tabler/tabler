@@ -7,6 +7,7 @@ import "./src/popover"
 import "./src/switch-icon"
 import "./src/tab"
 import "./src/toast"
+import "./src/sortable"
 
 export * as bootstrap from "bootstrap"
 export * as tabler from "./src/tabler"
