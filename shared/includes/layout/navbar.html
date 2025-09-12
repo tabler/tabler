@@ -18,12 +18,16 @@
 			{% if condensed %}
 			<div class="collapse navbar-collapse" id="navbar-menu">
 				{% if include.hide-search %}
-					{% include "layout/navbar-menu.html" sample=include.sample hide-icons=include.hide-icons %}
+					<nav aria-label="Primary">
+						{% include "layout/navbar-menu.html" sample=include.sample hide-icons=include.hide-icons %}
+					</nav>
 				{% elsif include.hide-menu %}
 					{% include "layout/navbar-search.html" rounded=include.transparent %}
 				{% else %}
 					<div class="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center">
-						{% include "layout/navbar-menu.html" sample=include.sample hide-icons=include.hide-icons %}
+						<nav aria-label="Primary">
+							{% include "layout/navbar-menu.html" sample=include.sample hide-icons=include.hide-icons %}
+						</nav>
 
 						{% unless condensed %}
 							{% assign search-class = "ms-md-auto ps-md-4 py-2 py-md-0 me-md-4 order-first order-md-last flex-grow-1" %}
@@ -47,7 +51,9 @@
 				<div class="container-xl">
 					<div class="row flex-column flex-md-row flex-fill align-items-center">
 						<div class="col">
-							{% include "layout/navbar-menu.html" sample=include.sample hide-icons=include.hide-icons long-titles=true %}
+							<nav aria-label="Primary">
+								{% include "layout/navbar-menu.html" sample=include.sample hide-icons=include.hide-icons long-titles=true %}
+							</nav>
 						</div>
 						{% unless include.hide-search %}
 						<div class="col-2 d-none d-xxl-block">
