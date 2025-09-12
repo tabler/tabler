@@ -1,5 +1,7 @@
+@use "sass:map";
+
 // All colors
-@each $color, $value in map-merge($theme-colors, ( white: $white)) {
+@each $color, $value in map.merge($theme-colors, ( white: $white)) {
   .bg-#{"" + $color} {
     background-color: color-mix(in srgb, var(--#{$prefix}#{$color}) calc(var(--#{$prefix}bg-opacity, 1) * 100%), transparent) !important;
   }

@@ -1,3 +1,5 @@
+@use "sass:map";
+
 @mixin navbar-vertical-nav {
   .navbar-collapse {
     flex-direction: column;
@@ -124,7 +126,7 @@ Navbar
 }
 
 .navbar-expand {
-  @each $breakpoint in map-keys($grid-breakpoints) {
+  @each $breakpoint in map.keys($grid-breakpoints) {
     $next: breakpoint-next($breakpoint, $grid-breakpoints);
     $infix: breakpoint-infix($next, $grid-breakpoints);
 
@@ -307,7 +309,7 @@ Navbar vertical
 @if $enable-navbar-vertical {
   .navbar-vertical {
     &.navbar-expand {
-      @each $breakpoint in map-keys($grid-breakpoints) {
+      @each $breakpoint in map.keys($grid-breakpoints) {
         $next: breakpoint-next($breakpoint, $grid-breakpoints);
         $infix: breakpoint-infix($next, $grid-breakpoints);
 
