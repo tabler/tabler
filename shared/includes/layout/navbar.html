@@ -18,20 +18,30 @@
 			{% if condensed %}
 			<div class="collapse navbar-collapse" id="navbar-menu">
 				{% if include.hide-search %}
-					{% include "layout/navbar-menu.html" sample=include.sample hide-icons=include.hide-icons %}
+					<!-- BEGIN NAVBAR MENU -->
+					<nav aria-label="Primary">
+						{% include "layout/navbar-menu.html" sample=include.sample hide-icons=include.hide-icons %}
+					</nav>
+					<!-- END NAVBAR MENU -->
 				{% elsif include.hide-menu %}
 					{% include "layout/navbar-search.html" rounded=include.transparent %}
 				{% else %}
 					<div class="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center">
-						{% include "layout/navbar-menu.html" sample=include.sample hide-icons=include.hide-icons %}
-
+						<!-- BEGIN NAVBAR MENU -->
+						<nav aria-label="Primary">
+							{% include "layout/navbar-menu.html" sample=include.sample hide-icons=include.hide-icons %}
+						</nav>
+						<!-- END NAVBAR MENU -->
+						
 						{% unless condensed %}
 							{% assign search-class = "ms-md-auto ps-md-4 py-2 py-md-0 me-md-4 order-first order-md-last flex-grow-1" %}
 							{% unless include.fluid-search %}
 								{% assign search-class = search-class | append: " flex-md-grow-0" %}
 							{% endunless %}
 
+							<!-- BEGIN NAVBAR SEARCH -->
 							{% include "layout/navbar-search.html" breakpoint=breakpoint rounded=include.transparent class=search-class %}
+							<!-- END NAVBAR SEARCH -->
 						{% endunless %}
 					</div>
 				{% endif %}
@@ -41,14 +51,20 @@
 	</header>
 
 	{% unless condensed %}
-	<header class="navbar-expand-{{ breakpoint }}">
+	<div class="navbar-expand-{{ breakpoint }}">
 		<div class="collapse navbar-collapse" id="navbar-menu">
 			<div class="navbar"{% if include.dark-secondary %} data-bs-theme="dark"{% endif %}>
 				<div class="container-xl">
 					<div class="row flex-column flex-md-row flex-fill align-items-center">
 						<div class="col">
-							{% include "layout/navbar-menu.html" sample=include.sample hide-icons=include.hide-icons long-titles=true %}
+							<!-- BEGIN NAVBAR MENU -->
+							<nav aria-label="Primary">
+								{% include "layout/navbar-menu.html" sample=include.sample hide-icons=include.hide-icons long-titles=true %}
+							</nav>
+							<!-- END NAVBAR MENU -->
 						</div>
+						
+						
 						{% unless include.hide-search %}
 						<div class="col-2 d-none d-xxl-block">
 							{% include "layout/navbar-search.html" breakpoint=breakpoint class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last" %}
@@ -56,6 +72,7 @@
 						{% endunless %}
 
 						<div class="col col-md-auto">
+							<!-- BEGIN NAVBAR NAV -->
 							<ul class="navbar-nav">
 								<li class="nav-item">
 									<a class="nav-link" href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSettings">
@@ -69,12 +86,13 @@
 									</a>
 								</li>
 							</ul>
+							<!-- END NAVBAR NAV -->
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-	</header>
+	</div>
 	{% endunless %}
 
 {% if include.sticky %}
