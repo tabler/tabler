@@ -1,0 +1,153 @@
+---
+layout: default
+title: Progress
+page-header: Progress
+page-menu: base.progress
+permalink: progress.html
+---
+
+<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+	<div class="col">
+		<div class="card">
+			<div class="card-body">
+				<h3 class="card-title">Default</h3>
+				<div class="space-y">
+					{% include "ui/progress.html" value="0" %}
+					{% include "ui/progress.html" value="20" %}
+					{% include "ui/progress.html" value="40" %}
+					{% include "ui/progress.html" value="100" %}
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col">
+		<div class="card">
+			<div class="card-body">
+				<h3 class="card-title">With value</h3>
+				<div class="space-y">
+					{% include "ui/progress.html" value="10" show-value size="lg" %}
+					{% include "ui/progress.html" value="20" show-value size="lg" %}
+					{% include "ui/progress.html" value="90" show-value size="lg" %}
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col">
+		<div class="card">
+			<div class="card-body">
+				<h3 class="card-title">Colors</h3>
+				<div class="space-y">
+					{% include "ui/progress.html" color="blue" value="20" %}
+					{% include "ui/progress.html" color="green" value="40" %}
+					{% include "ui/progress.html" color="yellow" value="60" %}
+					{% include "ui/progress.html" color="red" value="80" %}
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col">
+		<div class="card">
+			<div class="card-body">
+				<h3 class="card-title">Sizes</h3>
+				<div class="space-y">
+					{% include "ui/progress.html" value="20" size="sm" %}
+					{% include "ui/progress.html" value="40" %}
+					{% include "ui/progress.html" value="60" size="lg" %}
+					{% include "ui/progress.html" value="80" size="xl" %}
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col">
+		<div class="card">
+			<div class="card-body">
+				<h3 class="card-title">Indeterminate</h3>
+				<div class="space-y">
+					{% include "ui/progress.html" indeterminate=true %}
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col">
+		<div class="card">
+			<div class="card-body">
+				<h3 class="card-title">Multiple values</h3>
+				<div class="space-y">
+					{% include "ui/progress.html" values="20,30,10" %}
+					{% include "ui/progress.html" values="10,20,30,40" class="progress-separated" %}
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col">
+		<div class="card">
+			<div class="card-body">
+				<h3 class="card-title">Stripped</h3>
+				<div class="space-y">
+					{% include "ui/progress.html" color="blue" value="20" stripped %}
+					{% include "ui/progress.html" color="green" value="40" stripped %}
+					{% include "ui/progress.html" color="yellow" value="60" stripped %}
+					{% include "ui/progress.html" color="red" value="80" stripped %}
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col">
+		<div class="card">
+			<div class="card-body">
+				<h3 class="card-title">Animated</h3>
+				<div class="space-y">
+					{% include "ui/progress.html" value="20" stripped animated %}
+					{% include "ui/progress.html" value="40" color="green" stripped animated %}
+					{% include "ui/progress.html" value="60" color="yellow" stripped animated %}
+					{% include "ui/progress.html" value="80" color="red" stripped animated %}
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col">
+		<div class="card">
+			<div class="card-body">
+				<h3 class="card-title">Animated</h3>
+				<div class="row align-items-center g-0">
+					<div class="col">
+						{% include "ui/progress.html" value="0" id="progress-animated" %}
+					</div>
+					<div class="col-2 text-end" id="progress-animated-value">
+						0%
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% capture_script -%}
+<!-- BEGIN SCRIPT OF ANIMATION -->
+<script>
+	/*
+	This script is for animation of the last progress bar
+	It increases the progress bar value by a random amount every 2 seconds until it reaches 100%
+	When it reaches 100%, it changes the color to green and stops the animation
+
+	This is just a demo script to show how to animate the progress bar. You can modify it as needed.
+	*/
+	document.addEventListener("DOMContentLoaded", function () {
+		var progress = document.getElementById('progress-animated');
+		var width = 0;
+		var increment = 0;
+		var interval = setInterval(function () {
+			increment = Math.ceil(Math.random() * 10);
+			width = Math.min(width + increment, 100);
+			progress.querySelector('.progress-bar').style.width = width + '%';
+			progress.querySelector('.progress-bar').setAttribute('aria-valuenow', width);
+			document.getElementById('progress-animated-value').innerText = width + '%';
+			if (width >= 100) {
+				progress.querySelector('.progress-bar').classList.add('bg-green');
+				clearInterval(interval);
+			}
+		}, 2000);
+	});
+</script>
+<!-- END SCRIPT OF ANIMATION -->
+{%- endcapture_script -%}
