@@ -23,14 +23,14 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v5
 
+      - name: Install PNPM
+        uses: pnpm/action-setup@v4
+
       - name: Setup Node.js 18
         uses: actions/setup-node@v5
         with:
           node-version: "${{ env.NODE }}"
           cache: 'pnpm'
-
-      - name: Install PNPM
-        uses: pnpm/action-setup@v4
 
       - name: Install Dependencies
         run: pnpm install

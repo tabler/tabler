@@ -27,14 +27,14 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-turbo-
 
+      - name: Install PNPM
+        uses: pnpm/action-setup@v4
+
       - name: Set up Node.js
         uses: actions/setup-node@v5
         with:
           node-version: "${{ env.NODE }}"
           cache: 'pnpm'
-     
-      - name: Install PNPM
-        uses: pnpm/action-setup@v4
 
       - name: Set up Bundler
         uses: ruby/setup-ruby@v1
