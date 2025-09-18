@@ -108,7 +108,9 @@ permalink: progress.html
 	<div class="col">
 		<div class="card">
 			<div class="card-body">
-				<h3 class="card-title">Animated</h3>
+				<h3 class="card-title">
+					Animated with JavaScript
+				</h3>
 				<div class="row align-items-center g-0">
 					<div class="col">
 						{% include "ui/progress.html" value="0" id="progress-animated" %}
@@ -116,6 +118,59 @@ permalink: progress.html
 					<div class="col-2 text-end" id="progress-animated-value">
 						0%
 					</div>
+				</div>
+				<div class="btn-list mt-3">
+					<button class="btn btn-sm" id="progress-animated-0">0%</button>
+					<button class="btn btn-sm" id="progress-animated-10">10%</button>
+					<button class="btn btn-sm" id="progress-animated-50">50%</button>
+					<button class="btn btn-sm" id="progress-animated-100">100%</button>
+					<button class="btn btn-sm ms-3" id="progress-animated-minus-10">-10%</button>
+					<button class="btn btn-sm" id="progress-animated-add-10">+10%</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col">
+		<div class="card">
+			<div class="card-body">
+				<h3 class="card-title">
+					Steps Progress
+				</h3>
+				<div class="space-y">
+					{% include "ui/progress-steps.html" count=3 %}
+					{% include "ui/progress-steps.html" count=5 active=4 %}
+					{% include "ui/progress-steps.html" count=10 color="red" %}
+					{% include "ui/progress-steps.html" count=8 color="green" active=8 %}
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col">
+		<div class="card">
+			<div class="card-body">
+				<h3 class="card-title">
+					Progress Background
+				</h3>
+				<div class="space-y">
+					{% include "ui/progressbg.html" value="85" text="Poland" show-value=true %}
+					{% include "ui/progressbg.html" value="65" text="Germany" show-value=true %}
+					{% include "ui/progressbg.html" value="45" text="United States" show-value=true %}
+					{% include "ui/progressbg.html" value="25" text="France" show-value=true %}
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col">
+		<div class="card">
+			<div class="card-body">
+				<h3 class="card-title">
+					Progress Background Colors
+				</h3>
+				<div class="space-y">
+					{% include "ui/progressbg.html" value="75" text="Success" color="success-lt" show-value=true %}
+					{% include "ui/progressbg.html" value="60" text="Warning" color="warning-lt" show-value=true %}
+					{% include "ui/progressbg.html" value="40" text="Danger" color="danger-lt" show-value=true %}
+					{% include "ui/progressbg.html" value="90" text="Info" color="info-lt" show-value=true %}
 				</div>
 			</div>
 		</div>
@@ -133,20 +188,52 @@ permalink: progress.html
 	This is just a demo script to show how to animate the progress bar. You can modify it as needed.
 	*/
 	document.addEventListener("DOMContentLoaded", function () {
-		var progress = document.getElementById('progress-animated');
-		var width = 0;
-		var increment = 0;
-		var interval = setInterval(function () {
-			increment = Math.ceil(Math.random() * 10);
-			width = Math.min(width + increment, 100);
+		var width = 0; 
+		var setWidth = function(w) {
+			width = Math.min(Math.max(w, 0), 100);
+
 			progress.querySelector('.progress-bar').style.width = width + '%';
 			progress.querySelector('.progress-bar').setAttribute('aria-valuenow', width);
 			document.getElementById('progress-animated-value').innerText = width + '%';
+
 			if (width >= 100) {
 				progress.querySelector('.progress-bar').classList.add('bg-green');
+			} else {
+				progress.querySelector('.progress-bar').classList.remove('bg-green');
+			}
+		}
+
+		var progress = document.getElementById('progress-animated');
+		
+		var increment = 0;
+		var interval = setInterval(function () {
+			increment = Math.ceil(Math.random() * 10);
+			setWidth(width + increment);
+			
+			if (width >= 100) {
 				clearInterval(interval);
 			}
 		}, 2000);
+
+		document.getElementById('progress-animated-0').addEventListener('click', function() {
+			setWidth(0);
+		});
+		
+		document.getElementById('progress-animated-add-10').addEventListener('click', function() {
+			setWidth(width + 10);
+		});
+		
+		
+		document.getElementById('progress-animated-minus-10').addEventListener('click', function() {
+			setWidth(width - 10);
+		});
+		
+		
+		document.getElementById('progress-animated-100').addEventListener('click', function() {
+			setWidth(100);
+		});
+		
+		
 	});
 </script>
 <!-- END SCRIPT OF ANIMATION -->

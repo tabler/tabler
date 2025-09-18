@@ -169,41 +169,25 @@ By using a progress bar component as a background element, designers can create 
 
 Thanks to this you can create a nice looking statistics section:
 
+### Usage
+
+```liquid
+{% include "ui/progressbg.html" value="65" text="Poland" show-value=true %}
+```
+
+### Parameters
+
+- `value` - Progress percentage value (0-100)
+- `text` - Text to display on the progress background
+- `color` - Progress bar color (default: `primary-lt`)
+- `class` - Additional CSS classes
+- `show-value` - Display percentage value (optional)
+
 {% capture html -%}
-<div class="progressbg">
-  <div class="progress progressbg-progress">
-    <div class="progress-bar bg-primary-lt" style="width: 65%"></div>
-  </div>
-  <div class="progressbg-text">Poland</div>
-  <div class="progressbg-value">65%</div>
-</div>
-<div class="progressbg">
-  <div class="progress progressbg-progress">
-    <div class="progress-bar bg-primary-lt" style="width: 35%"></div>
-  </div>
-  <div class="progressbg-text">Germany</div>
-  <div class="progressbg-value">35%</div>
-</div>
-<div class="progressbg">
-  <div class="progress progressbg-progress">
-    <div class="progress-bar bg-primary-lt" style="width: 28%"></div>
-  </div>
-  <div class="progressbg-text">United Stated</div>
-  <div class="progressbg-value">28%</div>
-</div>
-<div class="progressbg">
-  <div class="progress progressbg-progress">
-    <div class="progress-bar bg-primary-lt" style="width: 20%"></div>
-  </div>
-  <div class="progressbg-text">United Kingdom</div>
-  <div class="progressbg-value">20%</div>
-</div>
-<div class="progressbg">
-  <div class="progress progressbg-progress">
-    <div class="progress-bar bg-primary-lt" style="width: 15%"></div>
-  </div>
-  <div class="progressbg-text">France</div>
-  <div class="progressbg-value">15%</div>
-</div>
+{% include "ui/progressbg.html" value="65" text="Poland" show-value=true %}
+{% include "ui/progressbg.html" value="35" text="Germany" show-value=true %}
+{% include "ui/progressbg.html" value="28" text="United Stated" show-value=true %}
+{% include "ui/progressbg.html" value="20" text="United Kingdom" show-value=true %}
+{% include "ui/progressbg.html" value="15" text="France" show-value=true %}
 {%- endcapture %}
 {% include "docs/example.html" html=html vertical card %}
