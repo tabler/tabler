@@ -169,20 +169,6 @@ By using a progress bar component as a background element, designers can create 
 
 Thanks to this you can create a nice looking statistics section:
 
-### Usage
-
-```liquid
-{% include "ui/progressbg.html" value="65" text="Poland" show-value=true %}
-```
-
-### Parameters
-
-- `value` - Progress percentage value (0-100)
-- `text` - Text to display on the progress background
-- `color` - Progress bar color (default: `primary-lt`)
-- `class` - Additional CSS classes
-- `show-value` - Display percentage value (optional)
-
 {% capture html -%}
 {% include "ui/progressbg.html" value="65" text="Poland" show-value=true %}
 {% include "ui/progressbg.html" value="35" text="Germany" show-value=true %}
