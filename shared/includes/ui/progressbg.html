@@ -1,0 +1,7 @@
+{% assign percentage = include.value | replace: '%', '' | default: 0 %}
+{% assign color = include.color | default: 'primary-lt' %}
+<div class="progressbg{% if include.class %} {{ include.class }}{% endif %}">
+	{% include "ui/progress.html" value=percentage class="progressbg-progress" color=color %}
+	{% if include.text %}<div class="progressbg-text">{{ include.text }}</div>{% endif %}
+	{% if include.show-value %}<div class="progressbg-value">{{ percentage }}%</div>{% endif %}
+</div>
