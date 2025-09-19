@@ -3,4 +3,4 @@
 "@tabler/preview": minor
 ---
 
-Added new "Pay" page with dedicated layout, navigation link, and payment form (card + PayPal).
+Added Pay page with dedicated layout, navigation link, and card/PayPal payment form.

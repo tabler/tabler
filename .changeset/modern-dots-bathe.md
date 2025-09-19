@@ -2,4 +2,4 @@
 "@tabler/preview": patch
 ---
 
-Update activity messages
+Updated activity messages.

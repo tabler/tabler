@@ -2,4 +2,4 @@
 "@tabler/core": patch
 ---
 
-Update Bootstrap to v5.3.8
+Updated Bootstrap to v5.3.8.

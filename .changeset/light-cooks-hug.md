@@ -2,4 +2,4 @@
 "@tabler/preview": patch
 ---
 
-Update icons to v3.34.1 (75 new icons)
+Updated icons to v3.34.1 with 75 new icons.

@@ -2,4 +2,4 @@
 "@tabler/docs": patch
 ---
 
-Fix Docs search in dark mode
+Fixed Docs search display in dark mode.

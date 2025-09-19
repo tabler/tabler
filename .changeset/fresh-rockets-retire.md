@@ -2,4 +2,4 @@
 "@tabler/core": patch
 ---
 
-Fix mixed declarations in SCSS
+Fixed mixed declarations in SCSS.

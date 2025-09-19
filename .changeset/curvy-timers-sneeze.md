@@ -2,4 +2,4 @@
 "@tabler/core": patch
 ---
 
-Fix icon alignment for `.btn-sm` and `.btn-xl` sizes
+Fixed icon alignment for `.btn-sm` and `.btn-xl` sizes.

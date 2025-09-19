@@ -2,4 +2,4 @@
 "@tabler/core": minor
 ---
 
-Added large and extra-large sizes for progress component (`.progress-lg`, `.progress-xl`).
+Added `.progress-lg` and `.progress-xl` size variants for the progress component.

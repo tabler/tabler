@@ -2,4 +2,4 @@
 "@tabler/preview": patch
 ---
 
-Fix responsive layputs in 'Form Elements' page
+Fixed responsive layouts on the Form Elements page.

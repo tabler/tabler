@@ -2,4 +2,4 @@
 "@tabler/core": patch
 ---
 
-Fix double bottom border in tables.
+Fixed double bottom border in tables.
