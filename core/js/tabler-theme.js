@@ -9,6 +9,9 @@ const themeConfig = {
 	"theme-font": "sans-serif",
 	"theme-primary": "blue",
 	"theme-radius": "1",
+	"sidebar-position": "left",
+	"sidebar-behavior": "sticky",
+	"layout": "container",
 }
 
 const params = new Proxy(new URLSearchParams(window.location.search), {
