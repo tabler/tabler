@@ -264,6 +264,10 @@ export default function (eleventyConfig) {
 	eleventyConfig.addGlobalData("environment", environment);
 	eleventyConfig.addGlobalData("package", pkg);
 	eleventyConfig.addGlobalData("cdnUrl", `https://cdn.jsdelivr.net/npm/@tabler/core@${pkg.version}`);
+	
+	// PostHog Analytics Environment Variables
+	eleventyConfig.addGlobalData("posthogApiKey", process.env.POSTHOG_API_KEY || "");
+	eleventyConfig.addGlobalData("posthogHost", process.env.POSTHOG_HOST || "https://us.i.posthog.com");
 
 	const data = {
 		iconsCount: () => 123,

@@ -36,6 +36,10 @@ export default function (eleventyConfig) {
 	eleventyConfig.addGlobalData("environment", environment);
 	eleventyConfig.addGlobalData("readme", readFileSync(join("..", "README.md"), "utf-8"));
 	eleventyConfig.addGlobalData("license", readFileSync(join("..", "LICENSE"), "utf-8"));
+	
+	// PostHog Analytics Environment Variables
+	eleventyConfig.addGlobalData("posthogApiKey", process.env.NEXT_PUBLIC_POSTHOG_KEY);
+	eleventyConfig.addGlobalData("posthogHost", process.env.NEXT_PUBLIC_POSTHOG_HOST);
 
 	eleventyConfig.addGlobalData("pages", () => {
 		return sync('pages/**/*.html').filter((file) => {
