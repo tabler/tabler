@@ -1,5 +1,28 @@
 # @tabler/core
 
+## 1.5.0
+
+### Minor Changes
+
+- 5e119d4: Added Pay page with dedicated layout, navigation link, and card/PayPal payment form.
+- 9c5d729: Added `.btn-ghost` button variant with transparent background and hover effects.
+- 9c5d729: Added Progress Background component with text labels and value display.
+- 9c5d729: Added `.progress-lg` and `.progress-xl` size variants for the progress component.
+- 9c5d729: Added Progress Steps component for step-by-step navigation indicators.
+
+### Patch Changes
+
+- c860288: Fixed icon alignment for `.btn-sm` and `.btn-xl` sizes.
+- b8b63d7: Fixed mixed declarations in SCSS.
+- 9c5d729: Updated `stroke-width` for `.icon-sm` from `1` to `1.5` for better visibility.
+- 5e119d4: Added `bg-blur` utility and increased `container-tight` width for layout flexibility.
+- 9a3361f: Fixed double bottom border in tables.
+- 9c5d729: Added smooth transitions for progress bar `width` and `background-color` changes.
+- 9c5d729: Updated skip-link to use `visually-hidden` for improved accessibility.
+- 736e604: Updated deprecated global Sass functions to module equivalents (`map.merge`, `string.slice`, `math.percentage`, etc.).
+- f8dee0a: Updated Bootstrap to v5.3.8.
+- 9c5d729: Updated trending component to use `arrow-up`/`arrow-down` instead of `trending-up`/`trending-down`.
+
 ## 1.4.0
 
 ### Minor Changes

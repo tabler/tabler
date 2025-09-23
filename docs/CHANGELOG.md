@@ -1,5 +1,27 @@
 # Tabler Documentation Changelog
 
+## 1.5.0
+
+### Patch Changes
+
+- ab8009b: Fixed Docs search display in dark mode.
+- Updated dependencies [5e119d4]
+- Updated dependencies [9c5d729]
+- Updated dependencies [c860288]
+- Updated dependencies [b8b63d7]
+- Updated dependencies [9c5d729]
+- Updated dependencies [5e119d4]
+- Updated dependencies [9a3361f]
+- Updated dependencies [9c5d729]
+- Updated dependencies [9c5d729]
+- Updated dependencies [9c5d729]
+- Updated dependencies [9c5d729]
+- Updated dependencies [9c5d729]
+- Updated dependencies [736e604]
+- Updated dependencies [f8dee0a]
+- Updated dependencies [9c5d729]
+  - @tabler/core@1.5.0
+
 ## 1.4.0
 
 ### Patch Changes
