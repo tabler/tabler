@@ -3,7 +3,7 @@
 		{% include "ui/icon.html" icon="brush" %}
 	</a>
 
-	<form class="offcanvas offcanvas-start offcanvas-narrow" tabindex="-1" id="offcanvasSettings" role="dialog" aria-modal="true" aria-labelledby="offcanvasSettingsTitle">
+	<form class="offcanvas offcanvas-end offcanvas-narrow" tabindex="-1" id="offcanvasSettings" role="dialog" aria-modal="true" aria-labelledby="offcanvasSettingsTitle">
 		<div class="offcanvas-header">
 			<h2 class="offcanvas-title" id="offcanvasSettingsTitle">Theme Settings</h2>
 			<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -43,13 +43,55 @@
 					<label class="form-label">Font family</label>
 					<p class="form-hint">Choose the font family that fits your app.</p>
 
-					<div>
+					<div class="form-selectgroup">
 						{% assign fonts = 'sans-serif,serif,monospace,comic' | split: ',' %} {% for font in fonts %}
-						<label class="form-check">
-							<div class="form-selectgroup-item">
-								<input type="radio" name="theme-font" value="{{ font }}" class="form-check-input"{% if font == 'sans-serif' %} checked{% endif %} />
-								<div class="form-check-label">{{ font | capitalize }}</div>
+						<label class="form-selectgroup-item">
+							<input type="radio" name="theme-font" value="{{ font }}" class="form-selectgroup-input"{% if font == 'sans-serif' %} checked{% endif %} />
+							<div class="form-selectgroup-label">
+								<span style="font-family: var(--tblr-font-{{ font }});" class="display-6">Aa</span>
 							</div>
+						</label>
+						{% endfor %}
+					</div>
+				</div>
+
+				<div class="mb-4">
+					<label class="form-label">Sidebar position</label>
+					<p class="form-hint">Toggle the position of the sidebar.</p>
+
+					<div class="form-selectgroup">
+						{% assign positions = 'left,right' | split: ',' %} {% for position in positions %}
+						<label class="form-selectgroup-item">
+							<input type="radio" name="sidebar-position" value="{{ position }}" class="form-selectgroup-input"{% if position == 'left' %} checked{% endif %} />
+							<div class="form-selectgroup-label">{{ position | capitalize }}</div>
+						</label>
+						{% endfor %}
+					</div>
+				</div>
+
+				<div class="mb-4">
+					<label class="form-label">Sidebar behavior</label>
+					<p class="form-hint">Change the behavior of the sidebar.</p>
+
+					<div class="form-selectgroup">
+						{% assign behaviors = 'sticky,fixed,compact' | split: ',' %} {% for behavior in behaviors %}
+						<label class="form-selectgroup-item">
+							<input type="radio" name="sidebar-behavior" value="{{ behavior }}" class="form-selectgroup-input"{% if behavior == 'sticky' %} checked{% endif %} />
+							<div class="form-selectgroup-label">{{ behavior | capitalize }}</div>
+						</label>
+						{% endfor %}
+					</div>
+				</div>
+
+				<div class="mb-4">
+					<label class="form-label">Layout</label>
+					<p class="form-hint">Toggle container layout system.</p>
+
+					<div class="form-selectgroup">
+						{% assign layouts = 'container,fluid,boxed' | split: ',' %} {% for layout in layouts %}
+						<label class="form-selectgroup-item">
+							<input type="radio" name="layout" value="{{ layout }}" class="form-selectgroup-input"{% if layout == 'fluid' %} checked{% endif %} />
+							<div class="form-selectgroup-label">{{ layout | capitalize }}</div>
 						</label>
 						{% endfor %}
 					</div>
@@ -121,6 +163,9 @@
 			"theme-font": "sans-serif",
 			"theme-primary": "blue",
 			"theme-radius": "1",
+			"sidebar-position": "left",
+			"sidebar-behavior": "sticky",
+			"layout": "fluid",
 		}
 
 		var url = new URL(window.location)

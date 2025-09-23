@@ -167,22 +167,6 @@ Navbar
             box-shadow: inset calc(1 * var(--#{$prefix}navbar-border-width)) 0 0 0 var(--#{$prefix}navbar-border-color);
           }
         }
-
-        &.navbar-vertical {
-          ~ .navbar,
-          ~ .page-wrapper {
-            margin-left: $sidebar-width;
-          }
-        }
-
-        &.navbar-vertical.navbar-right,
-        &.navbar-vertical.navbar-end {
-          ~ .navbar,
-          ~ .page-wrapper {
-            margin-left: 0;
-            margin-right: $sidebar-width;
-          }
-        }
       }
     }
   }
@@ -308,6 +292,10 @@ Navbar vertical
  */
 @if $enable-navbar-vertical {
   .navbar-vertical {
+    @at-root .page:has(>#{&}) {
+      margin-left: $sidebar-width;
+    }
+
     &.navbar-expand {
       @each $breakpoint in map.keys($grid-breakpoints) {
         $next: breakpoint-next($breakpoint, $grid-breakpoints);
@@ -380,6 +368,97 @@ Navbar vertical
         }
       }
     }
+
+    // Narrow sidebar implementation
+    &.navbar-narrow {
+      @at-root .page:has(>#{&}) {
+        margin-left: $sidebar-narrow-width;
+      }
+
+      &.navbar-expand {
+        @each $breakpoint in map.keys($grid-breakpoints) {
+          $next: breakpoint-next($breakpoint, $grid-breakpoints);
+          $infix: breakpoint-infix($next, $grid-breakpoints);
+
+          &#{$infix} {
+            @include media-breakpoint-up($next) {
+              width: $sidebar-narrow-width;
+
+              .navbar-brand {
+                .navbar-brand-image {
+                  width: 1.5rem;
+                  height: 1.5rem;
+                }
+              }
+
+              .navbar-nav {
+                .nav-link {
+                  justify-content: center;
+                  padding-left: 0.5rem;
+                  padding-right: 0.5rem;
+
+                  .nav-link-title {
+                    display: none;
+                  }
+
+                  .nav-link-icon {
+                    margin-right: 0;
+                  }
+                }
+
+                .dropdown-menu {
+                  position: fixed !important;
+                  left: $sidebar-narrow-width;
+                  top: auto;
+                  margin-left: 0.25rem;
+                  background: var(--#{$prefix}bg-surface);
+                  border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
+                  box-shadow: var(--#{$prefix}shadow);
+                  border-radius: var(--#{$prefix}border-radius);
+                  min-width: 12rem;
+
+                  .dropdown-item {
+                    padding: 0.5rem 1rem;
+                    color: var(--#{$prefix}body-color);
+                    background: transparent;
+
+                    &:hover,
+                    &:focus {
+                      background: var(--#{$prefix}gray-100);
+                    }
+
+                    &.active {
+                      background: var(--#{$prefix}primary);
+                      color: var(--#{$prefix}white);
+                    }
+                  }
+                }
+              }
+
+              ~ .page {
+                padding-left: $sidebar-narrow-width;
+              }
+
+              &.navbar-right ~ .page,
+              &.navbar-end ~ .page {
+                padding-left: 0;
+                padding-right: $sidebar-narrow-width;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+/**
+Navbar narrow tooltips
+*/
+.navbar-narrow-tooltip {
+  .tooltip-inner {
+    font-size: 0.75rem;
+    padding: 0.25rem 0.5rem;
   }
 }
 
