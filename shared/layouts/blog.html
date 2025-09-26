@@ -1,0 +1,62 @@
+---
+layout: base
+---
+
+
+{{ content }}
+
+<section class="section">
+	<div class="container text-center">
+		<h3 class="h2 mb-2">Subscribe to our newsletter</h3>
+		<p class="text-muted">Join our monthly newsletter and never miss out on new stories and promotions.</p>
+
+		<div class="row">
+			<div class="col-xs-12 col-sm-9 col-md-7 col-lg-5 ms-auto me-auto">
+				<div class="input-group mt-3">
+					<input type="text" class="form-control" placeholder="Email address" aria-label="Email address">
+					<span class="input-group-btn">
+						<button class="btn" type="button">Subscribe</button>
+					</span>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>
+
+<section>
+	<div class="action">
+		<a class="btn" href="#">
+			Follow us @ Instagram
+		</a>
+	</div>
+	<div class="row g-0">
+		<div class="col-sm-6">
+			<div class="row row-cols-5 g-0">
+				{% for image in instagram-photos limit: 5 %}
+				<div class="col">
+					<div class="ratio ratio-1x1">
+						<img class="img-fluid object-fit-cover" src="{{ image.path }}" alt="{{ image.alt }}">
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+		<div class="col-sm-6">
+			<div class="row row-cols-5 g-0">
+				{% for image in instagram-photos limit: 5, offset: 10 %}
+				<div class="col">
+					<div class="ratio ratio-1x1">
+						<img class="img-fluid object-fit-cover" src="{{ image.path }}" alt="{{ image.alt }}">
+					</div>
+				</div>
+				{% endfor %}
+			</div>
+		</div>
+	</div>
+</section>
+
+<footer class="py-4 bg-surface text-body" data-bs-theme="dark">
+	<div class="container text-center">
+		<div class="">&copy; {{ 'now' | date: '%Y' }} Your Company. All rights reserved.</div>
+	</div>
+</footer>
