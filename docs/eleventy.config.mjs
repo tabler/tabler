@@ -216,13 +216,20 @@ export default function (eleventyConfig) {
 	});
 
 	const generateUniqueId = (text) => {
-		return text
+		let id = text
 			.replace(/<[^>]+>/g, "")
 			.replace(/\s/g, "-")
 			.replace(/[^\w-]+/g, "")
 			.replace(/--+/g, "-")
 			.replace(/^-+|-+$/g, "")
 			.toLowerCase();
+		
+		// Ensure ID doesn't start with a number (invalid HTML)
+		if (/^[0-9]/.test(id)) {
+			id = "h" + id;
+		}
+		
+		return id;
 	}
 
 	eleventyConfig.addFilter("headings-id", function (content) {
