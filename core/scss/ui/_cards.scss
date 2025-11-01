@@ -426,6 +426,18 @@ Card table
   thead,
   tbody,
   tfoot {
+    &:last-child {
+      tr:last-child {
+        > *:last-child {
+          border-bottom-right-radius: calc(var(--#{$prefix}card-border-radius) - var(--#{$prefix}card-border-width));
+        }
+
+        > *:first-child {
+          border-bottom-left-radius: calc(var(--#{$prefix}card-border-radius) - var(--#{$prefix}card-border-width));
+        }
+      }
+    }
+
     tr {
       &:first-child {
         border-top: 0;
@@ -447,6 +459,7 @@ Card table
 			}
 		}
 	}
+
 	tfoot {
 		tr {
 			&:last-child {

@@ -2,6 +2,7 @@
 {% assign segmented-icons = include.icons | default: "" | split: "," %}
 {% assign segmented-disabled = include.disabled | default: "" | split: "," %}
 {% assign segmented-hover = include.hover | default: "" %}
+{% assign segmented-default = include.default | default: 1 | plus: 0 %}
 
 {% assign segmented-items-count = segmented-items | size %}
 {% assign segmented-icons-count = segmented-icons | size %}
@@ -13,10 +14,11 @@
 	{% for i in (1..segmented-all-count) %}
 		{% assign index = forloop.index | append: "" %}
 		{% assign disabled = segmented-disabled | contains: index %}
+		{% assign is-default = forloop.index == segmented-default %}
 
-		{% if include.name %}<input type="radio" class="nav-link-input" name="segmented" id="segmented-{{include.name }}-{{ index }}" {% if forloop.index == 1 %}checked{% endif %} />{% endif %}
+		{% if include.name %}<input type="radio" class="nav-link-input" name="{{ include.name }}" id="segmented-{{include.name }}-{{ index }}" {% if is-default %}checked{% endif %} />{% endif %}
 
-		<{% if include.name %}label for="segmented-{{include.name }}-{{ index }}"{% else %}button{% endif %} class="nav-link{% if forloop.index == 1 %}{% unless include.name %} active{% endunless %}{% endif %}{% if disabled %} disabled{% endif %}{% if segmented-hover == index %} hover{% endif %}" role="tab"{% unless include.name %} data-bs-toggle="tab"{% endunless %} aria-selected="{% if forloop.index == 1 %}true{% else %}false{% endif %}" {% if disabled %} aria-disabled="true"{% endif %}{% if forloop.index == 1 %} aria-current="page"{% endif %}>
+		<{% if include.name %}label for="segmented-{{include.name }}-{{ index }}"{% else %}button{% endif %} class="nav-link{% if disabled %} disabled{% endif %}{% if segmented-hover == index %} hover{% endif %}" role="tab"{% unless include.name %} data-bs-toggle="tab"{% endunless %} aria-selected="{% if is-default %}true{% else %}false{% endif %}" {% if disabled %} aria-disabled="true"{% endif %}{% if is-default %} aria-current="page"{% endif %}>
 			{% if segmented-icons[forloop.index0] %}
 				{% include "ui/icon.html" icon=segmented-icons[forloop.index0] class="nav-link-icon" %}
 			{% endif %}
