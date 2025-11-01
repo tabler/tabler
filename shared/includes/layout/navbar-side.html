@@ -13,6 +13,7 @@
 	</div>
 	{% endunless %}
 
+	{% if include.show-theme-toggle or include.show-notifications or include.show-apps or include.show-language-selector %}
 	<div class="d-none d-{{ include.breakpoint }}-flex me-3">
 		{% if include.show-theme-toggle %}
 			{% include "layout/navbar-side-theme.html" %}
@@ -27,6 +28,7 @@
 			{% include "layout/navbar-side-language.html" %}
 		{% endif %}
 	</div>
+	{% endif %}
 
 	{% if include.show-user %}
 		{% include "layout/navbar-side-user.html" person-id=person-id hide-username=include.hide-username dark=include.dark %}
