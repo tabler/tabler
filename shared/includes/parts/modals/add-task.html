@@ -1,0 +1,45 @@
+<div class="modal-header">
+	<h4 class="modal-title">Add task</h4>
+	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<div class="modal-body">
+	<form>
+		<div class="mb-3">
+			<label class="form-label">Name</label>
+			<input type="text" class="form-control" placeholder="Task name">
+		</div>
+		<div class="mb-3">
+			<label class="form-label">Assigned To</label>
+			<select class="form-select">
+				<option value="">Select person</option>
+				{% assign selected_people = "5,6,2,3" | split: "," %}
+				{% for person_id_str in selected_people %}
+					{% assign person_id = person_id_str | plus: 0 | minus: 1 %}
+					{% assign person = people[person_id] %}
+					<option value="{{ person.id }}">{{ person.full_name }}</option>
+				{% endfor %}
+			</select>
+		</div>
+		<div class="mb-3">
+			<label class="form-label">Priority</label>
+			<select class="form-select">
+				<option value="Low">Low</option>
+				<option value="Medium">Medium</option>
+				<option value="High">High</option>
+			</select>
+		</div>
+		<div class="mb-3">
+			<label class="form-label">Description</label>
+			<textarea class="form-control" rows="3" placeholder="Task description"></textarea>
+		</div>
+	</form>
+</div>
+
+<div class="modal-footer">
+	<button type="button" class="btn" data-bs-dismiss="modal">Cancel</button>
+	<button type="button" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
+		Save
+	</button>
+</div>
+
