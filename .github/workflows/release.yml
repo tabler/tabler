@@ -21,15 +21,16 @@ jobs:
       pull-requests: write # to create pull request
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js 18
-        uses: actions/setup-node@v4
-        with:
-          node-version: 20
+        uses: actions/checkout@v5
 
       - name: Install PNPM
         uses: pnpm/action-setup@v4
+
+      - name: Setup Node.js 18
+        uses: actions/setup-node@v6
+        with:
+          node-version: "${{ env.NODE }}"
+          cache: 'pnpm'
 
       - name: Install Dependencies
         run: pnpm install

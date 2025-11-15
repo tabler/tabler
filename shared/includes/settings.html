@@ -1,11 +1,11 @@
 <div class="settings">
-	<a href="#" class="btn btn-floating btn-icon btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvasSettings" aria-controls="offcanvasSettings" aria-label="Theme Settings">
+	<a href="#" class="btn btn-floating btn-icon btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-settings" aria-controls="offcanvas-settings" aria-label="Theme Settings">
 		{% include "ui/icon.html" icon="brush" %}
 	</a>
 
-	<form class="offcanvas offcanvas-start offcanvas-narrow" tabindex="-1" id="offcanvasSettings">
+	<form class="offcanvas offcanvas-start offcanvas-narrow" tabindex="-1" id="offcanvas-settings" role="dialog" aria-modal="true" aria-labelledby="offcanvas-settings-title">
 		<div class="offcanvas-header">
-			<h2 class="offcanvas-title">Theme Settings</h2>
+			<h2 class="offcanvas-title" id="offcanvas-settings-title">Theme Settings</h2>
 			<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
 		</div>
 		<div class="offcanvas-body d-flex flex-column">
@@ -106,6 +106,14 @@
 
 {% capture_script %}
 <script>
+	/*
+	This script handles the theme settings offcanvas functionality
+	It saves the selected settings to localStorage and applies them to the document
+	It also updates the URL with the selected settings as query parameters
+	It also has a reset button to clear all settings and revert to default
+
+	This is just a demo script to show how to implement theme settings. You can modify it as needed.
+	*/
 	document.addEventListener("DOMContentLoaded", function () {
 		var themeConfig = {
 			theme: "light",
@@ -116,7 +124,7 @@
 		}
 
 		var url = new URL(window.location)
-		var form = document.getElementById("offcanvasSettings")
+		var form = document.getElementById("offcanvas-settings")
 		var resetButton = document.getElementById("reset-changes")
 
 		var checkItems = function () {

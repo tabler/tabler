@@ -1,3 +1,5 @@
+@use "sass:map";
+
 @mixin navbar-vertical-nav {
   .navbar-collapse {
     flex-direction: column;
@@ -115,8 +117,8 @@ Navbar
 
       .badge {
         position: absolute;
-        top: 0.375rem;
-        right: 0.375rem;
+        top: .5rem;
+        right: .5rem;
         transform: translate(50%, -50%);
       }
     }
@@ -124,7 +126,7 @@ Navbar
 }
 
 .navbar-expand {
-  @each $breakpoint in map-keys($grid-breakpoints) {
+  @each $breakpoint in map.keys($grid-breakpoints) {
     $next: breakpoint-next($breakpoint, $grid-breakpoints);
     $infix: breakpoint-infix($next, $grid-breakpoints);
 
@@ -221,14 +223,14 @@ Navbar toggler
   width: 1.25em;
   background: currentColor;
   border-radius: 10px;
+  position: relative;
   @include transition(
     top $navbar-toggler-animation-time $navbar-toggler-animation-time,
     bottom $navbar-toggler-animation-time $navbar-toggler-animation-time,
     transform $navbar-toggler-animation-time,
     opacity 0s $navbar-toggler-animation-time
   );
-  position: relative;
-
+  
   &:before,
   &:after {
     content: "";
@@ -307,7 +309,7 @@ Navbar vertical
 @if $enable-navbar-vertical {
   .navbar-vertical {
     &.navbar-expand {
-      @each $breakpoint in map-keys($grid-breakpoints) {
+      @each $breakpoint in map.keys($grid-breakpoints) {
         $next: breakpoint-next($breakpoint, $grid-breakpoints);
         $infix: breakpoint-infix($next, $grid-breakpoints);
 
@@ -320,9 +322,9 @@ Navbar vertical
             bottom: 0;
             z-index: $zindex-fixed;
             align-items: flex-start;
-            @include transition(transform $transition-time);
             overflow-y: scroll;
             padding: 0;
+            @include transition(transform $transition-time);
 
             &.navbar-right,
             &.navbar-end {

@@ -1,0 +1,21 @@
+{% assign count = include.count | default: 3 %}
+{% assign labels = '' | split: ',' %}
+{% if include.labels %}
+{% assign labels = include.labels | split: ',' %}
+{% assign count = labels | size %}
+{% endif %}
+{% assign active = include.active | default: 1 %}
+{% assign color = include.color | default: 'primary' %}
+
+<ol class="progress-steps{% if include.class %} {{ include.class }}{% endif %}" {% if include.id %}
+   id="{{ include.id }}" {% endif %}{% if include['aria-label'] %} aria-label="{{ include['aria-label'] }}" {% endif %}>
+   {% for i in (1..count) %}
+   {% assign default = 'Step ' | append: i %}
+   {% assign label = labels[forloop.index0] | default: default %}
+   <li class="progress-steps-item{% if i <= active %} bg-{{ color }}{% endif %}" {% if i==active %} aria-current="step"{% endif %}>
+      <span class="visually-hidden">
+      {{ label }}
+      </span>
+   </li>
+   {% endfor %}
+</ol>

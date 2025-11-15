@@ -1,0 +1,171 @@
+---
+description: Tabler Project HTML Elements Guidelines
+globs: ["**/*.html", "**/*.liquid", "**/*.md"]
+alwaysApply: true
+---
+
+## HTML Elements Guidelines
+
+### 1. Icons
+
+When you need to use an icon, always use the Tabler icon include syntax:
+
+```html
+{% include "ui/icon.html" icon="ICON_NAME" %}
+```
+
+**Examples:**
+
+- `{% include "ui/icon.html" icon="home" %}`
+- `{% include "ui/icon.html" icon="building-community" %}`
+- `{% include "ui/icon.html" icon="map-pin" %}`
+
+### 2. Page Links
+
+When linking to other pages, always use the relative page syntax:
+
+```html
+href="{{ page | relative }}/url.html"
+```
+
+**Examples:**
+
+- `href="{{ page | relative }}/job-post.html"`
+- `href="{{ page | relative }}/job-listing.html"`
+- `href="{{ page | relative }}/marketing/index.html"`
+
+### 3. Static Generation
+
+All pages are statically generated to HTML using Eleventy (11ty). Keep this in mind when:
+
+- Writing frontmatter (must be static YAML, no Liquid templating)
+- Creating dynamic content (use Liquid templating in the body, not frontmatter)
+- Linking between pages (use relative paths)
+
+### 4. Additional Guidelines
+
+#### Frontmatter Rules
+
+- Frontmatter must be static YAML
+- Cannot use Liquid templating in frontmatter
+- Use static values for title, permalink, etc.
+
+#### Liquid Templating
+
+- Use Liquid templating only in the HTML body
+- Access data using `{{ variable }}` syntax
+- Use `{% for %}` loops for dynamic content
+- Use `{% if %}` conditions for conditional rendering
+
+#### File Structure
+
+- Pages go in `preview/pages/`
+- Includes go in `shared/includes/`
+- Data files go in `shared/data/`
+- Documentation goes in `docs/content/`
+
+#### CSS Classes
+
+- Use Bootstrap 5 classes
+- Use Tabler's custom CSS classes
+- Follow the pattern: `--#{$prefix}component-property`
+
+#### Accessibility
+
+- Include proper ARIA labels
+- Use semantic HTML elements
+- Ensure proper heading hierarchy
+- Add alt text for images
+
+### 5. Component Usage
+
+#### Cards
+
+- Use `card` class for main containers
+- Use `card-body` for content areas
+- Use `card-header` for card headers
+- Use `card-title` for card title
+
+#### Buttons
+
+- Use `btn` class for all buttons
+- Use `btn-primary` for primary actions
+- Use `btn` for secondary actions, don't use `btn-outline-secondary`
+- Use `btn-sm` for smaller buttons
+- Use `w-100` for full-width buttons
+
+#### Forms
+
+- Use `form-control` for input fields
+- Use `form-label` for labels
+- Use `form-check` for checkboxes/radio buttons
+- Use `form-select` for dropdowns
+
+#### Layout
+
+- Use Bootstrap grid system (`row`, `col-*`)
+- Use `container-xl` for main containers
+- Use `page-wrapper` for page structure
+- Use `page-body` for main content area
+
+#### Badges
+
+- Use `badge` class for badges
+- Don't use `badge-outline` for badges, use `badge` class instead
+- Don't use `badge-primary` for badges, use `badge` class instead
+- Don't change the text color of badges
+
+#### Markdown
+
+- Use `markdown` class for markdown content
+- Apply to containers that render markdown content
+- Example: `<div class="markdown">...</div>`
+
+#### Rest of the rules
+
+- Read the rest of the rules in the `docs/content/ui/` folder
+
+### 6. Data Integration
+
+#### Using JSON Data
+
+```liquid
+{% for item in items %}
+  <div>{{ item.name }}</div>
+{% endfor %}
+```
+
+#### Conditional Rendering
+
+```liquid
+{% if condition %}
+  <div>Content</div>
+{% endif %}
+```
+
+#### Including Components
+
+```liquid
+{% include "ui/button.html" color="primary" text="Click me" %}
+```
+
+### 7. Best Practices
+
+#### Performance
+
+- Minimize nested loops
+- Use `limit` filters when iterating large datasets
+- Optimize images for web use
+
+#### Code Organization
+
+- Keep components modular and reusable
+- Use consistent naming conventions
+- Comment complex logic
+- Group related functionality together
+
+#### Error Handling
+
+- Always check if data exists before using it
+- Provide fallback content for missing data
+- Use `{% if %}` guards for optional content

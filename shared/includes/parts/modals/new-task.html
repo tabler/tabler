@@ -1,0 +1,51 @@
+<div class="modal-header">
+	<h4 class="modal-title" id="task-modal-label">New task</h4>
+	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<div class="modal-body">
+	<form>
+		<div class="mb-4">
+			<label class="form-label" for="task-name">Task name</label>
+			<input class="form-control" id="task-name" type="text" placeholder="Enter task name">
+		</div>
+		<div class="mb-4">
+			<label class="form-label" for="task-description">Description</label>
+			<textarea class="form-control" id="task-description" rows="3" placeholder="Enter task description"></textarea>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="mb-4">
+					<label class="form-label" for="task-assigned">Assigned to</label>
+					{% include "ui/select.html" key="people" id="task-assigned" indicator="avatar" %}
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="mb-4">
+					<label class="form-label" for="task-priority">Priority</label>
+					<select class="form-select" id="task-priority">
+						<option value="low">Low</option>
+						<option value="medium" selected>Medium</option>
+						<option value="high">High</option>
+					</select>
+				</div>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="mb-4">
+					<label class="form-label" for="task-due-date">Due date</label>
+					{% include "ui/datepicker.html" layout="icon" id="task-due-date" %}
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="mb-4">
+					<label class="form-label" for="task-category">Category / Tags</label>
+					{% include "ui/select.html" key="tags" id="task-category" %}
+				</div>
+			</div>
+		</div>
+		{% include "ui/button.html" type="submit" text="Create task" color="primary" block=true class="mt-4" %}
+	</form>
+</div>
+

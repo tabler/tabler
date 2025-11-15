@@ -13,12 +13,6 @@ signaturePad.fromDataURL("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3
 
 
 {% capture advanced-js %}
-function randomColor() {
-  const r = Math.round(Math.random() * 255);
-  const g = Math.round(Math.random() * 255);
-  const b = Math.round(Math.random() * 255);
-  return `rgb(${r},${g},${b})`;
-}
 
 function download(dataURL, filename) {
   const blob = dataURLToBlob(dataURL);
@@ -49,9 +43,8 @@ function dataURLToBlob(dataURL) {
   return new Blob([uInt8Array], { type: contentType });
 }
 
-
-document.querySelector("#signature-advanced-color").addEventListener("click", function () {
-  signaturePad.penColor = randomColor();
+document.querySelector("#signature-advanced-color").addEventListener("input", function (e) {
+  signaturePad.penColor = e.target.value;
 });
 
 document.querySelector("#signature-advanced-svg").addEventListener("click", function () {
@@ -73,12 +66,12 @@ document.querySelector("#signature-advanced-png").addEventListener("click", func
         <p class="card-subtitle">Please confirm the transfer of funds by signing below.</p>
         <form action="">
           <div class="mb-3">
-            <label class="form-label required">First name</label>
-            <input type="text" class="form-control" />
+            <label class="form-label required" for="signature-first-name">First name</label>
+            <input type="text" class="form-control" id="signature-first-name" name="first_name" />
           </div>
           <div class="mb-3">
-            <label class="form-label required">Last name</label>
-            <input type="text" class="form-control" />
+            <label class="form-label required" for="signature-last-name">Last name</label>
+            <input type="text" class="form-control" id="signature-last-name" name="last_name" />
           </div>
           <div class="mb-3">
             <label class="form-label required">Signature</label>
@@ -112,7 +105,8 @@ document.querySelector("#signature-advanced-png").addEventListener("click", func
 					<div class="mt-4">
 						<div class="row">
 							<div class="col">
-								<button href="" class="btn w-100" id="signature-advanced-color">Change color</button>
+                <label for="signature-advanced-color" class="form-label visually-hidden">Pen color</label>
+                <input href="" type="color" id="signature-advanced-color" class="w-100 form-control form-control-color" />
 							</div>
 							<div class="col">
 								<button href="" class="btn w-100" id="signature-advanced-svg">Download SVG</button>

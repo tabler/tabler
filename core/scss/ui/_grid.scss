@@ -1,3 +1,5 @@
+@use "sass:map";
+
 .row > * {
   min-width: 0;
 }
@@ -54,7 +56,7 @@
   }
 }
 
-@each $name, $size in map-merge((null: $spacer), $spacers) {
+@each $name, $size in map.merge((null: $spacer), $spacers) {
   $name-prefixed: if($name == null, null, '-#{$name}');
 
   .space-y#{$name-prefixed} {
@@ -69,7 +71,7 @@
   }
 }
 
-@each $name, $size in map-merge((null: $spacer), $spacers) {
+@each $name, $size in map.merge((null: $spacer), $spacers) {
   $name-prefixed: if($name == null, null, '-#{$name}');
 
   .divide-y#{$name-prefixed} {

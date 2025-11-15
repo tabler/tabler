@@ -7,7 +7,7 @@
       padding-bottom: $table-th-padding-y;
       white-space: nowrap;
 
-      @media print {
+      @include media-print {
         background: transparent;
       }
     }
@@ -17,10 +17,6 @@
 .table-responsive {
   .table {
     margin-bottom: 0;
-  }
-
-  + .card-footer {
-    border-top: 0;
   }
 }
 
@@ -112,10 +108,9 @@ Table sort
   display: block;
   width: 100%;
   text-align: inherit;
-  @include transition(color $transition-time);
-
   margin: calc(-1 * $table-th-padding-y) calc(-1 * $table-th-padding-x);
   padding: $table-th-padding-y $table-th-padding-x;
+  @include transition(color $transition-time);
 
   &:hover,
   &.asc,

@@ -1,3 +1,8 @@
+@use "sass:string";
+@use "sass:math";
+@use "sass:map";
+@use "sass:color";
+
 $prefix: "tblr-" !default;
 
 // BASE CONFIG
@@ -23,8 +28,8 @@ $font-google-monospaced: null !default;
 $font-local: null !default;
 $font-icons: () !default;
 
-$font-family-sans-serif: unquote("#{if($font-local, "#{$font-local}, ", ' ')}#{if($font-google, "#{$font-google}, ", ' ')}") 'Inter Var', Inter, -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif !default;
-$font-family-monospace: unquote("#{if($font-google-monospaced, "#{$font-google-monospaced}, ", '')}") Monaco, Consolas, Liberation Mono, Courier New, monospace !default;
+$font-family-sans-serif: string.unquote("#{if($font-local, "#{$font-local}, ", ' ')}#{if($font-google, "#{$font-google}, ", ' ')}") 'Inter Var', Inter, -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif !default;
+$font-family-monospace: string.unquote("#{if($font-google-monospaced, "#{$font-google-monospaced}, ", '')}") Monaco, Consolas, Liberation Mono, Courier New, monospace !default;
 $font-family-serif: "Georgia", "Times New Roman", times, serif !default;
 $font-family-comic: "Comic Sans MS", "Comic Sans", "Chalkboard SE", "Comic Neue", sans-serif, cursive !default;
 
@@ -200,7 +205,7 @@ $border-color-translucent: rgba(4, 32, 69, 0.1);
 $border-dark-color: $gray-400 !default;
 $border-dark-color-translucent: rgba(4, 32, 69, 0.27);
 
-$border-active-color: mix($text-secondary, #ffffff, percentage($border-active-opacity)) !default;
+$border-active-color: color.mix($text-secondary, #ffffff, math.percentage($border-active-opacity)) !default;
 $border-active-color-translucent: rgba($text-secondary, $border-active-opacity) !default;
 
 $active-bg: rgba(var(--#{$prefix}primary-rgb), 0.04) !default;
@@ -282,21 +287,22 @@ $gray-colors: (
   gray-950: $gray-950,
 ) !default;
 
-$theme-colors: map-merge($theme-colors, map-merge($extra-colors, ()));
+$theme-colors: map.merge($theme-colors, map.merge($extra-colors, ()));
 
 // BACKDROPS
-$backdrop-opacity: 24% !default;
+$backdrop-opacity: .32 !default;
 $backdrop-blur: 4px !default;
-$backdrop-bg: var(--#{$prefix}gray-800) !default;
+$backdrop-bg: light-dark(var(--#{$prefix}gray-800), var(--#{$prefix}black)) !default;
 $backdrops: (
   dark: color-mix(in srgb, var(--#{$prefix}color-dark), transparent var(--#{$prefix}backdrop-opacity)),
   light: color-mix(in srgb, var(--#{$prefix}color-light), transparent var(--#{$prefix}backdrop-opacity)),
 ) !default;
 
-// Borders
+// Borders 
 $border-width: 1px !default;
 $border-width-wide: 2px !default;
 
+$border-radius-xs: 2px !default;
 $border-radius-sm: 4px !default;
 $border-radius: 6px !default;
 $border-radius-lg: 8px !default;
@@ -304,6 +310,7 @@ $border-radius-pill: 100rem !default;
 
 $border-radiuses: (
   0: 0,
+  xs: $border-radius-xs,
   sm: $border-radius-sm,
   md: $border-radius,
   lg: $border-radius-lg,
@@ -360,6 +367,7 @@ $avatar-sizes: (
     icon-size: 0.75rem,
     status-size: 0.375rem,
     brand-size: 0.75rem,
+    border-radius: $border-radius-xs,
   ),
   "sm": (
     size: 2rem,
@@ -427,7 +435,7 @@ $grid-gutter-width: 1rem !default;
 
 $container-variations: (
   slim: 16rem,
-  tight: 30rem,
+  tight: 32rem,
   narrow: 61.875rem,
 ) !default;
 
@@ -477,7 +485,7 @@ $size-spacers: (
   full: 100%,
 ) !default;
 
-$size-values: map-merge(
+$size-values: map.merge(
   $spacers,
   (
     25: 25%,
@@ -581,7 +589,7 @@ $badge-line-height: $code-line-height !default;
 $badge-font-weight: var(--#{$prefix}font-weight-medium) !default;
 $badge-padding-y: 0.25em !default;
 $badge-padding-x: 0.5em !default;
-$badge-empty-size: 10px !default;
+$badge-empty-size: .5rem !default;
 $badge-color: var(--#{$prefix}secondary) !default;
 $badge-bg-color: var(--#{$prefix}bg-surface-secondary) !default;
 
@@ -593,7 +601,7 @@ $input-btn-focus-width: 0.25rem !default;
 $input-btn-padding-y-sm: 0.3125rem !default;
 $input-btn-padding-x-sm: 0.5rem !default;
 $input-btn-font-size-sm: $h5-font-size !default;
-$input-btn-line-height-sm: divide(1rem, $input-btn-font-size-sm) !default;
+$input-btn-line-height-sm: 1rem !default;
 $input-btn-icon-size-sm: 1rem !default;
 
 $input-btn-padding-y: 0.5625rem !default;
@@ -609,9 +617,9 @@ $input-btn-font-size-lg: $h3-font-size !default;
 $input-btn-icon-size-lg: 1.5rem !default;
 
 $input-btn-padding-y-xl: 0.6875rem !default;
-$input-btn-padding-x-xl: 2rem !default;
+$input-btn-padding-x-xl: 1.75rem !default;
 $input-btn-font-size-xl: $h1-font-size !default;
-$input-btn-line-height-xl: divide(2rem, $input-btn-font-size-lg) !default;
+$input-btn-line-height-xl: 2rem !default;
 $input-btn-icon-size-xl: 2rem !default;
 
 
@@ -670,7 +678,7 @@ $card-border-color: var(--#{$prefix}border-color-translucent) !default;
 $card-border-radius: var(--#{$prefix}border-radius-lg) !default;
 
 $card-spacer-x: 1.25rem !default;
-$card-spacer-y: 1rem !default;
+$card-spacer-y: 1.25rem !default;
 
 $card-cap-bg: var(--#{$prefix}bg-surface-tertiary) !default;
 $card-cap-color: inherit !default;
@@ -735,7 +743,7 @@ $dropdown-divider-margin-y: var(--#{$prefix}spacer-2) !default;
 $tooltip-bg: var(--#{$prefix}bg-surface-inverted) !default;
 $tooltip-color: var(--#{$prefix}text-inverted) !default;
 $tooltip-padding-y: var(--#{$prefix}spacer-1) !default;
-$tooltip-padding-x: var(--#{$prefix}spacer-3) !default;
+$tooltip-padding-x: var(--#{$prefix}spacer-2) !default;
 
 // Loader
 $loader-size: 2.5rem !default;
@@ -749,9 +757,9 @@ $list-group-item-padding-y: $card-cap-padding-y !default;
 $list-group-item-padding-x: $card-cap-padding-x !default;
 
 // Modals
-$modal-backdrop-opacity: 0.24 !default;
+$modal-backdrop-opacity: $backdrop-opacity !default;
 $modal-backdrop-bg: $backdrop-bg !default;
-$modal-backdrop-blur: 4px !default;
+$modal-backdrop-blur: $backdrop-blur !default;
 
 $modal-fade-transform: translate(0, -1rem) !default;
 
@@ -1021,7 +1029,7 @@ $legend-border-radius: var(--#{$prefix}border-radius-sm) !default;
 
 // Flags
 $flag-box-shadow: var(--#{$prefix}shadow-border) !default;
-$flag-border-radius: var(--#{$prefix}border-radius) !default;
+$flag-border-radius: var(--#{$prefix}border-radius-sm) !default;
 $flag-sizes: $avatar-sizes !default;
 
 // Payments

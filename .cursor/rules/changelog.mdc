@@ -1,0 +1,100 @@
+---
+description: Cursor Rules for Tabler Changesets
+globs:
+alwaysApply: true
+---
+
+
+### File Structure
+
+- Each change must be in a separate changeset file in `.changeset/` directory
+- Use descriptive kebab-case filenames (e.g., `progress-sizes.md`, `button-ghost.md`)
+- Follow the standard changeset format with frontmatter and description
+
+### Change Description Format
+
+- **One sentence per changeset** - keep descriptions concise and focused
+- Use **backticks for code elements**: classes (`.btn-ghost`), properties (`stroke-width`), values (`1.5`), icons (`arrow-up`)
+- Start with action verbs: "Added", "Updated", "Fixed", "Removed"
+- Be specific about what was changed
+
+### Version Bump Guidelines
+
+- **Major**: Breaking changes, complete rewrites
+- **Minor**: New features, new components, new pages, significant enhancements
+- **Patch**: Bug fixes, small improvements, style updates, accessibility fixes
+
+### Package Selection
+
+- `"@tabler/core"`: Changes to SCSS, core functionality, CSS classes
+- `"@tabler/preview"`: New pages, demo updates, preview-specific changes
+- `"@tabler/docs"`: Documentation updates
+- Use multiple packages when change affects multiple areas
+
+### Examples
+
+#### New Feature (Minor)
+
+```md
+---
+"@tabler/core": minor
+"@tabler/preview": minor
+---
+
+Added Progress Steps component for step-by-step navigation indicators.
+```
+
+#### Bug Fix (Patch)
+
+```md
+---
+"@tabler/core": patch
+---
+
+Updated `stroke-width` for `.icon-sm` from `1` to `1.5` for better visibility.
+```
+
+#### New Page (Minor)
+
+```md
+---
+"@tabler/preview": minor
+---
+
+Added new onboarding page with progress indicator and navigation layout.
+```
+
+#### Style Enhancement (Patch)
+
+```md
+---
+"@tabler/core": patch
+---
+
+Added smooth transitions for progress bar width and background color changes.
+```
+
+### Code Formatting Rules
+
+- Class names: `.btn-ghost`, `.progress-lg`, `.icon-sm`
+- CSS properties: `stroke-width`, `background-color`, `width`
+- Values: `1.5`, `transparent`, `100%`
+- Icon names: `arrow-up`, `arrow-down`, `trending-up`
+- HTML attributes: `aria-label`, `role`, `data-*`
+- JavaScript functions: `addEventListener()`, `querySelector()`
+
+### Common Patterns
+
+- **Component additions**: "Added [ComponentName] component for [purpose]"
+- **Size variants**: "Added [size] size variant for [component] (`.class-size`)"
+- **Style fixes**: "Fixed [issue] in [component/element]"
+- **Icon updates**: "Updated [component] to use `new-icon` instead of `old-icon`"
+- **Accessibility**: "Improved accessibility by [specific change]"
+
+### Commit Message Format
+
+Use English for commit messages following conventional commit format when possible:
+
+- `feat: add progress steps component`
+- `fix: update icon stroke width for better visibility`
+- `style: add smooth transitions to progress bars`

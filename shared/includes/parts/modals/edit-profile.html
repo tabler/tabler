@@ -1,0 +1,92 @@
+<div class="modal-header">
+	<h4 class="modal-title" id="profile-modal-label">Edit profile</h4>
+	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<div class="modal-body">
+	<form>
+		<div class="mb-4">
+			<div class="row align-items-end">
+				<div class="col-auto">
+					{% include "ui/avatar-upload.html" class="rounded" size="lg" %}
+				</div>
+				<div class="col">
+					<label class="form-label">Avatar</label>
+					<div class="text-secondary">Click to upload a new avatar</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="row">
+			<div class="col-md-6">
+				<div class="mb-4">
+					<label class="form-label" for="profile-first-name">First name</label>
+					<input class="form-control" id="profile-first-name" type="text" placeholder="John">
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="mb-4">
+					<label class="form-label" for="profile-last-name">Last name</label>
+					<input class="form-control" id="profile-last-name" type="text" placeholder="Doe">
+				</div>
+			</div>
+		</div>
+
+		<div class="mb-4">
+			<label class="form-label" for="profile-email">Email</label>
+			<input class="form-control" id="profile-email" type="email" placeholder="john.doe@example.com">
+		</div>
+
+		<div class="mb-4">
+			<label class="form-label" for="profile-phone">Phone</label>
+			<input class="form-control" id="profile-phone" type="tel" placeholder="+1 (555) 123-4567">
+		</div>
+
+		<div class="mb-4">
+			<label class="form-label" for="profile-bio">Bio</label>
+			<textarea class="form-control" id="profile-bio" rows="4" placeholder="Tell us about yourself..."></textarea>
+		</div>
+
+		<div class="row">
+			<div class="col-md-6">
+				<div class="mb-4">
+					<label class="form-label" for="profile-location">Location</label>
+					<input class="form-control" id="profile-location" type="text" placeholder="City, Country">
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="mb-4">
+					<label class="form-label" for="profile-birthdate">Date of birth</label>
+					{% include "ui/datepicker.html" layout="icon" id="profile-birthdate" %}
+				</div>
+			</div>
+		</div>
+
+		<div class="mb-4">
+			<label class="form-label">Social links</label>
+			<div class="row g-2">
+				<div class="col-12">
+					<div class="input-group">
+						<span class="input-group-text">{% include "ui/icon.html" icon="brand-twitter" %}</span>
+						<input type="text" class="form-control" placeholder="twitter.com/username">
+					</div>
+				</div>
+				<div class="col-12">
+					<div class="input-group">
+						<span class="input-group-text">{% include "ui/icon.html" icon="brand-github" %}</span>
+						<input type="text" class="form-control" placeholder="github.com/username">
+					</div>
+				</div>
+				<div class="col-12">
+					<div class="input-group">
+						<span class="input-group-text">{% include "ui/icon.html" icon="brand-linkedin" %}</span>
+						<input type="text" class="form-control" placeholder="linkedin.com/in/username">
+					</div>
+				</div>
+			</div>
+		</div>
+
+		{% include "ui/button.html" type="submit" text="Save changes" color="primary" block=true class="mt-4" %}
+	</form>
+</div>
+
