@@ -7,7 +7,7 @@ $countries: (
 .flag {
   position: relative;
   display: inline-block;
-  height: $avatar-size;
+  width: $avatar-size;
   aspect-ratio: 1.33333;
   background: no-repeat center/cover;
   box-shadow: $flag-box-shadow;
@@ -28,6 +28,10 @@ $countries: (
 
 @each $flag-size, $size in $flag-sizes {
   .flag-#{$flag-size} {
-    height: map.get($size, size);
+    width: map.get($size, size);
+
+    @if map.has-key($size, border-radius) {
+      border-radius: map.get($size, border-radius);
+    }
   }
 }

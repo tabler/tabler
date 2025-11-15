@@ -1,0 +1,24 @@
+<!-- BEGIN USER MENU -->
+{% assign person-id = include.person-id | default: 1 %}
+{% assign person = people[person-id] %}
+<div class="nav-item dropdown">
+	<a href="#" class="nav-link d-flex lh-1 p-0 px-2" data-bs-toggle="dropdown" aria-label="Open user menu">
+		{% include "ui/avatar.html" person-id=person-id size="sm" %}
+
+		{% unless include.hide-username %}
+		<div class="d-none d-xl-block ps-2">
+			<div>{{ person.full_name }}</div>
+			<div class="mt-1 small text-secondary">{{ person.job_title }}</div>
+		</div>
+		{% endunless %}
+	</a>
+	<div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow"{% if include.dark %} data-bs-theme="light"{% endif %}>
+		<a class="dropdown-item" href="{{ page | relative }}/profile.html">{% include "ui/icon.html" icon="user" class="dropdown-item-icon" %} Profile</a>
+		<a class="dropdown-item" href="#">{% include "ui/icon.html" icon="chart-pie" class="dropdown-item-icon" %} Analytics</a>
+		<div class="dropdown-divider"></div>
+		<a class="dropdown-item" href="{{ page | relative }}/settings.html">Settings &amp; Privacy</a>
+		<a class="dropdown-item" href="#">Help</a>
+		<a class="dropdown-item" href="{{ page | relative }}/sign-in.html">Sign out</a>
+	</div>
+</div>
+<!-- END USER MENU -->

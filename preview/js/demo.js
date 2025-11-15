@@ -69,7 +69,7 @@ const submitForm = (form) => {
 parseUrl()
 
 // Elements
-const form = document.querySelector("#offcanvasSettings")
+const form = document.querySelector("#offcanvas-settings")
 
 // Toggle form controls
 if (form) {

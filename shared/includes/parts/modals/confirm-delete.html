@@ -1,0 +1,56 @@
+{% include "ui/modal/close.html" %}
+<div class="modal-status bg-danger"></div>
+<div class="modal-body text-center py-4">
+	{% include "ui/icon.html" icon="alert-triangle" color="danger" size="lg" class="mb-2" %}
+
+	<h3 id="confirm-delete-title">Are you sure?</h3>
+	<div class="text-secondary mb-4">
+		<p id="confirm-delete-message">Do you really want to delete this item? This action cannot be undone.</p>
+		<div id="confirm-delete-items" class="text-start d-none">
+			<div class="card card-sm mt-3">
+				<div class="card-body">
+					<div class="fw-bold mb-2">Items to be deleted:</div>
+					<ul class="list-unstyled mb-0" id="confirm-delete-list">
+						<li>• Item 1</li>
+						<li>• Item 2</li>
+						<li>• Item 3</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<label class="form-check text-start">
+		<input class="form-check-input" type="checkbox" id="confirm-delete-checkbox">
+		<span class="form-check-label">I understand this action cannot be undone</span>
+	</label>
+</div>
+
+<div class="modal-footer">
+	<div class="w-100">
+		<div class="row">
+			<div class="col">{% include "ui/button.html" dismiss=true text="Cancel" block=true %}</div>
+			<div class="col">
+				<button type="button" class="btn btn-danger w-100" data-bs-dismiss="modal" id="confirm-delete-button" disabled>
+					Delete
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% capture_script %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+	const checkbox = document.getElementById("confirm-delete-checkbox");
+	const deleteButton = document.getElementById("confirm-delete-button");
+	
+	if (checkbox && deleteButton) {
+		checkbox.addEventListener("change", function() {
+			deleteButton.disabled = !this.checked;
+		});
+	}
+});
+</script>
+{% endcapture_script %}
+

@@ -11,62 +11,24 @@
 	</div>
 	{% endunless %}
 
-	<div class="d-none d-{{ include.breakpoint }}-flex">
-		<div class="nav-item">
-			<a href="?theme=dark" class="nav-link px-0 hide-theme-dark" title="Enable dark mode" data-bs-toggle="tooltip"
-				data-bs-placement="bottom">
-				{% include "ui/icon.html" icon="moon" %}
-			</a>
-
-			<a href="?theme=light" class="nav-link px-0 hide-theme-light" title="Enable light mode" data-bs-toggle="tooltip"
-				data-bs-placement="bottom">
-				{% include "ui/icon.html" icon="sun" %}
-			</a>
-		</div>
-		<div class="nav-item dropdown d-none d-md-flex">
-			<a href="#" class="nav-link px-0" data-bs-toggle="dropdown" tabindex="-1" aria-label="Show notifications" data-bs-auto-close="outside" aria-expanded="false">
-				{% include "ui/icon.html" icon="bell" %}
-				<span class="badge bg-red"></span>
-			</a>
-			<!-- BEGIN NAVBAR NOTIFICATIONS -->
-			<div class="dropdown-menu dropdown-menu-arrow dropdown-menu-end dropdown-menu-card">
-				{% include "cards/navbar-notifications.html" %}
-			</div>
-			<!-- END NAVBAR NOTIFICATIONS -->
-		</div>
-
-		<div class="nav-item dropdown d-none d-md-flex me-3">
-			<a href="#" class="nav-link px-0" data-bs-toggle="dropdown" tabindex="-1" aria-label="Show app menu" data-bs-auto-close="outside" aria-expanded="false">
-				{% include "ui/icon.html" icon="apps" %}
-			</a>
-			<!-- BEGIN NAVBAR APPS -->
-			<div class="dropdown-menu dropdown-menu-arrow dropdown-menu-end dropdown-menu-card">
-				{% include "cards/navbar-apps.html" %}
-			</div>
-			<!-- END NAVBAR APPS -->
-		</div>
+	{% if include.show-theme-toggle or include.show-notifications or include.show-apps or include.show-language-selector %}
+	<div class="d-none d-{{ include.breakpoint }}-flex me-3">
+		{% if include.show-theme-toggle %}
+			{% include "layout/navbar-side-theme.html" %}
+		{% endif %}
+		{% if include.show-notifications %}
+			{% include "layout/navbar-side-notifications.html" %}
+		{% endif %}
+		{% if include.show-apps %}
+			{% include "layout/navbar-side-apps.html" %}
+		{% endif %}
+		{% if include.show-language-selector %}
+			{% include "layout/navbar-side-language.html" %}
+		{% endif %}
 	</div>
+	{% endif %}
 
-	<div class="nav-item dropdown">
-		<a href="#" class="nav-link d-flex lh-1 p-0 px-2" data-bs-toggle="dropdown" aria-label="Open user menu">
-			{% include "ui/avatar.html" person-id=person-id size="sm" %}
-
-			{% unless include.hide-username %}
-			<div class="d-none d-xl-block ps-2">
-				<div>{{ person.full_name }}</div>
-				<div class="mt-1 small text-secondary">{{ person.job_title }}</div>
-			</div>
-			{% endunless %}
-		</a>
-		<!-- BEGIN USER MENU -->
-		<div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow"{% if include.dark %} data-bs-theme="light"{% endif %}>
-			<a href="#" class="dropdown-item">Status</a>
-			<a href="{{ page | relative }}/profile.html" class="dropdown-item">Profile</a>
-			<a href="#" class="dropdown-item">Feedback</a>
-			<div class="dropdown-divider"></div>
-			<a href="{{ page | relative }}/settings.html" class="dropdown-item">Settings</a>
-			<a href="{{ page | relative }}/sign-in.html" class="dropdown-item">Logout</a>
-		</div>
-		<!-- END USER MENU -->
-	</div>
+	{% if include.show-user %}
+		{% include "layout/navbar-side-user.html" person-id=person-id hide-username=include.hide-username dark=include.dark %}
+	{% endif %}
 </div>
