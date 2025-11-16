@@ -20,11 +20,6 @@ $enable-dark-mode: true !default;
 $enable-negative-margins: true !default;
 $enable-rfs: false !default;
 $enable-cssgrid: true !default;
-
-// Characters which are escaped by the escape-svg function
-$escaped-characters: (('<', '%3c'), ('>', '%3e'), ('#', '%23'), ('(', '%28'), (')', '%29')) !default;
-
-// Bootstrap enable flags (for compatibility)
 $enable-caret: true !default;
 $enable-rounded: true !default;
 $enable-transitions: true !default;
@@ -36,6 +31,14 @@ $enable-button-pointers: true !default;
 $enable-validation-icons: true !default;
 $enable-deprecation-messages: true !default;
 $enable-important-utilities: true !default;
+
+// Characters which are escaped by the escape-svg function
+$escaped-characters: (
+  ('<', '%3c'),
+  ('>', '%3e'),
+  ('#', '%23'),
+  ('(', '%28'),
+  (')', '%29')) !default;
 
 // DARK MODE
 $color-mode-type: data !default;
@@ -699,7 +702,6 @@ $gray-colors: (
 
 $theme-colors: map.merge($theme-colors, map.merge($extra-colors, ()));
 
-// Bootstrap color maps (for compatibility)
 $theme-colors-rgb: map-loop($theme-colors, to-rgb, '$value') !default;
 $grays: (
   '100': $gray-100,
@@ -1418,7 +1420,7 @@ $tooltip-margin: null !default; // TODO: remove this in v6
 
 $tooltip-arrow-width: 0.8rem !default;
 $tooltip-arrow-height: 0.4rem !default;
-$tooltip-arrow-color: null !default; // Deprecated in Bootstrap 5.2.0 for CSS variables
+$tooltip-arrow-color: null !default;
 
 // Loader
 $loader-size: 2.5rem !default;
@@ -1601,7 +1603,6 @@ $popover-body-padding-x: 0.5rem !default;
 
 $popover-arrow-width: 1rem !default;
 $popover-arrow-height: 0.5rem !default;
-// Deprecated in Bootstrap 5.2.0 for CSS variables
 $popover-arrow-color: $popover-bg !default;
 $popover-arrow-outer-color: var(--#{$prefix}border-color-translucent) !default;
 
