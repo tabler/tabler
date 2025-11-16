@@ -11,8 +11,8 @@
     }
 
     .navbar-nav {
-      margin-left: 0;
-      margin-right: 0;
+      margin-inline-start: 0;
+      margin-inline-end: 0;
 
       .nav-link {
         padding: 0.5rem calc(#{$container-padding-x} / 2);
@@ -38,7 +38,7 @@
         min-width: 0;
         display: flex;
         width: auto;
-        padding-left: add(calc(#{$container-padding-x} / 2), 1.75rem);
+        padding-inline-start: add(calc(#{$container-padding-x} / 2), 1.75rem);
         color: inherit;
 
         &.disabled {
@@ -54,22 +54,22 @@
       }
 
       .dropdown-menu .dropdown-item {
-        padding-left: add(calc(#{$container-padding-x} / 2), 3.25rem);
+        padding-inline-start: add(calc(#{$container-padding-x} / 2), 3.25rem);
       }
 
       .dropdown-menu .dropdown-menu .dropdown-item {
-        padding-left: add(calc(#{$container-padding-x} / 2), 4.75rem);
+        padding-inline-start: add(calc(#{$container-padding-x} / 2), 4.75rem);
       }
     }
 
     .dropdown-toggle:after {
-      margin-left: auto;
+      margin-inline-start: auto;
     }
 
     .nav-item.active:after {
       border-bottom-width: 0;
-      border-left-width: 3px;
-      right: auto;
+      border-inline-start-width: 3px;
+  inset-inline-end: auto;
       top: 0;
       bottom: 0;
     }
@@ -118,7 +118,7 @@ Navbar
       .badge {
         position: absolute;
         top: .5rem;
-        right: .5rem;
+  inset-inline-end: .5rem;
         transform: translate(50%, -50%);
       }
     }
@@ -151,8 +151,8 @@ Navbar
           &:after {
             content: "";
             position: absolute;
-            left: 0;
-            right: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
             bottom: -0.25rem;
             border: 0 var(--#{$prefix}border-style) var(--#{$prefix}navbar-active-border-color);
             border-bottom-width: 2px;
@@ -171,7 +171,7 @@ Navbar
         &.navbar-vertical {
           ~ .navbar,
           ~ .page-wrapper {
-            margin-left: $sidebar-width;
+            margin-inline-start: $sidebar-width;
           }
         }
 
@@ -179,8 +179,8 @@ Navbar
         &.navbar-vertical.navbar-end {
           ~ .navbar,
           ~ .page-wrapper {
-            margin-left: 0;
-            margin-right: $sidebar-width;
+            margin-inline-start: 0;
+            margin-inline-end: $sidebar-width;
           }
         }
       }
@@ -240,7 +240,7 @@ Navbar toggler
     border-radius: inherit;
     background: inherit;
     position: absolute;
-    left: 0;
+  inset-inline-start: 0;
     @include transition(inherit);
   }
 
@@ -318,7 +318,7 @@ Navbar vertical
             width: $sidebar-width;
             position: fixed;
             top: 0;
-            left: 0;
+  inset-inline-start: 0;
             bottom: 0;
             z-index: $zindex-fixed;
             align-items: flex-start;
@@ -328,8 +328,8 @@ Navbar vertical
 
             &.navbar-right,
             &.navbar-end {
-              left: auto;
-              right: 0;
+  inset-inline-start: auto;
+  inset-inline-end: 0;
             }
 
             .navbar-brand {
@@ -361,18 +361,18 @@ Navbar vertical
             }
 
             ~ .page {
-              padding-left: $sidebar-width;
+              padding-inline-start: $sidebar-width;
 
               [class^="container"] {
-                padding-left: 1.5rem;
-                padding-right: 1.5rem;
+                padding-inline-start: 1.5rem;
+                padding-inline-end: 1.5rem;
               }
             }
 
             &.navbar-right ~ .page,
             &.navbar-end ~ .page {
-              padding-left: 0;
-              padding-right: $sidebar-width;
+              padding-inline-start: 0;
+              padding-inline-end: $sidebar-width;
             }
 
             @include navbar-vertical-nav;
@@ -389,8 +389,8 @@ Navbar vertical
     height: $navbar-overlap-height;
     position: absolute;
     top: 100%;
-    left: 0;
-    right: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
     background: inherit;
     z-index: -1;
     box-shadow: inherit;

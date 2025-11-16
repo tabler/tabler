@@ -5,7 +5,7 @@
   --#{$prefix}ribbon-border-radius: #{$card-ribbon-border-radius};
   position: absolute;
   top: .75rem;
-  right: calc(-1 * var(--#{$prefix}ribbon-margin));
+  inset-inline-end: calc(-1 * var(--#{$prefix}ribbon-margin));
   z-index: 1;
   padding: .25rem .75rem;
   font-size: $card-ribbon-font-size;
@@ -25,7 +25,7 @@
 
   &:before {
     position: absolute;
-    right: 0;
+  inset-inline-end: 0;
     bottom: 100%;
     width: 0;
     height: 0;
@@ -34,7 +34,7 @@
     border: calc(var(--#{$prefix}ribbon-margin) * .5) var(--#{$prefix}border-style);
     border-color: inherit;
     border-top-color: transparent;
-    border-right-color: transparent;
+    border-inline-end-color: transparent;
   }
 
   @if $enable-extra-colors {
@@ -58,44 +58,44 @@
 
 .ribbon-top {
   top: calc(-1 * var(--#{$prefix}ribbon-margin));
-  right: .75rem;
+  inset-inline-end: .75rem;
   width: 2rem;
   padding: .5rem 0;
   border-radius: 0 var(--#{$prefix}ribbon-border-radius) var(--#{$prefix}ribbon-border-radius) var(--#{$prefix}ribbon-border-radius);
 
   &:before {
     top: 0;
-    right: 100%;
+  inset-inline-end: 100%;
     bottom: auto;
     border-color: inherit;
     border-top-color: transparent;
-    border-left-color: transparent;
+    border-inline-start-color: transparent;
   }
 
   &.ribbon-start {
-    right: auto;
-    left: .75rem;
+  inset-inline-end: auto;
+  inset-inline-start: .75rem;
 
     &:before {
       top: 0;
-      right: 100%;
-      left: auto;
+  inset-inline-end: 100%;
+  inset-inline-start: auto;
     }
   }
 }
 
 .ribbon-start {
-  right: auto;
-  left: calc(-1 * var(--#{$prefix}ribbon-margin));
+  inset-inline-end: auto;
+  inset-inline-start: calc(-1 * var(--#{$prefix}ribbon-margin));
   border-radius: 0 var(--#{$prefix}ribbon-border-radius) var(--#{$prefix}ribbon-border-radius) var(--#{$prefix}ribbon-border-radius);
 
   &:before {
     top: auto;
     bottom: 100%;
-    left: 0;
+  inset-inline-start: 0;
     border-color: inherit;
     border-top-color: transparent;
-    border-left-color: transparent;
+    border-inline-start-color: transparent;
   }
 }
 
@@ -105,47 +105,47 @@
 }
 
 .ribbon-bookmark {
-  padding-left: .25rem;
+  padding-inline-start: .25rem;
   border-radius: 0 0 var(--#{$prefix}ribbon-border-radius) 0;
 
   &:after {
     position: absolute;
     top: 0;
-    right: 100%;
+  inset-inline-end: 100%;
     display: block;
     width: 0;
     height: 0;
     content: "";
     border: 1rem var(--#{$prefix}border-style);
     border-color: inherit;
-    border-right-width: 0;
-    border-left-color: transparent;
-    border-left-width: .5rem;
+    border-inline-end-width: 0;
+    border-inline-start-color: transparent;
+    border-inline-start-width: .5rem;
   }
 
   &.ribbon-left {
-    padding-right: .5rem;
+    padding-inline-end: .5rem;
 
     &:after {
-      right: auto;
-      left: 100%;
-      border-right-color: transparent;
+  inset-inline-end: auto;
+  inset-inline-start: 100%;
+      border-inline-end-color: transparent;
 
-      border-right-width: .5rem;
-      border-left-width: 0;
+      border-inline-end-width: .5rem;
+      border-inline-start-width: 0;
     }
   }
 
   &.ribbon-top {
-    padding-right: 0;
+    padding-inline-end: 0;
     padding-bottom: .25rem;
-    padding-left: 0;
+    padding-inline-start: 0;
     border-radius: 0 var(--#{$prefix}ribbon-border-radius) 0 0;
 
     &:after {
       top: 100%;
-      right: 0;
-      left: 0;
+  inset-inline-end: 0;
+  inset-inline-start: 0;
       border-color: inherit;
       border-width: 1rem;
       border-top-width: 0;

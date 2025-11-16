@@ -5,7 +5,7 @@
 }
 
 .col-separator {
-  border-left: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
+  border-inline-start: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
 }
 
 .container {
@@ -19,13 +19,13 @@
 
 @each $name, $value in (0: 0, sm: .375rem, md: 1.5rem, lg: 3rem) {
   .row-#{$name} {
-    margin-right: calc(-1 * $value);
-    margin-left: calc(-1 * $value);
+    margin-inline-end: calc(-1 * $value);
+    margin-inline-start: calc(-1 * $value);
 
     > .col,
     > [class*="col-"] {
-      padding-right: $value;
-      padding-left: $value;
+      padding-inline-end: $value;
+      padding-inline-start: $value;
     }
 
     .card {
@@ -90,15 +90,15 @@
 
   .divide-x#{$name-prefixed} {
     > :not(template) ~ :not(template) {
-      border-left: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color-translucent) !important;
+      border-inline-start: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color-translucent) !important;
     }
 
     > :not(template):not(:first-child) {
-      padding-left: $size !important;
+      padding-inline-start: $size !important;
     }
 
     > :not(template):not(:last-child) {
-      padding-right: $size !important;
+      padding-inline-end: $size !important;
     }
   }
 }
