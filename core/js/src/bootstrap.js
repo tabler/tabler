@@ -1,3 +1,3 @@
-export * as Popper from '@popperjs/core';
+export * as Popper from '@popperjs/core'
 
-export { Dropdown, Tooltip, Popover, Tab, Toast } from 'bootstrap';
+export { Dropdown, Tooltip, Popover, Tab, Toast } from 'bootstrap'

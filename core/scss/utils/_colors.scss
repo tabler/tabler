@@ -1,39 +1,47 @@
-@use "sass:map";
+@use 'sass:map';
 
 // All colors
-@each $color, $value in map.merge($theme-colors, ( white: $white)) {
-  .bg-#{"" + $color} {
+@each $color,
+  $value
+    in map.merge(
+      $theme-colors,
+      (
+        white: $white,
+      )
+    )
+{
+  .bg-#{'' + $color} {
     background-color: color-mix(in srgb, var(--#{$prefix}#{$color}) calc(var(--#{$prefix}bg-opacity, 1) * 100%), transparent) !important;
   }
 
-  .bg-#{"" + $color}-lt {
+  .bg-#{'' + $color}-lt {
     color: color-mix(in srgb, var(--#{$prefix}#{$color}) calc(var(--#{$prefix}text-opacity, 1) * 100%), transparent) !important;
     background-color: color-mix(in srgb, var(--#{$prefix}#{$color}-lt) calc(var(--#{$prefix}bg-opacity, 1) * 100%), transparent) !important;
   }
 
-  .border-#{"" + $color} {
+  .border-#{'' + $color} {
     border-color: color-mix(in srgb, var(--#{$prefix}#{$color}) calc(var(--#{$prefix}border-opacity, 1) * 100%), transparent) !important;
   }
 
-  .bg-gradient-from-#{"" + $color} {
+  .bg-gradient-from-#{'' + $color} {
     --#{$prefix}gradient-from: var(--#{$prefix}#{$color});
   }
 
-  .bg-gradient-to-#{"" + $color} {
+  .bg-gradient-to-#{'' + $color} {
     --#{$prefix}gradient-to: var(--#{$prefix}#{$color});
   }
 
-  .bg-gradient-via-#{"" + $color} {
+  .bg-gradient-via-#{'' + $color} {
     --#{$prefix}gradient-via: var(--#{$prefix}#{$color});
     --#{$prefix}gradient-stops: var(--#{$prefix}gradient-from, transparent), var(--#{$prefix}gradient-via, transparent), var(--#{$prefix}gradient-to, transparent);
   }
 
-  .text-bg-#{"" + $color} {
+  .text-bg-#{'' + $color} {
     color: color-contrast($value) if($enable-important-utilities, !important, null);
     background-color: RGBA(var(--#{$prefix}#{$color}-rgb), var(--#{$prefix}bg-opacity, 1)) if($enable-important-utilities, !important, null);
   }
 
-  .link-#{"" + $color} {
+  .link-#{'' + $color} {
     color: color-mix(in srgb, var(--#{$prefix}#{$color}) calc(var(--#{$prefix}link-opacity, 1) * 100%), transparent) !important;
     text-decoration-color: color-mix(in srgb, var(--#{$prefix}#{$color}) calc(var(--#{$prefix}link-underline-opacity, 1) * 100%), transparent) !important;
 
@@ -49,34 +57,34 @@
 }
 
 @each $color, $value in $theme-colors {
-  .text-#{"" + $color} {
+  .text-#{'' + $color} {
     --#{$prefix}text-opacity: 1;
     color: color-mix(in srgb, var(--#{$prefix}#{$color}) calc(var(--#{$prefix}text-opacity) * 100%), transparent) !important;
   }
 
-  .text-#{"" + $color}-fg {
+  .text-#{'' + $color}-fg {
     color: var(--#{$prefix}#{$color}-fg) !important;
   }
 }
 
 @each $color, $value in $gray-colors {
-  .bg-#{"" + $color} {
+  .bg-#{'' + $color} {
     --#{$prefix}bg-opacity: 1;
     background-color: color-mix(in srgb, var(--#{$prefix}#{$color}) calc(var(--#{$prefix}bg-opacity) * 100%), transparent) !important;
   }
 
-  .text-#{"" + $color}-fg {
+  .text-#{'' + $color}-fg {
     color: var(--#{$prefix}#{$color}-fg) !important;
   }
 }
 
 @each $color, $value in $social-colors {
-  .bg-#{"" + $color} {
+  .bg-#{'' + $color} {
     --#{$prefix}bg-opacity: 1;
     background-color: color-mix(in srgb, var(--#{$prefix}#{$color}) calc(var(--#{$prefix}bg-opacity) * 100%), transparent) !important;
   }
 
-  .text-#{"" + $color}-fg {
+  .text-#{'' + $color}-fg {
     color: var(--#{$prefix}#{$color}-fg) !important;
   }
 }
