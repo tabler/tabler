@@ -15,6 +15,8 @@
     "css-minify": "pnpm run css-minify-main && pnpm run css-minify-rtl",
     "css-minify-main": "cleancss -O1 --format breakWith=lf --with-rebase --source-map --source-map-inline-sources --output dist/css/ --batch --batch-suffix \".min\" \"dist/css/*.css\" \"!dist/css/*.min.css\" \"!dist/css/*rtl*.css\"",
     "css-minify-rtl": "cleancss -O1 --format breakWith=lf --with-rebase --source-map --source-map-inline-sources --output dist/css/ --batch --batch-suffix \".min\" \"dist/css/*rtl.css\" \"!dist/css/*.min.css\"",
+    "css-lint": "pnpm run css-lint-variables",
+    "css-lint-variables": "find-unused-sass-variables scss/ node_modules/bootstrap/scss/",
     "js": "pnpm run js-compile && pnpm run js-minify",
     "js-compile": "pnpm run js-compile-standalone && pnpm run js-compile-standalone-esm && pnpm run js-compile-theme && pnpm run js-compile-theme-esm",
     "js-compile-theme-esm": "rollup --environment THEME:true --environment ESM:true --config .build/rollup.config.mjs --sourcemap",
@@ -34,8 +36,8 @@
     "watch-js": "nodemon --watch js/ --ext js --exec \"pnpm run js-compile\"",
     "bundlewatch": "bundlewatch",
     "generate-sri": "node .build/generate-sri.js",
-    "format:check": "prettier --check src/**/*.{js,scss} --cache",
-    "format:write": "prettier --write src/**/*.{js,scss} --cache"
+    "format:check": "prettier --check \"scss/**/*.scss\" \"js/**/*.js\" --cache",
+    "format:write": "prettier --write \"scss/**/*.scss\" \"js/**/*.js\" --cache"
   },
   "repository": {
     "type": "git",
@@ -157,6 +159,7 @@
     "clipboard": "^2.0.11",
     "countup.js": "^2.9.0",
     "dropzone": "^6.0.0-beta.2",
+    "find-unused-sass-variables": "^6.1.0",
     "flatpickr": "^4.6.13",
     "fslightbox": "^3.7.4",
     "fullcalendar": "^6.1.19",
