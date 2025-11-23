@@ -1,4 +1,4 @@
-@import "typo/hr";
+@import 'typo/hr';
 
 .lead {
   color: var(--#{$prefix}secondary);
@@ -83,7 +83,7 @@ b {
 
 blockquote {
   padding: 1rem 1rem 1rem;
-  border-left: 2px var(--#{$prefix}border-style) var(--#{$prefix}border-color);
+  border-inline-start: 2px var(--#{$prefix}border-style) var(--#{$prefix}border-color);
 
   p {
     margin-bottom: 1rem;
@@ -91,17 +91,17 @@ blockquote {
 
   cite {
     display: block;
-    text-align: right;
+    text-align: end;
 
     &:before {
-      content: "— ";
+      content: '— ';
     }
   }
 }
 
 ul,
 ol {
-  padding-left: 1.5rem;
+  padding-inline-start: 1.5rem;
 }
 
 hr {
@@ -163,7 +163,7 @@ img {
 }
 
 .list-unstyled {
-  margin-left: 0;
+  margin-inline-start: 0;
 }
 
 /**
@@ -181,8 +181,8 @@ Selection
 /**
 Links
  */
-[class^="link-"],
-[class*=" link-"] {
+[class^='link-'],
+[class*=' link-'] {
   &.disabled {
     color: $nav-link-disabled-color !important;
     pointer-events: none;
@@ -258,7 +258,7 @@ Mentions
 
 .mention-count {
   color: var(--#{$prefix}secondary);
-  margin-left: calc(8em / 12);
+  margin-inline-start: calc(8em / 12);
 }
 
 $text-variants: (
@@ -279,10 +279,10 @@ $text-variants: (
 .steps {
   --#{$prefix}steps-padding: 2rem;
   --#{$prefix}steps-item-size: 1.5rem;
-  margin-left: 1rem;
-  padding-left: var(--#{$prefix}steps-padding);
+  margin-inline-start: 1rem;
+  padding-inline-start: var(--#{$prefix}steps-padding);
   counter-reset: step;
-  border-left: 1px solid var(--#{$prefix}border-color);
+  border-inline-start: 1px solid var(--#{$prefix}border-color);
   margin-bottom: 2rem;
 
   h3 {
@@ -297,7 +297,7 @@ $text-variants: (
       display: inline-block;
       position: absolute;
       margin-top: 1px;
-      margin-left: calc(-1 * var(--#{$prefix}steps-padding) - var(--#{$prefix}steps-item-size) / 2);
+      margin-inline-start: calc(-1 * var(--#{$prefix}steps-padding) - var(--#{$prefix}steps-item-size) / 2);
       width: var(--#{$prefix}steps-item-size);
       height: var(--#{$prefix}steps-item-size);
       text-align: center;
@@ -311,20 +311,19 @@ $text-variants: (
     }
   }
 
-  >:last-child {
+  > :last-child {
     margin-bottom: 0;
   }
 }
-
 
 .callout {
   margin-bottom: 1.5rem;
   border: 1px solid var(--#{$prefix}primary-200);
   border-radius: var(--#{$prefix}border-radius);
-  padding: .5rem 1rem;
+  padding: 0.5rem 1rem;
   background: var(--#{$prefix}primary-lt);
 
-  &>:last-child {
+  & > :last-child {
     margin-bottom: 0;
   }
 }

@@ -9,17 +9,17 @@
   &:after {
     position: absolute;
     top: 0;
-    left: 0;
+  inset-inline-start: 0;
     width: 100%;
     height: 100%;
-    content: "";
+    content: '';
     border: 1px var(--#{$prefix}border-style);
     border-color: transparent;
     border-top-color: currentColor;
-    border-left-color: currentColor;
+    border-inline-start-color: currentColor;
 
     border-radius: $border-radius-pill;
-    animation: rotate-360 .6s linear;
+    animation: rotate-360 0.6s linear;
     animation-iteration-count: infinite;
   }
 }
@@ -33,8 +33,8 @@ Dimmer
   .loader {
     position: absolute;
     top: 50%;
-    right: 0;
-    left: 0;
+  inset-inline-end: 0;
+  inset-inline-start: 0;
     display: none;
     margin: 0 auto;
     transform: translateY(-50%);
@@ -47,11 +47,10 @@ Dimmer
 
     .dimmer-content {
       pointer-events: none;
-      opacity: .1;
+      opacity: 0.1;
     }
   }
 }
-
 
 @keyframes animated-dots {
   0% {
@@ -66,7 +65,7 @@ Dimmer
 
   &:after {
     display: inline-block;
-    content: "...";
+    content: '...';
     animation: animated-dots 1.2s steps(4, jump-none) infinite;
   }
 }

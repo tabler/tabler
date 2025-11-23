@@ -1,0 +1,93 @@
+---
+title: Task List
+page-header: Task List
+page-menu: extra.tasks.list
+layout: default
+permalink: tasks-list.html
+---
+
+<div class="row">
+   <div class="col-12">
+      {% for section in tasks.columns %}
+      <div class="card mb-4">
+         <div class="card-header">
+            <h3 class="card-title mb-0">{{ section.name }}</h3>
+            <div class="card-actions">
+               {% include "ui/button.html" text="New Task" icon="plus" modal-id="add-task" size="sm" %}
+            </div>
+         </div>
+         <div class="table-responsive">
+            <table class="table table-vcenter card-table table-selectable">
+               <thead>
+                  <tr>
+                     <th class="w-1">
+                        <input type="checkbox" class="form-check-input align-middle table-selectable-check"
+                           aria-label="Select all tasks">
+                     </th>
+                     <th class="w-50">Name</th>
+                     <th class="d-none d-xl-table-cell">Assigned To</th>
+                     <th class="d-none d-xxl-table-cell">Due Date</th>
+                     <th>Priority</th>
+                     <th class="text-end">Actions</th>
+                  </tr>
+               </thead>
+               <tbody>
+                  {% for task in section.tasks %}
+                  {% if task.assigned_to %}
+                  {% assign person-id = task.assigned_to | minus: 1 %}
+                  {% assign person = people[person-id] %}
+                  {% endif %}
+                  <tr>
+                     <td>
+                        <input type="checkbox" class="form-check-input align-middle table-selectable-check"
+                           aria-label="Select task">
+                     </td>
+                     <td>
+                        {{ task.name }}
+                     </td>
+                     <td>
+                        {% if task.assigned_to and person %}
+                        <div class="d-flex align-items-center">
+                           {% include "ui/avatar.html" person-id=task.assigned_to size="xs" class="me-2" %}
+                           <span>{{ person.full_name }}</span>
+                        </div>
+                        {% else %}
+                        <span class="text-secondary">Unassigned</span>
+                        {% endif %}
+                     </td>
+                     <td class="text-secondary">
+                        {% if task.due_date %}
+                        {% include "ui/icon.html" icon="calendar" class="me-1" %}
+                        {{ task.due_date }}
+                        {% elsif task.due-date %}
+                        {% include "ui/icon.html" icon="calendar" class="me-1" %}
+                        {{ task.due-date }}
+                        {% else %}
+                        <span class="text-muted">—</span>
+                        {% endif %}
+                     </td>
+                     <td>
+                        {% if task.priority == "High" %}
+                        {% include "ui/badge.html" text="High" color="red" light %}
+                        {% elsif task.priority == "Medium" %}
+                        {% include "ui/badge.html" text="Medium" color="yellow" light %}
+                        {% elsif task.priority == "Low" %}
+                        {% include "ui/badge.html" text="Low" color="blue" light %}
+                        {% else %}
+                        {% include "ui/badge.html" text="—" light %}
+                        {% endif %}
+                     </td>
+                     <td class="text-end">
+                        {% include "ui/button.html" text="View" size="sm" %}
+                     </td>
+                  </tr>
+                  {% endfor %}
+               </tbody>
+            </table>
+         </div>
+      </div>
+      {% endfor %}
+   </div>
+</div>
+
+{% include "ui/modal.html" modal-id="add-task" %}

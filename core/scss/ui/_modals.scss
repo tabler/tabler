@@ -1,8 +1,9 @@
-.modal-content, .modal-header {
+.modal-content,
+.modal-header {
   > .btn-close {
     position: absolute;
     top: 0;
-    right: 0;
+  inset-inline-end: 0;
     width: $modal-header-height;
     height: $modal-header-height;
     margin: 0;
@@ -26,8 +27,8 @@
 .modal-status {
   position: absolute;
   top: 0;
-  left: 0;
-  right: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
   height: $modal-status-size;
   background: var(--#{$prefix}secondary);
   border-radius: $modal-content-border-radius $modal-content-border-radius 0 0;
@@ -51,10 +52,10 @@
   @if $modal-footer-border-width == 0 {
     padding-top: 0;
   } @else {
-    padding-top: .75rem;
+    padding-top: 0.75rem;
   }
 
-  padding-bottom: .75rem;
+  padding-bottom: 0.75rem;
 }
 
 .modal-blur {
@@ -64,4 +65,10 @@
 .modal-full-width {
   max-width: none;
   margin: 0 $modal-dialog-margin;
+}
+
+.modal {
+  @include media-print {
+    display: none !important;
+  }
 }

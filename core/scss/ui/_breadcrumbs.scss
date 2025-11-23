@@ -60,11 +60,11 @@
   }
 
   & + & {
-    padding-left: var(--#{$prefix}breadcrumb-item-padding-x);
+    padding-inline-start: var(--#{$prefix}breadcrumb-item-padding-x);
 
     &::before {
-      float: left;
-      padding-right: var(--#{$prefix}breadcrumb-item-padding-x);
+      float: inline-start;
+      padding-inline-end: var(--#{$prefix}breadcrumb-item-padding-x);
       color: var(--#{$prefix}breadcrumb-divider-color);
       content: var(--#{$prefix}breadcrumb-divider, escape-svg($breadcrumb-divider));
       /*rtl:raw:
@@ -76,6 +76,6 @@
 
 @each $name, $symbol in $breadcrumb-variants {
   .breadcrumb-#{$name} {
-    --#{$prefix}breadcrumb-divider: "#{quote($symbol)}";
+    --#{$prefix}breadcrumb-divider: '#{quote($symbol)}';
   }
 }

@@ -1,4 +1,7 @@
 .dropdown-menu {
+  --#{$prefix}dropdown-item-gap: 0.5rem;
+  --#{$prefix}dropdown-item-icon-size: #{$icon-size};
+  --#{$prefix}dropdown-item-icon-color: var(--#{$prefix}tertiary);
   user-select: none;
   background-clip: border-box;
 
@@ -11,6 +14,10 @@
       display: flex;
     }
   }
+
+  @include media-print {
+    display: none;
+  }
 }
 
 .dropdown-item {
@@ -19,21 +26,17 @@
   align-items: center;
   margin: 0;
   line-height: $line-height-base;
-  gap: .5rem;
+  gap: var(--#{$prefix}dropdown-item-gap);
 }
 
 .dropdown-item-icon {
-  width: $icon-size !important;
-  height: $icon-size !important;
-  margin-right: .5rem;
-  color: var(--#{$prefix}secondary);
-  opacity: $text-secondary-opacity;
+  width: var(--#{$prefix}dropdown-item-icon-size) !important;
+  height: var(--#{$prefix}dropdown-item-icon-size) !important;
+  color: var(--#{$prefix}dropdown-item-icon-color);
   text-align: center;
 }
 
 .dropdown-item-indicator {
-  margin-right: .5rem;
-  margin-left: -.25rem;
   height: 1.25rem;
   display: inline-flex;
   line-height: 1;
@@ -43,7 +46,7 @@
 
 .dropdown-header {
   @include subheader;
-  padding-bottom: .25rem;
+  padding-bottom: 0.25rem;
   pointer-events: none;
 }
 
@@ -63,16 +66,15 @@
 
 .dropdown-menu-columns {
   display: flex;
-  flex: 0 .25rem;
+  flex: 0 0.25rem;
 }
 
 .dropdown-menu-arrow {
-
   &:before {
-    content: "";
+    content: '';
     position: absolute;
-    top: -.25rem;
-    left: .75rem;
+    top: -0.25rem;
+  inset-inline-start: 0.75rem;
     display: block;
     background: inherit;
     width: 14px;
@@ -88,8 +90,8 @@
 
   &.dropdown-menu-end {
     &:before {
-      right: .75rem;
-      left: auto;
+  inset-inline-end: 0.75rem;
+  inset-inline-start: auto;
     }
   }
 }
@@ -97,12 +99,12 @@
 .dropend {
   > .dropdown-menu {
     margin-top: subtract(calc(-1 * $dropdown-padding-y), 1px);
-    margin-left: -.25rem;
+    margin-inline-start: -0.25rem;
   }
 
   .dropdown-toggle {
     &:after {
-      margin-left: auto;
+      margin-inline-start: auto;
     }
   }
 }
@@ -117,4 +119,3 @@
     box-shadow: none;
   }
 }
-

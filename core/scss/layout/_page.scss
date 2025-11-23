@@ -14,7 +14,7 @@
   display: flex;
   flex-direction: column;
 
-  @media print {
+  @include media-print {
     margin: 0 !important;
   }
 }
@@ -64,16 +64,15 @@
   position: relative;
 
   &:after {
-    content: "";
+    content: '';
     position: absolute;
     top: 0;
-    left: 0;
-    right: 0;
+  inset-inline-start: 0;
+  inset-inline-end: 0;
     bottom: 0;
     background-image: $overlay-gradient;
   }
 }
-
 
 .page-header {
   display: flex;
@@ -111,7 +110,7 @@
   svg {
     width: 1.5rem;
     height: 1.5rem;
-    margin-right: .25rem;
+    margin-inline-end: 0.25rem;
   }
 }
 
@@ -121,7 +120,7 @@
 }
 
 .page-subtitle {
-  margin-top: .25rem;
+  margin-top: 0.25rem;
   color: var(--#{$prefix}secondary);
 }
 
@@ -140,8 +139,8 @@
 .page-cover-img {
   position: absolute;
   top: calc(-2 * var(--#{$prefix}page-cover-blur, 0));
-  left: calc(-2 * var(--#{$prefix}page-cover-blur, 0));
-  right: calc(-2 * var(--#{$prefix}page-cover-blur, 0));
+  inset-inline-start: calc(-2 * var(--#{$prefix}page-cover-blur, 0));
+  inset-inline-end: calc(-2 * var(--#{$prefix}page-cover-blur, 0));
   bottom: calc(-2 * var(--#{$prefix}page-cover-blur, 0));
   pointer-events: none;
   filter: blur(var(--#{$prefix}page-cover-blur));
@@ -155,7 +154,7 @@
 // Page tabs
 //
 .page-tabs {
-  margin-top: .5rem;
+  margin-top: 0.5rem;
   position: relative;
 }
 

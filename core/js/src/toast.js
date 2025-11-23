@@ -1,17 +1,17 @@
-import { Toast } from './bootstrap';
+import { Toast } from './bootstrap'
 
 /*
 Toasts
  */
-let toastsTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="toast"]'));
+let toastsTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="toast"]'))
 toastsTriggerList.map(function (toastTriggerEl) {
-	if (!toastTriggerEl.hasAttribute('data-bs-target')) {
-		return;
-	}
+  if (!toastTriggerEl.hasAttribute('data-bs-target')) {
+    return
+  }
 
-	const toastEl = new Toast(toastTriggerEl.getAttribute('data-bs-target'));
+  const toastEl = new Toast(toastTriggerEl.getAttribute('data-bs-target'))
 
-	toastTriggerEl.addEventListener('click', () => {
-		toastEl.show()
-	});
-});
+  toastTriggerEl.addEventListener('click', () => {
+    toastEl.show()
+  })
+})

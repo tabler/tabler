@@ -1,9 +1,13 @@
 .pagination {
   margin: 0;
-  --#{$prefix}pagination-gap: .25rem;
+  --#{$prefix}pagination-gap: 0.25rem;
   user-select: none;
   gap: var(--#{$prefix}pagination-gap);
   line-height: var(--#{$prefix}body-line-height);
+
+  @include media-print {
+    display: none;
+  }
 }
 
 .page-link {
@@ -16,8 +20,8 @@
 }
 
 .page-text {
-  padding-left: .5rem;
-  padding-right: .5rem;
+  padding-inline-start: 0.5rem;
+  padding-inline-end: 0.5rem;
 }
 
 .page-item {
@@ -26,12 +30,12 @@
   &.page-prev,
   &.page-next {
     flex: 0 0 50%;
-    text-align: left;
+    text-align: start;
   }
 
   &.page-next {
-    margin-left: auto;
-    text-align: right;
+    margin-inline-start: auto;
+    text-align: end;
   }
 }
 
