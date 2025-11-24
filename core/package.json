@@ -28,9 +28,10 @@
     "js-minify-standalone-esm": "terser --compress passes=2 --mangle --comments \"/^!/\" --source-map \"content=dist/js/tabler.esm.js.map,includeSources,url=tabler.esm.min.js.map\" --output dist/js/tabler.esm.min.js dist/js/tabler.esm.js",
     "js-minify-theme": "terser --compress passes=2 --mangle --comments \"/^!/\" --source-map \"content=dist/js/tabler-theme.js.map,includeSources,url=tabler-theme.min.js.map\" --output dist/js/tabler-theme.min.js dist/js/tabler-theme.js",
     "js-minify-theme-esm": "terser --compress passes=2 --mangle --comments \"/^!/\" --source-map \"content=dist/js/tabler-theme.esm.js.map,includeSources,url=tabler-theme.esm.min.js.map\" --output dist/js/tabler-theme.esm.min.js dist/js/tabler-theme.esm.js",
-    "copy": "pnpm run copy-img && pnpm run copy-libs",
+    "copy": "pnpm run copy-img && pnpm run copy-libs && pnpm run copy-fonts",
     "copy-img": "shx mkdir -p dist/img && shx cp -rf img/* dist/img",
     "copy-libs": "node .build/copy-libs.mjs",
+    "copy-fonts": "node .build/copy-fonts.mjs",
     "watch": "concurrently \"pnpm run watch-css\" \"pnpm run watch-js\"",
     "watch-css": "nodemon --watch scss/ --ext scss --exec \"pnpm run css-compile && pnpm run css-prefix\"",
     "watch-js": "nodemon --watch js/ --ext js --exec \"pnpm run js-compile\"",
@@ -148,7 +149,8 @@
   },
   "dependencies": {
     "@popperjs/core": "^2.11.8",
-    "bootstrap": "5.3.8"
+    "bootstrap": "5.3.8",
+    "geist": "^1.5.1"
   },
   "devDependencies": {
     "@hotwired/turbo": "^8.0.18",
