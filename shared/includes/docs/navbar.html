@@ -1,7 +1,7 @@
 <div class="navbar navbar-expand sticky-top">
 	<div class="container">
 		<div class="row flex-fill align-items-md-center">
-			<div class="col">
+			<div class="col-auto">
 				<div class="d-flex align-items-center gap-4">
 					<a href="{{ page.url | relative }}" class="navbar-brand navbar-brand-autodark gap-4">
 						{% include "docs/logo.html" %}
@@ -11,7 +11,7 @@
 					</div>
 				</div>
 			</div>
-			<div class="d-none d-md-block col">
+			<div class="d-none d-md-block col-3">
 				<div id="docsearch"></div>
 			</div>
 			<div class="col d-flex">
@@ -43,6 +43,44 @@
 						</a>
 					</li>
 				</ul>
+			</div>
+		</div>
+	</div>
+</div>
+
+{% assign menu = collections.docs | collection-tree %}
+<div class="navbar-expand-md">
+	<div class="container">
+		<div class="navbar">
+			<div class="row flex-column flex-md-row flex-fill align-items-center">
+				<div class="col">
+					<nav>
+						<ul class="navbar-nav">
+							{% for level1 in menu %}
+							<li class="nav-item{% if page.url contains level1.url %} active{% endif %}">
+								<a href="{{ level1.url }}" class="nav-link">
+									{% if level1.data.icon %}<span class="nav-link-icon">{% include "ui/icon.html" icon=level1.data.icon %}</span>{% endif %}
+									<span class="nav-link-title">{{ level1.data.title }}</span>
+								</a>
+							</li>
+							{% endfor %}
+						</ul>
+					</nav>
+				</div>
+				<div class="col-auto">
+					<nav>
+						<ul class="navbar-nav">
+							{% for link in docs-links %}
+							<li class="nav-item">
+								<a href="{{ link.url }}" class="nav-link" target="_blank">
+									<span class="nav-link-icon">{% include "ui/icon.html" icon=link.icon %}</span>
+									<span class="nav-link-title">{{ link.title }}</span>
+								</a>
+							</li>
+							{% endfor %}
+						</ul>
+					</nav>
+				</div>
 			</div>
 		</div>
 	</div>

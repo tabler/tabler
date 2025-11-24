@@ -2,11 +2,13 @@
 
 :root {
   --docsearch-primary-color: var(--tblr-primary);
-  --docsearch-searchbox-background: var(--tblr-bg-surface);
-  --docsearch-searchbox-focus-background: var(--tblr-bg-surface);
+  --docsearch-searchbox-background: var(--tblr-bg-surface-secondary);
+  --docsearch-searchbox-focus-background: var(--tblr-bg-surface-secondary);
   --docsearch-text-color: var(--tblr-body-text);
-  --docsearch-key-shadow: 0 0 0 1px var(--tblr-border-color);
+  --docsearch-key-shadow: none;
   --docsearch-key-gradient: var(--tblr-bg-surface-secondary);
+  --docsearch-searchbox-shadow: 0 0 0 1px var(--tblr-border-color);
+  --docsearch-searchbox-focus-background: var(--tblr-bg-surface-tertiary);
 }
 
 .col-docs {
@@ -24,12 +26,22 @@
   box-shadow: 0 0 0 1px var(--tblr-border-color);
   font-weight: var(--tblr-font-weight-normal);
   transition: all 0.2s ease-in-out;
+  border-radius: var(--tblr-border-radius);
+}
+
+.DocSearch-Button-Placeholder {
+  font-size: var(--tblr-font-size);
 }
 
 .DocSearch-SearchBar {
   display: flex;
   padding: var(--docsearch-spacing) var(--docsearch-spacing) 0;
   background-color: var(--tblr-bg-surface) !important;
+}
+
+.DocSearch-Search-Icon {
+  width: 1rem;
+  height: 1rem;
 }
 
 .DocSearch-Hit-source {
@@ -45,7 +57,7 @@
   border: 1px solid var(--tblr-border-color) !important;
   color: var(--tblr-body-color) !important;
   box-shadow: none !important;
-  
+
   &:hover {
     background-color: var(--tblr-bg-surface-tertiary) !important;
     border-color: var(--tblr-border-color-active) !important;
@@ -88,7 +100,7 @@
 
 .DocSearch-Input {
   color: var(--tblr-body-color) !important;
-  
+
   &::placeholder {
     color: var(--tblr-muted) !important;
   }
@@ -100,8 +112,20 @@
   box-shadow: none !important;
 }
 
+.DocSearch-Button-Keys {
+  min-width: 0;
+  gap: .25rem;
+  margin-right: .25rem;
+}
+
 .DocSearch-Button-Key {
   top: 0;
+  box-shadow: none;
+  background: none;
+  padding: 0;
+  margin: 0;
+  width: auto;
+  font-size: var(--tblr-font-size);
 }
 
 .DocSearch-Container {
@@ -114,13 +138,13 @@
   }
 }
 
-.example > .modal,
-.example > .offcanvas {
+.example>.modal,
+.example>.offcanvas {
   display: block !important;
   position: relative !important;
 }
 
-.example > .offcanvas-backdrop {
+.example>.offcanvas-backdrop {
   position: absolute !important;
 }
 
