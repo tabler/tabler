@@ -274,9 +274,9 @@ export default function (eleventyConfig) {
 	eleventyConfig.addGlobalData("posthogHost", process.env.POSTHOG_HOST || "https://us.i.posthog.com");
 
 	const data = {
-		iconsCount: () => 123,
-		emailsCount: () => 123,
-		illustrationsCount: () => 123
+		iconsCount: () => 5963,
+		emailsCount: () => 80,
+		illustrationsCount: () => 105
 	};
 
 	for (const [key, value] of Object.entries(data)) {

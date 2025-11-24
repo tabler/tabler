@@ -10,5 +10,5 @@ description: Over 5000 pixel-perfect icons for web design and development
 
 Tabler Icons is a comprehensive icon library that features {{ iconsCount }}  high-quality icons. These icons are designed with a clean and modern aesthetic, making them suitable for a wide range of applications.
 
-To use Tabler Icons, you can visit their website at https://tabler-icons.io. From there, you can browse the full collection of icons by category or search for a specific icon using the search bar. Once you have found an icon you like, you can download it in various file formats, including SVG, PNG, and Icon Font.
+To use Tabler Icons, you can visit their website at [Tabler Icons Official Website]({{ site.icons.link }}). From there, you can browse the full collection of icons by category or search for a specific icon using the search bar. Once you have found an icon you like, you can download it in various file formats, including SVG, PNG, and Icon Font.
 
