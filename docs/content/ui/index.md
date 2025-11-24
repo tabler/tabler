@@ -1,5 +1,6 @@
 ---
 title: Tabler UI
+menu-title: Admin Template
 order: 1
 icon: layout
 description: Free and open source web application UI kit based on Bootstrap

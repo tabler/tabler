@@ -1,5 +1,6 @@
 ---
 title: Tabler Illustrations
+menu-title: Illustrations
 order: 3
 icon: paint
 description: Customizable illustrations for modern web and mobile designs.

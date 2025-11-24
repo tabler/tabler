@@ -1,5 +1,6 @@
 ---
 title: Tabler Emails
+menu-title: Emails
 seoTitle: Tabler Emails - premium email templates
 icon: mail
 order: 4
