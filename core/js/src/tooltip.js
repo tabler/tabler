@@ -4,7 +4,7 @@ let tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggl
 tooltipTriggerList.map(function (tooltipTriggerEl) {
   let options = {
     delay: { show: 50, hide: 50 },
-    html: tooltipTriggerEl.getAttribute('data-bs-html') === 'true' ?? false,
+    html: tooltipTriggerEl.getAttribute('data-bs-html') === 'true',
     placement: tooltipTriggerEl.getAttribute('data-bs-placement') ?? 'auto',
   }
   return new Tooltip(tooltipTriggerEl, options)
