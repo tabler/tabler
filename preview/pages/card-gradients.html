@@ -1,0 +1,84 @@
+---
+title: Card Gradients
+page-header: Card Gradients
+page-menu: base.cards.gradients
+layout: default
+permalink: card-gradients.html
+---
+
+{% assign gradients = 'sunset,rainbow,ocean,mellow,disco,psychedelic' | split: ',' %}
+
+<div class="row row-cards">
+   <div class="col-md-6">
+      <div class="row row-cards">
+         <div class="col-12">
+            {% include "cards/welcome.html" %}
+         </div>
+         <div class="col-12">
+            <div class="row">
+               <div class="col-6">
+                  {% include "cards/delete-confirm.html" %}
+               </div>
+                <div class="col-6">
+                   {% include "cards/pricing-plan.html" %}
+                </div>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="col-3">
+      {% include "cards/happy-birthday.html" %}
+   </div>
+   <div class="col-3">
+      <div class="row row-cards">
+         <div class="col-12">
+            {% include "cards/weather.html" city="Warsaw" temperature=3 color="rain" icon="cloud-rain" description="Cloudy morning" %}
+         </div>
+         <div class="col-12">
+            {% include "cards/weather.html" city="Oslo" temperature="-5" color="snow" icon="cloud" description="Snowy day" %}
+         </div>
+         <div class="col-12">
+            {% include "cards/weather.html" city="Dubai" temperature="32" color="sun" icon="sun" description="Sunny day" %}
+         </div>
+         <div class="col-12">
+            {% assign person = people[1] %}
+            <div class="card">
+               <div class="card-body text-center">
+                  <div>
+                     {% include "ui/avatar.html" size="2xl" person=person shape="rounded-circle" %}
+                  </div>
+                  <div class="h1 mt-4 mb-1">{{ person.full_name }}</div>
+                  <div class="text-secondary">{{ person.job_title }}</div>
+
+                  <div class="btn-list justify-content-center mt-3">
+                     <a href="#" class="btn btn-icon btn-pill" title="Message" data-bs-toggle="tooltip" data-bs-placement="top">{% include "ui/icon.html" icon="message" %}</a>
+                     <a href="#" class="btn btn-icon btn-pill" title="Phone" data-bs-toggle="tooltip" data-bs-placement="top">{% include "ui/icon.html" icon="phone" %}</a>
+                     <a href="#" class="btn btn-icon btn-pill" title="Email" data-bs-toggle="tooltip" data-bs-placement="top">{% include "ui/icon.html" icon="mail" %}</a>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   {% for gradient in gradients %}
+   <div class="col-sm-6 col-lg-3">
+      <div class="card card-gradient card-gradient-{{ gradient }}">
+         <div class="card-body">
+            <h3 class="card-title">{{ gradient }}</h3>
+         </div>
+      </div>
+   </div>
+   {% endfor %}
+
+   {% for color in site.colors %}
+   <div class="col-sm-6 col-lg-3">
+      <div class="card card-gradient card-gradient-{{ color[0] }}">
+         <div class="card-body">
+            <h3 class="card-title">{{ color[1].title }}</h3>
+         </div>
+      </div>
+   </div>
+   {% endfor %}
+
+</div>
