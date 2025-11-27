@@ -1,5 +1,21 @@
 @use 'sass:map';
 
+@property --tblr-card-gradient-direction {
+  syntax: '<angle>';
+  inherits: true;
+  initial-value: 180deg;
+}
+
+@keyframes gradient-animation {
+  0% {
+    --#{$prefix}card-gradient-direction: 180deg;
+  }
+
+  100% {
+    --#{$prefix}card-gradient-direction: 540deg;
+  }
+}
+
 .card {
   @include transition(transform $transition-time ease-out, opacity $transition-time ease-out, box-shadow $transition-time ease-out);
 
@@ -647,8 +663,8 @@ Card gradient
   --#{$prefix}card-gradient-opacity: 86%;
   --#{$prefix}card-gradient: var(--tblr-primary), var(--tblr-primary);
 
-  background: radial-gradient(ellipse at center, var(--#{$prefix}card-bg) 0%, color-mix(in srgb, var(--#{$prefix}card-bg) 0%, transparent) 100%) border-box,
-  linear-gradient(var(--#{$prefix}card-gradient-direction), color-mix(in srgb, var(--#{$prefix}card-bg) var(--#{$prefix}card-gradient-opacity), transparent) 0%, var(--#{$prefix}card-bg) 50%) border-box,
+  background: radial-gradient(ellipse at center, var(--#{$prefix}card-bg) 0%, color-mix(in srgb, var(--#{$prefix}card-bg) 0%, transparent) 80%) border-box,
+  linear-gradient(var(--#{$prefix}card-gradient-direction), color-mix(in srgb, var(--#{$prefix}card-bg) var(--#{$prefix}card-gradient-opacity), transparent) 0%, var(--#{$prefix}card-bg) 40%) border-box,
   linear-gradient(calc(270deg + var(--#{$prefix}card-gradient-direction)), var(--#{$prefix}card-gradient)) border-box;
 
 }
@@ -696,6 +712,14 @@ Card gradient
 
 .card-gradient-love {
   --#{$prefix}card-gradient: #f235e6, #bc0707;
+}
+
+.card-gradient-gold {
+  --#{$prefix}card-gradient: #9d4100, #bf7122, #f59f00, #FFD700;
+}
+
+.card-gradient-animated {
+  animation: gradient-animation 15s linear infinite;
 }
 
 .card-gradient-bottom {
