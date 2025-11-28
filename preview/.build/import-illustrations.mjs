@@ -11,6 +11,7 @@ const illustrations = sync(join(__dirname, `../../shared/static/illustrations/li
 	.map((file) => {
 		return basename(file, '.png')
 	})
+	.sort((a, b) => a.localeCompare(b));
 
 writeFileSync(
 	join(__dirname, `../../shared/data/illustrations.json`),
