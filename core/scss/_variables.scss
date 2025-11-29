@@ -560,11 +560,6 @@ $text-secondary-opacity: 0.7 !default;
 $text-secondary-light-opacity: 0.4 !default;
 $text-secondary-dark-opacity: 0.8 !default;
 
-$border-opacity: 0.16 !default;
-$border-light-opacity: 0.08 !default;
-$border-dark-opacity: 0.24 !default;
-$border-active-opacity: 0.58 !default;
-
 $bg-surface: var(--#{$prefix}white) !default;
 $bg-surface-secondary: var(--#{$prefix}gray-100) !default;
 $bg-surface-tertiary: var(--#{$prefix}gray-50) !default;
@@ -572,7 +567,7 @@ $bg-surface-dark: var(--#{$prefix}dark) !default;
 
 $body-text-align: null !default;
 $body-bg: $gray-50 !default;
-$body-color: $dark !default;
+$body-color: $gray-800 !default;
 $body-emphasis-color: $gray-700 !default;
 $body-secondary-color: rgba($body-color, 0.75) !default;
 $body-secondary-bg: $gray-200 !default;
@@ -587,14 +582,21 @@ $text-secondary: $gray-500 !default;
 $text-secondary-light: $gray-400 !default;
 $text-secondary-dark: $gray-600 !default;
 
-$border-color: $gray-200 !default;
-$border-color-translucent: rgba(4, 32, 69, 0.1);
+$border-light-color: var(--#{$prefix}gray-200) !default;
+$border-light-opacity: 4.7% !default;
+$border-light-color-translucent: color-mix(in srgb, var(--#{$prefix}gray-800) #{$border-light-opacity}, transparent) !default;
 
-$border-dark-color: $gray-400 !default;
-$border-dark-color-translucent: rgba(4, 32, 69, 0.27);
+$border-color: var(--#{$prefix}gray-200) !default;
+$border-opacity: 11.9% !default;
+$border-color-translucent: color-mix(in srgb, var(--#{$prefix}gray-800) #{$border-opacity}, transparent) !default;
 
-$border-active-color: color.mix($text-secondary, #ffffff, math.percentage($border-active-opacity)) !default;
-$border-active-color-translucent: rgba($text-secondary, $border-active-opacity) !default;
+$border-dark-color: var(--#{$prefix}gray-300) !default;
+$border-dark-opacity: 20.7% !default;
+$border-dark-color-translucent: color-mix(in srgb, var(--#{$prefix}gray-800) #{$border-dark-opacity}, transparent) !default;
+
+$border-active-color: var(--#{$prefix}gray-400) !default;
+$border-active-opacity: 44.8% !default;
+$border-active-color-translucent: color-mix(in srgb, var(--#{$prefix}gray-800) #{$border-active-opacity}, transparent) !default;
 
 $active-bg: rgba(var(--#{$prefix}primary-rgb), 0.04) !default;
 $active-color: var(--#{$prefix}primary) !default;
@@ -1166,9 +1168,9 @@ $btn-padding-y-lg: $input-btn-padding-y-lg !default;
 $btn-padding-x-lg: $input-btn-padding-x-lg !default;
 
 // Inputs
-$input-bg: var(--#{$prefix}body-bg) !default;
+$input-bg: var(--#{$prefix}bg-forms) !default;
 $input-disabled-color: null !default;
-$input-disabled-bg: var(--#{$prefix}secondary-bg) !default;
+$input-disabled-bg: var(--#{$prefix}bg-surface-secondary) !default;
 $input-disabled-border-color: null !default;
 
 $input-height: null !default;
@@ -1865,16 +1867,16 @@ $form-select-font-size-lg: $input-font-size-lg !default;
 $form-select-border-radius-lg: $input-border-radius-lg !default;
 $form-select-transition: $input-transition !default;
 
-$form-switch-color: rgba($black, 0.25) !default;
+$form-switch-color: white !default;
 $form-switch-width: 2rem !default;
 $form-switch-height: 1.25rem !default;
 $form-switch-padding-start: $form-switch-width + 0.5rem !default;
-$form-switch-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='#{$border-color}'/></svg>") !default;
+$form-switch-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='#{$form-switch-color}'/></svg>") !default;
 $form-switch-border-radius: $form-switch-width !default;
 $form-switch-transition: background-position 0.15s ease-in-out !default;
-$form-switch-focus-color: $input-focus-border-color !default;
+$form-switch-focus-color: white !default;
 $form-switch-focus-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='#{$form-switch-focus-color}'/></svg>") !default;
-$form-switch-checked-color: $component-active-color !default;
+$form-switch-checked-color: white!default;
 $form-switch-checked-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='-4 -4 8 8'><circle r='3' fill='#{$form-switch-checked-color}'/></svg>") !default;
 $form-switch-checked-bg-position: right center !default;
 $form-switch-bg-size: auto !default;
