@@ -16,367 +16,382 @@ $utilities-border-colors: map-loop(
   'border'
 ) !default;
 
-//Utilities
-$utilities: (
-  'align': (
-    property: vertical-align,
-    class: align,
-    values: baseline top middle bottom text-bottom text-top,
-  ),
-  'float': (
-    responsive: true,
-    property: float,
-    values: (
-      start: left,
-      end: right,
-      none: none,
+// Utilities
+
+$utilities: () !default;
+
+$utilities: map-merge(
+  (
+    'align': (
+      property: vertical-align,
+      class: align,
+      values: baseline top middle bottom text-bottom text-top,
     ),
-  ),
-  // Object Fit utilities
-  'object-fit': (
+    'float': (
       responsive: true,
+      property: float,
+      values: (
+        start: left,
+        end: right,
+        none: none,
+      ),
+    ),
+    // Object Fit utilities
+    'object-fit': (
+        responsive: true,
+        property: object-fit,
+        values: (
+          contain: contain,
+          cover: cover,
+          fill: fill,
+          scale: scale-down,
+          none: none,
+        ),
+      ),
+    // Opacity utilities
+    'opacity': (
+        property: opacity,
+        values: (
+          0: 0,
+          25: 0.25,
+          50: 0.5,
+          75: 0.75,
+          100: 1,
+        ),
+      ),
+    'overflow': (
+      property: overflow,
+      values: auto hidden visible scroll,
+    ),
+    'overflow-x': (
+      property: overflow-x,
+      values: auto hidden visible scroll,
+    ),
+    'overflow-y': (
+      property: overflow-y,
+      values: auto hidden visible scroll,
+    ),
+    'display': (
+      responsive: true,
+      print: true,
+      property: display,
+      class: d,
+      values: inline inline-block block grid inline-grid table table-row table-cell flex inline-flex none,
+    ),
+    'shadow': (
+      property: box-shadow,
+      class: shadow,
+      values: (
+        null: var(--#{$prefix}box-shadow),
+        sm: var(--#{$prefix}box-shadow-sm),
+        lg: var(--#{$prefix}box-shadow-lg),
+        none: none,
+      ),
+    ),
+    'focus-ring': (
+      css-var: true,
+      css-variable-name: focus-ring-color,
+      class: focus-ring,
+      values: map-loop($theme-colors-rgb, rgba-css-var, '$key', 'focus-ring'),
+    ),
+    'position': (
+      property: position,
+      values: static relative absolute fixed sticky,
+    ),
+    'top': (
+      property: top,
+      values: $position-values,
+    ),
+    'bottom': (
+      property: bottom,
+      values: $position-values,
+    ),
+    'start': (
+      property: left,
+      class: start,
+      values: $position-values,
+    ),
+    'end': (
+      property: right,
+      class: end,
+      values: $position-values,
+    ),
+    'translate-middle': (
+      property: transform,
+      class: translate-middle,
+      values: (
+        null: translate(-50%, -50%),
+        x: translateX(-50%),
+        y: translateY(-50%),
+      ),
+    ),
+    'object': (
       property: object-fit,
+      class: object,
       values: (
         contain: contain,
         cover: cover,
         fill: fill,
-        scale: scale-down,
+        scale-down: scale-down,
         none: none,
       ),
     ),
-  // Opacity utilities
-  'opacity': (
-      property: opacity,
+    'cursor': (
+      property: cursor,
+      class: cursor,
       values: (
-        0: 0,
+        auto: auto,
+        pointer: pointer,
+        move: move,
+        not-allowed: not-allowed,
+        zoom-in: zoom-in,
+        zoom-out: zoom-out,
+        default: default,
+        none: none,
+        help: help,
+        progress: progress,
+        wait: wait,
+        text: text,
+        v-text: vertical-text,
+        grab: grab,
+        grabbing: grabbing,
+        crosshair: crosshair,
+      ),
+    ),
+    'border': (
+      property: border,
+      values: $border-values,
+    ),
+    'border-top': (
+      property: border-top,
+      values: $border-values,
+    ),
+    'border-end': (
+      class: border-end,
+      property: border-inline-end,
+      values: $border-values,
+    ),
+    'border-bottom': (
+      property: border-bottom,
+      values: $border-values,
+    ),
+    'border-start': (
+      class: border-start,
+      property: border-inline-start,
+      values: $border-values,
+    ),
+    'border-x': (
+      class: border-x,
+      property: border-inline-start border-inline-end,
+      values: $border-values,
+    ),
+    'border-y': (
+      class: border-y,
+      property: border-top border-bottom,
+      values: $border-values,
+    ),
+    'border-color': (
+      property: border-color,
+      class: border,
+      local-vars: (
+        'border-opacity': 1,
+      ),
+      values: $utilities-border-colors,
+    ),
+    'subtle-border-color': (
+      property: border-color,
+      class: border,
+      values: $utilities-border-subtle,
+    ),
+    'border-width': (
+      property: border-width,
+      class: border,
+      values: $border-widths,
+    ),
+    'border-opacity': (
+      css-var: true,
+      class: border-opacity,
+      values: (
+        10: 0.1,
         25: 0.25,
         50: 0.5,
         75: 0.75,
         100: 1,
       ),
     ),
-  'overflow': (
-    property: overflow,
-    values: auto hidden visible scroll,
-  ),
-  'overflow-x': (
-    property: overflow-x,
-    values: auto hidden visible scroll,
-  ),
-  'overflow-y': (
-    property: overflow-y,
-    values: auto hidden visible scroll,
-  ),
-  'display': (
-    responsive: true,
-    print: true,
-    property: display,
-    class: d,
-    values: inline inline-block block grid inline-grid table table-row table-cell flex inline-flex none,
-  ),
-  'shadow': (
-    property: box-shadow,
-    class: shadow,
-    values: (
-      null: var(--#{$prefix}box-shadow),
-      sm: var(--#{$prefix}box-shadow-sm),
-      lg: var(--#{$prefix}box-shadow-lg),
-      none: none,
+    'width': (
+      property: width,
+      class: w,
+      values: $size-values,
     ),
-  ),
-  'focus-ring': (
-    css-var: true,
-    css-variable-name: focus-ring-color,
-    class: focus-ring,
-    values: map-loop($theme-colors-rgb, rgba-css-var, '$key', 'focus-ring'),
-  ),
-  'position': (
-    property: position,
-    values: static relative absolute fixed sticky,
-  ),
-  'top': (
-    property: top,
-    values: $position-values,
-  ),
-  'bottom': (
-    property: bottom,
-    values: $position-values,
-  ),
-  'start': (
-    property: left,
-    class: start,
-    values: $position-values,
-  ),
-  'end': (
-    property: right,
-    class: end,
-    values: $position-values,
-  ),
-  'translate-middle': (
-    property: transform,
-    class: translate-middle,
-    values: (
-      null: translate(-50%, -50%),
-      x: translateX(-50%),
-      y: translateY(-50%),
-    ),
-  ),
-  'object': (
-    property: object-fit,
-    class: object,
-    values: (
-      contain: contain,
-      cover: cover,
-      fill: fill,
-      scale-down: scale-down,
-      none: none,
-    ),
-  ),
-  'cursor': (
-    property: cursor,
-    class: cursor,
-    values: (
-      auto: auto,
-      pointer: pointer,
-      move: move,
-      not-allowed: not-allowed,
-      zoom-in: zoom-in,
-      zoom-out: zoom-out,
-      default: default,
-      none: none,
-      help: help,
-      progress: progress,
-      wait: wait,
-      text: text,
-      v-text: vertical-text,
-      grab: grab,
-      grabbing: grabbing,
-      crosshair: crosshair,
-    ),
-  ),
-  'border': (
-    property: border,
-    values: $border-values,
-  ),
-  'border-top': (
-    property: border-top,
-    values: $border-values,
-  ),
-  'border-end': (
-    class: border-end,
-    property: border-inline-end,
-    values: $border-values,
-  ),
-  'border-bottom': (
-    property: border-bottom,
-    values: $border-values,
-  ),
-  'border-start': (
-    class: border-start,
-    property: border-inline-start,
-    values: $border-values,
-  ),
-  'border-x': (
-    class: border-x,
-    property: border-inline-start border-inline-end,
-    values: $border-values,
-  ),
-  'border-y': (
-    class: border-y,
-    property: border-top border-bottom,
-    values: $border-values,
-  ),
-  'border-color': (
-    property: border-color,
-    class: border,
-    local-vars: (
-      'border-opacity': 1,
-    ),
-    values: $utilities-border-colors,
-  ),
-  'subtle-border-color': (
-    property: border-color,
-    class: border,
-    values: $utilities-border-subtle,
-  ),
-  'border-width': (
-    property: border-width,
-    class: border,
-    values: $border-widths,
-  ),
-  'border-opacity': (
-    css-var: true,
-    class: border-opacity,
-    values: (
-      10: 0.1,
-      25: 0.25,
-      50: 0.5,
-      75: 0.75,
-      100: 1,
-    ),
-  ),
-  'width': (
-    property: width,
-    class: w,
-    values: $size-values,
-  ),
-  'max-width': (
-    property: max-width,
-    class: mw,
-    values: (
-      100: 100%,
-    ),
-  ),
-  'viewport-width': (
-    property: width,
-    class: vw,
-    values: (
-      100: 100vw,
-    ),
-  ),
-  'min-viewport-width': (
-    property: min-width,
-    class: min-vw,
-    values: (
-      100: 100vw,
-    ),
-  ),
-  'height': (
-    property: height,
-    class: h,
-    values: $size-values,
-  ),
-  'max-height': (
-    property: max-height,
-    class: mh,
-    values: (
-      100: 100%,
-    ),
-  ),
-  'viewport-height': (
-    property: height,
-    class: vh,
-    values: (
-      100: 100vh,
-    ),
-  ),
-  'min-viewport-height': (
-    property: min-height,
-    class: min-vh,
-    values: (
-      100: 100vh,
-    ),
-  ),
-  'columns': (
-    property: columns,
-    class: columns,
-    responsive: true,
-    values: 2 3 4,
-  ),
-  // Flex utilities
-  'flex': (
-      responsive: true,
-      property: flex,
+    'max-width': (
+      property: max-width,
+      class: mw,
       values: (
-        fill: 1 1 auto,
+        100: 100%,
       ),
     ),
-  'flex-direction': (
-    responsive: true,
-    property: flex-direction,
-    class: flex,
-    values: row column row-reverse column-reverse,
-  ),
-  'flex-grow': (
-    responsive: true,
-    property: flex-grow,
-    class: flex,
-    values: (
-      grow-0: 0,
-      grow-1: 1,
+    'viewport-width': (
+      property: width,
+      class: vw,
+      values: (
+        100: 100vw,
+      ),
     ),
-  ),
-  'flex-shrink': (
-    responsive: true,
-    property: flex-shrink,
-    class: flex,
-    values: (
-      shrink-0: 0,
-      shrink-1: 1,
+    'min-viewport-width': (
+      property: min-width,
+      class: min-vw,
+      values: (
+        100: 100vw,
+      ),
     ),
-  ),
-  'flex-wrap': (
-    responsive: true,
-    property: flex-wrap,
-    class: flex,
-    values: wrap nowrap wrap-reverse,
-  ),
-  'justify-content': (
-    responsive: true,
-    property: justify-content,
-    values: (
-      start: flex-start,
-      end: flex-end,
-      center: center,
-      between: space-between,
-      around: space-around,
-      evenly: space-evenly,
+    'height': (
+      property: height,
+      class: h,
+      values: $size-values,
     ),
-  ),
-  'align-items': (
-    responsive: true,
-    property: align-items,
-    values: (
-      start: flex-start,
-      end: flex-end,
-      center: center,
-      baseline: baseline,
-      stretch: stretch,
+    'max-height': (
+      property: max-height,
+      class: mh,
+      values: (
+        100: 100%,
+      ),
     ),
-  ),
-  'align-content': (
-    responsive: true,
-    property: align-content,
-    values: (
-      start: flex-start,
-      end: flex-end,
-      center: center,
-      between: space-between,
-      around: space-around,
-      stretch: stretch,
+    'viewport-height': (
+      property: height,
+      class: vh,
+      values: (
+        100: 100vh,
+      ),
     ),
-  ),
-  'align-self': (
-    responsive: true,
-    property: align-self,
-    values: (
-      auto: auto,
-      start: flex-start,
-      end: flex-end,
-      center: center,
-      baseline: baseline,
-      stretch: stretch,
+    'min-viewport-height': (
+      property: min-height,
+      class: min-vh,
+      values: (
+        100: 100vh,
+      ),
     ),
-  ),
-  'order': (
-    responsive: true,
-    property: order,
-    values: (
-      first: -1,
-      0: 0,
-      1: 1,
-      2: 2,
-      3: 3,
-      4: 4,
-      5: 5,
-      last: 6,
-    ),
-  ),
-  // Margin utilities
-  'margin': (
+    'columns': (
+      property: columns,
+      class: columns,
       responsive: true,
-      property: margin,
-      class: m,
+      values: 2 3 4,
+    ),
+    // Flex utilities
+    'flex': (
+        responsive: true,
+        property: flex,
+        values: (
+          fill: 1 1 auto,
+        ),
+      ),
+    'flex-direction': (
+      responsive: true,
+      property: flex-direction,
+      class: flex,
+      values: row column row-reverse column-reverse,
+    ),
+    'flex-grow': (
+      responsive: true,
+      property: flex-grow,
+      class: flex,
+      values: (
+        grow-0: 0,
+        grow-1: 1,
+      ),
+    ),
+    'flex-shrink': (
+      responsive: true,
+      property: flex-shrink,
+      class: flex,
+      values: (
+        shrink-0: 0,
+        shrink-1: 1,
+      ),
+    ),
+    'flex-wrap': (
+      responsive: true,
+      property: flex-wrap,
+      class: flex,
+      values: wrap nowrap wrap-reverse,
+    ),
+    'justify-content': (
+      responsive: true,
+      property: justify-content,
+      values: (
+        start: flex-start,
+        end: flex-end,
+        center: center,
+        between: space-between,
+        around: space-around,
+        evenly: space-evenly,
+      ),
+    ),
+    'align-items': (
+      responsive: true,
+      property: align-items,
+      values: (
+        start: flex-start,
+        end: flex-end,
+        center: center,
+        baseline: baseline,
+        stretch: stretch,
+      ),
+    ),
+    'align-content': (
+      responsive: true,
+      property: align-content,
+      values: (
+        start: flex-start,
+        end: flex-end,
+        center: center,
+        between: space-between,
+        around: space-around,
+        stretch: stretch,
+      ),
+    ),
+    'align-self': (
+      responsive: true,
+      property: align-self,
+      values: (
+        auto: auto,
+        start: flex-start,
+        end: flex-end,
+        center: center,
+        baseline: baseline,
+        stretch: stretch,
+      ),
+    ),
+    'order': (
+      responsive: true,
+      property: order,
+      values: (
+        first: -1,
+        0: 0,
+        1: 1,
+        2: 2,
+        3: 3,
+        4: 4,
+        5: 5,
+        last: 6,
+      ),
+    ),
+    // Margin utilities
+    'margin': (
+        responsive: true,
+        property: margin,
+        class: m,
+        values: map.merge(
+            $spacers,
+            (
+              auto: auto,
+            )
+          ),
+      ),
+    'margin-x': (
+      responsive: true,
+      property: margin-right margin-left,
+      class: mx,
       values: map.merge(
           $spacers,
           (
@@ -384,514 +399,505 @@ $utilities: (
           )
         ),
     ),
-  'margin-x': (
-    responsive: true,
-    property: margin-right margin-left,
-    class: mx,
-    values: map.merge(
-        $spacers,
-        (
-          auto: auto,
-        )
-      ),
-  ),
-  'margin-y': (
-    responsive: true,
-    property: margin-top margin-bottom,
-    class: my,
-    values: map.merge(
-        $spacers,
-        (
-          auto: auto,
-        )
-      ),
-  ),
-  'margin-top': (
-    responsive: true,
-    property: margin-top,
-    class: mt,
-    values: map.merge(
-        $spacers,
-        (
-          auto: auto,
-        )
-      ),
-  ),
-  'margin-end': (
-    responsive: true,
-    property: margin-right,
-    class: me,
-    values: map.merge(
-        $spacers,
-        (
-          auto: auto,
-        )
-      ),
-  ),
-  'margin-bottom': (
-    responsive: true,
-    property: margin-bottom,
-    class: mb,
-    values: map.merge(
-        $spacers,
-        (
-          auto: auto,
-        )
-      ),
-  ),
-  'margin-start': (
-    responsive: true,
-    property: margin-left,
-    class: ms,
-    values: map.merge(
-        $spacers,
-        (
-          auto: auto,
-        )
-      ),
-  ),
-  // Negative margin utilities
-  'negative-margin': (
+    'margin-y': (
       responsive: true,
-      property: margin,
-      class: m,
+      property: margin-top margin-bottom,
+      class: my,
+      values: map.merge(
+          $spacers,
+          (
+            auto: auto,
+          )
+        ),
+    ),
+    'margin-top': (
+      responsive: true,
+      property: margin-top,
+      class: mt,
+      values: map.merge(
+          $spacers,
+          (
+            auto: auto,
+          )
+        ),
+    ),
+    'margin-end': (
+      responsive: true,
+      property: margin-right,
+      class: me,
+      values: map.merge(
+          $spacers,
+          (
+            auto: auto,
+          )
+        ),
+    ),
+    'margin-bottom': (
+      responsive: true,
+      property: margin-bottom,
+      class: mb,
+      values: map.merge(
+          $spacers,
+          (
+            auto: auto,
+          )
+        ),
+    ),
+    'margin-start': (
+      responsive: true,
+      property: margin-left,
+      class: ms,
+      values: map.merge(
+          $spacers,
+          (
+            auto: auto,
+          )
+        ),
+    ),
+    // Negative margin utilities
+    'negative-margin': (
+        responsive: true,
+        property: margin,
+        class: m,
+        values: $negative-spacers,
+      ),
+    'negative-margin-x': (
+      responsive: true,
+      property: margin-right margin-left,
+      class: mx,
       values: $negative-spacers,
     ),
-  'negative-margin-x': (
-    responsive: true,
-    property: margin-right margin-left,
-    class: mx,
-    values: $negative-spacers,
-  ),
-  'negative-margin-y': (
-    responsive: true,
-    property: margin-top margin-bottom,
-    class: my,
-    values: $negative-spacers,
-  ),
-  'negative-margin-top': (
-    responsive: true,
-    property: margin-top,
-    class: mt,
-    values: $negative-spacers,
-  ),
-  'negative-margin-end': (
-    responsive: true,
-    property: margin-right,
-    class: me,
-    values: $negative-spacers,
-  ),
-  'negative-margin-bottom': (
-    responsive: true,
-    property: margin-bottom,
-    class: mb,
-    values: $negative-spacers,
-  ),
-  'negative-margin-start': (
-    responsive: true,
-    property: margin-left,
-    class: ms,
-    values: $negative-spacers,
-  ),
-  // Padding utilities
-  'padding': (
+    'negative-margin-y': (
       responsive: true,
-      property: padding,
-      class: p,
+      property: margin-top margin-bottom,
+      class: my,
+      values: $negative-spacers,
+    ),
+    'negative-margin-top': (
+      responsive: true,
+      property: margin-top,
+      class: mt,
+      values: $negative-spacers,
+    ),
+    'negative-margin-end': (
+      responsive: true,
+      property: margin-right,
+      class: me,
+      values: $negative-spacers,
+    ),
+    'negative-margin-bottom': (
+      responsive: true,
+      property: margin-bottom,
+      class: mb,
+      values: $negative-spacers,
+    ),
+    'negative-margin-start': (
+      responsive: true,
+      property: margin-left,
+      class: ms,
+      values: $negative-spacers,
+    ),
+    // Padding utilities
+    'padding': (
+        responsive: true,
+        property: padding,
+        class: p,
+        values: $spacers,
+      ),
+    'padding-x': (
+      responsive: true,
+      property: padding-right padding-left,
+      class: px,
       values: $spacers,
     ),
-  'padding-x': (
-    responsive: true,
-    property: padding-right padding-left,
-    class: px,
-    values: $spacers,
-  ),
-  'padding-y': (
-    responsive: true,
-    property: padding-top padding-bottom,
-    class: py,
-    values: $spacers,
-  ),
-  'padding-top': (
-    responsive: true,
-    property: padding-top,
-    class: pt,
-    values: $spacers,
-  ),
-  'padding-end': (
-    responsive: true,
-    property: padding-right,
-    class: pe,
-    values: $spacers,
-  ),
-  'padding-bottom': (
-    responsive: true,
-    property: padding-bottom,
-    class: pb,
-    values: $spacers,
-  ),
-  'padding-start': (
-    responsive: true,
-    property: padding-left,
-    class: ps,
-    values: $spacers,
-  ),
-  // Gap utility
-  'gap': (
+    'padding-y': (
       responsive: true,
-      property: gap,
-      class: gap,
+      property: padding-top padding-bottom,
+      class: py,
       values: $spacers,
     ),
-  'row-gap': (
-    responsive: true,
-    property: row-gap,
-    class: row-gap,
-    values: $spacers,
-  ),
-  'column-gap': (
-    responsive: true,
-    property: column-gap,
-    class: column-gap,
-    values: $spacers,
-  ),
-  'bg-pattern': (
-    property: background,
-    class: bg-pattern,
-    values: (
-      transparent: #{url-svg('<svg width="16" height="16" viewBox="0 0 16 16"><rect x="0" y="0" width="8" height="8" fill="rgba(130, 130, 130, .1)" /><rect x="8" y="8" width="8" height="8" fill="rgba(130, 130, 130, .1)" /></svg>')} repeat center/16px 16px,
+    'padding-top': (
+      responsive: true,
+      property: padding-top,
+      class: pt,
+      values: $spacers,
     ),
-  ),
-  'bg-gradient': (
-    property: background,
-    class: bg-gradient,
-    values: (
-      null: linear-gradient(var(--#{$prefix}gradient-direction, to right), var(--#{$prefix}gradient-stops, var(--#{$prefix}gradient-from, transparent), var(--#{$prefix}gradient-to, transparent))) no-repeat,
+    'padding-end': (
+      responsive: true,
+      property: padding-right,
+      class: pe,
+      values: $spacers,
     ),
-  ),
-  'bg-blur': (
-    property: backdrop-filter,
-    class: bg-blur,
-    values: (
-      null: blur($backdrop-blur),
+    'padding-bottom': (
+      responsive: true,
+      property: padding-bottom,
+      class: pb,
+      values: $spacers,
     ),
-  ),
-  'bg-gradient-direction': (
-    property: --#{$prefix}gradient-direction,
-    class: bg-gradient,
-    values: (
-      to-t: to top,
-      to-te: to top right,
-      to-e: to right,
-      to-be: to bottom right,
-      to-b: to bottom,
-      to-bs: to bottom left,
-      to-s: to left,
-      to-ts: to top left,
+    'padding-start': (
+      responsive: true,
+      property: padding-left,
+      class: ps,
+      values: $spacers,
     ),
-  ),
-  'table-layout': (
-    property: table-layout,
-    class: table,
-    values: (
-      auto: auto,
-      fixed: fixed,
+    // Gap utility
+    'gap': (
+        responsive: true,
+        property: gap,
+        class: gap,
+        values: $spacers,
+      ),
+    'row-gap': (
+      responsive: true,
+      property: row-gap,
+      class: row-gap,
+      values: $spacers,
     ),
-  ),
-  // Text
-  'font-family': (
-      property: font-family,
-      class: font,
+    'column-gap': (
+      responsive: true,
+      property: column-gap,
+      class: column-gap,
+      values: $spacers,
+    ),
+    'bg-pattern': (
+      property: background,
+      class: bg-pattern,
       values: (
-        monospace: var(--#{$prefix}font-monospace),
+        transparent: #{url-svg('<svg width="16" height="16" viewBox="0 0 16 16"><rect x="0" y="0" width="8" height="8" fill="rgba(130, 130, 130, .1)" /><rect x="8" y="8" width="8" height="8" fill="rgba(130, 130, 130, .1)" /></svg>')} repeat center/16px 16px,
       ),
     ),
-  'font-size': (
-    property: font-size,
-    class: fs,
-    values: $font-sizes,
-  ),
-  'font-style': (
-    property: font-style,
-    class: fst,
-    values: italic normal,
-  ),
-  'font-weight': (
-    property: font-weight,
-    class: fw,
-    values: (
-      lighter: $font-weight-lighter,
-      light: $font-weight-light,
-      normal: $font-weight-normal,
-      medium: $font-weight-medium,
-      semibold: $font-weight-semibold,
-      bold: $font-weight-bold,
-      bolder: $font-weight-bolder,
-    ),
-  ),
-  'line-height': (
-    property: line-height,
-    class: lh,
-    values: (
-      1: 1,
-      sm: $line-height-sm,
-      base: $line-height-base,
-      lg: $line-height-lg,
-    ),
-  ),
-  'text-align': (
-    responsive: true,
-    property: text-align,
-    class: text,
-    values: (
-      start: left,
-      end: right,
-      center: center,
-    ),
-  ),
-  'text-decoration': (
-    property: text-decoration,
-    values: none underline line-through,
-  ),
-  'text-transform': (
-    property: text-transform,
-    class: text,
-    values: lowercase uppercase capitalize,
-  ),
-  'white-space': (
-    property: white-space,
-    class: text,
-    values: (
-      wrap: normal,
-      nowrap: nowrap,
-    ),
-  ),
-  'word-wrap': (
-    property: word-wrap word-break,
-    class: text,
-    values: (
-      break: break-word,
-    ),
-    rtl: false,
-  ),
-  'color': (
-    property: color,
-    class: text,
-    local-vars: (
-      'text-opacity': 1,
-    ),
-    values: map.merge(
-        $utilities-text-colors,
-        (
-          'muted': var(--#{$prefix}secondary-color),
-          // deprecated
-          'black-50': rgba($black, 0.5),
-          // deprecated
-          'white-50': rgba($white, 0.5),
-          // deprecated
-          'body-secondary': var(--#{$prefix}secondary-color),
-          'body-tertiary': var(--#{$prefix}tertiary-color),
-          'body-emphasis': var(--#{$prefix}emphasis-color),
-          'reset': inherit,
-        )
+    'bg-gradient': (
+      property: background,
+      class: bg-gradient,
+      values: (
+        null: linear-gradient(var(--#{$prefix}gradient-direction, to right), var(--#{$prefix}gradient-stops, var(--#{$prefix}gradient-from, transparent), var(--#{$prefix}gradient-to, transparent))) no-repeat,
       ),
-  ),
-  'text-opacity': (
-    css-var: true,
-    class: text-opacity,
-    values: (
-      25: 0.25,
-      50: 0.5,
-      75: 0.75,
-      100: 1,
     ),
-  ),
-  'text-color': (
-    property: color,
-    class: text,
-    values: $utilities-text-emphasis-colors,
-  ),
-  'link-opacity': (
-    css-var: true,
-    class: link-opacity,
-    state: hover,
-    values: (
-      10: 0.1,
-      25: 0.25,
-      50: 0.5,
-      75: 0.75,
-      100: 1,
-    ),
-  ),
-  'link-offset': (
-    property: text-underline-offset,
-    class: link-offset,
-    state: hover,
-    values: (
-      1: 0.125em,
-      2: 0.25em,
-      3: 0.375em,
-    ),
-  ),
-  'link-underline': (
-    property: text-decoration-color,
-    class: link-underline,
-    local-vars: (
-      'link-underline-opacity': 1,
-    ),
-    values: map.merge(
-        $utilities-links-underline,
-        (
-          null: rgba(var(--#{$prefix}link-color-rgb), var(--#{$prefix}link-underline-opacity, 1)),
-        )
+    'bg-blur': (
+      property: backdrop-filter,
+      class: bg-blur,
+      values: (
+        null: blur($backdrop-blur),
       ),
-  ),
-  'link-underline-opacity': (
-    css-var: true,
-    class: link-underline-opacity,
-    state: hover,
-    values: (
-      0: 0,
-      10: 0.1,
-      25: 0.25,
-      50: 0.5,
-      75: 0.75,
-      100: 1,
     ),
-  ),
-  'background-color': (
-    property: background-color,
-    class: bg,
-    local-vars: (
-      'bg-opacity': 1,
-    ),
-    values: map.merge(
-        $utilities-bg-colors,
-        (
-          'transparent': transparent,
-          'body-secondary': rgba(var(--#{$prefix}secondary-bg-rgb), var(--#{$prefix}bg-opacity)),
-          'body-tertiary': rgba(var(--#{$prefix}tertiary-bg-rgb), var(--#{$prefix}bg-opacity)),
-        )
+    'bg-gradient-direction': (
+      property: --#{$prefix}gradient-direction,
+      class: bg-gradient,
+      values: (
+        to-t: to top,
+        to-te: to top right,
+        to-e: to right,
+        to-be: to bottom right,
+        to-b: to bottom,
+        to-bs: to bottom left,
+        to-s: to left,
+        to-ts: to top left,
       ),
-  ),
-  'bg-opacity': (
-    css-var: true,
-    class: bg-opacity,
-    values: (
-      10: 0.1,
-      25: 0.25,
-      50: 0.5,
-      75: 0.75,
-      100: 1,
+    ),
+    'table-layout': (
+      property: table-layout,
+      class: table,
+      values: (
+        auto: auto,
+        fixed: fixed,
+      ),
+    ),
+    // Text
+    'font-family': (
+        property: font-family,
+        class: font,
+        values: (
+          monospace: var(--#{$prefix}font-monospace),
+        ),
+      ),
+    'font-size': (
+      property: font-size,
+      class: fs,
+      values: $font-sizes,
+    ),
+    'font-style': (
+      property: font-style,
+      class: fst,
+      values: italic normal,
+    ),
+    'font-weight': (
+      property: font-weight,
+      class: fw,
+      values: (
+        lighter: $font-weight-lighter,
+        light: $font-weight-light,
+        normal: $font-weight-normal,
+        medium: $font-weight-medium,
+        semibold: $font-weight-semibold,
+        bold: $font-weight-bold,
+        bolder: $font-weight-bolder,
+      ),
+    ),
+    'line-height': (
+      property: line-height,
+      class: lh,
+      values: (
+        1: 1,
+        sm: $line-height-sm,
+        base: $line-height-base,
+        lg: $line-height-lg,
+      ),
+    ),
+    'text-align': (
+      responsive: true,
+      property: text-align,
+      class: text,
+      values: (
+        start: left,
+        end: right,
+        center: center,
+      ),
+    ),
+    'text-decoration': (
+      property: text-decoration,
+      values: none underline line-through,
+    ),
+    'text-transform': (
+      property: text-transform,
+      class: text,
+      values: lowercase uppercase capitalize,
+    ),
+    'white-space': (
+      property: white-space,
+      class: text,
+      values: (
+        wrap: normal,
+        nowrap: nowrap,
+      ),
+    ),
+    'word-wrap': (
+      property: word-wrap word-break,
+      class: text,
+      values: (
+        break: break-word,
+      ),
+      rtl: false,
+    ),
+    'color': (
+      property: color,
+      class: text,
+      local-vars: (
+        'text-opacity': 1,
+      ),
+      values: map.merge(
+          $utilities-text-colors,
+          (
+            'muted': var(--#{$prefix}secondary-color),
+            // deprecated
+            'black-50': rgba($black, 0.5),
+            // deprecated
+            'white-50': rgba($white, 0.5),
+            // deprecated
+            'body-secondary': var(--#{$prefix}secondary-color),
+            'body-tertiary': var(--#{$prefix}tertiary-color),
+            'body-emphasis': var(--#{$prefix}emphasis-color),
+            'reset': inherit,
+          )
+        ),
+    ),
+    'text-opacity': (
+      css-var: true,
+      class: text-opacity,
+      values: (
+        25: 0.25,
+        50: 0.5,
+        75: 0.75,
+        100: 1,
+      ),
+    ),
+    'text-color': (
+      property: color,
+      class: text,
+      values: $utilities-text-emphasis-colors,
+    ),
+    'link-opacity': (
+      css-var: true,
+      class: link-opacity,
+      state: hover,
+      values: (
+        10: 0.1,
+        25: 0.25,
+        50: 0.5,
+        75: 0.75,
+        100: 1,
+      ),
+    ),
+    'link-offset': (
+      property: text-underline-offset,
+      class: link-offset,
+      state: hover,
+      values: (
+        1: 0.125em,
+        2: 0.25em,
+        3: 0.375em,
+      ),
+    ),
+    'link-underline': (
+      property: text-decoration-color,
+      class: link-underline,
+      local-vars: (
+        'link-underline-opacity': 1,
+      ),
+      values: map.merge(
+          $utilities-links-underline,
+          (
+            null: rgba(var(--#{$prefix}link-color-rgb), var(--#{$prefix}link-underline-opacity, 1)),
+          )
+        ),
+    ),
+    'link-underline-opacity': (
+      css-var: true,
+      class: link-underline-opacity,
+      state: hover,
+      values: (
+        0: 0,
+        10: 0.1,
+        25: 0.25,
+        50: 0.5,
+        75: 0.75,
+        100: 1,
+      ),
+    ),
+    'background-color': (
+      property: background-color,
+      class: bg,
+      local-vars: (
+        'bg-opacity': 1,
+      ),
+      values: map.merge(
+          $utilities-bg-colors,
+          (
+            'transparent': transparent,
+            'body-secondary': rgba(var(--#{$prefix}secondary-bg-rgb), var(--#{$prefix}bg-opacity)),
+            'body-tertiary': rgba(var(--#{$prefix}tertiary-bg-rgb), var(--#{$prefix}bg-opacity)),
+          )
+        ),
+    ),
+    'bg-opacity': (
+      css-var: true,
+      class: bg-opacity,
+      values: (
+        10: 0.1,
+        25: 0.25,
+        50: 0.5,
+        75: 0.75,
+        100: 1,
+      ),
+    ),
+    'subtle-background-color': (
+      property: background-color,
+      class: bg,
+      values: $utilities-bg-subtle,
+    ),
+    'gradient': (
+      property: background-image,
+      class: bg,
+      values: (
+        gradient: var(--#{$prefix}gradient),
+      ),
+    ),
+    'user-select': (
+      property: user-select,
+      values: all auto none,
+    ),
+    'pointer-events': (
+      property: pointer-events,
+      class: pe,
+      values: none auto,
+    ),
+    'rounded': (
+      property: border-radius,
+      class: rounded,
+      values: (
+        null: var(--#{$prefix}border-radius),
+        0: 0,
+        1: var(--#{$prefix}border-radius-sm),
+        2: var(--#{$prefix}border-radius),
+        3: var(--#{$prefix}border-radius-lg),
+        4: var(--#{$prefix}border-radius-xl),
+        5: var(--#{$prefix}border-radius-xxl),
+        circle: 50%,
+        pill: var(--#{$prefix}border-radius-pill),
+      ),
+    ),
+    'rounded-top': (
+      property: border-start-start-radius border-start-end-radius,
+      class: rounded-top,
+      values: (
+        null: var(--#{$prefix}border-radius),
+        0: 0,
+        1: var(--#{$prefix}border-radius-sm),
+        2: var(--#{$prefix}border-radius),
+        3: var(--#{$prefix}border-radius-lg),
+        4: var(--#{$prefix}border-radius-xl),
+        5: var(--#{$prefix}border-radius-xxl),
+        circle: 50%,
+        pill: var(--#{$prefix}border-radius-pill),
+      ),
+    ),
+    'rounded-end': (
+      property: border-end-end-radius border-end-start-radius,
+      class: rounded-end,
+      values: (
+        null: var(--#{$prefix}border-radius),
+        0: 0,
+        1: var(--#{$prefix}border-radius-sm),
+        2: var(--#{$prefix}border-radius),
+        3: var(--#{$prefix}border-radius-lg),
+        4: var(--#{$prefix}border-radius-xl),
+        5: var(--#{$prefix}border-radius-xxl),
+        circle: 50%,
+        pill: var(--#{$prefix}border-radius-pill),
+      ),
+    ),
+    'rounded-bottom': (
+      property: border-end-end-radius border-end-start-radius,
+      class: rounded-bottom,
+      values: (
+        null: var(--#{$prefix}border-radius),
+        0: 0,
+        1: var(--#{$prefix}border-radius-sm),
+        2: var(--#{$prefix}border-radius),
+        3: var(--#{$prefix}border-radius-lg),
+        4: var(--#{$prefix}border-radius-xl),
+        5: var(--#{$prefix}border-radius-xxl),
+        circle: 50%,
+        pill: var(--#{$prefix}border-radius-pill),
+      ),
+    ),
+    'rounded-start': (
+      property: border-start-start-radius border-start-end-radius,
+      class: rounded-start,
+      values: (
+        null: var(--#{$prefix}border-radius),
+        0: 0,
+        1: var(--#{$prefix}border-radius-sm),
+        2: var(--#{$prefix}border-radius),
+        3: var(--#{$prefix}border-radius-lg),
+        4: var(--#{$prefix}border-radius-xl),
+        5: var(--#{$prefix}border-radius-xxl),
+        circle: 50%,
+        pill: var(--#{$prefix}border-radius-pill),
+      ),
+    ),
+    'visibility': (
+      property: visibility,
+      class: null,
+      values: (
+        visible: visible,
+        invisible: hidden,
+      ),
+    ),
+    'z-index': (
+      property: z-index,
+      class: z,
+      values: $zindex-levels,
     ),
   ),
-  'subtle-background-color': (
-    property: background-color,
-    class: bg,
-    values: $utilities-bg-subtle,
-  ),
-  'gradient': (
-    property: background-image,
-    class: bg,
-    values: (
-      gradient: var(--#{$prefix}gradient),
-    ),
-  ),
-  'user-select': (
-    property: user-select,
-    values: all auto none,
-  ),
-  'pointer-events': (
-    property: pointer-events,
-    class: pe,
-    values: none auto,
-  ),
-  'rounded': (
-    property: border-radius,
-    class: rounded,
-    values: (
-      null: var(--#{$prefix}border-radius),
-      0: 0,
-      1: var(--#{$prefix}border-radius-sm),
-      2: var(--#{$prefix}border-radius),
-      3: var(--#{$prefix}border-radius-lg),
-      4: var(--#{$prefix}border-radius-xl),
-      5: var(--#{$prefix}border-radius-xxl),
-      circle: 50%,
-      pill: var(--#{$prefix}border-radius-pill),
-    ),
-  ),
-  'rounded-top': (
-    property: border-start-start-radius border-start-end-radius,
-    class: rounded-top,
-    values: (
-      null: var(--#{$prefix}border-radius),
-      0: 0,
-      1: var(--#{$prefix}border-radius-sm),
-      2: var(--#{$prefix}border-radius),
-      3: var(--#{$prefix}border-radius-lg),
-      4: var(--#{$prefix}border-radius-xl),
-      5: var(--#{$prefix}border-radius-xxl),
-      circle: 50%,
-      pill: var(--#{$prefix}border-radius-pill),
-    ),
-  ),
-  'rounded-end': (
-    property: border-end-end-radius border-end-start-radius,
-    class: rounded-end,
-    values: (
-      null: var(--#{$prefix}border-radius),
-      0: 0,
-      1: var(--#{$prefix}border-radius-sm),
-      2: var(--#{$prefix}border-radius),
-      3: var(--#{$prefix}border-radius-lg),
-      4: var(--#{$prefix}border-radius-xl),
-      5: var(--#{$prefix}border-radius-xxl),
-      circle: 50%,
-      pill: var(--#{$prefix}border-radius-pill),
-    ),
-  ),
-  'rounded-bottom': (
-    property: border-end-end-radius border-end-start-radius,
-    class: rounded-bottom,
-    values: (
-      null: var(--#{$prefix}border-radius),
-      0: 0,
-      1: var(--#{$prefix}border-radius-sm),
-      2: var(--#{$prefix}border-radius),
-      3: var(--#{$prefix}border-radius-lg),
-      4: var(--#{$prefix}border-radius-xl),
-      5: var(--#{$prefix}border-radius-xxl),
-      circle: 50%,
-      pill: var(--#{$prefix}border-radius-pill),
-    ),
-  ),
-  'rounded-start': (
-    property: border-start-start-radius border-start-end-radius,
-    class: rounded-start,
-    values: (
-      null: var(--#{$prefix}border-radius),
-      0: 0,
-      1: var(--#{$prefix}border-radius-sm),
-      2: var(--#{$prefix}border-radius),
-      3: var(--#{$prefix}border-radius-lg),
-      4: var(--#{$prefix}border-radius-xl),
-      5: var(--#{$prefix}border-radius-xxl),
-      circle: 50%,
-      pill: var(--#{$prefix}border-radius-pill),
-    ),
-  ),
-  'visibility': (
-    property: visibility,
-    class: null,
-    values: (
-      visible: visible,
-      invisible: hidden,
-    ),
-  ),
-  'z-index': (
-    property: z-index,
-    class: z,
-    values: $zindex-levels,
-  ),
-) !default;
+  $utilities
+);

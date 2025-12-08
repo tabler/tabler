@@ -1,12 +1,12 @@
 .alert {
   --#{$prefix}alert-variant-color: var(--#{$prefix}body-color);
-  --#{$prefix}alert-color: color-mix(in srgb, var(--#{$prefix}alert-variant-color) 50%, var(--#{$prefix}body-color));
+  --#{$prefix}alert-color: var(--#{$prefix}alert-variant-color);
   --#{$prefix}alert-bg: #{color-transparent(var(--#{$prefix}alert-variant-color), 0.16, var(--#{$prefix}bg-surface))};
   --#{$prefix}alert-padding-x: #{$alert-padding-x};
   --#{$prefix}alert-padding-y: #{$alert-padding-y};
   --#{$prefix}alert-margin-bottom: #{$alert-margin-bottom};
-  --#{$prefix}alert-border-color: #{color-transparent(var(--#{$prefix}alert-variant-color), 0.2,
-  var(--#{$prefix}bg-surface))};
+  --#{$prefix}alert-border-color: #{color-transparent(var(--#{$prefix}alert-variant-color), 0.2, var(--#{$prefix}bg-surface))};
+  --#{$prefix}alert-border-color: var(--#{$prefix}border-color);
   --#{$prefix}alert-border: var(--#{$prefix}border-width) solid var(--#{$prefix}alert-border-color);
   --#{$prefix}alert-border-radius: var(--#{$prefix}border-radius);
   --#{$prefix}alert-link-color: inherit;
@@ -70,15 +70,14 @@
   .btn-close {
     position: absolute;
     top: calc(var(--#{$prefix}alert-padding-x) / 2 - 1px);
-  inset-inline-end: calc(var(--#{$prefix}alert-padding-y) / 2 - 1px);
+    inset-inline-end: calc(var(--#{$prefix}alert-padding-y) / 2 - 1px);
     z-index: 1;
     padding: calc(var(--#{$prefix}alert-padding-y) * 1.25) var(--#{$prefix}alert-padding-x);
   }
 }
 
 .alert-important {
-  border-color: var(--#{$prefix}alert-color);
-  background-color: var(--#{$prefix}alert-color);
+  background-color: var(--#{$prefix}alert-variant-color);
   color: var(--#{$prefix}white);
 
   .alert-description {
