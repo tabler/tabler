@@ -9,7 +9,8 @@ import './src/tab'
 import './src/toast'
 import './src/sortable'
 
-export * as bootstrap from 'bootstrap'
-export * as tabler from './src/tabler'
+// Re-export everything from bootstrap.js (single source of truth)
+export * from './src/bootstrap'
 
-export { Alert, Modal, Toast, Tooltip, Tab, Button, Carousel, Collapse, Dropdown, Popover, ScrollSpy, Offcanvas } from 'bootstrap'
+// Re-export tabler namespace
+export * as tabler from './src/tabler'

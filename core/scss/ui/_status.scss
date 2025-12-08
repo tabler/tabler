@@ -1,3 +1,5 @@
+@use 'sass:map';
+
 @keyframes status-pulsate-main {
   40% {
     transform: scale(1.25, 1.25);
@@ -74,10 +76,10 @@
   color: var(--#{$prefix}body-color) !important;
 }
 
-@each $name, $color in $theme-colors {
+@each $name, $color in map.merge($theme-colors, $social-colors) {
   .status-#{$name} {
-    --#{$prefix}status-color: #{$color};
-    --#{$prefix}status-color-rgb: #{to-rgb($color)};
+    --#{$prefix}status-color: var(--#{$prefix}#{$name});
+    --#{$prefix}status-color-rgb: var(--#{$prefix}#{$name}-rgb);
   }
 }
 
