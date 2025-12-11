@@ -10,10 +10,11 @@ To create an offcanvas, add the `.offcanvas` class to a container element. You c
 
 {% capture html -%}
 <div
-  class="offcanvas offcanvas-start show"
+  class="offcanvas offcanvas-start"
   tabindex="-1"
   id="offcanvas"
   aria-labelledby="offcanvasLabel"
+  data-bs-scroll="true"
 >
   <div class="offcanvas-body">
     Content for the offcanvas goes here. You can place just about any Tabler component or custom
@@ -29,11 +30,12 @@ The offcanvas component is used to display a cookies banner. It is a great way t
 
 {% capture html -%}
 <div
-  class="offcanvas offcanvas-bottom h-auto show"
+  class="offcanvas offcanvas-bottom h-auto"
   tabindex="-1"
   id="offcanvasBottom"
   aria-modal="true"
   role="dialog"
+  data-bs-scroll="true"
 >
   <div class="offcanvas-body">
     <div class="container">
@@ -59,3 +61,11 @@ The offcanvas component is used to display a cookies banner. It is a great way t
 </div>
 {%- endcapture %}
 {% include "docs/example.html" html=html raw %}
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('[data-bs-scroll="true"]').forEach(el => {
+    new bootstrap.Offcanvas(el, { scroll: true }).show();
+  });
+});
+</script>

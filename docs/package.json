@@ -4,7 +4,8 @@
   "description": "",
   "private": true,
   "scripts": {
-    "build": "pnpm run clean && pnpm run js && pnpm run css && pnpm run html ",
+    "build": "pnpm run clean && pnpm run build-assets && pnpm run html",
+    "build-assets": "concurrently \"pnpm run js\" \"pnpm run css\"",
     "html": "eleventy",
     "js": "pnpm run js-compile && pnpm run js-minify",
     "js-compile": "rollup --config .build/rollup.config.mjs --sourcemap",

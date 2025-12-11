@@ -21,6 +21,24 @@
 {% capture script %}
 {% assign chart-type = data.type | default: 'bar' -%}
 {% removeemptylines %}
+
+<style>
+  :root {
+    {% if data.series %}
+      {% for serie in data.series %}
+        {% assign color = serie.color | default: data.color | default: 'primary' %}
+        {% assign opacity = serie.color-opacity | default: '100%' %}
+        --chart-{{ id }}-color-{{ forloop.index0 }}: color-mix(in srgb, transparent, var(--tblr-{{ color }}) {{ opacity }});
+      {% endfor %}
+    {% endif %}
+
+    {% if chart-type == 'area' %}
+      --chart-{{ id }}-fill-0: color-mix(in srgb, transparent, var(--tblr-primary) 16%);
+      --chart-{{ id }}-fill-1: color-mix(in srgb, transparent, var(--tblr-primary) 16%);
+    {% endif %}
+  }
+</style>
+
 <script>
 	document.addEventListener("DOMContentLoaded", function () {
 		{% if environment == 'development' %}
@@ -97,8 +115,8 @@
 			{% if chart-type == 'area' %}
 			fill: {
 				colors: [
-					'color-mix(in srgb, transparent, var(--tblr-primary) {% if chart-type == 'area' %}16%{% else %}100%{% endif %})',
-					'color-mix(in srgb, transparent, var(--tblr-primary) {% if chart-type == 'area' %}16%{% else %}80%{% endif %})',
+					'var(--chart-{{ id }}-fill-0)',
+					'var(--chart-{{ id }}-fill-1)',
 				],
 				type: 'solid'
 			},
@@ -234,9 +252,7 @@
 			{% endif %}
 
 			{% if data.series %}
-			colors: [{% for serie in data.series %}{% assign color = serie.color | default: data.color | default: 'primary' %}
-				'color-mix(in srgb, transparent, var(--tblr-{{ color }}) {% if serie.color-opacity %}{{ serie.color-opacity }}{% else %}100%{% endif %})'{% unless forloop.last %}, {% endunless %}{% endfor %}
-			],
+			colors: [{% for serie in data.series %}'var(--chart-{{ id }}-color-{{ forloop.index0 }})'{% unless forloop.last %}, {% endunless %}{% endfor %}],
 			{% endif %}
 
 			legend: {
