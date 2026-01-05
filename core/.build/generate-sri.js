@@ -1,9 +1,6 @@
 const crypto = require('node:crypto');
 const fs = require('node:fs');
 const path = require('node:path');
-const sh = require('shelljs');
-
-sh.config.fatal = true
 
 const configFile = path.join(__dirname, '../../shared/data/sri.json')
 
@@ -80,28 +77,35 @@ const files = [
 		file: 'dist/js/tabler-theme.min.js',
 		configPropertyName: 'js-theme'
 	},
-	// {
-	// 	file: 'dist/preview/css/demo.min.css',
-	// 	configPropertyName: 'demo-css'
-	// },
-	// {
-	// 	file: 'dist/preview/js/demo.min.js',
-	// 	configPropertyName: 'demo-js'
-	// },
 ]
 
-for (const { file, configPropertyName } of files) {
-	fs.readFile(path.join(__dirname, '..', file), 'utf8', (error, data) => {
-		if (error) {
+function generateSRI() {
+	const sriData = {}
+
+	for (const { file, configPropertyName } of files) {
+		try {
+			const filePath = path.join(__dirname, '..', file)
+			const data = fs.readFileSync(filePath, 'utf8')
+
+			const algorithm = 'sha384'
+			const hash = crypto.createHash(algorithm).update(data, 'utf8').digest('base64')
+			const integrity = `${algorithm}-${hash}`
+
+			console.log(`${configPropertyName}: ${integrity}`)
+
+			sriData[configPropertyName] = integrity
+		} catch (error) {
+			console.error(`Error processing ${file}:`, error.message)
 			throw error
 		}
+	}
 
-		const algorithm = 'sha384'
-		const hash = crypto.createHash(algorithm).update(data, 'utf8').digest('base64')
-		const integrity = `${algorithm}-${hash}`
+	fs.writeFileSync(configFile, JSON.stringify(sriData, null, 2) + '\n', 'utf8')
+}
 
-		console.log(`${configPropertyName}: ${integrity}`)
-
-		sh.sed('-i', new RegExp(`^(\\s+"${configPropertyName}":\\s+["'])\\S*(["'])`), `$1${integrity}$2`, configFile)
-	})
+try {
+	generateSRI()
+} catch (error) {
+	console.error('Failed to generate SRI:', error)
+	process.exit(1)
 }

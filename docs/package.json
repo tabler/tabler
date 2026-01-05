@@ -8,7 +8,7 @@
     "build-assets": "concurrently \"pnpm run js\" \"pnpm run css\"",
     "html": "eleventy",
     "js": "pnpm run js-compile && pnpm run js-minify",
-    "js-compile": "rollup --config .build/rollup.config.mjs --sourcemap",
+    "js-compile": "vite build --config .build/vite.config.mjs",
     "js-minify": "pnpm run js-minify-docs",
     "js-minify-docs": "terser --compress passes=2 --mangle --comments \"/^!/\" --source-map \"content=dist/js/docs.js.map,includeSources,url=docs.min.js.map\" --output dist/js/docs.min.js dist/js/docs.js",
     "css": "pnpm run css-compile && pnpm run css-prefix && pnpm run css-minify",
