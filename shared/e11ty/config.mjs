@@ -9,8 +9,6 @@ export function appConfig(eleventyConfig) {
 	eleventyConfig.addWatchTarget("../shared/**/*.html");
 	eleventyConfig.addWatchTarget("./pages/**/*.html");
 
-	console.log('ELEVENTY CONFIG additionalWatchTargets', eleventyConfig.directoryAssignments);
-
 	eleventyConfig.setLiquidOptions({
 		timezoneOffset: 0,
 		jekyllInclude: true,
