@@ -19,9 +19,7 @@ const bannerText = getBanner()
 
 // Try .ts first, fallback to .js for gradual migration
 const entryPath = path.resolve(__dirname, `../js/${entryFile}`)
-const entry = existsSync(`${entryPath}.ts`) 
-	? `${entryPath}.ts` 
-	: `${entryPath}.js`
+const entry = existsSync(`${entryPath}.ts`) ? `${entryPath}.ts` : `${entryPath}.js`
 
 export default createViteConfig({
 	entry: entry,
