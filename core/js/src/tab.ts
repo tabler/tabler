@@ -4,10 +4,10 @@ export const EnableActivationTabsFromLocationHash = (): void => {
   const locationHash: string = window.location.hash
 
   if (locationHash) {
-    const tabsList: HTMLElement[] = [].slice.call(document.querySelectorAll<HTMLElement>('[data-bs-toggle="tab"]'))
-    const matchedTabs = tabsList.filter((tab: HTMLElement) => tab.hash === locationHash)
+    const tabsList: HTMLAnchorElement[] = [].slice.call(document.querySelectorAll<HTMLAnchorElement>('[data-bs-toggle="tab"]'))
+    const matchedTabs = tabsList.filter((tab: HTMLAnchorElement) => tab.hash === locationHash)
 
-    matchedTabs.map((tab: HTMLElement) => {
+    matchedTabs.map((tab: HTMLAnchorElement) => {
       new Tab(tab).show()
     })
   }
