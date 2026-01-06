@@ -593,11 +593,11 @@ $border-active-color: var(--#{$prefix}gray-400) !default;
 $border-active-opacity: 44.8% !default;
 $border-active-color-translucent: color-mix(in srgb, var(--#{$prefix}gray-800) #{$border-active-opacity}, transparent) !default;
 
-$active-bg: color-mix(in srgb, var(--#{$prefix}primary) 4%, transparent) !default;
+$active-bg: color-transparent(var(--#{$prefix}primary), 0.04) !default;
 $active-color: var(--#{$prefix}primary) !default;
 $active-border-color: var(--#{$prefix}primary) !default;
 
-$hover-bg: color-mix(in srgb, var(--#{$prefix}secondary) 8%, transparent) !default;
+$hover-bg: color-transparent(var(--#{$prefix}secondary), 0.08) !default;
 
 $disabled-bg: var(--#{$prefix}bg-surface-secondary) !default;
 $disabled-color: color-transparent(var(--#{$prefix}body-color), 0.4) !default;
@@ -985,14 +985,14 @@ $aspect-ratios: (
 ) !default;
 
 // Shadows
-$box-shadow: rgba(var(--#{$prefix}body-color-rgb), 0.04) 0 2px 4px 0 !default;
+$box-shadow: color-transparent(var(--#{$prefix}body-color), 0.04) 0 2px 4px 0 !default;
 $box-shadow-sm: 0 0.125rem 0.25rem rgba($black, 0.075) !default;
 $box-shadow-lg: 0 1rem 3rem rgba($black, 0.175) !default;
 $box-shadow-transparent: 0 0 0 0 transparent !default;
 $box-shadow-border: inset 0 0 0 1px var(--#{$prefix}border-color-translucent) !default;
-$box-shadow-input: 0 1px 1px rgba(var(--#{$prefix}body-color-rgb), 0.06) !default;
+$box-shadow-input: 0 1px 1px color-transparent(var(--#{$prefix}body-color), 0.06) !default;
 $box-shadow-card: 0px 1px 3px rgba(0, 0, 0, 0.08) !default;
-$box-shadow-card-hover: rgba(var(--#{$prefix}body-color-rgb), 0.16) 0 2px 16px 0 !default;
+$box-shadow-card-hover: color-transparent(var(--#{$prefix}body-color), 0.16) 0 2px 16px 0 !default;
 $box-shadow-dropdown:
   0 16px 24px 2px rgba(0, 0, 0, 0.07),
   0 6px 30px 5px rgba(0, 0, 0, 0.06),
@@ -1516,7 +1516,7 @@ $navbar-light-disabled-color: var(--#{$prefix}disabled-color) !default;
 $navbar-light-active-bg: rgba(0, 0, 0, 0.2) !default;
 $navbar-light-icon-color: rgba($body-color, 0.75) !default;
 $navbar-light-toggler-icon-bg: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><path stroke='#{$navbar-light-icon-color}' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg>") !default;
-$navbar-light-toggler-border-color: rgba(var(--#{$prefix}emphasis-color-rgb), 0.15) !default;
+$navbar-light-toggler-border-color: color-transparent(var(--#{$prefix}emphasis-color), 0.15) !default;
 $navbar-light-brand-hover-color: $navbar-light-active-color !default;
 
 $navbar-dark-color: rgba($white, $text-secondary-opacity) !default;
@@ -1691,7 +1691,7 @@ $table-active-bg: var(--#{$prefix}active-bg) !default;
 
 $table-hover-color: $table-color !default;
 $table-hover-bg-factor: 0.075 !default;
-$table-hover-bg: rgba(var(--#{$prefix}emphasis-color-rgb), $table-hover-bg-factor) !default;
+$table-hover-bg: color-mix(in srgb, var(--#{$prefix}emphasis-color) #{percentage($table-hover-bg-factor)}, transparent) !default;
 
 $table-caption-color: var(--#{$prefix}secondary-color) !default;
 
@@ -1726,7 +1726,7 @@ $toast-box-shadow: var(--#{$prefix}box-shadow) !default;
 $toast-spacing: $container-padding-x !default;
 
 $toast-header-color: var(--#{$prefix}gray-500) !default;
-$toast-header-background-color: rgba(var(--#{$prefix}body-bg-rgb), 0.85) !default;
+$toast-header-background-color: color-transparent(var(--#{$prefix}body-bg), 0.85) !default;
 $toast-header-border-color: $toast-border-color !default;
 
 // Tracking
@@ -1955,7 +1955,7 @@ $form-validation-states: (
     'icon': $form-feedback-icon-valid,
     'tooltip-color': #fff,
     'tooltip-bg-color': var(--#{$prefix}success),
-    'focus-box-shadow': 0 0 $input-btn-focus-blur $input-focus-width rgba(var(--#{$prefix}success-rgb), $input-btn-focus-color-opacity),
+    'focus-box-shadow': 0 0 $input-btn-focus-blur $input-focus-width color-mix(in srgb, var(--#{$prefix}success) #{percentage($input-btn-focus-color-opacity)}, transparent),
     'border-color': var(--#{$prefix}form-valid-border-color),
   ),
   'invalid': (
@@ -1963,7 +1963,7 @@ $form-validation-states: (
     'icon': $form-feedback-icon-invalid,
     'tooltip-color': #fff,
     'tooltip-bg-color': var(--#{$prefix}danger),
-    'focus-box-shadow': 0 0 $input-btn-focus-blur $input-focus-width rgba(var(--#{$prefix}danger-rgb), $input-btn-focus-color-opacity),
+    'focus-box-shadow': 0 0 $input-btn-focus-blur $input-focus-width color-mix(in srgb, var(--#{$prefix}danger) #{percentage($input-btn-focus-color-opacity)}, transparent),
     'border-color': var(--#{$prefix}form-invalid-border-color),
   ),
 ) !default;

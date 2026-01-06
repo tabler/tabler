@@ -746,7 +746,7 @@ $utilities: map-merge(
       values: map.merge(
           $utilities-links-underline,
           (
-            null: rgba(var(--#{$prefix}link-color-rgb), var(--#{$prefix}link-underline-opacity, 1)),
+            null: color-mix(in srgb, var(--#{$prefix}link-color) calc(var(--#{$prefix}link-underline-opacity, 1) * 100%), transparent),
           )
         ),
     ),
@@ -773,8 +773,8 @@ $utilities: map-merge(
           $utilities-bg-colors,
           (
             'transparent': transparent,
-            'body-secondary': rgba(var(--#{$prefix}secondary-bg-rgb), var(--#{$prefix}bg-opacity)),
-            'body-tertiary': rgba(var(--#{$prefix}tertiary-bg-rgb), var(--#{$prefix}bg-opacity)),
+            'body-secondary': color-mix(in srgb, var(--#{$prefix}secondary-bg) calc(var(--#{$prefix}bg-opacity) * 100%), transparent),
+            'body-tertiary': color-mix(in srgb, var(--#{$prefix}tertiary-bg) calc(var(--#{$prefix}bg-opacity) * 100%), transparent),
           )
         ),
     ),
