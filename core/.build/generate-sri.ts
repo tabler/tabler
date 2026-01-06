@@ -1,10 +1,18 @@
-const crypto = require('node:crypto');
-const fs = require('node:fs');
-const path = require('node:path');
+import * as crypto from 'node:crypto'
+import { readFileSync, writeFileSync } from 'node:fs'
+import path from 'node:path'
+import { fileURLToPath } from 'node:url'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const configFile = path.join(__dirname, '../../shared/data/sri.json')
 
-const files = [
+interface FileConfig {
+	file: string
+	configPropertyName: string
+}
+
+const files: FileConfig[] = [
 	{
 		file: 'dist/css/tabler.min.css',
 		configPropertyName: 'css'
@@ -79,13 +87,13 @@ const files = [
 	},
 ]
 
-function generateSRI() {
-	const sriData = {}
+function generateSRI(): void {
+	const sriData: Record<string, string> = {}
 
 	for (const { file, configPropertyName } of files) {
 		try {
 			const filePath = path.join(__dirname, '..', file)
-			const data = fs.readFileSync(filePath, 'utf8')
+			const data = readFileSync(filePath, 'utf8')
 
 			const algorithm = 'sha384'
 			const hash = crypto.createHash(algorithm).update(data, 'utf8').digest('base64')
@@ -95,12 +103,13 @@ function generateSRI() {
 
 			sriData[configPropertyName] = integrity
 		} catch (error) {
-			console.error(`Error processing ${file}:`, error.message)
+			const errorMessage = error instanceof Error ? error.message : String(error)
+			console.error(`Error processing ${file}:`, errorMessage)
 			throw error
 		}
 	}
 
-	fs.writeFileSync(configFile, JSON.stringify(sriData, null, 2) + '\n', 'utf8')
+	writeFileSync(configFile, JSON.stringify(sriData, null, 2) + '\n', 'utf8')
 }
 
 try {
@@ -109,3 +118,4 @@ try {
 	console.error('Failed to generate SRI:', error)
 	process.exit(1)
 }
+

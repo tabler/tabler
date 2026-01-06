@@ -1,10 +1,8 @@
 #!/usr/bin/env node
 
-'use strict'
-
-import { existsSync, mkdirSync } from 'fs'
+import { existsSync, mkdirSync } from 'node:fs'
 import { copySync } from 'fs-extra/esm'
-import { fileURLToPath } from 'url'
+import { fileURLToPath } from 'node:url'
 import { join, dirname } from 'node:path'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
@@ -25,11 +23,11 @@ if (existsSync(monoFrom)) {
 	if (!existsSync(monoTo)) {
 		mkdirSync(monoTo, { recursive: true })
 	}
-	
+
 	copySync(monoFrom, monoTo, {
 		dereference: true,
 	})
-	
+
 	console.log(`Successfully copied geist-mono fonts`)
 } else {
 	console.warn(`Warning: geist-mono fonts not found at ${monoFrom}`)
@@ -43,11 +41,11 @@ if (existsSync(sansFrom)) {
 	if (!existsSync(sansTo)) {
 		mkdirSync(sansTo, { recursive: true })
 	}
-	
+
 	copySync(sansFrom, sansTo, {
 		dereference: true,
 	})
-	
+
 	console.log(`Successfully copied geist-sans fonts`)
 } else {
 	console.warn(`Warning: geist-sans fonts not found at ${sansFrom}`)
