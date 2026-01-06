@@ -8,7 +8,7 @@ popoverTriggerList.map(function (popoverTriggerEl: HTMLElement) {
   const options = {
     delay: { show: 50, hide: 50 },
     html: popoverTriggerEl.getAttribute('data-bs-html') === 'true',
-    placement: (popoverTriggerEl.getAttribute('data-bs-placement') ?? 'auto') as string,
+    placement: popoverTriggerEl.getAttribute('data-bs-placement') ?? 'auto',
   }
   return new Popover(popoverTriggerEl, options)
 })
