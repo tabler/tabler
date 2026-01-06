@@ -1,3 +1,9 @@
+import { readFileSync, existsSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+import { join, dirname } from 'node:path';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+
 export function appFilters(eleventyConfig) {
 	/**
 	 * Filters
@@ -195,10 +201,183 @@ export function appFilters(eleventyConfig) {
 		return "now";
 	})
 
+	function buildCollectionTree(flatData) {
+		const tree = [];
+		const lookup = {};
+
+		flatData
+			.filter(item => item.url !== '/')
+			.forEach(item => {
+				lookup[item.url] = { ...item, children: [] };
+			});
+
+		flatData.forEach(item => {
+			const parts = item.url.split('/').filter(Boolean);
+			if (parts.length === 1) {
+				tree.push(lookup[item.url]);
+			} else {
+				const parentUrl = '/' + parts.slice(0, -1).join('/') + '/';
+				if (lookup[parentUrl]) {
+					lookup[parentUrl].children.push(lookup[item.url]);
+				} else {
+					tree.push(lookup[item.url]);
+				}
+			}
+		});
+
+		return tree;
+	}
+
+	eleventyConfig.addFilter("collection-tree", function (collection) {
+		const a = collection.map(item => {
+			return {
+				data: item.data,
+				page: item.page,
+				url: item.url,
+				children: []
+			}
+		}).sort((a, b) => {
+			const orderA = a.data.order ?? 999;
+			const orderB = b.data.order ?? 999;
+
+			if (orderA !== orderB) {
+				return orderA - orderB;
+			}
+
+			const titleA = a.data.title ?? '';
+			const titleB = b.data.title ?? '';
+
+			return titleA.localeCompare(titleB);
+		});
+
+		return buildCollectionTree(a);
+	});
+
+	eleventyConfig.addFilter("collection-children", function (collection, page) {
+		const url = page.url.split('/').filter(Boolean).join('/');
+
+		const filteredCollection = collection.filter(item => {
+			const parts = item.url.split('/').filter(Boolean);
+			return parts.length > 1 && parts.slice(0, -1).join('/') === url;
+		});
+
+		return filteredCollection.sort((a, b) => {
+			return (a.data?.order || 999) - (b.data?.order || 999);
+		});
+	});
+
+	eleventyConfig.addFilter("next-prev", function (collection, page) {
+		const items = collection
+			.filter(item => {
+				const parts = item.url.split('/').filter(Boolean);
+				return parts.length > 1 && parts.slice(0, -1).join('/') === page.url.split('/').filter(Boolean).slice(0, -1).join('/');
+			})
+			.sort((a, b) => {
+				return a.data.title.localeCompare(b.data.title);
+			})
+			.sort((a, b) => {
+				return (a.data?.order || 999) - (b.data?.order || 999);
+			});
+		const index = items.findIndex(item => item.url === page.url);
+
+		const prevPost = index > 0 ? items[index - 1] : null;
+		const nextPost = index < items.length - 1 ? items[index + 1] : null;
+
+		return {
+			prev: prevPost ? prevPost : null,
+			next: nextPost ? nextPost : null,
+		};
+	});
+
+	const generateUniqueId = (text) => {
+		let id = text
+			.replace(/<[^>]+>/g, "")
+			.replace(/\s/g, "-")
+			.replace(/[^\w-]+/g, "")
+			.replace(/--+/g, "-")
+			.replace(/^-+|-+$/g, "")
+			.toLowerCase();
+		
+		// Ensure ID doesn't start with a number (invalid HTML)
+		if (/^[0-9]/.test(id)) {
+			id = "h" + id;
+		}
+		
+		return id;
+	}
+
+	eleventyConfig.addFilter("headings-id", function (content) {
+		return content.replace(/<h([1-6])>([^<]+)<\/h\1>/g, (match, level, text) => {
+			const headingId = generateUniqueId(text);
+
+			return `<h${level} id="${headingId}">${text}</h${level}>`;
+		});
+	})
+
+	eleventyConfig.addFilter("toc", function (name) {
+		const toc = [];
+
+		const contentWithoutExamples = name.replace(/<!--EXAMPLE-->[\s\S]*?<!--\/EXAMPLE-->/g, '');
+		const headings = contentWithoutExamples.match(/<h([23])>([^<]+)<\/h\1>/g);
+
+		if (headings) {
+			headings.forEach(heading => {
+				const level = parseInt(heading.match(/<h([1-6])>/)[1]);
+				const text = heading.replace(/<[^>]+>/g, "");
+				const id = generateUniqueId(text);
+
+				toc.push({ level, text, id });
+			});
+		}
+
+		return toc;
+	})
+
+	eleventyConfig.addFilter("remove-href", function (content) {
+		return content.replace(/href="#"/g, 'href="javascript:void(0)"');
+	})
+
 
 	/**
 	 * Shortcodes
 	 */
+	eleventyConfig.addShortcode('scss-docs', function (name, filename) {
+		const file = join(__dirname, `../../core/scss/${filename}`)
+
+		if (existsSync(file)) {
+			const content = readFileSync(file, 'utf8');
+			const regex = new RegExp(`\/\/\\sscss-docs-start\\s${name}\\n(.+?)\/\/\\sscss-docs-end`, 'gs')
+
+			const m = content.matchAll(regex)
+
+			if (m) {
+				const matches = [...m]
+
+				if (matches[0] && matches[0][1]) {
+					const lines = matches[0][1].split('\n');
+
+					// Find minimum number of leading spaces in non-empty lines
+					const minIndent = lines
+						.filter(line => line.trim().length > 0)
+						.reduce((min, line) => {
+							const match = line.match(/^(\s*)/);
+							const leadingSpaces = match ? match[1].length : 0;
+							return Math.min(min, leadingSpaces);
+						}, Infinity);
+
+					// Remove that many spaces from the start of each line
+					const result = lines.map(line => line.startsWith(' '.repeat(minIndent))
+						? line.slice(minIndent)
+						: line).join('\n');
+
+					return "\n```scss\n" + result.trimRight() + "\n```\n"
+				}
+			}
+		}
+
+		return ''
+	})
+
 	const tags = ["capture_global", "endcapture_global", "highlight", "endhighlight"];
 	tags.forEach(tag => {
 		eleventyConfig.addLiquidTag(tag, function (liquidEngine) {
