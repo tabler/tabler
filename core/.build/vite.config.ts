@@ -2,7 +2,7 @@ import path from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
 import { existsSync } from 'node:fs'
-import { createViteConfig } from '../../.build/vite.config.helper.mjs'
+import { createViteConfig } from '../../.build/vite.config.helper'
 import getBanner from '../../shared/banner/index.mjs'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))

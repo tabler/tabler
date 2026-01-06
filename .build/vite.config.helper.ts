@@ -1,18 +1,19 @@
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { defineConfig } from 'vite'
+import { defineConfig, type UserConfig } from 'vite'
+
+interface CreateViteConfigOptions {
+	entry: string
+	name?: string
+	fileName: string | ((format: string) => string)
+	formats: ('es' | 'umd' | 'iife' | 'cjs')[]
+	outDir: string
+	banner?: string
+	minify?: boolean | 'esbuild'
+}
 
 /**
  * Creates a Vite configuration for building libraries
- * @param {Object} options - Configuration options
- * @param {string} options.entry - Path to the entry file
- * @param {string|undefined} options.name - Library name (undefined for ESM)
- * @param {string|Function} options.fileName - Output file name or function returning it
- * @param {string[]} options.formats - Output formats (e.g., ['es'], ['umd'], ['es', 'umd'])
- * @param {string} options.outDir - Output directory path
- * @param {string|undefined} options.banner - Optional banner text to add to output
- * @param {boolean|string} options.minify - Minification option (false, true, or 'esbuild'). Default: false
- * @returns {import('vite').UserConfig} Vite configuration
  */
 export function createViteConfig({
 	entry,
@@ -22,8 +23,13 @@ export function createViteConfig({
 	outDir,
 	banner,
 	minify = false
-}) {
-	const rollupOutput = {
+}: CreateViteConfigOptions): UserConfig {
+	const rollupOutput: {
+		generatedCode: {
+			constBindings: boolean
+		}
+		banner?: string
+	} = {
 		generatedCode: {
 			constBindings: true
 		}
@@ -34,7 +40,7 @@ export function createViteConfig({
 		rollupOutput.banner = banner
 	}
 
-	const config = {
+	const config: UserConfig = {
 		build: {
 			lib: {
 				entry: path.resolve(entry),
