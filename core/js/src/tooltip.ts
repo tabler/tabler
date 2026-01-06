@@ -5,7 +5,7 @@ tooltipTriggerList.map(function (tooltipTriggerEl: HTMLElement) {
   const options = {
     delay: { show: 50, hide: 50 },
     html: tooltipTriggerEl.getAttribute('data-bs-html') === 'true',
-    placement: (tooltipTriggerEl.getAttribute('data-bs-placement') ?? 'auto') as string,
+    placement: tooltipTriggerEl.getAttribute('data-bs-placement') ?? 'auto',
   }
   return new Tooltip(tooltipTriggerEl, options)
 })
