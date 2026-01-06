@@ -2,11 +2,11 @@
 // Initializes Sortable on elements marked with [data-sortable]
 // Allows options via JSON in data attribute: data-sortable='{"animation":150}'
 
-const sortableElements = document.querySelectorAll('[data-sortable]')
+const sortableElements: NodeListOf<HTMLElement> = document.querySelectorAll<HTMLElement>('[data-sortable]')
 
 if (sortableElements.length) {
-  sortableElements.forEach(function (element) {
-    let options = {}
+  sortableElements.forEach(function (element: HTMLElement) {
+    let options: Record<string, any> = {}
 
     try {
       const rawOptions = element.getAttribute('data-sortable')

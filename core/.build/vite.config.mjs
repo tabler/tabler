@@ -1,6 +1,7 @@
 import path from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
+import { existsSync } from 'node:fs'
 import { createViteConfig } from '../../.build/vite.config.helper.mjs'
 import getBanner from '../../shared/banner/index.mjs'
 
@@ -15,8 +16,14 @@ const libraryName = `tabler${THEME ? '-theme' : ''}`
 
 const bannerText = getBanner()
 
+// Try .ts first, fallback to .js for gradual migration
+const entryPath = path.resolve(__dirname, `../js/${entryFile}`)
+const entry = existsSync(`${entryPath}.ts`) 
+	? `${entryPath}.ts` 
+	: `${entryPath}.js`
+
 export default createViteConfig({
-	entry: path.resolve(__dirname, `../js/${entryFile}.js`),
+	entry: entry,
 	name: ESM ? undefined : libraryName,
 	fileName: () => `${destinationFile}.js`,
 	formats: [ESM ? 'es' : 'umd'],

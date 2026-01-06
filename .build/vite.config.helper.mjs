@@ -53,7 +53,13 @@ export function createViteConfig({
 			'process.env.NODE_ENV': '"production"'
 		},
 		esbuild: {
-			target: 'es2015'
+			target: 'es2015',
+			tsconfigRaw: {
+				compilerOptions: {
+					module: 'ES2020',
+					target: 'ES2015'
+				}
+			}
 		}
 	})
 }

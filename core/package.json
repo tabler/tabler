@@ -36,11 +36,12 @@
     "import-fonts": "node .build/import-fonts.mjs",
     "watch": "concurrently \"pnpm run watch-css\" \"pnpm run watch-js\"",
     "watch-css": "nodemon --watch scss/ --ext scss --exec \"pnpm run css-compile && pnpm run css-prefix\"",
-    "watch-js": "nodemon --watch js/ --ext js --exec \"pnpm run js-compile\"",
+    "watch-js": "nodemon --watch js/ --ext ts,js --exec \"pnpm run js-compile\"",
     "bundlewatch": "bundlewatch",
     "generate-sri": "node .build/generate-sri.js",
-    "format:check": "prettier --check \"scss/**/*.scss\" \"js/**/*.js\" --cache",
-    "format:write": "prettier --write \"scss/**/*.scss\" \"js/**/*.js\" --cache"
+    "format:check": "prettier --check \"scss/**/*.scss\" \"js/**/*.{js,ts}\" --cache",
+    "format:write": "prettier --write \"scss/**/*.scss\" \"js/**/*.{js,ts}\" --cache",
+    "type-check": "tsc --noEmit"
   },
   "repository": {
     "type": "git",
@@ -70,7 +71,7 @@
   "files": [
     "docs/**/*",
     "dist/**/*",
-    "js/**/*.{js,map}",
+    "js/**/*.{ts,js,map}",
     "img/**/*.{svg}",
     "scss/**/*.scss",
     "libs.json"
@@ -156,6 +157,7 @@
   "devDependencies": {
     "@hotwired/turbo": "^8.0.18",
     "@melloware/coloris": "^0.25.0",
+    "@types/node": "^22.0.0",
     "apexcharts": "^5.3.6",
     "autosize": "^6.0.1",
     "choices.js": "^11.1.0",
@@ -179,6 +181,7 @@
     "star-rating.js": "^4.3.1",
     "tom-select": "^2.4.3",
     "typed.js": "^2.1.0",
+    "typescript": "^5.9.3",
     "driver.js": "^1.0.0"
   },
   "directories": {

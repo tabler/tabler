@@ -9,7 +9,7 @@ import './src/tab'
 import './src/toast'
 import './src/sortable'
 
-// Re-export everything from bootstrap.js (single source of truth)
+// Re-export everything from bootstrap.ts (single source of truth)
 export * from './src/bootstrap'
 
 // Re-export tabler namespace
