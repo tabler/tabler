@@ -14,6 +14,6 @@ export default createViteConfig({
 	formats: ['es'],
 	outDir: path.resolve(__dirname, '../dist/js'),
 	banner: undefined,
-	minify: MINIFY ? 'terser' : false
+	minify: MINIFY
 })
 

@@ -11,7 +11,7 @@ import { defineConfig } from 'vite'
  * @param {string[]} options.formats - Output formats (e.g., ['es'], ['umd'], ['es', 'umd'])
  * @param {string} options.outDir - Output directory path
  * @param {string|undefined} options.banner - Optional banner text to add to output
- * @param {boolean|string} options.minify - Minification option (false, 'esbuild', or 'terser'). Default: false
+ * @param {boolean|string} options.minify - Minification option (false, true, or 'esbuild'). Default: false
  * @returns {import('vite').UserConfig} Vite configuration
  */
 export function createViteConfig({
@@ -61,19 +61,6 @@ export function createViteConfig({
 					module: 'ES2020',
 					target: 'ES2015'
 				}
-			}
-		}
-	}
-
-	// Configure terser options when using terser for minification
-	if (minify === 'terser') {
-		config.build.terserOptions = {
-			compress: {
-				passes: 2
-			},
-			mangle: true,
-			format: {
-				comments: /^!/
 			}
 		}
 	}

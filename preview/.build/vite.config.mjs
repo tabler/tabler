@@ -16,6 +16,6 @@ export default createViteConfig({
 	formats: ['es'],
 	outDir: path.resolve(__dirname, '../dist/preview/js'),
 	banner: bannerText,
-	minify: MINIFY ? 'terser' : false
+	minify: MINIFY
 })
 

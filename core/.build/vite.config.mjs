@@ -28,6 +28,6 @@ export default createViteConfig({
 	formats: [ESM ? 'es' : 'umd'],
 	outDir: path.resolve(__dirname, '../dist/js'),
 	banner: bannerText,
-	minify: MINIFY ? 'terser' : false
+	minify: MINIFY ? true : false
 })
 
