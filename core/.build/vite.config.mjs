@@ -10,6 +10,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ESM = process.env.ESM === 'true'
 const THEME = process.env.THEME === 'true'
 
+const MINIFY = process.env.MINIFY === 'true'
 const destinationFile = `tabler${THEME ? '-theme' : ''}${ESM ? '.esm' : ''}`
 const entryFile = `tabler${THEME ? '-theme' : ''}`
 const libraryName = `tabler${THEME ? '-theme' : ''}`
@@ -25,9 +26,10 @@ const entry = existsSync(`${entryPath}.ts`)
 export default createViteConfig({
 	entry: entry,
 	name: ESM ? undefined : libraryName,
-	fileName: () => `${destinationFile}.js`,
+	fileName: () => MINIFY ? `${destinationFile}.min.js` : `${destinationFile}.js`,
 	formats: [ESM ? 'es' : 'umd'],
 	outDir: path.resolve(__dirname, '../dist/js'),
-	banner: bannerText
+	banner: bannerText,
+	minify: MINIFY ? 'terser' : false
 })
 

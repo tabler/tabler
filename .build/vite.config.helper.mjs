@@ -11,6 +11,7 @@ import { defineConfig } from 'vite'
  * @param {string[]} options.formats - Output formats (e.g., ['es'], ['umd'], ['es', 'umd'])
  * @param {string} options.outDir - Output directory path
  * @param {string|undefined} options.banner - Optional banner text to add to output
+ * @param {boolean|string} options.minify - Minification option (false, 'esbuild', or 'terser'). Default: false
  * @returns {import('vite').UserConfig} Vite configuration
  */
 export function createViteConfig({
@@ -19,7 +20,8 @@ export function createViteConfig({
 	fileName,
 	formats,
 	outDir,
-	banner
+	banner,
+	minify = false
 }) {
 	const rollupOutput = {
 		generatedCode: {
@@ -32,7 +34,7 @@ export function createViteConfig({
 		rollupOutput.banner = banner
 	}
 
-	return defineConfig({
+	const config = {
 		build: {
 			lib: {
 				entry: path.resolve(entry),
@@ -47,7 +49,7 @@ export function createViteConfig({
 				output: rollupOutput
 			},
 			target: 'es2015',
-			minify: false // Minification is done by terser in a separate step
+			minify: minify
 		},
 		define: {
 			'process.env.NODE_ENV': '"production"'
@@ -61,6 +63,21 @@ export function createViteConfig({
 				}
 			}
 		}
-	})
+	}
+
+	// Configure terser options when using terser for minification
+	if (minify === 'terser') {
+		config.build.terserOptions = {
+			compress: {
+				passes: 2
+			},
+			mangle: true,
+			format: {
+				comments: /^!/
+			}
+		}
+	}
+
+	return defineConfig(config)
 }
 
