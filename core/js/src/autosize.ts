@@ -4,7 +4,7 @@ const autosizeElements: NodeListOf<HTMLElement> = document.querySelectorAll<HTML
 if (autosizeElements.length) {
   autosizeElements.forEach(function (element: HTMLElement) {
     if (window.autosize) {
-      window.autosize(element as HTMLElement | HTMLTextAreaElement)
+      window.autosize(element)
     }
   })
 }
