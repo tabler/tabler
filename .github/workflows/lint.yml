@@ -1,4 +1,4 @@
-name: Test build
+name: Lint
 
 on:
   pull_request: null
@@ -10,19 +10,11 @@ permissions:
   contents: read
 
 jobs:
-  test:
+  lint:
     runs-on: ubuntu-latest
     steps:
       - name: Clone repository
         uses: actions/checkout@v6
-
-      - name: Cache turbo build setup
-        uses: actions/cache@v5
-        with: 
-          path: .turbo
-          key: ${{ runner.os }}-turbo-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-turbo-
 
       - name: Install PNPM
         uses: pnpm/action-setup@v4
@@ -33,10 +25,8 @@ jobs:
           node-version: "${{ env.NODE }}"
           cache: 'pnpm'
 
-      - run: node --version
-
       - name: Install pnpm dependencies
         run: pnpm install
 
-      - name: Build
-        run: pnpm run build
+      - name: Lint Markdown
+        run: pnpm run lint
