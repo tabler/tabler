@@ -1,10 +1,12 @@
 .alert {
-  --#{$prefix}alert-color: var(--#{$prefix}body-color);
-  --#{$prefix}alert-bg: #{color-transparent(var(--#{$prefix}alert-color), 0.1)};
+  --#{$prefix}alert-variant-color: var(--#{$prefix}body-color);
+  --#{$prefix}alert-color: var(--#{$prefix}alert-variant-color);
+  --#{$prefix}alert-bg: #{color-transparent(var(--#{$prefix}alert-variant-color), 0.16, var(--#{$prefix}bg-surface))};
   --#{$prefix}alert-padding-x: #{$alert-padding-x};
   --#{$prefix}alert-padding-y: #{$alert-padding-y};
   --#{$prefix}alert-margin-bottom: #{$alert-margin-bottom};
-  --#{$prefix}alert-border-color: #{color-transparent(var(--#{$prefix}alert-color), 0.2)};
+  --#{$prefix}alert-border-color: #{color-transparent(var(--#{$prefix}alert-variant-color), 0.2, var(--#{$prefix}bg-surface))};
+  --#{$prefix}alert-border-color: var(--#{$prefix}border-color);
   --#{$prefix}alert-border: var(--#{$prefix}border-width) solid var(--#{$prefix}alert-border-color);
   --#{$prefix}alert-border-radius: var(--#{$prefix}border-radius);
   --#{$prefix}alert-link-color: inherit;
@@ -16,6 +18,8 @@
   background-color: color-mix(in srgb, var(--#{$prefix}alert-bg), var(--#{$prefix}bg-surface));
   border-radius: var(--#{$prefix}alert-border-radius);
   border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}alert-border-color);
+  box-shadow: var(--#{$prefix}box-shadow);
+  color: var(--#{$prefix}alert-color);
   display: flex;
   flex-direction: row;
   gap: 1rem;
@@ -66,15 +70,14 @@
   .btn-close {
     position: absolute;
     top: calc(var(--#{$prefix}alert-padding-x) / 2 - 1px);
-  inset-inline-end: calc(var(--#{$prefix}alert-padding-y) / 2 - 1px);
+    inset-inline-end: calc(var(--#{$prefix}alert-padding-y) / 2 - 1px);
     z-index: 1;
     padding: calc(var(--#{$prefix}alert-padding-y) * 1.25) var(--#{$prefix}alert-padding-x);
   }
 }
 
 .alert-important {
-  border-color: var(--#{$prefix}alert-color);
-  background-color: var(--#{$prefix}alert-color);
+  background-color: var(--#{$prefix}alert-variant-color);
   color: var(--#{$prefix}white);
 
   .alert-description {
@@ -93,6 +96,6 @@
 
 @each $name, $color in $theme-colors {
   .alert-#{$name} {
-    --#{$prefix}alert-color: var(--#{$prefix}#{$name});
+    --#{$prefix}alert-variant-color: var(--#{$prefix}#{$name});
   }
 }

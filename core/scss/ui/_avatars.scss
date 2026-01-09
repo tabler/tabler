@@ -9,6 +9,7 @@
   --#{$prefix}avatar-font-size: #{$avatar-font-size};
   --#{$prefix}avatar-icon-size: #{$avatar-icon-size};
   --#{$prefix}avatar-brand-size: #{$avatar-brand-size};
+  --#{$prefix}avatar-border-radius: #{$avatar-border-radius};
   position: relative;
   width: var(--#{$prefix}avatar-size);
   height: var(--#{$prefix}avatar-size);
@@ -24,7 +25,7 @@
   vertical-align: bottom;
   user-select: none;
   background: var(--#{$prefix}avatar-bg) no-repeat center/cover;
-  border-radius: $avatar-border-radius;
+  border-radius: var(--#{$prefix}avatar-border-radius);
   box-shadow: var(--#{$prefix}avatar-box-shadow);
   transition:
     color $transition-time,
@@ -38,7 +39,7 @@
 
   .badge {
     position: absolute;
-  inset-inline-end: 0;
+    inset-inline-end: 0;
     bottom: 0;
     border-radius: $border-radius-pill;
     box-shadow: 0 0 0 calc(var(--#{$prefix}avatar-status-size) / 4) $card-bg;
@@ -58,6 +59,10 @@
   border-radius: $border-radius-pill;
 }
 
+.avatar-square {
+  border-radius: var(--#{$prefix}border-radius);
+}
+
 @each $avatar-size, $size in $avatar-sizes {
   .avatar-#{$avatar-size} {
     --#{$prefix}avatar-size: #{map.get($size, size)};
@@ -66,13 +71,13 @@
     --#{$prefix}avatar-icon-size: #{map.get($size, icon-size)};
     --#{$prefix}avatar-brand-size: #{map.get($size, brand-size)};
 
-    @if map.has-key($size, border-radius) {
-      border-radius: map.get($size, border-radius);
-    }
-
     .badge:empty {
       width: map.get($size, status-size);
       height: map.get($size, status-size);
+    }
+
+    &.avatar-square {
+      --#{$prefix}avatar-border-radius: #{map.get($size, border-radius)};
     }
   }
 }
@@ -96,10 +101,13 @@
   --#{$prefix}list-gap: 0;
 
   .avatar {
-    margin-inline-end: calc(#{$avatar-list-spacing} * var(--#{$prefix}avatar-size)) !important;
     box-shadow:
       var(--#{$prefix}avatar-box-shadow),
       0 0 0 2px var(--#{$prefix}card-bg, var(--#{$prefix}bg-surface));
+
+    &:not(:first-child) {
+      margin-inline-start: calc(#{$avatar-list-spacing} * var(--#{$prefix}avatar-size)) !important;
+    }
   }
 }
 

@@ -10,18 +10,15 @@
       "dependsOn": [
         "^build"
       ],
-      "inputs": [
-        "shared/**",
-        "preview/**"
-      ],
       "outputs": [
-        "dist/**"
+        "dist/**",
+        "demo/**"
       ],
-      "cache": false
+      "cache": true
     },
     "dev": {
       "cache": false,
-      "persistent": false
+      "persistent": true
     },
     "clean": {
       "dependsOn": [
@@ -32,7 +29,14 @@
     "bundlewatch": {
       "dependsOn": [
         "build"
-      ]
+      ],
+      "cache": true
+    },
+    "type-check": {
+      "dependsOn": [
+        "^type-check"
+      ],
+      "cache": true
     }
   }
 }

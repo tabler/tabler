@@ -1,0 +1,223 @@
+---
+title: Driver Tour
+page-header: Driver Tour
+page-libs: [driver.js]
+page-menu: plugins.tour
+layout: default
+permalink: tour.html
+---
+
+<div class="row row-cards">
+   <div class="col-12">
+      <div class="card">
+         <div class="card-header">
+            <h3 class="card-title">Product Tour Example</h3>
+            <div class="card-actions">
+               {% include "ui/button.html" id="start-tour" text="Start Tour" icon="play" color="primary" element="button" %}
+            </div>
+         </div>
+         <div class="card-body">
+            <p>
+               Click the "Start Tour" button to begin an interactive tour of this page.
+               The tour will guide you through different elements and features.
+            </p>
+         </div>
+      </div>
+   </div>
+   <div class="col-md-6">
+      <div class="card" id="tour-card-1">
+         <div class="card-header">
+            <h3 class="card-title">Welcome Section</h3>
+         </div>
+         <div class="card-body">
+            <p>This is the first card in our tour. It demonstrates how Driver.js highlights elements on the page.</p>
+            <div class="btn-list">
+               {% include "ui/button.html" text="Action Button" color="primary" element="button" %}
+               {% include "ui/button.html" text="Secondary" element="button" %}
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <div class="col-md-6">
+      <div class="card" id="tour-card-2">
+         <div class="card-header">
+            <h3 class="card-title">Features Section</h3>
+         </div>
+         <div class="card-body">
+            <p>This card shows additional features and demonstrates the tour's ability to navigate between different
+               elements.</p>
+            <div class="form-selectgroup">
+               <label class="form-selectgroup-item">
+                  <input type="radio" name="options" value="1" class="form-selectgroup-input" checked>
+                  <span class="form-selectgroup-label">Option 1</span>
+               </label>
+               <label class="form-selectgroup-item">
+                  <input type="radio" name="options" value="2" class="form-selectgroup-input">
+                  <span class="form-selectgroup-label">Option 2</span>
+               </label>
+            </div>
+         </div>
+      </div>
+   </div>
+   <div class="col-12">
+      <div class="card" id="tour-card-3">
+         <div class="card-header">
+            <h3 class="card-title">Navigation Example</h3>
+         </div>
+         <div class="card-body">
+            <p>This is a full-width card that demonstrates how the tour works with larger elements.</p>
+            <div class="table-responsive">
+               <table class="table table-vcenter">
+                  <thead>
+                     <tr>
+                        <th>Name</th>
+                        <th>Status</th>
+                        <th>Role</th>
+                        <th class="w-1"></th>
+                     </tr>
+                  </thead>
+                  <tbody>
+                     <tr>
+                        <td>John Doe</td>
+                        <td>{% include "ui/badge.html" text="Active" color="success" %}</td>
+                        <td>Developer</td>
+                        <td>
+                           {% include "ui/button.html" text="Edit" size="sm" href="#" %}
+                        </td>
+                     </tr>
+                     <tr>
+                        <td>Jane Smith</td>
+                        <td>{% include "ui/badge.html" text="Pending" color="warning" %}</td>
+                        <td>Designer</td>
+                        <td>
+                           {% include "ui/button.html" text="Edit" size="sm" href="#" %}
+                        </td>
+                     </tr>
+                  </tbody>
+               </table>
+            </div>
+         </div>
+      </div>
+   </div>
+
+   <div class="col-md-4">
+      <div class="card" id="tour-card-4">
+         <div class="card-body text-center">
+            <div class="mb-3">
+               {% include "ui/icon.html" icon="settings" size="48" %}
+            </div>
+            <h3 class="card-title">Settings</h3>
+            <p class="text-secondary">Configure your application settings here.</p>
+         </div>
+      </div>
+   </div>
+
+   <div class="col-md-4">
+      <div class="card" id="tour-card-5">
+         <div class="card-body text-center">
+            <div class="mb-3">
+               {% include "ui/icon.html" icon="users" size="48" %}
+            </div>
+            <h3 class="card-title">Users</h3>
+            <p class="text-secondary">Manage your team members and permissions.</p>
+         </div>
+      </div>
+   </div>
+
+   <div class="col-md-4">
+      <div class="card" id="tour-card-6">
+         <div class="card-body text-center">
+            <div class="mb-3">
+               {% include "ui/icon.html" icon="chart-bar" size="48" %}
+            </div>
+            <h3 class="card-title">Analytics</h3>
+            <p class="text-secondary">View your application statistics and reports.</p>
+         </div>
+      </div>
+   </div>
+</div>
+
+<script>
+   document.addEventListener('DOMContentLoaded', function () {
+      const driverObj = driver.js.driver({
+         allowClose: true,
+         overlayClickNext: true,
+         showButtons: ['next', 'previous', 'close'],
+         showProgress: true,
+         steps: [
+            {
+               element: '#start-tour',
+               popover: {
+                  title: 'Welcome to the Tour!',
+                  description: 'This button starts the interactive tour. Click it to begin exploring the page.',
+                  side: 'bottom',
+                  align: 'start'
+               }
+            },
+            {
+               element: '#tour-card-1',
+               popover: {
+                  title: 'Welcome Section',
+                  description: 'This is the first card in our tour. It demonstrates how Driver.js highlights elements on the page.',
+                  side: 'right',
+                  align: 'start'
+               }
+            },
+            {
+               element: '#tour-card-2',
+               popover: {
+                  title: 'Features Section',
+                  description: 'This card shows additional features and demonstrates the tour\'s ability to navigate between different elements.',
+                  side: 'left',
+                  align: 'start'
+               }
+            },
+            {
+               element: '#tour-card-3',
+               popover: {
+                  title: 'Data Table',
+                  description: 'This table shows how Driver.js works with larger elements. You can highlight entire sections of your page.',
+                  side: 'top',
+                  align: 'center'
+               }
+            },
+            {
+               element: '#tour-card-4',
+               popover: {
+                  title: 'Settings Card',
+                  description: 'This card demonstrates how the tour works with smaller, centered elements.',
+                  side: 'top',
+                  align: 'center'
+               }
+            },
+            {
+               element: '#tour-card-5',
+               popover: {
+                  title: 'Users Card',
+                  description: 'Another example card showing user management features.',
+                  side: 'top',
+                  align: 'center'
+               }
+            },
+            {
+               element: '#tour-card-6',
+               popover: {
+                  title: 'Analytics Card',
+                  description: 'The final step of the tour. This card shows analytics features.',
+                  side: 'top',
+                  align: 'center'
+               }
+            }
+         ]
+      });
+
+      const startButton = document.getElementById('start-tour');
+      if (startButton) {
+         startButton.addEventListener('click', function () {
+            driverObj.drive();
+         });
+      }
+   });
+</script>
+

@@ -1,3 +1,5 @@
+@use 'sass:map';
+
 @keyframes status-pulsate-main {
   40% {
     transform: scale(1.25, 1.25);
@@ -50,7 +52,7 @@
   padding: 0.25rem 0.75rem;
   gap: 0.5rem;
   color: var(--#{$prefix}status-color);
-  background: rgba(var(--#{$prefix}status-color-rgb), 0.1);
+  background: color-transparent(var(--#{$prefix}status-color), 0.1);
   font-size: $font-size-base;
   text-transform: none;
   letter-spacing: normal;
@@ -74,10 +76,10 @@
   color: var(--#{$prefix}body-color) !important;
 }
 
-@each $name, $color in $theme-colors {
+@each $name, $color in map.merge($theme-colors, $social-colors) {
   .status-#{$name} {
-    --#{$prefix}status-color: #{$color};
-    --#{$prefix}status-color-rgb: #{to-rgb($color)};
+    --#{$prefix}status-color: var(--#{$prefix}#{$name});
+    --#{$prefix}status-color-rgb: var(--#{$prefix}#{$name}-rgb);
   }
 }
 

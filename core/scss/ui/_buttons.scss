@@ -76,6 +76,15 @@
 //
 // Button color variations
 //
+.btn-ghost {
+  --#{$prefix}btn-bg: transparent;
+  --#{$prefix}btn-border-color: transparent;
+  --#{$prefix}btn-box-shadow: none;
+  --#{$prefix}btn-hover-bg: var(--#{$prefix}bg-surface-secondary);
+  --#{$prefix}btn-hover-border-color: transparent;
+  --#{$prefix}btn-hover-color: var(--#{$prefix}body-color);
+}
+
 @each $color, $value in map.merge($theme-colors, $social-colors) {
   .btn-#{$color} {
     @if $color == 'dark' {
@@ -112,15 +121,6 @@
     --#{$prefix}btn-active-border-color: var(--#{$prefix}#{$color});
     --#{$prefix}btn-disabled-color: var(--#{$prefix}#{$color});
     --#{$prefix}btn-disabled-border-color: var(--#{$prefix}#{$color});
-  }
-
-  .btn-ghost {
-    --#{$prefix}btn-bg: transparent;
-    --#{$prefix}btn-border-color: transparent;
-    --#{$prefix}btn-box-shadow: none;
-    --#{$prefix}btn-hover-bg: var(--#{$prefix}bg-surface-secondary);
-    --#{$prefix}btn-hover-border-color: transparent;
-    --#{$prefix}btn-hover-color: var(--#{$prefix}body-color);
   }
 
   .btn-ghost-#{$color},
@@ -207,6 +207,10 @@
   @include elements-list;
 }
 
+.btn-list-center {
+  justify-content: center;
+}
+
 //
 // Button floating
 //
@@ -246,7 +250,7 @@
     position: absolute;
     width: var(--#{$prefix}btn-icon-size);
     height: var(--#{$prefix}btn-icon-size);
-  inset-inline-start: calc(50% - var(--#{$prefix}btn-icon-size) / 2);
+    inset-inline-start: calc(50% - var(--#{$prefix}btn-icon-size) / 2);
     top: calc(50% - var(--#{$prefix}btn-icon-size) / 2);
     animation: spinner-border 0.75s linear infinite;
   }

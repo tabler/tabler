@@ -106,7 +106,6 @@
 
 ### Minor Changes
 
-- a2640e2: Add Playwright configuration and visual regression tests
 - d3ae77c: Enable `scrollSpy` in `countup` module
 - bd3d959: Refactor SCSS files to replace divide function with calc
 - cb278c7: Add Segmented Control component

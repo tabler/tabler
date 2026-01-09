@@ -5,7 +5,6 @@ description: Download Tabler Icons in EPS format.
 
 ![](/img/icons/package-eps.png)
 
-
 ## Installation
 
 {% include "docs/tabs-package.html" name="@tabler/icons-eps" %}

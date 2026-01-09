@@ -138,18 +138,20 @@
 
 // Colors
 @function to-rgb($value) {
+  @debug $value;
+  
   @return color.channel($value, 'red', $space: rgb), color.channel($value, 'green', $space: rgb), color.channel($value, 'blue', $space: rgb);
 }
 
 // stylelint-disable scss/dollar-variable-pattern
 @function rgba-css-var($identifier, $target) {
   @if $identifier == 'body' and $target == 'bg' {
-    @return rgba(var(--#{$prefix}#{$identifier}-bg-rgb), var(--#{$prefix}#{$target}-opacity));
+    @return color-mix(in srgb, var(--#{$prefix}#{$identifier}-bg) calc(var(--#{$prefix}#{$target}-opacity) * 100%), transparent);
   }
   @if $identifier == 'body' and $target == 'text' {
-    @return rgba(var(--#{$prefix}#{$identifier}-color-rgb), var(--#{$prefix}#{$target}-opacity));
+    @return color-mix(in srgb, var(--#{$prefix}#{$identifier}-color) calc(var(--#{$prefix}#{$target}-opacity) * 100%), transparent);
   } @else {
-    @return rgba(var(--#{$prefix}#{$identifier}-rgb), var(--#{$prefix}#{$target}-opacity));
+    @return color-mix(in srgb, var(--#{$prefix}#{$identifier}) calc(var(--#{$prefix}#{$target}-opacity) * 100%), transparent);
   }
 }
 

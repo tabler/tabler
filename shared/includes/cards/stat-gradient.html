@@ -1,0 +1,23 @@
+{% assign card-color = include.color | default: 'primary' %}
+{% assign card-icon = include.icon | default: 'trending-up' %}
+{% assign card-title = include.title | default: 'Total' %}
+{% assign card-value = include.value | default: '0' %}
+{% assign card-progress = include.progress | default: 0 %}
+
+<div class="card card-gradient card-gradient-{{ card-color }} card-gradient-start">
+	<div class="card-body">
+		<div class="row g-3">
+			<div class="col">
+				<h4 class="subheader mb-1">{{ card-title }}</h4>
+				<div class="h3 m-0">{{ card-value }}</div>
+			</div>
+			<div class="col-auto">
+				{% include "ui/avatar.html" icon=card-icon color=card-color %}
+			</div>
+			<div class="col-12">
+				{% include "ui/progress.html" value=card-progress color=card-color size="sm" %}
+			</div>
+		</div>
+	</div>
+</div>
+
