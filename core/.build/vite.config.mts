@@ -1,7 +1,6 @@
 import path from 'node:path'
 import process from 'node:process'
 import { fileURLToPath } from 'node:url'
-import { existsSync } from 'node:fs'
 import { createViteConfig } from '../../.build/vite.config.helper'
 import getBanner from '../../shared/banner/index.mjs'
 
@@ -9,7 +8,6 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const THEME = process.env.THEME === 'true'
 
-const MINIFY = process.env.MINIFY === 'true'
 const baseName = `tabler${THEME ? '-theme' : ''}`
 const entryFile = baseName
 const libraryName = baseName
@@ -24,11 +22,11 @@ export default createViteConfig({
 	name: libraryName,
 	fileName: (format) => {
 		const esmSuffix = format === 'es' ? '.esm' : ''
-		return MINIFY ? `${baseName}${esmSuffix}.min.js` : `${baseName}${esmSuffix}.js`
+		return `${baseName}${esmSuffix}.js`
 	},
 	formats: ['es', 'umd'],
 	outDir: path.resolve(__dirname, '../dist/js'),
 	banner: bannerText,
-	minify: MINIFY ? true : false
+	minify: false
 })
 

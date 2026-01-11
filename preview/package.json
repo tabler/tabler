@@ -17,7 +17,7 @@
     "js": "pnpm run js-build && pnpm run js-build-min",
     "js-build": "vite build --config .build/vite.config.mts",
     "js-build-min": "pnpm run js-build-min-demo",
-    "js-build-min-demo": "cross-env MINIFY=true vite build --config .build/vite.config.mts",
+    "js-build-min-demo": "terser dist/preview/js/demo.js --module --compress --mangle --comments '/@license|@preserve|^!/' --source-map \"content=dist/preview/js/demo.js.map,filename=dist/preview/js/demo.min.js.map,url=demo.min.js.map\" -o dist/preview/js/demo.min.js",
     "clean": "shx rm -rf dist demo",
     "html": "pnpm run html-build && pnpm run html-prettify && pnpm run html-remove-prettier-ignore",
     "html-build": "eleventy",
