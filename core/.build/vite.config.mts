@@ -7,25 +7,26 @@ import getBanner from '../../shared/banner/index.mjs'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
-const ESM = process.env.ESM === 'true'
 const THEME = process.env.THEME === 'true'
 
 const MINIFY = process.env.MINIFY === 'true'
-const destinationFile = `tabler${THEME ? '-theme' : ''}${ESM ? '.esm' : ''}`
-const entryFile = `tabler${THEME ? '-theme' : ''}`
-const libraryName = `tabler${THEME ? '-theme' : ''}`
+const baseName = `tabler${THEME ? '-theme' : ''}`
+const entryFile = baseName
+const libraryName = baseName
 
 const bannerText = getBanner()
 
-// Try .ts first, fallback to .js for gradual migration
 const entryPath = path.resolve(__dirname, `../js/${entryFile}`)
-const entry = existsSync(`${entryPath}.ts`) ? `${entryPath}.ts` : `${entryPath}.js`
+const entry = `${entryPath}.ts`
 
 export default createViteConfig({
 	entry: entry,
-	name: ESM ? undefined : libraryName,
-	fileName: () => MINIFY ? `${destinationFile}.min.js` : `${destinationFile}.js`,
-	formats: [ESM ? 'es' : 'umd'],
+	name: libraryName,
+	fileName: (format) => {
+		const esmSuffix = format === 'es' ? '.esm' : ''
+		return MINIFY ? `${baseName}${esmSuffix}.min.js` : `${baseName}${esmSuffix}.js`
+	},
+	formats: ['es', 'umd'],
 	outDir: path.resolve(__dirname, '../dist/js'),
 	banner: bannerText,
 	minify: MINIFY ? true : false
