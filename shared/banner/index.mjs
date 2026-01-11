@@ -10,7 +10,7 @@ const pkg = JSON.parse(readFileSync(pkgJson, 'utf8'))
 const year = new Date().getFullYear()
 
 function getBanner(pluginFilename) {
-	return `/*!
+  return `/*!
  * Tabler${pluginFilename ? ` ${pluginFilename}` : ''} v${pkg.version} (${pkg.homepage})
  * Copyright 2018-${year} The Tabler Authors
  * Copyright 2018-${year} codecalm.net Paweł Kuna
