@@ -30,7 +30,8 @@ Follow these steps to set up Tabler for development:
 3. Create a new branch for your changes:
 
    ```bash
-   git checkout -b your-branch-name
+   # Use the project branch naming convention, e.g.:
+   git checkout -b fix/markdown-table-overflow
 	```
 
 ## Development
