@@ -6,9 +6,7 @@ import getBanner from '../../shared/banner/index.mjs'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
-const THEME = process.env.THEME === 'true'
-
-const baseName = `tabler${THEME ? '-theme' : ''}`
+const baseName = process.env.BASE_NAME || 'tabler'
 const entryFile = baseName
 const libraryName = baseName
 
