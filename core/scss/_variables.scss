@@ -986,21 +986,36 @@ $aspect-ratios: (
 ) !default;
 
 // Shadows
-$box-shadow: color-transparent(var(--#{$prefix}body-color), 0.04) 0 2px 4px 0 !default;
-$box-shadow-sm: 0 0.125rem 0.25rem rgba($black, 0.075) !default;
-$box-shadow-lg: 0 1rem 3rem rgba($black, 0.175) !default;
+$box-shadow-xs: 0 1px 2px 0 rgba(18, 18, 23, 0.05) !default;
+$box-shadow-sm: 0 1px 3px 0 rgba(18, 18, 23, 0.1), 0 1px 2px 0 rgba(18, 18, 23, 0.06) !default;
+$box-shadow-md: 0px 2px 4px -1px rgba(18, 18, 23, 0.06), 0px 4px 6px -1px rgba(18, 18, 23, 0.08) !default;
+$box-shadow-lg: 0px 4px 6px -2px rgba(18, 18, 23, 0.05), 0px 10px 15px -3px rgba(18, 18, 23, 0.08) !default;
+$box-shadow-xl: 0px 10px 10px -5px rgba(18, 18, 23, 0.04), 0px 20px 25px -5px rgba(18, 18, 23, 0.10) !default;
+$box-shadow-2xl: 0px 25px 50px -12px rgba(18, 18, 23, 0.25) !default;
+$box-shadow-overlay:
+  0px 2px 4px 0px rgba(18, 18, 23, 0.04),
+  0px 5px 8px 0px rgba(18, 18, 23, 0.04),
+  0px 10px 18px 0px rgba(18, 18, 23, 0.03),
+  0px 24px 48px 0px rgba(18, 18, 23, 0.03),
+  0px 0px 0px 1px rgba(18, 18, 23, 0.10) !default;
+
+$box-shadow: $box-shadow-md !default;
 $box-shadow-transparent: 0 0 0 0 transparent !default;
-$box-shadow-border: inset 0 0 0 1px var(--#{$prefix}border-color-translucent) !default;
-$box-shadow-input: 0 1px 1px color-transparent(var(--#{$prefix}body-color), 0.06) !default;
-$box-shadow-card: 0px 1px 3px rgba(0, 0, 0, 0.08) !default;
-$box-shadow-card-hover: color-transparent(var(--#{$prefix}body-color), 0.16) 0 2px 16px 0 !default;
-$box-shadow-dropdown:
-  0 16px 24px 2px rgba(0, 0, 0, 0.07),
-  0 6px 30px 5px rgba(0, 0, 0, 0.06),
-  0 8px 10px -5px rgba(0, 0, 0, 0.1) !default;
+$box-shadow-border: 0px 0px 0px 1px rgba(18, 18, 23, 0.10) !default;
+$box-shadow-input: $box-shadow-xs !default;
+$box-shadow-card: $box-shadow-sm !default;
+$box-shadow-card-hover: $box-shadow-lg !default;
+$box-shadow-dropdown: $box-shadow-overlay !default;
 
 $box-shadows: (
   null: $box-shadow,
+  xs: $box-shadow-xs,
+  sm: $box-shadow-sm,
+  md: $box-shadow-md,
+  lg: $box-shadow-lg,
+  xl: $box-shadow-xl,
+  '2xl': $box-shadow-2xl,
+  overlay: $box-shadow-overlay,
   border: $box-shadow-border,
   transparent: $box-shadow-transparent,
   input: $box-shadow-input,
