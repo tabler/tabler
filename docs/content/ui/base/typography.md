@@ -246,7 +246,7 @@ To edit settings, press <kbd>ctrl</kbd> + <kbd>,</kbd> or <kbd>ctrl</kbd> + <kbd
 
 ## Prose
 
-If you can't use the CSS classes you want, or you just want to use HTML tags, use the `.prose` class in a container. It will apply the default styles for markdown elements. The `.markdown` class is an alias and will be removed in a future release. The `.wysiwyg` integration (`ui/wysiwyg.html`) is deprecated and will be removed in a future release.
+If you can't use the CSS classes you want, or you just want to use HTML tags, use the `.prose` class in a container. It will apply the default styles for markdown elements. The `.markdown` class is an alias and will be removed in a future release. The `.wysiwyg` integration (`ui/wysiwyg.html`) is deprecated and will be removed in a future release. See the Prose page for full examples.
 
 {% capture html -%}
 <div class="prose">
