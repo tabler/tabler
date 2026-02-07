@@ -84,7 +84,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: $border-radius-pill;
+  @include border-radius(var(--#{$prefix}border-radius-pill));
   width: calc(var(--#{$prefix}stamp-size) * 1);
   height: calc(var(--#{$prefix}stamp-size) * 1);
   position: relative;
@@ -173,7 +173,7 @@ Stacked card
     content: '';
     background: var(--#{$prefix}card-bg, var(--#{$prefix}bg-surface));
     border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}card-border-color);
-    border-radius: var(--#{$prefix}card-border-radius) var(--#{$prefix}card-border-radius) 0 0;
+    @include border-radius(var(--#{$prefix}card-border-radius) var(--#{$prefix}card-border-radius) 0 0);
   }
 }
 
@@ -194,7 +194,7 @@ Stacked card
 
   &:first-child,
   &:first-child:before {
-    border-radius: $border-radius $border-radius 0 0;
+    @include border-radius($border-radius $border-radius 0 0);
   }
 }
 
@@ -221,7 +221,7 @@ Stacked card
   background: transparent;
 
   &:first-child {
-    border-radius: var(--#{$prefix}card-border-radius) var(--#{$prefix}card-border-radius) 0 0;
+    @include border-radius(var(--#{$prefix}card-border-radius) var(--#{$prefix}card-border-radius) 0 0);
   }
 }
 
@@ -235,7 +235,7 @@ Stacked card
   flex: 1;
   margin: calc(var(--#{$prefix}card-cap-padding-y) * -1) calc(var(--#{$prefix}card-cap-padding-x) * -1) calc(var(--#{$prefix}card-cap-padding-y) * -1);
   padding: calc(var(--#{$prefix}card-cap-padding-y) * 0.5) calc(var(--#{$prefix}card-cap-padding-x) * 0.5) 0;
-  border-radius: var(--#{$prefix}card-border-radius) var(--#{$prefix}card-border-radius) 0 0;
+  @include border-radius(var(--#{$prefix}card-border-radius) var(--#{$prefix}card-border-radius) 0 0);
 }
 
 .card-header-pills {
@@ -281,7 +281,7 @@ Stacked card
   margin-top: auto;
 
   &:last-child {
-    border-radius: 0 0 var(--#{$prefix}card-border-radius) var(--#{$prefix}card-border-radius);
+    @include border-radius(0 0 var(--#{$prefix}card-border-radius) var(--#{$prefix}card-border-radius));
   }
 }
 
@@ -300,11 +300,11 @@ Stacked card
   height: 0.25rem;
 
   &:last-child {
-    border-radius: 0 0 2px 2px;
+    @include border-radius(0 0 2px 2px);
   }
 
   &:first-child {
-    border-radius: 2px 2px 0 0;
+    @include border-radius(2px 2px 0 0);
   }
 }
 
@@ -410,7 +410,7 @@ Card status
   inset-inline-end: 0;
   inset-inline-start: 0;
   height: $card-status-size;
-  border-radius: var(--#{$prefix}card-border-radius) var(--#{$prefix}card-border-radius) 0 0;
+  @include border-radius(var(--#{$prefix}card-border-radius) var(--#{$prefix}card-border-radius) 0 0);
 }
 
 .card-status-start {
@@ -419,7 +419,7 @@ Card status
   bottom: 0;
   width: $card-status-size;
   height: 100%;
-  border-radius: var(--#{$prefix}card-border-radius) 0 0 var(--#{$prefix}card-border-radius);
+  @include border-radius(var(--#{$prefix}card-border-radius) 0 0 var(--#{$prefix}card-border-radius));
 }
 
 .card-status-bottom {
@@ -428,7 +428,7 @@ Card status
   bottom: 0;
   width: 100%;
   height: $card-status-size;
-  border-radius: 0 0 var(--#{$prefix}card-border-radius) var(--#{$prefix}card-border-radius);
+  @include border-radius(0 0 var(--#{$prefix}card-border-radius) var(--#{$prefix}card-border-radius));
 }
 
 /**
@@ -633,7 +633,7 @@ Card list group
 
       .nav-link {
         border-bottom: $card-border-width var(--#{$prefix}border-style) $card-border-color;
-        border-radius: 0 0 $card-border-radius $card-border-radius;
+        @include border-radius(0 0 $card-border-radius $card-border-radius);
       }
 
       &:not(:first-child) .nav-link {

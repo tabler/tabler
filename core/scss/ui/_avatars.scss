@@ -25,7 +25,7 @@
   vertical-align: bottom;
   user-select: none;
   background: var(--#{$prefix}avatar-bg) no-repeat center/cover;
-  border-radius: var(--#{$prefix}avatar-border-radius);
+  @include border-radius(var(--#{$prefix}avatar-border-radius));
   box-shadow: var(--#{$prefix}avatar-box-shadow);
   transition:
     color $transition-time,
@@ -41,7 +41,7 @@
     position: absolute;
     inset-inline-end: 0;
     bottom: 0;
-    border-radius: $border-radius-pill;
+    @include border-radius(var(--#{$prefix}border-radius-pill));
     box-shadow: 0 0 0 calc(var(--#{$prefix}avatar-status-size) / 4) $card-bg;
   }
 
@@ -56,11 +56,11 @@
 }
 
 .avatar-rounded {
-  border-radius: $border-radius-pill;
+  @include border-radius(var(--#{$prefix}border-radius-pill));
 }
 
 .avatar-square {
-  border-radius: var(--#{$prefix}border-radius);
+  @include border-radius(var(--#{$prefix}border-radius));
 }
 
 @each $avatar-size, $size in $avatar-sizes {
@@ -77,7 +77,7 @@
     }
 
     &.avatar-square {
-      --#{$prefix}avatar-border-radius: #{map.get($size, border-radius)};
+      @include border-radius(map.get($size, border-radius));
     }
   }
 }
@@ -159,6 +159,6 @@
   bottom: -2px;
   z-index: 1000;
   background: var(--#{$prefix}bg-surface);
-  border-radius: var(--#{$prefix}border-radius);
+  @include border-radius(var(--#{$prefix}border-radius));
   border: 1px solid var(--#{$prefix}border-color);
 }

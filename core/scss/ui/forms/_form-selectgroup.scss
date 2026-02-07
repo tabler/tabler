@@ -43,7 +43,7 @@ Select group
   cursor: pointer;
   user-select: none;
   border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) $input-border-color;
-  border-radius: var(--#{$prefix}border-radius);
+  @include border-radius(var(--#{$prefix}border-radius));
   box-shadow: $input-box-shadow;
   @include transition(border-color $transition-time, background $transition-time, color $transition-time);
 
@@ -65,11 +65,11 @@ Select group
   box-shadow: $form-check-input-box-shadow;
 
   .form-selectgroup-input[type='checkbox'] + .form-selectgroup-label & {
-    border-radius: $form-check-input-border-radius;
+    @include border-radius($form-check-input-border-radius);
   }
 
   .form-selectgroup-input[type='radio'] + .form-selectgroup-label & {
-    border-radius: $form-check-radio-border-radius;
+    @include border-radius($form-check-radio-border-radius);
   }
 
   .form-selectgroup-input:checked + .form-selectgroup-label & {
@@ -149,6 +149,6 @@ Select group
   }
 
   .form-selectgroup-label {
-    border-radius: 50px;
+    @include border-radius(var(--#{$prefix}border-radius-pill));
   }
 }
