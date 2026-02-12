@@ -1,0 +1,26 @@
+---
+layout: default
+title: Patterns
+page-header: Patterns
+permalink: patterns.html
+---
+
+{% assign patterns = "bg-pattern-diagonal,bg-pattern-diagonal-2,bg-pattern-dots,bg-pattern-rectangles,bg-pattern-lines,bg-pattern-lines-vertical,bg-pattern-grid,bg-pattern-grid-diagonal,bg-pattern-blueprint,bg-pattern-cross-dots,bg-pattern-diagonal-stripes,bg-pattern-diagonal-stripes-2,bg-pattern-zigzag,bg-pattern-vertical-stripes,bg-pattern-horizontal-stripes" | split: "," %}
+
+<div class="row row-cards">
+	<div class="col-12">
+		<div class="card">
+			<div class="card-body">
+				<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-5 g-3">
+					{% for pattern in patterns %}
+					<div class="col">
+						<div class="{{ pattern }} border rounded mb-3" style="height: 8rem;"></div>
+						<div class="text-secondary small mb-1">Class</div>
+						<code>.{{ pattern }}</code>
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
