@@ -3,6 +3,7 @@ title: Background patterns
 summary: Use background pattern utilities to add subtle textures to elements. Combine pattern type, color, and size modifiers for different visual effects.
 description: Add decorative background patterns with utility classes.
 added-in: "1.4.0"
+source-css: "ui/_patterns.scss"
 ---
 
 {% assign patterns = "diagonal,diagonal-2,dots,rectangles,lines,lines-vertical,grid,grid-diagonal,blueprint,circles,diagonal-stripes,diagonal-stripes-2,zigzag,vertical-stripes,horizontal-stripes" | split: "," %}
