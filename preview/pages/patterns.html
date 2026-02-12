@@ -2,6 +2,7 @@
 layout: default
 title: Patterns
 page-header: Patterns
+page-menu: base.patterns
 permalink: patterns.html
 ---
 
@@ -11,12 +12,27 @@ permalink: patterns.html
 	<div class="col-12">
 		<div class="card">
 			<div class="card-body">
+				<h3 class="card-title">Pattern types</h3>
 				<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-5 g-3">
 					{% for pattern in patterns %}
 					<div class="col">
-						<div class="{{ pattern }} border rounded mb-3" style="height: 8rem;"></div>
-						<div class="text-secondary small mb-1">Class</div>
+						<div class="{{ pattern }} rounded mb-3" style="height: 8rem;"></div>
 						<code>.{{ pattern }}</code>
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-12">
+		<div class="card">
+			<div class="card-body">
+				<h3 class="card-title">Pattern colors</h3>
+				<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-5 g-3">
+					{% for color in site.colors %}
+					<div class="col">
+						<div class="bg-pattern-grid bg-pattern-{{ color[0] }} rounded mb-3" style="height: 8rem;"></div>
+						<code>.bg-pattern-{{ color[0] }}</code>
 					</div>
 					{% endfor %}
 				</div>
