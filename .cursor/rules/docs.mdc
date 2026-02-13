@@ -16,6 +16,19 @@ alwaysApply: false
 
 - Use static YAML frontmatter only (no Liquid in frontmatter).
 - Include `title`, `summary`, and `description` for docs pages in `docs/content/**`.
+- For component docs, use singular naming:
+  `title: Card` (not `Cards`) and filename `card.md` (not `cards.md`).
+- Add optional frontmatter `related` entries (instead of a `Related` content section).
+- In `related`, always use absolute docs paths in `url` (without `./`), for example:
+  `ui/components/breadcrumb`.
+- Use this structure:
+  ```yaml
+  related:
+    - name: Pagination
+      url: ui/components/pagination
+    - name: Dropdowns
+      url: ui/components/dropdowns
+  ```
 - If documentation describes a component defined in SCSS, add `source-scss` with a relative path
   inside `core/scss/` (for example: `source-scss: ui/buttons.scss`).
 - If a component extends a Bootstrap component, add `bootstrap-url: components/<name>` in frontmatter
@@ -86,33 +99,50 @@ classnames:
 
 ## Structure and readability
 
-- Start with a short purpose statement, then provide a basic example before advanced variants.
+- Start with a short purpose statement, then explain usage and variants.
 - Keep heading hierarchy consistent (`##` then `###`), without skipping levels.
+- Keep core documentation sections as `H2` headings in this order:
+  `Overview`, `Installation` (optional), `Variants` (for components that support variants or `Usage` for components that don't support variants), `Accessibility`,
+  `Examples` (optional), `SCSS variables` (optional), `Migration notes` (optional).
+- In `Overview`, add one visual component preview without code (`hide-code=true`).
 - Use descriptive section headings that are stable for linking.
-- For each component page, include `When to use` and `When not to use` sections with 2-3 short bullets.
-- Add a `Common mistakes` section with 2-4 short bullets.
-- Before `Examples`, add 1-2 short intro sentences (for example: "See how this component can look." or
-  "See how this works in practice.").
 - Vary intro phrasing across pages; avoid repeating the same sentence pattern.
 
 ## Markdown style
 
 - Follow `.markdownlint.json` conventions (ATX headings, `-` lists, fenced code blocks).
 - Keep line length within 120 characters where practical.
-- Keep examples copy-paste ready and aligned with current API/classes.
+- Keep examples aligned with current API/classes and practical usage.
 - Use active voice and direct verbs (`Use`, `Add`, `Set`).
 - Keep one main idea per sentence.
+- Do not add meta authoring notes in docs text (for example: "this snippet is copy-paste ready").
 
 ## Terminology and section naming
 
 - Use consistent terminology across pages; one term per concept.
 - Use clear and consistent section names across component docs.
-- Prefer shared section labels such as `Overview`, `Examples`, `Accessibility`, and `Migration notes`.
+- Prefer shared section labels such as `Overview`, `Accessibility`, `Examples` (optional), and `Migration notes`.
 - You can add an `SCSS variables` section for components with documented SCSS tokens/variables.
+
+### Recommended section order
+
+```md
+## Overview
+## Installation (optional)
+## Variants or Usage/API
+## Accessibility
+## Examples (optional)
+## SCSS variables (optional)
+## Migration notes (optional)
+```
 
 ## Project-specific docs patterns
 
-- In docs examples, prefer `{% capture html %}...{% endcapture %}` and, when needed, add `{% capture code %}...{% endcapture %}`.
+- In docs examples, prefer `{% capture html %}...{% endcapture %}` and, when needed, add `{% capture code %}...{% endcapture %}` for code snippets.
+- Use `{% include "docs/example.html" ... %}` to render visual component previews in any relevant section
+  (`Overview`, `Variants`, `Usage/API`, or `Examples`).
+- Before each `{% include "docs/example.html" ... %}`, add 1-2 short sentences that describe
+  the component state or behavior shown in the preview.
 - For examples with explicit source snippets, use `{% include "docs/example.html" html=html code=code %}`.
 - For visual-only examples, use `{% include "docs/example.html" html=html hide-code=true %}`.
 - If an example shows multiple elements as a list, use `separated` to display items with clean spacing:
@@ -146,11 +176,10 @@ classnames:
 - Verify that examples render correctly.
 - Verify that internal and external links work.
 - Verify heading hierarchy and section naming consistency.
-- Verify copy-paste readiness of code snippets.
+- Verify code snippets are accurate and minimal for the documented use case.
 - Validate documented classes against SCSS files before publishing.
 - Ensure every class in `classnames` maps to a real SCSS class or variable.
 - Ensure every class listed in `classnames` appears at least once in page content or examples.
-- Add a short `Related` section with 2-4 links to relevant docs pages.
 - For interactive components, add a short accessibility mini-check (`aria-label`, keyboard focus, semantic markup).
 
 ## Documentation structure examples
@@ -168,16 +197,20 @@ description: Practical description of when and why to use this component.
 
 One short paragraph explaining purpose and primary use case.
 
-## Basic example
+Show the component in its default state so users can recognize it immediately.
+Keep this first example focused on appearance and context.
 
 {% capture html -%}
-<button class="btn btn-primary">Save</button>
+<button class="btn btn-primary">Primary button</button>
 {% endcapture %}
-{% include "docs/example.html" html=html %}
+{% include "docs/example.html" html=html hide-code=true %}
 
 ## Variants
 
 ### Outline
+
+The outline variant presents a lighter visual emphasis than a filled primary action.
+Use it for secondary actions in dense interfaces.
 
 {% capture html -%}
 <button class="btn">Secondary</button>
@@ -188,26 +221,29 @@ One short paragraph explaining purpose and primary use case.
 
 - Use clear labels for interactive controls.
 - Add `aria-label` for icon-only buttons.
-```
 
-### Recommended section order
-
-```md
-## Overview
-## Basic example
-## Variants
-## Sizes (optional)
-## States (optional)
-## Accessibility
-## Notes / migration (optional, for deprecated APIs)
-```
-
-### Examples section patterns
-
-```md
-## Examples
+## Examples (optional, visual usage)
 
 ### Default
+
+The default variant represents the primary action style.
+Use it as a baseline before introducing additional variants.
+
+{% capture html -%}
+<button class="btn btn-primary">Save</button>
+{% endcapture %}
+{% include "docs/example.html" html=html %}
+```
+
+### Visual preview patterns (usable in any section)
+
+```md
+## Variants
+
+### Default
+
+The default variant represents the primary action style.
+Use it as a baseline before introducing additional variants.
 
 {% capture html -%}
 <button class="btn btn-primary">Primary button</button>
@@ -215,6 +251,9 @@ One short paragraph explaining purpose and primary use case.
 {% include "docs/example.html" html=html %}
 
 ### With icon
+
+This variant combines a leading icon with a text label.
+Use it for actions that benefit from an additional visual cue.
 
 {% capture html -%}
 <button class="btn btn-primary">
@@ -226,6 +265,9 @@ One short paragraph explaining purpose and primary use case.
 
 ### Custom background
 
+This variant presents the component on a dark background surface.
+Use it to verify contrast and visual hierarchy.
+
 {% capture html -%}
 <button class="btn btn-light">Light button on dark preview</button>
 {% endcapture %}
@@ -233,12 +275,15 @@ One short paragraph explaining purpose and primary use case.
 ```
 
 ```md
-## Examples with code
+## Usage
 
-Use this section when users are expected to copy the snippet directly.
-Use `code` for general, clean, copy-paste markup without preview-only visual scaffolding.
+Use this pattern in any section when source markup should be shown together with the visual output.
+Use `code` for clean implementation markup without preview-only wrappers.
 
 ### Card with footer actions
+
+This example presents a card layout with footer actions in a realistic container.
+Show `html` for rendered context and `code` for implementation markup.
 
 {% capture html -%}
 <div class="p-4 border rounded bg-light">
@@ -263,10 +308,13 @@ Use `code` for general, clean, copy-paste markup without preview-only visual sca
 ```
 
 ```md
-## Examples without code
+## Accessibility
 
-Use this section only for visual comparison cases where raw markup is not useful,
+Use this pattern in any section only for visual comparison cases where raw markup is not useful,
 for example screenshots, behavior notes, or before/after UI states.
+
+This pattern highlights visual state communication without extra source details.
+Use it for quick comparisons such as status, before/after states, or behavior notes.
 
 {% capture html -%}
 <div class="d-flex align-items-center gap-2">
@@ -279,10 +327,15 @@ for example screenshots, behavior notes, or before/after UI states.
 ### Do
 
 - Explain what changed and why it matters.
-- Link to a related coded example if available.
+- Link to a related practical example if available.
 
 ### Don't
 
 - Do not replace all practical examples with image-only examples.
-- Do not omit copy-paste snippets for core use cases.
+- Do not omit practical markup examples for core use cases.
 ```
+
+- Do not move core documentation content (for example API details, states, accessibility rules,
+  migration notes) into `Examples`.
+- Keep core sections as normal documentation; `Examples` is an optional showcase section,
+  while visual preview blocks can be used across multiple sections.
