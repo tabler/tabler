@@ -1,8 +1,8 @@
 ---
-title: Tables
-summary: Tables are useful interface elements that allow you to visualize data and arrange it in a clear way. Thanks to that, users can browse a lot of information at once and a good table design will help you take care of its clarity.
+title: Table
+summary: A table is a useful interface element that lets you visualize data and arrange it clearly. It allows users to browse a lot of information at once, and a good table design improves readability.
 bootstrapLink: content/tables/
-description: Visualize data clearly with tables.
+description: Visualize data clearly with a table.
 ---
 
 ## Basic Table

@@ -1,8 +1,8 @@
 ---
-title: Buttons
-summary: Use button styles that best suit your designs and encourage users to take the desired actions. You can customize the button's properties to improve the user experience of your website or system, changing the size, shape, color and many more.
+title: Button
+summary: Use a button style that best suits your design and encourages users to take the desired action. You can customize button properties to improve user experience by changing size, shape, color, and more.
 bootstrapLink: components/buttons/
-description: Customizable buttons for user actions.
+description: A customizable button for user actions.
 ---
 
 ## Button tag

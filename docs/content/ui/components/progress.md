@@ -1,8 +1,8 @@
 ---
-title: Progress bars
-summary: Progress bars are used to provide feedback on an action status and inform users of the current progress. Although seemingly small interface elements, they are extremely hepful in managing users' expectations and preventing them from abandoning a process they have initiated.
+title: Progress Bar
+summary: A progress bar is used to provide feedback on an action status and inform users about current progress. Although it is a small interface element, it is extremely helpful in managing user expectations and preventing abandonment of an initiated process.
 bootstrapLink: components/progress
-description: Track and display progress visually.
+description: Track and display progress with a progress bar.
 ---
 
 ## Default markup

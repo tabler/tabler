@@ -1,8 +1,8 @@
 ---
-title: Tooltips
-summary: Tooltips are text labels which appear when a user hovers over an interface element. They explain the interface elements that may be unclear for users and guide them when they need help. If used properly, tooltips can significantly enhance user experience and add value to your website or software.
+title: Tooltip
+summary: A tooltip is a text label that appears when a user hovers over an interface element. It explains unclear elements and guides users when they need help. When used properly, it can significantly enhance user experience and add value to your website or software.
 bootstrapLink: components/tooltips/
-description: Guide users with informative tooltips.
+description: Guide users with an informative tooltip.
 ---
 
 ## Default markup

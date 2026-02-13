@@ -1,8 +1,8 @@
 ---
-title: Tabs
-summary: Tabs allow users to alternate between equally important views within the same context. By dividing content into meaningful sections, they improve its organization and make it easy for users to navigate.
+title: Tab
+summary: A tab allows users to alternate between equally important views within the same context. By dividing content into meaningful sections, it improves organization and makes navigation easier.
 bootstrapLink: components/navs/
-description: Organize content with interactive tabs.
+description: Organize content with an interactive tab.
 ---
 
 ## Default markup
