@@ -1,8 +1,8 @@
 ---
-title: Dropdowns
-summary: Use dropdowns to display lists of options or include more items in a menu without overwhelming users with too many buttons and long lists. Dropdowns facilitate users' interaction with your website or software and make your design look clear.
+title: Dropdown
+summary: A dropdown is used to display a list of options or include more items in a menu without overwhelming users with too many buttons and long lists. It improves interaction with your website or software and keeps the interface clear.
 bootstrapLink: components/dropdowns
-description: Organize options with dropdown menus.
+description: Organize options with a dropdown menu.
 ---
 
 ## Default dropdown

@@ -1,8 +1,8 @@
 ---
 title: Breadcrumb
-summary: Breadcrumbs are used to show the current website or app location and reduce the number of actions users have to take. Thanks to breadcrumbs, they can easily navigate within the website hierarchy and better understand its structure.
+summary: A breadcrumb is used to show the current website or app location and reduce the number of actions users need to take. It helps users navigate the website hierarchy and better understand its structure.
 bootstrapLink: components/breadcrumb/
-description: Navigation aid for better structure.
+description: A navigation aid for better structure.
 ---
 
 ## Default markup

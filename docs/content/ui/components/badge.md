@@ -1,7 +1,7 @@
 ---
-title: Badges
-summary: Badges are small count and labeling components, which are used to add extra information to an interface element. You can use them to draw users' attention to a new element, notify about unread messages or provide any kind of additional info.
-description: Add extra information with badges.
+title: Badge
+summary: A badge is a small count and labeling component used to add extra information to an interface element. You can use it to draw user attention to a new element, notify about unread messages, or provide additional context.
+description: Add extra information with a badge.
 bootstrapLink: components/badge/
 ---
 

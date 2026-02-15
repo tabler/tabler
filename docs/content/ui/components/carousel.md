@@ -1,8 +1,8 @@
 ---
 title: Carousel
-summary: A carousel is used to display multiple pieces of visual content without taking up too much space. Carousels eliminate the need to scroll down the page to see all content and are a popular method of displaying marketing information.
+summary: A carousel is used to display multiple pieces of visual content without taking up too much space. It eliminates the need to scroll down the page to see all content and is a popular method of presenting marketing information.
 bootstrapLink: components/carousel/
-description: Display visual content with carousels.
+description: Display visual content with a carousel.
 ---
 
 ## Default markup

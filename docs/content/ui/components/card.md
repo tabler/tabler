@@ -1,8 +1,8 @@
 ---
-title: Cards
-summary: Cards are flexible user interface elements, which help organize content into meaningful sections and make it easier to display on different screen sizes. Cards contain various smaller components, such as images, text, links and buttons and may act as an entry to more detailed information, helping users scan the page quickly and find the most relevant content.
+title: Card
+summary: A card is a flexible user interface element that helps organize content into meaningful sections and display it across different screen sizes. It can contain smaller elements such as images, text, links, and buttons, and can act as an entry point to more detailed information.
 bootstrapLink: components/card/
-description: Organize content with flexible cards.
+description: Organize content with a flexible card.
 ---
 
 ## Default card

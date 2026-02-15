@@ -1,8 +1,8 @@
 ---
-title: Icons
-summary: Use any of over 5000 icons created specifically for Tabler and make your dashboard look even more attractive. All icons are under MIT license, so you can use them without any problem both in private and commercial projects.
+title: Icon
+summary: Use an icon from over 5000 options created specifically for Tabler to make your dashboard more attractive. Each icon is available under the MIT license, so it can be used in both private and commercial projects.
 banner: icons
-description: Enhance dashboards with custom icons.
+description: Enhance a dashboard with a custom icon.
 ---
 
 If you need to add icons to your website, you can use the [Tabler Icons library]({{ site.icons.link }}). It contains over 5000 icons that you can use in your projects. All icons are under the MIT license, so you can use them without any problem both in private and commercial projects.
