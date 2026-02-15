@@ -1,7 +1,7 @@
 ---
-title: Avatars
-summary: Avatars help customize various elements of a user interface and make the product experience more personalized. They are often used in communication apps, collaboration tools and social media.
-description: Personalize UI with user avatars.
+title: Avatar
+summary: An avatar helps customize interface elements and make the product experience more personalized. It is often used in communication apps, collaboration tools, and social media.
+description: Personalize UI with a user avatar.
 ---
 
 ## Default markup

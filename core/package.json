@@ -19,16 +19,12 @@
     "css-lint": "pnpm run css-lint-variables",
     "css-lint-variables": "find-unused-sass-variables scss/ node_modules/bootstrap/scss/",
     "js": "pnpm run js-build && pnpm run js-build-min",
-    "js-build": "concurrently \"pnpm run js-build-standalone\" \"pnpm run js-build-standalone-esm\" \"pnpm run js-build-theme\" \"pnpm run js-build-theme-esm\"",
-    "js-build-theme-esm": "cross-env THEME=true ESM=true vite build --config .build/vite.config.ts",
-    "js-build-theme": "cross-env THEME=true vite build --config .build/vite.config.ts",
-    "js-build-standalone": "vite build --config .build/vite.config.ts",
-    "js-build-standalone-esm": "cross-env ESM=true vite build --config .build/vite.config.ts",
-    "js-build-min": "concurrently \"pnpm run js-build-min-standalone\" \"pnpm run js-build-min-standalone-esm\" \"pnpm run js-build-min-theme\" \"pnpm run js-build-min-theme-esm\"",
-    "js-build-min-standalone": "cross-env MINIFY=true vite build --config .build/vite.config.ts",
-    "js-build-min-standalone-esm": "cross-env MINIFY=true ESM=true vite build --config .build/vite.config.ts",
-    "js-build-min-theme": "cross-env MINIFY=true THEME=true vite build --config .build/vite.config.ts",
-    "js-build-min-theme-esm": "cross-env MINIFY=true THEME=true ESM=true vite build --config .build/vite.config.ts",
+    "js-build": "concurrently \"pnpm run js-build-standalone\" \"pnpm run js-build-theme\"",
+    "js-build-theme": "cross-env BASE_NAME=tabler-theme vite build --config .build/vite.config.mts",
+    "js-build-standalone": "cross-env BASE_NAME=tabler vite build --config .build/vite.config.mts",
+    "js-build-min": "concurrently \"pnpm run js-build-min-standalone\" \"pnpm run js-build-min-theme\"",
+    "js-build-min-standalone": "concurrently \"terser dist/js/tabler.js --compress --mangle --comments '/@license|@preserve|^!/' --source-map \\\"content=dist/js/tabler.js.map,filename=dist/js/tabler.min.js.map,url=tabler.min.js.map\\\" -o dist/js/tabler.min.js\" \"terser dist/js/tabler.esm.js --module --compress --mangle --comments '/@license|@preserve|^!/' --source-map \\\"content=dist/js/tabler.esm.js.map,filename=dist/js/tabler.esm.min.js.map,url=tabler.esm.min.js.map\\\" -o dist/js/tabler.esm.min.js\"",
+    "js-build-min-theme": "concurrently \"terser dist/js/tabler-theme.js --compress --mangle --comments '/@license|@preserve|^!/' --source-map \\\"content=dist/js/tabler-theme.js.map,filename=dist/js/tabler-theme.min.js.map,url=tabler-theme.min.js.map\\\" -o dist/js/tabler-theme.min.js\" \"terser dist/js/tabler-theme.esm.js --module --compress --mangle --comments '/@license|@preserve|^!/' --source-map \\\"content=dist/js/tabler-theme.esm.js.map,filename=dist/js/tabler-theme.esm.min.js.map,url=tabler-theme.esm.min.js.map\\\" -o dist/js/tabler-theme.esm.min.js\"",
     "copy": "concurrently \"pnpm run copy-img\" \"pnpm run copy-libs\" \"pnpm run copy-fonts\"",
     "copy-img": "shx mkdir -p dist/img && shx cp -rf img/* dist/img",
     "copy-libs": "tsx .build/copy-libs.ts",
@@ -84,19 +80,19 @@
     "files": [
       {
         "path": "./dist/css/tabler.css",
-        "maxSize": "75 kB"
+        "maxSize": "76 kB"
       },
       {
         "path": "./dist/css/tabler.min.css",
-        "maxSize": "70 kB"
+        "maxSize": "71 kB"
       },
       {
         "path": "./dist/css/tabler.rtl.css",
-        "maxSize": "75 kB"
+        "maxSize": "76 kB"
       },
       {
         "path": "./dist/css/tabler.rtl.min.css",
-        "maxSize": "70 kB"
+        "maxSize": "71 kB"
       },
       {
         "path": "./dist/css/tabler-flags.css",

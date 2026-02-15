@@ -1,9 +1,9 @@
 ---
-title: Markdown
-page-header: Markdown
-page-menu: base.markdown
-layout: markdown
-permalink: markdown.html
+title: Prose
+page-header: Prose
+page-menu: base.prose
+layout: prose
+permalink: prose.html
 ---
 
 # Who's that then?
@@ -69,7 +69,6 @@ Well, I got better. Shut up! Will you shut up?! Well, I got better. I don't want
 ---
 
 # Typographic elements
-
 
 
 ## Emphasis

@@ -1,0 +1,58 @@
+---
+layout: default
+title: Patterns
+page-header: Patterns
+page-menu: base.patterns
+permalink: patterns.html
+---
+
+{% assign patterns = "bg-pattern-diagonal,bg-pattern-diagonal-2,bg-pattern-dots,bg-pattern-rectangles,bg-pattern-lines,bg-pattern-lines-vertical,bg-pattern-grid,bg-pattern-grid-diagonal,bg-pattern-blueprint,bg-pattern-circles,bg-pattern-diagonal-stripes,bg-pattern-diagonal-stripes-2,bg-pattern-zigzag,bg-pattern-vertical-stripes,bg-pattern-horizontal-stripes" | split: "," %}
+{% assign pattern-sizes = "sm,md,lg,xl" | split: "," %}
+
+<div class="row row-cards">
+	<div class="col-12">
+		<div class="card">
+			<div class="card-body">
+				<h3 class="card-title">Pattern types</h3>
+				<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-6 g-3">
+					{% for pattern in patterns %}
+					<div class="col">
+						<div class="{{ pattern }} rounded mb-3" style="height: 8rem;"></div>
+						<code>.{{ pattern }}</code>
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-12">
+		<div class="card">
+			<div class="card-body">
+				<h3 class="card-title">Pattern colors</h3>
+				<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-6 g-3">
+					{% for color in site.colors %}
+					<div class="col">
+						<div class="bg-pattern-rectangles bg-pattern-{{ color[0] }} rounded mb-3" style="height: 8rem;"></div>
+						<code>.bg-pattern-{{ color[0] }}</code>
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-12">
+		<div class="card">
+			<div class="card-body">
+				<h3 class="card-title">Pattern sizes</h3>
+				<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-6 g-3">
+					{% for size in pattern-sizes %}
+					<div class="col">
+						<div class="bg-pattern-diagonal bg-pattern-{{ size }} rounded mb-3" style="height: 8rem;"></div>
+						<code>.bg-pattern-{{ size }}</code>
+					</div>
+					{% endfor %}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

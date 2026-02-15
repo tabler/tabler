@@ -1,8 +1,8 @@
 ---
-title: Steps
-summary: Steps are used to guide users through complex processes, making them easier and more intuitive. Breaking a multi-step process into smaller parts and tracking progress along the way helps users complete it successfully.
+title: Step
+summary: A step is used to guide users through a complex process and make it easier to complete. Breaking a multi-step process into smaller parts and tracking progress along the way helps users finish it successfully.
 new: true
-description: Simplify complex processes with steps.
+description: Simplify a complex process with a step.
 ---
 
 ## Default markup
