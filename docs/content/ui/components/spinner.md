@@ -1,8 +1,8 @@
 ---
-title: Spinners
-summary: Spinners are used to show the loading state of a component or page. They provide feedback for an action a user has taken, when it takes a bit longer to complete.
+title: Spinner
+summary: A spinner is used to show the loading state of a component or page. It provides feedback for an action that takes longer to complete.
 bootstrapLink: components/spinners/
-description: Indicate loading state with spinners.
+description: Indicate loading state with a spinner.
 ---
 
 ## Default markup

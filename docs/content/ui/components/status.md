@@ -1,7 +1,7 @@
 ---
-title: Statuses
-summary: Status dots are particularly useful if you want to make an interface element more noticeable regardless of limited space.
-description: Highlight interface elements with status dots.
+title: Status
+summary: A status dot is particularly useful when you want to make an interface element more noticeable in limited space.
+description: Highlight an interface element with a status dot.
 ---
 
 ## Default markup

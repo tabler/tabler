@@ -1,7 +1,7 @@
 ---
-title: Empty states
-summary: Empty states or blank pages are commonly used as placeholders for first-use, empty data or error screens. Their aim is to engage users when there is no content to display and that is why their design is extremely important from the point of view of the user experience of your website or app.
-description: Engage users in empty or error screens.
+title: Empty State
+summary: An empty state or blank page is commonly used as a placeholder for first-use, empty data, or an error screen. Its goal is to engage users when there is no content to display, which makes its design important for the overall user experience of your website or app.
+description: Engage users in an empty or error screen.
 ---
 
 ## Default markup

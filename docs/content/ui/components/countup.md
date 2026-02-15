@@ -2,7 +2,7 @@
 title: Countup
 summary: A countup element is used to display numerical data in an interesting way and make the interface more interactive.
 docs-libs: countup
-description: Display numbers dynamically with countups.
+description: Display numbers dynamically with a countup.
 ---
 
 The countup component is used to display numbers dynamically. It is a great way to make the interface more interactive and engaging. The countup component is a simple and easy way to animate numbers in your application.
