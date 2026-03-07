@@ -1,0 +1,24 @@
+@mixin box-shadow($shadow...) {
+  @if $enable-shadows {
+    $result: ();
+    $has-single-value: false;
+    $single-value: null;
+
+    @each $value in $shadow {
+      @if $value != null {
+        @if $value == none or $value == initial or $value == inherit or $value == unset {
+          $has-single-value: true;
+          $single-value: $value;
+        } @else {
+          $result: append($result, $value, "comma");
+        }
+      }
+    }
+
+    @if $has-single-value {
+      box-shadow: $single-value;
+    } @else if (length($result) > 0) {
+      box-shadow: $result;
+    }
+  }
+}
