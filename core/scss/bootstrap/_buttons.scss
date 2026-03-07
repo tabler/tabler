@@ -29,10 +29,10 @@
   line-height: var(--#{$prefix}btn-line-height);
   color: var(--#{$prefix}btn-color);
   text-align: center;
-  text-decoration: if($link-decoration == none, null, none);
+  text-decoration: if(sass($link-decoration == none): null; else: none);
   white-space: $btn-white-space;
   vertical-align: middle;
-  cursor: if($enable-button-pointers, pointer, null);
+  cursor: if(sass($enable-button-pointers): pointer; else: null);
   user-select: none;
   border: var(--#{$prefix}btn-border-width) solid var(--#{$prefix}btn-border-color);
   @include border-radius(var(--#{$prefix}btn-border-radius));
@@ -42,7 +42,7 @@
 
   &:hover {
     color: var(--#{$prefix}btn-hover-color);
-    text-decoration: if($link-hover-decoration == underline, none, null);
+    text-decoration: if(sass($link-hover-decoration == underline): none; else: null);
     background-color: var(--#{$prefix}btn-hover-bg);
     border-color: var(--#{$prefix}btn-hover-border-color);
   }
@@ -86,7 +86,7 @@
     color: var(--#{$prefix}btn-active-color);
     background-color: var(--#{$prefix}btn-active-bg);
     // Remove CSS gradients if they're enabled
-    background-image: if($enable-gradients, none, null);
+    background-image: if(sass($enable-gradients): none; else: null);
     border-color: var(--#{$prefix}btn-active-border-color);
     @include box-shadow(var(--#{$prefix}btn-active-shadow));
 
@@ -115,7 +115,7 @@
     color: var(--#{$prefix}btn-disabled-color);
     pointer-events: none;
     background-color: var(--#{$prefix}btn-disabled-bg);
-    background-image: if($enable-gradients, none, null);
+    background-image: if(sass($enable-gradients): none; else: null);
     border-color: var(--#{$prefix}btn-disabled-border-color);
     opacity: var(--#{$prefix}btn-disabled-opacity);
     @include box-shadow(none);

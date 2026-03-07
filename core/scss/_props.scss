@@ -34,7 +34,7 @@
   @each $name, $color in map.merge($theme-colors, $social-colors) {
     --#{$prefix}#{$name}: #{$color};
     --#{$prefix}#{$name}-rgb: #{to-rgb($color)};
-    --#{$prefix}#{$name}-fg: #{if(contrast-ratio($color) > $min-contrast-ratio, var(--#{$prefix}light), var(--#{$prefix}dark))};
+    --#{$prefix}#{$name}-fg: #{if(sass(contrast-ratio($color) > $min-contrast-ratio): var(--#{$prefix}light); else: var(--#{$prefix}dark))};
     --#{$prefix}#{$name}-darken: #{theme-color-darker($color)};
     --#{$prefix}#{$name}-darken: color-mix(in oklab, var(--#{$prefix}#{$name}), transparent 20%);
     --#{$prefix}#{$name}-lt: #{theme-color-lighter($color)};
@@ -45,7 +45,7 @@
 
   /** Gray colors */
   @each $name, $color in $gray-colors {
-    --#{$prefix}#{$name}-fg: #{if(contrast-ratio($color, white) > $min-contrast-ratio, var(--#{$prefix}white), var(--#{$prefix}body-color))};
+    --#{$prefix}#{$name}-fg: #{if(sass(contrast-ratio($color, white) > $min-contrast-ratio): var(--#{$prefix}white); else: var(--#{$prefix}body-color))};
   }
 
   /** Spacers */
@@ -68,7 +68,7 @@
 
   /** Shadows */
   @each $name, $value in $box-shadows {
-    --#{$prefix}shadow#{if($name, '-#{$name}', '')}: #{$value};
+    --#{$prefix}shadow#{if(sass($name): '-#{$name}'; else: '')}: #{$value};
   }
 
   /** Border radiuses */
@@ -85,7 +85,7 @@
   --#{$prefix}backdrop-opacity: #{$backdrop-opacity};
   --#{$prefix}backdrop-bg: var(--#{$prefix}bg-surface-dark);
   @each $name, $value in $backdrops {
-    --#{$prefix}backdrop-bg#{if($name, '-#{$name}', '')}: #{$value};
+    --#{$prefix}backdrop-bg#{if(sass($name): '-#{$name}'; else: '')}: #{$value};
   }
   --#{$prefix}backdrop-blur: #{$backdrop-blur};
   --#{$prefix}backdrop-filter: blur(var(--#{$prefix}backdrop-blur));

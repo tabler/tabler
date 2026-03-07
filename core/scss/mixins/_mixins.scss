@@ -1,3 +1,5 @@
+@use "sass:meta";
+
 @mixin subheader($include-color: true, $include-line-height: true) {
   font-size: $h5-font-size;
   font-weight: var(--#{$prefix}font-weight-medium);
@@ -14,31 +16,32 @@
 }
 
 @mixin scrollbar {
-  #{if(&, "&", "*")} {
+  $selector: if(sass(meta.type-of(&) != "null"): "&"; else: "*");
+  #{$selector} {
     scrollbar-color: color-transparent(var(--#{$prefix}scrollbar-color, var(--#{$prefix}body-color)), 0.2) transparent;
   }
 
-  #{if(&, "&", "*")}::-webkit-scrollbar {
+  #{$selector}::-webkit-scrollbar {
     width: 1rem;
     height: 1rem;
     @include transition(background $transition-time);
   }
 
-  #{if(&, "&", "*")}::-webkit-scrollbar-thumb {
+  #{$selector}::-webkit-scrollbar-thumb {
     @include border-radius(1rem);
     border: 5px solid transparent;
     box-shadow: inset 0 0 0 1rem color-transparent(var(--#{$prefix}scrollbar-color, var(--#{$prefix}body-color)), 0.2);
   }
 
-  #{if(&, "&", "*")}::-webkit-scrollbar-track {
+  #{$selector}::-webkit-scrollbar-track {
     background: transparent;
   }
 
-  #{if(&, "&", "*")}:hover::-webkit-scrollbar-thumb {
+  #{$selector}:hover::-webkit-scrollbar-thumb {
     box-shadow: inset 0 0 0 1rem color-transparent(var(--#{$prefix}scrollbar-color, var(--#{$prefix}body-color)), 0.4);
   }
 
-  #{if(&, "&", "*")}::-webkit-scrollbar-corner {
+  #{$selector}::-webkit-scrollbar-corner {
     background: transparent;
   }
 }
