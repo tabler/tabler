@@ -1,3 +1,7 @@
+@use "sass:math";
+@use "sass:map";
+@use "sass:meta";
+
 // Grid system
 //
 // Generate semantic grid columns with these mixins.
@@ -13,7 +17,7 @@
 }
 
 @mixin make-col-ready() {
-  box-sizing: if(variable-exists(include-column-box-sizing) and $include-column-box-sizing, border-box, null);
+  box-sizing: if(meta.global-variable-exists("include-column-box-sizing") and $include-column-box-sizing, border-box, null);
   flex-shrink: 0;
   width: 100%;
   max-width: 100%;
@@ -25,7 +29,7 @@
 @mixin make-col($size: false, $columns: $grid-columns) {
   @if $size {
     flex: 0 0 auto;
-    width: percentage(divide($size, $columns));
+    width: math.percentage(divide($size, $columns));
   } @else {
     flex: 1 1 0;
     max-width: 100%;
@@ -39,18 +43,18 @@
 
 @mixin make-col-offset($size, $columns: $grid-columns) {
   $num: divide($size, $columns);
-  margin-left: if($num == 0, 0, percentage($num));
+  margin-left: if($num == 0, 0, math.percentage($num));
 }
 
 @mixin row-cols($count) {
   > * {
     flex: 0 0 auto;
-    width: percentage(divide(1, $count));
+    width: math.percentage(divide(1, $count));
   }
 }
 
 @mixin make-grid-columns($columns: $grid-columns, $gutter: $grid-gutter-width, $breakpoints: $grid-breakpoints) {
-  @each $breakpoint in map-keys($breakpoints) {
+  @each $breakpoint in map.keys($breakpoints) {
     $infix: breakpoint-infix($breakpoint, $breakpoints);
 
     @include media-breakpoint-up($breakpoint, $breakpoints) {
@@ -106,7 +110,7 @@
 }
 
 @mixin make-cssgrid($columns: $grid-columns, $breakpoints: $grid-breakpoints) {
-  @each $breakpoint in map-keys($breakpoints) {
+  @each $breakpoint in map.keys($breakpoints) {
     $infix: breakpoint-infix($breakpoint, $breakpoints);
 
     @include media-breakpoint-up($breakpoint, $breakpoints) {
