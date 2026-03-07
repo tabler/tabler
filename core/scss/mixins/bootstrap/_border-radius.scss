@@ -17,8 +17,14 @@
 @mixin border-radius($radius: $border-radius, $fallback-border-radius: false) {
   @if $enable-rounded {
     border-radius: valid-radius($radius);
-  }
-  @else if $fallback-border-radius != false {
+
+    @if $radius != 0 {
+      @supports (corner-shape: squircle) {
+        corner-shape: squircle;
+        border-radius: calc(#{$radius} * 2.5) !important;
+      }
+    }
+  } @else if $fallback-border-radius != false {
     border-radius: $fallback-border-radius;
   }
 }

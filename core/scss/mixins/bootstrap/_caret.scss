@@ -31,37 +31,42 @@
   $spacing: $caret-spacing,
   $vertical-align: $caret-vertical-align
 ) {
-  @if $enable-caret {
-    &::after {
-      display: inline-block;
-      margin-left: $spacing;
-      vertical-align: $vertical-align;
-      content: "";
-      @if $direction == down {
-        @include caret-down($width);
-      } @else if $direction == up {
-        @include caret-up($width);
-      } @else if $direction == end {
-        @include caret-end($width);
-      }
+  $selector: 'after';
+
+  @if $direction == 'left' {
+    $selector: 'before';
+  }
+
+  &:#{$selector} {
+    content: '';
+    display: inline-block;
+    vertical-align: $caret-vertical-align;
+    width: $caret-width;
+    height: $caret-width;
+    border-bottom: 1px var(--#{$prefix}border-style);
+    border-inline-start: 1px var(--#{$prefix}border-style);
+    margin-inline-end: 0.1em;
+
+    @if $direction != 'left' {
+      margin-inline-start: $caret-spacing;
+    } @else {
+      margin-inline-end: $caret-spacing;
     }
 
-    @if $direction == start {
-      &::after {
-        display: none;
-      }
-
-      &::before {
-        display: inline-block;
-        margin-right: $spacing;
-        vertical-align: $vertical-align;
-        content: "";
-        @include caret-start($width);
-      }
+    @if $direction == down {
+      transform: rotate(-45deg);
+    } @else if $direction == up {
+      transform: rotate(135deg);
+    } @else if $direction == end {
+      transform: rotate(-135deg);
+    } @else {
+      transform: rotate(45deg);
     }
+  }
 
-    &:empty::after {
-      margin-left: 0;
+  @if $direction == 'left' {
+    &:after {
+      content: none;
     }
   }
 }
