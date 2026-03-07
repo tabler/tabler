@@ -4,7 +4,7 @@
 
 @if $enable-dark-mode {
   :root {
-    &:not(.theme-dark):not([data-bs-theme='dark']) {
+    &:not(.theme-dark):not([data-bs-theme='dark'], [data-theme='dark']) {
       .hide-theme-light {
         display: none !important;
       }
@@ -15,7 +15,8 @@
     }
 
     &.theme-dark,
-    &[data-bs-theme='dark'] {
+    &[data-bs-theme='dark'],
+    &[data-theme='dark'] {
       .hide-theme-dark {
         display: none !important;
       }
@@ -63,7 +64,8 @@
     }
   }
 
-  body[data-bs-theme='dark'] [data-bs-theme='light'] {
+  body[data-bs-theme='dark'] [data-bs-theme='light'],
+  body[data-theme='dark'] [data-theme='light'] {
     @extend [data-bs-theme='dark'];
   }
 }

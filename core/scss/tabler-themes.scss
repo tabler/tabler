@@ -1,6 +1,7 @@
 @import 'config';
 
-[data-bs-theme-base='slate'] {
+[data-bs-theme-base='slate'],
+[data-theme-base='slate'] {
   --#{$prefix}gray-50: #f8fafc;
   --#{$prefix}gray-100: #f1f5f9;
   --#{$prefix}gray-200: #e2e8f0;
@@ -14,7 +15,8 @@
   --#{$prefix}gray-950: #020617;
 }
 
-[data-bs-theme-base='gray'] {
+[data-bs-theme-base='gray'],
+[data-theme-base='gray'] {
   --#{$prefix}gray-50: #{$gray-50};
   --#{$prefix}gray-100: #{$gray-100};
   --#{$prefix}gray-200: #{$gray-200};
@@ -28,7 +30,8 @@
   --#{$prefix}gray-950: #{$gray-950};
 }
 
-[data-bs-theme-base='zinc'] {
+[data-bs-theme-base='zinc'],
+[data-theme-base='zinc'] {
   --#{$prefix}gray-50: #fafafa;
   --#{$prefix}gray-100: #f4f4f5;
   --#{$prefix}gray-200: #e4e4e7;
@@ -42,7 +45,8 @@
   --#{$prefix}gray-950: #09090b;
 }
 
-[data-bs-theme-base='neutral'] {
+[data-bs-theme-base='neutral'],
+[data-theme-base='neutral'] {
   --#{$prefix}gray-50: #fafafa;
   --#{$prefix}gray-100: #f5f5f5;
   --#{$prefix}gray-200: #e5e5e5;
@@ -56,7 +60,8 @@
   --#{$prefix}gray-950: #0a0a0a;
 }
 
-[data-bs-theme-base='stone'] {
+[data-bs-theme-base='stone'],
+[data-theme-base='stone'] {
   --#{$prefix}gray-50: #fafaf9;
   --#{$prefix}gray-100: #f5f5f4;
   --#{$prefix}gray-200: #e7e5e4;
@@ -70,7 +75,8 @@
   --#{$prefix}gray-950: #0c0a09;
 }
 
-[data-bs-theme-base='pink'] {
+[data-bs-theme-base='pink'],
+[data-theme-base='pink'] {
   --#{$prefix}gray-50: #fdf2f8;
   --#{$prefix}gray-100: #fce7f3;
   --#{$prefix}gray-200: #fbcfe8;
@@ -85,25 +91,30 @@
 }
 
 @each $name, $value in $extra-colors {
-  [data-bs-theme-primary='#{$name}'] {
+  [data-bs-theme-primary='#{$name}'],
+  [data-theme-primary='#{$name}'] {
     --#{$prefix}primary: #{$value};
     --#{$prefix}primary-rgb: #{to-rgb($value)};
   }
 }
 
 @each $value in (0, 0.5, 1, 1.5, 2) {
-  [data-bs-theme-radius='#{$value}'] {
+  [data-bs-theme-radius='#{$value}'],
+  [data-theme-radius='#{$value}'] {
     --#{$prefix}border-radius-scale: #{$value};
   }
 }
 
-[data-bs-theme-primary='inverted'] {
+[data-bs-theme-primary='inverted'],
+[data-theme-primary='inverted'] {
   --#{$prefix}primary: var(--#{$prefix}gray-800);
   --#{$prefix}primary-fg: var(--#{$prefix}light);
   --#{$prefix}primary-rgb: #{to-rgb($dark)};
 
   &[data-bs-theme='dark'],
-  [data-bs-theme='dark'] {
+  [data-bs-theme='dark'],
+  &[data-theme='dark'],
+  [data-theme='dark'] {
     --#{$prefix}primary: #{$light};
     --#{$prefix}primary-fg: var(--#{$prefix}dark);
     --#{$prefix}primary-rgb: #{to-rgb($light)};
@@ -111,7 +122,8 @@
 }
 
 @each $name, $value in (monospace: $font-family-monospace, sans-serif: $font-family-sans-serif, serif: $font-family-serif, comic: $font-family-comic) {
-  [data-bs-theme-font='#{$name}'] {
+  [data-bs-theme-font='#{$name}'],
+  [data-theme-font='#{$name}'] {
     --#{$prefix}body-font-family: var(--#{$prefix}font-#{$name});
 
     @if $name == 'monospace' {
