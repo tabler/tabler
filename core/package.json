@@ -17,7 +17,7 @@
     "css-minify-main": "cleancss -O1 --format breakWith=lf --with-rebase --source-map --source-map-inline-sources --output dist/css/ --batch --batch-suffix \".min\" \"dist/css/*.css\" \"!dist/css/*.min.css\" \"!dist/css/*rtl*.css\"",
     "css-minify-rtl": "cleancss -O1 --format breakWith=lf --with-rebase --source-map --source-map-inline-sources --output dist/css/ --batch --batch-suffix \".min\" \"dist/css/*rtl.css\" \"!dist/css/*.min.css\"",
     "css-lint": "pnpm run css-lint-variables",
-    "css-lint-variables": "find-unused-sass-variables scss/ node_modules/bootstrap/scss/",
+    "css-lint-variables": "find-unused-sass-variables scss/",
     "js": "pnpm run js-build && pnpm run js-build-min",
     "js-build": "concurrently \"pnpm run js-build-standalone\" \"pnpm run js-build-theme\"",
     "js-build-theme": "cross-env BASE_NAME=tabler-theme vite build --config .build/vite.config.mts",
@@ -147,8 +147,7 @@
     ]
   },
   "dependencies": {
-    "@popperjs/core": "^2.11.8",
-    "bootstrap": "5.3.8"
+    "@popperjs/core": "^2.11.8"
   },
   "devDependencies": {
     "@hotwired/turbo": "^8.0.18",
