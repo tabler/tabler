@@ -1,34 +1,39 @@
 /**
  * --------------------------------------------------------------------------
- * Bootstrap util/backdrop.js
+ * Bootstrap util/backdrop.ts
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
 
 import EventHandler from '../dom/event-handler.js'
-import Config from './config.js'
+import Config from './config'
 import {
   execute, executeAfterTransition, getElement, reflow
-} from './index.js'
-
-/**
- * Constants
- */
+} from './index'
+import type { ComponentConfig, ComponentConfigType } from '../types'
 
 const NAME = 'backdrop'
 const CLASS_NAME_FADE = 'fade'
 const CLASS_NAME_SHOW = 'show'
 const EVENT_MOUSEDOWN = `mousedown.bs.${NAME}`
 
-const Default = {
+interface BackdropConfig {
+  className: string
+  clickCallback: (() => void) | null
+  isAnimated: boolean
+  isVisible: boolean
+  rootElement: HTMLElement | string
+}
+
+const Default: BackdropConfig = {
   className: 'modal-backdrop',
   clickCallback: null,
   isAnimated: false,
-  isVisible: true, // if false, we use the backdrop helper without adding any element to the dom
-  rootElement: 'body' // give the choice to place backdrop under different elements
+  isVisible: true,
+  rootElement: 'body'
 }
 
-const DefaultType = {
+const DefaultType: ComponentConfigType = {
   className: 'string',
   clickCallback: '(function|null)',
   isAnimated: 'boolean',
@@ -36,33 +41,31 @@ const DefaultType = {
   rootElement: '(element|string)'
 }
 
-/**
- * Class definition
- */
-
 class Backdrop extends Config {
-  constructor(config) {
+  declare _config: BackdropConfig & ComponentConfig
+  _isAppended: boolean
+  _element: HTMLElement | null
+
+  constructor(config?: ComponentConfig) {
     super()
-    this._config = this._getConfig(config)
+    this._config = this._getConfig(config) as BackdropConfig & ComponentConfig
     this._isAppended = false
     this._element = null
   }
 
-  // Getters
-  static get Default() {
+  static get Default(): ComponentConfig {
     return Default
   }
 
-  static get DefaultType() {
+  static get DefaultType(): ComponentConfigType {
     return DefaultType
   }
 
-  static get NAME() {
+  static get NAME(): string {
     return NAME
   }
 
-  // Public
-  show(callback) {
+  show(callback?: () => void): void {
     if (!this._config.isVisible) {
       execute(callback)
       return
@@ -82,7 +85,7 @@ class Backdrop extends Config {
     })
   }
 
-  hide(callback) {
+  hide(callback?: () => void): void {
     if (!this._config.isVisible) {
       execute(callback)
       return
@@ -96,19 +99,18 @@ class Backdrop extends Config {
     })
   }
 
-  dispose() {
+  dispose(): void {
     if (!this._isAppended) {
       return
     }
 
     EventHandler.off(this._element, EVENT_MOUSEDOWN)
 
-    this._element.remove()
+    this._element!.remove()
     this._isAppended = false
   }
 
-  // Private
-  _getElement() {
+  _getElement(): HTMLElement {
     if (!this._element) {
       const backdrop = document.createElement('div')
       backdrop.className = this._config.className
@@ -122,19 +124,18 @@ class Backdrop extends Config {
     return this._element
   }
 
-  _configAfterMerge(config) {
-    // use getElement() with the default "body" to get a fresh Element on each instantiation
+  _configAfterMerge(config: ComponentConfig): ComponentConfig {
     config.rootElement = getElement(config.rootElement)
     return config
   }
 
-  _append() {
+  _append(): void {
     if (this._isAppended) {
       return
     }
 
     const element = this._getElement()
-    this._config.rootElement.append(element)
+    ;(this._config.rootElement as HTMLElement).append(element)
 
     EventHandler.on(element, EVENT_MOUSEDOWN, () => {
       execute(this._config.clickCallback)
@@ -143,7 +144,7 @@ class Backdrop extends Config {
     this._isAppended = true
   }
 
-  _emulateAnimation(callback) {
+  _emulateAnimation(callback: () => void): void {
     executeAfterTransition(callback, this._getElement(), this._config.isAnimated)
   }
 }

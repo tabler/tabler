@@ -1,15 +1,16 @@
 /**
  * --------------------------------------------------------------------------
- * Bootstrap util/sanitizer.js
+ * Bootstrap util/sanitizer.ts
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
 
+import type { AllowList, SanitizeFn } from '../types'
+
 // js-docs-start allow-list
 const ARIA_ATTRIBUTE_PATTERN = /^aria-[\w-]*$/i
 
-export const DefaultAllowlist = {
-  // Global attributes allowed on any supplied element below.
+export const DefaultAllowlist: AllowList = {
   '*': ['class', 'dir', 'id', 'lang', 'role', ARIA_ATTRIBUTE_PATTERN],
   a: ['target', 'href', 'title', 'rel'],
   area: [],
@@ -57,31 +58,24 @@ const uriAttributes = new Set([
   'xlink:href'
 ])
 
-/**
- * A pattern that recognizes URLs that are safe wrt. XSS in URL navigation
- * contexts.
- *
- * Shout-out to Angular https://github.com/angular/angular/blob/15.2.8/packages/core/src/sanitization/url_sanitizer.ts#L38
- */
 const SAFE_URL_PATTERN = /^(?!javascript:)(?:[a-z0-9+.-]+:|[^&:/?#]*(?:[/?#]|$))/i
 
-const allowedAttribute = (attribute, allowedAttributeList) => {
+const allowedAttribute = (attribute: Attr, allowedAttributeList: (string | RegExp)[]): boolean => {
   const attributeName = attribute.nodeName.toLowerCase()
 
   if (allowedAttributeList.includes(attributeName)) {
     if (uriAttributes.has(attributeName)) {
-      return Boolean(SAFE_URL_PATTERN.test(attribute.nodeValue))
+      return Boolean(SAFE_URL_PATTERN.test(attribute.nodeValue!))
     }
 
     return true
   }
 
-  // Check if a regular expression validates the attribute.
   return allowedAttributeList.filter(attributeRegex => attributeRegex instanceof RegExp)
-    .some(regex => regex.test(attributeName))
+    .some(regex => (regex as RegExp).test(attributeName))
 }
 
-export function sanitizeHtml(unsafeHtml, allowList, sanitizeFunction) {
+export function sanitizeHtml(unsafeHtml: string, allowList: AllowList, sanitizeFunction?: SanitizeFn): string {
   if (!unsafeHtml.length) {
     return unsafeHtml
   }
@@ -92,9 +86,9 @@ export function sanitizeHtml(unsafeHtml, allowList, sanitizeFunction) {
 
   const domParser = new window.DOMParser()
   const createdDocument = domParser.parseFromString(unsafeHtml, 'text/html')
-  const elements = [].concat(...createdDocument.body.querySelectorAll('*'))
+  const elements = [].concat(...createdDocument.body.querySelectorAll('*') as any)
 
-  for (const element of elements) {
+  for (const element of elements as Element[]) {
     const elementName = element.nodeName.toLowerCase()
 
     if (!Object.keys(allowList).includes(elementName)) {
@@ -102,10 +96,10 @@ export function sanitizeHtml(unsafeHtml, allowList, sanitizeFunction) {
       continue
     }
 
-    const attributeList = [].concat(...element.attributes)
-    const allowedAttributes = [].concat(allowList['*'] || [], allowList[elementName] || [])
+    const attributeList = [].concat(...element.attributes as any)
+    const allowedAttributes = [].concat(allowList['*'] || [] as any, allowList[elementName] || [] as any)
 
-    for (const attribute of attributeList) {
+    for (const attribute of attributeList as Attr[]) {
       if (!allowedAttribute(attribute, allowedAttributes)) {
         element.removeAttribute(attribute.nodeName)
       }

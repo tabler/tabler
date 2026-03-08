@@ -1,24 +1,31 @@
 /**
  * --------------------------------------------------------------------------
- * Bootstrap util/template-factory.js
+ * Bootstrap util/template-factory.ts
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
 
 import SelectorEngine from '../dom/selector-engine.js'
-import Config from './config.js'
-import { DefaultAllowlist, sanitizeHtml } from './sanitizer.js'
-import { execute, getElement, isElement } from './index.js'
-
-/**
- * Constants
- */
+import Config from './config'
+import { DefaultAllowlist, sanitizeHtml } from './sanitizer'
+import { execute, getElement, isElement } from './index'
+import type { AllowList, ComponentConfig, ComponentConfigType, SanitizeFn } from '../types'
 
 const NAME = 'TemplateFactory'
 
-const Default = {
+interface TemplateFactoryConfig {
+  allowList: AllowList
+  content: Record<string, unknown>
+  extraClass: string | (() => string)
+  html: boolean
+  sanitize: boolean
+  sanitizeFn: SanitizeFn | null
+  template: string
+}
+
+const Default: TemplateFactoryConfig = {
   allowList: DefaultAllowlist,
-  content: {}, // { selector : text ,  selector2 : text2 , }
+  content: {},
   extraClass: '',
   html: false,
   sanitize: true,
@@ -26,7 +33,7 @@ const Default = {
   template: '<div></div>'
 }
 
-const DefaultType = {
+const DefaultType: ComponentConfigType = {
   allowList: 'object',
   content: 'object',
   extraClass: '(string|function)',
@@ -36,52 +43,48 @@ const DefaultType = {
   template: 'string'
 }
 
-const DefaultContentType = {
+const DefaultContentType: ComponentConfigType = {
   entry: '(string|element|function|null)',
   selector: '(string|element)'
 }
 
-/**
- * Class definition
- */
-
 class TemplateFactory extends Config {
-  constructor(config) {
+  declare _config: TemplateFactoryConfig & ComponentConfig
+
+  constructor(config?: ComponentConfig) {
     super()
-    this._config = this._getConfig(config)
+    this._config = this._getConfig(config) as TemplateFactoryConfig & ComponentConfig
   }
 
-  // Getters
-  static get Default() {
+  static get Default(): ComponentConfig {
     return Default
   }
 
-  static get DefaultType() {
+  static get DefaultType(): ComponentConfigType {
     return DefaultType
   }
 
-  static get NAME() {
+  static get NAME(): string {
     return NAME
   }
 
-  // Public
-  getContent() {
+  getContent(): unknown[] {
     return Object.values(this._config.content)
       .map(config => this._resolvePossibleFunction(config))
       .filter(Boolean)
   }
 
-  hasContent() {
+  hasContent(): boolean {
     return this.getContent().length > 0
   }
 
-  changeContent(content) {
+  changeContent(content: Record<string, unknown>): this {
     this._checkContent(content)
     this._config.content = { ...this._config.content, ...content }
     return this
   }
 
-  toHtml() {
+  toHtml(): Element {
     const templateWrapper = document.createElement('div')
     templateWrapper.innerHTML = this._maybeSanitize(this._config.template)
 
@@ -93,25 +96,24 @@ class TemplateFactory extends Config {
     const extraClass = this._resolvePossibleFunction(this._config.extraClass)
 
     if (extraClass) {
-      template.classList.add(...extraClass.split(' '))
+      template.classList.add(...(extraClass as string).split(' '))
     }
 
     return template
   }
 
-  // Private
-  _typeCheckConfig(config) {
+  _typeCheckConfig(config: ComponentConfig): void {
     super._typeCheckConfig(config)
     this._checkContent(config.content)
   }
 
-  _checkContent(arg) {
+  _checkContent(arg: Record<string, unknown>): void {
     for (const [selector, content] of Object.entries(arg)) {
       super._typeCheckConfig({ selector, entry: content }, DefaultContentType)
     }
   }
 
-  _setContent(template, content, selector) {
+  _setContent(template: HTMLElement, content: unknown, selector: string): void {
     const templateElement = SelectorEngine.findOne(selector, template)
 
     if (!templateElement) {
@@ -126,27 +128,27 @@ class TemplateFactory extends Config {
     }
 
     if (isElement(content)) {
-      this._putElementInTemplate(getElement(content), templateElement)
+      this._putElementInTemplate(getElement(content)!, templateElement)
       return
     }
 
     if (this._config.html) {
-      templateElement.innerHTML = this._maybeSanitize(content)
+      templateElement.innerHTML = this._maybeSanitize(content as string)
       return
     }
 
-    templateElement.textContent = content
+    templateElement.textContent = content as string
   }
 
-  _maybeSanitize(arg) {
-    return this._config.sanitize ? sanitizeHtml(arg, this._config.allowList, this._config.sanitizeFn) : arg
+  _maybeSanitize(arg: string): string {
+    return this._config.sanitize ? sanitizeHtml(arg, this._config.allowList, this._config.sanitizeFn!) : arg
   }
 
-  _resolvePossibleFunction(arg) {
+  _resolvePossibleFunction(arg: unknown): unknown {
     return execute(arg, [undefined, this])
   }
 
-  _putElementInTemplate(element, templateElement) {
+  _putElementInTemplate(element: HTMLElement, templateElement: Element): void {
     if (this._config.html) {
       templateElement.innerHTML = ''
       templateElement.append(element)
