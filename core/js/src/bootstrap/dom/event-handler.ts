@@ -1,20 +1,26 @@
 /**
  * --------------------------------------------------------------------------
- * Bootstrap dom/event-handler.js
+ * Bootstrap dom/event-handler.ts
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
 
-/**
- * Constants
- */
+type EventCallback = (...args: any[]) => any
+
+interface BootstrapHandler {
+  (event: Event): any
+  oneOff?: boolean
+  delegationSelector?: string | null
+  callable?: EventCallback
+  uidEvent?: string | number
+}
 
 const namespaceRegex = /[^.]*(?=\..*)\.|.*/
 const stripNameRegex = /\..*/
 const stripUidRegex = /::\d+$/
-const eventRegistry = {} // Events storage
+const eventRegistry: Record<string | number, Record<string, Record<string | number, BootstrapHandler>>> = {}
 let uidEvent = 1
-const customEvents = {
+const customEvents: Record<string, string> = {
   mouseenter: 'mouseover',
   mouseleave: 'mouseout'
 }
@@ -68,15 +74,11 @@ const nativeEvents = new Set([
   'scroll'
 ])
 
-/**
- * Private methods
- */
-
-function makeEventUid(element, uid) {
+function makeEventUid(element: any, uid?: string): string | number {
   return (uid && `${uid}::${uidEvent++}`) || element.uidEvent || uidEvent++
 }
 
-function getElementEvents(element) {
+function getElementEvents(element: any): Record<string, Record<string | number, BootstrapHandler>> {
   const uid = makeEventUid(element)
 
   element.uidEvent = uid
@@ -85,23 +87,23 @@ function getElementEvents(element) {
   return eventRegistry[uid]
 }
 
-function bootstrapHandler(element, fn) {
-  return function handler(event) {
+function bootstrapHandler(element: EventTarget, fn: EventCallback): BootstrapHandler {
+  return function handler(event: Event) {
     hydrateObj(event, { delegateTarget: element })
 
-    if (handler.oneOff) {
+    if ((handler as BootstrapHandler).oneOff) {
       EventHandler.off(element, event.type, fn)
     }
 
     return fn.apply(element, [event])
-  }
+  } as BootstrapHandler
 }
 
-function bootstrapDelegationHandler(element, selector, fn) {
-  return function handler(event) {
-    const domElements = element.querySelectorAll(selector)
+function bootstrapDelegationHandler(element: EventTarget, selector: string, fn: EventCallback): BootstrapHandler {
+  return function handler(this: EventTarget, event: Event) {
+    const domElements = (element as HTMLElement).querySelectorAll(selector)
 
-    for (let { target } = event; target && target !== this; target = target.parentNode) {
+    for (let { target } = event; target && target !== this; target = (target as HTMLElement).parentNode) {
       for (const domElement of domElements) {
         if (domElement !== target) {
           continue
@@ -109,25 +111,32 @@ function bootstrapDelegationHandler(element, selector, fn) {
 
         hydrateObj(event, { delegateTarget: target })
 
-        if (handler.oneOff) {
+        if ((handler as BootstrapHandler).oneOff) {
           EventHandler.off(element, event.type, selector, fn)
         }
 
         return fn.apply(target, [event])
       }
     }
-  }
+  } as BootstrapHandler
 }
 
-function findHandler(events, callable, delegationSelector = null) {
+function findHandler(
+  events: Record<string | number, BootstrapHandler>,
+  callable: EventCallback,
+  delegationSelector: string | null = null
+): BootstrapHandler | undefined {
   return Object.values(events)
     .find(event => event.callable === callable && event.delegationSelector === delegationSelector)
 }
 
-function normalizeParameters(originalTypeEvent, handler, delegationFunction) {
+function normalizeParameters(
+  originalTypeEvent: string,
+  handler: string | EventCallback | undefined,
+  delegationFunction: EventCallback | undefined
+): [boolean, EventCallback, string] {
   const isDelegated = typeof handler === 'string'
-  // TODO: tooltip passes `false` instead of selector, so we need to check
-  const callable = isDelegated ? delegationFunction : (handler || delegationFunction)
+  const callable = isDelegated ? delegationFunction! : (handler || delegationFunction)!
   let typeEvent = getTypeEvent(originalTypeEvent)
 
   if (!nativeEvents.has(typeEvent)) {
@@ -137,18 +146,22 @@ function normalizeParameters(originalTypeEvent, handler, delegationFunction) {
   return [isDelegated, callable, typeEvent]
 }
 
-function addHandler(element, originalTypeEvent, handler, delegationFunction, oneOff) {
+function addHandler(
+  element: EventTarget | null,
+  originalTypeEvent: string,
+  handler: string | EventCallback | undefined,
+  delegationFunction: EventCallback | undefined,
+  oneOff: boolean
+): void {
   if (typeof originalTypeEvent !== 'string' || !element) {
     return
   }
 
   let [isDelegated, callable, typeEvent] = normalizeParameters(originalTypeEvent, handler, delegationFunction)
 
-  // in case of mouseenter or mouseleave wrap the handler within a function that checks for its DOM position
-  // this prevents the handler from being dispatched the same way as mouseover or mouseout does
   if (originalTypeEvent in customEvents) {
-    const wrapFunction = fn => {
-      return function (event) {
+    const wrapFunction = (fn: EventCallback): EventCallback => {
+      return function (this: EventTarget, event: any) {
         if (!event.relatedTarget || (event.relatedTarget !== event.delegateTarget && !event.delegateTarget.contains(event.relatedTarget))) {
           return fn.call(this, event)
         }
@@ -160,7 +173,7 @@ function addHandler(element, originalTypeEvent, handler, delegationFunction, one
 
   const events = getElementEvents(element)
   const handlers = events[typeEvent] || (events[typeEvent] = {})
-  const previousFunction = findHandler(handlers, callable, isDelegated ? handler : null)
+  const previousFunction = findHandler(handlers, callable, isDelegated ? handler as string : null)
 
   if (previousFunction) {
     previousFunction.oneOff = previousFunction.oneOff && oneOff
@@ -169,11 +182,11 @@ function addHandler(element, originalTypeEvent, handler, delegationFunction, one
   }
 
   const uid = makeEventUid(callable, originalTypeEvent.replace(namespaceRegex, ''))
-  const fn = isDelegated ?
-    bootstrapDelegationHandler(element, handler, callable) :
+  const fn: BootstrapHandler = isDelegated ?
+    bootstrapDelegationHandler(element, handler as string, callable) :
     bootstrapHandler(element, callable)
 
-  fn.delegationSelector = isDelegated ? handler : null
+  fn.delegationSelector = isDelegated ? handler as string : null
   fn.callable = callable
   fn.oneOff = oneOff
   fn.uidEvent = uid
@@ -182,43 +195,53 @@ function addHandler(element, originalTypeEvent, handler, delegationFunction, one
   element.addEventListener(typeEvent, fn, isDelegated)
 }
 
-function removeHandler(element, events, typeEvent, handler, delegationSelector) {
-  const fn = findHandler(events[typeEvent], handler, delegationSelector)
+function removeHandler(
+  element: EventTarget,
+  events: Record<string, Record<string | number, BootstrapHandler>>,
+  typeEvent: string,
+  handler: EventCallback,
+  delegationSelector?: string | null
+): void {
+  const fn = findHandler(events[typeEvent], handler, delegationSelector ?? null)
 
   if (!fn) {
     return
   }
 
   element.removeEventListener(typeEvent, fn, Boolean(delegationSelector))
-  delete events[typeEvent][fn.uidEvent]
+  delete events[typeEvent][fn.uidEvent!]
 }
 
-function removeNamespacedHandlers(element, events, typeEvent, namespace) {
+function removeNamespacedHandlers(
+  element: EventTarget,
+  events: Record<string, Record<string | number, BootstrapHandler>>,
+  typeEvent: string,
+  namespace: string
+): void {
   const storeElementEvent = events[typeEvent] || {}
 
   for (const [handlerKey, event] of Object.entries(storeElementEvent)) {
     if (handlerKey.includes(namespace)) {
-      removeHandler(element, events, typeEvent, event.callable, event.delegationSelector)
+      removeHandler(element, events, typeEvent, event.callable!, event.delegationSelector)
     }
   }
 }
 
-function getTypeEvent(event) {
-  // allow to get the native events from namespaced events ('click.bs.button' --> 'click')
+function getTypeEvent(event: string): string {
   event = event.replace(stripNameRegex, '')
   return customEvents[event] || event
 }
 
 const EventHandler = {
-  on(element, event, handler, delegationFunction) {
+  on(element: EventTarget | null, event: string, handler: string | EventCallback, delegationFunction?: EventCallback): void {
     addHandler(element, event, handler, delegationFunction, false)
   },
 
-  one(element, event, handler, delegationFunction) {
+  one(element: EventTarget | null, event: string, handler: string | EventCallback, delegationFunction?: EventCallback): void {
     addHandler(element, event, handler, delegationFunction, true)
   },
 
-  off(element, originalTypeEvent, handler, delegationFunction) {
+  off(element: EventTarget | null, originalTypeEvent: string, handler?: string | EventCallback, delegationFunction?: EventCallback): void {
     if (typeof originalTypeEvent !== 'string' || !element) {
       return
     }
@@ -230,12 +253,11 @@ const EventHandler = {
     const isNamespace = originalTypeEvent.startsWith('.')
 
     if (typeof callable !== 'undefined') {
-      // Simplest case: handler is passed, remove that listener ONLY.
       if (!Object.keys(storeElementEvent).length) {
         return
       }
 
-      removeHandler(element, events, typeEvent, callable, isDelegated ? handler : null)
+      removeHandler(element, events, typeEvent, callable, isDelegated ? handler as string : null)
       return
     }
 
@@ -249,12 +271,12 @@ const EventHandler = {
       const handlerKey = keyHandlers.replace(stripUidRegex, '')
 
       if (!inNamespace || originalTypeEvent.includes(handlerKey)) {
-        removeHandler(element, events, typeEvent, event.callable, event.delegationSelector)
+        removeHandler(element, events, typeEvent, event.callable!, event.delegationSelector)
       }
     }
   },
 
-  trigger(element, event, args) {
+  trigger(element: EventTarget | null, event: string, args?: Record<string, any>): Event | null {
     if (typeof event !== 'string' || !element) {
       return null
     }
@@ -267,10 +289,10 @@ const EventHandler = {
   }
 }
 
-function hydrateObj(obj, meta = {}) {
+function hydrateObj<T extends object>(obj: T, meta: Record<string, any> = {}): T {
   for (const [key, value] of Object.entries(meta)) {
     try {
-      obj[key] = value
+      (obj as any)[key] = value
     } catch {
       Object.defineProperty(obj, key, {
         configurable: true,

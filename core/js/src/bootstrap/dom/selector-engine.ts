@@ -1,27 +1,22 @@
 /**
  * --------------------------------------------------------------------------
- * Bootstrap dom/selector-engine.js
+ * Bootstrap dom/selector-engine.ts
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
 
-import { isDisabled, isVisible, parseSelector } from '../util/index.js'
+import { isDisabled, isVisible, parseSelector } from '../util/index'
 
-const getSelector = element => {
-  let selector = element.getAttribute('data-bs-target')
+const getSelector = (element: HTMLElement): string | null => {
+  let selector = element.getAttribute('data-tblr-target') || element.getAttribute('data-bs-target')
 
   if (!selector || selector === '#') {
     let hrefAttribute = element.getAttribute('href')
 
-    // The only valid content that could double as a selector are IDs or classes,
-    // so everything starting with `#` or `.`. If a "real" URL is used as the selector,
-    // `document.querySelector` will rightfully complain it is invalid.
-    // See https://github.com/twbs/bootstrap/issues/32273
     if (!hrefAttribute || (!hrefAttribute.includes('#') && !hrefAttribute.startsWith('.'))) {
       return null
     }
 
-    // Just in case some CMS puts out a full URL with the anchor appended
     if (hrefAttribute.includes('#') && !hrefAttribute.startsWith('#')) {
       hrefAttribute = `#${hrefAttribute.split('#')[1]}`
     }
@@ -33,36 +28,36 @@ const getSelector = element => {
 }
 
 const SelectorEngine = {
-  find(selector, element = document.documentElement) {
-    return [].concat(...Element.prototype.querySelectorAll.call(element, selector))
+  find(selector: string, element: Element = document.documentElement): HTMLElement[] {
+    return [].concat(...Element.prototype.querySelectorAll.call(element, selector) as any)
   },
 
-  findOne(selector, element = document.documentElement) {
+  findOne(selector: string, element: Element = document.documentElement): HTMLElement | null {
     return Element.prototype.querySelector.call(element, selector)
   },
 
-  children(element, selector) {
-    return [].concat(...element.children).filter(child => child.matches(selector))
+  children(element: HTMLElement, selector: string): HTMLElement[] {
+    return [].concat(...element.children as any).filter((child: HTMLElement) => child.matches(selector))
   },
 
-  parents(element, selector) {
-    const parents = []
-    let ancestor = element.parentNode.closest(selector)
+  parents(element: HTMLElement, selector: string): HTMLElement[] {
+    const parents: HTMLElement[] = []
+    let ancestor = element.parentNode && (element.parentNode as HTMLElement).closest(selector)
 
     while (ancestor) {
-      parents.push(ancestor)
-      ancestor = ancestor.parentNode.closest(selector)
+      parents.push(ancestor as HTMLElement)
+      ancestor = ancestor.parentNode && (ancestor.parentNode as HTMLElement).closest(selector)
     }
 
     return parents
   },
 
-  prev(element, selector) {
+  prev(element: HTMLElement, selector: string): HTMLElement[] {
     let previous = element.previousElementSibling
 
     while (previous) {
       if (previous.matches(selector)) {
-        return [previous]
+        return [previous as HTMLElement]
       }
 
       previous = previous.previousElementSibling
@@ -70,13 +65,13 @@ const SelectorEngine = {
 
     return []
   },
-  // TODO: this is now unused; remove later along with prev()
-  next(element, selector) {
+
+  next(element: HTMLElement, selector: string): HTMLElement[] {
     let next = element.nextElementSibling
 
     while (next) {
       if (next.matches(selector)) {
-        return [next]
+        return [next as HTMLElement]
       }
 
       next = next.nextElementSibling
@@ -85,7 +80,7 @@ const SelectorEngine = {
     return []
   },
 
-  focusableChildren(element) {
+  focusableChildren(element: HTMLElement): HTMLElement[] {
     const focusables = [
       'a',
       'button',
@@ -100,7 +95,7 @@ const SelectorEngine = {
     return this.find(focusables, element).filter(el => !isDisabled(el) && isVisible(el))
   },
 
-  getSelectorFromElement(element) {
+  getSelectorFromElement(element: HTMLElement): string | null {
     const selector = getSelector(element)
 
     if (selector) {
@@ -110,13 +105,13 @@ const SelectorEngine = {
     return null
   },
 
-  getElementFromSelector(element) {
+  getElementFromSelector(element: HTMLElement): HTMLElement | null {
     const selector = getSelector(element)
 
     return selector ? SelectorEngine.findOne(selector) : null
   },
 
-  getMultipleElementsFromSelector(element) {
+  getMultipleElementsFromSelector(element: HTMLElement): HTMLElement[] {
     const selector = getSelector(element)
 
     return selector ? SelectorEngine.find(selector) : []
