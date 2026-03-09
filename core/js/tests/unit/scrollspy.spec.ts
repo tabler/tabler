@@ -94,7 +94,20 @@ describe('ScrollSpy', () => {
       ].join('')
 
       const contentEl = fixtureEl.querySelector('#content')!
-      vi.spyOn(window, 'getComputedStyle').mockReturnValue({ overflowY: 'visible' } as CSSStyleDeclaration)
+      const originalGetComputedStyle = window.getComputedStyle
+      vi.spyOn(window, 'getComputedStyle').mockImplementation((el, pseudoElt?) => {
+        const result = originalGetComputedStyle(el, pseudoElt ?? undefined)
+        if (el === contentEl) {
+          return new Proxy(result, {
+            get(target, prop) {
+              if (prop === 'overflowY') return 'visible'
+              return (target as any)[prop]
+            }
+          }) as CSSStyleDeclaration
+        }
+
+        return result
+      })
 
       const scrollSpy = new ScrollSpy(contentEl, {
         target: '#navigation'

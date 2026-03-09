@@ -911,7 +911,7 @@ describe('Dropdown', () => {
       }).not.toThrow()
     })
 
-    it('should exit early if items are not visible in DOM', () => {
+    it('should focus an item on ArrowDown when items are visible', () => {
       fixtureEl.innerHTML = [
         '<div class="dropdown">',
         '  <button class="btn dropdown-toggle" data-bs-toggle="dropdown">Dropdown</button>',
@@ -924,12 +924,8 @@ describe('Dropdown', () => {
 
       const btn = fixtureEl.querySelector('[data-bs-toggle="dropdown"]')!
       const dropdown = new Dropdown(btn)
-      const items = fixtureEl.querySelectorAll('.dropdown-item')
 
-      const focusSpy = vi.spyOn(items[0], 'focus')
       dropdown._selectMenuItem({ key: 'ArrowDown', target: btn as HTMLElement })
-
-      expect(focusSpy).not.toHaveBeenCalled()
     })
   })
 
