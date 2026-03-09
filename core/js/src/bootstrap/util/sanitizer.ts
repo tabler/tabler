@@ -86,9 +86,9 @@ export function sanitizeHtml(unsafeHtml: string, allowList: AllowList, sanitizeF
 
   const domParser = new window.DOMParser()
   const createdDocument = domParser.parseFromString(unsafeHtml, 'text/html')
-  const elements = [].concat(...createdDocument.body.querySelectorAll('*') as any)
+  const elements = Array.from(createdDocument.body.querySelectorAll('*'))
 
-  for (const element of elements as Element[]) {
+  for (const element of elements) {
     const elementName = element.nodeName.toLowerCase()
 
     if (!Object.keys(allowList).includes(elementName)) {
@@ -96,10 +96,10 @@ export function sanitizeHtml(unsafeHtml: string, allowList: AllowList, sanitizeF
       continue
     }
 
-    const attributeList = [].concat(...element.attributes as any)
-    const allowedAttributes = [].concat(allowList['*'] || [] as any, allowList[elementName] || [] as any)
+    const attributeList = Array.from(element.attributes)
+    const allowedAttributes = [...(allowList['*'] || []), ...(allowList[elementName] || [])]
 
-    for (const attribute of attributeList as Attr[]) {
+    for (const attribute of attributeList) {
       if (!allowedAttribute(attribute, allowedAttributes)) {
         element.removeAttribute(attribute.nodeName)
       }

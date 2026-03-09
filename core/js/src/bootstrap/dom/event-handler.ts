@@ -5,13 +5,17 @@
  * --------------------------------------------------------------------------
  */
 
-type EventCallback = (...args: any[]) => any
+type EventCallback = (this: EventTarget, ...args: unknown[]) => void
 
 interface BootstrapHandler {
-  (event: Event): any
+  (event: Event): void
   oneOff?: boolean
   delegationSelector?: string | null
   callable?: EventCallback
+  uidEvent?: string | number
+}
+
+interface EventableElement extends EventTarget {
   uidEvent?: string | number
 }
 
@@ -74,11 +78,11 @@ const nativeEvents = new Set([
   'scroll'
 ])
 
-function makeEventUid(element: any, uid?: string): string | number {
-  return (uid && `${uid}::${uidEvent++}`) || element.uidEvent || uidEvent++
+function makeEventUid(element: EventableElement | EventCallback, uid?: string): string | number {
+  return (uid && `${uid}::${uidEvent++}`) || (element as EventableElement).uidEvent || uidEvent++
 }
 
-function getElementEvents(element: any): Record<string, Record<string | number, BootstrapHandler>> {
+function getElementEvents(element: EventableElement): Record<string, Record<string | number, BootstrapHandler>> {
   const uid = makeEventUid(element)
 
   element.uidEvent = uid
@@ -161,8 +165,9 @@ function addHandler(
 
   if (originalTypeEvent in customEvents) {
     const wrapFunction = (fn: EventCallback): EventCallback => {
-      return function (this: EventTarget, event: any) {
-        if (!event.relatedTarget || (event.relatedTarget !== event.delegateTarget && !event.delegateTarget.contains(event.relatedTarget))) {
+      return function (this: EventTarget, event: unknown) {
+        const evt = event as MouseEvent & { delegateTarget: HTMLElement }
+        if (!evt.relatedTarget || (evt.relatedTarget !== evt.delegateTarget && !evt.delegateTarget.contains(evt.relatedTarget as Node))) {
           return fn.call(this, event)
         }
       }
@@ -276,7 +281,7 @@ const EventHandler = {
     }
   },
 
-  trigger(element: EventTarget | null, event: string, args?: Record<string, any>): Event | null {
+  trigger(element: EventTarget | null, event: string, args?: Record<string, unknown>): Event | null {
     if (typeof event !== 'string' || !element) {
       return null
     }
@@ -289,10 +294,10 @@ const EventHandler = {
   }
 }
 
-function hydrateObj<T extends object>(obj: T, meta: Record<string, any> = {}): T {
+function hydrateObj<T extends object>(obj: T, meta: Record<string, unknown> = {}): T {
   for (const [key, value] of Object.entries(meta)) {
     try {
-      (obj as any)[key] = value
+      (obj as Record<string, unknown>)[key] = value
     } catch {
       Object.defineProperty(obj, key, {
         configurable: true,

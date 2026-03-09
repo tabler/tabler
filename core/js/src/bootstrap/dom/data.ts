@@ -5,10 +5,10 @@
  * --------------------------------------------------------------------------
  */
 
-const elementMap = new Map<HTMLElement, Map<string, any>>()
+const elementMap = new Map<HTMLElement, Map<string, object>>()
 
 const Data = {
-  set(element: HTMLElement, key: string, instance: any): void {
+  set(element: HTMLElement, key: string, instance: object): void {
     if (!elementMap.has(element)) {
       elementMap.set(element, new Map())
     }
@@ -24,9 +24,9 @@ const Data = {
     instanceMap.set(key, instance)
   },
 
-  get(element: HTMLElement, key: string): any {
+  get<T = object>(element: HTMLElement, key: string): T | null {
     if (elementMap.has(element)) {
-      return elementMap.get(element)!.get(key) || null
+      return (elementMap.get(element)!.get(key) as T) || null
     }
 
     return null

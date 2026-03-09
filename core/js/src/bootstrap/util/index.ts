@@ -112,8 +112,8 @@ const isDisabled = (element: HTMLElement | null | undefined): boolean => {
     return true
   }
 
-  if (typeof (element as any).disabled !== 'undefined') {
-    return (element as any).disabled
+  if ('disabled' in element && typeof element.disabled !== 'undefined') {
+    return Boolean(element.disabled)
   }
 
   return element.hasAttribute('disabled') && element.getAttribute('disabled') !== 'false'
@@ -153,7 +153,7 @@ const reflow = (element: HTMLElement): void => {
 
 const isRTL = (): boolean => document.documentElement.dir === 'rtl'
 
-const execute = (possibleCallback: unknown, args: unknown[] = [], defaultValue: unknown = possibleCallback): any => {
+const execute = (possibleCallback: unknown, args: unknown[] = [], defaultValue: unknown = possibleCallback): unknown => {
   return typeof possibleCallback === 'function' ? possibleCallback.call(args[0], ...args.slice(1)) : defaultValue
 }
 

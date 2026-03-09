@@ -81,7 +81,7 @@ class ScrollBarHelper {
       }
 
       Manipulator.removeDataAttribute(element, styleProperty)
-      element.style.setProperty(styleProperty, value)
+      element.style.setProperty(styleProperty, String(value))
     }
 
     this._applyManipulationCallback(selector, manipulationCallBack)

@@ -38,7 +38,7 @@ class BaseComponent extends Config {
     EventHandler.off(this._element, ctor.EVENT_KEY)
 
     for (const propertyName of Object.getOwnPropertyNames(this)) {
-      (this as Record<string, any>)[propertyName] = null
+      (this as Record<string, unknown>)[propertyName] = null
     }
   }
 

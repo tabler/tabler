@@ -29,15 +29,15 @@ const getSelector = (element: HTMLElement): string | null => {
 
 const SelectorEngine = {
   find(selector: string, element: Element = document.documentElement): HTMLElement[] {
-    return [].concat(...Element.prototype.querySelectorAll.call(element, selector) as any)
+    return Array.from(element.querySelectorAll<HTMLElement>(selector))
   },
 
   findOne(selector: string, element: Element = document.documentElement): HTMLElement | null {
-    return Element.prototype.querySelector.call(element, selector)
+    return element.querySelector<HTMLElement>(selector)
   },
 
   children(element: HTMLElement, selector: string): HTMLElement[] {
-    return [].concat(...element.children as any).filter((child: HTMLElement) => child.matches(selector))
+    return Array.from(element.children).filter(child => child.matches(selector)) as HTMLElement[]
   },
 
   parents(element: HTMLElement, selector: string): HTMLElement[] {

@@ -12,7 +12,7 @@ import { isDisabled } from './index'
 interface DismissibleComponent {
   EVENT_KEY: string
   NAME: string
-  getOrCreateInstance(element: any): Record<string, any>
+  getOrCreateInstance(element: HTMLElement | string | null): { [method: string]: (...args: unknown[]) => void }
 }
 
 const enableDismissTrigger = (component: DismissibleComponent, method = 'hide'): void => {

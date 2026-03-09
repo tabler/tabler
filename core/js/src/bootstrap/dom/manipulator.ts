@@ -5,7 +5,9 @@
  * --------------------------------------------------------------------------
  */
 
-function normalizeData(value: string): any {
+type DataValue = string | number | boolean | null | Record<string, unknown>
+
+function normalizeData(value: string): DataValue {
   if (value === 'true') {
     return true
   }
@@ -50,12 +52,12 @@ const Manipulator = {
     }
   },
 
-  getDataAttributes(element: HTMLElement | null): Record<string, any> {
+  getDataAttributes(element: HTMLElement | null): Record<string, DataValue> {
     if (!element) {
       return {}
     }
 
-    const attributes: Record<string, any> = {}
+    const attributes: Record<string, DataValue> = {}
 
     for (const prefix of PREFIXES) {
       const keys = Object.keys(element.dataset).filter(key => key.startsWith(prefix) && !key.startsWith(`${prefix}Config`))
@@ -72,7 +74,7 @@ const Manipulator = {
     return attributes
   },
 
-  getDataAttribute(element: HTMLElement, key: string): any {
+  getDataAttribute(element: HTMLElement, key: string): DataValue {
     for (const prefix of PREFIXES) {
       const value = element.getAttribute(`data-${prefix}-${normalizeDataKey(key)}`)
       if (value !== null) {
