@@ -1,26 +1,23 @@
 /**
  * --------------------------------------------------------------------------
- * Bootstrap carousel.js
+ * Bootstrap carousel.ts
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
 
-import BaseComponent from './base-component.js'
-import EventHandler from './dom/event-handler.js'
-import Manipulator from './dom/manipulator.js'
-import SelectorEngine from './dom/selector-engine.js'
+import BaseComponent from './base-component'
+import EventHandler from './dom/event-handler'
+import Manipulator from './dom/manipulator'
+import SelectorEngine from './dom/selector-engine'
 import {
   getNextActiveElement,
   isRTL,
   isVisible,
   reflow,
   triggerTransitionEnd
-} from './util/index.js'
-import Swipe from './util/swipe.js'
-
-/**
- * Constants
- */
+} from './util/index'
+import Swipe from './util/swipe'
+import type { ComponentConfig, ComponentConfigType } from './types'
 
 const NAME = 'carousel'
 const DATA_KEY = 'bs.carousel'
@@ -29,7 +26,7 @@ const DATA_API_KEY = '.data-api'
 
 const ARROW_LEFT_KEY = 'ArrowLeft'
 const ARROW_RIGHT_KEY = 'ArrowRight'
-const TOUCHEVENT_COMPAT_WAIT = 500 // Time for mouse compat events to fire after touch
+const TOUCHEVENT_COMPAT_WAIT = 500
 
 const ORDER_NEXT = 'next'
 const ORDER_PREV = 'prev'
@@ -58,15 +55,15 @@ const SELECTOR_ITEM = '.carousel-item'
 const SELECTOR_ACTIVE_ITEM = SELECTOR_ACTIVE + SELECTOR_ITEM
 const SELECTOR_ITEM_IMG = '.carousel-item img'
 const SELECTOR_INDICATORS = '.carousel-indicators'
-const SELECTOR_DATA_SLIDE = '[data-bs-slide], [data-bs-slide-to]'
-const SELECTOR_DATA_RIDE = '[data-bs-ride="carousel"]'
+const SELECTOR_DATA_SLIDE = '[data-bs-slide], [data-bs-slide-to], [data-tblr-slide], [data-tblr-slide-to]'
+const SELECTOR_DATA_RIDE = '[data-bs-ride="carousel"], [data-tblr-ride="carousel"]'
 
-const KEY_TO_DIRECTION = {
+const KEY_TO_DIRECTION: Record<string, string> = {
   [ARROW_LEFT_KEY]: DIRECTION_RIGHT,
   [ARROW_RIGHT_KEY]: DIRECTION_LEFT
 }
 
-const Default = {
+const Default: ComponentConfig = {
   interval: 5000,
   keyboard: true,
   pause: 'hover',
@@ -75,8 +72,8 @@ const Default = {
   wrap: true
 }
 
-const DefaultType = {
-  interval: '(number|boolean)', // TODO:v6 remove boolean support
+const DefaultType: ComponentConfigType = {
+  interval: '(number|boolean)',
   keyboard: 'boolean',
   pause: '(string|boolean)',
   ride: '(boolean|string)',
@@ -84,12 +81,15 @@ const DefaultType = {
   wrap: 'boolean'
 }
 
-/**
- * Class definition
- */
-
 class Carousel extends BaseComponent {
-  constructor(element, config) {
+  _interval: ReturnType<typeof setInterval> | null
+  _activeElement: HTMLElement | null
+  _isSliding: boolean
+  touchTimeout: ReturnType<typeof setTimeout> | null
+  _swipeHelper: Swipe | null
+  _indicatorsElement: HTMLElement | null
+
+  constructor(element: HTMLElement | string, config?: Partial<ComponentConfig>) {
     super(element, config)
 
     this._interval = null
@@ -106,38 +106,33 @@ class Carousel extends BaseComponent {
     }
   }
 
-  // Getters
-  static get Default() {
+  static get Default(): ComponentConfig {
     return Default
   }
 
-  static get DefaultType() {
+  static get DefaultType(): ComponentConfigType {
     return DefaultType
   }
 
-  static get NAME() {
+  static get NAME(): string {
     return NAME
   }
 
-  // Public
-  next() {
+  next(): void {
     this._slide(ORDER_NEXT)
   }
 
-  nextWhenVisible() {
-    // FIXME TODO use `document.visibilityState`
-    // Don't call next when the page isn't visible
-    // or the carousel or its parent isn't visible
+  nextWhenVisible(): void {
     if (!document.hidden && isVisible(this._element)) {
       this.next()
     }
   }
 
-  prev() {
+  prev(): void {
     this._slide(ORDER_PREV)
   }
 
-  pause() {
+  pause(): void {
     if (this._isSliding) {
       triggerTransitionEnd(this._element)
     }
@@ -145,14 +140,14 @@ class Carousel extends BaseComponent {
     this._clearInterval()
   }
 
-  cycle() {
+  cycle(): void {
     this._clearInterval()
     this._updateInterval()
 
-    this._interval = setInterval(() => this.nextWhenVisible(), this._config.interval)
+    this._interval = setInterval(() => this.nextWhenVisible(), this._config.interval as number)
   }
 
-  _maybeEnableCycle() {
+  _maybeEnableCycle(): void {
     if (!this._config.ride) {
       return
     }
@@ -165,7 +160,7 @@ class Carousel extends BaseComponent {
     this.cycle()
   }
 
-  to(index) {
+  to(index: number): void {
     const items = this._getItems()
     if (index > items.length - 1 || index < 0) {
       return
@@ -176,7 +171,7 @@ class Carousel extends BaseComponent {
       return
     }
 
-    const activeIndex = this._getItemIndex(this._getActive())
+    const activeIndex = this._getItemIndex(this._getActive()!)
     if (activeIndex === index) {
       return
     }
@@ -186,7 +181,7 @@ class Carousel extends BaseComponent {
     this._slide(order, items[index])
   }
 
-  dispose() {
+  dispose(): void {
     if (this._swipeHelper) {
       this._swipeHelper.dispose()
     }
@@ -194,15 +189,14 @@ class Carousel extends BaseComponent {
     super.dispose()
   }
 
-  // Private
-  _configAfterMerge(config) {
+  _configAfterMerge(config: ComponentConfig): ComponentConfig {
     config.defaultInterval = config.interval
     return config
   }
 
-  _addEventListeners() {
+  _addEventListeners(): void {
     if (this._config.keyboard) {
-      EventHandler.on(this._element, EVENT_KEYDOWN, event => this._keydown(event))
+      EventHandler.on(this._element, EVENT_KEYDOWN, (event: Event) => this._keydown(event as KeyboardEvent))
     }
 
     if (this._config.pause === 'hover') {
@@ -215,9 +209,9 @@ class Carousel extends BaseComponent {
     }
   }
 
-  _addTouchEventListeners() {
+  _addTouchEventListeners(): void {
     for (const img of SelectorEngine.find(SELECTOR_ITEM_IMG, this._element)) {
-      EventHandler.on(img, EVENT_DRAG_START, event => event.preventDefault())
+      EventHandler.on(img, EVENT_DRAG_START, (event: Event) => event.preventDefault())
     }
 
     const endCallBack = () => {
@@ -225,20 +219,12 @@ class Carousel extends BaseComponent {
         return
       }
 
-      // If it's a touch-enabled device, mouseenter/leave are fired as
-      // part of the mouse compatibility events on first tap - the carousel
-      // would stop cycling until user tapped out of it;
-      // here, we listen for touchend, explicitly pause the carousel
-      // (as if it's the second time we tap on it, mouseenter compat event
-      // is NOT fired) and after a timeout (to allow for mouse compatibility
-      // events to fire) we explicitly restart cycling
-
       this.pause()
       if (this.touchTimeout) {
         clearTimeout(this.touchTimeout)
       }
 
-      this.touchTimeout = setTimeout(() => this._maybeEnableCycle(), TOUCHEVENT_COMPAT_WAIT + this._config.interval)
+      this.touchTimeout = setTimeout(() => this._maybeEnableCycle(), TOUCHEVENT_COMPAT_WAIT + (this._config.interval as number))
     }
 
     const swipeConfig = {
@@ -250,8 +236,8 @@ class Carousel extends BaseComponent {
     this._swipeHelper = new Swipe(this._element, swipeConfig)
   }
 
-  _keydown(event) {
-    if (/input|textarea/i.test(event.target.tagName)) {
+  _keydown(event: KeyboardEvent): void {
+    if (/input|textarea/i.test((event.target as HTMLElement).tagName)) {
       return
     }
 
@@ -262,21 +248,21 @@ class Carousel extends BaseComponent {
     }
   }
 
-  _getItemIndex(element) {
+  _getItemIndex(element: HTMLElement): number {
     return this._getItems().indexOf(element)
   }
 
-  _setActiveIndicatorElement(index) {
+  _setActiveIndicatorElement(index: number): void {
     if (!this._indicatorsElement) {
       return
     }
 
     const activeIndicator = SelectorEngine.findOne(SELECTOR_ACTIVE, this._indicatorsElement)
 
-    activeIndicator.classList.remove(CLASS_NAME_ACTIVE)
-    activeIndicator.removeAttribute('aria-current')
+    activeIndicator!.classList.remove(CLASS_NAME_ACTIVE)
+    activeIndicator!.removeAttribute('aria-current')
 
-    const newActiveIndicator = SelectorEngine.findOne(`[data-bs-slide-to="${index}"]`, this._indicatorsElement)
+    const newActiveIndicator = SelectorEngine.findOne(`[data-bs-slide-to="${index}"], [data-tblr-slide-to="${index}"]`, this._indicatorsElement)
 
     if (newActiveIndicator) {
       newActiveIndicator.classList.add(CLASS_NAME_ACTIVE)
@@ -284,26 +270,26 @@ class Carousel extends BaseComponent {
     }
   }
 
-  _updateInterval() {
+  _updateInterval(): void {
     const element = this._activeElement || this._getActive()
 
     if (!element) {
       return
     }
 
-    const elementInterval = Number.parseInt(element.getAttribute('data-bs-interval'), 10)
+    const elementInterval = Number.parseInt(element.getAttribute('data-bs-interval') || element.getAttribute('data-tblr-interval') || '', 10)
 
     this._config.interval = elementInterval || this._config.defaultInterval
   }
 
-  _slide(order, element = null) {
+  _slide(order: string, element: HTMLElement | null = null): void {
     if (this._isSliding) {
       return
     }
 
     const activeElement = this._getActive()
     const isNext = order === ORDER_NEXT
-    const nextElement = element || getNextActiveElement(this._getItems(), activeElement, isNext, this._config.wrap)
+    const nextElement = element || getNextActiveElement(this._getItems(), activeElement!, isNext, this._config.wrap as boolean) as HTMLElement
 
     if (nextElement === activeElement) {
       return
@@ -311,11 +297,11 @@ class Carousel extends BaseComponent {
 
     const nextElementIndex = this._getItemIndex(nextElement)
 
-    const triggerEvent = eventName => {
+    const triggerEvent = (eventName: string) => {
       return EventHandler.trigger(this._element, eventName, {
         relatedTarget: nextElement,
         direction: this._orderToDirection(order),
-        from: this._getItemIndex(activeElement),
+        from: this._getItemIndex(activeElement!),
         to: nextElementIndex
       })
     }
@@ -327,8 +313,6 @@ class Carousel extends BaseComponent {
     }
 
     if (!activeElement || !nextElement) {
-      // Some weirdness is happening, so we bail
-      // TODO: change tests that use empty divs to avoid this check
       return
     }
 
@@ -368,26 +352,26 @@ class Carousel extends BaseComponent {
     }
   }
 
-  _isAnimated() {
+  _isAnimated(): boolean {
     return this._element.classList.contains(CLASS_NAME_SLIDE)
   }
 
-  _getActive() {
+  _getActive(): HTMLElement | null {
     return SelectorEngine.findOne(SELECTOR_ACTIVE_ITEM, this._element)
   }
 
-  _getItems() {
+  _getItems(): HTMLElement[] {
     return SelectorEngine.find(SELECTOR_ITEM, this._element)
   }
 
-  _clearInterval() {
+  _clearInterval(): void {
     if (this._interval) {
       clearInterval(this._interval)
       this._interval = null
     }
   }
 
-  _directionToOrder(direction) {
+  _directionToOrder(direction: string): string {
     if (isRTL()) {
       return direction === DIRECTION_LEFT ? ORDER_PREV : ORDER_NEXT
     }
@@ -395,7 +379,7 @@ class Carousel extends BaseComponent {
     return direction === DIRECTION_LEFT ? ORDER_NEXT : ORDER_PREV
   }
 
-  _orderToDirection(order) {
+  _orderToDirection(order: string): string {
     if (isRTL()) {
       return order === ORDER_PREV ? DIRECTION_LEFT : DIRECTION_RIGHT
     }
@@ -404,11 +388,7 @@ class Carousel extends BaseComponent {
   }
 }
 
-/**
- * Data API implementation
- */
-
-EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_SLIDE, function (event) {
+EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_SLIDE, function (this: HTMLElement, event: Event) {
   const target = SelectorEngine.getElementFromSelector(this)
 
   if (!target || !target.classList.contains(CLASS_NAME_CAROUSEL)) {
@@ -417,11 +397,11 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_SLIDE, function (e
 
   event.preventDefault()
 
-  const carousel = Carousel.getOrCreateInstance(target)
-  const slideIndex = this.getAttribute('data-bs-slide-to')
+  const carousel = Carousel.getOrCreateInstance(target) as Carousel
+  const slideIndex = this.getAttribute('data-bs-slide-to') || this.getAttribute('data-tblr-slide-to')
 
   if (slideIndex) {
-    carousel.to(slideIndex)
+    carousel.to(Number(slideIndex))
     carousel._maybeEnableCycle()
     return
   }
