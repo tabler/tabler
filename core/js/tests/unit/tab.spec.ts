@@ -797,5 +797,53 @@ describe('Tab', () => {
 
       expect(trigger.classList.contains('active')).toBe(true)
     })
+
+    it('should create tab via data-tblr-toggle="list"', () => {
+      return new Promise<void>(resolve => {
+        fixtureEl.innerHTML = [
+          '<div class="list-group" role="tablist">',
+          '  <a class="list-group-item list-group-item-action active" data-tblr-toggle="list" href="#home" role="tab">Home</a>',
+          '  <a id="triggerProfile" class="list-group-item list-group-item-action" data-tblr-toggle="list" href="#profile" role="tab">Profile</a>',
+          '</div>',
+          '<div class="tab-content">',
+          '  <div class="tab-pane active" id="home" role="tabpanel">Home</div>',
+          '  <div class="tab-pane" id="profile" role="tabpanel">Profile</div>',
+          '</div>'
+        ].join('')
+
+        const trigger = fixtureEl.querySelector('#triggerProfile') as HTMLElement
+
+        trigger.addEventListener('shown.bs.tab', () => {
+          expect(trigger.classList.contains('active')).toBe(true)
+          resolve()
+        })
+
+        trigger.click()
+      })
+    })
+
+    it('should switch tabs via data-tblr-toggle with data-tblr-target', () => {
+      return new Promise<void>(resolve => {
+        fixtureEl.innerHTML = [
+          '<ul class="nav" role="tablist">',
+          '  <li><button class="nav-link active" data-tblr-toggle="tab" data-tblr-target="#home" role="tab">Home</button></li>',
+          '  <li><button id="triggerProfile" class="nav-link" data-tblr-toggle="tab" data-tblr-target="#profile" role="tab">Profile</button></li>',
+          '</ul>',
+          '<div class="tab-content">',
+          '  <div class="tab-pane active" id="home" role="tabpanel">Home</div>',
+          '  <div class="tab-pane" id="profile" role="tabpanel">Profile</div>',
+          '</div>'
+        ].join('')
+
+        const trigger = fixtureEl.querySelector('#triggerProfile') as HTMLElement
+
+        trigger.addEventListener('shown.bs.tab', () => {
+          expect(trigger.classList.contains('active')).toBe(true)
+          resolve()
+        })
+
+        trigger.click()
+      })
+    })
   })
 })

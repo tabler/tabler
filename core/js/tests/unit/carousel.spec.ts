@@ -561,6 +561,54 @@ describe('Carousel', () => {
       carousel.dispose()
     })
 
+    it('should navigate via data-tblr-slide="next"', () => {
+      return new Promise<void>(resolve => {
+        fixtureEl.innerHTML = [
+          '<div id="myCarousel" class="carousel slide">',
+          '  <div class="carousel-inner">',
+          '    <div class="carousel-item active">item 1</div>',
+          '    <div id="item2" class="carousel-item">item 2</div>',
+          '  </div>',
+          '  <button data-tblr-slide="next" data-bs-target="#myCarousel">Next</button>',
+          '</div>'
+        ].join('')
+
+        const carouselEl = fixtureEl.querySelector('#myCarousel')!
+        const nextBtn = fixtureEl.querySelector('[data-tblr-slide="next"]') as HTMLElement
+
+        carouselEl.addEventListener('slid.bs.carousel', () => {
+          expect(fixtureEl.querySelector('#item2')!.classList.contains('active')).toBe(true)
+          resolve()
+        })
+
+        nextBtn.click()
+      })
+    })
+
+    it('should navigate via data-tblr-slide="prev"', () => {
+      return new Promise<void>(resolve => {
+        fixtureEl.innerHTML = [
+          '<div id="myCarousel" class="carousel slide">',
+          '  <div class="carousel-inner">',
+          '    <div id="item1" class="carousel-item">item 1</div>',
+          '    <div class="carousel-item active">item 2</div>',
+          '  </div>',
+          '  <button data-tblr-slide="prev" data-bs-target="#myCarousel">Prev</button>',
+          '</div>'
+        ].join('')
+
+        const carouselEl = fixtureEl.querySelector('#myCarousel')!
+        const prevBtn = fixtureEl.querySelector('[data-tblr-slide="prev"]') as HTMLElement
+
+        carouselEl.addEventListener('slid.bs.carousel', () => {
+          expect(fixtureEl.querySelector('#item1')!.classList.contains('active')).toBe(true)
+          resolve()
+        })
+
+        prevBtn.click()
+      })
+    })
+
     it('should handle data-tblr-slide-to in indicators', () => {
       return new Promise<void>(resolve => {
         fixtureEl.innerHTML = [

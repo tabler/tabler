@@ -33,7 +33,7 @@ const WIDTH = 'width'
 const HEIGHT = 'height'
 
 const SELECTOR_ACTIVES = '.collapse.show, .collapse.collapsing'
-const SELECTOR_DATA_TOGGLE = '[data-bs-toggle="collapse"]'
+const SELECTOR_DATA_TOGGLE = '[data-bs-toggle="collapse"], [data-tblr-toggle="collapse"]'
 
 const Default: ComponentConfig = {
   parent: null,

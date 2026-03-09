@@ -30,7 +30,8 @@ jobs:
         run: pnpm install
 
       - name: Install Playwright Chromium
-        run: pnpm --filter @tabler/core exec playwright install --with-deps chromium
+        run: npx playwright install --with-deps chromium
+        working-directory: core
 
       - name: Run tests
         run: pnpm --filter @tabler/core test

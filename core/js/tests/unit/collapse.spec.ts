@@ -795,4 +795,63 @@ describe('Collapse', () => {
       expect(collapse2._config.toggle).toBe(false)
     })
   })
+
+  describe('data-tblr-toggle', () => {
+    it('should show collapse via data-tblr-toggle="collapse"', () => {
+      return new Promise<void>(resolve => {
+        fixtureEl.innerHTML = [
+          '<button data-tblr-toggle="collapse" data-bs-target="#test1">Toggle</button>',
+          '<div id="test1" class="collapse">Content</div>'
+        ].join('')
+
+        const target = fixtureEl.querySelector('#test1')!
+        const btn = fixtureEl.querySelector('[data-tblr-toggle="collapse"]') as HTMLElement
+
+        target.addEventListener('shown.bs.collapse', () => {
+          expect(target.classList.contains('show')).toBe(true)
+          resolve()
+        })
+
+        btn.click()
+      })
+    })
+
+    it('should hide collapse via data-tblr-toggle="collapse"', () => {
+      return new Promise<void>(resolve => {
+        fixtureEl.innerHTML = [
+          '<button data-tblr-toggle="collapse" data-bs-target="#test1">Toggle</button>',
+          '<div id="test1" class="collapse show">Content</div>'
+        ].join('')
+
+        const target = fixtureEl.querySelector('#test1')!
+        const btn = fixtureEl.querySelector('[data-tblr-toggle="collapse"]') as HTMLElement
+
+        target.addEventListener('hidden.bs.collapse', () => {
+          expect(target.classList.contains('show')).toBe(false)
+          resolve()
+        })
+
+        btn.click()
+      })
+    })
+
+    it('should show collapse via data-tblr-toggle with data-tblr-target', () => {
+      return new Promise<void>(resolve => {
+        fixtureEl.innerHTML = [
+          '<button data-tblr-toggle="collapse" data-tblr-target="#test1">Toggle</button>',
+          '<div id="test1" class="collapse">Content</div>'
+        ].join('')
+
+        const target = fixtureEl.querySelector('#test1')!
+        const btn = fixtureEl.querySelector('[data-tblr-toggle="collapse"]') as HTMLElement
+
+        target.addEventListener('shown.bs.collapse', () => {
+          expect(target.classList.contains('show')).toBe(true)
+          resolve()
+        })
+
+        btn.click()
+      })
+    })
+  })
 })
