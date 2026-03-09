@@ -1,11 +1,11 @@
 /**
  * --------------------------------------------------------------------------
- * Bootstrap popover.js
+ * Bootstrap popover.ts
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
 
-import Tooltip from './tooltip.js'
+import Tooltip from './tooltip'
 
 /**
  * Constants
@@ -16,7 +16,15 @@ const NAME = 'popover'
 const SELECTOR_TITLE = '.popover-header'
 const SELECTOR_CONTENT = '.popover-body'
 
-const Default = {
+interface ComponentConfig {
+  [key: string]: any
+}
+
+interface ComponentConfigType {
+  [key: string]: string
+}
+
+const Default: ComponentConfig = {
   ...Tooltip.Default,
   content: '',
   offset: [0, 8],
@@ -29,7 +37,7 @@ const Default = {
   trigger: 'click'
 }
 
-const DefaultType = {
+const DefaultType: ComponentConfigType = {
   ...Tooltip.DefaultType,
   content: '(null|string|element|function)'
 }
@@ -39,33 +47,30 @@ const DefaultType = {
  */
 
 class Popover extends Tooltip {
-  // Getters
-  static get Default() {
+  static get Default(): ComponentConfig {
     return Default
   }
 
-  static get DefaultType() {
+  static get DefaultType(): ComponentConfigType {
     return DefaultType
   }
 
-  static get NAME() {
+  static get NAME(): string {
     return NAME
   }
 
-  // Overrides
-  _isWithContent() {
-    return this._getTitle() || this._getContent()
+  _isWithContent(): boolean {
+    return Boolean(this._getTitle() || this._getContent())
   }
 
-  // Private
-  _getContentForTemplate() {
+  _getContentForTemplate(): Record<string, any> {
     return {
       [SELECTOR_TITLE]: this._getTitle(),
       [SELECTOR_CONTENT]: this._getContent()
     }
   }
 
-  _getContent() {
+  _getContent(): any {
     return this._resolvePossibleFunction(this._config.content)
   }
 }
