@@ -1,18 +1,18 @@
 /**
  * --------------------------------------------------------------------------
- * Bootstrap offcanvas.js
+ * Bootstrap offcanvas.ts
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
 
-import BaseComponent from './base-component.js'
-import EventHandler from './dom/event-handler.js'
-import SelectorEngine from './dom/selector-engine.js'
-import Backdrop from './util/backdrop.js'
-import { enableDismissTrigger } from './util/component-functions.js'
-import FocusTrap from './util/focustrap.js'
-import { isDisabled, isVisible } from './util/index.js'
-import ScrollBarHelper from './util/scrollbar.js'
+import BaseComponent from './base-component'
+import EventHandler from './dom/event-handler'
+import SelectorEngine from './dom/selector-engine'
+import Backdrop from './util/backdrop'
+import { enableDismissTrigger } from './util/component-functions'
+import FocusTrap from './util/focustrap'
+import { isDisabled, isVisible } from './util/index'
+import ScrollBarHelper from './util/scrollbar'
 
 /**
  * Constants
@@ -40,15 +40,23 @@ const EVENT_RESIZE = `resize${EVENT_KEY}`
 const EVENT_CLICK_DATA_API = `click${EVENT_KEY}${DATA_API_KEY}`
 const EVENT_KEYDOWN_DISMISS = `keydown.dismiss${EVENT_KEY}`
 
-const SELECTOR_DATA_TOGGLE = '[data-bs-toggle="offcanvas"]'
+const SELECTOR_DATA_TOGGLE = '[data-bs-toggle="offcanvas"], [data-tblr-toggle="offcanvas"]'
 
-const Default = {
+interface ComponentConfig {
+  [key: string]: any
+}
+
+interface ComponentConfigType {
+  [key: string]: string
+}
+
+const Default: ComponentConfig = {
   backdrop: true,
   keyboard: true,
   scroll: false
 }
 
-const DefaultType = {
+const DefaultType: ComponentConfigType = {
   backdrop: '(boolean|string)',
   keyboard: 'boolean',
   scroll: 'boolean'
@@ -59,7 +67,11 @@ const DefaultType = {
  */
 
 class Offcanvas extends BaseComponent {
-  constructor(element, config) {
+  _isShown: boolean
+  _backdrop: Backdrop
+  _focustrap: FocusTrap
+
+  constructor(element: HTMLElement | string, config?: Partial<ComponentConfig>) {
     super(element, config)
 
     this._isShown = false
@@ -68,25 +80,23 @@ class Offcanvas extends BaseComponent {
     this._addEventListeners()
   }
 
-  // Getters
-  static get Default() {
+  static get Default(): ComponentConfig {
     return Default
   }
 
-  static get DefaultType() {
+  static get DefaultType(): ComponentConfigType {
     return DefaultType
   }
 
-  static get NAME() {
+  static get NAME(): string {
     return NAME
   }
 
-  // Public
-  toggle(relatedTarget) {
+  toggle(relatedTarget?: HTMLElement): void {
     return this._isShown ? this.hide() : this.show(relatedTarget)
   }
 
-  show(relatedTarget) {
+  show(relatedTarget?: HTMLElement): void {
     if (this._isShown) {
       return
     }
@@ -104,7 +114,7 @@ class Offcanvas extends BaseComponent {
       new ScrollBarHelper().hide()
     }
 
-    this._element.setAttribute('aria-modal', true)
+    this._element.setAttribute('aria-modal', 'true')
     this._element.setAttribute('role', 'dialog')
     this._element.classList.add(CLASS_NAME_SHOWING)
 
@@ -121,7 +131,7 @@ class Offcanvas extends BaseComponent {
     this._queueCallback(completeCallBack, this._element, true)
   }
 
-  hide() {
+  hide(): void {
     if (!this._isShown) {
       return
     }
@@ -153,14 +163,13 @@ class Offcanvas extends BaseComponent {
     this._queueCallback(completeCallback, this._element, true)
   }
 
-  dispose() {
+  dispose(): void {
     this._backdrop.dispose()
     this._focustrap.deactivate()
     super.dispose()
   }
 
-  // Private
-  _initializeBackDrop() {
+  _initializeBackDrop(): Backdrop {
     const clickCallback = () => {
       if (this._config.backdrop === 'static') {
         EventHandler.trigger(this._element, EVENT_HIDE_PREVENTED)
@@ -170,27 +179,26 @@ class Offcanvas extends BaseComponent {
       this.hide()
     }
 
-    // 'static' option will be translated to true, and booleans will keep their value
-    const isVisible = Boolean(this._config.backdrop)
+    const isBackdropVisible = Boolean(this._config.backdrop)
 
     return new Backdrop({
       className: CLASS_NAME_BACKDROP,
-      isVisible,
+      isVisible: isBackdropVisible,
       isAnimated: true,
-      rootElement: this._element.parentNode,
-      clickCallback: isVisible ? clickCallback : null
+      rootElement: this._element.parentNode as HTMLElement,
+      clickCallback: isBackdropVisible ? clickCallback : null
     })
   }
 
-  _initializeFocusTrap() {
+  _initializeFocusTrap(): FocusTrap {
     return new FocusTrap({
       trapElement: this._element
     })
   }
 
-  _addEventListeners() {
-    EventHandler.on(this._element, EVENT_KEYDOWN_DISMISS, event => {
-      if (event.key !== ESCAPE_KEY) {
+  _addEventListeners(): void {
+    EventHandler.on(this._element, EVENT_KEYDOWN_DISMISS, (event: Event) => {
+      if ((event as KeyboardEvent).key !== ESCAPE_KEY) {
         return
       }
 
@@ -208,7 +216,7 @@ class Offcanvas extends BaseComponent {
  * Data API implementation
  */
 
-EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (event) {
+EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (this: HTMLElement, event: Event) {
   const target = SelectorEngine.getElementFromSelector(this)
 
   if (['A', 'AREA'].includes(this.tagName)) {
@@ -220,32 +228,30 @@ EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (
   }
 
   EventHandler.one(target, EVENT_HIDDEN, () => {
-    // focus on trigger when it is closed
     if (isVisible(this)) {
       this.focus()
     }
   })
 
-  // avoid conflict when clicking a toggler of an offcanvas, while another is open
   const alreadyOpen = SelectorEngine.findOne(OPEN_SELECTOR)
   if (alreadyOpen && alreadyOpen !== target) {
-    Offcanvas.getInstance(alreadyOpen).hide()
+    ;(Offcanvas.getInstance(alreadyOpen) as Offcanvas).hide()
   }
 
-  const data = Offcanvas.getOrCreateInstance(target)
+  const data = Offcanvas.getOrCreateInstance(target) as Offcanvas
   data.toggle(this)
 })
 
 EventHandler.on(window, EVENT_LOAD_DATA_API, () => {
   for (const selector of SelectorEngine.find(OPEN_SELECTOR)) {
-    Offcanvas.getOrCreateInstance(selector).show()
+    ;(Offcanvas.getOrCreateInstance(selector) as Offcanvas).show()
   }
 })
 
 EventHandler.on(window, EVENT_RESIZE, () => {
   for (const element of SelectorEngine.find('[aria-modal][class*=show][class*=offcanvas-]')) {
     if (getComputedStyle(element).position !== 'fixed') {
-      Offcanvas.getOrCreateInstance(element).hide()
+      ;(Offcanvas.getOrCreateInstance(element) as Offcanvas).hide()
     }
   }
 })
