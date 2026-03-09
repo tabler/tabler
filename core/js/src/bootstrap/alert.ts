@@ -1,17 +1,13 @@
 /**
  * --------------------------------------------------------------------------
- * Bootstrap alert.js
+ * Bootstrap alert.ts
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
 
-import BaseComponent from './base-component.js'
+import BaseComponent from './base-component'
 import EventHandler from './dom/event-handler.js'
-import { enableDismissTrigger } from './util/component-functions.js'
-
-/**
- * Constants
- */
+import { enableDismissTrigger } from './util/component-functions'
 
 const NAME = 'alert'
 const DATA_KEY = 'bs.alert'
@@ -22,21 +18,15 @@ const EVENT_CLOSED = `closed${EVENT_KEY}`
 const CLASS_NAME_FADE = 'fade'
 const CLASS_NAME_SHOW = 'show'
 
-/**
- * Class definition
- */
-
 class Alert extends BaseComponent {
-  // Getters
-  static get NAME() {
+  static get NAME(): string {
     return NAME
   }
 
-  // Public
-  close() {
+  close(): void {
     const closeEvent = EventHandler.trigger(this._element, EVENT_CLOSE)
 
-    if (closeEvent.defaultPrevented) {
+    if (closeEvent?.defaultPrevented) {
       return
     }
 
@@ -46,17 +36,12 @@ class Alert extends BaseComponent {
     this._queueCallback(() => this._destroyElement(), this._element, isAnimated)
   }
 
-  // Private
-  _destroyElement() {
+  _destroyElement(): void {
     this._element.remove()
     EventHandler.trigger(this._element, EVENT_CLOSED)
     this.dispose()
   }
 }
-
-/**
- * Data API implementation
- */
 
 enableDismissTrigger(Alert, 'close')
 

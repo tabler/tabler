@@ -1,21 +1,15 @@
 /**
  * --------------------------------------------------------------------------
- * Bootstrap collapse.js
+ * Bootstrap collapse.ts
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */
 
-import BaseComponent from './base-component.js'
-import EventHandler from './dom/event-handler.js'
-import SelectorEngine from './dom/selector-engine.js'
-import {
-  getElement,
-  reflow
-} from './util/index.js'
-
-/**
- * Constants
- */
+import BaseComponent from './base-component'
+import EventHandler from './dom/event-handler'
+import SelectorEngine from './dom/selector-engine'
+import { getElement, reflow } from './util/index'
+import type { ComponentConfig, ComponentConfigType, ElementSelector } from './types'
 
 const NAME = 'collapse'
 const DATA_KEY = 'bs.collapse'
@@ -41,22 +35,21 @@ const HEIGHT = 'height'
 const SELECTOR_ACTIVES = '.collapse.show, .collapse.collapsing'
 const SELECTOR_DATA_TOGGLE = '[data-bs-toggle="collapse"]'
 
-const Default = {
+const Default: ComponentConfig = {
   parent: null,
   toggle: true
 }
 
-const DefaultType = {
+const DefaultType: ComponentConfigType = {
   parent: '(null|element)',
   toggle: 'boolean'
 }
 
-/**
- * Class definition
- */
-
 class Collapse extends BaseComponent {
-  constructor(element, config) {
+  _isTransitioning: boolean
+  _triggerArray: HTMLElement[]
+
+  constructor(element: ElementSelector, config?: ComponentConfig) {
     super(element, config)
 
     this._isTransitioning = false
@@ -66,7 +59,7 @@ class Collapse extends BaseComponent {
 
     for (const elem of toggleList) {
       const selector = SelectorEngine.getSelectorFromElement(elem)
-      const filterElement = SelectorEngine.find(selector)
+      const filterElement = SelectorEngine.find(selector!)
         .filter(foundElement => foundElement === this._element)
 
       if (selector !== null && filterElement.length) {
@@ -85,21 +78,19 @@ class Collapse extends BaseComponent {
     }
   }
 
-  // Getters
-  static get Default() {
+  static get Default(): ComponentConfig {
     return Default
   }
 
-  static get DefaultType() {
+  static get DefaultType(): ComponentConfigType {
     return DefaultType
   }
 
-  static get NAME() {
+  static get NAME(): string {
     return NAME
   }
 
-  // Public
-  toggle() {
+  toggle(): void {
     if (this._isShown()) {
       this.hide()
     } else {
@@ -107,18 +98,17 @@ class Collapse extends BaseComponent {
     }
   }
 
-  show() {
+  show(): void {
     if (this._isTransitioning || this._isShown()) {
       return
     }
 
-    let activeChildren = []
+    let activeChildren: Collapse[] = []
 
-    // find active children
     if (this._config.parent) {
       activeChildren = this._getFirstLevelChildren(SELECTOR_ACTIVES)
         .filter(element => element !== this._element)
-        .map(element => Collapse.getOrCreateInstance(element, { toggle: false }))
+        .map(element => Collapse.getOrCreateInstance(element, { toggle: false }) as Collapse)
     }
 
     if (activeChildren.length && activeChildren[0]._isTransitioning) {
@@ -126,7 +116,7 @@ class Collapse extends BaseComponent {
     }
 
     const startEvent = EventHandler.trigger(this._element, EVENT_SHOW)
-    if (startEvent.defaultPrevented) {
+    if (startEvent?.defaultPrevented) {
       return
     }
 
@@ -139,7 +129,7 @@ class Collapse extends BaseComponent {
     this._element.classList.remove(CLASS_NAME_COLLAPSE)
     this._element.classList.add(CLASS_NAME_COLLAPSING)
 
-    this._element.style[dimension] = 0
+    this._element.style[dimension] = '0'
 
     this._addAriaAndCollapsedClass(this._triggerArray, true)
     this._isTransitioning = true
@@ -156,19 +146,19 @@ class Collapse extends BaseComponent {
     }
 
     const capitalizedDimension = dimension[0].toUpperCase() + dimension.slice(1)
-    const scrollSize = `scroll${capitalizedDimension}`
+    const scrollSize = `scroll${capitalizedDimension}` as 'scrollWidth' | 'scrollHeight'
 
     this._queueCallback(complete, this._element, true)
     this._element.style[dimension] = `${this._element[scrollSize]}px`
   }
 
-  hide() {
+  hide(): void {
     if (this._isTransitioning || !this._isShown()) {
       return
     }
 
     const startEvent = EventHandler.trigger(this._element, EVENT_HIDE)
-    if (startEvent.defaultPrevented) {
+    if (startEvent?.defaultPrevented) {
       return
     }
 
@@ -203,22 +193,21 @@ class Collapse extends BaseComponent {
     this._queueCallback(complete, this._element, true)
   }
 
-  // Private
-  _isShown(element = this._element) {
+  _isShown(element: HTMLElement = this._element): boolean {
     return element.classList.contains(CLASS_NAME_SHOW)
   }
 
-  _configAfterMerge(config) {
-    config.toggle = Boolean(config.toggle) // Coerce string values
+  _configAfterMerge(config: ComponentConfig): ComponentConfig {
+    config.toggle = Boolean(config.toggle)
     config.parent = getElement(config.parent)
     return config
   }
 
-  _getDimension() {
+  _getDimension(): typeof WIDTH | typeof HEIGHT {
     return this._element.classList.contains(CLASS_NAME_HORIZONTAL) ? WIDTH : HEIGHT
   }
 
-  _initializeChildren() {
+  _initializeChildren(): void {
     if (!this._config.parent) {
       return
     }
@@ -234,36 +223,30 @@ class Collapse extends BaseComponent {
     }
   }
 
-  _getFirstLevelChildren(selector) {
-    const children = SelectorEngine.find(CLASS_NAME_DEEPER_CHILDREN, this._config.parent)
-    // remove children if greater depth
-    return SelectorEngine.find(selector, this._config.parent).filter(element => !children.includes(element))
+  _getFirstLevelChildren(selector: string): HTMLElement[] {
+    const children = SelectorEngine.find(CLASS_NAME_DEEPER_CHILDREN, this._config.parent as HTMLElement)
+    return SelectorEngine.find(selector, this._config.parent as HTMLElement).filter(element => !children.includes(element))
   }
 
-  _addAriaAndCollapsedClass(triggerArray, isOpen) {
+  _addAriaAndCollapsedClass(triggerArray: HTMLElement[], isOpen: boolean): void {
     if (!triggerArray.length) {
       return
     }
 
     for (const element of triggerArray) {
       element.classList.toggle(CLASS_NAME_COLLAPSED, !isOpen)
-      element.setAttribute('aria-expanded', isOpen)
+      element.setAttribute('aria-expanded', String(isOpen))
     }
   }
 }
 
-/**
- * Data API implementation
- */
-
-EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (event) {
-  // preventDefault only for <a> elements (which change the URL) not inside the collapsible element
-  if (event.target.tagName === 'A' || (event.delegateTarget && event.delegateTarget.tagName === 'A')) {
+EventHandler.on(document, EVENT_CLICK_DATA_API, SELECTOR_DATA_TOGGLE, function (this: HTMLElement, event: Event) {
+  if ((event.target as HTMLElement).tagName === 'A' || ((event as any).delegateTarget && (event as any).delegateTarget.tagName === 'A')) {
     event.preventDefault()
   }
 
   for (const element of SelectorEngine.getMultipleElementsFromSelector(this)) {
-    Collapse.getOrCreateInstance(element, { toggle: false }).toggle()
+    (Collapse.getOrCreateInstance(element, { toggle: false }) as Collapse).toggle()
   }
 })
 

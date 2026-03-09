@@ -12,7 +12,8 @@ import { isDisabled } from './index'
 interface DismissibleComponent {
   EVENT_KEY: string
   NAME: string
-  getOrCreateInstance(element: HTMLElement | string | null): { [method: string]: (...args: unknown[]) => void }
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  getOrCreateInstance(element: HTMLElement | string | null): any
 }
 
 const enableDismissTrigger = (component: DismissibleComponent, method = 'hide'): void => {
