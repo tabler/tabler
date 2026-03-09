@@ -39,6 +39,17 @@ describe('util/index', () => {
       const result = parseSelector('#my.id')
       expect(result).toContain('#')
     })
+
+    it('should use CSS.escape when available', () => {
+      const original = window.CSS
+      Object.defineProperty(window, 'CSS', {
+        value: { escape: vi.fn((s: string) => s) },
+        configurable: true
+      })
+      parseSelector('#test-id')
+      expect(window.CSS.escape).toHaveBeenCalledWith('test-id')
+      Object.defineProperty(window, 'CSS', { value: original, configurable: true })
+    })
   })
 
   describe('toType', () => {
@@ -101,6 +112,28 @@ describe('util/index', () => {
       fixtureEl.innerHTML = '<div></div>'
       const div = fixtureEl.querySelector('div')!
       expect(getTransitionDurationFromElement(div)).toBe(0)
+    })
+
+    it('should return duration + delay in ms', () => {
+      fixtureEl.innerHTML = '<div></div>'
+      const div = fixtureEl.querySelector('div')!
+      vi.spyOn(window, 'getComputedStyle').mockReturnValue({
+        transitionDuration: '0.3s',
+        transitionDelay: '0.1s'
+      } as CSSStyleDeclaration)
+      expect(getTransitionDurationFromElement(div)).toBe(400)
+      vi.restoreAllMocks()
+    })
+
+    it('should handle comma-separated values (use first)', () => {
+      fixtureEl.innerHTML = '<div></div>'
+      const div = fixtureEl.querySelector('div')!
+      vi.spyOn(window, 'getComputedStyle').mockReturnValue({
+        transitionDuration: '0.5s, 0.2s',
+        transitionDelay: '0.1s, 0s'
+      } as CSSStyleDeclaration)
+      expect(getTransitionDurationFromElement(div)).toBe(600)
+      vi.restoreAllMocks()
     })
   })
 
@@ -170,6 +203,61 @@ describe('util/index', () => {
     it('should return false for non-element', () => {
       expect(isVisible(null as unknown as HTMLElement)).toBe(false)
     })
+
+    it('should return false when getClientRects is empty', () => {
+      fixtureEl.innerHTML = '<div style="display:none"></div>'
+      const div = fixtureEl.querySelector('div')!
+      expect(isVisible(div)).toBe(false)
+    })
+
+    it('should return true for visible element', () => {
+      fixtureEl.innerHTML = '<div style="visibility:visible">text</div>'
+      const div = fixtureEl.querySelector('div')!
+      vi.spyOn(div, 'getClientRects').mockReturnValue([{ width: 100, height: 100 }] as unknown as DOMRectList)
+      expect(isVisible(div)).toBe(true)
+    })
+
+    it('should return false for hidden visibility', () => {
+      fixtureEl.innerHTML = '<div style="visibility:hidden">text</div>'
+      const div = fixtureEl.querySelector('div')!
+      vi.spyOn(div, 'getClientRects').mockReturnValue([{ width: 100, height: 100 }] as unknown as DOMRectList)
+      expect(isVisible(div)).toBe(false)
+    })
+
+    it('should return false for element inside closed details', () => {
+      fixtureEl.innerHTML = '<details><div id="inside">text</div></details>'
+      const inside = fixtureEl.querySelector('#inside')!
+      vi.spyOn(inside, 'getClientRects').mockReturnValue([{ width: 100, height: 100 }] as unknown as DOMRectList)
+      expect(isVisible(inside as HTMLElement)).toBe(false)
+    })
+
+    it('should return true for element inside open details', () => {
+      fixtureEl.innerHTML = '<details open><div id="inside">text</div></details>'
+      const inside = fixtureEl.querySelector('#inside')!
+      vi.spyOn(inside, 'getClientRects').mockReturnValue([{ width: 100, height: 100 }] as unknown as DOMRectList)
+      expect(isVisible(inside as HTMLElement)).toBe(true)
+    })
+
+    it('should return visible for direct summary in closed details', () => {
+      fixtureEl.innerHTML = '<details><summary id="sum">title</summary></details>'
+      const sum = fixtureEl.querySelector('#sum')!
+      vi.spyOn(sum, 'getClientRects').mockReturnValue([{ width: 100, height: 100 }] as unknown as DOMRectList)
+      expect(isVisible(sum as HTMLElement)).toBe(true)
+    })
+
+    it('should return false for nested summary inside closed details', () => {
+      fixtureEl.innerHTML = '<details><div><summary id="sum">title</summary></div></details>'
+      const sum = fixtureEl.querySelector('#sum')!
+      vi.spyOn(sum, 'getClientRects').mockReturnValue([{ width: 100, height: 100 }] as unknown as DOMRectList)
+      expect(isVisible(sum as HTMLElement)).toBe(false)
+    })
+
+    it('should return false for non-summary element inside closed details', () => {
+      fixtureEl.innerHTML = '<details><span id="inner">content</span></details>'
+      const inner = fixtureEl.querySelector('#inner')!
+      vi.spyOn(inner, 'getClientRects').mockReturnValue([{ width: 100, height: 100 }] as unknown as DOMRectList)
+      expect(isVisible(inner as HTMLElement)).toBe(false)
+    })
   })
 
   describe('isDisabled', () => {
@@ -221,6 +309,41 @@ describe('util/index', () => {
     it('should return null for orphan node', () => {
       const orphan = document.createTextNode('text')
       expect(findShadowRoot(orphan)).toBeNull()
+    })
+
+    it('should return null if attachShadow is not supported', () => {
+      const original = document.documentElement.attachShadow
+      Object.defineProperty(document.documentElement, 'attachShadow', { value: undefined, configurable: true })
+      fixtureEl.innerHTML = '<div></div>'
+      expect(findShadowRoot(fixtureEl.querySelector('div')!)).toBeNull()
+      Object.defineProperty(document.documentElement, 'attachShadow', { value: original, configurable: true })
+    })
+
+    it('should return shadow root via getRootNode', () => {
+      const host = document.createElement('div')
+      document.body.appendChild(host)
+      const shadowRoot = host.attachShadow({ mode: 'open' })
+      const inner = document.createElement('span')
+      shadowRoot.appendChild(inner)
+
+      expect(findShadowRoot(inner)).toBe(shadowRoot)
+      host.remove()
+    })
+
+    it('should fallback to parentNode traversal if getRootNode is not available', () => {
+      const host = document.createElement('div')
+      document.body.appendChild(host)
+      const shadowRoot = host.attachShadow({ mode: 'open' })
+      const inner = document.createElement('span')
+      shadowRoot.appendChild(inner)
+
+      const originalGetRootNode = inner.getRootNode
+      Object.defineProperty(inner, 'getRootNode', { value: undefined, configurable: true })
+
+      expect(findShadowRoot(inner)).toBe(shadowRoot)
+
+      Object.defineProperty(inner, 'getRootNode', { value: originalGetRootNode, configurable: true })
+      host.remove()
     })
   })
 
@@ -302,15 +425,18 @@ describe('util/index', () => {
       expect(callback).toHaveBeenCalledOnce()
     })
 
-    it('should not execute callback when transitionend target is different', () => {
-      fixtureEl.innerHTML = '<div><span></span></div>'
-      const div = fixtureEl.querySelector('div')!
+    it('should ignore transitionend from a different target', () => {
+      fixtureEl.innerHTML = '<div id="parent"><span id="child"></span></div>'
+      const parent = fixtureEl.querySelector('#parent')!
+      const child = fixtureEl.querySelector('#child')!
       const callback = vi.fn()
 
-      executeAfterTransition(callback, div, true)
+      executeAfterTransition(callback, parent, true)
 
-      div.dispatchEvent(new Event('transitionend', { bubbles: false }))
+      child.dispatchEvent(new Event('transitionend', { bubbles: true }))
+      expect(callback).not.toHaveBeenCalled()
 
+      parent.dispatchEvent(new Event('transitionend'))
       expect(callback).toHaveBeenCalledOnce()
     })
 

@@ -20,3 +20,14 @@ export const getFixture = (): HTMLElement => {
 export const clearFixture = (): void => {
   getFixture().innerHTML = ''
 }
+
+export const createEvent = (eventName: string, parameters: EventInit = {}): Event => {
+  return new Event(eventName, parameters)
+}
+
+export const clearBodyAndDocument = (): void => {
+  for (const attribute of ['data-bs-padding-right', 'data-tblr-padding-right', 'style']) {
+    document.documentElement.removeAttribute(attribute)
+    document.body.removeAttribute(attribute)
+  }
+}
