@@ -154,7 +154,7 @@ const reflow = (element: HTMLElement): void => {
 const isRTL = (): boolean => document.documentElement.dir === 'rtl'
 
 const execute = (possibleCallback: unknown, args: unknown[] = [], defaultValue: unknown = possibleCallback): any => {
-  return typeof possibleCallback === 'function' ? possibleCallback.call(...args) : defaultValue
+  return typeof possibleCallback === 'function' ? possibleCallback.call(args[0], ...args.slice(1)) : defaultValue
 }
 
 const executeAfterTransition = (callback: () => void, transitionElement: HTMLElement, waitForTransition = true): void => {
