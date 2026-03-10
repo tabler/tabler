@@ -302,9 +302,10 @@ class Dropdown extends BaseComponent {
       }]
     }
 
+    const popperConfig = execute(this._config.popperConfig, [undefined, defaultBsPopperConfig])
     return {
       ...defaultBsPopperConfig,
-      ...execute(this._config.popperConfig, [undefined, defaultBsPopperConfig])
+      ...(typeof popperConfig === 'object' && popperConfig !== null ? popperConfig : {})
     }
   }
 

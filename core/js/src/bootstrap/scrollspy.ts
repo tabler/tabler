@@ -155,7 +155,7 @@ class ScrollSpy extends BaseComponent {
   _observerCallback(entries: IntersectionObserverEntry[]): void {
     const targetElement = (entry: IntersectionObserverEntry) => this._targetLinks.get(`#${entry.target.id}`)
     const activate = (entry: IntersectionObserverEntry) => {
-      this._previousScrollData.visibleEntryTop = entry.target.offsetTop
+      this._previousScrollData.visibleEntryTop = (entry.target as HTMLElement).offsetTop
       this._process(targetElement(entry)!)
     }
 
@@ -171,7 +171,7 @@ class ScrollSpy extends BaseComponent {
         continue
       }
 
-      const entryIsLowerThanPrevious = entry.target.offsetTop >= this._previousScrollData.visibleEntryTop
+      const entryIsLowerThanPrevious = (entry.target as HTMLElement).offsetTop >= this._previousScrollData.visibleEntryTop
       if (userScrollsDown && entryIsLowerThanPrevious) {
         activate(entry)
         if (!parentScrollTop) {

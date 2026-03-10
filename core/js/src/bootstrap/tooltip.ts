@@ -308,7 +308,7 @@ class Tooltip extends BaseComponent {
   }
 
   _createTipElement(content: Record<string, any>): HTMLElement | null {
-    const tip = this._getTemplateFactory(content).toHtml()
+    const tip = this._getTemplateFactory(content).toHtml() as HTMLElement
 
     if (!tip) {
       return null
@@ -375,7 +375,7 @@ class Tooltip extends BaseComponent {
   }
 
   _createPopper(tip: HTMLElement): Popper.Instance {
-    const placement = execute(this._config.placement, [this, tip, this._element])
+    const placement = execute(this._config.placement, [this, tip, this._element]) as string
     const attachment = AttachmentMap[placement.toUpperCase()]
     return Popper.createPopper(this._element, tip, this._getPopperConfig(attachment))
   }
@@ -437,9 +437,10 @@ class Tooltip extends BaseComponent {
       ]
     }
 
+    const popperConfig = execute(this._config.popperConfig, [undefined, defaultBsPopperConfig])
     return {
       ...defaultBsPopperConfig,
-      ...execute(this._config.popperConfig, [undefined, defaultBsPopperConfig])
+      ...(typeof popperConfig === 'object' && popperConfig !== null ? popperConfig : {})
     }
   }
 
