@@ -113,7 +113,7 @@ Navbar
       min-width: 2.5rem;
       min-height: 2.5rem;
       justify-content: center;
-      border-radius: var(--#{$prefix}border-radius);
+      @include border-radius(var(--#{$prefix}border-radius));
 
       .badge {
         position: absolute;
@@ -222,7 +222,7 @@ Navbar toggler
   height: 2px;
   width: 1.25em;
   background: currentColor;
-  border-radius: 10px;
+  @include border-radius(var(--#{$prefix}border-radius-pill));
   position: relative;
   @include transition(top $navbar-toggler-animation-time $navbar-toggler-animation-time, bottom $navbar-toggler-animation-time $navbar-toggler-animation-time, transform $navbar-toggler-animation-time, opacity 0s $navbar-toggler-animation-time);
 
@@ -275,7 +275,9 @@ Navbar transparent
 Navbar nav
  */
 .navbar-nav {
-  --#{$prefix}nav-link-hover-bg: #{color-transparent(var(--#{$prefix}nav-link-color), 0.04)};
+  --#{$prefix}nav-link-hover-bg: #{$navbar-nav-link-hover-bg};
+  --#{$prefix}nav-link-icon-color: #{$nav-link-icon-color};
+  --#{$prefix}nav-link-hover-icon-color: #{$nav-link-hover-icon-color};
   margin: 0;
   padding: 0;
   align-items: stretch;

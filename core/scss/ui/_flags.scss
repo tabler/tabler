@@ -1,6 +1,7 @@
 @use 'sass:map';
 @use '../config';
 
+
 .flag {
   position: relative;
   display: inline-block;
@@ -8,7 +9,7 @@
   aspect-ratio: 1.33333;
   background: no-repeat center/cover;
   box-shadow: config.$flag-box-shadow;
-  border-radius: config.$flag-border-radius;
+  @include config.border-radius(config.$flag-border-radius);
   vertical-align: bottom;
 
   &.flag-country-np {
@@ -28,7 +29,7 @@
     width: map.get($size, size);
 
     @if map.has-key($size, border-radius) {
-      border-radius: map.get($size, border-radius);
+      @include config.border-radius(map.get($size, border-radius));
     }
   }
 }

@@ -3,9 +3,6 @@ name: Test build
 on:
   pull_request: null
 
-env:
-  NODE: 22
-
 permissions:
   contents: read
 
@@ -30,7 +27,7 @@ jobs:
       - name: Set up Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: "${{ env.NODE }}"
+          node-version-file: '.nvmrc'
           cache: 'pnpm'
 
       - run: node --version

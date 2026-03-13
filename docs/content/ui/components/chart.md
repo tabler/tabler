@@ -1,5 +1,5 @@
 ---
-title: Charts
+title: Chart
 docs-libs: [apexcharts]
 summary: Tabler uses ApexCharts - a free and open-source modern charting library that helps developers to create beautiful and interactive visualizations for web pages.
 description: Interactive data visualizations with ApexCharts.

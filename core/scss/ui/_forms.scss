@@ -106,7 +106,7 @@ Form control
 }
 
 .form-control-rounded {
-  border-radius: 10rem;
+  @include border-radius(var(--#{$prefix}border-radius-pill));
 }
 
 .form-control-flush {
@@ -127,7 +127,7 @@ Form control
   margin-bottom: 1rem;
   background: var(--#{$prefix}bg-surface-secondary);
   border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
-  border-radius: var(--#{$prefix}border-radius);
+  @include border-radius(var(--#{$prefix}border-radius));
 }
 
 fieldset:empty {
@@ -151,7 +151,7 @@ Form help
   cursor: pointer;
   user-select: none;
   background: var(--#{$prefix}gray-100);
-  border-radius: $border-radius-pill;
+  @include border-radius(var(--#{$prefix}border-radius-pill));
   @include transition(background-color $transition-time, color $transition-time);
 
   &:hover,
@@ -166,7 +166,7 @@ Input group
  */
 .input-group {
   box-shadow: $input-box-shadow;
-  border-radius: $input-border-radius;
+  @include border-radius($input-border-radius);
 
   .form-control,
   .btn {
@@ -181,7 +181,7 @@ Input group
 .input-group-flat {
   &:focus-within {
     box-shadow: $input-focus-box-shadow;
-    border-radius: $input-border-radius;
+    @include border-radius($input-border-radius);
 
     .form-control,
     .input-group-text {

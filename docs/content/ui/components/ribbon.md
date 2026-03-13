@@ -1,7 +1,7 @@
 ---
-title: Ribbons
-summary: Ribbons are graphical elements which attract users' attention to a given element of an interface and make it stand out.
-description: Highlight elements with graphical ribbons.	
+title: Ribbon
+summary: A ribbon is a graphical element that attracts user attention to a given interface element and makes it stand out.
+description: Highlight an element with a graphical ribbon.
 ---
 
 ## Default markup

@@ -1,8 +1,8 @@
 ---
-title: Alerts
-summary: Alert messages are used to inform users of the status of their action and help them solve any problems that might have occurred. Good design of alert modals is very important for the overall user experience of a website or app.
+title: Alert
+summary: An alert message is used to inform users about the status of their action and help them solve problems that may occur. Good alert design is important for the overall user experience of a website or app.
 bootstrapLink: components/alerts/
-description: Alert messages for user notifications.
+description: An alert message for user notification.
 ---
 
 ## Default markup
