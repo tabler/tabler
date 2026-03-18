@@ -6,6 +6,7 @@
  */
 
 import Tooltip from './tooltip'
+import type { ComponentConfig, ComponentConfigType } from './types'
 
 /**
  * Constants
@@ -15,14 +16,6 @@ const NAME = 'popover'
 
 const SELECTOR_TITLE = '.popover-header'
 const SELECTOR_CONTENT = '.popover-body'
-
-interface ComponentConfig {
-  [key: string]: any
-}
-
-interface ComponentConfigType {
-  [key: string]: string
-}
 
 const Default: ComponentConfig = {
   ...Tooltip.Default,

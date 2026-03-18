@@ -54,7 +54,12 @@ class BaseComponent extends Config {
   }
 
   static getInstance(element: ElementSelector): BaseComponent | null {
-    return Data.get(getElement(element)!, this.DATA_KEY)
+    const resolved = getElement(element)
+    if (!resolved) {
+      return null
+    }
+
+    return Data.get(resolved, this.DATA_KEY)
   }
 
   static getOrCreateInstance(element: ElementSelector, config: ComponentConfig = {}): BaseComponent {

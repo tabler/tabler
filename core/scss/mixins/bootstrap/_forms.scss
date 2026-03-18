@@ -3,12 +3,12 @@
 
 @mixin form-validation-state-selector($state) {
   @if ($state == "valid" or $state == "invalid") {
-    .was-validated #{if(sass(&): "&"; else: "")}:#{$state},
-    #{if(sass(&): "&"; else: "")}.is-#{$state} {
+    .was-validated #{if(&, "&", "")}:#{$state},
+    #{if(&, "&", "")}.is-#{$state} {
       @content;
     }
   } @else {
-    #{if(sass(&): "&"; else: "")}.is-#{$state} {
+    #{if(&, "&", "")}.is-#{$state} {
       @content;
     }
   }

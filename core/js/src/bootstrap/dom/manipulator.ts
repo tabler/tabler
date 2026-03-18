@@ -24,10 +24,6 @@ function normalizeData(value: string): DataValue {
     return null
   }
 
-  if (typeof value !== 'string') {
-    return value
-  }
-
   try {
     return JSON.parse(decodeURIComponent(value))
   } catch {

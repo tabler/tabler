@@ -17,7 +17,7 @@
 }
 
 @mixin make-col-ready() {
-  box-sizing: if(sass(meta.global-variable-exists("include-column-box-sizing") and $include-column-box-sizing): border-box; else: null);
+  box-sizing: if(meta.global-variable-exists("include-column-box-sizing") and $include-column-box-sizing, border-box, null);
   flex-shrink: 0;
   width: 100%;
   max-width: 100%;
@@ -43,7 +43,7 @@
 
 @mixin make-col-offset($size, $columns: $grid-columns) {
   $num: divide($size, $columns);
-  margin-left: if(sass($num == 0): 0; else: math.percentage($num));
+  margin-left: if($num == 0, 0, math.percentage($num));
 }
 
 @mixin row-cols($count) {

@@ -125,7 +125,7 @@ class Backdrop extends Config {
   }
 
   _configAfterMerge(config: ComponentConfig): ComponentConfig {
-    config.rootElement = getElement(config.rootElement)
+    config.rootElement = getElement(config.rootElement) ?? document.body
     return config
   }
 
