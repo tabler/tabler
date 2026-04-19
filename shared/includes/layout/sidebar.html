@@ -1,17 +1,64 @@
 {% assign breakpoint = include.breakpoint | default: 'lg' %}
 
-<aside class="navbar navbar-vertical{% if include.end %} navbar-end{% endif %} navbar-expand-{{ breakpoint }}{% if include.transparent %} navbar-transparent{% endif %}{% if include.background %} bg-{{ include.background }}{% endif %}{% if include.class %} {{ include.class }}{% endif %}"{% if include.background-color %} style="background: {{ include.background-color }}"{% endif %}{% if include.dark %} data-bs-theme="dark"{% endif %}>
+<aside class="navbar navbar-vertical{% if include.end %} navbar-end{% endif %} navbar-expand-{{ breakpoint }}{% if include.transparent %} navbar-transparent{% endif %}{% if include.background %} bg-{{ include.background }}{% endif %}{% if include.class %} {{ include.class }}{% endif %}{% if include.narrow %} navbar-narrow{% endif %}"{% if include.background-color %} style="background: {{ include.background-color }}"{% endif %}{% if include.dark %} data-bs-theme="dark"{% endif %}>
 	<div class="container-fluid">
 		{% include "layout/navbar-toggler.html" target="sidebar-menu" %}
 
 		{% unless include.hide-brand %}
-			{% include "layout/navbar-logo.html" breakpoint=breakpoint header=true %}
+		<div class="navbar-brand-row d-flex align-items-center w-100">
+			{% include "layout/navbar-logo.html" breakpoint=breakpoint header=true class="navbar-brand-full" %}
+			{% include "layout/navbar-logo.html" breakpoint=breakpoint header=true small-logo=true class="navbar-brand-icon-only" %}
+
+			{% if include.narrow-toggle %}
+			<button class="btn btn-ghost-secondary btn-icon ms-auto d-none d-{{ breakpoint }}-flex" data-bs-toggle="navbar-narrow" data-bs-target=".navbar-vertical" aria-label="Toggle sidebar width">
+				{% include "ui/icon.html" icon="layout-sidebar" %}
+			</button>
+			{% endif %}
+		</div>
 		{% endunless %}
 
-		{% include "layout/navbar-side.html" class="d-lg-none" hide-username=include.hide-username person-id=include.person-id breakpoint=breakpoint %}
+		{% capture navbar-side-class %}d-{{ breakpoint }}-none{% endcapture %}
+		{% include "layout/navbar-side.html" class=navbar-side-class condensed=true hide-username=include.hide-username person-id=include.person-id breakpoint=breakpoint %}
 
 		<div class="collapse navbar-collapse" id="sidebar-menu">
-			{% include "layout/navbar-menu.html" auto-open=true class="pt-lg-3" keep-open=true %}
+			{% include "layout/navbar-menu.html" auto-open=true class="pt-{{ breakpoint }}-3" keep-open=true %}
+
+			{% if include.show-help %}
+			<ul class="navbar-nav navbar-nav-help mt-auto pt-3 pb-3">
+				<li class="nav-item">
+					<a href="#" class="nav-link">
+						<span class="nav-link-icon d-md-none d-{{ breakpoint }}-inline-block">{% include "ui/icon.html" icon="help" %}</span>
+						<span class="nav-link-title">Help &amp; getting started</span>
+					</a>
+				</li>
+			</ul>
+			{% endif %}
 		</div>
+
+		{% if include.show-user-footer %}
+		{% assign person-id = include.person-id | default: 1 %}
+		{% assign person = people[person-id] %}
+		<div class="navbar-footer dropup d-none d-{{ breakpoint }}-flex">
+			<a href="#" class="navbar-footer-trigger d-flex align-items-center gap-2 w-100" data-bs-toggle="dropdown" aria-expanded="false" aria-label="Open user menu">
+				{% include "ui/avatar.html" person-id=person-id size="sm" %}
+				<div class="navbar-footer-info">
+					<div class="fw-medium lh-1">{{ person.full_name }}</div>
+					<div class="small text-secondary mt-1">{{ person.job_title }}</div>
+				</div>
+				{% include "ui/icon.html" icon="selector" class="text-secondary ms-auto" %}
+			</a>
+			<div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow"{% if include.dark %} data-bs-theme="light"{% endif %}>
+				<a class="dropdown-item" href="{{ page | relative }}/profile.html">
+					{% include "ui/icon.html" icon="user" class="dropdown-item-icon" %}
+					Profile
+				</a>
+				<div class="dropdown-divider"></div>
+				<a class="dropdown-item" href="{{ page | relative }}/sign-in.html">
+					{% include "ui/icon.html" icon="logout" class="dropdown-item-icon" %}
+					Sign out
+				</a>
+			</div>
+		</div>
+		{% endif %}
 	</div>
 </aside>

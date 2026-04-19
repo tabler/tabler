@@ -1,5 +1,9 @@
 {% assign person-id = include.person-id | default: 1 %}
 {% assign person = people[person-id] %}
+{% assign has-side-content = false %}
+{% unless include.condensed %}{% assign has-side-content = true %}{% endunless %}
+{% if include.show-theme-toggle or include.show-notifications or include.show-apps or include.show-language-selector or include.show-user %}{% assign has-side-content = true %}{% endif %}
+{% if has-side-content %}
 <div class="navbar-nav flex-row{% if include.class %} {{ include.class }}{% endif %}">
 
 	{% unless include.condensed %}
@@ -32,3 +36,4 @@
 		{% include "layout/navbar-side-user.html" person-id=person-id hide-username=include.hide-username dark=include.dark %}
 	{% endif %}
 </div>
+{% endif %}

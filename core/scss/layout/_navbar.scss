@@ -189,6 +189,16 @@ Navbar
 }
 
 /**
+Navbar brand row (sidebar header row: logo + toggle button side by side)
+ */
+.navbar-brand-row {
+  // Icon-only logo hidden by default; full logo visible
+  .navbar-brand-icon-only {
+    display: none !important;
+  }
+}
+
+/**
 Navbar brand
  */
 .navbar-brand {
@@ -290,6 +300,33 @@ Navbar nav
 }
 
 /**
+Navbar footer (user profile at bottom of vertical sidebar)
+ */
+.navbar-footer {
+  margin-top: auto;
+  border-top: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}navbar-border-color);
+
+  .navbar-footer-trigger {
+    padding: 0.75rem calc(#{$container-padding-x} / 2);
+    color: var(--#{$prefix}navbar-color);
+    text-decoration: none;
+    @include border-radius(0);
+    @include transition(background-color $transition-time);
+
+    &:hover {
+      background-color: var(--#{$prefix}navbar-active-bg);
+      color: var(--#{$prefix}navbar-color);
+    }
+  }
+
+  .navbar-footer-info {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+  }
+}
+
+/**
 Navbar side
  */
 .navbar-side {
@@ -303,6 +340,19 @@ Navbar side
 /**
 Navbar vertical
  */
+/**
+Nav link header (section divider inside vertical navbar)
+ */
+.nav-link-header {
+  display: block;
+  padding: 0.5rem calc(#{$container-padding-x} / 2) 0.25rem;
+  font-size: $font-size-sm;
+  font-weight: var(--#{$prefix}font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: .04em;
+  color: var(--#{$prefix}text-secondary);
+}
+
 @if $enable-navbar-vertical {
   .navbar-vertical {
     &.navbar-expand {
@@ -321,7 +371,7 @@ Navbar vertical
             align-items: start;
             overflow-y: scroll;
             padding: 0;
-            @include transition(transform $transition-time);
+            @include transition(width $transition-time, transform $transition-time);
 
             &.navbar-right,
             &.navbar-end {
@@ -336,6 +386,11 @@ Navbar vertical
 
             .navbar-collapse {
               align-items: stretch;
+
+              .navbar-nav-help {
+                flex-grow: 0;
+                min-height: 0;
+              }
             }
 
             .navbar-nav {
@@ -357,8 +412,13 @@ Navbar vertical
               padding: 0;
             }
 
+            .navbar-brand-row {
+              padding-inline-start: calc(#{$container-padding-x} / 2);
+            }
+
             ~ .page {
               padding-inline-start: $sidebar-width;
+              @include transition(padding-inline-start $transition-time);
 
               [class^='container'] {
                 padding-inline-start: 1.5rem;
@@ -373,6 +433,122 @@ Navbar vertical
             }
 
             @include navbar-vertical-nav;
+          }
+        }
+      }
+    }
+  }
+
+  /**
+  Navbar vertical narrow state
+   */
+  .navbar-vertical.navbar-narrow {
+    &.navbar-expand {
+      @each $breakpoint in map.keys($grid-breakpoints) {
+        $next: breakpoint-next($breakpoint, $grid-breakpoints);
+        $infix: breakpoint-infix($next, $grid-breakpoints);
+
+        &#{$infix} {
+          @include media-breakpoint-up($next) {
+            width: $sidebar-narrow-width;
+            overflow-y: auto;
+            overflow-x: hidden;
+
+            ~ .page {
+              padding-inline-start: $sidebar-narrow-width;
+            }
+
+            &.navbar-right ~ .page,
+            &.navbar-end ~ .page {
+              padding-inline-start: 0;
+              padding-inline-end: $sidebar-narrow-width;
+            }
+
+            // Logo swap: hide full, show icon-only
+            .navbar-brand-row {
+              justify-content: center;
+              flex-direction: column;
+              align-items: center;
+              padding-inline-start: 0;
+
+              .navbar-brand-full {
+                display: none !important;
+              }
+
+              .navbar-brand-icon-only {
+                display: flex !important;
+              }
+
+              > .btn[data-bs-toggle='navbar-narrow'] {
+                margin-inline-start: 0 !important;
+                margin-top: 0.25rem;
+              }
+            }
+
+            .navbar-collapse {
+              flex-direction: column;
+              align-items: stretch;
+              justify-content: flex-start;
+
+              > .navbar-nav {
+                width: 100%;
+              }
+
+              .nav-link {
+                justify-content: center;
+                padding-inline-start: 0;
+                padding-inline-end: 0;
+
+                .nav-link-icon {
+                  margin-inline-end: 0;
+                }
+
+                .nav-link-title,
+                .badge {
+                  display: none;
+                }
+              }
+
+              .nav-link-header {
+                display: none;
+              }
+
+              .dropdown-toggle::after {
+                display: none;
+              }
+
+              .dropdown-menu {
+                position: absolute !important;
+                inset-inline-start: 100%;
+                inset-inline-end: auto;
+                top: 0;
+                margin: 0;
+                background: var(--#{$prefix}navbar-bg);
+                border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
+                box-shadow: var(--#{$prefix}shadow);
+
+                .dropdown-item {
+                  padding-inline-start: 0.75rem;
+                }
+
+                .dropdown-menu .dropdown-item {
+                  padding-inline-start: 0.75rem;
+                }
+              }
+            }
+
+            .navbar-footer {
+              .navbar-footer-trigger {
+                justify-content: center;
+                padding-inline-start: 0;
+                padding-inline-end: 0;
+              }
+
+              .navbar-footer-info,
+              .icon.text-secondary.ms-auto {
+                display: none;
+              }
+            }
           }
         }
       }

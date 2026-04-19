@@ -10,10 +10,15 @@
 <ul class="navbar-nav{% if include.class %} {{ include.class }}{% endif %}">
 	{% for level-1 in menu %}
 		{% assign icon = level-1[1].icon %}
+		{% if level-1[1].type == "nav-header" %}
+		<li class="nav-item">
+			<span class="nav-link-header">{{ level-1[1].title }}</span>
+		</li>
+		{% else %}
 		<li class="nav-item{% if level-1[0] == current-page[0] or level-1[1].active %} active{% endif %}{% if level-1[1].children %} dropdown{% endif %}">
 			<a class="nav-link{% if level-1[1].children %} dropdown-toggle{% endif %}{% if level-1[1].disabled %} disabled{% endif %}" {% if level-1[1].children %}href="#navbar-{{ level-1[0] }}" data-bs-toggle="dropdown" data-bs-auto-close="{% if include.keep-open %}false{% else %}outside{% endif %}" role="button" aria-haspopup="true" aria-expanded="{% if include.auto-open and level-1[0] == current-page[0] %}true{% else %}false{% endif %}" {% else %}href="{{ page | relative }}/{{ level-1[1].url }}" {% endif %}{% if level-1[0] == current-page[0] or level-1[1].active %} aria-current="page"{% endif %}>
 				{% unless hide-icons %}
-				<span class="nav-link-icon d-md-none d-lg-inline-block">{% include "ui/icon.html" icon=icon %}</span>
+				<span class="nav-link-icon d-md-none d-lg-inline-block">{% if icon %}{% include "ui/icon.html" icon=icon %}{% elsif level-1[1].color %}<span class="badge p-0 bg-{{ level-1[1].color }}" style="width:.75rem;height:.75rem;border-radius:50%;display:inline-block;"></span>{% endif %}</span>
 				{% endunless %}
 
 				<span class="nav-link-title">
@@ -81,6 +86,7 @@
 				</div>
 			{% endif %}
 		</li>
+		{% endif %}
 	{% endfor %}
 
 	{% comment %}
