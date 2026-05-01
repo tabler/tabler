@@ -51,33 +51,32 @@ Use the `alert-icon` class on an `<svg>` (or on an `<i>` when using the webfont)
 
 {% capture html -%}
 <div class="alert alert-success" role="alert">
-  <div class="d-flex">
-    <div>
+   <div class="alert-icon">
+      <!-- Download SVG icon from http://tabler.io/icons/icon/check -->
       <svg
-        xmlns="http://www.w3.org/2000/svg"
-        class="icon alert-icon"
-        width="24"
-        height="24"
-        viewBox="0 0 24 24"
-        stroke-width="2"
-        stroke="currentColor"
-        fill="none"
-        stroke-linecap="round"
-        stroke-linejoin="round"
-      >
-        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-        <path d="M5 12l5 5l10 -10" />
+         xmlns="http://www.w3.org/2000/svg"
+         class="icon alert-icon"
+         width="24"
+         height="24"
+         viewBox="0 0 24 24"
+         stroke-width="2"
+         stroke="currentColor"
+         fill="none"
+         stroke-linecap="round"
+         stroke-linejoin="round"
+         >
+         <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+         <path d="M5 12l5 5l10 -10" />
       </svg>
-    </div>
-    <div>
+   </div>
+   <div>
       <h4 class="alert-title">Wow! Everything worked!</h4>
       <div class="text-secondary">Your account has been saved!</div>
-    </div>
-  </div>
+   </div>
 </div>
 <div class="alert alert-info" role="alert">
-  <div class="d-flex">
-    <div>
+  <div class="alert-icon">
+      <!-- Download SVG icon from http://tabler.io/icons/icon/info-circle -->
       <svg
         xmlns="http://www.w3.org/2000/svg"
         class="icon alert-icon"
@@ -100,11 +99,10 @@ Use the `alert-icon` class on an `<svg>` (or on an `<i>` when using the webfont)
       <h4 class="alert-title">Did you know?</h4>
       <div class="text-secondary">Here is something that you might like to know.</div>
     </div>
-  </div>
 </div>
 <div class="alert alert-warning" role="alert">
-  <div class="d-flex">
-    <div>
+  <div class="alert-icon">
+      <!-- Download SVG icon from http://tabler.io/icons/icon/alert-triangle -->
       <svg
         xmlns="http://www.w3.org/2000/svg"
         class="icon alert-icon"
@@ -128,11 +126,10 @@ Use the `alert-icon` class on an `<svg>` (or on an `<i>` when using the webfont)
       <h4 class="alert-title">Uh oh, something went wrong</h4>
       <div class="text-secondary">Sorry! There was a problem with your request.</div>
     </div>
-  </div>
 </div>
 <div class="alert alert-danger" role="alert">
-  <div class="d-flex">
-    <div>
+  <div class="alert-icon">
+      <!-- Download SVG icon from http://tabler.io/icons/icon/alert-circle -->
       <svg
         xmlns="http://www.w3.org/2000/svg"
         class="icon alert-icon"
@@ -155,7 +152,6 @@ Use the `alert-icon` class on an `<svg>` (or on an `<i>` when using the webfont)
       <h4 class="alert-title">I'm so sorry&hellip;</h4>
       <div class="text-secondary">Your account has been deleted and can't be restored.</div>
     </div>
-  </div>
 </div>
 {%- endcapture %}
 {% include "docs/example.html" html=html %}
