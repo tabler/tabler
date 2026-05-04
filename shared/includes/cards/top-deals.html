@@ -1,0 +1,55 @@
+<div class="card">
+	{% assign deals = crm-dashboard.top_deals %}
+	<div class="card-header">
+		<h3 class="card-title">{{ deals.title }}</h3>
+		<div class="card-actions d-flex gap-2">
+			<button type="button" class="btn btn-sm">
+				{% include "ui/icon.html" icon="filter" class="me-1" %}
+				{{ deals.filter_text }}
+			</button>
+			<button type="button" class="btn btn-primary btn-sm">
+				{% include "ui/icon.html" icon="plus" class="me-1" %}
+				{{ deals.add_deal_text }}
+			</button>
+		</div>
+	</div>
+
+	<div class="table-responsive">
+		<table class="table table-vcenter card-table text-nowrap">
+			<thead>
+				<tr>
+					{% for column in deals.columns %}
+						<th>{{ column }}</th>
+					{% endfor %}
+					<th class="w-1"></th>
+				</tr>
+			</thead>
+			<tbody>
+				{% for item in deals.items %}
+					<tr>
+						<td>
+							<div class="fw-medium">{{ item.company }}</div>
+							<div class="small text-secondary">{{ item.contact }}</div>
+						</td>
+						<td><span class="badge bg-{{ item.stage_color }}-lt text-{{ item.stage_color }}">{{ item.stage }}</span></td>
+						<td class="fw-semibold">{{ item.value }}</td>
+						<td>
+							<div class="d-flex align-items-center gap-2">
+								<div class="w-100">
+									{% include "ui/progress.html" size="sm" value=item.probability color=item.probability_color %}
+								</div>
+								<span class="small text-secondary">{{ item.probability }}%</span>
+							</div>
+						</td>
+						<td>{% include "ui/avatar.html" placeholder=item.owner_initials color=item.owner_color size="sm" %}</td>
+						<td>
+							<button type="button" class="btn btn-icon btn-sm">
+								{% include "ui/icon.html" icon="dots" %}
+							</button>
+						</td>
+					</tr>
+				{% endfor %}
+			</tbody>
+		</table>
+	</div>
+</div>
