@@ -67,6 +67,13 @@ The documentation is available at https://docs.tabler.io/
 	<img src="https://repobeats.axiom.co/api/embed/61d1db34446967b0848af68198a392067e0f5870.svg" alt="Repobeats analytics image" />
 </p>
 
+
+## Agent skill
+
+```sh
+npx skills add https://github.com/tabler/tabler/tree/dev/skills/tabler
+```
+
 ## Installation
 
 ### Package Managers
