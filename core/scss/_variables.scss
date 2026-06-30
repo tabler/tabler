@@ -1791,7 +1791,10 @@ $list-group-action-active-bg: var(--#{$prefix}secondary-bg) !default;
 
 // Forms
 $input-disabled-bg: $disabled-bg !default;
-$input-border-color: var(--#{$prefix}border-color) !default;
+// Derived from the text color so the control boundary keeps >=3:1 (WCAG 1.4.11);
+// var(--#{$prefix}border-color) (gray-200) was ~1.2:1 on light surfaces.
+$form-control-border-color: color-mix(in srgb, var(--#{$prefix}body-color), transparent 40%) !default;
+$input-border-color: $form-control-border-color !default;
 $input-border-color-translucent: var(--#{$prefix}border-color-translucent) !default;
 
 $input-placeholder-color: var(--#{$prefix}tertiary) !default;
@@ -1817,7 +1820,7 @@ $form-check-input-width: 1.25rem !default;
 $form-check-min-height: $font-size-base * $line-height-base !default;
 $form-check-input-active-filter: brightness(90%) !default;
 $form-check-input-bg: var(--#{$prefix}bg-forms) !default;
-$form-check-input-border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) $input-border-color-translucent !default;
+$form-check-input-border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) $form-control-border-color !default;
 $form-check-input-border-radius: var(--#{$prefix}border-radius) !default;
 $form-check-radio-border-radius: 50% !default;
 $form-check-input-focus-border: $input-focus-border-color !default;
@@ -1830,7 +1833,7 @@ $form-check-input-checked-color: var(--#{$prefix}bg-forms) !default;
 $form-check-input-checked-bg-repeat: repeat !default;
 $form-check-input-checked-bg-image: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' width='16' height='16'><path fill='none' stroke='#{$white}' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4 8.5l2.5 2.5l5.5 -5.5'/></svg>") !default;
 $form-check-input-checked-bg-image-dark: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' width='16' height='16'><path fill='none' stroke='#{$body-color}' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M4 8.5l2.5 2.5l5.5 -5.5'/></svg>") !default;
-$form-check-input-checked-border-color: $input-border-color-translucent !default;
+$form-check-input-checked-border-color: $form-control-border-color !default;
 $form-check-input-indeterminate-color: $component-active-color !default;
 $form-check-input-indeterminate-bg-color: var(--#{$prefix}primary) !default;
 $form-check-input-indeterminate-border-color: $form-check-input-indeterminate-bg-color !default;
