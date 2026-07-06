@@ -1,5 +1,5 @@
 ---
-title: Progress Step
+title: Progress Steps
 summary: A progress step helps users track their place in a short process by breaking it into clear, simple steps. This makes flows like setup or onboarding easier to follow and finish.
 new: true
 description: Use progress steps to display compact onboarding, checkout, and setup progress.
