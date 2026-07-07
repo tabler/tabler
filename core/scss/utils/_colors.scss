@@ -37,8 +37,8 @@
   }
 
   .text-bg-#{'' + $color} {
-    color: color-contrast($value) if($enable-important-utilities, !important, null);
-    background-color: RGBA(var(--#{$prefix}#{$color}-rgb), var(--#{$prefix}bg-opacity, 1)) if($enable-important-utilities, !important, null);
+    color: color-contrast($value) if(sass($enable-important-utilities): !important; else: null);
+    background-color: RGBA(var(--#{$prefix}#{$color}-rgb), var(--#{$prefix}bg-opacity, 1)) if(sass($enable-important-utilities): !important; else: null);
   }
 
   .link-#{'' + $color} {
@@ -48,9 +48,9 @@
     @if $link-shade-percentage != 0 {
       &:hover,
       &:focus {
-        $hover-color: if(color-contrast($value) == $color-contrast-light, shade-color($value, $link-shade-percentage), tint-color($value, $link-shade-percentage));
-        color: RGBA(#{to-rgb($hover-color)}, var(--#{$prefix}link-opacity, 1)) if($enable-important-utilities, !important, null);
-        text-decoration-color: RGBA(to-rgb($hover-color), var(--#{$prefix}link-underline-opacity, 1)) if($enable-important-utilities, !important, null);
+        $hover-color: if(sass(color-contrast($value) == $color-contrast-light): shade-color($value, $link-shade-percentage); else: tint-color($value, $link-shade-percentage));
+        color: RGBA(#{to-rgb($hover-color)}, var(--#{$prefix}link-opacity, 1)) if(sass($enable-important-utilities): !important; else: null);
+        text-decoration-color: RGBA(to-rgb($hover-color), var(--#{$prefix}link-underline-opacity, 1)) if(sass($enable-important-utilities): !important; else: null);
       }
     }
   }

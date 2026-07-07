@@ -615,6 +615,8 @@ $link-color: $primary !default;
 $link-shade-percentage: 20% !default;
 $link-hover-color: shift-color($link-color, $link-shade-percentage) !default;
 $link-hover-decoration: null !default;
+$stretched-link-pseudo-element: after !default;
+$stretched-link-z-index: 1 !default;
 
 // Icon links
 $icon-link-gap: 0.375rem !default;
@@ -1033,7 +1035,7 @@ $component-active-bg: $primary !default;
 // Focus
 $focus-ring-width: 0.25rem !default;
 $focus-ring-opacity: 0.25 !default;
-$focus-ring-color: color-mix(in srgb, var(--#{$prefix}primary) #{percentage($focus-ring-opacity)}, transparent) !default;
+$focus-ring-color: color-mix(in srgb, var(--#{$prefix}primary) #{math.percentage($focus-ring-opacity)}, transparent) !default;
 $focus-ring-blur: 0 !default;
 $focus-ring-box-shadow: 0 0 $focus-ring-blur $focus-ring-width $focus-ring-color !default;
 
@@ -1708,7 +1710,7 @@ $table-active-bg: var(--#{$prefix}active-bg) !default;
 
 $table-hover-color: $table-color !default;
 $table-hover-bg-factor: 0.075 !default;
-$table-hover-bg: color-mix(in srgb, var(--#{$prefix}emphasis-color) #{percentage($table-hover-bg-factor)}, transparent) !default;
+$table-hover-bg: color-mix(in srgb, var(--#{$prefix}emphasis-color) #{math.percentage($table-hover-bg-factor)}, transparent) !default;
 
 $table-caption-color: var(--#{$prefix}secondary-color) !default;
 
@@ -1972,7 +1974,7 @@ $form-validation-states: (
     'icon': $form-feedback-icon-valid,
     'tooltip-color': #fff,
     'tooltip-bg-color': var(--#{$prefix}success),
-    'focus-box-shadow': 0 0 $input-btn-focus-blur $input-focus-width color-mix(in srgb, var(--#{$prefix}success) #{percentage($input-btn-focus-color-opacity)}, transparent),
+    'focus-box-shadow': 0 0 $input-btn-focus-blur $input-focus-width color-mix(in srgb, var(--#{$prefix}success) #{math.percentage($input-btn-focus-color-opacity)}, transparent),
     'border-color': var(--#{$prefix}form-valid-border-color),
   ),
   'invalid': (
@@ -1980,7 +1982,7 @@ $form-validation-states: (
     'icon': $form-feedback-icon-invalid,
     'tooltip-color': #fff,
     'tooltip-bg-color': var(--#{$prefix}danger),
-    'focus-box-shadow': 0 0 $input-btn-focus-blur $input-focus-width color-mix(in srgb, var(--#{$prefix}danger) #{percentage($input-btn-focus-color-opacity)}, transparent),
+    'focus-box-shadow': 0 0 $input-btn-focus-blur $input-focus-width color-mix(in srgb, var(--#{$prefix}danger) #{math.percentage($input-btn-focus-color-opacity)}, transparent),
     'border-color': var(--#{$prefix}form-invalid-border-color),
   ),
 ) !default;

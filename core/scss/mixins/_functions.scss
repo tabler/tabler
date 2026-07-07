@@ -45,11 +45,11 @@
 }
 
 @function breakpoint-prev($name, $breakpoints: $grid-breakpoints, $breakpoint-names: map.keys($breakpoints)) {
-  $n: index($breakpoint-names, $name);
+  $n: list.index($breakpoint-names, $name);
   @if not $n {
     @error "breakpoint `#{$name}` not found in `#{$breakpoints}`";
   }
-  @return if($n > 1, list.nth($breakpoint-names, $n - 1), null);
+  @return if(sass($n > 1): list.nth($breakpoint-names, $n - 1); else: null);
 }
 
 //
@@ -77,7 +77,7 @@
  * @return {String} - The percentage representation of the value.
  */
 @function to-percentage($value) {
-  @return if(math.is-unitless($value), math.percentage($value), $value);
+  @return if(sass(math.is-unitless($value)): math.percentage($value); else: $value);
 }
 
 /**
@@ -160,7 +160,7 @@
     // allow to pass the $key and $value of the map as an function argument
     $_args: ();
     @each $arg in $args {
-      $_args: list.append($_args, if($arg == '$key', $key, if($arg == '$value', $value, $arg)));
+      $_args: list.append($_args, if(sass($arg == '$key'): $key; else: if(sass($arg == '$value'): $value; else: $arg)));
     }
 
     $_map: map.merge(
@@ -199,7 +199,7 @@
 @function map-get-multiple($map, $values) {
   $result: ();
   @each $key, $value in $map {
-    @if (index($values, $key) != null) {
+    @if (list.index($values, $key) != null) {
       $result: map.merge(
         $result,
         (
@@ -294,7 +294,7 @@ $_luminance-list: 0.0008 0.001 0.0011 0.0013 0.0015 0.0017 0.002 0.0022 0.0025 0
   $l1: luminance($background);
   $l2: luminance(opaque($background, $foreground));
 
-  @return if($l1 > $l2, divide($l1 + 0.05, $l2 + 0.05), divide($l2 + 0.05, $l1 + 0.05));
+  @return if(sass($l1 > $l2): divide($l1 + 0.05, $l2 + 0.05); else: divide($l2 + 0.05, $l1 + 0.05));
 }
 
 // Return WCAG2.2 relative luminance
@@ -308,7 +308,7 @@ $_luminance-list: 0.0008 0.001 0.0011 0.0013 0.0015 0.0017 0.002 0.0022 0.0025 0
   );
 
   @each $name, $value in $rgb {
-    $value: if(divide($value, 255) < 0.04045, divide(divide($value, 255), 12.92), list.nth($_luminance-list, $value + 1));
+    $value: if(sass(divide($value, 255) < 0.04045): divide(divide($value, 255), 12.92); else: list.nth($_luminance-list, $value + 1));
     $rgb: map.merge(
       $rgb,
       (
@@ -338,7 +338,7 @@ $_luminance-list: 0.0008 0.001 0.0011 0.0013 0.0015 0.0017 0.002 0.0022 0.0025 0
 
 // Shade the color if the weight is positive, else tint it
 @function shift-color($color, $weight) {
-  @return if($weight > 0, shade-color($color, $weight), tint-color($color, -$weight));
+  @return if(sass($weight > 0): shade-color($color, $weight); else: tint-color($color, -$weight));
 }
 
 // Return valid calc
@@ -355,7 +355,7 @@ $_luminance-list: 0.0008 0.001 0.0011 0.0013 0.0015 0.0017 0.002 0.0022 0.0025 0
     @return $value1 + $value2;
   }
 
-  @return if($return-calc == true, calc(#{$value1} + #{$value2}), $value1 + string.unquote(' + ') + $value2);
+  @return if(sass($return-calc == true): calc(#{$value1} + #{$value2}); else: $value1 + string.unquote(' + ') + $value2);
 }
 
 @function subtract($value1, $value2, $return-calc: true) {
@@ -379,11 +379,11 @@ $_luminance-list: 0.0008 0.001 0.0011 0.0013 0.0015 0.0017 0.002 0.0022 0.0025 0
     $value2: string.unquote('(') + $value2 + string.unquote(')');
   }
 
-  @return if($return-calc == true, calc(#{$value1} - #{$value2}), $value1 + string.unquote(' - ') + $value2);
+  @return if(sass($return-calc == true): calc(#{$value1} - #{$value2}); else: $value1 + string.unquote(' - ') + $value2);
 }
 
 @function divide($dividend, $divisor, $precision: 10) {
-  $sign: if($dividend > 0 and $divisor > 0 or $dividend < 0 and $divisor < 0, 1, -1);
+  $sign: if(sass($dividend > 0 and $divisor > 0 or $dividend < 0 and $divisor < 0): 1; else: -1);
   $dividend: math.abs($dividend);
   $divisor: math.abs($divisor);
   @if $dividend == 0 {
