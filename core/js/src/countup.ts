@@ -15,11 +15,15 @@ if (countupElements.length) {
       // ignore invalid JSON
     }
 
-    const value = parseInt(element.innerHTML, 10)
+    // Strip thousands separators, currency symbols and other non-numeric characters
+    // so formatted targets like "1,234", "1 234" or "$99.5" parse correctly.
+    const value = parseFloat((element.textContent ?? '').replace(/[^0-9.-]/g, ''))
 
-    if (window.countUp && window.countUp.CountUp) {
+    if (!Number.isNaN(value) && window.countUp && window.countUp.CountUp) {
       const countUp = new window.countUp.CountUp(element, value, options)
-      if (!countUp.error) {
+      // When scrollSpy is enabled CountUp starts the animation itself once the
+      // element scrolls into view, so only start manually when it's disabled.
+      if (!countUp.error && !options.enableScrollSpy) {
         countUp.start()
       }
     }
