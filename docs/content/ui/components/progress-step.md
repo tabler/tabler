@@ -1,0 +1,94 @@
+---
+title: Progress Steps
+summary: A progress step helps users track their place in a short process by breaking it into clear, simple steps. This makes flows like setup or onboarding easier to follow and finish.
+new: true
+description: Use progress steps to display compact onboarding, checkout, and setup progress.
+---
+
+## Default markup
+
+Use `.progress-steps` as the container and `.progress-steps-item` for each segment. These two classes are enough to create the base component structure.
+
+```html
+<ol class="progress-steps" aria-label="Onboarding progress">
+  <li class="progress-steps-item"></li>
+  <li class="progress-steps-item"></li>
+  <li class="progress-steps-item"></li>
+</ol>
+```
+
+The example below shows the default progress step structure.
+
+{% capture html -%}
+
+<ol class="progress-steps" aria-label="Onboarding progress">
+  <li class="progress-steps-item"></li>
+  <li class="progress-steps-item"></li>
+  <li class="progress-steps-item"></li>
+  <li class="progress-steps-item"></li>
+</ol>
+{%- endcapture %}
+
+{% include "docs/example.html" html=html %}
+
+## Variants
+
+### Current and completed step
+
+Use color classes to mark completed steps. Set `aria-current="step"` on the current item.
+
+{% capture html -%} {% include "ui/progress-steps.html" count=4 active=2 aria-label="Setup progress" %} {%- endcapture %} {% include "docs/example.html" html=html %}
+
+### Custom labels
+
+Use hidden labels so assistive technologies can announce meaningful step names.
+
+{% capture html -%} {% include "ui/progress-steps.html" labels="Account,Profile,Billing,Review" active=3 aria-label="Checkout progress" %} {%- endcapture %} {% include "docs/example.html" html=html %}
+
+### Color state
+
+Use contextual background classes on completed and current items. This helps match state color to your flow semantics.
+
+{% capture html -%}
+
+<div class="mb-2">
+  <ol class="progress-steps" aria-label="Green progress">
+    <li class="progress-steps-item bg-green" aria-current="step">
+      <span class="visually-hidden">Step 1</span>
+    </li>
+    <li class="progress-steps-item">
+      <span class="visually-hidden">Step 2</span>
+    </li>
+  </ol>
+</div>
+
+<div class="mb-2">
+  <ol class="progress-steps" aria-label="Orange progress">
+	 <li class="progress-steps-item bg-orange" aria-current="step">
+	   <span class="visually-hidden">Step 1</span>
+	 </li>
+	 <li class="progress-steps-item">
+      <span class="visually-hidden">Step 2</span>
+    </li>
+  </ol>
+</div>
+
+<div>
+  <ol class="progress-steps" aria-label="Red progress">
+    <li class="progress-steps-item bg-red" aria-current="step">
+      <span class="visually-hidden">Step 1</span>
+    </li>
+    <li class="progress-steps-item">
+      <span class="visually-hidden">Step 2</span>
+    </li>
+  </ol>
+</div>
+{%- endcapture %}
+
+{% include "docs/example.html" html=html %}
+
+### Width and layout utilities
+
+Use utility classes on `.progress-steps` to control width and placement in layouts.
+
+{% capture html -%} {% include "ui/progress-steps.html" count=5 active=1 class="w-50" id="profile-progress" aria-label="Profile completion" %} {%- endcapture %} {% include "docs/example.html" html=html %}
