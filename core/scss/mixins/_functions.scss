@@ -4,6 +4,8 @@
 @use 'sass:map';
 @use 'sass:color';
 @use 'sass:meta';
+@use '../settings' as *;
+@use 'bootstrap/breakpoints' as *;
 
 @function theme-color-lighter($color, $background: #fff) {
   @return color.mix($color, $background, 10%);
@@ -13,18 +15,8 @@
   @return shade-color($color, 10%);
 }
 
-//
-// Replace all occurrences of a substring within a string.
-//
-@function str-replace($string, $search, $replace: '') {
-  $index: string.index($string, $search);
-
-  @if $index {
-    @return string.slice($string, 1, $index - 1) + $replace + str-replace(string.slice($string, $index + string.length($search)), $search, $replace);
-  }
-
-  @return $string;
-}
+// str-replace was defined here twice — the canonical copy lives in the
+// "Bootstrap functions" section below.
 
 @mixin media-breakpoint-down-than($name, $breakpoints: $grid-breakpoints) {
   $prev: breakpoint-prev($name);
@@ -52,23 +44,8 @@
   @return if(sass($n > 1): list.nth($breakpoint-names, $n - 1); else: null);
 }
 
-//
-// Escape SVG strings.
-//
-@function escape-svg($string) {
-  @if string.index($string, 'data:image/svg+xml') {
-    @each $char, $encoded in $escaped-characters {
-      // Do not escape the url brackets
-      @if string.index($string, 'url(') == 1 {
-        $string: url('#{str-replace(string.slice($string, 6, -3), $char, $encoded)}');
-      } @else {
-        $string: str-replace($string, $char, $encoded);
-      }
-    }
-  }
-
-  @return $string;
-}
+// escape-svg was defined here twice — the canonical copy lives in the
+// "Bootstrap functions" section below.
 
 /**
  * Converts a given value to a percentage string.
