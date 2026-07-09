@@ -3,23 +3,25 @@
 	<div class="card-header">
 		<div class="d-flex align-items-center gap-2">
 			{% include "ui/icon.html" icon="alert-triangle" class="text-red" %}
-			<h3 class="card-title mb-0">{{ churn.title }}</h3>
-			<span class="badge bg-red-lt">{{ churn.badge }}</span>
+			<h3 class="card-title mb-0">Churn risk</h3>
+		</div>
+		<div class="card-actions">
+			{% include "ui/badge.html" text="3 accounts" color="red" %}
 		</div>
 	</div>
 
 	<div class="list-group list-group-flush">
 		{% for item in churn.items %}
-			<div class="list-group-item">
-				<div class="row align-items-center g-2">
-					<div class="col">
-						<div class="fw-medium">{{ item.company }}</div>
-						<div class="small text-secondary">Last contact: {{ item.last_contact }}</div>
-					</div>
-					<div class="col-auto"><span class="badge bg-{{ item.level_color }}-lt">{{ item.level }}</span></div>
-					<div class="col-auto fw-semibold">{{ item.amount }}</div>
+		<div class="list-group-item">
+			<div class="row align-items-center g-2">
+				<div class="col">
+					<div class="fw-medium">{{ item.company }}</div>
+					<div class="small text-secondary">Last contact: {{ item.last_contact }}</div>
 				</div>
+				<div class="col-auto"><span class="badge bg-{{ item.level_color }}-lt">{{ item.level }}</span></div>
+				<div class="col-auto fw-semibold">{{ item.amount }}</div>
 			</div>
+		</div>
 		{% endfor %}
 	</div>
 </div>
