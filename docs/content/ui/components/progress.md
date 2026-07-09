@@ -10,6 +10,7 @@ description: Track and display progress with a progress bar.
 To create a default progress bar, add a `.progress` class to a `<div>` element. Thanks to that, you will be able to notify users how long they have to wait for a process to complete.
 
 {% capture html -%}
+
 <div class="progress">
   <div class="progress-bar" style="width: 38%"></div>
 </div>
@@ -27,6 +28,7 @@ Using Bootstrap’s typical naming structure, you can create a standard progress
 Look at the example below to see how it works:
 
 {% capture html -%}
+
 <div class="progress progress-sm">
   <div
     class="progress-bar"
@@ -40,14 +42,54 @@ Look at the example below to see how it works:
     <span class="visually-hidden">57% Complete</span>
   </div>
 </div>
+<div class="progress">
+  <div class="progress-bar" style="width: 45%" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" aria-label="45% Complete">
+    <span class="visually-hidden">45% Complete</span>
+  </div>
+</div>
+<div class="progress progress-lg">
+  <div class="progress-bar" style="width: 63%" role="progressbar" aria-valuenow="63" aria-valuemin="0" aria-valuemax="100" aria-label="63% Complete">
+    <span class="visually-hidden">63% Complete</span>
+  </div>
+</div>
+<div class="progress progress-xl">
+  <div class="progress-bar" style="width: 82%" role="progressbar" aria-valuenow="82" aria-valuemin="0" aria-valuemax="100" aria-label="82% Complete">
+    <span class="visually-hidden">82% Complete</span>
+  </div>
+</div>
+
+{%- endcapture %} {% include "docs/example.html" html=html column-full-width %}
+
+## Progress with value
+
+If you want to display the numeric value inside the bar, place the percentage text directly in the `.progress-bar`.
+
+{% capture html -%}
+
+<div class="progress progress-lg">
+  <div class="progress-bar" style="width: 10%" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" aria-label="10% Complete">
+    10%
+  </div>
+</div>
+<div class="progress progress-lg">
+  <div class="progress-bar" style="width: 35%" role="progressbar" aria-valuenow="35" aria-valuemin="0" aria-valuemax="100" aria-label="35% Complete">
+    35%
+  </div>
+</div>
+<div class="progress progress-lg">
+  <div class="progress-bar" style="width: 90%" role="progressbar" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100" aria-label="90% Complete">
+    90%
+  </div>
+</div>
 {%- endcapture %}
-{% include "docs/example.html" html=html %}
+{% include "docs/example.html" html=html column-full-width %}
 
 ## Indeterminate progress
 
 You can create a progress bar which shows indeterminate progress by adding `.progress-bar-indeterminate` to the `.progress-bar` element.
 
 {% capture html -%}
+
 <div class="progress progress-sm">
   <div class="progress-bar progress-bar-indeterminate"></div>
 </div>
@@ -58,10 +100,7 @@ You can create a progress bar which shows indeterminate progress by adding `.pro
 
 You can also use the native HTML5 `<progress>` element. It is a great way to create a progress bar without the need for additional HTML elements. This is what it looks like:
 
-{% capture html -%}
-<progress class="progress progress-sm" value="15" max="100" />
-{%- endcapture %}
-{% include "docs/example.html" html=html %}
+{% capture html -%} <progress class="progress progress-sm" value="15" max="100" /> {%- endcapture %} {% include "docs/example.html" html=html %}
 
 ## Progress color
 
@@ -70,6 +109,7 @@ You can change the color of the progress bar by adding a color class to the `.pr
 See the [full list of available colors](/ui/base/colors) for more details.
 
 {% capture html -%}
+
 <div class="progress">
   <div
     class="progress-bar bg-red"
@@ -123,7 +163,7 @@ See the [full list of available colors](/ui/base/colors) for more details.
   </div>
 </div>
 {%- endcapture %}
-{% include "docs/example.html" html=html %}
+{% include "docs/example.html" html=html column-full-width %}
 
 ## Multiple progress bars
 
@@ -138,6 +178,7 @@ You can stack multiple progress bars on top of each other to create a visually a
 This is how it looks:
 
 {% capture html -%}
+
 <div class="progress-stacked">
   <div class="progress" style="width: 15%">
     <div class="progress-bar"></div>
@@ -157,23 +198,61 @@ This is how it looks:
 You can create a striped progress bar by adding the `.progress-bar-striped` class to the `.progress-bar` element.
 
 {% capture html -%}
+
 <div class="progress">
-  <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 60%"></div>
+  <div class="progress-bar progress-bar-striped" style="width: 60%"></div>
 </div>
 {%- endcapture %}
 {% include "docs/example.html" html=html %}
 
+## Animated progress
+
+To animate stripes, add the `.progress-bar-animated` class to a striped progress bar.
+
+{% capture html -%}
+
+<div class="progress">
+  <div class="progress-bar progress-bar-striped progress-bar-animated" style="width: 40%"></div>
+</div>
+{%- endcapture %}
+{% include "docs/example.html" html=html column-full-width %}
+
+## Separated progress
+
+Use `.progress-separated` to make stacked segments easier to read when values are close to each other.
+
+{% capture html -%}
+
+<div class="progress-stacked">
+  <div class="progress progress-separated" style="width: 10%">
+    <div class="progress-bar bg-blue"></div>
+  </div>
+  <div class="progress progress-separated" style="width: 20%">
+    <div class="progress-bar bg-red"></div>
+  </div>
+  <div class="progress progress-separated" style="width: 30%">
+    <div class="progress-bar bg-green"></div>
+  </div>
+  <div class="progress progress-separated" style="width: 40%">
+    <div class="progress-bar bg-yellow"></div>
+  </div>
+</div>
+{%- endcapture %}
+{% include "docs/example.html" html=html vertical column %}
+
 ## Progress background
 
-By using a progress bar component as a background element, designers can create a dynamic and engaging visual experience for users. For example, the progress bar could be used to represent the completion of a long-term goal or project, such as a fundraising campaign or construction project. As users interact with the page, the progress bar could gradually fill up, creating a sense of momentum and progress.
+By using a progress bar component as a background element, designers can create a dynamic and engaging visual experience for users. For example, the progress bar could be used to represent the completion of a long-term goal or project, such as a fundraising campaign or construction project. As users interact with the
+page, the progress bar could gradually fill up, creating a sense of momentum and progress.
 
 Thanks to this you can create a nice looking statistics section:
 
-{% capture html -%}
-{% include "ui/progressbg.html" value="65" text="Poland" show-value=true %}
-{% include "ui/progressbg.html" value="35" text="Germany" show-value=true %}
-{% include "ui/progressbg.html" value="28" text="United Stated" show-value=true %}
-{% include "ui/progressbg.html" value="20" text="United Kingdom" show-value=true %}
-{% include "ui/progressbg.html" value="15" text="France" show-value=true %}
-{%- endcapture %}
-{% include "docs/example.html" html=html vertical card %}
+{% capture html -%} {% include "ui/progressbg.html" value="65" text="Poland" show-value=true %} {% include "ui/progressbg.html" value="35" text="Germany" show-value=true %} {% include "ui/progressbg.html" value="28" text="United States" show-value=true %}
+{% include "ui/progressbg.html" value="20" text="United Kingdom" show-value=true %} {% include "ui/progressbg.html" value="15" text="France" show-value=true %} {%- endcapture %} {% include "docs/example.html" html=html column-full-width %}
+
+## Progress background colors
+
+You can combine progress background with contextual light colors to better separate categories.
+
+{% capture html -%} {% include "ui/progressbg.html" value="75" text="Success" color="success-lt" show-value=true %} {% include "ui/progressbg.html" value="60" text="Warning" color="warning-lt" show-value=true %} {% include "ui/progressbg.html" value="40" text="Danger" color="danger-lt" show-value=true %}
+{% include "ui/progressbg.html" value="90" text="Info" color="info-lt" show-value=true %} {%- endcapture %} {% include "docs/example.html" html=html column-full-width %}
