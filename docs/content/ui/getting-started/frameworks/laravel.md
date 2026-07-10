@@ -1,0 +1,119 @@
+---
+title: Laravel
+order: 1
+summary: Set up Tabler in Laravel with Vite and build a first working page.
+description: Install `@tabler/core`, import CSS and JS with Vite, and render a minimal Laravel view with Tabler styles.
+---
+
+Use this guide to integrate Tabler in a Laravel app with the default Vite setup.
+
+<div class="steps steps-vertical">
+
+### Install Tabler package
+
+Install `@tabler/core` with your preferred package manager:
+
+{% include "docs/tabs-package.html" name="@tabler/core" %}
+
+You can also use CDN files when you do not want a Node-based build step:
+
+```blade
+<link rel="stylesheet" href="{{ cdnUrl }}/dist/css/tabler.min.css" />
+<script src="{{ cdnUrl }}/dist/js/tabler.min.js"></script>
+```
+
+### Import styles
+
+In a standard Laravel setup, import Tabler CSS in `resources/css/app.css`:
+
+```scss
+@import "@tabler/core/dist/css/tabler.min.css";
+```
+
+For full theme customization, you can import SCSS sources from the package:
+
+```scss
+@import "@tabler/core/scss/tabler";
+```
+
+`@tabler/core` does not define `exports`, so deep imports work in Vite.
+
+### Import and initialize JavaScript
+
+Tabler JavaScript is required for interactive components such as dropdowns, modals, and tooltips.
+Import it in `resources/js/app.js`:
+
+```js
+import "@tabler/core/dist/js/tabler.min.js";
+```
+
+Laravel-specific note: keep Tabler imports in Vite entry files (`resources/css/app.css` and `resources/js/app.js`)
+so they are compiled into your application bundles.
+
+### Minimal working example
+
+First, load compiled assets in your base Blade layout (for example `resources/views/layouts/app.blade.php`):
+
+```blade
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    @vite(["resources/css/app.css", "resources/js/app.js"])
+  </head>
+  <body>
+    @yield("content")
+  </body>
+</html>
+```
+
+Then create a simple page route in `routes/web.php`:
+
+```php
+<?php
+
+use Illuminate\Support\Facades\Route;
+
+Route::get("/", function () {
+    return view("welcome");
+});
+```
+
+Then add a small Tabler layout with one card in `resources/views/welcome.blade.php`:
+
+```blade
+@extends("layouts.app")
+
+@section("content")
+<div class="page">
+  <div class="page-wrapper">
+    <div class="container-xl py-4">
+      <div class="card">
+        <div class="card-body">
+          <h3 class="card-title">Laravel + Tabler</h3>
+          <p class="text-secondary mb-0">Your Tabler setup is working.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+@endsection
+```
+
+Run the dev server and Vite:
+
+```shell
+php artisan serve
+npm run dev
+```
+
+Open the local URL from `php artisan serve` and confirm the card is styled with Tabler.
+
+### Next steps
+
+- Continue with [Customize](/ui/getting-started/customize) to adjust styles and build setup.
+- Explore [Layout](/ui/layout) to choose page structures.
+- Browse [Components](/ui/components) to add UI building blocks.
+
+</div>
