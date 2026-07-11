@@ -17,7 +17,7 @@ This subsection contains framework-related setup and starter guidance.
 
 {% card "Next.js", "nextjs" %} Integrate Tabler with Next.js. {% endcard %}
 
-{% card "Vue", "" %} Integrate Tabler with Vue. {% endcard %}
+{% card "Vue", "vue" %} Integrate Tabler with Vue. {% endcard %}
 
 {% card "Angular", "" %} Integrate Tabler with Angular. {% endcard %}
 

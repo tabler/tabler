@@ -1,0 +1,108 @@
+---
+title: Vue
+order: 4
+summary: Set up Tabler in Vue and build a first working page.
+description: Install `@tabler/core`, import CSS and JS in Vue, and render a minimal page layout with a Tabler card.
+---
+
+Use this guide to integrate Tabler in a Vue app with a standard Vite-based setup.
+
+<div class="steps steps-vertical">
+
+### Install Tabler package
+
+Install `@tabler/core` with your preferred package manager:
+
+{% include "docs/tabs-package.html" name="@tabler/core" %}
+
+You can also use CDN files when you need a quick setup:
+
+```html
+<link rel="stylesheet" href="{{ cdnUrl }}/dist/css/tabler.min.css" />
+<script src="{{ cdnUrl }}/dist/js/tabler.min.js"></script>
+```
+
+### Import styles
+
+Import Tabler CSS once in your Vue entry file (`src/main.js`):
+
+```js
+import "@tabler/core/dist/css/tabler.min.css";
+```
+
+For full theme customization, import SCSS sources instead:
+
+```scss
+@import "@tabler/core/scss/tabler";
+```
+
+`@tabler/core` does not define `exports`, so deep imports work in common Vue build setups.
+
+### Import and initialize JavaScript
+
+Tabler JavaScript is required for interactive components such as dropdowns, modals, and tooltips.
+Import it once in `src/main.js`:
+
+```js
+import "@tabler/core/dist/js/tabler.min.js";
+```
+
+Vue-specific note: initialize DOM-based behavior after mount, not during render.
+Use `onMounted` in components that need manual initialization:
+
+```js
+import { onMounted } from "vue";
+
+onMounted(() => {
+  const elements = document.querySelectorAll('[data-bs-toggle="tooltip"]');
+  elements.forEach((element) => new window.bootstrap.Tooltip(element));
+});
+```
+
+### Minimal working example
+
+Create a simple `src/main.js` that loads Tabler assets and mounts the app:
+
+```js
+import { createApp } from "vue";
+import App from "./App.vue";
+import "@tabler/core/dist/css/tabler.min.css";
+import "@tabler/core/dist/js/tabler.min.js";
+
+createApp(App).mount("#app");
+```
+
+Then create `src/App.vue` with a minimal Tabler layout and one card:
+
+```vue
+<template>
+  <div class="page">
+    <div class="page-wrapper">
+      <div class="container-xl py-4">
+        <div class="card">
+          <div class="card-body">
+            <h3 class="card-title">Vue + Tabler</h3>
+            <p class="text-secondary mb-0">Your Tabler setup is working.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+```
+
+Run the app:
+
+```shell
+npm run dev
+```
+
+Open the local Vite URL and confirm the card is styled with Tabler.
+
+### Next steps
+
+- Continue with [Customize](/ui/getting-started/customize) to adjust styles and build setup.
+- Explore [Layout](/ui/layout) to choose page structures.
+- Browse [Components](/ui/components) to add UI building blocks.
+
+</div>
