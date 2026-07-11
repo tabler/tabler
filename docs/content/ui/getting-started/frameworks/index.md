@@ -19,7 +19,7 @@ This subsection contains framework-related setup and starter guidance.
 
 {% card "Vue", "vue" %} Integrate Tabler with Vue. {% endcard %}
 
-{% card "Angular", "" %} Integrate Tabler with Angular. {% endcard %}
+{% card "Angular", "angular" %} Integrate Tabler with Angular. {% endcard %}
 
 {% card "Nuxt", "" %} Integrate Tabler with Nuxt. {% endcard %}
 
