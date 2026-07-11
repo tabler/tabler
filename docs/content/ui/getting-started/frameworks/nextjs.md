@@ -44,6 +44,8 @@ For full theme customization, import SCSS sources:
 
 Tabler JavaScript is required for interactive components such as dropdowns, modals, and tooltips.
 
+Next.js-specific note: `tabler.min.js` accesses `document`, so load it only on the client. If you import it during SSR, Next.js throws `document is not defined`.
+
 Use a client component and dynamic import:
 
 ```jsx
@@ -59,8 +61,6 @@ export function TablerScripts() {
   return null
 }
 ```
-
-Next.js-specific note: `tabler.min.js` accesses `document`, so load it only on the client. If you import it during SSR, Next.js throws `document is not defined`.
 
 ### Minimal working example
 
