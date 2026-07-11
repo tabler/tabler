@@ -31,4 +31,12 @@ This subsection contains framework-related setup and starter guidance.
 
 {% card "SvelteKit", "/ui/getting-started/frameworks/sveltekit" %} Integrate Tabler with SvelteKit. {% endcard %}
 
+{% card "Astro", "" %} Integrate Tabler with Astro {% endcard %}
+
+{% card "ASP.NET Core", "" %} Integrate Tabler with ASP.NET Core {% endcard %}
+
+{% card "Flask", "" %} Integrate Tabler with Flask {% endcard %}
+
+{% card "HTMX", "" %} Integrate Tabler with HTMX {% endcard %}
+
 {% endcards %}
