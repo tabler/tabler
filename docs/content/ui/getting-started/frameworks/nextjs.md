@@ -7,6 +7,8 @@ description: Install `@tabler/core`, import CSS and JS in Next.js, and render a 
 
 Use this guide to integrate Tabler in a Next.js app.
 
+Tabler works with any framework as markup + CSS; JS is only needed for interactive components.
+
 <div class="steps steps-vertical">
 
 ### Install Tabler package

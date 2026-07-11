@@ -7,6 +7,8 @@ description: Install `@tabler/core`, import CSS and JS with Vite, and render a m
 
 Use this guide to integrate Tabler in a Laravel app with the default Vite setup.
 
+Tabler works with any framework as markup + CSS; JS is only needed for interactive components.
+
 <div class="steps steps-vertical">
 
 ### Install Tabler package

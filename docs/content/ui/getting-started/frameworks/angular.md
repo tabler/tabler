@@ -7,6 +7,8 @@ description: Install `@tabler/core`, register CSS and JS in `angular.json`, and 
 
 Use this guide to integrate Tabler in an Angular app.
 
+Tabler works with any framework as markup + CSS; JS is only needed for interactive components.
+
 <div class="steps steps-vertical">
 
 ### Install Tabler package

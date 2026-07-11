@@ -7,6 +7,8 @@ description: Install `@tabler/core`, import CSS and JS in React, and render a mi
 
 Use this guide to integrate Tabler in a React app with a standard Vite-based setup.
 
+Tabler works with any framework as markup + CSS; JS is only needed for interactive components.
+
 <div class="steps steps-vertical">
 
 ### Install Tabler package
