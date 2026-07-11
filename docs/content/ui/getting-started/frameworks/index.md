@@ -25,7 +25,7 @@ This subsection contains framework-related setup and starter guidance.
 
 {% card "Symfony", "/ui/getting-started/frameworks/symfony" %} Integrate Tabler with Symfony. {% endcard %}
 
-{% card "Django", "" %} Integrate Tabler with Django. {% endcard %}
+{% card "Django", "/ui/getting-started/frameworks/django" %} Integrate Tabler with Django. {% endcard %}
 
 {% card "Rails", "" %} Integrate Tabler with Rails. {% endcard %}
 

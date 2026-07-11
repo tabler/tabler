@@ -1,0 +1,127 @@
+---
+title: Django
+order: 8
+summary: Set up Tabler in Django and build a first working page.
+description: Install `@tabler/core`, load CSS and optional JS in Django templates, and render a minimal page layout with a Tabler card.
+---
+
+Use this guide to integrate Tabler in a Django app.
+
+Tabler works with any framework as markup + CSS; JS is only needed for interactive components.
+
+<div class="steps steps-vertical">
+
+### Install Tabler package
+
+Install `@tabler/core` with your preferred package manager:
+
+{% include "docs/tabs-package.html" name="@tabler/core" %}
+
+You can also use CDN files when you need a quick setup:
+
+```html
+<link rel="stylesheet" href="{{ cdnUrl }}/dist/css/tabler.min.css" />
+<script src="{{ cdnUrl }}/dist/js/tabler.min.js"></script>
+```
+
+### Import styles
+
+Django can use Tabler in two common ways:
+
+- Build frontend assets with npm and serve compiled files.
+- Copy static CSS/JS files into your Django static directory.
+
+If you use static files directly, add Tabler CSS to your base template:
+
+{% raw %}
+```html
+{% load static %}
+<link rel="stylesheet" href="{% static 'css/tabler.min.css' %}" />
+```
+{% endraw %}
+
+For full theme customization, build from SCSS sources:
+
+```scss
+@import "@tabler/core/scss/tabler";
+```
+
+`@tabler/core` does not define `exports`, so deep imports work in common build setups.
+
+### Import and initialize JavaScript
+
+Tabler JavaScript is required for interactive components such as dropdowns, modals, and tooltips.
+
+If you use static files, include Tabler JS in your base template:
+
+{% raw %}
+```html
+{% load static %}
+<script src="{% static 'js/tabler.min.js' %}"></script>
+```
+{% endraw %}
+
+Django-specific note: when serving local static assets in production, run `collectstatic` so
+Tabler files are included in your final static output.
+
+### Minimal working example
+
+Create a minimal base template in `templates/base.html`:
+
+{% raw %}
+```html
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="{% static 'css/tabler.min.css' %}" />
+  </head>
+  <body>
+    {% block content %}{% endblock %}
+    <script src="{% static 'js/tabler.min.js' %}"></script>
+  </body>
+</html>
+```
+{% endraw %}
+
+Then add a simple page in `templates/home.html`:
+
+{% raw %}
+```html
+{% extends "base.html" %}
+
+{% block content %}
+<div class="page">
+  <div class="page-wrapper">
+    <div class="container-xl py-4">
+      <div class="card">
+        <div class="card-body">
+          <h3 class="card-title">Django + Tabler</h3>
+          <p class="text-secondary mb-0">Your Tabler setup is working.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+```
+{% endraw %}
+
+Run the app:
+
+```shell
+python manage.py runserver
+python manage.py collectstatic
+```
+
+Open the local Django URL and confirm the card is styled with Tabler.
+
+### Next steps
+
+- Continue with [Customize](/ui/getting-started/customize) to adjust styles and build setup.
+- Explore [Layout](/ui/layout) to choose page structures.
+- Browse [Components](/ui/components) to add UI building blocks.
+
+</div>
