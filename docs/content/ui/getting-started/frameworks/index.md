@@ -29,6 +29,6 @@ This subsection contains framework-related setup and starter guidance.
 
 {% card "Rails", "/ui/getting-started/frameworks/rails" %} Integrate Tabler with Rails. {% endcard %}
 
-{% card "SvelteKit", "" %} Integrate Tabler with SvelteKit. {% endcard %}
+{% card "SvelteKit", "/ui/getting-started/frameworks/sveltekit" %} Integrate Tabler with SvelteKit. {% endcard %}
 
 {% endcards %}
