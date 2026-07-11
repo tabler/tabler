@@ -23,7 +23,7 @@ This subsection contains framework-related setup and starter guidance.
 
 {% card "Nuxt", "/ui/getting-started/frameworks/nuxt" %} Integrate Tabler with Nuxt. {% endcard %}
 
-{% card "Symfony", "" %} Integrate Tabler with Symfony. {% endcard %}
+{% card "Symfony", "/ui/getting-started/frameworks/symfony" %} Integrate Tabler with Symfony. {% endcard %}
 
 {% card "Django", "" %} Integrate Tabler with Django. {% endcard %}
 
