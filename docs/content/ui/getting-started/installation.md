@@ -2,8 +2,10 @@
 title: Installation
 order: 1
 summary: Learn how to set up Tabler in your project by creating a basic HTML file, adding Tabler’s CSS and JavaScript, and exploring its powerful components to build responsive and visually stunning web applications.
-description: "Set up Tabler: HTML, CSS, JS, and build stunning UIs."
+description: 'Set up Tabler: HTML, CSS, JS, and build stunning UIs.'
 ---
+
+Using a framework? See [Tabler framework integration guides](/ui/getting-started/frameworks).
 
 This guide will take you through the essential steps to set up Tabler in your project, from creating a basic HTML file to incorporating Tabler’s styles and scripts. Let’s dive in!
 
