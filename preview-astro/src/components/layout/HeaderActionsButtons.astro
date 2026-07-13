@@ -1,16 +1,21 @@
 ---
 // Port of layout/header-actions/buttons.html.
-// TODO: the layout-navbar-overlap && layout-navbar-dark branch (the "New view"
-// button with color="dark") — unused on the homepage (both unset).
 import Button from '../Button.astro';
 import Icon from '../Icon.astro';
 import Modal from '../modals/Modal.astro';
 import ReportModalContent from '../modals/ReportModalContent.astro';
+
+interface Props {
+	/** layout-navbar-overlap && layout-navbar-dark → the "New view" button is color="dark" */
+	dark?: boolean;
+}
+
+const { dark } = Astro.props;
 ---
 
 <div class="btn-list">
 	<span class="d-none d-sm-inline">
-		<Button text="New view" />
+		<Button text="New view" color={dark ? 'dark' : undefined} />
 	</span>
 	{/* Button.astro doesn't support modal-id (data-bs-toggle/target), so these two
 	    buttons are reproduced directly from the ui/button.html output. */}

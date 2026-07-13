@@ -170,14 +170,14 @@ ${data.horizontal ? `\t\tbarHeight: '50%',\n\t\thorizontal: true,` : `\t\tcolumn
 						const body = s['candlestick-data']
 							? s['candlestick-data'].map((c) => `{x: ${c.x}, y: [${c.y.join(', ')}]}`).join(', ')
 							: (s.data as number[]).join(', ');
-						return `{\n\tname: "${s.name}",\n\tdata: [${body}]\n}`;
+						return `{\n\tname: "${s.name ?? ''}",\n\tdata: [${body}]\n}`;
 					})
 					.join(',')}],`,
 			);
 		} else {
 			p.push(
 				`series: [${series
-					.map((s) => `{\n\tname: "${s.name}",\n\tdata: [${(s.data as number[]).join(', ')}]\n}`)
+					.map((s) => `{\n\tname: "${s.name ?? ''}",\n\tdata: [${(s.data as number[]).join(', ')}]\n}`)
 					.join(',')}],`,
 			);
 		}

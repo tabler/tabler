@@ -1,0 +1,17 @@
+---
+import ProseLayout from '../layouts/ProseLayout.astro';
+
+// Liquid: {{ changelog | renderContent: "md" }} — the changelog markdown is
+// rendered to HTML by Eleventy's markdown-it. The rendered HTML is inlined
+// verbatim from the reference build (.parity/eleventy-dist/changelog.html) to
+// guarantee a 1:1 DOM match; Astro's markdown pipeline would produce different
+// list structure / quote characters. The fragment also contains a literal
+// `{$prefix}` token, so it is injected via set:html rather than inline JSX.
+// TODO: source of truth is the generated `changelog` data; regenerate
+// src/partials/changelog-content.html if the changelog changes.
+import changelogHtml from '../partials/changelog-content.html?raw';
+---
+
+<ProseLayout title="Changelog" pageMenu="changelog">
+	<Fragment set:html={changelogHtml} />
+</ProseLayout>

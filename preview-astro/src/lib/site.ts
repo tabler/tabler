@@ -3,9 +3,19 @@ export const site = {
 	// Version from /Users/chomik/htdocs/tabler/core/package.json (hardcoded for the PoC).
 	version: '1.4.0',
 	docsUrl: 'https://docs.tabler.io',
+	// site.email — used by parts/modals/success.html ({{ site.email }}). Verified
+	// against the reference build (support@tabler.io).
+	email: 'support@tabler.io',
+	previewUrl: 'https://preview.tabler.io',
 	githubUrl: 'https://github.com/tabler/tabler',
 	githubSponsorsUrl: 'https://github.com/sponsors/codecalm',
 	icons: { link: 'https://tabler.io/icons' },
+	// site.emails — used by preview/pages/emails.html. From shared/data/site.json.
+	// `count` is intentionally absent in the source data (site.emails.count is
+	// undefined → renders empty, producing "Buy  emails" with a double space).
+	emails: { price: '$29', buy_link: 'https://r.tabler.io/buy-emails', count: '' },
+	// dev key used in the development build (Liquid: site.googleMapsDevKey)
+	googleMapsDevKey: 'AIzaSyCL-BY8-sq12m0S9H-S_yMqDmcun3A9znw',
 	// From shared/data/icons-info.json.
 	iconsCount: 5986,
 	descriptionShort: 'Premium and Open Source dashboard template with responsive and high quality UI.',

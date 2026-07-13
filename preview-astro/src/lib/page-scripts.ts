@@ -5,9 +5,9 @@
 const scripts: string[] = [];
 
 export function addPageScript(html: string): void {
-	if (!scripts.includes(html)) {
-		scripts.push(html);
-	}
+	// No dedup: Liquid's {% capture_script %} emits every snippet, even byte-identical
+	// ones (e.g. two identical star-rating inits on stars-rating.html).
+	scripts.push(html);
 }
 
 /** Returns the collected snippets and clears the buffer (called once per page, in BaseLayout). */

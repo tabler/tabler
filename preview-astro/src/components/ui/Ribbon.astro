@@ -1,0 +1,31 @@
+---
+// Port of shared/includes/ui/ribbon.html
+import Icon from '../Icon.astro';
+
+interface Props {
+	text?: string;
+	top?: boolean;
+	left?: boolean;
+	bottom?: boolean;
+	bookmark?: boolean;
+	color?: string;
+	filled?: boolean;
+}
+
+const { text, top, left, bottom, bookmark, color, filled } = Astro.props;
+
+const classes = [
+	'ribbon',
+	top && 'ribbon-top',
+	left && 'ribbon-start',
+	bottom && 'ribbon-bottom',
+	bookmark && 'ribbon-bookmark',
+	color && `bg-${color}`,
+]
+	.filter(Boolean)
+	.join(' ');
+---
+
+<div class={classes}>
+	{text ? text : <Icon name="star" type={filled ? 'filled' : 'outline'} />}
+</div>

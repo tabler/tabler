@@ -1,0 +1,48 @@
+---
+// Port of preview/pages/tables.html (layout: default)
+import DefaultLayout from '../layouts/DefaultLayout.astro';
+import Table from '../components/ui/Table.astro';
+import Progressbg from '../components/cards/tables/Progressbg.astro';
+import Invoices from '../components/cards/Invoices.astro';
+import AdvancedTable from '../components/ui/AdvancedTable.astro';
+---
+
+<DefaultLayout pageHeader="Tables" pageMenu="base.tables" pageLibs={['lists']}>
+	<div class="row row-cards">
+		<div class="col-lg-8">
+			<div class="card">
+				<Table card={true} limit={8} />
+			</div>
+		</div>
+
+		<div class="col-lg-4">
+			<Progressbg />
+		</div>
+
+		<div class="col-12">
+			<div class="card">
+				<Table card={true} stripped={true} offset={5} />
+			</div>
+		</div>
+
+		<div class="col-12">
+			<div class="card">
+				<Table card={true} avatars={true} offset={10} />
+			</div>
+		</div>
+
+		<div class="col-12">
+			<div class="card">
+				<Table card={true} mobile={true} avatars={true} offset={15} buttons={true} />
+			</div>
+		</div>
+
+		<div class="col-12">
+			<Invoices />
+		</div>
+
+		<div class="col-12">
+			<AdvancedTable />
+		</div>
+	</div>
+</DefaultLayout>

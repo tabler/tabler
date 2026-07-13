@@ -1,0 +1,103 @@
+---
+// Port of preview/pages/social-icons.html (layout: default)
+// Note: the Liquid front matter `plugins: ['social']` is inert for the output —
+// the `.social` styles ship in tabler-socials.css which is loaded globally on
+// every page; no extra page lib is emitted. So no pageLibs is passed.
+import DefaultLayout from '../layouts/DefaultLayout.astro';
+import Trending from '../components/ui/Trending.astro';
+import socialTiles from '@data/social-tiles.json';
+import socials from '@data/socials.json';
+
+interface SocialTile {
+	icon: string;
+	title: string;
+	description: string;
+	trending: number;
+}
+
+interface Social {
+	name: string;
+	file: string;
+}
+
+const tiles = socialTiles as SocialTile[];
+const socialList = socials as Social[];
+const fillers = Array.from({ length: 21 });
+---
+
+<DefaultLayout title="Social icons" pageHeader="Social icons" pageMenu="base.social">
+	<div class="row row-cards">
+		<div class="col-12">
+			<div class="row g-3">
+				{
+					tiles.map((tile) => (
+						<div class="col-3">
+							<div class="card">
+								<div class="card-body">
+									<div class="row align-items-center">
+										<div class="col-auto">
+											<span class={`social social-md social-app-${tile.icon}`} />
+										</div>
+										<div class="col">
+											<div>{tile.title}</div>
+											<div class="text-secondary">{tile.description}</div>
+										</div>
+										<div class="col-auto">
+											<Trending value={tile.trending} />
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					))
+				}
+			</div>
+		</div>
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header">
+					<div class="card-title">Sign in with social media</div>
+				</div>
+				<div class="card-body">
+					<div class="btn-list">
+						{
+							socialList.map((social) => (
+								<button class="btn">
+									<span class={`icon social social-app-${social.file}`} />
+									Sign in with {social.name}
+								</button>
+							))
+						}
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-12">
+			<div class="card">
+				<div class="card-header">
+					<div class="card-title">List of all social media icons</div>
+				</div>
+				<div class="card-body p-0">
+					<div class="demo-icons-list-wrap">
+						<div class="demo-icons-list">
+							{
+								socialList.map((social) => (
+									<span
+										class="demo-icons-list-item"
+										title={social.name}
+										data-bs-toggle="tooltip"
+										data-bs-placement="top"
+									>
+										<span class={`social social-app-${social.file}`} />
+									</span>
+								))
+							}
+							{fillers.map(() => <div />)}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</DefaultLayout>

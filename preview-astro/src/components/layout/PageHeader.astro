@@ -1,14 +1,18 @@
 ---
 // Port of layout/page-header.html. The page-header-* variables (global page
 // variables in Liquid) are plain props here.
-// TODO: the page-header-file branch ({% include "layout/headers/{file}.html" %}) —
-// unused on the homepage.
 // TODO: layout-navbar-overlap && layout-navbar-dark → extra text-white class
 // on .page-header — both unset on the homepage.
 import Icon from '../Icon.astro';
 import HeaderActionsButtons from './HeaderActionsButtons.astro';
 import HeaderActionsPrint from './HeaderActionsPrint.astro';
 import HeaderActionsPhotos from './HeaderActionsPhotos.astro';
+import HeaderActionsBreadcrumb from './HeaderActionsBreadcrumb.astro';
+import HeaderActionsAddBoard from './HeaderActionsAddBoard.astro';
+import HeaderActionsAddJob from './HeaderActionsAddJob.astro';
+import HeaderActionsUsers from './HeaderActionsUsers.astro';
+import HeaderProfile from './HeaderProfile.astro';
+import HeaderUptime from './HeaderUptime.astro';
 
 interface Props {
 	/** page-header — the page title; without it the whole block is not rendered */
@@ -23,15 +27,21 @@ interface Props {
 	class?: string;
 	/** page-header-icon */
 	icon?: string;
+	/** page-header-file — name of an include from layout/headers/, e.g. "profile" */
+	file?: string;
+	/** layout-navbar-overlap && layout-navbar-dark → text-white on .page-header */
+	textWhite?: boolean;
 }
 
-const { title, pretitle, description, actions, class: className, icon } = Astro.props;
+const { title, pretitle, description, actions, class: className, icon, file, textWhite } = Astro.props;
 ---
 
 <!-- BEGIN PAGE HEADER -->
+{file === 'profile' && <HeaderProfile />}
+{file === 'uptime' && <HeaderUptime />}
 {
-	title && (
-		<div class={`page-header${className ? ` ${className}` : ''} d-print-none`}>
+	!file && title && (
+		<div class={`page-header${className ? ` ${className}` : ''} d-print-none${textWhite ? ' text-white' : ''}`}>
 			<div class="container-xl">
 				<div class="row g-2 align-items-center">
 					<div class="col">
@@ -53,9 +63,13 @@ const { title, pretitle, description, actions, class: className, icon } = Astro.
 						<Fragment>
 							<!-- Page title actions -->
 							<div class="col-auto ms-auto d-print-none">
-								{actions === 'buttons' && <HeaderActionsButtons />}
+								{actions === 'buttons' && <HeaderActionsButtons dark={textWhite} />}
 								{actions === 'print' && <HeaderActionsPrint />}
 								{actions === 'photos' && <HeaderActionsPhotos />}
+								{actions === 'breadcrumb' && <HeaderActionsBreadcrumb />}
+								{actions === 'add-board' && <HeaderActionsAddBoard />}
+								{actions === 'add-job' && <HeaderActionsAddJob />}
+									{actions === 'users' && <HeaderActionsUsers />}
 							</div>
 						</Fragment>
 					)}

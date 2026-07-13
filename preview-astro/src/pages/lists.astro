@@ -1,0 +1,48 @@
+---
+// Port of preview/pages/lists.html (layout: default)
+import DefaultLayout from '../layouts/DefaultLayout.astro';
+import UsersList from '../components/cards/UsersList.astro';
+import UsersList2 from '../components/cards/UsersList2.astro';
+import UsersListHeaders from '../components/cards/UsersListHeaders.astro';
+---
+
+<DefaultLayout title="Lists" pageHeader="Lists" pageMenu="base.lists">
+	<div class="row row-cards">
+		<div class="col-md-6">
+			<div class="row row-cards">
+				<div class="col-12">
+					<UsersList2 />
+				</div>
+				<div class="col-12">
+					<UsersList offset={8} checkbox hover checkedIds="2,5,8" title="Contacts" />
+				</div>
+				<div class="col-12">
+					<div class="card">
+						<div class="card-header">
+							<h3 class="card-title">Links and buttons</h3>
+						</div>
+						<div class="list-group list-group-flush">
+							<a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+								The current link item
+							</a>
+							<a href="#" class="list-group-item list-group-item-action">A second link item</a>
+							<a href="#" class="list-group-item list-group-item-action">A third link item</a>
+							<a href="#" class="list-group-item list-group-item-action">A fourth link item</a>
+							<a class="list-group-item list-group-item-action disabled">A disabled link item</a>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-md-6">
+			<div class="row row-cards">
+				<div class="col-12">
+					<UsersList hoverable />
+				</div>
+				<div class="col-12">
+					<UsersListHeaders />
+				</div>
+			</div>
+		</div>
+	</div>
+</DefaultLayout>

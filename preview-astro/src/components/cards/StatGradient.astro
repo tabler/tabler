@@ -1,0 +1,38 @@
+---
+// Port of cards/stat-gradient.html
+import Avatar from '../ui/Avatar.astro';
+import Progress from '../ui/Progress.astro';
+
+interface Props {
+	color?: string;
+	icon?: string;
+	title?: string;
+	value?: string;
+	progress?: number;
+}
+
+const {
+	color = 'primary',
+	icon = 'trending-up',
+	title = 'Total',
+	value = '0',
+	progress = 0,
+} = Astro.props;
+---
+
+<div class={`card card-gradient card-gradient-${color} card-gradient-start`}>
+	<div class="card-body">
+		<div class="row g-3">
+			<div class="col">
+				<h4 class="subheader mb-1">{title}</h4>
+				<div class="h3 m-0">{value}</div>
+			</div>
+			<div class="col-auto">
+				<Avatar icon={icon} color={color} />
+			</div>
+			<div class="col-12">
+				<Progress value={progress} color={color} size="sm" />
+			</div>
+		</div>
+	</div>
+</div>

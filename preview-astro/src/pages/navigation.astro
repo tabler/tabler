@@ -1,0 +1,32 @@
+---
+// Port of preview/pages/navigation.html.
+//
+// This page is a showcase that includes layout/navbar.html seven times with
+// variant params:
+//   1. sample condensed transparent            person-id=3
+//   2. sample condensed                         person-id=4
+//   3. sample condensed dark hide-logo show-title hide-icons hide-username  person-id=5
+//   4. sample condensed dark small-logo background-color="#7952b3" hide-search  person-id=6
+//   5. sample condensed dark background="primary" hide-brand hide-icons fluid-search hide-username  person-id=7
+//   6. sample small-logo show-title              person-id=8
+//   7. sample dark                               person-id=9
+//
+// The shared Navbar.astro is intentionally the NON-condensed, hide-search
+// default-layout branch with hard-coded show-* flags; it does NOT accept any of
+// the params these variants need:
+//   sample, condensed, transparent, dark, background, background-color, overlap,
+//   sticky, hide-logo, small-logo, show-title, hide-icons, hide-username,
+//   hide-brand, hide-search, fluid-search, person-id.
+// Per the task, Navbar.astro must not be modified, so the seven variant navbars
+// are inlined verbatim from the reference build
+// (preview-astro/.parity/eleventy-dist/navigation.html) as a raw fragment.
+//
+// TODO: extend Navbar.astro (and NavbarSide / NavbarMenu / NavbarLogo) with the
+// above params, then replace this raw fragment with seven <Navbar .../> calls.
+import DefaultLayout from '../layouts/DefaultLayout.astro';
+import navbarsHtml from '../partials/navigation-navbars.html?raw';
+---
+
+<DefaultLayout title="Navigation" pageHeader="Navigation" pageMenu="base.navigation">
+	<Fragment set:html={navbarsHtml} />
+</DefaultLayout>

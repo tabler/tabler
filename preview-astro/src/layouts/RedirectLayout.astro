@@ -1,0 +1,36 @@
+---
+// Port of shared/layouts/redirect.html → shared/includes/redirect.html
+// (a bare meta-refresh document).
+//
+// The include computes:
+//   {% if url contains 'http://' or 'https://' %}{{ url }}
+//   {% else %}{{ page | relative }}{{ url }}{% endif %}
+// For root-level pages `{{ page | relative }}` resolves to ".".
+
+interface Props {
+	/**
+	 * include.url — the raw redirect target. NOTE: shared/layouts/redirect.html
+	 * passes `page.redirect.to`, but in Eleventy `page` is the built-in page
+	 * object (no front matter), so `page.redirect` is undefined and the include
+	 * receives an empty url → the target collapses to the relative root ".".
+	 * The reference build (markdown.html) redirects to "." for this reason.
+	 */
+	url?: string;
+}
+
+const { url = '' } = Astro.props;
+const isAbsolute = url.includes('http://') || url.includes('https://');
+// {{ page | relative }} → "." for root-level pages
+const target = isAbsolute ? url : `.${url}`;
+---
+
+<!doctype html>
+<html lang="en-US">
+	<meta charset="utf-8" />
+	<title>Redirecting…</title>
+	<link rel="canonical" href={target} />
+	<meta http-equiv="refresh" content={`0; url=${target}`} />
+	<meta name="robots" content="noindex" />
+	<noscript><a href={target}>Click here if you are not redirected.</a></noscript>
+	<script is:inline set:html={`location=${JSON.stringify(target)};`}></script>
+</html>

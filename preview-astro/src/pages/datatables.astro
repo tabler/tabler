@@ -1,0 +1,84 @@
+---
+// Port of preview/pages/datatables.html (layout: default)
+import DefaultLayout from '../layouts/DefaultLayout.astro';
+import { liquidUnixSeconds, liquidLongDate } from '../lib/liquid-date';
+import Progress from '../components/ui/Progress.astro';
+import TablerList from '../components/js/TablerList.astro';
+import rollercoasters from '@data/rollercoasters.json';
+
+const id = 'default';
+
+// Equivalent of the random_number / random_date filters from shared/e11ty/filters.mjs.
+function randomNumber(x: number, min = 0, max = 100): number {
+	let value =
+		((x * x * Math.PI * Math.E * (max + 1) * (Math.sin(x) / Math.cos(x * x))) % (max + 1 - min)) + min;
+	value = value > max ? max : value;
+	value = value < min ? min : value;
+	return Math.floor(value);
+}
+
+function randomDate(x: number): Date {
+	const start = new Date('2024-01-01').getTime() / 1000;
+	const end = new Date('2024-12-30').getTime() / 1000;
+	return new Date(randomNumber(x, start, end) * 1000);
+}
+
+
+const rows = (rollercoasters as Record<string, any>[]).map((rc, i) => {
+	const index = i + 1;
+	const progress = randomNumber(index, 0, 100);
+	const date = randomDate(index);
+	return {
+		rc,
+		progress,
+		quantity: randomNumber(index, 1, 200),
+		dateSeconds: liquidUnixSeconds(date),
+		dateLabel: liquidLongDate(date),
+	};
+});
+
+const parameters =
+	"[ 'sort-name', 'sort-type', 'sort-city', 'sort-score', { attr: 'data-date', name: 'sort-date' }, { attr: 'data-progress', name: 'sort-progress' }, 'sort-quantity' ]";
+---
+
+<DefaultLayout title="Datatables" pageHeader="Datatables" pageMenu="plugins.datatables" pageLibs={['lists']}>
+	<div class="card">
+		<div class="card-body p-0">
+			<div id={`table-${id}`} class="table-responsive">
+			<table class="table">
+				<thead>
+				<tr>
+					<th><button class="table-sort" data-sort="sort-name">Name</button></th>
+					<th><button class="table-sort" data-sort="sort-city">City</button></th>
+					<th><button class="table-sort" data-sort="sort-type">Type</button></th>
+					<th><button class="table-sort" data-sort="sort-score">Score</button></th>
+					<th><button class="table-sort" data-sort="sort-date">Date</button></th>
+					<th><button class="table-sort" data-sort="sort-quantity">Quantity</button></th>
+					<th><button class="table-sort" data-sort="sort-progress">Progress</button></th>
+				</tr>
+				</thead>
+				<tbody class="table-tbody">
+				{rows.map(({ rc, progress, quantity, dateSeconds, dateLabel }) => (
+					<tr>
+						<td class="sort-name">{rc.name}</td>
+						<td class="sort-city">{rc.city}</td>
+						<td class="sort-type">{rc.type}</td>
+						<td class="sort-score">{rc.score}</td>
+						<td class="sort-date" data-date={dateSeconds}>{dateLabel}</td>
+						<td class="sort-quantity">{quantity}</td>
+						<td class="sort-progress" data-progress={progress}>
+							<div class="row align-items-center">
+								<div class="col-12 col-lg-auto">{progress}%</div>
+								<div class="col"><Progress value={progress} width="5rem" /></div>
+							</div>
+						</td>
+					</tr>
+				))}
+				</tbody>
+			</table>
+			</div>
+		</div>
+	</div>
+
+	<TablerList id={id} parameters={parameters} />
+</DefaultLayout>

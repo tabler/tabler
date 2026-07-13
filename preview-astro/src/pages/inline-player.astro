@@ -1,0 +1,32 @@
+---
+// Port of preview/pages/inline-player.html (layout: default).
+// Liquid: {% for provider in inline-players %} → one card per provider.
+import DefaultLayout from '../layouts/DefaultLayout.astro';
+import InlinePlayer from '../components/ui/InlinePlayer.astro';
+import players from '@data/inline-players.json';
+
+type Provider = { title: string; type: string; id: string; 'embed-id': string | number };
+---
+
+<DefaultLayout
+	title="Inline Player"
+	pageHeader="Inline Player"
+	pageMenu="plugins.plyr"
+	pageLibs={['plyr']}
+>
+	<div class="row row-cards">
+		{
+			(players as Provider[]).map((provider) => (
+				<div class="col-lg-6">
+					<div class="card">
+						<div class="card-body">
+							<h3 class="card-title">{provider.title}</h3>
+
+							<InlinePlayer id={provider.id} type={provider.type} embedId={provider['embed-id']} />
+						</div>
+					</div>
+				</div>
+			))
+		}
+	</div>
+</DefaultLayout>

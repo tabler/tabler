@@ -1,0 +1,25 @@
+---
+// Equivalent of ui/payment.html
+interface Props {
+	payment?: string;
+	dark?: boolean;
+	size?: string;
+	class?: string;
+}
+
+const { payment = 'visa', dark, size, class: className } = Astro.props;
+
+// Class token order exactly as in ui/payment.html. The include['size'] bug
+// (junk `payment-N`) is NOT reproduced — only an explicit `size` becomes
+// `payment-{size}`.
+const classes = [
+	'payment',
+	size && `payment-${size}`,
+	`payment-provider-${payment}${dark ? '-dark' : ''}`,
+	className,
+]
+	.filter(Boolean)
+	.join(' ');
+---
+
+<span class={classes}></span>

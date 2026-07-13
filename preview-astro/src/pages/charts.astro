@@ -1,0 +1,54 @@
+---
+// Port of preview/pages/charts.html (layout: default)
+import DefaultLayout from '../layouts/DefaultLayout.astro';
+import Activity from '../components/parts/charts/Activity.astro';
+import SocialReferrals from '../components/cards/charts/SocialReferrals.astro';
+import Chart from '../components/Chart.astro';
+import chartsData from '@data/charts.json';
+
+const demoCharts = Object.entries(
+	chartsData as Record<string, { demo?: boolean; name?: string }>,
+).filter(([, chart]) => chart && chart.demo);
+---
+
+<DefaultLayout
+	title="Charts"
+	pageHeader="Charts"
+	pageMenu="plugins.charts"
+	pageLibs={['apexcharts']}
+>
+	<div class="row row-cards">
+		<div class="col-lg-12">
+			<Activity />
+		</div>
+
+		<div class="col-12">
+			<SocialReferrals />
+		</div>
+
+		<div class="col-12">
+			<div class="card">
+				<div class="card-body">
+					<Chart chartId="tasks-overview" height={20} />
+				</div>
+			</div>
+		</div>
+
+		{
+			demoCharts.map(([chartId, chart]) => (
+				<div class="col-lg-6 col-xl-4">
+					<div class="card">
+						{chart.name && (
+							<div class="card-header">
+								<h3 class="card-title">{chart.name}</h3>
+							</div>
+						)}
+						<div class="card-body">
+							<Chart chartId={chartId} height={15} />
+						</div>
+					</div>
+				</div>
+			))
+		}
+	</div>
+</DefaultLayout>

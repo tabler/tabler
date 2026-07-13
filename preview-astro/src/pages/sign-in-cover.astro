@@ -1,0 +1,33 @@
+---
+// Port of preview/pages/sign-in-cover.html (layout: base).
+// Photo id=11 → the 12th entry of the unfiltered photos list (Liquid
+// filtered-photos[11]); no `horizontal` filter is applied here.
+import BaseLayout from '../layouts/BaseLayout.astro';
+import NavbarLogo from '../components/NavbarLogo.astro';
+import SignInForm from '../components/SignInForm.astro';
+import Photo from '../components/ui/Photo.astro';
+import photos from '@data/photos.json';
+---
+
+<BaseLayout title="Sign in with cover" bodyClass="d-flex flex-column bg-white">
+	<div class="row g-0 flex-fill">
+		<div class="col-12 col-lg-6 col-xl-4 border-top-wide border-primary d-flex flex-column justify-content-center">
+			<div class="container container-tight my-5 px-lg-5">
+				<div class="text-center mb-4">
+					<NavbarLogo />
+				</div>
+
+				<h2 class="h3 text-center mb-3"> Login to your account </h2>
+
+				<SignInForm />
+
+				<div class="text-center text-secondary mt-3">
+					Don't have account yet? <a href="./sign-up.html" tabindex="-1">Sign up</a>
+				</div>
+			</div>
+		</div>
+		<div class="col-12 col-lg-6 col-xl-8 d-none d-lg-block">
+			<Photo photo={photos[11]} class="bg-cover h-100 min-vh-100" background />
+		</div>
+	</div>
+</BaseLayout>

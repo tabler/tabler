@@ -1,0 +1,39 @@
+---
+// Port of ui/photo.html.
+// The lightbox page passes a resolved `photo` object taken from the
+// horizontal-filtered list; the Eleventy reference's background/img src follows
+// that same filtered order, so a direct object is the faithful mapping.
+// TODO: the id-based lookup into photos.json and the `{% else %}` svg.html
+//       fallback branch (ui/svg.html) — both unused on the lightbox page.
+interface Photo {
+	file: string;
+	title?: string;
+}
+
+interface Props {
+	photo: Photo;
+	/** background param — plain <div> with only the background-image (no ratio class) */
+	background?: boolean;
+	/** ratio param — img-responsive img-responsive-{ratio} wrapper */
+	ratio?: string;
+	class?: string;
+}
+
+const { photo, background, ratio, class: className } = Astro.props;
+
+const src = `./static/photos/${photo.file}`;
+---
+
+<!-- Photo -->
+{
+	background ? (
+		<div class={className} style={`background-image: url(${src})`} />
+	) : ratio ? (
+		<div
+			class={`img-responsive img-responsive-${ratio}${className ? ` ${className}` : ''}`}
+			style={`background-image: url(${src})`}
+		/>
+	) : (
+		<img src={src} class={className} alt={photo.title} />
+	)
+}
