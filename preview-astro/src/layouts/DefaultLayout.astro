@@ -1,0 +1,95 @@
+---
+// Port of shared/layouts/default.html.
+// TODO: layout-wrapper-full (page-wrapper-full class + content without a container).
+// TODO: no-container / page-container-class (<div class="container-xl ...">
+//       variants).
+// Note: the `blank: true` front matter (blank.html) is inert — it is not
+// referenced by any template or Eleventy config; the empty page header on that
+// page comes purely from `page-header` being unset. No prop for it.
+// TODO: layout-sidebar-end / layout-navbar-transparent (sidebar params).
+import BaseLayout from './BaseLayout.astro';
+import Navbar from '../components/navbar/Navbar.astro';
+import Sidebar from '../components/navbar/Sidebar.astro';
+import PageHeader from '../components/layout/PageHeader.astro';
+import Footer from '../components/layout/Footer.astro';
+
+interface Props {
+	title?: string;
+	/** page-libs from the Eleventy front matter — passed down to BaseLayout */
+	pageLibs?: string[];
+	/** page-header — the title in the page header */
+	pageHeader?: string;
+	/** page-header-pretitle */
+	pretitle?: string;
+	/** page-header-description */
+	description?: string;
+	/** page-header-actions, e.g. "buttons" */
+	actions?: string;
+	/** page-menu from the front matter, e.g. "layout.vertical" — active menu entry */
+	pageMenu?: string;
+	/** layout-sidebar */
+	sidebar?: boolean;
+	/** layout-sidebar-dark */
+	sidebarDark?: boolean;
+	/** layout-hide-topbar */
+	hideTopbar?: boolean;
+	/** page-container-centered — adds my-auto to the .container-xl */
+	containerCentered?: boolean;
+}
+
+const {
+	title,
+	pageLibs,
+	pageHeader,
+	pretitle,
+	description,
+	actions,
+	pageMenu,
+	sidebar,
+	sidebarDark,
+	hideTopbar,
+	containerCentered,
+} = Astro.props;
+---
+
+<BaseLayout title={title} pageLibs={pageLibs}>
+	<div class="page">
+		{
+			sidebar && (
+				<Fragment>
+					<!--  BEGIN SIDEBAR  -->
+					<Sidebar dark={sidebarDark} breakpoint="lg" pageMenu={pageMenu} />
+					<!--  END SIDEBAR  -->
+				</Fragment>
+			)
+		}
+
+		{
+			!hideTopbar && (
+				<Fragment>
+					<!-- BEGIN NAVBAR  -->
+					<Navbar hideSearch pageMenu={pageMenu} />
+					<!-- END NAVBAR  -->
+				</Fragment>
+			)
+		}
+
+		<div class="page-wrapper">
+			<!-- BEGIN PAGE HEADER -->
+			<PageHeader title={pageHeader} pretitle={pretitle} description={description} actions={actions} />
+			<!-- END PAGE HEADER -->
+
+			<!-- BEGIN PAGE BODY -->
+			<main id="content" class="page-body">
+				<div class={`container-xl${containerCentered ? ' my-auto' : ''}`}>
+					<slot />
+				</div>
+			</main>
+			<!-- END PAGE BODY -->
+
+			<!-- BEGIN FOOTER -->
+			<Footer />
+			<!-- END FOOTER -->
+		</div>
+	</div>
+</BaseLayout>

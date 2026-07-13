@@ -1,0 +1,102 @@
+---
+// Port parts/modals/report.html + ui/modal/header.html
+import Button from '../Button.astro';
+import InputGroup from '../InputGroup.astro';
+
+const reports = [
+	{ title: 'Simple', description: 'Provide only basic data needed for the report' },
+	{ title: 'Advanced', description: 'Insert charts and additional advanced analyses to be inserted in the report' },
+];
+const visibilityOptions = ['Private', 'Public', 'Hidden'];
+---
+
+<div class="modal-header">
+	<h5 class="modal-title">New report</h5>
+	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<div class="modal-body">
+	<div class="mb-3">
+		<label class="form-label">Name</label>
+		<input type="text" class="form-control" name="example-text-input" placeholder="Your report name" />
+	</div>
+
+	<label class="form-label">Report type</label>
+	<div class="form-selectgroup-boxes row mb-3">
+		{
+			reports.map((report, index) => (
+				<div class="col-lg-6">
+					<label class="form-selectgroup-item">
+						<input
+							type="radio"
+							name="report-type"
+							value="1"
+							class="form-selectgroup-input"
+							checked={index === 0}
+						/>
+						<span class="form-selectgroup-label d-flex align-items-center p-3">
+							<span class="me-3">
+								<span class="form-selectgroup-check" />
+							</span>
+							<span class="form-selectgroup-label-content">
+								<span class="form-selectgroup-title strong mb-1">{report.title}</span>
+								<span class="d-block text-secondary">{report.description}</span>
+							</span>
+						</span>
+					</label>
+				</div>
+			))
+		}
+	</div>
+
+	<div class="row">
+		<div class="col-lg-8">
+			<div class="mb-3">
+				<label class="form-label">Report url</label>
+				<InputGroup prepend="https://tabler.io/reports/" flat inputClass="ps-0" value="report-01" />
+			</div>
+		</div>
+		<div class="col-lg-4">
+			<div class="mb-3">
+				<label class="form-label">Visibility</label>
+				<select class="form-select">
+					{
+						visibilityOptions.map((option, index) => (
+							<option value={index + 1} selected={index === 0}>
+								{option}
+							</option>
+						))
+					}
+				</select>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal-body">
+	<div class="row">
+		<div class="col-lg-6">
+			<div class="mb-3">
+				<label class="form-label">Client name</label>
+				<input type="text" class="form-control" />
+			</div>
+		</div>
+		<div class="col-lg-6">
+			<div class="mb-3">
+				<label class="form-label">Reporting period</label>
+				<input type="date" class="form-control" />
+			</div>
+		</div>
+		<div class="col-lg-12">
+			<div>
+				<label class="form-label">Additional information</label>
+				<textarea class="form-control" rows="3"></textarea>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal-footer">
+	<Button text="Cancel" color="link link-secondary" dismiss />
+	<Button text="Create new report" icon="plus" color="primary" dismiss class="ms-auto" />
+</div>

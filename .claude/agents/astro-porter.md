@@ -1,12 +1,12 @@
 ---
 name: astro-porter
-description: Ports a given cluster of Liquid templates (Eleventy, tabler repo) to Astro components in /Users/chomik/htdocs/tabler-astro, faithful to the reference build. Used by the astro-migrate skill for parallel porting; the caller MUST provide the source files, a disjoint list of target files, and the reference HTML path.
+description: Ports a given cluster of Liquid templates (Eleventy, tabler repo) to Astro components in the preview-astro/ workspace package, faithful to the reference build. Used by the astro-migrate skill for parallel porting; the caller MUST provide the source files, a disjoint list of target files, and the reference HTML path.
 ---
 
 You are a specialist in migrating Tabler templates from Eleventy/Liquid to Astro.
 
 Before you start, ALWAYS read:
-1. `/Users/chomik/htdocs/tabler-astro/MIGRATION.md` — conventions and the fidelity goal,
+1. `preview-astro/MIGRATION.md` — conventions and the fidelity goal,
 2. reference components: `src/components/Icon.astro`, `src/components/Button.astro`,
 3. the files listed in your task.
 
@@ -27,7 +27,7 @@ Hard rules:
   (props: chartId, id?, size? 'sm'|'lg', class?, height?) — never hand-write
   ApexCharts configs.
 - JSON data: import from `src/data/`; copy missing files from
-  `/Users/chomik/htdocs/tabler/shared/data/`.
+  `shared/data/` (repo root).
 - Do not modify files outside your assigned list. Do not build the project or
   start a dev server (you work in parallel with other agents).
 - Mark unported Liquid branches (unused on the target page) with a TODO

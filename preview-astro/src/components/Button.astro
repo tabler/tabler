@@ -1,0 +1,116 @@
+---
+// Port of ui/button.html.
+// TODO: spinner param (needs a ui/spinner.html port — no Spinner.astro yet).
+// TODO: provider param (assigned in ui/button.html but never used in its markup).
+// TODO: color=false special case (Liquid resets color to null; pass no color instead).
+import Icon from './Icon.astro';
+
+interface Props {
+	text?: string;
+	href?: string;
+	/** raw href + target="_blank" rel="noreferrer" (external param in ui/button.html) */
+	external?: boolean;
+	element?: 'a' | 'button';
+	type?: string;
+	id?: string;
+	color?: string;
+	outline?: boolean;
+	ghost?: boolean;
+	/** btn-{height} right after btn (height param in ui/button.html) */
+	height?: string;
+	size?: string;
+	block?: boolean;
+	disabled?: boolean;
+	square?: boolean;
+	loading?: boolean;
+	action?: boolean;
+	pill?: boolean;
+	/** btn-link (link param in ui/button.html) */
+	link?: boolean;
+	class?: string;
+	icon?: string;
+	iconColor?: string;
+	iconEnd?: string;
+	iconOnly?: boolean;
+	/** <span class="animated-dots"> after the text (dots param in ui/button.html) */
+	dots?: boolean;
+	/** data-bs-toggle="modal" data-bs-target="#modal-{modalId}" (modal-id param) */
+	modalId?: string;
+	/** data-bs-toggle="toast" data-bs-target="#toast-{toastId}" (toast-id param) */
+	toastId?: string;
+	/** data-bs-dismiss="modal" (dismiss param in ui/button.html) */
+	dismiss?: boolean;
+}
+
+const {
+	text = 'Button',
+	href,
+	external,
+	element: Element = 'a',
+	type,
+	id,
+	color,
+	outline,
+	ghost,
+	height,
+	size,
+	block,
+	disabled,
+	square,
+	loading,
+	action,
+	pill,
+	link,
+	class: className,
+	icon,
+	iconColor,
+	iconEnd,
+	iconOnly,
+	dots,
+	modalId,
+	toastId,
+	dismiss,
+} = Astro.props;
+
+// ui/button.html: href defaults to '#'; with external the href stays raw,
+// without external it is prefixed with site.base + '/' (site.base is undefined
+// in Eleventy, so it comes out as '/{href}').
+const resolvedHref = href ? (external ? href : `/${href}`) : '#';
+
+// Class token order exactly as in ui/button.html.
+const classes = [
+	'btn',
+	height && `btn-${height}`,
+	color && `btn-${outline ? 'outline-' : ghost ? 'ghost-' : ''}${color}`,
+	disabled && 'disabled',
+	square && 'btn-square',
+	loading && 'btn-loading',
+	action && 'btn-action',
+	pill && 'btn-pill',
+	size && `btn-${size}`,
+	className,
+	block && 'w-100',
+	link && 'btn-link',
+	iconOnly && 'btn-icon',
+]
+	.filter(Boolean)
+	.join(' ');
+---
+
+<Element
+	href={Element === 'a' ? resolvedHref : undefined}
+	type={type}
+	id={id}
+	class={classes}
+	target={external ? '_blank' : undefined}
+	rel={external ? 'noreferrer' : undefined}
+	data-bs-toggle={modalId ? 'modal' : toastId ? 'toast' : undefined}
+	data-bs-target={modalId ? `#modal-${modalId}` : toastId ? `#toast-${toastId}` : undefined}
+	aria-label={iconOnly ? text : undefined}
+	data-bs-dismiss={dismiss ? 'modal' : undefined}
+>
+	{icon && <Icon name={icon} color={iconColor} />}
+	{!iconOnly && text}
+	{!iconOnly && dots && <span class="animated-dots"></span>}
+	{!iconOnly && iconEnd && <Icon name={iconEnd} class="icon-end" />}
+</Element>

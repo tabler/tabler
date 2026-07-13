@@ -1,0 +1,28 @@
+---
+// Port cards/music/track-info.html
+import tracks from '@data/tracks.json';
+
+interface Props {
+	trackId?: number;
+}
+
+const { trackId = 5 } = Astro.props;
+
+const track = tracks[trackId];
+---
+
+<div class="card">
+	<div class="row row-0">
+		<div class="col-auto">
+			<img src={`./static/tracks/${track.album.images[1].path}`} class="rounded-start" alt={track.name} width="80" height="80" />
+		</div>
+		<div class="col">
+			<div class="card-body">
+				{track.name}
+				<div class="text-secondary">
+					{track.artists.map((artist) => artist.name).join(', ')}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

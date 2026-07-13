@@ -1,0 +1,93 @@
+---
+// Port of layout/navbar.html — the NON-condensed branch (called from layouts/default.html:
+// condensed/overlap/dark/hide-brand/hide-menu/sticky/transparent/class unset,
+// hide-search=true, default breakpoint 'md').
+//
+// TODO: unported Liquid branches (unused by the ported pages):
+// - condensed=true (menu + search inside <header>),
+// - sticky (wrapping in <div class="sticky-top"> + sticky-top class),
+// - transparent / background / background-color, overlap, dark / dark-secondary,
+// - hide-brand, hide-menu, class, small-logo / hide-logo / show-title,
+// - sample / hide-icons / keep-open (passed down to navbar-menu),
+// - person-id / hide-username / show-* (passed down to navbar-side),
+// - fluid-search and layout/navbar-search.html (hide-search=true on all
+//   default-layout pages) — see the TODO at the search column below.
+import Icon from '../Icon.astro';
+import NavbarLogo from '../NavbarLogo.astro';
+import NavbarToggler from './NavbarToggler.astro';
+import NavbarSide from './NavbarSide.astro';
+import NavbarMenu from './NavbarMenu.astro';
+
+interface Props {
+	hideSearch?: boolean;
+	/** equivalent of the page-menu front matter (active menu entry), e.g. "dashboards.default" */
+	pageMenu?: string;
+	breakpoint?: string;
+}
+
+// pageMenu is the front matter `page-menu` value; when a page has none, nothing
+// in the menu is active (pages must pass their own value — see index.astro).
+const { hideSearch = false, pageMenu, breakpoint = 'md' } = Astro.props;
+---
+
+<header class={`navbar navbar-expand-${breakpoint} d-print-none`}>
+	<div class="container-xl">
+		<NavbarToggler target="navbar-menu" />
+
+		<NavbarLogo header class="d-none-navbar-horizontal pe-0 pe-md-3" />
+
+		{/* navbar.html passes the show-* flags with default: true */}
+		<NavbarSide
+			class="order-md-last"
+			breakpoint={breakpoint}
+			showThemeToggle
+			showNotifications
+			showApps
+			showLanguageSelector
+			showUser
+		/>
+	</div>
+</header>
+
+<div class={`navbar-expand-${breakpoint}`}>
+	<div class="collapse navbar-collapse" id="navbar-menu">
+		<div class="navbar">
+			<div class="container-xl">
+				<div class="row flex-column flex-md-row flex-fill align-items-center">
+					<div class="col">
+						<!-- BEGIN NAVBAR MENU -->
+						<nav aria-label="Primary">
+							<NavbarMenu longTitles pageMenu={pageMenu} />
+						</nav>
+						<!-- END NAVBAR MENU -->
+					</div>
+
+					{
+						!hideSearch && (
+							<div class="col-2 d-none d-xxl-block">
+								{/* TODO: port layout/navbar-search.html — for now no page renders the
+								    navbar with a search box (default.html always passes hide-search=true) */}
+							</div>
+						)
+					}
+
+					<div class="col col-md-auto">
+						<!-- BEGIN NAVBAR NAV -->
+						<ul class="navbar-nav">
+							<li class="nav-item">
+								<a class="nav-link" href="#" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-settings">
+									<span class="badge badge-sm bg-red text-red-fg">New</span>
+									<span class="nav-link-icon d-md-none d-lg-inline-block">
+										<Icon name="settings" />
+									</span>
+									<span class="nav-link-title"> Theme Settings </span>
+								</a>
+							</li>
+						</ul>
+						<!-- END NAVBAR NAV -->
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>

@@ -32,7 +32,7 @@ class Canon(HTMLParser):
             # attribute values may contain nested HTML (data-clipboard-text):
             # apply the same normalizations as for the whole document
             v = re.sub(r"<!--.*?-->", "", v, flags=re.S)
-            v = re.sub(r" (?:icon|btn|avatar|badge|progress|flag|payment|steps|chart)-\d+(?=[\" ])", "", v)
+            v = re.sub(r" (?:icon|btn|avatar|badge|progress|flag|payment|steps|chart|form-switch)-\d+(?=[\" ])", "", v)
             v = re.sub(r"\s+", " ", v).strip()
             if "<" in v:
                 # nested HTML (data-clipboard-text): whitespace at tag
@@ -64,7 +64,7 @@ class Canon(HTMLParser):
 def canonicalize(path):
     html = open(path).read()
     html = re.sub(r"\?\d{9,}", "", html)                                  # cache-busters
-    html = re.sub(r" (?:icon|btn|avatar|badge|progress|flag|payment|steps|chart)-\d+(?=[\" ])", "", html)  # include['size'] bug
+    html = re.sub(r" (?:icon|btn|avatar|badge|progress|flag|payment|steps|chart|form-switch)-\d+(?=[\" ])", "", html)  # include['size'] bug
     html = re.sub(r"Generated \d{4}-\d{2}-\d{2} \d{2}:\d{2} \+0000", "Generated TIMESTAMP", html)
     html = re.sub(r"<!--.*?-->", "", html, flags=re.S)
     # empty lines inside shiki blocks (code panel cosmetics — Liquid leaves a

@@ -1,6 +1,6 @@
 ---
 name: astro-migrate
-description: Converts Tabler pages/partials (Eleventy/Liquid, preview and docs packages) to the Astro project at /Users/chomik/htdocs/tabler-astro with a guaranteed 1:1 DOM match. Use when the user wants to port/migrate/convert a page, card, include, or docs page to Astro ("migrate page X to Astro", "convert docs Z").
+description: Converts Tabler pages/partials (Eleventy/Liquid, preview and docs packages) to the Astro workspace package preview-astro/ with a guaranteed 1:1 DOM match. Use when the user wants to port/migrate/convert a page, card, include, or docs page to Astro ("migrate page X to Astro", "convert docs Z").
 ---
 
 # Eleventy/Liquid → Astro migration (Tabler)
@@ -9,8 +9,8 @@ Goal: the ported page must generate a **semantically identical DOM** to the
 Eleventy build. The completion criterion is binary: `compare-dom.py` must print
 `IDENTICAL`. Do not report success without it.
 
-Target project: `/Users/chomik/htdocs/tabler-astro` (pnpm). Porting conventions
-(parameter mapping, is:inline, known bugs): `tabler-astro/MIGRATION.md` — read
+Target project: `preview-astro/` (workspace package in this repo). Porting
+conventions (parameter mapping, is:inline, known bugs): `preview-astro/MIGRATION.md` — read
 it before the first port. State and pitfalls: memory `tabler-astro-poc`.
 
 ## Process
@@ -23,9 +23,9 @@ it before the first port. State and pitfalls: memory `tabler-astro-poc`.
 
 2. **Recon.** Read the page front matter (`preview/pages/*.html`), the layout
    chain (`shared/layouts/`), the includes used (`shared/includes/`) and data
-   (`shared/data/*.json` → copy what's needed into `tabler-astro/src/data/`).
+   (`shared/data/*.json` → copy what's needed into `preview-astro/src/data/`).
 
-3. **Inventory.** Check what already exists in `tabler-astro/src/components/` —
+3. **Inventory.** Check what already exists in `preview-astro/src/components/` —
    do not duplicate. Extend existing components according to the Liquid source
    while preserving their current output (already-migrated pages must stay
    IDENTICAL — after changing a shared component, re-diff all of them).
@@ -37,16 +37,25 @@ it before the first port. State and pitfalls: memory `tabler-astro-poc`.
    frontmatter (before the first `await`), because Astro renders siblings
    concurrently.
 
-5. **Build + diff.** In tabler-astro: `pnpm astro build`, then:
-   `python3 .claude/skills/astro-migrate/scripts/compare-dom.py <ref>.html <dist>.html --out-dir <TMP>`
-   (run from the tabler repo). Iterate until `IDENTICAL`. The script normalizes
+5. **Build + diff.** In preview-astro: `pnpm test` — it builds the package,
+   builds/reuses the Eleventy references in `.parity/` and checks every page
+   from `parity-manifest.json` (comparator: `preview-astro/.build/compare-dom.py`).
+   For a single page during iteration:
+   `python3 .build/compare-dom.py <ref>.html dist/<page>.html --out-dir .parity/diff`
+   Iterate until `IDENTICAL`, then ADD THE PAGE to `parity-manifest.json` —
+   that's what locks it against regressions. The comparator normalizes
    only non-semantic things: attribute order, whitespace, comments,
    cache-busters, the footer timestamp, the `include['size']` bug classes
    (`icon-N`/`btn-N` etc.) and shiki block presentation (code content is
    compared as text). Do NOT add normalizations that hide real differences.
 
-6. **Visual check.** tabler-astro dev server (port 4321) + screenshot; check
+6. **Visual check.** preview-astro dev server (port 4321) + screenshot; check
    the console and interactions (dropdowns, modals, charts).
+
+An accepted, unavoidable residual diff (rare — e.g. MDX re-serialization
+artifacts) can be frozen: save the semantic.diff under `.build/known-diffs/`
+and reference it from the manifest entry as `knownDiff`. The gate then fails
+on any deviation from the frozen diff.
 
 ## Large pages — parallelism
 

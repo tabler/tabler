@@ -1,0 +1,67 @@
+---
+// Port of layout/page-header.html. The page-header-* variables (global page
+// variables in Liquid) are plain props here.
+// TODO: the page-header-file branch ({% include "layout/headers/{file}.html" %}) —
+// unused on the homepage.
+// TODO: layout-navbar-overlap && layout-navbar-dark → extra text-white class
+// on .page-header — both unset on the homepage.
+import Icon from '../Icon.astro';
+import HeaderActionsButtons from './HeaderActionsButtons.astro';
+import HeaderActionsPrint from './HeaderActionsPrint.astro';
+import HeaderActionsPhotos from './HeaderActionsPhotos.astro';
+
+interface Props {
+	/** page-header — the page title; without it the whole block is not rendered */
+	title?: string;
+	/** page-header-pretitle */
+	pretitle?: string;
+	/** page-header-description */
+	description?: string;
+	/** page-header-actions — name of an include from layout/header-actions/, e.g. "buttons" */
+	actions?: string;
+	/** page-header-class */
+	class?: string;
+	/** page-header-icon */
+	icon?: string;
+}
+
+const { title, pretitle, description, actions, class: className, icon } = Astro.props;
+---
+
+<!-- BEGIN PAGE HEADER -->
+{
+	title && (
+		<div class={`page-header${className ? ` ${className}` : ''} d-print-none`}>
+			<div class="container-xl">
+				<div class="row g-2 align-items-center">
+					<div class="col">
+						{pretitle && (
+							<Fragment>
+								<!-- Page pre-title -->
+								<div class="page-pretitle">{pretitle}</div>
+							</Fragment>
+						)}
+						<h1 class="page-title">
+							{icon && <Icon name={icon} />}
+							{title}
+						</h1>
+
+						{description && <div class="text-secondary mt-1">{description}</div>}
+					</div>
+
+					{actions && (
+						<Fragment>
+							<!-- Page title actions -->
+							<div class="col-auto ms-auto d-print-none">
+								{actions === 'buttons' && <HeaderActionsButtons />}
+								{actions === 'print' && <HeaderActionsPrint />}
+								{actions === 'photos' && <HeaderActionsPhotos />}
+							</div>
+						</Fragment>
+					)}
+				</div>
+			</div>
+		</div>
+	)
+}
+<!-- END PAGE HEADER -->

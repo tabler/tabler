@@ -1,0 +1,38 @@
+---
+// Port of cards/small-stats.html — the subset used on the homepage
+// (the icon+color+title+description variant). TODO: the person-id,
+// chart-data/chart-position, small-icon, description-value, trending, button branches.
+import Icon from '../Icon.astro';
+
+interface Props {
+	icon: string;
+	color?: string;
+	lt?: boolean;
+	title: string;
+	description: string;
+	class?: string;
+}
+
+const { icon, color, lt, title, description, class: className } = Astro.props;
+
+const avatarClass = `${color ? `bg-${color}${lt ? '-lt' : ' text-white'}` : ''} avatar avatar-square`;
+---
+
+<div class:list={['card card-sm', className]}>
+	<div class="card-body">
+		<div class="row align-items-center">
+			<div class="col-auto">
+				<span class={avatarClass}><Icon name={icon} /></span>
+			</div>
+
+			<div class="col">
+				<div class="fw-medium">
+					{title}
+				</div>
+				<div class="text-secondary">
+					{description}
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
