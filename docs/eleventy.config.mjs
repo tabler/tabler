@@ -27,6 +27,17 @@ export default function (eleventyConfig) {
 		});
 	});
 
+	eleventyConfig.addCollection('sitemap', collection => {
+		return [...collection.getFilteredByGlob('./content/**/*.md')].sort((a, b) => {
+			const isHome = (page) => page.url === '/' || page.url === '/index.html';
+
+			if (isHome(a)) return -1;
+			if (isHome(b)) return 1;
+
+			return (a.url || '').localeCompare(b.url || '');
+		});
+	});
+
 	eleventyConfig.setInputDirectory("content");
 
 	eleventyConfig.amendLibrary('md', () => { });
