@@ -16,12 +16,16 @@ interface Props {
 	 * The reference build (markdown.html) redirects to "." for this reason.
 	 */
 	url?: string;
+	/**
+	 * `{{ page | relative }}` — the relative path to the site root from this
+	 * page. Defaults to "." (root-level pages); nested pages pass e.g. "../../..".
+	 */
+	base?: string;
 }
 
-const { url = '' } = Astro.props;
+const { url = '', base = '.' } = Astro.props;
 const isAbsolute = url.includes('http://') || url.includes('https://');
-// {{ page | relative }} → "." for root-level pages
-const target = isAbsolute ? url : `.${url}`;
+const target = isAbsolute ? url : `${base}${url}`;
 ---
 
 <!doctype html>

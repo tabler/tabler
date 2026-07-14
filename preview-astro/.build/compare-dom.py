@@ -35,9 +35,14 @@ class Canon(HTMLParser):
             v = re.sub(r" (?:icon|btn|avatar|badge|progress|flag|payment|steps|chart|form-switch|modal|nav|spinner)-\d+(?=[\" ])", "", v)
             v = re.sub(r"\s+", " ", v).strip()
             if "<" in v:
-                # nested HTML (data-clipboard-text): whitespace at tag
-                # boundaries is non-semantic for the copied snippet
-                v = re.sub(r"\s*(<|>)\s*", r"\1", v)
+                # nested HTML (data-clipboard-text): canonicalize the serialized
+                # fragment the same way as the document, so void closing tags
+                # (</path>), self-close style, entity form (&hellip; vs …) and
+                # attribute order — all non-semantic for the copied snippet —
+                # normalize identically on both sides.
+                inner = Canon()
+                inner.feed(v)
+                v = " ".join(x.strip() for x in inner.out)
             norm.append(f'{k}="{v}"')
         return " ".join(norm)
 
@@ -75,7 +80,20 @@ def canonicalize(path):
     def flatten_pre(m):
         import html as html_lib
         inner = re.sub(r"<[^>]+>", "", m.group(2))
-        inner = html_lib.unescape(inner)
+        # unescape to a fixpoint: source markup shown in the panel may be
+        # double-escaped (&amp;hellip;), while the DOM-derived side carries the
+        # decoded char (…). Collapsing both to the same char makes entity vs
+        # unicode non-semantic for the displayed snippet.
+        prev = None
+        while inner != prev:
+            prev = inner
+            inner = html_lib.unescape(inner)
+        # void-element self-close style (<input/> vs <input>), explicit void
+        # closing tags (</path>) and the include['size'] bug classes are all
+        # non-semantic in DISPLAYED code, same as in the DOM
+        inner = re.sub(r"\s*/>", ">", inner)
+        inner = re.sub(r"</(?:" + "|".join(VOID) + r")>", "", inner)
+        inner = re.sub(r" (?:icon|btn|avatar|badge|progress|flag|payment|steps|chart|form-switch|modal|nav|spinner)-\d+(?=[\"' >])", "", inner)
         # whitespace at tag boundaries inside a snippet is non-semantic
         inner = re.sub(r"\s*([<>])\s*", r"\1", inner)
         inner = inner.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
