@@ -9,7 +9,12 @@ const repo = join(root, '..');
 
 const copies = [
 	// @tabler/core dist (css/js/fonts/img/libs) — same as the Eleventy passthrough
-	{ from: join(root, 'node_modules', '@tabler', 'core', 'dist'), to: join(root, 'public', 'dist'), required: true },
+	{
+		from: join(root, 'node_modules', '@tabler', 'core', 'dist'),
+		to: join(root, 'public', 'dist'),
+		required: true,
+		allowDestinationFallback: true,
+	},
 	// demo css/js built by the @tabler/preview sass/vite pipeline
 	// TODO(phase 3): move that pipeline into this package
 	{ from: join(repo, 'preview', 'dist', 'preview'), to: join(root, 'public', 'preview'), required: false },
@@ -22,9 +27,13 @@ const copies = [
 	{ from: join(repo, 'preview', 'pages', 'favicon-dev.ico'), to: join(root, 'public', 'favicon-dev.ico'), required: true },
 ];
 
-for (const { from, to, required } of copies) {
+for (const { from, to, required, allowDestinationFallback } of copies) {
 	if (!existsSync(from)) {
 		const message = `copy-assets: missing ${from}`;
+		if (allowDestinationFallback && existsSync(to)) {
+			console.warn(`${message} (using existing ${to})`);
+			continue;
+		}
 		if (required) throw new Error(`${message} — run the build of that package first`);
 		console.warn(`${message} (skipped — build @tabler/preview or @tabler/docs to get it)`);
 		continue;
