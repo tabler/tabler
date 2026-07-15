@@ -35,8 +35,18 @@ for (const { from, to, required } of copies) {
 	} else {
 		// dereference: sources may be symlinks (e.g. preview/static → shared/static);
 		// remove the target first so a stale symlink never survives
-		rmSync(to, { recursive: true, force: true });
-		cpSync(from, to, { recursive: true, dereference: true });
+		try {
+			rmSync(to, { recursive: true, force: true });
+		} catch (error) {
+			if (!(error && typeof error === 'object' && error.code === 'ENOTEMPTY')) {
+				throw error;
+			}
+		}
+		cpSync(from, to, {
+			recursive: true,
+			dereference: true,
+			filter: src => !src.includes('/.vscode') && !src.includes('\\.vscode'),
+		});
 	}
 }
 console.log('copy-assets: done');
