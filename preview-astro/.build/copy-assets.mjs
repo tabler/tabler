@@ -42,20 +42,40 @@ for (const { from, to, required, allowDestinationFallback } of copies) {
 	if (from.endsWith('.ico')) {
 		copyFileSync(from, to);
 	} else {
-		// dereference: sources may be symlinks (e.g. preview/static → shared/static);
-		// remove the target first so a stale symlink never survives
-		try {
-			rmSync(to, { recursive: true, force: true });
-		} catch (error) {
-			if (!(error && typeof error === 'object' && error.code === 'ENOTEMPTY')) {
-				throw error;
+		// dereference: sources may be symlinks (e.g. preview/static → shared/static).
+		// For fallback-enabled copies (core dist), keep existing destination as a safety net
+		// in case source files disappear mid-copy during parallel clean/build tasks.
+		if (!allowDestinationFallback) {
+			// remove the target first so a stale symlink never survives
+			try {
+				rmSync(to, { recursive: true, force: true });
+			} catch (error) {
+				if (!(error && typeof error === 'object' && error.code === 'ENOTEMPTY')) {
+					throw error;
+				}
 			}
 		}
-		cpSync(from, to, {
-			recursive: true,
-			dereference: true,
-			filter: src => !src.includes('/.vscode') && !src.includes('\\.vscode'),
-		});
+		try {
+			cpSync(from, to, {
+				recursive: true,
+				dereference: true,
+				filter: src => !src.includes('/.vscode') && !src.includes('\\.vscode'),
+			});
+		} catch (error) {
+			// In turbo dev, @tabler/core can clean dist while we copy it.
+			// If fallback is allowed and destination exists, keep current assets.
+			if (
+				allowDestinationFallback &&
+				error &&
+				typeof error === 'object' &&
+				error.code === 'ENOENT' &&
+				existsSync(to)
+			) {
+				console.warn(`copy-assets: source changed during copy ${from} (using existing ${to})`);
+				continue;
+			}
+			throw error;
+		}
 	}
 }
 console.log('copy-assets: done');
