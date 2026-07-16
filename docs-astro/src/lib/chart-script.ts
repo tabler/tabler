@@ -4,7 +4,7 @@
 
 type Serie = {
 	name?: string;
-	data: number[] | number;
+	data?: number[] | number;
 	color?: string;
 	'color-opacity'?: string;
 	'candlestick-data'?: { x: number; y: number[] }[];
@@ -15,7 +15,7 @@ export type ChartData = {
 	height?: number;
 	extend?: string;
 	series?: Serie[];
-	categories?: string[];
+	categories?: Array<string | number>;
 	datetime?: boolean;
 	sparkline?: boolean;
 	stacked?: boolean;

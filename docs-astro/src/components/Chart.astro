@@ -1,6 +1,5 @@
 ---
 import charts from '@data/charts.json';
-import { addPageScript } from '../lib/page-scripts';
 import { chartSnippet, type ChartData } from '../lib/chart-script';
 
 interface Props {
@@ -31,9 +30,14 @@ if (data?.extend) {
 	data = { ...chartsData[data.extend], ...chartsData[chartId] };
 }
 
-if (data) {
-	addPageScript(chartSnippet({ id, chartId, data, height }));
-}
+const script = data ? chartSnippet({ id, chartId, data, height }) : '';
 ---
 
-{data && <div id={`chart-${id}`} class:list={['position-relative', className]} />}
+{
+	data && (
+		<Fragment>
+			<div id={`chart-${id}`} class:list={['position-relative', className]} />
+			<Fragment set:html={script} />
+		</Fragment>
+	)
+}

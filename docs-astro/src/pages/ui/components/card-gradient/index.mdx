@@ -1,0 +1,137 @@
+---
+title: Card gradient
+summary: Card gradients add rich color backgrounds to cards and help emphasize key information in dashboards and marketing sections.
+description: Build eye-catching cards with gradient variants, directions, and animated backgrounds.
+layout: '../../../../layouts/DocsMdxLayout.astro'
+---
+
+import Example from '../../../../components/docs/Example.astro'
+export const gradients = ['rainbow', 'sun', 'snow', 'ocean', 'mellow', 'disco', 'psychedelic', 'love', 'gold']
+
+## Default markup
+
+Use the `.card-gradient` class on a `.card` element to apply the default gradient treatment.
+
+```html
+<div class="card card-gradient">...</div>
+```
+
+The example below shows the base gradient card style.
+
+<Example>
+
+<div class="card card-gradient">
+  <div class="card-body">
+    <h3 class="card-title">Total Revenue</h3>
+    <p class="text-secondary mb-0">Track key metrics in a highlighted card.</p>
+  </div>
+</div>
+</Example>
+
+## Color variants
+
+You can change the color of card gradient by adding a color class like `.card-gradient-primary` or `.card-gradient-success` to the `.card-gradient` element. You can choose any color from [full list of available colors](/ui/base/colors).
+
+<Example>
+
+<div class="card card-gradient card-gradient-primary">
+  <div class="card-body">
+    <h3 class="card-title">Primary</h3>
+  </div>
+</div>
+<div class="card card-gradient card-gradient-success">
+  <div class="card-body">
+    <h3 class="card-title">Success</h3>
+  </div>
+</div>
+<div class="card card-gradient card-gradient-danger">
+  <div class="card-body">
+    <h3 class="card-title">Danger</h3>
+  </div>
+</div>
+<div class="card card-gradient card-gradient-blue">
+  <div class="card-body">
+    <h3 class="card-title">Blue</h3>
+  </div>
+</div>
+</Example>
+
+## Named gradients
+
+In addition to color-based variants, card gradients include predefined multi-color themes.
+
+Here is a list of classes:
+<ul>
+{gradients.map((gradient, i) => { return ( <li class={`card-gradient-${gradient}`}>{gradient.charAt(0).toUpperCase() + gradient.slice(1)}</li> ) })}
+</ul>
+<Example>
+	
+{gradients.map((gradient, i) => {
+	return (
+		<div class={`card card-gradient card-gradient-${gradient}`}>
+			<div class="card-body">
+				<h3 class="card-title">{gradient.charAt(0).toUpperCase() + gradient.slice(1)}</h3>
+			</div>
+		</div>
+	)
+})}
+
+</Example>
+
+## Direction modifiers
+
+Use direction modifiers to control where the gradient flow starts.
+
+```html
+<div class="card card-gradient card-gradient-start">...</div>
+<div class="card card-gradient card-gradient-end">...</div>
+<div class="card card-gradient card-gradient-bottom">...</div>
+```
+
+<Example>
+
+<div class="card card-gradient card-gradient-start card-gradient-purple">
+  <div class="card-body">
+    <h3 class="card-title">Start</h3>
+  </div>
+</div>
+
+<div class="card card-gradient card-gradient-end card-gradient-purple">
+  <div class="card-body">
+    <h3 class="card-title">End</h3>
+  </div>
+</div>
+
+<div class="card card-gradient card-gradient-bottom card-gradient-purple">
+  <div class="card-body">
+    <h3 class="card-title">Bottom</h3>
+  </div>
+</div>
+</Example>
+
+## Animated gradient
+
+Add `.card-gradient-animated` to animate gradient direction over time.
+
+<Example>
+
+<div class="card card-gradient card-gradient-rainbow card-gradient-animated">
+  <div class="card-body">
+    <h3 class="card-title">Animated gradient</h3>
+    <p class="text-secondary mb-0">Use this variant for visual emphasis on highlight cards.</p>
+  </div>
+</div>
+
+<div class="card card-gradient card-gradient-sun card-gradient-animated">
+  <div class="card-body">
+    <h3 class="card-title">Animated gradient</h3>
+    <p class="text-secondary mb-0">Use this variant for visual emphasis on highlight cards.</p>
+  </div>
+</div>
+</Example>
+
+## Accessibility
+
+- Keep text contrast readable on all gradient variants.
+- Prefer short content blocks on high-saturation gradients.
+- Avoid using animated gradients on too many cards in one view.
