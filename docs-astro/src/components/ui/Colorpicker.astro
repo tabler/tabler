@@ -1,0 +1,58 @@
+---
+// Port of ui/colorpicker.html.
+// The Coloris init <script> is captured via {% capture_script %} in Liquid, so it
+// is registered with addPageScript synchronously here. We mirror the development
+// build, which wraps the instance in window.tabler_colorpicker.
+import { addPageScript } from '../../lib/page-scripts';
+import site from '@data/site.json';
+
+interface Props {
+	value?: string;
+	id?: string | number;
+	alpha?: boolean;
+	format?: string | false;
+	/** swatches-only param in ui/colorpicker.html */
+	swatchesOnly?: boolean;
+	class?: string;
+}
+
+const {
+	value,
+	id = 'default',
+	alpha = false,
+	format = false,
+	swatchesOnly,
+	class: className,
+} = Astro.props;
+
+const colors = site.colors as Record<string, { prop: string }>;
+
+const swatches = Object.values(colors)
+	.map((color) => `\n\t\t\t\twindow.getComputedStyle(document.body).getPropertyValue('${color.prop}'),`)
+	.join('');
+
+const script = `<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		window.tabler_colorpicker = window.tabler_colorpicker || {};
+
+		window.Coloris && (window.tabler_colorpicker["colorpicker-${id}"] = Coloris({
+			el:  "#colorpicker-${id}",
+			selectInput: false,
+			alpha: ${alpha ? 'true' : 'false'},
+			${format ? `format: "${format}",` : ''}
+			${swatchesOnly ? 'swatchesOnly: true,' : ''}
+			swatches: [${swatches}
+			],
+		}))
+	})
+</script>`;
+
+addPageScript(script);
+---
+
+<input
+	type="text"
+	class={`form-control d-block${className ? ` ${className}` : ''}`}
+	id={`colorpicker-${id}`}
+	value={value}
+/>

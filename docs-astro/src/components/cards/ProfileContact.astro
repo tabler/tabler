@@ -1,0 +1,40 @@
+---
+// Port of cards/profile-contact.html
+// TODO: Liquid default `person = include.person | default: people[1]` — the
+// no-person fallback branch is unused on card-gradients (person is always
+// passed), so `person` is required here.
+import Icon from '../Icon.astro';
+import Avatar from '../ui/Avatar.astro';
+
+interface Person {
+	full_name?: string;
+	job_title?: string;
+	[key: string]: unknown;
+}
+
+interface Props {
+	person: Person;
+	color?: string;
+}
+
+const { person, color = 'yellow' } = Astro.props;
+---
+
+<div class={`card card-gradient card-gradient-${color}`}>
+	<div class="card-body text-center py-6">
+		<div class="position-absolute top-0 end-0 p-1">
+			<div class="btn btn-action"><Icon name="star" color="yellow" type="filled" /></div>
+		</div>
+		<div>
+			<Avatar size="2xl" person={person} shape="rounded-circle" />
+		</div>
+		<div class="h1 mt-4 mb-1">{person.full_name}</div>
+		<div class="text-secondary">{person.job_title}</div>
+
+		<div class="btn-list justify-content-center mt-3">
+			<a href="#" class="btn btn-icon btn-pill" title="Message" data-bs-toggle="tooltip" data-bs-placement="top"><Icon name="message" /></a>
+			<a href="#" class="btn btn-icon btn-pill" title="Phone" data-bs-toggle="tooltip" data-bs-placement="top"><Icon name="phone" /></a>
+			<a href="#" class="btn btn-icon btn-pill" title="Email" data-bs-toggle="tooltip" data-bs-placement="top"><Icon name="mail" /></a>
+		</div>
+	</div>
+</div>

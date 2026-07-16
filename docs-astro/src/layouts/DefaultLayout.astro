@@ -1,0 +1,152 @@
+---
+// Port of shared/layouts/default.html.
+// TODO: no-container (<div class="container-xl">-less body) — unused so far.
+// Note: the `blank: true` front matter (blank.html) is inert — it is not
+// referenced by any template or Eleventy config; the empty page header on that
+// page comes purely from `page-header` being unset. No prop for it.
+import BaseLayout from './BaseLayout.astro';
+import Navbar from '../components/navbar/Navbar.astro';
+import Sidebar from '../components/navbar/Sidebar.astro';
+import PageHeader from '../components/layout/PageHeader.astro';
+import Footer from '../components/layout/Footer.astro';
+
+interface Props {
+	title?: string;
+	/** page-libs from the Eleventy front matter — passed down to BaseLayout */
+	pageLibs?: string[];
+	/** page-header — the title in the page header */
+	pageHeader?: string;
+	/** page-header-file — renders a layout/headers/{file} component instead of the title block */
+	pageHeaderFile?: string;
+	/** page-header-pretitle */
+	pretitle?: string;
+	/** page-header-description */
+	description?: string;
+	/** page-header-actions, e.g. "buttons" */
+	actions?: string;
+	/** page-menu from the front matter, e.g. "layout.vertical" — active menu entry */
+	pageMenu?: string;
+	/** layout-sidebar */
+	sidebar?: boolean;
+	/** layout-sidebar-dark */
+	sidebarDark?: boolean;
+	/** layout-hide-topbar */
+	hideTopbar?: boolean;
+	/** page-container-centered — adds my-auto to the .container-xl */
+	containerCentered?: boolean;
+	/** layout-wrapper-full — page-wrapper-full + no .container-xl around the body */
+	wrapperFull?: boolean;
+	/** page-container-class — extra classes appended to the .container-xl */
+	containerClass?: string;
+	/** body-class front matter (e.g. "layout-boxed"/"layout-fluid") → passed to BaseLayout */
+	bodyClass?: string;
+	/** layout-rtl → passed to BaseLayout (dir="rtl" + RTL stylesheets) */
+	rtl?: boolean;
+	/** layout-sidebar-end */
+	sidebarEnd?: boolean;
+	/** layout-navbar-transparent (sidebar variant) */
+	navbarTransparent?: boolean;
+	/** layout-navbar-condensed */
+	navbarCondensed?: boolean;
+	/** layout-navbar-dark */
+	navbarDark?: boolean;
+	/** layout-navbar-overlap */
+	navbarOverlap?: boolean;
+	/** layout-navbar-sticky */
+	navbarSticky?: boolean;
+	/** layout-navbar-hide-brand */
+	navbarHideBrand?: boolean;
+	/** layout-navbar-class */
+	navbarClass?: string;
+}
+
+const {
+	title,
+	pageLibs,
+	pageHeader,
+	pageHeaderFile,
+	pretitle,
+	description,
+	actions,
+	pageMenu,
+	sidebar,
+	sidebarDark,
+	hideTopbar,
+	containerCentered,
+	wrapperFull,
+	containerClass,
+	bodyClass,
+	rtl,
+	sidebarEnd,
+	navbarTransparent,
+	navbarCondensed,
+	navbarDark,
+	navbarOverlap,
+	navbarSticky,
+	navbarHideBrand,
+	navbarClass,
+} = Astro.props;
+---
+
+<BaseLayout title={title} pageLibs={pageLibs} bodyClass={bodyClass} rtl={rtl}>
+	<div class="page">
+		{
+			sidebar && (
+				<Fragment>
+					<!--  BEGIN SIDEBAR  -->
+					<Sidebar
+						dark={sidebarDark}
+						end={sidebarEnd}
+						transparent={navbarTransparent}
+						breakpoint="lg"
+						pageMenu={pageMenu}
+					/>
+					<!--  END SIDEBAR  -->
+				</Fragment>
+			)
+		}
+
+		{
+			!hideTopbar && (
+				<Fragment>
+					<!-- BEGIN NAVBAR  -->
+					<Navbar
+						hideSearch
+						pageMenu={pageMenu}
+						condensed={navbarCondensed}
+						dark={navbarDark}
+						overlap={navbarOverlap}
+						sticky={navbarSticky}
+						hideBrand={navbarHideBrand}
+						class={navbarClass}
+					/>
+					<!-- END NAVBAR  -->
+				</Fragment>
+			)
+		}
+
+		<div class:list={['page-wrapper', wrapperFull && 'page-wrapper-full']}>
+			<!-- BEGIN PAGE HEADER -->
+			<PageHeader title={pageHeader} pretitle={pretitle} description={description} actions={actions} file={pageHeaderFile} textWhite={navbarOverlap && navbarDark} />
+			<!-- END PAGE HEADER -->
+
+			<!-- BEGIN PAGE BODY -->
+			<main id="content" class="page-body">
+				{
+					wrapperFull ? (
+						<slot />
+					) : (
+						<div class={`container-xl${containerCentered ? ' my-auto' : ''}${containerClass ? ` ${containerClass}` : ''}`}>
+							<slot />
+						</div>
+					)
+				}
+			</main>
+			<!-- END PAGE BODY -->
+
+			<!-- BEGIN FOOTER -->
+			<Footer />
+			<!-- END FOOTER -->
+		</div>
+	</div>
+</BaseLayout>

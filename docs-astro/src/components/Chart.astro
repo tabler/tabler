@@ -1,0 +1,39 @@
+---
+import charts from '@data/charts.json';
+import { addPageScript } from '../lib/page-scripts';
+import { chartSnippet, type ChartData } from '../lib/chart-script';
+
+interface Props {
+	chartId: string;
+	id?: string;
+	size?: 'sm' | 'lg';
+	class?: string;
+	height?: number;
+}
+
+const { chartId, id = chartId, size, class: classProp, height: heightProp } = Astro.props;
+
+const chartsData = charts as Record<string, ChartData>;
+let data = chartsData[chartId];
+
+let className = classProp;
+let height = heightProp ?? data?.height ?? 10;
+
+if (size === 'sm') {
+	className = `${classProp ?? ''} chart-sm`.trim();
+	height = 2.5;
+} else if (size === 'lg') {
+	className = `${classProp ?? ''} chart-lg`.trim();
+	height = 15;
+}
+
+if (data?.extend) {
+	data = { ...chartsData[data.extend], ...chartsData[chartId] };
+}
+
+if (data) {
+	addPageScript(chartSnippet({ id, chartId, data, height }));
+}
+---
+
+{data && <div id={`chart-${id}`} class:list={['position-relative', className]} />}

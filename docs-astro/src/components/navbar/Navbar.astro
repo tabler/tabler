@@ -1,0 +1,144 @@
+---
+// Full port of layout/navbar.html (both condensed and non-condensed branches).
+// Called from DefaultLayout with the params default.html forwards: condensed,
+// overlap, dark, hideBrand, sticky, transparent, class, hideSearch (always true).
+//
+// hide-search is always true on default-layout pages, so:
+//  - the condensed branch always renders the menu nav (never the search),
+//  - the non-condensed second block never renders the search column.
+// Therefore layout/navbar-search.html is intentionally not ported.
+//
+// TODO: navbar-standalone params used only by navigation.html (background,
+// background-color, small-logo, show-title, hide-icons, hide-username,
+// person-id, fluid-search, sample, dark-secondary, hide-menu) — that showcase
+// page still uses a verbatim fragment.
+import Icon from '../Icon.astro';
+import NavbarLogo from '../NavbarLogo.astro';
+import NavbarToggler from './NavbarToggler.astro';
+import NavbarSide from './NavbarSide.astro';
+import NavbarMenu from './NavbarMenu.astro';
+
+interface Props {
+	hideSearch?: boolean;
+	/** equivalent of the page-menu front matter (active menu entry), e.g. "dashboards.default" */
+	pageMenu?: string;
+	breakpoint?: string;
+	condensed?: boolean;
+	dark?: boolean;
+	transparent?: boolean;
+	overlap?: boolean;
+	sticky?: boolean;
+	hideBrand?: boolean;
+	/** layout-navbar-class */
+	class?: string;
+}
+
+// pageMenu is the front matter `page-menu` value; when a page has none, nothing
+// in the menu is active (pages must pass their own value — see index.astro).
+const {
+	hideSearch = false,
+	pageMenu,
+	breakpoint = 'md',
+	condensed = false,
+	dark = false,
+	transparent = false,
+	overlap = false,
+	sticky = false,
+	hideBrand = false,
+	class: className,
+} = Astro.props;
+
+const headerClass = [
+	`navbar navbar-expand-${breakpoint}`,
+	transparent && 'navbar-transparent',
+	sticky && 'sticky-top',
+	overlap && 'navbar-overlap',
+	className,
+	'd-print-none',
+]
+	.filter(Boolean)
+	.join(' ');
+---
+
+{sticky && <Fragment set:html="<div class='sticky-top'>" />}
+
+<header class={headerClass} data-bs-theme={dark ? 'dark' : undefined}>
+	<div class="container-xl">
+		<NavbarToggler target="navbar-menu" />
+
+		{!hideBrand && <NavbarLogo header class="d-none-navbar-horizontal pe-0 pe-md-3" />}
+
+		{/* navbar.html passes the show-* flags with default: true */}
+		<NavbarSide
+			class="order-md-last"
+			breakpoint={breakpoint}
+			condensed={condensed}
+			dark={dark}
+			showThemeToggle
+			showNotifications
+			showApps
+			showLanguageSelector
+			showUser
+		/>
+
+		{
+			condensed && (
+				<div class="collapse navbar-collapse" id="navbar-menu">
+					{/* hide-search is always true → menu nav */}
+					<!-- BEGIN NAVBAR MENU -->
+					<nav aria-label="Primary">
+						<NavbarMenu pageMenu={pageMenu} />
+					</nav>
+					<!-- END NAVBAR MENU -->
+				</div>
+			)
+		}
+	</div>
+</header>
+
+{
+	!condensed && (
+		<div class={`navbar-expand-${breakpoint}`}>
+			<div class="collapse navbar-collapse" id="navbar-menu">
+				<div class="navbar">
+					<div class="container-xl">
+						<div class="row flex-column flex-md-row flex-fill align-items-center">
+							<div class="col">
+								<!-- BEGIN NAVBAR MENU -->
+								<nav aria-label="Primary">
+									<NavbarMenu longTitles pageMenu={pageMenu} />
+								</nav>
+								<!-- END NAVBAR MENU -->
+							</div>
+
+							<div class="col col-md-auto">
+								<!-- BEGIN NAVBAR NAV -->
+								<ul class="navbar-nav">
+									<li class="nav-item">
+										<a
+											class="nav-link"
+											href="#"
+											data-bs-toggle="offcanvas"
+											data-bs-target="#offcanvas-settings"
+										>
+											<span class="badge badge-sm bg-red text-red-fg">
+												New
+											</span>
+											<span class="nav-link-icon d-md-none d-lg-inline-block">
+												<Icon name="settings" />
+											</span>
+											<span class="nav-link-title"> Theme Settings </span>
+										</a>
+									</li>
+								</ul>
+								<!-- END NAVBAR NAV -->
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	)
+}
+
+{sticky && <Fragment set:html="</div>" />}

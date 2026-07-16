@@ -1,0 +1,149 @@
+---
+// Equivalent of ui/map-vector.html
+import { addPageScript } from '../../lib/page-scripts';
+import mapsVector from '@data/maps-vector.json';
+
+interface MapData {
+	title?: string;
+	map: string;
+	color?: string;
+	filled?: boolean;
+	zoom?: boolean;
+	values?: Record<string, string>;
+	markers?: { name: string; coords: string }[];
+	lines?: { from: string; to: string }[];
+}
+
+interface Props {
+	mapId: string;
+	color?: string;
+	ratio?: string;
+}
+
+const { mapId, color: colorProp, ratio = '4x3' } = Astro.props;
+
+const data = (mapsVector as Record<string, MapData>)[mapId];
+const color = colorProp ?? data?.color ?? 'primary';
+
+if (data) {
+	const scaleLines = Array.from({ length: 10 }, (_, n) => {
+		const i = n + 1;
+		return `						scale${i}: 'color-mix(in srgb, transparent, var(--tblr-primary) ${i * 10}%)',`;
+	}).join('\n');
+
+	const valuesBlock = data.values
+		? `			series: {
+				regions: [{
+					attribute: "fill",
+					scale: {
+${scaleLines}
+					},
+					values: ${JSON.stringify(data.values)},
+				}]
+			}
+`
+		: '';
+
+	const markersBlock = data.markers
+		? `			markers: [
+${data.markers
+	.map(
+		(marker) => `				{
+					coords: [${marker.coords}],
+					name: "${marker.name}",
+				},`
+	)
+	.join('\n')}
+			],
+			markerStyle: {
+				initial: {
+					r: 4,
+					stroke: '#fff',
+					opacity: 1,
+					strokeWidth: 3,
+					stokeOpacity: .5,
+					fill: 'var(--tblr-${color})'
+				},
+				hover: {
+					fill: 'var(--tblr-${color})',
+					stroke: 'var(--tblr-${color})'
+				}
+			},
+			markerLabelStyle: {
+				initial: {
+					fontSize: 10
+				},
+			},
+			labels: {
+				markers: {
+					render: function(marker) {
+						return marker.name
+					},
+				},
+			},
+`
+		: '';
+
+	const linesBlock = data.lines
+		? `			lines: [
+${data.lines
+	.map(
+		(line) => `				{
+					from: "${line.from}",
+					to: "${line.to}"
+				},`
+	)
+	.join('\n')}
+			],
+			lineStyle: {
+				strokeDasharray:"4 4",
+				animation: true,
+				stroke: "rgba(98, 105, 118, .75)",
+				strokeWidth: .5,
+			},
+`
+		: '';
+
+	const regionStyleInitial = !data.filled
+		? `					fill: 'var(--tblr-bg-surface-secondary)',
+					stroke: 'var(--tblr-border-color)',
+					strokeWidth: 2,`
+		: `					fill: 'var(--tblr-bg-surface-secondary)',
+					stroke: '#fff',
+					strokeWidth: 1,`;
+
+	const script = `<script>
+	window.tabler_map_vector = window.tabler_map_vector || {};
+	document.addEventListener("DOMContentLoaded", function() {
+		const map = window.tabler_map_vector["map-${mapId}"] = new jsVectorMap({
+			selector: '#map-${mapId}',
+			map: '${data.map}',
+			backgroundColor: 'transparent',
+			regionStyle: {
+				initial: {
+${regionStyleInitial}
+				}
+			},
+			zoomOnScroll: ${data.zoom ? 'true' : 'false'},
+			zoomButtons: ${data.zoom ? 'true' : 'false'},
+${valuesBlock}${markersBlock}${linesBlock}		});
+
+		window.addEventListener("resize", () => {
+			map.updateSize();
+		});
+	});
+</script>`;
+
+	addPageScript(script);
+}
+---
+
+{
+	data && (
+		<div class={`ratio ratio-${ratio}`}>
+			<div>
+				<div id={`map-${mapId}`} class="w-100 h-100" />
+			</div>
+		</div>
+	)
+}

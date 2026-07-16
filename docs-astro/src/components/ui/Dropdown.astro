@@ -1,0 +1,19 @@
+---
+// Port of shared/includes/ui/dropdown.html
+interface Props {
+	mainBtn?: string;
+	/** comma-space separated option labels (Liquid `options | split: ", "`) */
+	options?: string;
+}
+
+const { mainBtn, options } = Astro.props;
+
+const optionsArray = (options ?? '').split(', ');
+---
+
+<div class="dropdown">
+	<a href="#" class="btn dropdown-toggle" data-bs-toggle="dropdown">{mainBtn}</a>
+	<div class="dropdown-menu">
+		{optionsArray.map((option) => <a class="dropdown-item" href="#">{option}</a>)}
+	</div>
+</div>

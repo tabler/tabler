@@ -1,0 +1,41 @@
+---
+// Port of marketing/sections/companies.html.
+import SectionDivider from '../SectionDivider.astro';
+import Baremetrics from '../brands/Baremetrics.astro';
+import Cgi from '../brands/Cgi.astro';
+import Docplanner from '../brands/Docplanner.astro';
+import Flow from '../brands/Flow.astro';
+import Fubotv from '../brands/Fubotv.astro';
+import SixFlags from '../brands/SixFlags.astro';
+import Vocus from '../brands/Vocus.astro';
+
+interface Props {
+	background?: string;
+	class?: string;
+	divider?: string;
+}
+
+const { background, class: className, divider } = Astro.props;
+
+const sectionClass = ['section', background && `section-${background}`, className]
+	.filter(Boolean)
+	.join(' ');
+---
+
+<section class={sectionClass}>
+	<SectionDivider divider={divider} />
+	<div class="container">
+		<div class="section-header mb-6">
+			<h2 class="section-title text-secondary">Trusted by over 3,000 companies</h2>
+		</div>
+		<div class="row g-lg-8 align-items-center justify-content-center">
+			<div class="col-auto"><a href="#" class="link-secondary"><Baremetrics /></a></div>
+			<div class="col-auto"><a href="#" class="link-secondary"><Cgi /></a></div>
+			<div class="col-auto"><a href="#" class="link-secondary"><Docplanner /></a></div>
+			<div class="col-auto"><a href="#" class="link-secondary"><Flow /></a></div>
+			<div class="col-auto"><a href="#" class="link-secondary"><Fubotv /></a></div>
+			<div class="col-auto"><a href="#" class="link-secondary"><SixFlags /></a></div>
+			<div class="col-auto"><a href="#" class="link-secondary"><Vocus /></a></div>
+		</div>
+	</div>
+</section>

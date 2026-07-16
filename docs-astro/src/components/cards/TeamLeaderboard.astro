@@ -1,0 +1,40 @@
+---
+// Port of cards/team-leaderboard.html
+import Avatar from '../ui/Avatar.astro';
+import Progress from '../ui/Progress.astro';
+import crmDashboard from '@data/crm-dashboard.json';
+
+const leaderboard = crmDashboard.leaderboard;
+---
+
+<div class="card h-100">
+	<div class="card-header">
+		<div>
+			<h3 class="card-title mb-0">Team leaderboard</h3>
+			<div class="card-subtitle">Q2 - May 1, 2026</div>
+		</div>
+	</div>
+
+	<div class="list-group list-group-flush">
+		{
+			leaderboard.items.map((item, index) => (
+				<div class="list-group-item">
+					<div class="row align-items-center g-3">
+						<div class="col-auto fw-bold me-3">{index + 1}</div>
+						<div class="col-auto">
+							<Avatar personId={index + 1} color={item.avatar_color} size="sm" />
+						</div>
+						<div class="col">
+							<div class="fw-medium">{item.name}</div>
+							<Progress size="sm" value={item.progress} color={item.avatar_color} class="mt-2" />
+						</div>
+						<div class="col-auto text-end">
+							<div class="fw-semibold">{item.amount}</div>
+							<div class="text-secondary">{item.deals} deals - {item.score}%</div>
+						</div>
+					</div>
+				</div>
+			))
+		}
+	</div>
+</div>

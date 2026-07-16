@@ -1,0 +1,42 @@
+---
+// Port of marketing/sections/features.html.
+// The ui/shape.html include is inlined: <div class="shape shape-md ..."><Icon /></div>
+// (shape class order: shape, shape-{size}, shape-{color}, {class}, rounded-circle).
+import SectionDivider from '../SectionDivider.astro';
+import Icon from '../../Icon.astro';
+
+interface Props {
+	background?: string;
+	class?: string;
+	divider?: string;
+}
+
+const { background, class: className, divider } = Astro.props;
+
+const sectionClass = ['section', background && `section-${background}`, className]
+	.filter(Boolean)
+	.join(' ');
+---
+
+<section class={sectionClass}>
+	<SectionDivider divider={divider} />
+	<div class="container">
+		<div class="row items-center text-center g-lg-10">
+			<div class="col-md-6 col-lg">
+				<div class="shape shape-md mb-3"><Icon name="devices" /></div>
+				<h2 class="h2">Mobile-optimized</h2>
+				<p class="text-secondary">Our email templates are fully responsive, so you can be sure they will look great on any device and screen size.</p>
+			</div>
+			<div class="col-md-6 col-lg">
+				<div class="shape shape-md mb-3"><Icon name="mailbox" /></div>
+				<h2 class="h2">Compatible with 90+ email clients</h2>
+				<p class="text-secondary">Tested across 90+ email clients and devices, Tabler emails will help you make your email communication professional and reliable.</p>
+			</div>
+			<div class="col-md-6 col-lg">
+				<div class="shape shape-md mb-3"><Icon name="palette" /></div>
+				<h2 class="h2">Unique, minimal design</h2>
+				<p class="text-secondary">Draw recipients’ attention with beautiful, minimal email designs based on Bootstrap and Material Design principles.</p>
+			</div>
+		</div>
+	</div>
+</section>
