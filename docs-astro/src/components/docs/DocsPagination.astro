@@ -1,14 +1,9 @@
 ---
-// Equivalent of docs/pagination.html — the next/prev branch.
-//
-// In Eleventy: `collections.docs | collection-children: page` (subpages of the
-// current page -> docs-card grid) or `collections.docs | next-prev: page`
-// (siblings from the same directory). In the PoC we derive the siblings from the
-// menu tree in src/data/docs.json (level-3 leaves of the same group). The
-// docs-card branch (index pages with children) is NOT ported — the menu tree has
-// no description/icon for subpages; for such pages the component renders nothing.
+// Equivalent of docs/pagination.html: child-page cards or next/prev siblings.
+import DocsCard from './DocsCard.astro';
 import docs from '../../data/docs.json';
 import Icon from '../Icon.astro';
+import { getDocsChildren } from '../../lib/docs-children';
 
 interface MenuLeaf {
 	title: string;
@@ -21,6 +16,8 @@ interface Props {
 }
 
 const { url } = Astro.props;
+
+const children = getDocsChildren(url);
 
 type Section = { title: string; children?: (MenuLeaf & { children?: MenuLeaf[] })[] };
 
@@ -42,7 +39,24 @@ for (const level1 of docs.menu as Section[]) {
 ---
 
 {
-	found && (
+	children.length > 0 && (
+		<div class="mt-6 pt-6">
+			<div class="row row-deck row-cards">
+				{children.map((child) => (
+					<DocsCard
+						href={child.url}
+						title={child.title}
+						description={child.description}
+						icon={child.icon}
+					/>
+				))}
+			</div>
+		</div>
+	)
+}
+
+{
+	children.length === 0 && found && (
 		<div class="mt-6 pt-6">
 			<ul class="pagination">
 				{prev && (
