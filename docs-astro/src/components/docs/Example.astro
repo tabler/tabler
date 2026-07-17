@@ -20,6 +20,7 @@ interface Props {
 	vertical?: boolean;
 	columnFullWidth?: boolean;
 	hideCode?: boolean;
+	codeOnly?: boolean;
 }
 
 const {
@@ -35,6 +36,7 @@ const {
 	vertical,
 	columnFullWidth,
 	hideCode,
+	codeOnly,
 } = Astro.props;
 
 // equivalent of {% removeemptylines %} around include output (e.g. ui/alert.html)
@@ -71,17 +73,21 @@ const highlighted = hideCode ? '' : await highlightCode(beautifyHtml(code ?? htm
 ---
 
 <!--EXAMPLE-->
-<div class={exampleClasses} style={height ? `height: ${height}` : undefined}>
-	{
-		raw ? (
-			<Fragment set:html={removeHref(html)} />
-		) : (
-			<div class={innerClasses} style={column ? 'max-width: 25rem;' : undefined}>
-				<Fragment set:html={removeHref(html)} />
-			</div>
-		)
-	}
-</div>
+{
+	!codeOnly && (
+		<div class={exampleClasses} style={height ? `height: ${height}` : undefined}>
+			{
+				raw ? (
+					<Fragment set:html={removeHref(html)} />
+				) : (
+					<div class={innerClasses} style={column ? 'max-width: 25rem;' : undefined}>
+						<Fragment set:html={removeHref(html)} />
+					</div>
+				)
+			}
+		</div>
+	)
+}
 
 {
 	!hideCode && (
