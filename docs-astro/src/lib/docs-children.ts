@@ -13,10 +13,17 @@ export type DocsChildPage = {
 	order: number;
 };
 
-const pageFrontmatter = import.meta.glob('../pages/**/index.mdx', {
-	eager: true,
-	import: 'frontmatter',
-}) as Record<string, DocsPageFrontmatter>;
+const pageModules = import.meta.glob('../pages/**/index.mdx', { eager: true });
+
+function getFrontmatter(mod: unknown): DocsPageFrontmatter | null {
+	if (!mod || typeof mod !== 'object') return null;
+
+	if ('frontmatter' in mod && mod.frontmatter && typeof mod.frontmatter === 'object') {
+		return mod.frontmatter as DocsPageFrontmatter;
+	}
+
+	return null;
+}
 
 function urlFromGlobPath(path: string): string {
 	const rel = path.replace('../pages/', '').replace(/\/index\.mdx$/, '');
@@ -32,8 +39,8 @@ function normalizeUrl(url: string): string {
 export function getDocsChildren(parentUrl: string): DocsChildPage[] {
 	const parentParts = normalizeUrl(parentUrl).split('/').filter(Boolean);
 
-	return Object.entries(pageFrontmatter)
-		.map(([path, fm]) => {
+	return Object.entries(pageModules)
+		.map(([path, mod]) => {
 			const pageUrl = urlFromGlobPath(path);
 			const parts = pageUrl.split('/').filter(Boolean);
 			const isDirectChild =
@@ -42,9 +49,12 @@ export function getDocsChildren(parentUrl: string): DocsChildPage[] {
 
 			if (!isDirectChild) return null;
 
+			const fm = getFrontmatter(mod);
+			if (!fm?.title) return null;
+
 			return {
 				url: pageUrl,
-				title: String(fm.title ?? ''),
+				title: String(fm.title),
 				description: String(fm.description ?? ''),
 				icon: fm.icon ? String(fm.icon) : undefined,
 				order: Number(fm.order ?? 999),
