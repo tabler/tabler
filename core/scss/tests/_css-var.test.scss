@@ -1,14 +1,10 @@
-// Fixture-based tests for the CSS custom-property builders in
-// scss/mixins/_functions.scss: `varify()` and `rgba-css-var()`. Both read the
-// global `$prefix`, so it is supplied as a local fixture + `@import`.
+// Tests for the CSS custom-property builders in scss/mixins/_functions.scss:
+// `varify()` and `rgba-css-var()`. Both read the global `$prefix`, which lives
+// in scss/_settings.scss (already `@use`d by functions.scss), so a plain `@use`
+// of the functions module is enough — no fixtures.
 
-@use "true" as *;
 @use "sass:meta";
-
-// --- fixture (real value from scss/_variables.scss) ---
-$prefix: "tblr-";
-
-@import "../mixins/functions";
+@use "../mixins/functions" as *;
 
 @include describe("varify") {
   // `varify` seeds its accumulator with `null`, so the raw list inspects as

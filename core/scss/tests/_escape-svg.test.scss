@@ -1,22 +1,11 @@
-// Fixture-based tests for `escape-svg()` from scss/mixins/_functions.scss.
+// Tests for `escape-svg()` from scss/mixins/_functions.scss.
 //
-// `escape-svg` iterates the global `$escaped-characters` map, which (like the
-// color-contrast globals) is not a `!default` module variable, so it is fed in
-// via a local fixture + `@import`. Escaping only happens when the string looks
-// like an SVG data URI; anything else is returned untouched.
+// It iterates the global `$escaped-characters` map, which lives in
+// scss/_settings.scss (already `@use`d by functions.scss), so a plain `@use` of
+// the functions module is enough — no fixtures. Escaping only happens when the
+// string looks like an SVG data URI; anything else is returned untouched.
 
-@use "true" as *;
-
-// --- fixture (real value from scss/_variables.scss) ---
-$escaped-characters: (
-  ("<", "%3c"),
-  (">", "%3e"),
-  ("#", "%23"),
-  ("(", "%28"),
-  (")", "%29")
-);
-
-@import "../mixins/functions";
+@use "../mixins/functions" as *;
 
 @include describe("escape-svg") {
   @include it("returns a non data-URI string unchanged") {

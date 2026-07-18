@@ -1,22 +1,10 @@
-// Fixture-based tests for `color-contrast()` from scss/mixins/_functions.scss.
+// Tests for `color-contrast()` from scss/mixins/_functions.scss.
 //
-// Unlike the other functions we test, `color-contrast` reads bare globals
-// ($white, $black, $color-contrast-*, $min-contrast-ratio) directly from its
-// definition scope, not just from parameters. Those are not `!default` module
-// variables, so `@use ... with (...)` cannot supply them — the only way to feed
-// them in is the legacy `@import`, which shares the global scope. We therefore
-// define the real Tabler values as local fixtures and `@import` the functions.
+// The globals it reads ($white, $black, $color-contrast-*, $min-contrast-ratio)
+// live in scss/_settings.scss, which functions.scss already `@use`s, so no
+// fixtures are needed — a plain `@use` of the functions module is enough.
 
-@use "true" as *;
-
-// --- fixtures (real values from scss/_variables.scss) ---
-$black: #000000;
-$white: #ffffff;
-$min-contrast-ratio: 2;
-$color-contrast-dark: $black;
-$color-contrast-light: $white;
-
-@import "../mixins/functions";
+@use "../mixins/functions" as *;
 
 @include describe("color-contrast") {
   @include it("picks black text on a light background") {
