@@ -1,12 +1,12 @@
 import { describe, it } from 'vitest'
-import { globbySync } from 'globby'
-import { readFileSync } from 'node:fs'
+import { globSync, readFileSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { runSass } from 'sass-true'
 
 const dir = path.dirname(fileURLToPath(import.meta.url))
-const files = globbySync('**/*.test.scss', { cwd: dir, absolute: true })
+// Auto-discover test files (fs.globSync has no `absolute` option, so join here).
+const files = globSync('**/*.test.scss', { cwd: dir }).map((f) => path.join(dir, f))
 
 for (const file of files) {
   const data = readFileSync(file, 'utf8')
