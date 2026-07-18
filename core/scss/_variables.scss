@@ -2,9 +2,11 @@
 @use 'sass:math';
 @use 'sass:map';
 @use 'sass:color';
+@use 'settings' as *;
+@use 'mixins/functions' as *;
 
 // Prefixes
-$prefix: 'tblr-' !default;
+// $prefix moved to `_settings.scss`
 $variable-prefix: bs- !default; // Deprecated in v5.2.0 for the shorter `$prefix`
 
 // Assets Base
@@ -18,7 +20,7 @@ $enable-shadows: true !default;
 $enable-navbar-vertical: true !default;
 $enable-dark-mode: true !default;
 $enable-negative-margins: true !default;
-$enable-rfs: false !default;
+// $enable-rfs is declared in `_mixins.scss` (forwarded from rfs with `false !default`)
 $enable-cssgrid: true !default;
 $enable-caret: true !default;
 $enable-rounded: true !default;
@@ -33,7 +35,7 @@ $enable-deprecation-messages: true !default;
 $enable-important-utilities: true !default;
 
 // Escaped Characters
-$escaped-characters: (('<', '%3c'), ('>', '%3e'), ('#', '%23'), ('(', '%28'), (')', '%29')) !default;
+// $escaped-characters moved to `_settings.scss`
 
 // Dark Mode
 $color-mode-type: data !default;
@@ -51,8 +53,7 @@ $gray-800: #1f2937 !default;
 $gray-900: #111827 !default;
 $gray-950: #030712 !default;
 
-$black: #000000 !default;
-$white: #ffffff !default;
+// $black and $white moved to `_settings.scss`
 
 $light: $gray-50 !default;
 $dark: $gray-800 !default;
@@ -101,9 +102,7 @@ $colors: (
   'gray-dark': $gray-800,
 ) !default;
 
-$min-contrast-ratio: 2 !default;
-$color-contrast-dark: $black !default;
-$color-contrast-light: $white !default;
+// $min-contrast-ratio, $color-contrast-dark and $color-contrast-light moved to `_settings.scss`
 
 $blue-100: tint-color($blue, 80%) !default;
 $blue-200: tint-color($blue, 60%) !default;
@@ -570,8 +569,9 @@ $body-bg: $gray-50 !default;
 $body-color: $gray-800 !default;
 $body-emphasis-color: $gray-700 !default;
 
-$color-contrast-dark: $body-color !default;
-$color-contrast-light: $light !default;
+// $color-contrast-dark and $color-contrast-light moved to `_settings.scss`.
+// Note: they were already no-ops here — the `!default` definitions earlier
+// in this file always won, so their effective values were $black / $white.
 
 $text-muted: $gray-500 !default;
 $text-secondary: $gray-500 !default;
@@ -921,14 +921,7 @@ $position-values: (
 ) !default;
 
 // Grid breakpoints
-$grid-breakpoints: (
-  xs: 0,
-  sm: 576px,
-  md: 768px,
-  lg: 992px,
-  xl: 1200px,
-  xxl: 1400px,
-) !default;
+// $grid-breakpoints moved to `_settings.scss`
 
 // Grid containers
 $container-max-widths: (
