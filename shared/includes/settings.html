@@ -13,7 +13,7 @@
 				<div class="mb-4">
 					<label class="form-label">Color mode</label>
 					<p class="form-hint">Choose the color mode for your app.</p>
-					{% assign modes = 'light,dark' | split: ',' %} {% for mode in modes %}
+					{% assign modes = 'light,dark,auto' | split: ',' %} {% for mode in modes %}
 					<label class="form-check">
 						<div class="form-selectgroup-item">
 							<input type="radio" name="theme" value="{{ mode }}" class="form-check-input"{% if mode == 'light' %} checked{% endif %} />
@@ -36,6 +36,12 @@
 							</label>
 						</div>
 						{% endfor %}
+						<div class="col-auto">
+							<label class="form-colorinput">
+								<input name="theme-primary" type="radio" value="inverted" class="form-colorinput-input" />
+								<span class="form-colorinput-color bg-inverted"></span>
+							</label>
+						</div>
 					</div>
 				</div>
 
@@ -150,7 +156,11 @@
 
 			for (var key in themeConfig) {
 				if (name === key) {
-					document.documentElement.setAttribute("data-bs-" + key, value)
+					var applied = value
+					if (key === "theme" && value === "auto") {
+						applied = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+					}
+					document.documentElement.setAttribute("data-bs-" + key, applied)
 					window.localStorage.setItem("tabler-" + key, value)
 					url.searchParams.set(key, value)
 				}
