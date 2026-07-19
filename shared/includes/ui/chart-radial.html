@@ -1,4 +1,4 @@
-{% removeemptylines %} {% assign id = include.id | default: "active-users-4" %} {% assign height = include.height | default: 350 %} {% assign class = include.class %} {% assign title = include.title | default: "Active users" %} {% assign value = include.value | default: 58 %}
+{% removeemptylines %} {% assign id = include.id | default: "active-users-4" %} {% assign height = include.height | default: 350 %} {% assign class = include.class %} {% assign title = include.title | default: "Active users" | upcase %} {% assign value = include.value | default: 58 %}
 
 <div id="chart-{{ id }}" class="position-relative {% if class %} {{ class }}{% endif %}"></div>
 
@@ -30,14 +30,17 @@
                   show: true,
                   offsetY: -20,
                   fontSize: "14px",
-                  color: "var(--tblr-secondary)",
+                  fontFamily: "inherit",
+                  fontWeight: 400,
+						color: "var(--tblr-secondary)",
                 },
                 value: {
                   show: true,
                   fontSize: "30px",
                   fontWeight: 700,
+                  fontFamily: "inherit",
                   offsetY: 0,
-                  color: "var(--tblr-body-color)",
+						color: "var(--tblr-body-color)",
                   formatter: function (val) {
                     return val + "%";
                   },
@@ -45,20 +48,7 @@
               },
             },
           },
-          fill: {
-            type: "gradient",
-            gradient: {
-              shade: "dark",
-              type: "horizontal",
-              shadeIntensity: 0.5,
-              gradientToColors: ["var(--tblr-primary)"],
-              inverseColors: true,
-              opacityFrom: 1,
-              opacityTo: 1,
-              stops: [0, 100],
-            },
-          },
-          colors: ["var(--tblr-azure)"],
+          colors: ["var(--tblr-primary)"],
           stroke: {
             lineCap: "round",
           },
