@@ -20,8 +20,9 @@ const copies = [
 	{ from: join(repo, 'preview', 'dist', 'preview'), to: join(root, 'public', 'preview'), required: false },
 	// docs.css built by the @tabler/docs sass pipeline (used by docs pages)
 	{ from: join(repo, 'docs', 'dist', 'css'), to: join(root, 'public', 'css'), required: false },
-	// static assets (photos, avatars, tracks, brand svgs...) — Eleventy passthrough "static"
-	{ from: join(repo, 'preview', 'static'), to: join(root, 'public', 'static'), required: true },
+	// static assets (photos, avatars, tracks, brand svgs...).
+	// Use the real source because preview/static is a symlink that may not survive deployment packaging.
+	{ from: join(repo, 'shared', 'static'), to: join(root, 'public', 'static'), required: true },
 	// favicons (source assets of @tabler/preview)
 	{ from: join(repo, 'preview', 'pages', 'favicon.ico'), to: join(root, 'public', 'favicon.ico'), required: true },
 	{ from: join(repo, 'preview', 'pages', 'favicon-dev.ico'), to: join(root, 'public', 'favicon-dev.ico'), required: true },
