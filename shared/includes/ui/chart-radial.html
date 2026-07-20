@@ -1,0 +1,60 @@
+{% removeemptylines %} {% assign id = include.id | default: "active-users-4" %} {% assign height = include.height | default: 350 %} {% assign class = include.class %} {% assign title = include.title | default: "Active users" | upcase %} {% assign value = include.value | default: 58 %}
+
+<div id="chart-{{ id }}" class="position-relative {% if class %} {{ class }}{% endif %}"></div>
+
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    {% if environment == 'development' %}
+    window.tabler_chart = window.tabler_chart || {};
+    {% endif %}
+
+    window.ApexCharts &&
+      ({% if environment == "development" %}window.tabler_chart["chart-{{ id }}"] = {% endif %}new ApexCharts(
+        document.getElementById("chart-{{ id }}"),
+        {
+          series: [{{ value }}],
+          chart: {
+            height: {{ height }},
+            type: "radialBar",
+          },
+          plotOptions: {
+            radialBar: {
+              startAngle: -120,
+              endAngle: 120,
+              hollow: {
+                margin: 15,
+                size: "70%",
+              },
+              dataLabels: {
+                name: {
+                  show: true,
+                  offsetY: -20,
+                  fontSize: "14px",
+                  fontFamily: "inherit",
+                  fontWeight: 400,
+						color: "var(--tblr-secondary)",
+                },
+                value: {
+                  show: true,
+                  fontSize: "30px",
+                  fontWeight: 700,
+                  fontFamily: "inherit",
+                  offsetY: 0,
+						color: "var(--tblr-body-color)",
+                  formatter: function (val) {
+                    return val + "%";
+                  },
+                },
+              },
+            },
+          },
+          colors: ["var(--tblr-primary)"],
+          stroke: {
+            lineCap: "round",
+          },
+          labels: ["{{ title }}"],
+        }
+      )).render();
+  });
+</script>
+{% endremoveemptylines %}

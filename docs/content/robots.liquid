@@ -1,0 +1,14 @@
+---
+layout: null
+permalink: robots.txt
+eleventyExcludeFromCollections: true
+---
+Sitemap: {% if environment == 'production' %}{{ site.docsUrl }}{% endif %}/sitemap.xml
+
+{% if environment != 'production' %}
+User-agent: *
+Disallow: /
+{% else %}
+User-agent: *
+Disallow:
+{% endif %}
