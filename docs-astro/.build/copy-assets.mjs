@@ -17,9 +17,10 @@ const copies = [
 	},
 	// demo css/js built by the @tabler/preview sass/vite pipeline
 	// TODO(phase 3): move that pipeline into this package
-	{ from: join(repo, 'preview', 'dist', 'preview'), to: join(root, 'public', 'preview'), required: false },
-	// docs.css built by the @tabler/docs sass pipeline (used by docs pages)
-	{ from: join(repo, 'docs', 'dist', 'css'), to: join(root, 'public', 'css'), required: false },
+	{ from: join(repo, 'preview', 'dist', 'preview'), to: join(root, 'public', 'preview'), required: true },
+	// docs.css and docs.js built by the @tabler/docs asset pipeline
+	{ from: join(repo, 'docs', 'dist', 'css'), to: join(root, 'public', 'css'), required: true },
+	{ from: join(repo, 'docs', 'dist', 'js'), to: join(root, 'public', 'js'), required: true },
 	// static assets (photos, avatars, tracks, brand svgs...) — Eleventy passthrough "static"
 	{ from: join(repo, 'preview', 'static'), to: join(root, 'public', 'static'), required: true },
 	// favicons (source assets of @tabler/preview)
