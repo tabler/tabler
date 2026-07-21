@@ -17,10 +17,27 @@ const copies = [
 	},
 	// demo css/js built by the @tabler/preview sass/vite pipeline
 	// TODO(phase 3): move that pipeline into this package
-	{ from: join(repo, 'preview', 'dist', 'preview'), to: join(root, 'public', 'preview'), required: true },
+	// Fallback: in `turbo dev` these packages run `clean && watch` concurrently,
+	// so their dist may be momentarily missing — keep the previous public/ copy then.
+	{
+		from: join(repo, 'preview', 'dist', 'preview'),
+		to: join(root, 'public', 'preview'),
+		required: true,
+		allowDestinationFallback: true,
+	},
 	// docs.css and docs.js built by the @tabler/docs asset pipeline
-	{ from: join(repo, 'docs', 'dist', 'css'), to: join(root, 'public', 'css'), required: true },
-	{ from: join(repo, 'docs', 'dist', 'js'), to: join(root, 'public', 'js'), required: true },
+	{
+		from: join(repo, 'docs', 'dist', 'css'),
+		to: join(root, 'public', 'css'),
+		required: true,
+		allowDestinationFallback: true,
+	},
+	{
+		from: join(repo, 'docs', 'dist', 'js'),
+		to: join(root, 'public', 'js'),
+		required: true,
+		allowDestinationFallback: true,
+	},
 	// static assets (photos, avatars, tracks, brand svgs...) — Eleventy passthrough "static"
 	{ from: join(repo, 'preview', 'static'), to: join(root, 'public', 'static'), required: true },
 	// favicons (source assets of @tabler/preview)
