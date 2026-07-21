@@ -1,8 +1,7 @@
 ---
 // Docs layout — port of shared/layouts/docs/default.html (the @tabler/docs app).
 // Standalone layout with its own <head>; does NOT use BaseLayout.astro.
-// Mirrors the development build (NODE_ENV=development): no SEO/analytics block
-// (in dev Eleventy doesn't even emit <title>), assets without .min and without cache busters.
+// Development uses the unminified assets; production additionally emits the SEO metadata.
 import { site } from '../lib/site';
 import libs from '@tabler/core/libs.json';
 import docs from '../data/docs.json';
@@ -16,13 +15,14 @@ import DocsPagination from '../components/docs/DocsPagination.astro';
 interface Props {
 	/** front matter: the page's h1 heading */
 	title: string;
+	/** front matter: optional SEO title override */
+	seoTitle?: string;
 	/** front matter: lead below the title (p.text-secondary.fs-3.lh-3) */
 	summary?: string;
-	/**
-	 * front matter: SEO description. UNUSED in the development build (Eleventy
-	 * emits the meta description only in production) — accepted for parity.
-	 */
+	/** front matter: SEO description */
 	description?: string;
+	/** front matter: optional SEO description override */
+	seoDescription?: string;
 	/**
 	 * front matter: path to the Bootstrap docs (e.g. "components/alerts/").
 	 * Unused by the layout or any docs include — it doesn't appear in the
@@ -44,7 +44,17 @@ interface Props {
 	docsLibs?: string[];
 }
 
-const { title, summary, addedIn, toc = [], docsLibs = [] } = Astro.props;
+const {
+	title,
+	seoTitle,
+	summary,
+	description,
+	seoDescription,
+	addedIn,
+	toc = [],
+	docsLibs = [],
+} = Astro.props;
+const environment = process.env.NODE_ENV || 'production';
 
 // URL in the docs namespace: /docs/ui/components/alert(.html) -> /ui/components/alert/
 const docsUrl =
@@ -55,6 +65,20 @@ const docsUrl =
 		return p;
 	})();
 
+const pageSection = docsUrl.startsWith('/ui/')
+	? 'UI'
+	: docsUrl.startsWith('/icons/')
+		? 'Icons'
+		: docsUrl.startsWith('/illustrations/')
+			? 'Illustrations'
+			: docsUrl.startsWith('/emails/')
+				? 'Emails'
+				: '';
+const metaTitle = seoTitle ?? title;
+const metaDescription = seoDescription ?? description;
+const siteName = pageSection ? `Tabler ${pageSection} Documentation` : 'Tabler Documentation';
+const canonicalUrl = new URL(docsUrl, Astro.site ?? site.docsUrl).href;
+
 // Equivalent of `{{ page | relative }}`: for /ui/components/alert/ -> "../../.."
 const depth = docsUrl.split('/').filter(Boolean).length;
 const relative = depth === 0 ? '.' : '../'.repeat(depth).slice(0, -1);
@@ -64,7 +88,7 @@ const inputPath = `./content${docsUrl.replace(/\/$/, '')}.md`;
 
 // JS/CSS libraries as in Eleventy: docs-libs + clipboard (always included).
 // In dev file names stay unchanged (e.g. dist/clipboard.min.js keeps .min — the reference has it so).
-type Lib = { npm: string; js?: string[]; css?: string[] };
+type Lib = { npm?: string; js?: string[]; css?: string[] };
 const libEntries = Object.entries(libs as Record<string, Lib>);
 const libUrl = (lib: Lib, file: string) =>
 	file.startsWith('http://') || file.startsWith('https://')
@@ -94,8 +118,35 @@ const docsLinks = docs.links as DocsLink[];
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-		<link rel="icon" href={`${relative}/favicon-dev.ico`} type="image/x-icon" />
-		<link rel="shortcut icon" href={`${relative}/favicon-dev.ico`} type="image/x-icon" />
+		<title>{metaTitle} | {siteName}</title>
+		{
+			environment === 'production' && (
+				<Fragment>
+					{metaDescription && <meta name="description" content={metaDescription} />}
+					<link rel="canonical" href={canonicalUrl} />
+
+					<!-- Open Graph / Social Media Meta Tags -->
+					<meta property="og:type" content="website" />
+					<meta property="og:title" content={metaTitle} />
+					{metaDescription && <meta property="og:description" content={metaDescription} />}
+					<meta property="og:site_name" content={siteName} />
+
+					<!-- Twitter Card data -->
+					<meta name="twitter:card" content="summary" />
+					<meta name="twitter:title" content={metaTitle} />
+					{metaDescription && <meta name="twitter:description" content={metaDescription} />}
+				</Fragment>
+			)
+		}
+
+		{
+			environment === 'development' && (
+				<Fragment>
+					<link rel="icon" href={`${relative}/favicon-dev.ico`} type="image/x-icon" />
+					<link rel="shortcut icon" href={`${relative}/favicon-dev.ico`} type="image/x-icon" />
+				</Fragment>
+			)
+		}
 
 		<link rel="stylesheet" href="/dist/css/tabler.css" />
 		{site.cssPlugins.map((plugin) => <link href={`/dist/css/tabler-${plugin}.css`} rel="stylesheet" />)}

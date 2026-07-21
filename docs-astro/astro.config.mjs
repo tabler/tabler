@@ -5,6 +5,7 @@ import { fileURLToPath } from 'node:url'
 
 // https://astro.build/config
 export default defineConfig({
+  site: 'https://docs.tabler.io',
   vite: {
     resolve: {
       alias: {
