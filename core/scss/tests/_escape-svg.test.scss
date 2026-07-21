@@ -1,0 +1,21 @@
+// Tests for `escape-svg()` from scss/mixins/_functions.scss.
+//
+// It iterates the global `$escaped-characters` map, which lives in
+// scss/_settings.scss (already `@use`d by functions.scss), so a plain `@use` of
+// the functions module is enough — no fixtures. Escaping only happens when the
+// string looks like an SVG data URI; anything else is returned untouched.
+
+@use "../mixins/functions" as *;
+
+@include describe("escape-svg") {
+  @include it("returns a non data-URI string unchanged") {
+    @include assert-equal(escape-svg("no data uri <here>"), "no data uri <here>");
+  }
+
+  @include it("percent-encodes reserved characters inside an SVG data URI") {
+    @include assert-equal(
+      escape-svg("data:image/svg+xml,<svg><path/></svg>"),
+      "data:image/svg+xml,%3csvg%3e%3cpath/%3e%3c/svg%3e"
+    );
+  }
+}

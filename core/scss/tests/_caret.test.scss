@@ -1,0 +1,94 @@
+// Output tests for the caret mixins in scss/mixins/bootstrap/_caret.scss.
+// The `caret-{down,up,end,start}` helpers draw a triangle out of borders; the
+// main `caret()` builds a pseudo-element and branches on `$direction` for the
+// rotation and (for `left`) the ::before/::after structure.
+
+@use "../mixins/bootstrap/caret" as *;
+
+@include describe("caret-* border helpers") {
+  @include it("caret-down points the border triangle downward") {
+    @include assert() {
+      @include output() { .t { @include caret-down(0.3em); } }
+      @include expect() {
+        .t {
+          border-top: 0.3em solid;
+          border-right: 0.3em solid transparent;
+          border-bottom: 0;
+          border-left: 0.3em solid transparent;
+        }
+      }
+    }
+  }
+
+  @include it("caret-up points the border triangle upward") {
+    @include assert() {
+      @include output() { .t { @include caret-up(0.3em); } }
+      @include expect() {
+        .t {
+          border-top: 0;
+          border-right: 0.3em solid transparent;
+          border-bottom: 0.3em solid;
+          border-left: 0.3em solid transparent;
+        }
+      }
+    }
+  }
+
+  @include it("caret-start omits the left border") {
+    @include assert() {
+      @include output() { .t { @include caret-start(0.3em); } }
+      @include expect() {
+        .t {
+          border-top: 0.3em solid transparent;
+          border-right: 0.3em solid;
+          border-bottom: 0.3em solid transparent;
+        }
+      }
+    }
+  }
+}
+
+@include describe("caret mixin") {
+  @include it("renders an ::after caret rotated for the down direction") {
+    @include assert() {
+      @include output() { .t { @include caret(down); } }
+      @include expect() {
+        .t:after {
+          content: "";
+          display: inline-block;
+          vertical-align: 0.255em;
+          width: 0.3em;
+          height: 0.3em;
+          border-bottom: 1px var(--tblr-border-style);
+          border-inline-start: 1px var(--tblr-border-style);
+          margin-inline-end: 0.1em;
+          margin-inline-start: 0.255em;
+          transform: rotate(-45deg);
+        }
+      }
+    }
+  }
+
+  @include it("uses ::before and clears ::after for the left direction") {
+    @include assert() {
+      @include output() { .t { @include caret(left); } }
+      @include expect() {
+        .t:before {
+          content: "";
+          display: inline-block;
+          vertical-align: 0.255em;
+          width: 0.3em;
+          height: 0.3em;
+          border-bottom: 1px var(--tblr-border-style);
+          border-inline-start: 1px var(--tblr-border-style);
+          margin-inline-end: 0.1em;
+          margin-inline-end: 0.255em;
+          transform: rotate(45deg);
+        }
+        .t:after {
+          content: none;
+        }
+      }
+    }
+  }
+}

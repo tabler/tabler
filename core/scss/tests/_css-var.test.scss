@@ -1,0 +1,43 @@
+// Tests for the CSS custom-property builders in scss/mixins/_functions.scss:
+// `varify()` and `rgba-css-var()`. Both read the global `$prefix`, which lives
+// in scss/_settings.scss (already `@use`d by functions.scss), so a plain `@use`
+// of the functions module is enough — no fixtures.
+
+@use "sass:meta";
+@use "../mixins/functions" as *;
+
+@include describe("varify") {
+  // `varify` seeds its accumulator with `null`, so the raw list inspects as
+  // `null var(...) ...`; Sass drops the null when serialising to CSS, so the
+  // behaviour is asserted through the rendered output rather than the value.
+  @include it("prefixes each entry as a space-separated var() list") {
+    @include assert() {
+      @include output() {
+        .t {
+          padding: varify(("gutter-x" "gutter-y"));
+        }
+      }
+      @include expect() {
+        .t {
+          padding: var(--tblr-gutter-x) var(--tblr-gutter-y);
+        }
+      }
+    }
+  }
+}
+
+@include describe("rgba-css-var") {
+  @include it("builds a color-mix() from the identifier and target opacity") {
+    @include assert-equal(
+      meta.inspect(rgba-css-var("primary", "bg")),
+      "color-mix(in srgb, var(--tblr-primary) calc(var(--tblr-bg-opacity) * 100%), transparent)"
+    );
+  }
+
+  @include it("special-cases the body background") {
+    @include assert-equal(
+      meta.inspect(rgba-css-var("body", "bg")),
+      "color-mix(in srgb, var(--tblr-body-bg) calc(var(--tblr-bg-opacity) * 100%), transparent)"
+    );
+  }
+}
