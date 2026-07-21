@@ -15,7 +15,10 @@ export type DocsChildPage = {
 
 // Both page conventions are supported: `foo/index.mdx` and flat `foo.mdx`
 // produce the same route (/foo/) with the default 'directory' build format.
-const pageModules = import.meta.glob('../../pages/**/*.mdx', { eager: true });
+// `@pages` is a per-package vite alias (preview: ./src/pages, docs: ./pages) —
+// that's what lets this file live in shared/ despite import.meta.glob being
+// resolved relative to the importer.
+const pageModules = import.meta.glob('@pages/**/*.mdx', { eager: true });
 
 function getFrontmatter(mod: unknown): DocsPageFrontmatter | null {
 	if (!mod || typeof mod !== 'object') return null;
@@ -28,8 +31,10 @@ function getFrontmatter(mod: unknown): DocsPageFrontmatter | null {
 }
 
 function urlFromGlobPath(path: string): string {
-	const rel = path
-		.replace('../../pages/', '')
+	// glob keys for alias patterns are resolved paths — derive the route from
+	// the segment after the pages dir
+	const marker = path.indexOf('/pages/');
+	const rel = (marker === -1 ? path : path.slice(marker + '/pages/'.length))
 		.replace(/(?:^|\/)index\.mdx$/, '')
 		.replace(/\.mdx$/, '');
 	return rel ? `/${rel}/` : '/';
