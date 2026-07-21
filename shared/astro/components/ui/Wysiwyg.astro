@@ -3,7 +3,8 @@
 // The HugeRTE init <script> is captured via {% capture script %} then
 // {% capture_script %} in Liquid, so it is registered with addPageScript
 // synchronously here.
-import { addPageScript } from '../../lib/page-scripts';
+import { addPageScript } from '@shared/lib/page-scripts';
+import InlineScript from '@pkg/components/InlineScript.astro';
 
 interface Props {
 	id?: string;
@@ -47,3 +48,4 @@ addPageScript(script);
 <form method="post">
 	<textarea id={`hugerte-${id}`}>Hello, <b>Tabler</b>!</textarea>
 </form>
+<InlineScript code={script} />

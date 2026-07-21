@@ -1,6 +1,6 @@
 ---
-import { addPageScript } from '../../lib/page-scripts';
-
+// The Liquid source (ui/chart-radial.html) emits its <script> inline right after
+// the chart div (not via {% capture_script %}), so this port inlines it too.
 interface Props {
 	id?: string;
 	height?: number;
@@ -14,7 +14,7 @@ const { id = "active-users-4", height = 350, class: className = "", title = "Act
 const chartId = `chart-${id}`;
 const fixedTitle = title.toUpperCase();
 
-addPageScript(`<script>
+const script = `<script>
   document.addEventListener("DOMContentLoaded", () => {
     window.tabler_chart = window.tabler_chart || {};
 
@@ -65,7 +65,8 @@ addPageScript(`<script>
           labels: ["${fixedTitle}"],
         }
       )).render();
-  });</script>`)
+  });</script>`;
 ---
 
 <div id={chartId} class={`position-relative ${className}`}></div>
+<Fragment set:html={script} />

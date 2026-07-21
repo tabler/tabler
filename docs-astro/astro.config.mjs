@@ -10,6 +10,11 @@ export default defineConfig({
     resolve: {
       alias: {
         '@data': fileURLToPath(new URL('../shared/data', import.meta.url)),
+        // Astro components/lib shared with preview-astro (single source of truth)
+        '@shared': fileURLToPath(new URL('../shared/astro', import.meta.url)),
+        // this package's src — used FROM shared code for the few deliberately
+        // package-specific files (InlineScript, chart-script, docs-children, data/docs.json)
+        '@pkg': fileURLToPath(new URL('./src', import.meta.url)),
       },
     },
   },

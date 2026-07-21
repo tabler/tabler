@@ -1,0 +1,17 @@
+---
+// Package-specific script emission point — the one deliberate divergence between
+// preview-astro and docs-astro in otherwise identical shared components.
+//
+// docs-astro renders the script inline at the component site: the Eleventy docs
+// layout has no {% scripts %} drain — example scripts are part of the example
+// markup, and MDX pages never pass through BaseLayout's <PageScripts /> drain.
+// (preview-astro's counterpart renders nothing — there the script is registered
+// via addPageScript() and drained at the end of <body>, mirroring Liquid.)
+interface Props {
+	code: string;
+}
+
+const { code } = Astro.props;
+---
+
+<Fragment set:html={code} />

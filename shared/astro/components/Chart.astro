@@ -1,7 +1,8 @@
 ---
 import charts from '@data/charts.json';
-import { addPageScript } from '../lib/page-scripts';
-import { chartSnippet, type ChartData } from '../lib/chart-script';
+import { addPageScript } from '@shared/lib/page-scripts';
+import { chartSnippet, type ChartData } from '@pkg/lib/chart-script';
+import InlineScript from '@pkg/components/InlineScript.astro';
 
 interface Props {
 	chartId: string;
@@ -31,9 +32,17 @@ if (data?.extend) {
 	data = { ...chartsData[data.extend], ...chartsData[chartId] };
 }
 
+const script = data ? chartSnippet({ id, chartId, data, height }) : '';
 if (data) {
-	addPageScript(chartSnippet({ id, chartId, data, height }));
+	addPageScript(script);
 }
 ---
 
-{data && <div id={`chart-${id}`} class:list={['position-relative', className]} />}
+{
+	data && (
+		<Fragment>
+			<div id={`chart-${id}`} class:list={['position-relative', className]} />
+			<InlineScript code={script} />
+		</Fragment>
+	)
+}

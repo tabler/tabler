@@ -1,6 +1,12 @@
 // Port of ui/chart.html (Liquid) — generator of the <style> + <script> ApexCharts block.
 // The config is built as a plain object (field order mirrors the Liquid template)
 // and serialized to formatted JS at the end.
+//
+// Deliberate divergence from preview-astro/src/lib/chart-script.ts: the preview
+// version builds the config as strings to stay token-identical with the Eleventy
+// output (parity gate); this version favors readable generated code (shown in the
+// docs code panels). Keep the FEATURE SET of both files in sync — once the
+// Eleventy pipeline is removed, preview should adopt this implementation.
 
 type Serie = {
 	name?: string;
@@ -25,7 +31,30 @@ export type ChartData = {
 	legend?: boolean;
 	title?: string;
 	color?: string;
+	colors?: string[];
 	datalabels?: boolean;
+	'fill-type'?: string;
+	'fill-gradient-shade'?: string;
+	'fill-gradient-type'?: string;
+	'fill-gradient-shade-intensity'?: number;
+	'fill-gradient-to-color'?: string;
+	'fill-gradient-inverse-colors'?: boolean;
+	'fill-gradient-opacity-from'?: number;
+	'fill-gradient-opacity-to'?: number;
+	'fill-gradient-stops'?: number[];
+	'radial-start-angle'?: number;
+	'radial-end-angle'?: number;
+	'radial-hollow-margin'?: number;
+	'radial-hollow-size'?: string;
+	'radial-labels-show'?: boolean;
+	'radial-name-show'?: boolean;
+	'radial-name-offset-y'?: number;
+	'radial-name-font-size'?: string;
+	'radial-name-color'?: string;
+	'radial-value-offset-y'?: number;
+	'radial-value-font-size'?: string;
+	'radial-value-font-weight'?: number;
+	'stroke-linecap'?: string;
 	'stroke-width'?: number[];
 	'stroke-dash'?: number[];
 	'stroke-curve'?: string;
@@ -140,12 +169,25 @@ export function chartSnippet(opts: {
 	if (type === 'radialBar') {
 		config.plotOptions = {
 			radialBar: {
-				startAngle: -120,
-				endAngle: 120,
-				hollow: { margin: 16, size: '50%' },
+				startAngle: data['radial-start-angle'] ?? -120,
+				endAngle: data['radial-end-angle'] ?? 120,
+				hollow: {
+					margin: data['radial-hollow-margin'] ?? 16,
+					size: data['radial-hollow-size'] ?? '50%',
+				},
 				dataLabels: {
-					show: true,
-					value: { offsetY: -8, fontSize: '24px' },
+					show: data['radial-labels-show'] !== false,
+					name: {
+						show: Boolean(data['radial-name-show']),
+						offsetY: data['radial-name-offset-y'] ?? 0,
+						fontSize: data['radial-name-font-size'] ?? '16px',
+						color: data['radial-name-color'] ?? 'inherit',
+					},
+					value: {
+						offsetY: data['radial-value-offset-y'] ?? -8,
+						fontSize: data['radial-value-font-size'] ?? '24px',
+						fontWeight: data['radial-value-font-weight'] ?? 600,
+					},
 				},
 			},
 		};
@@ -155,7 +197,24 @@ export function chartSnippet(opts: {
 		config.dataLabels = { enabled: Boolean(data.datalabels) };
 	}
 
-	if (type === 'area') {
+	if (data['fill-type']) {
+		config.fill = {
+			type: data['fill-type'],
+			gradient:
+				data['fill-type'] === 'gradient'
+					? {
+							shade: data['fill-gradient-shade'] ?? 'light',
+							type: data['fill-gradient-type'] ?? 'horizontal',
+							shadeIntensity: data['fill-gradient-shade-intensity'] ?? 0.5,
+							gradientToColors: [data['fill-gradient-to-color'] ?? '#9ec2fb'],
+							inverseColors: Boolean(data['fill-gradient-inverse-colors']),
+							opacityFrom: data['fill-gradient-opacity-from'] ?? 1,
+							opacityTo: data['fill-gradient-opacity-to'] ?? 1,
+							stops: data['fill-gradient-stops'] ?? [0, 100],
+						}
+					: undefined,
+		};
+	} else if (type === 'area') {
 		config.fill = {
 			colors: [`var(--chart-${id}-fill-0)`, `var(--chart-${id}-fill-1)`],
 			type: 'solid',
@@ -172,7 +231,9 @@ export function chartSnippet(opts: {
 		};
 	}
 
-	if (type === 'area' || type === 'line') {
+	if (type === 'radialBar' && data['stroke-linecap']) {
+		config.stroke = { lineCap: data['stroke-linecap'] };
+	} else if (type === 'area' || type === 'line') {
 		config.stroke = {
 			width: data['stroke-width'] ?? 2,
 			dashArray: data['stroke-dash'],
@@ -237,7 +298,9 @@ export function chartSnippet(opts: {
 		config.labels = datetimeLabels(data['start-date'] ?? '2020-06-20', count);
 	}
 
-	if (series.length > 0) {
+	if (data.colors) {
+		config.colors = data.colors;
+	} else if (series.length > 0) {
 		config.colors = series.map((_, i) => `var(--chart-${id}-color-${i})`);
 	}
 
