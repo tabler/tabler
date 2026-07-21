@@ -183,7 +183,15 @@ const libJsFiles = (head: boolean) =>
 
 					for (var key in themeConfig) {
 						if (name === key) {
-							document.documentElement.setAttribute("data-bs-" + key, value)
+							var applied = value
+							if (key === "theme" && value === "auto") {
+								applied = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
+							}
+							if (applied !== themeConfig[key]) {
+								document.documentElement.setAttribute("data-bs-" + key, applied)
+							} else {
+								document.documentElement.removeAttribute("data-bs-" + key)
+							}
 							window.localStorage.setItem("tabler-" + key, value)
 							url.searchParams.set(key, value)
 						}
