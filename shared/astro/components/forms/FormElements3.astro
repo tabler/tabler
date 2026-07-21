@@ -3,6 +3,7 @@
 // color inputs, color picker, validation states, and a fieldset.
 import photos from '@data/photos.json';
 import site from '@data/site.json';
+import InputColor from '../parts/form/InputColor.astro';
 
 const horizontal = (photos as { file: string; title: string; horizontal?: boolean }[]).filter(
 	(p) => p.horizontal,
@@ -11,9 +12,6 @@ const horizontal = (photos as { file: string; title: string; horizontal?: boolea
 const imageChecks = horizontal.slice(0, 6);
 const imageRadios = horizontal.slice(10, 16);
 
-const siteColors = Object.keys((site as { colors: Record<string, unknown> }).colors).slice(0, 10);
-// input-color prepends dark,white (unless hide-black-white)
-const colorList = ['dark', 'white', ...siteColors];
 const blueHex = (site as { colors: { blue: { hex: string } } }).colors.blue.hex;
 ---
 
@@ -79,32 +77,8 @@ const blueHex = (site as { colors: { blue: { hex: string } } }).colors.blue.hex;
 	</div>
 </div>
 
-{
-	[
-		{ label: 'Color Input Check', name: 'color', type: 'checkbox', rounded: false },
-		{ label: 'Color Input Radio', name: 'color-rounded', type: 'radio', rounded: true },
-	].map((cfg) => (
-		<div class="mb-3">
-			<label class="form-label">{cfg.label}</label>
-			<div class="row g-2">
-				{colorList.map((color, i) => (
-					<div class="col-auto">
-						<label class:list={['form-colorinput', color === 'white' && 'form-colorinput-light']}>
-							<input
-								name={cfg.name}
-								type={cfg.type}
-								value={color}
-								class="form-colorinput-input"
-								checked={i + 1 === 2}
-							/>
-							<span class:list={[`form-colorinput-color bg-${color}`, cfg.rounded && 'rounded-circle']} />
-						</label>
-					</div>
-				))}
-			</div>
-		</div>
-	))
-}
+<InputColor label="Color Input Check" type="checkbox" />
+<InputColor label="Color Input Radio" name="color-rounded" rounded />
 
 <div class="mb-3">
 	<label class="form-label">Color picker</label>

@@ -1,0 +1,33 @@
+---
+// Port of shared/includes/parts/form/input-color.html: color swatch picker —
+// dark/white + the first 10 site colors, the 2nd swatch (white) checked.
+import site from '@data/site.json';
+
+interface Props {
+	label?: string;
+	name?: string;
+	type?: 'radio' | 'checkbox';
+	rounded?: boolean;
+}
+
+const { label = 'Color Input', name = 'color', type = 'radio', rounded = false } = Astro.props;
+
+const siteColors = Object.keys((site as { colors: Record<string, unknown> }).colors).slice(0, 10);
+const colors = ['dark', 'white', ...siteColors];
+---
+
+<div class="mb-3">
+	<label class="form-label">{label}</label>
+	<div class="row g-2">
+		{
+			colors.map((color, i) => (
+				<div class="col-auto">
+					<label class:list={['form-colorinput', color === 'white' && 'form-colorinput-light']}>
+						<input name={name} type={type} value={color} class="form-colorinput-input" checked={i === 1} />
+						<span class:list={[`form-colorinput-color bg-${color}`, rounded && 'rounded-circle']} />
+					</label>
+				</div>
+			))
+		}
+	</div>
+</div>

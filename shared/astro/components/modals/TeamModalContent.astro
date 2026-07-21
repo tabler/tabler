@@ -1,26 +1,8 @@
 ---
-// Port of parts/modals/team.html (includes parts/form/input-color.html inline).
+// Port of parts/modals/team.html.
 import ModalHeader from './ModalHeader.astro';
 import AvatarUpload from '../ui/AvatarUpload.astro';
-
-// input-color.html: colors = ['dark','white'] + (site.colors | limit: 10).
-// site.colors first 10 == blue,azure,indigo,purple,pink,red,orange,yellow,lime,green
-// (verified against the reference). The 2nd swatch (white) is checked and carries
-// form-colorinput-light.
-const colors = [
-	'dark',
-	'white',
-	'blue',
-	'azure',
-	'indigo',
-	'purple',
-	'pink',
-	'red',
-	'orange',
-	'yellow',
-	'lime',
-	'green',
-];
+import InputColor from '../parts/form/InputColor.astro';
 ---
 
 <ModalHeader title="Add a new team" />
@@ -35,27 +17,7 @@ const colors = [
 		</div>
 	</div>
 
-	<div class="mb-3">
-		<label class="form-label">Pick your team color</label>
-		<div class="row g-2">
-			{
-				colors.map((color, index) => (
-					<div class="col-auto">
-						<label class:list={['form-colorinput', color === 'white' && 'form-colorinput-light']}>
-							<input
-								name="color"
-								type="radio"
-								value={color}
-								class="form-colorinput-input"
-								checked={index === 1}
-							/>
-							<span class={`form-colorinput-color bg-${color}`} />
-						</label>
-					</div>
-				))
-			}
-		</div>
-	</div>
+	<InputColor label="Pick your team color" />
 
 	<div>
 		<label class="form-label">Additional info</label>
