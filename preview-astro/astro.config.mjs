@@ -38,6 +38,11 @@ function prettifyHtml() {
 // https://astro.build/config
 export default defineConfig({
 	vite: {
+		// InlineScript.astro renders nothing here — scripts go through the
+		// addPageScript() registry and the <PageScripts /> drain (Eleventy model)
+		define: {
+			'import.meta.env.INLINE_PAGE_SCRIPTS': 'false',
+		},
 		resolve: {
 			alias: {
 				// demo data lives in the monorepo's shared/data — single source of
@@ -45,9 +50,6 @@ export default defineConfig({
 				'@data': fileURLToPath(new URL('../shared/data', import.meta.url)),
 				// Astro components/lib shared with docs-astro (single source of truth)
 				'@shared': fileURLToPath(new URL('../shared/astro', import.meta.url)),
-				// this package's src — used FROM shared code for the one deliberately
-				// package-specific file (components/InlineScript.astro)
-				'@pkg': fileURLToPath(new URL('./src', import.meta.url)),
 				// this package's pages dir — used by @shared/lib/docs-children's glob
 				'@pages': fileURLToPath(new URL('./src/pages', import.meta.url)),
 			},
