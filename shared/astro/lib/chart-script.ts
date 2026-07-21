@@ -1,12 +1,8 @@
 // Port of ui/chart.html (Liquid) — generator of the <style> + <script> ApexCharts block.
 // The config is built as a plain object (field order mirrors the Liquid template)
-// and serialized to formatted JS at the end.
-//
-// Deliberate divergence from preview-astro/src/lib/chart-script.ts: the preview
-// version builds the config as strings to stay token-identical with the Eleventy
-// output (parity gate); this version favors readable generated code (shown in the
-// docs code panels). Keep the FEATURE SET of both files in sync — once the
-// Eleventy pipeline is removed, preview should adopt this implementation.
+// and serialized to formatted JS at the end. The generated code is JS-token
+// equivalent (not byte-identical) to the Eleventy output — the parity comparator
+// normalizes script content at the token level (quotes, trailing commas, spacing).
 
 type Serie = {
 	name?: string;
@@ -105,7 +101,9 @@ function formatJs(value: unknown, indent: number): string {
 	}
 	const entries = Object.entries(value as Record<string, unknown>).filter(([, v]) => v !== undefined);
 	if (entries.length === 0) return '{}';
-	const parts = entries.map(([key, v]) => `${key}: ${formatJs(v, indent + 1)}`);
+	// a `//N` key suffix emits a duplicate key (mirrors Liquid emitting e.g. two
+	// `tooltip:` entries where the later one shadows the earlier — last wins in JS)
+	const parts = entries.map(([key, v]) => `${key.replace(/\/\/\d+$/, '')}: ${formatJs(v, indent + 1)}`);
 	const inline = `{ ${parts.join(', ')} }`;
 	// inline only "flat" objects (primitives, raw code, primitive arrays) that fit on one line
 	const flat = entries.every(([, v]) => isLeaf(v) || (Array.isArray(v) && v.every(isLeaf)));
@@ -266,7 +264,7 @@ export function chartSnippet(opts: {
 	};
 
 	if (data['show-data-labels']) {
-		config.dataLabels = { enabled: true };
+		config['dataLabels//2'] = { enabled: true };
 	}
 
 	if (data.categories || data.datetime) {
@@ -279,7 +277,7 @@ export function chartSnippet(opts: {
 			},
 			tooltip: { enabled: false },
 			axisBorder: type === 'area' || type === 'bar' ? { show: false } : undefined,
-			categories: data.categories,
+			categories: data.categories?.map(String),
 			type: data.datetime ? 'datetime' : undefined,
 		};
 	}
@@ -315,7 +313,7 @@ export function chartSnippet(opts: {
 		: { show: false };
 
 	if (data['hide-tooltip'] || type === 'pie' || type === 'donut') {
-		config.tooltip = {
+		config['tooltip//2'] = {
 			enabled: data['hide-tooltip'] ? false : undefined,
 			fillSeriesColor: type === 'pie' || type === 'donut' ? false : undefined,
 		};

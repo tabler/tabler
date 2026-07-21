@@ -19,11 +19,51 @@ from html.parser import HTMLParser
 VOID = {"meta", "link", "input", "br", "img", "hr", "path", "source", "circle", "rect", "line", "polyline", "polygon", "ellipse", "use", "stop", "option"}
 
 
+def normalize_js(code):
+    """JS-token-level normalization of inline <script> content.
+
+    The Astro chart generator builds configs as objects and serializes them
+    (double quotes, no trailing commas, its own spacing), while Liquid emitted
+    hand-formatted code. All of that is non-semantic for the executed JS, so:
+    string literals are canonicalized to double-quoted form, trailing commas
+    before } / ] are dropped, and whitespace adjacent to punctuation is removed.
+    Real config changes (values, keys, structure) still produce a diff.
+    """
+    out, strings = [], []
+    i, n = 0, len(code)
+    while i < n:
+        c = code[i]
+        if c in ('"', "'", "`"):
+            q, j, buf = c, i + 1, []
+            while j < n:
+                if code[j] == "\\":
+                    buf.append(code[j:j + 2]); j += 2; continue
+                if code[j] == q:
+                    break
+                buf.append(code[j]); j += 1
+            s = "".join(buf)
+            if q == "`":
+                strings.append("`" + s + "`")
+            else:
+                inner = s.replace('\\"', '"').replace("\\'", "'")
+                strings.append('"' + inner.replace('"', '\\"') + '"')
+            out.append("\x00%d\x00" % (len(strings) - 1))
+            i = j + 1
+        else:
+            out.append(c); i += 1
+    text = "".join(out)
+    text = re.sub(r",\s*([}\]])", r"\1", text)          # trailing commas
+    text = re.sub(r"\s+", " ", text)                      # collapse whitespace
+    text = re.sub(r" ?([{}()\[\]:;,=+*<>!&|.-]) ?", r"\1", text)  # spacing around punctuation
+    return re.sub(r"\x00(\d+)\x00", lambda m: strings[int(m.group(1))], text)
+
+
 class Canon(HTMLParser):
     def __init__(self):
         super().__init__(convert_charrefs=True)
         self.out = []
         self.depth = 0
+        self.in_script = False
 
     def _attrs(self, attrs):
         norm = []
@@ -49,6 +89,8 @@ class Canon(HTMLParser):
     def handle_starttag(self, tag, attrs):
         a = self._attrs(attrs)
         self.out.append("  " * self.depth + f"<{tag}{' ' + a if a else ''}>")
+        if tag == "script":
+            self.in_script = True
         if tag not in VOID:
             self.depth += 1
 
@@ -56,11 +98,15 @@ class Canon(HTMLParser):
         self.handle_starttag(tag, attrs)
 
     def handle_endtag(self, tag):
+        if tag == "script":
+            self.in_script = False
         if tag not in VOID:
             self.depth = max(0, self.depth - 1)
             self.out.append("  " * self.depth + f"</{tag}>")
 
     def handle_data(self, data):
+        if self.in_script:
+            data = normalize_js(data)
         t = re.sub(r"\s+", " ", data).strip()
         if t:
             self.out.append("  " * self.depth + t)
