@@ -1,0 +1,24 @@
+// Tests for `color-contrast()` from scss/mixins/_functions.scss.
+//
+// The globals it reads ($white, $black, $color-contrast-*, $min-contrast-ratio)
+// live in scss/_settings.scss, which functions.scss already `@use`s, so no
+// fixtures are needed — a plain `@use` of the functions module is enough.
+
+@use "../mixins/functions" as *;
+
+@include describe("color-contrast") {
+  @include it("picks black text on a light background") {
+    @include assert-equal(color-contrast(#ffffff), #000000);
+  }
+
+  @include it("picks white text on a dark background") {
+    @include assert-equal(color-contrast(#000000), #ffffff);
+  }
+
+  // When no candidate reaches the required ratio the function falls back to the
+  // highest-contrast option (and emits a @warn, which sass-true ignores). An
+  // impossible ratio of 21 against mid-grey forces that branch; black wins.
+  @include it("falls back to the highest-contrast colour when none qualifies") {
+    @include assert-equal(color-contrast(#808080, #000, #fff, 21), #000);
+  }
+}

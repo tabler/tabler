@@ -37,9 +37,14 @@
     "format:check": "prettier --check \"scss/**/*.scss\" \"js/**/*.{js,ts}\" --cache",
     "format:write": "prettier --write \"scss/**/*.scss\" \"js/**/*.{js,ts}\" --cache",
     "type-check": "tsc --noEmit",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "test:coverage": "vitest run --coverage"
+    "test": "concurrently \"pnpm run test:js\" \"pnpm run test:scss\"",
+    "test:js": "vitest run",
+    "test:scss": "vitest run --config vitest.scss.config.mjs",
+    "test:js:watch": "vitest",
+    "test:js:coverage": "vitest run --coverage",
+    "test:scss:watch": "vitest --config vitest.scss.config.mjs",
+    "test:watch": "pnpm run test:js:watch",
+    "test:coverage": "pnpm run test:js:coverage"
   },
   "repository": {
     "type": "git",
@@ -177,6 +182,8 @@
     "playwright": "1.61.0",
     "plyr": "^3.8.4",
     "signature_pad": "^5.1.3",
+    "sass": "1.101.0",
+    "sass-true": "^9.0.0",
     "sortablejs": "^1.15.7",
     "star-rating.js": "^4.3.1",
     "tom-select": "^2.6.1",

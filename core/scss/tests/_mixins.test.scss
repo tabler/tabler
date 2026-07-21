@@ -1,0 +1,203 @@
+// Output tests for the Tabler mixins in scss/mixins/_mixins.scss.
+//
+// `@use "../mixins/mixins"` transitively pulls in the real settings/variables
+// chain (all relative to that file, so no extra load paths are needed), which
+// means the assertions run against real values — `$prefix` = "tblr-", the real
+// `$h5-font-size`, etc. — instead of fixtures.
+
+@use "../mixins/mixins" as *;
+
+@include describe("subheader mixin") {
+  @include it("outputs the full subheader with colour and line-height") {
+    @include assert() {
+      @include output() {
+        .t {
+          @include subheader();
+        }
+      }
+      @include expect() {
+        .t {
+          font-size: 0.75rem;
+          font-weight: var(--tblr-font-weight-medium);
+          text-transform: uppercase;
+          letter-spacing: 0.04em;
+          line-height: 1rem;
+          color: var(--tblr-secondary);
+        }
+      }
+    }
+  }
+
+  @include it("drops colour and line-height when the flags are false") {
+    @include assert() {
+      @include output() {
+        .t {
+          @include subheader($include-color: false, $include-line-height: false);
+        }
+      }
+      @include expect() {
+        .t {
+          font-size: 0.75rem;
+          font-weight: var(--tblr-font-weight-medium);
+          text-transform: uppercase;
+          letter-spacing: 0.04em;
+        }
+      }
+    }
+  }
+}
+
+@include describe("autodark-image mixin") {
+  @include it("inverts the image via filter") {
+    @include assert() {
+      @include output() {
+        .t {
+          @include autodark-image;
+        }
+      }
+      @include expect() {
+        .t {
+          filter: brightness(0) invert(1);
+        }
+      }
+    }
+  }
+}
+
+@include describe("elements-list mixin") {
+  @include it("sets up a wrapping flex list with the default gap") {
+    @include assert() {
+      @include output() {
+        .t {
+          @include elements-list();
+        }
+      }
+      @include expect() {
+        .t {
+          --tblr-list-gap: 0.5rem;
+          display: flex;
+          flex-wrap: wrap;
+          gap: var(--tblr-list-gap);
+        }
+      }
+    }
+  }
+
+  @include it("honours a custom gap argument") {
+    @include assert() {
+      @include output() {
+        .t {
+          @include elements-list(1rem);
+        }
+      }
+      @include expect() {
+        .t {
+          --tblr-list-gap: 1rem;
+          display: flex;
+          flex-wrap: wrap;
+          gap: var(--tblr-list-gap);
+        }
+      }
+    }
+  }
+}
+
+@include describe("focus-ring mixin") {
+  @include it("outputs the ring without a border by default") {
+    @include assert() {
+      @include output() {
+        .t {
+          @include focus-ring();
+        }
+      }
+      @include expect() {
+        .t {
+          outline: 0;
+          box-shadow: 0 0 0 0.25rem color-mix(in srgb, var(--tblr-primary) 25%, transparent);
+        }
+      }
+    }
+  }
+
+  @include it("adds a border colour when requested") {
+    @include assert() {
+      @include output() {
+        .t {
+          @include focus-ring($show-border: true);
+        }
+      }
+      @include expect() {
+        .t {
+          outline: 0;
+          box-shadow: 0 0 0 0.25rem color-mix(in srgb, var(--tblr-primary) 25%, transparent);
+          border-color: color-mix(in srgb, var(--tblr-primary) 25%, transparent);
+        }
+      }
+    }
+  }
+}
+
+@include describe("media-print mixin") {
+  @include it("wraps content in a print media query") {
+    @include assert() {
+      @include output() {
+        @include media-print {
+          .x {
+            display: none;
+          }
+        }
+      }
+      @include expect() {
+        @media print {
+          .x {
+            display: none;
+          }
+        }
+      }
+    }
+  }
+}
+
+@include describe("scrollbar mixin") {
+  // The mixin resolves `&` to the current selector (or `*` at root); nested here,
+  // every rule is prefixed with `.scroll`. Also covers the reduced-motion query
+  // injected by the transition mixin.
+  @include it("emits the webkit scrollbar rule set") {
+    @include assert() {
+      @include output() {
+        .scroll {
+          @include scrollbar;
+        }
+      }
+      @include expect() {
+        .scroll {
+          scrollbar-color: color-mix(in srgb, var(--tblr-scrollbar-color, var(--tblr-body-color)) 20%, transparent) transparent;
+        }
+        .scroll::-webkit-scrollbar {
+          width: 1rem;
+          height: 1rem;
+          transition: background 0.3s;
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .scroll::-webkit-scrollbar {
+            transition: none;
+          }
+        }
+        .scroll::-webkit-scrollbar-thumb {
+          border-radius: 1rem;
+          border: 5px solid transparent;
+          box-shadow: inset 0 0 0 1rem color-mix(in srgb, var(--tblr-scrollbar-color, var(--tblr-body-color)) 20%, transparent);
+        }
+        .scroll::-webkit-scrollbar-track {
+          background: transparent;
+        }
+        .scroll:hover::-webkit-scrollbar-thumb {
+          box-shadow: inset 0 0 0 1rem color-mix(in srgb, var(--tblr-scrollbar-color, var(--tblr-body-color)) 40%, transparent);
+        }
+        .scroll::-webkit-scrollbar-corner {
+          background: transparent;
+        }
+      }
+    }
+  }
+}
