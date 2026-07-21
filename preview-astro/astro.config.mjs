@@ -37,6 +37,9 @@ function prettifyHtml() {
 
 // https://astro.build/config
 export default defineConfig({
+	// pages live at the package root (./pages) — all components/lib/data are
+	// shared (see the @shared alias)
+	srcDir: '.',
 	vite: {
 		// InlineScript.astro renders nothing here — scripts go through the
 		// addPageScript() registry and the <PageScripts /> drain (Eleventy model)
@@ -51,7 +54,7 @@ export default defineConfig({
 				// Astro components/lib shared with docs-astro (single source of truth)
 				'@shared': fileURLToPath(new URL('../shared/astro', import.meta.url)),
 				// this package's pages dir — used by @shared/lib/docs-children's glob
-				'@pages': fileURLToPath(new URL('./src/pages', import.meta.url)),
+				'@pages': fileURLToPath(new URL('./pages', import.meta.url)),
 			},
 		},
 	},
