@@ -39,9 +39,9 @@ it before the first port. State and pitfalls: memory `tabler-astro-poc`.
 
 5. **Build + diff.** In preview-astro: `pnpm test` — it builds the package,
    builds/reuses the Eleventy references in `.parity/` and checks every page
-   from `parity-manifest.json` (comparator: `preview-astro/.build/compare-dom.py`).
+   from `parity-manifest.json` (comparator: `.build/compare-dom.py` at the repo root — one shared copy).
    For a single page during iteration:
-   `python3 .build/compare-dom.py <ref>.html dist/<page>.html --out-dir .parity/diff`
+   `python3 ../.build/compare-dom.py <ref>.html dist/<page>.html --out-dir .parity/diff`
    Iterate until `IDENTICAL`, then ADD THE PAGE to `parity-manifest.json` —
    that's what locks it against regressions. The comparator normalizes
    only non-semantic things: attribute order, whitespace, comments,

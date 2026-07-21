@@ -4,13 +4,18 @@
 //
 // References are built with Eleventy (NODE_ENV=development) into .parity/
 // (gitignored) and cached; pass --refresh to rebuild them.
+//
+// One shared copy for all Astro packages: run from the package directory
+// (`node ../.build/parity.mjs`) — the package root is process.cwd(), the
+// repo root and compare-dom.py are resolved relative to this script.
 import { execFileSync, execSync } from 'node:child_process';
 import { existsSync, mkdirSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-const root = join(dirname(fileURLToPath(import.meta.url)), '..');
-const repo = join(root, '..');
+const root = process.cwd();
+const scriptDir = dirname(fileURLToPath(import.meta.url));
+const repo = join(scriptDir, '..');
 const cache = join(root, '.parity');
 const refresh = process.argv.includes('--refresh');
 
@@ -51,7 +56,7 @@ for (const page of manifest.pages) {
 	try {
 		output = execFileSync(
 			'python3',
-			[join(root, '.build', 'compare-dom.py'), ref, dist, '--out-dir', join(cache, 'diff')],
+			[join(scriptDir, 'compare-dom.py'), ref, dist, '--out-dir', join(cache, 'diff')],
 			{ encoding: 'utf8' },
 		);
 	} catch (error) {

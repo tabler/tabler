@@ -3,7 +3,7 @@
 Goal: the generated HTML must be **semantically identical** to the Eleventy
 build (`NODE_ENV=development`). Verification: canonical DOM diff (sorted
 attributes, normalized whitespace, no HTML comments) — see
-`.build/compare-dom.py` (gate: `pnpm test` → `.build/parity.mjs` + `parity-manifest.json`). This means:
+`../.build/compare-dom.py` (gate: `pnpm test` → `../.build/parity.mjs` + `parity-manifest.json`). This means:
 
 - **Class token order must be identical** to the Liquid output (attributes are
   sorted for the diff, but attribute values are not).
