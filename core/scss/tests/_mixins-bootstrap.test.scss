@@ -1,0 +1,55 @@
+// Output tests for the self-contained Bootstrap-layer mixins. These have no
+// dependency on project variables, so they are pulled in directly by path.
+// `output()` / `expect()` come from the `true` module (injected by the runner).
+
+@use "../mixins/bootstrap/clearfix" as *;
+@use "../mixins/bootstrap/visually-hidden" as *;
+
+@include describe("clearfix mixin") {
+  @include it("emits a clearing ::after pseudo-element") {
+    @include assert() {
+      @include output() {
+        .t {
+          @include clearfix();
+        }
+      }
+      @include expect() {
+        .t::after {
+          display: block;
+          clear: both;
+          content: "";
+        }
+      }
+    }
+  }
+}
+
+@include describe("visually-hidden mixin") {
+  @include it("hides the element while keeping it accessible") {
+    @include assert() {
+      @include output() {
+        .t {
+          @include visually-hidden();
+        }
+      }
+      @include expect() {
+        .t {
+          width: 1px !important;
+          height: 1px !important;
+          padding: 0 !important;
+          margin: -1px !important;
+          overflow: hidden !important;
+          clip: rect(0, 0, 0, 0) !important;
+          white-space: nowrap !important;
+          border: 0 !important;
+        }
+        .t:not(caption) {
+          position: absolute !important;
+        }
+        .t * {
+          overflow: hidden !important;
+        }
+      }
+    }
+  }
+}

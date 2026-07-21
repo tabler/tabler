@@ -1,0 +1,26 @@
+// Output test for the `color-mode` mixin in scss/mixins/bootstrap/_color-mode.scss.
+//
+// With the default `$color-mode-type: data`, the mixin scopes its content under
+// the `[data-bs-theme]` / `[data-theme]` attribute selectors (the mechanism
+// Tabler uses for dark mode). The `media-query` branch depends on overriding
+// that global through the variables module, so it is not covered here.
+
+@use "../mixins/bootstrap/color-mode" as *;
+
+@include describe("color-mode") {
+  @include it("scopes content under the theme attribute selectors") {
+    @include assert() {
+      @include output() {
+        @include color-mode(dark) {
+          .x { color: red; }
+        }
+      }
+      @include expect() {
+        [data-bs-theme=dark] .x,
+        [data-theme=dark] .x {
+          color: red;
+        }
+      }
+    }
+  }
+}

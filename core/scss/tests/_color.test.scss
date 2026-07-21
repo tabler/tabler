@@ -1,0 +1,44 @@
+// Priority 2 — unit tests for the colour/contrast helpers in
+// scss/mixins/_functions.scss. These are deterministic and, unlike
+// `color-contrast`, do not read any global config, so they can be exercised in
+// isolation. A regression here silently degrades accessibility, which is why
+// they rank high.
+
+@use "../mixins/functions" as *;
+
+@include describe("luminance") {
+  @include it("is 0 for black and 1 for white") {
+    @include assert-equal(luminance(#000), 0);
+    @include assert-equal(luminance(#fff), 1);
+  }
+}
+
+@include describe("contrast-ratio") {
+  @include it("is 21 for the black/white extreme") {
+    @include assert-equal(contrast-ratio(#000, #fff), 21);
+  }
+
+  @include it("is 1 for a colour against itself") {
+    @include assert-equal(contrast-ratio(#fff, #fff), 1);
+  }
+}
+
+@include describe("shade-color / tint-color") {
+  @include it("shade mixes the colour toward black") {
+    @include assert-equal(shade-color(#ffffff, 10%), rgb(229.5, 229.5, 229.5));
+  }
+
+  @include it("tint mixes the colour toward white") {
+    @include assert-equal(tint-color(#000000, 10%), rgb(25.5, 25.5, 25.5));
+  }
+}
+
+@include describe("shift-color") {
+  @include it("shades when the weight is positive") {
+    @include assert-equal(shift-color(#808080, 20%), shade-color(#808080, 20%));
+  }
+
+  @include it("tints when the weight is negative") {
+    @include assert-equal(shift-color(#808080, -20%), tint-color(#808080, 20%));
+  }
+}

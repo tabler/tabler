@@ -1,7 +1,11 @@
-name: Test build
+name: SCSS Tests
 
 on:
   pull_request: null
+  push:
+    branches:
+      - dev
+      - main
 
 permissions:
   contents: read
@@ -13,14 +17,6 @@ jobs:
       - name: Clone repository
         uses: actions/checkout@v7
 
-      - name: Cache turbo build setup
-        uses: actions/cache@v6
-        with: 
-          path: .turbo
-          key: ${{ runner.os }}-turbo-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-turbo-
-
       - name: Install PNPM
         uses: pnpm/action-setup@v6
 
@@ -30,10 +26,8 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'pnpm'
 
-      - run: node --version
-
-      - name: Install pnpm dependencies
+      - name: Install dependencies
         run: pnpm install
 
-      - name: Build
-        run: pnpm run build
+      - name: Run SCSS tests
+        run: pnpm --filter @tabler/core test:scss
