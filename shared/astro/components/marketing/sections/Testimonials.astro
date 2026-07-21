@@ -1,12 +1,10 @@
 ---
 // Port of marketing/sections/testimonials.html.
-// The avatar (ui/avatar.html person=... size="md") is inlined here instead of
-// reusing components/ui/Avatar.astro: Avatar hardcodes the "./" asset base
-// (root-level pages), but the marketing pages live one level deep, so the
-// reference uses "../static/avatars/...". Inlining lets us emit the correct
-// "../" prefix without modifying the committed Avatar component.
+// Marketing pages live one level deep, so the avatar asset base is ".."
+// (reference uses "../static/avatars/...") — passed to Avatar via `base`.
 import testimonials from '@data/testimonials.json';
 import people from '@data/people.json';
+import Avatar from '../../ui/Avatar.astro';
 
 interface Person {
 	full_name?: string;
@@ -36,10 +34,6 @@ const groups: string[][] = [];
 for (let i = 0; i < list.length; i += chunkSize) {
 	groups.push(list.slice(i, i + chunkSize));
 }
-
-// equivalent of the first_letters filter
-const firstLetters = (s: string) =>
-	(s || '').split(' ').map((w) => w.charAt(0)).join('');
 
 // Liquid: {% assign i = 1 %} — a global counter incremented per testimonial,
 // used to index people[i] (people[0] is intentionally skipped).
@@ -75,12 +69,7 @@ const cards = groups.map((group) =>
 										<div class="card-body">
 											<div class="row mb-3">
 												<div class="col-auto">
-													<span
-														class="avatar avatar-md"
-														style={person.photo ? `background-image: url(../${person.photo})` : undefined}
-													>
-														{!person.photo && firstLetters(person.full_name ?? '')}
-													</span>
+													<Avatar person={person} size="md" base=".." />
 												</div>
 												<div class="col">
 													<h3 class="h3 m-0">{person.full_name}</h3>

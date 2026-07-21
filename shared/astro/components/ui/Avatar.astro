@@ -27,6 +27,8 @@ interface Props {
 	statusIcon?: string;
 	brand?: string;
 	icon?: string;
+	/** asset URL base — '.' for root-level pages, '..' for pages one level deep (e.g. marketing/) */
+	base?: string;
 }
 
 const {
@@ -47,6 +49,7 @@ const {
 	statusIcon,
 	brand,
 	icon,
+	base = '.',
 } = Astro.props;
 
 // equivalent of the first_letters filter
@@ -81,10 +84,10 @@ const classes = [
 
 <El
 	class={classes}
-	style={src ? `background-image: url(./${src})` : undefined}
+	style={src ? `background-image: url(${base}/${src})` : undefined}
 	data-bs-toggle={dropdown ? 'dropdown' : undefined}
 >{status && (
 		<span class={`badge bg-${status}`}>{statusText ? statusText : statusIcon ? <Icon name={statusIcon} class="avatar-status-icon" /> : null}</span>
-	)}{brand && <span class="avatar-brand" style={`background-image: url(./static/brands/${brand}.svg);`} />}{
+	)}{brand && <span class="avatar-brand" style={`background-image: url(${base}/static/brands/${brand}.svg);`} />}{
 		src ? null : placeholder ? placeholder : icon ? <Icon name={icon} class="avatar-icon" /> : <Icon name="user" class="avatar-icon" />
 	}</El>

@@ -6,6 +6,7 @@
 // The access token comes from site data (site.mapboxKey).
 // Renders nothing unless maps[mapId] exists (Liquid: {% if data %}).
 import { addPageScript } from '@shared/lib/page-scripts';
+import InlineScript from '@pkg/components/InlineScript.astro';
 import maps from '@data/maps.json';
 import site from '@data/site.json';
 
@@ -29,6 +30,7 @@ type MapData = {
 
 const data = (maps as Record<string, MapData>)[mapId];
 
+let script = '';
 if (data) {
 	const style = data.style ?? 'streets-v11';
 	const zoom = data.zoom ?? 13;
@@ -42,7 +44,7 @@ if (data) {
 		)
 		.join('');
 
-	const script = `<script>
+	script = `<script>
 		window.tabler_map = window.tabler_map || {};
 
 		document.addEventListener("DOMContentLoaded", function() {
@@ -73,3 +75,4 @@ const ratioClass = data?.ratio ?? ratio ?? '16x9';
 		</div>
 	)
 }
+{data && <InlineScript code={script} />}

@@ -1,6 +1,7 @@
 ---
 // Equivalent of ui/chart-sparkline.html
 import { addPageScript } from '@shared/lib/page-scripts';
+import InlineScript from '@pkg/components/InlineScript.astro';
 
 interface Props {
 	id?: string;
@@ -41,8 +42,9 @@ const classes = [
 	.filter(Boolean)
 	.join(' ');
 
+let script = '';
 if (id) {
-	const script = `<script>
+	script = `<script>
 	document.addEventListener("DOMContentLoaded", function () {
 		window.tabler_chart = window.tabler_chart || {};
 
@@ -115,3 +117,4 @@ ${
 ---
 
 {id && <div class={classes} id={`sparkline-${id}`} />}
+{id && <InlineScript code={script} />}

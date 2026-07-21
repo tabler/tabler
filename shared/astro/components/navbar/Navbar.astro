@@ -1,22 +1,27 @@
 ---
 // Full port of layout/navbar.html (both condensed and non-condensed branches).
-// Called from DefaultLayout with the params default.html forwards: condensed,
-// overlap, dark, hideBrand, sticky, transparent, class, hideSearch (always true).
+// Called from DefaultLayout with the params default.html forwards (condensed,
+// overlap, dark, hideBrand, sticky, transparent, class, hideSearch — always
+// true there) and standalone from navigation.astro with the showcase params
+// (sample, personId, hideLogo, smallLogo, showTitle, hideIcons, hideUsername,
+// hideSearch, hideBrand, background, backgroundColor, fluidSearch).
 //
-// hide-search is always true on default-layout pages, so:
-//  - the condensed branch always renders the menu nav (never the search),
-//  - the non-condensed second block never renders the search column.
-// Therefore layout/navbar-search.html is intentionally not ported.
+// TODO: unported Liquid params (unused by any ported page):
+//  - hide-menu (the `elsif include.hide-menu` branch in the condensed collapse:
+//    search only, rounded=include.transparent),
+//  - dark-secondary (data-bs-theme="dark" on the non-condensed inner
+//    `<div class="navbar">`).
 //
-// TODO: navbar-standalone params used only by navigation.html (background,
-// background-color, small-logo, show-title, hide-icons, hide-username,
-// person-id, fluid-search, sample, dark-secondary, hide-menu) — that showcase
-// page still uses a verbatim fragment.
+// Note on fluid-search: in the Liquid source the search block inside the
+// condensed branch sits in `{% unless condensed %}` nested in `{% if condensed %}`
+// — dead code, it can never render. fluid-search therefore has no effect on the
+// output; the prop is accepted for parity with the include signature only.
 import Icon from '../Icon.astro';
 import NavbarLogo from '../NavbarLogo.astro';
 import NavbarToggler from './NavbarToggler.astro';
 import NavbarSide from './NavbarSide.astro';
 import NavbarMenu from './NavbarMenu.astro';
+import NavbarSearch from './NavbarSearch.astro';
 
 interface Props {
 	hideSearch?: boolean;
@@ -29,6 +34,21 @@ interface Props {
 	overlap?: boolean;
 	sticky?: boolean;
 	hideBrand?: boolean;
+	/** use the sample menu (menu-sample.json) instead of the real one */
+	sample?: boolean;
+	/** 1-based index into people.json for the user menu avatar */
+	personId?: number;
+	hideLogo?: boolean;
+	smallLogo?: boolean;
+	showTitle?: boolean;
+	hideIcons?: boolean;
+	hideUsername?: boolean;
+	/** bg-{background} class on the header (ignored when transparent) */
+	background?: string;
+	/** inline `background:` style on the header */
+	backgroundColor?: string;
+	/** no-op — see the fluid-search note above */
+	fluidSearch?: boolean;
 	/** layout-navbar-class */
 	class?: string;
 }
@@ -45,12 +65,21 @@ const {
 	overlap = false,
 	sticky = false,
 	hideBrand = false,
+	sample = false,
+	personId,
+	hideLogo = false,
+	smallLogo = false,
+	showTitle = false,
+	hideIcons = false,
+	hideUsername = false,
+	background,
+	backgroundColor,
 	class: className,
 } = Astro.props;
 
 const headerClass = [
 	`navbar navbar-expand-${breakpoint}`,
-	transparent && 'navbar-transparent',
+	transparent ? 'navbar-transparent' : background && `bg-${background}`,
 	sticky && 'sticky-top',
 	overlap && 'navbar-overlap',
 	className,
@@ -62,11 +91,25 @@ const headerClass = [
 
 {sticky && <Fragment set:html="<div class='sticky-top'>" />}
 
-<header class={headerClass} data-bs-theme={dark ? 'dark' : undefined}>
+<header
+	class={headerClass}
+	style={backgroundColor ? `background: ${backgroundColor}` : undefined}
+	data-bs-theme={dark ? 'dark' : undefined}
+>
 	<div class="container-xl">
 		<NavbarToggler target="navbar-menu" />
 
-		{!hideBrand && <NavbarLogo header class="d-none-navbar-horizontal pe-0 pe-md-3" />}
+		{
+			!hideBrand && (
+				<NavbarLogo
+					header
+					class="d-none-navbar-horizontal pe-0 pe-md-3"
+					smallLogo={smallLogo}
+					hideLogo={hideLogo}
+					showTitle={showTitle}
+				/>
+			)
+		}
 
 		{/* navbar.html passes the show-* flags with default: true */}
 		<NavbarSide
@@ -74,6 +117,8 @@ const headerClass = [
 			breakpoint={breakpoint}
 			condensed={condensed}
 			dark={dark}
+			personId={personId}
+			hideUsername={hideUsername}
 			showThemeToggle
 			showNotifications
 			showApps
@@ -84,12 +129,24 @@ const headerClass = [
 		{
 			condensed && (
 				<div class="collapse navbar-collapse" id="navbar-menu">
-					{/* hide-search is always true → menu nav */}
-					<!-- BEGIN NAVBAR MENU -->
-					<nav aria-label="Primary">
-						<NavbarMenu pageMenu={pageMenu} />
-					</nav>
-					<!-- END NAVBAR MENU -->
+					{hideSearch ? (
+						<Fragment>
+							<!-- BEGIN NAVBAR MENU -->
+							<nav aria-label="Primary">
+								<NavbarMenu sample={sample} hideIcons={hideIcons} pageMenu={pageMenu} />
+							</nav>
+							<!-- END NAVBAR MENU -->
+						</Fragment>
+					) : (
+						<div class="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center">
+							<!-- BEGIN NAVBAR MENU -->
+							<nav aria-label="Primary">
+								<NavbarMenu sample={sample} hideIcons={hideIcons} pageMenu={pageMenu} />
+							</nav>
+							<!-- END NAVBAR MENU -->
+							{/* the Liquid search block here is inside `unless condensed` — dead code, nothing to render */}
+						</div>
+					)}
 				</div>
 			)
 		}
@@ -106,10 +163,16 @@ const headerClass = [
 							<div class="col">
 								<!-- BEGIN NAVBAR MENU -->
 								<nav aria-label="Primary">
-									<NavbarMenu longTitles pageMenu={pageMenu} />
+									<NavbarMenu longTitles sample={sample} hideIcons={hideIcons} pageMenu={pageMenu} />
 								</nav>
 								<!-- END NAVBAR MENU -->
 							</div>
+
+							{!hideSearch && (
+								<div class="col-2 d-none d-xxl-block">
+									<NavbarSearch class="my-2 my-md-0 flex-grow-1 flex-md-grow-0 order-first order-md-last" />
+								</div>
+							)}
 
 							<div class="col col-md-auto">
 								<!-- BEGIN NAVBAR NAV -->

@@ -7,6 +7,7 @@
 // so the init assigns into window.tabler_datepicker[...].
 import Icon from '../Icon.astro';
 import { addPageScript } from '@shared/lib/page-scripts';
+import InlineScript from '@pkg/components/InlineScript.astro';
 
 interface Props {
 	id?: string;
@@ -93,3 +94,4 @@ if (id && script && !showScripts) {
 		))
 }
 {showScripts && id && <Fragment set:html={script} />}
+{!showScripts && id && script && <InlineScript code={script} />}

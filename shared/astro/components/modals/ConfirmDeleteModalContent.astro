@@ -5,8 +5,9 @@ import Icon from '../Icon.astro';
 import Button from '../Button.astro';
 import ModalClose from './ModalClose.astro';
 import { addPageScript } from '@shared/lib/page-scripts';
+import InlineScript from '@pkg/components/InlineScript.astro';
 
-addPageScript(`<script>
+const script = `<script>
 document.addEventListener("DOMContentLoaded", function () {
 	const checkbox = document.getElementById("confirm-delete-checkbox");
 	const deleteButton = document.getElementById("confirm-delete-button");
@@ -17,7 +18,8 @@ document.addEventListener("DOMContentLoaded", function () {
 		});
 	}
 });
-</script>`);
+</script>`;
+addPageScript(script);
 ---
 
 <ModalClose />
@@ -60,3 +62,4 @@ document.addEventListener("DOMContentLoaded", function () {
 		</div>
 	</div>
 </div>
+<InlineScript code={script} />

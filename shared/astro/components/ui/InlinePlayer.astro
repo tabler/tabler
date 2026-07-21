@@ -5,6 +5,7 @@
 // build, which wraps the instance in window.tabler_player.
 // Renders nothing unless both id and embedId are provided (Liquid: {% if id and include.embed-id %}).
 import { addPageScript } from '@shared/lib/page-scripts';
+import InlineScript from '@pkg/components/InlineScript.astro';
 
 interface Props {
 	id?: string;
@@ -17,8 +18,9 @@ const { id, type = 'youtube', embedId } = Astro.props;
 
 const enabled = Boolean(id && embedId);
 
+let script = '';
 if (enabled) {
-	const script = `<script>
+	script = `<script>
   document.addEventListener("DOMContentLoaded", function () {
     window.tabler_player = window.tabler_player || {};
     window.Plyr && (window.tabler_player["player-${id}"] = new Plyr('#player-${id}'));
@@ -33,3 +35,4 @@ if (enabled) {
 		<div id={`player-${id}`} data-plyr-provider={type} data-plyr-embed-id={embedId} />
 	)
 }
+{enabled && <InlineScript code={script} />}

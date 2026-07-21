@@ -3,6 +3,7 @@
 // The init <script> is captured via {% capture_script %} in the Liquid source,
 // so it is registered with addPageScript synchronously here (before any await).
 import { addPageScript } from '@shared/lib/page-scripts';
+import InlineScript from '@pkg/components/InlineScript.astro';
 
 interface Props {
 	id?: string;
@@ -91,3 +92,4 @@ addPageScript(script);
 ---
 
 <div id={`calendar-${id}`}></div>
+<InlineScript code={script} />

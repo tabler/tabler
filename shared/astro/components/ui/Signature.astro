@@ -5,6 +5,7 @@
 // is synchronous in the frontmatter — see src/lib/page-scripts.ts.
 import Icon from '../Icon.astro';
 import { addPageScript } from '@shared/lib/page-scripts';
+import InlineScript from '@pkg/components/InlineScript.astro';
 
 interface Props {
 	id?: string;
@@ -39,7 +40,7 @@ const clearSnippet = clear
 const extraSnippet = extraJs ? `${extraJs}
 ` : '';
 
-addPageScript(`<!-- BEGIN SIGNATURE PAD -->
+const script = `<!-- BEGIN SIGNATURE PAD -->
 <script>
   document.addEventListener("${event}", function () {
     const canvas = document.getElementById("signature-${id}");
@@ -68,7 +69,8 @@ ${clearSnippet}
 ${extraSnippet}
     }
   });
-</script>`);
+</script>`;
+addPageScript(script);
 ---
 
 <div class={signatureClass}>
@@ -83,3 +85,4 @@ ${extraSnippet}
 	}
 	<canvas id={`signature-${id}`} width={width} height={height} class="signature-canvas"></canvas>
 </div>
+<InlineScript code={script} />
