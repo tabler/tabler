@@ -38,6 +38,15 @@ const copies = [
 		required: true,
 		allowDestinationFallback: true,
 	},
+	// docs' own public assets (img/ with logos, covers, favicons) — Eleventy
+	// passthrough "public": "/" in docs/eleventy.config.mjs. Merge-copied into
+	// public/ (fallback entries skip the rm of the destination).
+	{
+		from: join(repo, 'docs', 'public'),
+		to: join(root, 'public'),
+		required: true,
+		allowDestinationFallback: true,
+	},
 	// static assets (photos, avatars, tracks, brand svgs...) — Eleventy passthrough "static"
 	{ from: join(repo, 'preview', 'static'), to: join(root, 'public', 'static'), required: true },
 	// favicons (source assets of @tabler/preview)
