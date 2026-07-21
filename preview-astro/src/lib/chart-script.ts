@@ -25,7 +25,30 @@ export type ChartData = {
 	legend?: boolean;
 	title?: string;
 	color?: string;
+	colors?: string[];
 	datalabels?: boolean;
+	'fill-type'?: string;
+	'fill-gradient-shade'?: string;
+	'fill-gradient-type'?: string;
+	'fill-gradient-shade-intensity'?: number;
+	'fill-gradient-to-color'?: string;
+	'fill-gradient-inverse-colors'?: boolean;
+	'fill-gradient-opacity-from'?: number;
+	'fill-gradient-opacity-to'?: number;
+	'fill-gradient-stops'?: number[];
+	'radial-start-angle'?: number;
+	'radial-end-angle'?: number;
+	'radial-hollow-margin'?: number;
+	'radial-hollow-size'?: string;
+	'radial-labels-show'?: boolean;
+	'radial-name-show'?: boolean;
+	'radial-name-offset-y'?: number;
+	'radial-name-font-size'?: string;
+	'radial-name-color'?: string;
+	'radial-value-offset-y'?: number;
+	'radial-value-font-size'?: string;
+	'radial-value-font-weight'?: number;
+	'stroke-linecap'?: string;
 	'stroke-width'?: number[];
 	'stroke-dash'?: number[];
 	'stroke-curve'?: string;
@@ -106,17 +129,24 @@ ${data.horizontal ? `\t\tbarHeight: '50%',\n\t\thorizontal: true,` : `\t\tcolumn
 	if (type === 'radialBar') {
 		p.push(`plotOptions: {
 \tradialBar: {
-\t\tstartAngle: -120,
-\t\tendAngle: 120,
+\t\tstartAngle: ${data['radial-start-angle'] ?? -120},
+\t\tendAngle: ${data['radial-end-angle'] ?? 120},
 \t\thollow: {
-\t\t\tmargin: 16,
-\t\t\tsize: "50%"
+\t\t\tmargin: ${data['radial-hollow-margin'] ?? 16},
+\t\t\tsize: "${data['radial-hollow-size'] ?? '50%'}"
 \t\t},
 \t\tdataLabels: {
-\t\t\tshow: true,
+\t\t\tshow: ${data['radial-labels-show'] === false ? 'false' : 'true'},
+\t\t\tname: {
+\t\t\t\tshow: ${data['radial-name-show'] ? 'true' : 'false'},
+\t\t\t\toffsetY: ${data['radial-name-offset-y'] ?? 0},
+\t\t\t\tfontSize: '${data['radial-name-font-size'] ?? '16px'}',
+\t\t\t\tcolor: '${data['radial-name-color'] ?? 'inherit'}',
+\t\t\t},
 \t\t\tvalue: {
-\t\t\t\toffsetY: -8,
-\t\t\t\tfontSize: '24px',
+\t\t\t\toffsetY: ${data['radial-value-offset-y'] ?? -8},
+\t\t\t\tfontSize: '${data['radial-value-font-size'] ?? '24px'}',
+\t\t\t\tfontWeight: ${data['radial-value-font-weight'] ?? 600},
 \t\t\t}
 \t\t},
 \t},
@@ -127,7 +157,25 @@ ${data.horizontal ? `\t\tbarHeight: '50%',\n\t\thorizontal: true,` : `\t\tcolumn
 		p.push(`dataLabels: {\n\tenabled: ${data.datalabels ? 'true' : 'false'},\n},`);
 	}
 
-	if (type === 'area') {
+	if (data['fill-type']) {
+		const gradient =
+			data['fill-type'] === 'gradient'
+				? `,
+\tgradient: {
+\t\tshade: '${data['fill-gradient-shade'] ?? 'light'}',
+\t\ttype: '${data['fill-gradient-type'] ?? 'horizontal'}',
+\t\tshadeIntensity: ${data['fill-gradient-shade-intensity'] ?? 0.5},
+\t\tgradientToColors: ['${data['fill-gradient-to-color'] ?? '#9ec2fb'}'],
+\t\tinverseColors: ${data['fill-gradient-inverse-colors'] ? 'true' : 'false'},
+\t\topacityFrom: ${data['fill-gradient-opacity-from'] ?? 1},
+\t\topacityTo: ${data['fill-gradient-opacity-to'] ?? 1},
+\t\tstops: [${(data['fill-gradient-stops'] ?? [0, 100]).join(', ')}]
+\t}`
+				: '';
+		p.push(`fill: {
+\ttype: '${data['fill-type']}'${gradient}
+},`);
+	} else if (type === 'area') {
 		p.push(`fill: {
 \tcolors: [
 \t\t'var(--chart-${id}-fill-0)',
@@ -149,7 +197,11 @@ ${data.horizontal ? `\t\tbarHeight: '50%',\n\t\thorizontal: true,` : `\t\tcolumn
 },`);
 	}
 
-	if (type === 'area' || type === 'line') {
+	if (type === 'radialBar' && data['stroke-linecap']) {
+		p.push(`stroke: {
+\tlineCap: "${data['stroke-linecap']}"
+},`);
+	} else if (type === 'area' || type === 'line') {
 		const width = data['stroke-width'] ? `[${data['stroke-width'].join(', ')}]` : '2';
 		const dash = data['stroke-dash'] ? `dashArray: [${data['stroke-dash'].join(', ')}],\n\t` : '';
 		p.push(`stroke: {
@@ -240,7 +292,9 @@ ${data.horizontal ? `\t\tbarHeight: '50%',\n\t\thorizontal: true,` : `\t\tcolumn
 		p.push(`labels: [\n\t${labels.map((l) => `'${l}'`).join(', ')}\n],`);
 	}
 
-	if (series.length > 0) {
+	if (data.colors) {
+		p.push(`colors: [${data.colors.map((color) => `'${color}'`).join(', ')}],`);
+	} else if (series.length > 0) {
 		p.push(`colors: [${series.map((_, i) => `'var(--chart-${id}-color-${i})'`).join(', ')}],`);
 	}
 
