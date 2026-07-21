@@ -160,10 +160,13 @@
 					if (key === "theme" && value === "auto") {
 						applied = window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light"
 					}
-					document.documentElement.setAttribute("data-bs-" + key, applied)
+					if (applied !== themeConfig[key]) {
+						document.documentElement.setAttribute("data-bs-" + key, applied)
+					} else {
+						document.documentElement.removeAttribute("data-bs-" + key)
+					}
 					window.localStorage.setItem("tabler-" + key, value)
 					url.searchParams.set(key, value)
-				}
 			}
 
 			window.history.pushState({}, "", url)
