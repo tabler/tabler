@@ -6,6 +6,9 @@ import { fileURLToPath } from 'node:url'
 // https://astro.build/config
 export default defineConfig({
   site: 'https://docs.tabler.io',
+  // pages live at the package root (./pages) — content-first layout like the
+  // Eleventy docs; components/lib/data stay under ./src (see @pkg alias)
+  srcDir: '.',
   vite: {
     resolve: {
       alias: {

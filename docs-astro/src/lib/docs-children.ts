@@ -15,7 +15,7 @@ export type DocsChildPage = {
 
 // Both page conventions are supported: `foo/index.mdx` and flat `foo.mdx`
 // produce the same route (/foo/) with the default 'directory' build format.
-const pageModules = import.meta.glob('../pages/**/*.mdx', { eager: true });
+const pageModules = import.meta.glob('../../pages/**/*.mdx', { eager: true });
 
 function getFrontmatter(mod: unknown): DocsPageFrontmatter | null {
 	if (!mod || typeof mod !== 'object') return null;
@@ -29,7 +29,7 @@ function getFrontmatter(mod: unknown): DocsPageFrontmatter | null {
 
 function urlFromGlobPath(path: string): string {
 	const rel = path
-		.replace('../pages/', '')
+		.replace('../../pages/', '')
 		.replace(/(?:^|\/)index\.mdx$/, '')
 		.replace(/\.mdx$/, '');
 	return rel ? `/${rel}/` : '/';
