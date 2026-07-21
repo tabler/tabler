@@ -3,13 +3,21 @@ import { site } from '@shared/lib/site';
 
 export const prerender = true;
 
-const pages = import.meta.glob('./**/index.{astro,mdx}');
+// Both page conventions are supported: `foo/index.mdx` and flat `foo.mdx`
+// produce the same route (/foo/) with the default 'directory' build format.
+const pages = import.meta.glob('./**/*.{astro,mdx}');
 
-const urls = Object.keys(pages)
-	.map((file) => {
-		const path = file.replace(/^\.\//, '').replace(/\/?index\.(?:astro|mdx)$/, '');
-		return path ? `/${path}/` : '/';
-	})
+const urls = [
+	...new Set(
+		Object.keys(pages).map((file) => {
+			const path = file
+				.replace(/^\.\//, '')
+				.replace(/\/?index\.(?:astro|mdx)$/, '')
+				.replace(/\.(?:astro|mdx)$/, '');
+			return path ? `/${path}/` : '/';
+		}),
+	),
+]
 	.sort((a, b) => {
 		if (a === '/') return -1;
 		if (b === '/') return 1;

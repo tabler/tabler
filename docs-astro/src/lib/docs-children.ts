@@ -13,7 +13,9 @@ export type DocsChildPage = {
 	order: number;
 };
 
-const pageModules = import.meta.glob('../pages/**/index.mdx', { eager: true });
+// Both page conventions are supported: `foo/index.mdx` and flat `foo.mdx`
+// produce the same route (/foo/) with the default 'directory' build format.
+const pageModules = import.meta.glob('../pages/**/*.mdx', { eager: true });
 
 function getFrontmatter(mod: unknown): DocsPageFrontmatter | null {
 	if (!mod || typeof mod !== 'object') return null;
@@ -26,8 +28,11 @@ function getFrontmatter(mod: unknown): DocsPageFrontmatter | null {
 }
 
 function urlFromGlobPath(path: string): string {
-	const rel = path.replace('../pages/', '').replace(/\/index\.mdx$/, '');
-	return `/${rel}/`;
+	const rel = path
+		.replace('../pages/', '')
+		.replace(/(?:^|\/)index\.mdx$/, '')
+		.replace(/\.mdx$/, '');
+	return rel ? `/${rel}/` : '/';
 }
 
 function normalizeUrl(url: string): string {
@@ -61,5 +66,7 @@ export function getDocsChildren(parentUrl: string): DocsChildPage[] {
 			};
 		})
 		.filter((page): page is DocsChildPage => page !== null)
+		// if a route exists in both conventions (foo.mdx AND foo/index.mdx), count it once
+		.filter((page, i, all) => all.findIndex((p) => p.url === page.url) === i)
 		.sort((a, b) => a.order - b.order || a.title.localeCompare(b.title));
 }
