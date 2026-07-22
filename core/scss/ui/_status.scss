@@ -1,165 +1,167 @@
 @use 'sass:map';
 
-@keyframes status-pulsate-main {
-  40% {
-    transform: scale(1.25, 1.25);
+@layer components {
+  @keyframes status-pulsate-main {
+    40% {
+      transform: scale(1.25, 1.25);
+    }
+    60% {
+      transform: scale(1.25, 1.25);
+    }
   }
-  60% {
-    transform: scale(1.25, 1.25);
-  }
-}
 
-@keyframes status-pulsate-secondary {
-  10% {
-    transform: scale(1, 1);
+  @keyframes status-pulsate-secondary {
+    10% {
+      transform: scale(1, 1);
+    }
+    30% {
+      transform: scale(3, 3);
+    }
+    80% {
+      transform: scale(3, 3);
+    }
+    100% {
+      transform: scale(1, 1);
+    }
   }
-  30% {
-    transform: scale(3, 3);
-  }
-  80% {
-    transform: scale(3, 3);
-  }
-  100% {
-    transform: scale(1, 1);
-  }
-}
 
-@keyframes status-pulsate-tertiary {
-  25% {
-    transform: scale(1, 1);
+  @keyframes status-pulsate-tertiary {
+    25% {
+      transform: scale(1, 1);
+    }
+    80% {
+      transform: scale(3, 3);
+      opacity: 0;
+    }
+    100% {
+      transform: scale(3, 3);
+      opacity: 0;
+    }
   }
-  80% {
-    transform: scale(3, 3);
-    opacity: 0;
+
+  //
+  // Status
+  //
+  .status {
+    --#{$prefix}status-height: #{$status-height};
+    --#{$prefix}status-color: #{$text-secondary};
+    --#{$prefix}status-color-rgb: #{to-rgb($text-secondary)};
+
+    display: inline-flex;
+    align-items: center;
+    height: var(--#{$prefix}status-height);
+    padding: 0.25rem 0.75rem;
+    gap: 0.5rem;
+    color: var(--#{$prefix}status-color);
+    background: color-transparent(var(--#{$prefix}status-color), 0.1);
+    font-size: $font-size-base;
+    text-transform: none;
+    letter-spacing: normal;
+    @include border-radius(var(--#{$prefix}border-radius-pill));
+    font-weight: var(--#{$prefix}font-weight-medium);
+    line-height: 1;
+    margin: 0;
+
+    .status-dot {
+      background: var(--#{$prefix}status-color);
+    }
+
+    .icon {
+      font-size: 1.25rem;
+    }
   }
-  100% {
-    transform: scale(3, 3);
-    opacity: 0;
+
+  .status-lite {
+    border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color) !important;
+    background: transparent !important;
+    color: var(--#{$prefix}body-color) !important;
   }
-}
 
-//
-// Status
-//
-.status {
-  --#{$prefix}status-height: #{$status-height};
-  --#{$prefix}status-color: #{$text-secondary};
-  --#{$prefix}status-color-rgb: #{to-rgb($text-secondary)};
+  @each $name, $color in map.merge($theme-colors, $social-colors) {
+    .status-#{$name} {
+      --#{$prefix}status-color: var(--#{$prefix}#{$name});
+      --#{$prefix}status-color-rgb: var(--#{$prefix}#{$name}-rgb);
+    }
+  }
 
-  display: inline-flex;
-  align-items: center;
-  height: var(--#{$prefix}status-height);
-  padding: 0.25rem 0.75rem;
-  gap: 0.5rem;
-  color: var(--#{$prefix}status-color);
-  background: color-transparent(var(--#{$prefix}status-color), 0.1);
-  font-size: $font-size-base;
-  text-transform: none;
-  letter-spacing: normal;
-  @include border-radius(var(--#{$prefix}border-radius-pill));
-  font-weight: var(--#{$prefix}font-weight-medium);
-  line-height: 1;
-  margin: 0;
-
+  //
+  // Status dot
+  //
   .status-dot {
-    background: var(--#{$prefix}status-color);
+    --#{$prefix}status-dot-color: var(--#{$prefix}status-color, #{$text-secondary});
+    --#{$prefix}status-size: #{$status-dot-size};
+    position: relative;
+    display: inline-block;
+    width: var(--#{$prefix}status-size);
+    height: var(--#{$prefix}status-size);
+    background: var(--#{$prefix}status-dot-color);
+    @include border-radius(var(--#{$prefix}border-radius-pill));
   }
 
-  .icon {
-    font-size: 1.25rem;
-  }
-}
-
-.status-lite {
-  border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color) !important;
-  background: transparent !important;
-  color: var(--#{$prefix}body-color) !important;
-}
-
-@each $name, $color in map.merge($theme-colors, $social-colors) {
-  .status-#{$name} {
-    --#{$prefix}status-color: var(--#{$prefix}#{$name});
-    --#{$prefix}status-color-rgb: var(--#{$prefix}#{$name}-rgb);
-  }
-}
-
-//
-// Status dot
-//
-.status-dot {
-  --#{$prefix}status-dot-color: var(--#{$prefix}status-color, #{$text-secondary});
-  --#{$prefix}status-size: #{$status-dot-size};
-  position: relative;
-  display: inline-block;
-  width: var(--#{$prefix}status-size);
-  height: var(--#{$prefix}status-size);
-  background: var(--#{$prefix}status-dot-color);
-  @include border-radius(var(--#{$prefix}border-radius-pill));
-}
-
-.status-dot-animated {
-  &:before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    background: inherit;
-    border-radius: inherit;
-    opacity: 0.6;
-    animation: 1s linear 2s backwards infinite status-pulsate-tertiary;
-  }
-}
-
-//
-// Status indicator
-//
-.status-indicator {
-  --#{$prefix}status-indicator-size: 2.5rem;
-  --#{$prefix}status-indicator-color: var(--#{$prefix}status-color, #{$text-secondary});
-  display: block;
-  position: relative;
-  width: var(--#{$prefix}status-indicator-size);
-  height: var(--#{$prefix}status-indicator-size);
-}
-
-.status-indicator-circle {
-  --#{$prefix}status-circle-size: 0.75rem;
-  position: absolute;
-  inset-inline-start: 50%;
-  top: 50%;
-  margin: calc(var(--#{$prefix}status-circle-size) / -2) 0 0 calc(var(--#{$prefix}status-circle-size) / -2);
-  width: var(--#{$prefix}status-circle-size);
-  height: var(--#{$prefix}status-circle-size);
-  @include border-radius(var(--#{$prefix}border-radius-pill));
-  background: var(--#{$prefix}status-color);
-
-  &:nth-child(1) {
-    z-index: 3;
+  .status-dot-animated {
+    &:before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      background: inherit;
+      border-radius: inherit;
+      opacity: 0.6;
+      animation: 1s linear 2s backwards infinite status-pulsate-tertiary;
+    }
   }
 
-  &:nth-child(2) {
-    z-index: 2;
-    opacity: 0.1;
+  //
+  // Status indicator
+  //
+  .status-indicator {
+    --#{$prefix}status-indicator-size: 2.5rem;
+    --#{$prefix}status-indicator-color: var(--#{$prefix}status-color, #{$text-secondary});
+    display: block;
+    position: relative;
+    width: var(--#{$prefix}status-indicator-size);
+    height: var(--#{$prefix}status-indicator-size);
   }
 
-  &:nth-child(3) {
-    z-index: 1;
-    opacity: 0.3;
-  }
-}
-
-.status-indicator-animated {
   .status-indicator-circle {
+    --#{$prefix}status-circle-size: 0.75rem;
+    position: absolute;
+    inset-inline-start: 50%;
+    top: 50%;
+    margin: calc(var(--#{$prefix}status-circle-size) / -2) 0 0 calc(var(--#{$prefix}status-circle-size) / -2);
+    width: var(--#{$prefix}status-circle-size);
+    height: var(--#{$prefix}status-circle-size);
+    @include border-radius(var(--#{$prefix}border-radius-pill));
+    background: var(--#{$prefix}status-color);
+
     &:nth-child(1) {
-      animation: 2s linear 1s infinite backwards status-pulsate-main;
+      z-index: 3;
     }
 
     &:nth-child(2) {
-      animation: 2s linear 1s infinite backwards status-pulsate-secondary;
+      z-index: 2;
+      opacity: 0.1;
     }
 
     &:nth-child(3) {
-      animation: 2s linear 1s infinite backwards status-pulsate-tertiary;
+      z-index: 1;
+      opacity: 0.3;
+    }
+  }
+
+  .status-indicator-animated {
+    .status-indicator-circle {
+      &:nth-child(1) {
+        animation: 2s linear 1s infinite backwards status-pulsate-main;
+      }
+
+      &:nth-child(2) {
+        animation: 2s linear 1s infinite backwards status-pulsate-secondary;
+      }
+
+      &:nth-child(3) {
+        animation: 2s linear 1s infinite backwards status-pulsate-tertiary;
+      }
     }
   }
 }

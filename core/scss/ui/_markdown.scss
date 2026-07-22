@@ -4,64 +4,67 @@ $markdown-line-height: var(--#{$prefix}line-height-lg) !default;
 /**
 Prose (formerly markdown)
  */
-.prose,
-.markdown {
-  line-height: $markdown-line-height;
-  font-size: $markdown-font-size;
 
-  > :first-child {
-    margin-top: 0;
-  }
+@layer components {
+  .prose,
+  .markdown {
+    line-height: $markdown-line-height;
+    font-size: $markdown-font-size;
 
-  > :last-child,
-  > :last-child .highlight {
-    margin-bottom: 0;
-  }
-
-  > hr {
-    @include media-breakpoint-up(md) {
-      margin-top: 3em;
-      margin-bottom: 3em;
-    }
-  }
-
-  > {
-    h1,
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-      font-weight: $headings-font-weight;
+    > :first-child {
+      margin-top: 0;
     }
 
-    h2,
-    h3,
-    h4,
-    h5,
-    h6 {
-      margin-top: 2.5rem;
+    > :last-child,
+    > :last-child .highlight {
+      margin-bottom: 0;
     }
-  }
 
-  > table {
-    font-size: var(--#{$prefix}body-font-size);
-    @extend .table, .table-bordered, .table-sm;
-  }
+    > hr {
+      @include media-breakpoint-up(md) {
+        margin-top: 3em;
+        margin-bottom: 3em;
+      }
+    }
 
-  > blockquote {
-    font-size: $h3-font-size;
-    margin: 1.5rem 0;
-    padding: 0.5rem 1.5rem;
-  }
+    > {
+      h1,
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        font-weight: $headings-font-weight;
+      }
 
-  > img,
-  > p > img {
-    @include border-radius(var(--#{$prefix}border-radius));
-    border: 1px solid var(--#{$prefix}border-color);
-  }
+      h2,
+      h3,
+      h4,
+      h5,
+      h6 {
+        margin-top: 2.5rem;
+      }
+    }
 
-  pre {
-    max-height: 20rem;
+    > table {
+      font-size: var(--#{$prefix}body-font-size);
+      @extend .table, .table-bordered, .table-sm;
+    }
+
+    > blockquote {
+      font-size: $h3-font-size;
+      margin: 1.5rem 0;
+      padding: 0.5rem 1.5rem;
+    }
+
+    > img,
+    > p > img {
+      @include border-radius(var(--#{$prefix}border-radius));
+      border: 1px solid var(--#{$prefix}border-color);
+    }
+
+    pre {
+      max-height: 20rem;
+    }
   }
 }

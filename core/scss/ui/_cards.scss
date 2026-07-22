@@ -1,742 +1,745 @@
 @use 'sass:map';
 
+// Emitted outside the cascade layer since `@property` registration is global.
 @property --tblr-card-gradient-direction {
   syntax: '<angle>';
   inherits: true;
   initial-value: 180deg;
 }
 
-@keyframes gradient-animation {
-  0% {
-    --#{$prefix}card-gradient-direction: 180deg;
-  }
+@layer components {
+  @keyframes gradient-animation {
+    0% {
+      --#{$prefix}card-gradient-direction: 180deg;
+    }
 
-  100% {
-    --#{$prefix}card-gradient-direction: 540deg;
-  }
-}
-
-.card {
-  @include transition(transform $transition-time ease-out, opacity $transition-time ease-out, box-shadow $transition-time ease-out);
-
-  @include media-print {
-    border: none;
-    box-shadow: none;
-  }
-
-  @at-root a#{&} {
-    color: inherit;
-
-    &:hover {
-      text-decoration: none;
-      box-shadow: var(--#{$prefix}shadow-card-hover);
+    100% {
+      --#{$prefix}card-gradient-direction: 540deg;
     }
   }
 
   .card {
+    @include transition(transform $transition-time ease-out, opacity $transition-time ease-out, box-shadow $transition-time ease-out);
+
+    @include media-print {
+      border: none;
+      box-shadow: none;
+    }
+
+    @at-root a#{&} {
+      color: inherit;
+
+      &:hover {
+        text-decoration: none;
+        box-shadow: var(--#{$prefix}shadow-card-hover);
+      }
+    }
+
+    .card {
+      box-shadow: none;
+    }
+  }
+
+  // Card borderless
+  .card-borderless {
+    &,
+    .card-header,
+    .card-footer {
+      border-color: transparent;
+    }
+  }
+
+  // Card dashed
+  .card-dashed {
+    border: var(--#{$prefix}border-width) dashed var(--#{$prefix}border-color);
+  }
+
+  // Card transparent
+  .card-transparent {
+    background: transparent;
+    border: var(--#{$prefix}border-width) dashed var(--#{$prefix}border-color);
     box-shadow: none;
   }
-}
 
-// Card borderless
-.card-borderless {
-  &,
-  .card-header,
-  .card-footer {
-    border-color: transparent;
-  }
-}
-
-// Card dashed
-.card-dashed {
-  border: var(--#{$prefix}border-width) dashed var(--#{$prefix}border-color);
-}
-
-// Card transparent
-.card-transparent {
-  background: transparent;
-  border: var(--#{$prefix}border-width) dashed var(--#{$prefix}border-color);
-  box-shadow: none;
-}
-
-// Card stamp
-.card-stamp {
-  --#{$prefix}stamp-size: 7rem;
-  position: absolute;
-  top: 0;
-  inset-inline-end: 0;
-  width: calc(var(--#{$prefix}stamp-size) * 1);
-  height: calc(var(--#{$prefix}stamp-size) * 1);
-  max-height: 100%;
-  border-start-end-radius: $border-radius;
-  opacity: $card-stamp-opacity;
-  overflow: hidden;
-  pointer-events: none;
-}
-
-.card-stamp-lg {
-  --#{$prefix}stamp-size: 13rem;
-}
-
-.card-stamp-icon {
-  background: var(--#{$prefix}secondary);
-  color: var(--#{$prefix}card-bg, var(--#{$prefix}bg-surface));
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  @include border-radius(var(--#{$prefix}border-radius-pill));
-  width: calc(var(--#{$prefix}stamp-size) * 1);
-  height: calc(var(--#{$prefix}stamp-size) * 1);
-  position: relative;
-  top: calc(var(--#{$prefix}stamp-size) * -0.25);
-  inset-inline-end: calc(var(--#{$prefix}stamp-size) * -0.25);
-  font-size: calc(var(--#{$prefix}stamp-size) * 0.75);
-  transform: rotate(10deg);
-
-  .icon {
-    stroke-width: 2;
-    width: calc(var(--#{$prefix}stamp-size) * 0.75);
-    height: calc(var(--#{$prefix}stamp-size) * 0.75);
-  }
-}
-
-// Card image
-.card-img,
-.card-img-start {
-  @include border-start-radius($card-inner-border-radius);
-}
-
-.card-img,
-.card-img-end {
-  @include border-end-radius($card-inner-border-radius);
-}
-
-.card-img-overlay {
-  display: flex;
-  flex-direction: column;
-  justify-content: end;
-}
-
-.card-img-overlay-dark {
-  background-image: $overlay-gradient;
-}
-
-.card-inactive {
-  pointer-events: none;
-  box-shadow: none;
-
-  .card-body {
-    opacity: 0.64;
-  }
-}
-
-.card-active {
-  --#{$prefix}card-border-color: var(--#{$prefix}primary);
-  --#{$prefix}card-bg: var(--#{$prefix}active-bg);
-}
-
-.card-btn {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: $card-spacer-y $card-spacer-x;
-  text-align: center;
-  border-top: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
-  flex: 1;
-  color: inherit;
-  font-weight: var(--#{$prefix}font-weight-medium);
-  @include transition(background $transition-time);
-
-  &:hover {
-    text-decoration: none;
-    background: $active-bg;
-  }
-
-  & + & {
-    border-inline-start: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
-  }
-}
-
-/**
-Stacked card
- */
-.card-stacked {
-  --#{$prefix}card-stacked-offset: 0.25rem;
-  position: relative;
-
-  &:after {
-    position: absolute;
-    top: calc(-1 * var(--#{$prefix}card-stacked-offset));
-    inset-inline-end: var(--#{$prefix}card-stacked-offset);
-    inset-inline-start: var(--#{$prefix}card-stacked-offset);
-    height: var(--#{$prefix}card-stacked-offset);
-    content: '';
-    background: var(--#{$prefix}card-bg, var(--#{$prefix}bg-surface));
-    border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}card-border-color);
-    @include border-radius(var(--#{$prefix}card-border-radius) var(--#{$prefix}card-border-radius) 0 0);
-  }
-}
-
-.card-cover {
-  position: relative;
-  padding: $card-spacer-y $card-spacer-x;
-  background: #666666 no-repeat center/cover;
-
-  &:before {
+  // Card stamp
+  .card-stamp {
+    --#{$prefix}stamp-size: 7rem;
     position: absolute;
     top: 0;
     inset-inline-end: 0;
-    bottom: 0;
-    inset-inline-start: 0;
-    content: '';
-    background: rgba($dark, 0.48);
+    width: calc(var(--#{$prefix}stamp-size) * 1);
+    height: calc(var(--#{$prefix}stamp-size) * 1);
+    max-height: 100%;
+    border-start-end-radius: $border-radius;
+    opacity: $card-stamp-opacity;
+    overflow: hidden;
+    pointer-events: none;
   }
 
-  &:first-child,
-  &:first-child:before {
-    @include border-radius($border-radius $border-radius 0 0);
+  .card-stamp-lg {
+    --#{$prefix}stamp-size: 13rem;
   }
-}
 
-.card-cover-blurred {
-  &:before {
-    backdrop-filter: blur(2px);
+  .card-stamp-icon {
+    background: var(--#{$prefix}secondary);
+    color: var(--#{$prefix}card-bg, var(--#{$prefix}bg-surface));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @include border-radius(var(--#{$prefix}border-radius-pill));
+    width: calc(var(--#{$prefix}stamp-size) * 1);
+    height: calc(var(--#{$prefix}stamp-size) * 1);
+    position: relative;
+    top: calc(var(--#{$prefix}stamp-size) * -0.25);
+    inset-inline-end: calc(var(--#{$prefix}stamp-size) * -0.25);
+    font-size: calc(var(--#{$prefix}stamp-size) * 0.75);
+    transform: rotate(10deg);
+
+    .icon {
+      stroke-width: 2;
+      width: calc(var(--#{$prefix}stamp-size) * 0.75);
+      height: calc(var(--#{$prefix}stamp-size) * 0.75);
+    }
   }
-}
 
-.card-actions {
-  margin: -0.5rem -0.5rem -0.5rem auto;
-  padding-inline-start: 0.5rem;
-
-  a {
-    text-decoration: none;
+  // Card image
+  .card-img,
+  .card-img-start {
+    @include border-start-radius($card-inner-border-radius);
   }
-}
 
-// Card header
-.card-header {
-  color: inherit;
-  display: flex;
-  align-items: center;
-  background: transparent;
+  .card-img,
+  .card-img-end {
+    @include border-end-radius($card-inner-border-radius);
+  }
 
-  &:first-child {
+  .card-img-overlay {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+  }
+
+  .card-img-overlay-dark {
+    background-image: $overlay-gradient;
+  }
+
+  .card-inactive {
+    pointer-events: none;
+    box-shadow: none;
+
+    .card-body {
+      opacity: 0.64;
+    }
+  }
+
+  .card-active {
+    --#{$prefix}card-border-color: var(--#{$prefix}primary);
+    --#{$prefix}card-bg: var(--#{$prefix}active-bg);
+  }
+
+  .card-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: $card-spacer-y $card-spacer-x;
+    text-align: center;
+    border-top: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
+    flex: 1;
+    color: inherit;
+    font-weight: var(--#{$prefix}font-weight-medium);
+    @include transition(background $transition-time);
+
+    &:hover {
+      text-decoration: none;
+      background: $active-bg;
+    }
+
+    & + & {
+      border-inline-start: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
+    }
+  }
+
+  /**
+  Stacked card
+   */
+  .card-stacked {
+    --#{$prefix}card-stacked-offset: 0.25rem;
+    position: relative;
+
+    &:after {
+      position: absolute;
+      top: calc(-1 * var(--#{$prefix}card-stacked-offset));
+      inset-inline-end: var(--#{$prefix}card-stacked-offset);
+      inset-inline-start: var(--#{$prefix}card-stacked-offset);
+      height: var(--#{$prefix}card-stacked-offset);
+      content: '';
+      background: var(--#{$prefix}card-bg, var(--#{$prefix}bg-surface));
+      border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}card-border-color);
+      @include border-radius(var(--#{$prefix}card-border-radius) var(--#{$prefix}card-border-radius) 0 0);
+    }
+  }
+
+  .card-cover {
+    position: relative;
+    padding: $card-spacer-y $card-spacer-x;
+    background: #666666 no-repeat center/cover;
+
+    &:before {
+      position: absolute;
+      top: 0;
+      inset-inline-end: 0;
+      bottom: 0;
+      inset-inline-start: 0;
+      content: '';
+      background: rgba($dark, 0.48);
+    }
+
+    &:first-child,
+    &:first-child:before {
+      @include border-radius($border-radius $border-radius 0 0);
+    }
+  }
+
+  .card-cover-blurred {
+    &:before {
+      backdrop-filter: blur(2px);
+    }
+  }
+
+  .card-actions {
+    margin: -0.5rem -0.5rem -0.5rem auto;
+    padding-inline-start: 0.5rem;
+
+    a {
+      text-decoration: none;
+    }
+  }
+
+  // Card header
+  .card-header {
+    color: inherit;
+    display: flex;
+    align-items: center;
+    background: transparent;
+
+    &:first-child {
+      @include border-radius(var(--#{$prefix}card-border-radius) var(--#{$prefix}card-border-radius) 0 0);
+    }
+  }
+
+  .card-header-light {
+    border-bottom-color: transparent;
+    background: var(--#{$prefix}bg-surface-tertiary);
+  }
+
+  .card-header-tabs {
+    background: $card-header-tabs-bg;
+    flex: 1;
+    margin: calc(var(--#{$prefix}card-cap-padding-y) * -1) calc(var(--#{$prefix}card-cap-padding-x) * -1) calc(var(--#{$prefix}card-cap-padding-y) * -1);
+    padding: calc(var(--#{$prefix}card-cap-padding-y) * 0.5) calc(var(--#{$prefix}card-cap-padding-x) * 0.5) 0;
     @include border-radius(var(--#{$prefix}card-border-radius) var(--#{$prefix}card-border-radius) 0 0);
   }
-}
 
-.card-header-light {
-  border-bottom-color: transparent;
-  background: var(--#{$prefix}bg-surface-tertiary);
-}
-
-.card-header-tabs {
-  background: $card-header-tabs-bg;
-  flex: 1;
-  margin: calc(var(--#{$prefix}card-cap-padding-y) * -1) calc(var(--#{$prefix}card-cap-padding-x) * -1) calc(var(--#{$prefix}card-cap-padding-y) * -1);
-  padding: calc(var(--#{$prefix}card-cap-padding-y) * 0.5) calc(var(--#{$prefix}card-cap-padding-x) * 0.5) 0;
-  @include border-radius(var(--#{$prefix}card-border-radius) var(--#{$prefix}card-border-radius) 0 0);
-}
-
-.card-header-pills {
-  flex: 1;
-  margin-top: -0.5rem;
-  margin-bottom: -0.5rem;
-}
-
-// Card rotate
-.card-rotate-left,
-.card-rotate-start {
-  transform: rotate(-1.5deg);
-}
-
-.card-rotate-right,
-.card-rotate-end {
-  transform: rotate(1.5deg);
-}
-
-// Card link
-.card-link {
-  color: inherit;
-
-  &:hover {
-    color: inherit;
-    text-decoration: none;
-    box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.08);
+  .card-header-pills {
+    flex: 1;
+    margin-top: -0.5rem;
+    margin-bottom: -0.5rem;
   }
-}
 
-.card-link-rotate:hover {
-  transform: rotate(1.5deg);
-  opacity: 1;
-}
+  // Card rotate
+  .card-rotate-left,
+  .card-rotate-start {
+    transform: rotate(-1.5deg);
+  }
 
-.card-link-pop:hover {
-  transform: translateY(-2px);
-  opacity: 1;
-}
+  .card-rotate-right,
+  .card-rotate-end {
+    transform: rotate(1.5deg);
+  }
 
-// Card footer
-.card-footer {
-  margin-top: auto;
+  // Card link
+  .card-link {
+    color: inherit;
 
-  &:last-child {
+    &:hover {
+      color: inherit;
+      text-decoration: none;
+      box-shadow: 0 1px 6px 0 rgba(0, 0, 0, 0.08);
+    }
+  }
+
+  .card-link-rotate:hover {
+    transform: rotate(1.5deg);
+    opacity: 1;
+  }
+
+  .card-link-pop:hover {
+    transform: translateY(-2px);
+    opacity: 1;
+  }
+
+  // Card footer
+  .card-footer {
+    margin-top: auto;
+
+    &:last-child {
+      @include border-radius(0 0 var(--#{$prefix}card-border-radius) var(--#{$prefix}card-border-radius));
+    }
+  }
+
+  .card-footer-transparent {
+    background: transparent;
+    border-color: transparent;
+    padding-top: 0;
+  }
+
+  .card-footer-borderless {
+    border-top: none;
+  }
+
+  // Card progress
+  .card-progress {
+    height: 0.25rem;
+
+    &:last-child {
+      @include border-radius(0 0 2px 2px);
+    }
+
+    &:first-child {
+      @include border-radius(2px 2px 0 0);
+    }
+  }
+
+  .card-meta {
+    color: var(--#{$prefix}secondary);
+  }
+
+  .card-title {
+    display: block;
+    margin: 0 0 1rem;
+    font-size: $h3-font-size;
+    font-weight: var(--#{$prefix}font-weight-medium);
+    color: var(--#{$prefix}heading-color);
+    line-height: 1.5rem;
+
+    @at-root a#{&}:hover {
+      color: inherit;
+    }
+
+    .card-header & {
+      margin: 0;
+    }
+  }
+
+  .card-subtitle {
+    margin-bottom: $card-title-spacer-y;
+    color: var(--#{$prefix}secondary);
+    font-weight: normal;
+
+    .card-header & {
+      margin: 0;
+    }
+
+    .card-title & {
+      margin: 0 0 0 0.25rem;
+      font-size: $h4-font-size;
+    }
+  }
+
+  .card-body {
+    position: relative;
+
+    > :last-child {
+      margin-bottom: 0;
+    }
+
+    .card-sm > & {
+      padding: 1rem;
+    }
+
+    .card-md > & {
+      @include media-breakpoint-up(md) {
+        padding: 2.5rem;
+      }
+    }
+
+    .card-lg > & {
+      @include media-breakpoint-up(md) {
+        padding: 2rem;
+      }
+
+      @include media-breakpoint-up(lg) {
+        padding: 4rem;
+      }
+    }
+
+    @include media-print {
+      padding: 0;
+    }
+
+    & + & {
+      border-top: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
+    }
+  }
+
+  .card-body-scrollable {
+    overflow: auto;
+  }
+
+  /**
+  Card optinos
+   */
+  .card-options {
+    top: 1.5rem;
+    inset-inline-end: 0.75rem;
+    display: flex;
+    margin-inline-start: auto;
+  }
+
+  .card-options-link {
+    display: inline-block;
+    min-width: 1rem;
+    margin-inline-start: 0.25rem;
+    color: var(--#{$prefix}secondary);
+  }
+
+  /**
+  Card status
+   */
+  .card-status-top {
+    position: absolute;
+    top: 0;
+    inset-inline-end: 0;
+    inset-inline-start: 0;
+    height: $card-status-size;
+    @include border-radius(var(--#{$prefix}card-border-radius) var(--#{$prefix}card-border-radius) 0 0);
+  }
+
+  .card-status-start {
+    position: absolute;
+    inset-inline-end: auto;
+    bottom: 0;
+    width: $card-status-size;
+    height: 100%;
+    @include border-radius(var(--#{$prefix}card-border-radius) 0 0 var(--#{$prefix}card-border-radius));
+  }
+
+  .card-status-bottom {
+    position: absolute;
+    top: initial;
+    bottom: 0;
+    width: 100%;
+    height: $card-status-size;
     @include border-radius(0 0 var(--#{$prefix}card-border-radius) var(--#{$prefix}card-border-radius));
   }
-}
 
-.card-footer-transparent {
-  background: transparent;
-  border-color: transparent;
-  padding-top: 0;
-}
-
-.card-footer-borderless {
-  border-top: none;
-}
-
-// Card progress
-.card-progress {
-  height: 0.25rem;
-
-  &:last-child {
-    @include border-radius(0 0 2px 2px);
-  }
-
-  &:first-child {
-    @include border-radius(2px 2px 0 0);
-  }
-}
-
-.card-meta {
-  color: var(--#{$prefix}secondary);
-}
-
-.card-title {
-  display: block;
-  margin: 0 0 1rem;
-  font-size: $h3-font-size;
-  font-weight: var(--#{$prefix}font-weight-medium);
-  color: var(--#{$prefix}heading-color);
-  line-height: 1.5rem;
-
-  @at-root a#{&}:hover {
-    color: inherit;
-  }
-
-  .card-header & {
-    margin: 0;
-  }
-}
-
-.card-subtitle {
-  margin-bottom: $card-title-spacer-y;
-  color: var(--#{$prefix}secondary);
-  font-weight: normal;
-
-  .card-header & {
-    margin: 0;
-  }
-
-  .card-title & {
-    margin: 0 0 0 0.25rem;
-    font-size: $h4-font-size;
-  }
-}
-
-.card-body {
-  position: relative;
-
-  > :last-child {
-    margin-bottom: 0;
-  }
-
-  .card-sm > & {
-    padding: 1rem;
-  }
-
-  .card-md > & {
-    @include media-breakpoint-up(md) {
-      padding: 2.5rem;
-    }
-  }
-
-  .card-lg > & {
-    @include media-breakpoint-up(md) {
-      padding: 2rem;
-    }
-
-    @include media-breakpoint-up(lg) {
-      padding: 4rem;
-    }
-  }
-
-  @include media-print {
-    padding: 0;
-  }
-
-  & + & {
-    border-top: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
-  }
-}
-
-.card-body-scrollable {
-  overflow: auto;
-}
-
-/**
-Card optinos
- */
-.card-options {
-  top: 1.5rem;
-  inset-inline-end: 0.75rem;
-  display: flex;
-  margin-inline-start: auto;
-}
-
-.card-options-link {
-  display: inline-block;
-  min-width: 1rem;
-  margin-inline-start: 0.25rem;
-  color: var(--#{$prefix}secondary);
-}
-
-/**
-Card status
- */
-.card-status-top {
-  position: absolute;
-  top: 0;
-  inset-inline-end: 0;
-  inset-inline-start: 0;
-  height: $card-status-size;
-  @include border-radius(var(--#{$prefix}card-border-radius) var(--#{$prefix}card-border-radius) 0 0);
-}
-
-.card-status-start {
-  position: absolute;
-  inset-inline-end: auto;
-  bottom: 0;
-  width: $card-status-size;
-  height: 100%;
-  @include border-radius(var(--#{$prefix}card-border-radius) 0 0 var(--#{$prefix}card-border-radius));
-}
-
-.card-status-bottom {
-  position: absolute;
-  top: initial;
-  bottom: 0;
-  width: 100%;
-  height: $card-status-size;
-  @include border-radius(0 0 var(--#{$prefix}card-border-radius) var(--#{$prefix}card-border-radius));
-}
-
-/**
-Card table
- */
-.card-table {
-  margin-bottom: 0 !important;
-
-  tr {
-    td,
-    th {
-      &:first-child {
-        padding-left: $card-spacer-x;
-        border-left: 0;
-        border-top-left-radius: var(--#{$prefix}card-border-radius);
-      }
-
-      &:last-child {
-        padding-right: $card-spacer-x;
-        border-right: 0;
-        border-top-right-radius: var(--#{$prefix}card-border-radius);
-        padding-inline-start: $card-spacer-x;
-        border-inline-start: 0;
-      }
-
-      &:last-child {
-        padding-inline-end: $card-spacer-x;
-        border-inline-end: 0;
-      }
-    }
-  }
-
-  thead,
-  tbody,
-  tfoot {
-    &:last-child {
-      tr:last-child {
-        > *:last-child {
-          border-end-end-radius: calc(var(--#{$prefix}card-border-radius) - var(--#{$prefix}card-border-width));
-        }
-
-        > *:first-child {
-          border-end-start-radius: calc(var(--#{$prefix}card-border-radius) - var(--#{$prefix}card-border-width));
-        }
-      }
-    }
+  /**
+  Card table
+   */
+  .card-table {
+    margin-bottom: 0 !important;
 
     tr {
-      &:first-child {
-        border-top: 0;
+      td,
+      th {
+        &:first-child {
+          padding-left: $card-spacer-x;
+          border-left: 0;
+          border-top-left-radius: var(--#{$prefix}card-border-radius);
+        }
 
-        td,
-        th {
+        &:last-child {
+          padding-right: $card-spacer-x;
+          border-right: 0;
+          border-top-right-radius: var(--#{$prefix}card-border-radius);
+          padding-inline-start: $card-spacer-x;
+          border-inline-start: 0;
+        }
+
+        &:last-child {
+          padding-inline-end: $card-spacer-x;
+          border-inline-end: 0;
+        }
+      }
+    }
+
+    thead,
+    tbody,
+    tfoot {
+      &:last-child {
+        tr:last-child {
+          > *:last-child {
+            border-end-end-radius: calc(var(--#{$prefix}card-border-radius) - var(--#{$prefix}card-border-width));
+          }
+
+          > *:first-child {
+            border-end-start-radius: calc(var(--#{$prefix}card-border-radius) - var(--#{$prefix}card-border-width));
+          }
+        }
+      }
+
+      tr {
+        &:first-child {
           border-top: 0;
+
+          td,
+          th {
+            border-top: 0;
+          }
         }
       }
     }
-  }
 
-  tbody {
-    tr {
-      &:last-child {
-        td {
+    tbody {
+      tr {
+        &:last-child {
+          td {
+            border-bottom: 0;
+          }
+        }
+      }
+    }
+
+    tfoot {
+      tr {
+        &:last-child {
           border-bottom: 0;
         }
       }
     }
+
+    .card-body + & {
+      border-top: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}table-border-color);
+    }
   }
 
-  tfoot {
-    tr {
+  /*
+  Card code
+   */
+  .card-code {
+    padding: 0;
+
+    .highlight {
+      margin: 0;
+      border: 0;
+    }
+
+    pre {
+      margin: 0 !important;
+      border: 0 !important;
+    }
+  }
+
+  /*
+  Card chart
+   */
+  .card-chart {
+    position: relative;
+    z-index: 1;
+    height: 3.5rem;
+  }
+
+  /**
+  Card avatar
+   */
+  .card-avatar {
+    margin-inline-start: auto;
+    margin-inline-end: auto;
+    box-shadow: 0 0 0 0.25rem var(--#{$prefix}card-bg, var(--#{$prefix}bg-surface));
+    margin-top: calc(-1 * calc(var(--#{$prefix}avatar-size) * 0.5));
+  }
+
+  /*
+  Card list group
+   */
+  .card-list-group {
+    .card-body + & {
+      border-top: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
+    }
+
+    .list-group-item {
+      padding-inline-end: $card-spacer-x;
+      padding-inline-start: $card-spacer-x;
+      border-inline-end: 0;
+      border-inline-start: 0;
+      border-radius: 0;
+
       &:last-child {
         border-bottom: 0;
       }
+
+      &:first-child {
+        border-top: 0;
+      }
     }
   }
 
-  .card-body + & {
-    border-top: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}table-border-color);
-  }
-}
-
-/*
-Card code
- */
-.card-code {
-  padding: 0;
-
-  .highlight {
-    margin: 0;
-    border: 0;
-  }
-
-  pre {
-    margin: 0 !important;
-    border: 0 !important;
-  }
-}
-
-/*
-Card chart
- */
-.card-chart {
-  position: relative;
-  z-index: 1;
-  height: 3.5rem;
-}
-
-/**
-Card avatar
- */
-.card-avatar {
-  margin-inline-start: auto;
-  margin-inline-end: auto;
-  box-shadow: 0 0 0 0.25rem var(--#{$prefix}card-bg, var(--#{$prefix}bg-surface));
-  margin-top: calc(-1 * calc(var(--#{$prefix}avatar-size) * 0.5));
-}
-
-/*
-Card list group
- */
-.card-list-group {
-  .card-body + & {
-    border-top: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
-  }
-
-  .list-group-item {
-    padding-inline-end: $card-spacer-x;
-    padding-inline-start: $card-spacer-x;
-    border-inline-end: 0;
-    border-inline-start: 0;
-    border-radius: 0;
-
-    &:last-child {
+  // Card tabs
+  .card-tabs {
+    .nav-tabs {
+      position: relative;
+      z-index: $zindex-dropdown;
       border-bottom: 0;
-    }
 
-    &:first-child {
-      border-top: 0;
-    }
-  }
-}
+      .nav-link {
+        background: $card-cap-bg;
+        border: $card-border-width var(--#{$prefix}border-style) $card-border-color;
 
-// Card tabs
-.card-tabs {
-  .nav-tabs {
-    position: relative;
-    z-index: $zindex-dropdown;
-    border-bottom: 0;
+        &.active,
+        &:active,
+        &:hover {
+          border-color: $card-border-color;
+          color: var(--#{$prefix}body-color);
+        }
 
-    .nav-link {
-      background: $card-cap-bg;
-      border: $card-border-width var(--#{$prefix}border-style) $card-border-color;
-
-      &.active,
-      &:active,
-      &:hover {
-        border-color: $card-border-color;
-        color: var(--#{$prefix}body-color);
-      }
-
-      &.active {
-        color: $headings-color;
-        background: var(--#{$prefix}card-bg, var(--#{$prefix}bg-surface));
-        border-bottom-color: transparent;
-      }
-    }
-
-    .nav-item {
-      &:not(:first-child) {
-        .nav-link {
-          border-start-start-radius: 0;
+        &.active {
+          color: $headings-color;
+          background: var(--#{$prefix}card-bg, var(--#{$prefix}bg-surface));
+          border-bottom-color: transparent;
         }
       }
 
-      &:not(:last-child) {
-        .nav-link {
-          border-start-end-radius: 0;
+      .nav-item {
+        &:not(:first-child) {
+          .nav-link {
+            border-start-start-radius: 0;
+          }
+        }
+
+        &:not(:last-child) {
+          .nav-link {
+            border-start-end-radius: 0;
+          }
+        }
+
+        + .nav-item {
+          margin-inline-start: calc(-1 * #{$card-border-width});
         }
       }
-
-      + .nav-item {
-        margin-inline-start: calc(-1 * #{$card-border-width});
-      }
-    }
-  }
-
-  .nav-tabs-bottom {
-    margin-bottom: 0;
-
-    .nav-link {
-      margin-bottom: 0;
-
-      &.active {
-        border-top-color: transparent;
-      }
     }
 
-    .nav-item {
-      margin-top: calc(-1 * #{$card-border-width});
+    .nav-tabs-bottom {
       margin-bottom: 0;
 
       .nav-link {
-        border-bottom: $card-border-width var(--#{$prefix}border-style) $card-border-color;
-        @include border-radius(0 0 $card-border-radius $card-border-radius);
+        margin-bottom: 0;
+
+        &.active {
+          border-top-color: transparent;
+        }
       }
 
-      &:not(:first-child) .nav-link {
-        border-end-start-radius: 0;
-      }
+      .nav-item {
+        margin-top: calc(-1 * #{$card-border-width});
+        margin-bottom: 0;
 
-      &:not(:last-child) .nav-link {
-        border-end-end-radius: 0;
+        .nav-link {
+          border-bottom: $card-border-width var(--#{$prefix}border-style) $card-border-color;
+          @include border-radius(0 0 $card-border-radius $card-border-radius);
+        }
+
+        &:not(:first-child) .nav-link {
+          border-end-start-radius: 0;
+        }
+
+        &:not(:last-child) .nav-link {
+          border-end-end-radius: 0;
+        }
       }
+    }
+
+    .card {
+      border-end-start-radius: 0;
+    }
+
+    .nav-tabs + .tab-content .card {
+      border-end-start-radius: var(--#{$prefix}card-border-radius);
+      border-start-start-radius: 0 !important;
+    }
+
+    .tab-content:has(+ .nav-tabs) .card {
+      border-start-start-radius: var(--#{$prefix}card-border-radius);
+      border-end-start-radius: 0 !important;
     }
   }
 
-  .card {
-    border-end-start-radius: 0;
+  /**
+  Card note
+  */
+  .card-note {
+    --#{$prefix}card-bg: #fff7dd;
+    --#{$prefix}card-border-color: #fff1c9;
   }
 
-  .nav-tabs + .tab-content .card {
-    border-end-start-radius: var(--#{$prefix}card-border-radius);
-    border-start-start-radius: 0 !important;
+  /**
+  Card gradient
+  */
+  .card-gradient {
+    --#{$prefix}card-gradient-direction: 180deg;
+    --#{$prefix}card-gradient-opacity: 86%;
+    --#{$prefix}card-gradient: var(--tblr-primary), var(--tblr-primary);
+
+    background:
+      radial-gradient(ellipse at center, var(--#{$prefix}card-bg) 0%, color-mix(in srgb, var(--#{$prefix}card-bg) 0%, transparent) 80%) border-box,
+      linear-gradient(var(--#{$prefix}card-gradient-direction), color-mix(in srgb, var(--#{$prefix}card-bg) var(--#{$prefix}card-gradient-opacity), transparent) 0%, var(--#{$prefix}card-bg) 40%) border-box,
+      linear-gradient(calc(270deg + var(--#{$prefix}card-gradient-direction)), var(--#{$prefix}card-gradient)) border-box;
   }
-  
-  .tab-content:has(+ .nav-tabs) .card {
-    border-start-start-radius: var(--#{$prefix}card-border-radius);
-    border-end-start-radius: 0 !important;
+
+  @each $name, $color in map.merge($colors, $theme-colors) {
+    .card-gradient-#{$name} {
+      --#{$prefix}card-gradient: var(--tblr-#{$name}), var(--tblr-#{$name});
+    }
   }
-}
 
-/**
-Card note
-*/
-.card-note {
-  --#{$prefix}card-bg: #fff7dd;
-  --#{$prefix}card-border-color: #fff1c9;
-}
-
-/**
-Card gradient
-*/
-.card-gradient {
-  --#{$prefix}card-gradient-direction: 180deg;
-  --#{$prefix}card-gradient-opacity: 86%;
-  --#{$prefix}card-gradient: var(--tblr-primary), var(--tblr-primary);
-
-  background:
-    radial-gradient(ellipse at center, var(--#{$prefix}card-bg) 0%, color-mix(in srgb, var(--#{$prefix}card-bg) 0%, transparent) 80%) border-box,
-    linear-gradient(var(--#{$prefix}card-gradient-direction), color-mix(in srgb, var(--#{$prefix}card-bg) var(--#{$prefix}card-gradient-opacity), transparent) 0%, var(--#{$prefix}card-bg) 40%) border-box,
-    linear-gradient(calc(270deg + var(--#{$prefix}card-gradient-direction)), var(--#{$prefix}card-gradient)) border-box;
-}
-
-@each $name, $color in map.merge($colors, $theme-colors) {
-  .card-gradient-#{$name} {
-    --#{$prefix}card-gradient: var(--tblr-#{$name}), var(--tblr-#{$name});
+  .card-gradient-rainbow {
+    --#{$prefix}card-gradient: #78c5d6, #459ba8, #79c267, #c5d647, #f5d63d, #f08b33, #e868a2, #be61a5;
   }
-}
 
-.card-gradient-rainbow {
-  --#{$prefix}card-gradient: #78c5d6, #459ba8, #79c267, #c5d647, #f5d63d, #f08b33, #e868a2, #be61a5;
-}
+  .card-gradient-sun {
+    --#{$prefix}card-gradient: #fd1d1d, #fcb045;
+  }
 
-.card-gradient-sun {
-  --#{$prefix}card-gradient: #fd1d1d, #fcb045;
-}
+  .card-gradient-snow {
+    --#{$prefix}card-gradient: #333, #e9ecef;
+  }
 
-.card-gradient-snow {
-  --#{$prefix}card-gradient: #333, #e9ecef;
-}
+  .card-gradient-ocean {
+    --#{$prefix}card-gradient: #1cb5e0, #000851;
+  }
 
-.card-gradient-ocean {
-  --#{$prefix}card-gradient: #1cb5e0, #000851;
-}
+  .card-gradient-mellow {
+    --#{$prefix}card-gradient: #f8ff00, #3ad59f;
+  }
 
-.card-gradient-mellow {
-  --#{$prefix}card-gradient: #f8ff00, #3ad59f;
-}
+  .card-gradient-disco {
+    --#{$prefix}card-gradient: #fc466b, #3f5efb;
+  }
 
-.card-gradient-disco {
-  --#{$prefix}card-gradient: #fc466b, #3f5efb;
-}
+  .card-gradient-psychedelic {
+    --#{$prefix}card-gradient: #fcc5e4, #fda34b, #ff7882, #c8699e, #7046aa, #0c1db8, #020f75;
+  }
 
-.card-gradient-psychedelic {
-  --#{$prefix}card-gradient: #fcc5e4, #fda34b, #ff7882, #c8699e, #7046aa, #0c1db8, #020f75;
-}
+  .card-gradient-love {
+    --#{$prefix}card-gradient: #f235e6, #bc0707;
+  }
 
-.card-gradient-love {
-  --#{$prefix}card-gradient: #f235e6, #bc0707;
-}
+  .card-gradient-gold {
+    --#{$prefix}card-gradient: #9d4100, #bf7122, #f59f00, #ffd700;
+  }
 
-.card-gradient-gold {
-  --#{$prefix}card-gradient: #9d4100, #bf7122, #f59f00, #ffd700;
-}
+  .card-gradient-animated {
+    animation: gradient-animation 15s linear infinite;
+  }
 
-.card-gradient-animated {
-  animation: gradient-animation 15s linear infinite;
-}
+  .card-gradient-bottom {
+    --#{$prefix}card-gradient-direction: 0deg;
+  }
 
-.card-gradient-bottom {
-  --#{$prefix}card-gradient-direction: 0deg;
-}
+  .card-gradient-end {
+    --#{$prefix}card-gradient-direction: 270deg;
+  }
 
-.card-gradient-end {
-  --#{$prefix}card-gradient-direction: 270deg;
-}
-
-.card-gradient-start {
-  --#{$prefix}card-gradient-direction: 90deg;
+  .card-gradient-start {
+    --#{$prefix}card-gradient-direction: 90deg;
+  }
 }

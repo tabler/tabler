@@ -1,114 +1,116 @@
-.nav {
-  --#{$prefix}nav-link-hover-bg: #{color-transparent(var(--#{$prefix}nav-link-color), 0.04)};
-}
-
-.nav-vertical {
-  &,
+@layer components {
   .nav {
-    flex-direction: column;
-    flex-wrap: nowrap;
+    --#{$prefix}nav-link-hover-bg: #{color-transparent(var(--#{$prefix}nav-link-color), 0.04)};
   }
 
-  .nav {
-    margin-inline-start: 1.25rem;
-    border-inline-start: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
-    padding-inline-start: 0.5rem;
-  }
+  .nav-vertical {
+    &,
+    .nav {
+      flex-direction: column;
+      flex-wrap: nowrap;
+    }
 
-  .nav-link.active,
-  .nav-item.show .nav-link {
-    font-weight: var(--#{$prefix}font-weight-semibold);
-    color: var(--#{$prefix}nav-link-active-color);
-  }
+    .nav {
+      margin-inline-start: 1.25rem;
+      border-inline-start: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
+      padding-inline-start: 0.5rem;
+    }
 
-  &.nav-pills {
-    margin: 0 calc(-1 * $nav-link-padding-x);
-  }
-}
+    .nav-link.active,
+    .nav-item.show .nav-link {
+      font-weight: var(--#{$prefix}font-weight-semibold);
+      color: var(--#{$prefix}nav-link-active-color);
+    }
 
-//
-// Nav bordered
-//
-.nav-bordered {
-  border-bottom: $nav-bordered-border-width var(--#{$prefix}border-style) $nav-bordered-border-color;
-
-  .nav-item {
-    + .nav-item {
-      margin-inline-start: $nav-bordered-margin-x;
+    &.nav-pills {
+      margin: 0 calc(-1 * $nav-link-padding-x);
     }
   }
 
-  .nav-link {
-    padding-inline-start: 0;
-    padding-inline-end: 0;
-    margin: 0 0 calc(-1 * #{$nav-bordered-border-width});
-    border: 0;
-    border-bottom: $nav-bordered-link-active-border-width var(--#{$prefix}border-style) transparent;
+  //
+  // Nav bordered
+  //
+  .nav-bordered {
+    border-bottom: $nav-bordered-border-width var(--#{$prefix}border-style) $nav-bordered-border-color;
 
-    &:hover {
-      background-color: transparent;
+    .nav-item {
+      + .nav-item {
+        margin-inline-start: $nav-bordered-margin-x;
+      }
     }
-  }
 
-  .nav-link.active,
-  .nav-item.show .nav-link {
-    color: $nav-bordered-link-active-color;
-    border-color: $nav-bordered-link-active-border-color;
-  }
-}
-
-.nav-underline {
-  .nav-link {
-    border-radius: 0;
-  }
-}
-
-.nav-link {
-  display: flex;
-  align-items: center;
-  @include transition(color $transition-time, background-color $transition-time);
-
-  &:hover,
-  &:focus {
-    background-color: var(--#{$prefix}nav-link-hover-bg);
-  }
-}
-
-.nav-link-toggle {
-  margin-inline-start: auto;
-  padding: 0 0.25rem;
-  @include transition(transform $transition-time);
-  @include caret();
-
-  &:after {
-    margin: 0;
-  }
-
-  @at-root .nav-link[aria-expanded='true'] & {
-    transform: rotate(180deg);
-  }
-}
-
-.nav-link-icon {
-  width: $nav-link-icon-size;
-  height: $nav-link-icon-size;
-  margin-inline-end: 0.5rem;
-  color: $nav-link-icon-color;
-
-  svg {
-    display: block;
-    height: 100%;
-  }
-
-  .nav-link:hover & {
-    color: var(--#{$prefix}nav-link-hover-icon-color);
-  }
-}
-
-.nav-fill {
-  .nav-item {
     .nav-link {
-      justify-content: center;
+      padding-inline-start: 0;
+      padding-inline-end: 0;
+      margin: 0 0 calc(-1 * #{$nav-bordered-border-width});
+      border: 0;
+      border-bottom: $nav-bordered-link-active-border-width var(--#{$prefix}border-style) transparent;
+
+      &:hover {
+        background-color: transparent;
+      }
+    }
+
+    .nav-link.active,
+    .nav-item.show .nav-link {
+      color: $nav-bordered-link-active-color;
+      border-color: $nav-bordered-link-active-border-color;
+    }
+  }
+
+  .nav-underline {
+    .nav-link {
+      border-radius: 0;
+    }
+  }
+
+  .nav-link {
+    display: flex;
+    align-items: center;
+    @include transition(color $transition-time, background-color $transition-time);
+
+    &:hover,
+    &:focus {
+      background-color: var(--#{$prefix}nav-link-hover-bg);
+    }
+  }
+
+  .nav-link-toggle {
+    margin-inline-start: auto;
+    padding: 0 0.25rem;
+    @include transition(transform $transition-time);
+    @include caret();
+
+    &:after {
+      margin: 0;
+    }
+
+    @at-root .nav-link[aria-expanded='true'] & {
+      transform: rotate(180deg);
+    }
+  }
+
+  .nav-link-icon {
+    width: $nav-link-icon-size;
+    height: $nav-link-icon-size;
+    margin-inline-end: 0.5rem;
+    color: $nav-link-icon-color;
+
+    svg {
+      display: block;
+      height: 100%;
+    }
+
+    .nav-link:hover & {
+      color: var(--#{$prefix}nav-link-hover-icon-color);
+    }
+  }
+
+  .nav-fill {
+    .nav-item {
+      .nav-link {
+        justify-content: center;
+      }
     }
   }
 }

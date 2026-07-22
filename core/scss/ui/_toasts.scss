@@ -1,23 +1,25 @@
-.toast {
-  border: $alert-border-width var(--#{$prefix}border-style) $alert-border-color;
-  box-shadow: $alert-shadow;
+@layer components {
+  .toast {
+    border: $alert-border-width var(--#{$prefix}border-style) $alert-border-color;
+    box-shadow: $alert-shadow;
 
-  .toast-header {
-    user-select: none;
+    .toast-header {
+      user-select: none;
+    }
+
+    button[data-bs-dismiss='toast'],
+    button[data-dismiss='toast'] {
+      outline: none;
+    }
+
+    @include media-print {
+      display: none;
+    }
   }
 
-  button[data-bs-dismiss='toast'],
-  button[data-dismiss='toast'] {
-    outline: none;
-  }
-
-  @include media-print {
-    display: none;
-  }
-}
-
-@each $state, $value in $theme-colors {
-  .toast-#{$state} {
-    --#{$prefix}toast-color: #{$value};
+  @each $state, $value in $theme-colors {
+    .toast-#{$state} {
+      --#{$prefix}toast-color: #{$value};
+    }
   }
 }

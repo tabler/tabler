@@ -1,251 +1,253 @@
-textarea {
-  &[cols] {
-    height: auto;
-  }
-}
-
-/**
-Form label
- */
-.col-form-label,
-.form-label {
-  display: block;
-  font-weight: var(--#{$prefix}font-weight-medium);
-
-  &.required {
-    &:after {
-      content: '*';
-      margin-inline-start: 0.25rem;
-      color: $red;
+@layer components {
+  textarea {
+    &[cols] {
+      height: auto;
     }
   }
-}
 
-.form-label-description {
-  float: inline-end;
-  font-weight: var(--#{$prefix}font-weight-normal);
-  color: $form-secondary-color;
-}
+  /**
+  Form label
+   */
+  .col-form-label,
+  .form-label {
+    display: block;
+    font-weight: var(--#{$prefix}font-weight-medium);
 
-/**
-Form hint
- */
-.form-hint {
-  display: block;
-  color: $form-secondary-color;
-
-  &:last-child {
-    margin-bottom: 0;
+    &.required {
+      &:after {
+        content: '*';
+        margin-inline-start: 0.25rem;
+        color: $red;
+      }
+    }
   }
 
-  & + .form-control {
-    margin-top: 0.25rem;
-  }
-
-  .form-label + & {
-    margin-top: -0.25rem;
-  }
-
-  .input-group + &,
-  .form-control + &,
-  .form-select + & {
-    margin-top: 0.5rem;
+  .form-label-description {
+    float: inline-end;
+    font-weight: var(--#{$prefix}font-weight-normal);
     color: $form-secondary-color;
   }
-}
 
-/**
-Form select
- */
-.form-select {
-  &:-moz-focusring {
-    color: var(--#{$prefix}body-color);
-  }
-}
-
-/**
-Form control
- */
-.form-control {
-  &:-webkit-autofill {
-    box-shadow: 0 0 0 1000px var(--#{$prefix}bg-surface-secondary) inset;
-    color: var(--#{$prefix}body-color);
-    -webkit-text-fill-color: var(--#{$prefix}body-color);
-  }
-
-  &:disabled,
-  &.disabled {
+  /**
+  Form hint
+   */
+  .form-hint {
+    display: block;
     color: $form-secondary-color;
-    user-select: none;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    & + .form-control {
+      margin-top: 0.25rem;
+    }
+
+    .form-label + & {
+      margin-top: -0.25rem;
+    }
+
+    .input-group + &,
+    .form-control + &,
+    .form-select + & {
+      margin-top: 0.5rem;
+      color: $form-secondary-color;
+    }
   }
 
-  &[size] {
-    width: auto;
+  /**
+  Form select
+   */
+  .form-select {
+    &:-moz-focusring {
+      color: var(--#{$prefix}body-color);
+    }
   }
-}
 
-.form-control-light {
-  background-color: var(--#{$prefix}gray-100);
-  border-color: transparent;
-}
+  /**
+  Form control
+   */
+  .form-control {
+    &:-webkit-autofill {
+      box-shadow: 0 0 0 1000px var(--#{$prefix}bg-surface-secondary) inset;
+      color: var(--#{$prefix}body-color);
+      -webkit-text-fill-color: var(--#{$prefix}body-color);
+    }
 
-.form-control-dark {
-  background-color: rgba($black, 0.1);
-  color: $white;
-  border-color: transparent;
+    &:disabled,
+    &.disabled {
+      color: $form-secondary-color;
+      user-select: none;
+    }
 
-  &:focus {
+    &[size] {
+      width: auto;
+    }
+  }
+
+  .form-control-light {
+    background-color: var(--#{$prefix}gray-100);
+    border-color: transparent;
+  }
+
+  .form-control-dark {
     background-color: rgba($black, 0.1);
-    box-shadow: none;
-    border-color: rgba($white, 0.24);
-  }
-
-  &::placeholder {
-    color: rgba($white, 0.6);
-  }
-}
-
-.form-control-rounded {
-  @include border-radius(var(--#{$prefix}border-radius-pill));
-}
-
-.form-control-flush {
-  padding: 0;
-  background: none !important;
-  border-color: transparent !important;
-  resize: none;
-  box-shadow: none !important;
-  line-height: inherit;
-}
-
-.form-footer {
-  margin-top: 2rem;
-}
-
-.form-fieldset {
-  padding: 1rem;
-  margin-bottom: 1rem;
-  background: var(--#{$prefix}bg-surface-secondary);
-  border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
-  @include border-radius(var(--#{$prefix}border-radius));
-}
-
-fieldset:empty {
-  display: none;
-}
-
-/**
-Form help
- */
-.form-help {
-  display: inline-flex;
-  font-weight: var(--#{$prefix}font-weight-semibold);
-  align-items: center;
-  justify-content: center;
-  width: 1.125rem;
-  height: 1.125rem;
-  font-size: 0.75rem;
-  color: $form-secondary-color;
-  text-align: center;
-  text-decoration: none;
-  cursor: pointer;
-  user-select: none;
-  background: var(--#{$prefix}gray-100);
-  @include border-radius(var(--#{$prefix}border-radius-pill));
-  @include transition(background-color $transition-time, color $transition-time);
-
-  &:hover,
-  &[aria-describedby] {
     color: $white;
-    background: var(--#{$prefix}primary);
+    border-color: transparent;
+
+    &:focus {
+      background-color: rgba($black, 0.1);
+      box-shadow: none;
+      border-color: rgba($white, 0.24);
+    }
+
+    &::placeholder {
+      color: rgba($white, 0.6);
+    }
   }
-}
 
-/**
-Input group
- */
-.input-group {
-  box-shadow: $input-box-shadow;
-  @include border-radius($input-border-radius);
-
-  .form-control,
-  .btn {
-    box-shadow: none;
+  .form-control-rounded {
+    @include border-radius(var(--#{$prefix}border-radius-pill));
   }
-}
 
-.input-group-link {
-  font-size: $h5-font-size;
-}
+  .form-control-flush {
+    padding: 0;
+    background: none !important;
+    border-color: transparent !important;
+    resize: none;
+    box-shadow: none !important;
+    line-height: inherit;
+  }
 
-.input-group-flat {
-  &:focus-within {
-    box-shadow: $input-focus-box-shadow;
+  .form-footer {
+    margin-top: 2rem;
+  }
+
+  .form-fieldset {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    background: var(--#{$prefix}bg-surface-secondary);
+    border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
+    @include border-radius(var(--#{$prefix}border-radius));
+  }
+
+  fieldset:empty {
+    display: none;
+  }
+
+  /**
+  Form help
+   */
+  .form-help {
+    display: inline-flex;
+    font-weight: var(--#{$prefix}font-weight-semibold);
+    align-items: center;
+    justify-content: center;
+    width: 1.125rem;
+    height: 1.125rem;
+    font-size: 0.75rem;
+    color: $form-secondary-color;
+    text-align: center;
+    text-decoration: none;
+    cursor: pointer;
+    user-select: none;
+    background: var(--#{$prefix}gray-100);
+    @include border-radius(var(--#{$prefix}border-radius-pill));
+    @include transition(background-color $transition-time, color $transition-time);
+
+    &:hover,
+    &[aria-describedby] {
+      color: $white;
+      background: var(--#{$prefix}primary);
+    }
+  }
+
+  /**
+  Input group
+   */
+  .input-group {
+    box-shadow: $input-box-shadow;
     @include border-radius($input-border-radius);
 
     .form-control,
-    .input-group-text {
-      border-color: $input-focus-border-color !important;
-    }
-  }
-
-  .form-control {
-    &:focus {
-      border-color: $input-border-color;
+    .btn {
       box-shadow: none;
     }
+  }
 
-    &:not(:last-child) {
-      border-inline-end: 0;
+  .input-group-link {
+    font-size: $h5-font-size;
+  }
+
+  .input-group-flat {
+    &:focus-within {
+      box-shadow: $input-focus-box-shadow;
+      @include border-radius($input-border-radius);
+
+      .form-control,
+      .input-group-text {
+        border-color: $input-focus-border-color !important;
+      }
     }
 
-    &:not(:first-child) {
-      border-inline-start: 0;
+    .form-control {
+      &:focus {
+        border-color: $input-border-color;
+        box-shadow: none;
+      }
+
+      &:not(:last-child) {
+        border-inline-end: 0;
+      }
+
+      &:not(:first-child) {
+        border-inline-start: 0;
+      }
+    }
+
+    .input-group-text {
+      background: $form-check-input-bg;
+      z-index: 10;
+      @include transition($input-transition);
+
+      &:first-child {
+        padding-inline-end: 0;
+        border-inline-end: 0;
+      }
+
+      &:last-child {
+        padding-inline-start: 0;
+        border-inline-start: 0;
+      }
     }
   }
 
-  .input-group-text {
-    background: $form-check-input-bg;
-    z-index: 10;
-    @include transition($input-transition);
-
-    &:first-child {
-      padding-inline-end: 0;
-      border-inline-end: 0;
-    }
-
-    &:last-child {
-      padding-inline-start: 0;
-      border-inline-start: 0;
-    }
+  /**
+  Upload files
+   */
+  .form-file-button {
+    margin-inline-start: 0;
+    border-inline-start: 0;
   }
-}
 
-/**
-Upload files
- */
-.form-file-button {
-  margin-inline-start: 0;
-  border-inline-start: 0;
-}
+  /**
+  Floating inputs
+   */
+  // Fix for the bug in twbs/bootstrap v5.3.3. Issue #39080. Should be fixed in v5.3.4
+  label[for='floating-input'] {
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
 
-/**
-Floating inputs
- */
-// Fix for the bug in twbs/bootstrap v5.3.3. Issue #39080. Should be fixed in v5.3.4
-label[for='floating-input'] {
-  max-width: 100%;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-}
-
-/**
-Forms on mobile devices 
-  */
-.form-control,
-.form-select {
-  @include media-breakpoint-down(sm) {
-    font-size: 1rem;
+  /**
+  Forms on mobile devices 
+    */
+  .form-control,
+  .form-select {
+    @include media-breakpoint-down(sm) {
+      font-size: 1rem;
+    }
   }
 }

@@ -1,104 +1,106 @@
-.calendar {
-  display: block;
-  font-size: $font-size-sm;
-  border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
-  @include border-radius(var(--#{$prefix}border-radius));
-}
-
-.calendar-nav {
-  display: flex;
-  align-items: center;
-}
-
-.calendar-title {
-  flex: 1;
-  text-align: center;
-}
-
-.calendar-body,
-.calendar-header {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: start;
-  padding: 0.5rem 0;
-}
-
-.calendar-header {
-  color: var(--#{$prefix}secondary);
-}
-
-.calendar-date {
-  flex: 0 0 calc(100% / 7);
-  max-width: calc(100% / 7);
-  padding: 0.2rem;
-  text-align: center;
-  border: 0;
-
-  &.prev-month,
-  &.next-month {
-    opacity: 0.25;
+@layer components {
+  .calendar {
+    display: block;
+    font-size: $font-size-sm;
+    border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
+    @include border-radius(var(--#{$prefix}border-radius));
   }
 
-  .date-item {
-    position: relative;
-    display: inline-block;
-    width: 1.4rem;
-    height: 1.4rem;
-    line-height: 1.4rem;
-    color: #66758c;
-    text-align: center;
-    text-decoration: none;
-    white-space: nowrap;
-    vertical-align: middle;
-    cursor: pointer;
-    background: 0 0;
-    border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) transparent;
-    @include border-radius(var(--#{$prefix}border-radius-pill));
-    outline: 0;
-    @include transition(background $transition-time, border $transition-time, box-shadow 0.32s, color $transition-time);
+  .calendar-nav {
+    display: flex;
+    align-items: center;
+  }
 
-    &:hover {
-      color: var(--#{$prefix}primary);
+  .calendar-title {
+    flex: 1;
+    text-align: center;
+  }
+
+  .calendar-body,
+  .calendar-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: start;
+    padding: 0.5rem 0;
+  }
+
+  .calendar-header {
+    color: var(--#{$prefix}secondary);
+  }
+
+  .calendar-date {
+    flex: 0 0 calc(100% / 7);
+    max-width: calc(100% / 7);
+    padding: 0.2rem;
+    text-align: center;
+    border: 0;
+
+    &.prev-month,
+    &.next-month {
+      opacity: 0.25;
+    }
+
+    .date-item {
+      position: relative;
+      display: inline-block;
+      width: 1.4rem;
+      height: 1.4rem;
+      line-height: 1.4rem;
+      color: #66758c;
+      text-align: center;
       text-decoration: none;
-      background: #fefeff;
+      white-space: nowrap;
+      vertical-align: middle;
+      cursor: pointer;
+      background: 0 0;
+      border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) transparent;
+      @include border-radius(var(--#{$prefix}border-radius-pill));
+      outline: 0;
+      @include transition(background $transition-time, border $transition-time, box-shadow 0.32s, color $transition-time);
+
+      &:hover {
+        color: var(--#{$prefix}primary);
+        text-decoration: none;
+        background: #fefeff;
+        border-color: var(--#{$prefix}border-color);
+      }
+    }
+
+    .date-today {
+      color: var(--#{$prefix}primary);
       border-color: var(--#{$prefix}border-color);
     }
   }
 
-  .date-today {
-    color: var(--#{$prefix}primary);
-    border-color: var(--#{$prefix}border-color);
-  }
-}
+  .calendar-range {
+    position: relative;
 
-.calendar-range {
-  position: relative;
-
-  &:before {
-    position: absolute;
-    top: 50%;
-    inset-inline-end: 0;
-    inset-inline-start: 0;
-    height: 1.4rem;
-    content: '';
-    background: color-transparent(var(--#{$prefix}primary), 0.1);
-    transform: translateY(-50%);
-  }
-
-  &.range-start,
-  &.range-end {
-    .date-item {
-      color: $white;
-      background: var(--#{$prefix}primary);
-      border-color: var(--#{$prefix}primary);
+    &:before {
+      position: absolute;
+      top: 50%;
+      inset-inline-end: 0;
+      inset-inline-start: 0;
+      height: 1.4rem;
+      content: '';
+      background: color-transparent(var(--#{$prefix}primary), 0.1);
+      transform: translateY(-50%);
     }
-  }
 
-  &.range-start:before {
-    inset-inline-start: 50%;
-  }
+    &.range-start,
+    &.range-end {
+      .date-item {
+        color: $white;
+        background: var(--#{$prefix}primary);
+        border-color: var(--#{$prefix}primary);
+      }
+    }
 
-  &.range-end:before {
-    inset-inline-end: 50%;
+    &.range-start:before {
+      inset-inline-start: 50%;
+    }
+
+    &.range-end:before {
+      inset-inline-end: 50%;
+    }
   }
 }

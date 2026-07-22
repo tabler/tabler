@@ -1,56 +1,58 @@
-.tag {
-  --#{$prefix}tag-height: 1.5rem;
-  border: $border-width solid var(--#{$prefix}border-color);
-  display: inline-flex;
-  align-items: center;
-  height: var(--#{$prefix}tag-height);
-  @include border-radius(var(--#{$prefix}border-radius));
-  padding: 0 0.5rem;
-  background: var(--#{$prefix}bg-surface);
-  box-shadow: var(--#{$prefix}shadow-input);
-  gap: 0.5rem;
+@layer components {
+  .tag {
+    --#{$prefix}tag-height: 1.5rem;
+    border: $border-width solid var(--#{$prefix}border-color);
+    display: inline-flex;
+    align-items: center;
+    height: var(--#{$prefix}tag-height);
+    @include border-radius(var(--#{$prefix}border-radius));
+    padding: 0 0.5rem;
+    background: var(--#{$prefix}bg-surface);
+    box-shadow: var(--#{$prefix}shadow-input);
+    gap: 0.5rem;
 
-  .btn-close {
+    .btn-close {
+      margin-inline-end: -0.25rem;
+      margin-inline-start: -0.125rem;
+      padding: 0;
+      width: 1rem;
+      height: 1rem;
+      font-size: 0.5rem;
+    }
+  }
+
+  .tag-badge {
+    --#{$prefix}badge-font-size: #{$h6-font-size};
+    --#{$prefix}badge-padding-x: 0.25rem;
+    --#{$prefix}badge-padding-y: 0.125rem;
     margin-inline-end: -0.25rem;
-    margin-inline-start: -0.125rem;
-    padding: 0;
+  }
+
+  .tag-avatar,
+  .tag-flag,
+  .tag-payment,
+  .tag-icon,
+  .tag-check {
+    margin-inline-start: -0.25rem;
+  }
+
+  .tag-icon {
+    color: var(--#{$prefix}secondary);
+    margin-inline-end: -0.125rem;
     width: 1rem;
     height: 1rem;
-    font-size: 0.5rem;
   }
-}
 
-.tag-badge {
-  --#{$prefix}badge-font-size: #{$h6-font-size};
-  --#{$prefix}badge-padding-x: 0.25rem;
-  --#{$prefix}badge-padding-y: 0.125rem;
-  margin-inline-end: -0.25rem;
-}
+  .tag-check {
+    width: 1rem;
+    height: 1rem;
+    background-size: 1rem;
+  }
 
-.tag-avatar,
-.tag-flag,
-.tag-payment,
-.tag-icon,
-.tag-check {
-  margin-inline-start: -0.25rem;
-}
-
-.tag-icon {
-  color: var(--#{$prefix}secondary);
-  margin-inline-end: -0.125rem;
-  width: 1rem;
-  height: 1rem;
-}
-
-.tag-check {
-  width: 1rem;
-  height: 1rem;
-  background-size: 1rem;
-}
-
-//
-// Tags list
-//
-.tags-list {
-  @include elements-list;
+  //
+  // Tags list
+  //
+  .tags-list {
+    @include elements-list;
+  }
 }

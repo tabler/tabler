@@ -1,27 +1,29 @@
 @use 'sass:map';
 @use '../config';
 
-.social {
-  position: relative;
-  display: inline-block;
-  height: config.$avatar-size;
-  aspect-ratio: 1;
-  background: no-repeat center/cover;
-  vertical-align: bottom;
-}
+@layer components {
+  .social {
+    position: relative;
+    display: inline-block;
+    height: config.$avatar-size;
+    aspect-ratio: 1;
+    background: no-repeat center/cover;
+    vertical-align: bottom;
+  }
 
-@each $app in config.$social-apps {
-  .social-app-#{$app} {
-    background-image: url('#{config.$assets-base}/img/social/#{$app}.svg');
+  @each $app in config.$social-apps {
+    .social-app-#{$app} {
+      background-image: url('#{config.$assets-base}/img/social/#{$app}.svg');
 
-    &.social-gray {
-      background-image: url('#{config.$assets-base}/img/social/#{$app}-gray.svg');
+      &.social-gray {
+        background-image: url('#{config.$assets-base}/img/social/#{$app}-gray.svg');
+      }
     }
   }
-}
 
-@each $flag-size, $size in config.$flag-sizes {
-  .social-#{$flag-size} {
-    height: map.get($size, size);
+  @each $flag-size, $size in config.$flag-sizes {
+    .social-#{$flag-size} {
+      height: map.get($size, size);
+    }
   }
 }

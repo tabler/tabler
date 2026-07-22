@@ -1,145 +1,147 @@
-@keyframes progress-indeterminate {
-  0% {
-    inset-inline-end: 100%;
-    inset-inline-start: -35%;
+@layer components {
+  @keyframes progress-indeterminate {
+    0% {
+      inset-inline-end: 100%;
+      inset-inline-start: -35%;
+    }
+
+    100%,
+    60% {
+      inset-inline-end: -90%;
+      inset-inline-start: 100%;
+    }
   }
 
-  100%,
-  60% {
-    inset-inline-end: -90%;
-    inset-inline-start: 100%;
+  /**
+  Progress
+   */
+  .progress {
+    position: relative;
+    width: 100%;
+    line-height: $progress-height;
+    appearance: none;
+
+    &::-webkit-progress-bar {
+      background: var(--#{$prefix}progress-bg);
+    }
+
+    &::-webkit-progress-value {
+      background-color: var(--#{$prefix}primary);
+    }
+
+    &::-moz-progress-bar {
+      background-color: var(--#{$prefix}primary);
+    }
+
+    &::-ms-fill {
+      background-color: var(--#{$prefix}primary);
+      border: none;
+    }
   }
-}
 
-/**
-Progress
- */
-.progress {
-  position: relative;
-  width: 100%;
-  line-height: $progress-height;
-  appearance: none;
-
-  &::-webkit-progress-bar {
-    background: var(--#{$prefix}progress-bg);
+  .progress-sm {
+    height: 0.25rem;
   }
 
-  &::-webkit-progress-value {
-    background-color: var(--#{$prefix}primary);
+  .progress-lg {
+    height: 0.75rem;
   }
 
-  &::-moz-progress-bar {
-    background-color: var(--#{$prefix}primary);
+  .progress-xl {
+    height: 1rem;
   }
 
-  &::-ms-fill {
-    background-color: var(--#{$prefix}primary);
-    border: none;
+  /**
+  Progress bar
+   */
+  .progress-bar {
+    height: 100%;
+    @include transition(width $transition-time, background $transition-time);
   }
-}
 
-.progress-sm {
-  height: 0.25rem;
-}
+  .progress-bar-indeterminate {
+    &:after,
+    &:before {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      inset-inline-start: 0;
+      content: '';
+      background-color: inherit;
+      will-change: left, right;
+    }
 
-.progress-lg {
-  height: 0.75rem;
-}
+    &:before {
+      animation: progress-indeterminate 1.5s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
+    }
+  }
 
-.progress-xl {
-  height: 1rem;
-}
+  .progress-separated {
+    .progress-bar {
+      box-shadow: 0 0 0 2px var(--#{$prefix}card-bg, var(--#{$prefix}bg-surface));
+    }
+  }
 
-/**
-Progress bar
- */
-.progress-bar {
-  height: 100%;
-  @include transition(width $transition-time, background $transition-time);
-}
+  /**
+  Progressbg
+   */
+  .progressbg {
+    position: relative;
+    padding: 0.25rem 0.5rem;
+    display: flex;
+  }
 
-.progress-bar-indeterminate {
-  &:after,
-  &:before {
+  .progressbg-text {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    @include text-truncate;
+  }
+
+  .progressbg-progress {
     position: absolute;
     top: 0;
+    inset-inline-end: 0;
     bottom: 0;
     inset-inline-start: 0;
-    content: '';
-    background-color: inherit;
-    will-change: left, right;
+    z-index: 0;
+    height: 100%;
+    background: transparent;
+    pointer-events: none;
   }
 
-  &:before {
-    animation: progress-indeterminate 1.5s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
+  .progressbg-value {
+    font-weight: var(--#{$prefix}font-weight-medium);
+    margin-inline-start: auto;
+    padding-inline-start: 2rem;
   }
-}
 
-.progress-separated {
-  .progress-bar {
-    box-shadow: 0 0 0 2px var(--#{$prefix}card-bg, var(--#{$prefix}bg-surface));
+  /**
+  Progress steps
+   */
+  .progress-steps {
+    display: flex;
+    flex-wrap: nowrap;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+    list-style: none;
+    gap: 0.25rem;
   }
-}
 
-/**
-Progressbg
- */
-.progressbg {
-  position: relative;
-  padding: 0.25rem 0.5rem;
-  display: flex;
-}
+  .progress-steps-item {
+    flex: 1 1 0;
+    min-height: 0.25rem;
+    margin-top: 0;
+    color: inherit;
+    text-align: center;
+    cursor: default;
+    background-color: var(--tblr-border-color);
+    @include border-radius(var(--#{$prefix}border-radius-pill));
 
-.progressbg-text {
-  position: relative;
-  z-index: 1;
-  display: flex;
-  align-items: center;
-  @include text-truncate;
-}
-
-.progressbg-progress {
-  position: absolute;
-  top: 0;
-  inset-inline-end: 0;
-  bottom: 0;
-  inset-inline-start: 0;
-  z-index: 0;
-  height: 100%;
-  background: transparent;
-  pointer-events: none;
-}
-
-.progressbg-value {
-  font-weight: var(--#{$prefix}font-weight-medium);
-  margin-inline-start: auto;
-  padding-inline-start: 2rem;
-}
-
-/**
-Progress steps
- */
-.progress-steps {
-  display: flex;
-  flex-wrap: nowrap;
-  width: 100%;
-  padding: 0;
-  margin: 0;
-  list-style: none;
-  gap: 0.25rem;
-}
-
-.progress-steps-item {
-  flex: 1 1 0;
-  min-height: 0.25rem;
-  margin-top: 0;
-  color: inherit;
-  text-align: center;
-  cursor: default;
-  background-color: var(--tblr-border-color);
-  @include border-radius(var(--#{$prefix}border-radius-pill));
-
-  @at-root a#{&} {
-    cursor: pointer;
+    @at-root a#{&} {
+      cursor: pointer;
+    }
   }
 }

@@ -1,85 +1,88 @@
 /*
 Form check
  */
-.form-check {
-  user-select: none;
 
-  &.form-check-highlight .form-check-input:not(:checked) ~ .form-check-label {
-    color: var(--#{$prefix}secondary);
-  }
+@layer components {
+  .form-check {
+    user-select: none;
 
-  .form-check-label-off {
-    color: var(--#{$prefix}secondary);
-  }
+    &.form-check-highlight .form-check-input:not(:checked) ~ .form-check-label {
+      color: var(--#{$prefix}secondary);
+    }
 
-  .form-check-input:checked ~ .form-check-label-off {
-    display: none;
-  }
+    .form-check-label-off {
+      color: var(--#{$prefix}secondary);
+    }
 
-  .form-check-input:not(:checked) ~ .form-check-label-on {
-    display: none;
-  }
-}
+    .form-check-input:checked ~ .form-check-label-off {
+      display: none;
+    }
 
-.form-check-input {
-  background-size: $form-check-input-width;
-  margin-top: ($form-check-min-height - $form-check-input-width) * 0.5;
-  box-shadow: $form-check-input-box-shadow;
-
-  .form-switch & {
-    @include transition(background-color$transition-time, background-position $transition-time);
-  }
-}
-
-.form-check-label {
-  display: block;
-
-  &.required {
-    &:after {
-      content: '*';
-      margin-inline-start: 0.25rem;
-      color: $red;
+    .form-check-input:not(:checked) ~ .form-check-label-on {
+      display: none;
     }
   }
-}
-
-.form-check-description {
-  display: block;
-  color: var(--#{$prefix}secondary);
-  font-size: $h5-font-size;
-  margin-top: 0.25rem;
-}
-
-.form-check-single {
-  margin: 0;
 
   .form-check-input {
-    margin: 0;
-  }
-}
+    background-size: $form-check-input-width;
+    margin-top: ($form-check-min-height - $form-check-input-width) * 0.5;
+    box-shadow: $form-check-input-box-shadow;
 
-/*
-Form switch
- */
-.form-switch {
-  .form-check-input {
-    height: $form-switch-height;
-    margin-top: ($form-check-min-height - $form-switch-height) * 0.5;
-  }
-}
-
-.form-switch-lg {
-  padding-inline-start: 3.5rem;
-  min-height: 1.5rem;
-
-  .form-check-input {
-    height: 1.5rem;
-    width: 2.75rem;
-    background-size: 1.5rem;
-    margin-inline-start: -3.5rem;
+    .form-switch & {
+      @include transition(background-color$transition-time, background-position $transition-time);
+    }
   }
 
   .form-check-label {
-    padding-top: 0.125rem;
+    display: block;
+
+    &.required {
+      &:after {
+        content: '*';
+        margin-inline-start: 0.25rem;
+        color: $red;
+      }
+    }
+  }
+
+  .form-check-description {
+    display: block;
+    color: var(--#{$prefix}secondary);
+    font-size: $h5-font-size;
+    margin-top: 0.25rem;
+  }
+
+  .form-check-single {
+    margin: 0;
+
+    .form-check-input {
+      margin: 0;
+    }
+  }
+
+  /*
+  Form switch
+   */
+  .form-switch {
+    .form-check-input {
+      height: $form-switch-height;
+      margin-top: ($form-check-min-height - $form-switch-height) * 0.5;
+    }
+  }
+
+  .form-switch-lg {
+    padding-inline-start: 3.5rem;
+    min-height: 1.5rem;
+
+    .form-check-input {
+      height: 1.5rem;
+      width: 2.75rem;
+      background-size: 1.5rem;
+      margin-inline-start: -3.5rem;
+    }
+
+    .form-check-label {
+      padding-top: 0.125rem;
+    }
   }
 }

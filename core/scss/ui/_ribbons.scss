@@ -1,156 +1,158 @@
 // stylelint-disable declaration-no-important
 
-.ribbon {
-  --#{$prefix}ribbon-margin: #{$card-ribbon-margin};
-  --#{$prefix}ribbon-border-radius: #{$card-ribbon-border-radius};
-  position: absolute;
-  top: 0.75rem;
-  inset-inline-end: calc(-1 * var(--#{$prefix}ribbon-margin));
-  z-index: 1;
-  padding: 0.25rem 0.75rem;
-  font-size: $card-ribbon-font-size;
-  font-weight: var(--#{$prefix}font-weight-semibold);
-  line-height: 1;
-  color: $white;
-  text-align: center;
-  text-transform: uppercase;
-  background: var(--#{$prefix}primary);
-  border-color: var(--#{$prefix}primary);
-  @include border-radius(var(--#{$prefix}ribbon-border-radius) 0 var(--#{$prefix}ribbon-border-radius) var(--#{$prefix}ribbon-border-radius));
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 2rem;
-  min-width: 2rem;
-
-  &:before {
+@layer components {
+  .ribbon {
+    --#{$prefix}ribbon-margin: #{$card-ribbon-margin};
+    --#{$prefix}ribbon-border-radius: #{$card-ribbon-border-radius};
     position: absolute;
-    inset-inline-end: 0;
-    bottom: 100%;
-    width: 0;
-    height: 0;
-    content: '';
-    filter: brightness(70%);
-    border: calc(var(--#{$prefix}ribbon-margin) * 0.5) var(--#{$prefix}border-style);
-    border-color: inherit;
-    border-top-color: transparent;
-    border-inline-end-color: transparent;
-  }
+    top: 0.75rem;
+    inset-inline-end: calc(-1 * var(--#{$prefix}ribbon-margin));
+    z-index: 1;
+    padding: 0.25rem 0.75rem;
+    font-size: $card-ribbon-font-size;
+    font-weight: var(--#{$prefix}font-weight-semibold);
+    line-height: 1;
+    color: $white;
+    text-align: center;
+    text-transform: uppercase;
+    background: var(--#{$prefix}primary);
+    border-color: var(--#{$prefix}primary);
+    @include border-radius(var(--#{$prefix}ribbon-border-radius) 0 var(--#{$prefix}ribbon-border-radius) var(--#{$prefix}ribbon-border-radius));
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2rem;
+    min-width: 2rem;
 
-  @if $enable-extra-colors {
-    @each $color, $value in $extra-colors {
-      &.bg-#{$color} {
-        border-color: var(--#{$prefix}#{$color});
-      }
+    &:before {
+      position: absolute;
+      inset-inline-end: 0;
+      bottom: 100%;
+      width: 0;
+      height: 0;
+      content: '';
+      filter: brightness(70%);
+      border: calc(var(--#{$prefix}ribbon-margin) * 0.5) var(--#{$prefix}border-style);
+      border-color: inherit;
+      border-top-color: transparent;
+      border-inline-end-color: transparent;
+    }
 
-      &.bg-#{$color}-lt {
-        border-color: color-transparent(var(--#{$prefix}#{$color}), 0.1) !important;
+    @if $enable-extra-colors {
+      @each $color, $value in $extra-colors {
+        &.bg-#{$color} {
+          border-color: var(--#{$prefix}#{$color});
+        }
+
+        &.bg-#{$color}-lt {
+          border-color: color-transparent(var(--#{$prefix}#{$color}), 0.1) !important;
+        }
       }
+    }
+
+    .icon {
+      width: 1.25rem;
+      height: 1.25rem;
+      font-size: 1.25rem;
     }
   }
 
-  .icon {
-    width: 1.25rem;
-    height: 1.25rem;
-    font-size: 1.25rem;
-  }
-}
-
-.ribbon-top {
-  top: calc(-1 * var(--#{$prefix}ribbon-margin));
-  inset-inline-end: 0.75rem;
-  width: 2rem;
-  padding: 0.5rem 0;
-  @include border-radius(0 var(--#{$prefix}ribbon-border-radius) var(--#{$prefix}ribbon-border-radius) var(--#{$prefix}ribbon-border-radius));
-
-  &:before {
-    top: 0;
-    inset-inline-end: 100%;
-    bottom: auto;
-    border-color: inherit;
-    border-top-color: transparent;
-    border-inline-start-color: transparent;
-  }
-
-  &.ribbon-start {
-    inset-inline-end: auto;
-    inset-inline-start: 0.75rem;
+  .ribbon-top {
+    top: calc(-1 * var(--#{$prefix}ribbon-margin));
+    inset-inline-end: 0.75rem;
+    width: 2rem;
+    padding: 0.5rem 0;
+    @include border-radius(0 var(--#{$prefix}ribbon-border-radius) var(--#{$prefix}ribbon-border-radius) var(--#{$prefix}ribbon-border-radius));
 
     &:before {
       top: 0;
       inset-inline-end: 100%;
-      inset-inline-start: auto;
+      bottom: auto;
+      border-color: inherit;
+      border-top-color: transparent;
+      border-inline-start-color: transparent;
     }
-  }
-}
 
-.ribbon-start {
-  inset-inline-end: auto;
-  inset-inline-start: calc(-1 * var(--#{$prefix}ribbon-margin));
-  @include border-radius(0 var(--#{$prefix}ribbon-border-radius) var(--#{$prefix}ribbon-border-radius) var(--#{$prefix}ribbon-border-radius));
-
-  &:before {
-    top: auto;
-    bottom: 100%;
-    inset-inline-start: 0;
-    border-color: inherit;
-    border-top-color: transparent;
-    border-inline-start-color: transparent;
-  }
-}
-
-.ribbon-bottom {
-  top: auto;
-  bottom: 0.75rem;
-}
-
-.ribbon-bookmark {
-  padding-inline-start: 0.25rem;
-  @include border-radius(0 0 var(--#{$prefix}ribbon-border-radius) 0);
-
-  &:after {
-    position: absolute;
-    top: 0;
-    inset-inline-end: 100%;
-    display: block;
-    width: 0;
-    height: 0;
-    content: '';
-    border: 1rem var(--#{$prefix}border-style);
-    border-color: inherit;
-    border-inline-end-width: 0;
-    border-inline-start-color: transparent;
-    border-inline-start-width: 0.5rem;
-  }
-
-  &.ribbon-left {
-    padding-inline-end: 0.5rem;
-
-    &:after {
+    &.ribbon-start {
       inset-inline-end: auto;
-      inset-inline-start: 100%;
-      border-inline-end-color: transparent;
+      inset-inline-start: 0.75rem;
 
-      border-inline-end-width: 0.5rem;
-      border-inline-start-width: 0;
+      &:before {
+        top: 0;
+        inset-inline-end: 100%;
+        inset-inline-start: auto;
+      }
     }
   }
 
-  &.ribbon-top {
-    padding-inline-end: 0;
-    padding-bottom: 0.25rem;
-    padding-inline-start: 0;
-    @include border-radius(0 var(--#{$prefix}ribbon-border-radius) 0 0);
+  .ribbon-start {
+    inset-inline-end: auto;
+    inset-inline-start: calc(-1 * var(--#{$prefix}ribbon-margin));
+    @include border-radius(0 var(--#{$prefix}ribbon-border-radius) var(--#{$prefix}ribbon-border-radius) var(--#{$prefix}ribbon-border-radius));
 
-    &:after {
-      top: 100%;
-      inset-inline-end: 0;
+    &:before {
+      top: auto;
+      bottom: 100%;
       inset-inline-start: 0;
       border-color: inherit;
-      border-width: 1rem;
-      border-top-width: 0;
-      border-bottom-color: transparent;
-      border-bottom-width: 0.5rem;
+      border-top-color: transparent;
+      border-inline-start-color: transparent;
+    }
+  }
+
+  .ribbon-bottom {
+    top: auto;
+    bottom: 0.75rem;
+  }
+
+  .ribbon-bookmark {
+    padding-inline-start: 0.25rem;
+    @include border-radius(0 0 var(--#{$prefix}ribbon-border-radius) 0);
+
+    &:after {
+      position: absolute;
+      top: 0;
+      inset-inline-end: 100%;
+      display: block;
+      width: 0;
+      height: 0;
+      content: '';
+      border: 1rem var(--#{$prefix}border-style);
+      border-color: inherit;
+      border-inline-end-width: 0;
+      border-inline-start-color: transparent;
+      border-inline-start-width: 0.5rem;
+    }
+
+    &.ribbon-left {
+      padding-inline-end: 0.5rem;
+
+      &:after {
+        inset-inline-end: auto;
+        inset-inline-start: 100%;
+        border-inline-end-color: transparent;
+
+        border-inline-end-width: 0.5rem;
+        border-inline-start-width: 0;
+      }
+    }
+
+    &.ribbon-top {
+      padding-inline-end: 0;
+      padding-bottom: 0.25rem;
+      padding-inline-start: 0;
+      @include border-radius(0 var(--#{$prefix}ribbon-border-radius) 0 0);
+
+      &:after {
+        top: 100%;
+        inset-inline-end: 0;
+        inset-inline-start: 0;
+        border-color: inherit;
+        border-width: 1rem;
+        border-top-width: 0;
+        border-bottom-color: transparent;
+        border-bottom-width: 0.5rem;
+      }
     }
   }
 }

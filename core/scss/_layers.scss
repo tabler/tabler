@@ -1,0 +1,16 @@
+// Cascade layers
+//
+// Declares the cascade layer order up front, so it applies regardless of the
+// order in which the layers are used later in the stylesheet.
+//
+// Kept outside of any layer on purpose:
+// - design tokens (`:root` custom properties in `props`, `bootstrap/root`,
+//   `layout/root`, `tabler-themes`) — unlayered styles always win, so user
+//   overrides of tokens keep working without specificity hacks
+// - `@property` registrations and `@font-face` rules — global by nature
+// - dark-mode switches (`layout/dark`)
+//
+// The `custom` layer is intentionally left empty: it is reserved for user
+// code. Styles placed in `@layer custom` override Tabler components, but
+// still lose to helpers and utilities.
+@layer root, reboot, layout, content, forms, components, custom, helpers, utilities;

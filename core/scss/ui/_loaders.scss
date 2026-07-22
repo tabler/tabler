@@ -1,71 +1,73 @@
-.loader {
-  position: relative;
-  display: block;
-  width: $loader-size;
-  height: $loader-size;
-  color: $blue;
-  vertical-align: middle;
-
-  &:after {
-    position: absolute;
-    top: 0;
-    inset-inline-start: 0;
-    width: 100%;
-    height: 100%;
-    content: '';
-    border: 1px var(--#{$prefix}border-style);
-    border-color: transparent;
-    border-top-color: currentColor;
-    border-inline-start-color: currentColor;
-
-    @include border-radius(var(--#{$prefix}border-radius-pill));
-    animation: rotate-360 0.6s linear;
-    animation-iteration-count: infinite;
-  }
-}
-
-/**
-Dimmer
-*/
-.dimmer {
-  position: relative;
-
+@layer components {
   .loader {
-    position: absolute;
-    top: 50%;
-    inset-inline-end: 0;
-    inset-inline-start: 0;
-    display: none;
-    margin: 0 auto;
-    transform: translateY(-50%);
+    position: relative;
+    display: block;
+    width: $loader-size;
+    height: $loader-size;
+    color: $blue;
+    vertical-align: middle;
+
+    &:after {
+      position: absolute;
+      top: 0;
+      inset-inline-start: 0;
+      width: 100%;
+      height: 100%;
+      content: '';
+      border: 1px var(--#{$prefix}border-style);
+      border-color: transparent;
+      border-top-color: currentColor;
+      border-inline-start-color: currentColor;
+
+      @include border-radius(var(--#{$prefix}border-radius-pill));
+      animation: rotate-360 0.6s linear;
+      animation-iteration-count: infinite;
+    }
   }
 
-  &.active {
+  /**
+  Dimmer
+  */
+  .dimmer {
+    position: relative;
+
     .loader {
-      display: block;
+      position: absolute;
+      top: 50%;
+      inset-inline-end: 0;
+      inset-inline-start: 0;
+      display: none;
+      margin: 0 auto;
+      transform: translateY(-50%);
     }
 
-    .dimmer-content {
-      pointer-events: none;
-      opacity: 0.1;
+    &.active {
+      .loader {
+        display: block;
+      }
+
+      .dimmer-content {
+        pointer-events: none;
+        opacity: 0.1;
+      }
     }
   }
-}
 
-@keyframes animated-dots {
-  0% {
-    transform: translateX(-100%);
+  @keyframes animated-dots {
+    0% {
+      transform: translateX(-100%);
+    }
   }
-}
 
-.animated-dots {
-  display: inline-block;
-  overflow: hidden;
-  vertical-align: bottom;
-
-  &:after {
+  .animated-dots {
     display: inline-block;
-    content: '...';
-    animation: animated-dots 1.2s steps(4, jump-none) infinite;
+    overflow: hidden;
+    vertical-align: bottom;
+
+    &:after {
+      display: inline-block;
+      content: '...';
+      animation: animated-dots 1.2s steps(4, jump-none) infinite;
+    }
   }
 }

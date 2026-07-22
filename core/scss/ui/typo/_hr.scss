@@ -1,76 +1,79 @@
 /**
 Horizontal rules
  */
-.hr {
-  @extend hr;
-}
 
-/**
-Hr text
- */
-.hr-text {
-  display: flex;
-  align-items: center;
-  margin: $hr-margin-y 0;
-  @include subheader;
-  height: 1px;
+@layer components {
+  .hr {
+    @extend hr;
+  }
 
-  &:after,
-  &:before {
-    flex: 1 1 auto;
+  /**
+  Hr text
+   */
+  .hr-text {
+    display: flex;
+    align-items: center;
+    margin: $hr-margin-y 0;
+    @include subheader;
     height: 1px;
-    background-color: var(--#{$prefix}border-color);
-  }
 
-  &:before {
-    content: '';
-    margin-inline-end: 0.5rem;
-  }
-
-  &:after {
-    content: '';
-    margin-inline-start: 0.5rem;
-  }
-
-  > *:first-child {
-    padding-inline-end: 0.5rem;
-    padding-inline-start: 0;
-    color: var(--#{$prefix}secondary);
-  }
-
-  &.hr-text-left,
-  &.hr-text-start {
+    &:after,
     &:before {
-      content: none;
+      flex: 1 1 auto;
+      height: 1px;
+      background-color: var(--#{$prefix}border-color);
     }
 
-    & > *:first-child {
-      padding-inline-end: 0.5rem;
-      padding-inline-start: 0.5rem;
-    }
-  }
-
-  &.hr-text-right,
-  &.hr-text-end {
     &:before {
       content: '';
+      margin-inline-end: 0.5rem;
     }
 
     &:after {
-      content: none;
+      content: '';
+      margin-inline-start: 0.5rem;
     }
 
-    & > *:first-child {
-      padding-inline-end: 0;
-      padding-inline-start: 0.5rem;
+    > *:first-child {
+      padding-inline-end: 0.5rem;
+      padding-inline-start: 0;
+      color: var(--#{$prefix}secondary);
+    }
+
+    &.hr-text-left,
+    &.hr-text-start {
+      &:before {
+        content: none;
+      }
+
+      & > *:first-child {
+        padding-inline-end: 0.5rem;
+        padding-inline-start: 0.5rem;
+      }
+    }
+
+    &.hr-text-right,
+    &.hr-text-end {
+      &:before {
+        content: '';
+      }
+
+      &:after {
+        content: none;
+      }
+
+      & > *:first-child {
+        padding-inline-end: 0;
+        padding-inline-start: 0.5rem;
+      }
+    }
+
+    .card > & {
+      margin: 0;
     }
   }
 
-  .card > & {
-    margin: 0;
+  .hr-text-spaceless {
+    margin: -0.5rem 0;
   }
-}
-
-.hr-text-spaceless {
-  margin: -0.5rem 0;
 }
