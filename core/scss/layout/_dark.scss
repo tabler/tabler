@@ -2,6 +2,8 @@
 
 // stylelint-disable declaration-no-important
 
+@use '../config' as *;
+
 @if $enable-dark-mode {
   :root {
     &:not(.theme-dark):not([data-bs-theme='dark'], [data-theme='dark']) {
@@ -64,8 +66,7 @@
     }
   }
 
-  body[data-bs-theme='dark'] [data-bs-theme='light'],
-  body[data-theme='dark'] [data-theme='light'] {
-    @extend [data-bs-theme='dark'];
-  }
+  // The global `@extend [data-bs-theme='dark']` for light-scoped subtrees
+  // inside a dark body lives in `_extends.scss` — with the module system it
+  // must have every dark-styling module upstream.
 }
