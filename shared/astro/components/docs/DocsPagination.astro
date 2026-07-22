@@ -4,10 +4,17 @@ import DocsCard from './DocsCard.astro';
 import docs from '@shared/data/docs.json';
 import Icon from '../Icon.astro';
 import { getDocsChildren } from '@shared/lib/docs-children';
+import type { DocsChildPage } from '@shared/lib/docs-children';
 
 interface MenuLeaf {
 	title: string;
 	url: string;
+}
+
+interface MenuNode {
+	title: string;
+	url?: string;
+	children?: MenuNode[];
 }
 
 interface Props {
@@ -19,30 +26,46 @@ const { url } = Astro.props;
 
 const children = getDocsChildren(url);
 
-type Section = { title: string; children?: (MenuLeaf & { children?: MenuLeaf[] })[] };
+type Pagination = {
+	prev: MenuLeaf | null;
+	next: MenuLeaf | null;
+	found: boolean;
+};
 
-let prev: MenuLeaf | null = null;
-let next: MenuLeaf | null = null;
-let found = false;
+function findPage(nodes: MenuNode[]): Pagination | null {
+	const index = nodes.findIndex((item) => item.url === url);
 
-for (const level1 of docs.menu as Section[]) {
-	for (const level2 of level1.children ?? []) {
-		const siblings = level2.children ?? [];
-		const index = siblings.findIndex((item) => item.url === url);
-		if (index !== -1) {
-			found = true;
-			prev = index > 0 ? siblings[index - 1] : null;
-			next = index < siblings.length - 1 ? siblings[index + 1] : null;
-		}
+	if (index !== -1) {
+		const previousNode = index > 0 ? nodes[index - 1] : null;
+		const nextNode = index < nodes.length - 1 ? nodes[index + 1] : null;
+
+		return {
+			prev: previousNode?.url ? { title: previousNode.title, url: previousNode.url } : null,
+			next: nextNode?.url ? { title: nextNode.title, url: nextNode.url } : null,
+			found: true,
+		};
 	}
+
+	for (const node of nodes) {
+		const result = node.children ? findPage(node.children) : null;
+		if (result) return result;
+	}
+
+	return null;
 }
+
+const { prev, next, found } = findPage(docs.menu as MenuNode[]) ?? {
+	prev: null,
+	next: null,
+	found: false,
+};
 ---
 
 {
 	children.length > 0 && (
 		<div class="mt-6 pt-6">
 			<div class="row row-deck row-cards">
-				{children.map((child) => (
+				{children.map((child: DocsChildPage) => (
 					<DocsCard
 						href={child.url}
 						title={child.title}

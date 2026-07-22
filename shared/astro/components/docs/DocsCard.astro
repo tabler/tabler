@@ -11,8 +11,8 @@ interface Props {
 const { href, icon, title, description }: Props = Astro.props;
 ---
 
-
-<div class="col-md-6">
+{href ? (
+	<div class="col-md-6">
 	<a href={ href } class="card">
 		<div class="card-body">
 			<div class="row">
@@ -29,3 +29,25 @@ const { href, icon, title, description }: Props = Astro.props;
 		</div>
 	</a>
 </div>
+) : (
+	<div class="col-md-6">
+		<div class="card bg-surface-tertiary">
+			<div class="card-body">
+				<div class="position-relative">
+					<span class="badge position-absolute top-0 end-0">Coming soon</span>
+					<div class="row">
+						{ icon && (
+							<div class="col-auto">
+								<Icon name={icon} class="text-secondary" />
+							</div>
+						)}
+						<div class="col">
+							<div class="h3">{ title }</div>
+							<p class="text-secondary m-0 fs-4 lh-base">{ description }</p>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+)}

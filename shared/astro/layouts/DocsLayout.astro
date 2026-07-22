@@ -42,6 +42,8 @@ interface Props {
 	url?: string;
 	/** front matter `docs-libs`: extra libraries from src/data/libs.json (css+js) */
 	docsLibs?: string[];
+	/** hides child and previous/next page navigation */
+	hidePagination?: boolean;
 }
 
 const {
@@ -53,6 +55,7 @@ const {
 	addedIn,
 	toc = [],
 	docsLibs = [],
+	hidePagination = false,
 } = Astro.props;
 const environment = process.env.NODE_ENV || 'production';
 
@@ -222,7 +225,7 @@ const docsLinks = docs.links as DocsLink[];
 									    page must supply headings with ids (MDX does this by default) */}
 									<slot />
 
-									<DocsPagination url={docsUrl} />
+									{!hidePagination && <DocsPagination url={docsUrl} />}
 
 									<div class="mt-7">
 										<div>
