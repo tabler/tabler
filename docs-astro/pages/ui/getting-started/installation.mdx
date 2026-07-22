@@ -7,6 +7,9 @@ layout: '@shared/layouts/DocsMdxLayout.astro'
 ---
 
 import Example from '@shared/components/docs/Example.astro'
+import CdnImportPackage from '@shared/components/docs/CdnImportPackage.astro'
+import { Code } from 'astro:components'
+import { site } from '@shared/lib/site.ts'
 
 Using a framework? See [Tabler framework integration guides](/ui/getting-started/frameworks).
 
@@ -36,28 +39,26 @@ Begin by creating a new `index.html` file in the root of your project. This file
 
 Enhance your page by including Tabler's CSS and JavaScript files. Use the following links to load the core Tabler styles and scripts from the CDN:
 
-```html
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/css/tabler.min.css" />
-<script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/js/tabler.min.js"></script>
-```
+<CdnImportPackage />
 
 Update your HTML file to include these resources:
 
-```html
-<!doctype html>
+<Code
+  lang="html"
+  code={`<!doctype html>
 <html lang="en">
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Tabler Demo</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/css/tabler.min.css" />
+    <link rel="stylesheet" href="${site.cdnUrl}/dist/css/tabler.min.css" />
   </head>
   <body>
     <h1>Hello, Tabler!</h1>
-    <script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.4.0/dist/js/tabler.min.js"></script>
+    <script src="${site.cdnUrl}/dist/js/tabler.min.js"></script>
   </body>
-</html>
-```
+</html>`}
+/>
 
 This setup includes the Tabler CSS and JavaScript via a CDN, providing a responsive and functional base for your project.
 

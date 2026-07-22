@@ -1,8 +1,11 @@
+const version = '1.4.0';
+
 export const site = {
 	title: 'Tabler',
 	// Version from /Users/chomik/htdocs/tabler/core/package.json (hardcoded for the PoC).
-	version: '1.4.0',
+	version,
 	docsUrl: 'https://docs.tabler.io',
+	cdnUrl: `https://cdn.jsdelivr.net/npm/@tabler/core@${version}`,
 	// site.email — used by parts/modals/success.html ({{ site.email }}). Verified
 	// against the reference build (support@tabler.io).
 	email: 'support@tabler.io',
