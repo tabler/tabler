@@ -1,9 +1,11 @@
-@use "sass:map";
-@use "sass:string";
+@use 'sass:map';
+@use 'sass:string';
 
 //
 // Base styles
 //
+
+@use '../../config' as *;
 
 .input-group {
   position: relative;
@@ -41,7 +43,6 @@
   }
 }
 
-
 // Textual addons
 //
 // Serves as a catch-all element for any text or radio/checkbox input you wish
@@ -61,7 +62,6 @@
   border: $input-border-width solid $input-group-addon-border-color;
   @include border-radius($input-border-radius);
 }
-
 
 // Sizing
 //
@@ -91,7 +91,6 @@
   padding-right: $form-select-padding-x + $form-select-indicator-padding;
 }
 
-
 // Rounded corners
 //
 // These rulesets must come after the sizing ones to properly override sm and lg
@@ -118,9 +117,9 @@
     }
   }
 
-  $validation-messages: "";
+  $validation-messages: '';
   @each $state in map.keys($form-validation-states) {
-    $validation-messages: $validation-messages + ":not(." + string.unquote($state) + "-tooltip)" + ":not(." + string.unquote($state) + "-feedback)";
+    $validation-messages: $validation-messages + ':not(.' + string.unquote($state) + '-tooltip)' + ':not(.' + string.unquote($state) + '-feedback)';
   }
 
   > :not(:first-child):not(.dropdown-menu)#{$validation-messages} {

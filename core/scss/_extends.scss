@@ -1,0 +1,68 @@
+// Cross-module `@extend` rules, loaded last from `tabler.scss`.
+//
+// With the Sass module system an extension only applies to upstream
+// stylesheets — the modules the extending file loads, directly or
+// transitively — never to sibling modules loaded elsewhere. The extends below
+// target element selectors spread across many modules (`h1`–`h6`, `hr`,
+// `.table`, `[data-bs-theme='dark']`), so they live here, with the whole
+// `core` upstream.
+//
+// Rules containing only `@extend` emit no CSS of their own, so placing them
+// here does not change the compiled output — each extension is applied
+// in-place to the rules it extends.
+@use 'config' as *;
+@use 'core';
+
+// Heading helpers (from `bootstrap/_type.scss`)
+.h1 {
+  @extend h1;
+}
+
+.h2 {
+  @extend h2;
+}
+
+.h3 {
+  @extend h3;
+}
+
+.h4 {
+  @extend h4;
+}
+
+.h5 {
+  @extend h5;
+}
+
+.h6 {
+  @extend h6;
+}
+
+// Emphasis helpers (from `bootstrap/_type.scss`)
+.small {
+  @extend small;
+}
+
+.mark {
+  @extend mark;
+}
+
+// Horizontal rule helper (from `ui/typo/_hr.scss`)
+.hr {
+  @extend hr;
+}
+
+// Markdown tables pick up the styled table look (from `ui/_markdown.scss`)
+.prose > table,
+.markdown > table {
+  @extend .table, .table-bordered, .table-sm;
+}
+
+// Light-scoped subtrees inside a dark body inherit the dark styles
+// (from `layout/_dark.scss`)
+@if $enable-dark-mode {
+  body[data-bs-theme='dark'] [data-bs-theme='light'],
+  body[data-theme='dark'] [data-theme='light'] {
+    @extend [data-bs-theme='dark'];
+  }
+}
