@@ -15,9 +15,8 @@ const copies = [
     required: true,
     allowDestinationFallback: true,
   },
-  // demo css/js built by the @tabler/preview sass/vite pipeline
-  // TODO(phase 3): move that pipeline into this package
-  { from: join(repo, 'preview', 'dist', 'preview'), to: join(root, 'public', 'preview'), required: false },
+  // demo css/js built by this package's sass/vite pipeline
+  { from: join(root, 'dist', 'preview'), to: join(root, 'public', 'preview'), required: true },
   // docs.css built by the @tabler/docs sass pipeline (used by docs pages)
   { from: join(repo, 'docs', 'dist', 'css'), to: join(root, 'public', 'css'), required: false },
   // static assets (photos, avatars, tracks, brand svgs...).

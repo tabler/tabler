@@ -7,7 +7,9 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "assets": "node .build/copy-assets.mjs",
+    "assets": "pnpm run css && pnpm run js && node .build/copy-assets.mjs",
+    "css": "sass --no-source-map --load-path=node_modules --style expanded scss/:dist/preview/css/ && postcss --config ../core/.build/postcss.config.mjs --replace \"dist/preview/css/*.css\" \"!dist/preview/css/*.min.css\" && cleancss -O1 --format breakWith=lf --with-rebase --source-map --source-map-inline-sources --output dist/preview/css/ --batch --batch-suffix \".min\" \"dist/preview/css/*.css\" \"!dist/preview/css/*.min.css\"",
+    "js": "vite build --config .build/vite.config.mts && terser dist/preview/js/demo.js --module --compress --mangle --comments '/@license|@preserve|^!/' --source-map \"content=dist/preview/js/demo.js.map,filename=dist/preview/js/demo.min.js.map,url=demo.min.js.map\" -o dist/preview/js/demo.min.js",
     "dev": "pnpm run assets && astro dev",
     "build": "pnpm run assets && astro build",
     "preview": "astro preview",
