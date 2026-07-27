@@ -41,12 +41,14 @@ Use this to infer **intent**, **user-visible behavior**, and **risk**—not only
 **Vercel preview URL:** after the branch is pushed, Vercel deploys a preview. Build the link from the branch name:
 
 1. Take the current branch name from `git branch --show-current`.
-2. Replace `/` with `-` and use lowercase (e.g. `feature/pricing-banner` → `feature-pricing-banner`).
+2. Replace `/` with `-`, **remove dots entirely** (do not replace them with dashes), and use lowercase (e.g. `feature/pricing-banner` → `feature-pricing-banner`, `update-icons-3.45.0` → `update-icons-3450`).
 3. Insert into: `https://tabler-git-{branch-slug}-tabler-io.vercel.app/`
 
-Example: branch `bundle-framing-posthog-flag` → `https://tabler-git-bundle-framing-posthog-flag-tabler-io.vercel.app/`
+Examples:
+- branch `bundle-framing-posthog-flag` → `https://tabler-git-bundle-framing-posthog-flag-tabler-io.vercel.app/`
+- branch `update-icons-3.45.0` → `https://tabler-git-update-icons-3450-tabler-io.vercel.app/`
 
-If the diff touches specific routes or pages (e.g. `src/app/pricing/`, `/pricing`), append that path to the preview URL (e.g. `…vercel.app/pricing`). Mention the exact path(s) in **Preview**.
+If the diff touches specific routes or pages, append that path to the preview URL. **Preview pages use the `.html` extension**: a page from `preview/pages/icons.astro` is served at `/icons.html` (e.g. `…vercel.app/icons.html`), not `/icons`. Docs pages use directory URLs without extension: a page from `docs/pages/ui/components/badge.mdx` is served at `/ui/components/badge/`. Mention the exact path(s) in **Preview**.
 
 ## 3. Title
 
