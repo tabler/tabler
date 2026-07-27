@@ -1,0 +1,102 @@
+---
+description: Tabler Project Rules
+globs:
+alwaysApply: true
+---
+
+
+# Tabler — project rules
+
+Shared instructions for all AI agents (Claude Code, Cursor, etc.). Canonical agent configuration lives in `.agents/` (`rules/` + `skills/`); `.claude/skills` is a symlink into it.
+
+## Project structure
+
+- `core/` — `@tabler/core`: SCSS sources (`core/scss/`), JS, the distributable framework.
+- `preview/` — `@tabler/preview`: demo site built with Astro (pages in `preview/pages/*.astro`).
+- `docs/` — `@tabler/docs`: documentation site built with Astro (pages in `docs/pages/**/*.mdx`); docs-specific rules: `.agents/rules/docs.mdc`.
+- `shared/astro/` — Astro components, layouts, and lib shared by `preview` and `docs` (imported via the `@shared` alias).
+- `shared/data/` — JSON data used by pages (imported via the `@data` alias).
+- Package manager: pnpm workspaces + turbo. Node.js >= 22.12.
+
+## Language
+
+- Write all repository content in English: code, comments, documentation, commit messages, PR titles and descriptions.
+- Use simple English in documentation: short sentences, common words, direct instructions.
+
+## HTML and component guidelines
+
+### Astro pages and components
+
+- Pages are Astro components; reusable markup lives in `shared/astro/components/`.
+- Icons: use the shared component — `<Icon name="home" />` (import from `@shared/components/Icon.astro`).
+- Links between preview pages are relative: `./job-listing.html` (root-level pages).
+- Boolean HTML attributes in Astro: `selected={true}` renders a bare attribute, but some attributes (e.g. `multiple`) render `="true"` — use `multiple ? '' : undefined` when a bare attribute is required.
+
+### CSS classes
+
+- Use Bootstrap 5 classes plus Tabler's custom classes.
+- Follow Tabler's CSS custom properties pattern: `--#{$prefix}component-property`.
+- Cards: `card` for containers, `card-body` for content, `card-header` / `card-title` for headers.
+- Buttons: `btn` for all buttons; `btn-primary` for primary actions; plain `btn` for secondary actions (do not use `btn-outline-secondary`); `btn-sm` for small buttons; `w-100` for full width.
+- Forms: `form-control` for inputs, `form-label` for labels, `form-check` for checkboxes/radios, `form-select` for dropdowns.
+- Layout: Bootstrap grid (`row`, `col-*`), `container-xl` for main containers, `page-wrapper` / `page-body` for page structure.
+- Badges: plain `badge` class; do not use `badge-outline` or `badge-primary`; do not change badge text color.
+- Markdown content: wrap in a `markdown` class container.
+
+### Accessibility
+
+- Use semantic HTML elements and proper heading hierarchy.
+- Include ARIA labels (e.g. `aria-label` for icon-only buttons) and alt text for images.
+
+## SCSS guidelines
+
+- Use semantic class names that describe purpose, not appearance.
+- Keep Bootstrap-compatible class naming conventions.
+- Group related styles together with clear comments; keep consistent spacing and indentation.
+
+## Git conventions
+
+### Branch naming
+
+- Lowercase, kebab-case, format: `<type>/<short-description>` or `<type>/<issue-id>-<short-description>` (issue id as `gh-123`, never `#`).
+- Allowed types: `feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `build`, `ci`, `perf`, `style`, `revert`.
+- Examples: `feat/gh-123-add-stepper-component`, `fix/markdown-table-overflow`.
+- Branch off `dev` by default.
+
+### Commit messages
+
+- English, conventional commit format when possible: `feat: add progress steps component`, `fix: update icon stroke width for better visibility`.
+
+### Pull requests
+
+- Title in English, capitalized, present tense, ideally <= 72 chars, no trailing period.
+- Description in English, skimmable (bullets, short paragraphs), focused on **why** the change is needed and its user-visible effect. Recommended template:
+
+  ```md
+  ## Summary
+  - <1-3 bullets describing the change and why>
+
+  ## Changes
+  - <key implementation notes, non-obvious decisions>
+  ```
+
+- Mark WIP PRs as drafts.
+
+### Changesets
+
+- Each change gets a separate file in `.changeset/` with a descriptive kebab-case filename (e.g. `progress-sizes.md`).
+- One sentence per changeset, starting with an action verb (`Added`, `Updated`, `Fixed`, `Removed`), with backticks for code elements (`.btn-ghost`, `stroke-width`, `1.5`, `arrow-up`).
+- Version bumps: **major** = breaking changes; **minor** = new features, components, or pages; **patch** = bug fixes, small improvements, style/accessibility tweaks.
+- Packages: `"@tabler/core"` for SCSS/JS/classes, `"@tabler/preview"` for demo pages, `"@tabler/docs"` for documentation; list multiple packages when the change spans areas.
+- Example:
+
+  ```md
+  ---
+  "@tabler/core": minor
+  "@tabler/preview": minor
+  ---
+
+  Added Progress Steps component for step-by-step navigation indicators.
+  ```
+
+- If a PR changes SCSS or any package behavior, it must include a changeset.

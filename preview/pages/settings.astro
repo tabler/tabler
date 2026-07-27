@@ -1,0 +1,76 @@
+---
+// Port of preview/pages/settings.html (layout: settings).
+import SettingsLayout from '@shared/layouts/SettingsLayout.astro';
+import Avatar from '@shared/components/ui/Avatar.astro';
+import Button from '@shared/components/Button.astro';
+import Check from '@shared/components/ui/form/Check.astro';
+import people from '@data/people.json';
+
+const person = people[0];
+---
+
+<SettingsLayout active="settings">
+	<div class="card-body">
+		<h2 class="mb-4">My Account</h2>
+
+		<h3 class="card-title">Profile Details</h3>
+
+		<div class="row align-items-center">
+			<div class="col-auto"><Avatar size="xl" personId={1} /></div>
+			<div class="col-auto"><Button text="Change avatar" /></div>
+			<div class="col-auto"><Button text="Delete avatar" color="danger" ghost /></div>
+		</div>
+
+
+		<h3 class="card-title mt-4">Business Profile</h3>
+
+		<div class="row g-3">
+			<div class="col-md">
+				<label class="form-label" for="business-name">Business Name</label>
+				<input type="text" class="form-control" id="business-name" name="business-name" value={person.company} />
+			</div>
+			<div class="col-md">
+				<label class="form-label" for="business-id">Business ID</label>
+				<input type="text" class="form-control" id="business-id" name="business-id" value="560afc32" />
+			</div>
+			<div class="col-md">
+				<label class="form-label" for="location">Location</label>
+				<input type="text" class="form-control" id="location" name="location" value={`${person.city}, ${person.country}`} />
+			</div>
+		</div>
+
+		<h3 class="card-title mt-4">Email</h3>
+		<p class="card-subtitle">This contact will be shown to others publicly, so choose it carefully.</p>
+
+		<div>
+			<div class="row g-2">
+				<div class="col-auto">
+					<label for="email" class="form-label visually-hidden">Email</label>
+					<input type="text" class="form-control w-auto" id="email" name="email" value={person.email} />
+				</div>
+				<div class="col-auto"><Button text="Change" /></div>
+			</div>
+		</div>
+
+		<h3 class="card-title mt-4">Password</h3>
+		<p class="card-subtitle">You can set a permanent password if you don't want to use temporary login codes.</p>
+		<div>
+			<Button text="Set new password" />
+		</div>
+
+		<h3 class="card-title mt-4">Public profile</h3>
+		<p class="card-subtitle">
+			Making your profile public means that anyone on the Dashkit network will be able to find
+			you.
+		</p>
+		<div>
+			<Check switch size="lg" titleOn="You're currently visible" titleOff="You're currently invisible" />
+		</div>
+	</div>
+	<div class="card-footer bg-transparent mt-auto">
+		<div class="btn-list justify-content-end">
+			<Button text="Cancel" />
+			<Button text="Submit" color="primary" />
+		</div>
+	</div>
+</SettingsLayout>

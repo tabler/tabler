@@ -1,0 +1,20 @@
+---
+// Port of cards/charts/social-referrals.html
+// Note: the Liquid include passes legend=true to ui/chart.html, but ui/chart.html
+// reads the legend flag from the chart data (data.legend), not the include arg —
+// so the arg is inert and Chart.astro needs no legend prop.
+import Chart from '../../Chart.astro';
+import DropdownDays from '../../ui/DropdownDays.astro';
+---
+
+<div class="card">
+	<div class="card-body">
+		<div class="d-flex">
+			<h3 class="card-title">Social referrals</h3>
+			<div class="ms-auto">
+				<DropdownDays id="social-referrals" label="Select time range for sales data" />
+			</div>
+		</div>
+		<Chart chartId="social-referrals" />
+	</div>
+</div>

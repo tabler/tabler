@@ -1,0 +1,56 @@
+---
+// Port of shared/includes/cards/user-info.html.
+// person = people[person-id - 1] (Liquid default person-id = 25 → people[24]).
+import Icon from '../Icon.astro';
+import Flag from '../ui/Flag.astro';
+import people from '@data/people.json';
+
+interface Person {
+	university?: string;
+	company?: string;
+	city?: string;
+	country?: string;
+	country_code?: string;
+	birth_date?: string;
+	time_zone?: string;
+	[key: string]: unknown;
+}
+
+interface Props {
+	title?: string;
+	personId?: number;
+}
+
+const { title = 'Basic info', personId = 25 } = Astro.props;
+const person = (people as Person[])[personId - 1];
+---
+
+<div class="card">
+	<div class="card-body">
+		<div class="card-title">{title}</div>
+		<div class="mb-2">
+			<Icon name="book" class="me-2 text-secondary" />
+			Went to: <strong>{person.university}</strong>
+		</div>
+		<div class="mb-2">
+			<Icon name="briefcase" class="me-2 text-secondary" />
+			Worked at: <strong>{person.company}</strong>
+		</div>
+		<div class="mb-2">
+			<Icon name="home" class="me-2 text-secondary" />
+			Lives in: <strong>{person.city}, {person.country}</strong>
+		</div>
+		<div class="mb-2">
+			<Icon name="map-pin" class="me-2 text-secondary" />
+			From: <strong><Flag size="xs" flag={person.country_code} /> {person.country}</strong>
+		</div>
+		<div class="mb-2">
+			<Icon name="calendar" class="me-2 text-secondary" />
+			Birth date: <strong>{person.birth_date}</strong>
+		</div>
+		<div>
+			<Icon name="clock" class="me-2 text-secondary" />
+			Time zone: <strong>{person.time_zone}</strong>
+		</div>
+	</div>
+</div>

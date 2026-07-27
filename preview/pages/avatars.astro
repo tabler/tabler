@@ -1,0 +1,168 @@
+---
+// Port of preview/pages/avatars.html (layout: default)
+// Note: the `description` front matter key is inert in the dev build (no
+// <meta name="description"> in the reference output), so it is not ported.
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
+import Avatar from '@shared/components/ui/Avatar.astro';
+import AvatarUpload from '@shared/components/ui/AvatarUpload.astro';
+import people from '@data/people.json';
+import { site } from '@shared/lib/site';
+
+const iconIcons = ['user', 'settings', 'car', 'balloon', 'users', 'users-group', 'apps', 'ghost'];
+
+// Liquid: {% for color in site.colors %} — the iterated keys match site.themeColors
+// (blue..cyan), confirmed against the reference output.
+const colors = site.themeColors;
+
+// equivalent of the first_letters filter
+const firstLetters = (s: string) => s.split(' ').map((w) => w.charAt(0)).join('');
+
+const people8 = people.slice(0, 8);
+const people5 = people.slice(0, 5);
+const sizes = ['xxs', 'xs', 'sm', 'md', 'lg', 'xl'];
+const listSizes = ['xxs', 'xs', 'sm', 'md', 'lg'];
+const uploadSizes = ['xxs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl'];
+const statusColors = ['red', 'green', 'blue', 'yellow', 'secondary'];
+const brands = ['netflix', 'amazon', 'messenger', 'figma', 'twitch'];
+---
+
+<DefaultLayout title="Avatars" pageMenu="base.avatars" pageHeader="Avatars">
+	<div class="row row-cards">
+		<div class="col-4">
+			<div class="card">
+				<div class="card-body">
+					<h2 class="card-title">Default avatar</h2>
+					<Avatar />
+				</div>
+			</div>
+		</div>
+		<div class="col-4">
+			<div class="card">
+				<div class="card-body">
+					<h2 class="card-title">Avatar with icon</h2>
+
+					<div class="avatar-list">
+						{iconIcons.map((icon) => <Avatar icon={icon} />)}
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-4">
+			<div class="card">
+				<div class="card-body">
+					<h2 class="card-title">Avatar with icon</h2>
+
+					<div class="avatar-list">
+						{colors.map((color) => <Avatar icon="user" color={color} />)}
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-4">
+			<div class="card">
+				<div class="card-body">
+					<h2 class="card-title">Simple avatar</h2>
+					<div class="avatar-list">
+						{people8.map((person) => <Avatar person={person} />)}
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-4">
+			<div class="card">
+				<div class="card-body">
+					<h2 class="card-title">Avatar placeholder</h2>
+					<div class="avatar-list">
+						{people8.map((person) => <Avatar placeholder={firstLetters(person.full_name)} />)}
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-4">
+			<div class="card">
+				<div class="card-body">
+					<h2 class="card-title">Avatar shapes</h2>
+					<div class="avatar-list">
+						<Avatar />
+						<Avatar class="rounded-circle" />
+						<Avatar class="rounded-0" />
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-6">
+			<div class="card">
+				<div class="card-body">
+					<h2 class="card-title">Avatar sizes</h2>
+					<div class="row">
+						<div class="col-6">
+							<div class="avatar-list">
+								{sizes.map((size) => <Avatar size={size} />)}
+							</div>
+						</div>
+						<div class="col-6">
+							<div class="avatar-list">
+								{sizes.map((size) => <Avatar placeholder="PK" size={size} />)}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-6">
+			<div class="card">
+				<div class="card-body">
+					<h2 class="card-title">Avatar lists</h2>
+					<div class="row g-3">
+						{
+							listSizes.map((size) => (
+								<>
+									<div class="col-6">
+										<div class={`avatar-list avatar-list-stacked avatar-list-${size}`}>
+											{people5.map((person) => (
+												<Avatar person={person} />
+											))}
+											<Avatar icon="plus" link />
+										</div>
+									</div>
+									<div class="col-6">
+										<div class={`avatar-list avatar-list-stacked avatar-list-${size}`}>
+											{people5.map((person) => (
+												<Avatar person={person} class="rounded-circle" />
+											))}
+											<Avatar icon="plus" link class="rounded-circle" />
+										</div>
+									</div>
+								</>
+							))
+						}
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-4">
+			<div class="card">
+				<div class="card-body">
+					<h2 class="card-title">Avatar placeholder</h2>
+					{uploadSizes.map((size) => <AvatarUpload size={size} />)}
+				</div>
+			</div>
+		</div>
+		<div class="col-4">
+			<div class="card">
+				<div class="card-body">
+					<h2 class="card-title">Avatar statuses</h2>
+					{statusColors.map((color, i) => <Avatar personId={i + 1} class="rounded-circle" status={color} />)}
+				</div>
+			</div>
+		</div>
+		<div class="col-4">
+			<div class="card">
+				<div class="card-body">
+					<h2 class="card-title">Avatar brands</h2>
+					{brands.map((brand, i) => <Avatar personId={i + 1} brand={brand} />)}
+				</div>
+			</div>
+		</div>
+	</div>
+</DefaultLayout>

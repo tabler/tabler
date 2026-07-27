@@ -1,0 +1,40 @@
+---
+// Port cards/social-traffic.html
+const services = 'Instagram:3550,Twitter:1798,Facebook:1245,TikTok:986,Pinterest:854,VK:650,Pinterest:420'
+	.split(',')
+	.map((service) => {
+		const [name, visitors] = service.split(':');
+		return { name, visitors: Number(visitors) };
+	});
+
+// equivalent of the format_number filter from shared/e11ty/filters.mjs
+const formatNumber = (value: number) => value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+---
+
+<div class="card">
+	<div class="card-header">
+		<h3 class="card-title">Social Media Traffic</h3>
+	</div>
+	<table class="table card-table table-vcenter">
+		<thead>
+		<tr>
+			<th>Network</th>
+			<th colspan="2">Visitors</th>
+		</tr>
+		</thead>
+		<tbody>
+		{services.map((service) => (
+			<tr>
+				<td>{service.name}</td>
+				<td>{formatNumber(service.visitors)}</td>
+				<td class="w-50">
+					<div class="progress progress-xs">
+
+						<div class="progress-bar bg-primary" style={`width: ${(service.visitors / 5000.0) * 100}%`}></div>
+					</div>
+				</td>
+			</tr>
+		))}
+		</tbody>
+	</table>
+</div>

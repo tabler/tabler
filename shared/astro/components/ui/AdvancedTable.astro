@@ -1,0 +1,227 @@
+---
+// Port of ui/advanced-table.html
+import Icon from '../Icon.astro';
+import { liquidLongDate } from '@shared/lib/liquid-date';
+import Avatar from './Avatar.astro';
+import Button from '../Button.astro';
+import Pagination from './Pagination.astro';
+import people from '@data/people.json';
+import tableProperties from '@data/table-properties.json';
+
+interface Props {
+	id?: string;
+}
+
+const { id: tableId = 'advanced-table' } = Astro.props;
+
+const statuses = ['Active', 'Inactive', 'Requested'];
+const perPage = ['10', '20', '50', '100'];
+const categories = ['Agencies', 'Individual', 'Event', 'Ticket'];
+const tags = ['QTA,Event,Tickets,TODO', 'Event,Tickets', 'QTA,Event', 'Tickets'];
+
+const headers = (tableProperties as Record<string, any>)['advanced-table'].headers as {
+	'data-sort': string;
+	name: string;
+}[];
+
+// Equivalent of the random_number / random_date filters from shared/e11ty/filters.mjs.
+function randomNumber(x: number, min = 0, max = 100): number {
+	let value =
+		((x * x * Math.PI * Math.E * (max + 1) * (Math.sin(x) / Math.cos(x * x))) % (max + 1 - min)) + min;
+	value = value > max ? max : value;
+	value = value < min ? min : value;
+	return Math.floor(value);
+}
+
+function randomItem<T>(x: number, items: T[]): T {
+	return items[randomNumber(x, 0, items.length - 1)];
+}
+
+function randomDate(x: number): Date {
+	const start = new Date('2024-01-01').getTime() / 1000;
+	const end = new Date('2024-12-30').getTime() / 1000;
+	return new Date(randomNumber(x, start, end) * 1000);
+}
+
+
+const rows = (people as Record<string, any>[]).map((person, i) => {
+	const index = i + 1;
+	const status = randomItem(index + 5, statuses);
+	const itemTags = randomItem(index + 5, tags).split(',');
+	const category = randomItem(index, categories);
+	const date = liquidLongDate(randomDate(index));
+	return { person, index, status, itemTags, category, date };
+});
+
+// Inline <script> from advanced-table.html (renders in the page body).
+const advancedJson = JSON.stringify((tableProperties as Record<string, any>)['advanced-table']);
+const perPageDefault = perPage[1];
+const script = `
+	const advancedTable = ${advancedJson}
+	const setPageListItems = e => {
+		window.tabler_list["${tableId}"].page = parseInt(e.target.dataset.value)
+		window.tabler_list["${tableId}"].update()
+
+		document.querySelector("#page-count").innerHTML = e.target.dataset.value
+	}
+
+	window.tabler_list = window.tabler_list || {}
+	document.addEventListener("DOMContentLoaded", function() {
+		const list = window.tabler_list["${tableId}"] = new List('${tableId}', {
+			sortClass: 'table-sort',
+			listClass: 'table-tbody',
+			page: parseInt("${perPageDefault}"),
+			pagination: {
+				item: value => {
+					return \`<li class="page-item"><a class="page-link cursor-pointer">\${value.page}</a></li>\`
+				},
+				innerWindow: 1,
+				outerWindow: 1,
+				left: 0,
+				right: 0,
+			},
+			valueNames: advancedTable.headers.map(header => header['data-sort'])
+		});
+
+		const searchInput = document.querySelector('#${tableId}-search');
+
+		if (searchInput) {
+			searchInput.addEventListener('input', () => {
+				list.search(searchInput.value)
+			})
+		}
+	})
+`;
+---
+
+{/*
+	ui/advanced-table.html begins with a commented-out {% include "js/tabler-list.html" %}
+	(a disabled List.js init for an empty table id). HTML comments are stripped by the
+	DOM parity diff, so it is intentionally omitted here rather than emitted verbatim.
+*/}
+<div class="card">
+	<div class="card-table">
+		<div class="card-header">
+			<div class="row w-full">
+				<div class="col">
+					<h3 class="card-title mb-0">
+						Employee
+					</h3>
+					<p class="text-secondary m-0">
+						Table description.
+					</p>
+				</div>
+				<div class="col-md-auto col-sm-12">
+					<div class="ms-auto d-flex flex-wrap btn-list">
+						<div class="input-group input-group-flat w-auto">
+							<span class="input-group-text">
+								<Icon name="search" />
+							</span>
+
+							<input id={`${tableId}-search`} type="text" class="form-control" autocomplete="off" />
+
+							<span class="input-group-text">
+								<kbd>ctrl + K</kbd>
+							</span>
+						</div>
+
+						<a href="#" class="btn btn-icon" aria-label="Button">
+							<Icon name="dots" />
+						</a>
+						<div class="dropdown">
+							<a href="#" class="btn dropdown-toggle" data-bs-toggle="dropdown">Download</a>
+							<div class="dropdown-menu">
+								<a class="dropdown-item" href="#">Action</a>
+								<a class="dropdown-item" href="#">Another action</a>
+								<a class="dropdown-item" href="#">Third action</a>
+							</div>
+						</div>
+						<Button />
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div id={tableId}>
+			<div class="table-responsive">
+				<table class="table table-vcenter table-selectable">
+					<thead>
+						<tr>
+							<th class="w-1"></th>
+							{headers.map((header) => (
+								<th>
+									<button class="table-sort d-flex justify-content-between" data-sort={header['data-sort']}>
+										{header.name}
+									</button>
+								</th>
+							))}
+						</tr>
+					</thead>
+
+					<tbody class="table-tbody">
+						{rows.map(({ person, status, itemTags, category, date }) => (
+							<tr>
+								<td>
+									<input class="form-check-input m-0 align-middle table-selectable-check" type="checkbox" aria-label="Select invoice" value="true" />
+								</td>
+								<td class={headers[0]['data-sort']}>
+									<Avatar person={person} size="xs" class="me-2" />
+									{person.full_name}
+								</td>
+								<td class={headers[1]['data-sort']}>
+									{person.city}, {person.country}
+								</td>
+								<td class={headers[2]['data-sort']}>
+									{status === 'Active' ? (
+										<span class="badge bg-success-lt">Active</span>
+									) : status === 'Inactive' ? (
+										<span class="badge bg-danger-lt">Inactive</span>
+									) : (
+										<span class="badge">Requested</span>
+									)}
+								</td>
+								<td class={headers[3]['data-sort']}>
+									{date}
+								</td>
+								<td class={headers[4]['data-sort']}>
+									<div class="badges-list">
+										{itemTags.map((tag) => (
+											<span class="badge">{tag}</span>
+										))}
+									</div>
+								</td>
+								<td class={`${headers[5]['data-sort']} py-0`}>
+									<span class="on-unchecked">
+										{category}
+									</span>
+									<div class="on-checked">
+										<div class="d-flex justify-content-end">
+											<Button icon="dots" iconOnly />
+										</div>
+									</div>
+								</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
+			</div>
+			<div class="card-footer d-flex align-items-center">
+				<div class="dropdown">
+					<a class="btn dropdown-toggle" data-bs-toggle="dropdown">
+						<span id="page-count" class="me-1">{perPage[1]}</span>
+						<span>records</span>
+					</a>
+					<div class="dropdown-menu">
+						{perPage.map((record) => (
+							<a class="dropdown-item" onclick="setPageListItems(event)" data-value={record}>{record} records</a>
+						))}
+					</div>
+				</div>
+
+				<Pagination class="m-0 ms-auto" count={10} />
+			</div>
+		</div>
+	</div>
+</div>
+
+<script is:inline set:html={script} />

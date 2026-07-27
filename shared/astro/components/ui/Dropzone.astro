@@ -1,0 +1,45 @@
+---
+// Port of shared/includes/ui/dropzone.html.
+// The Dropzone init <script> is captured via {% capture_script %} in Liquid, so it
+// is registered with addPageScript synchronously here. We mirror the development
+// build, which wraps the instance in window.tabler_dropzone.
+// Liquid action="{{ page | relative }}/" resolves to "./" for root-level pages.
+import { addPageScript } from '@shared/lib/page-scripts';
+import InlineScript from '@shared/components/InlineScript.astro';
+
+interface Props {
+	id?: string;
+	multiple?: boolean;
+	custom?: boolean;
+	text?: string;
+	description?: string;
+}
+
+const { id, multiple, custom, text = 'Text', description = 'Description' } = Astro.props;
+
+const script = `<script>
+  window.tabler_dropzone = window.tabler_dropzone || {};
+
+  document.addEventListener("DOMContentLoaded", function() {
+    window.tabler_dropzone["dropzone-${id}"] = new Dropzone("#dropzone-${id}")
+  })
+</script>`;
+
+addPageScript(script);
+---
+
+<form class="dropzone" id={`dropzone-${id}`} action="./" autocomplete="off" novalidate>
+	<div class="fallback">
+		{/* emit a bare boolean attribute (empty string) to match Liquid's {% if %}multiple */}
+		<input name="file" type="file" multiple={multiple ? '' : undefined} />
+	</div>
+	{
+		custom && (
+			<div class="dz-message">
+				<h3 class="dropzone-msg-title">{text}</h3>
+				<span class="dropzone-msg-desc">{description}</span>
+			</div>
+		)
+	}
+</form>
+<InlineScript code={script} />

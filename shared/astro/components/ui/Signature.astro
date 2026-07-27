@@ -1,0 +1,88 @@
+---
+// Port of ui/signature.html.
+// Renders the signature canvas markup and registers its SignaturePad init
+// script via addPageScript (the include's {% capture_script %}). Registration
+// is synchronous in the frontmatter — see src/lib/page-scripts.ts.
+import Icon from '../Icon.astro';
+import { addPageScript } from '@shared/lib/page-scripts';
+import InlineScript from '@shared/components/InlineScript.astro';
+
+interface Props {
+	id?: string;
+	class?: string;
+	clear?: boolean;
+	width?: number;
+	height?: number;
+	event?: string;
+	/** extra-js param — raw JS appended inside the init callback */
+	extraJs?: string;
+}
+
+const {
+	id = 'default',
+	class: className,
+	clear,
+	width = 400,
+	height = 400,
+	event = 'DOMContentLoaded',
+	extraJs,
+} = Astro.props;
+
+const signatureClass = ['signature position-relative', className].filter(Boolean).join(' ');
+
+const clearSnippet = clear
+	? `		document.querySelector("#signature-${id}-clear").addEventListener("click", function () {
+		  signaturePad.clear();
+		});
+`
+	: '';
+
+const extraSnippet = extraJs ? `${extraJs}
+` : '';
+
+const script = `<!-- BEGIN SIGNATURE PAD -->
+<script>
+  document.addEventListener("${event}", function () {
+    const canvas = document.getElementById("signature-${id}");
+
+    if (canvas) {
+      const signaturePad = new SignaturePad(canvas, {
+        backgroundColor: "transparent",
+		  penColor: getComputedStyle(canvas).color
+      });
+
+${clearSnippet}
+		function resizeCanvas() {
+        const ratio = Math.max(window.devicePixelRatio || 1, 1);
+
+		  console.log(canvas.offsetWidth, canvas.offsetHeight);
+
+        canvas.width = canvas.offsetWidth * ratio;
+        canvas.height = canvas.offsetHeight * ratio;
+        canvas.getContext("2d").scale(ratio, ratio);
+        signaturePad.fromData(signaturePad.toData());
+      }
+
+		window.addEventListener("resize", resizeCanvas);
+		resizeCanvas();
+
+${extraSnippet}
+    }
+  });
+</script>`;
+addPageScript(script);
+---
+
+<div class={signatureClass}>
+	{
+		clear && (
+			<div class="position-absolute top-0 end-0 p-2">
+				<div class="btn btn-icon" id={`signature-${id}-clear`} title="Clear signature" data-bs-toggle="tooltip">
+					<Icon name="trash" />{' '}
+				</div>
+			</div>
+		)
+	}
+	<canvas id={`signature-${id}`} width={width} height={height} class="signature-canvas"></canvas>
+</div>
+<InlineScript code={script} />

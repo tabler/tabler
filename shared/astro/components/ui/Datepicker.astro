@@ -1,0 +1,97 @@
+---
+// Port of shared/includes/ui/datepicker.html.
+// Renders the datepicker input (icon / icon-prepend / inline / plain layouts)
+// and registers its Litepicker init <script> via addPageScript (the include's
+// {% capture_script %}). Registration is synchronous in the frontmatter — see
+// src/lib/page-scripts.ts. The reference build is `environment == 'development'`,
+// so the init assigns into window.tabler_datepicker[...].
+import Icon from '../Icon.astro';
+import { addPageScript } from '@shared/lib/page-scripts';
+import InlineScript from '@shared/components/InlineScript.astro';
+
+interface Props {
+	id?: string;
+	value?: string;
+	placeholder?: string;
+	class?: string;
+	/** 'icon' | 'icon-prepend' | undefined (plain) */
+	layout?: string;
+	inline?: boolean;
+	/** show-scripts: emit the init inline instead of via capture_script (unused here) */
+	showScripts?: boolean;
+}
+
+const {
+	id,
+	value = '2020-06-20',
+	placeholder = 'Select a date',
+	class: className,
+	layout,
+	inline,
+	showScripts,
+} = Astro.props;
+
+// The Litepicker chevron buttons. In the reference the icons carry the junk
+// `icon-1` size class (stripped by the DOM diff); Icon.astro emits them without it.
+const chevronLeft =
+	'<!-- Download SVG icon from http://tabler.io/icons/icon/chevron-left -->\n\t<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" class="icon"><path d="M15 6l-6 6l6 6" /></svg>';
+const chevronRight =
+	'<!-- Download SVG icon from http://tabler.io/icons/icon/chevron-right -->\n\t<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" class="icon"><path d="M9 6l6 6l-6 6" /></svg>';
+
+const script = id
+	? `<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		window.tabler_datepicker = window.tabler_datepicker || {};
+
+		window.Litepicker && (window.tabler_datepicker["datepicker-${id}"] = new Litepicker({
+			element: document.getElementById('datepicker-${id}'),
+			buttonText: {
+				previousMonth: \`${chevronLeft}\`,
+				nextMonth: \`${chevronRight}\`,
+			},
+			${inline ? 'inlineMode: true,' : ''}
+		}));
+	});
+</script>`
+	: '';
+
+if (id && script && !showScripts) {
+	addPageScript(script);
+}
+---
+
+{
+	id &&
+		(inline ? (
+			<div class="datepicker-inline" id={`datepicker-${id}`} />
+		) : layout === 'icon' ? (
+			<div class:list={['input-icon', className]}>
+				<input
+					class="form-control"
+					placeholder={placeholder}
+					id={`datepicker-${id}`}
+					value={value}
+				/>
+				<span class="input-icon-addon"><Icon name="calendar" /></span>
+			</div>
+		) : layout === 'icon-prepend' ? (
+			<div class:list={['input-icon', className]}>
+				<span class="input-icon-addon"><Icon name="calendar" /></span>
+				<input
+					class="form-control"
+					placeholder={placeholder}
+					id={`datepicker-${id}`}
+					value={value}
+				/>
+			</div>
+		) : (
+			<input
+				class:list={['form-control', className]}
+				placeholder={placeholder}
+				id={`datepicker-${id}`}
+				value={value}
+			/>
+		))
+}
+{showScripts && id && <Fragment set:html={script} />}
+{!showScripts && id && script && <InlineScript code={script} />}

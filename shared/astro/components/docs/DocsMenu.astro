@@ -1,0 +1,86 @@
+---
+// Equivalent of docs/menu.html. In Eleventy the menu is built from `collections.docs |
+// collection-tree` (the tree of content/**/*.md files of the @tabler/docs app); in the PoC
+// the tree is frozen in shared/astro/data/docs.json (extracted from the reference
+// development docs build).
+import docs from '@shared/data/docs.json';
+
+interface MenuLeaf {
+	title: string;
+	url: string;
+}
+
+interface MenuGroup extends MenuLeaf {
+	children?: MenuLeaf[];
+}
+
+interface MenuSection {
+	title: string;
+	children?: MenuGroup[];
+}
+
+interface Props {
+	/** Page URL in the docs namespace (equivalent of page.url), e.g. "/ui/components/alert/". */
+	url: string;
+}
+
+const { url } = Astro.props;
+const menu = docs.menu as MenuSection[];
+
+// Equivalent of `level2.url | slug`: "/ui/getting-started/" -> "uigetting-started".
+const slug = (u: string) => u.split('/').filter(Boolean).join('');
+---
+
+<nav class="space-y space-y-5" id="menu">
+	{
+		menu.map((level1) => (
+			<div>
+				<div class="subheader mb-2">{level1.title}</div>
+				{level1.children && level1.children.length > 0 && (
+					<nav class="nav nav-vertical">
+						{level1.children.map((level2) => {
+							const hasChildren = Boolean(level2.children && level2.children.length > 0);
+							const expanded = url.includes(level2.url);
+							return (
+								<div>
+									{/* as in Liquid: href/data-bs-* only when the element has children */}
+									{hasChildren ? (
+										<a
+											class={`nav-link${expanded ? ' active' : ''}`}
+											href={level2.url}
+											data-bs-toggle="collapse"
+											data-bs-target={`#collapse-${slug(level2.url)}`}
+											aria-expanded={expanded ? 'true' : 'false'}
+										>
+											{level2.title} <span class="nav-link-toggle" />
+										</a>
+									) : (
+										<a class={`nav-link${expanded ? ' active' : ''}`}>{level2.title}</a>
+									)}
+
+									{hasChildren && (
+										<nav
+											class={`nav nav-vertical collapse${expanded ? ' show' : ''}`}
+											id={`collapse-${slug(level2.url)}`}
+										>
+											{level2.children!.map((level3) => (
+												<div>
+													<a
+														class={`nav-link${url === level3.url ? ' active' : ''}`}
+														href={level3.url}
+													>
+														{level3.title}
+													</a>
+												</div>
+											))}
+										</nav>
+									)}
+								</div>
+							);
+						})}
+					</nav>
+				)}
+			</div>
+		))
+	}
+</nav>

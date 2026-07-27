@@ -1,0 +1,19 @@
+---
+// Port of shared/includes/ui/status-dot.html
+interface Props {
+	color?: string;
+	animated?: boolean;
+}
+
+const { color, animated } = Astro.props;
+
+const classes = [
+	'status-dot',
+	color && `status-${color}`,
+	animated && 'status-dot-animated',
+]
+	.filter(Boolean)
+	.join(' ');
+---
+
+<span class={classes}></span>
