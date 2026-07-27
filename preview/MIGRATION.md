@@ -1,9 +1,13 @@
-# Eleventy/Liquid → Astro migration conventions (@tabler/preview-astro)
+# Eleventy/Liquid → Astro migration conventions (@tabler/preview)
 
-Goal: the generated HTML must be **semantically identical** to the Eleventy
-build (`NODE_ENV=development`). Verification: canonical DOM diff (sorted
-attributes, normalized whitespace, no HTML comments) — see
-`../.build/compare-dom.py` (gate: `pnpm test` → `../.build/parity.mjs` + `parity-manifest.json`). This means:
+Historical note: this package was ported from Eleventy/Liquid with the goal of
+producing HTML **semantically identical** to the Eleventy build
+(`NODE_ENV=development`). Verification used a canonical DOM diff (sorted
+attributes, normalized whitespace, no HTML comments); the parity tooling was
+removed together with the Eleventy sources once the migration was complete
+(see git history: `.build/compare-dom.py`, `.build/parity.mjs`,
+`parity-manifest.json`). The conventions below still apply when porting or
+writing components. Key fidelity rules:
 
 - **Class token order must be identical** to the Liquid output (attributes are
   sorted for the diff, but attribute values are not).
