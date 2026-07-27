@@ -1,30 +1,11 @@
 //
 // Headings
 //
-.h1 {
-  @extend h1;
-}
+@use '../config' as *;
 
-.h2 {
-  @extend h2;
-}
-
-.h3 {
-  @extend h3;
-}
-
-.h4 {
-  @extend h4;
-}
-
-.h5 {
-  @extend h5;
-}
-
-.h6 {
-  @extend h6;
-}
-
+// The `.h1`–`.h6` heading helpers live in `_extends.scss` — they extend the
+// `h1`–`h6` element selectors across all modules, which with the module
+// system requires the whole core to be upstream.
 
 .lead {
   @include font-size($lead-font-size);
@@ -45,13 +26,8 @@
 //
 // Emphasis
 //
-.small {
-  @extend small;
-}
-
-.mark {
-  @extend mark;
-}
+// The `.small` and `.mark` helpers live in `_extends.scss` (see the heading
+// helpers note above).
 
 //
 // Lists
@@ -72,7 +48,6 @@
     margin-right: $list-inline-padding;
   }
 }
-
 
 //
 // Misc
@@ -101,6 +76,6 @@
   color: $blockquote-footer-color;
 
   &::before {
-    content: "\2014\00A0"; // em dash, nbsp
+    content: '\2014\00A0'; // em dash, nbsp
   }
 }

@@ -1,9 +1,11 @@
-@use "sass:map";
+@use 'sass:map';
 
 // Navbar
 //
 // Provide a static navbar from which we expand to create full-width, fixed, and
 // other navbar variations.
+
+@use '../config' as *;
 
 .navbar {
   // scss-docs-start navbar-css-vars
@@ -59,7 +61,6 @@
   }
 }
 
-
 // Navbar brand
 //
 // Used for brand, project, or site names.
@@ -79,7 +80,6 @@
     text-decoration: if(sass($link-hover-decoration == underline): none; else: null);
   }
 }
-
 
 // Navbar nav
 //
@@ -114,7 +114,6 @@
   }
 }
 
-
 // Navbar text
 //
 //
@@ -126,11 +125,10 @@
 
   a,
   a:hover,
-  a:focus  {
+  a:focus {
     color: var(--#{$prefix}navbar-active-color);
   }
 }
-
 
 // Responsive navbar
 //
@@ -265,12 +263,12 @@
 // Styles for switching between navbars with light or dark background.
 
 .navbar-light {
-  @include deprecate("`.navbar-light`", "v5.2.0", "v6.0.0", true);
+  @include deprecate('`.navbar-light`', 'v5.2.0', 'v6.0.0', true);
 }
 
 .navbar-dark,
-.navbar[data-bs-theme="dark"],
-.navbar[data-theme="dark"] {
+.navbar[data-bs-theme='dark'],
+.navbar[data-theme='dark'] {
   // scss-docs-start navbar-dark-css-vars
   --#{$prefix}navbar-color: #{$navbar-dark-color};
   --#{$prefix}navbar-hover-color: #{$navbar-dark-hover-color};

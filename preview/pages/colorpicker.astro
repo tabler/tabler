@@ -1,0 +1,34 @@
+---
+// Port of preview/pages/colorpicker.html (layout: default).
+// Liquid: {% for color in site.colors %} — forloop.index (1-based) → id,
+// color[1].hex → value.
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
+import Colorpicker from '@shared/components/ui/Colorpicker.astro';
+import site from '@data/site.json';
+
+const colors = Object.values(site.colors) as { hex: string }[];
+---
+
+<DefaultLayout
+	title="Color picker"
+	pageHeader="Color picker"
+	pageMenu="plugins.colorpicker"
+	pageLibs={['coloris.js']}
+>
+	<div class="card">
+		<div class="card-body">
+			<h3 class="card-title">Basic</h3>
+			<div class="row g-3">
+				{
+					colors.map((color, index) => (
+						<div class="col-2">
+							<div>
+								<Colorpicker value={color.hex} id={index + 1} format="hex" />
+							</div>
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</div>
+</DefaultLayout>

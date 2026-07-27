@@ -22,7 +22,7 @@ const zip = new AdmZip()
 zip.addLocalFolder(path.join(__dirname, '../preview/dist'), 'dashboard')
 
 zip.addLocalFile(
-	path.join(__dirname, '../preview/static', 'og.png'),
+	path.join(__dirname, '../shared/static', 'og.png'),
 	'.',
 	'preview.png'
 )

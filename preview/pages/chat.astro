@@ -1,0 +1,88 @@
+---
+// Port of preview/pages/chat.html (layout: default)
+// Front matter page-container-class: "flex-fill d-flex flex-column" → containerClass prop.
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
+import Icon from '@shared/components/Icon.astro';
+import Avatar from '@shared/components/ui/Avatar.astro';
+import Chat from '@shared/components/ui/Chat.astro';
+import people from '@data/people.json';
+import chats from '@data/chats.json';
+
+interface Person {
+	full_name?: string;
+	photo?: string;
+	[key: string]: unknown;
+}
+
+interface Message {
+	message?: string;
+	[key: string]: unknown;
+}
+
+const sidebarPeople = (people as Person[]).slice(0, 10);
+const messages = chats as Message[];
+---
+
+<DefaultLayout
+	title="Chat"
+	pageHeader="Chat"
+	pageMenu="extra.chat"
+	containerClass="flex-fill d-flex flex-column"
+>
+	<div class="card flex-fill">
+		<div class="row g-0 flex-fill">
+			<div class="col-12 col-lg-5 col-xl-3 border-end d-flex flex-column">
+				<div class="card-header d-none d-md-block">
+					<div class="input-icon">
+						<span class="input-icon-addon"> <Icon name="search" /> </span>
+						<input type="text" value="" class="form-control" placeholder="Search…" aria-label="Search" />
+					</div>
+				</div>
+				<div class="card-body p-0 scrollable flex-fill">
+					<div class="nav flex-column nav-pills" role="tablist">
+						{
+							sidebarPeople.map((person, i) => {
+								const index = i + 1;
+								return (
+									<a
+										href="#chat-1"
+										class:list={['nav-link text-start mw-100 p-3', index === 1 && 'active']}
+										id="chat-1-tab"
+										data-bs-toggle="pill"
+										role="tab"
+										aria-selected="true"
+									>
+										<div class="row align-items-center flex-fill">
+											<div class="col-auto">
+												<Avatar person={person} />
+											</div>
+											<div class="col text-body">
+												<div>{person.full_name}</div>
+												<div class="text-secondary text-truncate w-100" set:html={messages[index]?.message} />
+											</div>
+											{index === 7 && <div class="col-auto">🌴</div>}
+										</div>
+									</a>
+								);
+							})
+						}
+					</div>
+				</div>
+			</div>
+			<div class="col-12 col-lg-7 col-xl-9 d-flex flex-column">
+				<div class="card-body scrollable"><Chat wide /></div>
+				<div class="card-footer">
+					<div class="input-group input-group-flat">
+						<input type="text" class="form-control" autocomplete="off" placeholder="Type message" />
+
+						<span class="input-group-text">
+							<a href="#" class="link-secondary" data-bs-toggle="tooltip" aria-label="Clear search" title="Clear search"> <Icon name="mood-smile" /> </a>
+
+							<a href="#" class="link-secondary ms-2" data-bs-toggle="tooltip" aria-label="Add notification" title="Add notification"> <Icon name="paperclip" /> </a>
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</DefaultLayout>

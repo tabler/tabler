@@ -1,0 +1,73 @@
+---
+title: Accordion
+summary: Use accordion panels to group related content and show one section at a time.
+description: Build collapsible content sections with accordion classes and modifiers.
+layout: '@shared/layouts/DocsMdxLayout.astro'
+---
+import Example from '@shared/components/docs/Example.astro';
+import Icon from '@shared/components/Icon.astro';
+
+## Overview
+
+Use `.accordion` as the wrapper and `.accordion-item` for each section. Inside each item, use `.accordion-header`, `.accordion-button`, `.accordion-button-toggle`, and `.accordion-body`.
+
+Accordion interaction uses Bootstrap Collapse. Add `data-bs-toggle="collapse"` and `data-bs-target="#panel-id"` to each `.accordion-button`, then use `.accordion-collapse.collapse` on the target panel. Use `.show` on the panel that should be open by default.
+
+This preview shows the base structure with one expanded section.
+
+<Example>
+<div class="accordion" id="accordion-overview"> <div class="accordion-item"> <h2 class="accordion-header"> <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#overview-item-1" aria-expanded="true" aria-controls="overview-item-1" > Account details <span class="accordion-button-toggle"> <Icon name="chevron-down" /> </span> </button> </h2> <div id="overview-item-1" class="accordion-collapse collapse show" data-bs-parent="#accordion-overview"> <div class="accordion-body"> Update profile fields, contact details, and team role settings in this section. </div> </div> </div> <div class="accordion-item"> <h2 class="accordion-header"> <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#overview-item-2" aria-expanded="false" aria-controls="overview-item-2" > Security settings <span class="accordion-button-toggle"> <Icon name="chevron-down" /> </span> </button> </h2> <div id="overview-item-2" class="accordion-collapse collapse" data-bs-parent="#accordion-overview"> <div class="accordion-body"> Configure password policy, two-factor requirements, and active device sessions. </div> </div> </div> <div class="accordion-item"> <h2 class="accordion-header"> <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#overview-item-3" aria-expanded="false" aria-controls="overview-item-3" > Notification preferences <span class="accordion-button-toggle"> <Icon name="chevron-down" /> </span> </button> </h2> <div id="overview-item-3" class="accordion-collapse collapse" data-bs-parent="#accordion-overview"> <div class="accordion-body"> Choose which updates to receive by email, browser push, and weekly digest. You can set separate rules for account alerts and product announcements. </div> </div> </div> </div>
+</Example>
+
+## Variants
+
+### Plus toggle icon
+
+Use `.accordion-button-toggle-plus` to hide the first SVG path when expanded. This pattern is useful for plus-to-minus toggles.
+
+<Example>
+<div class="accordion" id="accordion-plus"> <div class="accordion-item"> <h2 class="accordion-header"> <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#plus-item-1" aria-expanded="true" aria-controls="plus-item-1" > Billing details <span class="accordion-button-toggle accordion-button-toggle-plus"> <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"> <path d="M12 5v14"></path> <path d="M5 12h14"></path> </svg> </span> </button> </h2> <div id="plus-item-1" class="accordion-collapse collapse show" data-bs-parent="#accordion-plus"> <div class="accordion-body"> View invoices, payment method status, and tax details. </div> </div> </div> </div>
+</Example>
+
+### With leading icon
+
+Use `.accordion-button-icon` when a row needs a small icon before the label. The icon color uses the secondary token.
+
+<Example>
+<div class="accordion" id="accordion-icon"> <div class="accordion-item"> <h2 class="accordion-header"> <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#icon-item-1" aria-expanded="true" aria-controls="icon-item-1" > <span class="accordion-button-icon"> <Icon name="user" /> </span> Team profile <span class="accordion-button-toggle"> <Icon name="chevron-down" /> </span> </button> </h2> <div id="icon-item-1" class="accordion-collapse collapse show" data-bs-parent="#accordion-icon"> <div class="accordion-body"> Manage member names, avatars, and workspace profile details. </div> </div> </div> </div>
+</Example>
+
+### Flush accordion
+
+Use `.accordion-flush` to remove side borders and border radius. The first and last items also remove top and bottom borders.
+
+<Example>
+<div class="accordion accordion-flush" id="accordion-flush"> <div class="accordion-item"> <h2 class="accordion-header"> <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#flush-item-1" aria-expanded="true" aria-controls="flush-item-1" > API access <span class="accordion-button-toggle"> <Icon name="chevron-down" /> </span> </button> </h2> <div id="flush-item-1" class="accordion-collapse collapse show" data-bs-parent="#accordion-flush"> <div class="accordion-body"> Generate tokens and control access scopes. </div> </div> </div> <div class="accordion-item"> <h2 class="accordion-header"> <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-item-2" aria-expanded="false" aria-controls="flush-item-2" > Webhooks <span class="accordion-button-toggle"> <Icon name="chevron-down" /> </span> </button> </h2> <div id="flush-item-2" class="accordion-collapse collapse" data-bs-parent="#accordion-flush"> <div class="accordion-body"> Manage delivery URLs, retry policy, and event subscriptions. </div> </div> </div> </div>
+</Example>
+
+## Examples
+
+### Tab-like spacing
+
+Use `.accordion-tabs` to add a gap between items and keep full borders around each item. This style works well for settings pages.
+
+<Example>
+<div class="accordion accordion-tabs" id="accordion-tabs"> <div class="accordion-item"> <h2 class="accordion-header"> <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#tabs-item-1" aria-expanded="true" aria-controls="tabs-item-1" > Workspace <span class="accordion-button-toggle"> <Icon name="chevron-down" /> </span> </button> </h2> <div id="tabs-item-1" class="accordion-collapse collapse show" data-bs-parent="#accordion-tabs"> <div class="accordion-body"> Configure workspace name, slug, and timezone. </div> </div> </div> <div class="accordion-item"> <h2 class="accordion-header"> <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#tabs-item-2" aria-expanded="false" aria-controls="tabs-item-2" > Notifications <span class="accordion-button-toggle"> <Icon name="chevron-down" /> </span> </button> </h2> <div id="tabs-item-2" class="accordion-collapse collapse" data-bs-parent="#accordion-tabs"> <div class="accordion-body"> Control email, push, and digest notification preferences. </div> </div> </div> </div>
+</Example>
+
+### Inverted toggle position
+
+Use `.accordion-inverted` to move the toggle to the start of the button row. This helps layouts where controls should appear before text.
+
+<Example>
+<div class="accordion accordion-inverted" id="accordion-inverted"> <div class="accordion-item"> <h2 class="accordion-header"> <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#inverted-item-1" aria-expanded="true" aria-controls="inverted-item-1" > Access policy <span class="accordion-button-toggle"> <Icon name="chevron-down" /> </span> </button> </h2> <div id="inverted-item-1" class="accordion-collapse collapse show" data-bs-parent="#accordion-inverted"> <div class="accordion-body"> Set default policy, invite flow, and sign-in restrictions. </div> </div> </div> </div>
+</Example>
+
+## Accessibility
+
+- Use a real `<button>` element for `.accordion-button`.
+- Keep heading structure with `.accordion-header` so sections are easy to scan.
+- Use `aria-expanded` and `aria-controls` on toggle buttons when wiring interactive behavior.
+- Keep `data-bs-target` and panel `id` values in sync for every toggle.
+- Keep visible focus styles. The header and button styles include focus handling.
+- Add meaningful text labels, not only icons.

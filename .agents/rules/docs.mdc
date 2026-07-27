@@ -1,0 +1,80 @@
+---
+description: Tabler docs package rules (Astro, MDX documentation pages)
+globs: docs/**
+alwaysApply: false
+---
+
+# Tabler docs (@tabler/docs)
+
+## Development
+
+When starting the dev server, use background mode:
+
+```
+astro dev --background
+```
+
+Manage the background server with `astro dev stop`, `astro dev status`, and `astro dev logs`.
+
+## Documentation
+
+Full documentation: https://docs.astro.build
+
+Consult these guides before working on related tasks:
+
+- [Adding pages, dynamic routes, or middleware](https://docs.astro.build/en/guides/routing/)
+- [Working with Astro components](https://docs.astro.build/en/basics/astro-components/)
+- [Using React, Vue, Svelte, or other framework components](https://docs.astro.build/en/guides/framework-components/)
+- [Adding or managing content](https://docs.astro.build/en/guides/content-collections/)
+- [Adding styles or using Tailwind](https://docs.astro.build/en/guides/styling/)
+- [Supporting multiple languages](https://docs.astro.build/en/guides/internationalization/)
+
+## Writing documentation pages
+
+Pages live in `pages/**/*.mdx`. Use the flat convention: leaf pages are `foo.mdx`; only pages with sub-pages use `foo/index.mdx` (both render as `/foo/`).
+
+- Write in simple English: short sentences, common words, direct verbs (`Use`, `Add`, `Set`).
+- Component docs use singular naming in frontmatter and filename: `title: Card`, `card.mdx` (not `cards.mdx`).
+- Do not add meta authoring notes (e.g. "this snippet is copy-paste ready").
+
+### Frontmatter
+
+Static YAML only. Required keys plus the layout:
+
+```yaml
+---
+title: Alert
+summary: Short one-sentence summary of what this component does.
+description: Practical description of when and why to use it.
+layout: '@shared/layouts/DocsMdxLayout.astro'
+---
+```
+
+Optional: `bootstrapLink: components/alerts/` when the component extends a Bootstrap component.
+
+### Examples
+
+Import shared components after the frontmatter and wrap previews in `Example`:
+
+```mdx
+import Example from '@shared/components/docs/Example.astro';
+import Alert from '@shared/components/Alert.astro';
+
+<Example>
+<Alert type="success" title="Wow!" description="Your account has been saved!" />
+</Example>
+```
+
+- Add 1-2 short sentences before each `Example` describing what the preview shows.
+- `Example` props: `hideCode` (visual-only preview), `code` (override the displayed snippet), `centered`, `vertical`, `column` (narrow ~25rem column), `raw` (no preview wrappers), `bg="dark"` (background), `height`, `codeOnly`.
+- Raw HTML in an `Example` slot is reserialized by MDX — keep example markup on single lines next to tags to avoid stray `<p>` wrapping.
+
+### Structure
+
+Recommended `##` section order: `Overview`, `Installation` (optional), `Variants` (components) or `Usage` (utilities/workflows), `Accessibility`, `Examples` (optional), `SCSS variables` (optional), `Migration notes` (optional). Keep heading hierarchy consistent (`##` then `###`), use stable descriptive headings.
+
+### Checklist
+
+- Documented classes exist in `core/scss/` sources; do not document internal-only or removed classes.
+- Interactive examples include accessibility attributes (`aria-label`, semantic markup).
+- Verify examples render (`pnpm --filter @tabler/docs build`) and links work.

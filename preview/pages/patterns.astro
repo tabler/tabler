@@ -1,0 +1,82 @@
+---
+// Port of preview/pages/patterns.html (layout: default)
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
+import site from '@data/site.json';
+
+const patternColors = Object.keys(site.colors);
+const patternSizes = ['sm', 'md', 'lg', 'xl'];
+
+const patterns = [
+	'bg-pattern-diagonal',
+	'bg-pattern-diagonal-2',
+	'bg-pattern-dots',
+	'bg-pattern-rectangles',
+	'bg-pattern-lines',
+	'bg-pattern-lines-vertical',
+	'bg-pattern-grid',
+	'bg-pattern-grid-diagonal',
+	'bg-pattern-blueprint',
+	'bg-pattern-circles',
+	'bg-pattern-diagonal-stripes',
+	'bg-pattern-diagonal-stripes-2',
+	'bg-pattern-zigzag',
+	'bg-pattern-vertical-stripes',
+	'bg-pattern-horizontal-stripes',
+];
+---
+
+<DefaultLayout title="Patterns" pageHeader="Patterns" pageMenu="base.patterns">
+	<div class="row row-cards">
+		<div class="col-12">
+			<div class="card">
+				<div class="card-body">
+					<h3 class="card-title">Pattern types</h3>
+					<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-6 g-3">
+						{
+							patterns.map((pattern) => (
+								<div class="col">
+									<div class={`${pattern} rounded mb-3`} style="height: 8rem;" />
+									<code>.{pattern}</code>
+								</div>
+							))
+						}
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-12">
+			<div class="card">
+				<div class="card-body">
+					<h3 class="card-title">Pattern colors</h3>
+					<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-6 g-3">
+						{
+							patternColors.map((color) => (
+								<div class="col">
+									<div class={`bg-pattern-rectangles bg-pattern-${color} rounded mb-3`} style="height: 8rem;" />
+									<code>.bg-pattern-{color}</code>
+								</div>
+							))
+						}
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-12">
+			<div class="card">
+				<div class="card-body">
+					<h3 class="card-title">Pattern sizes</h3>
+					<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-6 g-3">
+						{
+							patternSizes.map((size) => (
+								<div class="col">
+									<div class={`bg-pattern-diagonal bg-pattern-${size} rounded mb-3`} style="height: 8rem;" />
+									<code>.bg-pattern-{size}</code>
+								</div>
+							))
+						}
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</DefaultLayout>
