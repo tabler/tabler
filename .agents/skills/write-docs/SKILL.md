@@ -1,6 +1,6 @@
 ---
 name: write-docs
-description: Write or update Tabler documentation pages in simple English using the current docs schema. Use when the user asks to create docs, edit docs, add new feature docs to an existing page, or standardize docs structure across any docs/content category.
+description: Write or update Tabler documentation pages in simple English using the current docs schema. Use when the user asks to create docs, edit docs, add new feature docs to an existing page, or standardize docs structure across any docs category.
 disable-model-invocation: true
 ---
 
@@ -10,7 +10,7 @@ Write docs directly in files (do not stop at draft mode) and follow the current 
 
 ## 1. Scope and behavior
 
-- Works for any docs page type under `docs/content/**` (components, utilities, forms, layout, plugins, base, getting started, emails, illustrations, icons, index pages).
+- Works for any docs page type under `docs/pages/**` (components, utilities, forms, layout, plugins, base, getting started, emails, illustrations, icons, index pages). Pages are MDX: leaf pages `foo.mdx`, parents with sub-pages `foo/index.mdx`.
 - Edit existing pages when the user asks to document new functionality in an existing component/page.
 - Create new pages when needed.
 - Use simple English in all prose.
@@ -32,14 +32,15 @@ Default frontmatter (required unless user asks otherwise):
 title: ...
 summary: ...
 description: ...
+layout: '@shared/layouts/DocsMdxLayout.astro'
 ---
 ```
 
 Rules:
 
 - Keep frontmatter static YAML only.
-- By default, include only `title`, `summary`, and `description`.
-- Add extended keys (for example `order`, `plugin`, `docs-libs`, `layout`, `redirect`, `related`, `source-scss`, `bootstrap-url`, `classnames`) only when the user explicitly asks for them.
+- By default, include only `title`, `summary`, `description`, and `layout`.
+- Add extended keys (for example `bootstrapLink`, `order`, `plugin`, `docs-libs`, `redirect`) only when the user explicitly asks for them or nearby pages in the same category use them.
 
 ## 4. Documentation schema to follow
 
@@ -62,22 +63,25 @@ Guidance by page type:
 
 ## 5. Example and snippet pattern
 
-For visual examples, use project includes:
+For visual examples, use the shared `Example` component (import after the frontmatter):
 
-- Wrap preview markup with:
-  - `{% capture html -%} ... {%- endcapture %}`
-  - `{% include "docs/example.html" html=html %}`
+```mdx
+import Example from '@shared/components/docs/Example.astro';
+
+<Example>
+<button class="btn btn-primary">Primary button</button>
+</Example>
+```
+
 - Add 1-2 short sentences before each preview block to explain what the preview shows.
-- Use include options when useful: `hide-code`, `separated`, `centered`, `vertical`, `raw`, `column`, `bg`.
-- For examples with cleaner source markup, also add:
-  - `{% capture code -%} ... {%- endcapture %}`
-  - `{% include "docs/example.html" html=html code=code %}`
-- For icons inside examples, use:
-  - `{% include "ui/icon.html" icon="icon-name" %}`
+- Use props when useful: `hideCode`, `centered`, `vertical`, `raw`, `column`, `bg`, `height`, `codeOnly`.
+- For a cleaner displayed snippet than the rendered preview, pass `code={...}`.
+- For icons and other shared components inside examples, import them from `@shared/components/` (for example `<Icon name="plus" />`).
+- Raw HTML in the `Example` slot is reserialized by MDX — keep markup lines attached to tags to avoid stray `<p>` wrapping.
 
 ## 6. Workflow for each request
 
-1. Identify target file(s) in `docs/content/**`.
+1. Identify target file(s) in `docs/pages/**`.
 2. Read the target page and 2-3 nearby pages in the same category to match tone and conventions.
 3. Apply the schema from section 4.
 4. Write/update the page directly in file(s).
@@ -96,8 +100,8 @@ For visual examples, use project includes:
 
 - [ ] Uses simple English.
 - [ ] Frontmatter uses static YAML.
-- [ ] Default frontmatter contains only `title`, `summary`, `description` (unless user requested extra keys).
+- [ ] Default frontmatter contains only `title`, `summary`, `description`, `layout` (unless user requested extra keys).
 - [ ] Follows schema and heading hierarchy.
-- [ ] Examples use `docs/example.html` pattern where applicable.
+- [ ] Examples use the `Example` component pattern where applicable.
 - [ ] Accessibility section exists for interactive UI docs.
 - [ ] No mention of changeset reminders unless user asks.
