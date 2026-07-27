@@ -1,3 +1,5 @@
+@use '../config' as *;
+
 $markdown-font-size: var(--#{$prefix}font-size-h3) !default;
 $markdown-line-height: var(--#{$prefix}line-height-lg) !default;
 
@@ -45,8 +47,9 @@ Prose (formerly markdown)
   }
 
   > table {
+    // The `@extend .table, .table-bordered, .table-sm` part lives in
+    // `_extends.scss` — its targets span modules loaded after this one.
     font-size: var(--#{$prefix}body-font-size);
-    @extend .table, .table-bordered, .table-sm;
   }
 
   > blockquote {
