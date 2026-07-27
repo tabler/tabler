@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config'
 import mdx from '@astrojs/mdx'
+import { satteri } from '@astrojs/markdown-satteri'
 import { fileURLToPath } from 'node:url'
 
 // https://astro.build/config
@@ -27,7 +28,8 @@ export default defineConfig({
   },
   integrations: [mdx()],
   markdown: {
-    smartypants: false,
+    // markdown-it in Eleventy did not produce typographic quotes — neither do we
+    processor: satteri({ features: { smartPunctuation: false } }),
     shikiConfig: {
       theme: 'github-dark',
     },
