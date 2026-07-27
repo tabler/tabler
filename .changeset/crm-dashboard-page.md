@@ -2,4 +2,4 @@
 "@tabler/preview": minor
 ---
 
-Added new `dashboard-crm.html` page with reusable CRM cards.
+Added new `dashboard-crm` page with reusable CRM cards.
