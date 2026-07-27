@@ -1,38 +1,29 @@
 {
   "name": "@tabler/docs",
-  "version": "1.4.0",
-  "description": "",
   "private": true,
-  "scripts": {
-    "build": "pnpm run clean && pnpm run build-assets && pnpm run html",
-    "build-assets": "concurrently \"pnpm run js\" \"pnpm run css\"",
-    "html": "eleventy",
-    "js": "pnpm run js-build && pnpm run js-build-min",
-    "js-build": "vite build --config .build/vite.config.mts",
-    "js-build-min": "pnpm run js-build-min-docs",
-    "js-build-min-docs": "terser dist/js/docs.js --module --compress --mangle --comments '/@license|@preserve|^!/' --source-map \"content=dist/js/docs.js.map,filename=dist/js/docs.min.js.map,url=docs.min.js.map\" -o dist/js/docs.min.js",
-    "css": "pnpm run css-build && pnpm run css-prefix && pnpm run css-minify",
-    "css-build": "sass scss/:dist/css/ --no-source-map --load-path=./node_modules",
-    "css-prefix": "postcss --config .build/postcss.config.mjs --replace \"dist/css/*.css\" \"!dist/css/*.rtl*.css\" \"!dist/css/*.min.css\"",
-    "css-minify": "cleancss -O1 --format breakWith=lf --with-rebase --source-map --source-map-inline-sources --output dist/css/ --batch --batch-suffix \".min\" \"dist/css/*.css\" \"!dist/css/*.min.css\" \"!dist/css/*rtl*.css\"",
-    "dev": "pnpm run clean && pnpm run watch",
-    "watch": "concurrently \"pnpm run watch-html\" \"pnpm run watch-js\" \"pnpm run watch-css\"",
-    "watch-html": "cross-env NODE_ENV=development eleventy --serve --port=3010",
-    "watch-js": "nodemon --watch js/ --ext js --exec \"pnpm run js\"",
-    "watch-css": "nodemon --watch scss/ --ext scss --exec \"pnpm run css\"",
-    "clean": "shx rm -rf dist"
+  "type": "module",
+  "version": "0.0.1",
+  "engines": {
+    "node": ">=22.12.0"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@11ty/eleventy": "3.1.6",
-    "@docsearch/css": "^4.6.3",
-    "@docsearch/js": "^4.6.3",
-    "flat-cache": "^6.1.23",
-    "shiki": "^4.3.1"
+  "scripts": {
+    "assets": "node .build/copy-assets.mjs",
+    "dev": "pnpm run assets && astro dev",
+    "build": "pnpm run assets && astro build",
+    "preview": "astro preview",
+    "clean": "shx rm -rf dist public .astro",
+    "astro": "astro"
   },
   "dependencies": {
-    "@tabler/core": "workspace:*"
+    "@tabler/core": "workspace:*",
+    "astro": "^7.0.9",
+    "shiki": "^4.3.1"
+  },
+  "devDependencies": {
+    "@astrojs/mdx": "^7.0.3",
+    "@tabler/preview": "workspace:*",
+    "@types/node": "^26.1.1",
+    "js-beautify": "^2.0.3",
+    "shx": "^0.4.0"
   }
 }

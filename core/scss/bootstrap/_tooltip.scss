@@ -1,4 +1,6 @@
 // Base class
+@use '../config' as *;
+
 .tooltip {
   // scss-docs-start tooltip-css-vars
   --#{$prefix}tooltip-zindex: #{$zindex-tooltip};
@@ -18,7 +20,7 @@
   z-index: var(--#{$prefix}tooltip-zindex);
   display: block;
   margin: var(--#{$prefix}tooltip-margin);
-  @include deprecate("`$tooltip-margin`", "v5", "v5.x", true);
+  @include deprecate('`$tooltip-margin`', 'v5', 'v5.x', true);
   // Our parent element can be arbitrary since tooltips are by default inserted as a sibling of their target element.
   // So reset our font and text properties to avoid inheriting weird values.
   @include reset-text();
@@ -27,7 +29,9 @@
   word-wrap: break-word;
   opacity: 0;
 
-  &.show { opacity: var(--#{$prefix}tooltip-opacity); }
+  &.show {
+    opacity: var(--#{$prefix}tooltip-opacity);
+  }
 
   .tooltip-arrow {
     display: block;
@@ -36,7 +40,7 @@
 
     &::before {
       position: absolute;
-      content: "";
+      content: '';
       border-color: transparent;
       border-style: solid;
     }
@@ -48,7 +52,7 @@
 
   &::before {
     top: -1px;
-    border-width: var(--#{$prefix}tooltip-arrow-height) calc(var(--#{$prefix}tooltip-arrow-width) * .5) 0; // stylelint-disable-line function-disallowed-list
+    border-width: var(--#{$prefix}tooltip-arrow-height) calc(var(--#{$prefix}tooltip-arrow-width) * 0.5) 0; // stylelint-disable-line function-disallowed-list
     border-top-color: var(--#{$prefix}tooltip-bg);
   }
 }
@@ -61,7 +65,7 @@
 
   &::before {
     right: -1px;
-    border-width: calc(var(--#{$prefix}tooltip-arrow-width) * .5) var(--#{$prefix}tooltip-arrow-height) calc(var(--#{$prefix}tooltip-arrow-width) * .5) 0; // stylelint-disable-line function-disallowed-list
+    border-width: calc(var(--#{$prefix}tooltip-arrow-width) * 0.5) var(--#{$prefix}tooltip-arrow-height) calc(var(--#{$prefix}tooltip-arrow-width) * 0.5) 0; // stylelint-disable-line function-disallowed-list
     border-right-color: var(--#{$prefix}tooltip-bg);
   }
 }
@@ -73,7 +77,7 @@
 
   &::before {
     bottom: -1px;
-    border-width: 0 calc(var(--#{$prefix}tooltip-arrow-width) * .5) var(--#{$prefix}tooltip-arrow-height); // stylelint-disable-line function-disallowed-list
+    border-width: 0 calc(var(--#{$prefix}tooltip-arrow-width) * 0.5) var(--#{$prefix}tooltip-arrow-height); // stylelint-disable-line function-disallowed-list
     border-bottom-color: var(--#{$prefix}tooltip-bg);
   }
 }
@@ -86,7 +90,7 @@
 
   &::before {
     left: -1px;
-    border-width: calc(var(--#{$prefix}tooltip-arrow-width) * .5) 0 calc(var(--#{$prefix}tooltip-arrow-width) * .5) var(--#{$prefix}tooltip-arrow-height); // stylelint-disable-line function-disallowed-list
+    border-width: calc(var(--#{$prefix}tooltip-arrow-width) * 0.5) 0 calc(var(--#{$prefix}tooltip-arrow-width) * 0.5) var(--#{$prefix}tooltip-arrow-height); // stylelint-disable-line function-disallowed-list
     border-left-color: var(--#{$prefix}tooltip-bg);
   }
 }
@@ -94,16 +98,16 @@
 /* rtl:end:ignore */
 
 .bs-tooltip-auto {
-  &[data-popper-placement^="top"] {
+  &[data-popper-placement^='top'] {
     @extend .bs-tooltip-top;
   }
-  &[data-popper-placement^="right"] {
+  &[data-popper-placement^='right'] {
     @extend .bs-tooltip-end;
   }
-  &[data-popper-placement^="bottom"] {
+  &[data-popper-placement^='bottom'] {
     @extend .bs-tooltip-bottom;
   }
-  &[data-popper-placement^="left"] {
+  &[data-popper-placement^='left'] {
     @extend .bs-tooltip-start;
   }
 }
