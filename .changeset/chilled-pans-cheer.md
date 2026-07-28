@@ -2,4 +2,4 @@
 "@tabler/preview": minor
 ---
 
-Added color palette to signing component.
+Added a color palette to the signature pad component for selecting the pen color.

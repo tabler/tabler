@@ -9,6 +9,12 @@ export default defineConfig({
   // pages live at the package root (./pages) — content-first layout; all
   // components/lib/data are shared (see the @shared alias)
   srcDir: '.',
+  server: {
+    port: 3010,
+    // bind on all interfaces so the dev server is reachable from Docker
+    // port mappings and other devices on the local network
+    host: true,
+  },
   vite: {
     // InlineScript.astro emits scripts inline at the component site —
     // docs pages have no <PageScripts /> drain

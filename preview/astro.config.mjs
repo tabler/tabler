@@ -40,6 +40,12 @@ export default defineConfig({
 	// pages live at the package root (./pages) — all components/lib/data are
 	// shared (see the @shared alias)
 	srcDir: '.',
+	server: {
+		port: 3000,
+		// bind on all interfaces so the dev server is reachable from Docker
+		// port mappings and other devices on the local network
+		host: true,
+	},
 	vite: {
 		// InlineScript.astro renders nothing here — scripts go through the
 		// addPageScript() registry and the <PageScripts /> drain (Eleventy model)
