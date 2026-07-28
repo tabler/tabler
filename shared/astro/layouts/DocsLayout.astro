@@ -44,6 +44,8 @@ interface Props {
 	docsLibs?: string[];
 	/** hides child and previous/next page navigation */
 	hidePagination?: boolean;
+	/** repo-relative source path for the "Edit this page" link, e.g. "docs/pages/ui/components/alert.mdx" */
+	editPath?: string;
 }
 
 const {
@@ -56,6 +58,7 @@ const {
 	toc = [],
 	docsLibs = [],
 	hidePagination = false,
+	editPath,
 } = Astro.props;
 const environment = process.env.NODE_ENV || 'production';
 
@@ -86,8 +89,9 @@ const canonicalUrl = new URL(docsUrl, Astro.site ?? site.docsUrl).href;
 const depth = docsUrl.split('/').filter(Boolean).length;
 const relative = depth === 0 ? '.' : '../'.repeat(depth).slice(0, -1);
 
-// Equivalent of page.inputPath: ./content/ui/components/alert.md
-const inputPath = `./content${docsUrl.replace(/\/$/, '')}.md`;
+// Source path for the "Edit this page" link. Prefer the real path passed by the
+// MDX layout; fall back to the flat-page convention (docs/pages/<url>.mdx).
+const editFilePath = editPath ?? `docs/pages${docsUrl.replace(/\/$/, '')}.mdx`;
 
 // JS/CSS libraries as in Eleventy: docs-libs + clipboard (always included).
 // In dev file names stay unchanged (e.g. dist/clipboard.min.js keeps .min — the reference has it so).
@@ -230,7 +234,7 @@ const docsLinks = docs.links as DocsLink[];
 									<div class="mt-7">
 										<div>
 											<a
-												href={`${site.githubUrl}/tree/dev/docs/${inputPath}`}
+												href={`${site.githubUrl}/edit/dev/${editFilePath}`}
 												class="link-primary"
 												target="_blank"><Icon name="edit" class="icon-inline" /> Edit this page on GitHub</a
 											>
