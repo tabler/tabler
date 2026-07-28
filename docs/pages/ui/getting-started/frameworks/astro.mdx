@@ -1,15 +1,15 @@
 ---
-title: Vue
-order: 4
-summary: Set up Tabler in Vue and build a first working page.
-description: Install `@tabler/core`, import CSS and JS in Vue, and render a minimal page layout with a Tabler card.
+title: Astro
+order: 11
+summary: Set up Tabler in Astro and build a first working page.
+description: Install `@tabler/core`, import CSS and client-side JS in Astro, and render a minimal page layout with a Tabler card.
 layout: '@shared/layouts/DocsMdxLayout.astro'
 ---
 
 import TabsPackage from '@shared/components/docs/TabsPackage.astro'
 import CdnImportPackage from '@shared/components/docs/CdnImportPackage.astro'
 
-Use this guide to integrate Tabler in a Vue app with a standard Vite-based setup.
+Use this guide to integrate Tabler in an Astro site.
 
 Tabler works with any framework as markup + CSS; JS is only needed for interactive components.
 
@@ -27,7 +27,7 @@ You can also use CDN files when you need a quick setup:
 
 ### Import styles
 
-Import Tabler CSS once in your Vue entry file (`src/main.js`):
+Import Tabler CSS once in the frontmatter of your base layout (`src/layouts/Layout.astro`):
 
 ```js
 import '@tabler/core/dist/css/tabler.min.css'
@@ -41,54 +41,62 @@ For full theme customization, import SCSS sources instead:
 
 ### Import and initialize JavaScript
 
-Tabler JavaScript is required for interactive components such as dropdowns, modals, and tooltips. Import it once in `src/main.js`:
+Tabler JavaScript is required for interactive components such as dropdowns, modals, and tooltips.
 
-```js
-import '@tabler/core/dist/js/tabler.min.js'
-```
+Astro-specific note: a plain `<script>` tag in an Astro component is bundled and runs only in the browser, so importing `tabler.min.js` there is safe — it never executes during server-side rendering:
 
-Vue-specific note: initialize DOM-based behavior after mount, not during render. Use `onMounted` in components that need manual initialization:
-
-```js
-import { onMounted } from 'vue'
-import { Tooltip } from '@tabler/core'
-
-onMounted(() => {
-  const elements = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-  elements.forEach((element) => new Tooltip(element))
-})
+```astro
+<script>
+  import '@tabler/core/dist/js/tabler.min.js'
+</script>
 ```
 
 ### Minimal working example
 
-Create a simple `src/main.js` that loads Tabler assets and mounts the app:
+Create a base layout in `src/layouts/Layout.astro` that loads Tabler CSS and JavaScript:
 
-```js
-import { createApp } from 'vue'
-import App from './App.vue'
+```astro
+---
 import '@tabler/core/dist/css/tabler.min.css'
-import '@tabler/core/dist/js/tabler.min.js'
+---
 
-createApp(App).mount('#app')
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Astro + Tabler</title>
+  </head>
+  <body>
+    <slot />
+    <script>
+      import '@tabler/core/dist/js/tabler.min.js'
+    </script>
+  </body>
+</html>
 ```
 
-Then create `src/App.vue` with a minimal Tabler layout and one card:
+Then add a minimal page in `src/pages/index.astro`:
 
-```vue
-<template>
+```astro
+---
+import Layout from '../layouts/Layout.astro'
+---
+
+<Layout>
   <div class="page">
     <div class="page-wrapper">
       <div class="container-xl py-4">
         <div class="card">
           <div class="card-body">
-            <h3 class="card-title">Vue + Tabler</h3>
+            <h3 class="card-title">Astro + Tabler</h3>
             <p class="text-secondary mb-0">Your Tabler setup is working.</p>
           </div>
         </div>
       </div>
     </div>
   </div>
-</template>
+</Layout>
 ```
 
 Run the app:
@@ -97,7 +105,7 @@ Run the app:
 npm run dev
 ```
 
-Open the local Vite URL and confirm the card is styled with Tabler.
+Open the local Astro URL and confirm the card is styled with Tabler.
 
 ### Next steps
 
