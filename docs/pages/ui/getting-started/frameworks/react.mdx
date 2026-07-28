@@ -53,12 +53,13 @@ React-specific note: do not initialize DOM-based behavior during render. Use `us
 
 ```jsx
 import { useEffect } from 'react'
+import { Tooltip } from '@tabler/core'
 
 export function TooltipExample() {
   useEffect(() => {
     // Run DOM initialization only after the component is mounted.
     const elements = document.querySelectorAll('[data-bs-toggle="tooltip"]')
-    elements.forEach((element) => new window.bootstrap.Tooltip(element))
+    elements.forEach((element) => new Tooltip(element))
   }, [])
 
   return (
