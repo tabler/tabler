@@ -13,6 +13,8 @@ interface Props {
 	progressColor?: string
 	status: string
 	statusColor?: string
+	/** outline badge (e.g. Exceeded) instead of light filled */
+	statusOutline?: boolean
 	/** reserve space for accordion chevron alignment */
 	spacer?: boolean
 }
@@ -26,25 +28,32 @@ const {
 	progressColor,
 	status,
 	statusColor = 'primary',
+	statusOutline,
 	spacer,
 } = Astro.props
 ---
 
-<div class:list={['grid', spacer && 'me-5']}>
-	<div class="g-col-8">
-		<div class="d-flex align-items-center gap-3">
+<div class:list={['grid', 'align-items-center', spacer && 'me-md-5']}>
+	<div class="g-col-12 g-col-md-8">
+		<div class="d-flex align-items-center gap-3 overflow-hidden">
 			<Avatar placeholder={tile} shape="square" size="sm" />
-			<div>
-				<h3 class="m-0">{name}</h3>
-				<p class="text-secondary fs-5 m-0">{owner}</p>
+			<div class="overflow-hidden">
+				<h3 class="m-0 text-truncate">{name}</h3>
+				<p class="text-secondary fs-5 m-0 text-truncate">{owner}</p>
 			</div>
 		</div>
 	</div>
-	<div class="g-col-3 d-flex align-items-center gap-3">
-		<Progress value={progress} color={progressColor} />
-		<span>{progressLabel}</span>
+	<div class="g-col-12 g-col-md-3 d-flex align-items-center gap-3">
+		<Progress value={progress} color={progressColor} class="flex-fill" />
+		<span class="flex-shrink-0">{progressLabel}</span>
 	</div>
-	<div class="g-col-1 d-flex align-items-center">
-		<Badge text={status} color={statusColor} light class="badge-pill" />
+	<div class="g-col-12 g-col-md-1 d-flex align-items-center">
+		{
+			statusOutline ? (
+				<Badge text={status} class={`badge-outline text-${statusColor} badge-pill`} />
+			) : (
+				<Badge text={status} color={statusColor} light class="badge-pill" />
+			)
+		}
 	</div>
 </div>
