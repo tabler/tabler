@@ -45,7 +45,7 @@ To set up Tabler for development, follow these steps:
 
 ### Ensure Node.js and pnpm are installed
 
-You’ll need Node.js (v20 or higher) and pnpm to compile Tabler’s files. If you don’t have them installed, download and install them from the official websites:
+You’ll need Node.js (v22.12 or higher) and pnpm to compile Tabler’s files. If you don’t have them installed, download and install them from the official websites:
 
 - [Node.js](https://nodejs.org/)
 - [pnpm](https://pnpm.io/) (we use pnpm over other package managers for faster installation).
@@ -70,6 +70,32 @@ pnpm run dev
 
 Make your changes in the appropriate folders, such as `./core/`, `./preview/` or `./docs/`. Avoid modifying files in any `dist` folders, as they are auto-generated during the build process and will be overwritten.
 </Steps>
+
+## Project structure
+
+Tabler is a pnpm monorepo. The packages you will work with most often are:
+
+- `core/` - the framework itself: SCSS sources in `core/scss/` and JavaScript in `core/js/`. This is where CSS classes and components are defined.
+- `preview/` - the demo website built with [Astro](https://astro.build). Pages live in `preview/pages/*.astro`.
+- `docs/` - the documentation website, also built with Astro. Pages live in `docs/pages/**/*.mdx`.
+- `shared/astro/` - Astro components, layouts and helpers shared by the preview and docs websites. Import them with the `@shared` alias, for example `import Button from '@shared/components/Button.astro'`.
+- `shared/data/` - JSON data used by demo pages. Import it with the `@data` alias.
+
+A few practical rules:
+
+- If you add a new CSS class or component style, change it in `core/scss/` and show it on a preview page.
+- If you add or change a reusable piece of markup, put it in `shared/astro/components/`, not in a single page.
+- If you add a new feature, document it in `docs/pages/`.
+
+## Add a changeset
+
+If your change affects any package (new feature, bug fix, new page), add a changeset - a short note used to build the changelog:
+
+```bash
+pnpm exec changeset
+```
+
+Select the affected packages (`@tabler/core`, `@tabler/preview` or `@tabler/docs`), pick the bump type (`patch` for fixes, `minor` for new features) and write a one-sentence description, for example: `Added .btn-ghost variant for buttons.`
 
 ## Compiling for Production
 
