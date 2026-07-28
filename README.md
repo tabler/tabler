@@ -49,7 +49,7 @@ Tabler is fully responsive and compatible with all modern browsers. Thanks to it
 
 ## 🚀 Features
 
-We've created this admin panel for everyone who wants to create templates based on our pre-made components. Our mission is to deliver a user-friendly, clear and easy administration panel that can be used by both simple websites and sophisticated systems. The only requirement is basic HTML and CSS (and some [Liquid](https://github.com/Shopify/liquid/wiki)) knowledge — as a reward, you'll be able to manage and visualize different types of data in the easiest possible way!
+We've created this admin panel for everyone who wants to create templates based on our pre-made components. Our mission is to deliver a user-friendly, clear and easy administration panel that can be used by both simple websites and sophisticated systems. The only requirement is basic HTML and CSS knowledge — as a reward, you'll be able to manage and visualize different types of data in the easiest possible way!
 
 * **Responsive:** With the support for mobile, tablet and desktop displays, it doesn’t matter what device you’re using. Tabler is responsive in all major browsers.
 * **Cross Browser:** Our theme works perfectly with the latest Chrome, Firefox+, Safari, Opera, Edge and mobile browsers. We work hard to provide continuous support for them.
@@ -114,7 +114,7 @@ If you **do** wish to edit the source code after downloading it, for example to 
 
 ### Installing and running development tools directly
 
-1. [Install Node.js](https://nodejs.org/download/), which we use to manage our dependencies.
+1. [Install Node.js](https://nodejs.org/download/) (version 22.12 or newer), which we use to manage our dependencies.
 2. [Install pnpm](https://pnpm.io/installation) (We recommend either by [Using Corepack](https://pnpm.io/installation#using-corepack) or by [Using npm](https://pnpm.io/installation#using-npm))
 3. From the root `/tabler` directory where you downloaded the Tabler source files, run installation on the command line:
 ```sh
@@ -128,11 +128,10 @@ pnpm run start
 Changes to most of the source files of Tabler core, preview and docs will rebuild the application and refresh the page.
 
 **Note**:
-If you wish to perform a one-off build without auto-refresh on any changes, you can run:
+If you wish to perform a one-off production build without a dev server, you can run:
 ```sh
 pnpm run build
 ```
-You can open [http://localhost:3001](http://localhost:3001) to configure the Web server.
 
 
 ### Installing and running development tools with Docker
@@ -145,15 +144,15 @@ Here is an example of how to use this image:
 ```sh
 docker build -t tabler .
 ```
-2. Run the tabler image. The following command mounts the `src` directory into the container, exposes port 3000 to browse the website locally, and exposes port 3001 to automatically sync changes:
+2. Run the tabler image. The following command mounts the source directories into the container, exposes port 3000 to browse the preview website and port 3010 to browse the documentation website:
 ```sh
-docker run -p 3000:3000 -p 3001:3001 -v $(pwd)/src:/app/src tabler
+docker run -p 3000:3000 -p 3010:3010 -v $(pwd)/core:/app/core -v $(pwd)/preview:/app/preview -v $(pwd)/docs:/app/docs -v $(pwd)/shared:/app/shared tabler
 ```
-3. Open your browser to [http://localhost:3000](http://localhost:3000). Edit anything in the `src/` folder and watch your browser refresh the page after it has been rebuilt.
+3. Open your browser to [http://localhost:3000](http://localhost:3000) (preview) or [http://localhost:3010](http://localhost:3010) (documentation). Edit anything in the `core/`, `preview/`, `docs/` or `shared/` folders and watch your browser refresh the page after it has been rebuilt.
 
 **Docker Compose**
 
-You can also use the docker compose config from this repo. From the root `/tabler` directory where you downloaded the Tabler source files, use `docker compose build && docker compose up` or `docker compose up --build` to build and start the container. Edit anything in the `src/` folder the same way as with plain docker and access the same URLs and ports in your browser.
+You can also use the docker compose config from this repo. From the root `/tabler` directory where you downloaded the Tabler source files, use `docker compose build && docker compose up` or `docker compose up --build` to build and start the container. Edit anything in the `core/`, `preview/`, `docs/` or `shared/` folders the same way as with plain docker and access the same URLs and ports in your browser.
 
 ## Bugs and feature requests
 
