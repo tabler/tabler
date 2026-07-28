@@ -6,24 +6,18 @@ layout: '@shared/layouts/DocsMdxLayout.astro'
 ---
 
 import TabsPackage from '@shared/components/docs/TabsPackage.astro'
+import CdnImportPackage from '@shared/components/docs/CdnImportPackage.astro'
+import CdnImportPlugin from '@shared/components/docs/CdnImportPlugin.astro'
 
 ## CDN via jsDelivr
 
 All files included in the `@tabler/core` npm package are available over a jsDelivr CDN. Use it to deliver cached versions of Tabler’s compiled CSS and JS to your project.
 
-```html
-<script src="{{ cdnUrl }}/dist/js/tabler.min.js"></script>
-<link rel="stylesheet" href="{{ cdnUrl }}/dist/css/tabler.min.css" />
-```
+<CdnImportPackage />
 
 You can also include additional Tabler plugins:
 
-```html
-<link rel="stylesheet" href="{{ cdnUrl }}/dist/css/tabler-flags.min.css" />
-<link rel="stylesheet" href="{{ cdnUrl }}/dist/css/tabler-payments.min.css" />
-<link rel="stylesheet" href="{{ cdnUrl }}/dist/css/tabler-social.min.css" />
-<link rel="stylesheet" href="{{ cdnUrl }}/dist/css/tabler-vendors.min.css" />
-```
+<CdnImportPlugin plugins={['flags', 'payments', 'socials', 'vendors']} />
 
 ## Package managers
 
