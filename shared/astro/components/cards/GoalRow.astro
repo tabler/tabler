@@ -1,0 +1,50 @@
+---
+import Avatar from '../ui/Avatar.astro'
+import Progress from '../ui/Progress.astro'
+import Badge from '../ui/Badge.astro'
+
+interface Props {
+	tile: string
+	name: string
+	owner: string
+	progress: number
+	/** shown next to the bar; defaults to `${progress}%` */
+	progressLabel?: string
+	progressColor?: string
+	status: string
+	statusColor?: string
+	/** reserve space for accordion chevron alignment */
+	spacer?: boolean
+}
+
+const {
+	tile,
+	name,
+	owner,
+	progress,
+	progressLabel = `${progress}%`,
+	progressColor,
+	status,
+	statusColor = 'primary',
+	spacer,
+} = Astro.props
+---
+
+<div class:list={['grid', spacer && 'me-5']}>
+	<div class="g-col-8">
+		<div class="d-flex align-items-center gap-3">
+			<Avatar placeholder={tile} shape="square" size="sm" />
+			<div>
+				<h3 class="m-0">{name}</h3>
+				<p class="text-secondary fs-5 m-0">{owner}</p>
+			</div>
+		</div>
+	</div>
+	<div class="g-col-3 d-flex align-items-center gap-3">
+		<Progress value={progress} color={progressColor} />
+		<span>{progressLabel}</span>
+	</div>
+	<div class="g-col-1 d-flex align-items-center">
+		<Badge text={status} color={statusColor} light class="badge-pill" />
+	</div>
+</div>

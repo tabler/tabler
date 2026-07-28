@@ -20,16 +20,20 @@ interface Props {
 	offset?: number;
 	stacked?: boolean;
 	class?: string;
+	/** forwarded to each Avatar (e.g. "sm") */
+	size?: string;
+	/** forwarded to each Avatar (e.g. "rounded-circle") */
+	avatarClass?: string;
 	/** placeholder avatar appended after the list (unused on the widgets page) */
 	text?: string;
 }
 
-const { limit = 5, offset = 0, stacked, class: className, text } = Astro.props;
+const { limit = 5, offset = 0, stacked, class: className, size, avatarClass, text } = Astro.props;
 
 const list = (people as Person[]).slice(offset, offset + limit);
 ---
 
 <div class:list={['avatar-list', stacked && 'avatar-list-stacked', className]}>
-	{list.map((person) => <Avatar person={person} />)}
-	{text && <Avatar placeholder={text} />}
+	{list.map((person) => <Avatar person={person} size={size} class={avatarClass} />)}
+	{text && <Avatar placeholder={text} size={size} class={avatarClass} />}
 </div>
