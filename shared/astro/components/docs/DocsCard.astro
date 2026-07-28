@@ -2,52 +2,35 @@
 import Icon from "../Icon.astro";
 
 interface Props {
-	href: string;
+	/** When omitted, the card renders as a non-interactive "Coming soon" tile. */
+	href?: string;
 	icon?: string;
 	title: string;
 	description: string;
 }
 
 const { href, icon, title, description }: Props = Astro.props;
+
+const Tag = href ? 'a' : 'div';
 ---
 
-{href ? (
-	<div class="col-md-6">
-	<a href={ href } class="card">
+<div class="col-md-6">
+	<Tag href={href} class:list={['card', !href && 'bg-surface-tertiary']}>
 		<div class="card-body">
-			<div class="row">
-				{ icon && (
-					<div class="col-auto">
-						<Icon name={icon} class="text-secondary" />
-					</div>
-				)}
-				<div class="col">
-					<div class="h3">{ title }</div>
-					<p class="text-secondary m-0 fs-4 lh-base">{ description }</p>
-				</div>
-			</div>
-		</div>
-	</a>
-</div>
-) : (
-	<div class="col-md-6">
-		<div class="card bg-surface-tertiary">
-			<div class="card-body">
-				<div class="position-relative">
-					<span class="badge position-absolute top-0 end-0">Coming soon</span>
-					<div class="row">
-						{ icon && (
-							<div class="col-auto">
-								<Icon name={icon} class="text-secondary" />
-							</div>
-						)}
-						<div class="col">
-							<div class="h3">{ title }</div>
-							<p class="text-secondary m-0 fs-4 lh-base">{ description }</p>
+			<div class="position-relative">
+				{ !href && <span class="badge position-absolute top-0 end-0">Coming soon</span> }
+				<div class="row">
+					{ icon && (
+						<div class="col-auto">
+							<Icon name={icon} class="text-secondary" />
 						</div>
+					)}
+					<div class="col">
+						<div class="h3">{ title }</div>
+						<p class="text-secondary m-0 fs-4 lh-base">{ description }</p>
 					</div>
 				</div>
 			</div>
 		</div>
-	</div>
-)}
+	</Tag>
+</div>

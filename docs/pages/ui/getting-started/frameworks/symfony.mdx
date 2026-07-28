@@ -59,7 +59,7 @@ If you use AssetMapper instead of Encore, use CDN links or copy built Tabler fil
 
 Create a minimal Twig layout in `templates/base.html.twig`:
 
-```html
+```twig
 <!doctype html>
 <html lang="en">
   <head>
@@ -68,15 +68,18 @@ Create a minimal Twig layout in `templates/base.html.twig`:
     {{ encore_entry_link_tags("app") }}
   </head>
   <body>
-    {% block body %}{% endblock %} {{ encore_entry_script_tags("app") }}
+    {% block body %}{% endblock %}
+    {{ encore_entry_script_tags("app") }}
   </body>
 </html>
 ```
 
 Then add a simple page in `templates/home/index.html.twig`:
 
-```html
-{% extends "base.html.twig" %} {% block body %}
+```twig
+{% extends "base.html.twig" %}
+
+{% block body %}
 <div class="page">
   <div class="page-wrapper">
     <div class="container-xl py-4">

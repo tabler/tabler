@@ -45,25 +45,32 @@ For full theme customization, import SCSS sources instead:
 
 Tabler JavaScript is required for interactive components such as dropdowns, modals, and tooltips.
 
-In SvelteKit, load `tabler.min.js` only on the client:
+In SvelteKit, load `tabler.min.js` only on the client. `onMount` runs only in the browser, so a dynamic import inside it never executes during SSR:
 
-```js
-import { browser } from '$app/environment'
+```html
+<script>
+  import { onMount } from 'svelte'
 
-if (browser) {
-  await import('@tabler/core/dist/js/tabler.min.js')
-}
+  onMount(() => {
+    import('@tabler/core/dist/js/tabler.min.js')
+  })
+</script>
 ```
 
 SvelteKit-specific note: `tabler.min.js` accesses `document`, so importing it during SSR can cause `document is not defined`.
 
 ### Minimal working example
 
-Create a simple `src/routes/+layout.svelte` that loads global styles:
+Create a simple `src/routes/+layout.svelte` that loads global styles and Tabler JavaScript:
 
 ```html
 <script>
+  import { onMount } from 'svelte'
   import '../app.css'
+
+  onMount(() => {
+    import('@tabler/core/dist/js/tabler.min.js')
+  })
 </script>
 
 <slot />
@@ -72,14 +79,6 @@ Create a simple `src/routes/+layout.svelte` that loads global styles:
 Then add a minimal page in `src/routes/+page.svelte`:
 
 ```html
-<script>
-  import { browser } from '$app/environment'
-
-  if (browser) {
-    import('@tabler/core/dist/js/tabler.min.js')
-  }
-</script>
-
 <div class="page">
   <div class="page-wrapper">
     <div class="container-xl py-4">

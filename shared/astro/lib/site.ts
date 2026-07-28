@@ -1,8 +1,9 @@
-const version = '1.4.0';
+import corePackage from '@tabler/core/package.json';
+
+const version = corePackage.version;
 
 export const site = {
 	title: 'Tabler',
-	// Version from /Users/chomik/htdocs/tabler/core/package.json (hardcoded for the PoC).
 	version,
 	docsUrl: 'https://docs.tabler.io',
 	cdnUrl: `https://cdn.jsdelivr.net/npm/@tabler/core@${version}`,

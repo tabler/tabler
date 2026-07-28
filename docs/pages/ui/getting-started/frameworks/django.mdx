@@ -32,9 +32,17 @@ Django can use Tabler in two common ways:
 - Build frontend assets with npm and serve compiled files.
 - Copy static CSS/JS files into your Django static directory.
 
-If you use static files directly, add Tabler CSS to your base template:
+If you use static files directly, copy the compiled files from the installed npm package into your static directory:
 
-```html
+```shell
+mkdir -p static/css static/js
+cp node_modules/@tabler/core/dist/css/tabler.min.css static/css/
+cp node_modules/@tabler/core/dist/js/tabler.min.js static/js/
+```
+
+Then add Tabler CSS to your base template:
+
+```jinja
 {% load static %}
 <link rel="stylesheet" href="{% static 'css/tabler.min.css' %}" />
 ```
@@ -53,7 +61,7 @@ Tabler JavaScript is required for interactive components such as dropdowns, moda
 
 If you use static files, include Tabler JS in your base template:
 
-```html
+```jinja
 {% load static %}
 <script src="{% static 'js/tabler.min.js' %}"></script>
 ```
@@ -64,7 +72,7 @@ Django-specific note: when serving local static assets in production, run `colle
 
 Create a minimal base template in `templates/base.html`:
 
-```html
+```jinja
 {% load static %}
 <!doctype html>
 <html lang="en">
@@ -82,8 +90,10 @@ Create a minimal base template in `templates/base.html`:
 
 Then add a simple page in `templates/home.html`:
 
-```html
-{% extends "base.html" %} {% block content %}
+```jinja
+{% extends "base.html" %}
+
+{% block content %}
 <div class="page">
   <div class="page-wrapper">
     <div class="container-xl py-4">
@@ -103,7 +113,6 @@ Run the app:
 
 ```shell
 python manage.py runserver
-python manage.py collectstatic
 ```
 
 Open the local Django URL and confirm the card is styled with Tabler.
