@@ -6,102 +6,107 @@ import Button from '@shared/components/Button.astro'
 import Badge from '@shared/components/ui/Badge.astro'
 
 const invoices = [
-  { date: 'Aug 18, 2026', number: 'INV-2026-0081', amount: '$49.00' },
-  { date: 'Jul 18, 2026', number: 'INV-2026-0074', amount: '$49.00' },
-  { date: 'Jun 18, 2026', number: 'INV-2026-0066', amount: '$49.00' },
+	{ date: 'Aug 18, 2026', number: 'INV-2026-0081', amount: '$49.00' },
+	{ date: 'Jul 18, 2026', number: 'INV-2026-0074', amount: '$49.00' },
+	{ date: 'Jun 18, 2026', number: 'INV-2026-0066', amount: '$49.00' },
 ]
 ---
 
 <DefaultLayout title="Billing" pageMenu="base.billing">
-  <div class="d-flex justify-content-between align-items-center flex-wrap mb-3">
-    <div>
-      <h1>Billing</h1>
-      <p class="text-secondary">Manage your Relay plan, payment method, and invoices.</p>
-    </div>
-    <Button text="Manage subscription" color="dark" element="button" />
-  </div>
+	<div class="d-flex justify-content-between align-items-start align-items-sm-center flex-wrap gap-2 mb-3">
+		<div>
+			<h1>Billing</h1>
+			<p class="text-secondary mb-0">Manage your Relay plan, payment method, and invoices.</p>
+		</div>
+		<Button text="Manage subscription" color="dark" element="button" />
+	</div>
 
-  <div class="card mb-3">
-    <div class="card-header justify-content-between align-items-start">
-      <div>
-        <h2 class="card-title">
-          Pro plan
-          <Badge text="Active" color="success" light class="badge-pill" />
-        </h2>
-        <p class="card-subtitle">Renews on September 18, 2026</p>
-      </div>
+	<div class="card mb-3">
+		<div class="card-header d-flex flex-column flex-sm-row justify-content-between align-items-start gap-3">
+			<div>
+				<h2 class="card-title">
+					Pro plan
+					<Badge text="Active" color="success" light class="badge-pill" />
+				</h2>
+				<p class="card-subtitle">Renews on September 18, 2026</p>
+			</div>
 
-      <div class="d-flex flex-column gap-2">
-        <div class="d-flex align-items-baseline">
-          <div class="h1 m-0">$49</div>
-          <div class="text-secondary">/month</div>
-        </div>
+			<div class="d-flex flex-column gap-2 align-items-start align-items-sm-end">
+				<div class="d-flex align-items-baseline">
+					<div class="h1 m-0">$49</div>
+					<div class="text-secondary">/month</div>
+				</div>
 
-        <Button text="Change plan" size="sm" element="button" />
-      </div>
-    </div>
+				<Button text="Change plan" size="sm" element="button" />
+			</div>
+		</div>
 
-    <div class="card-body">
-      <div class="d-flex justify-content-between align-items-center">
-        <h2 class="card-title">Monthly requests</h2>
-        <p>
-          <span class="text-black fw-bold">7,420</span>
-          <span class="text-secondary">/ 10,000</span>
-        </p>
-      </div>
-      <Progress value={74} color="success" class="mb-1" />
-      <p class="text-secondary">74% of included usage — resets at the start of each billing period.</p>
-    </div>
-  </div>
+		<div class="card-body">
+			<div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+				<h2 class="card-title mb-0">Monthly requests</h2>
+				<p class="mb-0">
+					<span class="text-black fw-bold">7,420</span>
+					<span class="text-secondary">/ 10,000</span>
+				</p>
+			</div>
+			<Progress value={74} color="success" class="mb-1" />
+			<p class="text-secondary mb-0">74% of included usage — resets at the start of each billing period.</p>
+		</div>
+	</div>
 
-  <div class="card mb-3">
-    <div class="card-header justify-content-between">
-      <div class="d-flex gap-3 align-items-center">
-        <Payment payment="visa" size="sm" />
-        <div class="d-flex flex-column gap-1">
-          <strong>Visa ending in 4242</strong>
-          <p class="text-secondary m-0 fs-5">Expires 09/2028</p>
-        </div>
-      </div>
+	<div class="card mb-3">
+		<div class="card-header d-flex flex-column flex-sm-row justify-content-between align-items-start align-items-sm-center gap-3">
+			<div class="d-flex gap-3 align-items-center overflow-hidden">
+				<Payment payment="visa" size="sm" />
+				<div class="d-flex flex-column gap-1 overflow-hidden">
+					<strong class="text-truncate">Visa ending in 4242</strong>
+					<p class="text-secondary m-0 fs-5">Expires 09/2028</p>
+				</div>
+			</div>
 
-      <Button text="Edit payment method" size="sm" element="button" />
-    </div>
+			<Button text="Edit payment method" size="sm" element="button" class="flex-shrink-0" />
+		</div>
 
-    <div class="card-body">
-      <h2 class="subheader text-secondary">Billing details</h2>
-      <dl class="row mb-0">
-        <dt class="col-5 text-secondary">Company</dt>
-        <dd class="col-7">Nova Labs Ltd.</dd>
+		<div class="card-body">
+			<h2 class="subheader text-secondary">Billing details</h2>
+			<dl class="row mb-0">
+				<dt class="col-12 col-sm-5 text-secondary">Company</dt>
+				<dd class="col-12 col-sm-7">Nova Labs Ltd.</dd>
 
-        <dt class="col-5 text-secondary">Billing email</dt>
-        <dd class="col-7">billing@novalabs.io</dd>
+				<dt class="col-12 col-sm-5 text-secondary">Billing email</dt>
+				<dd class="col-12 col-sm-7">billing@novalabs.io</dd>
 
-        <dt class="col-5 text-secondary">Address</dt>
-        <dd class="col-7">44 Harbor Street, Portland, OR 97209, United States</dd>
-      </dl>
-    </div>
-  </div>
+				<dt class="col-12 col-sm-5 text-secondary">Address</dt>
+				<dd class="col-12 col-sm-7 mb-0">44 Harbor Street, Portland, OR 97209, United States</dd>
+			</dl>
+		</div>
+	</div>
 
-  <div class="card">
-    <div class="card-header">
-      <h2 class="card-title">Invoices</h2>
-    </div>
+	<div class="card">
+		<div class="card-header">
+			<h2 class="card-title">Invoices</h2>
+		</div>
 
-    {
-      invoices.map((invoice, index) => (
-        <div class:list={[index === invoices.length - 1 ? 'card-body d-flex' : 'card-header', 'justify-content-between align-items-center']}>
-          <div>
-            <h3 class:list={['card-title', index === invoices.length - 1 && 'm-0']}>{invoice.date}</h3>
-            <p class="text-secondary m-0">{invoice.number}</p>
-          </div>
+		{
+			invoices.map((invoice, index) => (
+				<div
+					class:list={[
+						'd-flex justify-content-between align-items-center flex-wrap gap-2',
+						index === invoices.length - 1 ? 'card-body' : 'card-header',
+					]}
+				>
+					<div>
+						<h3 class:list={['card-title', index === invoices.length - 1 && 'm-0']}>{invoice.date}</h3>
+						<p class="text-secondary m-0">{invoice.number}</p>
+					</div>
 
-          <div class="d-flex align-items-center gap-2">
-            <span class="m-0">{invoice.amount}</span>
-            <Badge text="Paid" color="success" light class="badge-pill" />
-            <Button icon="download" iconOnly text={`Download invoice ${invoice.number}`} size="sm" />
-          </div>
-        </div>
-      ))
-    }
-  </div>
+					<div class="d-flex align-items-center gap-2 flex-wrap">
+						<span class="m-0">{invoice.amount}</span>
+						<Badge text="Paid" color="success" light class="badge-pill" />
+						<Button icon="download" iconOnly text={`Download invoice ${invoice.number}`} size="sm" />
+					</div>
+				</div>
+			))
+		}
+	</div>
 </DefaultLayout>
