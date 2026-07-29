@@ -4,6 +4,7 @@ import Avatar from '../ui/Avatar.astro';
 import Icon from '../Icon.astro';
 import people from '@data/people.json';
 import commits from '@data/commits.json';
+import { randomNumber } from '@shared/lib/liquid-random';
 
 interface Person {
 	full_name?: string;
@@ -38,16 +39,6 @@ const {
 	title = 'Last commits',
 	class: className,
 } = Astro.props;
-
-// Equivalent of the random_number filter from shared/e11ty/filters.mjs (deterministic).
-function randomNumber(x: number, min = 0, max = 100): number {
-	let value =
-		((x * x * Math.PI * Math.E * (max + 1) * (Math.sin(x) / Math.cos(x * x))) % (max + 1 - min)) +
-		min;
-	value = value > max ? max : value;
-	value = value < min ? min : value;
-	return Math.floor(value);
-}
 
 const colors = 'green,red,yellow,x,x'.split(',');
 const checkedIdList = checkedIds.split(',');

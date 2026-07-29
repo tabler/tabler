@@ -3,22 +3,11 @@
 // `{{ page | relative }}/` resolves to "./" for root-level pages.
 import InputGroup from '../InputGroup.astro';
 import Button from '../Button.astro';
+import { randomNumber } from '@shared/lib/liquid-random';
 
 const categories = ['Games', 'Clothing', 'Jewelery', 'Toys'];
 const ratings = ['5 stars', '4 stars', '3 stars', '2 and less stars'];
 const tags = ['business', 'evening', 'leisure', 'party'];
-
-// Equivalent of the random_number filter from shared/e11ty/filters.mjs (deterministic).
-function randomNumber(x: number, min = 0, max = 100): number {
-	let value =
-		((x * x * Math.PI * Math.E * (max + 1) * (Math.sin(x) / Math.cos(x * x))) % (max + 1 - min)) +
-		min;
-
-	value = value > max ? max : value;
-	value = value < min ? min : value;
-
-	return Math.floor(value);
-}
 ---
 
 <form action="./" method="get" autocomplete="off" novalidate>

@@ -1,5 +1,7 @@
 ---
 // Port of ui/form/check.html
+import { capitalize } from '@shared/lib/liquid-string';
+
 interface Props {
 	type?: string;
 	checked?: boolean;
@@ -41,8 +43,7 @@ if (!title) {
 	t += ' ' + type;
 	t += ' input';
 	t = t.replace(/^\s+/, '');
-	// Liquid `capitalize`: uppercase first char, lowercase the rest.
-	t = t.charAt(0).toUpperCase() + t.slice(1).toLowerCase();
+	t = capitalize(t);
 	title = t;
 }
 

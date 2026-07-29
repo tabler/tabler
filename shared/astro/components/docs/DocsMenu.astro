@@ -4,6 +4,7 @@
 // the tree is frozen in shared/astro/data/docs.json (extracted from the reference
 // development docs build).
 import docs from '@shared/data/docs.json';
+import { pathSlug as slug } from '@shared/lib/liquid-string';
 
 interface MenuLeaf {
 	title: string;
@@ -26,9 +27,6 @@ interface Props {
 
 const { url } = Astro.props;
 const menu = docs.menu as MenuSection[];
-
-// Equivalent of `level2.url | slug`: "/ui/getting-started/" -> "uigetting-started".
-const slug = (u: string) => u.split('/').filter(Boolean).join('');
 ---
 
 <nav class="space-y space-y-5" id="menu">

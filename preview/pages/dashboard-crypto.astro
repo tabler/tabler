@@ -9,6 +9,7 @@ import SwitchIcon from '@shared/components/ui/SwitchIcon.astro';
 import cryptoCurrencies from '@data/crypto-currencies.json';
 import cryptoMarkets from '@data/crypto-markets.json';
 import cryptoOrders from '@data/crypto-orders.json';
+import { parseCurrency, liquidRound } from '@shared/lib/liquid-string';
 
 interface Currency {
 	symbol: string;
@@ -25,14 +26,12 @@ const eth = find('ETH');
 const xmr = find('XMR');
 
 const btcBalance = 2.3;
-const num = (s: string) => parseFloat(s.replace(/[$,]/g, ''));
-const btcPriceNum = num(btc.price);
+const btcPriceNum = parseCurrency(btc.price);
 const totalUsd = Math.round(btcPriceNum * btcBalance).toLocaleString('en-US');
 // Liquid `divided_by` then `round: 8` (trailing zeros dropped by number output)
-const r8 = (x: number) => parseFloat(x.toFixed(8));
-const ltcBtc = r8(num(ltc.price) / btcPriceNum);
-const ethBtc = r8(num(eth.price) / btcPriceNum);
-const xmrBtc = r8(num(xmr.price) / btcPriceNum);
+const ltcBtc = liquidRound(parseCurrency(ltc.price) / btcPriceNum);
+const ethBtc = liquidRound(parseCurrency(eth.price) / btcPriceNum);
+const xmrBtc = liquidRound(parseCurrency(xmr.price) / btcPriceNum);
 
 const markets = (cryptoMarkets as { coin: string; price: string; volume: string; change: string }[]).slice(0, 10);
 const orders = cryptoOrders as { sell_orders: { price: string; btc: string; sum: string }[]; buy_orders: { price: string; btc: string; sum: string }[] };

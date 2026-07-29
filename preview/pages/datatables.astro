@@ -2,27 +2,12 @@
 // Port of preview/pages/datatables.html (layout: default)
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
 import { liquidUnixSeconds, liquidLongDate } from '@shared/lib/liquid-date';
+import { randomNumber, randomDate } from '@shared/lib/liquid-random';
 import Progress from '@shared/components/ui/Progress.astro';
 import TablerList from '@shared/components/js/TablerList.astro';
 import rollercoasters from '@data/rollercoasters.json';
 
 const id = 'default';
-
-// Equivalent of the random_number / random_date filters from shared/e11ty/filters.mjs.
-function randomNumber(x: number, min = 0, max = 100): number {
-	let value =
-		((x * x * Math.PI * Math.E * (max + 1) * (Math.sin(x) / Math.cos(x * x))) % (max + 1 - min)) + min;
-	value = value > max ? max : value;
-	value = value < min ? min : value;
-	return Math.floor(value);
-}
-
-function randomDate(x: number): Date {
-	const start = new Date('2024-01-01').getTime() / 1000;
-	const end = new Date('2024-12-30').getTime() / 1000;
-	return new Date(randomNumber(x, start, end) * 1000);
-}
-
 
 const rows = (rollercoasters as Record<string, any>[]).map((rc, i) => {
 	const index = i + 1;

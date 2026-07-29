@@ -2,6 +2,7 @@
 // Equivalent of ui/progressbg.html
 import Progress from './Progress.astro';
 import Flag from './Flag.astro';
+import { parsePercentage } from '@shared/lib/liquid-string';
 
 interface Props {
 	value?: number | string;
@@ -21,8 +22,7 @@ const {
 	showValue,
 } = Astro.props;
 
-// Liquid: {% assign percentage = include.value | replace: '%', '' | default: 0 %}
-const percentage = `${value ?? ''}`.split('%').join('') || '0';
+const percentage = parsePercentage(value);
 ---
 
 <div class={`progressbg${className ? ` ${className}` : ''}`}>

@@ -7,13 +7,7 @@
 import Icon from '../../Icon.astro';
 import DropdownMenu from '../../ui/DropdownMenu.astro';
 import tracks from '@data/tracks.json';
-
-// equivalent of the miliseconds_to_minutes filter from shared/e11ty/filters.mjs
-const milisecondsToMinutes = (value: number) => {
-	const minutes = Math.floor(value / 60000);
-	const seconds = ((value % 60000) / 1000).toFixed(0);
-	return `${minutes}:${Number(seconds) < 10 ? '0' : ''}${seconds}`;
-};
+import { milisecondsToMinutes } from '@shared/lib/liquid-string';
 
 // {% for track in tracks limit: 12 %}
 const items = tracks.slice(0, 12);

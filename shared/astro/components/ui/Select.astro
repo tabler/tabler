@@ -11,6 +11,7 @@ import selects from '@data/selects.json';
 import people from '@data/people.json';
 import { addPageScript } from '@shared/lib/page-scripts';
 import InlineScript from '@shared/components/InlineScript.astro';
+import { firstLetters } from '@shared/lib/liquid-string';
 
 interface Props {
 	id?: string;
@@ -53,8 +54,6 @@ const selectClass = [
 	.join(' ');
 
 const isMultiple = Boolean(multiple || data.multiple);
-
-const firstLetters = (s: string) => (s || '').split(' ').map((w) => w.charAt(0)).join('');
 
 interface Person {
 	id: string;

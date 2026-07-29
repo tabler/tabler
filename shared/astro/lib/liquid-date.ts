@@ -18,3 +18,20 @@ export function liquidUnixSeconds(date: Date): number {
 export function liquidLongDate(date: Date): string {
 	return `${MONTHS[date.getUTCMonth()]} ${String(date.getUTCDate()).padStart(2, '0')}, ${date.getUTCFullYear()}`;
 }
+
+/** Equivalent of the Liquid `date_to_string` filter ("Thu Nov 28 08:48:33 2025 +0100" → "28 Nov 2025"). */
+export function dateToString(date: string): string {
+	const m = date.match(/^\w+ (\w+) (\d+) [\d:]+ (\d+)/);
+	return m ? `${m[2]} ${m[1]} ${m[3]}` : date;
+}
+
+function pad(n: number): string {
+	return String(n).padStart(2, '0');
+}
+
+/** Equivalent of `{{ 'now' | date: '%Y-%m-%d %H:%M %Z' }}` — the Eleventy build formats in UTC. */
+export function liquidUtcTimestamp(date: Date): string {
+	return `${date.getUTCFullYear()}-${pad(date.getUTCMonth() + 1)}-${pad(date.getUTCDate())} ${pad(
+		date.getUTCHours(),
+	)}:${pad(date.getUTCMinutes())} +0000`;
+}

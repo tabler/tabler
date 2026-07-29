@@ -3,6 +3,7 @@
 import Avatar from '../ui/Avatar.astro';
 import people from '@data/people.json';
 import commits from '@data/commits.json';
+import { liquidSortBy } from '@shared/lib/liquid-string';
 
 interface Person {
 	full_name?: string;
@@ -20,11 +21,7 @@ const { title = 'People' } = Astro.props;
 const commitList = commits as { description: string }[];
 
 // Equivalent of `people | sort: 'last_name'` (LiquidJS case-sensitive sort).
-const sorted = [...(people as Person[])].sort((a, b) => {
-	const l = a.last_name ?? '';
-	const r = b.last_name ?? '';
-	return l < r ? -1 : l > r ? 1 : 0;
-});
+const sorted = liquidSortBy(people as Person[], (p) => p.last_name ?? '');
 
 // offset is unset in the include, so `forloop.index | plus: offset` == forloop.index.
 let prevLetter = '';
