@@ -1,0 +1,274 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
+import Breadcrumb from '@shared/components/ui/Breadcrumb.astro';
+import Avatar from '@shared/components/ui/Avatar.astro';
+import Badge from '@shared/components/ui/Badge.astro';
+import Button from '@shared/components/Button.astro';
+import NavSegmented from '@shared/components/ui/NavSegmented.astro';
+
+const navItems = [
+	{ label: 'Overview' },
+	{ label: 'Deployments', href: './deployment-failed.html' },
+	{ label: 'Analytics' },
+	{ label: 'Logs' },
+	{ label: 'Settings', href: './project-settings.html', active: true },
+];
+
+const settingsNav = [
+	{ label: 'General', href: '#general', active: true },
+	{ label: 'Domains', href: '#domains' },
+	{ label: 'Environment', href: '#env' },
+	{ label: 'Git', href: '#git' },
+	{ label: 'Danger zone', href: '#danger', danger: true },
+];
+
+const envVars = [
+	{ key: 'DATABASE_URL', value: '••••••••••••••••••••', action: 'Reveal', masked: true },
+	{ key: 'REDIS_URL', value: '••••••••••••••••', action: 'Reveal', masked: true },
+	{ key: 'WEBHOOK_SECRET', value: '••••••••••••', action: 'Reveal', masked: true },
+	{ key: 'NEXT_PUBLIC_APP_URL', value: 'https://api.pulsehq.dev', action: 'Copy' },
+];
+---
+
+<DefaultLayout>
+	<Breadcrumb pages="Projects,pulse-api,Settings" />
+
+	<div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between mt-3 gap-3">
+		<div class="d-flex align-items-center gap-2 overflow-hidden">
+			<Avatar placeholder="N" shape="square" />
+			<h1 class="m-0 text-truncate">pulse-api</h1>
+			<Badge text="Production" color="success" light class="badge-pill flex-shrink-0" />
+		</div>
+		<div class="btn-list flex-column flex-sm-row">
+			<Button text="Discard" />
+			<Button text="Save changes" color="dark" />
+		</div>
+	</div>
+
+	<div class="overflow-x-auto my-3">
+		<ul class="nav nav-bordered flex-nowrap" aria-label="Project sections">
+			{
+				navItems.map((item) => (
+					<li class="nav-item">
+						<a
+							class:list={['nav-link', 'text-nowrap', { active: item.active }]}
+							href={item.href ?? '#'}
+							aria-current={item.active ? 'page' : undefined}
+						>
+							{item.label}
+						</a>
+					</li>
+				))
+			}
+		</ul>
+	</div>
+
+	<div class="grid">
+		<div class="g-col-12 g-col-md-2">
+			<div class="card sticky-top" style="top: 1rem;">
+				<div class="card-body p-1">
+					<nav class="nav nav-vertical" aria-label="Settings sections">
+						{
+							settingsNav.map((item) => (
+								<a
+									href={item.href}
+									class:list={['nav-link', 'rounded-2', { active: item.active, 'text-danger': item.danger }]}
+									aria-current={item.active ? 'true' : undefined}
+								>
+									{item.label}
+								</a>
+							))
+						}
+					</nav>
+				</div>
+			</div>
+		</div>
+
+		<div class="g-col-12 g-col-md-10 space-y">
+			<div class="card" id="general">
+				<div class="card-header justify-content-between">
+					<h2 class="card-title">General</h2>
+					<span class="card-meta">Project identity and runtime</span>
+				</div>
+				<div class="card-body">
+					<form>
+						<div class="form-group">
+							<div class="mb-3">
+								<label class="form-label">Project name</label>
+								<input class="form-control" type="text" value="pulse-api" />
+							</div>
+
+							<div class="mb-3">
+								<label class="form-label">Framework</label>
+								<select class="form-select">
+									<option value="1" selected>Next.js</option>
+									<option value="2">Node.js</option>
+									<option value="3">Other</option>
+								</select>
+							</div>
+
+							<div class="mb-3">
+								<label class="form-label">Node.js version</label>
+								<select class="form-select">
+									<option value="1">20.x</option>
+									<option value="2" selected>22.x</option>
+								</select>
+							</div>
+
+							<div class="mb-3">
+								<label class="form-label">Region</label>
+								<select class="form-select">
+									<option value="1" selected>fra1 — Frankfurt, Germany</option>
+									<option value="2">iad1 — Washington, D.C., USA</option>
+									<option value="3">sfo1 — San Francisco, USA</option>
+								</select>
+							</div>
+
+							<div class="d-flex justify-content-between align-items-center">
+								<div>
+									<label class="form-label">Fluid compute</label>
+									<span class="text-secondary">Scale functions with shared concurrency</span>
+								</div>
+								<label class="form-check form-switch m-0"><input class="form-check-input" type="checkbox" checked /></label>
+							</div>
+						</div>
+					</form>
+				</div>
+			</div>
+
+			<div class="card" id="domains">
+				<div class="card-header justify-content-between">
+					<h2 class="card-title">Domains</h2>
+					<Button text="Add domain" size="sm" />
+				</div>
+
+				<div class="card-body">
+					<div class="d-flex justify-content-between align-items-center">
+						<div>
+							<p class="m-0">api.pulsehq.dev</p>
+							<span class="text-secondary fs-5">Production &middot; Valid configuration</span>
+						</div>
+
+						<Badge text="Primary" color="success" light class="badge-pill" />
+					</div>
+				</div>
+
+				<div class="card-body">
+					<div class="d-flex justify-content-between align-items-center">
+						<div>
+							<p class="m-0">pulse-api.relay.app</p>
+							<span class="text-secondary fs-5">Production &middot; Auto-assigned</span>
+						</div>
+
+						<Badge text="System" color="gray" light class="badge-pill" />
+					</div>
+				</div>
+
+				<div class="card-body">
+					<div class="d-flex justify-content-between align-items-center">
+						<div>
+							<p class="m-0">staging-api.pulsehq.dev</p>
+							<span class="text-secondary fs-5">Preview &middot; DNS pending</span>
+						</div>
+
+						<Badge text="Pending" color="warning" light class="badge-pill" />
+					</div>
+				</div>
+			</div>
+
+			<div class="card" id="env">
+				<div class="card-header justify-content-between">
+					<h2 class="card-title">Environment variables</h2>
+					<span class="text-secondary">18 variables &middot; updated Jul 20</span>
+				</div>
+
+				<div class="card-body">
+					<div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-2">
+						<NavSegmented items="Production,Preview,Development" size="sm" />
+						<Button text="Add variable" size="sm" />
+					</div>
+				</div>
+
+				<div class="list-group list-group-flush">
+					{
+						envVars.map((item) => (
+							<div class="list-group-item">
+								<div class="d-flex flex-wrap align-items-center gap-2 column-gap-3">
+									<code class="flex-shrink-0">{item.key}</code>
+									<span
+										class:list={['text-secondary', 'text-truncate', 'flex-fill', { 'font-monospace': !item.masked }]}
+										aria-label={item.masked ? 'Masked value' : undefined}
+									>
+										{item.value}
+									</span>
+									<Button text={item.action} link size="sm" class="flex-shrink-0 ms-auto text-black" />
+								</div>
+							</div>
+						))
+					}
+				</div>
+			</div>
+
+			<div class="card" id="git">
+				<div class="card-header justify-content-between">
+					<h2 class="card-title">Git</h2>
+					<span class="card-meta">Connected repository</span>
+				</div>
+				<div class="card-body">
+					<form>
+						<div class="mb-4">
+							<label class="form-label">Repository</label>
+							<a class="text-link-strong" href="#">pulsehq/pulse-api</a>
+						</div>
+
+						<div class="mb-4">
+							<label class="form-label">Production branch</label>
+							<input class="form-control" type="text" value="main" />
+						</div>
+
+						<div class="mb-4 d-flex align-items-center justify-content-between">
+							<div>
+								<label class="form-label">Auto-deploy on push</label>
+								<span class="text-secondary">Create a deployment for every commit</span>
+							</div>
+							<label class="form-check form-switch m-0"><input class="form-check-input" type="checkbox" checked /></label>
+						</div>
+
+						<div class="d-flex align-items-center justify-content-between">
+							<div>
+								<label class="form-label">Preview deployments</label>
+								<span class="text-secondary">Deploy pull request branches automatically</span>
+							</div>
+							<label class="form-check form-switch m-0"><input class="form-check-input" type="checkbox" checked /></label>
+						</div>
+					</form>
+				</div>
+			</div>
+
+			<div class="card border-danger" id="danger">
+				<div class="card-header justify-content-between">
+					<h2 class="card-title text-danger">Danger zone</h2>
+					<span class="text-secondary">Irreversible actions</span>
+				</div>
+				<div class="card-body">
+					<div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-2">
+						<div>
+							<div>Transfer project</div>
+							<div class="text-secondary">Move pulse-api to another team or personal account</div>
+						</div>
+						<Button text="Transfer" class="flex-shrink-0" />
+					</div>
+				</div>
+				<div class="card-body">
+					<div class="d-flex flex-column flex-sm-row align-items-sm-center justify-content-between gap-2">
+						<div>
+							<div>Delete project</div>
+							<div class="text-secondary">Permanently remove deployments, domains, and environment variables</div>
+						</div>
+						<Button text="Delete project" color="danger" class="flex-shrink-0" />
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</DefaultLayout>
