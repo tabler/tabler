@@ -1,6 +1,8 @@
 ---
 // Port of shared/includes/cards/form/payment.html.
 import Button from '../../Button.astro';
+import ButtonList from '../../ui/ButtonList.astro';
+import FormGroup from '../../ui/FormGroup.astro';
 ---
 
 <form class="card">
@@ -8,31 +10,27 @@ import Button from '../../Button.astro';
 		<h3 class="card-title">Payment Method</h3>
 		<p class="card-subtitle mb-4">All transactions are secure and encrypted</p>
 
-		<div class="mb-3">
-			<label class="form-label">Name on Card</label>
+		<FormGroup label="Name on Card">
 			<input type="text" class="form-control" placeholder="John Doe" />
-		</div>
+		</FormGroup>
 
 		<div class="row">
 			<div class="col-8">
-				<div class="mb-3">
-					<label class="form-label">Card Number</label>
+				<FormGroup label="Card Number">
 					<input type="text" class="form-control" placeholder="1234 5678 9012 3456" />
 					<small class="form-hint">Enter your 16-digit number.</small>
-				</div>
+				</FormGroup>
 			</div>
 			<div class="col-4">
-				<div class="mb-3">
-					<label class="form-label">CVV</label>
+				<FormGroup label="CVV">
 					<input type="text" class="form-control" placeholder="123" />
-				</div>
+				</FormGroup>
 			</div>
 		</div>
 
 		<div class="row">
 			<div class="col-6">
-				<div class="mb-3">
-					<label class="form-label">Month</label>
+				<FormGroup label="Month">
 					<select class="form-select">
 						<option value="">MM</option>
 						<option value="1">January</option>
@@ -48,11 +46,10 @@ import Button from '../../Button.astro';
 						<option value="11">November</option>
 						<option value="12">December</option>
 					</select>
-				</div>
+				</FormGroup>
 			</div>
 			<div class="col-6">
-				<div class="mb-3">
-					<label class="form-label">Year</label>
+				<FormGroup label="Year">
 					<select class="form-select">
 						<option value="">YYYY</option>
 						<option value="2025">2025</option>
@@ -62,7 +59,7 @@ import Button from '../../Button.astro';
 						<option value="2029">2029</option>
 						<option value="2030">2030</option>
 					</select>
-				</div>
+				</FormGroup>
 			</div>
 		</div>
 
@@ -80,16 +77,15 @@ import Button from '../../Button.astro';
 
 		<hr class="my-4" />
 
-		<div class="mb-3">
-			<label class="form-label">Comments</label>
+		<FormGroup label="Comments">
 			<textarea class="form-control" rows="3" placeholder="Add any additional comments"></textarea>
-		</div>
+		</FormGroup>
 
 		<div class="mt-4">
-			<div class="btn-list">
+			<ButtonList>
 				<Button text="Submit" color="primary" />
 				<Button text="Cancel" />
-			</div>
+			</ButtonList>
 		</div>
 	</div>
 </form>

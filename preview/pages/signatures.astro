@@ -2,6 +2,10 @@
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
 import Signature from '@shared/components/ui/Signature.astro';
 import Button from '@shared/components/Button.astro';
+import ButtonList from '@shared/components/ui/ButtonList.astro';
+import Card from '@shared/components/ui/Card.astro';
+import CardBody from '@shared/components/ui/CardBody.astro';
+import FormGroup from '@shared/components/ui/FormGroup.astro';
 import CaptureModal from '@shared/components/modals/CaptureModal.astro';
 
 // {% capture simple-js %} / {% capture advanced-js %} — raw JS passed as the
@@ -60,23 +64,20 @@ document.querySelector("#signature-advanced-png").addEventListener("click", func
 >
 	<div class="row row-cards">
 		<div class="col-lg-6">
-			<div class="card">
-				<div class="card-body">
+			<Card>
+				<CardBody>
 					<h3 class="card-title">Confirm transfer</h3>
 					<p class="card-subtitle">Please confirm the transfer of funds by signing below.</p>
 					<form action="">
-						<div class="mb-3">
-							<label class="form-label required" for="signature-first-name">First name</label>
+						<FormGroup label="First name" required for="signature-first-name">
 							<input type="text" class="form-control" id="signature-first-name" name="first_name" />
-						</div>
-						<div class="mb-3">
-							<label class="form-label required" for="signature-last-name">Last name</label>
+						</FormGroup>
+						<FormGroup label="Last name" required for="signature-last-name">
 							<input type="text" class="form-control" id="signature-last-name" name="last_name" />
-						</div>
-						<div class="mb-3">
-							<label class="form-label required">Signature</label>
+						</FormGroup>
+						<FormGroup label="Signature" required>
 							<Signature clear extraJs={simpleJs} />
-						</div>
+						</FormGroup>
 					</form>
 					<div class="text-secondary fs-5">
 						I agree that the signature and initials will be the electronic representation of my signature and initials for all purposes when I (or my agent) use
@@ -84,30 +85,29 @@ document.querySelector("#signature-advanced-png").addEventListener("click", func
 					</div>
 
 					<div class="mt-4">
-						<div class="btn-list">
+						<ButtonList>
 							<button type="button" class="btn">Cancel</button>
 							<button type="button" class="btn btn-primary ms-auto">Confirm transfer</button>
-						</div>
+						</ButtonList>
 					</div>
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 
 		<div class="col-lg-6">
 			<div class="row row-cards">
 				<div class="col-12">
-					<div class="card">
-						<div class="card-body">
+					<Card>
+						<CardBody>
 							<h3 class="card-title">Advanced demo</h3>
 
 							<Signature id="advanced" clear extraJs={advancedJs} />
 
 							<div class="mt-4">
 								<div class="row">
-									<div class="col">
-										<label for="signature-advanced-color" class="form-label visually-hidden">Pen color</label>
+									<FormGroup label="Pen color" for="signature-advanced-color" labelClass="visually-hidden" class="col">
 										<input href="" type="color" id="signature-advanced-color" class="w-100 form-control form-control-color" />
-									</div>
+									</FormGroup>
 									<div class="col">
 										<button href="" class="btn w-100" id="signature-advanced-svg">Download SVG</button>
 									</div>
@@ -116,16 +116,16 @@ document.querySelector("#signature-advanced-png").addEventListener("click", func
 									</div>
 								</div>
 							</div>
-						</div>
-					</div>
+						</CardBody>
+					</Card>
 				</div>
 
 				<div class="col-12">
-					<div class="card">
-						<div class="card-body">
+					<Card>
+						<CardBody>
 							<Button text="Open signature modal" modalId="signature" />
-						</div>
-					</div>
+						</CardBody>
+					</Card>
 				</div>
 			</div>
 		</div>

@@ -1,0 +1,17 @@
+---
+// Card header (.card-header) with an optional h3.card-title; slot renders after the title.
+
+interface Props {
+	title?: string;
+	/** card-header-light */
+	light?: boolean;
+	class?: string;
+}
+
+const { title, light, class: className } = Astro.props;
+---
+
+<div class:list={['card-header', light && 'card-header-light', className]}>
+	{title && <h3 class="card-title">{title}</h3>}
+	<slot />
+</div>

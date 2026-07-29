@@ -3,6 +3,8 @@
 // `{{ page | relative }}/` resolves to "./" for root-level pages.
 import InputGroup from '../InputGroup.astro';
 import Button from '../Button.astro';
+import ListGroup from '../ui/ListGroup.astro';
+import ListGroupItem from '../ui/ListGroupItem.astro';
 
 const categories = ['Games', 'Clothing', 'Jewelery', 'Toys'];
 const ratings = ['5 stars', '4 stars', '3 stars', '2 and less stars'];
@@ -23,19 +25,16 @@ function randomNumber(x: number, min = 0, max = 100): number {
 
 <form action="./" method="get" autocomplete="off" novalidate>
 	<div class="subheader mb-2">Category</div>
-	<nav class="list-group list-group-transparent mb-3">
+	<ListGroup as="nav" transparent class="mb-3">
 		{
 			categories.map((item, i) => (
-				<a
-					class={`list-group-item list-group-item-action d-flex align-items-center${i === 0 ? ' active' : ''}`}
-					href="#"
-				>
+				<ListGroupItem as="a" action active={i === 0} class="d-flex align-items-center" href="#">
 					{item}
 					<small class="text-secondary ms-auto">{randomNumber(i + 1, 11, 200)}</small>
-				</a>
+				</ListGroupItem>
 			))
 		}
-	</nav>
+	</ListGroup>
 
 	<div class="subheader mb-2">Rating</div>
 	<div class="mb-3">

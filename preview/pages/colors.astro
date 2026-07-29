@@ -2,6 +2,9 @@
 // Port of preview/pages/colors.html (layout: default)
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
 import Icon from '@shared/components/Icon.astro';
+import FormGroup from '@shared/components/ui/FormGroup.astro';
+import Card from '@shared/components/ui/Card.astro';
+import CardBody from '@shared/components/ui/CardBody.astro';
 import site from '@data/site.json';
 
 type ColorEntry = [string, { title: string; hex: string; abbr?: string; icon?: string }];
@@ -19,8 +22,8 @@ const gradientColors = [...Object.keys(site.colors), 'inverted', 'white', 'trans
 <DefaultLayout title="Colors" pageHeader="Colors" pageMenu="base.colors">
 	<div class="row row-cards">
 		<div class="col-3">
-			<div class="card">
-				<div class="card-body">
+			<Card>
+				<CardBody>
 					<div class="row g-3">
 						{
 							colors.map(([name, color]) => (
@@ -39,12 +42,12 @@ const gradientColors = [...Object.keys(site.colors), 'inverted', 'white', 'trans
 							))
 						}
 					</div>
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 		<div class="col-3">
-			<div class="card">
-				<div class="card-body">
+			<Card>
+				<CardBody>
 					<div class="row g-3">
 						{
 							lightColors.map(([name, color]) => (
@@ -63,12 +66,12 @@ const gradientColors = [...Object.keys(site.colors), 'inverted', 'white', 'trans
 							))
 						}
 					</div>
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 		<div class="col-3">
-			<div class="card">
-				<div class="card-body">
+			<Card>
+				<CardBody>
 					<div class="row g-3">
 						{
 							grayColors.map(([name, color]) => (
@@ -87,12 +90,12 @@ const gradientColors = [...Object.keys(site.colors), 'inverted', 'white', 'trans
 							))
 						}
 					</div>
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 		<div class="col-3">
-			<div class="card">
-				<div class="card-body">
+			<Card>
+				<CardBody>
 					<div class="row g-3">
 						{
 							socialColors.map(([name, color]) => (
@@ -113,26 +116,24 @@ const gradientColors = [...Object.keys(site.colors), 'inverted', 'white', 'trans
 							))
 						}
 					</div>
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 		<div class="col-12">
 			<div class="row">
 				<div class="col-6">
-					<div class="card">
-						<div class="card-body">
+					<Card>
+						<CardBody>
 							<h3 class="card-title">Gradient</h3>
 							<form action="">
 								<div class="row g-4">
 									<div class="col">
-										<div>
-											<label class="form-label">From</label>
+										<FormGroup label="From" class="">
 											<select class="form-select" name="color-from">
 												{gradientColors.map((color) => <option value={color}>{color}</option>)}
 											</select>
-										</div>
-										<div class="mt-3">
-											<label class="form-label">To</label>
+										</FormGroup>
+										<FormGroup label="To" class="mt-3">
 											<select class="form-select" name="color-to">
 												{
 													gradientColors.map((color) => (
@@ -142,18 +143,16 @@ const gradientColors = [...Object.keys(site.colors), 'inverted', 'white', 'trans
 													))
 												}
 											</select>
-										</div>
+										</FormGroup>
 									</div>
 									<div class="col">
-										<div>
-											<label class="form-label">Via</label>
+										<FormGroup label="Via" class="">
 											<select class="form-select" name="color-via">
 												<option></option>
 												{gradientColors.map((color) => <option value={color}>{color}</option>)}
 											</select>
-										</div>
-										<div class="mt-3">
-											<label class="form-label">Direction</label>
+										</FormGroup>
+										<FormGroup label="Direction" class="mt-3">
 											<select class="form-select" name="color-direction">
 												<option value="to-t">to top</option>
 												<option value="to-te">to top right</option>
@@ -164,7 +163,7 @@ const gradientColors = [...Object.keys(site.colors), 'inverted', 'white', 'trans
 												<option value="to-s">to left</option>
 												<option value="to-ts">to top left</option>
 											</select>
-										</div>
+										</FormGroup>
 									</div>
 									<div class="col-12">
 										<div class="border rounded bg-pattern-transparent overflow-hidden">
@@ -178,12 +177,12 @@ const gradientColors = [...Object.keys(site.colors), 'inverted', 'white', 'trans
 									</div>
 								</div>
 							</form>
-						</div>
-					</div>
+						</CardBody>
+					</Card>
 				</div>
 				<div class="col-6">
-					<div class="card">
-						<div class="card-body">
+					<Card>
+						<CardBody>
 							<div class="row">
 								<div class="col">
 									<div class="space-y">
@@ -204,8 +203,8 @@ const gradientColors = [...Object.keys(site.colors), 'inverted', 'white', 'trans
 									</div>
 								</div>
 							</div>
-						</div>
-					</div>
+						</CardBody>
+					</Card>
 				</div>
 			</div>
 		</div>

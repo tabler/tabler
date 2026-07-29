@@ -2,6 +2,9 @@
 // Port of preview/pages/turbo-loader.html (layout: default, page-libs: [turbo]).
 // The {% capture_script %} block is registered synchronously (before any await).
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
+import ButtonList from '@shared/components/ui/ButtonList.astro';
+import Card from '@shared/components/ui/Card.astro';
+import CardBody from '@shared/components/ui/CardBody.astro';
 import { addPageScript } from '@shared/lib/page-scripts';
 
 addPageScript(`<script>
@@ -49,15 +52,15 @@ document.addEventListener("DOMContentLoaded", function() {
 ---
 
 <DefaultLayout pageMenu="plugins.turbo" pageLibs={['turbo']}>
-	<div class="card">
-		<div class="card-body">
-			<div class="btn-list">
+	<Card>
+		<CardBody>
+			<ButtonList>
 				<button class="btn" id="show-loader">Show loader</button>
 				<button class="btn" id="hide-loader">Hide loader</button>
 				<button class="btn" id="set-10">Set 10%</button>
 				<button class="btn" id="set-50">Set 50%</button>
 				<button class="btn" id="set-100">Set 100%</button>
-			</div>
-		</div>
-	</div>
+			</ButtonList>
+		</CardBody>
+	</Card>
 </DefaultLayout>

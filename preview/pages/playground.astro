@@ -18,8 +18,13 @@
 // nothing in the layout/page-header consumes it, and it is absent from the
 // reference. No prop for it.
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
+import ButtonList from '@shared/components/ui/ButtonList.astro';
+import Card from '@shared/components/ui/Card.astro';
+import CardHeader from '@shared/components/ui/CardHeader.astro';
+import CardBody from '@shared/components/ui/CardBody.astro';
 import ProgressSteps from '@shared/components/ui/ProgressSteps.astro';
 import Datepicker from '@shared/components/ui/Datepicker.astro';
+import FormGroup from '@shared/components/ui/FormGroup.astro';
 import Trending from '@shared/components/ui/Trending.astro';
 ---
 
@@ -28,8 +33,8 @@ import Trending from '@shared/components/ui/Trending.astro';
 
 
 		<div class="col-12">
-			<div class="card">
-				<div class="card-body">
+			<Card>
+				<CardBody>
 					<div class="d-flex flex-wrap gap-4">
 						<div class="bg-pattern-diagonal w-10 h-10 border rounded"></div>
 						<div class="bg-pattern-diagonal-2 w-10 h-10 border rounded"></div>
@@ -48,153 +53,137 @@ import Trending from '@shared/components/ui/Trending.astro';
 						<div class="bg-pattern-horizontal-stripes w-10 h-10 border rounded"></div>
 
 					</div>
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 		<div class="col-6">
-			<div class="card">
-				<div class="card-body">
-					<div class="btn-list">
+			<Card>
+				<CardBody>
+					<ButtonList>
 						<a href="" class="btn" style="border-color: var(--tblr-border-color);">Button</a>
 						<a href="" class="btn" style="border-color: var(--tblr-border-color-translucent);">Button</a>
 						<a href="" class="btn" style="border-color: var(--tblr-border-dark-color);">Button</a>
 						<a href="" class="btn" style="border-color: var(--tblr-border-dark-color-translucent);">Button</a>
 						<a href="" class="btn btn-primary">Button</a>
-					</div>
-					<div class="btn-list mt-4">
+					</ButtonList>
+					<ButtonList class="mt-4">
 						<a href="" class="btn">Button</a>
 						<a href="" class="btn">Button</a>
 						<a href="" class="btn">Button</a>
 						<a href="" class="btn">Button</a>
 						<a href="" class="btn btn-primary">Button</a>
-					</div>
-				</div>
-			</div>
+					</ButtonList>
+				</CardBody>
+			</Card>
 		</div>
 
 		<div class="col-3">
-			<div class="card">
-				<div class="card-body">
+			<Card>
+				<CardBody>
 					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore
 					magna aliqua.
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 
 		<div class="col-6">
-			<div class="card">
-				<div class="card-body">
+			<Card>
+				<CardBody>
 					Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore
 					magna aliqua.
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 
 		<div class="col-12">
-			<div class="card">
-				<div class="card-body">
+			<Card>
+				<CardBody>
 					Lorem ipsum dolor sit amet consectetur adipisicing elit. Consequuntur earum perferendis expedita suscipit quasi maiores quas sint harum dolor! Dolorem cumque autem error ea fuga. Ea excepturi temporibus officiis perspiciatis.
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 
 		<div class="col-12">
-			<div class="card">
-				<div class="card-body">
+			<Card>
+				<CardBody>
 					<div class="space-y">
 						<ProgressSteps labels="Step A,Step B,Step C" active={2} />
 						<ProgressSteps count={9} active={4} />
 						<ProgressSteps count={9} active={9} color="success" />
 					</div>
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 
 		<div class="col-12">
-			<div class="card">
-				<div class="card-header">
-					<h3 class="card-title">Datepicker Examples</h3>
-				</div>
-				<div class="card-body">
+			<Card>
+				<CardHeader title="Datepicker Examples" />
+				<CardBody>
 					<div class="row g-4">
 						<div class="col-md-6">
 							<h4 class="mb-3">Basic Datepicker</h4>
-							<div class="mb-3">
-								<label class="form-label">Default datepicker</label>
+							<FormGroup label="Default datepicker">
 								<Datepicker id="playground-default" value="2024-01-15" />
-							</div>
-							<div class="mb-3">
-								<label class="form-label">With icon</label>
+							</FormGroup>
+							<FormGroup label="With icon">
 								<Datepicker id="playground-icon" layout="icon" value="2024-01-15" />
-							</div>
-							<div class="mb-3">
-								<label class="form-label">Icon prepend</label>
+							</FormGroup>
+							<FormGroup label="Icon prepend">
 								<Datepicker id="playground-icon-prepend" layout="icon-prepend" value="2024-01-15" />
-							</div>
+							</FormGroup>
 						</div>
 						<div class="col-md-6">
 							<h4 class="mb-3">Datepicker Options</h4>
-							<div class="mb-3">
-								<label class="form-label">With date range (min/max)</label>
+							<FormGroup label="With date range (min/max)">
 								<Datepicker id="playground-range" value="2024-06-15" />
-							</div>
-							<div class="mb-3">
-								<label class="form-label">Multiple selection</label>
+							</FormGroup>
+							<FormGroup label="Multiple selection">
 								<Datepicker id="playground-multiple" value="2024-01-15" />
-							</div>
-							<div class="mb-3">
-								<label class="form-label">Date range selection</label>
+							</FormGroup>
+							<FormGroup label="Date range selection">
 								<Datepicker id="playground-range-selection" value="2024-01-15" />
-							</div>
+							</FormGroup>
 						</div>
 						<div class="col-md-6">
 							<h4 class="mb-3">Placement Options</h4>
-							<div class="mb-3">
-								<label class="form-label">Left placement</label>
+							<FormGroup label="Left placement">
 								<Datepicker id="playground-placement-left" value="2024-01-15" />
-							</div>
-							<div class="mb-3">
-								<label class="form-label">Center placement</label>
+							</FormGroup>
+							<FormGroup label="Center placement">
 								<Datepicker id="playground-placement-center" value="2024-01-15" />
-							</div>
-							<div class="mb-3">
-								<label class="form-label">Right placement</label>
+							</FormGroup>
+							<FormGroup label="Right placement">
 								<Datepicker id="playground-placement-right" value="2024-01-15" />
-							</div>
+							</FormGroup>
 						</div>
 						<div class="col-md-6">
 							<h4 class="mb-3">Advanced Options</h4>
-							<div class="mb-3">
-								<label class="form-label">Multiple months</label>
+							<FormGroup label="Multiple months">
 								<Datepicker id="playground-multiple-months" value="2024-01-15" />
-							</div>
-							<div class="mb-3">
-								<label class="form-label">Custom first weekday (Monday)</label>
+							</FormGroup>
+							<FormGroup label="Custom first weekday (Monday)">
 								<Datepicker id="playground-weekday" value="2024-01-15" />
-							</div>
-							<div class="mb-3">
-								<label class="form-label">With pre-selected dates</label>
+							</FormGroup>
+							<FormGroup label="With pre-selected dates">
 								<Datepicker id="playground-preselected" />
-							</div>
+							</FormGroup>
 						</div>
 						<div class="col-12">
 							<h4 class="mb-3">Inline Datepicker</h4>
-							<div class="mb-3">
-								<label class="form-label">Inline calendar</label>
+							<FormGroup label="Inline calendar">
 								<Datepicker id="playground-inline" inline value="2024-01-15" />
-							</div>
-							<div class="mb-3">
-								<label class="form-label">Inline with multiple selection</label>
+							</FormGroup>
+							<FormGroup label="Inline with multiple selection">
 								<Datepicker id="playground-inline-multiple" inline value="2024-01-15" />
-							</div>
+							</FormGroup>
 						</div>
 					</div>
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 		<div class="col-8">
-			<div class="card">
-				<div class="card-body">
+			<Card>
+				<CardBody>
 					<p class="card-title mb-4">Cohort Statistics</p>
 					<dl class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
 
@@ -271,8 +260,8 @@ import Trending from '@shared/components/ui/Trending.astro';
 						</div>
 
 					</dl>
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 	</div>
 </DefaultLayout>

@@ -6,6 +6,7 @@
 import PayLayout from '@shared/layouts/PayLayout.astro';
 import Avatar from '@shared/components/ui/Avatar.astro';
 import Payment from '@shared/components/ui/Payment.astro';
+import FormGroup from '@shared/components/ui/FormGroup.astro';
 import Icon from '@shared/components/Icon.astro';
 ---
 
@@ -61,9 +62,7 @@ import Icon from '@shared/components/Icon.astro';
 					<div class="tab-pane active show" id="tab-card" role="tabpanel">
 						<form>
 							<div class="space-y">
-								<div>
-									<label class="form-label" for="card-number">Card Number</label>
-
+								<FormGroup label="Card Number" for="card-number" class="">
 									<div class="input-group input-group-flat">
 										<span class="input-group-text">
 											<Payment payment="visa" size="xs" />
@@ -76,11 +75,10 @@ import Icon from '@shared/components/Icon.astro';
 											id="card-number-addon"
 										/>
 									</div>
-								</div>
+								</FormGroup>
 
 								<div class="row g-3">
-									<div class="col-sm-6">
-										<label class="form-label" for="card-expiry">Expiry Date</label>
+									<FormGroup label="Expiry Date" for="card-expiry" class="col-sm-6">
 										<input
 											type="text"
 											class="form-control"
@@ -90,9 +88,8 @@ import Icon from '@shared/components/Icon.astro';
 											aria-required="true"
 											maxlength="5"
 										/>
-									</div>
-									<div class="col-sm-6">
-										<label class="form-label" for="card-cvc">CVC</label>
+									</FormGroup>
+									<FormGroup label="CVC" for="card-cvc" class="col-sm-6">
 										<input
 											type="text"
 											class="form-control"
@@ -102,18 +99,16 @@ import Icon from '@shared/components/Icon.astro';
 											aria-required="true"
 											maxlength="3"
 										/>
-									</div>
+									</FormGroup>
 								</div>
 
-								<div>
-									<label class="form-label" for="card-name">Name on Card</label>
+								<FormGroup label="Name on Card" for="card-name" class="">
 									<input type="text" class="form-control" id="card-name" placeholder="Full name" aria-required="true" />
-								</div>
+								</FormGroup>
 
-								<div>
-									<label class="form-label" for="card-email">Email</label>
+								<FormGroup label="Email" for="card-email" class="">
 									<input type="email" class="form-control" id="card-email" placeholder="you@example.com" aria-required="true" />
-								</div>
+								</FormGroup>
 
 								<div>
 									<button type="button" class="btn btn-primary w-100"> Pay $253 </button>

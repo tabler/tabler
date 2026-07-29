@@ -2,6 +2,8 @@
 // Port of preview/pages/tags.html (layout: default)
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
 import Tag from '@shared/components/ui/Tag.astro';
+import Card from '@shared/components/ui/Card.astro';
+import CardBody from '@shared/components/ui/CardBody.astro';
 import people from '@data/people.json';
 import flags from '@data/flags.json';
 import siteData from '@data/site.json';
@@ -21,92 +23,92 @@ const colors = Object.values(siteData.colors) as { class: string; title: string 
 <DefaultLayout title="Tags" pageHeader="Tags" pageMenu="base.tags">
 	<div class="row row-cards row-cols-1 row-cols-md-2 row-cols-lg-3">
 		<div class="col">
-			<div class="card">
-				<div class="card-body">
+			<Card>
+				<CardBody>
 					<h3 class="card-title">Default tags</h3>
 					<div class="tags-list">
 						{range(1, 14).map((i) => <Tag text={`Label ${i}`} />)}
 					</div>
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 
 		<div class="col">
-			<div class="card">
-				<div class="card-body">
+			<Card>
+				<CardBody>
 					<h3 class="card-title">Tags with flag</h3>
 					<div class="tags-list">
 						{flags9.map((country) => <Tag text={country.name} flag={(country as { code?: string }).code} />)}
 					</div>
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 
 		<div class="col">
-			<div class="card">
-				<div class="card-body">
+			<Card>
+				<CardBody>
 					<h3 class="card-title">Tags with icon</h3>
 					<div class="tags-list">
 						{tagIcons.map((icon) => <Tag text={icon} icon={icon} />)}
 					</div>
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 
 		<div class="col">
-			<div class="card">
-				<div class="card-body">
+			<Card>
+				<CardBody>
 					<h3 class="card-title">Tags with avatar</h3>
 					<div class="tags-list">
 						{people8.map((person) => <Tag text={person.full_name} person={person} />)}
 					</div>
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 
 		<div class="col">
-			<div class="card">
-				<div class="card-body">
+			<Card>
+				<CardBody>
 					<h3 class="card-title">Tags with status</h3>
 					<div class="tags-list">
 						{colors.map((color) => <Tag text={color.title} status={color.class} />)}
 					</div>
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 
 		<div class="col">
-			<div class="card">
-				<div class="card-body">
+			<Card>
+				<CardBody>
 					<h3 class="card-title">Tags with legend</h3>
 					<div class="tags-list">
 						{colors.map((color) => <Tag text={color.title} legend={color.class} />)}
 					</div>
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 
 		<div class="col">
-			<div class="card">
-				<div class="card-body">
+			<Card>
+				<CardBody>
 					<h3 class="card-title">Default tags</h3>
 					<div class="tags-list">
 						{range(1, 6).map((i) => <Tag text={`Label ${i}`} checkbox={true} />)}
 						{range(7, 12).map((i) => <Tag text={`Label ${i}`} checkbox={true} checked={true} />)}
 					</div>
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 
 		<div class="col">
-			<div class="card">
-				<div class="card-body">
+			<Card>
+				<CardBody>
 					<h3 class="card-title">Default tags</h3>
 					<div class="tags-list">
 						{range(1, 12).map((i) => <Tag text="Label" badge={i} />)}
 					</div>
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 	</div>
 </DefaultLayout>

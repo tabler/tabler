@@ -6,6 +6,7 @@ import Icon from '@shared/components/Icon.astro';
 import Avatar from '@shared/components/ui/Avatar.astro';
 import Badge from '@shared/components/ui/Badge.astro';
 import Modal from '@shared/components/modals/Modal.astro';
+import FormGroup from '@shared/components/ui/FormGroup.astro';
 import tasks from '@data/tasks.json';
 import people from '@data/people.json';
 
@@ -141,12 +142,10 @@ const selectedPeople = [5, 6, 2, 3].map((id) => peopleList[id - 1]);
 
 		<div class="modal-body">
 			<form>
-				<div class="mb-3">
-					<label class="form-label">Name</label>
+				<FormGroup label="Name">
 					<input type="text" class="form-control" placeholder="Task name" />
-				</div>
-				<div class="mb-3">
-					<label class="form-label">Assigned To</label>
+				</FormGroup>
+				<FormGroup label="Assigned To">
 					<select class="form-select">
 						<option value="">Select person</option>
 						{
@@ -155,19 +154,17 @@ const selectedPeople = [5, 6, 2, 3].map((id) => peopleList[id - 1]);
 							))
 						}
 					</select>
-				</div>
-				<div class="mb-3">
-					<label class="form-label">Priority</label>
+				</FormGroup>
+				<FormGroup label="Priority">
 					<select class="form-select">
 						<option value="Low">Low</option>
 						<option value="Medium">Medium</option>
 						<option value="High">High</option>
 					</select>
-				</div>
-				<div class="mb-3">
-					<label class="form-label">Description</label>
+				</FormGroup>
+				<FormGroup label="Description">
 					<textarea class="form-control" rows="3" placeholder="Task description"></textarea>
-				</div>
+				</FormGroup>
 			</form>
 		</div>
 

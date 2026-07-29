@@ -1,49 +1,50 @@
 ---
 // Port of preview/pages/sortable.html (layout: default, page-libs: [sortablejs]).
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
+import Card from '@shared/components/ui/Card.astro';
+import CardHeader from '@shared/components/ui/CardHeader.astro';
+import CardBody from '@shared/components/ui/CardBody.astro';
+import ListGroup from '@shared/components/ui/ListGroup.astro';
+import ListGroupItem from '@shared/components/ui/ListGroupItem.astro';
 ---
 
 <DefaultLayout title="Sortable" pageHeader="SortableJS" pageMenu="plugins.sortable" pageLibs={['sortablejs']}>
 	<div class="row row-cards">
 		<div class="col-md-6">
-			<div class="card">
-				<div class="card-header">
-					<h3 class="card-title">Podstawowe użycie</h3>
-				</div>
-				<div class="card-body">
-					<ul class="list-group" data-sortable='{"animation":150}'>
-						<li class="list-group-item">Element A</li>
-						<li class="list-group-item">Element B</li>
-						<li class="list-group-item">Element C</li>
-						<li class="list-group-item">Element D</li>
-					</ul>
-				</div>
-			</div>
+			<Card>
+				<CardHeader title="Podstawowe użycie" />
+				<CardBody>
+					<ListGroup as="ul" data-sortable='{"animation":150}'>
+						<ListGroupItem as="li">Element A</ListGroupItem>
+						<ListGroupItem as="li">Element B</ListGroupItem>
+						<ListGroupItem as="li">Element C</ListGroupItem>
+						<ListGroupItem as="li">Element D</ListGroupItem>
+					</ListGroup>
+				</CardBody>
+			</Card>
 		</div>
 		<div class="col-md-6">
-			<div class="card">
-				<div class="card-header">
-					<h3 class="card-title">Dwie listy z przenoszeniem</h3>
-				</div>
-				<div class="card-body">
+			<Card>
+				<CardHeader title="Dwie listy z przenoszeniem" />
+				<CardBody>
 					<div class="row g-3">
 						<div class="col-sm-6">
-							<ul class="list-group" data-sortable='{"group":"shared","animation":150}'>
-								<li class="list-group-item">Item 1</li>
-								<li class="list-group-item">Item 2</li>
-								<li class="list-group-item">Item 3</li>
-							</ul>
+							<ListGroup as="ul" data-sortable='{"group":"shared","animation":150}'>
+								<ListGroupItem as="li">Item 1</ListGroupItem>
+								<ListGroupItem as="li">Item 2</ListGroupItem>
+								<ListGroupItem as="li">Item 3</ListGroupItem>
+							</ListGroup>
 						</div>
 						<div class="col-sm-6">
-							<ul class="list-group" data-sortable='{"group":"shared","animation":150}'>
-								<li class="list-group-item">Item A</li>
-								<li class="list-group-item">Item B</li>
-								<li class="list-group-item">Item C</li>
-							</ul>
+							<ListGroup as="ul" data-sortable='{"group":"shared","animation":150}'>
+								<ListGroupItem as="li">Item A</ListGroupItem>
+								<ListGroupItem as="li">Item B</ListGroupItem>
+								<ListGroupItem as="li">Item C</ListGroupItem>
+							</ListGroup>
 						</div>
 					</div>
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 	</div>
 </DefaultLayout>

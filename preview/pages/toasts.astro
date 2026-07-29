@@ -2,18 +2,21 @@
 // Port of preview/pages/toasts.html (layout: default)
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
 import Button from '@shared/components/Button.astro';
+import ButtonList from '@shared/components/ui/ButtonList.astro';
+import Card from '@shared/components/ui/Card.astro';
+import CardBody from '@shared/components/ui/CardBody.astro';
 import Toast from '@shared/components/ui/Toast.astro';
 ---
 
 <DefaultLayout title="Toasts" pageHeader="Toasts" pageMenu="base.toasts">
-	<div class="card">
-		<div class="card-body">
-			<div class="btn-list">
+	<Card>
+		<CardBody>
+			<ButtonList>
 				<Button text="Simple toast" toastId="simple" />
 				<Button text="Cookies toast" toastId="cookies" />
-			</div>
-		</div>
-	</div>
+			</ButtonList>
+		</CardBody>
+	</Card>
 
 	<div class="toast-container position-fixed bottom-0 end-0 p-3">
 		<Toast toastId="simple" show={false} />

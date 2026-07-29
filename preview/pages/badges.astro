@@ -2,6 +2,9 @@
 // Port of preview/pages/badges.html (layout: default)
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
 import Icon from '@shared/components/Icon.astro';
+import ButtonList from '@shared/components/ui/ButtonList.astro';
+import Card from '@shared/components/ui/Card.astro';
+import CardBody from '@shared/components/ui/CardBody.astro';
 import DropdownMenu from '@shared/components/ui/DropdownMenu.astro';
 import site from '@data/site.json';
 
@@ -18,20 +21,20 @@ const ucFirst = (value: string) => value.charAt(0).toUpperCase() + value.slice(1
 		<div class="col-4">
 			<div class="row row-cards">
 				<div class="col-12">
-					<div class="card">
-						<div class="card-body">
+					<Card>
+						<CardBody>
 							<h1>Example heading <span class="badge">New</span></h1>
 							<h2>Example heading <span class="badge">New</span></h2>
 							<h3>Example heading <span class="badge">New</span></h3>
 							<h4>Example heading <span class="badge">New</span></h4>
 							<h5>Example heading <span class="badge">New</span></h5>
 							<h6>Example heading <span class="badge">New</span></h6>
-						</div>
-					</div>
+						</CardBody>
+					</Card>
 				</div>
 				<div class="col-12">
-					<div class="card">
-						<div class="card-body">
+					<Card>
+						<CardBody>
 							<h3 class="card-title">Badge sizes</h3>
 
 							<div class="space-y">
@@ -52,15 +55,15 @@ const ucFirst = (value: string) => value.charAt(0).toUpperCase() + value.slice(1
 									))
 								}
 							</div>
-						</div>
-					</div>
+						</CardBody>
+					</Card>
 				</div>
 				<div class="col-12">
-					<div class="card">
-						<div class="card-body">
+					<Card>
+						<CardBody>
 							<h3 class="card-title">Positioned badges</h3>
 
-							<div class="btn-list">
+							<ButtonList>
 								<button type="button" class="btn">Notifications <span class="badge text-bg-secondary ms-2">4</span></button>
 
 								<button type="button" class="btn">
@@ -90,47 +93,47 @@ const ucFirst = (value: string) => value.charAt(0).toUpperCase() + value.slice(1
 									<Icon name="bell" />
 									<span class="badge badge-dot bg-red badge-notification"></span>
 								</button>
-							</div>
-						</div>
-					</div>
+							</ButtonList>
+						</CardBody>
+					</Card>
 				</div>
 			</div>
 		</div>
 		<div class="col-8">
 			<div class="row row-cards">
 				<div class="col-12">
-					<div class="card">
-						<div class="card-body">
+					<Card>
+						<CardBody>
 							<h3 class="card-title">Basic badges</h3>
 							<div class="badges-list">
 								{colors.map((color) => <span class={`badge bg-${color} text-${color}-fg`}>{ucFirst(color)}</span>)}
 							</div>
-						</div>
-					</div>
+						</CardBody>
+					</Card>
 				</div>
 				<div class="col-12">
-					<div class="card">
-						<div class="card-body">
+					<Card>
+						<CardBody>
 							<h3 class="card-title">Light badges</h3>
 							<div class="badges-list">
 								{colors.map((color) => <span class={`badge bg-${color}-lt`}>{ucFirst(color)}</span>)}
 							</div>
-						</div>
-					</div>
+						</CardBody>
+					</Card>
 				</div>
 				<div class="col-12">
-					<div class="card">
-						<div class="card-body">
+					<Card>
+						<CardBody>
 							<h3 class="card-title">Outline badges</h3>
 							<div class="badges-list">
 								{colors.map((color) => <span class={`badge badge-outline text-${color}`}>{ucFirst(color)}</span>)}
 							</div>
-						</div>
-					</div>
+						</CardBody>
+					</Card>
 				</div>
 				<div class="col-12">
-					<div class="card">
-						<div class="card-body">
+					<Card>
+						<CardBody>
 							<h3 class="card-title">Badges with icons</h3>
 							<div class="badges-list">
 								{
@@ -142,8 +145,8 @@ const ucFirst = (value: string) => value.charAt(0).toUpperCase() + value.slice(1
 									))
 								}
 							</div>
-						</div>
-					</div>
+						</CardBody>
+					</Card>
 				</div>
 			</div>
 		</div>
@@ -151,9 +154,9 @@ const ucFirst = (value: string) => value.charAt(0).toUpperCase() + value.slice(1
 		<div class="col-sm-6 col-lg-9">
 			<div class="row row-cards">
 				<div class="col-12">
-					<div class="card">
-						<div class="card-body">
-							<div class="btn-list">
+					<Card>
+						<CardBody>
+							<ButtonList>
 								{
 									colors.map((color, index) => (
 										<button class="btn">
@@ -161,14 +164,14 @@ const ucFirst = (value: string) => value.charAt(0).toUpperCase() + value.slice(1
 										</button>
 									))
 								}
-							</div>
-						</div>
-					</div>
+							</ButtonList>
+						</CardBody>
+					</Card>
 				</div>
 				<div class="col-12">
-					<div class="card">
-						<div class="card-body">
-							<div class="btn-list">
+					<Card>
+						<CardBody>
+							<ButtonList>
 								{
 									colors.map((color, index) => (
 										<button class="btn position-relative">
@@ -177,14 +180,14 @@ const ucFirst = (value: string) => value.charAt(0).toUpperCase() + value.slice(1
 										</button>
 									))
 								}
-							</div>
-						</div>
-					</div>
+							</ButtonList>
+						</CardBody>
+					</Card>
 				</div>
 				<div class="col-12">
-					<div class="card">
-						<div class="card-body">
-							<div class="btn-list">
+					<Card>
+						<CardBody>
+							<ButtonList>
 								{
 									colors.map((color) => (
 										<button class="btn position-relative">
@@ -192,9 +195,9 @@ const ucFirst = (value: string) => value.charAt(0).toUpperCase() + value.slice(1
 										</button>
 									))
 								}
-							</div>
-						</div>
-					</div>
+							</ButtonList>
+						</CardBody>
+					</Card>
 				</div>
 			</div>
 		</div>

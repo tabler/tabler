@@ -1,0 +1,34 @@
+---
+// Form group: label (.form-label) + control slot + optional hint (.form-hint).
+
+interface Props {
+	label?: string;
+	/** .required asterisk on the label */
+	required?: boolean;
+	/** .form-label-description at the inline end of the label */
+	description?: string;
+	/** .form-hint under the control */
+	hint?: string;
+	/** for attribute of the label */
+	for?: string;
+	/** extra classes on the label (e.g. visually-hidden) */
+	labelClass?: string;
+	/** wrapper classes; replaces the default mb-3 */
+	class?: string;
+}
+
+const { label, required, description, hint, for: htmlFor, labelClass, class: className = 'mb-3' } = Astro.props;
+---
+
+<div class:list={[className]}>
+	{
+		label && (
+			<label class:list={['form-label', required && 'required', labelClass]} for={htmlFor}>
+				{label}
+				{description && <span class="form-label-description">{description}</span>}
+			</label>
+		)
+	}
+	<slot />
+	{hint && <div class="form-hint">{hint}</div>}
+</div>

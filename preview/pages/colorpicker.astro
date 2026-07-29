@@ -3,6 +3,8 @@
 // Liquid: {% for color in site.colors %} — forloop.index (1-based) → id,
 // color[1].hex → value.
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
+import Card from '@shared/components/ui/Card.astro';
+import CardBody from '@shared/components/ui/CardBody.astro';
 import Colorpicker from '@shared/components/ui/Colorpicker.astro';
 import site from '@data/site.json';
 
@@ -15,8 +17,8 @@ const colors = Object.values(site.colors) as { hex: string }[];
 	pageMenu="plugins.colorpicker"
 	pageLibs={['coloris.js']}
 >
-	<div class="card">
-		<div class="card-body">
+	<Card>
+		<CardBody>
 			<h3 class="card-title">Basic</h3>
 			<div class="row g-3">
 				{
@@ -29,6 +31,6 @@ const colors = Object.values(site.colors) as { hex: string }[];
 					))
 				}
 			</div>
-		</div>
-	</div>
+		</CardBody>
+	</Card>
 </DefaultLayout>
