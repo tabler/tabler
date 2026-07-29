@@ -46,11 +46,9 @@ const classes = [
 	color && `bg-${color}${light ? '-lt' : ''} text-${color}${light ? '-lt' : ''}-fg`,
 	className,
 ]
-	.filter(Boolean)
-	.join(' ');
 ---
 
-<span class={classes}>{icon && <Icon name={icon} />}{
+<span class:list={classes}>{icon && <Icon name={icon} />}{
 		personId && <Avatar personId={personId} />
 	}{text ? text : person?.full_name}{
 		addon && <span class={`badge-addon ${addonColor ? `bg-${addonColor}` : ''}`}>{addon}</span>

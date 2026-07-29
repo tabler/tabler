@@ -81,8 +81,6 @@ const classes = [
 	inactive && 'card-inactive',
 	className,
 ]
-	.filter(Boolean)
-	.join(' ');
 
 // footer-elements parsing — mirrors the Liquid loop, including the fact that
 // `right` is never reset once set (Liquid assign leaks across iterations).
@@ -107,7 +105,7 @@ const imgBottomPhoto = (photos as { file: string; title: string }[])[11];
 const avatarPeople = (people as { full_name?: string; photo?: string }[]).slice(0, 5);
 ---
 
-<Element href={link ? '#' : undefined} class={classes}>
+<Element href={link ? '#' : undefined} class:list={classes}>
 	{
 		empty ? (
 			<Empty illustration="not-found" height={160} />

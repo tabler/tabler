@@ -4,6 +4,7 @@
 // class in the Eleventy output is the include['size'] bug and is skipped).
 import Avatar from '../ui/Avatar.astro';
 import Button from '../ui/Button.astro';
+import CardTitle from '../ui/CardTitle.astro';
 import people from '@data/people.json';
 
 const avatarPeople = (people as { full_name?: string; photo?: string }[]).slice(0, 5);
@@ -16,7 +17,7 @@ const avatarPeople = (people as { full_name?: string; photo?: string }[]).slice(
 				{avatarPeople.map((person) => <Avatar person={person} />)}
 			</div>
 		</div>
-		<h3 class="card-title">No Team Members</h3>
+		<CardTitle>No Team Members</CardTitle>
 		<p class="text-secondary">Invite your team to<br />collaborate on this project.</p>
 		<div class="mt-4">
 			<Button text="Invite Members" color="primary" icon="plus" />

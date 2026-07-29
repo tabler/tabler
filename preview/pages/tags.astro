@@ -2,8 +2,10 @@
 // Port of preview/pages/tags.html (layout: default)
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
 import Tag from '@shared/components/ui/Tag.astro';
+import TagsList from '@shared/components/ui/TagsList.astro';
 import Card from '@shared/components/ui/Card.astro';
 import CardBody from '@shared/components/ui/CardBody.astro';
+import CardTitle from '@shared/components/ui/CardTitle.astro';
 import people from '@data/people.json';
 import flags from '@data/flags.json';
 import siteData from '@data/site.json';
@@ -25,10 +27,10 @@ const colors = Object.values(siteData.colors) as { class: string; title: string 
 		<div class="col">
 			<Card>
 				<CardBody>
-					<h3 class="card-title">Default tags</h3>
-					<div class="tags-list">
+					<CardTitle>Default tags</CardTitle>
+					<TagsList>
 						{range(1, 14).map((i) => <Tag text={`Label ${i}`} />)}
-					</div>
+					</TagsList>
 				</CardBody>
 			</Card>
 		</div>
@@ -36,10 +38,10 @@ const colors = Object.values(siteData.colors) as { class: string; title: string 
 		<div class="col">
 			<Card>
 				<CardBody>
-					<h3 class="card-title">Tags with flag</h3>
-					<div class="tags-list">
+					<CardTitle>Tags with flag</CardTitle>
+					<TagsList>
 						{flags9.map((country) => <Tag text={country.name} flag={(country as { code?: string }).code} />)}
-					</div>
+					</TagsList>
 				</CardBody>
 			</Card>
 		</div>
@@ -47,10 +49,10 @@ const colors = Object.values(siteData.colors) as { class: string; title: string 
 		<div class="col">
 			<Card>
 				<CardBody>
-					<h3 class="card-title">Tags with icon</h3>
-					<div class="tags-list">
+					<CardTitle>Tags with icon</CardTitle>
+					<TagsList>
 						{tagIcons.map((icon) => <Tag text={icon} icon={icon} />)}
-					</div>
+					</TagsList>
 				</CardBody>
 			</Card>
 		</div>
@@ -58,10 +60,10 @@ const colors = Object.values(siteData.colors) as { class: string; title: string 
 		<div class="col">
 			<Card>
 				<CardBody>
-					<h3 class="card-title">Tags with avatar</h3>
-					<div class="tags-list">
+					<CardTitle>Tags with avatar</CardTitle>
+					<TagsList>
 						{people8.map((person) => <Tag text={person.full_name} person={person} />)}
-					</div>
+					</TagsList>
 				</CardBody>
 			</Card>
 		</div>
@@ -69,10 +71,10 @@ const colors = Object.values(siteData.colors) as { class: string; title: string 
 		<div class="col">
 			<Card>
 				<CardBody>
-					<h3 class="card-title">Tags with status</h3>
-					<div class="tags-list">
+					<CardTitle>Tags with status</CardTitle>
+					<TagsList>
 						{colors.map((color) => <Tag text={color.title} status={color.class} />)}
-					</div>
+					</TagsList>
 				</CardBody>
 			</Card>
 		</div>
@@ -80,10 +82,10 @@ const colors = Object.values(siteData.colors) as { class: string; title: string 
 		<div class="col">
 			<Card>
 				<CardBody>
-					<h3 class="card-title">Tags with legend</h3>
-					<div class="tags-list">
+					<CardTitle>Tags with legend</CardTitle>
+					<TagsList>
 						{colors.map((color) => <Tag text={color.title} legend={color.class} />)}
-					</div>
+					</TagsList>
 				</CardBody>
 			</Card>
 		</div>
@@ -91,11 +93,11 @@ const colors = Object.values(siteData.colors) as { class: string; title: string 
 		<div class="col">
 			<Card>
 				<CardBody>
-					<h3 class="card-title">Default tags</h3>
-					<div class="tags-list">
+					<CardTitle>Default tags</CardTitle>
+					<TagsList>
 						{range(1, 6).map((i) => <Tag text={`Label ${i}`} checkbox={true} />)}
 						{range(7, 12).map((i) => <Tag text={`Label ${i}`} checkbox={true} checked={true} />)}
-					</div>
+					</TagsList>
 				</CardBody>
 			</Card>
 		</div>
@@ -103,10 +105,10 @@ const colors = Object.values(siteData.colors) as { class: string; title: string 
 		<div class="col">
 			<Card>
 				<CardBody>
-					<h3 class="card-title">Default tags</h3>
-					<div class="tags-list">
+					<CardTitle>Default tags</CardTitle>
+					<TagsList>
 						{range(1, 12).map((i) => <Tag text="Label" badge={i} />)}
-					</div>
+					</TagsList>
 				</CardBody>
 			</Card>
 		</div>

@@ -31,16 +31,14 @@ const classes = [
 	numbers && 'steps-counter',
 	color && `steps-${color}`,
 	size && `steps-${size}`,
-]
-	.filter(Boolean)
-	.join(' ');
+];
 
 const activeNum = Number(active);
 const total = Number(count);
 const steps = Array.from({ length: total }, (_, i) => i + 1);
 ---
 
-<div class={classes}>
+<div class:list={classes}>
 	{
 		steps.map((i) => {
 			const Element = i > activeNum ? 'span' : 'a';

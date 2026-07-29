@@ -53,15 +53,13 @@ const classes = [
 	arrow && 'dropdown-menu-arrow',
 	className,
 ]
-	.filter(Boolean)
-	.join(' ');
 
 const menuItems = menu ? menu.split(',') : undefined;
 const peopleItems = (people as { id: string; full_name: string }[]).slice(0, 5);
 const countryItems = (countries as { name: string; flag: string }[]).slice(0, 5);
 ---
 
-<div class={classes} data-bs-theme={dark ? 'dark' : undefined}>
+<div class:list={classes} data-bs-theme={dark ? 'dark' : undefined}>
 	{
 		menuItems ? (
 			menuItems.map((item) =>
