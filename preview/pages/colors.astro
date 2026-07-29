@@ -5,6 +5,7 @@ import Icon from '@shared/components/Icon.astro';
 import FormGroup from '@shared/components/ui/FormGroup.astro';
 import Card from '@shared/components/ui/Card.astro';
 import CardBody from '@shared/components/ui/CardBody.astro';
+import Avatar from '@shared/components/ui/Avatar.astro';
 import site from '@data/site.json';
 
 type ColorEntry = [string, { title: string; hex: string; abbr?: string; icon?: string }];
@@ -30,7 +31,7 @@ const gradientColors = [...Object.keys(site.colors), 'inverted', 'white', 'trans
 								<div class="col-12">
 									<div class="row align-items-center">
 										<div class="col-auto">
-											<div class={`avatar bg-${name} text-${name}-fg avatar-square`}>{color.abbr}</div>
+											<Avatar square class={`bg-${name} text-${name}-fg`} placeholder={color.abbr} />
 										</div>
 										<div class="col">
 											{color.title}
@@ -54,7 +55,7 @@ const gradientColors = [...Object.keys(site.colors), 'inverted', 'white', 'trans
 								<div class="col-12">
 									<div class="row align-items-center">
 										<div class="col-auto">
-											<div class={`avatar bg-${name}-lt text-${name}-lt-fg avatar-square`}>{color.abbr}</div>
+											<Avatar square class={`bg-${name}-lt text-${name}-lt-fg`} placeholder={color.abbr} />
 										</div>
 										<div class="col">
 											{color.title}
@@ -78,7 +79,7 @@ const gradientColors = [...Object.keys(site.colors), 'inverted', 'white', 'trans
 								<div class="col-12">
 									<div class="row align-items-center">
 										<div class="col-auto">
-											<div class={`avatar bg-${name} text-${name}-fg avatar-square`}>{color.abbr}</div>
+											<Avatar square class={`bg-${name} text-${name}-fg`} placeholder={color.abbr} />
 										</div>
 										<div class="col">
 											{color.title}
@@ -102,9 +103,7 @@ const gradientColors = [...Object.keys(site.colors), 'inverted', 'white', 'trans
 								<div class="col-12">
 									<div class="row align-items-center">
 										<div class="col-auto">
-											<div class={`avatar bg-${name} text-${name}-fg avatar-square`}>
-												{color.icon && <Icon name={color.icon} />}
-											</div>
+											<Avatar square class={`bg-${name} text-${name}-fg`} icon={color.icon} />
 										</div>
 										<div class="col">
 											{color.title}

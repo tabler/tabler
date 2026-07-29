@@ -5,6 +5,7 @@
 // (Paweł Kuna, photo 000m.jpg) — so we index 1-based, like ui/avatar.html
 // (person-id | minus: 1).
 import Icon from '../Icon.astro';
+import Avatar from '../ui/Avatar.astro';
 import people from '@data/people.json';
 
 interface Props {
@@ -21,7 +22,7 @@ const person = people[personId - 1];
 <!-- BEGIN USER MENU -->
 <div class="nav-item dropdown">
 	<a href="#" class="nav-link d-flex lh-1 p-0 px-2" data-bs-toggle="dropdown" aria-label="Open user menu">
-		<span class="avatar avatar-sm" style={`background-image: url(./${person.photo})`}></span>
+		<Avatar personId={personId} size="sm" />
 		{
 			!hideUsername && (
 				<div class="d-none d-xl-block ps-2">
