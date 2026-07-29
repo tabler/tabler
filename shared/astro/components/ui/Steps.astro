@@ -42,11 +42,11 @@ const steps = Array.from({ length: total }, (_, i) => i + 1);
 	{
 		steps.map((i) => {
 			const Element = i > activeNum ? 'span' : 'a';
-			const itemClass = `step-item${i === active ? ' active' : ''}`;
+			const itemClass = ['step-item', i === active ? 'active' : ''];
 			return (
 				<Element
 					href="#"
-					class={itemClass}
+					class:list={itemClass}
 					data-bs-toggle={showTooltip ? 'tooltip' : undefined}
 					title={showTooltip ? `Step ${i} description` : undefined}
 				>

@@ -5,6 +5,7 @@
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
 import Avatar from '@shared/components/ui/Avatar.astro';
 import AvatarUpload from '@shared/components/ui/AvatarUpload.astro';
+import AvatarList from '@shared/components/ui/AvatarList.astro';
 import Card from '@shared/components/ui/Card.astro';
 import CardBody from '@shared/components/ui/CardBody.astro';
 import CardTitle from '@shared/components/ui/CardTitle.astro';
@@ -121,20 +122,20 @@ const brands = ['netflix', 'amazon', 'messenger', 'figma', 'twitch'];
 							listSizes.map((size) => (
 								<>
 									<div class="col-6">
-										<div class={`avatar-list avatar-list-stacked avatar-list-${size}`}>
+										<AvatarList stacked={true} size={size}>
 											{people5.map((person) => (
 												<Avatar person={person} />
 											))}
 											<Avatar icon="plus" link />
-										</div>
+										</AvatarList>
 									</div>
 									<div class="col-6">
-										<div class={`avatar-list avatar-list-stacked avatar-list-${size}`}>
+										<AvatarList stacked={true} size={size}>
 											{people5.map((person) => (
 												<Avatar person={person} class="rounded-circle" />
 											))}
 											<Avatar icon="plus" link class="rounded-circle" />
-										</div>
+										</AvatarList>
 									</div>
 								</>
 							))

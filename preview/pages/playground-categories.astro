@@ -15,22 +15,16 @@
 // supports (element type is 'a'|'button'; html_for/tooltip absent). The shared
 // ui/button.html ignores html_for/tooltip too, and the reference emits a plain
 // <label> with no `for`. Inlined below to match the reference.
-//
-// TODO (AvatarList.astro missing `size`): the "Marketing campaigns" card calls
-// ui/avatar-list.html with size="xs", but AvatarList.astro has no `size` prop
-// and does not forward it to Avatar. Inlined here with <Avatar size="xs"> over
-// the people slice (offset 3, limit 3) to match the reference `avatar-xs`.
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
 import Icon from '@shared/components/ui/Icon.astro';
 import Button from '@shared/components/ui/Button.astro';
 import Badge from '@shared/components/ui/Badge.astro';
 import Avatar from '@shared/components/ui/Avatar.astro';
+import AvatarList from '@shared/components/ui/AvatarList.astro';
 import Pagination from '@shared/components/ui/Pagination.astro';
 import Card from '@shared/components/ui/Card.astro';
 import CardBody from '@shared/components/ui/CardBody.astro';
-import people from '@data/people.json';
 
-const marketingAvatars = people.slice(3, 6);
 ---
 
 <DefaultLayout title="Categories playground">
@@ -162,11 +156,11 @@ const marketingAvatars = people.slice(3, 6);
 					<p class="fs-sm text-secondary mb-0">Last post 2 days ago</p>
 					<hr>
 					<div class="d-flex align-items-center justify-content-between">
-						<div class="avatar-list avatar-list-stacked">
+						<AvatarList stacked={true}>
 							<Avatar src="static/avatars/001f.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="Emily Thompson" />
 							<Avatar src="static/avatars/002m.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="Michael Johnson" />
 							<Avatar src="static/avatars/003m.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="Robert Garcia" />
-						</div>
+						</AvatarList>
 						<div class="text-end">
 							<Badge text="20 posts" class="bg-light text-body" />
 						</div>
@@ -191,9 +185,7 @@ const marketingAvatars = people.slice(3, 6);
 					<p class="fs-sm text-secondary mb-0">Last post 1 day ago</p>
 					<hr>
 					<div class="d-flex align-items-center justify-content-between">
-						<div class="avatar-list avatar-list-stacked">
-							{marketingAvatars.map((person) => <Avatar person={person} size="xs" />)}
-						</div>
+						<AvatarList stacked={true} size="xs" offset={3} limit={3} />
 						<div class="text-end">
 							<Badge text="62 posts" class="bg-light text-body" />
 						</div>
@@ -212,10 +204,10 @@ const marketingAvatars = people.slice(3, 6);
 					<p class="fs-sm text-secondary mb-0">Last post 5 days ago</p>
 					<hr>
 					<div class="d-flex align-items-center justify-content-between">
-						<div class="avatar-list avatar-list-stacked">
+						<AvatarList stacked={true}>
 							<Avatar src="static/avatars/001f.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="Emily Thompson" />
 							<Avatar src="static/avatars/003m.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="Robert Garcia" />
-						</div>
+						</AvatarList>
 						<div class="text-end">
 							<Badge text="28 posts" class="bg-light text-body" />
 						</div>
@@ -234,10 +226,10 @@ const marketingAvatars = people.slice(3, 6);
 					<p class="fs-sm text-secondary mb-0">Last post 3 days ago</p>
 					<hr>
 					<div class="d-flex align-items-center justify-content-between">
-						<div class="avatar-list avatar-list-stacked">
+						<AvatarList stacked={true}>
 							<Avatar src="static/avatars/005f.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="Olivia Davis" />
 							<Avatar src="static/avatars/002m.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="Michael Johnson" />
-						</div>
+						</AvatarList>
 						<div class="text-end">
 							<Badge text="34 posts" class="bg-light text-body" />
 						</div>
@@ -256,10 +248,10 @@ const marketingAvatars = people.slice(3, 6);
 					<p class="fs-sm text-secondary mb-0">Last post 1 week ago</p>
 					<hr>
 					<div class="d-flex align-items-center justify-content-between">
-						<div class="avatar-list avatar-list-stacked">
+						<AvatarList stacked={true}>
 							<Avatar src="static/avatars/006m.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="James Wilson" />
 							<Avatar src="static/avatars/004f.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="Jessica Miller" />
-						</div>
+						</AvatarList>
 						<div class="text-end">
 							<Badge text="64 posts" class="bg-light text-body" />
 						</div>
@@ -278,10 +270,10 @@ const marketingAvatars = people.slice(3, 6);
 					<p class="fs-sm text-secondary mb-0">Last post 4 days ago</p>
 					<hr>
 					<div class="d-flex align-items-center justify-content-between">
-						<div class="avatar-list avatar-list-stacked">
+						<AvatarList stacked={true}>
 							<Avatar src="static/avatars/002m.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="Michael Johnson" />
 							<Avatar src="static/avatars/001f.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="Emily Thompson" />
-						</div>
+						</AvatarList>
 						<div class="text-end">
 							<Badge text="42 posts" class="bg-light text-body" />
 						</div>
@@ -300,10 +292,10 @@ const marketingAvatars = people.slice(3, 6);
 					<p class="fs-sm text-secondary mb-0">Last post 6 days ago</p>
 					<hr>
 					<div class="d-flex align-items-center justify-content-between">
-						<div class="avatar-list avatar-list-stacked">
+						<AvatarList stacked={true}>
 							<Avatar src="static/avatars/003m.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="Robert Garcia" />
 							<Avatar src="static/avatars/005f.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="Olivia Davis" />
-						</div>
+						</AvatarList>
 						<div class="text-end">
 							<Badge text="38 posts" class="bg-light text-body" />
 						</div>
@@ -322,10 +314,10 @@ const marketingAvatars = people.slice(3, 6);
 					<p class="fs-sm text-secondary mb-0">Last post 2 weeks ago</p>
 					<hr>
 					<div class="d-flex align-items-center justify-content-between">
-						<div class="avatar-list avatar-list-stacked">
+						<AvatarList stacked={true}>
 							<Avatar src="static/avatars/006m.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="James Wilson" />
 							<Avatar src="static/avatars/004f.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="Jessica Miller" />
-						</div>
+						</AvatarList>
 						<div class="text-end">
 							<Badge text="59 posts" class="bg-light text-body" />
 						</div>

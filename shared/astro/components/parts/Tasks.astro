@@ -8,10 +8,9 @@
 // The avatar-list offset uses task['users-offset'] (the hyphenated key that
 // DOES exist), matching the Eleventy output.
 import Icon from '../ui/Icon.astro';
-import Avatar from '../ui/Avatar.astro';
+import AvatarList from '../ui/AvatarList.astro';
 import CardTitle from '../ui/CardTitle.astro';
 import tasksData from '@data/tasks.json';
-import people from '@data/people.json';
 
 interface Column {
 	name: string;
@@ -24,7 +23,6 @@ interface Props {
 }
 
 const { data = tasksData as unknown as { columns: Column[] }, class: className } = Astro.props;
-const peopleList = people as { full_name?: string; photo?: string }[];
 ---
 
 <div class={`row${className ? ` ${className}` : ''}`}>
@@ -62,13 +60,12 @@ const peopleList = people as { full_name?: string; photo?: string }[];
 											<div class="row">
 												<div class="col">
 													{task.users && (
-														<div class="avatar-list avatar-list-stacked">
-															{peopleList
-																.slice(task['users-offset'] ?? 0, (task['users-offset'] ?? 0) + task.users)
-																.map((person) => (
-																	<Avatar person={person} size="xs" />
-																))}
-														</div>
+														<AvatarList
+															stacked={true}
+															size="xs"
+															offset={task['users-offset'] ?? 0}
+															limit={task.users}
+														/>
 													)}
 												</div>
 

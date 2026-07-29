@@ -34,22 +34,20 @@ const {
 	loader,
 } = Astro.props;
 
-const wrapperClass = ['input-icon', className].filter(Boolean).join(' ');
-const addonClass = ['input-icon-addon', iconClass].filter(Boolean).join(' ');
+const wrapperClass = ['input-icon', className];
+const addonClass = ['input-icon-addon', iconClass];
 const controlClass = [
 	'form-control',
 	light && 'form-control-light',
 	rounded && 'form-control-rounded',
 	inputClass,
 ]
-	.filter(Boolean)
-	.join(' ');
 ---
 
-<div class={wrapperClass}>
+<div class:list={wrapperClass}>
 	{
 		prepend && (
-			<span class={addonClass}>
+			<span class:list={addonClass}>
 				{
 					loader ? (
 						<div class="spinner-border spinner-border-sm text-secondary" role="status" />
@@ -63,14 +61,14 @@ const controlClass = [
 	<input
 		type={type}
 		value={value}
-		class={controlClass}
+		class:list={controlClass}
 		placeholder={placeholder}
 		aria-label={ariaLabel}
 		readonly={readonly}
 	/>
 	{
 		!prepend && (
-			<span class={addonClass}>
+			<span class:list={addonClass}>
 				{
 					loader ? (
 						<div class="spinner-border spinner-border-sm text-secondary" role="status" />

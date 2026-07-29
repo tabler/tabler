@@ -9,11 +9,10 @@
 // TODO: ui/form/check.html is inlined only in the empty+checked (switch)
 //       variants used by footer-elements; other check params are not ported.
 import Icon from '../ui/Icon.astro';
-import Avatar from '../ui/Avatar.astro';
+import AvatarList from '../ui/AvatarList.astro';
 import Empty from '../ui/Empty.astro';
 import Progress from '../ui/Progress.astro';
 import photos from '@data/photos.json';
-import people from '@data/people.json';
 
 interface Props {
 	link?: boolean;
@@ -102,7 +101,6 @@ const hasFooter = footer || footerButton || footerButtons || footerElements;
 
 const imgTopPhoto = (photos as { file: string; title: string }[])[7];
 const imgBottomPhoto = (photos as { file: string; title: string }[])[11];
-const avatarPeople = (people as { full_name?: string; photo?: string }[]).slice(0, 5);
 ---
 
 <Element href={link ? '#' : undefined} class:list={classes}>
@@ -201,12 +199,7 @@ const avatarPeople = (people as { full_name?: string; photo?: string }[]).slice(
 													<input class="form-check-input position-static" type="checkbox" checked />
 												</label>
 											) : el === 'avatars' ? (
-												<div class="avatar-list avatar-list-stacked">
-													{avatarPeople.map((person) => (
-														<Avatar person={person} size="sm" />
-													))}
-													<Avatar placeholder="+3" size="sm" />
-												</div>
+												<AvatarList stacked={true} size="sm" text="+3" />
 											) : el === 'more' ? (
 												<a href="#">More information</a>
 											) : null}

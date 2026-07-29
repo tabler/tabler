@@ -53,14 +53,12 @@ const labelClasses = [
 	isSwitch && size && `form-switch-${size}`,
 	className,
 ]
-	.filter(Boolean)
-	.join(' ');
 
-const inputClasses = ['form-check-input', isEmpty && 'position-static'].filter(Boolean).join(' ');
+const inputClasses = ['form-check-input', isEmpty && 'position-static'];
 ---
 
-<label class={labelClasses}>
-	<input class={inputClasses} type={type} name={name || undefined} checked={checked} disabled={disabled} />
+<label class:list={labelClasses}>
+	<input class:list={inputClasses} type={type} name={name || undefined} checked={checked} disabled={disabled} />
 	{
 		titleOn && titleOff ? (
 			<Fragment>
