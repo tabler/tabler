@@ -1,6 +1,7 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
 import mdx from '@astrojs/mdx';
+import { satteri } from '@astrojs/markdown-satteri';
 import beautify from 'js-beautify';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
@@ -75,7 +76,7 @@ export default defineConfig({
 	integrations: [mdx(), prettifyHtml()],
 	markdown: {
 		// markdown-it in Eleventy does not produce typographic quotes — neither do we
-		smartypants: false,
+		processor: satteri({ features: { smartPunctuation: false } }),
 		shikiConfig: {
 			theme: 'github-dark',
 			transformers: [
