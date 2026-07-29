@@ -57,8 +57,6 @@ const exampleClasses = [
 	bg ? `bg-${bg}` : 'bg-pattern-rectangles',
 	className,
 ]
-	.filter(Boolean)
-	.join(' ');
 
 const innerClasses = [
 	'p-6 w-full',
@@ -66,8 +64,6 @@ const innerClasses = [
 	!column && centered && `d-flex flex-fill flex-wrap gap-2 justify-content-center${vertical ? ' align-items-center flex-column' : ' justify-content-center'}`,
 	columnFullWidth && 'd-flex flex-fill flex-column gap-2',
 ]
-	.filter(Boolean)
-	.join(' ');
 
 const highlighted = hideCode ? '' : await highlightCode(beautifyHtml(code ?? html), 'html');
 ---
@@ -75,12 +71,12 @@ const highlighted = hideCode ? '' : await highlightCode(beautifyHtml(code ?? htm
 <!--EXAMPLE-->
 {
 	!codeOnly && (
-		<div class={exampleClasses} style={height ? `height: ${height}` : undefined}>
+		<div class:list={exampleClasses} style={height ? `height: ${height}` : undefined}>
 			{
 				raw ? (
 					<Fragment set:html={removeHref(html)} />
 				) : (
-					<div class={innerClasses} style={column ? 'max-width: 25rem;' : undefined}>
+					<div class:list={innerClasses} style={column ? 'max-width: 25rem;' : undefined}>
 						<Fragment set:html={removeHref(html)} />
 					</div>
 				)

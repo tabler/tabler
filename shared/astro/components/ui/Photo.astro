@@ -27,13 +27,13 @@ const src = `./static/photos/${photo.file}`;
 <!-- Photo -->
 {
 	background ? (
-		<div class={className} style={`background-image: url(${src})`} />
+		<div class:list={className} style={`background-image: url(${src})`} />
 	) : ratio ? (
 		<div
-			class={`img-responsive img-responsive-${ratio}${className ? ` ${className}` : ''}`}
+			class:list={['img-responsive', `img-responsive-${ratio}`, className]}
 			style={`background-image: url(${src})`}
 		/>
 	) : (
-		<img src={src} class={className} alt={photo.title} />
+		<img src={src} class:list={className} alt={photo.title} />
 	)
 }

@@ -28,7 +28,7 @@ const {
 	extraJs,
 } = Astro.props;
 
-const signatureClass = ['signature position-relative', className].filter(Boolean).join(' ');
+const signatureClass = ['signature position-relative', className];
 
 const clearSnippet = clear
 	? `		document.querySelector("#signature-${id}-clear").addEventListener("click", function () {
@@ -73,7 +73,7 @@ ${extraSnippet}
 addPageScript(script);
 ---
 
-<div class={signatureClass}>
+<div class:list={signatureClass}>
 	{
 		clear && (
 			<div class="position-absolute top-0 end-0 p-2">

@@ -32,7 +32,7 @@ const {
 	class: className,
 } = Astro.props;
 
-const avatarClass = `${color ? `bg-${color}${lt ? '-lt' : ' text-white'}` : ''} avatar avatar-square`;
+const avatarClass = [color ? `bg-${color}${lt ? '-lt' : ' text-white'}` : '', 'avatar', 'avatar-square'];
 ---
 
 <div class:list={['card card-sm', className]}>
@@ -41,7 +41,7 @@ const avatarClass = `${color ? `bg-${color}${lt ? '-lt' : ' text-white'}` : ''} 
 			{
 				icon && (
 					<div class="col-auto">
-						<span class={avatarClass}><Icon name={icon} /></span>
+						<span class:list={avatarClass}><Icon name={icon} /></span>
 					</div>
 				)
 			}

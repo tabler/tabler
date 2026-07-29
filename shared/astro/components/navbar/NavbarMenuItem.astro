@@ -37,8 +37,6 @@ const itemClasses = [
 	active && 'active',
 	item.color && `text-${item.color}`,
 ]
-	.filter(Boolean)
-	.join(' ');
 ---
 
 {
@@ -73,7 +71,7 @@ const itemClasses = [
 		</div>
 	) : (
 		<a
-			class={itemClasses}
+			class:list={itemClasses}
 			href={relative(item.url)}
 			target={isExternal(item.url) ? '_blank' : undefined}
 			rel={isExternal(item.url) ? 'noopener' : undefined}
