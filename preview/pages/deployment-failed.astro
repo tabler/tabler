@@ -1,0 +1,267 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
+import Breadcrumb from '@shared/components/ui/Breadcrumb.astro';
+import Avatar from '@shared/components/ui/Avatar.astro';
+import Badge from '@shared/components/ui/Badge.astro';
+import Button from '@shared/components/Button.astro';
+import Alert from '@shared/components/Alert.astro';
+import Icon from '@shared/components/Icon.astro';
+import StatusDot from '@shared/components/ui/StatusDot.astro';
+---
+
+<DefaultLayout>
+	<Breadcrumb pages="Projects,pulse-api,Deployments" />
+	
+	<div class="d-flex align-items-center justify-content-between mt-3">
+		<div class="d-flex align-items-center gap-2">
+			<Avatar placeholder="N" shape="square" />
+			<h1 class="m-0">pulse-api</h1>
+			<Badge text="Failed" color="danger" light class="badge-pill" />
+		</div>
+
+		<div>
+			<Button text="View full logs" />
+			<Button text="Retry Deployment" color="dark" icon="refresh" />
+		</div>
+	</div>
+
+	<ul class="nav nav-bordered my-3" aria-label="Project sections">
+		<li class="nav-item">
+		  <a class="nav-link" href="#">Overview</a>
+		</li>
+		<li class="nav-item">
+		  <a class="nav-link active" href="./deployment-failed.html" aria-current="page">Deployments</a>
+		</li>
+		<li class="nav-item">
+		  <a class="nav-link" href="#">Analytics</a>
+		</li>
+		<li class="nav-item">
+		  <a class="nav-link" href="#">Logs</a>
+		</li>
+		<li class="nav-item">
+		  <a class="nav-link" href="#">Settings</a>
+		</li>
+	 </ul>
+
+	 <div class="alert alert-danger d-flex align-items-center justify-content-between" role="alert">
+		<div class="d-flex align-items-center gap-2">
+			<div class="alert-icon">
+				<Icon name="alert-circle" />
+			</div>
+			<div>
+				<h4 class="alert-heading">Build failed at Compile</h4>
+				<div class="alert-description">Preview deployment stopped after 1m 12s. Production on api.pulsehq.dev is unchanged.</div>
+			</div>
+		</div>
+		<div class="btn-list">
+			<Button text="View full logs" />
+			<Button text="Retry Deployment" color="red" icon="refresh" />
+		</div>
+	 </div>
+
+	<div class="card">
+		<div class="card-header justify-content-between">
+			<h2 class="card-title">Deployment</h2>
+			<span class="text-secondary">pulse-api-2e77b09.relay.app · 1d ago</span>
+		</div>
+		<div class="card-body">
+			<dl class="row mb-0">
+				<dt class="col-5 col-sm-3 text-secondary mb-3">Status</dt>
+				<dd class="col-7 col-sm-9">
+					<span class="d-inline-flex align-items-center gap-2 me-2">
+						<StatusDot color="danger" />
+						Error
+					</span>
+					<span class="text-secondary">failed at Compile · 1m 12s</span>
+				</dd>
+
+				<dt class="col-5 col-sm-3 text-secondary mb-3">Source</dt>
+				<dd class="col-7 col-sm-9">
+					<a href="#" class="badge badge-outline text-secondary me-2 badge-pill">
+						<Icon name="git-branch" class="icon-sm" />
+						feat/redis-limiter
+					</a>
+					<a href="#" class="text-reset">
+						<code>2e77b09</code>
+						<span class="ms-1">Migrate rate limiter to Redis</span>
+					</a>
+				</dd>
+
+				<dt class="col-5 col-sm-3 text-secondary mb-3">Created</dt>
+				<dd class="col-7 col-sm-9">
+					Jul 28, 2026 at 09:41
+					<span class="text-secondary">by k.adamski</span>
+				</dd>
+
+				<dt class="col-5 col-sm-3 text-secondary">Environment</dt>
+				<dd class="col-7 col-sm-9 mb-0">
+					<Badge text="Preview" class="badge-outline text-secondary badge-pill" />
+				</dd>
+			</dl>
+		</div>
+	</div>
+
+	<div class="grid">
+		<div class="g-col-7">
+			<div class="card mt-3">
+				<div class="card-header justify-content-between">
+					<h2 class="card-title">Build steps</h2>
+					<span class="text-secondary">3 of 5 completed</span>
+				</div>
+
+				<div class="card-body">
+					<ul class="timeline">
+						<li class="timeline-event">
+							<div class="timeline-event-icon bg-success-lt text-success">
+								<Icon name="check" />
+							</div>
+
+							<div class="timeline-event-card">
+								<div class="d-flex justify-content-between">
+								<strong>Clone</strong>
+								<span class="text-secondary">2s</span>
+								</div>
+								<div class="text-secondary">
+								Fetched <code>feat/redis-limiter</code> at <code>2e77b09</code>
+								</div>
+							</div>
+						</li>
+
+						<li class="timeline-event">
+							<div class="timeline-event-icon bg-success-lt text-success">
+								<Icon name="check" />
+							</div>
+
+							<div class="timeline-event-card">
+								<div class="d-flex justify-content-between">
+								<strong>Install</strong>
+								<span class="text-secondary">38s</span>
+								</div>
+								<div class="text-secondary">
+								pnpm install - 412 packages
+								</div>
+							</div>
+						</li>
+
+						<li class="timeline-event">
+							<div class="timeline-event-icon bg-success-lt text-success">
+								<Icon name="check" />
+							</div>
+
+							<div class="timeline-event-card">
+								<div class="d-flex justify-content-between">
+								<strong>Build</strong>
+								<span class="text-secondary">24s</span>
+								</div>
+								<div class="text-secondary">
+								pnpm build completed
+								</div>
+							</div>
+						</li>
+
+						<li class="timeline-event">
+							<div class="timeline-event-icon bg-danger-lt text-danger">
+							<Icon name="x" />
+							</div>
+							<div class="timeline-event-card">
+							<div class="d-flex justify-content-between">
+								<strong class="text-danger">Compile</strong>
+								<span class="text-secondary">8s</span>
+							</div>
+							<div class="text-secondary mb-2">TypeScript exited with code 2</div>
+							<pre class="mb-2"><code>src/lib/rate-limit.ts:47:12 — error TS2345:
+	Argument of type 'RedisClient' is not assignable to
+	parameter of type 'RateLimiterStore'.
+		Property 'incr' is missing in type 'RedisClient'.
+
+	src/lib/rate-limit.ts:61:5 — error TS2322:
+	Type 'Promise&lt;number | null&gt;' is not assignable to
+	type 'Promise&lt;number&gt;'.
+
+	Found 2 errors in 1 file.</code></pre>
+							<a href="#">View full logs →</a>
+							</div>
+						</li>
+
+						<li class="timeline-event">
+							<div class="timeline-event-icon bg-secondary-lt text-secondary"></div>
+							<div class="timeline-event-card text-secondary">
+							<div class="d-flex justify-content-between">
+								<strong>Deploy</strong>
+								<span>-</span>
+							</div>
+							<div>Skipped</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+
+		<div class="w-100 mt-3 g-col-5">
+			<div class="card">
+				<div class="card-header">
+					<h2 class="card-title">Failure summary</h2>
+				</div>
+				<div class="card-body">
+					<dl class="row mb-0">
+						<dt class="col-5 text-secondary mb-3">Exit code</dt>
+						<dd class="col-7"><code>2</code></dd>
+
+						<dt class="col-5 text-secondary mb-3">Failed step</dt>
+						<dd class="col-7">Compile</dd>
+
+						<dt class="col-5 text-secondary mb-3">Errors</dt>
+						<dd class="col-7">2 TypeScript errors</dd>
+
+						<dt class="col-5 text-secondary mb-3">File</dt>
+						<dd class="col-7"><code>src/lib/rate-limit.ts</code></dd>
+
+						<dt class="col-5 text-secondary mb-3">Duration</dt>
+						<dd class="col-7">1m 12s</dd>
+
+						<dt class="col-5 text-secondary">Region</dt>
+						<dd class="col-7 mb-0"><code>fra1</code></dd>
+					</dl>
+				</div>
+			</div>
+
+			<div class="card mt-3">
+				<div class="card-header">
+					<h2 class="card-title">Next steps</h2>
+				</div>
+				<div class="card-body">
+					<ul class="list-unstyled mb-0 space-y">
+						<li class="d-flex gap-3">
+							<span class="avatar avatar-sm" aria-hidden="true">1</span>
+							<div>
+								<div>Fix type errors in <code>rate-limit.ts</code></div>
+								<div class="text-secondary">Align <code>RedisClient</code> with <code>RateLimiterStore</code></div>
+							</div>
+						</li>
+						<li class="d-flex gap-3">
+							<span class="avatar avatar-sm" aria-hidden="true">2</span>
+							<div>
+								<div>Push to <a href="#">feat/redis-limiter</a></div>
+								<div class="text-secondary">A new preview deploy starts automatically</div>
+							</div>
+						</li>
+						<li class="d-flex gap-3">
+							<span class="avatar avatar-sm" aria-hidden="true">3</span>
+							<div>
+								<div>Or retry this deployment</div>
+								<div class="text-secondary">Re-runs the same commit without a new push</div>
+							</div>
+						</li>
+					</ul>
+				</div>
+				<div class="card-footer">
+					<div class="btn-list flex-column">
+						<Button text="Retry deployment" color="dark" block icon="refresh" />
+						<Button text="View full logs" block />
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</DefaultLayout>
