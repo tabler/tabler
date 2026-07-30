@@ -1,10 +1,11 @@
 ---
-// Port of preview/pages/marketing/real-estate.html (no title front matter).
 // Uses the `real-estate` global data (imported from @data/real-estate.json).
 // Asset base is "../" (page|relative for the one-level-deep marketing pages).
 import MarketingLayout from '@shared/layouts/MarketingLayout.astro';
 import SectionDivider from '@shared/components/marketing/SectionDivider.astro';
-import Icon from '@shared/components/Icon.astro';
+import Icon from '@shared/components/ui/Icon.astro';
+import Card from '@shared/components/ui/Card.astro';
+import CardBody from '@shared/components/ui/CardBody.astro';
 import realEstate from '@data/real-estate.json';
 
 interface Building {
@@ -46,12 +47,12 @@ const buildings = realEstate as Building[];
 				{
 					buildings.map((building) => (
 						<div class="col-md-6 col-lg-4">
-							<div class="card">
+							<Card>
 								<a href="#">
 									<div class="img-bg ratio ratio-4x3 card-img-top" style={`background-image: url(../static/marketing/${building.image})`}></div>
 								</a>
 
-								<div class="card-body">
+								<CardBody>
 									<div class="h1 mb-2 fw-bold">{building.price}</div>
 									<div>
 										<div class="text-secondary">{building.address}, California USA</div>
@@ -69,8 +70,8 @@ const buildings = realEstate as Building[];
 
 										<a href="#" class="btn btn-primary py-2 px-3">See details</a>
 									</div>
-								</div>
-							</div>
+								</CardBody>
+							</Card>
 						</div>
 					))
 				}

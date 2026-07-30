@@ -1,6 +1,5 @@
 ---
-// Port of shared/includes/ui/nav.html (a fixed demo nav: Active / Link / Disabled / settings).
-import Icon from '../Icon.astro';
+import Icon from './Icon.astro';
 
 interface Props {
 	pills?: boolean;
@@ -17,11 +16,9 @@ const classes = [
 	pills && header ? 'card-header-pills' : tabs && header ? 'card-header-tabs' : undefined,
 	className,
 ]
-	.filter(Boolean)
-	.join(' ');
 ---
 
-<ul class={classes}>
+<ul class:list={classes}>
 	<li class="nav-item">
 		<a class="nav-link active" href="#">
 			Active

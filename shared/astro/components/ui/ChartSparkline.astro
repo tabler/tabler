@@ -39,8 +39,6 @@ const classes = [
 	wide && 'chart-sparkline-wide',
 	small && 'chart-sparkline-sm',
 ]
-	.filter(Boolean)
-	.join(' ');
 
 let script = '';
 if (id) {
@@ -116,5 +114,5 @@ ${
 }
 ---
 
-{id && <div class={classes} id={`sparkline-${id}`} />}
+{id && <div class:list={classes} id={`sparkline-${id}`} />}
 {id && <InlineScript code={script} />}

@@ -1,4 +1,3 @@
-// Port of ui/chart.html (Liquid) — generator of the <style> + <script> ApexCharts block.
 // The config is built as a plain object (field order mirrors the Liquid template)
 // and serialized to formatted JS at the end. The generated code is JS-token
 // equivalent (not byte-identical) to the Eleventy output — the parity comparator

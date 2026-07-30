@@ -1,10 +1,14 @@
 ---
+import CardActions from '@shared/components/ui/CardActions.astro';
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
 import Avatar from '@shared/components/ui/Avatar.astro';
 import Trending from '@shared/components/ui/Trending.astro';
 import CardDropdown from '@shared/components/ui/CardDropdown.astro';
+import Card from '@shared/components/ui/Card.astro';
+import CardHeader from '@shared/components/ui/CardHeader.astro';
+import CardBody from '@shared/components/ui/CardBody.astro';
 import NavSegmented from '@shared/components/ui/NavSegmented.astro';
-import Chart from '@shared/components/Chart.astro';
+import Chart from '@shared/components/ui/Chart.astro';
 import SwitchIcon from '@shared/components/ui/SwitchIcon.astro';
 import cryptoCurrencies from '@data/crypto-currencies.json';
 import cryptoMarkets from '@data/crypto-markets.json';
@@ -49,8 +53,8 @@ const operationCurrencies = currencies.slice(0, 20);
 		<div class="col-12">
 			<div class="row row-cards">
 				<div class="col-12 col-md-6 col-xxl">
-					<div class="card">
-						<div class="card-body">
+					<Card>
+						<CardBody>
 							<div class="row">
 								<div class="col mt-0">
 									<h5 class="card-title">Total balance</h5>
@@ -67,13 +71,13 @@ const operationCurrencies = currencies.slice(0, 20);
 								<Trending value={btc.p24h} />
 								<span class="text-muted">Since last week</span>
 							</div>
-						</div>
-					</div>
+						</CardBody>
+					</Card>
 				</div>
 
 				<div class="col-12 col-md-6 col-xxl">
-					<div class="card">
-						<div class="card-body">
+					<Card>
+						<CardBody>
 							<div class="row">
 								<div class="col mt-0">
 									<h5 class="card-title">USD/BTC</h5>
@@ -89,13 +93,13 @@ const operationCurrencies = currencies.slice(0, 20);
 							<div class="mb-0">
 								<span class="text-muted">Volume: {btc['volume-24h']}</span>
 							</div>
-						</div>
-					</div>
+						</CardBody>
+					</Card>
 				</div>
 
 				<div class="col-12 col-md-6 col-xxl">
-					<div class="card">
-						<div class="card-body">
+					<Card>
+						<CardBody>
 							<div class="row">
 								<div class="col mt-0">
 									<h5 class="card-title">LTC/BTC</h5>
@@ -111,13 +115,13 @@ const operationCurrencies = currencies.slice(0, 20);
 							<div class="mb-0">
 								<span class="text-muted">Volume: {ltc['volume-24h'].replace('$', '')}</span>
 							</div>
-						</div>
-					</div>
+						</CardBody>
+					</Card>
 				</div>
 
 				<div class="col-12 col-md-6 col-xxl">
-					<div class="card">
-						<div class="card-body">
+					<Card>
+						<CardBody>
 							<div class="row">
 								<div class="col mt-0">
 									<h5 class="card-title">ETH/BTC</h5>
@@ -133,13 +137,13 @@ const operationCurrencies = currencies.slice(0, 20);
 							<div class="mb-0">
 								<span class="text-muted">Volume: {eth['volume-24h'].replace('$', '')}</span>
 							</div>
-						</div>
-					</div>
+						</CardBody>
+					</Card>
 				</div>
 
 				<div class="col-12 col-md-6 col-xxl">
-					<div class="card">
-						<div class="card-body">
+					<Card>
+						<CardBody>
 							<div class="row">
 								<div class="col mt-0">
 									<h5 class="card-title">XMR/BTC</h5>
@@ -155,21 +159,21 @@ const operationCurrencies = currencies.slice(0, 20);
 							<div class="mb-0">
 								<span class="text-muted">Volume: {xmr['volume-24h'].replace('$', '')}</span>
 							</div>
-						</div>
-					</div>
+						</CardBody>
+					</Card>
 				</div>
 			</div>
 		</div>
 		<div class="col-12">
 			<div class="row row-cards">
 				<div class="col-12 col-lg-5">
-					<div class="card">
-						<div class="card-header">
+					<Card>
+						<CardHeader>
 							<h5 class="card-title mb-0">Markets</h5>
-							<div class="card-actions">
+							<CardActions>
 								<CardDropdown />
-							</div>
-						</div>
+							</CardActions>
+						</CardHeader>
 						<table class="table card-table table-striped">
 							<thead>
 								<tr>
@@ -200,36 +204,36 @@ const operationCurrencies = currencies.slice(0, 20);
 								}
 							</tbody>
 						</table>
-					</div>
+					</Card>
 				</div>
 
 				<div class="col-12 col-lg-7">
-					<div class="card">
-						<div class="card-header">
+					<Card>
+						<CardHeader>
 							<h5 class="card-title mb-0">LTC/BTC</h5>
-							<div class="card-actions">
+							<CardActions>
 								<NavSegmented items={['1m', '5m', '30m', '1h', '1d']} name="timeframe" size="sm" default={2} />
-							</div>
-						</div>
-						<div class="card-body">
+							</CardActions>
+						</CardHeader>
+						<CardBody>
 							<Chart chartId="dashboard-crypto-candlestick" height={28} />
-						</div>
-					</div>
+						</CardBody>
+					</Card>
 				</div>
 			</div>
 		</div>
 		<div class="col-12">
 			<div class="row row-cards">
 				<div class="col-12 col-lg-12 col-xxl-3">
-					<div class="card">
-						<div class="card-header">
+					<Card>
+						<CardHeader>
 							<h5 class="card-title mb-0">Operations</h5>
-							<div class="card-actions">
+							<CardActions>
 								<NavSegmented items={['Buy', 'Sell', 'Send']} name="operations" size="sm" />
-							</div>
-						</div>
+							</CardActions>
+						</CardHeader>
 
-						<div class="card-body">
+						<CardBody>
 							<p>Place new order:</p>
 
 							<div class="input-group mb-3">
@@ -263,18 +267,18 @@ const operationCurrencies = currencies.slice(0, 20);
 							</div>
 
 							<p class="text-muted mb-0 small">The final amount could change depending on current market conditions.</p>
-						</div>
-					</div>
+						</CardBody>
+					</Card>
 				</div>
 
 				<div class="col-12 col-lg-6 col-xxl">
-					<div class="card">
-						<div class="card-header">
+					<Card>
+						<CardHeader>
 							<h5 class="card-title mb-0">Sell Orders</h5>
-							<div class="card-actions">
+							<CardActions>
 								<button class="btn btn-sm">View all</button>
-							</div>
-						</div>
+							</CardActions>
+						</CardHeader>
 						<table class="table card-table table-striped">
 							<thead>
 								<tr>
@@ -295,17 +299,17 @@ const operationCurrencies = currencies.slice(0, 20);
 								}
 							</tbody>
 						</table>
-					</div>
+					</Card>
 				</div>
 
 				<div class="col-12 col-lg-6 col-xxl">
-					<div class="card">
-						<div class="card-header">
+					<Card>
+						<CardHeader>
 							<h5 class="card-title mb-0">Buy Orders</h5>
-							<div class="card-actions">
+							<CardActions>
 								<button class="btn btn-sm">View all</button>
-							</div>
-						</div>
+							</CardActions>
+						</CardHeader>
 						<table class="table card-table table-striped">
 							<thead>
 								<tr>
@@ -326,7 +330,7 @@ const operationCurrencies = currencies.slice(0, 20);
 								}
 							</tbody>
 						</table>
-					</div>
+					</Card>
 				</div>
 			</div>
 		</div>

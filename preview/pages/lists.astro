@@ -1,9 +1,12 @@
 ---
-// Port of preview/pages/lists.html (layout: default)
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
+import Card from '@shared/components/ui/Card.astro';
+import CardHeader from '@shared/components/ui/CardHeader.astro';
 import UsersList from '@shared/components/cards/UsersList.astro';
 import UsersList2 from '@shared/components/cards/UsersList2.astro';
 import UsersListHeaders from '@shared/components/cards/UsersListHeaders.astro';
+import ListGroup from '@shared/components/ui/ListGroup.astro';
+import ListGroupItem from '@shared/components/ui/ListGroupItem.astro';
 ---
 
 <DefaultLayout title="Lists" pageHeader="Lists" pageMenu="base.lists">
@@ -17,20 +20,18 @@ import UsersListHeaders from '@shared/components/cards/UsersListHeaders.astro';
 					<UsersList offset={8} checkbox hover checkedIds={[2, 5, 8]} title="Contacts" />
 				</div>
 				<div class="col-12">
-					<div class="card">
-						<div class="card-header">
-							<h3 class="card-title">Links and buttons</h3>
-						</div>
-						<div class="list-group list-group-flush">
-							<a href="#" class="list-group-item list-group-item-action active" aria-current="true">
+					<Card>
+						<CardHeader title="Links and buttons" />
+						<ListGroup flush>
+							<ListGroupItem as="a" href="#" action active aria-current="true">
 								The current link item
-							</a>
-							<a href="#" class="list-group-item list-group-item-action">A second link item</a>
-							<a href="#" class="list-group-item list-group-item-action">A third link item</a>
-							<a href="#" class="list-group-item list-group-item-action">A fourth link item</a>
-							<a class="list-group-item list-group-item-action disabled">A disabled link item</a>
-						</div>
-					</div>
+							</ListGroupItem>
+							<ListGroupItem as="a" href="#" action>A second link item</ListGroupItem>
+							<ListGroupItem as="a" href="#" action>A third link item</ListGroupItem>
+							<ListGroupItem as="a" href="#" action>A fourth link item</ListGroupItem>
+							<ListGroupItem as="a" action disabled>A disabled link item</ListGroupItem>
+						</ListGroup>
+					</Card>
 				</div>
 			</div>
 		</div>

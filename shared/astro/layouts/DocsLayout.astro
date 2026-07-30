@@ -5,12 +5,13 @@
 import { site } from '@shared/lib/site';
 import libs from '@tabler/core/libs.json';
 import docs from '@shared/data/docs.json';
-import Icon from '@shared/components/Icon.astro';
+import Icon from '@shared/components/ui/Icon.astro';
 import DocsNavbar from '@shared/components/docs/DocsNavbar.astro';
 import DocsMenu from '@shared/components/docs/DocsMenu.astro';
 import DocsToc from '@shared/components/docs/DocsToc.astro';
 import type { TocItem } from '@shared/components/docs/DocsToc.astro';
 import DocsPagination from '@shared/components/docs/DocsPagination.astro';
+import Prose from '@shared/components/ui/Prose.astro';
 
 interface Props {
 	/** front matter: the page's h1 heading */
@@ -200,8 +201,7 @@ const docsLinks = docs.links as DocsLink[];
 					<div class="col bg-docs-gradient">
 						<div class="py-lg-5 ps-lg-5">
 							<div class="py-6 ps-lg-6 p-xxl-6">
-								<div
-									class="prose"
+								<Prose
 									data-bs-spy="scroll"
 									data-bs-target="#toc"
 									data-bs-root-margin="50px 0px -0%"
@@ -256,7 +256,7 @@ const docsLinks = docs.links as DocsLink[];
 											</div>
 										</div>
 									</div>
-								</div>
+								</Prose>
 							</div>
 						</div>
 					</div>

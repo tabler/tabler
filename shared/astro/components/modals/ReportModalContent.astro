@@ -1,7 +1,7 @@
 ---
-// Port parts/modals/report.html + ui/modal/header.html
-import Button from '../Button.astro';
-import InputGroup from '../InputGroup.astro';
+import Button from '../ui/Button.astro';
+import InputGroup from '../ui/InputGroup.astro';
+import FormGroup from '../ui/FormGroup.astro';
 
 const reports = [
 	{ title: 'Simple', description: 'Provide only basic data needed for the report' },
@@ -16,10 +16,9 @@ const visibilityOptions = ['Private', 'Public', 'Hidden'];
 </div>
 
 <div class="modal-body">
-	<div class="mb-3">
-		<label class="form-label">Name</label>
+	<FormGroup label="Name">
 		<input type="text" class="form-control" name="example-text-input" placeholder="Your report name" />
-	</div>
+	</FormGroup>
 
 	<label class="form-label">Report type</label>
 	<div class="form-selectgroup-boxes row mb-3">
@@ -51,14 +50,12 @@ const visibilityOptions = ['Private', 'Public', 'Hidden'];
 
 	<div class="row">
 		<div class="col-lg-8">
-			<div class="mb-3">
-				<label class="form-label">Report url</label>
+			<FormGroup label="Report url">
 				<InputGroup prepend="https://tabler.io/reports/" flat inputClass="ps-0" value="report-01" />
-			</div>
+			</FormGroup>
 		</div>
 		<div class="col-lg-4">
-			<div class="mb-3">
-				<label class="form-label">Visibility</label>
+			<FormGroup label="Visibility">
 				<select class="form-select">
 					{
 						visibilityOptions.map((option, index) => (
@@ -68,7 +65,7 @@ const visibilityOptions = ['Private', 'Public', 'Hidden'];
 						))
 					}
 				</select>
-			</div>
+			</FormGroup>
 		</div>
 	</div>
 </div>
@@ -76,22 +73,19 @@ const visibilityOptions = ['Private', 'Public', 'Hidden'];
 <div class="modal-body">
 	<div class="row">
 		<div class="col-lg-6">
-			<div class="mb-3">
-				<label class="form-label">Client name</label>
+			<FormGroup label="Client name">
 				<input type="text" class="form-control" />
-			</div>
+			</FormGroup>
 		</div>
 		<div class="col-lg-6">
-			<div class="mb-3">
-				<label class="form-label">Reporting period</label>
+			<FormGroup label="Reporting period">
 				<input type="date" class="form-control" />
-			</div>
+			</FormGroup>
 		</div>
 		<div class="col-lg-12">
-			<div>
-				<label class="form-label">Additional information</label>
+			<FormGroup label="Additional information" class="">
 				<textarea class="form-control" rows="3"></textarea>
-			</div>
+			</FormGroup>
 		</div>
 	</div>
 </div>

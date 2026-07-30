@@ -1,12 +1,11 @@
 ---
-// Port of cards/small-stats.html (full parity).
 // Covers: icon / person-id / chart-data (left/right) / small-icon /
 // description-value / trending / button branches.
-import Icon from '../Icon.astro';
+import Icon from '../ui/Icon.astro';
 import Avatar from '../ui/Avatar.astro';
 import ChartSparkline from '../ui/ChartSparkline.astro';
 import Trending from '../ui/Trending.astro';
-import Button from '../Button.astro';
+import Button from '../ui/Button.astro';
 
 interface Props {
 	icon?: string;
@@ -49,7 +48,7 @@ const {
 } = Astro.props;
 
 const chartColor = color ?? 'primary';
-const avatarClass = `${color ? `bg-${color}${lt ? '-lt' : ' text-white'}` : ''} avatar avatar-square`;
+const avatarClass = [color ? `bg-${color}${lt ? '-lt' : ' text-white'}` : '', 'avatar', 'avatar-square'];
 ---
 
 <div class:list={['card card-sm', className]}>
@@ -58,7 +57,7 @@ const avatarClass = `${color ? `bg-${color}${lt ? '-lt' : ' text-white'}` : ''} 
 			{
 				icon ? (
 					<div class="col-auto">
-						<span class={avatarClass}><Icon name={icon} /></span>
+						<span class:list={avatarClass}><Icon name={icon} /></span>
 					</div>
 				) : personId ? (
 					<div class="col-auto">

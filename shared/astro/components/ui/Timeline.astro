@@ -1,9 +1,8 @@
 ---
-// Port of shared/includes/ui/timeline.html.
 // The Friend Requests event loops the first 3 people (ui/avatar.html with
 // status="success"); the New photos event inlines ui/photo.html (img branch,
 // full photos array) for ids 6/7/8 — matching the fixed Liquid arguments.
-import Icon from '../Icon.astro';
+import Icon from './Icon.astro';
 import Avatar from './Avatar.astro';
 import people from '@data/people.json';
 import photos from '@data/photos.json';
@@ -18,7 +17,7 @@ const avatarPeople = (people as { full_name?: string; photo?: string }[]).slice(
 const timelinePhotos = photos as { file: string; title: string }[];
 ---
 
-<ul class={`timeline${simple ? ' timeline-simple' : ''}`}>
+<ul class:list={['timeline', simple && 'timeline-simple']}>
 	<li class="timeline-event">
 		<div class="timeline-event-icon bg-x-lt"><Icon name="brand-x" /></div>
 		<div class="card timeline-event-card">

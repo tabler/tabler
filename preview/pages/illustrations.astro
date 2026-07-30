@@ -1,6 +1,10 @@
 ---
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
-import Icon from '@shared/components/Icon.astro';
+import Icon from '@shared/components/ui/Icon.astro';
+import CardStamp from '@shared/components/ui/CardStamp.astro';
+import Card from '@shared/components/ui/Card.astro';
+import CardBody from '@shared/components/ui/CardBody.astro';
+import Prose from '@shared/components/ui/Prose.astro';
 import freeIllustrations from '@data/free-illustrations.json';
 import illustrationsList from '@data/illustrations.json';
 import siteData from '@data/site.json';
@@ -89,17 +93,17 @@ ${illustrationsJs}
 			<div class="col-12">
 				<div class="row row-cards row-deck g-4">
 					<div class="col-md-7">
-						<div class="card">
-							<div class="card-body d-flex align-items-center">
+						<Card>
+							<CardBody class="d-flex align-items-center">
 								<div id="current-illustration" set:html={withClass(firstIllustration)} />
-							</div>
-						</div>
+							</CardBody>
+						</Card>
 					</div>
 					<div class="col-md-5">
 						<div class="row">
 							<div class="col-12">
-								<div class="card">
-									<div class="card-body">
+								<Card>
+									<CardBody>
 										<div>
 											<div class="form-label">Primary color</div>
 											<div class="row g-2">
@@ -155,8 +159,8 @@ ${illustrationsJs}
 												}
 											</div>
 										</div>
-									</div>
-								</div>
+									</CardBody>
+								</Card>
 							</div>
 						</div>
 					</div>
@@ -171,19 +175,15 @@ ${illustrationsJs}
 
 	<div class="row row-cards">
 		<div class="col-lg-4">
-			<div class="card card-md sticky-top">
-				<div class="card-stamp card-stamp-lg">
-					<div class="card-stamp-icon bg-primary">
-						<Icon name="brand-figma" />
-					</div>
-				</div>
-				<div class="card-body">
+			<Card size="md" class="sticky-top">
+				<CardStamp size="lg" icon="brand-figma" color="primary" />
+				<CardBody>
 					<div class="row align-items-center">
 						<div class="col-10">
 							<h3 class="h1">Tabler Illustrations</h3>
-							<div class="prose text-secondary">
+							<Prose class="text-secondary">
 								Access a wide range of SVG illustrations for various projects. Effortlessly customize any illustration to align perfectly with your chosen color scheme!
-							</div>
+							</Prose>
 							<div class="mt-3">
 								<a href={buyLink} class="btn btn-primary" target="_blank" rel="noopener">
 									<Icon name="download" />
@@ -192,22 +192,22 @@ ${illustrationsJs}
 							</div>
 						</div>
 					</div>
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 		<div class="col-lg-8">
 			<div class="row row-cards">
 				{
 					illustrationsList.map((illustration) => (
 						<div class="col-6 col-md-3">
-							<div class="card">
-								<div class="card-body">
+							<Card>
+								<CardBody>
 									<a href={buyLink} target="_blank">
 										<img src={`./static/illustrations/light/${illustration}.png`} alt={illustration} class="img-light" />
 										<img src={`./static/illustrations/dark/${illustration}.png`} alt={illustration} class="img-dark" />
 									</a>
-								</div>
-							</div>
+								</CardBody>
+							</Card>
 						</div>
 					))
 				}

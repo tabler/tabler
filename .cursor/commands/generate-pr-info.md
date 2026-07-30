@@ -1,0 +1,1 @@
+Generate PR title and description, use ALL changes in current branch vs dev branch. Use simple english, title should be no longer than 70 chars. Generate title and description in markdown. If issue numer are in branch name add reference in PR to this issue on Github.

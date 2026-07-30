@@ -1,10 +1,10 @@
 ---
-// Port of preview/pages/emails.html.
 // Masonry auto-inits from the data-masonry attribute (page-lib, no init script,
 // like cards-masonry.astro); fslightbox is a pure page-lib (no init script).
 // The show.bs.modal handler is captured via {% capture_script %} → addPageScript.
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
-import Icon from '@shared/components/Icon.astro';
+import CardStamp from '@shared/components/ui/CardStamp.astro';
+import Prose from '@shared/components/ui/Prose.astro';
 import { site } from '@shared/lib/site';
 import { addPageScript } from '@shared/lib/page-scripts';
 import emails from '@data/emails.json';
@@ -40,18 +40,14 @@ addPageScript(`<script>
 	<div class="row row-cards">
 		<div class="col-12">
 			<div class="card card-md">
-				<div class="card-stamp card-stamp-lg">
-					<div class="card-stamp-icon bg-primary">
-						<Icon name="mail" />
-					</div>
-				</div>
+				<CardStamp size="lg" icon="mail" color="primary" />
 				<div class="card-body">
 					<div class="row align-items-center">
 						<div class="col-10">
 							<h3 class="h1">Tabler Emails</h3>
-							<div class="prose text-secondary fs-3">
+							<Prose class="text-secondary fs-3">
 								{emailEntries.length} eye-catching, customizable and responsive email templates to improve your email communication. No coding skills needed.
-							</div>
+							</Prose>
 							<div class="mt-3">
 								<a href={site.emails.buy_link} class="btn btn-primary" target="_blank">Buy all emails for {site.emails.price}</a>
 							</div>
@@ -93,10 +89,10 @@ addPageScript(`<script>
 						</div>
 						<div class="col-6">
 							<div class="p-7">
-								<div class="prose">
+								<Prose>
 									<h3 data-email-title></h3>
 									<p data-email-description></p>
-								</div>
+								</Prose>
 
 								<div class="mt-6">
 									<a href={site.emails.buy_link} class="btn btn-primary w-100" target="_blank">Buy {site.emails.count} emails for {site.emails.price}</a>

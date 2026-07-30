@@ -8,12 +8,13 @@
 //       trailing literal id wins).
 // TODO: ui/form/check.html is inlined only in the empty+checked (switch)
 //       variants used by footer-elements; other check params are not ported.
-import Icon from '../Icon.astro';
-import Avatar from '../ui/Avatar.astro';
+
+import CardSubtitle from '../ui/CardSubtitle.astro';
+import Icon from '../ui/Icon.astro';
+import AvatarList from '../ui/AvatarList.astro';
 import Empty from '../ui/Empty.astro';
 import Progress from '../ui/Progress.astro';
 import photos from '@data/photos.json';
-import people from '@data/people.json';
 
 interface Props {
 	link?: boolean;
@@ -81,8 +82,6 @@ const classes = [
 	inactive && 'card-inactive',
 	className,
 ]
-	.filter(Boolean)
-	.join(' ');
 
 // footer-elements parsing — mirrors the Liquid loop, including the fact that
 // `right` is never reset once set (Liquid assign leaks across iterations).
@@ -101,10 +100,9 @@ const hasFooter = footer || footerButton || footerButtons || footerElements;
 
 const imgTopPhoto = (photos as { file: string; title: string }[])[7];
 const imgBottomPhoto = (photos as { file: string; title: string }[])[11];
-const avatarPeople = (people as { full_name?: string; photo?: string }[]).slice(0, 5);
 ---
 
-<Element href={link ? '#' : undefined} class={classes}>
+<Element href={link ? '#' : undefined} class:list={classes}>
 	{
 		empty ? (
 			<Empty illustration="not-found" height={160} />
@@ -163,7 +161,7 @@ const avatarPeople = (people as { full_name?: string; photo?: string }[]).slice(
 				{alert && <div class={`card-alert alert alert-${alertType} mb-0`} set:html={alert} />}
 				<div class="card-body">
 					{title && <h3 class="card-title" set:html={title} />}
-					{subtitle && <div class="card-subtitle">Card subtitle</div>}
+					{subtitle && <CardSubtitle as="div">Card subtitle</CardSubtitle>}
 
 					{body ? (
 						<p class="text-secondary" set:html={body} />
@@ -200,12 +198,7 @@ const avatarPeople = (people as { full_name?: string; photo?: string }[]).slice(
 													<input class="form-check-input position-static" type="checkbox" checked />
 												</label>
 											) : el === 'avatars' ? (
-												<div class="avatar-list avatar-list-stacked">
-													{avatarPeople.map((person) => (
-														<Avatar person={person} size="sm" />
-													))}
-													<Avatar placeholder="+3" size="sm" />
-												</div>
+												<AvatarList stacked={true} size="sm" text="+3" />
 											) : el === 'more' ? (
 												<a href="#">More information</a>
 											) : null}

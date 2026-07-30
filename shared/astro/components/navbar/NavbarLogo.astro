@@ -1,5 +1,4 @@
 ---
-// Port of layout/navbar-logo.html.
 // TODO: unported Liquid params: prefix (the "sidebar-brand" variant, used only
 // in layouts with a sidebar), breakpoint (assigned in Liquid but unused in the
 // markup), href ("/{href}" appended to page|relative — no ported page passes
@@ -25,7 +24,7 @@ const {
 	showTitle = false,
 } = Astro.props;
 
-const brandClasses = ['navbar-brand navbar-brand-autodark', className].filter(Boolean).join(' ');
+const brandClasses = ['navbar-brand navbar-brand-autodark', className];
 const logoClass = `navbar-brand-image${showTitle ? ' me-3' : ''}`;
 
 const logoMark =
@@ -42,7 +41,7 @@ const logoSvg = smallLogo
 {
 	header ? (
 		<Fragment>
-			<!-- BEGIN NAVBAR LOGO --><div class={brandClasses}>
+			<!-- BEGIN NAVBAR LOGO --><div class:list={brandClasses}>
 				<a href={href} aria-label={site.title}>{!hideLogo && <Fragment set:html={logoSvg} />}{showTitle && 'Dashboard'}</a>
 			</div><!-- END NAVBAR LOGO -->
 		</Fragment>
@@ -51,7 +50,7 @@ const logoSvg = smallLogo
 			<!-- BEGIN NAVBAR LOGO --><a
 				href={href}
 				aria-label={site.title}
-				class={brandClasses}
+				class:list={brandClasses}
 				>{!hideLogo && <Fragment set:html={logoSvg} />}{showTitle && 'Dashboard'}</a><!-- END NAVBAR LOGO -->
 		</Fragment>
 	)

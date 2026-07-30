@@ -1,9 +1,11 @@
 ---
-// Port of ui/advanced-table.html
-import Icon from '../Icon.astro';
+
+import BadgesList from './BadgesList.astro';
+import Icon from './Icon.astro';
 import { liquidLongDate } from '@shared/lib/liquid-date';
 import Avatar from './Avatar.astro';
-import Button from '../Button.astro';
+import Button from './Button.astro';
+import ButtonList from './ButtonList.astro';
 import Pagination from './Pagination.astro';
 import people from '@data/people.json';
 import tableProperties from '@data/table-properties.json';
@@ -42,7 +44,6 @@ function randomDate(x: number): Date {
 	const end = new Date('2024-12-30').getTime() / 1000;
 	return new Date(randomNumber(x, start, end) * 1000);
 }
-
 
 const rows = (people as Record<string, any>[]).map((person, i) => {
 	const index = i + 1;
@@ -112,7 +113,7 @@ const script = `
 					</p>
 				</div>
 				<div class="col-md-auto col-sm-12">
-					<div class="ms-auto d-flex flex-wrap btn-list">
+					<ButtonList class="ms-auto d-flex flex-wrap">
 						<div class="input-group input-group-flat w-auto">
 							<span class="input-group-text">
 								<Icon name="search" />
@@ -137,7 +138,7 @@ const script = `
 							</div>
 						</div>
 						<Button />
-					</div>
+					</ButtonList>
 				</div>
 			</div>
 		</div>
@@ -184,11 +185,11 @@ const script = `
 									{date}
 								</td>
 								<td class={headers[4]['data-sort']}>
-									<div class="badges-list">
+									<BadgesList>
 										{itemTags.map((tag) => (
 											<span class="badge">{tag}</span>
 										))}
-									</div>
+									</BadgesList>
 								</td>
 								<td class={`${headers[5]['data-sort']} py-0`}>
 									<span class="on-unchecked">

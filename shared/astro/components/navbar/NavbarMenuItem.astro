@@ -1,7 +1,7 @@
 ---
 // Level 2 (and 3) of the menu from layout/navbar-menu.html — a dropdown-item
 // entry, optionally with a nested dropend.
-import Icon from '../Icon.astro';
+import Icon from '../ui/Icon.astro';
 
 interface Level3 {
 	title: string;
@@ -37,8 +37,6 @@ const itemClasses = [
 	active && 'active',
 	item.color && `text-${item.color}`,
 ]
-	.filter(Boolean)
-	.join(' ');
 ---
 
 {
@@ -73,7 +71,7 @@ const itemClasses = [
 		</div>
 	) : (
 		<a
-			class={itemClasses}
+			class:list={itemClasses}
 			href={relative(item.url)}
 			target={isExternal(item.url) ? '_blank' : undefined}
 			rel={isExternal(item.url) ? 'noopener' : undefined}

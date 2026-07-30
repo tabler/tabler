@@ -1,5 +1,4 @@
 ---
-// Port of marketing/sections/companies.html.
 import SectionDivider from '../SectionDivider.astro';
 import Baremetrics from '../brands/Baremetrics.astro';
 import Cgi from '../brands/Cgi.astro';
@@ -18,11 +17,9 @@ interface Props {
 const { background, class: className, divider } = Astro.props;
 
 const sectionClass = ['section', background && `section-${background}`, className]
-	.filter(Boolean)
-	.join(' ');
 ---
 
-<section class={sectionClass}>
+<section class:list={sectionClass}>
 	<SectionDivider divider={divider} />
 	<div class="container">
 		<div class="section-header mb-6">
