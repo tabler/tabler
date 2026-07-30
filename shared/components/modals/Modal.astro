@@ -1,9 +1,5 @@
 ---
-// registers the modal in page-modals, and BaseLayout emits it at the end of <body>
-// (like {% modals %}).
-// NOTE: registration must be synchronous (a promise, not an awaited string) —
-// see the comment in src/lib/page-modals.ts.
-import { addPageModal } from '@shared/lib/page-modals';
+import CaptureModal from './CaptureModal.astro';
 
 interface Props {
 	modalId?: string;
@@ -34,19 +30,23 @@ const dialogClass = [
 ]
 	.filter(Boolean)
 	.join(' ');
+---
 
-addPageModal(
-	Astro.slots.render('default').then(
-		(content) =>
-			`<!-- BEGIN MODAL -->
-<div class="${modalClass}"${style ? ` style="${style}"` : ''} id="modal-${modalId}" tabindex="-1" role="dialog" aria-hidden="${show ? 'false' : 'true'}">
-	<div class="${dialogClass}" role="document">
-		<div class="modal-content">
-${content}
+<CaptureModal>
+	<!-- BEGIN MODAL -->
+	<div
+		class={modalClass}
+		style={style}
+		id={`modal-${modalId}`}
+		tabindex="-1"
+		role="dialog"
+		aria-hidden={show ? 'false' : 'true'}
+	>
+		<div class={dialogClass} role="document">
+			<div class="modal-content">
+				<slot />
+			</div>
 		</div>
 	</div>
-</div>
-<!-- END MODAL -->`,
-	),
-);
----
+	<!-- END MODAL -->
+</CaptureModal>
