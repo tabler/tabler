@@ -3,49 +3,8 @@ import Icon from '@ui/Icon.astro';
 import Avatar from '@ui/Avatar.astro';
 import CardTitle from '@ui/CardTitle.astro';
 import tasksList from '@data/tasks-list.json';
-
-// Equivalent of the random_number / random_date filters from shared/e11ty/filters.mjs
-// (deterministic pseudo-random depending on the loop index).
-function randomNumber(x: number, min = 0, max = 100, round = 0): number {
-	let value =
-		((x * x * Math.PI * Math.E * (max + 1) * (Math.sin(x) / Math.cos(x * x))) % (max + 1 - min)) + min;
-
-	value = value > max ? max : value;
-	value = value < min ? min : value;
-
-	if (round !== 0) {
-		value = parseFloat(value.toFixed(round));
-	} else {
-		value = Math.floor(value);
-	}
-
-	return value;
-}
-
-function randomDate(x: number): Date {
-	const start = new Date('2024-01-01').getTime() / 1000;
-	const end = new Date('2024-12-30').getTime() / 1000;
-
-	return new Date(randomNumber(x, start, end) * 1000);
-}
-
-// equivalent of the Liquid date: '%B %d, %Y'
-const months = [
-	'January',
-	'February',
-	'March',
-	'April',
-	'May',
-	'June',
-	'July',
-	'August',
-	'September',
-	'October',
-	'November',
-	'December',
-];
-const formatDate = (date: Date) =>
-	`${months[date.getMonth()]} ${String(date.getDate()).padStart(2, '0')}, ${date.getFullYear()}`;
+import { randomNumber, randomDate } from '@shared/lib/pseudo-random';
+import { formatLongDate } from '@shared/lib/date-format';
 ---
 
 <div class="card">
@@ -66,7 +25,7 @@ const formatDate = (date: Date) =>
 						</td>
 						<td class="text-nowrap text-secondary">
 							<Icon name="calendar" />
-							{formatDate(randomDate(index))}
+							{formatLongDate(randomDate(index))}
 						</td>
 						<td class="text-nowrap">
 							<a href="#" class="text-secondary">

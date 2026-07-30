@@ -4,6 +4,7 @@
 // in Astro they are passed explicitly as the `photo` and `index` props.
 import Avatar from '@ui/Avatar.astro';
 import Icon from '@ui/Icon.astro';
+import { randomNumber, timeagoLabel } from '@shared/lib/pseudo-random';
 
 interface Photo {
 	file: string;
@@ -26,26 +27,6 @@ interface Props {
 
 const { photo, person, index, hideLikes } = Astro.props;
 
-// Equivalent of the random_number filter from shared/e11ty/filters.mjs (deterministic).
-function randomNumber(x: number, min = 0, max = 100): number {
-	let value =
-		((x * x * Math.PI * Math.E * (max + 1) * (Math.sin(x) / Math.cos(x * x))) % (max + 1 - min)) +
-		min;
-
-	value = value > max ? max : value;
-	value = value < min ? min : value;
-
-	return Math.floor(value);
-}
-
-// Equivalent of `forloop.index | random_date_ago: 10 | timeago` — a date N days ago
-// (N = randomNumber(index, 0, 10)) formatted by timeago gives "now" / "N day(s) ago".
-function timeagoLabel(index: number): string {
-	const days = randomNumber(index, 0, 10);
-	if (days === 0) return 'now';
-	return `${days} day${days > 1 ? 's' : ''} ago`;
-}
-
 // Liquid: {% if forloop.index > 2 and forloop.index < 9 or forloop.index == 10 %}
 const heartClass = (index > 2 && index < 9) || index === 10 ? 'icon-filled text-red' : undefined;
 ---
@@ -57,7 +38,7 @@ const heartClass = (index > 2 && index < 9) || index === 10 ? 'icon-filled text-
 			<Avatar person={person} class="me-3 rounded" />
 			<div>
 				<div>{person.full_name}</div>
-				<div class="text-secondary">{timeagoLabel(index)}</div>
+				<div class="text-secondary">{timeagoLabel(index, 10)}</div>
 			</div>
 			{
 				!hideLikes && (

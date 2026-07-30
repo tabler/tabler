@@ -4,6 +4,7 @@ import ChartSparkline from '@ui/ChartSparkline.astro';
 import Icon from '@ui/Icon.astro';
 import Avatar from '@ui/Avatar.astro';
 import commits from '@data/commits.json';
+import { formatCommitDate } from '@shared/lib/date-format';
 
 interface Commit {
 	hash: string;
@@ -12,12 +13,6 @@ interface Commit {
 	date: string;
 	description: string;
 }
-
-// Equivalent of the Liquid date_to_string filter ("Thu Nov 28 08:48:33 2025 +0100" → "28 Nov 2025")
-const dateToString = (date: string) => {
-	const m = date.match(/^\w+ (\w+) (\d+) [\d:]+ (\d+)/);
-	return m ? `${m[2]} ${m[1]} ${m[3]}` : date;
-};
 
 const rows = (commits as Commit[]).slice(0, 5);
 ---
@@ -59,7 +54,7 @@ const rows = (commits as Commit[]).slice(0, 5);
 							{commit.description}
 						</div>
 					</td>
-					<td class="text-nowrap text-secondary">{dateToString(commit.date)}</td>
+					<td class="text-nowrap text-secondary">{formatCommitDate(commit.date)}</td>
 				</tr>
 			))}
 			</tbody>

@@ -2,6 +2,7 @@
 // Equivalent of ui/avatar.html
 import Icon from './Icon.astro';
 import people from '@data/people.json';
+import { firstLetters } from '@shared/lib/string-format';
 
 interface Person {
 	full_name?: string;
@@ -54,9 +55,6 @@ const {
 	base = '.',
 	...rest
 } = Astro.props;
-
-// equivalent of the first_letters filter
-const firstLetters = (s: string) => (s || '').split(' ').map((w) => w.charAt(0)).join('');
 
 let src = srcProp;
 let placeholder = placeholderProp;

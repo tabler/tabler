@@ -10,15 +10,13 @@ import CardBody from '@ui/CardBody.astro';
 import CardTitle from '@ui/CardTitle.astro';
 import people from '@data/people.json';
 import { site } from '@shared/lib/site';
+import { firstLetters } from '@shared/lib/string-format';
 
 const iconIcons = ['user', 'settings', 'car', 'balloon', 'users', 'users-group', 'apps', 'ghost'];
 
 // Liquid: {% for color in site.colors %} — the iterated keys match site.themeColors
 // (blue..cyan), confirmed against the reference output.
 const colors = site.themeColors;
-
-// equivalent of the first_letters filter
-const firstLetters = (s: string) => s.split(' ').map((w) => w.charAt(0)).join('');
 
 const people8 = people.slice(0, 8);
 const people5 = people.slice(0, 5);

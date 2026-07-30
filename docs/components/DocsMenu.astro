@@ -6,6 +6,7 @@
 
 import Subheader from '@ui/Subheader.astro';
 import docs from '@data/docs.json';
+import { pathSlug as slug } from '@shared/lib/string-format';
 
 interface MenuLeaf {
 	title: string;
@@ -28,9 +29,6 @@ interface Props {
 
 const { url } = Astro.props;
 const menu = docs.menu as MenuSection[];
-
-// Equivalent of `level2.url | slug`: "/ui/getting-started/" -> "uigetting-started".
-const slug = (u: string) => u.split('/').filter(Boolean).join('');
 ---
 
 <nav class="space-y space-y-5" id="menu">

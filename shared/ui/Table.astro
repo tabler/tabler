@@ -4,6 +4,7 @@ import Button from './Button.astro';
 import ButtonList from './ButtonList.astro';
 import DropdownMenu from './DropdownMenu.astro';
 import people from '@data/people.json';
+import { randomNumber } from '@shared/lib/pseudo-random';
 
 interface Props {
 	card?: boolean;
@@ -28,15 +29,6 @@ const {
 } = Astro.props;
 
 const roles = ['User', 'Admin', 'Owner'];
-
-// Equivalent of the random_number filter from shared/e11ty/filters.mjs (deterministic).
-function randomNumber(x: number, min = 0, max = 100): number {
-	let value =
-		((x * x * Math.PI * Math.E * (max + 1) * (Math.sin(x) / Math.cos(x * x))) % (max + 1 - min)) + min;
-	value = value > max ? max : value;
-	value = value < min ? min : value;
-	return Math.floor(value);
-}
 
 // {% for person in people limit: limit offset: include.offset %}
 const start = offset ?? 0;
