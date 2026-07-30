@@ -1,0 +1,46 @@
+---
+import Button from '../ui/Button.astro';
+import ButtonList from '../ui/ButtonList.astro';
+import Icon from '../ui/Icon.astro';
+import Modal from '../modals/Modal.astro';
+import ReportModalContent from '../modals/ReportModalContent.astro';
+
+interface Props {
+	/** layout-navbar-overlap && layout-navbar-dark → the "New view" button is color="dark" */
+	dark?: boolean;
+}
+
+const { dark } = Astro.props;
+---
+
+<ButtonList>
+	<span class="d-none d-sm-inline">
+		<Button text="New view" color={dark ? 'dark' : undefined} />
+	</span>
+	{/* Button.astro doesn't support modal-id (data-bs-toggle/target), so these two
+	    buttons are reproduced directly from the ui/button.html output. */}
+	<a
+		href="#"
+		class="btn btn-primary d-none d-sm-inline-block"
+		data-bs-toggle="modal"
+		data-bs-target="#modal-report"
+	>
+		<Icon name="plus" />
+		Create new report
+	</a>
+	<a
+		href="#"
+		class="btn btn-primary d-sm-none btn-icon"
+		data-bs-toggle="modal"
+		data-bs-target="#modal-report"
+		aria-label="Create new report"
+	>
+		<Icon name="plus" />
+	</a>
+</ButtonList>
+
+<!-- BEGIN MODAL -->
+<Modal modalId="report" size="lg" top>
+	<ReportModalContent />
+</Modal>
+<!-- END MODAL -->

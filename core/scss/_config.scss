@@ -1,8 +1,11 @@
-@import 'mixins';
-@import 'variables';
-@import 'variables-dark';
-@import 'maps';
-@import 'utilities';
-
-@import 'bootstrap-config';
-@import 'bootstrap-override';
+// Central hub of Tabler's Sass module graph.
+//
+// Forwards are ordered leaves-first (dependency order) so that a future
+// `@use 'config' with (...)` configures each module on its first load.
+// None of these modules emit CSS, so the order has no effect on output.
+@forward 'settings';
+@forward 'variables';
+@forward 'variables-dark';
+@forward 'maps';
+@forward 'mixins';
+@forward 'utilities';

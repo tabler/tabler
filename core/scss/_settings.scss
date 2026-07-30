@@ -1,0 +1,33 @@
+// Foundational settings used by both functions and variables.
+//
+// This is the lowest layer of the Sass module graph. Variables live here
+// (instead of `_variables.scss`) when they are referenced by functions or
+// mixins in `mixins/` — keeping them in `_variables.scss` would create a
+// circular `@use` between variables and functions. They are re-exported
+// through `_config.scss`, so overriding them works exactly as before.
+
+// Prefixes
+$prefix: 'tblr-' !default;
+
+// Characters which are escaped by the escape-svg function
+$escaped-characters: (('<', '%3c'), ('>', '%3e'), ('#', '%23'), ('(', '%28'), (')', '%29')) !default;
+
+$black: #000000 !default;
+$white: #ffffff !default;
+
+// The contrast ratio to reach against white, to determine if color changes from "light" to "dark".
+$min-contrast-ratio: 2 !default;
+
+// Customize the light and dark text colors for use in our color contrast function.
+$color-contrast-dark: $black !default;
+$color-contrast-light: $white !default;
+
+// Grid breakpoints
+$grid-breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+  xxl: 1400px,
+) !default;

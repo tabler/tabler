@@ -1,0 +1,79 @@
+---
+// The ui/svg.html placeholder (width=500 height=400 border=true) is inlined,
+// and ui/shape.html (size="md") as <div class="shape shape-md"><Icon /></div>.
+import SectionDivider from '../SectionDivider.astro';
+import Icon from '../../ui/Icon.astro';
+
+interface Props {
+	background?: string;
+	class?: string;
+	divider?: string;
+}
+
+const { background, class: className, divider } = Astro.props;
+
+const sectionClass = ['section', background && `section-${background}`, className]
+---
+
+<section class:list={sectionClass}>
+	<SectionDivider divider={divider} />
+	<div class="container">
+		<div class="section-header">
+			<h2 class="section-title">Everything you need to deploy your app</h2>
+			<div class="section-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</div>
+		</div>
+
+		<div class="row g-lg-10">
+			<div class="col-lg-6 mb-3 mb-lg-0">
+				<svg xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none" width="500" height="400" viewBox="0 0 500 400" fill="transparent" stroke="var(--tblr-border-color, #b8cef1)" style="width: 100%; height: auto">
+					<rect x=".5" y=".5" width="499" height="399" rx="2"></rect>
+					<line x1="0" y1="0" x2="500" y2="400"></line>
+					<line x1="0" y1="400" x2="500" y2="0"></line>
+				</svg>
+			</div>
+			<div class="col-lg-6">
+				<div class="space-y-6">
+					<div>
+						<div class="row">
+							<div class="col-auto">
+								<div class="shape shape-md"><Icon name="tools" /></div>
+							</div>
+							<div class="col">
+								<h3 class="h2 mb-2">Designed with users in mind</h3>
+								<p class="text-secondary m-0">
+									Tabler is fully responsive and compatible with all modern browsers. Thanks to its modern, user-friendly design you can create a fully functional interface that users will love. Every UI element has been created with
+									attention to detail to make your interface beautiful!
+								</p>
+							</div>
+						</div>
+					</div>
+					<div>
+						<div class="row">
+							<div class="col-auto">
+								<div class="shape shape-md"><Icon name="brand-bootstrap" /></div>
+							</div>
+							<div class="col">
+								<h3 class="h2 mb-2">Built for developers</h3>
+								<p class="text-secondary m-0">
+									Having in mind what it takes to write high-quality code, we want to help you speed up the development process and keep your code clean. Based on Bootstrap 5, Tabler is a cutting-edge solution, compatible with all modern
+									browsers and fully responsive.
+								</p>
+							</div>
+						</div>
+					</div>
+					<div>
+						<div class="row">
+							<div class="col-auto">
+								<div class="shape shape-md"><Icon name="paint" /></div>
+							</div>
+							<div class="col">
+								<h3 class="h2 mb-2">Fully customizable</h3>
+								<p class="text-secondary m-0">You can easily customize the UI elements to make them fit the needs of your project. And don’t worry if you don’t have much experience - Tabler is easy to get started!</p>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</section>

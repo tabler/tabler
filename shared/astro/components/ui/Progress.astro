@@ -1,0 +1,81 @@
+---
+// Equivalent of ui/progress.html
+interface Props {
+	value?: number | string;
+	values?: string;
+	color?: string;
+	colors?: string;
+	size?: string;
+	class?: string;
+	width?: string;
+	id?: string;
+	indeterminate?: boolean;
+	striped?: boolean;
+	animated?: boolean;
+	showValue?: boolean;
+}
+
+const {
+	value,
+	values,
+	color,
+	colors: colorsProp,
+	size,
+	class: className,
+	width,
+	id,
+	indeterminate,
+	striped,
+	animated,
+	showValue,
+} = Astro.props;
+
+const percentage =
+	value !== undefined && value !== null && `${value}` !== ''
+		? `${value}`.split('%').join('')
+		: '38';
+
+const colors = (colorsProp ?? color ?? 'blue,red,green,yellow,dark').split(',');
+const valueList = values !== undefined ? values.split(',') : undefined;
+
+const classes = [
+	'progress',
+	size && `progress-${size}`,
+	className,
+]
+---
+
+<div class:list={classes} style={width ? `width: ${width}` : undefined} id={id}>
+	{
+		indeterminate ? (
+			<div class={`progress-bar progress-bar-indeterminate${color ? ` bg-${color}` : ''}`} />
+		) : valueList ? (
+			valueList.map((v, i) => (
+				<div
+					class={`progress-bar bg-${colors[i] ?? ''}`}
+					style={`width: ${v}%`}
+					role="progressbar"
+					aria-valuenow={v}
+					aria-valuemin="0"
+					aria-valuemax="100"
+				/>
+			))
+		) : (
+			<div
+				class={`progress-bar${color ? ` bg-${color}` : ''}${striped ? ` progress-bar-striped${animated ? ' progress-bar-animated' : ''}` : ''}`}
+				style={`width: ${percentage}%`}
+				role="progressbar"
+				aria-valuenow={percentage}
+				aria-valuemin="0"
+				aria-valuemax="100"
+				aria-label={`${percentage}% Complete`}
+			>
+				{showValue ? (
+					`${percentage}%`
+				) : (
+					<span class="visually-hidden">{percentage}% Complete</span>
+				)}
+			</div>
+		)
+	}
+</div>

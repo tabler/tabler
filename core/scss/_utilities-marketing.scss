@@ -1,8 +1,13 @@
 @use 'sass:map';
 
-$negative-spacers-extra: if($enable-negative-margins, negativify-map(map.merge($spacers, $spacers-extra)), null);
+@use 'config' as *;
 
-$utilities: (
+$negative-spacers-extra: if(sass($enable-negative-margins): negativify-map(map.merge($spacers, $spacers-extra)); else: null);
+
+// Named differently from config's `$utilities`: with `@use 'config' as *`,
+// assigning to `$utilities` would overwrite the config module's variable
+// instead of declaring a local one.
+$marketing-utilities: (
   // Margin utilities
   'margin': (
       responsive: true,

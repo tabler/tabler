@@ -1,6 +1,10 @@
 // stylelint-disable declaration-no-important
 
-@each $size-name, $size in map_merge($spacers, $size-spacers) {
+@use 'sass:map';
+
+@use '../config' as *;
+
+@each $size-name, $size in map.merge($spacers, $size-spacers) {
   .w-#{$size-name} {
     width: $size !important;
   }

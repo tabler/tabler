@@ -1,0 +1,23 @@
+---
+interface Props {
+	target?: string;
+}
+
+const { target } = Astro.props;
+
+const ariaLabel = target === 'sidebar-menu' ? 'Toggle sidebar navigation' : 'Toggle primary navigation';
+---
+
+<!-- BEGIN NAVBAR TOGGLER -->
+<button
+	class="navbar-toggler"
+	type="button"
+	data-bs-toggle="collapse"
+	data-bs-target={target ? `#${target}` : undefined}
+	aria-controls={target ? target : undefined}
+	aria-expanded="false"
+	aria-label={ariaLabel}
+>
+	<span class="navbar-toggler-icon"></span>
+</button>
+<!-- END NAVBAR TOGGLER -->

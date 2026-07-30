@@ -1,0 +1,14 @@
+---
+// Equivalent of ui/flag.html
+interface Props {
+	flag?: string;
+	size?: string;
+	class?: string;
+}
+
+const { flag = 'pl', size, class: className } = Astro.props;
+
+const classes = ['flag', size && `flag-${size}`, `flag-country-${flag.toLowerCase()}`, className];
+---
+
+<span class:list={classes}></span>

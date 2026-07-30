@@ -1,0 +1,49 @@
+---
+// dark=layout-sidebar-dark, end=layout-sidebar-end,
+// transparent=layout-navbar-transparent, breakpoint="lg").
+//
+// TODO: unported Liquid params (unused by the ported pages):
+// - background / background-color, class, hide-brand,
+//   hide-username / person-id (passed down to navbar-side).
+import NavbarToggler from './NavbarToggler.astro';
+import NavbarLogo from './NavbarLogo.astro';
+import NavbarSide from './NavbarSide.astro';
+import NavbarMenu from './NavbarMenu.astro';
+
+interface Props {
+	dark?: boolean;
+	breakpoint?: string;
+	/** layout-sidebar-end — navbar-end class */
+	end?: boolean;
+	/** layout-navbar-transparent — navbar-transparent class */
+	transparent?: boolean;
+	/** equivalent of the page-menu front matter (active menu entry), e.g. "layout.vertical" */
+	pageMenu?: string;
+}
+
+const { dark = false, breakpoint = 'lg', end = false, transparent = false, pageMenu } = Astro.props;
+
+const asideClass = [
+	'navbar navbar-vertical',
+	end && 'navbar-end',
+	`navbar-expand-${breakpoint}`,
+	transparent && 'navbar-transparent',
+]
+	.filter(Boolean)
+	.join(' ');
+---
+
+<aside class={asideClass} data-bs-theme={dark ? 'dark' : undefined}>
+	<div class="container-fluid">
+		<NavbarToggler target="sidebar-menu" />
+
+		<NavbarLogo header />
+
+		{/* sidebar.html passes no show-* flags → only the Sponsor button renders */}
+		<NavbarSide class="d-lg-none" breakpoint={breakpoint} />
+
+		<div class="collapse navbar-collapse" id="sidebar-menu">
+			<NavbarMenu autoOpen class="pt-lg-3" keepOpen pageMenu={pageMenu} />
+		</div>
+	</div>
+</aside>

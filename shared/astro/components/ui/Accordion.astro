@@ -1,0 +1,66 @@
+---
+import Icon from './Icon.astro';
+import questions from '@data/questions.json';
+
+interface Props {
+	count?: number;
+	id?: string;
+	/** toggle-icon — when set, the toggle gets accordion-button-toggle-plus */
+	toggleIcon?: string;
+	/** type — comma-separated list, each becomes accordion-{type} */
+	type?: string;
+	/** show-icon — renders the accordion-button-icon (link icon) */
+	showIcon?: boolean;
+}
+
+const { count = 4, id = 'default', toggleIcon, type = '', showIcon } = Astro.props;
+
+const resolvedToggleIcon = toggleIcon ?? 'chevron-down';
+const hasToggleIcon = toggleIcon !== undefined;
+const types = type ? type.split(',') : [];
+
+const items = questions.slice(0, count);
+
+const accordionClasses = ['accordion', ...types.map((t) => `accordion-${t}`)].join(' ');
+---
+
+<div class={accordionClasses} id={`accordion-${id}`}>
+	{
+		items.map((question, i) => {
+			const index = i + 1;
+			const isFirst = index === 1;
+			return (
+				<div class="accordion-item">
+					<div class="accordion-header">
+						<button
+							class={`accordion-button${isFirst ? '' : ' collapsed'}`}
+							type="button"
+							data-bs-toggle="collapse"
+							data-bs-target={`#collapse-${index}-${id}`}
+							aria-expanded={isFirst ? 'true' : 'false'}
+						>
+							{showIcon && (
+								<div class="accordion-button-icon">
+									<Icon name="link" />
+								</div>
+							)}
+
+							{question.question}
+
+							<div class={`accordion-button-toggle${hasToggleIcon ? ' accordion-button-toggle-plus' : ''}`}>
+								<Icon name={resolvedToggleIcon} />
+							</div>
+						</button>
+					</div>
+					<div
+						id={`collapse-${index}-${id}`}
+						class={`accordion-collapse collapse${isFirst ? ' show' : ''}`}
+						data-bs-parent={`#accordion-${id}`}
+					>
+						<div class="accordion-body">{question.answer}</div>
+					</div>
+				</div>
+			);
+		})
+	}
+</div>

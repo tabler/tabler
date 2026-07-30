@@ -1,0 +1,44 @@
+---
+import Avatar from '../ui/Avatar.astro';
+import AvatarList from '../ui/AvatarList.astro';
+import Progress from '../ui/Progress.astro';
+
+interface Props {
+	title?: string;
+	date?: string;
+	stageColor?: string;
+	stage?: string;
+	projectColor?: string;
+	percentage?: number | string;
+	percentageColor?: string;
+	avatarOffset?: number;
+	avatarLimit?: number;
+}
+
+const {
+	title = 'New website',
+	date = '28 Aug 2019',
+	stageColor = 'green',
+	stage = 'Waiting',
+	projectColor,
+	percentage,
+	percentageColor,
+	avatarOffset,
+	avatarLimit,
+} = Astro.props;
+---
+
+<div class="card">
+	<div class="card-body p-4 py-5 text-center">
+		<Avatar size="xl" placeholder="W" class="mb-4" color={projectColor} />
+		<h3 class="mb-0">{title}</h3>
+		<p class="text-secondary">Due to: {date}</p>
+		<p class="mb-3">
+			<span class={`badge bg-${stageColor}-lt`}>{stage}</span>
+		</p>
+		<div>
+			<AvatarList stacked offset={avatarOffset} limit={avatarLimit} />
+		</div>
+	</div>
+	<Progress class="card-progress" value={percentage} color={percentageColor} />
+</div>

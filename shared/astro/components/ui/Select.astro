@@ -1,0 +1,167 @@
+---
+// Renders a <select id="select-{id}"> populated from @data/selects.json (+ people)
+// and registers a TomSelect init <script> via addPageScript (the include's
+// {% capture_script %}). Registration is synchronous — see src/lib/page-scripts.ts.
+// The reference build is `environment == 'development'`, so the init assigns into
+// window.tabler_select[...]. Note: tom-select is NOT in this page's libs, but the
+// capture_script is still emitted (mirrors Liquid).
+// TODO: optgroup / flag / label indicator branches (unused on the modals page).
+import selects from '@data/selects.json';
+import people from '@data/people.json';
+import { addPageScript } from '@shared/lib/page-scripts';
+import InlineScript from '@shared/components/InlineScript.astro';
+
+interface Props {
+	id?: string;
+	key?: string;
+	value?: string;
+	class?: string;
+	state?: string;
+	placeholder?: string;
+	indicator?: string;
+	multiple?: boolean;
+	values?: string;
+	showSearch?: boolean;
+	showScripts?: boolean;
+}
+
+const {
+	id: idProp,
+	key: keyProp,
+	value = '',
+	class: className,
+	state,
+	placeholder,
+	indicator,
+	multiple,
+	values,
+	showSearch,
+	showScripts,
+} = Astro.props;
+
+const id = idProp ?? keyProp;
+const key = keyProp ?? 'people';
+const data = (selects as Record<string, any>)[key] ?? {};
+
+const selectClass = [
+	'form-select',
+	className,
+	state && `is-${state}`,
+]
+
+const isMultiple = Boolean(multiple || data.multiple);
+
+const firstLetters = (s: string) => (s || '').split(' ').map((w) => w.charAt(0)).join('');
+
+interface Person {
+	id: string;
+	full_name: string;
+	photo?: string;
+}
+
+// Build the option list.
+type Opt = { value: string; text: string; custom?: string; selected?: boolean };
+type Group = { label: string; options: Opt[] };
+let options: Opt[] = [];
+let optgroups: Group[] = [];
+
+if (values) {
+	options = values.split(',').map((v) => ({ value: v, text: v }));
+} else if (data.data === 'people') {
+	options = (people as Person[]).slice(0, 20).map((person) => {
+		let custom: string | undefined;
+		if (indicator === 'avatar') {
+			custom = person.photo
+				? `<span class="avatar avatar-xs" style="background-image: url(./${person.photo})"></span>`
+				: `<span class="avatar avatar-xs">${firstLetters(person.full_name)}</span>`;
+		}
+		return { value: person.id, text: person.full_name, custom };
+	});
+} else if (data.data === 'optgroup') {
+	optgroups = (data.options as { title: string; options: string[] }[]).map((group) => ({
+		label: group.title,
+		options: group.options.map((option) => ({ value: option, text: option })),
+	}));
+} else if (Array.isArray(data.options)) {
+	options = (data.options as string[]).map((option) => ({ value: option, text: option }));
+} else if (data.options) {
+	// object of { key: { name, flag?, label?, selected? } } — with optional indicator
+	options = Object.entries(data.options as Record<string, any>).map(([optKey, v]) => {
+		let custom: string | undefined;
+		if (indicator === 'flag') custom = `<span class="flag flag-xs flag-country-${v.flag}"></span>`;
+		else if (indicator === 'label') custom = `<span class="badge bg-primary-lt">${v.label}</span>`;
+		return { value: optKey, text: v.name, custom, selected: Boolean(v.selected) };
+	});
+}
+
+const script = id
+	? `<script>
+	document.addEventListener("DOMContentLoaded", function () {
+		window.tabler_select = window.tabler_select || {};
+
+		var el;
+		window.TomSelect && (window.tabler_select["select-${id}"] = new TomSelect(el = document.getElementById('select-${id}'), {
+			copyClassesToDropdown: false,
+			dropdownParent: 'body',
+
+			${showSearch ? '' : "controlInput: '<input>',"}
+
+			render:{
+				item: function(data,escape) {
+					if( data.customProperties ){
+						return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+					}
+					return '<div>' + escape(data.text) + '</div>';
+				},
+				option: function(data,escape){
+					if( data.customProperties ){
+						return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+					}
+					return '<div>' + escape(data.text) + '</div>';
+				},
+			},
+		}));
+
+	});
+</script>`
+	: '';
+
+if (id && script && !showScripts) {
+	addPageScript(script);
+}
+---
+
+{
+	id && (
+		<select
+			class:list={selectClass}
+			placeholder={placeholder}
+			id={`select-${id}`}
+			value={value}
+			multiple={isMultiple ? '' : undefined}
+		>
+			{
+				optgroups.map((group) => (
+					<optgroup label={group.label}>
+						{group.options.map((option) => (
+							<option value={option.value}>{option.text}</option>
+						))}
+					</optgroup>
+				))
+			}
+			{
+				options.map((option) => (
+					<option
+						value={option.value}
+						data-custom-properties={option.custom}
+						selected={option.selected || undefined}
+					>
+						{option.text}
+					</option>
+				))
+			}
+		</select>
+	)
+}
+{showScripts && id && <Fragment set:html={script} />}
+{!showScripts && id && script && <InlineScript code={script} />}

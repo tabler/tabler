@@ -1,0 +1,31 @@
+---
+// Minimal navbar (small logo + close button) then a .page with the content.
+import BaseLayout from './BaseLayout.astro';
+import NavbarLogo from '@shared/components/navbar/NavbarLogo.astro';
+
+interface Props {
+	title?: string;
+	/** page-libs from the Eleventy front matter — passed down to BaseLayout */
+	pageLibs?: string[];
+	/** body-class front matter — passed down to BaseLayout */
+	bodyClass?: string;
+}
+
+const { title, pageLibs, bodyClass } = Astro.props;
+---
+
+<BaseLayout title={title} pageLibs={pageLibs} bodyClass={bodyClass}>
+	<header class="navbar">
+		<div class="container-fluid">
+			<NavbarLogo smallLogo />
+
+			<div>
+				<a href="." class="btn btn-close"></a>
+			</div>
+		</div>
+	</header>
+
+	<div class="page">
+		<slot />
+	</div>
+</BaseLayout>

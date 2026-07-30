@@ -1,0 +1,136 @@
+---
+import Avatar from './Avatar.astro';
+import Button from './Button.astro';
+import ButtonList from './ButtonList.astro';
+import DropdownMenu from './DropdownMenu.astro';
+import people from '@data/people.json';
+
+interface Props {
+	card?: boolean;
+	limit?: number;
+	stripped?: boolean;
+	offset?: number;
+	avatars?: boolean;
+	mobile?: boolean;
+	buttons?: boolean;
+	nowrap?: boolean;
+}
+
+const {
+	card,
+	limit = 5,
+	stripped,
+	offset,
+	avatars,
+	mobile,
+	buttons,
+	nowrap,
+} = Astro.props;
+
+const roles = ['User', 'Admin', 'Owner'];
+
+// Equivalent of the random_number filter from shared/e11ty/filters.mjs (deterministic).
+function randomNumber(x: number, min = 0, max = 100): number {
+	let value =
+		((x * x * Math.PI * Math.E * (max + 1) * (Math.sin(x) / Math.cos(x * x))) % (max + 1 - min)) + min;
+	value = value > max ? max : value;
+	value = value < min ? min : value;
+	return Math.floor(value);
+}
+
+// {% for person in people limit: limit offset: include.offset %}
+const start = offset ?? 0;
+const rows = (people as Record<string, any>[]).slice(start, start + limit);
+
+const tableClasses = [
+	'table',
+	'table-vcenter',
+	mobile && 'table-mobile-md',
+	card && 'card-table',
+	stripped && 'table-striped',
+	nowrap && 'table-nowrap',
+]
+---
+
+<div class="table-responsive">
+	<table class:list={tableClasses}>
+		<thead>
+		<tr>
+			<th>Name</th>
+			<th>Title</th>
+
+			{!avatars && <th>Email</th>}
+
+			<th>Role</th>
+
+			{nowrap && <th></th>}
+
+			<th class="w-1"></th>
+		</tr>
+		</thead>
+		<tbody>
+		{rows.map((person, i) => {
+			const role = roles[randomNumber(i + 1, 0, 2)];
+			return (
+				<tr>
+					{avatars ? (
+						<td data-label={mobile ? 'Name' : undefined}>
+							<div class="d-flex py-1 align-items-center">
+								<Avatar personId={person.id} class="me-2" />
+								<div class="flex-fill">
+									<div class="fw-medium">{person.full_name}</div>
+									<div class="text-secondary"><a href="#" class="text-reset">{person.email}</a></div>
+								</div>
+							</div>
+						</td>
+					) : (
+						<td data-label={mobile ? 'Name' : undefined}>{person.full_name}</td>
+					)}
+
+					{avatars ? (
+						<td data-label={mobile ? 'Title' : undefined}>
+							<div>{person.job_title}</div>
+							<div class="text-secondary">{person.department}</div>
+						</td>
+					) : (
+						<td class="text-secondary" data-label={mobile ? 'Title' : undefined}>
+							{person.job_title}, {person.department}
+						</td>
+					)}
+
+					{!avatars && (
+						<td class="text-secondary" data-label={mobile ? 'Email' : undefined}><a href="#" class="text-reset">{person.email}</a></td>
+					)}
+
+					<td class="text-secondary" data-label={mobile ? 'Role' : undefined}>
+						{role}
+					</td>
+
+					{nowrap && (
+						<td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, commodi cupiditate debitis deserunt
+							expedita hic incidunt iste modi molestiae nesciunt non nostrum perferendis perspiciatis placeat praesentium
+							quaerat quo repellendus, voluptates.
+						</td>
+					)}
+
+					<td>
+						{buttons ? (
+							<ButtonList class="flex-nowrap">
+								<Button text="Edit" />
+								<div class="dropdown">
+									<button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown">
+										Actions
+									</button>
+									<DropdownMenu right={true} />
+								</div>
+							</ButtonList>
+						) : (
+							<a href="#">Edit</a>
+						)}
+					</td>
+				</tr>
+			);
+		})}
+		</tbody>
+	</table>
+</div>

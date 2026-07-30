@@ -1,0 +1,81 @@
+---
+import Icon from '../Icon.astro';
+
+interface Props {
+	icon?: string;
+	iconClass?: string;
+	class?: string;
+	prepend?: boolean;
+	type?: string;
+	value?: string;
+	light?: boolean;
+	rounded?: boolean;
+	inputClass?: string;
+	ariaLabel?: string;
+	readonly?: boolean;
+	placeholder?: string;
+	loader?: boolean;
+}
+
+const {
+	icon = 'search',
+	iconClass,
+	class: className,
+	prepend,
+	type = 'text',
+	value = '',
+	light,
+	rounded,
+	inputClass,
+	ariaLabel,
+	readonly,
+	placeholder = 'Search…',
+	loader,
+} = Astro.props;
+
+const wrapperClass = ['input-icon', className];
+const addonClass = ['input-icon-addon', iconClass];
+const controlClass = [
+	'form-control',
+	light && 'form-control-light',
+	rounded && 'form-control-rounded',
+	inputClass,
+]
+---
+
+<div class:list={wrapperClass}>
+	{
+		prepend && (
+			<span class:list={addonClass}>
+				{
+					loader ? (
+						<div class="spinner-border spinner-border-sm text-secondary" role="status" />
+					) : (
+						<Icon name={icon} />
+					)
+				}
+			</span>
+		)
+	}
+	<input
+		type={type}
+		value={value}
+		class:list={controlClass}
+		placeholder={placeholder}
+		aria-label={ariaLabel}
+		readonly={readonly}
+	/>
+	{
+		!prepend && (
+			<span class:list={addonClass}>
+				{
+					loader ? (
+						<div class="spinner-border spinner-border-sm text-secondary" role="status" />
+					) : (
+						<Icon name={icon} />
+					)
+				}
+			</span>
+		)
+	}
+</div>

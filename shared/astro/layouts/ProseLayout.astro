@@ -1,0 +1,28 @@
+---
+// card.card-lg > card-body.prose wrapper around the page content).
+import DefaultLayout from './DefaultLayout.astro';
+import Card from '@shared/components/ui/Card.astro';
+import CardBody from '@shared/components/ui/CardBody.astro';
+
+interface Props {
+	title?: string;
+	/** page-header — the title in the page header */
+	pageHeader?: string;
+	/** page-menu — active menu entry, passed through to DefaultLayout */
+	pageMenu?: string;
+}
+
+const { title, pageHeader, pageMenu } = Astro.props;
+---
+
+<DefaultLayout title={title} pageHeader={pageHeader} pageMenu={pageMenu}>
+	<div class="row justify-content-center">
+		<div class="col-lg-10 col-xl-9">
+			<Card size="lg">
+				<CardBody class="prose">
+					<slot />
+				</CardBody>
+			</Card>
+		</div>
+	</div>
+</DefaultLayout>

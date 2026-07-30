@@ -1,0 +1,24 @@
+@use "../../settings" as *;
+@use "../../variables" as *;
+@use "../functions" as *;
+@use "breakpoints" as *;
+@mixin color-mode($mode: light, $root: false) {
+  @if $color-mode-type == "media-query" {
+    @if $root == true {
+      @media (prefers-color-scheme: $mode) {
+        :root {
+          @content;
+        }
+      }
+    } @else {
+      @media (prefers-color-scheme: $mode) {
+        @content;
+      }
+    }
+  } @else {
+    [data-bs-theme="#{$mode}"],
+    [data-theme="#{$mode}"] {
+      @content;
+    }
+  }
+}

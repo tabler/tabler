@@ -1,0 +1,130 @@
+---
+// TODO: %ICONS_COUNT% substitution in titles (Liquid: icons-info.count) —
+// menu.json doesn't contain that placeholder and src/data has no icons-info.json,
+// so we skip it for now.
+import Icon from '../ui/Icon.astro';
+import NavbarMenuItem from './NavbarMenuItem.astro';
+import menu from '@data/menu.json';
+import menuSample from '@data/menu-sample.json';
+
+interface Level1 {
+	title: string;
+	'title-long'?: string;
+	icon?: string;
+	url?: string;
+	badge?: string;
+	active?: boolean;
+	disabled?: boolean;
+	right?: boolean;
+	columns?: number;
+	children?: Record<string, Record<string, unknown>>;
+}
+
+interface Props {
+	/** equivalent of the page-menu front matter, e.g. "dashboards.default" */
+	pageMenu?: string;
+	sample?: boolean;
+	hideIcons?: boolean;
+	longTitles?: boolean;
+	keepOpen?: boolean;
+	autoOpen?: boolean;
+	class?: string;
+}
+
+const {
+	pageMenu = '',
+	sample = false,
+	hideIcons = false,
+	longTitles = false,
+	keepOpen = false,
+	autoOpen = false,
+	class: className,
+} = Astro.props;
+
+const currentPage = pageMenu.split('.');
+const items = Object.entries((sample ? menuSample : menu) as Record<string, Level1>);
+
+// Columns as in Liquid: per-column = ceil(size / columns), break every per-column.
+const chunk = <T,>(arr: T[], size: number): T[][] => {
+	const out: T[][] = [];
+	for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));
+	return out;
+};
+---
+
+<!-- BEGIN NAVBAR MENU -->
+<ul class:list={['navbar-nav', className]}>
+	{
+		items.map(([key, item]) => {
+			const active = key === currentPage[0] || item.active;
+			const hasChildren = !!item.children;
+			const children = Object.entries(item.children ?? {});
+			const columns = item.columns
+				? chunk(children, Math.ceil(children.length / item.columns))
+				: null;
+			const title = longTitles ? (item['title-long'] ?? item.title) : item.title;
+
+			return (
+				<li class:list={['nav-item', active && 'active', hasChildren && 'dropdown']}>
+					<a
+						class:list={['nav-link', hasChildren && 'dropdown-toggle', item.disabled && 'disabled']}
+						href={hasChildren ? `#navbar-${key}` : `./${item.url}`}
+						data-bs-toggle={hasChildren ? 'dropdown' : undefined}
+						data-bs-auto-close={hasChildren ? (keepOpen ? 'false' : 'outside') : undefined}
+						role={hasChildren ? 'button' : undefined}
+						aria-haspopup={hasChildren ? 'true' : undefined}
+						aria-expanded={hasChildren ? (autoOpen && key === currentPage[0] ? 'true' : 'false') : undefined}
+						aria-current={active ? 'page' : undefined}
+					>
+						{!hideIcons && (
+							<span class="nav-link-icon d-md-none d-lg-inline-block">{item.icon && <Icon name={item.icon} />}</span>
+						)}
+
+						<span class="nav-link-title">{title}</span>
+
+						{item.badge && <span class="badge badge-sm bg-red text-red-fg">{item.badge}</span>}
+					</a>
+
+					{hasChildren && (
+						<div
+							class:list={[
+								'dropdown-menu',
+								item.right && 'dropdown-menu-end',
+								autoOpen && key === currentPage[0] && 'show',
+							]}
+						>
+							{columns ? (
+								<div class="dropdown-menu-columns">
+									{columns.map((column) => (
+										<div class="dropdown-menu-column">
+											{column.map(([childKey, child]) => (
+												<NavbarMenuItem
+													level1Key={key}
+													itemKey={childKey}
+													item={child as any}
+													currentPage={currentPage}
+													keepOpen={keepOpen}
+												/>
+											))}
+										</div>
+									))}
+								</div>
+							) : (
+								children.map(([childKey, child]) => (
+									<NavbarMenuItem
+										level1Key={key}
+										itemKey={childKey}
+										item={child as any}
+										currentPage={currentPage}
+										keepOpen={keepOpen}
+									/>
+								))
+							)}
+						</div>
+					)}
+				</li>
+			);
+		})
+	}
+</ul>
+<!-- END NAVBAR MENU -->

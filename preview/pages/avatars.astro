@@ -1,0 +1,171 @@
+---
+// Note: the `description` front matter key is inert in the dev build (no
+// <meta name="description"> in the reference output), so it is not ported.
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
+import Avatar from '@shared/components/ui/Avatar.astro';
+import AvatarUpload from '@shared/components/ui/AvatarUpload.astro';
+import AvatarList from '@shared/components/ui/AvatarList.astro';
+import Card from '@shared/components/ui/Card.astro';
+import CardBody from '@shared/components/ui/CardBody.astro';
+import CardTitle from '@shared/components/ui/CardTitle.astro';
+import people from '@data/people.json';
+import { site } from '@shared/lib/site';
+
+const iconIcons = ['user', 'settings', 'car', 'balloon', 'users', 'users-group', 'apps', 'ghost'];
+
+// Liquid: {% for color in site.colors %} — the iterated keys match site.themeColors
+// (blue..cyan), confirmed against the reference output.
+const colors = site.themeColors;
+
+// equivalent of the first_letters filter
+const firstLetters = (s: string) => s.split(' ').map((w) => w.charAt(0)).join('');
+
+const people8 = people.slice(0, 8);
+const people5 = people.slice(0, 5);
+const sizes = ['xxs', 'xs', 'sm', 'md', 'lg', 'xl'];
+const listSizes = ['xxs', 'xs', 'sm', 'md', 'lg'];
+const uploadSizes = ['xxs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl'];
+const statusColors = ['red', 'green', 'blue', 'yellow', 'secondary'];
+const brands = ['netflix', 'amazon', 'messenger', 'figma', 'twitch'];
+---
+
+<DefaultLayout title="Avatars" pageMenu="base.avatars" pageHeader="Avatars">
+	<div class="row row-cards">
+		<div class="col-4">
+			<Card>
+				<CardBody>
+					<CardTitle as="h2">Default avatar</CardTitle>
+					<Avatar />
+				</CardBody>
+			</Card>
+		</div>
+		<div class="col-4">
+			<Card>
+				<CardBody>
+					<CardTitle as="h2">Avatar with icon</CardTitle>
+
+					<div class="avatar-list">
+						{iconIcons.map((icon) => <Avatar icon={icon} />)}
+					</div>
+				</CardBody>
+			</Card>
+		</div>
+		<div class="col-4">
+			<Card>
+				<CardBody>
+					<CardTitle as="h2">Avatar with icon</CardTitle>
+
+					<div class="avatar-list">
+						{colors.map((color) => <Avatar icon="user" color={color} />)}
+					</div>
+				</CardBody>
+			</Card>
+		</div>
+		<div class="col-4">
+			<Card>
+				<CardBody>
+					<CardTitle as="h2">Simple avatar</CardTitle>
+					<div class="avatar-list">
+						{people8.map((person) => <Avatar person={person} />)}
+					</div>
+				</CardBody>
+			</Card>
+		</div>
+		<div class="col-4">
+			<Card>
+				<CardBody>
+					<CardTitle as="h2">Avatar placeholder</CardTitle>
+					<div class="avatar-list">
+						{people8.map((person) => <Avatar placeholder={firstLetters(person.full_name)} />)}
+					</div>
+				</CardBody>
+			</Card>
+		</div>
+		<div class="col-4">
+			<Card>
+				<CardBody>
+					<CardTitle as="h2">Avatar shapes</CardTitle>
+					<div class="avatar-list">
+						<Avatar />
+						<Avatar class="rounded-circle" />
+						<Avatar class="rounded-0" />
+					</div>
+				</CardBody>
+			</Card>
+		</div>
+		<div class="col-6">
+			<Card>
+				<CardBody>
+					<CardTitle as="h2">Avatar sizes</CardTitle>
+					<div class="row">
+						<div class="col-6">
+							<div class="avatar-list">
+								{sizes.map((size) => <Avatar size={size} />)}
+							</div>
+						</div>
+						<div class="col-6">
+							<div class="avatar-list">
+								{sizes.map((size) => <Avatar placeholder="PK" size={size} />)}
+							</div>
+						</div>
+					</div>
+				</CardBody>
+			</Card>
+		</div>
+		<div class="col-6">
+			<Card>
+				<CardBody>
+					<CardTitle as="h2">Avatar lists</CardTitle>
+					<div class="row g-3">
+						{
+							listSizes.map((size) => (
+								<>
+									<div class="col-6">
+										<AvatarList stacked={true} size={size}>
+											{people5.map((person) => (
+												<Avatar person={person} />
+											))}
+											<Avatar icon="plus" link />
+										</AvatarList>
+									</div>
+									<div class="col-6">
+										<AvatarList stacked={true} size={size}>
+											{people5.map((person) => (
+												<Avatar person={person} class="rounded-circle" />
+											))}
+											<Avatar icon="plus" link class="rounded-circle" />
+										</AvatarList>
+									</div>
+								</>
+							))
+						}
+					</div>
+				</CardBody>
+			</Card>
+		</div>
+		<div class="col-4">
+			<Card>
+				<CardBody>
+					<CardTitle as="h2">Avatar placeholder</CardTitle>
+					{uploadSizes.map((size) => <AvatarUpload size={size} />)}
+				</CardBody>
+			</Card>
+		</div>
+		<div class="col-4">
+			<Card>
+				<CardBody>
+					<CardTitle as="h2">Avatar statuses</CardTitle>
+					{statusColors.map((color, i) => <Avatar personId={i + 1} class="rounded-circle" status={color} />)}
+				</CardBody>
+			</Card>
+		</div>
+		<div class="col-4">
+			<Card>
+				<CardBody>
+					<CardTitle as="h2">Avatar brands</CardTitle>
+					{brands.map((brand, i) => <Avatar personId={i + 1} brand={brand} />)}
+				</CardBody>
+			</Card>
+		</div>
+	</div>
+</DefaultLayout>

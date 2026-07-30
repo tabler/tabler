@@ -1,0 +1,30 @@
+---
+// IMask initializes from the data-mask attributes (tabler.js) — the include
+// emits no {% capture_script %}, so there is nothing to register here.
+interface Props {
+	name?: string;
+	mask?: string;
+	visible?: boolean;
+	placeholder?: string;
+	reverse?: boolean;
+}
+
+const {
+	name = 'mask',
+	mask = '00/00/0000',
+	visible,
+	placeholder,
+	reverse,
+} = Astro.props;
+---
+
+<input
+	type="text"
+	name={`input-${name}`}
+	class="form-control"
+	data-mask={mask}
+	data-mask-visible={visible ? 'true' : undefined}
+	placeholder={placeholder ?? mask}
+	data-mask-reverse={reverse ? 'true' : undefined}
+	autocomplete="off"
+/>

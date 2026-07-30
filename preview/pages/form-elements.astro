@@ -1,0 +1,246 @@
+---
+
+import CardSubtitle from '@shared/components/ui/CardSubtitle.astro';
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
+import FormElements1 from '@shared/components/forms/FormElements1.astro';
+import FormElements2 from '@shared/components/forms/FormElements2.astro';
+import FormElements3 from '@shared/components/forms/FormElements3.astro';
+import FormElements4 from '@shared/components/forms/FormElements4.astro';
+import FormElements5 from '@shared/components/forms/FormElements5.astro';
+import FormElements6 from '@shared/components/forms/FormElements6.astro';
+import Layout from '@shared/components/cards/form/Layout.astro';
+import InputIcon from '@shared/components/ui/form/InputIcon.astro';
+import InputMask from '@shared/components/ui/form/InputMask.astro';
+import Button from '@shared/components/ui/Button.astro';
+import Avatar from '@shared/components/ui/Avatar.astro';
+import Card from '@shared/components/ui/Card.astro';
+import CardHeader from '@shared/components/ui/CardHeader.astro';
+import CardBody from '@shared/components/ui/CardBody.astro';
+import CardFooter from '@shared/components/ui/CardFooter.astro';
+import CardTitle from '@shared/components/ui/CardTitle.astro';
+import FormGroup from '@shared/components/ui/FormGroup.astro';
+import people from '@data/people.json';
+
+const httpMethods = ['GET', 'POST', 'PUT', 'HEAD', 'DELETE', 'PATCH'];
+const comparisons = [
+	['EQUALS', 'Equals'], ['NOT_EQUALS', 'Not equals'], ['HAS_KEY', 'Has key'],
+	['NOT_HAS_KEY', 'Not has key'], ['HAS_VALUE', 'Has value'], ['NOT_HAS_VALUE', 'Not has value'],
+	['IS_EMPTY', 'Is empty'], ['NOT_EMPTY', 'Is not empty'], ['GREATER_THAN', 'Greater than'],
+	['LESS_THAN', 'Less than'],
+];
+const sources = [
+	['STATUS_CODE', 'Status code'], ['JSON_BODY', 'JSON body'], ['HEADERS', 'Headers'],
+	['TEXT_BODY', 'Text body'], ['RESPONSE_TIME', 'Response time'],
+];
+// assertion rows: [sourceSel, targetVal, comparisonSel]
+const rows = [
+	{ source: 'STATUS_CODE', comparison: 'EQUALS', target: '200', prop: '' },
+	{ source: 'JSON_BODY', comparison: 'HAS_VALUE', target: 'string', prop: 'parameters.alt.type' },
+	{ source: 'RESPONSE_TIME', comparison: 'LESS_THAN', target: '500', prop: '' },
+	{ source: 'HEADERS', comparison: 'EQUALS', target: 'application/json; charset=UTF-8', prop: 'content-type' },
+];
+---
+
+<DefaultLayout
+	title="Form elements"
+	pageHeader="Form elements"
+	pageMenu="form.elements"
+	pageLibs={['nouislider', 'autosize', 'tabler-flags', 'tabler-payments', 'litepicker', 'tom-select', 'imask']}
+>
+	<div class="row row-cards">
+		<div class="col-12">
+			<Card as="form" action="https://httpbin.org/post" method="post">
+				<CardHeader>
+					<h4 class="card-title">Form elements</h4>
+				</CardHeader>
+				<CardBody>
+					<div class="row g-5">
+						<div class="col-xl-4">
+							<div class="row">
+								<div class="col-md-6 col-xl-12"><FormElements1 /></div>
+								<div class="col-md-6 col-xl-12"><FormElements2 /></div>
+							</div>
+						</div>
+						<div class="col-xl-4">
+							<div class="row">
+								<div class="col-md-6 col-xl-12"><FormElements3 /></div>
+								<div class="col-md-6 col-xl-12"><FormElements4 /></div>
+							</div>
+						</div>
+						<div class="col-xl-4">
+							<div class="row">
+								<div class="col-md-6 col-xl-12"><FormElements5 /></div>
+								<div class="col-md-6 col-xl-12"><FormElements6 /></div>
+							</div>
+						</div>
+					</div>
+				</CardBody>
+				<CardFooter class="text-end">
+					<div class="d-flex">
+						<a href="#" class="btn btn-link">Cancel</a>
+						<button type="submit" class="btn btn-primary ms-auto">Send data</button>
+					</div>
+				</CardFooter>
+			</Card>
+		</div>
+
+		<div class="col-md-6">
+			<Card class="h-100">
+				<CardBody>
+					<CardTitle>Project ID</CardTitle>
+					<CardSubtitle>Used when interacting with the API.</CardSubtitle>
+					<InputIcon icon="files" value="prj_5ae74426fe935327a8fa178b07d84ad9" readonly />
+				</CardBody>
+				<CardFooter>
+					<div class="row align-items-center">
+						<div class="col">Learn more about <a href="#">Project ID</a></div>
+						<div class="col-auto"><Button text="Save" color="primary" /></div>
+					</div>
+				</CardFooter>
+			</Card>
+		</div>
+
+		<div class="col-md-6">
+			<Card>
+				<CardBody>
+					<CardTitle>Node.js Version</CardTitle>
+					<CardSubtitle>
+						The version of Node.js that is used in the Build Step and for Serverless Functions. A new Deployment is required for your changes to take effect.
+					</CardSubtitle>
+					<select class="form-select">
+						<option>14.x</option>
+						<option>12.x</option>
+					</select>
+				</CardBody>
+				<CardFooter>Learn more about <a href="#">Node.js Version</a></CardFooter>
+			</Card>
+		</div>
+
+		<div class="col-12 col-lg-4"><Layout /></div>
+
+		<div class="col-lg-8">
+			<div class="row row-cards">
+				<div class="col-12 col-lg-6">
+					<Card>
+						<CardHeader title="Input mask" />
+						<CardBody>
+							<FormGroup label="Date"><InputMask mask="00/00/0000" visible /></FormGroup>
+							<FormGroup label="Hour"><InputMask mask="00:00:00" visible /></FormGroup>
+							<FormGroup label={'Date & Hour'}><InputMask mask="00/00/0000 00:00:00" visible /></FormGroup>
+							<FormGroup label="ZIP Code"><InputMask mask="00000-000" visible /></FormGroup>
+							<FormGroup label="Money"><InputMask mask="000.000.000.000.000,00" visible reverse /></FormGroup>
+							<FormGroup label="Telephone"><InputMask mask="0000-0000" visible /></FormGroup>
+							<FormGroup label="Telephone with Code Area"><InputMask mask="(00) 0000-0000" visible /></FormGroup>
+							<FormGroup label="IP Address"><InputMask mask="099.099.099.099" placeholder="000.000.000.000" visible /></FormGroup>
+						</CardBody>
+					</Card>
+				</div>
+				<div class="col-12 col-lg-6">
+					<Card as="form" class="h-100">
+						<CardHeader title="My Profile" />
+						<CardBody>
+							<div class="mb-3">
+								<div class="row">
+									<div class="col-auto"><Avatar person={people[2]} size="md" /></div>
+									<div class="col">
+										<FormGroup label="Email-Address">
+											<input class="form-control" placeholder="your-email@domain.com" />
+										</FormGroup>
+									</div>
+								</div>
+							</div>
+							<FormGroup label="Bio">
+								<textarea class="form-control" rows="5">Big belly rude boy, million dollar hustler. Unemployed.</textarea>
+							</FormGroup>
+							<FormGroup label="Email-Address">
+								<input class="form-control" placeholder="your-email@domain.com" />
+							</FormGroup>
+							<FormGroup label="Password">
+								<input type="password" class="form-control" value="password" />
+							</FormGroup>
+						</CardBody>
+						<CardFooter class="text-end"><Button text="Save" color="primary" /></CardFooter>
+					</Card>
+				</div>
+			</div>
+		</div>
+
+		<div class="col-lg-12">
+			<div class="row row-cards">
+				<div class="col-12 col-lg-6">
+					<Card as="form">
+						<CardBody>
+							<CardTitle>Edit Profile</CardTitle>
+							<div class="row row-cards">
+								<div class="col-md-5"><FormGroup label="Company"><input type="text" class="form-control" disabled="" placeholder="Company" value="Creative Code Inc." /></FormGroup></div>
+								<div class="col-sm-6 col-md-3"><FormGroup label="Username"><input type="text" class="form-control" placeholder="Username" value="michael23" /></FormGroup></div>
+								<div class="col-sm-6 col-md-4"><FormGroup label="Email address"><input type="email" class="form-control" placeholder="Email" /></FormGroup></div>
+								<div class="col-sm-6 col-md-6"><FormGroup label="First Name"><input type="text" class="form-control" placeholder="Company" value="Chet" /></FormGroup></div>
+								<div class="col-sm-6 col-md-6"><FormGroup label="Last Name"><input type="text" class="form-control" placeholder="Last Name" value="Faker" /></FormGroup></div>
+								<div class="col-md-12"><FormGroup label="Address"><input type="text" class="form-control" placeholder="Home Address" value="Melbourne, Australia" /></FormGroup></div>
+								<div class="col-sm-6 col-md-4"><FormGroup label="City"><input type="text" class="form-control" placeholder="City" value="Melbourne" /></FormGroup></div>
+								<div class="col-sm-6 col-md-3"><FormGroup label="Postal Code"><input type="test" class="form-control" placeholder="ZIP Code" /></FormGroup></div>
+								<div class="col-md-5"><FormGroup label="Country"><select class="form-control form-select"><option value="">Germany</option></select></FormGroup></div>
+								<div class="col-md-12">
+									<FormGroup label="About Me" class="mb-3 mb-0">
+										<textarea rows="5" class="form-control" placeholder="Here can be your description" value="Mike">Oh so, your weak rhyme
+You doubt I'll bother, reading into it
+I'll probably won't, left to my own devices
+But that's the difference in our opinions.</textarea>
+									</FormGroup>
+								</div>
+							</div>
+						</CardBody>
+						<CardFooter class="text-end"><button type="submit" class="btn btn-primary">Update Profile</button></CardFooter>
+					</Card>
+				</div>
+				<div class="col-12 col-lg-6">
+					<Card class="h-100">
+						<CardHeader title="HTTP Request" />
+						<CardBody>
+							<div class="row row-cards">
+								<FormGroup label="Method" required class="mb-3 col-sm-4 col-md-2">
+									<select class="form-select">
+										{httpMethods.map((m) => <option value={m}>{m}</option>)}
+									</select>
+								</FormGroup>
+								<FormGroup label="URL" required class="mb-3 col-sm-8 col-md-10">
+									<input name="url" type="text" class="form-control" value="https://content.googleapis.com/discovery/v1/apis/surveys/v2/rest" />
+								</FormGroup>
+							</div>
+							<div class="form-label">Assertions</div>
+							<div class="table-responsive">
+								<table class="table mb-0">
+									<thead>
+										<tr><th>Source</th><th>Property</th><th>Comparison</th><th>Target</th></tr>
+									</thead>
+									<tbody>
+										{
+											rows.map((row) => (
+												<tr>
+													<td>
+														<select class="form-select">
+															{sources.map(([v, l]) => <option value={v} selected={v === row.source || undefined}>{l}</option>)}
+														</select>
+													</td>
+													<td><input type="text" class="form-control" value={row.prop || undefined} /></td>
+													<td>
+														<select class="form-select">
+															{comparisons.map(([v, l]) => <option value={v} selected={v === row.comparison || undefined}>{l}</option>)}
+														</select>
+													</td>
+													<td><input type="text" class="form-control" value={row.target} /></td>
+												</tr>
+											))
+										}
+									</tbody>
+								</table>
+							</div>
+						</CardBody>
+						<CardFooter class="text-end"><button type="submit" class="btn btn-primary">Make request</button></CardFooter>
+					</Card>
+				</div>
+			</div>
+		</div>
+	</div>
+</DefaultLayout>

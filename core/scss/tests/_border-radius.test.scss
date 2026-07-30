@@ -1,0 +1,33 @@
+// Next batch — the radius helper functions from
+// scss/mixins/bootstrap/_border-radius.scss. Both are self-contained (only
+// sass:list / sass:math / sass:meta) and operate on single values or lists.
+//
+// They return Sass lists, so the results are compared through `meta.inspect(...)`
+// (a single-item list is not `==` to the bare number it contains).
+
+@use "sass:meta";
+@use "../mixins/bootstrap/border-radius" as *;
+
+@include describe("valid-radius") {
+  @include it("clamps a negative value to 0") {
+    @include assert-equal(meta.inspect(valid-radius(-5px)), "0");
+  }
+
+  @include it("leaves a non-negative value untouched") {
+    @include assert-equal(meta.inspect(valid-radius(8px)), "8px");
+  }
+
+  @include it("clamps only the negative members of a list") {
+    @include assert-equal(meta.inspect(valid-radius(4px -2px 6px)), "4px 0 6px");
+  }
+}
+
+@include describe("squircle-radius") {
+  @include it("keeps 0 as 0") {
+    @include assert-equal(meta.inspect(squircle-radius(0)), "0");
+  }
+
+  @include it("scales a non-zero radius by 2.5 via calc()") {
+    @include assert-equal(meta.inspect(squircle-radius(4px)), "calc(4px * 2.5)");
+  }
+}
