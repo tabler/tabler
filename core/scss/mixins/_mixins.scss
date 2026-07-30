@@ -21,7 +21,7 @@
 }
 
 @mixin scrollbar {
-  $selector: if(sass(meta.type-of(&) != 'null'): '&'; else: '*');
+  $selector: if(meta.type-of(&) != 'null', '&', '*');
   #{$selector} {
     scrollbar-color: color-transparent(var(--#{$prefix}scrollbar-color, var(--#{$prefix}body-color)), 0.2) transparent;
   }
