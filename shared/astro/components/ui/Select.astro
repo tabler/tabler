@@ -14,7 +14,7 @@ interface Props {
 	placeholder?: string;
 	indicator?: string;
 	multiple?: boolean;
-	values?: string;
+	values?: string[];
 	showSearch?: boolean;
 }
 
@@ -58,7 +58,7 @@ let options: Opt[] = [];
 let optgroups: Group[] = [];
 
 if (values) {
-	options = values.split(',').map((v) => ({ value: v, text: v }));
+	options = values.map((v) => ({ value: v, text: v }));
 } else if (data.data === 'people') {
 	options = (people as Person[]).slice(0, 20).map((person) => {
 		let custom: string | undefined;

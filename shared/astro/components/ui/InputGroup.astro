@@ -11,8 +11,7 @@ interface Props {
 	id?: string;
 	prepend?: string;
 	append?: string;
-	/** comma-separated list of "icon:description" pairs, same as the Liquid include */
-	appendButton?: string;
+	appendButton?: { icon: string; description: string }[];
 }
 
 const {
@@ -28,13 +27,7 @@ const {
 	appendButton,
 } = Astro.props;
 
-const appendButtons = (appendButton ?? '')
-	.split(',')
-	.filter(Boolean)
-	.map((button) => {
-		const [icon, description] = button.split(':');
-		return { icon, description };
-	});
+const appendButtons = appendButton ?? [];
 ---
 
 <div class:list={['input-group', flat && 'input-group-flat', className]}>

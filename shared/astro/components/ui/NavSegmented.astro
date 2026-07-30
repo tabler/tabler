@@ -2,9 +2,9 @@
 import Icon from './Icon.astro';
 
 interface Props {
-	items?: string;
-	icons?: string;
-	disabled?: string;
+	items?: string[];
+	icons?: string[];
+	disabled?: number[];
 	hover?: string;
 	default?: number;
 	vertical?: boolean;
@@ -37,9 +37,8 @@ const props = Astro.props as Record<string, unknown>;
 const argCount = includeArgKeys.filter((k) => props[k] !== undefined).length;
 const sizeToken = size ? `nav-${size}` : `nav-${argCount}`;
 
-const itemsArr = items ? items.split(',') : [];
-const iconsArr = icons ? icons.split(',') : [];
-const disabledArr = disabled ? disabled.split(',') : [];
+const itemsArr = items ?? [];
+const iconsArr = icons ?? [];
 const count = Math.max(itemsArr.length, iconsArr.length);
 
 const navClasses = [
@@ -54,7 +53,7 @@ const navClasses = [
 const rows = Array.from({ length: count }, (_, i) => {
 	const forloopIndex = i + 1;
 	const index = String(forloopIndex);
-	const isDisabled = disabledArr.includes(index);
+	const isDisabled = disabled?.includes(forloopIndex) ?? false;
 	const isDefault = forloopIndex === defaultIndex;
 	const linkClasses = [
 		'nav-link',
