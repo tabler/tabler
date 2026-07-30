@@ -87,18 +87,15 @@ const emailEntries = Object.entries(emails);
 		const emailModal = document.getElementById('email-modal');
 		if (emailModal) {
 			emailModal.addEventListener('show.bs.modal', function (e) {
-				const button = e.relatedTarget;
+				const button = (e as Event & { relatedTarget: HTMLElement }).relatedTarget;
 
 				const image = button.getAttribute('data-bs-image'),
 					title = button.getAttribute('data-bs-title'),
 					description = button.getAttribute('data-bs-description');
 
-				emailModal.querySelector('[data-email-title]').textContent = title;
-				emailModal.querySelector('[data-email-description]').textContent = description;
-				emailModal.querySelector('[data-email-image]').src = image;
-
-				modalTitle.textContent = `New message to ${recipient}`;
-				modalBodyInput.value = recipient;
+				emailModal.querySelector('[data-email-title]')!.textContent = title;
+				emailModal.querySelector('[data-email-description]')!.textContent = description;
+				(emailModal.querySelector('[data-email-image]') as HTMLImageElement).src = image ?? '';
 			});
 		}
 	</script>

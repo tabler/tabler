@@ -22,6 +22,7 @@ function prettifyHtml() {
 				// dist/preview/ and dist/dist/ are copy-assets.mjs's copies of public/{preview,dist}
 				// (demo css/js and @tabler/core's dist, including vendored libs) — not pages, and
 				// some vendored libs ship their own malformed docs/*.html that trips the parser below.
+				/** @param {string} file */
 				const isVendorCopy = (file) => file.includes(`${outDir}preview/`) || file.includes(`${outDir}dist/`);
 				// Astro appends "overflow-x: auto" to the shiki <pre> style — the
 				// Eleventy pipeline doesn't have it and HTML is the product: restore 1:1.
