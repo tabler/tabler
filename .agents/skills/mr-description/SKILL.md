@@ -38,6 +38,12 @@ From the repository root:
 
 Use this to infer **intent**, **user-visible behavior**, and **risk**—not only filenames.
 
+**Existing PR content:** Before drafting, check whether a PR already exists for this branch (e.g. `gh pr view --json title,body,number,url` for the current branch, or a PR number/URL the user gave you). If one exists, read its current title and body first:
+
+- Carry over any issue references it already contains — `Closes #N`, `Fixes #N`, `Resolves #N`, or a plain `#N` mention — into the new body. Put them in **Notes / rollout** (or, if the PR uses a dedicated `Issue`/`Closes` line, keep that same convention) so a regenerated description never silently drops the link to a tracked issue.
+- Don't assume the diff alone tells you which issue this closes — the existing PR body is often the only place that link is recorded.
+- If no PR exists yet, skip this step (there is nothing to carry over).
+
 **Vercel preview URL:** after the branch is pushed, Vercel deploys a preview. Build the link from the branch name:
 
 1. Take the current branch name from `git branch --show-current`.
@@ -88,7 +94,7 @@ Output the body in a **second** fenced **`markdown`** block after the title bloc
 
 **Preview:** Always include when the branch is pushed (or note that preview is unavailable until push). Use the Vercel URL format from §2. Link the most relevant path(s)—homepage only if changes are global; otherwise deep-link (e.g. `/pricing`, `/blog/…`). **How to test** should be actionable: which page, which UI element or behavior changed, and what the reviewer should expect to see.
 
-**Notes:** Feature flags, env vars, backwards compatibility—only when evidenced in the diff or commit messages.
+**Notes:** Feature flags, env vars, backwards compatibility—only when evidenced in the diff or commit messages. Also include any issue reference carried over from an existing PR (see §2), e.g. `Closes #123`.
 
 ## 5. Language (simple English)
 
