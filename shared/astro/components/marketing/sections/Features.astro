@@ -1,9 +1,8 @@
 ---
-// Port of marketing/sections/features.html.
 // The ui/shape.html include is inlined: <div class="shape shape-md ..."><Icon /></div>
 // (shape class order: shape, shape-{size}, shape-{color}, {class}, rounded-circle).
 import SectionDivider from '../SectionDivider.astro';
-import Icon from '../../Icon.astro';
+import Icon from '../../ui/Icon.astro';
 
 interface Props {
 	background?: string;
@@ -14,11 +13,9 @@ interface Props {
 const { background, class: className, divider } = Astro.props;
 
 const sectionClass = ['section', background && `section-${background}`, className]
-	.filter(Boolean)
-	.join(' ');
 ---
 
-<section class={sectionClass}>
+<section class:list={sectionClass}>
 	<SectionDivider divider={divider} />
 	<div class="container">
 		<div class="row items-center text-center g-lg-10">

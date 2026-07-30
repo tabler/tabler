@@ -1,9 +1,11 @@
 ---
-// Port of preview/pages/charts.html (layout: default)
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
 import Activity from '@shared/components/parts/charts/Activity.astro';
 import SocialReferrals from '@shared/components/cards/charts/SocialReferrals.astro';
-import Chart from '@shared/components/Chart.astro';
+import Chart from '@shared/components/ui/Chart.astro';
+import Card from '@shared/components/ui/Card.astro';
+import CardHeader from '@shared/components/ui/CardHeader.astro';
+import CardBody from '@shared/components/ui/CardBody.astro';
 import chartsData from '@data/charts.json';
 
 const demoCharts = Object.entries(
@@ -27,26 +29,22 @@ const demoCharts = Object.entries(
 		</div>
 
 		<div class="col-12">
-			<div class="card">
-				<div class="card-body">
+			<Card>
+				<CardBody>
 					<Chart chartId="tasks-overview" height={20} />
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 
 		{
 			demoCharts.map(([chartId, chart]) => (
 				<div class="col-lg-6 col-xl-4">
-					<div class="card">
-						{chart.name && (
-							<div class="card-header">
-								<h3 class="card-title">{chart.name}</h3>
-							</div>
-						)}
-						<div class="card-body">
+					<Card>
+						{chart.name && <CardHeader title={chart.name} />}
+						<CardBody>
 							<Chart chartId={chartId} height={15} />
-						</div>
-					</div>
+						</CardBody>
+					</Card>
 				</div>
 			))
 		}

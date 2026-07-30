@@ -1,8 +1,12 @@
 ---
 // Equivalent of parts/nav/nav-aside.html (search filter aside, no parameters).
 // `{{ page | relative }}/` resolves to "./" for root-level pages.
-import InputGroup from '../InputGroup.astro';
-import Button from '../Button.astro';
+
+import Subheader from '../ui/Subheader.astro';
+import InputGroup from '../ui/InputGroup.astro';
+import Button from '../ui/Button.astro';
+import ListGroup from '../ui/ListGroup.astro';
+import ListGroupItem from '../ui/ListGroupItem.astro';
 
 const categories = ['Games', 'Clothing', 'Jewelery', 'Toys'];
 const ratings = ['5 stars', '4 stars', '3 stars', '2 and less stars'];
@@ -22,22 +26,19 @@ function randomNumber(x: number, min = 0, max = 100): number {
 ---
 
 <form action="./" method="get" autocomplete="off" novalidate>
-	<div class="subheader mb-2">Category</div>
-	<nav class="list-group list-group-transparent mb-3">
+	<Subheader class="mb-2">Category</Subheader>
+	<ListGroup as="nav" transparent class="mb-3">
 		{
 			categories.map((item, i) => (
-				<a
-					class={`list-group-item list-group-item-action d-flex align-items-center${i === 0 ? ' active' : ''}`}
-					href="#"
-				>
+				<ListGroupItem as="a" action active={i === 0} class="d-flex align-items-center" href="#">
 					{item}
 					<small class="text-secondary ms-auto">{randomNumber(i + 1, 11, 200)}</small>
-				</a>
+				</ListGroupItem>
 			))
 		}
-	</nav>
+	</ListGroup>
 
-	<div class="subheader mb-2">Rating</div>
+	<Subheader class="mb-2">Rating</Subheader>
 	<div class="mb-3">
 		{
 			ratings.map((item, i) => (
@@ -55,7 +56,7 @@ function randomNumber(x: number, min = 0, max = 100): number {
 		}
 	</div>
 
-	<div class="subheader mb-2">Tags</div>
+	<Subheader class="mb-2">Tags</Subheader>
 	<div class="mb-3">
 		{
 			tags.map((item, i) => (
@@ -73,7 +74,7 @@ function randomNumber(x: number, min = 0, max = 100): number {
 		}
 	</div>
 
-	<div class="subheader mb-2">Price</div>
+	<Subheader class="mb-2">Price</Subheader>
 	<div class="row g-2 align-items-center mb-3">
 		<div class="col">
 			<InputGroup prepend="$" placeholder="from" value="3" />
@@ -84,7 +85,7 @@ function randomNumber(x: number, min = 0, max = 100): number {
 		</div>
 	</div>
 
-	<div class="subheader mb-2">Shipping</div>
+	<Subheader class="mb-2">Shipping</Subheader>
 	<div>
 		<select name="" class="form-select">
 			<option>United Kingdom</option>

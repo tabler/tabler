@@ -1,5 +1,6 @@
 ---
-// Port of preview/pages/form-elements.html
+
+import CardSubtitle from '@shared/components/ui/CardSubtitle.astro';
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
 import FormElements1 from '@shared/components/forms/FormElements1.astro';
 import FormElements2 from '@shared/components/forms/FormElements2.astro';
@@ -10,8 +11,14 @@ import FormElements6 from '@shared/components/forms/FormElements6.astro';
 import Layout from '@shared/components/cards/form/Layout.astro';
 import InputIcon from '@shared/components/ui/form/InputIcon.astro';
 import InputMask from '@shared/components/ui/form/InputMask.astro';
-import Button from '@shared/components/Button.astro';
+import Button from '@shared/components/ui/Button.astro';
 import Avatar from '@shared/components/ui/Avatar.astro';
+import Card from '@shared/components/ui/Card.astro';
+import CardHeader from '@shared/components/ui/CardHeader.astro';
+import CardBody from '@shared/components/ui/CardBody.astro';
+import CardFooter from '@shared/components/ui/CardFooter.astro';
+import CardTitle from '@shared/components/ui/CardTitle.astro';
+import FormGroup from '@shared/components/ui/FormGroup.astro';
 import people from '@data/people.json';
 
 const httpMethods = ['GET', 'POST', 'PUT', 'HEAD', 'DELETE', 'PATCH'];
@@ -42,11 +49,11 @@ const rows = [
 >
 	<div class="row row-cards">
 		<div class="col-12">
-			<form action="https://httpbin.org/post" method="post" class="card">
-				<div class="card-header">
+			<Card as="form" action="https://httpbin.org/post" method="post">
+				<CardHeader>
 					<h4 class="card-title">Form elements</h4>
-				</div>
-				<div class="card-body">
+				</CardHeader>
+				<CardBody>
 					<div class="row g-5">
 						<div class="col-xl-4">
 							<div class="row">
@@ -67,46 +74,46 @@ const rows = [
 							</div>
 						</div>
 					</div>
-				</div>
-				<div class="card-footer text-end">
+				</CardBody>
+				<CardFooter class="text-end">
 					<div class="d-flex">
 						<a href="#" class="btn btn-link">Cancel</a>
 						<button type="submit" class="btn btn-primary ms-auto">Send data</button>
 					</div>
-				</div>
-			</form>
+				</CardFooter>
+			</Card>
 		</div>
 
 		<div class="col-md-6">
-			<div class="card h-100">
-				<div class="card-body">
-					<h3 class="card-title">Project ID</h3>
-					<p class="card-subtitle">Used when interacting with the API.</p>
+			<Card class="h-100">
+				<CardBody>
+					<CardTitle>Project ID</CardTitle>
+					<CardSubtitle>Used when interacting with the API.</CardSubtitle>
 					<InputIcon icon="files" value="prj_5ae74426fe935327a8fa178b07d84ad9" readonly />
-				</div>
-				<div class="card-footer">
+				</CardBody>
+				<CardFooter>
 					<div class="row align-items-center">
 						<div class="col">Learn more about <a href="#">Project ID</a></div>
 						<div class="col-auto"><Button text="Save" color="primary" /></div>
 					</div>
-				</div>
-			</div>
+				</CardFooter>
+			</Card>
 		</div>
 
 		<div class="col-md-6">
-			<div class="card">
-				<div class="card-body">
-					<h3 class="card-title">Node.js Version</h3>
-					<p class="card-subtitle">
+			<Card>
+				<CardBody>
+					<CardTitle>Node.js Version</CardTitle>
+					<CardSubtitle>
 						The version of Node.js that is used in the Build Step and for Serverless Functions. A new Deployment is required for your changes to take effect.
-					</p>
+					</CardSubtitle>
 					<select class="form-select">
 						<option>14.x</option>
 						<option>12.x</option>
 					</select>
-				</div>
-				<div class="card-footer">Learn more about <a href="#">Node.js Version</a></div>
-			</div>
+				</CardBody>
+				<CardFooter>Learn more about <a href="#">Node.js Version</a></CardFooter>
+			</Card>
 		</div>
 
 		<div class="col-12 col-lg-4"><Layout /></div>
@@ -114,50 +121,46 @@ const rows = [
 		<div class="col-lg-8">
 			<div class="row row-cards">
 				<div class="col-12 col-lg-6">
-					<div class="card">
-						<div class="card-header"><h3 class="card-title">Input mask</h3></div>
-						<div class="card-body">
-							<div class="mb-3"><label class="form-label">Date</label><InputMask mask="00/00/0000" visible /></div>
-							<div class="mb-3"><label class="form-label">Hour</label><InputMask mask="00:00:00" visible /></div>
-							<div class="mb-3"><label class="form-label">Date &amp; Hour</label><InputMask mask="00/00/0000 00:00:00" visible /></div>
-							<div class="mb-3"><label class="form-label">ZIP Code</label><InputMask mask="00000-000" visible /></div>
-							<div class="mb-3"><label class="form-label">Money</label><InputMask mask="000.000.000.000.000,00" visible reverse /></div>
-							<div class="mb-3"><label class="form-label">Telephone</label><InputMask mask="0000-0000" visible /></div>
-							<div class="mb-3"><label class="form-label">Telephone with Code Area</label><InputMask mask="(00) 0000-0000" visible /></div>
-							<div class="mb-3"><label class="form-label">IP Address</label><InputMask mask="099.099.099.099" placeholder="000.000.000.000" visible /></div>
-						</div>
-					</div>
+					<Card>
+						<CardHeader title="Input mask" />
+						<CardBody>
+							<FormGroup label="Date"><InputMask mask="00/00/0000" visible /></FormGroup>
+							<FormGroup label="Hour"><InputMask mask="00:00:00" visible /></FormGroup>
+							<FormGroup label={'Date & Hour'}><InputMask mask="00/00/0000 00:00:00" visible /></FormGroup>
+							<FormGroup label="ZIP Code"><InputMask mask="00000-000" visible /></FormGroup>
+							<FormGroup label="Money"><InputMask mask="000.000.000.000.000,00" visible reverse /></FormGroup>
+							<FormGroup label="Telephone"><InputMask mask="0000-0000" visible /></FormGroup>
+							<FormGroup label="Telephone with Code Area"><InputMask mask="(00) 0000-0000" visible /></FormGroup>
+							<FormGroup label="IP Address"><InputMask mask="099.099.099.099" placeholder="000.000.000.000" visible /></FormGroup>
+						</CardBody>
+					</Card>
 				</div>
 				<div class="col-12 col-lg-6">
-					<form class="card h-100">
-						<div class="card-header"><h3 class="card-title">My Profile</h3></div>
-						<div class="card-body">
+					<Card as="form" class="h-100">
+						<CardHeader title="My Profile" />
+						<CardBody>
 							<div class="mb-3">
 								<div class="row">
 									<div class="col-auto"><Avatar person={people[2]} size="md" /></div>
 									<div class="col">
-										<div class="mb-3">
-											<label class="form-label">Email-Address</label>
+										<FormGroup label="Email-Address">
 											<input class="form-control" placeholder="your-email@domain.com" />
-										</div>
+										</FormGroup>
 									</div>
 								</div>
 							</div>
-							<div class="mb-3">
-								<label class="form-label">Bio</label>
+							<FormGroup label="Bio">
 								<textarea class="form-control" rows="5">Big belly rude boy, million dollar hustler. Unemployed.</textarea>
-							</div>
-							<div class="mb-3">
-								<label class="form-label">Email-Address</label>
+							</FormGroup>
+							<FormGroup label="Email-Address">
 								<input class="form-control" placeholder="your-email@domain.com" />
-							</div>
-							<div class="mb-3">
-								<label class="form-label">Password</label>
+							</FormGroup>
+							<FormGroup label="Password">
 								<input type="password" class="form-control" value="password" />
-							</div>
-						</div>
-						<div class="card-footer text-end"><Button text="Save" color="primary" /></div>
-					</form>
+							</FormGroup>
+						</CardBody>
+						<CardFooter class="text-end"><Button text="Save" color="primary" /></CardFooter>
+					</Card>
 				</div>
 			</div>
 		</div>
@@ -165,48 +168,45 @@ const rows = [
 		<div class="col-lg-12">
 			<div class="row row-cards">
 				<div class="col-12 col-lg-6">
-					<form class="card">
-						<div class="card-body">
-							<h3 class="card-title">Edit Profile</h3>
+					<Card as="form">
+						<CardBody>
+							<CardTitle>Edit Profile</CardTitle>
 							<div class="row row-cards">
-								<div class="col-md-5"><div class="mb-3"><label class="form-label">Company</label><input type="text" class="form-control" disabled="" placeholder="Company" value="Creative Code Inc." /></div></div>
-								<div class="col-sm-6 col-md-3"><div class="mb-3"><label class="form-label">Username</label><input type="text" class="form-control" placeholder="Username" value="michael23" /></div></div>
-								<div class="col-sm-6 col-md-4"><div class="mb-3"><label class="form-label">Email address</label><input type="email" class="form-control" placeholder="Email" /></div></div>
-								<div class="col-sm-6 col-md-6"><div class="mb-3"><label class="form-label">First Name</label><input type="text" class="form-control" placeholder="Company" value="Chet" /></div></div>
-								<div class="col-sm-6 col-md-6"><div class="mb-3"><label class="form-label">Last Name</label><input type="text" class="form-control" placeholder="Last Name" value="Faker" /></div></div>
-								<div class="col-md-12"><div class="mb-3"><label class="form-label">Address</label><input type="text" class="form-control" placeholder="Home Address" value="Melbourne, Australia" /></div></div>
-								<div class="col-sm-6 col-md-4"><div class="mb-3"><label class="form-label">City</label><input type="text" class="form-control" placeholder="City" value="Melbourne" /></div></div>
-								<div class="col-sm-6 col-md-3"><div class="mb-3"><label class="form-label">Postal Code</label><input type="test" class="form-control" placeholder="ZIP Code" /></div></div>
-								<div class="col-md-5"><div class="mb-3"><label class="form-label">Country</label><select class="form-control form-select"><option value="">Germany</option></select></div></div>
+								<div class="col-md-5"><FormGroup label="Company"><input type="text" class="form-control" disabled="" placeholder="Company" value="Creative Code Inc." /></FormGroup></div>
+								<div class="col-sm-6 col-md-3"><FormGroup label="Username"><input type="text" class="form-control" placeholder="Username" value="michael23" /></FormGroup></div>
+								<div class="col-sm-6 col-md-4"><FormGroup label="Email address"><input type="email" class="form-control" placeholder="Email" /></FormGroup></div>
+								<div class="col-sm-6 col-md-6"><FormGroup label="First Name"><input type="text" class="form-control" placeholder="Company" value="Chet" /></FormGroup></div>
+								<div class="col-sm-6 col-md-6"><FormGroup label="Last Name"><input type="text" class="form-control" placeholder="Last Name" value="Faker" /></FormGroup></div>
+								<div class="col-md-12"><FormGroup label="Address"><input type="text" class="form-control" placeholder="Home Address" value="Melbourne, Australia" /></FormGroup></div>
+								<div class="col-sm-6 col-md-4"><FormGroup label="City"><input type="text" class="form-control" placeholder="City" value="Melbourne" /></FormGroup></div>
+								<div class="col-sm-6 col-md-3"><FormGroup label="Postal Code"><input type="test" class="form-control" placeholder="ZIP Code" /></FormGroup></div>
+								<div class="col-md-5"><FormGroup label="Country"><select class="form-control form-select"><option value="">Germany</option></select></FormGroup></div>
 								<div class="col-md-12">
-									<div class="mb-3 mb-0">
-										<label class="form-label">About Me</label>
+									<FormGroup label="About Me" class="mb-3 mb-0">
 										<textarea rows="5" class="form-control" placeholder="Here can be your description" value="Mike">Oh so, your weak rhyme
 You doubt I'll bother, reading into it
 I'll probably won't, left to my own devices
 But that's the difference in our opinions.</textarea>
-									</div>
+									</FormGroup>
 								</div>
 							</div>
-						</div>
-						<div class="card-footer text-end"><button type="submit" class="btn btn-primary">Update Profile</button></div>
-					</form>
+						</CardBody>
+						<CardFooter class="text-end"><button type="submit" class="btn btn-primary">Update Profile</button></CardFooter>
+					</Card>
 				</div>
 				<div class="col-12 col-lg-6">
-					<div class="card h-100">
-						<div class="card-header"><h3 class="card-title">HTTP Request</h3></div>
-						<div class="card-body">
+					<Card class="h-100">
+						<CardHeader title="HTTP Request" />
+						<CardBody>
 							<div class="row row-cards">
-								<div class="mb-3 col-sm-4 col-md-2">
-									<label class="form-label required">Method</label>
+								<FormGroup label="Method" required class="mb-3 col-sm-4 col-md-2">
 									<select class="form-select">
 										{httpMethods.map((m) => <option value={m}>{m}</option>)}
 									</select>
-								</div>
-								<div class="mb-3 col-sm-8 col-md-10">
-									<label class="form-label required">URL</label>
+								</FormGroup>
+								<FormGroup label="URL" required class="mb-3 col-sm-8 col-md-10">
 									<input name="url" type="text" class="form-control" value="https://content.googleapis.com/discovery/v1/apis/surveys/v2/rest" />
-								</div>
+								</FormGroup>
 							</div>
 							<div class="form-label">Assertions</div>
 							<div class="table-responsive">
@@ -236,9 +236,9 @@ But that's the difference in our opinions.</textarea>
 									</tbody>
 								</table>
 							</div>
-						</div>
-						<div class="card-footer text-end"><button type="submit" class="btn btn-primary">Make request</button></div>
-					</div>
+						</CardBody>
+						<CardFooter class="text-end"><button type="submit" class="btn btn-primary">Make request</button></CardFooter>
+					</Card>
 				</div>
 			</div>
 		</div>

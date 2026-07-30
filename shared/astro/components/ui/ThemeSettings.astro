@@ -1,7 +1,10 @@
 ---
 // The offcanvas behavior script lives in BaseLayout (page scripts render after
 // the global scripts, mirroring the Eleventy {% scripts %} capture).
+
+import FormHint from './FormHint.astro';
 import Icon from './Icon.astro';
+import FormGroup from './FormGroup.astro';
 import { site } from '@shared/lib/site';
 
 const defaults = {
@@ -39,9 +42,8 @@ const defaults = {
 		</div>
 		<div class="offcanvas-body d-flex flex-column">
 			<div>
-				<div class="mb-4">
-					<label class="form-label">Color mode</label>
-					<p class="form-hint">Choose the color mode for your app.</p>
+				<FormGroup label="Color mode" class="mb-4">
+					<FormHint as="p">Choose the color mode for your app.</FormHint>
 					{
 						['light', 'dark', 'auto'].map((mode) => (
 							<label class="form-check">
@@ -58,11 +60,10 @@ const defaults = {
 							</label>
 						))
 					}
-				</div>
+				</FormGroup>
 
-				<div class="mb-4">
-					<label class="form-label">Color scheme</label>
-					<p class="form-hint">The perfect color mode for your app.</p>
+				<FormGroup label="Color scheme" class="mb-4">
+					<FormHint as="p">The perfect color mode for your app.</FormHint>
 
 					<div class="row g-2">
 						{
@@ -87,11 +88,10 @@ const defaults = {
 							</label>
 						</div>
 					</div>
-				</div>
+				</FormGroup>
 
-				<div class="mb-4">
-					<label class="form-label">Font family</label>
-					<p class="form-hint">Choose the font family that fits your app.</p>
+				<FormGroup label="Font family" class="mb-4">
+					<FormHint as="p">Choose the font family that fits your app.</FormHint>
 
 					<div>
 						{
@@ -113,11 +113,10 @@ const defaults = {
 							))
 						}
 					</div>
-				</div>
+				</FormGroup>
 
-				<div class="mb-4">
-					<label class="form-label">Theme base</label>
-					<p class="form-hint">Choose the gray shade for your app.</p>
+				<FormGroup label="Theme base" class="mb-4">
+					<FormHint as="p">Choose the gray shade for your app.</FormHint>
 
 					<div>
 						{
@@ -139,11 +138,10 @@ const defaults = {
 							))
 						}
 					</div>
-				</div>
+				</FormGroup>
 
-				<div class="mb-4">
-					<label class="form-label">Corner Radius</label>
-					<p class="form-hint">Choose the border radius factor for your app.</p>
+				<FormGroup label="Corner Radius" class="mb-4">
+					<FormHint as="p">Choose the border radius factor for your app.</FormHint>
 
 					<div>
 						{
@@ -163,7 +161,7 @@ const defaults = {
 							))
 						}
 					</div>
-				</div>
+				</FormGroup>
 			</div>
 
 			<div class="mt-auto space-y">

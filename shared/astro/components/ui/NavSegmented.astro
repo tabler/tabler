@@ -1,6 +1,5 @@
 ---
-// Port of ui/nav-segmented.html
-import Icon from '../Icon.astro';
+import Icon from './Icon.astro';
 
 interface Props {
 	items?: string;
@@ -51,8 +50,6 @@ const navClasses = [
 	fullWidth && 'w-100',
 	className,
 ]
-	.filter(Boolean)
-	.join(' ');
 
 const rows = Array.from({ length: count }, (_, i) => {
 	const forloopIndex = i + 1;
@@ -65,13 +62,11 @@ const rows = Array.from({ length: count }, (_, i) => {
 		isDefault && !name && 'active',
 		hover === index && 'hover',
 	]
-		.filter(Boolean)
-		.join(' ');
 	return { forloopIndex, index, isDisabled, isDefault, linkClasses, icon: iconsArr[i], item: itemsArr[i] };
 });
 ---
 
-<nav class={navClasses} role="tablist" aria-orientation={vertical ? 'vertical' : undefined}>
+<nav class:list={navClasses} role="tablist" aria-orientation={vertical ? 'vertical' : undefined}>
 	{
 		rows.map((row) => {
 			const Element = name ? 'label' : 'button';
@@ -88,7 +83,7 @@ const rows = Array.from({ length: count }, (_, i) => {
 					)}
 					<Element
 						for={name ? `segmented-${name}-${row.index}` : undefined}
-						class={row.linkClasses}
+						class:list={row.linkClasses}
 						role="tab"
 						data-bs-toggle={name ? undefined : 'tab'}
 						aria-selected={row.isDefault ? 'true' : 'false'}

@@ -1,10 +1,12 @@
 ---
-// Port of cards/recent-activity.html
 // NOTE: the Liquid source passes class="icon text-{{ item.icon_color }}" as an
 // include argument to ui/icon.html; Liquid does NOT re-interpolate include-arg
 // strings, so the reference output contains the LITERAL text
 // `icon text-{{ item.icon_color }}` in the icon class. We reproduce it verbatim.
-import Icon from '../Icon.astro';
+
+import CardActions from '../ui/CardActions.astro';
+import Icon from '../ui/Icon.astro';
+import CardTitle from '../ui/CardTitle.astro';
 import crmDashboard from '@data/crm-dashboard.json';
 
 const activity = crmDashboard.recent_activity;
@@ -12,10 +14,10 @@ const activity = crmDashboard.recent_activity;
 
 <div class="card" style="height: 28rem">
 	<div class="card-header">
-		<h3 class="card-title">{activity.title}</h3>
-		<div class="card-actions">
+		<CardTitle>{activity.title}</CardTitle>
+		<CardActions>
 			<a href="#" class="small fw-medium text-primary">{activity.view_all_text}</a>
-		</div>
+		</CardActions>
 	</div>
 	<div class="card-body card-body-scrollable card-body-scrollable-shadow">
 		<div class="divide-y">

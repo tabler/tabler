@@ -1,5 +1,4 @@
 ---
-// Port of shared/includes/ui/select.html.
 // Renders a <select id="select-{id}"> populated from @data/selects.json (+ people)
 // and registers a TomSelect init <script> via addPageScript (the include's
 // {% capture_script %}). Registration is synchronous — see src/lib/page-scripts.ts.
@@ -49,8 +48,6 @@ const selectClass = [
 	className,
 	state && `is-${state}`,
 ]
-	.filter(Boolean)
-	.join(' ');
 
 const isMultiple = Boolean(multiple || data.multiple);
 
@@ -137,7 +134,7 @@ if (id && script && !showScripts) {
 {
 	id && (
 		<select
-			class={selectClass}
+			class:list={selectClass}
 			placeholder={placeholder}
 			id={`select-${id}`}
 			value={value}

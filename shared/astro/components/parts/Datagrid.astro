@@ -4,12 +4,12 @@
 // Nested includes used only here are inlined:
 // - ui/status.html (call: text="Active" color="green") — inlined; the dot/animated/lite
 //   branches of the Liquid include are not ported (unused here).
-// - ui/avatar-list.html (call: stacked=true text="+3" size="xs") — inlined; the
-//   limit/offset/class parameters of the Liquid include are not ported (unused here).
+// - ui/avatar-list.html (call: stacked=true text="+3" size="xs")
 // TODO: the Liquid avatar includes pass rounded=true, which ui/avatar.html ignores
 // (no output) — intentionally not ported.
 import Avatar from '../ui/Avatar.astro';
-import Icon from '../Icon.astro';
+import AvatarList from '../ui/AvatarList.astro';
+import Icon from '../ui/Icon.astro';
 import people from '@data/people.json';
 
 interface Person {
@@ -19,7 +19,6 @@ interface Person {
 }
 
 const creator = (people as Person[])[0];
-const avatarListPeople = (people as Person[]).slice(0, 5);
 ---
 
 <div class="datagrid">
@@ -61,10 +60,7 @@ const avatarListPeople = (people as Person[]).slice(0, 5);
 	<div class="datagrid-item">
 		<div class="datagrid-title">Avatars list</div>
 		<div class="datagrid-content">
-			<div class="avatar-list avatar-list-stacked">
-				{avatarListPeople.map((person) => <Avatar person={person} size="xs" />)}
-				<Avatar placeholder="+3" size="xs" />
-			</div>
+			<AvatarList stacked={true} size="xs" text="+3" />
 		</div>
 	</div>
 	<div class="datagrid-item">

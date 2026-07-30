@@ -3,7 +3,6 @@ import { site } from '@shared/lib/site';
 
 export const prerender = true;
 
-// Port of preview/pages/robots.liquid: the sitemap URL is absolute outside
 // development, and crawling is allowed only in the preview environment.
 export const GET: APIRoute = () => {
 	const environment = process.env.NODE_ENV || 'production';

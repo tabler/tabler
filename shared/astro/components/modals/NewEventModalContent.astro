@@ -1,7 +1,7 @@
 ---
-// Port of parts/modals/new-event.html.
-import Button from '../Button.astro';
+import Button from '../ui/Button.astro';
 import Datepicker from '../ui/Datepicker.astro';
+import FormGroup from '../ui/FormGroup.astro';
 ---
 
 <div class="modal-header">
@@ -11,26 +11,22 @@ import Datepicker from '../ui/Datepicker.astro';
 
 <div class="modal-body">
 	<form>
-		<div class="mb-4">
-			<label class="form-label" for="event-title">Title</label>
+		<FormGroup label="Title" for="event-title" class="mb-4">
 			<input class="form-control" id="event-title" type="text" placeholder="Event title">
-		</div>
-		<div class="mb-4">
-			<label class="form-label" for="event-description">Description</label>
+		</FormGroup>
+		<FormGroup label="Description" for="event-description" class="mb-4">
 			<textarea class="form-control" id="event-description" rows="3" placeholder="Event description"></textarea>
-		</div>
+		</FormGroup>
 		<div class="row">
 			<div class="col">
-				<div class="mb-4">
-					<label class="form-label" for="event-start">Start</label>
+				<FormGroup label="Start" for="event-start" class="mb-4">
 					<Datepicker layout="icon" id="event-start" />
-				</div>
+				</FormGroup>
 			</div>
 			<div class="col">
-				<div class="mb-4">
-					<label class="form-label" for="event-end">End</label>
+				<FormGroup label="End" for="event-end" class="mb-4">
 					<Datepicker layout="icon" id="event-end" />
-				</div>
+				</FormGroup>
 			</div>
 		</div>
 		<Button type="submit" text="Create event" color="primary" block class="mt-4" />

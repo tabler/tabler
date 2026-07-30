@@ -1,11 +1,13 @@
 ---
-// Port of preview/pages/playground-layout.html (layout: default).
 // Front matter: layout-sidebar + layout-sidebar-dark + page-header + pretitle.
 // Note: layout-navbar-toolbar is an inert front-matter key — it is not
 // referenced by default.html or any include, so there is no prop for it.
 // No page-menu front matter → pageMenu is intentionally not passed (nothing
 // active in the navbar/sidebar, matching the Eleventy output).
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
+import Card from '@shared/components/ui/Card.astro';
+import CardBody from '@shared/components/ui/CardBody.astro';
+import CardTitle from '@shared/components/ui/CardTitle.astro';
 ---
 
 <DefaultLayout
@@ -17,12 +19,12 @@ import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
 >
 	<div class="row row-cards">
 		<div class="col-12">
-			<div class="card">
-				<div class="card-body">
-					<h2 class="card-title">Sandbox</h2>
+			<Card>
+				<CardBody>
+					<CardTitle as="h2">Sandbox</CardTitle>
 					<p class="text-secondary mb-0">Edit this page to try layout options, components, and styles.</p>
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 	</div>
 </DefaultLayout>

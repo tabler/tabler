@@ -8,7 +8,7 @@ interface Props {
 
 const { flag = 'pl', size, class: className } = Astro.props;
 
-const classes = `flag${size ? ` flag-${size}` : ''} flag-country-${flag.toLowerCase()}${className ? ` ${className}` : ''}`;
+const classes = ['flag', size && `flag-${size}`, `flag-country-${flag.toLowerCase()}`, className];
 ---
 
-<span class={classes}></span>
+<span class:list={classes}></span>

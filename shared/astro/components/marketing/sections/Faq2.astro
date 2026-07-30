@@ -1,5 +1,4 @@
 ---
-// Port of marketing/sections/faq-2.html.
 interface Props {
 	background?: string;
 	class?: string;
@@ -8,11 +7,9 @@ interface Props {
 const { background, class: className } = Astro.props;
 
 const sectionClass = ['section', background && `section-${background}`, className]
-	.filter(Boolean)
-	.join(' ');
 ---
 
-<section class={sectionClass}>
+<section class:list={sectionClass}>
 	<div class="container">
 		<div class="row g-xl-6">
 			<div class="col-lg-4">

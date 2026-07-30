@@ -1,7 +1,7 @@
 ---
-// Port of ui/table.html
 import Avatar from './Avatar.astro';
-import Button from '../Button.astro';
+import Button from './Button.astro';
+import ButtonList from './ButtonList.astro';
 import DropdownMenu from './DropdownMenu.astro';
 import people from '@data/people.json';
 
@@ -50,12 +50,10 @@ const tableClasses = [
 	stripped && 'table-striped',
 	nowrap && 'table-nowrap',
 ]
-	.filter(Boolean)
-	.join(' ');
 ---
 
 <div class="table-responsive">
-	<table class={tableClasses}>
+	<table class:list={tableClasses}>
 		<thead>
 		<tr>
 			<th>Name</th>
@@ -117,7 +115,7 @@ const tableClasses = [
 
 					<td>
 						{buttons ? (
-							<div class="btn-list flex-nowrap">
+							<ButtonList class="flex-nowrap">
 								<Button text="Edit" />
 								<div class="dropdown">
 									<button class="btn dropdown-toggle align-text-top" data-bs-toggle="dropdown">
@@ -125,7 +123,7 @@ const tableClasses = [
 									</button>
 									<DropdownMenu right={true} />
 								</div>
-							</div>
+							</ButtonList>
 						) : (
 							<a href="#">Edit</a>
 						)}
