@@ -1,51 +1,6 @@
 ---
 // Port of preview/pages/turbo-loader.html (layout: default, page-libs: [turbo]).
-// The {% capture_script %} block is registered synchronously (before any await).
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
-import { addPageScript } from '@shared/lib/page-scripts';
-
-addPageScript(`<script>
-document.addEventListener("DOMContentLoaded", function() {
-	Turbo.session.drive = false
-
-	if(window.Turbo) {
-		var loader = Turbo.navigator.delegate.adapter.progressBar
-
-		console.log(loader);
-
-		document.getElementById("show-loader").addEventListener("click", function(e) {
-			loader.show()
-			e.preventDefault()
-		})
-
-		document.getElementById("hide-loader").addEventListener("click", function(e) {
-			loader.hide()
-			e.preventDefault()
-		})
-
-		document.getElementById("set-10").addEventListener("click", function(e) {
-			loader.show()
-			loader.setValue(.1)
-			e.preventDefault()
-		})
-
-		document.getElementById("set-50").addEventListener("click", function(e) {
-			loader.show()
-			loader.setValue(.5)
-			e.preventDefault()
-		})
-
-		document.getElementById("set-100").addEventListener("click", function(e) {
-			loader.show()
-			loader.setValue(1)
-			setTimeout(function() {
-				loader.hide()
-			}, 1000)
-			e.preventDefault()
-		})
-	}
-});
-</script>`);
 ---
 
 <DefaultLayout pageMenu="plugins.turbo" pageLibs={['turbo']}>
@@ -60,4 +15,53 @@ document.addEventListener("DOMContentLoaded", function() {
 			</div>
 		</div>
 	</div>
+	<!--
+		is:inline: turbo loads via a deferred page-lib <script>; see FormElements1.astro
+		for why a processed (module) script here would run too early and find
+		window.Turbo undefined.
+	-->
+	<script is:inline>
+		function initTurboLoader() {
+			Turbo.session.drive = false;
+
+			if (window.Turbo) {
+				const loader = Turbo.navigator.delegate.adapter.progressBar;
+
+				console.log(loader);
+
+				document.getElementById('show-loader').addEventListener('click', (e) => {
+					loader.show();
+					e.preventDefault();
+				});
+
+				document.getElementById('hide-loader').addEventListener('click', (e) => {
+					loader.hide();
+					e.preventDefault();
+				});
+
+				document.getElementById('set-10').addEventListener('click', (e) => {
+					loader.show();
+					loader.setValue(0.1);
+					e.preventDefault();
+				});
+
+				document.getElementById('set-50').addEventListener('click', (e) => {
+					loader.show();
+					loader.setValue(0.5);
+					e.preventDefault();
+				});
+
+				document.getElementById('set-100').addEventListener('click', (e) => {
+					loader.show();
+					loader.setValue(1);
+					setTimeout(() => {
+						loader.hide();
+					}, 1000);
+					e.preventDefault();
+				});
+			}
+		}
+
+		document.readyState !== 'loading' ? initTurboLoader() : document.addEventListener('DOMContentLoaded', initTurboLoader, { once: true });
+	</script>
 </DefaultLayout>

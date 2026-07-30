@@ -36,5 +36,7 @@ const target = isAbsolute ? url : `${base}${url}`;
 	<meta http-equiv="refresh" content={`0; url=${target}`} />
 	<meta name="robots" content="noindex" />
 	<noscript><a href={target}>Click here if you are not redirected.</a></noscript>
-	<script is:inline set:html={`location=${JSON.stringify(target)};`}></script>
+	<script define:vars={{ target }}>
+		location = target;
+	</script>
 </html>

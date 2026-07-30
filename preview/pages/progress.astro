@@ -5,67 +5,6 @@ import Progress from '@shared/components/ui/Progress.astro';
 import ProgressSteps from '@shared/components/ui/ProgressSteps.astro';
 import ProgressBg from '@shared/components/ui/ProgressBg.astro';
 import ProgressDescription from '@shared/components/ui/ProgressDescription.astro';
-import { addPageScript } from '@shared/lib/page-scripts';
-
-addPageScript(`<!-- BEGIN SCRIPT OF ANIMATION -->
-<script>
-	/*
-	This script is for animation of the last progress bar
-	It increases the progress bar value by a random amount every 2 seconds until it reaches 100%
-	When it reaches 100%, it changes the color to green and stops the animation
-
-	This is just a demo script to show how to animate the progress bar. You can modify it as needed.
-	*/
-	document.addEventListener("DOMContentLoaded", function () {
-		var width = 0;
-		var setWidth = function(w) {
-			width = Math.min(Math.max(w, 0), 100);
-
-			progress.querySelector('.progress-bar').style.width = width + '%';
-			progress.querySelector('.progress-bar').setAttribute('aria-valuenow', width);
-			document.getElementById('progress-animated-value').innerText = width + '%';
-
-			if (width >= 100) {
-				progress.querySelector('.progress-bar').classList.add('bg-green');
-			} else {
-				progress.querySelector('.progress-bar').classList.remove('bg-green');
-			}
-		}
-
-		var progress = document.getElementById('progress-animated');
-
-		var increment = 0;
-		var interval = setInterval(function () {
-			increment = Math.ceil(Math.random() * 10);
-			setWidth(width + increment);
-
-			if (width >= 100) {
-				clearInterval(interval);
-			}
-		}, 2000);
-
-		document.getElementById('progress-animated-0').addEventListener('click', function() {
-			setWidth(0);
-		});
-
-		document.getElementById('progress-animated-add-10').addEventListener('click', function() {
-			setWidth(width + 10);
-		});
-
-
-		document.getElementById('progress-animated-minus-10').addEventListener('click', function() {
-			setWidth(width - 10);
-		});
-
-
-		document.getElementById('progress-animated-100').addEventListener('click', function() {
-			setWidth(100);
-		});
-
-
-	});
-</script>
-<!-- END SCRIPT OF ANIMATION -->`);
 ---
 
 <DefaultLayout title="Progress" pageHeader="Progress" pageMenu="base.progress">
@@ -190,6 +129,36 @@ addPageScript(`<!-- BEGIN SCRIPT OF ANIMATION -->
 						<button class="btn btn-sm ms-3" id="progress-animated-minus-10">-10%</button>
 						<button class="btn btn-sm" id="progress-animated-add-10">+10%</button>
 					</div>
+					<script>
+						/*
+						This script is for animation of the last progress bar.
+						It increases the progress bar value by a random amount every 2 seconds until it reaches 100%.
+						When it reaches 100%, it changes the color to green and stops the animation.
+
+						This is just a demo script to show how to animate the progress bar. You can modify it as needed.
+						*/
+						const progress = document.getElementById('progress-animated');
+						let width = 0;
+
+						const setWidth = (w) => {
+							width = Math.min(Math.max(w, 0), 100);
+
+							progress.querySelector('.progress-bar').style.width = `${width}%`;
+							progress.querySelector('.progress-bar').setAttribute('aria-valuenow', width);
+							document.getElementById('progress-animated-value').innerText = `${width}%`;
+							progress.querySelector('.progress-bar').classList.toggle('bg-green', width >= 100);
+						};
+
+						const interval = setInterval(() => {
+							setWidth(width + Math.ceil(Math.random() * 10));
+							if (width >= 100) clearInterval(interval);
+						}, 2000);
+
+						document.getElementById('progress-animated-0').addEventListener('click', () => setWidth(0));
+						document.getElementById('progress-animated-add-10').addEventListener('click', () => setWidth(width + 10));
+						document.getElementById('progress-animated-minus-10').addEventListener('click', () => setWidth(width - 10));
+						document.getElementById('progress-animated-100').addEventListener('click', () => setWidth(100));
+					</script>
 				</div>
 			</div>
 		</div>

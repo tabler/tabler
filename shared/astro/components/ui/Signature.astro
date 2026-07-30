@@ -1,11 +1,7 @@
 ---
 // Port of ui/signature.html.
-// Renders the signature canvas markup and registers its SignaturePad init
-// script via addPageScript (the include's {% capture_script %}). Registration
-// is synchronous in the frontmatter — see src/lib/page-scripts.ts.
+// Renders the signature canvas markup and its SignaturePad init script.
 import Icon from '../Icon.astro';
-import { addPageScript } from '@shared/lib/page-scripts';
-import InlineScript from '@shared/components/InlineScript.astro';
 
 interface Props {
 	id?: string;
@@ -31,19 +27,25 @@ const {
 const signatureClass = ['signature position-relative', className].filter(Boolean).join(' ');
 
 const clearSnippet = clear
-	? `		document.querySelector("#signature-${id}-clear").addEventListener("click", function () {
+	? `		document.querySelector(${JSON.stringify(`#signature-${id}-clear`)}).addEventListener("click", function () {
 		  signaturePad.clear();
 		});
 `
 	: '';
 
+// extraJs is a documented escape hatch for raw JS (see Props) — not user data, so it
+// stays interpolated verbatim rather than JSON-serialized.
 const extraSnippet = extraJs ? `${extraJs}
 ` : '';
 
+// set:html (below) is genuinely required here: extraJs is a documented raw-JS escape
+// hatch that must land *inside* the init callback body (it references canvas /
+// signaturePad), so the whole script has to be assembled as text — <script define:vars>
+// can only inject variables, not splice caller-supplied code into the function body.
 const script = `<!-- BEGIN SIGNATURE PAD -->
 <script>
-  document.addEventListener("${event}", function () {
-    const canvas = document.getElementById("signature-${id}");
+  document.addEventListener(${JSON.stringify(event)}, function () {
+    const canvas = document.getElementById(${JSON.stringify(`signature-${id}`)});
 
     if (canvas) {
       const signaturePad = new SignaturePad(canvas, {
@@ -70,7 +72,6 @@ ${extraSnippet}
     }
   });
 </script>`;
-addPageScript(script);
 ---
 
 <div class={signatureClass}>
@@ -85,4 +86,4 @@ addPageScript(script);
 	}
 	<canvas id={`signature-${id}`} width={width} height={height} class="signature-canvas"></canvas>
 </div>
-<InlineScript code={script} />
+<Fragment set:html={script} />

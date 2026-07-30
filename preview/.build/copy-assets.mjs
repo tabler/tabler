@@ -6,6 +6,15 @@ import { fileURLToPath } from 'node:url'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const repo = join(root, '..')
+const publicDir = join(root, 'public')
+
+// Always start from a clean public/ (mirrors @tabler/docs' and Bootstrap's own docs
+// integration — see astro:config:done in bootstrap/site/src/libs/astro.ts): running
+// this script twice in a row, or running it without a prior `pnpm run clean`, must
+// never be able to accumulate stale/nested content. Without this, a previous run's
+// output could get copied into a source directory and re-copied on the next run,
+// growing without bound (this happened for real — see preview/.build/vite.config.mts).
+rmSync(publicDir, { recursive: true, force: true })
 
 const copies = [
   // @tabler/core dist (css/js/fonts/img/libs) — same as the Eleventy passthrough
@@ -15,8 +24,12 @@ const copies = [
     required: true,
     allowDestinationFallback: true,
   },
-  // demo css/js built by this package's sass/vite pipeline
-  { from: join(root, 'dist', 'preview'), to: join(root, 'public', 'preview'), required: true },
+  // demo css/js built by this package's sass/vite pipeline. Source is tmp-assets/
+  // (NOT dist/) on purpose — dist/ is Astro's own build output, and copying from a
+  // path Astro also writes to caused unbounded growth across repeated builds (each
+  // `astro build` re-seeds dist/ from public/, which the next `pnpm run assets`
+  // would then copy right back in).
+  { from: join(root, 'tmp-assets'), to: join(root, 'public', 'preview'), required: true },
   // docs.css built by the @tabler/docs sass pipeline (used by docs pages)
   { from: join(repo, 'docs', 'dist', 'css'), to: join(root, 'public', 'css'), required: false },
   // static assets (photos, avatars, tracks, brand svgs...).

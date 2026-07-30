@@ -1,12 +1,8 @@
 ---
 // Port of shared/includes/ui/dropzone.html.
-// The Dropzone init <script> is captured via {% capture_script %} in Liquid, so it
-// is registered with addPageScript synchronously here. We mirror the development
-// build, which wraps the instance in window.tabler_dropzone.
+// The Dropzone init <script> renders directly here (no more page-scripts registry),
+// wrapping the instance in window.tabler_dropzone.
 // Liquid action="{{ page | relative }}/" resolves to "./" for root-level pages.
-import { addPageScript } from '@shared/lib/page-scripts';
-import InlineScript from '@shared/components/InlineScript.astro';
-
 interface Props {
 	id?: string;
 	multiple?: boolean;
@@ -17,18 +13,11 @@ interface Props {
 
 const { id, multiple, custom, text = 'Text', description = 'Description' } = Astro.props;
 
-const script = `<script>
-  window.tabler_dropzone = window.tabler_dropzone || {};
-
-  document.addEventListener("DOMContentLoaded", function() {
-    window.tabler_dropzone["dropzone-${id}"] = new Dropzone("#dropzone-${id}")
-  })
-</script>`;
-
-addPageScript(script);
+const dropzoneId = `dropzone-${id}`;
+const dropzoneSelector = `#dropzone-${id}`;
 ---
 
-<form class="dropzone" id={`dropzone-${id}`} action="./" autocomplete="off" novalidate>
+<form class="dropzone" id={dropzoneId} action="./" autocomplete="off" novalidate>
 	<div class="fallback">
 		{/* emit a bare boolean attribute (empty string) to match Liquid's {% if %}multiple */}
 		<input name="file" type="file" multiple={multiple ? '' : undefined} />
@@ -42,4 +31,12 @@ addPageScript(script);
 		)
 	}
 </form>
-<InlineScript code={script} />
+<script define:vars={{ dropzoneId, dropzoneSelector }}>
+	window.tabler_dropzone ??= {};
+
+	function initDropzone() {
+		window.tabler_dropzone[dropzoneId] = new Dropzone(dropzoneSelector);
+	}
+
+	document.readyState !== 'loading' ? initDropzone() : document.addEventListener('DOMContentLoaded', initDropzone, { once: true });
+</script>

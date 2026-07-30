@@ -54,44 +54,8 @@ const rows = (people as Record<string, any>[]).map((person, i) => {
 });
 
 // Inline <script> from advanced-table.html (renders in the page body).
-const advancedJson = JSON.stringify((tableProperties as Record<string, any>)['advanced-table']);
+const advancedTable = (tableProperties as Record<string, any>)['advanced-table'];
 const perPageDefault = perPage[1];
-const script = `
-	const advancedTable = ${advancedJson}
-	const setPageListItems = e => {
-		window.tabler_list["${tableId}"].page = parseInt(e.target.dataset.value)
-		window.tabler_list["${tableId}"].update()
-
-		document.querySelector("#page-count").innerHTML = e.target.dataset.value
-	}
-
-	window.tabler_list = window.tabler_list || {}
-	document.addEventListener("DOMContentLoaded", function() {
-		const list = window.tabler_list["${tableId}"] = new List('${tableId}', {
-			sortClass: 'table-sort',
-			listClass: 'table-tbody',
-			page: parseInt("${perPageDefault}"),
-			pagination: {
-				item: value => {
-					return \`<li class="page-item"><a class="page-link cursor-pointer">\${value.page}</a></li>\`
-				},
-				innerWindow: 1,
-				outerWindow: 1,
-				left: 0,
-				right: 0,
-			},
-			valueNames: advancedTable.headers.map(header => header['data-sort'])
-		});
-
-		const searchInput = document.querySelector('#${tableId}-search');
-
-		if (searchInput) {
-			searchInput.addEventListener('input', () => {
-				list.search(searchInput.value)
-			})
-		}
-	})
-`;
 ---
 
 {/*
@@ -224,4 +188,35 @@ const script = `
 	</div>
 </div>
 
-<script is:inline set:html={script} />
+<script define:vars={{ tableId, advancedTable, perPageDefault }}>
+	// Astro wraps define:vars scripts in an IIFE, so this needs an explicit window
+	// assignment to stay reachable from the onclick="setPageListItems(event)" markup below.
+	window.setPageListItems = function setPageListItems(e) {
+		window.tabler_list[tableId].page = parseInt(e.target.dataset.value);
+		window.tabler_list[tableId].update();
+
+		document.querySelector('#page-count').innerHTML = e.target.dataset.value;
+	};
+
+	function initAdvancedTable() {
+		window.tabler_list ??= {};
+		const list = (window.tabler_list[tableId] = new List(tableId, {
+			sortClass: 'table-sort',
+			listClass: 'table-tbody',
+			page: parseInt(perPageDefault),
+			pagination: {
+				item: (value) => `<li class="page-item"><a class="page-link cursor-pointer">${value.page}</a></li>`,
+				innerWindow: 1,
+				outerWindow: 1,
+				left: 0,
+				right: 0,
+			},
+			valueNames: advancedTable.headers.map((header) => header['data-sort']),
+		}));
+
+		const searchInput = document.querySelector(`#${tableId}-search`);
+		searchInput?.addEventListener('input', () => list.search(searchInput.value));
+	}
+
+	document.readyState !== 'loading' ? initAdvancedTable() : document.addEventListener('DOMContentLoaded', initAdvancedTable, { once: true });
+</script>

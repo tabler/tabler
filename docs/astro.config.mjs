@@ -17,11 +17,6 @@ export default defineConfig({
     host: true,
   },
   vite: {
-    // InlineScript.astro emits scripts inline at the component site —
-    // docs pages have no <PageScripts /> drain
-    define: {
-      'import.meta.env.INLINE_PAGE_SCRIPTS': 'true',
-    },
     resolve: {
       alias: {
         '@data': fileURLToPath(new URL('../shared/data', import.meta.url)),

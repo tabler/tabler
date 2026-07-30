@@ -1,8 +1,6 @@
 ---
 // Equivalent of ui/map-vector.html
-import { addPageScript } from '@shared/lib/page-scripts';
 import mapsVector from '@data/maps-vector.json';
-import InlineScript from '@shared/components/InlineScript.astro';
 
 interface MapData {
 	title?: string;
@@ -26,118 +24,67 @@ const { mapId, color: colorProp, ratio = '4x3' } = Astro.props;
 const data = (mapsVector as Record<string, MapData>)[mapId];
 const color = colorProp ?? data?.color ?? 'primary';
 
-let script = '';
-if (data) {
-	const scaleLines = Array.from({ length: 10 }, (_, n) => {
-		const i = n + 1;
-		return `						scale${i}: 'color-mix(in srgb, transparent, var(--tblr-primary) ${i * 10}%)',`;
-	}).join('\n');
+// scale1..scale10 — a 10-step color-mix ramp against var(--tblr-primary).
+const scale = Object.fromEntries(
+	Array.from({ length: 10 }, (_, n) => [
+		`scale${n + 1}`,
+		`color-mix(in srgb, transparent, var(--tblr-primary) ${(n + 1) * 10}%)`,
+	]),
+);
 
-	const valuesBlock = data.values
-		? `			series: {
-				regions: [{
-					attribute: "fill",
-					scale: {
-${scaleLines}
-					},
-					values: ${JSON.stringify(data.values)},
-				}]
-			}
-`
-		: '';
+const markers = data?.markers?.map((marker) => ({
+	coords: marker.coords.split(',').map((n) => Number(n.trim())),
+	name: marker.name,
+}));
 
-	const markersBlock = data.markers
-		? `			markers: [
-${data.markers
-	.map(
-		(marker) => `				{
-					coords: [${marker.coords}],
-					name: "${marker.name}",
-				},`
-	)
-	.join('\n')}
-			],
-			markerStyle: {
-				initial: {
-					r: 4,
-					stroke: '#fff',
-					opacity: 1,
-					strokeWidth: 3,
-					stokeOpacity: .5,
-					fill: 'var(--tblr-${color})'
-				},
-				hover: {
-					fill: 'var(--tblr-${color})',
-					stroke: 'var(--tblr-${color})'
-				}
-			},
-			markerLabelStyle: {
-				initial: {
-					fontSize: 10
-				},
-			},
-			labels: {
-				markers: {
-					render: function(marker) {
-						return marker.name
-					},
-				},
-			},
-`
-		: '';
+const mapKey = `map-${mapId}`;
+const mapSelector = `#map-${mapId}`;
 
-	const linesBlock = data.lines
-		? `			lines: [
-${data.lines
-	.map(
-		(line) => `				{
-					from: "${line.from}",
-					to: "${line.to}"
-				},`
-	)
-	.join('\n')}
-			],
-			lineStyle: {
-				strokeDasharray:"4 4",
-				animation: true,
-				stroke: "rgba(98, 105, 118, .75)",
-				strokeWidth: .5,
-			},
-`
-		: '';
-
-	const regionStyleInitial = !data.filled
-		? `					fill: 'var(--tblr-bg-surface-secondary)',
-					stroke: 'var(--tblr-border-color)',
-					strokeWidth: 2,`
-		: `					fill: 'var(--tblr-bg-surface-secondary)',
-					stroke: '#fff',
-					strokeWidth: 1,`;
-
-	script = `<script>
-	window.tabler_map_vector = window.tabler_map_vector || {};
-	document.addEventListener("DOMContentLoaded", function() {
-		const map = window.tabler_map_vector["map-${mapId}"] = new jsVectorMap({
-			selector: '#map-${mapId}',
-			map: '${data.map}',
+const mapOptions = data
+	? {
 			backgroundColor: 'transparent',
 			regionStyle: {
 				initial: {
-${regionStyleInitial}
-				}
+					fill: 'var(--tblr-bg-surface-secondary)',
+					stroke: data.filled ? '#fff' : 'var(--tblr-border-color)',
+					strokeWidth: data.filled ? 1 : 2,
+				},
 			},
-			zoomOnScroll: ${data.zoom ? 'true' : 'false'},
-			zoomButtons: ${data.zoom ? 'true' : 'false'},
-${valuesBlock}${markersBlock}${linesBlock}		});
-
-		window.addEventListener("resize", () => {
-			map.updateSize();
-		});
-	});
-</script>`;
-
-	addPageScript(script);
-}
+			zoomOnScroll: Boolean(data.zoom),
+			zoomButtons: Boolean(data.zoom),
+			...(data.values
+				? { series: { regions: [{ attribute: 'fill', scale, values: data.values }] } }
+				: {}),
+			...(markers
+				? {
+						markers,
+						markerStyle: {
+							initial: {
+								r: 4,
+								stroke: '#fff',
+								opacity: 1,
+								strokeWidth: 3,
+								stokeOpacity: 0.5,
+								fill: `var(--tblr-${color})`,
+							},
+							hover: { fill: `var(--tblr-${color})`, stroke: `var(--tblr-${color})` },
+						},
+						markerLabelStyle: { initial: { fontSize: 10 } },
+					}
+				: {}),
+			...(data.lines
+				? {
+						lines: data.lines,
+						lineStyle: {
+							strokeDasharray: '4 4',
+							animation: true,
+							stroke: 'rgba(98, 105, 118, .75)',
+							strokeWidth: 0.5,
+						},
+					}
+				: {}),
+		}
+	: undefined;
 ---
 
 {
@@ -145,10 +92,29 @@ ${valuesBlock}${markersBlock}${linesBlock}		});
 		<Fragment>
 			<div class={`ratio ratio-${ratio}`}>
 				<div>
-					<div id={`map-${mapId}`} class="w-100 h-100" />
+					<div id={mapKey} class="w-100 h-100" />
 				</div>
 			</div>
-			<InlineScript code={script} />
+			<script define:vars={{ mapKey, mapSelector, mapName: data.map, mapOptions }}>
+				window.tabler_map_vector ??= {};
+
+				function initMapVector() {
+					const map = (window.tabler_map_vector[mapKey] = new jsVectorMap({
+						selector: mapSelector,
+						map: mapName,
+						...mapOptions,
+						// labels.markers.render is a function, not JSON-serializable — added here
+						// rather than baked into mapOptions.
+						...(mapOptions.markers ? { labels: { markers: { render: (marker) => marker.name } } } : {}),
+					}));
+
+					window.addEventListener('resize', () => {
+						map.updateSize();
+					});
+				}
+
+				document.readyState !== 'loading' ? initMapVector() : document.addEventListener('DOMContentLoaded', initMapVector, { once: true });
+			</script>
 		</Fragment>
 	)
 }

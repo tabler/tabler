@@ -1,12 +1,8 @@
 ---
 // Port of shared/includes/ui/inline-player.html.
-// The Plyr init <script> is captured via {% capture_script %} in Liquid, so it is
-// registered with addPageScript synchronously here. We mirror the development
-// build, which wraps the instance in window.tabler_player.
+// The Plyr init <script> renders directly here (no more page-scripts registry),
+// wrapping the instance in window.tabler_player.
 // Renders nothing unless both id and embedId are provided (Liquid: {% if id and include.embed-id %}).
-import { addPageScript } from '@shared/lib/page-scripts';
-import InlineScript from '@shared/components/InlineScript.astro';
-
 interface Props {
 	id?: string;
 	type?: string;
@@ -17,22 +13,25 @@ interface Props {
 const { id, type = 'youtube', embedId } = Astro.props;
 
 const enabled = Boolean(id && embedId);
-
-let script = '';
-if (enabled) {
-	script = `<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    window.tabler_player = window.tabler_player || {};
-    window.Plyr && (window.tabler_player["player-${id}"] = new Plyr('#player-${id}'));
-  });
-</script>`;
-	addPageScript(script);
-}
+const playerId = `player-${id}`;
+const playerSelector = `#player-${id}`;
 ---
 
 {
 	enabled && (
-		<div id={`player-${id}`} data-plyr-provider={type} data-plyr-embed-id={embedId} />
+		<div id={playerId} data-plyr-provider={type} data-plyr-embed-id={embedId} />
 	)
 }
-{enabled && <InlineScript code={script} />}
+{
+	enabled && (
+		<script define:vars={{ playerId, playerSelector }}>
+			window.tabler_player ??= {};
+
+			function initPlayer() {
+				window.Plyr && (window.tabler_player[playerId] = new Plyr(playerSelector));
+			}
+
+			document.readyState !== 'loading' ? initPlayer() : document.addEventListener('DOMContentLoaded', initPlayer, { once: true });
+		</script>
+	)
+}

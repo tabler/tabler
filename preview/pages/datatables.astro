@@ -37,8 +37,15 @@ const rows = (rollercoasters as Record<string, any>[]).map((rc, i) => {
 	};
 });
 
-const parameters =
-	"[ 'sort-name', 'sort-type', 'sort-city', 'sort-score', { attr: 'data-date', name: 'sort-date' }, { attr: 'data-progress', name: 'sort-progress' }, 'sort-quantity' ]";
+const valueNames = [
+	'sort-name',
+	'sort-type',
+	'sort-city',
+	'sort-score',
+	{ attr: 'data-date', name: 'sort-date' },
+	{ attr: 'data-progress', name: 'sort-progress' },
+	'sort-quantity',
+];
 ---
 
 <DefaultLayout title="Datatables" pageHeader="Datatables" pageMenu="plugins.datatables" pageLibs={['lists']}>
@@ -80,5 +87,5 @@ const parameters =
 		</div>
 	</div>
 
-	<TablerList id={id} parameters={parameters} />
+	<TablerList id={id} valueNames={valueNames} />
 </DefaultLayout>
