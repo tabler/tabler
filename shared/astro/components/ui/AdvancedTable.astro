@@ -1,8 +1,9 @@
 ---
-
+// Port of ui/advanced-table.html
 import BadgesList from './BadgesList.astro';
 import Icon from './Icon.astro';
-import { liquidLongDate } from '@shared/lib/liquid-date';
+import { formatLongDate } from '@shared/lib/date-format';
+import { randomNumber, randomItem, randomDate } from '@shared/lib/pseudo-random';
 import Avatar from './Avatar.astro';
 import Button from './Button.astro';
 import ButtonList from './ButtonList.astro';
@@ -26,31 +27,12 @@ const headers = (tableProperties as Record<string, any>)['advanced-table'].heade
 	name: string;
 }[];
 
-// Equivalent of the random_number / random_date filters from shared/e11ty/filters.mjs.
-function randomNumber(x: number, min = 0, max = 100): number {
-	let value =
-		((x * x * Math.PI * Math.E * (max + 1) * (Math.sin(x) / Math.cos(x * x))) % (max + 1 - min)) + min;
-	value = value > max ? max : value;
-	value = value < min ? min : value;
-	return Math.floor(value);
-}
-
-function randomItem<T>(x: number, items: T[]): T {
-	return items[randomNumber(x, 0, items.length - 1)];
-}
-
-function randomDate(x: number): Date {
-	const start = new Date('2024-01-01').getTime() / 1000;
-	const end = new Date('2024-12-30').getTime() / 1000;
-	return new Date(randomNumber(x, start, end) * 1000);
-}
-
 const rows = (people as Record<string, any>[]).map((person, i) => {
 	const index = i + 1;
 	const status = randomItem(index + 5, statuses);
 	const itemTags = randomItem(index + 5, tags).split(',');
 	const category = randomItem(index, categories);
-	const date = liquidLongDate(randomDate(index));
+	const date = formatLongDate(randomDate(index));
 	return { person, index, status, itemTags, category, date };
 });
 

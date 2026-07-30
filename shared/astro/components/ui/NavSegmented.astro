@@ -1,5 +1,7 @@
 ---
+// Port of ui/nav-segmented.html
 import Icon from './Icon.astro';
+import { includeArgCount } from '@shared/lib/include-args';
 
 interface Props {
 	items?: string[];
@@ -33,8 +35,7 @@ const {
 // `nav-N` junk classes are NOT stripped by the DOM diff, so they must be
 // reproduced verbatim. An explicit size stays (nav-sm/nav-lg).
 const includeArgKeys = ['items', 'icons', 'disabled', 'hover', 'default', 'vertical', 'size', 'fullWidth', 'class', 'name'] as const;
-const props = Astro.props as Record<string, unknown>;
-const argCount = includeArgKeys.filter((k) => props[k] !== undefined).length;
+const argCount = includeArgCount(Astro.props as Record<string, unknown>, includeArgKeys);
 const sizeToken = size ? `nav-${size}` : `nav-${argCount}`;
 
 const itemsArr = items ?? [];

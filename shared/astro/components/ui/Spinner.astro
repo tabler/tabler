@@ -5,6 +5,8 @@
 // `spinner-border-2`. Unlike icon-N/btn-N these `spinner-{type}-N` classes are
 // NOT stripped by the DOM diff (only icon|btn|avatar|badge|progress|flag|payment|
 // steps|chart|form-switch|modal|nav are), so they must be reproduced verbatim.
+import { includeArgCount } from '@shared/lib/include-args';
+
 interface Props {
 	element?: string;
 	type?: string;
@@ -16,8 +18,7 @@ interface Props {
 const { element: Element = 'div', type = 'border', color, size, class: className } = Astro.props;
 
 const includeArgKeys = ['element', 'type', 'color', 'size', 'class'] as const;
-const props = Astro.props as Record<string, unknown>;
-const argCount = includeArgKeys.filter((k) => props[k] !== undefined).length;
+const argCount = includeArgCount(Astro.props as Record<string, unknown>, includeArgKeys);
 // include['size'] → explicit value, else the arg count meta-property.
 const sizeValue = size !== undefined ? size : argCount || undefined;
 

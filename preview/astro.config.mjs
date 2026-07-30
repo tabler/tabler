@@ -4,6 +4,7 @@ import mdx from '@astrojs/mdx';
 import { satteri } from '@astrojs/markdown-satteri';
 import beautify from 'js-beautify';
 import { execFileSync } from 'node:child_process';
+import { devNull } from 'node:os';
 import { fileURLToPath } from 'node:url';
 
 /**
@@ -18,18 +19,38 @@ function prettifyHtml() {
 		hooks: {
 			'astro:build:done': async ({ dir, logger }) => {
 				const outDir = fileURLToPath(dir);
+				// dist/preview/ and dist/dist/ are copy-assets.mjs's copies of public/{preview,dist}
+				// (demo css/js and @tabler/core's dist, including vendored libs) — not pages, and
+				// some vendored libs ship their own malformed docs/*.html that trips the parser below.
+				const isVendorCopy = (file) => file.includes(`${outDir}preview/`) || file.includes(`${outDir}dist/`);
 				// Astro appends "overflow-x: auto" to the shiki <pre> style — the
 				// Eleventy pipeline doesn't have it and HTML is the product: restore 1:1.
 				const { globSync } = await import('node:fs');
 				const { readFileSync, writeFileSync } = await import('node:fs');
-				for (const file of globSync(`${outDir}**/*.html`)) {
+				for (const file of globSync(`${outDir}**/*.html`, { exclude: isVendorCopy })) {
 					const content = readFileSync(file, 'utf8');
 					const cleaned = content.replaceAll('; overflow-x: auto;', '');
 					if (cleaned !== content) writeFileSync(file, cleaned);
 				}
-				execFileSync('npx', ['prettier', '--write', '--parser', 'html', `${outDir}**/*.html`], {
-					stdio: 'inherit',
-				});
+				execFileSync(
+					'npx',
+					[
+						'prettier',
+						'--write',
+						'--parser',
+						'html',
+						// Prettier's default ignore-path is [.gitignore, .prettierignore], and both
+						// list "dist" (needed elsewhere so normal lint/format passes skip build
+						// output) — that silently no-ops this pass on the very directory it targets.
+						// Point at devNull to opt this one deliberate pass out of those ignores.
+						'--ignore-path',
+						devNull,
+						`${outDir}**/*.html`,
+						`!${outDir}preview/**`,
+						`!${outDir}dist/**`,
+					],
+					{ stdio: 'inherit' },
+				);
 				logger.info('HTML formatted with prettier');
 			},
 		},

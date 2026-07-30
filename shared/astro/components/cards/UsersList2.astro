@@ -3,6 +3,7 @@
 import Avatar from '../ui/Avatar.astro';
 import CardTitle from '../ui/CardTitle.astro';
 import people from '@data/people.json';
+import { randomNumber, timeagoLabel } from '@shared/lib/pseudo-random';
 
 interface Person {
 	full_name?: string;
@@ -19,23 +20,6 @@ interface Props {
 
 const { limit = 10, offset = 0, title = 'Top users', class: className } = Astro.props;
 
-// Equivalent of the random_number filter from shared/e11ty/filters.mjs (deterministic).
-function randomNumber(x: number, min = 0, max = 100): number {
-	let value =
-		((x * x * Math.PI * Math.E * (max + 1) * (Math.sin(x) / Math.cos(x * x))) % (max + 1 - min)) +
-		min;
-	value = value > max ? max : value;
-	value = value < min ? min : value;
-	return Math.floor(value);
-}
-
-// Equivalent of `forloop.index | random_date_ago: 6 | timeago`.
-function timeagoLabel(index: number): string {
-	const days = randomNumber(index, 0, 6);
-	if (days === 0) return 'now';
-	return `${days} day${days > 1 ? 's' : ''} ago`;
-}
-
 const colors = 'green,red,yellow,x,x'.split(',');
 
 const rows = (people as Person[]).slice(offset, offset + limit).map((person, idx) => {
@@ -43,7 +27,7 @@ const rows = (people as Person[]).slice(offset, offset + limit).map((person, idx
 	return {
 		person,
 		status: colors[randomNumber(index + 5, 0, colors.length - 1)],
-		timeago: timeagoLabel(index),
+		timeago: timeagoLabel(index, 6),
 	};
 });
 ---
