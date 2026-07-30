@@ -47,28 +47,30 @@ function normalizeUrl(url: string): string {
 export function getDocsChildren(parentUrl: string): DocsChildPage[] {
   const parentParts = normalizeUrl(parentUrl).split('/').filter(Boolean)
 
-  return Object.entries(pageModules)
-    .flatMap(([path, mod]): DocsChildPage[] => {
-      const pageUrl = urlFromGlobPath(path)
-      const parts = pageUrl.split('/').filter(Boolean)
-      const isDirectChild = parts.length === parentParts.length + 1 && parts.slice(0, -1).join('/') === parentParts.join('/')
+  return (
+    Object.entries(pageModules)
+      .flatMap(([path, mod]): DocsChildPage[] => {
+        const pageUrl = urlFromGlobPath(path)
+        const parts = pageUrl.split('/').filter(Boolean)
+        const isDirectChild = parts.length === parentParts.length + 1 && parts.slice(0, -1).join('/') === parentParts.join('/')
 
-      if (!isDirectChild) return []
+        if (!isDirectChild) return []
 
-      const fm = getFrontmatter(mod)
-      if (!fm?.title) return []
+        const fm = getFrontmatter(mod)
+        if (!fm?.title) return []
 
-      return [
-        {
-          url: pageUrl,
-          title: String(fm.title),
-          description: String(fm.description ?? ''),
-          ...(fm.icon ? { icon: String(fm.icon) } : {}),
-          order: Number(fm.order ?? 999),
-        },
-      ]
-    })
-    // if a route exists in both conventions (foo.mdx AND foo/index.mdx), count it once
-    .filter((page, i, all) => all.findIndex((p) => p.url === page.url) === i)
-    .sort((a, b) => a.order - b.order || a.title.localeCompare(b.title))
+        return [
+          {
+            url: pageUrl,
+            title: String(fm.title),
+            description: String(fm.description ?? ''),
+            ...(fm.icon ? { icon: String(fm.icon) } : {}),
+            order: Number(fm.order ?? 999),
+          },
+        ]
+      })
+      // if a route exists in both conventions (foo.mdx AND foo/index.mdx), count it once
+      .filter((page, i, all) => all.findIndex((p) => p.url === page.url) === i)
+      .sort((a, b) => a.order - b.order || a.title.localeCompare(b.title))
+  )
 }
