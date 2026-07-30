@@ -1,0 +1,37 @@
+// Output tests for the `box-shadow` mixin in scss/mixins/bootstrap/_box-shadow.scss.
+// With `$enable-shadows: true` (the default) it filters out null values, keeps a
+// single keyword (none/inherit/...) as-is, and otherwise joins the shadows into a
+// comma list. The `$enable-shadows: false` gate depends on overriding that global
+// and is not covered here.
+
+@use "../mixins/bootstrap/box-shadow" as *;
+
+@include describe("box-shadow") {
+  @include it("emits a single shadow value") {
+    @include assert() {
+      @include output() { .t { @include box-shadow(0 1px 2px #000); } }
+      @include expect() { .t { box-shadow: 0 1px 2px #000; } }
+    }
+  }
+
+  @include it("passes a keyword through untouched") {
+    @include assert() {
+      @include output() { .t { @include box-shadow(none); } }
+      @include expect() { .t { box-shadow: none; } }
+    }
+  }
+
+  @include it("joins multiple shadows into a comma list") {
+    @include assert() {
+      @include output() { .t { @include box-shadow(0 1px 2px #000, 0 2px 4px #111); } }
+      @include expect() { .t { box-shadow: 0 1px 2px #000, 0 2px 4px #111; } }
+    }
+  }
+
+  @include it("filters out null values") {
+    @include assert() {
+      @include output() { .t { @include box-shadow(null, 0 1px 2px #000); } }
+      @include expect() { .t { box-shadow: 0 1px 2px #000; } }
+    }
+  }
+}

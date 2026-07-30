@@ -1,0 +1,60 @@
+---
+import SingleLayout from '@shared/layouts/SingleLayout.astro';
+import Button from '@shared/components/ui/Button.astro';
+import ButtonList from '@shared/components/ui/ButtonList.astro';
+import FormGroup from '@shared/components/ui/FormGroup.astro';
+import HrText from '@shared/components/ui/HrText.astro';
+import InputGroup from '@shared/components/ui/InputGroup.astro';
+import Illustration from '@shared/components/ui/Illustration.astro';
+import Progress from '@shared/components/ui/Progress.astro';
+import { site } from '@shared/lib/site';
+import timezones from '@data/timezones.json';
+
+// TODO: front matter `page-menu: extra.wizard` is not ported — it is only read
+// by layout/navbar-menu.html, which the `single` layout does not include.
+---
+
+<SingleLayout title="Wizard">
+	<div class="card card-md">
+		<div class="card-body text-center py-4 p-sm-5">
+			<Illustration image="boy-girl.svg" height={200} class="mb-n2" />
+			<h1 class="mt-5">Welcome to Tabler!</h1>
+			<p class="text-secondary">{site.description}</p>
+		</div>
+
+		<HrText text="your data" position="center" class="hr-text-spaceless" />
+
+		<div class="card-body">
+			<FormGroup
+				label="Create your Tabler URL"
+				hint="Choose a URL that describes you or your business in a concise way. Make it short and easy to remember so you can share links with ease."
+			>
+				<InputGroup prepend="https://tabler.io/" inputClass="ps-1" flat />
+			</FormGroup>
+
+			<FormGroup label="Timezone" class="">
+				<select class="form-select mb-0">
+					{
+						timezones.map((timezone) => (
+							<option value={timezone.abbr} selected={timezone.abbr === 'CEDT'}>
+								{timezone.text}
+							</option>
+						))
+					}
+				</select>
+			</FormGroup>
+		</div>
+	</div>
+
+	<div class="row align-items-center mt-3">
+		<div class="col-4">
+			<Progress value={25} />
+		</div>
+		<div class="col">
+			<ButtonList class="justify-content-end">
+				<Button text="Set up later" color="link link-secondary" />
+				<Button text="Continue" color="primary" />
+			</ButtonList>
+		</div>
+	</div>
+</SingleLayout>

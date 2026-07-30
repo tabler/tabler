@@ -1,0 +1,11 @@
+---
+// Liquid appends `page.page-header` to "Tabler,Pages,", but inside the include
+// context `page` is the Eleventy page object (url, inputPath, …), which has no
+// `page-header` key — the appended value is empty, so the rendered breadcrumb
+// is always "Tabler > Pages" (confirmed against the faq.html reference).
+import Breadcrumb from '../ui/Breadcrumb.astro';
+---
+
+<div class="d-flex">
+	<Breadcrumb pages={['Tabler', 'Pages']} class="breadcrumb-arrows" />
+</div>

@@ -1,0 +1,81 @@
+//
+// Headings
+//
+@use '../config' as *;
+
+// The `.h1`–`.h6` heading helpers live in `_extends.scss` — they extend the
+// `h1`–`h6` element selectors across all modules, which with the module
+// system requires the whole core to be upstream.
+
+.lead {
+  @include font-size($lead-font-size);
+  font-weight: $lead-font-weight;
+}
+
+// Type display classes
+@each $display, $font-size in $display-font-sizes {
+  .display-#{$display} {
+    font-family: $display-font-family;
+    font-style: $display-font-style;
+    font-weight: $display-font-weight;
+    line-height: $display-line-height;
+    @include font-size($font-size);
+  }
+}
+
+//
+// Emphasis
+//
+// The `.small` and `.mark` helpers live in `_extends.scss` (see the heading
+// helpers note above).
+
+//
+// Lists
+//
+
+.list-unstyled {
+  @include list-unstyled();
+}
+
+// Inline turns list items into inline-block
+.list-inline {
+  @include list-unstyled();
+}
+.list-inline-item {
+  display: inline-block;
+
+  &:not(:last-child) {
+    margin-right: $list-inline-padding;
+  }
+}
+
+//
+// Misc
+//
+
+// Builds on `abbr`
+.initialism {
+  @include font-size($initialism-font-size);
+  text-transform: uppercase;
+}
+
+// Blockquotes
+.blockquote {
+  margin-bottom: $blockquote-margin-y;
+  @include font-size($blockquote-font-size);
+
+  > :last-child {
+    margin-bottom: 0;
+  }
+}
+
+.blockquote-footer {
+  margin-top: -$blockquote-margin-y;
+  margin-bottom: $blockquote-margin-y;
+  @include font-size($blockquote-footer-font-size);
+  color: $blockquote-footer-color;
+
+  &::before {
+    content: '\2014\00A0'; // em dash, nbsp
+  }
+}

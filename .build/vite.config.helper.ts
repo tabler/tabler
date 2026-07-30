@@ -24,16 +24,9 @@ export function createViteConfig({
 	banner,
 	minify = false
 }: CreateViteConfigOptions): UserConfig {
-	const rollupOutput: {
-		generatedCode: {
-			constBindings: boolean
-		}
-		banner?: string
-	} = {
-		generatedCode: {
-			constBindings: true
-		}
-	}
+	// Vite 8 (Rolldown) always emits const bindings and no longer accepts the
+	// Rollup-only generatedCode.constBindings option
+	const rollupOutput: { banner?: string } = {}
 
 	// Add banner if provided
 	if (banner) {

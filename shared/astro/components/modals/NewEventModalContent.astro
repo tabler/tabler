@@ -1,0 +1,34 @@
+---
+import Button from '../ui/Button.astro';
+import Datepicker from '../ui/Datepicker.astro';
+import FormGroup from '../ui/FormGroup.astro';
+---
+
+<div class="modal-header">
+	<h4 class="modal-title" id="event-modal-label">New event</h4>
+	<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<div class="modal-body">
+	<form>
+		<FormGroup label="Title" for="event-title" class="mb-4">
+			<input class="form-control" id="event-title" type="text" placeholder="Event title">
+		</FormGroup>
+		<FormGroup label="Description" for="event-description" class="mb-4">
+			<textarea class="form-control" id="event-description" rows="3" placeholder="Event description"></textarea>
+		</FormGroup>
+		<div class="row">
+			<div class="col">
+				<FormGroup label="Start" for="event-start" class="mb-4">
+					<Datepicker layout="icon" id="event-start" />
+				</FormGroup>
+			</div>
+			<div class="col">
+				<FormGroup label="End" for="event-end" class="mb-4">
+					<Datepicker layout="icon" id="event-end" />
+				</FormGroup>
+			</div>
+		</div>
+		<Button type="submit" text="Create event" color="primary" block class="mt-4" />
+	</form>
+</div>

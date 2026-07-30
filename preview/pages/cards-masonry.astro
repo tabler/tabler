@@ -1,0 +1,29 @@
+---
+// The masonry library is loaded via page-libs=[masonry] (BaseLayout emits the
+// CDN <script> from core/libs.json); auto-init is triggered by the
+// data-masonry attribute, so there is no page-level init script.
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
+import Card from '@shared/components/ui/Card.astro';
+import BodyPlaceholder from '@shared/components/cards/BodyPlaceholder.astro';
+
+const heights = [200, 150, 400, 300, 350, 600, 700, 200, 150, 250, 50, 400, 300, 200];
+---
+
+<DefaultLayout
+	title="Cards Masonry"
+	pageHeader="Cards Masonry"
+	pageMenu="base.cards.masonry"
+	pageLibs={['masonry']}
+>
+	<div class="row row-cards" data-masonry={'{"percentPosition": true }'}>
+		{
+			heights.map((height) => (
+				<div class="col-sm-6 col-lg-4">
+					<Card>
+						<BodyPlaceholder height={height} />
+					</Card>
+				</div>
+			))
+		}
+	</div>
+</DefaultLayout>

@@ -1,0 +1,24 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
+import Button from '@shared/components/ui/Button.astro';
+import ButtonList from '@shared/components/ui/ButtonList.astro';
+import Card from '@shared/components/ui/Card.astro';
+import CardBody from '@shared/components/ui/CardBody.astro';
+import Toast from '@shared/components/ui/Toast.astro';
+---
+
+<DefaultLayout title="Toasts" pageHeader="Toasts" pageMenu="base.toasts">
+	<Card>
+		<CardBody>
+			<ButtonList>
+				<Button text="Simple toast" toastId="simple" />
+				<Button text="Cookies toast" toastId="cookies" />
+			</ButtonList>
+		</CardBody>
+	</Card>
+
+	<div class="toast-container position-fixed bottom-0 end-0 p-3">
+		<Toast toastId="simple" show={false} />
+		<Toast toastId="cookies" show={false} cookies />
+	</div>
+</DefaultLayout>

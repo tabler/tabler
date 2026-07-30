@@ -1,0 +1,103 @@
+---
+// Equivalent of parts/nav/nav-aside.html (search filter aside, no parameters).
+// `{{ page | relative }}/` resolves to "./" for root-level pages.
+
+import Subheader from '../ui/Subheader.astro';
+import InputGroup from '../ui/InputGroup.astro';
+import Button from '../ui/Button.astro';
+import ListGroup from '../ui/ListGroup.astro';
+import ListGroupItem from '../ui/ListGroupItem.astro';
+
+const categories = ['Games', 'Clothing', 'Jewelery', 'Toys'];
+const ratings = ['5 stars', '4 stars', '3 stars', '2 and less stars'];
+const tags = ['business', 'evening', 'leisure', 'party'];
+
+// Equivalent of the random_number filter from shared/e11ty/filters.mjs (deterministic).
+function randomNumber(x: number, min = 0, max = 100): number {
+	let value =
+		((x * x * Math.PI * Math.E * (max + 1) * (Math.sin(x) / Math.cos(x * x))) % (max + 1 - min)) +
+		min;
+
+	value = value > max ? max : value;
+	value = value < min ? min : value;
+
+	return Math.floor(value);
+}
+---
+
+<form action="./" method="get" autocomplete="off" novalidate>
+	<Subheader class="mb-2">Category</Subheader>
+	<ListGroup as="nav" transparent class="mb-3">
+		{
+			categories.map((item, i) => (
+				<ListGroupItem as="a" action active={i === 0} class="d-flex align-items-center" href="#">
+					{item}
+					<small class="text-secondary ms-auto">{randomNumber(i + 1, 11, 200)}</small>
+				</ListGroupItem>
+			))
+		}
+	</ListGroup>
+
+	<Subheader class="mb-2">Rating</Subheader>
+	<div class="mb-3">
+		{
+			ratings.map((item, i) => (
+				<label class="form-check">
+					<input
+						type="radio"
+						class="form-check-input"
+						name="form-stars"
+						value={item}
+						checked={i === 0}
+					/>
+					<span class="form-check-label">{item}</span>
+				</label>
+			))
+		}
+	</div>
+
+	<Subheader class="mb-2">Tags</Subheader>
+	<div class="mb-3">
+		{
+			tags.map((item, i) => (
+				<label class="form-check">
+					<input
+						type="checkbox"
+						class="form-check-input"
+						name="form-tags[]"
+						value={item}
+						checked={i === 0}
+					/>
+					<span class="form-check-label">{item}</span>
+				</label>
+			))
+		}
+	</div>
+
+	<Subheader class="mb-2">Price</Subheader>
+	<div class="row g-2 align-items-center mb-3">
+		<div class="col">
+			<InputGroup prepend="$" placeholder="from" value="3" />
+		</div>
+		<div class="col-auto">—</div>
+		<div class="col">
+			<InputGroup prepend="$" placeholder="to" />
+		</div>
+	</div>
+
+	<Subheader class="mb-2">Shipping</Subheader>
+	<div>
+		<select name="" class="form-select">
+			<option>United Kingdom</option>
+			<option>USA</option>
+			<option>Germany</option>
+			<option>Poland</option>
+			<option>Other…</option>
+		</select>
+	</div>
+
+	<div class="mt-5">
+		<Button text="Confirm changes" color="primary" block element="button" />
+		<Button text="Reset to defaults" color="link" block />
+	</div>
+</form>

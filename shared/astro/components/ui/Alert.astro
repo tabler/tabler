@@ -1,0 +1,95 @@
+---
+import Icon from './Icon.astro';
+import ButtonList from './ButtonList.astro';
+
+interface Props {
+	type?: string;
+	icon?: string;
+	important?: boolean;
+	minor?: boolean;
+	showClose?: boolean;
+	avatar?: boolean;
+	class?: string;
+	title?: string;
+	description?: string;
+	list?: string[];
+	action?: string;
+	link?: string;
+	buttons?: boolean;
+}
+
+const {
+	type = 'success',
+	icon: iconProp,
+	important,
+	minor,
+	showClose,
+	avatar,
+	class: className,
+	title = 'This is a custom alert box!',
+	description,
+	list,
+	action,
+	link,
+	buttons,
+} = Astro.props;
+
+const defaultIcons: Record<string, string> = {
+	success: 'check',
+	warning: 'alert-triangle',
+	danger: 'alert-circle',
+	info: 'info-circle',
+};
+const icon = iconProp ?? defaultIcons[type];
+
+const classes = [
+	'alert',
+	important ? 'alert-important' : minor ? 'alert-minor' : undefined,
+	`alert-${type}`,
+	showClose && 'alert-dismissible',
+	avatar && 'alert-avatar',
+	className,
+]
+
+---
+
+<div class:list={classes} role="alert">
+	<div class="alert-icon">{icon && <Icon name={icon} class="alert-icon" />}</div>
+	{
+		description || list ? (
+			<div>
+				{/* Liquid doesn't escape {{ include.title }} — set:html preserves entities like &hellip; */}
+				<h4 class="alert-heading" set:html={title} />
+				<div class="alert-description">
+					<Fragment set:html={description ?? ''} />
+					{list && list.length > 0 && (
+						<ul class="alert-list">
+							{list.map((item) => (
+								<li>{item}</li>
+							))}
+						</ul>
+					)}
+				</div>
+			</div>
+		) : (
+			<Fragment>
+				<Fragment set:html={title} />
+				{/* prettier-ignore — anchor on one line as in Liquid (whitespace ends up in the code panel) */}
+				{action ? (
+					<a href="#" class="alert-action">{action}</a>
+				) : link ? (
+					<a href="#" class="alert-link">{link}</a>
+				) : null}
+			</Fragment>
+		)
+	}
+	{
+		buttons && (
+			<ButtonList>
+				<a href="#" class={`btn btn-${type}`}>Okay</a>
+				<a href="#" class="btn">Cancel</a>
+			</ButtonList>
+		)
+	}
+	{showClose && <a class="btn-close" data-bs-dismiss="alert" aria-label="close" />}
+</div>

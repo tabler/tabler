@@ -8,6 +8,10 @@ on:
       - '**.png'
       - '**.webp'
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   build:
     # Only run on Pull Requests within the same repository, and not from forks.
@@ -16,11 +20,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout Repo
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
         with:
           persist-credentials: false
 
       - name: Compress Images
         uses: calibreapp/image-actions@main
         with:
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

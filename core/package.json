@@ -17,7 +17,7 @@
     "css-minify-main": "cleancss -O1 --format breakWith=lf --with-rebase --source-map --source-map-inline-sources --output dist/css/ --batch --batch-suffix \".min\" \"dist/css/*.css\" \"!dist/css/*.min.css\" \"!dist/css/*rtl*.css\"",
     "css-minify-rtl": "cleancss -O1 --format breakWith=lf --with-rebase --source-map --source-map-inline-sources --output dist/css/ --batch --batch-suffix \".min\" \"dist/css/*rtl.css\" \"!dist/css/*.min.css\"",
     "css-lint": "pnpm run css-lint-variables",
-    "css-lint-variables": "find-unused-sass-variables scss/ node_modules/bootstrap/scss/",
+    "css-lint-variables": "find-unused-sass-variables scss/",
     "js": "pnpm run js-build && pnpm run js-build-min",
     "js-build": "concurrently \"pnpm run js-build-standalone\" \"pnpm run js-build-theme\"",
     "js-build-theme": "cross-env BASE_NAME=tabler-theme vite build --config .build/vite.config.mts",
@@ -37,7 +37,15 @@
     "generate-sri": "tsx .build/generate-sri.ts",
     "format:check": "prettier --check \"scss/**/*.scss\" \"js/**/*.{js,ts}\" --cache",
     "format:write": "prettier --write \"scss/**/*.scss\" \"js/**/*.{js,ts}\" --cache",
-    "type-check": "tsc --noEmit"
+    "type-check": "tsc --noEmit",
+    "test": "concurrently \"pnpm run test:js\" \"pnpm run test:scss\"",
+    "test:js": "vitest run",
+    "test:scss": "vitest run --config vitest.scss.config.mjs",
+    "test:js:watch": "vitest",
+    "test:js:coverage": "vitest run --coverage",
+    "test:scss:watch": "vitest --config vitest.scss.config.mjs",
+    "test:watch": "pnpm run test:js:watch",
+    "test:coverage": "pnpm run test:js:coverage"
   },
   "repository": {
     "type": "git",
@@ -82,103 +90,108 @@
     "files": [
       {
         "path": "./dist/css/tabler.css",
-        "maxSize": "77 kB"
+        "maxSize": "80 kB"
       },
       {
         "path": "./dist/css/tabler.min.css",
-        "maxSize": "72 kB"
+        "maxSize": "75 kB"
       },
       {
         "path": "./dist/css/tabler.rtl.css",
-        "maxSize": "77 kB"
+        "maxSize": "79 kB"
       },
       {
         "path": "./dist/css/tabler.rtl.min.css",
-        "maxSize": "73 kB"
+        "maxSize": "75 kB"
       },
       {
         "path": "./dist/css/tabler-flags.css",
-        "maxSize": "2.5 kB"
+        "maxSize": "2.6 kB"
       },
       {
         "path": "./dist/css/tabler-flags.min.css",
-        "maxSize": "2 kB"
+        "maxSize": "2.1 kB"
       },
       {
         "path": "./dist/css/tabler-payments.css",
-        "maxSize": "2.3 kB"
+        "maxSize": "2.4 kB"
       },
       {
         "path": "./dist/css/tabler-payments.min.css",
-        "maxSize": "2 kB"
+        "maxSize": "2.1 kB"
       },
       {
         "path": "./dist/css/tabler-socials.css",
-        "maxSize": "2 kB"
+        "maxSize": "2.1 kB"
       },
       {
         "path": "./dist/css/tabler-socials.min.css",
-        "maxSize": "2 kB"
+        "maxSize": "2.1 kB"
       },
       {
         "path": "./dist/css/tabler-vendors.css",
-        "maxSize": "7.5 kB"
+        "maxSize": "7.7 kB"
       },
       {
         "path": "./dist/css/tabler-vendors.min.css",
-        "maxSize": "6.5 kB"
+        "maxSize": "6.7 kB"
       },
       {
         "path": "./dist/js/tabler.js",
-        "maxSize": "60 kB"
+        "maxSize": "64 kB"
       },
       {
         "path": "./dist/js/tabler.min.js",
-        "maxSize": "45 kB"
+        "maxSize": "48 kB"
       },
       {
         "path": "./dist/js/tabler.esm.js",
-        "maxSize": "60 kB"
+        "maxSize": "64 kB"
       },
       {
         "path": "./dist/js/tabler.esm.min.js",
-        "maxSize": "45 kB"
+        "maxSize": "48 kB"
       }
     ]
   },
   "dependencies": {
-    "@popperjs/core": "^2.11.8",
-    "bootstrap": "5.3.8"
+    "@popperjs/core": "^2.11.8"
   },
   "devDependencies": {
-    "@hotwired/turbo": "^8.0.18",
+    "@hotwired/turbo": "^8.0.23",
     "@melloware/coloris": "^0.25.0",
-    "@types/node": "^22.0.0",
-    "apexcharts": "^5.3.6",
+    "@types/node": "^26.1.1",
+    "@vitest/browser-playwright": "4.1.10",
+    "playwright": "1.62.0",
+    "@vitest/coverage-istanbul": "4.1.10",
+    "apexcharts": "6.5.0",
     "autosize": "^6.0.1",
-    "choices.js": "^11.1.0",
+    "choices.js": "^11.2.3",
     "clipboard": "^2.0.11",
-    "countup.js": "^2.9.0",
+    "countup.js": "^2.10.1",
+    "driver.js": "^1.8.0",
     "dropzone": "^6.0.0-beta.2",
-    "find-unused-sass-variables": "^6.1.0",
+    "find-unused-sass-variables": "^6.2.1",
     "flatpickr": "^4.6.13",
-    "fslightbox": "^3.7.4",
-    "fullcalendar": "^6.1.19",
-    "geist": "^1.5.1",
-    "hugerte": "^1.0.9",
+    "fslightbox": "^3.7.5",
+    "fullcalendar": "^6.1.21",
+    "geist": "1.7.2",
+    "hugerte": "^1.0.12",
     "imask": "^7.6.1",
     "jsvectormap": "^1.7.0",
     "list.js": "^2.3.1",
     "litepicker": "^2.0.12",
     "nouislider": "^15.8.1",
-    "plyr": "^3.8.3",
-    "signature_pad": "^5.1.1",
-    "sortablejs": "^1.15.6",
+    "plyr": "^3.8.4",
+    "signature_pad": "^5.1.3",
+    "sass": "1.102.0",
+    "sass-true": "^10.1.0",
+    "sortablejs": "^1.15.7",
     "star-rating.js": "^4.3.1",
-    "tom-select": "^2.4.3",
-    "typed.js": "^2.1.0",
-    "typescript": "^5.9.3",
-    "driver.js": "^1.0.0"
+    "tom-select": "^2.6.2",
+    "typed.js": "^3.0.0",
+    "typescript": "^7.0.2",
+    "vitest": "4.1.10"
   },
   "directories": {
     "doc": "docs"

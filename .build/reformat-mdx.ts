@@ -8,7 +8,7 @@ import * as prettier from 'prettier'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
-const docs: string[] = sync(join(__dirname, '..', 'docs', '**', '*.md'))
+const docs: string[] = sync(join(__dirname, '..', 'docs', 'pages', '**', '*.mdx'))
 
 async function formatHTML(htmlString: string): Promise<string> {
 	try {

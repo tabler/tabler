@@ -1,0 +1,99 @@
+---
+// copy button with data-clipboard-text (equivalent of escape_attribute).
+// The example code comes from the `html` prop or from the rendered slot.
+import Icon from '../ui/Icon.astro';
+import { beautifyHtml, highlightCode, removeHref } from '@shared/lib/code-example';
+
+interface Props {
+	/** raw HTML of the example; when absent — the slot is rendered */
+	html?: string;
+	/** code shown in the panel instead of html (the code param in Liquid) */
+	code?: string;
+	raw?: boolean;
+	overflow?: string;
+	bg?: string;
+	class?: string;
+	height?: string;
+	column?: boolean;
+	centered?: boolean;
+	vertical?: boolean;
+	columnFullWidth?: boolean;
+	hideCode?: boolean;
+	codeOnly?: boolean;
+}
+
+const {
+	html: htmlProp,
+	code,
+	raw,
+	overflow = 'auto',
+	bg,
+	class: className,
+	height,
+	column,
+	centered,
+	vertical,
+	columnFullWidth,
+	hideCode,
+	codeOnly,
+} = Astro.props;
+
+// equivalent of {% removeemptylines %} around include output (e.g. ui/alert.html)
+let html = (htmlProp ?? (await Astro.slots.render('default'))).replace(/^\s*[\r\n]/gm, '');
+
+// JSX reserializes the slot markup: empty SVG elements get explicit closing
+// tags, and apostrophes in text are escaped. We restore the source form so the
+// code in the panel looks like hand-written HTML.
+html = html
+	.replace(/<(path|circle|line|polyline|polygon|rect|ellipse)([^>]*?)\s*><\/\1>/g, '<$1$2 />')
+	.replace(/&#39;/g, "'");
+
+const exampleClasses = [
+	'example fs-base border rounded my-5',
+	!raw && 'd-flex flex-wrap justify-content-center',
+	`overflow-${overflow}`,
+	'position-relative',
+	bg ? `bg-${bg}` : 'bg-pattern-rectangles',
+	className,
+]
+
+const innerClasses = [
+	'p-6 w-full',
+	column && 'd-flex gap-3 flex-column',
+	!column && centered && `d-flex flex-fill flex-wrap gap-2 justify-content-center${vertical ? ' align-items-center flex-column' : ' justify-content-center'}`,
+	columnFullWidth && 'd-flex flex-fill flex-column gap-2',
+]
+
+const highlighted = hideCode ? '' : await highlightCode(beautifyHtml(code ?? html), 'html');
+---
+
+<!--EXAMPLE-->
+{
+	!codeOnly && (
+		<div class:list={exampleClasses} style={height ? `height: ${height}` : undefined}>
+			{
+				raw ? (
+					<Fragment set:html={removeHref(html)} />
+				) : (
+					<div class:list={innerClasses} style={column ? 'max-width: 25rem;' : undefined}>
+						<Fragment set:html={removeHref(html)} />
+					</div>
+				)
+			}
+		</div>
+	)
+}
+
+{
+	!hideCode && (
+		<div class="position-relative">
+			{/* Astro escapes the attribute value itself (equivalent of escape_attribute) */}
+			<a class="btn btn-icon btn-dark position-absolute m-2 top-0 end-0 z-3" data-clipboard-text={html}>
+				<Icon name="clipboard" />
+				<Icon name="check" class="d-none" />
+			</a>
+			<Fragment set:html={highlighted} />
+		</div>
+	)
+}
+<!--/EXAMPLE-->
