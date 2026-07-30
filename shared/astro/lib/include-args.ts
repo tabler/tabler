@@ -7,5 +7,5 @@
  * does not strip, so they must be reproduced verbatim.
  */
 export function includeArgCount(props: Record<string, unknown>, keys: readonly string[]): number {
-	return keys.filter((k) => props[k] !== undefined).length;
+  return keys.filter((k) => props[k] !== undefined).length
 }
