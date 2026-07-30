@@ -1,7 +1,9 @@
 ---
-// Port of preview/pages/payment-providers.html (layout: default)
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
 import Payment from '@shared/components/ui/Payment.astro';
+import Card from '@shared/components/ui/Card.astro';
+import CardHeader from '@shared/components/ui/CardHeader.astro';
+import CardBody from '@shared/components/ui/CardBody.astro';
 import payments from '@data/payments.json';
 
 const providers = payments as { name: string; logo: string }[];
@@ -10,11 +12,11 @@ const providers = payments as { name: string; logo: string }[];
 <DefaultLayout title="Payment Providers" pageHeader="Payment Providers" pageMenu="addons.payments">
 	<div class="row row-cards">
 		<div class="col-12">
-			<div class="card">
-				<div class="card-header">
+			<Card>
+				<CardHeader>
 					<div class="card-title">Light version</div>
-				</div>
-				<div class="card-body">
+				</CardHeader>
+				<CardBody>
 					<div class="row g-5 row-cols-5">
 						{providers.map((provider) => (
 							<div class="col">
@@ -30,15 +32,15 @@ const providers = payments as { name: string; logo: string }[];
 							</div>
 						))}
 					</div>
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 		<div class="col-12">
-			<div class="card">
-				<div class="card-header">
+			<Card>
+				<CardHeader>
 					<div class="card-title">Dark version</div>
-				</div>
-				<div class="card-body">
+				</CardHeader>
+				<CardBody>
 					<div class="row g-5 row-cols-5">
 						{providers.map((provider) => (
 							<div class="col">
@@ -54,8 +56,8 @@ const providers = payments as { name: string; logo: string }[];
 							</div>
 						))}
 					</div>
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 	</div>
 </DefaultLayout>

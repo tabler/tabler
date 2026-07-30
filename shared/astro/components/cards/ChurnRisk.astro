@@ -1,7 +1,10 @@
 ---
-// Port of cards/churn-risk.html
-import Icon from '../Icon.astro';
+
+import CardActions from '../ui/CardActions.astro';
+import Icon from '../ui/Icon.astro';
 import Badge from '../ui/Badge.astro';
+import ListGroup from '../ui/ListGroup.astro';
+import ListGroupItem from '../ui/ListGroupItem.astro';
 import crmDashboard from '@data/crm-dashboard.json';
 
 const churn = crmDashboard.churn_risk;
@@ -13,15 +16,15 @@ const churn = crmDashboard.churn_risk;
 			<Icon name="alert-triangle" class="text-red" />
 			<h3 class="card-title mb-0">Churn risk</h3>
 		</div>
-		<div class="card-actions">
+		<CardActions>
 			<Badge text="3 accounts" color="red" />
-		</div>
+		</CardActions>
 	</div>
 
-	<div class="list-group list-group-flush">
+	<ListGroup flush>
 		{
 			churn.items.map((item) => (
-				<div class="list-group-item">
+				<ListGroupItem>
 					<div class="row align-items-center g-2">
 						<div class="col">
 							<div class="fw-medium">{item.company}</div>
@@ -30,8 +33,8 @@ const churn = crmDashboard.churn_risk;
 						<div class="col-auto"><span class={`badge bg-${item.level_color}-lt`}>{item.level}</span></div>
 						<div class="col-auto fw-semibold">{item.amount}</div>
 					</div>
-				</div>
+				</ListGroupItem>
 			))
 		}
-	</div>
+	</ListGroup>
 </div>

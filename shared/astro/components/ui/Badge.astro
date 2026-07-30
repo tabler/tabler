@@ -1,6 +1,7 @@
 ---
 // Equivalent of ui/badge.html
-import Icon from '../Icon.astro';
+import Icon from './Icon.astro';
+import Avatar from './Avatar.astro';
 import people from '@data/people.json';
 import { firstLetters } from '@shared/lib/string-format';
 
@@ -39,7 +40,6 @@ const {
 } = Astro.props;
 
 const person = personId ? (people as Person[])[personId - 1] : undefined;
-const src = person?.photo;
 
 const classes = [
 	'badge',
@@ -47,16 +47,10 @@ const classes = [
 	color && `bg-${color}${light ? '-lt' : ''} text-${color}${light ? '-lt' : ''}-fg`,
 	className,
 ]
-	.filter(Boolean)
-	.join(' ');
 ---
 
-<span class={classes}>{icon && <Icon name={icon} />}{
-		person && (
-			<span class="avatar" style={src ? `background-image: url(./${src})` : undefined}>
-				{!src && firstLetters(person.full_name ?? '')}
-			</span>
-		)
+<span class:list={classes}>{icon && <Icon name={icon} />}{
+		personId && <Avatar personId={personId} />
 	}{text ? text : person?.full_name}{
 		addon && <span class={`badge-addon ${addonColor ? `bg-${addonColor}` : ''}`}>{addon}</span>
 	}</span>

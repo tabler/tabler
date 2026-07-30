@@ -1,12 +1,13 @@
 ---
-// Port of preview/pages/onboarding.html (layout: base).
 // NOTE: the Liquid source passes `current=2` to ui/progress-steps.html, but that
 // include reads `active` (not `current`) — so the arg is a no-op and only the
 // first step is active. The reference reflects this (Step 1 = bg-primary).
 import BaseLayout from '@shared/layouts/BaseLayout.astro';
-import NavbarLogo from '@shared/components/NavbarLogo.astro';
+import NavbarLogo from '@shared/components/navbar/NavbarLogo.astro';
 import ProgressSteps from '@shared/components/ui/ProgressSteps.astro';
-import Button from '@shared/components/Button.astro';
+import Button from '@shared/components/ui/Button.astro';
+import ButtonList from '@shared/components/ui/ButtonList.astro';
+import FormGroup from '@shared/components/ui/FormGroup.astro';
 ---
 
 <BaseLayout title="Onboarding">
@@ -33,16 +34,13 @@ import Button from '@shared/components/Button.astro';
 			</div>
 			<div class="card mt-5">
 				<div class="card-body space-y-4">
-					<div>
-						<label class="form-label">Full name</label>
+					<FormGroup label="Full name" class="">
 						<input type="text" class="form-control" placeholder="Enter your full name" />
-					</div>
-					<div>
-						<label class="form-label">Company name</label>
+					</FormGroup>
+					<FormGroup label="Company name" class="">
 						<input type="text" class="form-control" placeholder="Enter your company name" />
-					</div>
-					<div>
-						<label class="form-label">Role</label>
+					</FormGroup>
+					<FormGroup label="Role" class="">
 						<select class="form-select">
 							<option value="">Select your role</option>
 							<option value="developer">Developer</option>
@@ -51,9 +49,8 @@ import Button from '@shared/components/Button.astro';
 							<option value="founder">Founder</option>
 							<option value="other">Other</option>
 						</select>
-					</div>
-					<div>
-						<label class="form-label">Team size</label>
+					</FormGroup>
+					<FormGroup label="Team size" class="">
 						<div class="form-selectgroup">
 							<label class="form-selectgroup-item">
 								<input type="radio" name="team-size" value="1" class="form-selectgroup-input" checked />
@@ -72,9 +69,8 @@ import Button from '@shared/components/Button.astro';
 								<span class="form-selectgroup-label">50+ people</span>
 							</label>
 						</div>
-					</div>
-					<div>
-						<label class="form-label">What are you planning to use this for?</label>
+					</FormGroup>
+					<FormGroup label="What are you planning to use this for?" class="">
 						<div class="form-check">
 							<input class="form-check-input" type="radio" value="personal" id="use-personal" checked />
 							<label class="form-check-label" for="use-personal"> Personal projects </label>
@@ -91,9 +87,8 @@ import Button from '@shared/components/Button.astro';
 							<input class="form-check-input" type="radio" value="learning" id="use-learning" />
 							<label class="form-check-label" for="use-learning"> Learning and experimentation </label>
 						</div>
-					</div>
-					<div>
-						<label class="form-label">How did you hear about us?</label>
+					</FormGroup>
+					<FormGroup label="How did you hear about us?" class="">
 						<div class="form-check">
 							<input class="form-check-input" type="checkbox" name="referral" value="search" id="ref-search" />
 							<label class="form-check-label" for="ref-search"> Search engine </label>
@@ -114,7 +109,7 @@ import Button from '@shared/components/Button.astro';
 							<input class="form-check-input" type="checkbox" name="referral" value="other" id="ref-other" />
 							<label class="form-check-label" for="ref-other"> Other </label>
 						</div>
-					</div>
+					</FormGroup>
 					<div>
 						<div class="form-check form-switch">
 							<input class="form-check-input" type="checkbox" id="notifications" checked />
@@ -124,10 +119,10 @@ import Button from '@shared/components/Button.astro';
 				</div>
 			</div>
 
-			<div class="btn-list justify-content-between mt-4">
+			<ButtonList class="justify-content-between mt-4">
 				<Button text="Back" color="link link-secondary" />
 				<Button text="Continue" color="primary" />
-			</div>
+			</ButtonList>
 		</div>
 	</main>
 </BaseLayout>

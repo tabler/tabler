@@ -1,6 +1,10 @@
 ---
 // Equivalent of cards/users-list-headers.html
 import Avatar from '../ui/Avatar.astro';
+import ListGroup from '../ui/ListGroup.astro';
+import ListGroupItem from '../ui/ListGroupItem.astro';
+import ListGroupHeader from '../ui/ListGroupHeader.astro';
+import CardTitle from '../ui/CardTitle.astro';
 import people from '@data/people.json';
 import commits from '@data/commits.json';
 import { sortBy } from '@shared/lib/string-format';
@@ -39,15 +43,15 @@ const rows = sorted.map((person, idx) => {
 
 <div class="card">
 	<div class="card-header">
-		<h3 class="card-title">{title}</h3>
+		<CardTitle>{title}</CardTitle>
 	</div>
 
-	<div class="list-group list-group-flush overflow-auto" style="max-height: 35rem">
+	<ListGroup flush class="overflow-auto" style="max-height: 35rem">
 		{
 			rows.map((row) => (
 				<>
-					{row.header && <div class="list-group-header sticky-top">{row.header}</div>}
-					<div class="list-group-item">
+					{row.header && <ListGroupHeader class="sticky-top">{row.header}</ListGroupHeader>}
+					<ListGroupItem>
 						<div class="row">
 							<div class="col-auto">
 								<a href="#">
@@ -59,9 +63,9 @@ const rows = sorted.map((person, idx) => {
 								<div class="text-secondary text-truncate mt-n1">{row.description}</div>
 							</div>
 						</div>
-					</div>
+					</ListGroupItem>
 				</>
 			))
 		}
-	</div>
+	</ListGroup>
 </div>

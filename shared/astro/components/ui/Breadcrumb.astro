@@ -1,6 +1,6 @@
 ---
 // Port of ui/breadcrumb.html.
-import Icon from '../Icon.astro';
+import Icon from './Icon.astro';
 import { splitDropTrailingEmpty } from '@shared/lib/string-format';
 
 interface Props {
@@ -22,13 +22,11 @@ const classes = [
 	className,
 	separator && `breadcrumb-${separator}`,
 ]
-	.filter(Boolean)
-	.join(' ');
 ---
 
 <!-- BEGIN BREADCRUMB -->
 <nav aria-label="Breadcrumb">
-	<ol class={classes}>
+	<ol class:list={classes}>
 		{
 			items.map((page, index) =>
 				index === items.length - 1 ? (

@@ -1,10 +1,13 @@
 ---
-// Port of preview/pages/social-icons.html (layout: default)
 // Note: the Liquid front matter `plugins: ['social']` is inert for the output —
 // the `.social` styles ship in tabler-socials.css which is loaded globally on
 // every page; no extra page lib is emitted. So no pageLibs is passed.
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
+import ButtonList from '@shared/components/ui/ButtonList.astro';
 import Trending from '@shared/components/ui/Trending.astro';
+import Card from '@shared/components/ui/Card.astro';
+import CardHeader from '@shared/components/ui/CardHeader.astro';
+import CardBody from '@shared/components/ui/CardBody.astro';
 import socialTiles from '@data/social-tiles.json';
 import socials from '@data/socials.json';
 
@@ -32,8 +35,8 @@ const fillers = Array.from({ length: 21 });
 				{
 					tiles.map((tile) => (
 						<div class="col-3">
-							<div class="card">
-								<div class="card-body">
+							<Card>
+								<CardBody>
 									<div class="row align-items-center">
 										<div class="col-auto">
 											<span class={`social social-md social-app-${tile.icon}`} />
@@ -46,20 +49,20 @@ const fillers = Array.from({ length: 21 });
 											<Trending value={tile.trending} />
 										</div>
 									</div>
-								</div>
-							</div>
+								</CardBody>
+							</Card>
 						</div>
 					))
 				}
 			</div>
 		</div>
 		<div class="col-12">
-			<div class="card">
-				<div class="card-header">
+			<Card>
+				<CardHeader>
 					<div class="card-title">Sign in with social media</div>
-				</div>
-				<div class="card-body">
-					<div class="btn-list">
+				</CardHeader>
+				<CardBody>
+					<ButtonList>
 						{
 							socialList.map((social) => (
 								<button class="btn">
@@ -68,17 +71,17 @@ const fillers = Array.from({ length: 21 });
 								</button>
 							))
 						}
-					</div>
-				</div>
-			</div>
+					</ButtonList>
+				</CardBody>
+			</Card>
 		</div>
 
 		<div class="col-12">
-			<div class="card">
-				<div class="card-header">
+			<Card>
+				<CardHeader>
 					<div class="card-title">List of all social media icons</div>
-				</div>
-				<div class="card-body p-0">
+				</CardHeader>
+				<CardBody class="p-0">
 					<div class="demo-icons-list-wrap">
 						<div class="demo-icons-list">
 							{
@@ -96,8 +99,8 @@ const fillers = Array.from({ length: 21 });
 							{fillers.map(() => <div />)}
 						</div>
 					</div>
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 	</div>
 </DefaultLayout>

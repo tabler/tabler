@@ -1,0 +1,21 @@
+---
+// List group item (.list-group-item).
+
+interface Props {
+	/** element to render instead of div (e.g. a, li, label) */
+	as?: string;
+	/** list-group-item-action (hover/focus affordance, typically for a/button items) */
+	action?: boolean;
+	active?: boolean;
+	disabled?: boolean;
+	class?: string;
+	/** remaining attributes (href, data-*, …) are forwarded to the element */
+	[key: string]: unknown;
+}
+
+const { as: Element = 'div', action, active, disabled, class: className, ...rest } = Astro.props;
+---
+
+<Element class:list={['list-group-item', action && 'list-group-item-action', active && 'active', disabled && 'disabled', className]} {...rest}>
+	<slot />
+</Element>

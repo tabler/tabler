@@ -1,10 +1,11 @@
 ---
-// Port of preview/pages/job-listing.html (layout: default)
 // NOTE: page-header-actions "add-job" requires PageHeader.astro to dispatch it
 // to HeaderActionsAddJob — see the migration report (PageHeader.astro is a
 // shared component and was not modified here).
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
-import Icon from '@shared/components/Icon.astro';
+import Icon from '@shared/components/ui/Icon.astro';
+import Card from '@shared/components/ui/Card.astro';
+import Avatar from '@shared/components/ui/Avatar.astro';
 import Check from '@shared/components/ui/form/Check.astro';
 import jobsData from '@data/jobs.json';
 
@@ -90,11 +91,11 @@ const salaries = ['$20K - $50K', '$50K - $100K', '> $100K', 'Drawing / Painting'
 				<div class="space-y">
 					{
 						jobs.map((job) => (
-							<div class="card">
+							<Card>
 								<div class="row g-0">
 									<div class="col-auto">
 										<div class="card-body">
-											<div class="avatar avatar-md" style={`background-image: url(./static/jobs/${job.image})`} />
+											<Avatar src={`static/jobs/${job.image}`} size="md" />
 										</div>
 									</div>
 									<div class="col">
@@ -143,7 +144,7 @@ const salaries = ['$20K - $50K', '$50K - $100K', '> $100K', 'Drawing / Painting'
 										</div>
 									</div>
 								</div>
-							</div>
+							</Card>
 						))
 					}
 				</div>

@@ -1,5 +1,4 @@
 ---
-// Port of ui/button.html.
 // TODO: spinner param (needs a ui/spinner.html port — no Spinner.astro yet).
 // TODO: provider param (assigned in ui/button.html but never used in its markup).
 // TODO: color=false special case (Liquid resets color to null; pass no color instead).
@@ -93,15 +92,13 @@ const classes = [
 	link && 'btn-link',
 	iconOnly && 'btn-icon',
 ]
-	.filter(Boolean)
-	.join(' ');
 ---
 
 <Element
 	href={Element === 'a' ? resolvedHref : undefined}
 	type={type}
 	id={id}
-	class={classes}
+	class:list={classes}
 	target={external ? '_blank' : undefined}
 	rel={external ? 'noreferrer' : undefined}
 	data-bs-toggle={modalId ? 'modal' : toastId ? 'toast' : undefined}

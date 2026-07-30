@@ -1,10 +1,13 @@
 ---
-// Port of preview/pages/avatars.html (layout: default)
 // Note: the `description` front matter key is inert in the dev build (no
 // <meta name="description"> in the reference output), so it is not ported.
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
 import Avatar from '@shared/components/ui/Avatar.astro';
 import AvatarUpload from '@shared/components/ui/AvatarUpload.astro';
+import AvatarList from '@shared/components/ui/AvatarList.astro';
+import Card from '@shared/components/ui/Card.astro';
+import CardBody from '@shared/components/ui/CardBody.astro';
+import CardTitle from '@shared/components/ui/CardTitle.astro';
 import people from '@data/people.json';
 import { site } from '@shared/lib/site';
 import { firstLetters } from '@shared/lib/string-format';
@@ -27,71 +30,71 @@ const brands = ['netflix', 'amazon', 'messenger', 'figma', 'twitch'];
 <DefaultLayout title="Avatars" pageMenu="base.avatars" pageHeader="Avatars">
 	<div class="row row-cards">
 		<div class="col-4">
-			<div class="card">
-				<div class="card-body">
-					<h2 class="card-title">Default avatar</h2>
+			<Card>
+				<CardBody>
+					<CardTitle as="h2">Default avatar</CardTitle>
 					<Avatar />
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 		<div class="col-4">
-			<div class="card">
-				<div class="card-body">
-					<h2 class="card-title">Avatar with icon</h2>
+			<Card>
+				<CardBody>
+					<CardTitle as="h2">Avatar with icon</CardTitle>
 
 					<div class="avatar-list">
 						{iconIcons.map((icon) => <Avatar icon={icon} />)}
 					</div>
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 		<div class="col-4">
-			<div class="card">
-				<div class="card-body">
-					<h2 class="card-title">Avatar with icon</h2>
+			<Card>
+				<CardBody>
+					<CardTitle as="h2">Avatar with icon</CardTitle>
 
 					<div class="avatar-list">
 						{colors.map((color) => <Avatar icon="user" color={color} />)}
 					</div>
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 		<div class="col-4">
-			<div class="card">
-				<div class="card-body">
-					<h2 class="card-title">Simple avatar</h2>
+			<Card>
+				<CardBody>
+					<CardTitle as="h2">Simple avatar</CardTitle>
 					<div class="avatar-list">
 						{people8.map((person) => <Avatar person={person} />)}
 					</div>
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 		<div class="col-4">
-			<div class="card">
-				<div class="card-body">
-					<h2 class="card-title">Avatar placeholder</h2>
+			<Card>
+				<CardBody>
+					<CardTitle as="h2">Avatar placeholder</CardTitle>
 					<div class="avatar-list">
 						{people8.map((person) => <Avatar placeholder={firstLetters(person.full_name)} />)}
 					</div>
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 		<div class="col-4">
-			<div class="card">
-				<div class="card-body">
-					<h2 class="card-title">Avatar shapes</h2>
+			<Card>
+				<CardBody>
+					<CardTitle as="h2">Avatar shapes</CardTitle>
 					<div class="avatar-list">
 						<Avatar />
 						<Avatar class="rounded-circle" />
 						<Avatar class="rounded-0" />
 					</div>
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 		<div class="col-6">
-			<div class="card">
-				<div class="card-body">
-					<h2 class="card-title">Avatar sizes</h2>
+			<Card>
+				<CardBody>
+					<CardTitle as="h2">Avatar sizes</CardTitle>
 					<div class="row">
 						<div class="col-6">
 							<div class="avatar-list">
@@ -104,63 +107,63 @@ const brands = ['netflix', 'amazon', 'messenger', 'figma', 'twitch'];
 							</div>
 						</div>
 					</div>
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 		<div class="col-6">
-			<div class="card">
-				<div class="card-body">
-					<h2 class="card-title">Avatar lists</h2>
+			<Card>
+				<CardBody>
+					<CardTitle as="h2">Avatar lists</CardTitle>
 					<div class="row g-3">
 						{
 							listSizes.map((size) => (
 								<>
 									<div class="col-6">
-										<div class={`avatar-list avatar-list-stacked avatar-list-${size}`}>
+										<AvatarList stacked={true} size={size}>
 											{people5.map((person) => (
 												<Avatar person={person} />
 											))}
 											<Avatar icon="plus" link />
-										</div>
+										</AvatarList>
 									</div>
 									<div class="col-6">
-										<div class={`avatar-list avatar-list-stacked avatar-list-${size}`}>
+										<AvatarList stacked={true} size={size}>
 											{people5.map((person) => (
 												<Avatar person={person} class="rounded-circle" />
 											))}
 											<Avatar icon="plus" link class="rounded-circle" />
-										</div>
+										</AvatarList>
 									</div>
 								</>
 							))
 						}
 					</div>
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 		<div class="col-4">
-			<div class="card">
-				<div class="card-body">
-					<h2 class="card-title">Avatar placeholder</h2>
+			<Card>
+				<CardBody>
+					<CardTitle as="h2">Avatar placeholder</CardTitle>
 					{uploadSizes.map((size) => <AvatarUpload size={size} />)}
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 		<div class="col-4">
-			<div class="card">
-				<div class="card-body">
-					<h2 class="card-title">Avatar statuses</h2>
+			<Card>
+				<CardBody>
+					<CardTitle as="h2">Avatar statuses</CardTitle>
 					{statusColors.map((color, i) => <Avatar personId={i + 1} class="rounded-circle" status={color} />)}
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 		<div class="col-4">
-			<div class="card">
-				<div class="card-body">
-					<h2 class="card-title">Avatar brands</h2>
+			<Card>
+				<CardBody>
+					<CardTitle as="h2">Avatar brands</CardTitle>
 					{brands.map((brand, i) => <Avatar personId={i + 1} brand={brand} />)}
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 	</div>
 </DefaultLayout>

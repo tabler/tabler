@@ -1,6 +1,6 @@
 ---
 // Equivalent of ui/avatar.html
-import Icon from '../Icon.astro';
+import Icon from './Icon.astro';
 import people from '@data/people.json';
 import { firstLetters } from '@shared/lib/string-format';
 
@@ -30,6 +30,8 @@ interface Props {
 	icon?: string;
 	/** asset URL base — '.' for root-level pages, '..' for pages one level deep (e.g. marketing/) */
 	base?: string;
+	/** remaining attributes (data-bs-toggle for tooltips, aria-*, …) are forwarded to the element */
+	[key: string]: unknown;
 }
 
 const {
@@ -51,6 +53,7 @@ const {
 	brand,
 	icon,
 	base = '.',
+	...rest
 } = Astro.props;
 
 let src = srcProp;
@@ -76,14 +79,13 @@ const classes = [
 	color && `bg-${color}-lt`,
 	square && 'avatar-square',
 ]
-	.filter(Boolean)
-	.join(' ');
 ---
 
 <El
-	class={classes}
+	class:list={classes}
 	style={src ? `background-image: url(${base}/${src})` : undefined}
 	data-bs-toggle={dropdown ? 'dropdown' : undefined}
+	{...rest}
 >{status && (
 		<span class={`badge bg-${status}`}>{statusText ? statusText : statusIcon ? <Icon name={statusIcon} class="avatar-status-icon" /> : null}</span>
 	)}{brand && <span class="avatar-brand" style={`background-image: url(${base}/static/brands/${brand}.svg);`} />}{

@@ -1,11 +1,12 @@
 ---
-// Port cards/music/tracks-list.html
 // The nested ui/switch-icon.html include (icon="heart") is inlined below —
 // it has no Astro component yet and this is its only use so far. For
 // icon="heart" the Liquid include resolves to: icon-b="heart",
 // icon-b-class="icon-filled", icon-a-color="muted", icon-b-color="red".
-import Icon from '../../Icon.astro';
+import Icon from '../../ui/Icon.astro';
 import DropdownMenu from '../../ui/DropdownMenu.astro';
+import ListGroup from '../../ui/ListGroup.astro';
+import ListGroupItem from '../../ui/ListGroupItem.astro';
 import tracks from '@data/tracks.json';
 import { millisecondsToMinutes } from '@shared/lib/string-format';
 
@@ -14,9 +15,9 @@ const items = tracks.slice(0, 12);
 ---
 
 <div class="card">
-	<div class="list-group card-list-group">
+	<ListGroup class="card-list-group">
 		{items.map((track, index) => (
-			<div class="list-group-item">
+			<ListGroupItem>
 				<div class="row g-2 align-items-center">
 					<div class="col-auto fs-3">
 						{index + 1}
@@ -52,7 +53,7 @@ const items = tracks.slice(0, 12);
 						</div>
 					</div>
 				</div>
-			</div>
+			</ListGroupItem>
 		))}
-	</div>
+	</ListGroup>
 </div>

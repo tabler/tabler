@@ -1,12 +1,18 @@
 ---
-// Port of preview/pages/badges.html (layout: default)
+
+// Liquid: colors = ['default'] + site.colors keys + ['dark', 'light']
+
+import BadgesList from '@shared/components/ui/BadgesList.astro';
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
-import Icon from '@shared/components/Icon.astro';
+import Icon from '@shared/components/ui/Icon.astro';
+import ButtonList from '@shared/components/ui/ButtonList.astro';
+import Card from '@shared/components/ui/Card.astro';
+import CardBody from '@shared/components/ui/CardBody.astro';
+import CardTitle from '@shared/components/ui/CardTitle.astro';
 import DropdownMenu from '@shared/components/ui/DropdownMenu.astro';
 import site from '@data/site.json';
 import { ucFirst } from '@shared/lib/string-format';
 
-// Liquid: colors = ['default'] + site.colors keys + ['dark', 'light']
 const colors = ['default', ...Object.keys(site.colors), 'dark', 'light'];
 const sizes = ['sm', 'md', 'lg'];
 ---
@@ -16,26 +22,26 @@ const sizes = ['sm', 'md', 'lg'];
 		<div class="col-4">
 			<div class="row row-cards">
 				<div class="col-12">
-					<div class="card">
-						<div class="card-body">
+					<Card>
+						<CardBody>
 							<h1>Example heading <span class="badge">New</span></h1>
 							<h2>Example heading <span class="badge">New</span></h2>
 							<h3>Example heading <span class="badge">New</span></h3>
 							<h4>Example heading <span class="badge">New</span></h4>
 							<h5>Example heading <span class="badge">New</span></h5>
 							<h6>Example heading <span class="badge">New</span></h6>
-						</div>
-					</div>
+						</CardBody>
+					</Card>
 				</div>
 				<div class="col-12">
-					<div class="card">
-						<div class="card-body">
-							<h3 class="card-title">Badge sizes</h3>
+					<Card>
+						<CardBody>
+							<CardTitle>Badge sizes</CardTitle>
 
 							<div class="space-y">
 								{
 									sizes.map((size) => (
-										<div class="badges-list">
+										<BadgesList>
 											<span class={`badge${size !== 'md' ? ` badge-${size}` : ''}`}>Default</span>
 											<span class={`badge${size !== 'md' ? ` badge-${size}` : ''}`}>
 												<Icon name="check" /> Left icon
@@ -46,19 +52,19 @@ const sizes = ['sm', 'md', 'lg'];
 											<span class={`badge badge-icononly${size !== 'md' ? ` badge-${size}` : ''}`}>
 												<Icon name="star" type="filled" />
 											</span>
-										</div>
+										</BadgesList>
 									))
 								}
 							</div>
-						</div>
-					</div>
+						</CardBody>
+					</Card>
 				</div>
 				<div class="col-12">
-					<div class="card">
-						<div class="card-body">
-							<h3 class="card-title">Positioned badges</h3>
+					<Card>
+						<CardBody>
+							<CardTitle>Positioned badges</CardTitle>
 
-							<div class="btn-list">
+							<ButtonList>
 								<button type="button" class="btn">Notifications <span class="badge text-bg-secondary ms-2">4</span></button>
 
 								<button type="button" class="btn">
@@ -88,49 +94,49 @@ const sizes = ['sm', 'md', 'lg'];
 									<Icon name="bell" />
 									<span class="badge badge-dot bg-red badge-notification"></span>
 								</button>
-							</div>
-						</div>
-					</div>
+							</ButtonList>
+						</CardBody>
+					</Card>
 				</div>
 			</div>
 		</div>
 		<div class="col-8">
 			<div class="row row-cards">
 				<div class="col-12">
-					<div class="card">
-						<div class="card-body">
-							<h3 class="card-title">Basic badges</h3>
-							<div class="badges-list">
+					<Card>
+						<CardBody>
+							<CardTitle>Basic badges</CardTitle>
+							<BadgesList>
 								{colors.map((color) => <span class={`badge bg-${color} text-${color}-fg`}>{ucFirst(color)}</span>)}
-							</div>
-						</div>
-					</div>
+							</BadgesList>
+						</CardBody>
+					</Card>
 				</div>
 				<div class="col-12">
-					<div class="card">
-						<div class="card-body">
-							<h3 class="card-title">Light badges</h3>
-							<div class="badges-list">
+					<Card>
+						<CardBody>
+							<CardTitle>Light badges</CardTitle>
+							<BadgesList>
 								{colors.map((color) => <span class={`badge bg-${color}-lt`}>{ucFirst(color)}</span>)}
-							</div>
-						</div>
-					</div>
+							</BadgesList>
+						</CardBody>
+					</Card>
 				</div>
 				<div class="col-12">
-					<div class="card">
-						<div class="card-body">
-							<h3 class="card-title">Outline badges</h3>
-							<div class="badges-list">
+					<Card>
+						<CardBody>
+							<CardTitle>Outline badges</CardTitle>
+							<BadgesList>
 								{colors.map((color) => <span class={`badge badge-outline text-${color}`}>{ucFirst(color)}</span>)}
-							</div>
-						</div>
-					</div>
+							</BadgesList>
+						</CardBody>
+					</Card>
 				</div>
 				<div class="col-12">
-					<div class="card">
-						<div class="card-body">
-							<h3 class="card-title">Badges with icons</h3>
-							<div class="badges-list">
+					<Card>
+						<CardBody>
+							<CardTitle>Badges with icons</CardTitle>
+							<BadgesList>
 								{
 									colors.map((color) => (
 										<span class={`badge bg-${color} text-${color}-fg`}>
@@ -139,9 +145,9 @@ const sizes = ['sm', 'md', 'lg'];
 										</span>
 									))
 								}
-							</div>
-						</div>
-					</div>
+							</BadgesList>
+						</CardBody>
+					</Card>
 				</div>
 			</div>
 		</div>
@@ -149,9 +155,9 @@ const sizes = ['sm', 'md', 'lg'];
 		<div class="col-sm-6 col-lg-9">
 			<div class="row row-cards">
 				<div class="col-12">
-					<div class="card">
-						<div class="card-body">
-							<div class="btn-list">
+					<Card>
+						<CardBody>
+							<ButtonList>
 								{
 									colors.map((color, index) => (
 										<button class="btn">
@@ -159,14 +165,14 @@ const sizes = ['sm', 'md', 'lg'];
 										</button>
 									))
 								}
-							</div>
-						</div>
-					</div>
+							</ButtonList>
+						</CardBody>
+					</Card>
 				</div>
 				<div class="col-12">
-					<div class="card">
-						<div class="card-body">
-							<div class="btn-list">
+					<Card>
+						<CardBody>
+							<ButtonList>
 								{
 									colors.map((color, index) => (
 										<button class="btn position-relative">
@@ -175,14 +181,14 @@ const sizes = ['sm', 'md', 'lg'];
 										</button>
 									))
 								}
-							</div>
-						</div>
-					</div>
+							</ButtonList>
+						</CardBody>
+					</Card>
 				</div>
 				<div class="col-12">
-					<div class="card">
-						<div class="card-body">
-							<div class="btn-list">
+					<Card>
+						<CardBody>
+							<ButtonList>
 								{
 									colors.map((color) => (
 										<button class="btn position-relative">
@@ -190,9 +196,9 @@ const sizes = ['sm', 'md', 'lg'];
 										</button>
 									))
 								}
-							</div>
-						</div>
-					</div>
+							</ButtonList>
+						</CardBody>
+					</Card>
 				</div>
 			</div>
 		</div>

@@ -1,8 +1,9 @@
 ---
-// Port of preview/pages/datatables.html (layout: default)
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
 import { toUnixSeconds, formatLongDate } from '@shared/lib/date-format';
 import { randomNumber, randomDate } from '@shared/lib/pseudo-random';
+import Card from '@shared/components/ui/Card.astro';
+import CardBody from '@shared/components/ui/CardBody.astro';
 import Progress from '@shared/components/ui/Progress.astro';
 import TablerList from '@shared/components/js/TablerList.astro';
 import rollercoasters from '@data/rollercoasters.json';
@@ -27,8 +28,8 @@ const parameters =
 ---
 
 <DefaultLayout title="Datatables" pageHeader="Datatables" pageMenu="plugins.datatables" pageLibs={['lists']}>
-	<div class="card">
-		<div class="card-body p-0">
+	<Card>
+		<CardBody class="p-0">
 			<div id={`table-${id}`} class="table-responsive">
 			<table class="table">
 				<thead>
@@ -62,8 +63,8 @@ const parameters =
 				</tbody>
 			</table>
 			</div>
-		</div>
-	</div>
+		</CardBody>
+	</Card>
 
 	<TablerList id={id} parameters={parameters} />
 </DefaultLayout>

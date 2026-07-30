@@ -1,14 +1,18 @@
 ---
-// Port of preview/pages/offcanvas.html (layout: default)
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
 import { ucFirst as capitalize } from '@shared/lib/string-format';
+import Card from '@shared/components/ui/Card.astro';
+import CardBody from '@shared/components/ui/CardBody.astro';
+import Offcanvas from '@shared/components/ui/Offcanvas.astro';
+import OffcanvasHeader from '@shared/components/ui/OffcanvasHeader.astro';
+import OffcanvasBody from '@shared/components/ui/OffcanvasBody.astro';
 
 const directions = ['start', 'end', 'top', 'bottom'];
 ---
 
 <DefaultLayout title="Offcanvas" pageHeader="Offcanvas" pageMenu="base.offcanvas">
-	<div class="card">
-		<div class="card-body">
+	<Card>
+		<CardBody>
 			{
 				directions.map((direction) => (
 					<a
@@ -22,24 +26,21 @@ const directions = ['start', 'end', 'top', 'bottom'];
 					</a>
 				))
 			}
-		</div>
-	</div>
+		</CardBody>
+	</Card>
 
 	{
 		directions.map((direction) => (
-			<div
-				class={`offcanvas offcanvas-${direction}`}
+			<Offcanvas
+				direction={direction}
 				tabindex="-1"
 				id={`offcanvas${capitalize(direction)}`}
 				aria-labelledby={`offcanvas${capitalize(direction)}Label`}
 			>
-				<div class="offcanvas-header">
-					<h2 class="offcanvas-title" id={`offcanvas${capitalize(direction)}Label`}>
-						{capitalize(direction)} offcanvas
-					</h2>
+				<OffcanvasHeader title={`${capitalize(direction)} offcanvas`} titleId={`offcanvas${capitalize(direction)}Label`}>
 					<button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close" />
-				</div>
-				<div class="offcanvas-body">
+				</OffcanvasHeader>
+				<OffcanvasBody>
 					<div>
 						Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab assumenda ea est, eum exercitationem fugiat
 						illum itaque laboriosam magni necessitatibus, nemo nisi numquam quae reiciendis repellat sit soluta unde.
@@ -50,8 +51,8 @@ const directions = ['start', 'end', 'top', 'bottom'];
 							Close offcanvas
 						</button>
 					</div>
-				</div>
-			</div>
+				</OffcanvasBody>
+			</Offcanvas>
 		))
 	}
 </DefaultLayout>
