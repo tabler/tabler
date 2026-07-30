@@ -43,6 +43,7 @@ const elementId = `chart-${id}`;
 		<Fragment>
 			<div id={elementId} class:list={['position-relative', className]} />
 			<Fragment set:html={style} />
+			<!-- BEGIN CHART -->
 			<script define:vars={{ chartKey, elementId, config, xFormatterExpr }}>
 				window.tabler_chart ??= {};
 
@@ -60,6 +61,7 @@ const elementId = `chart-${id}`;
 
 				document.readyState !== 'loading' ? initChart() : document.addEventListener('DOMContentLoaded', initChart, { once: true });
 			</script>
+			<!-- END CHART -->
 		</Fragment>
 	)
 }
