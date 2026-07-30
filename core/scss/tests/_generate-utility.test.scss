@@ -9,39 +9,73 @@
 // single vs multiple properties, custom class, css-var mode, pseudo-class
 // states and the responsive infix.
 
-@use "sass:map";
-@use "../mixins/bootstrap/utilities" as *;
-@use "../mixins/bootstrap/breakpoints" as *;
+@use 'sass:map';
+@use '../mixins/bootstrap/utilities' as *;
+@use '../mixins/bootstrap/breakpoints' as *;
 
-@include describe("generate-utility") {
-  @include it("generates a class per key from a values map") {
+@include describe('generate-utility') {
+  @include it('generates a class per key from a values map') {
     @include assert() {
       @include output() {
-        @include generate-utility((property: opacity, values: (0: 0, 50: 0.5)));
+        @include generate-utility(
+          (
+            property: opacity,
+            values: (
+              0: 0,
+              50: 0.5,
+            ),
+          )
+        );
       }
       @include expect() {
-        .opacity-0 { opacity: 0 !important; }
-        .opacity-50 { opacity: 0.5 !important; }
+        .opacity-0 {
+          opacity: 0 !important;
+        }
+        .opacity-50 {
+          opacity: 0.5 !important;
+        }
       }
     }
   }
 
-  @include it("zips a plain list of values into key/value pairs") {
+  @include it('zips a plain list of values into key/value pairs') {
     @include assert() {
       @include output() {
-        @include generate-utility((property: float, class: float, values: (left, right)));
+        @include generate-utility(
+          (
+            property: float,
+            class: float,
+            values: (
+              left,
+              right,
+            ),
+          )
+        );
       }
       @include expect() {
-        .float-left { float: left !important; }
-        .float-right { float: right !important; }
+        .float-left {
+          float: left !important;
+        }
+        .float-right {
+          float: right !important;
+        }
       }
     }
   }
 
-  @include it("emits every property when several are given") {
+  @include it('emits every property when several are given') {
     @include assert() {
       @include output() {
-        @include generate-utility((property: (margin-right margin-left), class: mx, values: (0: 0, auto: auto)));
+        @include generate-utility(
+          (
+            property: margin-right margin-left,
+            class: mx,
+            values: (
+              0: 0,
+              auto: auto,
+            ),
+          )
+        );
       }
       @include expect() {
         .mx-0 {
@@ -56,10 +90,19 @@
     }
   }
 
-  @include it("sets a custom property instead of a declaration in css-var mode") {
+  @include it('sets a custom property instead of a declaration in css-var mode') {
     @include assert() {
       @include output() {
-        @include generate-utility((property: opacity, class: opacity, css-var: true, values: (50: 0.5)));
+        @include generate-utility(
+          (
+            property: opacity,
+            class: opacity,
+            css-var: true,
+            values: (
+              50: 0.5,
+            ),
+          )
+        );
       }
       @include expect() {
         .opacity-50 {
@@ -69,25 +112,45 @@
     }
   }
 
-  @include it("adds a pseudo-class variant for each declared state") {
+  @include it('adds a pseudo-class variant for each declared state') {
     @include assert() {
       @include output() {
-        @include generate-utility((property: text-decoration, class: text-decoration, state: hover, values: (underline)));
+        @include generate-utility(
+          (
+            property: text-decoration,
+            class: text-decoration,
+            state: hover,
+            values: (underline),
+          )
+        );
       }
       @include expect() {
-        .text-decoration-underline { text-decoration: underline !important; }
-        .text-decoration-underline-hover:hover { text-decoration: underline !important; }
+        .text-decoration-underline {
+          text-decoration: underline !important;
+        }
+        .text-decoration-underline-hover:hover {
+          text-decoration: underline !important;
+        }
       }
     }
   }
 
-  @include it("injects the responsive infix into the class name") {
+  @include it('injects the responsive infix into the class name') {
     @include assert() {
       @include output() {
-        @include generate-utility((property: display, class: d, values: (none)), "-md");
+        @include generate-utility(
+          (
+            property: display,
+            class: d,
+            values: (none),
+          ),
+          '-md'
+        );
       }
       @include expect() {
-        .d-md-none { display: none !important; }
+        .d-md-none {
+          display: none !important;
+        }
       }
     }
   }
@@ -98,21 +161,40 @@
 // the mixin for a given infix when `map.get($utility, responsive)` is truthy (or
 // it's the base, infix-less breakpoint). This reproduces that gate against a local
 // breakpoint map with two utilities: one `responsive: true`, one without.
-@include describe("generate-utility (responsive property)") {
-  $g: (xs: 0, sm: 576px, md: 768px);
+@include describe('generate-utility (responsive property)') {
+  $g: (
+    xs: 0,
+    sm: 576px,
+    md: 768px,
+  );
   $utils: (
-    "display": (property: display, class: d, responsive: true, values: (none, flex)),
-    "float": (property: float, class: float, values: (left, right)),
+    'display': (
+      property: display,
+      class: d,
+      responsive: true,
+      values: (
+        none,
+        flex,
+      ),
+    ),
+    'float': (
+      property: float,
+      class: float,
+      values: (
+        left,
+        right,
+      ),
+    ),
   );
 
-  @include it("only a `responsive: true` utility gets breakpoint-infixed variants") {
+  @include it('only a `responsive: true` utility gets breakpoint-infixed variants') {
     @include assert() {
       @include output() {
         @each $bp in map.keys($g) {
           @include media-breakpoint-up($bp, $g) {
             $infix: breakpoint-infix($bp, $g);
             @each $key, $utility in $utils {
-              @if map.get($utility, responsive) or $infix == "" {
+              @if map.get($utility, responsive) or $infix == '' {
                 @include generate-utility($utility, $infix);
               }
             }
@@ -121,20 +203,36 @@
       }
       @include expect() {
         // base breakpoint: both utilities emit bare classes
-        .d-none { display: none !important; }
-        .d-flex { display: flex !important; }
-        .float-left { float: left !important; }
-        .float-right { float: right !important; }
+        .d-none {
+          display: none !important;
+        }
+        .d-flex {
+          display: flex !important;
+        }
+        .float-left {
+          float: left !important;
+        }
+        .float-right {
+          float: right !important;
+        }
 
         // responsive breakpoints: only `d` (responsive: true) is repeated; `float` is not
         @media (min-width: 576px) {
-          .d-sm-none { display: none !important; }
-          .d-sm-flex { display: flex !important; }
+          .d-sm-none {
+            display: none !important;
+          }
+          .d-sm-flex {
+            display: flex !important;
+          }
         }
 
         @media (min-width: 768px) {
-          .d-md-none { display: none !important; }
-          .d-md-flex { display: flex !important; }
+          .d-md-none {
+            display: none !important;
+          }
+          .d-md-flex {
+            display: flex !important;
+          }
         }
       }
     }

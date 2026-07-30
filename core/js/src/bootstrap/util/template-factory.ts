@@ -30,7 +30,7 @@ const Default: TemplateFactoryConfig = {
   html: false,
   sanitize: true,
   sanitizeFn: null,
-  template: '<div></div>'
+  template: '<div></div>',
 }
 
 const DefaultType: ComponentConfigType = {
@@ -40,12 +40,12 @@ const DefaultType: ComponentConfigType = {
   html: 'boolean',
   sanitize: 'boolean',
   sanitizeFn: '(null|function)',
-  template: 'string'
+  template: 'string',
 }
 
 const DefaultContentType: ComponentConfigType = {
   entry: '(string|element|function|null)',
-  selector: '(string|element)'
+  selector: '(string|element)',
 }
 
 class TemplateFactory extends Config {
@@ -70,7 +70,7 @@ class TemplateFactory extends Config {
 
   getContent(): unknown[] {
     return Object.values(this._config.content)
-      .map(config => this._resolvePossibleFunction(config))
+      .map((config) => this._resolvePossibleFunction(config))
       .filter(Boolean)
   }
 

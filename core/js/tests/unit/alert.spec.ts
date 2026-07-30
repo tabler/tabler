@@ -36,11 +36,7 @@ describe('Alert', () => {
 
   describe('data-api', () => {
     it('should close an alert without instantiating manually', () => {
-      fixtureEl.innerHTML = [
-        '<div class="alert">',
-        '  <button type="button" data-bs-dismiss="alert">x</button>',
-        '</div>'
-      ].join('')
+      fixtureEl.innerHTML = ['<div class="alert">', '  <button type="button" data-bs-dismiss="alert">x</button>', '</div>'].join('')
 
       const button = document.querySelector('button')!
       button.click()
@@ -48,11 +44,7 @@ describe('Alert', () => {
     })
 
     it('should close an alert with parent selector', () => {
-      fixtureEl.innerHTML = [
-        '<div class="alert">',
-        '  <button type="button" data-bs-target=".alert" data-bs-dismiss="alert">x</button>',
-        '</div>'
-      ].join('')
+      fixtureEl.innerHTML = ['<div class="alert">', '  <button type="button" data-bs-target=".alert" data-bs-dismiss="alert">x</button>', '</div>'].join('')
 
       const button = document.querySelector('button')!
       button.click()
@@ -60,11 +52,7 @@ describe('Alert', () => {
     })
 
     it('should close an alert via data-tblr-dismiss', () => {
-      fixtureEl.innerHTML = [
-        '<div class="alert">',
-        '  <button type="button" data-tblr-dismiss="alert">x</button>',
-        '</div>'
-      ].join('')
+      fixtureEl.innerHTML = ['<div class="alert">', '  <button type="button" data-tblr-dismiss="alert">x</button>', '</div>'].join('')
 
       const button = document.querySelector('button')!
       button.click()
@@ -72,11 +60,7 @@ describe('Alert', () => {
     })
 
     it('should close an alert via data-tblr-dismiss with data-tblr-target', () => {
-      fixtureEl.innerHTML = [
-        '<div class="alert">',
-        '  <button type="button" data-tblr-target=".alert" data-tblr-dismiss="alert">x</button>',
-        '</div>'
-      ].join('')
+      fixtureEl.innerHTML = ['<div class="alert">', '  <button type="button" data-tblr-target=".alert" data-tblr-dismiss="alert">x</button>', '</div>'].join('')
 
       const button = document.querySelector('button')!
       button.click()
@@ -86,7 +70,7 @@ describe('Alert', () => {
 
   describe('close', () => {
     it('should close an alert', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = '<div class="alert"></div>'
 
         const alertEl = document.querySelector('.alert')!
@@ -102,7 +86,7 @@ describe('Alert', () => {
     })
 
     it('should close alert with fade class', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = '<div class="alert fade"></div>'
 
         const alertEl = document.querySelector('.alert')!
@@ -118,13 +102,13 @@ describe('Alert', () => {
     })
 
     it('should not remove alert if close event is prevented', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = '<div class="alert"></div>'
 
         const alertEl = document.querySelector('.alert')!
         const alert = new Alert(alertEl)
 
-        alertEl.addEventListener('close.bs.alert', event => {
+        alertEl.addEventListener('close.bs.alert', (event) => {
           event.preventDefault()
           setTimeout(() => {
             expect(document.querySelector('.alert')).not.toBeNull()

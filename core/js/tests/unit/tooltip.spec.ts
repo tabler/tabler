@@ -6,8 +6,8 @@ vi.mock('@popperjs/core', () => ({
   createPopper: vi.fn(() => ({
     destroy: vi.fn(),
     update: vi.fn(),
-    setOptions: vi.fn()
-  }))
+    setOptions: vi.fn(),
+  })),
 }))
 
 describe('Tooltip', () => {
@@ -145,7 +145,7 @@ describe('Tooltip', () => {
     })
 
     it('should toggle tooltip visibility', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = '<a href="#" title="Tooltip title">Trigger</a>'
         const el = fixtureEl.querySelector('a')!
         const tooltip = new Tooltip(el, { animation: false })
@@ -167,7 +167,7 @@ describe('Tooltip', () => {
 
   describe('show', () => {
     it('should show tooltip', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = '<a href="#" title="Tooltip title">Trigger</a>'
         const el = fixtureEl.querySelector('a')!
         const tooltip = new Tooltip(el, { animation: false })
@@ -192,12 +192,12 @@ describe('Tooltip', () => {
     })
 
     it('should not show if show event is prevented', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = '<a href="#" title="Tooltip title">Trigger</a>'
         const el = fixtureEl.querySelector('a')!
         const tooltip = new Tooltip(el, { animation: false })
 
-        el.addEventListener('show.bs.tooltip', event => {
+        el.addEventListener('show.bs.tooltip', (event) => {
           event.preventDefault()
           setTimeout(() => {
             expect(tooltip._isShown()).toBe(false)
@@ -219,7 +219,7 @@ describe('Tooltip', () => {
     })
 
     it('should fire inserted event', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = '<a href="#" title="Tooltip title">Trigger</a>'
         const el = fixtureEl.querySelector('a')!
         const tooltip = new Tooltip(el, { animation: false })
@@ -235,7 +235,7 @@ describe('Tooltip', () => {
 
   describe('hide', () => {
     it('should hide tooltip', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = '<a href="#" title="Tooltip title">Trigger</a>'
         const el = fixtureEl.querySelector('a')!
         const tooltip = new Tooltip(el, { animation: false })
@@ -263,13 +263,13 @@ describe('Tooltip', () => {
     })
 
     it('should not hide if hide event is prevented', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = '<a href="#" title="Tooltip title">Trigger</a>'
         const el = fixtureEl.querySelector('a')!
         const tooltip = new Tooltip(el, { animation: false })
 
         el.addEventListener('shown.bs.tooltip', () => {
-          el.addEventListener('hide.bs.tooltip', event => {
+          el.addEventListener('hide.bs.tooltip', (event) => {
             event.preventDefault()
             setTimeout(() => {
               expect(tooltip._isShown()).toBe(true)
@@ -287,7 +287,7 @@ describe('Tooltip', () => {
 
   describe('update', () => {
     it('should call popper update', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = '<a href="#" title="Tooltip title">Trigger</a>'
         const el = fixtureEl.querySelector('a')!
         const tooltip = new Tooltip(el, { animation: false })
@@ -332,7 +332,7 @@ describe('Tooltip', () => {
     })
 
     it('should destroy popper on dispose', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = '<a href="#" title="Tooltip title">Trigger</a>'
         const el = fixtureEl.querySelector('a')!
         const tooltip = new Tooltip(el, { animation: false })
@@ -360,7 +360,7 @@ describe('Tooltip', () => {
     })
 
     it('should update shown tooltip', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = '<a href="#" title="Tooltip title">Trigger</a>'
         const el = fixtureEl.querySelector('a')!
         const tooltip = new Tooltip(el, { animation: false })
@@ -527,7 +527,7 @@ describe('Tooltip', () => {
 
   describe('_disposePopper', () => {
     it('should destroy popper and remove tip', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = '<a href="#" title="Tooltip title">Trigger</a>'
         const el = fixtureEl.querySelector('a')!
         const tooltip = new Tooltip(el, { animation: false })

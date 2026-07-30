@@ -222,7 +222,7 @@ describe('EventHandler', () => {
 
     it('should allow preventing the default action', () => {
       EventHandler.on(div, 'show.bs.test', (event: unknown) => {
-        (event as Event).preventDefault()
+        ;(event as Event).preventDefault()
       })
 
       const evt = EventHandler.trigger(div, 'show.bs.test')
@@ -351,7 +351,7 @@ describe('EventHandler', () => {
 
       const mouseoverEvent = new MouseEvent('mouseover', {
         bubbles: true,
-        relatedTarget: document.body
+        relatedTarget: document.body,
       })
       div.dispatchEvent(mouseoverEvent)
 
@@ -368,7 +368,7 @@ describe('EventHandler', () => {
 
       const mouseoverEvent = new MouseEvent('mouseover', {
         bubbles: true,
-        relatedTarget: btn
+        relatedTarget: btn,
       })
       div.dispatchEvent(mouseoverEvent)
 
@@ -384,7 +384,7 @@ describe('EventHandler', () => {
 
       const mouseoverEvent = new MouseEvent('mouseover', {
         bubbles: true,
-        relatedTarget: null
+        relatedTarget: null,
       })
       div.dispatchEvent(mouseoverEvent)
 
