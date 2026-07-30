@@ -1,10 +1,5 @@
 ---
-// The `include['size']` bug: with an explicit `size` it renders
-// `spinner-{type}-{size}`; WITHOUT one it falls through to the LiquidJS `.size`
-// meta-property (the include argument COUNT), producing junk like
-// `spinner-border-2`. Unlike icon-N/btn-N these `spinner-{type}-N` classes are
-// NOT stripped by the DOM diff (only icon|btn|avatar|badge|progress|flag|payment|
-// steps|chart|form-switch|modal|nav are), so they must be reproduced verbatim.
+// With explicit `size`: `spinner-{type}-{size}`. Without `size`: `spinner-{type}-{argCount}` (e.g. spinner-border-2).
 import { includeArgCount } from '@shared/lib/include-args';
 
 interface Props {

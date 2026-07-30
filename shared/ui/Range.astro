@@ -1,5 +1,5 @@
 ---
-// Port of ui/range.html. With an id → a noUiSlider div + init script, captured via CaptureScript and drained by PageScripts at end of body; without an id → a native <input type=range>.
+// With an id → a noUiSlider div + init script; without an id → a native <input type=range>.
 import CaptureScript from '../components/CaptureScript.astro';
 interface Props {
 	min?: number;
@@ -18,7 +18,7 @@ const size = values.length;
 const numericValues = values.map(Number);
 const startValue = size > 1 ? numericValues : numericValues[0];
 
-// connect array: {% for i in (2..size) %}cycle false,true{% endfor %} then true, false
+// Connect array: alternate false/true for mid segments, then true, false.
 let connectValue;
 if (size > 1 || connect) {
 	const parts: boolean[] = [];

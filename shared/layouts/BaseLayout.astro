@@ -7,19 +7,19 @@ import libs from '@tabler/core/libs.json';
 
 interface Props {
 	title?: string;
-	/** page-libs from the Eleventy front matter, e.g. ['apexcharts', 'jsvectormap'] */
+	/** Third-party libs from libs.json, e.g. ['apexcharts', 'jsvectormap'] */
 	pageLibs?: string[];
-	/** body-class front matter, e.g. "layout-boxed" / "layout-fluid" */
+	/** Extra body classes, e.g. "layout-boxed" / "layout-fluid" */
 	bodyClass?: string;
-	/** layout-rtl — dir="rtl" + RTL variants of the tabler/plugin stylesheets */
+	/** dir="rtl" + RTL variants of the tabler/plugin stylesheets */
 	rtl?: boolean;
-	/** relative asset base (Liquid `page | relative`): '.' for root pages, '..' one level deep */
+	/** Relative asset base: '.' for root pages, '..' one level deep */
 	base?: string;
 }
 
 const { title, pageLibs = [], bodyClass, rtl = false, base = '.' } = Astro.props;
 
-// PoC mirrors the Eleventy development build: unminified assets, dev favicon.
+// Development build: unminified assets, dev favicon.
 const environment = 'development';
 const min = environment === 'development' ? '' : '.min';
 // RTL swaps tabler/plugin stylesheets for their .rtl.css variants (demo stays LTR)
@@ -29,10 +29,9 @@ type Lib = { npm?: string; js?: string[]; css?: string[]; head?: boolean };
 const pageLibEntries = Object.entries(libs as Record<string, Lib>).filter(([name]) =>
 	pageLibs.includes(name),
 );
-// dev build uses the dev Google Maps key (Liquid: google-maps-key)
 const googleMapsKey = site.googleMapsDevKey;
-// Liquid: external URLs (http/https) are emitted verbatim (with the maps-key
-// placeholder replaced), local files as ./dist/libs/{npm}/{file}
+// External URLs (http/https) are emitted verbatim (with the maps-key placeholder
+// replaced); local files as ./dist/libs/{npm}/{file}.
 const libHref = (lib: Lib, file: string) =>
 	/^https?:\/\//.test(file)
 		? file.replace('GOOGLE_MAPS_KEY', googleMapsKey)
@@ -113,7 +112,6 @@ const libJsFiles = (head: boolean) =>
 
 		<slot />
 
-		{/* equivalent of {% modals %}: modals registered by the page components */}
 		<PageModals />
 
 		<ThemeSettings />
@@ -138,7 +136,6 @@ const libJsFiles = (head: boolean) =>
 		<script is:inline src={`${base}/preview/js/demo${min}.js`} defer></script>
 		<!-- END DEMO SCRIPTS -->
 
-		{/* equivalent of {% scripts %}: snippets registered by the page components */}
 		<PageScripts />
 
 		<!-- BEGIN PAGE SCRIPTS -->

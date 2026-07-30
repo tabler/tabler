@@ -12,13 +12,8 @@ interface Props {
 
 const { id: idProp, icon = 'star', color, size, value } = Astro.props;
 
-// id = include.id | default: include.icon | default: 'default'
 const id = idProp ?? (Astro.props.icon ? icon : undefined) ?? 'default';
 
-// Build the star SVG exactly like ui/icon.html (class="gl-star-full" type="filled"),
-// then collapse to a single clean line with the download comment removed — this is
-// the `star` capture in ui/rating.html. The include['size'] junk is NOT reproduced;
-// an explicit size becomes `icon-{size}`.
 const starClasses = [
 	'icon',
 	'gl-star-full',

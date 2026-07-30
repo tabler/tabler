@@ -1,7 +1,5 @@
 ---
-// TODO: %ICONS_COUNT% substitution in titles (Liquid: icons-info.count) —
-// menu.json doesn't contain that placeholder and src/data has no icons-info.json,
-// so we skip it for now.
+// TODO: %ICONS_COUNT% substitution in titles — menu.json has no placeholder, skipped for now.
 import Icon from '@ui/Icon.astro';
 import NavbarMenuItem from './NavbarMenuItem.astro';
 import menu from '@data/menu.json';
@@ -44,7 +42,7 @@ const {
 const currentPage = pageMenu.split('.');
 const items = Object.entries((sample ? menuSample : menu) as Record<string, Level1>);
 
-// Columns as in Liquid: per-column = ceil(size / columns), break every per-column.
+// per-column = ceil(size / columns), break every per-column.
 const chunk = <T,>(arr: T[], size: number): T[][] => {
 	const out: T[][] = [];
 	for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size));

@@ -7,7 +7,7 @@ import { beautifyHtml, highlightCode, removeHref } from '@shared/lib/code-exampl
 interface Props {
 	/** raw HTML of the example; when absent — the slot is rendered */
 	html?: string;
-	/** code shown in the panel instead of html (the code param in Liquid) */
+	/** code shown in the panel instead of html */
 	code?: string;
 	raw?: boolean;
 	overflow?: string;
@@ -38,7 +38,7 @@ const {
 	codeOnly,
 } = Astro.props;
 
-// equivalent of {% removeemptylines %} around include output (e.g. ui/alert.html)
+// Strip empty lines from the example HTML.
 let html = (htmlProp ?? (await Astro.slots.render('default'))).replace(/^\s*[\r\n]/gm, '');
 
 // JSX reserializes the slot markup: empty SVG elements get explicit closing

@@ -1,9 +1,7 @@
 ---
 // Inlines ui/avatar-list.html (stacked, size xs) and ui/switch-icon.html
 // (heart, scale variant) — the exact variants this part uses.
-// NOTE: the Liquid `task.due-date` reads the hyphenated key which does not
-// exist in tasks.json (the field is `due_date`), so the due-date branch never
-// renders — reproduced faithfully by reading task['due-date'] (undefined).
+// NOTE: task['due-date'] is undefined (field is `due_date`) — due-date branch never renders.
 // The avatar-list offset uses task['users-offset'] (the hyphenated key that
 // DOES exist), matching the Eleventy output.
 import Icon from '@ui/Icon.astro';
@@ -46,7 +44,7 @@ const { data = tasksData as unknown as { columns: Column[] }, class: className }
 									<div class="card-body">
 										<CardTitle>{task.name}</CardTitle>
 
-										{/* Liquid outputs the description unescaped; it may contain markup (e.g. <a>#tag</a>) */}
+										{/* Description may contain markup (e.g. <a>#tag</a>) — rendered with set:html */}
 										{task.description && <div class="text-secondary" set:html={task.description} />}
 
 										{task.image && (

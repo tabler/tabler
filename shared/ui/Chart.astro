@@ -50,9 +50,6 @@ const elementId = `chart-${id}`;
 					window.tabler_chart ??= {};
 
 					function initChart() {
-						// x-formatter is a raw JS expression from charts.json (e.g. `val + "K"`) — the
-						// only piece of this config that can't be plain data. Reconstructed here
-						// rather than baked into `config` by chartConfig(), which returns it separately.
 						if (xFormatterExpr && config.xaxis?.labels) {
 							config.xaxis.labels.formatter = new Function('val', `return (${xFormatterExpr})`);
 						}

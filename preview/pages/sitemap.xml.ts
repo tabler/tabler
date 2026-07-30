@@ -34,7 +34,7 @@ const escapeXml = (value: string) =>
 export const GET: APIRoute = () => {
 	const environment = process.env.NODE_ENV || 'production';
 	const baseUrl = environment !== 'development' ? site.previewUrl : '';
-	// same shape as Liquid's `'now' | date_to_xmlschema` (UTC, +00:00 suffix)
+	// ISO 8601 UTC timestamp (+00:00 suffix)
 	const lastModified = new Date().toISOString().replace(/\.\d{3}Z$/, '+00:00');
 	const entries = urls
 		.map(

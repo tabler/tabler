@@ -1,11 +1,8 @@
 ---
-// Equivalent of cards/card.html
 // TODO: ui/nav.html is inlined here only in its header variant (tabs/pills
 //       inside .card-header) — the standalone nav variants are not ported.
-// TODO: ui/photo.html is inlined only in its ratio branch with the fixed
-//       photo ids from the Liquid source (img-top → id=7, img-bottom → id=11;
-//       the `id=img-id` argument in card.html is always undefined and the
-//       trailing literal id wins).
+// TODO: ui/photo.html is inlined only in its ratio branch with fixed
+//       photo ids (img-top → id=7, img-bottom → id=11).
 // TODO: ui/form/check.html is inlined only in the empty+checked (switch)
 //       variants used by footer-elements; other check params are not ported.
 
@@ -40,8 +37,7 @@ interface Props {
 	footer?: boolean;
 	footerButton?: boolean;
 	footerButtons?: boolean;
-	/** a ">" prefix pushes the element (and, per the Liquid loop-variable leak,
-	 * every following one) to the right */
+	/** a ">" prefix pushes the element (and every following one) to the right — `right` is never reset */
 	footerElements?: string[];
 	progress?: boolean;
 }
@@ -83,8 +79,7 @@ const classes = [
 	className,
 ]
 
-// footer-elements parsing — mirrors the Liquid loop, including the fact that
-// `right` is never reset once set (Liquid assign leaks across iterations).
+// footer-elements parsing — `right` is never reset once set across iterations.
 let right = false;
 const footerEls = (footerElements ?? []).map((element) => {
 		let el = element;

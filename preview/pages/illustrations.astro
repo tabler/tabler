@@ -13,12 +13,11 @@ import siteData from '@data/site.json';
 const autodark = (freeIllustrations as { autodark: Record<string, string> }).autodark;
 const autodarkEntries = Object.entries(autodark);
 
-// first-illustration: the Liquid loop overwrites each pass → last value wins.
+// Last autodark entry (loop overwrites each pass).
 const firstIllustration = autodarkEntries.length
 	? autodarkEntries[autodarkEntries.length - 1][1]
 	: '';
 
-// Page-local transform: replace: '<svg ' , '<svg class="w-100 h-auto" '
 const withClass = (svg: string) => svg.replaceAll('<svg ', '<svg class="w-100 h-auto" ');
 
 const colors = siteData.colors as Record<string, { hex: string; class: string; prop: string }>;
@@ -26,15 +25,11 @@ const skinColors = siteData.skinColors as Record<string, { hex: string; class: s
 const colorEntries = Object.values(colors);
 const skinEntries = Object.values(skinColors);
 
-// skinColor = site.skinColors | first → the first value object (Rose).
 const skinFirst = skinEntries[0];
 const buyLink = (siteData.illustrations as { buy_link: string }).buy_link;
 
-// {{ illustrations | size | minus: 4 }}
 const moreCount = illustrationsList.length - 4;
 
-// Page script data — init script captured via CaptureScript and drained by
-// PageScripts at end of body.
 const illustrationsData = Object.fromEntries(
 	autodarkEntries.map(([key, svg]) => [key, { svg: withClass(svg) }]),
 );

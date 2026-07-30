@@ -1,13 +1,8 @@
 ---
 import ProseLayout from '@shared/layouts/ProseLayout.astro';
 import { renderMarkdown } from '@shared/lib/render-markdown';
-// Liquid: {{ changelog | renderContent: "md" }} — `changelog` is the raw
-// content of core/CHANGELOG.md (shared/e11ty/data.mjs), rendered by
-// Eleventy's markdown-it. renderMarkdown() mirrors that engine exactly
-// (markdown-it 14.3.0, { html: true }, indented code blocks disabled) —
-// output verified byte-identical to the reference build. Injected via
-// set:html: the fragment contains entities and a literal `{$prefix}` token
-// that must not be re-escaped or parsed as JSX.
+// CHANGELOG.md rendered via renderMarkdown() — output verified against reference build.
+// Injected via set:html: fragment contains entities and literal `{$prefix}` token.
 import changelog from '../../core/CHANGELOG.md?raw';
 
 const changelogHtml = renderMarkdown(changelog);

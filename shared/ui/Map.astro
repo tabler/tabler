@@ -1,16 +1,12 @@
 ---
-// Port of shared/includes/ui/map.html.
-// The Mapbox GL init <script> is captured via CaptureScript and drained by
-// PageScripts at end of body ,
-// wrapping the instance in window.tabler_map.
-// The access token comes from site data (site.mapboxKey).
-// Renders nothing unless maps[mapId] exists (Liquid: {% if data %}).
+// Mapbox GL map. Access token from site.mapboxKey. Renders nothing unless
+// maps[mapId] exists.
 import maps from '@data/maps.json';
 import site from '@data/site.json';
 import CaptureScript from '../components/CaptureScript.astro';
 
 interface Props {
-	/** map-id param in ui/map.html — key into the maps data */
+	/** Key into the maps data */
 	mapId: string;
 	ratio?: string;
 }

@@ -1,8 +1,6 @@
-// Port of ui/chart.html (Liquid) — generator of the ApexCharts <style> block and
-// config object. chartStyle() returns plain CSS text (rendered via set:html — inert,
-// not executable, so there's no injection surface to harden). chartConfig() returns a
-// real, JSON-serializable config object, rendered by Chart.astro via
-// <script define:vars> — no string-built script here at all.
+// ApexCharts helpers: chartStyle() returns plain CSS text (rendered via set:html —
+// inert, not executable). chartConfig() returns a JSON-serializable config object,
+// rendered by Chart.astro via <script define:vars>.
 
 type Serie = {
   'name'?: string
@@ -70,7 +68,7 @@ export type ChartData = {
 
 const escapeHtml = (value: string) => value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 
-/** Equivalent of the datetime loop: consecutive days from start-date (YYYY-MM-DD). */
+/** Consecutive days from start-date (YYYY-MM-DD). */
 function datetimeLabels(startDate: string, count: number): string[] {
   const start = new Date(`${startDate}T00:00:00Z`)
   return Array.from({ length: count }, (_, i) => {
@@ -229,8 +227,7 @@ export function chartConfig(opts: { id: string; data: ChartData; height: number 
   }
 
   if (data['show-data-labels']) {
-    // Liquid emits a second `dataLabels:` here, shadowing the earlier one — a
-    // plain reassignment (not a merge) reproduces that.
+    // Reassign dataLabels (shadows earlier config) — plain assignment, not a merge.
     config.dataLabels = { enabled: true }
   }
 
@@ -275,8 +272,7 @@ export function chartConfig(opts: { id: string; data: ChartData; height: number 
     : { show: false }
 
   if (data['hide-tooltip'] || type === 'pie' || type === 'donut') {
-    // Same reassignment-not-merge behavior as dataLabels above — the earlier
-    // `theme: 'dark'` is intentionally dropped, matching the Liquid source.
+    // Same reassignment-not-merge behavior as dataLabels above — earlier `theme: 'dark'` is intentionally dropped.
     config.tooltip = {
       enabled: data['hide-tooltip'] ? false : undefined,
       fillSeriesColor: type === 'pie' || type === 'donut' ? false : undefined,

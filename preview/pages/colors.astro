@@ -11,13 +11,11 @@ import site from '@data/site.json';
 
 type ColorEntry = [string, { title: string; hex: string; abbr?: string; icon?: string }];
 
-// Liquid iterates the site.json objects as [key, value] pairs.
 const colors = Object.entries(site.colors) as ColorEntry[];
 const lightColors = Object.entries(site.lightColors) as ColorEntry[];
 const grayColors = Object.entries(site.grayColors) as ColorEntry[];
 const socialColors = Object.entries(site.socialColors) as ColorEntry[];
 
-// Liquid: colors keys + inverted, white, transparent (pushed before the gradient loops).
 const gradientColors = [...Object.keys(site.colors), 'inverted', 'white', 'transparent'];
 ---
 

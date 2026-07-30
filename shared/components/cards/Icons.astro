@@ -9,7 +9,7 @@ interface Props {
 
 const { title, type = 'outline' } = Astro.props;
 
-// Liquid: limit is Infinity, but 20 when environment == 'development'.
+// limit is Infinity, but 20 in development.
 // The PoC mirrors the development build (see BaseLayout), so limit = 20.
 // NOTE: the limit applies to the ITERATION, before the svg[type] filter —
 // the "filled" card therefore shows only the filled icons among the first 20.
@@ -46,7 +46,7 @@ const entries = Object.entries(icons as Record<string, { svg?: Record<string, st
 							),
 					)
 				}
-				{/* Liquid: {% for icon in (0..20) %} → 21 empty divs (flexbox filler). */}
+				{/* 21 empty divs (flexbox filler) */}
 				{Array.from({ length: 21 }).map(() => <div />)}
 			</div>
 		</div>

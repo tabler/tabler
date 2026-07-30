@@ -1,5 +1,4 @@
 ---
-// Port of ui/advanced-table.html
 import BadgesList from './BadgesList.astro';
 import Icon from './Icon.astro';
 import { formatLongDate } from '@shared/lib/date-format';
@@ -37,17 +36,9 @@ const rows = (people as Record<string, any>[]).map((person, i) => {
 	return { person, index, status, itemTags, category, date };
 });
 
-// List.js init script captured via CaptureScript and drained by PageScripts at
-// end of body.
 const advancedTable = (tableProperties as Record<string, any>)['advanced-table'];
 const perPageDefault = perPage[1];
 ---
-
-{/*
-	ui/advanced-table.html begins with a commented-out {% include "js/tabler-list.html" %}
-	(a disabled List.js init for an empty table id). HTML comments are stripped by the
-	DOM parity diff, so it is intentionally omitted here rather than emitted verbatim.
-*/}
 <div class="card">
 	<div class="card-table">
 		<div class="card-header">
