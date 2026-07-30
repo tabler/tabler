@@ -1,5 +1,5 @@
-// Equivalent of the random_number / random_date / random_date_ago filters from
-// shared/e11ty/filters.mjs (deterministic pseudo-random depending on the loop index).
+// Deterministic pseudo-random values seeded by a loop index, used to generate
+// stable-looking demo data (numbers, dates, "time ago" labels) without a real RNG.
 
 export function randomNumber(x: number, min = 0, max = 100, round = 0): number {
 	let value =
@@ -28,10 +28,7 @@ export function randomItem<T>(x: number, items: T[]): T {
 	return items[randomNumber(x, 0, items.length - 1)];
 }
 
-/**
- * Equivalent of `forloop.index | random_date_ago: maxDays | timeago` — a date
- * up to `maxDays` days ago, formatted by timeago as "now" / "N day(s) ago".
- */
+/** A date up to `maxDays` days ago, formatted as "now" / "N day(s) ago". */
 export function timeagoLabel(index: number, maxDays: number): string {
 	const days = randomNumber(index, 0, maxDays);
 	if (days === 0) return 'now';

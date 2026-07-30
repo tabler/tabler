@@ -3,16 +3,16 @@ import {
 	capitalize,
 	firstLetters,
 	formatNumber,
-	liquidRound,
-	liquidSortBy,
-	milisecondsToMinutes,
+	millisecondsToMinutes,
 	parseCurrency,
 	parsePercentage,
 	pathSlug,
-	rubySplit,
+	roundTo,
 	slugifyWord,
+	sortBy,
+	splitDropTrailingEmpty,
 	ucFirst,
-} from './liquid-string';
+} from './string-format';
 
 describe('capitalize', () => {
 	it('uppercases the first char and lowercases the rest', () => {
@@ -46,13 +46,13 @@ describe('formatNumber', () => {
 	});
 });
 
-describe('rubySplit', () => {
-	it('drops trailing empty strings like Ruby String#split', () => {
-		expect(rubySplit('Tabler,Pages,', ',')).toEqual(['Tabler', 'Pages']);
+describe('splitDropTrailingEmpty', () => {
+	it('drops trailing empty strings', () => {
+		expect(splitDropTrailingEmpty('Tabler,Pages,', ',')).toEqual(['Tabler', 'Pages']);
 	});
 
 	it('keeps internal empty segments', () => {
-		expect(rubySplit('a,,b', ',')).toEqual(['a', '', 'b']);
+		expect(splitDropTrailingEmpty('a,,b', ',')).toEqual(['a', '', 'b']);
 	});
 });
 
@@ -83,17 +83,17 @@ describe('parsePercentage', () => {
 	});
 });
 
-describe('milisecondsToMinutes', () => {
+describe('millisecondsToMinutes', () => {
 	it('formats sub-minute durations', () => {
-		expect(milisecondsToMinutes(45000)).toBe('0:45');
+		expect(millisecondsToMinutes(45000)).toBe('0:45');
 	});
 
 	it('pads seconds under 10', () => {
-		expect(milisecondsToMinutes(65000)).toBe('1:05');
+		expect(millisecondsToMinutes(65000)).toBe('1:05');
 	});
 
 	it('formats multi-minute durations', () => {
-		expect(milisecondsToMinutes(225000)).toBe('3:45');
+		expect(millisecondsToMinutes(225000)).toBe('3:45');
 	});
 });
 
@@ -103,17 +103,17 @@ describe('parseCurrency', () => {
 	});
 });
 
-describe('liquidRound', () => {
+describe('roundTo', () => {
 	it('rounds to the given number of digits, dropping trailing zeros', () => {
-		expect(liquidRound(1 / 3, 4)).toBe(0.3333);
-		expect(liquidRound(2, 8)).toBe(2);
+		expect(roundTo(1 / 3, 4)).toBe(0.3333);
+		expect(roundTo(2, 8)).toBe(2);
 	});
 });
 
-describe('liquidSortBy', () => {
+describe('sortBy', () => {
 	it('sorts by the given key using case-sensitive string comparison', () => {
 		const people = [{ last_name: 'Smith' }, { last_name: 'Adams' }, { last_name: 'jones' }];
-		expect(liquidSortBy(people, (p) => p.last_name).map((p) => p.last_name)).toEqual([
+		expect(sortBy(people, (p) => p.last_name).map((p) => p.last_name)).toEqual([
 			'Adams',
 			'Smith',
 			'jones',
@@ -122,7 +122,7 @@ describe('liquidSortBy', () => {
 
 	it('does not mutate the input array', () => {
 		const people = [{ last_name: 'Smith' }, { last_name: 'Adams' }];
-		liquidSortBy(people, (p) => p.last_name);
+		sortBy(people, (p) => p.last_name);
 		expect(people[0].last_name).toBe('Smith');
 	});
 });

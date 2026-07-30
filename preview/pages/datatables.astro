@@ -1,8 +1,8 @@
 ---
 // Port of preview/pages/datatables.html (layout: default)
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
-import { liquidUnixSeconds, liquidLongDate } from '@shared/lib/liquid-date';
-import { randomNumber, randomDate } from '@shared/lib/liquid-random';
+import { toUnixSeconds, formatLongDate } from '@shared/lib/date-format';
+import { randomNumber, randomDate } from '@shared/lib/pseudo-random';
 import Progress from '@shared/components/ui/Progress.astro';
 import TablerList from '@shared/components/js/TablerList.astro';
 import rollercoasters from '@data/rollercoasters.json';
@@ -17,8 +17,8 @@ const rows = (rollercoasters as Record<string, any>[]).map((rc, i) => {
 		rc,
 		progress,
 		quantity: randomNumber(index, 1, 200),
-		dateSeconds: liquidUnixSeconds(date),
-		dateLabel: liquidLongDate(date),
+		dateSeconds: toUnixSeconds(date),
+		dateLabel: formatLongDate(date),
 	};
 });
 

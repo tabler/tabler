@@ -7,7 +7,7 @@
 import Icon from '../../Icon.astro';
 import DropdownMenu from '../../ui/DropdownMenu.astro';
 import tracks from '@data/tracks.json';
-import { milisecondsToMinutes } from '@shared/lib/liquid-string';
+import { millisecondsToMinutes } from '@shared/lib/string-format';
 
 // {% for track in tracks limit: 12 %}
 const items = tracks.slice(0, 12);
@@ -31,7 +31,7 @@ const items = tracks.slice(0, 12);
 						</div>
 					</div>
 					<div class="col-auto text-secondary">
-						{milisecondsToMinutes(track.duration_ms)}
+						{millisecondsToMinutes(track.duration_ms)}
 					</div>
 					<div class="col-auto">
 						<a href="#" class="link-secondary">

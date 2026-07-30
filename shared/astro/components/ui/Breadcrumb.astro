@@ -1,7 +1,7 @@
 ---
 // Port of ui/breadcrumb.html.
 import Icon from '../Icon.astro';
-import { rubySplit } from '@shared/lib/liquid-string';
+import { splitDropTrailingEmpty } from '@shared/lib/string-format';
 
 interface Props {
 	/** comma-separated list of pages (Liquid `pages` param) */
@@ -15,7 +15,7 @@ interface Props {
 
 const { pages = 'Home,Library,Data', class: className, separator, homeIcon } = Astro.props;
 
-const items = rubySplit(pages, ',');
+const items = splitDropTrailingEmpty(pages, ',');
 
 const classes = [
 	'breadcrumb',

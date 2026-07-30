@@ -5,7 +5,7 @@ import ChartSparkline from '../ui/ChartSparkline.astro';
 import Icon from '../Icon.astro';
 import Avatar from '../ui/Avatar.astro';
 import commits from '@data/commits.json';
-import { dateToString } from '@shared/lib/liquid-date';
+import { formatCommitDate } from '@shared/lib/date-format';
 
 interface Commit {
 	hash: string;
@@ -55,7 +55,7 @@ const rows = (commits as Commit[]).slice(0, 5);
 							{commit.description}
 						</div>
 					</td>
-					<td class="text-nowrap text-secondary">{dateToString(commit.date)}</td>
+					<td class="text-nowrap text-secondary">{formatCommitDate(commit.date)}</td>
 				</tr>
 			))}
 			</tbody>

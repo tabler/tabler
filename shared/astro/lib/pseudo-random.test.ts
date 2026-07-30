@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { randomDate, randomItem, randomNumber, timeagoLabel } from './liquid-random';
+import { randomDate, randomItem, randomNumber, timeagoLabel } from './pseudo-random';
 
 describe('randomNumber', () => {
 	it('is deterministic for a given index', () => {

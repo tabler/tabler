@@ -2,13 +2,13 @@
 // Port of layout/footer.html. {{ page | relative }} → "." (pages in the root).
 import Icon from '../Icon.astro';
 import { site } from '@shared/lib/site';
-import { liquidUtcTimestamp } from '@shared/lib/liquid-date';
+import { formatUtcTimestamp } from '@shared/lib/date-format';
 
 // The PoC mirrors the development build (as in BaseLayout).
 const environment: string = 'development';
 
 const now = new Date();
-const generatedAt = liquidUtcTimestamp(now);
+const generatedAt = formatUtcTimestamp(now);
 ---
 
 <!--  BEGIN FOOTER  -->

@@ -3,8 +3,8 @@
 import Icon from '../Icon.astro';
 import Avatar from '../ui/Avatar.astro';
 import tasksList from '@data/tasks-list.json';
-import { randomNumber, randomDate } from '@shared/lib/liquid-random';
-import { liquidLongDate } from '@shared/lib/liquid-date';
+import { randomNumber, randomDate } from '@shared/lib/pseudo-random';
+import { formatLongDate } from '@shared/lib/date-format';
 ---
 
 <div class="card">
@@ -25,7 +25,7 @@ import { liquidLongDate } from '@shared/lib/liquid-date';
 						</td>
 						<td class="text-nowrap text-secondary">
 							<Icon name="calendar" />
-							{liquidLongDate(randomDate(index))}
+							{formatLongDate(randomDate(index))}
 						</td>
 						<td class="text-nowrap">
 							<a href="#" class="text-secondary">

@@ -1,8 +1,8 @@
 ---
 // Port of ui/advanced-table.html
 import Icon from '../Icon.astro';
-import { liquidLongDate } from '@shared/lib/liquid-date';
-import { randomNumber, randomItem, randomDate } from '@shared/lib/liquid-random';
+import { formatLongDate } from '@shared/lib/date-format';
+import { randomNumber, randomItem, randomDate } from '@shared/lib/pseudo-random';
 import Avatar from './Avatar.astro';
 import Button from '../Button.astro';
 import Pagination from './Pagination.astro';
@@ -30,7 +30,7 @@ const rows = (people as Record<string, any>[]).map((person, i) => {
 	const status = randomItem(index + 5, statuses);
 	const itemTags = randomItem(index + 5, tags).split(',');
 	const category = randomItem(index, categories);
-	const date = liquidLongDate(randomDate(index));
+	const date = formatLongDate(randomDate(index));
 	return { person, index, status, itemTags, category, date };
 });
 
