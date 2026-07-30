@@ -27,12 +27,12 @@ interface FocusTrapConfig {
 
 const Default: FocusTrapConfig = {
   autofocus: true,
-  trapElement: null
+  trapElement: null,
 }
 
 const DefaultType: ComponentConfigType = {
   autofocus: 'boolean',
-  trapElement: 'element'
+  trapElement: 'element',
 }
 
 class FocusTrap extends Config {

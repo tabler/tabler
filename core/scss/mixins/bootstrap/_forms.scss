@@ -1,15 +1,15 @@
-@use "border-radius" as *;
-@use "box-shadow" as *;
-@use "rfs" as *;
-@use "../../settings" as *;
-@use "../../variables" as *;
-@use "../functions" as *;
-@use "breakpoints" as *;
+@use 'border-radius' as *;
+@use 'box-shadow' as *;
+@use 'rfs' as *;
+@use '../../settings' as *;
+@use '../../variables' as *;
+@use '../functions' as *;
+@use 'breakpoints' as *;
 // This mixin uses an `if()` technique to be compatible with Dart Sass
 // See https://github.com/sass/sass/issues/1873#issuecomment-152293725 for more details
 
 @mixin form-validation-state-selector($state) {
-  @if ($state == "valid" or $state == "invalid") {
+  @if ($state == 'valid' or $state == 'invalid') {
     .was-validated #{if(sass(&): "&"; else: "")}:#{$state},
     #{if(sass(&): "&"; else: "")}.is-#{$state} {
       @content;
@@ -21,15 +21,7 @@
   }
 }
 
-@mixin form-validation-state(
-  $state,
-  $color,
-  $icon,
-  $tooltip-color: color-contrast($color),
-  $tooltip-bg-color: rgba($color, $form-feedback-tooltip-opacity),
-  $focus-box-shadow: 0 0 $input-btn-focus-blur $input-focus-width rgba($color, $input-btn-focus-color-opacity),
-  $border-color: $color
-) {
+@mixin form-validation-state($state, $color, $icon, $tooltip-color: color-contrast($color), $tooltip-bg-color: rgba($color, $form-feedback-tooltip-opacity), $focus-box-shadow: 0 0 $input-btn-focus-blur $input-focus-width rgba($color, $input-btn-focus-color-opacity), $border-color: $color) {
   .#{$state}-feedback {
     display: none;
     width: 100%;
@@ -46,7 +38,7 @@
     display: none;
     max-width: 100%;
     padding: $form-feedback-tooltip-padding-y $form-feedback-tooltip-padding-x;
-    margin-top: .1rem;
+    margin-top: 0.1rem;
     @include font-size($form-feedback-tooltip-font-size);
     line-height: $form-feedback-tooltip-line-height;
     color: $tooltip-color;
@@ -100,7 +92,7 @@
 
       @if $enable-validation-icons {
         &:not([multiple]):not([size]),
-        &:not([multiple])[size="1"] {
+        &:not([multiple])[size='1'] {
           --#{$prefix}form-select-bg-icon: #{escape-svg($icon)};
           padding-right: $form-select-feedback-icon-padding-end;
           background-position: $form-select-bg-position, $form-select-feedback-icon-position;
@@ -146,7 +138,7 @@
   }
   .form-check-inline .form-check-input {
     ~ .#{$state}-feedback {
-      margin-left: .5em;
+      margin-left: 0.5em;
     }
   }
 
@@ -155,9 +147,9 @@
     > .form-select:not(:focus),
     > .form-floating:not(:focus-within) {
       @include form-validation-state-selector($state) {
-        @if $state == "valid" {
+        @if $state == 'valid' {
           z-index: 3;
-        } @else if $state == "invalid" {
+        } @else if $state == 'invalid' {
           z-index: 4;
         }
       }

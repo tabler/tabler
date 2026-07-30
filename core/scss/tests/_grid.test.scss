@@ -3,62 +3,118 @@
 // + math.percentage); `$columns` is passed explicitly so the tests don't depend
 // on the global `$grid-columns`.
 
-@use "../mixins/bootstrap/grid" as *;
+@use '../mixins/bootstrap/grid' as *;
 
-@include describe("make-col") {
-  @include it("sets a fixed width as a percentage of the column count") {
+@include describe('make-col') {
+  @include it('sets a fixed width as a percentage of the column count') {
     @include assert() {
-      @include output() { .t { @include make-col(6, 12); } }
-      @include expect() { .t { flex: 0 0 auto; width: 50%; } }
+      @include output() {
+        .t {
+          @include make-col(6, 12);
+        }
+      }
+      @include expect() {
+        .t {
+          flex: 0 0 auto;
+          width: 50%;
+        }
+      }
     }
   }
 
-  @include it("grows to fill the row when no size is given") {
+  @include it('grows to fill the row when no size is given') {
     @include assert() {
-      @include output() { .t { @include make-col(); } }
-      @include expect() { .t { flex: 1 1 0; max-width: 100%; } }
-    }
-  }
-}
-
-@include describe("make-col-auto") {
-  @include it("sizes to the content") {
-    @include assert() {
-      @include output() { .t { @include make-col-auto(); } }
-      @include expect() { .t { flex: 0 0 auto; width: auto; } }
-    }
-  }
-}
-
-@include describe("make-col-offset") {
-  @include it("offsets by a percentage of the column count") {
-    @include assert() {
-      @include output() { .t { @include make-col-offset(3, 12); } }
-      @include expect() { .t { margin-left: 25%; } }
-    }
-  }
-
-  @include it("collapses a zero offset to 0 (not 0%)") {
-    @include assert() {
-      @include output() { .t { @include make-col-offset(0, 12); } }
-      @include expect() { .t { margin-left: 0; } }
+      @include output() {
+        .t {
+          @include make-col();
+        }
+      }
+      @include expect() {
+        .t {
+          flex: 1 1 0;
+          max-width: 100%;
+        }
+      }
     }
   }
 }
 
-@include describe("row-cols") {
-  @include it("splits children into equal fractions of the row") {
+@include describe('make-col-auto') {
+  @include it('sizes to the content') {
     @include assert() {
-      @include output() { .t { @include row-cols(3); } }
-      @include expect() { .t > * { flex: 0 0 auto; width: 33.33333333%; } }
+      @include output() {
+        .t {
+          @include make-col-auto();
+        }
+      }
+      @include expect() {
+        .t {
+          flex: 0 0 auto;
+          width: auto;
+        }
+      }
     }
   }
 }
 
-@include describe("make-row") {
-  @include it("sets the gutter custom properties and negative margins") {
+@include describe('make-col-offset') {
+  @include it('offsets by a percentage of the column count') {
     @include assert() {
-      @include output() { .t { @include make-row(1rem); } }
+      @include output() {
+        .t {
+          @include make-col-offset(3, 12);
+        }
+      }
+      @include expect() {
+        .t {
+          margin-left: 25%;
+        }
+      }
+    }
+  }
+
+  @include it('collapses a zero offset to 0 (not 0%)') {
+    @include assert() {
+      @include output() {
+        .t {
+          @include make-col-offset(0, 12);
+        }
+      }
+      @include expect() {
+        .t {
+          margin-left: 0;
+        }
+      }
+    }
+  }
+}
+
+@include describe('row-cols') {
+  @include it('splits children into equal fractions of the row') {
+    @include assert() {
+      @include output() {
+        .t {
+          @include row-cols(3);
+        }
+      }
+      @include expect() {
+        .t > * {
+          flex: 0 0 auto;
+          width: 33.33333333%;
+        }
+      }
+    }
+  }
+}
+
+@include describe('make-row') {
+  @include it('sets the gutter custom properties and negative margins') {
+    @include assert() {
+      @include output() {
+        .t {
+          @include make-row(1rem);
+        }
+      }
       @include expect() {
         .t {
           --tblr-gutter-x: 1rem;
@@ -74,10 +130,14 @@
   }
 }
 
-@include describe("make-col-ready") {
-  @include it("primes a column with full width and gutter padding") {
+@include describe('make-col-ready') {
+  @include it('primes a column with full width and gutter padding') {
     @include assert() {
-      @include output() { .t { @include make-col-ready(); } }
+      @include output() {
+        .t {
+          @include make-col-ready();
+        }
+      }
       @include expect() {
         .t {
           flex-shrink: 0;

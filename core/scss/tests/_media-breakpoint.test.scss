@@ -9,130 +9,168 @@
 // Max-widths are the breakpoint value minus 0.02px (the min-/max- overlap fix);
 // the smallest/edge cases emit the content with no media query at all.
 
-@use "../mixins/bootstrap/breakpoints" as *;
-@use "../mixins/functions" as *;
+@use '../mixins/bootstrap/breakpoints' as *;
+@use '../mixins/functions' as *;
 
-$g: (xs: 0, sm: 576px, md: 768px, lg: 992px, xl: 1200px);
+$g: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+);
 
-@include describe("media-breakpoint-up") {
-  @include it("wraps content in a min-width query") {
+@include describe('media-breakpoint-up') {
+  @include it('wraps content in a min-width query') {
     @include assert() {
       @include output() {
         @include media-breakpoint-up(md, $g) {
-          .t { color: red; }
+          .t {
+            color: red;
+          }
         }
       }
       @include expect() {
         @media (min-width: 768px) {
-          .t { color: red; }
+          .t {
+            color: red;
+          }
         }
       }
     }
   }
 
-  @include it("emits content directly for the zero breakpoint") {
+  @include it('emits content directly for the zero breakpoint') {
     @include assert() {
       @include output() {
         @include media-breakpoint-up(xs, $g) {
-          .t { color: red; }
+          .t {
+            color: red;
+          }
         }
       }
       @include expect() {
-        .t { color: red; }
+        .t {
+          color: red;
+        }
       }
     }
   }
 }
 
-@include describe("media-breakpoint-down") {
-  @include it("wraps content in a max-width query (value - 0.02px)") {
+@include describe('media-breakpoint-down') {
+  @include it('wraps content in a max-width query (value - 0.02px)') {
     @include assert() {
       @include output() {
         @include media-breakpoint-down(md, $g) {
-          .t { color: red; }
+          .t {
+            color: red;
+          }
         }
       }
       @include expect() {
         @media (max-width: 767.98px) {
-          .t { color: red; }
+          .t {
+            color: red;
+          }
         }
       }
     }
   }
 
-  @include it("emits content directly for the zero breakpoint") {
+  @include it('emits content directly for the zero breakpoint') {
     @include assert() {
       @include output() {
         @include media-breakpoint-down(xs, $g) {
-          .t { color: red; }
+          .t {
+            color: red;
+          }
         }
       }
       @include expect() {
-        .t { color: red; }
+        .t {
+          color: red;
+        }
       }
     }
   }
 }
 
-@include describe("media-breakpoint-between") {
-  @include it("combines a min-width and a max-width query") {
+@include describe('media-breakpoint-between') {
+  @include it('combines a min-width and a max-width query') {
     @include assert() {
       @include output() {
         @include media-breakpoint-between(sm, md, $g) {
-          .t { color: red; }
+          .t {
+            color: red;
+          }
         }
       }
       @include expect() {
         @media (min-width: 576px) and (max-width: 767.98px) {
-          .t { color: red; }
+          .t {
+            color: red;
+          }
         }
       }
     }
   }
 }
 
-@include describe("media-breakpoint-only") {
-  @include it("spans from the breakpoint min to the next breakpoint max") {
+@include describe('media-breakpoint-only') {
+  @include it('spans from the breakpoint min to the next breakpoint max') {
     @include assert() {
       @include output() {
         @include media-breakpoint-only(md, $g) {
-          .t { color: red; }
+          .t {
+            color: red;
+          }
         }
       }
       @include expect() {
         @media (min-width: 768px) and (max-width: 991.98px) {
-          .t { color: red; }
+          .t {
+            color: red;
+          }
         }
       }
     }
   }
 }
 
-@include describe("media-breakpoint-down-than") {
-  @include it("targets everything below the previous breakpoint") {
+@include describe('media-breakpoint-down-than') {
+  @include it('targets everything below the previous breakpoint') {
     @include assert() {
       @include output() {
         @include media-breakpoint-down-than(md, $g) {
-          .t { color: red; }
+          .t {
+            color: red;
+          }
         }
       }
       @include expect() {
         @media (max-width: 575.98px) {
-          .t { color: red; }
+          .t {
+            color: red;
+          }
         }
       }
     }
   }
 
-  @include it("emits content directly when there is no previous breakpoint") {
+  @include it('emits content directly when there is no previous breakpoint') {
     @include assert() {
       @include output() {
         @include media-breakpoint-down-than(xs, $g) {
-          .t { color: red; }
+          .t {
+            color: red;
+          }
         }
       }
       @include expect() {
-        .t { color: red; }
+        .t {
+          color: red;
+        }
       }
     }
   }
