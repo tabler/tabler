@@ -1,6 +1,6 @@
 ---
-// Port of ui/range.html. With an id → a noUiSlider div + init script, rendered
-// directly here; without an id → a native <input type=range>.
+// Port of ui/range.html. With an id → a noUiSlider div + init script, captured via CaptureScript and drained by PageScripts at end of body; without an id → a native <input type=range>.
+import CaptureScript from '../components/CaptureScript.astro';
 interface Props {
 	min?: number;
 	max?: number;
@@ -38,22 +38,22 @@ const rangeId = `range-${id}`;
 }
 {
 	id && (
-		<Fragment>
-		<Fragment set:html={'<!-- BEGIN RANGE -->'} />
-		<script define:vars={{ rangeId, startValue, connectValue, step, min, max }}>
-			function initRange() {
-				window.noUiSlider &&
-					noUiSlider.create(document.getElementById(rangeId), {
-						start: startValue,
-						...(connectValue ? { connect: connectValue } : {}),
-						step,
-						range: { min, max },
-					});
-			}
+		<CaptureScript>
+			<!-- BEGIN RANGE -->
+			<script define:vars={{ rangeId, startValue, connectValue, step, min, max }}>
+				function initRange() {
+					window.noUiSlider &&
+						noUiSlider.create(document.getElementById(rangeId), {
+							start: startValue,
+							...(connectValue ? { connect: connectValue } : {}),
+							step,
+							range: { min, max },
+						});
+				}
 
-			document.readyState !== 'loading' ? initRange() : document.addEventListener('DOMContentLoaded', initRange, { once: true });
-		</script>
-		<Fragment set:html={'<!-- END RANGE -->'} />
-		</Fragment>
+				document.readyState !== 'loading' ? initRange() : document.addEventListener('DOMContentLoaded', initRange, { once: true });
+			</script>
+			<!-- END RANGE -->
+		</CaptureScript>
 	)
 }

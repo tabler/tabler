@@ -4,7 +4,7 @@
 // page-header (the page-header block renders empty in the reference).
 //
 // {% assign map-id = 'google' %} → id="map-google".
-// The {% capture_script %} block is registered synchronously (before any await).
+// Init script captured via CaptureScript and drained by PageScripts at end of body.
 // We mirror the development build (environment == 'development'), so the
 // `window.tabler_map` bookkeeping lines are emitted (as in the reference).
 //
@@ -12,6 +12,7 @@
 // class + slot rendered WITHOUT the .container-xl wrapper. Not implemented in
 // the shared DefaultLayout yet — flagged rather than modified here.
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
+import CaptureScript from '@shared/components/CaptureScript.astro';
 ---
 
 <DefaultLayout
@@ -25,8 +26,10 @@ import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
 	<!--
 		is:inline: google-maps loads via a deferred page-lib <script>; see
 		FormElements1.astro for why a processed (module) script here would run too
-		early and find window.google undefined.
+		early and find window.google undefined. Captured via CaptureScript and
+		drained by PageScripts at end of body.
 	-->
+	<CaptureScript>
 	<!-- BEGIN MAP SCRIPT -->
 	<script is:inline>
 		window.tabler_map ??= {};
@@ -43,4 +46,5 @@ import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
 		document.readyState !== 'loading' ? initMap() : document.addEventListener('DOMContentLoaded', initMap, { once: true });
 	</script>
 	<!-- END MAP SCRIPT -->
+	</CaptureScript>
 </DefaultLayout>

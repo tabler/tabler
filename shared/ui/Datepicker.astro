@@ -1,8 +1,10 @@
 ---
 // Port of shared/includes/ui/datepicker.html.
 // Renders the datepicker input (icon / icon-prepend / inline / plain layouts) and its
-// Litepicker init <script>, rendered directly here (no more page-scripts registry).
+// Litepicker init <script>, captured via CaptureScript and drained by PageScripts at
+// end of body.
 import Icon from './Icon.astro';
+import CaptureScript from '../components/CaptureScript.astro';
 
 interface Props {
 	id?: string;
@@ -68,26 +70,26 @@ const datepickerId = id ? `datepicker-${id}` : undefined;
 }
 {
 	id && (
-		<Fragment>
-		<Fragment set:html={'<!-- BEGIN DATEPICKER -->'} />
-		<script define:vars={{ datepickerId, chevronLeft, chevronRight, inline }}>
-			function initDatepicker() {
-				window.tabler_datepicker ??= {};
+		<CaptureScript>
+			<!-- BEGIN DATEPICKER -->
+			<script define:vars={{ datepickerId, chevronLeft, chevronRight, inline }}>
+				function initDatepicker() {
+					window.tabler_datepicker ??= {};
 
-				window.Litepicker &&
-					(window.tabler_datepicker[datepickerId] = new Litepicker({
-						element: document.getElementById(datepickerId),
-						buttonText: {
-							previousMonth: chevronLeft,
-							nextMonth: chevronRight,
-						},
-						...(inline ? { inlineMode: true } : {}),
-					}));
-			}
+					window.Litepicker &&
+						(window.tabler_datepicker[datepickerId] = new Litepicker({
+							element: document.getElementById(datepickerId),
+							buttonText: {
+								previousMonth: chevronLeft,
+								nextMonth: chevronRight,
+							},
+							...(inline ? { inlineMode: true } : {}),
+						}));
+				}
 
-			document.readyState !== 'loading' ? initDatepicker() : document.addEventListener('DOMContentLoaded', initDatepicker, { once: true });
-		</script>
-		<Fragment set:html={'<!-- END DATEPICKER -->'} />
-		</Fragment>
+				document.readyState !== 'loading' ? initDatepicker() : document.addEventListener('DOMContentLoaded', initDatepicker, { once: true });
+			</script>
+			<!-- END DATEPICKER -->
+		</CaptureScript>
 	)
 }

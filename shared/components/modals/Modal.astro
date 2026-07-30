@@ -1,6 +1,6 @@
 ---
-import CaptureModal from './CaptureModal.astro';
-
+// Modal shell markup. Wrap with <CaptureModal> at the call site to emit at the
+// end of <body> (see PageModals). For inline gallery demos use ModalInline.
 interface Props {
 	modalId?: string;
 	size?: string;
@@ -32,21 +32,19 @@ const dialogClass = [
 	.join(' ');
 ---
 
-<CaptureModal>
-	<!-- BEGIN MODAL -->
-	<div
-		class={modalClass}
-		style={style}
-		id={`modal-${modalId}`}
-		tabindex="-1"
-		role="dialog"
-		aria-hidden={show ? 'false' : 'true'}
-	>
-		<div class={dialogClass} role="document">
-			<div class="modal-content">
-				<slot />
-			</div>
+<!-- BEGIN MODAL -->
+<div
+	class={modalClass}
+	style={style}
+	id={`modal-${modalId}`}
+	tabindex="-1"
+	role="dialog"
+	aria-hidden={show ? 'false' : 'true'}
+>
+	<div class={dialogClass} role="document">
+		<div class="modal-content">
+			<slot />
 		</div>
 	</div>
-	<!-- END MODAL -->
-</CaptureModal>
+</div>
+<!-- END MODAL -->

@@ -12,6 +12,7 @@ import DocsToc from '@components/DocsToc.astro';
 import type { TocItem } from '@components/DocsToc.astro';
 import DocsPagination from '@components/DocsPagination.astro';
 import Prose from '@ui/Prose.astro';
+import PageScripts from '@shared/components/PageScripts.astro';
 
 interface Props {
 	/** front matter: the page's h1 heading */
@@ -345,6 +346,9 @@ const docsLinks = docs.links as DocsLink[];
 		<!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
 		<script is:inline src="/dist/js/tabler.js"></script>
 		<!-- END GLOBAL MANDATORY SCRIPTS -->
+
+		{/* equivalent of {% scripts %}: snippets registered by the page components */}
+		<PageScripts />
 
 		<!-- BEGIN DOCS SCRIPTS -->
 		<script is:inline src="/js/docs.js" defer></script>

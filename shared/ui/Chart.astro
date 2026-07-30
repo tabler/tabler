@@ -1,6 +1,7 @@
 ---
 import charts from '@data/charts.json';
 import { chartStyle, chartConfig, type ChartData } from '@shared/lib/chart-script';
+import CaptureScript from '../components/CaptureScript.astro';
 
 interface Props {
 	chartId: string;
@@ -43,25 +44,27 @@ const elementId = `chart-${id}`;
 		<Fragment>
 			<div id={elementId} class:list={['position-relative', className]} />
 			<Fragment set:html={style} />
-			<!-- BEGIN CHART -->
-			<script define:vars={{ chartKey, elementId, config, xFormatterExpr }}>
-				window.tabler_chart ??= {};
+			<CaptureScript>
+				<!-- BEGIN CHART -->
+				<script define:vars={{ chartKey, elementId, config, xFormatterExpr }}>
+					window.tabler_chart ??= {};
 
-				function initChart() {
-					// x-formatter is a raw JS expression from charts.json (e.g. `val + "K"`) — the
-					// only piece of this config that can't be plain data. Reconstructed here
-					// rather than baked into `config` by chartConfig(), which returns it separately.
-					if (xFormatterExpr && config.xaxis?.labels) {
-						config.xaxis.labels.formatter = new Function('val', `return (${xFormatterExpr})`);
+					function initChart() {
+						// x-formatter is a raw JS expression from charts.json (e.g. `val + "K"`) — the
+						// only piece of this config that can't be plain data. Reconstructed here
+						// rather than baked into `config` by chartConfig(), which returns it separately.
+						if (xFormatterExpr && config.xaxis?.labels) {
+							config.xaxis.labels.formatter = new Function('val', `return (${xFormatterExpr})`);
+						}
+
+						window.ApexCharts &&
+							(window.tabler_chart[chartKey] = new ApexCharts(document.getElementById(elementId), config)).render();
 					}
 
-					window.ApexCharts &&
-						(window.tabler_chart[chartKey] = new ApexCharts(document.getElementById(elementId), config)).render();
-				}
-
-				document.readyState !== 'loading' ? initChart() : document.addEventListener('DOMContentLoaded', initChart, { once: true });
-			</script>
-			<!-- END CHART -->
+					document.readyState !== 'loading' ? initChart() : document.addEventListener('DOMContentLoaded', initChart, { once: true });
+				</script>
+				<!-- END CHART -->
+			</CaptureScript>
 		</Fragment>
 	)
 }

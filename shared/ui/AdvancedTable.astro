@@ -10,6 +10,7 @@ import ButtonList from './ButtonList.astro';
 import Pagination from './Pagination.astro';
 import people from '@data/people.json';
 import tableProperties from '@data/table-properties.json';
+import CaptureScript from '../components/CaptureScript.astro';
 
 interface Props {
 	id?: string;
@@ -36,7 +37,8 @@ const rows = (people as Record<string, any>[]).map((person, i) => {
 	return { person, index, status, itemTags, category, date };
 });
 
-// Inline <script> from advanced-table.html (renders in the page body).
+// List.js init script captured via CaptureScript and drained by PageScripts at
+// end of body.
 const advancedTable = (tableProperties as Record<string, any>)['advanced-table'];
 const perPageDefault = perPage[1];
 ---
@@ -171,6 +173,7 @@ const perPageDefault = perPage[1];
 	</div>
 </div>
 
+<CaptureScript>
 <!-- BEGIN ADVANCED TABLE -->
 <script define:vars={{ tableId, advancedTable, perPageDefault }}>
 	// Astro wraps define:vars scripts in an IIFE, so this needs an explicit window
@@ -205,3 +208,4 @@ const perPageDefault = perPage[1];
 	document.readyState !== 'loading' ? initAdvancedTable() : document.addEventListener('DOMContentLoaded', initAdvancedTable, { once: true });
 </script>
 <!-- END ADVANCED TABLE -->
+</CaptureScript>

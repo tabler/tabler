@@ -1,8 +1,10 @@
 ---
 // Port of ui/fullcalendar.html.
-// The init <script> renders directly here (no more page-scripts registry). Sample
+// The init <script> is captured via CaptureScript and drained by PageScripts at
+// end of body. Sample
 // events carry [day, hour, minute] tuples instead of new Date(...) expressions — the
 // actual Date objects are built at runtime, relative to currentYear/currentMonth.
+import CaptureScript from '../components/CaptureScript.astro';
 interface Props {
 	id?: string;
 	/** sample-events param in ui/fullcalendar.html — injects the demo events array */
@@ -37,6 +39,7 @@ const sampleEventData = sampleEvents
 ---
 
 <div id={calendarId}></div>
+<CaptureScript>
 <!-- BEGIN FULLCALENDAR -->
 <script define:vars={{ calendarId, sampleEventData }}>
 	function initCalendar() {
@@ -57,3 +60,4 @@ const sampleEventData = sampleEvents
 	document.readyState !== 'loading' ? initCalendar() : document.addEventListener('DOMContentLoaded', initCalendar, { once: true });
 </script>
 <!-- END FULLCALENDAR -->
+</CaptureScript>

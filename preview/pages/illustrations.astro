@@ -5,6 +5,7 @@ import CardStamp from '@ui/CardStamp.astro';
 import Card from '@ui/Card.astro';
 import CardBody from '@ui/CardBody.astro';
 import Prose from '@ui/Prose.astro';
+import CaptureScript from '@shared/components/CaptureScript.astro';
 import freeIllustrations from '@data/free-illustrations.json';
 import illustrationsList from '@data/illustrations.json';
 import siteData from '@data/site.json';
@@ -32,8 +33,8 @@ const buyLink = (siteData.illustrations as { buy_link: string }).buy_link;
 // {{ illustrations | size | minus: 4 }}
 const moreCount = illustrationsList.length - 4;
 
-// {% capture_script %} — build the illustrations JS map from the same data.
-// skin_color / color[1].prop resolve to empty in Liquid → literal "var()".
+// Page script data — init script captured via CaptureScript and drained by
+// PageScripts at end of body.
 const illustrationsData = Object.fromEntries(
 	autodarkEntries.map(([key, svg]) => [key, { svg: withClass(svg) }]),
 );
@@ -174,6 +175,7 @@ const illustrationsData = Object.fromEntries(
 			</div>
 		</div>
 	</div>
+	<CaptureScript>
 	<!-- BEGIN ILLUSTRATIONS SCRIPT -->
 	<script define:vars={{ illustrationsData }}>
 		let skinColor = 'var()',
@@ -204,4 +206,5 @@ const illustrationsData = Object.fromEntries(
 		});
 	</script>
 	<!-- END ILLUSTRATIONS SCRIPT -->
+	</CaptureScript>
 </DefaultLayout>
