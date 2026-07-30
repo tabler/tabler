@@ -1,7 +1,8 @@
 ---
-// Port of shared/layouts/settings.html (layout: default).
 // Wraps the page body in a card with a left settings-nav column; the active
 // nav item is driven by the `active` prop (Liquid used page.fileSlug).
+
+import Subheader from '@shared/components/ui/Subheader.astro';
 import DefaultLayout from './DefaultLayout.astro';
 import ListGroup from '@shared/components/ui/ListGroup.astro';
 import ListGroupItem from '@shared/components/ui/ListGroupItem.astro';
@@ -20,7 +21,7 @@ const { active } = Astro.props;
 		<div class="row g-0">
 			<div class="col-12 col-md-3 border-end">
 				<div class="card-body">
-					<h4 class="subheader">Business settings</h4>
+					<Subheader as="h4">Business settings</Subheader>
 
 					<ListGroup as="nav" transparent>
 						<ListGroupItem
@@ -42,7 +43,7 @@ const { active } = Astro.props;
 						<ListGroupItem as="a" action class="d-flex align-items-center" href="#">Billing & Invoices</ListGroupItem>
 					</ListGroup>
 
-					<h4 class="subheader mt-4">Experience</h4>
+					<Subheader as="h4" class="mt-4">Experience</Subheader>
 
 					<ListGroup as="nav" transparent>
 						<ListGroupItem as="a" action href="#">Give Feedback</ListGroupItem>

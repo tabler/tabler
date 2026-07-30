@@ -1,5 +1,8 @@
 ---
-// Port of preview/pages/badges.html (layout: default)
+
+// Liquid: colors = ['default'] + site.colors keys + ['dark', 'light']
+
+import BadgesList from '@shared/components/ui/BadgesList.astro';
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
 import Icon from '@shared/components/ui/Icon.astro';
 import ButtonList from '@shared/components/ui/ButtonList.astro';
@@ -9,7 +12,6 @@ import CardTitle from '@shared/components/ui/CardTitle.astro';
 import DropdownMenu from '@shared/components/ui/DropdownMenu.astro';
 import site from '@data/site.json';
 
-// Liquid: colors = ['default'] + site.colors keys + ['dark', 'light']
 const colors = ['default', ...Object.keys(site.colors), 'dark', 'light'];
 const sizes = ['sm', 'md', 'lg'];
 
@@ -41,7 +43,7 @@ const ucFirst = (value: string) => value.charAt(0).toUpperCase() + value.slice(1
 							<div class="space-y">
 								{
 									sizes.map((size) => (
-										<div class="badges-list">
+										<BadgesList>
 											<span class={`badge${size !== 'md' ? ` badge-${size}` : ''}`}>Default</span>
 											<span class={`badge${size !== 'md' ? ` badge-${size}` : ''}`}>
 												<Icon name="check" /> Left icon
@@ -52,7 +54,7 @@ const ucFirst = (value: string) => value.charAt(0).toUpperCase() + value.slice(1
 											<span class={`badge badge-icononly${size !== 'md' ? ` badge-${size}` : ''}`}>
 												<Icon name="star" type="filled" />
 											</span>
-										</div>
+										</BadgesList>
 									))
 								}
 							</div>
@@ -106,9 +108,9 @@ const ucFirst = (value: string) => value.charAt(0).toUpperCase() + value.slice(1
 					<Card>
 						<CardBody>
 							<CardTitle>Basic badges</CardTitle>
-							<div class="badges-list">
+							<BadgesList>
 								{colors.map((color) => <span class={`badge bg-${color} text-${color}-fg`}>{ucFirst(color)}</span>)}
-							</div>
+							</BadgesList>
 						</CardBody>
 					</Card>
 				</div>
@@ -116,9 +118,9 @@ const ucFirst = (value: string) => value.charAt(0).toUpperCase() + value.slice(1
 					<Card>
 						<CardBody>
 							<CardTitle>Light badges</CardTitle>
-							<div class="badges-list">
+							<BadgesList>
 								{colors.map((color) => <span class={`badge bg-${color}-lt`}>{ucFirst(color)}</span>)}
-							</div>
+							</BadgesList>
 						</CardBody>
 					</Card>
 				</div>
@@ -126,9 +128,9 @@ const ucFirst = (value: string) => value.charAt(0).toUpperCase() + value.slice(1
 					<Card>
 						<CardBody>
 							<CardTitle>Outline badges</CardTitle>
-							<div class="badges-list">
+							<BadgesList>
 								{colors.map((color) => <span class={`badge badge-outline text-${color}`}>{ucFirst(color)}</span>)}
-							</div>
+							</BadgesList>
 						</CardBody>
 					</Card>
 				</div>
@@ -136,7 +138,7 @@ const ucFirst = (value: string) => value.charAt(0).toUpperCase() + value.slice(1
 					<Card>
 						<CardBody>
 							<CardTitle>Badges with icons</CardTitle>
-							<div class="badges-list">
+							<BadgesList>
 								{
 									colors.map((color) => (
 										<span class={`badge bg-${color} text-${color}-fg`}>
@@ -145,7 +147,7 @@ const ucFirst = (value: string) => value.charAt(0).toUpperCase() + value.slice(1
 										</span>
 									))
 								}
-							</div>
+							</BadgesList>
 						</CardBody>
 					</Card>
 				</div>

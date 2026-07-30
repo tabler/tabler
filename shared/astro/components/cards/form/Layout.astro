@@ -1,5 +1,6 @@
 ---
-// Port of shared/includes/cards/form/layout.html.
+
+import FormHint from '../../ui/FormHint.astro';
 import CardTitle from '../../ui/CardTitle.astro';
 
 interface Props {
@@ -21,7 +22,7 @@ const labelClass = horizontal ? 'col-3 col-form-label' : 'form-label';
 			<label class={`${labelClass} required`}>Email address</label>
 			<div class={horizontal ? 'col' : undefined}>
 				<input type="email" class="form-control" aria-describedby="emailHelp" placeholder="Enter email" />
-				<small class="form-hint">We'll never share your email with anyone else.</small>
+				<FormHint as="small">We'll never share your email with anyone else.</FormHint>
 			</div>
 		</div>
 
@@ -29,10 +30,10 @@ const labelClass = horizontal ? 'col-3 col-form-label' : 'form-label';
 			<label class={`${labelClass} required`}>Password</label>
 			<div class={horizontal ? 'col' : undefined}>
 				<input type="password" class="form-control" placeholder="Password" />
-				<small class="form-hint">
+				<FormHint as="small">
 					Your password must be 8-20 characters long, contain letters and numbers, and must not contain
 					spaces, special characters, or emoji.
-				</small>
+				</FormHint>
 			</div>
 		</div>
 

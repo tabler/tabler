@@ -1,12 +1,13 @@
 ---
+// Liquid: {% if country.code == 'US' %} selected{% endif %} — flags.json entries
+// have no `code` property, so the reference renders value="" and never `selected`.
+// We mirror that output exactly.
+
+import FormFooter from '@shared/components/ui/FormFooter.astro';
 import SingleLayout from '@shared/layouts/SingleLayout.astro';
 import Button from '@shared/components/ui/Button.astro';
 import FormGroup from '@shared/components/ui/FormGroup.astro';
 import flags from '@data/flags.json';
-
-// Liquid: {% if country.code == 'US' %} selected{% endif %} — flags.json entries
-// have no `code` property, so the reference renders value="" and never `selected`.
-// We mirror that output exactly.
 ---
 
 <SingleLayout title="2-Step Verification">
@@ -38,9 +39,9 @@ import flags from '@data/flags.json';
 				text you a verification code when you sign in on a new device
 			</div>
 
-			<div class="form-footer">
+			<FormFooter>
 				<Button element="button" type="submit" text="Send code" block color="primary" />
-			</div>
+			</FormFooter>
 		</div>
 	</form>
 </SingleLayout>

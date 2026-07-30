@@ -1,5 +1,4 @@
 ---
-// Port of preview/pages/playground-categories.html (layout: default).
 // Reuses committed components: Icon, Button, Badge, Pagination (+ Avatar).
 //
 // NOTE (no-container): the front matter is `no-container: true`, but Liquid's
@@ -15,6 +14,8 @@
 // supports (element type is 'a'|'button'; html_for/tooltip absent). The shared
 // ui/button.html ignores html_for/tooltip too, and the reference emits a plain
 // <label> with no `for`. Inlined below to match the reference.
+
+import ButtonGroup from '@shared/components/ui/ButtonGroup.astro';
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
 import Icon from '@shared/components/ui/Icon.astro';
 import Button from '@shared/components/ui/Button.astro';
@@ -24,7 +25,6 @@ import AvatarList from '@shared/components/ui/AvatarList.astro';
 import Pagination from '@shared/components/ui/Pagination.astro';
 import Card from '@shared/components/ui/Card.astro';
 import CardBody from '@shared/components/ui/CardBody.astro';
-
 ---
 
 <DefaultLayout title="Categories playground">
@@ -118,12 +118,12 @@ import CardBody from '@shared/components/ui/CardBody.astro';
 										</select>
 									</div>
 									<div class="col-auto">
-										<div class="btn-group" role="group" aria-label="Sort direction">
+										<ButtonGroup aria-label="Sort direction">
 											<input type="radio" class="btn-check" name="playgroundSortDir" id="playgroundSortAsc" autocomplete="off" checked>
 											<label class="btn btn-light px-0 btn-icon" aria-label="Ascending"><Icon name="arrow-up" /></label>
 											<input type="radio" class="btn-check" name="playgroundSortDir" id="playgroundSortDesc" autocomplete="off">
 											<label class="btn btn-light px-0 btn-icon" aria-label="Descending"><Icon name="arrow-down" /></label>
-										</div>
+										</ButtonGroup>
 									</div>
 								</div>
 							</form>

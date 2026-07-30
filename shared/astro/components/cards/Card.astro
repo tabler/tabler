@@ -8,6 +8,8 @@
 //       trailing literal id wins).
 // TODO: ui/form/check.html is inlined only in the empty+checked (switch)
 //       variants used by footer-elements; other check params are not ported.
+
+import CardSubtitle from '../ui/CardSubtitle.astro';
 import Icon from '../ui/Icon.astro';
 import AvatarList from '../ui/AvatarList.astro';
 import Empty from '../ui/Empty.astro';
@@ -162,7 +164,7 @@ const imgBottomPhoto = (photos as { file: string; title: string }[])[11];
 				{alert && <div class={`card-alert alert alert-${alertType} mb-0`} set:html={alert} />}
 				<div class="card-body">
 					{title && <h3 class="card-title" set:html={title} />}
-					{subtitle && <div class="card-subtitle">Card subtitle</div>}
+					{subtitle && <CardSubtitle as="div">Card subtitle</CardSubtitle>}
 
 					{body ? (
 						<p class="text-secondary" set:html={body} />
