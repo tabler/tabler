@@ -1,0 +1,58 @@
+---
+// The feature names are the fixed list from the Liquid source; the
+// `features` string is split per-character into a 1/0 availability mask.
+// ui/ribbon.html is inlined here in its bookmark+top+color variant (the only
+// one used by this card); its star icon renders as the outline `star`
+// (ui/icon.html ignores the `use-svg`/`filled` args).
+import Icon from '@ui/Icon.astro';
+
+interface Props {
+	price?: string;
+	users?: string | number;
+	category?: string;
+	features?: string;
+	/** featured-color — ribbon + button color (e.g. "green") */
+	featuredColor?: string;
+}
+
+const { price = '79', users = 10, category = 'Enterprise', features = '1000', featuredColor } = Astro.props;
+
+const featureNames = ['Sharing Tools', 'Design Tools', 'Private Messages', 'Twitter API'];
+const availableFeatures = features.split('');
+---
+
+<div class="card card-md">
+	{
+		featuredColor && (
+			<div class={`ribbon ribbon-top ribbon-bookmark bg-${featuredColor}`}>
+				<Icon name="star" />
+			</div>
+		)
+	}
+
+	<div class="card-body text-center">
+		<div class="text-uppercase text-secondary fw-medium">{category}</div>
+
+		<div class="display-5 fw-bold my-3">${price}</div>
+
+		<ul class="list-unstyled lh-lg">
+			<li><strong>{users}</strong> Users</li>
+			{
+				featureNames.map((feature, i) => (
+					<li>
+						{availableFeatures[i] === '1' ? (
+							<Icon name="check" class="me-1 text-success" />
+						) : (
+							<Icon name="x" class="me-1 text-danger" />
+						)}
+						{feature}
+					</li>
+				))
+			}
+		</ul>
+
+		<div class="text-center mt-4">
+			<a href="#" class={`btn${featuredColor ? ` btn-${featuredColor}` : ''} w-100`}>Choose plan</a>
+		</div>
+	</div>
+</div>

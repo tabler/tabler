@@ -1,0 +1,43 @@
+---
+
+import CardSubtitle from '@ui/CardSubtitle.astro';
+import Avatar from '@ui/Avatar.astro';
+import ListGroup from '@ui/ListGroup.astro';
+import ListGroupItem from '@ui/ListGroupItem.astro';
+import Progress from '@ui/Progress.astro';
+import crmDashboard from '@data/crm-dashboard.json';
+
+const leaderboard = crmDashboard.leaderboard;
+---
+
+<div class="card h-100">
+	<div class="card-header">
+		<div>
+			<h3 class="card-title mb-0">Team leaderboard</h3>
+			<CardSubtitle as="div">Q2 - May 1, 2026</CardSubtitle>
+		</div>
+	</div>
+
+	<ListGroup flush>
+		{
+			leaderboard.items.map((item, index) => (
+				<ListGroupItem>
+					<div class="row align-items-center g-3">
+						<div class="col-auto fw-bold me-3">{index + 1}</div>
+						<div class="col-auto">
+							<Avatar personId={index + 1} color={item.avatar_color} size="sm" />
+						</div>
+						<div class="col">
+							<div class="fw-medium">{item.name}</div>
+							<Progress size="sm" value={item.progress} color={item.avatar_color} class="mt-2" />
+						</div>
+						<div class="col-auto text-end">
+							<div class="fw-semibold">{item.amount}</div>
+							<div class="text-secondary">{item.deals} deals - {item.score}%</div>
+						</div>
+					</div>
+				</ListGroupItem>
+			))
+		}
+	</ListGroup>
+</div>

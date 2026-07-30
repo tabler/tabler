@@ -25,8 +25,11 @@ export default defineConfig({
     resolve: {
       alias: {
         '@data': fileURLToPath(new URL('../shared/data', import.meta.url)),
-        // Astro components/lib shared with preview-astro (single source of truth)
-        '@shared': fileURLToPath(new URL('../shared/astro', import.meta.url)),
+        // Astro components/lib shared with preview (single source of truth)
+        '@shared': fileURLToPath(new URL('../shared', import.meta.url)),
+        '@ui': fileURLToPath(new URL('../shared/ui', import.meta.url)),
+        // docs-only components (Example, DocsMenu, …)
+        '@components': fileURLToPath(new URL('./components', import.meta.url)),
         // this package's pages dir — used by @shared/lib/docs-children's glob
         '@pages': fileURLToPath(new URL('./pages', import.meta.url)),
       },

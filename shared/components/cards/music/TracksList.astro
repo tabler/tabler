@@ -1,0 +1,59 @@
+---
+// The nested ui/switch-icon.html include (icon="heart") is inlined below —
+// it has no Astro component yet and this is its only use so far. For
+// icon="heart" the Liquid include resolves to: icon-b="heart",
+// icon-b-class="icon-filled", icon-a-color="muted", icon-b-color="red".
+import Icon from '@ui/Icon.astro';
+import DropdownMenu from '@ui/DropdownMenu.astro';
+import ListGroup from '@ui/ListGroup.astro';
+import ListGroupItem from '@ui/ListGroupItem.astro';
+import tracks from '@data/tracks.json';
+import { millisecondsToMinutes } from '@shared/lib/string-format';
+
+// {% for track in tracks limit: 12 %}
+const items = tracks.slice(0, 12);
+---
+
+<div class="card">
+	<ListGroup class="card-list-group">
+		{items.map((track, index) => (
+			<ListGroupItem>
+				<div class="row g-2 align-items-center">
+					<div class="col-auto fs-3">
+						{index + 1}
+					</div>
+					<div class="col-auto">
+						<img src={`./static/tracks/${track.album.images[1].path}`} class="rounded" alt={track.name} width="40" height="40" />
+					</div>
+					<div class="col">
+						{track.name}
+						<div class="text-secondary">
+							{track.artists.map((artist) => artist.name).join(', ')}
+						</div>
+					</div>
+					<div class="col-auto text-secondary">
+						{millisecondsToMinutes(track.duration_ms)}
+					</div>
+					<div class="col-auto">
+						<a href="#" class="link-secondary">
+							<button class="switch-icon" data-bs-toggle="switch-icon">
+								<span class="switch-icon-a text-muted">
+									<Icon name="heart" />
+								</span>
+								<span class="switch-icon-b text-red">
+									<Icon name="heart" class="icon-filled" />
+								</span>
+							</button>
+						</a>
+					</div>
+					<div class="col-auto lh-1">
+						<div class="dropdown">
+							<a href="#" class="link-secondary" data-bs-toggle="dropdown"><Icon name="dots" /></a>
+							<DropdownMenu right />
+						</div>
+					</div>
+				</div>
+			</ListGroupItem>
+		))}
+	</ListGroup>
+</div>

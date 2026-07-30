@@ -66,7 +66,7 @@ Guidance by page type:
 For visual examples, use the shared `Example` component (import after the frontmatter):
 
 ```mdx
-import Example from '@shared/components/docs/Example.astro';
+import Example from '@components/Example.astro';
 
 <Example>
 <button class="btn btn-primary">Primary button</button>
@@ -76,7 +76,7 @@ import Example from '@shared/components/docs/Example.astro';
 - Add 1-2 short sentences before each preview block to explain what the preview shows.
 - Use props when useful: `hideCode`, `centered`, `vertical`, `raw`, `column`, `bg`, `height`, `codeOnly`.
 - For a cleaner displayed snippet than the rendered preview, pass `code={...}`.
-- For icons and other shared components inside examples, import them from `@shared/components/` (for example `<Icon name="plus" />`).
+- For icons and other shared components inside examples, import them from `@ui/` (for example `<Icon name="plus" />`).
 - Raw HTML in the `Example` slot is reserialized by MDX — keep markup lines attached to tags to avoid stray `<p>` wrapping.
 
 ## 6. Workflow for each request
