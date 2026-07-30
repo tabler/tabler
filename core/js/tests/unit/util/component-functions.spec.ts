@@ -30,11 +30,7 @@ describe('Component Functions', () => {
 
   describe('data-bs-dismiss', () => {
     it('should get plugin and execute given method on click', () => {
-      fixtureEl.innerHTML = [
-        '<div id="foo" class="test">',
-        '  <button type="button" data-bs-dismiss="test" data-bs-target="#foo"></button>',
-        '</div>'
-      ].join('')
+      fixtureEl.innerHTML = ['<div id="foo" class="test">', '  <button type="button" data-bs-dismiss="test" data-bs-target="#foo"></button>', '</div>'].join('')
 
       const spyGet = vi.spyOn(DummyClass, 'getOrCreateInstance')
       const spyTest = vi.spyOn(DummyClass.prototype, 'testMethod')
@@ -49,11 +45,7 @@ describe('Component Functions', () => {
     })
 
     it('should use closest class when no data-bs-target', () => {
-      fixtureEl.innerHTML = [
-        '<div id="foo" class="test">',
-        '  <button type="button" data-bs-dismiss="test"></button>',
-        '</div>'
-      ].join('')
+      fixtureEl.innerHTML = ['<div id="foo" class="test">', '  <button type="button" data-bs-dismiss="test"></button>', '</div>'].join('')
 
       const spyGet = vi.spyOn(DummyClass, 'getOrCreateInstance')
       const spyHide = vi.spyOn(DummyClass.prototype, 'hide')
@@ -68,11 +60,7 @@ describe('Component Functions', () => {
     })
 
     it('should not trigger if disabled', () => {
-      fixtureEl.innerHTML = [
-        '<div id="foo" class="test">',
-        '  <button type="button" disabled data-bs-dismiss="test"></button>',
-        '</div>'
-      ].join('')
+      fixtureEl.innerHTML = ['<div id="foo" class="test">', '  <button type="button" disabled data-bs-dismiss="test"></button>', '</div>'].join('')
 
       const spy = vi.spyOn(DummyClass, 'getOrCreateInstance')
 
@@ -85,11 +73,7 @@ describe('Component Functions', () => {
     })
 
     it('should preventDefault for <a> elements', () => {
-      fixtureEl.innerHTML = [
-        '<div id="foo" class="test">',
-        '  <a type="button" data-bs-dismiss="test"></a>',
-        '</div>'
-      ].join('')
+      fixtureEl.innerHTML = ['<div id="foo" class="test">', '  <a type="button" data-bs-dismiss="test"></a>', '</div>'].join('')
 
       enableDismissTrigger(DummyClass)
       const preventSpy = vi.spyOn(Event.prototype, 'preventDefault')

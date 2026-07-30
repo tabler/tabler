@@ -74,9 +74,7 @@ class Tab extends BaseComponent {
 
     const active = this._getActiveElem()
 
-    const hideEvent = active ?
-      EventHandler.trigger(active, EVENT_HIDE, { relatedTarget: innerElem }) :
-      null
+    const hideEvent = active ? EventHandler.trigger(active, EVENT_HIDE, { relatedTarget: innerElem }) : null
 
     const showEvent = EventHandler.trigger(innerElem, EVENT_SHOW, { relatedTarget: active })
 
@@ -107,7 +105,7 @@ class Tab extends BaseComponent {
       element.setAttribute('aria-selected', 'true')
       this._toggleDropDown(element, true)
       EventHandler.trigger(element, EVENT_SHOWN, {
-        relatedTarget: relatedElem
+        relatedTarget: relatedElem,
       })
     }
 
@@ -140,14 +138,14 @@ class Tab extends BaseComponent {
   }
 
   _keydown(event: KeyboardEvent): void {
-    if (!([ARROW_LEFT_KEY, ARROW_RIGHT_KEY, ARROW_UP_KEY, ARROW_DOWN_KEY, HOME_KEY, END_KEY].includes(event.key))) {
+    if (![ARROW_LEFT_KEY, ARROW_RIGHT_KEY, ARROW_UP_KEY, ARROW_DOWN_KEY, HOME_KEY, END_KEY].includes(event.key)) {
       return
     }
 
     event.stopPropagation()
     event.preventDefault()
 
-    const children = this._getChildren().filter(element => !isDisabled(element))
+    const children = this._getChildren().filter((element) => !isDisabled(element))
     let nextActiveElement: HTMLElement | undefined
 
     if ([HOME_KEY, END_KEY].includes(event.key)) {
@@ -168,7 +166,7 @@ class Tab extends BaseComponent {
   }
 
   _getActiveElem(): HTMLElement | null {
-    return this._getChildren().find(child => this._elemIsActive(child)) || null
+    return this._getChildren().find((child) => this._elemIsActive(child)) || null
   }
 
   _setInitialAttributes(parent: HTMLElement, children: HTMLElement[]): void {

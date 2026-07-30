@@ -5,10 +5,10 @@
 // means the assertions run against real values — `$prefix` = "tblr-", the real
 // `$h5-font-size`, etc. — instead of fixtures.
 
-@use "../mixins/mixins" as *;
+@use '../mixins/mixins' as *;
 
-@include describe("subheader mixin") {
-  @include it("outputs the full subheader with colour and line-height") {
+@include describe('subheader mixin') {
+  @include it('outputs the full subheader with colour and line-height') {
     @include assert() {
       @include output() {
         .t {
@@ -28,7 +28,7 @@
     }
   }
 
-  @include it("drops colour and line-height when the flags are false") {
+  @include it('drops colour and line-height when the flags are false') {
     @include assert() {
       @include output() {
         .t {
@@ -47,8 +47,8 @@
   }
 }
 
-@include describe("autodark-image mixin") {
-  @include it("inverts the image via filter") {
+@include describe('autodark-image mixin') {
+  @include it('inverts the image via filter') {
     @include assert() {
       @include output() {
         .t {
@@ -64,8 +64,8 @@
   }
 }
 
-@include describe("elements-list mixin") {
-  @include it("sets up a wrapping flex list with the default gap") {
+@include describe('elements-list mixin') {
+  @include it('sets up a wrapping flex list with the default gap') {
     @include assert() {
       @include output() {
         .t {
@@ -83,7 +83,7 @@
     }
   }
 
-  @include it("honours a custom gap argument") {
+  @include it('honours a custom gap argument') {
     @include assert() {
       @include output() {
         .t {
@@ -102,8 +102,8 @@
   }
 }
 
-@include describe("focus-ring mixin") {
-  @include it("outputs the ring without a border by default") {
+@include describe('focus-ring mixin') {
+  @include it('outputs the ring without a border by default') {
     @include assert() {
       @include output() {
         .t {
@@ -119,7 +119,7 @@
     }
   }
 
-  @include it("adds a border colour when requested") {
+  @include it('adds a border colour when requested') {
     @include assert() {
       @include output() {
         .t {
@@ -137,8 +137,8 @@
   }
 }
 
-@include describe("media-print mixin") {
-  @include it("wraps content in a print media query") {
+@include describe('media-print mixin') {
+  @include it('wraps content in a print media query') {
     @include assert() {
       @include output() {
         @include media-print {
@@ -158,11 +158,11 @@
   }
 }
 
-@include describe("scrollbar mixin") {
+@include describe('scrollbar mixin') {
   // The mixin resolves `&` to the current selector (or `*` at root); nested here,
   // every rule is prefixed with `.scroll`. Also covers the reduced-motion query
   // injected by the transition mixin.
-  @include it("emits the webkit scrollbar rule set") {
+  @include it('emits the webkit scrollbar rule set') {
     @include assert() {
       @include output() {
         .scroll {
