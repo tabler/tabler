@@ -1,4 +1,3 @@
-// Setting items
 interface SettingItem {
 	localStorage: string
 	default: string
@@ -17,14 +16,12 @@ const items: SettingsItems = {
 	},
 }
 
-// Theme config
 const config: Record<string, string> = {}
 for (const [key, params] of Object.entries(items)) {
 	const lsParams = localStorage.getItem(params.localStorage)
 	config[key] = lsParams ? lsParams : params.default
 }
 
-// Parse url params
 const parseUrl = (): void => {
 	const search = window.location.search.substring(1)
 	const params = search.split("&")
@@ -35,18 +32,14 @@ const parseUrl = (): void => {
 		const value = arr[1]
 
 		if (!!items[key]) {
-			// Save to localStorage
 			localStorage.setItem(items[key].localStorage, value)
-
-			// Update local variables
 			config[key] = value
 		}
 	}
 }
 
-// Toggle form controls
 const toggleFormControls = (form: HTMLFormElement): void => {
-	for (const [key, params] of Object.entries(items)) {
+	for (const [key] of Object.entries(items)) {
 		const elem = form.querySelector(
 			`[name="settings-${key}"][value="${config[key]}"]`,
 		) as HTMLInputElement | null
@@ -57,44 +50,33 @@ const toggleFormControls = (form: HTMLFormElement): void => {
 	}
 }
 
-// Submit form
 const submitForm = (form: HTMLFormElement): void => {
-	// Save data to localStorage
 	for (const [key, params] of Object.entries(items)) {
-		// Save to localStorage
 		const checkedInput = form.querySelector(`[name="settings-${key}"]:checked`) as HTMLInputElement
 		if (checkedInput) {
 			const value = checkedInput.value
 			localStorage.setItem(params.localStorage, value)
-
-			// Update local variables
 			config[key] = value
 		}
 	}
 
 	window.dispatchEvent(new Event("resize"))
 
-	// Bootstrap is available globally
-	const bootstrap = (window as any).bootstrap
+	const bootstrap = (window as Window & { bootstrap?: { Offcanvas: new (form: HTMLFormElement) => { hide(): void } } }).bootstrap
 	if (bootstrap) {
 		new bootstrap.Offcanvas(form).hide()
 	}
 }
 
-// Parse url
 parseUrl()
 
-// Elements
 const form = document.querySelector("#offcanvas-settings") as HTMLFormElement | null
 
-// Toggle form controls
 if (form) {
-	form.addEventListener("submit", function (e) {
-		e.preventDefault()
-
+	form.addEventListener("submit", function (event) {
+		event.preventDefault()
 		submitForm(form)
 	})
 
 	toggleFormControls(form)
 }
-

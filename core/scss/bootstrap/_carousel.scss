@@ -11,6 +11,8 @@
 // 5. .carousel-item-next.carousel-item-start and .carousel-item-prev.carousel-item-end
 //    is the upcoming slide in transition.
 
+@use '../config' as *;
+
 .carousel {
   position: relative;
 }
@@ -52,7 +54,6 @@
   transform: translateX(-100%);
 }
 
-
 //
 // Alternate transitions
 //
@@ -78,7 +79,6 @@
     @include transition(opacity 0s $carousel-transition-duration);
   }
 }
-
 
 //
 // Left/right controls for nav
@@ -115,11 +115,11 @@
 }
 .carousel-control-prev {
   left: 0;
-  background-image: if(sass($enable-gradients): linear-gradient(90deg, rgba($black, .25), rgba($black, .001)); else: null);
+  background-image: if(sass($enable-gradients): linear-gradient(90deg, rgba($black, 0.25), rgba($black, 0.001)); else: null);
 }
 .carousel-control-next {
   right: 0;
-  background-image: if(sass($enable-gradients): linear-gradient(270deg, rgba($black, .25), rgba($black, .001)); else: null);
+  background-image: if(sass($enable-gradients): linear-gradient(270deg, rgba($black, 0.25), rgba($black, 0.001)); else: null);
 }
 
 // Icons for within
@@ -134,10 +134,10 @@
 }
 
 .carousel-control-prev-icon {
-  background-image: escape-svg($carousel-control-prev-icon-bg) #{"/*rtl:" + escape-svg($carousel-control-next-icon-bg) + "*/"};
+  background-image: escape-svg($carousel-control-prev-icon-bg) #{'/*rtl:' + escape-svg($carousel-control-next-icon-bg) + '*/'};
 }
 .carousel-control-next-icon {
-  background-image: escape-svg($carousel-control-next-icon-bg) #{"/*rtl:" + escape-svg($carousel-control-prev-icon-bg) + "*/"};
+  background-image: escape-svg($carousel-control-next-icon-bg) #{'/*rtl:' + escape-svg($carousel-control-prev-icon-bg) + '*/'};
 }
 
 // Optional indicator pips/controls
@@ -185,16 +185,15 @@
   }
 }
 
-
 // Optional captions
 //
 //
 
 .carousel-caption {
   position: absolute;
-  right: (100% - $carousel-caption-width) * .5;
+  right: (100% - $carousel-caption-width) * 0.5;
   bottom: $carousel-caption-spacer;
-  left: (100% - $carousel-caption-width) * .5;
+  left: (100% - $carousel-caption-width) * 0.5;
   padding-top: $carousel-caption-padding-y;
   padding-bottom: $carousel-caption-padding-y;
   color: var(--#{$prefix}carousel-caption-color);
@@ -214,8 +213,8 @@
 }
 
 :root,
-[data-bs-theme="light"],
-[data-theme="light"] {
+[data-bs-theme='light'],
+[data-theme='light'] {
   --#{$prefix}carousel-indicator-active-bg: #{$carousel-indicator-active-bg};
   --#{$prefix}carousel-caption-color: #{$carousel-caption-color};
   --#{$prefix}carousel-control-icon-filter: #{$carousel-control-icon-filter};

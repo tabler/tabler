@@ -1,0 +1,40 @@
+---
+import Progress from '../../ui/Progress.astro';
+import crmDashboard from '@data/crm-dashboard.json';
+
+const funnel = crmDashboard.pipeline_funnel;
+---
+
+<div class="card h-100">
+	<div class="card-body">
+		<div class="card-title">
+			<div class="d-flex align-items-center justify-content-between">
+				<div class="fw-medium">{funnel.title}</div>
+				<div class="text-secondary">{funnel.period}</div>
+			</div>
+		</div>
+		<div class="d-flex flex-column gap-2">
+			{
+				funnel.items.map((item) => (
+					<div class="row g-2 align-items-center">
+						<div class="col-3 text-secondary">{item.label}</div>
+						<div class="col">
+							<div class="position-relative">
+								<Progress value={item.progress} color={item.color} class="h-4" />
+								<div class="position-absolute top-50 start-0 translate-middle-y px-2 small fw-semibold text-white">
+									{item.count}
+								</div>
+							</div>
+						</div>
+						<div class="col-2 fw-medium text-end text-nowrap">{item.amount}</div>
+					</div>
+				))
+			}
+		</div>
+
+		<div class="d-flex justify-content-between mt-4">
+			<div class="text-secondary">{funnel.conversion_label}</div>
+			<div class="fw-semibold text-green">{funnel.conversion_value}</div>
+		</div>
+	</div>
+</div>

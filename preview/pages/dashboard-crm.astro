@@ -1,0 +1,83 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
+import CrmStats from '@shared/components/cards/CrmStats.astro';
+import MrrOverview from '@shared/components/cards/charts/MrrOverview.astro';
+import PipelineFunnel from '@shared/components/cards/charts/PipelineFunnel.astro';
+import TopDeals from '@shared/components/cards/TopDeals.astro';
+import RecentActivity from '@shared/components/cards/RecentActivity.astro';
+import TasksDue from '@shared/components/cards/TasksDue.astro';
+import TeamLeaderboard from '@shared/components/cards/TeamLeaderboard.astro';
+import ChurnRisk from '@shared/components/cards/ChurnRisk.astro';
+---
+
+<DefaultLayout
+	title="CRM Dashboard"
+	pageHeader="CRM Dashboard"
+	description="Welcome back — here's your CRM overview for today."
+	pageMenu="dashboards.crm"
+	pageLibs={['apexcharts']}
+>
+	<div>
+		<div class="col-12">
+			<div class="row row-cards">
+				<div class="col-sm-6 col-lg-3">
+					<CrmStats color="primary" icon="currency-dollar" lt title="MRR" description="$92.4K" changeValue="+9.5" />
+				</div>
+				<div class="col-sm-6 col-lg-3">
+					<CrmStats color="azure" icon="filter" lt title="Pipeline" description="$2.4M" changeValue="+14" />
+				</div>
+				<div class="col-sm-6 col-lg-3">
+					<CrmStats color="green" icon="circle-check" lt title="Deals won" description="74" changeValue="+8" />
+				</div>
+				<div class="col-sm-6 col-lg-3">
+					<CrmStats color="purple" icon="percentage" lt title="Conversion" description="5.97%" changeValue="+0.4" />
+				</div>
+				<div class="col-sm-6 col-lg-3">
+					<CrmStats color="yellow" icon="activity" lt title="Activities" description="318" changeValue="+22" />
+				</div>
+				<div class="col-sm-6 col-lg-3">
+					<CrmStats color="red" icon="clock" lt title="Tasks due" description="12" changeValue="-3" changeValueUnit=" urgent" />
+				</div>
+				<div class="col-sm-6 col-lg-3">
+					<CrmStats color="cyan" icon="user-plus" lt title="Leads added" description="148" changeValue="+31" />
+				</div>
+				<div class="col-sm-6 col-lg-3">
+					<CrmStats color="green" icon="trending-up" lt title="Churn rate" description="1.8%" changeValue="-0.3" />
+				</div>
+
+				<div class="col-lg-6">
+					<div class="row row-cards">
+						<div class="col-12">
+							<MrrOverview />
+						</div>
+
+						<div class="col-12">
+							<TopDeals />
+						</div>
+					</div>
+				</div>
+
+				<div class="col-lg-6">
+					<div class="row row-cards">
+						<div class="col-12">
+							<PipelineFunnel />
+						</div>
+						<div class="col-12">
+							<RecentActivity />
+						</div>
+					</div>
+				</div>
+
+				<div class="col-lg-4">
+					<TasksDue />
+				</div>
+				<div class="col-lg-4">
+					<TeamLeaderboard />
+				</div>
+				<div class="col-lg-4">
+					<ChurnRisk />
+				</div>
+			</div>
+		</div>
+	</div>
+</DefaultLayout>

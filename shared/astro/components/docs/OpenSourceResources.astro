@@ -1,0 +1,30 @@
+---
+import openSources from '@data/open-source.json';
+---
+
+<table class="table">
+	<tr>
+		<th>
+			Name
+		</th>
+		<th>
+			Description
+		</th>
+		<th>
+			License
+		</th>
+	</tr>
+	{ openSources.map((el, i) => {
+		return (
+			<tr>
+				<td>
+					<a href={el.url} target="_blank">
+						{el.name}
+					</a>
+				</td>
+				<td>{el.description}</td>
+				<td>{el.license}</td>
+			</tr>
+		)
+	}) }
+</table>

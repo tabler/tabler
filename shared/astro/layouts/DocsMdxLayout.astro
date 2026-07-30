@@ -1,0 +1,64 @@
+---
+// Adapter: MDX (layout in frontmatter) → DocsLayout.
+// Astro passes { frontmatter, headings, url, file } to the MDX layout — we map it
+// onto DocsLayout props, computing the TOC from the headings (equivalent of the `toc` filter).
+import DocsLayout from './DocsLayout.astro';
+
+interface MdxHeading {
+	depth: number;
+	slug: string;
+	text: string;
+}
+
+interface MdxFrontmatter {
+	title?: string;
+	seoTitle?: string;
+	summary?: string;
+	description?: string;
+	seoDescription?: string;
+	bootstrapLink?: string;
+	'added-in'?: string;
+	'docs-libs'?: string[];
+	'hide-pagination'?: boolean;
+}
+
+const { frontmatter, headings = [], url, file } = Astro.props as {
+	frontmatter: MdxFrontmatter;
+	headings: MdxHeading[];
+	url?: string;
+	file?: string;
+};
+
+// Repo-relative source path for the "Edit this page" link, e.g.
+// "docs/pages/ui/components/alert.mdx" (`file` is the absolute path of the MDX page).
+const editPath = file?.includes('/docs/pages/')
+	? file.replace(/^.*\/docs\/pages\//, 'docs/pages/')
+	: undefined;
+
+const docsLibs = frontmatter['docs-libs'] ?? [];
+
+const toc = headings
+	.filter((heading) => heading.depth === 2 || heading.depth === 3)
+	.map((heading) => ({
+		level: heading.depth as 2 | 3,
+		text: heading.text,
+		id: heading.slug,
+	}));
+---
+
+<DocsLayout
+	title={frontmatter.title ?? ''}
+	seoTitle={frontmatter.seoTitle}
+	summary={frontmatter.summary}
+	description={frontmatter.description}
+	seoDescription={frontmatter.seoDescription}
+	bootstrapLink={frontmatter.bootstrapLink}
+	addedIn={frontmatter['added-in']}
+	docsLibs={docsLibs}
+	hidePagination={frontmatter['hide-pagination']}
+	editPath={editPath}
+	toc={toc}
+	url={url ? `${url.replace(/\.html$/, '').replace(/\/$/, '')}/` : undefined}
+>
+	<slot />
+</DocsLayout>

@@ -1,5 +1,5 @@
 @use 'sass:map';
-@import 'config';
+@use 'config' as *;
 
 :root,
 :host {
@@ -45,7 +45,7 @@
 
   /** Gray colors */
   @each $name, $color in $gray-colors {
-    --#{$prefix}#{$name}-fg: #{if(sass(contrast-ratio($color, white) > $min-contrast-ratio): var(--#{$prefix}white); else: var(--#{$prefix}body-color))};
+    --#{$prefix}#{$name}-fg: var(--#{$prefix}#{$name});
   }
 
   /** Spacers */

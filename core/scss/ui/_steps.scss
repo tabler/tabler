@@ -1,6 +1,8 @@
 //
 // Steps
 //
+@use '../config' as *;
+
 .steps {
   --#{$prefix}steps-color: #{$steps-color};
   --#{$prefix}steps-inactive-color: #{$steps-inactive-color};
@@ -12,6 +14,12 @@
   padding: 0;
   margin: 0;
   list-style: none;
+
+  @include media-breakpoint-down(sm) {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+  }
 }
 
 @each $name, $color in $extra-colors {

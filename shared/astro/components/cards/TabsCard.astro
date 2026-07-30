@@ -1,0 +1,96 @@
+---
+import Icon from '../ui/Icon.astro';
+import DropdownMenu from '../ui/DropdownMenu.astro';
+
+interface Props {
+	id: string;
+	icons?: boolean;
+	/** hide-text param; not exercised on tabs.html, ported 1:1 from the Liquid source */
+	hideText?: boolean;
+	reverse?: boolean;
+	justified?: boolean;
+	activity?: boolean;
+	disabled?: boolean;
+	dropdown?: boolean;
+	settings?: boolean;
+	animation?: boolean;
+}
+
+const {
+	id,
+	icons,
+	hideText,
+	reverse = false,
+	justified,
+	activity,
+	disabled,
+	dropdown,
+	settings,
+	animation,
+} = Astro.props;
+
+const iconClass = hideText ? undefined : 'me-2';
+const navClass = `nav nav-tabs card-header-tabs${reverse ? ' flex-row-reverse' : ''}${justified ? ' nav-fill' : ''}`;
+const paneClass = `tab-pane${animation ? ' fade' : ''}`;
+---
+
+<div class="card">
+	<div class="card-header">
+		<ul class={navClass} data-bs-toggle="tabs">
+			<li class="nav-item">
+				<a href={`#tabs-home-${id}`} class="nav-link active" data-bs-toggle="tab">{icons && <Icon name="home" class={iconClass} />}{!hideText && 'Home'}</a>
+			</li>
+			<li class="nav-item">
+				<a href={`#tabs-profile-${id}`} class="nav-link" data-bs-toggle="tab">{icons && <Icon name="user" class={iconClass} />}{!hideText && 'Profile'}</a>
+			</li>
+
+			{activity && (
+				<li class="nav-item">
+					<a href={`#tabs-activity-${id}`} class="nav-link" data-bs-toggle="tab">{icons && <Icon name="activity" class={iconClass} />}{!hideText && 'Activity'}</a>
+				</li>
+			)}
+
+			{disabled && (
+				<li class="nav-item">
+					<a href={`#tabs-activity-${id}`} class="nav-link disabled" data-bs-toggle="tab">{icons && <Icon name="x" class={iconClass} />}{!hideText && 'Disabled'}</a>
+				</li>
+			)}
+
+			{dropdown && (
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+					<DropdownMenu />
+				</li>
+			)}
+			{settings && (
+				<li class={`nav-item ${reverse ? 'me-auto' : 'ms-auto'}`}>
+					<a href={`#tabs-settings-${id}`} class="nav-link" title="Settings" data-bs-toggle="tab"><Icon name="settings" /></a>
+				</li>
+			)}
+		</ul>
+	</div>
+	<div class="card-body">
+		<div class="tab-content">
+			<div class={`${paneClass} active show`} id={`tabs-home-${id}`}>
+				<h4>Home tab</h4>
+				<div>Cursus turpis vestibulum, dui in pharetra vulputate id sed non turpis ultricies fringilla at sed facilisis lacus pellentesque purus nibh</div>
+			</div>
+			<div class={paneClass} id={`tabs-profile-${id}`}>
+				<h4>Profile tab</h4>
+				<div>Fringilla egestas nunc quis tellus diam rhoncus ultricies tristique enim at diam, sem nunc amet, pellentesque id egestas velit sed</div>
+			</div>
+			{settings && (
+				<div class={paneClass} id={`tabs-settings-${id}`}>
+					<h4>Settings tab</h4>
+					<div>Donec ac vitae diam amet vel leo egestas consequat rhoncus in luctus amet, facilisi sit mauris accumsan nibh habitant senectus</div>
+				</div>
+			)}
+			{activity && (
+				<div class={paneClass} id={`tabs-activity-${id}`}>
+					<h4>Activity tab</h4>
+					<div>Donec ac vitae diam amet vel leo egestas consequat rhoncus in luctus amet, facilisi sit mauris accumsan nibh habitant senectus</div>
+				</div>
+			)}
+		</div>
+	</div>
+</div>

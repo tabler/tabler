@@ -1,13 +1,16 @@
-@import 'config';
-@import 'variables';
-@import 'utilities-marketing';
+@forward 'config';
 
-@import 'marketing/core';
-@import 'marketing/hero';
-@import 'marketing/browser';
-@import 'marketing/sections';
-@import 'marketing/filters';
-@import 'marketing/pricing';
-@import 'marketing/shape';
+@forward 'marketing/core';
+@forward 'marketing/hero';
+@forward 'marketing/browser';
+@forward 'marketing/sections';
+@forward 'marketing/filters';
+@forward 'marketing/pricing';
+@forward 'marketing/shape';
 
-@import 'bootstrap/utilities/api';
+// This bundle uses its own utilities map instead of the global one, so the
+// utilities API is emitted via the parameterized mixin (last, as before).
+@use 'utilities-marketing' as um;
+@use 'mixins/utilities-api' as *;
+
+@include utilities-api(um.$marketing-utilities);

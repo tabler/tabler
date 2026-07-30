@@ -1,0 +1,17 @@
+name: Labeler
+
+on:
+  pull_request_target: null
+
+permissions:
+  contents: read
+  pull-requests: write
+
+jobs:
+  labeler:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Apply labels based on changed files
+        uses: actions/labeler@v7
+        with:
+          sync-labels: true

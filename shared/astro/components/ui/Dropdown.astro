@@ -1,0 +1,17 @@
+---
+interface Props {
+	mainBtn?: string;
+	options?: string[];
+}
+
+const { mainBtn, options } = Astro.props;
+
+const optionsArray = options ?? [];
+---
+
+<div class="dropdown">
+	<a href="#" class="btn dropdown-toggle" data-bs-toggle="dropdown">{mainBtn}</a>
+	<div class="dropdown-menu">
+		{optionsArray.map((option) => <a class="dropdown-item" href="#">{option}</a>)}
+	</div>
+</div>

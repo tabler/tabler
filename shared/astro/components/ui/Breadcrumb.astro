@@ -1,0 +1,49 @@
+---
+import Icon from './Icon.astro';
+
+interface Props {
+	pages?: string[];
+	class?: string;
+	/** breadcrumb-{separator} class, e.g. "dots" */
+	separator?: string;
+	/** first item becomes a home-icon link (home-icon param) */
+	homeIcon?: boolean;
+}
+
+const { pages = ['Home', 'Library', 'Data'], class: className, separator, homeIcon } = Astro.props;
+
+const items = pages;
+
+const classes = [
+	'breadcrumb',
+	className,
+	separator && `breadcrumb-${separator}`,
+]
+---
+
+<!-- BEGIN BREADCRUMB -->
+<nav aria-label="Breadcrumb">
+	<ol class:list={classes}>
+		{
+			items.map((page, index) =>
+				index === items.length - 1 ? (
+					<li class="breadcrumb-item active" aria-current="page">
+						{page}
+					</li>
+				) : (
+					<li class="breadcrumb-item">
+						{index === 0 && homeIcon ? (
+							/* Liquid: href="{{ site.baseurl }}/" — site.baseurl is undefined in Eleventy → "/" */
+							<a href="/">
+								<Icon name="home" />
+							</a>
+						) : (
+							<a href="#">{page}</a>
+						)}
+					</li>
+				),
+			)
+		}
+	</ol>
+</nav>
+<!-- END BREADCRUMB -->

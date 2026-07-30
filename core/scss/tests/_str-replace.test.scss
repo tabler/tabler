@@ -1,0 +1,34 @@
+// Unit tests for the `str-replace($string, $search, $replace: '')` function
+// defined in scss/mixins/_functions.scss.
+//
+// The file is picked up automatically by scss.test.mjs — no manual list.
+// `describe`, `it` and `assert-equal` come from the `true` module, which the
+// runner injects for us.
+
+@use "../mixins/functions" as *;
+
+@include describe("str-replace") {
+  @include it("replaces a single occurrence") {
+    @include assert-equal(str-replace("a-b-c", "-", "_"), "a_b_c");
+  }
+
+  @include it("replaces every occurrence, not just the first") {
+    @include assert-equal(str-replace("a.b.c.d", ".", "/"), "a/b/c/d");
+  }
+
+  @include it("returns the string unchanged when the search is not found") {
+    @include assert-equal(str-replace("hello world", "x", "y"), "hello world");
+  }
+
+  @include it("removes the search string when no replacement is given") {
+    @include assert-equal(str-replace("1,000,000", ","), "1000000");
+  }
+
+  @include it("handles a replacement longer than the search string") {
+    @include assert-equal(str-replace("aaa", "a", "bb"), "bbbbbb");
+  }
+
+  @include it("returns an empty string unchanged") {
+    @include assert-equal(str-replace("", "-", "_"), "");
+  }
+}

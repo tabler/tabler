@@ -15,13 +15,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Clone repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v7
 
       - name: Install PNPM
-        uses: pnpm/action-setup@v4
+        uses: pnpm/action-setup@v6
 
       - name: Set up Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version-file: '.nvmrc'
           cache: 'pnpm'
@@ -33,5 +33,5 @@ jobs:
         run: pnpm exec playwright install --with-deps chromium
         working-directory: core
 
-      - name: Run tests
-        run: pnpm --filter @tabler/core test
+      - name: Run JS tests
+        run: pnpm --filter @tabler/core test:js

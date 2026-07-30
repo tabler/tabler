@@ -1,0 +1,106 @@
+---
+title: Badge
+summary: A badge is a small count and labeling component used to add extra information to an interface element. You can use it to draw user attention to a new element, notify about unread messages, or provide additional context.
+description: Add extra information with a badge.
+bootstrapLink: components/badge/
+layout: '@shared/layouts/DocsMdxLayout.astro'
+---
+import BadgesList from '@shared/components/ui/BadgesList.astro';
+import Example from '@shared/components/docs/Example.astro';
+import Badge from '@shared/components/ui/Badge.astro';
+import site from '@data/site.json';
+
+export const colors = Object.entries(site.colors);
+
+## Default markup
+
+The default badges are square and come in the basic set of colors.
+
+<Example centered>
+<BadgesList>{colors.map(([key, val]) => <Badge color={key} text={val.title} />)}</BadgesList>
+</Example>
+
+## Headings
+
+Badges can be used in headings to draw attention to new or important information. You can use them in any heading level, from `<h1>` to `<h6>`. The example below shows how to use badges in headings.
+
+<Example>
+<h1> Example heading  <Badge text="New" /> </h1> <h2> Example heading  <Badge text="New" /> </h2> <h3> Example heading  <Badge text="New" /> </h3> <h4> Example heading  <Badge text="New" /> </h4> <h5> Example heading  <Badge text="New" /> </h5> <h6> Example heading  <Badge text="New" /> </h6>
+</Example>
+
+## Light versions of badges
+
+You can use the `-lt` classes to create a light version of the badge. This is useful for creating a more subtle look.
+
+For example you can use the `bg-blue-lt` class to create a light blue badge. If you add the `text-blue-lt-fg` class, the text will be blue as well.
+
+<Example centered>
+{colors.map(([key, val]) => <Badge color={key} text={val.title} light />)}
+</Example>
+
+## Pill badges
+
+Use the `.badge-pill` class if you want to create a badge with rounded corners. Its width will adjust to the label text.
+
+<Example centered>
+{colors.map(([key, val]) => <Badge color={key} text={val.title} class="badge-pill" />)}
+</Example>
+
+You can use it to create a pill with numbers, for example, to show the number of unread messages. The badge will adjust its width to the number of digits.
+
+<Example centered>
+{colors.map(([key, val], i) => <Badge color={key} text={String(i + 1)} class="badge-pill" />)}
+</Example>
+
+## Badges with icons
+
+You can use icons in badges to make them more visually appealing. The example below demonstrates how to use icons in badges.
+
+<Example centered>
+<Badge text="Star" icon="star" /> <Badge text="Heart" icon="heart" /> <Badge text="Check" icon="check" /> <Badge text="X" icon="x" /> <Badge text="Plus" icon="plus" /> <Badge text="Minus" icon="minus" />
+</Example>
+
+You can also use an icon on the right side of the badge. The example below demonstrates how to use icons on the right side of badges.
+
+<Example centered>
+<Badge text="Star" icon-end="arrow-right" /> <Badge text="Heart" icon-end="arrow-right" /> <Badge text="Check" icon-end="arrow-right" /> <Badge text="X" icon-end="arrow-right" /> <Badge text="Plus" icon-end="arrow-right" /> <Badge text="Minus" icon-end="arrow-right" />
+</Example>
+
+## Links
+
+Place the badge within an `<a>` element if you want it to perform the function of a link and make it clickable.
+
+<Example centered>
+<a href="#" class="badge bg-blue-lt">Blue</a> <a href="#" class="badge bg-azure-lt">Azure</a> <a href="#" class="badge bg-indigo-lt">Indigo</a> <a href="#" class="badge bg-purple-lt">Purple</a> <a href="#" class="badge bg-pink-lt">Pink</a> <a href="#" class="badge bg-red-lt">Red</a> <a href="#" class="badge bg-orange-lt">Orange</a> <a href="#" class="badge bg-yellow-lt">Yellow</a> <a href="#" class="badge bg-lime-lt">Lime</a> <a href="#" class="badge bg-green-lt">Green</a> <a href="#" class="badge bg-teal-lt">Teal</a> <a href="#" class="badge bg-cyan-lt">Cyan</a>
+</Example>
+
+## Button with badge
+
+Badges can be used as parts of links or buttons to provide, for example, a counter. Use the `.badge-notification` class to create a notification badge. This class will position the badge in the top right corner of the button.
+
+If you don't provide text for the badge, you end up with a small dot. This is useful for creating a simple notification button.
+
+<Example centered>
+<button type="button" class="btn"> Notifications <Badge text="2" color="red" class="ms-2" /> </button> <button type="button" class="btn"> Inbox <Badge text="4" color="red" class="badge-notification" /> </button> <button type="button" class="btn"> Profile <Badge text="" color="red" class="badge-notification" /> </button>
+</Example>
+
+## Animated badges
+
+You can use the `.badge-blink` class to create a blinking effect. This class will add a CSS animation to the badge, so it will blink to draw attention.
+
+<Example centered>
+<button type="button" class="btn"> Profile <Badge text="" color="red" class="badge-notification badge-blink" /> </button>
+</Example>
+
+## Size Options
+
+Use `.badge-sm` or `.badge-lg` to change badge size according to your needs. The default size is `.badge` and it is used in the examples above.
+
+<Example centered vertical>
+<div> <Badge color="primary" scale="sm" text="New" class="badge-sm" /> <Badge color="primary" scale="sm" text="1" class="badge-pill" /> </div> <div> <Badge color="primary" text="New" class="badge-sm" /> <Badge color="primary" text="1" class="badge-pill" /> </div> <div> <Badge color="primary" scale="lg" text="New" class="badge-sm" /> <Badge color="primary" scale="lg" text="1" class="badge-pill" /> </div>
+</Example>
+
+
+## More examples
+
+If you want to see more examples of badges, you can check out the [Bootstrap documentation](https://getbootstrap.com/docs/5.3/components/badge/) for badges. You can also find more examples in the Tabler [Badges](https://preview.tabler.io/badges.html) preview.

@@ -1,0 +1,77 @@
+---
+// Equivalent of parts/activity.html
+import Avatar from './Avatar.astro';
+import activity from '@data/activity.json';
+import people from '@data/people.json';
+
+interface Props {
+	limit?: number;
+}
+
+const { limit = 40 } = Astro.props;
+
+interface Person {
+	full_name?: string;
+	company?: string;
+	photo?: string;
+	[key: string]: unknown;
+}
+
+// Equivalent of the random_number filter from shared/e11ty/filters.mjs (deterministic).
+function randomNumber(x: number, min = 0, max = 100): number {
+	let value =
+		((x * x * Math.PI * Math.E * (max + 1) * (Math.sin(x) / Math.cos(x * x))) % (max + 1 - min)) +
+		min;
+
+	value = value > max ? max : value;
+	value = value < min ? min : value;
+
+	return Math.floor(value);
+}
+
+// Equivalent of `forloop.index | random_date_ago: 4 | timeago` — a date N days ago
+// (N = randomNumber(index, 0, 4)) formatted by timeago gives "now" / "N day(s) ago".
+function timeagoLabel(index: number): string {
+	const days = randomNumber(index, 0, 4);
+	if (days === 0) return 'now';
+	return `${days} day${days > 1 ? 's' : ''} ago`;
+}
+
+const items = (activity as { text: string; icon?: string }[])
+	.slice(0, limit)
+	.map((item, i) => {
+		const index = i + 1; // forloop.index (1-based)
+		const person = (people as Person[])[index];
+		return {
+			person,
+			text: item.text
+				.split('%p')
+				.join(person?.full_name ?? '')
+				.split('%c')
+				.join(person?.company ?? ''),
+			timeago: timeagoLabel(index),
+			badge: index < 5,
+		};
+	});
+---
+
+<div class="divide-y">
+	{items.map((item) => (
+		<div>
+			<div class="row">
+				<div class="col-auto">
+					<Avatar person={item.person} />
+				</div>
+				<div class="col">
+					<div class="text-truncate" set:html={item.text} />
+					<div class="text-secondary">{item.timeago}</div>
+				</div>
+				{item.badge && (
+					<div class="col-auto align-self-center">
+						<div class="badge bg-primary" />
+					</div>
+				)}
+			</div>
+		</div>
+	))}
+</div>

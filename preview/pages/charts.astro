@@ -1,0 +1,52 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
+import Activity from '@shared/components/parts/charts/Activity.astro';
+import SocialReferrals from '@shared/components/cards/charts/SocialReferrals.astro';
+import Chart from '@shared/components/ui/Chart.astro';
+import Card from '@shared/components/ui/Card.astro';
+import CardHeader from '@shared/components/ui/CardHeader.astro';
+import CardBody from '@shared/components/ui/CardBody.astro';
+import chartsData from '@data/charts.json';
+
+const demoCharts = Object.entries(
+	chartsData as Record<string, { demo?: boolean; name?: string }>,
+).filter(([, chart]) => chart && chart.demo);
+---
+
+<DefaultLayout
+	title="Charts"
+	pageHeader="Charts"
+	pageMenu="plugins.charts"
+	pageLibs={['apexcharts']}
+>
+	<div class="row row-cards">
+		<div class="col-lg-12">
+			<Activity />
+		</div>
+
+		<div class="col-12">
+			<SocialReferrals />
+		</div>
+
+		<div class="col-12">
+			<Card>
+				<CardBody>
+					<Chart chartId="tasks-overview" height={20} />
+				</CardBody>
+			</Card>
+		</div>
+
+		{
+			demoCharts.map(([chartId, chart]) => (
+				<div class="col-lg-6 col-xl-4">
+					<Card>
+						{chart.name && <CardHeader title={chart.name} />}
+						<CardBody>
+							<Chart chartId={chartId} height={15} />
+						</CardBody>
+					</Card>
+				</div>
+			))
+		}
+	</div>
+</DefaultLayout>
