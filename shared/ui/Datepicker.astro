@@ -69,7 +69,7 @@ const datepickerId = id ? `datepicker-${id}` : undefined;
 {
 	id && (
 		<Fragment>
-		<!-- BEGIN DATEPICKER -->
+		<Fragment set:html={'<!-- BEGIN DATEPICKER -->'} />
 		<script define:vars={{ datepickerId, chevronLeft, chevronRight, inline }}>
 			function initDatepicker() {
 				window.tabler_datepicker ??= {};
@@ -87,7 +87,7 @@ const datepickerId = id ? `datepicker-${id}` : undefined;
 
 			document.readyState !== 'loading' ? initDatepicker() : document.addEventListener('DOMContentLoaded', initDatepicker, { once: true });
 		</script>
-		<!-- END DATEPICKER -->
+		<Fragment set:html={'<!-- END DATEPICKER -->'} />
 		</Fragment>
 	)
 }

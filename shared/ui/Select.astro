@@ -125,7 +125,7 @@ const selectId = id ? `select-${id}` : undefined;
 {
 	id && (
 		<Fragment>
-		<!-- BEGIN SELECT -->
+		<Fragment set:html={'<!-- BEGIN SELECT -->'} />
 		<script define:vars={{ selectId, showSearch }}>
 			function initSelect() {
 				window.tabler_select ??= {};
@@ -151,7 +151,7 @@ const selectId = id ? `select-${id}` : undefined;
 
 			document.readyState !== 'loading' ? initSelect() : document.addEventListener('DOMContentLoaded', initSelect, { once: true });
 		</script>
-		<!-- END SELECT -->
+		<Fragment set:html={'<!-- END SELECT -->'} />
 		</Fragment>
 	)
 }

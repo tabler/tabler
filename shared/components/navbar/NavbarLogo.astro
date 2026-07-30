@@ -41,17 +41,21 @@ const logoSvg = smallLogo
 {
 	header ? (
 		<Fragment>
-			<!-- BEGIN NAVBAR LOGO --><div class:list={brandClasses}>
+			<Fragment set:html={'<!-- BEGIN NAVBAR LOGO -->'} />
+			<div class:list={brandClasses}>
 				<a href={href} aria-label={site.title}>{!hideLogo && <Fragment set:html={logoSvg} />}{showTitle && 'Dashboard'}</a>
-			</div><!-- END NAVBAR LOGO -->
+			</div>
+			<Fragment set:html={'<!-- END NAVBAR LOGO -->'} />
 		</Fragment>
 	) : (
 		<Fragment>
-			<!-- BEGIN NAVBAR LOGO --><a
+			<Fragment set:html={'<!-- BEGIN NAVBAR LOGO -->'} />
+			<a
 				href={href}
 				aria-label={site.title}
 				class:list={brandClasses}
-				>{!hideLogo && <Fragment set:html={logoSvg} />}{showTitle && 'Dashboard'}</a><!-- END NAVBAR LOGO -->
+				>{!hideLogo && <Fragment set:html={logoSvg} />}{showTitle && 'Dashboard'}</a>
+			<Fragment set:html={'<!-- END NAVBAR LOGO -->'} />
 		</Fragment>
 	)
 }
