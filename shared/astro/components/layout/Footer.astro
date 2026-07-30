@@ -1,16 +1,13 @@
 ---
 import Icon from '../ui/Icon.astro';
 import { site } from '@shared/lib/site';
+import { formatUtcTimestamp } from '@shared/lib/date-format';
 
 // The PoC mirrors the development build (as in BaseLayout).
 const environment: string = 'development';
 
 const now = new Date();
-const pad = (n: number) => String(n).padStart(2, '0');
-// Equivalent of {{ 'now' | date: '%Y-%m-%d %H:%M %Z' }} — the Eleventy build formats in UTC.
-const generatedAt = `${now.getUTCFullYear()}-${pad(now.getUTCMonth() + 1)}-${pad(
-	now.getUTCDate(),
-)} ${pad(now.getUTCHours())}:${pad(now.getUTCMinutes())} +0000`;
+const generatedAt = formatUtcTimestamp(now);
 ---
 
 <!--  BEGIN FOOTER  -->

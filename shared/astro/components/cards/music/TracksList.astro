@@ -8,13 +8,7 @@ import DropdownMenu from '../../ui/DropdownMenu.astro';
 import ListGroup from '../../ui/ListGroup.astro';
 import ListGroupItem from '../../ui/ListGroupItem.astro';
 import tracks from '@data/tracks.json';
-
-// equivalent of the miliseconds_to_minutes filter from shared/e11ty/filters.mjs
-const milisecondsToMinutes = (value: number) => {
-	const minutes = Math.floor(value / 60000);
-	const seconds = ((value % 60000) / 1000).toFixed(0);
-	return `${minutes}:${Number(seconds) < 10 ? '0' : ''}${seconds}`;
-};
+import { millisecondsToMinutes } from '@shared/lib/string-format';
 
 // {% for track in tracks limit: 12 %}
 const items = tracks.slice(0, 12);
@@ -38,7 +32,7 @@ const items = tracks.slice(0, 12);
 						</div>
 					</div>
 					<div class="col-auto text-secondary">
-						{milisecondsToMinutes(track.duration_ms)}
+						{millisecondsToMinutes(track.duration_ms)}
 					</div>
 					<div class="col-auto">
 						<a href="#" class="link-secondary">
