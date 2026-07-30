@@ -45,7 +45,7 @@ describe('Config', () => {
         testBool: true,
         testString: 'foo',
         testString1: 'foo',
-        testInt: 7
+        testInt: 7,
       })
 
       const instance = new DummyConfigClass()
@@ -66,14 +66,17 @@ describe('Config', () => {
         testBool: true,
         testString: 'foo',
         testString1: 'foo',
-        testInt: 7
+        testInt: 7,
       })
 
       const instance = new DummyConfigClass()
-      const result = instance._mergeConfigObj({
-        testString1: 'test',
-        testInt: 3
-      }, fixtureEl.querySelector('#test')!)
+      const result = instance._mergeConfigObj(
+        {
+          testString1: 'test',
+          testInt: 3,
+        },
+        fixtureEl.querySelector('#test')!,
+      )
 
       expect(result.testBool).toBe(false)
       expect(result.testString).toBe('foo')
@@ -88,7 +91,7 @@ describe('Config', () => {
 
       vi.spyOn(DummyConfigClass, 'Default', 'get').mockReturnValue({
         testInt: 7,
-        testInt2: 79
+        testInt2: 79,
       })
 
       const instance = new DummyConfigClass()
@@ -105,7 +108,7 @@ describe('Config', () => {
     it('should throw TypeError for wrong config types', () => {
       vi.spyOn(DummyConfigClass, 'DefaultType', 'get').mockReturnValue({
         toggle: 'boolean',
-        parent: '(string|element)'
+        parent: '(string|element)',
       })
 
       const obj = new DummyConfigClass()
@@ -119,7 +122,7 @@ describe('Config', () => {
     it('should accept null when type includes null', () => {
       vi.spyOn(DummyConfigClass, 'DefaultType', 'get').mockReturnValue({
         toggle: 'boolean',
-        parent: '(null|element)'
+        parent: '(null|element)',
       })
 
       const obj = new DummyConfigClass()
@@ -133,7 +136,7 @@ describe('Config', () => {
     it('should accept undefined when type includes undefined', () => {
       vi.spyOn(DummyConfigClass, 'DefaultType', 'get').mockReturnValue({
         toggle: 'boolean',
-        parent: '(undefined|element)'
+        parent: '(undefined|element)',
       })
 
       const obj = new DummyConfigClass()

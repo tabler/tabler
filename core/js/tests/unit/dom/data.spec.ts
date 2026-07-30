@@ -95,9 +95,7 @@ describe('Data', () => {
     Data.set(div, TEST_KEY, { ...TEST_DATA })
     Data.set(div, UNKNOWN_KEY, { ...TEST_DATA })
 
-    expect(spy).toHaveBeenCalledWith(
-      expect.stringContaining(TEST_KEY)
-    )
+    expect(spy).toHaveBeenCalledWith(expect.stringContaining(TEST_KEY))
 
     spy.mockRestore()
   })

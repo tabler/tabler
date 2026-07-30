@@ -26,7 +26,7 @@ const eventRegistry: Record<string | number, Record<string, Record<string | numb
 let uidEvent = 1
 const customEvents: Record<string, string> = {
   mouseenter: 'mouseover',
-  mouseleave: 'mouseout'
+  mouseleave: 'mouseout',
 }
 
 const nativeEvents = new Set([
@@ -75,7 +75,7 @@ const nativeEvents = new Set([
   'readystatechange',
   'error',
   'abort',
-  'scroll'
+  'scroll',
 ])
 
 function makeEventUid(element: EventableElement | EventCallback, uid?: string): string | number {
@@ -125,20 +125,11 @@ function bootstrapDelegationHandler(element: EventTarget, selector: string, fn: 
   } as BootstrapHandler
 }
 
-function findHandler(
-  events: Record<string | number, BootstrapHandler>,
-  callable: EventCallback,
-  delegationSelector: string | null = null
-): BootstrapHandler | undefined {
-  return Object.values(events)
-    .find(event => event.callable === callable && event.delegationSelector === delegationSelector)
+function findHandler(events: Record<string | number, BootstrapHandler>, callable: EventCallback, delegationSelector: string | null = null): BootstrapHandler | undefined {
+  return Object.values(events).find((event) => event.callable === callable && event.delegationSelector === delegationSelector)
 }
 
-function normalizeParameters(
-  originalTypeEvent: string,
-  handler: string | EventCallback | undefined,
-  delegationFunction: EventCallback | undefined
-): [boolean, EventCallback, string] {
+function normalizeParameters(originalTypeEvent: string, handler: string | EventCallback | undefined, delegationFunction: EventCallback | undefined): [boolean, EventCallback, string] {
   const isDelegated = typeof handler === 'string'
   const callable = isDelegated ? delegationFunction! : (handler || delegationFunction)!
   let typeEvent = getTypeEvent(originalTypeEvent)
@@ -150,13 +141,7 @@ function normalizeParameters(
   return [isDelegated, callable, typeEvent]
 }
 
-function addHandler(
-  element: EventTarget | null,
-  originalTypeEvent: string,
-  handler: string | EventCallback | undefined,
-  delegationFunction: EventCallback | undefined,
-  oneOff: boolean
-): void {
+function addHandler(element: EventTarget | null, originalTypeEvent: string, handler: string | EventCallback | undefined, delegationFunction: EventCallback | undefined, oneOff: boolean): void {
   if (typeof originalTypeEvent !== 'string' || !element) {
     return
   }
@@ -178,7 +163,7 @@ function addHandler(
 
   const events = getElementEvents(element)
   const handlers = events[typeEvent] || (events[typeEvent] = {})
-  const previousFunction = findHandler(handlers, callable, isDelegated ? handler as string : null)
+  const previousFunction = findHandler(handlers, callable, isDelegated ? (handler as string) : null)
 
   if (previousFunction) {
     previousFunction.oneOff = previousFunction.oneOff && oneOff
@@ -187,11 +172,9 @@ function addHandler(
   }
 
   const uid = makeEventUid(callable, originalTypeEvent.replace(namespaceRegex, ''))
-  const fn: BootstrapHandler = isDelegated ?
-    bootstrapDelegationHandler(element, handler as string, callable) :
-    bootstrapHandler(element, callable)
+  const fn: BootstrapHandler = isDelegated ? bootstrapDelegationHandler(element, handler as string, callable) : bootstrapHandler(element, callable)
 
-  fn.delegationSelector = isDelegated ? handler as string : null
+  fn.delegationSelector = isDelegated ? (handler as string) : null
   fn.callable = callable
   fn.oneOff = oneOff
   fn.uidEvent = uid
@@ -200,13 +183,7 @@ function addHandler(
   element.addEventListener(typeEvent, fn, isDelegated)
 }
 
-function removeHandler(
-  element: EventTarget,
-  events: Record<string, Record<string | number, BootstrapHandler>>,
-  typeEvent: string,
-  handler: EventCallback,
-  delegationSelector?: string | null
-): void {
+function removeHandler(element: EventTarget, events: Record<string, Record<string | number, BootstrapHandler>>, typeEvent: string, handler: EventCallback, delegationSelector?: string | null): void {
   const fn = findHandler(events[typeEvent], handler, delegationSelector ?? null)
 
   if (!fn) {
@@ -217,12 +194,7 @@ function removeHandler(
   delete events[typeEvent][fn.uidEvent!]
 }
 
-function removeNamespacedHandlers(
-  element: EventTarget,
-  events: Record<string, Record<string | number, BootstrapHandler>>,
-  typeEvent: string,
-  namespace: string
-): void {
+function removeNamespacedHandlers(element: EventTarget, events: Record<string, Record<string | number, BootstrapHandler>>, typeEvent: string, namespace: string): void {
   const storeElementEvent = events[typeEvent] || {}
 
   for (const [handlerKey, event] of Object.entries(storeElementEvent)) {
@@ -262,7 +234,7 @@ const EventHandler = {
         return
       }
 
-      removeHandler(element, events, typeEvent, callable, isDelegated ? handler as string : null)
+      removeHandler(element, events, typeEvent, callable, isDelegated ? (handler as string) : null)
       return
     }
 
@@ -291,19 +263,19 @@ const EventHandler = {
     element.dispatchEvent(evt)
 
     return evt
-  }
+  },
 }
 
 function hydrateObj<T extends object>(obj: T, meta: Record<string, unknown> = {}): T {
   for (const [key, value] of Object.entries(meta)) {
     try {
-      (obj as Record<string, unknown>)[key] = value
+      ;(obj as Record<string, unknown>)[key] = value
     } catch {
       Object.defineProperty(obj, key, {
         configurable: true,
         get() {
           return value
-        }
+        },
       })
     }
   }

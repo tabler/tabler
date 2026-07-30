@@ -6,16 +6,16 @@
 // control via await), because Astro renders siblings concurrently and
 // PageModals may drain the registry before the asynchronous render of the
 // modal's slot completes.
-const modals: Array<string | Promise<string>> = [];
+const modals: Array<string | Promise<string>> = []
 
 export function addPageModal(html: string | Promise<string>): void {
-	if (!modals.includes(html)) {
-		modals.push(html);
-	}
+  if (!modals.includes(html)) {
+    modals.push(html)
+  }
 }
 
 export function drainPageModals(): Array<string | Promise<string>> {
-	const out = [...modals];
-	modals.length = 0;
-	return out;
+  const out = [...modals]
+  modals.length = 0
+  return out
 }

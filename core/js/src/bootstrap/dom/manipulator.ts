@@ -36,7 +36,7 @@ function normalizeData(value: string): DataValue {
 }
 
 function normalizeDataKey(key: string): string {
-  return key.replace(/[A-Z]/g, chr => `-${chr.toLowerCase()}`)
+  return key.replace(/[A-Z]/g, (chr) => `-${chr.toLowerCase()}`)
 }
 
 const PREFIXES = ['tblr', 'bs'] as const
@@ -60,7 +60,7 @@ const Manipulator = {
     const attributes: Record<string, DataValue> = {}
 
     for (const prefix of PREFIXES) {
-      const keys = Object.keys(element.dataset).filter(key => key.startsWith(prefix) && !key.startsWith(`${prefix}Config`))
+      const keys = Object.keys(element.dataset).filter((key) => key.startsWith(prefix) && !key.startsWith(`${prefix}Config`))
 
       for (const key of keys) {
         let pureKey = key.replace(new RegExp(`^${prefix}`), '')
@@ -83,7 +83,7 @@ const Manipulator = {
     }
 
     return null
-  }
+  },
 }
 
 export default Manipulator
