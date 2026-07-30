@@ -24,6 +24,8 @@ const playerSelector = `#player-${id}`;
 }
 {
 	enabled && (
+		<Fragment>
+		<Fragment set:html={'<!-- BEGIN PLAYER -->'} />
 		<script define:vars={{ playerId, playerSelector }}>
 			window.tabler_player ??= {};
 
@@ -33,5 +35,7 @@ const playerSelector = `#player-${id}`;
 
 			document.readyState !== 'loading' ? initPlayer() : document.addEventListener('DOMContentLoaded', initPlayer, { once: true });
 		</script>
+		<Fragment set:html={'<!-- END PLAYER -->'} />
+		</Fragment>
 	)
 }

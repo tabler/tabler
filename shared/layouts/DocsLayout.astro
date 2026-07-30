@@ -123,6 +123,7 @@ const docsLinks = docs.links as DocsLink[];
 <!doctype html>
 <html lang="en">
 	<head>
+		<!-- BEGIN META -->
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
@@ -155,19 +156,40 @@ const docsLinks = docs.links as DocsLink[];
 				</Fragment>
 			)
 		}
+		<!-- END META -->
 
+		<!-- BEGIN GLOBAL MANDATORY STYLES -->
 		<link rel="stylesheet" href="/dist/css/tabler.css" />
-		{site.cssPlugins.map((plugin) => <link href={`/dist/css/tabler-${plugin}.css`} rel="stylesheet" />)}
+		<!-- END GLOBAL MANDATORY STYLES -->
 
-		{docsLibCss.map((href) => <link href={href} rel="stylesheet" />)}
+		<!-- BEGIN PLUGINS STYLES -->
+		{site.cssPlugins.map((plugin) => <link href={`/dist/css/tabler-${plugin}.css`} rel="stylesheet" />)}
+		<!-- END PLUGINS STYLES -->
+
+		{
+			docsLibCss.length > 0 && (
+				<Fragment>
+					<Fragment set:html={'<!-- BEGIN PAGE LEVEL STYLES -->'} />
+					{docsLibCss.map((href) => <link href={href} rel="stylesheet" />)}
+					<Fragment set:html={'<!-- END PAGE LEVEL STYLES -->'} />
+				</Fragment>
+			)
+		}
 
 		{/* is:inline — see MIGRATION.md (without it Astro adds data-astro-cid-*) */}
+		<!-- BEGIN CUSTOM FONT -->
 		<style is:inline>@import url('https://rsms.me/inter/inter.css');</style>
+		<!-- END CUSTOM FONT -->
+
+		<!-- BEGIN DOCS STYLES -->
 		<link rel="stylesheet" href="/css/docs.css" />
+		<!-- END DOCS STYLES -->
 	</head>
 
 	<body class="d-flex flex-column" style="background: var(--tblr-bg-surface)">
+		<!-- BEGIN GLOBAL THEME SCRIPT -->
 		<script is:inline src="/dist/js/tabler-theme.js"></script>
+		<!-- END GLOBAL THEME SCRIPT -->
 		<!-- BEGIN NAVBAR  -->
 		<header role="banner">
 			<DocsNavbar />
@@ -177,6 +199,7 @@ const docsLinks = docs.links as DocsLink[];
 		<main id="content" class="flex-fill">
 			<div class="container">
 				<div class="row g-0">
+					<!-- BEGIN DOCS MENU -->
 					<div class="col-docs d-none d-lg-block border-end">
 						<div class="py-4">
 							<div class="space-y space-y-5">
@@ -198,6 +221,7 @@ const docsLinks = docs.links as DocsLink[];
 							</div>
 						</div>
 					</div>
+					<!-- END DOCS MENU -->
 					<div class="col bg-docs-gradient">
 						<div class="py-lg-5 ps-lg-5">
 							<div class="py-6 ps-lg-6 p-xxl-6">
@@ -260,18 +284,29 @@ const docsLinks = docs.links as DocsLink[];
 							</div>
 						</div>
 					</div>
+					<!-- BEGIN DOCS TOC -->
 					<div class="col-2 d-none d-xxl-block">
 						<div class="py-6 sticky-top">
 							<DocsToc toc={toc} />
 						</div>
 					</div>
+					<!-- END DOCS TOC -->
 				</div>
 			</div>
 		</main>
 		<!-- END PAGE BODY -->
 
-		{docsLibJs.map((src) => <script is:inline src={src} />)}
+		{
+			docsLibJs.length > 0 && (
+				<Fragment>
+					<Fragment set:html={'<!-- BEGIN PAGE LIBRARIES -->'} />
+					{docsLibJs.map((src) => <script is:inline src={src} />)}
+					<Fragment set:html={'<!-- END PAGE LIBRARIES -->'} />
+				</Fragment>
+			)
+		}
 
+		<!-- BEGIN PAGE SCRIPTS -->
 		<script is:inline>
 			document.addEventListener('DOMContentLoaded', function () {
 				const elements = document.querySelectorAll('[data-clipboard-text]');
@@ -305,8 +340,14 @@ const docsLinks = docs.links as DocsLink[];
 				});
 			})
 		</script>
+		<!-- END PAGE SCRIPTS -->
 
+		<!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
 		<script is:inline src="/dist/js/tabler.js"></script>
+		<!-- END GLOBAL MANDATORY SCRIPTS -->
+
+		<!-- BEGIN DOCS SCRIPTS -->
 		<script is:inline src="/js/docs.js" defer></script>
+		<!-- END DOCS SCRIPTS -->
 	</body>
 </html>

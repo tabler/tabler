@@ -65,64 +65,68 @@ const chunk = <T,>(arr: T[], size: number): T[][] => {
 			const title = longTitles ? (item['title-long'] ?? item.title) : item.title;
 
 			return (
-				<li class:list={['nav-item', active && 'active', hasChildren && 'dropdown']}>
-					<a
-						class:list={['nav-link', hasChildren && 'dropdown-toggle', item.disabled && 'disabled']}
-						href={hasChildren ? `#navbar-${key}` : `./${item.url}`}
-						data-bs-toggle={hasChildren ? 'dropdown' : undefined}
-						data-bs-auto-close={hasChildren ? (keepOpen ? 'false' : 'outside') : undefined}
-						role={hasChildren ? 'button' : undefined}
-						aria-haspopup={hasChildren ? 'true' : undefined}
-						aria-expanded={hasChildren ? (autoOpen && key === currentPage[0] ? 'true' : 'false') : undefined}
-						aria-current={active ? 'page' : undefined}
-					>
-						{!hideIcons && (
-							<span class="nav-link-icon d-md-none d-lg-inline-block">{item.icon && <Icon name={item.icon} />}</span>
-						)}
-
-						<span class="nav-link-title">{title}</span>
-
-						{item.badge && <span class="badge badge-sm bg-red text-red-fg">{item.badge}</span>}
-					</a>
-
-					{hasChildren && (
-						<div
-							class:list={[
-								'dropdown-menu',
-								item.right && 'dropdown-menu-end',
-								autoOpen && key === currentPage[0] && 'show',
-							]}
+				<Fragment>
+					<Fragment set:html={'<!-- BEGIN NAVBAR ITEM -->'} />
+					<li class:list={['nav-item', active && 'active', hasChildren && 'dropdown']}>
+						<a
+							class:list={['nav-link', hasChildren && 'dropdown-toggle', item.disabled && 'disabled']}
+							href={hasChildren ? `#navbar-${key}` : `./${item.url}`}
+							data-bs-toggle={hasChildren ? 'dropdown' : undefined}
+							data-bs-auto-close={hasChildren ? (keepOpen ? 'false' : 'outside') : undefined}
+							role={hasChildren ? 'button' : undefined}
+							aria-haspopup={hasChildren ? 'true' : undefined}
+							aria-expanded={hasChildren ? (autoOpen && key === currentPage[0] ? 'true' : 'false') : undefined}
+							aria-current={active ? 'page' : undefined}
 						>
-							{columns ? (
-								<div class="dropdown-menu-columns">
-									{columns.map((column) => (
-										<div class="dropdown-menu-column">
-											{column.map(([childKey, child]) => (
-												<NavbarMenuItem
-													level1Key={key}
-													itemKey={childKey}
-													item={child as any}
-													currentPage={currentPage}
-													keepOpen={keepOpen}
-												/>
-											))}
-										</div>
-									))}
-								</div>
-							) : (
-								children.map(([childKey, child]) => (
-									<NavbarMenuItem
-										level1Key={key}
-										itemKey={childKey}
-										item={child as any}
-										currentPage={currentPage}
-										keepOpen={keepOpen}
-									/>
-								))
+							{!hideIcons && (
+								<span class="nav-link-icon d-md-none d-lg-inline-block">{item.icon && <Icon name={item.icon} />}</span>
 							)}
-						</div>
-					)}
-				</li>
+
+							<span class="nav-link-title">{title}</span>
+
+							{item.badge && <span class="badge badge-sm bg-red text-red-fg">{item.badge}</span>}
+						</a>
+
+						{hasChildren && (
+							<div
+								class:list={[
+									'dropdown-menu',
+									item.right && 'dropdown-menu-end',
+									autoOpen && key === currentPage[0] && 'show',
+								]}
+							>
+								{columns ? (
+									<div class="dropdown-menu-columns">
+										{columns.map((column) => (
+											<div class="dropdown-menu-column">
+												{column.map(([childKey, child]) => (
+													<NavbarMenuItem
+														level1Key={key}
+														itemKey={childKey}
+														item={child as any}
+														currentPage={currentPage}
+														keepOpen={keepOpen}
+													/>
+												))}
+											</div>
+										))}
+									</div>
+								) : (
+									children.map(([childKey, child]) => (
+										<NavbarMenuItem
+											level1Key={key}
+											itemKey={childKey}
+											item={child as any}
+											currentPage={currentPage}
+											keepOpen={keepOpen}
+										/>
+									))
+								)}
+							</div>
+						)}
+					</li>
+					<Fragment set:html={'<!-- END NAVBAR ITEM -->'} />
+				</Fragment>
 			);
 		})
 	}

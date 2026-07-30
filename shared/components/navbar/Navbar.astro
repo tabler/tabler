@@ -89,6 +89,7 @@ const headerClass = [
 
 {sticky && <Fragment set:html="<div class='sticky-top'>" />}
 
+<!-- BEGIN NAVBAR -->
 <header
 	class:list={headerClass}
 	style={backgroundColor ? `background: ${backgroundColor}` : undefined}
@@ -129,11 +130,11 @@ const headerClass = [
 				<div class="collapse navbar-collapse" id="navbar-menu">
 					{hideSearch ? (
 						<Fragment>
-							<!-- BEGIN NAVBAR MENU -->
+							<Fragment set:html={'<!-- BEGIN NAVBAR MENU -->'} />
 							<nav aria-label="Primary">
 								<NavbarMenu sample={sample} hideIcons={hideIcons} pageMenu={pageMenu} />
 							</nav>
-							<!-- END NAVBAR MENU -->
+							<Fragment set:html={'<!-- END NAVBAR MENU -->'} />
 						</Fragment>
 					) : (
 						<div class="d-flex flex-column flex-md-row flex-fill align-items-stretch align-items-md-center">
@@ -201,5 +202,6 @@ const headerClass = [
 		</div>
 	)
 }
+<!-- END NAVBAR -->
 
 {sticky && <Fragment set:html="</div>" />}

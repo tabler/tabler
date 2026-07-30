@@ -29,13 +29,17 @@ const target = isAbsolute ? url : `${base}${url}`;
 
 <!doctype html>
 <html lang="en-US">
+	<!-- BEGIN META -->
 	<meta charset="utf-8" />
 	<title>Redirecting…</title>
 	<link rel="canonical" href={target} />
 	<meta http-equiv="refresh" content={`0; url=${target}`} />
 	<meta name="robots" content="noindex" />
+	<!-- END META -->
 	<noscript><a href={target}>Click here if you are not redirected.</a></noscript>
+	<!-- BEGIN REDIRECT -->
 	<script define:vars={{ target }}>
 		location = target;
 	</script>
+	<!-- END REDIRECT -->
 </html>

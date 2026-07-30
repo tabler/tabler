@@ -38,13 +38,15 @@ const dialogClass = [
 addPageModal(
 	Astro.slots.render('default').then(
 		(content) =>
-			`<div class="${modalClass}"${style ? ` style="${style}"` : ''} id="modal-${modalId}" tabindex="-1" role="dialog" aria-hidden="${show ? 'false' : 'true'}">
+			`<!-- BEGIN MODAL -->
+<div class="${modalClass}"${style ? ` style="${style}"` : ''} id="modal-${modalId}" tabindex="-1" role="dialog" aria-hidden="${show ? 'false' : 'true'}">
 	<div class="${dialogClass}" role="document">
 		<div class="modal-content">
 ${content}
 		</div>
 	</div>
-</div>`,
+</div>
+<!-- END MODAL -->`,
 	),
 );
 ---

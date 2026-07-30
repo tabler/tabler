@@ -48,6 +48,7 @@ const libJsFiles = (head: boolean) =>
 <!doctype html>
 <html lang="en" dir={rtl ? 'rtl' : undefined}>
 	<head>
+		<!-- BEGIN META -->
 		<meta charset="utf-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 		<meta http-equiv="X-UA-Compatible" content="ie=edge" />
@@ -56,15 +57,16 @@ const libJsFiles = (head: boolean) =>
 
 		<link rel="icon" href={`${base}/favicon-dev.ico`} type="image/x-icon" />
 		<link rel="shortcut icon" href={`${base}/favicon-dev.ico`} type="image/x-icon" />
+		<!-- END META -->
 
 		{
 			libCssFiles.length > 0 && (
 				<Fragment>
-					<!-- BEGIN PAGE LEVEL STYLES -->
+					<Fragment set:html={'<!-- BEGIN PAGE LEVEL STYLES -->'} />
 					{libCssFiles.map((href) => (
 						<link href={href} rel="stylesheet" />
 					))}
-					<!-- END PAGE LEVEL STYLES -->
+					<Fragment set:html={'<!-- END PAGE LEVEL STYLES -->'} />
 				</Fragment>
 			)
 		}
@@ -84,11 +86,11 @@ const libJsFiles = (head: boolean) =>
 		{
 			libJsFiles(true).length > 0 && (
 				<Fragment>
-					<!-- BEGIN PAGE LIBRARIES -->
+					<Fragment set:html={'<!-- BEGIN PAGE LIBRARIES -->'} />
 					{libJsFiles(true).map((src) => (
 						<script is:inline src={src} defer />
 					))}
-					<!-- END PAGE LIBRARIES -->
+					<Fragment set:html={'<!-- END PAGE LIBRARIES -->'} />
 				</Fragment>
 			)
 		}
@@ -118,11 +120,11 @@ const libJsFiles = (head: boolean) =>
 		{
 			libJsFiles(false).length > 0 && (
 				<Fragment>
-					<!-- BEGIN PAGE LIBRARIES -->
+					<Fragment set:html={'<!-- BEGIN PAGE LIBRARIES -->'} />
 					{libJsFiles(false).map((src) => (
 						<script is:inline src={src} defer />
 					))}
-					<!-- END PAGE LIBRARIES -->
+					<Fragment set:html={'<!-- END PAGE LIBRARIES -->'} />
 				</Fragment>
 			)
 		}
