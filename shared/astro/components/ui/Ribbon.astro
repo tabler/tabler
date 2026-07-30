@@ -1,6 +1,5 @@
 ---
-// Port of shared/includes/ui/ribbon.html
-import Icon from '../Icon.astro';
+import Icon from './Icon.astro';
 
 interface Props {
 	text?: string;
@@ -22,10 +21,8 @@ const classes = [
 	bookmark && 'ribbon-bookmark',
 	color && `bg-${color}`,
 ]
-	.filter(Boolean)
-	.join(' ');
 ---
 
-<div class={classes}>
+<div class:list={classes}>
 	{text ? text : <Icon name="star" type={filled ? 'filled' : 'outline'} />}
 </div>

@@ -1,8 +1,8 @@
 ---
-// Port of layout/headers/profile.html (page-header-file: profile).
 import Avatar from '../ui/Avatar.astro';
-import Icon from '../Icon.astro';
-import Button from '../Button.astro';
+import Icon from '../ui/Icon.astro';
+import Button from '../ui/Button.astro';
+import ButtonList from '../ui/ButtonList.astro';
 import people from '@data/people.json';
 
 const person = people[3];
@@ -12,7 +12,7 @@ const person = people[3];
 	<div class="container">
 		<div class="row align-items-center">
 			<div class="col-auto">
-				<Avatar person={person} rounded size="lg" />
+				<Avatar person={person} size="lg" />
 			</div>
 			<div class="col">
 				<h1 class="fw-bold m-0">{person.full_name}</h1>
@@ -36,11 +36,11 @@ const person = people[3];
 				</div>
 			</div>
 			<div class="col-auto ms-auto">
-				<div class="btn-list">
+				<ButtonList>
 					<Button icon="dots" iconOnly />
 					<Button icon="message" iconOnly />
 					<Button icon="check" color="primary" text="Following" />
-				</div>
+				</ButtonList>
 			</div>
 		</div>
 	</div>

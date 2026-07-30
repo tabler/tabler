@@ -1,7 +1,7 @@
 ---
-// Port of parts/modals/add-task.html.
 // selected ids "5,6,2,3" → people[id-1] (Liquid: id | plus: 0 | minus: 1).
 import people from '@data/people.json';
+import FormGroup from '../ui/FormGroup.astro';
 
 interface Person {
 	id: string;
@@ -18,12 +18,10 @@ const selectedPeople = ['5', '6', '2', '3'].map((idStr) => (people as Person[])[
 
 <div class="modal-body">
 	<form>
-		<div class="mb-3">
-			<label class="form-label">Name</label>
+		<FormGroup label="Name">
 			<input type="text" class="form-control" placeholder="Task name">
-		</div>
-		<div class="mb-3">
-			<label class="form-label">Assigned To</label>
+		</FormGroup>
+		<FormGroup label="Assigned To">
 			<select class="form-select">
 				<option value="">Select person</option>
 				{
@@ -32,19 +30,17 @@ const selectedPeople = ['5', '6', '2', '3'].map((idStr) => (people as Person[])[
 					))
 				}
 			</select>
-		</div>
-		<div class="mb-3">
-			<label class="form-label">Priority</label>
+		</FormGroup>
+		<FormGroup label="Priority">
 			<select class="form-select">
 				<option value="Low">Low</option>
 				<option value="Medium">Medium</option>
 				<option value="High">High</option>
 			</select>
-		</div>
-		<div class="mb-3">
-			<label class="form-label">Description</label>
+		</FormGroup>
+		<FormGroup label="Description">
 			<textarea class="form-control" rows="3" placeholder="Task description"></textarea>
-		</div>
+		</FormGroup>
 	</form>
 </div>
 

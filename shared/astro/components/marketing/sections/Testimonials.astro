@@ -1,5 +1,4 @@
 ---
-// Port of marketing/sections/testimonials.html.
 // Marketing pages live one level deep, so the avatar asset base is ".."
 // (reference uses "../static/avatars/...") — passed to Avatar via `base`.
 import testimonials from '@data/testimonials.json';
@@ -23,8 +22,6 @@ interface Props {
 const { background, class: className, limit = 99, hideHeader } = Astro.props;
 
 const sectionClass = ['section', background && `section-${background}`, className]
-	.filter(Boolean)
-	.join(' ');
 
 // Liquid: testimonials | slice: 0, limit | split_to_n: 3
 const list = (testimonials as string[]).slice(0, limit);
@@ -47,7 +44,7 @@ const cards = groups.map((group) =>
 );
 ---
 
-<section class={sectionClass}>
+<section class:list={sectionClass}>
 	<div class="container">
 		{
 			!hideHeader && (

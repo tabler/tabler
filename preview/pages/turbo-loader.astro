@@ -1,20 +1,23 @@
 ---
 // Port of preview/pages/turbo-loader.html (layout: default, page-libs: [turbo]).
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
+import ButtonList from '@shared/components/ui/ButtonList.astro';
+import Card from '@shared/components/ui/Card.astro';
+import CardBody from '@shared/components/ui/CardBody.astro';
 ---
 
 <DefaultLayout pageMenu="plugins.turbo" pageLibs={['turbo']}>
-	<div class="card">
-		<div class="card-body">
-			<div class="btn-list">
+	<Card>
+		<CardBody>
+			<ButtonList>
 				<button class="btn" id="show-loader">Show loader</button>
 				<button class="btn" id="hide-loader">Hide loader</button>
 				<button class="btn" id="set-10">Set 10%</button>
 				<button class="btn" id="set-50">Set 50%</button>
 				<button class="btn" id="set-100">Set 100%</button>
-			</div>
-		</div>
-	</div>
+			</ButtonList>
+		</CardBody>
+	</Card>
 	<!--
 		is:inline: turbo loads via a deferred page-lib <script>; see FormElements1.astro
 		for why a processed (module) script here would run too early and find

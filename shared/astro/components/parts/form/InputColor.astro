@@ -1,7 +1,7 @@
 ---
-// Port of shared/includes/parts/form/input-color.html: color swatch picker —
 // dark/white + the first 10 site colors, the 2nd swatch (white) checked.
 import site from '@data/site.json';
+import FormGroup from '../../ui/FormGroup.astro';
 
 interface Props {
 	label?: string;
@@ -16,8 +16,7 @@ const siteColors = Object.keys((site as { colors: Record<string, unknown> }).col
 const colors = ['dark', 'white', ...siteColors];
 ---
 
-<div class="mb-3">
-	<label class="form-label">{label}</label>
+<FormGroup label={label}>
 	<div class="row g-2">
 		{
 			colors.map((color, i) => (
@@ -30,4 +29,4 @@ const colors = ['dark', 'white', ...siteColors];
 			))
 		}
 	</div>
-</div>
+</FormGroup>

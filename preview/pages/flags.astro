@@ -1,6 +1,8 @@
 ---
-// Port of preview/pages/flags.html (layout: default)
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
+import Card from '@shared/components/ui/Card.astro';
+import CardHeader from '@shared/components/ui/CardHeader.astro';
+import CardBody from '@shared/components/ui/CardBody.astro';
 import flags from '@data/flags.json';
 
 // Liquid: {% for icon in (0..20) %}<div></div>{% endfor %} — 21 filler divs
@@ -8,11 +10,11 @@ const fillers = Array.from({ length: 21 });
 ---
 
 <DefaultLayout title="Flags" pageHeader="Flags" pageMenu="addons.flags">
-	<div class="card">
-		<div class="card-header">
+	<Card>
+		<CardHeader>
 			<div class="card-title">List of all flags</div>
-		</div>
-		<div class="card-body p-0">
+		</CardHeader>
+		<CardBody class="p-0">
 			<div class="demo-icons-list-wrap">
 				<div class="demo-icons-list">
 					{
@@ -30,6 +32,6 @@ const fillers = Array.from({ length: 21 });
 					{fillers.map(() => <div></div>)}
 				</div>
 			</div>
-		</div>
-	</div>
+		</CardBody>
+	</Card>
 </DefaultLayout>

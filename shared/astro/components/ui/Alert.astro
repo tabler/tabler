@@ -1,6 +1,6 @@
 ---
-// Port ui/alert.html
 import Icon from './Icon.astro';
+import ButtonList from './ButtonList.astro';
 
 interface Props {
 	type?: string;
@@ -51,13 +51,11 @@ const classes = [
 	avatar && 'alert-avatar',
 	className,
 ]
-	.filter(Boolean)
-	.join(' ');
 
 const listItems = (list ?? '').split(',').filter(Boolean);
 ---
 
-<div class={classes} role="alert">
+<div class:list={classes} role="alert">
 	<div class="alert-icon">{icon && <Icon name={icon} class="alert-icon" />}</div>
 	{
 		description || list ? (
@@ -89,10 +87,10 @@ const listItems = (list ?? '').split(',').filter(Boolean);
 	}
 	{
 		buttons && (
-			<div class="btn-list">
+			<ButtonList>
 				<a href="#" class={`btn btn-${type}`}>Okay</a>
 				<a href="#" class="btn">Cancel</a>
-			</div>
+			</ButtonList>
 		)
 	}
 	{showClose && <a class="btn-close" data-bs-dismiss="alert" aria-label="close" />}

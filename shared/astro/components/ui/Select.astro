@@ -1,5 +1,4 @@
 ---
-// Port of shared/includes/ui/select.html.
 // Renders a <select id="select-{id}"> populated from @data/selects.json (+ people)
 // and its TomSelect init <script>, rendered directly here (no more page-scripts registry).
 // TODO: optgroup / flag / label indicator branches (unused on the modals page).
@@ -41,8 +40,6 @@ const selectClass = [
 	className,
 	state && `is-${state}`,
 ]
-	.filter(Boolean)
-	.join(' ');
 
 const isMultiple = Boolean(multiple || data.multiple);
 
@@ -95,7 +92,7 @@ const selectId = id ? `select-${id}` : undefined;
 {
 	id && (
 		<select
-			class={selectClass}
+			class:list={selectClass}
 			placeholder={placeholder}
 			id={`select-${id}`}
 			value={value}

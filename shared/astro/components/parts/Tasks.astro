@@ -1,5 +1,4 @@
 ---
-// Port of shared/includes/parts/tasks.html.
 // Inlines ui/avatar-list.html (stacked, size xs) and ui/switch-icon.html
 // (heart, scale variant) — the exact variants this part uses.
 // NOTE: the Liquid `task.due-date` reads the hyphenated key which does not
@@ -7,10 +6,10 @@
 // renders — reproduced faithfully by reading task['due-date'] (undefined).
 // The avatar-list offset uses task['users-offset'] (the hyphenated key that
 // DOES exist), matching the Eleventy output.
-import Icon from '../Icon.astro';
-import Avatar from '../ui/Avatar.astro';
+import Icon from '../ui/Icon.astro';
+import AvatarList from '../ui/AvatarList.astro';
+import CardTitle from '../ui/CardTitle.astro';
 import tasksData from '@data/tasks.json';
-import people from '@data/people.json';
 
 interface Column {
 	name: string;
@@ -23,7 +22,6 @@ interface Props {
 }
 
 const { data = tasksData as unknown as { columns: Column[] }, class: className } = Astro.props;
-const peopleList = people as { full_name?: string; photo?: string }[];
 ---
 
 <div class={`row${className ? ` ${className}` : ''}`}>
@@ -46,7 +44,7 @@ const peopleList = people as { full_name?: string; photo?: string }[];
 									)}
 
 									<div class="card-body">
-										<h3 class="card-title">{task.name}</h3>
+										<CardTitle>{task.name}</CardTitle>
 
 										{/* Liquid outputs the description unescaped; it may contain markup (e.g. <a>#tag</a>) */}
 										{task.description && <div class="text-secondary" set:html={task.description} />}
@@ -61,13 +59,12 @@ const peopleList = people as { full_name?: string; photo?: string }[];
 											<div class="row">
 												<div class="col">
 													{task.users && (
-														<div class="avatar-list avatar-list-stacked">
-															{peopleList
-																.slice(task['users-offset'] ?? 0, (task['users-offset'] ?? 0) + task.users)
-																.map((person) => (
-																	<Avatar person={person} size="xs" />
-																))}
-														</div>
+														<AvatarList
+															stacked={true}
+															size="xs"
+															offset={task['users-offset'] ?? 0}
+															limit={task.users}
+														/>
 													)}
 												</div>
 

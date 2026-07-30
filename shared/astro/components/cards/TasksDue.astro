@@ -1,6 +1,9 @@
 ---
-// Port of cards/tasks-due.html
-import Icon from '../Icon.astro';
+
+import CardActions from '../ui/CardActions.astro';
+import Icon from '../ui/Icon.astro';
+import ListGroup from '../ui/ListGroup.astro';
+import ListGroupItem from '../ui/ListGroupItem.astro';
 import crmDashboard from '@data/crm-dashboard.json';
 
 const tasks = crmDashboard.tasks_due;
@@ -12,18 +15,18 @@ const tasks = crmDashboard.tasks_due;
 			<h3 class="card-title mb-0">{tasks.title}</h3>
 			<span class="badge bg-red text-white">{tasks.badge}</span>
 		</div>
-		<div class="card-actions">
+		<CardActions>
 			<button type="button" class="btn btn-primary btn-sm">
 				<Icon name="plus" class="me-1" />
 				{tasks.button_text}
 			</button>
-		</div>
+		</CardActions>
 	</div>
 
-	<div class="list-group list-group-flush list-group-hoverable">
+	<ListGroup flush hoverable>
 		{
 			tasks.items.map((item) => (
-				<label class="list-group-item">
+				<ListGroupItem as="label">
 					<div class="row align-items-center g-2">
 						<div class="col-auto">
 							<input type="checkbox" class="form-check-input m-0" />
@@ -36,8 +39,8 @@ const tasks = crmDashboard.tasks_due;
 							<span class="small text-secondary">{item.due}</span>
 						</div>
 					</div>
-				</label>
+				</ListGroupItem>
 			))
 		}
-	</div>
+	</ListGroup>
 </div>

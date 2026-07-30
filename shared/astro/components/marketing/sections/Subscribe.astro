@@ -1,6 +1,5 @@
 ---
-// Port of marketing/sections/subscribe.html.
-import Icon from '../../Icon.astro';
+import Icon from '../../ui/Icon.astro';
 
 interface Props {
 	background?: string;
@@ -10,11 +9,9 @@ interface Props {
 const { background, class: className } = Astro.props;
 
 const sectionClass = ['section', background && `section-${background}`, className]
-	.filter(Boolean)
-	.join(' ');
 ---
 
-<section class={sectionClass}>
+<section class:list={sectionClass}>
 	<div class="container">
 		<div class="section-header mb-6">
 			<h2 class="section-title">Subscribe on our newsletter</h2>

@@ -1,44 +1,37 @@
 ---
-// Port of shared/includes/forms/form-elements-1.html.
 // Static inputs, plain selects, a TomSelect "states" multi-select, input groups
 // with dropdowns, icon/loader/separated inputs, and a help-icon input.
-import Icon from '../Icon.astro';
+import Icon from '../ui/Icon.astro';
+import FormGroup from '../ui/FormGroup.astro';
 import selects from '@data/selects.json';
 
 const states = (selects as { states: { options: Record<string, { name: string; selected?: boolean }> } }).states.options;
 ---
 
-<div class="mb-3">
-	<label class="form-label">Static</label>
+<FormGroup label="Static">
 	<div class="form-control-plaintext">Input value</div>
-</div>
+</FormGroup>
 
-<div class="mb-3">
-	<label class="form-label">Text</label>
+<FormGroup label="Text">
 	<input type="text" class="form-control" name="example-text-input" placeholder="Input placeholder">
-</div>
+</FormGroup>
 
-<div class="mb-3">
-	<label class="form-label">Password</label>
+<FormGroup label="Password">
 	<input type="text" class="form-control" name="example-password-input" placeholder="Input placeholder">
-</div>
+</FormGroup>
 
-<div class="mb-3">
-	<label class="form-label">Disabled</label>
+<FormGroup label="Disabled">
 	<input type="text" class="form-control" name="example-disabled-input" placeholder="Disabled..." value="Well, she turned me into a newt." disabled>
-</div>
-<div class="mb-3">
-	<label class="form-label">Readonly</label>
+</FormGroup>
+<FormGroup label="Readonly">
 	<input type="text" class="form-control" name="example-disabled-input" placeholder="Readonly..." value="Well, how'd you become king, then?" readonly>
-</div>
-<div class="mb-3">
-	<label class="form-label required">Required</label>
+</FormGroup>
+<FormGroup label="Required" required>
 	<input type="text" class="form-control" name="example-required-input" placeholder="Required...">
-</div>
-<div class="mb-3">
-	<label class="form-label">Textarea <span class="form-label-description">56/100</span></label>
+</FormGroup>
+<FormGroup label="Textarea" description="56/100">
 	<textarea class="form-control" name="example-textarea-input" rows="6" placeholder="Content..">Oh! Come and see the violence inherent in the system! Help, help, I'm being repressed! We shall say 'Ni' again to you, if you do not appease us. I'm not a witch. I'm not a witch. Camelot!</textarea>
-</div>
+</FormGroup>
 
 <div class="mb-3">
 	<div class="form-label">Select</div>
@@ -69,8 +62,7 @@ const states = (selects as { states: { options: Record<string, { name: string; s
 	</select>
 </div>
 
-<div class="mb-3">
-	<label class="form-label">Input group</label>
+<FormGroup label="Input group">
 	<div class="input-group mb-2">
 		<input type="text" class="form-control" placeholder="Search for…">
 		<button class="btn" type="button">Go!</button>
@@ -89,9 +81,8 @@ const states = (selects as { states: { options: Record<string, { name: string; s
 		</div>
 		<input type="text" class="form-control" aria-label="Text input with dropdown button">
 	</div>
-</div>
-<div class="mb-3">
-	<label class="form-label">Input group buttons</label>
+</FormGroup>
+<FormGroup label="Input group buttons">
 	<div class="input-group">
 		<input type="text" class="form-control">
 		<button type="button" class="btn">Action</button>
@@ -105,10 +96,9 @@ const states = (selects as { states: { options: Record<string, { name: string; s
 			</a>
 		</div>
 	</div>
-</div>
+</FormGroup>
 
-<div class="mb-3">
-	<label class="form-label">Icon input</label>
+<FormGroup label="Icon input">
 	<div class="input-icon mb-3">
 		<input type="text" value="" class="form-control" placeholder="Search…">
 		<span class="input-icon-addon">
@@ -121,10 +111,9 @@ const states = (selects as { states: { options: Record<string, { name: string; s
 		</span>
 		<input type="text" value="" class="form-control" placeholder="Username">
 	</div>
-</div>
+</FormGroup>
 
-<div class="mb-3">
-	<label class="form-label">Loader input</label>
+<FormGroup label="Loader input">
 	<div class="input-icon mb-3">
 		<input type="text" value="" class="form-control" placeholder="Loading…">
 		<span class="input-icon-addon">
@@ -137,9 +126,8 @@ const states = (selects as { states: { options: Record<string, { name: string; s
 		</span>
 		<input type="text" value="" class="form-control" placeholder="Loading…">
 	</div>
-</div>
-<div class="mb-3">
-	<label class="form-label">Separated inputs</label>
+</FormGroup>
+<FormGroup label="Separated inputs">
 	<div class="row g-2">
 		<div class="col">
 			<input type="text" class="form-control" placeholder="Search for…">
@@ -150,10 +138,9 @@ const states = (selects as { states: { options: Record<string, { name: string; s
 			</a>
 		</div>
 	</div>
-</div>
+</FormGroup>
 
-<div class="mb-3">
-	<label class="form-label">Input with help icon</label>
+<FormGroup label="Input with help icon">
 	<div class="row g-2">
 		<div class="col">
 			<input type="text" class="form-control" placeholder="Search for…">
@@ -162,7 +149,7 @@ const states = (selects as { states: { options: Record<string, { name: string; s
 			<span class="form-help" data-bs-toggle="popover" data-bs-placement="top" data-bs-content="<p>ZIP Code must be US or CDN format. You can use an extended ZIP+4 code to determine address more accurately.</p><p class='mb-0'><a href='#'>USP ZIP codes lookup tools</a></p>" data-bs-html="true">?</span>
 		</div>
 	</div>
-</div>
+</FormGroup>
 <!--
 	is:inline: TomSelect loads via a deferred page-lib <script>. A processed (module)
 	script runs in document order alongside other deferred/module scripts — since this

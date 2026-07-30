@@ -3,7 +3,6 @@ import { site } from '@shared/lib/site';
 
 export const prerender = true;
 
-// Port of preview/pages/sitemap.liquid: one entry per page, file-style URLs
 // (build.format 'file'), index pages collapse to their directory URL.
 // Entry order mirrors the Eleventy `pages` collection: top-level pages first,
 // then nested ones, each group in reverse-alphabetical order.

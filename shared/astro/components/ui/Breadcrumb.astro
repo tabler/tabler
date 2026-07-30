@@ -1,6 +1,5 @@
 ---
-// Port of ui/breadcrumb.html.
-import Icon from '../Icon.astro';
+import Icon from './Icon.astro';
 
 interface Props {
 	/** comma-separated list of pages (Liquid `pages` param) */
@@ -24,13 +23,11 @@ const classes = [
 	className,
 	separator && `breadcrumb-${separator}`,
 ]
-	.filter(Boolean)
-	.join(' ');
 ---
 
 <!-- BEGIN BREADCRUMB -->
 <nav aria-label="Breadcrumb">
-	<ol class={classes}>
+	<ol class:list={classes}>
 		{
 			items.map((page, index) =>
 				index === items.length - 1 ? (

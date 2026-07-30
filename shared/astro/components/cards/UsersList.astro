@@ -1,7 +1,10 @@
 ---
 // Equivalent of cards/users-list.html
 import Avatar from '../ui/Avatar.astro';
-import Icon from '../Icon.astro';
+import Icon from '../ui/Icon.astro';
+import ListGroup from '../ui/ListGroup.astro';
+import ListGroupItem from '../ui/ListGroupItem.astro';
+import CardTitle from '../ui/CardTitle.astro';
 import people from '@data/people.json';
 import commits from '@data/commits.json';
 
@@ -71,12 +74,12 @@ const rows = (people as Person[]).slice(offset, offset + limit).map((person, idx
 
 <div class={`card${className ? ` ${className}` : ''}`}>
 	<div class="card-header">
-		<h3 class="card-title">{title}</h3>
+		<CardTitle>{title}</CardTitle>
 	</div>
-	<div class={`list-group list-group-flush${hoverable ? ' list-group-hoverable' : ''}`}>
+	<ListGroup flush hoverable={hoverable}>
 		{
 			rows.map((row) => (
-				<div class={`list-group-item${row.checked ? ' active' : ''}`}>
+				<ListGroupItem active={row.checked}>
 					<div class="row align-items-center">
 						{checkbox ? (
 							<div class="col-auto">
@@ -105,8 +108,8 @@ const rows = (people as Person[]).slice(offset, offset + limit).map((person, idx
 							</div>
 						)}
 					</div>
-				</div>
+				</ListGroupItem>
 			))
 		}
-	</div>
+	</ListGroup>
 </div>
