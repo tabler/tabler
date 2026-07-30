@@ -1,0 +1,20 @@
+---
+// The Liquid include assigns `breakpoint` (default 'lg') but never uses it in
+// the markup, so the param is intentionally not ported.
+// Form action: Liquid `{{ page | relative }}/` → "./" (all ported pages are
+// root-level, see MIGRATION.md).
+import InputIcon from '@ui/form/InputIcon.astro';
+
+interface Props {
+	class?: string;
+	rounded?: boolean;
+}
+
+const { class: className, rounded = false } = Astro.props;
+---
+
+<div class={className}>
+	<form action="./" method="get" autocomplete="off" novalidate role="search">
+		<InputIcon prepend rounded={rounded} ariaLabel="Search in website" />
+	</form>
+</div>

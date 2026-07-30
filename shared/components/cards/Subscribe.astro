@@ -1,0 +1,48 @@
+---
+import Avatar from '@ui/Avatar.astro';
+import CardDropdown from '@ui/CardDropdown.astro';
+import people from '@data/people.json';
+
+interface Person {
+	full_name?: string;
+	company?: string;
+	photo?: string;
+	[key: string]: unknown;
+}
+
+interface Props {
+	personId?: number;
+}
+
+const { personId = 0 } = Astro.props;
+const person = (people as Person[])[personId];
+---
+
+<div class="card">
+	<div class="card-body">
+		<div class="row g-2 align-items-center">
+			<div class="col-auto">
+				<Avatar person={person} size="lg" />
+			</div>
+			<div class="col">
+				<h4 class="card-title m-0">
+					<a href="#">{person.full_name}</a>
+				</h4>
+				<div class="text-secondary">
+					Working in {person.company}
+				</div>
+				<div class="small mt-1">
+					<span class="badge bg-green"></span> Online
+				</div>
+			</div>
+			<div class="col-auto">
+				<a href="#" class="btn">
+					Subscribe
+				</a>
+			</div>
+			<div class="col-auto">
+				<CardDropdown />
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,118 @@
+---
+// Equivalent of docs/pagination.html: child-page cards or next/prev siblings.
+import DocsCard from './DocsCard.astro';
+import docs from '@data/docs.json';
+import Icon from '@ui/Icon.astro';
+import { getDocsChildren } from '@shared/lib/docs-children';
+import type { DocsChildPage } from '@shared/lib/docs-children';
+
+interface MenuLeaf {
+	title: string;
+	url: string;
+}
+
+interface MenuNode {
+	title: string;
+	url?: string;
+	children?: MenuNode[];
+}
+
+interface Props {
+	/** Page URL in the docs namespace (equivalent of page.url), e.g. "/ui/components/alert/". */
+	url: string;
+}
+
+const { url } = Astro.props;
+
+const children = getDocsChildren(url);
+
+type Pagination = {
+	prev: MenuLeaf | null;
+	next: MenuLeaf | null;
+	found: boolean;
+};
+
+function findPage(nodes: MenuNode[]): Pagination | null {
+	const index = nodes.findIndex((item) => item.url === url);
+
+	if (index !== -1) {
+		const previousNode = index > 0 ? nodes[index - 1] : null;
+		const nextNode = index < nodes.length - 1 ? nodes[index + 1] : null;
+
+		return {
+			prev: previousNode?.url ? { title: previousNode.title, url: previousNode.url } : null,
+			next: nextNode?.url ? { title: nextNode.title, url: nextNode.url } : null,
+			found: true,
+		};
+	}
+
+	for (const node of nodes) {
+		const result = node.children ? findPage(node.children) : null;
+		if (result) return result;
+	}
+
+	return null;
+}
+
+const { prev, next, found } = findPage(docs.menu as MenuNode[]) ?? {
+	prev: null,
+	next: null,
+	found: false,
+};
+---
+
+{
+	children.length > 0 && (
+		<div class="mt-6 pt-6">
+			<div class="row row-deck row-cards">
+				{children.map((child: DocsChildPage) => (
+					<DocsCard
+						href={child.url}
+						title={child.title}
+						description={child.description}
+						icon={child.icon}
+					/>
+				))}
+			</div>
+		</div>
+	)
+}
+
+{
+	children.length === 0 && found && (
+		<div class="mt-6 pt-6">
+			<ul class="pagination">
+				{prev && (
+					<li class="page-item page-prev">
+						<a class="page-link" href={prev.url}>
+							<div class="row align-items-center">
+								<div class="col-auto">
+									<Icon name="chevron-left" />
+								</div>
+								<div class="col">
+									<div class="page-item-subtitle">previous</div>
+									<div class="page-item-title">{prev.title}</div>
+								</div>
+							</div>
+						</a>
+					</li>
+				)}
+				{next && (
+					<li class="page-item page-next">
+						<a class="page-link" href={next.url}>
+							<div class="row align-items-center">
+								<div class="col">
+									<div class="page-item-subtitle">next</div>
+									<div class="page-item-title">{next.title}</div>
+								</div>
+								<div class="col-auto">
+									<Icon name="chevron-right" />
+								</div>
+							</div>
+						</a>
+					</li>
+				)}
+			</ul>
+		</div>
+	)
+}

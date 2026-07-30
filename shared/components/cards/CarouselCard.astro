@@ -1,0 +1,104 @@
+---
+// ui/carousel.html is inlined here (not a shared component in this task's
+// scope). Photos are filtered to horizontal=true, then sliced by offset/limit.
+import photos from '@data/photos.json';
+import CardTitle from '@ui/CardTitle.astro';
+
+interface Props {
+	id?: string;
+	title?: string;
+	indicators?: boolean;
+	indicatorsThumb?: boolean;
+	indicatorsThumbRatio?: boolean;
+	indicatorsDot?: boolean;
+	indicatorsVertical?: boolean;
+	controls?: boolean;
+	captions?: boolean;
+	offset?: number;
+	limit?: number;
+	fade?: boolean;
+}
+
+const {
+	id: idProp,
+	title = 'Carousel',
+	indicators,
+	indicatorsThumb,
+	indicatorsThumbRatio,
+	indicatorsDot,
+	indicatorsVertical,
+	controls,
+	captions,
+	offset = 0,
+	limit = 5,
+	fade,
+} = Astro.props;
+
+const carouselId = idProp ?? 'carousel';
+const filteredPhotos = (photos as { file: string; horizontal?: boolean }[]).filter((p) => p.horizontal);
+const slides = filteredPhotos.slice(offset, offset + limit);
+---
+
+<div class="card">
+	<div class="card-header">
+		<CardTitle>{title}</CardTitle>
+	</div>
+	<div class="card-body">
+		<div id={`carousel-${carouselId}`} class={`carousel slide${fade ? ' carousel-fade' : ''}`} data-bs-ride="carousel">
+			{
+				indicators && (
+					<div
+						class={`carousel-indicators${indicatorsVertical ? ' carousel-indicators-vertical' : ''}${
+							indicatorsDot ? ' carousel-indicators-dot' : indicatorsThumb ? ' carousel-indicators-thumb' : ''
+						}`}
+					>
+						{slides.map((photo, i) => (
+							<button
+								type="button"
+								data-bs-target={`#carousel-${carouselId}`}
+								data-bs-slide-to={`${i}`}
+								class={`${indicatorsThumbRatio ? ' ratio ratio-4x3' : ''}${i === 0 ? ' active' : ''}`}
+								style={indicatorsThumb ? `background-image: url(./static/photos/${photo.file})` : undefined}
+							/>
+						))}
+					</div>
+				)
+			}
+
+			<div class="carousel-inner">
+				{
+					slides.map((photo, i) => (
+						<div class={`carousel-item${i === 0 ? ' active' : ''}`}>
+							<img class="d-block w-100" alt="" src={`./static/photos/${photo.file}`} />
+
+							{captions && (
+								<Fragment>
+									<div class="carousel-caption-background d-none d-md-block" />
+									<div class="carousel-caption d-none d-md-block">
+										<h3>Slide label</h3>
+										<p>Nulla vitae elit libero, a pharetra augue mollis interdum.</p>
+									</div>
+								</Fragment>
+							)}
+						</div>
+					))
+				}
+			</div>
+
+			{
+				controls && (
+					<Fragment>
+						<a class="carousel-control-prev" href={`#carousel-${carouselId}`} role="button" data-bs-slide="prev">
+							<span class="carousel-control-prev-icon" aria-hidden="true" />
+							<span class="visually-hidden">Previous</span>
+						</a>
+						<a class="carousel-control-next" href={`#carousel-${carouselId}`} role="button" data-bs-slide="next">
+							<span class="carousel-control-next-icon" aria-hidden="true" />
+							<span class="visually-hidden">Next</span>
+						</a>
+					</Fragment>
+				)
+			}
+		</div>
+	</div>
+</div>
