@@ -1,5 +1,4 @@
-// Docs code-block pipeline: js-beautify + shiki (github-dark) — exactly the
-// same options as in docs/eleventy.config.mjs (markdown-it highlight hook).
+// Docs code-block pipeline: js-beautify + shiki (github-dark theme).
 import beautify from 'js-beautify'
 import { createHighlighter, type Highlighter } from 'shiki'
 

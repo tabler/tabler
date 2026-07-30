@@ -9,10 +9,8 @@ interface Props {
 
 const { title, type = 'outline' } = Astro.props;
 
-// limit is Infinity, but 20 in development.
-// The PoC mirrors the development build (see BaseLayout), so limit = 20.
-// NOTE: the limit applies to the ITERATION, before the svg[type] filter —
-// the "filled" card therefore shows only the filled icons among the first 20.
+// Dev preview limits icons to 20 (see BaseLayout).
+// The limit applies before the svg[type] filter — the "filled" card shows only filled icons among the first 20.
 const limit = 20;
 
 const entries = Object.entries(icons as Record<string, { svg?: Record<string, string> }>).slice(

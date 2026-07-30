@@ -1,10 +1,4 @@
 ---
-// "body-marketing body-gradient", plugins: marketing).
-// The `plugins: marketing` front matter is already covered by site.cssPlugins
-// (which includes 'marketing'), so no extra handling is needed here.
-// The footer (products/support/tabler columns, payment icons, socials, and the
-// copyright bar) lives inline in this layout.
-
 import Subheader from '@ui/Subheader.astro';
 import BaseLayout from './BaseLayout.astro';
 import MarketingNavbar from '@shared/components/marketing/MarketingNavbar.astro';
@@ -14,14 +8,12 @@ import { site } from '@shared/lib/site';
 
 interface Props {
 	title?: string;
-	/** page-libs from the Eleventy front matter, e.g. ['typed.js'] */
+	/** Script/CSS library keys, e.g. ['typed.js'] */
 	pageLibs?: string[];
 }
 
 const { title, pageLibs } = Astro.props;
 
-// site.base is undefined in the Eleventy build → the product links resolve to
-// an empty href (href="").
 const base = '';
 ---
 

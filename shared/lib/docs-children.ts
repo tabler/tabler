@@ -43,7 +43,7 @@ function normalizeUrl(url: string): string {
   return parts.length ? `/${parts.join('/')}/` : '/'
 }
 
-/** Direct child pages of a docs index URL (equivalent of Eleventy's collection-children). */
+/** Direct child pages of a docs index URL. */
 export function getDocsChildren(parentUrl: string): DocsChildPage[] {
   const parentParts = normalizeUrl(parentUrl).split('/').filter(Boolean)
 

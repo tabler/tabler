@@ -3,9 +3,7 @@ import { site } from '@shared/lib/site';
 
 export const prerender = true;
 
-// (build.format 'file'), index pages collapse to their directory URL.
-// Entry order mirrors the Eleventy `pages` collection: top-level pages first,
-// then nested ones, each group in reverse-alphabetical order.
+// Index pages collapse to directory URLs (build.format 'file').
 const pages = import.meta.glob('./**/*.astro');
 
 const urls = Object.keys(pages)
@@ -14,7 +12,6 @@ const urls = Object.keys(pages)
 		const depthA = a.split('/').length;
 		const depthB = b.split('/').length;
 		if (depthA !== depthB) return depthA - depthB;
-		// byte-wise, descending — matches the Eleventy `pages` collection order
 		return a < b ? 1 : -1;
 	})
 	.map((path) => {
