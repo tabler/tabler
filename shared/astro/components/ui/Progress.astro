@@ -2,9 +2,9 @@
 // Equivalent of ui/progress.html
 interface Props {
 	value?: number | string;
-	values?: string;
+	values?: (string | number)[];
 	color?: string;
-	colors?: string;
+	colors?: string[];
 	size?: string;
 	class?: string;
 	width?: string;
@@ -35,8 +35,8 @@ const percentage =
 		? `${value}`.split('%').join('')
 		: '38';
 
-const colors = (colorsProp ?? color ?? 'blue,red,green,yellow,dark').split(',');
-const valueList = values !== undefined ? values.split(',') : undefined;
+const colors = colorsProp ?? (color ? [color] : ['blue', 'red', 'green', 'yellow', 'dark']);
+const valueList = values;
 
 const classes = [
 	'progress',
