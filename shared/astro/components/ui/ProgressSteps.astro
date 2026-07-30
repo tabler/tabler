@@ -2,8 +2,8 @@
 // Equivalent of ui/progress-steps.html
 interface Props {
 	count?: number;
-	/** Comma-separated step labels; overrides `count` when provided. */
-	labels?: string;
+	/** Step labels; overrides `count` when provided. */
+	labels?: string[];
 	active?: number;
 	color?: string;
 	class?: string;
@@ -22,7 +22,7 @@ const {
 	ariaLabel,
 } = Astro.props;
 
-const labels = labelsProp ? labelsProp.split(',') : [];
+const labels = labelsProp ?? [];
 const count = labelsProp ? labels.length : countProp;
 const steps = Array.from({ length: count }, (_, i) => ({
 	index: i + 1,

@@ -7,17 +7,17 @@ interface Props {
 	id?: string;
 	/** toggle-icon — when set, the toggle gets accordion-button-toggle-plus */
 	toggleIcon?: string;
-	/** type — comma-separated list, each becomes accordion-{type} */
-	type?: string;
+	/** each entry becomes accordion-{type} */
+	type?: string[];
 	/** show-icon — renders the accordion-button-icon (link icon) */
 	showIcon?: boolean;
 }
 
-const { count = 4, id = 'default', toggleIcon, type = '', showIcon } = Astro.props;
+const { count = 4, id = 'default', toggleIcon, type = [], showIcon } = Astro.props;
 
 const resolvedToggleIcon = toggleIcon ?? 'chevron-down';
 const hasToggleIcon = toggleIcon !== undefined;
-const types = type ? type.split(',') : [];
+const types = type;
 
 const items = questions.slice(0, count);
 
