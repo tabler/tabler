@@ -7,14 +7,14 @@
 
 // @ts-ignore -- markdown-it ships no type declarations and @types/markdown-it
 // is intentionally not added (build-time helper only).
-import MarkdownIt from 'markdown-it';
+import MarkdownIt from 'markdown-it'
 
-const md = new MarkdownIt({ html: true });
+const md = new MarkdownIt({ html: true })
 
 // Eleventy disables indented code blocks by default (11ty/eleventy#2438).
-md.disable('code');
+md.disable('code')
 
 /** Render a markdown string to HTML exactly like Eleventy's `renderContent: "md"`. */
 export function renderMarkdown(src: string): string {
-	return md.render(src);
+  return md.render(src)
 }

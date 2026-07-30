@@ -24,7 +24,12 @@ const getSelector = (element: HTMLElement): string | null => {
     selector = hrefAttribute && hrefAttribute !== '#' ? hrefAttribute.trim() : null
   }
 
-  return selector ? selector.split(',').map(sel => parseSelector(sel)).join(',') : null
+  return selector
+    ? selector
+        .split(',')
+        .map((sel) => parseSelector(sel))
+        .join(',')
+    : null
 }
 
 const SelectorEngine = {
@@ -37,7 +42,7 @@ const SelectorEngine = {
   },
 
   children(element: HTMLElement, selector: string): HTMLElement[] {
-    return Array.from(element.children).filter(child => child.matches(selector)) as HTMLElement[]
+    return Array.from(element.children).filter((child) => child.matches(selector)) as HTMLElement[]
   },
 
   parents(element: HTMLElement, selector: string): HTMLElement[] {
@@ -81,18 +86,9 @@ const SelectorEngine = {
   },
 
   focusableChildren(element: HTMLElement): HTMLElement[] {
-    const focusables = [
-      'a',
-      'button',
-      'input',
-      'textarea',
-      'select',
-      'details',
-      '[tabindex]',
-      '[contenteditable="true"]'
-    ].map(selector => `${selector}:not([tabindex^="-"])`).join(',')
+    const focusables = ['a', 'button', 'input', 'textarea', 'select', 'details', '[tabindex]', '[contenteditable="true"]'].map((selector) => `${selector}:not([tabindex^="-"])`).join(',')
 
-    return this.find(focusables, element).filter(el => !isDisabled(el) && isVisible(el))
+    return this.find(focusables, element).filter((el) => !isDisabled(el) && isVisible(el))
   },
 
   getSelectorFromElement(element: HTMLElement): string | null {
@@ -115,7 +111,7 @@ const SelectorEngine = {
     const selector = getSelector(element)
 
     return selector ? SelectorEngine.find(selector) : []
-  }
+  },
 }
 
 export default SelectorEngine

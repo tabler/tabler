@@ -1,6 +1,6 @@
-@use "sass:list";
-@use "sass:map";
-@use "../../settings" as *;
+@use 'sass:list';
+@use 'sass:map';
+@use '../../settings' as *;
 
 // Breakpoint viewport sizes and media queries.
 //
@@ -35,7 +35,7 @@
 
 // Returns a blank string if smallest breakpoint, otherwise returns the name with a dash in front.
 @function breakpoint-infix($name, $breakpoints: $grid-breakpoints) {
-  @return if(sass(breakpoint-min($name, $breakpoints) == null): ""; else: "-#{$name}");
+  @return if(sass(breakpoint-min($name, $breakpoints) == null): ''; else: '-#{$name}');
 }
 
 // Media of at least the minimum breakpoint width. No query for the smallest breakpoint.
@@ -84,9 +84,9 @@
 
 // Media between the breakpoint's minimum and maximum widths.
 @mixin media-breakpoint-only($name, $breakpoints: $grid-breakpoints) {
-  $min:  breakpoint-min($name, $breakpoints);
+  $min: breakpoint-min($name, $breakpoints);
   $next: breakpoint-next($name, $breakpoints);
-  $max:  breakpoint-max($next, $breakpoints);
+  $max: breakpoint-max($next, $breakpoints);
 
   @if $min != null and $max != null {
     @media (min-width: $min) and (max-width: $max) {

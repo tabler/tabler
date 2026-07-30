@@ -6,7 +6,7 @@ vi.mock('../../../src/bootstrap/util/index', async (importOriginal) => {
   const actual = await importOriginal<typeof import('../../../src/bootstrap/util/index')>()
   return {
     ...actual,
-    isVisible: () => true
+    isVisible: () => true,
   }
 })
 
@@ -72,7 +72,7 @@ describe('SelectorEngine', () => {
       const result = SelectorEngine.children(parent, 'span')
 
       expect(result).toHaveLength(2)
-      result.forEach(el => expect(el.tagName).toBe('SPAN'))
+      result.forEach((el) => expect(el.tagName).toBe('SPAN'))
     })
 
     it('should return an empty array when no children match', () => {
@@ -167,7 +167,7 @@ describe('SelectorEngine', () => {
       const result = SelectorEngine.focusableChildren(parent)
 
       expect(result.length).toBeGreaterThanOrEqual(1)
-      const tags = result.map(el => el.tagName)
+      const tags = result.map((el) => el.tagName)
       expect(tags).toContain('BUTTON')
       expect(tags).toContain('INPUT')
       expect(tags).not.toContain('SPAN')
@@ -178,7 +178,7 @@ describe('SelectorEngine', () => {
       const parent = fixtureEl.querySelector('div')!
 
       const result = SelectorEngine.focusableChildren(parent)
-      const texts = result.map(el => el.textContent)
+      const texts = result.map((el) => el.textContent)
 
       expect(texts).toContain('Yes')
       expect(texts).not.toContain('No')
@@ -189,7 +189,7 @@ describe('SelectorEngine', () => {
       const parent = fixtureEl.querySelector('div')!
 
       const result = SelectorEngine.focusableChildren(parent)
-      const texts = result.map(el => el.textContent)
+      const texts = result.map((el) => el.textContent)
 
       expect(texts).toContain('Visible')
       expect(texts).not.toContain('Hidden')

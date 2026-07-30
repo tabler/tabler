@@ -10,16 +10,7 @@ import BaseComponent from './base-component'
 import EventHandler from './dom/event-handler'
 import Manipulator from './dom/manipulator'
 import SelectorEngine from './dom/selector-engine'
-import {
-  execute,
-  getElement,
-  getNextActiveElement,
-  isDisabled,
-  isElement,
-  isRTL,
-  isVisible,
-  noop
-} from './util/index'
+import { execute, getElement, getNextActiveElement, isDisabled, isElement, isRTL, isVisible, noop } from './util/index'
 import type { ComponentConfig, ComponentConfigType } from './types'
 
 const NAME = 'dropdown'
@@ -70,7 +61,7 @@ const Default: ComponentConfig = {
   display: 'dynamic',
   offset: [0, 2],
   popperConfig: null,
-  reference: 'toggle'
+  reference: 'toggle',
 }
 
 const DefaultType: ComponentConfigType = {
@@ -79,7 +70,7 @@ const DefaultType: ComponentConfigType = {
   display: 'string',
   offset: '(array|string|function)',
   popperConfig: '(null|object|function)',
-  reference: '(string|element|object)'
+  reference: '(string|element|object)',
 }
 
 class Dropdown extends BaseComponent {
@@ -93,9 +84,7 @@ class Dropdown extends BaseComponent {
 
     this._popper = null
     this._parent = this._element.parentNode as HTMLElement
-    this._menu = SelectorEngine.next(this._element, SELECTOR_MENU)[0] ||
-      SelectorEngine.prev(this._element, SELECTOR_MENU)[0] ||
-      SelectorEngine.findOne(SELECTOR_MENU, this._parent)!
+    this._menu = SelectorEngine.next(this._element, SELECTOR_MENU)[0] || SelectorEngine.prev(this._element, SELECTOR_MENU)[0] || SelectorEngine.findOne(SELECTOR_MENU, this._parent)!
     this._inNavbar = this._detectNavbar()
   }
 
@@ -121,7 +110,7 @@ class Dropdown extends BaseComponent {
     }
 
     const relatedTarget = {
-      relatedTarget: this._element
+      relatedTarget: this._element,
     }
 
     const showEvent = EventHandler.trigger(this._element, EVENT_SHOW, relatedTarget)
@@ -152,7 +141,7 @@ class Dropdown extends BaseComponent {
     }
 
     const relatedTarget = {
-      relatedTarget: this._element
+      relatedTarget: this._element,
     }
 
     this._completeHide(relatedTarget)
@@ -199,9 +188,7 @@ class Dropdown extends BaseComponent {
   _getConfig(config: Partial<ComponentConfig>): ComponentConfig {
     config = super._getConfig(config)
 
-    if (typeof config.reference === 'object' && !isElement(config.reference) &&
-      typeof (config.reference as any).getBoundingClientRect !== 'function'
-    ) {
+    if (typeof config.reference === 'object' && !isElement(config.reference) && typeof (config.reference as any).getBoundingClientRect !== 'function') {
       throw new TypeError(`${NAME.toUpperCase()}: Option "reference" provided type "object" without a required "getBoundingClientRect" method.`)
     }
 
@@ -210,7 +197,7 @@ class Dropdown extends BaseComponent {
 
   _createPopper(): void {
     if (typeof Popper === 'undefined') {
-      throw new TypeError('Bootstrap\'s dropdowns require Popper (https://popper.js.org/docs/v2/)')
+      throw new TypeError("Bootstrap's dropdowns require Popper (https://popper.js.org/docs/v2/)")
     }
 
     let referenceElement: HTMLElement | Popper.VirtualElement = this._element
@@ -267,7 +254,7 @@ class Dropdown extends BaseComponent {
     const { offset } = this._config
 
     if (typeof offset === 'string') {
-      return offset.split(',').map(value => Number.parseInt(value, 10))
+      return offset.split(',').map((value) => Number.parseInt(value, 10))
     }
 
     if (typeof offset === 'function') {
@@ -280,37 +267,41 @@ class Dropdown extends BaseComponent {
   _getPopperConfig(): Partial<Popper.Options> {
     const defaultBsPopperConfig: Partial<Popper.Options> = {
       placement: this._getPlacement() as Popper.Placement,
-      modifiers: [{
-        name: 'preventOverflow',
-        options: {
-          boundary: this._config.boundary
-        }
-      },
-      {
-        name: 'offset',
-        options: {
-          offset: this._getOffset()
-        }
-      }]
+      modifiers: [
+        {
+          name: 'preventOverflow',
+          options: {
+            boundary: this._config.boundary,
+          },
+        },
+        {
+          name: 'offset',
+          options: {
+            offset: this._getOffset(),
+          },
+        },
+      ],
     }
 
     if (this._inNavbar || this._config.display === 'static') {
       Manipulator.setDataAttribute(this._menu, 'popper', 'static')
-      defaultBsPopperConfig.modifiers = [{
-        name: 'applyStyles',
-        enabled: false
-      }]
+      defaultBsPopperConfig.modifiers = [
+        {
+          name: 'applyStyles',
+          enabled: false,
+        },
+      ]
     }
 
     const popperConfig = execute(this._config.popperConfig, [undefined, defaultBsPopperConfig])
     return {
       ...defaultBsPopperConfig,
-      ...(typeof popperConfig === 'object' && popperConfig !== null ? popperConfig : {})
+      ...(typeof popperConfig === 'object' && popperConfig !== null ? popperConfig : {}),
     }
   }
 
   _selectMenuItem({ key, target }: { key: string; target: HTMLElement }): void {
-    const items = SelectorEngine.find(SELECTOR_VISIBLE_ITEMS, this._menu).filter(element => isVisible(element))
+    const items = SelectorEngine.find(SELECTOR_VISIBLE_ITEMS, this._menu).filter((element) => isVisible(element))
 
     if (!items.length) {
       return
@@ -334,11 +325,7 @@ class Dropdown extends BaseComponent {
 
       const composedPath = event.composedPath()
       const isMenuTarget = composedPath.includes(context._menu)
-      if (
-        composedPath.includes(context._element) ||
-        (context._config.autoClose === 'inside' && !isMenuTarget) ||
-        (context._config.autoClose === 'outside' && isMenuTarget)
-      ) {
+      if (composedPath.includes(context._element) || (context._config.autoClose === 'inside' && !isMenuTarget) || (context._config.autoClose === 'outside' && isMenuTarget)) {
         continue
       }
 
@@ -371,11 +358,7 @@ class Dropdown extends BaseComponent {
 
     event.preventDefault()
 
-    const getToggleButton = this.matches(SELECTOR_DATA_TOGGLE) ?
-      this :
-      (SelectorEngine.prev(this, SELECTOR_DATA_TOGGLE)[0] ||
-        SelectorEngine.next(this, SELECTOR_DATA_TOGGLE)[0] ||
-        SelectorEngine.findOne(SELECTOR_DATA_TOGGLE, (event as any).delegateTarget.parentNode))
+    const getToggleButton = this.matches(SELECTOR_DATA_TOGGLE) ? this : SelectorEngine.prev(this, SELECTOR_DATA_TOGGLE)[0] || SelectorEngine.next(this, SELECTOR_DATA_TOGGLE)[0] || SelectorEngine.findOne(SELECTOR_DATA_TOGGLE, (event as any).delegateTarget.parentNode)
 
     const instance = Dropdown.getOrCreateInstance(getToggleButton!) as Dropdown
 

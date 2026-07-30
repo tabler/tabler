@@ -44,7 +44,7 @@ const Data = {
     if (instanceMap.size === 0) {
       elementMap.delete(element)
     }
-  }
+  },
 }
 
 export default Data

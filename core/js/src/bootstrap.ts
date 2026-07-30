@@ -38,5 +38,5 @@ export const bootstrap = {
   ScrollSpy,
   Tab,
   Toast,
-  Tooltip
+  Tooltip,
 }

@@ -9,13 +9,7 @@ import BaseComponent from './base-component'
 import EventHandler from './dom/event-handler'
 import Manipulator from './dom/manipulator'
 import SelectorEngine from './dom/selector-engine'
-import {
-  getNextActiveElement,
-  isRTL,
-  isVisible,
-  reflow,
-  triggerTransitionEnd
-} from './util/index'
+import { getNextActiveElement, isRTL, isVisible, reflow, triggerTransitionEnd } from './util/index'
 import Swipe from './util/swipe'
 import type { ComponentConfig, ComponentConfigType } from './types'
 
@@ -60,7 +54,7 @@ const SELECTOR_DATA_RIDE = '[data-bs-ride="carousel"], [data-tblr-ride="carousel
 
 const KEY_TO_DIRECTION: Record<string, string> = {
   [ARROW_LEFT_KEY]: DIRECTION_RIGHT,
-  [ARROW_RIGHT_KEY]: DIRECTION_LEFT
+  [ARROW_RIGHT_KEY]: DIRECTION_LEFT,
 }
 
 const Default: ComponentConfig = {
@@ -69,7 +63,7 @@ const Default: ComponentConfig = {
   pause: 'hover',
   ride: false,
   touch: true,
-  wrap: true
+  wrap: true,
 }
 
 const DefaultType: ComponentConfigType = {
@@ -78,7 +72,7 @@ const DefaultType: ComponentConfigType = {
   pause: '(string|boolean)',
   ride: '(boolean|string)',
   touch: 'boolean',
-  wrap: 'boolean'
+  wrap: 'boolean',
 }
 
 class Carousel extends BaseComponent {
@@ -230,7 +224,7 @@ class Carousel extends BaseComponent {
     const swipeConfig = {
       leftCallback: () => this._slide(this._directionToOrder(DIRECTION_LEFT)),
       rightCallback: () => this._slide(this._directionToOrder(DIRECTION_RIGHT)),
-      endCallback: endCallBack
+      endCallback: endCallBack,
     }
 
     this._swipeHelper = new Swipe(this._element, swipeConfig)
@@ -289,7 +283,7 @@ class Carousel extends BaseComponent {
 
     const activeElement = this._getActive()
     const isNext = order === ORDER_NEXT
-    const nextElement = element || getNextActiveElement(this._getItems(), activeElement!, isNext, this._config.wrap as boolean) as HTMLElement
+    const nextElement = element || (getNextActiveElement(this._getItems(), activeElement!, isNext, this._config.wrap as boolean) as HTMLElement)
 
     if (nextElement === activeElement) {
       return
@@ -302,7 +296,7 @@ class Carousel extends BaseComponent {
         relatedTarget: nextElement,
         direction: this._orderToDirection(order),
         from: this._getItemIndex(activeElement!),
-        to: nextElementIndex
+        to: nextElementIndex,
       })
     }
 
