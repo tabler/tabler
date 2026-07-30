@@ -1,50 +1,47 @@
 ---
-// The HugeRTE init <script> is captured via {% capture script %} then
-// {% capture_script %} in Liquid, so it is registered with addPageScript
-// synchronously here.
-import { addPageScript } from '@shared/lib/page-scripts';
-import InlineScript from '@shared/components/InlineScript.astro';
-
+// Port of shared/includes/ui/wysiwyg.html.
+// The HugeRTE init <script> renders directly here (no more page-scripts registry).
 interface Props {
 	id?: string;
 }
 
 const { id = 'mytextarea' } = Astro.props;
-
-const script = `<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    let options = {
-      selector: '#hugerte-${id}',
-      height: 300,
-      menubar: false,
-      statusbar: false,
-      plugins: [
-        'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview', 'anchor',
-        'searchreplace', 'visualblocks', 'code', 'fullscreen',
-        'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount'
-      ],
-      toolbar: 'undo redo | formatselect | ' +
-        'bold italic backcolor | alignleft aligncenter ' +
-        'alignright alignjustify | bullist numlist outdent indent | ' +
-        'removeformat',
-      content_style: 'body { font-family: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }'
-    }
-
-    // check current theme is light or dark
-    const theme = document.documentElement.getAttribute('data-bs-theme');
-    if (theme === 'dark') {
-      options.skin = 'oxide-dark';
-      options.content_css = 'dark';
-    }
-
-    hugeRTE.init(options);
-  })
-</script>`;
-
-addPageScript(script);
+const selector = `#hugerte-${id}`;
 ---
 
 <form method="post">
 	<textarea id={`hugerte-${id}`}>Hello, <b>Tabler</b>!</textarea>
 </form>
-<InlineScript code={script} />
+<script define:vars={{ selector }}>
+	function initWysiwyg() {
+		const options = {
+			selector,
+			height: 300,
+			menubar: false,
+			statusbar: false,
+			plugins: [
+				'advlist', 'autolink', 'lists', 'link', 'image', 'charmap', 'preview', 'anchor',
+				'searchreplace', 'visualblocks', 'code', 'fullscreen',
+				'insertdatetime', 'media', 'table', 'code', 'help', 'wordcount',
+			],
+			toolbar:
+				'undo redo | formatselect | ' +
+				'bold italic backcolor | alignleft aligncenter ' +
+				'alignright alignjustify | bullist numlist outdent indent | ' +
+				'removeformat',
+			content_style:
+				'body { font-family: -apple-system, BlinkMacSystemFont, San Francisco, Segoe UI, Roboto, Helvetica Neue, sans-serif; font-size: 14px; -webkit-font-smoothing: antialiased; }',
+		};
+
+		// check current theme is light or dark
+		const theme = document.documentElement.getAttribute('data-bs-theme');
+		if (theme === 'dark') {
+			options.skin = 'oxide-dark';
+			options.content_css = 'dark';
+		}
+
+		hugeRTE.init(options);
+	}
+
+	document.readyState !== 'loading' ? initWysiwyg() : document.addEventListener('DOMContentLoaded', initWysiwyg, { once: true });
+</script>

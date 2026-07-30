@@ -1,11 +1,9 @@
 ---
-// The Mapbox GL init <script> is captured via {% capture_script %} in Liquid, so it
-// is registered with addPageScript synchronously here. We mirror the development
-// build, which wraps the instance in window.tabler_map.
+// Port of shared/includes/ui/map.html.
+// The Mapbox GL init <script> renders directly here (no more page-scripts registry),
+// wrapping the instance in window.tabler_map.
 // The access token comes from site data (site.mapboxKey).
 // Renders nothing unless maps[mapId] exists (Liquid: {% if data %}).
-import { addPageScript } from '@shared/lib/page-scripts';
-import InlineScript from '@shared/components/InlineScript.astro';
 import maps from '@data/maps.json';
 import site from '@data/site.json';
 
@@ -29,38 +27,11 @@ type MapData = {
 
 const data = (maps as Record<string, MapData>)[mapId];
 
-let script = '';
-if (data) {
-	const style = data.style ?? 'streets-v11';
-	const zoom = data.zoom ?? 13;
-	const centerJs = data.center
-		? `center: [${data.center[1]}, ${data.center[0]}],`
-		: `center: [13.404900, 52.518827],`;
-	const markersJs = (data.markers ?? [])
-		.map(
-			(marker) =>
-				`\n\t\t\tnew mapboxgl.Marker({ color: "var(--tblr-primary)" }).setLngLat([${marker.center[1]}, ${marker.center[0]}]).addTo(map);\n`,
-		)
-		.join('');
-
-	script = `<script>
-		window.tabler_map = window.tabler_map || {};
-
-		document.addEventListener("DOMContentLoaded", function() {
-			mapboxgl.accessToken = '${site.mapboxKey}';
-			var map = new mapboxgl.Map({
-				container: 'map-${mapId}',
-				style: 'mapbox://styles/mapbox/${style}',
-				zoom: ${zoom},
-				${centerJs}
-			});
-${markersJs}
-			window.tabler_map["map-${mapId}"] = map;
-		});
-	</script>`;
-
-	addPageScript(script);
-}
+const mapContainerId = `map-${mapId}`;
+const style = data ? (data.style ?? 'streets-v11') : undefined;
+const zoom = data?.zoom ?? 13;
+const center = data?.center ? [data.center[1], data.center[0]] : [13.4049, 52.518827];
+const markers = (data?.markers ?? []).map((marker) => [marker.center[1], marker.center[0]]);
 
 const ratioClass = data?.ratio ?? ratio ?? '16x9';
 ---
@@ -69,9 +40,33 @@ const ratioClass = data?.ratio ?? ratio ?? '16x9';
 	data && (
 		<div class={`ratio ratio-${ratioClass}`}>
 			<div>
-				<div id={`map-${mapId}`} class={`w-100 h-100${data.card ? ' rounded' : ''}`} />
+				<div id={mapContainerId} class={`w-100 h-100${data.card ? ' rounded' : ''}`} />
 			</div>
 		</div>
 	)
 }
-{data && <InlineScript code={script} />}
+{
+	data && (
+		<script define:vars={{ mapboxKey: site.mapboxKey, mapContainerId, style, zoom, center, markers }}>
+			window.tabler_map ??= {};
+
+			function initMap() {
+				mapboxgl.accessToken = mapboxKey;
+				const map = new mapboxgl.Map({
+					container: mapContainerId,
+					style: `mapbox://styles/mapbox/${style}`,
+					zoom,
+					center,
+				});
+
+				markers.forEach((coords) => {
+					new mapboxgl.Marker({ color: 'var(--tblr-primary)' }).setLngLat(coords).addTo(map);
+				});
+
+				window.tabler_map[mapContainerId] = map;
+			}
+
+			document.readyState !== 'loading' ? initMap() : document.addEventListener('DOMContentLoaded', initMap, { once: true });
+		</script>
+	)
+}

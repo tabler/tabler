@@ -1,8 +1,6 @@
 ---
 import charts from '@data/charts.json';
-import { addPageScript } from '@shared/lib/page-scripts';
-import { chartSnippet, type ChartData } from '@shared/lib/chart-script';
-import InlineScript from '@shared/components/InlineScript.astro';
+import { chartStyle, chartConfig, type ChartData } from '@shared/lib/chart-script';
 
 interface Props {
 	chartId: string;
@@ -32,17 +30,36 @@ if (data?.extend) {
 	data = { ...chartsData[data.extend], ...chartsData[chartId] };
 }
 
-const script = data ? chartSnippet({ id, chartId, data, height }) : '';
-if (data) {
-	addPageScript(script);
-}
+// The :root custom-property block stays a plain string rendered via set:html — it's
+// inert CSS text (no injection surface), not executable code.
+const style = data ? chartStyle({ id, data }) : '';
+const { config, xFormatterExpr } = data ? chartConfig({ id, data, height }) : { config: undefined, xFormatterExpr: undefined };
+const chartKey = `chart-${chartId}`;
+const elementId = `chart-${id}`;
 ---
 
 {
 	data && (
 		<Fragment>
-			<div id={`chart-${id}`} class:list={['position-relative', className]} />
-			<InlineScript code={script} />
+			<div id={elementId} class:list={['position-relative', className]} />
+			<Fragment set:html={style} />
+			<script define:vars={{ chartKey, elementId, config, xFormatterExpr }}>
+				window.tabler_chart ??= {};
+
+				function initChart() {
+					// x-formatter is a raw JS expression from charts.json (e.g. `val + "K"`) — the
+					// only piece of this config that can't be plain data. Reconstructed here
+					// rather than baked into `config` by chartConfig(), which returns it separately.
+					if (xFormatterExpr && config.xaxis?.labels) {
+						config.xaxis.labels.formatter = new Function('val', `return (${xFormatterExpr})`);
+					}
+
+					window.ApexCharts &&
+						(window.tabler_chart[chartKey] = new ApexCharts(document.getElementById(elementId), config)).render();
+				}
+
+				document.readyState !== 'loading' ? initChart() : document.addEventListener('DOMContentLoaded', initChart, { once: true });
+			</script>
 		</Fragment>
 	)
 }

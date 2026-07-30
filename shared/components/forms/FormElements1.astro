@@ -1,49 +1,13 @@
 ---
 // Static inputs, plain selects, a TomSelect "states" multi-select, input groups
 // with dropdowns, icon/loader/separated inputs, and a help-icon input.
-// Registers the TomSelect init for #select-states via addPageScript (synchronous,
-// before any await) — mirrors the include's {% capture_script %}. This is the
-// FIRST page script, matching the reference order (select-states precedes the
-// FormElements6 scripts).
+// TomSelect init for #select-states — FIRST page script, matching the reference
+// order (select-states precedes the FormElements6 scripts).
 import Icon from '@ui/Icon.astro';
 import FormGroup from '@ui/FormGroup.astro';
 import selects from '@data/selects.json';
-import { addPageScript } from '@shared/lib/page-scripts';
-import InlineScript from '@shared/components/InlineScript.astro';
 
 const states = (selects as { states: { options: Record<string, { name: string; selected?: boolean }> } }).states.options;
-
-const selectStatesScript = `<script>
-	document.addEventListener("DOMContentLoaded", function () {
-		window.tabler_select = window.tabler_select || {};
-
-		var el;
-		window.TomSelect && (window.tabler_select["select-states"] = new TomSelect(el = document.getElementById('select-states'), {
-			copyClassesToDropdown: false,
-			dropdownParent: 'body',
-
-			controlInput: '<input>',
-
-			render:{
-				item: function(data,escape) {
-					if( data.customProperties ){
-						return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
-					}
-					return '<div>' + escape(data.text) + '</div>';
-				},
-				option: function(data,escape){
-					if( data.customProperties ){
-						return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
-					}
-					return '<div>' + escape(data.text) + '</div>';
-				},
-			},
-		}));
-
-	});
-</script>`;
-
-addPageScript(selectStatesScript);
 ---
 
 <FormGroup label="Static">
@@ -188,4 +152,36 @@ addPageScript(selectStatesScript);
 		</div>
 	</div>
 </FormGroup>
-<InlineScript code={selectStatesScript} />
+<!--
+	is:inline: TomSelect loads via a deferred page-lib <script>. A processed (module)
+	script runs in document order alongside other deferred/module scripts — since this
+	tag sits before the library's <script defer>, it would run first and find
+	window.TomSelect undefined. is:inline keeps this a classic script that runs
+	synchronously at parse time, so the readyState/DOMContentLoaded guard below
+	actually delays until after the library has loaded.
+-->
+<script is:inline>
+	function initSelectStates() {
+		window.tabler_select ??= {};
+
+		const renderOption = (data, escape) => {
+			if (data.customProperties) {
+				return `<div><span class="dropdown-item-indicator">${data.customProperties}</span>${escape(data.text)}</div>`;
+			}
+			return `<div>${escape(data.text)}</div>`;
+		};
+
+		window.TomSelect &&
+			(window.tabler_select['select-states'] = new TomSelect(document.getElementById('select-states'), {
+				copyClassesToDropdown: false,
+				dropdownParent: 'body',
+				controlInput: '<input>',
+				render: {
+					item: renderOption,
+					option: renderOption,
+				},
+			}));
+	}
+
+	document.readyState !== 'loading' ? initSelectStates() : document.addEventListener('DOMContentLoaded', initSelectStates, { once: true });
+</script>

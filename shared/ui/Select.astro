@@ -1,15 +1,9 @@
 ---
 // Renders a <select id="select-{id}"> populated from @data/selects.json (+ people)
-// and registers a TomSelect init <script> via addPageScript (the include's
-// {% capture_script %}). Registration is synchronous — see src/lib/page-scripts.ts.
-// The reference build is `environment == 'development'`, so the init assigns into
-// window.tabler_select[...]. Note: tom-select is NOT in this page's libs, but the
-// capture_script is still emitted (mirrors Liquid).
+// and its TomSelect init <script>, rendered directly here (no more page-scripts registry).
 // TODO: optgroup / flag / label indicator branches (unused on the modals page).
 import selects from '@data/selects.json';
 import people from '@data/people.json';
-import { addPageScript } from '@shared/lib/page-scripts';
-import InlineScript from '@shared/components/InlineScript.astro';
 import { firstLetters } from '@shared/lib/string-format';
 
 interface Props {
@@ -23,7 +17,6 @@ interface Props {
 	multiple?: boolean;
 	values?: string[];
 	showSearch?: boolean;
-	showScripts?: boolean;
 }
 
 const {
@@ -37,7 +30,6 @@ const {
 	multiple,
 	values,
 	showSearch,
-	showScripts,
 } = Astro.props;
 
 const id = idProp ?? keyProp;
@@ -51,6 +43,8 @@ const selectClass = [
 ]
 
 const isMultiple = Boolean(multiple || data.multiple);
+
+const firstLetters = (s: string) => (s || '').split(' ').map((w) => w.charAt(0)).join('');
 
 interface Person {
 	id: string;
@@ -93,41 +87,7 @@ if (values) {
 	});
 }
 
-const script = id
-	? `<script>
-	document.addEventListener("DOMContentLoaded", function () {
-		window.tabler_select = window.tabler_select || {};
-
-		var el;
-		window.TomSelect && (window.tabler_select["select-${id}"] = new TomSelect(el = document.getElementById('select-${id}'), {
-			copyClassesToDropdown: false,
-			dropdownParent: 'body',
-
-			${showSearch ? '' : "controlInput: '<input>',"}
-
-			render:{
-				item: function(data,escape) {
-					if( data.customProperties ){
-						return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
-					}
-					return '<div>' + escape(data.text) + '</div>';
-				},
-				option: function(data,escape){
-					if( data.customProperties ){
-						return '<div><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
-					}
-					return '<div>' + escape(data.text) + '</div>';
-				},
-			},
-		}));
-
-	});
-</script>`
-	: '';
-
-if (id && script && !showScripts) {
-	addPageScript(script);
-}
+const selectId = id ? `select-${id}` : undefined;
 ---
 
 {
@@ -162,5 +122,32 @@ if (id && script && !showScripts) {
 		</select>
 	)
 }
-{showScripts && id && <Fragment set:html={script} />}
-{!showScripts && id && script && <InlineScript code={script} />}
+{
+	id && (
+		<script define:vars={{ selectId, showSearch }}>
+			function initSelect() {
+				window.tabler_select ??= {};
+
+				const renderOption = (data, escape) => {
+					if (data.customProperties) {
+						return `<div><span class="dropdown-item-indicator">${data.customProperties}</span>${escape(data.text)}</div>`;
+					}
+					return `<div>${escape(data.text)}</div>`;
+				};
+
+				window.TomSelect &&
+					(window.tabler_select[selectId] = new TomSelect(document.getElementById(selectId), {
+						copyClassesToDropdown: false,
+						dropdownParent: 'body',
+						...(showSearch ? {} : { controlInput: '<input>' }),
+						render: {
+							item: renderOption,
+							option: renderOption,
+						},
+					}));
+			}
+
+			document.readyState !== 'loading' ? initSelect() : document.addEventListener('DOMContentLoaded', initSelect, { once: true });
+		</script>
+	)
+}

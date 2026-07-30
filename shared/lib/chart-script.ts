@@ -1,7 +1,8 @@
-// The config is built as a plain object (field order mirrors the Liquid template)
-// and serialized to formatted JS at the end. The generated code is JS-token
-// equivalent (not byte-identical) to the Eleventy output — the parity comparator
-// normalizes script content at the token level (quotes, trailing commas, spacing).
+// Port of ui/chart.html (Liquid) — generator of the ApexCharts <style> block and
+// config object. chartStyle() returns plain CSS text (rendered via set:html — inert,
+// not executable, so there's no injection surface to harden). chartConfig() returns a
+// real, JSON-serializable config object, rendered by Chart.astro via
+// <script define:vars> — no string-built script here at all.
 
 type Serie = {
   'name'?: string
@@ -69,46 +70,6 @@ export type ChartData = {
 
 const escapeHtml = (value: string) => value.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
 
-/** Verbatim JS code embedded in the config (e.g. formatter functions). */
-class RawJs {
-  readonly code: string
-  constructor(code: string) {
-    this.code = code
-  }
-}
-
-const raw = (code: string) => new RawJs(code)
-
-/**
- * Serialize a config object to formatted JS: unquoted keys, tab indentation,
- * `undefined` entries omitted, small objects and primitive arrays kept inline.
- */
-function formatJs(value: unknown, indent: number): string {
-  if (value instanceof RawJs) return value.code
-  if (typeof value === 'string') return JSON.stringify(value)
-  if (typeof value === 'number' || typeof value === 'boolean') return String(value)
-  const tab = '\t'.repeat(indent)
-  const isLeaf = (v: unknown) => typeof v !== 'object' || v === null || v instanceof RawJs
-  if (Array.isArray(value)) {
-    if (value.length === 0) return '[]'
-    const items = value.map((item) => formatJs(item, indent + 1))
-    if (value.every(isLeaf)) {
-      return `[${items.join(', ')}]`
-    }
-    return `[\n${items.map((item) => `${tab}\t${item}`).join(',\n')}\n${tab}]`
-  }
-  const entries = Object.entries(value as Record<string, unknown>).filter(([, v]) => v !== undefined)
-  if (entries.length === 0) return '{}'
-  // a `//N` key suffix emits a duplicate key (mirrors Liquid emitting e.g. two
-  // `tooltip:` entries where the later one shadows the earlier — last wins in JS)
-  const parts = entries.map(([key, v]) => `${key.replace(/\/\/\d+$/, '')}: ${formatJs(v, indent + 1)}`)
-  const inline = `{ ${parts.join(', ')} }`
-  // inline only "flat" objects (primitives, raw code, primitive arrays) that fit on one line
-  const flat = entries.every(([, v]) => isLeaf(v) || (Array.isArray(v) && v.every(isLeaf)))
-  if (flat && !inline.includes('\n') && inline.length <= 100) return inline
-  return `{\n${parts.map((part) => `${tab}\t${part}`).join(',\n')}\n${tab}}`
-}
-
 /** Equivalent of the datetime loop: consecutive days from start-date (YYYY-MM-DD). */
 function datetimeLabels(startDate: string, count: number): string[] {
   const start = new Date(`${startDate}T00:00:00Z`)
@@ -118,13 +79,12 @@ function datetimeLabels(startDate: string, count: number): string[] {
   })
 }
 
-export function chartSnippet(opts: { id: string; chartId: string; data: ChartData; height: number }): string {
-  const { id, chartId, data, height } = opts
+/** The :root custom-property block (chart series colors, area fill gradient). */
+export function chartStyle(opts: { id: string; data: ChartData }): string {
+  const { id, data } = opts
   const type = data.type ?? 'bar'
   const series = data.series ?? []
-  const isRound = type === 'pie' || type === 'donut' || type === 'radialBar'
 
-  // --- <style> ---
   let css = ''
   for (const [i, serie] of series.entries()) {
     const color = serie.color ?? data.color ?? 'primary'
@@ -135,9 +95,25 @@ export function chartSnippet(opts: { id: string; chartId: string; data: ChartDat
     css += `    --chart-${id}-fill-0: color-mix(in srgb, transparent, var(--tblr-primary) 16%);\n`
     css += `    --chart-${id}-fill-1: color-mix(in srgb, transparent, var(--tblr-primary) 16%);\n`
   }
-  const style = `<style>\n  :root {\n${css}  }\n</style>`
+  return `<style>\n  :root {\n${css}  }\n</style>`
+}
 
-  // --- config ---
+/**
+ * The ApexCharts config, as a real JSON-serializable object (rendered via
+ * <script define:vars> — no string-built script). The one exception is
+ * `x-formatter`: a handful of charts.json entries carry a raw JS expression for
+ * the x-axis label formatter (e.g. `val + "K"`), which can't be represented as
+ * data. It comes back as `xFormatterExpr` instead of being embedded in `config`,
+ * for the caller to turn into a real function with `new Function` — see
+ * Chart.astro. This is data-driven (from our own charts.json, not user input),
+ * same trust level as everything else here.
+ */
+export function chartConfig(opts: { id: string; data: ChartData; height: number }): { config: Record<string, unknown>; xFormatterExpr?: string } {
+  const { id, data, height } = opts
+  const type = data.type ?? 'bar'
+  const series = data.series ?? []
+  const isRound = type === 'pie' || type === 'donut' || type === 'radialBar'
+
   const config: Record<string, unknown> = {}
 
   config.chart = {
@@ -253,15 +229,14 @@ export function chartSnippet(opts: { id: string; chartId: string; data: ChartDat
   }
 
   if (data['show-data-labels']) {
-    config['dataLabels//2'] = { enabled: true }
+    // Liquid emits a second `dataLabels:` here, shadowing the earlier one — a
+    // plain reassignment (not a merge) reproduces that.
+    config.dataLabels = { enabled: true }
   }
 
   if (data.categories || data.datetime) {
     config.xaxis = {
-      labels: {
-        padding: 0,
-        formatter: data['x-formatter'] ? raw(`function (val) { return ${data['x-formatter']} }`) : undefined,
-      },
+      labels: { padding: 0 },
       tooltip: { enabled: false },
       axisBorder: type === 'area' || type === 'bar' ? { show: false } : undefined,
       categories: data.categories?.map(String),
@@ -300,7 +275,9 @@ export function chartSnippet(opts: { id: string; chartId: string; data: ChartDat
     : { show: false }
 
   if (data['hide-tooltip'] || type === 'pie' || type === 'donut') {
-    config['tooltip//2'] = {
+    // Same reassignment-not-merge behavior as dataLabels above — the earlier
+    // `theme: 'dark'` is intentionally dropped, matching the Liquid source.
+    config.tooltip = {
       enabled: data['hide-tooltip'] ? false : undefined,
       fillSeriesColor: type === 'pie' || type === 'donut' ? false : undefined,
     }
@@ -314,13 +291,5 @@ export function chartSnippet(opts: { id: string; chartId: string; data: ChartDat
     config.markers = { size: 2 }
   }
 
-  // environment === 'development' → window.tabler_chart registry
-  const script = `<script>
-\tdocument.addEventListener("DOMContentLoaded", function () {
-\t\twindow.tabler_chart = window.tabler_chart || {};
-\t\twindow.ApexCharts && (window.tabler_chart["chart-${chartId}"] = new ApexCharts(document.getElementById('chart-${id}'), ${formatJs(config, 2)})).render();
-\t});
-</script>`
-
-  return `${style}\n${script}`
+  return { config, xFormatterExpr: data['x-formatter'] }
 }

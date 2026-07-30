@@ -1,30 +1,13 @@
 ---
-// Inlines ui/typed.html: renders the seed span (first string) and registers the
-// Typed.js init via addPageScript (page-libs: [typed.js] loads the library).
+// Port of marketing/hero/side.html.
+// Inlines ui/typed.html: renders the seed span (first string) and the Typed.js init
+// (page-libs: [typed.js] loads the library), rendered directly here.
 import Icon from '@ui/Icon.astro';
 import Illustration from '@ui/Illustration.astro';
-import { addPageScript } from '@shared/lib/page-scripts';
-import InlineScript from '@shared/components/InlineScript.astro';
 
 // ui/typed.html: strings = include.strings | split: '|'; id defaults to "typed".
 const strings = ['more effective', 'more efficient', 'more productive'];
 const typedId = 'typed';
-
-// {% capture_script %} → registered synchronously (before any await).
-const script = `<script>
-document.addEventListener("DOMContentLoaded", function() {
-	var typed = new Typed('#${typedId}', {
-		strings: [${strings.map((s) => `'${s}'`).join(', ')}],
-		typeSpeed: 100,
-		backSpeed: 50,
-		backDelay: 1000,
-		startDelay: 1000,
-		loop: true,
-		fade: true
-	});
-});
-</script>`;
-addPageScript(script);
 ---
 
 <header class="hero">
@@ -72,4 +55,20 @@ addPageScript(script);
 		</div>
 	</div>
 </header>
-<InlineScript code={script} />
+<script define:vars={{ typedId, strings }}>
+	function initTyped() {
+		const typed = new Typed(`#${typedId}`, {
+			strings,
+			typeSpeed: 100,
+			backSpeed: 50,
+			backDelay: 1000,
+			startDelay: 1000,
+			loop: true,
+			fade: true,
+		});
+	}
+
+	// Typed.js loads via a deferred page-lib <script>, which only runs once parsing
+	// finishes — this inline script (positioned mid-body) would otherwise run first.
+	document.readyState !== 'loading' ? initTyped() : document.addEventListener('DOMContentLoaded', initTyped, { once: true });
+</script>

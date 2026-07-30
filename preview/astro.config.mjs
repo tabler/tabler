@@ -69,11 +69,6 @@ export default defineConfig({
 		host: true,
 	},
 	vite: {
-		// InlineScript.astro renders nothing here — scripts go through the
-		// addPageScript() registry and the <PageScripts /> drain (Eleventy model)
-		define: {
-			'import.meta.env.INLINE_PAGE_SCRIPTS': 'false',
-		},
 		resolve: {
 			alias: {
 				// demo data lives in the monorepo's shared/data — single source of

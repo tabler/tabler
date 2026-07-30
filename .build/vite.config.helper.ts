@@ -34,6 +34,11 @@ export function createViteConfig({
 	}
 
 	const config: UserConfig = {
+		// These are library (JS bundle) builds, not app builds — Vite's default
+		// behavior of copying <root>/public into outDir on every build is not wanted
+		// here (and in @tabler/preview, where public/ is itself generated from this
+		// same outDir, caused unbounded growth across repeated builds).
+		publicDir: false,
 		build: {
 			lib: {
 				entry: path.resolve(entry),

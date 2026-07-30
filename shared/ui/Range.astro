@@ -1,8 +1,6 @@
 ---
-// (registered via addPageScript); without an id → a native <input type=range>.
-import { addPageScript } from '@shared/lib/page-scripts';
-import InlineScript from '@shared/components/InlineScript.astro';
-
+// Port of ui/range.html. With an id → a noUiSlider div + init script, rendered
+// directly here; without an id → a native <input type=range>.
 interface Props {
 	min?: number;
 	max?: number;
@@ -17,38 +15,41 @@ const { min = 0, max = 100, step = 10, value = 50, id, connect = false, class: c
 
 const values = String(value).split(',');
 const size = values.length;
+const numericValues = values.map(Number);
+const startValue = size > 1 ? numericValues : numericValues[0];
 
-let script = '';
-if (id) {
-	// connect array: {% for i in (2..size) %}cycle false,true{% endfor %} then true, false
-	let connectStr = '';
-	if (size > 1 || connect) {
-		const parts: string[] = [];
-		for (let i = 2; i <= size; i++) parts.push((i - 2) % 2 === 0 ? 'false' : 'true');
-		connectStr = `\t\t\t\t\t  connect: [${[...parts, 'true', 'false'].join(', ')}],\n`;
-	}
-	const start = size > 1 ? `[${values.join(', ')}]` : values[0];
-	script = `<script>
-	document.addEventListener("DOMContentLoaded", function () {
-		 window.noUiSlider && (noUiSlider.create(document.getElementById('range-${id}'), {
-				  start: ${start},
-${connectStr}				  step: ${step},
-				  range: {
-					  min: ${min},
-					  max: ${max}
-				  }
-		 }));
-	});
-</script>`;
-	addPageScript(script);
+// connect array: {% for i in (2..size) %}cycle false,true{% endfor %} then true, false
+let connectValue;
+if (size > 1 || connect) {
+	const parts: boolean[] = [];
+	for (let i = 2; i <= size; i++) parts.push((i - 2) % 2 !== 0);
+	connectValue = [...parts, true, false];
 }
+
+const rangeId = `range-${id}`;
 ---
 
 {
 	id ? (
-		<div class:list={['form-range mb-2', className]} id={`range-${id}`} />
+		<div class:list={['form-range mb-2', className]} id={rangeId} />
 	) : (
 		<input type="range" class:list={['form-range mb-2', className]} value={value} min={min} max={max} step={step} />
 	)
 }
-{id && <InlineScript code={script} />}
+{
+	id && (
+		<script define:vars={{ rangeId, startValue, connectValue, step, min, max }}>
+			function initRange() {
+				window.noUiSlider &&
+					noUiSlider.create(document.getElementById(rangeId), {
+						start: startValue,
+						...(connectValue ? { connect: connectValue } : {}),
+						step,
+						range: { min, max },
+					});
+			}
+
+			document.readyState !== 'loading' ? initRange() : document.addEventListener('DOMContentLoaded', initRange, { once: true });
+		</script>
+	)
+}

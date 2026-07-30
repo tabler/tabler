@@ -1,9 +1,7 @@
 ---
-// The Coloris init <script> is captured via {% capture_script %} in Liquid, so it
-// is registered with addPageScript synchronously here. We mirror the development
-// build, which wraps the instance in window.tabler_colorpicker.
-import { addPageScript } from '@shared/lib/page-scripts';
-import InlineScript from '@shared/components/InlineScript.astro';
+// Port of ui/colorpicker.html.
+// The Coloris init <script> renders directly here (no more page-scripts registry),
+// wrapping the instance in window.tabler_colorpicker.
 import site from '@data/site.json';
 
 interface Props {
@@ -26,34 +24,34 @@ const {
 } = Astro.props;
 
 const colors = site.colors as Record<string, { prop: string }>;
+const swatchProps = Object.values(colors).map((color) => color.prop);
 
-const swatches = Object.values(colors)
-	.map((color) => `\n\t\t\t\twindow.getComputedStyle(document.body).getPropertyValue('${color.prop}'),`)
-	.join('');
-
-const script = `<script>
-	document.addEventListener("DOMContentLoaded", function () {
-		window.tabler_colorpicker = window.tabler_colorpicker || {};
-
-		window.Coloris && (window.tabler_colorpicker["colorpicker-${id}"] = Coloris({
-			el:  "#colorpicker-${id}",
-			selectInput: false,
-			alpha: ${alpha ? 'true' : 'false'},
-			${format ? `format: "${format}",` : ''}
-			${swatchesOnly ? 'swatchesOnly: true,' : ''}
-			swatches: [${swatches}
-			],
-		}))
-	})
-</script>`;
-
-addPageScript(script);
+const colorpickerId = `colorpicker-${id}`;
+const colorpickerSelector = `#colorpicker-${id}`;
 ---
 
 <input
 	type="text"
 	class={`form-control d-block${className ? ` ${className}` : ''}`}
-	id={`colorpicker-${id}`}
+	id={colorpickerId}
 	value={value}
 />
-<InlineScript code={script} />
+<script define:vars={{ colorpickerId, colorpickerSelector, alpha, format, swatchesOnly, swatchProps }}>
+	function initColorpicker() {
+		window.tabler_colorpicker ??= {};
+
+		const swatches = swatchProps.map((prop) => window.getComputedStyle(document.body).getPropertyValue(prop));
+
+		window.Coloris &&
+			(window.tabler_colorpicker[colorpickerId] = Coloris({
+				el: colorpickerSelector,
+				selectInput: false,
+				alpha,
+				...(format ? { format } : {}),
+				...(swatchesOnly ? { swatchesOnly: true } : {}),
+				swatches,
+			}));
+	}
+
+	document.readyState !== 'loading' ? initColorpicker() : document.addEventListener('DOMContentLoaded', initColorpicker, { once: true });
+</script>

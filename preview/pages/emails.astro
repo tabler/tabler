@@ -1,35 +1,13 @@
 ---
 // Masonry auto-inits from the data-masonry attribute (page-lib, no init script,
 // like cards-masonry.astro); fslightbox is a pure page-lib (no init script).
-// The show.bs.modal handler is captured via {% capture_script %} → addPageScript.
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
 import CardStamp from '@ui/CardStamp.astro';
 import Prose from '@ui/Prose.astro';
 import { site } from '@shared/lib/site';
-import { addPageScript } from '@shared/lib/page-scripts';
 import emails from '@data/emails.json';
 
 const emailEntries = Object.entries(emails);
-
-addPageScript(`<script>
-	const emailModal = document.getElementById("email-modal")
-	if (emailModal) {
-		emailModal.addEventListener("show.bs.modal", function (e) {
-			const button = e.relatedTarget
-
-			const image = button.getAttribute("data-bs-image"),
-				title = button.getAttribute("data-bs-title"),
-				description = button.getAttribute("data-bs-description")
-
-			emailModal.querySelector("[data-email-title]").textContent = title
-			emailModal.querySelector("[data-email-description]").textContent = description
-			emailModal.querySelector("[data-email-image]").src = image
-
-			modalTitle.textContent = \`New message to \${recipient}\`
-			modalBodyInput.value = recipient
-		})
-	}
-</script>`);
 ---
 
 <DefaultLayout
@@ -104,4 +82,23 @@ addPageScript(`<script>
 			</div>
 		</div>
 	</div>
+	<script>
+		const emailModal = document.getElementById('email-modal');
+		if (emailModal) {
+			emailModal.addEventListener('show.bs.modal', function (e) {
+				const button = e.relatedTarget;
+
+				const image = button.getAttribute('data-bs-image'),
+					title = button.getAttribute('data-bs-title'),
+					description = button.getAttribute('data-bs-description');
+
+				emailModal.querySelector('[data-email-title]').textContent = title;
+				emailModal.querySelector('[data-email-description]').textContent = description;
+				emailModal.querySelector('[data-email-image]').src = image;
+
+				modalTitle.textContent = `New message to ${recipient}`;
+				modalBodyInput.value = recipient;
+			});
+		}
+	</script>
 </DefaultLayout>

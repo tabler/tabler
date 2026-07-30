@@ -1,7 +1,5 @@
 ---
 import icons from '@data/icons.json';
-import { addPageScript } from '@shared/lib/page-scripts';
-import InlineScript from '@shared/components/InlineScript.astro';
 
 interface Props {
 	id?: string;
@@ -34,24 +32,8 @@ let star = iconData?.svg?.filled ?? '';
 star = star.replace('<path stroke="none" d="M0 0h24v24H0z" fill="none"/>', '');
 star = star.replace(/class="[^"]+"/, `aria-hidden="true" focusable="false" class="${starClasses}"`);
 
-// {% capture_script %} → registered synchronously (before any await).
-const script = `<script>
-  window.tabler_rating = window.tabler_rating || {};
-
-  document.addEventListener("DOMContentLoaded", function () {
-    const rating = new StarRating('#rating-${id}', {
-		tooltip: false,
-		clearable: false,
-		stars: function (el, item, index) {
-			 el.innerHTML = \`${star}\`;
-		},
-		classNames: {
-		}
-	 })
-    window.tabler_rating["rating-${id}"] = rating;
-  })
-</script>`;
-addPageScript(script);
+const ratingSelector = `#rating-${id}`;
+const ratingKey = `rating-${id}`;
 ---
 
 <select id={`rating-${id}`}>
@@ -62,4 +44,20 @@ addPageScript(script);
 	<option value="2" selected={value === 2}>Poor</option>
 	<option value="1" selected={value === 1}>Terrible</option>
 </select>
-<InlineScript code={script} />
+<script define:vars={{ ratingSelector, ratingKey, star }}>
+	window.tabler_rating ??= {};
+
+	function initRating() {
+		const rating = new StarRating(ratingSelector, {
+			tooltip: false,
+			clearable: false,
+			stars: (el) => {
+				el.innerHTML = star;
+			},
+			classNames: {},
+		});
+		window.tabler_rating[ratingKey] = rating;
+	}
+
+	document.readyState !== 'loading' ? initRating() : document.addEventListener('DOMContentLoaded', initRating, { once: true });
+</script>

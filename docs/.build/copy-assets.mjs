@@ -21,10 +21,13 @@ const copies = [
 		requiredFile: join(repo, 'core', 'dist', 'css', 'tabler.css'),
 	},
 	{
-		from: join(repo, 'preview', 'dist', 'preview'),
+		// Sourced from preview's isolated tmp-assets/ (not dist/) — dist/ is Astro's own
+		// build output there, and reading demo assets from it caused unbounded growth
+		// across repeated builds. See preview/.build/copy-assets.mjs.
+		from: join(repo, 'preview', 'tmp-assets'),
 		to: join(publicDir, 'preview'),
 		packageName: '@tabler/preview',
-		requiredFile: join(repo, 'preview', 'dist', 'preview', 'css', 'demo.css'),
+		requiredFile: join(repo, 'preview', 'tmp-assets', 'css', 'demo.css'),
 	},
 	{
 		from: join(repo, 'shared', 'static'),

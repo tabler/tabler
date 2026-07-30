@@ -3,21 +3,23 @@
 // which keeps the `window.tabler_list` registry assignment).
 interface Props {
 	id?: string;
-	parameters: string;
+	/** List.js `valueNames` entries — plain strings or `{ attr, name }` sort descriptors. */
+	valueNames: (string | { attr: string; name: string })[];
 }
 
-const { id = 'default', parameters } = Astro.props;
-
-const script = `
-	window.tabler_list = window.tabler_list || {};
-	document.addEventListener("DOMContentLoaded", function() {
-		const list = window.tabler_list["table-${id}"] = new List('table-${id}', {
-			sortClass: 'table-sort',
-			listClass: 'table-tbody',
-			valueNames: ${parameters}
-		});
-	})
-`;
+const { id = 'default', valueNames } = Astro.props;
+const listId = `table-${id}`;
 ---
 
-<script is:inline set:html={script} />
+<script define:vars={{ listId, valueNames }}>
+	function initTablerList() {
+		window.tabler_list ??= {};
+		window.tabler_list[listId] = new List(listId, {
+			sortClass: 'table-sort',
+			listClass: 'table-tbody',
+			valueNames,
+		});
+	}
+
+	document.readyState !== 'loading' ? initTablerList() : document.addEventListener('DOMContentLoaded', initTablerList, { once: true });
+</script>

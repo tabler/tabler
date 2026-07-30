@@ -1,8 +1,5 @@
 ---
 // Equivalent of ui/chart-sparkline.html
-import { addPageScript } from '@shared/lib/page-scripts';
-import InlineScript from '@shared/components/InlineScript.astro';
-
 interface Props {
 	id?: string;
 	type?: string;
@@ -40,79 +37,50 @@ const classes = [
 	small && 'chart-sparkline-sm',
 ]
 
-let script = '';
-if (id) {
-	script = `<script>
-	document.addEventListener("DOMContentLoaded", function () {
-		window.tabler_chart = window.tabler_chart || {};
+const seriesData = String(data ?? '').split(',').map(Number);
+const chartKey = `sparkline-${id}`;
 
-		window.ApexCharts && (window.tabler_chart["sparkline-${id}"] = new ApexCharts(document.getElementById('sparkline-${id}'), {
+const chartOptions = id
+	? {
 			chart: {
-				type: "${chartType}",
+				type: chartType,
 				fontFamily: 'inherit',
-				height: ${heightPx},
-${isSquare ? `				width: ${heightPx},\n` : ''}				animations: {
-					enabled: false
-				},
-				sparkline: {
-					enabled: true
-				},
+				height: heightPx,
+				...(isSquare ? { width: heightPx } : {}),
+				animations: { enabled: false },
+				sparkline: { enabled: true },
 			},
-			tooltip: {
-				enabled: false,
-			},
-${
-	type === 'donut'
-		? `			plotOptions: {
-				radialBar: {
-					hollow: {
-						margin: 0,
-						size: '75%'
-					},
-					track: {
-						margin: 0
-					},
-					dataLabels: {
-						show: false
+			tooltip: { enabled: false },
+			...(type === 'donut'
+				? {
+						plotOptions: {
+							radialBar: {
+								hollow: { margin: 0, size: '75%' },
+								track: { margin: 0 },
+								dataLabels: { show: false },
+							},
+						},
 					}
-				}
-			},
-`
-		: ''
-}${
-	type === 'area'
-		? `			fill: {
-				gradient: {
-					opacityFrom: [.1, .1]
-				}
-			},
-`
-		: ''
-}${
-	type === 'area' || type === 'line'
-		? `			stroke: {
-				width: 2,
-				lineCap: "round",
-			},
-`
-		: ''
-}${
-	type === 'donut'
-		? `			colors: ['var(--tblr-${color})'],
-			series: [${data}],
-`
-		: `			series: [{
-				color: 'var(--tblr-${color})',
-				data: [${data}]
-			}],
-`
-}		})).render();
-	});
-</script>`;
-
-	addPageScript(script);
-}
+				: {}),
+			...(type === 'area' ? { fill: { gradient: { opacityFrom: [0.1, 0.1] } } } : {}),
+			...(type === 'area' || type === 'line' ? { stroke: { width: 2, lineCap: 'round' } } : {}),
+			...(type === 'donut'
+				? { colors: [`var(--tblr-${color})`], series: seriesData }
+				: { series: [{ color: `var(--tblr-${color})`, data: seriesData }] }),
+		}
+	: undefined;
 ---
 
-{id && <div class:list={classes} id={`sparkline-${id}`} />}
-{id && <InlineScript code={script} />}
+{id && <div class:list={classes} id={chartKey} />}
+{
+	id && (
+		<script define:vars={{ chartKey, chartOptions }}>
+			function initSparkline() {
+				window.tabler_chart ??= {};
+				window.ApexCharts && (window.tabler_chart[chartKey] = new ApexCharts(document.getElementById(chartKey), chartOptions)).render();
+			}
+
+			document.readyState !== 'loading' ? initSparkline() : document.addEventListener('DOMContentLoaded', initSparkline, { once: true });
+		</script>
+	)
+}
