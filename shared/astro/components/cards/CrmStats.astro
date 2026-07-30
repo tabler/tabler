@@ -1,10 +1,11 @@
 ---
-// Port of cards/crm-stats.html (only the branches used by dashboard-crm).
 // TODO: unported ui/crm-stats.html branches (unused on dashboard-crm):
 //   person-id (avatar), chart-data + chart-position/chart-label/chart-label-icon
 //   (sparkline), small-icon, description-value/description-value-color, trending,
 //   button, chart-type/chart-color.
-import Icon from '../Icon.astro';
+
+import Subheader from '../ui/Subheader.astro';
+import Icon from '../ui/Icon.astro';
 import Trending from '../ui/Trending.astro';
 
 interface Props {
@@ -32,7 +33,7 @@ const {
 	class: className,
 } = Astro.props;
 
-const avatarClass = `${color ? `bg-${color}${lt ? '-lt' : ' text-white'}` : ''} avatar avatar-square`;
+const avatarClass = [color ? `bg-${color}${lt ? '-lt' : ' text-white'}` : '', 'avatar', 'avatar-square'];
 ---
 
 <div class:list={['card card-sm', className]}>
@@ -41,15 +42,15 @@ const avatarClass = `${color ? `bg-${color}${lt ? '-lt' : ' text-white'}` : ''} 
 			{
 				icon && (
 					<div class="col-auto">
-						<span class={avatarClass}><Icon name={icon} /></span>
+						<span class:list={avatarClass}><Icon name={icon} /></span>
 					</div>
 				)
 			}
 
 			<div class="col">
-				<div class="subheader">
+				<Subheader>
 					{title}
-				</div>
+				</Subheader>
 				<div class="h3 m-0 p-0">
 					{description}
 				</div>

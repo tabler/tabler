@@ -1,53 +1,57 @@
 ---
-// Port of preview/pages/uptime.html.
+
+import Subheader from '@shared/components/ui/Subheader.astro';
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
-import Chart from '@shared/components/Chart.astro';
+import Chart from '@shared/components/ui/Chart.astro';
+import Card from '@shared/components/ui/Card.astro';
+import CardBody from '@shared/components/ui/CardBody.astro';
+import CardTitle from '@shared/components/ui/CardTitle.astro';
 ---
 
 <DefaultLayout pageHeaderFile="uptime" pageMenu="extra.uptime" pageLibs={['apexcharts']}>
 	<div class="row row-cards">
 		<div class="col-md-4">
-			<div class="card">
-				<div class="card-body">
-					<div class="subheader">Currently up for</div>
+			<Card>
+				<CardBody>
+					<Subheader>Currently up for</Subheader>
 					<div class="h3 m-0">14 days 2 hours 54 mins 34 seconds</div>
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 		<div class="col-md-4">
-			<div class="card">
-				<div class="card-body">
-					<div class="subheader">Last checked at</div>
+			<Card>
+				<CardBody>
+					<Subheader>Last checked at</Subheader>
 					<div class="h3 m-0">27 seconds ago</div>
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 		<div class="col-md-4">
-			<div class="card">
-				<div class="card-body">
-					<div class="subheader">Incidents</div>
+			<Card>
+				<CardBody>
+					<Subheader>Incidents</Subheader>
 					<div class="h3 m-0">3</div>
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 		<div class="col-md-8">
-			<div class="card">
-				<div class="card-body">
-					<h3 class="card-title">Response times across regions in the last day</h3>
+			<Card>
+				<CardBody>
+					<CardTitle>Response times across regions in the last day</CardTitle>
 					<Chart chartId="uptime" height={15} />
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 		<div class="col-md-4">
-			<div class="card">
-				<div class="card-body">
-					<h3 class="card-title">Uptime incidents per day</h3>
+			<Card>
+				<CardBody>
+					<CardTitle>Uptime incidents per day</CardTitle>
 					<Chart chartId="uptime-incidents" height={15} />
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 		<div class="col-12">
-			<div class="card">
+			<Card>
 				<div class="card-table table-responsive">
 					<table class="table">
 						<thead>
@@ -103,7 +107,7 @@ import Chart from '@shared/components/Chart.astro';
 						</tbody>
 					</table>
 				</div>
-			</div>
+			</Card>
 		</div>
 	</div>
 </DefaultLayout>

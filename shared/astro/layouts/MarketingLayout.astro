@@ -1,14 +1,15 @@
 ---
-// Port of shared/layouts/marketing.html (layout: base, body-class
 // "body-marketing body-gradient", plugins: marketing).
 // The `plugins: marketing` front matter is already covered by site.cssPlugins
 // (which includes 'marketing'), so no extra handling is needed here.
 // The footer (products/support/tabler columns, payment icons, socials, and the
 // copyright bar) lives inline in this layout, exactly as in the Liquid source.
+
+import Subheader from '@shared/components/ui/Subheader.astro';
 import BaseLayout from './BaseLayout.astro';
 import MarketingNavbar from '@shared/components/marketing/MarketingNavbar.astro';
 import Payment from '@shared/components/ui/Payment.astro';
-import Icon from '@shared/components/Icon.astro';
+import Icon from '@shared/components/ui/Icon.astro';
 import { site } from '@shared/lib/site';
 
 interface Props {
@@ -45,7 +46,7 @@ const base = '';
 					<div class="col-lg-7">
 						<div class="row g-lg-4">
 							<div class="col-md">
-								<div class="subheader mb-3">Our products</div>
+								<Subheader class="mb-3">Our products</Subheader>
 								<ul class="list-unstyled list-separated gap-2">
 									<li><a class="link-secondary" href={base}>UI Kit</a></li>
 									<li>
@@ -58,7 +59,7 @@ const base = '';
 								</ul>
 							</div>
 							<div class="col-md">
-								<div class="subheader mb-3">Support</div>
+								<Subheader class="mb-3">Support</Subheader>
 								<ul class="list-unstyled list-separated gap-2">
 									<li><a class="link-secondary" href={base}>Blog</a></li>
 									<li><a class="link-secondary" href={base}>Documentation</a></li>
@@ -75,7 +76,7 @@ const base = '';
 								</ul>
 							</div>
 							<div class="col-md">
-								<div class="subheader mb-3">Tabler</div>
+								<Subheader class="mb-3">Tabler</Subheader>
 								<ul class="list-unstyled list-separated gap-2">
 									<li><a class="link-secondary" href={base}>About</a></li>
 									<li><a class="link-secondary" href={base}>Blog</a></li>
@@ -104,7 +105,7 @@ const base = '';
 
 				<div class="row g-lg-4 justify-content-between mt-0 mt-md-2">
 					<div class="col-sm-7 col-md-6 col-lg-4">
-						<h5 class="subheader">Payment &amp; Security</h5>
+						<Subheader as="h5">Payment &amp; Security</Subheader>
 						<ul class="list-inline mb-0 mt-3">
 							<li class="list-inline-item">
 								<a href="#"><Payment payment="paypal" /></a>
@@ -122,7 +123,7 @@ const base = '';
 					</div>
 
 					<div class="col-sm-5 col-md-6 col-lg-3 text-sm-end">
-						<h5 class="subheader">Follow us on</h5>
+						<Subheader as="h5">Follow us on</Subheader>
 						<ul class="list-inline mb-0 mt-3">
 							<li class="list-inline-item">
 								<a class="btn btn-icon btn-facebook" href="#"><Icon name="brand-facebook" /></a>

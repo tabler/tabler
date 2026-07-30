@@ -1,8 +1,10 @@
 ---
-// Port of cards/top-deals.html
-import Icon from '../Icon.astro';
+
+import CardActions from '../ui/CardActions.astro';
+import Icon from '../ui/Icon.astro';
 import Avatar from '../ui/Avatar.astro';
 import Progress from '../ui/Progress.astro';
+import CardTitle from '../ui/CardTitle.astro';
 import crmDashboard from '@data/crm-dashboard.json';
 
 const deals = crmDashboard.top_deals;
@@ -10,8 +12,8 @@ const deals = crmDashboard.top_deals;
 
 <div class="card">
 	<div class="card-header">
-		<h3 class="card-title">Top deals</h3>
-		<div class="card-actions d-flex gap-2">
+		<CardTitle>Top deals</CardTitle>
+		<CardActions class="d-flex gap-2">
 			<button type="button" class="btn btn-sm">
 				<Icon name="filter" class="me-1" />
 				Filter
@@ -20,7 +22,7 @@ const deals = crmDashboard.top_deals;
 				<Icon name="plus" class="me-1" />
 				Add deal
 			</button>
-		</div>
+		</CardActions>
 	</div>
 
 	<div class="table-responsive">

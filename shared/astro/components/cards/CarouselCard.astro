@@ -1,8 +1,8 @@
 ---
-// Port of shared/includes/cards/carousel.html + inlined ui/carousel.html.
 // ui/carousel.html is inlined here (not a shared component in this task's
 // scope). Photos are filtered to horizontal=true, then sliced by offset/limit.
 import photos from '@data/photos.json';
+import CardTitle from '../ui/CardTitle.astro';
 
 interface Props {
 	id?: string;
@@ -41,7 +41,7 @@ const slides = filteredPhotos.slice(offset, offset + limit);
 
 <div class="card">
 	<div class="card-header">
-		<h3 class="card-title">{title}</h3>
+		<CardTitle>{title}</CardTitle>
 	</div>
 	<div class="card-body">
 		<div id={`carousel-${carouselId}`} class={`carousel slide${fade ? ' carousel-fade' : ''}`} data-bs-ride="carousel">

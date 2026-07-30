@@ -1,5 +1,4 @@
 ---
-// Port of preview/pages/license.html (layout: default)
 // The prose is shared/includes/license.md rendered via `renderContent: "md"`
 // (markdown-it). The rendered HTML is inlined verbatim from the reference build
 // to guarantee a 1:1 DOM match — Astro's markdown pipeline (remark + smartypants)
@@ -7,7 +6,11 @@
 // TODO: source of truth remains shared/includes/license.md; regenerate this
 // block if the markdown changes.
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
-import Icon from '@shared/components/Icon.astro';
+import Icon from '@shared/components/ui/Icon.astro';
+import Card from '@shared/components/ui/Card.astro';
+import CardBody from '@shared/components/ui/CardBody.astro';
+import CardFooter from '@shared/components/ui/CardFooter.astro';
+import Prose from '@shared/components/ui/Prose.astro';
 
 const licenseHtml = `
 <p>This is a legal agreement between you, the Purchaser, and Tabler. Purchasing or downloading of any Tabler product (Tabler Free, Tabler PRO, Tabler Email), constitutes your acceptance of the terms of this license, <a href="https://tabler.io/terms-of-service.html">Tabler terms of service</a> and <a href="https://tabler.io/privacy-policy.html">Tabler private policy</a>.</p>
@@ -40,17 +43,17 @@ const licenseHtml = `
 <DefaultLayout title="License" pageHeader="Tabler License" pageMenu="extra.license">
 	<div class="row row-cards">
 		<div class="col-lg-8">
-			<div class="card card-lg">
-				<div class="card-body">
-					<div class="prose">
+			<Card size="lg">
+				<CardBody>
+					<Prose>
 						<Fragment set:html={licenseHtml} />
-					</div>
-				</div>
-			</div>
+					</Prose>
+				</CardBody>
+			</Card>
 		</div>
 		<div class="col-lg-4">
-			<div class="card">
-				<div class="card-body">
+			<Card>
+				<CardBody>
 					<div class="d-flex align-items-center mb-3">
 						<div class="me-3">
 							<Icon name="scale" size="md" />
@@ -88,12 +91,12 @@ const licenseHtml = `
 					<ul class="list-unstyled space-y-1">
 						<li><Icon name="info-circle" class="text-blue" /> License and copyright notice</li>
 					</ul>
-				</div>
-				<div class="card-footer">
+				</CardBody>
+				<CardFooter>
 					This is not legal advice.
 					<a href="#" target="_blank">Learn more about repository licenses.</a>
-				</div>
-			</div>
+				</CardFooter>
+			</Card>
 		</div>
 	</div>
 </DefaultLayout>

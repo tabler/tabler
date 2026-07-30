@@ -1,10 +1,15 @@
 ---
-// Port of preview/pages/card-actions.html.
+
+import CardSubtitle from '@shared/components/ui/CardSubtitle.astro';
+import CardActions from '@shared/components/ui/CardActions.astro';
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
 import BodyPlaceholder from '@shared/components/cards/BodyPlaceholder.astro';
-import Button from '@shared/components/Button.astro';
+import Card from '@shared/components/ui/Card.astro';
+import CardHeader from '@shared/components/ui/CardHeader.astro';
+import CardTitle from '@shared/components/ui/CardTitle.astro';
+import Button from '@shared/components/ui/Button.astro';
 import Avatar from '@shared/components/ui/Avatar.astro';
-import Icon from '@shared/components/Icon.astro';
+import Icon from '@shared/components/ui/Icon.astro';
 import people from '@data/people.json';
 
 const person0 = people[0];
@@ -14,42 +19,38 @@ const person3 = people[3];
 <DefaultLayout title="Card actions" pageHeader="Card actions" pageMenu="base.cards.actions">
 	<div class="row row-cards">
 		<div class="col-md-6">
-			<div class="card">
-				<div class="card-header">
-					<h3 class="card-title">Sample card</h3>
-				</div>
+			<Card>
+				<CardHeader title="Sample card" />
 				<BodyPlaceholder />
-			</div>
+			</Card>
 		</div>
 
 		<div class="col-md-6">
-			<div class="card">
-				<div class="card-header">
-					<h3 class="card-title">Card with action</h3>
-					<div class="card-actions">
+			<Card>
+				<CardHeader title="Card with action">
+					<CardActions>
 						<Button color="primary" icon="plus" text="Add new" />
-					</div>
-				</div>
+					</CardActions>
+				</CardHeader>
 				<BodyPlaceholder />
-			</div>
+			</Card>
 		</div>
 
 		<div class="col-md-6">
-			<div class="card">
-				<div class="card-header">
-					<h3 class="card-title">Cart title</h3>
-					<div class="card-actions">
+			<Card>
+				<CardHeader title="Cart title">
+					<CardActions>
 						<Button icon="phone" text="Phone" />
 						<Button icon="mail" text="Email" />
-					</div>
-				</div>
+					</CardActions>
+				</CardHeader>
 				<BodyPlaceholder />
-			</div>
+			</Card>
 		</div>
 
 		<div class="col-md-6">
-			<div class="card">
-				<div class="card-header">
+			<Card>
+				<CardHeader>
 					<div>
 						<div class="row align-items-center">
 							<div class="col-auto">
@@ -57,57 +58,57 @@ const person3 = people[3];
 							</div>
 							<div class="col">
 								<div class="card-title">{person0.full_name}</div>
-								<div class="card-subtitle">{person0.job_title}</div>
+								<CardSubtitle as="div">{person0.job_title}</CardSubtitle>
 							</div>
 						</div>
 					</div>
-					<div class="card-actions">
+					<CardActions>
 						<Button icon="phone" text="Phone" />
 						<Button icon="mail" text="Email" />
-					</div>
-				</div>
+					</CardActions>
+				</CardHeader>
 				<BodyPlaceholder />
-			</div>
+			</Card>
 		</div>
 
 		<div class="col-md-6">
-			<div class="card">
-				<div class="card-header">
+			<Card>
+				<CardHeader>
 					<div>
-						<h3 class="card-title">
+						<CardTitle>
 							With description
-						</h3>
-						<p class="card-subtitle">
+						</CardTitle>
+						<CardSubtitle>
 							Lorem ipsum dolor sit amet consectetur adipisicing.
-						</p>
+						</CardSubtitle>
 					</div>
-				</div>
+				</CardHeader>
 				<BodyPlaceholder />
-			</div>
+			</Card>
 		</div>
 
 		<div class="col-md-6">
-			<div class="card">
-				<div class="card-header">
+			<Card>
+				<CardHeader>
 					<div>
-						<h3 class="card-title">
+						<CardTitle>
 							With description and action
-						</h3>
-						<p class="card-subtitle">
+						</CardTitle>
+						<CardSubtitle>
 							Lorem ipsum dolor sit amet consectetur adipisicing.
-						</p>
+						</CardSubtitle>
 					</div>
-					<div class="card-actions">
+					<CardActions>
 						<Button color="primary" text="Create new job" />
-					</div>
-				</div>
+					</CardActions>
+				</CardHeader>
 				<BodyPlaceholder />
-			</div>
+			</Card>
 		</div>
 
 		<div class="col-md-6">
-			<div class="card">
-				<div class="card-header">
+			<Card>
+				<CardHeader>
 					<div>
 						<div class="row align-items-center">
 							<div class="col-auto">
@@ -115,11 +116,11 @@ const person3 = people[3];
 							</div>
 							<div class="col">
 								<div class="card-title">{person3.full_name}</div>
-								<div class="card-subtitle">{person3.job_title}</div>
+								<CardSubtitle as="div">{person3.job_title}</CardSubtitle>
 							</div>
 						</div>
 					</div>
-					<div class="card-actions">
+					<CardActions>
 						<div class="dropdown">
 							<a href="#" class="btn-action dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><Icon name="dots-vertical" /></a>
 							<div class="dropdown-menu dropdown-menu-end">
@@ -128,25 +129,24 @@ const person3 = people[3];
 								<a class="dropdown-item text-danger" href="#">Delete user</a>
 							</div>
 						</div>
-					</div>
-				</div>
+					</CardActions>
+				</CardHeader>
 				<BodyPlaceholder />
-			</div>
+			</Card>
 		</div>
 
 		<div class="col-md-6">
-			<div class="card">
-				<div class="card-header">
-					<h3 class="card-title">Card actions</h3>
-					<div class="card-actions btn-actions">
+			<Card>
+				<CardHeader title="Card actions">
+					<CardActions class="btn-actions">
 						<a href="#" class="btn-action"><Icon name="refresh" /></a>
 						<a href="#" class="btn-action"><Icon name="chevron-up" /></a>
 						<a href="#" class="btn-action"><Icon name="dots-vertical" /></a>
 						<a href="#" class="btn-action"><Icon name="x" /></a>
-					</div>
-				</div>
+					</CardActions>
+				</CardHeader>
 				<BodyPlaceholder />
-			</div>
+			</Card>
 		</div>
 	</div>
 </DefaultLayout>

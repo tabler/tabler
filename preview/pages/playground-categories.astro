@@ -1,5 +1,4 @@
 ---
-// Port of preview/pages/playground-categories.html (layout: default).
 // Reuses committed components: Icon, Button, Badge, Pagination (+ Avatar).
 //
 // NOTE (no-container): the front matter is `no-container: true`, but Liquid's
@@ -15,20 +14,17 @@
 // supports (element type is 'a'|'button'; html_for/tooltip absent). The shared
 // ui/button.html ignores html_for/tooltip too, and the reference emits a plain
 // <label> with no `for`. Inlined below to match the reference.
-//
-// TODO (AvatarList.astro missing `size`): the "Marketing campaigns" card calls
-// ui/avatar-list.html with size="xs", but AvatarList.astro has no `size` prop
-// and does not forward it to Avatar. Inlined here with <Avatar size="xs"> over
-// the people slice (offset 3, limit 3) to match the reference `avatar-xs`.
+
+import ButtonGroup from '@shared/components/ui/ButtonGroup.astro';
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
-import Icon from '@shared/components/Icon.astro';
-import Button from '@shared/components/Button.astro';
+import Icon from '@shared/components/ui/Icon.astro';
+import Button from '@shared/components/ui/Button.astro';
 import Badge from '@shared/components/ui/Badge.astro';
 import Avatar from '@shared/components/ui/Avatar.astro';
+import AvatarList from '@shared/components/ui/AvatarList.astro';
 import Pagination from '@shared/components/ui/Pagination.astro';
-import people from '@data/people.json';
-
-const marketingAvatars = people.slice(3, 6);
+import Card from '@shared/components/ui/Card.astro';
+import CardBody from '@shared/components/ui/CardBody.astro';
 ---
 
 <DefaultLayout title="Categories playground">
@@ -122,12 +118,12 @@ const marketingAvatars = people.slice(3, 6);
 										</select>
 									</div>
 									<div class="col-auto">
-										<div class="btn-group" role="group" aria-label="Sort direction">
+										<ButtonGroup aria-label="Sort direction">
 											<input type="radio" class="btn-check" name="playgroundSortDir" id="playgroundSortAsc" autocomplete="off" checked>
 											<label class="btn btn-light px-0 btn-icon" aria-label="Ascending"><Icon name="arrow-up" /></label>
 											<input type="radio" class="btn-check" name="playgroundSortDir" id="playgroundSortDesc" autocomplete="off">
 											<label class="btn btn-light px-0 btn-icon" aria-label="Descending"><Icon name="arrow-down" /></label>
-										</div>
+										</ButtonGroup>
 									</div>
 								</div>
 							</form>
@@ -145,8 +141,8 @@ const marketingAvatars = people.slice(3, 6);
 
 	<div class="row row-cards">
 		<div class="col-12 col-lg-6">
-			<div class="card">
-				<div class="card-body">
+			<Card>
+				<CardBody>
 					<div class="row align-items-center mb-4">
 						<div class="col">
 							<Badge text="Featured" color="primary" />
@@ -160,28 +156,22 @@ const marketingAvatars = people.slice(3, 6);
 					<p class="fs-sm text-secondary mb-0">Last post 2 days ago</p>
 					<hr>
 					<div class="d-flex align-items-center justify-content-between">
-						<div class="avatar-list avatar-list-stacked">
-							<span class="avatar avatar-xs" data-bs-toggle="tooltip" data-bs-title="Emily Thompson">
-								<img class="avatar-img" src="./static/avatars/001f.jpg" width="20" height="20" alt="Emily Thompson">
-							</span>
-							<span class="avatar avatar-xs" data-bs-toggle="tooltip" data-bs-title="Michael Johnson">
-								<img class="avatar-img" src="./static/avatars/002m.jpg" width="20" height="20" alt="Michael Johnson">
-							</span>
-							<span class="avatar avatar-xs" data-bs-toggle="tooltip" data-bs-title="Robert Garcia">
-								<img class="avatar-img" src="./static/avatars/003m.jpg" width="20" height="20" alt="Robert Garcia">
-							</span>
-						</div>
+						<AvatarList stacked={true}>
+							<Avatar src="static/avatars/001f.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="Emily Thompson" />
+							<Avatar src="static/avatars/002m.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="Michael Johnson" />
+							<Avatar src="static/avatars/003m.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="Robert Garcia" />
+						</AvatarList>
 						<div class="text-end">
 							<Badge text="20 posts" class="bg-light text-body" />
 						</div>
 					</div>
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 
 		<div class="col-12 col-lg-6">
-			<div class="card">
-				<div class="card-body">
+			<Card>
+				<CardBody>
 					<div class="row align-items-center mb-4">
 						<div class="col">
 							<Badge text="Featured" color="success" />
@@ -195,171 +185,145 @@ const marketingAvatars = people.slice(3, 6);
 					<p class="fs-sm text-secondary mb-0">Last post 1 day ago</p>
 					<hr>
 					<div class="d-flex align-items-center justify-content-between">
-						<div class="avatar-list avatar-list-stacked">
-							{marketingAvatars.map((person) => <Avatar person={person} size="xs" />)}
-						</div>
+						<AvatarList stacked={true} size="xs" offset={3} limit={3} />
 						<div class="text-end">
 							<Badge text="62 posts" class="bg-light text-body" />
 						</div>
 					</div>
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 
 		<div class="col-12 col-md-6 col-lg-4">
-			<div class="card position-relative overflow-hidden">
+			<Card class="position-relative overflow-hidden">
 				<Icon name="chart-pie" class="icon-lg text-danger opacity-25 position-absolute top-0 end-0 m-3" />
-				<div class="card-body">
+				<CardBody>
 					<small class="text-secondary d-block mb-4">12 followers</small>
 					<h3 class="fs-6 mb-1 text-truncate"><a class="text-body" href="./empty.html">Reports &amp; analytics</a></h3>
 					<p class="text-secondary text-truncate">Data-driven insights and performance reports across all departments.</p>
 					<p class="fs-sm text-secondary mb-0">Last post 5 days ago</p>
 					<hr>
 					<div class="d-flex align-items-center justify-content-between">
-						<div class="avatar-list avatar-list-stacked">
-							<span class="avatar avatar-xs" data-bs-toggle="tooltip" data-bs-title="Emily Thompson">
-								<img class="avatar-img" src="./static/avatars/001f.jpg" width="20" height="20" alt="Emily Thompson">
-							</span>
-							<span class="avatar avatar-xs" data-bs-toggle="tooltip" data-bs-title="Robert Garcia">
-								<img class="avatar-img" src="./static/avatars/003m.jpg" width="20" height="20" alt="Robert Garcia">
-							</span>
-						</div>
+						<AvatarList stacked={true}>
+							<Avatar src="static/avatars/001f.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="Emily Thompson" />
+							<Avatar src="static/avatars/003m.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="Robert Garcia" />
+						</AvatarList>
 						<div class="text-end">
 							<Badge text="28 posts" class="bg-light text-body" />
 						</div>
 					</div>
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 
 		<div class="col-12 col-md-6 col-lg-4">
-			<div class="card position-relative overflow-hidden">
+			<Card class="position-relative overflow-hidden">
 				<Icon name="id-badge" class="icon-lg text-warning opacity-25 position-absolute top-0 end-0 m-3" />
-				<div class="card-body">
+				<CardBody>
 					<small class="text-secondary d-block mb-4">16 followers</small>
 					<h3 class="fs-6 mb-1 text-truncate"><a class="text-body" href="./empty.html">Events &amp; webinars</a></h3>
 					<p class="text-secondary text-truncate">Upcoming events, webinar recordings, and community meetups.</p>
 					<p class="fs-sm text-secondary mb-0">Last post 3 days ago</p>
 					<hr>
 					<div class="d-flex align-items-center justify-content-between">
-						<div class="avatar-list avatar-list-stacked">
-							<span class="avatar avatar-xs" data-bs-toggle="tooltip" data-bs-title="Olivia Davis">
-								<img class="avatar-img" src="./static/avatars/005f.jpg" width="20" height="20" alt="Olivia Davis">
-							</span>
-							<span class="avatar avatar-xs" data-bs-toggle="tooltip" data-bs-title="Michael Johnson">
-								<img class="avatar-img" src="./static/avatars/002m.jpg" width="20" height="20" alt="Michael Johnson">
-							</span>
-						</div>
+						<AvatarList stacked={true}>
+							<Avatar src="static/avatars/005f.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="Olivia Davis" />
+							<Avatar src="static/avatars/002m.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="Michael Johnson" />
+						</AvatarList>
 						<div class="text-end">
 							<Badge text="34 posts" class="bg-light text-body" />
 						</div>
 					</div>
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 
 		<div class="col-12 col-md-6 col-lg-4">
-			<div class="card position-relative overflow-hidden">
+			<Card class="position-relative overflow-hidden">
 				<Icon name="user" class="icon-lg text-warning opacity-25 position-absolute top-0 end-0 m-3" />
-				<div class="card-body">
+				<CardBody>
 					<small class="text-secondary d-block mb-4">9 followers</small>
 					<h3 class="fs-6 mb-1 text-truncate"><a class="text-body" href="./empty.html">Client success stories</a></h3>
 					<p class="text-secondary text-truncate">Case studies and testimonials from our most satisfied customers.</p>
 					<p class="fs-sm text-secondary mb-0">Last post 1 week ago</p>
 					<hr>
 					<div class="d-flex align-items-center justify-content-between">
-						<div class="avatar-list avatar-list-stacked">
-							<span class="avatar avatar-xs" data-bs-toggle="tooltip" data-bs-title="James Wilson">
-								<img class="avatar-img" src="./static/avatars/006m.jpg" width="20" height="20" alt="James Wilson">
-							</span>
-							<span class="avatar avatar-xs" data-bs-toggle="tooltip" data-bs-title="Jessica Miller">
-								<img class="avatar-img" src="./static/avatars/004f.jpg" width="20" height="20" alt="Jessica Miller">
-							</span>
-						</div>
+						<AvatarList stacked={true}>
+							<Avatar src="static/avatars/006m.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="James Wilson" />
+							<Avatar src="static/avatars/004f.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="Jessica Miller" />
+						</AvatarList>
 						<div class="text-end">
 							<Badge text="64 posts" class="bg-light text-body" />
 						</div>
 					</div>
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 
 		<div class="col-12 col-md-6 col-lg-4">
-			<div class="card position-relative overflow-hidden">
+			<Card class="position-relative overflow-hidden">
 				<Icon name="message" class="icon-lg text-primary opacity-25 position-absolute top-0 end-0 m-3" />
-				<div class="card-body">
+				<CardBody>
 					<small class="text-secondary d-block mb-4">10 followers</small>
 					<h3 class="fs-6 mb-1 text-truncate"><a class="text-body" href="./empty.html">Team highlights</a></h3>
 					<p class="text-secondary text-truncate">Spotlights, shoutouts, and stories from people across the team.</p>
 					<p class="fs-sm text-secondary mb-0">Last post 4 days ago</p>
 					<hr>
 					<div class="d-flex align-items-center justify-content-between">
-						<div class="avatar-list avatar-list-stacked">
-							<span class="avatar avatar-xs" data-bs-toggle="tooltip" data-bs-title="Michael Johnson">
-								<img class="avatar-img" src="./static/avatars/002m.jpg" width="20" height="20" alt="Michael Johnson">
-							</span>
-							<span class="avatar avatar-xs" data-bs-toggle="tooltip" data-bs-title="Emily Thompson">
-								<img class="avatar-img" src="./static/avatars/001f.jpg" width="20" height="20" alt="Emily Thompson">
-							</span>
-						</div>
+						<AvatarList stacked={true}>
+							<Avatar src="static/avatars/002m.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="Michael Johnson" />
+							<Avatar src="static/avatars/001f.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="Emily Thompson" />
+						</AvatarList>
 						<div class="text-end">
 							<Badge text="42 posts" class="bg-light text-body" />
 						</div>
 					</div>
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 
 		<div class="col-12 col-md-6 col-lg-4">
-			<div class="card position-relative overflow-hidden">
+			<Card class="position-relative overflow-hidden">
 				<Icon name="building-bank" class="icon-lg text-danger opacity-25 position-absolute top-0 end-0 m-3" />
-				<div class="card-body">
+				<CardBody>
 					<small class="text-secondary d-block mb-4">26 followers</small>
 					<h3 class="fs-6 mb-1 text-truncate"><a class="text-body" href="./empty.html">Training &amp; resources</a></h3>
 					<p class="text-secondary text-truncate">Access to learning materials, tutorials, or resources for users and staff.</p>
 					<p class="fs-sm text-secondary mb-0">Last post 6 days ago</p>
 					<hr>
 					<div class="d-flex align-items-center justify-content-between">
-						<div class="avatar-list avatar-list-stacked">
-							<span class="avatar avatar-xs" data-bs-toggle="tooltip" data-bs-title="Robert Garcia">
-								<img class="avatar-img" src="./static/avatars/003m.jpg" width="20" height="20" alt="Robert Garcia">
-							</span>
-							<span class="avatar avatar-xs" data-bs-toggle="tooltip" data-bs-title="Olivia Davis">
-								<img class="avatar-img" src="./static/avatars/005f.jpg" width="20" height="20" alt="Olivia Davis">
-							</span>
-						</div>
+						<AvatarList stacked={true}>
+							<Avatar src="static/avatars/003m.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="Robert Garcia" />
+							<Avatar src="static/avatars/005f.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="Olivia Davis" />
+						</AvatarList>
 						<div class="text-end">
 							<Badge text="38 posts" class="bg-light text-body" />
 						</div>
 					</div>
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 
 		<div class="col-12 col-md-6 col-lg-4">
-			<div class="card position-relative overflow-hidden">
+			<Card class="position-relative overflow-hidden">
 				<Icon name="brand-apple" class="icon-lg text-primary opacity-25 position-absolute top-0 end-0 m-3" />
-				<div class="card-body">
+				<CardBody>
 					<small class="text-secondary d-block mb-4">6 followers</small>
 					<h3 class="fs-6 mb-1 text-truncate"><a class="text-body" href="./empty.html">Industry news</a></h3>
 					<p class="text-secondary text-truncate">Trends, news, and commentary from around the industry landscape.</p>
 					<p class="fs-sm text-secondary mb-0">Last post 2 weeks ago</p>
 					<hr>
 					<div class="d-flex align-items-center justify-content-between">
-						<div class="avatar-list avatar-list-stacked">
-							<span class="avatar avatar-xs" data-bs-toggle="tooltip" data-bs-title="James Wilson">
-								<img class="avatar-img" src="./static/avatars/006m.jpg" width="20" height="20" alt="James Wilson">
-							</span>
-							<span class="avatar avatar-xs" data-bs-toggle="tooltip" data-bs-title="Jessica Miller">
-								<img class="avatar-img" src="./static/avatars/004f.jpg" width="20" height="20" alt="Jessica Miller">
-							</span>
-						</div>
+						<AvatarList stacked={true}>
+							<Avatar src="static/avatars/006m.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="James Wilson" />
+							<Avatar src="static/avatars/004f.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="Jessica Miller" />
+						</AvatarList>
 						<div class="text-end">
 							<Badge text="59 posts" class="bg-light text-body" />
 						</div>
 					</div>
-				</div>
-			</div>
+				</CardBody>
+			</Card>
 		</div>
 	</div>
 

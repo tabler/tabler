@@ -1,6 +1,9 @@
 ---
-// Port of cards/team-leaderboard.html
+
+import CardSubtitle from '../ui/CardSubtitle.astro';
 import Avatar from '../ui/Avatar.astro';
+import ListGroup from '../ui/ListGroup.astro';
+import ListGroupItem from '../ui/ListGroupItem.astro';
 import Progress from '../ui/Progress.astro';
 import crmDashboard from '@data/crm-dashboard.json';
 
@@ -11,14 +14,14 @@ const leaderboard = crmDashboard.leaderboard;
 	<div class="card-header">
 		<div>
 			<h3 class="card-title mb-0">Team leaderboard</h3>
-			<div class="card-subtitle">Q2 - May 1, 2026</div>
+			<CardSubtitle as="div">Q2 - May 1, 2026</CardSubtitle>
 		</div>
 	</div>
 
-	<div class="list-group list-group-flush">
+	<ListGroup flush>
 		{
 			leaderboard.items.map((item, index) => (
-				<div class="list-group-item">
+				<ListGroupItem>
 					<div class="row align-items-center g-3">
 						<div class="col-auto fw-bold me-3">{index + 1}</div>
 						<div class="col-auto">
@@ -33,8 +36,8 @@ const leaderboard = crmDashboard.leaderboard;
 							<div class="text-secondary">{item.deals} deals - {item.score}%</div>
 						</div>
 					</div>
-				</div>
+				</ListGroupItem>
 			))
 		}
-	</div>
+	</ListGroup>
 </div>
