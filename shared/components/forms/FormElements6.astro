@@ -1,0 +1,81 @@
+---
+// (noUiSlider), datepickers, progress bars, form buttons, and TomSelect variants.
+import flags from '@data/flags.json';
+import FormGroup from '@ui/FormGroup.astro';
+import Range from '@ui/Range.astro';
+import Datepicker from '@ui/Datepicker.astro';
+import Progress from '@ui/Progress.astro';
+import Button from '@ui/Button.astro';
+import Select from '@ui/Select.astro';
+
+const datalistCountries = (flags as { name: string }[]).slice(0, 10);
+---
+
+<FormGroup label="Datalist example">
+	<input class="form-control" list="datalistOptions" placeholder="Type to search..." />
+	<datalist id="datalistOptions">
+		{datalistCountries.map((country) => <option value={country.name} />)}
+	</datalist>
+</FormGroup>
+
+<FormGroup label="Range input">
+	<Range value={40} />
+	<Range value="20" id="simple" connect />
+	<Range value="60,90" id="connect" />
+	<Range value="40" id="color" class="text-green" connect />
+</FormGroup>
+
+<FormGroup label="Datepicker">
+	<Datepicker id="default" class="mb-2" />
+	<Datepicker id="icon" layout="icon" class="mb-2" />
+	<Datepicker id="icon-prepend" layout="icon-prepend" />
+</FormGroup>
+
+<FormGroup label="Inline datepicker">
+	<Datepicker id="inline" inline />
+</FormGroup>
+
+<FormGroup label="Progress">
+	<Progress class="mb-2" />
+	<Progress indeterminate color="green" />
+</FormGroup>
+
+<FormGroup label="Form buttons">
+	<div class="row">
+		<div class="col">
+			<Button block icon="brand-github" iconColor="github" text="Login with Github" />
+		</div>
+		<div class="col">
+			<Button block icon="brand-x" iconColor="x" text="Login with X" />
+		</div>
+	</div>
+</FormGroup>
+
+<FormGroup label="Tags input">
+	<Select key="tags" placeholder="Select tags" />
+</FormGroup>
+
+<FormGroup label="Advanced select">
+	<Select key="users" />
+</FormGroup>
+
+<FormGroup label="Advanced select with optgroup">
+	<Select key="optgroups" />
+</FormGroup>
+
+<FormGroup label="Select with avatars">
+	<Select key="people" indicator="avatar" />
+</FormGroup>
+
+<FormGroup label="Select with flags">
+	<Select key="countries" indicator="flag" />
+</FormGroup>
+
+<FormGroup label="Select with labels">
+	<Select key="labels" indicator="label" />
+</FormGroup>
+
+<FormGroup label="Advanced select with validation state">
+	<Select id="countries-valid" key="countries" state="valid" class="mb-3" />
+	<Select id="countries-invalid" key="countries" state="invalid" />
+</FormGroup>

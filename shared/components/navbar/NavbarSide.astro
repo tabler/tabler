@@ -1,0 +1,69 @@
+---
+import Button from '@ui/Button.astro';
+import ButtonList from '@ui/ButtonList.astro';
+import NavbarSideTheme from './NavbarSideTheme.astro';
+import NavbarSideNotifications from './NavbarSideNotifications.astro';
+import NavbarSideApps from './NavbarSideApps.astro';
+import NavbarSideLanguage from './NavbarSideLanguage.astro';
+import NavbarSideUser from './NavbarSideUser.astro';
+
+interface Props {
+	class?: string;
+	breakpoint?: string;
+	condensed?: boolean;
+	personId?: number;
+	hideUsername?: boolean;
+	dark?: boolean;
+	showThemeToggle?: boolean;
+	showNotifications?: boolean;
+	showApps?: boolean;
+	showLanguageSelector?: boolean;
+	showUser?: boolean;
+}
+
+const {
+	class: className,
+	breakpoint = 'md',
+	condensed = false,
+	personId = 1,
+	hideUsername = false,
+	dark = false,
+	// As in layout/navbar-side.html: show-* flags not passed in are falsy
+	// (navbar.html explicitly passes true, sidebar.html passes nothing —
+	// in the sidebar only the Sponsor button renders).
+	showThemeToggle = false,
+	showNotifications = false,
+	showApps = false,
+	showLanguageSelector = false,
+	showUser = false,
+} = Astro.props;
+
+// TODO: site.githubSponsorsUrl — add to src/lib/site.ts (out of scope for this
+// task; value from /Users/chomik/htdocs/tabler/shared/data/site.json).
+const githubSponsorsUrl = 'https://github.com/sponsors/codecalm';
+---
+
+<div class:list={['navbar-nav flex-row', className]}>
+	{
+		!condensed && (
+			<div class={`nav-item d-none d-${breakpoint}-flex me-3`}>
+				<ButtonList>
+					<Button icon="heart" iconColor="pink" outline text="Sponsor" href={githubSponsorsUrl} external />
+				</ButtonList>
+			</div>
+		)
+	}
+
+	{
+		(showThemeToggle || showNotifications || showApps || showLanguageSelector) && (
+			<div class={`d-none d-${breakpoint}-flex me-3`}>
+				{showThemeToggle && <NavbarSideTheme />}
+				{showNotifications && <NavbarSideNotifications />}
+				{showApps && <NavbarSideApps />}
+				{showLanguageSelector && <NavbarSideLanguage />}
+			</div>
+		)
+	}
+
+	{showUser && <NavbarSideUser personId={personId} hideUsername={hideUsername} dark={dark} />}
+</div>

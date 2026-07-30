@@ -1,0 +1,51 @@
+---
+// NOTE: the widgets page passes a `value=` argument, but the Liquid source only
+// reads `percentage` (default 20) for the progress bar — `value` is never used.
+// It is accepted here for signature parity but intentionally ignored.
+import Progress from '@ui/Progress.astro';
+import AvatarList from '@ui/AvatarList.astro';
+import Icon from '@ui/Icon.astro';
+import CardTitle from '@ui/CardTitle.astro';
+
+interface Props {
+	title?: string;
+	badge?: string;
+	offset?: number;
+	limit?: number;
+	percentage?: number | string;
+	percentageColor?: string;
+	due?: string;
+	/** unused — see note above */
+	value?: number | string;
+}
+
+const {
+	title = 'Task Title',
+	badge,
+	offset = 40,
+	limit = 7,
+	percentage = 20,
+	percentageColor = 'green',
+	due = '2 days',
+} = Astro.props;
+---
+
+<div class="card">
+	<Progress value={percentage} class="card-progress" color={percentageColor} />
+	<div class="card-body">
+		<CardTitle>
+			<a href="#">{title}</a>
+			{badge && <Fragment> <span class="badge ms-2">{badge}</span></Fragment>}
+		</CardTitle>
+
+		<AvatarList offset={offset} limit={limit} stacked class="mb-3" />
+
+		<div class="card-meta d-flex justify-content-between">
+			<div class="d-flex align-items-center">
+				<Icon name="check" class="me-2" />
+				<span>5/10</span>
+			</div>
+			<span>Due {due}</span>
+		</div>
+	</div>
+</div>

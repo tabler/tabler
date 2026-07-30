@@ -4,8 +4,8 @@ summary: This guide explains how to contribute to Tabler, from setting up a deve
 description: Guide to contributing to Tabler and setting up for development.
 layout: '@shared/layouts/DocsMdxLayout.astro'
 ---
-import Example from '@shared/components/docs/Example.astro';
-import Steps from '@shared/components/docs/Steps.astro'
+import Example from '@components/Example.astro';
+import Steps from '@components/Steps.astro'
 
 Contributions are always welcome and highly encouraged! Whether you're new to open source or a seasoned contributor, your input helps make Tabler better for everyone. If you're new to open source, we recommend reading a [how to contribute](https://opensource.guide/how-to-contribute/) guide to learn more about contributing.
 
@@ -78,13 +78,13 @@ Tabler is a pnpm monorepo. The packages you will work with most often are:
 - `core/` - the framework itself: SCSS sources in `core/scss/` and JavaScript in `core/js/`. This is where CSS classes and components are defined.
 - `preview/` - the demo website built with [Astro](https://astro.build). Pages live in `preview/pages/*.astro`.
 - `docs/` - the documentation website, also built with Astro. Pages live in `docs/pages/**/*.mdx`.
-- `shared/astro/` - Astro components, layouts and helpers shared by the preview and docs websites. Import them with the `@shared` alias, for example `import Button from '@shared/components/ui/Button.astro'`.
+- `shared/` - Astro components, layouts and helpers shared by the preview and docs websites. Import UI with `@ui` (for example `import Button from '@ui/Button.astro'`), other shared pieces with `@shared`. Also holds `data/` (`@data`) and `static/`.
 - `shared/data/` - JSON data used by demo pages. Import it with the `@data` alias.
 
 A few practical rules:
 
 - If you add a new CSS class or component style, change it in `core/scss/` and show it on a preview page.
-- If you add or change a reusable piece of markup, put it in `shared/astro/components/`, not in a single page.
+- If you add or change a reusable piece of markup, put it in `shared/components/`, not in a single page.
 - If you add a new feature, document it in `docs/pages/`.
 
 ## Add a changeset

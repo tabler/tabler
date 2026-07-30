@@ -74,8 +74,10 @@ export default defineConfig({
 				// demo data lives in the monorepo's shared/data — single source of
 				// truth shared with the Eleventy packages (no copies in src/data)
 				'@data': fileURLToPath(new URL('../shared/data', import.meta.url)),
-				// Astro components/lib shared with docs-astro (single source of truth)
-				'@shared': fileURLToPath(new URL('../shared/astro', import.meta.url)),
+				// Astro components/lib shared with docs (single source of truth)
+				'@shared': fileURLToPath(new URL('../shared', import.meta.url)),
+				'@ui': fileURLToPath(new URL('../shared/ui', import.meta.url)),
+				'@components': fileURLToPath(new URL('../shared/components', import.meta.url)),
 				// this package's pages dir — used by @shared/lib/docs-children's glob
 				'@pages': fileURLToPath(new URL('./pages', import.meta.url)),
 			},

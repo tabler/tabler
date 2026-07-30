@@ -1,0 +1,64 @@
+---
+// TODO: unported ui/crm-stats.html branches (unused on dashboard-crm):
+//   person-id (avatar), chart-data + chart-position/chart-label/chart-label-icon
+//   (sparkline), small-icon, description-value/description-value-color, trending,
+//   button, chart-type/chart-color.
+
+import Subheader from '@ui/Subheader.astro';
+import Icon from '@ui/Icon.astro';
+import Trending from '@ui/Trending.astro';
+
+interface Props {
+	color?: string;
+	icon?: string;
+	/** lt — light avatar background (bg-{color}-lt) instead of bg-{color} text-white */
+	lt?: boolean;
+	title?: string;
+	description?: string;
+	/** change-value — passed straight to ui/trending.html (keeps its +/- sign) */
+	changeValue?: string;
+	/** change-value-unit — trending unit; defaults to '%' in Trending when unset */
+	changeValueUnit?: string;
+	class?: string;
+}
+
+const {
+	color,
+	icon,
+	lt,
+	title = '1700',
+	description = 'Users',
+	changeValue,
+	changeValueUnit,
+	class: className,
+} = Astro.props;
+
+const avatarClass = [color ? `bg-${color}${lt ? '-lt' : ' text-white'}` : '', 'avatar', 'avatar-square'];
+---
+
+<div class:list={['card card-sm', className]}>
+	<div class="card-body p-3">
+		<div class="row align-items-center">
+			{
+				icon && (
+					<div class="col-auto">
+						<span class:list={avatarClass}><Icon name={icon} /></span>
+					</div>
+				)
+			}
+
+			<div class="col">
+				<Subheader>
+					{title}
+				</Subheader>
+				<div class="h3 m-0 p-0">
+					{description}
+				</div>
+			</div>
+
+			<div class="col-auto">
+				<Trending value={changeValue as unknown as number} unit={changeValueUnit} />
+			</div>
+		</div>
+	</div>
+</div>

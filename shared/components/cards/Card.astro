@@ -1,0 +1,242 @@
+---
+// Equivalent of cards/card.html
+// TODO: ui/nav.html is inlined here only in its header variant (tabs/pills
+//       inside .card-header) — the standalone nav variants are not ported.
+// TODO: ui/photo.html is inlined only in its ratio branch with the fixed
+//       photo ids from the Liquid source (img-top → id=7, img-bottom → id=11;
+//       the `id=img-id` argument in card.html is always undefined and the
+//       trailing literal id wins).
+// TODO: ui/form/check.html is inlined only in the empty+checked (switch)
+//       variants used by footer-elements; other check params are not ported.
+
+import CardSubtitle from '@ui/CardSubtitle.astro';
+import Icon from '@ui/Icon.astro';
+import AvatarList from '@ui/AvatarList.astro';
+import Empty from '@ui/Empty.astro';
+import Progress from '@ui/Progress.astro';
+import photos from '@data/photos.json';
+
+interface Props {
+	link?: boolean;
+	active?: boolean;
+	inactive?: boolean;
+	class?: string;
+	empty?: boolean;
+	imgTop?: boolean;
+	imgBottom?: boolean;
+	statusTop?: string;
+	statusBottom?: string;
+	statusStart?: string;
+	header?: boolean;
+	headerTitle?: string;
+	headerTabs?: boolean;
+	headerPills?: boolean;
+	alert?: string;
+	alertType?: string;
+	title?: string;
+	subtitle?: boolean;
+	body?: string;
+	button?: boolean;
+	footer?: boolean;
+	footerButton?: boolean;
+	footerButtons?: boolean;
+	/** a ">" prefix pushes the element (and, per the Liquid loop-variable leak,
+	 * every following one) to the right */
+	footerElements?: string[];
+	progress?: boolean;
+}
+
+const {
+	link = false,
+	active,
+	inactive,
+	class: className,
+	empty,
+	imgTop,
+	imgBottom,
+	statusTop,
+	statusBottom,
+	statusStart,
+	header,
+	headerTitle,
+	headerTabs,
+	headerPills,
+	alert,
+	alertType = 'success',
+	title,
+	subtitle,
+	body,
+	button,
+	footer,
+	footerButton,
+	footerButtons,
+	footerElements,
+	progress,
+} = Astro.props;
+
+const Element = link ? 'a' : 'div';
+
+const classes = [
+	'card',
+	active && 'card-active',
+	inactive && 'card-inactive',
+	className,
+]
+
+// footer-elements parsing — mirrors the Liquid loop, including the fact that
+// `right` is never reset once set (Liquid assign leaks across iterations).
+let right = false;
+const footerEls = (footerElements ?? []).map((element) => {
+		let el = element;
+		if (el.slice(0, 1) === '>') {
+			right = true;
+			el = element.slice(1);
+		}
+		return { el, right };
+	});
+
+const hasHeader = header || headerTitle || headerTabs || headerPills;
+const hasFooter = footer || footerButton || footerButtons || footerElements;
+
+const imgTopPhoto = (photos as { file: string; title: string }[])[7];
+const imgBottomPhoto = (photos as { file: string; title: string }[])[11];
+---
+
+<Element href={link ? '#' : undefined} class:list={classes}>
+	{
+		empty ? (
+			<Empty illustration="not-found" height={160} />
+		) : (
+			<Fragment>
+				{imgTop && (
+					<Fragment>
+						<!-- Photo -->
+						<div
+							class="img-responsive img-responsive-21x9 card-img-top"
+							style={`background-image: url(./static/photos/${imgTopPhoto.file})`}
+						/>
+					</Fragment>
+				)}
+
+				{statusTop ? (
+					<div class={`card-status-top bg-${statusTop}`} />
+				) : statusBottom ? (
+					<div class={`card-status-bottom bg-${statusBottom}`} />
+				) : statusStart ? (
+					<div class={`card-status-start bg-${statusStart}`} />
+				) : null}
+
+				{hasHeader && (
+					<div class="card-header">
+						{headerTabs || headerPills ? (
+							<ul class={`nav ${headerPills ? 'nav-pills card-header-pills' : 'nav-tabs card-header-tabs'}`}>
+								<li class="nav-item">
+									<a class="nav-link active" href="#">
+										Active
+									</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link" href="#">
+										<Icon name="star" class="nav-link-icon" />
+										Link
+									</a>
+								</li>
+								<li class="nav-item">
+									<a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">
+										Disabled
+									</a>
+								</li>
+								<li class="nav-item ms-auto">
+									<a class="nav-link" href="#">
+										<Icon name="settings" />
+									</a>
+								</li>
+							</ul>
+						) : (
+							<h3 class="card-title" set:html={headerTitle ?? 'Header title'} />
+						)}
+					</div>
+				)}
+
+				{alert && <div class={`card-alert alert alert-${alertType} mb-0`} set:html={alert} />}
+				<div class="card-body">
+					{title && <h3 class="card-title" set:html={title} />}
+					{subtitle && <CardSubtitle as="div">Card subtitle</CardSubtitle>}
+
+					{body ? (
+						<p class="text-secondary" set:html={body} />
+					) : (
+						<p class="text-secondary">
+							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit incidunt, iste, itaque
+							minima neque pariatur perferendis sed suscipit velit vitae voluptatem.
+						</p>
+					)}
+
+					{button && (
+						<div class="card-text">
+							<a href="#" class="btn btn-primary">
+								Go somewhere
+							</a>
+						</div>
+					)}
+				</div>
+
+				{hasFooter && (
+					<Fragment>
+						<!-- Card footer -->
+						<div class="card-footer">
+							{footerElements ? (
+								<div class="row align-items-center">
+									{footerEls.map(({ el, right: elRight }) => (
+										<div class={`col-auto${elRight ? ' ms-auto' : ''}`}>
+											{el === 'switch' ? (
+												<label class="form-check form-switch m-0">
+													<input class="form-check-input position-static" type="checkbox" checked />
+												</label>
+											) : el === 'check' ? (
+												<label class="form-check m-0">
+													<input class="form-check-input position-static" type="checkbox" checked />
+												</label>
+											) : el === 'avatars' ? (
+												<AvatarList stacked={true} size="sm" text="+3" />
+											) : el === 'more' ? (
+												<a href="#">More information</a>
+											) : null}
+										</div>
+									))}
+								</div>
+							) : footerButton ? (
+								<a href="#" class="btn btn-primary">
+									Go somewhere
+								</a>
+							) : footerButtons ? (
+								<div class="d-flex">
+									<a href="#" class="btn btn-link">
+										Cancel
+									</a>
+									<a href="#" class="btn btn-primary ms-auto">
+										Go somewhere
+									</a>
+								</div>
+							) : (
+								'This is standard card footer'
+							)}
+						</div>
+					</Fragment>
+				)}
+
+				{imgBottom && (
+					<Fragment>
+						<!-- Photo -->
+						<div
+							class="img-responsive img-responsive-21x9 card-img-bottom"
+							style={`background-image: url(./static/photos/${imgBottomPhoto.file})`}
+						/>
+					</Fragment>
+				)}
+
+				{progress && <Progress class="progress-sm card-progress" />}
+			</Fragment>
+		)
+	}
+</Element>
