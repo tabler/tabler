@@ -32,7 +32,7 @@ export default defineConfig({
   },
   integrations: [mdx()],
   markdown: {
-    // markdown-it in Eleventy did not produce typographic quotes — neither do we
+    // No typographic quote rewriting.
     processor: satteri({ features: { smartPunctuation: false } }),
     shikiConfig: {
       theme: 'github-dark',

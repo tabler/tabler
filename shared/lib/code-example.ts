@@ -24,7 +24,7 @@ export async function highlightCode(code: string, lang = 'html'): Promise<string
   return highlighter.codeToHtml(code, { lang, theme: 'github-dark' })
 }
 
-/** Equivalent of the escape_attribute filter (data-clipboard-text). */
+/** Escape text for use in HTML attributes (e.g. data-clipboard-text). */
 export function escapeAttribute(text: string): string {
   return text
     .replace(/&/g, '&amp;')
@@ -36,7 +36,7 @@ export function escapeAttribute(text: string): string {
     .replace(/[\r\n]/g, '&#13;')
 }
 
-/** Equivalent of the remove-href filter. */
+/** Replace href="#" with javascript:void(0) in example markup. */
 export function removeHref(content: string): string {
   return content.replace(/href="#"/g, 'href="javascript:void(0)"')
 }
