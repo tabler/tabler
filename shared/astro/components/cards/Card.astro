@@ -39,9 +39,9 @@ interface Props {
 	footer?: boolean;
 	footerButton?: boolean;
 	footerButtons?: boolean;
-	/** comma-separated list; a ">" prefix pushes the element (and, per the
-	 * Liquid loop-variable leak, every following one) to the right */
-	footerElements?: string;
+	/** a ">" prefix pushes the element (and, per the Liquid loop-variable leak,
+	 * every following one) to the right */
+	footerElements?: string[];
 	progress?: boolean;
 }
 
@@ -87,10 +87,7 @@ const classes = [
 // footer-elements parsing — mirrors the Liquid loop, including the fact that
 // `right` is never reset once set (Liquid assign leaks across iterations).
 let right = false;
-const footerEls = (footerElements ?? '')
-	.split(',')
-	.filter(Boolean)
-	.map((element) => {
+const footerEls = (footerElements ?? []).map((element) => {
 		let el = element;
 		if (el.slice(0, 1) === '>') {
 			right = true;

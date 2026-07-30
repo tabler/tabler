@@ -12,8 +12,7 @@ interface Props {
 	class?: string;
 	title?: string;
 	description?: string;
-	/** comma-separated list of items (the list param in Liquid) */
-	list?: string;
+	list?: string[];
 	action?: string;
 	link?: string;
 	buttons?: boolean;
@@ -54,7 +53,6 @@ const classes = [
 	.filter(Boolean)
 	.join(' ');
 
-const listItems = (list ?? '').split(',').filter(Boolean);
 ---
 
 <div class={classes} role="alert">
@@ -66,9 +64,9 @@ const listItems = (list ?? '').split(',').filter(Boolean);
 				<h4 class="alert-heading" set:html={title} />
 				<div class="alert-description">
 					<Fragment set:html={description ?? ''} />
-					{listItems.length > 0 && (
+					{list && list.length > 0 && (
 						<ul class="alert-list">
-							{listItems.map((item) => (
+							{list.map((item) => (
 								<li>{item}</li>
 							))}
 						</ul>

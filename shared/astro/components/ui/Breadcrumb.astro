@@ -3,8 +3,7 @@
 import Icon from '../Icon.astro';
 
 interface Props {
-	/** comma-separated list of pages (Liquid `pages` param) */
-	pages?: string;
+	pages?: string[];
 	class?: string;
 	/** breadcrumb-{separator} class, e.g. "dots" */
 	separator?: string;
@@ -12,12 +11,9 @@ interface Props {
 	homeIcon?: boolean;
 }
 
-const { pages = 'Home,Library,Data', class: className, separator, homeIcon } = Astro.props;
+const { pages = ['Home', 'Library', 'Data'], class: className, separator, homeIcon } = Astro.props;
 
-// LiquidJS split behaves like Ruby's String#split: trailing empty strings are
-// dropped (layout/header-actions/breadcrumb.html passes "Tabler,Pages,").
-const items = pages.split(',');
-while (items.length > 0 && items[items.length - 1] === '') items.pop();
+const items = pages;
 
 const classes = [
 	'breadcrumb',

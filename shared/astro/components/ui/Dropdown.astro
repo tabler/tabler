@@ -2,13 +2,12 @@
 // Port of shared/includes/ui/dropdown.html
 interface Props {
 	mainBtn?: string;
-	/** comma-space separated option labels (Liquid `options | split: ", "`) */
-	options?: string;
+	options?: string[];
 }
 
 const { mainBtn, options } = Astro.props;
 
-const optionsArray = (options ?? '').split(', ');
+const optionsArray = options ?? [];
 ---
 
 <div class="dropdown">
