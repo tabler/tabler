@@ -87,7 +87,8 @@ const emailEntries = Object.entries(emails);
 		const emailModal = document.getElementById('email-modal');
 		if (emailModal) {
 			emailModal.addEventListener('show.bs.modal', function (e) {
-				const button = (e as Event & { relatedTarget: HTMLElement }).relatedTarget;
+				const button = (e as Event & { relatedTarget?: EventTarget | null }).relatedTarget;
+				if (!(button instanceof HTMLElement)) return;
 
 				const image = button.getAttribute('data-bs-image'),
 					title = button.getAttribute('data-bs-title'),
