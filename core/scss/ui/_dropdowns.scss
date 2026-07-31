@@ -1,9 +1,15 @@
 @use '../config' as *;
 
 .dropdown-menu {
-  --#{$prefix}dropdown-item-gap: 0.5rem;
+  --#{$prefix}dropdown-item-gap: #{$dropdown-item-gap};
   --#{$prefix}dropdown-item-icon-size: #{$icon-size};
   --#{$prefix}dropdown-item-icon-color: var(--#{$prefix}tertiary);
+  --#{$prefix}dropdown-header-padding-bottom: #{$dropdown-header-padding-bottom};
+  --#{$prefix}dropdown-menu-columns-gap: #{$dropdown-menu-columns-gap};
+  --#{$prefix}dropdown-arrow-offset: #{$dropdown-arrow-offset};
+  --#{$prefix}dropdown-arrow-inset: #{$dropdown-arrow-inset};
+  --#{$prefix}dropdown-dropend-offset: #{$dropdown-dropend-offset};
+  --#{$prefix}dropdown-menu-card-min-width: #{$dropdown-menu-card-min-width};
   user-select: none;
   background-clip: border-box;
 
@@ -48,7 +54,7 @@
 
 .dropdown-header {
   @include subheader;
-  padding-bottom: 0.25rem;
+  padding-bottom: var(--#{$prefix}dropdown-header-padding-bottom);
   pointer-events: none;
 }
 
@@ -68,15 +74,15 @@
 
 .dropdown-menu-columns {
   display: flex;
-  flex: 0 0.25rem;
+  flex: 0 0 var(--#{$prefix}dropdown-menu-columns-gap);
 }
 
 .dropdown-menu-arrow {
   &:before {
     content: '';
     position: absolute;
-    top: -0.25rem;
-    inset-inline-start: 0.75rem;
+    top: calc(-1 * var(--#{$prefix}dropdown-arrow-offset));
+    inset-inline-start: var(--#{$prefix}dropdown-arrow-inset);
     display: block;
     background: inherit;
     width: 14px;
@@ -92,7 +98,7 @@
 
   &.dropdown-menu-end {
     &:before {
-      inset-inline-end: 0.75rem;
+      inset-inline-end: var(--#{$prefix}dropdown-arrow-inset);
       inset-inline-start: auto;
     }
   }
@@ -101,7 +107,7 @@
 .dropend {
   > .dropdown-menu {
     margin-top: subtract(calc(-1 * $dropdown-padding-y), 1px);
-    margin-inline-start: -0.25rem;
+    margin-inline-start: calc(-1 * var(--#{$prefix}dropdown-dropend-offset));
   }
 
   .dropdown-toggle {
@@ -113,7 +119,7 @@
 
 .dropdown-menu-card {
   padding: 0;
-  min-width: 20rem;
+  min-width: var(--#{$prefix}dropdown-menu-card-min-width);
 
   > .card {
     margin: 0;

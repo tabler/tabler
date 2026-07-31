@@ -6,7 +6,7 @@
 .steps {
   --#{$prefix}steps-color: #{$steps-color};
   --#{$prefix}steps-inactive-color: #{$steps-inactive-color};
-  --#{$prefix}steps-dot-size: 0.5rem;
+  --#{$prefix}steps-dot-size: #{$steps-dot-size};
   --#{$prefix}steps-border-width: #{$steps-border-width};
   display: flex;
   flex-wrap: nowrap;
@@ -36,9 +36,10 @@
 // Step item
 //
 .step-item {
+  --#{$prefix}step-item-min-height: #{$step-item-min-height};
   position: relative;
   flex: 1 1 0;
-  min-height: 1rem;
+  min-height: var(--#{$prefix}step-item-min-height);
   margin-top: 0;
   color: inherit;
   text-align: center;
@@ -110,7 +111,7 @@
 // Steps counter
 //
 .steps-counter {
-  --#{$prefix}steps-dot-size: 1.5rem;
+  --#{$prefix}steps-dot-size: #{$steps-counter-dot-size};
   counter-reset: steps;
 
   .step-item {
@@ -127,6 +128,9 @@
 //
 .steps-vertical {
   --#{$prefix}steps-dot-offset: 6px;
+  --#{$prefix}steps-vertical-padding-start: #{$steps-vertical-padding-start};
+  --#{$prefix}steps-vertical-item-gap: #{$steps-vertical-item-gap};
+  --#{$prefix}steps-vertical-connector-gap: #{$steps-vertical-connector-gap};
   flex-direction: column;
 
   &.steps-counter {
@@ -136,11 +140,11 @@
   .step-item {
     text-align: start;
     padding-top: 0;
-    padding-inline-start: calc(var(--#{$prefix}steps-dot-size) + 1rem);
+    padding-inline-start: calc(var(--#{$prefix}steps-dot-size) + var(--#{$prefix}steps-vertical-padding-start));
     min-height: auto;
 
     &:not(:first-child) {
-      margin-top: 1rem;
+      margin-top: var(--#{$prefix}steps-vertical-item-gap);
     }
 
     &:before {
@@ -157,7 +161,7 @@
         top: var(--#{$prefix}steps-dot-offset);
         inset-inline-start: calc(var(--#{$prefix}steps-dot-size) * 0.5);
         width: var(--#{$prefix}steps-border-width);
-        height: calc(100% + 1rem);
+        height: calc(100% + var(--#{$prefix}steps-vertical-connector-gap));
       }
     }
   }

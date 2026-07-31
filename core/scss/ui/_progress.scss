@@ -41,15 +41,15 @@ Progress
 }
 
 .progress-sm {
-  height: 0.25rem;
+  --#{$prefix}progress-height: #{$progress-height-sm};
 }
 
 .progress-lg {
-  height: 0.75rem;
+  --#{$prefix}progress-height: #{$progress-height-lg};
 }
 
 .progress-xl {
-  height: 1rem;
+  --#{$prefix}progress-height: #{$progress-height-xl};
 }
 
 /**
@@ -87,8 +87,10 @@ Progress bar
 Progressbg
  */
 .progressbg {
+  --#{$prefix}progressbg-padding-y: #{$progressbg-padding-y};
+  --#{$prefix}progressbg-padding-x: #{$progressbg-padding-x};
   position: relative;
-  padding: 0.25rem 0.5rem;
+  padding: var(--#{$prefix}progressbg-padding-y) var(--#{$prefix}progressbg-padding-x);
   display: flex;
 }
 
@@ -113,27 +115,30 @@ Progressbg
 }
 
 .progressbg-value {
+  --#{$prefix}progressbg-value-padding-start: #{$progressbg-value-padding-start};
   font-weight: var(--#{$prefix}font-weight-medium);
   margin-inline-start: auto;
-  padding-inline-start: 2rem;
+  padding-inline-start: var(--#{$prefix}progressbg-value-padding-start);
 }
 
 /**
 Progress steps
  */
 .progress-steps {
+  --#{$prefix}progress-steps-gap: #{$progress-steps-gap};
   display: flex;
   flex-wrap: nowrap;
   width: 100%;
   padding: 0;
   margin: 0;
   list-style: none;
-  gap: 0.25rem;
+  gap: var(--#{$prefix}progress-steps-gap);
 }
 
 .progress-steps-item {
+  --#{$prefix}progress-steps-item-height: #{$progress-steps-item-height};
   flex: 1 1 0;
-  min-height: 0.25rem;
+  min-height: var(--#{$prefix}progress-steps-item-height);
   margin-top: 0;
   color: inherit;
   text-align: center;

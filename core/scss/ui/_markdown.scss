@@ -8,6 +8,11 @@ Prose (formerly markdown)
  */
 .prose,
 .markdown {
+  --#{$prefix}markdown-heading-margin-top: #{$markdown-heading-margin-top};
+  --#{$prefix}markdown-blockquote-margin-y: #{$markdown-blockquote-margin-y};
+  --#{$prefix}markdown-blockquote-padding-y: #{$markdown-blockquote-padding-y};
+  --#{$prefix}markdown-blockquote-padding-x: #{$markdown-blockquote-padding-x};
+  --#{$prefix}markdown-pre-max-height: #{$markdown-pre-max-height};
   line-height: $markdown-line-height;
   font-size: $markdown-font-size;
 
@@ -42,7 +47,7 @@ Prose (formerly markdown)
     h4,
     h5,
     h6 {
-      margin-top: 2.5rem;
+      margin-top: var(--#{$prefix}markdown-heading-margin-top);
     }
   }
 
@@ -54,8 +59,8 @@ Prose (formerly markdown)
 
   > blockquote {
     font-size: $h3-font-size;
-    margin: 1.5rem 0;
-    padding: 0.5rem 1.5rem;
+    margin: var(--#{$prefix}markdown-blockquote-margin-y) 0;
+    padding: var(--#{$prefix}markdown-blockquote-padding-y) var(--#{$prefix}markdown-blockquote-padding-x);
   }
 
   > img,
@@ -65,6 +70,6 @@ Prose (formerly markdown)
   }
 
   pre {
-    max-height: 20rem;
+    max-height: var(--#{$prefix}markdown-pre-max-height);
   }
 }
