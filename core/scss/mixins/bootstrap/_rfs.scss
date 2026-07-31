@@ -286,12 +286,7 @@ $rfs-mq-property-height: if($rfs-mode == max-media-query, max-height, min-height
         #{$property}: if($rfs-mode == max-media-query, $val, $fluid-val);
 
         // Include safari iframe resize fix if needed
-        min-width: if(
-          sass($rfs-safari-iframe-resize-bug-fix): (
-            0 * 1vw,
-          );
-          else: null
-        );
+        min-width: if($rfs-safari-iframe-resize-bug-fix, 0 * 1vw, null);
       }
 
       @include _rfs-media-query-rule() {
