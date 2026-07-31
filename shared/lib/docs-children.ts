@@ -49,25 +49,26 @@ export function getDocsChildren(parentUrl: string): DocsChildPage[] {
 
   return (
     Object.entries(pageModules)
-      .map(([path, mod]) => {
+      .flatMap(([path, mod]): DocsChildPage[] => {
         const pageUrl = urlFromGlobPath(path)
         const parts = pageUrl.split('/').filter(Boolean)
         const isDirectChild = parts.length === parentParts.length + 1 && parts.slice(0, -1).join('/') === parentParts.join('/')
 
-        if (!isDirectChild) return null
+        if (!isDirectChild) return []
 
         const fm = getFrontmatter(mod)
-        if (!fm?.title) return null
+        if (!fm?.title) return []
 
-        return {
-          url: pageUrl,
-          title: String(fm.title),
-          description: String(fm.description ?? ''),
-          icon: fm.icon ? String(fm.icon) : undefined,
-          order: Number(fm.order ?? 999),
-        }
+        return [
+          {
+            url: pageUrl,
+            title: String(fm.title),
+            description: String(fm.description ?? ''),
+            ...(fm.icon ? { icon: String(fm.icon) } : {}),
+            order: Number(fm.order ?? 999),
+          },
+        ]
       })
-      .filter((page): page is DocsChildPage => page !== null)
       // if a route exists in both conventions (foo.mdx AND foo/index.mdx), count it once
       .filter((page, i, all) => all.findIndex((p) => p.url === page.url) === i)
       .sort((a, b) => a.order - b.order || a.title.localeCompare(b.title))
