@@ -1,191 +1,201 @@
 ---
-import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
-import Icon from '@ui/Icon.astro';
-import Button from '@ui/Button.astro';
-import ButtonList from '@ui/ButtonList.astro';
-import Card from '@ui/Card.astro';
-import CardHeader from '@ui/CardHeader.astro';
-import CardBody from '@ui/CardBody.astro';
-import site from '@data/site.json';
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Icon from '@ui/Icon.astro'
+import Button from '@ui/Button.astro'
+import ButtonList from '@ui/ButtonList.astro'
+import Card from '@ui/Card.astro'
+import CardHeader from '@ui/CardHeader.astro'
+import CardBody from '@ui/CardBody.astro'
+import site from '@data/site.json'
 
-type ColorEntry = [string, { title: string; icon?: string }];
+type ColorEntry = [string, { title: string; icon?: string }]
 
 // Liquid iterates the site.json objects as [key, value] pairs.
 // themeColors/colors entries have no icon — ui/icon.html renders nothing there.
-const themeColors = Object.entries(site.themeColors) as ColorEntry[];
-const colors = Object.entries(site.colors) as ColorEntry[];
-const socialColors = Object.entries(site.socialColors) as ColorEntry[];
+const themeColors = Object.entries(site.themeColors) as ColorEntry[]
+const colors = Object.entries(site.colors) as ColorEntry[]
+const socialColors = Object.entries(site.socialColors) as ColorEntry[]
 
-const actions = ['edit', 'copy', 'settings', 'clipboard', 'x'];
-const sizes = ['sm', 'md', 'lg', 'xl'];
+const actions = ['edit', 'copy', 'settings', 'clipboard', 'x']
+const sizes = ['sm', 'md', 'lg', 'xl']
 ---
 
 <DefaultLayout title="Buttons" pageHeader="Buttons" pageMenu="base.buttons">
-	<div class="row row-cards">
-		<div class="col-md-6">
-			<Card>
-				<CardHeader title="Standard Buttons" />
-				<CardBody>
-					<ButtonList>
-						{
-							themeColors.map(([name, color]) => (
-								<a class={`btn btn-${name}`}>{color.icon && <Icon name={color.icon} />} {color.title}</a>
-							))
-						}
-					</ButtonList>
-				</CardBody>
-			</Card>
-		</div>
-		<div class="col-md-6">
-			<Card>
-				<CardHeader title="Outline Buttons" />
-				<CardBody>
-					<ButtonList>
-						{
-							themeColors.map(([name, color]) => (
-								<a class={`btn btn-outline btn-${name}`}>{color.icon && <Icon name={color.icon} />} {color.title}</a>
-							))
-						}
-					</ButtonList>
-				</CardBody>
-			</Card>
-		</div>
-		<div class="col-md-6">
-			<Card>
-				<CardHeader title="Ghost Buttons" />
-				<CardBody>
-					<ButtonList>
-						{
-							themeColors.map(([name, color]) => (
-								<a class={`btn btn-ghost btn-${name}`}>{color.icon && <Icon name={color.icon} />} {color.title}</a>
-							))
-						}
-					</ButtonList>
-				</CardBody>
-			</Card>
-		</div>
-		<div class="col-md-6">
-			<Card>
-				<CardHeader title="Square Buttons" />
-				<CardBody>
-					<ButtonList>
-						{
-							themeColors.map(([name, color]) => (
-								<a class={`btn btn-square btn-${name}`}>{color.icon && <Icon name={color.icon} />} {color.title}</a>
-							))
-						}
-					</ButtonList>
-				</CardBody>
-			</Card>
-		</div>
-		<div class="col-md-6">
-			<Card>
-				<CardHeader title="Pill Buttons" />
-				<CardBody>
-					<ButtonList>
-						{
-							themeColors.map(([name, color]) => (
-								<a class={`btn btn-pill btn-${name}`}>{color.icon && <Icon name={color.icon} />} {color.title}</a>
-							))
-						}
-					</ButtonList>
-				</CardBody>
-			</Card>
-		</div>
-		<div class="col-md-6">
-			<Card>
-				<CardHeader title="Extra colors" />
-				<CardBody>
-					<ButtonList>
-						{
-							colors.map(([name, color]) => (
-								<a class={`btn btn-${name}`}>{color.icon && <Icon name={color.icon} />} {color.title}</a>
-							))
-						}
-					</ButtonList>
-				</CardBody>
-			</Card>
-		</div>
-		<div class="col-md-6">
-			<Card>
-				<CardHeader title="Icon buttons" />
-				<CardBody>
-					<ButtonList>
-						{
-							socialColors.map(([name, app]) => (
-								<a class={`btn btn-icon btn-${name}`}>{app.icon && <Icon name={app.icon} />}</a>
-							))
-						}
-					</ButtonList>
-				</CardBody>
-			</Card>
-		</div>
-		<div class="col-md-6">
-			<Card>
-				<CardHeader title="Social colors" />
-				<CardBody>
-					<ButtonList>
-						{
-							socialColors.map(([name, app]) => (
-								<a class={`btn btn-${name}`}>{app.icon && <Icon name={app.icon} />} {app.title}</a>
-							))
-						}
-					</ButtonList>
-				</CardBody>
-			</Card>
-		</div>
-		<div class="col-md-6">
-			<Card>
-				<CardHeader title="Action buttons" />
-				<CardBody>
-					<div class="btn-actions">
-						{
-							actions.map((action) => (
-								<a class="btn btn-action">
-									<Icon name={action} />
-								</a>
-							))
-						}
-					</div>
-				</CardBody>
-			</Card>
-		</div>
-		<div class="col-md-6">
-			<Card>
-				<CardHeader title="Buttons with icon" />
-				<CardBody>
-					<ButtonList>
-						<a class="btn btn-animate-icon">Save <Icon name="arrow-right" class="icon-end" /></a>
-						<a class="btn btn-animate-icon btn-animate-icon-rotate"><Icon name="plus" /> Add</a>
-						<a class="btn btn-animate-icon btn-animate-icon-shake"><Icon name="bell" /> Notifications</a>
-						<a class="btn btn-animate-icon btn-animate-icon-rotate"><Icon name="settings" /> Settings</a>
-						<a class="btn btn-animate-icon btn-animate-icon-pulse"><Icon name="heart" /> Love</a>
-						<a class="btn btn-animate-icon btn-animate-icon-rotate"><Icon name="x" /> Close</a>
-						<a class="btn btn-animate-icon btn-animate-icon-tada"><Icon name="check" /> Confirm</a>
-						<a class="btn btn-animate-icon">Next <Icon name="chevron-right" class="icon-end" /></a>
-						<a class="btn btn-animate-icon btn-animate-icon-move-start"><Icon name="chevron-left" /> Previous</a>
-					</ButtonList>
-				</CardBody>
-			</Card>
-		</div>
-		<div class="col-md-6">
-			<Card>
-				<CardHeader title="Buttons size" />
-				<CardBody>
-					<div class="space-y">
-						{
-							sizes.map((size) => (
-								<ButtonList>
-									<Button size={size} text="Button" />
-									<Button size={size} icon="star" iconOnly />
-									<Button size={size} icon="star" text="Button" />
-									<Button size={size} iconEnd="star" text="Button" />
-								</ButtonList>
-							))
-						}
-					</div>
-				</CardBody>
-			</Card>
-		</div>
-	</div>
+  <div class="row row-cards">
+    <div class="col-md-6">
+      <Card>
+        <CardHeader title="Standard Buttons" />
+        <CardBody>
+          <ButtonList>
+            {
+              themeColors.map(([name, color]) => (
+                <a class={`btn btn-${name}`}>
+                  {color.icon && <Icon name={color.icon} />} {color.title}
+                </a>
+              ))
+            }
+          </ButtonList>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6">
+      <Card>
+        <CardHeader title="Outline Buttons" />
+        <CardBody>
+          <ButtonList>
+            {
+              themeColors.map(([name, color]) => (
+                <a class={`btn btn-outline btn-${name}`}>
+                  {color.icon && <Icon name={color.icon} />} {color.title}
+                </a>
+              ))
+            }
+          </ButtonList>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6">
+      <Card>
+        <CardHeader title="Ghost Buttons" />
+        <CardBody>
+          <ButtonList>
+            {
+              themeColors.map(([name, color]) => (
+                <a class={`btn btn-ghost btn-${name}`}>
+                  {color.icon && <Icon name={color.icon} />} {color.title}
+                </a>
+              ))
+            }
+          </ButtonList>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6">
+      <Card>
+        <CardHeader title="Square Buttons" />
+        <CardBody>
+          <ButtonList>
+            {
+              themeColors.map(([name, color]) => (
+                <a class={`btn btn-square btn-${name}`}>
+                  {color.icon && <Icon name={color.icon} />} {color.title}
+                </a>
+              ))
+            }
+          </ButtonList>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6">
+      <Card>
+        <CardHeader title="Pill Buttons" />
+        <CardBody>
+          <ButtonList>
+            {
+              themeColors.map(([name, color]) => (
+                <a class={`btn btn-pill btn-${name}`}>
+                  {color.icon && <Icon name={color.icon} />} {color.title}
+                </a>
+              ))
+            }
+          </ButtonList>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6">
+      <Card>
+        <CardHeader title="Extra colors" />
+        <CardBody>
+          <ButtonList>
+            {
+              colors.map(([name, color]) => (
+                <a class={`btn btn-${name}`}>
+                  {color.icon && <Icon name={color.icon} />} {color.title}
+                </a>
+              ))
+            }
+          </ButtonList>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6">
+      <Card>
+        <CardHeader title="Icon buttons" />
+        <CardBody>
+          <ButtonList>
+            {socialColors.map(([name, app]) => <a class={`btn btn-icon btn-${name}`}>{app.icon && <Icon name={app.icon} />}</a>)}
+          </ButtonList>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6">
+      <Card>
+        <CardHeader title="Social colors" />
+        <CardBody>
+          <ButtonList>
+            {
+              socialColors.map(([name, app]) => (
+                <a class={`btn btn-${name}`}>
+                  {app.icon && <Icon name={app.icon} />} {app.title}
+                </a>
+              ))
+            }
+          </ButtonList>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6">
+      <Card>
+        <CardHeader title="Action buttons" />
+        <CardBody>
+          <div class="btn-actions">
+            {
+              actions.map((action) => (
+                <a class="btn btn-action">
+                  <Icon name={action} />
+                </a>
+              ))
+            }
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6">
+      <Card>
+        <CardHeader title="Buttons with icon" />
+        <CardBody>
+          <ButtonList>
+            <a class="btn btn-animate-icon">Save <Icon name="arrow-right" class="icon-end" /></a>
+            <a class="btn btn-animate-icon btn-animate-icon-rotate"><Icon name="plus" /> Add</a>
+            <a class="btn btn-animate-icon btn-animate-icon-shake"><Icon name="bell" /> Notifications</a>
+            <a class="btn btn-animate-icon btn-animate-icon-rotate"><Icon name="settings" /> Settings</a>
+            <a class="btn btn-animate-icon btn-animate-icon-pulse"><Icon name="heart" /> Love</a>
+            <a class="btn btn-animate-icon btn-animate-icon-rotate"><Icon name="x" /> Close</a>
+            <a class="btn btn-animate-icon btn-animate-icon-tada"><Icon name="check" /> Confirm</a>
+            <a class="btn btn-animate-icon">Next <Icon name="chevron-right" class="icon-end" /></a>
+            <a class="btn btn-animate-icon btn-animate-icon-move-start"><Icon name="chevron-left" /> Previous</a>
+          </ButtonList>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6">
+      <Card>
+        <CardHeader title="Buttons size" />
+        <CardBody>
+          <div class="space-y">
+            {
+              sizes.map((size) => (
+                <ButtonList>
+                  <Button size={size} text="Button" />
+                  <Button size={size} icon="star" iconOnly />
+                  <Button size={size} icon="star" text="Button" />
+                  <Button size={size} iconEnd="star" text="Button" />
+                </ButtonList>
+              ))
+            }
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+  </div>
 </DefaultLayout>

@@ -3,6 +3,7 @@
 import { cpSync, existsSync, mkdirSync, copyFileSync, rmSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
+import { setTimeout as sleep } from 'node:timers/promises'
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const repo = join(root, '..')
@@ -16,13 +17,34 @@ const publicDir = join(root, 'public')
 // growing without bound (this happened for real — see preview/.build/vite.config.mts).
 rmSync(publicDir, { recursive: true, force: true })
 
+const BUILD_WAIT_TIMEOUT_MS = 120_000
+const BUILD_WAIT_POLL_MS = 200
+
+async function waitForBuildOutput(requiredFile, packageName) {
+  if (existsSync(requiredFile)) return
+  console.log(`copy-assets: waiting for ${packageName} to finish its first build (${requiredFile})...`)
+  const deadline = Date.now() + BUILD_WAIT_TIMEOUT_MS
+  while (!existsSync(requiredFile)) {
+    if (Date.now() > deadline) {
+      throw new Error(`copy-assets: timed out waiting for ${requiredFile} — is ${packageName}'s dev/build running?`)
+    }
+    await sleep(BUILD_WAIT_POLL_MS)
+  }
+}
+
 const copies = [
-  // @tabler/core dist (css/js/fonts/img/libs) — same as the Eleventy passthrough
+  // @tabler/core dist (css/js/fonts/img/libs) — same as the Eleventy passthrough.
+  // core's own `dev` builds this asynchronously (nodemon-driven watch), so in
+  // `pnpm run dev` this script can start before it exists on a fresh clone — wait
+  // for it instead of failing outright. See docs/.build/copy-assets.mjs for the same race.
   {
     from: join(root, 'node_modules', '@tabler', 'core', 'dist'),
     to: join(root, 'public', 'dist'),
+    requiredFile: join(root, 'node_modules', '@tabler', 'core', 'dist', 'css', 'tabler.css'),
+    packageName: '@tabler/core',
     required: true,
     allowDestinationFallback: true,
+    waitForBuild: true,
   },
   // demo css/js built by this package's sass/vite pipeline. Source is tmp-assets/
   // (NOT dist/) on purpose — dist/ is Astro's own build output, and copying from a
@@ -40,7 +62,10 @@ const copies = [
   { from: join(root, 'assets', 'favicon-dev.ico'), to: join(root, 'public', 'favicon-dev.ico'), required: true },
 ]
 
-for (const { from, to, required, allowDestinationFallback } of copies) {
+for (const { from, to, required, allowDestinationFallback, requiredFile, packageName, waitForBuild } of copies) {
+  if (waitForBuild) {
+    await waitForBuildOutput(requiredFile, packageName)
+  }
   if (!existsSync(from)) {
     const message = `copy-assets: missing ${from}`
     if (allowDestinationFallback && existsSync(to)) {

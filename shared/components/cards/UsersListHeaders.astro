@@ -1,71 +1,73 @@
 ---
 // Equivalent of cards/users-list-headers.html
-import Avatar from '@ui/Avatar.astro';
-import ListGroup from '@ui/ListGroup.astro';
-import ListGroupItem from '@ui/ListGroupItem.astro';
-import ListGroupHeader from '@ui/ListGroupHeader.astro';
-import CardTitle from '@ui/CardTitle.astro';
-import people from '@data/people.json';
-import commits from '@data/commits.json';
-import { sortBy } from '@shared/lib/string-format';
+import Avatar from '@ui/Avatar.astro'
+import ListGroup from '@ui/ListGroup.astro'
+import ListGroupItem from '@ui/ListGroupItem.astro'
+import ListGroupHeader from '@ui/ListGroupHeader.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import people from '@data/people.json'
+import commits from '@data/commits.json'
+import { sortBy } from '@shared/lib/string-format'
 
 interface Person {
-	full_name?: string;
-	photo?: string;
-	last_name?: string;
-	[key: string]: unknown;
+  full_name?: string
+  photo?: string
+  last_name?: string
+  [key: string]: unknown
 }
 
 interface Props {
-	title?: string;
+  title?: string
 }
 
-const { title = 'People' } = Astro.props;
+const { title = 'People' } = Astro.props
 
-const commitList = commits as { description: string }[];
+const commitList = commits as { description: string }[]
 
 // Equivalent of `people | sort: 'last_name'` (LiquidJS case-sensitive sort).
-const sorted = sortBy(people as Person[], (p) => p.last_name ?? '');
+const sorted = sortBy(people as Person[], (p) => p.last_name ?? '')
 
 // offset is unset in the include, so `forloop.index | plus: offset` == forloop.index.
-let prevLetter = '';
+let prevLetter = ''
 const rows = sorted.map((person, idx) => {
-	const index = idx + 1; // forloop.index (1-based)
-	const firstLetter = (person.last_name ?? '').slice(0, 1);
-	let header: string | null = null;
-	if (prevLetter !== firstLetter) {
-		prevLetter = firstLetter;
-		header = firstLetter;
-	}
-	return { person, header, description: commitList[index]?.description };
-});
+  const index = idx + 1 // forloop.index (1-based)
+  const firstLetter = (person.last_name ?? '').slice(0, 1)
+  let header: string | null = null
+  if (prevLetter !== firstLetter) {
+    prevLetter = firstLetter
+    header = firstLetter
+  }
+  return { person, header, description: commitList[index]?.description }
+})
 ---
 
 <div class="card">
-	<div class="card-header">
-		<CardTitle>{title}</CardTitle>
-	</div>
+  <div class="card-header">
+    <CardTitle>{title}</CardTitle>
+  </div>
 
-	<ListGroup flush class="overflow-auto" style="max-height: 35rem">
-		{
-			rows.map((row) => (
-				<>
-					{row.header && <ListGroupHeader class="sticky-top">{row.header}</ListGroupHeader>}
-					<ListGroupItem>
-						<div class="row">
-							<div class="col-auto">
-								<a href="#">
-									<Avatar person={row.person} />
-								</a>
-							</div>
-							<div class="col text-truncate">
-								<a href="#" class="text-body d-block">{row.person.full_name}</a>
-								<div class="text-secondary text-truncate mt-n1">{row.description}</div>
-							</div>
-						</div>
-					</ListGroupItem>
-				</>
-			))
-		}
-	</ListGroup>
+  <ListGroup flush class="overflow-auto" style="max-height: 35rem">
+    {
+      rows.map((row) => (
+        <>
+          {row.header && <ListGroupHeader class="sticky-top">{row.header}</ListGroupHeader>}
+          <ListGroupItem>
+            <div class="row">
+              <div class="col-auto">
+                <a href="#">
+                  <Avatar person={row.person} />
+                </a>
+              </div>
+              <div class="col text-truncate">
+                <a href="#" class="text-body d-block">
+                  {row.person.full_name}
+                </a>
+                <div class="text-secondary text-truncate mt-n1">{row.description}</div>
+              </div>
+            </div>
+          </ListGroupItem>
+        </>
+      ))
+    }
+  </ListGroup>
 </div>

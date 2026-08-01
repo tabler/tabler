@@ -1,93 +1,60 @@
 ---
 // Equivalent of ui/avatar.html
-import Icon from './Icon.astro';
-import people from '@data/people.json';
-import { firstLetters } from '@shared/lib/string-format';
+import Icon from './Icon.astro'
+import people from '@data/people.json'
+import { firstLetters } from '@shared/lib/string-format'
 
 interface Person {
-	full_name?: string;
-	photo?: string;
-	[key: string]: unknown;
+  full_name?: string
+  photo?: string
+  [key: string]: unknown
 }
 
 interface Props {
-	src?: string;
-	placeholder?: string;
-	personId?: number;
-	person?: Person;
-	link?: boolean;
-	dropdown?: boolean;
-	size?: string;
-	thumb?: boolean;
-	class?: string;
-	shape?: string;
-	color?: string;
-	square?: boolean;
-	status?: string;
-	statusText?: string;
-	statusIcon?: string;
-	brand?: string;
-	icon?: string;
-	/** asset URL base — '.' for root-level pages, '..' for pages one level deep (e.g. marketing/) */
-	base?: string;
-	/** remaining attributes (data-bs-toggle for tooltips, aria-*, …) are forwarded to the element */
-	[key: string]: unknown;
+  src?: string
+  placeholder?: string
+  personId?: number
+  person?: Person
+  link?: boolean
+  dropdown?: boolean
+  size?: string
+  thumb?: boolean
+  class?: string
+  shape?: string
+  color?: string
+  square?: boolean
+  status?: string
+  statusText?: string
+  statusIcon?: string
+  brand?: string
+  icon?: string
+  /** asset URL base — '.' for root-level pages, '..' for pages one level deep (e.g. marketing/) */
+  base?: string
+  /** remaining attributes (data-bs-toggle for tooltips, aria-*, …) are forwarded to the element */
+  [key: string]: unknown
 }
 
-const {
-	src: srcProp,
-	placeholder: placeholderProp,
-	personId,
-	person: personProp,
-	link: linkProp = false,
-	dropdown,
-	size,
-	thumb,
-	class: className,
-	shape,
-	color,
-	square,
-	status,
-	statusText,
-	statusIcon,
-	brand,
-	icon,
-	base = '.',
-	...rest
-} = Astro.props;
+const { src: srcProp, placeholder: placeholderProp, personId, person: personProp, link: linkProp = false, dropdown, size, thumb, class: className, shape, color, square, status, statusText, statusIcon, brand, icon, base = '.', ...rest } = Astro.props
 
-let src = srcProp;
-let placeholder = placeholderProp;
+let src = srcProp
+let placeholder = placeholderProp
 
-const person = personId ? (people as Person[])[personId - 1] : personProp;
+const person = personId ? (people as Person[])[personId - 1] : personProp
 if (person) {
-	src = person.photo;
-	if (!src) {
-		placeholder = firstLetters(person.full_name ?? '');
-	}
+  src = person.photo
+  if (!src) {
+    placeholder = firstLetters(person.full_name ?? '')
+  }
 }
 
-const link = linkProp || Boolean(dropdown);
-const El = link ? 'a' : 'span';
+const link = linkProp || Boolean(dropdown)
+const El = link ? 'a' : 'span'
 
-const classes = [
-	'avatar',
-	size && `avatar-${size}`,
-	thumb && 'avatar-thumb',
-	className,
-	shape && `avatar-${shape}`,
-	color && `bg-${color}-lt`,
-	square && 'avatar-square',
-]
+const classes = ['avatar', size && `avatar-${size}`, thumb && 'avatar-thumb', className, shape && `avatar-${shape}`, color && `bg-${color}-lt`, square && 'avatar-square']
 ---
 
-<El
-	class:list={classes}
-	style={src ? `background-image: url(${base}/${src})` : undefined}
-	data-bs-toggle={dropdown ? 'dropdown' : undefined}
-	{...rest}
->{status && (
-		<span class={`badge bg-${status}`}>{statusText ? statusText : statusIcon ? <Icon name={statusIcon} class="avatar-status-icon" /> : null}</span>
-	)}{brand && <span class="avatar-brand" style={`background-image: url(${base}/static/brands/${brand}.svg);`} />}{
-		src ? null : placeholder ? placeholder : icon ? <Icon name={icon} class="avatar-icon" /> : <Icon name="user" class="avatar-icon" />
-	}</El>
+<El class:list={classes} style={src ? `background-image: url(${base}/${src})` : undefined} data-bs-toggle={dropdown ? 'dropdown' : undefined} {...rest}
+  >{status && <span class={`badge bg-${status}`}>{statusText ? statusText : statusIcon ? <Icon name={statusIcon} class="avatar-status-icon" /> : null}</span>}{brand && <span class="avatar-brand" style={`background-image: url(${base}/static/brands/${brand}.svg);`} />}{
+    src ? null : placeholder ? placeholder : icon ? <Icon name={icon} class="avatar-icon" /> : <Icon name="user" class="avatar-icon" />
+  }</El
+>

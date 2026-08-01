@@ -1,30 +1,30 @@
 ---
-import BaseLayout from './BaseLayout.astro';
-import NavbarLogo from '@shared/components/navbar/NavbarLogo.astro';
+import BaseLayout from './BaseLayout.astro'
+import NavbarLogo from '@shared/components/navbar/NavbarLogo.astro'
 
 interface Props {
-	title?: string;
-	containerSize?: string;
-	hideLogo?: boolean;
+  title?: string
+  containerSize?: string
+  hideLogo?: boolean
 }
 
-const { title, containerSize = 'tight', hideLogo } = Astro.props;
+const { title, containerSize = 'tight', hideLogo } = Astro.props
 ---
 
 <BaseLayout title={title}>
-	<!-- BEGIN PAGE BODY -->
-	<div class="page page-center">
-		<div class={`container container-${containerSize} py-4`}>
-			{
-				!hideLogo && (
-					<div class="text-center mb-4">
-						<NavbarLogo />
-					</div>
-				)
-			}
+  <!-- BEGIN PAGE BODY -->
+  <div class="page page-center">
+    <div class={`container container-${containerSize} py-4`}>
+      {
+        !hideLogo && (
+          <div class="text-center mb-4">
+            <NavbarLogo />
+          </div>
+        )
+      }
 
-			<slot />
-		</div>
-	</div>
-	<!-- END PAGE BODY -->
+      <slot />
+    </div>
+  </div>
+  <!-- END PAGE BODY -->
 </BaseLayout>

@@ -4,44 +4,43 @@
 // here it comes in as a prop from the consuming page.
 
 export interface TocItem {
-	/** 2 or 3 (h2/h3); h3 gets the ms-3 indent */
-	level: number;
-	text: string;
-	/** anchor without '#', e.g. "default-markup" */
-	id: string;
+  /** 2 or 3 (h2/h3); h3 gets the ms-3 indent */
+  level: number
+  text: string
+  /** anchor without '#', e.g. "default-markup" */
+  id: string
 }
 
 interface Props {
-	toc?: TocItem[];
+  toc?: TocItem[]
 }
 
-const { toc = [] } = Astro.props;
+const { toc = [] } = Astro.props
 
 // Equivalent of `illustrations | size` (shared/data/illustrations.json has 100 entries).
-const illustrationsCount = 100;
+const illustrationsCount = 100
 ---
 
-<!-- BEGIN DOCS TOC -->
-{
-	toc.length > 0 && (
-		<Fragment>
-			<h3>Table of Contents</h3>
-			<div class="nav nav-vertical" id="toc">
-				{toc.map((item) => (
-					<a href={`#${item.id}`} class={`nav-link${item.level === 3 ? ' ms-3' : ''}`}>
-						{item.text}
-					</a>
-				))}
-			</div>
-		</Fragment>
-	)
+<!-- BEGIN DOCS TOC -->{
+  toc.length > 0 && (
+    <Fragment>
+      <h3>Table of Contents</h3>
+      <div class="nav nav-vertical" id="toc">
+        {toc.map((item) => (
+          <a href={`#${item.id}`} class={`nav-link${item.level === 3 ? ' ms-3' : ''}`}>
+            {item.text}
+          </a>
+        ))}
+      </div>
+    </Fragment>
+  )
 }
 
 <a href="https://r.tabler.io/illustrations" class="card card-sm mt-6 shadow-none" target="_blank">
-	<div class="card-body">
-		<img src="/img/banner-carbon.png" class="mb-3" alt="" />
+  <div class="card-body">
+    <img src="/img/banner-carbon.png" class="mb-3" alt="" />
 
-		<h4>{illustrationsCount} sleek illustrations for your startup's visual identity.</h4>
-	</div>
+    <h4>{illustrationsCount} sleek illustrations for your startup's visual identity.</h4>
+  </div>
 </a>
 <!-- END DOCS TOC -->
