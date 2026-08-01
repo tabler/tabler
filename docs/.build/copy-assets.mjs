@@ -2,8 +2,8 @@
 // Runs as an Astro integration (astro:config:done) instead of a standalone
 // pre-script, so the copy is ordered by Astro's own lifecycle for both dev and
 // build — mirrors Bootstrap's site/src/libs/astro.ts integration.
-import { cpSync, existsSync, mkdirSync, rmSync } from 'node:fs';
-import { dirname, join } from 'node:path';
+import { copyFileSync, cpSync, existsSync, mkdirSync, rmSync } from 'node:fs';
+import { dirname, join, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const root = join(dirname(fileURLToPath(import.meta.url)), '..');
@@ -71,6 +71,43 @@ export function copyAssets() {
 				}
 
 				logger.info('public/ rebuilt from workspace assets');
+			},
+			'astro:server:setup': ({ server, logger }) => {
+				if (command !== 'dev') return;
+				// The copy above runs once at startup, so edits to core's scss/js during
+				// `pnpm run dev` (rebuilt into core/dist by its watchers) would never reach
+				// the served public/ copy. Watch the generated sources, sync changed files
+				// into public/, and trigger a browser reload (debounced — one sass rebuild
+				// rewrites a dozen css files at once).
+				const syncDirs = [
+					{ from: join(repo, 'core', 'dist'), to: join(publicDir, 'dist') },
+					{ from: join(repo, 'preview', 'tmp-assets'), to: join(publicDir, 'preview') },
+					{ from: join(root, 'assets'), to: publicDir },
+					{ from: join(repo, 'shared', 'static'), to: join(publicDir, 'static') },
+				];
+				server.watcher.add(syncDirs.map(dir => dir.from));
+				let reloadTimer;
+				const sync = file => {
+					for (const { from, to } of syncDirs) {
+						if (!file.startsWith(from + sep)) continue;
+						const dest = join(to, relative(from, file));
+						mkdirSync(dirname(dest), { recursive: true });
+						copyFileSync(file, dest);
+						// Source maps piggyback on their css/js file's reload; and a single scss
+						// edit is a whole pipeline of writes (sass per entry, then postcss
+						// rewrites every file) — wait for a full second of quiet so one edit
+						// triggers one reload, not one per write burst.
+						if (file.endsWith('.map')) return;
+						clearTimeout(reloadTimer);
+						reloadTimer = setTimeout(() => {
+							server.hot.send({ type: 'full-reload' });
+							logger.info(`reloaded after change in ${relative(repo, file)}`);
+						}, 1000);
+						return;
+					}
+				};
+				server.watcher.on('add', sync);
+				server.watcher.on('change', sync);
 			},
 		},
 	};
