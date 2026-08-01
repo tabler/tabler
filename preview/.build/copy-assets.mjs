@@ -1,5 +1,8 @@
 // Equivalent of the Eleventy passthrough copies: static assets are generated
 // into public/ before dev/build (public/ is fully generated — see .gitignore).
+// Runs as an Astro integration (astro:config:done) instead of a standalone
+// pre-script, so the copy is ordered by Astro's own lifecycle for both dev and
+// build — mirrors Bootstrap's site/src/libs/astro.ts integration.
 import { cpSync, existsSync, mkdirSync, copyFileSync, rmSync } from 'node:fs'
 import { dirname, join } from 'node:path'
 import { fileURLToPath } from 'node:url'
@@ -7,14 +10,6 @@ import { fileURLToPath } from 'node:url'
 const root = join(dirname(fileURLToPath(import.meta.url)), '..')
 const repo = join(root, '..')
 const publicDir = join(root, 'public')
-
-// Always start from a clean public/ (mirrors @tabler/docs' and Bootstrap's own docs
-// integration — see astro:config:done in bootstrap/site/src/libs/astro.ts): running
-// this script twice in a row, or running it without a prior `pnpm run clean`, must
-// never be able to accumulate stale/nested content. Without this, a previous run's
-// output could get copied into a source directory and re-copied on the next run,
-// growing without bound (this happened for real — see preview/.build/vite.config.mts).
-rmSync(publicDir, { recursive: true, force: true })
 
 const copies = [
   // @tabler/core dist (css/js/fonts/img/libs) — same as the Eleventy passthrough
@@ -40,49 +35,71 @@ const copies = [
   { from: join(root, 'assets', 'favicon-dev.ico'), to: join(root, 'public', 'favicon-dev.ico'), required: true },
 ]
 
-for (const { from, to, required, allowDestinationFallback } of copies) {
-  if (!existsSync(from)) {
-    const message = `copy-assets: missing ${from}`
-    if (allowDestinationFallback && existsSync(to)) {
-      console.warn(`${message} (using existing ${to})`)
-      continue
-    }
-    if (required) throw new Error(`${message} — run the build of that package first`)
-    console.warn(`${message} (skipped — build @tabler/preview or @tabler/docs to get it)`)
-    continue
-  }
-  mkdirSync(dirname(to), { recursive: true })
-  if (from.endsWith('.ico')) {
-    copyFileSync(from, to)
-  } else {
-    // dereference: sources may be symlinks (e.g. preview/static → shared/static).
-    // For fallback-enabled copies (core dist), keep existing destination as a safety net
-    // in case source files disappear mid-copy during parallel clean/build tasks.
-    if (!allowDestinationFallback) {
-      // remove the target first so a stale symlink never survives
-      try {
-        rmSync(to, { recursive: true, force: true })
-      } catch (error) {
-        if (!(error && typeof error === 'object' && error.code === 'ENOTEMPTY')) {
-          throw error
-        }
-      }
-    }
-    try {
-      cpSync(from, to, {
-        recursive: true,
-        dereference: true,
-        filter: (src) => !src.includes('/.vscode') && !src.includes('\\.vscode'),
-      })
-    } catch (error) {
-      // In turbo dev, @tabler/core can clean dist while we copy it.
-      // If fallback is allowed and destination exists, keep current assets.
-      if (allowDestinationFallback && error && typeof error === 'object' && error.code === 'ENOENT' && existsSync(to)) {
-        console.warn(`copy-assets: source changed during copy ${from} (using existing ${to})`)
+function rebuildPublicDir(logger) {
+  // Always start from a clean public/ (mirrors @tabler/docs' and Bootstrap's own docs
+  // integration — see astro:config:done in bootstrap/site/src/libs/astro.ts): running
+  // this twice in a row, or running it without a prior `pnpm run clean`, must
+  // never be able to accumulate stale/nested content. Without this, a previous run's
+  // output could get copied into a source directory and re-copied on the next run,
+  // growing without bound (this happened for real — see preview/.build/vite.config.mts).
+  rmSync(publicDir, { recursive: true, force: true })
+
+  for (const { from, to, required, allowDestinationFallback } of copies) {
+    if (!existsSync(from)) {
+      const message = `copy-assets: missing ${from}`
+      if (allowDestinationFallback && existsSync(to)) {
+        logger.warn(`${message} (using existing ${to})`)
         continue
       }
-      throw error
+      if (required) throw new Error(`${message} — run the build of that package first`)
+      logger.warn(`${message} (skipped — build @tabler/preview or @tabler/docs to get it)`)
+      continue
+    }
+    mkdirSync(dirname(to), { recursive: true })
+    if (from.endsWith('.ico')) {
+      copyFileSync(from, to)
+    } else {
+      // dereference: sources may be symlinks (e.g. preview/static → shared/static).
+      // For fallback-enabled copies (core dist), keep existing destination as a safety net
+      // in case source files disappear mid-copy during parallel clean/build tasks.
+      if (!allowDestinationFallback) {
+        // remove the target first so a stale symlink never survives
+        try {
+          rmSync(to, { recursive: true, force: true })
+        } catch (error) {
+          if (!(error && typeof error === 'object' && error.code === 'ENOTEMPTY')) {
+            throw error
+          }
+        }
+      }
+      try {
+        cpSync(from, to, {
+          recursive: true,
+          dereference: true,
+          filter: (src) => !src.includes('/.vscode') && !src.includes('\\.vscode'),
+        })
+      } catch (error) {
+        // In turbo dev, @tabler/core can clean dist while we copy it.
+        // If fallback is allowed and destination exists, keep current assets.
+        if (allowDestinationFallback && error && typeof error === 'object' && error.code === 'ENOENT' && existsSync(to)) {
+          logger.warn(`copy-assets: source changed during copy ${from} (using existing ${to})`)
+          continue
+        }
+        throw error
+      }
     }
   }
+  logger.info('public/ rebuilt from workspace assets')
 }
-console.log('copy-assets: done')
+
+/** @returns {import('astro').AstroIntegration} */
+export function copyAssets() {
+  return {
+    name: 'copy-assets',
+    hooks: {
+      'astro:config:done': ({ logger }) => {
+        rebuildPublicDir(logger)
+      },
+    },
+  }
+}

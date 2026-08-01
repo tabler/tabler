@@ -7,13 +7,14 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "assets": "shx rm -rf tmp-assets && pnpm run css && pnpm run js && node .build/copy-assets.mjs",
+    "assets": "shx rm -rf tmp-assets && pnpm run css && pnpm run js",
     "css": "sass --no-source-map --load-path=node_modules --style expanded scss/:tmp-assets/css/ && postcss --config ../core/.build/postcss.config.mjs --replace \"tmp-assets/css/*.css\" \"!tmp-assets/css/*.min.css\" && cleancss -O1 --format breakWith=lf --with-rebase --source-map --source-map-inline-sources --output tmp-assets/css/ --batch --batch-suffix \".min\" \"tmp-assets/css/*.css\" \"!tmp-assets/css/*.min.css\"",
     "js": "vite build --config .build/vite.config.mts && terser tmp-assets/js/demo.js --module --compress --mangle --comments '/@license|@preserve|^!/' --source-map \"content=tmp-assets/js/demo.js.map,filename=tmp-assets/js/demo.min.js.map,url=demo.min.js.map\" -o tmp-assets/js/demo.min.js",
     "watch-css": "nodemon --watch scss/ --ext scss --exec \"sass --no-source-map --load-path=node_modules --style expanded scss/:public/preview/css/ && postcss --config ../core/.build/postcss.config.mjs --replace 'public/preview/css/*.css' '!public/preview/css/*.min.css'\"",
     "watch-js": "cross-env PREVIEW_JS_OUT_DIR=public/preview/js vite build --watch --config .build/vite.config.mts",
     "watch": "concurrently \"pnpm run watch-css\" \"pnpm run watch-js\"",
-    "dev": "pnpm run assets && concurrently -n astro,css,js -c blue,magenta,cyan \"astro dev\" \"pnpm run watch-css\" \"pnpm run watch-js\"",
+    "dev": "concurrently -n astro,css,js -c blue,magenta,cyan \"astro dev\" \"pnpm run watch-css\" \"pnpm run watch-js\"",
+    "dev-prepare": "pnpm run assets",
     "build": "pnpm run assets && astro build",
     "preview": "astro preview",
     "clean": "shx rm -rf dist public/dist public/preview public/css .astro tmp-assets",

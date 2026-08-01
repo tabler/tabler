@@ -6,6 +6,7 @@ import beautify from 'js-beautify';
 import { execFileSync } from 'node:child_process';
 import { devNull } from 'node:os';
 import { fileURLToPath } from 'node:url';
+import { copyAssets } from './.build/copy-assets.mjs';
 
 /**
  * Equivalent of the Eleventy "html-prettify" step (@tabler/preview): the
@@ -92,7 +93,7 @@ export default defineConfig({
 	// Do not collapse whitespace in the output — the HTML must stay readable
 	// (like the Eleventy build); prettier finalizes formatting after the build.
 	compressHTML: false,
-	integrations: [mdx(), prettifyHtml()],
+	integrations: [copyAssets(), mdx(), prettifyHtml()],
 	markdown: {
 		// markdown-it in Eleventy does not produce typographic quotes — neither do we
 		processor: satteri({ features: { smartPunctuation: false } }),
