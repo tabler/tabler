@@ -90,6 +90,7 @@ const emailEntries = Object.entries(emails);
 		if (emailModal) {
 			emailModal.addEventListener('show.bs.modal', function (e) {
 				const button = e.relatedTarget;
+				if (!(button instanceof HTMLElement)) return;
 
 				const image = button.getAttribute('data-bs-image'),
 					title = button.getAttribute('data-bs-title'),
@@ -98,7 +99,6 @@ const emailEntries = Object.entries(emails);
 				emailModal.querySelector('[data-email-title]').textContent = title;
 				emailModal.querySelector('[data-email-description]').textContent = description;
 				emailModal.querySelector('[data-email-image]').src = image;
-
 			});
 		}
 	</script>

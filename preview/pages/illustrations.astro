@@ -172,7 +172,9 @@ const illustrationsData = Object.fromEntries(
 	</div>
 	<CaptureScript>
 	<!-- BEGIN ILLUSTRATIONS SCRIPT -->
-	<script define:vars={{ illustrationsData }}>
+	<script is:inline define:vars={{ illustrationsData }}>
+		// @ts-nocheck — illustrationsData is injected at runtime by define:vars, which
+		// the type checker can't see since is:inline skips TS processing of this script.
 		let skinColor = 'var()',
 			primaryColor = 'var()';
 

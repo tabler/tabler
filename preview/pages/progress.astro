@@ -143,16 +143,17 @@ import ProgressDescription from '@ui/ProgressDescription.astro';
 
 						This is just a demo script to show how to animate the progress bar. You can modify it as needed.
 						*/
-						const progress = document.getElementById('progress-animated');
+						const progress = document.getElementById('progress-animated')!;
 						let width = 0;
 
-						const setWidth = (w) => {
+						const setWidth = (w: number) => {
 							width = Math.min(Math.max(w, 0), 100);
 
-							progress.querySelector('.progress-bar').style.width = `${width}%`;
-							progress.querySelector('.progress-bar').setAttribute('aria-valuenow', width);
-							document.getElementById('progress-animated-value').innerText = `${width}%`;
-							progress.querySelector('.progress-bar').classList.toggle('bg-green', width >= 100);
+							const bar = progress.querySelector<HTMLElement>('.progress-bar')!;
+							bar.style.width = `${width}%`;
+							bar.setAttribute('aria-valuenow', `${width}`);
+							document.getElementById('progress-animated-value')!.innerText = `${width}%`;
+							bar.classList.toggle('bg-green', width >= 100);
 						};
 
 						const interval = setInterval(() => {
@@ -160,10 +161,10 @@ import ProgressDescription from '@ui/ProgressDescription.astro';
 							if (width >= 100) clearInterval(interval);
 						}, 2000);
 
-						document.getElementById('progress-animated-0').addEventListener('click', () => setWidth(0));
-						document.getElementById('progress-animated-add-10').addEventListener('click', () => setWidth(width + 10));
-						document.getElementById('progress-animated-minus-10').addEventListener('click', () => setWidth(width - 10));
-						document.getElementById('progress-animated-100').addEventListener('click', () => setWidth(100));
+						document.getElementById('progress-animated-0')!.addEventListener('click', () => setWidth(0));
+						document.getElementById('progress-animated-add-10')!.addEventListener('click', () => setWidth(width + 10));
+						document.getElementById('progress-animated-minus-10')!.addEventListener('click', () => setWidth(width - 10));
+						document.getElementById('progress-animated-100')!.addEventListener('click', () => setWidth(100));
 					</script>
 					<!-- END SCRIPT OF ANIMATION -->
 					</CaptureScript>

@@ -4,10 +4,12 @@ Select group
 @use '../../config' as *;
 
 .form-selectgroup {
+  --#{$prefix}form-selectgroup-gap: #{$form-selectgroup-gap};
+  --#{$prefix}form-selectgroup-icon-margin-x: #{$form-selectgroup-icon-margin-x};
   display: inline-flex;
   margin: 0;
   flex-wrap: wrap;
-  gap: 0.5rem;
+  gap: var(--#{$prefix}form-selectgroup-gap);
 
   .form-selectgroup-item {
     margin: 0;
@@ -50,7 +52,7 @@ Select group
   @include transition(border-color $transition-time, background $transition-time, color $transition-time);
 
   .icon:only-child {
-    margin: 0 -0.25rem;
+    margin: 0 var(--#{$prefix}form-selectgroup-icon-margin-x);
   }
 
   &:hover {

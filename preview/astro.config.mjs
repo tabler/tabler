@@ -17,7 +17,10 @@ function prettifyHtml() {
 		hooks: {
 			'astro:build:done': async ({ dir, logger }) => {
 				const outDir = fileURLToPath(dir);
-				// Skip public/{preview,dist} copies — not pages; vendored docs can break the parser.
+				// dist/preview/ and dist/dist/ are copy-assets.mjs's copies of public/{preview,dist}
+				// (demo css/js and @tabler/core's dist, including vendored libs) — not pages, and
+				// some vendored libs ship their own malformed docs/*.html that trips the parser below.
+				/** @param {string} file */
 				const isVendorCopy = (file) => file.includes(`${outDir}preview/`) || file.includes(`${outDir}dist/`);
 				// Strip Astro's extra "overflow-x: auto" on shiki <pre> styles.
 				const { globSync } = await import('node:fs');
