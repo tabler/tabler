@@ -94,10 +94,19 @@ function rebuildPublicDir(logger) {
 
 /** @returns {import('astro').AstroIntegration} */
 export function copyAssets() {
+  /** @type {string} */
+  let command
   return {
     name: 'copy-assets',
     hooks: {
+      'astro:config:setup': (options) => {
+        command = options.command
+      },
       'astro:config:done': ({ logger }) => {
+        // `astro check`/`astro sync` (command 'sync') runs these hooks too, but
+        // only needs types — public/ is irrelevant there and CI's type-check
+        // job has no built workspace assets to copy.
+        if (command === 'sync') return
         rebuildPublicDir(logger)
       },
     },
