@@ -85,7 +85,7 @@ const emailEntries = Object.entries(emails);
 	</div>
 	<CaptureScript>
 	<!-- BEGIN EMAIL MODAL SCRIPT -->
-	<script>
+	<script is:inline>
 		const emailModal = document.getElementById('email-modal');
 		if (emailModal) {
 			emailModal.addEventListener('show.bs.modal', function (e) {
@@ -99,8 +99,6 @@ const emailEntries = Object.entries(emails);
 				emailModal.querySelector('[data-email-description]').textContent = description;
 				emailModal.querySelector('[data-email-image]').src = image;
 
-				modalTitle.textContent = `New message to ${recipient}`;
-				modalBodyInput.value = recipient;
 			});
 		}
 	</script>
