@@ -127,16 +127,15 @@ export function copyAssets() {
         server.watcher.add([...syncDirs.map((dir) => dir.from), ...reloadDirs])
         let reloadTimer
         const scheduleReload = (file) => {
-          // Source maps piggyback on their css/js file's reload; and a single scss
-          // edit is a whole pipeline of writes (sass per entry, then postcss
-          // rewrites every file) — wait for a full second of quiet so one edit
-          // triggers one reload, not one per write burst.
+          // Source maps piggyback on their css/js file's reload. build-css.mjs
+          // buffers all writes into one tight burst, so a short quiet window is
+          // enough to coalesce a whole rebuild into a single reload.
           if (file.endsWith('.map')) return
           clearTimeout(reloadTimer)
           reloadTimer = setTimeout(() => {
             server.hot.send({ type: 'full-reload' })
             logger.info(`reloaded after change in ${relative(repo, file)}`)
-          }, 1000)
+          }, 250)
         }
         const sync = (file) => {
           for (const { from, to } of syncDirs) {
