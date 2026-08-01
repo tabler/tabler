@@ -6,7 +6,10 @@ import beautify from 'js-beautify';
 import { execFileSync } from 'node:child_process';
 import { devNull } from 'node:os';
 import { fileURLToPath } from 'node:url';
-import { copyAssets } from './.build/copy-assets.mjs';
+import { copyAssets } from '../.build/copy-assets';
+
+/** @param {string} p */
+const path = (p) => fileURLToPath(new URL(p, import.meta.url));
 
 /**
  * Equivalent of the Eleventy "html-prettify" step (@tabler/preview): the
@@ -93,7 +96,59 @@ export default defineConfig({
 	// Do not collapse whitespace in the output — the HTML must stay readable
 	// (like the Eleventy build); prettier finalizes formatting after the build.
 	compressHTML: false,
-	integrations: [copyAssets(), mdx(), prettifyHtml()],
+	integrations: [
+		copyAssets({
+			repo: path('..'),
+			publicDir: path('./public'),
+			copies: [
+				{
+					// @tabler/core dist (css/js/fonts/img/libs) — same as the Eleventy passthrough.
+					// Fallback keeps current assets if core rebuilds dist mid-copy in turbo dev.
+					from: path('./node_modules/@tabler/core/dist'),
+					to: path('./public/dist'),
+					label: '@tabler/core',
+					allowDestinationFallback: true,
+				},
+				{
+					// demo css/js built by this package's sass/vite pipeline. Source is
+					// tmp-assets/ (NOT dist/) on purpose — dist/ is Astro's own build output,
+					// and copying from a path Astro also writes to caused unbounded growth
+					// across repeated builds. See preview/.build/vite.config.mts.
+					from: path('./tmp-assets'),
+					to: path('./public/preview'),
+					label: '@tabler/preview',
+				},
+				{
+					// docs.css built by the @tabler/docs sass pipeline (used by docs pages)
+					from: path('../docs/dist/css'),
+					to: path('./public/css'),
+					label: '@tabler/docs',
+					required: false,
+				},
+				{
+					// static assets (photos, avatars, tracks, brand svgs...). The real source,
+					// because preview/static is a symlink that may not survive deployment packaging.
+					from: path('../shared/static'),
+					to: path('./public/static'),
+					label: 'shared assets',
+				},
+				// favicons (source assets of @tabler/preview)
+				{ from: path('./assets/favicon.ico'), to: path('./public/favicon.ico'), label: '@tabler/preview' },
+				{ from: path('./assets/favicon-dev.ico'), to: path('./public/favicon-dev.ico'), label: '@tabler/preview' },
+			],
+			// Watch the real core/dist, not the node_modules symlink the startup copy
+			// reads from — same directory.
+			syncDirs: [
+				{ from: path('../core/dist'), to: path('./public/dist') },
+				{ from: path('../shared/static'), to: path('./public/static') },
+			],
+			// watch-css/watch-js write straight into public/preview — the file is already
+			// in place, but Astro does not reload the browser on public/ changes.
+			reloadDirs: [path('./public/preview')],
+		}),
+		mdx(),
+		prettifyHtml(),
+	],
 	markdown: {
 		// markdown-it in Eleventy does not produce typographic quotes — neither do we
 		processor: satteri({ features: { smartPunctuation: false } }),
