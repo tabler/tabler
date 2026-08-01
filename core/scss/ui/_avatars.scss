@@ -123,6 +123,9 @@
 // Avatar upload
 //
 .avatar-upload {
+  --#{$prefix}avatar-upload-icon-size: #{$avatar-upload-icon-size};
+  --#{$prefix}avatar-upload-text-margin-top: #{$avatar-upload-text-margin-top};
+
   border: var(--#{$prefix}border-width) dashed var(--#{$prefix}border-color);
   background: $form-check-input-bg;
   box-shadow: none;
@@ -130,8 +133,8 @@
   @include transition(color $transition-time, background-color $transition-time);
 
   svg {
-    width: 1.5rem;
-    height: 1.5rem;
+    width: var(--#{$prefix}avatar-upload-icon-size);
+    height: var(--#{$prefix}avatar-upload-icon-size);
     stroke-width: 1;
   }
 
@@ -145,20 +148,23 @@
 .avatar-upload-text {
   font-size: $h6-font-size;
   line-height: 1;
-  margin-top: 0.25rem;
+  margin-top: var(--#{$prefix}avatar-upload-text-margin-top);
 }
 
 .avatar-cover {
+  --#{$prefix}avatar-cover-ring-width: #{$avatar-cover-ring-width};
+
   margin-top: calc(-0.5 * var(--#{$prefix}avatar-size));
-  box-shadow: 0 0 0 0.25rem var(--#{$prefix}card-bg, var(--#{$prefix}body-bg));
+  box-shadow: 0 0 0 var(--#{$prefix}avatar-cover-ring-width) var(--#{$prefix}card-bg, var(--#{$prefix}body-bg));
 }
 
 .avatar-brand {
+  --#{$prefix}avatar-brand-offset: #{$avatar-brand-offset};
   width: var(--#{$prefix}avatar-brand-size);
   height: var(--#{$prefix}avatar-brand-size);
   position: absolute;
-  inset-inline-end: -2px;
-  bottom: -2px;
+  inset-inline-end: var(--#{$prefix}avatar-brand-offset);
+  bottom: var(--#{$prefix}avatar-brand-offset);
   z-index: 1000;
   background: var(--#{$prefix}bg-surface);
   @include border-radius(var(--#{$prefix}border-radius));
