@@ -4,6 +4,7 @@ import mdx from '@astrojs/mdx';
 import { satteri } from '@astrojs/markdown-satteri';
 import beautify from 'js-beautify';
 import { execFileSync } from 'node:child_process';
+import { globSync, readFileSync, writeFileSync } from 'node:fs';
 import { devNull } from 'node:os';
 import { fileURLToPath } from 'node:url';
 import { copyAssets } from '../.build/copy-assets';
@@ -30,8 +31,10 @@ function prettifyHtml() {
 				const isVendorCopy = (file) => file.includes(`${outDir}preview/`) || file.includes(`${outDir}dist/`);
 				// Astro appends "overflow-x: auto" to the shiki <pre> style — the
 				// Eleventy pipeline doesn't have it and HTML is the product: restore 1:1.
-				const { globSync } = await import('node:fs');
-				const { readFileSync, writeFileSync } = await import('node:fs');
+				// node:fs is imported statically — a dynamic import() here would go
+				// through Vite's module runner, which is already closed by the time
+				// the astro:build:done hook runs (the config is bundled by vite-node
+				// because it imports a .ts module).
 				for (const file of globSync(`${outDir}**/*.html`, { exclude: isVendorCopy })) {
 					const content = readFileSync(file, 'utf8');
 					const cleaned = content.replaceAll('; overflow-x: auto;', '');
