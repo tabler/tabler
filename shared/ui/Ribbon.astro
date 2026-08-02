@@ -1,28 +1,21 @@
 ---
-import Icon from './Icon.astro';
+import Icon from './Icon.astro'
 
 interface Props {
-	text?: string;
-	top?: boolean;
-	left?: boolean;
-	bottom?: boolean;
-	bookmark?: boolean;
-	color?: string;
-	filled?: boolean;
+  text?: string
+  top?: boolean
+  left?: boolean
+  bottom?: boolean
+  bookmark?: boolean
+  color?: string
+  filled?: boolean
 }
 
-const { text, top, left, bottom, bookmark, color, filled } = Astro.props;
+const { text, top, left, bottom, bookmark, color, filled } = Astro.props
 
-const classes = [
-	'ribbon',
-	top && 'ribbon-top',
-	left && 'ribbon-start',
-	bottom && 'ribbon-bottom',
-	bookmark && 'ribbon-bookmark',
-	color && `bg-${color}`,
-]
+const classes = ['ribbon', top && 'ribbon-top', left && 'ribbon-start', bottom && 'ribbon-bottom', bookmark && 'ribbon-bookmark', color && `bg-${color}`]
 ---
 
 <div class:list={classes}>
-	{text ? text : <Icon name="star" type={filled ? 'filled' : 'outline'} />}
+  {text ? text : <Icon name="star" type={filled ? 'filled' : 'outline'} />}
 </div>

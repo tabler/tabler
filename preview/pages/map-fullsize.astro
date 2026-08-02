@@ -1,17 +1,6 @@
 ---
-// Front matter: layout-wrapper-full + layout-sidebar + layout-hide-topbar,
-// page-libs: [google-maps], page-menu: plugins.map-fullsize. No title / no
-// page-header (the page-header block renders empty in the reference).
-//
-// {% assign map-id = 'google' %} → id="map-google".
-// The {% capture_script %} block is registered synchronously (before any await).
-// We mirror the development build (environment == 'development'), so the
-// `window.tabler_map` bookkeeping lines are emitted (as in the reference).
-//
-// REQUIRES DefaultLayout `wrapperFull` support (see report): page-wrapper-full
-// class + slot rendered WITHOUT the .container-xl wrapper. Not implemented in
-// the shared DefaultLayout yet — flagged rather than modified here.
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
+import CaptureScript from '@shared/components/CaptureScript.astro';
 ---
 
 <DefaultLayout
@@ -27,6 +16,7 @@ import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
 		FormElements1.astro for why a processed (module) script here would run too
 		early and find window.google undefined.
 	-->
+	<CaptureScript>
 	<!-- BEGIN MAP SCRIPT -->
 	<script is:inline>
 		window.tabler_map ??= {};
@@ -43,4 +33,5 @@ import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
 		document.readyState !== 'loading' ? initMap() : document.addEventListener('DOMContentLoaded', initMap, { once: true });
 	</script>
 	<!-- END MAP SCRIPT -->
+	</CaptureScript>
 </DefaultLayout>

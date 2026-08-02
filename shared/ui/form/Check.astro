@@ -1,12 +1,11 @@
 ---
-// Port of ui/form/check.html
 import { capitalize } from '@shared/lib/string-format';
 
 interface Props {
 	type?: string;
 	checked?: boolean;
 	disabled?: boolean;
-	/** switch — Liquid `switch` param (reserved word, destructured as isSwitch) */
+	/** Switch mode (prop name isSwitch; `switch` is reserved). */
 	switch?: boolean;
 	title?: string | false;
 	name?: string;
@@ -33,7 +32,6 @@ const {
 	class: className,
 } = Astro.props;
 
-// {% unless title %} … build a default label {% endunless %}
 let title = titleProp;
 if (!title) {
 	let t = '';

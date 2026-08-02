@@ -1,121 +1,91 @@
 ---
 // color inputs, color picker, validation states, and a fieldset.
-import photos from '@data/photos.json';
-import site from '@data/site.json';
-import InputColor from '../parts/form/InputColor.astro';
-import FormGroup from '@ui/FormGroup.astro';
+import photos from '@data/photos.json'
+import site from '@data/site.json'
+import InputColor from '../parts/form/InputColor.astro'
+import FormGroup from '@ui/FormGroup.astro'
 
-const horizontal = (photos as { file: string; title: string; horizontal?: boolean }[]).filter(
-	(p) => p.horizontal,
-);
+const horizontal = (photos as { file: string; title: string; horizontal?: boolean }[]).filter((p) => p.horizontal)
 // input-image: limit 6, offset 0; input-image-radio: offset 10
-const imageChecks = horizontal.slice(0, 6);
-const imageRadios = horizontal.slice(10, 16);
+const imageChecks = horizontal.slice(0, 6)
+const imageRadios = horizontal.slice(10, 16)
 
-const blueHex = (site as { colors: { blue: { hex: string } } }).colors.blue.hex;
+const blueHex = (site as { colors: { blue: { hex: string } } }).colors.blue.hex
 ---
 
 <FormGroup label="Image Check">
-	<div class="row g-2">
-		{
-			imageChecks.map((photo, i) => {
-				const index = i + 1;
-				return (
-					<div class="col-6 col-sm-4">
-						<label class="form-imagecheck mb-2">
-							<input
-								name="form-imagecheck"
-								type="checkbox"
-								value={index}
-								class="form-imagecheck-input"
-								checked={index === 2 || index === 4 || index === 7}
-							/>
-							<span class="form-imagecheck-figure">
-								<img
-									src={`./static/photos/${photo.file}`}
-									alt={photo.title}
-									class="form-imagecheck-image"
-								/>
-							</span>
-						</label>
-					</div>
-				);
-			})
-		}
-	</div>
+  <div class="row g-2">
+    {
+      imageChecks.map((photo, i) => {
+        const index = i + 1
+        return (
+          <div class="col-6 col-sm-4">
+            <label class="form-imagecheck mb-2">
+              <input name="form-imagecheck" type="checkbox" value={index} class="form-imagecheck-input" checked={index === 2 || index === 4 || index === 7} />
+              <span class="form-imagecheck-figure">
+                <img src={`./static/photos/${photo.file}`} alt={photo.title} class="form-imagecheck-image" />
+              </span>
+            </label>
+          </div>
+        )
+      })
+    }
+  </div>
 </FormGroup>
 
 <FormGroup label="Image Check Radio">
-	<div class="row g-2">
-		{
-			imageRadios.map((photo, i) => {
-				const index = i + 1;
-				return (
-					<div class="col-6 col-sm-4">
-						<label class="form-imagecheck mb-2">
-							<input
-								name="form-imagecheck-radio"
-								type="radio"
-								value={index}
-								class="form-imagecheck-input"
-								checked={index === 2 || index === 4 || index === 7}
-							/>
-							<span class="form-imagecheck-figure">
-								<img
-									src={`./static/photos/${photo.file}`}
-									alt={photo.title}
-									class="form-imagecheck-image"
-								/>
-							</span>
-						</label>
-					</div>
-				);
-			})
-		}
-	</div>
+  <div class="row g-2">
+    {
+      imageRadios.map((photo, i) => {
+        const index = i + 1
+        return (
+          <div class="col-6 col-sm-4">
+            <label class="form-imagecheck mb-2">
+              <input name="form-imagecheck-radio" type="radio" value={index} class="form-imagecheck-input" checked={index === 2 || index === 4 || index === 7} />
+              <span class="form-imagecheck-figure">
+                <img src={`./static/photos/${photo.file}`} alt={photo.title} class="form-imagecheck-image" />
+              </span>
+            </label>
+          </div>
+        )
+      })
+    }
+  </div>
 </FormGroup>
 
 <InputColor label="Color Input Check" type="checkbox" />
 <InputColor label="Color Input Radio" name="color-rounded" rounded />
 
 <FormGroup label="Color picker">
-	<input type="color" class="form-control form-control-color" value={blueHex} title="Choose your color" />
+  <input type="color" class="form-control form-control-color" value={blueHex} title="Choose your color" />
 </FormGroup>
 
 {
-	[false, true].map((lite) => (
-		<FormGroup label={`Validation States${lite ? ' (lite)' : ''}`}>
-			<input
-				type="text"
-				class:list={['form-control is-valid', lite && 'is-valid-lite', 'mb-2']}
-				placeholder="Valid State.."
-			/>
-			<input
-				type="text"
-				class:list={['form-control is-invalid', lite && 'is-invalid-lite']}
-				placeholder="Invalid State.."
-			/>
-			{!lite && <div class="invalid-feedback">Invalid feedback</div>}
-		</FormGroup>
-	))
+  [false, true].map((lite) => (
+    <FormGroup label={`Validation States${lite ? ' (lite)' : ''}`}>
+      <input type="text" class:list={['form-control is-valid', lite && 'is-valid-lite', 'mb-2']} placeholder="Valid State.." />
+      <input type="text" class:list={['form-control is-invalid', lite && 'is-invalid-lite']} placeholder="Invalid State.." />
+      {!lite && <div class="invalid-feedback">Invalid feedback</div>}
+    </FormGroup>
+  ))
 }
 
 <label class="form-label">Form fieldset</label>
 <fieldset class="form-fieldset">
-	<FormGroup label="Full name" required>
-		<input type="text" class="form-control" autocomplete="off" />
-	</FormGroup>
-	<FormGroup label="Company" required>
-		<input type="text" class="form-control" autocomplete="off" />
-	</FormGroup>
-	<FormGroup label="Email" required>
-		<input type="email" class="form-control" autocomplete="off" />
-	</FormGroup>
-	<FormGroup label="Phone number">
-		<input type="tel" class="form-control" autocomplete="off" />
-	</FormGroup>
-	<label class="form-check">
-		<input type="checkbox" class="form-check-input" />
-		<span class="form-check-label required">I agree to the Terms & Conditions</span>
-	</label>
+  <FormGroup label="Full name" required>
+    <input type="text" class="form-control" autocomplete="off" />
+  </FormGroup>
+  <FormGroup label="Company" required>
+    <input type="text" class="form-control" autocomplete="off" />
+  </FormGroup>
+  <FormGroup label="Email" required>
+    <input type="email" class="form-control" autocomplete="off" />
+  </FormGroup>
+  <FormGroup label="Phone number">
+    <input type="tel" class="form-control" autocomplete="off" />
+  </FormGroup>
+  <label class="form-check">
+    <input type="checkbox" class="form-check-input" />
+    <span class="form-check-label required">I agree to the Terms & Conditions</span>
+  </label>
 </fieldset>

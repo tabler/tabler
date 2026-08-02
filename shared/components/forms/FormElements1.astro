@@ -6,6 +6,7 @@
 import Icon from '@ui/Icon.astro';
 import FormGroup from '@ui/FormGroup.astro';
 import selects from '@data/selects.json';
+import CaptureScript from '../CaptureScript.astro';
 
 const states = (selects as { states: { options: Record<string, { name: string; selected?: boolean }> } }).states.options;
 ---
@@ -160,6 +161,7 @@ const states = (selects as { states: { options: Record<string, { name: string; s
 	synchronously at parse time, so the readyState/DOMContentLoaded guard below
 	actually delays until after the library has loaded.
 -->
+<CaptureScript>
 <!-- BEGIN SELECT STATES -->
 <script is:inline>
 	function initSelectStates() {
@@ -187,3 +189,4 @@ const states = (selects as { states: { options: Record<string, { name: string; s
 	document.readyState !== 'loading' ? initSelectStates() : document.addEventListener('DOMContentLoaded', initSelectStates, { once: true });
 </script>
 <!-- END SELECT STATES -->
+</CaptureScript>

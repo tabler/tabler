@@ -5,6 +5,7 @@ import CardStamp from '@ui/CardStamp.astro';
 import Card from '@ui/Card.astro';
 import CardBody from '@ui/CardBody.astro';
 import Prose from '@ui/Prose.astro';
+import CaptureScript from '@shared/components/CaptureScript.astro';
 import freeIllustrations from '@data/free-illustrations.json';
 import illustrationsList from '@data/illustrations.json';
 import siteData from '@data/site.json';
@@ -12,12 +13,11 @@ import siteData from '@data/site.json';
 const autodark = (freeIllustrations as { autodark: Record<string, string> }).autodark;
 const autodarkEntries = Object.entries(autodark);
 
-// first-illustration: the Liquid loop overwrites each pass → last value wins.
+// Last autodark entry (loop overwrites each pass).
 const firstIllustration = autodarkEntries.length
 	? autodarkEntries[autodarkEntries.length - 1][1]
 	: '';
 
-// Page-local transform: replace: '<svg ' , '<svg class="w-100 h-auto" '
 const withClass = (svg: string) => svg.replaceAll('<svg ', '<svg class="w-100 h-auto" ');
 
 const colors = siteData.colors as Record<string, { hex: string; class: string; prop: string }>;
@@ -25,15 +25,11 @@ const skinColors = siteData.skinColors as Record<string, { hex: string; class: s
 const colorEntries = Object.values(colors);
 const skinEntries = Object.values(skinColors);
 
-// skinColor = site.skinColors | first → the first value object (Rose).
 const skinFirst = skinEntries[0];
 const buyLink = (siteData.illustrations as { buy_link: string }).buy_link;
 
-// {{ illustrations | size | minus: 4 }}
 const moreCount = illustrationsList.length - 4;
 
-// {% capture_script %} — build the illustrations JS map from the same data.
-// skin_color / color[1].prop resolve to empty in Liquid → literal "var()".
 const illustrationsData = Object.fromEntries(
 	autodarkEntries.map(([key, svg]) => [key, { svg: withClass(svg) }]),
 );
@@ -174,6 +170,7 @@ const illustrationsData = Object.fromEntries(
 			</div>
 		</div>
 	</div>
+	<CaptureScript>
 	<!-- BEGIN ILLUSTRATIONS SCRIPT -->
 	<script is:inline define:vars={{ illustrationsData }}>
 		// @ts-nocheck — illustrationsData is injected at runtime by define:vars, which
@@ -206,4 +203,5 @@ const illustrationsData = Object.fromEntries(
 		});
 	</script>
 	<!-- END ILLUSTRATIONS SCRIPT -->
+	</CaptureScript>
 </DefaultLayout>

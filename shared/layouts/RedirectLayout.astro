@@ -1,24 +1,10 @@
 ---
-// (a bare meta-refresh document).
-//
-// The include computes:
-//   {% if url contains 'http://' or 'https://' %}{{ url }}
-//   {% else %}{{ page | relative }}{{ url }}{% endif %}
-// For root-level pages `{{ page | relative }}` resolves to ".".
+// Bare meta-refresh redirect document.
 
 interface Props {
-	/**
-	 * include.url — the raw redirect target. NOTE: shared/layouts/redirect.html
-	 * passes `page.redirect.to`, but in Eleventy `page` is the built-in page
-	 * object (no front matter), so `page.redirect` is undefined and the include
-	 * receives an empty url → the target collapses to the relative root ".".
-	 * The reference build (markdown.html) redirects to "." for this reason.
-	 */
+	/** Redirect target. Absolute http(s) URLs are used as-is; relative ones are prefixed with `base`. */
 	url?: string;
-	/**
-	 * `{{ page | relative }}` — the relative path to the site root from this
-	 * page. Defaults to "." (root-level pages); nested pages pass e.g. "../../..".
-	 */
+	/** Relative path to the site root from this page. Defaults to ".". */
 	base?: string;
 }
 

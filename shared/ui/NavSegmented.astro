@@ -1,5 +1,4 @@
 ---
-// Port of ui/nav-segmented.html
 import Icon from './Icon.astro';
 import { includeArgCount } from '@shared/lib/include-args';
 
@@ -29,11 +28,7 @@ const {
 	class: className,
 } = Astro.props;
 
-// nav-segmented.html emits ` nav-{{ include.size }}` which — via the LiquidJS
-// `.size` meta-property bug — resolves to the include argument COUNT when no
-// explicit `size` is passed (nav-1, nav-2, …). Unlike icon-N/btn-N these
-// `nav-N` junk classes are NOT stripped by the DOM diff, so they must be
-// reproduced verbatim. An explicit size stays (nav-sm/nav-lg).
+// When `size` is omitted, append `nav-{argCount}` (e.g. nav-1, nav-2). An explicit size uses nav-sm/nav-lg.
 const includeArgKeys = ['items', 'icons', 'disabled', 'hover', 'default', 'vertical', 'size', 'fullWidth', 'class', 'name'] as const;
 const argCount = includeArgCount(Astro.props as Record<string, unknown>, includeArgKeys);
 const sizeToken = size ? `nav-${size}` : `nav-${argCount}`;

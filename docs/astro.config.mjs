@@ -29,6 +29,8 @@ export default defineConfig({
         '@ui': fileURLToPath(new URL('../shared/ui', import.meta.url)),
         // docs-only components (Example, DocsMenu, …)
         '@components': fileURLToPath(new URL('./components', import.meta.url)),
+        // docs-only layouts (DocsLayout + the MDX adapter, referenced by `layout:` front matter)
+        '@layouts': fileURLToPath(new URL('./layouts', import.meta.url)),
         // this package's pages dir — used by @shared/lib/docs-children's glob
         '@pages': fileURLToPath(new URL('./pages', import.meta.url)),
       },
@@ -77,7 +79,7 @@ export default defineConfig({
     mdx(),
   ],
   markdown: {
-    // markdown-it in Eleventy did not produce typographic quotes — neither do we
+    // No typographic quote rewriting.
     processor: satteri({ features: { smartPunctuation: false } }),
     shikiConfig: {
       theme: 'github-dark',

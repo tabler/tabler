@@ -1,8 +1,5 @@
 ---
-// Port of shared/includes/ui/dropzone.html.
-// The Dropzone init <script> renders directly here (no more page-scripts registry),
-// wrapping the instance in window.tabler_dropzone.
-// Liquid action="{{ page | relative }}/" resolves to "./" for root-level pages.
+import CaptureScript from '../components/CaptureScript.astro';
 interface Props {
 	id?: string;
 	multiple?: boolean;
@@ -19,7 +16,6 @@ const dropzoneSelector = `#dropzone-${id}`;
 
 <form class="dropzone" id={dropzoneId} action="./" autocomplete="off" novalidate>
 	<div class="fallback">
-		{/* emit a bare boolean attribute (empty string) to match Liquid's {% if %}multiple */}
 		<input name="file" type="file" multiple={multiple ? '' : undefined} />
 	</div>
 	{
@@ -31,6 +27,7 @@ const dropzoneSelector = `#dropzone-${id}`;
 		)
 	}
 </form>
+<CaptureScript>
 <!-- BEGIN DROPZONE -->
 <script define:vars={{ dropzoneId, dropzoneSelector }}>
 	window.tabler_dropzone ??= {};
@@ -42,3 +39,4 @@ const dropzoneSelector = `#dropzone-${id}`;
 	document.readyState !== 'loading' ? initDropzone() : document.addEventListener('DOMContentLoaded', initDropzone, { once: true });
 </script>
 <!-- END DROPZONE -->
+</CaptureScript>

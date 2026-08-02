@@ -3,6 +3,7 @@ import FormFooter from '@ui/FormFooter.astro';
 import SingleLayout from '@shared/layouts/SingleLayout.astro';
 import Button from '@ui/Button.astro';
 import ButtonList from '@ui/ButtonList.astro';
+import CaptureScript from '@shared/components/CaptureScript.astro';
 ---
 
 <SingleLayout title="2-Step Verification">
@@ -57,22 +58,23 @@ import ButtonList from '@ui/ButtonList.astro';
 		</div>
 	</form>
 
+	<CaptureScript>
 	<!-- BEGIN CODE INPUT SCRIPT -->
-	<script>
-		const inputs = document.querySelectorAll<HTMLInputElement>('[data-code-input]');
+	<script is:inline>
+		const inputs = document.querySelectorAll('[data-code-input]');
 
 		// Attach an event listener to each input element
 		inputs.forEach((input, i) => {
 			input.addEventListener('input', (e) => {
-				const target = e.target as HTMLInputElement;
+				const target = e.target;
 				// If the input field has a character, and there is a next input field, focus it
 				if (target.value.length === target.maxLength && i + 1 < inputs.length) {
 					inputs[i + 1].focus();
 				}
 			});
 
-			input.addEventListener('keydown', (e: KeyboardEvent) => {
-				const target = e.target as HTMLInputElement;
+			input.addEventListener('keydown', (e) => {
+				const target = e.target;
 				// If the input field is empty and Backspace is pressed, and there is a previous input field, focus it
 				if (target.value.length === 0 && e.key === 'Backspace' && i > 0) {
 					inputs[i - 1].focus();
@@ -81,6 +83,7 @@ import ButtonList from '@ui/ButtonList.astro';
 		});
 	</script>
 	<!-- END CODE INPUT SCRIPT -->
+	</CaptureScript>
 
 	<div class="text-center text-secondary mt-3">
 		It may take a minute to receive your code. Haven't received it? <a href="./"

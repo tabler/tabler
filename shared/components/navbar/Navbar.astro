@@ -1,21 +1,11 @@
 ---
-// Full port of layout/navbar.html (both condensed and non-condensed branches).
-// Called from DefaultLayout with the params default.html forwards (condensed,
-// overlap, dark, hideBrand, sticky, transparent, class, hideSearch — always
-// true there) and standalone from navigation.astro with the showcase params
-// (sample, personId, hideLogo, smallLogo, showTitle, hideIcons, hideUsername,
-// hideSearch, hideBrand, background, backgroundColor, fluidSearch).
+// Condensed and non-condensed navbar branches. DefaultLayout passes condensed,
+// overlap, dark, hideBrand, sticky, transparent, class, hideSearch; navigation
+// showcase pages also use sample, personId, hideLogo, smallLogo, showTitle,
+// hideIcons, hideUsername, background, backgroundColor, fluidSearch.
 //
-// TODO: unported Liquid params (unused by any ported page):
-//  - hide-menu (the `elsif include.hide-menu` branch in the condensed collapse:
-//    search only, rounded=include.transparent),
-//  - dark-secondary (data-bs-theme="dark" on the non-condensed inner
-//    `<div class="navbar">`).
-//
-// Note on fluid-search: in the Liquid source the search block inside the
-// condensed branch sits in `{% unless condensed %}` nested in `{% if condensed %}`
-// — dead code, it can never render. fluid-search therefore has no effect on the
-// output; the prop is accepted for parity with the include signature only.
+// fluidSearch has no effect on output (search in the condensed branch is dead
+// code); the prop is kept for call-site compatibility.
 import Icon from '@ui/Icon.astro';
 import NavbarLogo from './NavbarLogo.astro';
 import NavbarToggler from './NavbarToggler.astro';
@@ -110,7 +100,6 @@ const headerClass = [
 			)
 		}
 
-		{/* navbar.html passes the show-* flags with default: true */}
 		<NavbarSide
 			class="order-md-last"
 			breakpoint={breakpoint}
@@ -143,7 +132,7 @@ const headerClass = [
 								<NavbarMenu sample={sample} hideIcons={hideIcons} pageMenu={pageMenu} />
 							</nav>
 							<!-- END NAVBAR MENU -->
-							{/* the Liquid search block here is inside `unless condensed` — dead code, nothing to render */}
+							{/* Search block omitted when condensed — nothing to render */}
 						</div>
 					)}
 				</div>

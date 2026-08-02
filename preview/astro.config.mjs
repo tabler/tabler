@@ -13,9 +13,7 @@ import { copyAssets } from '../.build/copy-assets';
 const path = (p) => fileURLToPath(new URL(p, import.meta.url));
 
 /**
- * Equivalent of the Eleventy "html-prettify" step (@tabler/preview): the
- * generated HTML is the product (users copy it 1:1), so after the build we
- * format it with prettier per .prettierrc.
+ * After build, format page HTML with prettier (users copy it 1:1).
  * @returns {import('astro').AstroIntegration}
  */
 function prettifyHtml() {
@@ -79,25 +77,22 @@ export default defineConfig({
 	vite: {
 		resolve: {
 			alias: {
-				// demo data lives in the monorepo's shared/data — single source of
-				// truth shared with the Eleventy packages (no copies in src/data)
+				// Demo data in shared/data (single source of truth).
 				'@data': fileURLToPath(new URL('../shared/data', import.meta.url)),
-				// Astro components/lib shared with docs (single source of truth)
+				// Components/lib shared with docs.
 				'@shared': fileURLToPath(new URL('../shared', import.meta.url)),
 				'@ui': fileURLToPath(new URL('../shared/ui', import.meta.url)),
 				'@components': fileURLToPath(new URL('../shared/components', import.meta.url)),
-				// this package's pages dir — used by @shared/lib/docs-children's glob
+				// Used by @shared/lib/docs-children's glob.
 				'@pages': fileURLToPath(new URL('./pages', import.meta.url)),
 			},
 		},
 	},
 	build: {
-		// emit sign-in.html instead of sign-in/index.html — matches the Eleventy
-		// preview package layout, where the HTML files are the distributed product
+		// Emit sign-in.html instead of sign-in/index.html (HTML is the product).
 		format: 'file',
 	},
-	// Do not collapse whitespace in the output — the HTML must stay readable
-	// (like the Eleventy build); prettier finalizes formatting after the build.
+	// Keep readable HTML; prettier formats after the build.
 	compressHTML: false,
 	integrations: [
 		copyAssets({
@@ -153,21 +148,19 @@ export default defineConfig({
 		prettifyHtml(),
 	],
 	markdown: {
-		// markdown-it in Eleventy does not produce typographic quotes — neither do we
+		// No typographic quote rewriting.
 		processor: satteri({ features: { smartPunctuation: false } }),
 		shikiConfig: {
 			theme: 'github-dark',
 			transformers: [
 				{
-					// The Eleventy docs pipeline beautifies html fences before highlighting
+					// Beautify html fences before highlighting.
 					preprocess(code) {
 						if (this.options.lang === 'html') {
 							return beautify.html(code, { indent_size: 2, wrap_line_length: 80 });
 						}
 					},
-					// Eleventy docs emits raw shiki output: <pre class="shiki github-dark">.
-					// Astro adds its own astro-code class and data-language — restore the
-					// exact markdown-it + shiki pipeline markup.
+					// Keep shiki classes only (drop Astro's astro-code / data-language).
 					pre(node) {
 						node.properties.class = 'shiki github-dark';
 						delete node.properties.dataLanguage;

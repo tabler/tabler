@@ -1,6 +1,6 @@
 ---
-// Equivalent of ui/map-vector.html
 import mapsVector from '@data/maps-vector.json';
+import CaptureScript from '../components/CaptureScript.astro';
 
 interface MapData {
 	title?: string;
@@ -95,28 +95,30 @@ const mapOptions = data
 					<div id={mapKey} class="w-100 h-100" />
 				</div>
 			</div>
-			<!-- BEGIN MAP VECTOR -->
-			<script define:vars={{ mapKey, mapSelector, mapName: data.map, mapOptions }}>
-				window.tabler_map_vector ??= {};
+			<CaptureScript>
+				<!-- BEGIN MAP VECTOR -->
+				<script define:vars={{ mapKey, mapSelector, mapName: data.map, mapOptions }}>
+					window.tabler_map_vector ??= {};
 
-				function initMapVector() {
-					const map = (window.tabler_map_vector[mapKey] = new jsVectorMap({
-						selector: mapSelector,
-						map: mapName,
-						...mapOptions,
-						// labels.markers.render is a function, not JSON-serializable — added here
-						// rather than baked into mapOptions.
-						...(mapOptions.markers ? { labels: { markers: { render: (marker) => marker.name } } } : {}),
-					}));
+					function initMapVector() {
+						const map = (window.tabler_map_vector[mapKey] = new jsVectorMap({
+							selector: mapSelector,
+							map: mapName,
+							...mapOptions,
+							// labels.markers.render is a function, not JSON-serializable — added here
+							// rather than baked into mapOptions.
+							...(mapOptions.markers ? { labels: { markers: { render: (marker) => marker.name } } } : {}),
+						}));
 
-					window.addEventListener('resize', () => {
-						map.updateSize();
-					});
-				}
+						window.addEventListener('resize', () => {
+							map.updateSize();
+						});
+					}
 
-				document.readyState !== 'loading' ? initMapVector() : document.addEventListener('DOMContentLoaded', initMapVector, { once: true });
-			</script>
-			<!-- END MAP VECTOR -->
+					document.readyState !== 'loading' ? initMapVector() : document.addEventListener('DOMContentLoaded', initMapVector, { once: true });
+				</script>
+				<!-- END MAP VECTOR -->
+			</CaptureScript>
 		</Fragment>
 	)
 }

@@ -1,15 +1,12 @@
 ---
-// Port of ui/colorpicker.html.
-// The Coloris init <script> renders directly here (no more page-scripts registry),
-// wrapping the instance in window.tabler_colorpicker.
 import site from '@data/site.json';
+import CaptureScript from '../components/CaptureScript.astro';
 
 interface Props {
 	value?: string;
 	id?: string | number;
 	alpha?: boolean;
 	format?: string | false;
-	/** swatches-only param in ui/colorpicker.html */
 	swatchesOnly?: boolean;
 	class?: string;
 }
@@ -36,6 +33,7 @@ const colorpickerSelector = `#colorpicker-${id}`;
 	id={colorpickerId}
 	value={value}
 />
+<CaptureScript>
 <!-- BEGIN COLORPICKER -->
 <script define:vars={{ colorpickerId, colorpickerSelector, alpha, format, swatchesOnly, swatchProps }}>
 	function initColorpicker() {
@@ -57,3 +55,4 @@ const colorpickerSelector = `#colorpicker-${id}`;
 	document.readyState !== 'loading' ? initColorpicker() : document.addEventListener('DOMContentLoaded', initColorpicker, { once: true });
 </script>
 <!-- END COLORPICKER -->
+</CaptureScript>

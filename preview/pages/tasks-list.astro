@@ -7,6 +7,7 @@ import Icon from '@ui/Icon.astro';
 import Avatar from '@ui/Avatar.astro';
 import Badge from '@ui/Badge.astro';
 import Modal from '@shared/components/modals/Modal.astro';
+import CaptureModal from '@shared/components/CaptureModal.astro';
 import FormGroup from '@ui/FormGroup.astro';
 import tasks from '@data/tasks.json';
 import people from '@data/people.json';
@@ -35,7 +36,7 @@ interface Column {
 const columns = (tasks as { columns: Column[] }).columns;
 const peopleList = people as Person[];
 
-// add-task modal: assignable people (parts/modals/add-task.html — "5,6,2,3")
+// Assignable people for the add-task modal.
 const selectedPeople = [5, 6, 2, 3].map((id) => peopleList[id - 1]);
 ---
 
@@ -135,45 +136,47 @@ const selectedPeople = [5, 6, 2, 3].map((id) => peopleList[id - 1]);
 		</div>
 	</div>
 
-	<Modal modalId="add-task">
-		<div class="modal-header">
-			<h4 class="modal-title">Add task</h4>
-			<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-		</div>
+	<CaptureModal>
+		<Modal modalId="add-task">
+			<div class="modal-header">
+				<h4 class="modal-title">Add task</h4>
+				<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+			</div>
 
-		<div class="modal-body">
-			<form>
-				<FormGroup label="Name">
-					<input type="text" class="form-control" placeholder="Task name" />
-				</FormGroup>
-				<FormGroup label="Assigned To">
-					<select class="form-select">
-						<option value="">Select person</option>
-						{
-							selectedPeople.map((person) => (
-								<option value={person.id}>{person.full_name}</option>
-							))
-						}
-					</select>
-				</FormGroup>
-				<FormGroup label="Priority">
-					<select class="form-select">
-						<option value="Low">Low</option>
-						<option value="Medium">Medium</option>
-						<option value="High">High</option>
-					</select>
-				</FormGroup>
-				<FormGroup label="Description">
-					<textarea class="form-control" rows="3" placeholder="Task description"></textarea>
-				</FormGroup>
-			</form>
-		</div>
+			<div class="modal-body">
+				<form>
+					<FormGroup label="Name">
+						<input type="text" class="form-control" placeholder="Task name" />
+					</FormGroup>
+					<FormGroup label="Assigned To">
+						<select class="form-select">
+							<option value="">Select person</option>
+							{
+								selectedPeople.map((person) => (
+									<option value={person.id}>{person.full_name}</option>
+								))
+							}
+						</select>
+					</FormGroup>
+					<FormGroup label="Priority">
+						<select class="form-select">
+							<option value="Low">Low</option>
+							<option value="Medium">Medium</option>
+							<option value="High">High</option>
+						</select>
+					</FormGroup>
+					<FormGroup label="Description">
+						<textarea class="form-control" rows="3" placeholder="Task description"></textarea>
+					</FormGroup>
+				</form>
+			</div>
 
-		<div class="modal-footer">
-			<button type="button" class="btn" data-bs-dismiss="modal">Cancel</button>
-			<button type="button" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
-				Save
-			</button>
-		</div>
-	</Modal>
+			<div class="modal-footer">
+				<button type="button" class="btn" data-bs-dismiss="modal">Cancel</button>
+				<button type="button" class="btn btn-primary ms-auto" data-bs-dismiss="modal">
+					Save
+				</button>
+			</div>
+		</Modal>
+	</CaptureModal>
 </DefaultLayout>

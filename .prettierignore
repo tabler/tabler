@@ -3,3 +3,28 @@ dist
 .vscode
 .cache
 node_modules
+# generated / build outputs
+.astro
+coverage
+demo
+packages-zip
+preview/public
+preview/tmp-assets
+docs/public
+
+# prettier-plugin-astro cannot parse HTML comments or <script> tags inside
+# JSX expressions ({cond && (<Fragment><!-- ... --><script>...)}) — these files
+# use those constructs on purpose (BEGIN/END markers emitted into demo HTML,
+# conditional inline scripts). Re-check when the plugin gains support.
+docs/layouts/DocsLayout.astro
+shared/components/cards/Card.astro
+shared/components/layout/PageHeader.astro
+shared/components/navbar/Navbar.astro
+shared/ui/Chart.astro
+shared/ui/ChartSparkline.astro
+shared/ui/Datepicker.astro
+shared/ui/InlinePlayer.astro
+shared/ui/Map.astro
+shared/ui/MapVector.astro
+shared/ui/Range.astro
+shared/ui/Select.astro

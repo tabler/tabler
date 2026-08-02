@@ -1,76 +1,71 @@
 ---
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import SettingsLayout from '@shared/layouts/SettingsLayout.astro'
+import Avatar from '@ui/Avatar.astro'
+import Button from '@ui/Button.astro'
+import ButtonList from '@ui/ButtonList.astro'
+import Check from '@ui/form/Check.astro'
+import FormGroup from '@ui/FormGroup.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import people from '@data/people.json'
 
-import CardSubtitle from '@ui/CardSubtitle.astro';
-import SettingsLayout from '@shared/layouts/SettingsLayout.astro';
-import Avatar from '@ui/Avatar.astro';
-import Button from '@ui/Button.astro';
-import ButtonList from '@ui/ButtonList.astro';
-import Check from '@ui/form/Check.astro';
-import FormGroup from '@ui/FormGroup.astro';
-import CardTitle from '@ui/CardTitle.astro';
-import people from '@data/people.json';
-
-const person = people[0];
+const person = people[0]
 ---
 
 <SettingsLayout active="settings">
-	<div class="card-body">
-		<h2 class="mb-4">My Account</h2>
+  <div class="card-body">
+    <h2 class="mb-4">My Account</h2>
 
-		<CardTitle>Profile Details</CardTitle>
+    <CardTitle>Profile Details</CardTitle>
 
-		<div class="row align-items-center">
-			<div class="col-auto"><Avatar size="xl" personId={1} /></div>
-			<div class="col-auto"><Button text="Change avatar" /></div>
-			<div class="col-auto"><Button text="Delete avatar" color="danger" ghost /></div>
-		</div>
+    <div class="row align-items-center">
+      <div class="col-auto"><Avatar size="xl" personId={1} /></div>
+      <div class="col-auto"><Button text="Change avatar" /></div>
+      <div class="col-auto"><Button text="Delete avatar" color="danger" ghost /></div>
+    </div>
 
+    <CardTitle class="mt-4">Business Profile</CardTitle>
 
-		<CardTitle class="mt-4">Business Profile</CardTitle>
+    <div class="row g-3">
+      <FormGroup label="Business Name" for="business-name" class="col-md">
+        <input type="text" class="form-control" id="business-name" name="business-name" value={person.company} />
+      </FormGroup>
+      <FormGroup label="Business ID" for="business-id" class="col-md">
+        <input type="text" class="form-control" id="business-id" name="business-id" value="560afc32" />
+      </FormGroup>
+      <FormGroup label="Location" for="location" class="col-md">
+        <input type="text" class="form-control" id="location" name="location" value={`${person.city}, ${person.country}`} />
+      </FormGroup>
+    </div>
 
-		<div class="row g-3">
-			<FormGroup label="Business Name" for="business-name" class="col-md">
-				<input type="text" class="form-control" id="business-name" name="business-name" value={person.company} />
-			</FormGroup>
-			<FormGroup label="Business ID" for="business-id" class="col-md">
-				<input type="text" class="form-control" id="business-id" name="business-id" value="560afc32" />
-			</FormGroup>
-			<FormGroup label="Location" for="location" class="col-md">
-				<input type="text" class="form-control" id="location" name="location" value={`${person.city}, ${person.country}`} />
-			</FormGroup>
-		</div>
+    <CardTitle class="mt-4">Email</CardTitle>
+    <CardSubtitle>This contact will be shown to others publicly, so choose it carefully.</CardSubtitle>
 
-		<CardTitle class="mt-4">Email</CardTitle>
-		<CardSubtitle>This contact will be shown to others publicly, so choose it carefully.</CardSubtitle>
+    <div>
+      <div class="row g-2">
+        <FormGroup label="Email" for="email" labelClass="visually-hidden" class="col-auto">
+          <input type="text" class="form-control w-auto" id="email" name="email" value={person.email} />
+        </FormGroup>
+        <div class="col-auto"><Button text="Change" /></div>
+      </div>
+    </div>
 
-		<div>
-			<div class="row g-2">
-				<FormGroup label="Email" for="email" labelClass="visually-hidden" class="col-auto">
-					<input type="text" class="form-control w-auto" id="email" name="email" value={person.email} />
-				</FormGroup>
-				<div class="col-auto"><Button text="Change" /></div>
-			</div>
-		</div>
+    <CardTitle class="mt-4">Password</CardTitle>
+    <CardSubtitle>You can set a permanent password if you don't want to use temporary login codes.</CardSubtitle>
+    <div>
+      <Button text="Set new password" />
+    </div>
 
-		<CardTitle class="mt-4">Password</CardTitle>
-		<CardSubtitle>You can set a permanent password if you don't want to use temporary login codes.</CardSubtitle>
-		<div>
-			<Button text="Set new password" />
-		</div>
-
-		<CardTitle class="mt-4">Public profile</CardTitle>
-		<CardSubtitle>
-			Making your profile public means that anyone on the Dashkit network will be able to find
-			you.
-		</CardSubtitle>
-		<div>
-			<Check switch size="lg" titleOn="You're currently visible" titleOff="You're currently invisible" />
-		</div>
-	</div>
-	<div class="card-footer bg-transparent mt-auto">
-		<ButtonList class="justify-content-end">
-			<Button text="Cancel" />
-			<Button text="Submit" color="primary" />
-		</ButtonList>
-	</div>
+    <CardTitle class="mt-4">Public profile</CardTitle>
+    <CardSubtitle> Making your profile public means that anyone on the Dashkit network will be able to find you. </CardSubtitle>
+    <div>
+      <Check switch size="lg" titleOn="You're currently visible" titleOff="You're currently invisible" />
+    </div>
+  </div>
+  <div class="card-footer bg-transparent mt-auto">
+    <ButtonList class="justify-content-end">
+      <Button text="Cancel" />
+      <Button text="Submit" color="primary" />
+    </ButtonList>
+  </div>
 </SettingsLayout>

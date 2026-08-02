@@ -1,33 +1,38 @@
 ---
-import payments from '@data/payments.json';
+import payments from '@data/payments.json'
 ---
 
 <table class="table table-vcenter">
-	<thead>
-	 <tr>
-		<th class="w-1">Icon light</th>
-		<th class="w-1">Icon dark</th>
-		<th>Provider name</th>
-		<th>CSS class</th>
-	 </tr>
+  <thead>
+    <tr>
+      <th class="w-1">Icon light</th>
+      <th class="w-1">Icon dark</th>
+      <th>Provider name</th>
+      <th>CSS class</th>
+    </tr>
   </thead>
   <tbody>
-	{payments.map((payment) => {
-		return (
-		<tr>
-			<td>
-				<div class={`payment payment-sm payment-provider-${ payment.logo }`}></div>
-			</td>
-			<td>
-				<div class={`payment payment-sm payment-provider-${ payment.logo }-dark`}></div>
-			</td>
-			<td>{ payment.name }</td>
-			<td>
-				<code>.payment-provider-{ payment.logo }</code><br>
-				<code>.payment-provider-{ payment.logo }-dark</code>
-			</td>
-		</tr>
-		);
-	})}
+    {
+      payments.map((payment) => {
+        return (
+          <tr>
+            <td>
+              <div class={`payment payment-sm payment-provider-${payment.logo}`} />
+            </td>
+            <td>
+              <div class={`payment payment-sm payment-provider-${payment.logo}-dark`} />
+            </td>
+            <td>{payment.name}</td>
+            <td>
+              <>
+                <code>.payment-provider-{payment.logo}</code>
+                <br />
+              </>
+              <code>.payment-provider-{payment.logo}-dark</code>
+            </td>
+          </tr>
+        )
+      })
+    }
   </tbody>
 </table>
