@@ -45,8 +45,6 @@ const selectClass = [
 
 const isMultiple = Boolean(multiple || data.multiple);
 
-const firstLetters = (s: string) => (s || '').split(' ').map((w) => w.charAt(0)).join('');
-
 interface Person {
 	id: string;
 	full_name: string;
@@ -95,7 +93,7 @@ const selectId = id ? `select-${id}` : undefined;
 	id && (
 		<select
 			class:list={selectClass}
-			placeholder={placeholder}
+			data-placeholder={placeholder}
 			id={`select-${id}`}
 			value={value}
 			multiple={isMultiple ? '' : undefined}

@@ -1,58 +1,50 @@
 ---
-import Button from '@ui/Button.astro';
-import FormGroup from '@ui/FormGroup.astro';
+import Button from '@ui/Button.astro'
+import FormGroup from '@ui/FormGroup.astro'
 
-const months = Array.from({ length: 12 }, (_, i) => i + 1);
-const years = Array.from({ length: 11 }, (_, i) => 2020 + i);
+const months = Array.from({ length: 12 }, (_, i) => i + 1)
+const years = Array.from({ length: 11 }, (_, i) => 2020 + i)
 ---
 
 <div class="card">
-	<div class="card-body">
-		<div class="mb-3">
-			<div class="form-label">Card number</div>
-			<input
-				type="text"
-				name="input-mask"
-				class="form-control"
-				data-mask="0000 0000 0000 0000"
-				data-mask-visible="true"
-				placeholder="0000 0000 0000 0000"
-				autocomplete="off"
-			/>
-		</div>
+  <div class="card-body">
+    <div class="mb-3">
+      <div class="form-label">Card number</div>
+      <input type="text" name="input-mask" class="form-control" data-mask="0000 0000 0000 0000" data-mask-visible="true" placeholder="0000 0000 0000 0000" autocomplete="off" />
+    </div>
 
-		<div class="mb-3">
-			<div class="form-label">Card name</div>
-			<input type="text" class="form-control" />
-		</div>
+    <div class="mb-3">
+      <div class="form-label">Card name</div>
+      <input type="text" class="form-control" />
+    </div>
 
-		<div class="row">
-			<div class="col-8">
-				<FormGroup label="Expiration date">
-					<div class="row g-2">
-						<div class="col">
-							<select class="form-select">
-								{months.map((month) => <option value={month}>{month}</option>)}
-							</select>
-						</div>
-						<div class="col">
-							<select class="form-select">
-								{years.map((year) => <option value={year}>{year}</option>)}
-							</select>
-						</div>
-					</div>
-				</FormGroup>
-			</div>
-			<div class="col">
-				<div class="mb-3">
-					<div class="form-label">CVV</div>
-					<input type="number" class="form-control" />
-				</div>
-			</div>
-		</div>
+    <div class="row">
+      <div class="col-8">
+        <FormGroup label="Expiration date">
+          <div class="row g-2">
+            <div class="col">
+              <select class="form-select">
+                {months.map((month) => <option value={month}>{month}</option>)}
+              </select>
+            </div>
+            <div class="col">
+              <select class="form-select">
+                {years.map((year) => <option value={year}>{year}</option>)}
+              </select>
+            </div>
+          </div>
+        </FormGroup>
+      </div>
+      <div class="col">
+        <div class="mb-3">
+          <div class="form-label">CVV</div>
+          <input type="number" class="form-control" />
+        </div>
+      </div>
+    </div>
 
-		<div class="mt-2">
-			<Button text="Pay now" color="primary" block />
-		</div>
-	</div>
+    <div class="mt-2">
+      <Button text="Pay now" color="primary" block />
+    </div>
+  </div>
 </div>

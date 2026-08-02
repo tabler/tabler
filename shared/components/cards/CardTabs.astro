@@ -1,33 +1,28 @@
 ---
 // Tabs/content blocks are HTML strings (different order when `bottom`).
 interface Props {
-	/** tabs-count — present but unused */
-	count?: number;
-	id?: string;
-	bottom?: boolean;
-	borderless?: boolean;
+  /** tabs-count — present but unused */
+  count?: number
+  id?: string
+  bottom?: boolean
+  borderless?: boolean
 }
 
-const { id = 'top', bottom, borderless } = Astro.props;
+const { id = 'top', bottom, borderless } = Astro.props
 
-const tabs = ['Activity', 'Profile', 'Settings'];
+const tabs = ['Activity', 'Profile', 'Settings']
 
 const tabsHtml = `
 <!-- Cards navigation -->
 <ul class="nav nav-tabs${bottom ? ' nav-tabs-bottom' : ''}">
-${tabs
-	.map(
-		(tab, i) =>
-			`   <li class="nav-item"><a href="#tab-${id}-${i + 1}" class="nav-link${i === 0 ? ' active' : ''}" data-bs-toggle="tab">${tab}</a></li>`,
-	)
-	.join('\n')}
-</ul>`;
+${tabs.map((tab, i) => `   <li class="nav-item"><a href="#tab-${id}-${i + 1}" class="nav-link${i === 0 ? ' active' : ''}" data-bs-toggle="tab">${tab}</a></li>`).join('\n')}
+</ul>`
 
 const tabsContentHtml = `
 <div class="tab-content">
 ${tabs
-	.map(
-		(tab, i) => `   <!-- Content of card #${tab} -->
+  .map(
+    (tab, i) => `   <!-- Content of card #${tab} -->
    <div id="tab-${id}-${i + 1}" class="card tab-pane${i === 0 ? ' active show' : ''}">
       <div class="card-body">
          <div class="card-title">${tab}</div>
@@ -36,24 +31,24 @@ ${tabs
          </p>
       </div>
    </div>`,
-	)
-	.join('\n')}
-</div>`;
+  )
+  .join('\n')}
+</div>`
 ---
 
 <!-- Cards with tabs component -->
 <div class={`card-tabs${borderless ? ' border-0' : ''}`}>
-	{
-		bottom ? (
-			<Fragment>
-				<Fragment set:html={tabsContentHtml} />
-				<Fragment set:html={tabsHtml} />
-			</Fragment>
-		) : (
-			<Fragment>
-				<Fragment set:html={tabsHtml} />
-				<Fragment set:html={tabsContentHtml} />
-			</Fragment>
-		)
-	}
+  {
+    bottom ? (
+      <Fragment>
+        <Fragment set:html={tabsContentHtml} />
+        <Fragment set:html={tabsHtml} />
+      </Fragment>
+    ) : (
+      <Fragment>
+        <Fragment set:html={tabsHtml} />
+        <Fragment set:html={tabsContentHtml} />
+      </Fragment>
+    )
+  }
 </div>
