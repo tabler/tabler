@@ -1,13 +1,12 @@
 ---
-// copy button with data-clipboard-text (equivalent of escape_attribute).
-// The example code comes from the `html` prop or from the rendered slot.
+// Example code from the `html` prop or the rendered slot; copy button uses data-clipboard-text.
 import Icon from '@ui/Icon.astro';
 import { beautifyHtml, highlightCode, removeHref } from '@shared/lib/code-example';
 
 interface Props {
 	/** raw HTML of the example; when absent — the slot is rendered */
 	html?: string;
-	/** code shown in the panel instead of html (the code param in Liquid) */
+	/** code shown in the panel instead of html */
 	code?: string;
 	raw?: boolean;
 	overflow?: string;
@@ -38,7 +37,7 @@ const {
 	codeOnly,
 } = Astro.props;
 
-// equivalent of {% removeemptylines %} around include output (e.g. ui/alert.html)
+// Strip empty lines from the example HTML.
 let html = (htmlProp ?? (await Astro.slots.render('default'))).replace(/^\s*[\r\n]/gm, '');
 
 // JSX reserializes the slot markup: empty SVG elements get explicit closing
@@ -87,7 +86,6 @@ const highlighted = hideCode ? '' : await highlightCode(beautifyHtml(code ?? htm
 {
 	!hideCode && (
 		<div class="position-relative">
-			{/* Astro escapes the attribute value itself (equivalent of escape_attribute) */}
 			<a class="btn btn-icon btn-dark position-absolute m-2 top-0 end-0 z-3" data-clipboard-text={html}>
 				<Icon name="clipboard" />
 				<Icon name="check" class="d-none" />

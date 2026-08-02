@@ -1,5 +1,6 @@
 ---
-// Equivalent of ui/chart-sparkline.html
+import CaptureScript from '../components/CaptureScript.astro';
+
 interface Props {
 	id?: string;
 	type?: string;
@@ -74,17 +75,17 @@ const chartOptions = id
 {id && <div class:list={classes} id={chartKey} />}
 {
 	id && (
-		<Fragment>
-		<Fragment set:html={'<!-- BEGIN CHART SPARKLINE -->'} />
-		<script define:vars={{ chartKey, chartOptions }}>
-			function initSparkline() {
-				window.tabler_chart ??= {};
-				window.ApexCharts && (window.tabler_chart[chartKey] = new ApexCharts(document.getElementById(chartKey), chartOptions)).render();
-			}
+		<CaptureScript>
+			<!-- BEGIN CHART SPARKLINE -->
+			<script define:vars={{ chartKey, chartOptions }}>
+				function initSparkline() {
+					window.tabler_chart ??= {};
+					window.ApexCharts && (window.tabler_chart[chartKey] = new ApexCharts(document.getElementById(chartKey), chartOptions)).render();
+				}
 
-			document.readyState !== 'loading' ? initSparkline() : document.addEventListener('DOMContentLoaded', initSparkline, { once: true });
-		</script>
-		<Fragment set:html={'<!-- END CHART SPARKLINE -->'} />
-		</Fragment>
+				document.readyState !== 'loading' ? initSparkline() : document.addEventListener('DOMContentLoaded', initSparkline, { once: true });
+			</script>
+			<!-- END CHART SPARKLINE -->
+		</CaptureScript>
 	)
 }

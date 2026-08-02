@@ -51,6 +51,37 @@
       "cache": false,
       "persistent": true
     },
+    "@tabler/core#dev-prepare": {
+      "cache": false
+    },
+    "@tabler/preview#dev-prepare": {
+      "dependsOn": [
+        "@tabler/core#dev-prepare"
+      ],
+      "cache": false
+    },
+    "@tabler/core#dev": {
+      "dependsOn": [
+        "@tabler/core#dev-prepare"
+      ],
+      "cache": false,
+      "persistent": true
+    },
+    "@tabler/preview#dev": {
+      "dependsOn": [
+        "@tabler/preview#dev-prepare"
+      ],
+      "cache": false,
+      "persistent": true
+    },
+    "@tabler/docs#dev": {
+      "dependsOn": [
+        "@tabler/core#dev-prepare",
+        "@tabler/preview#dev-prepare"
+      ],
+      "cache": false,
+      "persistent": true
+    },
     "clean": {
       "dependsOn": [
         "^clean"

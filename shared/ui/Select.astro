@@ -1,10 +1,11 @@
 ---
 // Renders a <select id="select-{id}"> populated from @data/selects.json (+ people)
-// and its TomSelect init <script>, rendered directly here (no more page-scripts registry).
+// and its TomSelect init script.
 // TODO: optgroup / flag / label indicator branches (unused on the modals page).
 import selects from '@data/selects.json';
 import people from '@data/people.json';
 import { firstLetters } from '@shared/lib/string-format';
+import CaptureScript from '../components/CaptureScript.astro';
 
 interface Props {
 	id?: string;
@@ -124,34 +125,34 @@ const selectId = id ? `select-${id}` : undefined;
 }
 {
 	id && (
-		<Fragment>
-		<Fragment set:html={'<!-- BEGIN SELECT -->'} />
-		<script define:vars={{ selectId, showSearch }}>
-			function initSelect() {
-				window.tabler_select ??= {};
+		<CaptureScript>
+			<!-- BEGIN SELECT -->
+			<script define:vars={{ selectId, showSearch }}>
+				function initSelect() {
+					window.tabler_select ??= {};
 
-				const renderOption = (data, escape) => {
-					if (data.customProperties) {
-						return `<div><span class="dropdown-item-indicator">${data.customProperties}</span>${escape(data.text)}</div>`;
-					}
-					return `<div>${escape(data.text)}</div>`;
-				};
+					const renderOption = (data, escape) => {
+						if (data.customProperties) {
+							return `<div><span class="dropdown-item-indicator">${data.customProperties}</span>${escape(data.text)}</div>`;
+						}
+						return `<div>${escape(data.text)}</div>`;
+					};
 
-				window.TomSelect &&
-					(window.tabler_select[selectId] = new TomSelect(document.getElementById(selectId), {
-						copyClassesToDropdown: false,
-						dropdownParent: 'body',
-						...(showSearch ? {} : { controlInput: '<input>' }),
-						render: {
-							item: renderOption,
-							option: renderOption,
-						},
-					}));
-			}
+					window.TomSelect &&
+						(window.tabler_select[selectId] = new TomSelect(document.getElementById(selectId), {
+							copyClassesToDropdown: false,
+							dropdownParent: 'body',
+							...(showSearch ? {} : { controlInput: '<input>' }),
+							render: {
+								item: renderOption,
+								option: renderOption,
+							},
+						}));
+				}
 
-			document.readyState !== 'loading' ? initSelect() : document.addEventListener('DOMContentLoaded', initSelect, { once: true });
-		</script>
-		<Fragment set:html={'<!-- END SELECT -->'} />
-		</Fragment>
+				document.readyState !== 'loading' ? initSelect() : document.addEventListener('DOMContentLoaded', initSelect, { once: true });
+			</script>
+			<!-- END SELECT -->
+		</CaptureScript>
 	)
 }

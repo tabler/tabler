@@ -1,5 +1,4 @@
 ---
-// Port of ui/advanced-table.html
 import BadgesList from './BadgesList.astro';
 import Icon from './Icon.astro';
 import { formatLongDate } from '@shared/lib/date-format';
@@ -10,6 +9,7 @@ import ButtonList from './ButtonList.astro';
 import Pagination from './Pagination.astro';
 import people from '@data/people.json';
 import tableProperties from '@data/table-properties.json';
+import CaptureScript from '../components/CaptureScript.astro';
 
 interface Props {
 	id?: string;
@@ -36,16 +36,9 @@ const rows = (people as Record<string, any>[]).map((person, i) => {
 	return { person, index, status, itemTags, category, date };
 });
 
-// Inline <script> from advanced-table.html (renders in the page body).
 const advancedTable = (tableProperties as Record<string, any>)['advanced-table'];
 const perPageDefault = perPage[1];
 ---
-
-{/*
-	ui/advanced-table.html begins with a commented-out {% include "js/tabler-list.html" %}
-	(a disabled List.js init for an empty table id). HTML comments are stripped by the
-	DOM parity diff, so it is intentionally omitted here rather than emitted verbatim.
-*/}
 <div class="card">
 	<div class="card-table">
 		<div class="card-header">
@@ -171,6 +164,7 @@ const perPageDefault = perPage[1];
 	</div>
 </div>
 
+<CaptureScript>
 <!-- BEGIN ADVANCED TABLE -->
 <script define:vars={{ tableId, advancedTable, perPageDefault }}>
 	// Astro wraps define:vars scripts in an IIFE, so this needs an explicit window
@@ -205,3 +199,4 @@ const perPageDefault = perPage[1];
 	document.readyState !== 'loading' ? initAdvancedTable() : document.addEventListener('DOMContentLoaded', initAdvancedTable, { once: true });
 </script>
 <!-- END ADVANCED TABLE -->
+</CaptureScript>

@@ -1,22 +1,4 @@
 ---
-// Reuses committed components: ProgressSteps, Datepicker, Trending.
-//
-// NOTE (datepicker params): the source passes many params to ui/datepicker.html
-// (date-min, date-max, selection-mode, placement, display-months-count,
-// first-weekday, selected-dates). The current shared ui/datepicker.html is
-// Litepicker-based and IGNORES all of them — the reference build renders only a
-// plain input (id/value/layout/inline). Datepicker.astro mirrors that include, so
-// we pass only the supported props and drop the rest, matching the reference.
-//
-// NOTE (page-libs): front matter is `page-libs: [vanilla-calendar-pro]`, but that
-// lib is NOT registered in @tabler/core/libs.json, so BaseLayout emits no assets
-// for it (matches the reference: empty PAGE LEVEL STYLES, no vanilla output).
-// Passed through faithfully anyway.
-//
-// NOTE: the `page-header-link` front matter key ("Go to Team Settings") is inert —
-// nothing in the layout/page-header consumes it, and it is absent from the
-// reference. No prop for it.
-
 import Subheader from '@ui/Subheader.astro';
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
 import ButtonList from '@ui/ButtonList.astro';

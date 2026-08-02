@@ -1,5 +1,6 @@
 ---
 import icons from '@data/icons.json';
+import CaptureScript from '../components/CaptureScript.astro';
 
 interface Props {
 	id?: string;
@@ -11,13 +12,8 @@ interface Props {
 
 const { id: idProp, icon = 'star', color, size, value } = Astro.props;
 
-// id = include.id | default: include.icon | default: 'default'
 const id = idProp ?? (Astro.props.icon ? icon : undefined) ?? 'default';
 
-// Build the star SVG exactly like ui/icon.html (class="gl-star-full" type="filled"),
-// then collapse to a single clean line with the download comment removed — this is
-// the `star` capture in ui/rating.html. The include['size'] junk is NOT reproduced;
-// an explicit size becomes `icon-{size}`.
 const starClasses = [
 	'icon',
 	'gl-star-full',
@@ -44,6 +40,7 @@ const ratingKey = `rating-${id}`;
 	<option value="2" selected={value === 2}>Poor</option>
 	<option value="1" selected={value === 1}>Terrible</option>
 </select>
+<CaptureScript>
 <!-- BEGIN RATING -->
 <script define:vars={{ ratingSelector, ratingKey, star }}>
 	window.tabler_rating ??= {};
@@ -63,3 +60,4 @@ const ratingKey = `rating-${id}`;
 	document.readyState !== 'loading' ? initRating() : document.addEventListener('DOMContentLoaded', initRating, { once: true });
 </script>
 <!-- END RATING -->
+</CaptureScript>

@@ -65,16 +65,14 @@ additively instead of creating parallel variants.
 
 ## Page scripts and modals
 
-- Register per-page scripts with `addPageScript()` and modals with
-  `addPageModal()` (`@shared/lib/page-scripts.ts` / `page-modals.ts`).
+- Capture markup with `CaptureScript` / `CaptureModal` (HTML in the slot, not
+  template strings). They register via `addPageScript()` / `addPageModal()`
+  (`@shared/lib/page-scripts.ts` / `page-modals.ts`).
+  Wrap at the call site, e.g. `<CaptureModal><Modal …>…</Modal></CaptureModal>`.
   Registration MUST be synchronous in the component frontmatter (before the
   first `await`) — Astro renders siblings concurrently, and a registration
   after `await Astro.slots.render()` loses the race against the drain in
-  `PageScripts`/`PageModals` (emitted by `BaseLayout`).
-- Script-emitting components also render `<InlineScript code={script} />`.
-  Its behavior is chosen per package by the vite define
-  `import.meta.env.INLINE_PAGE_SCRIPTS`: preview drains registered scripts at
-  the end of the page; docs inlines them next to the example.
+  `PageScripts`/`PageModals` (emitted by `BaseLayout` / `DocsLayout`).
 - Third-party page libraries: list names in the layout's `pageLibs` prop —
   resolved via `@tabler/core/libs.json` (a full `http` URL in there is emitted
   verbatim; `head: true` libs go into `<head>`).

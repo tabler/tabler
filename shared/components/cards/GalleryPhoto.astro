@@ -1,7 +1,5 @@
 ---
-// Equivalent of cards/gallery-photo.html.
-// The Liquid include reads `photo` and `forloop.index` from the parent loop scope —
-// in Astro they are passed explicitly as the `photo` and `index` props.
+// `photo` and `index` are passed explicitly from the parent loop.
 import Avatar from '@ui/Avatar.astro';
 import Icon from '@ui/Icon.astro';
 import { randomNumber, timeagoLabel } from '@shared/lib/pseudo-random';
@@ -20,14 +18,14 @@ interface Person {
 interface Props {
 	photo: Photo;
 	person: Person;
-	/** 1-based loop index (forloop.index in Liquid) — seeds the deterministic pseudo-random values */
+	/** 1-based loop index — seeds the deterministic pseudo-random values */
 	index: number;
 	hideLikes?: boolean;
 }
 
 const { photo, person, index, hideLikes } = Astro.props;
 
-// Liquid: {% if forloop.index > 2 and forloop.index < 9 or forloop.index == 10 %}
+// Heart filled when (index > 2 && index < 9) || index === 10.
 const heartClass = (index > 2 && index < 9) || index === 10 ? 'icon-filled text-red' : undefined;
 ---
 

@@ -1,6 +1,6 @@
 ---
-// The Liquid source (ui/chart-radial.html) emits its <script> inline right after
-// the chart div (not via {% capture_script %}), so this port inlines it too.
+import CaptureScript from '../components/CaptureScript.astro';
+
 interface Props {
 	id?: string;
 	height?: number;
@@ -16,6 +16,7 @@ const fixedTitle = title.toUpperCase();
 ---
 
 <div id={chartId} class={`position-relative ${className}`}></div>
+<CaptureScript>
 <!-- BEGIN CHART RADIAL -->
 <script define:vars={{ chartId, height, value, fixedTitle }}>
 	function initRadialChart() {
@@ -68,3 +69,4 @@ const fixedTitle = title.toUpperCase();
 	document.readyState !== 'loading' ? initRadialChart() : document.addEventListener('DOMContentLoaded', initRadialChart, { once: true });
 </script>
 <!-- END CHART RADIAL -->
+</CaptureScript>

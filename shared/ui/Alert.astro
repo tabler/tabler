@@ -58,7 +58,7 @@ const classes = [
 	{
 		description || list ? (
 			<div>
-				{/* Liquid doesn't escape {{ include.title }} — set:html preserves entities like &hellip; */}
+				{/* set:html preserves entities like &hellip; in the title */}
 				<h4 class="alert-heading" set:html={title} />
 				<div class="alert-description">
 					<Fragment set:html={description ?? ''} />
@@ -74,7 +74,7 @@ const classes = [
 		) : (
 			<Fragment>
 				<Fragment set:html={title} />
-				{/* prettier-ignore — anchor on one line as in Liquid (whitespace ends up in the code panel) */}
+				{/* prettier-ignore — anchor on one line (whitespace ends up in the code panel) */}
 				{action ? (
 					<a href="#" class="alert-action">{action}</a>
 				) : link ? (

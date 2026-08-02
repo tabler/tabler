@@ -1,8 +1,6 @@
 ---
-// Port of shared/includes/ui/datepicker.html.
-// Renders the datepicker input (icon / icon-prepend / inline / plain layouts) and its
-// Litepicker init <script>, rendered directly here (no more page-scripts registry).
 import Icon from './Icon.astro';
+import CaptureScript from '../components/CaptureScript.astro';
 
 interface Props {
 	id?: string;
@@ -23,8 +21,6 @@ const {
 	inline,
 } = Astro.props;
 
-// The Litepicker chevron buttons. In the reference the icons carry the junk
-// `icon-1` size class (stripped by the DOM diff); Icon.astro emits them without it.
 const chevronLeft =
 	'<!-- Download SVG icon from http://tabler.io/icons/icon/chevron-left -->\n\t<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" class="icon"><path d="M15 6l-6 6l6 6" /></svg>';
 const chevronRight =
@@ -68,26 +64,26 @@ const datepickerId = id ? `datepicker-${id}` : undefined;
 }
 {
 	id && (
-		<Fragment>
-		<Fragment set:html={'<!-- BEGIN DATEPICKER -->'} />
-		<script define:vars={{ datepickerId, chevronLeft, chevronRight, inline }}>
-			function initDatepicker() {
-				window.tabler_datepicker ??= {};
+		<CaptureScript>
+			<!-- BEGIN DATEPICKER -->
+			<script define:vars={{ datepickerId, chevronLeft, chevronRight, inline }}>
+				function initDatepicker() {
+					window.tabler_datepicker ??= {};
 
-				window.Litepicker &&
-					(window.tabler_datepicker[datepickerId] = new Litepicker({
-						element: document.getElementById(datepickerId),
-						buttonText: {
-							previousMonth: chevronLeft,
-							nextMonth: chevronRight,
-						},
-						...(inline ? { inlineMode: true } : {}),
-					}));
-			}
+					window.Litepicker &&
+						(window.tabler_datepicker[datepickerId] = new Litepicker({
+							element: document.getElementById(datepickerId),
+							buttonText: {
+								previousMonth: chevronLeft,
+								nextMonth: chevronRight,
+							},
+							...(inline ? { inlineMode: true } : {}),
+						}));
+				}
 
-			document.readyState !== 'loading' ? initDatepicker() : document.addEventListener('DOMContentLoaded', initDatepicker, { once: true });
-		</script>
-		<Fragment set:html={'<!-- END DATEPICKER -->'} />
-		</Fragment>
+				document.readyState !== 'loading' ? initDatepicker() : document.addEventListener('DOMContentLoaded', initDatepicker, { once: true });
+			</script>
+			<!-- END DATEPICKER -->
+		</CaptureScript>
 	)
 }

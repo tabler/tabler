@@ -1,0 +1,10 @@
+---
+// Separate component so drainPageScripts() executes only at this point of the
+// render stream (after the page content render has STARTED — registrations are
+// synchronous, script content may be a promise).
+import { drainPageScripts } from '@shared/lib/page-scripts';
+
+const scripts = await Promise.all(drainPageScripts());
+---
+
+{scripts.length > 0 && <Fragment set:html={scripts.join('\n')} />}

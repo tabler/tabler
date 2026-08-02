@@ -1,5 +1,6 @@
 ---
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
+import CaptureScript from '@shared/components/CaptureScript.astro';
 import ButtonList from '@ui/ButtonList.astro';
 import Card from '@ui/Card.astro';
 import CardBody from '@ui/CardBody.astro';
@@ -132,8 +133,9 @@ import ProgressDescription from '@ui/ProgressDescription.astro';
 						<button class="btn btn-sm ms-3" id="progress-animated-minus-10">-10%</button>
 						<button class="btn btn-sm" id="progress-animated-add-10">+10%</button>
 					</ButtonList>
+					<CaptureScript>
 					<!-- BEGIN SCRIPT OF ANIMATION -->
-					<script>
+					<script is:inline>
 						/*
 						This script is for animation of the last progress bar.
 						It increases the progress bar value by a random amount every 2 seconds until it reaches 100%.
@@ -165,6 +167,7 @@ import ProgressDescription from '@ui/ProgressDescription.astro';
 						document.getElementById('progress-animated-100')!.addEventListener('click', () => setWidth(100));
 					</script>
 					<!-- END SCRIPT OF ANIMATION -->
+					</CaptureScript>
 				</CardBody>
 			</Card>
 		</div>

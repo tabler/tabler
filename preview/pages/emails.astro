@@ -4,6 +4,7 @@
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
 import CardStamp from '@ui/CardStamp.astro';
 import Prose from '@ui/Prose.astro';
+import CaptureScript from '@shared/components/CaptureScript.astro';
 import { site } from '@shared/lib/site';
 import emails from '@data/emails.json';
 
@@ -82,23 +83,25 @@ const emailEntries = Object.entries(emails);
 			</div>
 		</div>
 	</div>
+	<CaptureScript>
 	<!-- BEGIN EMAIL MODAL SCRIPT -->
-	<script>
+	<script is:inline>
 		const emailModal = document.getElementById('email-modal');
 		if (emailModal) {
 			emailModal.addEventListener('show.bs.modal', function (e) {
-				const button = (e as Event & { relatedTarget?: EventTarget | null }).relatedTarget;
+				const button = e.relatedTarget;
 				if (!(button instanceof HTMLElement)) return;
 
 				const image = button.getAttribute('data-bs-image'),
 					title = button.getAttribute('data-bs-title'),
 					description = button.getAttribute('data-bs-description');
 
-				emailModal.querySelector('[data-email-title]')!.textContent = title;
-				emailModal.querySelector('[data-email-description]')!.textContent = description;
-				(emailModal.querySelector('[data-email-image]') as HTMLImageElement).src = image ?? '';
+				emailModal.querySelector('[data-email-title]').textContent = title;
+				emailModal.querySelector('[data-email-description]').textContent = description;
+				emailModal.querySelector('[data-email-image]').src = image;
 			});
 		}
 	</script>
 	<!-- END EMAIL MODAL SCRIPT -->
+	</CaptureScript>
 </DefaultLayout>

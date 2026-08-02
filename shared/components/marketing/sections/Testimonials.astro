@@ -23,7 +23,7 @@ const { background, class: className, limit = 99, hideHeader } = Astro.props;
 
 const sectionClass = ['section', background && `section-${background}`, className]
 
-// Liquid: testimonials | slice: 0, limit | split_to_n: 3
+// Slice testimonials and split into 3 columns.
 const list = (testimonials as string[]).slice(0, limit);
 const n = 3;
 const chunkSize = Math.round(list.length / n);
@@ -32,8 +32,7 @@ for (let i = 0; i < list.length; i += chunkSize) {
 	groups.push(list.slice(i, i + chunkSize));
 }
 
-// Liquid: {% assign i = 1 %} — a global counter incremented per testimonial,
-// used to index people[i] (people[0] is intentionally skipped).
+// Global counter starting at 1 — indexes people[i] (people[0] is intentionally skipped).
 let i = 1;
 const cards = groups.map((group) =>
 	group.map((testimonial) => {

@@ -1,9 +1,5 @@
 ---
-// Equivalent of docs/menu.html. In Eleventy the menu is built from `collections.docs |
-// collection-tree` (the tree of content/**/*.md files of the @tabler/docs app); in the PoC
-// the tree is frozen in shared/data/docs.json (extracted from the reference
-// development docs build).
-
+// Menu tree from shared/data/docs.json.
 import Subheader from '@ui/Subheader.astro';
 import docs from '@data/docs.json';
 import { pathSlug as slug } from '@shared/lib/string-format';
@@ -46,7 +42,7 @@ const menu = docs.menu as MenuSection[];
 							const expanded = url === level2.url || Boolean(level2.children?.some((child) => child.url === url));
 							return (
 								<div>
-									{/* as in Liquid: href/data-bs-* only when the element has children */}
+									{/* href/data-bs-* only when the element has children */}
 									{hasChildren ? (
 										<a
 											class={`nav-link${expanded ? ' active' : ''}`}

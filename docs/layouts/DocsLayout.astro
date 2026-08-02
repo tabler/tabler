@@ -1,5 +1,5 @@
 ---
-// Docs layout — port of shared/layouts/docs/default.html (the @tabler/docs app).
+// Docs layout for the @tabler/docs app.
 // Standalone layout with its own <head>; does NOT use BaseLayout.astro.
 // Development uses the unminified assets; production additionally emits the SEO metadata.
 import { site } from '@shared/lib/site';
@@ -12,6 +12,7 @@ import DocsToc from '@components/DocsToc.astro';
 import type { TocItem } from '@components/DocsToc.astro';
 import DocsPagination from '@components/DocsPagination.astro';
 import Prose from '@ui/Prose.astro';
+import PageScripts from '@shared/components/PageScripts.astro';
 
 interface Props {
 	/** front matter: the page's h1 heading */
@@ -24,24 +25,18 @@ interface Props {
 	description?: string;
 	/** front matter: optional SEO description override */
 	seoDescription?: string;
-	/**
-	 * front matter: path to the Bootstrap docs (e.g. "components/alerts/").
-	 * Unused by the layout or any docs include — it doesn't appear in the
-	 * reference output either; accepted for front matter parity.
-	 */
-	bootstrapLink?: string;
 	/** front matter `added-in`: renders the "Added in X" badge next to the h1 */
 	addedIn?: string;
-	/** table of contents (h2/h3 from the markdown content) — see DocsToc.astro */
+	/** Table of contents (h2/h3 from the markdown content) — see DocsToc.astro */
 	toc?: TocItem[];
 	/**
-	 * Page URL in the docs namespace (equivalent of Eleventy's page.url), e.g.
-	 * "/ui/components/alert/". By default derived from Astro.url.pathname by
-	 * stripping the /docs prefix. Drives the active menu entry, pagination,
-	 * the "Edit this page" link, and the relative favicon path.
+	 * Page URL in the docs namespace, e.g. "/ui/components/alert/".
+	 * By default derived from Astro.url.pathname by stripping the /docs prefix.
+	 * Drives the active menu entry, pagination, the "Edit this page" link, and
+	 * the relative favicon path.
 	 */
 	url?: string;
-	/** front matter `docs-libs`: extra libraries from src/data/libs.json (css+js) */
+	/** Extra libraries from libs.json (css+js) */
 	docsLibs?: string[];
 	/** hides child and previous/next page navigation */
 	hidePagination?: boolean;
@@ -63,7 +58,7 @@ const {
 } = Astro.props;
 const environment = process.env.NODE_ENV || 'production';
 
-// URL in the docs namespace: /docs/ui/components/alert(.html) -> /ui/components/alert/
+// Strip /docs prefix (and optional .html) for the docs namespace URL.
 const docsUrl =
 	Astro.props.url ??
 	(() => {
@@ -86,7 +81,7 @@ const metaDescription = seoDescription ?? description;
 const siteName = pageSection ? `Tabler ${pageSection} Documentation` : 'Tabler Documentation';
 const canonicalUrl = new URL(docsUrl, Astro.site ?? site.docsUrl).href;
 
-// Equivalent of `{{ page | relative }}`: for /ui/components/alert/ -> "../../.."
+// Relative asset base: for /ui/components/alert/ -> "../../.."
 const depth = docsUrl.split('/').filter(Boolean).length;
 const relative = depth === 0 ? '.' : '../'.repeat(depth).slice(0, -1);
 
@@ -94,8 +89,8 @@ const relative = depth === 0 ? '.' : '../'.repeat(depth).slice(0, -1);
 // MDX layout; fall back to the flat-page convention (docs/pages/<url>.mdx).
 const editFilePath = editPath ?? `docs/pages${docsUrl.replace(/\/$/, '')}.mdx`;
 
-// JS/CSS libraries as in Eleventy: docs-libs + clipboard (always included).
-// In dev file names stay unchanged (e.g. dist/clipboard.min.js keeps .min — the reference has it so).
+// docs-libs + clipboard (always included). In dev, file names stay unchanged
+// (e.g. dist/clipboard.min.js keeps .min).
 type Lib = { npm?: string; js?: string[]; css?: string[] };
 const libEntries = Object.entries(libs as Record<string, Lib>);
 const libUrl = (lib: Lib, file: string) =>
@@ -240,7 +235,6 @@ const docsLinks = docs.links as DocsLink[];
 										{
 											addedIn && (
 												<div class="ms-auto">
-													{/* equivalent of ui/badge.html color="primary" light=true */}
 													<span class="badge bg-primary-lt text-primary-lt-fg">Added in {addedIn}</span>
 												</div>
 											)
@@ -249,8 +243,7 @@ const docsLinks = docs.links as DocsLink[];
 
 									<p class="text-secondary fs-3 lh-3">{summary}</p>
 
-									{/* markdown content; equivalent of {{ content | headings-id }} — the consuming
-									    page must supply headings with ids (MDX does this by default) */}
+									{/* Page must supply headings with ids (MDX does this by default). */}
 									<slot />
 
 									{!hidePagination && <DocsPagination url={docsUrl} />}
@@ -345,6 +338,8 @@ const docsLinks = docs.links as DocsLink[];
 		<!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
 		<script is:inline src="/dist/js/tabler.js"></script>
 		<!-- END GLOBAL MANDATORY SCRIPTS -->
+
+		<PageScripts />
 
 		<!-- BEGIN DOCS SCRIPTS -->
 		<script is:inline src="/js/docs.js" defer></script>

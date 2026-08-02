@@ -1,13 +1,13 @@
 ---
-// TODO: spinner param (needs a ui/spinner.html port — no Spinner.astro yet).
-// TODO: provider param (assigned in ui/button.html but never used in its markup).
-// TODO: color=false special case (Liquid resets color to null; pass no color instead).
+// TODO: spinner param (needs Spinner.astro).
+// TODO: provider param (unused in markup).
+// TODO: color=false special case — pass no color prop instead.
 import Icon from './Icon.astro';
 
 interface Props {
 	text?: string;
 	href?: string;
-	/** raw href + target="_blank" rel="noreferrer" (external param in ui/button.html) */
+	/** raw href + target="_blank" rel="noreferrer" */
 	external?: boolean;
 	element?: 'a' | 'button';
 	type?: string;
@@ -15,7 +15,7 @@ interface Props {
 	color?: string;
 	outline?: boolean;
 	ghost?: boolean;
-	/** btn-{height} right after btn (height param in ui/button.html) */
+	/** btn-{height} right after btn */
 	height?: string;
 	size?: string;
 	block?: boolean;
@@ -24,20 +24,20 @@ interface Props {
 	loading?: boolean;
 	action?: boolean;
 	pill?: boolean;
-	/** btn-link (link param in ui/button.html) */
+	/** btn-link */
 	link?: boolean;
 	class?: string;
 	icon?: string;
 	iconColor?: string;
 	iconEnd?: string;
 	iconOnly?: boolean;
-	/** <span class="animated-dots"> after the text (dots param in ui/button.html) */
+	/** animated dots after the text */
 	dots?: boolean;
 	/** data-bs-toggle="modal" data-bs-target="#modal-{modalId}" (modal-id param) */
 	modalId?: string;
 	/** data-bs-toggle="toast" data-bs-target="#toast-{toastId}" (toast-id param) */
 	toastId?: string;
-	/** data-bs-dismiss="modal" (dismiss param in ui/button.html) */
+	/** data-bs-dismiss="modal" */
 	dismiss?: boolean;
 }
 
@@ -71,12 +71,9 @@ const {
 	dismiss,
 } = Astro.props;
 
-// ui/button.html: href defaults to '#'; with external the href stays raw,
-// without external it is prefixed with site.base + '/' (site.base is undefined
-// in Eleventy, so it comes out as '/{href}').
+// href defaults to '#'; internal hrefs are prefixed with '/'.
 const resolvedHref = href ? (external ? href : `/${href}`) : '#';
 
-// Class token order exactly as in ui/button.html.
 const classes = [
 	'btn',
 	height && `btn-${height}`,

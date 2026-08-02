@@ -3,9 +3,7 @@ import { site } from '@shared/lib/site';
 
 export const prerender = true;
 
-// (build.format 'file'), index pages collapse to their directory URL.
-// Entry order mirrors the Eleventy `pages` collection: top-level pages first,
-// then nested ones, each group in reverse-alphabetical order.
+// Index pages collapse to directory URLs (build.format 'file').
 const pages = import.meta.glob('./**/*.astro');
 
 const urls = Object.keys(pages)
@@ -14,7 +12,6 @@ const urls = Object.keys(pages)
 		const depthA = a.split('/').length;
 		const depthB = b.split('/').length;
 		if (depthA !== depthB) return depthA - depthB;
-		// byte-wise, descending — matches the Eleventy `pages` collection order
 		return a < b ? 1 : -1;
 	})
 	.map((path) => {
@@ -34,7 +31,7 @@ const escapeXml = (value: string) =>
 export const GET: APIRoute = () => {
 	const environment = process.env.NODE_ENV || 'production';
 	const baseUrl = environment !== 'development' ? site.previewUrl : '';
-	// same shape as Liquid's `'now' | date_to_xmlschema` (UTC, +00:00 suffix)
+	// ISO 8601 UTC timestamp (+00:00 suffix)
 	const lastModified = new Date().toISOString().replace(/\.\d{3}Z$/, '+00:00');
 	const entries = urls
 		.map(

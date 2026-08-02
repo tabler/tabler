@@ -1,30 +1,17 @@
 ---
-// Equivalent of cards/body-placeholder.html (ui/svg.html inlined).
-// TODO: the ui/svg.html `border` branch (rect + inline style) is not ported —
-//       body-placeholder.html never sets it (the "border" token in the class
-//       list is just a CSS class).
 interface Props {
-	width?: number;
-	height?: number;
-	ratio?: string;
-	class?: string;
+  width?: number
+  height?: number
+  ratio?: string
+  class?: string
 }
 
-const { width = 400, height = 200, ratio, class: className } = Astro.props;
+const { width = 400, height = 200, ratio, class: className } = Astro.props
 ---
 
 <div class={`card-body${className ? ` ${className}` : ''}`}>
-	<svg
-		xmlns="http://www.w3.org/2000/svg"
-		class="w-100 border rounded"
-		preserveAspectRatio={ratio ? 'xMidYMid meet' : 'none'}
-		width={width}
-		height={height}
-		viewBox={`0 0 ${width} ${height}`}
-		fill="transparent"
-		stroke="var(--tblr-border-color, #b8cef1)"
-	>
-		<line x1="0" y1="0" x2={width} y2={height}></line>
-		<line x1="0" y1={height} x2={width} y2="0"></line>
-	</svg>
+  <svg xmlns="http://www.w3.org/2000/svg" class="w-100 border rounded" preserveAspectRatio={ratio ? 'xMidYMid meet' : 'none'} width={width} height={height} viewBox={`0 0 ${width} ${height}`} fill="transparent" stroke="var(--tblr-border-color, #b8cef1)">
+    <line x1="0" y1="0" x2={width} y2={height}></line>
+    <line x1="0" y1={height} x2={width} y2="0"></line>
+  </svg>
 </div>
