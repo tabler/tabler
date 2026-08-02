@@ -1,69 +1,69 @@
 ---
-import Button from '@ui/Button.astro';
-import ButtonList from '@ui/ButtonList.astro';
-import NavbarSideTheme from './NavbarSideTheme.astro';
-import NavbarSideNotifications from './NavbarSideNotifications.astro';
-import NavbarSideApps from './NavbarSideApps.astro';
-import NavbarSideLanguage from './NavbarSideLanguage.astro';
-import NavbarSideUser from './NavbarSideUser.astro';
+import Button from '@ui/Button.astro'
+import ButtonList from '@ui/ButtonList.astro'
+import NavbarSideTheme from './NavbarSideTheme.astro'
+import NavbarSideNotifications from './NavbarSideNotifications.astro'
+import NavbarSideApps from './NavbarSideApps.astro'
+import NavbarSideLanguage from './NavbarSideLanguage.astro'
+import NavbarSideUser from './NavbarSideUser.astro'
 
 interface Props {
-	class?: string;
-	breakpoint?: string;
-	condensed?: boolean;
-	personId?: number;
-	hideUsername?: boolean;
-	dark?: boolean;
-	showThemeToggle?: boolean;
-	showNotifications?: boolean;
-	showApps?: boolean;
-	showLanguageSelector?: boolean;
-	showUser?: boolean;
+  class?: string
+  breakpoint?: string
+  condensed?: boolean
+  personId?: number
+  hideUsername?: boolean
+  dark?: boolean
+  showThemeToggle?: boolean
+  showNotifications?: boolean
+  showApps?: boolean
+  showLanguageSelector?: boolean
+  showUser?: boolean
 }
 
 const {
-	class: className,
-	breakpoint = 'md',
-	condensed = false,
-	personId = 1,
-	hideUsername = false,
-	dark = false,
-	// show-* flags default false — sidebar only shows the Sponsor button unless set.
-	showThemeToggle = false,
-	showNotifications = false,
-	showApps = false,
-	showLanguageSelector = false,
-	showUser = false,
-} = Astro.props;
+  class: className,
+  breakpoint = 'md',
+  condensed = false,
+  personId = 1,
+  hideUsername = false,
+  dark = false,
+  // show-* flags default false — sidebar only shows the Sponsor button unless set.
+  showThemeToggle = false,
+  showNotifications = false,
+  showApps = false,
+  showLanguageSelector = false,
+  showUser = false,
+} = Astro.props
 
 // TODO: site.githubSponsorsUrl — add to src/lib/site.ts (out of scope for this
 // task; value from /Users/chomik/htdocs/tabler/shared/data/site.json).
-const githubSponsorsUrl = 'https://github.com/sponsors/codecalm';
+const githubSponsorsUrl = 'https://github.com/sponsors/codecalm'
 ---
 
 <!-- BEGIN NAVBAR ACTIONS -->
 <div class:list={['navbar-nav flex-row', className]}>
-	{
-		!condensed && (
-			<div class={`nav-item d-none d-${breakpoint}-flex me-3`}>
-				<ButtonList>
-					<Button icon="heart" iconColor="pink" outline text="Sponsor" href={githubSponsorsUrl} external />
-				</ButtonList>
-			</div>
-		)
-	}
+  {
+    !condensed && (
+      <div class={`nav-item d-none d-${breakpoint}-flex me-3`}>
+        <ButtonList>
+          <Button icon="heart" iconColor="pink" outline text="Sponsor" href={githubSponsorsUrl} external />
+        </ButtonList>
+      </div>
+    )
+  }
 
-	{
-		(showThemeToggle || showNotifications || showApps || showLanguageSelector) && (
-			<div class={`d-none d-${breakpoint}-flex me-3`}>
-				{showThemeToggle && <NavbarSideTheme />}
-				{showNotifications && <NavbarSideNotifications />}
-				{showApps && <NavbarSideApps />}
-				{showLanguageSelector && <NavbarSideLanguage />}
-			</div>
-		)
-	}
+  {
+    (showThemeToggle || showNotifications || showApps || showLanguageSelector) && (
+      <div class={`d-none d-${breakpoint}-flex me-3`}>
+        {showThemeToggle && <NavbarSideTheme />}
+        {showNotifications && <NavbarSideNotifications />}
+        {showApps && <NavbarSideApps />}
+        {showLanguageSelector && <NavbarSideLanguage />}
+      </div>
+    )
+  }
 
-	{showUser && <NavbarSideUser personId={personId} hideUsername={hideUsername} dark={dark} />}
+  {showUser && <NavbarSideUser personId={personId} hideUsername={hideUsername} dark={dark} />}
 </div>
 <!-- END NAVBAR ACTIONS -->

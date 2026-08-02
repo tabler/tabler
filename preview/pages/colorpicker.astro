@@ -1,34 +1,29 @@
 ---
-import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
-import Card from '@ui/Card.astro';
-import CardBody from '@ui/CardBody.astro';
-import CardTitle from '@ui/CardTitle.astro';
-import Colorpicker from '@ui/Colorpicker.astro';
-import site from '@data/site.json';
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import Colorpicker from '@ui/Colorpicker.astro'
+import site from '@data/site.json'
 
-const colors = Object.values(site.colors) as { hex: string }[];
+const colors = Object.values(site.colors) as { hex: string }[]
 ---
 
-<DefaultLayout
-	title="Color picker"
-	pageHeader="Color picker"
-	pageMenu="plugins.colorpicker"
-	pageLibs={['coloris.js']}
->
-	<Card>
-		<CardBody>
-			<CardTitle>Basic</CardTitle>
-			<div class="row g-3">
-				{
-					colors.map((color, index) => (
-						<div class="col-2">
-							<div>
-								<Colorpicker value={color.hex} id={index + 1} format="hex" />
-							</div>
-						</div>
-					))
-				}
-			</div>
-		</CardBody>
-	</Card>
+<DefaultLayout title="Color picker" pageHeader="Color picker" pageMenu="plugins.colorpicker" pageLibs={['coloris.js']}>
+  <Card>
+    <CardBody>
+      <CardTitle>Basic</CardTitle>
+      <div class="row g-3">
+        {
+          colors.map((color, index) => (
+            <div class="col-2">
+              <div>
+                <Colorpicker value={color.hex} id={index + 1} format="hex" />
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </CardBody>
+  </Card>
 </DefaultLayout>

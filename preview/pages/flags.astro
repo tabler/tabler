@@ -1,37 +1,32 @@
 ---
-import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
-import Card from '@ui/Card.astro';
-import CardHeader from '@ui/CardHeader.astro';
-import CardBody from '@ui/CardBody.astro';
-import flags from '@data/flags.json';
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Card from '@ui/Card.astro'
+import CardHeader from '@ui/CardHeader.astro'
+import CardBody from '@ui/CardBody.astro'
+import flags from '@data/flags.json'
 
 // 21 filler divs for flexbox layout.
-const fillers = Array.from({ length: 21 });
+const fillers = Array.from({ length: 21 })
 ---
 
 <DefaultLayout title="Flags" pageHeader="Flags" pageMenu="addons.flags">
-	<Card>
-		<CardHeader>
-			<div class="card-title">List of all flags</div>
-		</CardHeader>
-		<CardBody class="p-0">
-			<div class="demo-icons-list-wrap">
-				<div class="demo-icons-list">
-					{
-						flags.map((country) => (
-							<span
-								class="demo-icons-list-item"
-								title={country.name}
-								data-bs-toggle="tooltip"
-								data-bs-placement="top"
-							>
-								<span class={`flag flag-country-${country.flag.toLowerCase()}`} />
-							</span>
-						))
-					}
-					{fillers.map(() => <div></div>)}
-				</div>
-			</div>
-		</CardBody>
-	</Card>
+  <Card>
+    <CardHeader>
+      <div class="card-title">List of all flags</div>
+    </CardHeader>
+    <CardBody class="p-0">
+      <div class="demo-icons-list-wrap">
+        <div class="demo-icons-list">
+          {
+            flags.map((country) => (
+              <span class="demo-icons-list-item" title={country.name} data-bs-toggle="tooltip" data-bs-placement="top">
+                <span class={`flag flag-country-${country.flag.toLowerCase()}`} />
+              </span>
+            ))
+          }
+          {fillers.map(() => <div />)}
+        </div>
+      </div>
+    </CardBody>
+  </Card>
 </DefaultLayout>

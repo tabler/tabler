@@ -1,206 +1,205 @@
 ---
-
 // colors = ['default'] + site.colors keys + ['dark', 'light']
 
-import BadgesList from '@ui/BadgesList.astro';
-import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
-import Icon from '@ui/Icon.astro';
-import ButtonList from '@ui/ButtonList.astro';
-import Card from '@ui/Card.astro';
-import CardBody from '@ui/CardBody.astro';
-import CardTitle from '@ui/CardTitle.astro';
-import DropdownMenu from '@ui/DropdownMenu.astro';
-import site from '@data/site.json';
-import { ucFirst } from '@shared/lib/string-format';
+import BadgesList from '@ui/BadgesList.astro'
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Icon from '@ui/Icon.astro'
+import ButtonList from '@ui/ButtonList.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import DropdownMenu from '@ui/DropdownMenu.astro'
+import site from '@data/site.json'
+import { ucFirst } from '@shared/lib/string-format'
 
-const colors = ['default', ...Object.keys(site.colors), 'dark', 'light'];
-const sizes = ['sm', 'md', 'lg'];
+const colors = ['default', ...Object.keys(site.colors), 'dark', 'light']
+const sizes = ['sm', 'md', 'lg']
 ---
 
 <DefaultLayout title="Badges" pageHeader="Badges" pageMenu="base.badges">
-	<div class="row row-cards">
-		<div class="col-4">
-			<div class="row row-cards">
-				<div class="col-12">
-					<Card>
-						<CardBody>
-							<h1>Example heading <span class="badge">New</span></h1>
-							<h2>Example heading <span class="badge">New</span></h2>
-							<h3>Example heading <span class="badge">New</span></h3>
-							<h4>Example heading <span class="badge">New</span></h4>
-							<h5>Example heading <span class="badge">New</span></h5>
-							<h6>Example heading <span class="badge">New</span></h6>
-						</CardBody>
-					</Card>
-				</div>
-				<div class="col-12">
-					<Card>
-						<CardBody>
-							<CardTitle>Badge sizes</CardTitle>
+  <div class="row row-cards">
+    <div class="col-4">
+      <div class="row row-cards">
+        <div class="col-12">
+          <Card>
+            <CardBody>
+              <h1>Example heading <span class="badge">New</span></h1>
+              <h2>Example heading <span class="badge">New</span></h2>
+              <h3>Example heading <span class="badge">New</span></h3>
+              <h4>Example heading <span class="badge">New</span></h4>
+              <h5>Example heading <span class="badge">New</span></h5>
+              <h6>Example heading <span class="badge">New</span></h6>
+            </CardBody>
+          </Card>
+        </div>
+        <div class="col-12">
+          <Card>
+            <CardBody>
+              <CardTitle>Badge sizes</CardTitle>
 
-							<div class="space-y">
-								{
-									sizes.map((size) => (
-										<BadgesList>
-											<span class={`badge${size !== 'md' ? ` badge-${size}` : ''}`}>Default</span>
-											<span class={`badge${size !== 'md' ? ` badge-${size}` : ''}`}>
-												<Icon name="check" /> Left icon
-											</span>
-											<span class={`badge${size !== 'md' ? ` badge-${size}` : ''}`}>
-												Right icon<Icon name="arrow-right" />
-											</span>
-											<span class={`badge badge-icononly${size !== 'md' ? ` badge-${size}` : ''}`}>
-												<Icon name="star" type="filled" />
-											</span>
-										</BadgesList>
-									))
-								}
-							</div>
-						</CardBody>
-					</Card>
-				</div>
-				<div class="col-12">
-					<Card>
-						<CardBody>
-							<CardTitle>Positioned badges</CardTitle>
+              <div class="space-y">
+                {
+                  sizes.map((size) => (
+                    <BadgesList>
+                      <span class={`badge${size !== 'md' ? ` badge-${size}` : ''}`}>Default</span>
+                      <span class={`badge${size !== 'md' ? ` badge-${size}` : ''}`}>
+                        <Icon name="check" /> Left icon
+                      </span>
+                      <span class={`badge${size !== 'md' ? ` badge-${size}` : ''}`}>
+                        Right icon
+                        <Icon name="arrow-right" />
+                      </span>
+                      <span class={`badge badge-icononly${size !== 'md' ? ` badge-${size}` : ''}`}>
+                        <Icon name="star" type="filled" />
+                      </span>
+                    </BadgesList>
+                  ))
+                }
+              </div>
+            </CardBody>
+          </Card>
+        </div>
+        <div class="col-12">
+          <Card>
+            <CardBody>
+              <CardTitle>Positioned badges</CardTitle>
 
-							<ButtonList>
-								<button type="button" class="btn">Notifications <span class="badge text-bg-secondary ms-2">4</span></button>
+              <ButtonList>
+                <button type="button" class="btn">Notifications <span class="badge text-bg-secondary ms-2">4</span></button>
 
-								<button type="button" class="btn">
-									Inbox
-									<span class="badge bg-red badge-notification text-red-fg">
-										9+
-										<span class="visually-hidden">unread messages</span>
-									</span>
-								</button>
+                <button type="button" class="btn">
+                  Inbox
+                  <span class="badge bg-red badge-notification text-red-fg">
+                    9+
+                    <span class="visually-hidden">unread messages</span>
+                  </span>
+                </button>
 
-								<button type="button" class="btn">
-									Profile
-									<span class="badge badge-dot bg-red badge-notification"></span>
-								</button>
+                <button type="button" class="btn">
+                  Profile
+                  <span class="badge badge-dot bg-red badge-notification"></span>
+                </button>
 
-								<button type="button" class="btn">
-									Settings
-									<span class="badge badge-dot bg-red badge-notification badge-blink"></span>
-								</button>
+                <button type="button" class="btn">
+                  Settings
+                  <span class="badge badge-dot bg-red badge-notification badge-blink"></span>
+                </button>
 
-								<button type="button" class="btn btn-icon">
-									<Icon name="bell" />
-									<span class="badge badge-dot bg-red badge-notification badge-blink"></span>
-								</button>
+                <button type="button" class="btn btn-icon">
+                  <Icon name="bell" />
+                  <span class="badge badge-dot bg-red badge-notification badge-blink"></span>
+                </button>
 
-								<button type="button" class="btn btn-icon btn-action">
-									<Icon name="bell" />
-									<span class="badge badge-dot bg-red badge-notification"></span>
-								</button>
-							</ButtonList>
-						</CardBody>
-					</Card>
-				</div>
-			</div>
-		</div>
-		<div class="col-8">
-			<div class="row row-cards">
-				<div class="col-12">
-					<Card>
-						<CardBody>
-							<CardTitle>Basic badges</CardTitle>
-							<BadgesList>
-								{colors.map((color) => <span class={`badge bg-${color} text-${color}-fg`}>{ucFirst(color)}</span>)}
-							</BadgesList>
-						</CardBody>
-					</Card>
-				</div>
-				<div class="col-12">
-					<Card>
-						<CardBody>
-							<CardTitle>Light badges</CardTitle>
-							<BadgesList>
-								{colors.map((color) => <span class={`badge bg-${color}-lt`}>{ucFirst(color)}</span>)}
-							</BadgesList>
-						</CardBody>
-					</Card>
-				</div>
-				<div class="col-12">
-					<Card>
-						<CardBody>
-							<CardTitle>Outline badges</CardTitle>
-							<BadgesList>
-								{colors.map((color) => <span class={`badge badge-outline text-${color}`}>{ucFirst(color)}</span>)}
-							</BadgesList>
-						</CardBody>
-					</Card>
-				</div>
-				<div class="col-12">
-					<Card>
-						<CardBody>
-							<CardTitle>Badges with icons</CardTitle>
-							<BadgesList>
-								{
-									colors.map((color) => (
-										<span class={`badge bg-${color} text-${color}-fg`}>
-											{' '}
-											<Icon name="star" type="filled" /> {ucFirst(color)}{' '}
-										</span>
-									))
-								}
-							</BadgesList>
-						</CardBody>
-					</Card>
-				</div>
-			</div>
-		</div>
-		<div class="col-sm-6 col-lg-3"><DropdownMenu show badge arrow /></div>
-		<div class="col-sm-6 col-lg-9">
-			<div class="row row-cards">
-				<div class="col-12">
-					<Card>
-						<CardBody>
-							<ButtonList>
-								{
-									colors.map((color, index) => (
-										<button class="btn">
-											{ucFirst(color)} badge <span class={`badge bg-${color} text-${color}-fg ms-2`}>{index + 1}</span>
-										</button>
-									))
-								}
-							</ButtonList>
-						</CardBody>
-					</Card>
-				</div>
-				<div class="col-12">
-					<Card>
-						<CardBody>
-							<ButtonList>
-								{
-									colors.map((color, index) => (
-										<button class="btn position-relative">
-											{ucFirst(color)} badge{' '}
-											<span class={`badge bg-${color} text-${color}-fg badge-notification badge-pill`}>{index + 1}</span>
-										</button>
-									))
-								}
-							</ButtonList>
-						</CardBody>
-					</Card>
-				</div>
-				<div class="col-12">
-					<Card>
-						<CardBody>
-							<ButtonList>
-								{
-									colors.map((color) => (
-										<button class="btn position-relative">
-											{ucFirst(color)} badge <span class={`badge bg-${color} badge-notification badge-blink`} />
-										</button>
-									))
-								}
-							</ButtonList>
-						</CardBody>
-					</Card>
-				</div>
-			</div>
-		</div>
-	</div>
+                <button type="button" class="btn btn-icon btn-action">
+                  <Icon name="bell" />
+                  <span class="badge badge-dot bg-red badge-notification"></span>
+                </button>
+              </ButtonList>
+            </CardBody>
+          </Card>
+        </div>
+      </div>
+    </div>
+    <div class="col-8">
+      <div class="row row-cards">
+        <div class="col-12">
+          <Card>
+            <CardBody>
+              <CardTitle>Basic badges</CardTitle>
+              <BadgesList>
+                {colors.map((color) => <span class={`badge bg-${color} text-${color}-fg`}>{ucFirst(color)}</span>)}
+              </BadgesList>
+            </CardBody>
+          </Card>
+        </div>
+        <div class="col-12">
+          <Card>
+            <CardBody>
+              <CardTitle>Light badges</CardTitle>
+              <BadgesList>
+                {colors.map((color) => <span class={`badge bg-${color}-lt`}>{ucFirst(color)}</span>)}
+              </BadgesList>
+            </CardBody>
+          </Card>
+        </div>
+        <div class="col-12">
+          <Card>
+            <CardBody>
+              <CardTitle>Outline badges</CardTitle>
+              <BadgesList>
+                {colors.map((color) => <span class={`badge badge-outline text-${color}`}>{ucFirst(color)}</span>)}
+              </BadgesList>
+            </CardBody>
+          </Card>
+        </div>
+        <div class="col-12">
+          <Card>
+            <CardBody>
+              <CardTitle>Badges with icons</CardTitle>
+              <BadgesList>
+                {
+                  colors.map((color) => (
+                    <span class={`badge bg-${color} text-${color}-fg`}>
+                      {' '}
+                      <Icon name="star" type="filled" /> {ucFirst(color)}{' '}
+                    </span>
+                  ))
+                }
+              </BadgesList>
+            </CardBody>
+          </Card>
+        </div>
+      </div>
+    </div>
+    <div class="col-sm-6 col-lg-3"><DropdownMenu show badge arrow /></div>
+    <div class="col-sm-6 col-lg-9">
+      <div class="row row-cards">
+        <div class="col-12">
+          <Card>
+            <CardBody>
+              <ButtonList>
+                {
+                  colors.map((color, index) => (
+                    <button class="btn">
+                      {ucFirst(color)} badge <span class={`badge bg-${color} text-${color}-fg ms-2`}>{index + 1}</span>
+                    </button>
+                  ))
+                }
+              </ButtonList>
+            </CardBody>
+          </Card>
+        </div>
+        <div class="col-12">
+          <Card>
+            <CardBody>
+              <ButtonList>
+                {
+                  colors.map((color, index) => (
+                    <button class="btn position-relative">
+                      {ucFirst(color)} badge <span class={`badge bg-${color} text-${color}-fg badge-notification badge-pill`}>{index + 1}</span>
+                    </button>
+                  ))
+                }
+              </ButtonList>
+            </CardBody>
+          </Card>
+        </div>
+        <div class="col-12">
+          <Card>
+            <CardBody>
+              <ButtonList>
+                {
+                  colors.map((color) => (
+                    <button class="btn position-relative">
+                      {ucFirst(color)} badge <span class={`badge bg-${color} badge-notification badge-blink`} />
+                    </button>
+                  ))
+                }
+              </ButtonList>
+            </CardBody>
+          </Card>
+        </div>
+      </div>
+    </div>
+  </div>
 </DefaultLayout>

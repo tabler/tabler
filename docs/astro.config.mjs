@@ -6,7 +6,7 @@ import { fileURLToPath } from 'node:url'
 import { copyAssets } from '../.build/copy-assets'
 
 /** @param {string} p */
-const path = p => fileURLToPath(new URL(p, import.meta.url))
+const path = (p) => fileURLToPath(new URL(p, import.meta.url))
 
 // https://astro.build/config
 export default defineConfig({

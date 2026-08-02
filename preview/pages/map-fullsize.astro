@@ -1,37 +1,31 @@
 ---
-import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
-import CaptureScript from '@shared/components/CaptureScript.astro';
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import CaptureScript from '@shared/components/CaptureScript.astro'
 ---
 
-<DefaultLayout
-	pageMenu="plugins.map-fullsize"
-	pageLibs={['google-maps']}
-	sidebar
-	hideTopbar
-	wrapperFull
->
-	<div class="map flex-fill" id="map-google"></div>
-	<!--
+<DefaultLayout pageMenu="plugins.map-fullsize" pageLibs={['google-maps']} sidebar hideTopbar wrapperFull>
+  <div class="map flex-fill" id="map-google"></div>
+  <!--
 		is:inline: google-maps loads via a deferred page-lib <script>; see
 		FormElements1.astro for why a processed (module) script here would run too
 		early and find window.google undefined.
 	-->
-	<CaptureScript>
-	<!-- BEGIN MAP SCRIPT -->
-	<script is:inline>
-		window.tabler_map ??= {};
+  <CaptureScript>
+    <!-- BEGIN MAP SCRIPT -->
+    <script is:inline>
+      window.tabler_map ??= {}
 
-		function initMap() {
-			const map = new google.maps.Map(document.getElementById('map-google'), {
-				center: { lat: -34.397, lng: 150.644 },
-				zoom: 8,
-			});
+      function initMap() {
+        const map = new google.maps.Map(document.getElementById('map-google'), {
+          center: { lat: -34.397, lng: 150.644 },
+          zoom: 8,
+        })
 
-			window.tabler_map['map-google'] = map;
-		}
+        window.tabler_map['map-google'] = map
+      }
 
-		document.readyState !== 'loading' ? initMap() : document.addEventListener('DOMContentLoaded', initMap, { once: true });
-	</script>
-	<!-- END MAP SCRIPT -->
-	</CaptureScript>
+      document.readyState !== 'loading' ? initMap() : document.addEventListener('DOMContentLoaded', initMap, { once: true })
+    </script>
+    <!-- END MAP SCRIPT -->
+  </CaptureScript>
 </DefaultLayout>

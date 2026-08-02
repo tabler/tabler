@@ -1,52 +1,41 @@
 ---
-import Icon from '@ui/Icon.astro';
-import icons from '@data/icons.json';
+import Icon from '@ui/Icon.astro'
+import icons from '@data/icons.json'
 
 interface Props {
-	title?: string;
-	type?: 'outline' | 'filled';
+  title?: string
+  type?: 'outline' | 'filled'
 }
 
-const { title, type = 'outline' } = Astro.props;
+const { title, type = 'outline' } = Astro.props
 
 // Dev preview limits icons to 20 (see BaseLayout).
 // The limit applies before the svg[type] filter — the "filled" card shows only filled icons among the first 20.
-const limit = 20;
+const limit = 20
 
-const entries = Object.entries(icons as Record<string, { svg?: Record<string, string> }>).slice(
-	0,
-	limit,
-);
+const entries = Object.entries(icons as Record<string, { svg?: Record<string, string | null> }>).slice(0, limit)
 ---
 
 <div class="card">
-	<div class="card-header">
-		<div class="card-title">{title}</div>
-	</div>
-	<div class="card-body p-0">
-		<div class="demo-icons-list-wrap">
-			<div class="demo-icons-list">
-				{
-					entries.map(
-						([iconName, icon]) =>
-							icon.svg?.[type] && (
-								<a
-									href={`https://tabler.io/icons/icon/${iconName}`}
-									target="_blank"
-									rel="noopener"
-									class="demo-icons-list-item"
-									title={iconName}
-									data-bs-toggle="tooltip"
-									data-bs-placement="top"
-								>
-									<Icon name={iconName} type={type} />
-								</a>
-							),
-					)
-				}
-				{/* 21 empty divs (flexbox filler) */}
-				{Array.from({ length: 21 }).map(() => <div />)}
-			</div>
-		</div>
-	</div>
+  <div class="card-header">
+    <div class="card-title">{title}</div>
+  </div>
+  <div class="card-body p-0">
+    <div class="demo-icons-list-wrap">
+      <div class="demo-icons-list">
+        {
+          entries.map(
+            ([iconName, icon]) =>
+              icon.svg?.[type] && (
+                <a href={`https://tabler.io/icons/icon/${iconName}`} target="_blank" rel="noopener" class="demo-icons-list-item" title={iconName} data-bs-toggle="tooltip" data-bs-placement="top">
+                  <Icon name={iconName} type={type} />
+                </a>
+              ),
+          )
+        }
+        {/* 21 empty divs (flexbox filler) */}
+        {Array.from({ length: 21 }).map(() => <div />)}
+      </div>
+    </div>
+  </div>
 </div>
