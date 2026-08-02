@@ -2,28 +2,28 @@
 import CaptureScript from '../CaptureScript.astro';
 
 interface Props {
-	id?: string;
-	/** List.js `valueNames` entries — plain strings or `{ attr, name }` sort descriptors. */
-	valueNames: (string | { attr: string; name: string })[];
+  id?: string
+  /** List.js `valueNames` entries — plain strings or `{ attr, name }` sort descriptors. */
+  valueNames: (string | { attr: string; name: string })[]
 }
 
-const { id = 'default', valueNames } = Astro.props;
-const listId = `table-${id}`;
+const { id = 'default', valueNames } = Astro.props
+const listId = `table-${id}`
 ---
 
 <CaptureScript>
 <!-- BEGIN TABLER LIST -->
 <script define:vars={{ listId, valueNames }}>
-	function initTablerList() {
-		window.tabler_list ??= {};
-		window.tabler_list[listId] = new List(listId, {
-			sortClass: 'table-sort',
-			listClass: 'table-tbody',
-			valueNames,
-		});
-	}
+  function initTablerList() {
+    window.tabler_list ??= {}
+    window.tabler_list[listId] = new List(listId, {
+      sortClass: 'table-sort',
+      listClass: 'table-tbody',
+      valueNames,
+    })
+  }
 
-	document.readyState !== 'loading' ? initTablerList() : document.addEventListener('DOMContentLoaded', initTablerList, { once: true });
+  document.readyState !== 'loading' ? initTablerList() : document.addEventListener('DOMContentLoaded', initTablerList, { once: true })
 </script>
 <!-- END TABLER LIST -->
 </CaptureScript>

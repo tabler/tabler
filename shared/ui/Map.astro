@@ -23,7 +23,7 @@ type MapData = {
 	markers?: { name?: string; center: [number, number] }[];
 };
 
-const data = (maps as Record<string, MapData>)[mapId];
+const data = (maps as unknown as Record<string, MapData>)[mapId];
 
 const mapContainerId = `map-${mapId}`;
 const style = data ? (data.style ?? 'streets-v11') : undefined;

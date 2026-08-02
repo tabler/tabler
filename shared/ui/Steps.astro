@@ -1,52 +1,34 @@
 ---
 // Step styling uses strict equality for `active`, so a string (e.g. active="2") never matches the integer loop index.
 interface Props {
-	count?: number | string;
-	active?: number | string;
-	numbers?: boolean;
-	color?: string;
-	size?: string;
-	showTooltip?: boolean;
-	showTitle?: boolean;
+  count?: number | string
+  active?: number | string
+  numbers?: boolean
+  color?: string
+  size?: string
+  showTooltip?: boolean
+  showTitle?: boolean
 }
 
-const {
-	count = 4,
-	active = 3,
-	numbers,
-	color,
-	size,
-	showTooltip,
-	showTitle,
-} = Astro.props;
+const { count = 4, active = 3, numbers, color, size, showTooltip, showTitle } = Astro.props
 
-const classes = [
-	'steps',
-	numbers && 'steps-counter',
-	color && `steps-${color}`,
-	size && `steps-${size}`,
-];
+const classes = ['steps', numbers && 'steps-counter', color && `steps-${color}`, size && `steps-${size}`]
 
-const activeNum = Number(active);
-const total = Number(count);
-const steps = Array.from({ length: total }, (_, i) => i + 1);
+const activeNum = Number(active)
+const total = Number(count)
+const steps = Array.from({ length: total }, (_, i) => i + 1)
 ---
 
 <div class:list={classes}>
-	{
-		steps.map((i) => {
-			const Element = i > activeNum ? 'span' : 'a';
-			const itemClass = ['step-item', i === active ? 'active' : ''];
-			return (
-				<Element
-					href="#"
-					class:list={itemClass}
-					data-bs-toggle={showTooltip ? 'tooltip' : undefined}
-					title={showTooltip ? `Step ${i} description` : undefined}
-				>
-					{showTitle && `Step ${i}`}
-				</Element>
-			);
-		})
-	}
+  {
+    steps.map((i) => {
+      const Element = i > activeNum ? 'span' : 'a'
+      const itemClass = ['step-item', i === active ? 'active' : '']
+      return (
+        <Element href="#" class:list={itemClass} data-bs-toggle={showTooltip ? 'tooltip' : undefined} title={showTooltip ? `Step ${i} description` : undefined}>
+          {showTitle && `Step ${i}`}
+        </Element>
+      )
+    })
+  }
 </div>

@@ -16,15 +16,14 @@ const entryPath = path.resolve(__dirname, `../js/${entryFile}`)
 const entry = `${entryPath}.ts`
 
 export default createViteConfig({
-	entry: entry,
-	name: libraryName,
-	fileName: (format) => {
-		const esmSuffix = format === 'es' ? '.esm' : ''
-		return `${baseName}${esmSuffix}.js`
-	},
-	formats: ['es', 'umd'],
-	outDir: path.resolve(__dirname, '../dist/js'),
-	banner: bannerText,
-	minify: false
+  entry: entry,
+  name: libraryName,
+  fileName: (format) => {
+    const esmSuffix = format === 'es' ? '.esm' : ''
+    return `${baseName}${esmSuffix}.js`
+  },
+  formats: ['es', 'umd'],
+  outDir: path.resolve(__dirname, '../dist/js'),
+  banner: bannerText,
+  minify: false,
 })
-

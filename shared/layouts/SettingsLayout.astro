@@ -2,58 +2,46 @@
 // Wraps the page body in a card with a left settings-nav column; the active
 // nav item is driven by the `active` prop.
 
-import Subheader from '@ui/Subheader.astro';
-import DefaultLayout from './DefaultLayout.astro';
-import ListGroup from '@ui/ListGroup.astro';
-import ListGroupItem from '@ui/ListGroupItem.astro';
+import Subheader from '@ui/Subheader.astro'
+import DefaultLayout from './DefaultLayout.astro'
+import ListGroup from '@ui/ListGroup.astro'
+import ListGroupItem from '@ui/ListGroupItem.astro'
 
 interface Props {
-	/** current page slug for the active nav item: 'settings' | 'settings-plan' */
-	active?: string;
+  /** current page slug for the active nav item: 'settings' | 'settings-plan' */
+  active?: string
 }
 
-const { active } = Astro.props;
+const { active } = Astro.props
 ---
 
 <DefaultLayout title="Settings" pageHeader="Account Settings">
-	<div class="card">
-		<div class="row g-0">
-			<!-- BEGIN SETTINGS NAV -->
-			<div class="col-12 col-md-3 border-end">
-				<div class="card-body">
-					<Subheader as="h4">Business settings</Subheader>
+  <div class="card">
+    <div class="row g-0">
+      <!-- BEGIN SETTINGS NAV -->
+      <div class="col-12 col-md-3 border-end">
+        <div class="card-body">
+          <Subheader as="h4">Business settings</Subheader>
 
-					<ListGroup as="nav" transparent>
-						<ListGroupItem
-							as="a"
-							action
-							active={active === 'settings'}
-							class="d-flex align-items-center"
-							href="./settings.html">My Account</ListGroupItem
-						>
-						<ListGroupItem as="a" action class="d-flex align-items-center" href="#">My Notifications</ListGroupItem>
-						<ListGroupItem as="a" action class="d-flex align-items-center" href="#">Connected Apps</ListGroupItem>
-						<ListGroupItem
-							as="a"
-							action
-							active={active === 'settings-plan'}
-							class="d-flex align-items-center"
-							href="./settings-plan.html">Plans</ListGroupItem
-						>
-						<ListGroupItem as="a" action class="d-flex align-items-center" href="#">Billing & Invoices</ListGroupItem>
-					</ListGroup>
+          <ListGroup as="nav" transparent>
+            <ListGroupItem as="a" action active={active === 'settings'} class="d-flex align-items-center" href="./settings.html">My Account</ListGroupItem>
+            <ListGroupItem as="a" action class="d-flex align-items-center" href="#">My Notifications</ListGroupItem>
+            <ListGroupItem as="a" action class="d-flex align-items-center" href="#">Connected Apps</ListGroupItem>
+            <ListGroupItem as="a" action active={active === 'settings-plan'} class="d-flex align-items-center" href="./settings-plan.html">Plans</ListGroupItem>
+            <ListGroupItem as="a" action class="d-flex align-items-center" href="#">Billing & Invoices</ListGroupItem>
+          </ListGroup>
 
-					<Subheader as="h4" class="mt-4">Experience</Subheader>
+          <Subheader as="h4" class="mt-4">Experience</Subheader>
 
-					<ListGroup as="nav" transparent>
-						<ListGroupItem as="a" action href="#">Give Feedback</ListGroupItem>
-					</ListGroup>
-				</div>
-			</div>
-			<!-- END SETTINGS NAV -->
-			<div class="col-12 col-md-9 d-flex flex-column">
-				<slot />
-			</div>
-		</div>
-	</div>
+          <ListGroup as="nav" transparent>
+            <ListGroupItem as="a" action href="#">Give Feedback</ListGroupItem>
+          </ListGroup>
+        </div>
+      </div>
+      <!-- END SETTINGS NAV -->
+      <div class="col-12 col-md-9 d-flex flex-column">
+        <slot />
+      </div>
+    </div>
+  </div>
 </DefaultLayout>

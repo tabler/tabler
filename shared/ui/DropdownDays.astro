@@ -1,26 +1,18 @@
 ---
 interface Props {
-	id?: string;
-	label?: string;
-	value?: string;
+  id?: string
+  label?: string
+  value?: string
 }
 
-const { id, label = 'Select time range', value = 'Last 7 days' } = Astro.props;
+const { id, label = 'Select time range', value = 'Last 7 days' } = Astro.props
 ---
 
 <div class="dropdown">
-	<a
-		class="dropdown-toggle text-secondary"
-		id={id ? `${id}-dropdown` : undefined}
-		href="#"
-		data-bs-toggle="dropdown"
-		aria-haspopup="true"
-		aria-expanded="false"
-		aria-label={label}
-	>{value}</a>
-	<div class="dropdown-menu dropdown-menu-end" aria-labelledby={id ? `${id}-dropdown` : undefined}>
-		<a class="dropdown-item active" href="#" aria-current="true">Last 7 days</a>
-		<a class="dropdown-item" href="#">Last 30 days</a>
-		<a class="dropdown-item" href="#">Last 3 months</a>
-	</div>
+  <a class="dropdown-toggle text-secondary" id={id ? `${id}-dropdown` : undefined} href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label={label}>{value}</a>
+  <div class="dropdown-menu dropdown-menu-end" aria-labelledby={id ? `${id}-dropdown` : undefined}>
+    <a class="dropdown-item active" href="#" aria-current="true">Last 7 days</a>
+    <a class="dropdown-item" href="#">Last 30 days</a>
+    <a class="dropdown-item" href="#">Last 3 months</a>
+  </div>
 </div>

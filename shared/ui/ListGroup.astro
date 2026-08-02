@@ -2,22 +2,19 @@
 // List group container (.list-group).
 
 interface Props {
-	/** element to render instead of div (e.g. ul, nav) */
-	as?: string;
-	flush?: boolean;
-	hoverable?: boolean;
-	transparent?: boolean;
-	class?: string;
-	/** remaining attributes (data-sortable, style, …) are forwarded to the element */
-	[key: string]: unknown;
+  /** element to render instead of div (e.g. ul, nav) */
+  as?: string
+  flush?: boolean
+  hoverable?: boolean
+  transparent?: boolean
+  class?: string
+  /** remaining attributes (data-sortable, style, …) are forwarded to the element */
+  [key: string]: unknown
 }
 
-const { as: Element = 'div', flush, hoverable, transparent, class: className, ...rest } = Astro.props;
+const { as: Element = 'div', flush, hoverable, transparent, class: className, ...rest } = Astro.props
 ---
 
-<Element
-	class:list={['list-group', flush && 'list-group-flush', hoverable && 'list-group-hoverable', transparent && 'list-group-transparent', className]}
-	{...rest}
->
-	<slot />
+<Element class:list={['list-group', flush && 'list-group-flush', hoverable && 'list-group-hoverable', transparent && 'list-group-transparent', className]} {...rest}>
+  <slot />
 </Element>

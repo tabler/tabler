@@ -1,63 +1,63 @@
 ---
-import Chart from '@ui/Chart.astro';
-import ChartSparkline from '@ui/ChartSparkline.astro';
-import Icon from '@ui/Icon.astro';
-import Avatar from '@ui/Avatar.astro';
-import commits from '@data/commits.json';
-import { formatCommitDate } from '@shared/lib/date-format';
+import Chart from '@ui/Chart.astro'
+import ChartSparkline from '@ui/ChartSparkline.astro'
+import Icon from '@ui/Icon.astro'
+import Avatar from '@ui/Avatar.astro'
+import commits from '@data/commits.json'
+import { formatCommitDate } from '@shared/lib/date-format'
 
 interface Commit {
-	hash: string;
-	short_hash: string;
-	author: string;
-	date: string;
-	description: string;
+  hash: string
+  short_hash: string
+  author: string
+  date: string
+  description: string
 }
 
-const rows = (commits as Commit[]).slice(0, 5);
+const rows = (commits as Commit[]).slice(0, 5)
 ---
 
 <div class="card">
-	<div class="card-header border-0">
-		<div class="card-title">Development activity</div>
-	</div>
-	<div class="position-relative">
-		<div class="position-absolute top-0 left-0 px-3 mt-1 w-75">
-			<div class="row g-2">
-				<div class="col-auto"><ChartSparkline id="activity" percentage={35} type="donut" /></div>
-				<div class="col">
-					<div>Today's Earning: $4,262.40</div>
-					<div class="text-secondary"><Icon name="trending-up" color="green" class="icon-inline" /> +5% more than yesterday</div>
-				</div>
-			</div>
-		</div>
-		<Chart chartId="development-activity" height={12} />
-	</div>
+  <div class="card-header border-0">
+    <div class="card-title">Development activity</div>
+  </div>
+  <div class="position-relative">
+    <div class="position-absolute top-0 left-0 px-3 mt-1 w-75">
+      <div class="row g-2">
+        <div class="col-auto"><ChartSparkline id="activity" percentage={35} type="donut" /></div>
+        <div class="col">
+          <div>Today's Earning: $4,262.40</div>
+          <div class="text-secondary"><Icon name="trending-up" color="green" class="icon-inline" /> +5% more than yesterday</div>
+        </div>
+      </div>
+    </div>
+    <Chart chartId="development-activity" height={12} />
+  </div>
 
-	<div class="card-table table-responsive">
-		<table class="table table-vcenter">
-			<thead>
-			<tr>
-				<th>User</th>
-				<th>Commit</th>
-				<th>Date</th>
-			</tr>
-			</thead>
-			<tbody>
-			{rows.map((commit, index) => (
-				<tr>
-					<td class="w-1">
-						<Avatar personId={index + 1} size="sm" />
-					</td>
-					<td class="td-truncate">
-						<div class="text-truncate">
-							{commit.description}
-						</div>
-					</td>
-					<td class="text-nowrap text-secondary">{formatCommitDate(commit.date)}</td>
-				</tr>
-			))}
-			</tbody>
-		</table>
-	</div>
+  <div class="card-table table-responsive">
+    <table class="table table-vcenter">
+      <thead>
+        <tr>
+          <th>User</th>
+          <th>Commit</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          rows.map((commit, index) => (
+            <tr>
+              <td class="w-1">
+                <Avatar personId={index + 1} size="sm" />
+              </td>
+              <td class="td-truncate">
+                <div class="text-truncate">{commit.description}</div>
+              </td>
+              <td class="text-nowrap text-secondary">{formatCommitDate(commit.date)}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
 </div>

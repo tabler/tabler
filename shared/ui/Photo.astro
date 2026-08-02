@@ -1,34 +1,22 @@
 ---
 // Lightbox passes a resolved `photo` object from the horizontal-filtered list.
 interface Photo {
-	file: string;
-	title?: string;
+  file: string
+  title?: string
 }
 
 interface Props {
-	photo: Photo;
-	/** background param — plain <div> with only the background-image (no ratio class) */
-	background?: boolean;
-	/** ratio param — img-responsive img-responsive-{ratio} wrapper */
-	ratio?: string;
-	class?: string;
+  photo: Photo
+  /** background param — plain <div> with only the background-image (no ratio class) */
+  background?: boolean
+  /** ratio param — img-responsive img-responsive-{ratio} wrapper */
+  ratio?: string
+  class?: string
 }
 
-const { photo, background, ratio, class: className } = Astro.props;
+const { photo, background, ratio, class: className } = Astro.props
 
-const src = `./static/photos/${photo.file}`;
+const src = `./static/photos/${photo.file}`
 ---
 
-<!-- Photo -->
-{
-	background ? (
-		<div class:list={className} style={`background-image: url(${src})`} />
-	) : ratio ? (
-		<div
-			class:list={['img-responsive', `img-responsive-${ratio}`, className]}
-			style={`background-image: url(${src})`}
-		/>
-	) : (
-		<img src={src} class:list={className} alt={photo.title} />
-	)
-}
+<!-- Photo -->{background ? <div class:list={className} style={`background-image: url(${src})`} /> : ratio ? <div class:list={['img-responsive', `img-responsive-${ratio}`, className]} style={`background-image: url(${src})`} /> : <img src={src} class:list={className} alt={photo.title} />}
