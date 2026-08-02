@@ -1,6 +1,6 @@
 ---
-// so it renders inline where it is placed (mirrors the Eleventy dev build,
-// which keeps the `window.tabler_list` registry assignment).
+import CaptureScript from '../CaptureScript.astro';
+
 interface Props {
   id?: string
   /** List.js `valueNames` entries — plain strings or `{ attr, name }` sort descriptors. */
@@ -11,6 +11,7 @@ const { id = 'default', valueNames } = Astro.props
 const listId = `table-${id}`
 ---
 
+<CaptureScript>
 <!-- BEGIN TABLER LIST -->
 <script define:vars={{ listId, valueNames }}>
   function initTablerList() {
@@ -25,3 +26,4 @@ const listId = `table-${id}`
   document.readyState !== 'loading' ? initTablerList() : document.addEventListener('DOMContentLoaded', initTablerList, { once: true })
 </script>
 <!-- END TABLER LIST -->
+</CaptureScript>

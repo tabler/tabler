@@ -1,115 +1,114 @@
 ---
-import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
-import Tag from '@ui/Tag.astro'
-import TagsList from '@ui/TagsList.astro'
-import Card from '@ui/Card.astro'
-import CardBody from '@ui/CardBody.astro'
-import CardTitle from '@ui/CardTitle.astro'
-import people from '@data/people.json'
-import flags from '@data/flags.json'
-import siteData from '@data/site.json'
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
+import Tag from '@ui/Tag.astro';
+import TagsList from '@ui/TagsList.astro';
+import Card from '@ui/Card.astro';
+import CardBody from '@ui/CardBody.astro';
+import CardTitle from '@ui/CardTitle.astro';
+import people from '@data/people.json';
+import flags from '@data/flags.json';
+import siteData from '@data/site.json';
 
-const tagIcons = ['bold', 'italic', 'underline', 'copy', 'scissors', 'file-plus', 'file-minus', 'ghost', 'star', 'script', 'photo', 'dog', 'piano']
+const tagIcons = ['bold', 'italic', 'underline', 'copy', 'scissors', 'file-plus', 'file-minus', 'ghost', 'star', 'script', 'photo', 'dog', 'piano'];
 
-const range = (a: number, b: number) => Array.from({ length: b - a + 1 }, (_, i) => a + i)
+const range = (a: number, b: number) => Array.from({ length: b - a + 1 }, (_, i) => a + i);
 
-const flags9 = flags.slice(0, 9)
-const people8 = people.slice(0, 8)
+const flags9 = flags.slice(0, 9);
+const people8 = people.slice(0, 8);
 
-// site.colors is an object keyed by colour name; the Liquid loop yields the
-// value objects with .class / .title.
-const colors = Object.values(siteData.colors) as { class: string; title: string }[]
+// site.colors yields value objects with .class / .title.
+const colors = Object.values(siteData.colors) as { class: string; title: string }[];
 ---
 
 <DefaultLayout title="Tags" pageHeader="Tags" pageMenu="base.tags">
-  <div class="row row-cards row-cols-1 row-cols-md-2 row-cols-lg-3">
-    <div class="col">
-      <Card>
-        <CardBody>
-          <CardTitle>Default tags</CardTitle>
-          <TagsList>
-            {range(1, 14).map((i) => <Tag text={`Label ${i}`} />)}
-          </TagsList>
-        </CardBody>
-      </Card>
-    </div>
+	<div class="row row-cards row-cols-1 row-cols-md-2 row-cols-lg-3">
+		<div class="col">
+			<Card>
+				<CardBody>
+					<CardTitle>Default tags</CardTitle>
+					<TagsList>
+						{range(1, 14).map((i) => <Tag text={`Label ${i}`} />)}
+					</TagsList>
+				</CardBody>
+			</Card>
+		</div>
 
-    <div class="col">
-      <Card>
-        <CardBody>
-          <CardTitle>Tags with flag</CardTitle>
-          <TagsList>
-            {flags9.map((country) => <Tag text={country.name} flag={(country as { code?: string }).code} />)}
-          </TagsList>
-        </CardBody>
-      </Card>
-    </div>
+		<div class="col">
+			<Card>
+				<CardBody>
+					<CardTitle>Tags with flag</CardTitle>
+					<TagsList>
+						{flags9.map((country) => <Tag text={country.name} flag={(country as { code?: string }).code} />)}
+					</TagsList>
+				</CardBody>
+			</Card>
+		</div>
 
-    <div class="col">
-      <Card>
-        <CardBody>
-          <CardTitle>Tags with icon</CardTitle>
-          <TagsList>
-            {tagIcons.map((icon) => <Tag text={icon} icon={icon} />)}
-          </TagsList>
-        </CardBody>
-      </Card>
-    </div>
+		<div class="col">
+			<Card>
+				<CardBody>
+					<CardTitle>Tags with icon</CardTitle>
+					<TagsList>
+						{tagIcons.map((icon) => <Tag text={icon} icon={icon} />)}
+					</TagsList>
+				</CardBody>
+			</Card>
+		</div>
 
-    <div class="col">
-      <Card>
-        <CardBody>
-          <CardTitle>Tags with avatar</CardTitle>
-          <TagsList>
-            {people8.map((person) => <Tag text={person.full_name} person={person} />)}
-          </TagsList>
-        </CardBody>
-      </Card>
-    </div>
+		<div class="col">
+			<Card>
+				<CardBody>
+					<CardTitle>Tags with avatar</CardTitle>
+					<TagsList>
+						{people8.map((person) => <Tag text={person.full_name} person={person} />)}
+					</TagsList>
+				</CardBody>
+			</Card>
+		</div>
 
-    <div class="col">
-      <Card>
-        <CardBody>
-          <CardTitle>Tags with status</CardTitle>
-          <TagsList>
-            {colors.map((color) => <Tag text={color.title} status={color.class} />)}
-          </TagsList>
-        </CardBody>
-      </Card>
-    </div>
+		<div class="col">
+			<Card>
+				<CardBody>
+					<CardTitle>Tags with status</CardTitle>
+					<TagsList>
+						{colors.map((color) => <Tag text={color.title} status={color.class} />)}
+					</TagsList>
+				</CardBody>
+			</Card>
+		</div>
 
-    <div class="col">
-      <Card>
-        <CardBody>
-          <CardTitle>Tags with legend</CardTitle>
-          <TagsList>
-            {colors.map((color) => <Tag text={color.title} legend={color.class} />)}
-          </TagsList>
-        </CardBody>
-      </Card>
-    </div>
+		<div class="col">
+			<Card>
+				<CardBody>
+					<CardTitle>Tags with legend</CardTitle>
+					<TagsList>
+						{colors.map((color) => <Tag text={color.title} legend={color.class} />)}
+					</TagsList>
+				</CardBody>
+			</Card>
+		</div>
 
-    <div class="col">
-      <Card>
-        <CardBody>
-          <CardTitle>Default tags</CardTitle>
-          <TagsList>
-            {range(1, 6).map((i) => <Tag text={`Label ${i}`} checkbox={true} />)}
-            {range(7, 12).map((i) => <Tag text={`Label ${i}`} checkbox={true} checked={true} />)}
-          </TagsList>
-        </CardBody>
-      </Card>
-    </div>
+		<div class="col">
+			<Card>
+				<CardBody>
+					<CardTitle>Default tags</CardTitle>
+					<TagsList>
+						{range(1, 6).map((i) => <Tag text={`Label ${i}`} checkbox={true} />)}
+						{range(7, 12).map((i) => <Tag text={`Label ${i}`} checkbox={true} checked={true} />)}
+					</TagsList>
+				</CardBody>
+			</Card>
+		</div>
 
-    <div class="col">
-      <Card>
-        <CardBody>
-          <CardTitle>Default tags</CardTitle>
-          <TagsList>
-            {range(1, 12).map((i) => <Tag text="Label" badge={i} />)}
-          </TagsList>
-        </CardBody>
-      </Card>
-    </div>
-  </div>
+		<div class="col">
+			<Card>
+				<CardBody>
+					<CardTitle>Default tags</CardTitle>
+					<TagsList>
+						{range(1, 12).map((i) => <Tag text="Label" badge={i} />)}
+					</TagsList>
+				</CardBody>
+			</Card>
+		</div>
+	</div>
 </DefaultLayout>

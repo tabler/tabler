@@ -1,70 +1,72 @@
 ---
-// The Liquid source (ui/chart-radial.html) emits its <script> inline right after
-// the chart div (not via {% capture_script %}), so this port inlines it too.
+import CaptureScript from '../components/CaptureScript.astro';
+
 interface Props {
-  id?: string
-  height?: number
-  class?: string
-  title?: string
-  value?: number
+	id?: string;
+	height?: number;
+	class?: string;
+	title?: string;
+	value?: number;
 }
 
-const { id = 'active-users-4', height = 350, class: className = '', title = 'Active users', value = 58 }: Props = Astro.props
+const { id = "active-users-4", height = 350, class: className = "", title = "Active users", value = 58 }: Props = Astro.props;
 
-const chartId = `chart-${id}`
-const fixedTitle = title.toUpperCase()
+const chartId = `chart-${id}`;
+const fixedTitle = title.toUpperCase();
 ---
 
 <div id={chartId} class={`position-relative ${className}`}></div>
+<CaptureScript>
 <!-- BEGIN CHART RADIAL -->
 <script define:vars={{ chartId, height, value, fixedTitle }}>
-  function initRadialChart() {
-    window.tabler_chart ??= {}
+	function initRadialChart() {
+		window.tabler_chart ??= {};
 
-    window.ApexCharts &&
-      (window.tabler_chart[chartId] = new ApexCharts(document.getElementById(chartId), {
-        series: [value],
-        chart: {
-          height,
-          type: 'radialBar',
-        },
-        plotOptions: {
-          radialBar: {
-            startAngle: -120,
-            endAngle: 120,
-            hollow: {
-              margin: 15,
-              size: '70%',
-            },
-            dataLabels: {
-              name: {
-                show: true,
-                offsetY: -20,
-                fontSize: '14px',
-                fontFamily: 'inherit',
-                fontWeight: 400,
-                color: 'var(--tblr-secondary)',
-              },
-              value: {
-                show: true,
-                fontSize: '30px',
-                fontWeight: 700,
-                fontFamily: 'inherit',
-                offsetY: 0,
-                color: 'var(--tblr-body-color)',
-                formatter: (val) => `${val}%`,
-              },
-            },
-          },
-        },
-        colors: ['var(--tblr-primary)'],
-        stroke: {
-          lineCap: 'round',
-        },
-        labels: [fixedTitle],
-      })).render()
-  }
+		window.ApexCharts &&
+			(window.tabler_chart[chartId] = new ApexCharts(document.getElementById(chartId), {
+				series: [value],
+				chart: {
+					height,
+					type: 'radialBar',
+				},
+				plotOptions: {
+					radialBar: {
+						startAngle: -120,
+						endAngle: 120,
+						hollow: {
+							margin: 15,
+							size: '70%',
+						},
+						dataLabels: {
+							name: {
+								show: true,
+								offsetY: -20,
+								fontSize: '14px',
+								fontFamily: 'inherit',
+								fontWeight: 400,
+								color: 'var(--tblr-secondary)',
+							},
+							value: {
+								show: true,
+								fontSize: '30px',
+								fontWeight: 700,
+								fontFamily: 'inherit',
+								offsetY: 0,
+								color: 'var(--tblr-body-color)',
+								formatter: (val) => `${val}%`,
+							},
+						},
+					},
+				},
+				colors: ['var(--tblr-primary)'],
+				stroke: {
+					lineCap: 'round',
+				},
+				labels: [fixedTitle],
+			})).render();
+	}
 
-  document.readyState !== 'loading' ? initRadialChart() : document.addEventListener('DOMContentLoaded', initRadialChart, { once: true })
+	document.readyState !== 'loading' ? initRadialChart() : document.addEventListener('DOMContentLoaded', initRadialChart, { once: true });
 </script>
 <!-- END CHART RADIAL -->
+</CaptureScript>

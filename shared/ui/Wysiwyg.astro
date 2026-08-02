@@ -1,6 +1,5 @@
 ---
-// Port of shared/includes/ui/wysiwyg.html.
-// The HugeRTE init <script> renders directly here (no more page-scripts registry).
+import CaptureScript from '../components/CaptureScript.astro';
 interface Props {
   id?: string
 }
@@ -12,6 +11,7 @@ const selector = `#hugerte-${id}`
 <form method="post">
   <textarea id={`hugerte-${id}`} set:html={'Hello, <b>Tabler</b>!'} />
 </form>
+<CaptureScript>
 <!-- BEGIN WYSIWYG -->
 <script define:vars={{ selector }}>
   function initWysiwyg() {
@@ -38,3 +38,4 @@ const selector = `#hugerte-${id}`
   document.readyState !== 'loading' ? initWysiwyg() : document.addEventListener('DOMContentLoaded', initWysiwyg, { once: true })
 </script>
 <!-- END WYSIWYG -->
+</CaptureScript>

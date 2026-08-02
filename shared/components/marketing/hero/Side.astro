@@ -1,78 +1,77 @@
 ---
-// Port of marketing/hero/side.html.
-// Inlines ui/typed.html: renders the seed span (first string) and the Typed.js init
-// (page-libs: [typed.js] loads the library), rendered directly here.
-import Icon from '@ui/Icon.astro'
-import Illustration from '@ui/Illustration.astro'
+import Icon from '@ui/Icon.astro';
+import Illustration from '@ui/Illustration.astro';
+import CaptureScript from '../../CaptureScript.astro';
 
-// ui/typed.html: strings = include.strings | split: '|'; id defaults to "typed".
-const strings = ['more effective', 'more efficient', 'more productive']
-const typedId = 'typed'
+const strings = ['more effective', 'more efficient', 'more productive'];
+const typedId = 'typed';
 ---
 
 <!-- BEGIN HERO -->
 <header class="hero">
-  <div class="container">
-    <div class="row g-lg-8 align-items-center">
-      <div class="col-md-6 text-center text-md-start">
-        <div class="hero-subheader">Tabler Emails</div>
-        <h1 class="hero-title">
-          Better email communication,<br />
-          <span class="text-primary" id={typedId}>{strings[0]}</span>
-        </h1>
-        <p class="hero-description mt-4">54 eye-catching, customizable and responsive email templates to improve your email communication. No coding skills needed.</p>
-        <div class="mt-6 mt-lg-7">
-          <div class="row justify-content-center justify-content-md-start">
-            <div class="col-auto"><a href="#" class="btn btn-lg btn-primary">Buy for $29</a></div>
-            <div class="col-auto"><a href="#" class="btn btn-lg">Browse gallery</a></div>
-          </div>
-        </div>
-      </div>
-      <div class="col-md-6">
-        <div class="hero-img-side">
-          <div id="carousel-controls" class="carousel slide" data-bs-ride="carousel" data-interval="4000">
-            <div class="carousel-inner">
-              <div class="carousel-item active">
-                <Illustration image="boy-with-key.svg" class="d-block mx-auto" height="350" />
-              </div>
-              <div class="carousel-item">
-                <Illustration image="boy-girl.svg" class="d-block mx-auto" height="350" />
-              </div>
-              <div class="carousel-item">
-                <Illustration image="computer-fix.svg" class="d-block mx-auto" height="350" />
-              </div>
-            </div>
-            <a class="carousel-control-prev text-secondary" href="#carousel-controls" role="button" data-bs-slide="prev">
-              <Icon name="chevron-left" class="icon-md" />
-              <span class="visually-hidden">Previous</span>
-            </a>
-            <a class="carousel-control-next text-secondary" href="#carousel-controls" role="button" data-bs-slide="next">
-              <Icon name="chevron-right" class="icon-md" />
-              <span class="visually-hidden">Next</span>
-            </a>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+	<div class="container">
+		<div class="row g-lg-8 align-items-center">
+			<div class="col-md-6 text-center text-md-start">
+				<div class="hero-subheader">Tabler Emails</div>
+				<h1 class="hero-title">
+					Better email communication,<br />
+					<span class="text-primary" id={typedId}>{strings[0]}</span>
+				</h1>
+				<p class="hero-description mt-4">54 eye-catching, customizable and responsive email templates to improve your email communication. No coding skills needed.</p>
+				<div class="mt-6 mt-lg-7">
+					<div class="row justify-content-center justify-content-md-start">
+						<div class="col-auto"><a href="#" class="btn btn-lg btn-primary">Buy for $29</a></div>
+						<div class="col-auto"><a href="#" class="btn btn-lg">Browse gallery</a></div>
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="hero-img-side">
+					<div id="carousel-controls" class="carousel slide" data-bs-ride="carousel" data-interval="4000">
+						<div class="carousel-inner">
+							<div class="carousel-item active">
+								<Illustration image="boy-with-key.svg" class="d-block mx-auto" height="350" />
+							</div>
+							<div class="carousel-item">
+								<Illustration image="boy-girl.svg" class="d-block mx-auto" height="350" />
+							</div>
+							<div class="carousel-item">
+								<Illustration image="computer-fix.svg" class="d-block mx-auto" height="350" />
+							</div>
+						</div>
+						<a class="carousel-control-prev text-secondary" href="#carousel-controls" role="button" data-bs-slide="prev">
+							<Icon name="chevron-left" class="icon-md" />
+							<span class="visually-hidden">Previous</span>
+						</a>
+						<a class="carousel-control-next text-secondary" href="#carousel-controls" role="button" data-bs-slide="next">
+							<Icon name="chevron-right" class="icon-md" />
+							<span class="visually-hidden">Next</span>
+						</a>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </header>
 <!-- END HERO -->
+<CaptureScript>
 <!-- BEGIN TYPED -->
 <script define:vars={{ typedId, strings }}>
-  function initTyped() {
-    const typed = new Typed(`#${typedId}`, {
-      strings,
-      typeSpeed: 100,
-      backSpeed: 50,
-      backDelay: 1000,
-      startDelay: 1000,
-      loop: true,
-      fade: true,
-    })
-  }
+	function initTyped() {
+		const typed = new Typed(`#${typedId}`, {
+			strings,
+			typeSpeed: 100,
+			backSpeed: 50,
+			backDelay: 1000,
+			startDelay: 1000,
+			loop: true,
+			fade: true,
+		});
+	}
 
-  // Typed.js loads via a deferred page-lib <script>, which only runs once parsing
-  // finishes — this inline script (positioned mid-body) would otherwise run first.
-  document.readyState !== 'loading' ? initTyped() : document.addEventListener('DOMContentLoaded', initTyped, { once: true })
+	// Typed.js loads via a deferred page-lib <script>, which only runs once parsing
+	// finishes — this inline script (positioned mid-body) would otherwise run first.
+	document.readyState !== 'loading' ? initTyped() : document.addEventListener('DOMContentLoaded', initTyped, { once: true });
 </script>
 <!-- END TYPED -->
+</CaptureScript>

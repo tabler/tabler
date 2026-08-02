@@ -1,16 +1,10 @@
 ---
-// The prose is shared/includes/license.md rendered via `renderContent: "md"`
-// (markdown-it). The rendered HTML is inlined verbatim from the reference build
-// to guarantee a 1:1 DOM match — Astro's markdown pipeline (remark + smartypants)
-// would produce different quote characters and structure.
-// TODO: source of truth remains shared/includes/license.md; regenerate this
-// block if the markdown changes.
-import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
-import Icon from '@ui/Icon.astro'
-import Card from '@ui/Card.astro'
-import CardBody from '@ui/CardBody.astro'
-import CardFooter from '@ui/CardFooter.astro'
-import Prose from '@ui/Prose.astro'
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
+import Icon from '@ui/Icon.astro';
+import Card from '@ui/Card.astro';
+import CardBody from '@ui/CardBody.astro';
+import CardFooter from '@ui/CardFooter.astro';
+import Prose from '@ui/Prose.astro';
 
 const licenseHtml = `
 <p>This is a legal agreement between you, the Purchaser, and Tabler. Purchasing or downloading of any Tabler product (Tabler Free, Tabler PRO, Tabler Email), constitutes your acceptance of the terms of this license, <a href="https://tabler.io/terms-of-service.html">Tabler terms of service</a> and <a href="https://tabler.io/privacy-policy.html">Tabler private policy</a>.</p>
@@ -37,60 +31,66 @@ const licenseHtml = `
 <li>You cannot add our source code to any open source repository.</li>
 <li>The source code may not be placed on any website in a complete or archived downloadable format.</li>
 </ol>
-`
+`;
 ---
 
 <DefaultLayout title="License" pageHeader="Tabler License" pageMenu="extra.license">
-  <div class="row row-cards">
-    <div class="col-lg-8">
-      <Card size="lg">
-        <CardBody>
-          <Prose>
-            <Fragment set:html={licenseHtml} />
-          </Prose>
-        </CardBody>
-      </Card>
-    </div>
-    <div class="col-lg-4">
-      <Card>
-        <CardBody>
-          <div class="d-flex align-items-center mb-3">
-            <div class="me-3">
-              <Icon name="scale" size="md" />
-            </div>
-            <div>
-              <small class="text-secondary">tabler/tabler is licensed under the</small>
-              <h3 class="lh-1">MIT License</h3>
-            </div>
-          </div>
+	<div class="row row-cards">
+		<div class="col-lg-8">
+			<Card size="lg">
+				<CardBody>
+					<Prose>
+						<Fragment set:html={licenseHtml} />
+					</Prose>
+				</CardBody>
+			</Card>
+		</div>
+		<div class="col-lg-4">
+			<Card>
+				<CardBody>
+					<div class="d-flex align-items-center mb-3">
+						<div class="me-3">
+							<Icon name="scale" size="md" />
+						</div>
+						<div>
+							<small class="text-secondary">tabler/tabler is licensed under the</small>
+							<h3 class="lh-1">MIT License</h3>
+						</div>
+					</div>
 
-          <div class="text-secondary mb-3">A short and simple permissive license with conditions only requiring preservation of copyright and license notices. Licensed works, modifications, and larger works may be distributed under different terms and without source code.</div>
+					<div class="text-secondary mb-3">
+						A short and simple permissive license with conditions only requiring preservation of copyright and
+						license notices. Licensed works, modifications, and larger works may be distributed under different terms
+						and without source code.
+					</div>
 
-          <h4>Permissions</h4>
 
-          <ul class="list-unstyled space-y-1">
-            <li><Icon name="check" class="text-green" /> Commercial use</li>
-            <li><Icon name="check" class="text-green" /> Modification</li>
-            <li><Icon name="check" class="text-green" /> Distribution</li>
-            <li><Icon name="check" class="text-green" /> Private use</li>
-          </ul>
+					<h4>Permissions</h4>
 
-          <h4>Limitations</h4>
-          <ul class="list-unstyled space-y-1">
-            <li><Icon name="x" class="text-red" /> Liability</li>
-            <li><Icon name="x" class="text-red" /> Warranty</li>
-          </ul>
+					<ul class="list-unstyled space-y-1">
+						<li><Icon name="check" class="text-green" /> Commercial use</li>
+						<li><Icon name="check" class="text-green" /> Modification</li>
+						<li><Icon name="check" class="text-green" /> Distribution</li>
+						<li><Icon name="check" class="text-green" /> Private use</li>
+					</ul>
 
-          <h4>Conditions</h4>
-          <ul class="list-unstyled space-y-1">
-            <li><Icon name="info-circle" class="text-blue" /> License and copyright notice</li>
-          </ul>
-        </CardBody>
-        <CardFooter>
-          This is not legal advice.
-          <a href="#" target="_blank">Learn more about repository licenses.</a>
-        </CardFooter>
-      </Card>
-    </div>
-  </div>
+
+					<h4>Limitations</h4>
+					<ul class="list-unstyled space-y-1">
+						<li><Icon name="x" class="text-red" /> Liability</li>
+						<li><Icon name="x" class="text-red" /> Warranty</li>
+					</ul>
+
+					<h4>Conditions</h4>
+					<ul class="list-unstyled space-y-1">
+						<li><Icon name="info-circle" class="text-blue" /> License and copyright notice</li>
+					</ul>
+				</CardBody>
+				<CardFooter>
+					This is not legal advice.
+					<a href="#" target="_blank">Learn more about repository licenses.</a>
+				</CardFooter>
+			</Card>
+		</div>
+	</div>
 </DefaultLayout>

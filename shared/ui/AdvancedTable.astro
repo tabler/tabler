@@ -1,201 +1,202 @@
 ---
-// Port of ui/advanced-table.html
-import BadgesList from './BadgesList.astro'
-import Icon from './Icon.astro'
-import { formatLongDate } from '@shared/lib/date-format'
-import { randomNumber, randomItem, randomDate } from '@shared/lib/pseudo-random'
-import Avatar from './Avatar.astro'
-import Button from './Button.astro'
-import ButtonList from './ButtonList.astro'
-import Pagination from './Pagination.astro'
-import people from '@data/people.json'
-import tableProperties from '@data/table-properties.json'
+import BadgesList from './BadgesList.astro';
+import Icon from './Icon.astro';
+import { formatLongDate } from '@shared/lib/date-format';
+import { randomNumber, randomItem, randomDate } from '@shared/lib/pseudo-random';
+import Avatar from './Avatar.astro';
+import Button from './Button.astro';
+import ButtonList from './ButtonList.astro';
+import Pagination from './Pagination.astro';
+import people from '@data/people.json';
+import tableProperties from '@data/table-properties.json';
+import CaptureScript from '../components/CaptureScript.astro';
 
 interface Props {
-  id?: string
+	id?: string;
 }
 
-const { id: tableId = 'advanced-table' } = Astro.props
+const { id: tableId = 'advanced-table' } = Astro.props;
 
-const statuses = ['Active', 'Inactive', 'Requested']
-const perPage = ['10', '20', '50', '100']
-const categories = ['Agencies', 'Individual', 'Event', 'Ticket']
-const tags = ['QTA,Event,Tickets,TODO', 'Event,Tickets', 'QTA,Event', 'Tickets']
+const statuses = ['Active', 'Inactive', 'Requested'];
+const perPage = ['10', '20', '50', '100'];
+const categories = ['Agencies', 'Individual', 'Event', 'Ticket'];
+const tags = ['QTA,Event,Tickets,TODO', 'Event,Tickets', 'QTA,Event', 'Tickets'];
 
 const headers = (tableProperties as Record<string, any>)['advanced-table'].headers as {
-  'data-sort': string
-  'name': string
-}[]
+	'data-sort': string;
+	name: string;
+}[];
 
 const rows = (people as Record<string, any>[]).map((person, i) => {
-  const index = i + 1
-  const status = randomItem(index + 5, statuses)
-  const itemTags = randomItem(index + 5, tags).split(',')
-  const category = randomItem(index, categories)
-  const date = formatLongDate(randomDate(index))
-  return { person, index, status, itemTags, category, date }
-})
+	const index = i + 1;
+	const status = randomItem(index + 5, statuses);
+	const itemTags = randomItem(index + 5, tags).split(',');
+	const category = randomItem(index, categories);
+	const date = formatLongDate(randomDate(index));
+	return { person, index, status, itemTags, category, date };
+});
 
-// Inline <script> from advanced-table.html (renders in the page body).
-const advancedTable = (tableProperties as Record<string, any>)['advanced-table']
-const perPageDefault = perPage[1]
+const advancedTable = (tableProperties as Record<string, any>)['advanced-table'];
+const perPageDefault = perPage[1];
 ---
-
-{
-  /*
-	ui/advanced-table.html begins with a commented-out {% include "js/tabler-list.html" %}
-	(a disabled List.js init for an empty table id). HTML comments are stripped by the
-	DOM parity diff, so it is intentionally omitted here rather than emitted verbatim.
-*/
-}
 <div class="card">
-  <div class="card-table">
-    <div class="card-header">
-      <div class="row w-full">
-        <div class="col">
-          <h3 class="card-title mb-0">Employee</h3>
-          <p class="text-secondary m-0">Table description.</p>
-        </div>
-        <div class="col-md-auto col-sm-12">
-          <ButtonList class="ms-auto d-flex flex-wrap">
-            <div class="input-group input-group-flat w-auto">
-              <span class="input-group-text">
-                <Icon name="search" />
-              </span>
+	<div class="card-table">
+		<div class="card-header">
+			<div class="row w-full">
+				<div class="col">
+					<h3 class="card-title mb-0">
+						Employee
+					</h3>
+					<p class="text-secondary m-0">
+						Table description.
+					</p>
+				</div>
+				<div class="col-md-auto col-sm-12">
+					<ButtonList class="ms-auto d-flex flex-wrap">
+						<div class="input-group input-group-flat w-auto">
+							<span class="input-group-text">
+								<Icon name="search" />
+							</span>
 
-              <input id={`${tableId}-search`} type="text" class="form-control" autocomplete="off" />
+							<input id={`${tableId}-search`} type="text" class="form-control" autocomplete="off" />
 
-              <span class="input-group-text">
-                <kbd>ctrl + K</kbd>
-              </span>
-            </div>
+							<span class="input-group-text">
+								<kbd>ctrl + K</kbd>
+							</span>
+						</div>
 
-            <a href="#" class="btn btn-icon" aria-label="Button">
-              <Icon name="dots" />
-            </a>
-            <div class="dropdown">
-              <a href="#" class="btn dropdown-toggle" data-bs-toggle="dropdown">Download</a>
-              <div class="dropdown-menu">
-                <a class="dropdown-item" href="#">Action</a>
-                <a class="dropdown-item" href="#">Another action</a>
-                <a class="dropdown-item" href="#">Third action</a>
-              </div>
-            </div>
-            <Button />
-          </ButtonList>
-        </div>
-      </div>
-    </div>
+						<a href="#" class="btn btn-icon" aria-label="Button">
+							<Icon name="dots" />
+						</a>
+						<div class="dropdown">
+							<a href="#" class="btn dropdown-toggle" data-bs-toggle="dropdown">Download</a>
+							<div class="dropdown-menu">
+								<a class="dropdown-item" href="#">Action</a>
+								<a class="dropdown-item" href="#">Another action</a>
+								<a class="dropdown-item" href="#">Third action</a>
+							</div>
+						</div>
+						<Button />
+					</ButtonList>
+				</div>
+			</div>
+		</div>
 
-    <div id={tableId}>
-      <div class="table-responsive">
-        <table class="table table-vcenter table-selectable">
-          <thead>
-            <tr>
-              <th class="w-1"></th>
-              {
-                headers.map((header) => (
-                  <th>
-                    <button class="table-sort d-flex justify-content-between" data-sort={header['data-sort']}>
-                      {header.name}
-                    </button>
-                  </th>
-                ))
-              }
-            </tr>
-          </thead>
+		<div id={tableId}>
+			<div class="table-responsive">
+				<table class="table table-vcenter table-selectable">
+					<thead>
+						<tr>
+							<th class="w-1"></th>
+							{headers.map((header) => (
+								<th>
+									<button class="table-sort d-flex justify-content-between" data-sort={header['data-sort']}>
+										{header.name}
+									</button>
+								</th>
+							))}
+						</tr>
+					</thead>
 
-          <tbody class="table-tbody">
-            {
-              rows.map(({ person, status, itemTags, category, date }) => (
-                <tr>
-                  <td>
-                    <input class="form-check-input m-0 align-middle table-selectable-check" type="checkbox" aria-label="Select invoice" value="true" />
-                  </td>
-                  <td class={headers[0]['data-sort']}>
-                    <Avatar person={person} size="xs" class="me-2" />
-                    {person.full_name}
-                  </td>
-                  <td class={headers[1]['data-sort']}>
-                    {person.city}, {person.country}
-                  </td>
-                  <td class={headers[2]['data-sort']}>{status === 'Active' ? <span class="badge bg-success-lt">Active</span> : status === 'Inactive' ? <span class="badge bg-danger-lt">Inactive</span> : <span class="badge">Requested</span>}</td>
-                  <td class={headers[3]['data-sort']}>{date}</td>
-                  <td class={headers[4]['data-sort']}>
-                    <BadgesList>
-                      {itemTags.map((tag) => (
-                        <span class="badge">{tag}</span>
-                      ))}
-                    </BadgesList>
-                  </td>
-                  <td class={`${headers[5]['data-sort']} py-0`}>
-                    <span class="on-unchecked">{category}</span>
-                    <div class="on-checked">
-                      <div class="d-flex justify-content-end">
-                        <Button icon="dots" iconOnly />
-                      </div>
-                    </div>
-                  </td>
-                </tr>
-              ))
-            }
-          </tbody>
-        </table>
-      </div>
-      <div class="card-footer d-flex align-items-center">
-        <div class="dropdown">
-          <a class="btn dropdown-toggle" data-bs-toggle="dropdown">
-            <span id="page-count" class="me-1">{perPage[1]}</span>
-            <span>records</span>
-          </a>
-          <div class="dropdown-menu">
-            {
-              perPage.map((record) => (
-                <a class="dropdown-item" onclick="setPageListItems(event)" data-value={record}>
-                  {record} records
-                </a>
-              ))
-            }
-          </div>
-        </div>
+					<tbody class="table-tbody">
+						{rows.map(({ person, status, itemTags, category, date }) => (
+							<tr>
+								<td>
+									<input class="form-check-input m-0 align-middle table-selectable-check" type="checkbox" aria-label="Select invoice" value="true" />
+								</td>
+								<td class={headers[0]['data-sort']}>
+									<Avatar person={person} size="xs" class="me-2" />
+									{person.full_name}
+								</td>
+								<td class={headers[1]['data-sort']}>
+									{person.city}, {person.country}
+								</td>
+								<td class={headers[2]['data-sort']}>
+									{status === 'Active' ? (
+										<span class="badge bg-success-lt">Active</span>
+									) : status === 'Inactive' ? (
+										<span class="badge bg-danger-lt">Inactive</span>
+									) : (
+										<span class="badge">Requested</span>
+									)}
+								</td>
+								<td class={headers[3]['data-sort']}>
+									{date}
+								</td>
+								<td class={headers[4]['data-sort']}>
+									<BadgesList>
+										{itemTags.map((tag) => (
+											<span class="badge">{tag}</span>
+										))}
+									</BadgesList>
+								</td>
+								<td class={`${headers[5]['data-sort']} py-0`}>
+									<span class="on-unchecked">
+										{category}
+									</span>
+									<div class="on-checked">
+										<div class="d-flex justify-content-end">
+											<Button icon="dots" iconOnly />
+										</div>
+									</div>
+								</td>
+							</tr>
+						))}
+					</tbody>
+				</table>
+			</div>
+			<div class="card-footer d-flex align-items-center">
+				<div class="dropdown">
+					<a class="btn dropdown-toggle" data-bs-toggle="dropdown">
+						<span id="page-count" class="me-1">{perPage[1]}</span>
+						<span>records</span>
+					</a>
+					<div class="dropdown-menu">
+						{perPage.map((record) => (
+							<a class="dropdown-item" onclick="setPageListItems(event)" data-value={record}>{record} records</a>
+						))}
+					</div>
+				</div>
 
-        <Pagination class="m-0 ms-auto" count={10} />
-      </div>
-    </div>
-  </div>
+				<Pagination class="m-0 ms-auto" count={10} />
+			</div>
+		</div>
+	</div>
 </div>
 
+<CaptureScript>
 <!-- BEGIN ADVANCED TABLE -->
 <script define:vars={{ tableId, advancedTable, perPageDefault }}>
-  // Astro wraps define:vars scripts in an IIFE, so this needs an explicit window
-  // assignment to stay reachable from the onclick="setPageListItems(event)" markup below.
-  window.setPageListItems = function setPageListItems(e) {
-    window.tabler_list[tableId].page = parseInt(e.target.dataset.value)
-    window.tabler_list[tableId].update()
+	// Astro wraps define:vars scripts in an IIFE, so this needs an explicit window
+	// assignment to stay reachable from the onclick="setPageListItems(event)" markup below.
+	window.setPageListItems = function setPageListItems(e) {
+		window.tabler_list[tableId].page = parseInt(e.target.dataset.value);
+		window.tabler_list[tableId].update();
 
-    document.querySelector('#page-count').innerHTML = e.target.dataset.value
-  }
+		document.querySelector('#page-count').innerHTML = e.target.dataset.value;
+	};
 
-  function initAdvancedTable() {
-    window.tabler_list ??= {}
-    const list = (window.tabler_list[tableId] = new List(tableId, {
-      sortClass: 'table-sort',
-      listClass: 'table-tbody',
-      page: parseInt(perPageDefault),
-      pagination: {
-        item: (value) => `<li class="page-item"><a class="page-link cursor-pointer">${value.page}</a></li>`,
-        innerWindow: 1,
-        outerWindow: 1,
-        left: 0,
-        right: 0,
-      },
-      valueNames: advancedTable.headers.map((header) => header['data-sort']),
-    }))
+	function initAdvancedTable() {
+		window.tabler_list ??= {};
+		const list = (window.tabler_list[tableId] = new List(tableId, {
+			sortClass: 'table-sort',
+			listClass: 'table-tbody',
+			page: parseInt(perPageDefault),
+			pagination: {
+				item: (value) => `<li class="page-item"><a class="page-link cursor-pointer">${value.page}</a></li>`,
+				innerWindow: 1,
+				outerWindow: 1,
+				left: 0,
+				right: 0,
+			},
+			valueNames: advancedTable.headers.map((header) => header['data-sort']),
+		}));
 
-    const searchInput = document.querySelector(`#${tableId}-search`)
-    searchInput?.addEventListener('input', () => list.search(searchInput.value))
-  }
+		const searchInput = document.querySelector(`#${tableId}-search`);
+		searchInput?.addEventListener('input', () => list.search(searchInput.value));
+	}
 
-  document.readyState !== 'loading' ? initAdvancedTable() : document.addEventListener('DOMContentLoaded', initAdvancedTable, { once: true })
+	document.readyState !== 'loading' ? initAdvancedTable() : document.addEventListener('DOMContentLoaded', initAdvancedTable, { once: true });
 </script>
 <!-- END ADVANCED TABLE -->
+</CaptureScript>

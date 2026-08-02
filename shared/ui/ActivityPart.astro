@@ -1,58 +1,57 @@
 ---
-// Equivalent of parts/activity.html
-import Avatar from './Avatar.astro'
-import activity from '@data/activity.json'
-import people from '@data/people.json'
-import { timeagoLabel } from '@shared/lib/pseudo-random'
+import Avatar from './Avatar.astro';
+import activity from '@data/activity.json';
+import people from '@data/people.json';
+import { timeagoLabel } from '@shared/lib/pseudo-random';
 
 interface Props {
-  limit?: number
+	limit?: number;
 }
 
-const { limit = 40 } = Astro.props
+const { limit = 40 } = Astro.props;
 
 interface Person {
-  full_name?: string
-  company?: string
-  photo?: string
-  [key: string]: unknown
+	full_name?: string;
+	company?: string;
+	photo?: string;
+	[key: string]: unknown;
 }
 
-const items = (activity as { text: string; icon?: string }[]).slice(0, limit).map((item, i) => {
-  const index = i + 1 // forloop.index (1-based)
-  const person = (people as Person[])[index]
-  return {
-    person,
-    text: item.text
-      .split('%p')
-      .join(person?.full_name ?? '')
-      .split('%c')
-      .join(person?.company ?? ''),
-    timeago: timeagoLabel(index, 4),
-    badge: index < 5,
-  }
-})
+const items = (activity as { text: string; icon?: string }[])
+	.slice(0, limit)
+	.map((item, i) => {
+		const index = i + 1; // forloop.index (1-based)
+		const person = (people as Person[])[index];
+		return {
+			person,
+			text: item.text
+				.split('%p')
+				.join(person?.full_name ?? '')
+				.split('%c')
+				.join(person?.company ?? ''),
+			timeago: timeagoLabel(index, 4),
+			badge: index < 5,
+		};
+	});
 ---
 
 <div class="divide-y">
-  {
-    items.map((item) => (
-      <div>
-        <div class="row">
-          <div class="col-auto">
-            <Avatar person={item.person} />
-          </div>
-          <div class="col">
-            <div class="text-truncate" set:html={item.text} />
-            <div class="text-secondary">{item.timeago}</div>
-          </div>
-          {item.badge && (
-            <div class="col-auto align-self-center">
-              <div class="badge bg-primary" />
-            </div>
-          )}
-        </div>
-      </div>
-    ))
-  }
+	{items.map((item) => (
+		<div>
+			<div class="row">
+				<div class="col-auto">
+					<Avatar person={item.person} />
+				</div>
+				<div class="col">
+					<div class="text-truncate" set:html={item.text} />
+					<div class="text-secondary">{item.timeago}</div>
+				</div>
+				{item.badge && (
+					<div class="col-auto align-self-center">
+						<div class="badge bg-primary" />
+					</div>
+				)}
+			</div>
+		</div>
+	))}
 </div>

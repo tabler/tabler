@@ -1,195 +1,207 @@
 ---
-import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
-import Icon from '@ui/Icon.astro'
-import CardStamp from '@ui/CardStamp.astro'
-import Card from '@ui/Card.astro'
-import CardBody from '@ui/CardBody.astro'
-import Prose from '@ui/Prose.astro'
-import freeIllustrations from '@data/free-illustrations.json'
-import illustrationsList from '@data/illustrations.json'
-import siteData from '@data/site.json'
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
+import Icon from '@ui/Icon.astro';
+import CardStamp from '@ui/CardStamp.astro';
+import Card from '@ui/Card.astro';
+import CardBody from '@ui/CardBody.astro';
+import Prose from '@ui/Prose.astro';
+import CaptureScript from '@shared/components/CaptureScript.astro';
+import freeIllustrations from '@data/free-illustrations.json';
+import illustrationsList from '@data/illustrations.json';
+import siteData from '@data/site.json';
 
-const autodark = (freeIllustrations as { autodark: Record<string, string> }).autodark
-const autodarkEntries = Object.entries(autodark)
+const autodark = (freeIllustrations as { autodark: Record<string, string> }).autodark;
+const autodarkEntries = Object.entries(autodark);
 
-// first-illustration: the Liquid loop overwrites each pass → last value wins.
-const firstIllustration = autodarkEntries.length ? autodarkEntries[autodarkEntries.length - 1][1] : ''
+// Last autodark entry (loop overwrites each pass).
+const firstIllustration = autodarkEntries.length
+	? autodarkEntries[autodarkEntries.length - 1][1]
+	: '';
 
-// Page-local transform: replace: '<svg ' , '<svg class="w-100 h-auto" '
-const withClass = (svg: string) => svg.replaceAll('<svg ', '<svg class="w-100 h-auto" ')
+const withClass = (svg: string) => svg.replaceAll('<svg ', '<svg class="w-100 h-auto" ');
 
-const colors = siteData.colors as Record<string, { hex: string; class: string; prop: string }>
-const skinColors = siteData.skinColors as Record<string, { hex: string; class: string }>
-const colorEntries = Object.values(colors)
-const skinEntries = Object.values(skinColors)
+const colors = siteData.colors as Record<string, { hex: string; class: string; prop: string }>;
+const skinColors = siteData.skinColors as Record<string, { hex: string; class: string }>;
+const colorEntries = Object.values(colors);
+const skinEntries = Object.values(skinColors);
 
-// skinColor = site.skinColors | first → the first value object (Rose).
-const skinFirst = skinEntries[0]
-const buyLink = (siteData.illustrations as { buy_link: string }).buy_link
+const skinFirst = skinEntries[0];
+const buyLink = (siteData.illustrations as { buy_link: string }).buy_link;
 
-// {{ illustrations | size | minus: 4 }}
-const moreCount = illustrationsList.length - 4
+const moreCount = illustrationsList.length - 4;
 
-// {% capture_script %} — build the illustrations JS map from the same data.
-// skin_color / color[1].prop resolve to empty in Liquid → literal "var()".
-const illustrationsData = Object.fromEntries(autodarkEntries.map(([key, svg]) => [key, { svg: withClass(svg) }]))
+const illustrationsData = Object.fromEntries(
+	autodarkEntries.map(([key, svg]) => [key, { svg: withClass(svg) }]),
+);
 ---
 
-<DefaultLayout title="SVG Illustrations" pageHeader="SVG Illustrations" pageMenu="addons.illustrations">
-  <div class="mb-7" style={`--tblr-illustrations-primary: var(--tblr-color-primary); --tblr-illustrations-skin: ${skinFirst.hex};`} id="current-illustration-style">
-    <div class="row row-cards">
-      <div class="col-12">
-        <div class="row row-cards row-deck g-4">
-          <div class="col-md-7">
-            <Card>
-              <CardBody class="d-flex align-items-center">
-                <div id="current-illustration" set:html={withClass(firstIllustration)} />
-              </CardBody>
-            </Card>
-          </div>
-          <div class="col-md-5">
-            <div class="row">
-              <div class="col-12">
-                <Card>
-                  <CardBody>
-                    <div>
-                      <div class="form-label">Primary color</div>
-                      <div class="row g-2">
-                        <div class="col-auto">
-                          <label class="form-colorinput">
-                            <input name="color" type="radio" value="var(--tblr-color-primary)" class="form-colorinput-input js-select-color" checked />
-                            <span class="form-colorinput-color bg-primary"></span>
-                          </label>
-                        </div>
-                        <div class="col-auto">
-                          <label class="form-colorinput">
-                            <input name="color" type="radio" value="var(--tblr-bg-surface-inverted)" class="form-colorinput-input js-select-color" />
-                            <span class="form-colorinput-color bg-inverted"></span>
-                          </label>
-                        </div>
-                        {
-                          colorEntries.map((color) => (
-                            <div class="col-auto">
-                              <label class="form-colorinput">
-                                <input name="color" type="radio" value={color.hex} class="form-colorinput-input js-select-color" />
-                                <span class={`form-colorinput-color bg-${color.class}`} />
-                              </label>
-                            </div>
-                          ))
-                        }
-                      </div>
+<DefaultLayout
+	title="SVG Illustrations"
+	pageHeader="SVG Illustrations"
+	pageMenu="addons.illustrations"
+>
+	<div
+		class="mb-7"
+		style={`--tblr-illustrations-primary: var(--tblr-color-primary); --tblr-illustrations-skin: ${skinFirst.hex};`}
+		id="current-illustration-style"
+	>
+		<div class="row row-cards">
+			<div class="col-12">
+				<div class="row row-cards row-deck g-4">
+					<div class="col-md-7">
+						<Card>
+							<CardBody class="d-flex align-items-center">
+								<div id="current-illustration" set:html={withClass(firstIllustration)} />
+							</CardBody>
+						</Card>
+					</div>
+					<div class="col-md-5">
+						<div class="row">
+							<div class="col-12">
+								<Card>
+									<CardBody>
+										<div>
+											<div class="form-label">Primary color</div>
+											<div class="row g-2">
+												<div class="col-auto">
+													<label class="form-colorinput">
+														<input name="color" type="radio" value="var(--tblr-color-primary)" class="form-colorinput-input js-select-color" checked />
+														<span class="form-colorinput-color bg-primary"></span>
+													</label>
+												</div>
+												<div class="col-auto">
+													<label class="form-colorinput">
+														<input name="color" type="radio" value="var(--tblr-bg-surface-inverted)" class="form-colorinput-input js-select-color" />
+														<span class="form-colorinput-color bg-inverted"></span>
+													</label>
+												</div>
+												{
+													colorEntries.map((color) => (
+														<div class="col-auto">
+															<label class="form-colorinput">
+																<input name="color" type="radio" value={color.hex} class="form-colorinput-input js-select-color" />
+																<span class={`form-colorinput-color bg-${color.class}`} />
+															</label>
+														</div>
+													))
+												}
+											</div>
 
-                      <div class="form-label mt-4">Skin color</div>
-                      <div class="row g-2">
-                        {
-                          skinEntries.map((color, i) => (
-                            <div class="col-auto">
-                              <label class="form-colorinput">
-                                <input name="skin-color" type="radio" value={color.hex} class="form-colorinput-input js-select-skin-color" checked={i === 0} />
-                                <span class="form-colorinput-color" style={`background-color: ${color.hex}`} />
-                              </label>
-                            </div>
-                          ))
-                        }
-                      </div>
+											<div class="form-label mt-4">Skin color</div>
+											<div class="row g-2">
+												{
+													skinEntries.map((color, i) => (
+														<div class="col-auto">
+															<label class="form-colorinput">
+																<input name="skin-color" type="radio" value={color.hex} class="form-colorinput-input js-select-skin-color" checked={i === 0} />
+																<span class="form-colorinput-color" style={`background-color: ${color.hex}`} />
+															</label>
+														</div>
+													))
+												}
+											</div>
 
-                      <div class="form-label mt-4">Select SVG illustration</div>
-                      <div class="row">
-                        {
-                          autodarkEntries.map(([key, svg], i) => (
-                            <div class="col-3">
-                              <label class="form-imagecheck mb-2">
-                                <input name="form-imagecheck" type="radio" value={key} class="form-imagecheck-input js-select-illustration" checked={i === autodarkEntries.length - 1} />
-                                <span class="form-imagecheck-figure" set:html={withClass(svg)} />
-                              </label>
-                            </div>
-                          ))
-                        }
-                      </div>
-                    </div>
-                  </CardBody>
-                </Card>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
+											<div class="form-label mt-4">Select SVG illustration</div>
+											<div class="row">
+												{
+													autodarkEntries.map(([key, svg], i) => (
+														<div class="col-3">
+															<label class="form-imagecheck mb-2">
+																<input name="form-imagecheck" type="radio" value={key} class="form-imagecheck-input js-select-illustration" checked={i === autodarkEntries.length - 1} />
+																<span class="form-imagecheck-figure" set:html={withClass(svg)} />
+															</label>
+														</div>
+													))
+												}
+											</div>
+										</div>
+									</CardBody>
+								</Card>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 
-  <h2 class="page-title my-5">
-    {moreCount} more SVG Illustrations
-  </h2>
+	<h2 class="page-title my-5">
+		{moreCount} more SVG Illustrations
+	</h2>
 
-  <div class="row row-cards">
-    <div class="col-lg-4">
-      <Card size="md" class="sticky-top">
-        <CardStamp size="lg" icon="brand-figma" color="primary" />
-        <CardBody>
-          <div class="row align-items-center">
-            <div class="col-10">
-              <h3 class="h1">Tabler Illustrations</h3>
-              <Prose class="text-secondary"> Access a wide range of SVG illustrations for various projects. Effortlessly customize any illustration to align perfectly with your chosen color scheme! </Prose>
-              <div class="mt-3">
-                <a href={buyLink} class="btn btn-primary" target="_blank" rel="noopener">
-                  <Icon name="download" />
-                  Get lifetime access
-                </a>
-              </div>
-            </div>
-          </div>
-        </CardBody>
-      </Card>
-    </div>
-    <div class="col-lg-8">
-      <div class="row row-cards">
-        {
-          illustrationsList.map((illustration) => (
-            <div class="col-6 col-md-3">
-              <Card>
-                <CardBody>
-                  <a href={buyLink} target="_blank">
-                    <img src={`./static/illustrations/light/${illustration}.png`} alt={illustration} class="img-light" />
-                    <img src={`./static/illustrations/dark/${illustration}.png`} alt={illustration} class="img-dark" />
-                  </a>
-                </CardBody>
-              </Card>
-            </div>
-          ))
-        }
-      </div>
-    </div>
-  </div>
-  <!-- BEGIN ILLUSTRATIONS SCRIPT -->
-  <script is:inline define:vars={{ illustrationsData }}>
-    // @ts-nocheck — illustrationsData is injected at runtime by define:vars, which
-    // the type checker can't see since is:inline skips TS processing of this script.
-    let skinColor = 'var()',
-      primaryColor = 'var()'
+	<div class="row row-cards">
+		<div class="col-lg-4">
+			<Card size="md" class="sticky-top">
+				<CardStamp size="lg" icon="brand-figma" color="primary" />
+				<CardBody>
+					<div class="row align-items-center">
+						<div class="col-10">
+							<h3 class="h1">Tabler Illustrations</h3>
+							<Prose class="text-secondary">
+								Access a wide range of SVG illustrations for various projects. Effortlessly customize any illustration to align perfectly with your chosen color scheme!
+							</Prose>
+							<div class="mt-3">
+								<a href={buyLink} class="btn btn-primary" target="_blank" rel="noopener">
+									<Icon name="download" />
+									Get lifetime access
+								</a>
+							</div>
+						</div>
+					</div>
+				</CardBody>
+			</Card>
+		</div>
+		<div class="col-lg-8">
+			<div class="row row-cards">
+				{
+					illustrationsList.map((illustration) => (
+						<div class="col-6 col-md-3">
+							<Card>
+								<CardBody>
+									<a href={buyLink} target="_blank">
+										<img src={`./static/illustrations/light/${illustration}.png`} alt={illustration} class="img-light" />
+										<img src={`./static/illustrations/dark/${illustration}.png`} alt={illustration} class="img-dark" />
+									</a>
+								</CardBody>
+							</Card>
+						</div>
+					))
+				}
+			</div>
+		</div>
+	</div>
+	<CaptureScript>
+	<!-- BEGIN ILLUSTRATIONS SCRIPT -->
+	<script is:inline define:vars={{ illustrationsData }}>
+		// @ts-nocheck — illustrationsData is injected at runtime by define:vars, which
+		// the type checker can't see since is:inline skips TS processing of this script.
+		let skinColor = 'var()',
+			primaryColor = 'var()';
 
-    const illustrations = illustrationsData
-    const currentIllustration = document.getElementById('current-illustration')
+		const illustrations = illustrationsData;
+		const currentIllustration = document.getElementById('current-illustration');
 
-    document.querySelectorAll('.js-select-illustration').forEach((elem) => {
-      elem.addEventListener('change', (e) => {
-        const selectedIllustration = illustrations[e.target.value]
-        currentIllustration.innerHTML = selectedIllustration.svg
-      })
-    })
+		document.querySelectorAll('.js-select-illustration').forEach((elem) => {
+			elem.addEventListener('change', (e) => {
+				const selectedIllustration = illustrations[e.target.value];
+				currentIllustration.innerHTML = selectedIllustration.svg;
+			});
+		});
 
-    document.querySelectorAll('.js-select-color').forEach((elem) => {
-      elem.addEventListener('change', (e) => {
-        primaryColor = e.target.value
-        document.getElementById('current-illustration-style').style.setProperty('--tblr-illustrations-primary', primaryColor)
-      })
-    })
+		document.querySelectorAll('.js-select-color').forEach((elem) => {
+			elem.addEventListener('change', (e) => {
+				primaryColor = e.target.value;
+				document.getElementById('current-illustration-style').style.setProperty('--tblr-illustrations-primary', primaryColor);
+			});
+		});
 
-    document.querySelectorAll('.js-select-skin-color').forEach((elem) => {
-      elem.addEventListener('change', (e) => {
-        skinColor = e.target.value
-        document.getElementById('current-illustration-style').style.setProperty('--tblr-illustrations-skin', skinColor)
-      })
-    })
-  </script>
-  <!-- END ILLUSTRATIONS SCRIPT -->
+		document.querySelectorAll('.js-select-skin-color').forEach((elem) => {
+			elem.addEventListener('change', (e) => {
+				skinColor = e.target.value;
+				document.getElementById('current-illustration-style').style.setProperty('--tblr-illustrations-skin', skinColor);
+			});
+		});
+	</script>
+	<!-- END ILLUSTRATIONS SCRIPT -->
+	</CaptureScript>
 </DefaultLayout>

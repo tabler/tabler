@@ -1,35 +1,35 @@
 ---
 // Minimal navbar (small logo + close button) then a .page with the content.
-import BaseLayout from './BaseLayout.astro'
-import NavbarLogo from '@shared/components/navbar/NavbarLogo.astro'
+import BaseLayout from './BaseLayout.astro';
+import NavbarLogo from '@shared/components/navbar/NavbarLogo.astro';
 
 interface Props {
-  title?: string
-  /** page-libs from the Eleventy front matter — passed down to BaseLayout */
-  pageLibs?: string[]
-  /** body-class front matter — passed down to BaseLayout */
-  bodyClass?: string
+	title?: string;
+	/** Script/CSS library keys passed to BaseLayout */
+	pageLibs?: string[];
+	/** body-class front matter — passed down to BaseLayout */
+	bodyClass?: string;
 }
 
-const { title, pageLibs, bodyClass } = Astro.props
+const { title, pageLibs, bodyClass } = Astro.props;
 ---
 
 <BaseLayout title={title} pageLibs={pageLibs} bodyClass={bodyClass}>
-  <!-- BEGIN NAVBAR  -->
-  <header class="navbar">
-    <div class="container-fluid">
-      <NavbarLogo smallLogo />
+	<!-- BEGIN NAVBAR  -->
+	<header class="navbar">
+		<div class="container-fluid">
+			<NavbarLogo smallLogo />
 
-      <div>
-        <a href="." class="btn btn-close"></a>
-      </div>
-    </div>
-  </header>
-  <!-- END NAVBAR  -->
+			<div>
+				<a href="." class="btn btn-close"></a>
+			</div>
+		</div>
+	</header>
+	<!-- END NAVBAR  -->
 
-  <!-- BEGIN PAGE BODY -->
-  <div class="page">
-    <slot />
-  </div>
-  <!-- END PAGE BODY -->
+	<!-- BEGIN PAGE BODY -->
+	<div class="page">
+		<slot />
+	</div>
+	<!-- END PAGE BODY -->
 </BaseLayout>

@@ -1,30 +1,28 @@
 ---
-// The `include['size']` bug: with an explicit `size` it renders
-// `spinner-{type}-{size}`; WITHOUT one it falls through to the LiquidJS `.size`
-// meta-property (the include argument COUNT), producing junk like
-// `spinner-border-2`. Unlike icon-N/btn-N these `spinner-{type}-N` classes are
-// NOT stripped by the DOM diff (only icon|btn|avatar|badge|progress|flag|payment|
-// steps|chart|form-switch|modal|nav are), so they must be reproduced verbatim.
-import { includeArgCount } from '@shared/lib/include-args'
+// With explicit `size`: `spinner-{type}-{size}`. Without `size`: `spinner-{type}-{argCount}` (e.g. spinner-border-2).
+import { includeArgCount } from '@shared/lib/include-args';
 
 interface Props {
-  element?: string
-  type?: string
-  color?: string
-  size?: string
-  class?: string
+	element?: string;
+	type?: string;
+	color?: string;
+	size?: string;
+	class?: string;
 }
 
-const { element = 'div', type = 'border', color, size, class: className } = Astro.props
-// Dynamic tag from a plain string prop — cast so the template type-checks as a known element.
-const Element = element as 'div'
+const { element: Element = 'div', type = 'border', color, size, class: className } = Astro.props;
 
-const includeArgKeys = ['element', 'type', 'color', 'size', 'class'] as const
-const argCount = includeArgCount(Astro.props as Record<string, unknown>, includeArgKeys)
+const includeArgKeys = ['element', 'type', 'color', 'size', 'class'] as const;
+const argCount = includeArgCount(Astro.props as Record<string, unknown>, includeArgKeys);
 // include['size'] → explicit value, else the arg count meta-property.
-const sizeValue = size !== undefined ? size : argCount || undefined
+const sizeValue = size !== undefined ? size : argCount || undefined;
 
-const classes = [`spinner-${type}`, color && `text-${color}`, sizeValue && `spinner-${type}-${sizeValue}`, className]
+const classes = [
+	`spinner-${type}`,
+	color && `text-${color}`,
+	sizeValue && `spinner-${type}-${sizeValue}`,
+	className,
+]
 ---
 
-<Element class:list={classes} role="status" />
+<Element class:list={classes} role="status"></Element>

@@ -1,54 +1,71 @@
 ---
-// Port of ui/form/check.html
-import { capitalize } from '@shared/lib/string-format'
+import { capitalize } from '@shared/lib/string-format';
 
 interface Props {
-  type?: astroHTML.JSX.HTMLInputTypeAttribute
-  checked?: boolean
-  disabled?: boolean
-  /** switch — Liquid `switch` param (reserved word, destructured as isSwitch) */
-  switch?: boolean
-  title?: string | false
-  name?: string
-  inline?: boolean
-  size?: string
-  empty?: boolean
-  titleOn?: string
-  titleOff?: string
-  class?: string
+	type?: string;
+	checked?: boolean;
+	disabled?: boolean;
+	/** Switch mode (prop name isSwitch; `switch` is reserved). */
+	switch?: boolean;
+	title?: string | false;
+	name?: string;
+	inline?: boolean;
+	size?: string;
+	empty?: boolean;
+	titleOn?: string;
+	titleOff?: string;
+	class?: string;
 }
 
-const { type = 'checkbox', checked = false, disabled = false, switch: isSwitch = false, title: titleProp = false, name, inline, size, empty: isEmpty = false, titleOn, titleOff, class: className } = Astro.props
+const {
+	type = 'checkbox',
+	checked = false,
+	disabled = false,
+	switch: isSwitch = false,
+	title: titleProp = false,
+	name,
+	inline,
+	size,
+	empty: isEmpty = false,
+	titleOn,
+	titleOff,
+	class: className,
+} = Astro.props;
 
-// {% unless title %} … build a default label {% endunless %}
-let title = titleProp
+let title = titleProp;
 if (!title) {
-  let t = ''
-  if (disabled) t += ' disabled'
-  if (checked) t += ' checked'
-  if (isSwitch) t += ' switch'
-  t += ' ' + type
-  t += ' input'
-  t = t.replace(/^\s+/, '')
-  t = capitalize(t)
-  title = t
+	let t = '';
+	if (disabled) t += ' disabled';
+	if (checked) t += ' checked';
+	if (isSwitch) t += ' switch';
+	t += ' ' + type;
+	t += ' input';
+	t = t.replace(/^\s+/, '');
+	t = capitalize(t);
+	title = t;
 }
 
-const labelClasses = ['form-check', inline && 'form-check-inline', isSwitch && 'form-switch', isSwitch && size && `form-switch-${size}`, className]
+const labelClasses = [
+	'form-check',
+	inline && 'form-check-inline',
+	isSwitch && 'form-switch',
+	isSwitch && size && `form-switch-${size}`,
+	className,
+]
 
-const inputClasses = ['form-check-input', isEmpty && 'position-static']
+const inputClasses = ['form-check-input', isEmpty && 'position-static'];
 ---
 
 <label class:list={labelClasses}>
-  <input class:list={inputClasses} type={type} name={name || undefined} checked={checked} disabled={disabled} />
-  {
-    titleOn && titleOff ? (
-      <Fragment>
-        <span class="form-check-label form-check-label-on">{titleOn}</span>
-        <span class="form-check-label form-check-label-off">{titleOff}</span>
-      </Fragment>
-    ) : (
-      !isEmpty && <span class="form-check-label">{title}</span>
-    )
-  }
+	<input class:list={inputClasses} type={type} name={name || undefined} checked={checked} disabled={disabled} />
+	{
+		titleOn && titleOff ? (
+			<Fragment>
+				<span class="form-check-label form-check-label-on">{titleOn}</span>
+				<span class="form-check-label form-check-label-off">{titleOff}</span>
+			</Fragment>
+		) : (
+			!isEmpty && <span class="form-check-label">{title}</span>
+		)
+	}
 </label>

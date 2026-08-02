@@ -1,54 +1,69 @@
 ---
-import Avatar from './Avatar.astro'
-import people from '@data/people.json'
+import Avatar from './Avatar.astro';
+import people from '@data/people.json';
 
 interface Props {
-  toastId?: string
-  /** people index, 0-based exactly like Liquid `people[person-id]` (default 2 → Mallory Hulme) */
-  personId?: number
-  show?: boolean
-  hideHeader?: boolean
-  cookies?: boolean
-  date?: string
-  text?: string
+	toastId?: string;
+	/** people index, 0-based (default 2 → Mallory Hulme) */
+	personId?: number;
+	show?: boolean;
+	hideHeader?: boolean;
+	cookies?: boolean;
+	date?: string;
+	text?: string;
 }
 
-const { toastId = 'simple', personId = 2, show, hideHeader, cookies, date = '11 mins ago', text = 'Hello, world! This is a toast message.' } = Astro.props
+const {
+	toastId = 'simple',
+	personId = 2,
+	show,
+	hideHeader,
+	cookies,
+	date = '11 mins ago',
+	text = 'Hello, world! This is a toast message.',
+} = Astro.props;
 
 interface Person {
-  full_name?: string
-  photo?: string
-  [key: string]: unknown
+	full_name?: string;
+	photo?: string;
+	[key: string]: unknown;
 }
 
-const person = (people as Person[])[personId]
+const person = (people as Person[])[personId];
 ---
 
-<div class:list={['toast', show && 'show']} id={`toast-${toastId}`} role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
-  {
-    !hideHeader && (
-      <div class="toast-header">
-        <Avatar person={person} class="me-2" size="xs" />
-        <strong class="me-auto">{person.full_name}</strong>
-        <small>{date}</small>
-        <button type="button" class="ms-2 btn-close" data-bs-dismiss="toast" aria-label="Close" />
-      </div>
-    )
-  }
-  <div class="toast-body">
-    {
-      cookies ? (
-        <Fragment>
-          🍪&nbsp;Our site uses cookies. By continuing to use our site, you agree to our Cookie Policy.
-          <div class="mt-2 pt-2 border-top">
-            <a href="#" class="btn btn-primary btn-sm">
-              I understand
-            </a>
-          </div>
-        </Fragment>
-      ) : (
-        <Fragment set:html={text} />
-      )
-    }
-  </div>
+<div
+	class:list={['toast', show && 'show']}
+	id={`toast-${toastId}`}
+	role="alert"
+	aria-live="assertive"
+	aria-atomic="true"
+	data-bs-autohide="false"
+>
+	{
+		!hideHeader && (
+			<div class="toast-header">
+				<Avatar person={person} class="me-2" size="xs" />
+				<strong class="me-auto">{person.full_name}</strong>
+				<small>{date}</small>
+				<button type="button" class="ms-2 btn-close" data-bs-dismiss="toast" aria-label="Close" />
+			</div>
+		)
+	}
+	<div class="toast-body">
+		{
+			cookies ? (
+				<Fragment>
+					🍪&nbsp;Our site uses cookies. By continuing to use our site, you agree to our Cookie Policy.
+					<div class="mt-2 pt-2 border-top">
+						<a href="#" class="btn btn-primary btn-sm">
+							I understand
+						</a>
+					</div>
+				</Fragment>
+			) : (
+				<Fragment set:html={text} />
+			)
+		}
+	</div>
 </div>

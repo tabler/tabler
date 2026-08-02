@@ -1,30 +1,29 @@
 ---
-// person = people[person-id] (object passed to Avatar; `rounded` is a no-op in avatar.html).
-import Avatar from '@ui/Avatar.astro'
-import people from '@data/people.json'
+import Avatar from '@ui/Avatar.astro';
+import people from '@data/people.json';
 
 interface Person {
-  full_name?: string
-  job_title?: string
-  photo?: string
-  [key: string]: unknown
+	full_name?: string;
+	job_title?: string;
+	photo?: string;
+	[key: string]: unknown;
 }
 
 interface Props {
-  personId?: number
+	personId?: number;
 }
 
-const { personId = 0 } = Astro.props
-const person = (people as Person[])[personId]
+const { personId = 0 } = Astro.props;
+const person = (people as Person[])[personId];
 ---
 
 <div class="card">
-  <div class="card-body text-center">
-    <div class="mb-3">
-      <Avatar size="xl" person={person} />
-    </div>
-    <div class="card-title mb-1">{person.full_name}</div>
-    <div class="text-secondary">{person.job_title}</div>
-  </div>
-  <a href="#" class="card-btn">View full profile</a>
+	<div class="card-body text-center">
+		<div class="mb-3">
+			<Avatar size="xl" person={person} />
+		</div>
+		<div class="card-title mb-1">{person.full_name}</div>
+		<div class="text-secondary">{person.job_title}</div>
+	</div>
+	<a href="#" class="card-btn">View full profile</a>
 </div>

@@ -1,8 +1,6 @@
-// Reproduces the wall-clock/UTC date formatting quirks the app's demo data
-// depends on. Two things matter for byte-identical output:
-//  - unix seconds are shifted by the local timezone offset, so it is NOT the
-//    true epoch (the value is derived from the rendered wall clock).
-//  - the long-date format uses the UTC wall-clock components of the timestamp.
+// Demo data date formatting quirks:
+// - unix seconds are shifted by local timezone offset (not the true epoch)
+// - long-date format uses UTC wall-clock components
 const MONTHS = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December']
 
 /** Unix seconds shifted by the local timezone offset (not the true epoch). */

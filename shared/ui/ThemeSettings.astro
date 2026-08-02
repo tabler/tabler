@@ -1,131 +1,177 @@
 ---
-// The offcanvas behavior script lives in BaseLayout (page scripts render after
-// the global scripts, mirroring the Eleventy {% scripts %} capture).
-
-import FormHint from './FormHint.astro'
-import Icon from './Icon.astro'
-import FormGroup from './FormGroup.astro'
-import { site } from '@shared/lib/site'
+// Offcanvas behavior script lives in BaseLayout (after global scripts).
+import FormHint from './FormHint.astro';
+import Icon from './Icon.astro';
+import FormGroup from './FormGroup.astro';
+import { site } from '@shared/lib/site';
 
 const defaults = {
-  'theme': 'light',
-  'theme-base': 'gray',
-  'theme-font': 'sans-serif',
-  'theme-primary': 'blue',
-  'theme-radius': '1',
-}
+	theme: 'light',
+	'theme-base': 'gray',
+	'theme-font': 'sans-serif',
+	'theme-primary': 'blue',
+	'theme-radius': '1',
+};
 ---
 
 <!-- BEGIN THEME SETTINGS -->
 <div class="settings">
-  <a href="#" class="btn btn-floating btn-icon btn-primary" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-settings" aria-controls="offcanvas-settings" aria-label="Theme Settings">
-    <Icon name="brush" />
-  </a>
+	<a
+		href="#"
+		class="btn btn-floating btn-icon btn-primary"
+		data-bs-toggle="offcanvas"
+		data-bs-target="#offcanvas-settings"
+		aria-controls="offcanvas-settings"
+		aria-label="Theme Settings"
+	>
+		<Icon name="brush" />
+	</a>
 
-  <form class="offcanvas offcanvas-start offcanvas-narrow" tabindex="-1" id="offcanvas-settings" role="dialog" aria-modal="true" aria-labelledby="offcanvas-settings-title">
-    <div class="offcanvas-header">
-      <h2 class="offcanvas-title" id="offcanvas-settings-title">Theme Settings</h2>
-      <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
-    </div>
-    <div class="offcanvas-body d-flex flex-column">
-      <div>
-        <FormGroup label="Color mode" class="mb-4">
-          <FormHint as="p">Choose the color mode for your app.</FormHint>
-          {
-            ['light', 'dark', 'auto'].map((mode) => (
-              <label class="form-check">
-                <div class="form-selectgroup-item">
-                  <input type="radio" name="theme" value={mode} class="form-check-input" checked={mode === defaults.theme} />
-                  <div class="form-check-label">{mode.charAt(0).toUpperCase() + mode.slice(1)}</div>
-                </div>
-              </label>
-            ))
-          }
-        </FormGroup>
+	<form
+		class="offcanvas offcanvas-start offcanvas-narrow"
+		tabindex="-1"
+		id="offcanvas-settings"
+		role="dialog"
+		aria-modal="true"
+		aria-labelledby="offcanvas-settings-title"
+	>
+		<div class="offcanvas-header">
+			<h2 class="offcanvas-title" id="offcanvas-settings-title">Theme Settings</h2>
+			<button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+		</div>
+		<div class="offcanvas-body d-flex flex-column">
+			<div>
+				<FormGroup label="Color mode" class="mb-4">
+					<FormHint as="p">Choose the color mode for your app.</FormHint>
+					{
+						['light', 'dark', 'auto'].map((mode) => (
+							<label class="form-check">
+								<div class="form-selectgroup-item">
+									<input
+										type="radio"
+										name="theme"
+										value={mode}
+										class="form-check-input"
+										checked={mode === defaults.theme}
+									/>
+									<div class="form-check-label">{mode.charAt(0).toUpperCase() + mode.slice(1)}</div>
+								</div>
+							</label>
+						))
+					}
+				</FormGroup>
 
-        <FormGroup label="Color scheme" class="mb-4">
-          <FormHint as="p">The perfect color mode for your app.</FormHint>
+				<FormGroup label="Color scheme" class="mb-4">
+					<FormHint as="p">The perfect color mode for your app.</FormHint>
 
-          <div class="row g-2">
-            {
-              site.themeColors.map((color) => (
-                <div class="col-auto">
-                  <label class="form-colorinput">
-                    <input name="theme-primary" type="radio" value={color} class="form-colorinput-input" />
-                    <span class={`form-colorinput-color bg-${color}`} />
-                  </label>
-                </div>
-              ))
-            }
-            <div class="col-auto">
-              <label class="form-colorinput">
-                <input name="theme-primary" type="radio" value="inverted" class="form-colorinput-input" />
-                <span class="form-colorinput-color bg-inverted"></span>
-              </label>
-            </div>
-          </div>
-        </FormGroup>
+					<div class="row g-2">
+						{
+							site.themeColors.map((color) => (
+								<div class="col-auto">
+									<label class="form-colorinput">
+										<input
+											name="theme-primary"
+											type="radio"
+											value={color}
+											class="form-colorinput-input"
+										/>
+										<span class={`form-colorinput-color bg-${color}`} />
+									</label>
+								</div>
+							))
+						}
+						<div class="col-auto">
+							<label class="form-colorinput">
+								<input name="theme-primary" type="radio" value="inverted" class="form-colorinput-input" />
+								<span class="form-colorinput-color bg-inverted"></span>
+							</label>
+						</div>
+					</div>
+				</FormGroup>
 
-        <FormGroup label="Font family" class="mb-4">
-          <FormHint as="p">Choose the font family that fits your app.</FormHint>
+				<FormGroup label="Font family" class="mb-4">
+					<FormHint as="p">Choose the font family that fits your app.</FormHint>
 
-          <div>
-            {
-              site.themeFonts.map((font) => (
-                <label class="form-check">
-                  <div class="form-selectgroup-item">
-                    <input type="radio" name="theme-font" value={font} class="form-check-input" checked={font === defaults['theme-font']} />
-                    <div class="form-check-label">{font.charAt(0).toUpperCase() + font.slice(1)}</div>
-                  </div>
-                </label>
-              ))
-            }
-          </div>
-        </FormGroup>
+					<div>
+						{
+							site.themeFonts.map((font) => (
+								<label class="form-check">
+									<div class="form-selectgroup-item">
+										<input
+											type="radio"
+											name="theme-font"
+											value={font}
+											class="form-check-input"
+											checked={font === defaults['theme-font']}
+										/>
+										<div class="form-check-label">
+											{font.charAt(0).toUpperCase() + font.slice(1)}
+										</div>
+									</div>
+								</label>
+							))
+						}
+					</div>
+				</FormGroup>
 
-        <FormGroup label="Theme base" class="mb-4">
-          <FormHint as="p">Choose the gray shade for your app.</FormHint>
+				<FormGroup label="Theme base" class="mb-4">
+					<FormHint as="p">Choose the gray shade for your app.</FormHint>
 
-          <div>
-            {
-              site.themeBases.map((base) => (
-                <label class="form-check">
-                  <div class="form-selectgroup-item">
-                    <input type="radio" name="theme-base" value={base} class="form-check-input" checked={base === defaults['theme-base']} />
-                    <div class="form-check-label">{base.charAt(0).toUpperCase() + base.slice(1)}</div>
-                  </div>
-                </label>
-              ))
-            }
-          </div>
-        </FormGroup>
+					<div>
+						{
+							site.themeBases.map((base) => (
+								<label class="form-check">
+									<div class="form-selectgroup-item">
+										<input
+											type="radio"
+											name="theme-base"
+											value={base}
+											class="form-check-input"
+											checked={base === defaults['theme-base']}
+										/>
+										<div class="form-check-label">
+											{base.charAt(0).toUpperCase() + base.slice(1)}
+										</div>
+									</div>
+								</label>
+							))
+						}
+					</div>
+				</FormGroup>
 
-        <FormGroup label="Corner Radius" class="mb-4">
-          <FormHint as="p">Choose the border radius factor for your app.</FormHint>
+				<FormGroup label="Corner Radius" class="mb-4">
+					<FormHint as="p">Choose the border radius factor for your app.</FormHint>
 
-          <div>
-            {
-              site.themeRadiuses.map((radius) => (
-                <label class="form-check">
-                  <div class="form-selectgroup-item">
-                    <input type="radio" name="theme-radius" value={radius} class="form-check-input" checked={radius === defaults['theme-radius']} />
-                    <div class="form-check-label">{radius}</div>
-                  </div>
-                </label>
-              ))
-            }
-          </div>
-        </FormGroup>
-      </div>
+					<div>
+						{
+							site.themeRadiuses.map((radius) => (
+								<label class="form-check">
+									<div class="form-selectgroup-item">
+										<input
+											type="radio"
+											name="theme-radius"
+											value={radius}
+											class="form-check-input"
+											checked={radius === defaults['theme-radius']}
+										/>
+										<div class="form-check-label">{radius}</div>
+									</div>
+								</label>
+							))
+						}
+					</div>
+				</FormGroup>
+			</div>
 
-      <div class="mt-auto space-y">
-        <button type="button" class="btn w-100" id="reset-changes">
-          <Icon name="rotate" />
-          Reset changes
-        </button>
-        <a href="#" class="btn btn-primary w-100" data-bs-dismiss="offcanvas"> Save </a>
-      </div>
-    </div>
-  </form>
+			<div class="mt-auto space-y">
+				<button type="button" class="btn w-100" id="reset-changes">
+					<Icon name="rotate" />
+					Reset changes
+				</button>
+				<a href="#" class="btn btn-primary w-100" data-bs-dismiss="offcanvas"> Save </a>
+			</div>
+		</div>
+	</form>
 </div>
 <!-- END THEME SETTINGS -->
+

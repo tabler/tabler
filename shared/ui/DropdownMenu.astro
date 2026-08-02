@@ -1,135 +1,116 @@
 ---
-// Equivalent of ui/dropdown-menu.html
-import Icon from './Icon.astro'
-import Avatar from './Avatar.astro'
-import Flag from './Flag.astro'
-import people from '@data/people.json'
-import countries from '@data/countries.json'
+import Icon from './Icon.astro';
+import Avatar from './Avatar.astro';
+import Flag from './Flag.astro';
+import people from '@data/people.json';
+import countries from '@data/countries.json';
 
 interface Props {
-  right?: boolean
-  show?: boolean
-  arrow?: boolean
-  dark?: boolean
-  class?: string
-  menu?: string[]
-  check?: boolean
-  radio?: boolean
-  people?: boolean
-  flag?: boolean
-  type?: string
-  header?: boolean
-  icons?: boolean
-  badge?: boolean
-  active?: boolean
-  disabled?: boolean
-  separated?: boolean
+	right?: boolean;
+	show?: boolean;
+	arrow?: boolean;
+	dark?: boolean;
+	class?: string;
+	menu?: string[];
+	check?: boolean;
+	radio?: boolean;
+	people?: boolean;
+	flag?: boolean;
+	type?: string;
+	header?: boolean;
+	icons?: boolean;
+	badge?: boolean;
+	active?: boolean;
+	disabled?: boolean;
+	separated?: boolean;
 }
 
-const { right, show, arrow, dark, class: className, menu, check, radio, people: showPeople, flag: showFlags, type, header, icons, badge, active, disabled, separated } = Astro.props
+const {
+	right,
+	show,
+	arrow,
+	dark,
+	class: className,
+	menu,
+	check,
+	radio,
+	people: showPeople,
+	flag: showFlags,
+	type,
+	header,
+	icons,
+	badge,
+	active,
+	disabled,
+	separated,
+} = Astro.props;
 
-const classes = ['dropdown-menu', right && 'dropdown-menu-end', show && 'dropdown-menu-demo', arrow && 'dropdown-menu-arrow', className]
+const classes = [
+	'dropdown-menu',
+	right && 'dropdown-menu-end',
+	show && 'dropdown-menu-demo',
+	arrow && 'dropdown-menu-arrow',
+	className,
+]
 
-const menuItems = menu
-const peopleItems = (people as { id: string; full_name: string }[]).slice(0, 5)
-const countryItems = (countries as { name: string; flag: string }[]).slice(0, 5)
+const menuItems = menu;
+const peopleItems = (people as { id: string; full_name: string }[]).slice(0, 5);
+const countryItems = (countries as { name: string; flag: string }[]).slice(0, 5);
 ---
 
 <div class:list={classes} data-bs-theme={dark ? 'dark' : undefined}>
-  {
-    menuItems ? (
-      menuItems.map((item) =>
-        item === '|' ? (
-          <div class="dropdown-divider" />
-        ) : item.includes('h:') ? (
-          <h3 class="dropdown-header">{item.split('h:').join('')}</h3>
-        ) : item.includes('a:') ? (
-          <a href="#" class="dropdown-item active">
-            {item.split('a:').join('')}
-          </a>
-        ) : item.includes('d:') ? (
-          <a href="#" class="dropdown-item text-danger">
-            {item.split('d:').join('')}
-          </a>
-        ) : (
-          <a href="#" class="dropdown-item">
-            {item}
-          </a>
-        ),
-      )
-    ) : check || radio ? (
-      [1, 2, 3].map((i) => (
-        <label class="dropdown-item">
-          <input class="form-check-input m-0 me-2" type={radio ? 'radio' : 'checkbox'} /> Option {i}
-        </label>
-      ))
-    ) : showPeople ? (
-      peopleItems.map((person) => (
-        <a href="#" class="dropdown-item">
-          <Avatar personId={Number(person.id)} size="xs" /> {person.full_name}
-        </a>
-      ))
-    ) : showFlags ? (
-      countryItems.map((country) => (
-        <a href="#" class="dropdown-item">
-          <Flag flag={country.flag} size="xs" /> {country.name}
-        </a>
-      ))
-    ) : type === 'text' ? null : (
-      <>
-        {header && <span class="dropdown-header">Dropdown header</span>}
-        <a class="dropdown-item" href="#">
-          {icons && (
-            <>
-              <Icon name="settings" class="dropdown-item-icon" />{' '}
-            </>
-          )}
-          Action
-          {badge && <span class="badge bg-primary text-primary-fg ms-auto">12</span>}
-        </a>
-        <a class="dropdown-item" href="#">
-          {icons && (
-            <>
-              <Icon name="edit" class="dropdown-item-icon" />{' '}
-            </>
-          )}
-          Another action
-          {badge && <span class="badge bg-green ms-auto" />}
-        </a>
-        {active && (
-          <a class="dropdown-item active" href="#">
-            {icons && (
-              <>
-                <Icon name="activity" class="dropdown-item-icon" />{' '}
-              </>
-            )}
-            Active action
-          </a>
-        )}
-        {disabled && (
-          <a class="dropdown-item disabled" href="#">
-            {icons && (
-              <>
-                <Icon name="user-x" class="dropdown-item-icon" />{' '}
-              </>
-            )}
-            Disabled action
-          </a>
-        )}
-        {separated && (
-          <>
-            <div class="dropdown-divider" />
-            <a class="dropdown-item" href="#">
-              {icons && (
-                <>
-                  <Icon name="plus" class="dropdown-item-icon" />{' '}
-                </>
-              )}
-              Separated link
-            </a>
-          </>
-        )}
-      </>
-    )
-  }
+	{
+		menuItems ? (
+			menuItems.map((item) =>
+				item === '|' ? (
+					<div class="dropdown-divider" />
+				) : item.includes('h:') ? (
+					<h3 class="dropdown-header">{item.split('h:').join('')}</h3>
+				) : item.includes('a:') ? (
+					<a href="#" class="dropdown-item active">{item.split('a:').join('')}</a>
+				) : item.includes('d:') ? (
+					<a href="#" class="dropdown-item text-danger">{item.split('d:').join('')}</a>
+				) : (
+					<a href="#" class="dropdown-item">{item}</a>
+				)
+			)
+		) : check || radio ? (
+			[1, 2, 3].map((i) => (
+				<label class="dropdown-item"><input class="form-check-input m-0 me-2" type={radio ? 'radio' : 'checkbox'} /> Option {i}</label>
+			))
+		) : showPeople ? (
+			peopleItems.map((person) => (
+				<a href="#" class="dropdown-item"><Avatar personId={Number(person.id)} size="xs" /> {person.full_name}</a>
+			))
+		) : showFlags ? (
+			countryItems.map((country) => (
+				<a href="#" class="dropdown-item"><Flag flag={country.flag} size="xs" /> {country.name}</a>
+			))
+		) : type === 'text' ? null : (
+			<>
+				{header && <span class="dropdown-header">Dropdown header</span>}
+				<a class="dropdown-item" href="#">
+					{icons && <><Icon name="settings" class="dropdown-item-icon" />{' '}</>}
+					Action
+					{badge && <span class="badge bg-primary text-primary-fg ms-auto">12</span>}
+				</a>
+				<a class="dropdown-item" href="#">
+					{icons && <><Icon name="edit" class="dropdown-item-icon" />{' '}</>}Another action
+					{badge && <span class="badge bg-green ms-auto" />}
+				</a>
+				{active && (
+					<a class="dropdown-item active" href="#">{icons && <><Icon name="activity" class="dropdown-item-icon" />{' '}</>}Active action</a>
+				)}
+				{disabled && (
+					<a class="dropdown-item disabled" href="#">{icons && <><Icon name="user-x" class="dropdown-item-icon" />{' '}</>}Disabled action</a>
+				)}
+				{separated && (
+					<>
+						<div class="dropdown-divider" />
+						<a class="dropdown-item" href="#">{icons && <><Icon name="plus" class="dropdown-item-icon" />{' '}</>}Separated link</a>
+					</>
+				)}
+			</>
+		)
+	}
 </div>

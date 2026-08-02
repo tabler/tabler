@@ -1,59 +1,57 @@
 ---
-// Equivalent of cards/gallery-photo.html.
-// The Liquid include reads `photo` and `forloop.index` from the parent loop scope —
-// in Astro they are passed explicitly as the `photo` and `index` props.
-import Avatar from '@ui/Avatar.astro'
-import Icon from '@ui/Icon.astro'
-import { randomNumber, timeagoLabel } from '@shared/lib/pseudo-random'
+// `photo` and `index` are passed explicitly from the parent loop.
+import Avatar from '@ui/Avatar.astro';
+import Icon from '@ui/Icon.astro';
+import { randomNumber, timeagoLabel } from '@shared/lib/pseudo-random';
 
 interface Photo {
-  file: string
-  [key: string]: unknown
+	file: string;
+	[key: string]: unknown;
 }
 
 interface Person {
-  full_name?: string
-  photo?: string
-  [key: string]: unknown
+	full_name?: string;
+	photo?: string;
+	[key: string]: unknown;
 }
 
 interface Props {
-  photo: Photo
-  person: Person
-  /** 1-based loop index (forloop.index in Liquid) — seeds the deterministic pseudo-random values */
-  index: number
-  hideLikes?: boolean
+	photo: Photo;
+	person: Person;
+	/** 1-based loop index — seeds the deterministic pseudo-random values */
+	index: number;
+	hideLikes?: boolean;
 }
 
-const { photo, person, index, hideLikes } = Astro.props
+const { photo, person, index, hideLikes } = Astro.props;
 
-// Liquid: {% if forloop.index > 2 and forloop.index < 9 or forloop.index == 10 %}
-const heartClass = (index > 2 && index < 9) || index === 10 ? 'icon-filled text-red' : undefined
+// Heart filled when (index > 2 && index < 9) || index === 10.
+const heartClass = (index > 2 && index < 9) || index === 10 ? 'icon-filled text-red' : undefined;
 ---
 
 <div class="card card-sm">
-  <a href="#" class="d-block"><img src={`./static/photos/${photo.file}`} class="card-img-top" /></a>
-  <div class="card-body">
-    <div class="d-flex align-items-center">
-      <Avatar person={person} class="me-3 rounded" />
-      <div>
-        <div>{person.full_name}</div>
-        <div class="text-secondary">{timeagoLabel(index, 10)}</div>
-      </div>
-      {
-        !hideLikes && (
-          <div class="ms-auto">
-            <a href="#" class="text-secondary">
-              <Icon name="eye" />
-              {randomNumber(index, 300, 600)}
-            </a>
-            <a href="#" class="ms-3 text-secondary">
-              <Icon name="heart" class={heartClass} />
-              {randomNumber(index, 20, 100)}
-            </a>
-          </div>
-        )
-      }
-    </div>
-  </div>
+	<a href="#" class="d-block"><img src={`./static/photos/${photo.file}`} class="card-img-top" /></a>
+	<div class="card-body">
+		<div class="d-flex align-items-center">
+			<Avatar person={person} class="me-3 rounded" />
+			<div>
+				<div>{person.full_name}</div>
+				<div class="text-secondary">{timeagoLabel(index, 10)}</div>
+			</div>
+			{
+				!hideLikes && (
+					<div class="ms-auto">
+						<a href="#" class="text-secondary">
+							<Icon name="eye" />
+							{randomNumber(index, 300, 600)}
+						</a>
+						<a href="#" class="ms-3 text-secondary">
+							<Icon name="heart" class={heartClass} />
+							{randomNumber(index, 20, 100)}
+						</a>
+					</div>
+				)
+			}
+		</div>
+	</div>
 </div>

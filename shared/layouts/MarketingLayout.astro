@@ -1,160 +1,178 @@
 ---
-// "body-marketing body-gradient", plugins: marketing).
-// The `plugins: marketing` front matter is already covered by site.cssPlugins
-// (which includes 'marketing'), so no extra handling is needed here.
-// The footer (products/support/tabler columns, payment icons, socials, and the
-// copyright bar) lives inline in this layout, exactly as in the Liquid source.
-
-import Subheader from '@ui/Subheader.astro'
-import BaseLayout from './BaseLayout.astro'
-import MarketingNavbar from '@shared/components/marketing/MarketingNavbar.astro'
-import Payment from '@ui/Payment.astro'
-import Icon from '@ui/Icon.astro'
-import { site } from '@shared/lib/site'
+import Subheader from '@ui/Subheader.astro';
+import BaseLayout from './BaseLayout.astro';
+import MarketingNavbar from '@shared/components/marketing/MarketingNavbar.astro';
+import Payment from '@ui/Payment.astro';
+import Icon from '@ui/Icon.astro';
+import { site } from '@shared/lib/site';
 
 interface Props {
-  title?: string
-  /** page-libs from the Eleventy front matter, e.g. ['typed.js'] */
-  pageLibs?: string[]
+	title?: string;
+	/** Script/CSS library keys, e.g. ['typed.js'] */
+	pageLibs?: string[];
 }
 
-const { title, pageLibs } = Astro.props
+const { title, pageLibs } = Astro.props;
 
-// site.base is undefined in the Eleventy build → the product links resolve to
-// an empty href (href="").
-const base = ''
+const base = '';
 ---
 
 <BaseLayout title={title} pageLibs={pageLibs} bodyClass="body-marketing body-gradient" base="..">
-  <!-- BEGIN NAVBAR  -->
-  <header role="banner">
-    <MarketingNavbar />
-  </header>
-  <!-- END NAVBAR  -->
+	<!-- BEGIN NAVBAR  -->
+	<header role="banner">
+		<MarketingNavbar />
+	</header>
+	<!-- END NAVBAR  -->
 
-  <!-- BEGIN PAGE BODY -->
-  <main id="content">
-    <slot />
-  </main>
-  <!-- END PAGE BODY -->
+	<!-- BEGIN PAGE BODY -->
+	<main id="content">
+		<slot />
+	</main>
+	<!-- END PAGE BODY -->
 
-  <!-- BEGIN FOOTER -->
-  <footer class="footer">
-    <div class="container">
-      <div class="py-3">
-        <div class="row g-lg-4">
-          <div class="col-lg-7">
-            <div class="row g-lg-4">
-              <div class="col-md">
-                <Subheader class="mb-3">Our products</Subheader>
-                <ul class="list-unstyled list-separated gap-2">
-                  <li><a class="link-secondary" href={base}>UI Kit</a></li>
-                  <li>
-                    <a class="link-secondary" href={base}>Open source icons</a>
-                  </li>
-                  <li>
-                    <a class="link-secondary" href={base}>Email templates</a>
-                  </li>
-                  <li><a class="link-secondary" href={base}>Pricing</a></li>
-                </ul>
-              </div>
-              <div class="col-md">
-                <Subheader class="mb-3">Support</Subheader>
-                <ul class="list-unstyled list-separated gap-2">
-                  <li><a class="link-secondary" href={base}>Blog</a></li>
-                  <li><a class="link-secondary" href={base}>Documentation</a></li>
-                  <li><a class="link-secondary" href={base}>Support</a></li>
-                  <li>
-                    <a href="https://status.tabler.io" class="link-secondary" target="_blank" rel="noreferrer">Status</a>
-                  </li>
-                </ul>
-              </div>
-              <div class="col-md">
-                <Subheader class="mb-3">Tabler</Subheader>
-                <ul class="list-unstyled list-separated gap-2">
-                  <li><a class="link-secondary" href={base}>About</a></li>
-                  <li><a class="link-secondary" href={base}>Blog</a></li>
-                  <li><a class="link-secondary" href={base}>Changelog</a></li>
-                  <li>
-                    <a href={site.githubUrl} class="link-secondary" target="_blank" rel="noreferrer">Github</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4 ml-auto">
-            <div class="text-secondary">Tabler comes with tons of well-designed components and features. Start your adventure with Tabler and make your dashboard great again. For free!</div>
-          </div>
-        </div>
+	<!-- BEGIN FOOTER -->
+	<footer class="footer">
+		<div class="container">
+			<div class="py-3">
+				<div class="row g-lg-4">
+					<div class="col-lg-7">
+						<div class="row g-lg-4">
+							<div class="col-md">
+								<Subheader class="mb-3">Our products</Subheader>
+								<ul class="list-unstyled list-separated gap-2">
+									<li><a class="link-secondary" href={base}>UI Kit</a></li>
+									<li>
+										<a class="link-secondary" href={base}>Open source icons</a>
+									</li>
+									<li>
+										<a class="link-secondary" href={base}>Email templates</a>
+									</li>
+									<li><a class="link-secondary" href={base}>Pricing</a></li>
+								</ul>
+							</div>
+							<div class="col-md">
+								<Subheader class="mb-3">Support</Subheader>
+								<ul class="list-unstyled list-separated gap-2">
+									<li><a class="link-secondary" href={base}>Blog</a></li>
+									<li><a class="link-secondary" href={base}>Documentation</a></li>
+									<li><a class="link-secondary" href={base}>Support</a></li>
+									<li>
+										<a
+											href="https://status.tabler.io"
+											class="link-secondary"
+											target="_blank"
+											rel="noreferrer"
+											>Status</a
+										>
+									</li>
+								</ul>
+							</div>
+							<div class="col-md">
+								<Subheader class="mb-3">Tabler</Subheader>
+								<ul class="list-unstyled list-separated gap-2">
+									<li><a class="link-secondary" href={base}>About</a></li>
+									<li><a class="link-secondary" href={base}>Blog</a></li>
+									<li><a class="link-secondary" href={base}>Changelog</a></li>
+									<li>
+										<a
+											href={site.githubUrl}
+											class="link-secondary"
+											target="_blank"
+											rel="noreferrer"
+											>Github</a
+										>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-4 ml-auto">
+						<div class="text-secondary">
+							Tabler comes with tons of well-designed components and features.
+							Start your adventure with Tabler and make your dashboard great
+							again. For free!
+						</div>
+					</div>
+				</div>
 
-        <div class="row g-lg-4 justify-content-between mt-0 mt-md-2">
-          <div class="col-sm-7 col-md-6 col-lg-4">
-            <Subheader as="h5">Payment &amp; Security</Subheader>
-            <ul class="list-inline mb-0 mt-3">
-              <li class="list-inline-item">
-                <a href="#"><Payment payment="paypal" /></a>
-              </li>
-              <li class="list-inline-item">
-                <a href="#"><Payment payment="visa" /></a>
-              </li>
-              <li class="list-inline-item">
-                <a href="#"><Payment payment="mastercard" /></a>
-              </li>
-              <li class="list-inline-item">
-                <a href="#"><Payment payment="americanexpress" /></a>
-              </li>
-            </ul>
-          </div>
+				<div class="row g-lg-4 justify-content-between mt-0 mt-md-2">
+					<div class="col-sm-7 col-md-6 col-lg-4">
+						<Subheader as="h5">Payment &amp; Security</Subheader>
+						<ul class="list-inline mb-0 mt-3">
+							<li class="list-inline-item">
+								<a href="#"><Payment payment="paypal" /></a>
+							</li>
+							<li class="list-inline-item">
+								<a href="#"><Payment payment="visa" /></a>
+							</li>
+							<li class="list-inline-item">
+								<a href="#"><Payment payment="mastercard" /></a>
+							</li>
+							<li class="list-inline-item">
+								<a href="#"><Payment payment="americanexpress" /></a>
+							</li>
+						</ul>
+					</div>
 
-          <div class="col-sm-5 col-md-6 col-lg-3 text-sm-end">
-            <Subheader as="h5">Follow us on</Subheader>
-            <ul class="list-inline mb-0 mt-3">
-              <li class="list-inline-item">
-                <a class="btn btn-icon btn-facebook" href="#"><Icon name="brand-facebook" /></a>
-              </li>
-              <li class="list-inline-item">
-                <a class="btn btn-icon btn-instagram" href="#"><Icon name="brand-instagram" /></a>
-              </li>
-              <li class="list-inline-item">
-                <a class="btn btn-icon btn-twitter" href="#"><Icon name="brand-twitter" /></a>
-              </li>
-              <li class="list-inline-item">
-                <a class="btn btn-icon btn-linkedin" href="#"><Icon name="brand-linkedin" /></a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-  </footer>
+					<div class="col-sm-5 col-md-6 col-lg-3 text-sm-end">
+						<Subheader as="h5">Follow us on</Subheader>
+						<ul class="list-inline mb-0 mt-3">
+							<li class="list-inline-item">
+								<a class="btn btn-icon btn-facebook" href="#"><Icon name="brand-facebook" /></a>
+							</li>
+							<li class="list-inline-item">
+								<a class="btn btn-icon btn-instagram" href="#"><Icon name="brand-instagram" /></a>
+							</li>
+							<li class="list-inline-item">
+								<a class="btn btn-icon btn-twitter" href="#"><Icon name="brand-twitter" /></a>
+							</li>
+							<li class="list-inline-item">
+								<a class="btn btn-icon btn-linkedin" href="#"><Icon name="brand-linkedin" /></a>
+							</li>
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer>
 
-  <footer class="footer">
-    <div class="container">
-      <div class="py-3 border-top-light text-center text-lg-start">
-        <div class="row g-lg-4">
-          <div class="col-lg-auto text-lg-end order-lg-last">
-            <div class="row justify-center">
-              <div class="col-auto">
-                ©<a href="https://codecalm.net" class="link-secondary" target="_blank" rel="noopener noreferrer">codecalm.net</a>
-              </div>
-              <div class="col-auto">
-                <ul class="list-inline list-inline-dots">
-                  <li class="list-inline-item">
-                    <a class="link-secondary" href="/terms-of-service">Terms of service</a>
-                  </li>
-                  <li class="list-inline-item">
-                    <a class="link-secondary" href="/privacy-policy">Privacy policy</a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg">
-            Made with <Icon name="heart" color="red" inline /> in Poland.
-          </div>
-        </div>
-      </div>
-    </div>
-  </footer>
-  <!-- END FOOTER -->
+	<footer class="footer">
+		<div class="container">
+			<div class="py-3 border-top-light text-center text-lg-start">
+				<div class="row g-lg-4">
+					<div class="col-lg-auto text-lg-end order-lg-last">
+						<div class="row justify-center">
+							<div class="col-auto">
+								©<a
+									href="https://codecalm.net"
+									class="link-secondary"
+									target="_blank"
+									rel="noopener noreferrer"
+									>codecalm.net</a
+								>
+							</div>
+							<div class="col-auto">
+								<ul class="list-inline list-inline-dots">
+									<li class="list-inline-item">
+										<a class="link-secondary" href="/terms-of-service"
+											>Terms of service</a
+										>
+									</li>
+									<li class="list-inline-item">
+										<a class="link-secondary" href="/privacy-policy"
+											>Privacy policy</a
+										>
+									</li>
+								</ul>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg">
+						Made with <Icon name="heart" color="red" inline /> in Poland.
+					</div>
+				</div>
+			</div>
+		</div>
+	</footer>
+	<!-- END FOOTER -->
 </BaseLayout>
