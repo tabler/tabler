@@ -47,12 +47,15 @@
   --#{$prefix}status-height: #{$status-height};
   --#{$prefix}status-color: #{$text-secondary};
   --#{$prefix}status-color-rgb: #{to-rgb($text-secondary)};
+  --#{$prefix}status-padding-y: #{$status-padding-y};
+  --#{$prefix}status-padding-x: #{$status-padding-x};
+  --#{$prefix}status-gap: #{$status-gap};
 
   display: inline-flex;
   align-items: center;
   height: var(--#{$prefix}status-height);
-  padding: 0.25rem 0.75rem;
-  gap: 0.5rem;
+  padding: var(--#{$prefix}status-padding-y) var(--#{$prefix}status-padding-x);
+  gap: var(--#{$prefix}status-gap);
   color: var(--#{$prefix}status-color);
   background: color-transparent(var(--#{$prefix}status-color), 0.1);
   font-size: $font-size-base;
@@ -68,7 +71,7 @@
   }
 
   .icon {
-    font-size: 1.25rem;
+    font-size: $status-icon-size;
   }
 }
 
@@ -116,7 +119,7 @@
 // Status indicator
 //
 .status-indicator {
-  --#{$prefix}status-indicator-size: 2.5rem;
+  --#{$prefix}status-indicator-size: #{$status-indicator-size};
   --#{$prefix}status-indicator-color: var(--#{$prefix}status-color, #{$text-secondary});
   display: block;
   position: relative;
@@ -125,7 +128,7 @@
 }
 
 .status-indicator-circle {
-  --#{$prefix}status-circle-size: 0.75rem;
+  --#{$prefix}status-circle-size: #{$status-circle-size};
   position: absolute;
   inset-inline-start: 50%;
   top: 50%;

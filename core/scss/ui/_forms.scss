@@ -11,13 +11,15 @@ Form label
  */
 .col-form-label,
 .form-label {
+  --#{$prefix}form-label-required-gap: #{$form-label-required-gap};
+
   display: block;
   font-weight: var(--#{$prefix}font-weight-medium);
 
   &.required {
     &:after {
       content: '*';
-      margin-inline-start: 0.25rem;
+      margin-inline-start: var(--#{$prefix}form-label-required-gap);
       color: $red;
     }
   }
@@ -33,6 +35,10 @@ Form label
 Form hint
  */
 .form-hint {
+  --#{$prefix}form-hint-margin-top: #{$form-hint-margin-top};
+  --#{$prefix}form-hint-label-offset: #{$form-hint-label-offset};
+  --#{$prefix}form-hint-control-margin-top: #{$form-hint-control-margin-top};
+
   display: block;
   color: $form-secondary-color;
 
@@ -41,17 +47,17 @@ Form hint
   }
 
   & + .form-control {
-    margin-top: 0.25rem;
+    margin-top: var(--#{$prefix}form-hint-margin-top);
   }
 
   .form-label + & {
-    margin-top: -0.25rem;
+    margin-top: var(--#{$prefix}form-hint-label-offset);
   }
 
   .input-group + &,
   .form-control + &,
   .form-select + & {
-    margin-top: 0.5rem;
+    margin-top: var(--#{$prefix}form-hint-control-margin-top);
     color: $form-secondary-color;
   }
 }
@@ -121,12 +127,17 @@ Form control
 }
 
 .form-footer {
-  margin-top: 2rem;
+  --#{$prefix}form-footer-margin-top: #{$form-footer-margin-top};
+
+  margin-top: var(--#{$prefix}form-footer-margin-top);
 }
 
 .form-fieldset {
-  padding: 1rem;
-  margin-bottom: 1rem;
+  --#{$prefix}form-fieldset-padding: #{$form-fieldset-padding};
+  --#{$prefix}form-fieldset-margin-bottom: #{$form-fieldset-margin-bottom};
+
+  padding: var(--#{$prefix}form-fieldset-padding);
+  margin-bottom: var(--#{$prefix}form-fieldset-margin-bottom);
   background: var(--#{$prefix}bg-surface-secondary);
   border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
   @include border-radius(var(--#{$prefix}border-radius));
@@ -140,13 +151,16 @@ fieldset:empty {
 Form help
  */
 .form-help {
+  --#{$prefix}form-help-size: #{$form-help-size};
+  --#{$prefix}form-help-font-size: #{$form-help-font-size};
+
   display: inline-flex;
   font-weight: var(--#{$prefix}font-weight-semibold);
   align-items: center;
   justify-content: center;
-  width: 1.125rem;
-  height: 1.125rem;
-  font-size: 0.75rem;
+  width: var(--#{$prefix}form-help-size);
+  height: var(--#{$prefix}form-help-size);
+  font-size: var(--#{$prefix}form-help-font-size);
   color: $form-secondary-color;
   text-align: center;
   text-decoration: none;
@@ -248,7 +262,9 @@ Forms on mobile devices
   */
 .form-control,
 .form-select {
+  --#{$prefix}form-control-mobile-font-size: #{$form-control-mobile-font-size};
+
   @include media-breakpoint-down(sm) {
-    font-size: 1rem;
+    font-size: var(--#{$prefix}form-control-mobile-font-size);
   }
 }

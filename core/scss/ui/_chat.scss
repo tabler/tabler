@@ -1,18 +1,21 @@
 @use '../config' as *;
 
 .chat {
+  --#{$prefix}chat-bubbles-gap: #{$chat-bubbles-gap};
+  --#{$prefix}chat-bubble-padding: #{$chat-bubble-padding};
+  --#{$prefix}chat-bubble-title-margin-bottom: #{$chat-bubble-title-margin-bottom};
 }
 
 .chat-bubbles {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: var(--#{$prefix}chat-bubbles-gap);
 }
 
 .chat-bubble {
   background: var(--#{$prefix}bg-surface-secondary);
   @include border-radius(var(--#{$prefix}border-radius-lg));
-  padding: 1rem;
+  padding: var(--#{$prefix}chat-bubble-padding);
   position: relative;
 }
 
@@ -22,7 +25,7 @@
 }
 
 .chat-bubble-title {
-  margin-bottom: 0.25rem;
+  margin-bottom: var(--#{$prefix}chat-bubble-title-margin-bottom);
 }
 
 .chat-bubble-author {
