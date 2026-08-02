@@ -2,34 +2,31 @@
 // Equivalent of cards/card-image.html
 // TODO: ui/photo.html is inlined only in its plain <img> branch (no
 //       background/ratio params are used by card-image.html).
-import photos from '@data/photos.json';
+import photos from '@data/photos.json'
 
 interface Props {
-	title?: string;
-	right?: boolean;
-	imgId?: number;
+  title?: string
+  right?: boolean
+  imgId?: number
 }
 
-const { title, right, imgId = 1 } = Astro.props;
+const { title, right, imgId = 1 } = Astro.props
 
-const photo = (photos as { file: string; title: string }[])[imgId];
-const imgClass = `w-100 h-100 object-cover ${right ? 'card-img-end' : 'card-img-start'}`;
+const photo = (photos as { file: string; title: string }[])[imgId]
+const imgClass = `w-100 h-100 object-cover ${right ? 'card-img-end' : 'card-img-start'}`
 ---
 
 <div class="card">
-	<div class="row row-0">
-		<div class={`col-3${right ? ' order-md-last' : ''}`}>
-			<!-- Photo -->
-			<img src={`./static/photos/${photo.file}`} class={imgClass} alt={photo.title} />
-		</div>
-		<div class="col">
-			<div class="card-body">
-				{title && <h3 class="card-title" set:html={title} />}
-				<p class="text-secondary">
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit incidunt, iste, itaque minima
-					neque pariatur perferendis sed suscipit velit vitae voluptatem.
-				</p>
-			</div>
-		</div>
-	</div>
+  <div class="row row-0">
+    <div class={`col-3${right ? ' order-md-last' : ''}`}>
+      <!-- Photo -->
+      <img src={`./static/photos/${photo.file}`} class={imgClass} alt={photo.title} />
+    </div>
+    <div class="col">
+      <div class="card-body">
+        {title && <h3 class="card-title" set:html={title} />}
+        <p class="text-secondary">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit incidunt, iste, itaque minima neque pariatur perferendis sed suscipit velit vitae voluptatem.</p>
+      </div>
+    </div>
+  </div>
 </div>

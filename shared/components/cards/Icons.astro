@@ -1,54 +1,43 @@
 ---
-import Icon from '@ui/Icon.astro';
-import icons from '@data/icons.json';
+import Icon from '@ui/Icon.astro'
+import icons from '@data/icons.json'
 
 interface Props {
-	title?: string;
-	type?: 'outline' | 'filled';
+  title?: string
+  type?: 'outline' | 'filled'
 }
 
-const { title, type = 'outline' } = Astro.props;
+const { title, type = 'outline' } = Astro.props
 
 // Liquid: limit is Infinity, but 20 when environment == 'development'.
 // The PoC mirrors the development build (see BaseLayout), so limit = 20.
 // NOTE: the limit applies to the ITERATION, before the svg[type] filter —
 // the "filled" card therefore shows only the filled icons among the first 20.
-const limit = 20;
+const limit = 20
 
-const entries = Object.entries(icons as Record<string, { svg?: Record<string, string> }>).slice(
-	0,
-	limit,
-);
+const entries = Object.entries(icons as unknown as Record<string, { svg?: Record<string, string> }>).slice(0, limit)
 ---
 
 <div class="card">
-	<div class="card-header">
-		<div class="card-title">{title}</div>
-	</div>
-	<div class="card-body p-0">
-		<div class="demo-icons-list-wrap">
-			<div class="demo-icons-list">
-				{
-					entries.map(
-						([iconName, icon]) =>
-							icon.svg?.[type] && (
-								<a
-									href={`https://tabler.io/icons/icon/${iconName}`}
-									target="_blank"
-									rel="noopener"
-									class="demo-icons-list-item"
-									title={iconName}
-									data-bs-toggle="tooltip"
-									data-bs-placement="top"
-								>
-									<Icon name={iconName} type={type} />
-								</a>
-							),
-					)
-				}
-				{/* Liquid: {% for icon in (0..20) %} → 21 empty divs (flexbox filler). */}
-				{Array.from({ length: 21 }).map(() => <div />)}
-			</div>
-		</div>
-	</div>
+  <div class="card-header">
+    <div class="card-title">{title}</div>
+  </div>
+  <div class="card-body p-0">
+    <div class="demo-icons-list-wrap">
+      <div class="demo-icons-list">
+        {
+          entries.map(
+            ([iconName, icon]) =>
+              icon.svg?.[type] && (
+                <a href={`https://tabler.io/icons/icon/${iconName}`} target="_blank" rel="noopener" class="demo-icons-list-item" title={iconName} data-bs-toggle="tooltip" data-bs-placement="top">
+                  <Icon name={iconName} type={type} />
+                </a>
+              ),
+          )
+        }
+        {/* Liquid: {% for icon in (0..20) %} → 21 empty divs (flexbox filler). */}
+        {Array.from({ length: 21 }).map(() => <div />)}
+      </div>
+    </div>
+  </div>
 </div>

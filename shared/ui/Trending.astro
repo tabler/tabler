@@ -1,21 +1,22 @@
 ---
 // Equivalent of ui/trending.html
-import Icon from './Icon.astro';
+import Icon from './Icon.astro'
 
 interface Props {
-	value?: number;
-	unit?: string;
-	class?: string;
+  value?: number
+  unit?: string
+  class?: string
 }
 
-const { value = 25, unit = '%', class: className } = Astro.props;
+const { value = 25, unit = '%', class: className } = Astro.props
 
-const trendingColor = value > 0 ? 'green' : value === 0 ? 'muted' : 'red';
-const trendingIcon = value > 0 ? 'arrow-up' : value === 0 ? 'minus' : 'arrow-down';
+const trendingColor = value > 0 ? 'green' : value === 0 ? 'muted' : 'red'
+const trendingIcon = value > 0 ? 'arrow-up' : value === 0 ? 'minus' : 'arrow-down'
 
-const classes = [`text-${trendingColor} d-inline-flex align-items-center lh-1`, className];
+const classes = [`text-${trendingColor} d-inline-flex align-items-center lh-1`, className]
 ---
 
 <span class:list={classes}>
-	{value}{unit} <Icon name={trendingIcon} class="ms-0" size="sm" />
+  {value}{unit}
+  <Icon name={trendingIcon} class="ms-0" size="sm" />
 </span>

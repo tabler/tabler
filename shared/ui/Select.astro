@@ -4,7 +4,6 @@
 // TODO: optgroup / flag / label indicator branches (unused on the modals page).
 import selects from '@data/selects.json';
 import people from '@data/people.json';
-import { firstLetters } from '@shared/lib/string-format';
 
 interface Props {
 	id?: string;
@@ -94,7 +93,7 @@ const selectId = id ? `select-${id}` : undefined;
 	id && (
 		<select
 			class:list={selectClass}
-			placeholder={placeholder}
+			{...({ placeholder } as unknown as astroHTML.JSX.SelectHTMLAttributes)}
 			id={`select-${id}`}
 			value={value}
 			multiple={isMultiple ? '' : undefined}

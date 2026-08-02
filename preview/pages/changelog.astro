@@ -1,6 +1,6 @@
 ---
-import ProseLayout from '@shared/layouts/ProseLayout.astro';
-import { renderMarkdown } from '@shared/lib/render-markdown';
+import ProseLayout from '@shared/layouts/ProseLayout.astro'
+import { renderMarkdown } from '@shared/lib/render-markdown'
 // Liquid: {{ changelog | renderContent: "md" }} — `changelog` is the raw
 // content of core/CHANGELOG.md (shared/e11ty/data.mjs), rendered by
 // Eleventy's markdown-it. renderMarkdown() mirrors that engine exactly
@@ -8,11 +8,11 @@ import { renderMarkdown } from '@shared/lib/render-markdown';
 // output verified byte-identical to the reference build. Injected via
 // set:html: the fragment contains entities and a literal `{$prefix}` token
 // that must not be re-escaped or parsed as JSX.
-import changelog from '../../core/CHANGELOG.md?raw';
+import changelog from '../../core/CHANGELOG.md?raw'
 
-const changelogHtml = renderMarkdown(changelog);
+const changelogHtml = renderMarkdown(changelog)
 ---
 
 <ProseLayout title="Changelog" pageMenu="changelog">
-	<Fragment set:html={changelogHtml} />
+  <Fragment set:html={changelogHtml} />
 </ProseLayout>

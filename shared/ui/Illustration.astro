@@ -1,28 +1,27 @@
 ---
 // Equivalent of ui/illustration.html
-import freeIllustrations from '@data/free-illustrations.json';
+import freeIllustrations from '@data/free-illustrations.json'
 
 interface Props {
-	/** file name of the illustration, e.g. "boy-girl.svg" (the ".svg" suffix is stripped) */
-	image: string;
-	height?: number | string;
-	class?: string;
+  /** file name of the illustration, e.g. "boy-girl.svg" (the ".svg" suffix is stripped) */
+  image: string
+  height?: number | string
+  class?: string
 }
 
-const { image, height = 128, class: className } = Astro.props;
+const { image, height = 128, class: className } = Astro.props
 
 // The Liquid include always reads from the `autodark` variant.
-const key = image.replaceAll('.svg', '');
-const source =
-	(freeIllustrations as { autodark: Record<string, string> }).autodark[key] ?? '';
+const key = image.replaceAll('.svg', '')
+const source = (freeIllustrations as { autodark: Record<string, string> }).autodark[key] ?? ''
 
 // Liquid: replace '<svg ' with '<svg class="img[ include.class]" '
 // (Liquid `replace` substitutes all occurrences — mirror with replaceAll)
-const replaceTo = `<svg class="img${className ? ` ${className}` : ''}" `;
-let illustration = source.replaceAll('<svg ', replaceTo);
+const replaceTo = `<svg class="img${className ? ` ${className}` : ''}" `
+let illustration = source.replaceAll('<svg ', replaceTo)
 
 // Liquid: replace 'width="800" height="600"' with 'height="{height}"' (default 128)
-illustration = illustration.replaceAll('width="800" height="600"', `height="${height}"`);
+illustration = illustration.replaceAll('width="800" height="600"', `height="${height}"`)
 ---
 
 <!-- BEGIN ILLUSTRATION -->

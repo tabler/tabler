@@ -86,7 +86,7 @@ const classes = [
 // footer-elements parsing — mirrors the Liquid loop, including the fact that
 // `right` is never reset once set (Liquid assign leaks across iterations).
 let right = false;
-const footerEls = (footerElements ?? []).map((element) => {
+const footerEls = (footerElements ?? []).map((element: string) => {
 		let el = element;
 		if (el.slice(0, 1) === '>') {
 			right = true;
@@ -187,7 +187,7 @@ const imgBottomPhoto = (photos as { file: string; title: string }[])[11];
 						<div class="card-footer">
 							{footerElements ? (
 								<div class="row align-items-center">
-									{footerEls.map(({ el, right: elRight }) => (
+									{footerEls.map(({ el, right: elRight }: { el: string; right: boolean }) => (
 										<div class={`col-auto${elRight ? ' ms-auto' : ''}`}>
 											{el === 'switch' ? (
 												<label class="form-check form-switch m-0">

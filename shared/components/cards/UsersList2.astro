@@ -1,58 +1,60 @@
 ---
 // Equivalent of cards/users-list-2.html
-import Avatar from '@ui/Avatar.astro';
-import CardTitle from '@ui/CardTitle.astro';
-import people from '@data/people.json';
-import { randomNumber, timeagoLabel } from '@shared/lib/pseudo-random';
+import Avatar from '@ui/Avatar.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import people from '@data/people.json'
+import { randomNumber, timeagoLabel } from '@shared/lib/pseudo-random'
 
 interface Person {
-	full_name?: string;
-	photo?: string;
-	[key: string]: unknown;
+  full_name?: string
+  photo?: string
+  [key: string]: unknown
 }
 
 interface Props {
-	limit?: number;
-	offset?: number;
-	title?: string;
-	class?: string;
+  limit?: number
+  offset?: number
+  title?: string
+  class?: string
 }
 
-const { limit = 10, offset = 0, title = 'Top users', class: className } = Astro.props;
+const { limit = 10, offset = 0, title = 'Top users', class: className } = Astro.props
 
-const colors = 'green,red,yellow,x,x'.split(',');
+const colors = 'green,red,yellow,x,x'.split(',')
 
 const rows = (people as Person[]).slice(offset, offset + limit).map((person, idx) => {
-	const index = idx + 1; // forloop.index (1-based)
-	return {
-		person,
-		status: colors[randomNumber(index + 5, 0, colors.length - 1)],
-		timeago: timeagoLabel(index, 6),
-	};
-});
+  const index = idx + 1 // forloop.index (1-based)
+  return {
+    person,
+    status: colors[randomNumber(index + 5, 0, colors.length - 1)],
+    timeago: timeagoLabel(index, 6),
+  }
+})
 ---
 
 <div class={`card${className ? ` ${className}` : ''}`}>
-	<div class="card-header">
-		<CardTitle>{title}</CardTitle>
-	</div>
-	<div class="card-body">
-		<div class="row g-3">
-			{
-				rows.map((row) => (
-					<div class="col-6">
-						<div class="row g-3 align-items-center">
-							<a href="#" class="col-auto">
-								<Avatar person={row.person} status={row.status} />
-							</a>
-							<div class="col text-truncate">
-								<a href="#" class="text-reset d-block text-truncate">{row.person.full_name}</a>
-								<div class="text-secondary text-truncate mt-n1">{row.timeago}</div>
-							</div>
-						</div>
-					</div>
-				))
-			}
-		</div>
-	</div>
+  <div class="card-header">
+    <CardTitle>{title}</CardTitle>
+  </div>
+  <div class="card-body">
+    <div class="row g-3">
+      {
+        rows.map((row) => (
+          <div class="col-6">
+            <div class="row g-3 align-items-center">
+              <a href="#" class="col-auto">
+                <Avatar person={row.person} status={row.status} />
+              </a>
+              <div class="col text-truncate">
+                <a href="#" class="text-reset d-block text-truncate">
+                  {row.person.full_name}
+                </a>
+                <div class="text-secondary text-truncate mt-n1">{row.timeago}</div>
+              </div>
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
 </div>

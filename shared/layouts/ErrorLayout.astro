@@ -1,45 +1,37 @@
 ---
 // "border-top-wide border-primary", a .page-center container and ui/empty.html
 // fed from the errors.json entry keyed by the `page-error` front matter).
-import BaseLayout from './BaseLayout.astro';
-import Empty from '@ui/Empty.astro';
-import errors from '@data/errors.json';
+import BaseLayout from './BaseLayout.astro'
+import Empty from '@ui/Empty.astro'
+import errors from '@data/errors.json'
 
 interface Props {
-	title?: string;
-	/** page-error front matter — key into errors.json ("404" | "500" | "maintenance" | …) */
-	pageError: string;
+  title?: string
+  /** page-error front matter — key into errors.json ("404" | "500" | "maintenance" | …) */
+  pageError: string
 }
 
-const { title, pageError } = Astro.props;
+const { title, pageError } = Astro.props
 
 type ErrorEntry = {
-	illustration?: string;
-	title?: string | number;
-	header?: string;
-	description?: string;
-};
+  illustration?: string
+  title?: string | number
+  header?: string
+  description?: string
+}
 
 // {% assign error = errors[page-error] %}
-const error = (errors as Record<string, ErrorEntry>)[pageError] ?? {};
+const error = (errors as Record<string, ErrorEntry>)[pageError] ?? {}
 // {% assign header = error.header | default: 'Oops… You just found an error page' %}
-const header = error.header ?? 'Oops… You just found an error page';
+const header = error.header ?? 'Oops… You just found an error page'
 ---
 
 <BaseLayout title={title} bodyClass="border-top-wide border-primary">
-	<!-- BEGIN PAGE BODY -->
-	<div class="page page-center">
-		<div class="container-tight py-4">
-			<Empty
-				icon="settings"
-				illustration={error.illustration}
-				iconText={error.title != null ? String(error.title) : undefined}
-				title={header}
-				subtitle={error.description}
-				buttonIcon="arrow-left"
-				buttonText="Take me home"
-			/>
-		</div>
-	</div>
-	<!-- END PAGE BODY -->
+  <!-- BEGIN PAGE BODY -->
+  <div class="page page-center">
+    <div class="container-tight py-4">
+      <Empty icon="settings" illustration={error.illustration} iconText={error.title != null ? String(error.title) : undefined} title={header} subtitle={error.description} buttonIcon="arrow-left" buttonText="Take me home" />
+    </div>
+  </div>
+  <!-- END PAGE BODY -->
 </BaseLayout>

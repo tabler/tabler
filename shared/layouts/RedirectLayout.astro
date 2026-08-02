@@ -7,39 +7,41 @@
 // For root-level pages `{{ page | relative }}` resolves to ".".
 
 interface Props {
-	/**
-	 * include.url — the raw redirect target. NOTE: shared/layouts/redirect.html
-	 * passes `page.redirect.to`, but in Eleventy `page` is the built-in page
-	 * object (no front matter), so `page.redirect` is undefined and the include
-	 * receives an empty url → the target collapses to the relative root ".".
-	 * The reference build (markdown.html) redirects to "." for this reason.
-	 */
-	url?: string;
-	/**
-	 * `{{ page | relative }}` — the relative path to the site root from this
-	 * page. Defaults to "." (root-level pages); nested pages pass e.g. "../../..".
-	 */
-	base?: string;
+  /**
+   * include.url — the raw redirect target. NOTE: shared/layouts/redirect.html
+   * passes `page.redirect.to`, but in Eleventy `page` is the built-in page
+   * object (no front matter), so `page.redirect` is undefined and the include
+   * receives an empty url → the target collapses to the relative root ".".
+   * The reference build (markdown.html) redirects to "." for this reason.
+   */
+  url?: string
+  /**
+   * `{{ page | relative }}` — the relative path to the site root from this
+   * page. Defaults to "." (root-level pages); nested pages pass e.g. "../../..".
+   */
+  base?: string
 }
 
-const { url = '', base = '.' } = Astro.props;
-const isAbsolute = url.includes('http://') || url.includes('https://');
-const target = isAbsolute ? url : `${base}${url}`;
+const { url = '', base = '.' } = Astro.props
+const isAbsolute = url.includes('http://') || url.includes('https://')
+const target = isAbsolute ? url : `${base}${url}`
 ---
 
 <!doctype html>
 <html lang="en-US">
-	<!-- BEGIN META -->
-	<meta charset="utf-8" />
-	<title>Redirecting…</title>
-	<link rel="canonical" href={target} />
-	<meta http-equiv="refresh" content={`0; url=${target}`} />
-	<meta name="robots" content="noindex" />
-	<!-- END META -->
-	<noscript><a href={target}>Click here if you are not redirected.</a></noscript>
-	<!-- BEGIN REDIRECT -->
-	<script define:vars={{ target }}>
-		location = target;
-	</script>
-	<!-- END REDIRECT -->
+  <!-- BEGIN META -->
+  <meta charset="utf-8" />
+  <title>Redirecting…</title>
+  <link rel="canonical" href={target} />
+  <meta http-equiv="refresh" content={`0; url=${target}`} />
+  <meta name="robots" content="noindex" />
+  <!-- END META -->
+  <noscript><a href={target}>Click here if you are not redirected.</a></noscript>
+  <!-- BEGIN REDIRECT -->
+  <script define:vars={{ target }}>
+    location = target
+  </script>
+  <!-- END REDIRECT -->
+
+
 </html>

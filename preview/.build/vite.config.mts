@@ -19,16 +19,14 @@ const entry = path.resolve(__dirname, '../js/demo.ts')
 // public/preview/js. `astro dev` never touches public/, so there's no dist/
 // collision to avoid there, and this lets edits show up on refresh without an
 // extra copy-assets.mjs pass.
-const outDir = process.env.PREVIEW_JS_OUT_DIR
-	? path.resolve(__dirname, '..', process.env.PREVIEW_JS_OUT_DIR)
-	: path.resolve(__dirname, '../tmp-assets/js')
+const outDir = process.env.PREVIEW_JS_OUT_DIR ? path.resolve(__dirname, '..', process.env.PREVIEW_JS_OUT_DIR) : path.resolve(__dirname, '../tmp-assets/js')
 
 export default createViteConfig({
-	entry,
-	name: 'demo',
-	fileName: () => 'demo.js',
-	formats: ['es'],
-	outDir,
-	banner: getBanner('Demo'),
-	minify: false,
+  entry,
+  name: 'demo',
+  fileName: () => 'demo.js',
+  formats: ['es'],
+  outDir,
+  banner: getBanner('Demo'),
+  minify: false,
 })

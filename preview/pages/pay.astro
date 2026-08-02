@@ -2,134 +2,91 @@
 // page-libs [tabler-payments, imask]: `tabler-payments` is not a key in
 // core/libs.json, so it resolves to nothing (only imask emits a <script>) —
 // matches the Eleventy reference.
-import PayLayout from '@shared/layouts/PayLayout.astro';
-import Avatar from '@ui/Avatar.astro';
-import Payment from '@ui/Payment.astro';
-import FormGroup from '@ui/FormGroup.astro';
-import Icon from '@ui/Icon.astro';
+import PayLayout from '@shared/layouts/PayLayout.astro'
+import Avatar from '@ui/Avatar.astro'
+import Payment from '@ui/Payment.astro'
+import FormGroup from '@ui/FormGroup.astro'
+import Icon from '@ui/Icon.astro'
 ---
 
 <PayLayout title="Pay" pageLibs={['tabler-payments', 'imask']}>
-	<div class="bg-dark bg-cover" style="background-image: url(./static/bg-cover.jpg)">
-		<div class="bg-dark bg-opacity-75 pt-5 bg-blur">
-			<div class="container container-tight bg-overlay">
-				<img src="./static/bg-cover.jpg" alt="" class="img-fluid rounded-lg rounded-top" />
-			</div>
-		</div>
-	</div>
+  <div class="bg-dark bg-cover" style="background-image: url(./static/bg-cover.jpg)">
+    <div class="bg-dark bg-opacity-75 pt-5 bg-blur">
+      <div class="container container-tight bg-overlay">
+        <img src="./static/bg-cover.jpg" alt="" class="img-fluid rounded-lg rounded-top" />
+      </div>
+    </div>
+  </div>
 
-	<div class="container container-tight">
-		<div class="card rounded-top-0 border-top-0">
-			<div class="card-body pt-0">
-				<div class="mb-3 text-center">
-					<Avatar personId={1} size="xl" class="avatar-cover rounded-circle mb-3" />
-					<div class="mb-4">
-						<h2 class="h2">Front-End Learning</h2>
-						<div class="text-secondary">
-							Learn to build web apps with HTML & CSS. Get started quickly with included templates.
-						</div>
-					</div>
-				</div>
+  <div class="container container-tight">
+    <div class="card rounded-top-0 border-top-0">
+      <div class="card-body pt-0">
+        <div class="mb-3 text-center">
+          <Avatar personId={1} size="xl" class="avatar-cover rounded-circle mb-3" />
+          <div class="mb-4">
+            <h2 class="h2">Front-End Learning</h2>
+            <div class="text-secondary">Learn to build web apps with HTML & CSS. Get started quickly with included templates.</div>
+          </div>
+        </div>
 
+        <nav class="nav nav-segmented w-100 mb-4" role="tablist">
+          <button data-bs-target="#tab-card" class="nav-link active" data-bs-toggle="tab" role="tab" aria-controls="tab-card" aria-selected="true">
+            <Icon name="credit-card" />
+            <span>Pay With Card</span>
+          </button>
+          <button data-bs-target="#tab-paypal" class="nav-link" data-bs-toggle="tab" role="tab" aria-controls="tab-paypal" aria-selected="false">
+            <Icon name="brand-paypal" />
+            <span>Pay With PayPal</span>
+          </button>
+        </nav>
 
-				<nav class="nav nav-segmented w-100 mb-4" role="tablist">
-					<button
-						data-bs-target="#tab-card"
-						class="nav-link active"
-						data-bs-toggle="tab"
-						role="tab"
-						aria-controls="tab-card"
-						aria-selected="true"
-					>
-						<Icon name="credit-card" />
-						<span>Pay With Card</span>
-					</button>
-					<button
-						data-bs-target="#tab-paypal"
-						class="nav-link"
-						data-bs-toggle="tab"
-						role="tab"
-						aria-controls="tab-paypal"
-						aria-selected="false"
-					>
-						<Icon name="brand-paypal" />
-						<span>Pay With PayPal</span>
-					</button>
-				</nav>
+        <div class="tab-content">
+          <div class="tab-pane active show" id="tab-card" role="tabpanel">
+            <form>
+              <div class="space-y">
+                <FormGroup label="Card Number" for="card-number" class="">
+                  <div class="input-group input-group-flat">
+                    <span class="input-group-text">
+                      <Payment payment="visa" size="xs" />
+                    </span>
+                    <input type="text" class="form-control" placeholder="0000 0000 0000 0000" autocomplete="off" id="card-number-addon" />
+                  </div>
+                </FormGroup>
 
-				<div class="tab-content">
-					<div class="tab-pane active show" id="tab-card" role="tabpanel">
-						<form>
-							<div class="space-y">
-								<FormGroup label="Card Number" for="card-number" class="">
-									<div class="input-group input-group-flat">
-										<span class="input-group-text">
-											<Payment payment="visa" size="xs" />
-										</span>
-										<input
-											type="text"
-											class="form-control"
-											placeholder="0000 0000 0000 0000"
-											autocomplete="off"
-											id="card-number-addon"
-										/>
-									</div>
-								</FormGroup>
+                <div class="row g-3">
+                  <FormGroup label="Expiry Date" for="card-expiry" class="col-sm-6">
+                    <input type="text" class="form-control" id="card-expiry" placeholder="MM/YY" inputmode="numeric" aria-required="true" maxlength="5" />
+                  </FormGroup>
+                  <FormGroup label="CVC" for="card-cvc" class="col-sm-6">
+                    <input type="text" class="form-control" id="card-cvc" placeholder="CVC" inputmode="numeric" aria-required="true" maxlength="3" />
+                  </FormGroup>
+                </div>
 
-								<div class="row g-3">
-									<FormGroup label="Expiry Date" for="card-expiry" class="col-sm-6">
-										<input
-											type="text"
-											class="form-control"
-											id="card-expiry"
-											placeholder="MM/YY"
-											inputmode="numeric"
-											aria-required="true"
-											maxlength="5"
-										/>
-									</FormGroup>
-									<FormGroup label="CVC" for="card-cvc" class="col-sm-6">
-										<input
-											type="text"
-											class="form-control"
-											id="card-cvc"
-											placeholder="CVC"
-											inputmode="numeric"
-											aria-required="true"
-											maxlength="3"
-										/>
-									</FormGroup>
-								</div>
+                <FormGroup label="Name on Card" for="card-name" class="">
+                  <input type="text" class="form-control" id="card-name" placeholder="Full name" aria-required="true" />
+                </FormGroup>
 
-								<FormGroup label="Name on Card" for="card-name" class="">
-									<input type="text" class="form-control" id="card-name" placeholder="Full name" aria-required="true" />
-								</FormGroup>
+                <FormGroup label="Email" for="card-email" class="">
+                  <input type="email" class="form-control" id="card-email" placeholder="you@example.com" aria-required="true" />
+                </FormGroup>
 
-								<FormGroup label="Email" for="card-email" class="">
-									<input type="email" class="form-control" id="card-email" placeholder="you@example.com" aria-required="true" />
-								</FormGroup>
+                <div>
+                  <button type="button" class="btn btn-primary w-100"> Pay $253 </button>
+                  <div class="text-secondary text-center small mt-3">You'll be charged $253, including $48 for VAT in Poland</div>
+                </div>
+              </div>
+            </form>
+          </div>
 
-								<div>
-									<button type="button" class="btn btn-primary w-100"> Pay $253 </button>
-									<div class="text-secondary text-center small mt-3">
-										You'll be charged $253, including $48 for VAT in Poland
-									</div>
-								</div>
-							</div>
-						</form>
-					</div>
-
-					<div class="tab-pane" id="tab-paypal" role="tabpanel">
-						<button type="button" class="btn btn-primary w-100">
-							<Icon name="brand-paypal" />
-							<span class="ms-2">Pay with PayPal - $253</span>
-						</button>
-						<div class="text-secondary text-center small mt-3">
-							You'll be charged $253, including $48 for VAT in Poland
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+          <div class="tab-pane" id="tab-paypal" role="tabpanel">
+            <button type="button" class="btn btn-primary w-100">
+              <Icon name="brand-paypal" />
+              <span class="ms-2">Pay with PayPal - $253</span>
+            </button>
+            <div class="text-secondary text-center small mt-3">You'll be charged $253, including $48 for VAT in Poland</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </PayLayout>

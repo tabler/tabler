@@ -5,34 +5,22 @@
 // TODO: the id-based lookup into photos.json and the `{% else %}` svg.html
 //       fallback branch (ui/svg.html) — both unused on the lightbox page.
 interface Photo {
-	file: string;
-	title?: string;
+  file: string
+  title?: string
 }
 
 interface Props {
-	photo: Photo;
-	/** background param — plain <div> with only the background-image (no ratio class) */
-	background?: boolean;
-	/** ratio param — img-responsive img-responsive-{ratio} wrapper */
-	ratio?: string;
-	class?: string;
+  photo: Photo
+  /** background param — plain <div> with only the background-image (no ratio class) */
+  background?: boolean
+  /** ratio param — img-responsive img-responsive-{ratio} wrapper */
+  ratio?: string
+  class?: string
 }
 
-const { photo, background, ratio, class: className } = Astro.props;
+const { photo, background, ratio, class: className } = Astro.props
 
-const src = `./static/photos/${photo.file}`;
+const src = `./static/photos/${photo.file}`
 ---
 
-<!-- Photo -->
-{
-	background ? (
-		<div class:list={className} style={`background-image: url(${src})`} />
-	) : ratio ? (
-		<div
-			class:list={['img-responsive', `img-responsive-${ratio}`, className]}
-			style={`background-image: url(${src})`}
-		/>
-	) : (
-		<img src={src} class:list={className} alt={photo.title} />
-	)
-}
+<!-- Photo -->{background ? <div class:list={className} style={`background-image: url(${src})`} /> : ratio ? <div class:list={['img-responsive', `img-responsive-${ratio}`, className]} style={`background-image: url(${src})`} /> : <img src={src} class:list={className} alt={photo.title} />}

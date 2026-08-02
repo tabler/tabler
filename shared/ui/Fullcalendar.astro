@@ -4,56 +4,54 @@
 // events carry [day, hour, minute] tuples instead of new Date(...) expressions — the
 // actual Date objects are built at runtime, relative to currentYear/currentMonth.
 interface Props {
-	id?: string;
-	/** sample-events param in ui/fullcalendar.html — injects the demo events array */
-	sampleEvents?: boolean;
+  id?: string
+  /** sample-events param in ui/fullcalendar.html — injects the demo events array */
+  sampleEvents?: boolean
 }
 
-const { id = 'default', sampleEvents } = Astro.props;
-const calendarId = `calendar-${id}`;
+const { id = 'default', sampleEvents } = Astro.props
+const calendarId = `calendar-${id}`
 
 const sampleEventData = sampleEvents
-	? [
-			{
-				title: 'Offsite Retreat',
-				start: [2, 9, 0],
-				end: [4, 17, 0],
-				color: 'var(--tblr-red)',
-				backgroundColor: 'var(--tblr-red-lt)',
-				borderColor: 'var(--tblr-red-200)',
-			},
-			{ title: 'Monthly Planning', start: [1, 10, 0], end: [1, 11, 30] },
-			{ title: 'Marketing Strategy Call', start: [4, 14, 0], end: [4, 15, 0] },
-			{ title: 'Design Sprint', start: [7, 9, 0], end: [7, 12, 0] },
-			{ title: 'Dev Team Check-in', start: [10, 11, 0], end: [10, 11, 30] },
-			{ title: 'Customer Feedback Review', start: [13, 13, 0], end: [13, 14, 0] },
-			{ title: 'Mid-Month Review', start: [15, 10, 30], end: [15, 11, 30] },
-			{ title: 'Webinar: Product Update', start: [18, 16, 0], end: [18, 17, 0] },
-			{ title: 'Sales Training', start: [21, 9, 30], end: [21, 11, 0] },
-			{ title: 'Company All-Hands', start: [25, 15, 0], end: [25, 16, 0] },
-			{ title: 'End-of-Month Wrap-up', start: [31, 10, 0], end: [31, 11, 0] },
-		]
-	: undefined;
+  ? [
+      {
+        title: 'Offsite Retreat',
+        start: [2, 9, 0],
+        end: [4, 17, 0],
+        color: 'var(--tblr-red)',
+        backgroundColor: 'var(--tblr-red-lt)',
+        borderColor: 'var(--tblr-red-200)',
+      },
+      { title: 'Monthly Planning', start: [1, 10, 0], end: [1, 11, 30] },
+      { title: 'Marketing Strategy Call', start: [4, 14, 0], end: [4, 15, 0] },
+      { title: 'Design Sprint', start: [7, 9, 0], end: [7, 12, 0] },
+      { title: 'Dev Team Check-in', start: [10, 11, 0], end: [10, 11, 30] },
+      { title: 'Customer Feedback Review', start: [13, 13, 0], end: [13, 14, 0] },
+      { title: 'Mid-Month Review', start: [15, 10, 30], end: [15, 11, 30] },
+      { title: 'Webinar: Product Update', start: [18, 16, 0], end: [18, 17, 0] },
+      { title: 'Sales Training', start: [21, 9, 30], end: [21, 11, 0] },
+      { title: 'Company All-Hands', start: [25, 15, 0], end: [25, 16, 0] },
+      { title: 'End-of-Month Wrap-up', start: [31, 10, 0], end: [31, 11, 0] },
+    ]
+  : undefined
 ---
 
 <div id={calendarId}></div>
 <!-- BEGIN FULLCALENDAR -->
 <script define:vars={{ calendarId, sampleEventData }}>
-	function initCalendar() {
-		const calendarEl = document.getElementById(calendarId);
-		const currentYear = new Date().getFullYear();
-		const currentMonth = new Date().getMonth();
-		const toDate = ([day, hour, minute]) => new Date(currentYear, currentMonth, day, hour, minute);
+  function initCalendar() {
+    const calendarEl = document.getElementById(calendarId)
+    const currentYear = new Date().getFullYear()
+    const currentMonth = new Date().getMonth()
+    const toDate = ([day, hour, minute]) => new Date(currentYear, currentMonth, day, hour, minute)
 
-		const calendar = new FullCalendar.Calendar(calendarEl, {
-			initialView: 'dayGridMonth',
-			...(sampleEventData
-				? { events: sampleEventData.map((event) => ({ ...event, start: toDate(event.start), end: toDate(event.end) })) }
-				: {}),
-		});
-		calendar.render();
-	}
+    const calendar = new FullCalendar.Calendar(calendarEl, {
+      initialView: 'dayGridMonth',
+      ...(sampleEventData ? { events: sampleEventData.map((event) => ({ ...event, start: toDate(event.start), end: toDate(event.end) })) } : {}),
+    })
+    calendar.render()
+  }
 
-	document.readyState !== 'loading' ? initCalendar() : document.addEventListener('DOMContentLoaded', initCalendar, { once: true });
+  document.readyState !== 'loading' ? initCalendar() : document.addEventListener('DOMContentLoaded', initCalendar, { once: true })
 </script>
 <!-- END FULLCALENDAR -->

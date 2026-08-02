@@ -1,104 +1,98 @@
 ---
 // Equivalent of cards/users-list.html
-import Avatar from '@ui/Avatar.astro';
-import Icon from '@ui/Icon.astro';
-import ListGroup from '@ui/ListGroup.astro';
-import ListGroupItem from '@ui/ListGroupItem.astro';
-import CardTitle from '@ui/CardTitle.astro';
-import people from '@data/people.json';
-import commits from '@data/commits.json';
-import { randomNumber } from '@shared/lib/pseudo-random';
+import Avatar from '@ui/Avatar.astro'
+import Icon from '@ui/Icon.astro'
+import ListGroup from '@ui/ListGroup.astro'
+import ListGroupItem from '@ui/ListGroupItem.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import people from '@data/people.json'
+import commits from '@data/commits.json'
+import { randomNumber } from '@shared/lib/pseudo-random'
 
 interface Person {
-	full_name?: string;
-	photo?: string;
-	last_name?: string;
-	[key: string]: unknown;
+  full_name?: string
+  photo?: string
+  last_name?: string
+  [key: string]: unknown
 }
 
 interface Props {
-	limit?: number;
-	offset?: number;
-	hoverable?: boolean;
-	checkbox?: boolean;
-	/** checked-ids — 1-based indices, e.g. [2, 5, 8] */
-	checkedIds?: number[];
-	title?: string;
-	class?: string;
-	/**
-	 * Inert. The lists.html Contacts card passes `hover=true`, but
-	 * users-list.html never reads it — only `hoverable` toggles the star column.
-	 * Declared so the call site can mirror the Liquid source faithfully.
-	 */
-	hover?: boolean;
+  limit?: number
+  offset?: number
+  hoverable?: boolean
+  checkbox?: boolean
+  /** checked-ids — 1-based indices, e.g. [2, 5, 8] */
+  checkedIds?: number[]
+  title?: string
+  class?: string
+  /**
+   * Inert. The lists.html Contacts card passes `hover=true`, but
+   * users-list.html never reads it — only `hoverable` toggles the star column.
+   * Declared so the call site can mirror the Liquid source faithfully.
+   */
+  hover?: boolean
 }
 
-const {
-	limit = 8,
-	offset = 0,
-	hoverable = false,
-	checkbox,
-	checkedIds,
-	title = 'Last commits',
-	class: className,
-} = Astro.props;
+const { limit = 8, offset = 0, hoverable = false, checkbox, checkedIds, title = 'Last commits', class: className } = Astro.props
 
-const colors = ['green', 'red', 'yellow', 'x', 'x'];
-const commitList = commits as { description: string }[];
+const colors = ['green', 'red', 'yellow', 'x', 'x']
+const commitList = commits as { description: string }[]
 
 const rows = (people as Person[]).slice(offset, offset + limit).map((person, idx) => {
-	const index = idx + 1; // forloop.index (1-based)
-	const color = colors[randomNumber(index + 5, 0, colors.length - 1)];
-	const checked = checkedIds?.includes(index) ?? false;
-	const i = index + offset;
-	return {
-		person,
-		color,
-		checked,
-		description: commitList[i]?.description,
-		starColor: checked ? 'text-yellow' : 'text-secondary',
-	};
-});
+  const index = idx + 1 // forloop.index (1-based)
+  const color = colors[randomNumber(index + 5, 0, colors.length - 1)]
+  const checked = checkedIds?.includes(index) ?? false
+  const i = index + offset
+  return {
+    person,
+    color,
+    checked,
+    description: commitList[i]?.description,
+    starColor: checked ? 'text-yellow' : 'text-secondary',
+  }
+})
 ---
 
 <div class={`card${className ? ` ${className}` : ''}`}>
-	<div class="card-header">
-		<CardTitle>{title}</CardTitle>
-	</div>
-	<ListGroup flush hoverable={hoverable}>
-		{
-			rows.map((row) => (
-				<ListGroupItem active={row.checked}>
-					<div class="row align-items-center">
-						{checkbox ? (
-							<div class="col-auto">
-								<input type="checkbox" class="form-check-input" checked={row.checked} />
-							</div>
-						) : (
-							<div class="col-auto">
-								<span class={`badge${row.color !== 'x' ? ` bg-${row.color}` : ''}`} />
-							</div>
-						)}
-						<div class="col-auto">
-							<a href="#">
-								<Avatar person={row.person} />
-							</a>
-						</div>
+  <div class="card-header">
+    <CardTitle>{title}</CardTitle>
+  </div>
+  <ListGroup flush hoverable={hoverable}>
+    {
+      rows.map((row) => (
+        <ListGroupItem active={row.checked}>
+          <div class="row align-items-center">
+            {checkbox ? (
+              <div class="col-auto">
+                <input type="checkbox" class="form-check-input" checked={row.checked} />
+              </div>
+            ) : (
+              <div class="col-auto">
+                <span class={`badge${row.color !== 'x' ? ` bg-${row.color}` : ''}`} />
+              </div>
+            )}
+            <div class="col-auto">
+              <a href="#">
+                <Avatar person={row.person} />
+              </a>
+            </div>
 
-						<div class="col text-truncate">
-							<a href="#" class="text-reset d-block">{row.person.full_name}</a>
-							<div class="d-block text-secondary text-truncate mt-n1">{row.description}</div>
-						</div>
-						{hoverable && (
-							<div class="col-auto">
-								<a href="#" class={`list-group-item-actions${row.checked ? ' show' : ''}`}>
-									<Icon name="star" class={row.starColor} />
-								</a>
-							</div>
-						)}
-					</div>
-				</ListGroupItem>
-			))
-		}
-	</ListGroup>
+            <div class="col text-truncate">
+              <a href="#" class="text-reset d-block">
+                {row.person.full_name}
+              </a>
+              <div class="d-block text-secondary text-truncate mt-n1">{row.description}</div>
+            </div>
+            {hoverable && (
+              <div class="col-auto">
+                <a href="#" class={`list-group-item-actions${row.checked ? ' show' : ''}`}>
+                  <Icon name="star" class={row.starColor} />
+                </a>
+              </div>
+            )}
+          </div>
+        </ListGroupItem>
+      ))
+    }
+  </ListGroup>
 </div>

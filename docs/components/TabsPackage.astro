@@ -1,45 +1,36 @@
 ---
-import { Code } from 'astro:components';
-import packageManagers from '@data/package-managers.json';
+import { Code } from 'astro:components'
+import packageManagers from '@data/package-managers.json'
 
 interface Props {
-	name: string;
+  name: string
 }
 
-const { name }: Props = Astro.props;
+const { name }: Props = Astro.props
 ---
 
 <ul class="nav nav-bordered mb-2" role="tablist">
-	{packageManagers.map((manager, i) => {
-		return (
-			<li class="nav-item" role="presentation">
-				<button
-					class={`nav-link${i === 0 ? ' active' : ''}`}
-					id={`${manager.name}-tab`}
-					data-bs-toggle="tab"
-					data-bs-target={`#${manager.name}`}
-					type="button"
-					role="tab"
-					aria-controls="home"
-					aria-selected={i === 0 ? 'true' : 'false'}>
-						<span set:html={manager.icon.replace('<svg ', '<svg class="me-2" ')} />
-						{manager.name}
-				</button>
-			</li>
-		);
-	})}
+  {
+    packageManagers.map((manager, i) => {
+      return (
+        <li class="nav-item" role="presentation">
+          <button class={`nav-link${i === 0 ? ' active' : ''}`} id={`${manager.name}-tab`} data-bs-toggle="tab" data-bs-target={`#${manager.name}`} type="button" role="tab" aria-controls="home" aria-selected={i === 0 ? 'true' : 'false'}>
+            <span set:html={manager.icon.replace('<svg ', '<svg class="me-2" ')} />
+            {manager.name}
+          </button>
+        </li>
+      )
+    })
+  }
 </ul>
 <div class="tab-content">
-	{packageManagers.map((manager, i) => {
-		return (
-			<div
-				class={`tab-pane${i === 0 ? ' show active' : ''}`}
-				id={`${manager.name}`}
-				role="tabpanel"
-				aria-labelledby={`${manager.name}-tab`}
-			>
-				<Code code={`${manager.command} ${manager.install} ${name}`} lang="bash" />
-			</div>
-		);
-	})}
+  {
+    packageManagers.map((manager, i) => {
+      return (
+        <div class={`tab-pane${i === 0 ? ' show active' : ''}`} id={`${manager.name}`} role="tabpanel" aria-labelledby={`${manager.name}-tab`}>
+          <Code code={`${manager.command} ${manager.install} ${name}`} lang="bash" />
+        </div>
+      )
+    })
+  }
 </div>

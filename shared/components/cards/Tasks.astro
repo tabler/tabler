@@ -1,48 +1,53 @@
 ---
-import Icon from '@ui/Icon.astro';
-import Avatar from '@ui/Avatar.astro';
-import CardTitle from '@ui/CardTitle.astro';
-import tasksList from '@data/tasks-list.json';
-import { randomNumber, randomDate } from '@shared/lib/pseudo-random';
-import { formatLongDate } from '@shared/lib/date-format';
+import Icon from '@ui/Icon.astro'
+import Avatar from '@ui/Avatar.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import tasksList from '@data/tasks-list.json'
+import { randomNumber, randomDate } from '@shared/lib/pseudo-random'
+import { formatLongDate } from '@shared/lib/date-format'
 ---
 
 <div class="card">
-	<div class="card-header">
-		<CardTitle>Tasks</CardTitle>
-	</div>
-	<div class="table-responsive">
-		<table class="table table-selectable card-table table-vcenter">
-			{tasksList.map((task, i) => {
-				const index = i + 1;
-				return (
-					<tr>
-						<td class="w-1 pe-0">
-							<input type="checkbox" class="form-check-input m-0 align-middle table-selectable-check" aria-label="Select task" checked={task.checked} />
-						</td>
-						<td class="w-100">
-							<a href="#" class="text-reset">{task.name}</a>
-						</td>
-						<td class="text-nowrap text-secondary">
-							<Icon name="calendar" />
-							{formatLongDate(randomDate(index))}
-						</td>
-						<td class="text-nowrap">
-							<a href="#" class="text-secondary">
-								<Icon name="check" />
-								{randomNumber(index, 0, 6)}/{randomNumber(index, 5, 10)}
-							</a>
-						</td>
-						<td class="text-nowrap">
-							<a href="#" class="text-secondary">
-								<Icon name="message" /> {randomNumber(index, 0, 12)}</a>
-						</td>
-						<td>
-							<Avatar size="sm" personId={index} />
-						</td>
-					</tr>
-				);
-			})}
-		</table>
-	</div>
+  <div class="card-header">
+    <CardTitle>Tasks</CardTitle>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-selectable card-table table-vcenter">
+      {
+        tasksList.map((task, i) => {
+          const index = i + 1
+          return (
+            <tr>
+              <td class="w-1 pe-0">
+                <input type="checkbox" class="form-check-input m-0 align-middle table-selectable-check" aria-label="Select task" checked={task.checked} />
+              </td>
+              <td class="w-100">
+                <a href="#" class="text-reset">
+                  {task.name}
+                </a>
+              </td>
+              <td class="text-nowrap text-secondary">
+                <Icon name="calendar" />
+                {formatLongDate(randomDate(index))}
+              </td>
+              <td class="text-nowrap">
+                <a href="#" class="text-secondary">
+                  <Icon name="check" />
+                  {randomNumber(index, 0, 6)}/{randomNumber(index, 5, 10)}
+                </a>
+              </td>
+              <td class="text-nowrap">
+                <a href="#" class="text-secondary">
+                  <Icon name="message" /> {randomNumber(index, 0, 12)}
+                </a>
+              </td>
+              <td>
+                <Avatar size="sm" personId={index} />
+              </td>
+            </tr>
+          )
+        })
+      }
+    </table>
+  </div>
 </div>
