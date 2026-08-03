@@ -3,6 +3,9 @@
 
 :root,
 :host {
+  /** Direction multiplier for physical transforms (1 = LTR, -1 = RTL) */
+  --#{$prefix}dir: 1;
+
   /** Fonts */
   --#{$prefix}font-monospace: #{$font-family-monospace};
   --#{$prefix}font-sans-serif: #{$font-family-sans-serif};
@@ -89,4 +92,12 @@
   }
   --#{$prefix}backdrop-blur: #{$backdrop-blur};
   --#{$prefix}backdrop-filter: blur(var(--#{$prefix}backdrop-blur));
+}
+
+[dir='ltr'] {
+  --#{$prefix}dir: 1;
+}
+
+[dir='rtl'] {
+  --#{$prefix}dir: -1;
 }
