@@ -1,0 +1,24 @@
+---
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Badge from '@ui/Badge.astro'
+import BadgesList from '@ui/BadgesList.astro'
+import site from '@data/site.json'
+
+const colors = ['default', ...Object.keys(site.colors), 'dark']
+---
+
+<ScreenshotLayout title="Badge">
+  <div class="space-y">
+    <BadgesList>
+      {colors.map((color) => <Badge text={color} color={color === 'default' ? undefined : color} />)}
+    </BadgesList>
+    <BadgesList>
+      {colors.map((color) => <Badge text={color} color={color === 'default' ? undefined : color} light />)}
+    </BadgesList>
+    <BadgesList>
+      <Badge text="With icon" icon="check" color="green" />
+      <Badge text="With addon" addon="12" addonColor="red" color="azure" />
+      <Badge text="Small" scale="sm" color="primary" />
+    </BadgesList>
+  </div>
+</ScreenshotLayout>

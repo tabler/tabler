@@ -1,0 +1,32 @@
+---
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Button from '@ui/Button.astro'
+import ButtonList from '@ui/ButtonList.astro'
+import site from '@data/site.json'
+
+const colors = ['default', ...Object.keys(site.colors), 'dark']
+---
+
+<ScreenshotLayout title="Button">
+  <div class="space-y">
+    <ButtonList>
+      {colors.map((color) => <Button text={color} color={color === 'default' ? undefined : color} element="button" />)}
+    </ButtonList>
+    <ButtonList>
+      {colors.map((color) => <Button text={color} color={color === 'default' ? undefined : color} element="button" outline />)}
+    </ButtonList>
+    <ButtonList>
+      {colors.map((color) => <Button text={color} color={color === 'default' ? undefined : color} element="button" ghost />)}
+    </ButtonList>
+    <ButtonList>
+      <Button text="Small" element="button" size="sm" />
+      <Button text="Default" element="button" />
+      <Button text="Large" element="button" size="lg" />
+      <Button text="Disabled" element="button" disabled />
+      <Button text="Loading" element="button" loading />
+      <Button text="With icon" element="button" icon="heart" />
+      <Button text="Icon only" element="button" icon="heart" iconOnly />
+      <Button text="Pill" element="button" pill color="primary" />
+    </ButtonList>
+  </div>
+</ScreenshotLayout>

@@ -1,0 +1,62 @@
+---
+// Chrome-free layout for component screenshots: just @tabler/core CSS/JS
+// around a single component, no navbar/sidebar/demo styling. Dark/light is
+// driven by the same ?theme= query param and dist/js/tabler-theme.min.js
+// as preview/pages/screenshot.astro, so a screenshot tool can request
+// /button.html?theme=dark without depending on stored/localStorage state.
+interface Props {
+  title: string
+  /** dir="rtl" + the .rtl.css variant of tabler.css */
+  rtl?: boolean
+  /** extra classes on the wrapping container the component is rendered into */
+  class?: string
+}
+
+const { title, rtl = false, class: className } = Astro.props
+const rtlSuffix = rtl ? '.rtl' : ''
+---
+
+<!doctype html>
+<html lang="en" dir={rtl ? 'rtl' : undefined}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+
+    <title>{title} - Tabler screenshots</title>
+
+    <link rel="icon" href="/favicon-dev.ico" type="image/x-icon" />
+
+    <link href={`/dist/css/tabler${rtlSuffix}.css`} rel="stylesheet" />
+
+    <style is:inline>
+      /* Deterministic screenshots: no mid-capture animation/transition frames, no blinking caret. */
+      *,
+      *::before,
+      *::after {
+        transition: none !important;
+        animation: none !important;
+        caret-color: transparent !important;
+      }
+    </style>
+
+    <!-- loaded early, before paint, so ?theme=dark applies before first render -->
+    <script is:inline src="/dist/js/tabler-theme.min.js"></script>
+  </head>
+  <body>
+    <div class:list={['container-xl', 'p-4', className]}>
+      <slot />
+    </div>
+
+    <script is:inline src="/dist/js/tabler.min.js" defer></script>
+    <script>
+      // Signals to the screenshot tool that fonts, images and JS-driven
+      // component init (dropdowns, tooltips, ...) are all settled.
+      // window "load" (not just fonts.ready) guarantees the deferred
+      // tabler.min.js above has already run.
+      const loaded = new Promise((resolve) => window.addEventListener('load', resolve, { once: true }))
+      Promise.all([document.fonts.ready, loaded]).then(() => {
+        requestAnimationFrame(() => requestAnimationFrame(() => (document.documentElement.dataset.screenshotReady = 'true')))
+      })
+    </script>
+  </body>
+</html>
