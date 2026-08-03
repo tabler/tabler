@@ -18,8 +18,6 @@ interface Props {
   rtl?: boolean
   /** the Tabler logo above the card (+ balancing spacer below it) */
   showLogo?: boolean
-  /** wrap the component in the elevated .data-screenshot-targetscreenshot-card; when false the slot renders bare */
-  showCard?: boolean
   /** caps the [data-screenshot-target] width at columns * 320px */
   columns?: number
   /** CSS zoom applied to [data-screenshot-target] */
@@ -30,7 +28,7 @@ interface Props {
   class?: string
 }
 
-const { title, rtl = false, showLogo = true, showCard = true, columns, zoom = 1, pageLibs = [], class: className } = Astro.props
+const { title, rtl = false, showLogo = true, columns, zoom = 1, pageLibs = [], class: className } = Astro.props
 const targetStyle = [columns && `max-width: ${columns * 310}px`, `zoom: ${zoom}`].filter(Boolean).join('; ')
 const rtlSuffix = rtl ? '.rtl' : ''
 // core/dist only has .min. files after a full `pnpm build`; `astro dev` (this
@@ -82,18 +80,11 @@ const libJsFiles = pageLibEntries.flatMap(([, lib]) => (lib.js ?? []).map((file)
         width: 100%;
       }
 
-      .screenshot-wrapper > .card,
-      .screenshot-card {
+      .screenshot-wrapper > .card {
         box-shadow:
           0 1px 1px 0 rgba(0, 0, 0, 0.02),
           0 8px 24px -4px rgba(0, 0, 0, 0.04),
           0 24px 40px -8px rgba(0, 0, 0, 0.1);
-      }
-
-      .screenshot-card {
-        padding: 64px;
-        border-radius: 16px;
-        width: 100%;
       }
 
       .screenshot-logo {
@@ -129,7 +120,7 @@ const libJsFiles = pageLibEntries.flatMap(([, lib]) => (lib.js ?? []).map((file)
           )
         }
 
-        <div class:list={['screenshot-wrapper', showCard && ['screenshot-card', 'card'], className]} style={targetStyle} data-screenshot-target>
+        <div class:list={['screenshot-wrapper', className]} style={targetStyle} data-screenshot-target>
           <slot />
         </div>
 
