@@ -1,6 +1,12 @@
 ---
 import Icon from '@ui/Icon.astro'
 import { site } from '@shared/lib/site'
+
+interface Props {
+  rtl?: boolean
+}
+
+const { rtl = false } = Astro.props
 ---
 
 <a href={site.githubSponsorsUrl} class="card border-primary" target="_blank" rel="noopener" aria-label="Sponsor Tabler!" style="background: color-mix(in srgb, var(--tblr-primary) 4%, var(--tblr-bg-surface))">
@@ -194,13 +200,13 @@ import { site } from '@shared/lib/site'
       opacity=".3"></path>
   </svg>
   <div class="card-body d-flex flex-column justify-content-center p-5">
-    <div class="row">
-      <div class="col-7 offset-5 text-primary">
+    <div class="row justify-content-end" dir="ltr">
+      <div class="col-7 text-primary">
         <div class="h1 text-uppercase">Help Tabler Grow and Thrive</div>
         <p class="h3 fw-normal">Sponsor Tabler and help us make a difference!</p>
         <div class="mt-4">
-          <button class="btn w-100 pe-none" type="button">
-            <Icon name="heart" type="filled" color="pink" />
+          <button class="btn w-100 pe-none" type="button" dir="ltr">
+            <Icon name="heart" type="filled" color="pink" class={rtl ? 'icon-end' : undefined} />
             Become a Sponsor
           </button>
         </div>
