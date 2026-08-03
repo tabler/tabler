@@ -18,7 +18,7 @@ interface Props {
   rtl?: boolean
   /** the Tabler logo above the card (+ balancing spacer below it) */
   showLogo?: boolean
-  /** wrap the component in the elevated .screenshot-card; when false the slot renders bare */
+  /** wrap the component in the elevated .data-screenshot-targetscreenshot-card; when false the slot renders bare */
   showCard?: boolean
   /** caps the [data-screenshot-target] width at columns * 320px */
   columns?: number
@@ -78,9 +78,9 @@ const libJsFiles = pageLibEntries.flatMap(([, lib]) => (lib.js ?? []).map((file)
         padding: 0 4rem;
       }
 
-		.screenshot-wrapper {
-			width: 100%;
-		}
+      .screenshot-wrapper {
+        width: 100%;
+      }
 
       .screenshot-wrapper > .card,
       .screenshot-card {
@@ -153,12 +153,17 @@ const libJsFiles = pageLibEntries.flatMap(([, lib]) => (lib.js ?? []).map((file)
     <PageScripts />
 
     <script>
-      // Signals to the screenshot tool that fonts, images and JS-driven
-      // component init (dropdowns, tooltips, ...) are all settled.
-      // window "load" (not just fonts.ready) guarantees the deferred
-      // tabler(.min).js above has already run.
-      const loaded = new Promise((resolve) => window.addEventListener('load', resolve, { once: true }))
-      Promise.all([document.fonts.ready, loaded]).then(() => {
+      // Signals to the screenshot tool that fonts and JS-driven component init
+      // (dropdowns, tooltips, charts via PageScripts, ...) are settled.
+      // DOMContentLoaded — not window "load" — on purpose: deferred scripts
+      // (tabler(.min).js above, and everything PageScripts drained) already run
+      // before DOMContentLoaded per spec, and unlike "load" it doesn't block on
+      // slow/unreachable subresources (e.g. an external chat GIF).
+      const domReady = new Promise((resolve) => {
+        if (document.readyState !== 'loading') resolve(undefined)
+        else document.addEventListener('DOMContentLoaded', () => resolve(undefined), { once: true })
+      })
+      Promise.all([document.fonts.ready, domReady]).then(() => {
         requestAnimationFrame(() => requestAnimationFrame(() => (document.documentElement.dataset.screenshotReady = 'true')))
       })
     </script>

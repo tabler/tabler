@@ -11,7 +11,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "clean": "shx rm -rf dist public .astro",
+    "capture": "turbo build --filter=@tabler/screenshots && tsx .build/capture.ts",
+    "clean": "shx rm -rf dist public captures/* .astro",
     "type-check": "astro check"
   },
   "dependencies": {
@@ -20,6 +21,8 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
+    "@types/node": "^26.1.1",
+    "playwright": "1.62.0",
     "shx": "^0.4.0",
     "typescript": "^5.7.3"
   }
