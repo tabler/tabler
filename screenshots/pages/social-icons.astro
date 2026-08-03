@@ -1,0 +1,23 @@
+---
+// .social-app-{file} icon classes come from the "socials" core CSS plugin
+// (tabler-socials.css) — not bundled in the base tabler.css, hence cssPlugins.
+// The grid itself is built from scratch here (not preview's .demo-icons-list)
+// since that class lives in preview/scss/demo.scss, which this app never loads.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Card from '@ui/Card.astro'
+import CardHeader from '@ui/CardHeader.astro'
+import CardBody from '@ui/CardBody.astro'
+import socials from '@data/socials.json'
+---
+
+<ScreenshotLayout title="List of all social media icons" columns={2} cssPlugins={['socials']} zoom={1.25}>
+  <div class="d-flex flex-wrap gap-4 justify-content-center align-items-center">
+    {
+      socials.map((item) => (
+        <span title={item.name}>
+          <span class={`social social-app-${item.file}`} />
+        </span>
+      ))
+    }
+  </div>
+</ScreenshotLayout>

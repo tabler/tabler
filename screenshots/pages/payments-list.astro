@@ -1,0 +1,21 @@
+---
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Payment from '@ui/Payment.astro'
+import allPayments from '@data/payments.json'
+
+// 12 most globally recognized payment providers.
+const popularLogos = ['visa', 'mastercard', 'paypal', 'applepay', 'google-pay', 'stripe', 'americanexpress', 'klarna', 'amazon-pay', 'samsung-pay', 'unionpay', 'alipay']
+const payments = popularLogos.map((logo) => allPayments.find((item) => item.logo === logo)).filter((item) => item !== undefined)
+---
+
+<ScreenshotLayout title="Payments list" columns={2} cssPlugins={['payments']} zoom={1.5}>
+  <div class="d-grid gap-4" style="grid-template-columns: repeat(4, auto); justify-content: center; align-items: center;">
+    {
+      payments.map((item) => (
+        <span title={item.name}>
+          <Payment payment={item.logo} dark={true} />
+        </span>
+      ))
+    }
+  </div>
+</ScreenshotLayout>

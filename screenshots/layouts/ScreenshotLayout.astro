@@ -24,11 +24,13 @@ interface Props {
   zoom?: number
   /** third-party libs from libs.json the component needs, e.g. ['apexcharts'] */
   pageLibs?: string[]
+  /** core CSS plugins (site.cssPlugins), e.g. ['socials'] for tabler-socials.css */
+  cssPlugins?: string[]
   /** extra classes on the component wrapper */
   class?: string
 }
 
-const { title, rtl = false, showLogo = true, columns, zoom = 1, pageLibs = [], class: className } = Astro.props
+const { title, rtl = false, showLogo = true, columns, zoom = 1, pageLibs = [], cssPlugins = [], class: className } = Astro.props
 const targetStyle = [columns && `max-width: ${columns * 310}px`, `zoom: ${zoom}`].filter(Boolean).join('; ')
 const rtlSuffix = rtl ? '.rtl' : ''
 // core/dist only has .min. files after a full `pnpm build`; `astro dev` (this
@@ -55,6 +57,8 @@ const libJsFiles = pageLibEntries.flatMap(([, lib]) => (lib.js ?? []).map((file)
     <link rel="icon" href="/favicon-dev.ico" type="image/x-icon" />
 
     <link href={`/dist/css/tabler${rtlSuffix}${min}.css`} rel="stylesheet" />
+
+    {cssPlugins.map((plugin) => <link href={`/dist/css/tabler-${plugin}${rtlSuffix}${min}.css`} rel="stylesheet" />)}
 
     {libCssFiles.map((href) => <link href={href} rel="stylesheet" />)}
 
