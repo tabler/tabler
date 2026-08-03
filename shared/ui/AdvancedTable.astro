@@ -136,16 +136,16 @@ const perPageDefault = perPage[1]
       </div>
       <div class="card-footer d-flex align-items-center">
         <div class="dropdown">
-          <a class="btn dropdown-toggle" data-bs-toggle="dropdown">
+          <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
             <span id="page-count" class="me-1">{perPage[1]}</span>
             <span>records</span>
-          </a>
+          </button>
           <div class="dropdown-menu">
             {
               perPage.map((record) => (
-                <a class="dropdown-item" onclick="setPageListItems(event)" data-value={record}>
+                <button type="button" class="dropdown-item" onclick="setPageListItems(event)" data-value={record}>
                   {record} records
-                </a>
+                </button>
               ))
             }
           </div>
@@ -163,10 +163,12 @@ const perPageDefault = perPage[1]
     // Astro wraps define:vars scripts in an IIFE, so this needs an explicit window
     // assignment to stay reachable from the onclick="setPageListItems(event)" markup below.
     window.setPageListItems = function setPageListItems(e) {
-      window.tabler_list[tableId].page = parseInt(e.target.dataset.value)
+      const item = e.target.closest('[data-value]')
+      if (!item) return
+      window.tabler_list[tableId].page = parseInt(item.dataset.value)
       window.tabler_list[tableId].update()
 
-      document.querySelector('#page-count').innerHTML = e.target.dataset.value
+      document.querySelector('#page-count').innerHTML = item.dataset.value
     }
 
     function initAdvancedTable() {

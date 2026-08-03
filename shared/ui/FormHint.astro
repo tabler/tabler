@@ -5,11 +5,12 @@ interface Props {
   /** element to render — default div */
   as?: string
   class?: string
+  id?: string
 }
 
-const { as: Tag = 'div', class: className } = Astro.props
+const { as: Tag = 'div', class: className, id } = Astro.props
 ---
 
-<Tag class:list={['form-hint', className]}>
+<Tag class:list={['form-hint', className]} id={id}>
   <slot />
 </Tag>

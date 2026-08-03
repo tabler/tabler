@@ -1,0 +1,51 @@
+@use '../config' as *;
+
+//
+// Skip link — visible only when focused
+//
+.skip-link {
+  &:focus,
+  &:focus-visible {
+    position: fixed;
+    top: 0.5rem;
+    inset-inline-start: 0.5rem;
+    z-index: 1080;
+    width: auto;
+    height: auto;
+    padding: 0.5rem 1rem;
+    margin: 0;
+    overflow: visible;
+    clip: auto;
+    white-space: normal;
+    background-color: var(--#{$prefix}bg-surface);
+    color: var(--#{$prefix}primary);
+    border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
+    border-radius: var(--#{$prefix}border-radius);
+    box-shadow: $focus-ring-box-shadow;
+    text-decoration: none;
+  }
+}
+
+//
+// Windows High Contrast / forced colors — restore outlines when box-shadow is ignored
+//
+@media (forced-colors: active) {
+  :focus-visible,
+  .btn:focus-visible,
+  .btn-action:focus-visible,
+  .btn-close:focus-visible,
+  .nav-link:focus-visible,
+  .dropdown-item:focus-visible,
+  .form-control:focus-visible,
+  .form-select:focus-visible,
+  .form-check-input:focus-visible,
+  .page-link:focus-visible,
+  .switch-icon:focus-visible,
+  .calendar-date:focus-visible,
+  button[data-bs-dismiss='toast']:focus-visible,
+  button[data-dismiss='toast']:focus-visible {
+    outline: 2px solid Highlight;
+    outline-offset: 2px;
+    box-shadow: none;
+  }
+}

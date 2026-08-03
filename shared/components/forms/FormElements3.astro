@@ -13,7 +13,7 @@ const imageRadios = horizontal.slice(10, 16)
 const blueHex = (site as { colors: { blue: { hex: string } } }).colors.blue.hex
 ---
 
-<FormGroup label="Image Check">
+<FormGroup label="Image Check" associate={false}>
   <div class="row g-2">
     {
       imageChecks.map((photo, i) => {
@@ -33,7 +33,7 @@ const blueHex = (site as { colors: { blue: { hex: string } } }).colors.blue.hex
   </div>
 </FormGroup>
 
-<FormGroup label="Image Check Radio">
+<FormGroup label="Image Check Radio" associate={false}>
   <div class="row g-2">
     {
       imageRadios.map((photo, i) => {
@@ -62,9 +62,9 @@ const blueHex = (site as { colors: { blue: { hex: string } } }).colors.blue.hex
 
 {
   [false, true].map((lite) => (
-    <FormGroup label={`Validation States${lite ? ' (lite)' : ''}`}>
-      <input type="text" class:list={['form-control is-valid', lite && 'is-valid-lite', 'mb-2']} placeholder="Valid State.." />
-      <input type="text" class:list={['form-control is-invalid', lite && 'is-invalid-lite']} placeholder="Invalid State.." />
+    <FormGroup label={`Validation States${lite ? ' (lite)' : ''}`} associate={false}>
+      <input type="text" class:list={['form-control is-valid', lite && 'is-valid-lite', 'mb-2']} placeholder="Valid State.." aria-invalid="false" />
+      <input type="text" class:list={['form-control is-invalid', lite && 'is-invalid-lite']} placeholder="Invalid State.." aria-invalid="true" />
       {!lite && <div class="invalid-feedback">Invalid feedback</div>}
     </FormGroup>
   ))
@@ -73,16 +73,16 @@ const blueHex = (site as { colors: { blue: { hex: string } } }).colors.blue.hex
 <label class="form-label">Form fieldset</label>
 <fieldset class="form-fieldset">
   <FormGroup label="Full name" required>
-    <input type="text" class="form-control" autocomplete="off" />
+    <input type="text" class="form-control" autocomplete="name" required />
   </FormGroup>
   <FormGroup label="Company" required>
-    <input type="text" class="form-control" autocomplete="off" />
+    <input type="text" class="form-control" autocomplete="organization" required />
   </FormGroup>
   <FormGroup label="Email" required>
-    <input type="email" class="form-control" autocomplete="off" />
+    <input type="email" class="form-control" autocomplete="email" required />
   </FormGroup>
   <FormGroup label="Phone number">
-    <input type="tel" class="form-control" autocomplete="off" />
+    <input type="tel" class="form-control" autocomplete="tel" />
   </FormGroup>
   <label class="form-check">
     <input type="checkbox" class="form-check-input" />

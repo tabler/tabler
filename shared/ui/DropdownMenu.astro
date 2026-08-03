@@ -43,17 +43,17 @@ const countryItems = (countries as { name: string; flag: string }[]).slice(0, 5)
         ) : item.includes('h:') ? (
           <h3 class="dropdown-header">{item.split('h:').join('')}</h3>
         ) : item.includes('a:') ? (
-          <a href="#" class="dropdown-item active">
+          <button type="button" class="dropdown-item active">
             {item.split('a:').join('')}
-          </a>
+          </button>
         ) : item.includes('d:') ? (
-          <a href="#" class="dropdown-item text-danger">
+          <button type="button" class="dropdown-item text-danger">
             {item.split('d:').join('')}
-          </a>
+          </button>
         ) : (
-          <a href="#" class="dropdown-item">
+          <button type="button" class="dropdown-item">
             {item}
-          </a>
+          </button>
         ),
       )
     ) : check || radio ? (
@@ -64,20 +64,20 @@ const countryItems = (countries as { name: string; flag: string }[]).slice(0, 5)
       ))
     ) : showPeople ? (
       peopleItems.map((person) => (
-        <a href="#" class="dropdown-item">
+        <button type="button" class="dropdown-item">
           <Avatar personId={Number(person.id)} size="xs" /> {person.full_name}
-        </a>
+        </button>
       ))
     ) : showFlags ? (
       countryItems.map((country) => (
-        <a href="#" class="dropdown-item">
+        <button type="button" class="dropdown-item">
           <Flag flag={country.flag} size="xs" /> {country.name}
-        </a>
+        </button>
       ))
     ) : type === 'text' ? null : (
       <>
         {header && <span class="dropdown-header">Dropdown header</span>}
-        <a class="dropdown-item" href="#">
+        <button type="button" class="dropdown-item">
           {icons && (
             <>
               <Icon name="settings" class="dropdown-item-icon" />{' '}
@@ -85,8 +85,8 @@ const countryItems = (countries as { name: string; flag: string }[]).slice(0, 5)
           )}
           Action
           {badge && <span class="badge bg-primary text-primary-fg ms-auto">12</span>}
-        </a>
-        <a class="dropdown-item" href="#">
+        </button>
+        <button type="button" class="dropdown-item">
           {icons && (
             <>
               <Icon name="edit" class="dropdown-item-icon" />{' '}
@@ -94,38 +94,38 @@ const countryItems = (countries as { name: string; flag: string }[]).slice(0, 5)
           )}
           Another action
           {badge && <span class="badge bg-green ms-auto" />}
-        </a>
+        </button>
         {active && (
-          <a class="dropdown-item active" href="#">
+          <button type="button" class="dropdown-item active">
             {icons && (
               <>
                 <Icon name="activity" class="dropdown-item-icon" />{' '}
               </>
             )}
             Active action
-          </a>
+          </button>
         )}
         {disabled && (
-          <a class="dropdown-item disabled" href="#">
+          <button type="button" class="dropdown-item disabled" disabled>
             {icons && (
               <>
                 <Icon name="user-x" class="dropdown-item-icon" />{' '}
               </>
             )}
             Disabled action
-          </a>
+          </button>
         )}
         {separated && (
           <>
             <div class="dropdown-divider" />
-            <a class="dropdown-item" href="#">
+            <button type="button" class="dropdown-item">
               {icons && (
                 <>
                   <Icon name="plus" class="dropdown-item-icon" />{' '}
                 </>
               )}
               Separated link
-            </a>
+            </button>
           </>
         )}
       </>

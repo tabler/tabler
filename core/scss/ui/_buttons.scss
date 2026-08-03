@@ -279,8 +279,12 @@
   }
 
   &:focus {
-    outline: none;
-    box-shadow: none;
+    outline: 0;
+  }
+
+  &:focus-visible {
+    outline: 0;
+    box-shadow: $focus-ring-box-shadow;
   }
 
   &:hover,
@@ -363,6 +367,19 @@
       .icon {
         transform: none;
         animation: tada 0.9s;
+      }
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &.btn-animate-icon-pulse,
+    &.btn-animate-icon-shake,
+    &.btn-animate-icon-tada {
+      &:hover,
+      &:focus-visible {
+        .icon {
+          animation: none;
+        }
       }
     }
   }

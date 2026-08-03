@@ -41,10 +41,13 @@ interface Props {
   dismiss?: boolean
 }
 
-const { text = 'Button', href, external, element: Element = 'a', type, id, color, outline, ghost, height, size, block, disabled, square, loading, action, pill, link, class: className, icon, iconColor, iconEnd, iconOnly, dots, modalId, toastId, dismiss } = Astro.props
+const { text = 'Button', href, external, element, type, id, color, outline, ghost, height, size, block, disabled, square, loading, action, pill, link, class: className, icon, iconColor, iconEnd, iconOnly, dots, modalId, toastId, dismiss } = Astro.props
 
-// href defaults to '#'; internal hrefs are prefixed with '/'.
-const resolvedHref = href ? (external ? href : `/${href}`) : '#'
+// Actions (modal/toast/dismiss) and bare buttons use <button>. Real URLs use <a>.
+const isAction = Boolean(modalId || toastId || dismiss)
+const Element = element ?? (href && !isAction ? 'a' : 'button')
+const resolvedHref = Element === 'a' ? (href ? (external ? href : `/${href}`) : undefined) : undefined
+const resolvedType = Element === 'button' ? (type ?? 'button') : undefined
 
 const classes = [
   'btn',
@@ -64,8 +67,8 @@ const classes = [
 ---
 
 <Element
-  href={Element === 'a' ? resolvedHref : undefined}
-  type={type}
+  href={resolvedHref}
+  type={resolvedType}
   id={id}
   class:list={classes}
   target={external ? '_blank' : undefined}
@@ -74,6 +77,7 @@ const classes = [
   data-bs-target={modalId ? `#modal-${modalId}` : toastId ? `#toast-${toastId}` : undefined}
   aria-label={iconOnly ? text : undefined}
   data-bs-dismiss={dismiss ? 'modal' : undefined}
+  disabled={Element === 'button' && disabled ? true : undefined}
 >
   {icon && <Icon name={icon} color={iconColor} />}
   {!iconOnly && text}

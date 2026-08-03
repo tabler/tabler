@@ -12,24 +12,38 @@ interface Props {
   prepend?: string
   append?: string
   appendButton?: { icon: string; description: string }[]
+  /** HTML autocomplete token; omit unless needed (e.g. email, tel, off) */
+  autocomplete?: string
+  /** mark control invalid for assistive tech */
+  invalid?: boolean
+  required?: boolean
 }
 
-const { type = 'text', placeholder, value, flat, class: className, inputClass, id, prepend, append, appendButton } = Astro.props
+const { type = 'text', placeholder, value, flat, class: className, inputClass, id, prepend, append, appendButton, autocomplete, invalid, required } = Astro.props
 
 const appendButtons = appendButton ?? []
 ---
 
 <div class:list={['input-group', flat && 'input-group-flat', className]}>
   {prepend && <span class="input-group-text">{prepend}</span>}
-  <input type={type} class:list={['form-control', inputClass]} placeholder={placeholder} value={value} autocomplete="off" id={id} />
+  <input
+    type={type}
+    class:list={['form-control', invalid && 'is-invalid', inputClass]}
+    placeholder={placeholder}
+    value={value}
+    autocomplete={autocomplete}
+    id={id}
+    aria-invalid={invalid ? 'true' : undefined}
+    required={required}
+  />
   {append && <span class="input-group-text">{append}</span>}
   {
     appendButtons.length > 0 && (
       <span class="input-group-text">
         {appendButtons.map(({ icon, description }, index) => (
-          <a href="#" class:list={['link-secondary', index > 0 && 'ms-2']} title={description} data-bs-toggle="tooltip">
+          <button type="button" class:list={['link-secondary border-0 bg-transparent p-0', index > 0 && 'ms-2']} title={description} data-bs-toggle="tooltip" aria-label={description}>
             <Icon name={icon} />
-          </a>
+          </button>
         ))}
       </span>
     )
