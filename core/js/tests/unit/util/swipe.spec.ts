@@ -5,7 +5,7 @@ import { clearFixture, getFixture } from '../../helpers/fixture'
 function mockTouchSupport() {
   Object.defineProperty(document.documentElement, 'ontouchstart', {
     value: () => {},
-    configurable: true
+    configurable: true,
   })
 }
 
@@ -26,7 +26,7 @@ function createTouchEvent(type: string, touches: Array<{ clientX: number }>, tar
     radiusX: 0,
     radiusY: 0,
     rotationAngle: 0,
-    force: 0
+    force: 0,
   })) as unknown as Touch[]
 
   const event = new Event(type, { bubbles: true, cancelable: true }) as TouchEvent
@@ -40,8 +40,8 @@ function createPointerEvent(type: string, opts: Partial<PointerEvent> = {}): Poi
     bubbles: true,
     cancelable: true,
     clientX: opts.clientX ?? 0,
-    pointerType: (opts as Record<string, unknown>).pointerType as string ?? 'touch',
-    ...opts
+    pointerType: ((opts as Record<string, unknown>).pointerType as string) ?? 'touch',
+    ...opts,
   })
 }
 
@@ -162,16 +162,20 @@ describe('Swipe', () => {
       const leftCallback = vi.fn()
       const swipe = new Swipe(div, { leftCallback })
 
-      div.dispatchEvent(new PointerEvent('pointerdown', {
-        bubbles: true,
-        clientX: 300,
-        pointerType: 'mouse'
-      }))
-      div.dispatchEvent(new PointerEvent('pointerup', {
-        bubbles: true,
-        clientX: 100,
-        pointerType: 'mouse'
-      }))
+      div.dispatchEvent(
+        new PointerEvent('pointerdown', {
+          bubbles: true,
+          clientX: 300,
+          pointerType: 'mouse',
+        }),
+      )
+      div.dispatchEvent(
+        new PointerEvent('pointerup', {
+          bubbles: true,
+          clientX: 100,
+          pointerType: 'mouse',
+        }),
+      )
 
       expect(leftCallback).not.toHaveBeenCalled()
       swipe.dispose()
@@ -181,16 +185,20 @@ describe('Swipe', () => {
       const leftCallback = vi.fn()
       const swipe = new Swipe(div, { leftCallback })
 
-      div.dispatchEvent(new PointerEvent('pointerdown', {
-        bubbles: true,
-        clientX: 300,
-        pointerType: 'pen'
-      }))
-      div.dispatchEvent(new PointerEvent('pointerup', {
-        bubbles: true,
-        clientX: 100,
-        pointerType: 'pen'
-      }))
+      div.dispatchEvent(
+        new PointerEvent('pointerdown', {
+          bubbles: true,
+          clientX: 300,
+          pointerType: 'pen',
+        }),
+      )
+      div.dispatchEvent(
+        new PointerEvent('pointerup', {
+          bubbles: true,
+          clientX: 100,
+          pointerType: 'pen',
+        }),
+      )
 
       expect(leftCallback).toHaveBeenCalledOnce()
       swipe.dispose()
@@ -296,7 +304,7 @@ describe('Swipe', () => {
       expect(Swipe.Default).toEqual({
         endCallback: null,
         leftCallback: null,
-        rightCallback: null
+        rightCallback: null,
       })
     })
 
@@ -304,7 +312,7 @@ describe('Swipe', () => {
       expect(Swipe.DefaultType).toEqual({
         endCallback: '(function|null)',
         leftCallback: '(function|null)',
-        rightCallback: '(function|null)'
+        rightCallback: '(function|null)',
       })
     })
   })

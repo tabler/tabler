@@ -1,0 +1,124 @@
+---
+import mapsVector from '@data/maps-vector.json';
+import CaptureScript from '../components/CaptureScript.astro';
+
+interface MapData {
+	title?: string;
+	map: string;
+	color?: string;
+	filled?: boolean;
+	zoom?: boolean;
+	values?: Record<string, string>;
+	markers?: { name: string; coords: string }[];
+	lines?: { from: string; to: string }[];
+}
+
+interface Props {
+	mapId: string;
+	color?: string;
+	ratio?: string;
+}
+
+const { mapId, color: colorProp, ratio = '4x3' } = Astro.props;
+
+const data = (mapsVector as Record<string, MapData>)[mapId];
+const color = colorProp ?? data?.color ?? 'primary';
+
+// scale1..scale10 — a 10-step color-mix ramp against var(--tblr-primary).
+const scale = Object.fromEntries(
+	Array.from({ length: 10 }, (_, n) => [
+		`scale${n + 1}`,
+		`color-mix(in srgb, transparent, var(--tblr-primary) ${(n + 1) * 10}%)`,
+	]),
+);
+
+const markers = data?.markers?.map((marker) => ({
+	coords: marker.coords.split(',').map((n) => Number(n.trim())),
+	name: marker.name,
+}));
+
+const mapKey = `map-${mapId}`;
+const mapSelector = `#map-${mapId}`;
+
+const mapOptions = data
+	? {
+			backgroundColor: 'transparent',
+			regionStyle: {
+				initial: {
+					fill: 'var(--tblr-bg-surface-secondary)',
+					stroke: data.filled ? '#fff' : 'var(--tblr-border-color)',
+					strokeWidth: data.filled ? 1 : 2,
+				},
+			},
+			zoomOnScroll: Boolean(data.zoom),
+			zoomButtons: Boolean(data.zoom),
+			...(data.values
+				? { series: { regions: [{ attribute: 'fill', scale, values: data.values }] } }
+				: {}),
+			...(markers
+				? {
+						markers,
+						markerStyle: {
+							initial: {
+								r: 4,
+								stroke: '#fff',
+								opacity: 1,
+								strokeWidth: 3,
+								stokeOpacity: 0.5,
+								fill: `var(--tblr-${color})`,
+							},
+							hover: { fill: `var(--tblr-${color})`, stroke: `var(--tblr-${color})` },
+						},
+						markerLabelStyle: { initial: { fontSize: 10 } },
+					}
+				: {}),
+			...(data.lines
+				? {
+						lines: data.lines,
+						lineStyle: {
+							strokeDasharray: '4 4',
+							animation: true,
+							stroke: 'rgba(98, 105, 118, .75)',
+							strokeWidth: 0.5,
+						},
+					}
+				: {}),
+		}
+	: undefined;
+---
+
+{
+	data && (
+		<Fragment>
+			<div class={`ratio ratio-${ratio}`}>
+				<div>
+					<div id={mapKey} class="w-100 h-100" />
+				</div>
+			</div>
+			<CaptureScript>
+				<!-- BEGIN MAP VECTOR -->
+				<script define:vars={{ mapKey, mapSelector, mapName: data.map, mapOptions }}>
+					window.tabler_map_vector ??= {};
+
+					function initMapVector() {
+						const map = (window.tabler_map_vector[mapKey] = new jsVectorMap({
+							selector: mapSelector,
+							map: mapName,
+							...mapOptions,
+							// labels.markers.render is a function, not JSON-serializable — added here
+							// rather than baked into mapOptions.
+							...(mapOptions.markers ? { labels: { markers: { render: (marker) => marker.name } } } : {}),
+						}));
+
+						window.addEventListener('resize', () => {
+							map.updateSize();
+						});
+					}
+
+					document.readyState !== 'loading' ? initMapVector() : document.addEventListener('DOMContentLoaded', initMapVector, { once: true });
+				</script>
+				<!-- END MAP VECTOR -->
+			</CaptureScript>
+		</Fragment>
+	)
+}

@@ -1,3 +1,5 @@
+@use '../config' as *;
+
 .modal-content,
 .modal-header {
   > .btn-close {
@@ -16,7 +18,7 @@
   @include scrollbar;
 
   .modal-title {
-    margin-bottom: 1rem;
+    margin-bottom: var(--#{$prefix}modal-body-title-margin-bottom);
   }
 
   & + & {
@@ -52,10 +54,10 @@
   @if $modal-footer-border-width == 0 {
     padding-top: 0;
   } @else {
-    padding-top: 0.75rem;
+    padding-top: var(--#{$prefix}modal-footer-padding-y);
   }
 
-  padding-bottom: 0.75rem;
+  padding-bottom: var(--#{$prefix}modal-footer-padding-y);
 }
 
 .modal-blur {
@@ -68,6 +70,9 @@
 }
 
 .modal {
+  --#{$prefix}modal-body-title-margin-bottom: #{$modal-body-title-margin-bottom};
+  --#{$prefix}modal-footer-padding-y: #{$modal-footer-padding-y};
+
   @include media-print {
     display: none !important;
   }

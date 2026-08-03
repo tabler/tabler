@@ -1,0 +1,36 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Dropzone from '@ui/Dropzone.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+---
+
+<DefaultLayout title="Dropzone" pageHeader="Dropzone" pageMenu="plugins.dropzone" pageLibs={['dropzone']}>
+  <div class="row row-cards">
+    <div class="col-md-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Basic Usage</CardTitle>
+          <Dropzone id="default" />
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Multiple File Upload</CardTitle>
+          <Dropzone id="multiple" multiple={true} />
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Custom Dropzone</CardTitle>
+          <Dropzone id="custom" custom={true} text="Your text here" description="Your custom description here" />
+        </CardBody>
+      </Card>
+    </div>
+  </div>
+</DefaultLayout>

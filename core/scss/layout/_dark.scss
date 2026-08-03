@@ -2,6 +2,8 @@
 
 // stylelint-disable declaration-no-important
 
+@use '../config' as *;
+
 @if $enable-dark-mode {
   :root {
     &:not(.theme-dark):not([data-bs-theme='dark'], [data-theme='dark']) {
@@ -28,33 +30,12 @@
   }
 
   @include color-mode(dark, true) {
+    // Must come after layout/_root's `color-scheme: light` on `:root` (equal specificity,
+    // later source wins) — this is what actually flips every light-dark() token to dark.
     color-scheme: dark;
-    --#{$prefix}body-color: var(--#{$prefix}gray-200);
-    --#{$prefix}secondary: var(--#{$prefix}gray-400);
 
-    --#{$prefix}body-bg: var(--#{$prefix}gray-900);
-    --#{$prefix}emphasis-color: #{$body-emphasis-color-dark};
-    --#{$prefix}emphasis-color-rgb: #{to-rgb($body-emphasis-color-dark)};
-
-    --#{$prefix}bg-forms: var(--#{$prefix}gray-900);
-    --#{$prefix}bg-surface: var(--#{$prefix}gray-800);
-    --#{$prefix}bg-surface-inverted: var(--#{$prefix}gray-100);
-    --#{$prefix}bg-surface-secondary: var(--#{$prefix}gray-900);
-    --#{$prefix}bg-surface-tertiary: var(--#{$prefix}gray-800);
-
-    --#{$prefix}text-inverted: var(--#{$prefix}gray-800);
-
-    --#{$prefix}link-color: var(--#{$prefix}primary);
-    --#{$prefix}link-hover-color: color-mix(in srgb, var(--#{$prefix}primary), black 20%);
-
-    --#{$prefix}active-bg: #{$lighten-dark};
-    --#{$prefix}disabled-color: #{color-transparent(var(--#{$prefix}body-color), 0.4)};
-
-    --#{$prefix}border-color: var(--#{$prefix}gray-700);
-    --#{$prefix}border-color-translucent: var(--#{$prefix}dark-mode-border-color-translucent);
-    --#{$prefix}border-dark-color: var(--#{$prefix}dark-mode-border-dark-color);
-    --#{$prefix}border-active-color: var(--#{$prefix}dark-mode-border-active-color);
-
+    // Everything else here has been folded into light-dark() declarations in
+    // layout/_root.scss; only genuinely dark-only, non-paired values remain.
     --#{$prefix}btn-color: #{$darken-dark};
 
     .navbar-brand-autodark {
@@ -64,8 +45,7 @@
     }
   }
 
-  body[data-bs-theme='dark'] [data-bs-theme='light'],
-  body[data-theme='dark'] [data-theme='light'] {
-    @extend [data-bs-theme='dark'];
-  }
+  // The global `@extend [data-bs-theme='dark']` for light-scoped subtrees
+  // inside a dark body lives in `_extends.scss` — with the module system it
+  // must have every dark-styling module upstream.
 }

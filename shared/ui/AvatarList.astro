@@ -1,0 +1,35 @@
+---
+// Default slot: loops over the `people` global with limit/offset.
+// Pass children to override and render a custom list.
+// NOTE: when `size` is omitted we pass NO size to Avatar — callers that omit size should not get avatar-N suffix classes.
+import Avatar from './Avatar.astro'
+import people from '@data/people.json'
+
+interface Person {
+  full_name?: string
+  photo?: string
+  [key: string]: unknown
+}
+
+interface Props {
+  limit?: number
+  offset?: number
+  stacked?: boolean
+  /** avatar-list-{size} + forwarded to default Avatars */
+  size?: string
+  class?: string
+  /** placeholder avatar appended after the list */
+  text?: string
+}
+
+const { limit = 5, offset = 0, stacked, size, class: className, text } = Astro.props
+
+const list = (people as Person[]).slice(offset, offset + limit)
+---
+
+<div class:list={['avatar-list', stacked && 'avatar-list-stacked', size && `avatar-list-${size}`, className]}>
+  <slot>
+    {list.map((person) => <Avatar person={person} size={size} />)}
+    {text && <Avatar placeholder={text} size={size} />}
+  </slot>
+</div>

@@ -36,6 +36,4 @@ const enableDismissTrigger = (component: DismissibleComponent, method = 'hide'):
   })
 }
 
-export {
-  enableDismissTrigger
-}
+export { enableDismissTrigger }

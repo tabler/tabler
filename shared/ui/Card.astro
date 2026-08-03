@@ -1,0 +1,19 @@
+---
+// Composable card container (.card). For the fixed demo-showcase card see ../cards/Card.astro.
+
+interface Props {
+  /** element to render instead of div (e.g. form, a) */
+  as?: string
+  /** card-{size} body padding: sm | md | lg */
+  size?: string
+  class?: string
+  /** remaining attributes (id, action, data-*, …) are forwarded to the element */
+  [key: string]: unknown
+}
+
+const { as: Element = 'div', size, class: className, ...rest } = Astro.props
+---
+
+<Element class:list={['card', size && `card-${size}`, className]} {...rest}>
+  <slot />
+</Element>

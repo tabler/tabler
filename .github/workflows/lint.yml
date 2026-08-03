@@ -17,7 +17,7 @@ jobs:
         uses: pnpm/action-setup@v6
 
       - name: Set up Node.js
-        uses: actions/setup-node@v6
+        uses: actions/setup-node@v7
         with:
           node-version-file: '.nvmrc'
           cache: 'pnpm'
@@ -25,5 +25,8 @@ jobs:
       - name: Install pnpm dependencies
         run: pnpm install
 
-      - name: Lint Markdown
+      - name: Lint
         run: pnpm run lint
+
+      - name: Type Check
+        run: pnpm run type-check

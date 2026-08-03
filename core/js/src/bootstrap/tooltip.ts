@@ -58,7 +58,7 @@ const AttachmentMap: Record<string, string> = {
   TOP: 'top',
   RIGHT: isRTL() ? 'left' : 'right',
   BOTTOM: 'bottom',
-  LEFT: isRTL() ? 'right' : 'left'
+  LEFT: isRTL() ? 'right' : 'left',
 }
 
 const Default: ComponentConfig = {
@@ -76,12 +76,9 @@ const Default: ComponentConfig = {
   sanitize: true,
   sanitizeFn: null,
   selector: false,
-  template: '<div class="tooltip" role="tooltip">' +
-            '<div class="tooltip-arrow"></div>' +
-            '<div class="tooltip-inner"></div>' +
-            '</div>',
+  template: '<div class="tooltip" role="tooltip">' + '<div class="tooltip-arrow"></div>' + '<div class="tooltip-inner"></div>' + '</div>',
   title: '',
-  trigger: 'hover focus'
+  trigger: 'hover focus',
 }
 
 const DefaultType: ComponentConfigType = {
@@ -101,7 +98,7 @@ const DefaultType: ComponentConfigType = {
   selector: '(string|boolean)',
   template: 'string',
   title: '(string|element|function)',
-  trigger: 'string'
+  trigger: 'string',
 }
 
 /**
@@ -121,7 +118,7 @@ class Tooltip extends BaseComponent {
 
   constructor(element: HTMLElement | string, config?: Partial<ComponentConfig>) {
     if (typeof Popper === 'undefined') {
-      throw new TypeError('Bootstrap\'s tooltips require Popper (https://popper.js.org/docs/v2/)')
+      throw new TypeError("Bootstrap's tooltips require Popper (https://popper.js.org/docs/v2/)")
     }
 
     super(element, config)
@@ -187,9 +184,7 @@ class Tooltip extends BaseComponent {
     EventHandler.off(this._element.closest(SELECTOR_MODAL), EVENT_MODAL_HIDE, this._hideModalHandler)
 
     if (this._element.getAttribute('data-bs-original-title') || this._element.getAttribute('data-tblr-original-title')) {
-      this._element.setAttribute('title',
-        this._element.getAttribute('data-bs-original-title') ||
-        this._element.getAttribute('data-tblr-original-title') || '')
+      this._element.setAttribute('title', this._element.getAttribute('data-bs-original-title') || this._element.getAttribute('data-tblr-original-title') || '')
     }
 
     this._disposePopper()
@@ -343,7 +338,7 @@ class Tooltip extends BaseComponent {
       this._templateFactory = new TemplateFactory({
         ...this._config,
         content,
-        extraClass: this._resolvePossibleFunction(this._config.customClass)
+        extraClass: this._resolvePossibleFunction(this._config.customClass),
       })
     }
 
@@ -352,14 +347,12 @@ class Tooltip extends BaseComponent {
 
   _getContentForTemplate(): Record<string, any> {
     return {
-      [SELECTOR_TOOLTIP_INNER]: this._getTitle()
+      [SELECTOR_TOOLTIP_INNER]: this._getTitle(),
     }
   }
 
   _getTitle(): string {
-    return this._resolvePossibleFunction(this._config.title) ||
-      this._element.getAttribute('data-bs-original-title') ||
-      this._element.getAttribute('data-tblr-original-title') || ''
+    return this._resolvePossibleFunction(this._config.title) || this._element.getAttribute('data-bs-original-title') || this._element.getAttribute('data-tblr-original-title') || ''
   }
 
   _initializeOnDelegatedTarget(event: Event & { delegateTarget?: HTMLElement }): Tooltip {
@@ -405,26 +398,26 @@ class Tooltip extends BaseComponent {
         {
           name: 'flip',
           options: {
-            fallbackPlacements: this._config.fallbackPlacements
-          }
+            fallbackPlacements: this._config.fallbackPlacements,
+          },
         },
         {
           name: 'offset',
           options: {
-            offset: this._getOffset()
-          }
+            offset: this._getOffset(),
+          },
         },
         {
           name: 'preventOverflow',
           options: {
-            boundary: this._config.boundary
-          }
+            boundary: this._config.boundary,
+          },
         },
         {
           name: 'arrow',
           options: {
-            element: `.${(this.constructor as typeof Tooltip).NAME}-arrow`
-          }
+            element: `.${(this.constructor as typeof Tooltip).NAME}-arrow`,
+          },
         },
         {
           name: 'preSetPlacement',
@@ -432,15 +425,15 @@ class Tooltip extends BaseComponent {
           phase: 'beforeMain',
           fn: (data: any) => {
             this._getTipElement()!.setAttribute('data-popper-placement', data.state.placement)
-          }
-        }
-      ]
+          },
+        },
+      ],
     }
 
     const popperConfig = execute(this._config.popperConfig, [undefined, defaultBsPopperConfig])
     return {
       ...defaultBsPopperConfig,
-      ...(typeof popperConfig === 'object' && popperConfig !== null ? popperConfig : {})
+      ...(typeof popperConfig === 'object' && popperConfig !== null ? popperConfig : {}),
     }
   }
 
@@ -455,12 +448,8 @@ class Tooltip extends BaseComponent {
           context.toggle()
         })
       } else if (trigger !== TRIGGER_MANUAL) {
-        const eventIn = trigger === TRIGGER_HOVER ?
-          (this.constructor as typeof Tooltip).eventName(EVENT_MOUSEENTER) :
-          (this.constructor as typeof Tooltip).eventName(EVENT_FOCUSIN)
-        const eventOut = trigger === TRIGGER_HOVER ?
-          (this.constructor as typeof Tooltip).eventName(EVENT_MOUSELEAVE) :
-          (this.constructor as typeof Tooltip).eventName(EVENT_FOCUSOUT)
+        const eventIn = trigger === TRIGGER_HOVER ? (this.constructor as typeof Tooltip).eventName(EVENT_MOUSEENTER) : (this.constructor as typeof Tooltip).eventName(EVENT_FOCUSIN)
+        const eventOut = trigger === TRIGGER_HOVER ? (this.constructor as typeof Tooltip).eventName(EVENT_MOUSELEAVE) : (this.constructor as typeof Tooltip).eventName(EVENT_FOCUSOUT)
 
         EventHandler.on(this._element, eventIn, this._config.selector, (event: Event) => {
           const context = this._initializeOnDelegatedTarget(event)
@@ -469,8 +458,7 @@ class Tooltip extends BaseComponent {
         })
         EventHandler.on(this._element, eventOut, this._config.selector, (event: Event & { relatedTarget?: HTMLElement }) => {
           const context = this._initializeOnDelegatedTarget(event)
-          context._activeTrigger[event.type === 'focusout' ? TRIGGER_FOCUS : TRIGGER_HOVER] =
-            context._element.contains(event.relatedTarget as Node)
+          context._activeTrigger[event.type === 'focusout' ? TRIGGER_FOCUS : TRIGGER_HOVER] = context._element.contains(event.relatedTarget as Node)
 
           context._leave()
         })
@@ -550,7 +538,7 @@ class Tooltip extends BaseComponent {
 
     config = {
       ...dataAttributes,
-      ...(typeof config === 'object' && config ? config : {})
+      ...(typeof config === 'object' && config ? config : {}),
     }
     config = this._mergeConfigObj(config)
     config = this._configAfterMerge(config)
@@ -564,7 +552,7 @@ class Tooltip extends BaseComponent {
     if (typeof config.delay === 'number') {
       config.delay = {
         show: config.delay,
-        hide: config.delay
+        hide: config.delay,
       }
     }
 

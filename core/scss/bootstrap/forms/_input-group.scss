@@ -1,9 +1,11 @@
-@use "sass:map";
-@use "sass:string";
+@use 'sass:map';
+@use 'sass:string';
 
 //
 // Base styles
 //
+
+@use '../../config' as *;
 
 .input-group {
   position: relative;
@@ -41,7 +43,6 @@
   }
 }
 
-
 // Textual addons
 //
 // Serves as a catch-all element for any text or radio/checkbox input you wish
@@ -62,7 +63,6 @@
   @include border-radius($input-border-radius);
 }
 
-
 // Sizing
 //
 // Remix the default form control sizing classes into new ones for easier
@@ -72,6 +72,8 @@
 .input-group-lg > .form-select,
 .input-group-lg > .input-group-text,
 .input-group-lg > .btn {
+  line-height: $input-line-height-lg;
+  min-height: $input-height-lg;
   padding: $input-padding-y-lg $input-padding-x-lg;
   @include font-size($input-font-size-lg);
   @include border-radius($input-border-radius-lg);
@@ -81,6 +83,8 @@
 .input-group-sm > .form-select,
 .input-group-sm > .input-group-text,
 .input-group-sm > .btn {
+  line-height: $input-line-height-sm;
+  min-height: $input-height-sm;
   padding: $input-padding-y-sm $input-padding-x-sm;
   @include font-size($input-font-size-sm);
   @include border-radius($input-border-radius-sm);
@@ -90,7 +94,6 @@
 .input-group-sm > .form-select {
   padding-right: $form-select-padding-x + $form-select-indicator-padding;
 }
-
 
 // Rounded corners
 //
@@ -118,9 +121,9 @@
     }
   }
 
-  $validation-messages: "";
+  $validation-messages: '';
   @each $state in map.keys($form-validation-states) {
-    $validation-messages: $validation-messages + ":not(." + string.unquote($state) + "-tooltip)" + ":not(." + string.unquote($state) + "-feedback)";
+    $validation-messages: $validation-messages + ':not(.' + string.unquote($state) + '-tooltip)' + ':not(.' + string.unquote($state) + '-feedback)';
   }
 
   > :not(:first-child):not(.dropdown-menu)#{$validation-messages} {

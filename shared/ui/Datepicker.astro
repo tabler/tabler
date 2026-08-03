@@ -1,0 +1,89 @@
+---
+import Icon from './Icon.astro';
+import CaptureScript from '../components/CaptureScript.astro';
+
+interface Props {
+	id?: string;
+	value?: string;
+	placeholder?: string;
+	class?: string;
+	/** 'icon' | 'icon-prepend' | undefined (plain) */
+	layout?: string;
+	inline?: boolean;
+}
+
+const {
+	id,
+	value = '2020-06-20',
+	placeholder = 'Select a date',
+	class: className,
+	layout,
+	inline,
+} = Astro.props;
+
+const chevronLeft =
+	'<!-- Download SVG icon from http://tabler.io/icons/icon/chevron-left -->\n\t<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" class="icon"><path d="M15 6l-6 6l6 6" /></svg>';
+const chevronRight =
+	'<!-- Download SVG icon from http://tabler.io/icons/icon/chevron-right -->\n\t<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" class="icon"><path d="M9 6l6 6l-6 6" /></svg>';
+
+const datepickerId = id ? `datepicker-${id}` : undefined;
+---
+
+{
+	id &&
+		(inline ? (
+			<div class="datepicker-inline" id={`datepicker-${id}`} />
+		) : layout === 'icon' ? (
+			<div class:list={['input-icon', className]}>
+				<input
+					class="form-control"
+					placeholder={placeholder}
+					id={`datepicker-${id}`}
+					value={value}
+				/>
+				<span class="input-icon-addon"><Icon name="calendar" /></span>
+			</div>
+		) : layout === 'icon-prepend' ? (
+			<div class:list={['input-icon', className]}>
+				<span class="input-icon-addon"><Icon name="calendar" /></span>
+				<input
+					class="form-control"
+					placeholder={placeholder}
+					id={`datepicker-${id}`}
+					value={value}
+				/>
+			</div>
+		) : (
+			<input
+				class:list={['form-control', className]}
+				placeholder={placeholder}
+				id={`datepicker-${id}`}
+				value={value}
+			/>
+		))
+}
+{
+	id && (
+		<CaptureScript>
+			<!-- BEGIN DATEPICKER -->
+			<script define:vars={{ datepickerId, chevronLeft, chevronRight, inline }}>
+				function initDatepicker() {
+					window.tabler_datepicker ??= {};
+
+					window.Litepicker &&
+						(window.tabler_datepicker[datepickerId] = new Litepicker({
+							element: document.getElementById(datepickerId),
+							buttonText: {
+								previousMonth: chevronLeft,
+								nextMonth: chevronRight,
+							},
+							...(inline ? { inlineMode: true } : {}),
+						}));
+				}
+
+				document.readyState !== 'loading' ? initDatepicker() : document.addEventListener('DOMContentLoaded', initDatepicker, { once: true });
+			</script>
+			<!-- END DATEPICKER -->
+		</CaptureScript>
+	)
+}

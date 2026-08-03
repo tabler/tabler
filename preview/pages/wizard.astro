@@ -1,0 +1,56 @@
+---
+import SingleLayout from '@shared/layouts/SingleLayout.astro'
+import Button from '@ui/Button.astro'
+import ButtonList from '@ui/ButtonList.astro'
+import FormGroup from '@ui/FormGroup.astro'
+import HrText from '@ui/HrText.astro'
+import InputGroup from '@ui/InputGroup.astro'
+import Illustration from '@ui/Illustration.astro'
+import Progress from '@ui/Progress.astro'
+import { site } from '@shared/lib/site'
+import timezones from '@data/timezones.json'
+
+// TODO: page-menu (extra.wizard) is unused — SingleLayout has no navbar menu.
+---
+
+<SingleLayout title="Wizard">
+  <div class="card card-md">
+    <div class="card-body text-center py-4 p-sm-5">
+      <Illustration image="boy-girl.svg" height={200} class="mb-n2" />
+      <h1 class="mt-5">Welcome to Tabler!</h1>
+      <p class="text-secondary">{site.description}</p>
+    </div>
+
+    <HrText text="your data" position="center" class="hr-text-spaceless" />
+
+    <div class="card-body">
+      <FormGroup label="Create your Tabler URL" hint="Choose a URL that describes you or your business in a concise way. Make it short and easy to remember so you can share links with ease.">
+        <InputGroup prepend="https://tabler.io/" inputClass="ps-1" flat />
+      </FormGroup>
+
+      <FormGroup label="Timezone" class="">
+        <select class="form-select mb-0">
+          {
+            timezones.map((timezone) => (
+              <option value={timezone.abbr} selected={timezone.abbr === 'CEDT'}>
+                {timezone.text}
+              </option>
+            ))
+          }
+        </select>
+      </FormGroup>
+    </div>
+  </div>
+
+  <div class="row align-items-center mt-3">
+    <div class="col-4">
+      <Progress value={25} />
+    </div>
+    <div class="col">
+      <ButtonList class="justify-content-end">
+        <Button text="Set up later" color="link link-secondary" />
+        <Button text="Continue" color="primary" />
+      </ButtonList>
+    </div>
+  </div>
+</SingleLayout>

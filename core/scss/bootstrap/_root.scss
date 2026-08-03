@@ -1,8 +1,11 @@
-@use "sass:meta";
+@use 'sass:map';
+@use 'sass:meta';
+
+@use '../config' as *;
 
 :root,
-[data-bs-theme="light"],
-[data-theme="light"] {
+[data-bs-theme='light'],
+[data-theme='light'] {
   // Note: Custom variable values only support SassScript inside `#{}`.
 
   // Colors
@@ -25,16 +28,31 @@
     --#{$prefix}#{$color}-rgb: #{$value};
   }
 
-  @each $color, $value in $theme-colors-text {
-    --#{$prefix}#{$color}-text-emphasis: #{$value};
-  }
+  // $theme-colors-*-dark maps are only populated when $enable-dark-mode is true (see _maps.scss)
+  @if $enable-dark-mode {
+    @each $color, $value in $theme-colors-text {
+      --#{$prefix}#{$color}-text-emphasis: light-dark(#{$value}, #{map.get($theme-colors-text-dark, $color)});
+    }
 
-  @each $color, $value in $theme-colors-bg-subtle {
-    --#{$prefix}#{$color}-bg-subtle: #{$value};
-  }
+    @each $color, $value in $theme-colors-bg-subtle {
+      --#{$prefix}#{$color}-bg-subtle: light-dark(#{$value}, #{map.get($theme-colors-bg-subtle-dark, $color)});
+    }
 
-  @each $color, $value in $theme-colors-border-subtle {
-    --#{$prefix}#{$color}-border-subtle: #{$value};
+    @each $color, $value in $theme-colors-border-subtle {
+      --#{$prefix}#{$color}-border-subtle: light-dark(#{$value}, #{map.get($theme-colors-border-subtle-dark, $color)});
+    }
+  } @else {
+    @each $color, $value in $theme-colors-text {
+      --#{$prefix}#{$color}-text-emphasis: #{$value};
+    }
+
+    @each $color, $value in $theme-colors-bg-subtle {
+      --#{$prefix}#{$color}-bg-subtle: #{$value};
+    }
+
+    @each $color, $value in $theme-colors-border-subtle {
+      --#{$prefix}#{$color}-border-subtle: #{$value};
+    }
   }
 
   --#{$prefix}white-rgb: #{to-rgb($white)};
@@ -61,47 +79,51 @@
     --#{$prefix}body-text-align: #{$body-text-align};
   }
 
-  --#{$prefix}body-color: #{$body-color};
+  --#{$prefix}body-color: light-dark(#{$body-color}, #{$body-color-dark});
   --#{$prefix}body-color-rgb: #{to-rgb($body-color)};
-  --#{$prefix}body-bg: #{$body-bg};
+  --#{$prefix}body-bg: light-dark(#{$body-bg}, #{$body-bg-dark});
   --#{$prefix}body-bg-rgb: #{to-rgb($body-bg)};
 
-  --#{$prefix}emphasis-color: #{$body-emphasis-color};
+  --#{$prefix}emphasis-color: light-dark(#{$body-emphasis-color}, #{$body-emphasis-color-dark});
   --#{$prefix}emphasis-color-rgb: #{to-rgb($body-emphasis-color)};
 
-  --#{$prefix}secondary-color: #{$body-secondary-color};
+  --#{$prefix}secondary-color: light-dark(#{$body-secondary-color}, #{$body-secondary-color-dark});
   --#{$prefix}secondary-color-rgb: #{to-rgb($body-secondary-color)};
-  --#{$prefix}secondary-bg: #{$body-secondary-bg};
+  --#{$prefix}secondary-bg: light-dark(#{$body-secondary-bg}, #{$body-secondary-bg-dark});
   --#{$prefix}secondary-bg-rgb: #{to-rgb($body-secondary-bg)};
 
-  --#{$prefix}tertiary-color: #{$body-tertiary-color};
+  --#{$prefix}tertiary-color: light-dark(#{$body-tertiary-color}, #{$body-tertiary-color-dark});
   --#{$prefix}tertiary-color-rgb: #{to-rgb($body-tertiary-color)};
-  --#{$prefix}tertiary-bg: #{$body-tertiary-bg};
+  --#{$prefix}tertiary-bg: light-dark(#{$body-tertiary-bg}, #{$body-tertiary-bg-dark});
   --#{$prefix}tertiary-bg-rgb: #{to-rgb($body-tertiary-bg)};
   // scss-docs-end root-body-variables
 
+  // $headings-color is itself light-dark(gray-900, white); the dark-mode block below
+  // overrides it to `inherit`, which can't be expressed as a light-dark() branch.
   --#{$prefix}heading-color: #{$headings-color};
 
-  --#{$prefix}link-color: #{$link-color};
+  --#{$prefix}link-color: light-dark(#{$link-color}, #{$link-color-dark});
   --#{$prefix}link-color-rgb: #{to-rgb($link-color)};
   --#{$prefix}link-decoration: #{$link-decoration};
 
-  --#{$prefix}link-hover-color: #{$link-hover-color};
+  --#{$prefix}link-hover-color: light-dark(#{$link-hover-color}, #{$link-hover-color-dark});
   --#{$prefix}link-hover-color-rgb: #{to-rgb($link-hover-color)};
 
   @if $link-hover-decoration != null {
     --#{$prefix}link-hover-decoration: #{$link-hover-decoration};
   }
 
+  // $code-color is itself light-dark(gray-600, gray-400); layout/_root.scss re-declares
+  // --code-color afterwards and is the one that actually wins in the compiled cascade.
   --#{$prefix}code-color: #{$code-color};
-  --#{$prefix}highlight-color: #{$mark-color};
-  --#{$prefix}highlight-bg: #{$mark-bg};
+  --#{$prefix}highlight-color: light-dark(#{$mark-color}, #{$mark-color-dark});
+  --#{$prefix}highlight-bg: light-dark(#{$mark-bg}, #{$mark-bg-dark});
 
   // scss-docs-start root-border-var
   --#{$prefix}border-width: #{$border-width};
   --#{$prefix}border-style: #{$border-style};
-  --#{$prefix}border-color: #{$border-color};
-  --#{$prefix}border-color-translucent: #{$border-color-translucent};
+  --#{$prefix}border-color: light-dark(#{$border-color}, #{$border-color-dark});
+  --#{$prefix}border-color-translucent: light-dark(#{$border-color-translucent}, #{$border-color-translucent-dark});
 
   --#{$prefix}border-radius: #{$border-radius};
   --#{$prefix}border-radius-sm: #{$border-radius-sm};
@@ -125,66 +147,29 @@
   // scss-docs-end root-focus-variables
 
   // scss-docs-start root-form-validation-variables
-  --#{$prefix}form-valid-color: #{$form-valid-color};
-  --#{$prefix}form-valid-border-color: #{$form-valid-border-color};
-  --#{$prefix}form-invalid-color: #{$form-invalid-color};
-  --#{$prefix}form-invalid-border-color: #{$form-invalid-border-color};
+  --#{$prefix}form-valid-color: light-dark(#{$form-valid-color}, #{$form-valid-color-dark});
+  --#{$prefix}form-valid-border-color: light-dark(#{$form-valid-border-color}, #{$form-valid-border-color-dark});
+  --#{$prefix}form-invalid-color: light-dark(#{$form-invalid-color}, #{$form-invalid-color-dark});
+  --#{$prefix}form-invalid-border-color: light-dark(#{$form-invalid-border-color}, #{$form-invalid-border-color-dark});
   // scss-docs-end root-form-validation-variables
 }
 
 @if $enable-dark-mode {
   @include color-mode(dark, true) {
-    color-scheme: dark;
-
     // scss-docs-start root-dark-mode-vars
-    --#{$prefix}body-color: #{$body-color-dark};
+    // -rgb triplets and non-color overrides can't be expressed inside light-dark(), so they stay here.
     --#{$prefix}body-color-rgb: #{to-rgb($body-color-dark)};
-    --#{$prefix}body-bg: #{$body-bg-dark};
     --#{$prefix}body-bg-rgb: #{to-rgb($body-bg-dark)};
-
-    --#{$prefix}emphasis-color: #{$body-emphasis-color-dark};
     --#{$prefix}emphasis-color-rgb: #{to-rgb($body-emphasis-color-dark)};
-
-    --#{$prefix}secondary-color: #{$body-secondary-color-dark};
     --#{$prefix}secondary-color-rgb: #{to-rgb($body-secondary-color-dark)};
-    --#{$prefix}secondary-bg: #{$body-secondary-bg-dark};
     --#{$prefix}secondary-bg-rgb: #{to-rgb($body-secondary-bg-dark)};
-
-    --#{$prefix}tertiary-color: #{$body-tertiary-color-dark};
     --#{$prefix}tertiary-color-rgb: #{to-rgb($body-tertiary-color-dark)};
-    --#{$prefix}tertiary-bg: #{$body-tertiary-bg-dark};
     --#{$prefix}tertiary-bg-rgb: #{to-rgb($body-tertiary-bg-dark)};
-
-    @each $color, $value in $theme-colors-text-dark {
-      --#{$prefix}#{$color}-text-emphasis: #{$value};
-    }
-
-    @each $color, $value in $theme-colors-bg-subtle-dark {
-      --#{$prefix}#{$color}-bg-subtle: #{$value};
-    }
-
-    @each $color, $value in $theme-colors-border-subtle-dark {
-      --#{$prefix}#{$color}-border-subtle: #{$value};
-    }
 
     --#{$prefix}heading-color: #{$headings-color-dark};
 
-    --#{$prefix}link-color: #{$link-color-dark};
-    --#{$prefix}link-hover-color: #{$link-hover-color-dark};
     --#{$prefix}link-color-rgb: #{to-rgb($link-color-dark)};
     --#{$prefix}link-hover-color-rgb: #{to-rgb($link-hover-color-dark)};
-
-    --#{$prefix}code-color: #{$code-color-dark};
-    --#{$prefix}highlight-color: #{$mark-color-dark};
-    --#{$prefix}highlight-bg: #{$mark-bg-dark};
-
-    --#{$prefix}border-color: #{$border-color-dark};
-    --#{$prefix}border-color-translucent: #{$border-color-translucent-dark};
-
-    --#{$prefix}form-valid-color: #{$form-valid-color-dark};
-    --#{$prefix}form-valid-border-color: #{$form-valid-border-color-dark};
-    --#{$prefix}form-invalid-color: #{$form-invalid-color-dark};
-    --#{$prefix}form-invalid-border-color: #{$form-invalid-border-color-dark};
     // scss-docs-end root-dark-mode-vars
   }
 }

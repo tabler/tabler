@@ -1,0 +1,34 @@
+---
+import Icon from './Icon.astro'
+
+interface Props {
+  pills?: boolean
+  tabs?: boolean
+  header?: boolean
+  class?: string
+}
+
+const { pills, tabs, header, class: className } = Astro.props
+
+const classes = ['nav', pills ? 'nav-pills' : tabs ? 'nav-tabs' : undefined, pills && header ? 'card-header-pills' : tabs && header ? 'card-header-tabs' : undefined, className]
+---
+
+<ul class:list={classes}>
+  <li class="nav-item">
+    <a class="nav-link active" href="#"> Active </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">
+      <Icon name="star" class="nav-link-icon" />
+      Link
+    </a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true"> Disabled </a>
+  </li>
+  <li class="nav-item ms-auto">
+    <a class="nav-link" href="#">
+      <Icon name="settings" />
+    </a>
+  </li>
+</ul>

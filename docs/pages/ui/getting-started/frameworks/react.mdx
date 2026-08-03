@@ -1,0 +1,129 @@
+---
+title: React
+order: 2
+summary: Set up Tabler in React and build a first working page.
+description: Integrate Tabler with React.
+icon: brand-react
+seoDescription: Install `@tabler/core`, import CSS and JS in React, and render a minimal page layout with a Tabler card.
+layout: '@layouts/DocsMdxLayout.astro'
+---
+
+import TabsPackage from '@components/TabsPackage.astro'
+import CdnImportPackage from '@components/CdnImportPackage.astro'
+import Steps from '@components/Steps.astro'
+
+React components render standard HTML, so Tabler slots in as the styling layer: you write JSX with Tabler classes and `@tabler/core` provides the CSS. JavaScript is only needed for interactive components such as dropdowns, modals, and tooltips.
+
+This guide uses a standard Vite-based React setup. You will install `@tabler/core`, import its CSS and JS in your entry file, and render a first page with a Tabler card.
+
+## Setup
+
+<Steps>
+
+### Install Tabler package
+
+Install `@tabler/core` with your preferred package manager:
+
+<TabsPackage name="@tabler/core" />
+
+You can also use CDN files when you want a quick no-build setup:
+
+<CdnImportPackage />
+
+### Import styles
+
+Import Tabler CSS once in your React entry file (`src/main.jsx`):
+
+```jsx
+import '@tabler/core/dist/css/tabler.min.css'
+```
+
+For full theme customization, import SCSS sources instead:
+
+```scss
+@import '@tabler/core/scss/tabler';
+```
+
+### Import and initialize JavaScript
+
+Tabler JavaScript is required for interactive components such as dropdowns, modals, and tooltips. Import it once in `src/main.jsx`:
+
+```jsx
+import '@tabler/core/dist/js/tabler.min.js'
+```
+
+React-specific note: do not initialize DOM-based behavior during render. Use `useEffect`:
+
+```jsx
+import { useEffect } from 'react'
+import { Tooltip } from '@tabler/core'
+
+export function TooltipExample() {
+  useEffect(() => {
+    // Run DOM initialization only after the component is mounted.
+    const elements = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+    elements.forEach((element) => new Tooltip(element))
+  }, [])
+
+  return (
+    <button data-bs-toggle="tooltip" title="Example">
+      Hover me
+    </button>
+  )
+}
+```
+
+### Minimal working example
+
+Create a simple `src/main.jsx` that loads Tabler assets and renders the app:
+
+```jsx
+import React from 'react'
+import ReactDOM from 'react-dom/client'
+import '@tabler/core/dist/css/tabler.min.css'
+import '@tabler/core/dist/js/tabler.min.js'
+import App from './App.jsx'
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+)
+```
+
+Then create `src/App.jsx` with a minimal Tabler layout and one card:
+
+```jsx
+export default function App() {
+  return (
+    <div className="page">
+      <div className="page-wrapper">
+        <div className="container-xl py-4">
+          <div className="card">
+            <div className="card-body">
+              <h3 className="card-title">React + Tabler</h3>
+              <p className="text-secondary mb-0">Your Tabler setup is working.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  )
+}
+```
+
+Run the app:
+
+```shell
+npm run dev
+```
+
+Open the local Vite URL and confirm the card is styled with Tabler.
+
+### Next steps
+
+- Continue with [Customize](/ui/getting-started/customize) to adjust styles and build setup.
+- Explore [Layout](/ui/layout) to choose page structures.
+- Browse [Components](/ui/components) to add UI building blocks.
+
+</Steps>

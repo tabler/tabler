@@ -1,3 +1,5 @@
+@use '../../config' as *;
+
 .form-floating {
   position: relative;
 
@@ -72,10 +74,10 @@
   > textarea:not(:placeholder-shown) {
     ~ label::after {
       position: absolute;
-      inset: $form-floating-padding-y ($form-floating-padding-x * .5);
+      inset: $form-floating-padding-y ($form-floating-padding-x * 0.5);
       z-index: -1;
       height: $form-floating-label-height;
-      content: "";
+      content: '';
       background-color: $input-bg;
       @include border-radius($input-border-radius);
     }
@@ -91,7 +93,8 @@
   }
 
   > :disabled ~ label,
-  > .form-control:disabled ~ label { // Required for `.form-control`s because of specificity
+  > .form-control:disabled ~ label {
+    // Required for `.form-control`s because of specificity
     color: $form-floating-label-disabled-color;
   }
 }

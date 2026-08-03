@@ -8,6 +8,10 @@ on:
       - '**.png'
       - '**.webp'
 
+permissions:
+  contents: write
+  pull-requests: write
+
 jobs:
   build:
     # Only run on Pull Requests within the same repository, and not from forks.
@@ -23,4 +27,4 @@ jobs:
       - name: Compress Images
         uses: calibreapp/image-actions@main
         with:
-          githubToken: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

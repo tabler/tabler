@@ -1,14 +1,17 @@
 /**
 Horizontal rules
  */
-.hr {
-  @extend hr;
-}
+@use '../../config' as *;
+
+// The `.hr` helper lives in `_extends.scss` — it extends the `hr` element
+// selector across all modules, which with the module system requires the
+// whole core to be upstream.
 
 /**
 Hr text
  */
 .hr-text {
+  --#{$prefix}hr-text-gap: #{$hr-text-gap};
   display: flex;
   align-items: center;
   margin: $hr-margin-y 0;
@@ -24,16 +27,16 @@ Hr text
 
   &:before {
     content: '';
-    margin-inline-end: 0.5rem;
+    margin-inline-end: var(--#{$prefix}hr-text-gap);
   }
 
   &:after {
     content: '';
-    margin-inline-start: 0.5rem;
+    margin-inline-start: var(--#{$prefix}hr-text-gap);
   }
 
   > *:first-child {
-    padding-inline-end: 0.5rem;
+    padding-inline-end: var(--#{$prefix}hr-text-gap);
     padding-inline-start: 0;
     color: var(--#{$prefix}secondary);
   }
@@ -45,8 +48,8 @@ Hr text
     }
 
     & > *:first-child {
-      padding-inline-end: 0.5rem;
-      padding-inline-start: 0.5rem;
+      padding-inline-end: var(--#{$prefix}hr-text-gap);
+      padding-inline-start: var(--#{$prefix}hr-text-gap);
     }
   }
 
@@ -62,7 +65,7 @@ Hr text
 
     & > *:first-child {
       padding-inline-end: 0;
-      padding-inline-start: 0.5rem;
+      padding-inline-start: var(--#{$prefix}hr-text-gap);
     }
   }
 
@@ -72,5 +75,6 @@ Hr text
 }
 
 .hr-text-spaceless {
-  margin: -0.5rem 0;
+  --#{$prefix}hr-text-spaceless-margin-y: #{$hr-text-spaceless-margin-y};
+  margin: var(--#{$prefix}hr-text-spaceless-margin-y) 0;
 }

@@ -1,0 +1,184 @@
+---
+// Static inputs, plain selects, a TomSelect "states" multi-select, input groups
+// with dropdowns, icon/loader/separated inputs, and a help-icon input.
+// TomSelect init for #select-states — FIRST page script, matching the reference
+// order (select-states precedes the FormElements6 scripts).
+import Icon from '@ui/Icon.astro'
+import FormGroup from '@ui/FormGroup.astro'
+import selects from '@data/selects.json'
+import CaptureScript from '../CaptureScript.astro'
+
+const states = (selects as { states: { options: Record<string, { name: string; selected?: boolean }> } }).states.options
+---
+
+<FormGroup label="Static">
+  <div class="form-control-plaintext">Input value</div>
+</FormGroup>
+
+<FormGroup label="Text">
+  <input type="text" class="form-control" name="example-text-input" placeholder="Input placeholder" />
+</FormGroup>
+
+<FormGroup label="Password">
+  <input type="text" class="form-control" name="example-password-input" placeholder="Input placeholder" />
+</FormGroup>
+
+<FormGroup label="Disabled">
+  <input type="text" class="form-control" name="example-disabled-input" placeholder="Disabled..." value="Well, she turned me into a newt." disabled />
+</FormGroup>
+<FormGroup label="Readonly">
+  <input type="text" class="form-control" name="example-disabled-input" placeholder="Readonly..." value="Well, how'd you become king, then?" readonly />
+</FormGroup>
+<FormGroup label="Required" required>
+  <input type="text" class="form-control" name="example-required-input" placeholder="Required..." />
+</FormGroup>
+<FormGroup label="Textarea" description="56/100">
+  <textarea class="form-control" name="example-textarea-input" rows="6" placeholder="Content..">Oh! Come and see the violence inherent in the system! Help, help, I'm being repressed! We shall say 'Ni' again to you, if you do not appease us. I'm not a witch. I'm not a witch. Camelot!</textarea>
+</FormGroup>
+
+<div class="mb-3">
+  <div class="form-label">Select</div>
+  <select class="form-select">
+    <option value="1">One</option>
+    <option value="2">Two</option>
+    <option value="3">Three</option>
+  </select>
+</div>
+
+<div class="mb-3">
+  <div class="form-label">Select multiple</div>
+  <select class="form-select" multiple>
+    <option value="1">One</option>
+    <option value="2">Two</option>
+    <option value="3">Three</option>
+  </select>
+</div>
+
+<div class="mb-3">
+  <div class="form-label">Select multiple states</div>
+  <select class="form-select" id="select-states" value="" multiple>
+    {
+      Object.entries(states).map(([code, { name, selected }]) => (
+        <option value={code} selected={selected}>
+          {name}
+        </option>
+      ))
+    }
+  </select>
+</div>
+
+<FormGroup label="Input group">
+  <div class="input-group mb-2">
+    <input type="text" class="form-control" placeholder="Search for…" />
+    <button class="btn" type="button">Go!</button>
+  </div>
+  <div class="input-group">
+    <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Action </button>
+    <div class="dropdown-menu">
+      <a class="dropdown-item" href="#"> Action </a>
+      <a class="dropdown-item" href="#"> Another action </a>
+    </div>
+    <input type="text" class="form-control" aria-label="Text input with dropdown button" />
+  </div>
+</FormGroup>
+<FormGroup label="Input group buttons">
+  <div class="input-group">
+    <input type="text" class="form-control" />
+    <button type="button" class="btn">Action</button>
+    <button data-bs-toggle="dropdown" type="button" class="btn dropdown-toggle dropdown-toggle-split"></button>
+    <div class="dropdown-menu dropdown-menu-end">
+      <a class="dropdown-item" href="#"> Action </a>
+      <a class="dropdown-item" href="#"> Another action </a>
+    </div>
+  </div>
+</FormGroup>
+
+<FormGroup label="Icon input">
+  <div class="input-icon mb-3">
+    <input type="text" value="" class="form-control" placeholder="Search…" />
+    <span class="input-icon-addon">
+      <Icon name="search" />
+    </span>
+  </div>
+  <div class="input-icon mb-3">
+    <span class="input-icon-addon">
+      <Icon name="user" />
+    </span>
+    <input type="text" value="" class="form-control" placeholder="Username" />
+  </div>
+</FormGroup>
+
+<FormGroup label="Loader input">
+  <div class="input-icon mb-3">
+    <input type="text" value="" class="form-control" placeholder="Loading…" />
+    <span class="input-icon-addon">
+      <div class="spinner-border spinner-border-sm text-secondary" role="status"></div>
+    </span>
+  </div>
+  <div class="input-icon mb-3">
+    <span class="input-icon-addon">
+      <div class="spinner-border spinner-border-sm text-secondary" role="status"></div>
+    </span>
+    <input type="text" value="" class="form-control" placeholder="Loading…" />
+  </div>
+</FormGroup>
+<FormGroup label="Separated inputs">
+  <div class="row g-2">
+    <div class="col">
+      <input type="text" class="form-control" placeholder="Search for…" />
+    </div>
+    <div class="col-auto">
+      <a href="#" class="btn btn-icon" aria-label="Button">
+        <Icon name="search" />
+      </a>
+    </div>
+  </div>
+</FormGroup>
+
+<FormGroup label="Input with help icon">
+  <div class="row g-2">
+    <div class="col">
+      <input type="text" class="form-control" placeholder="Search for…" />
+    </div>
+    <div class="col-auto align-self-center">
+      <span class="form-help" data-bs-toggle="popover" data-bs-placement="top" data-bs-content="<p>ZIP Code must be US or CDN format. You can use an extended ZIP+4 code to determine address more accurately.</p><p class='mb-0'><a href='#'>USP ZIP codes lookup tools</a></p>" data-bs-html="true">?</span>
+    </div>
+  </div>
+</FormGroup>
+<!--
+	is:inline: TomSelect loads via a deferred page-lib <script>. A processed (module)
+	script runs in document order alongside other deferred/module scripts — since this
+	tag sits before the library's <script defer>, it would run first and find
+	window.TomSelect undefined. is:inline keeps this a classic script that runs
+	synchronously at parse time, so the readyState/DOMContentLoaded guard below
+	actually delays until after the library has loaded.
+-->
+<CaptureScript>
+  <!-- BEGIN SELECT STATES -->
+  <script is:inline>
+    function initSelectStates() {
+      window.tabler_select ??= {}
+
+      const renderOption = (data, escape) => {
+        if (data.customProperties) {
+          return `<div><span class="dropdown-item-indicator">${data.customProperties}</span>${escape(data.text)}</div>`
+        }
+        return `<div>${escape(data.text)}</div>`
+      }
+
+      window.TomSelect &&
+        (window.tabler_select['select-states'] = new TomSelect(document.getElementById('select-states'), {
+          copyClassesToDropdown: false,
+          dropdownParent: 'body',
+          controlInput: '<input>',
+          render: {
+            item: renderOption,
+            option: renderOption,
+          },
+        }))
+    }
+
+    document.readyState !== 'loading' ? initSelectStates() : document.addEventListener('DOMContentLoaded', initSelectStates, { once: true })
+  </script>
+  <!-- END SELECT STATES -->
+</CaptureScript>

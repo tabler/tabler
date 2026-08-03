@@ -1,0 +1,348 @@
+---
+// Docs layout for the @tabler/docs app.
+// Standalone layout with its own <head>; does NOT use BaseLayout.astro.
+// Development uses the unminified assets; production additionally emits the SEO metadata.
+import { site } from '@shared/lib/site';
+import libs from '@tabler/core/libs.json';
+import docs from '@data/docs.json';
+import Icon from '@ui/Icon.astro';
+import DocsNavbar from '@components/DocsNavbar.astro';
+import DocsMenu from '@components/DocsMenu.astro';
+import DocsToc from '@components/DocsToc.astro';
+import type { TocItem } from '@components/DocsToc.astro';
+import DocsPagination from '@components/DocsPagination.astro';
+import Prose from '@ui/Prose.astro';
+import PageScripts from '@shared/components/PageScripts.astro';
+
+interface Props {
+	/** front matter: the page's h1 heading */
+	title: string;
+	/** front matter: optional SEO title override */
+	seoTitle?: string;
+	/** front matter: lead below the title (p.text-secondary.fs-3.lh-3) */
+	summary?: string;
+	/** front matter: SEO description */
+	description?: string;
+	/** front matter: optional SEO description override */
+	seoDescription?: string;
+	/** front matter `added-in`: renders the "Added in X" badge next to the h1 */
+	addedIn?: string;
+	/** Table of contents (h2/h3 from the markdown content) — see DocsToc.astro */
+	toc?: TocItem[];
+	/**
+	 * Page URL in the docs namespace, e.g. "/ui/components/alert/".
+	 * By default derived from Astro.url.pathname by stripping the /docs prefix.
+	 * Drives the active menu entry, pagination, the "Edit this page" link, and
+	 * the relative favicon path.
+	 */
+	url?: string;
+	/** Extra libraries from libs.json (css+js) */
+	docsLibs?: string[];
+	/** hides child and previous/next page navigation */
+	hidePagination?: boolean;
+	/** repo-relative source path for the "Edit this page" link, e.g. "docs/pages/ui/components/alert.mdx" */
+	editPath?: string;
+}
+
+const {
+	title,
+	seoTitle,
+	summary,
+	description,
+	seoDescription,
+	addedIn,
+	toc = [],
+	docsLibs = [],
+	hidePagination = false,
+	editPath,
+} = Astro.props;
+const environment = process.env.NODE_ENV || 'production';
+
+// Strip /docs prefix (and optional .html) for the docs namespace URL.
+const docsUrl =
+	Astro.props.url ??
+	(() => {
+		let p = Astro.url.pathname.replace(/^\/docs(?=\/|$)/, '').replace(/\.html$/, '');
+		if (!p.endsWith('/')) p += '/';
+		return p;
+	})();
+
+const pageSection = docsUrl.startsWith('/ui/')
+	? 'UI'
+	: docsUrl.startsWith('/icons/')
+		? 'Icons'
+		: docsUrl.startsWith('/illustrations/')
+			? 'Illustrations'
+			: docsUrl.startsWith('/emails/')
+				? 'Emails'
+				: '';
+const metaTitle = seoTitle ?? title;
+const metaDescription = seoDescription ?? description;
+const siteName = pageSection ? `Tabler ${pageSection} Documentation` : 'Tabler Documentation';
+const canonicalUrl = new URL(docsUrl, Astro.site ?? site.docsUrl).href;
+
+// Relative asset base: for /ui/components/alert/ -> "../../.."
+const depth = docsUrl.split('/').filter(Boolean).length;
+const relative = depth === 0 ? '.' : '../'.repeat(depth).slice(0, -1);
+
+// Source path for the "Edit this page" link. Prefer the real path passed by the
+// MDX layout; fall back to the flat-page convention (docs/pages/<url>.mdx).
+const editFilePath = editPath ?? `docs/pages${docsUrl.replace(/\/$/, '')}.mdx`;
+
+// docs-libs + clipboard (always included). In dev, file names stay unchanged
+// (e.g. dist/clipboard.min.js keeps .min).
+type Lib = { npm?: string; js?: string[]; css?: string[] };
+const libEntries = Object.entries(libs as Record<string, Lib>);
+const libUrl = (lib: Lib, file: string) =>
+	file.startsWith('http://') || file.startsWith('https://')
+		? file
+		: `/dist/libs/${lib.npm}/${file}`;
+const docsLibCss = libEntries
+	.filter(([name]) => docsLibs.includes(name))
+	.flatMap(([, lib]) => (lib.css ?? []).map((file) => libUrl(lib, file)));
+const docsLibJs = libEntries
+	.filter(([name]) => docsLibs.includes(name) || name === 'clipboard')
+	.flatMap(([, lib]) => (lib.js ?? []).map((file) => libUrl(lib, file)));
+
+// Eventually belongs in src/lib/site.ts (out of scope for this task).
+const opencollectiveUrl = 'https://opencollective.com/tabler';
+const xUrl = 'https://x.com/tabler_io';
+const linkedinUrl = 'https://www.linkedin.com/company/tabler-io';
+
+const year = new Date().getFullYear();
+
+type DocsLink = { title: string; url: string; icon: string };
+const docsLinks = docs.links as DocsLink[];
+---
+
+<!doctype html>
+<html lang="en">
+	<head>
+		<!-- BEGIN META -->
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+		<title>{metaTitle} | {siteName}</title>
+		{
+			environment === 'production' && (
+				<Fragment>
+					{metaDescription && <meta name="description" content={metaDescription} />}
+					<link rel="canonical" href={canonicalUrl} />
+
+					<!-- Open Graph / Social Media Meta Tags -->
+					<meta property="og:type" content="website" />
+					<meta property="og:title" content={metaTitle} />
+					{metaDescription && <meta property="og:description" content={metaDescription} />}
+					<meta property="og:site_name" content={siteName} />
+
+					<!-- Twitter Card data -->
+					<meta name="twitter:card" content="summary" />
+					<meta name="twitter:title" content={metaTitle} />
+					{metaDescription && <meta name="twitter:description" content={metaDescription} />}
+				</Fragment>
+			)
+		}
+
+		{
+			environment === 'development' && (
+				<Fragment>
+					<link rel="icon" href={`${relative}/favicon-dev.ico`} type="image/x-icon" />
+					<link rel="shortcut icon" href={`${relative}/favicon-dev.ico`} type="image/x-icon" />
+				</Fragment>
+			)
+		}
+		<!-- END META -->
+
+		<!-- BEGIN GLOBAL MANDATORY STYLES -->
+		<link rel="stylesheet" href="/dist/css/tabler.css" />
+		<!-- END GLOBAL MANDATORY STYLES -->
+
+		<!-- BEGIN PLUGINS STYLES -->
+		{site.cssPlugins.map((plugin) => <link href={`/dist/css/tabler-${plugin}.css`} rel="stylesheet" />)}
+		<!-- END PLUGINS STYLES -->
+
+		{
+			docsLibCss.length > 0 && (
+				<Fragment>
+					<Fragment set:html={'<!-- BEGIN PAGE LEVEL STYLES -->'} />
+					{docsLibCss.map((href) => <link href={href} rel="stylesheet" />)}
+					<Fragment set:html={'<!-- END PAGE LEVEL STYLES -->'} />
+				</Fragment>
+			)
+		}
+
+		{/* is:inline — see MIGRATION.md (without it Astro adds data-astro-cid-*) */}
+		<!-- BEGIN CUSTOM FONT -->
+		<style is:inline>@import url('https://rsms.me/inter/inter.css');</style>
+		<!-- END CUSTOM FONT -->
+
+		<!-- BEGIN DOCS STYLES -->
+		<link rel="stylesheet" href="/css/docs.css" />
+		<!-- END DOCS STYLES -->
+	</head>
+
+	<body class="d-flex flex-column" style="background: var(--tblr-bg-surface)">
+		<!-- BEGIN GLOBAL THEME SCRIPT -->
+		<script is:inline src="/dist/js/tabler-theme.js"></script>
+		<!-- END GLOBAL THEME SCRIPT -->
+		<!-- BEGIN NAVBAR  -->
+		<header role="banner">
+			<DocsNavbar />
+		</header>
+		<!-- END NAVBAR  -->
+		<!-- BEGIN PAGE BODY -->
+		<main id="content" class="flex-fill">
+			<div class="container">
+				<div class="row g-0">
+					<!-- BEGIN DOCS MENU -->
+					<div class="col-docs d-none d-lg-block border-end">
+						<div class="py-4">
+							<div class="space-y space-y-5">
+								<div class="nav nav-vertical">
+									{
+										docsLinks.map((link) => (
+											<a href={link.url} class="nav-link" target="_blank">
+												<span class="border me-2 rounded p-1">
+													<Icon name={link.icon} />
+												</span>
+												{link.title}
+											</a>
+										))
+									}
+								</div>
+								<div class="flex-fill">
+									<DocsMenu url={docsUrl} />
+								</div>
+							</div>
+						</div>
+					</div>
+					<!-- END DOCS MENU -->
+					<div class="col bg-docs-gradient">
+						<div class="py-lg-5 ps-lg-5">
+							<div class="py-6 ps-lg-6 p-xxl-6">
+								<Prose
+									data-bs-spy="scroll"
+									data-bs-target="#toc"
+									data-bs-root-margin="50px 0px -0%"
+									data-bs-smooth-scroll="true"
+									tabindex="0"
+								>
+									<div class="d-flex">
+										<h1>
+											{title}
+										</h1>
+
+										{
+											addedIn && (
+												<div class="ms-auto">
+													<span class="badge bg-primary-lt text-primary-lt-fg">Added in {addedIn}</span>
+												</div>
+											)
+										}
+									</div>
+
+									<p class="text-secondary fs-3 lh-3">{summary}</p>
+
+									{/* Page must supply headings with ids (MDX does this by default). */}
+									<slot />
+
+									{!hidePagination && <DocsPagination url={docsUrl} />}
+
+									<div class="mt-7">
+										<div>
+											<a
+												href={`${site.githubUrl}/edit/dev/${editFilePath}`}
+												class="link-primary"
+												target="_blank"><Icon name="edit" class="icon-inline" /> Edit this page on GitHub</a
+											>
+										</div>
+
+										<div class="mt-5">
+											<div class="row">
+												<div class="col text-secondary">
+													© {year} Tabler. All rights reserved.
+												</div>
+
+												<div class="col text-end">
+													<a href={site.githubUrl} class="link-secondary" target="_blank"><Icon name="brand-github" /></a>
+													<a href={site.githubSponsorsUrl} class="link-secondary" target="_blank"><Icon name="heart" /></a>
+													<a href={opencollectiveUrl} class="link-secondary" target="_blank"><Icon name="hearts" /></a>
+													<a href={xUrl} class="link-secondary" target="_blank"><Icon name="brand-x" /></a>
+													<a href={linkedinUrl} class="link-secondary" target="_blank"><Icon name="brand-linkedin" /></a>
+												</div>
+											</div>
+										</div>
+									</div>
+								</Prose>
+							</div>
+						</div>
+					</div>
+					<!-- BEGIN DOCS TOC -->
+					<div class="col-2 d-none d-xxl-block">
+						<div class="py-6 sticky-top">
+							<DocsToc toc={toc} />
+						</div>
+					</div>
+					<!-- END DOCS TOC -->
+				</div>
+			</div>
+		</main>
+		<!-- END PAGE BODY -->
+
+		{
+			docsLibJs.length > 0 && (
+				<Fragment>
+					<Fragment set:html={'<!-- BEGIN PAGE LIBRARIES -->'} />
+					{docsLibJs.map((src) => <script is:inline src={src} />)}
+					<Fragment set:html={'<!-- END PAGE LIBRARIES -->'} />
+				</Fragment>
+			)
+		}
+
+		<!-- BEGIN PAGE SCRIPTS -->
+		<script is:inline>
+			document.addEventListener('DOMContentLoaded', function () {
+				const elements = document.querySelectorAll('[data-clipboard-text]');
+
+				elements.forEach(function (element) {
+					const clipboard = new ClipboardJS(element, {
+						text: function (trigger) {
+							return element.getAttribute('data-clipboard-text');
+						}
+					});
+
+					clipboard.on('success', function (e) {
+						e.clearSelection();
+						e.trigger.classList.add('btn-success');
+						e.trigger.classList.remove('btn-dark');
+						e.trigger.children[0].classList.add('d-none');
+						e.trigger.children[1].classList.remove('d-none');
+
+						setTimeout(function () {
+							e.trigger.classList.remove('btn-success');
+							e.trigger.classList.add('btn-dark');
+
+							e.trigger.children[0].classList.remove('d-none');
+							e.trigger.children[1].classList.add('d-none');
+						}, 2000);
+					});
+
+					clipboard.on('error', function (e) {
+						console.error('Error copying text: ', e);
+					});
+				});
+			})
+		</script>
+		<!-- END PAGE SCRIPTS -->
+
+		<!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
+		<script is:inline src="/dist/js/tabler.js"></script>
+		<!-- END GLOBAL MANDATORY SCRIPTS -->
+
+		<PageScripts />
+
+		<!-- BEGIN DOCS SCRIPTS -->
+		<script is:inline src="/js/docs.js" defer></script>
+		<!-- END DOCS SCRIPTS -->
+	</body>
+</html>

@@ -1,0 +1,59 @@
+---
+// With an id → a noUiSlider div + init script; without an id → a native <input type=range>.
+import CaptureScript from '../components/CaptureScript.astro';
+interface Props {
+	min?: number;
+	max?: number;
+	step?: number;
+	value?: string | number;
+	id?: string;
+	connect?: boolean;
+	class?: string;
+}
+
+const { min = 0, max = 100, step = 10, value = 50, id, connect = false, class: className } = Astro.props;
+
+const values = String(value).split(',');
+const size = values.length;
+const numericValues = values.map(Number);
+const startValue = size > 1 ? numericValues : numericValues[0];
+
+// Connect array: alternate false/true for mid segments, then true, false.
+let connectValue;
+if (size > 1 || connect) {
+	const parts: boolean[] = [];
+	for (let i = 2; i <= size; i++) parts.push((i - 2) % 2 !== 0);
+	connectValue = [...parts, true, false];
+}
+
+const rangeId = `range-${id}`;
+---
+
+{
+	id ? (
+		<div class:list={['form-range mb-2', className]} id={rangeId} />
+	) : (
+		<input type="range" class:list={['form-range mb-2', className]} value={value} min={min} max={max} step={step} />
+	)
+}
+{
+	id && (
+		<CaptureScript>
+			<!-- BEGIN RANGE -->
+			<script define:vars={{ rangeId, startValue, connectValue, step, min, max }}>
+				function initRange() {
+					window.noUiSlider &&
+						noUiSlider.create(document.getElementById(rangeId), {
+							start: startValue,
+							...(connectValue ? { connect: connectValue } : {}),
+							step,
+							range: { min, max },
+						});
+				}
+
+				document.readyState !== 'loading' ? initRange() : document.addEventListener('DOMContentLoaded', initRange, { once: true });
+			</script>
+			<!-- END RANGE -->
+		</CaptureScript>
+	)
+}

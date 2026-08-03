@@ -1,3 +1,5 @@
+@use '../config' as *;
+
 .offcanvas {
   @include media-print {
     display: none;
@@ -13,11 +15,15 @@
 }
 
 .offcanvas-title {
+  --#{$prefix}offcanvas-title-line-height: #{$offcanvas-title-line-height};
+
   font-size: $h3-font-size;
   font-weight: var(--#{$prefix}font-weight-medium);
-  line-height: 1.5rem;
+  line-height: var(--#{$prefix}offcanvas-title-line-height);
 }
 
 .offcanvas-narrow {
-  width: 20rem;
+  --#{$prefix}offcanvas-narrow-width: #{$offcanvas-narrow-width};
+
+  width: var(--#{$prefix}offcanvas-narrow-width);
 }

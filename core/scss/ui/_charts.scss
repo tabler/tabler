@@ -1,6 +1,10 @@
+@use '../config' as *;
+
 .chart {
+  --#{$prefix}chart-min-height: #{$chart-min-height};
+
   display: block;
-  min-height: 10rem;
+  min-height: var(--#{$prefix}chart-min-height);
 
   text {
     font-family: inherit;
@@ -8,41 +12,58 @@
 }
 
 .chart-sm {
-  height: 2.5rem;
+  --#{$prefix}chart-height-sm: #{$chart-height-sm};
+
+  height: var(--#{$prefix}chart-height-sm);
 }
 
 .chart-lg {
-  height: 15rem;
+  --#{$prefix}chart-height-lg: #{$chart-height-lg};
+
+  height: var(--#{$prefix}chart-height-lg);
 }
 
 .chart-square {
-  height: 5.75rem;
+  --#{$prefix}chart-height-square: #{$chart-height-square};
+
+  height: var(--#{$prefix}chart-height-square);
 }
 
 /**
 Chart sparkline
  */
 .chart-sparkline {
+  --#{$prefix}chart-sparkline-width: #{$chart-sparkline-width};
+  --#{$prefix}chart-sparkline-height: #{$chart-sparkline-height};
+
   position: relative;
-  width: 4rem;
-  height: 2.5rem;
+  width: var(--#{$prefix}chart-sparkline-width);
+  height: var(--#{$prefix}chart-sparkline-height);
   line-height: 1;
   min-height: 0 !important;
 }
 
 .chart-sparkline-sm {
-  height: 1.5rem;
+  --#{$prefix}chart-sparkline-height-sm: #{$chart-sparkline-height-sm};
+
+  height: var(--#{$prefix}chart-sparkline-height-sm);
 }
 
 .chart-sparkline-square {
-  width: 2.5rem;
+  --#{$prefix}chart-sparkline-width-square: #{$chart-sparkline-width-square};
+
+  width: var(--#{$prefix}chart-sparkline-width-square);
 }
 
 .chart-sparkline-wide {
-  width: 6rem;
+  --#{$prefix}chart-sparkline-width-wide: #{$chart-sparkline-width-wide};
+
+  width: var(--#{$prefix}chart-sparkline-width-wide);
 }
 
 .chart-sparkline-label {
+  --#{$prefix}chart-sparkline-label-icon-size: #{$chart-sparkline-label-icon-size};
+
   position: absolute;
   top: 0;
   inset-inline-end: 0;
@@ -54,8 +75,8 @@ Chart sparkline
   font-size: $h6-font-size;
 
   .icon {
-    width: 1rem;
-    height: 1rem;
-    font-size: 1rem;
+    width: var(--#{$prefix}chart-sparkline-label-icon-size);
+    height: var(--#{$prefix}chart-sparkline-label-icon-size);
+    font-size: var(--#{$prefix}chart-sparkline-label-icon-size);
   }
 }

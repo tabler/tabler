@@ -19,7 +19,66 @@
       ],
       "cache": true
     },
+    "@tabler/preview#build": {
+      "dependsOn": [
+        "^build"
+      ],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "$TURBO_ROOT$/shared/**"
+      ],
+      "outputs": [
+        "dist/**",
+        "demo/**",
+        "tmp-assets/**"
+      ],
+      "cache": true
+    },
+    "@tabler/docs#build": {
+      "dependsOn": [
+        "^build"
+      ],
+      "inputs": [
+        "$TURBO_DEFAULT$",
+        "$TURBO_ROOT$/shared/**"
+      ],
+      "outputs": [
+        "dist/**"
+      ],
+      "cache": true
+    },
     "dev": {
+      "cache": false,
+      "persistent": true
+    },
+    "@tabler/core#dev-prepare": {
+      "cache": false
+    },
+    "@tabler/preview#dev-prepare": {
+      "dependsOn": [
+        "@tabler/core#dev-prepare"
+      ],
+      "cache": false
+    },
+    "@tabler/core#dev": {
+      "dependsOn": [
+        "@tabler/core#dev-prepare"
+      ],
+      "cache": false,
+      "persistent": true
+    },
+    "@tabler/preview#dev": {
+      "dependsOn": [
+        "@tabler/preview#dev-prepare"
+      ],
+      "cache": false,
+      "persistent": true
+    },
+    "@tabler/docs#dev": {
+      "dependsOn": [
+        "@tabler/core#dev-prepare",
+        "@tabler/preview#dev-prepare"
+      ],
       "cache": false,
       "persistent": true
     },

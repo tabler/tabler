@@ -1,30 +1,47 @@
+@use '../config' as *;
+
 .tag {
-  --#{$prefix}tag-height: 1.5rem;
+  --#{$prefix}tag-height: #{$tag-height};
+  --#{$prefix}tag-padding-x: #{$tag-padding-x};
+  --#{$prefix}tag-gap: #{$tag-gap};
+  --#{$prefix}tag-close-margin-end: #{$tag-close-margin-end};
+  --#{$prefix}tag-close-margin-start: #{$tag-close-margin-start};
+  --#{$prefix}tag-close-size: #{$tag-close-size};
+  --#{$prefix}tag-close-font-size: #{$tag-close-font-size};
+  --#{$prefix}tag-addon-margin-start: #{$tag-addon-margin-start};
+  --#{$prefix}tag-icon-margin-end: #{$tag-icon-margin-end};
+  --#{$prefix}tag-icon-size: #{$tag-icon-size};
+  --#{$prefix}tag-check-size: #{$tag-check-size};
+
   border: $border-width solid var(--#{$prefix}border-color);
   display: inline-flex;
   align-items: center;
   height: var(--#{$prefix}tag-height);
   @include border-radius(var(--#{$prefix}border-radius));
-  padding: 0 0.5rem;
+  padding: 0 var(--#{$prefix}tag-padding-x);
   background: var(--#{$prefix}bg-surface);
   box-shadow: var(--#{$prefix}shadow-input);
-  gap: 0.5rem;
+  gap: var(--#{$prefix}tag-gap);
 
   .btn-close {
-    margin-inline-end: -0.25rem;
-    margin-inline-start: -0.125rem;
+    margin-inline-end: var(--#{$prefix}tag-close-margin-end);
+    margin-inline-start: var(--#{$prefix}tag-close-margin-start);
     padding: 0;
-    width: 1rem;
-    height: 1rem;
-    font-size: 0.5rem;
+    width: var(--#{$prefix}tag-close-size);
+    height: var(--#{$prefix}tag-close-size);
+    font-size: var(--#{$prefix}tag-close-font-size);
   }
 }
 
 .tag-badge {
+  --#{$prefix}tag-badge-padding-y: #{$tag-badge-padding-y};
+  --#{$prefix}tag-badge-padding-x: #{$tag-badge-padding-x};
+  --#{$prefix}tag-badge-margin-end: #{$tag-badge-margin-end};
+
   --#{$prefix}badge-font-size: #{$h6-font-size};
-  --#{$prefix}badge-padding-x: 0.25rem;
-  --#{$prefix}badge-padding-y: 0.125rem;
-  margin-inline-end: -0.25rem;
+  --#{$prefix}badge-padding-x: var(--#{$prefix}tag-badge-padding-x);
+  --#{$prefix}badge-padding-y: var(--#{$prefix}tag-badge-padding-y);
+  margin-inline-end: var(--#{$prefix}tag-badge-margin-end);
 }
 
 .tag-avatar,
@@ -32,20 +49,20 @@
 .tag-payment,
 .tag-icon,
 .tag-check {
-  margin-inline-start: -0.25rem;
+  margin-inline-start: var(--#{$prefix}tag-addon-margin-start);
 }
 
 .tag-icon {
   color: var(--#{$prefix}secondary);
-  margin-inline-end: -0.125rem;
-  width: 1rem;
-  height: 1rem;
+  margin-inline-end: var(--#{$prefix}tag-icon-margin-end);
+  width: var(--#{$prefix}tag-icon-size);
+  height: var(--#{$prefix}tag-icon-size);
 }
 
 .tag-check {
-  width: 1rem;
-  height: 1rem;
-  background-size: 1rem;
+  width: var(--#{$prefix}tag-check-size);
+  height: var(--#{$prefix}tag-check-size);
+  background-size: var(--#{$prefix}tag-check-size);
 }
 
 //

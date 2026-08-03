@@ -1,3 +1,5 @@
+@use '../config' as *;
+
 .accordion {
   --#{$prefix}accordion-color: var(--#{$prefix}body-color);
   --#{$prefix}accordion-border-color: var(--#{$prefix}border-color);
@@ -8,12 +10,14 @@
   --#{$prefix}accordion-active-color: #{$accordion-button-active-color};
   --#{$prefix}accordion-btn-color: var(--#{$prefix}accordion-color);
   --#{$prefix}accordion-btn-bg: #{$accordion-button-bg};
-  --#{$prefix}accordion-btn-toggle-width: 1.25rem;
+  --#{$prefix}accordion-btn-toggle-width: #{$accordion-btn-toggle-width};
   --#{$prefix}accordion-btn-padding-x: var(--#{$prefix}accordion-padding-x);
   --#{$prefix}accordion-btn-padding-y: #{$accordion-button-padding-y};
   --#{$prefix}accordion-btn-font-weight: var(--#{$prefix}font-weight-medium);
   --#{$prefix}accordion-body-padding-x: var(--#{$prefix}accordion-padding-x);
   --#{$prefix}accordion-body-padding-y: #{$accordion-body-padding-y};
+  --#{$prefix}accordion-btn-gap: #{$accordion-btn-gap};
+  --#{$prefix}accordion-header-gap: #{$accordion-header-gap};
 
   display: flex;
   flex-direction: column;
@@ -32,7 +36,7 @@
   border: 0;
   font-size: inherit;
   font-weight: var(--#{$prefix}accordion-btn-font-weight);
-  gap: 0.75rem;
+  gap: var(--#{$prefix}accordion-btn-gap);
 
   &:not(.collapsed) {
     border-bottom-color: transparent;
@@ -45,7 +49,7 @@
   margin: 0;
   position: relative;
   display: flex;
-  gap: 1rem;
+  gap: var(--#{$prefix}accordion-header-gap);
   align-items: center;
   width: 100%;
   color: var(--#{$prefix}accordion-btn-color);
@@ -161,7 +165,7 @@
 }
 
 .accordion-tabs {
-  --#{$prefix}accordion-gap: 0.75rem;
+  --#{$prefix}accordion-gap: #{$accordion-tabs-gap};
 
   > .accordion-item {
     border: var(--#{$prefix}border-width) solid var(--#{$prefix}accordion-border-color);

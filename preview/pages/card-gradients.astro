@@ -1,0 +1,91 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Welcome from '@shared/components/cards/Welcome.astro'
+import DeleteConfirm from '@shared/components/cards/DeleteConfirm.astro'
+import SuccessMessage from '@shared/components/cards/SuccessMessage.astro'
+import PricingPlan from '@shared/components/cards/PricingPlan.astro'
+import StatGradient from '@shared/components/cards/StatGradient.astro'
+import HappyBirthday from '@shared/components/cards/HappyBirthday.astro'
+import YouWin from '@shared/components/cards/YouWin.astro'
+import Weather from '@shared/components/cards/Weather.astro'
+import ProfileContact from '@shared/components/cards/ProfileContact.astro'
+import SmallStats from '@shared/components/cards/SmallStats.astro'
+import people from '@data/people.json'
+---
+
+<DefaultLayout title="Card Gradients" pageHeader="Card Gradients" pageMenu="base.cards.gradients" pageLibs={['apexcharts']}>
+  <div class="row row-cards">
+    <div class="col-md-6">
+      <div class="row row-cards">
+        <div class="col-12">
+          <Welcome />
+        </div>
+        <div class="col-12">
+          <div class="row">
+            <div class="col-6">
+              <div class="row row-cards">
+                <div class="col-12">
+                  <DeleteConfirm />
+                </div>
+                <div class="col-12">
+                  <SuccessMessage />
+                </div>
+              </div>
+            </div>
+            <div class="col-6">
+              <div class="row row-cards">
+                <div class="col-12">
+                  <PricingPlan />
+                </div>
+                <div class="col-12">
+                  <StatGradient title="Earned" value="$2,847" icon="credit-card" color="success" progress={75} />
+                </div>
+                <div class="col-12">
+                  <StatGradient title="Pending Orders" value="47" icon="clock" color="yellow" progress={38} />
+                </div>
+                <div class="col-12">
+                  <StatGradient title="Cancelled Orders" value="12" icon="shopping-cart-x" color="red" progress={8} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-3">
+      <div class="row row-cards">
+        <div class="col-12">
+          <HappyBirthday />
+        </div>
+        <div class="col-12">
+          <YouWin />
+        </div>
+      </div>
+    </div>
+    <div class="col-3">
+      <div class="row row-cards">
+        <div class="col-12">
+          <Weather city="Warsaw, PL" temperature={3} color="rain" icon="cloud-rain" description="Cloudy morning" />
+        </div>
+        <div class="col-12">
+          <Weather city="Oslo, NO" temperature="-5" color="snow" icon="cloud" description="Snowy day" />
+        </div>
+        <div class="col-12">
+          <Weather city="Dubai, AE" temperature="32" color="sun" icon="sun" description="Sunny day" />
+        </div>
+        <div class="col-12">
+          <ProfileContact person={people[6]} />
+        </div>
+        <div class="col-12">
+          <SmallStats chartType="line" chartData="11,16,13,20,17,24,19,23,16,20,13,17,11,19" color="primary" id="chart1" class="card-gradient card-gradient-end card-gradient-primary" />
+        </div>
+        <div class="col-12">
+          <SmallStats id="sales" icon="arrow-up" color="green" title="$5,256.99" description="Revenue last 30 days" descriptionValue="+4%" class="card-gradient card-gradient-end card-gradient-green" />
+        </div>
+        <div class="col-12">
+          <SmallStats id="orders" icon="arrow-down" color="red" title="342" description="Sales last 30 days" descriptionValue="-4.3%" descriptionValueColor="red" class="card-gradient card-gradient-end card-gradient-red" />
+        </div>
+      </div>
+    </div>
+  </div>
+</DefaultLayout>

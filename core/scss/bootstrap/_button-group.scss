@@ -1,4 +1,8 @@
 // Make the div behave like a button
+@use '../config' as *;
+// Loaded for the `@extend .btn-sm/.btn-lg` targets below.
+@use 'buttons';
+
 .btn-group,
 .btn-group-vertical {
   position: relative;
@@ -64,17 +68,20 @@
 //
 // Remix the default button sizing classes into new ones for easier manipulation.
 
-.btn-group-sm > .btn { @extend .btn-sm; }
-.btn-group-lg > .btn { @extend .btn-lg; }
-
+.btn-group-sm > .btn {
+  @extend .btn-sm;
+}
+.btn-group-lg > .btn {
+  @extend .btn-lg;
+}
 
 //
 // Split button dropdowns
 //
 
 .dropdown-toggle-split {
-  padding-right: $btn-padding-x * .75;
-  padding-left: $btn-padding-x * .75;
+  padding-right: $btn-padding-x * 0.75;
+  padding-left: $btn-padding-x * 0.75;
 
   &::after,
   .dropup &::after,
@@ -88,15 +95,14 @@
 }
 
 .btn-sm + .dropdown-toggle-split {
-  padding-right: $btn-padding-x-sm * .75;
-  padding-left: $btn-padding-x-sm * .75;
+  padding-right: $btn-padding-x-sm * 0.75;
+  padding-left: $btn-padding-x-sm * 0.75;
 }
 
 .btn-lg + .dropdown-toggle-split {
-  padding-right: $btn-padding-x-lg * .75;
-  padding-left: $btn-padding-x-lg * .75;
+  padding-right: $btn-padding-x-lg * 0.75;
+  padding-left: $btn-padding-x-lg * 0.75;
 }
-
 
 // The clickable button for toggling the menu
 // Set the same inset shadow as the :active state
@@ -108,7 +114,6 @@
     @include box-shadow(none);
   }
 }
-
 
 //
 // Vertical button groups

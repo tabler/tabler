@@ -1,0 +1,85 @@
+---
+import Icon from './Icon.astro'
+import CaptureScript from '../components/CaptureScript.astro'
+
+interface Props {
+  id?: string
+  class?: string
+  clear?: boolean
+  width?: number
+  height?: number
+  event?: string
+  /** extra-js param — raw JS appended inside the init callback */
+  extraJs?: string
+}
+
+const { id = 'default', class: className, clear, width = 400, height = 400, event = 'DOMContentLoaded', extraJs } = Astro.props
+
+const signatureClass = ['signature position-relative', className]
+
+const clearSnippet = clear
+  ? `		document.querySelector(${JSON.stringify(`#signature-${id}-clear`)}).addEventListener("click", function () {
+		  signaturePad.clear();
+		});
+`
+  : ''
+
+// extraJs is a documented escape hatch for raw JS (see Props) — not user data, so it
+// stays interpolated verbatim rather than JSON-serialized.
+const extraSnippet = extraJs
+  ? `${extraJs}
+`
+  : ''
+
+// set:html (below) is genuinely required here: extraJs is a documented raw-JS escape
+// hatch that must land *inside* the init callback body (it references canvas /
+// signaturePad), so the whole script has to be assembled as text — <script define:vars>
+// can only inject variables, not splice caller-supplied code into the function body.
+const script = `<!-- BEGIN SIGNATURE PAD -->
+<script>
+  document.addEventListener(${JSON.stringify(event)}, function () {
+    const canvas = document.getElementById(${JSON.stringify(`signature-${id}`)});
+
+    if (canvas) {
+      const signaturePad = new SignaturePad(canvas, {
+        backgroundColor: "transparent",
+		  penColor: getComputedStyle(canvas).color
+      });
+
+${clearSnippet}
+		function resizeCanvas() {
+        const ratio = Math.max(window.devicePixelRatio || 1, 1);
+
+		  console.log(canvas.offsetWidth, canvas.offsetHeight);
+
+        canvas.width = canvas.offsetWidth * ratio;
+        canvas.height = canvas.offsetHeight * ratio;
+        canvas.getContext("2d").scale(ratio, ratio);
+        signaturePad.fromData(signaturePad.toData());
+      }
+
+		window.addEventListener("resize", resizeCanvas);
+		resizeCanvas();
+
+${extraSnippet}
+    }
+  });
+</script>
+<!-- END SIGNATURE PAD -->`
+---
+
+<div class:list={signatureClass}>
+  {
+    clear && (
+      <div class="position-absolute top-0 end-0 p-2">
+        <div class="btn btn-icon" id={`signature-${id}-clear`} title="Clear signature" data-bs-toggle="tooltip">
+          <Icon name="trash" />{' '}
+        </div>
+      </div>
+    )
+  }
+  <canvas id={`signature-${id}`} width={width} height={height} class="signature-canvas"></canvas>
+</div>
+<CaptureScript>
+  <Fragment set:html={script} />
+</CaptureScript>

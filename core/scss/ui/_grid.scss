@@ -1,5 +1,7 @@
 @use 'sass:map';
 
+@use '../config' as *;
+
 .row > * {
   min-width: 0;
 }
@@ -17,19 +19,20 @@
   }
 }
 
-@each $name, $value in (0: 0, sm: 0.375rem, md: 1.5rem, lg: 3rem) {
+@each $name, $value in (0: 0, sm: $grid-row-gutter-sm, md: $grid-row-gutter-md, lg: $grid-row-gutter-lg) {
   .row-#{$name} {
-    margin-inline-end: calc(-1 * $value);
-    margin-inline-start: calc(-1 * $value);
+    --#{$prefix}grid-row-gutter: #{$value};
+    margin-inline-end: calc(-1 * var(--#{$prefix}grid-row-gutter));
+    margin-inline-start: calc(-1 * var(--#{$prefix}grid-row-gutter));
 
     > .col,
     > [class*='col-'] {
-      padding-inline-end: $value;
-      padding-inline-start: $value;
+      padding-inline-end: var(--#{$prefix}grid-row-gutter);
+      padding-inline-start: var(--#{$prefix}grid-row-gutter);
     }
 
     .card {
-      margin-bottom: 2 * $value;
+      margin-bottom: calc(2 * var(--#{$prefix}grid-row-gutter));
     }
   }
 }

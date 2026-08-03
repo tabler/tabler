@@ -1,0 +1,111 @@
+---
+title: Rails
+order: 9
+summary: Set up Tabler in Rails and build a first working page.
+description: Integrate Tabler with Rails.
+icon: diamond
+seoDescription: Install `@tabler/core`, load CSS and optional JS in Rails, and render a minimal page layout with a Tabler card.
+layout: '@layouts/DocsMdxLayout.astro'
+---
+
+import TabsPackage from '@components/TabsPackage.astro'
+import CdnImportPackage from '@components/CdnImportPackage.astro'
+import Steps from '@components/Steps.astro'
+
+Rails renders server-side HTML through ERB templates, so Tabler classes work directly in your views, and the compiled CSS and JS integrate with the standard Rails bundling gems (`cssbundling-rails` and `jsbundling-rails`).
+
+You will install `@tabler/core`, import its assets in your application bundles, and render a first view with a Tabler card.
+
+## Setup
+
+<Steps>
+
+### Install Tabler package
+
+Install `@tabler/core` with your preferred package manager:
+
+<TabsPackage name="@tabler/core" />
+
+You can also use CDN files when you need a quick setup:
+
+<CdnImportPackage />
+
+### Import styles
+
+For Rails with `cssbundling-rails`, import Tabler CSS in `app/assets/stylesheets/application.scss`:
+
+```scss
+@import '@tabler/core/dist/css/tabler.min.css';
+```
+
+For full theme customization, import SCSS sources instead:
+
+```scss
+@import '@tabler/core/scss/tabler';
+```
+
+### Import and initialize JavaScript
+
+Tabler JavaScript is required for interactive components such as dropdowns, modals, and tooltips.
+
+If you use `jsbundling-rails`, import Tabler JS in `app/javascript/application.js`:
+
+```js
+import '@tabler/core/dist/js/tabler.min.js'
+```
+
+Rails-specific note: if you use `importmap-rails` without npm bundling, prefer CDN for Tabler JS or add compiled files to your asset pipeline and include them from your layout.
+
+### Minimal working example
+
+Create a simple layout in `app/views/layouts/application.html.erb`:
+
+```erb
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
+    <%= javascript_include_tag "application", "data-turbo-track": "reload", defer: true %>
+  </head>
+  <body>
+    <%= yield %>
+  </body>
+</html>
+```
+
+Then add a simple page in `app/views/home/index.html.erb`:
+
+```html
+<div class="page">
+  <div class="page-wrapper">
+    <div class="container-xl py-4">
+      <div class="card">
+        <div class="card-body">
+          <h3 class="card-title">Rails + Tabler</h3>
+          <p class="text-secondary mb-0">Your Tabler setup is working.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+```
+
+Run the app:
+
+```shell
+bin/rails server
+```
+
+Open the local Rails URL and confirm the card is styled with Tabler.
+
+### Next steps
+
+- Continue with [Customize](/ui/getting-started/customize) to adjust styles and build setup.
+- Explore [Layout](/ui/layout) to choose page structures.
+- Browse [Components](/ui/components) to add UI building blocks.
+
+</Steps>

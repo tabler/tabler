@@ -1,8 +1,10 @@
-@use "sass:math";
+@use 'sass:math';
 
 //
 // General form controls (plus a few specific high-level interventions)
 //
+
+@use '../../config' as *;
 
 .form-control {
   display: block;
@@ -24,7 +26,7 @@
   @include box-shadow($input-box-shadow);
   @include transition($input-transition);
 
-  &[type="file"] {
+  &[type='file'] {
     overflow: hidden; // prevent pseudo element button overlap
 
     &:not(:disabled):not([readonly]) {
@@ -38,6 +40,7 @@
     background-color: $input-focus-bg;
     border-color: $input-focus-border-color;
     outline: 0;
+
     @if $enable-shadows {
       @include box-shadow($input-box-shadow, $input-focus-box-shadow);
     } @else {
@@ -58,7 +61,7 @@
     // https://github.com/twbs/bootstrap/issues/23307
     // TODO: we can remove this workaround once https://bugs.webkit.org/show_bug.cgi?id=198959 is resolved
     // Multiply line-height by 1em if it has no unit
-    height: if(sass(math.unit($input-line-height) == ""): $input-line-height * 1em; else: $input-line-height);
+    height: if(sass(math.unit($input-line-height) == ''): $input-line-height * 1em; else: $input-line-height);
 
     // Android Chrome type="date" is taller than the other inputs
     // because of "margin: 1px 24px 1px 4px" inside the shadow DOM
@@ -149,6 +152,7 @@
 // Repeated in `_input_group.scss` to avoid Sass extend issues.
 
 .form-control-sm {
+  line-height: $input-line-height-sm;
   min-height: $input-height-sm;
   padding: $input-padding-y-sm $input-padding-x-sm;
   @include font-size($input-font-size-sm);
@@ -162,6 +166,7 @@
 }
 
 .form-control-lg {
+  line-height: $input-line-height-lg;
   min-height: $input-height-lg;
   padding: $input-padding-y-lg $input-padding-x-lg;
   @include font-size($input-font-size-lg);
@@ -190,6 +195,7 @@ textarea {
     min-height: $input-height-lg;
   }
 }
+
 // stylelint-enable selector-no-qualifying-type
 
 .form-control-color {
@@ -211,6 +217,11 @@ textarea {
     @include border-radius($input-border-radius);
   }
 
-  &.form-control-sm { height: $input-height-sm; }
-  &.form-control-lg { height: $input-height-lg; }
+  &.form-control-sm {
+    height: $input-height-sm;
+  }
+
+  &.form-control-lg {
+    height: $input-height-lg;
+  }
 }

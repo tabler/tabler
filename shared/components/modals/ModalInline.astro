@@ -1,0 +1,28 @@
+---
+// the page body (not drained to the end of <body> like Modal.astro). Used by the
+// modals gallery page where each modal is shown inline with `inline show`.
+interface Props {
+  modalId?: string
+  size?: string
+  top?: boolean
+  scrollable?: boolean
+  class?: string
+  show?: boolean
+  style?: string
+}
+
+const { modalId = 'simple', size, top, scrollable, class: className, show, style } = Astro.props
+
+const modalClass = ['modal modal-blur fade', className, show && 'show'].filter(Boolean).join(' ')
+const dialogClass = ['modal-dialog', size && `modal-${size}`, !top && 'modal-dialog-centered', scrollable && 'modal-dialog-scrollable'].filter(Boolean).join(' ')
+---
+
+<!-- BEGIN MODAL -->
+<div class={modalClass} style={style} id={`modal-${modalId}`} tabindex="-1" role="dialog" aria-hidden={show ? 'false' : 'true'}>
+  <div class={dialogClass} role="document">
+    <div class="modal-content">
+      <slot />
+    </div>
+  </div>
+</div>
+<!-- END MODAL -->

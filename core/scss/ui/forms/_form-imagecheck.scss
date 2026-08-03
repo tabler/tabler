@@ -1,8 +1,12 @@
 /**
 Image check
  */
+@use '../../config' as *;
+
 .form-imagecheck {
   --#{$prefix}form-imagecheck-radius: var(--#{$prefix}border-radius);
+  --#{$prefix}form-imagecheck-check-offset: #{$form-imagecheck-check-offset};
+  --#{$prefix}form-imagecheck-caption-padding: #{$form-imagecheck-caption-padding};
   position: relative;
   margin: 0;
   cursor: pointer;
@@ -33,8 +37,8 @@ Image check
 
   &:before {
     position: absolute;
-    top: 0.25rem;
-    inset-inline-start: 0.25rem;
+    top: var(--#{$prefix}form-imagecheck-check-offset);
+    inset-inline-start: var(--#{$prefix}form-imagecheck-check-offset);
     z-index: 1;
     display: block;
     width: $form-check-input-width;
@@ -91,7 +95,7 @@ Image check
 }
 
 .form-imagecheck-caption {
-  padding: 0.25rem;
+  padding: var(--#{$prefix}form-imagecheck-caption-padding);
   font-size: $font-size-sm;
   color: var(--#{$prefix}secondary);
   text-align: center;

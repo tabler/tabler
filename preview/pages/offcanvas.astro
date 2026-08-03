@@ -1,0 +1,43 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import { ucFirst as capitalize } from '@shared/lib/string-format'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import Offcanvas from '@ui/Offcanvas.astro'
+import OffcanvasHeader from '@ui/OffcanvasHeader.astro'
+import OffcanvasBody from '@ui/OffcanvasBody.astro'
+
+const directions = ['start', 'end', 'top', 'bottom']
+---
+
+<DefaultLayout title="Offcanvas" pageHeader="Offcanvas" pageMenu="base.offcanvas">
+  <Card>
+    <CardBody>
+      {
+        directions.map((direction) => (
+          <a class="btn" data-bs-toggle="offcanvas" href={`#offcanvas${capitalize(direction)}`} role="button" aria-controls={`offcanvas${capitalize(direction)}`}>
+            Toggle {direction} offcanvas
+          </a>
+        ))
+      }
+    </CardBody>
+  </Card>
+
+  {
+    directions.map((direction) => (
+      <Offcanvas direction={direction} tabindex="-1" id={`offcanvas${capitalize(direction)}`} aria-labelledby={`offcanvas${capitalize(direction)}Label`}>
+        <OffcanvasHeader title={`${capitalize(direction)} offcanvas`} titleId={`offcanvas${capitalize(direction)}Label`}>
+          <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close" />
+        </OffcanvasHeader>
+        <OffcanvasBody>
+          <div>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ab assumenda ea est, eum exercitationem fugiat illum itaque laboriosam magni necessitatibus, nemo nisi numquam quae reiciendis repellat sit soluta unde. Aut!</div>
+          <div class="mt-3">
+            <button class="btn btn-primary" type="button" data-bs-dismiss="offcanvas">
+              Close offcanvas
+            </button>
+          </div>
+        </OffcanvasBody>
+      </Offcanvas>
+    ))
+  }
+</DefaultLayout>

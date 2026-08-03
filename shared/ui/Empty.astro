@@ -1,0 +1,46 @@
+---
+import Icon from './Icon.astro'
+import Button from './Button.astro'
+import Illustration from './Illustration.astro'
+
+interface Props {
+  icon?: string
+  height?: number | string
+  bordered?: boolean
+  class?: string
+  /** illustration file name, e.g. "computer-fix.svg" */
+  illustration?: string
+  /** icon-text param — big text rendered instead of an icon/illustration */
+  iconText?: string
+  title?: string
+  subtitle?: string
+  buttonText?: string
+  buttonIcon?: string
+}
+
+const { icon = 'mood-sad', height = 256, bordered, class: className, illustration, iconText, title = 'No results found', subtitle = "Try adjusting your search or filter to find what you're looking for.", buttonText = 'Search again', buttonIcon = 'search' } = Astro.props
+
+const classes = ['empty', bordered && 'empty-bordered', className]
+---
+
+<div class:list={classes}>
+  {
+    illustration ? (
+      <div class="empty-img">
+        <Illustration image={illustration} height={height} />
+      </div>
+    ) : iconText ? (
+      <div class="empty-header" set:html={iconText} />
+    ) : (
+      <div class="empty-icon">
+        <Icon name={icon} />
+      </div>
+    )
+  }
+
+  <p class="empty-title" set:html={title} />
+  <p class="empty-subtitle text-secondary" set:html={subtitle} />
+  <div class="empty-action">
+    <Button text={buttonText} color="primary" icon={buttonIcon} href="." />
+  </div>
+</div>

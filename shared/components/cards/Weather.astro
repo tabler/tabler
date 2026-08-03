@@ -1,0 +1,36 @@
+---
+import Icon from '@ui/Icon.astro'
+
+interface Props {
+  city?: string
+  temperature?: string | number
+  color?: string
+  icon?: string
+  description?: string
+}
+
+const { city = 'Warsaw', temperature = 20, color = 'blue', icon = 'cloud-rain', description = 'Cloudy morning' } = Astro.props
+---
+
+<div class={`card card-gradient card-gradient-${color} card-gradient-end`}>
+  <div class="card-body">
+    <div class="row">
+      <div class="col">
+        <div class="row">
+          <div class="col-auto">
+            <h3 class="card-title mb-2">{city}</h3>
+          </div>
+          <div class="col">
+            <Icon name={icon} />
+          </div>
+        </div>
+        <div class="text-secondary">
+          {description}
+        </div>
+      </div>
+      <div class="col-auto">
+        <div class="display-5 lh-1 fw-lighter">{temperature}&deg;</div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,14 +1,27 @@
 // stylelint-disable declaration-no-important
 
+@use '../config' as *;
+
 .ribbon {
   --#{$prefix}ribbon-margin: #{$card-ribbon-margin};
   --#{$prefix}ribbon-border-radius: #{$card-ribbon-border-radius};
+  --#{$prefix}ribbon-font-size: #{$card-ribbon-font-size};
+  --#{$prefix}ribbon-icon-size: #{$card-ribbon-icon-size};
+  --#{$prefix}ribbon-offset: #{$ribbon-offset};
+  --#{$prefix}ribbon-padding-y: #{$ribbon-padding-y};
+  --#{$prefix}ribbon-padding-x: #{$ribbon-padding-x};
+  --#{$prefix}ribbon-min-size: #{$ribbon-min-size};
+  --#{$prefix}ribbon-top-width: #{$ribbon-top-width};
+  --#{$prefix}ribbon-top-padding-y: #{$ribbon-top-padding-y};
+  --#{$prefix}ribbon-bookmark-border-size: #{$ribbon-bookmark-border-size};
+  --#{$prefix}ribbon-bookmark-notch-width: #{$ribbon-bookmark-notch-width};
+
   position: absolute;
-  top: 0.75rem;
+  top: var(--#{$prefix}ribbon-offset);
   inset-inline-end: calc(-1 * var(--#{$prefix}ribbon-margin));
   z-index: 1;
-  padding: 0.25rem 0.75rem;
-  font-size: $card-ribbon-font-size;
+  padding: var(--#{$prefix}ribbon-padding-y) var(--#{$prefix}ribbon-padding-x);
+  font-size: var(--#{$prefix}ribbon-font-size);
   font-weight: var(--#{$prefix}font-weight-semibold);
   line-height: 1;
   color: $white;
@@ -20,8 +33,8 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 2rem;
-  min-width: 2rem;
+  min-height: var(--#{$prefix}ribbon-min-size);
+  min-width: var(--#{$prefix}ribbon-min-size);
 
   &:before {
     position: absolute;
@@ -50,17 +63,17 @@
   }
 
   .icon {
-    width: 1.25rem;
-    height: 1.25rem;
-    font-size: 1.25rem;
+    width: var(--#{$prefix}ribbon-icon-size);
+    height: var(--#{$prefix}ribbon-icon-size);
+    font-size: var(--#{$prefix}ribbon-icon-size);
   }
 }
 
 .ribbon-top {
   top: calc(-1 * var(--#{$prefix}ribbon-margin));
-  inset-inline-end: 0.75rem;
-  width: 2rem;
-  padding: 0.5rem 0;
+  inset-inline-end: var(--#{$prefix}ribbon-offset);
+  width: var(--#{$prefix}ribbon-top-width);
+  padding: var(--#{$prefix}ribbon-top-padding-y) 0;
   @include border-radius(0 var(--#{$prefix}ribbon-border-radius) var(--#{$prefix}ribbon-border-radius) var(--#{$prefix}ribbon-border-radius));
 
   &:before {
@@ -74,7 +87,7 @@
 
   &.ribbon-start {
     inset-inline-end: auto;
-    inset-inline-start: 0.75rem;
+    inset-inline-start: var(--#{$prefix}ribbon-offset);
 
     &:before {
       top: 0;
@@ -101,11 +114,11 @@
 
 .ribbon-bottom {
   top: auto;
-  bottom: 0.75rem;
+  bottom: var(--#{$prefix}ribbon-offset);
 }
 
 .ribbon-bookmark {
-  padding-inline-start: 0.25rem;
+  padding-inline-start: var(--#{$prefix}ribbon-padding-y);
   @include border-radius(0 0 var(--#{$prefix}ribbon-border-radius) 0);
 
   &:after {
@@ -116,29 +129,29 @@
     width: 0;
     height: 0;
     content: '';
-    border: 1rem var(--#{$prefix}border-style);
+    border: var(--#{$prefix}ribbon-bookmark-border-size) var(--#{$prefix}border-style);
     border-color: inherit;
     border-inline-end-width: 0;
     border-inline-start-color: transparent;
-    border-inline-start-width: 0.5rem;
+    border-inline-start-width: var(--#{$prefix}ribbon-bookmark-notch-width);
   }
 
   &.ribbon-left {
-    padding-inline-end: 0.5rem;
+    padding-inline-end: var(--#{$prefix}ribbon-bookmark-notch-width);
 
     &:after {
       inset-inline-end: auto;
       inset-inline-start: 100%;
       border-inline-end-color: transparent;
 
-      border-inline-end-width: 0.5rem;
+      border-inline-end-width: var(--#{$prefix}ribbon-bookmark-notch-width);
       border-inline-start-width: 0;
     }
   }
 
   &.ribbon-top {
     padding-inline-end: 0;
-    padding-bottom: 0.25rem;
+    padding-bottom: var(--#{$prefix}ribbon-padding-y);
     padding-inline-start: 0;
     @include border-radius(0 var(--#{$prefix}ribbon-border-radius) 0 0);
 
@@ -147,10 +160,10 @@
       inset-inline-end: 0;
       inset-inline-start: 0;
       border-color: inherit;
-      border-width: 1rem;
+      border-width: var(--#{$prefix}ribbon-bookmark-border-size);
       border-top-width: 0;
       border-bottom-color: transparent;
-      border-bottom-width: 0.5rem;
+      border-bottom-width: var(--#{$prefix}ribbon-bookmark-notch-width);
     }
   }
 }

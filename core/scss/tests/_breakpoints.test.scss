@@ -6,39 +6,45 @@
 // `breakpoint-prev` lives in mixins/_functions.scss; the rest live in
 // mixins/bootstrap/_breakpoints.scss.
 
-@use "../mixins/functions" as fn;
-@use "../mixins/bootstrap/breakpoints" as *;
+@use '../mixins/functions' as fn;
+@use '../mixins/bootstrap/breakpoints' as *;
 
-$grid: (xs: 0, sm: 576px, md: 768px, lg: 992px, xl: 1200px);
+$grid: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px,
+);
 
-@include describe("breakpoint-next / breakpoint-prev") {
-  @include it("returns the neighbouring breakpoint name") {
+@include describe('breakpoint-next / breakpoint-prev') {
+  @include it('returns the neighbouring breakpoint name') {
     @include assert-equal(breakpoint-next(md, $grid), lg);
     @include assert-equal(fn.breakpoint-prev(md, $grid), sm);
   }
 
-  @include it("returns null past the last / before the first breakpoint") {
+  @include it('returns null past the last / before the first breakpoint') {
     @include assert-equal(breakpoint-next(xl, $grid), null);
     @include assert-equal(fn.breakpoint-prev(xs, $grid), null);
   }
 }
 
-@include describe("breakpoint-min") {
-  @include it("returns the min width, or null for the zero breakpoint") {
+@include describe('breakpoint-min') {
+  @include it('returns the min width, or null for the zero breakpoint') {
     @include assert-equal(breakpoint-min(md, $grid), 768px);
     @include assert-equal(breakpoint-min(xs, $grid), null);
   }
 }
 
-@include describe("breakpoint-max") {
-  @include it("subtracts 0.02px to avoid min/max overlap") {
+@include describe('breakpoint-max') {
+  @include it('subtracts 0.02px to avoid min/max overlap') {
     @include assert-equal(breakpoint-max(md, $grid), 767.98px);
   }
 }
 
-@include describe("breakpoint-infix") {
-  @include it("is blank for the smallest breakpoint and dash-prefixed otherwise") {
-    @include assert-equal(breakpoint-infix(xs, $grid), "");
-    @include assert-equal(breakpoint-infix(md, $grid), "-md");
+@include describe('breakpoint-infix') {
+  @include it('is blank for the smallest breakpoint and dash-prefixed otherwise') {
+    @include assert-equal(breakpoint-infix(xs, $grid), '');
+    @include assert-equal(breakpoint-infix(md, $grid), '-md');
   }
 }

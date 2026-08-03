@@ -1,6 +1,10 @@
+@use '../config' as *;
+
 .pagination {
   margin: 0;
-  --#{$prefix}pagination-gap: 0.25rem;
+  --#{$prefix}pagination-gap: #{$pagination-gap};
+  --#{$prefix}pagination-link-min-width: #{$pagination-link-min-width};
+  --#{$prefix}page-text-padding-x: #{$page-text-padding-x};
   user-select: none;
   gap: var(--#{$prefix}pagination-gap);
   line-height: var(--#{$prefix}body-line-height);
@@ -11,7 +15,7 @@
 }
 
 .page-link {
-  min-width: 2rem;
+  min-width: var(--#{$prefix}pagination-link-min-width);
   @include border-radius(var(--#{$prefix}pagination-border-radius));
 }
 
@@ -20,8 +24,8 @@
 }
 
 .page-text {
-  padding-inline-start: 0.5rem;
-  padding-inline-end: 0.5rem;
+  padding-inline-start: var(--#{$prefix}page-text-padding-x);
+  padding-inline-end: var(--#{$prefix}page-text-padding-x);
 }
 
 .page-item {
@@ -40,8 +44,10 @@
 }
 
 .page-item-subtitle {
-  margin-bottom: 2px;
-  font-size: 12px;
+  --#{$prefix}page-item-subtitle-margin-bottom: #{$page-item-subtitle-margin-bottom};
+  --#{$prefix}page-item-subtitle-font-size: #{$page-item-subtitle-font-size};
+  margin-bottom: var(--#{$prefix}page-item-subtitle-margin-bottom);
+  font-size: var(--#{$prefix}page-item-subtitle-font-size);
   color: var(--#{$prefix}secondary);
   text-transform: uppercase;
 

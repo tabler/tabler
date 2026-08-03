@@ -1,4 +1,6 @@
-@import 'typo/hr';
+@use '../config' as *;
+
+@forward 'typo/hr';
 
 .lead {
   color: var(--#{$prefix}secondary);
@@ -82,11 +84,13 @@ b {
 }
 
 blockquote {
-  padding: 1rem 1rem 1rem;
+  --#{$prefix}blockquote-padding: #{$blockquote-padding};
+  --#{$prefix}blockquote-paragraph-margin-bottom: #{$blockquote-paragraph-margin-bottom};
+  padding: var(--#{$prefix}blockquote-padding) var(--#{$prefix}blockquote-padding) var(--#{$prefix}blockquote-padding);
   border-inline-start: 2px var(--#{$prefix}border-style) var(--#{$prefix}border-color);
 
   p {
-    margin-bottom: 1rem;
+    margin-bottom: var(--#{$prefix}blockquote-paragraph-margin-bottom);
   }
 
   cite {
@@ -101,11 +105,13 @@ blockquote {
 
 ul,
 ol {
-  padding-inline-start: 1.5rem;
+  --#{$prefix}list-padding-start: #{$list-padding-start};
+  padding-inline-start: var(--#{$prefix}list-padding-start);
 }
 
 hr {
-  margin: 2rem 0;
+  --#{$prefix}hr-margin-y: #{$hr-margin-y};
+  margin: var(--#{$prefix}hr-margin-y) 0;
 }
 
 dl {
@@ -277,19 +283,22 @@ $text-variants: (
 }
 
 .steps {
-  --#{$prefix}steps-padding: 2rem;
-  --#{$prefix}steps-item-size: 1.5rem;
-  margin-inline-start: 1rem;
+  --#{$prefix}steps-padding: #{$steps-padding};
+  --#{$prefix}steps-item-size: #{$steps-item-size};
+  --#{$prefix}steps-margin-start: #{$steps-margin-start};
+  --#{$prefix}steps-margin-bottom: #{$steps-margin-bottom};
+  --#{$prefix}steps-heading-margin-top: #{$steps-heading-margin-top};
+  margin-inline-start: var(--#{$prefix}steps-margin-start);
   padding-inline-start: var(--#{$prefix}steps-padding);
   counter-reset: step;
   border-inline-start: 1px solid var(--#{$prefix}border-color);
-  margin-bottom: 2rem;
+  margin-bottom: var(--#{$prefix}steps-margin-bottom);
 
   h3 {
     counter-increment: step;
 
     &:not(:first-child) {
-      margin-top: 2.5rem !important;
+      margin-top: var(--#{$prefix}steps-heading-margin-top) !important;
     }
 
     &:before {
@@ -317,10 +326,13 @@ $text-variants: (
 }
 
 .callout {
-  margin-bottom: 1.5rem;
+  --#{$prefix}callout-margin-bottom: #{$callout-margin-bottom};
+  --#{$prefix}callout-padding-y: #{$callout-padding-y};
+  --#{$prefix}callout-padding-x: #{$callout-padding-x};
+  margin-bottom: var(--#{$prefix}callout-margin-bottom);
   border: 1px solid var(--#{$prefix}primary-200);
   @include border-radius(var(--#{$prefix}border-radius));
-  padding: 0.5rem 1rem;
+  padding: var(--#{$prefix}callout-padding-y) var(--#{$prefix}callout-padding-x);
   background: var(--#{$prefix}primary-lt);
 
   & > :last-child {
