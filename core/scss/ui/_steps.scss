@@ -83,7 +83,8 @@
     align-items: center;
     justify-content: center;
     @include border-radius(var(--#{$prefix}border-radius-pill));
-    transform: translateX(-50%);
+    /*rtl:ignore*/
+    transform: translateX(calc(var(--#{$prefix}dir) * -50%));
     color: var(--#{$prefix}white);
     width: var(--#{$prefix}steps-dot-size);
     height: var(--#{$prefix}steps-dot-size);
@@ -157,7 +158,8 @@
       &:after {
         position: absolute;
         content: '';
-        transform: translateX(-50%);
+        /*rtl:ignore*/
+        transform: translateX(calc(var(--#{$prefix}dir) * -50%));
         top: var(--#{$prefix}steps-dot-offset);
         inset-inline-start: calc(var(--#{$prefix}steps-dot-size) * 0.5);
         width: var(--#{$prefix}steps-border-width);
