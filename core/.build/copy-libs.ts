@@ -47,12 +47,26 @@ for (const name in libsData) {
       files.push(...matches)
     }
 
-    if (js || css) {
+    if (files) {
       for (const file of files) {
         copySync(join(pkgDir, file), join(to, file), {
           dereference: true,
         })
       }
+    }
+
+    // Ship each upstream license alongside its files — we redistribute the
+    // built bundles, and MIT/BSD/Apache all require the notice to travel with them.
+    const licenses = globSync('{license,licence,copying}*', { cwd: pkgDir, nodir: true, nocase: true })
+
+    if (licenses.length === 0) {
+      console.warn(`Warning: no license file found for ${npm}`)
+    }
+
+    for (const file of licenses) {
+      copySync(join(pkgDir, file), join(to, file), {
+        dereference: true,
+      })
     }
 
     console.log(`Successfully copied ${npm}`)
