@@ -1,0 +1,107 @@
+---
+title: Floating labels
+summary: Floating labels put the label inside the field. The label sits over the empty control and moves up when the user types or selects a value.
+description: Show labels inside form controls.
+layout: '@layouts/DocsMdxLayout.astro'
+---
+import Example from '@components/Example.astro';
+
+## Overview
+
+Use `.form-floating` to place a label inside a form control. The label covers the empty field and moves up when the field has a value or gets focus. This saves vertical space in dense forms.
+
+Wrap one control and its label in a `.form-floating` element. The control comes first, the label second.
+
+<Example>
+<div class="form-floating"> <input type="email" class="form-control" id="floating-overview" placeholder="name@example.com" /> <label for="floating-overview">Email address</label> </div>
+</Example>
+
+Two rules make the effect work:
+
+- The control needs a `placeholder`. The label only moves up when the placeholder is not shown. The placeholder text itself is hidden.
+- The label must come after the control in the markup. The style uses the `~` sibling selector.
+
+Link the label to the control with `for` and `id`, the same as for a normal `.form-label`.
+
+## Usage
+
+### Inputs
+
+Floating labels work with all text based inputs, for example `text`, `email`, `password`, and `number`.
+
+<Example column>
+<div class="form-floating"> <input type="text" class="form-control" id="floating-name" placeholder="Jane Doe" /> <label for="floating-name">Full name</label> </div> <div class="form-floating"> <input type="password" class="form-control" id="floating-password" placeholder="Password" /> <label for="floating-password">Password</label> </div>
+</Example>
+
+### Textarea
+
+A textarea inside `.form-floating` gets the same fixed height as an input. Set your own height with a `style` or a utility class when you need more space.
+
+<Example column>
+<div class="form-floating"> <textarea class="form-control" id="floating-comment" placeholder="Your comment"></textarea> <label for="floating-comment">Comment</label> </div> <div class="form-floating"> <textarea class="form-control" id="floating-message" placeholder="Your message" style="height: 8rem"></textarea> <label for="floating-message">Message</label> </div>
+</Example>
+
+### Select
+
+A select always shows a value, so its label stays in the floated position. A `placeholder` is not needed here.
+
+<Example column>
+<div class="form-floating"> <select class="form-select" id="floating-country"> <option selected>United States</option> <option>Germany</option> <option>Poland</option> </select> <label for="floating-country">Country</label> </div>
+</Example>
+
+### Readonly plaintext
+
+Use `.form-control-plaintext` to show a value without the input border. The label stays floated.
+
+<Example column>
+<div class="form-floating"> <input type="email" readonly class="form-control-plaintext" id="floating-plaintext" placeholder="name@example.com" value="name@example.com" /> <label for="floating-plaintext">Email address</label> </div>
+</Example>
+
+### Disabled state
+
+Add `disabled` to the control. The label turns gray to show the field cannot be edited.
+
+<Example column>
+<div class="form-floating"> <input type="text" class="form-control" id="floating-disabled" placeholder="Disabled input" disabled /> <label for="floating-disabled">Disabled input</label> </div> <div class="form-floating"> <textarea class="form-control" id="floating-disabled-textarea" placeholder="Disabled textarea" disabled></textarea> <label for="floating-disabled-textarea">Disabled textarea</label> </div>
+</Example>
+
+### Input group
+
+Put `.form-floating` inside an `.input-group` to mix a floating label with text or buttons. The group keeps the rounded corners on the outer elements.
+
+<Example column>
+<div class="input-group"> <span class="input-group-text">@</span> <div class="form-floating"> <input type="text" class="form-control" id="floating-username" placeholder="Username" /> <label for="floating-username">Username</label> </div> </div> <div class="input-group"> <div class="form-floating"> <input type="text" class="form-control" id="floating-search" placeholder="Search" /> <label for="floating-search">Search</label> </div> <button class="btn btn-primary" type="button">Go</button> </div>
+</Example>
+
+### Validation states
+
+Add `.is-valid` or `.is-invalid` to the control, the same as for other form elements. Put the feedback text after the label.
+
+<Example column>
+<div class="form-floating"> <input type="email" class="form-control is-valid" id="floating-valid" placeholder="name@example.com" value="name@example.com" /> <label for="floating-valid">Email address</label> <div class="valid-feedback">Looks good</div> </div> <div class="form-floating"> <input type="email" class="form-control is-invalid" id="floating-invalid" placeholder="name@example.com" value="name@" /> <label for="floating-invalid">Email address</label> <div class="invalid-feedback">Enter a valid email address</div> </div>
+</Example>
+
+## Examples
+
+### Form in a grid
+
+Use the grid to place floating labels next to each other. Each field keeps its own `.form-floating` wrapper.
+
+<Example>
+<div class="row g-2" style="width: 100%;"> <div class="col-md-6"> <div class="form-floating"> <input type="text" class="form-control" id="floating-first-name" placeholder="Jane" /> <label for="floating-first-name">First name</label> </div> </div> <div class="col-md-6"> <div class="form-floating"> <input type="text" class="form-control" id="floating-last-name" placeholder="Doe" /> <label for="floating-last-name">Last name</label> </div> </div> <div class="col-12"> <div class="form-floating"> <input type="email" class="form-control" id="floating-work-email" placeholder="name@example.com" /> <label for="floating-work-email">Work email</label> </div> </div> </div>
+</Example>
+
+### Sign in card
+
+Floating labels keep login forms short, because the labels do not take an extra line.
+
+<Example>
+<div class="card" style="width: 22rem;"> <div class="card-body"> <h3 class="card-title">Sign in</h3> <div class="mb-2"> <div class="form-floating"> <input type="email" class="form-control" id="floating-signin-email" placeholder="name@example.com" /> <label for="floating-signin-email">Email address</label> </div> </div> <div class="mb-3"> <div class="form-floating"> <input type="password" class="form-control" id="floating-signin-password" placeholder="Password" /> <label for="floating-signin-password">Password</label> </div> </div> <button type="button" class="btn btn-primary w-100">Sign in</button> </div> </div>
+</Example>
+
+## Accessibility
+
+- Always use a real `<label>` with `for` pointing to the control `id`. The floated text is the only label, so screen readers need this link.
+- The placeholder is only a technical helper here, because its text is hidden. Never put important hints in it.
+- Keep labels short. A long label is cut with an ellipsis, since it must fit on one line.
+- The label ignores pointer events, so clicking it focuses the control below.
