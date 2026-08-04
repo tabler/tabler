@@ -49,9 +49,40 @@ const elementId = `chart-${id}`;
 				<script define:vars={{ chartKey, elementId, config, xFormatterExpr }}>
 					window.tabler_chart ??= {};
 
+					// Heatmap shades each cell by computing off the literal base color in JS
+					// (light -> full color-mix by value), unlike other chart types where the
+					// SVG `fill` attribute just holds `var(--chart-...)` and the browser paints
+					// it directly. A raw var()/color-mix() string can't be parsed by that color
+					// math, so it falls back to gray — and ApexCharts' heatmap parser only
+					// accepts hex, not rgb()/rgba() either. Probing a real element's computed
+					// `color` resolves var()/color-mix() (Chromium serializes it as a CSS Color 4
+					// `color(srgb ...)` string), then a 1x1 canvas round-trip converts that to hex.
+					function resolveCssVar(value) {
+						if (typeof value !== 'string' || !value.includes('var(')) return value;
+						const probe = document.createElement('span');
+						probe.style.cssText = 'position:absolute;visibility:hidden';
+						probe.style.color = value;
+						document.body.appendChild(probe);
+						const resolved = getComputedStyle(probe).color;
+						probe.remove();
+						if (!resolved) return value;
+
+						const canvas = document.createElement('canvas');
+						canvas.width = canvas.height = 1;
+						const ctx = canvas.getContext('2d');
+						ctx.fillStyle = resolved;
+						ctx.fillRect(0, 0, 1, 1);
+						const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
+						return `#${[r, g, b].map((c) => c.toString(16).padStart(2, '0')).join('')}`;
+					}
+
 					function initChart() {
 						if (xFormatterExpr && config.xaxis?.labels) {
 							config.xaxis.labels.formatter = new Function('val', `return (${xFormatterExpr})`);
+						}
+
+						if (config.chart?.type === 'heatmap' && Array.isArray(config.colors)) {
+							config.colors = config.colors.map(resolveCssVar);
 						}
 
 						window.ApexCharts &&

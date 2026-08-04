@@ -690,15 +690,22 @@ Card note
 /**
 Card gradient
 */
+// Split out so scss/tests/_cards.test.scss can assert on it directly — a bare
+// top-level ruleset like .card-gradient can't be @include-d or otherwise
+// referenced in isolation by sass-true.
+@mixin card-gradient-background {
+  background:
+    radial-gradient(ellipse at center, var(--#{$prefix}card-bg) 0%, color-mix(in srgb, var(--#{$prefix}card-bg) 0%, transparent) 80%) border-box,
+    linear-gradient(var(--#{$prefix}card-gradient-direction), color-mix(in srgb, var(--#{$prefix}card-bg) var(--#{$prefix}card-gradient-opacity), transparent) 0%, var(--#{$prefix}card-bg) 40%) border-box,
+    linear-gradient(calc(270deg + var(--#{$prefix}card-gradient-direction)), var(--#{$prefix}card-gradient)) border-box;
+}
+
 .card-gradient {
   --#{$prefix}card-gradient-direction: 180deg;
   --#{$prefix}card-gradient-opacity: 86%;
   --#{$prefix}card-gradient: var(--tblr-primary), var(--tblr-primary);
 
-  background:
-    radial-gradient(ellipse at center, var(--#{$prefix}card-bg) 0%, color-mix(in srgb, var(--#{$prefix}card-bg) 0%, transparent) 80%) border-box,
-    linear-gradient(var(--#{$prefix}card-gradient-direction), color-mix(in srgb, var(--#{$prefix}card-bg) var(--#{$prefix}card-gradient-opacity), transparent) 0%, var(--#{$prefix}card-bg) 40%) border-box,
-    linear-gradient(calc(270deg + var(--#{$prefix}card-gradient-direction)), var(--#{$prefix}card-gradient)) border-box;
+  @include card-gradient-background;
 }
 
 @each $name, $color in map.merge($colors, $theme-colors) {

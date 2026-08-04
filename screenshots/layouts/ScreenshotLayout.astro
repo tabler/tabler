@@ -8,7 +8,7 @@
 // hide-theme-light/hide-theme-dark nav-segmented toggle as that page, so a
 // screenshot tool can request /button.html?theme=dark without depending on
 // stored/localStorage state.
-import NavbarLogo from '@shared/components/navbar/NavbarLogo.astro'
+import Logo from '@shared/components/navbar/Logo.astro'
 import PageScripts from '@shared/components/PageScripts.astro'
 import libs from '@tabler/core/libs.json'
 
@@ -54,11 +54,11 @@ const libJsFiles = pageLibEntries.flatMap(([, lib]) => (lib.js ?? []).map((file)
 
     <title>{title} - Tabler screenshots</title>
 
-    <link rel="icon" href="/favicon-dev.ico" type="image/x-icon" />
+    <link rel="icon" href="./favicon-dev.ico" type="image/x-icon" />
 
-    <link href={`/dist/css/tabler${rtlSuffix}${min}.css`} rel="stylesheet" />
+    <link href={`./dist/css/tabler${rtlSuffix}${min}.css`} rel="stylesheet" />
 
-    {cssPlugins.map((plugin) => <link href={`/dist/css/tabler-${plugin}${rtlSuffix}${min}.css`} rel="stylesheet" />)}
+    {cssPlugins.map((plugin) => <link href={`./dist/css/tabler-${plugin}${rtlSuffix}${min}.css`} rel="stylesheet" />)}
 
     {libCssFiles.map((href) => <link href={href} rel="stylesheet" />)}
 
@@ -119,7 +119,7 @@ const libJsFiles = pageLibEntries.flatMap(([, lib]) => (lib.js ?? []).map((file)
         {
           showLogo && (
             <div class="screenshot-logo">
-              <NavbarLogo class="brand-gray" />
+              <Logo gray />
             </div>
           )
         }
