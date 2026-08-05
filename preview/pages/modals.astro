@@ -24,8 +24,6 @@ import ChangePasswordModalContent from '@shared/components/modals/ChangePassword
 import AddTaskModalContent from '@shared/components/modals/AddTaskModalContent.astro'
 
 const cardClass = 'position-relative rounded d-block bg-surface-backdrop py-6 w-auto h-auto z-0'
-// add-task bakes `show` into the class string (no `show` flag) → aria-hidden="true".
-const addTaskClass = 'position-relative rounded d-block show bg-surface-backdrop py-6 w-auto h-auto z-0'
 ---
 
 <DefaultLayout title="Modals" pageHeader="Modals" pageMenu="base.modals" pageLibs={['signature_pad', 'hugerte', 'litepicker']}>
@@ -152,7 +150,7 @@ const addTaskClass = 'position-relative rounded d-block show bg-surface-backdrop
             </div>
             <div>
               <h3>Add task modal</h3>
-              <ModalInline class={addTaskClass} modalId="add-task">
+              <ModalInline class={cardClass} modalId="add-task" show>
                 <AddTaskModalContent />
               </ModalInline>
             </div>

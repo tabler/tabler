@@ -1,5 +1,22 @@
 @use '../config' as *;
 
+// Skip-to-content link: hidden via .visually-hidden-focusable until keyboard focus reveals it
+.skip-link {
+  position: fixed;
+  inset-inline-start: 0;
+  top: 0;
+  z-index: $zindex-tooltip;
+  padding: 0.5rem 1rem;
+  color: var(--primary-fg, #fff);
+  text-decoration: none;
+  background: var(--primary);
+
+  &:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
+  }
+}
+
 .page {
   position: relative;
   display: flex;
@@ -33,16 +50,16 @@
   display: flex;
   flex: 1;
   flex-direction: column;
-  margin-top: var(--#{$prefix}page-padding-y);
-  margin-bottom: var(--#{$prefix}page-padding-y);
+  margin-top: var(--page-padding-y);
+  margin-bottom: var(--page-padding-y);
 }
 
 .page-body-card {
   flex: 1;
-  padding: var(--#{$prefix}page-padding) 0;
+  padding: var(--page-padding) 0;
   margin-bottom: 0;
-  background: var(--#{$prefix}bg-surface);
-  border-top: var(--#{$prefix}border-width) var(--#{$prefix}border-style) $card-border-color;
+  background: var(--bg-surface);
+  border-top: var(--border-width) var(--border-style) $card-border-color;
 
   .page-body ~ & {
     margin-top: 0;
@@ -72,15 +89,15 @@
   min-height: 2.25rem;
 
   .page-wrapper & {
-    margin: var(--#{$prefix}page-padding-y) 0 0;
+    margin: var(--page-padding-y) 0 0;
   }
 }
 
 .page-header-border {
-  padding: var(--#{$prefix}page-padding-y) 0;
+  padding: var(--page-padding-y) 0;
   margin: 0 !important;
-  background-color: var(--#{$prefix}bg-surface);
-  border-bottom: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
+  background-color: var(--bg-surface);
+  border-bottom: var(--border-width) var(--border-style) var(--border-color);
 }
 
 .page-pretitle {
@@ -110,18 +127,18 @@
 
 .page-subtitle {
   margin-top: 0.25rem;
-  color: var(--#{$prefix}secondary);
+  color: var(--secondary);
 }
 
 //
 // Page cover
 //
 .page-cover {
-  --#{$prefix}page-cover-blur: 20px;
-  --#{$prefix}page-cover-padding: 1rem;
+  --page-cover-blur: 20px;
+  --page-cover-padding: 1rem;
   position: relative;
   min-height: 6rem;
-  padding: var(--#{$prefix}page-cover-padding) 0;
+  padding: var(--page-cover-padding) 0;
   overflow: hidden;
   background: no-repeat center/cover;
 
@@ -136,14 +153,14 @@
 
 .page-cover-img {
   position: absolute;
-  inset-inline-start: calc(-2 * var(--#{$prefix}page-cover-blur, 0));
-  inset-inline-end: calc(-2 * var(--#{$prefix}page-cover-blur, 0));
-  top: calc(-2 * var(--#{$prefix}page-cover-blur, 0));
-  bottom: calc(-2 * var(--#{$prefix}page-cover-blur, 0));
+  inset-inline-start: calc(-2 * var(--page-cover-blur, 0));
+  inset-inline-end: calc(-2 * var(--page-cover-blur, 0));
+  top: calc(-2 * var(--page-cover-blur, 0));
+  bottom: calc(-2 * var(--page-cover-blur, 0));
   z-index: -1;
   pointer-events: none;
   object-fit: cover;
-  filter: blur(var(--#{$prefix}page-cover-blur));
+  filter: blur(var(--page-cover-blur));
   background-position: center;
   background-size: cover;
 }

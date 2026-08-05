@@ -1,15 +1,15 @@
 @use '../config' as *;
 
 .dropdown-menu {
-  --#{$prefix}dropdown-item-gap: #{$dropdown-item-gap};
-  --#{$prefix}dropdown-item-icon-size: #{$icon-size};
-  --#{$prefix}dropdown-item-icon-color: var(--#{$prefix}tertiary);
-  --#{$prefix}dropdown-header-padding-bottom: #{$dropdown-header-padding-bottom};
-  --#{$prefix}dropdown-menu-columns-gap: #{$dropdown-menu-columns-gap};
-  --#{$prefix}dropdown-arrow-offset: #{$dropdown-arrow-offset};
-  --#{$prefix}dropdown-arrow-inset: #{$dropdown-arrow-inset};
-  --#{$prefix}dropdown-dropend-offset: #{$dropdown-dropend-offset};
-  --#{$prefix}dropdown-menu-card-min-width: #{$dropdown-menu-card-min-width};
+  --dropdown-item-gap: #{$dropdown-item-gap};
+  --dropdown-item-icon-size: #{$icon-size};
+  --dropdown-item-icon-color: var(--tertiary);
+  --dropdown-header-padding-bottom: #{$dropdown-header-padding-bottom};
+  --dropdown-menu-columns-gap: #{$dropdown-menu-columns-gap};
+  --dropdown-arrow-offset: #{$dropdown-arrow-offset};
+  --dropdown-arrow-inset: #{$dropdown-arrow-inset};
+  --dropdown-dropend-offset: #{$dropdown-dropend-offset};
+  --dropdown-menu-card-min-width: #{$dropdown-menu-card-min-width};
   user-select: none;
   background-clip: border-box;
 
@@ -30,7 +30,7 @@
 
 .dropdown-item {
   display: flex;
-  gap: var(--#{$prefix}dropdown-item-gap);
+  gap: var(--dropdown-item-gap);
   align-items: center;
   min-width: $dropdown-min-width;
   margin: 0;
@@ -38,23 +38,23 @@
 }
 
 .dropdown-item-icon {
-  width: var(--#{$prefix}dropdown-item-icon-size) !important;
-  height: var(--#{$prefix}dropdown-item-icon-size) !important;
-  color: var(--#{$prefix}dropdown-item-icon-color);
+  width: var(--dropdown-item-icon-size) !important;
+  height: var(--dropdown-item-icon-size) !important;
+  color: var(--dropdown-item-icon-color);
   text-align: center;
 }
 
 .dropdown-item-indicator {
   display: inline-flex;
   align-items: center;
-  height: var(--#{$prefix}dropdown-item-icon-size);
+  height: var(--dropdown-item-icon-size);
   line-height: 1;
   vertical-align: bottom;
 }
 
 .dropdown-header {
   @include subheader();
-  padding-bottom: var(--#{$prefix}dropdown-header-padding-bottom);
+  padding-bottom: var(--dropdown-header-padding-bottom);
   pointer-events: none;
 }
 
@@ -74,14 +74,14 @@
 
 .dropdown-menu-columns {
   display: flex;
-  flex: 0 var(--#{$prefix}dropdown-menu-columns-gap);
+  flex: 0 var(--dropdown-menu-columns-gap);
 }
 
 .dropdown-menu-arrow {
   &::before {
     position: absolute;
-    inset-inline-start: var(--#{$prefix}dropdown-arrow-inset);
-    top: calc(-1 * var(--#{$prefix}dropdown-arrow-offset));
+    inset-inline-start: var(--dropdown-arrow-inset);
+    top: calc(-1 * var(--dropdown-arrow-offset));
     z-index: -1;
     display: block;
     width: 14px;
@@ -100,14 +100,14 @@
   &.dropdown-menu-end {
     &::before {
       inset-inline-start: auto;
-      inset-inline-end: var(--#{$prefix}dropdown-arrow-inset);
+      inset-inline-end: var(--dropdown-arrow-inset);
     }
   }
 }
 
 .dropend {
   > .dropdown-menu {
-    margin-inline-start: calc(-1 * var(--#{$prefix}dropdown-dropend-offset));
+    margin-inline-start: calc(-1 * var(--dropdown-dropend-offset));
     margin-top: subtract(calc(-1 * $dropdown-padding-y), 1px);
   }
 
@@ -119,7 +119,7 @@
 }
 
 .dropdown-menu-card {
-  min-width: var(--#{$prefix}dropdown-menu-card-min-width);
+  min-width: var(--dropdown-menu-card-min-width);
   padding: 0;
 
   > .card {

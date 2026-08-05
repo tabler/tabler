@@ -44,30 +44,30 @@
 // Status
 //
 .status {
-  --#{$prefix}status-height: #{$status-height};
-  --#{$prefix}status-color: #{$text-secondary};
-  --#{$prefix}status-color-rgb: #{to-rgb($text-secondary)};
-  --#{$prefix}status-padding-y: #{$status-padding-y};
-  --#{$prefix}status-padding-x: #{$status-padding-x};
-  --#{$prefix}status-gap: #{$status-gap};
+  --status-height: #{$status-height};
+  --status-color: #{$text-secondary};
+  --status-color-rgb: #{to-rgb($text-secondary)};
+  --status-padding-y: #{$status-padding-y};
+  --status-padding-x: #{$status-padding-x};
+  --status-gap: #{$status-gap};
 
   display: inline-flex;
-  gap: var(--#{$prefix}status-gap);
+  gap: var(--status-gap);
   align-items: center;
-  height: var(--#{$prefix}status-height);
-  padding: var(--#{$prefix}status-padding-y) var(--#{$prefix}status-padding-x);
+  height: var(--status-height);
+  padding: var(--status-padding-y) var(--status-padding-x);
   margin: 0;
   font-size: $font-size-base;
-  font-weight: var(--#{$prefix}font-weight-medium);
+  font-weight: var(--font-weight-medium);
   line-height: 1;
-  color: var(--#{$prefix}status-color);
+  color: var(--status-color);
   text-transform: none;
   letter-spacing: normal;
-  background: color-transparent(var(--#{$prefix}status-color), 0.1);
-  @include border-radius(var(--#{$prefix}border-radius-pill));
+  background: color-transparent(var(--status-color), 0.1);
+  @include border-radius(var(--border-radius-pill));
 
   .status-dot {
-    background: var(--#{$prefix}status-color);
+    background: var(--status-color);
   }
 
   .icon {
@@ -76,15 +76,15 @@
 }
 
 .status-lite {
-  color: var(--#{$prefix}body-color) !important;
+  color: var(--body-color) !important;
   background: transparent !important;
-  border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color) !important;
+  border: var(--border-width) var(--border-style) var(--border-color) !important;
 }
 
 @each $name, $color in map.merge($theme-colors, $social-colors) {
   .status-#{$name} {
-    --#{$prefix}status-color: var(--#{$prefix}#{$name});
-    --#{$prefix}status-color-rgb: var(--#{$prefix}#{$name}-rgb);
+    --status-color: var(--#{$name});
+    --status-color-rgb: var(--#{$name}-rgb);
   }
 }
 
@@ -92,14 +92,14 @@
 // Status dot
 //
 .status-dot {
-  --#{$prefix}status-dot-color: var(--#{$prefix}status-color, #{$text-secondary});
-  --#{$prefix}status-size: #{$status-dot-size};
+  --status-dot-color: var(--status-color, #{$text-secondary});
+  --status-size: #{$status-dot-size};
   position: relative;
   display: inline-block;
-  width: var(--#{$prefix}status-size);
-  height: var(--#{$prefix}status-size);
-  background: var(--#{$prefix}status-dot-color);
-  @include border-radius(var(--#{$prefix}border-radius-pill));
+  width: var(--status-size);
+  height: var(--status-size);
+  background: var(--status-dot-color);
+  @include border-radius(var(--border-radius-pill));
 }
 
 .status-dot-animated {
@@ -119,24 +119,24 @@
 // Status indicator
 //
 .status-indicator {
-  --#{$prefix}status-indicator-size: #{$status-indicator-size};
-  --#{$prefix}status-indicator-color: var(--#{$prefix}status-color, #{$text-secondary});
+  --status-indicator-size: #{$status-indicator-size};
+  --status-indicator-color: var(--status-color, #{$text-secondary});
   position: relative;
   display: block;
-  width: var(--#{$prefix}status-indicator-size);
-  height: var(--#{$prefix}status-indicator-size);
+  width: var(--status-indicator-size);
+  height: var(--status-indicator-size);
 }
 
 .status-indicator-circle {
-  --#{$prefix}status-circle-size: #{$status-circle-size};
+  --status-circle-size: #{$status-circle-size};
   position: absolute;
   inset-inline-start: 50%;
   top: 50%;
-  width: var(--#{$prefix}status-circle-size);
-  height: var(--#{$prefix}status-circle-size);
-  margin: calc(var(--#{$prefix}status-circle-size) / -2) 0 0 calc(var(--#{$prefix}status-circle-size) / -2);
-  background: var(--#{$prefix}status-color);
-  @include border-radius(var(--#{$prefix}border-radius-pill));
+  width: var(--status-circle-size);
+  height: var(--status-circle-size);
+  margin: calc(var(--status-circle-size) / -2) 0 0 calc(var(--status-circle-size) / -2);
+  background: var(--status-color);
+  @include border-radius(var(--border-radius-pill));
 
   &:nth-child(1) {
     z-index: 3;

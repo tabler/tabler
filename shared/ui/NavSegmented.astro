@@ -38,14 +38,14 @@ const rows = Array.from({ length: count }, (_, i) => {
 })
 ---
 
-<nav class:list={navClasses} role="tablist" aria-orientation={vertical ? 'vertical' : undefined}>
+<nav class:list={navClasses} role={name ? undefined : 'tablist'} aria-orientation={!name && vertical ? 'vertical' : undefined}>
   {
     rows.map((row) => {
       const Element = name ? 'label' : 'button'
       return (
         <Fragment>
           {name && <input type="radio" class="nav-link-input" name={name} id={`segmented-${name}-${row.index}`} checked={row.isDefault} />}
-          <Element for={name ? `segmented-${name}-${row.index}` : undefined} class:list={row.linkClasses} role="tab" data-bs-toggle={name ? undefined : 'tab'} aria-selected={row.isDefault ? 'true' : 'false'} aria-disabled={row.isDisabled ? 'true' : undefined} aria-current={row.isDefault ? 'page' : undefined}>
+          <Element for={name ? `segmented-${name}-${row.index}` : undefined} class:list={row.linkClasses} role={name ? undefined : 'tab'} data-bs-toggle={name ? undefined : 'tab'} aria-selected={name ? undefined : row.isDefault ? 'true' : 'false'} aria-disabled={row.isDisabled ? 'true' : undefined}>
             {row.icon && <Icon name={row.icon} class="nav-link-icon" />}
             {row.item && row.item}
           </Element>

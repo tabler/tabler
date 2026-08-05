@@ -7,6 +7,7 @@ import Card from '@ui/Card.astro'
 import CardHeader from '@ui/CardHeader.astro'
 import CardBody from '@ui/CardBody.astro'
 import chartsData from '@data/charts.json'
+import { capitalize } from '@shared/lib/string-format'
 
 const demoCharts = Object.entries(chartsData as Record<string, { demo?: boolean; name?: string }>).filter(([, chart]) => chart && chart.demo)
 ---
@@ -24,7 +25,7 @@ const demoCharts = Object.entries(chartsData as Record<string, { demo?: boolean;
     <div class="col-12">
       <Card>
         <CardBody>
-          <Chart chartId="tasks-overview" height={20} />
+          <Chart chartId="tasks-overview" height={20} label="Tasks overview" />
         </CardBody>
       </Card>
     </div>
@@ -35,7 +36,7 @@ const demoCharts = Object.entries(chartsData as Record<string, { demo?: boolean;
           <Card>
             {chart.name && <CardHeader title={chart.name} />}
             <CardBody>
-              <Chart chartId={chartId} height={15} />
+              <Chart chartId={chartId} height={15} label={chart.name ?? capitalize(chartId.replace(/-/g, ' '))} />
             </CardBody>
           </Card>
         </div>

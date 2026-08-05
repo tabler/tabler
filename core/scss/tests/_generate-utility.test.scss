@@ -1,8 +1,9 @@
 // Output tests for the `generate-utility` mixin from
 // scss/mixins/bootstrap/_utilities.scss — the engine behind Tabler's utility
 // classes. `@use "../mixins/bootstrap/utilities"` pulls in the real
-// settings/variables chain, so `$prefix` = "tblr-" and
-// `$enable-important-utilities` = true (hence the `!important` in the output).
+// settings/variables chain, so `$enable-important-utilities` = true (hence the
+// `!important` in the output). Custom properties are expected unprefixed: the
+// `--tblr-` prefix is added later, by the css pipeline (.build/css-var-prefix.ts).
 //
 // Each `it` feeds the mixin a hand-built utility map and asserts the generated
 // classes, covering the branches that shape the output: map vs list values,
@@ -106,7 +107,7 @@
       }
       @include expect() {
         .opacity-50 {
-          --tblr-opacity: 0.5;
+          --opacity: 0.5;
         }
       }
     }

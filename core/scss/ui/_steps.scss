@@ -4,10 +4,10 @@
 @use '../config' as *;
 
 .steps {
-  --#{$prefix}steps-color: #{$steps-color};
-  --#{$prefix}steps-inactive-color: #{$steps-inactive-color};
-  --#{$prefix}steps-dot-size: #{$steps-dot-size};
-  --#{$prefix}steps-border-width: #{$steps-border-width};
+  --steps-color: #{$steps-color};
+  --steps-inactive-color: #{$steps-inactive-color};
+  --steps-dot-size: #{$steps-dot-size};
+  --steps-border-width: #{$steps-border-width};
   display: flex;
   flex-wrap: nowrap;
   width: 100%;
@@ -24,10 +24,10 @@
 
 @each $name, $color in $extra-colors {
   .steps-#{$name} {
-    --#{$prefix}steps-color: var(--#{$prefix}#{$name});
+    --steps-color: var(--#{$name});
 
     &-lt {
-      --#{$prefix}steps-color: var(--#{$prefix}#{$name}-lt);
+      --steps-color: var(--#{$name}-lt);
     }
   }
 }
@@ -36,11 +36,11 @@
 // Step item
 //
 .step-item {
-  --#{$prefix}step-item-min-height: #{$step-item-min-height};
+  --step-item-min-height: #{$step-item-min-height};
   position: relative;
   flex: 1 1 0;
-  min-height: var(--#{$prefix}step-item-min-height);
-  padding-top: calc(var(--#{$prefix}steps-dot-size));
+  min-height: var(--step-item-min-height);
+  padding-top: calc(var(--steps-dot-size));
   margin-top: 0;
   color: inherit;
   text-align: center;
@@ -56,7 +56,7 @@
 
   &::after,
   &::before {
-    background: var(--#{$prefix}steps-color);
+    background: var(--steps-color);
   }
 
   &:not(:last-child)::after {
@@ -68,8 +68,8 @@
   }
 
   &::after {
-    top: calc(var(--#{$prefix}steps-dot-size) * 0.5);
-    height: var(--#{$prefix}steps-border-width);
+    top: calc(var(--steps-dot-size) * 0.5);
+    height: var(--steps-border-width);
   }
 
   &::before {
@@ -81,29 +81,29 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    width: var(--#{$prefix}steps-dot-size);
-    height: var(--#{$prefix}steps-dot-size);
-    color: var(--#{$prefix}white);
+    width: var(--steps-dot-size);
+    height: var(--steps-dot-size);
+    color: var(--white);
     content: '';
 
     /* rtl:ignore */
-    transform: translateX(calc(var(--#{$prefix}dir) * -50%));
-    @include border-radius(var(--#{$prefix}border-radius-pill));
+    transform: translateX(calc(var(--dir) * -50%));
+    @include border-radius(var(--border-radius-pill));
   }
 
   &.active {
-    font-weight: var(--#{$prefix}font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
 
     &::after {
-      background: var(--#{$prefix}steps-inactive-color);
+      background: var(--steps-inactive-color);
     }
 
     ~ .step-item {
-      color: var(--#{$prefix}disabled-color);
+      color: var(--disabled-color);
 
       &::after,
       &::before {
-        background: var(--#{$prefix}steps-inactive-color);
+        background: var(--steps-inactive-color);
       }
     }
   }
@@ -113,7 +113,7 @@
 // Steps counter
 //
 .steps-counter {
-  --#{$prefix}steps-dot-size: #{$steps-counter-dot-size};
+  --steps-dot-size: #{$steps-counter-dot-size};
   counter-reset: steps;
 
   .step-item {
@@ -129,43 +129,43 @@
 // Steps vertical
 //
 .steps-vertical {
-  --#{$prefix}steps-dot-offset: #{$steps-dot-offset};
-  --#{$prefix}steps-vertical-padding-start: #{$steps-vertical-padding-start};
-  --#{$prefix}steps-vertical-item-gap: #{$steps-vertical-item-gap};
-  --#{$prefix}steps-vertical-connector-gap: #{$steps-vertical-connector-gap};
+  --steps-dot-offset: #{$steps-dot-offset};
+  --steps-vertical-padding-start: #{$steps-vertical-padding-start};
+  --steps-vertical-item-gap: #{$steps-vertical-item-gap};
+  --steps-vertical-connector-gap: #{$steps-vertical-connector-gap};
   flex-direction: column;
 
   &.steps-counter {
-    --#{$prefix}steps-dot-offset: #{$steps-dot-offset-counter};
+    --steps-dot-offset: #{$steps-dot-offset-counter};
   }
 
   .step-item {
     min-height: auto;
-    padding-inline-start: calc(var(--#{$prefix}steps-dot-size) + var(--#{$prefix}steps-vertical-padding-start));
+    padding-inline-start: calc(var(--steps-dot-size) + var(--steps-vertical-padding-start));
     padding-top: 0;
     text-align: start;
 
     &:not(:first-child) {
-      margin-top: var(--#{$prefix}steps-vertical-item-gap);
+      margin-top: var(--steps-vertical-item-gap);
     }
 
     &::before {
       inset-inline-start: 0;
-      top: var(--#{$prefix}steps-dot-offset);
+      top: var(--steps-dot-offset);
       transform: translate(0, 0);
     }
 
     &:not(:last-child) {
       &::after {
         position: absolute;
-        inset-inline-start: calc(var(--#{$prefix}steps-dot-size) * 0.5);
-        top: var(--#{$prefix}steps-dot-offset);
-        width: var(--#{$prefix}steps-border-width);
-        height: calc(100% + var(--#{$prefix}steps-vertical-connector-gap));
+        inset-inline-start: calc(var(--steps-dot-size) * 0.5);
+        top: var(--steps-dot-offset);
+        width: var(--steps-border-width);
+        height: calc(100% + var(--steps-vertical-connector-gap));
         content: '';
 
         /* rtl:ignore */
-        transform: translateX(calc(var(--#{$prefix}dir) * -50%));
+        transform: translateX(calc(var(--dir) * -50%));
       }
     }
   }

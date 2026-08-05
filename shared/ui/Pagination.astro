@@ -30,81 +30,83 @@ if (offset < count) {
 ---
 
 <!-- BEGIN PAGINATION -->
-<ul class={`pagination${className ? ` ${className}` : ''}`}>
-  {
-    firstLast && (
-      <li class="page-item disabled">
-        <a class={`page-link${text ? ' page-text' : ''}`} href="#" tabindex="-1" aria-disabled="true">
-          {!text ? <Icon name="chevrons-left" /> : 'Previous'}
-        </a>
-      </li>
-    )
-  }
-  <li class={`page-item${prevDescription ? ' page-prev' : ''} disabled`}>
-    <a class={`page-link${text ? ' page-text' : ''}`} href="#" tabindex="-1" aria-disabled="true">
-      {
-        prevDescription ? (
-          <>
-            <div class="page-item-subtitle">previous</div>
-            <div class="page-item-title">{prevDescription}</div>
-          </>
-        ) : !text ? (
-          <Icon name="chevron-left" />
-        ) : (
-          'Previous'
-        )
-      }
-    </a>
-  </li>
-  {
-    firstPages.map((i) => (
-      <li class={`page-item${i === normalizedActiveItem ? ' active' : ''}`}>
-        <a class="page-link" href="#">
-          {i}
-        </a>
-      </li>
-    ))
-  }
-  {
-    offset < count && (
-      <>
-        <li class="page-item">
-          <span class="page-link disabled">&hellip;</span>
+<nav aria-label="Pagination">
+  <ul class={`pagination${className ? ` ${className}` : ''}`}>
+    {
+      firstLast && (
+        <li class="page-item disabled">
+          <a class={`page-link${text ? ' page-text' : ''}`} href="#" tabindex="-1" aria-disabled="true" aria-label={!text ? 'First page' : undefined}>
+            {!text ? <Icon name="chevrons-left" /> : 'Previous'}
+          </a>
         </li>
-        {lastPages.map((i) => (
-          <li class={`page-item${i === normalizedActiveItem ? ' active' : ''}`}>
-            <a class="page-link" href="#">
-              {i}
-            </a>
+      )
+    }
+    <li class={`page-item${prevDescription ? ' page-prev' : ''} disabled`}>
+      <a class={`page-link${text ? ' page-text' : ''}`} href="#" tabindex="-1" aria-disabled="true" aria-label={!prevDescription && !text ? 'Previous page' : undefined}>
+        {
+          prevDescription ? (
+            <>
+              <div class="page-item-subtitle">previous</div>
+              <div class="page-item-title">{prevDescription}</div>
+            </>
+          ) : !text ? (
+            <Icon name="chevron-left" />
+          ) : (
+            'Previous'
+          )
+        }
+      </a>
+    </li>
+    {
+      firstPages.map((i) => (
+        <li class={`page-item${i === normalizedActiveItem ? ' active' : ''}`}>
+          <a class="page-link" href="#" aria-label={`Page ${i}`} aria-current={i === normalizedActiveItem ? 'page' : undefined}>
+            {i}
+          </a>
+        </li>
+      ))
+    }
+    {
+      offset < count && (
+        <>
+          <li class="page-item">
+            <span class="page-link disabled">&hellip;</span>
           </li>
-        ))}
-      </>
-    )
-  }
-  <li class={`page-item${prevDescription ? ' page-next' : ''}`}>
-    <a class={`page-link${text ? ' page-text' : ''}`} href="#">
-      {
-        nextDescription ? (
-          <>
-            <div class="page-item-subtitle">next</div>
-            <div class="page-item-title">{nextDescription}</div>
-          </>
-        ) : !text ? (
-          <Icon name="chevron-right" />
-        ) : (
-          'Next'
-        )
-      }
-    </a>
-  </li>
-  {
-    firstLast && (
-      <li class="page-item">
-        <a class={`page-link${text ? ' page-text' : ''}`} href="#">
-          {!text ? <Icon name="chevrons-right" /> : 'Next'}
-        </a>
-      </li>
-    )
-  }
-</ul>
+          {lastPages.map((i) => (
+            <li class={`page-item${i === normalizedActiveItem ? ' active' : ''}`}>
+              <a class="page-link" href="#" aria-label={`Page ${i}`} aria-current={i === normalizedActiveItem ? 'page' : undefined}>
+                {i}
+              </a>
+            </li>
+          ))}
+        </>
+      )
+    }
+    <li class={`page-item${prevDescription ? ' page-next' : ''}`}>
+      <a class={`page-link${text ? ' page-text' : ''}`} href="#" aria-label={!nextDescription && !text ? 'Next page' : undefined}>
+        {
+          nextDescription ? (
+            <>
+              <div class="page-item-subtitle">next</div>
+              <div class="page-item-title">{nextDescription}</div>
+            </>
+          ) : !text ? (
+            <Icon name="chevron-right" />
+          ) : (
+            'Next'
+          )
+        }
+      </a>
+    </li>
+    {
+      firstLast && (
+        <li class="page-item">
+          <a class={`page-link${text ? ' page-text' : ''}`} href="#" aria-label={!text ? 'Last page' : undefined}>
+            {!text ? <Icon name="chevrons-right" /> : 'Next'}
+          </a>
+        </li>
+      )
+    }
+  </ul>
+</nav>
 <!-- END PAGINATION -->

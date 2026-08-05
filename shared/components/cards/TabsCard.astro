@@ -25,18 +25,18 @@ const paneClass = `tab-pane${animation ? ' fade' : ''}`
 
 <div class="card">
   <div class="card-header">
-    <ul class={navClass} data-bs-toggle="tabs">
-      <li class="nav-item">
-        <a href={`#tabs-home-${id}`} class="nav-link active" data-bs-toggle="tab">{icons && <Icon name="home" class={iconClass} />}{!hideText && 'Home'}</a>
+    <ul class={navClass} role="tablist" data-bs-toggle="tab">
+      <li class="nav-item" role="presentation">
+        <a href={`#tabs-home-${id}`} id={`tabs-home-${id}-tab`} class="nav-link active" data-bs-toggle="tab" data-bs-target={`#tabs-home-${id}`} role="tab" aria-controls={`tabs-home-${id}`} aria-selected="true">{icons && <Icon name="home" class={iconClass} />}{!hideText && 'Home'}</a>
       </li>
-      <li class="nav-item">
-        <a href={`#tabs-profile-${id}`} class="nav-link" data-bs-toggle="tab">{icons && <Icon name="user" class={iconClass} />}{!hideText && 'Profile'}</a>
+      <li class="nav-item" role="presentation">
+        <a href={`#tabs-profile-${id}`} id={`tabs-profile-${id}-tab`} class="nav-link" data-bs-toggle="tab" data-bs-target={`#tabs-profile-${id}`} role="tab" aria-controls={`tabs-profile-${id}`} aria-selected="false">{icons && <Icon name="user" class={iconClass} />}{!hideText && 'Profile'}</a>
       </li>
 
       {
         activity && (
-          <li class="nav-item">
-            <a href={`#tabs-activity-${id}`} class="nav-link" data-bs-toggle="tab">
+          <li class="nav-item" role="presentation">
+            <a href={`#tabs-activity-${id}`} id={`tabs-activity-${id}-tab`} class="nav-link" data-bs-toggle="tab" data-bs-target={`#tabs-activity-${id}`} role="tab" aria-controls={`tabs-activity-${id}`} aria-selected="false">
               {icons && <Icon name="activity" class={iconClass} />}
               {!hideText && 'Activity'}
             </a>
@@ -46,8 +46,8 @@ const paneClass = `tab-pane${animation ? ' fade' : ''}`
 
       {
         disabled && (
-          <li class="nav-item">
-            <a href={`#tabs-activity-${id}`} class="nav-link disabled" data-bs-toggle="tab">
+          <li class="nav-item" role="presentation">
+            <a href={`#tabs-activity-${id}`} class="nav-link disabled" data-bs-toggle="tab" role="tab" aria-selected="false" aria-disabled="true" tabindex="-1">
               {icons && <Icon name="x" class={iconClass} />}
               {!hideText && 'Disabled'}
             </a>
@@ -67,8 +67,8 @@ const paneClass = `tab-pane${animation ? ' fade' : ''}`
       }
       {
         settings && (
-          <li class={`nav-item ${reverse ? 'me-auto' : 'ms-auto'}`}>
-            <a href={`#tabs-settings-${id}`} class="nav-link" title="Settings" data-bs-toggle="tab">
+          <li class={`nav-item ${reverse ? 'me-auto' : 'ms-auto'}`} role="presentation">
+            <a href={`#tabs-settings-${id}`} id={`tabs-settings-${id}-tab`} class="nav-link" title="Settings" data-bs-toggle="tab" data-bs-target={`#tabs-settings-${id}`} role="tab" aria-controls={`tabs-settings-${id}`} aria-selected="false">
               <Icon name="settings" />
             </a>
           </li>
@@ -78,17 +78,17 @@ const paneClass = `tab-pane${animation ? ' fade' : ''}`
   </div>
   <div class="card-body">
     <div class="tab-content">
-      <div class={`${paneClass} active show`} id={`tabs-home-${id}`}>
+      <div class={`${paneClass} active show`} id={`tabs-home-${id}`} role="tabpanel" aria-labelledby={`tabs-home-${id}-tab`}>
         <h4>Home tab</h4>
         <div>Cursus turpis vestibulum, dui in pharetra vulputate id sed non turpis ultricies fringilla at sed facilisis lacus pellentesque purus nibh</div>
       </div>
-      <div class={paneClass} id={`tabs-profile-${id}`}>
+      <div class={paneClass} id={`tabs-profile-${id}`} role="tabpanel" aria-labelledby={`tabs-profile-${id}-tab`}>
         <h4>Profile tab</h4>
         <div>Fringilla egestas nunc quis tellus diam rhoncus ultricies tristique enim at diam, sem nunc amet, pellentesque id egestas velit sed</div>
       </div>
       {
         settings && (
-          <div class={paneClass} id={`tabs-settings-${id}`}>
+          <div class={paneClass} id={`tabs-settings-${id}`} role="tabpanel" aria-labelledby={`tabs-settings-${id}-tab`}>
             <h4>Settings tab</h4>
             <div>Donec ac vitae diam amet vel leo egestas consequat rhoncus in luctus amet, facilisi sit mauris accumsan nibh habitant senectus</div>
           </div>
@@ -96,7 +96,7 @@ const paneClass = `tab-pane${animation ? ' fade' : ''}`
       }
       {
         activity && (
-          <div class={paneClass} id={`tabs-activity-${id}`}>
+          <div class={paneClass} id={`tabs-activity-${id}`} role="tabpanel" aria-labelledby={`tabs-activity-${id}-tab`}>
             <h4>Activity tab</h4>
             <div>Donec ac vitae diam amet vel leo egestas consequat rhoncus in luctus amet, facilisi sit mauris accumsan nibh habitant senectus</div>
           </div>

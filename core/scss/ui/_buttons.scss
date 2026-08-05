@@ -7,47 +7,47 @@
 @use '../config' as *;
 
 .btn {
-  --#{$prefix}btn-icon-size: #{$input-btn-icon-size};
-  --#{$prefix}btn-icon-color: inherit;
-  --#{$prefix}btn-bg: var(--#{$prefix}bg-surface);
-  --#{$prefix}btn-color: var(--#{$prefix}body-color);
-  --#{$prefix}btn-border-color: #{$btn-border-color};
-  --#{$prefix}btn-hover-bg: var(--#{$prefix}btn-bg);
-  --#{$prefix}btn-hover-border-color: var(--#{$prefix}border-active-color);
-  --#{$prefix}btn-active-color: #{$active-color};
-  --#{$prefix}btn-active-bg: #{$active-bg};
-  --#{$prefix}btn-active-border-color: #{$active-border-color};
+  --btn-icon-size: #{$input-btn-icon-size};
+  --btn-icon-color: inherit;
+  --btn-bg: var(--bg-surface);
+  --btn-color: var(--body-color);
+  --btn-border-color: #{$btn-border-color};
+  --btn-hover-bg: var(--btn-bg);
+  --btn-hover-border-color: var(--border-active-color);
+  --btn-active-color: #{$active-color};
+  --btn-active-bg: #{$active-bg};
+  --btn-active-border-color: #{$active-border-color};
   position: relative;
 
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-width: calc((var(--#{$prefix}btn-line-height) * 1) + (var(--#{$prefix}btn-padding-y) * 2) + (var(--#{$prefix}btn-border-width) * 2));
-  min-height: calc((var(--#{$prefix}btn-line-height) * 1) + (var(--#{$prefix}btn-padding-y) * 2) + (var(--#{$prefix}btn-border-width) * 2));
+  min-width: calc((var(--btn-line-height) * 1) + (var(--btn-padding-y) * 2) + (var(--btn-border-width) * 2));
+  min-height: calc((var(--btn-line-height) * 1) + (var(--btn-padding-y) * 2) + (var(--btn-border-width) * 2));
   white-space: nowrap;
-  box-shadow: var(--#{$prefix}btn-box-shadow);
+  box-shadow: var(--btn-box-shadow);
 
-  @include border-radius(var(--#{$prefix}btn-border-radius));
+  @include border-radius(var(--btn-border-radius));
 
   .icon {
-    width: var(--#{$prefix}btn-icon-size);
-    min-width: var(--#{$prefix}btn-icon-size);
-    height: var(--#{$prefix}btn-icon-size);
-    margin: 0 calc(var(--#{$prefix}btn-padding-x) / 2) 0 calc(var(--#{$prefix}btn-padding-x) / -4);
-    font-size: var(--#{$prefix}btn-icon-size);
-    color: var(--#{$prefix}btn-icon-color);
+    width: var(--btn-icon-size);
+    min-width: var(--btn-icon-size);
+    height: var(--btn-icon-size);
+    margin: 0 calc(var(--btn-padding-x) / 2) 0 calc(var(--btn-padding-x) / -4);
+    font-size: var(--btn-icon-size);
+    color: var(--btn-icon-color);
     vertical-align: bottom;
   }
 
   .avatar {
-    width: var(--#{$prefix}btn-icon-size);
-    height: var(--#{$prefix}btn-icon-size);
-    margin: 0 calc(var(--#{$prefix}btn-padding-x) / 2) 0 calc(var(--#{$prefix}btn-padding-x) / -4);
+    width: var(--btn-icon-size);
+    height: var(--btn-icon-size);
+    margin: 0 calc(var(--btn-padding-x) / 2) 0 calc(var(--btn-padding-x) / -4);
   }
 
   .icon-right,
   .icon-end {
-    margin: 0 calc(var(--#{$prefix}btn-padding-x) / -4) 0 calc(var(--#{$prefix}btn-padding-x) / 2);
+    margin: 0 calc(var(--btn-padding-x) / -4) 0 calc(var(--btn-padding-x) / 2);
   }
 
   .badge {
@@ -55,9 +55,9 @@
   }
 
   .btn-check + &:hover {
-    color: var(--#{$prefix}btn-hover-color);
-    background-color: var(--#{$prefix}btn-hover-bg);
-    border-color: var(--#{$prefix}btn-hover-border-color);
+    color: var(--btn-hover-color);
+    background-color: var(--btn-hover-bg);
+    border-color: var(--btn-hover-border-color);
   }
 }
 
@@ -81,69 +81,69 @@
 // Button color variations
 //
 .btn-ghost {
-  --#{$prefix}btn-bg: transparent;
-  --#{$prefix}btn-border-color: transparent;
-  --#{$prefix}btn-box-shadow: none;
-  --#{$prefix}btn-hover-bg: var(--#{$prefix}bg-surface-secondary);
-  --#{$prefix}btn-hover-border-color: transparent;
-  --#{$prefix}btn-hover-color: var(--#{$prefix}body-color);
+  --btn-bg: transparent;
+  --btn-border-color: transparent;
+  --btn-box-shadow: none;
+  --btn-hover-bg: var(--bg-surface-secondary);
+  --btn-hover-border-color: transparent;
+  --btn-hover-color: var(--body-color);
 }
 
 @each $color, $value in map.merge($theme-colors, $social-colors) {
   .btn-#{$color} {
     @if $color == 'dark' {
-      --#{$prefix}btn-border-color: var(--#{$prefix}dark-mode-border-color);
-      --#{$prefix}btn-hover-border-color: var(--#{$prefix}dark-mode-border-active-color);
-      --#{$prefix}btn-active-border-color: var(--#{$prefix}dark-mode-border-active-color);
+      --btn-border-color: var(--dark-mode-border-color);
+      --btn-hover-border-color: var(--dark-mode-border-active-color);
+      --btn-active-border-color: var(--dark-mode-border-active-color);
     } @else {
-      --#{$prefix}btn-border-color: transparent;
-      --#{$prefix}btn-hover-border-color: transparent;
-      --#{$prefix}btn-active-border-color: transparent;
+      --btn-border-color: transparent;
+      --btn-hover-border-color: transparent;
+      --btn-active-border-color: transparent;
     }
 
-    --#{$prefix}btn-color: var(--#{$prefix}#{$color}-fg, #{$white});
-    --#{$prefix}btn-bg: var(--#{$prefix}#{$color});
-    --#{$prefix}btn-hover-color: var(--#{$prefix}#{$color}-fg);
-    --#{$prefix}btn-hover-bg: var(--#{$prefix}#{$color}-darken);
-    --#{$prefix}btn-active-color: var(--#{$prefix}#{$color}-fg);
-    --#{$prefix}btn-active-bg: var(--#{$prefix}#{$color}-darken);
-    --#{$prefix}btn-disabled-bg: var(--#{$prefix}#{$color});
-    --#{$prefix}btn-disabled-color: var(--#{$prefix}#{$color}-fg);
-    --#{$prefix}btn-box-shadow: var(--#{$prefix}shadow-input);
+    --btn-color: var(--#{$color}-fg, #{$white});
+    --btn-bg: var(--#{$color});
+    --btn-hover-color: var(--#{$color}-fg);
+    --btn-hover-bg: var(--#{$color}-darken);
+    --btn-active-color: var(--#{$color}-fg);
+    --btn-active-bg: var(--#{$color}-darken);
+    --btn-disabled-bg: var(--#{$color});
+    --btn-disabled-color: var(--#{$color}-fg);
+    --btn-box-shadow: var(--shadow-input);
   }
 
   .btn-outline-#{$color},
   .btn-outline.btn-#{$color} {
-    --#{$prefix}btn-color: var(--#{$prefix}#{$color});
-    --#{$prefix}btn-bg: transparent;
-    --#{$prefix}btn-border-color: var(--#{$prefix}#{$color});
-    --#{$prefix}btn-hover-color: var(--#{$prefix}#{$color}-fg);
-    --#{$prefix}btn-hover-border-color: transparent;
-    --#{$prefix}btn-hover-bg: var(--#{$prefix}#{$color});
-    --#{$prefix}btn-active-color: var(--#{$prefix}#{$color}-fg);
-    --#{$prefix}btn-active-bg: var(--#{$prefix}#{$color});
-    --#{$prefix}btn-active-border-color: var(--#{$prefix}#{$color});
-    --#{$prefix}btn-disabled-color: var(--#{$prefix}#{$color});
-    --#{$prefix}btn-disabled-border-color: var(--#{$prefix}#{$color});
+    --btn-color: var(--#{$color});
+    --btn-bg: transparent;
+    --btn-border-color: var(--#{$color});
+    --btn-hover-color: var(--#{$color}-fg);
+    --btn-hover-border-color: transparent;
+    --btn-hover-bg: var(--#{$color});
+    --btn-active-color: var(--#{$color}-fg);
+    --btn-active-bg: var(--#{$color});
+    --btn-active-border-color: var(--#{$color});
+    --btn-disabled-color: var(--#{$color});
+    --btn-disabled-border-color: var(--#{$color});
   }
 
   .btn-ghost-#{$color},
   .btn-ghost.btn-#{$color} {
-    --#{$prefix}btn-color: var(--#{$prefix}#{$color});
-    --#{$prefix}btn-bg: transparent;
-    --#{$prefix}btn-border-color: transparent;
-    --#{$prefix}btn-hover-color: var(--#{$prefix}#{$color}-fg);
-    --#{$prefix}btn-hover-bg: var(--#{$prefix}#{$color});
-    --#{$prefix}btn-hover-border-color: var(--#{$prefix}#{$color});
-    --#{$prefix}btn-active-color: var(--#{$prefix}#{$color}-fg);
-    --#{$prefix}btn-active-bg: var(--#{$prefix}#{$color});
-    --#{$prefix}btn-active-border-color: transparent;
-    --#{$prefix}btn-active-shadow: #{$btn-active-box-shadow};
-    --#{$prefix}btn-disabled-color: var(--#{$prefix}#{$color});
-    --#{$prefix}btn-disabled-bg: transparent;
-    --#{$prefix}btn-disabled-border-color: transparent;
-    --#{$prefix}gradient: none;
-    --#{$prefix}btn-box-shadow: none;
+    --btn-color: var(--#{$color});
+    --btn-bg: transparent;
+    --btn-border-color: transparent;
+    --btn-hover-color: var(--#{$color}-fg);
+    --btn-hover-bg: var(--#{$color});
+    --btn-hover-border-color: var(--#{$color});
+    --btn-active-color: var(--#{$color}-fg);
+    --btn-active-bg: var(--#{$color});
+    --btn-active-border-color: transparent;
+    --btn-active-shadow: #{$btn-active-box-shadow};
+    --btn-disabled-color: var(--#{$color});
+    --btn-disabled-bg: transparent;
+    --btn-disabled-border-color: transparent;
+    --gradient: none;
+    --btn-box-shadow: none;
   }
 }
 
@@ -152,23 +152,23 @@
 //
 .btn-sm,
 .btn-group-sm > .btn {
-  --#{$prefix}btn-line-height: #{$input-btn-line-height-sm};
-  --#{$prefix}btn-icon-size: #{$input-btn-icon-size-sm};
+  --btn-line-height: #{$input-btn-line-height-sm};
+  --btn-icon-size: #{$input-btn-icon-size-sm};
 }
 
 .btn-lg,
 .btn-group-lg > .btn {
-  --#{$prefix}btn-line-height: #{$input-btn-line-height-lg};
-  --#{$prefix}btn-icon-size: #{$input-btn-icon-size-lg};
+  --btn-line-height: #{$input-btn-line-height-lg};
+  --btn-icon-size: #{$input-btn-icon-size-lg};
 }
 
 .btn-xl,
 .btn-group-xl > .btn {
-  --#{$prefix}btn-line-height: #{$input-btn-line-height-xl};
-  --#{$prefix}btn-icon-size: #{$input-btn-icon-size-xl};
-  --#{$prefix}btn-padding-y: #{$input-btn-padding-y-xl};
-  --#{$prefix}btn-padding-x: #{$input-btn-padding-x-xl};
-  --#{$prefix}btn-font-size: #{$input-btn-font-size-xl};
+  --btn-line-height: #{$input-btn-line-height-xl};
+  --btn-icon-size: #{$input-btn-icon-size-xl};
+  --btn-padding-y: #{$input-btn-padding-y-xl};
+  --btn-padding-x: #{$input-btn-padding-x-xl};
+  --btn-font-size: #{$input-btn-font-size-xl};
 }
 
 //
@@ -177,12 +177,12 @@
 .btn-pill {
   padding-inline-start: 1.5em;
   padding-inline-end: 1.5em;
-  @include border-radius(var(--#{$prefix}border-radius-pill));
+  @include border-radius(var(--border-radius-pill));
 
   &[class*='btn-icon'] {
-    --#{$prefix}btn-pill-icon-padding-y: #{$btn-pill-icon-padding-y};
-    --#{$prefix}btn-pill-icon-padding-x: #{$btn-pill-icon-padding-x};
-    padding: var(--#{$prefix}btn-pill-icon-padding-y) var(--#{$prefix}btn-pill-icon-padding-x);
+    --btn-pill-icon-padding-y: #{$btn-pill-icon-padding-y};
+    --btn-pill-icon-padding-x: #{$btn-pill-icon-padding-x};
+    padding: var(--btn-pill-icon-padding-y) var(--btn-pill-icon-padding-x);
   }
 }
 
@@ -195,14 +195,15 @@
 //
 .btn-icon,
 .btn-action {
+
   //[BUG] btn-sm and btn-xl with an icon looks broken
   //issue #2470 fixed
-  min-width: calc(var(--#{$prefix}btn-line-height) + (var(--#{$prefix}btn-padding-y) * 2) + (var(--#{$prefix}btn-border-width) * 2));
+  min-width: calc(var(--btn-line-height) + (var(--btn-padding-y) * 2) + (var(--btn-border-width) * 2));
   padding-inline-start: 0;
   padding-inline-end: 0;
 
   .icon {
-    margin: calc(-1 * var(--#{$prefix}btn-padding-x));
+    margin: calc(-1 * var(--btn-padding-x));
   }
 }
 
@@ -221,12 +222,12 @@
 // Button floating
 //
 .btn-floating {
-  --#{$prefix}btn-floating-offset: #{$btn-floating-offset};
+  --btn-floating-offset: #{$btn-floating-offset};
   position: fixed;
-  inset-inline-start: var(--#{$prefix}btn-floating-offset);
-  bottom: var(--#{$prefix}btn-floating-offset);
+  inset-inline-start: var(--btn-floating-offset);
+  bottom: var(--btn-floating-offset);
   z-index: $zindex-fixed;
-  box-shadow: var(--#{$prefix}shadow-dropdown);
+  box-shadow: var(--shadow-dropdown);
 
   @include media-print() {
     display: none;
@@ -248,18 +249,18 @@
 
   &::after {
     position: absolute;
-    inset-inline-start: calc(50% - var(--#{$prefix}btn-icon-size) / 2);
-    top: calc(50% - var(--#{$prefix}btn-icon-size) / 2);
+    inset-inline-start: calc(50% - var(--btn-icon-size) / 2);
+    top: calc(50% - var(--btn-icon-size) / 2);
     display: inline-block;
-    width: var(--#{$prefix}btn-icon-size);
-    height: var(--#{$prefix}btn-icon-size);
-    color: var(--#{$prefix}btn-color);
+    width: var(--btn-icon-size);
+    height: var(--btn-icon-size);
+    color: var(--btn-color);
     vertical-align: text-bottom;
     content: '';
-    border: $spinner-border-width var(--#{$prefix}border-style) currentColor;
+    border: $spinner-border-width var(--border-style) currentColor;
     border-inline-end-color: transparent;
     animation: spinner-border 0.75s linear infinite;
-    @include border-radius(var(--#{$prefix}border-radius-pill));
+    @include border-radius(var(--border-radius-pill));
   }
 }
 
@@ -267,9 +268,9 @@
 // Action button
 //
 .btn-action {
-  --#{$prefix}border-color: transparent;
-  color: var(--#{$prefix}secondary);
-  @include border-radius(var(--#{$prefix}border-radius));
+  --border-color: transparent;
+  color: var(--secondary);
+  @include border-radius(var(--border-radius));
   background: transparent;
   box-shadow: none;
 
@@ -277,20 +278,26 @@
     content: none;
   }
 
-  &:focus {
+  &:focus:not(:focus-visible) {
     outline: none;
+    box-shadow: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: -2px;
     box-shadow: none;
   }
 
   &:hover,
   &.show {
-    color: var(--#{$prefix}body-color);
-    background: var(--#{$prefix}active-bg);
+    color: var(--body-color);
+    background: var(--active-bg);
     border-color: transparent;
   }
 
   &.show {
-    color: var(--#{$prefix}primary);
+    color: var(--primary);
   }
 
   @include media-print() {
@@ -315,7 +322,7 @@
   &:focus-visible {
     .icon {
       /* rtl:ignore */
-      transform: translateX(calc(var(--#{$prefix}dir) * 4px));
+      transform: translateX(calc(var(--dir) * 4px));
     }
   }
 
@@ -333,7 +340,7 @@
     &:focus-visible {
       .icon {
         /* rtl:ignore */
-        transform: translateX(calc(var(--#{$prefix}dir) * -4px));
+        transform: translateX(calc(var(--dir) * -4px));
       }
     }
   }

@@ -17,8 +17,13 @@
     opacity: $btn-disabled-opacity;
   }
 
-  &:focus {
+  &:focus:not(:focus-visible) {
     outline: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
   }
 
   svg {
@@ -162,13 +167,13 @@
 
   .switch-icon-b {
     /* rtl:ignore */
-    transform: translateX(calc(var(--#{$prefix}dir) * 100%));
+    transform: translateX(calc(var(--dir) * 100%));
   }
 
   &.active {
     .switch-icon-a {
       /* rtl:ignore */
-      transform: translateX(calc(var(--#{$prefix}dir) * -100%));
+      transform: translateX(calc(var(--dir) * -100%));
     }
 
     .switch-icon-b {
@@ -185,13 +190,13 @@
 
   .switch-icon-b {
     /* rtl:ignore */
-    transform: translateX(calc(var(--#{$prefix}dir) * -100%));
+    transform: translateX(calc(var(--dir) * -100%));
   }
 
   &.active {
     .switch-icon-a {
       /* rtl:ignore */
-      transform: translateX(calc(var(--#{$prefix}dir) * 100%));
+      transform: translateX(calc(var(--dir) * 100%));
     }
 
     .switch-icon-b {

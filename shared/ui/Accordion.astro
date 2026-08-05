@@ -31,8 +31,8 @@ const accordionClasses = ['accordion', ...types.map((t) => `accordion-${t}`)].jo
       const isFirst = index === 1
       return (
         <div class="accordion-item">
-          <div class="accordion-header">
-            <button class={`accordion-button${isFirst ? '' : ' collapsed'}`} type="button" data-bs-toggle="collapse" data-bs-target={`#collapse-${index}-${id}`} aria-expanded={isFirst ? 'true' : 'false'}>
+          <h2 class="accordion-header">
+            <button id={`accordion-button-${index}-${id}`} class={`accordion-button${isFirst ? '' : ' collapsed'}`} type="button" data-bs-toggle="collapse" data-bs-target={`#collapse-${index}-${id}`} aria-expanded={isFirst ? 'true' : 'false'} aria-controls={`collapse-${index}-${id}`}>
               {showIcon && (
                 <div class="accordion-button-icon">
                   <Icon name="link" />
@@ -45,8 +45,8 @@ const accordionClasses = ['accordion', ...types.map((t) => `accordion-${t}`)].jo
                 <Icon name={resolvedToggleIcon} />
               </div>
             </button>
-          </div>
-          <div id={`collapse-${index}-${id}`} class={`accordion-collapse collapse${isFirst ? ' show' : ''}`} data-bs-parent={`#accordion-${id}`}>
+          </h2>
+          <div id={`collapse-${index}-${id}`} class={`accordion-collapse collapse${isFirst ? ' show' : ''}`} data-bs-parent={`#accordion-${id}`} role="region" aria-labelledby={`accordion-button-${index}-${id}`}>
             <div class="accordion-body">{question.answer}</div>
           </div>
         </div>

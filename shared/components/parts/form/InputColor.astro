@@ -17,16 +17,19 @@ const colors = ['dark', 'white', ...siteColors]
 ---
 
 <FormGroup label={label}>
-  <div class="row g-2">
-    {
-      colors.map((color, i) => (
-        <div class="col-auto">
-          <label class:list={['form-colorinput', color === 'white' && 'form-colorinput-light']}>
-            <input name={name} type={type} value={color} class="form-colorinput-input" checked={i === 1} />
-            <span class:list={[`form-colorinput-color bg-${color}`, rounded && 'rounded-circle']} />
-          </label>
-        </div>
-      ))
-    }
-  </div>
+  <fieldset>
+    <legend class="visually-hidden">{label}</legend>
+    <div class="row g-2">
+      {
+        colors.map((color, i) => (
+          <div class="col-auto">
+            <label class:list={['form-colorinput', color === 'white' && 'form-colorinput-light']}>
+              <input name={name} type={type} value={color} class="form-colorinput-input" checked={i === 1} aria-label={color} />
+              <span class:list={[`form-colorinput-color bg-${color}`, rounded && 'rounded-circle']} />
+            </label>
+          </div>
+        ))
+      }
+    </div>
+  </fieldset>
 </FormGroup>
