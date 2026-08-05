@@ -59,7 +59,6 @@
     background: 0 0;
     border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) transparent;
     @include border-radius(var(--#{$prefix}border-radius-pill));
-    outline: 0;
     @include transition(background $transition-time, border $transition-time, box-shadow 0.32s, color $transition-time);
 
     &:hover {
@@ -67,6 +66,11 @@
       text-decoration: none;
       background: #fefeff;
       border-color: var(--#{$prefix}border-color);
+    }
+
+    &:focus-visible {
+      outline: 2px solid var(--#{$prefix}primary);
+      outline-offset: 2px;
     }
   }
 

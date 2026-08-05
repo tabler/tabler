@@ -21,6 +21,18 @@
   opacity: var(--#{$prefix}btn-close-opacity);
   cursor: pointer;
   display: block;
+  position: relative;
+
+  // Invisible overlay extending the hit area to a 24x24px minimum touch target
+  &:before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: max(100%, 24px);
+    height: max(100%, 24px);
+    transform: translate(-50%, -50%);
+  }
 
   &:hover {
     color: var(--#{$prefix}btn-close-color);

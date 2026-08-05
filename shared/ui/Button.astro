@@ -41,9 +41,10 @@ interface Props {
   dismiss?: boolean
 }
 
-const { text = 'Button', href, external, element: Element = 'a', type, id, color, outline, ghost, height, size, block, disabled, square, loading, action, pill, link, class: className, icon, iconColor, iconEnd, iconOnly, dots, modalId, toastId, dismiss } = Astro.props
+const { text = 'Button', href, external, element, type, id, color, outline, ghost, height, size, block, disabled, square, loading, action, pill, link, class: className, icon, iconColor, iconEnd, iconOnly, dots, modalId, toastId, dismiss } = Astro.props
 
-// href defaults to '#'; internal hrefs are prefixed with '/'.
+// Without a real destination the control is an action, so render <button>; internal hrefs are prefixed with '/'.
+const Element = element ?? (href ? 'a' : 'button')
 const resolvedHref = href ? (external ? href : `/${href}`) : '#'
 
 const classes = [
@@ -65,7 +66,8 @@ const classes = [
 
 <Element
   href={Element === 'a' ? resolvedHref : undefined}
-  type={type}
+  type={Element === 'button' ? (type ?? 'button') : undefined}
+  disabled={Element === 'button' && disabled ? true : undefined}
   id={id}
   class:list={classes}
   target={external ? '_blank' : undefined}
