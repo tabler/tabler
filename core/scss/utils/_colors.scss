@@ -52,7 +52,7 @@
       &:focus {
         $hover-color: if(sass(color-contrast($value) == $color-contrast-light): shade-color($value, $link-shade-percentage); else: tint-color($value, $link-shade-percentage));
         color: RGBA(#{to-rgb($hover-color)}, var(--link-opacity, 1)) if(sass($enable-important-utilities): !important; else: null);
-        text-decoration-color: RGBA(to-rgb($hover-color), var(--link-underline-opacity, 1)) if(sass($enable-important-utilities): !important; else: null);
+        text-decoration-color: rgba(to-rgb($hover-color), var(--link-underline-opacity, 1)) if(sass($enable-important-utilities): !important; else: null);
       }
     }
   }
@@ -97,7 +97,7 @@
 
 .bg-inverted {
   --bg-opacity: 1;
-  background-color: color-mix(in srgb, var(--bg-surface-inverted) calc(var(--bg-opacity) * 100%), transparent) !important;
+  background-color: color-mix(in sRGB, var(--bg-surface-inverted) calc(var(--bg-opacity) * 100%), transparent) !important;
 }
 .bg-surface {
   background-color: var(--bg-surface) !important;
