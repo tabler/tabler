@@ -1,54 +1,54 @@
 @use '../config' as *;
 
 .alert {
-  --#{$prefix}alert-variant-color: var(--#{$prefix}body-color);
-  --#{$prefix}alert-color: var(--#{$prefix}alert-variant-color);
-  --#{$prefix}alert-bg: #{color-transparent(var(--#{$prefix}alert-variant-color), 0.16, var(--#{$prefix}bg-surface))};
-  --#{$prefix}alert-padding-x: #{$alert-padding-x};
-  --#{$prefix}alert-padding-y: #{$alert-padding-y};
-  --#{$prefix}alert-margin-bottom: #{$alert-margin-bottom};
-  --#{$prefix}alert-border-color: #{color-transparent(var(--#{$prefix}alert-variant-color), 0.2, var(--#{$prefix}bg-surface))};
-  --#{$prefix}alert-border-color: var(--#{$prefix}border-color);
-  --#{$prefix}alert-border: var(--#{$prefix}border-width) solid var(--#{$prefix}alert-border-color);
-  --#{$prefix}alert-border-radius: var(--#{$prefix}border-radius);
-  --#{$prefix}alert-link-color: inherit;
-  --#{$prefix}alert-heading-font-weight: var(--#{$prefix}font-weight-medium);
-  --#{$prefix}alert-heading-margin-bottom: #{$alert-heading-margin-bottom};
-  --#{$prefix}alert-icon-size: #{$alert-icon-size};
-  --#{$prefix}alert-padding-inline-end: #{$alert-padding-inline-end};
-  --#{$prefix}alert-gap: #{$alert-gap};
+  --alert-variant-color: var(--body-color);
+  --alert-color: var(--alert-variant-color);
+  --alert-bg: #{color-transparent(var(--alert-variant-color), 0.16, var(--bg-surface))};
+  --alert-padding-x: #{$alert-padding-x};
+  --alert-padding-y: #{$alert-padding-y};
+  --alert-margin-bottom: #{$alert-margin-bottom};
+  --alert-border-color: #{color-transparent(var(--alert-variant-color), 0.2, var(--bg-surface))};
+  --alert-border-color: var(--border-color);
+  --alert-border: var(--border-width) solid var(--alert-border-color);
+  --alert-border-radius: var(--border-radius);
+  --alert-link-color: inherit;
+  --alert-heading-font-weight: var(--font-weight-medium);
+  --alert-heading-margin-bottom: #{$alert-heading-margin-bottom};
+  --alert-icon-size: #{$alert-icon-size};
+  --alert-padding-inline-end: #{$alert-padding-inline-end};
+  --alert-gap: #{$alert-gap};
 
   position: relative;
-  padding: var(--#{$prefix}alert-padding-y) var(--#{$prefix}alert-padding-x);
-  margin-bottom: var(--#{$prefix}alert-margin-bottom);
-  background-color: color-mix(in srgb, var(--#{$prefix}alert-bg), var(--#{$prefix}bg-surface));
-  @include border-radius(var(--#{$prefix}alert-border-radius));
-  border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}alert-border-color);
-  box-shadow: var(--#{$prefix}box-shadow);
-  color: var(--#{$prefix}alert-color);
+  padding: var(--alert-padding-y) var(--alert-padding-x);
+  margin-bottom: var(--alert-margin-bottom);
+  background-color: color-mix(in srgb, var(--alert-bg), var(--bg-surface));
+  @include border-radius(var(--alert-border-radius));
+  border: var(--border-width) var(--border-style) var(--alert-border-color);
+  box-shadow: var(--box-shadow);
+  color: var(--alert-color);
   display: flex;
   flex-direction: row;
-  gap: var(--#{$prefix}alert-gap);
+  gap: var(--alert-gap);
 }
 
 .alert-heading {
   color: inherit;
-  margin-bottom: var(--#{$prefix}alert-heading-margin-bottom);
-  font-weight: var(--#{$prefix}alert-heading-font-weight);
+  margin-bottom: var(--alert-heading-margin-bottom);
+  font-weight: var(--alert-heading-font-weight);
 }
 
 .alert-description {
-  color: var(--#{$prefix}secondary);
+  color: var(--secondary);
 }
 
 .alert-icon {
-  color: var(--#{$prefix}alert-color);
-  width: var(--#{$prefix}alert-icon-size) !important;
-  height: var(--#{$prefix}alert-icon-size) !important;
+  color: var(--alert-color);
+  width: var(--alert-icon-size) !important;
+  height: var(--alert-icon-size) !important;
 }
 
 .alert-action {
-  color: var(--#{$prefix}alert-color);
+  color: var(--alert-color);
   text-decoration: underline;
 
   &:hover {
@@ -62,29 +62,29 @@
 
 .alert-link {
   font-weight: $alert-link-font-weight;
-  color: var(--#{$prefix}alert-link-color);
+  color: var(--alert-link-color);
 
   &,
   &:hover {
-    color: var(--#{$prefix}alert-color);
+    color: var(--alert-color);
   }
 }
 
 .alert-dismissible {
-  padding-inline-end: var(--#{$prefix}alert-padding-inline-end);
+  padding-inline-end: var(--alert-padding-inline-end);
 
   .btn-close {
     position: absolute;
-    top: calc(var(--#{$prefix}alert-padding-x) / 2 - 1px);
-    inset-inline-end: calc(var(--#{$prefix}alert-padding-y) / 2 - 1px);
+    top: calc(var(--alert-padding-x) / 2 - 1px);
+    inset-inline-end: calc(var(--alert-padding-y) / 2 - 1px);
     z-index: 1;
-    padding: calc(var(--#{$prefix}alert-padding-y) * 1.25) var(--#{$prefix}alert-padding-x);
+    padding: calc(var(--alert-padding-y) * 1.25) var(--alert-padding-x);
   }
 }
 
 .alert-important {
-  background-color: var(--#{$prefix}alert-variant-color);
-  color: var(--#{$prefix}white);
+  background-color: var(--alert-variant-color);
+  color: var(--white);
 
   .alert-description {
     color: inherit;
@@ -97,11 +97,11 @@
 
 .alert-minor {
   background: transparent;
-  border-color: var(--tblr-border-color);
+  border-color: var(--border-color);
 }
 
 @each $name, $color in $theme-colors {
   .alert-#{$name} {
-    --#{$prefix}alert-variant-color: var(--#{$prefix}#{$name});
+    --alert-variant-color: var(--#{$name});
   }
 }
