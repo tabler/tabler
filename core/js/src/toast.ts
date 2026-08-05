@@ -3,6 +3,7 @@ import { Toast } from './bootstrap'
 /*
 Toasts
  */
+// js-docs-start toast-init
 const toastsTriggerList: HTMLElement[] = [].slice.call(document.querySelectorAll<HTMLElement>('[data-bs-toggle="toast"]'))
 toastsTriggerList.map(function (toastTriggerEl: HTMLElement) {
   const target = toastTriggerEl.getAttribute('data-bs-target')
@@ -16,3 +17,4 @@ toastsTriggerList.map(function (toastTriggerEl: HTMLElement) {
     toastEl.show()
   })
 })
+// js-docs-end toast-init
