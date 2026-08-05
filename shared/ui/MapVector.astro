@@ -100,7 +100,7 @@ const mapOptions = data
 				<script define:vars={{ mapKey, mapSelector, mapName: data.map, mapOptions }}>
 					window.tabler_map_vector ??= {};
 
-					function initMapVector() {
+					function createMapVector() {
 						const map = (window.tabler_map_vector[mapKey] = new jsVectorMap({
 							selector: mapSelector,
 							map: mapName,
@@ -113,6 +113,27 @@ const mapOptions = data
 						window.addEventListener('resize', () => {
 							map.updateSize();
 						});
+					}
+
+					function initMapVector() {
+						const container = document.querySelector(mapSelector);
+
+						// jsVectorMap computes its initial scale from the container's layout
+						// size. If the container is still 0x0 (e.g. layout hasn't settled
+						// yet), that scale ends up 0, and a later resize divides by it,
+						// producing a NaN transform. Wait for real dimensions first.
+						if (container.offsetWidth && container.offsetHeight) {
+							createMapVector();
+							return;
+						}
+
+						const observer = new ResizeObserver((entries) => {
+							if (entries[0].contentRect.width && entries[0].contentRect.height) {
+								observer.disconnect();
+								createMapVector();
+							}
+						});
+						observer.observe(container);
 					}
 
 					document.readyState !== 'loading' ? initMapVector() : document.addEventListener('DOMContentLoaded', initMapVector, { once: true });
