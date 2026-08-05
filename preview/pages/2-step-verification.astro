@@ -9,20 +9,20 @@ import flags from '@data/flags.json'
 ---
 
 <SingleLayout title="2-Step Verification">
-  <form class="card card-md" action="./2-step-verification-code.html" method="get" autocomplete="off" novalidate>
+  <form class="card card-md" action="./2-step-verification-code.html" method="get" novalidate>
     <div class="card-body">
       <h2 class="card-title text-center mb-4">2-Step Verification</h2>
 
-      <FormGroup label="Country">
-        <select class="form-select">
-          {flags.map((country) => <option value="">{country.name}</option>)}
+      <FormGroup label="Country" for="verify-country">
+        <select class="form-select" id="verify-country" autocomplete="country-name">
+          {flags.map((country) => <option value={country.name}>{country.name}</option>)}
         </select>
       </FormGroup>
 
-      <FormGroup label="Your Phone Number" class="mb-4">
+      <FormGroup label="Your Phone Number" for="verify-phone" class="mb-4">
         <div class="input-group">
           <span class="input-group-text">+1</span>
-          <input type="text" class="form-control" placeholder="Enter phone number" />
+          <input type="tel" class="form-control" id="verify-phone" placeholder="Enter phone number" autocomplete="tel-national" />
         </div>
       </FormGroup>
 

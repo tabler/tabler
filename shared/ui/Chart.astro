@@ -9,9 +9,10 @@ interface Props {
 	size?: 'sm' | 'lg';
 	class?: string;
 	height?: number;
+	label: string;
 }
 
-const { chartId, id = chartId, size, class: classProp, height: heightProp } = Astro.props;
+const { chartId, id = chartId, size, class: classProp, height: heightProp, label } = Astro.props;
 
 const chartsData = charts as Record<string, ChartData>;
 let data = chartsData[chartId];
@@ -42,7 +43,7 @@ const elementId = `chart-${id}`;
 {
 	data && (
 		<Fragment>
-			<div id={elementId} class:list={['position-relative', className]} />
+			<div id={elementId} class:list={['position-relative', className]} role="img" aria-label={label} />
 			<Fragment set:html={style} />
 			<CaptureScript>
 				<!-- BEGIN CHART -->

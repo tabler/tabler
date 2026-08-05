@@ -1,5 +1,6 @@
 import { Tab } from './bootstrap'
 
+// js-docs-start tab-init
 export const EnableActivationTabsFromLocationHash = (): void => {
   const locationHash: string = window.location.hash
 
@@ -14,3 +15,4 @@ export const EnableActivationTabsFromLocationHash = (): void => {
 }
 
 EnableActivationTabsFromLocationHash()
+// js-docs-end tab-init

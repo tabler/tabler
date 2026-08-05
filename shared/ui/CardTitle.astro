@@ -5,11 +5,12 @@ interface Props {
   /** heading element, e.g. h2 — default h3 */
   as?: string
   class?: string
+  id?: string
 }
 
-const { as: Tag = 'h3', class: className } = Astro.props
+const { as: Tag = 'h3', class: className, id } = Astro.props
 ---
 
-<Tag class:list={['card-title', className]}>
+<Tag class:list={['card-title', className]} id={id}>
   <slot />
 </Tag>

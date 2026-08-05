@@ -11,46 +11,48 @@ const visibilityOptions = ['Private', 'Public', 'Hidden']
 ---
 
 <div class="modal-header">
-  <h5 class="modal-title">New report</h5>
+  <h5 class="modal-title" id="modal-report-title">New report</h5>
   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>
 
 <div class="modal-body">
-  <FormGroup label="Name">
-    <input type="text" class="form-control" name="example-text-input" placeholder="Your report name" />
+  <FormGroup label="Name" for="report-name">
+    <input type="text" id="report-name" class="form-control" name="example-text-input" placeholder="Your report name" />
   </FormGroup>
 
-  <label class="form-label">Report type</label>
-  <div class="form-selectgroup-boxes row mb-3">
-    {
-      reports.map((report, index) => (
-        <div class="col-lg-6">
-          <label class="form-selectgroup-item">
-            <input type="radio" name="report-type" value="1" class="form-selectgroup-input" checked={index === 0} />
-            <span class="form-selectgroup-label d-flex align-items-center p-3">
-              <span class="me-3">
-                <span class="form-selectgroup-check" />
+  <fieldset class="border-0 p-0 mb-3">
+    <legend class="form-label float-none mb-0" style="font-size: inherit;">Report type</legend>
+    <div class="form-selectgroup-boxes row">
+      {
+        reports.map((report, index) => (
+          <div class="col-lg-6">
+            <label class="form-selectgroup-item">
+              <input type="radio" name="report-type" value="1" class="form-selectgroup-input" checked={index === 0} />
+              <span class="form-selectgroup-label d-flex align-items-center p-3">
+                <span class="me-3">
+                  <span class="form-selectgroup-check" />
+                </span>
+                <span class="form-selectgroup-label-content">
+                  <span class="form-selectgroup-title strong mb-1">{report.title}</span>
+                  <span class="d-block text-secondary">{report.description}</span>
+                </span>
               </span>
-              <span class="form-selectgroup-label-content">
-                <span class="form-selectgroup-title strong mb-1">{report.title}</span>
-                <span class="d-block text-secondary">{report.description}</span>
-              </span>
-            </span>
-          </label>
-        </div>
-      ))
-    }
-  </div>
+            </label>
+          </div>
+        ))
+      }
+    </div>
+  </fieldset>
 
   <div class="row">
     <div class="col-lg-8">
-      <FormGroup label="Report url">
-        <InputGroup prepend="https://tabler.io/reports/" flat inputClass="ps-0" value="report-01" />
+      <FormGroup label="Report url" for="report-url">
+        <InputGroup id="report-url" prepend="https://tabler.io/reports/" flat inputClass="ps-0" value="report-01" />
       </FormGroup>
     </div>
     <div class="col-lg-4">
-      <FormGroup label="Visibility">
-        <select class="form-select">
+      <FormGroup label="Visibility" for="report-visibility">
+        <select id="report-visibility" class="form-select">
           {
             visibilityOptions.map((option, index) => (
               <option value={index + 1} selected={index === 0}>
@@ -67,18 +69,18 @@ const visibilityOptions = ['Private', 'Public', 'Hidden']
 <div class="modal-body">
   <div class="row">
     <div class="col-lg-6">
-      <FormGroup label="Client name">
-        <input type="text" class="form-control" />
+      <FormGroup label="Client name" for="report-client-name">
+        <input type="text" id="report-client-name" class="form-control" />
       </FormGroup>
     </div>
     <div class="col-lg-6">
-      <FormGroup label="Reporting period">
-        <input type="date" class="form-control" />
+      <FormGroup label="Reporting period" for="report-reporting-period">
+        <input type="date" id="report-reporting-period" class="form-control" />
       </FormGroup>
     </div>
     <div class="col-lg-12">
-      <FormGroup label="Additional information" class="">
-        <textarea class="form-control" rows="3"></textarea>
+      <FormGroup label="Additional information" for="report-additional-info" class="">
+        <textarea id="report-additional-info" class="form-control" rows="3"></textarea>
       </FormGroup>
     </div>
   </div>

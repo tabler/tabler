@@ -1,3 +1,4 @@
+// js-docs-start countup-init
 const countupElements: NodeListOf<HTMLElement> = document.querySelectorAll<HTMLElement>('[data-countup]')
 
 if (countupElements.length) {
@@ -29,3 +30,4 @@ if (countupElements.length) {
     }
   })
 }
+// js-docs-end countup-init

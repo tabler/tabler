@@ -24,6 +24,25 @@ export async function highlightCode(code: string, lang = 'html'): Promise<string
   return highlighter.codeToHtml(code, { lang, theme: 'github-dark' })
 }
 
+/**
+ * Extract the content between `// <marker>-start <name>` and `// <marker>-end <name>`
+ * comments in a source file, dedented to the first column. Returns null when the
+ * markers are missing.
+ */
+export function extractMarkedSnippet(source: string, marker: string, name: string): string | null {
+  const match = source.match(new RegExp(`// ${marker}-start ${name}\\n((?:.|\\n)*?)// ${marker}-end ${name}`))
+  if (!match?.[1]) {
+    return null
+  }
+  const lines = match[1].split('\n')
+  const spaceCounts = lines.filter((line) => line.trim().length > 0).map((line) => (line.match(/^ */)?.[0] ?? '').length)
+  const minSpaces = spaceCounts.length ? Math.min(...spaceCounts) : 0
+  return lines
+    .map((line) => line.slice(minSpaces))
+    .join('\n')
+    .trim()
+}
+
 /** Escape text for use in HTML attributes (e.g. data-clipboard-text). */
 export function escapeAttribute(text: string): string {
   return text

@@ -70,15 +70,28 @@ const datepickerId = id ? `datepicker-${id}` : undefined;
 				function initDatepicker() {
 					window.tabler_datepicker ??= {};
 
-					window.Litepicker &&
-						(window.tabler_datepicker[datepickerId] = new Litepicker({
-							element: document.getElementById(datepickerId),
-							buttonText: {
-								previousMonth: chevronLeft,
-								nextMonth: chevronRight,
-							},
-							...(inline ? { inlineMode: true } : {}),
-						}));
+					if (!window.Litepicker) return;
+
+					const picker = new Litepicker({
+						element: document.getElementById(datepickerId),
+						buttonText: {
+							previousMonth: chevronLeft,
+							nextMonth: chevronRight,
+						},
+						...(inline ? { inlineMode: true } : {}),
+					});
+
+					// Litepicker sets buttonText as the buttons' innerHTML, and the icon SVGs are
+					// aria-hidden, so the generated month-nav buttons otherwise have no accessible
+					// name. Litepicker also re-renders these buttons (new DOM nodes) on every open
+					// and every month change, so re-apply the labels on each "render" event instead
+					// of labeling once at init.
+					picker.on('render', () => {
+						picker.ui?.querySelector('.button-previous-month')?.setAttribute('aria-label', 'Previous month');
+						picker.ui?.querySelector('.button-next-month')?.setAttribute('aria-label', 'Next month');
+					});
+
+					window.tabler_datepicker[datepickerId] = picker;
 				}
 
 				document.readyState !== 'loading' ? initDatepicker() : document.addEventListener('DOMContentLoaded', initDatepicker, { once: true });
