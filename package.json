@@ -15,7 +15,7 @@
     "publish": "changeset publish",
     "reformat-md": "tsx .build/reformat-mdx.ts",
     "lint": "pnpm run lint-md && pnpm run lint-prettier && pnpm run lint-scss-vars",
-    "lint:fix": "pnpm run lint-md-fix && pnpm run lint:scss:fix && pnpm run format-prettier",
+    "lint:fix": "(pnpm run lint-md-fix || true) && (pnpm run lint:scss:fix || true) && (pnpm run format-prettier || true)",
     "lint:scss": "pnpm --filter @tabler/core lint:scss",
     "lint:scss:fix": "pnpm --filter @tabler/core lint:scss:fix",
     "lint-md": "markdownlint --config .markdownlint-docs.json \"docs/pages/**/*.mdx\"",
