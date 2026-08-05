@@ -14,27 +14,27 @@
   background-clip: border-box;
 
   &.card {
-    padding: 0;
-    min-width: $dropdown-max-width;
     display: none;
+    min-width: $dropdown-max-width;
+    padding: 0;
 
     &.show {
       display: flex;
     }
   }
 
-  @include media-print {
+  @include media-print() {
     display: none;
   }
 }
 
 .dropdown-item {
-  min-width: $dropdown-min-width;
   display: flex;
+  gap: var(--#{$prefix}dropdown-item-gap);
   align-items: center;
+  min-width: $dropdown-min-width;
   margin: 0;
   line-height: $line-height-base;
-  gap: var(--#{$prefix}dropdown-item-gap);
 }
 
 .dropdown-item-icon {
@@ -45,15 +45,15 @@
 }
 
 .dropdown-item-indicator {
-  height: var(--#{$prefix}dropdown-item-icon-size);
   display: inline-flex;
+  align-items: center;
+  height: var(--#{$prefix}dropdown-item-icon-size);
   line-height: 1;
   vertical-align: bottom;
-  align-items: center;
 }
 
 .dropdown-header {
-  @include subheader;
+  @include subheader();
   padding-bottom: var(--#{$prefix}dropdown-header-padding-bottom);
   pointer-events: none;
 }
@@ -78,48 +78,49 @@
 }
 
 .dropdown-menu-arrow {
-  &:before {
-    content: '';
+  &::before {
     position: absolute;
-    top: calc(-1 * var(--#{$prefix}dropdown-arrow-offset));
     inset-inline-start: var(--#{$prefix}dropdown-arrow-inset);
+    top: calc(-1 * var(--#{$prefix}dropdown-arrow-offset));
+    z-index: -1;
     display: block;
-    background: inherit;
     width: 14px;
     height: 14px;
-    /*rtl:ignore*/
-    transform: rotate(45deg);
-    transform-origin: center;
+    clip: rect(0, 9px, 9px, 0);
+    content: '';
+    background: inherit;
     border: 1px solid;
     border-color: inherit;
-    z-index: -1;
-    clip: rect(0px, 9px, 9px, 0px);
+
+    /* rtl:ignore */
+    transform: rotate(45deg);
+    transform-origin: center;
   }
 
   &.dropdown-menu-end {
-    &:before {
-      inset-inline-end: var(--#{$prefix}dropdown-arrow-inset);
+    &::before {
       inset-inline-start: auto;
+      inset-inline-end: var(--#{$prefix}dropdown-arrow-inset);
     }
   }
 }
 
 .dropend {
   > .dropdown-menu {
-    margin-top: subtract(calc(-1 * $dropdown-padding-y), 1px);
     margin-inline-start: calc(-1 * var(--#{$prefix}dropdown-dropend-offset));
+    margin-top: subtract(calc(-1 * $dropdown-padding-y), 1px);
   }
 
   .dropdown-toggle {
-    &:after {
+    &::after {
       margin-inline-start: auto;
     }
   }
 }
 
 .dropdown-menu-card {
-  padding: 0;
   min-width: var(--#{$prefix}dropdown-menu-card-min-width);
+  padding: 0;
 
   > .card {
     margin: 0;

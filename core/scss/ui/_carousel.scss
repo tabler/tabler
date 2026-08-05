@@ -8,14 +8,14 @@
 
   inset-inline-start: auto;
   top: 0;
-  margin: 0 var(--#{$prefix}carousel-indicators-vertical-margin-inline-end) 0 0;
   flex-direction: column;
+  margin: 0 var(--#{$prefix}carousel-indicators-vertical-margin-inline-end) 0 0;
 
   [data-bs-target],
   [data-target] {
-    margin: $carousel-indicator-spacer 0 $carousel-indicator-spacer;
     width: $carousel-indicator-height;
     height: $carousel-indicator-width;
+    margin: $carousel-indicator-spacer 0 $carousel-indicator-spacer;
     border: 0;
     border-inline-start: $carousel-indicator-hit-area-height var(--#{$prefix}border-style) transparent;
     border-inline-end: $carousel-indicator-hit-area-height var(--#{$prefix}border-style) transparent;
@@ -27,9 +27,9 @@
   [data-target] {
     width: $carousel-indicator-dot-width;
     height: $carousel-indicator-dot-width;
-    @include border-radius(var(--#{$prefix}border-radius-pill));
-    border: $carousel-indicator-hit-area-height var(--#{$prefix}border-style) transparent;
     margin: 0;
+    border: $carousel-indicator-hit-area-height var(--#{$prefix}border-style) transparent;
+    @include border-radius(var(--#{$prefix}border-radius-pill));
   }
 }
 
@@ -38,21 +38,21 @@
   [data-target] {
     width: $carousel-indicator-thumb-width * 0.5;
     height: auto;
+    margin: 0 $carousel-indicator-spacer;
     background: no-repeat center/cover;
     border: 0;
-    @include border-radius(var(--#{$prefix}border-radius));
     box-shadow: $box-shadow;
-    margin: 0 $carousel-indicator-spacer;
     opacity: $carousel-indicator-thumb-opacity;
+    @include border-radius(var(--#{$prefix}border-radius));
 
     @include media-breakpoint-up(lg) {
       width: $carousel-indicator-thumb-width;
     }
 
-    &:before {
-      content: '';
-      padding-top: var(--#{$prefix}aspect-ratio, 100%);
+    &::before {
       display: block;
+      padding-top: var(--#{$prefix}aspect-ratio, 100%);
+      content: '';
     }
   }
 
@@ -65,11 +65,11 @@
 }
 
 .carousel-caption-background {
-  background: red;
   position: absolute;
   inset-inline-start: 0;
   inset-inline-end: 0;
   bottom: 0;
   height: 90%;
+  background: red;
   background: linear-gradient(0deg, rgba($dark, 0.9), rgba($dark, 0));
 }

@@ -40,11 +40,11 @@
   position: relative;
   flex: 1 1 0;
   min-height: var(--#{$prefix}step-item-min-height);
+  padding-top: calc(var(--#{$prefix}steps-dot-size));
   margin-top: 0;
   color: inherit;
   text-align: center;
   cursor: default;
-  padding-top: calc(var(--#{$prefix}steps-dot-size));
 
   @at-root a#{&} {
     cursor: pointer;
@@ -54,12 +54,12 @@
     }
   }
 
-  &:after,
-  &:before {
+  &::after,
+  &::before {
     background: var(--#{$prefix}steps-color);
   }
 
-  &:not(:last-child):after {
+  &:not(:last-child)::after {
     position: absolute;
     inset-inline-start: 50%;
     width: 100%;
@@ -67,41 +67,42 @@
     transform: translateY(-50%);
   }
 
-  &:after {
+  &::after {
     top: calc(var(--#{$prefix}steps-dot-size) * 0.5);
     height: var(--#{$prefix}steps-border-width);
   }
 
-  &:before {
-    content: '';
+  &::before {
     position: absolute;
-    top: 0;
     inset-inline-start: 50%;
+    top: 0;
     z-index: 1;
     box-sizing: content-box;
     display: flex;
     align-items: center;
     justify-content: center;
-    @include border-radius(var(--#{$prefix}border-radius-pill));
-    /*rtl:ignore*/
-    transform: translateX(calc(var(--#{$prefix}dir) * -50%));
-    color: var(--#{$prefix}white);
     width: var(--#{$prefix}steps-dot-size);
     height: var(--#{$prefix}steps-dot-size);
+    color: var(--#{$prefix}white);
+    content: '';
+
+    /* rtl:ignore */
+    transform: translateX(calc(var(--#{$prefix}dir) * -50%));
+    @include border-radius(var(--#{$prefix}border-radius-pill));
   }
 
   &.active {
     font-weight: var(--#{$prefix}font-weight-semibold);
 
-    &:after {
+    &::after {
       background: var(--#{$prefix}steps-inactive-color);
     }
 
     & ~ .step-item {
       color: var(--#{$prefix}disabled-color);
 
-      &:after,
-      &:before {
+      &::after,
+      &::before {
         background: var(--#{$prefix}steps-inactive-color);
       }
     }
@@ -118,7 +119,7 @@
   .step-item {
     counter-increment: steps;
 
-    &:before {
+    &::before {
       content: counter(steps);
     }
   }
@@ -139,31 +140,32 @@
   }
 
   .step-item {
-    text-align: start;
-    padding-top: 0;
-    padding-inline-start: calc(var(--#{$prefix}steps-dot-size) + var(--#{$prefix}steps-vertical-padding-start));
     min-height: auto;
+    padding-inline-start: calc(var(--#{$prefix}steps-dot-size) + var(--#{$prefix}steps-vertical-padding-start));
+    padding-top: 0;
+    text-align: start;
 
     &:not(:first-child) {
       margin-top: var(--#{$prefix}steps-vertical-item-gap);
     }
 
-    &:before {
-      top: var(--#{$prefix}steps-dot-offset);
+    &::before {
       inset-inline-start: 0;
+      top: var(--#{$prefix}steps-dot-offset);
       transform: translate(0, 0);
     }
 
     &:not(:last-child) {
-      &:after {
+      &::after {
         position: absolute;
-        content: '';
-        /*rtl:ignore*/
-        transform: translateX(calc(var(--#{$prefix}dir) * -50%));
-        top: var(--#{$prefix}steps-dot-offset);
         inset-inline-start: calc(var(--#{$prefix}steps-dot-size) * 0.5);
+        top: var(--#{$prefix}steps-dot-offset);
         width: var(--#{$prefix}steps-border-width);
         height: calc(100% + var(--#{$prefix}steps-vertical-connector-gap));
+        content: '';
+
+        /* rtl:ignore */
+        transform: translateX(calc(var(--#{$prefix}dir) * -50%));
       }
     }
   }

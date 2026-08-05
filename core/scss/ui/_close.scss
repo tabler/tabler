@@ -9,24 +9,24 @@
   --#{$prefix}btn-close-focus-opacity: #{$btn-close-focus-opacity};
   --#{$prefix}btn-close-disabled-opacity: #{$btn-close-disabled-opacity};
   --#{$prefix}btn-close-size: #{$btn-close-width};
+  display: block;
 
   width: var(--#{$prefix}btn-close-size);
   height: var(--#{$prefix}btn-close-size);
   padding: $btn-close-padding-y $btn-close-padding-x;
   color: var(--#{$prefix}btn-close-color);
-  mask: var(--#{$prefix}btn-close-bg) no-repeat center/calc(var(--#{$prefix}btn-close-size) * 0.75);
+  cursor: pointer;
   background-color: var(--#{$prefix}btn-close-color);
   border: 0;
-  @include border-radius(var(--tblr-border-radius));
   opacity: var(--#{$prefix}btn-close-opacity);
-  cursor: pointer;
-  display: block;
+  mask: var(--#{$prefix}btn-close-bg) no-repeat center/calc(var(--#{$prefix}btn-close-size) * 0.75);
+  @include border-radius(var(--tblr-border-radius));
 
   &:hover {
     color: var(--#{$prefix}btn-close-color);
     text-decoration: none;
-    opacity: var(--#{$prefix}btn-close-hover-opacity);
     background-color: var(--#{$prefix}btn-close-color);
+    opacity: var(--#{$prefix}btn-close-hover-opacity);
   }
 
   &:focus {
@@ -42,7 +42,7 @@
     opacity: var(--#{$prefix}btn-close-disabled-opacity);
   }
 
-  @include media-print {
+  @include media-print() {
     display: none;
   }
 }

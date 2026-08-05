@@ -31,12 +31,12 @@
     transform: scale(1, 1);
   }
   80% {
-    transform: scale(3, 3);
     opacity: 0;
+    transform: scale(3, 3);
   }
   100% {
-    transform: scale(3, 3);
     opacity: 0;
+    transform: scale(3, 3);
   }
 }
 
@@ -52,19 +52,19 @@
   --#{$prefix}status-gap: #{$status-gap};
 
   display: inline-flex;
+  gap: var(--#{$prefix}status-gap);
   align-items: center;
   height: var(--#{$prefix}status-height);
   padding: var(--#{$prefix}status-padding-y) var(--#{$prefix}status-padding-x);
-  gap: var(--#{$prefix}status-gap);
-  color: var(--#{$prefix}status-color);
-  background: color-transparent(var(--#{$prefix}status-color), 0.1);
+  margin: 0;
   font-size: $font-size-base;
-  text-transform: none;
-  letter-spacing: normal;
-  @include border-radius(var(--#{$prefix}border-radius-pill));
   font-weight: var(--#{$prefix}font-weight-medium);
   line-height: 1;
-  margin: 0;
+  color: var(--#{$prefix}status-color);
+  text-transform: none;
+  letter-spacing: normal;
+  background: color-transparent(var(--#{$prefix}status-color), 0.1);
+  @include border-radius(var(--#{$prefix}border-radius-pill));
 
   .status-dot {
     background: var(--#{$prefix}status-color);
@@ -76,9 +76,9 @@
 }
 
 .status-lite {
-  border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color) !important;
-  background: transparent !important;
   color: var(--#{$prefix}body-color) !important;
+  background: transparent !important;
+  border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color) !important;
 }
 
 @each $name, $color in map.merge($theme-colors, $social-colors) {
@@ -103,11 +103,11 @@
 }
 
 .status-dot-animated {
-  &:before {
-    content: '';
+  &::before {
     position: absolute;
     inset: 0;
     z-index: 0;
+    content: '';
     background: inherit;
     border-radius: inherit;
     opacity: 0.6;
@@ -121,8 +121,8 @@
 .status-indicator {
   --#{$prefix}status-indicator-size: #{$status-indicator-size};
   --#{$prefix}status-indicator-color: var(--#{$prefix}status-color, #{$text-secondary});
-  display: block;
   position: relative;
+  display: block;
   width: var(--#{$prefix}status-indicator-size);
   height: var(--#{$prefix}status-indicator-size);
 }
@@ -132,11 +132,11 @@
   position: absolute;
   inset-inline-start: 50%;
   top: 50%;
-  margin: calc(var(--#{$prefix}status-circle-size) / -2) 0 0 calc(var(--#{$prefix}status-circle-size) / -2);
   width: var(--#{$prefix}status-circle-size);
   height: var(--#{$prefix}status-circle-size);
-  @include border-radius(var(--#{$prefix}border-radius-pill));
+  margin: calc(var(--#{$prefix}status-circle-size) / -2) 0 0 calc(var(--#{$prefix}status-circle-size) / -2);
   background: var(--#{$prefix}status-color);
+  @include border-radius(var(--#{$prefix}border-radius-pill));
 
   &:nth-child(1) {
     z-index: 3;

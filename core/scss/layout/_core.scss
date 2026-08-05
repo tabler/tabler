@@ -12,28 +12,28 @@ html {
 
 // stylelint-disable property-no-vendor-prefix
 body {
-  letter-spacing: $body-letter-spacing;
-  touch-action: manipulation;
-  text-rendering: optimizeLegibility;
+  position: relative;
+  height: 100%;
+  min-height: 100%;
+  padding: 0;
   font-feature-settings:
     'liga' 0,
     'cv03',
     'cv04',
     'cv11';
-  position: relative;
-  min-height: 100%;
-  height: 100%;
-  padding: 0;
+  letter-spacing: $body-letter-spacing;
+  touch-action: manipulation;
+  text-rendering: optimizeLegibility;
 
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  @include media-print {
+  @include media-print() {
     background: transparent;
   }
 }
 
-@include scrollbar;
+@include scrollbar();
 
 //
 // Fluid container
@@ -54,20 +54,20 @@ body {
   --#{$prefix}theme-boxed-width: #{map.get($container-max-widths, xxl)};
 
   @include media-breakpoint-up(md) {
-    background: $dark linear-gradient(to right, rgba(#fff, 0.1), transparent) fixed;
     padding: 1rem;
+    background: $dark linear-gradient(to right, rgba(#fff, 0.1), transparent) fixed;
     --#{$prefix}theme-boxed-border-radius: #{$border-radius};
   }
 
   .page {
-    margin: 0 auto;
     max-width: var(--#{$prefix}theme-boxed-width);
-    @include border-radius(var(--#{$prefix}theme-boxed-border-radius));
+    margin: 0 auto;
     color: var(--#{$prefix}body-color);
+    @include border-radius(var(--#{$prefix}theme-boxed-border-radius));
 
     @include media-breakpoint-up(md) {
-      border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
       background: var(--#{$prefix}body-bg);
+      border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
     }
 
     > .navbar:first-child {

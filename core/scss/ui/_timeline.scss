@@ -6,8 +6,8 @@
 .timeline {
   --#{$prefix}timeline-icon-size: #{$avatar-size};
   position: relative;
-  list-style: none;
   padding: 0;
+  list-style: none;
 }
 
 //
@@ -19,13 +19,13 @@
   &:not(:last-child) {
     margin-bottom: var(--#{$prefix}page-padding);
 
-    &:before {
-      content: '';
+    &::before {
       position: absolute;
-      top: var(--#{$prefix}timeline-icon-size);
       inset-inline-start: calc(var(--#{$prefix}timeline-icon-size) / 2);
+      top: var(--#{$prefix}timeline-icon-size);
       bottom: calc(-1 * var(--#{$prefix}page-padding));
       width: var(--#{$prefix}border-width);
+      content: '';
       background-color: var(--#{$prefix}border-color);
       @include border-radius(var(--#{$prefix}border-radius));
     }
@@ -34,15 +34,15 @@
 
 .timeline-event-icon {
   position: absolute;
+  z-index: 5;
   display: flex;
   align-items: center;
   justify-content: center;
   width: var(--#{$prefix}timeline-icon-size, $avatar-size);
   height: var(--#{$prefix}timeline-icon-size, $avatar-size);
-  background: var(--#{$prefix}bg-surface-secondary);
   color: var(--#{$prefix}secondary);
+  background: var(--#{$prefix}bg-surface-secondary);
   @include border-radius(var(--#{$prefix}border-radius));
-  z-index: 5;
 }
 
 .timeline-event-card {

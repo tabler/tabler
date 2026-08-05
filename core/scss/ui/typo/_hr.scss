@@ -14,58 +14,58 @@ Hr text
   --#{$prefix}hr-text-gap: #{$hr-text-gap};
   display: flex;
   align-items: center;
-  margin: $hr-margin-y 0;
-  @include subheader;
   height: 1px;
+  margin: $hr-margin-y 0;
+  @include subheader();
 
-  &:after,
-  &:before {
+  &::after,
+  &::before {
     flex: 1 1 auto;
     height: 1px;
     background-color: var(--#{$prefix}border-color);
   }
 
-  &:before {
-    content: '';
+  &::before {
     margin-inline-end: var(--#{$prefix}hr-text-gap);
+    content: '';
   }
 
-  &:after {
-    content: '';
+  &::after {
     margin-inline-start: var(--#{$prefix}hr-text-gap);
+    content: '';
   }
 
   > *:first-child {
-    padding-inline-end: var(--#{$prefix}hr-text-gap);
     padding-inline-start: 0;
+    padding-inline-end: var(--#{$prefix}hr-text-gap);
     color: var(--#{$prefix}secondary);
   }
 
   &.hr-text-left,
   &.hr-text-start {
-    &:before {
+    &::before {
       content: none;
     }
 
     & > *:first-child {
-      padding-inline-end: var(--#{$prefix}hr-text-gap);
       padding-inline-start: var(--#{$prefix}hr-text-gap);
+      padding-inline-end: var(--#{$prefix}hr-text-gap);
     }
   }
 
   &.hr-text-right,
   &.hr-text-end {
-    &:before {
+    &::before {
       content: '';
     }
 
-    &:after {
+    &::after {
       content: none;
     }
 
     & > *:first-child {
-      padding-inline-end: 0;
       padding-inline-start: var(--#{$prefix}hr-text-gap);
+      padding-inline-end: 0;
     }
   }
 

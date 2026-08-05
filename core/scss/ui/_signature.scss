@@ -4,19 +4,19 @@
   --#{$prefix}signature-padding: var(--#{$prefix}spacer-1);
   --#{$prefix}signature-border-radius: var(--#{$prefix}border-radius);
   --#{$prefix}signature-canvas-height: 12.5rem;
-  border: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color);
   padding: var(--#{$prefix}signature-padding);
+  border: var(--#{$prefix}border-width) solid var(--#{$prefix}border-color);
   @include border-radius(var(--#{$prefix}border-radius));
 }
 
 .signature-canvas {
-  border: var(--#{$prefix}border-width) dashed var(--#{$prefix}border-color);
-  @include border-radius(calc(var(--#{$prefix}signature-border-radius) - var(--#{$prefix}signature-padding)));
   display: block;
-  cursor: crosshair;
   width: 100%;
   // A fixed height is required: without it the canvas height comes from its own
   // width/height attributes, which `resizeCanvas()` rewrites on every resize —
   // each run then measures a different `offsetHeight` and the pad drifts.
   height: var(--#{$prefix}signature-canvas-height);
+  cursor: crosshair;
+  border: var(--#{$prefix}border-width) dashed var(--#{$prefix}border-color);
+  @include border-radius(calc(var(--#{$prefix}signature-border-radius) - var(--#{$prefix}signature-padding)));
 }

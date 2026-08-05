@@ -5,13 +5,13 @@
 
   thead {
     th {
-      background: $table-th-bg;
-      @include subheader;
       padding-top: $table-th-padding-y;
       padding-bottom: $table-th-padding-y;
       white-space: nowrap;
+      background: $table-th-bg;
+      @include subheader();
 
-      @include media-print {
+      @include media-print() {
         background: transparent;
       }
     }
@@ -51,8 +51,8 @@
 }
 
 .td-truncate {
-  max-width: 1px;
   width: 100%;
+  max-width: 1px;
 }
 
 .table-mobile {
@@ -74,14 +74,14 @@
         td {
           display: block;
           padding: $table-cell-padding-x $table-cell-padding-y !important;
-          border: none;
           color: var(--#{$prefix}body-color) !important;
+          border: none;
 
           &[data-label] {
-            &:before {
-              @include subheader;
-              content: attr(data-label);
+            &::before {
+              @include subheader();
               display: block;
+              content: attr(data-label);
             }
           }
         }
@@ -104,18 +104,18 @@ Table sort
 .table-sort {
   --#{$prefix}table-sort-icon-size: #{$table-sort-icon-size};
   --#{$prefix}table-sort-icon-margin-start: #{$table-sort-icon-margin-start};
+  display: block;
+  width: 100%;
+  padding: $table-th-padding-y $table-th-padding-x;
+  margin: calc(-1 * $table-th-padding-y) calc(-1 * $table-th-padding-x);
 
   font: inherit;
   color: inherit;
+  text-align: inherit;
   text-transform: inherit;
   letter-spacing: inherit;
-  border: 0;
   background: inherit;
-  display: block;
-  width: 100%;
-  text-align: inherit;
-  margin: calc(-1 * $table-th-padding-y) calc(-1 * $table-th-padding-x);
-  padding: $table-th-padding-y $table-th-padding-x;
+  border: 0;
   @include transition(color $transition-time);
 
   &:hover,
@@ -124,22 +124,22 @@ Table sort
     color: var(--#{$prefix}body-color);
   }
 
-  &:after {
-    content: '';
+  &::after {
     display: inline-flex;
     width: var(--#{$prefix}table-sort-icon-size);
     height: var(--#{$prefix}table-sort-icon-size);
-    vertical-align: bottom;
-    mask-image: $table-sort-bg-image;
-    background: currentColor;
     margin-inline-start: var(--#{$prefix}table-sort-icon-margin-start);
+    vertical-align: bottom;
+    content: '';
+    background: currentColor;
+    mask-image: $table-sort-bg-image;
   }
 
-  &.asc:after {
+  &.asc::after {
     mask-image: $table-sort-desc-bg-image;
   }
 
-  &.desc:after {
+  &.desc::after {
     mask-image: $table-sort-asc-bg-image;
   }
 }

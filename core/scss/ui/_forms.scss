@@ -17,10 +17,10 @@ Form label
   font-weight: var(--#{$prefix}font-weight-medium);
 
   &.required {
-    &:after {
-      content: '*';
+    &::after {
       margin-inline-start: var(--#{$prefix}form-label-required-gap);
       color: $red;
+      content: '*';
     }
   }
 }
@@ -76,8 +76,8 @@ Form control
  */
 .form-control {
   &:-webkit-autofill {
-    box-shadow: 0 0 0 1000px var(--#{$prefix}bg-surface-secondary) inset;
     color: var(--#{$prefix}body-color);
+    box-shadow: 0 0 0 1000px var(--#{$prefix}bg-surface-secondary) inset;
     -webkit-text-fill-color: var(--#{$prefix}body-color);
   }
 
@@ -98,14 +98,14 @@ Form control
 }
 
 .form-control-dark {
-  background-color: rgba($black, 0.1);
   color: $white;
+  background-color: rgba($black, 0.1);
   border-color: transparent;
 
   &:focus {
     background-color: rgba($black, 0.1);
-    box-shadow: none;
     border-color: rgba($white, 0.24);
+    box-shadow: none;
   }
 
   &::placeholder {
@@ -119,11 +119,11 @@ Form control
 
 .form-control-flush {
   padding: 0;
+  line-height: inherit;
+  resize: none;
   background: none !important;
   border-color: transparent !important;
-  resize: none;
   box-shadow: none !important;
-  line-height: inherit;
 }
 
 .form-footer {
@@ -155,12 +155,12 @@ Form help
   --#{$prefix}form-help-font-size: #{$form-help-font-size};
 
   display: inline-flex;
-  font-weight: var(--#{$prefix}font-weight-semibold);
   align-items: center;
   justify-content: center;
   width: var(--#{$prefix}form-help-size);
   height: var(--#{$prefix}form-help-size);
   font-size: var(--#{$prefix}form-help-font-size);
+  font-weight: var(--#{$prefix}font-weight-semibold);
   color: $form-secondary-color;
   text-align: center;
   text-decoration: none;
@@ -222,8 +222,8 @@ Input group
   }
 
   .input-group-text {
-    background: $form-check-input-bg;
     z-index: 10;
+    background: $form-check-input-bg;
     @include transition($input-transition);
 
     &:first-child {

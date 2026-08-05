@@ -18,13 +18,13 @@
 
   display: flex;
   flex-wrap: wrap;
-  @include font-size(var(--#{$prefix}breadcrumb-font-size));
-  list-style: none;
-  background-color: var(--#{$prefix}breadcrumb-bg);
-  @include border-radius(var(--#{$prefix}breadcrumb-border-radius));
   padding: 0;
   margin: 0;
+  list-style: none;
   background: transparent;
+  background-color: var(--#{$prefix}breadcrumb-bg);
+  @include font-size(var(--#{$prefix}breadcrumb-font-size));
+  @include border-radius(var(--#{$prefix}breadcrumb-border-radius));
 
   a {
     color: var(--#{$prefix}breadcrumb-link-color);
@@ -41,8 +41,8 @@
 
 .breadcrumb-item {
   &.active {
-    color: var(--#{$prefix}breadcrumb-item-active-color);
     font-weight: var(--#{$prefix}breadcrumb-item-active-font-weight);
+    color: var(--#{$prefix}breadcrumb-item-active-color);
 
     a {
       color: inherit;
@@ -53,7 +53,7 @@
   &.disabled {
     color: var(--#{$prefix}breadcrumb-item-disabled-color);
 
-    &:before {
+    &::before {
       color: inherit;
     }
 
@@ -71,7 +71,8 @@
       padding-inline-end: var(--#{$prefix}breadcrumb-item-padding-x);
       color: var(--#{$prefix}breadcrumb-divider-color);
       content: var(--#{$prefix}breadcrumb-divider, escape-svg($breadcrumb-divider));
-      /*rtl:raw:
+
+      /* rtl:raw:
       transform: scaleX(-1);
       */
     }

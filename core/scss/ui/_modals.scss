@@ -4,18 +4,18 @@
 .modal-header {
   > .btn-close {
     position: absolute;
-    top: 0;
     inset-inline-end: 0;
+    top: 0;
+    z-index: 10;
     width: $modal-header-height;
     height: $modal-header-height;
-    margin: 0;
     padding: 0;
-    z-index: 10;
+    margin: 0;
   }
 }
 
 .modal-body {
-  @include scrollbar;
+  @include scrollbar();
 
   .modal-title {
     margin-bottom: var(--#{$prefix}modal-body-title-margin-bottom);
@@ -28,9 +28,9 @@
 
 .modal-status {
   position: absolute;
-  top: 0;
   inset-inline-start: 0;
   inset-inline-end: 0;
+  top: 0;
   height: $modal-status-size;
   background: var(--#{$prefix}secondary);
   @include border-radius($modal-content-border-radius $modal-content-border-radius 0 0);
@@ -39,15 +39,15 @@
 .modal-header {
   align-items: center;
   min-height: $modal-header-height;
-  background: $modal-header-bg;
   padding: 0 $modal-header-height 0 $modal-inner-padding;
+  background: $modal-header-bg;
 }
 
 .modal-title {
   font-size: $h3-font-size;
   font-weight: $headings-font-weight;
-  color: $headings-color;
   line-height: $line-height-base;
+  color: $headings-color;
 }
 
 .modal-footer {
@@ -73,7 +73,7 @@
   --#{$prefix}modal-body-title-margin-bottom: #{$modal-body-title-margin-bottom};
   --#{$prefix}modal-footer-padding-y: #{$modal-footer-padding-y};
 
-  @include media-print {
+  @include media-print() {
     display: none !important;
   }
 }

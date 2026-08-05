@@ -13,26 +13,26 @@
   --#{$prefix}avatar-brand-size: #{$avatar-brand-size};
   --#{$prefix}avatar-border-radius: #{$avatar-border-radius};
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: var(--#{$prefix}avatar-size);
   height: var(--#{$prefix}avatar-size);
   font-size: var(--#{$prefix}avatar-font-size);
   font-weight: var(--#{$prefix}font-weight-medium);
   line-height: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   color: var(--#{$prefix}secondary);
   text-align: center;
   text-transform: uppercase;
   vertical-align: bottom;
   user-select: none;
   background: var(--#{$prefix}avatar-bg) no-repeat center/cover;
-  @include border-radius(var(--#{$prefix}avatar-border-radius));
   box-shadow: var(--#{$prefix}avatar-box-shadow);
   transition:
     color $transition-time,
     background-color $transition-time,
     box-shadow $transition-time;
+  @include border-radius(var(--#{$prefix}avatar-border-radius));
 
   .icon {
     width: var(--#{$prefix}avatar-icon-size);
@@ -89,7 +89,7 @@
 //
 .avatar-list {
   --#{$prefix}avatar-list-size: #{$avatar-size};
-  @include elements-list;
+  @include elements-list();
 
   a.avatar {
     &:hover {
@@ -125,11 +125,11 @@
 .avatar-upload {
   --#{$prefix}avatar-upload-icon-size: #{$avatar-upload-icon-size};
   --#{$prefix}avatar-upload-text-margin-top: #{$avatar-upload-text-margin-top};
+  flex-direction: column;
+  background: $form-check-input-bg;
 
   border: var(--#{$prefix}border-width) dashed var(--#{$prefix}border-color);
-  background: $form-check-input-bg;
   box-shadow: none;
-  flex-direction: column;
   @include transition(color $transition-time, background-color $transition-time);
 
   svg {
@@ -139,16 +139,16 @@
   }
 
   &:hover {
-    border-color: var(--#{$prefix}primary);
     color: var(--#{$prefix}primary);
     text-decoration: none;
+    border-color: var(--#{$prefix}primary);
   }
 }
 
 .avatar-upload-text {
+  margin-top: var(--#{$prefix}avatar-upload-text-margin-top);
   font-size: $h6-font-size;
   line-height: 1;
-  margin-top: var(--#{$prefix}avatar-upload-text-margin-top);
 }
 
 .avatar-cover {
@@ -160,13 +160,13 @@
 
 .avatar-brand {
   --#{$prefix}avatar-brand-offset: #{$avatar-brand-offset};
-  width: var(--#{$prefix}avatar-brand-size);
-  height: var(--#{$prefix}avatar-brand-size);
   position: absolute;
   inset-inline-end: var(--#{$prefix}avatar-brand-offset);
   bottom: var(--#{$prefix}avatar-brand-offset);
   z-index: 1000;
+  width: var(--#{$prefix}avatar-brand-size);
+  height: var(--#{$prefix}avatar-brand-size);
   background: var(--#{$prefix}bg-surface);
-  @include border-radius(var(--#{$prefix}border-radius));
   border: 1px solid var(--#{$prefix}border-color);
+  @include border-radius(var(--#{$prefix}border-radius));
 }

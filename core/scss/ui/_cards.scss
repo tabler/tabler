@@ -21,7 +21,7 @@
 .card {
   @include transition(transform $transition-time ease-out, opacity $transition-time ease-out, box-shadow $transition-time ease-out);
 
-  @include media-print {
+  @include media-print() {
     border: none;
     box-shadow: none;
   }
@@ -65,15 +65,15 @@
 .card-stamp {
   --#{$prefix}stamp-size: #{$card-stamp-size};
   position: absolute;
-  top: 0;
   inset-inline-end: 0;
+  top: 0;
   width: calc(var(--#{$prefix}stamp-size) * 1);
   height: calc(var(--#{$prefix}stamp-size) * 1);
   max-height: 100%;
-  border-start-end-radius: $border-radius;
-  opacity: $card-stamp-opacity;
   overflow: hidden;
   pointer-events: none;
+  border-start-end-radius: $border-radius;
+  opacity: $card-stamp-opacity;
 }
 
 .card-stamp-lg {
@@ -81,24 +81,24 @@
 }
 
 .card-stamp-icon {
-  background: var(--#{$prefix}secondary);
-  color: var(--#{$prefix}card-bg, var(--#{$prefix}bg-surface));
+  position: relative;
+  inset-inline-end: calc(var(--#{$prefix}stamp-size) * -0.25);
+  top: calc(var(--#{$prefix}stamp-size) * -0.25);
   display: flex;
   align-items: center;
   justify-content: center;
-  @include border-radius(var(--#{$prefix}border-radius-pill));
   width: calc(var(--#{$prefix}stamp-size) * 1);
   height: calc(var(--#{$prefix}stamp-size) * 1);
-  position: relative;
-  top: calc(var(--#{$prefix}stamp-size) * -0.25);
-  inset-inline-end: calc(var(--#{$prefix}stamp-size) * -0.25);
   font-size: calc(var(--#{$prefix}stamp-size) * 0.75);
+  color: var(--#{$prefix}card-bg, var(--#{$prefix}bg-surface));
+  background: var(--#{$prefix}secondary);
   transform: rotate(10deg);
+  @include border-radius(var(--#{$prefix}border-radius-pill));
 
   .icon {
-    stroke-width: 2;
     width: calc(var(--#{$prefix}stamp-size) * 0.75);
     height: calc(var(--#{$prefix}stamp-size) * 0.75);
+    stroke-width: 2;
   }
 }
 
@@ -139,14 +139,14 @@
 
 .card-btn {
   display: flex;
+  flex: 1;
   align-items: center;
   justify-content: center;
   padding: $card-spacer-y $card-spacer-x;
+  font-weight: var(--#{$prefix}font-weight-medium);
+  color: inherit;
   text-align: center;
   border-top: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
-  flex: 1;
-  color: inherit;
-  font-weight: var(--#{$prefix}font-weight-medium);
   @include transition(background $transition-time);
 
   &:hover {
@@ -166,11 +166,11 @@ Stacked card
   --#{$prefix}card-stacked-offset: #{$card-stacked-offset};
   position: relative;
 
-  &:after {
+  &::after {
     position: absolute;
-    top: calc(-1 * var(--#{$prefix}card-stacked-offset));
-    inset-inline-end: var(--#{$prefix}card-stacked-offset);
     inset-inline-start: var(--#{$prefix}card-stacked-offset);
+    inset-inline-end: var(--#{$prefix}card-stacked-offset);
+    top: calc(-1 * var(--#{$prefix}card-stacked-offset));
     height: var(--#{$prefix}card-stacked-offset);
     content: '';
     background: var(--#{$prefix}card-bg, var(--#{$prefix}bg-surface));
@@ -182,34 +182,34 @@ Stacked card
 .card-cover {
   position: relative;
   padding: $card-spacer-y $card-spacer-x;
-  background: #666666 no-repeat center/cover;
+  background: #666 no-repeat center/cover;
 
-  &:before {
+  &::before {
     position: absolute;
-    top: 0;
-    inset-inline-end: 0;
-    bottom: 0;
     inset-inline-start: 0;
+    inset-inline-end: 0;
+    top: 0;
+    bottom: 0;
     content: '';
     background: rgba($dark, 0.48);
   }
 
   &:first-child,
-  &:first-child:before {
+  &:first-child::before {
     @include border-radius($border-radius $border-radius 0 0);
   }
 }
 
 .card-cover-blurred {
-  &:before {
+  &::before {
     backdrop-filter: blur(2px);
   }
 }
 
 .card-actions {
   --#{$prefix}card-actions-gutter: #{$card-actions-gutter};
-  margin: calc(-1 * var(--#{$prefix}card-actions-gutter)) calc(-1 * var(--#{$prefix}card-actions-gutter)) calc(-1 * var(--#{$prefix}card-actions-gutter)) auto;
   padding-inline-start: var(--#{$prefix}card-actions-gutter);
+  margin: calc(-1 * var(--#{$prefix}card-actions-gutter)) calc(-1 * var(--#{$prefix}card-actions-gutter)) calc(-1 * var(--#{$prefix}card-actions-gutter)) auto;
 
   a {
     text-decoration: none;
@@ -218,9 +218,9 @@ Stacked card
 
 // Card header
 .card-header {
-  color: inherit;
   display: flex;
   align-items: center;
+  color: inherit;
   background-color: var(--#{$prefix}card-cap-bg);
 
   &:first-child {
@@ -229,15 +229,15 @@ Stacked card
 }
 
 .card-header-light {
-  border-bottom-color: transparent;
   background: var(--#{$prefix}bg-surface-tertiary);
+  border-bottom-color: transparent;
 }
 
 .card-header-tabs {
-  background: $card-header-tabs-bg;
   flex: 1;
-  margin: calc(var(--#{$prefix}card-cap-padding-y) * -1) calc(var(--#{$prefix}card-cap-padding-x) * -1) calc(var(--#{$prefix}card-cap-padding-y) * -1);
   padding: calc(var(--#{$prefix}card-cap-padding-y) * 0.5) calc(var(--#{$prefix}card-cap-padding-x) * 0.5) 0;
+  margin: calc(var(--#{$prefix}card-cap-padding-y) * -1) calc(var(--#{$prefix}card-cap-padding-x) * -1) calc(var(--#{$prefix}card-cap-padding-y) * -1);
+  background: $card-header-tabs-bg;
   @include border-radius(var(--#{$prefix}card-border-radius) var(--#{$prefix}card-border-radius) 0 0);
 }
 
@@ -271,13 +271,13 @@ Stacked card
 }
 
 .card-link-rotate:hover {
-  transform: rotate(1.5deg);
   opacity: 1;
+  transform: rotate(1.5deg);
 }
 
 .card-link-pop:hover {
-  transform: translateY(-2px);
   opacity: 1;
+  transform: translateY(-2px);
 }
 
 // Card footer
@@ -290,9 +290,9 @@ Stacked card
 }
 
 .card-footer-transparent {
+  padding-top: 0;
   background: transparent;
   border-color: transparent;
-  padding-top: 0;
 }
 
 .card-footer-borderless {
@@ -324,8 +324,8 @@ Stacked card
   margin: 0 0 var(--#{$prefix}card-title-margin-bottom);
   font-size: $h3-font-size;
   font-weight: var(--#{$prefix}font-weight-medium);
-  color: var(--#{$prefix}heading-color);
   line-height: var(--#{$prefix}card-title-line-height);
+  color: var(--#{$prefix}heading-color);
 
   @at-root a#{&}:hover {
     color: inherit;
@@ -339,8 +339,8 @@ Stacked card
 .card-subtitle {
   --#{$prefix}card-subtitle-margin-start: #{$card-subtitle-margin-start};
   margin-bottom: $card-title-spacer-y;
+  font-weight: 400;
   color: var(--#{$prefix}secondary);
-  font-weight: normal;
 
   .card-header & {
     margin: 0;
@@ -383,7 +383,7 @@ Stacked card
     }
   }
 
-  @include media-print {
+  @include media-print() {
     padding: 0;
   }
 
@@ -402,8 +402,8 @@ Card optinos
 .card-options {
   --#{$prefix}card-options-top: #{$card-options-top};
   --#{$prefix}card-options-inset: #{$card-options-inset};
-  top: var(--#{$prefix}card-options-top);
   inset-inline-end: var(--#{$prefix}card-options-inset);
+  top: var(--#{$prefix}card-options-top);
   display: flex;
   margin-inline-start: auto;
 }
@@ -422,9 +422,9 @@ Card status
  */
 .card-status-top {
   position: absolute;
-  top: 0;
-  inset-inline-end: 0;
   inset-inline-start: 0;
+  inset-inline-end: 0;
+  top: 0;
   height: $card-status-size;
   @include border-radius(var(--#{$prefix}card-border-radius) var(--#{$prefix}card-border-radius) 0 0);
 }
@@ -554,8 +554,8 @@ Card avatar
   --#{$prefix}card-avatar-ring-width: #{$card-avatar-ring-width};
   margin-inline-start: auto;
   margin-inline-end: auto;
-  box-shadow: 0 0 0 var(--#{$prefix}card-avatar-ring-width) var(--#{$prefix}card-bg, var(--#{$prefix}bg-surface));
   margin-top: calc(-1 * calc(var(--#{$prefix}avatar-size) * 0.5));
+  box-shadow: 0 0 0 var(--#{$prefix}card-avatar-ring-width) var(--#{$prefix}card-bg, var(--#{$prefix}bg-surface));
 }
 
 /*
@@ -567,10 +567,10 @@ Card list group
   }
 
   .list-group-item {
-    padding-inline-end: $card-spacer-x;
     padding-inline-start: $card-spacer-x;
-    border-inline-end: 0;
+    padding-inline-end: $card-spacer-x;
     border-inline-start: 0;
+    border-inline-end: 0;
     border-radius: 0;
 
     &:last-child {
@@ -597,8 +597,8 @@ Card list group
       &.active,
       &:active,
       &:hover {
-        border-color: $card-border-color;
         color: var(--#{$prefix}body-color);
+        border-color: $card-border-color;
       }
 
       &.active {
@@ -662,8 +662,8 @@ Card list group
   }
 
   .nav-tabs + .tab-content .card {
-    border-end-start-radius: var(--#{$prefix}card-border-radius);
     border-start-start-radius: 0 !important;
+    border-end-start-radius: var(--#{$prefix}card-border-radius);
   }
 
   .tab-content:has(+ .nav-tabs) .card {
