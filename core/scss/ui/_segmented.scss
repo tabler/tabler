@@ -1,40 +1,40 @@
 @use '../config' as *;
 
 .nav-segmented {
-  --#{$prefix}nav-bg: var(--#{$prefix}bg-surface-tertiary);
-  --#{$prefix}nav-padding: #{$nav-segmented-padding};
-  --#{$prefix}nav-height: #{$nav-segmented-height};
-  --#{$prefix}nav-gap: #{$nav-segmented-gap};
-  --#{$prefix}nav-active-bg: var(--#{$prefix}bg-surface);
-  --#{$prefix}nav-font-size: inherit;
-  --#{$prefix}nav-radius: #{$nav-segmented-radius};
+  --nav-bg: var(--bg-surface-tertiary);
+  --nav-padding: #{$nav-segmented-padding};
+  --nav-height: #{$nav-segmented-height};
+  --nav-gap: #{$nav-segmented-gap};
+  --nav-active-bg: var(--bg-surface);
+  --nav-font-size: inherit;
+  --nav-radius: #{$nav-segmented-radius};
 
-  --#{$prefix}nav-link-disabled-color: var(--#{$prefix}disabled-color);
-  --#{$prefix}nav-link-gap: #{$nav-segmented-link-gap};
-  --#{$prefix}nav-link-padding-x: #{$nav-segmented-link-padding-x};
-  --#{$prefix}nav-link-icon-size: #{$nav-segmented-link-icon-size};
-  --#{$prefix}nav-link-icon-margin: #{$nav-segmented-icon-margin};
+  --nav-link-disabled-color: var(--disabled-color);
+  --nav-link-gap: #{$nav-segmented-link-gap};
+  --nav-link-padding-x: #{$nav-segmented-link-padding-x};
+  --nav-link-icon-size: #{$nav-segmented-link-icon-size};
+  --nav-link-icon-margin: #{$nav-segmented-icon-margin};
   display: inline-flex;
   flex-wrap: wrap;
-  gap: var(--#{$prefix}nav-gap);
-  padding: var(--#{$prefix}nav-padding);
+  gap: var(--nav-gap);
+  padding: var(--nav-padding);
   list-style: none;
-  background: var(--#{$prefix}nav-bg);
-  @include border-radius(calc(var(--#{$prefix}nav-radius) + var(--#{$prefix}nav-padding)));
+  background: var(--nav-bg);
+  @include border-radius(calc(var(--nav-radius) + var(--nav-padding)));
   box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.04);
 
   .nav-link {
     display: inline-flex;
-    gap: calc(#{$nav-segmented-link-gap} + var(--#{$prefix}nav-link-gap));
+    gap: calc(#{$nav-segmented-link-gap} + var(--nav-link-gap));
     align-items: center;
     margin: 0;
-    font-size: var(--#{$prefix}nav-font-size);
-    min-width: calc(var(--#{$prefix}nav-height) - 2 * var(--#{$prefix}nav-padding));
-    height: calc(var(--#{$prefix}nav-height) - 2 * var(--#{$prefix}nav-padding));
-    padding: 0 calc(var(--#{$prefix}nav-link-padding-x) - 2px);
+    font-size: var(--nav-font-size);
+    min-width: calc(var(--nav-height) - 2 * var(--nav-padding));
+    height: calc(var(--nav-height) - 2 * var(--nav-padding));
+    padding: 0 calc(var(--nav-link-padding-x) - 2px);
     border: 1px solid transparent;
     background: transparent;
-    color: var(--#{$prefix}secondary);
+    color: var(--secondary);
     text-align: center;
     text-decoration: none;
     white-space: nowrap;
@@ -42,28 +42,28 @@
     transition:
       background-color $transition-time,
       color $transition-time;
-    @include border-radius(var(--#{$prefix}nav-radius));
+    @include border-radius(var(--nav-radius));
     flex-grow: 1;
     justify-content: center;
 
     &:hover,
     &.hover {
       background: rgba(0, 0, 0, 0.04);
-      color: var(--#{$prefix}body-color);
+      color: var(--body-color);
     }
 
     &.disabled,
     &:disabled {
-      color: var(--#{$prefix}nav-link-disabled-color);
+      color: var(--nav-link-disabled-color);
       cursor: not-allowed;
     }
   }
 
   .nav-link-input:checked + .nav-link,
   .nav-link.active {
-    color: var(--#{$prefix}body-color);
-    background: var(--#{$prefix}nav-active-bg);
-    border-color: var(--#{$prefix}border-color);
+    color: var(--body-color);
+    background: var(--nav-active-bg);
+    border-color: var(--border-color);
   }
 
   .nav-link-input {
@@ -71,9 +71,9 @@
   }
 
   .nav-link-icon {
-    width: var(--#{$prefix}nav-link-icon-size);
-    height: var(--#{$prefix}nav-link-icon-size);
-    margin: 0 var(--#{$prefix}nav-link-icon-margin);
+    width: var(--nav-link-icon-size);
+    height: var(--nav-link-icon-size);
+    margin: 0 var(--nav-link-icon-margin);
     color: inherit;
   }
 }
@@ -87,19 +87,19 @@
 }
 
 .nav-sm {
-  --#{$prefix}nav-height: #{$nav-segmented-height-sm};
-  --#{$prefix}nav-font-size: var(--tblr-font-size-h5);
-  --#{$prefix}nav-radius: #{$nav-segmented-radius-sm};
-  --#{$prefix}nav-link-padding-x: #{$nav-segmented-link-padding-x-sm};
-  --#{$prefix}nav-link-gap: #{$nav-segmented-link-gap-sm};
-  --#{$prefix}nav-link-icon-size: #{$nav-segmented-link-icon-size-sm};
+  --nav-height: #{$nav-segmented-height-sm};
+  --nav-font-size: var(--font-size-h5);
+  --nav-radius: #{$nav-segmented-radius-sm};
+  --nav-link-padding-x: #{$nav-segmented-link-padding-x-sm};
+  --nav-link-gap: #{$nav-segmented-link-gap-sm};
+  --nav-link-icon-size: #{$nav-segmented-link-icon-size-sm};
 }
 
 .nav-lg {
-  --#{$prefix}nav-height: #{$nav-segmented-height-lg};
-  --#{$prefix}nav-font-size: var(--tblr-font-size-h3);
-  --#{$prefix}nav-radius: #{$nav-segmented-radius-lg};
-  --#{$prefix}nav-link-padding-x: #{$nav-segmented-link-padding-x-lg};
-  --#{$prefix}nav-link-gap: #{$nav-segmented-link-gap-lg};
-  --#{$prefix}nav-link-icon-size: #{$nav-segmented-link-icon-size-lg};
+  --nav-height: #{$nav-segmented-height-lg};
+  --nav-font-size: var(--font-size-h3);
+  --nav-radius: #{$nav-segmented-radius-lg};
+  --nav-link-padding-x: #{$nav-segmented-link-padding-x-lg};
+  --nav-link-gap: #{$nav-segmented-link-gap-lg};
+  --nav-link-icon-size: #{$nav-segmented-link-icon-size-lg};
 }

@@ -19,7 +19,7 @@
       }
       @include expect() {
         .t {
-          padding: var(--tblr-gutter-x) var(--tblr-gutter-y);
+          padding: var(--gutter-x) var(--gutter-y);
         }
       }
     }
@@ -28,10 +28,10 @@
 
 @include describe('rgba-css-var') {
   @include it('builds a color-mix() from the identifier and target opacity') {
-    @include assert-equal(meta.inspect(rgba-css-var('primary', 'bg')), 'color-mix(in srgb, var(--tblr-primary) calc(var(--tblr-bg-opacity) * 100%), transparent)');
+    @include assert-equal(meta.inspect(rgba-css-var('primary', 'bg')), 'color-mix(in srgb, var(--primary) calc(var(--bg-opacity) * 100%), transparent)');
   }
 
   @include it('special-cases the body background') {
-    @include assert-equal(meta.inspect(rgba-css-var('body', 'bg')), 'color-mix(in srgb, var(--tblr-body-bg) calc(var(--tblr-bg-opacity) * 100%), transparent)');
+    @include assert-equal(meta.inspect(rgba-css-var('body', 'bg')), 'color-mix(in srgb, var(--body-bg) calc(var(--bg-opacity) * 100%), transparent)');
   }
 }

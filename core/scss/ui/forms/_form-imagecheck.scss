@@ -4,9 +4,9 @@ Image check
 @use '../../config' as *;
 
 .form-imagecheck {
-  --#{$prefix}form-imagecheck-radius: var(--#{$prefix}border-radius);
-  --#{$prefix}form-imagecheck-check-offset: #{$form-imagecheck-check-offset};
-  --#{$prefix}form-imagecheck-caption-padding: #{$form-imagecheck-caption-padding};
+  --form-imagecheck-radius: var(--border-radius);
+  --form-imagecheck-check-offset: #{$form-imagecheck-check-offset};
+  --form-imagecheck-caption-padding: #{$form-imagecheck-caption-padding};
   position: relative;
   margin: 0;
   cursor: pointer;
@@ -23,22 +23,22 @@ Image check
   display: block;
   margin: 0;
   user-select: none;
-  border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
-  @include border-radius(var(--#{$prefix}form-imagecheck-radius));
+  border: var(--border-width) var(--border-style) var(--border-color);
+  @include border-radius(var(--form-imagecheck-radius));
 
   .form-imagecheck-input:focus ~ & {
-    border-color: var(--#{$prefix}primary);
+    border-color: var(--primary);
     box-shadow: $input-btn-focus-box-shadow;
   }
 
   .form-imagecheck-input:checked ~ & {
-    border-color: var(--#{$prefix}primary);
+    border-color: var(--primary);
   }
 
   &:before {
     position: absolute;
-    top: var(--#{$prefix}form-imagecheck-check-offset);
-    inset-inline-start: var(--#{$prefix}form-imagecheck-check-offset);
+    top: var(--form-imagecheck-check-offset);
+    inset-inline-start: var(--form-imagecheck-check-offset);
     z-index: 1;
     display: block;
     width: $form-check-input-width;
@@ -48,7 +48,7 @@ Image check
     content: '';
     user-select: none;
     background: $form-check-input-bg;
-    border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
+    border: var(--border-width) var(--border-style) var(--border-color);
     @include border-radius($form-check-input-border-radius);
     @include transition(opacity $transition-time);
 
@@ -78,13 +78,13 @@ Image check
   @include transition(opacity $transition-time);
 
   &:first-child {
-    border-start-start-radius: calc(var(--#{$prefix}form-imagecheck-radius) - 1px);
-    border-start-end-radius: calc(var(--#{$prefix}form-imagecheck-radius) - 1px);
+    border-start-start-radius: calc(var(--form-imagecheck-radius) - 1px);
+    border-start-end-radius: calc(var(--form-imagecheck-radius) - 1px);
   }
 
   &:last-child {
-    border-end-end-radius: calc(var(--#{$prefix}form-imagecheck-radius) - 1px);
-    border-end-start-radius: calc(var(--#{$prefix}form-imagecheck-radius) - 1px);
+    border-end-end-radius: calc(var(--form-imagecheck-radius) - 1px);
+    border-end-start-radius: calc(var(--form-imagecheck-radius) - 1px);
   }
 
   .form-imagecheck:hover &,
@@ -95,15 +95,15 @@ Image check
 }
 
 .form-imagecheck-caption {
-  padding: var(--#{$prefix}form-imagecheck-caption-padding);
+  padding: var(--form-imagecheck-caption-padding);
   font-size: $font-size-sm;
-  color: var(--#{$prefix}secondary);
+  color: var(--secondary);
   text-align: center;
   @include transition(color $transition-time);
 
   .form-imagecheck:hover &,
   .form-imagecheck-input:focus ~ .form-imagecheck-figure &,
   .form-imagecheck-input:checked ~ .form-imagecheck-figure & {
-    color: var(--#{$prefix}body-color);
+    color: var(--body-color);
   }
 }
