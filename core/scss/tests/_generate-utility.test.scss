@@ -68,7 +68,7 @@
       @include output() {
         @include generate-utility(
           (
-            property: margin-right margin-left,
+            property: margin-inline-end margin-inline-start,
             class: mx,
             values: (
               0: 0,
@@ -79,12 +79,12 @@
       }
       @include expect() {
         .mx-0 {
-          margin-right: 0 !important;
-          margin-left: 0 !important;
+          margin-inline-end: 0 !important;
+          margin-inline-start: 0 !important;
         }
         .mx-auto {
-          margin-right: auto !important;
-          margin-left: auto !important;
+          margin-inline-end: auto !important;
+          margin-inline-start: auto !important;
         }
       }
     }
@@ -181,8 +181,9 @@
       property: float,
       class: float,
       values: (
-        left,
-        right,
+        start: inline-start,
+        end: inline-end,
+        none: none,
       ),
     ),
   );
@@ -209,11 +210,14 @@
         .d-flex {
           display: flex !important;
         }
-        .float-left {
-          float: left !important;
+        .float-start {
+          float: inline-start !important;
         }
-        .float-right {
-          float: right !important;
+        .float-end {
+          float: inline-end !important;
+        }
+        .float-none {
+          float: none !important;
         }
 
         // responsive breakpoints: only `d` (responsive: true) is repeated; `float` is not

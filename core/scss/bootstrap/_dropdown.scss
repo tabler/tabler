@@ -58,7 +58,7 @@
   margin: 0; // Override default margin of ul
   @include font-size(var(--#{$prefix}dropdown-font-size));
   color: var(--#{$prefix}dropdown-color);
-  text-align: left; // Ensures proper alignment if parent has it changed (e.g., modal footer)
+  text-align: start; // Ensures proper alignment if parent has it changed (e.g., modal footer)
   list-style: none;
   background-color: var(--#{$prefix}dropdown-bg);
   background-clip: padding-box;
@@ -69,7 +69,7 @@
   &[data-bs-popper],
   &[data-tblr-popper] {
     top: 100%;
-    left: 0;
+    inset-inline-start: 0;
     margin-top: var(--#{$prefix}dropdown-spacer);
   }
 
@@ -98,8 +98,8 @@
 
       &[data-bs-popper],
       &[data-tblr-popper] {
-        right: auto;
-        left: 0;
+        inset-inline-end: auto;
+        inset-inline-start: 0;
       }
     }
 
@@ -108,8 +108,8 @@
 
       &[data-bs-popper],
       &[data-tblr-popper] {
-        right: 0;
-        left: auto;
+        inset-inline-end: 0;
+        inset-inline-start: auto;
       }
     }
   }
@@ -136,10 +136,10 @@
   .dropdown-menu[data-bs-popper],
   .dropdown-menu[data-tblr-popper] {
     top: 0;
-    right: auto;
-    left: 100%;
+    inset-inline-end: auto;
+    inset-inline-start: 100%;
     margin-top: 0;
-    margin-left: var(--#{$prefix}dropdown-spacer);
+    margin-inline-start: var(--#{$prefix}dropdown-spacer);
   }
 
   .dropdown-toggle {
@@ -154,10 +154,10 @@
   .dropdown-menu[data-bs-popper],
   .dropdown-menu[data-tblr-popper] {
     top: 0;
-    right: 100%;
-    left: auto;
+    inset-inline-end: 100%;
+    inset-inline-start: auto;
     margin-top: 0;
-    margin-right: var(--#{$prefix}dropdown-spacer);
+    margin-inline-end: var(--#{$prefix}dropdown-spacer);
   }
 
   .dropdown-toggle {
