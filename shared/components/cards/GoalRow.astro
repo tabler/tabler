@@ -19,18 +19,7 @@ interface Props {
   spacer?: boolean
 }
 
-const {
-  tile,
-  name,
-  owner,
-  progress,
-  progressLabel = `${progress}%`,
-  progressColor,
-  status,
-  statusColor = 'primary',
-  statusOutline,
-  spacer,
-} = Astro.props
+const { tile, name, owner, progress, progressLabel = `${progress}%`, progressColor, status, statusColor = 'primary', statusOutline, spacer } = Astro.props
 ---
 
 <div class:list={['grid', 'align-items-center', spacer && 'me-md-5']}>
@@ -48,12 +37,6 @@ const {
     <span class="flex-shrink-0">{progressLabel}</span>
   </div>
   <div class="g-col-12 g-col-md-1 d-flex align-items-center">
-    {
-      statusOutline ? (
-        <Badge text={status} class={`badge-outline text-${statusColor} badge-pill`} />
-      ) : (
-        <Badge text={status} color={statusColor} light class="badge-pill" />
-      )
-    }
+    {statusOutline ? <Badge text={status} class={`badge-outline text-${statusColor} badge-pill`} /> : <Badge text={status} color={statusColor} light class="badge-pill" />}
   </div>
 </div>
