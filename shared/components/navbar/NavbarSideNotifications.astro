@@ -1,95 +1,116 @@
 ---
 import Icon from '@ui/Icon.astro'
-import Button from '@ui/Button.astro'
+import Avatar from '@ui/Avatar.astro'
 import ListGroup from '@ui/ListGroup.astro'
 import ListGroupItem from '@ui/ListGroupItem.astro'
 import CardTitle from '@ui/CardTitle.astro'
+import CardActions from '@ui/CardActions.astro'
+
+const notifications = [
+  { icon: 'git-pull-request', color: 'azure', title: 'New pull request', description: 'Fix deprecated html tags to text decoration classes (#29604)', time: '5 min ago', unread: true },
+  { icon: 'message-circle', color: 'green', title: 'New comment', description: '"Looks great, ready to merge!" on your PR #29734', time: '2 hours ago', unread: true },
+  { icon: 'shield', color: 'red', title: 'New sign-in detected', description: 'A new device signed in from Warsaw, Poland', time: '6 hours ago', unread: true },
+  { icon: 'user-plus', color: 'purple', title: 'New team member', description: 'Alice Johnson joined the Design team', time: '1 day ago', unread: false },
+  { icon: 'chart-bar', color: 'yellow', title: 'Weekly report ready', description: 'Your project analytics for last week are ready to view', time: '2 days ago', unread: false },
+]
+
+const unread = notifications.filter((notification) => notification.unread)
 ---
 
 <!-- BEGIN NOTIFICATIONS -->
 <div class="nav-item dropdown d-none d-md-flex">
   <a href="#" class="nav-link px-0" data-bs-toggle="dropdown" aria-label="Show notifications" data-bs-auto-close="outside" aria-expanded="false">
     <Icon name="bell" />
-    <span class="badge bg-red"></span>
+    {unread.length > 0 && <span class="badge bg-red"></span>}
   </a>
   <!-- BEGIN NAVBAR NOTIFICATIONS -->
   <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-end dropdown-menu-card">
     <div class="card">
-      <div class="card-header d-flex">
+      <div class="card-header">
         <CardTitle>Notifications</CardTitle>
-        <div class="btn-close ms-auto" data-bs-dismiss="dropdown"></div>
+        {unread.length > 0 && <span class="badge bg-red-lt ms-2">{unread.length} new</span>}
+        <CardActions class="btn-actions">
+          <a href="#" class="btn-action" title="Mark all as read" data-bs-toggle="tooltip" data-bs-placement="bottom">
+            <Icon name="checks" />
+          </a>
+          <div class="btn-close ms-1" data-bs-dismiss="dropdown"></div>
+        </CardActions>
       </div>
-      <ListGroup flush hoverable>
-        <ListGroupItem>
-          <div class="row align-items-center">
-            <div class="col-auto">
-              <span class="status-dot status-dot-animated bg-red d-block"><span class="visually-hidden">Unread</span></span>
-            </div>
-            <div class="col text-truncate">
-              <a href="#" class="text-body d-block">Example 1</a>
-              <div class="d-block text-secondary text-truncate mt-n1">Change deprecated html tags to text decoration classes (#29604)</div>
-            </div>
-            <div class="col-auto">
-              <a href="#" class="list-group-item-actions">
-                <Icon name="star" color="muted" />
-              </a>
-            </div>
-          </div>
-        </ListGroupItem>
-        <ListGroupItem>
-          <div class="row align-items-center">
-            <div class="col-auto">
-              <span class="status-dot d-block"><span class="visually-hidden">Read</span></span>
-            </div>
-            <div class="col text-truncate">
-              <a href="#" class="text-body d-block">Example 2</a>
-              <div class="d-block text-secondary text-truncate mt-n1">justify-content:between ⇒ justify-content:space-between (#29734)</div>
-            </div>
-            <div class="col-auto">
-              <a href="#" class="list-group-item-actions show">
-                <Icon name="star" color="yellow" />
-              </a>
-            </div>
-          </div>
-        </ListGroupItem>
-        <ListGroupItem>
-          <div class="row align-items-center">
-            <div class="col-auto">
-              <span class="status-dot d-block"><span class="visually-hidden">Read</span></span>
-            </div>
-            <div class="col text-truncate">
-              <a href="#" class="text-body d-block">Example 3</a>
-              <div class="d-block text-secondary text-truncate mt-n1">Update change-version.js (#29736)</div>
-            </div>
-            <div class="col-auto">
-              <a href="#" class="list-group-item-actions">
-                <Icon name="star" color="muted" />
-              </a>
-            </div>
-          </div>
-        </ListGroupItem>
-        <ListGroupItem>
-          <div class="row align-items-center">
-            <div class="col-auto">
-              <span class="status-dot status-dot-animated bg-green d-block"><span class="visually-hidden">Unread</span></span>
-            </div>
-            <div class="col text-truncate">
-              <a href="#" class="text-body d-block">Example 4</a>
-              <div class="d-block text-secondary text-truncate mt-n1">Regenerate package-lock.json (#29730)</div>
-            </div>
-            <div class="col-auto">
-              <a href="#" class="list-group-item-actions">
-                <Icon name="star" color="muted" />
-              </a>
-            </div>
-          </div>
-        </ListGroupItem>
-      </ListGroup>
-      <div class="card-body">
-        <div class="row">
-          <div class="col"><Button block text="Archive all" /></div>
-          <div class="col"><Button block text="Mark all as read" /></div>
+      <div class="card-body border-bottom py-2">
+        <ul class="nav nav-pills nav-sm" role="tablist" data-bs-toggle="tab">
+          <li class="nav-item" role="presentation">
+            <a href="#notifications-all" class="nav-link active" data-bs-toggle="tab" data-bs-target="#notifications-all" role="tab" aria-controls="notifications-all" aria-selected="true">
+              All
+            </a>
+          </li>
+          <li class="nav-item" role="presentation">
+            <a href="#notifications-unread" class="nav-link" data-bs-toggle="tab" data-bs-target="#notifications-unread" role="tab" aria-controls="notifications-unread" aria-selected="false">
+              Unread <span class="badge bg-red-lt ms-1">{unread.length}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <div class="tab-content">
+        <div class="tab-pane active show" id="notifications-all" role="tabpanel">
+          <ListGroup flush hoverable class="card-body-scrollable" style="max-height: 21rem">
+            {
+              notifications.map((notification) => (
+                <ListGroupItem class={notification.unread ? 'bg-body-tertiary' : undefined}>
+                  <div class="row align-items-center">
+                    <div class="col-auto">
+                      <Avatar size="sm" color={notification.color} icon={notification.icon} />
+                    </div>
+                    <div class="col text-truncate">
+                      <a href="#" class="text-body d-block text-truncate">
+                        {notification.title}
+                        {notification.unread && <span class="status-dot status-dot-animated bg-red ms-1" />}
+                      </a>
+                      <div class="d-block text-secondary text-truncate mt-n1">{notification.description}</div>
+                    </div>
+                    <div class="col-auto">
+                      <div class="text-secondary small">{notification.time}</div>
+                    </div>
+                  </div>
+                </ListGroupItem>
+              ))
+            }
+          </ListGroup>
         </div>
+        <div class="tab-pane" id="notifications-unread" role="tabpanel">
+          {
+            unread.length > 0 ? (
+              <ListGroup flush hoverable class="card-body-scrollable" style="max-height: 21rem">
+                {unread.map((notification) => (
+                  <ListGroupItem class="bg-body-tertiary">
+                    <div class="row align-items-center">
+                      <div class="col-auto">
+                        <Avatar size="sm" color={notification.color} icon={notification.icon} />
+                      </div>
+                      <div class="col text-truncate">
+                        <a href="#" class="text-body d-block text-truncate">
+                          {notification.title}
+                          <span class="status-dot status-dot-animated bg-red ms-1" />
+                        </a>
+                        <div class="d-block text-secondary text-truncate mt-n1">{notification.description}</div>
+                      </div>
+                      <div class="col-auto">
+                        <div class="text-secondary small">{notification.time}</div>
+                      </div>
+                    </div>
+                  </ListGroupItem>
+                ))}
+              </ListGroup>
+            ) : (
+              <div class="card-body text-center text-secondary py-4">
+                <Icon name="checks" class="mb-2 text-muted" size="lg" />
+                <div>You're all caught up</div>
+              </div>
+            )
+          }
+        </div>
+      </div>
+      <div class="card-footer text-center">
+        <a href="#">View all notifications</a>
       </div>
     </div>
   </div>
