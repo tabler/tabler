@@ -7,7 +7,7 @@ import CaptureScript from '@shared/components/CaptureScript.astro'
 ---
 
 <SingleLayout title="2-Step Verification">
-  <form class="card card-md" action="./" method="get" autocomplete="off" novalidate>
+  <form class="card card-md" action="./" method="get" novalidate>
     <div class="card-body">
       <h2 class="card-title card-title-lg text-center mb-4">Authenticate Your Account</h2>
 
@@ -15,15 +15,16 @@ import CaptureScript from '@shared/components/CaptureScript.astro'
         Please confirm your account by entering the authorization code sent to <strong>+1 856-672-8552</strong>.
       </p>
 
-      <div class="my-5">
+      <fieldset class="my-5 border-0 p-0 m-0">
+        <legend class="visually-hidden">Verification code</legend>
         <div class="row g-4">
           {
-            Array.from({ length: 2 }).map(() => (
+            Array.from({ length: 2 }).map((_, group) => (
               <div class="col">
                 <div class="row g-2">
-                  {Array.from({ length: 3 }).map(() => (
+                  {Array.from({ length: 3 }).map((_, i) => (
                     <div class="col">
-                      <input type="text" class="form-control form-control-lg text-center px-3 py-3" maxlength="1" inputmode="numeric" pattern="[0-9]*" data-code-input />
+                      <input type="text" class="form-control form-control-lg text-center px-3 py-3" maxlength="1" inputmode="numeric" pattern="[0-9]*" data-code-input aria-label={`Digit ${group * 3 + i + 1}`} autocomplete={group === 0 && i === 0 ? 'one-time-code' : undefined} />
                     </div>
                   ))}
                 </div>
@@ -31,12 +32,12 @@ import CaptureScript from '@shared/components/CaptureScript.astro'
             ))
           }
         </div>
-      </div>
+      </fieldset>
 
       <div class="my-4">
         <label class="form-check">
           <input type="checkbox" class="form-check-input" />
-          Dont't ask for codes again on this device
+          Don't ask for codes again on this device
         </label>
       </div>
 

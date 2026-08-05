@@ -1,5 +1,22 @@
 @use '../config' as *;
 
+// Skip-to-content link: hidden via .visually-hidden-focusable until keyboard focus reveals it
+.skip-link {
+  position: fixed;
+  top: 0;
+  inset-inline-start: 0;
+  z-index: $zindex-tooltip;
+  padding: 0.5rem 1rem;
+  background: var(--#{$prefix}primary);
+  color: var(--#{$prefix}primary-fg, #fff);
+  text-decoration: none;
+
+  &:focus-visible {
+    outline: 2px solid var(--#{$prefix}primary);
+    outline-offset: 2px;
+  }
+}
+
 .page {
   display: flex;
   flex-direction: column;

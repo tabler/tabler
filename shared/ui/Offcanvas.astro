@@ -10,15 +10,19 @@ interface Props {
   narrow?: boolean
   show?: boolean
   class?: string
-  /** remaining attributes (id, tabindex, aria-*, role, data-bs-*, …) are forwarded to the element */
+  /** defaults to "-1" when not provided */
+  tabindex?: string
+  /** defaults to "dialog" when not provided */
+  role?: astroHTML.JSX.AriaRole
+  /** remaining attributes (id, aria-*, data-bs-*, …) are forwarded to the element */
   [key: string]: unknown
 }
 
-const { direction, size, narrow, show, class: className, ...rest } = Astro.props
+const { direction, size, narrow, show, class: className, tabindex, role, ...rest } = Astro.props
 ---
 
 <!-- BEGIN OFFCANVAS -->
-<div class:list={[size ? `offcanvas-${size}` : 'offcanvas', direction && `offcanvas-${direction}`, narrow && 'offcanvas-narrow', show && 'show', className]} {...rest}>
+<div class:list={[size ? `offcanvas-${size}` : 'offcanvas', direction && `offcanvas-${direction}`, narrow && 'offcanvas-narrow', show && 'show', className]} tabindex={tabindex ?? '-1'} role={role ?? 'dialog'} {...rest}>
   <slot />
 </div>
 <!-- END OFFCANVAS -->

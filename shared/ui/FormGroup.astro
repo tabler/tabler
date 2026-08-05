@@ -10,7 +10,7 @@ interface Props {
   description?: string
   /** .form-hint under the control */
   hint?: string
-  /** for attribute of the label */
+  /** for attribute of the label — must match the slotted control's id */
   for?: string
   /** extra classes on the label (e.g. visually-hidden) */
   labelClass?: string
@@ -19,6 +19,8 @@ interface Props {
 }
 
 const { label, required, description, hint, for: htmlFor, labelClass, class: className = 'mb-3' } = Astro.props
+
+const hintId = hint && htmlFor ? `${htmlFor}-hint` : undefined
 ---
 
 <div class:list={[className]}>
@@ -26,10 +28,11 @@ const { label, required, description, hint, for: htmlFor, labelClass, class: cla
     label && (
       <label class:list={['form-label', required && 'required', labelClass]} for={htmlFor}>
         {label}
+        {required && <span class="visually-hidden"> (required)</span>}
         {description && <span class="form-label-description">{description}</span>}
       </label>
     )
   }
   <slot />
-  {hint && <FormHint>{hint}</FormHint>}
+  {hint && <FormHint id={hintId}>{hint}</FormHint>}
 </div>

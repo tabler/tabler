@@ -12,28 +12,28 @@ import FormGroup from '@ui/FormGroup.astro'
     <CardTitle>Payment Method</CardTitle>
     <CardSubtitle class="mb-4">All transactions are secure and encrypted</CardSubtitle>
 
-    <FormGroup label="Name on Card">
-      <input type="text" class="form-control" placeholder="John Doe" />
+    <FormGroup label="Name on Card" for="payment-form-name">
+      <input type="text" id="payment-form-name" class="form-control" placeholder="John Doe" autocomplete="cc-name" />
     </FormGroup>
 
     <div class="row">
       <div class="col-8">
-        <FormGroup label="Card Number">
-          <input type="text" class="form-control" placeholder="1234 5678 9012 3456" />
-          <FormHint as="small">Enter your 16-digit number.</FormHint>
+        <FormGroup label="Card Number" for="payment-form-number">
+          <input type="text" id="payment-form-number" class="form-control" placeholder="1234 5678 9012 3456" autocomplete="cc-number" aria-describedby="payment-form-number-hint" />
+          <FormHint as="small" id="payment-form-number-hint">Enter your 16-digit number.</FormHint>
         </FormGroup>
       </div>
       <div class="col-4">
-        <FormGroup label="CVV">
-          <input type="text" class="form-control" placeholder="123" />
+        <FormGroup label="CVV" for="payment-form-cvv">
+          <input type="text" id="payment-form-cvv" class="form-control" placeholder="123" autocomplete="cc-csc" />
         </FormGroup>
       </div>
     </div>
 
     <div class="row">
       <div class="col-6">
-        <FormGroup label="Month">
-          <select class="form-select">
+        <FormGroup label="Month" for="payment-form-exp-month">
+          <select id="payment-form-exp-month" class="form-select" autocomplete="cc-exp-month">
             <option value="">MM</option>
             <option value="1">January</option>
             <option value="2">February</option>
@@ -51,8 +51,8 @@ import FormGroup from '@ui/FormGroup.astro'
         </FormGroup>
       </div>
       <div class="col-6">
-        <FormGroup label="Year">
-          <select class="form-select">
+        <FormGroup label="Year" for="payment-form-exp-year">
+          <select id="payment-form-exp-year" class="form-select" autocomplete="cc-exp-year">
             <option value="">YYYY</option>
             <option value="2025">2025</option>
             <option value="2026">2026</option>
@@ -79,8 +79,8 @@ import FormGroup from '@ui/FormGroup.astro'
 
     <hr class="my-4" />
 
-    <FormGroup label="Comments">
-      <textarea class="form-control" rows="3" placeholder="Add any additional comments"></textarea>
+    <FormGroup label="Comments" for="payment-form-comments">
+      <textarea id="payment-form-comments" class="form-control" rows="3" placeholder="Add any additional comments"></textarea>
     </FormGroup>
 
     <div class="mt-4">
