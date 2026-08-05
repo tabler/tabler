@@ -1541,7 +1541,10 @@ $navbar-light-active-color: var(--body-color) !default;
 $navbar-light-hover-color: var(--body-color) !default;
 $navbar-light-disabled-color: var(--disabled-color) !default;
 $navbar-light-active-bg: rgba(0, 0, 0, 0.2) !default;
-$navbar-light-icon-color: color-transparent(var(--body-color), 0.75) !default;
+// Spelled with the literal prefix: this value is url-encoded into the svg data
+// uri below, so the build-time prefixing in .build/build-css.ts never sees a
+// `var()` here to rewrite (it arrives as `var%28--body-color%29`).
+$navbar-light-icon-color: color-transparent(var(--tblr-body-color), 0.75) !default;
 $navbar-light-toggler-icon-bg: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'><path stroke='#{$navbar-light-icon-color}' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/></svg>") !default;
 $navbar-light-toggler-border-color: color-transparent(var(--emphasis-color), 0.15) !default;
 $navbar-light-brand-hover-color: $navbar-light-active-color !default;
