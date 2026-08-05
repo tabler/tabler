@@ -10,12 +10,14 @@ import ListGroupItem from '@ui/ListGroupItem.astro'
 interface Props {
   /** current page slug for the active nav item: 'settings' | 'settings-plan' */
   active?: string
+  /** <title> — falls back to "Settings" */
+  title?: string
 }
 
-const { active } = Astro.props
+const { active, title = 'Settings' } = Astro.props
 ---
 
-<DefaultLayout title="Settings" pageHeader="Account Settings">
+<DefaultLayout title={title} pageHeader="Account Settings">
   <div class="card">
     <div class="row g-0">
       <!-- BEGIN SETTINGS NAV -->
@@ -23,7 +25,7 @@ const { active } = Astro.props
         <div class="card-body">
           <Subheader as="h4">Business settings</Subheader>
 
-          <ListGroup as="nav" transparent>
+          <ListGroup as="nav" aria-label="Business settings" transparent>
             <ListGroupItem as="a" action active={active === 'settings'} class="d-flex align-items-center" href="./settings.html">My Account</ListGroupItem>
             <ListGroupItem as="a" action class="d-flex align-items-center" href="#">My Notifications</ListGroupItem>
             <ListGroupItem as="a" action class="d-flex align-items-center" href="#">Connected Apps</ListGroupItem>
@@ -33,7 +35,7 @@ const { active } = Astro.props
 
           <Subheader as="h4" class="mt-4">Experience</Subheader>
 
-          <ListGroup as="nav" transparent>
+          <ListGroup as="nav" aria-label="Experience" transparent>
             <ListGroupItem as="a" action href="#">Give Feedback</ListGroupItem>
           </ListGroup>
         </div>

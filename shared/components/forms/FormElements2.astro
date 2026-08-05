@@ -1,6 +1,7 @@
 ---
 import Icon from '@ui/Icon.astro'
 import FormGroup from '@ui/FormGroup.astro'
+import InputGroup from '@ui/InputGroup.astro'
 ---
 
 <FormGroup label="Form control rounded">
@@ -67,12 +68,7 @@ import FormGroup from '@ui/FormGroup.astro'
 </FormGroup>
 
 <FormGroup label="Input with appended link" for="fe2-appended-link">
-  <div class="input-group input-group-flat">
-    <input type="password" class="form-control" id="fe2-appended-link" value="ultrastrongpassword" autocomplete="off" />
-    <span class="input-group-text">
-      <a href="#" class="input-group-link">Show password</a>
-    </span>
-  </div>
+  <InputGroup type="password" id="fe2-appended-link" value="ultrastrongpassword" flat appendButton={[{ icon: 'eye', description: 'Show password' }]} />
 </FormGroup>
 
 <FormGroup label="Input with appended kbd" for="fe2-appended-kbd">
@@ -88,9 +84,15 @@ import FormGroup from '@ui/FormGroup.astro'
   <div class="input-group input-group-flat">
     <input type="text" class="form-control" id="fe2-appended-icon-links" autocomplete="off" />
     <span class="input-group-text">
-      <a href="#" class="link-secondary" title="Clear search" data-bs-toggle="tooltip"><Icon name="x" /></a>
-      <a href="#" class="link-secondary ms-2" title="Search settings" data-bs-toggle="tooltip"><Icon name="adjustments" /></a>
-      <a href="#" class="link-secondary ms-2 disabled" title="Add notification" data-bs-toggle="tooltip"><Icon name="bell" /></a>
+      <button type="button" class="link-secondary border-0 bg-transparent p-0" title="Clear search" aria-label="Clear search" data-bs-toggle="tooltip">
+        <Icon name="x" />
+      </button>
+      <button type="button" class="link-secondary ms-2 border-0 bg-transparent p-0" title="Search settings" aria-label="Search settings" data-bs-toggle="tooltip">
+        <Icon name="adjustments" />
+      </button>
+      <button type="button" class="link-secondary ms-2 border-0 bg-transparent p-0" title="Add notification" aria-label="Add notification" data-bs-toggle="tooltip" disabled>
+        <Icon name="bell" />
+      </button>
     </span>
   </div>
 </FormGroup>

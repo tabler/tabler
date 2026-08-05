@@ -23,14 +23,14 @@ const illustrationsCount = 100
 <!-- BEGIN DOCS TOC -->{
   toc.length > 0 && (
     <Fragment>
-      <h3>Table of Contents</h3>
-      <div class="nav nav-vertical" id="toc">
+      <h3 id="toc-heading">Table of Contents</h3>
+      <nav class="nav nav-vertical" id="toc" aria-labelledby="toc-heading">
         {toc.map((item) => (
           <a href={`#${item.id}`} class={`nav-link${item.level === 3 ? ' ms-3' : ''}`}>
             {item.text}
           </a>
         ))}
-      </div>
+      </nav>
     </Fragment>
   )
 }
