@@ -5,6 +5,9 @@ import CardTitle from '@ui/CardTitle.astro'
 import DropdownMenu from '@ui/DropdownMenu.astro'
 import Pagination from '@ui/Pagination.astro'
 import invoices from '@data/invoices.json'
+import countries from '@data/countries.json'
+
+const countryNames = Object.fromEntries((countries as { code: string; name: string }[]).map((c) => [c.code, c.name]))
 ---
 
 <div class="card">
@@ -61,7 +64,7 @@ import invoices from '@data/invoices.json'
                 </a>
               </td>
               <td>
-                <Flag flag={invoice.country} size="xs" class="me-2" />
+                <Flag flag={invoice.country} size="xs" class="me-2" label={countryNames[invoice.country] ?? invoice.country.toUpperCase()} />
                 {invoice.client}
               </td>
               <td>{invoice['vat-no']}</td>

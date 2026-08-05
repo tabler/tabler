@@ -14,43 +14,49 @@ const blueHex = (site as { colors: { blue: { hex: string } } }).colors.blue.hex
 ---
 
 <FormGroup label="Image Check">
-  <div class="row g-2">
-    {
-      imageChecks.map((photo, i) => {
-        const index = i + 1
-        return (
-          <div class="col-6 col-sm-4">
-            <label class="form-imagecheck mb-2">
-              <input name="form-imagecheck" type="checkbox" value={index} class="form-imagecheck-input" checked={index === 2 || index === 4 || index === 7} />
-              <span class="form-imagecheck-figure">
-                <img src={`./static/photos/${photo.file}`} alt={photo.title} class="form-imagecheck-image" />
-              </span>
-            </label>
-          </div>
-        )
-      })
-    }
-  </div>
+  <fieldset>
+    <legend class="visually-hidden">Image Check</legend>
+    <div class="row g-2">
+      {
+        imageChecks.map((photo, i) => {
+          const index = i + 1
+          return (
+            <div class="col-6 col-sm-4">
+              <label class="form-imagecheck mb-2">
+                <input name="form-imagecheck" type="checkbox" value={index} class="form-imagecheck-input" checked={index === 2 || index === 4 || index === 7} />
+                <span class="form-imagecheck-figure">
+                  <img src={`./static/photos/${photo.file}`} alt={photo.title} class="form-imagecheck-image" />
+                </span>
+              </label>
+            </div>
+          )
+        })
+      }
+    </div>
+  </fieldset>
 </FormGroup>
 
 <FormGroup label="Image Check Radio">
-  <div class="row g-2">
-    {
-      imageRadios.map((photo, i) => {
-        const index = i + 1
-        return (
-          <div class="col-6 col-sm-4">
-            <label class="form-imagecheck mb-2">
-              <input name="form-imagecheck-radio" type="radio" value={index} class="form-imagecheck-input" checked={index === 2 || index === 4 || index === 7} />
-              <span class="form-imagecheck-figure">
-                <img src={`./static/photos/${photo.file}`} alt={photo.title} class="form-imagecheck-image" />
-              </span>
-            </label>
-          </div>
-        )
-      })
-    }
-  </div>
+  <fieldset>
+    <legend class="visually-hidden">Image Check Radio</legend>
+    <div class="row g-2">
+      {
+        imageRadios.map((photo, i) => {
+          const index = i + 1
+          return (
+            <div class="col-6 col-sm-4">
+              <label class="form-imagecheck mb-2">
+                <input name="form-imagecheck-radio" type="radio" value={index} class="form-imagecheck-input" checked={index === 2 || index === 4 || index === 7} />
+                <span class="form-imagecheck-figure">
+                  <img src={`./static/photos/${photo.file}`} alt={photo.title} class="form-imagecheck-image" />
+                </span>
+              </label>
+            </div>
+          )
+        })
+      }
+    </div>
+  </fieldset>
 </FormGroup>
 
 <InputColor label="Color Input Check" type="checkbox" />

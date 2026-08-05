@@ -20,27 +20,29 @@ const visibilityOptions = ['Private', 'Public', 'Hidden']
     <input type="text" id="report-name" class="form-control" name="example-text-input" placeholder="Your report name" />
   </FormGroup>
 
-  <label class="form-label">Report type</label>
-  <div class="form-selectgroup-boxes row mb-3">
-    {
-      reports.map((report, index) => (
-        <div class="col-lg-6">
-          <label class="form-selectgroup-item">
-            <input type="radio" name="report-type" value="1" class="form-selectgroup-input" checked={index === 0} />
-            <span class="form-selectgroup-label d-flex align-items-center p-3">
-              <span class="me-3">
-                <span class="form-selectgroup-check" />
+  <fieldset class="border-0 p-0 mb-3">
+    <legend class="form-label float-none mb-0" style="font-size: inherit;">Report type</legend>
+    <div class="form-selectgroup-boxes row">
+      {
+        reports.map((report, index) => (
+          <div class="col-lg-6">
+            <label class="form-selectgroup-item">
+              <input type="radio" name="report-type" value="1" class="form-selectgroup-input" checked={index === 0} />
+              <span class="form-selectgroup-label d-flex align-items-center p-3">
+                <span class="me-3">
+                  <span class="form-selectgroup-check" />
+                </span>
+                <span class="form-selectgroup-label-content">
+                  <span class="form-selectgroup-title strong mb-1">{report.title}</span>
+                  <span class="d-block text-secondary">{report.description}</span>
+                </span>
               </span>
-              <span class="form-selectgroup-label-content">
-                <span class="form-selectgroup-title strong mb-1">{report.title}</span>
-                <span class="d-block text-secondary">{report.description}</span>
-              </span>
-            </span>
-          </label>
-        </div>
-      ))
-    }
-  </div>
+            </label>
+          </div>
+        ))
+      }
+    </div>
+  </fieldset>
 
   <div class="row">
     <div class="col-lg-8">

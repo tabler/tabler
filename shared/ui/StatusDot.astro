@@ -2,11 +2,12 @@
 interface Props {
   color?: string
   animated?: boolean
+  label?: string
 }
 
-const { color, animated } = Astro.props
+const { color, animated, label } = Astro.props
 
 const classes = ['status-dot', color && `status-${color}`, animated && 'status-dot-animated']
 ---
 
-<span class:list={classes}></span>
+<span class:list={classes}>{label && <span class="visually-hidden">{label}</span>}</span>

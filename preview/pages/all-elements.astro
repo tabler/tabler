@@ -40,6 +40,22 @@ import Empty from '@ui/Empty.astro'
 import NavSegmented from '@ui/NavSegmented.astro'
 import ListGroup from '@ui/ListGroup.astro'
 import ListGroupItem from '@ui/ListGroupItem.astro'
+import payments from '@data/payments.json'
+
+const paymentNames = Object.fromEntries((payments as { name: string; logo: string }[]).map((p) => [p.logo, p.name]))
+
+const countryNames: Record<string, string> = {
+  us: 'United States',
+  gb: 'United Kingdom',
+  de: 'Germany',
+  fr: 'France',
+  pl: 'Poland',
+  es: 'Spain',
+  it: 'Italy',
+  nl: 'Netherlands',
+  ca: 'Canada',
+  au: 'Australia',
+}
 
 const codeExample = `// JavaScript example
 function greetUser(name) {
@@ -467,10 +483,10 @@ function greetUser(name) {
         <CardBody>
           <h4>Status Dots</h4>
           <div class="mb-3">
-            <StatusDot color="success" />
-            <StatusDot color="warning" />
-            <StatusDot color="danger" />
-            <StatusDot color="info" animated />
+            <StatusDot color="success" label="Success" />
+            <StatusDot color="warning" label="Warning" />
+            <StatusDot color="danger" label="Danger" />
+            <StatusDot color="info" animated label="Info" />
           </div>
 
           <h4>Toast Notifications</h4>
@@ -541,38 +557,38 @@ function greetUser(name) {
           <h4>Flags</h4>
           <div class="mb-3">
             <div class="d-flex flex-wrap gap-2">
-              <Flag flag="us" />
-              <Flag flag="gb" />
-              <Flag flag="de" />
-              <Flag flag="fr" />
-              <Flag flag="pl" />
-              <Flag flag="es" />
-              <Flag flag="it" />
-              <Flag flag="nl" />
-              <Flag flag="ca" />
-              <Flag flag="au" />
+              <Flag flag="us" label={countryNames.us} />
+              <Flag flag="gb" label={countryNames.gb} />
+              <Flag flag="de" label={countryNames.de} />
+              <Flag flag="fr" label={countryNames.fr} />
+              <Flag flag="pl" label={countryNames.pl} />
+              <Flag flag="es" label={countryNames.es} />
+              <Flag flag="it" label={countryNames.it} />
+              <Flag flag="nl" label={countryNames.nl} />
+              <Flag flag="ca" label={countryNames.ca} />
+              <Flag flag="au" label={countryNames.au} />
             </div>
           </div>
 
           <h4>Payment Icons</h4>
           <div class="mb-3">
             <div class="d-flex flex-wrap gap-2">
-              <Payment payment="visa" />
-              <Payment payment="mastercard" />
-              <Payment payment="paypal" />
-              <Payment payment="americanexpress" />
-              <Payment payment="applepay" />
-              <Payment payment="google-pay" />
-              <Payment payment="stripe" />
-              <Payment payment="discover" />
-              <Payment payment="jcb" />
-              <Payment payment="maestro" />
-              <Payment payment="dinersclub" />
-              <Payment payment="bitcoin" />
-              <Payment payment="ethereum" />
-              <Payment payment="klarna" />
-              <Payment payment="venmo" />
-              <Payment payment="square" />
+              <Payment payment="visa" label={paymentNames.visa} />
+              <Payment payment="mastercard" label={paymentNames.mastercard} />
+              <Payment payment="paypal" label={paymentNames.paypal} />
+              <Payment payment="americanexpress" label={paymentNames.americanexpress} />
+              <Payment payment="applepay" label={paymentNames.applepay} />
+              <Payment payment="google-pay" label={paymentNames['google-pay']} />
+              <Payment payment="stripe" label={paymentNames.stripe} />
+              <Payment payment="discover" label={paymentNames.discover} />
+              <Payment payment="jcb" label={paymentNames.jcb} />
+              <Payment payment="maestro" label={paymentNames.maestro} />
+              <Payment payment="dinersclub" label={paymentNames.dinersclub} />
+              <Payment payment="bitcoin" label={paymentNames.bitcoin} />
+              <Payment payment="ethereum" label={paymentNames.ethereum} />
+              <Payment payment="klarna" label={paymentNames.klarna} />
+              <Payment payment="venmo" label={paymentNames.venmo} />
+              <Payment payment="square" label={paymentNames.square} />
             </div>
           </div>
         </CardBody>

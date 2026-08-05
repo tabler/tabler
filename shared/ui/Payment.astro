@@ -4,12 +4,13 @@ interface Props {
   dark?: boolean
   size?: string
   class?: string
+  label?: string
 }
 
-const { payment = 'visa', dark, size, class: className } = Astro.props
+const { payment = 'visa', dark, size, class: className, label } = Astro.props
 
 // Only an explicit `size` becomes `payment-{size}`.
 const classes = ['payment', size && `payment-${size}`, `payment-provider-${payment}${dark ? '-dark' : ''}`, className]
 ---
 
-<span class:list={classes}></span>
+<span class:list={classes} role={label ? 'img' : undefined} aria-label={label}></span>
