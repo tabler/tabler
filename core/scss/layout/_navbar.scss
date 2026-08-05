@@ -108,6 +108,7 @@ Navbar
   }
 
   .navbar-nav {
+    --#{$prefix}nav-link-icon-margin-end: #{$nav-link-icon-margin-end};
     min-height: subtract($navbar-height, 2 * $navbar-padding-y);
 
     .nav-link {
@@ -121,7 +122,8 @@ Navbar
         position: absolute;
         top: 0.5rem;
         inset-inline-end: 0.5rem;
-        transform: translate(50%, -50%);
+        /*rtl:ignore*/
+        transform: translate(calc(var(--#{$prefix}dir) * 50%), -50%);
       }
     }
   }

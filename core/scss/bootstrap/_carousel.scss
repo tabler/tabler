@@ -31,9 +31,9 @@
 .carousel-item {
   position: relative;
   display: none;
-  float: left;
+  float: inline-start;
   width: 100%;
-  margin-right: -100%;
+  margin-inline-end: -100%;
   backface-visibility: hidden;
   @include transition($carousel-transition);
 }
@@ -46,12 +46,14 @@
 
 .carousel-item-next:not(.carousel-item-start),
 .active.carousel-item-end {
-  transform: translateX(100%);
+  /*rtl:ignore*/
+  transform: translateX(calc(var(--#{$prefix}dir) * 100%));
 }
 
 .carousel-item-prev:not(.carousel-item-end),
 .active.carousel-item-start {
-  transform: translateX(-100%);
+  /*rtl:ignore*/
+  transform: translateX(calc(var(--#{$prefix}dir) * -100%));
 }
 
 //
@@ -114,11 +116,11 @@
   }
 }
 .carousel-control-prev {
-  left: 0;
+  inset-inline-start: 0;
   background-image: if(sass($enable-gradients): linear-gradient(90deg, rgba($black, 0.25), rgba($black, 0.001)); else: null);
 }
 .carousel-control-next {
-  right: 0;
+  inset-inline-end: 0;
   background-image: if(sass($enable-gradients): linear-gradient(270deg, rgba($black, 0.25), rgba($black, 0.001)); else: null);
 }
 
@@ -147,17 +149,16 @@
 
 .carousel-indicators {
   position: absolute;
-  right: 0;
+  inset-inline: 0;
   bottom: 0;
-  left: 0;
   z-index: 2;
   display: flex;
   justify-content: center;
   padding: 0;
   // Use the .carousel-control's width as margin so we don't overlay those
-  margin-right: $carousel-control-width;
+  margin-inline-end: $carousel-control-width;
   margin-bottom: 1rem;
-  margin-left: $carousel-control-width;
+  margin-inline-start: $carousel-control-width;
 
   [data-bs-target],
   [data-target] {
@@ -166,8 +167,8 @@
     width: $carousel-indicator-width;
     height: $carousel-indicator-height;
     padding: 0;
-    margin-right: $carousel-indicator-spacer;
-    margin-left: $carousel-indicator-spacer;
+    margin-inline-end: $carousel-indicator-spacer;
+    margin-inline-start: $carousel-indicator-spacer;
     text-indent: -999px;
     cursor: pointer;
     background-color: var(--#{$prefix}carousel-indicator-active-bg);
@@ -191,9 +192,8 @@
 
 .carousel-caption {
   position: absolute;
-  right: (100% - $carousel-caption-width) * 0.5;
+  inset-inline: (100% - $carousel-caption-width) * 0.5;
   bottom: $carousel-caption-spacer;
-  left: (100% - $carousel-caption-width) * 0.5;
   padding-top: $carousel-caption-padding-y;
   padding-bottom: $carousel-caption-padding-y;
   color: var(--#{$prefix}carousel-caption-color);

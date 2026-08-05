@@ -41,7 +41,7 @@ class Config {
       ...ctor.Default,
       ...(typeof jsonConfig === 'object' ? jsonConfig : {}),
       ...(isElement(element) ? Manipulator.getDataAttributes(element!) : {}),
-      ...(typeof config === 'object' ? config : {})
+      ...(typeof config === 'object' ? config : {}),
     }
   }
 
@@ -54,9 +54,7 @@ class Config {
       const valueType = isElement(value) ? 'element' : toType(value)
 
       if (!new RegExp(expectedTypes).test(valueType)) {
-        throw new TypeError(
-          `${ctor.NAME.toUpperCase()}: Option "${property}" provided type "${valueType}" but expected type "${expectedTypes}".`
-        )
+        throw new TypeError(`${ctor.NAME.toUpperCase()}: Option "${property}" provided type "${valueType}" but expected type "${expectedTypes}".`)
       }
     }
   }

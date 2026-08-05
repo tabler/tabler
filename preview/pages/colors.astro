@@ -1,247 +1,236 @@
 ---
-// Port of preview/pages/colors.html (layout: default)
-import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
-import Icon from '@shared/components/Icon.astro';
-import site from '@data/site.json';
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import CaptureScript from '@shared/components/CaptureScript.astro'
+import FormGroup from '@ui/FormGroup.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import Avatar from '@ui/Avatar.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import site from '@data/site.json'
 
-type ColorEntry = [string, { title: string; hex: string; abbr?: string; icon?: string }];
+type ColorEntry = [string, { title: string; hex: string; abbr?: string; icon?: string }]
 
-// Liquid iterates the site.json objects as [key, value] pairs.
-const colors = Object.entries(site.colors) as ColorEntry[];
-const lightColors = Object.entries(site.lightColors) as ColorEntry[];
-const grayColors = Object.entries(site.grayColors) as ColorEntry[];
-const socialColors = Object.entries(site.socialColors) as ColorEntry[];
+const colors = Object.entries(site.colors) as ColorEntry[]
+const lightColors = Object.entries(site.lightColors) as ColorEntry[]
+const grayColors = Object.entries(site.grayColors) as ColorEntry[]
+const socialColors = Object.entries(site.socialColors) as ColorEntry[]
 
-// Liquid: colors keys + inverted, white, transparent (pushed before the gradient loops).
-const gradientColors = [...Object.keys(site.colors), 'inverted', 'white', 'transparent'];
+const gradientColors = [...Object.keys(site.colors), 'inverted', 'white', 'transparent']
 ---
 
 <DefaultLayout title="Colors" pageHeader="Colors" pageMenu="base.colors">
-	<div class="row row-cards">
-		<div class="col-3">
-			<div class="card">
-				<div class="card-body">
-					<div class="row g-3">
-						{
-							colors.map(([name, color]) => (
-								<div class="col-12">
-									<div class="row align-items-center">
-										<div class="col-auto">
-											<div class={`avatar bg-${name} text-${name}-fg avatar-square`}>{color.abbr}</div>
-										</div>
-										<div class="col">
-											{color.title}
-											<br />
-											<code>{color.hex}</code>
-										</div>
-									</div>
-								</div>
-							))
-						}
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col-3">
-			<div class="card">
-				<div class="card-body">
-					<div class="row g-3">
-						{
-							lightColors.map(([name, color]) => (
-								<div class="col-12">
-									<div class="row align-items-center">
-										<div class="col-auto">
-											<div class={`avatar bg-${name}-lt text-${name}-lt-fg avatar-square`}>{color.abbr}</div>
-										</div>
-										<div class="col">
-											{color.title}
-											<br />
-											<code>{color.hex}</code>
-										</div>
-									</div>
-								</div>
-							))
-						}
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col-3">
-			<div class="card">
-				<div class="card-body">
-					<div class="row g-3">
-						{
-							grayColors.map(([name, color]) => (
-								<div class="col-12">
-									<div class="row align-items-center">
-										<div class="col-auto">
-											<div class={`avatar bg-${name} text-${name}-fg avatar-square`}>{color.abbr}</div>
-										</div>
-										<div class="col">
-											{color.title}
-											<br />
-											<code>{color.hex}</code>
-										</div>
-									</div>
-								</div>
-							))
-						}
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col-3">
-			<div class="card">
-				<div class="card-body">
-					<div class="row g-3">
-						{
-							socialColors.map(([name, color]) => (
-								<div class="col-12">
-									<div class="row align-items-center">
-										<div class="col-auto">
-											<div class={`avatar bg-${name} text-${name}-fg avatar-square`}>
-												{color.icon && <Icon name={color.icon} />}
-											</div>
-										</div>
-										<div class="col">
-											{color.title}
-											<br />
-											<code>{color.hex}</code>
-										</div>
-									</div>
-								</div>
-							))
-						}
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col-12">
-			<div class="row">
-				<div class="col-6">
-					<div class="card">
-						<div class="card-body">
-							<h3 class="card-title">Gradient</h3>
-							<form action="">
-								<div class="row g-4">
-									<div class="col">
-										<div>
-											<label class="form-label">From</label>
-											<select class="form-select" name="color-from">
-												{gradientColors.map((color) => <option value={color}>{color}</option>)}
-											</select>
-										</div>
-										<div class="mt-3">
-											<label class="form-label">To</label>
-											<select class="form-select" name="color-to">
-												{
-													gradientColors.map((color) => (
-														<option value={color} selected={color === 'transparent'}>
-															{color}
-														</option>
-													))
-												}
-											</select>
-										</div>
-									</div>
-									<div class="col">
-										<div>
-											<label class="form-label">Via</label>
-											<select class="form-select" name="color-via">
-												<option></option>
-												{gradientColors.map((color) => <option value={color}>{color}</option>)}
-											</select>
-										</div>
-										<div class="mt-3">
-											<label class="form-label">Direction</label>
-											<select class="form-select" name="color-direction">
-												<option value="to-t">to top</option>
-												<option value="to-te">to top right</option>
-												<option value="to-r" selected>to right</option>
-												<option value="to-be">to bottom right</option>
-												<option value="to-b">to bottom</option>
-												<option value="to-bs">to bottom left</option>
-												<option value="to-s">to left</option>
-												<option value="to-ts">to top left</option>
-											</select>
-										</div>
-									</div>
-									<div class="col-12">
-										<div class="border rounded bg-pattern-transparent overflow-hidden">
-											<div
-												id="gradient-preview"
-												class="border rounded bg-gradient bg-gradient-from-primary bg-gradient-to-transparent"
-											>
-												<div class=" px-4 py-5"></div>
-											</div>
-										</div>
-									</div>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-				<div class="col-6">
-					<div class="card">
-						<div class="card-body">
-							<div class="row">
-								<div class="col">
-									<div class="space-y">
-										{
-											gradientColors.map((color) => (
-												<div class={`border rounded bg-gradient bg-gradient-from-${color} bg-gradient-to-transparent px-4 py-2`} />
-											))
-										}
-									</div>
-								</div>
-								<div class="col">
-									<div class="space-y">
-										{
-											gradientColors.map((color) => (
-												<div class={`border rounded bg-gradient bg-gradient-to-${color} bg-gradient-from-transparent px-4 py-2`} />
-											))
-										}
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+  <div class="row row-cards">
+    <div class="col-3">
+      <Card>
+        <CardBody>
+          <div class="row g-3">
+            {
+              colors.map(([name, color]) => (
+                <div class="col-12">
+                  <div class="row align-items-center">
+                    <div class="col-auto">
+                      <Avatar square class={`bg-${name} text-${name}-fg`} placeholder={color.abbr} />
+                    </div>
+                    <div class="col">
+                      {color.title}
+                      <br />
+                      <code>{color.hex}</code>
+                    </div>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-3">
+      <Card>
+        <CardBody>
+          <div class="row g-3">
+            {
+              lightColors.map(([name, color]) => (
+                <div class="col-12">
+                  <div class="row align-items-center">
+                    <div class="col-auto">
+                      <Avatar square class={`bg-${name}-lt text-${name}-lt-fg`} placeholder={color.abbr} />
+                    </div>
+                    <div class="col">
+                      {color.title}
+                      <br />
+                      <code>{color.hex}</code>
+                    </div>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-3">
+      <Card>
+        <CardBody>
+          <div class="row g-3">
+            {
+              grayColors.map(([name, color]) => (
+                <div class="col-12">
+                  <div class="row align-items-center">
+                    <div class="col-auto">
+                      <Avatar square class={`bg-${name} text-${name}-fg`} placeholder={color.abbr} />
+                    </div>
+                    <div class="col">
+                      {color.title}
+                      <br />
+                      <code>{color.hex}</code>
+                    </div>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-3">
+      <Card>
+        <CardBody>
+          <div class="row g-3">
+            {
+              socialColors.map(([name, color]) => (
+                <div class="col-12">
+                  <div class="row align-items-center">
+                    <div class="col-auto">
+                      <Avatar square class={`bg-${name} text-${name}-fg`} icon={color.icon} />
+                    </div>
+                    <div class="col">
+                      {color.title}
+                      <br />
+                      <code>{color.hex}</code>
+                    </div>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-12">
+      <div class="row">
+        <div class="col-6">
+          <Card>
+            <CardBody>
+              <CardTitle>Gradient</CardTitle>
+              <form action="">
+                <div class="row g-4">
+                  <div class="col">
+                    <FormGroup label="From" class="">
+                      <select class="form-select" name="color-from">
+                        {gradientColors.map((color) => <option value={color}>{color}</option>)}
+                      </select>
+                    </FormGroup>
+                    <FormGroup label="To" class="mt-3">
+                      <select class="form-select" name="color-to">
+                        {
+                          gradientColors.map((color) => (
+                            <option value={color} selected={color === 'transparent'}>
+                              {color}
+                            </option>
+                          ))
+                        }
+                      </select>
+                    </FormGroup>
+                  </div>
+                  <div class="col">
+                    <FormGroup label="Via" class="">
+                      <select class="form-select" name="color-via">
+                        <option></option>
+                        {gradientColors.map((color) => <option value={color}>{color}</option>)}
+                      </select>
+                    </FormGroup>
+                    <FormGroup label="Direction" class="mt-3">
+                      <select class="form-select" name="color-direction">
+                        <option value="to-t">to top</option>
+                        <option value="to-te">to top right</option>
+                        <option value="to-r" selected>to right</option>
+                        <option value="to-be">to bottom right</option>
+                        <option value="to-b">to bottom</option>
+                        <option value="to-bs">to bottom left</option>
+                        <option value="to-s">to left</option>
+                        <option value="to-ts">to top left</option>
+                      </select>
+                    </FormGroup>
+                  </div>
+                  <div class="col-12">
+                    <div class="border rounded bg-pattern-transparent overflow-hidden">
+                      <div id="gradient-preview" class="border rounded bg-gradient bg-gradient-from-primary bg-gradient-to-transparent">
+                        <div class="px-4 py-5"></div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </CardBody>
+          </Card>
+        </div>
+        <div class="col-6">
+          <Card>
+            <CardBody>
+              <div class="row">
+                <div class="col">
+                  <div class="space-y">
+                    {gradientColors.map((color) => <div class={`border rounded bg-gradient bg-gradient-from-${color} bg-gradient-to-transparent px-4 py-2`} />)}
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="space-y">
+                    {gradientColors.map((color) => <div class={`border rounded bg-gradient bg-gradient-to-${color} bg-gradient-from-transparent px-4 py-2`} />)}
+                  </div>
+                </div>
+              </div>
+            </CardBody>
+          </Card>
+        </div>
+      </div>
+    </div>
+  </div>
 
-	<script is:inline>
-		document.addEventListener('DOMContentLoaded', function () {
-			var gradientPreview = document.getElementById('gradient-preview');
-			var colorFrom = document.querySelector('[name="color-from"]');
-			var colorTo = document.querySelector('[name="color-to"]');
-			var colorVia = document.querySelector('[name="color-via"]');
-			var colorDirection = document.querySelector('[name="color-direction"]');
+  <CaptureScript>
+    <!-- BEGIN GRADIENT SCRIPT -->
+    <script is:inline>
+      document.addEventListener('DOMContentLoaded', function () {
+        var gradientPreview = document.getElementById('gradient-preview')
+        var colorFrom = document.querySelector('[name="color-from"]')
+        var colorTo = document.querySelector('[name="color-to"]')
+        var colorVia = document.querySelector('[name="color-via"]')
+        var colorDirection = document.querySelector('[name="color-direction"]')
 
-			function updateGradient() {
-				var from = colorFrom.value;
-				var to = colorTo.value;
-				var via = colorVia.value;
-				var direction = colorDirection.value;
+        function updateGradient() {
+          var from = colorFrom.value
+          var to = colorTo.value
+          var via = colorVia.value
+          var direction = colorDirection.value
 
-				var gradient = 'bg-gradient bg-gradient-from-' + from + ' bg-gradient-to-' + to;
+          var gradient = 'bg-gradient bg-gradient-from-' + from + ' bg-gradient-to-' + to
 
-				if (via) {
-					gradient += ' bg-gradient-via-' + via;
-				}
+          if (via) {
+            gradient += ' bg-gradient-via-' + via
+          }
 
-				gradient += ' bg-gradient-' + direction;
+          gradient += ' bg-gradient-' + direction
 
-				gradientPreview.className = gradient;
-			}
+          gradientPreview.className = gradient
+        }
 
-			colorFrom.addEventListener('change', updateGradient);
-			colorTo.addEventListener('change', updateGradient);
-			colorVia.addEventListener('change', updateGradient);
-			colorDirection.addEventListener('change', updateGradient);
+        colorFrom.addEventListener('change', updateGradient)
+        colorTo.addEventListener('change', updateGradient)
+        colorVia.addEventListener('change', updateGradient)
+        colorDirection.addEventListener('change', updateGradient)
 
-			updateGradient();
-		});
-	</script>
+        updateGradient()
+      })
+    </script>
+    <!-- END GRADIENT SCRIPT -->
+  </CaptureScript>
 </DefaultLayout>

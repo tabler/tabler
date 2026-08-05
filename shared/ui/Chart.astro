@@ -1,0 +1,67 @@
+---
+import charts from '@data/charts.json';
+import { chartStyle, chartConfig, type ChartData } from '@shared/lib/chart-script';
+import CaptureScript from '../components/CaptureScript.astro';
+
+interface Props {
+	chartId: string;
+	id?: string;
+	size?: 'sm' | 'lg';
+	class?: string;
+	height?: number;
+}
+
+const { chartId, id = chartId, size, class: classProp, height: heightProp } = Astro.props;
+
+const chartsData = charts as Record<string, ChartData>;
+let data = chartsData[chartId];
+
+let className = classProp;
+let height = heightProp ?? data?.height ?? 10;
+
+if (size === 'sm') {
+	className = `${classProp ?? ''} chart-sm`.trim();
+	height = 2.5;
+} else if (size === 'lg') {
+	className = `${classProp ?? ''} chart-lg`.trim();
+	height = 15;
+}
+
+if (data?.extend) {
+	data = { ...chartsData[data.extend], ...chartsData[chartId] };
+}
+
+// The :root custom-property block stays a plain string rendered via set:html — it's
+// inert CSS text (no injection surface), not executable code.
+const style = data ? chartStyle({ id, data }) : '';
+const { config, xFormatterExpr } = data ? chartConfig({ id, data, height }) : { config: undefined, xFormatterExpr: undefined };
+const chartKey = `chart-${chartId}`;
+const elementId = `chart-${id}`;
+---
+
+{
+	data && (
+		<Fragment>
+			<div id={elementId} class:list={['position-relative', className]} />
+			<Fragment set:html={style} />
+			<CaptureScript>
+				<!-- BEGIN CHART -->
+				<script define:vars={{ chartKey, elementId, config, xFormatterExpr }}>
+					window.tabler_chart ??= {};
+
+					function initChart() {
+						if (xFormatterExpr && config.xaxis?.labels) {
+							config.xaxis.labels.formatter = new Function('val', `return (${xFormatterExpr})`);
+						}
+
+						window.ApexCharts &&
+							(window.tabler_chart[chartKey] = new ApexCharts(document.getElementById(elementId), config)).render();
+					}
+
+					document.readyState !== 'loading' ? initChart() : document.addEventListener('DOMContentLoaded', initChart, { once: true });
+				</script>
+				<!-- END CHART -->
+			</CaptureScript>
+		</Fragment>
+	)
+}

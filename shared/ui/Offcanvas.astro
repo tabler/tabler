@@ -1,0 +1,24 @@
+---
+// Offcanvas container (.offcanvas). Renders inline at the call site (unlike Modal, which drains to the end of body).
+
+interface Props {
+  /** offcanvas-{direction}: start | end | top | bottom */
+  direction?: string
+  /** responsive variant offcanvas-{size} (lg | xl | xxl) — replaces the base .offcanvas class */
+  size?: string
+  /** offcanvas-narrow (20rem width) */
+  narrow?: boolean
+  show?: boolean
+  class?: string
+  /** remaining attributes (id, tabindex, aria-*, role, data-bs-*, …) are forwarded to the element */
+  [key: string]: unknown
+}
+
+const { direction, size, narrow, show, class: className, ...rest } = Astro.props
+---
+
+<!-- BEGIN OFFCANVAS -->
+<div class:list={[size ? `offcanvas-${size}` : 'offcanvas', direction && `offcanvas-${direction}`, narrow && 'offcanvas-narrow', show && 'show', className]} {...rest}>
+  <slot />
+</div>
+<!-- END OFFCANVAS -->

@@ -18,19 +18,20 @@ describe('Modal', () => {
     }
   })
 
-  const createModalHTML = () => [
-    '<div class="modal" tabindex="-1">',
-    '  <div class="modal-dialog">',
-    '    <div class="modal-content">',
-    '      <div class="modal-header">',
-    '        <h5 class="modal-title">Modal</h5>',
-    '        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>',
-    '      </div>',
-    '      <div class="modal-body"><p>Content</p></div>',
-    '    </div>',
-    '  </div>',
-    '</div>'
-  ].join('')
+  const createModalHTML = () =>
+    [
+      '<div class="modal" tabindex="-1">',
+      '  <div class="modal-dialog">',
+      '    <div class="modal-content">',
+      '      <div class="modal-header">',
+      '        <h5 class="modal-title">Modal</h5>',
+      '        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>',
+      '      </div>',
+      '      <div class="modal-body"><p>Content</p></div>',
+      '    </div>',
+      '  </div>',
+      '</div>',
+    ].join('')
 
   describe('VERSION', () => {
     it('should return plugin version', () => {
@@ -81,7 +82,7 @@ describe('Modal', () => {
 
   describe('toggle', () => {
     it('should show when hidden', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = createModalHTML()
         const modalEl = fixtureEl.querySelector('.modal')!
         const modal = new Modal(modalEl)
@@ -96,7 +97,7 @@ describe('Modal', () => {
     })
 
     it('should hide when shown', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = createModalHTML()
         const modalEl = fixtureEl.querySelector('.modal')!
         const modal = new Modal(modalEl)
@@ -117,7 +118,7 @@ describe('Modal', () => {
 
   describe('show', () => {
     it('should show modal', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = createModalHTML()
         const modalEl = fixtureEl.querySelector('.modal')!
         const modal = new Modal(modalEl)
@@ -136,7 +137,7 @@ describe('Modal', () => {
     })
 
     it('should not show if already shown', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = createModalHTML()
         const modalEl = fixtureEl.querySelector('.modal')!
         const modal = new Modal(modalEl)
@@ -154,12 +155,12 @@ describe('Modal', () => {
     })
 
     it('should not show if show event is prevented', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = createModalHTML()
         const modalEl = fixtureEl.querySelector('.modal')!
         const modal = new Modal(modalEl)
 
-        modalEl.addEventListener('show.bs.modal', event => {
+        modalEl.addEventListener('show.bs.modal', (event) => {
           event.preventDefault()
           setTimeout(() => {
             expect(modal._isShown).toBe(false)
@@ -172,7 +173,7 @@ describe('Modal', () => {
     })
 
     it('should pass relatedTarget in show event', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = createModalHTML() + '<button id="trigger">Open</button>'
         const modalEl = fixtureEl.querySelector('.modal')!
         const trigger = fixtureEl.querySelector('#trigger') as HTMLElement
@@ -190,7 +191,7 @@ describe('Modal', () => {
 
   describe('hide', () => {
     it('should hide modal', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = createModalHTML()
         const modalEl = fixtureEl.querySelector('.modal')!
         const modal = new Modal(modalEl)
@@ -220,13 +221,13 @@ describe('Modal', () => {
     })
 
     it('should not hide if hide event is prevented', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = createModalHTML()
         const modalEl = fixtureEl.querySelector('.modal')!
         const modal = new Modal(modalEl)
 
         modalEl.addEventListener('shown.bs.modal', () => {
-          modalEl.addEventListener('hide.bs.modal', event => {
+          modalEl.addEventListener('hide.bs.modal', (event) => {
             event.preventDefault()
             setTimeout(() => {
               expect(modal._isShown).toBe(true)
@@ -285,7 +286,7 @@ describe('Modal', () => {
 
   describe('keyboard', () => {
     it('should close on Escape when keyboard is true', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = createModalHTML()
         const modalEl = fixtureEl.querySelector('.modal')!
         const modal = new Modal(modalEl, { keyboard: true })
@@ -304,7 +305,7 @@ describe('Modal', () => {
     })
 
     it('should not close on Escape when keyboard is false', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = createModalHTML()
         const modalEl = fixtureEl.querySelector('.modal')!
         const modal = new Modal(modalEl, { keyboard: false })
@@ -323,7 +324,7 @@ describe('Modal', () => {
     })
 
     it('should ignore non-Escape keys', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = createModalHTML()
         const modalEl = fixtureEl.querySelector('.modal')!
         const modal = new Modal(modalEl)
@@ -376,7 +377,7 @@ describe('Modal', () => {
 
   describe('_triggerBackdropTransition', () => {
     it('should add and remove modal-static class', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = createModalHTML()
         const modalEl = fixtureEl.querySelector('.modal')!
         const modal = new Modal(modalEl, { keyboard: false })
@@ -396,13 +397,13 @@ describe('Modal', () => {
     })
 
     it('should not transition if hidePrevented is prevented', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = createModalHTML()
         const modalEl = fixtureEl.querySelector('.modal')!
         const modal = new Modal(modalEl, { keyboard: false })
 
         modalEl.addEventListener('shown.bs.modal', () => {
-          modalEl.addEventListener('hidePrevented.bs.modal', event => {
+          modalEl.addEventListener('hidePrevented.bs.modal', (event) => {
             event.preventDefault()
             setTimeout(() => {
               expect(modal._isShown).toBe(true)
@@ -418,7 +419,7 @@ describe('Modal', () => {
     })
 
     it('should early return if overflowY is hidden', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = createModalHTML()
         const modalEl = fixtureEl.querySelector('.modal')!
         const modal = new Modal(modalEl, { keyboard: false })
@@ -441,7 +442,7 @@ describe('Modal', () => {
     })
 
     it('should early return if already has modal-static class', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = createModalHTML()
         const modalEl = fixtureEl.querySelector('.modal')!
         const modal = new Modal(modalEl, { keyboard: false })
@@ -466,7 +467,7 @@ describe('Modal', () => {
 
   describe('backdrop click', () => {
     it('should hide when clicking outside dialog with backdrop true', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = createModalHTML()
         const modalEl = fixtureEl.querySelector('.modal')!
         const modal = new Modal(modalEl, { backdrop: true })
@@ -486,7 +487,7 @@ describe('Modal', () => {
     })
 
     it('should not hide when click starts inside dialog', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = createModalHTML()
         const modalEl = fixtureEl.querySelector('.modal')!
         const dialog = modalEl.querySelector('.modal-dialog')!
@@ -510,7 +511,7 @@ describe('Modal', () => {
     })
 
     it('should trigger backdrop transition with static backdrop', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = createModalHTML()
         const modalEl = fixtureEl.querySelector('.modal')!
         const modal = new Modal(modalEl, { backdrop: 'static' })
@@ -539,7 +540,7 @@ describe('Modal', () => {
 
       const modal = new Modal(modalEl)
 
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         modalEl.addEventListener('shown.bs.modal', () => {
           expect(document.body.contains(modalEl)).toBe(true)
           modal.dispose()
@@ -552,7 +553,7 @@ describe('Modal', () => {
     })
 
     it('should scroll modal body to top', () => {
-      return new Promise<void>(resolve => {
+      return new Promise<void>((resolve) => {
         fixtureEl.innerHTML = createModalHTML()
         const modalEl = fixtureEl.querySelector('.modal')!
         const modal = new Modal(modalEl)
@@ -569,13 +570,8 @@ describe('Modal', () => {
 
   describe('data-tblr-toggle', () => {
     it('should open modal via data-tblr-toggle="modal"', () => {
-      return new Promise<void>(resolve => {
-        fixtureEl.innerHTML = [
-          '<button data-tblr-toggle="modal" data-bs-target="#testModal">Open</button>',
-          '<div class="modal" id="testModal" tabindex="-1">',
-          '  <div class="modal-dialog"><div class="modal-content"></div></div>',
-          '</div>'
-        ].join('')
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = ['<button data-tblr-toggle="modal" data-bs-target="#testModal">Open</button>', '<div class="modal" id="testModal" tabindex="-1">', '  <div class="modal-dialog"><div class="modal-content"></div></div>', '</div>'].join('')
 
         const modalEl = fixtureEl.querySelector('#testModal')!
         const btn = fixtureEl.querySelector('[data-tblr-toggle="modal"]') as HTMLElement
@@ -591,13 +587,8 @@ describe('Modal', () => {
     })
 
     it('should open modal via data-tblr-toggle with data-tblr-target', () => {
-      return new Promise<void>(resolve => {
-        fixtureEl.innerHTML = [
-          '<button data-tblr-toggle="modal" data-tblr-target="#testModal">Open</button>',
-          '<div class="modal" id="testModal" tabindex="-1">',
-          '  <div class="modal-dialog"><div class="modal-content"></div></div>',
-          '</div>'
-        ].join('')
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = ['<button data-tblr-toggle="modal" data-tblr-target="#testModal">Open</button>', '<div class="modal" id="testModal" tabindex="-1">', '  <div class="modal-dialog"><div class="modal-content"></div></div>', '</div>'].join('')
 
         const modalEl = fixtureEl.querySelector('#testModal')!
         const btn = fixtureEl.querySelector('[data-tblr-toggle="modal"]') as HTMLElement
@@ -615,16 +606,8 @@ describe('Modal', () => {
 
   describe('data-tblr-dismiss', () => {
     it('should close modal via data-tblr-dismiss="modal"', () => {
-      return new Promise<void>(resolve => {
-        fixtureEl.innerHTML = [
-          '<div class="modal" tabindex="-1">',
-          '  <div class="modal-dialog">',
-          '    <div class="modal-content">',
-          '      <button type="button" class="btn-close" data-tblr-dismiss="modal"></button>',
-          '    </div>',
-          '  </div>',
-          '</div>'
-        ].join('')
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = ['<div class="modal" tabindex="-1">', '  <div class="modal-dialog">', '    <div class="modal-content">', '      <button type="button" class="btn-close" data-tblr-dismiss="modal"></button>', '    </div>', '  </div>', '</div>'].join('')
 
         const modalEl = fixtureEl.querySelector('.modal')!
         const dismissBtn = fixtureEl.querySelector('[data-tblr-dismiss="modal"]') as HTMLElement

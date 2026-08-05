@@ -1,0 +1,87 @@
+---
+// Marketing pages live one level deep, so the avatar asset base is ".."
+// (reference uses "../static/avatars/...") — passed to Avatar via `base`.
+import testimonials from '@data/testimonials.json'
+import people from '@data/people.json'
+import Avatar from '@ui/Avatar.astro'
+
+interface Person {
+  full_name?: string
+  photo?: string
+  job_title?: string
+  [key: string]: unknown
+}
+
+interface Props {
+  background?: string
+  class?: string
+  limit?: number
+  hideHeader?: boolean
+}
+
+const { background, class: className, limit = 99, hideHeader } = Astro.props
+
+const sectionClass = ['section', background && `section-${background}`, className]
+
+// Slice testimonials and split into 3 columns.
+const list = (testimonials as string[]).slice(0, limit)
+const n = 3
+const chunkSize = Math.round(list.length / n)
+const groups: string[][] = []
+for (let i = 0; i < list.length; i += chunkSize) {
+  groups.push(list.slice(i, i + chunkSize))
+}
+
+// Global counter starting at 1 — indexes people[i] (people[0] is intentionally skipped).
+let i = 1
+const cards = groups.map((group) =>
+  group.map((testimonial) => {
+    const person = (people as Person[])[i] ?? {}
+    i += 1
+    return { testimonial, person }
+  }),
+)
+---
+
+<section class:list={sectionClass}>
+  <div class="container">
+    {
+      !hideHeader && (
+        <div class="section-header">
+          <h2 class="section-title">Trusted by hundreds</h2>
+          <p class="section-description">Our Users send us bunch of smilies with our services, and we love them 😍</p>
+        </div>
+      )
+    }
+
+    <div class="row g-lg-6">
+      {
+        cards.map((group) => (
+          <div class="col-md-6 col-lg-4">
+            <div class="row g-lg-6">
+              {group.map(({ testimonial, person }) => (
+                <div class="col-12">
+                  <a href="#" class="card bg-surface-secondary">
+                    <div class="card-body">
+                      <div class="row mb-3">
+                        <div class="col-auto">
+                          <Avatar person={person} size="md" base=".." />
+                        </div>
+                        <div class="col">
+                          <h3 class="h3 m-0">{person.full_name}</h3>
+                          <div class="text-secondary">{person.job_title}</div>
+                        </div>
+                      </div>
+
+                      <p>{testimonial}</p>
+                    </div>
+                  </a>
+                </div>
+              ))}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

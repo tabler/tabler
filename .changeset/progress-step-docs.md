@@ -3,4 +3,4 @@
 "@tabler/preview": patch
 ---
 
-Added `Progress Step` component documentation and updated `ui/progress-steps.html` formatting for cleaner rendered output.
+Added `Progress Step` component documentation and cleaned up the progress steps preview markup for cleaner rendered output.

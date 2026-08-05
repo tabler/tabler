@@ -1,0 +1,23 @@
+---
+// Decorative card corner stamp (.card-stamp > .card-stamp-icon).
+import Icon from './Icon.astro'
+
+interface Props {
+  icon?: string
+  /** card-stamp-{size}; only 'lg' exists in SCSS (13rem instead of 7rem) */
+  size?: string
+  /** bg-{color} on the icon wrapper; SCSS default is secondary */
+  color?: string
+  /** text-{textColor} on the icon wrapper (e.g. color="white" textColor="primary") */
+  textColor?: string
+  class?: string
+}
+
+const { icon = 'star', size, color, textColor, class: className } = Astro.props
+---
+
+<div class:list={['card-stamp', size && `card-stamp-${size}`, className]}>
+  <div class:list={['card-stamp-icon', color && `bg-${color}`, textColor && `text-${textColor}`]}>
+    <slot><Icon name={icon} /></slot>
+  </div>
+</div>

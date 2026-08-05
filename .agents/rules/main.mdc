@@ -14,8 +14,8 @@ Shared instructions for all AI agents (Claude Code, Cursor, etc.). Canonical age
 - `core/` — `@tabler/core`: SCSS sources (`core/scss/`), JS, the distributable framework.
 - `preview/` — `@tabler/preview`: demo site built with Astro (pages in `preview/pages/*.astro`).
 - `docs/` — `@tabler/docs`: documentation site built with Astro (pages in `docs/pages/**/*.mdx`); docs-specific rules: `.agents/rules/docs.mdc`.
-- `shared/astro/` — Astro components, layouts, and lib shared by `preview` and `docs` (imported via the `@shared` alias).
-- `shared/data/` — JSON data used by pages (imported via the `@data` alias).
+- `shared/` — Astro components (`ui/`, `components/`, `layouts/`, `lib/`) shared by `preview` and `docs` via `@shared`; JSON data in `data/` via `@data`; plus `static/`.
+- `docs/components/` — docs-only Astro components (`Example`, menu, …) via `@components`.
 - Package manager: pnpm workspaces + turbo. Node.js >= 22.12.
 
 ## Language
@@ -27,8 +27,8 @@ Shared instructions for all AI agents (Claude Code, Cursor, etc.). Canonical age
 
 ### Astro pages and components
 
-- Pages are Astro components; reusable markup lives in `shared/astro/components/`.
-- Icons: use the shared component — `<Icon name="home" />` (import from `@shared/components/Icon.astro`).
+- Pages are Astro components; reusable markup lives in `shared/components/`.
+- Icons: use the shared component — `<Icon name="home" />` (import from `@ui/Icon.astro`).
 - Links between preview pages are relative: `./job-listing.html` (root-level pages).
 - Boolean HTML attributes in Astro: `selected={true}` renders a bare attribute, but some attributes (e.g. `multiple`) render `="true"` — use `multiple ? '' : undefined` when a bare attribute is required.
 

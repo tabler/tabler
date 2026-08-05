@@ -1,36 +1,36 @@
 ---
-// Port of preview/pages/maps.html (layout: default).
-// Liquid: {% for map in maps %} — card maps span a full-width column with no
-// card-body; non-card maps get a card-body with a title.
-import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
-import Map from '@shared/components/ui/Map.astro';
-import maps from '@data/maps.json';
+// Card maps span full-width column with no card-body; non-card maps get card-body with title.
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Map from '@ui/Map.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import maps from '@data/maps.json'
 
-type MapData = { title?: string; card?: boolean };
-const mapEntries = Object.entries(maps as Record<string, MapData>);
+type MapData = { title?: string; card?: boolean }
+const mapEntries = Object.entries(maps as Record<string, MapData>)
 ---
 
 <DefaultLayout title="Maps" pageHeader="Maps" pageMenu="plugins.maps" pageLibs={['mapbox']}>
-	<div class="row row-cards">
-		{
-			mapEntries.map(([mapId, data]) =>
-				data.card ? (
-					<div class="col-lg-12">
-						<div class="card">
-							<Map mapId={mapId} ratio="21x9" />
-						</div>
-					</div>
-				) : (
-					<div class="col-lg-6">
-						<div class="card">
-							<div class="card-body">
-								<div class="card-title">{data.title}</div>
-								<Map mapId={mapId} />
-							</div>
-						</div>
-					</div>
-				),
-			)
-		}
-	</div>
+  <div class="row row-cards">
+    {
+      mapEntries.map(([mapId, data]) =>
+        data.card ? (
+          <div class="col-lg-12">
+            <Card>
+              <Map mapId={mapId} ratio="21x9" />
+            </Card>
+          </div>
+        ) : (
+          <div class="col-lg-6">
+            <Card>
+              <CardBody>
+                <div class="card-title">{data.title}</div>
+                <Map mapId={mapId} />
+              </CardBody>
+            </Card>
+          </div>
+        ),
+      )
+    }
+  </div>
 </DefaultLayout>

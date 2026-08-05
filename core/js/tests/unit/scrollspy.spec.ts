@@ -12,7 +12,7 @@ class MockIntersectionObserver implements IntersectionObserver {
   constructor(callback: IntersectionObserverCallback, options?: IntersectionObserverInit) {
     this.callback = callback
     this.options = options
-    this.root = options?.root as Element | null ?? null
+    this.root = (options?.root as Element | null) ?? null
     this.rootMargin = options?.rootMargin ?? ''
     this.thresholds = Array.isArray(options?.threshold) ? options!.threshold : [options?.threshold ?? 0]
   }
@@ -23,16 +23,8 @@ class MockIntersectionObserver implements IntersectionObserver {
   takeRecords = vi.fn().mockReturnValue([])
 }
 
-const getDummyFixture = () => [
-  '<nav id="navBar" class="navbar">',
-  '  <ul class="nav">',
-  '    <li class="nav-item"><a id="li-jsm-1" class="nav-link" href="#div-jsm-1">div 1</a></li>',
-  '  </ul>',
-  '</nav>',
-  '<div class="content" data-bs-target="#navBar" style="overflow-y: auto">',
-  '  <div id="div-jsm-1">div 1</div>',
-  '</div>'
-].join('')
+const getDummyFixture = () =>
+  ['<nav id="navBar" class="navbar">', '  <ul class="nav">', '    <li class="nav-item"><a id="li-jsm-1" class="nav-link" href="#div-jsm-1">div 1</a></li>', '  </ul>', '</nav>', '<div class="content" data-bs-target="#navBar" style="overflow-y: auto">', '  <div id="div-jsm-1">div 1</div>', '</div>'].join('')
 
 describe('ScrollSpy', () => {
   let fixtureEl: HTMLElement
@@ -82,16 +74,7 @@ describe('ScrollSpy', () => {
     })
 
     it('should set _rootElement to null if overflowY is visible', () => {
-      fixtureEl.innerHTML = [
-        '<nav id="navigation" class="navbar">',
-        '  <ul class="navbar-nav">',
-        '    <li class="nav-item"><a class="nav-link" href="#one">One</a></li>',
-        '  </ul>',
-        '</nav>',
-        '<div id="content" style="overflow-y: visible;">',
-        '  <div id="one" style="height: 300px;">test</div>',
-        '</div>'
-      ].join('')
+      fixtureEl.innerHTML = ['<nav id="navigation" class="navbar">', '  <ul class="navbar-nav">', '    <li class="nav-item"><a class="nav-link" href="#one">One</a></li>', '  </ul>', '</nav>', '<div id="content" style="overflow-y: visible;">', '  <div id="one" style="height: 300px;">test</div>', '</div>'].join('')
 
       const contentEl = fixtureEl.querySelector('#content')!
       const originalGetComputedStyle = window.getComputedStyle
@@ -102,7 +85,7 @@ describe('ScrollSpy', () => {
             get(target, prop) {
               if (prop === 'overflowY') return 'visible'
               return (target as any)[prop]
-            }
+            },
           }) as CSSStyleDeclaration
         }
 
@@ -110,42 +93,28 @@ describe('ScrollSpy', () => {
       })
 
       const scrollSpy = new ScrollSpy(contentEl, {
-        target: '#navigation'
+        target: '#navigation',
       })
 
       expect(scrollSpy._rootElement).toBeNull()
     })
 
     it('should respect threshold option', () => {
-      fixtureEl.innerHTML = [
-        '<ul id="navigation" class="navbar">',
-        '   <a class="nav-link" href="#one">One</a>',
-        '</ul>',
-        '<div id="content">',
-        '  <div id="one">test</div>',
-        '</div>'
-      ].join('')
+      fixtureEl.innerHTML = ['<ul id="navigation" class="navbar">', '   <a class="nav-link" href="#one">One</a>', '</ul>', '<div id="content">', '  <div id="one">test</div>', '</div>'].join('')
 
       const scrollSpy = new ScrollSpy('#content', {
         target: '#navigation',
-        threshold: [1]
+        threshold: [1],
       })
 
       expect(scrollSpy._observer!.thresholds).toEqual([1])
     })
 
     it('should parse string threshold from data attribute', () => {
-      fixtureEl.innerHTML = [
-        '<ul id="navigation" class="navbar">',
-        '   <a class="nav-link" href="#one">One</a>',
-        '</ul>',
-        '<div id="content" data-bs-threshold="0,0.2,1">',
-        '  <div id="one">test</div>',
-        '</div>'
-      ].join('')
+      fixtureEl.innerHTML = ['<ul id="navigation" class="navbar">', '   <a class="nav-link" href="#one">One</a>', '</ul>', '<div id="content" data-bs-threshold="0,0.2,1">', '  <div id="one">test</div>', '</div>'].join('')
 
       const scrollSpy = new ScrollSpy('#content', {
-        target: '#navigation'
+        target: '#navigation',
       })
 
       expect(scrollSpy._observer!.thresholds).toEqual([0, 0.2, 1])
@@ -161,11 +130,11 @@ describe('ScrollSpy', () => {
         '</nav>',
         '<div id="content" style="height: 200px; overflow-y: auto;">',
         '  <div id="two" style="height: 300px;">test</div>',
-        '</div>'
+        '</div>',
       ].join('')
 
       const scrollSpy = new ScrollSpy(fixtureEl.querySelector('#content')!, {
-        target: '#navigation'
+        target: '#navigation',
       })
 
       // jsdom elements are not "visible" (getClientRects returns empty), so maps are empty
@@ -267,10 +236,7 @@ describe('ScrollSpy', () => {
 
   describe('event handler', () => {
     it('should create scrollspy on window load event', () => {
-      fixtureEl.innerHTML = [
-        '<div id="nav"></div>',
-        '<div id="wrapper" data-bs-spy="scroll" data-bs-target="#nav" style="overflow-y: auto"></div>'
-      ].join('')
+      fixtureEl.innerHTML = ['<div id="nav"></div>', '<div id="wrapper" data-bs-spy="scroll" data-bs-target="#nav" style="overflow-y: auto"></div>'].join('')
 
       const scrollSpyEl = fixtureEl.querySelector('#wrapper')!
 
@@ -297,7 +263,7 @@ describe('ScrollSpy', () => {
       const entry = {
         isIntersecting: true,
         target: section,
-        intersectionRatio: 1
+        intersectionRatio: 1,
       } as unknown as IntersectionObserverEntry
 
       Object.defineProperty(section, 'offsetTop', { value: 100, configurable: true })
@@ -322,7 +288,7 @@ describe('ScrollSpy', () => {
 
       const entry = {
         isIntersecting: false,
-        target: section
+        target: section,
       } as unknown as IntersectionObserverEntry
 
       scrollSpy._observerCallback([entry])
@@ -350,7 +316,7 @@ describe('ScrollSpy', () => {
       const entry = {
         isIntersecting: true,
         target: section,
-        intersectionRatio: 1
+        intersectionRatio: 1,
       } as unknown as IntersectionObserverEntry
 
       scrollSpy._observerCallback([entry])
@@ -378,7 +344,7 @@ describe('ScrollSpy', () => {
       const entry = {
         isIntersecting: true,
         target: section,
-        intersectionRatio: 1
+        intersectionRatio: 1,
       } as unknown as IntersectionObserverEntry
 
       scrollSpy._observerCallback([entry])
@@ -406,7 +372,7 @@ describe('ScrollSpy', () => {
       const entry = {
         isIntersecting: true,
         target: section,
-        intersectionRatio: 1
+        intersectionRatio: 1,
       } as unknown as IntersectionObserverEntry
 
       const spy = vi.fn()
@@ -451,7 +417,7 @@ describe('ScrollSpy', () => {
         '</nav>',
         '<div class="content" style="overflow-y: auto">',
         '  <div id="one">one</div>',
-        '</div>'
+        '</div>',
       ].join('')
 
       const div = fixtureEl.querySelector('.content')!
@@ -465,16 +431,7 @@ describe('ScrollSpy', () => {
     })
 
     it('should activate nav parents for nav-link target', () => {
-      fixtureEl.innerHTML = [
-        '<nav class="navbar">',
-        '  <nav class="nav">',
-        '    <a class="nav-link" id="a1" href="#one">One</a>',
-        '  </nav>',
-        '</nav>',
-        '<div class="content" style="overflow-y: auto">',
-        '  <div id="one">one</div>',
-        '</div>'
-      ].join('')
+      fixtureEl.innerHTML = ['<nav class="navbar">', '  <nav class="nav">', '    <a class="nav-link" id="a1" href="#one">One</a>', '  </nav>', '</nav>', '<div class="content" style="overflow-y: auto">', '  <div id="one">one</div>', '</div>'].join('')
 
       const div = fixtureEl.querySelector('.content')!
       const scrollSpy = new ScrollSpy(div)
@@ -489,15 +446,7 @@ describe('ScrollSpy', () => {
 
   describe('_clearActiveClass', () => {
     it('should remove active class from parent and children', () => {
-      fixtureEl.innerHTML = [
-        '<nav class="navbar active">',
-        '  <a class="nav-link active" href="#one">One</a>',
-        '  <a class="nav-link active" href="#two">Two</a>',
-        '</nav>',
-        '<div class="content" style="overflow-y: auto">',
-        '  <div id="one">one</div>',
-        '</div>'
-      ].join('')
+      fixtureEl.innerHTML = ['<nav class="navbar active">', '  <a class="nav-link active" href="#one">One</a>', '  <a class="nav-link active" href="#two">Two</a>', '</nav>', '<div class="content" style="overflow-y: auto">', '  <div id="one">one</div>', '</div>'].join('')
 
       const div = fixtureEl.querySelector('.content')!
       const scrollSpy = new ScrollSpy(div)
@@ -521,7 +470,7 @@ describe('ScrollSpy', () => {
 
       Object.defineProperty(section, 'getClientRects', {
         value: () => [{ width: 100, height: 100 }],
-        configurable: true
+        configurable: true,
       })
 
       scrollSpy._initializeTargetsAndObservables()
@@ -541,7 +490,7 @@ describe('ScrollSpy', () => {
         '<div class="content" style="overflow-y: auto">',
         '  <div id="div1">div 1</div>',
         '  <div id="div2">div 2</div>',
-        '</div>'
+        '</div>',
       ].join('')
 
       const div = fixtureEl.querySelector('.content')!
@@ -563,7 +512,7 @@ describe('ScrollSpy', () => {
         '<div class="content" style="overflow-y: auto">',
         '  <div id="one">one</div>',
         '  <div id="two">two</div>',
-        '</div>'
+        '</div>',
       ].join('')
 
       const div = fixtureEl.querySelector('.content')!
@@ -600,7 +549,7 @@ describe('ScrollSpy', () => {
       const section = fixtureEl.querySelector('#div-jsm-1') as HTMLElement
       Object.defineProperty(section, 'getClientRects', {
         value: () => [{ width: 100, height: 100 }],
-        configurable: true
+        configurable: true,
       })
 
       const scrollSpy = new ScrollSpy(div, { offset: 1, smoothScroll: true })
@@ -619,7 +568,7 @@ describe('ScrollSpy', () => {
       const section = fixtureEl.querySelector('#div-jsm-1') as HTMLElement
       Object.defineProperty(section, 'getClientRects', {
         value: () => [{ width: 100, height: 100 }],
-        configurable: true
+        configurable: true,
       })
 
       // Manually set _rootElement to a plain object without scrollTo
@@ -650,7 +599,7 @@ describe('ScrollSpy', () => {
         '</nav>',
         '<div class="content" data-bs-target="#navBar" style="overflow-y: auto">',
         '  <div id="div-jsm-1">div 1</div>',
-        '</div>'
+        '</div>',
       ].join('')
 
       const div = fixtureEl.querySelector('.content') as HTMLElement
@@ -666,10 +615,7 @@ describe('ScrollSpy', () => {
 
   describe('data-tblr-spy', () => {
     it('should create scrollspy on window load with data-tblr-spy="scroll"', () => {
-      fixtureEl.innerHTML = [
-        '<div id="nav"></div>',
-        '<div id="wrapper" data-tblr-spy="scroll" data-bs-target="#nav" style="overflow-y: auto"></div>'
-      ].join('')
+      fixtureEl.innerHTML = ['<div id="nav"></div>', '<div id="wrapper" data-tblr-spy="scroll" data-bs-target="#nav" style="overflow-y: auto"></div>'].join('')
 
       const scrollSpyEl = fixtureEl.querySelector('#wrapper')!
 

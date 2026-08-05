@@ -1,152 +1,143 @@
 ---
-// Port of preview/pages/card-actions.html.
-import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
-import BodyPlaceholder from '@shared/components/cards/BodyPlaceholder.astro';
-import Button from '@shared/components/Button.astro';
-import Avatar from '@shared/components/ui/Avatar.astro';
-import Icon from '@shared/components/Icon.astro';
-import people from '@data/people.json';
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import CardActions from '@ui/CardActions.astro'
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import BodyPlaceholder from '@shared/components/cards/BodyPlaceholder.astro'
+import Card from '@ui/Card.astro'
+import CardHeader from '@ui/CardHeader.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import Button from '@ui/Button.astro'
+import Avatar from '@ui/Avatar.astro'
+import Icon from '@ui/Icon.astro'
+import people from '@data/people.json'
 
-const person0 = people[0];
-const person3 = people[3];
+const person0 = people[0]
+const person3 = people[3]
 ---
 
 <DefaultLayout title="Card actions" pageHeader="Card actions" pageMenu="base.cards.actions">
-	<div class="row row-cards">
-		<div class="col-md-6">
-			<div class="card">
-				<div class="card-header">
-					<h3 class="card-title">Sample card</h3>
-				</div>
-				<BodyPlaceholder />
-			</div>
-		</div>
+  <div class="row row-cards">
+    <div class="col-md-6">
+      <Card>
+        <CardHeader title="Sample card" />
+        <BodyPlaceholder />
+      </Card>
+    </div>
 
-		<div class="col-md-6">
-			<div class="card">
-				<div class="card-header">
-					<h3 class="card-title">Card with action</h3>
-					<div class="card-actions">
-						<Button color="primary" icon="plus" text="Add new" />
-					</div>
-				</div>
-				<BodyPlaceholder />
-			</div>
-		</div>
+    <div class="col-md-6">
+      <Card>
+        <CardHeader title="Card with action">
+          <CardActions>
+            <Button color="primary" icon="plus" text="Add new" />
+          </CardActions>
+        </CardHeader>
+        <BodyPlaceholder />
+      </Card>
+    </div>
 
-		<div class="col-md-6">
-			<div class="card">
-				<div class="card-header">
-					<h3 class="card-title">Cart title</h3>
-					<div class="card-actions">
-						<Button icon="phone" text="Phone" />
-						<Button icon="mail" text="Email" />
-					</div>
-				</div>
-				<BodyPlaceholder />
-			</div>
-		</div>
+    <div class="col-md-6">
+      <Card>
+        <CardHeader title="Cart title">
+          <CardActions>
+            <Button icon="phone" text="Phone" />
+            <Button icon="mail" text="Email" />
+          </CardActions>
+        </CardHeader>
+        <BodyPlaceholder />
+      </Card>
+    </div>
 
-		<div class="col-md-6">
-			<div class="card">
-				<div class="card-header">
-					<div>
-						<div class="row align-items-center">
-							<div class="col-auto">
-								<Avatar person={person0} />
-							</div>
-							<div class="col">
-								<div class="card-title">{person0.full_name}</div>
-								<div class="card-subtitle">{person0.job_title}</div>
-							</div>
-						</div>
-					</div>
-					<div class="card-actions">
-						<Button icon="phone" text="Phone" />
-						<Button icon="mail" text="Email" />
-					</div>
-				</div>
-				<BodyPlaceholder />
-			</div>
-		</div>
+    <div class="col-md-6">
+      <Card>
+        <CardHeader>
+          <div>
+            <div class="row align-items-center">
+              <div class="col-auto">
+                <Avatar person={person0} />
+              </div>
+              <div class="col">
+                <div class="card-title">{person0.full_name}</div>
+                <CardSubtitle as="div">{person0.job_title}</CardSubtitle>
+              </div>
+            </div>
+          </div>
+          <CardActions>
+            <Button icon="phone" text="Phone" />
+            <Button icon="mail" text="Email" />
+          </CardActions>
+        </CardHeader>
+        <BodyPlaceholder />
+      </Card>
+    </div>
 
-		<div class="col-md-6">
-			<div class="card">
-				<div class="card-header">
-					<div>
-						<h3 class="card-title">
-							With description
-						</h3>
-						<p class="card-subtitle">
-							Lorem ipsum dolor sit amet consectetur adipisicing.
-						</p>
-					</div>
-				</div>
-				<BodyPlaceholder />
-			</div>
-		</div>
+    <div class="col-md-6">
+      <Card>
+        <CardHeader>
+          <div>
+            <CardTitle> With description </CardTitle>
+            <CardSubtitle> Lorem ipsum dolor sit amet consectetur adipisicing. </CardSubtitle>
+          </div>
+        </CardHeader>
+        <BodyPlaceholder />
+      </Card>
+    </div>
 
-		<div class="col-md-6">
-			<div class="card">
-				<div class="card-header">
-					<div>
-						<h3 class="card-title">
-							With description and action
-						</h3>
-						<p class="card-subtitle">
-							Lorem ipsum dolor sit amet consectetur adipisicing.
-						</p>
-					</div>
-					<div class="card-actions">
-						<Button color="primary" text="Create new job" />
-					</div>
-				</div>
-				<BodyPlaceholder />
-			</div>
-		</div>
+    <div class="col-md-6">
+      <Card>
+        <CardHeader>
+          <div>
+            <CardTitle> With description and action </CardTitle>
+            <CardSubtitle> Lorem ipsum dolor sit amet consectetur adipisicing. </CardSubtitle>
+          </div>
+          <CardActions>
+            <Button color="primary" text="Create new job" />
+          </CardActions>
+        </CardHeader>
+        <BodyPlaceholder />
+      </Card>
+    </div>
 
-		<div class="col-md-6">
-			<div class="card">
-				<div class="card-header">
-					<div>
-						<div class="row align-items-center">
-							<div class="col-auto">
-								<Avatar person={person3} />
-							</div>
-							<div class="col">
-								<div class="card-title">{person3.full_name}</div>
-								<div class="card-subtitle">{person3.job_title}</div>
-							</div>
-						</div>
-					</div>
-					<div class="card-actions">
-						<div class="dropdown">
-							<a href="#" class="btn-action dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><Icon name="dots-vertical" /></a>
-							<div class="dropdown-menu dropdown-menu-end">
-								<a class="dropdown-item" href="#">Edit user</a>
-								<a class="dropdown-item" href="#">Change permissions</a>
-								<a class="dropdown-item text-danger" href="#">Delete user</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<BodyPlaceholder />
-			</div>
-		</div>
+    <div class="col-md-6">
+      <Card>
+        <CardHeader>
+          <div>
+            <div class="row align-items-center">
+              <div class="col-auto">
+                <Avatar person={person3} />
+              </div>
+              <div class="col">
+                <div class="card-title">{person3.full_name}</div>
+                <CardSubtitle as="div">{person3.job_title}</CardSubtitle>
+              </div>
+            </div>
+          </div>
+          <CardActions>
+            <div class="dropdown">
+              <a href="#" class="btn-action dropdown-toggle" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><Icon name="dots-vertical" /></a>
+              <div class="dropdown-menu dropdown-menu-end">
+                <a class="dropdown-item" href="#">Edit user</a>
+                <a class="dropdown-item" href="#">Change permissions</a>
+                <a class="dropdown-item text-danger" href="#">Delete user</a>
+              </div>
+            </div>
+          </CardActions>
+        </CardHeader>
+        <BodyPlaceholder />
+      </Card>
+    </div>
 
-		<div class="col-md-6">
-			<div class="card">
-				<div class="card-header">
-					<h3 class="card-title">Card actions</h3>
-					<div class="card-actions btn-actions">
-						<a href="#" class="btn-action"><Icon name="refresh" /></a>
-						<a href="#" class="btn-action"><Icon name="chevron-up" /></a>
-						<a href="#" class="btn-action"><Icon name="dots-vertical" /></a>
-						<a href="#" class="btn-action"><Icon name="x" /></a>
-					</div>
-				</div>
-				<BodyPlaceholder />
-			</div>
-		</div>
-	</div>
+    <div class="col-md-6">
+      <Card>
+        <CardHeader title="Card actions">
+          <CardActions class="btn-actions">
+            <a href="#" class="btn-action"><Icon name="refresh" /></a>
+            <a href="#" class="btn-action"><Icon name="chevron-up" /></a>
+            <a href="#" class="btn-action"><Icon name="dots-vertical" /></a>
+            <a href="#" class="btn-action"><Icon name="x" /></a>
+          </CardActions>
+        </CardHeader>
+        <BodyPlaceholder />
+      </Card>
+    </div>
+  </div>
 </DefaultLayout>

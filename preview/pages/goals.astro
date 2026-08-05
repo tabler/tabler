@@ -1,10 +1,12 @@
 ---
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
-import AvatarList from '@shared/components/ui/AvatarList.astro'
-import Trending from '@shared/components/ui/Trending.astro'
-import Icon from '@shared/components/Icon.astro'
+import AvatarList from '@ui/AvatarList.astro'
+import Avatar from '@ui/Avatar.astro'
+import Trending from '@ui/Trending.astro'
+import Icon from '@ui/Icon.astro'
 import GoalRow from '@shared/components/cards/GoalRow.astro'
 import GoalRequirement from '@shared/components/cards/GoalRequirement.astro'
+import people from '@data/people.json'
 
 const atlasRequirements = [
   { done: true, title: 'Intelligent task routing', meta: 'Chris Cole · Shipped July 18', progress: 100 },
@@ -51,7 +53,12 @@ const staticGoals = [
       <span class="text-secondary fs-5">Updated July 23, 2026</span>
     </div>
 
-    <AvatarList stacked size="sm" limit={3} text="+5" avatarClass="rounded-circle" />
+    <AvatarList stacked size="sm">
+      {people.slice(0, 3).map((person) => (
+        <Avatar person={person} size="sm" class="rounded-circle" />
+      ))}
+      <Avatar placeholder="+5" size="sm" class="rounded-circle" />
+    </AvatarList>
   </div>
 
   <h1>Accelerate product experience and growth</h1>

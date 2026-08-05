@@ -38,12 +38,8 @@ describe('Toast', () => {
     })
 
     it('should allow config in js', () => {
-      return new Promise<void>(resolve => {
-        fixtureEl.innerHTML = [
-          '<div class="toast">',
-          '  <div class="toast-body">a simple toast</div>',
-          '</div>'
-        ].join('')
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = ['<div class="toast">', '  <div class="toast-body">a simple toast</div>', '</div>'].join('')
 
         const toastEl = fixtureEl.querySelector('div')!
         const toast = new Toast(toastEl, { delay: 1 })
@@ -58,12 +54,8 @@ describe('Toast', () => {
     })
 
     it('should close toast when dismiss button is clicked', () => {
-      return new Promise<void>(resolve => {
-        fixtureEl.innerHTML = [
-          '<div class="toast" data-bs-delay="1" data-bs-autohide="false" data-bs-animation="false">',
-          '  <button type="button" class="btn-close" data-bs-dismiss="toast"></button>',
-          '</div>'
-        ].join('')
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = ['<div class="toast" data-bs-delay="1" data-bs-autohide="false" data-bs-animation="false">', '  <button type="button" class="btn-close" data-bs-dismiss="toast"></button>', '</div>'].join('')
 
         const toastEl = fixtureEl.querySelector('div')!
         const toast = new Toast(toastEl)
@@ -84,12 +76,8 @@ describe('Toast', () => {
     })
 
     it('should close toast via data-tblr-dismiss', () => {
-      return new Promise<void>(resolve => {
-        fixtureEl.innerHTML = [
-          '<div class="toast" data-bs-delay="1" data-bs-autohide="false" data-bs-animation="false">',
-          '  <button type="button" class="btn-close" data-tblr-dismiss="toast"></button>',
-          '</div>'
-        ].join('')
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = ['<div class="toast" data-bs-delay="1" data-bs-autohide="false" data-bs-animation="false">', '  <button type="button" class="btn-close" data-tblr-dismiss="toast"></button>', '</div>'].join('')
 
         const toastEl = fixtureEl.querySelector('div')!
         const toast = new Toast(toastEl)
@@ -117,11 +105,7 @@ describe('Toast', () => {
 
       Toast.Default.delay = defaultDelay
 
-      fixtureEl.innerHTML = [
-        '<div class="toast" data-bs-autohide="false" data-bs-animation="false">',
-        '  <button type="button" class="btn-close" data-bs-dismiss="toast"></button>',
-        '</div>'
-      ].join('')
+      fixtureEl.innerHTML = ['<div class="toast" data-bs-autohide="false" data-bs-animation="false">', '  <button type="button" class="btn-close" data-bs-dismiss="toast"></button>', '</div>'].join('')
 
       const toastEl = fixtureEl.querySelector('div')!
       const toast = new Toast(toastEl)
@@ -140,12 +124,8 @@ describe('Toast', () => {
 
   describe('show', () => {
     it('should auto hide', () => {
-      return new Promise<void>(resolve => {
-        fixtureEl.innerHTML = [
-          '<div class="toast" data-bs-delay="1">',
-          '  <div class="toast-body">a simple toast</div>',
-          '</div>'
-        ].join('')
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = ['<div class="toast" data-bs-delay="1">', '  <div class="toast-body">a simple toast</div>', '</div>'].join('')
 
         const toastEl = fixtureEl.querySelector('.toast')!
         const toast = new Toast(toastEl)
@@ -160,12 +140,8 @@ describe('Toast', () => {
     })
 
     it('should not add fade class when animation is false', () => {
-      return new Promise<void>(resolve => {
-        fixtureEl.innerHTML = [
-          '<div class="toast" data-bs-delay="1" data-bs-animation="false">',
-          '  <div class="toast-body">a simple toast</div>',
-          '</div>'
-        ].join('')
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = ['<div class="toast" data-bs-delay="1" data-bs-animation="false">', '  <div class="toast-body">a simple toast</div>', '</div>'].join('')
 
         const toastEl = fixtureEl.querySelector('.toast')!
         const toast = new Toast(toastEl)
@@ -181,16 +157,12 @@ describe('Toast', () => {
 
     it('should not trigger shown if show is prevented', () => {
       return new Promise<void>((resolve, reject) => {
-        fixtureEl.innerHTML = [
-          '<div class="toast" data-bs-delay="1" data-bs-animation="false">',
-          '  <div class="toast-body">a simple toast</div>',
-          '</div>'
-        ].join('')
+        fixtureEl.innerHTML = ['<div class="toast" data-bs-delay="1" data-bs-animation="false">', '  <div class="toast-body">a simple toast</div>', '</div>'].join('')
 
         const toastEl = fixtureEl.querySelector('.toast')!
         const toast = new Toast(toastEl)
 
-        toastEl.addEventListener('show.bs.toast', event => {
+        toastEl.addEventListener('show.bs.toast', (event) => {
           event.preventDefault()
           setTimeout(() => {
             expect(toastEl.classList.contains('show')).toBe(false)
@@ -207,12 +179,8 @@ describe('Toast', () => {
     })
 
     it('should clear timeout on mouse interaction', () => {
-      return new Promise<void>(resolve => {
-        fixtureEl.innerHTML = [
-          '<div class="toast">',
-          '  <div class="toast-body">a simple toast</div>',
-          '</div>'
-        ].join('')
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = ['<div class="toast">', '  <div class="toast-body">a simple toast</div>', '</div>'].join('')
 
         const toastEl = fixtureEl.querySelector('.toast')!
         const toast = new Toast(toastEl)
@@ -234,13 +202,8 @@ describe('Toast', () => {
     })
 
     it('should clear timeout on keyboard interaction', () => {
-      return new Promise<void>(resolve => {
-        fixtureEl.innerHTML = [
-          '<button id="outside">outside</button>',
-          '<div class="toast">',
-          '  <div class="toast-body">a simple toast <button>inside</button></div>',
-          '</div>'
-        ].join('')
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = ['<button id="outside">outside</button>', '<div class="toast">', '  <div class="toast-body">a simple toast <button>inside</button></div>', '</div>'].join('')
 
         const toastEl = fixtureEl.querySelector('.toast')!
         const toast = new Toast(toastEl)
@@ -263,13 +226,8 @@ describe('Toast', () => {
     })
 
     it('should still auto hide after mouse and keyboard leave', () => {
-      return new Promise<void>(resolve => {
-        fixtureEl.innerHTML = [
-          '<button id="outside-focusable">outside</button>',
-          '<div class="toast">',
-          '  <div class="toast-body">a simple toast <button>inside</button></div>',
-          '</div>'
-        ].join('')
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = ['<button id="outside-focusable">outside</button>', '<div class="toast">', '  <div class="toast-body">a simple toast <button>inside</button></div>', '</div>'].join('')
 
         const toastEl = fixtureEl.querySelector('.toast')!
         const toast = new Toast(toastEl)
@@ -297,13 +255,8 @@ describe('Toast', () => {
     })
 
     it('should not auto hide if focus leaves but mouse remains inside', () => {
-      return new Promise<void>(resolve => {
-        fixtureEl.innerHTML = [
-          '<button id="outside-focusable">outside</button>',
-          '<div class="toast">',
-          '  <div class="toast-body">a simple toast <button>inside</button></div>',
-          '</div>'
-        ].join('')
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = ['<button id="outside-focusable">outside</button>', '<div class="toast">', '  <div class="toast-body">a simple toast <button>inside</button></div>', '</div>'].join('')
 
         const toastEl = fixtureEl.querySelector('.toast')!
         const toast = new Toast(toastEl)
@@ -328,13 +281,8 @@ describe('Toast', () => {
     })
 
     it('should not auto hide if mouse leaves but focus remains inside', () => {
-      return new Promise<void>(resolve => {
-        fixtureEl.innerHTML = [
-          '<button id="outside-focusable">outside</button>',
-          '<div class="toast">',
-          '  <div class="toast-body">a simple toast <button>inside</button></div>',
-          '</div>'
-        ].join('')
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = ['<button id="outside-focusable">outside</button>', '<div class="toast">', '  <div class="toast-body">a simple toast <button>inside</button></div>', '</div>'].join('')
 
         const toastEl = fixtureEl.querySelector('.toast')!
         const toast = new Toast(toastEl)
@@ -359,12 +307,8 @@ describe('Toast', () => {
     })
 
     it('should handle _onInteraction with unknown event type', () => {
-      return new Promise<void>(resolve => {
-        fixtureEl.innerHTML = [
-          '<div class="toast">',
-          '  <div class="toast-body">a simple toast</div>',
-          '</div>'
-        ].join('')
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = ['<div class="toast">', '  <div class="toast-body">a simple toast</div>', '</div>'].join('')
 
         const toastEl = fixtureEl.querySelector('.toast')!
         const toast = new Toast(toastEl)
@@ -385,13 +329,8 @@ describe('Toast', () => {
     })
 
     it('should not schedule hide when relatedTarget is within the toast', () => {
-      return new Promise<void>(resolve => {
-        fixtureEl.innerHTML = [
-          '<button id="outside-focusable">outside</button>',
-          '<div class="toast">',
-          '  <div class="toast-body">a simple toast <button id="inside-btn">inside</button></div>',
-          '</div>'
-        ].join('')
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = ['<button id="outside-focusable">outside</button>', '<div class="toast">', '  <div class="toast-body">a simple toast <button id="inside-btn">inside</button></div>', '</div>'].join('')
 
         const toastEl = fixtureEl.querySelector('.toast')!
         const insideBtn = toastEl.querySelector('#inside-btn')!
@@ -402,7 +341,7 @@ describe('Toast', () => {
 
           const focusOutEvent = new FocusEvent('focusout', {
             bubbles: true,
-            relatedTarget: insideBtn
+            relatedTarget: insideBtn,
           })
           toast._onInteraction(focusOutEvent, false)
 
@@ -417,12 +356,8 @@ describe('Toast', () => {
 
   describe('hide', () => {
     it('should allow to hide toast manually', () => {
-      return new Promise<void>(resolve => {
-        fixtureEl.innerHTML = [
-          '<div class="toast" data-bs-delay="1" data-bs-autohide="false">',
-          '  <div class="toast-body">a simple toast</div>',
-          '</div>'
-        ].join('')
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = ['<div class="toast" data-bs-delay="1" data-bs-autohide="false">', '  <div class="toast-body">a simple toast</div>', '</div>'].join('')
 
         const toastEl = fixtureEl.querySelector('.toast')!
         const toast = new Toast(toastEl)
@@ -454,11 +389,7 @@ describe('Toast', () => {
 
     it('should not trigger hidden if hide is prevented', () => {
       return new Promise<void>((resolve, reject) => {
-        fixtureEl.innerHTML = [
-          '<div class="toast" data-bs-delay="1" data-bs-animation="false">',
-          '  <div class="toast-body">a simple toast</div>',
-          '</div>'
-        ].join('')
+        fixtureEl.innerHTML = ['<div class="toast" data-bs-delay="1" data-bs-animation="false">', '  <div class="toast-body">a simple toast</div>', '</div>'].join('')
 
         const toastEl = fixtureEl.querySelector('.toast')!
         const toast = new Toast(toastEl)
@@ -467,7 +398,7 @@ describe('Toast', () => {
           toast.hide()
         })
 
-        toastEl.addEventListener('hide.bs.toast', event => {
+        toastEl.addEventListener('hide.bs.toast', (event) => {
           event.preventDefault()
           setTimeout(() => {
             expect(toastEl.classList.contains('show')).toBe(true)
@@ -499,12 +430,8 @@ describe('Toast', () => {
     })
 
     it('should destroy and hide shown toast', () => {
-      return new Promise<void>(resolve => {
-        fixtureEl.innerHTML = [
-          '<div class="toast" data-bs-delay="0" data-bs-autohide="false">',
-          '  <div class="toast-body">a simple toast</div>',
-          '</div>'
-        ].join('')
+      return new Promise<void>((resolve) => {
+        fixtureEl.innerHTML = ['<div class="toast" data-bs-delay="0" data-bs-autohide="false">', '  <div class="toast-body">a simple toast</div>', '</div>'].join('')
 
         const toastEl = fixtureEl.querySelector('div')!
         const toast = new Toast(toastEl)

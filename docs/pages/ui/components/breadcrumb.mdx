@@ -1,13 +1,12 @@
 ---
 title: Breadcrumb
 summary: A breadcrumb is used to show the current website or app location and reduce the number of actions users need to take. It helps users navigate the website hierarchy and better understand its structure.
-bootstrapLink: components/breadcrumb/
 description: A navigation aid for better structure.
-layout: '@shared/layouts/DocsMdxLayout.astro'
+layout: '@layouts/DocsMdxLayout.astro'
 ---
-import Example from '@shared/components/docs/Example.astro';
-import Breadcrumb from '@shared/components/ui/Breadcrumb.astro';
-import Icon from '@shared/components/Icon.astro';
+import Example from '@components/Example.astro';
+import Breadcrumb from '@ui/Breadcrumb.astro';
+import Icon from '@ui/Icon.astro';
 
 ## Default markup
 
@@ -16,7 +15,7 @@ Use the `breadcrumb` class to add a breadcrumb to your interface design for bett
 Look at the example below to see how breadcrumbs work in practice.
 
 <Example centered>
-<Breadcrumb pages="Home,Library,Data" />
+<Breadcrumb pages={['Home', 'Library', 'Data']} />
 </Example>
 
 ## Different separators
@@ -26,7 +25,7 @@ You can use different breadcrumb styles to match your website or app design. Cho
 This example shows how to use different breadcrumb styles.
 
 <Example vertical separated centered>
-<Breadcrumb pages="Home,Library,Data" separator="dots" /> <Breadcrumb pages="Home,Library,Data" separator="arrows" /> <Breadcrumb pages="Home,Library,Data" separator="bullets" />
+<Breadcrumb pages={['Home', 'Library', 'Data']} separator="dots" /> <Breadcrumb pages={['Home', 'Library', 'Data']} separator="arrows" /> <Breadcrumb pages={['Home', 'Library', 'Data']} separator="bullets" />
 </Example>
 
 ## With icon
@@ -34,7 +33,7 @@ This example shows how to use different breadcrumb styles.
 You can use icons in breadcrumbs to make them more visually appealing. The example below demonstrates how to use icons in breadcrumbs.
 
 <Example vertical separated>
-<Breadcrumb pages="Home,Library,Data" home-icon />
+<Breadcrumb pages={['Home', 'Library', 'Data']} home-icon />
 </Example>
 
 ## Muted breadcrumbs
@@ -42,7 +41,7 @@ You can use icons in breadcrumbs to make them more visually appealing. The examp
 You can use the `breadcrumb-muted` class to create a muted breadcrumb style. This style is perfect for breadcrumbs that are not the main focus of your website or app.
 
 <Example>
-<Breadcrumb pages="Home,Library,Data" class="breadcrumb-muted" />
+<Breadcrumb pages={['Home', 'Library', 'Data']} class="breadcrumb-muted" />
 </Example>
 
 ## Breadcrumb in headers
@@ -50,5 +49,5 @@ You can use the `breadcrumb-muted` class to create a muted breadcrumb style. Thi
 You can use breadcrumbs in headers to show the current page location and provide a better navigation experience. The example below demonstrates how to use breadcrumbs in headers.
 
 <Example centered vertical>
-<div class="page-header"> <div class="row align-items-center mw-100"> <div class="col"> <Breadcrumb pages="Home,Library,Articles" /> <h2 class="page-title"> <span class="text-truncate">How to Build a Modern Dashboard with Tabler</span> </h2> </div> <div class="col-auto"> <div class="btn-list"> <a href="#" class="btn d-none d-md-inline-flex"> <Icon name="edit" /> Edit </a> <a href="#" class="btn btn-primary">Publish</a> </div> </div> </div> </div>
+<div class="page-header"> <div class="row align-items-center mw-100"> <div class="col"> <Breadcrumb pages={['Home', 'Library', 'Articles']} /> <h2 class="page-title"> <span class="text-truncate">How to Build a Modern Dashboard with Tabler</span> </h2> </div> <div class="col-auto"> <div class="btn-list"> <a href="#" class="btn d-none d-md-inline-flex"> <Icon name="edit" /> Edit </a> <a href="#" class="btn btn-primary">Publish</a> </div> </div> </div> </div>
 </Example>

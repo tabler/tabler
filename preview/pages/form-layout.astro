@@ -1,204 +1,190 @@
 ---
-// Port of preview/pages/form-layout.html
-import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
-import Button from '@shared/components/Button.astro';
-import InputIcon from '@shared/components/ui/form/InputIcon.astro';
-import Check from '@shared/components/ui/form/Check.astro';
-import Icon from '@shared/components/Icon.astro';
-import Datepicker from '@shared/components/ui/Datepicker.astro';
-import Layout from '@shared/components/cards/form/Layout.astro';
-import Payment from '@shared/components/cards/form/Payment.astro';
-import flags from '@data/flags.json';
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Button from '@ui/Button.astro'
+import InputIcon from '@ui/form/InputIcon.astro'
+import Check from '@ui/form/Check.astro'
+import Icon from '@ui/Icon.astro'
+import Datepicker from '@ui/Datepicker.astro'
+import FormGroup from '@ui/FormGroup.astro'
+import Card from '@ui/Card.astro'
+import CardHeader from '@ui/CardHeader.astro'
+import CardBody from '@ui/CardBody.astro'
+import Layout from '@shared/components/cards/form/Layout.astro'
+import Payment from '@shared/components/cards/form/Payment.astro'
+import flags from '@data/flags.json'
 
-const countries = flags as { name: string }[];
+const countries = flags as { name: string }[]
 ---
 
 <DefaultLayout title="Form layout" pageHeader="Form Layout" pageMenu="form.layout" pageLibs={['litepicker']}>
-	<div class="row row-cards row-cols-1 row-cols-md-3">
-		<div class="col">
-			<div class="row row-cards">
-				<div class="col-12">
-					<div class="card">
-						<div class="card-header"><h3 class="card-title">Basic Form</h3></div>
-						<div class="card-body">
-							<form class="space-y">
-								<div class="row">
-									<div class="col-6">
-										<label class="form-label visually-hidden" for="basic-name">Name</label>
-										<input type="text" placeholder="Name" class="form-control" id="basic-name" name="name" />
-									</div>
-									<div class="col-6">
-										<label class="form-label visually-hidden" for="basic-email">Email address</label>
-										<input type="email" placeholder="Email address" class="form-control" id="basic-email" name="email" />
-									</div>
-								</div>
-								<div>
-									<label class="form-label visually-hidden" for="basic-password">Password</label>
-									<input type="password" placeholder="Password" class="form-control" id="basic-password" name="password" />
-								</div>
-								<div>
-									<label class="form-label visually-hidden" for="basic-password-confirm">Confirm Password</label>
-									<input type="password" placeholder="Confirm Password" class="form-control" id="basic-password-confirm" name="password_confirm" />
-								</div>
-								<div><Button color="primary" block text="Submit" /></div>
-							</form>
-						</div>
-					</div>
-				</div>
-				<div class="col-12">
-					<div class="card">
-						<div class="card-header"><h3 class="card-title">Example Form</h3></div>
-						<div class="card-body">
-							<form>
-								<div class="space-y">
-									<div>
-										<label class="form-label" for="example-first-name">First Name</label>
-										<input type="text" placeholder="Enter first name" class="form-control" id="example-first-name" name="first_name" />
-									</div>
-									<div>
-										<label class="form-label" for="example-last-name">Last Name</label>
-										<input type="text" placeholder="Enter last name" class="form-control" id="example-last-name" name="last_name" />
-									</div>
-									<div>
-										<label class="form-label" for="example-email">Email</label>
-										<input type="email" placeholder="Enter email address" class="form-control" id="example-email" name="email" />
-									</div>
-									<div>
-										<label class="form-label" for="example-subject">Select Subject</label>
-										<select class="form-select" id="example-subject" name="subject">
-											<option>Option 1</option><option>Option 2</option><option>Option 3</option><option>Option 4</option>
-										</select>
-									</div>
-									<div>
-										<label class="form-label" for="example-message">Message</label>
-										<textarea placeholder="Enter your message" rows="6" class="form-control" id="example-message" name="message"></textarea>
-									</div>
-									<div><Button color="primary" block text="Send Message" iconEnd="arrow-right" /></div>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+  <div class="row row-cards row-cols-1 row-cols-md-3">
+    <div class="col">
+      <div class="row row-cards">
+        <div class="col-12">
+          <Card>
+            <CardHeader title="Basic Form" />
+            <CardBody>
+              <form class="space-y">
+                <div class="row">
+                  <FormGroup label="Name" labelClass="visually-hidden" for="basic-name" class="col-6">
+                    <input type="text" placeholder="Name" class="form-control" id="basic-name" name="name" />
+                  </FormGroup>
+                  <FormGroup label="Email address" labelClass="visually-hidden" for="basic-email" class="col-6">
+                    <input type="email" placeholder="Email address" class="form-control" id="basic-email" name="email" />
+                  </FormGroup>
+                </div>
+                <FormGroup label="Password" labelClass="visually-hidden" for="basic-password" class="">
+                  <input type="password" placeholder="Password" class="form-control" id="basic-password" name="password" />
+                </FormGroup>
+                <FormGroup label="Confirm Password" labelClass="visually-hidden" for="basic-password-confirm" class="">
+                  <input type="password" placeholder="Confirm Password" class="form-control" id="basic-password-confirm" name="password_confirm" />
+                </FormGroup>
+                <div><Button color="primary" block text="Submit" /></div>
+              </form>
+            </CardBody>
+          </Card>
+        </div>
+        <div class="col-12">
+          <Card>
+            <CardHeader title="Example Form" />
+            <CardBody>
+              <form>
+                <div class="space-y">
+                  <FormGroup label="First Name" for="example-first-name" class="">
+                    <input type="text" placeholder="Enter first name" class="form-control" id="example-first-name" name="first_name" />
+                  </FormGroup>
+                  <FormGroup label="Last Name" for="example-last-name" class="">
+                    <input type="text" placeholder="Enter last name" class="form-control" id="example-last-name" name="last_name" />
+                  </FormGroup>
+                  <FormGroup label="Email" for="example-email" class="">
+                    <input type="email" placeholder="Enter email address" class="form-control" id="example-email" name="email" />
+                  </FormGroup>
+                  <FormGroup label="Select Subject" for="example-subject" class="">
+                    <select class="form-select" id="example-subject" name="subject">
+                      <option>Option 1</option><option>Option 2</option><option>Option 3</option><option>Option 4</option>
+                    </select>
+                  </FormGroup>
+                  <FormGroup label="Message" for="example-message" class="">
+                    <textarea placeholder="Enter your message" rows="6" class="form-control" id="example-message" name="message"></textarea>
+                  </FormGroup>
+                  <div><Button color="primary" block text="Send Message" iconEnd="arrow-right" /></div>
+                </div>
+              </form>
+            </CardBody>
+          </Card>
+        </div>
+      </div>
+    </div>
 
-		<div class="col">
-			<div class="row row-cards">
-				<div class="col-12">
-					<div class="card">
-						<div class="card-header"><h3 class="card-title">Example Form with Icons</h3></div>
-						<div class="card-body">
-							<form class="space-y">
-								<div><InputIcon icon="user" placeholder="Username" prepend /></div>
-								<div><InputIcon icon="mail" placeholder="Email address" prepend type="mail" /></div>
-								<div><InputIcon icon="lock" placeholder="Password" prepend type="password" /></div>
-								<div><InputIcon icon="lock" placeholder="Confirm Password" prepend type="password" /></div>
-								<div>
-									<div class="row align-items-center">
-										<div class="col"><Check title="Remember me" class="m-0" /></div>
-										<div class="col-auto"><Button color="primary" text="Create Account" iconEnd="arrow-right" /></div>
-									</div>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
+    <div class="col">
+      <div class="row row-cards">
+        <div class="col-12">
+          <Card>
+            <CardHeader title="Example Form with Icons" />
+            <CardBody>
+              <form class="space-y">
+                <div><InputIcon icon="user" placeholder="Username" prepend /></div>
+                <div><InputIcon icon="mail" placeholder="Email address" prepend type="mail" /></div>
+                <div><InputIcon icon="lock" placeholder="Password" prepend type="password" /></div>
+                <div><InputIcon icon="lock" placeholder="Confirm Password" prepend type="password" /></div>
+                <div>
+                  <div class="row align-items-center">
+                    <div class="col"><Check title="Remember me" class="m-0" /></div>
+                    <div class="col-auto"><Button color="primary" text="Create Account" iconEnd="arrow-right" /></div>
+                  </div>
+                </div>
+              </form>
+            </CardBody>
+          </Card>
+        </div>
 
-				<div class="col-12">
-					<div class="card">
-						<div class="card-header"><h3 class="card-title">Form with Icons and Validation</h3></div>
-						<div class="card-body">
-							<form class="space-y">
-								<div>
-									<div class="input-icon">
-										<span class="input-icon-addon"><Icon name="user" /></span>
-										<input type="text" value="" class="form-control is-invalid" placeholder="Username" />
-										<div class="invalid-feedback">This throws the icon out of bounds when input element contains `is-invalid` class.</div>
-									</div>
-								</div>
-								<div>
-									<div class="input-icon">
-										<span class="input-icon-addon"><Icon name="mail" /></span>
-										<input type="email" value="" class="form-control is-valid" placeholder="Email" />
-										<div class="valid-feedback">This email looks good!</div>
-									</div>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
+        <div class="col-12">
+          <Card>
+            <CardHeader title="Form with Icons and Validation" />
+            <CardBody>
+              <form class="space-y">
+                <div>
+                  <div class="input-icon">
+                    <span class="input-icon-addon"><Icon name="user" /></span>
+                    <input type="text" value="" class="form-control is-invalid" placeholder="Username" />
+                    <div class="invalid-feedback">This throws the icon out of bounds when input element contains `is-invalid` class.</div>
+                  </div>
+                </div>
+                <div>
+                  <div class="input-icon">
+                    <span class="input-icon-addon"><Icon name="mail" /></span>
+                    <input type="email" value="" class="form-control is-valid" placeholder="Email" />
+                    <div class="valid-feedback">This email looks good!</div>
+                  </div>
+                </div>
+              </form>
+            </CardBody>
+          </Card>
+        </div>
 
-				<div class="col-12"><Layout horizontal title="Horizontal form" /></div>
+        <div class="col-12"><Layout horizontal title="Horizontal form" /></div>
 
-				<div class="col-12">
-					<div class="card">
-						<div class="card-header"><h3 class="card-title">Example Form</h3></div>
-						<div class="card-body">
-							<form>
-								<div class="space-y">
-									<div><h4>Personal Info</h4></div>
-									<div class="row row-cols-2 g-4">
-										<div>
-											<label class="form-label">First Name</label>
-											<input type="text" placeholder="Enter first name" class="form-control" />
-										</div>
-										<div>
-											<label class="form-label">Last Name</label>
-											<input type="text" placeholder="Enter last name" class="form-control" />
-										</div>
-										<div>
-											<label class="form-label">Gender</label>
-											<div><select class="form-select"><option>Male</option><option>Female</option><option>Others</option></select></div>
-										</div>
-										<div>
-											<label class="form-label">Date of Birth</label>
-											<div><Datepicker layout="icon" id="birth-date" /></div>
-										</div>
-									</div>
-									<div>
-										<label class="form-label">Category</label>
-										<div><select class="form-select"><option>Category 1</option><option>Category 2</option><option>Category 3</option></select></div>
-									</div>
-									<div><h4>Address</h4></div>
-									<div>
-										<label class="form-label">Street</label>
-										<input type="text" class="form-control" />
-									</div>
-									<div class="row row-cols-2 g-4">
-										<div><label class="form-label">City</label><input type="text" class="form-control" /></div>
-										<div><label class="form-label">State</label><input type="text" class="form-control" /></div>
-										<div><label class="form-label">Post Code</label><input type="text" class="form-control" /></div>
-										<div>
-											<label class="form-label">Country</label>
-											<div>
-												<select class="form-select">
-													<option>--Select Country--</option>
-													{countries.map((country) => <option>{country.name}</option>)}
-												</select>
-											</div>
-										</div>
-									</div>
-									<div>
-										<div>
-											<label class="form-label">Membership</label>
-											<div class="d-flex flex-row gap-4">
-												<Check title="Free" type="radio" name="membership" checked />
-												<Check title="Paid" type="radio" name="membership" />
-											</div>
-										</div>
-									</div>
-									<div class="text-end">
-										<Button text="Cancel" />
-										<Button color="primary" text="Save Changes" />
-									</div>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+        <div class="col-12">
+          <Card>
+            <CardHeader title="Example Form" />
+            <CardBody>
+              <form>
+                <div class="space-y">
+                  <div><h4>Personal Info</h4></div>
+                  <div class="row row-cols-2 g-4">
+                    <FormGroup label="First Name" class="">
+                      <input type="text" placeholder="Enter first name" class="form-control" />
+                    </FormGroup>
+                    <FormGroup label="Last Name" class="">
+                      <input type="text" placeholder="Enter last name" class="form-control" />
+                    </FormGroup>
+                    <FormGroup label="Gender" class="">
+                      <div><select class="form-select"><option>Male</option><option>Female</option><option>Others</option></select></div>
+                    </FormGroup>
+                    <FormGroup label="Date of Birth" class="">
+                      <div><Datepicker layout="icon" id="birth-date" /></div>
+                    </FormGroup>
+                  </div>
+                  <FormGroup label="Category" class="">
+                    <div><select class="form-select"><option>Category 1</option><option>Category 2</option><option>Category 3</option></select></div>
+                  </FormGroup>
+                  <div><h4>Address</h4></div>
+                  <FormGroup label="Street" class="">
+                    <input type="text" class="form-control" />
+                  </FormGroup>
+                  <div class="row row-cols-2 g-4">
+                    <FormGroup label="City" class=""><input type="text" class="form-control" /></FormGroup>
+                    <FormGroup label="State" class=""><input type="text" class="form-control" /></FormGroup>
+                    <FormGroup label="Post Code" class=""><input type="text" class="form-control" /></FormGroup>
+                    <FormGroup label="Country" class="">
+                      <div>
+                        <select class="form-select">
+                          <option>--Select Country--</option>
+                          {countries.map((country) => <option>{country.name}</option>)}
+                        </select>
+                      </div>
+                    </FormGroup>
+                  </div>
+                  <div>
+                    <FormGroup label="Membership" class="">
+                      <div class="d-flex flex-row gap-4">
+                        <Check title="Free" type="radio" name="membership" checked />
+                        <Check title="Paid" type="radio" name="membership" />
+                      </div>
+                    </FormGroup>
+                  </div>
+                  <div class="text-end">
+                    <Button text="Cancel" />
+                    <Button color="primary" text="Save Changes" />
+                  </div>
+                </div>
+              </form>
+            </CardBody>
+          </Card>
+        </div>
+      </div>
+    </div>
 
-		<div class="col"><Payment /></div>
-	</div>
+    <div class="col"><Payment /></div>
+  </div>
 </DefaultLayout>

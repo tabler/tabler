@@ -1,272 +1,236 @@
 ---
-// Port of preview/pages/progress.html (layout: default)
-import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
-import Progress from '@shared/components/ui/Progress.astro';
-import ProgressSteps from '@shared/components/ui/ProgressSteps.astro';
-import ProgressBg from '@shared/components/ui/ProgressBg.astro';
-import ProgressDescription from '@shared/components/ui/ProgressDescription.astro';
-import { addPageScript } from '@shared/lib/page-scripts';
-
-addPageScript(`<!-- BEGIN SCRIPT OF ANIMATION -->
-<script>
-	/*
-	This script is for animation of the last progress bar
-	It increases the progress bar value by a random amount every 2 seconds until it reaches 100%
-	When it reaches 100%, it changes the color to green and stops the animation
-
-	This is just a demo script to show how to animate the progress bar. You can modify it as needed.
-	*/
-	document.addEventListener("DOMContentLoaded", function () {
-		var width = 0;
-		var setWidth = function(w) {
-			width = Math.min(Math.max(w, 0), 100);
-
-			progress.querySelector('.progress-bar').style.width = width + '%';
-			progress.querySelector('.progress-bar').setAttribute('aria-valuenow', width);
-			document.getElementById('progress-animated-value').innerText = width + '%';
-
-			if (width >= 100) {
-				progress.querySelector('.progress-bar').classList.add('bg-green');
-			} else {
-				progress.querySelector('.progress-bar').classList.remove('bg-green');
-			}
-		}
-
-		var progress = document.getElementById('progress-animated');
-
-		var increment = 0;
-		var interval = setInterval(function () {
-			increment = Math.ceil(Math.random() * 10);
-			setWidth(width + increment);
-
-			if (width >= 100) {
-				clearInterval(interval);
-			}
-		}, 2000);
-
-		document.getElementById('progress-animated-0').addEventListener('click', function() {
-			setWidth(0);
-		});
-
-		document.getElementById('progress-animated-add-10').addEventListener('click', function() {
-			setWidth(width + 10);
-		});
-
-
-		document.getElementById('progress-animated-minus-10').addEventListener('click', function() {
-			setWidth(width - 10);
-		});
-
-
-		document.getElementById('progress-animated-100').addEventListener('click', function() {
-			setWidth(100);
-		});
-
-
-	});
-</script>
-<!-- END SCRIPT OF ANIMATION -->`);
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import CaptureScript from '@shared/components/CaptureScript.astro'
+import ButtonList from '@ui/ButtonList.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import Progress from '@ui/Progress.astro'
+import ProgressSteps from '@ui/ProgressSteps.astro'
+import ProgressBg from '@ui/ProgressBg.astro'
+import ProgressDescription from '@ui/ProgressDescription.astro'
 ---
 
 <DefaultLayout title="Progress" pageHeader="Progress" pageMenu="base.progress">
-	<div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
-		<div class="col">
-			<div class="card">
-				<div class="card-body">
-					<h3 class="card-title">Default</h3>
-					<div class="space-y">
-						<Progress value="0" />
-						<Progress value="20" />
-						<Progress value="40" />
-						<Progress value="100" />
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col">
-			<div class="card">
-				<div class="card-body">
-					<h3 class="card-title">With value</h3>
-					<div class="space-y">
-						<Progress value="10" showValue size="lg" />
-						<Progress value="20" showValue size="lg" />
-						<Progress value="90" showValue size="lg" />
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col">
-			<div class="card">
-				<div class="card-body">
-					<h3 class="card-title">Colors</h3>
-					<div class="space-y">
-						<Progress color="blue" value="20" />
-						<Progress color="green" value="40" />
-						<Progress color="yellow" value="60" />
-						<Progress color="red" value="80" />
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col">
-			<div class="card">
-				<div class="card-body">
-					<h3 class="card-title">Sizes</h3>
-					<div class="space-y">
-						<Progress value="20" size="sm" />
-						<Progress value="40" />
-						<Progress value="60" size="lg" />
-						<Progress value="80" size="xl" />
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col">
-			<div class="card">
-				<div class="card-body">
-					<h3 class="card-title">Indeterminate</h3>
-					<div class="space-y">
-						<Progress indeterminate />
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col">
-			<div class="card">
-				<div class="card-body">
-					<h3 class="card-title">Multiple values</h3>
-					<div class="space-y">
-						<Progress values="20,30,10" />
-						<Progress values="10,20,30,40" class="progress-separated" />
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col">
-			<div class="card">
-				<div class="card-body">
-					<h3 class="card-title">Striped</h3>
-					<div class="space-y">
-						<Progress color="blue" value="20" striped />
-						<Progress color="green" value="40" striped />
-						<Progress color="yellow" value="60" striped />
-						<Progress color="red" value="80" striped />
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col">
-			<div class="card">
-				<div class="card-body">
-					<h3 class="card-title">Animated</h3>
-					<div class="space-y">
-						<Progress value="20" striped animated />
-						<Progress value="40" color="green" striped animated />
-						<Progress value="60" color="yellow" striped animated />
-						<Progress value="80" color="red" striped animated />
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col">
-			<div class="card">
-				<div class="card-body">
-					<h3 class="card-title">
-						Animated with JavaScript
-					</h3>
-					<div class="row align-items-center g-0">
-						<div class="col">
-							<Progress value="0" id="progress-animated" />
-						</div>
-						<div class="col-2 text-end" id="progress-animated-value">
-							0%
-						</div>
-					</div>
-					<div class="btn-list mt-3">
-						<button class="btn btn-sm" id="progress-animated-0">0%</button>
-						<button class="btn btn-sm" id="progress-animated-10">10%</button>
-						<button class="btn btn-sm" id="progress-animated-50">50%</button>
-						<button class="btn btn-sm" id="progress-animated-100">100%</button>
-						<button class="btn btn-sm ms-3" id="progress-animated-minus-10">-10%</button>
-						<button class="btn btn-sm" id="progress-animated-add-10">+10%</button>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col">
-			<div class="card">
-				<div class="card-body">
-					<h3 class="card-title">
-						Steps Progress
-					</h3>
-					<div class="space-y">
-						<ProgressSteps count={3} />
-						<ProgressSteps count={5} active={4} />
-						<ProgressSteps count={10} color="red" />
-						<ProgressSteps count={8} color="green" active={8} />
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col">
-			<div class="card">
-				<div class="card-body">
-					<h3 class="card-title">
-						Progress Background
-					</h3>
-					<div class="space-y">
-						<ProgressBg value="85" text="Poland" showValue />
-						<ProgressBg value="65" text="Germany" showValue />
-						<ProgressBg value="45" text="United States" showValue />
-						<ProgressBg value="25" text="France" showValue />
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col">
-			<div class="card">
-				<div class="card-body">
-					<h3 class="card-title">
-						Progress Background Colors
-					</h3>
-					<div class="space-y">
-						<ProgressBg value="75" text="Success" color="success-lt" showValue />
-						<ProgressBg value="60" text="Warning" color="warning-lt" showValue />
-						<ProgressBg value="40" text="Danger" color="danger-lt" showValue />
-						<ProgressBg value="90" text="Info" color="info-lt" showValue />
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col">
-			<div class="card">
-				<div class="card-body">
-					<h3 class="card-title">
-						Progress Description
-					</h3>
-					<div class="space-y">
-						<ProgressDescription label="Project completion" value="85" color="green" />
-						<ProgressDescription label="Storage usage" description="2.4GB of 5GB" value="48" color="blue" />
-						<ProgressDescription label="Download progress" value="75" color="yellow" />
-						<ProgressDescription label="Skills assessment" description="HTML/CSS" value="92" color="red" />
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col">
-			<div class="card">
-				<div class="card-body">
-					<h3 class="card-title">
-						Progress Description Sizes
-					</h3>
-					<div class="space-y">
-						<ProgressDescription label="Small progress" value="60" size="sm" color="blue" />
-						<ProgressDescription label="Default progress" value="70" color="green" />
-						<ProgressDescription label="Large progress" value="80" size="lg" color="orange" />
-						<ProgressDescription label="Extra large" value="90" size="xl" color="purple" />
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+  <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+    <div class="col">
+      <Card>
+        <CardBody>
+          <CardTitle>Default</CardTitle>
+          <div class="space-y">
+            <Progress value="0" />
+            <Progress value="20" />
+            <Progress value="40" />
+            <Progress value="100" />
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col">
+      <Card>
+        <CardBody>
+          <CardTitle>With value</CardTitle>
+          <div class="space-y">
+            <Progress value="10" showValue size="lg" />
+            <Progress value="20" showValue size="lg" />
+            <Progress value="90" showValue size="lg" />
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col">
+      <Card>
+        <CardBody>
+          <CardTitle>Colors</CardTitle>
+          <div class="space-y">
+            <Progress color="blue" value="20" />
+            <Progress color="green" value="40" />
+            <Progress color="yellow" value="60" />
+            <Progress color="red" value="80" />
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col">
+      <Card>
+        <CardBody>
+          <CardTitle>Sizes</CardTitle>
+          <div class="space-y">
+            <Progress value="20" size="sm" />
+            <Progress value="40" />
+            <Progress value="60" size="lg" />
+            <Progress value="80" size="xl" />
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col">
+      <Card>
+        <CardBody>
+          <CardTitle>Indeterminate</CardTitle>
+          <div class="space-y">
+            <Progress indeterminate />
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col">
+      <Card>
+        <CardBody>
+          <CardTitle>Multiple values</CardTitle>
+          <div class="space-y">
+            <Progress values={[20, 30, 10]} />
+            <Progress values={[10, 20, 30, 40]} class="progress-separated" />
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col">
+      <Card>
+        <CardBody>
+          <CardTitle>Striped</CardTitle>
+          <div class="space-y">
+            <Progress color="blue" value="20" striped />
+            <Progress color="green" value="40" striped />
+            <Progress color="yellow" value="60" striped />
+            <Progress color="red" value="80" striped />
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col">
+      <Card>
+        <CardBody>
+          <CardTitle>Animated</CardTitle>
+          <div class="space-y">
+            <Progress value="20" striped animated />
+            <Progress value="40" color="green" striped animated />
+            <Progress value="60" color="yellow" striped animated />
+            <Progress value="80" color="red" striped animated />
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col">
+      <Card>
+        <CardBody>
+          <CardTitle> Animated with JavaScript </CardTitle>
+          <div class="row align-items-center g-0">
+            <div class="col">
+              <Progress value="0" id="progress-animated" />
+            </div>
+            <div class="col-2 text-end" id="progress-animated-value">0%</div>
+          </div>
+          <ButtonList class="mt-3">
+            <button class="btn btn-sm" id="progress-animated-0">0%</button>
+            <button class="btn btn-sm" id="progress-animated-10">10%</button>
+            <button class="btn btn-sm" id="progress-animated-50">50%</button>
+            <button class="btn btn-sm" id="progress-animated-100">100%</button>
+            <button class="btn btn-sm ms-3" id="progress-animated-minus-10">-10%</button>
+            <button class="btn btn-sm" id="progress-animated-add-10">+10%</button>
+          </ButtonList>
+          <CaptureScript>
+            <!-- BEGIN SCRIPT OF ANIMATION -->
+            <script is:inline>
+              /*
+						This script is for animation of the last progress bar.
+						It increases the progress bar value by a random amount every 2 seconds until it reaches 100%.
+						When it reaches 100%, it changes the color to green and stops the animation.
+
+						This is just a demo script to show how to animate the progress bar. You can modify it as needed.
+						*/
+              const progress = document.getElementById('progress-animated')
+              let width = 0
+
+              const setWidth = (w) => {
+                width = Math.min(Math.max(w, 0), 100)
+
+                const bar = progress.querySelector('.progress-bar')
+                bar.style.width = `${width}%`
+                bar.setAttribute('aria-valuenow', `${width}`)
+                document.getElementById('progress-animated-value').innerText = `${width}%`
+                bar.classList.toggle('bg-green', width >= 100)
+              }
+
+              const interval = setInterval(() => {
+                setWidth(width + Math.ceil(Math.random() * 10))
+                if (width >= 100) clearInterval(interval)
+              }, 2000)
+
+              document.getElementById('progress-animated-0').addEventListener('click', () => setWidth(0))
+              document.getElementById('progress-animated-add-10').addEventListener('click', () => setWidth(width + 10))
+              document.getElementById('progress-animated-minus-10').addEventListener('click', () => setWidth(width - 10))
+              document.getElementById('progress-animated-100').addEventListener('click', () => setWidth(100))
+            </script>
+            <!-- END SCRIPT OF ANIMATION -->
+          </CaptureScript>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col">
+      <Card>
+        <CardBody>
+          <CardTitle> Steps Progress </CardTitle>
+          <div class="space-y">
+            <ProgressSteps count={3} />
+            <ProgressSteps count={5} active={4} />
+            <ProgressSteps count={10} color="red" />
+            <ProgressSteps count={8} color="green" active={8} />
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col">
+      <Card>
+        <CardBody>
+          <CardTitle> Progress Background </CardTitle>
+          <div class="space-y">
+            <ProgressBg value="85" text="Poland" showValue />
+            <ProgressBg value="65" text="Germany" showValue />
+            <ProgressBg value="45" text="United States" showValue />
+            <ProgressBg value="25" text="France" showValue />
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col">
+      <Card>
+        <CardBody>
+          <CardTitle> Progress Background Colors </CardTitle>
+          <div class="space-y">
+            <ProgressBg value="75" text="Success" color="success-lt" showValue />
+            <ProgressBg value="60" text="Warning" color="warning-lt" showValue />
+            <ProgressBg value="40" text="Danger" color="danger-lt" showValue />
+            <ProgressBg value="90" text="Info" color="info-lt" showValue />
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col">
+      <Card>
+        <CardBody>
+          <CardTitle> Progress Description </CardTitle>
+          <div class="space-y">
+            <ProgressDescription label="Project completion" value="85" color="green" />
+            <ProgressDescription label="Storage usage" description="2.4GB of 5GB" value="48" color="blue" />
+            <ProgressDescription label="Download progress" value="75" color="yellow" />
+            <ProgressDescription label="Skills assessment" description="HTML/CSS" value="92" color="red" />
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col">
+      <Card>
+        <CardBody>
+          <CardTitle> Progress Description Sizes </CardTitle>
+          <div class="space-y">
+            <ProgressDescription label="Small progress" value="60" size="sm" color="blue" />
+            <ProgressDescription label="Default progress" value="70" color="green" />
+            <ProgressDescription label="Large progress" value="80" size="lg" color="orange" />
+            <ProgressDescription label="Extra large" value="90" size="xl" color="purple" />
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+  </div>
 </DefaultLayout>

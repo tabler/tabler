@@ -1,0 +1,46 @@
+---
+import site from '@data/site.json'
+import CaptureScript from '../components/CaptureScript.astro'
+
+interface Props {
+  value?: string
+  id?: string | number
+  alpha?: boolean
+  format?: string | false
+  swatchesOnly?: boolean
+  class?: string
+}
+
+const { value, id = 'default', alpha = false, format = false, swatchesOnly, class: className } = Astro.props
+
+const colors = site.colors as Record<string, { prop: string }>
+const swatchProps = Object.values(colors).map((color) => color.prop)
+
+const colorpickerId = `colorpicker-${id}`
+const colorpickerSelector = `#colorpicker-${id}`
+---
+
+<input type="text" class={`form-control d-block${className ? ` ${className}` : ''}`} id={colorpickerId} value={value} />
+<CaptureScript>
+  <!-- BEGIN COLORPICKER -->
+  <script define:vars={{ colorpickerId, colorpickerSelector, alpha, format, swatchesOnly, swatchProps }}>
+    function initColorpicker() {
+      window.tabler_colorpicker ??= {}
+
+      const swatches = swatchProps.map((prop) => window.getComputedStyle(document.body).getPropertyValue(prop))
+
+      window.Coloris &&
+        (window.tabler_colorpicker[colorpickerId] = Coloris({
+          el: colorpickerSelector,
+          selectInput: false,
+          alpha,
+          ...(format ? { format } : {}),
+          ...(swatchesOnly ? { swatchesOnly: true } : {}),
+          swatches,
+        }))
+    }
+
+    document.readyState !== 'loading' ? initColorpicker() : document.addEventListener('DOMContentLoaded', initColorpicker, { once: true })
+  </script>
+  <!-- END COLORPICKER -->
+</CaptureScript>

@@ -2,11 +2,11 @@
 title: Badge
 summary: A badge is a small count and labeling component used to add extra information to an interface element. You can use it to draw user attention to a new element, notify about unread messages, or provide additional context.
 description: Add extra information with a badge.
-bootstrapLink: components/badge/
-layout: '@shared/layouts/DocsMdxLayout.astro'
+layout: '@layouts/DocsMdxLayout.astro'
 ---
-import Example from '@shared/components/docs/Example.astro';
-import Badge from '@shared/components/ui/Badge.astro';
+import BadgesList from '@ui/BadgesList.astro';
+import Example from '@components/Example.astro';
+import Badge from '@ui/Badge.astro';
 import site from '@data/site.json';
 
 export const colors = Object.entries(site.colors);
@@ -16,7 +16,7 @@ export const colors = Object.entries(site.colors);
 The default badges are square and come in the basic set of colors.
 
 <Example centered>
-<div class="badges-list">{colors.map(([key, val]) => <Badge color={key} text={val.title} />)}</div>
+<BadgesList>{colors.map(([key, val]) => <Badge color={key} text={val.title} />)}</BadgesList>
 </Example>
 
 ## Headings
@@ -100,6 +100,6 @@ Use `.badge-sm` or `.badge-lg` to change badge size according to your needs. The
 </Example>
 
 
-## More examples 
+## More examples
 
 If you want to see more examples of badges, you can check out the [Bootstrap documentation](https://getbootstrap.com/docs/5.3/components/badge/) for badges. You can also find more examples in the Tabler [Badges](https://preview.tabler.io/badges.html) preview.

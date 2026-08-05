@@ -1,5 +1,15 @@
 {
-  "redirects": [
-    { "source": "/marketing", "destination": "/marketing.html", "permanent": true }
+  "routes": [
+    {
+      "src": "/marketing",
+      "status": 308,
+      "headers": { "Location": "/marketing.html" }
+    },
+    { "handle": "filesystem" },
+    {
+      "src": "/(.*)",
+      "status": 404,
+      "dest": "/error-404.html"
+    }
   ]
 }

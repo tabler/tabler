@@ -53,13 +53,13 @@ interface ComponentConfigType {
 const Default: ComponentConfig = {
   backdrop: true,
   keyboard: true,
-  scroll: false
+  scroll: false,
 }
 
 const DefaultType: ComponentConfigType = {
   backdrop: '(boolean|string)',
   keyboard: 'boolean',
-  scroll: 'boolean'
+  scroll: 'boolean',
 }
 
 /**
@@ -186,13 +186,13 @@ class Offcanvas extends BaseComponent {
       isVisible: isBackdropVisible,
       isAnimated: true,
       rootElement: this._element.parentNode as HTMLElement,
-      clickCallback: isBackdropVisible ? clickCallback : null
+      clickCallback: isBackdropVisible ? clickCallback : null,
     })
   }
 
   _initializeFocusTrap(): FocusTrap {
     return new FocusTrap({
-      trapElement: this._element
+      trapElement: this._element,
     })
   }
 

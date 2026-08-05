@@ -1,11 +1,11 @@
-@use "../../settings" as *;
-@use "../../variables" as *;
-@use "../functions" as *;
-@use "../../maps" as *;
-@use "breakpoints" as *;
-@use "sass:math";
-@use "sass:map";
-@use "sass:meta";
+@use '../../settings' as *;
+@use '../../variables' as *;
+@use '../functions' as *;
+@use '../../maps' as *;
+@use 'breakpoints' as *;
+@use 'sass:math';
+@use 'sass:map';
+@use 'sass:meta';
 
 // Grid system
 //
@@ -17,17 +17,17 @@
   display: flex;
   flex-wrap: wrap;
   margin-top: calc(-1 * var(--#{$prefix}gutter-y)); // stylelint-disable-line function-disallowed-list
-  margin-right: calc(-.5 * var(--#{$prefix}gutter-x)); // stylelint-disable-line function-disallowed-list
-  margin-left: calc(-.5 * var(--#{$prefix}gutter-x)); // stylelint-disable-line function-disallowed-list
+  margin-inline-end: calc(-0.5 * var(--#{$prefix}gutter-x)); // stylelint-disable-line function-disallowed-list
+  margin-inline-start: calc(-0.5 * var(--#{$prefix}gutter-x)); // stylelint-disable-line function-disallowed-list
 }
 
 @mixin make-col-ready() {
-  box-sizing: if(sass(meta.global-variable-exists("include-column-box-sizing") and $include-column-box-sizing): border-box; else: null);
+  box-sizing: if(sass(meta.global-variable-exists('include-column-box-sizing') and $include-column-box-sizing): border-box; else: null);
   flex-shrink: 0;
   width: 100%;
   max-width: 100%;
-  padding-right: calc(var(--#{$prefix}gutter-x) * .5); // stylelint-disable-line function-disallowed-list
-  padding-left: calc(var(--#{$prefix}gutter-x) * .5); // stylelint-disable-line function-disallowed-list
+  padding-inline-end: calc(var(--#{$prefix}gutter-x) * 0.5); // stylelint-disable-line function-disallowed-list
+  padding-inline-start: calc(var(--#{$prefix}gutter-x) * 0.5); // stylelint-disable-line function-disallowed-list
   margin-top: var(--#{$prefix}gutter-y);
 }
 
@@ -48,7 +48,7 @@
 
 @mixin make-col-offset($size, $columns: $grid-columns) {
   $num: divide($size, $columns);
-  margin-left: if(sass($num == 0): 0; else: math.percentage($num));
+  margin-inline-start: if(sass($num == 0): 0; else: math.percentage($num));
 }
 
 @mixin row-cols($count) {
@@ -91,7 +91,7 @@
         }
 
         @for $i from 0 through ($columns - 1) {
-          @if not ($infix == "" and $i == 0) {
+          @if not($infix == '' and $i == 0) {
             .offset#{$infix}-#{$i} {
               @include make-col-offset($i, $columns);
             }

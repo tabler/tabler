@@ -1,376 +1,324 @@
 ---
-// Port of preview/pages/playground-categories.html (layout: default).
-// Reuses committed components: Icon, Button, Badge, Pagination (+ Avatar).
-//
-// NOTE (no-container): the front matter is `no-container: true`, but Liquid's
-// `page.no-container` (hyphen key via dot access) does NOT resolve, so the
-// reference build renders the normal `.container-xl` wrapper (default slot).
-// We therefore use DefaultLayout unchanged — no special no-container handling.
-//
-// NOTE (page-menu): none in the front matter → pageMenu is intentionally NOT
-// passed.
-//
-// TODO (Button.astro missing params): the two sort-direction buttons use
-// `element="label"` + `html_for` + `tooltip`, none of which Button.astro
-// supports (element type is 'a'|'button'; html_for/tooltip absent). The shared
-// ui/button.html ignores html_for/tooltip too, and the reference emits a plain
-// <label> with no `for`. Inlined below to match the reference.
-//
-// TODO (AvatarList.astro missing `size`): the "Marketing campaigns" card calls
-// ui/avatar-list.html with size="xs", but AvatarList.astro has no `size` prop
-// and does not forward it to Avatar. Inlined here with <Avatar size="xs"> over
-// the people slice (offset 3, limit 3) to match the reference `avatar-xs`.
-import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
-import Icon from '@shared/components/Icon.astro';
-import Button from '@shared/components/Button.astro';
-import Badge from '@shared/components/ui/Badge.astro';
-import Avatar from '@shared/components/ui/Avatar.astro';
-import Pagination from '@shared/components/ui/Pagination.astro';
-import people from '@data/people.json';
-
-const marketingAvatars = people.slice(3, 6);
+import ButtonGroup from '@ui/ButtonGroup.astro'
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Icon from '@ui/Icon.astro'
+import Button from '@ui/Button.astro'
+import Badge from '@ui/Badge.astro'
+import Avatar from '@ui/Avatar.astro'
+import AvatarList from '@ui/AvatarList.astro'
+import Pagination from '@ui/Pagination.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
 ---
 
 <DefaultLayout title="Categories playground">
-	<!-- Header -->
-	<div class="row align-items-center gy-3 mb-5">
-		<div class="col">
-			<nav aria-label="breadcrumb">
-				<ol class="breadcrumb mb-1">
-					<li class="breadcrumb-item">
-						<a class="text-secondary" href="#">
-							<Icon name="arrow-left" class="icon-inline me-1" />
-							Back
-						</a>
-					</li>
-				</ol>
-			</nav>
-			<h1 class="fs-3 mb-0">Categories</h1>
-		</div>
-		<div class="col-12 col-lg-auto order-last order-lg-0">
-			<div class="row align-items-center gx-3">
-				<div class="col col-lg-auto">
-					<div class="input-group input-group-flat rounded-pill">
-						<input type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="playground-categories-search">
-						<span class="input-group-text" id="playground-categories-search">
-							<Icon name="search" />
-						</span>
-					</div>
-				</div>
-				<div class="col-auto">
-					<div class="dropdown">
-						<Button element="button" type="button" icon="filter" iconOnly text="Open filters" />
-						<div class="dropdown-menu rounded-3 p-6">
-							<h4 class="fs-lg mb-4">Filter</h4>
-							<form id="playgroundCategoriesFilterForm" style="width: 350px">
-								<div class="row align-items-center mb-3">
-									<div class="col-3">
-										<label class="form-label mb-0" for="playgroundFilterUser">User</label>
-									</div>
-									<div class="col-9">
-										<select class="form-select" id="playgroundFilterUser" aria-label="User">
-											<option value="Emily Thompson" selected>Emily Thompson</option>
-											<option value="Michael Johnson">Michael Johnson</option>
-											<option value="Robert Garcia">Robert Garcia</option>
-											<option value="Jessica Miller">Jessica Miller</option>
-										</select>
-									</div>
-								</div>
-								<div class="row align-items-center mb-3">
-									<div class="col-3">
-										<label class="form-label mb-0" for="playgroundFilterCompany">Company</label>
-									</div>
-									<div class="col-9">
-										<select class="form-select" id="playgroundFilterCompany" aria-label="Company">
-											<option value="TechPinnacle Solutions" selected>TechPinnacle Solutions</option>
-											<option value="Quantum Dynamics">Quantum Dynamics</option>
-											<option value="Pinnacle Technologies">Pinnacle Technologies</option>
-											<option value="Apex Innovations">Apex Innovations</option>
-										</select>
-									</div>
-								</div>
-								<div class="row align-items-center">
-									<div class="col-3">
-										<label class="form-label mb-0" for="playgroundFilterLocation">Location</label>
-									</div>
-									<div class="col-9">
-										<select class="form-select" id="playgroundFilterLocation" aria-label="Location">
-											<option value="San Francisco, CA" selected>San Francisco, CA</option>
-											<option value="Austin, TX">Austin, TX</option>
-											<option value="Miami, FL">Miami, FL</option>
-											<option value="Seattle, WA">Seattle, WA</option>
-										</select>
-									</div>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-				<div class="col-auto ms-n2">
-					<div class="dropdown">
-						<Button element="button" type="button" icon="sort-ascending-letters" iconOnly text="Open sort options" />
-						<div class="dropdown-menu rounded-3 p-6">
-							<h4 class="fs-lg mb-4">Sort</h4>
-							<form id="playgroundCategoriesSortForm" style="width: 350px">
-								<div class="row gx-3">
-									<div class="col">
-										<select class="form-select" id="playgroundSortField" aria-label="Sort by">
-											<option value="user" selected>User</option>
-											<option value="company">Company</option>
-											<option value="phone">Phone</option>
-											<option value="location">Location</option>
-										</select>
-									</div>
-									<div class="col-auto">
-										<div class="btn-group" role="group" aria-label="Sort direction">
-											<input type="radio" class="btn-check" name="playgroundSortDir" id="playgroundSortAsc" autocomplete="off" checked>
-											<label class="btn btn-light px-0 btn-icon" aria-label="Ascending"><Icon name="arrow-up" /></label>
-											<input type="radio" class="btn-check" name="playgroundSortDir" id="playgroundSortDesc" autocomplete="off">
-											<label class="btn btn-light px-0 btn-icon" aria-label="Descending"><Icon name="arrow-down" /></label>
-										</div>
-									</div>
-								</div>
-							</form>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col-auto">
-			<button class="btn btn-primary" type="button">New category</button>
-		</div>
-	</div>
+  <!-- Header -->
+  <div class="row align-items-center gy-3 mb-5">
+    <div class="col">
+      <nav aria-label="breadcrumb">
+        <ol class="breadcrumb mb-1">
+          <li class="breadcrumb-item">
+            <a class="text-secondary" href="#">
+              <Icon name="arrow-left" class="icon-inline me-1" />
+              Back
+            </a>
+          </li>
+        </ol>
+      </nav>
+      <h1 class="fs-3 mb-0">Categories</h1>
+    </div>
+    <div class="col-12 col-lg-auto order-last order-lg-0">
+      <div class="row align-items-center gx-3">
+        <div class="col col-lg-auto">
+          <div class="input-group input-group-flat rounded-pill">
+            <input type="text" class="form-control" placeholder="Search" aria-label="Search" aria-describedby="playground-categories-search" />
+            <span class="input-group-text" id="playground-categories-search">
+              <Icon name="search" />
+            </span>
+          </div>
+        </div>
+        <div class="col-auto">
+          <div class="dropdown">
+            <Button element="button" type="button" icon="filter" iconOnly text="Open filters" />
+            <div class="dropdown-menu rounded-3 p-6">
+              <h4 class="fs-lg mb-4">Filter</h4>
+              <form id="playgroundCategoriesFilterForm" style="width: 350px">
+                <div class="row align-items-center mb-3">
+                  <div class="col-3">
+                    <label class="form-label mb-0" for="playgroundFilterUser">User</label>
+                  </div>
+                  <div class="col-9">
+                    <select class="form-select" id="playgroundFilterUser" aria-label="User">
+                      <option value="Emily Thompson" selected>Emily Thompson</option>
+                      <option value="Michael Johnson">Michael Johnson</option>
+                      <option value="Robert Garcia">Robert Garcia</option>
+                      <option value="Jessica Miller">Jessica Miller</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row align-items-center mb-3">
+                  <div class="col-3">
+                    <label class="form-label mb-0" for="playgroundFilterCompany">Company</label>
+                  </div>
+                  <div class="col-9">
+                    <select class="form-select" id="playgroundFilterCompany" aria-label="Company">
+                      <option value="TechPinnacle Solutions" selected>TechPinnacle Solutions</option>
+                      <option value="Quantum Dynamics">Quantum Dynamics</option>
+                      <option value="Pinnacle Technologies">Pinnacle Technologies</option>
+                      <option value="Apex Innovations">Apex Innovations</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="row align-items-center">
+                  <div class="col-3">
+                    <label class="form-label mb-0" for="playgroundFilterLocation">Location</label>
+                  </div>
+                  <div class="col-9">
+                    <select class="form-select" id="playgroundFilterLocation" aria-label="Location">
+                      <option value="San Francisco, CA" selected>San Francisco, CA</option>
+                      <option value="Austin, TX">Austin, TX</option>
+                      <option value="Miami, FL">Miami, FL</option>
+                      <option value="Seattle, WA">Seattle, WA</option>
+                    </select>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="col-auto ms-n2">
+          <div class="dropdown">
+            <Button element="button" type="button" icon="sort-ascending-letters" iconOnly text="Open sort options" />
+            <div class="dropdown-menu rounded-3 p-6">
+              <h4 class="fs-lg mb-4">Sort</h4>
+              <form id="playgroundCategoriesSortForm" style="width: 350px">
+                <div class="row gx-3">
+                  <div class="col">
+                    <select class="form-select" id="playgroundSortField" aria-label="Sort by">
+                      <option value="user" selected>User</option>
+                      <option value="company">Company</option>
+                      <option value="phone">Phone</option>
+                      <option value="location">Location</option>
+                    </select>
+                  </div>
+                  <div class="col-auto">
+                    <ButtonGroup aria-label="Sort direction">
+                      <input type="radio" class="btn-check" name="playgroundSortDir" id="playgroundSortAsc" autocomplete="off" checked />
+                      <label class="btn btn-light px-0 btn-icon" aria-label="Ascending"><Icon name="arrow-up" /></label>
+                      <input type="radio" class="btn-check" name="playgroundSortDir" id="playgroundSortDesc" autocomplete="off" />
+                      <label class="btn btn-light px-0 btn-icon" aria-label="Descending"><Icon name="arrow-down" /></label>
+                    </ButtonGroup>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-auto">
+      <button class="btn btn-primary" type="button">New category</button>
+    </div>
+  </div>
 
-	<hr class="my-7">
+  <hr class="my-7" />
 
-	<div class="row row-cards">
-		<div class="col-12 col-lg-6">
-			<div class="card">
-				<div class="card-body">
-					<div class="row align-items-center mb-4">
-						<div class="col">
-							<Badge text="Featured" color="primary" />
-						</div>
-						<div class="col-auto">
-							<Icon name="confetti" class="icon-lg text-primary opacity-50" />
-						</div>
-					</div>
-					<h3 class="fs-5 mb-1 text-truncate"><a class="text-body" href="./empty.html">Announcements</a></h3>
-					<p class="text-secondary text-truncate">For company updates, system changes, or important notices that everyone should see.</p>
-					<p class="fs-sm text-secondary mb-0">Last post 2 days ago</p>
-					<hr>
-					<div class="d-flex align-items-center justify-content-between">
-						<div class="avatar-list avatar-list-stacked">
-							<span class="avatar avatar-xs" data-bs-toggle="tooltip" data-bs-title="Emily Thompson">
-								<img class="avatar-img" src="./static/avatars/001f.jpg" width="20" height="20" alt="Emily Thompson">
-							</span>
-							<span class="avatar avatar-xs" data-bs-toggle="tooltip" data-bs-title="Michael Johnson">
-								<img class="avatar-img" src="./static/avatars/002m.jpg" width="20" height="20" alt="Michael Johnson">
-							</span>
-							<span class="avatar avatar-xs" data-bs-toggle="tooltip" data-bs-title="Robert Garcia">
-								<img class="avatar-img" src="./static/avatars/003m.jpg" width="20" height="20" alt="Robert Garcia">
-							</span>
-						</div>
-						<div class="text-end">
-							<Badge text="20 posts" class="bg-light text-body" />
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+  <div class="row row-cards">
+    <div class="col-12 col-lg-6">
+      <Card>
+        <CardBody>
+          <div class="row align-items-center mb-4">
+            <div class="col">
+              <Badge text="Featured" color="primary" />
+            </div>
+            <div class="col-auto">
+              <Icon name="confetti" class="icon-lg text-primary opacity-50" />
+            </div>
+          </div>
+          <h3 class="fs-5 mb-1 text-truncate"><a class="text-body" href="./empty.html">Announcements</a></h3>
+          <p class="text-secondary text-truncate">For company updates, system changes, or important notices that everyone should see.</p>
+          <p class="fs-sm text-secondary mb-0">Last post 2 days ago</p>
+          <hr />
+          <div class="d-flex align-items-center justify-content-between">
+            <AvatarList stacked={true}>
+              <Avatar src="static/avatars/001f.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="Emily Thompson" />
+              <Avatar src="static/avatars/002m.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="Michael Johnson" />
+              <Avatar src="static/avatars/003m.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="Robert Garcia" />
+            </AvatarList>
+            <div class="text-end">
+              <Badge text="20 posts" class="bg-light text-body" />
+            </div>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
 
-		<div class="col-12 col-lg-6">
-			<div class="card">
-				<div class="card-body">
-					<div class="row align-items-center mb-4">
-						<div class="col">
-							<Badge text="Featured" color="success" />
-						</div>
-						<div class="col-auto">
-							<Icon name="slideshow" class="icon-lg text-success opacity-50" />
-						</div>
-					</div>
-					<h3 class="fs-5 mb-1 text-truncate"><a class="text-body" href="./empty.html">Marketing campaigns</a></h3>
-					<p class="text-secondary text-truncate">Posts related to new campaigns, marketing strategies, and promotions.</p>
-					<p class="fs-sm text-secondary mb-0">Last post 1 day ago</p>
-					<hr>
-					<div class="d-flex align-items-center justify-content-between">
-						<div class="avatar-list avatar-list-stacked">
-							{marketingAvatars.map((person) => <Avatar person={person} size="xs" />)}
-						</div>
-						<div class="text-end">
-							<Badge text="62 posts" class="bg-light text-body" />
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+    <div class="col-12 col-lg-6">
+      <Card>
+        <CardBody>
+          <div class="row align-items-center mb-4">
+            <div class="col">
+              <Badge text="Featured" color="success" />
+            </div>
+            <div class="col-auto">
+              <Icon name="slideshow" class="icon-lg text-success opacity-50" />
+            </div>
+          </div>
+          <h3 class="fs-5 mb-1 text-truncate"><a class="text-body" href="./empty.html">Marketing campaigns</a></h3>
+          <p class="text-secondary text-truncate">Posts related to new campaigns, marketing strategies, and promotions.</p>
+          <p class="fs-sm text-secondary mb-0">Last post 1 day ago</p>
+          <hr />
+          <div class="d-flex align-items-center justify-content-between">
+            <AvatarList stacked={true} size="xs" offset={3} limit={3} />
+            <div class="text-end">
+              <Badge text="62 posts" class="bg-light text-body" />
+            </div>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
 
-		<div class="col-12 col-md-6 col-lg-4">
-			<div class="card position-relative overflow-hidden">
-				<Icon name="chart-pie" class="icon-lg text-danger opacity-25 position-absolute top-0 end-0 m-3" />
-				<div class="card-body">
-					<small class="text-secondary d-block mb-4">12 followers</small>
-					<h3 class="fs-6 mb-1 text-truncate"><a class="text-body" href="./empty.html">Reports &amp; analytics</a></h3>
-					<p class="text-secondary text-truncate">Data-driven insights and performance reports across all departments.</p>
-					<p class="fs-sm text-secondary mb-0">Last post 5 days ago</p>
-					<hr>
-					<div class="d-flex align-items-center justify-content-between">
-						<div class="avatar-list avatar-list-stacked">
-							<span class="avatar avatar-xs" data-bs-toggle="tooltip" data-bs-title="Emily Thompson">
-								<img class="avatar-img" src="./static/avatars/001f.jpg" width="20" height="20" alt="Emily Thompson">
-							</span>
-							<span class="avatar avatar-xs" data-bs-toggle="tooltip" data-bs-title="Robert Garcia">
-								<img class="avatar-img" src="./static/avatars/003m.jpg" width="20" height="20" alt="Robert Garcia">
-							</span>
-						</div>
-						<div class="text-end">
-							<Badge text="28 posts" class="bg-light text-body" />
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+    <div class="col-12 col-md-6 col-lg-4">
+      <Card class="position-relative overflow-hidden">
+        <Icon name="chart-pie" class="icon-lg text-danger opacity-25 position-absolute top-0 end-0 m-3" />
+        <CardBody>
+          <small class="text-secondary d-block mb-4">12 followers</small>
+          <h3 class="fs-6 mb-1 text-truncate"><a class="text-body" href="./empty.html">Reports &amp; analytics</a></h3>
+          <p class="text-secondary text-truncate">Data-driven insights and performance reports across all departments.</p>
+          <p class="fs-sm text-secondary mb-0">Last post 5 days ago</p>
+          <hr />
+          <div class="d-flex align-items-center justify-content-between">
+            <AvatarList stacked={true}>
+              <Avatar src="static/avatars/001f.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="Emily Thompson" />
+              <Avatar src="static/avatars/003m.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="Robert Garcia" />
+            </AvatarList>
+            <div class="text-end">
+              <Badge text="28 posts" class="bg-light text-body" />
+            </div>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
 
-		<div class="col-12 col-md-6 col-lg-4">
-			<div class="card position-relative overflow-hidden">
-				<Icon name="id-badge" class="icon-lg text-warning opacity-25 position-absolute top-0 end-0 m-3" />
-				<div class="card-body">
-					<small class="text-secondary d-block mb-4">16 followers</small>
-					<h3 class="fs-6 mb-1 text-truncate"><a class="text-body" href="./empty.html">Events &amp; webinars</a></h3>
-					<p class="text-secondary text-truncate">Upcoming events, webinar recordings, and community meetups.</p>
-					<p class="fs-sm text-secondary mb-0">Last post 3 days ago</p>
-					<hr>
-					<div class="d-flex align-items-center justify-content-between">
-						<div class="avatar-list avatar-list-stacked">
-							<span class="avatar avatar-xs" data-bs-toggle="tooltip" data-bs-title="Olivia Davis">
-								<img class="avatar-img" src="./static/avatars/005f.jpg" width="20" height="20" alt="Olivia Davis">
-							</span>
-							<span class="avatar avatar-xs" data-bs-toggle="tooltip" data-bs-title="Michael Johnson">
-								<img class="avatar-img" src="./static/avatars/002m.jpg" width="20" height="20" alt="Michael Johnson">
-							</span>
-						</div>
-						<div class="text-end">
-							<Badge text="34 posts" class="bg-light text-body" />
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+    <div class="col-12 col-md-6 col-lg-4">
+      <Card class="position-relative overflow-hidden">
+        <Icon name="id-badge" class="icon-lg text-warning opacity-25 position-absolute top-0 end-0 m-3" />
+        <CardBody>
+          <small class="text-secondary d-block mb-4">16 followers</small>
+          <h3 class="fs-6 mb-1 text-truncate"><a class="text-body" href="./empty.html">Events &amp; webinars</a></h3>
+          <p class="text-secondary text-truncate">Upcoming events, webinar recordings, and community meetups.</p>
+          <p class="fs-sm text-secondary mb-0">Last post 3 days ago</p>
+          <hr />
+          <div class="d-flex align-items-center justify-content-between">
+            <AvatarList stacked={true}>
+              <Avatar src="static/avatars/005f.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="Olivia Davis" />
+              <Avatar src="static/avatars/002m.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="Michael Johnson" />
+            </AvatarList>
+            <div class="text-end">
+              <Badge text="34 posts" class="bg-light text-body" />
+            </div>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
 
-		<div class="col-12 col-md-6 col-lg-4">
-			<div class="card position-relative overflow-hidden">
-				<Icon name="user" class="icon-lg text-warning opacity-25 position-absolute top-0 end-0 m-3" />
-				<div class="card-body">
-					<small class="text-secondary d-block mb-4">9 followers</small>
-					<h3 class="fs-6 mb-1 text-truncate"><a class="text-body" href="./empty.html">Client success stories</a></h3>
-					<p class="text-secondary text-truncate">Case studies and testimonials from our most satisfied customers.</p>
-					<p class="fs-sm text-secondary mb-0">Last post 1 week ago</p>
-					<hr>
-					<div class="d-flex align-items-center justify-content-between">
-						<div class="avatar-list avatar-list-stacked">
-							<span class="avatar avatar-xs" data-bs-toggle="tooltip" data-bs-title="James Wilson">
-								<img class="avatar-img" src="./static/avatars/006m.jpg" width="20" height="20" alt="James Wilson">
-							</span>
-							<span class="avatar avatar-xs" data-bs-toggle="tooltip" data-bs-title="Jessica Miller">
-								<img class="avatar-img" src="./static/avatars/004f.jpg" width="20" height="20" alt="Jessica Miller">
-							</span>
-						</div>
-						<div class="text-end">
-							<Badge text="64 posts" class="bg-light text-body" />
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+    <div class="col-12 col-md-6 col-lg-4">
+      <Card class="position-relative overflow-hidden">
+        <Icon name="user" class="icon-lg text-warning opacity-25 position-absolute top-0 end-0 m-3" />
+        <CardBody>
+          <small class="text-secondary d-block mb-4">9 followers</small>
+          <h3 class="fs-6 mb-1 text-truncate"><a class="text-body" href="./empty.html">Client success stories</a></h3>
+          <p class="text-secondary text-truncate">Case studies and testimonials from our most satisfied customers.</p>
+          <p class="fs-sm text-secondary mb-0">Last post 1 week ago</p>
+          <hr />
+          <div class="d-flex align-items-center justify-content-between">
+            <AvatarList stacked={true}>
+              <Avatar src="static/avatars/006m.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="James Wilson" />
+              <Avatar src="static/avatars/004f.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="Jessica Miller" />
+            </AvatarList>
+            <div class="text-end">
+              <Badge text="64 posts" class="bg-light text-body" />
+            </div>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
 
-		<div class="col-12 col-md-6 col-lg-4">
-			<div class="card position-relative overflow-hidden">
-				<Icon name="message" class="icon-lg text-primary opacity-25 position-absolute top-0 end-0 m-3" />
-				<div class="card-body">
-					<small class="text-secondary d-block mb-4">10 followers</small>
-					<h3 class="fs-6 mb-1 text-truncate"><a class="text-body" href="./empty.html">Team highlights</a></h3>
-					<p class="text-secondary text-truncate">Spotlights, shoutouts, and stories from people across the team.</p>
-					<p class="fs-sm text-secondary mb-0">Last post 4 days ago</p>
-					<hr>
-					<div class="d-flex align-items-center justify-content-between">
-						<div class="avatar-list avatar-list-stacked">
-							<span class="avatar avatar-xs" data-bs-toggle="tooltip" data-bs-title="Michael Johnson">
-								<img class="avatar-img" src="./static/avatars/002m.jpg" width="20" height="20" alt="Michael Johnson">
-							</span>
-							<span class="avatar avatar-xs" data-bs-toggle="tooltip" data-bs-title="Emily Thompson">
-								<img class="avatar-img" src="./static/avatars/001f.jpg" width="20" height="20" alt="Emily Thompson">
-							</span>
-						</div>
-						<div class="text-end">
-							<Badge text="42 posts" class="bg-light text-body" />
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+    <div class="col-12 col-md-6 col-lg-4">
+      <Card class="position-relative overflow-hidden">
+        <Icon name="message" class="icon-lg text-primary opacity-25 position-absolute top-0 end-0 m-3" />
+        <CardBody>
+          <small class="text-secondary d-block mb-4">10 followers</small>
+          <h3 class="fs-6 mb-1 text-truncate"><a class="text-body" href="./empty.html">Team highlights</a></h3>
+          <p class="text-secondary text-truncate">Spotlights, shoutouts, and stories from people across the team.</p>
+          <p class="fs-sm text-secondary mb-0">Last post 4 days ago</p>
+          <hr />
+          <div class="d-flex align-items-center justify-content-between">
+            <AvatarList stacked={true}>
+              <Avatar src="static/avatars/002m.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="Michael Johnson" />
+              <Avatar src="static/avatars/001f.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="Emily Thompson" />
+            </AvatarList>
+            <div class="text-end">
+              <Badge text="42 posts" class="bg-light text-body" />
+            </div>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
 
-		<div class="col-12 col-md-6 col-lg-4">
-			<div class="card position-relative overflow-hidden">
-				<Icon name="building-bank" class="icon-lg text-danger opacity-25 position-absolute top-0 end-0 m-3" />
-				<div class="card-body">
-					<small class="text-secondary d-block mb-4">26 followers</small>
-					<h3 class="fs-6 mb-1 text-truncate"><a class="text-body" href="./empty.html">Training &amp; resources</a></h3>
-					<p class="text-secondary text-truncate">Access to learning materials, tutorials, or resources for users and staff.</p>
-					<p class="fs-sm text-secondary mb-0">Last post 6 days ago</p>
-					<hr>
-					<div class="d-flex align-items-center justify-content-between">
-						<div class="avatar-list avatar-list-stacked">
-							<span class="avatar avatar-xs" data-bs-toggle="tooltip" data-bs-title="Robert Garcia">
-								<img class="avatar-img" src="./static/avatars/003m.jpg" width="20" height="20" alt="Robert Garcia">
-							</span>
-							<span class="avatar avatar-xs" data-bs-toggle="tooltip" data-bs-title="Olivia Davis">
-								<img class="avatar-img" src="./static/avatars/005f.jpg" width="20" height="20" alt="Olivia Davis">
-							</span>
-						</div>
-						<div class="text-end">
-							<Badge text="38 posts" class="bg-light text-body" />
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
+    <div class="col-12 col-md-6 col-lg-4">
+      <Card class="position-relative overflow-hidden">
+        <Icon name="building-bank" class="icon-lg text-danger opacity-25 position-absolute top-0 end-0 m-3" />
+        <CardBody>
+          <small class="text-secondary d-block mb-4">26 followers</small>
+          <h3 class="fs-6 mb-1 text-truncate"><a class="text-body" href="./empty.html">Training &amp; resources</a></h3>
+          <p class="text-secondary text-truncate">Access to learning materials, tutorials, or resources for users and staff.</p>
+          <p class="fs-sm text-secondary mb-0">Last post 6 days ago</p>
+          <hr />
+          <div class="d-flex align-items-center justify-content-between">
+            <AvatarList stacked={true}>
+              <Avatar src="static/avatars/003m.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="Robert Garcia" />
+              <Avatar src="static/avatars/005f.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="Olivia Davis" />
+            </AvatarList>
+            <div class="text-end">
+              <Badge text="38 posts" class="bg-light text-body" />
+            </div>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
 
-		<div class="col-12 col-md-6 col-lg-4">
-			<div class="card position-relative overflow-hidden">
-				<Icon name="brand-apple" class="icon-lg text-primary opacity-25 position-absolute top-0 end-0 m-3" />
-				<div class="card-body">
-					<small class="text-secondary d-block mb-4">6 followers</small>
-					<h3 class="fs-6 mb-1 text-truncate"><a class="text-body" href="./empty.html">Industry news</a></h3>
-					<p class="text-secondary text-truncate">Trends, news, and commentary from around the industry landscape.</p>
-					<p class="fs-sm text-secondary mb-0">Last post 2 weeks ago</p>
-					<hr>
-					<div class="d-flex align-items-center justify-content-between">
-						<div class="avatar-list avatar-list-stacked">
-							<span class="avatar avatar-xs" data-bs-toggle="tooltip" data-bs-title="James Wilson">
-								<img class="avatar-img" src="./static/avatars/006m.jpg" width="20" height="20" alt="James Wilson">
-							</span>
-							<span class="avatar avatar-xs" data-bs-toggle="tooltip" data-bs-title="Jessica Miller">
-								<img class="avatar-img" src="./static/avatars/004f.jpg" width="20" height="20" alt="Jessica Miller">
-							</span>
-						</div>
-						<div class="text-end">
-							<Badge text="59 posts" class="bg-light text-body" />
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+    <div class="col-12 col-md-6 col-lg-4">
+      <Card class="position-relative overflow-hidden">
+        <Icon name="brand-apple" class="icon-lg text-primary opacity-25 position-absolute top-0 end-0 m-3" />
+        <CardBody>
+          <small class="text-secondary d-block mb-4">6 followers</small>
+          <h3 class="fs-6 mb-1 text-truncate"><a class="text-body" href="./empty.html">Industry news</a></h3>
+          <p class="text-secondary text-truncate">Trends, news, and commentary from around the industry landscape.</p>
+          <p class="fs-sm text-secondary mb-0">Last post 2 weeks ago</p>
+          <hr />
+          <div class="d-flex align-items-center justify-content-between">
+            <AvatarList stacked={true}>
+              <Avatar src="static/avatars/006m.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="James Wilson" />
+              <Avatar src="static/avatars/004f.jpg" size="xs" data-bs-toggle="tooltip" data-bs-title="Jessica Miller" />
+            </AvatarList>
+            <div class="text-end">
+              <Badge text="59 posts" class="bg-light text-body" />
+            </div>
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+  </div>
 
-	<div class="row align-items-center mt-7">
-		<div class="col">
-			<p class="text-secondary mb-0">1 – 8 (8 total)</p>
-		</div>
-		<div class="col-auto">
-			<nav aria-label="Page navigation">
-				<Pagination count={3} offset={3} activeItem={1} class="mb-0" />
-			</nav>
-		</div>
-	</div>
+  <div class="row align-items-center mt-7">
+    <div class="col">
+      <p class="text-secondary mb-0">1 – 8 (8 total)</p>
+    </div>
+    <div class="col-auto">
+      <nav aria-label="Page navigation">
+        <Pagination count={3} offset={3} activeItem={1} class="mb-0" />
+      </nav>
+    </div>
+  </div>
 </DefaultLayout>

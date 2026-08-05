@@ -1,6 +1,9 @@
 @use '../config' as *;
 
 .calendar {
+  --#{$prefix}calendar-padding-y: #{$calendar-padding-y};
+  --#{$prefix}calendar-date-padding: #{$calendar-date-padding};
+  --#{$prefix}calendar-date-size: #{$calendar-date-size};
   display: block;
   font-size: $font-size-sm;
   border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) var(--#{$prefix}border-color);
@@ -22,7 +25,7 @@
   display: flex;
   flex-wrap: wrap;
   justify-content: start;
-  padding: 0.5rem 0;
+  padding: var(--#{$prefix}calendar-padding-y) 0;
 }
 
 .calendar-header {
@@ -32,7 +35,7 @@
 .calendar-date {
   flex: 0 0 calc(100% / 7);
   max-width: calc(100% / 7);
-  padding: 0.2rem;
+  padding: var(--#{$prefix}calendar-date-padding);
   text-align: center;
   border: 0;
 
@@ -44,9 +47,9 @@
   .date-item {
     position: relative;
     display: inline-block;
-    width: 1.4rem;
-    height: 1.4rem;
-    line-height: 1.4rem;
+    width: var(--#{$prefix}calendar-date-size);
+    height: var(--#{$prefix}calendar-date-size);
+    line-height: var(--#{$prefix}calendar-date-size);
     color: #66758c;
     text-align: center;
     text-decoration: none;
@@ -81,7 +84,7 @@
     top: 50%;
     inset-inline-end: 0;
     inset-inline-start: 0;
-    height: 1.4rem;
+    height: var(--#{$prefix}calendar-date-size);
     content: '';
     background: color-transparent(var(--#{$prefix}primary), 0.1);
     transform: translateY(-50%);

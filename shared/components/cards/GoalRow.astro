@@ -1,0 +1,59 @@
+---
+import Avatar from '@ui/Avatar.astro'
+import Progress from '@ui/Progress.astro'
+import Badge from '@ui/Badge.astro'
+
+interface Props {
+  tile: string
+  name: string
+  owner: string
+  progress: number
+  /** shown next to the bar; defaults to `${progress}%` */
+  progressLabel?: string
+  progressColor?: string
+  status: string
+  statusColor?: string
+  /** outline badge (e.g. Exceeded) instead of light filled */
+  statusOutline?: boolean
+  /** reserve space for accordion chevron alignment */
+  spacer?: boolean
+}
+
+const {
+  tile,
+  name,
+  owner,
+  progress,
+  progressLabel = `${progress}%`,
+  progressColor,
+  status,
+  statusColor = 'primary',
+  statusOutline,
+  spacer,
+} = Astro.props
+---
+
+<div class:list={['grid', 'align-items-center', spacer && 'me-md-5']}>
+  <div class="g-col-12 g-col-md-8">
+    <div class="d-flex align-items-center gap-3 overflow-hidden">
+      <Avatar placeholder={tile} shape="square" size="sm" />
+      <div class="overflow-hidden">
+        <h3 class="m-0 text-truncate">{name}</h3>
+        <p class="text-secondary fs-5 m-0 text-truncate">{owner}</p>
+      </div>
+    </div>
+  </div>
+  <div class="g-col-12 g-col-md-3 d-flex align-items-center gap-3">
+    <Progress value={progress} color={progressColor} class="flex-fill" />
+    <span class="flex-shrink-0">{progressLabel}</span>
+  </div>
+  <div class="g-col-12 g-col-md-1 d-flex align-items-center">
+    {
+      statusOutline ? (
+        <Badge text={status} class={`badge-outline text-${statusColor} badge-pill`} />
+      ) : (
+        <Badge text={status} color={statusColor} light class="badge-pill" />
+      )
+    }
+  </div>
+</div>

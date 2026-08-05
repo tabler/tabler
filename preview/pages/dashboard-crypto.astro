@@ -1,334 +1,332 @@
 ---
-import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
-import Avatar from '@shared/components/ui/Avatar.astro';
-import Trending from '@shared/components/ui/Trending.astro';
-import CardDropdown from '@shared/components/ui/CardDropdown.astro';
-import NavSegmented from '@shared/components/ui/NavSegmented.astro';
-import Chart from '@shared/components/Chart.astro';
-import SwitchIcon from '@shared/components/ui/SwitchIcon.astro';
-import cryptoCurrencies from '@data/crypto-currencies.json';
-import cryptoMarkets from '@data/crypto-markets.json';
-import cryptoOrders from '@data/crypto-orders.json';
+import CardActions from '@ui/CardActions.astro'
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Avatar from '@ui/Avatar.astro'
+import Trending from '@ui/Trending.astro'
+import CardDropdown from '@ui/CardDropdown.astro'
+import Card from '@ui/Card.astro'
+import CardHeader from '@ui/CardHeader.astro'
+import CardBody from '@ui/CardBody.astro'
+import NavSegmented from '@ui/NavSegmented.astro'
+import Chart from '@ui/Chart.astro'
+import SwitchIcon from '@ui/SwitchIcon.astro'
+import cryptoCurrencies from '@data/crypto-currencies.json'
+import cryptoMarkets from '@data/crypto-markets.json'
+import cryptoOrders from '@data/crypto-orders.json'
+import { parseCurrency, roundTo } from '@shared/lib/string-format'
 
 interface Currency {
-	symbol: string;
-	price: string;
-	p24h: number;
-	'volume-24h': string;
+  'symbol': string
+  'price': string
+  'p24h': number
+  'volume-24h': string
 }
 
-const currencies = cryptoCurrencies as Currency[];
-const find = (symbol: string) => currencies.find((c) => c.symbol === symbol)!;
-const btc = find('BTC');
-const ltc = find('LTC');
-const eth = find('ETH');
-const xmr = find('XMR');
+const currencies = cryptoCurrencies as Currency[]
+const find = (symbol: string) => currencies.find((c) => c.symbol === symbol)!
+const btc = find('BTC')
+const ltc = find('LTC')
+const eth = find('ETH')
+const xmr = find('XMR')
 
-const btcBalance = 2.3;
-const num = (s: string) => parseFloat(s.replace(/[$,]/g, ''));
-const btcPriceNum = num(btc.price);
-const totalUsd = Math.round(btcPriceNum * btcBalance).toLocaleString('en-US');
-// Liquid `divided_by` then `round: 8` (trailing zeros dropped by number output)
-const r8 = (x: number) => parseFloat(x.toFixed(8));
-const ltcBtc = r8(num(ltc.price) / btcPriceNum);
-const ethBtc = r8(num(eth.price) / btcPriceNum);
-const xmrBtc = r8(num(xmr.price) / btcPriceNum);
+const btcBalance = 2.3
+const btcPriceNum = parseCurrency(btc.price)
+const totalUsd = Math.round(btcPriceNum * btcBalance).toLocaleString('en-US')
+// divided_by then round to 8 decimals (trailing zeros dropped in output)
+const ltcBtc = roundTo(parseCurrency(ltc.price) / btcPriceNum)
+const ethBtc = roundTo(parseCurrency(eth.price) / btcPriceNum)
+const xmrBtc = roundTo(parseCurrency(xmr.price) / btcPriceNum)
 
-const markets = (cryptoMarkets as { coin: string; price: string; volume: string; change: string }[]).slice(0, 10);
-const orders = cryptoOrders as { sell_orders: { price: string; btc: string; sum: string }[]; buy_orders: { price: string; btc: string; sum: string }[] };
-const operationCurrencies = currencies.slice(0, 20);
+const markets = (cryptoMarkets as { coin: string; price: string; volume: string; change: string }[]).slice(0, 10)
+const orders = cryptoOrders as { sell_orders: { price: string; btc: string; sum: string }[]; buy_orders: { price: string; btc: string; sum: string }[] }
+const operationCurrencies = currencies.slice(0, 20)
 ---
 
-<DefaultLayout
-	title="Crypto Dashboard"
-	pageHeader="Crypto Dashboard"
-	pageMenu="dashboards.crypto"
-	pageLibs={['apexcharts']}
->
-	<div class="row row-cards">
-		<div class="col-12">
-			<div class="row row-cards">
-				<div class="col-12 col-md-6 col-xxl">
-					<div class="card">
-						<div class="card-body">
-							<div class="row">
-								<div class="col mt-0">
-									<h5 class="card-title">Total balance</h5>
-								</div>
-								<div class="col-auto">
-									<Avatar icon="currency-dollar" />
-								</div>
-							</div>
-							<div class="mb-1">
-								<span class="h3">${totalUsd}</span>
-								<span class="text-muted">{btcBalance} {btc.symbol}</span>
-							</div>
-							<div class="mb-0">
-								<Trending value={btc.p24h} />
-								<span class="text-muted">Since last week</span>
-							</div>
-						</div>
-					</div>
-				</div>
+<DefaultLayout title="Crypto Dashboard" pageHeader="Crypto Dashboard" pageMenu="dashboards.crypto" pageLibs={['apexcharts']}>
+  <div class="row row-cards">
+    <div class="col-12">
+      <div class="row row-cards">
+        <div class="col-12 col-md-6 col-xxl">
+          <Card>
+            <CardBody>
+              <div class="row">
+                <div class="col mt-0">
+                  <h5 class="card-title">Total balance</h5>
+                </div>
+                <div class="col-auto">
+                  <Avatar icon="currency-dollar" />
+                </div>
+              </div>
+              <div class="mb-1">
+                <span class="h3">${totalUsd}</span>
+                <span class="text-muted">{btcBalance} {btc.symbol}</span>
+              </div>
+              <div class="mb-0">
+                <Trending value={btc.p24h} />
+                <span class="text-muted">Since last week</span>
+              </div>
+            </CardBody>
+          </Card>
+        </div>
 
-				<div class="col-12 col-md-6 col-xxl">
-					<div class="card">
-						<div class="card-body">
-							<div class="row">
-								<div class="col mt-0">
-									<h5 class="card-title">USD/BTC</h5>
-								</div>
-								<div class="col-auto">
-									<Avatar icon="currency-bitcoin" />
-								</div>
-							</div>
-							<div class="mb-1">
-								<span class="h3">{btc.price}</span>
-								<span class="text-muted">{btc.price}</span>
-							</div>
-							<div class="mb-0">
-								<span class="text-muted">Volume: {btc['volume-24h']}</span>
-							</div>
-						</div>
-					</div>
-				</div>
+        <div class="col-12 col-md-6 col-xxl">
+          <Card>
+            <CardBody>
+              <div class="row">
+                <div class="col mt-0">
+                  <h5 class="card-title">USD/BTC</h5>
+                </div>
+                <div class="col-auto">
+                  <Avatar icon="currency-bitcoin" />
+                </div>
+              </div>
+              <div class="mb-1">
+                <span class="h3">{btc.price}</span>
+                <span class="text-muted">{btc.price}</span>
+              </div>
+              <div class="mb-0">
+                <span class="text-muted">Volume: {btc['volume-24h']}</span>
+              </div>
+            </CardBody>
+          </Card>
+        </div>
 
-				<div class="col-12 col-md-6 col-xxl">
-					<div class="card">
-						<div class="card-body">
-							<div class="row">
-								<div class="col mt-0">
-									<h5 class="card-title">LTC/BTC</h5>
-								</div>
-								<div class="col-auto">
-									<Avatar icon="currency-litecoin" />
-								</div>
-							</div>
-							<div class="mb-1">
-								<span class="h3">{ltcBtc}</span>
-								<span class="text-muted">{ltc.price}</span>
-							</div>
-							<div class="mb-0">
-								<span class="text-muted">Volume: {ltc['volume-24h'].replace('$', '')}</span>
-							</div>
-						</div>
-					</div>
-				</div>
+        <div class="col-12 col-md-6 col-xxl">
+          <Card>
+            <CardBody>
+              <div class="row">
+                <div class="col mt-0">
+                  <h5 class="card-title">LTC/BTC</h5>
+                </div>
+                <div class="col-auto">
+                  <Avatar icon="currency-litecoin" />
+                </div>
+              </div>
+              <div class="mb-1">
+                <span class="h3">{ltcBtc}</span>
+                <span class="text-muted">{ltc.price}</span>
+              </div>
+              <div class="mb-0">
+                <span class="text-muted">Volume: {ltc['volume-24h'].replace('$', '')}</span>
+              </div>
+            </CardBody>
+          </Card>
+        </div>
 
-				<div class="col-12 col-md-6 col-xxl">
-					<div class="card">
-						<div class="card-body">
-							<div class="row">
-								<div class="col mt-0">
-									<h5 class="card-title">ETH/BTC</h5>
-								</div>
-								<div class="col-auto">
-									<Avatar icon="currency-ethereum" />
-								</div>
-							</div>
-							<div class="mb-1">
-								<span class="h3">{ethBtc}</span>
-								<span class="text-muted">{eth.price}</span>
-							</div>
-							<div class="mb-0">
-								<span class="text-muted">Volume: {eth['volume-24h'].replace('$', '')}</span>
-							</div>
-						</div>
-					</div>
-				</div>
+        <div class="col-12 col-md-6 col-xxl">
+          <Card>
+            <CardBody>
+              <div class="row">
+                <div class="col mt-0">
+                  <h5 class="card-title">ETH/BTC</h5>
+                </div>
+                <div class="col-auto">
+                  <Avatar icon="currency-ethereum" />
+                </div>
+              </div>
+              <div class="mb-1">
+                <span class="h3">{ethBtc}</span>
+                <span class="text-muted">{eth.price}</span>
+              </div>
+              <div class="mb-0">
+                <span class="text-muted">Volume: {eth['volume-24h'].replace('$', '')}</span>
+              </div>
+            </CardBody>
+          </Card>
+        </div>
 
-				<div class="col-12 col-md-6 col-xxl">
-					<div class="card">
-						<div class="card-body">
-							<div class="row">
-								<div class="col mt-0">
-									<h5 class="card-title">XMR/BTC</h5>
-								</div>
-								<div class="col-auto">
-									<Avatar icon="currency-monero" />
-								</div>
-							</div>
-							<div class="mb-1">
-								<span class="h3">{xmrBtc}</span>
-								<span class="text-muted">{xmr.price}</span>
-							</div>
-							<div class="mb-0">
-								<span class="text-muted">Volume: {xmr['volume-24h'].replace('$', '')}</span>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col-12">
-			<div class="row row-cards">
-				<div class="col-12 col-lg-5">
-					<div class="card">
-						<div class="card-header">
-							<h5 class="card-title mb-0">Markets</h5>
-							<div class="card-actions">
-								<CardDropdown />
-							</div>
-						</div>
-						<table class="table card-table table-striped">
-							<thead>
-								<tr>
-									<th>
-										<SwitchIcon icon="star" iconBColor="yellow" variant="slide-up" />
-									</th>
-									<th>Coin</th>
-									<th>Price</th>
-									<th class="d-none d-xl-table-cell">Volume</th>
-									<th class="d-none d-xl-table-cell text-end">Change</th>
-								</tr>
-							</thead>
-							<tbody>
-								{
-									markets.map((market) => (
-										<tr>
-											<td>
-												<SwitchIcon icon="star" iconBColor="yellow" variant="slide-up" />
-											</td>
-											<td>{market.coin}</td>
-											<td class="">{market.price}</td>
-											<td class="d-none d-xl-table-cell">{market.volume}</td>
-											<td class="d-none d-xl-table-cell text-end">
-												<Trending value={market.change as unknown as number} />
-											</td>
-										</tr>
-									))
-								}
-							</tbody>
-						</table>
-					</div>
-				</div>
+        <div class="col-12 col-md-6 col-xxl">
+          <Card>
+            <CardBody>
+              <div class="row">
+                <div class="col mt-0">
+                  <h5 class="card-title">XMR/BTC</h5>
+                </div>
+                <div class="col-auto">
+                  <Avatar icon="currency-monero" />
+                </div>
+              </div>
+              <div class="mb-1">
+                <span class="h3">{xmrBtc}</span>
+                <span class="text-muted">{xmr.price}</span>
+              </div>
+              <div class="mb-0">
+                <span class="text-muted">Volume: {xmr['volume-24h'].replace('$', '')}</span>
+              </div>
+            </CardBody>
+          </Card>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="row row-cards">
+        <div class="col-12 col-lg-5">
+          <Card>
+            <CardHeader>
+              <h5 class="card-title mb-0">Markets</h5>
+              <CardActions>
+                <CardDropdown />
+              </CardActions>
+            </CardHeader>
+            <table class="table card-table table-striped">
+              <thead>
+                <tr>
+                  <th>
+                    <SwitchIcon icon="star" iconBColor="yellow" variant="slide-up" />
+                  </th>
+                  <th>Coin</th>
+                  <th>Price</th>
+                  <th class="d-none d-xl-table-cell">Volume</th>
+                  <th class="d-none d-xl-table-cell text-end">Change</th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  markets.map((market) => (
+                    <tr>
+                      <td>
+                        <SwitchIcon icon="star" iconBColor="yellow" variant="slide-up" />
+                      </td>
+                      <td>{market.coin}</td>
+                      <td class="">{market.price}</td>
+                      <td class="d-none d-xl-table-cell">{market.volume}</td>
+                      <td class="d-none d-xl-table-cell text-end">
+                        <Trending value={market.change as unknown as number} />
+                      </td>
+                    </tr>
+                  ))
+                }
+              </tbody>
+            </table>
+          </Card>
+        </div>
 
-				<div class="col-12 col-lg-7">
-					<div class="card">
-						<div class="card-header">
-							<h5 class="card-title mb-0">LTC/BTC</h5>
-							<div class="card-actions">
-								<NavSegmented items="1m,5m,30m,1h,1d" name="timeframe" size="sm" default={2} />
-							</div>
-						</div>
-						<div class="card-body">
-							<Chart chartId="dashboard-crypto-candlestick" height={28} />
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col-12">
-			<div class="row row-cards">
-				<div class="col-12 col-lg-12 col-xxl-3">
-					<div class="card">
-						<div class="card-header">
-							<h5 class="card-title mb-0">Operations</h5>
-							<div class="card-actions">
-								<NavSegmented items="Buy,Sell,Send" name="operations" size="sm" />
-							</div>
-						</div>
+        <div class="col-12 col-lg-7">
+          <Card>
+            <CardHeader>
+              <h5 class="card-title mb-0">LTC/BTC</h5>
+              <CardActions>
+                <NavSegmented items={['1m', '5m', '30m', '1h', '1d']} name="timeframe" size="sm" default={2} />
+              </CardActions>
+            </CardHeader>
+            <CardBody>
+              <Chart chartId="dashboard-crypto-candlestick" height={28} />
+            </CardBody>
+          </Card>
+        </div>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="row row-cards">
+        <div class="col-12 col-lg-12 col-xxl-3">
+          <Card>
+            <CardHeader>
+              <h5 class="card-title mb-0">Operations</h5>
+              <CardActions>
+                <NavSegmented items={['Buy', 'Sell', 'Send']} name="operations" size="sm" />
+              </CardActions>
+            </CardHeader>
 
-						<div class="card-body">
-							<p>Place new order:</p>
+            <CardBody>
+              <p>Place new order:</p>
 
-							<div class="input-group mb-3">
-								<label class="input-group-text">Amount</label>
-								<select class="form-select">
-									{
-										operationCurrencies.map((currency, i) => (
-											<option value={currency.symbol} selected={i === 0}>
-												{currency.symbol}
-											</option>
-										))
-									}
-								</select>
-								<input type="text" class="form-control" value="0.25" />
-							</div>
+              <div class="input-group mb-3">
+                <label class="input-group-text">Amount</label>
+                <select class="form-select">
+                  {
+                    operationCurrencies.map((currency, i) => (
+                      <option value={currency.symbol} selected={i === 0}>
+                        {currency.symbol}
+                      </option>
+                    ))
+                  }
+                </select>
+                <input type="text" class="form-control" value="0.25" />
+              </div>
 
-							<div class="input-group mb-3">
-								<label class="input-group-text">Price</label>
-								<input type="text" class="form-control" readonly="" value="23,077.05" />
-								<label class="input-group-text">$</label>
-							</div>
+              <div class="input-group mb-3">
+                <label class="input-group-text">Price</label>
+                <input type="text" class="form-control" readonly="" value="23,077.05" />
+                <label class="input-group-text">$</label>
+              </div>
 
-							<div class="input-group mb-3">
-								<label class="input-group-text">Total</label>
-								<input type="text" class="form-control" readonly="" value="5,769.27" />
-								<label class="input-group-text">$</label>
-							</div>
+              <div class="input-group mb-3">
+                <label class="input-group-text">Total</label>
+                <input type="text" class="form-control" readonly="" value="5,769.27" />
+                <label class="input-group-text">$</label>
+              </div>
 
-							<div class="d-grid">
-								<button type="button" class="btn btn-primary mb-3">Process to wallet</button>
-							</div>
+              <div class="d-grid">
+                <button type="button" class="btn btn-primary mb-3">Process to wallet</button>
+              </div>
 
-							<p class="text-muted mb-0 small">The final amount could change depending on current market conditions.</p>
-						</div>
-					</div>
-				</div>
+              <p class="text-muted mb-0 small">The final amount could change depending on current market conditions.</p>
+            </CardBody>
+          </Card>
+        </div>
 
-				<div class="col-12 col-lg-6 col-xxl">
-					<div class="card">
-						<div class="card-header">
-							<h5 class="card-title mb-0">Sell Orders</h5>
-							<div class="card-actions">
-								<button class="btn btn-sm">View all</button>
-							</div>
-						</div>
-						<table class="table card-table table-striped">
-							<thead>
-								<tr>
-									<th>Price</th>
-									<th class="d-none d-xl-table-cell">BTC</th>
-									<th>Sum(BTC)</th>
-								</tr>
-							</thead>
-							<tbody>
-								{
-									orders.sell_orders.map((order) => (
-										<tr>
-											<td>{order.price}</td>
-											<td class="d-none d-xl-table-cell">{order.btc}</td>
-											<td>{order.sum}</td>
-										</tr>
-									))
-								}
-							</tbody>
-						</table>
-					</div>
-				</div>
+        <div class="col-12 col-lg-6 col-xxl">
+          <Card>
+            <CardHeader>
+              <h5 class="card-title mb-0">Sell Orders</h5>
+              <CardActions>
+                <button class="btn btn-sm">View all</button>
+              </CardActions>
+            </CardHeader>
+            <table class="table card-table table-striped">
+              <thead>
+                <tr>
+                  <th>Price</th>
+                  <th class="d-none d-xl-table-cell">BTC</th>
+                  <th>Sum(BTC)</th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  orders.sell_orders.map((order) => (
+                    <tr>
+                      <td>{order.price}</td>
+                      <td class="d-none d-xl-table-cell">{order.btc}</td>
+                      <td>{order.sum}</td>
+                    </tr>
+                  ))
+                }
+              </tbody>
+            </table>
+          </Card>
+        </div>
 
-				<div class="col-12 col-lg-6 col-xxl">
-					<div class="card">
-						<div class="card-header">
-							<h5 class="card-title mb-0">Buy Orders</h5>
-							<div class="card-actions">
-								<button class="btn btn-sm">View all</button>
-							</div>
-						</div>
-						<table class="table card-table table-striped">
-							<thead>
-								<tr>
-									<th>Price</th>
-									<th class="d-none d-xl-table-cell">BTC</th>
-									<th>Sum(BTC)</th>
-								</tr>
-							</thead>
-							<tbody>
-								{
-									orders.buy_orders.map((order) => (
-										<tr>
-											<td>{order.price}</td>
-											<td class="d-none d-xl-table-cell">{order.btc}</td>
-											<td>{order.sum}</td>
-										</tr>
-									))
-								}
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+        <div class="col-12 col-lg-6 col-xxl">
+          <Card>
+            <CardHeader>
+              <h5 class="card-title mb-0">Buy Orders</h5>
+              <CardActions>
+                <button class="btn btn-sm">View all</button>
+              </CardActions>
+            </CardHeader>
+            <table class="table card-table table-striped">
+              <thead>
+                <tr>
+                  <th>Price</th>
+                  <th class="d-none d-xl-table-cell">BTC</th>
+                  <th>Sum(BTC)</th>
+                </tr>
+              </thead>
+              <tbody>
+                {
+                  orders.buy_orders.map((order) => (
+                    <tr>
+                      <td>{order.price}</td>
+                      <td class="d-none d-xl-table-cell">{order.btc}</td>
+                      <td>{order.sum}</td>
+                    </tr>
+                  ))
+                }
+              </tbody>
+            </table>
+          </Card>
+        </div>
+      </div>
+    </div>
+  </div>
 </DefaultLayout>

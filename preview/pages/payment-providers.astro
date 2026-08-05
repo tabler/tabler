@@ -1,61 +1,71 @@
 ---
-// Port of preview/pages/payment-providers.html (layout: default)
-import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
-import Payment from '@shared/components/ui/Payment.astro';
-import payments from '@data/payments.json';
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Payment from '@ui/Payment.astro'
+import Card from '@ui/Card.astro'
+import CardHeader from '@ui/CardHeader.astro'
+import CardBody from '@ui/CardBody.astro'
+import payments from '@data/payments.json'
 
-const providers = payments as { name: string; logo: string }[];
+const providers = payments as { name: string; logo: string }[]
 ---
 
 <DefaultLayout title="Payment Providers" pageHeader="Payment Providers" pageMenu="addons.payments">
-	<div class="row row-cards">
-		<div class="col-12">
-			<div class="card">
-				<div class="card-header">
-					<div class="card-title">Light version</div>
-				</div>
-				<div class="card-body">
-					<div class="row g-5 row-cols-5">
-						{providers.map((provider) => (
-							<div class="col">
-								<div class="row">
-									<div class="col-auto"><Payment payment={provider.logo} /></div>
-									<div class="col">
-										<strong class="d-block">{provider.name}</strong>
-										<div class="mt-1">
-											<code>{provider.logo}</code>
-										</div>
-									</div>
-								</div>
-							</div>
-						))}
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col-12">
-			<div class="card">
-				<div class="card-header">
-					<div class="card-title">Dark version</div>
-				</div>
-				<div class="card-body">
-					<div class="row g-5 row-cols-5">
-						{providers.map((provider) => (
-							<div class="col">
-								<div class="row">
-									<div class="col-auto"><Payment payment={provider.logo} dark={true} /></div>
-									<div class="col">
-										<strong class="d-block">{provider.name}</strong>
-										<div class="mt-1">
-											<code>{provider.logo}-dark</code>
-										</div>
-									</div>
-								</div>
-							</div>
-						))}
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+  <div class="row row-cards">
+    <div class="col-12">
+      <Card>
+        <CardHeader>
+          <div class="card-title">Light version</div>
+        </CardHeader>
+        <CardBody>
+          <div class="row g-5 row-cols-5">
+            {
+              providers.map((provider) => (
+                <div class="col">
+                  <div class="row">
+                    <div class="col-auto">
+                      <Payment payment={provider.logo} />
+                    </div>
+                    <div class="col">
+                      <strong class="d-block">{provider.name}</strong>
+                      <div class="mt-1">
+                        <code>{provider.logo}</code>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-12">
+      <Card>
+        <CardHeader>
+          <div class="card-title">Dark version</div>
+        </CardHeader>
+        <CardBody>
+          <div class="row g-5 row-cols-5">
+            {
+              providers.map((provider) => (
+                <div class="col">
+                  <div class="row">
+                    <div class="col-auto">
+                      <Payment payment={provider.logo} dark={true} />
+                    </div>
+                    <div class="col">
+                      <strong class="d-block">{provider.name}</strong>
+                      <div class="mt-1">
+                        <code>{provider.logo}-dark</code>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))
+            }
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+  </div>
 </DefaultLayout>

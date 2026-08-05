@@ -12,7 +12,7 @@ const toDir = join(__dirname, '..', 'fonts')
 
 // Create fonts directory if it doesn't exist
 if (!existsSync(toDir)) {
-	mkdirSync(toDir, { recursive: true })
+  mkdirSync(toDir, { recursive: true })
 }
 
 // Copy geist-mono fonts
@@ -20,17 +20,17 @@ const monoFrom = join(fromDir, 'geist-mono')
 const monoTo = join(toDir, 'geist-mono')
 
 if (existsSync(monoFrom)) {
-	if (!existsSync(monoTo)) {
-		mkdirSync(monoTo, { recursive: true })
-	}
+  if (!existsSync(monoTo)) {
+    mkdirSync(monoTo, { recursive: true })
+  }
 
-	copySync(monoFrom, monoTo, {
-		dereference: true,
-	})
+  copySync(monoFrom, monoTo, {
+    dereference: true,
+  })
 
-	console.log(`Successfully copied geist-mono fonts`)
+  console.log(`Successfully copied geist-mono fonts`)
 } else {
-	console.warn(`Warning: geist-mono fonts not found at ${monoFrom}`)
+  console.warn(`Warning: geist-mono fonts not found at ${monoFrom}`)
 }
 
 // Copy geist-sans fonts
@@ -38,16 +38,15 @@ const sansFrom = join(fromDir, 'geist-sans')
 const sansTo = join(toDir, 'geist-sans')
 
 if (existsSync(sansFrom)) {
-	if (!existsSync(sansTo)) {
-		mkdirSync(sansTo, { recursive: true })
-	}
+  if (!existsSync(sansTo)) {
+    mkdirSync(sansTo, { recursive: true })
+  }
 
-	copySync(sansFrom, sansTo, {
-		dereference: true,
-	})
+  copySync(sansFrom, sansTo, {
+    dereference: true,
+  })
 
-	console.log(`Successfully copied geist-sans fonts`)
+  console.log(`Successfully copied geist-sans fonts`)
 } else {
-	console.warn(`Warning: geist-sans fonts not found at ${sansFrom}`)
+  console.warn(`Warning: geist-sans fonts not found at ${sansFrom}`)
 }
-

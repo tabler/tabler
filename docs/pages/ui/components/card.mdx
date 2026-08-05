@@ -1,12 +1,11 @@
 ---
 title: Card
 summary: A card is a flexible user interface element that helps organize content into meaningful sections and display it across different screen sizes. It can contain smaller elements such as images, text, links, and buttons, and can act as an entry point to more detailed information.
-bootstrapLink: components/card/
 description: Organize content with a flexible card.
-layout: '@shared/layouts/DocsMdxLayout.astro'
+layout: '@layouts/DocsMdxLayout.astro'
 ---
-import Example from '@shared/components/docs/Example.astro';
-import Icon from '@shared/components/Icon.astro';
+import Example from '@components/Example.astro';
+import Icon from '@ui/Icon.astro';
 
 ## Default card
 
@@ -72,6 +71,24 @@ Add a status color to your card, either at the top or on the side of the card, t
 
 <Example bg="surface-secondary">
 <div class="row row-deck"> <div class="col-md-6"> <div class="card"> <div class="card-status-top bg-danger"></div> <div class="card-body"> <h3 class="card-title">Card with top status</h3> <p class="text-secondary"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit incidunt, iste, itaque minima neque pariatur perferendis sed suscipit velit vitae voluptatem. </p> </div> </div> </div> <div class="col-md-6"> <div class="card"> <div class="card-status-start bg-green"></div> <div class="card-body"> <h3 class="card-title">Card with side status</h3> <p class="text-secondary"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit incidunt, iste, itaque minima neque pariatur perferendis sed suscipit velit vitae voluptatem. </p> </div> </div> </div> </div>
+</Example>
+
+## Card stamp
+
+Use a card stamp to put a large, faded icon in the top corner of a card. It is only a decoration, so it never covers the text and it does not react to clicks.
+
+Add a `.card-stamp` element as a direct child of the card, before the card body. Put the icon in a `.card-stamp-icon` element inside it.
+
+<Example bg="surface-secondary" column>
+<div class="card"> <div class="card-stamp"> <div class="card-stamp-icon bg-yellow"> <Icon name="bell" /> </div> </div> <div class="card-body"> <h3 class="card-title">Card with a stamp</h3> <p class="text-secondary">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit incidunt, iste, itaque minima neque pariatur.</p> </div> </div>
+</Example>
+
+## Card stamp size and color
+
+Add the `card-stamp-lg` class to make the stamp bigger. Change the circle color with a `bg-*` class, and the icon color with a `text-*` class.
+
+<Example bg="surface-secondary">
+<div class="row row-deck"> <div class="col-md-6"> <div class="card"> <div class="card-stamp card-stamp-lg"> <div class="card-stamp-icon bg-primary"> <Icon name="ghost" /> </div> </div> <div class="card-body"> <h3 class="card-title">Large stamp</h3> <p class="text-secondary">The large stamp is a good fit for banners and wide cards.</p> </div> </div> </div> <div class="col-md-6"> <div class="card bg-primary text-primary-fg"> <div class="card-stamp"> <div class="card-stamp-icon bg-white text-primary"> <Icon name="star" /> </div> </div> <div class="card-body"> <h3 class="card-title">Stamp on a color card</h3> <p>Use a white circle with a colored icon on a card with a background color.</p> </div> </div> </div> </div>
 </Example>
 
 ## Stacked card

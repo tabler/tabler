@@ -102,6 +102,9 @@
 Table sort
  */
 .table-sort {
+  --#{$prefix}table-sort-icon-size: #{$table-sort-icon-size};
+  --#{$prefix}table-sort-icon-margin-start: #{$table-sort-icon-margin-start};
+
   font: inherit;
   color: inherit;
   text-transform: inherit;
@@ -124,12 +127,12 @@ Table sort
   &:after {
     content: '';
     display: inline-flex;
-    width: 1rem;
-    height: 1rem;
+    width: var(--#{$prefix}table-sort-icon-size);
+    height: var(--#{$prefix}table-sort-icon-size);
     vertical-align: bottom;
     mask-image: $table-sort-bg-image;
     background: currentColor;
-    margin-inline-start: 0.25rem;
+    margin-inline-start: var(--#{$prefix}table-sort-icon-margin-start);
   }
 
   &.asc:after {

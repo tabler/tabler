@@ -1,0 +1,26 @@
+---
+import Subheader from '@ui/Subheader.astro'
+import Avatar from '@ui/Avatar.astro'
+
+interface Props {
+  title?: string
+  value?: string
+  icon?: string
+}
+
+const { title = 'Title', value = '', icon = 'user' } = Astro.props
+---
+
+<div class="card">
+  <div class="card-body">
+    <div class="row align-items-center">
+      <div class="col">
+        <Subheader as="h4" class="mb-1">{title}</Subheader>
+        <div class="h3 m-0">{value}</div>
+      </div>
+      <div class="col-auto">
+        <Avatar icon={icon} size="lg" />
+      </div>
+    </div>
+  </div>
+</div>

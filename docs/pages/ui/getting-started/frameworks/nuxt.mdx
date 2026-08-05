@@ -1,0 +1,98 @@
+---
+title: Nuxt
+order: 6
+summary: Set up Tabler in Nuxt and build a first working page.
+description: Integrate Tabler with Nuxt.
+icon: brand-nuxt
+seoDescription: Install `@tabler/core`, import CSS and client-only JS in Nuxt, and render a minimal page layout with a Tabler card.
+layout: '@layouts/DocsMdxLayout.astro'
+---
+
+import TabsPackage from '@components/TabsPackage.astro'
+import CdnImportPackage from '@components/CdnImportPackage.astro'
+import Steps from '@components/Steps.astro'
+
+Nuxt renders on the server by default, so Tabler integrates in two parts: CSS registered globally in `nuxt.config.ts`, and `tabler.min.js` loaded through a client-only plugin so it never runs during server-side rendering.
+
+You will install `@tabler/core`, register the styles, add the client plugin, and render a first page with a Tabler card.
+
+## Setup
+
+<Steps>
+
+### Install Tabler package
+
+Install `@tabler/core` with your preferred package manager:
+
+<TabsPackage name="@tabler/core" />
+
+You can also use CDN files when you need a quick setup:
+
+<CdnImportPackage />
+
+### Import styles
+
+Register Tabler CSS in `nuxt.config.ts`:
+
+```ts
+export default defineNuxtConfig({
+  css: ['@tabler/core/dist/css/tabler.min.css'],
+})
+```
+
+For full theme customization, import SCSS sources in your app stylesheet:
+
+```scss
+@import '@tabler/core/scss/tabler';
+```
+
+### Import and initialize JavaScript
+
+Tabler JavaScript is required for interactive components such as dropdowns, modals, and tooltips.
+
+Nuxt-specific note: `tabler.min.js` accesses `document`, so load it only on the client. If you import it during SSR, Nuxt throws `document is not defined`.
+
+Create a client-only plugin in `plugins/tabler.client.ts`:
+
+```ts
+export default defineNuxtPlugin(async () => {
+  await import('@tabler/core/dist/js/tabler.min.js')
+})
+```
+
+### Minimal working example
+
+Create a minimal `pages/index.vue` page:
+
+```vue
+<template>
+  <div class="page">
+    <div class="page-wrapper">
+      <div class="container-xl py-4">
+        <div class="card">
+          <div class="card-body">
+            <h3 class="card-title">Nuxt + Tabler</h3>
+            <p class="text-secondary mb-0">Your Tabler setup is working.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>
+```
+
+Run the app:
+
+```shell
+npm run dev
+```
+
+Open the local Nuxt URL and confirm the card is styled with Tabler.
+
+### Next steps
+
+- Continue with [Customize](/ui/getting-started/customize) to adjust styles and build setup.
+- Explore [Layout](/ui/layout) to choose page structures.
+- Browse [Components](/ui/components) to add UI building blocks.
+
+</Steps>

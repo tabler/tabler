@@ -180,7 +180,9 @@
   @include border-radius(var(--#{$prefix}border-radius-pill));
 
   &[class*='btn-icon'] {
-    padding: 0.375rem 15px;
+    --#{$prefix}btn-pill-icon-padding-y: #{$btn-pill-icon-padding-y};
+    --#{$prefix}btn-pill-icon-padding-x: #{$btn-pill-icon-padding-x};
+    padding: var(--#{$prefix}btn-pill-icon-padding-y) var(--#{$prefix}btn-pill-icon-padding-x);
   }
 }
 
@@ -199,6 +201,7 @@
   .icon {
     margin: calc(-1 * var(--#{$prefix}btn-padding-x));
   }
+
   //[BUG] btn-sm and btn-xl with an icon looks broken
   //issue #2470 fixed
   min-width: calc(var(--#{$prefix}btn-line-height) + (var(--#{$prefix}btn-padding-y) * 2) + (var(--#{$prefix}btn-border-width) * 2));
@@ -219,10 +222,11 @@
 // Button floating
 //
 .btn-floating {
+  --#{$prefix}btn-floating-offset: #{$btn-floating-offset};
   position: fixed;
   z-index: $zindex-fixed;
-  bottom: 1rem;
-  inset-inline-start: 1rem;
+  bottom: var(--#{$prefix}btn-floating-offset);
+  inset-inline-start: var(--#{$prefix}btn-floating-offset);
   box-shadow: var(--#{$prefix}shadow-dropdown);
 
   @include media-print {
@@ -311,7 +315,8 @@
   &:hover,
   &:focus-visible {
     .icon {
-      transform: translateX(4px);
+      /*rtl:ignore*/
+      transform: translateX(calc(var(--#{$prefix}dir) * 4px));
     }
   }
 
@@ -328,7 +333,8 @@
     &:hover,
     &:focus-visible {
       .icon {
-        transform: translateX(-4px);
+        /*rtl:ignore*/
+        transform: translateX(calc(var(--#{$prefix}dir) * -4px));
       }
     }
   }

@@ -1,23 +1,33 @@
 @use '../config' as *;
 
 .empty {
+  --#{$prefix}empty-padding: #{$empty-padding};
+  --#{$prefix}empty-padding-md: #{$empty-padding-md};
+  --#{$prefix}empty-icon-size: #{$empty-icon-size};
+  --#{$prefix}empty-icon-margin-bottom: #{$empty-icon-margin-bottom};
+  --#{$prefix}empty-img-margin-bottom: #{$empty-img-margin-bottom};
+  --#{$prefix}empty-header-margin-bottom: #{$empty-header-margin-bottom};
+  --#{$prefix}empty-header-font-size: #{$empty-header-font-size};
+  --#{$prefix}empty-title-margin-bottom: #{$empty-title-margin-bottom};
+  --#{$prefix}empty-action-margin-top: #{$empty-action-margin-top};
+
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
   height: 100%;
-  padding: 1rem;
+  padding: var(--#{$prefix}empty-padding);
   text-align: center;
 
   @include media-breakpoint-up(md) {
-    padding: 3rem;
+    padding: var(--#{$prefix}empty-padding-md);
   }
 }
 
 .empty-icon {
-  margin: 0 0 1rem;
-  width: 3rem;
-  height: 3rem;
+  margin: 0 0 var(--#{$prefix}empty-icon-margin-bottom);
+  width: var(--#{$prefix}empty-icon-size);
+  height: var(--#{$prefix}empty-icon-size);
   line-height: 1;
   color: var(--#{$prefix}secondary);
 
@@ -28,13 +38,13 @@
 }
 
 .empty-img {
-  margin: 0 0 2rem;
+  margin: 0 0 var(--#{$prefix}empty-img-margin-bottom);
   line-height: 1;
 }
 
 .empty-header {
-  margin: 0 0 1rem;
-  font-size: 4rem;
+  margin: 0 0 var(--#{$prefix}empty-header-margin-bottom);
+  font-size: var(--#{$prefix}empty-header-font-size);
   font-weight: var(--#{$prefix}font-weight-light);
   line-height: 1;
   color: var(--#{$prefix}secondary);
@@ -48,11 +58,11 @@
 
 .empty-title,
 .empty-subtitle {
-  margin: 0 0 0.5rem;
+  margin: 0 0 var(--#{$prefix}empty-title-margin-bottom);
 }
 
 .empty-action {
-  margin-top: 1.5rem;
+  margin-top: var(--#{$prefix}empty-action-margin-top);
 }
 
 .empty-bordered {

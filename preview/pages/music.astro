@@ -1,30 +1,28 @@
 ---
-// Port of preview/pages/music.html (layout: default)
-import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
-import TracksList from '@shared/components/cards/music/TracksList.astro';
-import TrackInfo from '@shared/components/cards/music/TrackInfo.astro';
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import TracksList from '@shared/components/cards/music/TracksList.astro'
+import TrackInfo from '@shared/components/cards/music/TrackInfo.astro'
 
-// Liquid: {% for i in (8..13) %}
-const topTrackIds = [8, 9, 10, 11, 12, 13];
+const topTrackIds = [8, 9, 10, 11, 12, 13]
 ---
 
 <DefaultLayout title="Music components" pageHeader="Music components" pageMenu="extra.music">
-	<div class="row">
-		<div class="col-lg-8">
-			<TracksList />
-		</div>
-		<div class="col-lg-4">
-			<h3 class="mb-3">Top tracks</h3>
+  <div class="row">
+    <div class="col-lg-8">
+      <TracksList />
+    </div>
+    <div class="col-lg-4">
+      <h3 class="mb-3">Top tracks</h3>
 
-			<div class="row row-cards">
-				{
-					topTrackIds.map((trackId) => (
-						<div class="col-md-6 col-lg-12">
-							<TrackInfo trackId={trackId} />
-						</div>
-					))
-				}
-			</div>
-		</div>
-	</div>
+      <div class="row row-cards">
+        {
+          topTrackIds.map((trackId) => (
+            <div class="col-md-6 col-lg-12">
+              <TrackInfo trackId={trackId} />
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
 </DefaultLayout>

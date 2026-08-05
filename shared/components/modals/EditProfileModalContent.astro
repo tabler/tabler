@@ -1,0 +1,91 @@
+---
+import Icon from '@ui/Icon.astro'
+import Button from '@ui/Button.astro'
+import AvatarUpload from '@ui/AvatarUpload.astro'
+import Datepicker from '@ui/Datepicker.astro'
+import FormGroup from '@ui/FormGroup.astro'
+---
+
+<div class="modal-header">
+  <h4 class="modal-title" id="profile-modal-label">Edit profile</h4>
+  <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+</div>
+
+<div class="modal-body">
+  <form>
+    <div class="mb-4">
+      <div class="row align-items-end">
+        <div class="col-auto">
+          <AvatarUpload class="rounded" size="lg" />
+        </div>
+        <div class="col">
+          <label class="form-label">Avatar</label>
+          <div class="text-secondary">Click to upload a new avatar</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="col-md-6">
+        <FormGroup label="First name" for="profile-first-name" class="mb-4">
+          <input class="form-control" id="profile-first-name" type="text" placeholder="John" />
+        </FormGroup>
+      </div>
+      <div class="col-md-6">
+        <FormGroup label="Last name" for="profile-last-name" class="mb-4">
+          <input class="form-control" id="profile-last-name" type="text" placeholder="Doe" />
+        </FormGroup>
+      </div>
+    </div>
+
+    <FormGroup label="Email" for="profile-email" class="mb-4">
+      <input class="form-control" id="profile-email" type="email" placeholder="john.doe@example.com" />
+    </FormGroup>
+
+    <FormGroup label="Phone" for="profile-phone" class="mb-4">
+      <input class="form-control" id="profile-phone" type="tel" placeholder="+1 (555) 123-4567" />
+    </FormGroup>
+
+    <FormGroup label="Bio" for="profile-bio" class="mb-4">
+      <textarea class="form-control" id="profile-bio" rows="4" placeholder="Tell us about yourself..."></textarea>
+    </FormGroup>
+
+    <div class="row">
+      <div class="col-md-6">
+        <FormGroup label="Location" for="profile-location" class="mb-4">
+          <input class="form-control" id="profile-location" type="text" placeholder="City, Country" />
+        </FormGroup>
+      </div>
+      <div class="col-md-6">
+        <FormGroup label="Date of birth" for="profile-birthdate" class="mb-4">
+          <Datepicker layout="icon" id="profile-birthdate" />
+        </FormGroup>
+      </div>
+    </div>
+
+    <FormGroup label="Social links" class="mb-4">
+      <div class="row g-2">
+        <div class="col-12">
+          <div class="input-group">
+            <span class="input-group-text"><Icon name="brand-twitter" /></span>
+            <input type="text" class="form-control" placeholder="twitter.com/username" />
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="input-group">
+            <span class="input-group-text"><Icon name="brand-github" /></span>
+            <input type="text" class="form-control" placeholder="github.com/username" />
+          </div>
+        </div>
+        <div class="col-12">
+          <div class="input-group">
+            <span class="input-group-text"><Icon name="brand-linkedin" /></span>
+            <input type="text" class="form-control" placeholder="linkedin.com/in/username" />
+          </div>
+        </div>
+      </div>
+    </FormGroup>
+
+    <Button type="submit" text="Save changes" color="primary" block class="mt-4" />
+  </form>
+</div>

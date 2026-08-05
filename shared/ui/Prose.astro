@@ -1,0 +1,15 @@
+---
+// Prose container (.prose) for long-form / markdown-like content.
+
+interface Props {
+  class?: string
+  /** remaining attributes (data-*, tabindex, …) are forwarded to the element */
+  [key: string]: unknown
+}
+
+const { class: className, ...rest } = Astro.props
+---
+
+<div class:list={['prose', className]} {...rest}>
+  <slot />
+</div>

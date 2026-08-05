@@ -1,22 +1,22 @@
 ---
-// Port of preview/pages/wysiwyg.html (layout: default).
 // The front matter uses `menu: base.wysiwyg` (not `page-menu`), so no pageMenu prop.
-import DefaultLayout from '@shared/layouts/DefaultLayout.astro';
-import Wysiwyg from '@shared/components/ui/Wysiwyg.astro';
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import Wysiwyg from '@ui/Wysiwyg.astro'
+import FormGroup from '@ui/FormGroup.astro'
 ---
 
 <DefaultLayout title="HugeRTE" pageHeader="HugeRTE" pageLibs={['hugerte']}>
-	<div class="card">
-		<div class="card-body">
-			<div class="mb-3">
-				<label class="form-label">Your name</label>
-				<input type="text" class="form-control" placeholder="Name" />
-			</div>
+  <Card>
+    <CardBody>
+      <FormGroup label="Your name">
+        <input type="text" class="form-control" placeholder="Name" />
+      </FormGroup>
 
-			<div class="mb-3">
-				<label class="form-label">Description</label>
-				<Wysiwyg />
-			</div>
-		</div>
-	</div>
+      <FormGroup label="Description">
+        <Wysiwyg />
+      </FormGroup>
+    </CardBody>
+  </Card>
 </DefaultLayout>
