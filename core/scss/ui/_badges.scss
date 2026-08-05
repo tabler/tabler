@@ -11,24 +11,24 @@
   --badge-line-height: 1;
   --badge-gap: #{$badge-gap};
   display: inline-flex;
+  gap: var(--badge-gap);
+  align-items: center;
+  justify-content: center;
+  min-width: calc(1em + var(--badge-padding-y) * 2 + 2px);
   padding: var(--badge-padding-y) var(--badge-padding-x);
-  font-weight: var(--badge-font-weight);
+  overflow: hidden;
   font-size: var(--badge-font-size);
+  font-weight: var(--badge-font-weight);
+  line-height: var(--badge-line-height);
   color: var(--badge-color);
   text-align: center;
+  letter-spacing: 0.04em;
   white-space: nowrap;
-  justify-content: center;
-  align-items: center;
-  gap: var(--badge-gap);
-  background: $badge-bg-color;
-  overflow: hidden;
+  vertical-align: bottom;
   user-select: none;
+  background: $badge-bg-color;
   border: var(--border-width) var(--border-style) transparent;
   @include border-radius(var(--badge-border-radius));
-  min-width: calc(1em + var(--badge-padding-y) * 2 + 2px);
-  letter-spacing: 0.04em;
-  vertical-align: bottom;
-  line-height: var(--badge-line-height);
 
   @at-root a#{&} {
     background: var(--bg-surface-secondary);
@@ -46,12 +46,12 @@
 .badge-dot {
   display: inline-block;
   width: $badge-empty-size;
-  height: $badge-empty-size;
   min-width: 0;
+  height: $badge-empty-size;
   min-height: auto;
   padding: 0;
-  @include border-radius(var(--border-radius-pill));
   vertical-align: baseline;
+  @include border-radius(var(--border-radius-pill));
 }
 
 //
@@ -73,7 +73,7 @@
 // Badges list
 //
 .badges-list {
-  @include elements-list;
+  @include elements-list();
 }
 
 //
@@ -81,11 +81,12 @@
 //
 .badge-notification {
   position: absolute !important;
-  top: 0 !important;
   inset-inline-end: 0 !important;
-  /*rtl:ignore*/
-  transform: translate(calc(var(--dir) * 50%), -50%);
+  top: 0 !important;
   z-index: 1;
+
+  /* rtl:ignore */
+  transform: translate(calc(var(--dir) * 50%), -50%);
 }
 
 .badge-blink {

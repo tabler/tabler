@@ -13,26 +13,26 @@
   --avatar-brand-size: #{$avatar-brand-size};
   --avatar-border-radius: #{$avatar-border-radius};
   position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   width: var(--avatar-size);
   height: var(--avatar-size);
   font-size: var(--avatar-font-size);
   font-weight: var(--font-weight-medium);
   line-height: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
   color: var(--secondary);
   text-align: center;
   text-transform: uppercase;
   vertical-align: bottom;
   user-select: none;
   background: var(--avatar-bg) no-repeat center/cover;
-  @include border-radius(var(--avatar-border-radius));
   box-shadow: var(--avatar-box-shadow);
   transition:
     color $transition-time,
     background-color $transition-time,
     box-shadow $transition-time;
+  @include border-radius(var(--avatar-border-radius));
 
   .icon {
     width: var(--avatar-icon-size);
@@ -89,7 +89,7 @@
 //
 .avatar-list {
   --avatar-list-size: #{$avatar-size};
-  @include elements-list;
+  @include elements-list();
 
   a.avatar {
     &:hover {
@@ -125,11 +125,11 @@
 .avatar-upload {
   --avatar-upload-icon-size: #{$avatar-upload-icon-size};
   --avatar-upload-text-margin-top: #{$avatar-upload-text-margin-top};
+  flex-direction: column;
+  background: $form-check-input-bg;
 
   border: var(--border-width) dashed var(--border-color);
-  background: $form-check-input-bg;
   box-shadow: none;
-  flex-direction: column;
   @include transition(color $transition-time, background-color $transition-time);
 
   svg {
@@ -139,16 +139,16 @@
   }
 
   &:hover {
-    border-color: var(--primary);
     color: var(--primary);
     text-decoration: none;
+    border-color: var(--primary);
   }
 }
 
 .avatar-upload-text {
+  margin-top: var(--avatar-upload-text-margin-top);
   font-size: $h6-font-size;
   line-height: 1;
-  margin-top: var(--avatar-upload-text-margin-top);
 }
 
 .avatar-cover {
@@ -160,13 +160,13 @@
 
 .avatar-brand {
   --avatar-brand-offset: #{$avatar-brand-offset};
-  width: var(--avatar-brand-size);
-  height: var(--avatar-brand-size);
   position: absolute;
   inset-inline-end: var(--avatar-brand-offset);
   bottom: var(--avatar-brand-offset);
   z-index: 1000;
+  width: var(--avatar-brand-size);
+  height: var(--avatar-brand-size);
   background: var(--bg-surface);
-  @include border-radius(var(--border-radius));
   border: 1px solid var(--border-color);
+  @include border-radius(var(--border-radius));
 }

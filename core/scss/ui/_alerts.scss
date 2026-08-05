@@ -8,7 +8,6 @@
   --alert-padding-y: #{$alert-padding-y};
   --alert-margin-bottom: #{$alert-margin-bottom};
   --alert-border-color: #{color-transparent(var(--alert-variant-color), 0.2, var(--bg-surface))};
-  --alert-border-color: var(--border-color);
   --alert-border: var(--border-width) solid var(--alert-border-color);
   --alert-border-radius: var(--border-radius);
   --alert-link-color: inherit;
@@ -19,22 +18,22 @@
   --alert-gap: #{$alert-gap};
 
   position: relative;
-  padding: var(--alert-padding-y) var(--alert-padding-x);
-  margin-bottom: var(--alert-margin-bottom);
-  background-color: color-mix(in srgb, var(--alert-bg), var(--bg-surface));
-  @include border-radius(var(--alert-border-radius));
-  border: var(--border-width) var(--border-style) var(--alert-border-color);
-  box-shadow: var(--box-shadow);
-  color: var(--alert-color);
   display: flex;
   flex-direction: row;
   gap: var(--alert-gap);
+  padding: var(--alert-padding-y) var(--alert-padding-x);
+  margin-bottom: var(--alert-margin-bottom);
+  color: var(--alert-color);
+  background-color: color-mix(in sRGB, var(--alert-bg), var(--bg-surface));
+  border: var(--border-width) var(--border-style) var(--alert-border-color);
+  box-shadow: var(--box-shadow);
+  @include border-radius(var(--alert-border-radius));
 }
 
 .alert-heading {
-  color: inherit;
   margin-bottom: var(--alert-heading-margin-bottom);
   font-weight: var(--alert-heading-font-weight);
+  color: inherit;
 }
 
 .alert-description {
@@ -42,9 +41,9 @@
 }
 
 .alert-icon {
-  color: var(--alert-color);
   width: var(--alert-icon-size) !important;
   height: var(--alert-icon-size) !important;
+  color: var(--alert-color);
 }
 
 .alert-action {
@@ -75,16 +74,16 @@
 
   .btn-close {
     position: absolute;
-    top: calc(var(--alert-padding-x) / 2 - 1px);
     inset-inline-end: calc(var(--alert-padding-y) / 2 - 1px);
+    top: calc(var(--alert-padding-x) / 2 - 1px);
     z-index: 1;
     padding: calc(var(--alert-padding-y) * 1.25) var(--alert-padding-x);
   }
 }
 
 .alert-important {
-  background-color: var(--alert-variant-color);
   color: var(--white);
+  background-color: var(--alert-variant-color);
 
   .alert-description {
     color: inherit;

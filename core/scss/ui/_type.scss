@@ -3,16 +3,16 @@
 @forward 'typo/hr';
 
 .lead {
-  color: var(--secondary);
   font-size: inherit;
+  color: var(--secondary);
 }
 
 a {
   text-decoration-skip-ink: auto;
-  color: color-mix(in srgb, transparent, var(--link-color) var(--link-opacity, 100%));
+  color: color-mix(in sRGB, transparent, var(--link-color) var(--link-opacity, 100%));
 
   &:hover {
-    color: color-mix(in srgb, transparent, var(--link-hover-color) var(--link-opacity, 100%));
+    color: color-mix(in sRGB, transparent, var(--link-hover-color) var(--link-opacity, 100%));
   }
 }
 
@@ -97,7 +97,7 @@ blockquote {
     display: block;
     text-align: end;
 
-    &:before {
+    &::before {
       content: '— ';
     }
   }
@@ -125,22 +125,22 @@ dl {
 pre {
   --scrollbar-color: #{$pre-color};
   padding: $pre-padding;
-  background: $pre-bg;
-  color: $pre-color;
-  @include border-radius(var(--border-radius));
   line-height: $line-height-base;
+  color: $pre-color;
+  background: $pre-bg;
+  @include border-radius(var(--border-radius));
 
-  @include scrollbar;
+  @include scrollbar();
 
   code {
-    background: transparent;
     padding: 0;
+    background: transparent;
   }
 }
 
 code {
-  background: var(--code-bg);
   padding: 2px 4px;
+  background: var(--code-bg);
   @include border-radius(var(--border-radius));
 }
 
@@ -152,14 +152,14 @@ abbr {
 
 kbd,
 .kbd {
-  border: $kbd-border;
-  display: inline-block;
   box-sizing: border-box;
+  display: inline-block;
   max-width: 100%;
   font-size: $kbd-font-size;
   font-weight: $kbd-font-weight;
   line-height: 1;
   vertical-align: baseline;
+  border: $kbd-border;
   @include border-radius($kbd-border-radius);
 }
 
@@ -204,8 +204,8 @@ a:hover:has(.icon) {
   transition: background-color 0.15s ease-in-out;
 
   &:hover {
-    text-decoration: none;
     color: var(--primary);
+    text-decoration: none;
     background: color-transparent(var(--secondary), 0.04);
   }
 }
@@ -214,7 +214,7 @@ a:hover:has(.icon) {
 Subheader
  */
 .subheader {
-  @include subheader;
+  @include subheader();
 }
 
 /**
@@ -222,22 +222,22 @@ Mentions
  */
 .mention {
   display: inline-block;
-  box-shadow: var(--shadow-border);
-  @include border-radius(var(--border-radius-pill));
-  line-height: calc(16em / 12);
+  padding: calc(2em / 12) calc(8em / 12);
   font-size: calc(12em / 14);
+  font-weight: var(--font-weight-medium);
+  line-height: calc(16em / 12);
   color: var(--body-color);
   background: var(--bg-surface-tertiary);
-  padding: calc(2em / 12) calc(8em / 12);
-  font-weight: var(--font-weight-medium);
+  box-shadow: var(--shadow-border);
+  @include border-radius(var(--border-radius-pill));
 
   @at-root a#{&} {
     cursor: pointer;
 
     &:hover,
     &.hover {
-      background: var(--bg-surface-secondary);
       text-decoration: underline;
+      background: var(--bg-surface-secondary);
     }
   }
 }
@@ -245,26 +245,26 @@ Mentions
 .mention-avatar,
 .mention-app,
 .mention-color {
+  display: inline-flex;
   width: calc(14em / 12);
   height: calc(14em / 12);
-  @include border-radius(var(--border-radius-pill));
   margin: calc(-2em / 12) calc(4em / 12) 0 calc(-4em / 12);
-  display: inline-flex;
+  text-align: center;
+  vertical-align: middle;
   background: no-repeat center center/cover;
   box-shadow: var(--shadow-border);
-  vertical-align: middle;
-  text-align: center;
+  @include border-radius(var(--border-radius-pill));
 }
 
 .mention-app {
-  box-shadow: none;
   background: none;
   border-radius: 0;
+  box-shadow: none;
 }
 
 .mention-count {
-  color: var(--secondary);
   margin-inline-start: calc(8em / 12);
+  color: var(--secondary);
 }
 
 $text-variants: (
@@ -274,11 +274,11 @@ $text-variants: (
 
 @each $variant, $color in $text-variants {
   .text-#{$variant} {
-    background: color-transparent($color, 0.04);
-    background: color-transparent($color, 4%);
     text-decoration: underline;
     text-decoration-thickness: 1px;
     text-decoration-color: $color;
+    background: color-transparent($color, 0.04);
+    background: color-transparent($color, 4%);
   }
 }
 
@@ -288,11 +288,11 @@ $text-variants: (
   --steps-margin-start: #{$steps-margin-start};
   --steps-margin-bottom: #{$steps-margin-bottom};
   --steps-heading-margin-top: #{$steps-heading-margin-top};
-  margin-inline-start: var(--steps-margin-start);
   padding-inline-start: var(--steps-padding);
+  margin-inline-start: var(--steps-margin-start);
+  margin-bottom: var(--steps-margin-bottom);
   counter-reset: step;
   border-inline-start: 1px solid var(--border-color);
-  margin-bottom: var(--steps-margin-bottom);
 
   h3 {
     counter-increment: step;
@@ -301,22 +301,22 @@ $text-variants: (
       margin-top: var(--steps-heading-margin-top) !important;
     }
 
-    &:before {
-      content: counter(step);
-      display: inline-block;
+    &::before {
       position: absolute;
-      margin-top: 1px;
-      margin-inline-start: calc(-1 * var(--steps-padding) - var(--steps-item-size) / 2);
+      display: inline-block;
       width: var(--steps-item-size);
       height: var(--steps-item-size);
-      text-align: center;
-      color: var(--body-color);
-      border: 1px solid var(--border-color);
-      background: var(--bg-surface);
-      @include border-radius(var(--border-radius));
-      line-height: calc(var(--steps-item-size) - 2px);
+      margin-inline-start: calc(-1 * var(--steps-padding) - var(--steps-item-size) / 2);
+      margin-top: 1px;
       font-size: var(--font-size-h4);
       font-weight: var(--font-weight-semibold);
+      line-height: calc(var(--steps-item-size) - 2px);
+      color: var(--body-color);
+      text-align: center;
+      content: counter(step);
+      background: var(--bg-surface);
+      border: 1px solid var(--border-color);
+      @include border-radius(var(--border-radius));
     }
   }
 
@@ -329,13 +329,13 @@ $text-variants: (
   --callout-margin-bottom: #{$callout-margin-bottom};
   --callout-padding-y: #{$callout-padding-y};
   --callout-padding-x: #{$callout-padding-x};
+  padding: var(--callout-padding-y) var(--callout-padding-x);
   margin-bottom: var(--callout-margin-bottom);
+  background: var(--primary-lt);
   border: 1px solid var(--primary-200);
   @include border-radius(var(--border-radius));
-  padding: var(--callout-padding-y) var(--callout-padding-x);
-  background: var(--primary-lt);
 
-  & > :last-child {
+  > :last-child {
     margin-bottom: 0;
   }
 }

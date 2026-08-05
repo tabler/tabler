@@ -27,37 +27,37 @@
 .accordion-button {
   position: relative;
   display: flex;
+  gap: var(--accordion-btn-gap);
   align-items: center;
   width: 100%;
   padding: var(--accordion-btn-padding-y) var(--accordion-padding-x);
+  font-size: inherit;
+  font-weight: var(--accordion-btn-font-weight);
   color: inherit;
   text-align: inherit;
   background-color: transparent;
   border: 0;
-  font-size: inherit;
-  font-weight: var(--accordion-btn-font-weight);
-  gap: var(--accordion-btn-gap);
 
   &:not(.collapsed) {
+    color: var(--accordion-active-color);
     border-bottom-color: transparent;
     box-shadow: none;
-    color: var(--accordion-active-color);
   }
 }
 
 .accordion-header {
-  margin: 0;
   position: relative;
   display: flex;
   gap: var(--accordion-header-gap);
   align-items: center;
   width: 100%;
+  margin: 0;
   color: var(--accordion-btn-color);
   text-align: start;
   background-color: transparent;
   border: 0;
-  overflow-anchor: none;
   transition: transform $transition-time;
+  overflow-anchor: none;
 
   &:hover {
     z-index: 2;
@@ -81,17 +81,17 @@
 
 .accordion-button-toggle {
   display: flex;
-  line-height: 1;
-  transition: $transition-time transform;
-  margin-inline-start: auto;
-  margin-inline-end: 0;
-  color: var(--secondary);
   width: var(--accordion-btn-toggle-width);
   height: var(--accordion-btn-toggle-width);
+  margin-inline-start: auto;
+  margin-inline-end: 0;
+  line-height: 1;
+  color: var(--secondary);
+  transition: $transition-time transform;
 
   .accordion-button:not(.collapsed) & {
-    transform: rotate(-180deg);
     color: var(--accordion-active-color);
+    transform: rotate(-180deg);
   }
 
   path {
@@ -139,14 +139,14 @@
 }
 
 .accordion-body {
-  color: var(--secondary);
   padding: 0 var(--accordion-body-padding-x) var(--accordion-body-padding-y);
+  color: var(--secondary);
 }
 
 .accordion-flush {
   > .accordion-item {
-    border-inline-end: 0;
     border-inline-start: 0;
+    border-inline-end: 0;
     @include border-radius(0);
 
     &:first-child {
@@ -157,8 +157,7 @@
     }
 
     > .accordion-collapse,
-    > .accordion-header .accordion-button,
-    > .accordion-header .accordion-button.collapsed {
+    > .accordion-header .accordion-button {
       @include border-radius(0);
     }
   }

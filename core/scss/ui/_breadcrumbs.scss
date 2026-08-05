@@ -18,13 +18,13 @@
 
   display: flex;
   flex-wrap: wrap;
-  @include font-size(var(--breadcrumb-font-size));
-  list-style: none;
-  background-color: var(--breadcrumb-bg);
-  @include border-radius(var(--breadcrumb-border-radius));
   padding: 0;
   margin: 0;
+  list-style: none;
   background: transparent;
+  background-color: var(--breadcrumb-bg);
+  @include font-size(var(--breadcrumb-font-size));
+  @include border-radius(var(--breadcrumb-border-radius));
 
   a {
     color: var(--breadcrumb-link-color);
@@ -41,8 +41,8 @@
 
 .breadcrumb-item {
   &.active {
-    color: var(--breadcrumb-item-active-color);
     font-weight: var(--breadcrumb-item-active-font-weight);
+    color: var(--breadcrumb-item-active-color);
 
     a {
       color: inherit;
@@ -53,7 +53,7 @@
   &.disabled {
     color: var(--breadcrumb-item-disabled-color);
 
-    &:before {
+    &::before {
       color: inherit;
     }
 
@@ -71,7 +71,8 @@
       padding-inline-end: var(--breadcrumb-item-padding-x);
       color: var(--breadcrumb-divider-color);
       content: var(--breadcrumb-divider, escape-svg($breadcrumb-divider));
-      /*rtl:raw:
+
+      /* rtl:raw:
       transform: scaleX(-1);
       */
     }

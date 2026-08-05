@@ -2,14 +2,14 @@
 
 @keyframes progress-indeterminate {
   0% {
-    inset-inline-end: 100%;
     inset-inline-start: -35%;
+    inset-inline-end: 100%;
   }
 
   100%,
   60% {
-    inset-inline-end: -90%;
     inset-inline-start: 100%;
+    inset-inline-end: -90%;
   }
 }
 
@@ -61,18 +61,18 @@ Progress bar
 }
 
 .progress-bar-indeterminate {
-  &:after,
-  &:before {
+  &::after,
+  &::before {
     position: absolute;
+    inset-inline-start: 0;
     top: 0;
     bottom: 0;
-    inset-inline-start: 0;
     content: '';
     background-color: inherit;
     will-change: left, right;
   }
 
-  &:before {
+  &::before {
     animation: progress-indeterminate 1.5s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
   }
 }
@@ -92,8 +92,8 @@ Progressbg
   --progressbg-padding-y: #{$progressbg-padding-y};
   --progressbg-padding-x: #{$progressbg-padding-x};
   position: relative;
-  padding: var(--progressbg-padding-y) var(--progressbg-padding-x);
   display: flex;
+  padding: var(--progressbg-padding-y) var(--progressbg-padding-x);
 }
 
 .progressbg-text {
@@ -101,26 +101,26 @@ Progressbg
   z-index: 1;
   display: flex;
   align-items: center;
-  @include text-truncate;
+  @include text-truncate();
 }
 
 .progressbg-progress {
   position: absolute;
-  top: 0;
-  inset-inline-end: 0;
-  bottom: 0;
   inset-inline-start: 0;
+  inset-inline-end: 0;
+  top: 0;
+  bottom: 0;
   z-index: 0;
   height: 100%;
-  background: transparent;
   pointer-events: none;
+  background: transparent;
 }
 
 .progressbg-value {
   --progressbg-value-padding-start: #{$progressbg-value-padding-start};
-  font-weight: var(--font-weight-medium);
-  margin-inline-start: auto;
   padding-inline-start: var(--progressbg-value-padding-start);
+  margin-inline-start: auto;
+  font-weight: var(--font-weight-medium);
 }
 
 /**
@@ -130,11 +130,11 @@ Progress steps
   --progress-steps-gap: #{$progress-steps-gap};
   display: flex;
   flex-wrap: nowrap;
+  gap: var(--progress-steps-gap);
   width: 100%;
   padding: 0;
   margin: 0;
   list-style: none;
-  gap: var(--progress-steps-gap);
 }
 
 .progress-steps-item {

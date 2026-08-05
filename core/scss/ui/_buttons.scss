@@ -17,26 +17,26 @@
   --btn-active-color: #{$active-color};
   --btn-active-bg: #{$active-bg};
   --btn-active-border-color: #{$active-border-color};
+  position: relative;
 
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  white-space: nowrap;
-  box-shadow: var(--btn-box-shadow);
-  position: relative;
   min-width: calc((var(--btn-line-height) * 1) + (var(--btn-padding-y) * 2) + (var(--btn-border-width) * 2));
   min-height: calc((var(--btn-line-height) * 1) + (var(--btn-padding-y) * 2) + (var(--btn-border-width) * 2));
+  white-space: nowrap;
+  box-shadow: var(--btn-box-shadow);
 
   @include border-radius(var(--btn-border-radius));
 
   .icon {
     width: var(--btn-icon-size);
-    height: var(--btn-icon-size);
     min-width: var(--btn-icon-size);
-    font-size: var(--btn-icon-size);
+    height: var(--btn-icon-size);
     margin: 0 calc(var(--btn-padding-x) / 2) 0 calc(var(--btn-padding-x) / -4);
-    vertical-align: bottom;
+    font-size: var(--btn-icon-size);
     color: var(--btn-icon-color);
+    vertical-align: bottom;
   }
 
   .avatar {
@@ -175,8 +175,8 @@
 // Button shapes
 //
 .btn-pill {
-  padding-inline-end: 1.5em;
   padding-inline-start: 1.5em;
+  padding-inline-end: 1.5em;
   @include border-radius(var(--border-radius-pill));
 
   &[class*='btn-icon'] {
@@ -195,23 +195,22 @@
 //
 .btn-icon,
 .btn-action {
+  //[BUG] btn-sm and btn-xl with an icon looks broken
+  //issue #2470 fixed
+  min-width: calc(var(--btn-line-height) + (var(--btn-padding-y) * 2) + (var(--btn-border-width) * 2));
   padding-inline-start: 0;
   padding-inline-end: 0;
 
   .icon {
     margin: calc(-1 * var(--btn-padding-x));
   }
-
-  //[BUG] btn-sm and btn-xl with an icon looks broken
-  //issue #2470 fixed
-  min-width: calc(var(--btn-line-height) + (var(--btn-padding-y) * 2) + (var(--btn-border-width) * 2));
 }
 
 //
 // Button list
 //
 .btn-list {
-  @include elements-list;
+  @include elements-list();
 }
 
 .btn-list-center {
@@ -224,12 +223,12 @@
 .btn-floating {
   --btn-floating-offset: #{$btn-floating-offset};
   position: fixed;
-  z-index: $zindex-fixed;
-  bottom: var(--btn-floating-offset);
   inset-inline-start: var(--btn-floating-offset);
+  bottom: var(--btn-floating-offset);
+  z-index: $zindex-fixed;
   box-shadow: var(--shadow-dropdown);
 
-  @include media-print {
+  @include media-print() {
     display: none;
   }
 }
@@ -247,20 +246,20 @@
     opacity: 0;
   }
 
-  &:after {
-    content: '';
-    display: inline-block;
-    vertical-align: text-bottom;
-    border: $spinner-border-width var(--border-style) currentColor;
-    border-inline-end-color: transparent;
-    @include border-radius(var(--border-radius-pill));
-    color: var(--btn-color);
+  &::after {
     position: absolute;
-    width: var(--btn-icon-size);
-    height: var(--btn-icon-size);
     inset-inline-start: calc(50% - var(--btn-icon-size) / 2);
     top: calc(50% - var(--btn-icon-size) / 2);
+    display: inline-block;
+    width: var(--btn-icon-size);
+    height: var(--btn-icon-size);
+    color: var(--btn-color);
+    vertical-align: text-bottom;
+    content: '';
+    border: $spinner-border-width var(--border-style) currentColor;
+    border-inline-end-color: transparent;
     animation: spinner-border 0.75s linear infinite;
+    @include border-radius(var(--border-radius-pill));
   }
 }
 
@@ -274,7 +273,7 @@
   background: transparent;
   box-shadow: none;
 
-  &:after {
+  &::after {
     content: none;
   }
 
@@ -300,7 +299,7 @@
     color: var(--primary);
   }
 
-  @include media-print {
+  @include media-print() {
     display: none;
   }
 }
@@ -308,7 +307,7 @@
 .btn-actions {
   display: flex;
 
-  @include media-print {
+  @include media-print() {
     display: none;
   }
 }
@@ -321,7 +320,7 @@
   &:hover,
   &:focus-visible {
     .icon {
-      /*rtl:ignore*/
+      /* rtl:ignore */
       transform: translateX(calc(var(--dir) * 4px));
     }
   }
@@ -339,7 +338,7 @@
     &:hover,
     &:focus-visible {
       .icon {
-        /*rtl:ignore*/
+        /* rtl:ignore */
         transform: translateX(calc(var(--dir) * -4px));
       }
     }

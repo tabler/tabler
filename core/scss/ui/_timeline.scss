@@ -6,8 +6,8 @@
 .timeline {
   --timeline-icon-size: #{$avatar-size};
   position: relative;
-  list-style: none;
   padding: 0;
+  list-style: none;
 }
 
 //
@@ -19,13 +19,13 @@
   &:not(:last-child) {
     margin-bottom: var(--page-padding);
 
-    &:before {
-      content: '';
+    &::before {
       position: absolute;
-      top: var(--timeline-icon-size);
       inset-inline-start: calc(var(--timeline-icon-size) / 2);
+      top: var(--timeline-icon-size);
       bottom: calc(-1 * var(--page-padding));
       width: var(--border-width);
+      content: '';
       background-color: var(--border-color);
       @include border-radius(var(--border-radius));
     }
@@ -34,15 +34,15 @@
 
 .timeline-event-icon {
   position: absolute;
+  z-index: 5;
   display: flex;
   align-items: center;
   justify-content: center;
   width: var(--timeline-icon-size, $avatar-size);
   height: var(--timeline-icon-size, $avatar-size);
-  background: var(--bg-surface-secondary);
   color: var(--secondary);
+  background: var(--bg-surface-secondary);
   @include border-radius(var(--border-radius));
-  z-index: 5;
 }
 
 .timeline-event-card {
