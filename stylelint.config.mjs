@@ -21,22 +21,12 @@ export default {
   ],
   rules: {
     ...prettierOwned,
-    // Prettier breaks long Sass maps onto separate lines, which this rule reads
-    // as a missing space after the `$variable:` colon.
     'scss/dollar-variable-colon-space-after': null,
-    // Tabler intentionally qualifies type selectors (e.g. `a.card`).
     'selector-no-qualifying-type': null,
-    // Named arguments are used on purpose for readability.
     'scss/at-function-named-arguments': null,
-    // The autofix rewrites `@import url($var)` into `@import '$var'`, turning the Sass
-    // variable into a literal string — see scss/fonts/_webfonts.scss, which builds the
-    // Google Fonts URL at compile time. Sass has no `url()`-free form for that.
     'import-notation': null,
-    // Font stacks live in Sass variables and CSS custom properties, which stylelint sees
-    // as ordinary declarations — without this the autofix lowercases real family names
-    // (`BlinkMacSystemFont` → `blinkmacsystemfont`).
-    // `camelCaseSvgKeywords` keeps `text-rendering: optimizeLegibility` intact.
     'value-keyword-case': ['lower', { ignoreProperties: ['/^\\$font-family/', '/^--.*font/'], camelCaseSvgKeywords: true }],
+    'declaration-no-important': null,
   },
   overrides: [
     {

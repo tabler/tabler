@@ -489,10 +489,14 @@ Card table
       &:first-child {
         border-top: 0;
 
+        // Plain semantic table markup (thead/tbody/tfoot > tr > td/th) has no class
+        // hooks to target instead.
+        // stylelint-disable selector-max-type
         td,
         th {
           border-top: 0;
         }
+        // stylelint-enable selector-max-type
       }
     }
   }
@@ -500,6 +504,7 @@ Card table
   tbody {
     tr {
       &:last-child {
+        // stylelint-disable-next-line selector-max-type
         td {
           border-bottom: 0;
         }
