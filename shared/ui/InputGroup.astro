@@ -12,16 +12,17 @@ interface Props {
   prepend?: string
   append?: string
   appendButton?: { icon: string; description: string }[]
+  autocomplete?: string
 }
 
-const { type = 'text', placeholder, value, flat, class: className, inputClass, id, prepend, append, appendButton } = Astro.props
+const { type = 'text', placeholder, value, flat, class: className, inputClass, id, prepend, append, appendButton, autocomplete } = Astro.props
 
 const appendButtons = appendButton ?? []
 ---
 
 <div class:list={['input-group', flat && 'input-group-flat', className]}>
   {prepend && <span class="input-group-text">{prepend}</span>}
-  <input type={type} class:list={['form-control', inputClass]} placeholder={placeholder} value={value} autocomplete="off" id={id} />
+  <input type={type} class:list={['form-control', inputClass]} placeholder={placeholder} value={value} autocomplete={autocomplete} id={id} />
   {append && <span class="input-group-text">{append}</span>}
   {
     appendButtons.length > 0 && (
