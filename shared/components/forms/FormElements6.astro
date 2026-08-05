@@ -11,8 +11,8 @@ import Select from '@ui/Select.astro'
 const datalistCountries = (flags as { name: string }[]).slice(0, 10)
 ---
 
-<FormGroup label="Datalist example">
-  <input class="form-control" list="datalistOptions" placeholder="Type to search..." />
+<FormGroup label="Datalist example" for="fe6-datalist">
+  <input class="form-control" id="fe6-datalist" list="datalistOptions" placeholder="Type to search..." />
   <datalist id="datalistOptions">
     {datalistCountries.map((country) => <option value={country.name} />)}
   </datalist>
@@ -31,6 +31,7 @@ const datalistCountries = (flags as { name: string }[]).slice(0, 10)
   <Datepicker id="icon-prepend" layout="icon-prepend" />
 </FormGroup>
 
+{/* Inline datepicker renders a calendar div (`datepicker-inline`), not a labelable input — `for` intentionally skipped, same as Range. */}
 <FormGroup label="Inline datepicker">
   <Datepicker id="inline" inline />
 </FormGroup>
@@ -51,28 +52,28 @@ const datalistCountries = (flags as { name: string }[]).slice(0, 10)
   </div>
 </FormGroup>
 
-<FormGroup label="Tags input">
-  <Select key="tags" placeholder="Select tags" />
+<FormGroup label="Tags input" for="select-fe6-tags">
+  <Select id="fe6-tags" key="tags" placeholder="Select tags" />
 </FormGroup>
 
-<FormGroup label="Advanced select">
-  <Select key="users" />
+<FormGroup label="Advanced select" for="select-fe6-advanced-select">
+  <Select id="fe6-advanced-select" key="users" />
 </FormGroup>
 
-<FormGroup label="Advanced select with optgroup">
-  <Select key="optgroups" />
+<FormGroup label="Advanced select with optgroup" for="select-fe6-select-optgroup">
+  <Select id="fe6-select-optgroup" key="optgroups" />
 </FormGroup>
 
-<FormGroup label="Select with avatars">
-  <Select key="people" indicator="avatar" />
+<FormGroup label="Select with avatars" for="select-fe6-select-avatars">
+  <Select id="fe6-select-avatars" key="people" indicator="avatar" />
 </FormGroup>
 
-<FormGroup label="Select with flags">
-  <Select key="countries" indicator="flag" />
+<FormGroup label="Select with flags" for="select-fe6-select-flags">
+  <Select id="fe6-select-flags" key="countries" indicator="flag" />
 </FormGroup>
 
-<FormGroup label="Select with labels">
-  <Select key="labels" indicator="label" />
+<FormGroup label="Select with labels" for="select-fe6-select-labels">
+  <Select id="fe6-select-labels" key="labels" indicator="label" />
 </FormGroup>
 
 <FormGroup label="Advanced select with validation state">

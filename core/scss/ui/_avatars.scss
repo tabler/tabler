@@ -3,75 +3,75 @@
 @use '../config' as *;
 
 .avatar {
-  --#{$prefix}avatar-size: var(--#{$prefix}avatar-list-size, #{$avatar-size});
-  --#{$prefix}avatar-status-size: #{$avatar-status-size};
-  --#{$prefix}avatar-bg: #{$avatar-bg};
-  --#{$prefix}avatar-box-shadow-color: var(--#{$prefix}border-color-translucent);
-  --#{$prefix}avatar-box-shadow: inset 0 0 0 1px var(--#{$prefix}avatar-box-shadow-color);
-  --#{$prefix}avatar-font-size: #{$avatar-font-size};
-  --#{$prefix}avatar-icon-size: #{$avatar-icon-size};
-  --#{$prefix}avatar-brand-size: #{$avatar-brand-size};
-  --#{$prefix}avatar-border-radius: #{$avatar-border-radius};
+  --avatar-size: var(--avatar-list-size, #{$avatar-size});
+  --avatar-status-size: #{$avatar-status-size};
+  --avatar-bg: #{$avatar-bg};
+  --avatar-box-shadow-color: var(--border-color-translucent);
+  --avatar-box-shadow: inset 0 0 0 1px var(--avatar-box-shadow-color);
+  --avatar-font-size: #{$avatar-font-size};
+  --avatar-icon-size: #{$avatar-icon-size};
+  --avatar-brand-size: #{$avatar-brand-size};
+  --avatar-border-radius: #{$avatar-border-radius};
   position: relative;
-  width: var(--#{$prefix}avatar-size);
-  height: var(--#{$prefix}avatar-size);
-  font-size: var(--#{$prefix}avatar-font-size);
-  font-weight: var(--#{$prefix}font-weight-medium);
-  line-height: 1;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  color: var(--#{$prefix}secondary);
+  width: var(--avatar-size);
+  height: var(--avatar-size);
+  font-size: var(--avatar-font-size);
+  font-weight: var(--font-weight-medium);
+  line-height: 1;
+  color: var(--secondary);
   text-align: center;
   text-transform: uppercase;
   vertical-align: bottom;
   user-select: none;
-  background: var(--#{$prefix}avatar-bg) no-repeat center/cover;
-  @include border-radius(var(--#{$prefix}avatar-border-radius));
-  box-shadow: var(--#{$prefix}avatar-box-shadow);
+  background: var(--avatar-bg) no-repeat center/cover;
+  box-shadow: var(--avatar-box-shadow);
   transition:
     color $transition-time,
     background-color $transition-time,
     box-shadow $transition-time;
+  @include border-radius(var(--avatar-border-radius));
 
   .icon {
-    width: var(--#{$prefix}avatar-icon-size);
-    height: var(--#{$prefix}avatar-icon-size);
+    width: var(--avatar-icon-size);
+    height: var(--avatar-icon-size);
   }
 
   .badge {
     position: absolute;
     inset-inline-end: 0;
     bottom: 0;
-    @include border-radius(var(--#{$prefix}border-radius-pill));
-    box-shadow: 0 0 0 calc(var(--#{$prefix}avatar-status-size) / 4) $card-bg;
+    @include border-radius(var(--border-radius-pill));
+    box-shadow: 0 0 0 calc(var(--avatar-status-size) / 4) $card-bg;
   }
 
   @at-root a#{&} {
     cursor: pointer;
 
     &:hover {
-      color: var(--#{$prefix}primary);
-      --#{$prefix}avatar-box-shadow-color: var(--#{$prefix}primary);
+      color: var(--primary);
+      --avatar-box-shadow-color: var(--primary);
     }
   }
 }
 
 .avatar-rounded {
-  @include border-radius(var(--#{$prefix}border-radius-pill));
+  @include border-radius(var(--border-radius-pill));
 }
 
 .avatar-square {
-  @include border-radius(var(--#{$prefix}border-radius));
+  @include border-radius(var(--border-radius));
 }
 
 @each $avatar-size, $size in $avatar-sizes {
   .avatar-#{$avatar-size} {
-    --#{$prefix}avatar-size: #{map.get($size, size)};
-    --#{$prefix}avatar-status-size: #{map.get($size, status-size)};
-    --#{$prefix}avatar-font-size: #{map.get($size, font-size)};
-    --#{$prefix}avatar-icon-size: #{map.get($size, icon-size)};
-    --#{$prefix}avatar-brand-size: #{map.get($size, brand-size)};
+    --avatar-size: #{map.get($size, size)};
+    --avatar-status-size: #{map.get($size, status-size)};
+    --avatar-font-size: #{map.get($size, font-size)};
+    --avatar-icon-size: #{map.get($size, icon-size)};
+    --avatar-brand-size: #{map.get($size, brand-size)};
 
     .badge:empty {
       width: map.get($size, status-size);
@@ -88,8 +88,8 @@
 // Avatar list
 //
 .avatar-list {
-  --#{$prefix}avatar-list-size: #{$avatar-size};
-  @include elements-list;
+  --avatar-list-size: #{$avatar-size};
+  @include elements-list();
 
   a.avatar {
     &:hover {
@@ -100,22 +100,22 @@
 
 .avatar-list-stacked {
   display: block;
-  --#{$prefix}list-gap: 0;
+  --list-gap: 0;
 
   .avatar {
     box-shadow:
-      var(--#{$prefix}avatar-box-shadow),
-      0 0 0 2px var(--#{$prefix}card-bg, var(--#{$prefix}bg-surface));
+      var(--avatar-box-shadow),
+      0 0 0 2px var(--card-bg, var(--bg-surface));
 
     &:not(:first-child) {
-      margin-inline-start: calc(#{$avatar-list-spacing} * var(--#{$prefix}avatar-size)) !important;
+      margin-inline-start: calc(#{$avatar-list-spacing} * var(--avatar-size)) !important;
     }
   }
 }
 
 @each $avatar-size, $size in $avatar-sizes {
   .avatar-list-#{$avatar-size} {
-    --#{$prefix}avatar-list-size: #{map.get($size, size)};
+    --avatar-list-size: #{map.get($size, size)};
   }
 }
 
@@ -123,50 +123,50 @@
 // Avatar upload
 //
 .avatar-upload {
-  --#{$prefix}avatar-upload-icon-size: #{$avatar-upload-icon-size};
-  --#{$prefix}avatar-upload-text-margin-top: #{$avatar-upload-text-margin-top};
-
-  border: var(--#{$prefix}border-width) dashed var(--#{$prefix}border-color);
-  background: $form-check-input-bg;
-  box-shadow: none;
+  --avatar-upload-icon-size: #{$avatar-upload-icon-size};
+  --avatar-upload-text-margin-top: #{$avatar-upload-text-margin-top};
   flex-direction: column;
+  background: $form-check-input-bg;
+
+  border: var(--border-width) dashed var(--border-color);
+  box-shadow: none;
   @include transition(color $transition-time, background-color $transition-time);
 
   svg {
-    width: var(--#{$prefix}avatar-upload-icon-size);
-    height: var(--#{$prefix}avatar-upload-icon-size);
+    width: var(--avatar-upload-icon-size);
+    height: var(--avatar-upload-icon-size);
     stroke-width: 1;
   }
 
   &:hover {
-    border-color: var(--#{$prefix}primary);
-    color: var(--#{$prefix}primary);
+    color: var(--primary);
     text-decoration: none;
+    border-color: var(--primary);
   }
 }
 
 .avatar-upload-text {
+  margin-top: var(--avatar-upload-text-margin-top);
   font-size: $h6-font-size;
   line-height: 1;
-  margin-top: var(--#{$prefix}avatar-upload-text-margin-top);
 }
 
 .avatar-cover {
-  --#{$prefix}avatar-cover-ring-width: #{$avatar-cover-ring-width};
+  --avatar-cover-ring-width: #{$avatar-cover-ring-width};
 
-  margin-top: calc(-0.5 * var(--#{$prefix}avatar-size));
-  box-shadow: 0 0 0 var(--#{$prefix}avatar-cover-ring-width) var(--#{$prefix}card-bg, var(--#{$prefix}body-bg));
+  margin-top: calc(-0.5 * var(--avatar-size));
+  box-shadow: 0 0 0 var(--avatar-cover-ring-width) var(--card-bg, var(--body-bg));
 }
 
 .avatar-brand {
-  --#{$prefix}avatar-brand-offset: #{$avatar-brand-offset};
-  width: var(--#{$prefix}avatar-brand-size);
-  height: var(--#{$prefix}avatar-brand-size);
+  --avatar-brand-offset: #{$avatar-brand-offset};
   position: absolute;
-  inset-inline-end: var(--#{$prefix}avatar-brand-offset);
-  bottom: var(--#{$prefix}avatar-brand-offset);
+  inset-inline-end: var(--avatar-brand-offset);
+  bottom: var(--avatar-brand-offset);
   z-index: 1000;
-  background: var(--#{$prefix}bg-surface);
-  @include border-radius(var(--#{$prefix}border-radius));
-  border: 1px solid var(--#{$prefix}border-color);
+  width: var(--avatar-brand-size);
+  height: var(--avatar-brand-size);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  @include border-radius(var(--border-radius));
 }

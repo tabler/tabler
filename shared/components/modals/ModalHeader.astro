@@ -1,12 +1,14 @@
 ---
 interface Props {
   title?: string
+  /** id on the title heading, referenced by the modal root's aria-labelledby */
+  titleId?: string
 }
 
-const { title = 'Modal title' } = Astro.props
+const { title = 'Modal title', titleId } = Astro.props
 ---
 
 <div class="modal-header">
-  <h5 class="modal-title">{title}</h5>
+  <h5 class="modal-title" id={titleId}>{title}</h5>
   <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
 </div>

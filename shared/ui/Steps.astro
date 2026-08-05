@@ -19,16 +19,22 @@ const total = Number(count)
 const steps = Array.from({ length: total }, (_, i) => i + 1)
 ---
 
-<div class:list={classes}>
+<ol class:list={classes} aria-label="Progress">
   {
     steps.map((i) => {
-      const Element = i > activeNum ? 'span' : 'a'
-      const itemClass = ['step-item', i === active ? 'active' : '']
+      const isFuture = i > activeNum
+      const isCurrent = i === activeNum
+      const isDone = i < activeNum
+      const Element = isFuture ? 'span' : 'a'
+      const itemClass = ['step-item', isCurrent ? 'active' : '']
+      const fallbackLabel = `Step ${i}${isCurrent ? ' (current)' : isDone ? ' (completed)' : ''}`
       return (
-        <Element href="#" class:list={itemClass} data-bs-toggle={showTooltip ? 'tooltip' : undefined} title={showTooltip ? `Step ${i} description` : undefined}>
-          {showTitle && `Step ${i}`}
-        </Element>
+        <li class:list={itemClass}>
+          <Element href={isFuture ? undefined : '#'} aria-current={isCurrent ? 'step' : undefined} data-bs-toggle={showTooltip ? 'tooltip' : undefined} title={showTooltip ? `Step ${i} description` : undefined}>
+            {showTitle ? `Step ${i}` : <span class="visually-hidden">{fallbackLabel}</span>}
+          </Element>
+        </li>
       )
     })
   }
-</div>
+</ol>

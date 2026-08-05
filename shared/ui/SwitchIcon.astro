@@ -9,9 +9,11 @@ interface Props {
   iconBClass?: string
   variant?: string
   active?: boolean
+  /** accessible name announced alongside the pressed state, e.g. "Favorite" */
+  label?: string
 }
 
-const { icon = 'heart', iconB, iconAColor = 'muted', iconBColor = 'red', iconBClass, variant, active } = Astro.props
+const { icon = 'heart', iconB, iconAColor = 'muted', iconBColor = 'red', iconBClass, variant, active, label = 'Favorite' } = Astro.props
 
 const resolvedIconB = iconB ?? icon ?? 'heart'
 // star/heart force the filled variant; otherwise use the passed class.
@@ -20,7 +22,7 @@ const resolvedIconBClass = icon === 'star' || icon === 'heart' ? 'icon-filled' :
 const buttonClass = ['switch-icon', variant && `switch-icon-${variant}`, active && 'active']
 ---
 
-<button class:list={buttonClass} data-bs-toggle="switch-icon">
+<button type="button" class:list={buttonClass} data-bs-toggle="switch-icon" aria-pressed={active ? 'true' : 'false'} aria-label={label}>
   <span class={`switch-icon-a text-${iconAColor}`}>
     <Icon name={icon} />
   </span>

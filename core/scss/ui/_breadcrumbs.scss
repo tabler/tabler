@@ -3,31 +3,31 @@
 @use '../config' as *;
 
 .breadcrumb {
-  --#{$prefix}breadcrumb-padding-x: #{$breadcrumb-padding-x};
-  --#{$prefix}breadcrumb-padding-y: #{$breadcrumb-padding-y};
-  --#{$prefix}breadcrumb-margin-bottom: #{$breadcrumb-margin-bottom};
-  --#{$prefix}breadcrumb-font-size: #{$breadcrumb-font-size};
-  --#{$prefix}breadcrumb-bg: #{$breadcrumb-bg};
-  --#{$prefix}breadcrumb-border-radius: #{$breadcrumb-border-radius};
-  --#{$prefix}breadcrumb-divider-color: #{$breadcrumb-divider-color};
-  --#{$prefix}breadcrumb-item-padding-x: #{$breadcrumb-item-padding-x};
-  --#{$prefix}breadcrumb-item-active-color: #{$breadcrumb-active-color};
-  --#{$prefix}breadcrumb-item-active-font-weight: #{$breadcrumb-active-font-weight};
-  --#{$prefix}breadcrumb-item-disabled-color: #{$breadcrumb-disabled-color};
-  --#{$prefix}breadcrumb-link-color: #{$breadcrumb-link-color};
+  --breadcrumb-padding-x: #{$breadcrumb-padding-x};
+  --breadcrumb-padding-y: #{$breadcrumb-padding-y};
+  --breadcrumb-margin-bottom: #{$breadcrumb-margin-bottom};
+  --breadcrumb-font-size: #{$breadcrumb-font-size};
+  --breadcrumb-bg: #{$breadcrumb-bg};
+  --breadcrumb-border-radius: #{$breadcrumb-border-radius};
+  --breadcrumb-divider-color: #{$breadcrumb-divider-color};
+  --breadcrumb-item-padding-x: #{$breadcrumb-item-padding-x};
+  --breadcrumb-item-active-color: #{$breadcrumb-active-color};
+  --breadcrumb-item-active-font-weight: #{$breadcrumb-active-font-weight};
+  --breadcrumb-item-disabled-color: #{$breadcrumb-disabled-color};
+  --breadcrumb-link-color: #{$breadcrumb-link-color};
 
   display: flex;
   flex-wrap: wrap;
-  @include font-size(var(--#{$prefix}breadcrumb-font-size));
-  list-style: none;
-  background-color: var(--#{$prefix}breadcrumb-bg);
-  @include border-radius(var(--#{$prefix}breadcrumb-border-radius));
   padding: 0;
   margin: 0;
+  list-style: none;
   background: transparent;
+  background-color: var(--breadcrumb-bg);
+  @include font-size(var(--breadcrumb-font-size));
+  @include border-radius(var(--breadcrumb-border-radius));
 
   a {
-    color: var(--#{$prefix}breadcrumb-link-color);
+    color: var(--breadcrumb-link-color);
 
     &:hover {
       text-decoration: underline;
@@ -36,13 +36,13 @@
 }
 
 .breadcrumb-muted {
-  --#{$prefix}breadcrumb-link-color: var(--#{$prefix}secondary);
+  --breadcrumb-link-color: var(--secondary);
 }
 
 .breadcrumb-item {
   &.active {
-    color: var(--#{$prefix}breadcrumb-item-active-color);
-    font-weight: var(--#{$prefix}breadcrumb-item-active-font-weight);
+    font-weight: var(--breadcrumb-item-active-font-weight);
+    color: var(--breadcrumb-item-active-color);
 
     a {
       color: inherit;
@@ -51,9 +51,9 @@
   }
 
   &.disabled {
-    color: var(--#{$prefix}breadcrumb-item-disabled-color);
+    color: var(--breadcrumb-item-disabled-color);
 
-    &:before {
+    &::before {
       color: inherit;
     }
 
@@ -64,14 +64,15 @@
   }
 
   & + & {
-    padding-inline-start: var(--#{$prefix}breadcrumb-item-padding-x);
+    padding-inline-start: var(--breadcrumb-item-padding-x);
 
     &::before {
       float: inline-start;
-      padding-inline-end: var(--#{$prefix}breadcrumb-item-padding-x);
-      color: var(--#{$prefix}breadcrumb-divider-color);
-      content: var(--#{$prefix}breadcrumb-divider, escape-svg($breadcrumb-divider));
-      /*rtl:raw:
+      padding-inline-end: var(--breadcrumb-item-padding-x);
+      color: var(--breadcrumb-divider-color);
+      content: var(--breadcrumb-divider, escape-svg($breadcrumb-divider));
+
+      /* rtl:raw:
       transform: scaleX(-1);
       */
     }
@@ -80,6 +81,6 @@
 
 @each $name, $symbol in $breadcrumb-variants {
   .breadcrumb-#{$name} {
-    --#{$prefix}breadcrumb-divider: '#{string.quote($symbol)}';
+    --breadcrumb-divider: '#{string.quote($symbol)}';
   }
 }

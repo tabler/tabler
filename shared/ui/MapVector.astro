@@ -39,6 +39,13 @@ const markers = data?.markers?.map((marker) => ({
 
 const mapKey = `map-${mapId}`;
 const mapSelector = `#map-${mapId}`;
+const mapLabel = data?.title ?? 'Map';
+
+// jsVectorMap renders its own zoom +/- buttons inside this container when
+// zoom is enabled. `role="img"` flattens all descendants for assistive
+// tech, which would swallow those buttons — so only apply it when there's
+// no interactive chrome to hide.
+const hasZoomControls = Boolean(data?.zoom);
 
 const mapOptions = data
 	? {
@@ -92,7 +99,12 @@ const mapOptions = data
 		<Fragment>
 			<div class={`ratio ratio-${ratio}`}>
 				<div>
-					<div id={mapKey} class="w-100 h-100" />
+					<div
+						id={mapKey}
+						class="w-100 h-100"
+						role={hasZoomControls ? undefined : 'img'}
+						aria-label={mapLabel}
+					/>
 				</div>
 			</div>
 			<CaptureScript>
@@ -100,7 +112,7 @@ const mapOptions = data
 				<script define:vars={{ mapKey, mapSelector, mapName: data.map, mapOptions }}>
 					window.tabler_map_vector ??= {};
 
-					function initMapVector() {
+					function createMapVector() {
 						const map = (window.tabler_map_vector[mapKey] = new jsVectorMap({
 							selector: mapSelector,
 							map: mapName,
@@ -113,6 +125,27 @@ const mapOptions = data
 						window.addEventListener('resize', () => {
 							map.updateSize();
 						});
+					}
+
+					function initMapVector() {
+						const container = document.querySelector(mapSelector);
+
+						// jsVectorMap computes its initial scale from the container's layout
+						// size. If the container is still 0x0 (e.g. layout hasn't settled
+						// yet), that scale ends up 0, and a later resize divides by it,
+						// producing a NaN transform. Wait for real dimensions first.
+						if (container.offsetWidth && container.offsetHeight) {
+							createMapVector();
+							return;
+						}
+
+						const observer = new ResizeObserver((entries) => {
+							if (entries[0].contentRect.width && entries[0].contentRect.height) {
+								observer.disconnect();
+								createMapVector();
+							}
+						});
+						observer.observe(container);
 					}
 
 					document.readyState !== 'loading' ? initMapVector() : document.addEventListener('DOMContentLoaded', initMapVector, { once: true });

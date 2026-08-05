@@ -1,8 +1,9 @@
 // Output tests for the `generate-utility` mixin from
 // scss/mixins/bootstrap/_utilities.scss — the engine behind Tabler's utility
 // classes. `@use "../mixins/bootstrap/utilities"` pulls in the real
-// settings/variables chain, so `$prefix` = "tblr-" and
-// `$enable-important-utilities` = true (hence the `!important` in the output).
+// settings/variables chain, so `$enable-important-utilities` = true (hence the
+// `!important` in the output). Custom properties are expected unprefixed: the
+// `--tblr-` prefix is added later, by the css pipeline (.build/css-var-prefix.ts).
 //
 // Each `it` feeds the mixin a hand-built utility map and asserts the generated
 // classes, covering the branches that shape the output: map vs list values,
@@ -68,7 +69,7 @@
       @include output() {
         @include generate-utility(
           (
-            property: margin-right margin-left,
+            property: margin-inline-end margin-inline-start,
             class: mx,
             values: (
               0: 0,
@@ -79,12 +80,12 @@
       }
       @include expect() {
         .mx-0 {
-          margin-right: 0 !important;
-          margin-left: 0 !important;
+          margin-inline-end: 0 !important;
+          margin-inline-start: 0 !important;
         }
         .mx-auto {
-          margin-right: auto !important;
-          margin-left: auto !important;
+          margin-inline-end: auto !important;
+          margin-inline-start: auto !important;
         }
       }
     }
@@ -106,7 +107,7 @@
       }
       @include expect() {
         .opacity-50 {
-          --tblr-opacity: 0.5;
+          --opacity: 0.5;
         }
       }
     }
@@ -181,8 +182,9 @@
       property: float,
       class: float,
       values: (
-        left,
-        right,
+        start: inline-start,
+        end: inline-end,
+        none: none,
       ),
     ),
   );
@@ -209,11 +211,14 @@
         .d-flex {
           display: flex !important;
         }
-        .float-left {
-          float: left !important;
+        .float-start {
+          float: inline-start !important;
         }
-        .float-right {
-          float: right !important;
+        .float-end {
+          float: inline-end !important;
+        }
+        .float-none {
+          float: none !important;
         }
 
         // responsive breakpoints: only `d` (responsive: true) is repeated; `float` is not

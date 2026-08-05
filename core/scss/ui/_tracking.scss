@@ -1,32 +1,32 @@
 @use '../config' as *;
 
 .tracking {
-  --#{$prefix}tracking-height: #{$tracking-height};
-  --#{$prefix}tracking-gap-width: #{$tracking-gap-width};
-  --#{$prefix}tracking-block-border-radius: #{$tracking-border-radius};
-  --#{$prefix}tracking-block-min-width: #{$tracking-block-min-width};
+  --tracking-height: #{$tracking-height};
+  --tracking-gap-width: #{$tracking-gap-width};
+  --tracking-block-border-radius: #{$tracking-border-radius};
+  --tracking-block-min-width: #{$tracking-block-min-width};
   display: flex;
-  gap: var(--#{$prefix}tracking-gap-width);
+  gap: var(--tracking-gap-width);
 }
 
 .tracking-squares {
-  --#{$prefix}tracking-block-border-radius: var(--#{$prefix}border-radius-sm);
+  --tracking-block-border-radius: var(--border-radius-sm);
 
   .tracking-block {
     height: auto;
 
-    &:before {
-      content: '';
+    &::before {
       display: block;
       padding-top: 100%;
+      content: '';
     }
   }
 }
 
 .tracking-block {
   flex: 1;
-  @include border-radius(var(--#{$prefix}tracking-block-border-radius));
-  height: var(--#{$prefix}tracking-height);
-  min-width: var(--#{$prefix}tracking-block-min-width);
-  background: var(--#{$prefix}border-color);
+  min-width: var(--tracking-block-min-width);
+  height: var(--tracking-height);
+  background: var(--border-color);
+  @include border-radius(var(--tracking-block-border-radius));
 }
