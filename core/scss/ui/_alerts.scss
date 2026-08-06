@@ -3,11 +3,10 @@
 .alert {
   --alert-variant-color: var(--body-color);
   --alert-color: var(--alert-variant-color);
-  --alert-bg: #{color-transparent(var(--alert-variant-color), 0.16, var(--bg-surface))};
+  --alert-bg: var(--secondary-bg-subtle);
   --alert-padding-x: #{$alert-padding-x};
   --alert-padding-y: #{$alert-padding-y};
   --alert-margin-bottom: #{$alert-margin-bottom};
-  --alert-border-color: #{color-transparent(var(--alert-variant-color), 0.2, var(--bg-surface))};
   --alert-border-color: var(--border-color);
   --alert-border: var(--border-width) solid var(--alert-border-color);
   --alert-border-radius: var(--border-radius);
@@ -21,7 +20,7 @@
   position: relative;
   padding: var(--alert-padding-y) var(--alert-padding-x);
   margin-bottom: var(--alert-margin-bottom);
-  background-color: color-mix(in srgb, var(--alert-bg), var(--bg-surface));
+  background-color: var(--alert-bg);
   @include border-radius(var(--alert-border-radius));
   border: var(--border-width) var(--border-style) var(--alert-border-color);
   box-shadow: var(--box-shadow);
@@ -103,5 +102,6 @@
 @each $name, $color in $theme-colors {
   .alert-#{$name} {
     --alert-variant-color: var(--#{$name});
+    --alert-bg: var(--#{$name}-bg-subtle);
   }
 }

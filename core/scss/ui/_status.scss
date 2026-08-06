@@ -46,7 +46,7 @@
 .status {
   --status-height: #{$status-height};
   --status-color: #{$text-secondary};
-  --status-color-rgb: #{to-rgb($text-secondary)};
+  --status-bg: var(--secondary-bg-subtle);
   --status-padding-y: #{$status-padding-y};
   --status-padding-x: #{$status-padding-x};
   --status-gap: #{$status-gap};
@@ -57,7 +57,7 @@
   padding: var(--status-padding-y) var(--status-padding-x);
   gap: var(--status-gap);
   color: var(--status-color);
-  background: color-transparent(var(--status-color), 0.1);
+  background: var(--status-bg);
   font-size: $font-size-base;
   text-transform: none;
   letter-spacing: normal;
@@ -84,7 +84,7 @@
 @each $name, $color in map.merge($theme-colors, $social-colors) {
   .status-#{$name} {
     --status-color: var(--#{$name});
-    --status-color-rgb: var(--#{$name}-rgb);
+    --status-bg: var(--#{$name}-bg-subtle);
   }
 }
 

@@ -1,4 +1,5 @@
 @use 'sass:map';
+@use 'sass:math';
 @use 'config' as *;
 
 :root,
@@ -38,12 +39,52 @@
     --#{$name}: #{$color};
     --#{$name}-rgb: #{to-rgb($color)};
     --#{$name}-fg: #{if(sass(contrast-ratio($color) > $min-contrast-ratio): var(--light); else: var(--dark))};
+    // Bootstrap v6 names the "text on top of this color" token --{color}-contrast.
+    --#{$name}-contrast: var(--#{$name}-fg);
     --#{$name}-darken: #{theme-color-darker($color)};
     --#{$name}-darken: color-mix(in oklab, var(--#{$name}), transparent 20%);
-    --#{$name}-lt: #{theme-color-lighter($color)};
-    --#{$name}-lt: color-mix(in oklab, var(--#{$name}) 10%, transparent);
-    --#{$name}-200: color-mix(in oklab, var(--#{$name}) 20%, transparent);
-    --#{$name}-lt-rgb: #{to-rgb(theme-color-lighter($color))};
+
+    // bootstrap/_root.scss already defines --{color}-bg-subtle for the 8 core
+    // theme colors from hand-tuned Sass variables; only fill in the rest here.
+    @if not map.has-key($theme-colors-bg-subtle, $name) {
+      --#{$name}-bg-subtle: color-mix(in oklab, var(--#{$name}) 10%, transparent);
+    }
+    --#{$name}-lt: var(--#{$name}-bg-subtle); // deprecated, use --#{$name}-bg-subtle
+
+    --#{$name}-bg-muted: color-mix(in oklab, var(--#{$name}) 20%, transparent);
+    --#{$name}-200: var(--#{$name}-bg-muted); // deprecated, use --#{$name}-bg-muted
+
+    // For the 8 core colors, read the same hand-tuned Sass variables
+    // bootstrap/_root.scss uses for --{color}-text-emphasis, so a project
+    // overriding e.g. $primary-text-emphasis stays consistent between the two
+    // (differently-named) custom properties. Every other color falls back to
+    // the same formula those variables already use (see _variables.scss).
+    @if map.has-key($theme-colors-text, $name) {
+      @if $enable-dark-mode {
+        --#{$name}-fg-emphasis: light-dark(#{map.get($theme-colors-text, $name)}, #{map.get($theme-colors-text-dark, $name)});
+      } @else {
+        --#{$name}-fg-emphasis: #{map.get($theme-colors-text, $name)};
+      }
+    } @else if $enable-dark-mode {
+      --#{$name}-fg-emphasis: light-dark(#{shade-color($color, 60%)}, #{tint-color($color, 40%)});
+    } @else {
+      --#{$name}-fg-emphasis: #{shade-color($color, 60%)};
+    }
+
+    @if map.has-key($theme-colors-border-subtle, $name) {
+      @if $enable-dark-mode {
+        --#{$name}-border: light-dark(#{map.get($theme-colors-border-subtle, $name)}, #{map.get($theme-colors-border-subtle-dark, $name)});
+      } @else {
+        --#{$name}-border: #{map.get($theme-colors-border-subtle, $name)};
+      }
+    } @else if $enable-dark-mode {
+      --#{$name}-border: light-dark(#{tint-color($color, 60%)}, #{shade-color($color, 40%)});
+    } @else {
+      --#{$name}-border: #{tint-color($color, 60%)};
+    }
+
+    // Same formula already used for the global --focus-ring-color (see _variables.scss), per color.
+    --#{$name}-focus-ring: color-mix(in srgb, var(--#{$name}) #{math.percentage($focus-ring-opacity)}, transparent);
   }
 
   /** Gray colors */
