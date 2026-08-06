@@ -116,17 +116,19 @@ const libJsFiles = pageLibEntries.flatMap(([, lib]) => (lib.js ?? []).map((file)
   <body>
     <div class="page page-center align-items-center">
       <div class="screenshot d-flex flex-column justify-content-center align-items-center px-12" id="screenshot">
-        {
-          showLogo && (
-            <div class="screenshot-logo"></div>
-          )
-        }
+        {showLogo && <div class="screenshot-logo" />}
 
         <div class:list={['screenshot-wrapper', className]} style={targetStyle} data-screenshot-target>
           <slot />
         </div>
 
-        {showLogo && <div class="screenshot-logo"><Logo gray /></div>}
+        {
+          showLogo && (
+            <div class="screenshot-logo">
+              <Logo gray />
+            </div>
+          )
+        }
       </div>
 
       <!-- outside .screenshot on purpose: a screenshot tool crops to [data-screenshot-target], so this toggle never ends up in the capture -->

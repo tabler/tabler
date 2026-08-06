@@ -693,9 +693,9 @@ Card gradient
 // referenced in isolation by sass-true.
 @mixin card-gradient-background {
   background:
-    radial-gradient(ellipse at center, var(--#{$prefix}card-bg) 0%, color-mix(in srgb, var(--#{$prefix}card-bg) 0%, transparent) 80%) border-box,
-    linear-gradient(var(--#{$prefix}card-gradient-direction), color-mix(in srgb, var(--#{$prefix}card-bg) var(--#{$prefix}card-gradient-opacity), transparent) 0%, var(--#{$prefix}card-bg) 40%) border-box,
-    linear-gradient(calc(270deg + var(--#{$prefix}card-gradient-direction)), var(--#{$prefix}card-gradient)) border-box;
+    radial-gradient(ellipse at center, var(--card-bg) 0%, color-mix(in sRGB, var(--card-bg) 0%, transparent) 80%) border-box,
+    linear-gradient(var(--card-gradient-direction), color-mix(in sRGB, var(--card-bg) var(--card-gradient-opacity), transparent) 0%, var(--card-bg) 40%) border-box,
+    linear-gradient(calc(270deg + var(--card-gradient-direction)), var(--card-gradient)) border-box;
 }
 
 .card-gradient {
@@ -703,7 +703,7 @@ Card gradient
   --card-gradient-opacity: 86%;
   --card-gradient: var(--primary), var(--primary);
 
-  @include card-gradient-background;
+  @include card-gradient-background();
 }
 
 @each $name, $color in map.merge($colors, $theme-colors) {
