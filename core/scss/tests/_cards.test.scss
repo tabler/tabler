@@ -1,6 +1,6 @@
 // Regression coverage for the multi-layer .card-gradient background: every
 // zero-value gradient stop must keep its `%` unit. Unlike <length>,
-// <percentage> has no unitless-zero exception, so `color-mix(in srgb, x 0,
+// <percentage> has no unitless-zero exception, so `color-mix(in sRGB, x 0,
 // y)` (missing the %) is invalid CSS and the whole color-mix() — and the
 // gradient layer using it — silently drops in the browser.
 //
@@ -21,9 +21,9 @@
       @include expect() {
         .t {
           background:
-            radial-gradient(ellipse at center, var(--tblr-card-bg) 0%, color-mix(in srgb, var(--tblr-card-bg) 0%, transparent) 80%) border-box,
-            linear-gradient(var(--tblr-card-gradient-direction), color-mix(in srgb, var(--tblr-card-bg) var(--tblr-card-gradient-opacity), transparent) 0%, var(--tblr-card-bg) 40%) border-box,
-            linear-gradient(calc(270deg + var(--tblr-card-gradient-direction)), var(--tblr-card-gradient)) border-box;
+            radial-gradient(ellipse at center, var(--card-bg) 0%, color-mix(in sRGB, var(--card-bg) 0%, transparent) 80%) border-box,
+            linear-gradient(var(--card-gradient-direction), color-mix(in sRGB, var(--card-bg) var(--card-gradient-opacity), transparent) 0%, var(--card-bg) 40%) border-box,
+            linear-gradient(calc(270deg + var(--card-gradient-direction)), var(--card-gradient)) border-box;
         }
       }
     }
