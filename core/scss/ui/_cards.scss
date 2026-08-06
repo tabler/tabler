@@ -688,15 +688,22 @@ Card note
 /**
 Card gradient
 */
+// Split out so scss/tests/_cards.test.scss can assert on it directly — a bare
+// top-level ruleset like .card-gradient can't be @include-d or otherwise
+// referenced in isolation by sass-true.
+@mixin card-gradient-background {
+  background:
+    radial-gradient(ellipse at center, var(--card-bg) 0%, color-mix(in sRGB, var(--card-bg) 0%, transparent) 80%) border-box,
+    linear-gradient(var(--card-gradient-direction), color-mix(in sRGB, var(--card-bg) var(--card-gradient-opacity), transparent) 0%, var(--card-bg) 40%) border-box,
+    linear-gradient(calc(270deg + var(--card-gradient-direction)), var(--card-gradient)) border-box;
+}
+
 .card-gradient {
   --card-gradient-direction: 180deg;
   --card-gradient-opacity: 86%;
   --card-gradient: var(--primary), var(--primary);
 
-  background:
-    radial-gradient(ellipse at center, var(--card-bg) 0%, color-mix(in sRGB, var(--card-bg) 0%, transparent) 80%) border-box,
-    linear-gradient(var(--card-gradient-direction), color-mix(in sRGB, var(--card-bg) var(--card-gradient-opacity), transparent) 0%, var(--card-bg) 40%) border-box,
-    linear-gradient(calc(270deg + var(--card-gradient-direction)), var(--card-gradient)) border-box;
+  @include card-gradient-background();
 }
 
 @each $name, $color in map.merge($colors, $theme-colors) {

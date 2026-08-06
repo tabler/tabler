@@ -124,6 +124,14 @@ function flushWrites(): void {
 async function minify(files: string[]): Promise<void> {
   const minified = await new CleanCSS({
     batch: true,
+    // zeroUnits (default true) strips the unit off zero values, e.g. `0%` -> `0`.
+    // clean-css only skips this inside calc/rgb/hsl/rgba/hsla/min/max/clamp —
+    // not color-mix() — so it turns `color-mix(in srgb, x 0%, y)` into
+    // `color-mix(in srgb, x 0, y)`. Unlike <length>, <percentage> has no
+    // unitless-zero exception, so that's invalid CSS and the whole color-mix()
+    // (and the gradient layer using it, e.g. .card-gradient) silently drops.
+    // Covered by .build/build-css.test.ts.
+    compatibility: { properties: { zeroUnits: false } },
     format: 'breakWith=lf;breaks:afterComment=on',
     inline: 'local',
     level: { 1: true },

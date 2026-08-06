@@ -8,6 +8,8 @@ type Serie = {
   'color'?: string
   'color-opacity'?: string
   'candlestick-data'?: { x: number; y: number[] }[]
+  /** one row of a heatmap: { x: category label, y: intensity value } per cell */
+  'heatmap-data'?: { x: string; y: number }[]
 }
 
 export type ChartData = {
@@ -160,6 +162,15 @@ export function chartConfig(opts: { id: string; data: ChartData; height: number 
     config.dataLabels = { enabled: Boolean(data.datalabels) }
   }
 
+  if (type === 'heatmap') {
+    // Rounded cells + a hairline gap read less like a spreadsheet, more like
+    // a deliberate "contribution graph" grid. Single-hue intensity shading
+    // (light -> the series color) is ApexCharts' own default once `colors`
+    // is set below, so no colorScale.ranges override is needed here.
+    config.plotOptions = { heatmap: { radius: 3 } }
+    config.dataLabels = { enabled: false }
+  }
+
   if (data['fill-type']) {
     config.fill = {
       type: data['fill-type'],
@@ -212,7 +223,7 @@ export function chartConfig(opts: { id: string; data: ChartData; height: number 
     } else {
       config.series = series.map((s) => ({
         name: s.name ?? '',
-        data: s['candlestick-data'] ? s['candlestick-data'].map((c) => ({ x: c.x, y: c.y })) : (s.data as number[]),
+        data: s['candlestick-data'] ? s['candlestick-data'].map((c) => ({ x: c.x, y: c.y })) : s['heatmap-data'] ? s['heatmap-data'].map((c) => ({ x: c.x, y: c.y })) : (s.data as number[]),
       }))
     }
   }
@@ -223,6 +234,9 @@ export function chartConfig(opts: { id: string; data: ChartData; height: number 
     padding: data.sparkline ? undefined : { top: -20, right: 0, left: -4, bottom: -4 },
     show: data['hide-grid'] ? false : undefined,
     strokeDashArray: data['hide-grid'] ? undefined : 4,
+    // ApexCharts' own default (#e0e0e0) is a light-mode-only gray — near
+    // invisible, and wrong-toned, against a dark background.
+    borderColor: 'var(--tblr-border-color)',
     xaxis: !data['hide-grid'] && data['show-x'] ? { lines: { show: true } } : undefined,
   }
 
@@ -231,9 +245,11 @@ export function chartConfig(opts: { id: string; data: ChartData; height: number 
     config.dataLabels = { enabled: true }
   }
 
-  if (data.categories || data.datetime) {
+  if (data.categories || data.datetime || type === 'heatmap') {
     config.xaxis = {
-      labels: { padding: 0 },
+      // ApexCharts' own default label color (#373d3f) is a light-mode-only
+      // dark gray — low-contrast (near-invisible) against a dark background.
+      labels: { padding: 0, style: { colors: 'var(--tblr-secondary)' } },
       tooltip: { enabled: false },
       axisBorder: type === 'area' || type === 'bar' ? { show: false } : undefined,
       categories: data.categories?.map(String),
@@ -243,7 +259,7 @@ export function chartConfig(opts: { id: string; data: ChartData; height: number 
 
   if (!isRound) {
     config.yaxis = {
-      labels: { padding: 4 },
+      labels: { padding: 4, style: { colors: 'var(--tblr-secondary)' } },
       max: data['y-max'],
       title: data['y-title'] ? { text: escapeHtml(data['y-title']) } : undefined,
       tooltip: data['y-tooltip'] ? { enabled: true } : undefined,
@@ -268,6 +284,9 @@ export function chartConfig(opts: { id: string; data: ChartData; height: number 
         offsetY: 12,
         markers: { width: 10, height: 10, radius: 100 },
         itemMargin: { horizontal: 8, vertical: 8 },
+        // Same fixed light-mode-only default (#373d3f) as the axis labels —
+        // near-invisible on a dark background.
+        labels: { colors: 'var(--tblr-secondary)' },
       }
     : { show: false }
 
