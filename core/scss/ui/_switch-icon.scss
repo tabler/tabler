@@ -1,24 +1,29 @@
 @use '../config' as *;
 
 .switch-icon {
+  position: relative;
   display: inline-block;
-  line-height: 1;
-  border: 0;
-  padding: 0;
-  background: transparent;
   width: $icon-size;
   height: $icon-size;
+  padding: 0;
+  line-height: 1;
   vertical-align: bottom;
-  position: relative;
   cursor: pointer;
+  background: transparent;
+  border: 0;
 
   &.disabled {
     pointer-events: none;
     opacity: $btn-disabled-opacity;
   }
 
-  &:focus {
+  &:focus:not(:focus-visible) {
     outline: none;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--primary);
+    outline-offset: 2px;
   }
 
   svg {
@@ -40,8 +45,8 @@
 
   .switch-icon-b {
     position: absolute;
-    top: 0;
     inset-inline-start: 0;
+    top: 0;
     opacity: 0;
   }
 
@@ -161,12 +166,14 @@
   }
 
   .switch-icon-b {
-    transform: translateX(100%);
+    /* rtl:ignore */
+    transform: translateX(calc(var(--dir) * 100%));
   }
 
   &.active {
     .switch-icon-a {
-      transform: translateX(-100%);
+      /* rtl:ignore */
+      transform: translateX(calc(var(--dir) * -100%));
     }
 
     .switch-icon-b {
@@ -182,12 +189,14 @@
   }
 
   .switch-icon-b {
-    transform: translateX(-100%);
+    /* rtl:ignore */
+    transform: translateX(calc(var(--dir) * -100%));
   }
 
   &.active {
     .switch-icon-a {
-      transform: translateX(100%);
+      /* rtl:ignore */
+      transform: translateX(calc(var(--dir) * 100%));
     }
 
     .switch-icon-b {

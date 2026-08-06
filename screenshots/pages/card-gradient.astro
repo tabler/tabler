@@ -1,0 +1,52 @@
+---
+// .card-gradient + .card-gradient-{variant} come from core/scss/ui/_cards.scss
+// (bundled in the base tabler.css — no cssPlugins needed here). Content follows
+// shared/components/cards/StatGradient.astro's pattern (subheader + big stat +
+// icon avatar + progress bar) rather than reusing it directly — its `color`
+// prop assumes a single real theme color drives BOTH the gradient background
+// and the icon/progress accent, which doesn't hold for the named palettes
+// below (rainbow, ocean, ...); accentColor is picked separately so the icon
+// stays legible in dark mode too ("dark" text is invisible on a dark theme).
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Subheader from '@ui/Subheader.astro'
+import Avatar from '@ui/Avatar.astro'
+import Progress from '@ui/Progress.astro'
+
+const variants = [
+  { name: 'rainbow', accentColor: 'pink', label: 'Palettes', icon: 'palette', value: '24', progress: 80 },
+  { name: 'ocean', accentColor: 'azure', label: 'Revenue', icon: 'droplet', value: '$12.4k', progress: 62 },
+  { name: 'sun', accentColor: 'orange', label: 'Temperature', icon: 'sun', value: '32°C', progress: 74 },
+  { name: 'snow', accentColor: 'cyan', label: 'Temperature', icon: 'snowflake', value: '-4°C', progress: 18 },
+  { name: 'gold', accentColor: 'yellow', label: 'Rank', icon: 'trophy', value: '#1', progress: 96 },
+  { name: 'disco', accentColor: 'purple', label: 'Tempo', icon: 'music', value: '128 BPM', progress: 55 },
+]
+---
+
+<ScreenshotLayout title="Card gradient" columns={2}>
+  <div class="row row-cards">
+    {
+      variants.map((variant) => (
+        <div class="col-6">
+          <div class={`card card-gradient card-gradient-${variant.name}`}>
+            <div class="card-body">
+              <div class="row g-3 align-items-center">
+                <div class="col">
+                  <Subheader as="h4" class="mb-1">
+                    {variant.label}
+                  </Subheader>
+                  <div class="h3 m-0">{variant.value}</div>
+                </div>
+                <div class="col-auto">
+                  <Avatar icon={variant.icon} color={variant.accentColor} />
+                </div>
+                <div class="col-12">
+                  <Progress value={variant.progress} color={variant.accentColor} size="sm" />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</ScreenshotLayout>

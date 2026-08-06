@@ -1,11 +1,11 @@
 @use '../config' as *;
 
 .noUi-target {
+  color: $form-range-thumb-bg;
+  background: none;
   border: 0;
   box-shadow: none;
-  background: none;
   @include border-radius(0);
-  color: $form-range-thumb-bg;
 }
 
 .noUi-horizontal {
@@ -21,22 +21,22 @@
 .noUi-handle {
   width: $form-range-thumb-width;
   height: $form-range-thumb-height;
+  background: currentColor;
   border: $form-range-thumb-border;
+  outline: 0;
   box-shadow: $form-range-thumb-box-shadow;
   @include border-radius($form-range-thumb-border-radius);
-  background: currentColor;
-  outline: 0;
 
-  &:before,
-  &:after {
+  &::before,
+  &::after {
     content: none;
   }
 
   .noUi-horizontal & {
+    inset-inline-end: calc($form-range-thumb-height * -0.5);
+    top: calc($form-range-thumb-height * -0.5);
     width: $form-range-thumb-width;
     height: $form-range-thumb-height;
-    top: calc($form-range-thumb-height * -0.5);
-    inset-inline-end: calc($form-range-thumb-height * -0.5);
     margin: 1px 1px 0 0;
   }
 

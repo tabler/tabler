@@ -25,6 +25,7 @@ interface Props {
   status?: string
   statusText?: string
   statusIcon?: string
+  statusLabel?: string
   brand?: string
   icon?: string
   /** asset URL base — '.' for root-level pages, '..' for pages one level deep (e.g. marketing/) */
@@ -33,7 +34,7 @@ interface Props {
   [key: string]: unknown
 }
 
-const { src: srcProp, placeholder: placeholderProp, personId, person: personProp, link: linkProp = false, dropdown, size, thumb, class: className, shape, color, square, status, statusText, statusIcon, brand, icon, base = '.', ...rest } = Astro.props
+const { src: srcProp, placeholder: placeholderProp, personId, person: personProp, link: linkProp = false, dropdown, size, thumb, class: className, shape, color, square, status, statusText, statusIcon, statusLabel, brand, icon, base = '.', ...rest } = Astro.props
 
 let src = srcProp
 let placeholder = placeholderProp
@@ -53,7 +54,7 @@ const classes = ['avatar', size && `avatar-${size}`, thumb && 'avatar-thumb', cl
 ---
 
 <El class:list={classes} style={src ? `background-image: url(${base}/${src})` : undefined} data-bs-toggle={dropdown ? 'dropdown' : undefined} {...rest}
-  >{status && <span class={`badge bg-${status}`}>{statusText ? statusText : statusIcon ? <Icon name={statusIcon} class="avatar-status-icon" /> : null}</span>}{brand && <span class="avatar-brand" style={`background-image: url(${base}/static/brands/${brand}.svg);`} />}{
-    src ? null : placeholder ? placeholder : icon ? <Icon name={icon} class="avatar-icon" /> : <Icon name="user" class="avatar-icon" />
-  }</El
+  >{status && <span class={`badge bg-${status}`}>{statusText ? statusText : statusIcon ? <Icon name={statusIcon} class="avatar-status-icon" /> : <span class="visually-hidden">{statusLabel ?? status}</span>}</span>}{
+    brand && <span class="avatar-brand" style={`background-image: url(${base}/static/brands/${brand}.svg);`} />
+  }{src ? null : placeholder ? placeholder : icon ? <Icon name={icon} class="avatar-icon" /> : <Icon name="user" class="avatar-icon" />}</El
 >

@@ -50,8 +50,6 @@ ${clearSnippet}
 		function resizeCanvas() {
         const ratio = Math.max(window.devicePixelRatio || 1, 1);
 
-		  console.log(canvas.offsetWidth, canvas.offsetHeight);
-
         canvas.width = canvas.offsetWidth * ratio;
         canvas.height = canvas.offsetHeight * ratio;
         canvas.getContext("2d").scale(ratio, ratio);
@@ -72,9 +70,9 @@ ${extraSnippet}
   {
     clear && (
       <div class="position-absolute top-0 end-0 p-2">
-        <div class="btn btn-icon" id={`signature-${id}-clear`} title="Clear signature" data-bs-toggle="tooltip">
+        <button type="button" class="btn btn-icon" id={`signature-${id}-clear`} title="Clear signature" aria-label="Clear signature" data-bs-toggle="tooltip">
           <Icon name="trash" />{' '}
-        </div>
+        </button>
       </div>
     )
   }

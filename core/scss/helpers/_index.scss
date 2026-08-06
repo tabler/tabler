@@ -24,7 +24,7 @@
   align-self: stretch;
   width: $vr-border-width;
   min-height: 1em;
-  background-color: currentcolor;
+  background-color: currentColor;
   opacity: $hr-opacity;
 }
 
@@ -34,10 +34,10 @@
 .stretched-link {
   &::after {
     position: absolute;
-    top: 0;
-    inset-inline-end: 0;
-    bottom: 0;
     inset-inline-start: 0;
+    inset-inline-end: 0;
+    top: 0;
+    bottom: 0;
     z-index: 1;
     content: '';
   }
@@ -75,17 +75,17 @@
 
 .fixed-top {
   position: fixed;
-  top: 0;
-  inset-inline-end: 0;
   inset-inline-start: 0;
+  inset-inline-end: 0;
+  top: 0;
   z-index: $zindex-fixed;
 }
 
 .fixed-bottom {
   position: fixed;
+  inset-inline-start: 0;
   inset-inline-end: 0;
   bottom: 0;
-  inset-inline-start: 0;
   z-index: $zindex-fixed;
 }
 
@@ -117,14 +117,14 @@
 
   &::before {
     display: block;
-    padding-top: var(--#{$prefix}aspect-ratio);
+    padding-top: var(--aspect-ratio);
     content: '';
   }
 
   > * {
     position: absolute;
-    top: 0;
     inset-inline-start: 0;
+    top: 0;
     width: 100%;
     height: 100%;
   }
@@ -132,7 +132,7 @@
 
 @each $key, $ratio in $aspect-ratios {
   .ratio-#{$key} {
-    --#{$prefix}aspect-ratio: #{$ratio};
+    --aspect-ratio: #{$ratio};
   }
 }
 
@@ -142,5 +142,5 @@
 .focus-ring:focus {
   outline: 0;
   // By default, there is no `--bs-focus-ring-x`, `--bs-focus-ring-y`, or `--bs-focus-ring-blur`, but we provide CSS variables with fallbacks to initial `0` values
-  box-shadow: var(--#{$prefix}focus-ring-x, 0) var(--#{$prefix}focus-ring-y, 0) var(--#{$prefix}focus-ring-blur, 0) var(--#{$prefix}focus-ring-width) var(--#{$prefix}focus-ring-color);
+  box-shadow: var(--focus-ring-x, 0) var(--focus-ring-y, 0) var(--focus-ring-blur, 0) var(--focus-ring-width) var(--focus-ring-color);
 }

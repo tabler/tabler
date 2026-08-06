@@ -6,7 +6,7 @@
 
 :root {
   @each $name, $value in $grid-breakpoints {
-    --#{$prefix}breakpoint-#{$name}: #{$value};
+    --breakpoint-#{$name}: #{$value};
   }
 }
 
@@ -23,9 +23,9 @@
 @if $enable-cssgrid {
   .grid {
     display: grid;
-    grid-template-rows: repeat(var(--#{$prefix}rows, 1), 1fr);
-    grid-template-columns: repeat(var(--#{$prefix}columns, #{$grid-columns}), 1fr);
-    gap: var(--#{$prefix}gap, #{$grid-gutter-width});
+    grid-template-rows: repeat(var(--rows, 1), 1fr);
+    grid-template-columns: repeat(var(--columns, #{$grid-columns}), 1fr);
+    gap: var(--gap, #{$grid-gutter-width});
 
     @include make-cssgrid();
   }

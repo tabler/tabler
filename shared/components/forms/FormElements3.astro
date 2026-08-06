@@ -14,75 +14,85 @@ const blueHex = (site as { colors: { blue: { hex: string } } }).colors.blue.hex
 ---
 
 <FormGroup label="Image Check">
-  <div class="row g-2">
-    {
-      imageChecks.map((photo, i) => {
-        const index = i + 1
-        return (
-          <div class="col-6 col-sm-4">
-            <label class="form-imagecheck mb-2">
-              <input name="form-imagecheck" type="checkbox" value={index} class="form-imagecheck-input" checked={index === 2 || index === 4 || index === 7} />
-              <span class="form-imagecheck-figure">
-                <img src={`./static/photos/${photo.file}`} alt={photo.title} class="form-imagecheck-image" />
-              </span>
-            </label>
-          </div>
-        )
-      })
-    }
-  </div>
+  <fieldset>
+    <legend class="visually-hidden">Image Check</legend>
+    <div class="row g-2">
+      {
+        imageChecks.map((photo, i) => {
+          const index = i + 1
+          return (
+            <div class="col-6 col-sm-4">
+              <label class="form-imagecheck mb-2">
+                <input name="form-imagecheck" type="checkbox" value={index} class="form-imagecheck-input" checked={index === 2 || index === 4 || index === 7} />
+                <span class="form-imagecheck-figure">
+                  <img src={`./static/photos/${photo.file}`} alt={photo.title} class="form-imagecheck-image" />
+                </span>
+              </label>
+            </div>
+          )
+        })
+      }
+    </div>
+  </fieldset>
 </FormGroup>
 
 <FormGroup label="Image Check Radio">
-  <div class="row g-2">
-    {
-      imageRadios.map((photo, i) => {
-        const index = i + 1
-        return (
-          <div class="col-6 col-sm-4">
-            <label class="form-imagecheck mb-2">
-              <input name="form-imagecheck-radio" type="radio" value={index} class="form-imagecheck-input" checked={index === 2 || index === 4 || index === 7} />
-              <span class="form-imagecheck-figure">
-                <img src={`./static/photos/${photo.file}`} alt={photo.title} class="form-imagecheck-image" />
-              </span>
-            </label>
-          </div>
-        )
-      })
-    }
-  </div>
+  <fieldset>
+    <legend class="visually-hidden">Image Check Radio</legend>
+    <div class="row g-2">
+      {
+        imageRadios.map((photo, i) => {
+          const index = i + 1
+          return (
+            <div class="col-6 col-sm-4">
+              <label class="form-imagecheck mb-2">
+                <input name="form-imagecheck-radio" type="radio" value={index} class="form-imagecheck-input" checked={index === 2 || index === 4 || index === 7} />
+                <span class="form-imagecheck-figure">
+                  <img src={`./static/photos/${photo.file}`} alt={photo.title} class="form-imagecheck-image" />
+                </span>
+              </label>
+            </div>
+          )
+        })
+      }
+    </div>
+  </fieldset>
 </FormGroup>
 
 <InputColor label="Color Input Check" type="checkbox" />
 <InputColor label="Color Input Radio" name="color-rounded" rounded />
 
-<FormGroup label="Color picker">
-  <input type="color" class="form-control form-control-color" value={blueHex} title="Choose your color" />
+<FormGroup label="Color picker" for="fe3-color-picker">
+  <input type="color" id="fe3-color-picker" class="form-control form-control-color" value={blueHex} title="Choose your color" />
 </FormGroup>
 
 {
   [false, true].map((lite) => (
     <FormGroup label={`Validation States${lite ? ' (lite)' : ''}`}>
-      <input type="text" class:list={['form-control is-valid', lite && 'is-valid-lite', 'mb-2']} placeholder="Valid State.." />
-      <input type="text" class:list={['form-control is-invalid', lite && 'is-invalid-lite']} placeholder="Invalid State.." />
-      {!lite && <div class="invalid-feedback">Invalid feedback</div>}
+      <input type="text" class:list={['form-control is-valid', lite && 'is-valid-lite', 'mb-2']} placeholder="Valid State.." aria-invalid="false" />
+      <input type="text" class:list={['form-control is-invalid', lite && 'is-invalid-lite']} placeholder="Invalid State.." aria-invalid="true" aria-describedby={!lite ? 'validation-invalid-feedback' : undefined} />
+      {!lite && (
+        <div class="invalid-feedback" id="validation-invalid-feedback">
+          Invalid feedback
+        </div>
+      )}
     </FormGroup>
   ))
 }
 
 <label class="form-label">Form fieldset</label>
 <fieldset class="form-fieldset">
-  <FormGroup label="Full name" required>
-    <input type="text" class="form-control" autocomplete="off" />
+  <FormGroup label="Full name" required for="fe3-fieldset-name">
+    <input type="text" id="fe3-fieldset-name" class="form-control" autocomplete="name" aria-required="true" />
   </FormGroup>
-  <FormGroup label="Company" required>
-    <input type="text" class="form-control" autocomplete="off" />
+  <FormGroup label="Company" required for="fe3-fieldset-company">
+    <input type="text" id="fe3-fieldset-company" class="form-control" autocomplete="organization" aria-required="true" />
   </FormGroup>
-  <FormGroup label="Email" required>
-    <input type="email" class="form-control" autocomplete="off" />
+  <FormGroup label="Email" required for="fe3-fieldset-email">
+    <input type="email" id="fe3-fieldset-email" class="form-control" autocomplete="email" aria-required="true" />
   </FormGroup>
-  <FormGroup label="Phone number">
-    <input type="tel" class="form-control" autocomplete="off" />
+  <FormGroup label="Phone number" for="fe3-fieldset-phone">
+    <input type="tel" id="fe3-fieldset-phone" class="form-control" autocomplete="tel" />
   </FormGroup>
   <label class="form-check">
     <input type="checkbox" class="form-check-input" />

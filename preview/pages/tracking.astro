@@ -1,0 +1,76 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import StatusMonitoring from '@shared/components/cards/StatusMonitoring.astro'
+
+interface TrackingItem {
+  status?: 'success' | 'warning' | 'danger'
+  label: string
+}
+
+// Mirrors the uptime history shown in docs/pages/ui/components/tracking.mdx.
+const uptime: TrackingItem[] = [
+  { status: 'success', label: 'Operational' },
+  { status: 'success', label: 'Operational' },
+  { status: 'success', label: 'Operational' },
+  { status: 'success', label: 'Operational' },
+  { status: 'danger', label: 'Downtime' },
+  { status: 'success', label: 'Operational' },
+  { status: 'success', label: 'Operational' },
+  { status: 'success', label: 'Operational' },
+  { status: 'success', label: 'Operational' },
+  { status: 'success', label: 'Operational' },
+  { status: 'success', label: 'Operational' },
+  { status: 'success', label: 'Operational' },
+  { status: 'success', label: 'Operational' },
+  { status: 'warning', label: 'Big load' },
+  { status: 'success', label: 'Operational' },
+  { status: 'success', label: 'Operational' },
+  { status: 'success', label: 'Operational' },
+  { status: 'danger', label: 'Downtime' },
+  { status: 'success', label: 'Operational' },
+  { status: 'success', label: 'Operational' },
+  { status: 'success', label: 'Operational' },
+  { label: 'No data' },
+  { label: 'No data' },
+  { status: 'success', label: 'Operational' },
+  { status: 'success', label: 'Operational' },
+  { status: 'success', label: 'Operational' },
+  { status: 'success', label: 'Operational' },
+  { status: 'success', label: 'Operational' },
+  { status: 'success', label: 'Operational' },
+  { status: 'success', label: 'Operational' },
+]
+---
+
+<DefaultLayout title="Tracking" pageHeader="Tracking" pageMenu="base.tracking">
+  <div class="row row-cards">
+    <div class="col-12">
+      <Card>
+        <CardBody>
+          <CardTitle>Basic example</CardTitle>
+          <div class="tracking">
+            {uptime.map((item) => <div class:list={['tracking-block', item.status && `bg-${item.status}`]} data-bs-toggle="tooltip" data-bs-placement="top" title={item.label} />)}
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-md-6">
+      <StatusMonitoring />
+    </div>
+
+    <div class="col-md-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Squares variant (.tracking-squares)</CardTitle>
+          <div class="tracking tracking-squares">
+            {uptime.map((item) => <div class:list={['tracking-block', item.status && `bg-${item.status}`]} data-bs-toggle="tooltip" data-bs-placement="top" title={item.label} />)}
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+  </div>
+</DefaultLayout>

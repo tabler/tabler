@@ -2,6 +2,7 @@
 // Photos filtered to horizontal=true, then sliced by offset/limit.
 import photos from '@data/photos.json'
 import CardTitle from '@ui/CardTitle.astro'
+import Carousel from '@ui/Carousel.astro'
 
 interface Props {
   id?: string
@@ -21,7 +22,7 @@ interface Props {
 const { id: idProp, title = 'Carousel', indicators, indicatorsThumb, indicatorsThumbRatio, indicatorsDot, indicatorsVertical, controls, captions, offset = 0, limit = 5, fade } = Astro.props
 
 const carouselId = idProp ?? 'carousel'
-const filteredPhotos = (photos as { file: string; horizontal?: boolean }[]).filter((p) => p.horizontal)
+const filteredPhotos = (photos as { file: string; title?: string; horizontal?: boolean }[]).filter((p) => p.horizontal)
 const slides = filteredPhotos.slice(offset, offset + limit)
 ---
 
@@ -30,22 +31,30 @@ const slides = filteredPhotos.slice(offset, offset + limit)
     <CardTitle>{title}</CardTitle>
   </div>
   <div class="card-body">
-    <div id={`carousel-${carouselId}`} class={`carousel slide${fade ? ' carousel-fade' : ''}`} data-bs-ride="carousel">
+    <div id={`carousel-${carouselId}`} class={`carousel slide${fade ? ' carousel-fade' : ''}`} data-bs-ride="carousel" aria-roledescription="carousel" aria-label={title}>
       {
         indicators && (
           <div class={`carousel-indicators${indicatorsVertical ? ' carousel-indicators-vertical' : ''}${indicatorsDot ? ' carousel-indicators-dot' : indicatorsThumb ? ' carousel-indicators-thumb' : ''}`}>
             {slides.map((photo, i) => (
-              <button type="button" data-bs-target={`#carousel-${carouselId}`} data-bs-slide-to={`${i}`} class={`${indicatorsThumbRatio ? ' ratio ratio-4x3' : ''}${i === 0 ? ' active' : ''}`} style={indicatorsThumb ? `background-image: url(./static/photos/${photo.file})` : undefined} />
+              <button
+                type="button"
+                data-bs-target={`#carousel-${carouselId}`}
+                data-bs-slide-to={`${i}`}
+                class={`${indicatorsThumbRatio ? ' ratio ratio-4x3' : ''}${i === 0 ? ' active' : ''}`}
+                style={indicatorsThumb ? `background-image: url(./static/photos/${photo.file})` : undefined}
+                aria-label={`Slide ${i + 1}`}
+                aria-current={i === 0 ? 'true' : undefined}
+              />
             ))}
           </div>
         )
       }
 
-      <div class="carousel-inner">
+      <div class="carousel-inner" aria-live="polite" aria-atomic="true">
         {
           slides.map((photo, i) => (
             <div class={`carousel-item${i === 0 ? ' active' : ''}`}>
-              <img class="d-block w-100" alt="" src={`./static/photos/${photo.file}`} />
+              <img class="d-block w-100" alt={captions ? '' : (photo.title ?? '')} src={`./static/photos/${photo.file}`} />
 
               {captions && (
                 <Fragment>
@@ -64,14 +73,14 @@ const slides = filteredPhotos.slice(offset, offset + limit)
       {
         controls && (
           <Fragment>
-            <a class="carousel-control-prev" href={`#carousel-${carouselId}`} role="button" data-bs-slide="prev">
+            <button type="button" class="carousel-control-prev" data-bs-target={`#carousel-${carouselId}`} data-bs-slide="prev">
               <span class="carousel-control-prev-icon" aria-hidden="true" />
               <span class="visually-hidden">Previous</span>
-            </a>
-            <a class="carousel-control-next" href={`#carousel-${carouselId}`} role="button" data-bs-slide="next">
+            </button>
+            <button type="button" class="carousel-control-next" data-bs-target={`#carousel-${carouselId}`} data-bs-slide="next">
               <span class="carousel-control-next-icon" aria-hidden="true" />
               <span class="visually-hidden">Next</span>
-            </a>
+            </button>
           </Fragment>
         )
       }

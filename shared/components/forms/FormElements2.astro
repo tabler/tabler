@@ -1,6 +1,7 @@
 ---
 import Icon from '@ui/Icon.astro'
 import FormGroup from '@ui/FormGroup.astro'
+import InputGroup from '@ui/InputGroup.astro'
 ---
 
 <FormGroup label="Form control rounded">
@@ -14,8 +15,8 @@ import FormGroup from '@ui/FormGroup.astro'
   </div>
 </FormGroup>
 
-<FormGroup label="Form control flush">
-  <input type="text" class="form-control form-control-flush" name="Form control flush" placeholder="Text.." />
+<FormGroup label="Form control flush" for="fe2-form-control-flush">
+  <input type="text" class="form-control form-control-flush" id="fe2-form-control-flush" name="Form control flush" placeholder="Text.." />
 </FormGroup>
 
 <FormGroup label="Input group">
@@ -52,45 +53,46 @@ import FormGroup from '@ui/FormGroup.astro'
   </div>
 </FormGroup>
 
-<FormGroup label="Input with prepended text">
+<FormGroup label="Input with prepended text" for="fe2-prepended-text">
   <div class="input-group input-group-flat">
     <span class="input-group-text">https://tabler.io/users/</span>
-    <input type="text" class="form-control ps-0" value="yourfancyusername" autocomplete="off" />
+    <input type="text" class="form-control ps-0" id="fe2-prepended-text" value="yourfancyusername" autocomplete="off" />
   </div>
 </FormGroup>
 
-<FormGroup label="Input with appended text">
+<FormGroup label="Input with appended text" for="fe2-appended-text">
   <div class="input-group input-group-flat">
-    <input type="text" class="form-control text-end pe-0" value="yourfancydomain" autocomplete="off" />
+    <input type="text" class="form-control text-end pe-0" id="fe2-appended-text" value="yourfancydomain" autocomplete="off" />
     <span class="input-group-text">.tabler.io</span>
   </div>
 </FormGroup>
 
-<FormGroup label="Input with appended link">
-  <div class="input-group input-group-flat">
-    <input type="password" class="form-control" value="ultrastrongpassword" autocomplete="off" />
-    <span class="input-group-text">
-      <a href="#" class="input-group-link">Show password</a>
-    </span>
-  </div>
+<FormGroup label="Input with appended link" for="fe2-appended-link">
+  <InputGroup type="password" id="fe2-appended-link" value="ultrastrongpassword" flat appendButton={[{ icon: 'eye', description: 'Show password' }]} />
 </FormGroup>
 
-<FormGroup label="Input with appended kbd">
+<FormGroup label="Input with appended kbd" for="fe2-appended-kbd">
   <div class="input-group input-group-flat">
-    <input type="text" class="form-control" autocomplete="off" />
+    <input type="text" class="form-control" id="fe2-appended-kbd" autocomplete="off" />
     <span class="input-group-text">
       <kbd>ctrl + K</kbd>
     </span>
   </div>
 </FormGroup>
 
-<FormGroup label="Input with appended icon links">
+<FormGroup label="Input with appended icon links" for="fe2-appended-icon-links">
   <div class="input-group input-group-flat">
-    <input type="text" class="form-control" autocomplete="off" />
+    <input type="text" class="form-control" id="fe2-appended-icon-links" autocomplete="off" />
     <span class="input-group-text">
-      <a href="#" class="link-secondary" title="Clear search" data-bs-toggle="tooltip"><Icon name="x" /></a>
-      <a href="#" class="link-secondary ms-2" title="Search settings" data-bs-toggle="tooltip"><Icon name="adjustments" /></a>
-      <a href="#" class="link-secondary ms-2 disabled" title="Add notification" data-bs-toggle="tooltip"><Icon name="bell" /></a>
+      <button type="button" class="link-secondary border-0 bg-transparent p-0" title="Clear search" aria-label="Clear search" data-bs-toggle="tooltip">
+        <Icon name="x" />
+      </button>
+      <button type="button" class="link-secondary ms-2 border-0 bg-transparent p-0" title="Search settings" aria-label="Search settings" data-bs-toggle="tooltip">
+        <Icon name="adjustments" />
+      </button>
+      <button type="button" class="link-secondary ms-2 border-0 bg-transparent p-0" title="Add notification" aria-label="Add notification" data-bs-toggle="tooltip" disabled>
+        <Icon name="bell" />
+      </button>
     </span>
   </div>
 </FormGroup>

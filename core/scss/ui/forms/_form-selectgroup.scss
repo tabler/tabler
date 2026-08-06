@@ -4,12 +4,12 @@ Select group
 @use '../../config' as *;
 
 .form-selectgroup {
-  --#{$prefix}form-selectgroup-gap: #{$form-selectgroup-gap};
-  --#{$prefix}form-selectgroup-icon-margin-x: #{$form-selectgroup-icon-margin-x};
+  --form-selectgroup-gap: #{$form-selectgroup-gap};
+  --form-selectgroup-icon-margin-x: #{$form-selectgroup-icon-margin-x};
   display: inline-flex;
-  margin: 0;
   flex-wrap: wrap;
-  gap: var(--#{$prefix}form-selectgroup-gap);
+  gap: var(--form-selectgroup-gap);
+  margin: 0;
 
   .form-selectgroup-item {
     margin: 0;
@@ -21,14 +21,14 @@ Select group
 }
 
 .form-selectgroup-item {
-  display: block;
   position: relative;
+  display: block;
 }
 
 .form-selectgroup-input {
   position: absolute;
-  top: 0;
   inset-inline-start: 0;
+  top: 0;
   z-index: -1;
   opacity: 0;
 }
@@ -37,26 +37,26 @@ Select group
   position: relative;
   display: block;
   min-width: $input-height;
-  margin: 0;
   padding: $input-btn-padding-y $input-btn-padding-x;
+  margin: 0;
   font-size: $input-btn-font-size;
   line-height: $input-line-height;
-  color: var(--#{$prefix}secondary);
-  background: $form-check-input-bg;
+  color: var(--secondary);
   text-align: center;
   cursor: pointer;
   user-select: none;
-  border: var(--#{$prefix}border-width) var(--#{$prefix}border-style) $input-border-color;
-  @include border-radius(var(--#{$prefix}border-radius));
+  background: $form-check-input-bg;
+  border: var(--border-width) var(--border-style) $input-border-color;
   box-shadow: $input-box-shadow;
+  @include border-radius(var(--border-radius));
   @include transition(border-color $transition-time, background $transition-time, color $transition-time);
 
   .icon:only-child {
-    margin: 0 var(--#{$prefix}form-selectgroup-icon-margin-x);
+    margin: 0 var(--form-selectgroup-icon-margin-x);
   }
 
   &:hover {
-    color: var(--#{$prefix}body-color);
+    color: var(--body-color);
   }
 }
 
@@ -64,8 +64,8 @@ Select group
   display: inline-block;
   width: $form-check-input-width;
   height: $form-check-input-width;
-  border: $form-check-input-border;
   vertical-align: middle;
+  border: $form-check-input-border;
   box-shadow: $form-check-input-box-shadow;
 
   .form-selectgroup-input[type='checkbox'] + .form-selectgroup-label & {
@@ -95,8 +95,8 @@ Select group
 
 .form-selectgroup-check-floated {
   position: absolute;
-  top: $input-btn-padding-y;
   inset-inline-end: $input-btn-padding-y;
+  top: $input-btn-padding-y;
 }
 
 .form-selectgroup-input:checked + .form-selectgroup-label {
@@ -108,12 +108,9 @@ Select group
 
 .form-selectgroup-input:focus + .form-selectgroup-label {
   z-index: 2;
-  color: var(--#{$prefix}primary);
-  border-color: var(--#{$prefix}primary);
+  color: var(--primary);
+  border-color: var(--primary);
   box-shadow: $input-btn-focus-box-shadow;
-}
-
-.form-selectgroup-label-content {
 }
 
 /**
@@ -121,9 +118,9 @@ Alternate version of form select group
  */
 .form-selectgroup-boxes {
   .form-selectgroup-label {
-    text-align: start;
     padding: $card-spacer-x $card-spacer-y;
     color: inherit;
+    text-align: start;
   }
 
   .form-selectgroup-input:checked {
@@ -131,7 +128,7 @@ Alternate version of form select group
       color: inherit;
 
       .form-selectgroup-title {
-        color: var(--#{$prefix}primary);
+        color: var(--primary);
       }
 
       .form-selectgroup-label-content {
@@ -153,6 +150,6 @@ Select group
   }
 
   .form-selectgroup-label {
-    @include border-radius(var(--#{$prefix}border-radius-pill));
+    @include border-radius(var(--border-radius-pill));
   }
 }
