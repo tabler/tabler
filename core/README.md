@@ -1,6 +1,20 @@
-# Tabler Core
+<p align="center">
+<a href="https://tabler.io"><img src="https://raw.githubusercontent.com/tabler/tabler/refs/heads/dev/shared/static/logo.svg" alt="Tabler" width="300"></a>
+</p>
 
-Tabler Core is a set of components and utilities for building web applications. It provides a collection of pre-designed components, such as buttons, forms, modals, and more, that can be easily customized and integrated into your projects.
+<p align="center">
+A premium and open source dashboard template with a responsive and high-quality UI.
+</p>
+
+<p align="center">
+<a href="https://www.npmjs.com/package/@tabler/core" target="__blank"><img src="https://img.shields.io/npm/v/@tabler/core?color=1864ab&label=Latest+version" alt="NPM version"></a>
+<a href="https://www.npmjs.com/package/@tabler/core" target="__blank"><img alt="NPM Downloads" src="https://img.shields.io/npm/dm/@tabler/core?color=1971c2&label=Downloads"></a>
+<a href="https://github.com/tabler/tabler/blob/dev/LICENSE"><img src="https://img.shields.io/npm/l/tabler.svg?label=License&message=MIT&color=1c7ed6" alt="License"></a>
+</p>
+
+<p align="center">
+<a href="https://preview.tabler.io">Live demo</a> · <a href="https://docs.tabler.io">Documentation</a> · <a href="https://github.com/tabler/tabler">GitHub</a> · <a href="https://github.com/tabler/tabler/blob/dev/core/CHANGELOG.md">Changelog</a>
+</p>
 
 ## 🔎 Preview
 
@@ -12,21 +26,39 @@ Tabler is fully responsive and compatible with all modern browsers. Thanks to it
 	</a>
 </p>
 
-## Installation
+## 📦 Installation
 
-To install Tabler Core, you can use npm or yarn. Run one of the following commands in your terminal:
+Install `@tabler/core` with npm or your preferred JavaScript package manager:
 
-```bash
-npm install @tabler/core
+```sh
+npm install --save @tabler/core
 ```
 
-or
+### CDN
 
-```bash
-pnpm add @tabler/core
+All files included in the `@tabler/core` npm package are also available over a CDN.
+
+JavaScript:
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/js/tabler.min.js"></script>
 ```
 
-## Sponsors
+Styles:
+
+```html
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/css/tabler.min.css">
+```
+
+## 📖 Documentation
+
+The full documentation is available at [docs.tabler.io](https://docs.tabler.io/). Release notes live in the [changelog](https://github.com/tabler/tabler/blob/dev/core/CHANGELOG.md).
+
+## 🤝 Contributing
+
+We welcome contributions of all kinds! See the [contributing guide](https://github.com/tabler/tabler/blob/dev/CONTRIBUTING.md) to get started.
+
+## 💛 Sponsors
 
 **If you want to support our project and help us grow it, you can [become a sponsor on GitHub](https://github.com/sponsors/codecalm) or just [donate on PayPal](https://paypal.me/codecalm) :)**
 
@@ -36,7 +68,6 @@ pnpm add @tabler/core
 	</a>
 </p>
 
+## 📄 License
 
-## License
-
-See the [LICENSE](https://github.com/tabler/tabler/blob/master/LICENSE) file.
+Tabler is licensed under the [MIT License](https://github.com/tabler/tabler/blob/dev/LICENSE).

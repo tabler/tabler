@@ -86,7 +86,7 @@ The full documentation is available at [docs.tabler.io](https://docs.tabler.io/)
 
 ## 🛠️ Development
 
-To build a copy of Tabler locally, you have two options: set up the development tools directly on your device, or use the provided Docker setup.
+To build a copy of Tabler locally, you have two options: set up the development tools directly on your device, or use the provided Docker setup. You can also start right away in the cloud with [GitHub Codespaces](https://codespaces.new/tabler/tabler) — the dev container installs everything for you.
 
 ### Local setup
 
