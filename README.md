@@ -101,7 +101,7 @@ Create an HTML file with Tabler's CSS and JavaScript loaded from the CDN and sta
 </html>
 ```
 
-Or try it without installing anything: [open the starter template on StackBlitz](https://stackblitz.com/github/tabler/tabler-starter) or [CodeSandbox](https://codesandbox.io/s/github/tabler/tabler-starter).
+Or try it without installing anything: open the [tabler-starter](https://github.com/tabler/tabler-starter) template on [StackBlitz](https://stackblitz.com/github/tabler/tabler-starter), [CodeSandbox](https://codesandbox.io/s/github/tabler/tabler-starter) or [GitHub Codespaces](https://codespaces.new/tabler/tabler-starter).
 
 ## 📖 Documentation
 
