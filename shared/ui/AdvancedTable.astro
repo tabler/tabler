@@ -2,7 +2,7 @@
 import BadgesList from './BadgesList.astro'
 import Icon from './Icon.astro'
 import { formatLongDate } from '@shared/lib/date-format'
-import { randomNumber, randomItem, randomDate } from '@shared/lib/pseudo-random'
+import { randomItem, randomDate } from '@shared/lib/pseudo-random'
 import Avatar from './Avatar.astro'
 import Button from './Button.astro'
 import ButtonList from './ButtonList.astro'
@@ -143,7 +143,7 @@ const perPageDefault = perPage[1]
           <div class="dropdown-menu">
             {
               perPage.map((record) => (
-                <button type="button" class="dropdown-item" onclick="setPageListItems(event)" data-value={record}>
+                <button type="button" class="dropdown-item" onclick="setPageListItems(this)" data-value={record}>
                   {record} records
                 </button>
               ))
@@ -159,14 +159,14 @@ const perPageDefault = perPage[1]
 
 <CaptureScript>
   <!-- BEGIN ADVANCED TABLE -->
-  <script define:vars={{ tableId, advancedTable, perPageDefault }}>
+  <script is:inline define:vars={{ tableId, advancedTable, perPageDefault }}>
     // Astro wraps define:vars scripts in an IIFE, so this needs an explicit window
-    // assignment to stay reachable from the onclick="setPageListItems(event)" markup below.
-    window.setPageListItems = function setPageListItems(e) {
-      window.tabler_list[tableId].page = parseInt(e.target.dataset.value)
+    // assignment to stay reachable from the onclick="setPageListItems(this)" markup below.
+    window.setPageListItems = function setPageListItems(el) {
+      window.tabler_list[tableId].page = parseInt(el.dataset.value)
       window.tabler_list[tableId].update()
 
-      document.querySelector('#page-count').innerHTML = e.target.dataset.value
+      document.querySelector('#page-count').innerHTML = el.dataset.value
     }
 
     function initAdvancedTable() {
