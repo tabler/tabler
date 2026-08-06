@@ -80,9 +80,32 @@ Styles:
 
 If you don't use a package manager, you can [download the latest release](https://github.com/tabler/tabler/releases) as a ZIP archive.
 
+### Quick start
+
+Create an HTML file with Tabler's CSS and JavaScript loaded from the CDN and start building:
+
+```html
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tabler demo</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/css/tabler.min.css" />
+  </head>
+  <body>
+    <h1>Hello, Tabler!</h1>
+    <button class="btn btn-primary">Primary button</button>
+    <script src="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/js/tabler.min.js"></script>
+  </body>
+</html>
+```
+
+Or try it without installing anything: [open the starter template on CodeSandbox](https://codesandbox.io/api/v1/sandboxes/define?parameters=N4IgZglgNgpgziAXKCA7AJjAHgOgBYAuAtlEqAMYD2qBMNSIAPAITqXkECeADjAASESAPgA6qRoKh8oAQ1QBzALwiQdFaNR8-EmDPQatWxkRgEZfcnhkAnOKeUgArgTABaABwq-AegOHjpuaoMiYOAG4QMADu3JTWBF5UNHQEDlEQ6AR4ipgR5DCu6Zl4ADR8aBAEEDJQrnDkNTCKAIxevmKG2lUEsEIAKjIARrDWfJhElIze3b0d_lBoANZ81jBQDnBcsHB4MKZeeKtgDoQE3HCI3t7k6Kg4AFZwmAth1jiopt6o3ETeAAJmYYwazXOIwP6yWibbzoCDQ8hwODTIYjHBENA4BFwNp-Ka7PS4waUdCcPxGWFhCyyREObgyeQwdRzTqMClUmQ0lR0hmFawybi8axMzSdfxs8jUuC0-kFIkk4Wi0WsiCUiUcqUqJJmNDA1xYKAKxVK8WShwNazoQ1G40q9mckDm9CuOWcK3WpV4ZpCAASayglDKAyB1mYeK9zPdLO4do1IFoWAIdRgSXQNldICEAFFYQQ-Fk4Xw4HJ0ESsHnKHnrJw-JRnHwgyMLJQiLEPjQ4DgptwyZH_INnARqDGHIMCJpR6hXNxrBAiGn1AAFGdzqt8fsEQfibzrzc93vaHdDtX2ifqAAiMDAMkcUFzh639737qmFKfipfKrf_hhn4jLJ_YRPh-gERsBPaMPUM7cLmcDWOQJwbuclzXLcDxPGsKpvB8BBfD8_yAiMoKrBCMhQjhsLQo8yLBmiGKPOoUyQRA0G4tuxKkmIeLEFAQggAAvgJQA).
+
 ## 📖 Documentation
 
-The full documentation is available at [docs.tabler.io](https://docs.tabler.io/).
+The full documentation is available at [docs.tabler.io](https://docs.tabler.io/). To see what changed in each release, check the [changelog](core/CHANGELOG.md) and [GitHub releases](https://github.com/tabler/tabler/releases).
 
 ## 🛠️ Development
 
