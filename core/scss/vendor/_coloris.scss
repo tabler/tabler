@@ -1,8 +1,8 @@
 @use '../config' as *;
 
 .clr-picker {
-  box-shadow: var(--shadow-dropdown);
   background-color: var(--bg-surface);
+  box-shadow: var(--shadow-dropdown);
   @include border-radius(var(--border-radius));
 }
 
@@ -13,8 +13,8 @@
 input.clr-color {
   @include border-radius(var(--border-radius));
   color: var(--body-color);
-  border-color: var(--border-color);
   background: transparent;
+  border-color: var(--border-color);
 
   &:focus {
     @include focus-ring(true);
@@ -24,10 +24,10 @@ input.clr-color {
 .clr-swatches {
   button {
     @include border-radius(var(--border-radius));
-    padding: 0 2px 4px 2px;
+    padding: 0 2px 4px;
 
     &:focus {
-      @include focus-ring;
+      @include focus-ring();
     }
   }
 }
@@ -37,14 +37,14 @@ input.clr-color {
   overflow: visible;
 
   button,
-  &:before,
-  &:after {
+  &::before,
+  &::after {
     @include border-radius(var(--border-radius));
   }
 
   button {
     &:focus {
-      @include focus-ring;
+      @include focus-ring();
     }
   }
 }
@@ -53,18 +53,18 @@ input.clr-color {
   display: block;
 
   button {
-    width: 1.5rem;
-    height: 1.5rem;
     inset-inline-start: 6px;
     inset-inline-end: auto;
+    width: 1.5rem;
+    height: 1.5rem;
     @include border-radius(var(--border-radius));
 
-    &:after {
+    &::after {
       box-shadow: inset 0 0 0 1px var(--border-color-translucent);
     }
 
     &:focus {
-      @include focus-ring;
+      @include focus-ring();
     }
   }
 

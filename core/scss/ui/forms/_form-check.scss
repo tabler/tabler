@@ -25,14 +25,10 @@ Form check
 
 .form-check-input {
   --form-check-input-width: #{$form-check-input-width};
+  margin-top: ($form-check-min-height - $form-check-input-width) * 0.5;
 
   background-size: var(--form-check-input-width);
-  margin-top: ($form-check-min-height - $form-check-input-width) * 0.5;
   box-shadow: $form-check-input-box-shadow;
-
-  .form-switch & {
-    @include transition(background-color$transition-time, background-position $transition-time);
-  }
 }
 
 .form-check-label {
@@ -41,10 +37,10 @@ Form check
   display: block;
 
   &.required {
-    &:after {
-      content: '*';
+    &::after {
       margin-inline-start: var(--form-check-label-required-gap);
       color: $red;
+      content: '*';
     }
   }
 }
@@ -53,9 +49,9 @@ Form check
   --form-check-description-margin-top: #{$form-check-description-margin-top};
 
   display: block;
-  color: var(--secondary);
-  font-size: $h5-font-size;
   margin-top: var(--form-check-description-margin-top);
+  font-size: $h5-font-size;
+  color: var(--secondary);
 }
 
 .form-check-single {
@@ -73,6 +69,7 @@ Form switch
   .form-check-input {
     height: $form-switch-height;
     margin-top: ($form-check-min-height - $form-switch-height) * 0.5;
+    @include transition(background-color $transition-time, background-position $transition-time);
   }
 }
 
@@ -84,15 +81,15 @@ Form switch
   --form-switch-lg-bg-size: #{$form-switch-lg-bg-size};
   --form-switch-lg-input-offset: #{$form-switch-lg-input-offset};
   --form-switch-lg-label-padding-top: #{$form-switch-lg-label-padding-top};
-
-  padding-inline-start: var(--form-switch-lg-padding-start);
   min-height: var(--form-switch-lg-min-height);
 
+  padding-inline-start: var(--form-switch-lg-padding-start);
+
   .form-check-input {
-    height: var(--form-switch-lg-height);
     width: var(--form-switch-lg-width);
-    background-size: var(--form-switch-lg-bg-size);
+    height: var(--form-switch-lg-height);
     margin-inline-start: var(--form-switch-lg-input-offset);
+    background-size: var(--form-switch-lg-bg-size);
   }
 
   .form-check-label {

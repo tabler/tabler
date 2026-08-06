@@ -12,23 +12,23 @@
   --tag-icon-margin-end: #{$tag-icon-margin-end};
   --tag-icon-size: #{$tag-icon-size};
   --tag-check-size: #{$tag-check-size};
-
-  border: $border-width solid var(--border-color);
   display: inline-flex;
+  gap: var(--tag-gap);
   align-items: center;
   height: var(--tag-height);
-  @include border-radius(var(--border-radius));
   padding: 0 var(--tag-padding-x);
   background: var(--bg-surface);
+
+  border: $border-width solid var(--border-color);
   box-shadow: var(--shadow-input);
-  gap: var(--tag-gap);
+  @include border-radius(var(--border-radius));
 
   .btn-close {
-    margin-inline-end: var(--tag-close-margin-end);
-    margin-inline-start: var(--tag-close-margin-start);
-    padding: 0;
     width: var(--tag-close-size);
     height: var(--tag-close-size);
+    padding: 0;
+    margin-inline-start: var(--tag-close-margin-start);
+    margin-inline-end: var(--tag-close-margin-end);
     font-size: var(--tag-close-font-size);
   }
 }
@@ -53,10 +53,10 @@
 }
 
 .tag-icon {
-  color: var(--secondary);
-  margin-inline-end: var(--tag-icon-margin-end);
   width: var(--tag-icon-size);
   height: var(--tag-icon-size);
+  margin-inline-end: var(--tag-icon-margin-end);
+  color: var(--secondary);
 }
 
 .tag-check {
@@ -69,5 +69,5 @@
 // Tags list
 //
 .tags-list {
-  @include elements-list;
+  @include elements-list();
 }

@@ -106,10 +106,13 @@
 //
 
 .card-header {
+  @if $card-header-bg != null {
+    --card-header-bg: #{$card-header-bg};
+  }
   padding: var(--card-cap-padding-y) var(--card-cap-padding-x);
   margin-bottom: 0; // Removes the default margin-bottom of <hN>
   color: var(--card-cap-color);
-  background-color: var(--card-cap-bg);
+  background-color: var(--card-header-bg, var(--card-cap-bg));
   border-bottom: var(--card-border-width) solid var(--card-border-color);
 
   &:first-child {
@@ -118,9 +121,12 @@
 }
 
 .card-footer {
+  @if $card-footer-bg != null {
+    --card-footer-bg: #{$card-footer-bg};
+  }
   padding: var(--card-cap-padding-y) var(--card-cap-padding-x);
   color: var(--card-cap-color);
-  background-color: var(--card-cap-bg);
+  background-color: var(--card-footer-bg, var(--card-cap-bg));
   border-top: var(--card-border-width) solid var(--card-border-color);
 
   &:last-child {

@@ -22,13 +22,13 @@
 @each $name, $value in (0: 0, sm: $grid-row-gutter-sm, md: $grid-row-gutter-md, lg: $grid-row-gutter-lg) {
   .row-#{$name} {
     --grid-row-gutter: #{$value};
-    margin-inline-end: calc(-1 * var(--grid-row-gutter));
     margin-inline-start: calc(-1 * var(--grid-row-gutter));
+    margin-inline-end: calc(-1 * var(--grid-row-gutter));
 
     > .col,
     > [class*='col-'] {
-      padding-inline-end: var(--grid-row-gutter);
       padding-inline-start: var(--grid-row-gutter);
+      padding-inline-end: var(--grid-row-gutter);
     }
 
     .card {
@@ -128,9 +128,9 @@
   height: 100%;
 
   > :not(template) {
-    flex: 1;
     display: flex;
-    justify-content: center;
+    flex: 1;
     flex-direction: column;
+    justify-content: center;
   }
 }

@@ -17,9 +17,14 @@
   --ribbon-bookmark-notch-width: #{$ribbon-bookmark-notch-width};
 
   position: absolute;
-  top: var(--ribbon-offset);
   inset-inline-end: calc(-1 * var(--ribbon-margin));
+  top: var(--ribbon-offset);
   z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: var(--ribbon-min-size);
+  min-height: var(--ribbon-min-size);
   padding: var(--ribbon-padding-y) var(--ribbon-padding-x);
   font-size: var(--ribbon-font-size);
   font-weight: var(--font-weight-semibold);
@@ -30,13 +35,8 @@
   background: var(--primary);
   border-color: var(--primary);
   @include border-radius(var(--ribbon-border-radius) 0 var(--ribbon-border-radius) var(--ribbon-border-radius));
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-height: var(--ribbon-min-size);
-  min-width: var(--ribbon-min-size);
 
-  &:before {
+  &::before {
     position: absolute;
     inset-inline-end: 0;
     bottom: 100%;
@@ -46,8 +46,8 @@
     filter: brightness(70%);
     border: calc(var(--ribbon-margin) * 0.5) var(--border-style);
     border-color: inherit;
-    border-top-color: transparent;
     border-inline-end-color: transparent;
+    border-top-color: transparent;
   }
 
   @if $enable-extra-colors {
@@ -70,45 +70,45 @@
 }
 
 .ribbon-top {
-  top: calc(-1 * var(--ribbon-margin));
   inset-inline-end: var(--ribbon-offset);
+  top: calc(-1 * var(--ribbon-margin));
   width: var(--ribbon-top-width);
   padding: var(--ribbon-top-padding-y) 0;
   @include border-radius(0 var(--ribbon-border-radius) var(--ribbon-border-radius) var(--ribbon-border-radius));
 
-  &:before {
-    top: 0;
+  &::before {
     inset-inline-end: 100%;
+    top: 0;
     bottom: auto;
     border-color: inherit;
-    border-top-color: transparent;
     border-inline-start-color: transparent;
+    border-top-color: transparent;
   }
 
   &.ribbon-start {
-    inset-inline-end: auto;
     inset-inline-start: var(--ribbon-offset);
+    inset-inline-end: auto;
 
-    &:before {
-      top: 0;
-      inset-inline-end: 100%;
+    &::before {
       inset-inline-start: auto;
+      inset-inline-end: 100%;
+      top: 0;
     }
   }
 }
 
 .ribbon-start {
-  inset-inline-end: auto;
   inset-inline-start: calc(-1 * var(--ribbon-margin));
+  inset-inline-end: auto;
   @include border-radius(0 var(--ribbon-border-radius) var(--ribbon-border-radius) var(--ribbon-border-radius));
 
-  &:before {
+  &::before {
+    inset-inline-start: 0;
     top: auto;
     bottom: 100%;
-    inset-inline-start: 0;
     border-color: inherit;
-    border-top-color: transparent;
     border-inline-start-color: transparent;
+    border-top-color: transparent;
   }
 }
 
@@ -121,44 +121,44 @@
   padding-inline-start: var(--ribbon-padding-y);
   @include border-radius(0 0 var(--ribbon-border-radius) 0);
 
-  &:after {
+  &::after {
     position: absolute;
-    top: 0;
     inset-inline-end: 100%;
+    top: 0;
     display: block;
     width: 0;
     height: 0;
     content: '';
     border: var(--ribbon-bookmark-border-size) var(--border-style);
     border-color: inherit;
-    border-inline-end-width: 0;
     border-inline-start-color: transparent;
     border-inline-start-width: var(--ribbon-bookmark-notch-width);
+    border-inline-end-width: 0;
   }
 
   &.ribbon-left {
     padding-inline-end: var(--ribbon-bookmark-notch-width);
 
-    &:after {
-      inset-inline-end: auto;
+    &::after {
       inset-inline-start: 100%;
+      inset-inline-end: auto;
+      border-inline-start-width: 0;
       border-inline-end-color: transparent;
 
       border-inline-end-width: var(--ribbon-bookmark-notch-width);
-      border-inline-start-width: 0;
     }
   }
 
   &.ribbon-top {
+    padding-inline-start: 0;
     padding-inline-end: 0;
     padding-bottom: var(--ribbon-padding-y);
-    padding-inline-start: 0;
     @include border-radius(0 var(--ribbon-border-radius) 0 0);
 
-    &:after {
-      top: 100%;
-      inset-inline-end: 0;
+    &::after {
       inset-inline-start: 0;
+      inset-inline-end: 0;
+      top: 100%;
       border-color: inherit;
       border-width: var(--ribbon-bookmark-border-size);
       border-top-width: 0;

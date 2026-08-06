@@ -8,13 +8,13 @@
 }
 
 .list-group-header {
-  background: $list-group-header-bg;
   padding: var(--list-group-header-padding-y) $list-group-item-padding-x;
   font-size: $h5-font-size;
   font-weight: var(--font-weight-medium);
   line-height: 1;
-  text-transform: uppercase;
   color: $list-group-header-color;
+  text-transform: uppercase;
+  background: $list-group-header-bg;
   border-bottom: var(--border-width) var(--border-style) var(--border-color);
 
   .list-group-flush > & {
@@ -26,6 +26,12 @@
 
 .list-group-item {
   background-color: inherit;
+
+  &.disabled,
+  &:disabled {
+    color: $gray-500;
+    background-color: $dropdown-link-hover-bg;
+  }
 }
 
 .list-group-item.active {
@@ -34,18 +40,10 @@
   border-inline-start-width: $border-width-wide;
 }
 
-.list-group-item {
-  &.disabled,
-  &:disabled {
-    color: $gray-500;
-    background-color: $dropdown-link-hover-bg;
-  }
-}
-
 .list-bordered {
   .list-item {
-    border-top: var(--border-width) var(--border-style) var(--border-color);
     margin-top: -1px;
+    border-top: var(--border-width) var(--border-style) var(--border-color);
 
     &:first-child {
       border-top: none;
@@ -119,8 +117,8 @@ Inline list
 }
 
 .list-inline-dots {
-  .list-inline-item + .list-inline-item:before {
-    content: ' · ';
+  .list-inline-item + .list-inline-item::before {
     margin-inline-end: $list-inline-padding;
+    content: ' · ';
   }
 }
