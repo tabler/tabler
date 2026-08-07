@@ -135,9 +135,9 @@ const perPageDefault = perPage[1]
         </table>
       </div>
       <div class="card-footer d-flex align-items-center">
-        <div class="dropdown">
+        <div class="dropdown" data-table-id={tableId}>
           <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            <span id="page-count" class="me-1">{perPage[1]}</span>
+            <span id={`${tableId}-page-count`} class="me-1">{perPage[1]}</span>
             <span>records</span>
           </button>
           <div class="dropdown-menu">
@@ -162,11 +162,16 @@ const perPageDefault = perPage[1]
   <script define:vars={{ tableId, advancedTable, perPageDefault }}>
     // Astro wraps define:vars scripts in an IIFE, so this needs an explicit window
     // assignment to stay reachable from the onclick="setPageListItems(event)" markup below.
+    // Each AdvancedTable instance redefines this identically, so it stays safe to share:
+    // the table id is resolved from the clicked element instead of being closed over.
     window.setPageListItems = function setPageListItems(e) {
-      window.tabler_list[tableId].page = parseInt(e.target.dataset.value)
-      window.tabler_list[tableId].update()
+      const id = e.target.closest('[data-table-id]')?.dataset.tableId
+      if (!id || !window.tabler_list?.[id]) return
 
-      document.querySelector('#page-count').innerHTML = e.target.dataset.value
+      window.tabler_list[id].page = parseInt(e.target.dataset.value)
+      window.tabler_list[id].update()
+
+      document.querySelector(`#${id}-page-count`).innerHTML = e.target.dataset.value
     }
 
     function initAdvancedTable() {
