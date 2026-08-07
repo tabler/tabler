@@ -1,10 +1,6 @@
 /**
-Customizable <select>, built on the experimental `appearance: base-select`
-API (https://developer.chrome.com/blog/introducing-base-select). Chromium
-only for now — everything below lives behind an `@supports` guard, so
-unsupported browsers keep rendering a plain, fully working native select;
-the extra button/selectedcontent/div markup isn't part of the option list
-model there and simply isn't rendered.
+Customizable <select> (appearance: base-select, Chromium only). Unsupported
+browsers keep a plain native select — the extra markup isn't rendered there.
  */
 @use '../../config' as *;
 
@@ -26,7 +22,7 @@ model there and simply isn't rendered.
       border: $dropdown-border-width solid $dropdown-border-color;
       @include border-radius($dropdown-border-radius);
       @include box-shadow($dropdown-box-shadow);
-      @include transition(opacity 0.15s ease, transform 0.15s ease, display 0.15s allow-discrete, overlay 0.15s allow-discrete);
+      @include transition(opacity 0.15s ease, transform 0.15s ease);
 
       &:not(:popover-open) {
         opacity: 0;
@@ -36,13 +32,6 @@ model there and simply isn't rendered.
       &:popover-open {
         opacity: 1;
         transform: scale(1);
-      }
-
-      @starting-style {
-        &:popover-open {
-          opacity: 0;
-          transform: scale(0.96);
-        }
       }
     }
 
@@ -56,10 +45,6 @@ model there and simply isn't rendered.
       justify-content: space-between;
       inline-size: 100%;
       padding: $form-select-padding-y $form-select-padding-x;
-      font-family: $form-select-font-family;
-      @include font-size($form-select-font-size);
-      font-weight: $form-select-font-weight;
-      color: $form-select-color;
       text-align: start;
       background-color: $form-select-bg;
       border: $form-select-border-width solid $form-select-border-color;
@@ -87,7 +72,6 @@ model there and simply isn't rendered.
     .form-select-custom-toggle {
       display: block;
       overflow: hidden;
-      text-align: start;
     }
 
     .form-select-custom-label {
@@ -101,15 +85,6 @@ model there and simply isn't rendered.
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-
-      > * {
-        @include transition(opacity 0.2s ease, translate 0.2s ease);
-
-        @starting-style {
-          opacity: 0;
-          translate: 0 0.25rem;
-        }
-      }
     }
 
     .form-select-custom-caret {
@@ -165,10 +140,8 @@ model there and simply isn't rendered.
         cursor: not-allowed;
       }
     }
-  }
 
-  &.form-select-custom-primary {
-    @supports (appearance: base-select) {
+    &.form-select-custom-primary {
       > button {
         color: var(--white);
         background-color: var(--primary);
