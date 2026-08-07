@@ -3,6 +3,7 @@
 import Icon from '@ui/Icon.astro'
 import Flag from '@ui/Flag.astro'
 import people from '@data/people.json'
+import { requireIndex } from '@shared/lib/array'
 
 interface Person {
   university?: string
@@ -21,7 +22,7 @@ interface Props {
 }
 
 const { title = 'Basic info', personId = 25 } = Astro.props
-const person = (people as Person[])[personId - 1]
+const person = requireIndex(people as Person[], personId - 1)
 ---
 
 <div class="card">

@@ -2,6 +2,7 @@
 import Progress from '@ui/Progress.astro'
 import CardDropdown from '@ui/CardDropdown.astro'
 import projects from '@data/projects.json'
+import { requireIndex } from '@shared/lib/array'
 
 interface Project {
   title?: string
@@ -16,7 +17,7 @@ interface Props {
 }
 
 const { projectId = 0, progress = 25, daysAgo = 2 } = Astro.props
-const project = (projects as Project[])[projectId]
+const project = requireIndex(projects as Project[], projectId)
 ---
 
 <div class="card">

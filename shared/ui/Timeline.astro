@@ -4,6 +4,7 @@ import Icon from './Icon.astro'
 import Avatar from './Avatar.astro'
 import people from '@data/people.json'
 import photos from '@data/photos.json'
+import { requireIndex } from '@shared/lib/array'
 
 interface Props {
   simple?: boolean
@@ -13,6 +14,7 @@ const { simple } = Astro.props
 
 const avatarPeople = (people as { full_name?: string; photo?: string }[]).slice(0, 3)
 const timelinePhotos = photos as { file: string; title: string }[]
+const timelinePhoto = (i: number) => requireIndex(timelinePhotos, i)
 ---
 
 <ul class:list={['timeline', simple && 'timeline-simple']}>
@@ -78,15 +80,15 @@ const timelinePhotos = photos as { file: string; title: string }[]
           <div class="row g-2">
             <div class="col-4">
               <!-- Photo -->
-              <img src={`./static/photos/${timelinePhotos[6].file}`} class="rounded" alt={timelinePhotos[6].title} />
+              <img src={`./static/photos/${timelinePhoto(6).file}`} class="rounded" alt={timelinePhoto(6).title} />
             </div>
             <div class="col-4">
               <!-- Photo -->
-              <img src={`./static/photos/${timelinePhotos[7].file}`} class="rounded" alt={timelinePhotos[7].title} />
+              <img src={`./static/photos/${timelinePhoto(7).file}`} class="rounded" alt={timelinePhoto(7).title} />
             </div>
             <div class="col-4">
               <!-- Photo -->
-              <img src={`./static/photos/${timelinePhotos[8].file}`} class="rounded" alt={timelinePhotos[8].title} />
+              <img src={`./static/photos/${timelinePhoto(8).file}`} class="rounded" alt={timelinePhoto(8).title} />
             </div>
           </div>
         </div>

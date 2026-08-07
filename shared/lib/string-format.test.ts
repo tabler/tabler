@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest'
 import { capitalize, firstLetters, formatNumber, millisecondsToMinutes, parseCurrency, parsePercentage, pathSlug, roundTo, slugifyWord, sortBy, splitDropTrailingEmpty, ucFirst } from './string-format'
+import { requireIndex } from './array'
 
 describe('capitalize', () => {
   it('uppercases the first char and lowercases the rest', () => {
@@ -106,6 +107,6 @@ describe('sortBy', () => {
   it('does not mutate the input array', () => {
     const people = [{ last_name: 'Smith' }, { last_name: 'Adams' }]
     sortBy(people, (p) => p.last_name)
-    expect(people[0].last_name).toBe('Smith')
+    expect(requireIndex(people, 0).last_name).toBe('Smith')
   })
 })

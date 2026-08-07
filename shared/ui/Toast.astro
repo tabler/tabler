@@ -1,6 +1,7 @@
 ---
 import Avatar from './Avatar.astro'
 import people from '@data/people.json'
+import { requireIndex } from '@shared/lib/array'
 
 interface Props {
   toastId?: string
@@ -21,7 +22,7 @@ interface Person {
   [key: string]: unknown
 }
 
-const person = (people as Person[])[personId]
+const person = requireIndex(people as Person[], personId)
 ---
 
 <div class:list={['toast', show && 'show']} id={`toast-${toastId}`} role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">

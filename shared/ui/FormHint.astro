@@ -6,12 +6,12 @@ interface Props {
   as?: string
   class?: string
   /** id so a control can reference the hint via aria-describedby */
-  id?: string
+  id?: string | undefined
 }
 
-const { as: Tag = 'div', class: className, id } = Astro.props
+const { as: Tag = 'div', class: className, id }: Props = Astro.props
 ---
 
-<Tag class:list={['form-hint', className]} id={id}>
+<Tag class:list={['form-hint', className]} {...(id ? { id } : {})}>
   <slot />
 </Tag>

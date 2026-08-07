@@ -6,6 +6,7 @@ import Icon from '@ui/Icon.astro'
 import Datagrid from '@ui/Datagrid.astro'
 import DatagridItem from '@ui/DatagridItem.astro'
 import people from '@data/people.json'
+import { requireIndex } from '@shared/lib/array'
 
 interface Person {
   full_name?: string
@@ -13,7 +14,7 @@ interface Person {
   [key: string]: unknown
 }
 
-const creator = (people as Person[])[0]
+const creator = requireIndex(people as Person[], 0)
 ---
 
 <Datagrid>
