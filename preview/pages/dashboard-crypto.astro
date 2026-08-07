@@ -33,6 +33,7 @@ const btcBalance = 2.3
 const btcPriceNum = parseCurrency(btc.price)
 const totalUsd = Math.round(btcPriceNum * btcBalance).toLocaleString('en-US')
 // divided_by then round to 8 decimals (trailing zeros dropped in output)
+const usdBtc = roundTo(1 / btcPriceNum)
 const ltcBtc = roundTo(parseCurrency(ltc.price) / btcPriceNum)
 const ethBtc = roundTo(parseCurrency(eth.price) / btcPriceNum)
 const xmrBtc = roundTo(parseCurrency(xmr.price) / btcPriceNum)
@@ -81,7 +82,7 @@ const operationCurrencies = currencies.slice(0, 20)
                 </div>
               </div>
               <div class="mb-1">
-                <span class="h3">{btc.price}</span>
+                <span class="h3">{usdBtc}</span>
                 <span class="text-muted">{btc.price}</span>
               </div>
               <div class="mb-0">
