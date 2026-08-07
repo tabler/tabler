@@ -52,7 +52,8 @@ const renderGroups: Group[] = groups.length > 0 ? groups : [{ options }]
   <button type="button">
     <span class="form-select-custom-toggle">
       {label && <small class="form-select-custom-label">{label}</small>}
-      <selectedcontent></selectedcontent>
+      {/* set:html: Astro renders <selectedcontent> as void otherwise, breaking the post-build HTML prettify pass */}
+      <Fragment set:html="<selectedcontent></selectedcontent>" />
     </span>
     <Icon name="chevron-down" class="form-select-custom-caret" />
   </button>
