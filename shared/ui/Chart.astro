@@ -18,6 +18,11 @@ const chartsData = charts as Record<string, ChartData>;
 let data = chartsData[chartId];
 
 let className = classProp;
+
+if (data?.extend) {
+	data = { ...chartsData[data.extend], ...chartsData[chartId] };
+}
+
 let height = heightProp ?? data?.height ?? 10;
 
 if (size === 'sm') {
@@ -28,15 +33,11 @@ if (size === 'sm') {
 	height = 15;
 }
 
-if (data?.extend) {
-	data = { ...chartsData[data.extend], ...chartsData[chartId] };
-}
-
 // The :root custom-property block stays a plain string rendered via set:html — it's
 // inert CSS text (no injection surface), not executable code.
 const style = data ? chartStyle({ id, data }) : '';
 const { config, xFormatterExpr } = data ? chartConfig({ id, data, height }) : { config: undefined, xFormatterExpr: undefined };
-const chartKey = `chart-${chartId}`;
+const chartKey = `chart-${id}`;
 const elementId = `chart-${id}`;
 ---
 
