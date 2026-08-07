@@ -1,5 +1,4 @@
 ---
-// NOTE: `days-ago` param accepted but unused ("Updated 2 hours ago" is hardcoded).
 import Progress from '@ui/Progress.astro'
 import CardDropdown from '@ui/CardDropdown.astro'
 import projects from '@data/projects.json'
@@ -16,7 +15,7 @@ interface Props {
   daysAgo?: number
 }
 
-const { projectId = 0, progress = 25 } = Astro.props
+const { projectId = 0, progress = 25, daysAgo = 2 } = Astro.props
 const project = (projects as Project[])[projectId]
 ---
 
@@ -30,7 +29,7 @@ const project = (projects as Project[])[projectId]
         <h3 class="card-title mb-1">
           <a href="#" class="text-reset">{project.title}</a>
         </h3>
-        <div class="text-secondary">Updated 2 hours ago</div>
+        <div class="text-secondary">Updated {daysAgo} days ago</div>
 
         <div class="mt-3">
           <div class="row g-2 align-items-center">
