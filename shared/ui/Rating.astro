@@ -18,7 +18,7 @@ const starClasses = ['icon', 'gl-star-full', color && `text-${color}`, size && `
 
 const iconData = (icons as Record<string, { svg: Record<string, string | null> }>)[icon]
 let star = iconData?.svg?.filled ?? ''
-star = star.replace('<path stroke="none" d="M0 0h24v24H0z" fill="none" />', '')
+star = star.replace(/<path stroke="none" d="M0 0h24v24H0z" fill="none"\s*\/>/, '')
 star = star.replace(/class="[^"]+"/, `aria-hidden="true" focusable="false" class="${starClasses}"`)
 
 const ratingSelector = `#rating-${id}`
