@@ -4,6 +4,7 @@ import NavAside from '@shared/components/parts/NavAside.astro'
 import GalleryPhoto from '@shared/components/cards/GalleryPhoto.astro'
 import photos from '@data/photos.json'
 import people from '@data/people.json'
+import { requireIndex } from '@shared/lib/array'
 
 const resultPhotos = photos.filter((photo) => photo.horizontal).slice(0, 18)
 ---
@@ -18,7 +19,7 @@ const resultPhotos = photos.filter((photo) => photo.horizontal).slice(0, 18)
         {
           resultPhotos.map((photo, index) => (
             <div class="col-sm-6 col-lg-4">
-              <GalleryPhoto photo={photo} person={people[index]} index={index + 1} hideLikes />
+              <GalleryPhoto photo={photo} person={requireIndex(people, index)} index={index + 1} hideLikes />
             </div>
           ))
         }

@@ -149,9 +149,7 @@ export default defineConfig({
         {
           // Beautify html fences before highlighting.
           preprocess(code) {
-            if (this.options.lang === 'html') {
-              return beautify.html(code, { indent_size: 2, wrap_line_length: 80 })
-            }
+            return this.options.lang === 'html' ? beautify.html(code, { indent_size: 2, wrap_line_length: 80 }) : code
           },
           // Keep shiki classes only (drop Astro's astro-code / data-language).
           pre(node) {
