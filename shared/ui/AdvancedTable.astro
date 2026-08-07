@@ -2,7 +2,7 @@
 import BadgesList from './BadgesList.astro'
 import Icon from './Icon.astro'
 import { formatLongDate } from '@shared/lib/date-format'
-import { randomNumber, randomItem, randomDate } from '@shared/lib/pseudo-random'
+import { randomItem, randomDate } from '@shared/lib/pseudo-random'
 import Avatar from './Avatar.astro'
 import Button from './Button.astro'
 import ButtonList from './ButtonList.astro'
@@ -10,9 +10,21 @@ import Pagination from './Pagination.astro'
 import people from '@data/people.json'
 import tableProperties from '@data/table-properties.json'
 import CaptureScript from '../components/CaptureScript.astro'
+import { requireIndex } from '@shared/lib/array'
 
 interface Props {
   id?: string
+}
+
+interface Person {
+  full_name?: string
+  city?: string
+  country?: string
+  [key: string]: unknown
+}
+
+interface AdvancedTableProperties {
+  headers: { 'data-sort': string; 'name': string }[]
 }
 
 const { id: tableId = 'advanced-table' } = Astro.props
@@ -22,12 +34,10 @@ const perPage = ['10', '20', '50', '100']
 const categories = ['Agencies', 'Individual', 'Event', 'Ticket']
 const tags = ['QTA,Event,Tickets,TODO', 'Event,Tickets', 'QTA,Event', 'Tickets']
 
-const headers = (tableProperties as Record<string, any>)['advanced-table'].headers as {
-  'data-sort': string
-  'name': string
-}[]
+const advancedTable = (tableProperties as { 'advanced-table': AdvancedTableProperties })['advanced-table']
+const headers = advancedTable.headers
 
-const rows = (people as Record<string, any>[]).map((person, i) => {
+const rows = (people as Person[]).map((person, i) => {
   const index = i + 1
   const status = randomItem(index + 5, statuses)
   const itemTags = randomItem(index + 5, tags).split(',')
@@ -36,8 +46,7 @@ const rows = (people as Record<string, any>[]).map((person, i) => {
   return { person, index, status, itemTags, category, date }
 })
 
-const advancedTable = (tableProperties as Record<string, any>)['advanced-table']
-const perPageDefault = perPage[1]
+const perPageDefault = requireIndex(perPage, 1)
 ---
 
 <div class="card">
@@ -104,23 +113,23 @@ const perPageDefault = perPage[1]
                   <td>
                     <input class="form-check-input m-0 align-middle table-selectable-check" type="checkbox" aria-label="Select invoice" value="true" />
                   </td>
-                  <td class={headers[0]['data-sort']}>
+                  <td class={requireIndex(headers, 0)['data-sort']}>
                     <Avatar person={person} size="xs" class="me-2" />
                     {person.full_name}
                   </td>
-                  <td class={headers[1]['data-sort']}>
+                  <td class={requireIndex(headers, 1)['data-sort']}>
                     {person.city}, {person.country}
                   </td>
-                  <td class={headers[2]['data-sort']}>{status === 'Active' ? <span class="badge bg-success-lt">Active</span> : status === 'Inactive' ? <span class="badge bg-danger-lt">Inactive</span> : <span class="badge">Requested</span>}</td>
-                  <td class={headers[3]['data-sort']}>{date}</td>
-                  <td class={headers[4]['data-sort']}>
+                  <td class={requireIndex(headers, 2)['data-sort']}>{status === 'Active' ? <span class="badge bg-success-lt">Active</span> : status === 'Inactive' ? <span class="badge bg-danger-lt">Inactive</span> : <span class="badge">Requested</span>}</td>
+                  <td class={requireIndex(headers, 3)['data-sort']}>{date}</td>
+                  <td class={requireIndex(headers, 4)['data-sort']}>
                     <BadgesList>
                       {itemTags.map((tag) => (
                         <span class="badge">{tag}</span>
                       ))}
                     </BadgesList>
                   </td>
-                  <td class={`${headers[5]['data-sort']} py-0`}>
+                  <td class={`${requireIndex(headers, 5)['data-sort']} py-0`}>
                     <span class="on-unchecked">{category}</span>
                     <div class="on-checked">
                       <div class="d-flex justify-content-end">
@@ -137,7 +146,7 @@ const perPageDefault = perPage[1]
       <div class="card-footer d-flex align-items-center">
         <div class="dropdown" data-table-id={tableId}>
           <button type="button" class="btn dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-            <span id={`${tableId}-page-count`} class="me-1">{perPage[1]}</span>
+            <span id={`${tableId}-page-count`} class="me-1">{perPageDefault}</span>
             <span>records</span>
           </button>
           <div class="dropdown-menu">

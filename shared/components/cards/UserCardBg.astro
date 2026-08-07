@@ -3,6 +3,7 @@
 import Avatar from '@ui/Avatar.astro'
 import people from '@data/people.json'
 import photos from '@data/photos.json'
+import { requireIndex } from '@shared/lib/array'
 
 interface Person {
   full_name?: string
@@ -22,8 +23,8 @@ interface Props {
 }
 
 const { personId = 0, blurred } = Astro.props
-const person = (people as Person[])[personId]
-const photo = (photos as Photo[])[personId]
+const person = requireIndex(people as Person[], personId)
+const photo = requireIndex(photos as Photo[], personId)
 ---
 
 <a class="card card-link" href="#">

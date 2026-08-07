@@ -2,6 +2,7 @@
 import Avatar from './Avatar.astro'
 import chats from '@data/chats.json'
 import people from '@data/people.json'
+import { requireIndex } from '@shared/lib/array'
 
 interface Person {
   full_name?: string
@@ -31,7 +32,7 @@ const peopleList = people as Person[]
   <div class="chat-bubbles">
     {
       messages.map((message) => {
-        const person = peopleList[message['person-id']]
+        const person = requireIndex(peopleList, message['person-id'])
         const me = message['person-id'] === 0
         const messageColClass = message.loading ? 'col-auto' : `col${wide ? ' col-lg-6' : ''}`
 
