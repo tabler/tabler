@@ -10,10 +10,11 @@ interface Props {
 const { title, type = 'outline' } = Astro.props
 
 // Dev preview limits icons to 20 (see BaseLayout).
-// The limit applies before the svg[type] filter — the "filled" card shows only filled icons among the first 20.
 const limit = 20
 
-const entries = Object.entries(icons as Record<string, { svg?: Record<string, string | null> }>).slice(0, limit)
+const entries = Object.entries(icons as Record<string, { svg?: Record<string, string | null> }>)
+  .filter(([, icon]) => icon.svg?.[type])
+  .slice(0, limit)
 ---
 
 <div class="card">
