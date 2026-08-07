@@ -26,13 +26,12 @@ const parseUrl = (): void => {
   const search = window.location.search.substring(1)
   const params = search.split('&')
 
-  for (let i = 0; i < params.length; i++) {
-    const arr = params[i].split('=')
-    const key = arr[0]
-    const value = arr[1]
+  for (const param of params) {
+    const [key, value] = param.split('=')
+    const item = key !== undefined ? items[key] : undefined
 
-    if (!!items[key]) {
-      localStorage.setItem(items[key].localStorage, value)
+    if (item && key !== undefined && value !== undefined) {
+      localStorage.setItem(item.localStorage, value)
       config[key] = value
     }
   }

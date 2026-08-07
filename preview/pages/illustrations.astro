@@ -9,12 +9,13 @@ import CaptureScript from '@shared/components/CaptureScript.astro'
 import freeIllustrations from '@data/free-illustrations.json'
 import illustrationsList from '@data/illustrations.json'
 import siteData from '@data/site.json'
+import { requireIndex } from '@shared/lib/array'
 
 const autodark = (freeIllustrations as { autodark: Record<string, string> }).autodark
 const autodarkEntries = Object.entries(autodark)
 
 // Last autodark entry (loop overwrites each pass).
-const firstIllustration = autodarkEntries.length ? autodarkEntries[autodarkEntries.length - 1][1] : ''
+const firstIllustration = autodarkEntries.length ? requireIndex(autodarkEntries, autodarkEntries.length - 1)[1] : ''
 
 const withClass = (svg: string) => svg.replaceAll('<svg ', '<svg class="w-100 h-auto" ')
 
@@ -23,7 +24,7 @@ const skinColors = siteData.skinColors as Record<string, { hex: string; class: s
 const colorEntries = Object.values(colors)
 const skinEntries = Object.values(skinColors)
 
-const skinFirst = skinEntries[0]
+const skinFirst = requireIndex(skinEntries, 0)
 const buyLink = (siteData.illustrations as { buy_link: string }).buy_link
 
 const moreCount = illustrationsList.length - 4
