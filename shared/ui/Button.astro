@@ -39,9 +39,11 @@ interface Props {
   toastId?: string
   /** data-bs-dismiss="modal" */
   dismiss?: boolean
+  /** data-bs-toggle="dropdown" */
+  dropdown?: boolean
 }
 
-const { text = 'Button', href, external, element, type, id, color, outline, ghost, height, size, block, disabled, square, loading, action, pill, link, class: className, icon, iconColor, iconEnd, iconOnly, dots, modalId, toastId, dismiss } = Astro.props
+const { text = 'Button', href, external, element, type, id, color, outline, ghost, height, size, block, disabled, square, loading, action, pill, link, class: className, icon, iconColor, iconEnd, iconOnly, dots, modalId, toastId, dismiss, dropdown } = Astro.props
 
 // Without a real destination the control is an action, so render <button>; internal hrefs are prefixed with '/'.
 const Element = element ?? (href ? 'a' : 'button')
@@ -72,8 +74,8 @@ const classes = [
   class:list={classes}
   target={external ? '_blank' : undefined}
   rel={external ? 'noreferrer' : undefined}
-  data-bs-toggle={modalId ? 'modal' : toastId ? 'toast' : undefined}
-  data-bs-target={modalId ? `#modal-${modalId}` : toastId ? `#toast-${toastId}` : undefined}
+  data-bs-toggle={dropdown ? 'dropdown' : modalId ? 'modal' : toastId ? 'toast' : undefined}
+  data-bs-target={!dropdown && modalId ? `#modal-${modalId}` : !dropdown && toastId ? `#toast-${toastId}` : undefined}
   aria-label={iconOnly ? text : undefined}
   data-bs-dismiss={dismiss ? 'modal' : undefined}
 >
