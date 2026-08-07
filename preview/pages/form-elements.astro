@@ -10,6 +10,7 @@ import FormElements6 from '@shared/components/forms/FormElements6.astro'
 import Layout from '@shared/components/cards/form/Layout.astro'
 import InputIcon from '@ui/form/InputIcon.astro'
 import InputMask from '@ui/form/InputMask.astro'
+import SelectCustom from '@ui/SelectCustom.astro'
 import Button from '@ui/Button.astro'
 import Avatar from '@ui/Avatar.astro'
 import Card from '@ui/Card.astro'
@@ -114,6 +115,129 @@ const rows = [
           </select>
         </CardBody>
         <CardFooter>Learn more about <a href="#">Node.js Version</a></CardFooter>
+      </Card>
+    </div>
+
+    <div class="col-12">
+      <Card>
+        <CardBody>
+          <CardTitle>Customizable select <span class="badge bg-orange-lt ms-2">Experimental</span></CardTitle>
+          <CardSubtitle>Zero-JS rich &lt;select&gt; via the CSS "customizable select" API. Chromium only for now — other browsers fall back to a plain, working native select.</CardSubtitle>
+          <div class="row row-cols-1 row-cols-sm-2 row-cols-xl-4 g-3">
+            <div class="col">
+              <div class="form-label">Status dot</div>
+              <SelectCustom
+                id="select-custom-status"
+                options={[
+                  { value: 'on', text: 'On', dot: 'success', selected: true },
+                  { value: 'off', text: 'Off', dot: 'danger' },
+                  { value: 'disabled', text: 'Disable', dot: 'secondary' },
+                ]}
+              />
+            </div>
+            <div class="col">
+              <div class="form-label">Avatar</div>
+              <SelectCustom
+                id="select-custom-people"
+                options={[
+                  { value: '1', text: 'Paweł Kuna', personId: 1 },
+                  { value: '2', text: 'Jeffie Lewzey', personId: 2, selected: true },
+                  { value: '3', text: 'Mallory Hulme', personId: 3 },
+                ]}
+              />
+            </div>
+            <div class="col">
+              <div class="form-label">Flag</div>
+              <SelectCustom
+                id="select-custom-flag"
+                options={[
+                  { value: 'pl', text: 'Poland', flag: 'pl', selected: true },
+                  { value: 'de', text: 'Germany', flag: 'de' },
+                  { value: 'cz', text: 'Czech Republic', flag: 'cz' },
+                  { value: 'br', text: 'Brazil', flag: 'br' },
+                ]}
+              />
+            </div>
+            <div class="col">
+              <div class="form-label">Badge</div>
+              <SelectCustom
+                id="select-custom-badge"
+                options={[
+                  { value: 'copy', text: 'Copy', badge: 'cmd + C', badgeColor: 'secondary' },
+                  { value: 'paste', text: 'Paste', badge: 'cmd + V', badgeColor: 'secondary', selected: true },
+                  { value: 'cut', text: 'Cut', badge: 'cmd + X', badgeColor: 'secondary' },
+                ]}
+              />
+            </div>
+            <div class="col">
+              <div class="form-label">Grouped, sticky headers</div>
+              <SelectCustom
+                id="select-custom-groups"
+                label="Color space"
+                scrollable
+                groups={[
+                  {
+                    label: 'Standard',
+                    options: [
+                      { value: 'srgb', text: 'srgb' },
+                      { value: 'hsl', text: 'hsl' },
+                      { value: 'hwb', text: 'hwb' },
+                    ],
+                  },
+                  {
+                    label: 'HD',
+                    options: [
+                      { value: 'display-p3', text: 'display-p3' },
+                      { value: 'a98-rgb', text: 'a98-rgb' },
+                    ],
+                  },
+                  {
+                    label: 'Ultra HD',
+                    options: [
+                      { value: 'lch', text: 'lch' },
+                      { value: 'oklch', text: 'oklch', selected: true },
+                      { value: 'oklab', text: 'oklab' },
+                    ],
+                  },
+                ]}
+              />
+            </div>
+            <div class="col">
+              <div class="form-label">Primary, with description</div>
+              <SelectCustom
+                id="select-custom-primary"
+                primary
+                options={[
+                  { value: 'published', text: 'Published', description: 'Live on the web, available to anyone with the link.', selected: true },
+                  { value: 'draft', text: 'Draft', description: 'Not available on the web, no public access.' },
+                ]}
+              />
+            </div>
+            <div class="col">
+              <div class="form-label">Disabled option</div>
+              <SelectCustom
+                id="select-custom-disabled"
+                options={[
+                  { value: 'starter', text: 'Starter', selected: true },
+                  { value: 'pro', text: 'Pro' },
+                  { value: 'enterprise', text: 'Enterprise', disabled: true, badge: 'Contact us', badgeColor: 'secondary' },
+                ]}
+              />
+            </div>
+            <div class="col">
+              <div class="form-label">Plain (no indicators)</div>
+              <SelectCustom
+                id="select-custom-plain"
+                options={[
+                  { value: 'html', text: 'HTML' },
+                  { value: 'js', text: 'JavaScript', selected: true },
+                  { value: 'css', text: 'CSS' },
+                  { value: 'bootstrap', text: 'Bootstrap' },
+                ]}
+              />
+            </div>
+          </div>
+        </CardBody>
       </Card>
     </div>
 
