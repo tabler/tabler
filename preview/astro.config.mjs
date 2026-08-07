@@ -3,7 +3,9 @@ import { defineConfig } from 'astro/config'
 import mdx from '@astrojs/mdx'
 import { satteri } from '@astrojs/markdown-satteri'
 import beautify from 'js-beautify'
-import { execSync } from 'node:child_process'
+import { createRequire } from 'node:module'
+const require = createRequire(import.meta.url)
+import { execFileSync } from 'node:child_process'
 import { globSync, readFileSync, writeFileSync } from 'node:fs'
 import { devNull } from 'node:os'
 import { fileURLToPath } from 'node:url'
@@ -38,10 +40,9 @@ function prettifyHtml() {
           const cleaned = content.replaceAll('; overflow-x: auto;', '')
           if (cleaned !== content) writeFileSync(file, cleaned)
         }
-        execSync(
-          `npx prettier --write --parser html --ignore-path "${devNull}" "${outDir}**/*.html" "!${outDir}preview/**" "!${outDir}dist/**"`,
-          { stdio: 'inherit' }
-        )
+        // .gitignore and .prettierignore both list dist, so without pointing at devNull
+        // the pass silently no-ops on the very directory it's meant to format.
+        execFileSync(process.execPath, [require.resolve('prettier/bin/prettier.cjs'), '--write', '--parser', 'html', '--ignore-path', devNull, `${outDir}**/*.html`, `!${outDir}preview/**`, `!${outDir}dist/**`], { stdio: 'inherit' })
         logger.info('HTML formatted with prettier')
       },
     },
