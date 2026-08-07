@@ -17,7 +17,7 @@ interface MdxFrontmatter {
   'description'?: string
   'seoDescription'?: string
   'added-in'?: string
-  'docs-libs'?: string[]
+  'docs-libs'?: string | string[]
   'hide-pagination'?: boolean
 }
 
@@ -37,7 +37,8 @@ const {
 // "docs/pages/ui/components/alert.mdx" (`file` is the absolute path of the MDX page).
 const editPath = file?.includes('/docs/pages/') ? file.replace(/^.*\/docs\/pages\//, 'docs/pages/') : undefined
 
-const docsLibs = frontmatter['docs-libs'] ?? []
+const rawDocsLibs = frontmatter['docs-libs']
+const docsLibs = rawDocsLibs == null ? [] : Array.isArray(rawDocsLibs) ? rawDocsLibs : [rawDocsLibs]
 
 const toc = headings
   .filter((heading) => heading.depth === 2 || heading.depth === 3)
