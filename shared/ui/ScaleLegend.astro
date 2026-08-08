@@ -1,16 +1,14 @@
 ---
 // "Less -> More" gradient legend, e.g. for a choropleth map's color scale.
 interface Props {
-  /** number of swatches */
-  steps?: number
-  /** theme color the swatches ramp up to, e.g. 'primary' */
-  color?: string
-  minLabel?: string
-  maxLabel?: string
   class?: string
 }
 
-const { steps = 10, color = 'primary', minLabel = 'Less', maxLabel = 'More', class: className } = Astro.props
+const { class: className } = Astro.props
+const steps = 10
+const color = 'primary'
+const minLabel = 'Less'
+const maxLabel = 'More'
 
 const items = Array.from({ length: steps }, (_, i) => i + 1)
 ---

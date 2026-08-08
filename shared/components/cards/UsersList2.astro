@@ -12,13 +12,14 @@ interface Person {
 }
 
 interface Props {
-  limit?: number
-  offset?: number
-  title?: string
   class?: string
 }
 
-const { limit = 10, offset = 0, title = 'Top users', class: className } = Astro.props
+const { class: className } = Astro.props
+
+const limit = 10
+const offset = 0
+const title = 'Top users'
 
 const colors = ['green', 'red', 'yellow', 'x', 'x'] as const
 const statusLabels: Record<(typeof colors)[number], string> = { green: 'Online', red: 'Busy', yellow: 'Away', x: 'Offline' }

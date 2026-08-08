@@ -6,7 +6,6 @@ interface Props {
   items?: string[]
   icons?: string[]
   disabled?: number[]
-  hover?: string
   default?: number
   vertical?: boolean
   /** core/scss/ui/_segmented.scss `.nav-{size}` modifier classes */
@@ -16,10 +15,10 @@ interface Props {
   class?: string
 }
 
-const { items, icons, disabled, hover = '', default: defaultIndex = 1, vertical, size, fullWidth, name, class: className } = Astro.props
+const { items, icons, disabled, default: defaultIndex = 1, vertical, size, fullWidth, name, class: className } = Astro.props
 
 // When `size` is omitted, append `nav-{argCount}` (e.g. nav-1, nav-2). An explicit size uses nav-sm/nav-lg.
-const includeArgKeys = ['items', 'icons', 'disabled', 'hover', 'default', 'vertical', 'size', 'fullWidth', 'class', 'name'] as const
+const includeArgKeys = ['items', 'icons', 'disabled', 'default', 'vertical', 'size', 'fullWidth', 'class', 'name'] as const
 const argCount = includeArgCount(Astro.props as Record<string, unknown>, includeArgKeys)
 const sizeToken = size ? `nav-${size}` : `nav-${argCount}`
 
@@ -34,7 +33,7 @@ const rows = Array.from({ length: count }, (_, i) => {
   const index = String(forloopIndex)
   const isDisabled = disabled?.includes(forloopIndex) ?? false
   const isDefault = forloopIndex === defaultIndex
-  const linkClasses = ['nav-link', isDisabled && 'disabled', isDefault && !name && 'active', hover === index && 'hover']
+  const linkClasses = ['nav-link', isDisabled && 'disabled', isDefault && !name && 'active']
   return { forloopIndex, index, isDisabled, isDefault, linkClasses, icon: iconsArr[i], item: itemsArr[i] }
 })
 ---

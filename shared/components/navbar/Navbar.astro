@@ -10,7 +10,6 @@ import Icon from '@ui/Icon.astro';
 import Logo from './Logo.astro';
 import NavbarToggler from './NavbarToggler.astro';
 import NavbarSide from './NavbarSide.astro';
-import type { Breakpoint } from './NavbarSide.astro';
 import NavbarMenu from './NavbarMenu.astro';
 import NavbarSearch from './NavbarSearch.astro';
 
@@ -18,7 +17,6 @@ interface Props {
 	hideSearch?: boolean;
 	/** equivalent of the page-menu front matter (active menu entry), e.g. "dashboards.default" */
 	pageMenu?: string | undefined;
-	breakpoint?: Breakpoint | undefined;
 	condensed?: boolean | undefined;
 	dark?: boolean | undefined;
 	transparent?: boolean;
@@ -49,7 +47,6 @@ interface Props {
 const {
 	hideSearch = false,
 	pageMenu,
-	breakpoint = 'md',
 	condensed = false,
 	dark = false,
 	transparent = false,
@@ -67,6 +64,8 @@ const {
 	backgroundColor,
 	class: className,
 } = Astro.props;
+
+const breakpoint = 'md';
 
 const headerClass = [
 	`navbar navbar-expand-${breakpoint}`,

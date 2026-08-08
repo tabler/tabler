@@ -4,8 +4,6 @@
 import Icon from '@ui/Icon.astro'
 import Avatar from '@ui/Avatar.astro'
 import ChartSparkline from '@ui/ChartSparkline.astro'
-import Trending from '@ui/Trending.astro'
-import Button from '@ui/Button.astro'
 
 interface Props {
   icon?: string
@@ -19,16 +17,12 @@ interface Props {
   chartType?: string
   chartPosition?: string
   chartData?: string | number
-  chartLabel?: string
-  chartLabelIcon?: string
   smallIcon?: string
   descriptionValue?: string
   descriptionValueColor?: string
-  trending?: number
-  button?: string
 }
 
-const { icon, color, lt, title, description, class: className, id, personId, chartType = 'line', chartPosition = 'right', chartData, smallIcon, descriptionValue, descriptionValueColor, trending, button } = Astro.props
+const { icon, color, lt, title, description, class: className, id, personId, chartType = 'line', chartPosition = 'right', chartData, smallIcon, descriptionValue, descriptionValueColor } = Astro.props
 
 const chartColor = color ?? 'primary'
 const avatarClass = [color ? `bg-${color}${lt ? '-lt' : ' text-white'}` : '', 'avatar', 'avatar-square']
@@ -74,21 +68,6 @@ const avatarClass = [color ? `bg-${color}${lt ? '-lt' : ' text-white'}` : '', 'a
         )
       }
 
-      {
-        trending && (
-          <div class="col-auto">
-            <Trending value={trending} />
-          </div>
-        )
-      }
-
-      {
-        button && (
-          <div class="col-auto">
-            <Button text={button} size="sm" />
-          </div>
-        )
-      }
     </div>
   </div>
 </div>

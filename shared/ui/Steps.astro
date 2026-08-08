@@ -4,15 +4,11 @@ interface Props {
   count?: number | string
   active?: number | string
   numbers?: boolean
-  color?: string
-  size?: string
-  showTooltip?: boolean
-  showTitle?: boolean
 }
 
-const { count = 4, active = 3, numbers, color, size, showTooltip, showTitle } = Astro.props
+const { count = 4, active = 3, numbers } = Astro.props
 
-const classes = ['steps', numbers && 'steps-counter', color && `steps-${color}`, size && `steps-${size}`]
+const classes = ['steps', numbers && 'steps-counter']
 
 const activeNum = Number(active)
 const total = Number(count)
@@ -30,8 +26,8 @@ const steps = Array.from({ length: total }, (_, i) => i + 1)
       const fallbackLabel = `Step ${i}${isCurrent ? ' (current)' : isDone ? ' (completed)' : ''}`
       return (
         <li class:list={itemClass}>
-          <Element href={isFuture ? undefined : '#'} aria-current={isCurrent ? 'step' : undefined} data-bs-toggle={showTooltip ? 'tooltip' : undefined} title={showTooltip ? `Step ${i} description` : undefined}>
-            {showTitle ? `Step ${i}` : <span class="visually-hidden">{fallbackLabel}</span>}
+          <Element href={isFuture ? undefined : '#'} aria-current={isCurrent ? 'step' : undefined}>
+            <span class="visually-hidden">{fallbackLabel}</span>
           </Element>
         </li>
       )

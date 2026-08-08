@@ -1,6 +1,5 @@
 ---
 import Progress from './Progress.astro'
-import Flag from './Flag.astro'
 import { parsePercentage } from '@shared/lib/string-format'
 
 interface Props {
@@ -8,11 +7,10 @@ interface Props {
   color?: string
   class?: string
   text?: string
-  flag?: string
   showValue?: boolean
 }
 
-const { value, color = 'primary-lt', class: className, text, flag, showValue } = Astro.props
+const { value, color = 'primary-lt', class: className, text, showValue } = Astro.props
 
 const percentage = parsePercentage(value)
 ---
@@ -22,7 +20,6 @@ const percentage = parsePercentage(value)
   {
     text && (
       <div class="progressbg-text">
-        {flag && <Flag flag={flag} class="me-2" size="xs" />}
         {text}
       </div>
     )

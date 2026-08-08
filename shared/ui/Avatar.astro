@@ -18,7 +18,6 @@ interface Props {
   personId?: number
   person?: Person | undefined
   link?: boolean
-  dropdown?: boolean
   size?: AvatarSize | undefined
   thumb?: boolean
   class?: string
@@ -26,8 +25,6 @@ interface Props {
   color?: string | undefined
   square?: boolean
   status?: string
-  statusText?: string
-  statusIcon?: string
   statusLabel?: string
   brand?: string
   icon?: string | undefined
@@ -37,7 +34,7 @@ interface Props {
   [key: string]: unknown
 }
 
-const { src: srcProp, placeholder: placeholderProp, personId, person: personProp, link: linkProp = false, dropdown, size, thumb, class: className, shape, color, square, status, statusText, statusIcon, statusLabel, brand, icon, base = '.', ...rest } = Astro.props
+const { src: srcProp, placeholder: placeholderProp, personId, person: personProp, link: linkProp = false, size, thumb, class: className, shape, color, square, status, statusLabel, brand, icon, base = '.', ...rest } = Astro.props
 
 let src = srcProp
 let placeholder = placeholderProp
@@ -50,14 +47,13 @@ if (person) {
   }
 }
 
-const link = linkProp || Boolean(dropdown)
-const El = link ? 'a' : 'span'
+const El = linkProp ? 'a' : 'span'
 
 const classes = ['avatar', size && `avatar-${size}`, thumb && 'avatar-thumb', className, shape && `avatar-${shape}`, color && `bg-${color}-lt`, square && 'avatar-square']
 ---
 
-<El class:list={classes} style={src ? `background-image: url(${base}/${src})` : undefined} data-bs-toggle={dropdown ? 'dropdown' : undefined} {...rest}
-  >{status && <span class={`badge bg-${status}`}>{statusText ? statusText : statusIcon ? <Icon name={statusIcon} class="avatar-status-icon" /> : <span class="visually-hidden">{statusLabel ?? status}</span>}</span>}{
+<El class:list={classes} style={src ? `background-image: url(${base}/${src})` : undefined} {...rest}
+  >{status && <span class={`badge bg-${status}`}><span class="visually-hidden">{statusLabel ?? status}</span></span>}{
     brand && <span class="avatar-brand" style={`background-image: url(${base}/static/brands/${brand}.svg);`} />
   }{src ? null : placeholder ? placeholder : icon ? <Icon name={icon} class="avatar-icon" /> : <Icon name="user" class="avatar-icon" />}</El
 >

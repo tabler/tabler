@@ -5,19 +5,17 @@ interface Props {
   modalId?: string
   /** core/scss/bootstrap/_modal.scss + ui/_modals.scss `.modal-{size}` modifier classes */
   size?: 'sm' | 'lg' | 'xl' | 'fullscreen' | 'full-width' | undefined
-  top?: boolean
   scrollable?: boolean
   class?: string
   show?: boolean
   style?: string
-  /** id of the title element the root references via aria-labelledby; defaults to `modal-${modalId}-title` */
-  titleId?: string
 }
 
-const { modalId = 'simple', size, top, scrollable, class: className, show, style, titleId = `modal-${modalId}-title` } = Astro.props
+const { modalId = 'simple', size, scrollable, class: className, show, style } = Astro.props
+const titleId = `modal-${modalId}-title`
 
 const modalClass = ['modal modal-blur fade', className, show && 'show'].filter(Boolean).join(' ')
-const dialogClass = ['modal-dialog', size && `modal-${size}`, !top && 'modal-dialog-centered', scrollable && 'modal-dialog-scrollable'].filter(Boolean).join(' ')
+const dialogClass = ['modal-dialog', size && `modal-${size}`, 'modal-dialog-centered', scrollable && 'modal-dialog-scrollable'].filter(Boolean).join(' ')
 ---
 
 <!-- BEGIN MODAL -->

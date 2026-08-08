@@ -2,7 +2,6 @@
 // Layout front-matter flags are plain props here.
 // TODO: layout-navbar-overlap && layout-navbar-dark → extra text-white class
 // on .page-header — both unset on the homepage.
-import Icon from '@ui/Icon.astro';
 import HeaderActionsButtons from './HeaderActionsButtons.astro';
 import HeaderActionsPrint from './HeaderActionsPrint.astro';
 import HeaderActionsPhotos from './HeaderActionsPhotos.astro';
@@ -24,15 +23,13 @@ interface Props {
 	actions?: string | undefined;
 	/** page-header-class */
 	class?: string;
-	/** page-header-icon */
-	icon?: string;
 	/** page-header-file — name of an include from layout/headers/, e.g. "profile" */
 	file?: string | undefined;
 	/** layout-navbar-overlap && layout-navbar-dark → text-white on .page-header */
 	textWhite?: boolean | undefined;
 }
 
-const { title, pretitle, description, actions, class: className, icon, file, textWhite } = Astro.props;
+const { title, pretitle, description, actions, class: className, file, textWhite } = Astro.props;
 ---
 
 {file === 'profile' && <HeaderProfile />}
@@ -50,7 +47,6 @@ const { title, pretitle, description, actions, class: className, icon, file, tex
 							</Fragment>
 						)}
 						<h1 class="page-title">
-							{icon && <Icon name={icon} />}
 							{title}
 						</h1>
 

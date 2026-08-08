@@ -3,7 +3,6 @@
 import { includeArgCount } from '@shared/lib/include-args'
 
 interface Props {
-  element?: 'div' | 'span'
   type?: 'border' | 'grow'
   color?: string
   /** core/scss/bootstrap/_spinners.scss `.spinner-{type}-{size}` — only 'sm' exists */
@@ -11,9 +10,9 @@ interface Props {
   class?: string
 }
 
-const { element: Element = 'div', type = 'border', color, size, class: className } = Astro.props
+const { type = 'border', color, size, class: className } = Astro.props
 
-const includeArgKeys = ['element', 'type', 'color', 'size', 'class'] as const
+const includeArgKeys = ['type', 'color', 'size', 'class'] as const
 const argCount = includeArgCount(Astro.props as Record<string, unknown>, includeArgKeys)
 // include['size'] → explicit value, else the arg count meta-property.
 const sizeValue = size !== undefined ? size : argCount || undefined
@@ -21,4 +20,4 @@ const sizeValue = size !== undefined ? size : argCount || undefined
 const classes = [`spinner-${type}`, color && `text-${color}`, sizeValue && `spinner-${type}-${sizeValue}`, className]
 ---
 
-<Element class:list={classes} role="status" />
+<div class:list={classes} role="status" />

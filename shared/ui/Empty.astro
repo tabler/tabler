@@ -6,7 +6,6 @@ import Illustration from './Illustration.astro'
 interface Props {
   icon?: string
   height?: number | string
-  bordered?: boolean
   class?: string
   /** illustration file name, e.g. "computer-fix.svg" */
   illustration?: string | undefined
@@ -18,9 +17,9 @@ interface Props {
   buttonIcon?: string
 }
 
-const { icon = 'mood-sad', height = 256, bordered, class: className, illustration, iconText, title = 'No results found', subtitle = "Try adjusting your search or filter to find what you're looking for.", buttonText = 'Search again', buttonIcon = 'search' } = Astro.props
+const { icon = 'mood-sad', height = 256, class: className, illustration, iconText, title = 'No results found', subtitle = "Try adjusting your search or filter to find what you're looking for.", buttonText = 'Search again', buttonIcon = 'search' } = Astro.props
 
-const classes = ['empty', bordered && 'empty-bordered', className]
+const classes = ['empty', className]
 ---
 
 <div class:list={classes}>

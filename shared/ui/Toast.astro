@@ -5,16 +5,12 @@ import { requireIndex } from '@shared/lib/array'
 
 interface Props {
   toastId?: string
-  /** people index, 0-based (default 2 → Mallory Hulme) */
-  personId?: number
   show?: boolean
-  hideHeader?: boolean
   cookies?: boolean
-  date?: string
   text?: string
 }
 
-const { toastId = 'simple', personId = 2, show, hideHeader, cookies, date = '11 mins ago', text = 'Hello, world! This is a toast message.' } = Astro.props
+const { toastId = 'simple', show, cookies, text = 'Hello, world! This is a toast message.' } = Astro.props
 
 interface Person {
   full_name?: string
@@ -22,20 +18,18 @@ interface Person {
   [key: string]: unknown
 }
 
-const person = requireIndex(people as Person[], personId)
+const date = '11 mins ago'
+/** people index, 0-based (default 2 → Mallory Hulme) */
+const person = requireIndex(people as Person[], 2)
 ---
 
 <div class:list={['toast', show && 'show']} id={`toast-${toastId}`} role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
-  {
-    !hideHeader && (
-      <div class="toast-header">
-        <Avatar person={person} class="me-2" size="xs" />
-        <strong class="me-auto">{person.full_name}</strong>
-        <small>{date}</small>
-        <button type="button" class="ms-2 btn-close" data-bs-dismiss="toast" aria-label="Close" />
-      </div>
-    )
-  }
+  <div class="toast-header">
+    <Avatar person={person} class="me-2" size="xs" />
+    <strong class="me-auto">{person.full_name}</strong>
+    <small>{date}</small>
+    <button type="button" class="ms-2 btn-close" data-bs-dismiss="toast" aria-label="Close" />
+  </div>
   <div class="toast-body">
     {
       cookies ? (

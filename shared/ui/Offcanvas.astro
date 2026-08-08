@@ -6,8 +6,6 @@ interface Props {
   direction?: 'start' | 'end' | 'top' | 'bottom' | undefined
   /** responsive variant offcanvas-{size} ($grid-breakpoints minus xs) — replaces the base .offcanvas class */
   size?: 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | undefined
-  /** offcanvas-narrow (20rem width) */
-  narrow?: boolean
   show?: boolean
   class?: string
   /** defaults to "-1" when not provided */
@@ -18,11 +16,11 @@ interface Props {
   [key: string]: unknown
 }
 
-const { direction, size, narrow, show, class: className, tabindex, role, ...rest } = Astro.props
+const { direction, size, show, class: className, tabindex, role, ...rest } = Astro.props
 ---
 
 <!-- BEGIN OFFCANVAS -->
-<div class:list={[size ? `offcanvas-${size}` : 'offcanvas', direction && `offcanvas-${direction}`, narrow && 'offcanvas-narrow', show && 'show', className]} tabindex={tabindex ?? '-1'} role={role ?? 'dialog'} {...rest}>
+<div class:list={[size ? `offcanvas-${size}` : 'offcanvas', direction && `offcanvas-${direction}`, show && 'show', className]} tabindex={tabindex ?? '-1'} role={role ?? 'dialog'} {...rest}>
   <slot />
 </div>
 <!-- END OFFCANVAS -->

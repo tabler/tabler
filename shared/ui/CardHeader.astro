@@ -9,15 +9,13 @@ type PolymorphicProps = { as?: HTMLTag }
 
 interface Props extends PolymorphicProps {
   title?: string
-  /** card-header-light */
-  light?: boolean
   class?: string
 }
 
-const { title, as: TitleTag = 'h3', light, class: className }: Props = Astro.props
+const { title, as: TitleTag = 'h3', class: className }: Props = Astro.props
 ---
 
-<div class:list={['card-header', light && 'card-header-light', className]}>
+<div class:list={['card-header', className]}>
   {title && <TitleTag class:list={['card-title']}>{title}</TitleTag>}
   <slot />
 </div>

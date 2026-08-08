@@ -5,15 +5,14 @@ import CaptureScript from '../components/CaptureScript.astro'
 interface Props {
   value?: string
   id?: string | number
-  alpha?: boolean
   format?: string | false
-  swatchesOnly?: boolean
   class?: string
   /** Accessible name for the input; falls back to a generic label when the caller doesn't wrap this in a labelled FormGroup */
   ariaLabel?: string
 }
 
-const { value, id = 'default', alpha = false, format = false, swatchesOnly, class: className, ariaLabel } = Astro.props
+const { value, id = 'default', format = false, class: className, ariaLabel } = Astro.props
+const alpha = false
 
 const colors = site.colors as Record<string, { prop: string }>
 const swatchProps = Object.values(colors).map((color) => color.prop)
@@ -25,7 +24,7 @@ const colorpickerSelector = `#colorpicker-${id}`
 <input type="text" class={`form-control d-block${className ? ` ${className}` : ''}`} id={colorpickerId} value={value} aria-label={ariaLabel ?? 'Color value'} />
 <CaptureScript>
   <!-- BEGIN COLORPICKER -->
-  <script is:inline define:vars={{ colorpickerId, colorpickerSelector, alpha, format, swatchesOnly, swatchProps }}>
+  <script is:inline define:vars={{ colorpickerId, colorpickerSelector, alpha, format, swatchProps }}>
     function initColorpicker() {
       window.tabler_colorpicker ??= {}
 
@@ -40,7 +39,6 @@ const colorpickerSelector = `#colorpicker-${id}`
           selectInput: false,
           alpha,
           ...(format ? { format } : {}),
-          ...(swatchesOnly ? { swatchesOnly: true } : {}),
           swatches,
         })
         window.tabler_colorpicker[colorpickerId] = colorpickerSelector
