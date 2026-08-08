@@ -5,12 +5,15 @@ interface Photo {
   title?: string
 }
 
+/** core/scss/_variables.scss `$aspect-ratios` map keys */
+type PhotoRatio = '1x1' | '2x1' | '1x2' | '3x1' | '1x3' | '4x1' | '1x4' | '4x3' | '3x4' | '16x9' | '9x16' | '21x9' | '9x21'
+
 interface Props {
   photo: Photo
   /** background param — plain <div> with only the background-image (no ratio class) */
   background?: boolean
   /** ratio param — img-responsive img-responsive-{ratio} wrapper */
-  ratio?: string
+  ratio?: PhotoRatio | undefined
   class?: string
 }
 

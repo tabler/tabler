@@ -2,8 +2,11 @@
 import Icon from './Icon.astro'
 import ButtonList from './ButtonList.astro'
 
+/** alert-{type} / btn-{type} — matches defaultIcons below */
+type AlertType = 'success' | 'warning' | 'danger' | 'info'
+
 interface Props {
-  type?: string
+  type?: AlertType
   icon?: string
   important?: boolean
   minor?: boolean
@@ -20,7 +23,7 @@ interface Props {
 
 const { type = 'success', icon: iconProp, important, minor, showClose, avatar, class: className, title = 'This is a custom alert box!', description, list, action, link, buttons } = Astro.props
 
-const defaultIcons: Record<string, string> = {
+const defaultIcons: Record<AlertType, string> = {
   success: 'check',
   warning: 'alert-triangle',
   danger: 'alert-circle',
