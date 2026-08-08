@@ -4,6 +4,9 @@
 // TODO: color=false special case — pass no color prop instead.
 import Icon from './Icon.astro'
 
+/** core/scss/ui/_buttons.scss `.btn-{size}` modifier classes — 'md' is the default (no class emitted) */
+type ButtonSize = 'sm' | 'md' | 'lg' | 'xl'
+
 interface Props {
   text?: string
   href?: string
@@ -17,7 +20,7 @@ interface Props {
   ghost?: boolean
   /** btn-{height} right after btn */
   height?: string
-  size?: string
+  size?: ButtonSize | undefined
   block?: boolean
   disabled?: boolean
   square?: boolean
@@ -58,7 +61,7 @@ const classes = [
   loading && 'btn-loading',
   action && 'btn-action',
   pill && 'btn-pill',
-  size && `btn-${size}`,
+  size && size !== 'md' && `btn-${size}`,
   className,
   block && 'w-100',
   link && 'btn-link',
