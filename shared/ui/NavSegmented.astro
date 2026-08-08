@@ -1,6 +1,5 @@
 ---
 import Icon from './Icon.astro'
-import { includeArgCount } from '@shared/lib/include-args'
 
 interface Props {
   items?: string[]
@@ -17,16 +16,11 @@ interface Props {
 
 const { items, icons, disabled, default: defaultIndex = 1, vertical, size, fullWidth, name, class: className } = Astro.props
 
-// When `size` is omitted, append `nav-{argCount}` (e.g. nav-1, nav-2). An explicit size uses nav-sm/nav-lg.
-const includeArgKeys = ['items', 'icons', 'disabled', 'default', 'vertical', 'size', 'fullWidth', 'class', 'name'] as const
-const argCount = includeArgCount(Astro.props as Record<string, unknown>, includeArgKeys)
-const sizeToken = size ? `nav-${size}` : `nav-${argCount}`
-
 const itemsArr = items ?? []
 const iconsArr = icons ?? []
 const count = Math.max(itemsArr.length, iconsArr.length)
 
-const navClasses = ['nav', 'nav-segmented', vertical && 'nav-segmented-vertical', sizeToken, fullWidth && 'w-100', className]
+const navClasses = ['nav', 'nav-segmented', vertical && 'nav-segmented-vertical', size && `nav-${size}`, fullWidth && 'w-100', className]
 
 const rows = Array.from({ length: count }, (_, i) => {
   const forloopIndex = i + 1
