@@ -48,7 +48,8 @@ const elementId = `chart-${id}`;
 			<Fragment set:html={style} />
 			<CaptureScript>
 				<!-- BEGIN CHART -->
-				<script define:vars={{ chartKey, elementId, config, xFormatterExpr }}>
+				<script is:inline define:vars={{ chartKey, elementId, config, xFormatterExpr }}>
+					// @ts-nocheck — chartKey/elementId/config/xFormatterExpr come from define:vars, ApexCharts from the charts page lib; neither is visible to the type checker.
 					window.tabler_chart ??= {};
 
 					// Heatmap shades each cell by computing off the literal base color in JS

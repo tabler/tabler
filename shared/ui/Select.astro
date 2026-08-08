@@ -125,7 +125,8 @@ const selectId = id ? `select-${id}` : undefined;
 	id && (
 		<CaptureScript>
 			<!-- BEGIN SELECT -->
-			<script define:vars={{ selectId, showSearch }}>
+			<script is:inline define:vars={{ selectId, showSearch }}>
+				// @ts-nocheck — selectId/showSearch come from define:vars, TomSelect from the tom-select page lib; neither is visible to the type checker.
 				function initSelect() {
 					window.tabler_select ??= {};
 

@@ -109,7 +109,8 @@ const mapOptions = data
 			</div>
 			<CaptureScript>
 				<!-- BEGIN MAP VECTOR -->
-				<script define:vars={{ mapKey, mapSelector, mapName: data.map, mapOptions }}>
+				<script is:inline define:vars={{ mapKey, mapSelector, mapName: data.map, mapOptions }}>
+					// @ts-nocheck — mapKey/mapSelector/mapName/mapOptions come from define:vars, jsVectorMap from the maps-vector page lib; neither is visible to the type checker.
 					window.tabler_map_vector ??= {};
 
 					function createMapVector() {

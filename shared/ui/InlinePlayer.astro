@@ -23,7 +23,8 @@ const playerSelector = `#player-${id}`;
 	enabled && (
 		<CaptureScript>
 			<!-- BEGIN PLAYER -->
-			<script define:vars={{ playerId, playerSelector }}>
+			<script is:inline define:vars={{ playerId, playerSelector }}>
+				// @ts-nocheck — playerId/playerSelector come from define:vars, Plyr from the inline-player page lib; neither is visible to the type checker.
 				window.tabler_player ??= {};
 
 				function initPlayer() {

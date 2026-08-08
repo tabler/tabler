@@ -25,7 +25,8 @@ const colorpickerSelector = `#colorpicker-${id}`
 <input type="text" class={`form-control d-block${className ? ` ${className}` : ''}`} id={colorpickerId} value={value} aria-label={ariaLabel ?? 'Color value'} />
 <CaptureScript>
   <!-- BEGIN COLORPICKER -->
-  <script define:vars={{ colorpickerId, colorpickerSelector, alpha, format, swatchesOnly, swatchProps }}>
+  <script is:inline define:vars={{ colorpickerId, colorpickerSelector, alpha, format, swatchesOnly, swatchProps }}>
+    // @ts-nocheck — colorpickerId/colorpickerSelector/alpha/format/swatchesOnly/swatchProps come from define:vars, Coloris from the colorpicker page lib; neither is visible to the type checker.
     function initColorpicker() {
       window.tabler_colorpicker ??= {}
 

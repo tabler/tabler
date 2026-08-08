@@ -13,7 +13,8 @@ const selector = `#hugerte-${id}`
 </form>
 <CaptureScript>
   <!-- BEGIN WYSIWYG -->
-  <script define:vars={{ selector }}>
+  <script is:inline define:vars={{ selector }}>
+    // @ts-nocheck — selector comes from define:vars, hugeRTE from the wysiwyg page lib; neither is visible to the type checker.
     function initWysiwyg() {
       const options = {
         selector,

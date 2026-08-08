@@ -35,7 +35,8 @@ const ratingKey = `rating-${id}`
 </select>
 <CaptureScript>
   <!-- BEGIN RATING -->
-  <script define:vars={{ ratingSelector, ratingKey, star }}>
+  <script is:inline define:vars={{ ratingSelector, ratingKey, star }}>
+    // @ts-nocheck — ratingSelector/ratingKey/star come from define:vars, StarRating from the star-rating.js page lib; neither is visible to the type checker.
     window.tabler_rating ??= {}
 
     function initRating() {

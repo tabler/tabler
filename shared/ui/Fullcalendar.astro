@@ -38,7 +38,8 @@ const sampleEventData = sampleEvents
 <div id={calendarId}></div>
 <CaptureScript>
   <!-- BEGIN FULLCALENDAR -->
-  <script define:vars={{ calendarId, sampleEventData }}>
+  <script is:inline define:vars={{ calendarId, sampleEventData }}>
+    // @ts-nocheck — calendarId/sampleEventData come from define:vars, FullCalendar from the fullcalendar page lib; neither is visible to the type checker.
     function initCalendar() {
       const calendarEl = document.getElementById(calendarId)
       const currentYear = new Date().getFullYear()
