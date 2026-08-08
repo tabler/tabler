@@ -55,7 +55,8 @@ const typedId = 'typed'
 <!-- END HERO -->
 <CaptureScript>
   <!-- BEGIN TYPED -->
-  <script define:vars={{ typedId, strings }}>
+  <script is:inline define:vars={{ typedId, strings }}>
+    // @ts-nocheck — typedId is used in a template literal, which the type checker resolves independently of define:vars.
     function initTyped() {
       const typed = new Typed(`#${typedId}`, {
         strings,

@@ -47,6 +47,7 @@ const rows = (people as Person[]).map((person, i) => {
 })
 
 const perPageDefault = requireIndex(perPage, 1)
+const sortKeys = headers.map((header) => header['data-sort'])
 ---
 
 <div class="card">
@@ -152,7 +153,7 @@ const perPageDefault = requireIndex(perPage, 1)
           <div class="dropdown-menu">
             {
               perPage.map((record) => (
-                <button type="button" class="dropdown-item" onclick="setPageListItems(event)" data-value={record}>
+                <button type="button" class="dropdown-item" onclick="setPageListItems(this)" data-value={record}>
                   {record} records
                 </button>
               ))
@@ -168,24 +169,24 @@ const perPageDefault = requireIndex(perPage, 1)
 
 <CaptureScript>
   <!-- BEGIN ADVANCED TABLE -->
-  <script define:vars={{ tableId, advancedTable, perPageDefault }}>
+  <script is:inline define:vars={{ tableId, sortKeys, perPageDefault }}>
     // Astro wraps define:vars scripts in an IIFE, so this needs an explicit window
-    // assignment to stay reachable from the onclick="setPageListItems(event)" markup below.
+    // assignment to stay reachable from the onclick="setPageListItems(this)" markup below.
     // Each AdvancedTable instance redefines this identically, so it stays safe to share:
     // the table id is resolved from the clicked element instead of being closed over.
-    window.setPageListItems = function setPageListItems(e) {
-      const id = e.target.closest('[data-table-id]')?.dataset.tableId
+    window.setPageListItems = function setPageListItems(el) {
+      const id = el.closest('[data-table-id]')?.dataset.tableId
       if (!id || !window.tabler_list?.[id]) return
 
-      window.tabler_list[id].page = parseInt(e.target.dataset.value)
+      window.tabler_list[id].page = parseInt(el.dataset.value)
       window.tabler_list[id].update()
 
-      document.querySelector(`#${id}-page-count`).innerHTML = e.target.dataset.value
+      document.querySelector(`#${id}-page-count`).innerHTML = el.dataset.value
     }
 
     function initAdvancedTable() {
       window.tabler_list ??= {}
-      const list = (window.tabler_list[tableId] = new List(tableId, {
+      window.tabler_list[tableId] = new List(tableId, {
         sortClass: 'table-sort',
         listClass: 'table-tbody',
         page: parseInt(perPageDefault),
@@ -196,8 +197,9 @@ const perPageDefault = requireIndex(perPage, 1)
           left: 0,
           right: 0,
         },
-        valueNames: advancedTable.headers.map((header) => header['data-sort']),
-      }))
+        valueNames: sortKeys,
+      })
+      const list = window.tabler_list[tableId]
 
       const searchInput = document.querySelector(`#${tableId}-search`)
       searchInput?.addEventListener('input', () => list.search(searchInput.value))
