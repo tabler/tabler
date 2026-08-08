@@ -1,7 +1,4 @@
 ---
-// With explicit `size`: `spinner-{type}-{size}`. Without `size`: `spinner-{type}-{argCount}` (e.g. spinner-border-2).
-import { includeArgCount } from '@shared/lib/include-args'
-
 interface Props {
   type?: 'border' | 'grow'
   color?: string
@@ -12,12 +9,7 @@ interface Props {
 
 const { type = 'border', color, size, class: className } = Astro.props
 
-const includeArgKeys = ['type', 'color', 'size', 'class'] as const
-const argCount = includeArgCount(Astro.props as Record<string, unknown>, includeArgKeys)
-// include['size'] → explicit value, else the arg count meta-property.
-const sizeValue = size !== undefined ? size : argCount || undefined
-
-const classes = [`spinner-${type}`, color && `text-${color}`, sizeValue && `spinner-${type}-${sizeValue}`, className]
+const classes = [`spinner-${type}`, color && `text-${color}`, size && `spinner-${type}-${size}`, className]
 ---
 
 <div class:list={classes} role="status"></div>
