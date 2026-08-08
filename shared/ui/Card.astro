@@ -1,9 +1,13 @@
 ---
+import type { HTMLTag } from 'astro/types'
+
 // Composable card container (.card). For the fixed demo-showcase card see ../cards/Card.astro.
 
-interface Props {
-  /** element to render instead of div (e.g. form, a) */
-  as?: string
+// `as` must stay out of the Props body: Astro's frontmatter scanner bails on a member
+// literally named `as` and silently falls back to untyped props.
+type PolymorphicProps = { as?: HTMLTag }
+
+interface Props extends PolymorphicProps {
   /** card-{size} body padding: sm | md | lg */
   size?: string
   class?: string

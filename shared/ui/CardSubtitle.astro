@@ -1,9 +1,13 @@
 ---
+import type { HTMLTag } from 'astro/types'
+
 // Card subtitle (.card-subtitle).
 
-interface Props {
-  /** element to render — default p */
-  as?: string
+// `as` must stay out of the Props body: Astro's frontmatter scanner bails on a member
+// literally named `as` and silently falls back to untyped props.
+type PolymorphicProps = { as?: HTMLTag }
+
+interface Props extends PolymorphicProps {
   class?: string
 }
 

@@ -1,10 +1,14 @@
 ---
+import type { HTMLTag } from 'astro/types'
+
 // Card header (.card-header) with an optional h3.card-title; slot renders after the title.
 
-interface Props {
+// `as` must stay out of the Props body: Astro's frontmatter scanner bails on a member
+// literally named `as` and silently falls back to untyped props.
+type PolymorphicProps = { as?: HTMLTag }
+
+interface Props extends PolymorphicProps {
   title?: string
-  /** heading element for the title, e.g. h2 — default h3 */
-  as?: string
   /** card-header-light */
   light?: boolean
   class?: string
