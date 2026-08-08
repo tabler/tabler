@@ -43,18 +43,6 @@ export function extractMarkedSnippet(source: string, marker: string, name: strin
     .trim()
 }
 
-/** Escape text for use in HTML attributes (e.g. data-clipboard-text). */
-export function escapeAttribute(text: string): string {
-  return text
-    .replace(/&/g, '&amp;')
-    .replace(/'/g, '&apos;')
-    .replace(/"/g, '&quot;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/\r\n/g, '&#13;')
-    .replace(/[\r\n]/g, '&#13;')
-}
-
 /** Replace href="#" with javascript:void(0) in example markup. */
 export function removeHref(content: string): string {
   return content.replace(/href="#"/g, 'href="javascript:void(0)"')
