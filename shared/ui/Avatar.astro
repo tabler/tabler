@@ -53,7 +53,11 @@ const classes = ['avatar', size && `avatar-${size}`, thumb && 'avatar-thumb', cl
 ---
 
 <El class:list={classes} style={src ? `background-image: url(${base}/${src})` : undefined} {...rest}
-  >{status && <span class={`badge bg-${status}`}><span class="visually-hidden">{statusLabel ?? status}</span></span>}{
-    brand && <span class="avatar-brand" style={`background-image: url(${base}/static/brands/${brand}.svg);`} />
-  }{src ? null : placeholder ? placeholder : icon ? <Icon name={icon} class="avatar-icon" /> : <Icon name="user" class="avatar-icon" />}</El
+  >{
+    status && (
+      <span class={`badge bg-${status}`}>
+        <span class="visually-hidden">{statusLabel ?? status}</span>
+      </span>
+    )
+  }{brand && <span class="avatar-brand" style={`background-image: url(${base}/static/brands/${brand}.svg);`} />}{src ? null : placeholder ? placeholder : icon ? <Icon name={icon} class="avatar-icon" /> : <Icon name="user" class="avatar-icon" />}</El
 >
