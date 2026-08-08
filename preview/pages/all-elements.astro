@@ -42,9 +42,12 @@ import ListGroup from '@ui/ListGroup.astro'
 import ListGroupItem from '@ui/ListGroupItem.astro'
 import payments from '@data/payments.json'
 
-const paymentNames = Object.fromEntries((payments as { name: string; logo: string }[]).map((p) => [p.logo, p.name]))
+const PAYMENT_IDS = ['visa', 'mastercard', 'paypal', 'americanexpress', 'applepay', 'google-pay', 'stripe', 'discover', 'jcb', 'maestro', 'dinersclub', 'bitcoin', 'ethereum', 'klarna', 'venmo', 'square'] as const
+type PaymentId = (typeof PAYMENT_IDS)[number]
 
-const countryNames: Record<string, string> = {
+const paymentNames = Object.fromEntries((payments as { name: string; logo: string }[]).map((p) => [p.logo, p.name])) as Record<PaymentId, string>
+
+const countryNames = {
   us: 'United States',
   gb: 'United Kingdom',
   de: 'Germany',
@@ -365,9 +368,9 @@ function greetUser(name) {
               <Avatar placeholder="AB" size="xl" />
             </div>
             <div>
-              <Avatar placeholder="RD" shape="avatar-rounded" />
-              <Avatar placeholder="PR" color="primary" shape="avatar-rounded" />
-              <Avatar placeholder="SC" color="success" shape="avatar-rounded" />
+              <Avatar placeholder="RD" shape="rounded" />
+              <Avatar placeholder="PR" color="primary" shape="rounded" />
+              <Avatar placeholder="SC" color="success" shape="rounded" />
             </div>
             <div>
               <Avatar icon="user" />
@@ -539,10 +542,10 @@ function greetUser(name) {
           </div>
 
           <h4>Ribbons</h4>
-          <div class="position-relative mb-4" style="height: 100px; background: #f8f9fa; border-radius: 8px;">
+          <div class="position-relative mb-4" style="height: 100px; background-color: var(--tblr-bg-surface-secondary); border-radius: 8px;">
             <Ribbon text="New" color="success" />
           </div>
-          <div class="position-relative mb-3" style="height: 100px; background: #f8f9fa; border-radius: 8px;">
+          <div class="position-relative mb-3" style="height: 100px; background: var(--tblr-bg-surface-secondary); border-radius: 8px;">
             <Ribbon text="Sale" color="danger" top />
           </div>
         </CardBody>
@@ -573,22 +576,14 @@ function greetUser(name) {
           <h4>Payment Icons</h4>
           <div class="mb-3">
             <div class="d-flex flex-wrap gap-2">
-              <Payment payment="visa" label={paymentNames.visa} />
-              <Payment payment="mastercard" label={paymentNames.mastercard} />
-              <Payment payment="paypal" label={paymentNames.paypal} />
-              <Payment payment="americanexpress" label={paymentNames.americanexpress} />
-              <Payment payment="applepay" label={paymentNames.applepay} />
-              <Payment payment="google-pay" label={paymentNames['google-pay']} />
-              <Payment payment="stripe" label={paymentNames.stripe} />
-              <Payment payment="discover" label={paymentNames.discover} />
-              <Payment payment="jcb" label={paymentNames.jcb} />
-              <Payment payment="maestro" label={paymentNames.maestro} />
-              <Payment payment="dinersclub" label={paymentNames.dinersclub} />
-              <Payment payment="bitcoin" label={paymentNames.bitcoin} />
-              <Payment payment="ethereum" label={paymentNames.ethereum} />
-              <Payment payment="klarna" label={paymentNames.klarna} />
-              <Payment payment="venmo" label={paymentNames.venmo} />
-              <Payment payment="square" label={paymentNames.square} />
+              {
+                PAYMENT_IDS.map((payment) => (
+                  <>
+                    <Payment payment={payment} label={paymentNames[payment]} class="hide-theme-dark" />
+                    <Payment payment={payment} label={paymentNames[payment]} dark class="hide-theme-light" />
+                  </>
+                ))
+              }
             </div>
           </div>
         </CardBody>

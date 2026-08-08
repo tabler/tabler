@@ -31,15 +31,20 @@ const colorpickerSelector = `#colorpicker-${id}`
 
       const swatches = swatchProps.map((prop) => window.getComputedStyle(document.body).getPropertyValue(prop))
 
-      window.Coloris &&
-        (window.tabler_colorpicker[colorpickerId] = Coloris({
-          el: colorpickerSelector,
+      if (window.Coloris) {
+        // `el` can only be configured globally, but Coloris.setInstance() scopes the rest
+        // (alpha, format, swatches, ...) to this selector so multiple pickers with
+        // different options don't clobber each other's settings.
+        Coloris({ el: colorpickerSelector })
+        Coloris.setInstance(colorpickerSelector, {
           selectInput: false,
           alpha,
           ...(format ? { format } : {}),
           ...(swatchesOnly ? { swatchesOnly: true } : {}),
           swatches,
-        }))
+        })
+        window.tabler_colorpicker[colorpickerId] = colorpickerSelector
+      }
     }
 
     document.readyState !== 'loading' ? initColorpicker() : document.addEventListener('DOMContentLoaded', initColorpicker, { once: true })

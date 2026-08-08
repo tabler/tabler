@@ -1,0 +1,22 @@
+---
+// .bg-pattern-{type} utility (core/scss/ui/_patterns.scss) as a component;
+// combine with a theme color and/or size, e.g. <BackgroundPattern pattern="dots" color="primary" size="lg" />.
+
+interface Props {
+  pattern: 'diagonal' | 'diagonal-2' | 'dots' | 'rectangles' | 'lines' | 'lines-vertical' | 'grid' | 'grid-diagonal' | 'blueprint' | 'cross-dots' | 'circles' | 'diagonal-stripes' | 'diagonal-stripes-2' | 'zigzag' | 'vertical-stripes' | 'horizontal-stripes'
+  /** theme color the pattern ramps up to, e.g. 'primary' */
+  color?: string
+  size?: 'sm' | 'md' | 'lg' | 'xl'
+  /** element to render instead of div */
+  as?: string
+  class?: string
+  /** remaining attributes (style, data-*, …) are forwarded to the element */
+  [key: string]: unknown
+}
+
+const { pattern, color, size, as: Element = 'div', class: className, ...rest }: Props = Astro.props
+---
+
+<Element class:list={[`bg-pattern-${pattern}`, color && `bg-pattern-${color}`, size && `bg-pattern-${size}`, className]} {...rest}>
+  <slot />
+</Element>

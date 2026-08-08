@@ -1,6 +1,7 @@
 ---
 import Icon from '@ui/Icon.astro'
 import Illustration from '@ui/Illustration.astro'
+import Carousel from '@ui/Carousel.astro'
 import CaptureScript from '../../CaptureScript.astro'
 
 const strings = ['more effective', 'more efficient', 'more productive']
@@ -27,27 +28,25 @@ const typedId = 'typed'
       </div>
       <div class="col-md-6">
         <div class="hero-img-side">
-          <div id="carousel-controls" class="carousel slide" data-bs-ride="carousel" data-interval="4000">
-            <div class="carousel-inner">
-              <div class="carousel-item active">
-                <Illustration image="boy-with-key.svg" class="d-block mx-auto" height="350" />
-              </div>
-              <div class="carousel-item">
-                <Illustration image="boy-girl.svg" class="d-block mx-auto" height="350" />
-              </div>
-              <div class="carousel-item">
-                <Illustration image="computer-fix.svg" class="d-block mx-auto" height="350" />
-              </div>
+          <Carousel id="carousel-controls" slideCount={3} interval={4000}>
+            <div class="carousel-item active">
+              <Illustration image="boy-with-key.svg" class="d-block mx-auto" height="350" />
             </div>
-            <button type="button" class="carousel-control-prev text-secondary" data-bs-target="#carousel-controls" data-bs-slide="prev">
+            <div class="carousel-item">
+              <Illustration image="boy-girl.svg" class="d-block mx-auto" height="350" />
+            </div>
+            <div class="carousel-item">
+              <Illustration image="computer-fix.svg" class="d-block mx-auto" height="350" />
+            </div>
+            <a slot="controls" class="carousel-control-prev text-secondary" href="#carousel-controls" role="button" data-bs-slide="prev">
               <Icon name="chevron-left" class="icon-md" />
               <span class="visually-hidden">Previous</span>
-            </button>
-            <button type="button" class="carousel-control-next text-secondary" data-bs-target="#carousel-controls" data-bs-slide="next">
+            </a>
+            <a slot="controls" class="carousel-control-next text-secondary" href="#carousel-controls" role="button" data-bs-slide="next">
               <Icon name="chevron-right" class="icon-md" />
               <span class="visually-hidden">Next</span>
-            </button>
-          </div>
+            </a>
+          </Carousel>
         </div>
       </div>
     </div>
@@ -57,6 +56,7 @@ const typedId = 'typed'
 <CaptureScript>
   <!-- BEGIN TYPED -->
   <script is:inline define:vars={{ typedId, strings }}>
+    // @ts-nocheck — typedId is used in a template literal, which the type checker resolves independently of define:vars.
     function initTyped() {
       new Typed(`#${typedId}`, {
         strings,

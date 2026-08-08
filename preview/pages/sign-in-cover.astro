@@ -1,10 +1,11 @@
 ---
 // Photo id=11 → 12th entry of the unfiltered photos list; no horizontal filter.
 import BaseLayout from '@shared/layouts/BaseLayout.astro'
-import NavbarLogo from '@shared/components/navbar/NavbarLogo.astro'
+import Logo from '@shared/components/navbar/Logo.astro'
 import SignInForm from '@shared/components/cards/SignInForm.astro'
 import Photo from '@ui/Photo.astro'
 import photos from '@data/photos.json'
+import { requireIndex } from '@shared/lib/array'
 ---
 
 <BaseLayout title="Sign in with cover" bodyClass="d-flex flex-column bg-white">
@@ -12,7 +13,7 @@ import photos from '@data/photos.json'
     <div class="col-12 col-lg-6 col-xl-4 border-top-wide border-primary d-flex flex-column justify-content-center">
       <div class="container container-tight my-5 px-lg-5">
         <div class="text-center mb-4">
-          <NavbarLogo />
+          <Logo />
         </div>
 
         <h2 class="h3 text-center mb-3">Login to your account</h2>
@@ -25,7 +26,7 @@ import photos from '@data/photos.json'
       </div>
     </div>
     <div class="col-12 col-lg-6 col-xl-8 d-none d-lg-block">
-      <Photo photo={photos[11]} class="bg-cover h-100 min-vh-100" background />
+      <Photo photo={requireIndex(photos, 11)} class="bg-cover h-100 min-vh-100" background />
     </div>
   </div>
 </BaseLayout>

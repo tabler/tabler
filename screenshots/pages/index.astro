@@ -1,0 +1,26 @@
+---
+// Every other page under pages/ is a screenshot target. Listing them via a
+// glob (instead of a hand-maintained array) means adding a new component
+// page is the only step needed for it to show up here.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+
+const pageModules = import.meta.glob('./*.astro')
+const pages = Object.keys(pageModules)
+  .map((path) => path.replace(/^\.\//, '').replace(/\.astro$/, ''))
+  .filter((slug) => slug !== 'index')
+  .sort()
+---
+
+<ScreenshotLayout title="Components" columns={2}>
+  <div class="card">
+    <div class="card-body">
+      {
+        pages.map((slug) => (
+          <a href={`/${slug}`} class="d-block">
+            {slug.replace(/-/g, ' ')}
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</ScreenshotLayout>

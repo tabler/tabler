@@ -7,7 +7,7 @@
 // fluidSearch has no effect on output (search in the condensed branch is dead
 // code); the prop is kept for call-site compatibility.
 import Icon from '@ui/Icon.astro';
-import NavbarLogo from './NavbarLogo.astro';
+import Logo from './Logo.astro';
 import NavbarToggler from './NavbarToggler.astro';
 import NavbarSide from './NavbarSide.astro';
 import NavbarMenu from './NavbarMenu.astro';
@@ -16,14 +16,14 @@ import NavbarSearch from './NavbarSearch.astro';
 interface Props {
 	hideSearch?: boolean;
 	/** equivalent of the page-menu front matter (active menu entry), e.g. "dashboards.default" */
-	pageMenu?: string;
+	pageMenu?: string | undefined;
 	breakpoint?: string;
-	condensed?: boolean;
-	dark?: boolean;
+	condensed?: boolean | undefined;
+	dark?: boolean | undefined;
 	transparent?: boolean;
-	overlap?: boolean;
-	sticky?: boolean;
-	hideBrand?: boolean;
+	overlap?: boolean | undefined;
+	sticky?: boolean | undefined;
+	hideBrand?: boolean | undefined;
 	/** use the sample menu (menu-sample.json) instead of the real one */
 	sample?: boolean;
 	/** 1-based index into people.json for the user menu avatar */
@@ -40,7 +40,7 @@ interface Props {
 	/** no-op — see the fluid-search note above */
 	fluidSearch?: boolean;
 	/** layout-navbar-class */
-	class?: string;
+	class?: string | undefined;
 }
 
 // pageMenu is the front matter `page-menu` value; when a page has none, nothing
@@ -90,7 +90,7 @@ const headerClass = [
 
 		{
 			!hideBrand && (
-				<NavbarLogo
+				<Logo
 					header
 					class="d-none-navbar-horizontal pe-0 pe-md-3"
 					smallLogo={smallLogo}

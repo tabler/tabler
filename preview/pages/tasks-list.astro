@@ -10,6 +10,7 @@ import CaptureModal from '@shared/components/CaptureModal.astro'
 import FormGroup from '@ui/FormGroup.astro'
 import tasks from '@data/tasks.json'
 import people from '@data/people.json'
+import { requireIndex } from '@shared/lib/array'
 
 interface Person {
   id?: string
@@ -36,7 +37,7 @@ const columns = (tasks as { columns: Column[] }).columns
 const peopleList = people as Person[]
 
 // Assignable people for the add-task modal.
-const selectedPeople = [5, 6, 2, 3].map((id) => peopleList[id - 1])
+const selectedPeople = [5, 6, 2, 3].map((id) => requireIndex(peopleList, id - 1))
 ---
 
 <DefaultLayout title="Task List" pageHeader="Task List" pageMenu="extra.tasks.list">

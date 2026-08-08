@@ -52,7 +52,7 @@ interface Person {
 }
 
 // Build the option list.
-type Opt = { value: string; text: string; custom?: string; selected?: boolean };
+type Opt = { value: string; text: string; custom?: string | undefined; selected?: boolean };
 type Group = { label: string; options: Opt[] };
 let options: Opt[] = [];
 let optgroups: Group[] = [];
@@ -140,7 +140,7 @@ const selectId = id ? `select-${id}` : undefined;
 						(window.tabler_select[selectId] = new TomSelect(document.getElementById(selectId), {
 							copyClassesToDropdown: false,
 							dropdownParent: 'body',
-							...(showSearch ? {} : { controlInput: '<input>' }),
+							...(showSearch === false ? { controlInput: null } : {}),
 							render: {
 								item: renderOption,
 								option: renderOption,

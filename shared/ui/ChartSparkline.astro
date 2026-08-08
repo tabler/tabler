@@ -2,9 +2,9 @@
 import CaptureScript from '../components/CaptureScript.astro';
 
 interface Props {
-	id?: string;
+	id?: string | undefined;
 	type?: string;
-	color?: string;
+	color?: string | undefined;
 	height?: number;
 	small?: boolean;
 	wide?: boolean;
@@ -80,7 +80,7 @@ const chartOptions = id
 				: {}),
 			...(type === 'area' ? { fill: { gradient: { opacityFrom: [0.1, 0.1] } } } : {}),
 			...(type === 'area' || type === 'line' ? { stroke: { width: 2, lineCap: 'round' } } : {}),
-			...(type === 'donut'
+			...(type === 'donut' || type === 'pie'
 				? { colors: [`var(--tblr-${color})`], series: seriesData }
 				: { series: [{ color: `var(--tblr-${color})`, data: seriesData }] }),
 		}

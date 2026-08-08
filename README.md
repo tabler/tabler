@@ -1,5 +1,8 @@
 <p align="center">
-<a href="https://github.com/tabler/tabler"><img src="https://raw.githubusercontent.com/tabler/tabler/refs/heads/dev/shared/static/logo.svg" alt="A premium and open source dashboard template with a responsive and high-quality UI." width="300"></a><br><br>
+<a href="https://tabler.io"><img src="https://raw.githubusercontent.com/tabler/tabler/refs/heads/dev/shared/static/logo.svg" alt="Tabler" width="300"></a>
+</p>
+
+<p align="center">
 A premium and open source dashboard template with a responsive and high-quality UI.
 </p>
 
@@ -7,13 +10,17 @@ A premium and open source dashboard template with a responsive and high-quality 
 <a href="https://www.npmjs.com/package/@tabler/core" target="__blank"><img src="https://img.shields.io/npm/v/@tabler/core?color=1864ab&label=Latest+version" alt="NPM version"></a>
 <a href="https://www.npmjs.com/package/@tabler/core" target="__blank"><img alt="NPM Downloads" src="https://img.shields.io/npm/dm/@tabler/core?color=1971c2&label=Downloads"></a>
 <a href="https://preview.tabler.io" target="__blank"><img src="https://img.shields.io/static/v1?label=Demo&message=preview&color=228be6" alt="Tabler preview"></a>
-<a href="https://github.com/tabler/tabler/blob/master/LICENSE"><img src="https://img.shields.io/npm/l/tabler.svg?label=License&message=MIT&color=1c7ed6" alt="License"></a>
-<a href="https://github.com/tabler/tabler/archive/dev.zip" target="__blank"><img src="https://img.shields.io/static/v1?label=Download&message=ZIP&color=339af0" alt="Tabler preview"></a>
+<a href="https://github.com/tabler/tabler/blob/dev/LICENSE"><img src="https://img.shields.io/npm/l/tabler.svg?label=License&message=MIT&color=1c7ed6" alt="License"></a>
+<a href="https://github.com/tabler/tabler/archive/dev.zip" target="__blank"><img src="https://img.shields.io/static/v1?label=Download&message=ZIP&color=339af0" alt="Download ZIP"></a>
 <a href="https://github.com/tabler/tabler/actions/workflows/test.yml" target="__blank"><img alt="Test build" src="https://github.com/tabler/tabler/actions/workflows/test.yml/badge.svg"></a>
 <a href="https://github.com/tabler/tabler" target="__blank"><img alt="GitHub stars" src="https://img.shields.io/github/stars/tabler/tabler?style=social"></a>
 </p>
 
-## Sponsors
+<p align="center">
+<a href="https://preview.tabler.io">Live demo</a> · <a href="https://docs.tabler.io">Documentation</a> · <a href="https://github.com/tabler/tabler/releases">Releases</a> · <a href="https://github.com/tabler/tabler/discussions">Discussions</a>
+</p>
+
+## 💛 Sponsors
 
 **If you want to support our project and help us grow it, you can [become a sponsor on GitHub](https://github.com/sponsors/codecalm) or just [donate on PayPal](https://paypal.me/codecalm) :)**
 
@@ -23,23 +30,9 @@ A premium and open source dashboard template with a responsive and high-quality 
 	</a>
 </p>
 
-## Testing
-
-<p align="center">Browser testing via:</p>
-
-<p align="center">
-  <a href="https://www.testmuai.com/?utm_medium=sponsor&utm_source=tabler" target="_blank">
-    <picture>
-      <source media="(prefers-color-scheme: dark)" srcset="https://github.com/user-attachments/assets/f0967860-31ad-4078-850b-40b0abc95582" />
-      <source media="(prefers-color-scheme: light)" srcset="https://github.com/user-attachments/assets/55ac290a-6729-44aa-bbc3-4c5e909facbf" />
-      <img src="https://github.com/user-attachments/assets/86bcbe29-eb8d-4273-a381-5ce17d4ca92d" alt="TestMu AI" width="296">
-    </picture>
-  </a>
-</p>
-
 ## 🔎 Preview
 
-Tabler is fully responsive and compatible with all modern browsers. Thanks to its modern and user-friendly design you can create a fully functional interface that users will love! Choose the layouts and components you need and customize them to make your design consistent and eye-catching. Every component has been created with attention to detail to make your interface beautiful! <a href="https://preview.tabler.io">Show me a demo</a>
+Tabler is fully responsive and compatible with all modern browsers. Thanks to its modern and user-friendly design you can create a fully functional interface that users will love! Choose the layouts and components you need and customize them to make your design consistent and eye-catching. Every component has been created with attention to detail to make your interface beautiful! [Show me a demo](https://preview.tabler.io)
 
 <p align="center">
 	<a href="https://preview.tabler.io" target="_blank">
@@ -51,112 +44,134 @@ Tabler is fully responsive and compatible with all modern browsers. Thanks to it
 
 We've created this admin panel for everyone who wants to create templates based on our pre-made components. Our mission is to deliver a user-friendly, clear and easy administration panel that can be used by both simple websites and sophisticated systems. The only requirement is basic HTML and CSS knowledge — as a reward, you'll be able to manage and visualize different types of data in the easiest possible way!
 
-* **Responsive:** With the support for mobile, tablet and desktop displays, it doesn’t matter what device you’re using. Tabler is responsive in all major browsers.
-* **Cross Browser:** Our theme works perfectly with the latest Chrome, Firefox+, Safari, Opera, Edge and mobile browsers. We work hard to provide continuous support for them.
-* **HTML5 & CSS3:** We use only modern web technologies, such as HTML5 and CSS3. Our theme includes some subtle CSS3 animations, which will help you attract attention.
-* **Clean Code:** We followed Bootstrap’s guidelines carefully to make your integration as easy as possible. All code is handwritten and W3C valid.
-* **Demo pages**: Tabler features over 20 individual pages using various components, which gives you the freedom to choose and combine. All components can vary in color and styling that you can easily modify using Sass. Sky is the limit!
+- **Responsive:** With the support for mobile, tablet and desktop displays, it doesn't matter what device you're using. Tabler is responsive in all major browsers.
+- **Cross Browser:** Our theme works perfectly with the latest Chrome, Firefox, Safari, Opera, Edge and mobile browsers. We work hard to provide continuous support for them.
+- **HTML5 & CSS3:** We use only modern web technologies, such as HTML5 and CSS3. Our theme includes some subtle CSS3 animations, which will help you attract attention.
+- **Clean Code:** We followed Bootstrap's guidelines carefully to make your integration as easy as possible. All code is handwritten and W3C valid.
+- **Demo pages:** Tabler features over 20 individual pages using various components, which gives you the freedom to choose and combine. All components can vary in color and styling that you can easily modify using Sass. Sky is the limit!
 
-## 📖 Documentation
+## 📦 Installation
 
-The documentation is available at https://docs.tabler.io/
+### Package managers
 
-## 🪴 Project Activity
-
-<p align="center">
-	<img src="https://repobeats.axiom.co/api/embed/61d1db34446967b0848af68198a392067e0f5870.svg" alt="Repobeats analytics image" />
-</p>
-
-## Installation
-
-### Package Managers
-
-Tabler is distributed via npm. You can install it with this or your preferred JavaScript package manager:
+Tabler is distributed via npm. You can install it with npm or your preferred JavaScript package manager:
 
 ```sh
 npm install --save @tabler/core
 ```
 
-### CDN support
+### CDN
 
-All files included in `@tabler/core` npm package are also available over a CDN.
+All files included in the `@tabler/core` npm package are also available over a CDN.
 
-#### Javascript
+JavaScript:
 
 ```html
 <script src="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/js/tabler.min.js"></script>
 ```
 
-#### Styles
+Styles:
 
 ```html
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/css/tabler.min.css">
 ```
 
-## Building locally
+### Download
 
-To build a copy of Tabler locally, you have two options. You can either set up your device directly with the development tools required to build Tabler, or if you would prefer not to install all the development dependencies directly onto your device, you can use a Dockerfile that Tabler provides to build a docker image. Instructions follow below.
+If you don't use a package manager, you can [download the latest release](https://github.com/tabler/tabler/releases) as a ZIP archive.
 
-### First steps: Downloading the Tabler source files
+### Quick start
 
-With either method, the first thing you'll want to do is download a copy of the Tabler source files to your device.
+Create an HTML file with Tabler's CSS and JavaScript loaded from the CDN and start building:
 
-#### From the Tabler GitHub releases page
-
-If you don't want to edit the source code once you've downloaded it, and aren't interested in merging future project updates into your copy, you can just download the source files straight from the [Tabler releases on GitHub](https://github.com/tabler/tabler/releases) and extract the contents to a directory called `tabler`.
-
-#### Cloning with Git
-
-If you **do** wish to edit the source code after downloading it, for example to contribute changes back to the Tabler project, you'll want to do this by cloning it with Git:
-1. If you don't have Git installed on your device, download and install it. You can find instructions at [https://git-scm.com/downloads](https://git-scm.com/downloads).
-2. (Optional) **Windows users:** you could optionally install Git in the `C:\Program Files\git\bin` directory and run `npm config set script-shell "C:\\Program Files\\git\\bin\\bash.exe"` to change the default shell.
-3. Clone the Tabler project into a folder on your device. Instructions can be found at [cloning a repository](https://docs.github.com/en/repositories/creating-and-managing-repositories/cloning-a-repository).
-
-### Installing and running development tools directly
-
-1. [Install Node.js](https://nodejs.org/download/) (version 22.12 or newer), which we use to manage our dependencies.
-2. [Install pnpm](https://pnpm.io/installation) (We recommend either by [Using Corepack](https://pnpm.io/installation#using-corepack) or by [Using npm](https://pnpm.io/installation#using-npm))
-3. From the root `/tabler` directory where you downloaded the Tabler source files, run installation on the command line:
-```sh
-pnpm install
+```html
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Tabler demo</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/css/tabler.min.css" />
+  </head>
+  <body>
+    <h1>Hello, Tabler!</h1>
+    <button class="btn btn-primary">Primary button</button>
+    <script src="https://cdn.jsdelivr.net/npm/@tabler/core@latest/dist/js/tabler.min.js"></script>
+  </body>
+</html>
 ```
-4. Then execute the following to start up the application stack:
-```sh
-pnpm run start
-```
-5. Open [http://localhost:3000](http://localhost:3000) to view the preview website in your browser, or [http://localhost:3010](http://localhost:3010) to view the documentation website - and voilà.
-Changes to most of the source files of Tabler core, preview and docs will rebuild the application and refresh the page.
 
-**Note**:
-If you wish to perform a one-off production build without a dev server, you can run:
+Or try it without installing anything: open the [tabler-starter](https://github.com/tabler/tabler-starter) template on [StackBlitz](https://stackblitz.com/github/tabler/tabler-starter), [CodeSandbox](https://codesandbox.io/s/github/tabler/tabler-starter) or [GitHub Codespaces](https://codespaces.new/tabler/tabler-starter).
+
+## 📖 Documentation
+
+The full documentation is available at [docs.tabler.io](https://docs.tabler.io/). To see what changed in each release, check the [changelog](core/CHANGELOG.md) and [GitHub releases](https://github.com/tabler/tabler/releases).
+
+## 🛠️ Development
+
+To build a copy of Tabler locally, you have two options: set up the development tools directly on your device, or use the provided Docker setup. You can also start right away in the cloud with [GitHub Codespaces](https://codespaces.new/tabler/tabler) — the dev container installs everything for you.
+
+### Local setup
+
+1. Install [Node.js](https://nodejs.org/download/) (version 22.12 or newer) and [pnpm](https://pnpm.io/installation) (we recommend [Corepack](https://pnpm.io/installation#using-corepack)).
+2. Clone the repository:
+
+   ```sh
+   git clone https://github.com/tabler/tabler.git
+   cd tabler
+   ```
+
+3. Install dependencies:
+
+   ```sh
+   pnpm install
+   ```
+
+4. Start the development servers:
+
+   ```sh
+   pnpm run dev
+   ```
+
+5. Open [http://localhost:3000](http://localhost:3000) to view the preview website, or [http://localhost:3010](http://localhost:3010) to view the documentation website. Changes to most source files of Tabler core, preview and docs will rebuild the application and refresh the page.
+
+To perform a one-off production build without a dev server, run:
+
 ```sh
 pnpm run build
 ```
 
+### Docker
 
-### Installing and running development tools with Docker
+1. From the root `tabler` directory, build the image:
 
-**Plain Docker**
+   ```sh
+   docker build -t tabler .
+   ```
 
-Here is an example of how to use this image:
+2. Run the image. The following command mounts the source directories into the container and exposes port 3000 (preview) and port 3010 (documentation):
 
-1. From the root `/tabler` directory where you downloaded the Tabler source files, build the tabler image:
-```sh
-docker build -t tabler .
-```
-2. Run the tabler image. The following command mounts the source directories into the container, exposes port 3000 to browse the preview website and port 3010 to browse the documentation website:
-```sh
-docker run -p 3000:3000 -p 3010:3010 -v $(pwd)/core:/app/core -v $(pwd)/preview:/app/preview -v $(pwd)/docs:/app/docs -v $(pwd)/shared:/app/shared tabler
-```
-3. Open your browser to [http://localhost:3000](http://localhost:3000) (preview) or [http://localhost:3010](http://localhost:3010) (documentation). Edit anything in the `core/`, `preview/`, `docs/` or `shared/` folders and watch your browser refresh the page after it has been rebuilt.
+   ```sh
+   docker run -p 3000:3000 -p 3010:3010 -v $(pwd)/core:/app/core -v $(pwd)/preview:/app/preview -v $(pwd)/docs:/app/docs -v $(pwd)/shared:/app/shared tabler
+   ```
 
-**Docker Compose**
+3. Open [http://localhost:3000](http://localhost:3000) (preview) or [http://localhost:3010](http://localhost:3010) (documentation). Edit anything in the `core/`, `preview/`, `docs/` or `shared/` folders and watch your browser refresh the page after it has been rebuilt.
 
-You can also use the docker compose config from this repo. From the root `/tabler` directory where you downloaded the Tabler source files, use `docker compose build && docker compose up` or `docker compose up --build` to build and start the container. Edit anything in the `core/`, `preview/`, `docs/` or `shared/` folders the same way as with plain docker and access the same URLs and ports in your browser.
+Alternatively, use Docker Compose: `docker compose up --build` builds and starts the container with the same mounts, ports and URLs.
 
-## Bugs and feature requests
+## 🤝 Contributing
 
-Found a bug or have a feature request? [Please open a new issue](https://github.com/tabler/tabler/issues/new).
+We welcome contributions of all kinds! Please read the [contributing guide](CONTRIBUTING.md) to learn about the development workflow, project structure and conventions. By participating, you agree to follow our [Code of Conduct](.github/CODE_OF_CONDUCT.md).
+
+- **Found a bug?** [Open a bug report](https://github.com/tabler/tabler/issues/new?template=bug_report.yml).
+- **Have an idea?** [Open a feature request](https://github.com/tabler/tabler/issues/new?template=feature_request.yml) or start a [discussion](https://github.com/tabler/tabler/discussions).
+- **Found a security issue?** Please report it privately — see our [security policy](SECURITY.md).
+
+## 🪴 Project activity
+
+<p align="center">
+	<img src="https://repobeats.axiom.co/api/embed/61d1db34446967b0848af68198a392067e0f5870.svg" alt="Repobeats analytics image" />
+</p>
 
 ## 🤓 Creators
 
@@ -171,17 +186,22 @@ Found a bug or have a feature request? [Please open a new issue](https://github.
 - <https://x.com/B_Gaweda>
 - <https://github.com/BG-Software-BG>
 
+**Bartosz Dobija**
+
+- <https://github.com/Bartosz-Do>
+
 ## 👨‍🚀 Contributors
 
 This project exists thanks to all the people who contribute.
 
-<img src="https://opencollective.com/tabler/contributors.svg?width=890&button=false" />
+<a href="https://github.com/tabler/tabler/graphs/contributors">
+	<img src="https://opencollective.com/tabler/contributors.svg?width=890&button=false" alt="Tabler contributors">
+</a>
 
-## Social media
+## 📣 Social media
 
-Stay up to date by joining our community on <a href="https://x.com/tabler_io" >X</a> and <a href="https://www.facebook.com/tabler.io">Facebook</a>
+Stay up to date by joining our community on [X](https://x.com/tabler_io) and [Facebook](https://www.facebook.com/tabler.io).
 
-## License
+## 📄 License
 
-See the [LICENSE](https://github.com/tabler/tabler/blob/master/LICENSE) file.
-
+Tabler is licensed under the [MIT License](LICENSE).

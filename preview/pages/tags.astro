@@ -13,7 +13,7 @@ const tagIcons = ['bold', 'italic', 'underline', 'copy', 'scissors', 'file-plus'
 
 const range = (a: number, b: number) => Array.from({ length: b - a + 1 }, (_, i) => a + i)
 
-const flags9 = flags.slice(0, 9)
+const flags9 = flags.slice(0, 9) as { name: string; flag: string }[]
 const people8 = people.slice(0, 8)
 
 // site.colors yields value objects with .class / .title.
@@ -38,7 +38,7 @@ const colors = Object.values(siteData.colors) as { class: string; title: string 
         <CardBody>
           <CardTitle>Tags with flag</CardTitle>
           <TagsList>
-            {flags9.map((country) => <Tag text={country.name} flag={(country as { code?: string }).code} />)}
+            {flags9.map((country) => <Tag text={country.name} flag={country.flag} />)}
           </TagsList>
         </CardBody>
       </Card>

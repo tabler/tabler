@@ -14,10 +14,10 @@ interface Props extends PolymorphicProps {
   class?: string
 }
 
-const { title, as: TitleTag = 'h3', light, class: className } = Astro.props
+const { title, as: TitleTag = 'h3', light, class: className }: Props = Astro.props
 ---
 
 <div class:list={['card-header', light && 'card-header-light', className]}>
-  {title && <TitleTag class="card-title">{title}</TitleTag>}
+  {title && <TitleTag class:list={['card-title']}>{title}</TitleTag>}
   <slot />
 </div>

@@ -1,0 +1,31 @@
+// Regression coverage for the multi-layer .card-gradient background: every
+// zero-value gradient stop must keep its `%` unit. Unlike <length>,
+// <percentage> has no unitless-zero exception, so `color-mix(in sRGB, x 0,
+// y)` (missing the %) is invalid CSS and the whole color-mix() — and the
+// gradient layer using it — silently drops in the browser.
+//
+// This only guards the SCSS source; the actual incident was a CSS minifier
+// (clean-css) stripping a valid `0%` down to `0` post-compile, which is
+// outside what Sass-level tests can see — see .build/build-css.ts's minify().
+@use '../ui/cards' as cards;
+
+@include describe('card-gradient-background') {
+  @include it('keeps the % unit on every zero-value gradient stop') {
+    @include assert() {
+      @include output() {
+        .t {
+          @include cards.card-gradient-background;
+        }
+      }
+
+      @include expect() {
+        .t {
+          background:
+            radial-gradient(ellipse at center, var(--card-bg) 0%, color-mix(in sRGB, var(--card-bg) 0%, transparent) 80%) border-box,
+            linear-gradient(var(--card-gradient-direction), color-mix(in sRGB, var(--card-bg) var(--card-gradient-opacity), transparent) 0%, var(--card-bg) 40%) border-box,
+            linear-gradient(calc(270deg + var(--card-gradient-direction)), var(--card-gradient)) border-box;
+        }
+      }
+    }
+  }
+}

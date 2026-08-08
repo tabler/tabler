@@ -5,6 +5,7 @@ import AvatarList from '@ui/AvatarList.astro';
 import Empty from '@ui/Empty.astro';
 import Progress from '@ui/Progress.astro';
 import photos from '@data/photos.json';
+import { requireIndex } from '@shared/lib/array';
 
 interface Props {
 	link?: boolean;
@@ -61,7 +62,7 @@ const {
 	footerButtons,
 	footerElements,
 	progress,
-} = Astro.props;
+}: Props = Astro.props;
 
 const Element = link ? 'a' : 'div';
 
@@ -86,8 +87,8 @@ const footerEls = (footerElements ?? []).map((element: string) => {
 const hasHeader = header || headerTitle || headerTabs || headerPills;
 const hasFooter = footer || footerButton || footerButtons || footerElements;
 
-const imgTopPhoto = (photos as { file: string; title: string }[])[7];
-const imgBottomPhoto = (photos as { file: string; title: string }[])[11];
+const imgTopPhoto = requireIndex(photos as { file: string; title: string }[], 7);
+const imgBottomPhoto = requireIndex(photos as { file: string; title: string }[], 11);
 ---
 
 <Element href={link ? '#' : undefined} class:list={classes}>

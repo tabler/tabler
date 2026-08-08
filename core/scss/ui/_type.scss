@@ -282,15 +282,27 @@ $text-variants: (
   }
 }
 
-.steps {
+// Numbered walkthrough for long-form content: every `h3` inside becomes a
+// numbered step on a vertical guideline.
+//
+// This shares the `.steps` name with the progress-tracker component in
+// `ui/_steps.scss`, and this file is loaded after it — so the selector excludes
+// anything holding `.step-item` children, which is what makes an element that
+// component. Everything else keeps matching, exactly as before. The component's
+// unqualified `.steps` rule still applies here though, so the layout it sets up
+// (flex row, full width, scrollable below `sm`) has to be undone.
+.steps:not(:has(> .step-item)) {
   --steps-padding: #{$steps-padding};
   --steps-item-size: #{$steps-item-size};
   --steps-margin-start: #{$steps-margin-start};
   --steps-margin-bottom: #{$steps-margin-bottom};
   --steps-heading-margin-top: #{$steps-heading-margin-top};
+  display: block;
+  width: auto;
   padding-inline-start: var(--steps-padding);
   margin-inline-start: var(--steps-margin-start);
   margin-bottom: var(--steps-margin-bottom);
+  overflow: visible;
   counter-reset: step;
   border-inline-start: 1px solid var(--border-color);
 

@@ -1,0 +1,38 @@
+---
+// MapVectorCard.astro has no room for a header legend/stats row, so the card
+// is hand-built here (same shape as MapVectorCard.astro) instead of reusing it.
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import MapVector from '@ui/MapVector.astro'
+import Subheader from '@ui/Subheader.astro'
+import ScaleLegend from '@ui/ScaleLegend.astro'
+---
+
+<ScreenshotLayout title="Map" columns={2} pageLibs={['jsvectormap']} cssPlugins={['flags']}>
+  <div class="card">
+    <div class="card-body">
+      <div class="d-flex align-items-center mb-3">
+        <h3 class="card-title m-0">Locations</h3>
+        <ScaleLegend class="ms-auto" />
+      </div>
+      <MapVector mapId="world" color="primary" ratio="21x9" />
+
+      <div class="row g-3 mt-1">
+        <div class="col-4">
+          <Subheader>Countries</Subheader>
+          <div class="h3 m-0">182</div>
+        </div>
+        <div class="col-4">
+          <Subheader>Top country</Subheader>
+          <div class="h3 m-0 d-flex align-items-center gap-2">
+            <span class="flag flag-xs flag-country-pl"></span>
+            Poland
+          </div>
+        </div>
+        <div class="col-4">
+          <Subheader>Total visits</Subheader>
+          <div class="h3 m-0">84,392</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</ScreenshotLayout>
