@@ -5,36 +5,21 @@ interface Props {
 	id?: string | undefined;
 	type?: string;
 	color?: string | undefined;
-	height?: number;
 	small?: boolean;
-	wide?: boolean;
 	data?: string | number;
 	percentage?: string | number;
-	/**
-	 * Sparklines are typically decorative, sitting next to a visible stat
-	 * number that already conveys the value — so they're hidden from
-	 * assistive tech by default. Set to `false` (with `label`) when the
-	 * sparkline is the only representation of the data.
-	 */
-	decorative?: boolean;
-	/** Accessible name, used only when `decorative` is explicitly `false`. */
-	label?: string;
 }
 
 const {
 	id,
 	type = 'bar',
 	color = 'primary',
-	height: heightProp,
 	small,
-	wide,
 	data: dataProp,
 	percentage,
-	decorative = true,
-	label,
 } = Astro.props;
 
-const height = heightProp ?? (small ? 1.5 : 2.5);
+const height = small ? 1.5 : 2.5;
 const heightPx = Math.round(height * 16);
 
 const data = percentage ?? dataProp;
@@ -45,16 +30,11 @@ const chartType = type === 'donut' ? 'radialBar' : type;
 const classes = [
 	'chart-sparkline',
 	isSquare && 'chart-sparkline-square',
-	wide && 'chart-sparkline-wide',
 	small && 'chart-sparkline-sm',
 ]
 
 const seriesData = String(data ?? '').split(',').map(Number);
 const chartKey = `sparkline-${id}`;
-
-const ariaHidden = decorative ? true : undefined;
-const ariaRole = decorative ? undefined : 'img';
-const ariaLabel = decorative ? undefined : (label ?? 'Chart');
 
 const chartOptions = id
 	? {
@@ -87,7 +67,7 @@ const chartOptions = id
 	: undefined;
 ---
 
-{id && <div class:list={classes} id={chartKey} role={ariaRole} aria-label={ariaLabel} aria-hidden={ariaHidden} />}
+{id && <div class:list={classes} id={chartKey} aria-hidden="true" />}
 {
 	id && (
 		<CaptureScript>

@@ -3,24 +3,21 @@
 // end of <body> (see PageModals). For inline gallery demos use ModalInline.
 interface Props {
   modalId?: string
-  size?: string
+  /** core/scss/bootstrap/_modal.scss + ui/_modals.scss `.modal-{size}` modifier classes */
+  size?: 'sm' | 'lg' | 'xl' | 'fullscreen' | 'full-width' | undefined
   top?: boolean
-  scrollable?: boolean
   class?: string
-  show?: boolean
-  style?: string
-  /** id of the title element the root references via aria-labelledby; defaults to `modal-${modalId}-title` */
-  titleId?: string
 }
 
-const { modalId = 'simple', size, top, scrollable, class: className, show, style, titleId = `modal-${modalId}-title` } = Astro.props
+const { modalId = 'simple', size, top, class: className } = Astro.props
+const titleId = `modal-${modalId}-title`
 
-const modalClass = ['modal modal-blur fade', className, show && 'show'].filter(Boolean).join(' ')
-const dialogClass = ['modal-dialog', size && `modal-${size}`, !top && 'modal-dialog-centered', scrollable && 'modal-dialog-scrollable'].filter(Boolean).join(' ')
+const modalClass = ['modal modal-blur fade', className].filter(Boolean).join(' ')
+const dialogClass = ['modal-dialog', size && `modal-${size}`, !top && 'modal-dialog-centered'].filter(Boolean).join(' ')
 ---
 
 <!-- BEGIN MODAL -->
-<div class={modalClass} style={style} id={`modal-${modalId}`} tabindex="-1" role="dialog" aria-modal="true" aria-labelledby={titleId} aria-hidden={show ? undefined : 'true'}>
+<div class={modalClass} id={`modal-${modalId}`} tabindex="-1" role="dialog" aria-modal="true" aria-labelledby={titleId} aria-hidden="true">
   <div class={dialogClass}>
     <div class="modal-content">
       <slot />

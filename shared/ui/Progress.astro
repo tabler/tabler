@@ -1,10 +1,12 @@
 ---
+/** core/scss/ui/_progress.scss `.progress-{size}` modifier classes */
+export type ProgressSize = 'sm' | 'lg' | 'xl'
+
 interface Props {
   value?: number | string | undefined
   values?: (string | number)[]
   color?: string | undefined
-  colors?: string[]
-  size?: string | undefined
+  size?: ProgressSize | undefined
   class?: string
   width?: string
   id?: string
@@ -14,11 +16,11 @@ interface Props {
   showValue?: boolean
 }
 
-const { value, values, color, colors: colorsProp, size, class: className, width, id, indeterminate, striped, animated, showValue } = Astro.props
+const { value, values, color, size, class: className, width, id, indeterminate, striped, animated, showValue } = Astro.props
 
 const percentage = value !== undefined && value !== null && `${value}` !== '' ? `${value}`.split('%').join('') : '38'
 
-const colors = colorsProp ?? (color ? [color] : ['blue', 'red', 'green', 'yellow', 'dark'])
+const colors = color ? [color] : ['blue', 'red', 'green', 'yellow', 'dark']
 const valueList = values
 
 const classes = ['progress', size && `progress-${size}`, className]

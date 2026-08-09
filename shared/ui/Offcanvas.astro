@@ -2,12 +2,10 @@
 // Offcanvas container (.offcanvas). Renders inline at the call site (unlike Modal, which drains to the end of body).
 
 interface Props {
-  /** offcanvas-{direction}: start | end | top | bottom */
-  direction?: string
-  /** responsive variant offcanvas-{size} (lg | xl | xxl) — replaces the base .offcanvas class */
-  size?: string
-  /** offcanvas-narrow (20rem width) */
-  narrow?: boolean
+  /** core/scss/bootstrap/_offcanvas.scss `.offcanvas-{direction}` modifier classes */
+  direction?: 'start' | 'end' | 'top' | 'bottom' | undefined
+  /** responsive variant offcanvas-{size} ($grid-breakpoints minus xs) — replaces the base .offcanvas class */
+  size?: 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | undefined
   show?: boolean
   class?: string
   /** defaults to "-1" when not provided */
@@ -18,11 +16,11 @@ interface Props {
   [key: string]: unknown
 }
 
-const { direction, size, narrow, show, class: className, tabindex, role, ...rest } = Astro.props
+const { direction, size, show, class: className, tabindex, role, ...rest } = Astro.props
 ---
 
 <!-- BEGIN OFFCANVAS -->
-<div class:list={[size ? `offcanvas-${size}` : 'offcanvas', direction && `offcanvas-${direction}`, narrow && 'offcanvas-narrow', show && 'show', className]} tabindex={tabindex ?? '-1'} role={role ?? 'dialog'} {...rest}>
+<div class:list={[size ? `offcanvas-${size}` : 'offcanvas', direction && `offcanvas-${direction}`, show && 'show', className]} tabindex={tabindex ?? '-1'} role={role ?? 'dialog'} {...rest}>
   <slot />
 </div>
 <!-- END OFFCANVAS -->

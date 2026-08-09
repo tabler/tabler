@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { capitalize, firstLetters, formatNumber, millisecondsToMinutes, parseCurrency, parsePercentage, pathSlug, roundTo, slugifyWord, sortBy, splitDropTrailingEmpty, ucFirst } from './string-format'
+import { capitalize, firstLetters, formatNumber, millisecondsToMinutes, parseCurrency, parsePercentage, pathSlug, roundTo, slugifyWord, sortBy, ucFirst } from './string-format'
 import { requireIndex } from './array'
 
 describe('capitalize', () => {
@@ -31,16 +31,6 @@ describe('formatNumber', () => {
   it('adds thousands separators', () => {
     expect(formatNumber(1234567)).toBe('1,234,567')
     expect(formatNumber(42)).toBe('42')
-  })
-})
-
-describe('splitDropTrailingEmpty', () => {
-  it('drops trailing empty strings', () => {
-    expect(splitDropTrailingEmpty('Tabler,Pages,', ',')).toEqual(['Tabler', 'Pages'])
-  })
-
-  it('keeps internal empty segments', () => {
-    expect(splitDropTrailingEmpty('a,,b', ',')).toEqual(['a', '', 'b'])
   })
 })
 

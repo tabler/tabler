@@ -7,16 +7,14 @@ interface Props {
   /** theme color the pattern ramps up to, e.g. 'primary' */
   color?: string
   size?: 'sm' | 'md' | 'lg' | 'xl'
-  /** element to render instead of div */
-  as?: string
   class?: string
   /** remaining attributes (style, data-*, …) are forwarded to the element */
   [key: string]: unknown
 }
 
-const { pattern, color, size, as: Element = 'div', class: className, ...rest }: Props = Astro.props
+const { pattern, color, size, class: className, ...rest }: Props = Astro.props
 ---
 
-<Element class:list={[`bg-pattern-${pattern}`, color && `bg-pattern-${color}`, size && `bg-pattern-${size}`, className]} {...rest}>
+<div class:list={[`bg-pattern-${pattern}`, color && `bg-pattern-${color}`, size && `bg-pattern-${size}`, className]} {...rest}>
   <slot />
-</Element>
+</div>

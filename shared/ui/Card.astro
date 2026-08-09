@@ -7,9 +7,11 @@ import type { HTMLTag } from 'astro/types'
 // literally named `as` and silently falls back to untyped props.
 type PolymorphicProps = { as?: HTMLTag }
 
+/** core/scss/ui/_cards.scss `.card-{size}` body padding modifier classes */
+type CardSize = 'sm' | 'md' | 'lg'
+
 interface Props extends PolymorphicProps {
-  /** card-{size} body padding: sm | md | lg */
-  size?: string
+  size?: CardSize | undefined
   class?: string
   /** remaining attributes (id, action, data-*, …) are forwarded to the element */
   [key: string]: unknown

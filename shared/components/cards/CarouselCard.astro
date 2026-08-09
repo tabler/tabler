@@ -14,12 +14,12 @@ interface Props {
   controls?: boolean
   captions?: boolean
   offset?: number
-  limit?: number
   fade?: boolean
 }
 
-const { id: idProp, title = 'Carousel', indicators, indicatorsThumb, indicatorsThumbRatio, indicatorsDot, indicatorsVertical, controls, captions, offset = 0, limit = 5, fade } = Astro.props
+const { id: idProp, title = 'Carousel', indicators, indicatorsThumb, indicatorsThumbRatio, indicatorsDot, indicatorsVertical, controls, captions, offset = 0, fade } = Astro.props
 
+const limit = 5
 const carouselId = idProp ?? 'carousel'
 const filteredPhotos = (photos as { file: string; title?: string; horizontal?: boolean }[]).filter((p) => p.horizontal)
 const slides = filteredPhotos.slice(offset, offset + limit)

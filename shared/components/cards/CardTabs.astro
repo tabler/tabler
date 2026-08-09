@@ -1,14 +1,11 @@
 ---
 // Tabs/content blocks are HTML strings (different order when `bottom`).
 interface Props {
-  /** tabs-count — present but unused */
-  count?: number
   id?: string
   bottom?: boolean
-  borderless?: boolean
 }
 
-const { id = 'top', bottom, borderless } = Astro.props
+const { id = 'top', bottom } = Astro.props
 
 const tabs = ['Activity', 'Profile', 'Settings']
 
@@ -37,7 +34,7 @@ ${tabs
 ---
 
 <!-- Cards with tabs component -->
-<div class={`card-tabs${borderless ? ' border-0' : ''}`}>
+<div class="card-tabs">
   {
     bottom ? (
       <Fragment>

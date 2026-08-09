@@ -3,6 +3,7 @@
 // Pass children to override and render a custom list.
 // NOTE: when `size` is omitted we pass NO size to Avatar — callers that omit size should not get avatar-N suffix classes.
 import Avatar from './Avatar.astro'
+import type { AvatarSize } from './Avatar.astro'
 import people from '@data/people.json'
 
 interface Person {
@@ -16,7 +17,7 @@ interface Props {
   offset?: number | undefined
   stacked?: boolean
   /** avatar-list-{size} + forwarded to default Avatars */
-  size?: string
+  size?: AvatarSize | undefined
   class?: string
   /** placeholder avatar appended after the list */
   text?: string

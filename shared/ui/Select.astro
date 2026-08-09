@@ -10,29 +10,24 @@ import CaptureScript from '../components/CaptureScript.astro';
 interface Props {
 	id?: string;
 	key?: string;
-	value?: string;
 	class?: string;
 	state?: string;
 	placeholder?: string;
 	indicator?: string;
-	multiple?: boolean;
 	values?: string[];
-	showSearch?: boolean;
 }
 
 const {
 	id: idProp,
 	key: keyProp,
-	value = '',
 	class: className,
 	state,
 	placeholder,
 	indicator,
-	multiple,
 	values,
-	showSearch,
 } = Astro.props;
 
+const value = '';
 const id = idProp ?? keyProp;
 const key = keyProp ?? 'people';
 const data = (selects as Record<string, any>)[key] ?? {};
@@ -43,7 +38,7 @@ const selectClass = [
 	state && `is-${state}`,
 ]
 
-const isMultiple = Boolean(multiple || data.multiple);
+const isMultiple = Boolean(data.multiple);
 
 interface Person {
 	id: string;
@@ -125,7 +120,7 @@ const selectId = id ? `select-${id}` : undefined;
 	id && (
 		<CaptureScript>
 			<!-- BEGIN SELECT -->
-			<script is:inline define:vars={{ selectId, showSearch }}>
+			<script is:inline define:vars={{ selectId }}>
 				function initSelect() {
 					window.tabler_select ??= {};
 
@@ -140,7 +135,6 @@ const selectId = id ? `select-${id}` : undefined;
 						(window.tabler_select[selectId] = new TomSelect(document.getElementById(selectId), {
 							copyClassesToDropdown: false,
 							dropdownParent: 'body',
-							...(showSearch === false ? { controlInput: null } : {}),
 							render: {
 								item: renderOption,
 								option: renderOption,
