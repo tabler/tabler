@@ -35,7 +35,8 @@ function urlFromGlobPath(path: string): string {
   // the segment after the pages dir
   const marker = path.indexOf('/pages/')
   const rel = (marker === -1 ? path : path.slice(marker + '/pages/'.length)).replace(/(?:^|\/)index\.mdx$/, '').replace(/\.mdx$/, '')
-  return rel ? `/${rel}/` : '/'
+  // canonical URL form has no trailing slash (docs vercel.json trailingSlash: false)
+  return rel ? `/${rel}` : '/'
 }
 
 function normalizeUrl(url: string): string {

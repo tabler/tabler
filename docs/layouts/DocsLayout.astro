@@ -30,7 +30,7 @@ interface Props {
 	/** Table of contents (h2/h3 from the markdown content) — see DocsToc.astro */
 	toc?: TocItem[];
 	/**
-	 * Page URL in the docs namespace, e.g. "/ui/components/alert/".
+	 * Page URL in the docs namespace, e.g. "/ui/components/alert".
 	 * By default derived from Astro.url.pathname by stripping the /docs prefix.
 	 * Drives the active menu entry, pagination, the "Edit this page" link, and
 	 * the relative favicon path.
@@ -57,29 +57,37 @@ const {
 	editPath,
 } = Astro.props;
 const environment = process.env.NODE_ENV || 'production';
+// Vercel preview/branch deployments must not be indexed (VERCEL_ENV is unset locally).
+const isVercelPreview = !!process.env.VERCEL_ENV && process.env.VERCEL_ENV !== 'production';
 
 // Strip /docs prefix (and optional .html) for the docs namespace URL.
+// Canonical form has no trailing slash (matching vercel.json trailingSlash: false);
+// the root stays "/".
 const docsUrl =
 	Astro.props.url ??
 	(() => {
-		let p = Astro.url.pathname.replace(/^\/docs(?=\/|$)/, '').replace(/\.html$/, '');
-		if (!p.endsWith('/')) p += '/';
-		return p;
+		const p = Astro.url.pathname
+			.replace(/^\/docs(?=\/|$)/, '')
+			.replace(/\.html$/, '')
+			.replace(/\/+$/, '');
+		return p || '/';
 	})();
 
-const pageSection = docsUrl.startsWith('/ui/')
+const inSection = (prefix: string) => docsUrl === prefix || docsUrl.startsWith(`${prefix}/`);
+const pageSection = inSection('/ui')
 	? 'UI'
-	: docsUrl.startsWith('/icons/')
+	: inSection('/icons')
 		? 'Icons'
-		: docsUrl.startsWith('/illustrations/')
+		: inSection('/illustrations')
 			? 'Illustrations'
-			: docsUrl.startsWith('/emails/')
+			: inSection('/emails')
 				? 'Emails'
 				: '';
 const metaTitle = seoTitle ?? title;
 const metaDescription = seoDescription ?? description;
 const siteName = pageSection ? `Tabler ${pageSection} Documentation` : 'Tabler Documentation';
 const canonicalUrl = new URL(docsUrl, Astro.site ?? site.docsUrl).href;
+const ogImageUrl = new URL('/static/og.png', Astro.site ?? site.docsUrl).href;
 
 // Relative asset base: for /ui/components/alert/ -> "../../.."
 const depth = docsUrl.split('/').filter(Boolean).length;
@@ -123,6 +131,7 @@ const docsLinks = docs.links as DocsLink[];
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
 		<title>{metaTitle} | {siteName}</title>
+		{isVercelPreview && <meta name="robots" content="noindex" />}
 		{
 			environment === 'production' && (
 				<Fragment>
@@ -131,14 +140,17 @@ const docsLinks = docs.links as DocsLink[];
 
 					<!-- Open Graph / Social Media Meta Tags -->
 					<meta property="og:type" content="website" />
+					<meta property="og:url" content={canonicalUrl} />
 					<meta property="og:title" content={metaTitle} />
 					{metaDescription && <meta property="og:description" content={metaDescription} />}
 					<meta property="og:site_name" content={siteName} />
+					<meta property="og:image" content={ogImageUrl} />
 
 					<!-- Twitter Card data -->
-					<meta name="twitter:card" content="summary" />
+					<meta name="twitter:card" content="summary_large_image" />
 					<meta name="twitter:title" content={metaTitle} />
 					{metaDescription && <meta name="twitter:description" content={metaDescription} />}
+					<meta name="twitter:image" content={ogImageUrl} />
 				</Fragment>
 			)
 		}
@@ -171,9 +183,10 @@ const docsLinks = docs.links as DocsLink[];
 			)
 		}
 
-		{/* is:inline — see MIGRATION.md (without it Astro adds data-astro-cid-*) */}
 		<!-- BEGIN CUSTOM FONT -->
-		<style is:inline>@import url('https://rsms.me/inter/inter.css');</style>
+		<link rel="preconnect" href="https://rsms.me/" />
+		<link rel="preconnect" href="https://rsms.me/" crossorigin />
+		<link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
 		<!-- END CUSTOM FONT -->
 
 		<!-- BEGIN DOCS STYLES -->
@@ -202,7 +215,7 @@ const docsLinks = docs.links as DocsLink[];
 								<nav class="nav nav-vertical" aria-label="Resources">
 									{
 										docsLinks.map((link) => (
-											<a href={link.url} class="nav-link" target="_blank">
+											<a href={link.url} class="nav-link" target="_blank" rel="noopener noreferrer">
 												<span class="border me-2 rounded p-1">
 													<Icon name={link.icon} />
 												</span>
@@ -254,7 +267,7 @@ const docsLinks = docs.links as DocsLink[];
 											<a
 												href={`${site.githubUrl}/edit/dev/${editFilePath}`}
 												class="link-primary"
-												target="_blank"><Icon name="edit" class="icon-inline" /> Edit this page on GitHub</a
+												target="_blank" rel="noopener noreferrer"><Icon name="edit" class="icon-inline" /> Edit this page on GitHub</a
 											>
 										</div>
 
@@ -265,11 +278,11 @@ const docsLinks = docs.links as DocsLink[];
 												</div>
 
 												<div class="col text-end">
-													<a href={site.githubUrl} class="link-secondary" target="_blank"><Icon name="brand-github" /></a>
-													<a href={site.githubSponsorsUrl} class="link-secondary" target="_blank"><Icon name="heart" /></a>
-													<a href={opencollectiveUrl} class="link-secondary" target="_blank"><Icon name="hearts" /></a>
-													<a href={xUrl} class="link-secondary" target="_blank"><Icon name="brand-x" /></a>
-													<a href={linkedinUrl} class="link-secondary" target="_blank"><Icon name="brand-linkedin" /></a>
+													<a href={site.githubUrl} class="link-secondary" target="_blank" rel="noopener noreferrer"><Icon name="brand-github" /></a>
+													<a href={site.githubSponsorsUrl} class="link-secondary" target="_blank" rel="noopener noreferrer"><Icon name="heart" /></a>
+													<a href={opencollectiveUrl} class="link-secondary" target="_blank" rel="noopener noreferrer"><Icon name="hearts" /></a>
+													<a href={xUrl} class="link-secondary" target="_blank" rel="noopener noreferrer"><Icon name="brand-x" /></a>
+													<a href={linkedinUrl} class="link-secondary" target="_blank" rel="noopener noreferrer"><Icon name="brand-linkedin" /></a>
 												</div>
 											</div>
 										</div>

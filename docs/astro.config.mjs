@@ -1,5 +1,6 @@
 // @ts-check
 import { defineConfig } from 'astro/config'
+import vercel from '@astrojs/vercel'
 import mdx from '@astrojs/mdx'
 import { satteri } from '@astrojs/markdown-satteri'
 import { fileURLToPath } from 'node:url'
@@ -11,6 +12,17 @@ const path = (p) => fileURLToPath(new URL(p, import.meta.url))
 // https://astro.build/config
 export default defineConfig({
   site: 'https://docs.tabler.io',
+  // Static output + the Vercel adapter: turns `redirects` below into real HTTP
+  // redirects at Vercel's routing layer (no adapter = meta-refresh HTML pages).
+  adapter: vercel({
+    webAnalytics: {
+      enabled: true,
+    },
+  }),
+  // Renamed/moved pages. Add an entry here whenever a docs URL changes.
+  redirects: {
+    '/ui/base/markdown': { status: 301, destination: '/ui/base/prose' },
+  },
   // pages live at the package root (./pages) — content-first layout; all
   // components/lib/data are shared (see the @shared alias)
   srcDir: '.',
