@@ -12,13 +12,13 @@
 // Generate semantic grid columns with these mixins.
 
 @mixin make-row($gutter: $grid-gutter-width) {
-  --#{$prefix}gutter-x: #{$gutter};
-  --#{$prefix}gutter-y: 0;
+  --gutter-x: #{$gutter};
+  --gutter-y: 0;
   display: flex;
   flex-wrap: wrap;
-  margin-top: calc(-1 * var(--#{$prefix}gutter-y)); // stylelint-disable-line function-disallowed-list
-  margin-right: calc(-0.5 * var(--#{$prefix}gutter-x)); // stylelint-disable-line function-disallowed-list
-  margin-left: calc(-0.5 * var(--#{$prefix}gutter-x)); // stylelint-disable-line function-disallowed-list
+  margin-top: calc(-1 * var(--gutter-y)); // stylelint-disable-line function-disallowed-list
+  margin-inline-end: calc(-0.5 * var(--gutter-x)); // stylelint-disable-line function-disallowed-list
+  margin-inline-start: calc(-0.5 * var(--gutter-x)); // stylelint-disable-line function-disallowed-list
 }
 
 @mixin make-col-ready() {
@@ -26,9 +26,9 @@
   flex-shrink: 0;
   width: 100%;
   max-width: 100%;
-  padding-right: calc(var(--#{$prefix}gutter-x) * 0.5); // stylelint-disable-line function-disallowed-list
-  padding-left: calc(var(--#{$prefix}gutter-x) * 0.5); // stylelint-disable-line function-disallowed-list
-  margin-top: var(--#{$prefix}gutter-y);
+  padding-inline-end: calc(var(--gutter-x) * 0.5); // stylelint-disable-line function-disallowed-list
+  padding-inline-start: calc(var(--gutter-x) * 0.5); // stylelint-disable-line function-disallowed-list
+  margin-top: var(--gutter-y);
 }
 
 @mixin make-col($size: false, $columns: $grid-columns) {
@@ -48,7 +48,7 @@
 
 @mixin make-col-offset($size, $columns: $grid-columns) {
   $num: divide($size, $columns);
-  margin-left: if(sass($num == 0): 0; else: math.percentage($num));
+  margin-inline-start: if(sass($num == 0): 0; else: math.percentage($num));
 }
 
 @mixin row-cols($count) {
@@ -102,12 +102,12 @@
       @each $key, $value in $gutters {
         .g#{$infix}-#{$key},
         .gx#{$infix}-#{$key} {
-          --#{$prefix}gutter-x: #{$value};
+          --gutter-x: #{$value};
         }
 
         .g#{$infix}-#{$key},
         .gy#{$infix}-#{$key} {
-          --#{$prefix}gutter-y: #{$value};
+          --gutter-y: #{$value};
         }
       }
     }

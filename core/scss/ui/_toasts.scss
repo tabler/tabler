@@ -1,7 +1,7 @@
 @use '../config' as *;
 
 .toast {
-  border: $alert-border-width var(--#{$prefix}border-style) $alert-border-color;
+  border: $alert-border-width var(--border-style) $alert-border-color;
   box-shadow: $alert-shadow;
 
   .toast-header {
@@ -10,23 +10,18 @@
 
   button[data-bs-dismiss='toast'],
   button[data-dismiss='toast'] {
-    &:focus {
-      outline: 0;
-    }
-
-    &:focus-visible {
-      outline: 0;
-      box-shadow: $focus-ring-box-shadow;
+    &:focus:not(:focus-visible) {
+      outline: none;
     }
   }
 
-  @include media-print {
+  @include media-print() {
     display: none;
   }
 }
 
 @each $state, $value in $theme-colors {
   .toast-#{$state} {
-    --#{$prefix}toast-color: #{$value};
+    --toast-color: #{$value};
   }
 }

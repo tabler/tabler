@@ -11,12 +11,10 @@ interface Props {
   arrow?: boolean
   dark?: boolean
   class?: string
-  menu?: string[]
   check?: boolean
   radio?: boolean
   people?: boolean
   flag?: boolean
-  type?: string
   header?: boolean
   icons?: boolean
   badge?: boolean
@@ -25,41 +23,20 @@ interface Props {
   separated?: boolean
 }
 
-const { right, show, arrow, dark, class: className, menu, check, radio, people: showPeople, flag: showFlags, type, header, icons, badge, active, disabled, separated } = Astro.props
+const { right, show, arrow, dark, class: className, check, radio, people: showPeople, flag: showFlags, header, icons, badge, active, disabled, separated } = Astro.props
 
 const classes = ['dropdown-menu', right && 'dropdown-menu-end', show && 'dropdown-menu-demo', arrow && 'dropdown-menu-arrow', className]
 
-const menuItems = menu
 const peopleItems = (people as { id: string; full_name: string }[]).slice(0, 5)
 const countryItems = (countries as { name: string; flag: string }[]).slice(0, 5)
 ---
 
 <div class:list={classes} data-bs-theme={dark ? 'dark' : undefined}>
   {
-    menuItems ? (
-      menuItems.map((item) =>
-        item === '|' ? (
-          <div class="dropdown-divider" />
-        ) : item.includes('h:') ? (
-          <h3 class="dropdown-header">{item.split('h:').join('')}</h3>
-        ) : item.includes('a:') ? (
-          <button type="button" class="dropdown-item active">
-            {item.split('a:').join('')}
-          </button>
-        ) : item.includes('d:') ? (
-          <button type="button" class="dropdown-item text-danger">
-            {item.split('d:').join('')}
-          </button>
-        ) : (
-          <button type="button" class="dropdown-item">
-            {item}
-          </button>
-        ),
-      )
-    ) : check || radio ? (
+    check || radio ? (
       [1, 2, 3].map((i) => (
         <label class="dropdown-item">
-          <input class="form-check-input m-0 me-2" type={radio ? 'radio' : 'checkbox'} /> Option {i}
+          <input class="form-check-input m-0 me-2" type={radio ? 'radio' : 'checkbox'} name={radio ? 'dropdown-menu-radio' : undefined} /> Option {i}
         </label>
       ))
     ) : showPeople ? (
@@ -74,7 +51,7 @@ const countryItems = (countries as { name: string; flag: string }[]).slice(0, 5)
           <Flag flag={country.flag} size="xs" /> {country.name}
         </button>
       ))
-    ) : type === 'text' ? null : (
+    ) : (
       <>
         {header && <span class="dropdown-header">Dropdown header</span>}
         <button type="button" class="dropdown-item">

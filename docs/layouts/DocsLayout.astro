@@ -18,15 +18,15 @@ interface Props {
 	/** front matter: the page's h1 heading */
 	title: string;
 	/** front matter: optional SEO title override */
-	seoTitle?: string;
+	seoTitle?: string | undefined;
 	/** front matter: lead below the title (p.text-secondary.fs-3.lh-3) */
-	summary?: string;
+	summary?: string | undefined;
 	/** front matter: SEO description */
-	description?: string;
+	description?: string | undefined;
 	/** front matter: optional SEO description override */
-	seoDescription?: string;
+	seoDescription?: string | undefined;
 	/** front matter `added-in`: renders the "Added in X" badge next to the h1 */
-	addedIn?: string;
+	addedIn?: string | undefined;
 	/** Table of contents (h2/h3 from the markdown content) — see DocsToc.astro */
 	toc?: TocItem[];
 	/**
@@ -35,13 +35,13 @@ interface Props {
 	 * Drives the active menu entry, pagination, the "Edit this page" link, and
 	 * the relative favicon path.
 	 */
-	url?: string;
+	url?: string | undefined;
 	/** Extra libraries from libs.json (css+js) */
 	docsLibs?: string[];
 	/** hides child and previous/next page navigation */
-	hidePagination?: boolean;
+	hidePagination?: boolean | undefined;
 	/** repo-relative source path for the "Edit this page" link, e.g. "docs/pages/ui/components/alert.mdx" */
-	editPath?: string;
+	editPath?: string | undefined;
 }
 
 const {
@@ -199,7 +199,7 @@ const docsLinks = docs.links as DocsLink[];
 					<div class="col-docs d-none d-lg-block border-end">
 						<div class="py-4">
 							<div class="space-y space-y-5">
-								<div class="nav nav-vertical">
+								<nav class="nav nav-vertical" aria-label="Resources">
 									{
 										docsLinks.map((link) => (
 											<a href={link.url} class="nav-link" target="_blank">
@@ -210,7 +210,7 @@ const docsLinks = docs.links as DocsLink[];
 											</a>
 										))
 									}
-								</div>
+								</nav>
 								<div class="flex-fill">
 									<DocsMenu url={docsUrl} />
 								</div>
@@ -307,7 +307,7 @@ const docsLinks = docs.links as DocsLink[];
 
 				elements.forEach(function (element) {
 					const clipboard = new ClipboardJS(element, {
-						text: function (trigger) {
+						text: function () {
 							return element.getAttribute('data-clipboard-text');
 						}
 					});

@@ -1,7 +1,33 @@
 @use '../../config' as *;
 
 %validation-lite {
-  border-color: var(--#{$prefix}border-color) !important;
+  border-color: var(--border-color) !important;
+}
+
+// Bootstrap sizes the valid/invalid icon off the input's own line-height and
+// padding, which makes it noticeably bigger than every other icon in the
+// design system. Match it to $input-btn-icon-size instead, the same token
+// `.btn`/`.btn-sm`/`.btn-lg` use for their own icons (see ui/_buttons.scss).
+%validation-icon-size {
+  --form-feedback-icon-size: #{$input-btn-icon-size};
+  --form-feedback-icon-inset: #{$input-padding-x};
+  padding-inline-end: calc(var(--form-feedback-icon-size) + var(--form-feedback-icon-inset) * 2) !important;
+  background-position: right var(--form-feedback-icon-inset) center !important;
+  background-size: var(--form-feedback-icon-size) var(--form-feedback-icon-size) !important;
+}
+
+%validation-icon-size-sm {
+  --form-feedback-icon-size: #{$input-btn-icon-size-sm};
+  --form-feedback-icon-inset: #{$input-padding-x-sm};
+}
+
+%validation-icon-size-lg {
+  --form-feedback-icon-size: #{$input-btn-icon-size-lg};
+  --form-feedback-icon-inset: #{$input-padding-x-lg};
+}
+
+%validation-icon-size-textarea {
+  background-position: top var(--form-feedback-icon-inset) right var(--form-feedback-icon-inset) !important;
 }
 
 @each $state, $data in $form-validation-states {
@@ -11,5 +37,21 @@
 
   .form-select.is-#{$state}-lite {
     @extend %validation-lite;
+  }
+
+  .form-control.is-#{$state} {
+    @extend %validation-icon-size;
+  }
+
+  .form-control-sm.is-#{$state} {
+    @extend %validation-icon-size-sm;
+  }
+
+  .form-control-lg.is-#{$state} {
+    @extend %validation-icon-size-lg;
+  }
+
+  textarea.form-control.is-#{$state} {
+    @extend %validation-icon-size-textarea;
   }
 }

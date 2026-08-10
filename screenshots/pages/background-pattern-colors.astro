@@ -1,0 +1,30 @@
+---
+// .bg-pattern-{color} sets --tblr-pattern-color; combine with a pattern-type
+// class (core/scss/ui/_patterns.scss).
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import BackgroundPattern from '@ui/BackgroundPattern.astro'
+import site from '@data/site.json'
+
+const patternColors = Object.keys(site.colors)
+---
+
+<ScreenshotLayout title="Background pattern colors" columns={2}>
+  <Card>
+    <CardBody>
+      <CardTitle>Pattern colors</CardTitle>
+      <div class="row row-cols-4 g-3">
+        {
+          patternColors.map((color) => (
+            <div class="col">
+              <BackgroundPattern pattern="rectangles" color={color} class="rounded mb-2" style="height: 5rem;" />
+              <code>.bg-pattern-{color}</code>
+            </div>
+          ))
+        }
+      </div>
+    </CardBody>
+  </Card>
+</ScreenshotLayout>

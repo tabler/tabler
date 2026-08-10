@@ -40,6 +40,25 @@ import Empty from '@ui/Empty.astro'
 import NavSegmented from '@ui/NavSegmented.astro'
 import ListGroup from '@ui/ListGroup.astro'
 import ListGroupItem from '@ui/ListGroupItem.astro'
+import payments from '@data/payments.json'
+
+const PAYMENT_IDS = ['visa', 'mastercard', 'paypal', 'americanexpress', 'applepay', 'google-pay', 'stripe', 'discover', 'jcb', 'maestro', 'dinersclub', 'bitcoin', 'ethereum', 'klarna', 'venmo', 'square'] as const
+type PaymentId = (typeof PAYMENT_IDS)[number]
+
+const paymentNames = Object.fromEntries((payments as { name: string; logo: string }[]).map((p) => [p.logo, p.name])) as Record<PaymentId, string>
+
+const countryNames = {
+  us: 'United States',
+  gb: 'United Kingdom',
+  de: 'Germany',
+  fr: 'France',
+  pl: 'Poland',
+  es: 'Spain',
+  it: 'Italy',
+  nl: 'Netherlands',
+  ca: 'Canada',
+  au: 'Australia',
+}
 
 const codeExample = `// JavaScript example
 function greetUser(name) {
@@ -209,22 +228,22 @@ function greetUser(name) {
         <CardBody>
           <div class="row">
             <div class="col-md-6">
-              <FormGroup label="Text Input">
-                <input type="text" class="form-control" placeholder="Enter text" />
+              <FormGroup label="Text Input" for="all-elements-text-input">
+                <input type="text" class="form-control" id="all-elements-text-input" placeholder="Enter text" />
               </FormGroup>
-              <FormGroup label="Email Input">
-                <input type="email" class="form-control" placeholder="Enter email" />
+              <FormGroup label="Email Input" for="all-elements-email-input">
+                <input type="email" class="form-control" id="all-elements-email-input" placeholder="Enter email" />
               </FormGroup>
-              <FormGroup label="Password Input">
-                <input type="password" class="form-control" placeholder="Enter password" />
+              <FormGroup label="Password Input" for="all-elements-password-input">
+                <input type="password" class="form-control" id="all-elements-password-input" placeholder="Enter password" />
               </FormGroup>
-              <FormGroup label="Select Dropdown">
+              <FormGroup label="Select Dropdown" for="select-demo-select">
                 <Select id="demo-select" values={['Option 1', 'Option 2', 'Option 3']} />
               </FormGroup>
             </div>
             <div class="col-md-6">
-              <FormGroup label="Textarea">
-                <textarea class="form-control" rows="3" placeholder="Enter message"></textarea>
+              <FormGroup label="Textarea" for="all-elements-textarea">
+                <textarea class="form-control" id="all-elements-textarea" rows="3" placeholder="Enter message"></textarea>
               </FormGroup>
               <FormGroup label="Checkboxes" associate={false}>
                 <Check title="Option 1" type="checkbox" />
@@ -234,7 +253,8 @@ function greetUser(name) {
                 <Check title="Option 1" type="radio" name="radio-demo" />
                 <Check title="Option 2" type="radio" name="radio-demo" checked />
               </FormGroup>
-              <FormGroup label="Switch">
+              {/* Check.astro has no id prop to target with `for`; its own <label> already wraps the input, so it's self-labeled */}
+              <FormGroup label="Switch" associate={false}>
                 <Check title="Enable notifications" switch />
               </FormGroup>
             </div>
@@ -348,9 +368,9 @@ function greetUser(name) {
               <Avatar placeholder="AB" size="xl" />
             </div>
             <div>
-              <Avatar placeholder="RD" shape="avatar-rounded" />
-              <Avatar placeholder="PR" color="primary" shape="avatar-rounded" />
-              <Avatar placeholder="SC" color="success" shape="avatar-rounded" />
+              <Avatar placeholder="RD" shape="rounded" />
+              <Avatar placeholder="PR" color="primary" shape="rounded" />
+              <Avatar placeholder="SC" color="success" shape="rounded" />
             </div>
             <div>
               <Avatar icon="user" />
@@ -466,10 +486,10 @@ function greetUser(name) {
         <CardBody>
           <h4>Status Dots</h4>
           <div class="mb-3">
-            <StatusDot color="success" />
-            <StatusDot color="warning" />
-            <StatusDot color="danger" />
-            <StatusDot color="info" animated />
+            <StatusDot color="success" label="Success" />
+            <StatusDot color="warning" label="Warning" />
+            <StatusDot color="danger" label="Danger" />
+            <StatusDot color="info" animated label="Info" />
           </div>
 
           <h4>Toast Notifications</h4>
@@ -522,10 +542,10 @@ function greetUser(name) {
           </div>
 
           <h4>Ribbons</h4>
-          <div class="position-relative mb-4" style="height: 100px; background: #f8f9fa; border-radius: 8px;">
+          <div class="position-relative mb-4" style="height: 100px; background-color: var(--tblr-bg-surface-secondary); border-radius: 8px;">
             <Ribbon text="New" color="success" />
           </div>
-          <div class="position-relative mb-3" style="height: 100px; background: #f8f9fa; border-radius: 8px;">
+          <div class="position-relative mb-3" style="height: 100px; background: var(--tblr-bg-surface-secondary); border-radius: 8px;">
             <Ribbon text="Sale" color="danger" top />
           </div>
         </CardBody>
@@ -540,38 +560,30 @@ function greetUser(name) {
           <h4>Flags</h4>
           <div class="mb-3">
             <div class="d-flex flex-wrap gap-2">
-              <Flag flag="us" />
-              <Flag flag="gb" />
-              <Flag flag="de" />
-              <Flag flag="fr" />
-              <Flag flag="pl" />
-              <Flag flag="es" />
-              <Flag flag="it" />
-              <Flag flag="nl" />
-              <Flag flag="ca" />
-              <Flag flag="au" />
+              <Flag flag="us" label={countryNames.us} />
+              <Flag flag="gb" label={countryNames.gb} />
+              <Flag flag="de" label={countryNames.de} />
+              <Flag flag="fr" label={countryNames.fr} />
+              <Flag flag="pl" label={countryNames.pl} />
+              <Flag flag="es" label={countryNames.es} />
+              <Flag flag="it" label={countryNames.it} />
+              <Flag flag="nl" label={countryNames.nl} />
+              <Flag flag="ca" label={countryNames.ca} />
+              <Flag flag="au" label={countryNames.au} />
             </div>
           </div>
 
           <h4>Payment Icons</h4>
           <div class="mb-3">
             <div class="d-flex flex-wrap gap-2">
-              <Payment payment="visa" />
-              <Payment payment="mastercard" />
-              <Payment payment="paypal" />
-              <Payment payment="americanexpress" />
-              <Payment payment="applepay" />
-              <Payment payment="google-pay" />
-              <Payment payment="stripe" />
-              <Payment payment="discover" />
-              <Payment payment="jcb" />
-              <Payment payment="maestro" />
-              <Payment payment="dinersclub" />
-              <Payment payment="bitcoin" />
-              <Payment payment="ethereum" />
-              <Payment payment="klarna" />
-              <Payment payment="venmo" />
-              <Payment payment="square" />
+              {
+                PAYMENT_IDS.map((payment) => (
+                  <>
+                    <Payment payment={payment} label={paymentNames[payment]} class="hide-theme-dark" />
+                    <Payment payment={payment} label={paymentNames[payment]} dark class="hide-theme-light" />
+                  </>
+                ))
+              }
             </div>
           </div>
         </CardBody>
@@ -632,7 +644,7 @@ function greetUser(name) {
             <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
               <div class="modal-content">
                 <div class="modal-body text-center py-4">
-                  <Icon name="circle-check" color="success" size="xl" class="mb-2" />
+                  <Icon name="circle-check" color="success" size="lg" class="mb-2" />
                   <h3>Success!</h3>
                   <div class="text-secondary">Your action was completed successfully.</div>
                 </div>

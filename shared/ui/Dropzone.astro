@@ -8,15 +8,18 @@ interface Props {
   description?: string
 }
 
-const { id, multiple, custom, text = 'Text', description = 'Description' } = Astro.props
+const { id = 'default', multiple, custom, text = 'Text', description = 'Description' } = Astro.props
+const label = 'Upload file'
 
 const dropzoneId = `dropzone-${id}`
 const dropzoneSelector = `#dropzone-${id}`
+const fileInputId = `${dropzoneId}-file`
 ---
 
-<form class="dropzone" id={dropzoneId} action="./" autocomplete="off" novalidate>
+<form class="dropzone" id={dropzoneId} action="./" autocomplete="off" novalidate tabindex="0" role="button" aria-label="Click or drag files to upload">
   <div class="fallback">
-    <input name="file" type="file" multiple={multiple ? '' : undefined} />
+    <label class="visually-hidden" for={fileInputId}>{label}</label>
+    <input id={fileInputId} name="file" type="file" multiple={multiple ? '' : undefined} />
   </div>
   {
     custom && (
@@ -29,11 +32,26 @@ const dropzoneSelector = `#dropzone-${id}`
 </form>
 <CaptureScript>
   <!-- BEGIN DROPZONE -->
-  <script define:vars={{ dropzoneId, dropzoneSelector }}>
+  <script is:inline define:vars={{ dropzoneId, dropzoneSelector }}>
     window.tabler_dropzone ??= {}
 
     function initDropzone() {
-      window.tabler_dropzone[dropzoneId] = new Dropzone(dropzoneSelector)
+      const dropzoneEl = document.querySelector(dropzoneSelector)
+      const instance = new Dropzone(dropzoneSelector)
+      window.tabler_dropzone[dropzoneId] = instance
+
+      // Dropzone.js is click/drag-only by default: it binds a click handler on the whole
+      // element but never wires a keyboard equivalent. Since the element is now focusable
+      // (role="button" + tabindex="0"), forward Enter/Space to a programmatic click on
+      // Dropzone's own hidden file input so keyboard users can open the file picker too.
+      // Note: that input is appended to <body> (hiddenInputContainer default), not inside
+      // dropzoneEl, so it must be reached via the instance rather than a DOM query here.
+      dropzoneEl?.addEventListener('keydown', (event) => {
+        if (event.target !== dropzoneEl) return
+        if (event.key !== 'Enter' && event.key !== ' ' && event.key !== 'Spacebar') return
+        event.preventDefault()
+        instance.hiddenFileInput?.click()
+      })
     }
 
     document.readyState !== 'loading' ? initDropzone() : document.addEventListener('DOMContentLoaded', initDropzone, { once: true })

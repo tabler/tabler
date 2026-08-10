@@ -13,7 +13,7 @@ interface Props {
   description?: string
   /** .form-hint under the control */
   hint?: string
-  /** for attribute of the label — pair with the same id on the control */
+  /** for attribute of the label — must match the slotted control's id */
   for?: string
   /** extra classes on the label (e.g. visually-hidden) */
   labelClass?: string
@@ -40,6 +40,7 @@ const wrapLabel = Boolean(label && !htmlFor && associate)
     label && htmlFor && (
       <label class:list={['form-label', required && 'required', labelClass]} for={htmlFor}>
         {label}
+        {required && <span class="visually-hidden"> (required)</span>}
         {description && <span class="form-label-description">{description}</span>}
       </label>
     )
@@ -57,6 +58,7 @@ const wrapLabel = Boolean(label && !htmlFor && associate)
       <label class="d-block">
         <span class:list={['form-label', required && 'required', labelClass]}>
           {label}
+          {required && <span class="visually-hidden"> (required)</span>}
           {description && <span class="form-label-description">{description}</span>}
         </span>
         <slot />
@@ -65,6 +67,12 @@ const wrapLabel = Boolean(label && !htmlFor && associate)
       <slot />
     )
   }
-  {error && <div class="invalid-feedback d-block" id={errorId} role="alert">{error}</div>}
+  {
+    error && (
+      <div class="invalid-feedback d-block" id={errorId} role="alert">
+        {error}
+      </div>
+    )
+  }
   {hint && <FormHint id={hintId}>{hint}</FormHint>}
 </div>

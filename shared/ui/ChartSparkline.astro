@@ -2,12 +2,10 @@
 import CaptureScript from '../components/CaptureScript.astro';
 
 interface Props {
-	id?: string;
+	id?: string | undefined;
 	type?: string;
-	color?: string;
-	height?: number;
+	color?: string | undefined;
 	small?: boolean;
-	wide?: boolean;
 	data?: string | number;
 	percentage?: string | number;
 }
@@ -16,14 +14,12 @@ const {
 	id,
 	type = 'bar',
 	color = 'primary',
-	height: heightProp,
 	small,
-	wide,
 	data: dataProp,
 	percentage,
 } = Astro.props;
 
-const height = heightProp ?? (small ? 1.5 : 2.5);
+const height = small ? 1.5 : 2.5;
 const heightPx = Math.round(height * 16);
 
 const data = percentage ?? dataProp;
@@ -34,7 +30,6 @@ const chartType = type === 'donut' ? 'radialBar' : type;
 const classes = [
 	'chart-sparkline',
 	isSquare && 'chart-sparkline-square',
-	wide && 'chart-sparkline-wide',
 	small && 'chart-sparkline-sm',
 ]
 
@@ -65,19 +60,19 @@ const chartOptions = id
 				: {}),
 			...(type === 'area' ? { fill: { gradient: { opacityFrom: [0.1, 0.1] } } } : {}),
 			...(type === 'area' || type === 'line' ? { stroke: { width: 2, lineCap: 'round' } } : {}),
-			...(type === 'donut'
+			...(type === 'donut' || type === 'pie'
 				? { colors: [`var(--tblr-${color})`], series: seriesData }
 				: { series: [{ color: `var(--tblr-${color})`, data: seriesData }] }),
 		}
 	: undefined;
 ---
 
-{id && <div class:list={classes} id={chartKey} />}
+{id && <div class:list={classes} id={chartKey} aria-hidden="true" />}
 {
 	id && (
 		<CaptureScript>
 			<!-- BEGIN CHART SPARKLINE -->
-			<script define:vars={{ chartKey, chartOptions }}>
+			<script is:inline define:vars={{ chartKey, chartOptions }}>
 				function initSparkline() {
 					window.tabler_chart ??= {};
 					window.ApexCharts && (window.tabler_chart[chartKey] = new ApexCharts(document.getElementById(chartKey), chartOptions)).render();

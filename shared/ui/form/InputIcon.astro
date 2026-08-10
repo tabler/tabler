@@ -3,25 +3,22 @@ import Icon from '../Icon.astro'
 
 interface Props {
   icon?: string
-  iconClass?: string
   class?: string
   prepend?: boolean
   type?: string
   value?: string
-  light?: boolean
   rounded?: boolean
-  inputClass?: string
   ariaLabel?: string
   readonly?: boolean
   placeholder?: string
   loader?: boolean
 }
 
-const { icon = 'search', iconClass, class: className, prepend, type = 'text', value = '', light, rounded, inputClass, ariaLabel, readonly, placeholder = 'Search…', loader } = Astro.props
+const { icon = 'search', class: className, prepend, type = 'text', value = '', rounded, ariaLabel, readonly, placeholder = 'Search…', loader } = Astro.props
 
 const wrapperClass = ['input-icon', className]
-const addonClass = ['input-icon-addon', iconClass]
-const controlClass = ['form-control', light && 'form-control-light', rounded && 'form-control-rounded', inputClass]
+const addonClass = ['input-icon-addon']
+const controlClass = ['form-control', rounded && 'form-control-rounded']
 ---
 
 <div class:list={wrapperClass}>

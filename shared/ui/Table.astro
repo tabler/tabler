@@ -14,17 +14,16 @@ interface Props {
   avatars?: boolean
   mobile?: boolean
   buttons?: boolean
-  nowrap?: boolean
 }
 
-const { card, limit = 5, stripped, offset, avatars, mobile, buttons, nowrap } = Astro.props
+const { card, limit = 5, stripped, offset, avatars, mobile, buttons } = Astro.props
 
 const roles = ['User', 'Admin', 'Owner']
 
 const start = offset ?? 0
 const rows = (people as Record<string, any>[]).slice(start, start + limit)
 
-const tableClasses = ['table', 'table-vcenter', mobile && 'table-mobile-md', card && 'card-table', stripped && 'table-striped', nowrap && 'table-nowrap']
+const tableClasses = ['table', 'table-vcenter', mobile && 'table-mobile-md', card && 'card-table', stripped && 'table-striped']
 ---
 
 <div class="table-responsive">
@@ -37,8 +36,6 @@ const tableClasses = ['table', 'table-vcenter', mobile && 'table-mobile-md', car
         {!avatars && <th>Email</th>}
 
         <th>Role</th>
-
-        {nowrap && <th />}
 
         <th class="w-1"></th>
       </tr>
@@ -89,8 +86,6 @@ const tableClasses = ['table', 'table-vcenter', mobile && 'table-mobile-md', car
               <td class="text-secondary" data-label={mobile ? 'Role' : undefined}>
                 {role}
               </td>
-
-              {nowrap && <td>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi, commodi cupiditate debitis deserunt expedita hic incidunt iste modi molestiae nesciunt non nostrum perferendis perspiciatis placeat praesentium quaerat quo repellendus, voluptates.</td>}
 
               <td>
                 {buttons ? (

@@ -2,7 +2,6 @@
 import Icon from './Icon.astro'
 import Flag from './Flag.astro'
 import Avatar from './Avatar.astro'
-import Payment from './Payment.astro'
 import Badge from './Badge.astro'
 
 interface Person {
@@ -13,11 +12,9 @@ interface Person {
 
 interface Props {
   text?: string
-  flag?: string
+  flag?: string | undefined
   icon?: string
   person?: Person
-  personId?: number
-  payment?: string
   status?: string
   legend?: string
   checkbox?: boolean
@@ -25,7 +22,7 @@ interface Props {
   badge?: string | number
 }
 
-const { text, flag, icon, person, personId, payment, status, legend, checkbox, checked, badge } = Astro.props
+const { text, flag, icon, person, status, legend, checkbox, checked, badge } = Astro.props
 ---
 
 <span class="tag">
@@ -33,13 +30,9 @@ const { text, flag, icon, person, personId, payment, status, legend, checkbox, c
     flag ? (
       <Flag flag={flag} size="xxs" class="tag-flag" />
     ) : icon ? (
-      <Icon name={icon} size="xxs" class="tag-icon" />
+      <Icon name={icon} size="sm" class="tag-icon" />
     ) : person ? (
       <Avatar person={person} size="xxs" class="tag-avatar" />
-    ) : personId ? (
-      <Avatar personId={personId} size="xxs" class="tag-avatar" />
-    ) : payment ? (
-      <Payment payment={payment} size="xxs" class="tag-payment" />
     ) : status ? (
       <Badge color={status} class="tag-status badge-dot" text="" />
     ) : legend ? (
@@ -49,7 +42,7 @@ const { text, flag, icon, person, personId, payment, status, legend, checkbox, c
     ) : null
   }
   {text}
-  {badge && <Badge class="tag-badge" text={String(badge)} />}
+  {badge != null && <Badge class="tag-badge" text={String(badge)} />}
 
-  <button type="button" class="btn-close" aria-label="Remove"></button>
+  <button type="button" class="btn-close" aria-label={text ? `Remove ${text}` : 'Remove'}></button>
 </span>

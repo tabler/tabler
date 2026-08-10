@@ -1,56 +1,66 @@
 @use '../config' as *;
 
 .btn-close {
-  --#{$prefix}btn-close-color: currentColor;
-  --#{$prefix}btn-close-bg: #{escape-svg($btn-close-bg)};
-  --#{$prefix}btn-close-opacity: #{$btn-close-opacity};
-  --#{$prefix}btn-close-hover-opacity: #{$btn-close-hover-opacity};
-  --#{$prefix}btn-close-focus-shadow: #{$btn-close-focus-shadow};
-  --#{$prefix}btn-close-focus-opacity: #{$btn-close-focus-opacity};
-  --#{$prefix}btn-close-disabled-opacity: #{$btn-close-disabled-opacity};
-  --#{$prefix}btn-close-size: #{$btn-close-width};
-
-  // content-box so padding grows the hit target without shrinking the icon
-  box-sizing: content-box;
-  width: var(--#{$prefix}btn-close-size);
-  height: var(--#{$prefix}btn-close-size);
-  padding: $btn-close-padding-y $btn-close-padding-x;
-  color: var(--#{$prefix}btn-close-color);
-  mask: var(--#{$prefix}btn-close-bg) no-repeat center/calc(var(--#{$prefix}btn-close-size) * 0.75);
-  background-color: var(--#{$prefix}btn-close-color);
-  border: 0;
-  @include border-radius(var(--tblr-border-radius));
-  opacity: var(--#{$prefix}btn-close-opacity);
-  cursor: pointer;
+  --btn-close-color: currentColor;
+  --btn-close-bg: #{escape-svg($btn-close-bg)};
+  --btn-close-opacity: #{$btn-close-opacity};
+  --btn-close-hover-opacity: #{$btn-close-hover-opacity};
+  --btn-close-focus-shadow: #{$btn-close-focus-shadow};
+  --btn-close-focus-opacity: #{$btn-close-focus-opacity};
+  --btn-close-disabled-opacity: #{$btn-close-disabled-opacity};
+  --btn-close-size: #{$btn-close-width};
+  position: relative;
   display: block;
 
+  width: var(--btn-close-size);
+  height: var(--btn-close-size);
+  padding: $btn-close-padding-y $btn-close-padding-x;
+  color: var(--btn-close-color);
+  cursor: pointer;
+  background-color: var(--btn-close-color);
+  border: 0;
+  opacity: var(--btn-close-opacity);
+  mask: var(--btn-close-bg) no-repeat center/calc(var(--btn-close-size) * 0.75);
+  @include border-radius(var(--border-radius));
+
+  // Invisible overlay extending the hit area to a 24x24px minimum touch target
+  &::before {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: max(100%, 24px);
+    height: max(100%, 24px);
+    content: '';
+    transform: translate(-50%, -50%);
+  }
+
   &:hover {
-    color: var(--#{$prefix}btn-close-color);
+    color: var(--btn-close-color);
     text-decoration: none;
-    opacity: var(--#{$prefix}btn-close-hover-opacity);
-    background-color: var(--#{$prefix}btn-close-color);
+    background-color: var(--btn-close-color);
+    opacity: var(--btn-close-hover-opacity);
   }
 
   &:focus {
     outline: 0;
-    box-shadow: var(--#{$prefix}btn-close-focus-shadow);
-    opacity: var(--#{$prefix}btn-close-focus-opacity);
+    box-shadow: var(--btn-close-focus-shadow);
+    opacity: var(--btn-close-focus-opacity);
   }
 
   &:disabled,
   &.disabled {
     pointer-events: none;
     user-select: none;
-    opacity: var(--#{$prefix}btn-close-disabled-opacity);
+    opacity: var(--btn-close-disabled-opacity);
   }
 
-  @include media-print {
+  @include media-print() {
     display: none;
   }
 }
 
 // @mixin btn-close-white() {
-//   --#{$prefix}btn-close-filter: #{$btn-close-filter-dark};
+//   --btn-close-filter: #{$btn-close-filter-dark};
 // }
 
 // .btn-close-white {
@@ -59,7 +69,7 @@
 
 // :root,
 // [data-bs-theme="light"] {
-//   --#{$prefix}btn-close-filter: #{$btn-close-filter};
+//   --btn-close-filter: #{$btn-close-filter};
 // }
 
 // @if $enable-dark-mode {

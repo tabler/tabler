@@ -1,12 +1,15 @@
 ---
 import icons from '@data/icons.json'
 
+/** core/scss/ui/_icons.scss `.icon-{size}` modifier classes */
+export type IconSize = 'sm' | 'md' | 'lg'
+
 interface Props {
   name: string
   type?: 'outline' | 'filled'
-  class?: string
-  color?: string
-  size?: string
+  class?: string | undefined
+  color?: string | undefined
+  size?: IconSize | undefined
   inline?: boolean
 }
 
@@ -17,7 +20,7 @@ const icon = (icons as unknown as Record<string, { svg: Record<string, string> }
 const classes = ['icon', className, color && `text-${color}`, inline && 'icon-inline', size && `icon-${size}`].filter(Boolean).join(' ')
 
 let svg = icon?.svg?.[type] ?? ''
-svg = svg.replace('<path stroke="none" d="M0 0h24v24H0z" fill="none"/>', '')
+svg = svg.replace(/<path stroke="none" d="M0 0h24v24H0z" fill="none"\s*\/>/, '')
 svg = svg.replace(/class="[^"]+"/, `aria-hidden="true" focusable="false" class="${classes}"`)
 ---
 

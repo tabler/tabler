@@ -117,13 +117,6 @@ export default defineConfig({
           label: '@tabler/preview',
         },
         {
-          // docs.css built by the @tabler/docs sass pipeline (used by docs pages)
-          from: path('../docs/dist/css'),
-          to: path('./public/css'),
-          label: '@tabler/docs',
-          required: false,
-        },
-        {
           // static assets (photos, avatars, tracks, brand svgs...). The real source,
           // because preview/static is a symlink that may not survive deployment packaging.
           from: path('../shared/static'),
@@ -156,9 +149,7 @@ export default defineConfig({
         {
           // Beautify html fences before highlighting.
           preprocess(code) {
-            if (this.options.lang === 'html') {
-              return beautify.html(code, { indent_size: 2, wrap_line_length: 80 })
-            }
+            return this.options.lang === 'html' ? beautify.html(code, { indent_size: 2, wrap_line_length: 80 }) : code
           },
           // Keep shiki classes only (drop Astro's astro-code / data-language).
           pre(node) {

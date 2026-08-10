@@ -26,7 +26,7 @@
 
 :root {
   @if $font-size-root != null {
-    @include font-size(var(--#{$prefix}root-font-size));
+    @include font-size(var(--root-font-size));
   }
 
   @if $enable-smooth-scroll {
@@ -46,13 +46,13 @@
 // scss-docs-start reboot-body-rules
 body {
   margin: 0; // 1
-  font-family: var(--#{$prefix}body-font-family);
-  @include font-size(var(--#{$prefix}body-font-size));
-  font-weight: var(--#{$prefix}body-font-weight);
-  line-height: var(--#{$prefix}body-line-height);
-  color: var(--#{$prefix}body-color);
-  text-align: var(--#{$prefix}body-text-align);
-  background-color: var(--#{$prefix}body-bg); // 2
+  font-family: var(--body-font-family);
+  @include font-size(var(--body-font-size));
+  font-weight: var(--body-font-weight);
+  line-height: var(--body-line-height);
+  color: var(--body-color);
+  text-align: var(--body-text-align);
+  background-color: var(--body-bg); // 2
   -webkit-text-size-adjust: 100%; // 3
   -webkit-tap-highlight-color: rgba($black, 0); // 4
 }
@@ -83,7 +83,7 @@ hr {
   font-style: $headings-font-style;
   font-weight: $headings-font-weight;
   line-height: $headings-line-height;
-  color: var(--#{$prefix}heading-color);
+  color: var(--heading-color);
 }
 
 h1 {
@@ -150,7 +150,7 @@ address {
 
 ol,
 ul {
-  padding-left: 2rem;
+  padding-inline-start: 2rem;
 }
 
 ol,
@@ -175,7 +175,7 @@ dt {
 
 dd {
   margin-bottom: 0.5rem;
-  margin-left: 0; // 1
+  margin-inline-start: 0; // 1
 }
 
 // Blockquote
@@ -205,8 +205,8 @@ small {
 
 mark {
   padding: $mark-padding;
-  color: var(--#{$prefix}highlight-color);
-  background-color: var(--#{$prefix}highlight-bg);
+  color: var(--highlight-color);
+  background-color: var(--highlight-bg);
 }
 
 // Sub and Sup
@@ -232,11 +232,11 @@ sup {
 // Links
 
 a {
-  color: rgba(var(--#{$prefix}link-color-rgb), var(--#{$prefix}link-opacity, 1));
+  color: rgba(var(--link-color-rgb), var(--link-opacity, 1));
   text-decoration: $link-decoration;
 
   &:hover {
-    --#{$prefix}link-color-rgb: var(--#{$prefix}link-hover-color-rgb);
+    --link-color-rgb: var(--link-hover-color-rgb);
     text-decoration: $link-hover-decoration;
   }
 }
@@ -286,7 +286,7 @@ pre {
 
 code {
   @include font-size($code-font-size);
-  color: var(--#{$prefix}code-color);
+  color: var(--code-color);
   word-wrap: break-word;
 
   // Streamline the style when inside anchors to avoid broken underline and more
@@ -337,7 +337,7 @@ caption {
   padding-top: $table-cell-padding-y;
   padding-bottom: $table-cell-padding-y;
   color: $table-caption-color;
-  text-align: left;
+  text-align: start;
 }
 
 // 1. Removes font-weight bold by inheriting
@@ -480,7 +480,7 @@ fieldset {
 //    See https://github.com/twbs/bootstrap/issues/29712
 
 legend {
-  float: left; // 1
+  float: inline-start; // 1
   width: 100%;
   padding: 0;
   margin-bottom: $legend-margin-bottom;

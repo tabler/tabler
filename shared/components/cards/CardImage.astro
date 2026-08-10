@@ -1,5 +1,6 @@
 ---
 import photos from '@data/photos.json'
+import { requireIndex } from '@shared/lib/array'
 
 interface Props {
   title?: string
@@ -9,7 +10,7 @@ interface Props {
 
 const { title, right, imgId = 1 } = Astro.props
 
-const photo = (photos as { file: string; title: string }[])[imgId]
+const photo = requireIndex(photos as { file: string; title: string }[], imgId)
 const imgClass = `w-100 h-100 object-cover ${right ? 'card-img-end' : 'card-img-start'}`
 ---
 

@@ -2,14 +2,14 @@
 
 @keyframes progress-indeterminate {
   0% {
-    inset-inline-end: 100%;
     inset-inline-start: -35%;
+    inset-inline-end: 100%;
   }
 
   100%,
   60% {
-    inset-inline-end: -90%;
     inset-inline-start: 100%;
+    inset-inline-end: -90%;
   }
 }
 
@@ -23,33 +23,33 @@ Progress
   appearance: none;
 
   &::-webkit-progress-bar {
-    background: var(--#{$prefix}progress-bg);
+    background: var(--progress-bg);
   }
 
   &::-webkit-progress-value {
-    background-color: var(--#{$prefix}primary);
+    background-color: var(--primary);
   }
 
   &::-moz-progress-bar {
-    background-color: var(--#{$prefix}primary);
+    background-color: var(--primary);
   }
 
   &::-ms-fill {
-    background-color: var(--#{$prefix}primary);
+    background-color: var(--primary);
     border: none;
   }
 }
 
 .progress-sm {
-  --#{$prefix}progress-height: #{$progress-height-sm};
+  --progress-height: #{$progress-height-sm};
 }
 
 .progress-lg {
-  --#{$prefix}progress-height: #{$progress-height-lg};
+  --progress-height: #{$progress-height-lg};
 }
 
 .progress-xl {
-  --#{$prefix}progress-height: #{$progress-height-xl};
+  --progress-height: #{$progress-height-xl};
 }
 
 /**
@@ -61,18 +61,18 @@ Progress bar
 }
 
 .progress-bar-indeterminate {
-  &:after,
-  &:before {
+  &::after,
+  &::before {
     position: absolute;
+    inset-inline-start: 0;
     top: 0;
     bottom: 0;
-    inset-inline-start: 0;
     content: '';
     background-color: inherit;
     will-change: left, right;
   }
 
-  &:before {
+  &::before {
     animation: progress-indeterminate 1.5s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
 
     @media (prefers-reduced-motion: reduce) {
@@ -82,10 +82,10 @@ Progress bar
 }
 
 .progress-separated {
-  --#{$prefix}progress-separated-ring-width: #{$progress-separated-ring-width};
+  --progress-separated-ring-width: #{$progress-separated-ring-width};
 
   .progress-bar {
-    box-shadow: 0 0 0 var(--#{$prefix}progress-separated-ring-width) var(--#{$prefix}card-bg, var(--#{$prefix}bg-surface));
+    box-shadow: 0 0 0 var(--progress-separated-ring-width) var(--card-bg, var(--bg-surface));
   }
 }
 
@@ -93,11 +93,11 @@ Progress bar
 Progressbg
  */
 .progressbg {
-  --#{$prefix}progressbg-padding-y: #{$progressbg-padding-y};
-  --#{$prefix}progressbg-padding-x: #{$progressbg-padding-x};
+  --progressbg-padding-y: #{$progressbg-padding-y};
+  --progressbg-padding-x: #{$progressbg-padding-x};
   position: relative;
-  padding: var(--#{$prefix}progressbg-padding-y) var(--#{$prefix}progressbg-padding-x);
   display: flex;
+  padding: var(--progressbg-padding-y) var(--progressbg-padding-x);
 }
 
 .progressbg-text {
@@ -105,52 +105,52 @@ Progressbg
   z-index: 1;
   display: flex;
   align-items: center;
-  @include text-truncate;
+  @include text-truncate();
 }
 
 .progressbg-progress {
   position: absolute;
-  top: 0;
-  inset-inline-end: 0;
-  bottom: 0;
   inset-inline-start: 0;
+  inset-inline-end: 0;
+  top: 0;
+  bottom: 0;
   z-index: 0;
   height: 100%;
-  background: transparent;
   pointer-events: none;
+  background: transparent;
 }
 
 .progressbg-value {
-  --#{$prefix}progressbg-value-padding-start: #{$progressbg-value-padding-start};
-  font-weight: var(--#{$prefix}font-weight-medium);
+  --progressbg-value-padding-start: #{$progressbg-value-padding-start};
+  padding-inline-start: var(--progressbg-value-padding-start);
   margin-inline-start: auto;
-  padding-inline-start: var(--#{$prefix}progressbg-value-padding-start);
+  font-weight: var(--font-weight-medium);
 }
 
 /**
 Progress steps
  */
 .progress-steps {
-  --#{$prefix}progress-steps-gap: #{$progress-steps-gap};
+  --progress-steps-gap: #{$progress-steps-gap};
   display: flex;
   flex-wrap: nowrap;
+  gap: var(--progress-steps-gap);
   width: 100%;
   padding: 0;
   margin: 0;
   list-style: none;
-  gap: var(--#{$prefix}progress-steps-gap);
 }
 
 .progress-steps-item {
-  --#{$prefix}progress-steps-item-height: #{$progress-steps-item-height};
+  --progress-steps-item-height: #{$progress-steps-item-height};
   flex: 1 1 0;
-  min-height: var(--#{$prefix}progress-steps-item-height);
+  min-height: var(--progress-steps-item-height);
   margin-top: 0;
   color: inherit;
   text-align: center;
   cursor: default;
-  background-color: var(--tblr-border-color);
-  @include border-radius(var(--#{$prefix}border-radius-pill));
+  background-color: var(--border-color);
+  @include border-radius(var(--border-radius-pill));
 
   @at-root a#{&} {
     cursor: pointer;

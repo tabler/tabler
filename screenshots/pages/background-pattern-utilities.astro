@@ -1,0 +1,30 @@
+---
+// .bg-pattern-{type} (core/scss/ui/_patterns.scss) — pure CSS background-image
+// utilities, no color/size modifier needed for the default look (they read
+// --tblr-body-color at low opacity out of the box).
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import BackgroundPattern from '@ui/BackgroundPattern.astro'
+
+const patterns = ['diagonal', 'dots', 'rectangles', 'grid', 'blueprint', 'circles', 'zigzag', 'diagonal-stripes'] as const
+---
+
+<ScreenshotLayout title="Background pattern utilities" columns={2}>
+  <Card>
+    <CardBody>
+      <CardTitle>Pattern types</CardTitle>
+      <div class="row row-cols-4 g-3">
+        {
+          patterns.map((pattern) => (
+            <div class="col">
+              <BackgroundPattern pattern={pattern} class="rounded mb-2" style="height: 5rem;" />
+              <code>.bg-pattern-{pattern}</code>
+            </div>
+          ))
+        }
+      </div>
+    </CardBody>
+  </Card>
+</ScreenshotLayout>

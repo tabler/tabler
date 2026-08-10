@@ -1,0 +1,24 @@
+---
+// Highlighted code block with a copy button — used by CodeDocs.
+import Icon from '@ui/Icon.astro'
+import { highlightCode } from '@shared/lib/code-example'
+
+interface Props {
+  /** The code to display. */
+  code: string
+  /** Shiki language used for highlighting. */
+  lang: string
+}
+
+const { code, lang } = Astro.props
+
+const highlighted = await highlightCode(code, lang)
+---
+
+<div class="position-relative">
+  <a class="btn btn-icon btn-dark position-absolute m-2 top-0 end-0 z-3" data-clipboard-text={code}>
+    <Icon name="clipboard" />
+    <Icon name="check" class="d-none" />
+  </a>
+  <Fragment set:html={highlighted} />
+</div>

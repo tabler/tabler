@@ -4,17 +4,14 @@
 interface Props {
   /** use .btn-group-vertical instead of .btn-group */
   vertical?: boolean
-  /** btn-group-{size}: sm | lg | xl */
-  size?: string
   class?: string
-  role?: astroHTML.JSX.AriaRole
   /** remaining attributes (aria-label, …) are forwarded */
   [key: string]: unknown
 }
 
-const { vertical, size, class: className, role = 'group', ...rest } = Astro.props
+const { vertical, class: className, ...rest } = Astro.props
 ---
 
-<div class:list={[vertical ? 'btn-group-vertical' : 'btn-group', size && `btn-group-${size}`, className]} role={role} {...rest}>
+<div class:list={[vertical ? 'btn-group-vertical' : 'btn-group', className]} role="group" {...rest}>
   <slot />
 </div>

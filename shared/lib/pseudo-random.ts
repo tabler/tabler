@@ -1,6 +1,8 @@
 // Deterministic pseudo-random values seeded by a loop index, used to generate
 // stable-looking demo data (numbers, dates, "time ago" labels) without a real RNG.
 
+import { requireIndex } from './array'
+
 export function randomNumber(x: number, min = 0, max = 100, round = 0): number {
   let value = ((x * x * Math.PI * Math.E * (max + 1) * (Math.sin(x) / Math.cos(x * x))) % (max + 1 - min)) + min
 
@@ -24,7 +26,7 @@ export function randomDate(x: number): Date {
 }
 
 export function randomItem<T>(x: number, items: T[]): T {
-  return items[randomNumber(x, 0, items.length - 1)]
+  return requireIndex(items, randomNumber(x, 0, items.length - 1))
 }
 
 /** A date up to `maxDays` days ago, formatted as "now" / "N day(s) ago". */

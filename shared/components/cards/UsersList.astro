@@ -16,7 +16,6 @@ interface Person {
 }
 
 interface Props {
-  limit?: number
   offset?: number
   hoverable?: boolean
   checkbox?: boolean
@@ -32,7 +31,9 @@ interface Props {
   hover?: boolean
 }
 
-const { limit = 8, offset = 0, hoverable = false, checkbox, checkedIds, title = 'Last commits', class: className } = Astro.props
+const { offset = 0, hoverable = false, checkbox, checkedIds, title = 'Last commits', class: className } = Astro.props
+
+const limit = 8
 
 const colors = ['green', 'red', 'yellow', 'x', 'x']
 const commitList = commits as { description: string }[]

@@ -84,7 +84,7 @@ const countries = flags as { name: string }[]
             <CardBody>
               <form class="space-y">
                 <div><InputIcon icon="user" placeholder="Username" prepend /></div>
-                <div><InputIcon icon="mail" placeholder="Email address" prepend type="mail" /></div>
+                <div><InputIcon icon="mail" placeholder="Email address" prepend type="email" /></div>
                 <div><InputIcon icon="lock" placeholder="Password" prepend type="password" /></div>
                 <div><InputIcon icon="lock" placeholder="Confirm Password" prepend type="password" /></div>
                 <div>
@@ -106,15 +106,15 @@ const countries = flags as { name: string }[]
                 <div>
                   <div class="input-icon">
                     <span class="input-icon-addon"><Icon name="user" /></span>
-                    <input type="text" value="" class="form-control is-invalid" placeholder="Username" />
-                    <div class="invalid-feedback">This throws the icon out of bounds when input element contains `is-invalid` class.</div>
+                    <input type="text" value="" class="form-control is-invalid" placeholder="Username" aria-label="Username" aria-invalid="true" aria-describedby="username-invalid-feedback" />
+                    <div class="invalid-feedback" id="username-invalid-feedback">This throws the icon out of bounds when input element contains `is-invalid` class.</div>
                   </div>
                 </div>
                 <div>
                   <div class="input-icon">
                     <span class="input-icon-addon"><Icon name="mail" /></span>
-                    <input type="email" value="" class="form-control is-valid" placeholder="Email" />
-                    <div class="valid-feedback">This email looks good!</div>
+                    <input type="email" value="" class="form-control is-valid" placeholder="Email" aria-label="Email" aria-invalid="false" aria-describedby="email-valid-feedback" />
+                    <div class="valid-feedback" id="email-valid-feedback">This email looks good!</div>
                   </div>
                 </div>
               </form>
@@ -132,33 +132,51 @@ const countries = flags as { name: string }[]
                 <div class="space-y">
                   <div><h4>Personal Info</h4></div>
                   <div class="row row-cols-2 g-4">
-                    <FormGroup label="First Name" class="">
-                      <input type="text" placeholder="Enter first name" class="form-control" />
+                    <FormGroup label="First Name" for="example-form-first-name" class="">
+                      <input type="text" id="example-form-first-name" placeholder="Enter first name" class="form-control" autocomplete="given-name" />
                     </FormGroup>
-                    <FormGroup label="Last Name" class="">
-                      <input type="text" placeholder="Enter last name" class="form-control" />
+                    <FormGroup label="Last Name" for="example-form-last-name" class="">
+                      <input type="text" id="example-form-last-name" placeholder="Enter last name" class="form-control" autocomplete="family-name" />
                     </FormGroup>
-                    <FormGroup label="Gender" class="">
-                      <div><select class="form-select"><option>Male</option><option>Female</option><option>Others</option></select></div>
+                    <FormGroup label="Gender" for="example-form-gender" class="">
+                      <div>
+                        <select class="form-select" id="example-form-gender">
+                          <option>Male</option>
+                          <option>Female</option>
+                          <option>Others</option>
+                        </select>
+                      </div>
                     </FormGroup>
-                    <FormGroup label="Date of Birth" class="">
+                    <FormGroup label="Date of Birth" for="datepicker-birth-date" class="">
                       <div><Datepicker layout="icon" id="birth-date" /></div>
                     </FormGroup>
                   </div>
-                  <FormGroup label="Category" class="">
-                    <div><select class="form-select"><option>Category 1</option><option>Category 2</option><option>Category 3</option></select></div>
+                  <FormGroup label="Category" for="example-form-category" class="">
+                    <div>
+                      <select class="form-select" id="example-form-category">
+                        <option>Category 1</option>
+                        <option>Category 2</option>
+                        <option>Category 3</option>
+                      </select>
+                    </div>
                   </FormGroup>
                   <div><h4>Address</h4></div>
-                  <FormGroup label="Street" class="">
-                    <input type="text" class="form-control" />
+                  <FormGroup label="Street" for="example-form-street" class="">
+                    <input type="text" id="example-form-street" class="form-control" autocomplete="street-address" />
                   </FormGroup>
                   <div class="row row-cols-2 g-4">
-                    <FormGroup label="City" class=""><input type="text" class="form-control" /></FormGroup>
-                    <FormGroup label="State" class=""><input type="text" class="form-control" /></FormGroup>
-                    <FormGroup label="Post Code" class=""><input type="text" class="form-control" /></FormGroup>
-                    <FormGroup label="Country" class="">
+                    <FormGroup label="City" for="example-form-city" class="">
+                      <input type="text" id="example-form-city" class="form-control" autocomplete="address-level2" />
+                    </FormGroup>
+                    <FormGroup label="State" for="example-form-state" class="">
+                      <input type="text" id="example-form-state" class="form-control" autocomplete="address-level1" />
+                    </FormGroup>
+                    <FormGroup label="Post Code" for="example-form-postcode" class="">
+                      <input type="text" id="example-form-postcode" class="form-control" autocomplete="postal-code" />
+                    </FormGroup>
+                    <FormGroup label="Country" for="example-form-country" class="">
                       <div>
-                        <select class="form-select">
+                        <select class="form-select" id="example-form-country" autocomplete="country-name">
                           <option>--Select Country--</option>
                           {countries.map((country) => <option>{country.name}</option>)}
                         </select>
@@ -185,6 +203,6 @@ const countries = flags as { name: string }[]
       </div>
     </div>
 
-    <div class="col"><Payment /></div>
+    <div class="col"><Payment label="Visa" /></div>
   </div>
 </DefaultLayout>

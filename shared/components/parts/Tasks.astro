@@ -12,11 +12,11 @@ interface Column {
 }
 
 interface Props {
-  data?: { columns: Column[] }
   class?: string
 }
 
-const { data = tasksData as unknown as { columns: Column[] }, class: className } = Astro.props
+const { class: className } = Astro.props
+const data = tasksData as unknown as { columns: Column[] }
 ---
 
 <div class={`row${className ? ` ${className}` : ''}`}>

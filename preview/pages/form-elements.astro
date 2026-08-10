@@ -19,6 +19,7 @@ import CardFooter from '@ui/CardFooter.astro'
 import CardTitle from '@ui/CardTitle.astro'
 import FormGroup from '@ui/FormGroup.astro'
 import people from '@data/people.json'
+import { requireIndex } from '@shared/lib/array'
 
 const httpMethods = ['GET', 'POST', 'PUT', 'HEAD', 'DELETE', 'PATCH']
 const comparisons = [
@@ -142,7 +143,7 @@ const rows = [
             <CardBody>
               <div class="mb-3">
                 <div class="row">
-                  <div class="col-auto"><Avatar person={people[2]} size="md" /></div>
+                  <div class="col-auto"><Avatar person={requireIndex(people, 2)} size="md" /></div>
                   <div class="col">
                     <FormGroup label="Email-Address">
                       <input class="form-control" placeholder="your-email@domain.com" />
@@ -184,7 +185,7 @@ const rows = [
                 <div class="col-md-5"><FormGroup label="Country"><select class="form-control form-select"><option value="">Germany</option></select></FormGroup></div>
                 <div class="col-md-12">
                   <FormGroup label="About Me" class="mb-3 mb-0">
-                    <textarea rows="5" class="form-control" placeholder="Here can be your description" value="Mike">Oh so, your weak rhyme You doubt I'll bother, reading into it I'll probably won't, left to my own devices But that's the difference in our opinions.</textarea>
+                    <textarea rows="5" class="form-control" placeholder="Here can be your description">Oh so, your weak rhyme You doubt I'll bother, reading into it I'll probably won't, left to my own devices But that's the difference in our opinions.</textarea>
                   </FormGroup>
                 </div>
               </div>

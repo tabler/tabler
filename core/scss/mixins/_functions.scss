@@ -121,12 +121,12 @@
 // stylelint-disable scss/dollar-variable-pattern
 @function rgba-css-var($identifier, $target) {
   @if $identifier == 'body' and $target == 'bg' {
-    @return color-mix(in srgb, var(--#{$prefix}#{$identifier}-bg) calc(var(--#{$prefix}#{$target}-opacity) * 100%), transparent);
+    @return color-mix(in srgb, var(--#{$identifier}-bg) calc(var(--#{$target}-opacity) * 100%), transparent);
   }
   @if $identifier == 'body' and $target == 'text' {
-    @return color-mix(in srgb, var(--#{$prefix}#{$identifier}-color) calc(var(--#{$prefix}#{$target}-opacity) * 100%), transparent);
+    @return color-mix(in srgb, var(--#{$identifier}-color) calc(var(--#{$target}-opacity) * 100%), transparent);
   } @else {
-    @return color-mix(in srgb, var(--#{$prefix}#{$identifier}) calc(var(--#{$prefix}#{$target}-opacity) * 100%), transparent);
+    @return color-mix(in srgb, var(--#{$identifier}) calc(var(--#{$target}-opacity) * 100%), transparent);
   }
 }
 
@@ -155,7 +155,7 @@
 @function varify($list) {
   $result: null;
   @each $entry in $list {
-    $result: list.append($result, var(--#{$prefix}#{$entry}), space);
+    $result: list.append($result, var(--#{$entry}), space);
   }
   @return $result;
 }

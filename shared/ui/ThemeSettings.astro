@@ -2,7 +2,6 @@
 // Offcanvas behavior script lives in BaseLayout (after global scripts).
 import FormHint from './FormHint.astro'
 import Icon from './Icon.astro'
-import FormGroup from './FormGroup.astro'
 import { site } from '@shared/lib/site'
 
 const defaults = {
@@ -27,7 +26,8 @@ const defaults = {
     </div>
     <div class="offcanvas-body d-flex flex-column">
       <div>
-        <FormGroup label="Color mode" class="mb-4" associate={false}>
+        <fieldset class="border-0 p-0 mb-4">
+          <legend class="form-label float-none mb-0" style="font-size: inherit;">Color mode</legend>
           <FormHint as="p">Choose the color mode for your app.</FormHint>
           {
             ['light', 'dark', 'auto'].map((mode) => (
@@ -39,9 +39,10 @@ const defaults = {
               </label>
             ))
           }
-        </FormGroup>
+        </fieldset>
 
-        <FormGroup label="Color scheme" class="mb-4" associate={false}>
+        <fieldset class="border-0 p-0 mb-4">
+          <legend class="form-label float-none mb-0" style="font-size: inherit;">Color scheme</legend>
           <FormHint as="p">The perfect color mode for your app.</FormHint>
 
           <div class="row g-2">
@@ -49,7 +50,7 @@ const defaults = {
               site.themeColors.map((color) => (
                 <div class="col-auto">
                   <label class="form-colorinput">
-                    <input name="theme-primary" type="radio" value={color} class="form-colorinput-input" />
+                    <input name="theme-primary" type="radio" value={color} class="form-colorinput-input" aria-label={color} />
                     <span class={`form-colorinput-color bg-${color}`} />
                   </label>
                 </div>
@@ -57,14 +58,15 @@ const defaults = {
             }
             <div class="col-auto">
               <label class="form-colorinput">
-                <input name="theme-primary" type="radio" value="inverted" class="form-colorinput-input" />
+                <input name="theme-primary" type="radio" value="inverted" class="form-colorinput-input" aria-label="Inverted" />
                 <span class="form-colorinput-color bg-inverted"></span>
               </label>
             </div>
           </div>
-        </FormGroup>
+        </fieldset>
 
-        <FormGroup label="Font family" class="mb-4" associate={false}>
+        <fieldset class="border-0 p-0 mb-4">
+          <legend class="form-label float-none mb-0" style="font-size: inherit;">Font family</legend>
           <FormHint as="p">Choose the font family that fits your app.</FormHint>
 
           <div>
@@ -79,9 +81,10 @@ const defaults = {
               ))
             }
           </div>
-        </FormGroup>
+        </fieldset>
 
-        <FormGroup label="Theme base" class="mb-4" associate={false}>
+        <fieldset class="border-0 p-0 mb-4">
+          <legend class="form-label float-none mb-0" style="font-size: inherit;">Theme base</legend>
           <FormHint as="p">Choose the gray shade for your app.</FormHint>
 
           <div>
@@ -96,9 +99,10 @@ const defaults = {
               ))
             }
           </div>
-        </FormGroup>
+        </fieldset>
 
-        <FormGroup label="Corner Radius" class="mb-4" associate={false}>
+        <fieldset class="border-0 p-0 mb-4">
+          <legend class="form-label float-none mb-0" style="font-size: inherit;">Corner Radius</legend>
           <FormHint as="p">Choose the border radius factor for your app.</FormHint>
 
           <div>
@@ -113,7 +117,7 @@ const defaults = {
               ))
             }
           </div>
-        </FormGroup>
+        </fieldset>
       </div>
 
       <div class="mt-auto space-y">

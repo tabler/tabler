@@ -1,9 +1,13 @@
 ---
+import type { HTMLTag } from 'astro/types'
+
 // List group item (.list-group-item).
 
-interface Props {
-  /** element to render instead of div (e.g. a, li, label) */
-  as?: string
+// `as` must stay out of the Props body: Astro's frontmatter scanner bails on a member
+// literally named `as` and silently falls back to untyped props.
+type PolymorphicProps = { as?: HTMLTag }
+
+interface Props extends PolymorphicProps {
   /** list-group-item-action (hover/focus affordance, typically for a/button items) */
   action?: boolean
   active?: boolean
@@ -13,7 +17,7 @@ interface Props {
   [key: string]: unknown
 }
 
-const { as: Element = 'div', action, active, disabled, class: className, ...rest } = Astro.props
+const { as: Element = 'div', action, active, disabled, class: className, ...rest }: Props = Astro.props
 ---
 
 <Element class:list={['list-group-item', action && 'list-group-item-action', active && 'active', disabled && 'disabled', className]} {...rest}>

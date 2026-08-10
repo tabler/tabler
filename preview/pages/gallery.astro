@@ -4,6 +4,7 @@ import GalleryPhoto from '@shared/components/cards/GalleryPhoto.astro'
 import Pagination from '@ui/Pagination.astro'
 import photos from '@data/photos.json'
 import people from '@data/people.json'
+import { requireIndex } from '@shared/lib/array'
 
 // Horizontal photos, limit 15; person = people[loop index].
 const galleryPhotos = photos.filter((photo) => photo.horizontal).slice(0, 15)
@@ -14,7 +15,7 @@ const galleryPhotos = photos.filter((photo) => photo.horizontal).slice(0, 15)
     {
       galleryPhotos.map((photo, index) => (
         <div class="col-sm-6 col-lg-4">
-          <GalleryPhoto photo={photo} person={people[index]} index={index + 1} />
+          <GalleryPhoto photo={photo} person={requireIndex(people, index)} index={index + 1} />
         </div>
       ))
     }
