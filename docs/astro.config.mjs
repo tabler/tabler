@@ -68,6 +68,9 @@ export default defineConfig({
     host: true,
   },
   vite: {
+    define: {
+      TABLER_STATIC_BASE: JSON.stringify('/static'),
+    },
     resolve: {
       alias: {
         '@data': fileURLToPath(new URL('../shared/data', import.meta.url)),
