@@ -312,6 +312,24 @@ const docsLinks = docs.links as DocsLink[];
 					<div class="col bg-docs-gradient">
 						<div class="py-lg-5 ps-lg-5">
 							<div class="py-6 ps-lg-6 p-xxl-6">
+								{breadcrumbs && (
+									<nav aria-label="Breadcrumb">
+										<ol class="breadcrumb breadcrumb-arrows breadcrumb-muted mb-3">
+											{breadcrumbs.map((item, index) =>
+												index < breadcrumbs.length - 1 ? (
+													<li class="breadcrumb-item">
+														<a href={item.path}>{item.name}</a>
+													</li>
+												) : (
+													<li class="breadcrumb-item active" aria-current="page">
+														{item.name}
+													</li>
+												),
+											)}
+										</ol>
+									</nav>
+								)}
+
 								<Prose
 									data-bs-spy="scroll"
 									data-bs-target="#toc"
@@ -319,24 +337,6 @@ const docsLinks = docs.links as DocsLink[];
 									data-bs-smooth-scroll="true"
 									tabindex="0"
 								>
-									{breadcrumbs && (
-										<nav aria-label="Breadcrumb">
-											<ol class="breadcrumb breadcrumb-arrows breadcrumb-muted mb-3">
-												{breadcrumbs.map((item, index) =>
-													index < breadcrumbs.length - 1 ? (
-														<li class="breadcrumb-item">
-															<a href={item.path}>{item.name}</a>
-														</li>
-													) : (
-														<li class="breadcrumb-item active" aria-current="page">
-															{item.name}
-														</li>
-													),
-												)}
-											</ol>
-										</nav>
-									)}
-
 									<div class="d-flex">
 										<h1>
 											{title}
