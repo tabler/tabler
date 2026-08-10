@@ -3,6 +3,14 @@
 import Icon from '@ui/Icon.astro'
 import { beautifyHtml, highlightCode, removeHref } from '@shared/lib/code-example'
 
+/**
+ * Demo area background:
+ * - surface-secondary — muted solid surface (default)
+ * - transparent — checkerboard pattern, for components with their own background
+ * - primary — theme-aware white (bg-surface)
+ */
+type ExampleBackground = 'surface-secondary' | 'transparent' | 'primary'
+
 interface Props {
   /** raw HTML of the example; when absent — the slot is rendered */
   html?: string
@@ -10,7 +18,7 @@ interface Props {
   code?: string
   raw?: boolean
   overflow?: string
-  bg?: string
+  background?: ExampleBackground
   class?: string
   height?: string
   column?: boolean
@@ -21,7 +29,13 @@ interface Props {
   codeOnly?: boolean
 }
 
-const { html: htmlProp, code, raw, overflow = 'auto', bg, class: className, height, column, centered, vertical, columnFullWidth, hideCode, codeOnly } = Astro.props
+const { html: htmlProp, code, raw, overflow = 'auto', background = 'surface-secondary', class: className, height, column, centered, vertical, columnFullWidth, hideCode, codeOnly } = Astro.props
+
+const backgroundClasses: Record<ExampleBackground, string> = {
+  'surface-secondary': 'bg-surface-secondary',
+  'transparent': 'bg-pattern-rectangles',
+  'primary': 'bg-surface',
+}
 
 // Strip empty lines from the example HTML.
 let html = (htmlProp ?? (await Astro.slots.render('default'))).replace(/^\s*[\r\n]/gm, '')
@@ -31,7 +45,7 @@ let html = (htmlProp ?? (await Astro.slots.render('default'))).replace(/^\s*[\r\
 // code in the panel looks like hand-written HTML.
 html = html.replace(/<(path|circle|line|polyline|polygon|rect|ellipse)([^>]*?)\s*><\/\1>/g, '<$1$2 />').replace(/&#39;/g, "'")
 
-const exampleClasses = ['example fs-base border rounded my-5', !raw && 'd-flex flex-wrap justify-content-center', `overflow-${overflow}`, 'position-relative', bg ? `bg-${bg}` : 'bg-pattern-rectangles', className]
+const exampleClasses = ['example fs-base border rounded my-5', !raw && 'd-flex flex-wrap justify-content-center', `overflow-${overflow}`, 'position-relative', backgroundClasses[background], className]
 
 const innerClasses = ['p-6 w-full', column && 'd-flex gap-3 flex-column', !column && centered && `d-flex flex-fill flex-wrap gap-2 justify-content-center${vertical ? ' align-items-center flex-column' : ' justify-content-center'}`, columnFullWidth && 'd-flex flex-fill flex-column gap-2']
 
