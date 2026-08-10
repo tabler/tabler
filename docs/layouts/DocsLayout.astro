@@ -38,6 +38,8 @@ interface Props {
 	url?: string | undefined;
 	/** Extra libraries from libs.json (css+js) */
 	docsLibs?: string[];
+	/** front matter `css-plugins`: extra tabler-<name>.css sheets for this page's demos */
+	cssPlugins?: string[];
 	/** hides child and previous/next page navigation */
 	hidePagination?: boolean | undefined;
 	/** repo-relative source path for the "Edit this page" link, e.g. "docs/pages/ui/components/alert.mdx" */
@@ -53,9 +55,16 @@ const {
 	addedIn,
 	toc = [],
 	docsLibs = [],
+	cssPlugins = [],
 	hidePagination = false,
 	editPath,
 } = Astro.props;
+
+// Always-on plugin styles. Heavy demo-only sheets (flags, payments, socials)
+// are opt-in per page via the `css-plugins` frontmatter key; marketing is not
+// used by any docs page.
+const basePlugins = ['themes', 'vendors'];
+const pagePlugins = [...basePlugins, ...cssPlugins.filter((plugin) => !basePlugins.includes(plugin))];
 const environment = process.env.NODE_ENV || 'production';
 // Vercel preview/branch deployments must not be indexed (VERCEL_ENV is unset locally).
 const isVercelPreview = !!process.env.VERCEL_ENV && process.env.VERCEL_ENV !== 'production';
@@ -119,6 +128,47 @@ const linkedinUrl = 'https://www.linkedin.com/company/tabler-io';
 
 const year = new Date().getFullYear();
 
+// JSON-LD breadcrumbs. Segment names come from the docs.json menu tree;
+// top-level sections are not in the menu, so they get explicit names.
+const sectionNames: Record<string, string> = {
+	'/ui': 'Tabler UI',
+	'/icons': 'Tabler Icons',
+	'/illustrations': 'Tabler Illustrations',
+	'/emails': 'Tabler Emails',
+};
+type MenuNode = { title?: string; url?: string; children?: MenuNode[] };
+const menuTitleByUrl = new Map<string, string>();
+const collectTitles = (nodes: MenuNode[]) => {
+	for (const node of nodes) {
+		if (node.url?.startsWith('/') && node.title) menuTitleByUrl.set(node.url, node.title);
+		if (node.children) collectTitles(node.children);
+	}
+};
+collectTitles(docs.menu as MenuNode[]);
+
+const breadcrumbJsonLd = (() => {
+	if (docsUrl === '/' || docsUrl === '/404') return null;
+	const segments = docsUrl.split('/').filter(Boolean);
+	const items = [{ name: 'Tabler Documentation', url: `${site.docsUrl}/` }];
+	let path = '';
+	segments.forEach((segment, index) => {
+		path += `/${segment}`;
+		const isLast = index === segments.length - 1;
+		const name = isLast ? title : (menuTitleByUrl.get(path) ?? sectionNames[path] ?? segment);
+		items.push({ name, url: `${site.docsUrl}${path}` });
+	});
+	return JSON.stringify({
+		'@context': 'https://schema.org',
+		'@type': 'BreadcrumbList',
+		itemListElement: items.map((item, index) => ({
+			'@type': 'ListItem',
+			position: index + 1,
+			name: item.name,
+			item: item.url,
+		})),
+	});
+})();
+
 type DocsLink = { title: string; url: string; icon: string };
 const docsLinks = docs.links as DocsLink[];
 ---
@@ -151,6 +201,8 @@ const docsLinks = docs.links as DocsLink[];
 					<meta name="twitter:title" content={metaTitle} />
 					{metaDescription && <meta name="twitter:description" content={metaDescription} />}
 					<meta name="twitter:image" content={ogImageUrl} />
+
+					{breadcrumbJsonLd && <script is:inline type="application/ld+json" set:html={breadcrumbJsonLd} />}
 				</Fragment>
 			)
 		}
@@ -170,7 +222,7 @@ const docsLinks = docs.links as DocsLink[];
 		<!-- END GLOBAL MANDATORY STYLES -->
 
 		<!-- BEGIN PLUGINS STYLES -->
-		{site.cssPlugins.map((plugin) => <link href={`/dist/css/tabler-${plugin}.css`} rel="stylesheet" />)}
+		{pagePlugins.map((plugin) => <link href={`/dist/css/tabler-${plugin}.css`} rel="stylesheet" />)}
 		<!-- END PLUGINS STYLES -->
 
 		{
@@ -350,7 +402,7 @@ const docsLinks = docs.links as DocsLink[];
 		<!-- END PAGE SCRIPTS -->
 
 		<!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
-		<script is:inline src="/dist/js/tabler.js"></script>
+		<script is:inline src="/dist/js/tabler.js" defer></script>
 		<!-- END GLOBAL MANDATORY SCRIPTS -->
 
 		<PageScripts />
