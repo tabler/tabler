@@ -162,28 +162,34 @@ const websiteJsonLd =
 			})
 		: null;
 
-const breadcrumbJsonLd = (() => {
+// Breadcrumb trail — one source for the visible nav above the h1 and the
+// JSON-LD, so the structured data mirrors what the page shows.
+const breadcrumbs = (() => {
 	if (docsUrl === '/' || docsUrl === '/404') return null;
 	const segments = docsUrl.split('/').filter(Boolean);
-	const items = [{ name: 'Tabler Documentation', url: `${site.docsUrl}/` }];
+	const items = [{ name: 'Docs', path: '/' }];
 	let path = '';
 	segments.forEach((segment, index) => {
 		path += `/${segment}`;
 		const isLast = index === segments.length - 1;
 		const name = isLast ? title : (menuTitleByUrl.get(path) ?? sectionNames[path] ?? segment);
-		items.push({ name, url: `${site.docsUrl}${path}` });
+		items.push({ name, path });
 	});
-	return JSON.stringify({
-		'@context': 'https://schema.org',
-		'@type': 'BreadcrumbList',
-		itemListElement: items.map((item, index) => ({
-			'@type': 'ListItem',
-			position: index + 1,
-			name: item.name,
-			item: item.url,
-		})),
-	});
+	return items;
 })();
+
+const breadcrumbJsonLd = breadcrumbs
+	? JSON.stringify({
+			'@context': 'https://schema.org',
+			'@type': 'BreadcrumbList',
+			itemListElement: breadcrumbs.map((item, index) => ({
+				'@type': 'ListItem',
+				position: index + 1,
+				name: item.name,
+				item: item.path === '/' ? `${site.docsUrl}/` : `${site.docsUrl}${item.path}`,
+			})),
+		})
+	: null;
 
 type DocsLink = { title: string; url: string; icon: string };
 const docsLinks = docs.links as DocsLink[];
@@ -313,6 +319,24 @@ const docsLinks = docs.links as DocsLink[];
 									data-bs-smooth-scroll="true"
 									tabindex="0"
 								>
+									{breadcrumbs && (
+										<nav aria-label="Breadcrumb">
+											<ol class="breadcrumb breadcrumb-arrows">
+												{breadcrumbs.map((item, index) =>
+													index < breadcrumbs.length - 1 ? (
+														<li class="breadcrumb-item">
+															<a href={item.path}>{item.name}</a>
+														</li>
+													) : (
+														<li class="breadcrumb-item active" aria-current="page">
+															{item.name}
+														</li>
+													),
+												)}
+											</ol>
+										</nav>
+									)}
+
 									<div class="d-flex">
 										<h1>
 											{title}
