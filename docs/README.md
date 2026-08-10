@@ -42,4 +42,5 @@ Static output goes to `dist/` and, via the `@astrojs/vercel` adapter, to `.verce
 ```sh
 pnpm --dir docs run type-check
 pnpm run lint-md
+pnpm run check-docs-links # validates internal links at the source level (also part of `pnpm lint`)
 ```
