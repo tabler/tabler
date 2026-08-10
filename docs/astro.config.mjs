@@ -1,5 +1,5 @@
 // @ts-check
-import { defineConfig } from 'astro/config'
+import { defineConfig, envField } from 'astro/config'
 import vercel from '@astrojs/vercel'
 import mdx from '@astrojs/mdx'
 import { satteri } from '@astrojs/markdown-satteri'
@@ -12,6 +12,16 @@ const path = (p) => fileURLToPath(new URL(p, import.meta.url))
 // https://astro.build/config
 export default defineConfig({
   site: 'https://docs.tabler.io',
+  env: {
+    // DocSearch/Algolia config for the docs search (see DocsNavbar.astro).
+    // Values come from the environment only (.env locally, project settings on
+    // Vercel) — see .env.example. When unset, the search input is hidden.
+    schema: {
+      DOCSEARCH_APP_ID: envField.string({ context: 'client', access: 'public', optional: true }),
+      DOCSEARCH_INDEX_NAME: envField.string({ context: 'client', access: 'public', optional: true }),
+      DOCSEARCH_API_KEY: envField.string({ context: 'client', access: 'public', optional: true }),
+    },
+  },
   // Static output + the Vercel adapter: turns `redirects` below into real HTTP
   // redirects at Vercel's routing layer (no adapter = meta-refresh HTML pages).
   adapter: vercel({

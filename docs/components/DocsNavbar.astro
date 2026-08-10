@@ -23,7 +23,20 @@ const changelogUrl = 'https://tabler.io/changelog'
         </div>
       </div>
       <div class="d-none d-md-block col">
-        <div id="docsearch"></div>
+        {
+          /* Native Tabler search input. The script below lazy-imports @docsearch/js on
+            interaction and opens its modal; DocSearch mounts into the hidden #docsearch. */
+        }
+        <div class="input-icon">
+          <span class="input-icon-addon">
+            <Icon name="search" />
+          </span>
+          <input type="search" id="docs-search-input" class="form-control cursor-pointer" placeholder="Search…" aria-label="Search documentation" autocomplete="off" readonly />
+          <span class="input-icon-addon">
+            <kbd id="docs-search-kbd">⌘K</kbd>
+          </span>
+        </div>
+        <div id="docsearch" class="d-none"></div>
       </div>
       <div class="col d-flex">
         <ul class="navbar-nav ms-auto gap-2 align-items-center">
@@ -59,3 +72,77 @@ const changelogUrl = 'https://tabler.io/changelog'
   </div>
 </nav>
 <!-- END DOCS NAVBAR -->
+
+<script>
+  // Lazy DocSearch: the native input above triggers a dynamic import of
+  // @docsearch/js, which Vite splits into its own hashed chunk — nothing is
+  // downloaded until the first interaction. DocSearch mounts into the hidden
+  // #docsearch container; opening the modal means clicking its hidden button.
+  import { DOCSEARCH_APP_ID, DOCSEARCH_INDEX_NAME, DOCSEARCH_API_KEY } from 'astro:env/client'
+
+  const input = document.getElementById('docs-search-input')
+  const mount = document.getElementById('docsearch')
+  const configured = Boolean(DOCSEARCH_APP_ID && DOCSEARCH_INDEX_NAME && DOCSEARCH_API_KEY)
+
+  if (input && !configured) {
+    // No Algolia env config (see .env.example) — hide the dead search input.
+    input.closest<HTMLElement>('.input-icon')?.classList.add('d-none')
+    console.warn('Docs search disabled: DOCSEARCH_* env variables are not set.')
+  }
+
+  if (input && mount && configured) {
+    const isMac = /Mac|iPhone|iPad|iPod/.test(navigator.platform)
+    const kbd = document.getElementById('docs-search-kbd')
+    if (kbd && !isMac) kbd.textContent = 'Ctrl K'
+
+    let state: 'idle' | 'loading' | 'ready' = 'idle'
+    let openWhenReady = false
+
+    const openModal = () => mount.querySelector<HTMLElement>('.DocSearch-Button')?.click()
+
+    const load = async (open: boolean) => {
+      openWhenReady = openWhenReady || open
+      if (state === 'ready') {
+        if (open) openModal()
+        return
+      }
+      if (state === 'loading') return
+      state = 'loading'
+      try {
+        const { default: docsearch } = await import('@docsearch/js')
+        docsearch({
+          container: '#docsearch',
+          appId: DOCSEARCH_APP_ID,
+          indexName: DOCSEARCH_INDEX_NAME,
+          apiKey: DOCSEARCH_API_KEY,
+        })
+        state = 'ready'
+        // The bundle renders its (hidden) button and binds its own shortcuts.
+        if (openWhenReady) openModal()
+      } catch {
+        state = 'idle'
+      }
+    }
+
+    input.addEventListener('click', () => {
+      load(true)
+      input.blur()
+    })
+    // Keyboard users: prefetch on focus, open on Enter or when they start typing.
+    input.addEventListener('focus', () => load(false))
+    input.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter' || event.key.length === 1) {
+        event.preventDefault()
+        load(true)
+        input.blur()
+      }
+    })
+    input.addEventListener('pointerenter', () => load(false))
+    document.addEventListener('keydown', (event) => {
+      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k' && state !== 'ready') {
+        event.preventDefault()
+        load(true)
+      }
+    })
+  }
+</script>
