@@ -163,9 +163,12 @@ for (const file of sync(join(pagesDir, '**', '*.mdx'))) {
     checkTarget(label, link, file)
   }
 
-  const related = frontmatter(file).match(/^related:\s*\[([^\]]*)\]/m)
+  // `related:` accepts both the array and the scalar form (see DocsMdxLayout).
+  const related = frontmatter(file).match(/^related:\s*(.+)$/m)
   if (related) {
-    for (const url of (related[1] ?? '').split(',').map((value) => value.trim().replace(/^['"]|['"]$/g, ''))) {
+    const value = (related[1] ?? '').trim()
+    const entries = value.startsWith('[') ? value.replace(/^\[|\]$/g, '').split(',') : [value]
+    for (const url of entries.map((entry) => entry.trim().replace(/^['"]|['"]$/g, ''))) {
       if (url) checkTarget(`${label} (related)`, url)
     }
   }
