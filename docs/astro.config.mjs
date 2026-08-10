@@ -20,8 +20,33 @@ export default defineConfig({
     },
   }),
   // Renamed/moved pages. Add an entry here whenever a docs URL changes.
+  // The plural component slugs are the pre-Astro URLs still present in the
+  // Google index, Algolia search results and external backlinks.
   redirects: {
     '/ui/base/markdown': { status: 301, destination: '/ui/base/prose' },
+    ...Object.fromEntries(
+      [
+        ['alerts', 'alert'],
+        ['avatars', 'avatar'],
+        ['badges', 'badge'],
+        ['buttons', 'button'],
+        ['cards', 'card'],
+        ['charts', 'chart'],
+        ['dropdowns', 'dropdown'],
+        ['icons', 'icon'],
+        ['modals', 'modal'],
+        ['ribbons', 'ribbon'],
+        ['spinners', 'spinner'],
+        ['statuses', 'status'],
+        ['steps', 'step'],
+        ['tables', 'table'],
+        ['tabs', 'tab'],
+        ['timelines', 'timeline'],
+        ['toasts', 'toast'],
+        ['tooltips', 'tooltip'],
+        ['vector-maps', 'vector-map'],
+      ].map(([from, to]) => [`/ui/components/${from}`, { status: 301, destination: `/ui/components/${to}` }]),
+    ),
   },
   // pages live at the package root (./pages) — content-first layout; all
   // components/lib/data are shared (see the @shared alias)

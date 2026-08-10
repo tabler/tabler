@@ -19,6 +19,7 @@ interface MdxFrontmatter {
   'added-in'?: string
   'docs-libs'?: string | string[]
   'css-plugins'?: string | string[]
+  'related'?: string | string[]
   'hide-pagination'?: boolean
 }
 
@@ -44,6 +45,9 @@ const docsLibs = rawDocsLibs == null ? [] : Array.isArray(rawDocsLibs) ? rawDocs
 const rawCssPlugins = frontmatter['css-plugins']
 const cssPlugins = rawCssPlugins == null ? [] : Array.isArray(rawCssPlugins) ? rawCssPlugins : [rawCssPlugins]
 
+const rawRelated = frontmatter['related']
+const related = rawRelated == null ? [] : Array.isArray(rawRelated) ? rawRelated : [rawRelated]
+
 const toc = headings
   .filter((heading) => heading.depth === 2 || heading.depth === 3)
   .map((heading) => ({
@@ -62,6 +66,7 @@ const toc = headings
   addedIn={frontmatter['added-in']}
   docsLibs={docsLibs}
   cssPlugins={cssPlugins}
+  related={related}
   hidePagination={frontmatter['hide-pagination']}
   editPath={editPath}
   toc={toc}

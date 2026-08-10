@@ -40,6 +40,8 @@ interface Props {
 	docsLibs?: string[];
 	/** front matter `css-plugins`: extra tabler-<name>.css sheets for this page's demos */
 	cssPlugins?: string[];
+	/** front matter `related`: docs URLs of related pages, rendered above the pagination */
+	related?: string[];
 	/** hides child and previous/next page navigation */
 	hidePagination?: boolean | undefined;
 	/** repo-relative source path for the "Edit this page" link, e.g. "docs/pages/ui/components/alert.mdx" */
@@ -56,6 +58,7 @@ const {
 	toc = [],
 	docsLibs = [],
 	cssPlugins = [],
+	related = [],
 	hidePagination = false,
 	editPath,
 } = Astro.props;
@@ -146,6 +149,19 @@ const collectTitles = (nodes: MenuNode[]) => {
 };
 collectTitles(docs.menu as MenuNode[]);
 
+// WebSite schema on the homepage only — lets Google pick the right site name.
+// No SearchAction: docs search is a modal, there is no /search?q= results URL.
+const websiteJsonLd =
+	docsUrl === '/'
+		? JSON.stringify({
+				'@context': 'https://schema.org',
+				'@type': 'WebSite',
+				'name': 'Tabler Documentation',
+				'alternateName': 'Tabler Docs',
+				'url': `${site.docsUrl}/`,
+			})
+		: null;
+
 const breadcrumbJsonLd = (() => {
 	if (docsUrl === '/' || docsUrl === '/404') return null;
 	const segments = docsUrl.split('/').filter(Boolean);
@@ -179,6 +195,8 @@ const docsLinks = docs.links as DocsLink[];
 		<!-- BEGIN META -->
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="theme-color" content={site.themeColor} />
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
 		<title>{metaTitle} | {siteName}</title>
 		{isVercelPreview && <meta name="robots" content="noindex" />}
@@ -198,10 +216,12 @@ const docsLinks = docs.links as DocsLink[];
 
 					<!-- Twitter Card data -->
 					<meta name="twitter:card" content="summary_large_image" />
+					<meta name="twitter:site" content="@tabler_io" />
 					<meta name="twitter:title" content={metaTitle} />
 					{metaDescription && <meta name="twitter:description" content={metaDescription} />}
 					<meta name="twitter:image" content={ogImageUrl} />
 
+					{websiteJsonLd && <script is:inline type="application/ld+json" set:html={websiteJsonLd} />}
 					{breadcrumbJsonLd && <script is:inline type="application/ld+json" set:html={breadcrumbJsonLd} />}
 				</Fragment>
 			)
@@ -311,6 +331,19 @@ const docsLinks = docs.links as DocsLink[];
 
 									{/* Page must supply headings with ids (MDX does this by default). */}
 									<slot />
+
+									{related.length > 0 && (
+										<Fragment>
+											<h2 id="related">Related</h2>
+											<ul>
+												{related.map((relatedUrl) => (
+													<li>
+														<a href={relatedUrl}>{menuTitleByUrl.get(relatedUrl) ?? relatedUrl}</a>
+													</li>
+												))}
+											</ul>
+										</Fragment>
+									)}
 
 									{!hidePagination && <DocsPagination url={docsUrl} />}
 
