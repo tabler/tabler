@@ -11,6 +11,8 @@ import DocsMenu from '@components/DocsMenu.astro';
 import DocsToc from '@components/DocsToc.astro';
 import type { TocItem } from '@components/DocsToc.astro';
 import DocsPagination from '@components/DocsPagination.astro';
+import DocsCard from '@components/DocsCard.astro';
+import { getDocsPage } from '@shared/lib/docs-children';
 import Prose from '@ui/Prose.astro';
 import PageScripts from '@shared/components/PageScripts.astro';
 
@@ -193,6 +195,12 @@ const breadcrumbJsonLd = breadcrumbs
 
 type DocsLink = { title: string; url: string; icon: string };
 const docsLinks = docs.links as DocsLink[];
+
+// Card data for the "Related" section (title/description from the target
+// page's frontmatter; menu title as fallback).
+const relatedPages = related.map(
+	(url) => getDocsPage(url) ?? { url, title: menuTitleByUrl.get(url) ?? url, description: '', order: 0 },
+);
 ---
 
 <!doctype html>
@@ -356,16 +364,14 @@ const docsLinks = docs.links as DocsLink[];
 									{/* Page must supply headings with ids (MDX does this by default). */}
 									<slot />
 
-									{related.length > 0 && (
+									{relatedPages.length > 0 && (
 										<Fragment>
 											<h2 id="related">Related</h2>
-											<ul>
-												{related.map((relatedUrl) => (
-													<li>
-														<a href={relatedUrl}>{menuTitleByUrl.get(relatedUrl) ?? relatedUrl}</a>
-													</li>
+											<div class="row row-deck row-cards">
+												{relatedPages.map((page) => (
+													<DocsCard href={page.url} title={page.title} description={page.description} />
 												))}
-											</ul>
+											</div>
 										</Fragment>
 									)}
 

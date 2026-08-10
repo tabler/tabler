@@ -44,6 +44,29 @@ function normalizeUrl(url: string): string {
   return parts.length ? `/${parts.join('/')}/` : '/'
 }
 
+let pageByUrl: Map<string, DocsChildPage> | null = null
+
+/** Card data (title, description, icon) for a single docs page url, or null when unknown. */
+export function getDocsPage(url: string): DocsChildPage | null {
+  if (!pageByUrl) {
+    pageByUrl = new Map()
+    for (const [path, mod] of Object.entries(pageModules)) {
+      const pageUrl = urlFromGlobPath(path)
+      const fm = getFrontmatter(mod)
+      if (!fm?.title || pageByUrl.has(pageUrl)) continue
+      pageByUrl.set(pageUrl, {
+        url: pageUrl,
+        title: String(fm.title),
+        description: String(fm.description ?? ''),
+        ...(fm.icon ? { icon: String(fm.icon) } : {}),
+        order: Number(fm.order ?? 999),
+      })
+    }
+  }
+  const parts = url.split('/').filter(Boolean)
+  return pageByUrl.get(parts.length ? `/${parts.join('/')}` : '/') ?? null
+}
+
 /** Direct child pages of a docs index URL. */
 export function getDocsChildren(parentUrl: string): DocsChildPage[] {
   const parentParts = normalizeUrl(parentUrl).split('/').filter(Boolean)
