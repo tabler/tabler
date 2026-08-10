@@ -82,16 +82,19 @@ const changelogUrl = 'https://tabler.io/changelog'
 
   const input = document.getElementById('docs-search-input')
   const mount = document.getElementById('docsearch')
-  const configured = Boolean(DOCSEARCH_APP_ID && DOCSEARCH_INDEX_NAME && DOCSEARCH_API_KEY)
+  // Local consts so TypeScript narrows `string | undefined` inside the closures below.
+  const appId = DOCSEARCH_APP_ID
+  const indexName = DOCSEARCH_INDEX_NAME
+  const apiKey = DOCSEARCH_API_KEY
 
-  if (input && !configured) {
+  if (input && !(appId && indexName && apiKey)) {
     // No Algolia env config (see .env.example) — hide the dead search input.
     input.closest<HTMLElement>('.input-icon')?.classList.add('d-none')
     console.warn('Docs search disabled: DOCSEARCH_* env variables are not set.')
   }
 
-  if (input && mount && configured) {
-    const isMac = /Mac|iPhone|iPad|iPod/.test(navigator.platform)
+  if (input && mount && appId && indexName && apiKey) {
+    const isMac = /Mac|iPhone|iPad|iPod/.test(navigator.userAgent)
     const kbd = document.getElementById('docs-search-kbd')
     if (kbd && !isMac) kbd.textContent = 'Ctrl K'
 
@@ -112,9 +115,9 @@ const changelogUrl = 'https://tabler.io/changelog'
         const { default: docsearch } = await import('@docsearch/js')
         docsearch({
           container: '#docsearch',
-          appId: DOCSEARCH_APP_ID,
-          indexName: DOCSEARCH_INDEX_NAME,
-          apiKey: DOCSEARCH_API_KEY,
+          appId,
+          indexName,
+          apiKey,
         })
         state = 'ready'
         // The bundle renders its (hidden) button and binds its own shortcuts.
