@@ -1,7 +1,7 @@
 // Output tests for the caret mixins in scss/mixins/bootstrap/_caret.scss.
 // The `caret-{down,up,end,start}` helpers draw a triangle out of borders; the
 // main `caret()` builds a pseudo-element and branches on `$direction` for the
-// rotation and (for `left`) the ::before/::after structure.
+// rotation and (for `start`) the ::before/::after structure.
 
 @use '../mixins/bootstrap/caret' as *;
 
@@ -76,8 +76,8 @@
           vertical-align: 0.306em;
           width: 0.36em;
           height: 0.36em;
-          border-bottom: 1px var(--tblr-border-style);
-          border-inline-start: 1px var(--tblr-border-style);
+          border-bottom: 1px var(--border-style);
+          border-inline-start: 1px var(--border-style);
           margin-inline-end: 0.1em;
           margin-inline-start: 0.306em;
           transform: rotate(-45deg);
@@ -86,11 +86,11 @@
     }
   }
 
-  @include it('uses ::before and clears ::after for the left direction') {
+  @include it('uses ::before and clears ::after for the start direction') {
     @include assert() {
       @include output() {
         .t {
-          @include caret(left);
+          @include caret(start);
         }
       }
       @include expect() {
@@ -100,13 +100,13 @@
           vertical-align: 0.306em;
           width: 0.36em;
           height: 0.36em;
-          border-bottom: 1px var(--tblr-border-style);
-          border-inline-start: 1px var(--tblr-border-style);
+          border-bottom: 1px var(--border-style);
+          border-inline-start: 1px var(--border-style);
           margin-inline-end: 0.1em;
           margin-inline-end: 0.306em;
           transform: rotate(45deg);
         }
-        .t:after {
+        .t::after {
           content: none;
         }
       }

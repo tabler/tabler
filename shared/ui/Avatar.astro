@@ -1,4 +1,5 @@
 ---
+import { assetRoot } from '@shared/lib/assets'
 import Icon from './Icon.astro'
 import people from '@data/people.json'
 import { firstLetters } from '@shared/lib/string-format'
@@ -9,31 +10,32 @@ interface Person {
   [key: string]: unknown
 }
 
+/** core/scss/_variables.scss `$avatar-sizes` map keys */
+export type AvatarSize = 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
+
 interface Props {
   src?: string
-  placeholder?: string
+  placeholder?: string | undefined
   personId?: number
-  person?: Person
+  person?: Person | undefined
   link?: boolean
-  dropdown?: boolean
-  size?: string
+  size?: AvatarSize | undefined
   thumb?: boolean
   class?: string
   shape?: string
-  color?: string
+  color?: string | undefined
   square?: boolean
   status?: string
-  statusText?: string
-  statusIcon?: string
+  statusLabel?: string
   brand?: string
-  icon?: string
-  /** asset URL base — '.' for root-level pages, '..' for pages one level deep (e.g. marketing/) */
+  icon?: string | undefined
+  /** asset URL base — defaults to assetRoot (@shared/lib/assets); pass '..' for pages one level deep (e.g. marketing/) */
   base?: string
   /** remaining attributes (data-bs-toggle for tooltips, aria-*, …) are forwarded to the element */
   [key: string]: unknown
 }
 
-const { src: srcProp, placeholder: placeholderProp, personId, person: personProp, link: linkProp = false, dropdown, size, thumb, class: className, shape, color, square, status, statusText, statusIcon, brand, icon, base = '.', ...rest } = Astro.props
+const { src: srcProp, placeholder: placeholderProp, personId, person: personProp, link: linkProp = false, size, thumb, class: className, shape, color, square, status, statusLabel, brand, icon, base = assetRoot, ...rest } = Astro.props
 
 let src = srcProp
 let placeholder = placeholderProp
@@ -46,14 +48,13 @@ if (person) {
   }
 }
 
-const link = linkProp || Boolean(dropdown)
-const El = link ? 'a' : 'span'
+const El = linkProp ? 'a' : 'span'
 
 const classes = ['avatar', size && `avatar-${size}`, thumb && 'avatar-thumb', className, shape && `avatar-${shape}`, color && `bg-${color}-lt`, square && 'avatar-square']
 ---
 
-<El class:list={classes} style={src ? `background-image: url(${base}/${src})` : undefined} data-bs-toggle={dropdown ? 'dropdown' : undefined} {...rest}
-  >{status && <span class={`badge bg-${status}`}>{statusText ? statusText : statusIcon ? <Icon name={statusIcon} class="avatar-status-icon" /> : null}</span>}{brand && <span class="avatar-brand" style={`background-image: url(${base}/static/brands/${brand}.svg);`} />}{
+<El class:list={classes} style={src ? `background-image: url(${base}/${src})` : undefined} {...rest}
+  >{status && <span class={`badge bg-${status}`} aria-label={statusLabel ?? status} />}{brand && <span class="avatar-brand" style={`background-image: url(${base}/static/brands/${brand}.svg);`} />}{
     src ? null : placeholder ? placeholder : icon ? <Icon name={icon} class="avatar-icon" /> : <Icon name="user" class="avatar-icon" />
   }</El
 >

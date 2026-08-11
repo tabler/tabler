@@ -1,12 +1,14 @@
 ---
 title: Form elements
 summary: Forms are one of the most important types of interaction with a website or app. Since their aim is to enable users to make a purchase, subscribe to a service or sign up to create an account, it's important to make sure they are easy to complete and help increase conversion rates. Use the available elements to create forms which are well-structured and user-friendly.
-docs-libs: nouislider
-description: Design user-friendly and effective forms.
+docs-libs: [nouislider]
+description: Build user-friendly forms with styled inputs, selects, checkboxes, and radios. Learn about states, sizes, and layout options.
 order: 1
+related: [/ui/forms/form-validation, /ui/forms/form-helpers, /ui/forms/form-fieldset]
 layout: '@layouts/DocsMdxLayout.astro'
 ---
 import Example from '@components/Example.astro';
+import CodeDocs from '@components/CodeDocs.astro';
 
 ## Classic inputs
 
@@ -40,7 +42,7 @@ You can remove borders from your form control by adding the `form-control-flush`
 
 ## Input with icon
 
-Add icons to your input controls to suggest users what they should enter or inform them of the current state of a form element.
+Add [icons](/ui/components/icon) to your input controls to suggest users what they should enter or inform them of the current state of a form element.
 
 <Example>
 <div class="mb-3"> <label class="form-label">Icon input</label> <div class="input-icon mb-3"> <input type="text" value="" class="form-control" placeholder="Search…" /> <span class="input-icon-addon"> <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" > <path stroke="none" d="M0 0h24v24H0z" fill="none" /> <circle cx="10" cy="10" r="7" /> <line x1="21" y1="21" x2="15" y2="15" /> </svg> </span> </div> <div class="input-icon mb-3"> <span class="input-icon-addon"> <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" > <path stroke="none" d="M0 0h24v24H0z" fill="none" /> <circle cx="12" cy="7" r="4" /> <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /> </svg> </span> <input type="text" value="" class="form-control" placeholder="Username" /> </div> </div> <div class="mb-3"> <label class="form-label">Loader input</label> <div class="input-icon mb-3"> <input type="text" value="" class="form-control" placeholder="Loading…" /> <span class="input-icon-addon"> <div class="spinner-border spinner-border-sm text-secondary" role="status"></div> </span> </div> <div class="input-icon mb-3"> <span class="input-icon-addon"> <div class="spinner-border spinner-border-sm text-secondary" role="status"></div> </span> <input type="text" value="" class="form-control" placeholder="Loading…" /> </div> </div>
@@ -48,7 +50,7 @@ Add icons to your input controls to suggest users what they should enter or info
 
 ## Separated inputs
 
-Include an additional element in your input section, such as a button which can be used to submit the information entered in the input control.
+Include an additional element in your input section, such as a [button](/ui/components/button) which can be used to submit the information entered in the input control.
 
 <Example>
 <div class="mb-3"> <label class="form-label">Separated inputs</label> <div class="row g-2"> <div class="col"> <input type="text" class="form-control" placeholder="Search for…" /> </div> <div class="col-auto"> <a href="#" class="btn btn-icon" aria-label="Button"> <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" > <path stroke="none" d="M0 0h24v24H0z" fill="none" /> <circle cx="10" cy="10" r="7" /> <line x1="21" y1="21" x2="15" y2="15" /> </svg> </a> </div> </div> </div>
@@ -110,7 +112,7 @@ Use checkboxes if you want to allow users to select more than one option from a 
 
 ## Range input
 
-Add a range slider to make it possible for users to set a value or range, such as a price range or a time frame.
+Add a [range slider](/ui/components/range-slider) to make it possible for users to set a value or range, such as a price range or a time frame.
 
 <Example>
 <div class="mb-3"> <label class="form-label">Range input</label> <input type="range" class="form-range mb-2" value="40" min="0" max="100" step="10" /> <div class="form-range mb-2 text-green" id="range-color"></div> </div> <script>{`document.addEventListener("DOMContentLoaded", function () { window.noUiSlider && noUiSlider.create(document.getElementById("range-color"), { start: 40, connect: [true, false], step: 10, range: { min: 0, max: 100, }, }); });`}</script>
@@ -163,3 +165,9 @@ Add an icon link which you want to display at the end of your input control to v
 <Example>
 <div class="mb-3"> <label class="form-label">Input with appended icon links</label> <div class="input-group input-group-flat"> <input type="text" class="form-control" autocomplete="off" /> <span class="input-group-text"> <a href="#" class="link-secondary" title="Clear search" data-bs-toggle="tooltip"> <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" > <path stroke="none" d="M0 0h24v24H0z" fill="none" /> <line x1="18" y1="6" x2="6" y2="18" /> <line x1="6" y1="6" x2="18" y2="18" /> </svg> </a> <a href="#" class="link-secondary ms-2" title="Search settings" data-bs-toggle="tooltip"> <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" > <path stroke="none" d="M0 0h24v24H0z" fill="none" /> <circle cx="6" cy="10" r="2" /> <line x1="6" y1="4" x2="6" y2="8" /> <line x1="6" y1="12" x2="6" y2="20" /> <circle cx="12" cy="16" r="2" /> <line x1="12" y1="4" x2="12" y2="14" /> <line x1="12" y1="18" x2="12" y2="20" /> <circle cx="18" cy="7" r="2" /> <line x1="18" y1="4" x2="18" y2="5" /> <line x1="18" y1="9" x2="18" y2="20" /> </svg> </a> <a href="#" class="link-secondary ms-2 disabled" title="Add notification" data-bs-toggle="tooltip" > <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" > <path stroke="none" d="M0 0h24v24H0z" fill="none" /> <path d="M10 5a2 2 0 0 1 4 0a7 7 0 0 1 4 6v3a4 4 0 0 0 2 3h-16a4 4 0 0 0 2 -3v-3a7 7 0 0 1 4 -6" /> <path d="M9 17v1a3 3 0 0 0 6 0v-1" /> </svg> </a> </span> </div> </div>
 </Example>
+
+## SCSS variables
+
+Use these SCSS variables to customize form controls. The default values are:
+
+<CodeDocs name="input-variables" file="core/scss/_variables.scss" />

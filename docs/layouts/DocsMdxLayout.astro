@@ -17,7 +17,9 @@ interface MdxFrontmatter {
   'description'?: string
   'seoDescription'?: string
   'added-in'?: string
-  'docs-libs'?: string[]
+  'docs-libs'?: string | string[]
+  'css-plugins'?: string | string[]
+  'related'?: string | string[]
   'hide-pagination'?: boolean
 }
 
@@ -37,7 +39,14 @@ const {
 // "docs/pages/ui/components/alert.mdx" (`file` is the absolute path of the MDX page).
 const editPath = file?.includes('/docs/pages/') ? file.replace(/^.*\/docs\/pages\//, 'docs/pages/') : undefined
 
-const docsLibs = frontmatter['docs-libs'] ?? []
+const rawDocsLibs = frontmatter['docs-libs']
+const docsLibs = rawDocsLibs == null ? [] : Array.isArray(rawDocsLibs) ? rawDocsLibs : [rawDocsLibs]
+
+const rawCssPlugins = frontmatter['css-plugins']
+const cssPlugins = rawCssPlugins == null ? [] : Array.isArray(rawCssPlugins) ? rawCssPlugins : [rawCssPlugins]
+
+const rawRelated = frontmatter['related']
+const related = rawRelated == null ? [] : Array.isArray(rawRelated) ? rawRelated : [rawRelated]
 
 const toc = headings
   .filter((heading) => heading.depth === 2 || heading.depth === 3)
@@ -56,10 +65,12 @@ const toc = headings
   seoDescription={frontmatter.seoDescription}
   addedIn={frontmatter['added-in']}
   docsLibs={docsLibs}
+  cssPlugins={cssPlugins}
+  related={related}
   hidePagination={frontmatter['hide-pagination']}
   editPath={editPath}
   toc={toc}
-  url={url ? `${url.replace(/\.html$/, '').replace(/\/$/, '')}/` : undefined}
+  url={url ? url.replace(/\.html$/, '').replace(/\/+$/, '') || '/' : undefined}
 >
   <slot />
 </DocsLayout>

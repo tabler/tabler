@@ -1,5 +1,6 @@
 ---
 import Icon from './Icon.astro'
+import CaptureScript from '../components/CaptureScript.astro'
 
 interface Props {
   type?: astroHTML.JSX.HTMLInputTypeAttribute
@@ -11,27 +12,86 @@ interface Props {
   id?: string
   prepend?: string
   append?: string
-  appendButton?: { icon: string; description: string }[]
+  appendButton?: { icon: string; description: string; pressed?: boolean }[]
+  /** HTML autocomplete token; omit unless needed (e.g. email, tel, off) */
+  autocomplete?: string
+  /** mark control invalid for assistive tech */
+  invalid?: boolean
+  required?: boolean
 }
 
-const { type = 'text', placeholder, value, flat, class: className, inputClass, id, prepend, append, appendButton } = Astro.props
+const { type = 'text', placeholder, value, flat, class: className, inputClass, id, prepend, append, appendButton, autocomplete, invalid, required } = Astro.props
 
 const appendButtons = appendButton ?? []
+// A password field's "eye" button gets a working show/hide toggle instead of a static icon —
+// it needs the field's id to target the input, so falls back to a plain icon button without one.
+const hasPasswordToggle = type === 'password' && appendButtons.some((button) => button.icon === 'eye' && id)
+
+// Built as a string (not a literal <script> tag) so Astro doesn't hoist/process it — see
+// Signature.astro for the same pattern. CaptureScript renders this into the string it
+// registers, and a real <script> element there would get extracted before that capture runs.
+const toggleScript = `<!-- BEGIN INPUT GROUP PASSWORD TOGGLE -->
+<script>
+  if (!window.__tablerPasswordToggleInit) {
+    window.__tablerPasswordToggleInit = true
+    document.addEventListener("click", (e) => {
+      const btn = e.target.closest("[data-password-toggle]")
+      if (!btn) return
+      const input = document.getElementById(btn.getAttribute("data-password-toggle"))
+      if (!input) return
+      const showing = input.type === "password"
+      input.type = showing ? "text" : "password"
+      const label = showing ? "Hide password" : "Show password"
+      btn.setAttribute("aria-pressed", showing ? "true" : "false")
+      btn.setAttribute("aria-label", label)
+      btn.setAttribute("title", label)
+      btn.setAttribute("data-bs-original-title", label)
+      btn.querySelector(".icon-toggle-show")?.classList.toggle("d-none", showing)
+      btn.querySelector(".icon-toggle-hide")?.classList.toggle("d-none", !showing)
+    })
+  }
+</script>
+<!-- END INPUT GROUP PASSWORD TOGGLE -->`
 ---
 
 <div class:list={['input-group', flat && 'input-group-flat', className]}>
   {prepend && <span class="input-group-text">{prepend}</span>}
-  <input type={type} class:list={['form-control', inputClass]} placeholder={placeholder} value={value} autocomplete="off" id={id} />
+  <input type={type} class:list={['form-control', invalid && 'is-invalid', inputClass]} placeholder={placeholder} value={value} autocomplete={autocomplete} id={id} aria-invalid={invalid ? 'true' : undefined} required={required} />
   {append && <span class="input-group-text">{append}</span>}
   {
     appendButtons.length > 0 && (
       <span class="input-group-text">
-        {appendButtons.map(({ icon, description }, index) => (
-          <a href="#" class:list={['link-secondary', index > 0 && 'ms-2']} title={description} data-bs-toggle="tooltip">
-            <Icon name={icon} />
-          </a>
-        ))}
+        {appendButtons.map(({ icon, description, pressed }, index) => {
+          const isPasswordToggle = icon === 'eye' && type === 'password' && id
+          return (
+            <button
+              type="button"
+              class:list={['link-secondary input-group-link border-0 bg-transparent p-0', index > 0 && 'ms-2']}
+              title={description}
+              aria-label={description}
+              aria-pressed={isPasswordToggle || pressed !== undefined ? ((pressed ?? false) ? 'true' : 'false') : undefined}
+              data-bs-toggle="tooltip"
+              data-password-toggle={isPasswordToggle ? id : undefined}
+            >
+              {isPasswordToggle ? (
+                <Fragment>
+                  <Icon name="eye" class="icon-toggle-show" />
+                  <Icon name="eye-off" class="icon-toggle-hide d-none" />
+                </Fragment>
+              ) : (
+                <Icon name={icon} />
+              )}
+            </button>
+          )
+        })}
       </span>
     )
   }
 </div>
+{
+  hasPasswordToggle && (
+    <CaptureScript>
+      <Fragment set:html={toggleScript} />
+    </CaptureScript>
+  )
+}

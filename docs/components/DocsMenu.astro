@@ -19,7 +19,7 @@ interface MenuSection {
 }
 
 interface Props {
-  /** Page URL in the docs namespace (equivalent of page.url), e.g. "/ui/components/alert/". */
+  /** Page URL in the docs namespace (equivalent of page.url), e.g. "/ui/components/alert". */
   url: string
 }
 
@@ -28,13 +28,13 @@ const menu = docs.menu as MenuSection[]
 ---
 
 <!-- BEGIN DOCS MENU -->
-<nav class="space-y space-y-5" id="menu">
+<nav class="space-y space-y-5" id="menu" aria-label="Documentation">
   {
     menu.map((level1) => (
       <div>
         <Subheader class="mb-2">{level1.title}</Subheader>
         {level1.children && level1.children.length > 0 && (
-          <nav class="nav nav-vertical">
+          <div class="nav nav-vertical">
             {level1.children.map((level2) => {
               const hasChildren = Boolean(level2.children && level2.children.length > 0)
               // Expanded only for the group's own page or one of its direct children —
@@ -48,11 +48,13 @@ const menu = docs.menu as MenuSection[]
                       {level2.title} <span class="nav-link-toggle" />
                     </a>
                   ) : (
-                    <a class={`nav-link${expanded ? ' active' : ''}`}>{level2.title}</a>
+                    <a class={`nav-link${expanded ? ' active' : ''}`} href={level2.url}>
+                      {level2.title}
+                    </a>
                   )}
 
                   {hasChildren && (
-                    <nav class={`nav nav-vertical collapse${expanded ? ' show' : ''}`} id={`collapse-${slug(level2.url)}`}>
+                    <div class={`nav nav-vertical collapse${expanded ? ' show' : ''}`} id={`collapse-${slug(level2.url)}`}>
                       {level2.children!.map((level3) => (
                         <div>
                           <a class={`nav-link${url === level3.url ? ' active' : ''}`} href={level3.url}>
@@ -60,12 +62,12 @@ const menu = docs.menu as MenuSection[]
                           </a>
                         </div>
                       ))}
-                    </nav>
+                    </div>
                   )}
                 </div>
               )
             })}
-          </nav>
+          </div>
         )}
       </div>
     ))

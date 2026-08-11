@@ -4,13 +4,12 @@ import Icon from './Icon.astro'
 interface Props {
   pills?: boolean
   tabs?: boolean
-  header?: boolean
   class?: string
 }
 
-const { pills, tabs, header, class: className } = Astro.props
+const { pills, tabs, class: className } = Astro.props
 
-const classes = ['nav', pills ? 'nav-pills' : tabs ? 'nav-tabs' : undefined, pills && header ? 'card-header-pills' : tabs && header ? 'card-header-tabs' : undefined, className]
+const classes = ['nav', pills ? 'nav-pills' : tabs ? 'nav-tabs' : undefined, className]
 ---
 
 <ul class:list={classes}>

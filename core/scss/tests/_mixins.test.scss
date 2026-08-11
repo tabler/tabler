@@ -2,8 +2,9 @@
 //
 // `@use "../mixins/mixins"` transitively pulls in the real settings/variables
 // chain (all relative to that file, so no extra load paths are needed), which
-// means the assertions run against real values — `$prefix` = "tblr-", the real
-// `$h5-font-size`, etc. — instead of fixtures.
+// means the assertions run against real values — the real `$h5-font-size`,
+// etc. — instead of fixtures. Custom properties are expected unprefixed: the
+// `--tblr-` prefix is added later, by the css pipeline (.build/css-var-prefix.ts).
 
 @use '../mixins/mixins' as *;
 
@@ -18,11 +19,11 @@
       @include expect() {
         .t {
           font-size: 0.75rem;
-          font-weight: var(--tblr-font-weight-medium);
+          font-weight: var(--font-weight-medium);
           text-transform: uppercase;
           letter-spacing: 0.04em;
           line-height: 1rem;
-          color: var(--tblr-secondary);
+          color: var(--secondary);
         }
       }
     }
@@ -38,7 +39,7 @@
       @include expect() {
         .t {
           font-size: 0.75rem;
-          font-weight: var(--tblr-font-weight-medium);
+          font-weight: var(--font-weight-medium);
           text-transform: uppercase;
           letter-spacing: 0.04em;
         }
@@ -74,10 +75,10 @@
       }
       @include expect() {
         .t {
-          --tblr-list-gap: 0.5rem;
+          --list-gap: 0.5rem;
           display: flex;
           flex-wrap: wrap;
-          gap: var(--tblr-list-gap);
+          gap: var(--list-gap);
         }
       }
     }
@@ -92,10 +93,10 @@
       }
       @include expect() {
         .t {
-          --tblr-list-gap: 1rem;
+          --list-gap: 1rem;
           display: flex;
           flex-wrap: wrap;
-          gap: var(--tblr-list-gap);
+          gap: var(--list-gap);
         }
       }
     }
@@ -113,7 +114,9 @@
       @include expect() {
         .t {
           outline: 0;
-          box-shadow: 0 0 0 0.25rem color-mix(in srgb, var(--tblr-primary) 25%, transparent);
+          box-shadow:
+            0 0 0 2px var(--primary),
+            0 0 0 0.25rem color-mix(in srgb, var(--primary) 25%, transparent);
         }
       }
     }
@@ -129,8 +132,10 @@
       @include expect() {
         .t {
           outline: 0;
-          box-shadow: 0 0 0 0.25rem color-mix(in srgb, var(--tblr-primary) 25%, transparent);
-          border-color: color-mix(in srgb, var(--tblr-primary) 25%, transparent);
+          box-shadow:
+            0 0 0 2px var(--primary),
+            0 0 0 0.25rem color-mix(in srgb, var(--primary) 25%, transparent);
+          border-color: color-mix(in srgb, var(--primary) 25%, transparent);
         }
       }
     }
@@ -171,7 +176,7 @@
       }
       @include expect() {
         .scroll {
-          scrollbar-color: color-mix(in srgb, var(--tblr-scrollbar-color, var(--tblr-body-color)) 20%, transparent) transparent;
+          scrollbar-color: color-mix(in srgb, var(--scrollbar-color, var(--body-color)) 20%, transparent) transparent;
         }
         .scroll::-webkit-scrollbar {
           width: 1rem;
@@ -186,13 +191,13 @@
         .scroll::-webkit-scrollbar-thumb {
           border-radius: 1rem;
           border: 5px solid transparent;
-          box-shadow: inset 0 0 0 1rem color-mix(in srgb, var(--tblr-scrollbar-color, var(--tblr-body-color)) 20%, transparent);
+          box-shadow: inset 0 0 0 1rem color-mix(in srgb, var(--scrollbar-color, var(--body-color)) 20%, transparent);
         }
         .scroll::-webkit-scrollbar-track {
           background: transparent;
         }
         .scroll:hover::-webkit-scrollbar-thumb {
-          box-shadow: inset 0 0 0 1rem color-mix(in srgb, var(--tblr-scrollbar-color, var(--tblr-body-color)) 40%, transparent);
+          box-shadow: inset 0 0 0 1rem color-mix(in srgb, var(--scrollbar-color, var(--body-color)) 40%, transparent);
         }
         .scroll::-webkit-scrollbar-corner {
           background: transparent;

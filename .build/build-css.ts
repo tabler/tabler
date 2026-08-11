@@ -31,9 +31,11 @@ import { basename, join, resolve } from 'node:path'
 import { compile as compileSass } from 'sass'
 import postcss, { type Result } from 'postcss'
 import autoprefixer from 'autoprefixer'
+import prefixCustomProperties from 'postcss-prefix-custom-properties'
 import rtlcss from 'rtlcss'
 import CleanCSS from 'clean-css'
 import { addBanner } from '../shared/banner/index.mjs'
+import { cssVarIgnore, cssVarPrefix, inlineValueComments } from './css-var-prefix'
 
 const args = process.argv.slice(2)
 const flags = args.filter((arg) => arg.startsWith('--'))
@@ -47,6 +49,7 @@ const withMinify = flags.includes('--minify')
 const withBanner = flags.includes('--banner')
 
 const mapOptions = { inline: false, annotation: true, sourcesContent: true }
+
 const written: string[] = []
 const pendingWrites: { file: string; content: string }[] = []
 
@@ -68,7 +71,12 @@ async function compile(entry: string): Promise<{ outFile: string; result: Result
   // Banner goes in before postcss runs, so the map it generates already counts
   // the banner's lines — and so does the rtl map chained onto it below.
   const input = withBanner ? addBanner(css, outFile) : css
-  const result = await postcss([autoprefixer({ cascade: false })]).process(input, {
+  // Prefixing is its own pass, ahead of the one that generates the map:
+  // postcss maps generated positions back to *its own input*, so renaming
+  // inside the map-generating pass would leave every mapping — and the
+  // embedded sourcesContent — describing css that no longer exists on disk.
+  const { css: prefixed } = await postcss([inlineValueComments, prefixCustomProperties({ prefix: cssVarPrefix, ignore: cssVarIgnore })]).process(input, { from: outFile, to: outFile, map: false })
+  const result = await postcss([autoprefixer({ cascade: false })]).process(prefixed, {
     from: outFile,
     to: outFile,
     map: mapOptions,
@@ -116,6 +124,14 @@ function flushWrites(): void {
 async function minify(files: string[]): Promise<void> {
   const minified = await new CleanCSS({
     batch: true,
+    // zeroUnits (default true) strips the unit off zero values, e.g. `0%` -> `0`.
+    // clean-css only skips this inside calc/rgb/hsl/rgba/hsla/min/max/clamp —
+    // not color-mix() — so it turns `color-mix(in srgb, x 0%, y)` into
+    // `color-mix(in srgb, x 0, y)`. Unlike <length>, <percentage> has no
+    // unitless-zero exception, so that's invalid CSS and the whole color-mix()
+    // (and the gradient layer using it, e.g. .card-gradient) silently drops.
+    // Covered by .build/build-css.test.ts.
+    compatibility: { properties: { zeroUnits: false } },
     format: 'breakWith=lf;breaks:afterComment=on',
     inline: 'local',
     level: { 1: true },

@@ -1,27 +1,29 @@
 ---
 title: Validation states
 summary: To inform users whether the entered value is correct or not, use either of the validation states. Thanks to that, users will immediately know which form elements they need to correct and, if the state displays as invalid, why the value is incorrect.
-description: Indicate valid or invalid inputs.
+description: Show valid and invalid states on form fields with feedback messages, so users know exactly what to correct before submitting.
+related: [/ui/forms/form-elements, /ui/forms/form-helpers]
 layout: '@layouts/DocsMdxLayout.astro'
 ---
 import Example from '@components/Example.astro';
+import CodeDocs from '@components/CodeDocs.astro';
 
 ## Validation states
 
 To inform users whether the entered value is correct or not, use either of the validation states. Thanks to that, users will immediately know which form elements they need to correct and, if the state displays as invalid, why the value is incorrect.
 
-To apply the validation state to the form control, use the `.is-valid` and `.is-invalid` classes.
+To apply the validation state to the form control, use the `.is-valid` and `.is-invalid` classes. For assistive tech, also set `aria-invalid="true"` on invalid controls.
 
 <Example>
-<input type="text" class="form-control is-valid" placeholder="Valid State..." /> <input type="text" class="form-control is-invalid" placeholder="Invalid State..." />
+<input type="text" class="form-control is-valid" placeholder="Valid State..." aria-invalid="false" /> <input type="text" class="form-control is-invalid" placeholder="Invalid State..." aria-invalid="true" />
 </Example>
 
 ## Validation feedback
 
-To provide users with additional information about the validation state, you can use the `.valid-feedback` and `.invalid-feedback` classes.
+To provide users with additional information about the validation state, you can use the `.valid-feedback` and `.invalid-feedback` classes. Link the message with `aria-describedby` when you can.
 
 <Example>
-<div> <label class="form-label required">City</label> <input type="text" class="form-control is-invalid" required /> <div class="invalid-feedback">Please provide a valid city.</div> </div>
+<div> <label class="form-label required" for="city-invalid">City</label> <input type="text" class="form-control is-invalid" id="city-invalid" required aria-invalid="true" aria-describedby="city-invalid-feedback" /> <div class="invalid-feedback" id="city-invalid-feedback">Please provide a valid city.</div> </div>
 </Example>
 
 You can also use the `.valid-feedback` to provide users with positive feedback.
@@ -39,3 +41,9 @@ To do this, use the `.is-valid-lite` and `.is-invalid-lite` classes.
 <Example>
 <input type="text" class="form-control is-valid is-valid-lite" placeholder="Valid State..." /> <input type="text" class="form-control is-invalid is-invalid-lite" placeholder="Invalid State..." />
 </Example>
+
+## SCSS variables
+
+Use these SCSS variables to customize form validation states. The default values are:
+
+<CodeDocs name="form-validation-variables" file="core/scss/_variables.scss" />

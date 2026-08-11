@@ -5,16 +5,16 @@
 @use '../config' as *;
 
 .datagrid {
-  --#{$prefix}datagrid-padding: #{$datagrid-padding};
-  --#{$prefix}datagrid-item-width: #{$datagrid-item-width};
-  --#{$prefix}datagrid-title-margin-bottom: #{$datagrid-title-margin-bottom};
+  --datagrid-padding: #{$datagrid-padding};
+  --datagrid-item-width: #{$datagrid-item-width};
+  --datagrid-title-margin-bottom: #{$datagrid-title-margin-bottom};
 
   display: grid;
-  grid-gap: var(--#{$prefix}datagrid-padding);
-  grid-template-columns: repeat(auto-fit, minmax(var(--#{$prefix}datagrid-item-width), 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(var(--datagrid-item-width), 1fr));
+  grid-gap: var(--datagrid-padding);
 }
 
 .datagrid-title {
-  @include subheader;
-  margin-bottom: var(--#{$prefix}datagrid-title-margin-bottom);
+  @include subheader();
+  margin-bottom: var(--datagrid-title-margin-bottom);
 }

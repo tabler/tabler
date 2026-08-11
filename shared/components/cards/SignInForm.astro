@@ -4,18 +4,18 @@ import FormGroup from '@ui/FormGroup.astro'
 import InputGroup from '@ui/InputGroup.astro'
 ---
 
-<form action="./" method="get" autocomplete="off" novalidate>
-  <FormGroup label="Email address">
-    <input type="email" class="form-control" placeholder="your@email.com" autocomplete="off" />
+<form action="./" method="get" novalidate>
+  <FormGroup label="Email address" for="signin-email">
+    <input type="email" class="form-control" placeholder="your@email.com" id="signin-email" autocomplete="email" required />
   </FormGroup>
   <div class="mb-2">
-    <label class="form-label">
+    <label class="form-label" for="signin-password">
       Password
       <span class="form-label-description">
         <a href="./forgot-password.html">I forgot password</a>
       </span>
     </label>
-    <InputGroup type="password" placeholder="Your password" flat appendButton={[{ icon: 'eye', description: 'Show password' }]} />
+    <InputGroup type="password" placeholder="Your password" flat id="signin-password" autocomplete="current-password" required appendButton={[{ icon: 'eye', description: 'Show password' }]} />
   </div>
   <div class="mb-2">
     <label class="form-check">

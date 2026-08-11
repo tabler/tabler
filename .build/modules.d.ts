@@ -5,6 +5,11 @@ declare module 'rtlcss' {
   export default function rtlcss(config?: unknown): Plugin
 }
 
+declare module 'postcss-prefix-custom-properties' {
+  import type { Plugin } from 'postcss'
+  export default function prefixCustomProperties(options?: { prefix?: string; ignore?: (string | RegExp)[] }): Plugin
+}
+
 declare module 'clean-css' {
   interface MinifyResult {
     styles: string

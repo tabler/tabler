@@ -1,0 +1,20 @@
+---
+import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import allFlags from '@data/flags.json'
+
+// 12 most popular countries, by population/economy/recognizability.
+const popularCodes = ['us', 'gb', 'de', 'fr', 'cn', 'jp', 'in', 'br', 'ca', 'au', 'pl', 'es']
+const flags = popularCodes.map((code) => allFlags.find((country) => country.flag === code)).filter((country) => country !== undefined)
+---
+
+<ScreenshotLayout title="Flags list" columns={2} cssPlugins={['flags']} zoom={1.5}>
+  <div class="d-grid gap-4" style="grid-template-columns: repeat(4, auto); justify-content: center; align-items: center;">
+    {
+      flags.map((country) => (
+        <span title={country.name}>
+          <span class={`flag flag-country-${country.flag}`} />
+        </span>
+      ))
+    }
+  </div>
+</ScreenshotLayout>

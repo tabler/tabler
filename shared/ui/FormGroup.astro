@@ -1,35 +1,78 @@
 ---
 // Form group: label (.form-label) + control slot + optional hint (.form-hint).
+// When `for` is omitted and associate is true (default), the control is nested
+// inside the label for implicit association. Set associate={false} for groups
+// with multiple controls.
 import FormHint from './FormHint.astro'
 
 interface Props {
   label?: string
-  /** .required asterisk on the label */
+  /** .required asterisk on the label — also set required on the control */
   required?: boolean
   /** .form-label-description at the inline end of the label */
   description?: string
   /** .form-hint under the control */
   hint?: string
-  /** for attribute of the label */
+  /** for attribute of the label — must match the slotted control's id */
   for?: string
   /** extra classes on the label (e.g. visually-hidden) */
   labelClass?: string
   /** wrapper classes; replaces the default mb-3 */
   class?: string
+  /** marks the group invalid — pair with aria-invalid and .is-invalid on the control */
+  invalid?: boolean
+  /** error message shown under the control (.invalid-feedback) */
+  error?: string
+  /** nest the control in the label when `for` is omitted (default true) */
+  associate?: boolean
 }
 
-const { label, required, description, hint, for: htmlFor, labelClass, class: className = 'mb-3' } = Astro.props
+const { label, required, description, hint, for: htmlFor, labelClass, class: className = 'mb-3', invalid, error, associate = true } = Astro.props
+
+const uid = htmlFor ?? `fg-${Math.random().toString(36).slice(2, 9)}`
+const hintId = hint ? `${uid}-hint` : undefined
+const errorId = error ? `${uid}-error` : undefined
+const wrapLabel = Boolean(label && !htmlFor && associate)
 ---
 
-<div class:list={[className]}>
+<div class:list={[className, invalid && 'has-validation']}>
   {
-    label && (
+    label && htmlFor && (
       <label class:list={['form-label', required && 'required', labelClass]} for={htmlFor}>
         {label}
+        {required && <span class="visually-hidden"> (required)</span>}
         {description && <span class="form-label-description">{description}</span>}
       </label>
     )
   }
-  <slot />
-  {hint && <FormHint>{hint}</FormHint>}
+  {
+    label && !htmlFor && !associate && (
+      <div class:list={['form-label', required && 'required', labelClass]}>
+        {label}
+        {description && <span class="form-label-description">{description}</span>}
+      </div>
+    )
+  }
+  {
+    wrapLabel ? (
+      <label class="d-block">
+        <span class:list={['form-label', required && 'required', labelClass]}>
+          {label}
+          {required && <span class="visually-hidden"> (required)</span>}
+          {description && <span class="form-label-description">{description}</span>}
+        </span>
+        <slot />
+      </label>
+    ) : (
+      <slot />
+    )
+  }
+  {
+    error && (
+      <div class="invalid-feedback d-block" id={errorId} role="alert">
+        {error}
+      </div>
+    )
+  }
+  {hint && <FormHint id={hintId}>{hint}</FormHint>}
 </div>

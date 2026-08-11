@@ -1,16 +1,28 @@
 # Security Policy
 
-We take security very seriously and ask that you follow the following process.
+We take security seriously and appreciate responsible disclosure of vulnerabilities.
 
-## Supported Versions
+## Supported versions
 
 | Version | Supported          |
 | ------- | ------------------ |
-| 1.0.x   | :white_check_mark: |
+| 1.x     | :white_check_mark: |
 | 0.x     | :x:                |
 
-## Reporting a Vulnerability
+## Reporting a vulnerability
 
-If you think you may have found a security bug, We ask that you privately send the details to support@tabler.io. 
-Please make sure to use a descriptive title in the email.
+**Please do not report security vulnerabilities through public GitHub issues.**
 
+If you think you have found a security issue, report it privately in one of two ways:
+
+- Use GitHub's private reporting: [Report a vulnerability](https://github.com/tabler/tabler/security/advisories/new) (Security tab → "Report a vulnerability")
+- Send the details to **support@tabler.io**
+
+Please include:
+
+- A descriptive title
+- A description of the issue and its potential impact
+- Steps to reproduce, or a proof of concept if possible
+- The affected version(s)
+
+We will review your report and get back to you as soon as possible. Please give us reasonable time to address the issue before disclosing it publicly.

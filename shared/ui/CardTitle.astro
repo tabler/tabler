@@ -1,15 +1,20 @@
 ---
+import type { HTMLTag } from 'astro/types'
+
 // Standalone card title heading (.card-title), used inside a card body without a .card-header bar.
 
-interface Props {
-  /** heading element, e.g. h2 — default h3 */
-  as?: string
+// `as` must stay out of the Props body: Astro's frontmatter scanner bails on a member
+// literally named `as` and silently falls back to untyped props.
+type PolymorphicProps = { as?: HTMLTag }
+
+interface Props extends PolymorphicProps {
   class?: string
+  id?: string
 }
 
-const { as: Tag = 'h3', class: className } = Astro.props
+const { as: Tag = 'h3', class: className, id }: Props = Astro.props
 ---
 
-<Tag class:list={['card-title', className]}>
+<Tag class:list={['card-title', className]} {...id ? { id } : {}}>
   <slot />
 </Tag>

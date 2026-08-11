@@ -9,26 +9,26 @@ const years = Array.from({ length: 11 }, (_, i) => 2020 + i)
 <div class="card">
   <div class="card-body">
     <div class="mb-3">
-      <div class="form-label">Card number</div>
-      <input type="text" name="input-mask" class="form-control" data-mask="0000 0000 0000 0000" data-mask-visible="true" placeholder="0000 0000 0000 0000" autocomplete="off" />
+      <label class="form-label" for="credit-card-number">Card number</label>
+      <input type="text" name="input-mask" id="credit-card-number" class="form-control" data-mask="0000 0000 0000 0000" data-mask-visible="true" placeholder="0000 0000 0000 0000" autocomplete="cc-number" />
     </div>
 
     <div class="mb-3">
-      <div class="form-label">Card name</div>
-      <input type="text" class="form-control" />
+      <label class="form-label" for="credit-card-name">Card name</label>
+      <input type="text" id="credit-card-name" class="form-control" autocomplete="cc-name" />
     </div>
 
     <div class="row">
       <div class="col-8">
-        <FormGroup label="Expiration date">
+        <FormGroup label="Expiration date" associate={false}>
           <div class="row g-2">
             <div class="col">
-              <select class="form-select">
+              <select class="form-select" aria-label="Expiration month" autocomplete="cc-exp-month">
                 {months.map((month) => <option value={month}>{month}</option>)}
               </select>
             </div>
             <div class="col">
-              <select class="form-select">
+              <select class="form-select" aria-label="Expiration year" autocomplete="cc-exp-year">
                 {years.map((year) => <option value={year}>{year}</option>)}
               </select>
             </div>
@@ -37,8 +37,8 @@ const years = Array.from({ length: 11 }, (_, i) => 2020 + i)
       </div>
       <div class="col">
         <div class="mb-3">
-          <div class="form-label">CVV</div>
-          <input type="number" class="form-control" />
+          <label class="form-label" for="credit-card-cvv">CVV</label>
+          <input type="number" id="credit-card-cvv" class="form-control" autocomplete="cc-csc" />
         </div>
       </div>
     </div>

@@ -3,7 +3,7 @@ import Icon from './Icon.astro'
 
 interface Props {
   value?: number
-  unit?: string
+  unit?: string | undefined
   class?: string
 }
 
@@ -16,6 +16,6 @@ const classes = [`text-${trendingColor} d-inline-flex align-items-center lh-1`, 
 ---
 
 <span class:list={classes}>
-  {value}{unit}
+  <span class="visually-hidden">{value > 0 ? 'Increased by' : value < 0 ? 'Decreased by' : 'No change,'} </span>{value}{unit}
   <Icon name={trendingIcon} class="ms-0" size="sm" />
 </span>

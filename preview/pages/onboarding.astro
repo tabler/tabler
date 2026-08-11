@@ -1,7 +1,7 @@
 ---
 // NOTE: `current=2` passed to ProgressSteps is a no-op (reads `active`, not `current`) — only step 1 is active.
 import BaseLayout from '@shared/layouts/BaseLayout.astro'
-import NavbarLogo from '@shared/components/navbar/NavbarLogo.astro'
+import Logo from '@shared/components/navbar/Logo.astro'
 import ProgressSteps from '@ui/ProgressSteps.astro'
 import Button from '@ui/Button.astro'
 import ButtonList from '@ui/ButtonList.astro'
@@ -13,7 +13,7 @@ import FormGroup from '@ui/FormGroup.astro'
     <div class="container">
       <div class="row w-100 align-items-center">
         <div class="col me-auto">
-          <NavbarLogo class="logo-gray" />
+          <Logo class="logo-gray" />
         </div>
         <div class="col-2">
           <ProgressSteps count={5} />
@@ -25,21 +25,21 @@ import FormGroup from '@ui/FormGroup.astro'
     </div>
   </nav>
 
-  <main class="py-5">
+  <main class="py-5" id="content">
     <div class="container container-tight">
       <div class="page-header">
         <h1 class="page-title">Let's set up your account</h1>
       </div>
       <div class="card mt-5">
         <div class="card-body space-y-4">
-          <FormGroup label="Full name" class="">
-            <input type="text" class="form-control" placeholder="Enter your full name" />
+          <FormGroup label="Full name" for="onboarding-full-name" class="">
+            <input type="text" class="form-control" id="onboarding-full-name" placeholder="Enter your full name" />
           </FormGroup>
-          <FormGroup label="Company name" class="">
-            <input type="text" class="form-control" placeholder="Enter your company name" />
+          <FormGroup label="Company name" for="onboarding-company-name" class="">
+            <input type="text" class="form-control" id="onboarding-company-name" placeholder="Enter your company name" />
           </FormGroup>
-          <FormGroup label="Role" class="">
-            <select class="form-select">
+          <FormGroup label="Role" for="onboarding-role" class="">
+            <select class="form-select" id="onboarding-role">
               <option value="">Select your role</option>
               <option value="developer">Developer</option>
               <option value="designer">Designer</option>
@@ -48,7 +48,8 @@ import FormGroup from '@ui/FormGroup.astro'
               <option value="other">Other</option>
             </select>
           </FormGroup>
-          <FormGroup label="Team size" class="">
+          <fieldset class="border-0 p-0 m-0">
+            <legend class="form-label float-none mb-0" style="font-size: inherit;">Team size</legend>
             <div class="form-selectgroup">
               <label class="form-selectgroup-item">
                 <input type="radio" name="team-size" value="1" class="form-selectgroup-input" checked />
@@ -67,26 +68,28 @@ import FormGroup from '@ui/FormGroup.astro'
                 <span class="form-selectgroup-label">50+ people</span>
               </label>
             </div>
-          </FormGroup>
-          <FormGroup label="What are you planning to use this for?" class="">
+          </fieldset>
+          <fieldset class="border-0 p-0 m-0">
+            <legend class="form-label float-none mb-0" style="font-size: inherit;">What are you planning to use this for?</legend>
             <div class="form-check">
-              <input class="form-check-input" type="radio" value="personal" id="use-personal" checked />
+              <input class="form-check-input" type="radio" name="use-for" value="personal" id="use-personal" checked />
               <label class="form-check-label" for="use-personal"> Personal projects </label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="radio" value="business" id="use-business" />
+              <input class="form-check-input" type="radio" name="use-for" value="business" id="use-business" />
               <label class="form-check-label" for="use-business"> Business applications </label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="radio" value="client" id="use-client" />
+              <input class="form-check-input" type="radio" name="use-for" value="client" id="use-client" />
               <label class="form-check-label" for="use-client"> Client work </label>
             </div>
             <div class="form-check">
-              <input class="form-check-input" type="radio" value="learning" id="use-learning" />
+              <input class="form-check-input" type="radio" name="use-for" value="learning" id="use-learning" />
               <label class="form-check-label" for="use-learning"> Learning and experimentation </label>
             </div>
-          </FormGroup>
-          <FormGroup label="How did you hear about us?" class="">
+          </fieldset>
+          <fieldset class="border-0 p-0 m-0">
+            <legend class="form-label float-none mb-0" style="font-size: inherit;">How did you hear about us?</legend>
             <div class="form-check">
               <input class="form-check-input" type="checkbox" name="referral" value="search" id="ref-search" />
               <label class="form-check-label" for="ref-search"> Search engine </label>
@@ -107,7 +110,7 @@ import FormGroup from '@ui/FormGroup.astro'
               <input class="form-check-input" type="checkbox" name="referral" value="other" id="ref-other" />
               <label class="form-check-label" for="ref-other"> Other </label>
             </div>
-          </FormGroup>
+          </fieldset>
           <div>
             <div class="form-check form-switch">
               <input class="form-check-input" type="checkbox" id="notifications" checked />

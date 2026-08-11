@@ -23,13 +23,6 @@ export function formatNumber(value: number): string {
   return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }
 
-/** Splits a string on `sep`, dropping trailing empty segments (e.g. "a,b," -> ["a", "b"]). */
-export function splitDropTrailingEmpty(str: string, sep: string): string[] {
-  const items = str.split(sep)
-  while (items.length > 0 && items[items.length - 1] === '') items.pop()
-  return items
-}
-
 /** Lowercases a single-word string for use as an anchor slug. */
 export function slugifyWord(text: string): string {
   return text.toLowerCase()
