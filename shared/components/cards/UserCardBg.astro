@@ -1,5 +1,6 @@
 ---
 // person = people[person-id]; the cover photo is photos[person-id].file.
+import { staticPath } from '@shared/lib/assets'
 import Avatar from '@ui/Avatar.astro'
 import people from '@data/people.json'
 import photos from '@data/photos.json'
@@ -28,7 +29,7 @@ const photo = requireIndex(photos as Photo[], personId)
 ---
 
 <a class="card card-link" href="#">
-  <div class={`card-cover text-center${blurred ? ' card-cover-blurred' : ''}`} style={`background-image: url(./static/photos/${photo.file})`}>
+  <div class={`card-cover text-center${blurred ? ' card-cover-blurred' : ''}`} style={`background-image: url(${staticPath(`photos/${photo.file}`)})`}>
     <Avatar size="xl" person={person} thumb />
   </div>
   <div class="card-body text-center">

@@ -14,10 +14,12 @@ const urls = [
 				.replace(/^\.\//, '')
 				.replace(/\/?index\.(?:astro|mdx)$/, '')
 				.replace(/\.(?:astro|mdx)$/, '');
-			return path ? `/${path}/` : '/';
+			return path ? `/${path}` : '/';
 		}),
 	),
 ]
+	// the 404 page is not a real route
+	.filter((url) => url !== '/404')
 	.sort((a, b) => {
 		if (a === '/') return -1;
 		if (b === '/') return 1;
@@ -35,12 +37,10 @@ const escapeXml = (value: string) =>
 export const GET: APIRoute = () => {
 	const isDevelopment = process.env.NODE_ENV === 'development';
 	const baseUrl = isDevelopment ? '' : site.docsUrl;
-	const lastModified = new Date().toISOString();
 	const entries = urls
 		.map(
 			(url) => `<url>
 	<loc>${escapeXml(`${baseUrl}${url}`)}</loc>
-	<lastmod>${lastModified}</lastmod>
 </url>`,
 		)
 		.join('\n');
