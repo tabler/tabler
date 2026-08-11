@@ -174,4 +174,29 @@ $g: (
       }
     }
   }
+
+  // Names that don't exist in the global $grid-breakpoints at all: this only
+  // resolves if $breakpoints actually reaches the breakpoint-prev() lookup,
+  // not just the breakpoint-max() one.
+  $custom: (
+    tablet: 0,
+    desktop: 900px,
+  );
+
+  @include it('resolves the previous breakpoint from a custom $breakpoints map') {
+    @include assert() {
+      @include output() {
+        @include media-breakpoint-down-than(desktop, $custom) {
+          .t {
+            color: red;
+          }
+        }
+      }
+      @include expect() {
+        .t {
+          color: red;
+        }
+      }
+    }
+  }
 }
