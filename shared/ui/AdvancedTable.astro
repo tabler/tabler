@@ -1,5 +1,5 @@
 ---
-import BadgesList from './BadgesList.astro'
+import BadgeList from './BadgeList.astro'
 import Icon from './Icon.astro'
 import { formatLongDate } from '@shared/lib/date-format'
 import { randomItem, randomDate } from '@shared/lib/pseudo-random'
@@ -124,11 +124,11 @@ const sortKeys = headers.map((header) => header['data-sort'])
                   <td class={requireIndex(headers, 2)['data-sort']}>{status === 'Active' ? <span class="badge bg-success-lt">Active</span> : status === 'Inactive' ? <span class="badge bg-danger-lt">Inactive</span> : <span class="badge">Requested</span>}</td>
                   <td class={requireIndex(headers, 3)['data-sort']}>{date}</td>
                   <td class={requireIndex(headers, 4)['data-sort']}>
-                    <BadgesList>
+                    <BadgeList>
                       {itemTags.map((tag) => (
                         <span class="badge">{tag}</span>
                       ))}
-                    </BadgesList>
+                    </BadgeList>
                   </td>
                   <td class={`${requireIndex(headers, 5)['data-sort']} py-0`}>
                     <span class="on-unchecked">{category}</span>
