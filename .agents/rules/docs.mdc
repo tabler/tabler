@@ -31,7 +31,7 @@ Consult these guides before working on related tasks:
 
 ## Writing documentation pages
 
-Pages live in `pages/**/*.mdx`. Use the flat convention: leaf pages are `foo.mdx`; only pages with sub-pages use `foo/index.mdx` (both render as `/foo/`).
+Pages live in `content/**/*.mdx` — the `docs` content collection, rendered by `pages/[...slug].astro`. Use the flat convention: leaf pages are `foo.mdx`; only pages with sub-pages use `foo/index.mdx` (both render as `/foo/`).
 
 - Write in simple English: short sentences, common words, direct verbs (`Use`, `Add`, `Set`).
 - Component docs use singular naming in frontmatter and filename: `title: Card`, `card.mdx` (not `cards.mdx`).
@@ -39,18 +39,19 @@ Pages live in `pages/**/*.mdx`. Use the flat convention: leaf pages are `foo.mdx
 
 ### Frontmatter
 
-Static YAML only. Required keys plus the layout:
+Static YAML only, validated by the collection schema in `docs/content.config.ts` — an unknown or mistyped key fails the build. Required keys:
 
 ```yaml
 ---
 title: Alert
 summary: Short one-sentence summary of what this component does.
 description: Practical description of when and why to use it.
-layout: '@shared/layouts/DocsMdxLayout.astro'
 ---
 ```
 
-Optional: `bootstrapLink: components/alerts/` when the component extends a Bootstrap component.
+No `layout:` key — the route picks the layout.
+
+Optional keys: `seoTitle`, `seoDescription`, `icon`, `order`, `related`, `docs-libs`, `css-plugins`, `hide-pagination`, `added-in`. Anything else is rejected.
 
 ### Examples
 

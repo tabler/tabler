@@ -7,7 +7,7 @@ Thank you for wanting to contribute! This is a short overview — the full guide
 - **Pick a starter issue** — issues labeled [`good first issue`](https://github.com/tabler/tabler/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) are small and well-scoped, and [`help wanted`](https://github.com/tabler/tabler/issues?q=is%3Aissue+is%3Aopen+label%3A%22help+wanted%22) issues welcome community help.
 - **Report a bug** — use the [bug report template](https://github.com/tabler/tabler/issues/new?template=bug_report.yml). Include steps to reproduce and, if possible, a live example (for example a JSFiddle).
 - **Suggest a feature** — use the [feature request template](https://github.com/tabler/tabler/issues/new?template=feature_request.yml) or start a [discussion](https://github.com/tabler/tabler/discussions) first if you are not sure.
-- **Improve the documentation** — docs live in `docs/pages/**/*.mdx` and follow the same pull request workflow as code.
+- **Improve the documentation** — docs live in `docs/content/**/*.mdx` and follow the same pull request workflow as code.
 - **Submit a pull request** — fixes and improvements are always welcome. For large changes, please open an issue or discussion first so we can align before you invest time.
 - **Report a security issue** — do not open a public issue; follow the [security policy](SECURITY.md) instead.
 
@@ -28,7 +28,7 @@ You can also skip the local setup entirely: open the repository in [GitHub Codes
 
 - `core/` — the framework: SCSS (`core/scss/`) and JavaScript (`core/js/`)
 - `preview/` — demo website (Astro, pages in `preview/pages/*.astro`)
-- `docs/` — documentation website (Astro, pages in `docs/pages/**/*.mdx`)
+- `docs/` — documentation website (Astro, pages in `docs/content/**/*.mdx`)
 - `shared/` — components and layouts shared by preview and docs (`@shared` alias), plus `data/` and `static/`
 - `shared/data/` — JSON data for demo pages (`@data` alias)
 

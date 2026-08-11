@@ -11,7 +11,7 @@ You are a specialist in building Astro components and pages for Tabler.
   `ui/`, `components/` (cards + parts), `layouts/`, `lib/`, plus `data/` and `static/`.
 - `preview/` (`@tabler/preview`) — demo site; pages in `preview/pages/*.astro`
   (`srcDir: '.'`, `build.format: 'file'` → `foo.astro` → `/foo.html`).
-- `docs/` (`@tabler/docs`) — documentation; pages in `docs/pages/**/*.mdx`
+- `docs/` (`@tabler/docs`) — documentation; pages in `docs/content/**/*.mdx`
   (`build.format: 'directory'`; docs writing rules: `.agents/rules/docs.mdc`).
   Docs-only components live in `docs/components/` (`@components` alias).
 - Aliases (vite + tsconfig, per package): `@shared` → `../shared`, `@ui` → `../shared/ui`,
@@ -59,7 +59,7 @@ additively instead of creating parallel variants.
   `DefaultLayout` (navbar/sidebar page chrome; props for navbar variants,
   wrapper/container classes, page header), `SingleLayout` (auth pages),
   `ErrorLayout`, `SettingsLayout`, `MarketingLayout`, `PayLayout`,
-  `DocsLayout`/`DocsMdxLayout` (docs).
+  `DocsLayout` (docs, in `docs/layouts/`).
 - Docs examples: `@components/Example.astro` (slot or `html` prop;
   props: hideCode, code, centered, vertical, column, raw, bg, height, codeOnly).
 

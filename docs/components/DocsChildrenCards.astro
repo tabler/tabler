@@ -1,0 +1,18 @@
+---
+// Cards for the direct child pages of a docs index url. MDX cannot await, so
+// pages use this component instead of calling getDocsChildren() inline.
+// Renders bare cards — the caller supplies the surrounding `.row`.
+import DocsCard from '@components/DocsCard.astro'
+import { getDocsChildren } from '@lib/docs-pages'
+
+interface Props {
+  /** docs url whose children are listed, e.g. "/ui/getting-started/frameworks" */
+  url: string
+}
+
+const { url } = Astro.props
+
+const children = await getDocsChildren(url)
+---
+
+{children.map((child) => <DocsCard href={child.url} icon={child.icon} title={child.title} description={child.description} />)}

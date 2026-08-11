@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // Validates internal links in the docs at the source level (no build needed):
-// - markdown links and `related:` frontmatter in docs/pages/**/*.mdx
+// - markdown links and `related:` frontmatter in docs/content/**/*.mdx
 // - menu/link urls in shared/data/docs.json
 // - redirect destinations in docs/astro.config.mjs
 // - href string literals in docs .astro components
@@ -18,18 +18,26 @@ import GithubSlugger from 'github-slugger'
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const repoRoot = join(__dirname, '..')
 const pagesDir = join(repoRoot, 'docs', 'pages')
+// Docs content sits outside the routing dir — pages/[...slug].astro renders it
+// from the `docs` collection (see docs/content.config.ts).
+const contentDir = join(repoRoot, 'docs', 'content')
 
 // ---------------------------------------------------------------------------
-// Route table: every mdx/astro page under docs/pages, keyed by its url.
+// Route table: every docs page, keyed by its url.
 // ---------------------------------------------------------------------------
 const routeFiles = new Map<string, string>()
-for (const file of sync(join(pagesDir, '**', '*.{mdx,astro}'))) {
+const addRoute = (baseDir: string, file: string) => {
   const url =
     '/' +
-    relative(pagesDir, file)
+    relative(baseDir, file)
       .replace(/\/?index\.(?:mdx|astro)$/, '')
       .replace(/\.(?:mdx|astro)$/, '')
   routeFiles.set(url === '/404' ? url : url.replace(/\/$/, '') || '/', file)
+}
+for (const file of sync(join(contentDir, '**', '*.mdx'))) addRoute(contentDir, file)
+// dynamic routes are expanded from the content dir above, not routes of their own
+for (const file of sync(join(pagesDir, '**', '*.astro'))) {
+  if (!file.includes('[')) addRoute(pagesDir, file)
 }
 
 // Redirect sources are valid link targets; their destinations must exist.
@@ -149,7 +157,7 @@ const checkTarget = (sourceLabel: string, link: string, sourceFile?: string) => 
 }
 
 // 1. Markdown links + `related:` frontmatter in every mdx page.
-for (const file of sync(join(pagesDir, '**', '*.mdx'))) {
+for (const file of sync(join(contentDir, '**', '*.mdx'))) {
   const label = relative(repoRoot, file)
   const prose = stripDemosAndCode(body(file))
 
@@ -163,7 +171,7 @@ for (const file of sync(join(pagesDir, '**', '*.mdx'))) {
     checkTarget(label, link, file)
   }
 
-  // `related:` accepts both the array and the scalar form (see DocsMdxLayout).
+  // `related:` accepts both the array and the scalar form (see content.config.ts).
   const related = frontmatter(file).match(/^related:\s*(.+)$/m)
   if (related) {
     const value = (related[1] ?? '').trim()

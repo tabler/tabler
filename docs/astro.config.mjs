@@ -59,7 +59,8 @@ export default defineConfig({
     ),
   },
   // pages live at the package root (./pages) — content-first layout; all
-  // components/lib/data are shared (see the @shared alias)
+  // components/lib/data are shared (see the @shared alias). The docs content
+  // itself lives in ./content and is rendered by pages/[...slug].astro.
   srcDir: '.',
   server: {
     port: 3010,
@@ -79,10 +80,10 @@ export default defineConfig({
         '@ui': fileURLToPath(new URL('../shared/ui', import.meta.url)),
         // docs-only components (Example, DocsMenu, …)
         '@components': fileURLToPath(new URL('./components', import.meta.url)),
-        // docs-only layouts (DocsLayout + the MDX adapter, referenced by `layout:` front matter)
+        // docs-only layouts (DocsLayout)
         '@layouts': fileURLToPath(new URL('./layouts', import.meta.url)),
-        // this package's pages dir — used by @shared/lib/docs-children's glob
-        '@pages': fileURLToPath(new URL('./pages', import.meta.url)),
+        // docs-only helpers (docs collection queries)
+        '@lib': fileURLToPath(new URL('./lib', import.meta.url)),
       },
     },
   },

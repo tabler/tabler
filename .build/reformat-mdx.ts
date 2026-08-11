@@ -8,7 +8,14 @@ import * as prettier from 'prettier'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
-const docs: string[] = sync(join(__dirname, '..', 'docs', 'pages', '**', '*.mdx'))
+const docs: string[] = sync(join(__dirname, '..', 'docs', 'content', '**', '*.mdx'))
+
+// Finding nothing means the docs moved and this glob was not updated. Exiting 0
+// with no output would look like "everything is already formatted".
+if (docs.length === 0) {
+  console.error('No docs pages found — check the glob in this script.')
+  process.exit(1)
+}
 
 async function formatHTML(htmlString: string, options: prettier.Options = {}): Promise<string> {
   try {
