@@ -2,5 +2,4 @@
 "@tabler/core": patch
 ---
 
-Updated flags and avatars styling for better visual consistency.
-
+Added bottom corner radius to the last row of a table inside a `.card`.

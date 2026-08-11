@@ -3,5 +3,4 @@
 "@tabler/docs": patch
 ---
 
-Added Geist font family integration.
-
+Added the Geist and Geist Mono fonts as the default `$font-family-sans-serif` and `$font-family-monospace`.

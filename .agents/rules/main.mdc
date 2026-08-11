@@ -84,8 +84,9 @@ Shared instructions for all AI agents (Claude Code, Cursor, etc.). Canonical age
 
 ### Changesets
 
+- **Always use the `generate-changeset` skill** (`.agents/skills/generate-changeset/SKILL.md`) to write a changeset — both when asked for one and on your own before committing or opening a PR that touches `core/`, `preview/`, or `docs/`. Do not hand-write the file.
 - Each change gets a separate file in `.changeset/` with a descriptive kebab-case filename (e.g. `progress-sizes.md`).
-- One sentence per changeset, starting with an action verb (`Added`, `Updated`, `Fixed`, `Removed`), with backticks for code elements (`.btn-ghost`, `stroke-width`, `1.5`, `arrow-up`).
+- One sentence per changeset, **130 characters or fewer** (hard ceiling 160, only when a longer list is the actual content), starting with an action verb (`Added`, `Updated`, `Fixed`, `Removed`), with backticks for code elements (`.btn-ghost`, `stroke-width`, `1.5`, `arrow-up`). A changeset is one changelog line — keep the reasons, implementation notes, and affected-file lists in the PR description. Always name a concrete component, class, variable, page, or dependency; "Fixed mixed declarations in SCSS" tells a reader nothing.
 - Version bumps: **major** = breaking changes; **minor** = new features, components, or pages; **patch** = bug fixes, small improvements, style/accessibility tweaks.
 - Packages: `"@tabler/core"` for SCSS/JS/classes, `"@tabler/preview"` for demo pages, `"@tabler/docs"` for documentation; list multiple packages when the change spans areas.
 - Example:

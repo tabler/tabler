@@ -2,4 +2,4 @@
 "@tabler/core": patch
 ---
 
-Refactored Bootstrap exports to use single source of truth in `bootstrap.js` and removed duplicate exports from `tabler.js` for better maintainability.
+Updated Bootstrap exports to a single source of truth in `bootstrap.js` and removed the duplicates from `tabler.js`.

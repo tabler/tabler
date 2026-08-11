@@ -3,4 +3,3 @@
 ---
 
 Updated `@tabler/icons` to v3.36.1.
-

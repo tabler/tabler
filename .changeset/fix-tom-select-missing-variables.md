@@ -2,4 +2,4 @@
 "@tabler/core": patch
 ---
 
-Fixed Tom Select dropdown and control styles to use `--tblr-*` CSS variables instead of undefined `--bs-*` references from the bootstrap5 preset.
+Fixed Tom Select styles to use `--tblr-*` variables instead of undefined `--bs-*` references.

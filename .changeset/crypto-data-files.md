@@ -2,5 +2,4 @@
 "@tabler/preview": patch
 ---
 
-Added crypto markets and orders data files (`crypto-markets.json`, `crypto-orders.json`) for cryptocurrency dashboard functionality.
-
+Added `crypto-markets.json` and `crypto-orders.json` data files for the crypto dashboard.

@@ -2,4 +2,4 @@
 "@tabler/core": patch
 ---
 
-Implement `border-radius` mixin across various SCSS files
+Updated SCSS files to use the `border-radius` mixin.
