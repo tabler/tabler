@@ -34,8 +34,7 @@ interface Props {
 	/**
 	 * Page URL in the docs namespace, e.g. "/ui/components/alert".
 	 * By default derived from Astro.url.pathname by stripping the /docs prefix.
-	 * Drives the active menu entry, pagination, the "Edit this page" link, and
-	 * the relative favicon path.
+	 * Drives the active menu entry, pagination, and the relative favicon path.
 	 */
 	url?: string | undefined;
 	/** Extra libraries from libs.json (css+js) */
@@ -46,8 +45,6 @@ interface Props {
 	related?: string[];
 	/** hides child and previous/next page navigation */
 	hidePagination?: boolean | undefined;
-	/** repo-relative source path for the "Edit this page" link, e.g. "docs/content/ui/components/alert.mdx" */
-	editPath?: string | undefined;
 	/** url of this page's markdown mirror (see pages/[...slug].md.ts); omitted for pages outside the docs collection */
 	markdownUrl?: string | undefined;
 }
@@ -64,7 +61,6 @@ const {
 	cssPlugins = [],
 	related = [],
 	hidePagination = false,
-	editPath,
 	markdownUrl,
 } = Astro.props;
 
@@ -109,11 +105,6 @@ const ogImageUrl = new URL('/static/og.png', Astro.site ?? site.docsUrl).href;
 // Relative asset base: for /ui/components/alert/ -> "../../.."
 const depth = docsUrl.split('/').filter(Boolean).length;
 const relative = depth === 0 ? '.' : '../'.repeat(depth).slice(0, -1);
-
-// Source path for the "Edit this page" link. Prefer the real path passed by the
-// route (from the collection entry); fall back to the flat-page convention.
-const editFilePath =
-	editPath ?? (docsUrl === '/' ? 'docs/content/index.mdx' : `docs/content${docsUrl.replace(/\/$/, '')}.mdx`);
 
 // docs-libs + clipboard (always included). In dev, file names stay unchanged
 // (e.g. dist/clipboard.min.js keeps .min).
@@ -389,15 +380,7 @@ const relatedPages = await Promise.all(
 									{!hidePagination && <DocsPagination url={docsUrl} />}
 
 									<div class="mt-7">
-										<div>
-											<a
-												href={`${site.githubUrl}/edit/dev/${editFilePath}`}
-												class="link-primary"
-												target="_blank" rel="noopener noreferrer"><Icon name="edit" class="icon-inline" /> Edit this page on GitHub</a
-											>
-										</div>
-
-										<nav class="mt-5" aria-label="Documentation sections">
+										<nav aria-label="Documentation sections">
 											<ul class="list-inline list-inline-dots mb-0 text-secondary">
 												{[
 													{ title: 'Getting started', url: '/ui/getting-started' },
