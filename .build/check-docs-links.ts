@@ -39,6 +39,12 @@ for (const file of sync(join(contentDir, '**', '*.mdx'))) addRoute(contentDir, f
 for (const file of sync(join(pagesDir, '**', '*.astro'))) {
   if (!file.includes('[')) addRoute(pagesDir, file)
 }
+// Endpoints keep their extension in the route: robots.txt.ts → /robots.txt,
+// sitemap.xml.ts → /sitemap.xml, llms.txt.ts → /llms.txt.
+for (const file of sync(join(pagesDir, '**', '*.ts'))) {
+  if (file.includes('[')) continue
+  routeFiles.set(`/${relative(pagesDir, file).replace(/\.ts$/, '')}`, file)
+}
 
 // Redirect sources are valid link targets; their destinations must exist.
 const astroConfig = readFileSync(join(repoRoot, 'docs', 'astro.config.mjs'), 'utf8')
@@ -136,8 +142,9 @@ const checkTarget = (sourceLabel: string, link: string, sourceFile?: string) => 
   }
 
   // Root-level files (favicon.ico, apple-touch-icon.png, …) live in docs/assets
-  // or docs/public and are copied to the site root at build time.
-  if (/^\/[^/]+\.[a-z0-9]+$/i.test(cleanPath)) {
+  // or docs/public and are copied to the site root at build time. Endpoint routes
+  // look the same (/llms.txt) but are generated, so they are matched as routes below.
+  if (!routeFiles.has(cleanPath) && /^\/[^/]+\.[a-z0-9]+$/i.test(cleanPath)) {
     const file = cleanPath.slice(1)
     if (![join(repoRoot, 'docs', 'assets', file), join(repoRoot, 'docs', 'public', file)].some((p) => existsSync(p))) {
       errors.push(`${sourceLabel}: dead asset link "${link}"`)
