@@ -11,6 +11,8 @@ import DocsMenu from '@components/DocsMenu.astro';
 import DocsToc from '@components/DocsToc.astro';
 import type { TocItem } from '@components/DocsToc.astro';
 import DocsPagination from '@components/DocsPagination.astro';
+import DocsCard from '@components/DocsCard.astro';
+import { getDocsPage } from '@shared/lib/docs-children';
 import Prose from '@ui/Prose.astro';
 import PageScripts from '@shared/components/PageScripts.astro';
 
@@ -30,7 +32,7 @@ interface Props {
 	/** Table of contents (h2/h3 from the markdown content) — see DocsToc.astro */
 	toc?: TocItem[];
 	/**
-	 * Page URL in the docs namespace, e.g. "/ui/components/alert/".
+	 * Page URL in the docs namespace, e.g. "/ui/components/alert".
 	 * By default derived from Astro.url.pathname by stripping the /docs prefix.
 	 * Drives the active menu entry, pagination, the "Edit this page" link, and
 	 * the relative favicon path.
@@ -38,6 +40,10 @@ interface Props {
 	url?: string | undefined;
 	/** Extra libraries from libs.json (css+js) */
 	docsLibs?: string[];
+	/** front matter `css-plugins`: extra tabler-<name>.css sheets for this page's demos */
+	cssPlugins?: string[];
+	/** front matter `related`: docs URLs of related pages, rendered above the pagination */
+	related?: string[];
 	/** hides child and previous/next page navigation */
 	hidePagination?: boolean | undefined;
 	/** repo-relative source path for the "Edit this page" link, e.g. "docs/pages/ui/components/alert.mdx" */
@@ -53,33 +59,49 @@ const {
 	addedIn,
 	toc = [],
 	docsLibs = [],
+	cssPlugins = [],
+	related = [],
 	hidePagination = false,
 	editPath,
 } = Astro.props;
+
+// Always-on plugin styles. Heavy demo-only sheets (flags, payments, socials)
+// are opt-in per page via the `css-plugins` frontmatter key; marketing is not
+// used by any docs page.
+const basePlugins = ['themes', 'vendors'];
+const pagePlugins = [...basePlugins, ...cssPlugins.filter((plugin) => !basePlugins.includes(plugin))];
 const environment = process.env.NODE_ENV || 'production';
+// Vercel preview/branch deployments must not be indexed (VERCEL_ENV is unset locally).
+const isVercelPreview = !!process.env.VERCEL_ENV && process.env.VERCEL_ENV !== 'production';
 
 // Strip /docs prefix (and optional .html) for the docs namespace URL.
+// Canonical form has no trailing slash (matching vercel.json trailingSlash: false);
+// the root stays "/".
 const docsUrl =
 	Astro.props.url ??
 	(() => {
-		let p = Astro.url.pathname.replace(/^\/docs(?=\/|$)/, '').replace(/\.html$/, '');
-		if (!p.endsWith('/')) p += '/';
-		return p;
+		const p = Astro.url.pathname
+			.replace(/^\/docs(?=\/|$)/, '')
+			.replace(/\.html$/, '')
+			.replace(/\/+$/, '');
+		return p || '/';
 	})();
 
-const pageSection = docsUrl.startsWith('/ui/')
+const inSection = (prefix: string) => docsUrl === prefix || docsUrl.startsWith(`${prefix}/`);
+const pageSection = inSection('/ui')
 	? 'UI'
-	: docsUrl.startsWith('/icons/')
+	: inSection('/icons')
 		? 'Icons'
-		: docsUrl.startsWith('/illustrations/')
+		: inSection('/illustrations')
 			? 'Illustrations'
-			: docsUrl.startsWith('/emails/')
+			: inSection('/emails')
 				? 'Emails'
 				: '';
 const metaTitle = seoTitle ?? title;
 const metaDescription = seoDescription ?? description;
 const siteName = pageSection ? `Tabler ${pageSection} Documentation` : 'Tabler Documentation';
 const canonicalUrl = new URL(docsUrl, Astro.site ?? site.docsUrl).href;
+const ogImageUrl = new URL('/static/og.png', Astro.site ?? site.docsUrl).href;
 
 // Relative asset base: for /ui/components/alert/ -> "../../.."
 const depth = docsUrl.split('/').filter(Boolean).length;
@@ -111,8 +133,74 @@ const linkedinUrl = 'https://www.linkedin.com/company/tabler-io';
 
 const year = new Date().getFullYear();
 
+// JSON-LD breadcrumbs. Segment names come from the docs.json menu tree;
+// top-level sections are not in the menu, so they get explicit names.
+const sectionNames: Record<string, string> = {
+	'/ui': 'Tabler UI',
+	'/icons': 'Tabler Icons',
+	'/illustrations': 'Tabler Illustrations',
+	'/emails': 'Tabler Emails',
+};
+type MenuNode = { title?: string; url?: string; children?: MenuNode[] };
+const menuTitleByUrl = new Map<string, string>();
+const collectTitles = (nodes: MenuNode[]) => {
+	for (const node of nodes) {
+		if (node.url?.startsWith('/') && node.title) menuTitleByUrl.set(node.url, node.title);
+		if (node.children) collectTitles(node.children);
+	}
+};
+collectTitles(docs.menu as MenuNode[]);
+
+// WebSite schema on the homepage only — lets Google pick the right site name.
+// No SearchAction: docs search is a modal, there is no /search?q= results URL.
+const websiteJsonLd =
+	docsUrl === '/'
+		? JSON.stringify({
+				'@context': 'https://schema.org',
+				'@type': 'WebSite',
+				'name': 'Tabler Documentation',
+				'alternateName': 'Tabler Docs',
+				'url': `${site.docsUrl}/`,
+			})
+		: null;
+
+// Breadcrumb trail — one source for the visible nav above the h1 and the
+// JSON-LD, so the structured data mirrors what the page shows.
+const breadcrumbs = (() => {
+	if (docsUrl === '/' || docsUrl === '/404') return null;
+	const segments = docsUrl.split('/').filter(Boolean);
+	const items = [{ name: 'Docs', path: '/' }];
+	let path = '';
+	segments.forEach((segment, index) => {
+		path += `/${segment}`;
+		const isLast = index === segments.length - 1;
+		const name = isLast ? title : (menuTitleByUrl.get(path) ?? sectionNames[path] ?? segment);
+		items.push({ name, path });
+	});
+	return items;
+})();
+
+const breadcrumbJsonLd = breadcrumbs
+	? JSON.stringify({
+			'@context': 'https://schema.org',
+			'@type': 'BreadcrumbList',
+			itemListElement: breadcrumbs.map((item, index) => ({
+				'@type': 'ListItem',
+				position: index + 1,
+				name: item.name,
+				item: item.path === '/' ? `${site.docsUrl}/` : `${site.docsUrl}${item.path}`,
+			})),
+		})
+	: null;
+
 type DocsLink = { title: string; url: string; icon: string };
 const docsLinks = docs.links as DocsLink[];
+
+// Card data for the "Related" section (title/description from the target
+// page's frontmatter; menu title as fallback).
+const relatedPages = related.map(
+	(url) => getDocsPage(url) ?? { url, title: menuTitleByUrl.get(url) ?? url, description: '', order: 0 },
+);
 ---
 
 <!doctype html>
@@ -121,8 +209,11 @@ const docsLinks = docs.links as DocsLink[];
 		<!-- BEGIN META -->
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<meta name="theme-color" content={site.themeColor} />
+		<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
 		<title>{metaTitle} | {siteName}</title>
+		{isVercelPreview && <meta name="robots" content="noindex" />}
 		{
 			environment === 'production' && (
 				<Fragment>
@@ -131,14 +222,21 @@ const docsLinks = docs.links as DocsLink[];
 
 					<!-- Open Graph / Social Media Meta Tags -->
 					<meta property="og:type" content="website" />
+					<meta property="og:url" content={canonicalUrl} />
 					<meta property="og:title" content={metaTitle} />
 					{metaDescription && <meta property="og:description" content={metaDescription} />}
 					<meta property="og:site_name" content={siteName} />
+					<meta property="og:image" content={ogImageUrl} />
 
 					<!-- Twitter Card data -->
-					<meta name="twitter:card" content="summary" />
+					<meta name="twitter:card" content="summary_large_image" />
+					<meta name="twitter:site" content="@tabler_io" />
 					<meta name="twitter:title" content={metaTitle} />
 					{metaDescription && <meta name="twitter:description" content={metaDescription} />}
+					<meta name="twitter:image" content={ogImageUrl} />
+
+					{websiteJsonLd && <script is:inline type="application/ld+json" set:html={websiteJsonLd} />}
+					{breadcrumbJsonLd && <script is:inline type="application/ld+json" set:html={breadcrumbJsonLd} />}
 				</Fragment>
 			)
 		}
@@ -158,7 +256,7 @@ const docsLinks = docs.links as DocsLink[];
 		<!-- END GLOBAL MANDATORY STYLES -->
 
 		<!-- BEGIN PLUGINS STYLES -->
-		{site.cssPlugins.map((plugin) => <link href={`/dist/css/tabler-${plugin}.css`} rel="stylesheet" />)}
+		{pagePlugins.map((plugin) => <link href={`/dist/css/tabler-${plugin}.css`} rel="stylesheet" />)}
 		<!-- END PLUGINS STYLES -->
 
 		{
@@ -171,9 +269,10 @@ const docsLinks = docs.links as DocsLink[];
 			)
 		}
 
-		{/* is:inline — see MIGRATION.md (without it Astro adds data-astro-cid-*) */}
 		<!-- BEGIN CUSTOM FONT -->
-		<style is:inline>@import url('https://rsms.me/inter/inter.css');</style>
+		<link rel="preconnect" href="https://rsms.me/" />
+		<link rel="preconnect" href="https://rsms.me/" crossorigin />
+		<link rel="stylesheet" href="https://rsms.me/inter/inter.css" />
 		<!-- END CUSTOM FONT -->
 
 		<!-- BEGIN DOCS STYLES -->
@@ -202,7 +301,7 @@ const docsLinks = docs.links as DocsLink[];
 								<nav class="nav nav-vertical" aria-label="Resources">
 									{
 										docsLinks.map((link) => (
-											<a href={link.url} class="nav-link" target="_blank">
+											<a href={link.url} class="nav-link" target="_blank" rel="noopener noreferrer">
 												<span class="border me-2 rounded p-1">
 													<Icon name={link.icon} />
 												</span>
@@ -221,6 +320,24 @@ const docsLinks = docs.links as DocsLink[];
 					<div class="col bg-docs-gradient">
 						<div class="py-lg-5 ps-lg-5">
 							<div class="py-6 ps-lg-6 p-xxl-6">
+								{breadcrumbs && (
+									<nav aria-label="Breadcrumb">
+										<ol class="breadcrumb breadcrumb-arrows breadcrumb-muted mb-3">
+											{breadcrumbs.map((item, index) =>
+												index < breadcrumbs.length - 1 ? (
+													<li class="breadcrumb-item">
+														<a href={item.path}>{item.name}</a>
+													</li>
+												) : (
+													<li class="breadcrumb-item active" aria-current="page">
+														{item.name}
+													</li>
+												),
+											)}
+										</ol>
+									</nav>
+								)}
+
 								<Prose
 									data-bs-spy="scroll"
 									data-bs-target="#toc"
@@ -247,6 +364,17 @@ const docsLinks = docs.links as DocsLink[];
 									{/* Page must supply headings with ids (MDX does this by default). */}
 									<slot />
 
+									{relatedPages.length > 0 && (
+										<Fragment>
+											<h2 id="related">Related</h2>
+											<div class="row row-deck row-cards">
+												{relatedPages.map((page) => (
+													<DocsCard href={page.url} title={page.title} description={page.description} />
+												))}
+											</div>
+										</Fragment>
+									)}
+
 									{!hidePagination && <DocsPagination url={docsUrl} />}
 
 									<div class="mt-7">
@@ -254,9 +382,29 @@ const docsLinks = docs.links as DocsLink[];
 											<a
 												href={`${site.githubUrl}/edit/dev/${editFilePath}`}
 												class="link-primary"
-												target="_blank"><Icon name="edit" class="icon-inline" /> Edit this page on GitHub</a
+												target="_blank" rel="noopener noreferrer"><Icon name="edit" class="icon-inline" /> Edit this page on GitHub</a
 											>
 										</div>
+
+										<nav class="mt-5" aria-label="Documentation sections">
+											<ul class="list-inline list-inline-dots mb-0 text-secondary">
+												{[
+													{ title: 'Getting started', url: '/ui/getting-started' },
+													{ title: 'UI components', url: '/ui/components' },
+													{ title: 'Icons', url: '/icons' },
+													{ title: 'Illustrations', url: '/illustrations' },
+													{ title: 'Emails', url: '/emails' },
+													{ title: 'FAQ', url: '/ui/getting-started/faq' },
+													{ title: 'License', url: '/ui/getting-started/license' },
+												].map((section) => (
+													<li class="list-inline-item">
+														<a href={section.url} class="link-secondary">
+															{section.title}
+														</a>
+													</li>
+												))}
+											</ul>
+										</nav>
 
 										<div class="mt-5">
 											<div class="row">
@@ -265,11 +413,11 @@ const docsLinks = docs.links as DocsLink[];
 												</div>
 
 												<div class="col text-end">
-													<a href={site.githubUrl} class="link-secondary" target="_blank"><Icon name="brand-github" /></a>
-													<a href={site.githubSponsorsUrl} class="link-secondary" target="_blank"><Icon name="heart" /></a>
-													<a href={opencollectiveUrl} class="link-secondary" target="_blank"><Icon name="hearts" /></a>
-													<a href={xUrl} class="link-secondary" target="_blank"><Icon name="brand-x" /></a>
-													<a href={linkedinUrl} class="link-secondary" target="_blank"><Icon name="brand-linkedin" /></a>
+													<a href={site.githubUrl} class="link-secondary" target="_blank" rel="noopener noreferrer"><Icon name="brand-github" /></a>
+													<a href={site.githubSponsorsUrl} class="link-secondary" target="_blank" rel="noopener noreferrer"><Icon name="heart" /></a>
+													<a href={opencollectiveUrl} class="link-secondary" target="_blank" rel="noopener noreferrer"><Icon name="hearts" /></a>
+													<a href={xUrl} class="link-secondary" target="_blank" rel="noopener noreferrer"><Icon name="brand-x" /></a>
+													<a href={linkedinUrl} class="link-secondary" target="_blank" rel="noopener noreferrer"><Icon name="brand-linkedin" /></a>
 												</div>
 											</div>
 										</div>
@@ -337,13 +485,9 @@ const docsLinks = docs.links as DocsLink[];
 		<!-- END PAGE SCRIPTS -->
 
 		<!-- BEGIN GLOBAL MANDATORY SCRIPTS -->
-		<script is:inline src="/dist/js/tabler.js"></script>
+		<script is:inline src="/dist/js/tabler.js" defer></script>
 		<!-- END GLOBAL MANDATORY SCRIPTS -->
 
 		<PageScripts />
-
-		<!-- BEGIN DOCS SCRIPTS -->
-		<script is:inline src="/js/docs.js" defer></script>
-		<!-- END DOCS SCRIPTS -->
 	</body>
 </html>

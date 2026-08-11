@@ -1,5 +1,6 @@
 // @ts-check
-import { defineConfig } from 'astro/config'
+import { defineConfig, envField } from 'astro/config'
+import vercel from '@astrojs/vercel'
 import mdx from '@astrojs/mdx'
 import { satteri } from '@astrojs/markdown-satteri'
 import { fileURLToPath } from 'node:url'
@@ -11,6 +12,52 @@ const path = (p) => fileURLToPath(new URL(p, import.meta.url))
 // https://astro.build/config
 export default defineConfig({
   site: 'https://docs.tabler.io',
+  env: {
+    // DocSearch/Algolia config for the docs search (see DocsNavbar.astro).
+    // Values come from the environment only (.env locally, project settings on
+    // Vercel) — see .env.example. When unset, the search input is hidden.
+    schema: {
+      DOCSEARCH_APP_ID: envField.string({ context: 'client', access: 'public', optional: true }),
+      DOCSEARCH_INDEX_NAME: envField.string({ context: 'client', access: 'public', optional: true }),
+      DOCSEARCH_API_KEY: envField.string({ context: 'client', access: 'public', optional: true }),
+    },
+  },
+  // Static output + the Vercel adapter: turns `redirects` below into real HTTP
+  // redirects at Vercel's routing layer (no adapter = meta-refresh HTML pages).
+  adapter: vercel({
+    webAnalytics: {
+      enabled: true,
+    },
+  }),
+  // Renamed/moved pages. Add an entry here whenever a docs URL changes.
+  // The plural component slugs are the pre-Astro URLs still present in the
+  // Google index, Algolia search results and external backlinks.
+  redirects: {
+    '/ui/base/markdown': { status: 301, destination: '/ui/base/prose' },
+    ...Object.fromEntries(
+      [
+        ['alerts', 'alert'],
+        ['avatars', 'avatar'],
+        ['badges', 'badge'],
+        ['buttons', 'button'],
+        ['cards', 'card'],
+        ['charts', 'chart'],
+        ['dropdowns', 'dropdown'],
+        ['icons', 'icon'],
+        ['modals', 'modal'],
+        ['ribbons', 'ribbon'],
+        ['spinners', 'spinner'],
+        ['statuses', 'status'],
+        ['steps', 'step'],
+        ['tables', 'table'],
+        ['tabs', 'tab'],
+        ['timelines', 'timeline'],
+        ['toasts', 'toast'],
+        ['tooltips', 'tooltip'],
+        ['vector-maps', 'vector-map'],
+      ].map(([from, to]) => [`/ui/components/${from}`, { status: 301, destination: `/ui/components/${to}` }]),
+    ),
+  },
   // pages live at the package root (./pages) — content-first layout; all
   // components/lib/data are shared (see the @shared alias)
   srcDir: '.',
@@ -21,6 +68,9 @@ export default defineConfig({
     host: true,
   },
   vite: {
+    define: {
+      TABLER_STATIC_BASE: JSON.stringify('/static'),
+    },
     resolve: {
       alias: {
         '@data': fileURLToPath(new URL('../shared/data', import.meta.url)),

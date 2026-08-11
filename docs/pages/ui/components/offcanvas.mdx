@@ -1,5 +1,8 @@
 ---
 title: Offcanvas
+summary: Offcanvas is a hidden sidebar that slides into view from the edge of the screen. Use it for navigation, filters or settings that should not take up space all the time.
+description: Sidebar panel that slides in from the edge of the viewport.
+related: [/ui/components/modal]
 layout: '@layouts/DocsMdxLayout.astro'
 ---
 import Example from '@components/Example.astro';
@@ -11,23 +14,17 @@ Offcanvas is a sidebar component that can be toggled via JavaScript to appear fr
 
 To create an offcanvas, add the `.offcanvas` class to a container element. You can also add the `.offcanvas-start`, `.offcanvas-end`, `.offcanvas-top`, or `.offcanvas-bottom` class to specify the position of the offcanvas. The `.show` class is used to display the offcanvas.
 
-<Example raw>
-<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvas" aria-labelledby="offcanvasLabel" data-bs-scroll="true" > <div class="offcanvas-body"> Content for the offcanvas goes here. You can place just about any Tabler component or custom elements here. </div> </div>
+<Example raw code={`<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvas" aria-labelledby="offcanvasLabel" data-bs-scroll="true"> <div class="offcanvas-body"> Content for the offcanvas goes here. You can place just about any Tabler component or custom elements here. </div> </div>`}>
+<div class="offcanvas offcanvas-start show position-static" tabindex="-1" id="offcanvas" aria-labelledby="offcanvasLabel" data-bs-scroll="true" > <div class="offcanvas-body"> Content for the offcanvas goes here. You can place just about any Tabler component or custom elements here. </div> </div>
 </Example>
 
 ## Cookies banner
 
 The offcanvas component is used to display a cookies banner. It is a great way to inform users about the use of cookies on your website and to get their consent.
 
-<Example raw>
-<div class="offcanvas offcanvas-bottom h-auto" tabindex="-1" id="offcanvasBottom" aria-modal="true" role="dialog" data-bs-scroll="true" > <div class="offcanvas-body"> <div class="container"> <div class="row align-items-center"> <div class="col"> <strong>Do you like cookies?</strong> 🍪 We use cookies to ensure you get the best experience on our website. <a href="./terms-of-service.html" target="_blank">Learn more</a> </div> <div class="col-auto"> <button type="button" class="btn btn-primary" data-bs-dismiss="offcanvas"> Essential Cookies Only </button> </div> <div class="col-auto"> <button type="button" class="btn btn-primary" data-bs-dismiss="offcanvas"> Allow All Cookies </button> </div> </div> </div> </div> </div>
+<Example raw code={`<div class="offcanvas offcanvas-bottom h-auto" tabindex="-1" id="offcanvasBottom" aria-modal="true" role="dialog" data-bs-scroll="true"> <div class="offcanvas-body"> <div class="container"> <div class="row align-items-center"> <div class="col"> <strong>Do you like cookies?</strong> 🍪 We use cookies to ensure you get the best experience on our website. <a href="./terms-of-service.html" target="_blank">Learn more</a> </div> <div class="col-auto"> <button type="button" class="btn btn-primary" data-bs-dismiss="offcanvas"> Essential Cookies Only </button> </div> <div class="col-auto"> <button type="button" class="btn btn-primary" data-bs-dismiss="offcanvas"> Allow All Cookies </button> </div> </div> </div> </div> </div>`}>
+<div class="offcanvas offcanvas-bottom h-auto show position-static" tabindex="-1" id="offcanvasBottom" aria-modal="true" role="dialog" data-bs-scroll="true" > <div class="offcanvas-body"> <div class="container"> <div class="row align-items-center"> <div class="col"> <strong>Do you like cookies?</strong> 🍪 We use cookies to ensure you get the best experience on our website. <a href="./terms-of-service.html" target="_blank">Learn more</a> </div> <div class="col-auto"> <button type="button" class="btn btn-primary" data-bs-dismiss="offcanvas"> Essential Cookies Only </button> </div> <div class="col-auto"> <button type="button" class="btn btn-primary" data-bs-dismiss="offcanvas"> Allow All Cookies </button> </div> </div> </div> </div> </div>
 </Example>
-
-<script>{`document.addEventListener('DOMContentLoaded', function() {
-  document.querySelectorAll('[data-bs-scroll="true"]').forEach(el => {
-    new bootstrap.Offcanvas(el, { scroll: true }).show();
-  });
-});`}</script>
 
 ## SCSS variables
 

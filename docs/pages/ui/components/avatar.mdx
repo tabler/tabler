@@ -1,7 +1,8 @@
 ---
 title: Avatar
 summary: An avatar helps customize interface elements and make the product experience more personalized. It is often used in communication apps, collaboration tools, and social media.
-description: Personalize UI with a user avatar.
+description: Display user avatars with images, initials, or icons. Change sizes, shapes, and colors, or group them into stacked avatar lists.
+related: [/ui/components/status, /ui/components/badge]
 layout: '@layouts/DocsMdxLayout.astro'
 ---
 import Example from '@components/Example.astro';
@@ -35,7 +36,7 @@ You can also use initials instead of pictures.
 
 ## Avatar icons
 
-Besides pictures and initials, you can also use icons to make the avatars more universal.
+Besides pictures and initials, you can also use [icons](/ui/components/icon) to make the avatars more universal.
 
 <Example centered>
 <span class="avatar"> <Icon name="user" /> </span> <span class="avatar"> <Icon name="plus" /> </span> <span class="avatar"> <Icon name="settings" /> </span>
@@ -59,7 +60,7 @@ Using Bootstrap’s typical naming structure, you can create a standard avatar o
 
 ## Avatar status
 
-Add a status indicator to your avatar to show, for instance, if a user is online or offline or indicate the number of messages they have received.
+Add a [status indicator](/ui/components/status) to your avatar to show, for instance, if a user is online or offline or indicate the number of messages they have received.
 
 <Example centered>
 <span class="avatar" style="background-image: url(/static/avatars/018m.jpg)"></span> <span class="avatar" style="background-image: url(/static/avatars/015m.jpg)"> <span class="badge bg-danger"></span> </span> <span class="avatar" style="background-image: url(/static/avatars/022m.jpg)"> <span class="badge bg-success"></span> </span> <span class="avatar"> <span class="badge bg-warning"></span>SA </span> <span class="avatar" style="background-image: url(/static/avatars/022m.jpg)"> <span class="badge bg-info"></span> </span> <span class="avatar" style="background-image: url(/static/avatars/048m.jpg)"> <span class="badge bg-gray">5</span> </span>
@@ -71,6 +72,40 @@ Change the shape of an avatar with the default Bootstrap image classes. You can 
 
 <Example centered>
 <span class="avatar" style="background-image: url(/static/avatars/019m.jpg)"></span> <span class="avatar rounded" style="background-image: url(/static/avatars/039f.jpg)"></span> <span class="avatar rounded-circle">AA</span> <span class="avatar rounded-0" style="background-image: url(/static/avatars/043f.jpg)"></span> <span class="avatar rounded-3" style="background-image: url(/static/avatars/044f.jpg)"></span>
+</Example>
+
+## Avatar upload
+
+Use the `avatar-upload` class together with `avatar` to show an empty avatar slot. It has a dashed border and no image, so users can see that the picture is still missing. On hover the border and the icon turn to the primary color.
+
+Put an icon inside to show the action. The variant is often used as a link or a button.
+
+<Example centered>
+<a href="#" class="avatar avatar-upload"> <Icon name="plus" /> </a> <a href="#" class="avatar avatar-upload rounded"> <Icon name="plus" /> </a> <a href="#" class="avatar avatar-upload rounded-0"> <Icon name="camera" /> </a>
+</Example>
+
+## Avatar upload size
+
+The upload avatar uses the same size classes as a normal avatar, from `avatar-xxs` to `avatar-2xl`.
+
+<Example centered>
+<a href="#" class="avatar avatar-upload avatar-2xl rounded"> <Icon name="plus" /> </a> <a href="#" class="avatar avatar-upload avatar-xl rounded"> <Icon name="plus" /> </a> <a href="#" class="avatar avatar-upload avatar-lg rounded"> <Icon name="plus" /> </a> <a href="#" class="avatar avatar-upload rounded"> <Icon name="plus" /> </a> <a href="#" class="avatar avatar-upload avatar-sm rounded"> <Icon name="plus" /> </a>
+</Example>
+
+## Avatar upload text
+
+Add a short label under the icon with the `avatar-upload-text` class. The content is stacked in a column, so use this only in the larger sizes. The text is shown in uppercase, like all avatar text.
+
+<Example centered>
+<a href="#" class="avatar avatar-upload avatar-xl rounded"> <Icon name="plus" /> <span class="avatar-upload-text">Upload</span> </a> <a href="#" class="avatar avatar-upload avatar-2xl rounded"> <Icon name="camera" /> <span class="avatar-upload-text">Add photo</span> </a>
+</Example>
+
+## Avatar upload in a form
+
+To pick a real file, use a `label` with the upload classes and connect it to a hidden file input. Add `cursor-pointer`, because the pointer cursor is only set for links.
+
+<Example>
+<div class="row align-items-end" style="width: 100%;"> <div class="col-auto"> <label for="avatar-file" class="avatar avatar-upload avatar-lg rounded cursor-pointer"> <Icon name="plus" /> </label> <input type="file" id="avatar-file" class="visually-hidden" accept="image/*" /> </div> <div class="col"> <label class="form-label" for="avatar-file">Avatar</label> <div class="text-secondary">Click to upload a new avatar</div> </div> </div>
 </Example>
 
 ## Avatars list
@@ -92,6 +127,13 @@ Make the list stack once a certain number of avatars is reached to make it look 
 <Example centered>
 <AvatarList stacked={true}> <span class="avatar avatar-sm rounded-circle" style="background-image: url(/static/avatars/035m.jpg)" ></span> <span class="avatar avatar-sm rounded-circle" style="background-image: url(/static/avatars/027f.jpg)" ></span> <span class="avatar avatar-sm rounded-circle" style="background-image: url(/static/avatars/036f.jpg)" ></span> <span class="avatar avatar-sm rounded-circle">SA</span> <span class="avatar avatar-sm rounded-circle" style="background-image: url(/static/avatars/034f.jpg)" ></span> <span class="avatar avatar-sm rounded-circle" style="background-image: url(/static/avatars/043f.jpg)" ></span> <span class="avatar avatar-sm rounded-circle" style="background-image: url(/static/avatars/039f.jpg)" ></span> <span class="avatar avatar-sm rounded-circle" style="background-image: url(/static/avatars/020m.jpg)" ></span> </AvatarList>
 </Example>
+
+## Accessibility
+
+- An avatar with a background image has no text of its own. Show the user name next to it, or add an `aria-label` to the avatar.
+- Give the upload avatar a clear name. Use the `avatar-upload-text` label, an `aria-label`, or a `form-label` linked with `for`.
+- Use a `label` with a file input, or a `button`, when the upload avatar does something. A link with `href="#"` is only good for a static demo.
+- Keep the hidden file input in the markup with the `visually-hidden` class. Do not use `display: none`, because then keyboard users cannot reach it.
 
 ## SCSS variables
 
