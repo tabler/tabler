@@ -2,4 +2,4 @@
 "@tabler/docs": patch
 ---
 
-Fixed Docs search display in dark mode.
+Fixed the DocSearch search box and dropdown colors in dark mode.

@@ -2,4 +2,4 @@
 "@tabler/preview": patch
 ---
 
-Updated activity messages.
+Updated the activity feed messages in `activity.json` and the activity preview page.

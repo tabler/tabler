@@ -2,4 +2,4 @@
 "@tabler/preview": patch
 ---
 
-Added comprehensive All Elements page with all UI components and Bootstrap elements
+Added an All Elements page showing every UI component and Bootstrap element.

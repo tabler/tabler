@@ -2,5 +2,4 @@
 "@tabler/preview": minor
 ---
 
-Added Confirm Delete modal with warning icon, confirmation checkbox, and JavaScript validation to enable delete button only when confirmed.
-
+Added Confirm Delete modal with a warning icon and a checkbox that enables the delete button.
