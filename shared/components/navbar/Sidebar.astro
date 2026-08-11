@@ -3,6 +3,7 @@ import NavbarToggler from './NavbarToggler.astro'
 import Logo from './Logo.astro'
 import NavbarSide from './NavbarSide.astro'
 import NavbarMenu from './NavbarMenu.astro'
+import NavbarSearch from './NavbarSearch.astro'
 import type { Breakpoint } from './NavbarSide.astro'
 
 interface Props {
@@ -32,6 +33,9 @@ const asideClass = ['navbar navbar-vertical', end && 'navbar-end', `navbar-expan
     <NavbarSide class="d-lg-none" breakpoint={breakpoint} />
 
     <nav class="collapse navbar-collapse" id="sidebar-menu" aria-label="Sidebar">
+      {/* Sidebar layouts hide the topbar, so this is their only search affordance. */}
+      <NavbarSearch class="mt-3" />
+
       <NavbarMenu autoOpen class="pt-lg-3" keepOpen pageMenu={pageMenu} />
     </nav>
   </div>

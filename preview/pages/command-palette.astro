@@ -1,0 +1,99 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Card from '@ui/Card.astro'
+import CardHeader from '@ui/CardHeader.astro'
+import CardBody from '@ui/CardBody.astro'
+import Icon from '@ui/Icon.astro'
+
+const shortcuts = [
+  { keys: ['⌘', 'K'], description: 'Open or close the palette (Ctrl + K on Windows and Linux)' },
+  { keys: ['↑', '↓'], description: 'Move between results' },
+  { keys: ['↵'], description: 'Open the highlighted page or run the highlighted action' },
+  { keys: ['esc'], description: 'Close the palette' },
+]
+
+const features = [
+  { icon: 'file-text', title: 'Every page', description: 'Results are built from the demo menu, so any page in the sidebar can be reached without opening it.' },
+  { icon: 'bolt', title: 'Actions', description: 'Commands sit next to pages — toggling dark mode or opening theme settings takes two keystrokes.' },
+  { icon: 'history', title: 'Recent', description: 'The last five things you picked are shown first when the search field is empty.' },
+  { icon: 'keyboard', title: 'Keyboard only', description: 'Combobox roles and aria-activedescendant, so screen readers announce the highlighted result.' },
+]
+---
+
+<DefaultLayout title="Command palette" pageHeader="Command palette" description="A ⌘K launcher for pages and actions." pageMenu="base.command-palette">
+  <div class="row row-cards">
+    <div class="col-12">
+      <Card>
+        <CardBody class="text-center py-5">
+          <p class="text-secondary">Press</p>
+          <p class="h1 mb-4">
+            <kbd>⌘</kbd> + <kbd>K</kbd>
+          </p>
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modal-command-palette">
+            <Icon name="search" />
+            Or open it here
+          </button>
+        </CardBody>
+      </Card>
+    </div>
+
+    {
+      features.map((feature) => (
+        <div class="col-sm-6 col-lg-3">
+          <Card>
+            <CardBody>
+              <Icon name={feature.icon} class="mb-2 text-secondary" />
+              <h3 class="card-title">{feature.title}</h3>
+              <p class="text-secondary mb-0">{feature.description}</p>
+            </CardBody>
+          </Card>
+        </div>
+      ))
+    }
+
+    <div class="col-lg-6">
+      <Card>
+        <CardHeader title="Keyboard shortcuts" />
+        <div class="table-responsive">
+          <table class="table table-vcenter card-table">
+            <tbody>
+              {
+                shortcuts.map((shortcut) => (
+                  <tr>
+                    <td class="w-1 text-nowrap">
+                      {shortcut.keys.map((key, index) => (
+                        <>
+                          {index > 0 && ' '}
+                          <kbd>{key}</kbd>
+                        </>
+                      ))}
+                    </td>
+                    <td class="text-secondary">{shortcut.description}</td>
+                  </tr>
+                ))
+              }
+            </tbody>
+          </table>
+        </div>
+      </Card>
+    </div>
+
+    <div class="col-lg-6">
+      <Card>
+        <CardHeader title="How it works" />
+        <CardBody>
+          <p>
+            The palette is a Bootstrap modal with a search field and a listbox. Its items come from <code>shared/data/menu.json</code>, so pages added to the menu show up without any extra wiring.
+          </p>
+          <p>
+            Matching is a scored subsequence search: every typed character has to appear in order, with bonuses for consecutive characters and word starts. Typing <code>sgnin</code> finds <em>Sign in</em>, and matched characters are highlighted in the result.
+          </p>
+          <p class="mb-0">
+            The palette lives in <code>BaseLayout.astro</code>, next to <code>&lt;ThemeSettings /&gt;</code>, so <kbd>⌘</kbd>
+            <kbd>K</kbd> works on every page of the demo — this page only describes it.
+          </p>
+        </CardBody>
+      </Card>
+    </div>
+  </div>
+</DefaultLayout>

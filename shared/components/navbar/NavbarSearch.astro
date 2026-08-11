@@ -1,7 +1,7 @@
 ---
-// breakpoint param (default 'lg') is unused.
-// Form action is "./" for root-level pages.
-import InputIcon from '@ui/form/InputIcon.astro'
+// Opens the command palette (see @ui/CommandPalette.astro, mounted in BaseLayout)
+// rather than submitting a search form: one search surface, one result list.
+import Icon from '@ui/Icon.astro'
 
 interface Props {
   class?: string
@@ -12,8 +12,10 @@ const { class: className } = Astro.props
 
 <!-- BEGIN NAVBAR SEARCH -->
 <div class={className}>
-  <form action="./" method="get" autocomplete="off" novalidate role="search">
-    <InputIcon prepend ariaLabel="Search in website" />
-  </form>
+  <button type="button" class="btn w-100 justify-content-start text-secondary" data-bs-toggle="modal" data-bs-target="#modal-command-palette" aria-label="Search pages and actions">
+    <Icon name="search" />
+    Search
+    <kbd class="ms-auto" data-command-palette-shortcut>⌘K</kbd>
+  </button>
 </div>
 <!-- END NAVBAR SEARCH -->

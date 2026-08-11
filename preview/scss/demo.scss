@@ -77,3 +77,103 @@ $demo-icon-size: 4rem;
     text-decoration: none;
   }
 }
+
+//
+// Command palette prototype (see shared/ui/CommandPalette.astro).
+// Demo-only styles — nothing here is part of the core CSS API yet.
+//
+
+.command-palette-search {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding-inline: 1rem;
+  border-bottom: var(--border-width) var(--border-style) var(--border-color);
+
+  .form-control {
+    flex: 1 1 auto;
+    width: auto;
+    min-width: 0;
+    padding-inline: 0;
+    padding-block: 0.875rem;
+    font-size: 1rem;
+  }
+}
+
+.command-palette-search-icon {
+  display: flex;
+  color: var(--secondary);
+}
+
+.command-palette-list {
+  max-height: 60vh;
+  margin: 0;
+  padding: 0.5rem;
+  list-style: none;
+}
+
+.command-palette-group {
+  padding: 0.5rem 0.75rem 0.25rem;
+  font-size: 0.625rem;
+  font-weight: var(--font-weight-medium);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--secondary);
+}
+
+.command-palette-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.75rem;
+  border-radius: var(--border-radius);
+  cursor: pointer;
+
+  &.active {
+    background: var(--active-bg);
+  }
+
+  mark {
+    padding: 0;
+    background: none;
+    font-weight: var(--font-weight-bold);
+    color: inherit;
+  }
+}
+
+.command-palette-item-icon {
+  display: flex;
+  color: var(--secondary);
+}
+
+.command-palette-item-title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.command-palette-item-hint,
+.command-palette-item-section {
+  font-size: 0.75rem;
+  color: var(--secondary);
+  white-space: nowrap;
+}
+
+.command-palette-item-section {
+  margin-inline-start: auto;
+}
+
+.command-palette-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 0.5rem 1rem;
+  border-top: var(--border-width) var(--border-style) var(--border-color);
+  font-size: 0.75rem;
+  color: var(--secondary);
+}
+
+.command-palette-kbd {
+  font-size: 0.625rem;
+}
