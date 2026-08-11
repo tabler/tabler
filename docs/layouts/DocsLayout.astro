@@ -12,7 +12,7 @@ import DocsToc from '@components/DocsToc.astro';
 import type { TocItem } from '@components/DocsToc.astro';
 import DocsPagination from '@components/DocsPagination.astro';
 import DocsCard from '@components/DocsCard.astro';
-import { getDocsPage } from '@shared/lib/docs-children';
+import { getDocsPage } from '@lib/docs-pages';
 import Prose from '@ui/Prose.astro';
 import PageScripts from '@shared/components/PageScripts.astro';
 
@@ -46,7 +46,7 @@ interface Props {
 	related?: string[];
 	/** hides child and previous/next page navigation */
 	hidePagination?: boolean | undefined;
-	/** repo-relative source path for the "Edit this page" link, e.g. "docs/pages/ui/components/alert.mdx" */
+	/** repo-relative source path for the "Edit this page" link, e.g. "docs/content/ui/components/alert.mdx" */
 	editPath?: string | undefined;
 }
 
@@ -108,8 +108,9 @@ const depth = docsUrl.split('/').filter(Boolean).length;
 const relative = depth === 0 ? '.' : '../'.repeat(depth).slice(0, -1);
 
 // Source path for the "Edit this page" link. Prefer the real path passed by the
-// MDX layout; fall back to the flat-page convention (docs/pages/<url>.mdx).
-const editFilePath = editPath ?? `docs/pages${docsUrl.replace(/\/$/, '')}.mdx`;
+// route (from the collection entry); fall back to the flat-page convention.
+const editFilePath =
+	editPath ?? (docsUrl === '/' ? 'docs/content/index.mdx' : `docs/content${docsUrl.replace(/\/$/, '')}.mdx`);
 
 // docs-libs + clipboard (always included). In dev, file names stay unchanged
 // (e.g. dist/clipboard.min.js keeps .min).
@@ -198,8 +199,11 @@ const docsLinks = docs.links as DocsLink[];
 
 // Card data for the "Related" section (title/description from the target
 // page's frontmatter; menu title as fallback).
-const relatedPages = related.map(
-	(url) => getDocsPage(url) ?? { url, title: menuTitleByUrl.get(url) ?? url, description: '', order: 0 },
+const relatedPages = await Promise.all(
+	related.map(
+		async (url) =>
+			(await getDocsPage(url)) ?? { url, title: menuTitleByUrl.get(url) ?? url, description: '', order: 0 },
+	),
 );
 ---
 

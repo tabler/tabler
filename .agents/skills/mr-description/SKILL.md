@@ -46,17 +46,31 @@ Use this to infer **intent**, **user-visible behavior**, and **risk**—not only
 
 **Vercel preview URL:** only when the diff has **visual / UI changes** a reviewer can check in the browser (CSS, preview pages, docs examples, components, layout). Skip the preview URL for non-visual work (agent skills, CI, tooling, docs prose-only, lockfile, config with no rendered UI effect).
 
-When a preview URL is needed and the branch is pushed, Vercel deploys a preview. Build the link from the branch name:
+When a preview URL is needed and the branch is pushed, Vercel deploys a preview. **The repo has two separate Vercel projects — pick the one matching the diff:**
 
-1. Take the current branch name from `git branch --show-current`.
-2. Replace `/` with `-`, **remove dots entirely** (do not replace them with dashes), and use lowercase (e.g. `feature/pricing-banner` → `feature-pricing-banner`, `update-icons-3.45.0` → `update-icons-3450`).
-3. Insert into: `https://tabler-git-{branch-slug}-tabler-io.vercel.app/`
+| Diff touches | Project | Host |
+| --- | --- | --- |
+| `preview/**`, `core/**` (demo pages) | `tabler` | `https://tabler-git-{branch-slug}-tabler-io.vercel.app/` |
+| `docs/**` (documentation site) | `tabler-docs` | `https://tabler-docs-git-{branch-slug}-tabler-io.vercel.app/` |
 
-Examples:
-- branch `bundle-framing-posthog-flag` → `https://tabler-git-bundle-framing-posthog-flag-tabler-io.vercel.app/`
-- branch `update-icons-3.45.0` → `https://tabler-git-update-icons-3450-tabler-io.vercel.app/`
+Using the `tabler` host for a docs page returns 404 — the pages simply do not exist in that project.
 
-If the diff touches specific routes or pages, append that path to the preview URL. **Preview pages use the `.html` extension**: a page from `preview/pages/icons.astro` is served at `/icons.html` (e.g. `…vercel.app/icons.html`), not `/icons`. Docs pages use directory URLs without extension: a page from `docs/pages/ui/components/badge.mdx` is served at `/ui/components/badge/`. Mention the exact path(s) in **Preview**.
+Build `{branch-slug}` from the branch name (`git branch --show-current`): replace `/` with `-`, **remove dots entirely** (do not replace them with dashes), lowercase. Examples: `feature/pricing-banner` → `feature-pricing-banner`, `update-icons-3.45.0` → `update-icons-3450`.
+
+**Verify before pasting.** The slug rule is a convention, not a guarantee. Read the real url from the deployment, then `curl` each link you intend to put in the body:
+
+```shell
+gh api repos/tabler/tabler/deployments --jq '[.[] | select(.environment=="Preview – tabler-docs")][0].id'
+gh api repos/tabler/tabler/deployments/<id>/statuses --jq '.[0].environment_url'
+curl -s -o /dev/null -w '%{http_code}\n' <link>
+```
+
+If the diff touches specific routes or pages, append that path. Path shape differs per project:
+
+- **Preview pages use the `.html` extension**: `preview/pages/icons.astro` → `/icons.html`, not `/icons`.
+- **Docs pages use directory urls with no extension and no trailing slash** (`vercel.json` sets `trailingSlash: false`): `docs/content/ui/components/badge.mdx` → `/ui/components/badge`. A trailing slash still resolves, but through a 308 redirect.
+
+Mention the exact path(s) in **Preview**.
 
 ## 3. Title
 

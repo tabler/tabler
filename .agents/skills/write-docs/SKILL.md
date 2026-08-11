@@ -1,6 +1,6 @@
 ---
 name: write-docs
-description: Write, update, or suggest Tabler documentation pages in simple English using the current docs schema. Use whenever the user asks to create docs, edit docs, add new feature docs to an existing page, or standardize docs structure across any docs category. Also consult this skill proactively — without being asked — whenever a new visual UI component (shared/ui/*.astro), plugin, or other user-facing feature has just been added or changed and has no matching, up-to-date page under docs/pages/**, since undocumented components are easy to forget about.
+description: Write, update, or suggest Tabler documentation pages in simple English using the current docs schema. Use whenever the user asks to create docs, edit docs, add new feature docs to an existing page, or standardize docs structure across any docs category. Also consult this skill proactively — without being asked — whenever a new visual UI component (shared/ui/*.astro), plugin, or other user-facing feature has just been added or changed and has no matching, up-to-date page under docs/content/**, since undocumented components are easy to forget about.
 ---
 
 # Write Tabler Docs
@@ -9,7 +9,7 @@ Follow the current Tabler documentation schema. How far to go depends on how the
 
 ## 1. Scope and behavior
 
-- Works for any docs page type under `docs/pages/**` (components, utilities, forms, layout, plugins, base, getting started, emails, illustrations, icons, index pages). Pages are MDX: leaf pages `foo.mdx`, parents with sub-pages `foo/index.mdx`.
+- Works for any docs page type under `docs/content/**` (components, utilities, forms, layout, plugins, base, getting started, emails, illustrations, icons, index pages). Pages are MDX: leaf pages `foo.mdx`, parents with sub-pages `foo/index.mdx`.
 - Edit existing pages when the user asks to document new functionality in an existing component/page.
 - Create new pages when needed.
 - Use simple English in all prose.
@@ -36,15 +36,15 @@ Default frontmatter (required unless user asks otherwise):
 title: ...
 summary: ...
 description: ...
-layout: '@shared/layouts/DocsMdxLayout.astro'
 ---
 ```
 
 Rules:
 
 - Keep frontmatter static YAML only.
-- By default, include only `title`, `summary`, `description`, and `layout`.
-- Add extended keys (for example `bootstrapLink`, `order`, `plugin`, `docs-libs`, `redirect`) only when the user explicitly asks for them or nearby pages in the same category use them.
+- No `layout:` key — `docs/pages/[...slug].astro` renders every page.
+- By default, include only `title`, `summary` and `description`.
+- Add extended keys only when the user explicitly asks for them or nearby pages in the same category use them. The full set is `seoTitle`, `seoDescription`, `icon`, `order`, `related`, `docs-libs`, `css-plugins`, `hide-pagination`, `added-in` — the collection schema in `docs/content.config.ts` is strict, so anything else fails the build.
 
 ## 4. Documentation schema to follow
 
@@ -94,16 +94,17 @@ Prose and example markup are only as accurate as their source. Before writing ex
 
 ## 7. Registering new pages in the docs menu
 
-`docs/pages/**` is not scanned automatically to build navigation — the sidebar tree is frozen in `shared/data/docs.json` (see the comment in `docs/components/DocsMenu.astro`). A new leaf page with no entry there exists but is unreachable from the docs site.
+`docs/content/**` is not scanned automatically to build navigation — the sidebar tree is frozen in `shared/data/docs.json` (see the comment in `docs/components/DocsMenu.astro`). A new leaf page with no entry there exists but is unreachable from the docs site.
 
 - Only touch `docs.json` for genuinely **new** pages. Editing an existing page needs no menu change.
-- Find the matching section in the `menu` array by directory: `docs/pages/ui/components/*` → the `"Components"` entry under `"Tabler UI"`, `docs/pages/ui/plugins/*` → `"Plugins"`, `docs/pages/icons/libraries/*` → `"Libraries"` under `"Tabler Icons"`, and so on — the section `title`/`url` pairs mirror the `docs/pages/ui/*` and `docs/pages/icons/*` subdirectory names.
-- Add `{ "title": "<Title Case name>", "url": "/<matching>/<slug>/" }` to that section's `children`, in the same alphabetical position its neighbors already follow.
+- Find the matching section in the `menu` array by directory: `docs/content/ui/components/*` → the `"Components"` entry under `"Tabler UI"`, `docs/content/ui/plugins/*` → `"Plugins"`, `docs/content/icons/libraries/*` → `"Libraries"` under `"Tabler Icons"`, and so on — the section `title`/`url` pairs mirror the `docs/content/ui/*` and `docs/content/icons/*` subdirectory names.
+- Add `{ "title": "<Title Case name>", "url": "/<matching>/<slug>" }` to that section's `children`, in the same alphabetical position its neighbors already follow.
+- **No trailing slash on `url`.** The menu compares it against the page url, which never has one, so a trailing slash silently breaks the active-item highlight for that page.
 - The `title` and `url` must match the new page's frontmatter `title` and its file path exactly, or the sidebar entry will point at the wrong place.
 
 ## 8. Workflow for each request
 
-1. Identify target file(s) in `docs/pages/**` (or determine none exist yet — see section 7).
+1. Identify target file(s) in `docs/content/**` (or determine none exist yet — see section 7).
 2. Read the target page and 2-3 nearby pages in the same category to match tone and conventions.
 3. Read the underlying component/plugin source per section 6 so examples are accurate, not guessed.
 4. Apply the schema from section 4.

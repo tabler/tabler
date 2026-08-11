@@ -83,8 +83,6 @@ export default defineConfig({
         '@shared': fileURLToPath(new URL('../shared', import.meta.url)),
         '@ui': fileURLToPath(new URL('../shared/ui', import.meta.url)),
         '@components': fileURLToPath(new URL('../shared/components', import.meta.url)),
-        // Used by @shared/lib/docs-children's glob.
-        '@pages': fileURLToPath(new URL('./pages', import.meta.url)),
       },
     },
   },

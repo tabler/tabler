@@ -2,8 +2,8 @@
 import DocsCard from './DocsCard.astro'
 import docs from '@data/docs.json'
 import Icon from '@ui/Icon.astro'
-import { getDocsChildren } from '@shared/lib/docs-children'
-import type { DocsChildPage } from '@shared/lib/docs-children'
+import { getDocsChildren } from '@lib/docs-pages'
+import type { DocsPage } from '@lib/docs-pages'
 
 interface MenuLeaf {
   title: string
@@ -23,7 +23,7 @@ interface Props {
 
 const { url } = Astro.props
 
-const children = getDocsChildren(url)
+const children = await getDocsChildren(url)
 
 type Pagination = {
   prev: MenuLeaf | null
@@ -64,7 +64,7 @@ const { prev, next, found } = findPage(docs.menu as MenuNode[]) ?? {
   children.length > 0 && (
     <div class="mt-6 pt-6">
       <div class="row row-deck row-cards">
-        {children.map((child: DocsChildPage) => (
+        {children.map((child: DocsPage) => (
           <DocsCard href={child.url} title={child.title} description={child.description} icon={child.icon} />
         ))}
       </div>

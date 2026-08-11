@@ -13,4 +13,4 @@
 - [ ] The branch is based on `dev` and named `<type>/<short-description>` (for example `fix/markdown-table-overflow`)
 - [ ] `pnpm run build` passes locally
 - [ ] A changeset is included if the change affects any package (`pnpm exec changeset`)
-- [ ] Documentation is updated if needed (`docs/pages/**`)
+- [ ] Documentation is updated if needed (`docs/content/**`)

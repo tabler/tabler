@@ -1,0 +1,44 @@
+---
+// Renders every page of the `docs` content collection (see ../content.config.ts).
+// Replaces the former file-system routing of docs/pages/**/*.mdx and the
+// DocsMdxLayout adapter that mapped MDX front matter onto DocsLayout props.
+import type { GetStaticPaths } from 'astro'
+import { getCollection, render } from 'astro:content'
+import DocsLayout from '@layouts/DocsLayout.astro'
+import { docsUrlFromId } from '@lib/docs-pages'
+
+export const getStaticPaths = (async () => {
+  const entries = await getCollection('docs')
+
+  return entries.map((entry) => ({
+    // the home page has no slug segments — `[...slug]` matches it with `undefined`
+    params: { slug: entry.id === 'index' ? undefined : entry.id },
+    props: { entry },
+  }))
+}) satisfies GetStaticPaths
+
+// Astro.props is inferred from getStaticPaths — no Props interface needed.
+const { entry } = Astro.props
+const { data } = entry
+const { Content, headings } = await render(entry)
+
+const toc = headings.filter((heading) => heading.depth === 2 || heading.depth === 3).map((heading) => ({ level: heading.depth as 2 | 3, text: heading.text, id: heading.slug }))
+---
+
+<DocsLayout
+  title={data.title}
+  seoTitle={data.seoTitle}
+  summary={data.summary}
+  description={data.description}
+  seoDescription={data.seoDescription}
+  addedIn={data.addedIn}
+  docsLibs={data.docsLibs}
+  cssPlugins={data.cssPlugins}
+  related={data.related}
+  hidePagination={data.hidePagination}
+  toc={toc}
+  url={docsUrlFromId(entry.id)}
+  editPath={entry.filePath ? `docs/${entry.filePath}` : undefined}
+>
+  <Content />
+</DocsLayout>
