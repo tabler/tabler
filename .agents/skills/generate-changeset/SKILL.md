@@ -4,7 +4,6 @@ description: >-
   Creates a Tabler changeset file in `.changeset/` from the current code
   changes. Use when the user asks for a changeset, version bump, release note
   entry, or changelog entry for @tabler/core, @tabler/preview, or @tabler/docs.
-disable-model-invocation: true
 ---
 
 # Generate changeset
