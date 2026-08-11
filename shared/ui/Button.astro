@@ -20,6 +20,7 @@ interface Props {
   ghost?: boolean
   size?: ButtonSize | undefined
   block?: boolean
+  disabled?: boolean
   class?: string
   icon?: string
   iconColor?: string
@@ -35,18 +36,21 @@ interface Props {
   dropdown?: boolean
 }
 
-const { text = 'Button', href, external, element, type, id, color, outline, ghost, size, block, class: className, icon, iconColor, iconEnd, iconOnly, modalId, toastId, dismiss, dropdown } = Astro.props
+const { text = 'Button', href, external, element, type, id, color, outline, ghost, size, block, disabled, class: className, icon, iconColor, iconEnd, iconOnly, modalId, toastId, dismiss, dropdown } = Astro.props
 
-// Without a real destination the control is an action, so render <button>; internal hrefs are prefixed with '/'.
-const Element = element ?? (href ? 'a' : 'button')
-const resolvedHref = href ? (external ? href : `/${href}`) : '#'
+// Actions (dropdown/modal/toast/dismiss) and bare buttons use <button>. Real URLs use <a>,
+// with internal hrefs prefixed with '/'.
+const isAction = Boolean(dropdown || modalId || toastId || dismiss)
+const Element = element ?? (href && !isAction ? 'a' : 'button')
+const resolvedHref = Element === 'a' ? (href ? (external ? href : `/${href}`) : undefined) : undefined
+const resolvedType = Element === 'button' ? (type ?? 'button') : undefined
 
 const classes = ['btn', color && `btn-${outline ? 'outline-' : ghost ? 'ghost-' : ''}${color}`, size && size !== 'md' && `btn-${size}`, className, block && 'w-100', iconOnly && 'btn-icon']
 ---
 
 <Element
-  href={Element === 'a' ? resolvedHref : undefined}
-  type={Element === 'button' ? (type ?? 'button') : undefined}
+  href={resolvedHref}
+  type={resolvedType}
   id={id}
   class:list={classes}
   target={external ? '_blank' : undefined}
@@ -55,6 +59,7 @@ const classes = ['btn', color && `btn-${outline ? 'outline-' : ghost ? 'ghost-' 
   data-bs-target={!dropdown && modalId ? `#modal-${modalId}` : !dropdown && toastId ? `#toast-${toastId}` : undefined}
   aria-label={iconOnly ? text : undefined}
   data-bs-dismiss={dismiss ? 'modal' : undefined}
+  disabled={Element === 'button' && disabled ? true : undefined}
 >
   {icon && <Icon name={icon} color={iconColor} />}
   {!iconOnly && text}

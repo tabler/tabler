@@ -14,7 +14,7 @@ const imageRadios = horizontal.slice(10, 16)
 const blueHex = (site as { colors: { blue: { hex: string } } }).colors.blue.hex
 ---
 
-<FormGroup label="Image Check">
+<FormGroup label="Image Check" associate={false}>
   <fieldset>
     <legend class="visually-hidden">Image Check</legend>
     <div class="row g-2">
@@ -37,7 +37,7 @@ const blueHex = (site as { colors: { blue: { hex: string } } }).colors.blue.hex
   </fieldset>
 </FormGroup>
 
-<FormGroup label="Image Check Radio">
+<FormGroup label="Image Check Radio" associate={false}>
   <fieldset>
     <legend class="visually-hidden">Image Check Radio</legend>
     <div class="row g-2">
@@ -69,7 +69,7 @@ const blueHex = (site as { colors: { blue: { hex: string } } }).colors.blue.hex
 
 {
   [false, true].map((lite) => (
-    <FormGroup label={`Validation States${lite ? ' (lite)' : ''}`}>
+    <FormGroup label={`Validation States${lite ? ' (lite)' : ''}`} associate={false}>
       <input type="text" class:list={['form-control is-valid', lite && 'is-valid-lite', 'mb-2']} placeholder="Valid State.." aria-invalid="false" />
       <input type="text" class:list={['form-control is-invalid', lite && 'is-invalid-lite']} placeholder="Invalid State.." aria-invalid="true" aria-describedby={!lite ? 'validation-invalid-feedback' : undefined} />
       {!lite && (
