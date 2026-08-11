@@ -48,6 +48,8 @@ interface Props {
 	hidePagination?: boolean | undefined;
 	/** repo-relative source path for the "Edit this page" link, e.g. "docs/content/ui/components/alert.mdx" */
 	editPath?: string | undefined;
+	/** url of this page's markdown mirror (see pages/[...slug].md.ts); omitted for pages outside the docs collection */
+	markdownUrl?: string | undefined;
 }
 
 const {
@@ -63,6 +65,7 @@ const {
 	related = [],
 	hidePagination = false,
 	editPath,
+	markdownUrl,
 } = Astro.props;
 
 // Always-on plugin styles. Heavy demo-only sheets (flags, payments, socials)
@@ -218,6 +221,10 @@ const relatedPages = await Promise.all(
 
 		<title>{metaTitle} | {siteName}</title>
 		{isVercelPreview && <meta name="robots" content="noindex" />}
+
+		<!-- Markdown for LLMs: the docs index and this page's own .md mirror. -->
+		<link rel="alternate" type="text/plain" href="/llms.txt" title="llms.txt" />
+		{markdownUrl && <link rel="alternate" type="text/markdown" href={markdownUrl} title={`${title} (markdown)`} />}
 		{
 			environment === 'production' && (
 				<Fragment>
