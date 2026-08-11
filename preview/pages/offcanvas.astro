@@ -1,6 +1,7 @@
 ---
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
 import { ucFirst as capitalize } from '@shared/lib/string-format'
+import ButtonList from '@ui/ButtonList.astro'
 import Card from '@ui/Card.astro'
 import CardBody from '@ui/CardBody.astro'
 import Offcanvas from '@ui/Offcanvas.astro'
@@ -13,13 +14,15 @@ const directions = ['start', 'end', 'top', 'bottom'] as const
 <DefaultLayout title="Offcanvas" pageHeader="Offcanvas" pageMenu="base.offcanvas">
   <Card>
     <CardBody>
-      {
-        directions.map((direction) => (
-          <a class="btn" data-bs-toggle="offcanvas" href={`#offcanvas${capitalize(direction)}`} role="button" aria-controls={`offcanvas${capitalize(direction)}`}>
-            Toggle {direction} offcanvas
-          </a>
-        ))
-      }
+      <ButtonList>
+        {
+          directions.map((direction) => (
+            <a class="btn" data-bs-toggle="offcanvas" href={`#offcanvas${capitalize(direction)}`} role="button" aria-controls={`offcanvas${capitalize(direction)}`}>
+              Toggle {direction} offcanvas
+            </a>
+          ))
+        }
+      </ButtonList>
     </CardBody>
   </Card>
 
