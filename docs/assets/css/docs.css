@@ -1570,6 +1570,48 @@ svg.DocSearch-Hit-Select-Icon {
   width: 15rem;
 }
 
+/* Running text keeps a comfortable measure of about 70 characters; demos, code
+   and tables stay full width. Direct children only, so markup inside demos is
+   left alone. Geist's `0` is much wider than its average glyph, so 61ch reads
+   as roughly 70 characters, not 61. */
+.prose > p,
+.prose > ul,
+.prose > ol,
+.prose > dl,
+.prose > blockquote,
+.prose > h2,
+.prose > h3,
+.prose > h4 {
+  max-width: 61ch;
+}
+
+/* Docs pages need more heading contrast than the dashboard scale gives: there,
+   h3 matches the body size and only differs in weight. */
+.docs-page-header h1 {
+  font-size: 1.875rem;
+  line-height: 1.2;
+}
+
+.prose > h2 {
+  font-size: 1.375rem;
+  line-height: 1.3;
+}
+
+.prose > h3 {
+  font-size: 1.125rem;
+}
+
+/* The code panel is flush with the demo above it. It carries the lower half of
+   the shared outline: in dark mode the code background matches the page, so
+   without a border the card would have no bottom edge. */
+.example-code .shiki {
+  margin-bottom: 0;
+  border: 1px solid var(--tblr-border-color);
+  border-block-start: 0;
+  border-start-start-radius: 0;
+  border-start-end-radius: 0;
+}
+
 .DocSearch-Button {
   width: 100%;
   box-shadow: 0 0 0 1px var(--tblr-border-color);
