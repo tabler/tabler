@@ -35,12 +35,36 @@ function urlFromGlobPath(path: string): string {
   // the segment after the pages dir
   const marker = path.indexOf('/pages/')
   const rel = (marker === -1 ? path : path.slice(marker + '/pages/'.length)).replace(/(?:^|\/)index\.mdx$/, '').replace(/\.mdx$/, '')
-  return rel ? `/${rel}/` : '/'
+  // canonical URL form has no trailing slash (docs vercel.json trailingSlash: false)
+  return rel ? `/${rel}` : '/'
 }
 
 function normalizeUrl(url: string): string {
   const parts = url.split('/').filter(Boolean)
   return parts.length ? `/${parts.join('/')}/` : '/'
+}
+
+let pageByUrl: Map<string, DocsChildPage> | null = null
+
+/** Card data (title, description, icon) for a single docs page url, or null when unknown. */
+export function getDocsPage(url: string): DocsChildPage | null {
+  if (!pageByUrl) {
+    pageByUrl = new Map()
+    for (const [path, mod] of Object.entries(pageModules)) {
+      const pageUrl = urlFromGlobPath(path)
+      const fm = getFrontmatter(mod)
+      if (!fm?.title || pageByUrl.has(pageUrl)) continue
+      pageByUrl.set(pageUrl, {
+        url: pageUrl,
+        title: String(fm.title),
+        description: String(fm.description ?? ''),
+        ...(fm.icon ? { icon: String(fm.icon) } : {}),
+        order: Number(fm.order ?? 999),
+      })
+    }
+  }
+  const parts = url.split('/').filter(Boolean)
+  return pageByUrl.get(parts.length ? `/${parts.join('/')}` : '/') ?? null
 }
 
 /** Direct child pages of a docs index URL. */

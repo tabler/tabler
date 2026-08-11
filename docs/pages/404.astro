@@ -1,0 +1,25 @@
+---
+// Branded 404 page. Astro emits it as 404.html; the Vercel adapter already
+// routes every unmatched URL to /404.html with a 404 status.
+// Excluded from sitemap.xml.ts and absent from docs.json on purpose.
+import DocsLayout from '@layouts/DocsLayout.astro'
+import DocsCard from '@components/DocsCard.astro'
+
+const sections = [
+  { title: 'UI Components', href: '/ui', icon: 'paint', description: 'Free and open source web application UI kit based on Bootstrap' },
+  { title: 'Plugins', href: '/ui/plugins', icon: 'plug', description: 'Free and open source plugins for Tabler UI components' },
+  { title: 'Icons', href: '/icons', icon: 'ghost', description: 'Pixel-perfect icons for web design and development' },
+  { title: 'Illustrations', href: '/illustrations', icon: 'brand-figma', description: 'Customizable SVG illustrations for your web project' },
+  { title: 'Email Templates', href: '/emails', icon: 'mail', description: 'Responsive email templates ready to use in your marketing campaigns' },
+]
+---
+
+<DocsLayout title="Page not found" summary="The page you are looking for does not exist or has been moved." description="The page you are looking for does not exist. Browse the Tabler documentation sections or use the search." hidePagination url="/404" editPath="docs/pages/404.astro">
+  <p>Check the address for typos, use the search at the top of the page, or start from one of the sections below.</p>
+
+  <div class="mt-6">
+    <div class="row row-deck row-cards">
+      {sections.map((section) => <DocsCard href={section.href} title={section.title} description={section.description} icon={section.icon} />)}
+    </div>
+  </div>
+</DocsLayout>

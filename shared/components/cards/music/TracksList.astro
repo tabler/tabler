@@ -1,5 +1,6 @@
 ---
 // Switch-icon heart variant inlined: icon-b="heart", icon-b-class="icon-filled", icon-a-color="muted", icon-b-color="red".
+import { staticPath } from '@shared/lib/assets'
 import Icon from '@ui/Icon.astro'
 import DropdownMenu from '@ui/DropdownMenu.astro'
 import ListGroup from '@ui/ListGroup.astro'
@@ -19,7 +20,7 @@ const items = tracks.slice(0, 12)
           <div class="row g-2 align-items-center">
             <div class="col-auto fs-3">{index + 1}</div>
             <div class="col-auto">
-              <img src={`./static/tracks/${requireIndex(track.album.images, 1).path}`} class="rounded" alt={track.name} width="40" height="40" />
+              <img src={staticPath(`tracks/${requireIndex(track.album.images, 1).path}`)} class="rounded" alt={track.name} width="40" height="40" />
             </div>
             <div class="col">
               {track.name}
