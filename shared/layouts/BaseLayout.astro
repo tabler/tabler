@@ -6,13 +6,13 @@ import PageScripts from '@shared/components/PageScripts.astro'
 import libs from '@tabler/core/libs.json'
 
 interface Props {
-  title?: string
+  title?: string | undefined
   /** Third-party libs from libs.json, e.g. ['apexcharts', 'jsvectormap'] */
-  pageLibs?: string[]
+  pageLibs?: string[] | undefined
   /** Extra body classes, e.g. "layout-boxed" / "layout-fluid" */
-  bodyClass?: string
+  bodyClass?: string | undefined
   /** dir="rtl" + RTL variants of the tabler/plugin stylesheets */
-  rtl?: boolean
+  rtl?: boolean | undefined
   /** Relative asset base: '.' for root pages, '..' one level deep */
   base?: string
 }
@@ -94,7 +94,7 @@ const libJsFiles = (head: boolean) => pageLibEntries.filter(([, lib]) => Boolean
   </head>
 
   <body class={bodyClass}>
-    <a href="#content" class="visually-hidden skip-link">Skip to main content</a>
+    <a href="#content" class="visually-hidden-focusable skip-link">Skip to main content</a>
 
     <!-- BEGIN GLOBAL THEME SCRIPT -->
     <script is:inline src={`${base}/dist/js/tabler-theme${min}.js`}></script>
@@ -193,7 +193,6 @@ const libJsFiles = (head: boolean) => pageLibEntries.filter(([, lib]) => Boolean
 
         resetButton.addEventListener('click', function () {
           for (var key in themeConfig) {
-            var value = themeConfig[key]
             document.documentElement.removeAttribute('data-bs-' + key)
             window.localStorage.removeItem('tabler-' + key)
             url.searchParams.delete(key)

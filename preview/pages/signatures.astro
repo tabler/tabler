@@ -71,7 +71,7 @@ document.querySelector("#signature-advanced-png").addEventListener("click", func
             <FormGroup label="Last name" required for="signature-last-name">
               <input type="text" class="form-control" id="signature-last-name" name="last_name" />
             </FormGroup>
-            <FormGroup label="Signature" required>
+            <FormGroup label="Signature" required associate={false}>
               <Signature clear extraJs={simpleJs} />
             </FormGroup>
           </form>
@@ -125,11 +125,11 @@ document.querySelector("#signature-advanced-png").addEventListener("click", func
   </div>
 
   <CaptureModal>
-    <div class="modal" tabindex="-1" id="modal-signature">
+    <div class="modal" tabindex="-1" id="modal-signature" role="dialog" aria-modal="true" aria-labelledby="modal-signature-save-title">
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-body">
-            <h5 class="modal-title">Save your signature</h5>
+            <h5 class="modal-title" id="modal-signature-save-title">Save your signature</h5>
             <Signature id="modal" clear event="shown.bs.modal" />
 
             <div class="text-secondary fs-5 mt-4">I agree that the signature and initials will be the electronic representation of my signature and initials for all purposes when I (or my agent) use them on documents, including legally binding contracts - just the same as a pen-and-paper signature or initial.</div>

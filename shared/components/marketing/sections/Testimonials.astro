@@ -13,15 +13,14 @@ interface Person {
 }
 
 interface Props {
-  background?: string
   class?: string
   limit?: number
   hideHeader?: boolean
 }
 
-const { background, class: className, limit = 99, hideHeader } = Astro.props
+const { class: className, limit = 99, hideHeader } = Astro.props
 
-const sectionClass = ['section', background && `section-${background}`, className]
+const sectionClass = ['section', className]
 
 // Slice testimonials and split into 3 columns.
 const list = (testimonials as string[]).slice(0, limit)

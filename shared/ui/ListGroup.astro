@@ -1,9 +1,13 @@
 ---
+import type { HTMLTag } from 'astro/types'
+
 // List group container (.list-group).
 
-interface Props {
-  /** element to render instead of div (e.g. ul, nav) */
-  as?: string
+// `as` must stay out of the Props body: Astro's frontmatter scanner bails on a member
+// literally named `as` and silently falls back to untyped props.
+type PolymorphicProps = { as?: HTMLTag }
+
+interface Props extends PolymorphicProps {
   flush?: boolean
   hoverable?: boolean
   transparent?: boolean
@@ -12,7 +16,7 @@ interface Props {
   [key: string]: unknown
 }
 
-const { as: Element = 'div', flush, hoverable, transparent, class: className, ...rest } = Astro.props
+const { as: Element = 'div', flush, hoverable, transparent, class: className, ...rest }: Props = Astro.props
 ---
 
 <Element class:list={['list-group', flush && 'list-group-flush', hoverable && 'list-group-hoverable', transparent && 'list-group-transparent', className]} {...rest}>

@@ -1,0 +1,60 @@
+---
+// Prints everything between `// <marker>-start <name>` and `// <marker>-end <name>`
+// comments found in a source file, so docs stay in sync with the code. The marker
+// prefix and highlight language are picked from the file extension: `.scss` files
+// use `scss-docs` markers (with ` !default` suffixes stripped), `.js`/`.ts` files
+// use `js-docs` markers.
+import CodeSnippet from '@components/CodeSnippet.astro'
+import { extractMarkedSnippet } from '@shared/lib/code-example'
+
+// Vite inlines the sources at build time — `node:fs` paths would break once
+// the component is bundled into dist/.prerender during `astro build`.
+const scssSources = import.meta.glob('../../core/scss/**/*.scss', { query: '?raw', import: 'default' })
+const jsSources = import.meta.glob('../../core/js/**/*.{js,ts}', { query: '?raw', import: 'default' })
+
+interface Props {
+  /** Reference name used to find the content to display within the content of the `file` prop. */
+  name: string
+  /** File path that contains the content to display, relative to the root of the repository. */
+  file: string
+}
+
+const { name, file } = Astro.props
+
+if (!name || !file) {
+  throw new Error(`Missing required parameter(s) for the '<CodeDocs />' component, expected both 'name' and 'file' but got 'name: ${name}' and 'file: ${file}'.`)
+}
+
+const kinds = {
+  scss: { sources: scssSources, marker: 'scss-docs', lang: 'scss' },
+  ts: { sources: jsSources, marker: 'js-docs', lang: 'ts' },
+  js: { sources: jsSources, marker: 'js-docs', lang: 'js' },
+}
+
+const kind = kinds[file.split('.').pop() as keyof typeof kinds]
+
+if (!kind) {
+  throw new Error(`Unsupported file extension in the '<CodeDocs />' component, expected a '.scss', '.js' or '.ts' file but got '${file}'.`)
+}
+
+// Repo-root-relative `file` → glob key relative to this component (docs/components/).
+const loadSource = kind.sources[`../../${file}`]
+
+if (!loadSource) {
+  throw new Error(`Unknown file '${file}' in the '<CodeDocs />' component, expected a path to a 'core/scss' or 'core/js' file relative to the repository root.`)
+}
+
+let fileContent = (await loadSource()) as string
+
+if (kind.lang === 'scss') {
+  fileContent = fileContent.replaceAll(' !default', '')
+}
+
+const content = extractMarkedSnippet(fileContent, kind.marker, name)
+
+if (content === null) {
+  throw new Error(`Failed to find the content named '${name}' in '${file}', make sure that '// ${kind.marker}-start ${name}' and '// ${kind.marker}-end ${name}' are defined.`)
+}
+---
+
+<CodeSnippet code={content} lang={kind.lang} />

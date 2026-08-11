@@ -4,6 +4,9 @@
 // TODO: color=false special case — pass no color prop instead.
 import Icon from './Icon.astro'
 
+/** core/scss/ui/_buttons.scss `.btn-{size}` modifier classes — 'md' is the default (no class emitted) */
+type ButtonSize = 'sm' | 'md' | 'lg' | 'xl'
+
 interface Props {
   text?: string
   href?: string
@@ -12,71 +15,53 @@ interface Props {
   element?: 'a' | 'button'
   type?: 'button' | 'reset' | 'submit'
   id?: string
-  color?: string
+  color?: string | undefined
   outline?: boolean
   ghost?: boolean
-  /** btn-{height} right after btn */
-  height?: string
-  size?: string
+  size?: ButtonSize | undefined
   block?: boolean
   disabled?: boolean
-  square?: boolean
-  loading?: boolean
-  action?: boolean
-  pill?: boolean
-  /** btn-link */
-  link?: boolean
   class?: string
   icon?: string
   iconColor?: string
   iconEnd?: string
   iconOnly?: boolean
-  /** animated dots after the text */
-  dots?: boolean
   /** data-bs-toggle="modal" data-bs-target="#modal-{modalId}" (modal-id param) */
   modalId?: string
   /** data-bs-toggle="toast" data-bs-target="#toast-{toastId}" (toast-id param) */
   toastId?: string
   /** data-bs-dismiss="modal" */
   dismiss?: boolean
+  /** data-bs-toggle="dropdown" */
+  dropdown?: boolean
 }
 
-const { text = 'Button', href, external, element: Element = 'a', type, id, color, outline, ghost, height, size, block, disabled, square, loading, action, pill, link, class: className, icon, iconColor, iconEnd, iconOnly, dots, modalId, toastId, dismiss } = Astro.props
+const { text = 'Button', href, external, element, type, id, color, outline, ghost, size, block, disabled, class: className, icon, iconColor, iconEnd, iconOnly, modalId, toastId, dismiss, dropdown } = Astro.props
 
-// href defaults to '#'; internal hrefs are prefixed with '/'.
-const resolvedHref = href ? (external ? href : `/${href}`) : '#'
+// Actions (dropdown/modal/toast/dismiss) and bare buttons use <button>. Real URLs use <a>,
+// with internal hrefs prefixed with '/'.
+const isAction = Boolean(dropdown || modalId || toastId || dismiss)
+const Element = element ?? (href && !isAction ? 'a' : 'button')
+const resolvedHref = Element === 'a' ? (href ? (external ? href : `/${href}`) : undefined) : undefined
+const resolvedType = Element === 'button' ? (type ?? 'button') : undefined
 
-const classes = [
-  'btn',
-  height && `btn-${height}`,
-  color && `btn-${outline ? 'outline-' : ghost ? 'ghost-' : ''}${color}`,
-  disabled && 'disabled',
-  square && 'btn-square',
-  loading && 'btn-loading',
-  action && 'btn-action',
-  pill && 'btn-pill',
-  size && `btn-${size}`,
-  className,
-  block && 'w-100',
-  link && 'btn-link',
-  iconOnly && 'btn-icon',
-]
+const classes = ['btn', color && `btn-${outline ? 'outline-' : ghost ? 'ghost-' : ''}${color}`, size && size !== 'md' && `btn-${size}`, className, block && 'w-100', iconOnly && 'btn-icon']
 ---
 
 <Element
-  href={Element === 'a' ? resolvedHref : undefined}
-  type={type}
+  href={resolvedHref}
+  type={resolvedType}
   id={id}
   class:list={classes}
   target={external ? '_blank' : undefined}
   rel={external ? 'noreferrer' : undefined}
-  data-bs-toggle={modalId ? 'modal' : toastId ? 'toast' : undefined}
-  data-bs-target={modalId ? `#modal-${modalId}` : toastId ? `#toast-${toastId}` : undefined}
+  data-bs-toggle={dropdown ? 'dropdown' : modalId ? 'modal' : toastId ? 'toast' : undefined}
+  data-bs-target={!dropdown && modalId ? `#modal-${modalId}` : !dropdown && toastId ? `#toast-${toastId}` : undefined}
   aria-label={iconOnly ? text : undefined}
   data-bs-dismiss={dismiss ? 'modal' : undefined}
+  disabled={Element === 'button' && disabled ? true : undefined}
 >
   {icon && <Icon name={icon} color={iconColor} />}
   {!iconOnly && text}
-  {!iconOnly && dots && <span class="animated-dots" />}
   {!iconOnly && iconEnd && <Icon name={iconEnd} class="icon-end" />}
 </Element>

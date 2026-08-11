@@ -1,13 +1,17 @@
 ---
+import type { AvatarSize } from './Avatar.astro'
+
 interface Props {
-  flag?: string
-  size?: string
+  flag?: string | undefined
+  /** core/scss/_variables.scss `$flag-sizes` (aliased to `$avatar-sizes`) */
+  size?: AvatarSize | undefined
   class?: string
+  label?: string | undefined
 }
 
-const { flag = 'pl', size, class: className } = Astro.props
+const { flag = 'pl', size, class: className, label } = Astro.props
 
 const classes = ['flag', size && `flag-${size}`, `flag-country-${flag.toLowerCase()}`, className]
 ---
 
-<span class:list={classes}></span>
+<span class:list={classes} role={label ? 'img' : undefined} aria-label={label}></span>

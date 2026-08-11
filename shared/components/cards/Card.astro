@@ -1,15 +1,13 @@
 ---
-import CardSubtitle from '@ui/CardSubtitle.astro';
+import { staticPath } from '@shared/lib/assets';
 import Icon from '@ui/Icon.astro';
 import AvatarList from '@ui/AvatarList.astro';
 import Empty from '@ui/Empty.astro';
 import Progress from '@ui/Progress.astro';
 import photos from '@data/photos.json';
+import { requireIndex } from '@shared/lib/array';
 
 interface Props {
-	link?: boolean;
-	active?: boolean;
-	inactive?: boolean;
 	class?: string;
 	empty?: boolean;
 	imgTop?: boolean;
@@ -17,28 +15,17 @@ interface Props {
 	statusTop?: string;
 	statusBottom?: string;
 	statusStart?: string;
-	header?: boolean;
-	headerTitle?: string;
 	headerTabs?: boolean;
 	headerPills?: boolean;
-	alert?: string;
-	alertType?: string;
 	title?: string;
-	subtitle?: boolean;
-	body?: string;
-	button?: boolean;
-	footer?: boolean;
 	footerButton?: boolean;
 	footerButtons?: boolean;
-	/** a ">" prefix pushes the element (and every following one) to the right — `right` is never reset */
+	/** a right-angle-bracket prefix pushes the element (and every following one) to the right — `right` is never reset */
 	footerElements?: string[];
 	progress?: boolean;
 }
 
 const {
-	link = false,
-	active,
-	inactive,
 	class: className,
 	empty,
 	imgTop,
@@ -46,31 +33,16 @@ const {
 	statusTop,
 	statusBottom,
 	statusStart,
-	header,
-	headerTitle,
 	headerTabs,
 	headerPills,
-	alert,
-	alertType = 'success',
 	title,
-	subtitle,
-	body,
-	button,
-	footer,
 	footerButton,
 	footerButtons,
 	footerElements,
 	progress,
-} = Astro.props;
+}: Props = Astro.props;
 
-const Element = link ? 'a' : 'div';
-
-const classes = [
-	'card',
-	active && 'card-active',
-	inactive && 'card-inactive',
-	className,
-]
+const classes = ['card', className]
 
 // footer-elements parsing — `right` is never reset once set across iterations.
 let right = false;
@@ -83,14 +55,14 @@ const footerEls = (footerElements ?? []).map((element: string) => {
 		return { el, right };
 	});
 
-const hasHeader = header || headerTitle || headerTabs || headerPills;
-const hasFooter = footer || footerButton || footerButtons || footerElements;
+const hasHeader = headerTabs || headerPills;
+const hasFooter = footerButton || footerButtons || footerElements;
 
-const imgTopPhoto = (photos as { file: string; title: string }[])[7];
-const imgBottomPhoto = (photos as { file: string; title: string }[])[11];
+const imgTopPhoto = requireIndex(photos as { file: string; title: string }[], 7);
+const imgBottomPhoto = requireIndex(photos as { file: string; title: string }[], 11);
 ---
 
-<Element href={link ? '#' : undefined} class:list={classes}>
+<div class:list={classes}>
 	{
 		empty ? (
 			<Empty illustration="not-found" height={160} />
@@ -101,7 +73,7 @@ const imgBottomPhoto = (photos as { file: string; title: string }[])[11];
 						<!-- Photo -->
 						<div
 							class="img-responsive img-responsive-21x9 card-img-top"
-							style={`background-image: url(./static/photos/${imgTopPhoto.file})`}
+							style={`background-image: url(${staticPath(`photos/${imgTopPhoto.file}`)})`}
 						/>
 					</Fragment>
 				)}
@@ -141,32 +113,18 @@ const imgBottomPhoto = (photos as { file: string; title: string }[])[11];
 								</li>
 							</ul>
 						) : (
-							<h3 class="card-title" set:html={headerTitle ?? 'Header title'} />
+							<h3 class="card-title">Header title</h3>
 						)}
 					</div>
 				)}
 
-				{alert && <div class={`card-alert alert alert-${alertType} mb-0`} set:html={alert} />}
 				<div class="card-body">
 					{title && <h3 class="card-title" set:html={title} />}
-					{subtitle && <CardSubtitle as="div">Card subtitle</CardSubtitle>}
 
-					{body ? (
-						<p class="text-secondary" set:html={body} />
-					) : (
-						<p class="text-secondary">
-							Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit incidunt, iste, itaque
-							minima neque pariatur perferendis sed suscipit velit vitae voluptatem.
-						</p>
-					)}
-
-					{button && (
-						<div class="card-text">
-							<a href="#" class="btn btn-primary">
-								Go somewhere
-							</a>
-						</div>
-					)}
+					<p class="text-secondary">
+						Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit incidunt, iste, itaque
+						minima neque pariatur perferendis sed suscipit velit vitae voluptatem.
+					</p>
 				</div>
 
 				{hasFooter && (
@@ -218,7 +176,7 @@ const imgBottomPhoto = (photos as { file: string; title: string }[])[11];
 						<!-- Photo -->
 						<div
 							class="img-responsive img-responsive-21x9 card-img-bottom"
-							style={`background-image: url(./static/photos/${imgBottomPhoto.file})`}
+							style={`background-image: url(${staticPath(`photos/${imgBottomPhoto.file}`)})`}
 						/>
 					</Fragment>
 				)}
@@ -227,4 +185,4 @@ const imgBottomPhoto = (photos as { file: string; title: string }[])[11];
 			</Fragment>
 		)
 	}
-</Element>
+</div>

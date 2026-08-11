@@ -3,25 +3,21 @@ import Icon from './Icon.astro'
 
 interface Props {
   icon?: string
-  iconB?: string
-  iconAColor?: string
   iconBColor?: string
-  iconBClass?: string
   variant?: string
-  active?: boolean
 }
 
-const { icon = 'heart', iconB, iconAColor = 'muted', iconBColor = 'red', iconBClass, variant, active } = Astro.props
+const { icon = 'heart', iconBColor = 'red', variant } = Astro.props
 
-const resolvedIconB = iconB ?? icon ?? 'heart'
-// star/heart force the filled variant; otherwise use the passed class.
-const resolvedIconBClass = icon === 'star' || icon === 'heart' ? 'icon-filled' : iconBClass
+const resolvedIconB = icon ?? 'heart'
+// star/heart force the filled variant; otherwise no extra class.
+const resolvedIconBClass = icon === 'star' || icon === 'heart' ? 'icon-filled' : undefined
 
-const buttonClass = ['switch-icon', variant && `switch-icon-${variant}`, active && 'active']
+const buttonClass = ['switch-icon', variant && `switch-icon-${variant}`]
 ---
 
-<button class:list={buttonClass} data-bs-toggle="switch-icon">
-  <span class={`switch-icon-a text-${iconAColor}`}>
+<button type="button" class:list={buttonClass} data-bs-toggle="switch-icon" aria-pressed="false" aria-label="Favorite">
+  <span class="switch-icon-a text-muted">
     <Icon name={icon} />
   </span>
   <span class={`switch-icon-b text-${iconBColor}`}>

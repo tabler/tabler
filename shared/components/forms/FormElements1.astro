@@ -11,29 +11,29 @@ import CaptureScript from '../CaptureScript.astro'
 const states = (selects as { states: { options: Record<string, { name: string; selected?: boolean }> } }).states.options
 ---
 
-<FormGroup label="Static">
+<FormGroup label="Static" associate={false}>
   <div class="form-control-plaintext">Input value</div>
 </FormGroup>
 
-<FormGroup label="Text">
-  <input type="text" class="form-control" name="example-text-input" placeholder="Input placeholder" />
+<FormGroup label="Text" for="fe1-text">
+  <input type="text" class="form-control" id="fe1-text" name="example-text-input" placeholder="Input placeholder" />
 </FormGroup>
 
-<FormGroup label="Password">
-  <input type="text" class="form-control" name="example-password-input" placeholder="Input placeholder" />
+<FormGroup label="Password" for="fe1-password">
+  <input type="text" class="form-control" id="fe1-password" name="example-password-input" placeholder="Input placeholder" />
 </FormGroup>
 
-<FormGroup label="Disabled">
-  <input type="text" class="form-control" name="example-disabled-input" placeholder="Disabled..." value="Well, she turned me into a newt." disabled />
+<FormGroup label="Disabled" for="fe1-disabled">
+  <input type="text" class="form-control" id="fe1-disabled" name="example-disabled-input" placeholder="Disabled..." value="Well, she turned me into a newt." disabled />
 </FormGroup>
-<FormGroup label="Readonly">
-  <input type="text" class="form-control" name="example-disabled-input" placeholder="Readonly..." value="Well, how'd you become king, then?" readonly />
+<FormGroup label="Readonly" for="fe1-readonly">
+  <input type="text" class="form-control" id="fe1-readonly" name="example-disabled-input" placeholder="Readonly..." value="Well, how'd you become king, then?" readonly />
 </FormGroup>
-<FormGroup label="Required" required>
-  <input type="text" class="form-control" name="example-required-input" placeholder="Required..." />
+<FormGroup label="Required" required for="fe1-required">
+  <input type="text" class="form-control" id="fe1-required" name="example-required-input" placeholder="Required..." aria-required="true" />
 </FormGroup>
-<FormGroup label="Textarea" description="56/100">
-  <textarea class="form-control" name="example-textarea-input" rows="6" placeholder="Content..">Oh! Come and see the violence inherent in the system! Help, help, I'm being repressed! We shall say 'Ni' again to you, if you do not appease us. I'm not a witch. I'm not a witch. Camelot!</textarea>
+<FormGroup label="Textarea" description="56/100" for="fe1-textarea">
+  <textarea class="form-control" id="fe1-textarea" name="example-textarea-input" rows="6" placeholder="Content..">Oh! Come and see the violence inherent in the system! Help, help, I'm being repressed! We shall say 'Ni' again to you, if you do not appease us. I'm not a witch. I'm not a witch. Camelot!</textarea>
 </FormGroup>
 
 <div class="mb-3">
@@ -67,7 +67,7 @@ const states = (selects as { states: { options: Record<string, { name: string; s
   </select>
 </div>
 
-<FormGroup label="Input group">
+<FormGroup label="Input group" associate={false}>
   <div class="input-group mb-2">
     <input type="text" class="form-control" placeholder="Search for…" />
     <button class="btn" type="button">Go!</button>
@@ -81,9 +81,9 @@ const states = (selects as { states: { options: Record<string, { name: string; s
     <input type="text" class="form-control" aria-label="Text input with dropdown button" />
   </div>
 </FormGroup>
-<FormGroup label="Input group buttons">
+<FormGroup label="Input group buttons" for="fe1-input-group-buttons">
   <div class="input-group">
-    <input type="text" class="form-control" />
+    <input type="text" class="form-control" id="fe1-input-group-buttons" />
     <button type="button" class="btn">Action</button>
     <button data-bs-toggle="dropdown" type="button" class="btn dropdown-toggle dropdown-toggle-split"></button>
     <div class="dropdown-menu dropdown-menu-end">
@@ -93,7 +93,7 @@ const states = (selects as { states: { options: Record<string, { name: string; s
   </div>
 </FormGroup>
 
-<FormGroup label="Icon input">
+<FormGroup label="Icon input" associate={false}>
   <div class="input-icon mb-3">
     <input type="text" value="" class="form-control" placeholder="Search…" />
     <span class="input-icon-addon">
@@ -108,7 +108,7 @@ const states = (selects as { states: { options: Record<string, { name: string; s
   </div>
 </FormGroup>
 
-<FormGroup label="Loader input">
+<FormGroup label="Loader input" associate={false}>
   <div class="input-icon mb-3">
     <input type="text" value="" class="form-control" placeholder="Loading…" />
     <span class="input-icon-addon">
@@ -122,10 +122,10 @@ const states = (selects as { states: { options: Record<string, { name: string; s
     <input type="text" value="" class="form-control" placeholder="Loading…" />
   </div>
 </FormGroup>
-<FormGroup label="Separated inputs">
+<FormGroup label="Separated inputs" for="fe1-separated-input">
   <div class="row g-2">
     <div class="col">
-      <input type="text" class="form-control" placeholder="Search for…" />
+      <input type="text" class="form-control" id="fe1-separated-input" placeholder="Search for…" />
     </div>
     <div class="col-auto">
       <a href="#" class="btn btn-icon" aria-label="Button">
@@ -135,10 +135,10 @@ const states = (selects as { states: { options: Record<string, { name: string; s
   </div>
 </FormGroup>
 
-<FormGroup label="Input with help icon">
+<FormGroup label="Input with help icon" for="fe1-help-icon-input">
   <div class="row g-2">
     <div class="col">
-      <input type="text" class="form-control" placeholder="Search for…" />
+      <input type="text" class="form-control" id="fe1-help-icon-input" placeholder="Search for…" />
     </div>
     <div class="col-auto align-self-center">
       <span class="form-help" data-bs-toggle="popover" data-bs-placement="top" data-bs-content="<p>ZIP Code must be US or CDN format. You can use an extended ZIP+4 code to determine address more accurately.</p><p class='mb-0'><a href='#'>USP ZIP codes lookup tools</a></p>" data-bs-html="true">?</span>

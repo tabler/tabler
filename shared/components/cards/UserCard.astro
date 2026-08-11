@@ -2,6 +2,7 @@
 // person = people[person-id] (no -1: the object is passed straight to Avatar).
 import Avatar from '@ui/Avatar.astro'
 import people from '@data/people.json'
+import { requireIndex } from '@shared/lib/array'
 
 interface Person {
   full_name?: string
@@ -16,7 +17,7 @@ interface Props {
 }
 
 const { personId = 0, right } = Astro.props
-const person = (people as Person[])[personId]
+const person = requireIndex(people as Person[], personId)
 ---
 
 <a class="card card-link" href="#">

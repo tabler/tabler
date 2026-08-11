@@ -3,11 +3,12 @@ import Button from '@ui/Button.astro'
 import Avatar from '@ui/Avatar.astro'
 import CardTitle from '@ui/CardTitle.astro'
 import people from '@data/people.json'
+import { requireIndex } from '@shared/lib/array'
 
-const person = people[0]
+const person = requireIndex(people, 0)
 ---
 
-<form class="card card-md" action="./" method="get" autocomplete="off" novalidate>
+<form class="card card-md" action="./" method="get" novalidate>
   <div class="card-body text-center">
     <div class="mb-4">
       <CardTitle as="h2">Account Locked</CardTitle>
@@ -20,7 +21,8 @@ const person = people[0]
     </div>
 
     <div class="mb-4">
-      <input type="password" class="form-control" placeholder="Password…" />
+      <label class="visually-hidden" for="lock-password">Password</label>
+      <input type="password" class="form-control" placeholder="Password…" id="lock-password" autocomplete="current-password" required />
     </div>
 
     <div>

@@ -10,9 +10,10 @@ import Button from '@ui/Button.astro'
 import Avatar from '@ui/Avatar.astro'
 import Icon from '@ui/Icon.astro'
 import people from '@data/people.json'
+import { requireIndex } from '@shared/lib/array'
 
-const person0 = people[0]
-const person3 = people[3]
+const person0 = requireIndex(people, 0)
+const person3 = requireIndex(people, 3)
 ---
 
 <DefaultLayout title="Card actions" pageHeader="Card actions" pageMenu="base.cards.actions">
@@ -56,7 +57,7 @@ const person3 = people[3]
                 <Avatar person={person0} />
               </div>
               <div class="col">
-                <div class="card-title">{person0.full_name}</div>
+                <h3 class="card-title">{person0.full_name}</h3>
                 <CardSubtitle as="div">{person0.job_title}</CardSubtitle>
               </div>
             </div>
@@ -106,7 +107,7 @@ const person3 = people[3]
                 <Avatar person={person3} />
               </div>
               <div class="col">
-                <div class="card-title">{person3.full_name}</div>
+                <h3 class="card-title">{person3.full_name}</h3>
                 <CardSubtitle as="div">{person3.job_title}</CardSubtitle>
               </div>
             </div>

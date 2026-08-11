@@ -14,14 +14,12 @@ interface Props {
 
 const { title, pageLibs } = Astro.props
 
-const base = ''
+const base = '..'
 ---
 
-<BaseLayout title={title} pageLibs={pageLibs} bodyClass="body-marketing body-gradient" base="..">
+<BaseLayout title={title} pageLibs={pageLibs} bodyClass="body-marketing body-gradient" base={base}>
   <!-- BEGIN NAVBAR  -->
-  <header role="banner">
-    <MarketingNavbar />
-  </header>
+  <MarketingNavbar />
   <!-- END NAVBAR  -->
 
   <!-- BEGIN PAGE BODY -->
@@ -31,7 +29,7 @@ const base = ''
   <!-- END PAGE BODY -->
 
   <!-- BEGIN FOOTER -->
-  <footer class="footer">
+  <footer class="footer" aria-label="Links">
     <div class="container">
       <div class="py-3">
         <div class="row g-lg-4">
@@ -84,16 +82,16 @@ const base = ''
             <Subheader as="h5">Payment &amp; Security</Subheader>
             <ul class="list-inline mb-0 mt-3">
               <li class="list-inline-item">
-                <a href="#"><Payment payment="paypal" /></a>
+                <a href="#"><Payment payment="paypal" label="PayPal" /></a>
               </li>
               <li class="list-inline-item">
-                <a href="#"><Payment payment="visa" /></a>
+                <a href="#"><Payment payment="visa" label="Visa" /></a>
               </li>
               <li class="list-inline-item">
-                <a href="#"><Payment payment="mastercard" /></a>
+                <a href="#"><Payment payment="mastercard" label="Mastercard" /></a>
               </li>
               <li class="list-inline-item">
-                <a href="#"><Payment payment="americanexpress" /></a>
+                <a href="#"><Payment payment="americanexpress" label="American Express" /></a>
               </li>
             </ul>
           </div>
@@ -120,7 +118,7 @@ const base = ''
     </div>
   </footer>
 
-  <footer class="footer">
+  <footer class="footer" aria-label="Legal">
     <div class="container">
       <div class="py-3 border-top-light text-center text-lg-start">
         <div class="row g-lg-4">

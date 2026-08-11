@@ -3,6 +3,7 @@ import { Dropdown } from './bootstrap'
 /*
 Core dropdowns
  */
+// js-docs-start dropdown-init
 const dropdownTriggerList: HTMLElement[] = [].slice.call(document.querySelectorAll<HTMLElement>('[data-bs-toggle="dropdown"]'))
 dropdownTriggerList.map(function (dropdownTriggerEl: HTMLElement) {
   const options = {
@@ -10,3 +11,4 @@ dropdownTriggerList.map(function (dropdownTriggerEl: HTMLElement) {
   }
   return new Dropdown(dropdownTriggerEl, options)
 })
+// js-docs-end dropdown-init

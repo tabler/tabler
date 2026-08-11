@@ -1,5 +1,5 @@
 ---
-title: How to Contribute
+title: How to contribute
 summary: This guide explains how to contribute to Tabler, from setting up a development environment to making and testing changes. It covers essential steps like forking the repository, installing dependencies, and submitting a pull request to help improve Tabler's features and functionality.
 description: Guide to contributing to Tabler and setting up for development.
 layout: '@layouts/DocsMdxLayout.astro'
@@ -9,7 +9,9 @@ import Steps from '@components/Steps.astro'
 
 Contributions are always welcome and highly encouraged! Whether you're new to open source or a seasoned contributor, your input helps make Tabler better for everyone. If you're new to open source, we recommend reading a [how to contribute](https://opensource.guide/how-to-contribute/) guide to learn more about contributing.
 
-## Contribution Requirements
+Not sure where to start? Look for issues labeled [good first issue](https://github.com/tabler/tabler/issues?q=is%3Aissue+is%3Aopen+label%3A%22good+first+issue%22) - they are small and well-scoped.
+
+## Contribution requirements
 
 When contributing to Tabler, please adhere to the following guidelines:
 
@@ -39,7 +41,9 @@ Follow these steps to set up Tabler for development:
 
 ## Development
 
-To set up Tabler for development, follow these steps:
+You can skip the local setup and open the repository in [GitHub Codespaces](https://codespaces.new/tabler/tabler) or a VS Code Dev Container. The configuration in `.devcontainer/` installs Node.js, pnpm and all dependencies for you.
+
+To set up Tabler for development on your own machine, follow these steps:
 
 <Steps>
 
@@ -71,6 +75,19 @@ pnpm run dev
 Make your changes in the appropriate folders, such as `./core/`, `./preview/` or `./docs/`. Avoid modifying files in any `dist` folders, as they are auto-generated during the build process and will be overwritten.
 </Steps>
 
+## Useful commands
+
+These commands cover the most common development tasks. Run them from the repository root:
+
+| Command             | What it does                                        |
+| ------------------- | --------------------------------------------------- |
+| `pnpm run dev`      | Start preview and docs dev servers with live reload |
+| `pnpm run build`    | Production build of all packages                    |
+| `pnpm run lint`     | Markdown, Prettier and SCSS variable checks         |
+| `pnpm run lint:fix` | Auto-fix lint issues where possible                 |
+| `pnpm run test`     | Run the test suites                                 |
+| `pnpm run check`    | Lint plus TypeScript type checks                    |
+
 ## Project structure
 
 Tabler is a pnpm monorepo. The packages you will work with most often are:
@@ -97,7 +114,7 @@ pnpm exec changeset
 
 Select the affected packages (`@tabler/core`, `@tabler/preview` or `@tabler/docs`), pick the bump type (`patch` for fixes, `minor` for new features) and write a one-sentence description, for example: `Added .btn-ghost variant for buttons.`
 
-## Compiling for Production
+## Compiling for production
 
 Before submitting a pull request, ensure your changes are properly compiled and tested:
 
@@ -109,6 +126,12 @@ Before submitting a pull request, ensure your changes are properly compiled and 
 
 2. Test all pages to confirm everything works as expected.
 
-## Submitting Your Contribution
+## Submitting your contribution
 
-Once your changes are ready, create a pull request (PR) on GitHub. Make sure to include a clear and concise description of the changes and their purpose. Thank you for contributing to Tabler!
+Once your changes are ready, create a pull request (PR) on GitHub:
+
+1. Branch off `dev` and name the branch `<type>/<short-description>`, for example `feat/gh-123-add-stepper-component` or `fix/markdown-table-overflow`. Allowed types: `feat`, `fix`, `docs`, `chore`, `refactor`, `test`, `build`, `ci`, `perf`, `style`, `revert`.
+2. Write the PR in English: a concise title in present tense (max ~72 characters, no trailing period) and a short description that explains why the change is needed.
+3. Keep the scope small - one logical change per pull request makes reviews faster.
+
+Thank you for contributing to Tabler!

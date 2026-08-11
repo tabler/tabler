@@ -1,0 +1,26 @@
+---
+// Self-contained carousel (.carousel). Default slot holds the .carousel-item elements
+// (the caller marks the first one "active" — see CarouselCard.astro / hero/Side.astro);
+// a "controls" slot renders custom prev/next markup (e.g. an <Icon>-based pair).
+
+interface Props {
+  id?: string
+  /** data-bs-interval in ms, or false to disable autoplay */
+  interval?: number | false
+  class?: string
+  /** remaining attributes forwarded to the element */
+  [key: string]: unknown
+}
+
+const { id, interval, class: className, ...rest } = Astro.props
+
+const hasCustomControls = Astro.slots.has('controls')
+---
+
+<div id={id} class:list={['carousel', 'slide', className]} data-bs-ride="carousel" data-bs-interval={interval === false ? 'false' : interval} {...rest}>
+  <div class="carousel-inner">
+    <slot />
+  </div>
+
+  {hasCustomControls && <slot name="controls" />}
+</div>

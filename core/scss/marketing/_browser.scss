@@ -4,22 +4,22 @@
 @use '../config' as *;
 
 .browser {
-  @include border-radius(var(--#{$prefix}border-radius-lg));
-  box-shadow: 0 0 0 1px var(--#{$prefix}border-color);
-  background: var(--#{$prefix}bg-surface-secondary);
+  @include border-radius(var(--border-radius-lg));
   overflow: hidden;
+  background: var(--bg-surface-secondary);
+  box-shadow: 0 0 0 1px var(--border-color);
 }
 
 .browser-header {
   padding: 0.25rem 1rem;
-  background: var(--#{$prefix}border-color-light) linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.03));
-  border-bottom: 1px solid var(--#{$prefix}border-color);
-  @include border-radius(calc(var(--#{$prefix}border-radius-lg) - 1px) calc(var(--#{$prefix}border-radius-lg) - 1px) 0 0);
+  background: var(--border-color-light) linear-gradient(to bottom, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.03));
+  border-bottom: 1px solid var(--border-color);
+  @include border-radius(calc(var(--border-radius-lg) - 1px) calc(var(--border-radius-lg) - 1px) 0 0);
 }
 
 .browser-dots {
-  margin-inline-end: 3rem;
   display: flex;
+  margin-inline-end: 3rem;
 }
 
 .browser-dots-colored {
@@ -39,31 +39,31 @@
 }
 
 .browser-dot {
-  margin-inline-end: 0.5rem;
   width: 0.75rem;
   min-width: 0.75rem;
   height: 0.75rem;
-  background: var(--#{$prefix}border-color);
-  @include border-radius(var(--#{$prefix}border-radius-circle));
-  border: 1px solid var(--#{$prefix}border-color-dark);
+  margin-inline-end: 0.5rem;
+  background: var(--border-color);
+  border: 1px solid var(--border-color-dark);
+  @include border-radius(var(--border-radius-circle));
 }
 
 .browser-input {
-  flex: 1;
   display: flex;
+  flex: 1;
   align-items: center;
   justify-content: center;
-  text-decoration: none;
   padding: 0.25rem;
-  color: var(--#{$prefix}secondary);
-  font-size: var(--#{$prefix}font-size-h5);
-  @include border-radius(var(--#{$prefix}border-radius));
+  font-size: var(--font-size-h5);
   line-height: 1;
+  color: var(--secondary);
+  text-decoration: none;
   cursor: pointer;
+  background-image: linear-gradient(to bottom, var(--bg-surface), var(--bg-surface-secondary));
   box-shadow:
     0 0 0 1px rgba(0, 0, 0, 0.05),
     0 1px 2px 0 rgba(0, 0, 0, 0.05);
-  background-image: linear-gradient(to bottom, var(--#{$prefix}bg-surface), var(--#{$prefix}bg-surface-secondary));
+  @include border-radius(var(--border-radius));
 
   &:hover {
     text-decoration: none;

@@ -1,22 +1,26 @@
 ---
+import { staticPath } from '@shared/lib/assets'
 // Lightbox passes a resolved `photo` object from the horizontal-filtered list.
 interface Photo {
   file: string
   title?: string
 }
 
+/** core/scss/_variables.scss `$aspect-ratios` map keys */
+type PhotoRatio = '1x1' | '2x1' | '1x2' | '3x1' | '1x3' | '4x1' | '1x4' | '4x3' | '3x4' | '16x9' | '9x16' | '21x9' | '9x21'
+
 interface Props {
   photo: Photo
   /** background param — plain <div> with only the background-image (no ratio class) */
   background?: boolean
   /** ratio param — img-responsive img-responsive-{ratio} wrapper */
-  ratio?: string
+  ratio?: PhotoRatio | undefined
   class?: string
 }
 
 const { photo, background, ratio, class: className } = Astro.props
 
-const src = `./static/photos/${photo.file}`
+const src = staticPath(`photos/${photo.file}`)
 ---
 
-<!-- Photo -->{background ? <div class:list={className} style={`background-image: url(${src})`} /> : ratio ? <div class:list={['img-responsive', `img-responsive-${ratio}`, className]} style={`background-image: url(${src})`} /> : <img src={src} class:list={className} alt={photo.title} />}
+<!-- Photo -->{background ? <div class:list={[className]} style={`background-image: url(${src})`} /> : ratio ? <div class:list={['img-responsive', `img-responsive-${ratio}`, className]} style={`background-image: url(${src})`} /> : <img src={src} class:list={[className]} alt={photo.title} />}

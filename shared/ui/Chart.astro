@@ -9,14 +9,20 @@ interface Props {
 	size?: 'sm' | 'lg';
 	class?: string;
 	height?: number;
+	label: string;
 }
 
-const { chartId, id = chartId, size, class: classProp, height: heightProp } = Astro.props;
+const { chartId, id = chartId, size, class: classProp, height: heightProp, label } = Astro.props;
 
 const chartsData = charts as Record<string, ChartData>;
 let data = chartsData[chartId];
 
 let className = classProp;
+
+if (data?.extend) {
+	data = { ...chartsData[data.extend], ...chartsData[chartId] };
+}
+
 let height = heightProp ?? data?.height ?? 10;
 
 if (size === 'sm') {
@@ -27,31 +33,58 @@ if (size === 'sm') {
 	height = 15;
 }
 
-if (data?.extend) {
-	data = { ...chartsData[data.extend], ...chartsData[chartId] };
-}
-
 // The :root custom-property block stays a plain string rendered via set:html — it's
 // inert CSS text (no injection surface), not executable code.
 const style = data ? chartStyle({ id, data }) : '';
 const { config, xFormatterExpr } = data ? chartConfig({ id, data, height }) : { config: undefined, xFormatterExpr: undefined };
-const chartKey = `chart-${chartId}`;
+const chartKey = `chart-${id}`;
 const elementId = `chart-${id}`;
 ---
 
 {
 	data && (
 		<Fragment>
-			<div id={elementId} class:list={['position-relative', className]} />
+			<div id={elementId} class:list={['position-relative', className]} role="img" aria-label={label} />
 			<Fragment set:html={style} />
 			<CaptureScript>
 				<!-- BEGIN CHART -->
-				<script define:vars={{ chartKey, elementId, config, xFormatterExpr }}>
+				<script is:inline define:vars={{ chartKey, elementId, config, xFormatterExpr }}>
 					window.tabler_chart ??= {};
+
+					// Heatmap shades each cell by computing off the literal base color in JS
+					// (light -> full color-mix by value), unlike other chart types where the
+					// SVG `fill` attribute just holds `var(--chart-...)` and the browser paints
+					// it directly. A raw var()/color-mix() string can't be parsed by that color
+					// math, so it falls back to gray — and ApexCharts' heatmap parser only
+					// accepts hex, not rgb()/rgba() either. Probing a real element's computed
+					// `color` resolves var()/color-mix() (Chromium serializes it as a CSS Color 4
+					// `color(srgb ...)` string), then a 1x1 canvas round-trip converts that to hex.
+					function resolveCssVar(value) {
+						if (typeof value !== 'string' || !value.includes('var(')) return value;
+						const probe = document.createElement('span');
+						probe.style.cssText = 'position:absolute;visibility:hidden';
+						probe.style.color = value;
+						document.body.appendChild(probe);
+						const resolved = getComputedStyle(probe).color;
+						probe.remove();
+						if (!resolved) return value;
+
+						const canvas = document.createElement('canvas');
+						canvas.width = canvas.height = 1;
+						const ctx = canvas.getContext('2d');
+						ctx.fillStyle = resolved;
+						ctx.fillRect(0, 0, 1, 1);
+						const [r, g, b] = ctx.getImageData(0, 0, 1, 1).data;
+						return `#${[r, g, b].map((c) => c.toString(16).padStart(2, '0')).join('')}`;
+					}
 
 					function initChart() {
 						if (xFormatterExpr && config.xaxis?.labels) {
 							config.xaxis.labels.formatter = new Function('val', `return (${xFormatterExpr})`);
+						}
+
+						if (config.chart?.type === 'heatmap' && Array.isArray(config.colors)) {
+							config.colors = config.colors.map(resolveCssVar);
 						}
 
 						window.ApexCharts &&

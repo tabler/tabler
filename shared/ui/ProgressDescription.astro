@@ -1,20 +1,21 @@
 ---
 // Forward `size` only when explicitly provided.
 import Progress from './Progress.astro'
+import type { ProgressSize } from './Progress.astro'
 
 interface Props {
   label?: string
   description?: string
   value?: number | string
   color?: string
-  size?: string
+  size?: ProgressSize | undefined
   class?: string
 }
 
 const { label = 'Label', description, value, color = 'blue', size, class: className } = Astro.props
 ---
 
-<div class:list={className}>
+<div class:list={[className]}>
   <div class="d-flex mb-1 align-items-center lh-1">
     <div class="fs-5 fw-semibold m-0">{label}</div>
     {description && <div class="fs-6 text-secondary ms-2">{description}</div>}
