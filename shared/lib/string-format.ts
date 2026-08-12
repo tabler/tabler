@@ -1,4 +1,10 @@
 // String/number formatting helpers used by the demo data across components.
+import { site } from './site'
+
+/** Builds a docs.tabler.io URL from a path, e.g. "/ui/components/button#ghost-buttons". */
+export function getDocsUrl(path: string): string {
+  return `${site.docsUrl}${path}`
+}
 
 /** Uppercases the first char, lowercases the rest. */
 export function capitalize(s: string): string {
