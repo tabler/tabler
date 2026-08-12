@@ -38,6 +38,20 @@ $input-border-width: 1px;
       --ts-pr-clear-button: 1.5rem;
     }
   }
+
+  // Tom Select's Bootstrap 5 stylesheet hardcodes Bootstrap's own caret and
+  // valid/invalid icons on `.ts-wrapper.is-valid` / `.is-invalid`, and those
+  // selectors outrank `.form-select`. Hand the backgrounds back to the
+  // `.form-select` custom properties so a validated select shows the same
+  // icons as a validated `.form-control`. `:not(.single)` matches the
+  // specificity of the vendor rule for multi selects.
+  &.form-select.is-invalid,
+  &.form-select.is-valid {
+    &,
+    &:not(.single) {
+      background-image: var(--form-select-bg-img), var(--form-select-bg-icon, none);
+    }
+  }
 }
 
 .ts-dropdown {
