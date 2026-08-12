@@ -2,6 +2,7 @@
 import { staticPath } from '@shared/lib/assets'
 import photos from '@data/photos.json'
 import { requireIndex } from '@shared/lib/array'
+import CardTitle from '@ui/CardTitle.astro'
 
 interface Props {
   title?: string
@@ -23,7 +24,13 @@ const imgClass = `w-100 h-100 object-cover ${right ? 'card-img-end' : 'card-img-
     </div>
     <div class="col">
       <div class="card-body">
-        {title && <h3 class="card-title" set:html={title} />}
+        {
+          title && (
+            <CardTitle>
+              <Fragment set:html={title} />
+            </CardTitle>
+          )
+        }
         <p class="text-secondary">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit incidunt, iste, itaque minima neque pariatur perferendis sed suscipit velit vitae voluptatem.</p>
       </div>
     </div>

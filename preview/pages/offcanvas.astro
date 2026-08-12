@@ -1,23 +1,19 @@
 ---
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
-import { ucFirst as capitalize, getDocsUrl } from '@shared/lib/string-format'
+import { ucFirst as capitalize } from '@shared/lib/string-format'
 import ButtonList from '@ui/ButtonList.astro'
 import Card from '@ui/Card.astro'
 import CardBody from '@ui/CardBody.astro'
-import Icon from '@ui/Icon.astro'
 import Offcanvas from '@ui/Offcanvas.astro'
 import OffcanvasHeader from '@ui/OffcanvasHeader.astro'
 import OffcanvasBody from '@ui/OffcanvasBody.astro'
+import DocsLink from '@ui/DocsLink.astro'
 
 const directions = ['start', 'end', 'top', 'bottom'] as const
-
-const offcanvasDocsUrl = getDocsUrl('/ui/components/offcanvas')
 ---
 
-<DefaultLayout title="Offcanvas" pageHeader="Offcanvas" pageMenu="base.offcanvas" description="An offcanvas panel slides in from an edge of the screen for navigation or supplementary content.">
-  <a slot="page-header-actions" href={offcanvasDocsUrl} target="_blank" rel="noopener" class="link-secondary">
-    Docs <Icon name="external-link" class="icon-sm" />
-  </a>
+<DefaultLayout title="Offcanvas" pageMenu="base.offcanvas" description="An offcanvas panel slides in from an edge of the screen for navigation or supplementary content.">
+  <DocsLink slot="page-header-actions" path="/ui/components/offcanvas" />
 
   <Card>
     <CardBody>

@@ -7,9 +7,8 @@ import CardBody from '@ui/CardBody.astro'
 import Avatar from '@ui/Avatar.astro'
 import CardTitle from '@ui/CardTitle.astro'
 import CardSubtitle from '@ui/CardSubtitle.astro'
-import Icon from '@ui/Icon.astro'
 import site from '@data/site.json'
-import { getDocsUrl } from '@shared/lib/string-format'
+import DocsLink from '@ui/DocsLink.astro'
 
 type ColorEntry = [string, { title: string; hex: string; abbr?: string; icon?: string }]
 
@@ -19,14 +18,10 @@ const grayColors = Object.entries(site.grayColors) as ColorEntry[]
 const socialColors = Object.entries(site.socialColors) as ColorEntry[]
 
 const gradientColors = [...Object.keys(site.colors), 'inverted', 'white', 'transparent']
-
-const colorsDocsUrl = getDocsUrl('/ui/base/colors')
 ---
 
-<DefaultLayout title="Colors" pageHeader="Colors" pageMenu="base.colors" description="The full color palette, with hex values, and a gradient builder.">
-  <a slot="page-header-actions" href={colorsDocsUrl} target="_blank" rel="noopener" class="link-secondary">
-    Docs <Icon name="external-link" class="icon-sm" />
-  </a>
+<DefaultLayout title="Colors" pageMenu="base.colors" description="The full color palette, with hex values, and a gradient builder.">
+  <DocsLink slot="page-header-actions" path="/ui/base/colors" />
 
   <div class="row row-cards">
     <div class="col-6 col-lg-3">

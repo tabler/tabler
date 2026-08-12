@@ -12,7 +12,9 @@ interface Props extends PolymorphicProps {
   id?: string
 }
 
-const { as: Tag = 'h3', class: className, id }: Props = Astro.props
+// h2 by default: cards sit directly under the page h1, so h3 would skip a level.
+// Pass as="h3" for a card nested under its own h2 section heading.
+const { as: Tag = 'h2', class: className, id }: Props = Astro.props
 ---
 
 <Tag class:list={['card-title', className]} {...id ? { id } : {}}>

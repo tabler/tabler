@@ -1,0 +1,21 @@
+---
+import Icon from '@ui/Icon.astro'
+import { getDocsUrl } from '@shared/lib/string-format'
+
+// Link from a demo page to its documentation page, e.g. <DocsLink path="/ui/components/tag" />.
+
+interface Props {
+  /** Docs path, appended to the docs base URL */
+  path: string
+  /** Link label */
+  text?: string
+  class?: string
+}
+
+const { path, text = 'Docs', class: className }: Props = Astro.props
+---
+
+<a href={getDocsUrl(path)} target="_blank" rel="noopener" class:list={['link-secondary', className]}>
+  {text}
+  <Icon name="external-link" class="icon-sm" />
+</a>

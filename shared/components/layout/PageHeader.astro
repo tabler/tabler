@@ -23,9 +23,7 @@ interface Props {
 
 const { title, pretitle, description, class: className, file, textWhite } = Astro.props;
 
-// A slot forwarded from a layout registers here even when the page fills nothing,
-// so test the rendered content, not Astro.slots.has().
-const actionsSlot = Astro.slots.has('actions') ? (await Astro.slots.render('actions')).trim() : '';
+const actionsSlot = ((await Astro.slots.render('actions')) ?? '').trim();
 ---
 
 {file === 'profile' && <HeaderProfile />}

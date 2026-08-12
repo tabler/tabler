@@ -1,16 +1,11 @@
 ---
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
 import TabsCard from '@shared/components/cards/TabsCard.astro'
-import Icon from '@ui/Icon.astro'
-import { getDocsUrl } from '@shared/lib/string-format'
-
-const tabsDocsUrl = getDocsUrl('/ui/layout/navs-tabs')
+import DocsLink from '@ui/DocsLink.astro'
 ---
 
-<DefaultLayout title="Tabs" pageHeader="Tabs" pageMenu="base.tabs" description="Tabs switch between related panels of content inside a card.">
-  <a slot="page-header-actions" href={tabsDocsUrl} target="_blank" rel="noopener" class="link-secondary">
-    Docs <Icon name="external-link" class="icon-sm" />
-  </a>
+<DefaultLayout title="Tabs" pageMenu="base.tabs" description="Tabs switch between related panels of content inside a card.">
+  <DocsLink slot="page-header-actions" path="/ui/layout/navs-tabs" />
 
   <div class="row row-cards">
     <div class="col-md-4"><TabsCard id="1" settings /></div>

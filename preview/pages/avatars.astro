@@ -7,10 +7,10 @@ import Card from '@ui/Card.astro'
 import CardBody from '@ui/CardBody.astro'
 import CardTitle from '@ui/CardTitle.astro'
 import CardSubtitle from '@ui/CardSubtitle.astro'
-import Icon from '@ui/Icon.astro'
 import people from '@data/people.json'
 import { site } from '@shared/lib/site'
-import { firstLetters, getDocsUrl } from '@shared/lib/string-format'
+import { firstLetters } from '@shared/lib/string-format'
+import DocsLink from '@ui/DocsLink.astro'
 
 const iconIcons = ['user', 'settings', 'car', 'balloon', 'users', 'users-group', 'apps', 'ghost']
 
@@ -24,20 +24,16 @@ const listSizes = ['xxs', 'xs', 'sm', 'md', 'lg'] as const
 const uploadSizes = ['xxs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl'] as const
 const statusColors = ['red', 'green', 'blue', 'yellow', 'secondary']
 const brands = ['netflix', 'amazon', 'messenger', 'figma', 'twitch']
-
-const avatarDocsUrl = getDocsUrl('/ui/components/avatar')
 ---
 
-<DefaultLayout title="Avatars" pageHeader="Avatars" pageMenu="base.avatars" description="Avatars display a photo, icon, or initials to represent a person, brand, or status.">
-  <a slot="page-header-actions" href={avatarDocsUrl} target="_blank" rel="noopener" class="link-secondary">
-    Docs <Icon name="external-link" class="icon-sm" />
-  </a>
+<DefaultLayout title="Avatars" pageMenu="base.avatars" description="Avatars display a photo, icon, or initials to represent a person, brand, or status.">
+  <DocsLink slot="page-header-actions" path="/ui/components/avatar" />
 
   <div class="row row-cards">
     <div class="col-sm-6 col-lg-4">
       <Card>
         <CardBody>
-          <CardTitle as="h2">Default avatar</CardTitle>
+          <CardTitle>Default avatar</CardTitle>
           <CardSubtitle>The base <code>.avatar</code> element — a placeholder box for a photo, icon, or initials.</CardSubtitle>
           <Avatar />
         </CardBody>
@@ -46,7 +42,7 @@ const avatarDocsUrl = getDocsUrl('/ui/components/avatar')
     <div class="col-sm-6 col-lg-4">
       <Card>
         <CardBody>
-          <CardTitle as="h2">Avatar with icon</CardTitle>
+          <CardTitle>Avatar with icon</CardTitle>
           <CardSubtitle>Use an icon instead of a photo with the <code>icon</code> prop.</CardSubtitle>
           <div class="avatar-list">
             {iconIcons.map((icon) => <Avatar icon={icon} />)}
@@ -57,7 +53,7 @@ const avatarDocsUrl = getDocsUrl('/ui/components/avatar')
     <div class="col-sm-6 col-lg-4">
       <Card>
         <CardBody>
-          <CardTitle as="h2">Avatar icon colors</CardTitle>
+          <CardTitle>Avatar icon colors</CardTitle>
           <CardSubtitle>Combine an icon avatar with any theme color.</CardSubtitle>
           <div class="avatar-list">
             {colors.map((color) => <Avatar icon="user" color={color} />)}
@@ -68,7 +64,7 @@ const avatarDocsUrl = getDocsUrl('/ui/components/avatar')
     <div class="col-sm-6 col-lg-4">
       <Card>
         <CardBody>
-          <CardTitle as="h2">Simple avatar</CardTitle>
+          <CardTitle>Simple avatar</CardTitle>
           <CardSubtitle>Pass a <code>person</code> object to render their photo.</CardSubtitle>
           <div class="avatar-list">
             {people8.map((person) => <Avatar person={person} />)}
@@ -79,7 +75,7 @@ const avatarDocsUrl = getDocsUrl('/ui/components/avatar')
     <div class="col-sm-6 col-lg-4">
       <Card>
         <CardBody>
-          <CardTitle as="h2">Avatar placeholder</CardTitle>
+          <CardTitle>Avatar placeholder</CardTitle>
           <CardSubtitle>Fall back to initials with the <code>placeholder</code> prop when there's no photo.</CardSubtitle>
           <div class="avatar-list">
             {people8.map((person) => <Avatar placeholder={firstLetters(person.full_name)} />)}
@@ -90,7 +86,7 @@ const avatarDocsUrl = getDocsUrl('/ui/components/avatar')
     <div class="col-sm-6 col-lg-4">
       <Card>
         <CardBody>
-          <CardTitle as="h2">Avatar shapes</CardTitle>
+          <CardTitle>Avatar shapes</CardTitle>
           <CardSubtitle>Square by default — add <code>.rounded-circle</code> or <code>.rounded-0</code> to change the shape.</CardSubtitle>
           <div class="avatar-list">
             <Avatar />
@@ -103,7 +99,7 @@ const avatarDocsUrl = getDocsUrl('/ui/components/avatar')
     <div class="col-12 col-lg-6">
       <Card>
         <CardBody>
-          <CardTitle as="h2">Avatar sizes</CardTitle>
+          <CardTitle>Avatar sizes</CardTitle>
           <CardSubtitle>Six sizes from <code>xxs</code> to <code>xl</code>, for both photos and placeholders.</CardSubtitle>
           <div class="row">
             <div class="col-6">
@@ -123,7 +119,7 @@ const avatarDocsUrl = getDocsUrl('/ui/components/avatar')
     <div class="col-12 col-lg-6">
       <Card>
         <CardBody>
-          <CardTitle as="h2">Avatar lists</CardTitle>
+          <CardTitle>Avatar lists</CardTitle>
           <CardSubtitle>Stack avatars with <code>&lt;AvatarList&gt;</code> to show a group at a glance.</CardSubtitle>
           <div class="row g-3">
             {
@@ -155,7 +151,7 @@ const avatarDocsUrl = getDocsUrl('/ui/components/avatar')
     <div class="col-sm-6 col-lg-4">
       <Card>
         <CardBody>
-          <CardTitle as="h2">Avatar upload</CardTitle>
+          <CardTitle>Avatar upload</CardTitle>
           <CardSubtitle>An upload control styled as an avatar, for profile photo pickers.</CardSubtitle>
           {uploadSizes.map((size) => <AvatarUpload size={size} />)}
         </CardBody>
@@ -164,7 +160,7 @@ const avatarDocsUrl = getDocsUrl('/ui/components/avatar')
     <div class="col-sm-6 col-lg-4">
       <Card>
         <CardBody>
-          <CardTitle as="h2">Avatar statuses</CardTitle>
+          <CardTitle>Avatar statuses</CardTitle>
           <CardSubtitle>Add a <code>status</code> dot to show online, away, or busy state.</CardSubtitle>
           {statusColors.map((color, i) => <Avatar personId={i + 1} class="rounded-circle" status={color} />)}
         </CardBody>
@@ -173,7 +169,7 @@ const avatarDocsUrl = getDocsUrl('/ui/components/avatar')
     <div class="col-sm-6 col-lg-4">
       <Card>
         <CardBody>
-          <CardTitle as="h2">Avatar brands</CardTitle>
+          <CardTitle>Avatar brands</CardTitle>
           <CardSubtitle>Show a recognizable brand icon instead of a person.</CardSubtitle>
           {brands.map((brand, i) => <Avatar personId={i + 1} brand={brand} />)}
         </CardBody>

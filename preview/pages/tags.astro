@@ -6,11 +6,10 @@ import Card from '@ui/Card.astro'
 import CardBody from '@ui/CardBody.astro'
 import CardTitle from '@ui/CardTitle.astro'
 import CardSubtitle from '@ui/CardSubtitle.astro'
-import Icon from '@ui/Icon.astro'
 import people from '@data/people.json'
 import flags from '@data/flags.json'
 import siteData from '@data/site.json'
-import { getDocsUrl } from '@shared/lib/string-format'
+import DocsLink from '@ui/DocsLink.astro'
 
 const tagIcons = ['bold', 'italic', 'underline', 'copy', 'scissors', 'file-plus', 'file-minus', 'ghost', 'star', 'script', 'photo', 'dog', 'piano']
 
@@ -21,14 +20,10 @@ const people8 = people.slice(0, 8)
 
 // site.colors yields value objects with .class / .title.
 const colors = Object.values(siteData.colors) as { class: string; title: string }[]
-
-const tagDocsUrl = getDocsUrl('/ui/components/tag')
 ---
 
-<DefaultLayout title="Tags" pageHeader="Tags" pageMenu="base.tags" description="Tags are compact labels for filters, categories, and keywords.">
-  <a slot="page-header-actions" href={tagDocsUrl} target="_blank" rel="noopener" class="link-secondary">
-    Docs <Icon name="external-link" class="icon-sm" />
-  </a>
+<DefaultLayout title="Tags" pageMenu="base.tags" description="Tags are compact labels for filters, categories, and keywords.">
+  <DocsLink slot="page-header-actions" path="/ui/components/tag" />
 
   <div class="row row-cards row-cols-1 row-cols-md-2 row-cols-lg-3">
     <div class="col">

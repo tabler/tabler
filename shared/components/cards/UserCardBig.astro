@@ -2,6 +2,7 @@
 import Avatar from '@ui/Avatar.astro'
 import people from '@data/people.json'
 import { requireIndex } from '@shared/lib/array'
+import CardTitle from '@ui/CardTitle.astro'
 
 interface Person {
   full_name?: string
@@ -23,7 +24,7 @@ const person = requireIndex(people as Person[], personId)
     <div class="mb-3">
       <Avatar size="xl" person={person} />
     </div>
-    <h3 class="card-title mb-1">{person.full_name}</h3>
+    <CardTitle class="mb-1">{person.full_name}</CardTitle>
     <div class="text-secondary">{person.job_title}</div>
   </div>
   <a href="#" class="card-btn">View full profile</a>
