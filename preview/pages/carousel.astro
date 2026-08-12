@@ -1,9 +1,20 @@
 ---
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
 import CarouselCard from '@shared/components/cards/CarouselCard.astro'
+import Icon from '@ui/Icon.astro'
+import { getDocsUrl } from '@shared/lib/string-format'
+
+const carouselDocsUrl = getDocsUrl('/ui/components/carousel')
 ---
 
-<DefaultLayout title="Carousel" pageHeader="Carousel" pageMenu="base.carousel">
+<DefaultLayout title="Carousel" pageMenu="base.carousel" description="A carousel cycles through a set of slides, with optional indicators and controls.">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="page-title">Carousel</h1>
+    <a href={carouselDocsUrl} target="_blank" rel="noopener" class="link-secondary">
+      Docs <Icon name="external-link" class="icon-sm" />
+    </a>
+  </div>
+
   <div class="row row-cards">
     <div class="col-md-6">
       <CarouselCard id="default" />

@@ -6,9 +6,10 @@ import AvatarList from '@ui/AvatarList.astro'
 import Card from '@ui/Card.astro'
 import CardBody from '@ui/CardBody.astro'
 import CardTitle from '@ui/CardTitle.astro'
+import Icon from '@ui/Icon.astro'
 import people from '@data/people.json'
 import { site } from '@shared/lib/site'
-import { firstLetters } from '@shared/lib/string-format'
+import { firstLetters, getDocsUrl } from '@shared/lib/string-format'
 
 const iconIcons = ['user', 'settings', 'car', 'balloon', 'users', 'users-group', 'apps', 'ghost']
 
@@ -22,64 +23,77 @@ const listSizes = ['xxs', 'xs', 'sm', 'md', 'lg'] as const
 const uploadSizes = ['xxs', 'xs', 'sm', 'md', 'lg', 'xl', '2xl'] as const
 const statusColors = ['red', 'green', 'blue', 'yellow', 'secondary']
 const brands = ['netflix', 'amazon', 'messenger', 'figma', 'twitch']
+
+const avatarDocsUrl = getDocsUrl('/ui/components/avatar')
 ---
 
-<DefaultLayout title="Avatars" pageMenu="base.avatars" pageHeader="Avatars">
+<DefaultLayout title="Avatars" pageMenu="base.avatars" description="Avatars display a photo, icon, or initials to represent a person, brand, or status.">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="page-title">Avatars</h1>
+    <a href={avatarDocsUrl} target="_blank" rel="noopener" class="link-secondary">
+      Docs <Icon name="external-link" class="icon-sm" />
+    </a>
+  </div>
+
   <div class="row row-cards">
-    <div class="col-4">
+    <div class="col-sm-6 col-lg-4">
       <Card>
         <CardBody>
           <CardTitle as="h2">Default avatar</CardTitle>
+          <div class="card-subtitle">The base <code>.avatar</code> element — a placeholder box for a photo, icon, or initials.</div>
           <Avatar />
         </CardBody>
       </Card>
     </div>
-    <div class="col-4">
+    <div class="col-sm-6 col-lg-4">
       <Card>
         <CardBody>
           <CardTitle as="h2">Avatar with icon</CardTitle>
-
+          <div class="card-subtitle">Use an icon instead of a photo with the <code>icon</code> prop.</div>
           <div class="avatar-list">
             {iconIcons.map((icon) => <Avatar icon={icon} />)}
           </div>
         </CardBody>
       </Card>
     </div>
-    <div class="col-4">
+    <div class="col-sm-6 col-lg-4">
       <Card>
         <CardBody>
-          <CardTitle as="h2">Avatar with icon</CardTitle>
-
+          <CardTitle as="h2">Avatar icon colors</CardTitle>
+          <div class="card-subtitle">Combine an icon avatar with any theme color.</div>
           <div class="avatar-list">
             {colors.map((color) => <Avatar icon="user" color={color} />)}
           </div>
         </CardBody>
       </Card>
     </div>
-    <div class="col-4">
+    <div class="col-sm-6 col-lg-4">
       <Card>
         <CardBody>
           <CardTitle as="h2">Simple avatar</CardTitle>
+          <div class="card-subtitle">Pass a <code>person</code> object to render their photo.</div>
           <div class="avatar-list">
             {people8.map((person) => <Avatar person={person} />)}
           </div>
         </CardBody>
       </Card>
     </div>
-    <div class="col-4">
+    <div class="col-sm-6 col-lg-4">
       <Card>
         <CardBody>
           <CardTitle as="h2">Avatar placeholder</CardTitle>
+          <div class="card-subtitle">Fall back to initials with the <code>placeholder</code> prop when there's no photo.</div>
           <div class="avatar-list">
             {people8.map((person) => <Avatar placeholder={firstLetters(person.full_name)} />)}
           </div>
         </CardBody>
       </Card>
     </div>
-    <div class="col-4">
+    <div class="col-sm-6 col-lg-4">
       <Card>
         <CardBody>
           <CardTitle as="h2">Avatar shapes</CardTitle>
+          <div class="card-subtitle">Square by default — add <code>.rounded-circle</code> or <code>.rounded-0</code> to change the shape.</div>
           <div class="avatar-list">
             <Avatar />
             <Avatar class="rounded-circle" />
@@ -88,10 +102,11 @@ const brands = ['netflix', 'amazon', 'messenger', 'figma', 'twitch']
         </CardBody>
       </Card>
     </div>
-    <div class="col-6">
+    <div class="col-12 col-lg-6">
       <Card>
         <CardBody>
           <CardTitle as="h2">Avatar sizes</CardTitle>
+          <div class="card-subtitle">Six sizes from <code>xxs</code> to <code>xl</code>, for both photos and placeholders.</div>
           <div class="row">
             <div class="col-6">
               <div class="avatar-list">
@@ -107,10 +122,11 @@ const brands = ['netflix', 'amazon', 'messenger', 'figma', 'twitch']
         </CardBody>
       </Card>
     </div>
-    <div class="col-6">
+    <div class="col-12 col-lg-6">
       <Card>
         <CardBody>
           <CardTitle as="h2">Avatar lists</CardTitle>
+          <div class="card-subtitle">Stack avatars with <code>&lt;AvatarList&gt;</code> to show a group at a glance.</div>
           <div class="row g-3">
             {
               listSizes.map((size) => (
@@ -138,26 +154,29 @@ const brands = ['netflix', 'amazon', 'messenger', 'figma', 'twitch']
         </CardBody>
       </Card>
     </div>
-    <div class="col-4">
+    <div class="col-sm-6 col-lg-4">
       <Card>
         <CardBody>
-          <CardTitle as="h2">Avatar placeholder</CardTitle>
+          <CardTitle as="h2">Avatar upload</CardTitle>
+          <div class="card-subtitle">An upload control styled as an avatar, for profile photo pickers.</div>
           {uploadSizes.map((size) => <AvatarUpload size={size} />)}
         </CardBody>
       </Card>
     </div>
-    <div class="col-4">
+    <div class="col-sm-6 col-lg-4">
       <Card>
         <CardBody>
           <CardTitle as="h2">Avatar statuses</CardTitle>
+          <div class="card-subtitle">Add a <code>status</code> dot to show online, away, or busy state.</div>
           {statusColors.map((color, i) => <Avatar personId={i + 1} class="rounded-circle" status={color} />)}
         </CardBody>
       </Card>
     </div>
-    <div class="col-4">
+    <div class="col-sm-6 col-lg-4">
       <Card>
         <CardBody>
           <CardTitle as="h2">Avatar brands</CardTitle>
+          <div class="card-subtitle">Show a recognizable brand icon instead of a person.</div>
           {brands.map((brand, i) => <Avatar personId={i + 1} brand={brand} />)}
         </CardBody>
       </Card>

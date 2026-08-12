@@ -3,13 +3,27 @@ import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
 import NavSegmented from '@ui/NavSegmented.astro'
 import Card from '@ui/Card.astro'
 import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import Icon from '@ui/Icon.astro'
+import { getDocsUrl } from '@shared/lib/string-format'
+
+const segmentedControlDocsUrl = getDocsUrl('/ui/components/segmented-control')
 ---
 
-<DefaultLayout title="Segmented control" pageHeader="Segmented control" pageMenu="base.segmented-control">
+<DefaultLayout title="Segmented control" pageMenu="base.segmented-control" description="A segmented control lets users pick one option from a small, always-visible set.">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="page-title">Segmented control</h1>
+    <a href={segmentedControlDocsUrl} target="_blank" rel="noopener" class="link-secondary">
+      Docs <Icon name="external-link" class="icon-sm" />
+    </a>
+  </div>
+
   <div class="row row-cards">
     <div class="col-md-6">
       <Card>
         <CardBody>
+          <CardTitle>Basic</CardTitle>
+          <div class="card-subtitle">A list of <code>items</code> is enough for a plain control.</div>
           <NavSegmented items={['1', '2', '3', '4']} />
         </CardBody>
       </Card>
@@ -17,6 +31,8 @@ import CardBody from '@ui/CardBody.astro'
     <div class="col-md-6">
       <Card>
         <CardBody>
+          <CardTitle>Any content</CardTitle>
+          <div class="card-subtitle">Items can be any short text, including emoji.</div>
           <NavSegmented items={['👦', '👦🏿', '👦🏾', '👦🏽', '👦🏼', '👦🏻']} />
         </CardBody>
       </Card>
@@ -24,6 +40,8 @@ import CardBody from '@ui/CardBody.astro'
     <div class="col-md-6">
       <Card>
         <CardBody>
+          <CardTitle>Icons only</CardTitle>
+          <div class="card-subtitle">Pass <code>icons</code> without <code>items</code> for an icon-only control.</div>
           <NavSegmented icons={['home', 'star', 'clock', 'ghost', 'bold', 'italic', 'underline']} />
         </CardBody>
       </Card>
@@ -31,6 +49,8 @@ import CardBody from '@ui/CardBody.astro'
     <div class="col-md-6">
       <Card>
         <CardBody>
+          <CardTitle>With icons</CardTitle>
+          <div class="card-subtitle">Combine <code>items</code> and <code>icons</code> to label each option.</div>
           <NavSegmented items={['List', 'Kanban', 'Calendar', 'Files']} icons={['list', 'layout', 'calendar', 'files']} />
         </CardBody>
       </Card>
@@ -38,6 +58,8 @@ import CardBody from '@ui/CardBody.astro'
     <div class="col-md-6">
       <Card>
         <CardBody>
+          <CardTitle>Vertical</CardTitle>
+          <div class="card-subtitle">Add <code>vertical</code> to stack the options in a column.</div>
           <NavSegmented items={['List', 'Kanban', 'Calendar', 'Files']} icons={['list', 'layout', 'calendar', 'files']} vertical />
         </CardBody>
       </Card>
@@ -45,6 +67,8 @@ import CardBody from '@ui/CardBody.astro'
     <div class="col-md-6">
       <Card>
         <CardBody>
+          <CardTitle>Vertical with disabled items</CardTitle>
+          <div class="card-subtitle">Pass indexes to <code>disabled</code> to make specific options unselectable.</div>
           <NavSegmented icons={['home', 'star', 'clock', 'ghost', 'bold', 'italic', 'underline']} vertical disabled={[3]} />
         </CardBody>
       </Card>
@@ -52,6 +76,8 @@ import CardBody from '@ui/CardBody.astro'
     <div class="col-md-6">
       <Card>
         <CardBody>
+          <CardTitle>Disabled items</CardTitle>
+          <div class="card-subtitle">Disabled options stay visible but can't be selected.</div>
           <NavSegmented items={['Daily', 'Weekly', 'Monthly', 'Quarterly', 'Yearly']} disabled={[4, 5]} />
         </CardBody>
       </Card>
@@ -59,6 +85,8 @@ import CardBody from '@ui/CardBody.astro'
     <div class="col-md-6">
       <Card>
         <CardBody>
+          <CardTitle>Vertical, no icons</CardTitle>
+          <div class="card-subtitle">A vertical control also works with text-only items.</div>
           <NavSegmented items={['Daily', 'Weekly', 'Monthly', 'Quarterly', 'Yearly']} vertical={true} />
         </CardBody>
       </Card>
@@ -66,6 +94,8 @@ import CardBody from '@ui/CardBody.astro'
     <div class="col-md-6">
       <Card>
         <CardBody>
+          <CardTitle>Independent group</CardTitle>
+          <div class="card-subtitle">Set a unique <code>name</code> so this control doesn't share selection state with others using the same items.</div>
           <NavSegmented items={['Daily', 'Weekly', 'Monthly', 'Quarterly', 'Yearly']} name="checkbox" />
         </CardBody>
       </Card>
@@ -73,6 +103,8 @@ import CardBody from '@ui/CardBody.astro'
     <div class="col-md-6">
       <Card>
         <CardBody>
+          <CardTitle>Full width</CardTitle>
+          <div class="card-subtitle">Add <code>fullWidth</code> to stretch the control across its container.</div>
           <NavSegmented items={['Daily', 'Weekly', 'Monthly', 'Quarterly', 'Yearly']} fullWidth={true} />
         </CardBody>
       </Card>
@@ -80,6 +112,8 @@ import CardBody from '@ui/CardBody.astro'
     <div class="col-md-6">
       <Card>
         <CardBody>
+          <CardTitle>Full width, stacked</CardTitle>
+          <div class="card-subtitle">Multiple full-width controls, one above the other.</div>
           <div class="space-y">
             <div><NavSegmented items={['Overview', 'Analytics', 'Reports', 'Notifications']} fullWidth={true} /></div>
             <div><NavSegmented items={['Account', 'Password']} fullWidth={true} /></div>
@@ -90,6 +124,8 @@ import CardBody from '@ui/CardBody.astro'
     <div class="col-md-6">
       <Card>
         <CardBody>
+          <CardTitle>Sizes</CardTitle>
+          <div class="card-subtitle">Set <code>size</code> to <code>sm</code> or <code>lg</code> — with text, icons, or both.</div>
           <div class="space-y">
             <div><NavSegmented items={['List', 'Kanban', 'Calendar', 'Files']} disabled={[3, 5]} size="sm" /></div>
             <div><NavSegmented items={['List', 'Kanban', 'Calendar', 'Files']} disabled={[3, 5]} /></div>

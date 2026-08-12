@@ -3,10 +3,21 @@ import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
 import Card from '@ui/Card.astro'
 import CardHeader from '@ui/CardHeader.astro'
 import CardBody from '@ui/CardBody.astro'
+import Icon from '@ui/Icon.astro'
 import Datagrid from '@shared/components/parts/Datagrid.astro'
+import { getDocsUrl } from '@shared/lib/string-format'
+
+const datagridDocsUrl = getDocsUrl('/ui/components/datagrid')
 ---
 
-<DefaultLayout title="Data grid" pageHeader="Data grid" pageMenu="base.datagrid">
+<DefaultLayout title="Data grid" pageMenu="base.datagrid" description="A data grid lays out label/value pairs in a compact, aligned grid.">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="page-title">Data grid</h1>
+    <a href={datagridDocsUrl} target="_blank" rel="noopener" class="link-secondary">
+      Docs <Icon name="external-link" class="icon-sm" />
+    </a>
+  </div>
+
   <Card>
     <CardHeader title="Base info" />
     <CardBody>

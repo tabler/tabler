@@ -3,35 +3,65 @@ import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
 import Card from '@ui/Card.astro'
 import CardBody from '@ui/CardBody.astro'
 import CardTitle from '@ui/CardTitle.astro'
+import Icon from '@ui/Icon.astro'
+import { getDocsUrl } from '@shared/lib/string-format'
+
+const stepDocsUrl = getDocsUrl('/ui/components/step')
 ---
 
-<DefaultLayout title="Steps" pageHeader="Steps" pageMenu="base.steps">
-  <div class="row row-cards">
-    <div class="col-lg-8">
+<DefaultLayout title="Steps" pageMenu="base.steps" description="Steps show progress through a numbered or labeled sequence, as a horizontal bar, breadcrumb, or vertical timeline.">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="page-title">Steps</h1>
+    <a href={stepDocsUrl} target="_blank" rel="noopener" class="link-secondary">
+      Docs <Icon name="external-link" class="icon-sm" />
+    </a>
+  </div>
+
+  <div class="row row-cards mb-5">
+    <div class="col-12">
       <Card>
         <CardBody>
-          <CardTitle>Steps horizontal</CardTitle>
+          <CardTitle>Horizontal</CardTitle>
+          <div class="card-subtitle">Numbered steps for a linear process, with the current step highlighted.</div>
           <ul class="steps steps-green my-4">
             <li class="step-item">1</li>
             <li class="step-item active">2</li>
             <li class="step-item">3</li>
           </ul>
         </CardBody>
+      </Card>
+    </div>
+    <div class="col-12">
+      <Card>
         <CardBody>
+          <CardTitle>Horizontal counter</CardTitle>
+          <div class="card-subtitle">The same steps without numbers, for a more minimal look.</div>
           <ul class="steps steps-green steps-counter my-4">
             <li class="step-item"></li>
             <li class="step-item active"></li>
             <li class="step-item"></li>
           </ul>
         </CardBody>
+      </Card>
+    </div>
+    <div class="col-12">
+      <Card>
         <CardBody>
+          <CardTitle>With labels</CardTitle>
+          <div class="card-subtitle">Give each step a title instead of a number.</div>
           <ul class="steps steps-green steps-counter my-4">
             <li class="step-item">Cart</li>
             <li class="step-item active">Billing Information</li>
             <li class="step-item">Confirmation</li>
           </ul>
         </CardBody>
+      </Card>
+    </div>
+    <div class="col-12">
+      <Card>
         <CardBody>
+          <CardTitle>Breadcrumb arrows</CardTitle>
+          <div class="card-subtitle">Chevron-style steps, useful for wizards and checkouts.</div>
           <ol class="breadcrumb breadcrumb-arrows">
             <li class="breadcrumb-item"><a href="#">Step one</a></li>
             <li class="breadcrumb-item active"><a href="#">Step two</a></li>
@@ -39,7 +69,13 @@ import CardTitle from '@ui/CardTitle.astro'
             <li class="breadcrumb-item disabled"><a href="#">Step four</a></li>
           </ol>
         </CardBody>
+      </Card>
+    </div>
+    <div class="col-12">
+      <Card>
         <CardBody>
+          <CardTitle>Breadcrumb numbered</CardTitle>
+          <div class="card-subtitle">Number each step and mute the ones not yet reached.</div>
           <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="#">1. Step one</a></li>
             <li class="breadcrumb-item"><a href="#">2. Step two</a></li>
@@ -48,7 +84,13 @@ import CardTitle from '@ui/CardTitle.astro'
             <li class="breadcrumb-item disabled"><a href="#">5. Step five</a></li>
           </ol>
         </CardBody>
+      </Card>
+    </div>
+    <div class="col-12">
+      <Card>
         <CardBody>
+          <CardTitle>Breadcrumb muted</CardTitle>
+          <div class="card-subtitle">A quieter style for steps that shouldn't compete with the rest of the page.</div>
           <ol class="breadcrumb breadcrumb-muted">
             <li class="breadcrumb-item"><a href="#">1. Step one</a></li>
             <li class="breadcrumb-item"><a href="#">2. Step two</a></li>
@@ -59,31 +101,40 @@ import CardTitle from '@ui/CardTitle.astro'
         </CardBody>
       </Card>
     </div>
+  </div>
 
-    <div class="col-lg-4">
+  <div class="row row-cards">
+    <div class="col-md-6">
       <Card>
         <CardBody>
-          <CardTitle>Steps vertical</CardTitle>
+          <CardTitle>Vertical</CardTitle>
+          <div class="card-subtitle">A title and description per step, for a detailed timeline.</div>
           <ul class="steps steps-vertical">
             <li class="step-item">
               <div class="h4 m-0">Order received</div>
-              <div class="text-secondary">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Accusamus culpa cum expedita ipsam laborum nam ratione reprehenderit sed sint tenetur!</div>
+              <div class="text-secondary">The order was placed and payment was confirmed. A confirmation email is on its way.</div>
             </li>
             <li class="step-item">
-              <div class="h4 m-0">Order received</div>
-              <div class="text-secondary">Lorem ipsum dolor sit amet.</div>
+              <div class="h4 m-0">Preparing</div>
+              <div class="text-secondary">The warehouse picked and packed the items.</div>
             </li>
             <li class="step-item active">
               <div class="h4 m-0">Out for delivery</div>
-              <div class="text-secondary">Lorem ipsum dolor sit amet.</div>
+              <div class="text-secondary">The courier has the package and is on the way.</div>
             </li>
             <li class="step-item">
-              <div class="h4 m-0">Finalized</div>
-              <div class="text-secondary">Lorem ipsum dolor sit amet.</div>
+              <div class="h4 m-0">Delivered</div>
+              <div class="text-secondary">Signed for at the delivery address.</div>
             </li>
           </ul>
         </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6">
+      <Card>
         <CardBody>
+          <CardTitle>Vertical counter</CardTitle>
+          <div class="card-subtitle">Numbered steps in a vertical list, without descriptions.</div>
           <ul class="steps steps-counter steps-vertical">
             <li class="step-item">Step one</li>
             <li class="step-item">Step two</li>

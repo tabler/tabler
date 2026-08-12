@@ -2,14 +2,25 @@
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
 import Card from '@ui/Card.astro'
 import CardHeader from '@ui/CardHeader.astro'
+import Icon from '@ui/Icon.astro'
 import UsersList from '@shared/components/cards/UsersList.astro'
 import UsersList2 from '@shared/components/cards/UsersList2.astro'
 import UsersListHeaders from '@shared/components/cards/UsersListHeaders.astro'
 import ListGroup from '@ui/ListGroup.astro'
 import ListGroupItem from '@ui/ListGroupItem.astro'
+import { getDocsUrl } from '@shared/lib/string-format'
+
+const listGroupDocsUrl = getDocsUrl('/ui/components/list-group')
 ---
 
-<DefaultLayout title="Lists" pageHeader="Lists" pageMenu="base.lists">
+<DefaultLayout title="Lists" pageMenu="base.lists" description="Lists of users, contacts, and links — built from list-group items or a plain card body.">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="page-title">Lists</h1>
+    <a href={listGroupDocsUrl} target="_blank" rel="noopener" class="link-secondary">
+      Docs <Icon name="external-link" class="icon-sm" />
+    </a>
+  </div>
+
   <div class="row row-cards">
     <div class="col-md-6">
       <div class="row row-cards">

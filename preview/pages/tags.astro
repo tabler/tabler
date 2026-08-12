@@ -5,9 +5,11 @@ import TagList from '@ui/TagList.astro'
 import Card from '@ui/Card.astro'
 import CardBody from '@ui/CardBody.astro'
 import CardTitle from '@ui/CardTitle.astro'
+import Icon from '@ui/Icon.astro'
 import people from '@data/people.json'
 import flags from '@data/flags.json'
 import siteData from '@data/site.json'
+import { getDocsUrl } from '@shared/lib/string-format'
 
 const tagIcons = ['bold', 'italic', 'underline', 'copy', 'scissors', 'file-plus', 'file-minus', 'ghost', 'star', 'script', 'photo', 'dog', 'piano']
 
@@ -18,14 +20,24 @@ const people8 = people.slice(0, 8)
 
 // site.colors yields value objects with .class / .title.
 const colors = Object.values(siteData.colors) as { class: string; title: string }[]
+
+const tagDocsUrl = getDocsUrl('/ui/components/tag')
 ---
 
-<DefaultLayout title="Tags" pageHeader="Tags" pageMenu="base.tags">
+<DefaultLayout title="Tags" pageMenu="base.tags" description="Tags are compact labels for filters, categories, and keywords.">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="page-title">Tags</h1>
+    <a href={tagDocsUrl} target="_blank" rel="noopener" class="link-secondary">
+      Docs <Icon name="external-link" class="icon-sm" />
+    </a>
+  </div>
+
   <div class="row row-cards row-cols-1 row-cols-md-2 row-cols-lg-3">
     <div class="col">
       <Card>
         <CardBody>
           <CardTitle>Default tags</CardTitle>
+          <div class="card-subtitle">The base tag, for a plain label.</div>
           <TagList>
             {range(1, 14).map((i) => <Tag text={`Label ${i}`} />)}
           </TagList>
@@ -37,6 +49,7 @@ const colors = Object.values(siteData.colors) as { class: string; title: string 
       <Card>
         <CardBody>
           <CardTitle>Tags with flag</CardTitle>
+          <div class="card-subtitle">Pair a tag with a country flag.</div>
           <TagList>
             {flags9.map((country) => <Tag text={country.name} flag={country.flag} />)}
           </TagList>
@@ -48,6 +61,7 @@ const colors = Object.values(siteData.colors) as { class: string; title: string 
       <Card>
         <CardBody>
           <CardTitle>Tags with icon</CardTitle>
+          <div class="card-subtitle">Add an icon before the label.</div>
           <TagList>
             {tagIcons.map((icon) => <Tag text={icon} icon={icon} />)}
           </TagList>
@@ -59,6 +73,7 @@ const colors = Object.values(siteData.colors) as { class: string; title: string 
       <Card>
         <CardBody>
           <CardTitle>Tags with avatar</CardTitle>
+          <div class="card-subtitle">Add a person's avatar before the label.</div>
           <TagList>
             {people8.map((person) => <Tag text={person.full_name} person={person} />)}
           </TagList>
@@ -70,6 +85,7 @@ const colors = Object.values(siteData.colors) as { class: string; title: string 
       <Card>
         <CardBody>
           <CardTitle>Tags with status</CardTitle>
+          <div class="card-subtitle">Add a small status dot in any theme or extended color.</div>
           <TagList>
             {colors.map((color) => <Tag text={color.title} status={color.class} />)}
           </TagList>
@@ -81,6 +97,7 @@ const colors = Object.values(siteData.colors) as { class: string; title: string 
       <Card>
         <CardBody>
           <CardTitle>Tags with legend</CardTitle>
+          <div class="card-subtitle">Add a colored legend square instead of a dot.</div>
           <TagList>
             {colors.map((color) => <Tag text={color.title} legend={color.class} />)}
           </TagList>
@@ -91,7 +108,8 @@ const colors = Object.values(siteData.colors) as { class: string; title: string 
     <div class="col">
       <Card>
         <CardBody>
-          <CardTitle>Default tags</CardTitle>
+          <CardTitle>Selectable tags</CardTitle>
+          <div class="card-subtitle">Add <code>checkbox</code> to let users toggle a tag on and off.</div>
           <TagList>
             {range(1, 6).map((i) => <Tag text={`Label ${i}`} checkbox={true} />)}
             {range(7, 12).map((i) => <Tag text={`Label ${i}`} checkbox={true} checked={true} />)}
@@ -103,7 +121,8 @@ const colors = Object.values(siteData.colors) as { class: string; title: string 
     <div class="col">
       <Card>
         <CardBody>
-          <CardTitle>Default tags</CardTitle>
+          <CardTitle>Tags with badge</CardTitle>
+          <div class="card-subtitle">Add a <code>badge</code> count to the end of the tag.</div>
           <TagList>
             {range(1, 12).map((i) => <Tag text="Label" badge={i} />)}
           </TagList>

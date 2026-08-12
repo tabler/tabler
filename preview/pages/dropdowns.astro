@@ -2,9 +2,20 @@
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
 import DropdownMenu from '@ui/DropdownMenu.astro'
 import DropdownMenuAll from '@ui/DropdownMenuAll.astro'
+import Icon from '@ui/Icon.astro'
+import { getDocsUrl } from '@shared/lib/string-format'
+
+const dropdownDocsUrl = getDocsUrl('/ui/components/dropdown')
 ---
 
-<DefaultLayout title="Dropdowns" pageHeader="Dropdowns" pageMenu="base.dropdowns">
+<DefaultLayout title="Dropdowns" pageMenu="base.dropdowns" description="Dropdown menus for actions, filters, and selections, always shown open here for reference.">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="page-title">Dropdowns</h1>
+    <a href={dropdownDocsUrl} target="_blank" rel="noopener" class="link-secondary">
+      Docs <Icon name="external-link" class="icon-sm" />
+    </a>
+  </div>
+
   <div class="row">
     <div class="col-sm-6 col-lg-3">
       <DropdownMenuAll show />

@@ -3,7 +3,9 @@ import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
 import Card from '@ui/Card.astro'
 import CardBody from '@ui/CardBody.astro'
 import CardTitle from '@ui/CardTitle.astro'
+import Icon from '@ui/Icon.astro'
 import StatusMonitoring from '@shared/components/cards/StatusMonitoring.astro'
+import { getDocsUrl } from '@shared/lib/string-format'
 
 interface TrackingItem {
   status?: 'success' | 'warning' | 'danger'
@@ -43,14 +45,24 @@ const uptime: TrackingItem[] = [
   { status: 'success', label: 'Operational' },
   { status: 'success', label: 'Operational' },
 ]
+
+const trackingDocsUrl = getDocsUrl('/ui/components/tracking')
 ---
 
-<DefaultLayout title="Tracking" pageHeader="Tracking" pageMenu="base.tracking">
+<DefaultLayout title="Tracking" pageMenu="base.tracking" description="Tracking blocks show an uptime or activity history as a row of colored bars.">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="page-title">Tracking</h1>
+    <a href={trackingDocsUrl} target="_blank" rel="noopener" class="link-secondary">
+      Docs <Icon name="external-link" class="icon-sm" />
+    </a>
+  </div>
+
   <div class="row row-cards">
     <div class="col-12">
       <Card>
         <CardBody>
           <CardTitle>Basic example</CardTitle>
+          <div class="card-subtitle">Hover a block to see its status.</div>
           <div class="tracking">
             {uptime.map((item) => <div class:list={['tracking-block', item.status && `bg-${item.status}`]} data-bs-toggle="tooltip" data-bs-placement="top" title={item.label} />)}
           </div>
@@ -65,7 +77,8 @@ const uptime: TrackingItem[] = [
     <div class="col-md-6">
       <Card>
         <CardBody>
-          <CardTitle>Squares variant (.tracking-squares)</CardTitle>
+          <CardTitle>Squares variant</CardTitle>
+          <div class="card-subtitle">Add <code>.tracking-squares</code> for square, evenly spaced blocks.</div>
           <div class="tracking tracking-squares">
             {uptime.map((item) => <div class:list={['tracking-block', item.status && `bg-${item.status}`]} data-bs-toggle="tooltip" data-bs-placement="top" title={item.label} />)}
           </div>

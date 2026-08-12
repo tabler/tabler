@@ -4,10 +4,12 @@ import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
 import ButtonList from '@ui/ButtonList.astro'
 import Trending from '@ui/Trending.astro'
 import Card from '@ui/Card.astro'
-import CardHeader from '@ui/CardHeader.astro'
 import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import Icon from '@ui/Icon.astro'
 import socialTiles from '@data/social-tiles.json'
 import socials from '@data/socials.json'
+import { getDocsUrl } from '@shared/lib/string-format'
 
 interface SocialTile {
   icon: string
@@ -24,15 +26,24 @@ interface Social {
 const tiles = socialTiles as SocialTile[]
 const socialList = socials as Social[]
 const fillers = Array.from({ length: 21 })
+
+const socialDocsUrl = getDocsUrl('/ui/plugins/social-icons')
 ---
 
-<DefaultLayout title="Social icons" pageHeader="Social icons" pageMenu="base.social">
+<DefaultLayout title="Social icons" pageMenu="base.social" description="Branded icons and helpers for linking out to, or signing in with, social networks.">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="page-title">Social icons</h1>
+    <a href={socialDocsUrl} target="_blank" rel="noopener" class="link-secondary">
+      Docs <Icon name="external-link" class="icon-sm" />
+    </a>
+  </div>
+
   <div class="row row-cards">
     <div class="col-12">
       <div class="row g-3">
         {
           tiles.map((tile) => (
-            <div class="col-3">
+            <div class="col-6 col-md-4 col-lg-3">
               <Card>
                 <CardBody>
                   <div class="row align-items-center">
@@ -56,10 +67,9 @@ const fillers = Array.from({ length: 21 })
     </div>
     <div class="col-12">
       <Card>
-        <CardHeader>
-          <h3 class="card-title">Sign in with social media</h3>
-        </CardHeader>
         <CardBody>
+          <CardTitle>Sign in with social media</CardTitle>
+          <div class="card-subtitle">A button per provider, for a social sign-in screen.</div>
           <ButtonList>
             {
               socialList.map((social) => (
@@ -76,9 +86,10 @@ const fillers = Array.from({ length: 21 })
 
     <div class="col-12">
       <Card>
-        <CardHeader>
-          <h3 class="card-title">List of all social media icons</h3>
-        </CardHeader>
+        <CardBody>
+          <CardTitle>List of all social media icons</CardTitle>
+          <div class="card-subtitle">Every brand icon shipped with the social icons plugin.</div>
+        </CardBody>
         <CardBody class="p-0">
           <div class="demo-icons-list-wrap">
             <div class="demo-icons-list">
