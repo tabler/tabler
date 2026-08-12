@@ -5,12 +5,14 @@ import Pagination from '@ui/Pagination.astro'
 import photos from '@data/photos.json'
 import people from '@data/people.json'
 import { requireIndex } from '@shared/lib/array'
+import HeaderActionsPhotos from '@shared/components/layout/HeaderActionsPhotos.astro'
 
 // Horizontal photos, limit 15; person = people[loop index].
 const galleryPhotos = photos.filter((photo) => photo.horizontal).slice(0, 15)
 ---
 
-<DefaultLayout title="Gallery" pageHeader="Gallery" description="1-15 of 241 photos" actions="photos" pageMenu="extra.gallery">
+<DefaultLayout title="Gallery" description="1-15 of 241 photos" pageMenu="extra.gallery">
+  <HeaderActionsPhotos slot="page-header-actions" />
   <div class="row row-cards">
     {
       galleryPhotos.map((photo, index) => (

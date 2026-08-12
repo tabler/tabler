@@ -1,18 +1,19 @@
 ---
 import Progress from '@ui/Progress.astro'
 import crmDashboard from '@data/crm-dashboard.json'
+import CardTitle from '@ui/CardTitle.astro'
 
 const funnel = crmDashboard.pipeline_funnel
 ---
 
 <div class="card h-100">
   <div class="card-body">
-    <h3 class="card-title">
+    <CardTitle>
       <div class="d-flex align-items-center justify-content-between">
         <div class="fw-medium">{funnel.title}</div>
         <div class="text-secondary">{funnel.period}</div>
       </div>
-    </h3>
+    </CardTitle>
     <div class="d-flex flex-column gap-2">
       {
         funnel.items.map((item) => (

@@ -8,8 +8,7 @@ import CardBody from '@ui/CardBody.astro'
 import CardTitle from '@ui/CardTitle.astro'
 import CardSubtitle from '@ui/CardSubtitle.astro'
 import site from '@data/site.json'
-import { getDocsUrl } from '@shared/lib/string-format'
-import PageTitle from '@ui/PageTitle.astro'
+import DocsLink from '@ui/DocsLink.astro'
 
 type ColorEntry = [string, { title: string; icon?: string }]
 
@@ -21,17 +20,10 @@ const socialColors = Object.entries(site.socialColors) as ColorEntry[]
 
 const actions = ['edit', 'copy', 'settings', 'clipboard', 'x']
 const sizes = ['sm', 'md', 'lg', 'xl'] as const
-
-const buttonDocsUrl = getDocsUrl('/ui/components/button')
 ---
 
 <DefaultLayout title="Buttons" pageMenu="base.buttons" description="Buttons are used to trigger actions in a user interface.">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <PageTitle>Buttons</PageTitle>
-    <a href={buttonDocsUrl} target="_blank" rel="noopener" class="link-secondary">
-      Docs <Icon name="external-link" class="icon-sm" />
-    </a>
-  </div>
+  <DocsLink slot="page-header-actions" path="/ui/components/button" />
 
   <div class="row row-cards mb-5">
     <div class="col-md-6 col-lg-4">

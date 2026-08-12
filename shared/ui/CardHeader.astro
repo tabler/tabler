@@ -1,7 +1,7 @@
 ---
 import type { HTMLTag } from 'astro/types'
 
-// Card header (.card-header) with an optional h3.card-title; slot renders after the title.
+// Card header (.card-header) with an optional h2.card-title; slot renders after the title.
 
 // `as` must stay out of the Props body: Astro's frontmatter scanner bails on a member
 // literally named `as` and silently falls back to untyped props.
@@ -12,7 +12,8 @@ interface Props extends PolymorphicProps {
   class?: string
 }
 
-const { title, as: TitleTag = 'h3', class: className }: Props = Astro.props
+// h2 to match CardTitle — cards sit directly under the page h1.
+const { title, as: TitleTag = 'h2', class: className }: Props = Astro.props
 ---
 
 <div class:list={['card-header', className]}>

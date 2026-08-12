@@ -14,6 +14,7 @@ import cryptoCurrencies from '@data/crypto-currencies.json'
 import cryptoMarkets from '@data/crypto-markets.json'
 import cryptoOrders from '@data/crypto-orders.json'
 import { parseCurrency, roundTo } from '@shared/lib/string-format'
+import CardTitle from '@ui/CardTitle.astro'
 
 interface Currency {
   'symbol': string
@@ -43,7 +44,7 @@ const orders = cryptoOrders as { sell_orders: { price: string; btc: string; sum:
 const operationCurrencies = currencies.slice(0, 20)
 ---
 
-<DefaultLayout title="Crypto Dashboard" pageHeader="Crypto Dashboard" pageMenu="dashboards.crypto" pageLibs={['apexcharts']}>
+<DefaultLayout title="Crypto Dashboard" pageMenu="dashboards.crypto" pageLibs={['apexcharts']}>
   <div class="row row-cards">
     <div class="col-12">
       <div class="row row-cards">
@@ -52,7 +53,7 @@ const operationCurrencies = currencies.slice(0, 20)
             <CardBody>
               <div class="row">
                 <div class="col mt-0">
-                  <h5 class="card-title">Total balance</h5>
+                  <CardTitle>Total balance</CardTitle>
                 </div>
                 <div class="col-auto">
                   <Avatar icon="currency-dollar" />
@@ -75,7 +76,7 @@ const operationCurrencies = currencies.slice(0, 20)
             <CardBody>
               <div class="row">
                 <div class="col mt-0">
-                  <h5 class="card-title">USD/BTC</h5>
+                  <CardTitle>USD/BTC</CardTitle>
                 </div>
                 <div class="col-auto">
                   <Avatar icon="currency-bitcoin" />
@@ -97,7 +98,7 @@ const operationCurrencies = currencies.slice(0, 20)
             <CardBody>
               <div class="row">
                 <div class="col mt-0">
-                  <h5 class="card-title">LTC/BTC</h5>
+                  <CardTitle>LTC/BTC</CardTitle>
                 </div>
                 <div class="col-auto">
                   <Avatar icon="currency-litecoin" />
@@ -119,7 +120,7 @@ const operationCurrencies = currencies.slice(0, 20)
             <CardBody>
               <div class="row">
                 <div class="col mt-0">
-                  <h5 class="card-title">ETH/BTC</h5>
+                  <CardTitle>ETH/BTC</CardTitle>
                 </div>
                 <div class="col-auto">
                   <Avatar icon="currency-ethereum" />
@@ -141,7 +142,7 @@ const operationCurrencies = currencies.slice(0, 20)
             <CardBody>
               <div class="row">
                 <div class="col mt-0">
-                  <h5 class="card-title">XMR/BTC</h5>
+                  <CardTitle>XMR/BTC</CardTitle>
                 </div>
                 <div class="col-auto">
                   <Avatar icon="currency-monero" />
@@ -164,7 +165,7 @@ const operationCurrencies = currencies.slice(0, 20)
         <div class="col-12 col-lg-5">
           <Card>
             <CardHeader>
-              <h5 class="card-title mb-0">Markets</h5>
+              <CardTitle class="mb-0">Markets</CardTitle>
               <CardActions>
                 <CardDropdown />
               </CardActions>
@@ -205,7 +206,7 @@ const operationCurrencies = currencies.slice(0, 20)
         <div class="col-12 col-lg-7">
           <Card>
             <CardHeader>
-              <h5 class="card-title mb-0">LTC/BTC</h5>
+              <CardTitle class="mb-0">LTC/BTC</CardTitle>
               <CardActions>
                 <NavSegmented items={['1m', '5m', '30m', '1h', '1d']} name="timeframe" size="sm" default={2} />
               </CardActions>
@@ -222,7 +223,7 @@ const operationCurrencies = currencies.slice(0, 20)
         <div class="col-12 col-lg-12 col-xxl-3">
           <Card>
             <CardHeader>
-              <h5 class="card-title mb-0">Operations</h5>
+              <CardTitle class="mb-0">Operations</CardTitle>
               <CardActions>
                 <NavSegmented items={['Buy', 'Sell', 'Send']} name="operations" size="sm" />
               </CardActions>
@@ -269,7 +270,7 @@ const operationCurrencies = currencies.slice(0, 20)
         <div class="col-12 col-lg-6 col-xxl">
           <Card>
             <CardHeader>
-              <h5 class="card-title mb-0">Sell Orders</h5>
+              <CardTitle class="mb-0">Sell Orders</CardTitle>
               <CardActions>
                 <button class="btn btn-sm">View all</button>
               </CardActions>
@@ -300,7 +301,7 @@ const operationCurrencies = currencies.slice(0, 20)
         <div class="col-12 col-lg-6 col-xxl">
           <Card>
             <CardHeader>
-              <h5 class="card-title mb-0">Buy Orders</h5>
+              <CardTitle class="mb-0">Buy Orders</CardTitle>
               <CardActions>
                 <button class="btn btn-sm">View all</button>
               </CardActions>
