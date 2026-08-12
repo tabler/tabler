@@ -2,4 +2,4 @@
 "@tabler/preview": minor
 ---
 
-Added a `page-header-actions` slot to `DefaultLayout` and moved the Interface demo page titles into the page header.
+Removed the `actions` preset prop from `DefaultLayout`; pages now fill a `page-header-actions` slot instead.
