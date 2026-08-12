@@ -3,25 +3,45 @@ import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
 import Accordion from '@ui/Accordion.astro'
 import Card from '@ui/Card.astro'
 import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import Icon from '@ui/Icon.astro'
+import { getDocsUrl } from '@shared/lib/string-format'
+
+const accordionDocsUrl = getDocsUrl('/ui/components/accordion')
 ---
 
-<DefaultLayout title="Accordion" pageHeader="Accordion" pageMenu="base.accordion">
+<DefaultLayout title="Accordion" pageMenu="base.accordion" description="Accordions show and hide sections of content, one panel at a time, inside a card.">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="page-title">Accordion</h1>
+    <a href={accordionDocsUrl} target="_blank" rel="noopener" class="link-secondary">
+      Docs <Icon name="external-link" class="icon-sm" />
+    </a>
+  </div>
+
   <div class="row row-cards">
     <div class="col-md-6">
       <Card>
         <CardBody>
+          <CardTitle>Default</CardTitle>
+          <div class="card-subtitle">The base accordion — one panel open at a time.</div>
           <Accordion />
         </CardBody>
       </Card>
     </div>
     <div class="col-md-6">
       <Card>
+        <CardBody>
+          <CardTitle>Flush</CardTitle>
+          <div class="card-subtitle">Add <code>flush</code> to remove the card border and rounded corners.</div>
+        </CardBody>
         <Accordion type={['flush']} id="flush" />
       </Card>
     </div>
     <div class="col-md-6">
       <Card>
         <CardBody>
+          <CardTitle>Tabs</CardTitle>
+          <div class="card-subtitle">Add <code>tabs</code> for a tab-like header instead of the default style.</div>
           <Accordion type={['tabs']} id="tabs" />
         </CardBody>
       </Card>
@@ -29,6 +49,8 @@ import CardBody from '@ui/CardBody.astro'
     <div class="col-md-6">
       <Card>
         <CardBody>
+          <CardTitle>Inverted</CardTitle>
+          <div class="card-subtitle">Add <code>inverted</code> to flip the toggle icon to the start of the header.</div>
           <Accordion type={['inverted']} id="inverted" />
         </CardBody>
       </Card>
@@ -36,6 +58,8 @@ import CardBody from '@ui/CardBody.astro'
     <div class="col-md-6">
       <Card>
         <CardBody>
+          <CardTitle>Inverted with plus icon</CardTitle>
+          <div class="card-subtitle">Combine <code>inverted</code> with a custom <code>toggleIcon</code>.</div>
           <Accordion id="inverted-plus" type={['inverted', 'plus']} toggleIcon="plus" />
         </CardBody>
       </Card>
@@ -43,6 +67,8 @@ import CardBody from '@ui/CardBody.astro'
     <div class="col-md-6">
       <Card>
         <CardBody>
+          <CardTitle>With icons</CardTitle>
+          <div class="card-subtitle">Add <code>showIcon</code> to show an icon next to each panel's title.</div>
           <Accordion id="icons" showIcon />
         </CardBody>
       </Card>

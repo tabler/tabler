@@ -6,7 +6,9 @@ import Card from '@ui/Card.astro'
 import CardBody from '@ui/CardBody.astro'
 import Avatar from '@ui/Avatar.astro'
 import CardTitle from '@ui/CardTitle.astro'
+import Icon from '@ui/Icon.astro'
 import site from '@data/site.json'
+import { getDocsUrl } from '@shared/lib/string-format'
 
 type ColorEntry = [string, { title: string; hex: string; abbr?: string; icon?: string }]
 
@@ -16,13 +18,24 @@ const grayColors = Object.entries(site.grayColors) as ColorEntry[]
 const socialColors = Object.entries(site.socialColors) as ColorEntry[]
 
 const gradientColors = [...Object.keys(site.colors), 'inverted', 'white', 'transparent']
+
+const colorsDocsUrl = getDocsUrl('/ui/base/colors')
 ---
 
-<DefaultLayout title="Colors" pageHeader="Colors" pageMenu="base.colors">
+<DefaultLayout title="Colors" pageMenu="base.colors" description="The full color palette, with hex values, and a gradient builder.">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="page-title">Colors</h1>
+    <a href={colorsDocsUrl} target="_blank" rel="noopener" class="link-secondary">
+      Docs <Icon name="external-link" class="icon-sm" />
+    </a>
+  </div>
+
   <div class="row row-cards">
-    <div class="col-3">
+    <div class="col-6 col-lg-3">
       <Card>
         <CardBody>
+          <CardTitle>Colors</CardTitle>
+          <div class="card-subtitle">The extended color palette, with hex values.</div>
           <div class="row g-3">
             {
               colors.map(([name, color]) => (
@@ -44,9 +57,11 @@ const gradientColors = [...Object.keys(site.colors), 'inverted', 'white', 'trans
         </CardBody>
       </Card>
     </div>
-    <div class="col-3">
+    <div class="col-6 col-lg-3">
       <Card>
         <CardBody>
+          <CardTitle>Light colors</CardTitle>
+          <div class="card-subtitle">A tinted, low-contrast version of each color.</div>
           <div class="row g-3">
             {
               lightColors.map(([name, color]) => (
@@ -68,9 +83,11 @@ const gradientColors = [...Object.keys(site.colors), 'inverted', 'white', 'trans
         </CardBody>
       </Card>
     </div>
-    <div class="col-3">
+    <div class="col-6 col-lg-3">
       <Card>
         <CardBody>
+          <CardTitle>Gray colors</CardTitle>
+          <div class="card-subtitle">The neutral gray scale used for text, borders, and backgrounds.</div>
           <div class="row g-3">
             {
               grayColors.map(([name, color]) => (
@@ -92,9 +109,11 @@ const gradientColors = [...Object.keys(site.colors), 'inverted', 'white', 'trans
         </CardBody>
       </Card>
     </div>
-    <div class="col-3">
+    <div class="col-6 col-lg-3">
       <Card>
         <CardBody>
+          <CardTitle>Social colors</CardTitle>
+          <div class="card-subtitle">Brand colors for social networks.</div>
           <div class="row g-3">
             {
               socialColors.map(([name, color]) => (
@@ -118,10 +137,11 @@ const gradientColors = [...Object.keys(site.colors), 'inverted', 'white', 'trans
     </div>
     <div class="col-12">
       <div class="row">
-        <div class="col-6">
+        <div class="col-12 col-lg-6">
           <Card>
             <CardBody>
               <CardTitle>Gradient</CardTitle>
+              <div class="card-subtitle">Build a gradient from any two colors and preview it live.</div>
               <form action="">
                 <div class="row g-4">
                   <div class="col">
@@ -174,9 +194,11 @@ const gradientColors = [...Object.keys(site.colors), 'inverted', 'white', 'trans
             </CardBody>
           </Card>
         </div>
-        <div class="col-6">
+        <div class="col-12 col-lg-6">
           <Card>
             <CardBody>
+              <CardTitle>Gradient colors</CardTitle>
+              <div class="card-subtitle">Every color faded to transparent, fading in from the left or the right.</div>
               <div class="row">
                 <div class="col">
                   <div class="space-y">
