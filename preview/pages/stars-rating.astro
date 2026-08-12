@@ -4,15 +4,17 @@ import Rating from '@ui/Rating.astro'
 import Card from '@ui/Card.astro'
 import CardBody from '@ui/CardBody.astro'
 import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
 import Icon from '@ui/Icon.astro'
 import { getDocsUrl } from '@shared/lib/string-format'
+import PageTitle from '@ui/PageTitle.astro'
 
 const starsRatingDocsUrl = getDocsUrl('/ui/components/star-rating')
 ---
 
 <DefaultLayout title="Star Ratings" pageMenu="base.stars-rating" pageLibs={['tabler-flags', 'star-rating.js']} description="An interactive star rating built on the star-rating.js widget, backed by a hidden select for accessibility and forms.">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="page-title">Star Ratings</h1>
+    <PageTitle>Star Ratings</PageTitle>
     <a href={starsRatingDocsUrl} target="_blank" rel="noopener" class="link-secondary">
       Docs <Icon name="external-link" class="icon-sm" />
     </a>
@@ -23,7 +25,7 @@ const starsRatingDocsUrl = getDocsUrl('/ui/components/star-rating')
       <Card>
         <CardBody>
           <CardTitle>Basic</CardTitle>
-          <div class="card-subtitle">Click a star to set the value.</div>
+          <CardSubtitle>Click a star to set the value.</CardSubtitle>
           <Rating id="basic" value={4} />
         </CardBody>
       </Card>
@@ -32,7 +34,7 @@ const starsRatingDocsUrl = getDocsUrl('/ui/components/star-rating')
       <Card>
         <CardBody>
           <CardTitle>Icons</CardTitle>
-          <div class="card-subtitle">Swap the star for any icon with the <code>icon</code> prop.</div>
+          <CardSubtitle>Swap the star for any icon with the <code>icon</code> prop.</CardSubtitle>
           <div class="space-y">
             <Rating id="icon-star" value={4} />
             <Rating id="icon-heart" icon="heart" value={4} color="red" />
@@ -46,7 +48,7 @@ const starsRatingDocsUrl = getDocsUrl('/ui/components/star-rating')
       <Card>
         <CardBody>
           <CardTitle>Sizes</CardTitle>
-          <div class="card-subtitle">Match the rating to surrounding text with <code>size</code>.</div>
+          <CardSubtitle>Match the rating to surrounding text with <code>size</code>.</CardSubtitle>
           <div class="space-y">
             <Rating id="size-sm" value={3} size="sm" />
             <Rating id="size-md" value={3} size="md" />
@@ -59,7 +61,7 @@ const starsRatingDocsUrl = getDocsUrl('/ui/components/star-rating')
       <Card>
         <CardBody>
           <CardTitle>Colors</CardTitle>
-          <div class="card-subtitle">Set <code>color</code> to any theme or extended color to match the rest of the page.</div>
+          <CardSubtitle>Set <code>color</code> to any theme or extended color to match the rest of the page.</CardSubtitle>
           <div class="space-y">
             <Rating id="color-default" value={3} />
             <Rating id="color-primary" color="primary" value={3} />

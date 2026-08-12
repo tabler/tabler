@@ -6,10 +6,12 @@ import AvatarList from '@ui/AvatarList.astro'
 import Card from '@ui/Card.astro'
 import CardBody from '@ui/CardBody.astro'
 import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
 import Icon from '@ui/Icon.astro'
 import people from '@data/people.json'
 import { site } from '@shared/lib/site'
 import { firstLetters, getDocsUrl } from '@shared/lib/string-format'
+import PageTitle from '@ui/PageTitle.astro'
 
 const iconIcons = ['user', 'settings', 'car', 'balloon', 'users', 'users-group', 'apps', 'ghost']
 
@@ -29,7 +31,7 @@ const avatarDocsUrl = getDocsUrl('/ui/components/avatar')
 
 <DefaultLayout title="Avatars" pageMenu="base.avatars" description="Avatars display a photo, icon, or initials to represent a person, brand, or status.">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="page-title">Avatars</h1>
+    <PageTitle>Avatars</PageTitle>
     <a href={avatarDocsUrl} target="_blank" rel="noopener" class="link-secondary">
       Docs <Icon name="external-link" class="icon-sm" />
     </a>
@@ -40,7 +42,7 @@ const avatarDocsUrl = getDocsUrl('/ui/components/avatar')
       <Card>
         <CardBody>
           <CardTitle as="h2">Default avatar</CardTitle>
-          <div class="card-subtitle">The base <code>.avatar</code> element — a placeholder box for a photo, icon, or initials.</div>
+          <CardSubtitle>The base <code>.avatar</code> element — a placeholder box for a photo, icon, or initials.</CardSubtitle>
           <Avatar />
         </CardBody>
       </Card>
@@ -49,7 +51,7 @@ const avatarDocsUrl = getDocsUrl('/ui/components/avatar')
       <Card>
         <CardBody>
           <CardTitle as="h2">Avatar with icon</CardTitle>
-          <div class="card-subtitle">Use an icon instead of a photo with the <code>icon</code> prop.</div>
+          <CardSubtitle>Use an icon instead of a photo with the <code>icon</code> prop.</CardSubtitle>
           <div class="avatar-list">
             {iconIcons.map((icon) => <Avatar icon={icon} />)}
           </div>
@@ -60,7 +62,7 @@ const avatarDocsUrl = getDocsUrl('/ui/components/avatar')
       <Card>
         <CardBody>
           <CardTitle as="h2">Avatar icon colors</CardTitle>
-          <div class="card-subtitle">Combine an icon avatar with any theme color.</div>
+          <CardSubtitle>Combine an icon avatar with any theme color.</CardSubtitle>
           <div class="avatar-list">
             {colors.map((color) => <Avatar icon="user" color={color} />)}
           </div>
@@ -71,7 +73,7 @@ const avatarDocsUrl = getDocsUrl('/ui/components/avatar')
       <Card>
         <CardBody>
           <CardTitle as="h2">Simple avatar</CardTitle>
-          <div class="card-subtitle">Pass a <code>person</code> object to render their photo.</div>
+          <CardSubtitle>Pass a <code>person</code> object to render their photo.</CardSubtitle>
           <div class="avatar-list">
             {people8.map((person) => <Avatar person={person} />)}
           </div>
@@ -82,7 +84,7 @@ const avatarDocsUrl = getDocsUrl('/ui/components/avatar')
       <Card>
         <CardBody>
           <CardTitle as="h2">Avatar placeholder</CardTitle>
-          <div class="card-subtitle">Fall back to initials with the <code>placeholder</code> prop when there's no photo.</div>
+          <CardSubtitle>Fall back to initials with the <code>placeholder</code> prop when there's no photo.</CardSubtitle>
           <div class="avatar-list">
             {people8.map((person) => <Avatar placeholder={firstLetters(person.full_name)} />)}
           </div>
@@ -93,7 +95,7 @@ const avatarDocsUrl = getDocsUrl('/ui/components/avatar')
       <Card>
         <CardBody>
           <CardTitle as="h2">Avatar shapes</CardTitle>
-          <div class="card-subtitle">Square by default — add <code>.rounded-circle</code> or <code>.rounded-0</code> to change the shape.</div>
+          <CardSubtitle>Square by default — add <code>.rounded-circle</code> or <code>.rounded-0</code> to change the shape.</CardSubtitle>
           <div class="avatar-list">
             <Avatar />
             <Avatar class="rounded-circle" />
@@ -106,7 +108,7 @@ const avatarDocsUrl = getDocsUrl('/ui/components/avatar')
       <Card>
         <CardBody>
           <CardTitle as="h2">Avatar sizes</CardTitle>
-          <div class="card-subtitle">Six sizes from <code>xxs</code> to <code>xl</code>, for both photos and placeholders.</div>
+          <CardSubtitle>Six sizes from <code>xxs</code> to <code>xl</code>, for both photos and placeholders.</CardSubtitle>
           <div class="row">
             <div class="col-6">
               <div class="avatar-list">
@@ -126,7 +128,7 @@ const avatarDocsUrl = getDocsUrl('/ui/components/avatar')
       <Card>
         <CardBody>
           <CardTitle as="h2">Avatar lists</CardTitle>
-          <div class="card-subtitle">Stack avatars with <code>&lt;AvatarList&gt;</code> to show a group at a glance.</div>
+          <CardSubtitle>Stack avatars with <code>&lt;AvatarList&gt;</code> to show a group at a glance.</CardSubtitle>
           <div class="row g-3">
             {
               listSizes.map((size) => (
@@ -158,7 +160,7 @@ const avatarDocsUrl = getDocsUrl('/ui/components/avatar')
       <Card>
         <CardBody>
           <CardTitle as="h2">Avatar upload</CardTitle>
-          <div class="card-subtitle">An upload control styled as an avatar, for profile photo pickers.</div>
+          <CardSubtitle>An upload control styled as an avatar, for profile photo pickers.</CardSubtitle>
           {uploadSizes.map((size) => <AvatarUpload size={size} />)}
         </CardBody>
       </Card>
@@ -167,7 +169,7 @@ const avatarDocsUrl = getDocsUrl('/ui/components/avatar')
       <Card>
         <CardBody>
           <CardTitle as="h2">Avatar statuses</CardTitle>
-          <div class="card-subtitle">Add a <code>status</code> dot to show online, away, or busy state.</div>
+          <CardSubtitle>Add a <code>status</code> dot to show online, away, or busy state.</CardSubtitle>
           {statusColors.map((color, i) => <Avatar personId={i + 1} class="rounded-circle" status={color} />)}
         </CardBody>
       </Card>
@@ -176,7 +178,7 @@ const avatarDocsUrl = getDocsUrl('/ui/components/avatar')
       <Card>
         <CardBody>
           <CardTitle as="h2">Avatar brands</CardTitle>
-          <div class="card-subtitle">Show a recognizable brand icon instead of a person.</div>
+          <CardSubtitle>Show a recognizable brand icon instead of a person.</CardSubtitle>
           {brands.map((brand, i) => <Avatar personId={i + 1} brand={brand} />)}
         </CardBody>
       </Card>

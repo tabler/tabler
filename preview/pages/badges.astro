@@ -8,9 +8,11 @@ import ButtonList from '@ui/ButtonList.astro'
 import Card from '@ui/Card.astro'
 import CardBody from '@ui/CardBody.astro'
 import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
 import DropdownMenu from '@ui/DropdownMenu.astro'
 import site from '@data/site.json'
 import { ucFirst, getDocsUrl } from '@shared/lib/string-format'
+import PageTitle from '@ui/PageTitle.astro'
 
 const colors = ['default', ...Object.keys(site.colors), 'dark', 'light']
 const sizes = ['sm', 'md', 'lg']
@@ -20,7 +22,7 @@ const badgeDocsUrl = getDocsUrl('/ui/components/badge')
 
 <DefaultLayout title="Badges" pageMenu="base.badges" description="Badges highlight a count, status, or short label attached to text, buttons, or menu items.">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="page-title">Badges</h1>
+    <PageTitle>Badges</PageTitle>
     <a href={badgeDocsUrl} target="_blank" rel="noopener" class="link-secondary">
       Docs <Icon name="external-link" class="icon-sm" />
     </a>
@@ -31,7 +33,7 @@ const badgeDocsUrl = getDocsUrl('/ui/components/badge')
       <Card>
         <CardBody>
           <CardTitle>In headings</CardTitle>
-          <div class="card-subtitle">A badge scales with the heading level it sits next to.</div>
+          <CardSubtitle>A badge scales with the heading level it sits next to.</CardSubtitle>
           <h1>Example heading <span class="badge">New</span></h1>
           <h2>Example heading <span class="badge">New</span></h2>
           <h3>Example heading <span class="badge">New</span></h3>
@@ -45,7 +47,7 @@ const badgeDocsUrl = getDocsUrl('/ui/components/badge')
       <Card>
         <CardBody>
           <CardTitle>Sizes</CardTitle>
-          <div class="card-subtitle">Three sizes, with an optional icon before or after the label.</div>
+          <CardSubtitle>Three sizes, with an optional icon before or after the label.</CardSubtitle>
           <div class="space-y">
             {
               sizes.map((size) => (
@@ -72,7 +74,7 @@ const badgeDocsUrl = getDocsUrl('/ui/components/badge')
       <Card>
         <CardBody>
           <CardTitle>Positioned</CardTitle>
-          <div class="card-subtitle">Attach a count or a dot to a button with <code>.badge-notification</code>.</div>
+          <CardSubtitle>Attach a count or a dot to a button with <code>.badge-notification</code>.</CardSubtitle>
           <ButtonList>
             <button type="button" class="btn">Notifications <span class="badge text-bg-secondary ms-2">4</span></button>
 
@@ -111,7 +113,7 @@ const badgeDocsUrl = getDocsUrl('/ui/components/badge')
       <Card>
         <CardBody>
           <CardTitle>In a dropdown</CardTitle>
-          <div class="card-subtitle">A badge inside a dropdown item.</div>
+          <CardSubtitle>A badge inside a dropdown item.</CardSubtitle>
           <DropdownMenu show badge arrow />
         </CardBody>
       </Card>
@@ -120,7 +122,7 @@ const badgeDocsUrl = getDocsUrl('/ui/components/badge')
       <Card>
         <CardBody>
           <CardTitle>On buttons</CardTitle>
-          <div class="card-subtitle">Pair any badge color with a button label.</div>
+          <CardSubtitle>Pair any badge color with a button label.</CardSubtitle>
           <ButtonList>
             {
               colors.map((color, index) => (
@@ -137,7 +139,7 @@ const badgeDocsUrl = getDocsUrl('/ui/components/badge')
       <Card>
         <CardBody>
           <CardTitle>Notification dot</CardTitle>
-          <div class="card-subtitle">A pill-shaped counter positioned on the corner of a button.</div>
+          <CardSubtitle>A pill-shaped counter positioned on the corner of a button.</CardSubtitle>
           <ButtonList>
             {
               colors.map((color, index) => (
@@ -154,7 +156,7 @@ const badgeDocsUrl = getDocsUrl('/ui/components/badge')
       <Card>
         <CardBody>
           <CardTitle>Blinking notification</CardTitle>
-          <div class="card-subtitle">Add <code>.badge-blink</code> to draw attention to unread activity.</div>
+          <CardSubtitle>Add <code>.badge-blink</code> to draw attention to unread activity.</CardSubtitle>
           <ButtonList>
             {
               colors.map((color) => (
@@ -174,7 +176,7 @@ const badgeDocsUrl = getDocsUrl('/ui/components/badge')
       <Card>
         <CardBody>
           <CardTitle>Basic</CardTitle>
-          <div class="card-subtitle">Fill a badge with a theme or extended color.</div>
+          <CardSubtitle>Fill a badge with a theme or extended color.</CardSubtitle>
           <BadgeList>
             {colors.map((color) => <span class={`badge bg-${color} text-${color}-fg`}>{ucFirst(color)}</span>)}
           </BadgeList>
@@ -185,7 +187,7 @@ const badgeDocsUrl = getDocsUrl('/ui/components/badge')
       <Card>
         <CardBody>
           <CardTitle>Light</CardTitle>
-          <div class="card-subtitle">A tinted background for a softer, secondary badge.</div>
+          <CardSubtitle>A tinted background for a softer, secondary badge.</CardSubtitle>
           <BadgeList>
             {colors.map((color) => <span class={`badge bg-${color}-lt`}>{ucFirst(color)}</span>)}
           </BadgeList>
@@ -196,7 +198,7 @@ const badgeDocsUrl = getDocsUrl('/ui/components/badge')
       <Card>
         <CardBody>
           <CardTitle>Outline</CardTitle>
-          <div class="card-subtitle">A colored border with a transparent background.</div>
+          <CardSubtitle>A colored border with a transparent background.</CardSubtitle>
           <BadgeList>
             {colors.map((color) => <span class={`badge badge-outline text-${color}`}>{ucFirst(color)}</span>)}
           </BadgeList>
@@ -207,7 +209,7 @@ const badgeDocsUrl = getDocsUrl('/ui/components/badge')
       <Card>
         <CardBody>
           <CardTitle>With icons</CardTitle>
-          <div class="card-subtitle">Add an icon before the label to reinforce its meaning.</div>
+          <CardSubtitle>Add an icon before the label to reinforce its meaning.</CardSubtitle>
           <BadgeList>
             {
               colors.map((color) => (
