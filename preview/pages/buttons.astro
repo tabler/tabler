@@ -4,9 +4,10 @@ import Icon from '@ui/Icon.astro'
 import Button from '@ui/Button.astro'
 import ButtonList from '@ui/ButtonList.astro'
 import Card from '@ui/Card.astro'
-import CardHeader from '@ui/CardHeader.astro'
 import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
 import site from '@data/site.json'
+import { getDocsUrl } from '@shared/lib/string-format'
 
 type ColorEntry = [string, { title: string; icon?: string }]
 
@@ -18,136 +19,61 @@ const socialColors = Object.entries(site.socialColors) as ColorEntry[]
 
 const actions = ['edit', 'copy', 'settings', 'clipboard', 'x']
 const sizes = ['sm', 'md', 'lg', 'xl'] as const
+
+const buttonDocsUrl = getDocsUrl('/ui/components/button')
 ---
 
-<DefaultLayout title="Buttons" pageHeader="Buttons" pageMenu="base.buttons">
-  <div class="row row-cards">
-    <div class="col-md-6">
+<DefaultLayout title="Buttons" pageMenu="base.buttons" description="Buttons are used to trigger actions in a user interface.">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="page-title">Buttons</h1>
+    <a href={buttonDocsUrl} target="_blank" rel="noopener" class="link-secondary">
+      Docs <Icon name="external-link" class="icon-sm" />
+    </a>
+  </div>
+
+  <div class="row row-cards mb-5">
+    <div class="col-md-6 col-lg-4">
       <Card>
-        <CardHeader title="Standard Buttons" />
         <CardBody>
+          <CardTitle>Basic</CardTitle>
+          <div class="text-secondary mb-3 card-subtitle">Add an icon to the left, the right, or drop the label for an icon-only button.</div>
           <ButtonList>
-            {
-              themeColors.map(([name, color]) => (
-                <a class={`btn btn-${name}`}>
-                  {color.icon && <Icon name={color.icon} />} {color.title}
-                </a>
-              ))
-            }
+            <Button text="Button" />
+            <Button icon="star" text="With icon" />
+            <Button iconEnd="star" text="Icon at end" />
+            <Button icon="star" iconOnly text="Icon only" />
+            <Button text="Disabled" disabled />
           </ButtonList>
         </CardBody>
       </Card>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-6 col-lg-4">
       <Card>
-        <CardHeader title="Outline Buttons" />
         <CardBody>
+          <CardTitle>Shapes</CardTitle>
+          <div class="text-secondary mb-3 card-subtitle">Round the corners with <code>.btn-pill</code>, or square them off with <code>.btn-square</code>.</div>
           <ButtonList>
-            {
-              themeColors.map(([name, color]) => (
-                <a class={`btn btn-outline btn-${name}`}>
-                  {color.icon && <Icon name={color.icon} />} {color.title}
-                </a>
-              ))
-            }
+            <a class="btn">Default</a>
+            <a class="btn btn-pill">Pill</a>
+            <a class="btn btn-square">Square</a>
+            <a class="btn btn-icon">
+              <Icon name="star" />
+            </a>
+            <a class="btn btn-pill btn-icon">
+              <Icon name="star" />
+            </a>
+            <a class="btn btn-square btn-icon">
+              <Icon name="star" />
+            </a>
           </ButtonList>
         </CardBody>
       </Card>
     </div>
-    <div class="col-md-6">
+    <div class="col-md-6 col-lg-4">
       <Card>
-        <CardHeader title="Ghost Buttons" />
         <CardBody>
-          <ButtonList>
-            {
-              themeColors.map(([name, color]) => (
-                <a class={`btn btn-ghost btn-${name}`}>
-                  {color.icon && <Icon name={color.icon} />} {color.title}
-                </a>
-              ))
-            }
-          </ButtonList>
-        </CardBody>
-      </Card>
-    </div>
-    <div class="col-md-6">
-      <Card>
-        <CardHeader title="Square Buttons" />
-        <CardBody>
-          <ButtonList>
-            {
-              themeColors.map(([name, color]) => (
-                <a class={`btn btn-square btn-${name}`}>
-                  {color.icon && <Icon name={color.icon} />} {color.title}
-                </a>
-              ))
-            }
-          </ButtonList>
-        </CardBody>
-      </Card>
-    </div>
-    <div class="col-md-6">
-      <Card>
-        <CardHeader title="Pill Buttons" />
-        <CardBody>
-          <ButtonList>
-            {
-              themeColors.map(([name, color]) => (
-                <a class={`btn btn-pill btn-${name}`}>
-                  {color.icon && <Icon name={color.icon} />} {color.title}
-                </a>
-              ))
-            }
-          </ButtonList>
-        </CardBody>
-      </Card>
-    </div>
-    <div class="col-md-6">
-      <Card>
-        <CardHeader title="Extra colors" />
-        <CardBody>
-          <ButtonList>
-            {
-              colors.map(([name, color]) => (
-                <a class={`btn btn-${name}`}>
-                  {color.icon && <Icon name={color.icon} />} {color.title}
-                </a>
-              ))
-            }
-          </ButtonList>
-        </CardBody>
-      </Card>
-    </div>
-    <div class="col-md-6">
-      <Card>
-        <CardHeader title="Icon buttons" />
-        <CardBody>
-          <ButtonList>
-            {socialColors.map(([name, app]) => <a class={`btn btn-icon btn-${name}`}>{app.icon && <Icon name={app.icon} />}</a>)}
-          </ButtonList>
-        </CardBody>
-      </Card>
-    </div>
-    <div class="col-md-6">
-      <Card>
-        <CardHeader title="Social colors" />
-        <CardBody>
-          <ButtonList>
-            {
-              socialColors.map(([name, app]) => (
-                <a class={`btn btn-${name}`}>
-                  {app.icon && <Icon name={app.icon} />} {app.title}
-                </a>
-              ))
-            }
-          </ButtonList>
-        </CardBody>
-      </Card>
-    </div>
-    <div class="col-md-6">
-      <Card>
-        <CardHeader title="Action buttons" />
-        <CardBody>
+          <CardTitle>Action buttons</CardTitle>
+          <div class="text-secondary mb-3 card-subtitle">Compact, icon-only buttons for card headers and toolbars.</div>
           <div class="btn-actions">
             {
               actions.map((action) => (
@@ -160,28 +86,11 @@ const sizes = ['sm', 'md', 'lg', 'xl'] as const
         </CardBody>
       </Card>
     </div>
-    <div class="col-md-6">
+    <div class="col-12 col-lg-8">
       <Card>
-        <CardHeader title="Buttons with icon" />
         <CardBody>
-          <ButtonList>
-            <a class="btn btn-animate-icon">Save <Icon name="arrow-right" class="icon-end" /></a>
-            <a class="btn btn-animate-icon btn-animate-icon-rotate"><Icon name="plus" /> Add</a>
-            <a class="btn btn-animate-icon btn-animate-icon-shake"><Icon name="bell" /> Notifications</a>
-            <a class="btn btn-animate-icon btn-animate-icon-rotate"><Icon name="settings" /> Settings</a>
-            <a class="btn btn-animate-icon btn-animate-icon-pulse"><Icon name="heart" /> Love</a>
-            <a class="btn btn-animate-icon btn-animate-icon-rotate"><Icon name="x" /> Close</a>
-            <a class="btn btn-animate-icon btn-animate-icon-tada"><Icon name="check" /> Confirm</a>
-            <a class="btn btn-animate-icon">Next <Icon name="chevron-right" class="icon-end" /></a>
-            <a class="btn btn-animate-icon btn-animate-icon-move-start"><Icon name="chevron-left" /> Previous</a>
-          </ButtonList>
-        </CardBody>
-      </Card>
-    </div>
-    <div class="col-md-6">
-      <Card>
-        <CardHeader title="Buttons size" />
-        <CardBody>
+          <CardTitle>Sizes</CardTitle>
+          <div class="text-secondary mb-3 card-subtitle">Scale a button from <code>sm</code> to <code>xl</code> without changing its icon layout.</div>
           <div class="space-y">
             {
               sizes.map((size) => (
@@ -194,6 +103,171 @@ const sizes = ['sm', 'md', 'lg', 'xl'] as const
               ))
             }
           </div>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-12 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Animated icon</CardTitle>
+          <div class="text-secondary mb-3 card-subtitle">Small hover animations draw attention to the icon.</div>
+          <ButtonList>
+            <a class="btn btn-animate-icon">
+              Save <Icon name="arrow-right" class="icon-end" />
+            </a>
+            <a class="btn btn-animate-icon btn-animate-icon-rotate">
+              <Icon name="plus" /> Add
+            </a>
+            <a class="btn btn-animate-icon btn-animate-icon-shake">
+              <Icon name="bell" /> Notifications
+            </a>
+            <a class="btn btn-animate-icon btn-animate-icon-rotate">
+              <Icon name="settings" /> Settings
+            </a>
+            <a class="btn btn-animate-icon btn-animate-icon-pulse">
+              <Icon name="heart" /> Love
+            </a>
+            <a class="btn btn-animate-icon btn-animate-icon-rotate">
+              <Icon name="x" /> Close
+            </a>
+            <a class="btn btn-animate-icon btn-animate-icon-tada">
+              <Icon name="check" /> Confirm
+            </a>
+            <a class="btn btn-animate-icon">
+              Next <Icon name="chevron-right" class="icon-end" />
+            </a>
+            <a class="btn btn-animate-icon btn-animate-icon-move-start">
+              <Icon name="chevron-left" /> Previous
+            </a>
+          </ButtonList>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-12">
+      <Card>
+        <CardBody>
+          <CardTitle>Standard</CardTitle>
+          <div class="text-secondary mb-3 card-subtitle">Fill a button with a theme color to mark its purpose.</div>
+          <ButtonList>
+            {
+              themeColors.map(([name, color]) => (
+                <a class={`btn btn-${name}`}>
+                  {color.icon && <Icon name={color.icon} />} {color.title}
+                </a>
+              ))
+            }
+          </ButtonList>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-12">
+      <Card>
+        <CardBody>
+          <CardTitle>Outline</CardTitle>
+          <div class="text-secondary mb-3 card-subtitle">Keep the border colored and the background transparent for a subtler action.</div>
+          <ButtonList>
+            {
+              themeColors.map(([name, color]) => (
+                <a class={`btn btn-outline btn-${name}`}>
+                  {color.icon && <Icon name={color.icon} />} {color.title}
+                </a>
+              ))
+            }
+          </ButtonList>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-12">
+      <Card>
+        <CardBody>
+          <CardTitle>Ghost</CardTitle>
+          <div class="text-secondary mb-3 card-subtitle">Drop the border too — color appears only on hover.</div>
+          <ButtonList>
+            {
+              themeColors.map(([name, color]) => (
+                <a class={`btn btn-ghost btn-${name}`}>
+                  {color.icon && <Icon name={color.icon} />} {color.title}
+                </a>
+              ))
+            }
+          </ButtonList>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-12">
+      <Card>
+        <CardBody>
+          <CardTitle>Pill</CardTitle>
+          <div class="text-secondary mb-3 card-subtitle">Combine <code>.btn-pill</code> with a theme color.</div>
+          <ButtonList>
+            {
+              themeColors.map(([name, color]) => (
+                <a class={`btn btn-pill btn-${name}`}>
+                  {color.icon && <Icon name={color.icon} />} {color.title}
+                </a>
+              ))
+            }
+          </ButtonList>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-12">
+      <Card>
+        <CardBody>
+          <CardTitle>Square</CardTitle>
+          <div class="text-secondary mb-3 card-subtitle">Combine <code>.btn-square</code> with a theme color.</div>
+          <ButtonList>
+            {
+              themeColors.map(([name, color]) => (
+                <a class={`btn btn-square btn-${name}`}>
+                  {color.icon && <Icon name={color.icon} />} {color.title}
+                </a>
+              ))
+            }
+          </ButtonList>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-12">
+      <Card>
+        <CardBody>
+          <CardTitle>Extra colors</CardTitle>
+          <div class="text-secondary mb-3 card-subtitle">The full Tabler palette, beyond the eight theme colors.</div>
+          <ButtonList>
+            {
+              colors.map(([name, color]) => (
+                <a class={`btn btn-${name}`}>
+                  {color.icon && <Icon name={color.icon} />} {color.title}
+                </a>
+              ))
+            }
+          </ButtonList>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-12">
+      <Card>
+        <CardBody>
+          <CardTitle>Social colors</CardTitle>
+          <div class="text-secondary mb-3 card-subtitle">Brand colors for linking out to social networks.</div>
+          <ButtonList>
+            {
+              socialColors.map(([name, app]) => (
+                <a class={`btn btn-${name}`}>
+                  {app.icon && <Icon name={app.icon} />} {app.title}
+                </a>
+              ))
+            }
+          </ButtonList>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-12">
+      <Card>
+        <CardBody>
+          <CardTitle>Icon buttons</CardTitle>
+          <div class="text-secondary mb-3 card-subtitle">Social brand colors without a label, for compact toolbars.</div>
+          <ButtonList>{socialColors.map(([name, app]) => <a class={`btn btn-icon btn-${name}`}>{app.icon && <Icon name={app.icon} />}</a>)}</ButtonList>
         </CardBody>
       </Card>
     </div>

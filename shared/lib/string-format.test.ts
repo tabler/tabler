@@ -1,6 +1,12 @@
 import { describe, expect, it } from 'vitest'
-import { capitalize, firstLetters, formatNumber, millisecondsToMinutes, parseCurrency, parsePercentage, pathSlug, roundTo, slugifyWord, sortBy, ucFirst } from './string-format'
+import { capitalize, firstLetters, formatNumber, getDocsUrl, millisecondsToMinutes, parseCurrency, parsePercentage, pathSlug, roundTo, slugifyWord, sortBy, ucFirst } from './string-format'
 import { requireIndex } from './array'
+
+describe('getDocsUrl', () => {
+  it('appends the path to the docs.tabler.io origin', () => {
+    expect(getDocsUrl('/ui/components/button#ghost-buttons')).toBe('https://docs.tabler.io/ui/components/button#ghost-buttons')
+  })
+})
 
 describe('capitalize', () => {
   it('uppercases the first char and lowercases the rest', () => {
