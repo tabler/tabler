@@ -10,6 +10,7 @@ import freeIllustrations from '@data/free-illustrations.json'
 import illustrationsList from '@data/illustrations.json'
 import siteData from '@data/site.json'
 import { requireIndex } from '@shared/lib/array'
+import PageTitle from '@ui/PageTitle.astro'
 
 const autodark = (freeIllustrations as { autodark: Record<string, string> }).autodark
 const autodarkEntries = Object.entries(autodark)
@@ -114,9 +115,9 @@ const illustrationsData = Object.fromEntries(autodarkEntries.map(([key, svg]) =>
     </div>
   </div>
 
-  <h2 class="page-title my-5">
+  <PageTitle as="h2" class="my-5">
     {moreCount} more SVG Illustrations
-  </h2>
+  </PageTitle>
 
   <div class="row row-cards">
     <div class="col-lg-4">

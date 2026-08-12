@@ -6,9 +6,11 @@ import Card from '@ui/Card.astro'
 import CardBody from '@ui/CardBody.astro'
 import Avatar from '@ui/Avatar.astro'
 import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
 import Icon from '@ui/Icon.astro'
 import site from '@data/site.json'
 import { getDocsUrl } from '@shared/lib/string-format'
+import PageTitle from '@ui/PageTitle.astro'
 
 type ColorEntry = [string, { title: string; hex: string; abbr?: string; icon?: string }]
 
@@ -24,7 +26,7 @@ const colorsDocsUrl = getDocsUrl('/ui/base/colors')
 
 <DefaultLayout title="Colors" pageMenu="base.colors" description="The full color palette, with hex values, and a gradient builder.">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="page-title">Colors</h1>
+    <PageTitle>Colors</PageTitle>
     <a href={colorsDocsUrl} target="_blank" rel="noopener" class="link-secondary">
       Docs <Icon name="external-link" class="icon-sm" />
     </a>
@@ -35,7 +37,7 @@ const colorsDocsUrl = getDocsUrl('/ui/base/colors')
       <Card>
         <CardBody>
           <CardTitle>Colors</CardTitle>
-          <div class="card-subtitle">The extended color palette, with hex values.</div>
+          <CardSubtitle>The extended color palette, with hex values.</CardSubtitle>
           <div class="row g-3">
             {
               colors.map(([name, color]) => (
@@ -61,7 +63,7 @@ const colorsDocsUrl = getDocsUrl('/ui/base/colors')
       <Card>
         <CardBody>
           <CardTitle>Light colors</CardTitle>
-          <div class="card-subtitle">A tinted, low-contrast version of each color.</div>
+          <CardSubtitle>A tinted, low-contrast version of each color.</CardSubtitle>
           <div class="row g-3">
             {
               lightColors.map(([name, color]) => (
@@ -87,7 +89,7 @@ const colorsDocsUrl = getDocsUrl('/ui/base/colors')
       <Card>
         <CardBody>
           <CardTitle>Gray colors</CardTitle>
-          <div class="card-subtitle">The neutral gray scale used for text, borders, and backgrounds.</div>
+          <CardSubtitle>The neutral gray scale used for text, borders, and backgrounds.</CardSubtitle>
           <div class="row g-3">
             {
               grayColors.map(([name, color]) => (
@@ -113,7 +115,7 @@ const colorsDocsUrl = getDocsUrl('/ui/base/colors')
       <Card>
         <CardBody>
           <CardTitle>Social colors</CardTitle>
-          <div class="card-subtitle">Brand colors for social networks.</div>
+          <CardSubtitle>Brand colors for social networks.</CardSubtitle>
           <div class="row g-3">
             {
               socialColors.map(([name, color]) => (
@@ -141,7 +143,7 @@ const colorsDocsUrl = getDocsUrl('/ui/base/colors')
           <Card>
             <CardBody>
               <CardTitle>Gradient</CardTitle>
-              <div class="card-subtitle">Build a gradient from any two colors and preview it live.</div>
+              <CardSubtitle>Build a gradient from any two colors and preview it live.</CardSubtitle>
               <form action="">
                 <div class="row g-4">
                   <div class="col">
@@ -198,7 +200,7 @@ const colorsDocsUrl = getDocsUrl('/ui/base/colors')
           <Card>
             <CardBody>
               <CardTitle>Gradient colors</CardTitle>
-              <div class="card-subtitle">Every color faded to transparent, fading in from the left or the right.</div>
+              <CardSubtitle>Every color faded to transparent, fading in from the left or the right.</CardSubtitle>
               <div class="row">
                 <div class="col">
                   <div class="space-y">

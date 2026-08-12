@@ -4,15 +4,17 @@ import Pagination from '@ui/Pagination.astro'
 import Card from '@ui/Card.astro'
 import CardBody from '@ui/CardBody.astro'
 import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
 import Icon from '@ui/Icon.astro'
 import { getDocsUrl } from '@shared/lib/string-format'
+import PageTitle from '@ui/PageTitle.astro'
 
 const paginationDocsUrl = getDocsUrl('/ui/components/pagination')
 ---
 
 <DefaultLayout title="Pagination" pageMenu="base.pagination" description="Pagination splits a long list of results into pages, with Prev/Next controls.">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="page-title">Pagination</h1>
+    <PageTitle>Pagination</PageTitle>
     <a href={paginationDocsUrl} target="_blank" rel="noopener" class="link-secondary">
       Docs <Icon name="external-link" class="icon-sm" />
     </a>
@@ -23,7 +25,7 @@ const paginationDocsUrl = getDocsUrl('/ui/components/pagination')
       <Card>
         <CardBody>
           <CardTitle>Numbered</CardTitle>
-          <div class="card-subtitle">Page numbers, with or without <code>text</code> Prev/Next labels.</div>
+          <CardSubtitle>Page numbers, with or without <code>text</code> Prev/Next labels.</CardSubtitle>
           <Pagination />
           <Pagination text />
         </CardBody>
@@ -33,7 +35,7 @@ const paginationDocsUrl = getDocsUrl('/ui/components/pagination')
       <Card>
         <CardBody>
           <CardTitle>With descriptions</CardTitle>
-          <div class="card-subtitle">Add <code>prevDescription</code>/<code>nextDescription</code> to name the adjacent page.</div>
+          <CardSubtitle>Add <code>prevDescription</code>/<code>nextDescription</code> to name the adjacent page.</CardSubtitle>
           <Pagination count={0} prevDescription="Getting started" nextDescription="Breadcrumbs" />
         </CardBody>
       </Card>

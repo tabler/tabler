@@ -5,11 +5,13 @@ import TagList from '@ui/TagList.astro'
 import Card from '@ui/Card.astro'
 import CardBody from '@ui/CardBody.astro'
 import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
 import Icon from '@ui/Icon.astro'
 import people from '@data/people.json'
 import flags from '@data/flags.json'
 import siteData from '@data/site.json'
 import { getDocsUrl } from '@shared/lib/string-format'
+import PageTitle from '@ui/PageTitle.astro'
 
 const tagIcons = ['bold', 'italic', 'underline', 'copy', 'scissors', 'file-plus', 'file-minus', 'ghost', 'star', 'script', 'photo', 'dog', 'piano']
 
@@ -26,7 +28,7 @@ const tagDocsUrl = getDocsUrl('/ui/components/tag')
 
 <DefaultLayout title="Tags" pageMenu="base.tags" description="Tags are compact labels for filters, categories, and keywords.">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="page-title">Tags</h1>
+    <PageTitle>Tags</PageTitle>
     <a href={tagDocsUrl} target="_blank" rel="noopener" class="link-secondary">
       Docs <Icon name="external-link" class="icon-sm" />
     </a>
@@ -37,7 +39,7 @@ const tagDocsUrl = getDocsUrl('/ui/components/tag')
       <Card>
         <CardBody>
           <CardTitle>Default tags</CardTitle>
-          <div class="card-subtitle">The base tag, for a plain label.</div>
+          <CardSubtitle>The base tag, for a plain label.</CardSubtitle>
           <TagList>
             {range(1, 14).map((i) => <Tag text={`Label ${i}`} />)}
           </TagList>
@@ -49,7 +51,7 @@ const tagDocsUrl = getDocsUrl('/ui/components/tag')
       <Card>
         <CardBody>
           <CardTitle>Tags with flag</CardTitle>
-          <div class="card-subtitle">Pair a tag with a country flag.</div>
+          <CardSubtitle>Pair a tag with a country flag.</CardSubtitle>
           <TagList>
             {flags9.map((country) => <Tag text={country.name} flag={country.flag} />)}
           </TagList>
@@ -61,7 +63,7 @@ const tagDocsUrl = getDocsUrl('/ui/components/tag')
       <Card>
         <CardBody>
           <CardTitle>Tags with icon</CardTitle>
-          <div class="card-subtitle">Add an icon before the label.</div>
+          <CardSubtitle>Add an icon before the label.</CardSubtitle>
           <TagList>
             {tagIcons.map((icon) => <Tag text={icon} icon={icon} />)}
           </TagList>
@@ -73,7 +75,7 @@ const tagDocsUrl = getDocsUrl('/ui/components/tag')
       <Card>
         <CardBody>
           <CardTitle>Tags with avatar</CardTitle>
-          <div class="card-subtitle">Add a person's avatar before the label.</div>
+          <CardSubtitle>Add a person's avatar before the label.</CardSubtitle>
           <TagList>
             {people8.map((person) => <Tag text={person.full_name} person={person} />)}
           </TagList>
@@ -85,7 +87,7 @@ const tagDocsUrl = getDocsUrl('/ui/components/tag')
       <Card>
         <CardBody>
           <CardTitle>Tags with status</CardTitle>
-          <div class="card-subtitle">Add a small status dot in any theme or extended color.</div>
+          <CardSubtitle>Add a small status dot in any theme or extended color.</CardSubtitle>
           <TagList>
             {colors.map((color) => <Tag text={color.title} status={color.class} />)}
           </TagList>
@@ -97,7 +99,7 @@ const tagDocsUrl = getDocsUrl('/ui/components/tag')
       <Card>
         <CardBody>
           <CardTitle>Tags with legend</CardTitle>
-          <div class="card-subtitle">Add a colored legend square instead of a dot.</div>
+          <CardSubtitle>Add a colored legend square instead of a dot.</CardSubtitle>
           <TagList>
             {colors.map((color) => <Tag text={color.title} legend={color.class} />)}
           </TagList>
@@ -109,7 +111,7 @@ const tagDocsUrl = getDocsUrl('/ui/components/tag')
       <Card>
         <CardBody>
           <CardTitle>Selectable tags</CardTitle>
-          <div class="card-subtitle">Add <code>checkbox</code> to let users toggle a tag on and off.</div>
+          <CardSubtitle>Add <code>checkbox</code> to let users toggle a tag on and off.</CardSubtitle>
           <TagList>
             {range(1, 6).map((i) => <Tag text={`Label ${i}`} checkbox={true} />)}
             {range(7, 12).map((i) => <Tag text={`Label ${i}`} checkbox={true} checked={true} />)}
@@ -122,7 +124,7 @@ const tagDocsUrl = getDocsUrl('/ui/components/tag')
       <Card>
         <CardBody>
           <CardTitle>Tags with badge</CardTitle>
-          <div class="card-subtitle">Add a <code>badge</code> count to the end of the tag.</div>
+          <CardSubtitle>Add a <code>badge</code> count to the end of the tag.</CardSubtitle>
           <TagList>
             {range(1, 12).map((i) => <Tag text="Label" badge={i} />)}
           </TagList>

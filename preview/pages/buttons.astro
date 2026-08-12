@@ -6,8 +6,10 @@ import ButtonList from '@ui/ButtonList.astro'
 import Card from '@ui/Card.astro'
 import CardBody from '@ui/CardBody.astro'
 import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
 import site from '@data/site.json'
 import { getDocsUrl } from '@shared/lib/string-format'
+import PageTitle from '@ui/PageTitle.astro'
 
 type ColorEntry = [string, { title: string; icon?: string }]
 
@@ -25,7 +27,7 @@ const buttonDocsUrl = getDocsUrl('/ui/components/button')
 
 <DefaultLayout title="Buttons" pageMenu="base.buttons" description="Buttons are used to trigger actions in a user interface.">
   <div class="d-flex justify-content-between align-items-center mb-4">
-    <h1 class="page-title">Buttons</h1>
+    <PageTitle>Buttons</PageTitle>
     <a href={buttonDocsUrl} target="_blank" rel="noopener" class="link-secondary">
       Docs <Icon name="external-link" class="icon-sm" />
     </a>
@@ -36,7 +38,7 @@ const buttonDocsUrl = getDocsUrl('/ui/components/button')
       <Card>
         <CardBody>
           <CardTitle>Basic</CardTitle>
-          <div class="text-secondary mb-3 card-subtitle">Add an icon to the left, the right, or drop the label for an icon-only button.</div>
+          <CardSubtitle>Add an icon to the left, the right, or drop the label for an icon-only button.</CardSubtitle>
           <ButtonList>
             <Button text="Button" />
             <Button icon="star" text="With icon" />
@@ -51,7 +53,7 @@ const buttonDocsUrl = getDocsUrl('/ui/components/button')
       <Card>
         <CardBody>
           <CardTitle>Shapes</CardTitle>
-          <div class="text-secondary mb-3 card-subtitle">Round the corners with <code>.btn-pill</code>, or square them off with <code>.btn-square</code>.</div>
+          <CardSubtitle>Round the corners with <code>.btn-pill</code>, or square them off with <code>.btn-square</code>.</CardSubtitle>
           <ButtonList>
             <a class="btn">Default</a>
             <a class="btn btn-pill">Pill</a>
@@ -73,7 +75,7 @@ const buttonDocsUrl = getDocsUrl('/ui/components/button')
       <Card>
         <CardBody>
           <CardTitle>Action buttons</CardTitle>
-          <div class="text-secondary mb-3 card-subtitle">Compact, icon-only buttons for card headers and toolbars.</div>
+          <CardSubtitle>Compact, icon-only buttons for card headers and toolbars.</CardSubtitle>
           <div class="btn-actions">
             {
               actions.map((action) => (
@@ -90,7 +92,7 @@ const buttonDocsUrl = getDocsUrl('/ui/components/button')
       <Card>
         <CardBody>
           <CardTitle>Sizes</CardTitle>
-          <div class="text-secondary mb-3 card-subtitle">Scale a button from <code>sm</code> to <code>xl</code> without changing its icon layout.</div>
+          <CardSubtitle>Scale a button from <code>sm</code> to <code>xl</code> without changing its icon layout.</CardSubtitle>
           <div class="space-y">
             {
               sizes.map((size) => (
@@ -110,7 +112,7 @@ const buttonDocsUrl = getDocsUrl('/ui/components/button')
       <Card>
         <CardBody>
           <CardTitle>Animated icon</CardTitle>
-          <div class="text-secondary mb-3 card-subtitle">Small hover animations draw attention to the icon.</div>
+          <CardSubtitle>Small hover animations draw attention to the icon.</CardSubtitle>
           <ButtonList>
             <a class="btn btn-animate-icon">
               Save <Icon name="arrow-right" class="icon-end" />
@@ -147,7 +149,7 @@ const buttonDocsUrl = getDocsUrl('/ui/components/button')
       <Card>
         <CardBody>
           <CardTitle>Standard</CardTitle>
-          <div class="text-secondary mb-3 card-subtitle">Fill a button with a theme color to mark its purpose.</div>
+          <CardSubtitle>Fill a button with a theme color to mark its purpose.</CardSubtitle>
           <ButtonList>
             {
               themeColors.map(([name, color]) => (
@@ -164,7 +166,7 @@ const buttonDocsUrl = getDocsUrl('/ui/components/button')
       <Card>
         <CardBody>
           <CardTitle>Outline</CardTitle>
-          <div class="text-secondary mb-3 card-subtitle">Keep the border colored and the background transparent for a subtler action.</div>
+          <CardSubtitle>Keep the border colored and the background transparent for a subtler action.</CardSubtitle>
           <ButtonList>
             {
               themeColors.map(([name, color]) => (
@@ -181,7 +183,7 @@ const buttonDocsUrl = getDocsUrl('/ui/components/button')
       <Card>
         <CardBody>
           <CardTitle>Ghost</CardTitle>
-          <div class="text-secondary mb-3 card-subtitle">Drop the border too — color appears only on hover.</div>
+          <CardSubtitle>Drop the border too — color appears only on hover.</CardSubtitle>
           <ButtonList>
             {
               themeColors.map(([name, color]) => (
@@ -198,7 +200,7 @@ const buttonDocsUrl = getDocsUrl('/ui/components/button')
       <Card>
         <CardBody>
           <CardTitle>Pill</CardTitle>
-          <div class="text-secondary mb-3 card-subtitle">Combine <code>.btn-pill</code> with a theme color.</div>
+          <CardSubtitle>Combine <code>.btn-pill</code> with a theme color.</CardSubtitle>
           <ButtonList>
             {
               themeColors.map(([name, color]) => (
@@ -215,7 +217,7 @@ const buttonDocsUrl = getDocsUrl('/ui/components/button')
       <Card>
         <CardBody>
           <CardTitle>Square</CardTitle>
-          <div class="text-secondary mb-3 card-subtitle">Combine <code>.btn-square</code> with a theme color.</div>
+          <CardSubtitle>Combine <code>.btn-square</code> with a theme color.</CardSubtitle>
           <ButtonList>
             {
               themeColors.map(([name, color]) => (
@@ -232,7 +234,7 @@ const buttonDocsUrl = getDocsUrl('/ui/components/button')
       <Card>
         <CardBody>
           <CardTitle>Extra colors</CardTitle>
-          <div class="text-secondary mb-3 card-subtitle">The full Tabler palette, beyond the eight theme colors.</div>
+          <CardSubtitle>The full Tabler palette, beyond the eight theme colors.</CardSubtitle>
           <ButtonList>
             {
               colors.map(([name, color]) => (
@@ -249,7 +251,7 @@ const buttonDocsUrl = getDocsUrl('/ui/components/button')
       <Card>
         <CardBody>
           <CardTitle>Social colors</CardTitle>
-          <div class="text-secondary mb-3 card-subtitle">Brand colors for linking out to social networks.</div>
+          <CardSubtitle>Brand colors for linking out to social networks.</CardSubtitle>
           <ButtonList>
             {
               socialColors.map(([name, app]) => (
@@ -266,7 +268,7 @@ const buttonDocsUrl = getDocsUrl('/ui/components/button')
       <Card>
         <CardBody>
           <CardTitle>Icon buttons</CardTitle>
-          <div class="text-secondary mb-3 card-subtitle">Social brand colors without a label, for compact toolbars.</div>
+          <CardSubtitle>Social brand colors without a label, for compact toolbars.</CardSubtitle>
           <ButtonList>{socialColors.map(([name, app]) => <a class={`btn btn-icon btn-${name}`}>{app.icon && <Icon name={app.icon} />}</a>)}</ButtonList>
         </CardBody>
       </Card>
