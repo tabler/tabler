@@ -6,6 +6,7 @@ import Avatar from '@ui/Avatar.astro'
 import BadgeList from '@ui/BadgeList.astro'
 import Check from '@ui/form/Check.astro'
 import jobsData from '@data/jobs.json'
+import HeaderActionsAddJob from '@shared/components/layout/HeaderActionsAddJob.astro'
 
 interface Job {
   company: string
@@ -23,7 +24,8 @@ const types = ['Programming', 'Design', 'Management / Finance', 'Customer Suppor
 const salaries = ['$20K - $50K', '$50K - $100K', '> $100K']
 ---
 
-<DefaultLayout title="Search for Jobs" pageHeader="Search for Jobs" actions="add-job" pageMenu="extra.job-listing">
+<DefaultLayout title="Search for Jobs" pageHeader="Search for Jobs" pageMenu="extra.job-listing">
+  <HeaderActionsAddJob slot="page-header-actions" />
   <div class="row g-4">
     <div class="col-md-3">
       <form action="./" method="get" autocomplete="off" novalidate class="sticky-top">

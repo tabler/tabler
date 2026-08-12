@@ -2,13 +2,6 @@
 // Layout front-matter flags are plain props here.
 // TODO: layout-navbar-overlap && layout-navbar-dark → extra text-white class
 // on .page-header — both unset on the homepage.
-import HeaderActionsButtons from './HeaderActionsButtons.astro';
-import HeaderActionsPrint from './HeaderActionsPrint.astro';
-import HeaderActionsPhotos from './HeaderActionsPhotos.astro';
-import HeaderActionsBreadcrumb from './HeaderActionsBreadcrumb.astro';
-import HeaderActionsAddBoard from './HeaderActionsAddBoard.astro';
-import HeaderActionsAddJob from './HeaderActionsAddJob.astro';
-import HeaderActionsUsers from './HeaderActionsUsers.astro';
 import HeaderProfile from './HeaderProfile.astro';
 import HeaderUptime from './HeaderUptime.astro';
 import PageTitle from '@ui/PageTitle.astro';
@@ -20,9 +13,6 @@ interface Props {
 	pretitle?: string | undefined;
 	/** page-header-description */
 	description?: string | undefined;
-	/** page-header-actions — name of an include from layout/header-actions/, e.g. "buttons".
-	 * Legacy preset list; prefer the `actions` slot for page-specific markup. */
-	actions?: string | undefined;
 	/** page-header-class */
 	class?: string;
 	/** page-header-file — name of an include from layout/headers/, e.g. "profile" */
@@ -31,10 +21,10 @@ interface Props {
 	textWhite?: boolean | undefined;
 }
 
-const { title, pretitle, description, actions, class: className, file, textWhite } = Astro.props;
+const { title, pretitle, description, class: className, file, textWhite } = Astro.props;
 
-// The `actions` slot wins over the preset names above. A slot forwarded from a layout registers
-// here even when the page fills nothing, so test the rendered content, not Astro.slots.has().
+// A slot forwarded from a layout registers here even when the page fills nothing,
+// so test the rendered content, not Astro.slots.has().
 const actionsSlot = Astro.slots.has('actions') ? (await Astro.slots.render('actions')).trim() : '';
 ---
 
@@ -59,18 +49,11 @@ const actionsSlot = Astro.slots.has('actions') ? (await Astro.slots.render('acti
 						{description && <div class="text-secondary mt-1">{description}</div>}
 					</div>
 
-					{(actionsSlot || actions) && (
+					{actionsSlot && (
 						<Fragment>
 							<!-- Page title actions -->
 							<div class="col-auto ms-auto d-print-none">
 								<Fragment set:html={actionsSlot} />
-								{actions === 'buttons' && <HeaderActionsButtons dark={textWhite} />}
-								{actions === 'print' && <HeaderActionsPrint />}
-								{actions === 'photos' && <HeaderActionsPhotos />}
-								{actions === 'breadcrumb' && <HeaderActionsBreadcrumb />}
-								{actions === 'add-board' && <HeaderActionsAddBoard />}
-								{actions === 'add-job' && <HeaderActionsAddJob />}
-									{actions === 'users' && <HeaderActionsUsers />}
 							</div>
 						</Fragment>
 					)}

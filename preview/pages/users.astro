@@ -8,6 +8,7 @@ import CardBody from '@ui/CardBody.astro'
 import Icon from '@ui/Icon.astro'
 import Pagination from '@ui/Pagination.astro'
 import people from '@data/people.json'
+import HeaderActionsUsers from '@shared/components/layout/HeaderActionsUsers.astro'
 
 interface Person {
   full_name?: string
@@ -19,7 +20,8 @@ interface Person {
 const users = (people as Person[]).slice(0, 18)
 ---
 
-<DefaultLayout title="Users list" pageHeader="Users" actions="users" description="1-18 of 413 people" pageMenu="extra.users">
+<DefaultLayout title="Users list" pageHeader="Users" description="1-18 of 413 people" pageMenu="extra.users">
+  <HeaderActionsUsers slot="page-header-actions" />
   <div class="row row-cards">
     {
       users.map((person, idx) => {

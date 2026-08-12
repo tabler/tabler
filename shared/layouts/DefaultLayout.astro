@@ -18,8 +18,6 @@ interface Props {
   pretitle?: string | undefined
   /** page-header-description */
   description?: string | undefined
-  /** page-header-actions, e.g. "buttons" */
-  actions?: string | undefined
   /** page-menu from the front matter, e.g. "layout.vertical" — active menu entry */
   pageMenu?: string | undefined
   /** layout-sidebar */
@@ -56,8 +54,7 @@ interface Props {
   navbarClass?: string
 }
 
-const { title, pageLibs, pageHeader, pageHeaderFile, pretitle, description, actions, pageMenu, sidebar, sidebarDark, hideTopbar, containerCentered, wrapperFull, containerClass, bodyClass, rtl, sidebarEnd, navbarTransparent, navbarCondensed, navbarDark, navbarOverlap, navbarSticky, navbarHideBrand, navbarClass } =
-  Astro.props
+const { title, pageLibs, pageHeader, pageHeaderFile, pretitle, description, pageMenu, sidebar, sidebarDark, hideTopbar, containerCentered, wrapperFull, containerClass, bodyClass, rtl, sidebarEnd, navbarTransparent, navbarCondensed, navbarDark, navbarOverlap, navbarSticky, navbarHideBrand, navbarClass } = Astro.props
 ---
 
 <BaseLayout title={title} pageLibs={pageLibs} bodyClass={bodyClass} rtl={rtl}>
@@ -84,7 +81,7 @@ const { title, pageLibs, pageHeader, pageHeaderFile, pretitle, description, acti
 
     <div class:list={['page-wrapper', wrapperFull && 'page-wrapper-full']}>
       <!-- BEGIN PAGE HEADER -->
-      <PageHeader title={pageHeader} pretitle={pretitle} description={description} actions={actions} file={pageHeaderFile} textWhite={navbarOverlap && navbarDark}>
+      <PageHeader title={pageHeader} pretitle={pretitle} description={description} file={pageHeaderFile} textWhite={navbarOverlap && navbarDark}>
         <slot name="page-header-actions" slot="actions" />
       </PageHeader>
       <!-- END PAGE HEADER -->
