@@ -30,6 +30,18 @@
   background-position: top var(--form-feedback-icon-inset) right var(--form-feedback-icon-inset) !important;
 }
 
+// `.form-select` layers a second background (the feedback icon) behind its
+// own caret, so it needs its own override alongside %validation-icon-size —
+// same oversized-icon bug, but the caret's background-size must stay first.
+// Tom Select copies the select's classes onto its `.ts-wrapper`, which is
+// what actually paints these backgrounds, so this rule reaches that too.
+%validation-icon-size-select {
+  --form-feedback-icon-size: #{$input-btn-icon-size};
+  background-size:
+    #{$form-select-bg-size},
+    var(--form-feedback-icon-size) var(--form-feedback-icon-size) !important;
+}
+
 @each $state, $data in $form-validation-states {
   .form-control.is-#{$state}-lite {
     @extend %validation-lite;
@@ -41,6 +53,10 @@
 
   .form-control.is-#{$state} {
     @extend %validation-icon-size;
+  }
+
+  .form-select.is-#{$state} {
+    @extend %validation-icon-size-select;
   }
 
   .form-control-sm.is-#{$state} {
