@@ -1,0 +1,93 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Prose from '@ui/Prose.astro'
+import Icon from '@ui/Icon.astro'
+import { getDocsUrl } from '@shared/lib/string-format'
+
+const proseDocsUrl = getDocsUrl('/ui/base/prose')
+---
+
+<DefaultLayout title="Prose" pageMenu="base.prose" description="Wrap long-form content in .prose to style headings, paragraphs, lists, and tables without adding classes to every element.">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="page-title">Prose</h1>
+    <a href={proseDocsUrl} target="_blank" rel="noopener" class="link-secondary">
+      Docs <Icon name="external-link" class="icon-sm" />
+    </a>
+  </div>
+
+  <div class="card card-lg">
+    <div class="card-body">
+      <Prose>
+        <h1>Getting started with documentation</h1>
+        <p>
+          Writing clear and effective documentation is essential for any project. When you create content that others will read and use, proper formatting makes all the difference. <em>Good documentation</em> helps users understand complex concepts quickly and efficiently.
+        </p>
+        <blockquote>
+          <p>Documentation is a love letter that you write to your future self.</p>
+        </blockquote>
+        <p>
+          The foundation of great documentation starts with <strong>understanding your audience</strong> and their needs. Along the way you'll reach for a handful of inline elements: <mark>highlights</mark> to draw the eye, an <abbr title="HyperText Markup Language">HTML</abbr> tag for terms that deserve a definition, and
+          <del>outdated advice</del> replaced with <ins>the current recommendation</ins>. Formulas read naturally too, like H<sub>2</sub>O or 2<sup>10</sup>.
+        </p>
+
+        <h2>Adding code examples</h2>
+        <p>
+          Inline code looks like <code>console.log("Hello")</code> and uses monospace styling. For anything longer, drop it into a code block:
+        </p>
+        <pre><code>{`function add(a, b) {\n  return a + b;\n}`}</code></pre>
+
+        <h2>Structuring steps and points</h2>
+        <p>Use an ordered list to walk through a process:</p>
+        <ol>
+          <li>Start with the most important information.</li>
+          <li>Provide context before technical details.</li>
+          <li>Include practical examples.</li>
+        </ol>
+        <p>And an unordered list for related points that don't have a specific order:</p>
+        <ul>
+          <li>Write clear, concise list items.</li>
+          <li>Keep the structure consistent.</li>
+          <li>Avoid overly long items.</li>
+        </ul>
+
+        <h2>Supporting images</h2>
+        <p>Images should support the text and provide useful context, not just decorate the page.</p>
+        <img src="/static/photos/cup-of-coffee-and-an-open-book.jpg" alt="Open book and coffee" />
+
+        <h2>Comparing data in tables</h2>
+        <p>Tables work best for comparing related data points, like votes on a proposal:</p>
+        <table>
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Up-votes</th>
+              <th>Down-votes</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Alice</td>
+              <td>10</td>
+              <td>11</td>
+            </tr>
+            <tr>
+              <td>Bob</td>
+              <td>4</td>
+              <td>3</td>
+            </tr>
+            <tr>
+              <td>Charlie</td>
+              <td>7</td>
+              <td>9</td>
+            </tr>
+            <tr>
+              <td>Totals</td>
+              <td>21</td>
+              <td>23</td>
+            </tr>
+          </tbody>
+        </table>
+      </Prose>
+    </div>
+  </div>
+</DefaultLayout>
