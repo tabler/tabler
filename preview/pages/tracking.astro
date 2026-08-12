@@ -7,7 +7,6 @@ import CardSubtitle from '@ui/CardSubtitle.astro'
 import Icon from '@ui/Icon.astro'
 import StatusMonitoring from '@shared/components/cards/StatusMonitoring.astro'
 import { getDocsUrl } from '@shared/lib/string-format'
-import PageTitle from '@ui/PageTitle.astro'
 
 interface TrackingItem {
   status?: 'success' | 'warning' | 'danger'
@@ -51,13 +50,10 @@ const uptime: TrackingItem[] = [
 const trackingDocsUrl = getDocsUrl('/ui/components/tracking')
 ---
 
-<DefaultLayout title="Tracking" pageMenu="base.tracking" description="Tracking blocks show an uptime or activity history as a row of colored bars.">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <PageTitle>Tracking</PageTitle>
-    <a href={trackingDocsUrl} target="_blank" rel="noopener" class="link-secondary">
-      Docs <Icon name="external-link" class="icon-sm" />
-    </a>
-  </div>
+<DefaultLayout title="Tracking" pageHeader="Tracking" pageMenu="base.tracking" description="Tracking blocks show an uptime or activity history as a row of colored bars.">
+  <a slot="page-header-actions" href={trackingDocsUrl} target="_blank" rel="noopener" class="link-secondary">
+    Docs <Icon name="external-link" class="icon-sm" />
+  </a>
 
   <div class="row row-cards">
     <div class="col-12">

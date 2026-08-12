@@ -20,7 +20,8 @@ interface Props {
 	pretitle?: string | undefined;
 	/** page-header-description */
 	description?: string | undefined;
-	/** page-header-actions — name of an include from layout/header-actions/, e.g. "buttons" */
+	/** page-header-actions — name of an include from layout/header-actions/, e.g. "buttons".
+	 * Legacy preset list; prefer the `actions` slot for page-specific markup. */
 	actions?: string | undefined;
 	/** page-header-class */
 	class?: string;
@@ -31,6 +32,10 @@ interface Props {
 }
 
 const { title, pretitle, description, actions, class: className, file, textWhite } = Astro.props;
+
+// The `actions` slot wins over the preset names above. A slot forwarded from a layout registers
+// here even when the page fills nothing, so test the rendered content, not Astro.slots.has().
+const actionsSlot = Astro.slots.has('actions') ? (await Astro.slots.render('actions')).trim() : '';
 ---
 
 {file === 'profile' && <HeaderProfile />}
@@ -54,10 +59,11 @@ const { title, pretitle, description, actions, class: className, file, textWhite
 						{description && <div class="text-secondary mt-1">{description}</div>}
 					</div>
 
-					{actions && (
+					{(actionsSlot || actions) && (
 						<Fragment>
 							<!-- Page title actions -->
 							<div class="col-auto ms-auto d-print-none">
+								<Fragment set:html={actionsSlot} />
 								{actions === 'buttons' && <HeaderActionsButtons dark={textWhite} />}
 								{actions === 'print' && <HeaderActionsPrint />}
 								{actions === 'photos' && <HeaderActionsPhotos />}

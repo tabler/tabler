@@ -11,7 +11,6 @@ import people from '@data/people.json'
 import flags from '@data/flags.json'
 import siteData from '@data/site.json'
 import { getDocsUrl } from '@shared/lib/string-format'
-import PageTitle from '@ui/PageTitle.astro'
 
 const tagIcons = ['bold', 'italic', 'underline', 'copy', 'scissors', 'file-plus', 'file-minus', 'ghost', 'star', 'script', 'photo', 'dog', 'piano']
 
@@ -26,13 +25,10 @@ const colors = Object.values(siteData.colors) as { class: string; title: string 
 const tagDocsUrl = getDocsUrl('/ui/components/tag')
 ---
 
-<DefaultLayout title="Tags" pageMenu="base.tags" description="Tags are compact labels for filters, categories, and keywords.">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <PageTitle>Tags</PageTitle>
-    <a href={tagDocsUrl} target="_blank" rel="noopener" class="link-secondary">
-      Docs <Icon name="external-link" class="icon-sm" />
-    </a>
-  </div>
+<DefaultLayout title="Tags" pageHeader="Tags" pageMenu="base.tags" description="Tags are compact labels for filters, categories, and keywords.">
+  <a slot="page-header-actions" href={tagDocsUrl} target="_blank" rel="noopener" class="link-secondary">
+    Docs <Icon name="external-link" class="icon-sm" />
+  </a>
 
   <div class="row row-cards row-cols-1 row-cols-md-2 row-cols-lg-3">
     <div class="col">

@@ -6,18 +6,14 @@ import CardTitle from '@ui/CardTitle.astro'
 import CardSubtitle from '@ui/CardSubtitle.astro'
 import Icon from '@ui/Icon.astro'
 import { getDocsUrl } from '@shared/lib/string-format'
-import PageTitle from '@ui/PageTitle.astro'
 
 const stepDocsUrl = getDocsUrl('/ui/components/step')
 ---
 
-<DefaultLayout title="Steps" pageMenu="base.steps" description="Steps show progress through a numbered or labeled sequence, as a horizontal bar, breadcrumb, or vertical timeline.">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <PageTitle>Steps</PageTitle>
-    <a href={stepDocsUrl} target="_blank" rel="noopener" class="link-secondary">
-      Docs <Icon name="external-link" class="icon-sm" />
-    </a>
-  </div>
+<DefaultLayout title="Steps" pageHeader="Steps" pageMenu="base.steps" description="Steps show progress through a numbered or labeled sequence, as a horizontal bar, breadcrumb, or vertical timeline.">
+  <a slot="page-header-actions" href={stepDocsUrl} target="_blank" rel="noopener" class="link-secondary">
+    Docs <Icon name="external-link" class="icon-sm" />
+  </a>
 
   <div class="row row-cards mb-5">
     <div class="col-12">

@@ -7,18 +7,14 @@ import CardTitle from '@ui/CardTitle.astro'
 import CardSubtitle from '@ui/CardSubtitle.astro'
 import Icon from '@ui/Icon.astro'
 import { getDocsUrl } from '@shared/lib/string-format'
-import PageTitle from '@ui/PageTitle.astro'
 
 const starsRatingDocsUrl = getDocsUrl('/ui/components/star-rating')
 ---
 
-<DefaultLayout title="Star Ratings" pageMenu="base.stars-rating" pageLibs={['tabler-flags', 'star-rating.js']} description="An interactive star rating built on the star-rating.js widget, backed by a hidden select for accessibility and forms.">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <PageTitle>Star Ratings</PageTitle>
-    <a href={starsRatingDocsUrl} target="_blank" rel="noopener" class="link-secondary">
-      Docs <Icon name="external-link" class="icon-sm" />
-    </a>
-  </div>
+<DefaultLayout title="Star Ratings" pageHeader="Star Ratings" pageMenu="base.stars-rating" pageLibs={['tabler-flags', 'star-rating.js']} description="An interactive star rating built on the star-rating.js widget, backed by a hidden select for accessibility and forms.">
+  <a slot="page-header-actions" href={starsRatingDocsUrl} target="_blank" rel="noopener" class="link-secondary">
+    Docs <Icon name="external-link" class="icon-sm" />
+  </a>
 
   <div class="row row-cards mb-5">
     <div class="col-md-6 col-lg-4">

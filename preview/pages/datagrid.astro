@@ -6,18 +6,14 @@ import CardBody from '@ui/CardBody.astro'
 import Icon from '@ui/Icon.astro'
 import Datagrid from '@shared/components/parts/Datagrid.astro'
 import { getDocsUrl } from '@shared/lib/string-format'
-import PageTitle from '@ui/PageTitle.astro'
 
 const datagridDocsUrl = getDocsUrl('/ui/components/datagrid')
 ---
 
-<DefaultLayout title="Data grid" pageMenu="base.datagrid" description="A data grid lays out label/value pairs in a compact, aligned grid.">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <PageTitle>Data grid</PageTitle>
-    <a href={datagridDocsUrl} target="_blank" rel="noopener" class="link-secondary">
-      Docs <Icon name="external-link" class="icon-sm" />
-    </a>
-  </div>
+<DefaultLayout title="Data grid" pageHeader="Data grid" pageMenu="base.datagrid" description="A data grid lays out label/value pairs in a compact, aligned grid.">
+  <a slot="page-header-actions" href={datagridDocsUrl} target="_blank" rel="noopener" class="link-secondary">
+    Docs <Icon name="external-link" class="icon-sm" />
+  </a>
 
   <Card>
     <CardHeader title="Base info" />

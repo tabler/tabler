@@ -10,7 +10,6 @@ import CardSubtitle from '@ui/CardSubtitle.astro'
 import Icon from '@ui/Icon.astro'
 import site from '@data/site.json'
 import { getDocsUrl } from '@shared/lib/string-format'
-import PageTitle from '@ui/PageTitle.astro'
 
 type ColorEntry = [string, { title: string; hex: string; abbr?: string; icon?: string }]
 
@@ -24,13 +23,10 @@ const gradientColors = [...Object.keys(site.colors), 'inverted', 'white', 'trans
 const colorsDocsUrl = getDocsUrl('/ui/base/colors')
 ---
 
-<DefaultLayout title="Colors" pageMenu="base.colors" description="The full color palette, with hex values, and a gradient builder.">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <PageTitle>Colors</PageTitle>
-    <a href={colorsDocsUrl} target="_blank" rel="noopener" class="link-secondary">
-      Docs <Icon name="external-link" class="icon-sm" />
-    </a>
-  </div>
+<DefaultLayout title="Colors" pageHeader="Colors" pageMenu="base.colors" description="The full color palette, with hex values, and a gradient builder.">
+  <a slot="page-header-actions" href={colorsDocsUrl} target="_blank" rel="noopener" class="link-secondary">
+    Docs <Icon name="external-link" class="icon-sm" />
+  </a>
 
   <div class="row row-cards">
     <div class="col-6 col-lg-3">

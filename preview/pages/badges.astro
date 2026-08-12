@@ -12,7 +12,6 @@ import CardSubtitle from '@ui/CardSubtitle.astro'
 import DropdownMenu from '@ui/DropdownMenu.astro'
 import site from '@data/site.json'
 import { ucFirst, getDocsUrl } from '@shared/lib/string-format'
-import PageTitle from '@ui/PageTitle.astro'
 
 const colors = ['default', ...Object.keys(site.colors), 'dark', 'light']
 const sizes = ['sm', 'md', 'lg']
@@ -20,13 +19,10 @@ const sizes = ['sm', 'md', 'lg']
 const badgeDocsUrl = getDocsUrl('/ui/components/badge')
 ---
 
-<DefaultLayout title="Badges" pageMenu="base.badges" description="Badges highlight a count, status, or short label attached to text, buttons, or menu items.">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <PageTitle>Badges</PageTitle>
-    <a href={badgeDocsUrl} target="_blank" rel="noopener" class="link-secondary">
-      Docs <Icon name="external-link" class="icon-sm" />
-    </a>
-  </div>
+<DefaultLayout title="Badges" pageHeader="Badges" pageMenu="base.badges" description="Badges highlight a count, status, or short label attached to text, buttons, or menu items.">
+  <a slot="page-header-actions" href={badgeDocsUrl} target="_blank" rel="noopener" class="link-secondary">
+    Docs <Icon name="external-link" class="icon-sm" />
+  </a>
 
   <div class="row row-cards mb-5">
     <div class="col-md-6 col-lg-4">

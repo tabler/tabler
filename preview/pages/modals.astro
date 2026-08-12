@@ -24,20 +24,16 @@ import ConfirmDeleteModalContent from '@shared/components/modals/ConfirmDeleteMo
 import ChangePasswordModalContent from '@shared/components/modals/ChangePasswordModalContent.astro'
 import AddTaskModalContent from '@shared/components/modals/AddTaskModalContent.astro'
 import { getDocsUrl } from '@shared/lib/string-format'
-import PageTitle from '@ui/PageTitle.astro'
 
 const cardClass = 'position-relative rounded d-block bg-surface-backdrop py-6 w-auto h-auto z-0'
 
 const modalDocsUrl = getDocsUrl('/ui/components/modal')
 ---
 
-<DefaultLayout title="Modals" pageMenu="base.modals" pageLibs={['signature_pad', 'hugerte', 'litepicker', 'tom-select']} description="Modals interrupt the page to ask for input, confirmation, or a focused action.">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <PageTitle>Modals</PageTitle>
-    <a href={modalDocsUrl} target="_blank" rel="noopener" class="link-secondary">
-      Docs <Icon name="external-link" class="icon-sm" />
-    </a>
-  </div>
+<DefaultLayout title="Modals" pageHeader="Modals" pageMenu="base.modals" pageLibs={['signature_pad', 'hugerte', 'litepicker', 'tom-select']} description="Modals interrupt the page to ask for input, confirmation, or a focused action.">
+  <a slot="page-header-actions" href={modalDocsUrl} target="_blank" rel="noopener" class="link-secondary">
+    Docs <Icon name="external-link" class="icon-sm" />
+  </a>
 
   <Card>
     <CardBody>

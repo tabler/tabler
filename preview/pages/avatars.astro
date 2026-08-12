@@ -11,7 +11,6 @@ import Icon from '@ui/Icon.astro'
 import people from '@data/people.json'
 import { site } from '@shared/lib/site'
 import { firstLetters, getDocsUrl } from '@shared/lib/string-format'
-import PageTitle from '@ui/PageTitle.astro'
 
 const iconIcons = ['user', 'settings', 'car', 'balloon', 'users', 'users-group', 'apps', 'ghost']
 
@@ -29,13 +28,10 @@ const brands = ['netflix', 'amazon', 'messenger', 'figma', 'twitch']
 const avatarDocsUrl = getDocsUrl('/ui/components/avatar')
 ---
 
-<DefaultLayout title="Avatars" pageMenu="base.avatars" description="Avatars display a photo, icon, or initials to represent a person, brand, or status.">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <PageTitle>Avatars</PageTitle>
-    <a href={avatarDocsUrl} target="_blank" rel="noopener" class="link-secondary">
-      Docs <Icon name="external-link" class="icon-sm" />
-    </a>
-  </div>
+<DefaultLayout title="Avatars" pageHeader="Avatars" pageMenu="base.avatars" description="Avatars display a photo, icon, or initials to represent a person, brand, or status.">
+  <a slot="page-header-actions" href={avatarDocsUrl} target="_blank" rel="noopener" class="link-secondary">
+    Docs <Icon name="external-link" class="icon-sm" />
+  </a>
 
   <div class="row row-cards">
     <div class="col-sm-6 col-lg-4">

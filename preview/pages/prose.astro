@@ -4,18 +4,14 @@ import Prose from '@ui/Prose.astro'
 import Icon from '@ui/Icon.astro'
 import Avatar from '@ui/Avatar.astro'
 import { getDocsUrl } from '@shared/lib/string-format'
-import PageTitle from '@ui/PageTitle.astro'
 
 const proseDocsUrl = getDocsUrl('/ui/base/prose')
 ---
 
-<DefaultLayout title="Prose" pageMenu="base.prose" description="Wrap long-form content in .prose to style headings, paragraphs, lists, and tables without adding classes to every element.">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <PageTitle>Prose</PageTitle>
-    <a href={proseDocsUrl} target="_blank" rel="noopener" class="link-secondary">
-      Docs <Icon name="external-link" class="icon-sm" />
-    </a>
-  </div>
+<DefaultLayout title="Prose" pageHeader="Prose" pageMenu="base.prose" description="Wrap long-form content in .prose to style headings, paragraphs, lists, and tables without adding classes to every element.">
+  <a slot="page-header-actions" href={proseDocsUrl} target="_blank" rel="noopener" class="link-secondary">
+    Docs <Icon name="external-link" class="icon-sm" />
+  </a>
 
   <div class="row justify-content-center">
     <div class="col-lg-9 col-xl-8">
