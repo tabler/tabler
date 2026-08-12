@@ -4,9 +4,8 @@ import Icon from '@ui/Icon.astro'
 import Button from '@ui/Button.astro'
 import ButtonList from '@ui/ButtonList.astro'
 import Card from '@ui/Card.astro'
-import CardHeader from '@ui/CardHeader.astro'
 import CardBody from '@ui/CardBody.astro'
-import CardActions from '@ui/CardActions.astro'
+import CardTitle from '@ui/CardTitle.astro'
 import site from '@data/site.json'
 import { getDocsUrl } from '@shared/lib/string-format'
 
@@ -21,24 +20,23 @@ const socialColors = Object.entries(site.socialColors) as ColorEntry[]
 const actions = ['edit', 'copy', 'settings', 'clipboard', 'x']
 const sizes = ['sm', 'md', 'lg', 'xl'] as const
 
-// Anchors match the `##` headings in docs/content/ui/components/button.mdx.
-const buttonDocsUrl = (anchor: string) => getDocsUrl(`/ui/components/button#${anchor}`)
+const buttonDocsUrl = getDocsUrl('/ui/components/button')
 ---
 
-<DefaultLayout title="Buttons" pageHeader="Buttons" pageMenu="base.buttons">
-  <h2 class="mb-3">Styles</h2>
+<DefaultLayout title="Buttons" pageMenu="base.buttons" description="Buttons are used to trigger actions in a user interface.">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h1 class="page-title">Buttons</h1>
+    <a href={buttonDocsUrl} target="_blank" rel="noopener" class="link-secondary">
+      Docs <Icon name="external-link" class="icon-sm" />
+    </a>
+  </div>
+
   <div class="row row-cards mb-5">
     <div class="col-md-6 col-lg-4">
       <Card>
-        <CardHeader title="Basic">
-          <CardActions>
-            <a href={buttonDocsUrl('buttons-with-icons')} target="_blank" rel="noopener" class="link-secondary">
-              Docs <Icon name="external-link" class="icon-sm" />
-            </a>
-          </CardActions>
-        </CardHeader>
         <CardBody>
-          <div class="text-secondary mb-3">Add an icon to the left, the right, or drop the label for an icon-only button.</div>
+          <CardTitle>Basic</CardTitle>
+          <div class="text-secondary mb-3 card-subtitle">Add an icon to the left, the right, or drop the label for an icon-only button.</div>
           <ButtonList>
             <Button text="Button" />
             <Button icon="star" text="With icon" />
@@ -51,15 +49,9 @@ const buttonDocsUrl = (anchor: string) => getDocsUrl(`/ui/components/button#${an
     </div>
     <div class="col-md-6 col-lg-4">
       <Card>
-        <CardHeader title="Shapes">
-          <CardActions>
-            <a href={buttonDocsUrl('pill-buttons')} target="_blank" rel="noopener" class="link-secondary">
-              Docs <Icon name="external-link" class="icon-sm" />
-            </a>
-          </CardActions>
-        </CardHeader>
         <CardBody>
-          <div class="text-secondary mb-3">Round the corners with <code>.btn-pill</code>, or square them off with <code>.btn-square</code>.</div>
+          <CardTitle>Shapes</CardTitle>
+          <div class="text-secondary mb-3 card-subtitle">Round the corners with <code>.btn-pill</code>, or square them off with <code>.btn-square</code>.</div>
           <ButtonList>
             <a class="btn">Default</a>
             <a class="btn btn-pill">Pill</a>
@@ -79,15 +71,9 @@ const buttonDocsUrl = (anchor: string) => getDocsUrl(`/ui/components/button#${an
     </div>
     <div class="col-md-6 col-lg-4">
       <Card>
-        <CardHeader title="Action buttons">
-          <CardActions>
-            <a href={buttonDocsUrl('action-buttons')} target="_blank" rel="noopener" class="link-secondary">
-              Docs <Icon name="external-link" class="icon-sm" />
-            </a>
-          </CardActions>
-        </CardHeader>
         <CardBody>
-          <div class="text-secondary mb-3">Compact, icon-only buttons for card headers and toolbars.</div>
+          <CardTitle>Action buttons</CardTitle>
+          <div class="text-secondary mb-3 card-subtitle">Compact, icon-only buttons for card headers and toolbars.</div>
           <div class="btn-actions">
             {
               actions.map((action) => (
@@ -100,17 +86,11 @@ const buttonDocsUrl = (anchor: string) => getDocsUrl(`/ui/components/button#${an
         </CardBody>
       </Card>
     </div>
-    <div class="col-md-6 col-lg-8">
+    <div class="col-12 col-lg-8">
       <Card>
-        <CardHeader title="Sizes">
-          <CardActions>
-            <a href={buttonDocsUrl('button-size')} target="_blank" rel="noopener" class="link-secondary">
-              Docs <Icon name="external-link" class="icon-sm" />
-            </a>
-          </CardActions>
-        </CardHeader>
         <CardBody>
-          <div class="text-secondary mb-3">Scale a button from <code>sm</code> to <code>xl</code> without changing its icon layout.</div>
+          <CardTitle>Sizes</CardTitle>
+          <div class="text-secondary mb-3 card-subtitle">Scale a button from <code>sm</code> to <code>xl</code> without changing its icon layout.</div>
           <div class="space-y">
             {
               sizes.map((size) => (
@@ -126,17 +106,11 @@ const buttonDocsUrl = (anchor: string) => getDocsUrl(`/ui/components/button#${an
         </CardBody>
       </Card>
     </div>
-    <div class="col-md-6 col-lg-4">
+    <div class="col-md-12 col-lg-4">
       <Card>
-        <CardHeader title="Animated icon">
-          <CardActions>
-            <a href={buttonDocsUrl('buttons-with-animations-on-hover')} target="_blank" rel="noopener" class="link-secondary">
-              Docs <Icon name="external-link" class="icon-sm" />
-            </a>
-          </CardActions>
-        </CardHeader>
         <CardBody>
-          <div class="text-secondary mb-3">Small hover animations draw attention to the icon.</div>
+          <CardTitle>Animated icon</CardTitle>
+          <div class="text-secondary mb-3 card-subtitle">Small hover animations draw attention to the icon.</div>
           <ButtonList>
             <a class="btn btn-animate-icon">
               Save <Icon name="arrow-right" class="icon-end" />
@@ -169,21 +143,11 @@ const buttonDocsUrl = (anchor: string) => getDocsUrl(`/ui/components/button#${an
         </CardBody>
       </Card>
     </div>
-  </div>
-
-  <h2 class="mb-3">Colors</h2>
-  <div class="row row-cards">
     <div class="col-12">
       <Card>
-        <CardHeader title="Standard">
-          <CardActions>
-            <a href={buttonDocsUrl('button-variations')} target="_blank" rel="noopener" class="link-secondary">
-              Docs <Icon name="external-link" class="icon-sm" />
-            </a>
-          </CardActions>
-        </CardHeader>
         <CardBody>
-          <div class="text-secondary mb-3">Fill a button with a theme color to mark its purpose.</div>
+          <CardTitle>Standard</CardTitle>
+          <div class="text-secondary mb-3 card-subtitle">Fill a button with a theme color to mark its purpose.</div>
           <ButtonList>
             {
               themeColors.map(([name, color]) => (
@@ -198,15 +162,9 @@ const buttonDocsUrl = (anchor: string) => getDocsUrl(`/ui/components/button#${an
     </div>
     <div class="col-12">
       <Card>
-        <CardHeader title="Outline">
-          <CardActions>
-            <a href={buttonDocsUrl('outline-buttons')} target="_blank" rel="noopener" class="link-secondary">
-              Docs <Icon name="external-link" class="icon-sm" />
-            </a>
-          </CardActions>
-        </CardHeader>
         <CardBody>
-          <div class="text-secondary mb-3">Keep the border colored and the background transparent for a subtler action.</div>
+          <CardTitle>Outline</CardTitle>
+          <div class="text-secondary mb-3 card-subtitle">Keep the border colored and the background transparent for a subtler action.</div>
           <ButtonList>
             {
               themeColors.map(([name, color]) => (
@@ -221,15 +179,9 @@ const buttonDocsUrl = (anchor: string) => getDocsUrl(`/ui/components/button#${an
     </div>
     <div class="col-12">
       <Card>
-        <CardHeader title="Ghost">
-          <CardActions>
-            <a href={buttonDocsUrl('ghost-buttons')} target="_blank" rel="noopener" class="link-secondary">
-              Docs <Icon name="external-link" class="icon-sm" />
-            </a>
-          </CardActions>
-        </CardHeader>
         <CardBody>
-          <div class="text-secondary mb-3">Drop the border too — color appears only on hover.</div>
+          <CardTitle>Ghost</CardTitle>
+          <div class="text-secondary mb-3 card-subtitle">Drop the border too — color appears only on hover.</div>
           <ButtonList>
             {
               themeColors.map(([name, color]) => (
@@ -244,15 +196,9 @@ const buttonDocsUrl = (anchor: string) => getDocsUrl(`/ui/components/button#${an
     </div>
     <div class="col-12">
       <Card>
-        <CardHeader title="Pill">
-          <CardActions>
-            <a href={buttonDocsUrl('pill-buttons')} target="_blank" rel="noopener" class="link-secondary">
-              Docs <Icon name="external-link" class="icon-sm" />
-            </a>
-          </CardActions>
-        </CardHeader>
         <CardBody>
-          <div class="text-secondary mb-3">Combine <code>.btn-pill</code> with a theme color.</div>
+          <CardTitle>Pill</CardTitle>
+          <div class="text-secondary mb-3 card-subtitle">Combine <code>.btn-pill</code> with a theme color.</div>
           <ButtonList>
             {
               themeColors.map(([name, color]) => (
@@ -267,15 +213,9 @@ const buttonDocsUrl = (anchor: string) => getDocsUrl(`/ui/components/button#${an
     </div>
     <div class="col-12">
       <Card>
-        <CardHeader title="Square">
-          <CardActions>
-            <a href={buttonDocsUrl('square-buttons')} target="_blank" rel="noopener" class="link-secondary">
-              Docs <Icon name="external-link" class="icon-sm" />
-            </a>
-          </CardActions>
-        </CardHeader>
         <CardBody>
-          <div class="text-secondary mb-3">Combine <code>.btn-square</code> with a theme color.</div>
+          <CardTitle>Square</CardTitle>
+          <div class="text-secondary mb-3 card-subtitle">Combine <code>.btn-square</code> with a theme color.</div>
           <ButtonList>
             {
               themeColors.map(([name, color]) => (
@@ -290,15 +230,9 @@ const buttonDocsUrl = (anchor: string) => getDocsUrl(`/ui/components/button#${an
     </div>
     <div class="col-12">
       <Card>
-        <CardHeader title="Extra colors">
-          <CardActions>
-            <a href={buttonDocsUrl('color-variations')} target="_blank" rel="noopener" class="link-secondary">
-              Docs <Icon name="external-link" class="icon-sm" />
-            </a>
-          </CardActions>
-        </CardHeader>
         <CardBody>
-          <div class="text-secondary mb-3">The full Tabler palette, beyond the eight theme colors.</div>
+          <CardTitle>Extra colors</CardTitle>
+          <div class="text-secondary mb-3 card-subtitle">The full Tabler palette, beyond the eight theme colors.</div>
           <ButtonList>
             {
               colors.map(([name, color]) => (
@@ -313,15 +247,9 @@ const buttonDocsUrl = (anchor: string) => getDocsUrl(`/ui/components/button#${an
     </div>
     <div class="col-12">
       <Card>
-        <CardHeader title="Social colors">
-          <CardActions>
-            <a href={buttonDocsUrl('social-buttons')} target="_blank" rel="noopener" class="link-secondary">
-              Docs <Icon name="external-link" class="icon-sm" />
-            </a>
-          </CardActions>
-        </CardHeader>
         <CardBody>
-          <div class="text-secondary mb-3">Brand colors for linking out to social networks.</div>
+          <CardTitle>Social colors</CardTitle>
+          <div class="text-secondary mb-3 card-subtitle">Brand colors for linking out to social networks.</div>
           <ButtonList>
             {
               socialColors.map(([name, app]) => (
@@ -336,15 +264,9 @@ const buttonDocsUrl = (anchor: string) => getDocsUrl(`/ui/components/button#${an
     </div>
     <div class="col-12">
       <Card>
-        <CardHeader title="Icon buttons">
-          <CardActions>
-            <a href={buttonDocsUrl('icon-buttons')} target="_blank" rel="noopener" class="link-secondary">
-              Docs <Icon name="external-link" class="icon-sm" />
-            </a>
-          </CardActions>
-        </CardHeader>
         <CardBody>
-          <div class="text-secondary mb-3">Social brand colors without a label, for compact toolbars.</div>
+          <CardTitle>Icon buttons</CardTitle>
+          <div class="text-secondary mb-3 card-subtitle">Social brand colors without a label, for compact toolbars.</div>
           <ButtonList>{socialColors.map(([name, app]) => <a class={`btn btn-icon btn-${name}`}>{app.icon && <Icon name={app.icon} />}</a>)}</ButtonList>
         </CardBody>
       </Card>
