@@ -19,7 +19,7 @@
     "generate-tokens": "tsx .build/generate-tokens.ts",
     "generate-tokens:check": "tsx .build/generate-tokens.ts check",
     "check-docs-links": "tsx .build/check-docs-links.ts",
-    "lint": "pnpm run lint-md && pnpm run check-docs-links && pnpm run lint-prettier && pnpm run lint-scss-vars",
+    "lint": "pnpm run lint-md && pnpm run check-docs-links && pnpm run lint-prettier && pnpm run lint-scss-vars && pnpm run generate-tokens:check",
     "lint:fix": "(pnpm run lint-md-fix || true) && (pnpm run lint:scss:fix || true) && (pnpm run format-prettier || true)",
     "lint:scss": "pnpm --filter @tabler/core lint:scss",
     "lint:scss:fix": "pnpm --filter @tabler/core lint:scss:fix",
@@ -29,7 +29,7 @@
     "lint-scss-vars": "pnpm --filter @tabler/core css-lint",
     "format": "pnpm run format-prettier && pnpm run reformat-md",
     "format-prettier": "prettier --write \"core/scss/**/*.scss\" \"core/js/**/*.{js,ts}\" \"core/.build/**/*.{ts,mts,mjs}\" \".build/**/*.ts\" \"screenshots/.build/**/*.ts\" \"preview/scss/**/*.scss\" \"preview/js/**/*.{js,ts}\" \"{preview,docs,screenshots,shared}/**/*.astro\" \"{preview,docs,screenshots}/**/*.{mjs,mts,ts}\" \"shared/**/*.{js,mjs,mts,ts}\" --cache",
-    "check": "pnpm run lint && pnpm run type-check && pnpm run generate-tokens:check",
+    "check": "pnpm run lint && pnpm run type-check",
     "zip-package": "tsx .build/zip-package.ts",
     "start": "pnpm dev"
   },
