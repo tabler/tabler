@@ -42,7 +42,7 @@ Here are the available pattern types:
 	{patterns.map((pattern, i) => {
 		return (
 			<div class="col">
-				<div class={`bg-pattern-${pattern} rounded mb-2`} style={{height: "6rem"}}></div>
+				<div class={`bg-pattern-${pattern} border rounded mb-2`} style={{height: "6rem"}}></div>
 				<code>.bg-pattern-{ pattern }</code>
 			</div>
 		)
@@ -63,7 +63,7 @@ Combine any pattern with color modifiers using `.bg-pattern-{color}`. See the [f
 
 <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-6 g-3">
 
-{colors.map((color) => ( <div class="col"> <div class={`bg-pattern-diagonal-stripes-2 bg-pattern-${color[0]} rounded mb-2`} style={{height: "6rem"}}></div> <code>.bg-pattern-{ color[0] }</code> </div> ))}
+{colors.map((color) => ( <div class="col"> <div class={`bg-pattern-diagonal-stripes-2 bg-pattern-${color[0]} border rounded mb-2`} style={{height: "6rem"}}></div> <code>.bg-pattern-{ color[0] }</code> </div> ))}
 
 </div>
 </Example>
@@ -75,7 +75,7 @@ Combine any pattern with color modifiers using `.bg-pattern-{color}`. See the [f
 
 ## Transparent pattern utility
 
-Use `.bg-pattern-transparent` when you need a checkerboard-style transparent background. This utility comes from the generic background utilities and can be combined with spacing and border classes.
+Use `.bg-pattern-transparent` when you need a checkerboard-style transparent background. Combine it with spacing and border classes. You can change strength with `--tblr-pattern-opacity` (include the `%` unit).
 
 <Example hideCode>
   <Illustration image="boy-with-key.svg" class="d-block mx-auto mw-100" height={200} />
@@ -98,19 +98,19 @@ Look at the following examples to see how the pattern sizes work:
 <Example hideCode>
 <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3">
   <div class="col">
-    <div class="bg-pattern-circles bg-pattern-sm rounded mb-2" style="height: 6rem;"></div>
+    <div class="bg-pattern-circles bg-pattern-sm border rounded mb-2" style="height: 6rem;"></div>
     <code>.bg-pattern-sm</code>
   </div>
   <div class="col">
-    <div class="bg-pattern-circles bg-pattern-md rounded mb-2" style="height: 6rem;"></div>
+    <div class="bg-pattern-circles bg-pattern-md border rounded mb-2" style="height: 6rem;"></div>
     <code>.bg-pattern-md</code>
   </div>
   <div class="col">
-    <div class="bg-pattern-circles bg-pattern-lg rounded mb-2" style="height: 6rem;"></div>
+    <div class="bg-pattern-circles bg-pattern-lg border rounded mb-2" style="height: 6rem;"></div>
     <code>.bg-pattern-lg</code>
   </div>
   <div class="col">
-    <div class="bg-pattern-circles bg-pattern-xl rounded mb-2" style="height: 6rem;"></div>
+    <div class="bg-pattern-circles bg-pattern-xl border rounded mb-2" style="height: 6rem;"></div>
     <code>.bg-pattern-xl</code>
   </div>
 </div>
@@ -121,6 +121,49 @@ Look at the following examples to see how the pattern sizes work:
 <div class="bg-pattern-circles bg-pattern-lg"></div>
 <div class="bg-pattern-circles bg-pattern-xl"></div>
 </Example>
+
+## Pattern opacity
+
+Use opacity utilities to control how strong the texture is:
+
+- `.bg-pattern-opacity-lighter`
+- `.bg-pattern-opacity-light`
+- `.bg-pattern-opacity-dark`
+- `.bg-pattern-opacity-darker`
+
+<Example hideCode>
+<div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3">
+  <div class="col">
+    <div class="bg-pattern-circles bg-pattern-opacity-lighter border rounded mb-2" style="height: 6rem;"></div>
+    <code>.bg-pattern-opacity-lighter</code>
+  </div>
+  <div class="col">
+    <div class="bg-pattern-circles bg-pattern-opacity-light border rounded mb-2" style="height: 6rem;"></div>
+    <code>.bg-pattern-opacity-light</code>
+  </div>
+  <div class="col">
+    <div class="bg-pattern-circles bg-pattern-opacity-dark border rounded mb-2" style="height: 6rem;"></div>
+    <code>.bg-pattern-opacity-dark</code>
+  </div>
+  <div class="col">
+    <div class="bg-pattern-circles bg-pattern-opacity-darker border rounded mb-2" style="height: 6rem;"></div>
+    <code>.bg-pattern-opacity-darker</code>
+  </div>
+</div>
+</Example>
+<Example codeOnly>
+<div class="bg-pattern-circles bg-pattern-opacity-lighter"></div>
+<div class="bg-pattern-circles bg-pattern-opacity-light"></div>
+<div class="bg-pattern-circles bg-pattern-opacity-dark"></div>
+<div class="bg-pattern-circles bg-pattern-opacity-darker"></div>
+</Example>
+
+You can also set `--tblr-pattern-opacity-factor` (default `1`). `--tblr-pattern-opacity` is `factor` times the pattern default. Override `--tblr-pattern-opacity` if you need a fixed percentage.
+
+```html
+<div class="bg-pattern-diagonal" style="--tblr-pattern-opacity-factor: 2"></div>
+<div class="bg-pattern-transparent" style="--tblr-pattern-opacity: 40%"></div>
+```
 
 ## Examples
 
