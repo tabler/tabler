@@ -29,9 +29,12 @@ export function formatNumber(value: number): string {
   return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }
 
-/** Lowercases a single-word string for use as an anchor slug. */
-export function slugifyWord(text: string): string {
-  return text.toLowerCase()
+/** Lowercases and collapses non-alphanumeric runs into single dashes, trimming edge dashes (e.g. "Create your URL" -> "create-your-url"). */
+export function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
 }
 
 /** Strips slashes and joins segments: "/ui/getting-started/" -> "uigetting-started". */

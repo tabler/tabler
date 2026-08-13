@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { capitalize, firstLetters, formatNumber, getDocsUrl, millisecondsToMinutes, parseCurrency, parsePercentage, pathSlug, roundTo, slugifyWord, sortBy, ucFirst } from './string-format'
+import { capitalize, firstLetters, formatNumber, getDocsUrl, millisecondsToMinutes, parseCurrency, parsePercentage, pathSlug, roundTo, slugify, sortBy, ucFirst } from './string-format'
 import { requireIndex } from './array'
 
 describe('getDocsUrl', () => {
@@ -37,12 +37,6 @@ describe('formatNumber', () => {
   it('adds thousands separators', () => {
     expect(formatNumber(1234567)).toBe('1,234,567')
     expect(formatNumber(42)).toBe('42')
-  })
-})
-
-describe('slugifyWord', () => {
-  it('lowercases the input', () => {
-    expect(slugifyWord('Settings')).toBe('settings')
   })
 })
 
@@ -104,5 +98,15 @@ describe('sortBy', () => {
     const people = [{ last_name: 'Smith' }, { last_name: 'Adams' }]
     sortBy(people, (p) => p.last_name)
     expect(requireIndex(people, 0).last_name).toBe('Smith')
+  })
+})
+
+describe('slugify', () => {
+  it('lowercases and dashes non-alphanumeric runs', () => {
+    expect(slugify('Create your Tabler URL')).toBe('create-your-tabler-url')
+  })
+
+  it('trims leading and trailing dashes', () => {
+    expect(slugify('  Hello, world!  ')).toBe('hello-world')
   })
 })
