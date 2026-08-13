@@ -1,0 +1,365 @@
+---
+// Prototype: a ⌘K command palette built on the Bootstrap modal.
+// The item list is derived from shared/data/menu.json, so every page in the
+// demo menu is reachable without touching this component.
+import menu from '@data/menu.json'
+import icons from '@data/icons.json'
+import Icon from './Icon.astro'
+import CaptureScript from '../components/CaptureScript.astro'
+
+interface MenuNode {
+  title: string
+  url?: string
+  icon?: string
+  badge?: string
+  children?: Record<string, MenuNode>
+}
+
+// The palette ships on every page (BaseLayout), so this payload is inlined
+// ~120 times over a build: anything derivable client-side (the recent-list key,
+// whether a url is external) is left out on purpose.
+interface PaletteItem {
+  title: string
+  /** Parent entry title for nested items, e.g. "Authentication" */
+  hint?: string | undefined
+  url?: string
+  action?: string
+  section: string
+  icon: string
+}
+
+const pages: PaletteItem[] = []
+
+for (const group of Object.values(menu as Record<string, MenuNode>)) {
+  const icon = group.icon ?? 'file'
+
+  const walk = (nodes: Record<string, MenuNode>, hint?: string) => {
+    for (const node of Object.values(nodes)) {
+      if (node.children) {
+        walk(node.children, node.title)
+      } else if (node.url) {
+        pages.push({ title: node.title, hint, url: node.url, section: group.title, icon })
+      }
+    }
+  }
+
+  walk(group.children ?? {})
+}
+
+const actions: PaletteItem[] = [
+  { title: 'Toggle dark mode', action: 'toggle-theme', section: 'Actions', icon: 'moon' },
+  { title: 'Open theme settings', action: 'open-settings', section: 'Actions', icon: 'brush' },
+  { title: 'Copy page URL', action: 'copy-url', section: 'Actions', icon: 'link' },
+]
+
+const items: PaletteItem[] = [...actions, ...pages]
+
+// Items are rendered client-side, so their icons ship as SVG strings instead of
+// <Icon> markup (same approach as Rating.astro's star).
+const iconSvg: Record<string, string> = {}
+
+for (const name of new Set(items.map((item) => item.icon))) {
+  const icon = (icons as unknown as Record<string, { svg: Record<string, string> }>)[name]
+  let svg = icon?.svg?.outline ?? ''
+  svg = svg.replace(/<path stroke="none" d="M0 0h24v24H0z" fill="none"\s*\/>/, '')
+  svg = svg.replace(/class="[^"]+"/, 'aria-hidden="true" focusable="false" class="icon"')
+  iconSvg[name] = svg
+}
+---
+
+<!-- BEGIN COMMAND PALETTE -->
+<div class="modal modal-blur fade" id="modal-command-palette" tabindex="-1" role="dialog" aria-modal="true" aria-labelledby="command-palette-title" aria-hidden="true">
+  <div class="modal-dialog modal-lg modal-dialog-scrollable" role="document">
+    <div class="modal-content command-palette">
+      <h2 class="visually-hidden" id="command-palette-title">Command palette</h2>
+
+      <div class="command-palette-search">
+        <span class="command-palette-search-icon"><Icon name="search" /></span>
+        <input type="text" class="form-control form-control-flush" id="command-palette-input" placeholder="Search pages and actions…" aria-label="Search pages and actions" role="combobox" aria-expanded="true" aria-controls="command-palette-list" aria-autocomplete="list" autocomplete="off" spellcheck="false" />
+        <kbd class="command-palette-kbd">esc</kbd>
+      </div>
+
+      <div class="modal-body p-0">
+        <ul class="command-palette-list" id="command-palette-list" role="listbox" aria-label="Results"></ul>
+
+        <div class="empty py-4" id="command-palette-empty" hidden>
+          <p class="empty-title">No results found</p>
+          <p class="empty-subtitle text-secondary">Try a different phrase.</p>
+        </div>
+      </div>
+
+      <div class="command-palette-footer">
+        <span><kbd class="command-palette-kbd">↑</kbd> <kbd class="command-palette-kbd">↓</kbd> to navigate</span>
+        <span><kbd class="command-palette-kbd">↵</kbd> to select</span>
+        <span><kbd class="command-palette-kbd">esc</kbd> to close</span>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END COMMAND PALETTE -->
+
+<CaptureScript>
+  <!-- BEGIN COMMAND PALETTE SCRIPT -->
+  <script is:inline define:vars={{ items, iconSvg }}>
+    function initCommandPalette() {
+      const modalEl = document.getElementById('modal-command-palette')
+      const input = document.getElementById('command-palette-input')
+      const list = document.getElementById('command-palette-list')
+      const empty = document.getElementById('command-palette-empty')
+
+      if (!modalEl || !input || !list || !empty) return
+
+      const Modal = window.tabler && window.tabler.Modal
+      if (!Modal) return
+
+      const modal = Modal.getOrCreateInstance(modalEl)
+      const recentKey = 'tabler-command-palette-recent'
+      const recentLimit = 5
+
+      // Derived rather than serialized — see the note above the payload.
+      const keyOf = (item) => (item.url ? `url:${item.url}` : `action:${item.action}`)
+      const isExternal = (url) => /^https?:\/\//.test(url)
+
+      // Entry queued on select and executed once the modal is hidden, so an
+      // action (e.g. opening the settings offcanvas) never fights the modal's
+      // own backdrop/focus teardown.
+      let pending = null
+      let matches = []
+      let activeIndex = 0
+
+      const escapeHtml = (value) => value.replace(/[&<>"]/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' })[char])
+
+      // Subsequence match: every query character has to appear in order, with
+      // bonuses for consecutive hits and word starts so "sgnin" ranks "Sign in"
+      // above "Sign in with cover".
+      function fuzzy(text, query) {
+        const haystack = text.toLowerCase()
+        const indices = []
+        let score = 0
+        let from = 0
+        let previous = -2
+
+        for (const char of query) {
+          const index = haystack.indexOf(char, from)
+          if (index === -1) return null
+
+          if (index === previous + 1) score += 8
+          if (index === 0 || /[\s\-/]/.test(haystack[index - 1])) score += 6
+          score += 1
+
+          indices.push(index)
+          previous = index
+          from = index + 1
+        }
+
+        // Prefer matches that start early in a short title.
+        return { score: score - indices[0] * 0.4 - text.length * 0.05, indices }
+      }
+
+      function search(query) {
+        const normalized = query.trim().toLowerCase()
+
+        if (!normalized) {
+          const recent = readRecent()
+          return [...recent.map((item) => ({ item, indices: [], section: 'Recent' })), ...items.map((item) => ({ item, indices: [], section: item.section }))]
+        }
+
+        const found = []
+
+        for (const item of items) {
+          // Fall back to the section/hint so "forms" also finds pages that never
+          // repeat the word in their own title — but only the title is highlighted.
+          const match = fuzzy(item.title, normalized) ?? (fuzzy(`${item.section} ${item.hint ?? ''} ${item.title}`, normalized) ? { score: -50, indices: [] } : null)
+
+          if (match) found.push({ item, indices: match.indices, section: item.section, score: match.score })
+        }
+
+        found.sort((a, b) => b.score - a.score)
+
+        // Keep the sections in "best match first" order without breaking them apart.
+        const sections = []
+        for (const entry of found) if (!sections.includes(entry.section)) sections.push(entry.section)
+
+        return sections.flatMap((section) => found.filter((entry) => entry.section === section))
+      }
+
+      function readRecent() {
+        try {
+          const keys = JSON.parse(window.localStorage.getItem(recentKey) || '[]')
+          return keys.map((key) => items.find((item) => keyOf(item) === key)).filter(Boolean)
+        } catch {
+          return []
+        }
+      }
+
+      function remember(item) {
+        try {
+          const key = keyOf(item)
+          const keys = readRecent().map(keyOf)
+          window.localStorage.setItem(recentKey, JSON.stringify([key, ...keys.filter((entry) => entry !== key)].slice(0, recentLimit)))
+        } catch {
+          // Ignore — private mode or a full storage quota just means no history.
+        }
+      }
+
+      function highlight(title, indices) {
+        if (!indices.length) return escapeHtml(title)
+
+        return [...title].map((char, index) => (indices.includes(index) ? `<mark>${escapeHtml(char)}</mark>` : escapeHtml(char))).join('')
+      }
+
+      function render(query) {
+        matches = search(query)
+        list.innerHTML = ''
+        empty.hidden = matches.length > 0
+
+        let group = null
+        let section = null
+
+        matches.forEach((entry, index) => {
+          if (entry.section !== section) {
+            section = entry.section
+            group = document.createElement('li')
+            group.setAttribute('role', 'group')
+            group.setAttribute('aria-label', section)
+            group.innerHTML = `<div class="command-palette-group" aria-hidden="true">${escapeHtml(section)}</div>`
+            list.append(group)
+          }
+
+          const option = document.createElement('div')
+          option.className = 'command-palette-item'
+          option.id = `command-palette-item-${index}`
+          option.setAttribute('role', 'option')
+          option.setAttribute('aria-selected', 'false')
+          option.dataset.index = String(index)
+          option.innerHTML = [
+            `<span class="command-palette-item-icon">${iconSvg[entry.item.icon] ?? ''}</span>`,
+            `<span class="command-palette-item-title">${highlight(entry.item.title, entry.indices)}</span>`,
+            entry.item.hint ? `<span class="command-palette-item-hint">${escapeHtml(entry.item.hint)}</span>` : '',
+            `<span class="command-palette-item-section">${escapeHtml(entry.item.section)}</span>`,
+          ].join('')
+
+          group.append(option)
+        })
+
+        setActive(0)
+      }
+
+      function setActive(index, scroll = true) {
+        if (!matches.length) return
+
+        activeIndex = (index + matches.length) % matches.length
+
+        list.querySelectorAll('.command-palette-item').forEach((option, i) => {
+          const active = i === activeIndex
+          option.classList.toggle('active', active)
+          option.setAttribute('aria-selected', active ? 'true' : 'false')
+          if (active && scroll) option.scrollIntoView({ block: 'nearest' })
+        })
+
+        input.setAttribute('aria-activedescendant', `command-palette-item-${activeIndex}`)
+      }
+
+      function select(entry) {
+        if (!entry) return
+
+        remember(entry.item)
+        pending = entry.item
+        modal.hide()
+      }
+
+      const actions = {
+        'toggle-theme': () => {
+          const next = document.documentElement.getAttribute('data-bs-theme') === 'dark' ? 'light' : 'dark'
+          document.documentElement.setAttribute('data-bs-theme', next)
+          window.localStorage.setItem('tabler-theme', next)
+        },
+        'open-settings': () => {
+          const offcanvasEl = document.getElementById('offcanvas-settings')
+          const Offcanvas = window.tabler && window.tabler.Offcanvas
+          if (offcanvasEl && Offcanvas) Offcanvas.getOrCreateInstance(offcanvasEl).show()
+        },
+        'copy-url': () => navigator.clipboard && navigator.clipboard.writeText(window.location.href),
+      }
+
+      input.addEventListener('input', () => render(input.value))
+
+      input.addEventListener('keydown', (event) => {
+        if (event.key === 'ArrowDown') {
+          event.preventDefault()
+          setActive(activeIndex + 1)
+        } else if (event.key === 'ArrowUp') {
+          event.preventDefault()
+          setActive(activeIndex - 1)
+        } else if (event.key === 'Home') {
+          event.preventDefault()
+          setActive(0)
+        } else if (event.key === 'End') {
+          event.preventDefault()
+          setActive(matches.length - 1)
+        } else if (event.key === 'Enter') {
+          event.preventDefault()
+          select(matches[activeIndex])
+        }
+      })
+
+      list.addEventListener('mousemove', (event) => {
+        const option = event.target.closest('.command-palette-item')
+        if (option) setActive(Number(option.dataset.index), false)
+      })
+
+      list.addEventListener('click', (event) => {
+        const option = event.target.closest('.command-palette-item')
+        if (option) select(matches[Number(option.dataset.index)])
+      })
+
+      document.addEventListener('keydown', (event) => {
+        if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+          event.preventDefault()
+          modalEl.classList.contains('show') ? modal.hide() : modal.show()
+        }
+      })
+
+      modalEl.addEventListener('shown.bs.modal', () => {
+        input.focus()
+        input.select()
+      })
+
+      modalEl.addEventListener('show.bs.modal', () => {
+        // A select() that raced the close animation leaves `pending` set without
+        // a matching hidden.bs.modal — drop it so it can't fire on the next close.
+        pending = null
+        render(input.value)
+      })
+
+      modalEl.addEventListener('hidden.bs.modal', () => {
+        const item = pending
+        pending = null
+
+        if (!item) return
+
+        if (item.url) {
+          if (isExternal(item.url)) window.open(item.url, '_blank', 'noopener')
+          else window.location.href = `./${item.url}`
+          return
+        }
+
+        const action = actions[item.action]
+        if (action) action()
+      })
+
+      // Shortcut hints (navbar search, docs) are authored as ⌘K — rewrite them
+      // off Apple platforms, where the palette answers to Ctrl instead.
+      if (!/Mac|iPhone|iPad|iPod/.test(navigator.userAgent)) {
+        document.querySelectorAll('[data-command-palette-shortcut]').forEach((hint) => {
+          hint.textContent = 'Ctrl K'
+        })
+      }
+
+      render('')
+    }
+
+    document.readyState !== 'loading' ? initCommandPalette() : document.addEventListener('DOMContentLoaded', initCommandPalette, { once: true })
+  </script>
+  <!-- END COMMAND PALETTE SCRIPT -->
+</CaptureScript>

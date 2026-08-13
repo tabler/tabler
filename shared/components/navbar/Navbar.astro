@@ -1,11 +1,14 @@
 ---
 // Condensed and non-condensed navbar branches. DefaultLayout passes condensed,
-// overlap, dark, hideBrand, sticky, transparent, class, hideSearch; navigation
-// showcase pages also use sample, personId, hideLogo, smallLogo, showTitle,
-// hideIcons, hideUsername, background, backgroundColor, fluidSearch.
+// overlap, dark, hideBrand, sticky, transparent, class; navigation showcase
+// pages also use sample, personId, hideLogo, smallLogo, showTitle, hideIcons,
+// hideUsername, background, backgroundColor, fluidSearch, hideSearch.
 //
-// fluidSearch has no effect on output (search in the condensed branch is dead
-// code); the prop is kept for call-site compatibility.
+// Both branches render NavbarSearch, which opens the command palette. In the
+// non-condensed branch it is xxl-only (the second row has no space for it
+// below 1400px); ⌘K works at every width regardless.
+//
+// fluidSearch has no effect on output; the prop is kept for call-site compatibility.
 import Icon from '@ui/Icon.astro';
 import Logo from './Logo.astro';
 import NavbarToggler from './NavbarToggler.astro';
@@ -14,7 +17,7 @@ import NavbarMenu from './NavbarMenu.astro';
 import NavbarSearch from './NavbarSearch.astro';
 
 interface Props {
-	hideSearch?: boolean;
+	hideSearch?: boolean | undefined;
 	/** equivalent of the page-menu front matter (active menu entry), e.g. "dashboards.default" */
 	pageMenu?: string | undefined;
 	condensed?: boolean | undefined;
@@ -132,7 +135,7 @@ const headerClass = [
 								<NavbarMenu sample={sample} hideIcons={hideIcons} pageMenu={pageMenu} />
 							</nav>
 							<!-- END NAVBAR MENU -->
-							{/* Search block omitted when condensed — nothing to render */}
+							<NavbarSearch class="my-2 my-md-0 ms-md-auto" />
 						</div>
 					)}
 				</div>
