@@ -1,21 +1,14 @@
 ---
-import Avatar from './Avatar.astro'
+import Avatar from '@ui/Avatar.astro'
+import { people } from '@shared/lib/people'
 import activity from '@data/activity.json'
-import people from '@data/people.json'
 import { timeagoLabel } from '@shared/lib/pseudo-random'
 
 const limit = 40
 
-interface Person {
-  full_name?: string
-  company?: string
-  photo?: string
-  [key: string]: unknown
-}
-
 const items = (activity as { text: string; icon?: string }[]).slice(0, limit).map((item, i) => {
   const index = i + 1 // forloop.index (1-based)
-  const person = (people as Person[])[index]
+  const person = people[index]
   return {
     person,
     text: item.text

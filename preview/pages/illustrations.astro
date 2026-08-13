@@ -1,4 +1,5 @@
 ---
+import { illustrationSvg } from '@shared/lib/svg'
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
 import Icon from '@ui/Icon.astro'
 import CardStamp from '@ui/CardStamp.astro'
@@ -19,7 +20,7 @@ const autodarkEntries = Object.entries(autodark)
 // Last autodark entry (loop overwrites each pass).
 const firstIllustration = autodarkEntries.length ? requireIndex(autodarkEntries, autodarkEntries.length - 1)[1] : ''
 
-const withClass = (svg: string) => svg.replaceAll('<svg ', '<svg class="w-100 h-auto" ')
+const withClass = (svg: string) => illustrationSvg(svg, { classes: 'w-100 h-auto' })
 
 const colors = siteData.colors as Record<string, { hex: string; class: string; prop: string }>
 const skinColors = siteData.skinColors as Record<string, { hex: string; class: string }>

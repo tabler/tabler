@@ -29,9 +29,11 @@ interface Props {
 
 const { label, required, description, hint, for: htmlFor, labelClass, class: className = 'mb-3', invalid, error, associate = true } = Astro.props
 
-const uid = htmlFor ?? `fg-${Math.random().toString(36).slice(2, 9)}`
-const hintId = hint ? `${uid}-hint` : undefined
-const errorId = error ? `${uid}-error` : undefined
+// Hint/error ids exist only when the caller provides `for` — an auto-derived
+// id is unreferenceable by the slotted control anyway, and label-based slugs
+// collide between same-label groups on one page.
+const hintId = hint && htmlFor ? `${htmlFor}-hint` : undefined
+const errorId = error && htmlFor ? `${htmlFor}-error` : undefined
 const wrapLabel = Boolean(label && !htmlFor && associate)
 ---
 

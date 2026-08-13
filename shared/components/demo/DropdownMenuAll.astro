@@ -1,7 +1,7 @@
 ---
-import Icon from './Icon.astro'
-import Avatar from './Avatar.astro'
-import people from '@data/people.json'
+import { people } from '@shared/lib/people'
+import Icon from '@ui/Icon.astro'
+import Avatar from '@ui/Avatar.astro'
 
 interface Props {
   show?: boolean
@@ -9,7 +9,7 @@ interface Props {
 
 const { show } = Astro.props
 
-const peopleItems = (people as { id: number | string; full_name: string }[]).slice(0, 3)
+const peopleItems = people.slice(0, 3)
 ---
 
 <div class={`dropdown-menu${show ? ' dropdown-menu-demo' : ''}`}>
@@ -40,7 +40,7 @@ const peopleItems = (people as { id: number | string; full_name: string }[]).sli
   {
     peopleItems.map((person) => (
       <button type="button" class="dropdown-item">
-        <Avatar personId={Number(person.id)} class="rounded me-2" size="xs" /> {person.full_name}
+        <Avatar person={person} class="rounded me-2" size="xs" /> {person.full_name}
       </button>
     ))
   }

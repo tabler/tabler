@@ -1,4 +1,6 @@
 ---
+import { range } from '@shared/lib/array'
+import type { FlagCountry } from '@shared/lib/tokens'
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
 import Tag from '@ui/Tag.astro'
 import TagList from '@ui/TagList.astro'
@@ -6,14 +8,12 @@ import Card from '@ui/Card.astro'
 import CardBody from '@ui/CardBody.astro'
 import CardTitle from '@ui/CardTitle.astro'
 import CardSubtitle from '@ui/CardSubtitle.astro'
-import people from '@data/people.json'
+import { people } from '@shared/lib/people'
 import flags from '@data/flags.json'
 import siteData from '@data/site.json'
 import DocsLink from '@ui/DocsLink.astro'
 
 const tagIcons = ['bold', 'italic', 'underline', 'copy', 'scissors', 'file-plus', 'file-minus', 'ghost', 'star', 'script', 'photo', 'dog', 'piano']
-
-const range = (a: number, b: number) => Array.from({ length: b - a + 1 }, (_, i) => a + i)
 
 const flags9 = flags.slice(0, 9) as { name: string; flag: string }[]
 const people8 = people.slice(0, 8)
@@ -44,7 +44,7 @@ const colors = Object.values(siteData.colors) as { class: string; title: string 
           <CardTitle>Tags with flag</CardTitle>
           <CardSubtitle>Pair a tag with a country flag.</CardSubtitle>
           <TagList>
-            {flags9.map((country) => <Tag text={country.name} flag={country.flag} />)}
+            {flags9.map((country) => <Tag text={country.name} flag={country.flag as FlagCountry} />)}
           </TagList>
         </CardBody>
       </Card>

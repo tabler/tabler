@@ -1,34 +1,27 @@
 ---
-import BadgeList from './BadgeList.astro'
-import Icon from './Icon.astro'
+import BadgeList from '@ui/BadgeList.astro'
+import { people } from '@shared/lib/people'
+import Icon from '@ui/Icon.astro'
 import { formatLongDate } from '@shared/lib/date-format'
 import { randomItem, randomDate } from '@shared/lib/pseudo-random'
-import Avatar from './Avatar.astro'
-import Button from './Button.astro'
-import ButtonList from './ButtonList.astro'
-import Pagination from './Pagination.astro'
-import people from '@data/people.json'
+import Avatar from '@ui/Avatar.astro'
+import Button from '@ui/Button.astro'
+import ButtonList from '@ui/ButtonList.astro'
+import Pagination from '@ui/Pagination.astro'
 import tableProperties from '@data/table-properties.json'
-import CaptureScript from '../components/CaptureScript.astro'
+import CaptureScript from '../CaptureScript.astro'
 import { requireIndex } from '@shared/lib/array'
 import CardTitle from '@ui/CardTitle.astro'
 
 interface Props {
-  id?: string
-}
-
-interface Person {
-  full_name?: string
-  city?: string
-  country?: string
-  [key: string]: unknown
+  id: string
 }
 
 interface AdvancedTableProperties {
   headers: { 'data-sort': string; 'name': string }[]
 }
 
-const { id: tableId = 'advanced-table' } = Astro.props
+const { id: tableId } = Astro.props
 
 const statuses = ['Active', 'Inactive', 'Requested']
 const perPage = ['10', '20', '50', '100']
@@ -38,7 +31,7 @@ const tags = ['QTA,Event,Tickets,TODO', 'Event,Tickets', 'QTA,Event', 'Tickets']
 const advancedTable = (tableProperties as { 'advanced-table': AdvancedTableProperties })['advanced-table']
 const headers = advancedTable.headers
 
-const rows = (people as Person[]).map((person, i) => {
+const rows = people.map((person, i) => {
   const index = i + 1
   const status = randomItem(index + 5, statuses)
   const itemTags = randomItem(index + 5, tags).split(',')
@@ -84,7 +77,7 @@ const sortKeys = headers.map((header) => header['data-sort'])
                 <button type="button" class="dropdown-item">Third action</button>
               </div>
             </div>
-            <Button />
+            <Button text="Button" />
           </ButtonList>
         </div>
       </div>
@@ -135,7 +128,7 @@ const sortKeys = headers.map((header) => header['data-sort'])
                     <span class="on-unchecked">{category}</span>
                     <div class="on-checked">
                       <div class="d-flex justify-content-end">
-                        <Button icon="dots" iconOnly />
+                        <Button icon="dots" iconOnly text="Actions" />
                       </div>
                     </div>
                   </td>
@@ -162,7 +155,7 @@ const sortKeys = headers.map((header) => header['data-sort'])
           </div>
         </div>
 
-        <Pagination class="m-0 ms-auto" count={10} />
+        <Pagination count={10} activeItem={3} class="m-0 ms-auto" />
       </div>
     </div>
   </div>

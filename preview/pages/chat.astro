@@ -1,24 +1,18 @@
 ---
 // Front matter page-container-class: "flex-fill d-flex flex-column" → containerClass prop.
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import { people } from '@shared/lib/people'
 import Icon from '@ui/Icon.astro'
 import Avatar from '@ui/Avatar.astro'
-import Chat from '@ui/Chat.astro'
-import people from '@data/people.json'
+import Chat from '@components/demo/Chat.astro'
 import chats from '@data/chats.json'
-
-interface Person {
-  full_name?: string
-  photo?: string
-  [key: string]: unknown
-}
 
 interface Message {
   message?: string
   [key: string]: unknown
 }
 
-const sidebarPeople = (people as Person[]).slice(0, 10)
+const sidebarPeople = people.slice(0, 10)
 const messages = chats as Message[]
 ---
 

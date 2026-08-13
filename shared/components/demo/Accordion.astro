@@ -1,19 +1,19 @@
 ---
-import Icon from './Icon.astro'
+import Icon from '@ui/Icon.astro'
 import questions from '@data/questions.json'
 
 interface Props {
   count?: number
-  id?: string
+  id: string
   /** toggle-icon — when set, the toggle gets accordion-button-toggle-plus */
   toggleIcon?: string
-  /** each entry becomes accordion-{type} */
-  type?: string[]
+  /** each entry becomes accordion-{type} (core/scss/ui/_accordion.scss) */
+  type?: ('flush' | 'tabs' | 'inverted')[]
   /** show-icon — renders the accordion-button-icon (link icon) */
   showIcon?: boolean
 }
 
-const { count = 4, id = 'default', toggleIcon, type = [], showIcon } = Astro.props
+const { count = 4, id, toggleIcon, type = [], showIcon } = Astro.props
 
 const resolvedToggleIcon = toggleIcon ?? 'chevron-down'
 const hasToggleIcon = toggleIcon !== undefined

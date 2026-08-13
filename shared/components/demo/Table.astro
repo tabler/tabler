@@ -1,29 +1,29 @@
 ---
-import Avatar from './Avatar.astro'
-import Button from './Button.astro'
-import ButtonList from './ButtonList.astro'
+import { people } from '@shared/lib/people'
+import Avatar from '@ui/Avatar.astro'
+import Button from '@ui/Button.astro'
+import ButtonList from '@ui/ButtonList.astro'
 import DropdownMenu from './DropdownMenu.astro'
-import people from '@data/people.json'
 import { randomNumber } from '@shared/lib/pseudo-random'
 
 interface Props {
   card?: boolean
   limit?: number
-  stripped?: boolean
+  striped?: boolean
   offset?: number
   avatars?: boolean
   mobile?: boolean
   buttons?: boolean
 }
 
-const { card, limit = 5, stripped, offset, avatars, mobile, buttons } = Astro.props
+const { card, limit = 5, striped, offset, avatars, mobile, buttons } = Astro.props
 
 const roles = ['User', 'Admin', 'Owner']
 
 const start = offset ?? 0
-const rows = (people as Record<string, any>[]).slice(start, start + limit)
+const rows = people.slice(start, start + limit)
 
-const tableClasses = ['table', 'table-vcenter', mobile && 'table-mobile-md', card && 'card-table', stripped && 'table-striped']
+const tableClasses = ['table', 'table-vcenter', mobile && 'table-mobile-md', card && 'card-table', striped && 'table-striped']
 ---
 
 <div class="table-responsive">
@@ -49,7 +49,7 @@ const tableClasses = ['table', 'table-vcenter', mobile && 'table-mobile-md', car
               {avatars ? (
                 <td data-label={mobile ? 'Name' : undefined}>
                   <div class="d-flex py-1 align-items-center">
-                    <Avatar personId={person.id} class="me-2" />
+                    <Avatar person={person} class="me-2" />
                     <div class="flex-fill">
                       <div class="fw-medium">{person.full_name}</div>
                       <div class="text-secondary">

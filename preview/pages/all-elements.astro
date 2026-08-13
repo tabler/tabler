@@ -14,22 +14,22 @@ import Alert from '@ui/Alert.astro'
 import Badge from '@ui/Badge.astro'
 import BadgeList from '@ui/BadgeList.astro'
 import Progress from '@ui/Progress.astro'
-import Select from '@ui/Select.astro'
+import DataSelect from '@components/demo/DataSelect.astro'
 import Check from '@ui/form/Check.astro'
 import FormGroup from '@ui/FormGroup.astro'
-import Nav from '@ui/Nav.astro'
+import Nav from '@components/demo/Nav.astro'
 import Breadcrumb from '@ui/Breadcrumb.astro'
 import Pagination from '@ui/Pagination.astro'
 import Avatar from '@ui/Avatar.astro'
 import AvatarList from '@ui/AvatarList.astro'
 import Icon from '@ui/Icon.astro'
-import Dropdown from '@ui/Dropdown.astro'
-import Accordion from '@ui/Accordion.astro'
+import Dropdown from '@components/demo/Dropdown.astro'
+import Accordion from '@components/demo/Accordion.astro'
 import Spinner from '@ui/Spinner.astro'
 import Rating from '@ui/Rating.astro'
 import Steps from '@ui/Steps.astro'
 import StatusDot from '@ui/StatusDot.astro'
-import Toast from '@ui/Toast.astro'
+import Toast from '@components/demo/Toast.astro'
 import InputIcon from '@ui/form/InputIcon.astro'
 import InputGroup from '@ui/InputGroup.astro'
 import Range from '@ui/Range.astro'
@@ -38,7 +38,7 @@ import TagList from '@ui/TagList.astro'
 import Ribbon from '@ui/Ribbon.astro'
 import Flag from '@ui/Flag.astro'
 import Payment from '@ui/Payment.astro'
-import Timeline from '@ui/Timeline.astro'
+import Timeline from '@components/demo/Timeline.astro'
 import Empty from '@ui/Empty.astro'
 import NavSegmented from '@ui/NavSegmented.astro'
 import ListGroup from '@ui/ListGroup.astro'
@@ -130,9 +130,9 @@ function greetUser(name) {
 
               <h4>Icon Buttons</h4>
               <ButtonList class="mb-3 align-items-start">
-                <Button icon="heart" iconOnly />
-                <Button icon="star" iconOnly />
-                <Button icon="check" iconOnly />
+                <Button icon="heart" iconOnly text="Heart" />
+                <Button icon="star" iconOnly text="Star" />
+                <Button icon="check" iconOnly text="Check" />
               </ButtonList>
             </div>
           </div>
@@ -170,10 +170,10 @@ function greetUser(name) {
       <Card>
         <CardHeader title="Alerts" />
         <CardBody>
-          <Alert type="info" title="This is a primary alert with an icon." />
-          <Alert type="success" title="This is a success alert message." />
-          <Alert type="warning" title="This is a warning alert message." />
-          <Alert type="danger" title="This is a danger alert message." />
+          <Alert color="info" title="This is a primary alert with an icon." />
+          <Alert color="success" title="This is a success alert message." />
+          <Alert color="warning" title="This is a warning alert message." />
+          <Alert color="danger" title="This is a danger alert message." />
         </CardBody>
       </Card>
     </div>
@@ -208,16 +208,16 @@ function greetUser(name) {
         <CardBody>
           <div class="space-y">
             <div>
-              <Progress value="25" />
+              <Progress value={25} />
             </div>
             <div>
-              <Progress value="50" color="success" />
+              <Progress value={50} color="success" />
             </div>
             <div>
-              <Progress value="75" color="warning" />
+              <Progress value={75} color="warning" />
             </div>
             <div>
-              <Progress value="90" color="danger" showValue />
+              <Progress value={90} color="danger" showValue />
             </div>
           </div>
         </CardBody>
@@ -241,7 +241,7 @@ function greetUser(name) {
                 <input type="password" class="form-control" id="all-elements-password-input" placeholder="Enter password" />
               </FormGroup>
               <FormGroup label="Select Dropdown" for="select-demo-select">
-                <Select id="demo-select" values={['Option 1', 'Option 2', 'Option 3']} />
+                <DataSelect id="demo-select" values={['Option 1', 'Option 2', 'Option 3']} />
               </FormGroup>
             </div>
             <div class="col-md-6">
@@ -289,10 +289,10 @@ function greetUser(name) {
             <div class="col-md-6">
               <h4>Pagination</h4>
               {/* activeItem="2" is a string — strict equality never matches integer index, so no page is active */}
-              <Pagination count={5} activeItem="2" class="mb-4" />
+              <Pagination count={5} activeItem={2} class="mb-4" />
 
               <h4>Pagination with Text</h4>
-              <Pagination count={3} text />
+              <Pagination count={3} activeItem={3} text />
             </div>
           </div>
         </CardBody>
@@ -471,10 +471,10 @@ function greetUser(name) {
 
               <h4>Steps</h4>
               <div class="mb-3">
-                <Steps count={4} active="2" />
+                <Steps count={4} active={2} />
               </div>
               <div class="mb-3">
-                <Steps count={4} active="3" numbers />
+                <Steps count={4} active={3} numbers />
               </div>
             </div>
           </div>
@@ -489,10 +489,10 @@ function greetUser(name) {
         <CardBody>
           <h4>Status Dots</h4>
           <div class="mb-3">
-            <StatusDot color="success" label="Success" />
-            <StatusDot color="warning" label="Warning" />
-            <StatusDot color="danger" label="Danger" />
-            <StatusDot color="info" animated label="Info" />
+            <StatusDot color="success" ariaLabel="Success" />
+            <StatusDot color="warning" ariaLabel="Warning" />
+            <StatusDot color="danger" ariaLabel="Danger" />
+            <StatusDot color="info" animated ariaLabel="Info" />
           </div>
 
           <h4>Toast Notifications</h4>
@@ -526,7 +526,7 @@ function greetUser(name) {
 
           <h4>Range Slider</h4>
           <div class="mb-3">
-            <Range id="demo-range" min={0} max={100} value="50" />
+            <Range id="demo-range" min={0} max={100} value={50} />
           </div>
         </CardBody>
       </Card>
@@ -563,16 +563,16 @@ function greetUser(name) {
           <h4>Flags</h4>
           <div class="mb-3">
             <div class="d-flex flex-wrap gap-2">
-              <Flag flag="us" label={countryNames.us} />
-              <Flag flag="gb" label={countryNames.gb} />
-              <Flag flag="de" label={countryNames.de} />
-              <Flag flag="fr" label={countryNames.fr} />
-              <Flag flag="pl" label={countryNames.pl} />
-              <Flag flag="es" label={countryNames.es} />
-              <Flag flag="it" label={countryNames.it} />
-              <Flag flag="nl" label={countryNames.nl} />
-              <Flag flag="ca" label={countryNames.ca} />
-              <Flag flag="au" label={countryNames.au} />
+              <Flag flag="us" ariaLabel={countryNames.us} />
+              <Flag flag="gb" ariaLabel={countryNames.gb} />
+              <Flag flag="de" ariaLabel={countryNames.de} />
+              <Flag flag="fr" ariaLabel={countryNames.fr} />
+              <Flag flag="pl" ariaLabel={countryNames.pl} />
+              <Flag flag="es" ariaLabel={countryNames.es} />
+              <Flag flag="it" ariaLabel={countryNames.it} />
+              <Flag flag="nl" ariaLabel={countryNames.nl} />
+              <Flag flag="ca" ariaLabel={countryNames.ca} />
+              <Flag flag="au" ariaLabel={countryNames.au} />
             </div>
           </div>
 
@@ -582,8 +582,8 @@ function greetUser(name) {
               {
                 PAYMENT_IDS.map((payment) => (
                   <>
-                    <Payment payment={payment} label={paymentNames[payment]} class="hide-theme-dark" />
-                    <Payment payment={payment} label={paymentNames[payment]} dark class="hide-theme-light" />
+                    <Payment payment={payment} ariaLabel={paymentNames[payment]} class="hide-theme-dark" />
+                    <Payment payment={payment} ariaLabel={paymentNames[payment]} dark class="hide-theme-light" />
                   </>
                 ))
               }
@@ -608,7 +608,7 @@ function greetUser(name) {
       <Card>
         <CardHeader title="Empty State" />
         <CardBody>
-          <Empty title="No data found" subtitle="Try adjusting your search or filter to find what you're looking for." illustration="boy-girl.svg" buttonText="Add new item" buttonIcon="plus" />
+          <Empty title="No data found" description="Try adjusting your search or filter to find what you're looking for." illustration="boy-girl.svg" buttonText="Add new item" buttonIcon="plus" />
         </CardBody>
       </Card>
     </div>

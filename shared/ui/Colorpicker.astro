@@ -4,14 +4,15 @@ import CaptureScript from '../components/CaptureScript.astro'
 
 interface Props {
   value?: string
-  id?: string | number
-  format?: string | false
+  id: string
+  /** Coloris output format; false leaves the library default */
+  format?: 'hex' | 'rgb' | 'hsl' | 'auto' | 'mixed' | false
   class?: string
   /** Accessible name for the input; falls back to a generic label when the caller doesn't wrap this in a labelled FormGroup */
   ariaLabel?: string
 }
 
-const { value, id = 'default', format = false, class: className, ariaLabel } = Astro.props
+const { value, id, format = false, class: className, ariaLabel } = Astro.props
 const alpha = false
 
 const colors = site.colors as Record<string, { prop: string }>

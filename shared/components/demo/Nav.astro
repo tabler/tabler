@@ -1,18 +1,20 @@
 ---
-import Icon from './Icon.astro'
+import Icon from '@ui/Icon.astro'
 
 interface Props {
   pills?: boolean
   tabs?: boolean
   class?: string
+  /** remaining attributes (id, data-*, aria-*, …) are forwarded to the root element */
+  [key: string]: unknown
 }
 
-const { pills, tabs, class: className } = Astro.props
+const { pills, tabs, class: className, ...rest } = Astro.props
 
 const classes = ['nav', pills ? 'nav-pills' : tabs ? 'nav-tabs' : undefined, className]
 ---
 
-<ul class:list={classes}>
+<ul class:list={classes} {...rest}>
   <li class="nav-item">
     <a class="nav-link active" href="#"> Active </a>
   </li>

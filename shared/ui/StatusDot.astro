@@ -2,12 +2,16 @@
 interface Props {
   color?: string
   animated?: boolean
-  label?: string
+  /** accessible name (visually-hidden text inside the dot) */
+  ariaLabel?: string
+  class?: string
+  /** remaining attributes (id, data-*, aria-*, …) are forwarded to the root element */
+  [key: string]: unknown
 }
 
-const { color, animated, label } = Astro.props
+const { color, animated, ariaLabel, class: className, ...rest } = Astro.props
 
-const classes = ['status-dot', color && `status-${color}`, animated && 'status-dot-animated']
+const classes = ['status-dot', color && `status-${color}`, animated && 'status-dot-animated', className]
 ---
 
-<span class:list={classes}>{label && <span class="visually-hidden">{label}</span>}</span>
+<span class:list={classes} {...rest}>{ariaLabel && <span class="visually-hidden">{ariaLabel}</span>}</span>

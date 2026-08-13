@@ -1,28 +1,29 @@
 ---
-// TODO: spinner param (needs Spinner.astro).
-// TODO: provider param (unused in markup).
-// TODO: color=false special case — pass no color prop instead.
 import Icon from './Icon.astro'
 
 /** core/scss/ui/_buttons.scss `.btn-{size}` modifier classes — 'md' is the default (no class emitted) */
 type ButtonSize = 'sm' | 'md' | 'lg' | 'xl'
 
 interface Props {
-  text?: string
+  /** visible label; for iconOnly buttons it becomes the aria-label */
+  text?: string | undefined
+  /** passed through literally — the caller owns the relative/absolute convention */
   href?: string
-  /** raw href + target="_blank" rel="noreferrer" */
+  /** adds target="_blank" rel="noreferrer" */
   external?: boolean
   element?: 'a' | 'button'
   type?: 'button' | 'reset' | 'submit'
   id?: string
   color?: string | undefined
-  outline?: boolean
-  ghost?: boolean
+  /** btn-outline-{color} / btn-ghost-{color} style variants */
+  variant?: 'outline' | 'ghost'
   size?: ButtonSize | undefined
   block?: boolean
   disabled?: boolean
+  /** .btn-loading — CSS-only spinner replacing the button content */
+  loading?: boolean
   class?: string
-  icon?: string
+  icon?: string | undefined
   iconColor?: string
   iconEnd?: string
   iconOnly?: boolean
@@ -34,18 +35,19 @@ interface Props {
   dismiss?: boolean
   /** data-bs-toggle="dropdown" */
   dropdown?: boolean
+  /** remaining attributes (data-*, aria-*, …) are forwarded to the root element */
+  [key: string]: unknown
 }
 
-const { text = 'Button', href, external, element, type, id, color, outline, ghost, size, block, disabled, class: className, icon, iconColor, iconEnd, iconOnly, modalId, toastId, dismiss, dropdown } = Astro.props
+const { text, href, external, element, type, id, color, variant, size, block, disabled, loading, class: className, icon, iconColor, iconEnd, iconOnly, modalId, toastId, dismiss, dropdown, ...rest } = Astro.props
 
-// Actions (dropdown/modal/toast/dismiss) and bare buttons use <button>. Real URLs use <a>,
-// with internal hrefs prefixed with '/'.
+// Actions (dropdown/modal/toast/dismiss) and bare buttons use <button>. Real URLs use <a>.
 const isAction = Boolean(dropdown || modalId || toastId || dismiss)
 const Element = element ?? (href && !isAction ? 'a' : 'button')
-const resolvedHref = Element === 'a' ? (href ? (external ? href : `/${href}`) : undefined) : undefined
+const resolvedHref = Element === 'a' ? href : undefined
 const resolvedType = Element === 'button' ? (type ?? 'button') : undefined
 
-const classes = ['btn', color && `btn-${outline ? 'outline-' : ghost ? 'ghost-' : ''}${color}`, size && size !== 'md' && `btn-${size}`, className, block && 'w-100', iconOnly && 'btn-icon']
+const classes = ['btn', color ? `btn-${variant ? `${variant}-` : ''}${color}` : variant && `btn-${variant}`, size && size !== 'md' && `btn-${size}`, className, block && 'w-100', iconOnly && 'btn-icon', loading && 'btn-loading']
 ---
 
 <Element
@@ -60,6 +62,7 @@ const classes = ['btn', color && `btn-${outline ? 'outline-' : ghost ? 'ghost-' 
   aria-label={iconOnly ? text : undefined}
   data-bs-dismiss={dismiss ? 'modal' : undefined}
   disabled={Element === 'button' && disabled ? true : undefined}
+  {...rest}
 >
   {icon && <Icon name={icon} color={iconColor} />}
   {!iconOnly && text}

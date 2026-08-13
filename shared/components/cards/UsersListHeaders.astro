@@ -1,26 +1,19 @@
 ---
 import Avatar from '@ui/Avatar.astro'
+import { people } from '@shared/lib/people'
 import ListGroup from '@ui/ListGroup.astro'
 import ListGroupItem from '@ui/ListGroupItem.astro'
 import ListGroupHeader from '@ui/ListGroupHeader.astro'
 import CardTitle from '@ui/CardTitle.astro'
-import people from '@data/people.json'
 import commits from '@data/commits.json'
 import { sortBy } from '@shared/lib/string-format'
-
-interface Person {
-  full_name?: string
-  photo?: string
-  last_name?: string
-  [key: string]: unknown
-}
 
 const title = 'People'
 
 const commitList = commits as { description: string }[]
 
 // Sort by last_name (case-sensitive).
-const sorted = sortBy(people as Person[], (p) => p.last_name ?? '')
+const sorted = sortBy(people, (p) => p.last_name ?? '')
 
 // offset is unset in the include, so `forloop.index | plus: offset` == forloop.index.
 let prevLetter = ''

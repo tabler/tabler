@@ -1,5 +1,6 @@
 ---
 // Dropdown menu item, optionally with a nested dropend.
+import { isExternal } from '@shared/lib/url'
 import Icon from '@ui/Icon.astro'
 
 interface Level3 {
@@ -25,7 +26,6 @@ interface Props {
 const { level1Key, itemKey, item, currentPage, keepOpen = false } = Astro.props
 
 const hasChildren = !!item.children
-const isExternal = (url?: string) => !!url && (url.includes('http://') || url.includes('https://'))
 const relative = (url?: string) => (isExternal(url) ? url : `./${url}`)
 
 const active = level1Key === currentPage[0] && itemKey === currentPage[1]

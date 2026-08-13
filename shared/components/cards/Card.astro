@@ -1,7 +1,7 @@
 ---
 import { staticPath } from '@shared/lib/assets';
 import Icon from '@ui/Icon.astro';
-import AvatarList from '@ui/AvatarList.astro';
+import PeopleAvatarList from '@shared/components/demo/PeopleAvatarList.astro';
 import Empty from '@ui/Empty.astro';
 import Progress from '@ui/Progress.astro';
 import photos from '@data/photos.json';
@@ -66,7 +66,7 @@ const imgBottomPhoto = requireIndex(photos as { file: string; title: string }[],
 <div class:list={classes}>
 	{
 		empty ? (
-			<Empty illustration="not-found" height={160} />
+			<Empty illustration="not-found" height={160} title="No results found" description="Try adjusting your search or filter to find what you're looking for." buttonText="Search again" buttonIcon="search" />
 		) : (
 			<Fragment>
 				{imgTop && (
@@ -149,7 +149,7 @@ const imgBottomPhoto = requireIndex(photos as { file: string; title: string }[],
 													<input class="form-check-input position-static" type="checkbox" checked />
 												</label>
 											) : el === 'avatars' ? (
-												<AvatarList stacked={true} size="sm" text="+3" />
+												<PeopleAvatarList stacked={true} size="sm" text="+3" />
 											) : el === 'more' ? (
 												<a href="#">More information</a>
 											) : null}
@@ -186,7 +186,7 @@ const imgBottomPhoto = requireIndex(photos as { file: string; title: string }[],
 					</Fragment>
 				)}
 
-				{progress && <Progress class="progress-sm card-progress" />}
+				{progress && <Progress value={38} class="progress-sm card-progress" />}
 			</Fragment>
 		)
 	}

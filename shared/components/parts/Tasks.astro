@@ -2,7 +2,7 @@
 // task['due-date'] is undefined (field is due_date) — due-date branch never renders.
 // Avatar offset uses task['users-offset'] (hyphenated key).
 import Icon from '@ui/Icon.astro'
-import AvatarList from '@ui/AvatarList.astro'
+import PeopleAvatarList from '@shared/components/demo/PeopleAvatarList.astro'
 import CardTitle from '@ui/CardTitle.astro'
 import tasksData from '@data/tasks.json'
 
@@ -52,7 +52,7 @@ const data = tasksData as unknown as { columns: Column[] }
 
                     <div class="mt-4">
                       <div class="row">
-                        <div class="col">{task.users && <AvatarList stacked={true} size="xs" offset={task['users-offset'] ?? 0} limit={task.users} />}</div>
+                        <div class="col">{task.users && <PeopleAvatarList stacked={true} size="xs" offset={task['users-offset'] ?? 0} limit={task.users} />}</div>
 
                         {task['due-date'] && (
                           <div class="col-auto">
