@@ -2,13 +2,12 @@
 // person = people[person-id - 1] (default person-id = 25 → people[24]).
 import Icon from '@ui/Icon.astro'
 import type { FlagCountry } from '@shared/lib/tokens'
-import type { Person } from '@shared/lib/people'
+import { people } from '@shared/lib/people'
 import Flag from '@ui/Flag.astro'
-import people from '@data/people.json'
 import { requireIndex } from '@shared/lib/array'
 import CardTitle from '@ui/CardTitle.astro'
 
-const person = requireIndex(people as Person[], 24)
+const person = requireIndex(people, 24)
 ---
 
 <div class="card">

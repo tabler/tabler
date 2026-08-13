@@ -1,10 +1,9 @@
 ---
-import { personById } from '@shared/lib/people'
+import { people, personById } from '@shared/lib/people'
 import type { FlagCountry } from '@shared/lib/tokens'
 import Icon from '@ui/Icon.astro'
 import Avatar from '@ui/Avatar.astro'
 import Flag from '@ui/Flag.astro'
-import people from '@data/people.json'
 import countries from '@data/countries.json'
 
 interface Props {
@@ -29,7 +28,7 @@ const { right, show, arrow, dark, class: className, check, radio, people: showPe
 
 const classes = ['dropdown-menu', right && 'dropdown-menu-end', show && 'dropdown-menu-demo', arrow && 'dropdown-menu-arrow', className]
 
-const peopleItems = (people as { id: string; full_name: string }[]).slice(0, 5)
+const peopleItems = people.slice(0, 5)
 const countryItems = (countries as { name: string; flag: string }[]).slice(0, 5)
 ---
 

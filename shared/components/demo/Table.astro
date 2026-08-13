@@ -1,11 +1,10 @@
 ---
-import type { Person } from '@shared/lib/people'
+import { people } from '@shared/lib/people'
 import { personById } from '@shared/lib/people'
 import Avatar from '@ui/Avatar.astro'
 import Button from '@ui/Button.astro'
 import ButtonList from '@ui/ButtonList.astro'
 import DropdownMenu from './DropdownMenu.astro'
-import people from '@data/people.json'
 import { randomNumber } from '@shared/lib/pseudo-random'
 
 interface Props {
@@ -23,7 +22,7 @@ const { card, limit = 5, striped, offset, avatars, mobile, buttons } = Astro.pro
 const roles = ['User', 'Admin', 'Owner']
 
 const start = offset ?? 0
-const rows = (people as Person[]).slice(start, start + limit)
+const rows = people.slice(start, start + limit)
 
 const tableClasses = ['table', 'table-vcenter', mobile && 'table-mobile-md', card && 'card-table', striped && 'table-striped']
 ---

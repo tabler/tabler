@@ -2,15 +2,8 @@
 // Marketing pages live one level deep, so the avatar asset base is ".."
 // (reference uses "../static/avatars/...") — passed to Avatar via `base`.
 import testimonials from '@data/testimonials.json'
-import people from '@data/people.json'
+import { people } from '@shared/lib/people'
 import Avatar from '@ui/Avatar.astro'
-
-interface Person {
-  full_name?: string
-  photo?: string
-  job_title?: string
-  [key: string]: unknown
-}
 
 interface Props {
   class?: string
@@ -35,7 +28,7 @@ for (let i = 0; i < list.length; i += chunkSize) {
 let i = 1
 const cards = groups.map((group) =>
   group.map((testimonial) => {
-    const person = (people as Person[])[i] ?? {}
+    const person = people[i] ?? {}
     i += 1
     return { testimonial, person }
   }),

@@ -12,13 +12,14 @@ interface Props {
   light?: boolean
   class?: string
   icon?: string
+  iconEnd?: string
   /** remaining attributes (id, data-*, aria-*, …) are forwarded to the root element */
   [key: string]: unknown
 }
 
-const { text, color, size, light, class: className, icon, ...rest } = Astro.props
+const { text, color, size, light, class: className, icon, iconEnd, ...rest } = Astro.props
 
 const classes = ['badge', size && `badge-${size}`, color && `bg-${color}${light ? '-lt' : ''} text-${color}${light ? '-lt' : ''}-fg`, className]
 ---
 
-<span class:list={classes} {...rest}>{icon && <Icon name={icon} />}{text}</span>
+<span class:list={classes} {...rest}>{icon && <Icon name={icon} />}{text}{iconEnd && <Icon name={iconEnd} />}</span>

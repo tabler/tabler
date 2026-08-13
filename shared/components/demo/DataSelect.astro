@@ -2,8 +2,8 @@
 // Demo select fed from @data/selects.json (+ people) — the data-lookup sugar
 // extracted from ui/Select; builds the option list and delegates rendering.
 import selects from '@data/selects.json';
+import { people } from '@shared/lib/people'
 import type { FormValidationState } from '@shared/lib/tokens';
-import people from '@data/people.json';
 import { firstLetters } from '@shared/lib/string-format';
 import Select from '@ui/Select.astro';
 import type { SelectOption, SelectOptgroup } from '@ui/Select.astro';
@@ -37,12 +37,6 @@ const data = (selects as Record<string, any>)[key] ?? {};
 
 const isMultiple = Boolean(data.multiple);
 
-interface Person {
-	id: string;
-	full_name: string;
-	photo?: string;
-}
-
 // Build the option list.
 let options: SelectOption[] = [];
 let optgroups: SelectOptgroup[] = [];
@@ -50,14 +44,14 @@ let optgroups: SelectOptgroup[] = [];
 if (values) {
 	options = values.map((v) => ({ value: v, text: v }));
 } else if (data.data === 'people') {
-	options = (people as Person[]).slice(0, 20).map((person) => {
+	options = people.slice(0, 20).map((person) => {
 		let custom: string | undefined;
 		if (indicator === 'avatar') {
 			custom = person.photo
 				? `<span class="avatar avatar-xs" style="background-image: url(./${person.photo})"></span>`
-				: `<span class="avatar avatar-xs">${firstLetters(person.full_name)}</span>`;
+				: `<span class="avatar avatar-xs">${firstLetters(person.full_name ?? '')}</span>`;
 		}
-		return { value: person.id, text: person.full_name, custom };
+		return { value: String(person.id), text: person.full_name ?? '', custom };
 	});
 } else if (data.data === 'optgroup') {
 	optgroups = (data.options as { title: string; options: string[] }[]).map((group) => ({

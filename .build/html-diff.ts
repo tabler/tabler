@@ -106,7 +106,10 @@ const main = async () => {
     }
     const baselineLines = baseline.split('\n')
     const currentLines = html.split('\n')
-    const line = baselineLines.findIndex((l, i) => l !== currentLines[i])
+    // findIndex misses the case where one side is a strict prefix of the other
+    // (lines appended/removed at the end) — point at the first extra line then.
+    let line = baselineLines.findIndex((l, i) => l !== currentLines[i])
+    if (line === -1) line = Math.min(baselineLines.length, currentLines.length)
     console.error(`± ${name}: differs at line ${line + 1}`)
     console.error(`  - ${(baselineLines[line] ?? '<missing>').trim().slice(0, 160)}`)
     console.error(`  + ${(currentLines[line] ?? '<missing>').trim().slice(0, 160)}`)

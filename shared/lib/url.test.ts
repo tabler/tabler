@@ -18,3 +18,9 @@ describe('isExternal', () => {
     expect(isExternal('')).toBe(false)
   })
 })
+
+describe('isExternal (anchored)', () => {
+  it('is false when http(s) appears mid-string', () => {
+    expect(isExternal('/redirect?to=https://example.com')).toBe(false)
+  })
+})

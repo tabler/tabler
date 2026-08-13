@@ -35,7 +35,7 @@ const classes = ['progress', size && `progress-${size}`, className]
     indeterminate ? (
       <div class={`progress-bar progress-bar-indeterminate${color ? ` bg-${color}` : ''}`} />
     ) : valueList ? (
-      valueList.map((v, i) => <div class={`progress-bar bg-${colors[i] ?? ''}`} style={`width: ${v}%`} role="progressbar" aria-valuenow={v} aria-valuemin="0" aria-valuemax="100" />)
+      valueList.map((v, i) => <div class={`progress-bar${colors[i] ? ` bg-${colors[i]}` : ''}`} style={`width: ${v}%`} role="progressbar" aria-valuenow={v} aria-valuemin="0" aria-valuemax="100" />)
     ) : (
       <div class={`progress-bar${color ? ` bg-${color}` : ''}${striped ? ` progress-bar-striped${animated ? ' progress-bar-animated' : ''}` : ''}`} style={`width: ${percentage}%`} role="progressbar" aria-valuenow={percentage} aria-valuemin="0" aria-valuemax="100" aria-label={`${percentage}% Complete`}>
         {showValue ? `${percentage}%` : <span class="visually-hidden">{percentage}% Complete</span>}

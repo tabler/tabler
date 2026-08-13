@@ -2,5 +2,5 @@
 
 /** True for absolute http(s) urls — used to decide between raw and relative hrefs. */
 export function isExternal(url?: string): boolean {
-  return !!url && (url.includes('http://') || url.includes('https://'))
+  return !!url && /^https?:\/\//.test(url)
 }

@@ -1,7 +1,8 @@
-// Demo-data helper: resolves a 1-based person id to the people.json entry.
-// Lives in the demo/lib layer so ui primitives (Avatar) stay data-free —
-// call sites pass the resolved object via the `person` prop instead.
-import people from '../data/people.json'
+// Demo-data access for people.json. Lives in the demo/lib layer so ui
+// primitives (Avatar) stay data-free — call sites pass resolved objects via
+// the `person` prop instead. The json→Person assertion lives here, once;
+// consumers import the typed `people` array instead of re-casting the json.
+import peopleData from '../data/people.json'
 
 // Fields components actually read, typed against the people.json schema;
 // everything else stays reachable through the index signature.
@@ -24,6 +25,8 @@ export interface Person {
   [key: string]: unknown
 }
 
+export const people = peopleData as Person[]
+
 export function personById(id: number): Person | undefined {
-  return (people as Person[])[id - 1]
+  return people[id - 1]
 }

@@ -38,7 +38,7 @@ const classes = ['alert', variant && `alert-${variant}`, `alert-${color}`, showC
     description || list ? (
       <div>
         {/* set:html preserves entities like &hellip; in the title */}
-        <h4 class="alert-heading" set:html={title} />
+        {title && <h4 class="alert-heading" set:html={title} />}
         <div class="alert-description">
           <Fragment set:html={description ?? ''} />
           {list && list.length > 0 && (

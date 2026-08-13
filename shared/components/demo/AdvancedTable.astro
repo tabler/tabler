@@ -1,6 +1,6 @@
 ---
 import BadgeList from '@ui/BadgeList.astro'
-import type { Person } from '@shared/lib/people'
+import { people } from '@shared/lib/people'
 import Icon from '@ui/Icon.astro'
 import { formatLongDate } from '@shared/lib/date-format'
 import { randomItem, randomDate } from '@shared/lib/pseudo-random'
@@ -8,7 +8,6 @@ import Avatar from '@ui/Avatar.astro'
 import Button from '@ui/Button.astro'
 import ButtonList from '@ui/ButtonList.astro'
 import Pagination from '@ui/Pagination.astro'
-import people from '@data/people.json'
 import tableProperties from '@data/table-properties.json'
 import CaptureScript from '../CaptureScript.astro'
 import { requireIndex } from '@shared/lib/array'
@@ -32,7 +31,7 @@ const tags = ['QTA,Event,Tickets,TODO', 'Event,Tickets', 'QTA,Event', 'Tickets']
 const advancedTable = (tableProperties as { 'advanced-table': AdvancedTableProperties })['advanced-table']
 const headers = advancedTable.headers
 
-const rows = (people as Person[]).map((person, i) => {
+const rows = people.map((person, i) => {
   const index = i + 1
   const status = randomItem(index + 5, statuses)
   const itemTags = randomItem(index + 5, tags).split(',')
