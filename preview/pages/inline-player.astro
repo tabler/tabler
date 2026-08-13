@@ -6,11 +6,13 @@ import CardBody from '@ui/CardBody.astro'
 import CardTitle from '@ui/CardTitle.astro'
 import InlinePlayer from '@ui/InlinePlayer.astro'
 import players from '@data/inline-players.json'
+import DocsLink from '@ui/DocsLink.astro'
 
 type Provider = { 'title': string; 'type': string; 'id': string; 'embed-id': string | number }
 ---
 
 <DefaultLayout title="Inline Player" pageMenu="plugins.plyr" pageLibs={['plyr']}>
+  <DocsLink slot="page-header-actions" path="/ui/components/inline-player" />
   <div class="row row-cards">
     {
       (players as Provider[]).map((provider) => (

@@ -6,12 +6,14 @@ import Card from '@ui/Card.astro'
 import CardBody from '@ui/CardBody.astro'
 import maps from '@data/maps.json'
 import CardTitle from '@ui/CardTitle.astro'
+import DocsLink from '@ui/DocsLink.astro'
 
 type MapData = { title?: string; card?: boolean }
 const mapEntries = Object.entries(maps as Record<string, MapData>)
 ---
 
 <DefaultLayout title="Maps" pageMenu="plugins.maps" pageLibs={['mapbox']}>
+  <DocsLink slot="page-header-actions" path="/ui/components/map" />
   <div class="row row-cards">
     {
       mapEntries.map(([mapId, data]) =>
