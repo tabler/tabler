@@ -12,6 +12,7 @@ import illustrationsList from '@data/illustrations.json'
 import siteData from '@data/site.json'
 import { requireIndex } from '@shared/lib/array'
 import PageTitle from '@ui/PageTitle.astro'
+import DocsLink from '@ui/DocsLink.astro'
 
 const autodark = (freeIllustrations as { autodark: Record<string, string> }).autodark
 const autodarkEntries = Object.entries(autodark)
@@ -35,6 +36,8 @@ const illustrationsData = Object.fromEntries(autodarkEntries.map(([key, svg]) =>
 ---
 
 <DefaultLayout title="SVG Illustrations" pageMenu="addons.illustrations">
+  <DocsLink slot="page-header-actions" path="/illustrations" />
+
   <div class="mb-7" style={`--tblr-illustrations-primary: var(--tblr-color-primary); --tblr-illustrations-skin: ${skinFirst.hex};`} id="current-illustration-style">
     <div class="row row-cards">
       <div class="col-12">

@@ -3,16 +3,20 @@ import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
 import Card from '@ui/Card.astro'
 import CardBody from '@ui/CardBody.astro'
 import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
 import Colorpicker from '@ui/Colorpicker.astro'
 import site from '@data/site.json'
+import DocsLink from '@ui/DocsLink.astro'
 
 const colors = Object.values(site.colors) as { hex: string; title: string }[]
 ---
 
 <DefaultLayout title="Color picker" pageMenu="plugins.colorpicker" pageLibs={['coloris.js']}>
+  <DocsLink slot="page-header-actions" path="/ui/forms/form-colorpicker" />
   <Card>
     <CardBody>
       <CardTitle>Basic</CardTitle>
+      <CardSubtitle>Click a swatch to open the picker and choose any color.</CardSubtitle>
       <div class="row g-3">
         {
           colors.map((color, index) => (

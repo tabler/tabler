@@ -5,18 +5,22 @@ import ButtonList from '@ui/ButtonList.astro'
 import Card from '@ui/Card.astro'
 import CardBody from '@ui/CardBody.astro'
 import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
 import Progress from '@ui/Progress.astro'
 import ProgressSteps from '@ui/ProgressSteps.astro'
 import ProgressBg from '@ui/ProgressBg.astro'
 import ProgressDescription from '@ui/ProgressDescription.astro'
+import DocsLink from '@ui/DocsLink.astro'
 ---
 
 <DefaultLayout title="Progress" pageMenu="base.progress">
+  <DocsLink slot="page-header-actions" path="/ui/components/progress" />
   <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
     <div class="col">
       <Card>
         <CardBody>
           <CardTitle>Default</CardTitle>
+          <CardSubtitle>Track completion with a simple bar from empty to full.</CardSubtitle>
           <div class="space-y">
             <Progress value={0} />
             <Progress value={20} />
@@ -30,6 +34,7 @@ import ProgressDescription from '@ui/ProgressDescription.astro'
       <Card>
         <CardBody>
           <CardTitle>With value</CardTitle>
+          <CardSubtitle>Show the exact percentage inside a larger bar with <code>showValue</code>.</CardSubtitle>
           <div class="space-y">
             <Progress value={10} showValue size="lg" />
             <Progress value={20} showValue size="lg" />
@@ -42,6 +47,7 @@ import ProgressDescription from '@ui/ProgressDescription.astro'
       <Card>
         <CardBody>
           <CardTitle>Colors</CardTitle>
+          <CardSubtitle>Match the bar color to the context with any theme color.</CardSubtitle>
           <div class="space-y">
             <Progress color="blue" value={20} />
             <Progress color="green" value={40} />
@@ -55,6 +61,7 @@ import ProgressDescription from '@ui/ProgressDescription.astro'
       <Card>
         <CardBody>
           <CardTitle>Sizes</CardTitle>
+          <CardSubtitle>Scale a bar from <code>sm</code> to <code>xl</code>.</CardSubtitle>
           <div class="space-y">
             <Progress value={20} size="sm" />
             <Progress value={40} />
@@ -68,6 +75,7 @@ import ProgressDescription from '@ui/ProgressDescription.astro'
       <Card>
         <CardBody>
           <CardTitle>Indeterminate</CardTitle>
+          <CardSubtitle>Animate a bar with no known end point using <code>indeterminate</code>.</CardSubtitle>
           <div class="space-y">
             <Progress indeterminate />
           </div>
@@ -78,6 +86,7 @@ import ProgressDescription from '@ui/ProgressDescription.astro'
       <Card>
         <CardBody>
           <CardTitle>Multiple values</CardTitle>
+          <CardSubtitle>Stack several segments in one bar to compare parts of a whole.</CardSubtitle>
           <div class="space-y">
             <Progress values={[20, 30, 10]} colors={['blue', 'red', 'green']} />
             <Progress values={[10, 20, 30, 40]} colors={['blue', 'red', 'green', 'yellow']} class="progress-separated" />
@@ -89,6 +98,7 @@ import ProgressDescription from '@ui/ProgressDescription.astro'
       <Card>
         <CardBody>
           <CardTitle>Striped</CardTitle>
+          <CardSubtitle>Add diagonal stripes with <code>striped</code> for a textured look.</CardSubtitle>
           <div class="space-y">
             <Progress color="blue" value={20} striped />
             <Progress color="green" value={40} striped />
@@ -102,6 +112,7 @@ import ProgressDescription from '@ui/ProgressDescription.astro'
       <Card>
         <CardBody>
           <CardTitle>Animated</CardTitle>
+          <CardSubtitle>Combine <code>striped</code> with <code>animated</code> to keep the stripes moving.</CardSubtitle>
           <div class="space-y">
             <Progress value={20} striped animated />
             <Progress value={40} color="green" striped animated />
@@ -115,6 +126,7 @@ import ProgressDescription from '@ui/ProgressDescription.astro'
       <Card>
         <CardBody>
           <CardTitle> Animated with JavaScript </CardTitle>
+          <CardSubtitle>Update the bar's width at runtime and watch it react.</CardSubtitle>
           <div class="row align-items-center g-0">
             <div class="col">
               <Progress value={0} id="progress-animated" />
@@ -173,6 +185,7 @@ import ProgressDescription from '@ui/ProgressDescription.astro'
       <Card>
         <CardBody>
           <CardTitle> Steps Progress </CardTitle>
+          <CardSubtitle>Mark discrete steps instead of a continuous percentage.</CardSubtitle>
           <div class="space-y">
             <ProgressSteps count={3} />
             <ProgressSteps count={5} active={4} />
@@ -186,6 +199,7 @@ import ProgressDescription from '@ui/ProgressDescription.astro'
       <Card>
         <CardBody>
           <CardTitle> Progress Background </CardTitle>
+          <CardSubtitle>Fill a row's background as the progress indicator itself.</CardSubtitle>
           <div class="space-y">
             <ProgressBg value={85} text="Poland" showValue />
             <ProgressBg value={65} text="Germany" showValue />
@@ -199,6 +213,7 @@ import ProgressDescription from '@ui/ProgressDescription.astro'
       <Card>
         <CardBody>
           <CardTitle> Progress Background Colors </CardTitle>
+          <CardSubtitle>Pair a light background fill with a matching accent color.</CardSubtitle>
           <div class="space-y">
             <ProgressBg value={75} text="Success" color="success" showValue />
             <ProgressBg value={60} text="Warning" color="warning" showValue />
@@ -212,6 +227,7 @@ import ProgressDescription from '@ui/ProgressDescription.astro'
       <Card>
         <CardBody>
           <CardTitle> Progress Description </CardTitle>
+          <CardSubtitle>Pair a label and percentage with the bar for more context.</CardSubtitle>
           <div class="space-y">
             <ProgressDescription label="Project completion" value={85} color="green" />
             <ProgressDescription label="Storage usage" description="2.4GB of 5GB" value={48} color="blue" />
@@ -225,6 +241,7 @@ import ProgressDescription from '@ui/ProgressDescription.astro'
       <Card>
         <CardBody>
           <CardTitle> Progress Description Sizes </CardTitle>
+          <CardSubtitle>Scale the labeled progress bar from <code>sm</code> to <code>xl</code>.</CardSubtitle>
           <div class="space-y">
             <ProgressDescription label="Small progress" value={60} size="sm" color="blue" />
             <ProgressDescription label="Default progress" value={70} color="green" />

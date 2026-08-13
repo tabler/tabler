@@ -64,6 +64,8 @@ gh api repos/tabler/tabler/deployments/<id>/statuses --jq '.[0].environment_url'
 curl -s -o /dev/null -w '%{http_code}\n' <link>
 ```
 
+**Links to the published docs** (not a Vercel preview) belong to a different pair of hosts: `docs.tabler.io` serves the last release, `docs-dev.tabler.io` serves `dev`. Check any `docs.tabler.io` link you mention against `docs-dev.tabler.io` — production still serves the pre-content-collection URLs, so a page that exists in `docs/content/**` can 404 there without being a broken link.
+
 If the diff touches specific routes or pages, append that path. Path shape differs per project:
 
 - **Preview pages use the `.html` extension**: `preview/pages/icons.astro` → `/icons.html`, not `/icons`.
