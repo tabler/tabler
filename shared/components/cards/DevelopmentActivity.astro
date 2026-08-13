@@ -1,5 +1,6 @@
 ---
-import Chart from '@ui/Chart.astro'
+import { personById } from '@shared/lib/people'
+import Chart from '@shared/components/demo/Chart.astro'
 import ChartSparkline from '@ui/ChartSparkline.astro'
 import Icon from '@ui/Icon.astro'
 import Avatar from '@ui/Avatar.astro'
@@ -49,7 +50,7 @@ const rows = (commits as Commit[]).slice(0, 5)
           rows.map((commit, index) => (
             <tr>
               <td class="w-1">
-                <Avatar personId={index + 1} size="sm" />
+                <Avatar person={personById(index + 1)} size="sm" />
               </td>
               <td class="td-truncate">
                 <div class="text-truncate">{commit.description}</div>

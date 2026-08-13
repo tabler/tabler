@@ -1,4 +1,5 @@
 ---
+import { personById } from '@shared/lib/people'
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
 import Avatar from '@ui/Avatar.astro'
 import AvatarUpload from '@ui/AvatarUpload.astro'
@@ -162,7 +163,7 @@ const brands = ['netflix', 'amazon', 'messenger', 'figma', 'twitch']
         <CardBody>
           <CardTitle>Avatar statuses</CardTitle>
           <CardSubtitle>Add a <code>status</code> dot to show online, away, or busy state.</CardSubtitle>
-          {statusColors.map((color, i) => <Avatar personId={i + 1} class="rounded-circle" status={color} />)}
+          {statusColors.map((color, i) => <Avatar person={personById(i + 1)} class="rounded-circle" status={color} />)}
         </CardBody>
       </Card>
     </div>
@@ -171,7 +172,7 @@ const brands = ['netflix', 'amazon', 'messenger', 'figma', 'twitch']
         <CardBody>
           <CardTitle>Avatar brands</CardTitle>
           <CardSubtitle>Show a recognizable brand icon instead of a person.</CardSubtitle>
-          {brands.map((brand, i) => <Avatar personId={i + 1} brand={brand} />)}
+          {brands.map((brand, i) => <Avatar person={personById(i + 1)} brand={brand} />)}
         </CardBody>
       </Card>
     </div>

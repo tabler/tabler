@@ -4,6 +4,7 @@
 // inside the label for implicit association. Set associate={false} for groups
 // with multiple controls.
 import FormHint from './FormHint.astro'
+import { slugify } from '@shared/lib/string-format'
 
 interface Props {
   label?: string
@@ -29,7 +30,11 @@ interface Props {
 
 const { label, required, description, hint, for: htmlFor, labelClass, class: className = 'mb-3', invalid, error, associate = true } = Astro.props
 
-const uid = htmlFor ?? `fg-${Math.random().toString(36).slice(2, 9)}`
+// Hint/error ids derived from the label so output stays deterministic between
+// builds (Math.random would differ every render). Groups sharing a label on one
+// page should pass `for` to disambiguate.
+const slug = label ? slugify(label) : undefined
+const uid = htmlFor ?? (slug ? `fg-${slug}` : 'fg')
 const hintId = hint ? `${uid}-hint` : undefined
 const errorId = error ? `${uid}-error` : undefined
 const wrapLabel = Boolean(label && !htmlFor && associate)

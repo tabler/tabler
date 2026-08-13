@@ -1,20 +1,24 @@
 ---
 import Icon from './Icon.astro'
 
+/** core/scss/ui/_badges.scss `.badge-{size}` modifier classes */
+type BadgeSize = 'sm' | 'lg'
+
 interface Props {
   text?: string
   color?: string
-  /** badge-{scale} right after badge */
-  scale?: string
+  size?: BadgeSize | undefined
   /** -lt colour variant + text-{color}-lt-fg */
   light?: boolean
   class?: string
   icon?: string
+  /** remaining attributes (id, data-*, aria-*, …) are forwarded to the root element */
+  [key: string]: unknown
 }
 
-const { text, color, scale, light, class: className, icon } = Astro.props
+const { text, color, size, light, class: className, icon, ...rest } = Astro.props
 
-const classes = ['badge', scale && `badge-${scale}`, color && `bg-${color}${light ? '-lt' : ''} text-${color}${light ? '-lt' : ''}-fg`, className]
+const classes = ['badge', size && `badge-${size}`, color && `bg-${color}${light ? '-lt' : ''} text-${color}${light ? '-lt' : ''}-fg`, className]
 ---
 
-<span class:list={classes}>{icon && <Icon name={icon} />}{text}</span>
+<span class:list={classes} {...rest}>{icon && <Icon name={icon} />}{text}</span>

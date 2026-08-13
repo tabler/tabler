@@ -1,8 +1,9 @@
 ---
 // Friend Requests: first 3 people with status="success". New photos: photo ids 6/7/8.
+import type { Person } from '@shared/lib/people'
 import { staticPath } from '@shared/lib/assets'
-import Icon from './Icon.astro'
-import Avatar from './Avatar.astro'
+import Icon from '@ui/Icon.astro'
+import Avatar from '@ui/Avatar.astro'
 import people from '@data/people.json'
 import photos from '@data/photos.json'
 import { requireIndex } from '@shared/lib/array'
@@ -13,7 +14,7 @@ interface Props {
 
 const { simple } = Astro.props
 
-const avatarPeople = (people as { full_name?: string; photo?: string }[]).slice(0, 3)
+const avatarPeople = (people as Person[]).slice(0, 3)
 const timelinePhotos = photos as { file: string; title: string }[]
 const timelinePhoto = (i: number) => requireIndex(timelinePhotos, i)
 ---

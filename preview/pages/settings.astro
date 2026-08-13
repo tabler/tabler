@@ -1,4 +1,5 @@
 ---
+import { personById } from '@shared/lib/people'
 import CardSubtitle from '@ui/CardSubtitle.astro'
 import SettingsLayout from '@shared/layouts/SettingsLayout.astro'
 import Avatar from '@ui/Avatar.astro'
@@ -20,9 +21,9 @@ const person = requireIndex(people, 0)
     <CardTitle>Profile Details</CardTitle>
 
     <div class="row align-items-center">
-      <div class="col-auto"><Avatar size="xl" personId={1} /></div>
+      <div class="col-auto"><Avatar size="xl" person={personById(1)} /></div>
       <div class="col-auto"><Button text="Change avatar" /></div>
-      <div class="col-auto"><Button text="Delete avatar" color="danger" ghost /></div>
+      <div class="col-auto"><Button text="Delete avatar" color="danger" variant="ghost" /></div>
     </div>
 
     <CardTitle class="mt-4">Business Profile</CardTitle>

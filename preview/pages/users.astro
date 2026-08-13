@@ -2,6 +2,7 @@
 // progress and online_counter assigned per person but never rendered — omitted.
 // rounded=true on avatar has no effect — Avatar has no `rounded` prop.
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import type { Person } from '@shared/lib/people'
 import Avatar from '@ui/Avatar.astro'
 import Card from '@ui/Card.astro'
 import CardBody from '@ui/CardBody.astro'
@@ -9,13 +10,6 @@ import Icon from '@ui/Icon.astro'
 import Pagination from '@ui/Pagination.astro'
 import people from '@data/people.json'
 import HeaderActionsUsers from '@shared/components/layout/HeaderActionsUsers.astro'
-
-interface Person {
-  full_name?: string
-  job_title?: string
-  photo?: string
-  [key: string]: unknown
-}
 
 const users = (people as Person[]).slice(0, 18)
 ---
@@ -54,6 +48,6 @@ const users = (people as Person[]).slice(0, 18)
   </div>
 
   <div class="d-flex mt-4">
-    <Pagination class="ms-auto" />
+    <Pagination count={5} activeItem={3} class="ms-auto" />
   </div>
 </DefaultLayout>

@@ -1,21 +1,25 @@
 ---
-// Step styling uses strict equality for `active`, so a string (e.g. active="2") never matches the integer loop index.
+import { range } from '@shared/lib/array'
+
 interface Props {
-  count?: number | string
-  active?: number | string
+  count: number
+  active: number
   numbers?: boolean
+  class?: string
+  /** remaining attributes (id, data-*, aria-*, …) are forwarded to the root element */
+  [key: string]: unknown
 }
 
-const { count = 4, active = 3, numbers } = Astro.props
+const { count, active, numbers, class: className, ...rest } = Astro.props
 
-const classes = ['steps', numbers && 'steps-counter']
+const classes = ['steps', numbers && 'steps-counter', className]
 
 const activeNum = Number(active)
 const total = Number(count)
-const steps = Array.from({ length: total }, (_, i) => i + 1)
+const steps = range(1, total)
 ---
 
-<ol class:list={classes} aria-label="Progress">
+<ol class:list={classes} aria-label="Progress" {...rest}>
   {
     steps.map((i) => {
       const isFuture = i > activeNum

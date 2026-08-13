@@ -2,7 +2,7 @@
 import Icon from '@ui/Icon.astro'
 import Flag from '@ui/Flag.astro'
 import CardTitle from '@ui/CardTitle.astro'
-import DropdownMenu from '@ui/DropdownMenu.astro'
+import DropdownMenu from '@shared/components/demo/DropdownMenu.astro'
 import Pagination from '@ui/Pagination.astro'
 import invoices from '@data/invoices.json'
 import countries from '@data/countries.json'
@@ -64,7 +64,7 @@ const countryNames = Object.fromEntries((countries as { code: string; name: stri
                 </a>
               </td>
               <td>
-                <Flag flag={invoice.country} size="xs" class="me-2" label={countryNames[invoice.country] ?? invoice.country.toUpperCase()} />
+                <Flag flag={invoice.country} size="xs" class="me-2" ariaLabel={countryNames[invoice.country] ?? invoice.country.toUpperCase()} />
                 {invoice.client}
               </td>
               <td>{invoice['vat-no']}</td>
@@ -94,7 +94,7 @@ const countryNames = Object.fromEntries((countries as { code: string; name: stri
         <p class="m-0 text-secondary">Showing <strong>1 to 8</strong> of <strong>16 entries</strong></p>
       </div>
       <div class="col-auto">
-        <Pagination class="m-0 ms-auto" />
+        <Pagination count={5} activeItem={3} class="m-0 ms-auto" />
       </div>
     </div>
   </div>

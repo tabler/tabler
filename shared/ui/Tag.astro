@@ -1,14 +1,9 @@
 ---
 import Icon from './Icon.astro'
+import type { Person } from '@shared/lib/people'
 import Flag from './Flag.astro'
 import Avatar from './Avatar.astro'
 import Badge from './Badge.astro'
-
-interface Person {
-  full_name?: string
-  photo?: string
-  [key: string]: unknown
-}
 
 interface Props {
   text?: string
@@ -20,12 +15,15 @@ interface Props {
   checkbox?: boolean
   checked?: boolean
   badge?: string | number
+  class?: string
+  /** remaining attributes (id, data-*, aria-*, …) are forwarded to the root element */
+  [key: string]: unknown
 }
 
-const { text, flag, icon, person, status, legend, checkbox, checked, badge } = Astro.props
+const { text, flag, icon, person, status, legend, checkbox, checked, badge, class: className, ...rest } = Astro.props
 ---
 
-<span class="tag">
+<span class:list={['tag', className]} {...rest}>
   {
     flag ? (
       <Flag flag={flag} size="xxs" class="tag-flag" />

@@ -1,5 +1,6 @@
 ---
 // person-id=1 → people[0] (1-based index).
+import { personById } from '@shared/lib/people'
 import Icon from '@ui/Icon.astro'
 import Avatar from '@ui/Avatar.astro'
 import people from '@data/people.json'
@@ -19,7 +20,7 @@ const person = requireIndex(people, personId - 1)
 <!-- BEGIN USER MENU -->
 <div class="nav-item dropdown">
   <a href="#" class="nav-link d-flex lh-1 p-0 px-2" data-bs-toggle="dropdown" aria-label="Open user menu">
-    <Avatar personId={personId} size="sm" />
+    <Avatar person={personById(personId)} size="sm" />
     {
       !hideUsername && (
         <div class="d-none d-xl-block ps-2">

@@ -2,18 +2,21 @@
 import type { AvatarSize } from './Avatar.astro'
 
 interface Props {
-  payment?: string
+  payment: string
   dark?: boolean
   /** core/scss/_variables.scss `$payment-sizes` (aliased to `$avatar-sizes`) */
   size?: AvatarSize | undefined
   class?: string
-  label?: string | undefined
+  /** accessible name (role="img" + aria-label) */
+  ariaLabel?: string | undefined
+  /** remaining attributes (id, data-*, aria-*, …) are forwarded to the root element */
+  [key: string]: unknown
 }
 
-const { payment = 'visa', dark, size, class: className, label } = Astro.props
+const { payment, dark, size, class: className, ariaLabel, ...rest } = Astro.props
 
 // Only an explicit `size` becomes `payment-{size}`.
 const classes = ['payment', size && `payment-${size}`, `payment-provider-${payment}${dark ? '-dark' : ''}`, className]
 ---
 
-<span class:list={classes} role={label ? 'img' : undefined} aria-label={label}></span>
+<span class:list={classes} role={ariaLabel ? 'img' : undefined} aria-label={ariaLabel} {...rest}></span>

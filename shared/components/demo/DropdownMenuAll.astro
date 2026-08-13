@@ -1,6 +1,7 @@
 ---
-import Icon from './Icon.astro'
-import Avatar from './Avatar.astro'
+import { personById } from '@shared/lib/people'
+import Icon from '@ui/Icon.astro'
+import Avatar from '@ui/Avatar.astro'
 import people from '@data/people.json'
 
 interface Props {
@@ -40,7 +41,7 @@ const peopleItems = (people as { id: number | string; full_name: string }[]).sli
   {
     peopleItems.map((person) => (
       <button type="button" class="dropdown-item">
-        <Avatar personId={Number(person.id)} class="rounded me-2" size="xs" /> {person.full_name}
+        <Avatar person={personById(Number(person.id))} class="rounded me-2" size="xs" /> {person.full_name}
       </button>
     ))
   }

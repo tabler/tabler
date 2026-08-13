@@ -9,18 +9,19 @@ interface Props {
   vertical?: boolean
   /** core/scss/ui/_segmented.scss `.nav-{size}` modifier classes */
   size?: 'sm' | 'lg' | undefined
-  fullWidth?: boolean
+  /** w-100 — stretch across the container */
+  block?: boolean
   name?: string
   class?: string
 }
 
-const { items, icons, disabled, default: defaultIndex = 1, vertical, size, fullWidth, name, class: className } = Astro.props
+const { items, icons, disabled, default: defaultIndex = 1, vertical, size, block, name, class: className } = Astro.props
 
 const itemsArr = items ?? []
 const iconsArr = icons ?? []
 const count = Math.max(itemsArr.length, iconsArr.length)
 
-const navClasses = ['nav', 'nav-segmented', vertical && 'nav-segmented-vertical', size && `nav-${size}`, fullWidth && 'w-100', className]
+const navClasses = ['nav', 'nav-segmented', vertical && 'nav-segmented-vertical', size && `nav-${size}`, block && 'w-100', className]
 
 const rows = Array.from({ length: count }, (_, i) => {
   const forloopIndex = i + 1

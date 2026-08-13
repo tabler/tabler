@@ -3,8 +3,10 @@
 export type ProgressSize = 'sm' | 'lg' | 'xl'
 
 interface Props {
-  value?: number | string | undefined
+  value?: number | undefined
   values?: (string | number)[]
+  /** per-bar colors for the `values` variant, e.g. ['blue', 'red'] */
+  colors?: string[]
   color?: string | undefined
   size?: ProgressSize | undefined
   class?: string
@@ -14,19 +16,21 @@ interface Props {
   striped?: boolean
   animated?: boolean
   showValue?: boolean
+  /** remaining attributes (data-*, aria-*, …) are forwarded to the root element */
+  [key: string]: unknown
 }
 
-const { value, values, color, size, class: className, width, id, indeterminate, striped, animated, showValue } = Astro.props
+const { value, values, colors: colorsProp, color, size, class: className, width, id, indeterminate, striped, animated, showValue, ...rest } = Astro.props
 
-const percentage = value !== undefined && value !== null && `${value}` !== '' ? `${value}`.split('%').join('') : '38'
+const percentage = value ?? 0
 
-const colors = color ? [color] : ['blue', 'red', 'green', 'yellow', 'dark']
+const colors = color ? [color] : (colorsProp ?? [])
 const valueList = values
 
 const classes = ['progress', size && `progress-${size}`, className]
 ---
 
-<div class:list={classes} style={width ? `width: ${width}` : undefined} id={id}>
+<div class:list={classes} style={width ? `width: ${width}` : undefined} id={id} {...rest}>
   {
     indeterminate ? (
       <div class={`progress-bar progress-bar-indeterminate${color ? ` bg-${color}` : ''}`} />

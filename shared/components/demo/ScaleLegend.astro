@@ -1,5 +1,7 @@
 ---
 // "Less -> More" gradient legend, e.g. for a choropleth map's color scale.
+import { range } from '@shared/lib/array'
+
 interface Props {
   class?: string
 }
@@ -10,7 +12,7 @@ const color = 'primary'
 const minLabel = 'Less'
 const maxLabel = 'More'
 
-const items = Array.from({ length: steps }, (_, i) => i + 1)
+const items = range(1, steps)
 ---
 
 <div class:list={['d-flex align-items-center gap-2', className]}>

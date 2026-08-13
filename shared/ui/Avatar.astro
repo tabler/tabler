@@ -1,14 +1,8 @@
 ---
 import { assetRoot } from '@shared/lib/assets'
+import type { Person } from '@shared/lib/people'
 import Icon from './Icon.astro'
-import people from '@data/people.json'
 import { firstLetters } from '@shared/lib/string-format'
-
-interface Person {
-  full_name?: string
-  photo?: string
-  [key: string]: unknown
-}
 
 /** core/scss/_variables.scss `$avatar-sizes` map keys */
 export type AvatarSize = 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
@@ -16,15 +10,15 @@ export type AvatarSize = 'xxs' | 'xs' | 'sm' | 'md' | 'lg' | 'xl' | '2xl'
 interface Props {
   src?: string
   placeholder?: string | undefined
-  personId?: number
+  /** person object (photo → src, initials → placeholder); resolve demo ids with personById() from @shared/lib/people */
   person?: Person | undefined
   link?: boolean
   size?: AvatarSize | undefined
   thumb?: boolean
   class?: string
-  shape?: string
+  /** avatar-{shape} (core/scss/ui/_avatars.scss) */
+  shape?: 'rounded' | 'square' | undefined
   color?: string | undefined
-  square?: boolean
   status?: string
   statusLabel?: string
   brand?: string
@@ -35,12 +29,11 @@ interface Props {
   [key: string]: unknown
 }
 
-const { src: srcProp, placeholder: placeholderProp, personId, person: personProp, link: linkProp = false, size, thumb, class: className, shape, color, square, status, statusLabel, brand, icon, base = assetRoot, ...rest } = Astro.props
+const { src: srcProp, placeholder: placeholderProp, person, link: linkProp = false, size, thumb, class: className, shape, color, status, statusLabel, brand, icon, base = assetRoot, ...rest } = Astro.props
 
 let src = srcProp
 let placeholder = placeholderProp
 
-const person = personId ? (people as Person[])[personId - 1] : personProp
 if (person) {
   src = person.photo
   if (!src) {
@@ -50,7 +43,7 @@ if (person) {
 
 const El = linkProp ? 'a' : 'span'
 
-const classes = ['avatar', size && `avatar-${size}`, thumb && 'avatar-thumb', className, shape && `avatar-${shape}`, color && `bg-${color}-lt`, square && 'avatar-square']
+const classes = ['avatar', size && `avatar-${size}`, thumb && 'avatar-thumb', className, shape && `avatar-${shape}`, color && `bg-${color}-lt`]
 ---
 
 <El class:list={classes} style={src ? `background-image: url(${base}/${src})` : undefined} {...rest}

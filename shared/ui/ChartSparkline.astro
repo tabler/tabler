@@ -5,7 +5,8 @@ interface Props {
 	id?: string | undefined;
 	type?: string;
 	color?: string | undefined;
-	small?: boolean;
+	/** chart-sparkline-{size} — only 'sm' exists */
+	size?: 'sm' | undefined;
 	data?: string | number;
 	percentage?: string | number;
 }
@@ -14,12 +15,12 @@ const {
 	id,
 	type = 'bar',
 	color = 'primary',
-	small,
+	size,
 	data: dataProp,
 	percentage,
 } = Astro.props;
 
-const height = small ? 1.5 : 2.5;
+const height = size === 'sm' ? 1.5 : 2.5;
 const heightPx = Math.round(height * 16);
 
 const data = percentage ?? dataProp;
@@ -30,7 +31,7 @@ const chartType = type === 'donut' ? 'radialBar' : type;
 const classes = [
 	'chart-sparkline',
 	isSquare && 'chart-sparkline-square',
-	small && 'chart-sparkline-sm',
+	size === 'sm' && 'chart-sparkline-sm',
 ]
 
 const seriesData = String(data ?? '').split(',').map(Number);

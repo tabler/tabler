@@ -5,13 +5,16 @@ interface Props {
   text?: string
   top?: boolean
   color?: string
+  class?: string
+  /** remaining attributes (id, data-*, aria-*, …) are forwarded to the root element */
+  [key: string]: unknown
 }
 
-const { text, top, color } = Astro.props
+const { text, top, color, class: className, ...rest } = Astro.props
 
-const classes = ['ribbon', top && 'ribbon-top', color && `bg-${color}`]
+const classes = ['ribbon', top && 'ribbon-top', color && `bg-${color}`, className]
 ---
 
-<div class:list={classes}>
+<div class:list={classes} {...rest}>
   {text ? text : <Icon name="star" />}
 </div>

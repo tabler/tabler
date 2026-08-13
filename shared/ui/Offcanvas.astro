@@ -4,8 +4,8 @@
 interface Props {
   /** core/scss/bootstrap/_offcanvas.scss `.offcanvas-{direction}` modifier classes */
   direction?: 'start' | 'end' | 'top' | 'bottom' | undefined
-  /** responsive variant offcanvas-{size} ($grid-breakpoints minus xs) — replaces the base .offcanvas class */
-  size?: 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | undefined
+  /** responsive variant offcanvas-{responsive} ($grid-breakpoints minus xs) — replaces the base .offcanvas class */
+  responsive?: 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | undefined
   show?: boolean
   class?: string
   /** defaults to "-1" when not provided */
@@ -16,11 +16,11 @@ interface Props {
   [key: string]: unknown
 }
 
-const { direction, size, show, class: className, tabindex, role, ...rest } = Astro.props
+const { direction, responsive, show, class: className, tabindex, role, ...rest } = Astro.props
 ---
 
 <!-- BEGIN OFFCANVAS -->
-<div class:list={[size ? `offcanvas-${size}` : 'offcanvas', direction && `offcanvas-${direction}`, show && 'show', className]} tabindex={tabindex ?? '-1'} role={role ?? 'dialog'} {...rest}>
+<div class:list={[responsive ? `offcanvas-${responsive}` : 'offcanvas', direction && `offcanvas-${direction}`, show && 'show', className]} tabindex={tabindex ?? '-1'} role={role ?? 'dialog'} {...rest}>
   <slot />
 </div>
 <!-- END OFFCANVAS -->

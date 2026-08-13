@@ -1,5 +1,6 @@
 ---
 interface Props {
+  /** number of steps; ignored when `labels` is provided */
   count?: number
   /** Step labels; overrides `count` when provided. */
   labels?: string[]
@@ -11,10 +12,10 @@ interface Props {
   ariaLabel?: string
 }
 
-const { count: countProp = 3, labels: labelsProp, active = 1, color = 'primary', class: className, id, ariaLabel } = Astro.props
+const { count: countProp, labels: labelsProp, active = 1, color = 'primary', class: className, id, ariaLabel } = Astro.props
 
 const labels = labelsProp ?? []
-const count = labelsProp ? labels.length : countProp
+const count = labelsProp ? labels.length : (countProp ?? 0)
 const steps = Array.from({ length: count }, (_, i) => ({
   index: i + 1,
   label: labels[i] || `Step ${i + 1}`,
