@@ -3,6 +3,7 @@
 // init script. For the selects.json/people-fed demo variant see
 // @shared/components/demo/DataSelect.astro.
 import CaptureScript from '../components/CaptureScript.astro';
+import type { FormValidationState } from '@shared/lib/tokens';
 
 export type SelectOption = { value: string; text: string; custom?: string | undefined; selected?: boolean };
 export type SelectOptgroup = { label: string; options: SelectOption[] };
@@ -10,8 +11,7 @@ export type SelectOptgroup = { label: string; options: SelectOption[] };
 interface Props {
 	id: string;
 	class?: string | undefined;
-	/** is-{state} validation class */
-	state?: 'valid' | 'invalid' | undefined;
+	state?: FormValidationState | undefined;
 	placeholder?: string | undefined;
 	multiple?: boolean | undefined;
 	options?: SelectOption[];

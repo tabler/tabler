@@ -2,6 +2,7 @@
 // Demo select fed from @data/selects.json (+ people) — the data-lookup sugar
 // extracted from ui/Select; builds the option list and delegates rendering.
 import selects from '@data/selects.json';
+import type { FormValidationState } from '@shared/lib/tokens';
 import people from '@data/people.json';
 import { firstLetters } from '@shared/lib/string-format';
 import Select from '@ui/Select.astro';
@@ -12,7 +13,7 @@ interface Props {
 	/** key into @data/selects.json (default 'people') */
 	key?: string;
 	class?: string;
-	state?: 'valid' | 'invalid' | undefined;
+	state?: FormValidationState | undefined;
 	placeholder?: string;
 	/** option decoration: 'avatar' | 'flag' | 'label' */
 	indicator?: string;

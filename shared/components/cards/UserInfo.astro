@@ -1,6 +1,7 @@
 ---
 // person = people[person-id - 1] (default person-id = 25 → people[24]).
 import Icon from '@ui/Icon.astro'
+import type { FlagCountry } from '@shared/lib/tokens'
 import type { Person } from '@shared/lib/people'
 import Flag from '@ui/Flag.astro'
 import people from '@data/people.json'
@@ -27,7 +28,7 @@ const person = requireIndex(people as Person[], 24)
     </div>
     <div class="mb-2">
       <Icon name="map-pin" class="me-2 text-secondary" />
-      From: <strong><Flag size="xs" flag={person.country_code ?? ''} /> {person.country}</strong>
+      From: <strong><Flag size="xs" flag={(person.country_code ?? '') as FlagCountry} /> {person.country}</strong>
     </div>
     <div class="mb-2">
       <Icon name="calendar" class="me-2 text-secondary" />

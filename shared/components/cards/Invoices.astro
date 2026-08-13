@@ -1,5 +1,6 @@
 ---
 import Icon from '@ui/Icon.astro'
+import type { FlagCountry } from '@shared/lib/tokens'
 import Flag from '@ui/Flag.astro'
 import CardTitle from '@ui/CardTitle.astro'
 import DropdownMenu from '@shared/components/demo/DropdownMenu.astro'
@@ -64,7 +65,7 @@ const countryNames = Object.fromEntries((countries as { code: string; name: stri
                 </a>
               </td>
               <td>
-                <Flag flag={invoice.country} size="xs" class="me-2" ariaLabel={countryNames[invoice.country] ?? invoice.country.toUpperCase()} />
+                <Flag flag={invoice.country as FlagCountry} size="xs" class="me-2" ariaLabel={countryNames[invoice.country] ?? invoice.country.toUpperCase()} />
                 {invoice.client}
               </td>
               <td>{invoice['vat-no']}</td>

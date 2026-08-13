@@ -1,12 +1,14 @@
 ---
 // .bg-pattern-{type} utility (core/scss/ui/_patterns.scss) as a component;
 // combine with a theme color and/or size, e.g. <BackgroundPattern pattern="dots" color="primary" size="lg" />.
+import type { PatternSize } from '@shared/lib/tokens'
 
 interface Props {
   pattern: 'diagonal' | 'diagonal-2' | 'dots' | 'rectangles' | 'lines' | 'lines-vertical' | 'grid' | 'grid-diagonal' | 'blueprint' | 'cross-dots' | 'circles' | 'diagonal-stripes' | 'diagonal-stripes-2' | 'zigzag' | 'vertical-stripes' | 'horizontal-stripes'
   /** theme color the pattern ramps up to, e.g. 'primary' */
   color?: string
-  size?: 'sm' | 'md' | 'lg' | 'xl'
+  /** `$sizes` map in core/scss/ui/_patterns.scss */
+  size?: PatternSize
   class?: string
   /** remaining attributes (style, data-*, …) are forwarded to the element */
   [key: string]: unknown

@@ -1,11 +1,12 @@
 ---
 // Offcanvas container (.offcanvas). Renders inline at the call site (unlike Modal, which drains to the end of body).
+import type { Breakpoint } from '@shared/lib/tokens'
 
 interface Props {
   /** core/scss/bootstrap/_offcanvas.scss `.offcanvas-{direction}` modifier classes */
   direction?: 'start' | 'end' | 'top' | 'bottom' | undefined
   /** responsive variant offcanvas-{responsive} ($grid-breakpoints minus xs) — replaces the base .offcanvas class */
-  responsive?: 'sm' | 'md' | 'lg' | 'xl' | 'xxl' | undefined
+  responsive?: Exclude<Breakpoint, 'xs'> | undefined
   show?: boolean
   class?: string
   /** defaults to "-1" when not provided */
