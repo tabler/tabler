@@ -1,5 +1,5 @@
 ---
-import { people, personById } from '@shared/lib/people'
+import { people } from '@shared/lib/people'
 import type { FlagCountry } from '@shared/lib/tokens'
 import Icon from '@ui/Icon.astro'
 import Avatar from '@ui/Avatar.astro'
@@ -43,7 +43,7 @@ const countryItems = (countries as { name: string; flag: string }[]).slice(0, 5)
     ) : showPeople ? (
       peopleItems.map((person) => (
         <button type="button" class="dropdown-item">
-          <Avatar person={personById(Number(person.id))} size="xs" /> {person.full_name}
+          <Avatar person={person} size="xs" /> {person.full_name}
         </button>
       ))
     ) : showFlags ? (
