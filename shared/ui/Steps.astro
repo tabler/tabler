@@ -14,17 +14,15 @@ const { count, active, numbers, class: className, ...rest } = Astro.props
 
 const classes = ['steps', numbers && 'steps-counter', className]
 
-const activeNum = Number(active)
-const total = Number(count)
-const steps = range(1, total)
+const steps = range(1, count)
 ---
 
 <ol class:list={classes} aria-label="Progress" {...rest}>
   {
     steps.map((i) => {
-      const isFuture = i > activeNum
-      const isCurrent = i === activeNum
-      const isDone = i < activeNum
+      const isFuture = i > active
+      const isCurrent = i === active
+      const isDone = i < active
       const Element = isFuture ? 'span' : 'a'
       const itemClass = ['step-item', isCurrent ? 'active' : '']
       const fallbackLabel = `Step ${i}${isCurrent ? ' (current)' : isDone ? ' (completed)' : ''}`

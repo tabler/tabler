@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { capitalize, firstLetters, formatNumber, getDocsUrl, millisecondsToMinutes, parseCurrency, parsePercentage, pathSlug, roundTo, slugify, sortBy, ucFirst } from './string-format'
+import { capitalize, firstLetters, formatNumber, getDocsUrl, millisecondsToMinutes, parseCurrency, pathSlug, roundTo, slugify, sortBy, ucFirst } from './string-format'
 import { requireIndex } from './array'
 
 describe('getDocsUrl', () => {
@@ -43,21 +43,6 @@ describe('formatNumber', () => {
 describe('pathSlug', () => {
   it('strips slashes and joins segments', () => {
     expect(pathSlug('/ui/getting-started/')).toBe('uigetting-started')
-  })
-})
-
-describe('parsePercentage', () => {
-  it('strips a trailing "%"', () => {
-    expect(parsePercentage('42%')).toBe('42')
-  })
-
-  it('defaults to "0" when empty or undefined', () => {
-    expect(parsePercentage(undefined)).toBe('0')
-    expect(parsePercentage('')).toBe('0')
-  })
-
-  it('passes through numeric input', () => {
-    expect(parsePercentage(75)).toBe('75')
   })
 })
 

@@ -16,7 +16,6 @@ interface Props {
 
 const { icon = 'heart', activeColor = 'red', variant, class: className, ...rest } = Astro.props
 
-const resolvedIconB = icon ?? 'heart'
 // star/heart force the filled variant; otherwise no extra class.
 const resolvedIconBClass = icon === 'star' || icon === 'heart' ? 'icon-filled' : undefined
 
@@ -28,6 +27,6 @@ const buttonClass = ['switch-icon', variant && `switch-icon-${variant}`, classNa
     <Icon name={icon} />
   </span>
   <span class={`switch-icon-b text-${activeColor}`}>
-    <Icon name={resolvedIconB} class={resolvedIconBClass} />
+    <Icon name={icon} class={resolvedIconBClass} />
   </span>
 </button>

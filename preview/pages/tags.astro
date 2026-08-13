@@ -1,5 +1,6 @@
 ---
 import { range } from '@shared/lib/array'
+import type { FlagCountry } from '@shared/lib/tokens'
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
 import Tag from '@ui/Tag.astro'
 import TagList from '@ui/TagList.astro'
@@ -43,7 +44,7 @@ const colors = Object.values(siteData.colors) as { class: string; title: string 
           <CardTitle>Tags with flag</CardTitle>
           <CardSubtitle>Pair a tag with a country flag.</CardSubtitle>
           <TagList>
-            {flags9.map((country) => <Tag text={country.name} flag={country.flag} />)}
+            {flags9.map((country) => <Tag text={country.name} flag={country.flag as FlagCountry} />)}
           </TagList>
         </CardBody>
       </Card>

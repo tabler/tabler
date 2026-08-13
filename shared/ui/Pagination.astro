@@ -16,8 +16,6 @@ interface Props {
 
 const { count, offset = count, activeItem = 1, class: className, firstLast, text, prevDescription, nextDescription } = Astro.props
 
-const normalizedActiveItem = activeItem
-
 // (1..offset), then (count-offset+1..count) when there is a tail
 const firstPages = range(1, offset)
 const countOffset = count - offset + 1
@@ -54,8 +52,8 @@ const lastPages = offset < count ? range(countOffset, count) : []
     </li>
     {
       firstPages.map((i) => (
-        <li class={`page-item${i === normalizedActiveItem ? ' active' : ''}`}>
-          <a class="page-link" href="#" aria-label={`Page ${i}`} aria-current={i === normalizedActiveItem ? 'page' : undefined}>
+        <li class={`page-item${i === activeItem ? ' active' : ''}`}>
+          <a class="page-link" href="#" aria-label={`Page ${i}`} aria-current={i === activeItem ? 'page' : undefined}>
             {i}
           </a>
         </li>
@@ -68,8 +66,8 @@ const lastPages = offset < count ? range(countOffset, count) : []
             <span class="page-link disabled">&hellip;</span>
           </li>
           {lastPages.map((i) => (
-            <li class={`page-item${i === normalizedActiveItem ? ' active' : ''}`}>
-              <a class="page-link" href="#" aria-label={`Page ${i}`} aria-current={i === normalizedActiveItem ? 'page' : undefined}>
+            <li class={`page-item${i === activeItem ? ' active' : ''}`}>
+              <a class="page-link" href="#" aria-label={`Page ${i}`} aria-current={i === activeItem ? 'page' : undefined}>
                 {i}
               </a>
             </li>

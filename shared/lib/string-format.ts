@@ -42,11 +42,6 @@ export function pathSlug(u: string): string {
   return u.split('/').filter(Boolean).join('')
 }
 
-/** Strips a trailing "%" from a value, defaulting to "0" when empty/undefined. */
-export function parsePercentage(value: number | string | undefined): string {
-  return `${value ?? ''}`.split('%').join('') || '0'
-}
-
 /** Formats a millisecond duration as "M:SS". */
 export function millisecondsToMinutes(value: number): string {
   const minutes = Math.floor(value / 60000)

@@ -1,5 +1,6 @@
 ---
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import type { PaymentProvider } from '@shared/lib/tokens'
 import Payment from '@ui/Payment.astro'
 import Card from '@ui/Card.astro'
 import CardHeader from '@ui/CardHeader.astro'
@@ -31,7 +32,7 @@ const providers = payments as { name: string; logo: string }[]
                 <div class="col">
                   <div class="row">
                     <div class="col-auto">
-                      <Payment payment={provider.logo} />
+                      <Payment payment={provider.logo as PaymentProvider} />
                     </div>
                     <div class="col">
                       <strong class="d-block">{provider.name}</strong>
@@ -62,7 +63,7 @@ const providers = payments as { name: string; logo: string }[]
                 <div class="col">
                   <div class="row">
                     <div class="col-auto">
-                      <Payment payment={provider.logo} dark={true} />
+                      <Payment payment={provider.logo as PaymentProvider} dark={true} />
                     </div>
                     <div class="col">
                       <strong class="d-block">{provider.name}</strong>
