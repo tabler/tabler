@@ -1,6 +1,7 @@
 ---
 import { Code } from 'astro:components'
 import { site } from '@shared/lib/site.ts'
+import { sri } from '@shared/lib/sri.ts'
 
 interface Props {
   plugins: string[]
@@ -13,7 +14,7 @@ const { plugins }: Props = Astro.props
   lang="html"
   code={plugins
     .map((plugin) => {
-      return `<link rel="stylesheet" href="${site.cdnUrl}/dist/css/tabler-${plugin}.min.css" />`
+      return `<link rel="stylesheet" href="${site.cdnUrl}/dist/css/tabler-${plugin}.min.css" integrity="${sri[`css-${plugin}`]}" crossorigin="anonymous" />`
     })
     .join('\n')}
 />

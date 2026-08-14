@@ -1,10 +1,11 @@
 ---
 import { Code } from 'astro:components'
 import { site } from '@shared/lib/site.ts'
+import { sri } from '@shared/lib/sri.ts'
 ---
 
 <Code
   lang="html"
-  code={`<link rel="stylesheet" href="${site.cdnUrl}/dist/css/tabler.min.css" />
-<script src="${site.cdnUrl}/dist/js/tabler.min.js"></script>`}
+  code={`<link rel="stylesheet" href="${site.cdnUrl}/dist/css/tabler.min.css" integrity="${sri['css']}" crossorigin="anonymous" />
+<script src="${site.cdnUrl}/dist/js/tabler.min.js" integrity="${sri['js']}" crossorigin="anonymous"></script>`}
 />
