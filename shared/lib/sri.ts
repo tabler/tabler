@@ -1,7 +1,10 @@
 import { existsSync, readFileSync } from 'node:fs'
-import { fileURLToPath } from 'node:url'
+import path from 'node:path'
 
-const sriPath = fileURLToPath(new URL('../data/sri.json', import.meta.url))
+// Resolved from process.cwd() (the calling package's directory, e.g. docs/ or preview/),
+// not import.meta.url: Vite/Rollup emit this module's compiled output into a different
+// directory (e.g. dist/.prerender/chunks/), which would break a file-relative path.
+const sriPath = path.resolve(process.cwd(), '../shared/data/sri.json')
 
 if (!existsSync(sriPath)) {
   throw new Error(
