@@ -3,10 +3,14 @@ import { defineConfig } from 'astro/config'
 import mdx from '@astrojs/mdx'
 import { satteri } from '@astrojs/markdown-satteri'
 import beautify from 'js-beautify'
-import { execFileSync } from 'node:child_process'
-import { globSync, readFileSync, writeFileSync } from 'node:fs'
-import { devNull } from 'node:os'
+import { globSync, statSync } from 'node:fs'
+import { availableParallelism } from 'node:os'
 import { fileURLToPath } from 'node:url'
+import { Worker } from 'node:worker_threads'
+// Imported statically: a dynamic import() inside the hook below would go through
+// Vite's module runner, which is already closed by the time astro:build:done runs
+// (the config is bundled by vite-node because it imports a .ts module).
+import prettier from 'prettier'
 import { copyAssets } from '../.build/copy-assets'
 
 /** @param {string} p */
@@ -14,6 +18,8 @@ const path = (p) => fileURLToPath(new URL(p, import.meta.url))
 
 /**
  * After build, format page HTML with prettier (users copy it 1:1).
+ * The formatting itself happens in .build/prettify-html-worker.mjs — see there
+ * for why it is worth spreading over threads.
  * @returns {import('astro').AstroIntegration}
  */
 function prettifyHtml() {
@@ -27,37 +33,38 @@ function prettifyHtml() {
         // some vendored libs ship their own malformed docs/*.html that trips the parser below.
         /** @param {string} file */
         const isVendorCopy = (file) => file.includes(`${outDir}preview/`) || file.includes(`${outDir}dist/`)
-        // Astro appends "overflow-x: auto" to the shiki <pre> style — the
-        // Eleventy pipeline doesn't have it and HTML is the product: restore 1:1.
-        // node:fs is imported statically — a dynamic import() here would go
-        // through Vite's module runner, which is already closed by the time
-        // the astro:build:done hook runs (the config is bundled by vite-node
-        // because it imports a .ts module).
-        for (const file of globSync(`${outDir}**/*.html`, { exclude: isVendorCopy })) {
-          const content = readFileSync(file, 'utf8')
-          const cleaned = content.replaceAll('; overflow-x: auto;', '')
-          if (cleaned !== content) writeFileSync(file, cleaned)
-        }
-        execFileSync(
-          'npx',
-          [
-            'prettier',
-            '--write',
-            '--parser',
-            'html',
-            // Prettier's default ignore-path is [.gitignore, .prettierignore], and both
-            // list "dist" (needed elsewhere so normal lint/format passes skip build
-            // output) — that silently no-ops this pass on the very directory it targets.
-            // Point at devNull to opt this one deliberate pass out of those ignores.
-            '--ignore-path',
-            devNull,
-            `${outDir}**/*.html`,
-            `!${outDir}preview/**`,
-            `!${outDir}dist/**`,
-          ],
-          { stdio: 'inherit' },
+        const files = globSync(`${outDir}**/*.html`, { exclude: isVendorCopy })
+        const firstFile = files[0]
+        if (firstFile === undefined) return
+
+        // Resolved once for the whole run: every page sits in the same directory
+        // tree and no .prettierrc override matches *.html. Passing the options on
+        // also keeps the workers off the ignore files — .gitignore and
+        // .prettierignore both list "dist" (so normal lint/format passes skip build
+        // output), which would silently no-op this deliberate pass.
+        const options = { ...(await prettier.resolveConfig(firstFile)), parser: 'html' }
+
+        // Page sizes span two orders of magnitude, so an even split by file count
+        // leaves one worker alone with the biggest page long after the others are
+        // done. Dealing the size-ordered list round-robin evens the batches out.
+        const workerCount = Math.min(availableParallelism(), 8, files.length)
+        const ordered = files
+          .map((file) => ({ file, size: statSync(file).size }))
+          .sort((a, b) => b.size - a.size)
+          .map(({ file }) => file)
+        const batches = Array.from({ length: workerCount }, (_, worker) => ordered.filter((_, index) => index % workerCount === worker))
+
+        await Promise.all(
+          batches.map(
+            (batch) =>
+              new Promise((resolve, reject) => {
+                const worker = new Worker(path('./.build/prettify-html-worker.mjs'), { workerData: { files: batch, options } })
+                worker.on('error', reject)
+                worker.on('exit', (code) => (code === 0 ? resolve(undefined) : reject(new Error(`prettify-html worker exited with code ${code}`))))
+              }),
+          ),
         )
-        logger.info('HTML formatted with prettier')
+        logger.info(`HTML formatted with prettier (${files.length} pages, ${workerCount} workers)`)
       },
     },
   }
