@@ -1,29 +1,25 @@
 // Writes the SRI hashes the docs render into their CDN snippets.
 //
-// The hashes are taken from the files jsDelivr actually serves for the published release, not
-// from the local core/dist: the snippets link to @tabler/core@<version>, while dev is usually
-// ahead of that release, so hashing the local build would ship an `integrity` value the browser
-// rejects — worse for users than no `integrity` at all.
+// Hashes describe the published release the snippets link to (@tabler/core@<version>), so this
+// only runs at release time: the release workflow builds core, publishes that build to npm, and
+// then hashes the same core/dist it just published. Running it mid-cycle would pin hashes of an
+// unreleased build — an `integrity` value the browser rejects, which is worse for users than no
+// `integrity` at all.
 //
 // The result is committed to shared/data/sri.json, so a docs build needs neither the network nor
-// a prior core build. Run this after publishing a release (`pnpm --filter @tabler/core
-// generate-sri`). Two flags exist for CI: `--check` verifies the committed file still matches the
-// CDN, and `--wait` polls until the just-published release is there, which the release workflow
-// uses right after `changesets publish`.
+// a prior core build. `--check` verifies the committed file against what jsDelivr actually serves,
+// which is the independent way to catch hashes generated at the wrong moment.
 import * as crypto from 'node:crypto'
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
-import { setTimeout } from 'node:timers/promises'
 import { fileURLToPath } from 'node:url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 const configFile = path.join(__dirname, '../../shared/data/sri.json')
+const distDir = path.join(__dirname, '../dist')
 const { version } = JSON.parse(readFileSync(path.join(__dirname, '../package.json'), 'utf8')) as { version: string }
 const cdnUrl = `https://cdn.jsdelivr.net/npm/@tabler/core@${version}/dist`
-
-const waitAttempts = 10
-const waitDelay = 30_000
 
 interface FileConfig {
   file: string
@@ -113,6 +109,23 @@ const files: FileConfig[] = [
 /** Thrown when the version is not on the CDN yet, which is expected between a bump and a publish. */
 class UnpublishedVersionError extends Error {}
 
+const integrityOf = (data: Buffer): string => `sha384-${crypto.createHash('sha384').update(data).digest('base64')}`
+
+/** Hashes of the local build — the files the release workflow is about to publish, or just did. */
+function hashDist(): Record<string, string> {
+  const entries = files.map(({ file, configPropertyName }) => {
+    const filePath = path.join(distDir, file)
+
+    if (!existsSync(filePath)) {
+      throw new Error(`${filePath} is missing. Run \`pnpm --filter @tabler/core build\` first.`)
+    }
+
+    return [configPropertyName, integrityOf(readFileSync(filePath))] as const
+  })
+
+  return Object.fromEntries(entries)
+}
+
 async function fetchIntegrity(file: string): Promise<string> {
   const response = await fetch(`${cdnUrl}/${file}`)
 
@@ -124,37 +137,14 @@ async function fetchIntegrity(file: string): Promise<string> {
     throw new Error(`${cdnUrl}/${file} returned ${response.status} ${response.statusText}`)
   }
 
-  const hash = crypto
-    .createHash('sha384')
-    .update(Buffer.from(await response.arrayBuffer()))
-    .digest('base64')
-
-  return `sha384-${hash}`
+  return integrityOf(Buffer.from(await response.arrayBuffer()))
 }
 
+/** Hashes of what the CDN serves, used by `--check` to verify the committed file. */
 async function fetchHashes(): Promise<Record<string, string>> {
   const entries = await Promise.all(files.map(async ({ file, configPropertyName }) => [configPropertyName, await fetchIntegrity(file)] as const))
 
   return Object.fromEntries(entries)
-}
-
-/**
- * With `--wait`, keep polling until the release shows up on the CDN. Used right after a publish,
- * where npm and jsDelivr are a few moments behind the workflow that published them.
- */
-async function fetchHashesWaiting(): Promise<Record<string, string>> {
-  for (let attempt = 1; attempt <= waitAttempts; attempt++) {
-    try {
-      return await fetchHashes()
-    } catch (error) {
-      if (!(error instanceof UnpublishedVersionError) || attempt === waitAttempts) throw error
-
-      console.log(`@tabler/core@${version} is not on the CDN yet — retrying in ${waitDelay / 1000}s (${attempt}/${waitAttempts - 1})`)
-      await setTimeout(waitDelay)
-    }
-  }
-
-  throw new UnpublishedVersionError(`@tabler/core@${version} did not appear on the CDN`)
 }
 
 function readConfig(): SriData | null {
@@ -163,16 +153,16 @@ function readConfig(): SriData | null {
   return JSON.parse(readFileSync(configFile, 'utf8')) as SriData
 }
 
-async function generateSRI(check: boolean, wait: boolean): Promise<void> {
-  let hashes: Record<string, string>
+async function check(): Promise<void> {
+  let published: Record<string, string>
 
   try {
-    hashes = wait ? await fetchHashesWaiting() : await fetchHashes()
+    published = await fetchHashes()
   } catch (error) {
-    if (error instanceof UnpublishedVersionError && !wait) {
-      // Nothing to pin yet. The docs render their snippets without `integrity` until the release
-      // is on npm and this script is run again.
-      console.warn(`@tabler/core@${version} is not published yet — shared/data/sri.json left unchanged.`)
+    if (error instanceof UnpublishedVersionError) {
+      // Between a version bump and the publish there is nothing to compare against. The docs
+      // render their snippets without `integrity` in that window, which is safe.
+      console.warn(`@tabler/core@${version} is not published yet — nothing to check.`)
       return
     }
 
@@ -180,17 +170,17 @@ async function generateSRI(check: boolean, wait: boolean): Promise<void> {
   }
 
   const current = readConfig()
+  const matches = current?.version === version && files.every(({ configPropertyName }) => current?.hashes[configPropertyName] === published[configPropertyName])
 
-  if (check) {
-    const matches = current?.version === version && files.every(({ configPropertyName }) => current?.hashes[configPropertyName] === hashes[configPropertyName])
-
-    if (!matches) {
-      throw new Error(`shared/data/sri.json does not match what the CDN serves for @tabler/core@${version}. Run \`pnpm --filter @tabler/core generate-sri\`.`)
-    }
-
-    console.log(`shared/data/sri.json matches @tabler/core@${version}.`)
-    return
+  if (!matches) {
+    throw new Error(`shared/data/sri.json does not match what the CDN serves for @tabler/core@${version}. It was generated from a build that was never published.`)
   }
+
+  console.log(`shared/data/sri.json matches @tabler/core@${version}.`)
+}
+
+function generate(): void {
+  const hashes = hashDist()
 
   for (const { configPropertyName } of files) {
     console.log(`${configPropertyName}: ${hashes[configPropertyName]}`)
@@ -199,7 +189,9 @@ async function generateSRI(check: boolean, wait: boolean): Promise<void> {
   writeFileSync(configFile, JSON.stringify({ version, hashes } satisfies SriData, null, 2) + '\n', 'utf8')
 }
 
-generateSRI(process.argv.includes('--check'), process.argv.includes('--wait')).catch((error: unknown) => {
+const run = process.argv.includes('--check') ? check() : Promise.resolve(generate())
+
+run.catch((error: unknown) => {
   console.error('Failed to generate SRI:', error)
   process.exit(1)
 })

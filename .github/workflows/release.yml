@@ -53,11 +53,11 @@ jobs:
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
-      # The docs pin their CDN snippets to the files the CDN serves, so the hashes can only be
-      # taken once the release is on npm. `--wait` polls jsDelivr until it picks the version up.
+      # core/dist here is the build that was just published, so hashing it pins the docs to the
+      # exact files the CDN will serve — no waiting for npm and jsDelivr to catch up.
       - name: Update SRI hashes
         if: steps.changesets.outputs.published == 'true'
-        run: pnpm --filter @tabler/core run generate-sri --wait
+        run: pnpm --filter @tabler/core run generate-sri
 
       - name: Commit SRI hashes
         if: steps.changesets.outputs.published == 'true'
