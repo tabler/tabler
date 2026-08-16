@@ -9,6 +9,7 @@ import type { CollectionEntry } from 'astro:content'
 import { extractMarkedSnippet } from '@shared/lib/code-example'
 import { site } from '@shared/lib/site'
 import packageManagers from '@data/package-managers.json'
+import { cdnCssTag, cdnJsTag, cdnPackageSnippet, cdnPluginSnippet } from './cdn-snippets.ts'
 
 // Lazy raw imports, same as CodeDocs.astro — node:fs paths break once this is
 // bundled into dist/.prerender.
@@ -16,6 +17,20 @@ const scssSources = import.meta.glob('../../core/scss/**/*.scss', { query: '?raw
 const jsSources = import.meta.glob('../../core/js/**/*.{js,ts}', { query: '?raw', import: 'default' })
 
 const fence = (code: string, lang = 'html') => `\`\`\`${lang}\n${code.trim()}\n\`\`\``
+
+/**
+ * `<Code code={`…`} />` blocks are read as source text, never evaluated, so the few interpolations
+ * the docs use inside them are resolved by hand. Anything not listed here is left as written.
+ */
+function resolveCodeTokens(snippet: string): string {
+  const tokens: Record<string, () => string> = {
+    '${site.cdnUrl}': () => site.cdnUrl,
+    '${cdnCssTag()}': cdnCssTag,
+    '${cdnJsTag()}': cdnJsTag,
+  }
+
+  return Object.entries(tokens).reduce((text, [token, resolve]) => text.replaceAll(token, resolve()), snippet)
+}
 
 /** Strip the common leading indentation from a block and trim blank edges. */
 const dedent = (text: string) => {
@@ -101,7 +116,7 @@ export async function mdxToMarkdown(body: string): Promise<string> {
   // would otherwise be mistaken for markdown code spans by protectCode() below.
   let text = body.replace(/<Code\b[^>]*?code=\{`([\s\S]*?)`\}[\s\S]*?\/>/g, (match, snippet: string) => {
     const lang = attr(match, 'lang') ?? 'html'
-    return `\n${fence(snippet.replaceAll('${site.cdnUrl}', site.cdnUrl), lang)}\n`
+    return `\n${fence(resolveCodeTokens(snippet), lang)}\n`
   })
 
   const code: string[] = []
@@ -127,13 +142,12 @@ export async function mdxToMarkdown(body: string): Promise<string> {
     return `\n${fence(commands.join('\n'), 'shell')}\n`
   })
 
-  text = text.replace(/<CdnImportPackage\b[^>]*\/>/g, () => `\n${fence(`<link rel="stylesheet" href="${site.cdnUrl}/dist/css/tabler.min.css" />\n<script src="${site.cdnUrl}/dist/js/tabler.min.js"></script>`)}\n`)
+  text = text.replace(/<CdnImportPackage\b[^>]*\/>/g, () => `\n${fence(cdnPackageSnippet())}\n`)
 
   text = text.replace(/<CdnImportPlugin\b[^>]*\/>/g, (match: string) => {
-    const plugins = [...match.matchAll(/'([^']+)'/g)].map((plugin) => plugin[1])
+    const plugins = [...match.matchAll(/'([^']+)'/g)].map((plugin) => plugin[1]).filter((plugin): plugin is string => Boolean(plugin))
     if (!plugins.length) return ''
-    const links = plugins.map((plugin) => `<link rel="stylesheet" href="${site.cdnUrl}/dist/css/tabler-${plugin}.min.css" />`)
-    return `\n${fence(links.join('\n'))}\n`
+    return `\n${fence(cdnPluginSnippet(plugins))}\n`
   })
 
   // the blocks just produced must be protected too, for the same reason

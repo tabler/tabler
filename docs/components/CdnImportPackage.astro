@@ -1,11 +1,6 @@
 ---
 import { Code } from 'astro:components'
-import { site } from '@shared/lib/site.ts'
-import { sriAttributes } from '@shared/lib/sri.ts'
+import { cdnPackageSnippet } from '@lib/cdn-snippets.ts'
 ---
 
-<Code
-  lang="html"
-  code={`<link rel="stylesheet" href="${site.cdnUrl}/dist/css/tabler.min.css"${sriAttributes('css')} />
-<script src="${site.cdnUrl}/dist/js/tabler.min.js"${sriAttributes('js')}></script>`}
-/>
+<Code lang="html" code={cdnPackageSnippet()} />
