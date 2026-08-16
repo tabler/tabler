@@ -7,10 +7,13 @@
 //
 // The result is committed to shared/data/sri.json, so a docs build needs neither the network nor
 // a prior core build. Run this after publishing a release (`pnpm --filter @tabler/core
-// generate-sri`), or with `--check` to verify the committed file still matches the CDN.
+// generate-sri`). Two flags exist for CI: `--check` verifies the committed file still matches the
+// CDN, and `--wait` polls until the just-published release is there, which the release workflow
+// uses right after `changesets publish`.
 import * as crypto from 'node:crypto'
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import path from 'node:path'
+import { setTimeout } from 'node:timers/promises'
 import { fileURLToPath } from 'node:url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
@@ -18,6 +21,9 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const configFile = path.join(__dirname, '../../shared/data/sri.json')
 const { version } = JSON.parse(readFileSync(path.join(__dirname, '../package.json'), 'utf8')) as { version: string }
 const cdnUrl = `https://cdn.jsdelivr.net/npm/@tabler/core@${version}/dist`
+
+const waitAttempts = 10
+const waitDelay = 30_000
 
 interface FileConfig {
   file: string
@@ -132,19 +138,38 @@ async function fetchHashes(): Promise<Record<string, string>> {
   return Object.fromEntries(entries)
 }
 
+/**
+ * With `--wait`, keep polling until the release shows up on the CDN. Used right after a publish,
+ * where npm and jsDelivr are a few moments behind the workflow that published them.
+ */
+async function fetchHashesWaiting(): Promise<Record<string, string>> {
+  for (let attempt = 1; attempt <= waitAttempts; attempt++) {
+    try {
+      return await fetchHashes()
+    } catch (error) {
+      if (!(error instanceof UnpublishedVersionError) || attempt === waitAttempts) throw error
+
+      console.log(`@tabler/core@${version} is not on the CDN yet — retrying in ${waitDelay / 1000}s (${attempt}/${waitAttempts - 1})`)
+      await setTimeout(waitDelay)
+    }
+  }
+
+  throw new UnpublishedVersionError(`@tabler/core@${version} did not appear on the CDN`)
+}
+
 function readConfig(): SriData | null {
   if (!existsSync(configFile)) return null
 
   return JSON.parse(readFileSync(configFile, 'utf8')) as SriData
 }
 
-async function generateSRI(check: boolean): Promise<void> {
+async function generateSRI(check: boolean, wait: boolean): Promise<void> {
   let hashes: Record<string, string>
 
   try {
-    hashes = await fetchHashes()
+    hashes = wait ? await fetchHashesWaiting() : await fetchHashes()
   } catch (error) {
-    if (error instanceof UnpublishedVersionError) {
+    if (error instanceof UnpublishedVersionError && !wait) {
       // Nothing to pin yet. The docs render their snippets without `integrity` until the release
       // is on npm and this script is run again.
       console.warn(`@tabler/core@${version} is not published yet — shared/data/sri.json left unchanged.`)
@@ -174,7 +199,7 @@ async function generateSRI(check: boolean): Promise<void> {
   writeFileSync(configFile, JSON.stringify({ version, hashes } satisfies SriData, null, 2) + '\n', 'utf8')
 }
 
-generateSRI(process.argv.includes('--check')).catch((error: unknown) => {
+generateSRI(process.argv.includes('--check'), process.argv.includes('--wait')).catch((error: unknown) => {
   console.error('Failed to generate SRI:', error)
   process.exit(1)
 })

@@ -22,6 +22,8 @@ jobs:
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v7
+        with:
+          fetch-depth: 0 # full history, so the SRI commit below can be pushed back to dev
 
       - name: Install PNPM
         uses: pnpm/action-setup@v6
@@ -39,6 +41,7 @@ jobs:
         run: pnpm run build
 
       - name: Create release Pull Request or publish to NPM
+        id: changesets
         uses: changesets/action@v1
         with:
           version: pnpm run version
@@ -49,3 +52,23 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+
+      # The docs pin their CDN snippets to the files the CDN serves, so the hashes can only be
+      # taken once the release is on npm. `--wait` polls jsDelivr until it picks the version up.
+      - name: Update SRI hashes
+        if: steps.changesets.outputs.published == 'true'
+        run: pnpm --filter @tabler/core run generate-sri --wait
+
+      - name: Commit SRI hashes
+        if: steps.changesets.outputs.published == 'true'
+        run: |
+          if git diff --quiet -- shared/data/sri.json; then
+            echo "shared/data/sri.json is already up to date"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add shared/data/sri.json
+          git commit -m "chore: update SRI hashes [skip ci]"
+          git pull --rebase --autostash origin dev
+          git push origin HEAD:dev
