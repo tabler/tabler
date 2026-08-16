@@ -38,10 +38,11 @@ function prettifyHtml() {
         if (firstFile === undefined) return
 
         // Resolved once for the whole run: every page sits in the same directory
-        // tree and no .prettierrc override matches *.html. Passing the options on
-        // also keeps the workers off the ignore files — .gitignore and
+        // tree and no .prettierrc override matches *.html. The CLI pass this
+        // replaced also needed --ignore-path devNull, because .gitignore and
         // .prettierignore both list "dist" (so normal lint/format passes skip build
-        // output), which would silently no-op this deliberate pass.
+        // output) and the CLI would have skipped the very directory it targeted.
+        // format() reads no ignore files, so the workers need no such opt-out.
         const options = { ...(await prettier.resolveConfig(firstFile)), parser: 'html' }
 
         // Page sizes span two orders of magnitude, so an even split by file count
