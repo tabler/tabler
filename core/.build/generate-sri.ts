@@ -7,6 +7,9 @@
 //
 // The result is committed to shared/data/sri.json, so a docs build needs no prior core build. The
 // version stored next to the hashes is what the docs check before rendering them.
+//
+// There is deliberately no package.json script for this: .github/workflows/release.yml calls it as
+// `pnpm exec tsx core/.build/generate-sri.ts`, and that release is the only place it belongs.
 import * as crypto from 'node:crypto'
 import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import path from 'node:path'

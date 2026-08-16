@@ -54,10 +54,11 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
 
       # core/dist here is the build changesets just published, so hashing it pins the docs to the
-      # exact files users will load from the CDN.
+      # exact files users will load from the CDN. Called directly, with no package.json script
+      # behind it, so there is nothing to run by accident mid-cycle.
       - name: Update SRI hashes
         if: steps.changesets.outputs.published == 'true'
-        run: pnpm --filter @tabler/core run generate-sri
+        run: pnpm exec tsx core/.build/generate-sri.ts
 
       - name: Commit SRI hashes
         if: steps.changesets.outputs.published == 'true'
