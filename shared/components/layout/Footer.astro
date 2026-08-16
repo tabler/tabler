@@ -3,11 +3,10 @@ import Icon from '@ui/Icon.astro'
 import { site } from '@shared/lib/site'
 import { formatUtcTimestamp } from '@shared/lib/date-format'
 
-// Development build (unminified assets), same as BaseLayout.
-const environment: string = 'development'
+// Set to "preview" on the branch deploys, same as robots.txt and sitemap.xml.
+const environment = process.env.NODE_ENV || 'production'
 
 const now = new Date()
-const generatedAt = formatUtcTimestamp(now)
 ---
 
 <!--  BEGIN FOOTER  -->
@@ -44,12 +43,12 @@ const generatedAt = formatUtcTimestamp(now)
           </li>
           <li class="list-inline-item">
             {
-              environment === 'production' || environment === 'preview' ? (
+              environment === 'preview' ? (
+                `Generated ${formatUtcTimestamp(now)}`
+              ) : (
                 <a href="./changelog.html" class="link-secondary" rel="noopener">
                   v{site.version}
                 </a>
-              ) : (
-                `Generated ${generatedAt}`
               )
             }
           </li>
