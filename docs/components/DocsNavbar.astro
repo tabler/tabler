@@ -11,26 +11,20 @@ const changelogUrl = 'https://tabler.io/changelog'
 <!-- BEGIN DOCS NAVBAR -->
 <nav class="navbar navbar-expand sticky-top" aria-label="Docs">
   <div class="container">
-    <div class="row flex-fill align-items-md-center">
-      <div class="col">
-        <div class="d-flex align-items-center gap-4">
-          <button type="button" class="btn btn-icon d-lg-none" data-bs-toggle="offcanvas" data-bs-target="#docs-menu-offcanvas" aria-controls="docs-menu-offcanvas" aria-label="Open documentation menu">
-            <Icon name="menu-2" />
-          </button>
-          <a href="/" class="navbar-brand navbar-brand-autodark gap-4">
-            <DocsLogo />
-          </a>
-          <div class="d-none d-sm-block">
-            <span class="badge">v{site.version}</span>
-          </div>
-        </div>
-      </div>
-      <div class="d-none d-md-block col">
+    <div class="d-flex align-items-center flex-fill gap-2">
+      <button type="button" class="btn btn-icon btn-ghost-secondary d-lg-none" data-bs-toggle="offcanvas" data-bs-target="#docs-menu-offcanvas" aria-controls="docs-menu-offcanvas" aria-label="Open documentation menu">
+        <Icon name="menu-2" />
+      </button>
+      <a href="/" class="navbar-brand navbar-brand-autodark me-2">
+        <DocsLogo />
+      </a>
+      <span class="badge d-none d-sm-inline-block">v{site.version}</span>
+      <div class="ms-auto d-flex align-items-center gap-2">
         {
           /* Native Tabler search input. The script below lazy-imports @docsearch/js on
             interaction and opens its modal; DocSearch mounts into the hidden #docsearch. */
         }
-        <div class="input-icon">
+        <div class="input-icon docs-search d-none d-md-block">
           <span class="input-icon-addon">
             <Icon name="search" />
           </span>
@@ -40,36 +34,13 @@ const changelogUrl = 'https://tabler.io/changelog'
           </span>
         </div>
         <div id="docsearch" class="d-none"></div>
-      </div>
-      <div class="col d-flex">
-        <ul class="navbar-nav ms-auto gap-2 align-items-center">
-          <li class="nav-item d-none d-md-block">
-            <a href={previewUrl} class="nav-link">Preview</a>
-          </li>
-          <li class="nav-item d-none d-md-block">
-            <a href={changelogUrl} class="nav-link">Changelog</a>
-          </li>
-          <li class="nav-item hide-theme-dark">
-            <a href="?theme=dark" class="btn btn-icon">
-              <Icon name="moon" />
-            </a>
-          </li>
-          <li class="nav-item hide-theme-light">
-            <a href="?theme=light" class="btn btn-icon">
-              <Icon name="sun" />
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href={site.githubUrl} class="btn btn-icon" target="_blank" rel="noopener noreferrer">
-              <Icon name="brand-github" />
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href={previewUrl} class="btn btn-primary" target="_blank" rel="noopener noreferrer">
-              <Icon name="eye" /> Preview
-            </a>
-          </li>
-        </ul>
+        <nav class="d-none d-md-flex align-items-center me-1" aria-label="Tabler sites">
+          <a href={previewUrl} class="nav-link docs-navbar-link" target="_blank" rel="noopener noreferrer">Preview</a>
+          <a href={changelogUrl} class="nav-link docs-navbar-link" target="_blank" rel="noopener noreferrer">Changelog</a>
+        </nav>
+        <a href={site.githubUrl} class="btn btn-icon btn-ghost-secondary" target="_blank" rel="noopener noreferrer" aria-label="Tabler on GitHub">
+          <Icon name="brand-github" />
+        </a>
       </div>
     </div>
   </div>
