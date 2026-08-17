@@ -307,23 +307,29 @@ const relatedPages = await Promise.all(
 			<div class="container">
 				<div class="row g-0">
 					<!-- BEGIN DOCS MENU -->
-					<div class="col-docs d-none d-lg-block">
-						<div class="py-6">
-							<div class="space-y space-y-5">
-								<nav class="nav nav-vertical" aria-label="Resources">
-									{
-										docsLinks.map((link) => (
-											<a href={link.url} class="nav-link" target="_blank" rel="noopener noreferrer">
-												<span class="border me-2 rounded p-1 bg-surface d-inline-flex">
-													<Icon name={link.icon} />
-												</span>
-												{link.title}
-											</a>
-										))
-									}
-								</nav>
-								<div class="flex-fill">
-									<DocsMenu url={docsUrl} />
+					<div class="col-docs offcanvas-lg offcanvas-start" tabindex="-1" id="docs-menu-offcanvas" aria-labelledby="docs-menu-offcanvas-title">
+						<div class="offcanvas-header d-lg-none">
+							<h2 class="offcanvas-title" id="docs-menu-offcanvas-title">Menu</h2>
+							<button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#docs-menu-offcanvas" aria-label="Close"></button>
+						</div>
+						<div class="offcanvas-body">
+							<div class="py-lg-6 flex-fill">
+								<div class="space-y space-y-5">
+									<nav class="nav nav-vertical" aria-label="Resources">
+										{
+											docsLinks.map((link) => (
+												<a href={link.url} class="nav-link" target="_blank" rel="noopener noreferrer">
+													<span class="border me-2 rounded p-1 bg-surface d-inline-flex">
+														<Icon name={link.icon} />
+													</span>
+													{link.title}
+												</a>
+											))
+										}
+									</nav>
+									<div class="flex-fill">
+										<DocsMenu url={docsUrl} />
+									</div>
 								</div>
 							</div>
 						</div>
