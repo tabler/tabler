@@ -6,7 +6,7 @@ import Range from '@ui/Range.astro'
 import Datepicker from '@ui/Datepicker.astro'
 import Progress from '@ui/Progress.astro'
 import Button from '@ui/Button.astro'
-import Select from '@ui/Select.astro'
+import DataSelect from '@shared/components/demo/DataSelect.astro'
 
 const datalistCountries = (flags as { name: string }[]).slice(0, 10)
 ---
@@ -20,24 +20,24 @@ const datalistCountries = (flags as { name: string }[]).slice(0, 10)
 
 <FormGroup label="Range input" associate={false}>
   <Range value={40} />
-  <Range value="20" id="simple" connect />
-  <Range value="60,90" id="connect" />
-  <Range value="40" id="color" class="text-green" connect />
+  <Range value={20} id="simple" connect />
+  <Range value={[60, 90]} id="connect" />
+  <Range value={40} id="color" class="text-green" connect />
 </FormGroup>
 
 <FormGroup label="Datepicker" associate={false}>
-  <Datepicker id="default" class="mb-2" />
-  <Datepicker id="icon" layout="icon" class="mb-2" />
-  <Datepicker id="icon-prepend" layout="icon-prepend" />
+  <Datepicker id="default" class="mb-2" value="2020-06-20" />
+  <Datepicker id="icon" layout="icon" class="mb-2" value="2020-06-20" />
+  <Datepicker id="icon-prepend" layout="icon-prepend" value="2020-06-20" />
 </FormGroup>
 
 {/* Inline datepicker renders a calendar div (`datepicker-inline`), not a labelable input — `for` intentionally skipped, same as Range. */}
 <FormGroup label="Inline datepicker" associate={false}>
-  <Datepicker id="inline" inline />
+  <Datepicker id="inline" inline value="2020-06-20" />
 </FormGroup>
 
 <FormGroup label="Progress" associate={false}>
-  <Progress class="mb-2" />
+  <Progress value={38} class="mb-2" />
   <Progress indeterminate color="green" />
 </FormGroup>
 
@@ -53,30 +53,30 @@ const datalistCountries = (flags as { name: string }[]).slice(0, 10)
 </FormGroup>
 
 <FormGroup label="Tags input" for="select-fe6-tags">
-  <Select id="fe6-tags" key="tags" placeholder="Select tags" />
+  <DataSelect id="fe6-tags" key="tags" placeholder="Select tags" />
 </FormGroup>
 
 <FormGroup label="Advanced select" for="select-fe6-advanced-select">
-  <Select id="fe6-advanced-select" key="users" />
+  <DataSelect id="fe6-advanced-select" key="users" />
 </FormGroup>
 
 <FormGroup label="Advanced select with optgroup" for="select-fe6-select-optgroup">
-  <Select id="fe6-select-optgroup" key="optgroups" />
+  <DataSelect id="fe6-select-optgroup" key="optgroups" />
 </FormGroup>
 
 <FormGroup label="Select with avatars" for="select-fe6-select-avatars">
-  <Select id="fe6-select-avatars" key="people" indicator="avatar" />
+  <DataSelect id="fe6-select-avatars" key="people" indicator="avatar" />
 </FormGroup>
 
 <FormGroup label="Select with flags" for="select-fe6-select-flags">
-  <Select id="fe6-select-flags" key="countries" indicator="flag" />
+  <DataSelect id="fe6-select-flags" key="countries" indicator="flag" />
 </FormGroup>
 
 <FormGroup label="Select with labels" for="select-fe6-select-labels">
-  <Select id="fe6-select-labels" key="labels" indicator="label" />
+  <DataSelect id="fe6-select-labels" key="labels" indicator="label" />
 </FormGroup>
 
 <FormGroup label="Advanced select with validation state" associate={false}>
-  <Select id="countries-valid" key="countries" state="valid" class="mb-3" />
-  <Select id="countries-invalid" key="countries" state="invalid" />
+  <DataSelect id="countries-valid" key="countries" state="valid" class="mb-3" />
+  <DataSelect id="countries-invalid" key="countries" state="invalid" />
 </FormGroup>

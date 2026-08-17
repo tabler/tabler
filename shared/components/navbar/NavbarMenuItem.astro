@@ -1,5 +1,6 @@
 ---
 // Dropdown menu item, optionally with a nested dropend.
+import { isExternal } from '@shared/lib/url'
 import Icon from '@ui/Icon.astro'
 
 interface Level3 {
@@ -25,10 +26,9 @@ interface Props {
 const { level1Key, itemKey, item, currentPage, keepOpen = false } = Astro.props
 
 const hasChildren = !!item.children
-const isExternal = (url?: string) => !!url && (url.includes('http://') || url.includes('https://'))
 const relative = (url?: string) => (isExternal(url) ? url : `./${url}`)
 
-const active = level1Key === currentPage[0] && itemKey === currentPage[1] && currentPage.length === 2
+const active = level1Key === currentPage[0] && itemKey === currentPage[1]
 
 const itemClasses = ['dropdown-item', hasChildren && 'dropdown-toggle', active && 'active', item.color && `text-${item.color}`]
 ---
@@ -45,13 +45,16 @@ const itemClasses = ['dropdown-item', hasChildren && 'dropdown-toggle', active &
       </a>
 
       <div class="dropdown-menu">
-        {Object.entries(item.children!).map(([, child]) => (
-          <a href={relative(child.url)} class="dropdown-item">
-            {child.title}
+        {Object.entries(item.children!).map(([childKey, child]) => {
+          const childActive = level1Key === currentPage[0] && itemKey === currentPage[1] && childKey === currentPage[2]
+          return (
+            <a href={relative(child.url)} class:list={['dropdown-item', childActive && 'active']} aria-current={childActive ? 'page' : undefined}>
+              {child.title}
 
-            {child.badge && <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">{child.badge}</span>}
-          </a>
-        ))}
+              {child.badge && <span class="badge badge-sm bg-green-lt text-uppercase ms-auto">{child.badge}</span>}
+            </a>
+          )
+        })}
       </div>
     </div>
   ) : (

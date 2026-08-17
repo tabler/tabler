@@ -2,13 +2,19 @@
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
 import Card from '@ui/Card.astro'
 import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
 import Fullcalendar from '@ui/Fullcalendar.astro'
+import DocsLink from '@ui/DocsLink.astro'
 ---
 
-<DefaultLayout title="Fullcalendar" pageHeader="Fullcalendar" pageMenu="plugins.fullcalendar" pageLibs={['fullcalendar']}>
+<DefaultLayout title="Fullcalendar" pageMenu="plugins.fullcalendar" pageLibs={['fullcalendar']}>
+  <DocsLink slot="page-header-actions" path="/ui/components/fullcalendar" />
   <Card>
     <CardBody>
-      <Fullcalendar sampleEvents />
+      <CardTitle>Full calendar</CardTitle>
+      <CardSubtitle>Drag to create an event, click one to edit it — populated here with sample events.</CardSubtitle>
+      <Fullcalendar id="default" sampleEvents />
     </CardBody>
   </Card>
 </DefaultLayout>

@@ -1,6 +1,12 @@
 import { describe, expect, it } from 'vitest'
-import { capitalize, firstLetters, formatNumber, millisecondsToMinutes, parseCurrency, parsePercentage, pathSlug, roundTo, slugifyWord, sortBy, ucFirst } from './string-format'
+import { capitalize, firstLetters, formatNumber, getDocsUrl, millisecondsToMinutes, parseCurrency, pathSlug, roundTo, slugify, sortBy, ucFirst } from './string-format'
 import { requireIndex } from './array'
+
+describe('getDocsUrl', () => {
+  it('appends the path to the docs.tabler.io origin', () => {
+    expect(getDocsUrl('/ui/components/button#ghost-buttons')).toBe('https://docs.tabler.io/ui/components/button#ghost-buttons')
+  })
+})
 
 describe('capitalize', () => {
   it('uppercases the first char and lowercases the rest', () => {
@@ -34,30 +40,9 @@ describe('formatNumber', () => {
   })
 })
 
-describe('slugifyWord', () => {
-  it('lowercases the input', () => {
-    expect(slugifyWord('Settings')).toBe('settings')
-  })
-})
-
 describe('pathSlug', () => {
   it('strips slashes and joins segments', () => {
     expect(pathSlug('/ui/getting-started/')).toBe('uigetting-started')
-  })
-})
-
-describe('parsePercentage', () => {
-  it('strips a trailing "%"', () => {
-    expect(parsePercentage('42%')).toBe('42')
-  })
-
-  it('defaults to "0" when empty or undefined', () => {
-    expect(parsePercentage(undefined)).toBe('0')
-    expect(parsePercentage('')).toBe('0')
-  })
-
-  it('passes through numeric input', () => {
-    expect(parsePercentage(75)).toBe('75')
   })
 })
 
@@ -98,5 +83,15 @@ describe('sortBy', () => {
     const people = [{ last_name: 'Smith' }, { last_name: 'Adams' }]
     sortBy(people, (p) => p.last_name)
     expect(requireIndex(people, 0).last_name).toBe('Smith')
+  })
+})
+
+describe('slugify', () => {
+  it('lowercases and dashes non-alphanumeric runs', () => {
+    expect(slugify('Create your Tabler URL')).toBe('create-your-tabler-url')
+  })
+
+  it('trims leading and trailing dashes', () => {
+    expect(slugify('  Hello, world!  ')).toBe('hello-world')
   })
 })

@@ -3,6 +3,8 @@ import CardSubtitle from '@ui/CardSubtitle.astro'
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
 import CardStamp from '@ui/CardStamp.astro'
 import CardTitle from '@ui/CardTitle.astro'
+import SectionCard from '@ui/Card.astro'
+import SectionCardBody from '@ui/CardBody.astro'
 import Card from '@shared/components/cards/Card.astro'
 import CardImage from '@shared/components/cards/CardImage.astro'
 import CardTabs from '@shared/components/cards/CardTabs.astro'
@@ -12,246 +14,369 @@ import CardBackgroundIcon from '@shared/components/cards/CardBackgroundIcon.astr
 import CreditCard from '@shared/components/cards/CreditCard.astro'
 import EmptyTeam from '@shared/components/cards/EmptyTeam.astro'
 import BodyPlaceholder from '@shared/components/cards/BodyPlaceholder.astro'
+import DocsLink from '@ui/DocsLink.astro'
 
 const cardsStack = ['First', 'Second', 'Third']
 const cardsStackColors = ['red', 'green', 'blue']
 ---
 
-<DefaultLayout title="Cards" pageHeader="Cards" pageMenu="base.cards.base">
+<DefaultLayout title="Cards" pageMenu="base.cards.base">
+  <DocsLink slot="page-header-actions" path="/ui/components/card" />
   <div class="row row-cards">
-    <div class="col-md-6 col-lg-3">
-      <div class="card">
-        <div class="card-header">
-          <CardTitle>Card title</CardTitle>
-        </div>
-        <div class="card-body">Simple card</div>
-      </div>
+    <div class="col-12">
+      <SectionCard>
+        <SectionCardBody>
+          <CardTitle>Headers & body styles</CardTitle>
+          <CardSubtitle>Combine a header, a tinted background, or drop the border for a simpler look.</CardSubtitle>
+          <div class="row row-cards">
+            <div class="col-md-6 col-lg-3">
+              <div class="card">
+                <div class="card-header">
+                  <CardTitle>Card title</CardTitle>
+                </div>
+                <div class="card-body">Simple card</div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+              <div class="card">
+                <div class="card-header card-header-light">
+                  <CardTitle>Card title</CardTitle>
+                </div>
+                <div class="card-body">Card with header background</div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+              <div class="card card-borderless">
+                <div class="card-body">
+                  <CardTitle>Card title</CardTitle>
+                  <div>Card without border</div>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+              <div class="card">
+                <div class="card-header">
+                  <CardTitle>Card title <CardSubtitle as="span">Subtitle</CardSubtitle></CardTitle>
+                </div>
+                <div class="card-body">Card with title and subtitle</div>
+              </div>
+            </div>
+          </div>
+        </SectionCardBody>
+      </SectionCard>
     </div>
-    <div class="col-md-6 col-lg-3">
-      <div class="card">
-        <div class="card-header card-header-light">
-          <CardTitle>Card title</CardTitle>
-        </div>
-        <div class="card-body">Card with header background</div>
-      </div>
-    </div>
-    <div class="col-md-6 col-lg-3">
-      <div class="card card-borderless">
-        <div class="card-body">
-          <CardTitle>Card title</CardTitle>
-          <div>Card without border</div>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-6 col-lg-3">
-      <div class="card">
-        <div class="card-header">
-          <CardTitle>Card title <CardSubtitle as="span">Subtitle</CardSubtitle></CardTitle>
-        </div>
-        <div class="card-body">Card with title and subtitle</div>
-      </div>
-    </div>
-
-    <div class="col-md-6 col-lg-3">
-      <a href="#" class="card card-link">
-        <div class="card-body">Default hover effect</div>
-      </a>
-    </div>
-    <div class="col-md-6 col-lg-3">
-      <a href="#" class="card card-link card-link-rotate">
-        <div class="card-body">Rotate hover effect</div>
-      </a>
-    </div>
-    <div class="col-md-6 col-lg-3">
-      <a href="#" class="card card-link card-link-pop">
-        <div class="card-body">Pop hover effect</div>
-      </a>
-    </div>
-    <div class="col-md-6 col-lg-3"></div>
-
-    <div class="col-md-6 col-lg-3">
-      <div class="card card-rotate-end">
-        <div class="card-body">Card rotate end</div>
-      </div>
-    </div>
-    <div class="col-md-6 col-lg-3">
-      <div class="card card-rotate-start">
-        <div class="card-body">Card rotate start</div>
-      </div>
-    </div>
-    <div class="col-md-6 col-lg-3">
-      <div class="card card-active">
-        <div class="card-body">
-          <p>This is a card with active state.</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-6 col-lg-3">
-      <div class="card card-inactive">
-        <div class="card-body">
-          <p>This is some text inactive state.</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-6 col-lg-3">
-      <div class="card">
-        <CardStamp icon="bell" color="yellow" />
-        <div class="card-body">
-          <CardTitle>Card with icon bg</CardTitle>
-          <p class="text-secondary">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto at consectetur culpa ducimus eum fuga fugiat, ipsa iusto, modi nostrum recusandae reiciendis saepe.</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-6 col-lg-3">
-      <div class="card bg-primary-lt">
-        <div class="card-body">
-          <CardTitle>Card with primary light background</CardTitle>
-          <p class="text-secondary">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto at consectetur culpa ducimus eum fuga fugiat, ipsa iusto, modi nostrum recusandae reiciendis saepe.</p>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-6 col-lg-3">
-      <CardBackgroundIcon />
-    </div>
-    <div class="col-md-6 col-lg-3">
-      <Card statusTop="danger" title="Card with top status" />
-    </div>
-    <div class="col-md-6 col-lg-3">
-      <Card statusBottom="success" title="Card with bottom status" />
-    </div>
-    <div class="col-md-6 col-lg-3">
-      <Card statusStart="primary" title="Card with side status" />
-    </div>
-
-    <div class="col-md-6 col-lg-3">
-      <CardRibbonTop />
-    </div>
-    <div class="col-md-6 col-lg-3">
-      <CardRibbonText />
-    </div>
-    <div class="col-md-6 col-lg-3">
-      <Card progress title="Card with progress bar" />
-    </div>
-    <div class="col-md-6 col-lg-3">
-      <Card class="card-stacked" title="Stacked card" />
-    </div>
-    <div class="col-lg-6">
-      <CardImage title="Card with left side image" />
-    </div>
-    <div class="col-lg-6">
-      <CardImage title="Card with right side image" right imgId={3} />
-    </div>
-    <div class="col-md-6 col-lg-3">
-      <Card imgTop title="Card with top image" />
-    </div>
-    <div class="col-md-6 col-lg-3">
-      <Card imgBottom title="Card with bottom image" />
-    </div>
-
-    <div class="col-md-6 col-lg-3">
-      <div class="card">
-        <div class="card-body">
-          <CardTitle>Card with footer</CardTitle>
-          <p class="text-secondary">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit incidunt, iste, itaque minima neque pariatur perferendis sed suscipit velit vitae voluptatem.</p>
-        </div>
-        <div class="card-footer">This is standard card footer</div>
-      </div>
-    </div>
-    <div class="col-md-6 col-lg-3">
-      <div class="card">
-        <div class="card-body">
-          <CardTitle>Card with transparent footer</CardTitle>
-          <p class="text-secondary">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit incidunt, iste, itaque minima neque pariatur perferendis sed suscipit velit vitae voluptatem.</p>
-        </div>
-        <div class="card-footer card-footer-transparent">This is transparent card footer</div>
-      </div>
-    </div>
-    <div class="col-md-6 col-lg-3"><Card title="Card with footer button" footerButton /></div>
-    <div class="col-md-6 col-lg-3"><Card title="Card with footer buttons" footerButtons /></div>
-
-    <div class="col-md-6 col-lg-3"><Card footerElements={['more', '>switch']} /></div>
-    <div class="col-md-6 col-lg-3"><Card footerElements={['>avatars']} /></div>
-
-    <div class="col-md-6 col-lg-4"><Card headerTabs /></div>
-    <div class="col-md-6 col-lg-4"><Card headerPills /></div>
-    <div class="col-md-6 col-lg-4"><CardTabs /></div>
-    <div class="col-md-6 col-lg-4"><CardTabs bottom id="bottom" /></div>
 
     <div class="col-12">
-      <div class="card">
-        <div class="card-header">
-          <CardTitle>Cards inside card</CardTitle>
-        </div>
-        <div class="card-body">
+      <SectionCard>
+        <SectionCardBody>
+          <CardTitle>Link hover effects</CardTitle>
+          <CardSubtitle>Add motion cues when the whole card acts as a link.</CardSubtitle>
           <div class="row row-cards">
-            {
-              cardsStack.map((name, i) => (
-                <div class="col-md">
-                  <div class="card">
-                    <div class={`card-status-top bg-${cardsStackColors[i]}`} />
-                    <div class="card-header">
-                      <CardTitle>{name} card</CardTitle>
-                    </div>
-                    <BodyPlaceholder />
+            <div class="col-md-6 col-lg-3">
+              <a href="#" class="card card-link">
+                <div class="card-body">Default hover effect</div>
+              </a>
+            </div>
+            <div class="col-md-6 col-lg-3">
+              <a href="#" class="card card-link card-link-rotate">
+                <div class="card-body">Rotate hover effect</div>
+              </a>
+            </div>
+            <div class="col-md-6 col-lg-3">
+              <a href="#" class="card card-link card-link-pop">
+                <div class="card-body">Pop hover effect</div>
+              </a>
+            </div>
+          </div>
+        </SectionCardBody>
+      </SectionCard>
+    </div>
+
+    <div class="col-12">
+      <SectionCard>
+        <SectionCardBody>
+          <CardTitle>Rotation & state</CardTitle>
+          <CardSubtitle>Tilt a card slightly, or mark it as active or inactive.</CardSubtitle>
+          <div class="row row-cards">
+            <div class="col-md-6 col-lg-3">
+              <div class="card card-rotate-end">
+                <div class="card-body">Card rotate end</div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+              <div class="card card-rotate-start">
+                <div class="card-body">Card rotate start</div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+              <div class="card card-active">
+                <div class="card-body">
+                  <p>This is a card with active state.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+              <div class="card card-inactive">
+                <div class="card-body">
+                  <p>This is some text inactive state.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </SectionCardBody>
+      </SectionCard>
+    </div>
+
+    <div class="col-12">
+      <SectionCard>
+        <SectionCardBody>
+          <CardTitle>Icon & background accents</CardTitle>
+          <CardSubtitle>Draw attention with a stamp icon or a tinted background.</CardSubtitle>
+          <div class="row row-cards">
+            <div class="col-md-6 col-lg-4">
+              <div class="card">
+                <CardStamp icon="bell" color="yellow" />
+                <div class="card-body">
+                  <CardTitle>Card with icon bg</CardTitle>
+                  <p class="text-secondary">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto at consectetur culpa ducimus eum fuga fugiat, ipsa iusto, modi nostrum recusandae reiciendis saepe.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <div class="card bg-primary-lt">
+                <div class="card-body">
+                  <CardTitle>Card with primary light background</CardTitle>
+                  <p class="text-secondary">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Architecto at consectetur culpa ducimus eum fuga fugiat, ipsa iusto, modi nostrum recusandae reiciendis saepe.</p>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <CardBackgroundIcon />
+            </div>
+          </div>
+        </SectionCardBody>
+      </SectionCard>
+    </div>
+
+    <div class="col-12">
+      <SectionCard>
+        <SectionCardBody>
+          <CardTitle>Status indicators</CardTitle>
+          <CardSubtitle>Mark a card's state with a colored edge on any side.</CardSubtitle>
+          <div class="row row-cards">
+            <div class="col-md-6 col-lg-4">
+              <Card statusTop="danger" title="Card with top status" />
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <Card statusBottom="success" title="Card with bottom status" />
+            </div>
+            <div class="col-md-6 col-lg-4">
+              <Card statusStart="primary" title="Card with side status" />
+            </div>
+          </div>
+        </SectionCardBody>
+      </SectionCard>
+    </div>
+
+    <div class="col-12">
+      <SectionCard>
+        <SectionCardBody>
+          <CardTitle>Ribbons & progress</CardTitle>
+          <CardSubtitle>Flag content with a ribbon, or track progress right inside the card.</CardSubtitle>
+          <div class="row row-cards">
+            <div class="col-md-6 col-lg-3">
+              <CardRibbonTop />
+            </div>
+            <div class="col-md-6 col-lg-3">
+              <CardRibbonText />
+            </div>
+            <div class="col-md-6 col-lg-3">
+              <Card progress title="Card with progress bar" />
+            </div>
+            <div class="col-md-6 col-lg-3">
+              <Card class="card-stacked" title="Stacked card" />
+            </div>
+          </div>
+        </SectionCardBody>
+      </SectionCard>
+    </div>
+
+    <div class="col-12">
+      <SectionCard>
+        <SectionCardBody>
+          <CardTitle>Card images</CardTitle>
+          <CardSubtitle>Pair a card with an image on the left, right, top, or bottom.</CardSubtitle>
+          <div class="row row-cards">
+            <div class="col-lg-6">
+              <CardImage title="Card with left side image" />
+            </div>
+            <div class="col-lg-6">
+              <CardImage title="Card with right side image" right imgId={3} />
+            </div>
+            <div class="col-md-6 col-lg-3">
+              <Card imgTop title="Card with top image" />
+            </div>
+            <div class="col-md-6 col-lg-3">
+              <Card imgBottom title="Card with bottom image" />
+            </div>
+          </div>
+        </SectionCardBody>
+      </SectionCard>
+    </div>
+
+    <div class="col-12">
+      <SectionCard>
+        <SectionCardBody>
+          <CardTitle>Footers</CardTitle>
+          <CardSubtitle>Add a footer for metadata, a single action, or a group of buttons.</CardSubtitle>
+          <div class="row row-cards">
+            <div class="col-md-6 col-lg-3">
+              <div class="card">
+                <div class="card-body">
+                  <CardTitle>Card with footer</CardTitle>
+                  <p class="text-secondary">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit incidunt, iste, itaque minima neque pariatur perferendis sed suscipit velit vitae voluptatem.</p>
+                </div>
+                <div class="card-footer">This is standard card footer</div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3">
+              <div class="card">
+                <div class="card-body">
+                  <CardTitle>Card with transparent footer</CardTitle>
+                  <p class="text-secondary">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit incidunt, iste, itaque minima neque pariatur perferendis sed suscipit velit vitae voluptatem.</p>
+                </div>
+                <div class="card-footer card-footer-transparent">This is transparent card footer</div>
+              </div>
+            </div>
+            <div class="col-md-6 col-lg-3"><Card title="Card with footer button" footerButton /></div>
+            <div class="col-md-6 col-lg-3"><Card title="Card with footer buttons" footerButtons /></div>
+          </div>
+        </SectionCardBody>
+      </SectionCard>
+    </div>
+
+    <div class="col-12">
+      <SectionCard>
+        <SectionCardBody>
+          <CardTitle>Footer elements</CardTitle>
+          <CardSubtitle>Compose footer content from prebuilt elements like links, switches, or avatars.</CardSubtitle>
+          <div class="row row-cards">
+            <div class="col-md-6 col-lg-3"><Card footerElements={['more', '>switch']} /></div>
+            <div class="col-md-6 col-lg-3"><Card footerElements={['>avatars']} /></div>
+          </div>
+        </SectionCardBody>
+      </SectionCard>
+    </div>
+
+    <div class="col-12">
+      <SectionCard>
+        <SectionCardBody>
+          <CardTitle>Header tabs & pills</CardTitle>
+          <CardSubtitle>Navigate between panes right from the card header.</CardSubtitle>
+          <div class="row row-cards">
+            <div class="col-md-6 col-lg-3"><Card headerTabs /></div>
+            <div class="col-md-6 col-lg-3"><Card headerPills /></div>
+            <div class="col-md-6 col-lg-3"><CardTabs /></div>
+            <div class="col-md-6 col-lg-3"><CardTabs bottom id="bottom" /></div>
+          </div>
+        </SectionCardBody>
+      </SectionCard>
+    </div>
+
+    <div class="col-12">
+      <SectionCard>
+        <SectionCardBody>
+          <CardTitle>Nested & grouped cards</CardTitle>
+          <CardSubtitle>Combine cards inside a card, a full-bleed group, or a matched-height deck.</CardSubtitle>
+          <div class="row row-cards">
+            <div class="col-12">
+              <div class="card">
+                <div class="card-header">
+                  <CardTitle>Cards inside card</CardTitle>
+                </div>
+                <div class="card-body">
+                  <div class="row row-cards">
+                    {
+                      cardsStack.map((name, i) => (
+                        <div class="col-md">
+                          <div class="card">
+                            <div class={`card-status-top bg-${cardsStackColors[i]}`} />
+                            <div class="card-header">
+                              <CardTitle>{name} card</CardTitle>
+                            </div>
+                            <BodyPlaceholder />
+                          </div>
+                        </div>
+                      ))
+                    }
                   </div>
                 </div>
-              ))
-            }
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-12">
-      <div class="card-group">
-        {
-          cardsStack.map((name) => (
-            <div class="card">
-              <div class="card-header">
-                <CardTitle>{name} card</CardTitle>
               </div>
-              <BodyPlaceholder />
             </div>
-          ))
-        }
-      </div>
+
+            <div class="col-12">
+              <div class="card-group">
+                {
+                  cardsStack.map((name) => (
+                    <div class="card">
+                      <div class="card-header">
+                        <CardTitle>{name} card</CardTitle>
+                      </div>
+                      <BodyPlaceholder />
+                    </div>
+                  ))
+                }
+              </div>
+            </div>
+
+            <div class="col-12">
+              <div class="row row-cards row-deck">
+                <div class="col">
+                  <div class="card">
+                    <div class="card-header">
+                      <CardTitle>Card title</CardTitle>
+                    </div>
+                    <div class="card-body">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</div>
+                    <div class="card-footer">Last updated 3 mins ago</div>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="card">
+                    <div class="card-header">
+                      <CardTitle>Card title</CardTitle>
+                    </div>
+                    <div class="card-body">This card has supporting text below as a natural lead-in to additional content.</div>
+                    <div class="card-footer">Last updated 3 mins ago</div>
+                  </div>
+                </div>
+                <div class="col">
+                  <div class="card">
+                    <div class="card-header">
+                      <CardTitle>Card with very long content</CardTitle>
+                    </div>
+                    <div class="card-body">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</div>
+                    <div class="card-footer">Last updated 3 mins ago</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </SectionCardBody>
+      </SectionCard>
     </div>
 
     <div class="col-12">
-      <div class="row row-cards row-deck">
-        <div class="col">
-          <div class="card">
-            <div class="card-header">
-              <CardTitle>Card title</CardTitle>
-            </div>
-            <div class="card-body">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</div>
-            <div class="card-footer">Last updated 3 mins ago</div>
+      <SectionCard>
+        <SectionCardBody>
+          <CardTitle>Special states</CardTitle>
+          <CardSubtitle>An empty state, a team placeholder, and a specialty credit card layout.</CardSubtitle>
+          <div class="row row-cards">
+            <div class="col-lg-4"><Card empty /></div>
+            <div class="col-lg-4"><EmptyTeam /></div>
+            <div class="col-lg-4"><CreditCard /></div>
           </div>
-        </div>
-        <div class="col">
-          <div class="card">
-            <div class="card-header">
-              <CardTitle>Card title</CardTitle>
-            </div>
-            <div class="card-body">This card has supporting text below as a natural lead-in to additional content.</div>
-            <div class="card-footer">Last updated 3 mins ago</div>
-          </div>
-        </div>
-        <div class="col">
-          <div class="card">
-            <div class="card-header">
-              <CardTitle>Card with very long content</CardTitle>
-            </div>
-            <div class="card-body">This is a wider card with supporting text below as a natural lead-in to additional content. This card has even longer content than the first to show that equal height action.</div>
-            <div class="card-footer">Last updated 3 mins ago</div>
-          </div>
-        </div>
-      </div>
+        </SectionCardBody>
+      </SectionCard>
     </div>
-
-    <div class="col-lg-4"><Card empty /></div>
-    <div class="col-lg-4"><EmptyTeam /></div>
-    <div class="col-lg-4"><CreditCard /></div>
   </div>
 </DefaultLayout>

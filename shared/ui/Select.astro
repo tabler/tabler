@@ -1,36 +1,26 @@
 ---
-// Renders a <select id="select-{id}"> populated from @data/selects.json (+ people)
-// and its TomSelect init script.
-// TODO: optgroup / flag / label indicator branches (unused on the modals page).
-import selects from '@data/selects.json';
-import people from '@data/people.json';
-import { firstLetters } from '@shared/lib/string-format';
+// Renders a <select id="select-{id}"> from explicit options and its TomSelect
+// init script. For the selects.json/people-fed demo variant see
+// @shared/components/demo/DataSelect.astro.
 import CaptureScript from '../components/CaptureScript.astro';
+import type { FormValidationState } from '@shared/lib/tokens';
+
+export type SelectOption = { value: string; text: string; custom?: string | undefined; selected?: boolean };
+export type SelectOptgroup = { label: string; options: SelectOption[] };
 
 interface Props {
-	id?: string;
-	key?: string;
-	class?: string;
-	state?: string;
-	placeholder?: string;
-	indicator?: string;
-	values?: string[];
+	id: string;
+	class?: string | undefined;
+	state?: FormValidationState | undefined;
+	placeholder?: string | undefined;
+	multiple?: boolean | undefined;
+	options?: SelectOption[];
+	optgroups?: SelectOptgroup[];
 }
 
-const {
-	id: idProp,
-	key: keyProp,
-	class: className,
-	state,
-	placeholder,
-	indicator,
-	values,
-} = Astro.props;
+const { id, class: className, state, placeholder, multiple, options = [], optgroups = [] } = Astro.props;
 
 const value = '';
-const id = idProp ?? keyProp;
-const key = keyProp ?? 'people';
-const data = (selects as Record<string, any>)[key] ?? {};
 
 const selectClass = [
 	'form-select',
@@ -38,113 +28,62 @@ const selectClass = [
 	state && `is-${state}`,
 ]
 
-const isMultiple = Boolean(data.multiple);
-
-interface Person {
-	id: string;
-	full_name: string;
-	photo?: string;
-}
-
-// Build the option list.
-type Opt = { value: string; text: string; custom?: string | undefined; selected?: boolean };
-type Group = { label: string; options: Opt[] };
-let options: Opt[] = [];
-let optgroups: Group[] = [];
-
-if (values) {
-	options = values.map((v) => ({ value: v, text: v }));
-} else if (data.data === 'people') {
-	options = (people as Person[]).slice(0, 20).map((person) => {
-		let custom: string | undefined;
-		if (indicator === 'avatar') {
-			custom = person.photo
-				? `<span class="avatar avatar-xs" style="background-image: url(./${person.photo})"></span>`
-				: `<span class="avatar avatar-xs">${firstLetters(person.full_name)}</span>`;
-		}
-		return { value: person.id, text: person.full_name, custom };
-	});
-} else if (data.data === 'optgroup') {
-	optgroups = (data.options as { title: string; options: string[] }[]).map((group) => ({
-		label: group.title,
-		options: group.options.map((option) => ({ value: option, text: option })),
-	}));
-} else if (Array.isArray(data.options)) {
-	options = (data.options as string[]).map((option) => ({ value: option, text: option }));
-} else if (data.options) {
-	// object of { key: { name, flag?, label?, selected? } } — with optional indicator
-	options = Object.entries(data.options as Record<string, any>).map(([optKey, v]) => {
-		let custom: string | undefined;
-		if (indicator === 'flag') custom = `<span class="flag flag-xs flag-country-${v.flag}"></span>`;
-		else if (indicator === 'label') custom = `<span class="badge bg-primary-lt">${v.label}</span>`;
-		return { value: optKey, text: v.name, custom, selected: Boolean(v.selected) };
-	});
-}
-
-const selectId = id ? `select-${id}` : undefined;
+const selectId = `select-${id}`;
 ---
 
-{
-	id && (
-		<select
-			class:list={selectClass}
-			data-placeholder={placeholder}
-			id={`select-${id}`}
-			value={value}
-			multiple={isMultiple ? '' : undefined}
-		>
-			{
-				optgroups.map((group) => (
-					<optgroup label={group.label}>
-						{group.options.map((option) => (
-							<option value={option.value}>{option.text}</option>
-						))}
-					</optgroup>
-				))
-			}
-			{
-				options.map((option) => (
-					<option
-						value={option.value}
-						data-custom-properties={option.custom}
-						selected={option.selected || undefined}
-					>
-						{option.text}
-					</option>
-				))
-			}
-		</select>
-	)
-}
-{
-	id && (
-		<CaptureScript>
-			<!-- BEGIN SELECT -->
-			<script is:inline define:vars={{ selectId }}>
-				function initSelect() {
-					window.tabler_select ??= {};
+<select
+	class:list={selectClass}
+	data-placeholder={placeholder}
+	id={`select-${id}`}
+	value={value}
+	multiple={multiple ? '' : undefined}
+>
+	{
+		optgroups.map((group) => (
+			<optgroup label={group.label}>
+				{group.options.map((option) => (
+					<option value={option.value}>{option.text}</option>
+				))}
+			</optgroup>
+		))
+	}
+	{
+		options.map((option) => (
+			<option
+				value={option.value}
+				data-custom-properties={option.custom}
+				selected={option.selected || undefined}
+			>
+				{option.text}
+			</option>
+		))
+	}
+</select>
+<CaptureScript>
+	<!-- BEGIN SELECT -->
+	<script is:inline define:vars={{ selectId }}>
+		function initSelect() {
+			window.tabler_select ??= {};
 
-					const renderOption = (data, escape) => {
-						if (data.customProperties) {
-							return `<div class="dropdown-item"><span class="dropdown-item-indicator">${data.customProperties}</span>${escape(data.text)}</div>`;
-						}
-						return `<div>${escape(data.text)}</div>`;
-					};
-
-					window.TomSelect &&
-						(window.tabler_select[selectId] = new TomSelect(document.getElementById(selectId), {
-							copyClassesToDropdown: false,
-							dropdownParent: 'body',
-							render: {
-								item: renderOption,
-								option: renderOption,
-							},
-						}));
+			const renderOption = (data, escape) => {
+				if (data.customProperties) {
+					return `<div class="dropdown-item"><span class="dropdown-item-indicator">${data.customProperties}</span>${escape(data.text)}</div>`;
 				}
+				return `<div>${escape(data.text)}</div>`;
+			};
 
-				document.readyState !== 'loading' ? initSelect() : document.addEventListener('DOMContentLoaded', initSelect, { once: true });
-			</script>
-			<!-- END SELECT -->
-		</CaptureScript>
-	)
-}
+			window.TomSelect &&
+				(window.tabler_select[selectId] = new TomSelect(document.getElementById(selectId), {
+					copyClassesToDropdown: false,
+					dropdownParent: 'body',
+					render: {
+						item: renderOption,
+						option: renderOption,
+					},
+				}));
+		}
+
+		document.readyState !== 'loading' ? initSelect() : document.addEventListener('DOMContentLoaded', initSelect, { once: true });
+	</script>
+	<!-- END SELECT -->
+</CaptureScript>

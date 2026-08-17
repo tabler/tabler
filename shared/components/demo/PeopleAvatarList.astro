@@ -1,0 +1,28 @@
+---
+// Demo avatar list fed from people.json (limit/offset window) with an optional
+// "+N" placeholder — the data-driven sugar extracted from ui/AvatarList.
+import AvatarList from '@ui/AvatarList.astro'
+import Avatar from '@ui/Avatar.astro'
+import type { AvatarSize } from '@ui/Avatar.astro'
+import { people } from '@shared/lib/people'
+
+interface Props {
+  limit?: number | undefined
+  offset?: number | undefined
+  stacked?: boolean
+  /** avatar-list-{size} + forwarded to the Avatars */
+  size?: AvatarSize | undefined
+  class?: string
+  /** placeholder avatar appended after the list */
+  text?: string
+}
+
+const { limit = 5, offset = 0, stacked, size, class: className, text } = Astro.props
+
+const list = people.slice(offset, offset + limit)
+---
+
+<AvatarList stacked={stacked} size={size} class={className}>
+  {list.map((person) => <Avatar person={person} size={size} />)}
+  {text && <Avatar placeholder={text} size={size} />}
+</AvatarList>

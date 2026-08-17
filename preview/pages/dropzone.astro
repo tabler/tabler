@@ -4,14 +4,18 @@ import Dropzone from '@ui/Dropzone.astro'
 import Card from '@ui/Card.astro'
 import CardBody from '@ui/CardBody.astro'
 import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import DocsLink from '@ui/DocsLink.astro'
 ---
 
-<DefaultLayout title="Dropzone" pageHeader="Dropzone" pageMenu="plugins.dropzone" pageLibs={['dropzone']}>
+<DefaultLayout title="Dropzone" pageMenu="plugins.dropzone" pageLibs={['dropzone']}>
+  <DocsLink slot="page-header-actions" path="/ui/components/dropzone" />
   <div class="row row-cards">
     <div class="col-md-6">
       <Card>
         <CardBody>
           <CardTitle>Basic Usage</CardTitle>
+          <CardSubtitle>Drag a file in or click to browse — a single drop target for one upload.</CardSubtitle>
           <Dropzone id="default" />
         </CardBody>
       </Card>
@@ -20,6 +24,7 @@ import CardTitle from '@ui/CardTitle.astro'
       <Card>
         <CardBody>
           <CardTitle>Multiple File Upload</CardTitle>
+          <CardSubtitle>Accept and preview several files at once from the same drop target.</CardSubtitle>
           <Dropzone id="multiple" multiple={true} />
         </CardBody>
       </Card>
@@ -28,6 +33,7 @@ import CardTitle from '@ui/CardTitle.astro'
       <Card>
         <CardBody>
           <CardTitle>Custom Dropzone</CardTitle>
+          <CardSubtitle>Swap in your own label and helper text for the drop target.</CardSubtitle>
           <Dropzone id="custom" custom={true} text="Your text here" description="Your custom description here" />
         </CardBody>
       </Card>

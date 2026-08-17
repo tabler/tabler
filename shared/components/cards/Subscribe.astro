@@ -1,22 +1,16 @@
 ---
 import Avatar from '@ui/Avatar.astro'
+import { people } from '@shared/lib/people'
 import CardDropdown from '@ui/CardDropdown.astro'
-import people from '@data/people.json'
 import { requireIndex } from '@shared/lib/array'
-
-interface Person {
-  full_name?: string
-  company?: string
-  photo?: string
-  [key: string]: unknown
-}
+import CardTitle from '@ui/CardTitle.astro'
 
 interface Props {
   personId?: number
 }
 
 const { personId = 0 } = Astro.props
-const person = requireIndex(people as Person[], personId)
+const person = requireIndex(people, personId)
 ---
 
 <div class="card">
@@ -26,9 +20,9 @@ const person = requireIndex(people as Person[], personId)
         <Avatar person={person} size="lg" />
       </div>
       <div class="col">
-        <h4 class="card-title m-0">
+        <CardTitle class="m-0">
           <a href="#">{person.full_name}</a>
-        </h4>
+        </CardTitle>
         <div class="text-secondary">
           Working in {person.company}
         </div>

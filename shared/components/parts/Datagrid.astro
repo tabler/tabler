@@ -1,20 +1,14 @@
 ---
 // rounded=true on avatar includes has no effect.
 import Avatar from '@ui/Avatar.astro'
-import AvatarList from '@ui/AvatarList.astro'
+import { people } from '@shared/lib/people'
+import PeopleAvatarList from '@shared/components/demo/PeopleAvatarList.astro'
 import Icon from '@ui/Icon.astro'
 import Datagrid from '@ui/Datagrid.astro'
 import DatagridItem from '@ui/DatagridItem.astro'
-import people from '@data/people.json'
 import { requireIndex } from '@shared/lib/array'
 
-interface Person {
-  full_name?: string
-  photo?: string
-  [key: string]: unknown
-}
-
-const creator = requireIndex(people as Person[], 0)
+const creator = requireIndex(people, 0)
 ---
 
 <Datagrid>
@@ -33,7 +27,7 @@ const creator = requireIndex(people as Person[], 0)
     <span class="status status-green"> Active </span>
   </DatagridItem>
   <DatagridItem title="Avatars list">
-    <AvatarList stacked={true} size="xs" text="+3" />
+    <PeopleAvatarList stacked={true} size="xs" text="+3" />
   </DatagridItem>
   <DatagridItem title="Checkbox">
     <label class="form-check">

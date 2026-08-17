@@ -1,5 +1,5 @@
 ---
-import ThemeSettings from '@ui/ThemeSettings.astro'
+import ThemeSettings from '@shared/components/demo/ThemeSettings.astro'
 import { site } from '@shared/lib/site'
 import PageModals from '@shared/components/PageModals.astro'
 import PageScripts from '@shared/components/PageScripts.astro'
@@ -15,9 +15,11 @@ interface Props {
   rtl?: boolean | undefined
   /** Relative asset base: '.' for root pages, '..' one level deep */
   base?: string
+  /** <meta name="description"> — falls back to the site description */
+  description?: string | undefined
 }
 
-const { title, pageLibs = [], bodyClass, rtl = false, base = '.' } = Astro.props
+const { title, pageLibs = [], bodyClass, rtl = false, base = '.', description } = Astro.props
 
 // Development build: unminified assets, dev favicon.
 const environment = 'development'
@@ -44,6 +46,7 @@ const libJsFiles = (head: boolean) => pageLibEntries.filter(([, lib]) => Boolean
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
     <title>{title ? `${title} - ` : ''}{site.title} - {site.descriptionShort}</title>
+    <meta name="description" content={description ?? site.descriptionShort} />
 
     <link rel="icon" href={`${base}/favicon-dev.ico`} type="image/x-icon" />
     <link rel="shortcut icon" href={`${base}/favicon-dev.ico`} type="image/x-icon" />

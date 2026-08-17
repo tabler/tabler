@@ -1,13 +1,15 @@
 ---
 // Gallery uses horizontal photos only.
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
-import Photo from '@ui/Photo.astro'
+import Photo from '@components/demo/Photo.astro'
 import photos from '@data/photos.json'
+import DocsLink from '@ui/DocsLink.astro'
 
 const filteredPhotos = photos.filter((photo) => photo.horizontal)
 ---
 
-<DefaultLayout title="Lightbox" pageHeader="Lightbox" pageMenu="plugins.lightbox" pageLibs={['fslightbox']}>
+<DefaultLayout title="Lightbox" pageMenu="plugins.lightbox" pageLibs={['fslightbox']} description="Click any photo to open it full-screen, then arrow or swipe through the rest of the gallery.">
+  <DocsLink slot="page-header-actions" path="/ui/components/lightbox" />
   <div class="row row-cols-3 row-cols-md-4 row-cols-lg-6 g-3">
     {
       filteredPhotos.map((photo) => (

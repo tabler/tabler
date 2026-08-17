@@ -14,8 +14,12 @@
     "version": "changeset version",
     "publish": "changeset publish",
     "reformat-md": "tsx .build/reformat-mdx.ts",
+    "html-diff": "tsx .build/html-diff.ts check",
+    "html-diff:baseline": "tsx .build/html-diff.ts baseline",
+    "generate-tokens": "tsx .build/generate-tokens.ts",
+    "generate-tokens:check": "tsx .build/generate-tokens.ts check",
     "check-docs-links": "tsx .build/check-docs-links.ts",
-    "lint": "pnpm run lint-md && pnpm run check-docs-links && pnpm run lint-prettier && pnpm run lint-scss-vars",
+    "lint": "pnpm run lint-md && pnpm run check-docs-links && pnpm run lint-prettier && pnpm run lint-scss-vars && pnpm run generate-tokens:check",
     "lint:fix": "(pnpm run lint-md-fix || true) && (pnpm run lint:scss:fix || true) && (pnpm run format-prettier || true)",
     "lint:scss": "pnpm --filter @tabler/core lint:scss",
     "lint:scss:fix": "pnpm --filter @tabler/core lint:scss:fix",
@@ -35,7 +39,6 @@
     "shx": "^0.4.0"
   },
   "devDependencies": {
-    "@changesets/changelog-github": "^0.7.0",
     "@changesets/cli": "^2.31.1",
     "@stylistic/stylelint-config": "^2.0.0",
     "adm-zip": "^0.6.0",

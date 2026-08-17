@@ -4,6 +4,7 @@
 // - menu/link urls in shared/data/docs.json
 // - redirect destinations in docs/astro.config.mjs
 // - href string literals in docs .astro components
+// - docs paths linked from the demo site: <DocsLink path="…"> and getDocsUrl('…')
 // Anchors are checked against heading slugs computed with github-slugger —
 // the same library the markdown pipeline uses. Demo markup inside <Example>
 // blocks and code fences is ignored; its links are illustrative by design.
@@ -214,6 +215,19 @@ for (const destination of redirectDestinations) {
 for (const file of sync(join(repoRoot, 'docs', '{components,layouts,pages}', '**', '*.astro'))) {
   const label = relative(repoRoot, file)
   for (const match of readFileSync(file, 'utf8').matchAll(/href(?:=|:\s*)["'](\/[^"']*)["']/g)) {
+    checkTarget(label, match[1] ?? '')
+  }
+}
+
+// 5. Docs paths used by the demo site — <DocsLink path="…"> and getDocsUrl('…').
+// These render as absolute docs.tabler.io urls, so a typo only shows up in a browser.
+for (const file of sync(join(repoRoot, '{preview,shared}', '**', '*.astro'), { ignore: '**/node_modules/**' })) {
+  const label = relative(repoRoot, file)
+  const source = readFileSync(file, 'utf8')
+  for (const match of source.matchAll(/<DocsLink\b[^>]*?\spath=["'](\/[^"']*)["']/g)) {
+    checkTarget(label, match[1] ?? '')
+  }
+  for (const match of source.matchAll(/getDocsUrl\(\s*["'](\/[^"']*)["']/g)) {
     checkTarget(label, match[1] ?? '')
   }
 }

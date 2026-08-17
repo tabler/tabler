@@ -3,57 +3,61 @@ import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
 import Rating from '@ui/Rating.astro'
 import Card from '@ui/Card.astro'
 import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import DocsLink from '@ui/DocsLink.astro'
 ---
 
-<DefaultLayout title="Star Ratings" pageHeader="Star Ratings" pageMenu="base.stars-rating" pageLibs={['tabler-flags', 'star-rating.js']}>
-  <div class="row row-cards">
-    <div class="col-md-4">
-      <div class="row row-cards">
-        <div class="col-12">
-          <Card>
-            <CardBody>
-              <h3 class="card-title">Basic</h3>
-              <div><Rating id="basic" value={4} /></div>
-            </CardBody>
-          </Card>
-        </div>
-        <div class="col-12">
-          <Card>
-            <CardBody>
-              <h3 class="card-title">Different icon</h3>
-              <div class="space-y">
-                <Rating id="different-icon" value={4} />
-                <Rating icon="heart" value={4} color="red" />
-                <Rating icon="ghost" value={4} color="azure" />
-                <Rating icon="circle" value={4} color="green" />
-              </div>
-            </CardBody>
-          </Card>
-        </div>
-      </div>
-    </div>
-    <div class="col-md-4">
+<DefaultLayout title="Star Ratings" pageMenu="base.stars-rating" pageLibs={['tabler-flags', 'star-rating.js']} description="An interactive star rating built on the star-rating.js widget, backed by a hidden select for accessibility and forms.">
+  <DocsLink slot="page-header-actions" path="/ui/components/star-rating" />
+
+  <div class="row row-cards mb-5">
+    <div class="col-md-6 col-lg-4">
       <Card>
         <CardBody>
-          <h3 class="card-title">Custom colors</h3>
+          <CardTitle>Basic</CardTitle>
+          <CardSubtitle>Click a star to set the value.</CardSubtitle>
+          <Rating id="basic" value={4} />
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Icons</CardTitle>
+          <CardSubtitle>Swap the star for any icon with the <code>icon</code> prop.</CardSubtitle>
           <div class="space-y">
-            <Rating id="color" value={3} />
-            <Rating id="color-primary" color="primary" value={3} />
-            <Rating id="color-red" color="red" value={3} />
-            <Rating id="color-lime" color="lime" value={3} />
+            <Rating id="icon-star" value={4} />
+            <Rating id="icon-heart" icon="heart" value={4} color="red" />
+            <Rating id="icon-ghost" icon="ghost" value={4} color="azure" />
+            <Rating id="icon-circle" icon="circle" value={4} color="green" />
           </div>
         </CardBody>
       </Card>
     </div>
-    <div class="col-md-4">
+    <div class="col-md-6 col-lg-4">
       <Card>
         <CardBody>
-          <h3 class="card-title">Custom sizes</h3>
+          <CardTitle>Sizes</CardTitle>
+          <CardSubtitle>Match the rating to surrounding text with <code>size</code>.</CardSubtitle>
           <div class="space-y">
             <Rating id="size-sm" value={3} size="sm" />
-            <Rating id="size-primary" value={3} />
             <Rating id="size-md" value={3} size="md" />
             <Rating id="size-lg" value={3} size="lg" />
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+    <div class="col-md-6 col-lg-4">
+      <Card>
+        <CardBody>
+          <CardTitle>Colors</CardTitle>
+          <CardSubtitle>Set <code>color</code> to any theme or extended color to match the rest of the page.</CardSubtitle>
+          <div class="space-y">
+            <Rating id="color-default" value={3} />
+            <Rating id="color-primary" color="primary" value={3} />
+            <Rating id="color-red" color="red" value={3} />
+            <Rating id="color-lime" color="lime" value={3} />
           </div>
         </CardBody>
       </Card>

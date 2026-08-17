@@ -1,17 +1,11 @@
 ---
 // person = people[person-id]; the cover photo is photos[person-id].file.
 import { staticPath } from '@shared/lib/assets'
+import { people } from '@shared/lib/people'
 import Avatar from '@ui/Avatar.astro'
-import people from '@data/people.json'
 import photos from '@data/photos.json'
 import { requireIndex } from '@shared/lib/array'
-
-interface Person {
-  full_name?: string
-  job_title?: string
-  photo?: string
-  [key: string]: unknown
-}
+import CardTitle from '@ui/CardTitle.astro'
 
 interface Photo {
   file?: string
@@ -24,7 +18,7 @@ interface Props {
 }
 
 const { personId = 0, blurred } = Astro.props
-const person = requireIndex(people as Person[], personId)
+const person = requireIndex(people, personId)
 const photo = requireIndex(photos as Photo[], personId)
 ---
 
@@ -33,7 +27,7 @@ const photo = requireIndex(photos as Photo[], personId)
     <Avatar size="xl" person={person} thumb />
   </div>
   <div class="card-body text-center">
-    <h3 class="card-title mb-1">{person.full_name}</h3>
+    <CardTitle class="mb-1">{person.full_name}</CardTitle>
     <div class="text-secondary">{person.job_title}</div>
   </div>
 </a>

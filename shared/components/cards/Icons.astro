@@ -1,6 +1,7 @@
 ---
 import Icon from '@ui/Icon.astro'
 import icons from '@data/icons.json'
+import CardTitle from '@ui/CardTitle.astro'
 
 interface Props {
   title?: string
@@ -19,7 +20,7 @@ const entries = Object.entries(icons as Record<string, { svg?: Record<string, st
 
 <div class="card">
   <div class="card-header">
-    <h3 class="card-title">{title}</h3>
+    <CardTitle>{title}</CardTitle>
   </div>
   <div class="card-body p-0">
     <div class="demo-icons-list-wrap">
@@ -29,7 +30,7 @@ const entries = Object.entries(icons as Record<string, { svg?: Record<string, st
             ([iconName, icon]) =>
               icon.svg?.[type] && (
                 <a href={`https://tabler.io/icons/icon/${iconName}`} target="_blank" rel="noopener" class="demo-icons-list-item" title={iconName} data-bs-toggle="tooltip" data-bs-placement="top">
-                  <Icon name={iconName} type={type} />
+                  <Icon name={iconName} filled={type === 'filled'} />
                 </a>
               ),
           )

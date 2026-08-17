@@ -106,6 +106,10 @@ Or try it without installing anything: open the [tabler-starter](https://github.
 
 The full documentation is available at [docs.tabler.io](https://docs.tabler.io/). To see what changed in each release, check the [changelog](core/CHANGELOG.md) and [GitHub releases](https://github.com/tabler/tabler/releases).
 
+### Upgrading to 1.5
+
+Tabler 1.5 ships Bootstrap inside the package, moves the Sass sources to the module system, and drops a few unused variables. Read the [upgrade guide](https://docs.tabler.io/ui/getting-started/upgrade/) before updating from 1.4 — it lists every breaking change with a before-and-after example.
+
 ## 🛠️ Development
 
 To build a copy of Tabler locally, you have two options: set up the development tools directly on your device, or use the provided Docker setup. You can also start right away in the cloud with [GitHub Codespaces](https://codespaces.new/tabler/tabler) — the dev container installs everything for you.

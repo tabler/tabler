@@ -18,8 +18,9 @@ import CardBody from '@ui/CardBody.astro'
 import CardFooter from '@ui/CardFooter.astro'
 import CardTitle from '@ui/CardTitle.astro'
 import FormGroup from '@ui/FormGroup.astro'
-import people from '@data/people.json'
+import { people } from '@shared/lib/people'
 import { requireIndex } from '@shared/lib/array'
+import DocsLink from '@ui/DocsLink.astro'
 
 const httpMethods = ['GET', 'POST', 'PUT', 'HEAD', 'DELETE', 'PATCH']
 const comparisons = [
@@ -50,12 +51,13 @@ const rows = [
 ]
 ---
 
-<DefaultLayout title="Form elements" pageHeader="Form elements" pageMenu="form.elements" pageLibs={['nouislider', 'autosize', 'tabler-flags', 'tabler-payments', 'litepicker', 'tom-select', 'imask']}>
+<DefaultLayout title="Form elements" pageMenu="form.elements" pageLibs={['nouislider', 'autosize', 'tabler-flags', 'tabler-payments', 'litepicker', 'tom-select', 'imask']}>
+  <DocsLink slot="page-header-actions" path="/ui/forms/form-elements" />
   <div class="row row-cards">
     <div class="col-12">
       <Card as="form" action="https://httpbin.org/post" method="post">
         <CardHeader>
-          <h4 class="card-title">Form elements</h4>
+          <CardTitle>Form elements</CardTitle>
         </CardHeader>
         <CardBody>
           <div class="row g-5">

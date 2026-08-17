@@ -1,13 +1,16 @@
 ---
 interface Props {
-  text?: string
-  position?: string
+  text: string
+  /** hr-text-{position} (core/scss/ui/typo/_hr.scss); center is the default look */
+  position?: 'start' | 'center' | 'end' | undefined
   class?: string
+  /** remaining attributes (id, data-*, aria-*, …) are forwarded to the root element */
+  [key: string]: unknown
 }
 
-const { text = 'Label', position, class: className } = Astro.props
+const { text, position, class: className, ...rest } = Astro.props
 
 const classes = ['hr-text', position && `hr-text-${position.toLowerCase()}`, className]
 ---
 
-<div class:list={classes}>{text}</div>
+<div class:list={classes} {...rest}>{text}</div>

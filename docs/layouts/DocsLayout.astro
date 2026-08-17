@@ -3,6 +3,7 @@
 // Standalone layout with its own <head>; does NOT use BaseLayout.astro.
 // Development uses the unminified assets; production additionally emits the SEO metadata.
 import { site } from '@shared/lib/site';
+import { isExternal } from '@shared/lib/url';
 import libs from '@tabler/core/libs.json';
 import docs from '@data/docs.json';
 import Icon from '@ui/Icon.astro';
@@ -120,7 +121,7 @@ const editFilePath =
 type Lib = { npm?: string; js?: string[]; css?: string[] };
 const libEntries = Object.entries(libs as Record<string, Lib>);
 const libUrl = (lib: Lib, file: string) =>
-	file.startsWith('http://') || file.startsWith('https://')
+	isExternal(file)
 		? file
 		: `/dist/libs/${lib.npm}/${file}`;
 const docsLibCss = libEntries
