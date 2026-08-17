@@ -15,7 +15,21 @@ function getHighlighter(): Promise<Highlighter> {
 export function beautifyHtml(code: string): string {
   return beautify.html(code, {
     indent_size: 2,
-    wrap_line_length: 80,
+    indent_char: ' ',
+    max_preserve_newlines: 5,
+    preserve_newlines: true,
+    indent_scripts: 'normal',
+    wrap_attributes: 'auto',
+    end_with_newline: false,
+    wrap_line_length: 0,
+    indent_inner_html: false,
+    indent_empty_lines: false,
+    // The examples arrive as one line: MDX drops the whitespace between
+    // sibling elements, and js-beautify will not add a line break where one
+    // would be rendered as a space. Emptying the inline list lifts that
+    // restriction, so every element goes on its own line — the demo markup
+    // is written that way in the source.
+    inline: [],
   })
 }
 
