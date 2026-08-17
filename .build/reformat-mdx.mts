@@ -64,24 +64,23 @@ async function replaceAsync(str: string, regex: RegExp, asyncFn: (...args: strin
  * off as a second guard.
  *
  * Empty lines are stripped: a blank line inside the slot would make MDX start a
- * new paragraph. Raw text lines are fine — the docs pipeline unwraps the
- * paragraphs MDX wraps them in (see docs/lib/remark-unwrap-jsx-paragraphs.mjs).
+ * new paragraph. Raw text is glued to the preceding markup line: markdown
+ * syntax is line-based, so a text line of its own can turn into a heading
+ * (`=`), a list (`+ 2`) or a blockquote (`>`); glued after a tag it stays
+ * phrasing text, and the docs pipeline unwraps the paragraph MDX wraps it in
+ * (docs/lib/satteri-unwrap-jsx-paragraphs.mjs).
  *
- * Prettier's whitespace-sensitive close artifacts (`</a` + a lone `>`, or a
- * line starting with `>label`) do not parse in every MDX position, so the
- * bracket is folded back onto the previous line — whitespace inside a tag,
- * no rendering change. The real MDX compiler then has the final word: an
- * example whose formatted form it rejects keeps its original form.
+ * The real MDX compiler has the final word: an example whose formatted form
+ * it rejects keeps its original form.
  */
 async function formatExamples(source: string): Promise<string> {
   return replaceAsync(source, /(<Example\b[^>]*>\n)([\s\S]*?)(\n<\/Example>)/g, async (_m: string, open: string, inner: string, close: string) => {
     if (inner.includes('{')) return _m
 
-    const formatted = (await formatHTML(inner, { embeddedLanguageFormatting: 'off' }))
-      .replace(/^\s*[\r\n]/gm, '')
-      .replace(/(<\/[\w.-]+)\s*\n\s*>/g, '$1>')
-      .replace(/\s*\n\s*>(?=\S)/g, '>')
-      .trim()
+    // Whitespace sensitivity is off: MDX drops whitespace between sibling JSX
+    // elements anyway, and with the default `css` sensitivity prettier glues
+    // inline siblings together (`</span><span`) and wraps inside their tags.
+    const formatted = glueTextLines((await formatHTML(inner, { embeddedLanguageFormatting: 'off', htmlWhitespaceSensitivity: 'ignore' })).replace(/^\s*[\r\n]/gm, '').trim())
     if (!formatted) return _m
 
     if (!(await compilesAsMdx(open + formatted + close))) {
@@ -100,6 +99,53 @@ async function compilesAsMdx(source: string): Promise<boolean> {
   } catch {
     return false
   }
+}
+
+// A complete tag; character classes also match newlines, so a tag spread over
+// several lines (one attribute per line) matches too.
+const tagPattern = /<\/?[a-zA-Z][\w.-]*(?:"[^"]*"|'[^']*'|[^<>"'])*?\/?>/g
+const voidTags = new Set(['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'track', 'wbr'])
+
+/** opens minus closes over the tags of one line */
+function lineBalance(line: string): number {
+  let depth = 0
+  for (const m of line.matchAll(/<(\/)?([a-zA-Z][\w.-]*)((?:"[^"]*"|'[^']*'|[^<>"'])*?)(\/)?>/g)) {
+    if (m[1]) depth--
+    else if (!m[4] && !voidTags.has(m[2]!.toLowerCase())) depth++
+  }
+  return depth
+}
+
+const hasText = (line: string): boolean => line.replace(/<[^<>]*>/g, '').trim().length > 0
+
+/**
+ * Merge raw-text lines back into their markup (see formatExamples). MDX parses
+ * a line that mixes text and tags as one markdown paragraph, and every tag in
+ * it must open and close within that paragraph — so a text line joins the
+ * preceding line, and the joined line keeps absorbing following lines until
+ * its tags balance. Tags spread over several lines are folded up first so the
+ * balance is countable per line; examples without raw text keep prettier's
+ * output untouched.
+ */
+function glueTextLines(formatted: string): string {
+  const lines = formatted.split('\n')
+  if (!lines.some((line) => hasText(line))) return formatted
+
+  const out: string[] = []
+  for (const line of formatted.replace(tagPattern, (tag) => tag.replace(/\s+/g, ' ').replace(/ >$/, '>')).split('\n')) {
+    const trimmed = line.trim()
+    const tail = out[out.length - 1]
+    const absorbing = tail !== undefined && hasText(tail) && lineBalance(tail) > 0
+    if (tail !== undefined && trimmed && (absorbing || !trimmed.startsWith('<'))) out[out.length - 1] = `${tail} ${trimmed}`
+    else out.push(line)
+    // A text line can also land after a closing tag whose opener sits on an
+    // earlier line (label after a multi-line svg) — pull those lines up too.
+    while (out.length > 1 && hasText(out[out.length - 1]!) && lineBalance(out[out.length - 1]!) < 0) {
+      const merged = `${out[out.length - 2]} ${out[out.length - 1]!.trim()}`
+      out.splice(out.length - 2, 2, merged)
+    }
+  }
+  return out.join('\n')
 }
 
 async function processFiles(): Promise<void> {
