@@ -8,7 +8,7 @@ description: 'Set up Tabler: HTML, CSS, JS, and build stunning UIs.'
 import Example from '@components/Example.astro'
 import CdnImportPackage from '@components/CdnImportPackage.astro'
 import { Code } from 'astro:components'
-import { site } from '@shared/lib/site.ts'
+import { cdnCssTag, cdnJsTag } from '@lib/cdn-snippets.ts'
 import Steps from '@components/Steps.astro'
 
 Using a framework? See [Tabler framework integration guides](/ui/getting-started/frameworks).
@@ -53,11 +53,11 @@ Update your HTML file to include these resources:
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Tabler Demo</title>
-    <link rel="stylesheet" href="${site.cdnUrl}/dist/css/tabler.min.css" />
+    ${cdnCssTag()}
   </head>
   <body>
     <h1>Hello, Tabler!</h1>
-    <script src="${site.cdnUrl}/dist/js/tabler.min.js"></script>
+    ${cdnJsTag()}
   </body>
 </html>`}
 />
