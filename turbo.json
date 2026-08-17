@@ -19,9 +19,23 @@
       ],
       "cache": true
     },
+    "@tabler/preview#assets": {
+      "inputs": [
+        "scss/**",
+        "js/**",
+        ".build/vite.config.mts",
+        "$TURBO_ROOT$/.build/build-css.ts",
+        "$TURBO_ROOT$/.build/vite.config.helper.ts"
+      ],
+      "outputs": [
+        "tmp-assets/**"
+      ],
+      "cache": true
+    },
     "@tabler/preview#build": {
       "dependsOn": [
-        "^build"
+        "^build",
+        "@tabler/preview#assets"
       ],
       "inputs": [
         "$TURBO_DEFAULT$",
@@ -29,14 +43,14 @@
       ],
       "outputs": [
         "dist/**",
-        "demo/**",
-        "tmp-assets/**"
+        "demo/**"
       ],
       "cache": true
     },
     "@tabler/docs#build": {
       "dependsOn": [
-        "^build"
+        "@tabler/core#build",
+        "@tabler/preview#assets"
       ],
       "inputs": [
         "$TURBO_DEFAULT$",

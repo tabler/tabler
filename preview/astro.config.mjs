@@ -121,6 +121,9 @@ export default defineConfig({
           from: path('./tmp-assets'),
           to: path('./public/preview'),
           label: '@tabler/preview',
+          // Built by the separate "assets" script (its own turbo task), so this
+          // build can start with a half-written tmp-assets from an aborted run.
+          requiredFile: path('./tmp-assets/css/demo.css'),
         },
         {
           // static assets (photos, avatars, tracks, brand svgs...). The real source,
