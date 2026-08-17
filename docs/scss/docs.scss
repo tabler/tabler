@@ -176,12 +176,23 @@ header > .navbar {
 
 // Page footer below the article panel, aligned with the panel content.
 .docs-footer {
-  padding: 0.5rem 1rem 2rem;
+  padding: 0.5rem 0 2rem;
 
   @media (min-width: 992px) {
     margin-inline: 1.5rem;
-    padding: 0.5rem 2.5rem 2.5rem;
+    padding: 0.5rem 0 2.5rem;
   }
+}
+
+// Footer theme switcher: a segmented control whose active segment follows the
+// stored choice — light, dark, or auto (see the data-docs-theme inline script
+// in DocsLayout.astro; tabler-theme.js resolves auto to the system scheme).
+:root[data-docs-theme='light'] .docs-theme-toggle-light,
+:root[data-docs-theme='dark'] .docs-theme-toggle-dark,
+:root[data-docs-theme='auto'] .docs-theme-toggle-auto {
+  color: var(--tblr-body-color);
+  background: var(--tblr-bg-surface);
+  border-color: var(--tblr-border-color);
 }
 
 // Sidebar navigation: compact rounded links.

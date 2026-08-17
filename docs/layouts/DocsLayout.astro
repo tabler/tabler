@@ -296,6 +296,11 @@ const relatedPages = await Promise.all(
 		<a href="#content" class="visually-hidden-focusable skip-link">Skip to main content</a>
 		<!-- BEGIN GLOBAL THEME SCRIPT -->
 		<script is:inline src="/dist/js/tabler-theme.js"></script>
+		<script is:inline>
+			// The stored *choice* (light/dark/auto) drives the footer theme switcher's
+			// active segment; tabler-theme.js above only exposes the resolved theme.
+			document.documentElement.setAttribute('data-docs-theme', localStorage.getItem('tabler-theme') || 'auto');
+		</script>
 		<!-- END GLOBAL THEME SCRIPT -->
 		<!-- BEGIN NAVBAR  -->
 		<header role="banner">
@@ -313,7 +318,7 @@ const relatedPages = await Promise.all(
 							<button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#docs-menu-offcanvas" aria-label="Close"></button>
 						</div>
 						<div class="offcanvas-body">
-							<div class="py-lg-6 flex-fill">
+							<div class="py-lg-4 flex-fill">
 								<div class="space-y space-y-5">
 									<nav class="nav nav-vertical" aria-label="Resources">
 										{
@@ -425,12 +430,19 @@ const relatedPages = await Promise.all(
 										© {year} Tabler. All rights reserved.
 									</div>
 
-									<div class="col text-end">
-										<a href={site.githubUrl} class="link-secondary" target="_blank" rel="noopener noreferrer"><Icon name="brand-github" /></a>
-										<a href={site.githubSponsorsUrl} class="link-secondary" target="_blank" rel="noopener noreferrer"><Icon name="heart" /></a>
-										<a href={opencollectiveUrl} class="link-secondary" target="_blank" rel="noopener noreferrer"><Icon name="hearts" /></a>
-										<a href={xUrl} class="link-secondary" target="_blank" rel="noopener noreferrer"><Icon name="brand-x" /></a>
-										<a href={linkedinUrl} class="link-secondary" target="_blank" rel="noopener noreferrer"><Icon name="brand-linkedin" /></a>
+									<div class="col d-flex align-items-center justify-content-end gap-4">
+										<nav class="nav nav-segmented nav-sm docs-theme-toggle" aria-label="Color scheme">
+											<a href="?theme=light" class="nav-link docs-theme-toggle-light" aria-label="Enable light mode"><Icon name="sun" class="nav-link-icon" /></a>
+											<a href="?theme=auto" class="nav-link docs-theme-toggle-auto" aria-label="Follow the system color scheme"><Icon name="sun-moon" class="nav-link-icon" /></a>
+											<a href="?theme=dark" class="nav-link docs-theme-toggle-dark" aria-label="Enable dark mode"><Icon name="moon" class="nav-link-icon" /></a>
+										</nav>
+										<div class="d-inline-flex align-items-center gap-2">
+											<a href={site.githubUrl} class="link-secondary" target="_blank" rel="noopener noreferrer"><Icon name="brand-github" /></a>
+											<a href={site.githubSponsorsUrl} class="link-secondary" target="_blank" rel="noopener noreferrer"><Icon name="heart" /></a>
+											<a href={opencollectiveUrl} class="link-secondary" target="_blank" rel="noopener noreferrer"><Icon name="hearts" /></a>
+											<a href={xUrl} class="link-secondary" target="_blank" rel="noopener noreferrer"><Icon name="brand-x" /></a>
+											<a href={linkedinUrl} class="link-secondary" target="_blank" rel="noopener noreferrer"><Icon name="brand-linkedin" /></a>
+										</div>
 									</div>
 								</div>
 							</div>
@@ -438,7 +450,7 @@ const relatedPages = await Promise.all(
 					</div>
 					<!-- BEGIN DOCS TOC -->
 					<div class="col-2 d-none d-xxl-block">
-						<div class="py-6 sticky-top">
+						<div class="py-5 sticky-top">
 							<DocsToc toc={toc} editUrl={`${site.githubUrl}/edit/dev/${editFilePath}`} />
 						</div>
 					</div>
