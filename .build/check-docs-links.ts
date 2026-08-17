@@ -66,10 +66,10 @@ for (const match of astroConfig.matchAll(/\['([a-z-]+)',\s*'([a-z-]+)'\]/g)) {
 const assetRoots: Record<string, string[]> = {
   '/img': [join(repoRoot, 'docs', 'assets', 'img')],
   '/static': [join(repoRoot, 'shared', 'static')],
-  '/css': [join(repoRoot, 'docs', 'assets', 'css')],
 }
-// Built artifacts of other packages — not resolvable without a build.
-const skipPrefixes = ['/dist/', '/preview/', '/_vercel/', '/_astro/']
+// Built artifacts — not resolvable without a build. /css/ is compiled from
+// docs/scss/ into tmp-assets/css (see the docs `css` script).
+const skipPrefixes = ['/dist/', '/preview/', '/css/', '/_vercel/', '/_astro/']
 // Element ids rendered by DocsLayout, valid as anchors on every page.
 const layoutIds = new Set(['content', 'related', 'docsearch', 'menu', 'toc'])
 
