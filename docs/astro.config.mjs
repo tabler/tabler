@@ -42,7 +42,6 @@ export default defineConfig({
         ['badges', 'badge'],
         ['buttons', 'button'],
         ['cards', 'card'],
-        ['charts', 'chart'],
         ['dropdowns', 'dropdown'],
         ['icons', 'icon'],
         ['modals', 'modal'],
@@ -55,9 +54,13 @@ export default defineConfig({
         ['timelines', 'timeline'],
         ['toasts', 'toast'],
         ['tooltips', 'tooltip'],
-        ['vector-maps', 'vector-map'],
       ].map(([from, to]) => [`/ui/components/${from}`, { status: 301, destination: `/ui/components/${to}` }]),
     ),
+    // Components that need a third-party library moved to /ui/plugins/.
+    ...Object.fromEntries(['autosize', 'chart', 'countup', 'dropzone', 'fullcalendar', 'inline-player', 'lightbox', 'range-slider', 'signature', 'vector-map', 'wysiwyg'].map((slug) => [`/ui/components/${slug}`, { status: 301, destination: `/ui/plugins/${slug}` }])),
+    // Pre-Astro plural urls for two of those pages, sent straight to the new home.
+    '/ui/components/charts': { status: 301, destination: '/ui/plugins/chart' },
+    '/ui/components/vector-maps': { status: 301, destination: '/ui/plugins/vector-map' },
     // The form- prefix was redundant inside /ui/forms/.
     '/ui/forms/form-elements': { status: 301, destination: '/ui/forms/elements' },
     '/ui/forms/form-fieldset': { status: 301, destination: '/ui/forms/fieldset' },
