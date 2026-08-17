@@ -1,16 +1,14 @@
 ---
 title: Theme base colors
-summary: The tabler-themes stylesheet ships five gray palettes - slate, gray, zinc, neutral, and stone - that you switch between with the data-bs-theme-base attribute. It's what the theme-base setting on the Color modes page actually changes.
+summary: The tabler-themes stylesheet ships five gray palettes - slate, gray, zinc, neutral, and stone - that you switch between with the data-bs-theme-base attribute.
 description: Load the tabler-themes plugin and switch between five gray base palettes (slate, gray, zinc, neutral, stone) with data-bs-theme-base.
 css-plugins: [themes]
-related: [/ui/getting-started/color-modes, /ui/getting-started/customize]
+related: [/ui/getting-started/customize]
 ---
 
 import CdnImportPlugin from '@components/CdnImportPlugin.astro';
 
 Every gray you see in Tabler - card backgrounds, borders, muted text, table stripes - is built from a `--tblr-gray-50` … `--tblr-gray-950` scale. By default that scale is Tabler's own `gray` palette. The `tabler-themes` stylesheet adds four more takes on the same scale - `slate`, `zinc`, `neutral`, and `stone` - so you can pick a cooler or warmer neutral without touching a single component's CSS.
-
-This page covers the palettes themselves. For the script that lets visitors switch between them (and between light, dark, and auto mode), see [Color modes](/ui/getting-started/color-modes).
 
 ## Installation
 
@@ -80,7 +78,7 @@ For each palette, the stylesheet redefines the eleven gray variables under an at
 
 Every selector matches two attributes: `data-bs-theme-base` (Bootstrap's namespaced convention, the one Tabler's own theme script writes) and the shorter `data-theme-base` (for setups that don't use the `bs-` prefix). Set either one - you don't need both. The compiled CSS variables are published with Tabler's `tblr-` prefix, so in your own CSS you read them as `--tblr-gray-50` … `--tblr-gray-950`.
 
-Because this only changes CSS variables, it has no effect on its own - you still need `data-bs-theme-base` set on `<html>` (or an ancestor) to pick a palette. The [Color modes](/ui/getting-started/color-modes) page covers the three ways to set it: a `?theme-base=slate` query parameter, `localStorage`, or rendering the attribute yourself.
+Because this only changes CSS variables, it has no effect on its own - you still need `data-bs-theme-base` set on `<html>` (or an ancestor) to pick a palette. Set it in markup, or let Tabler's theme script pick it up from a `?theme-base=slate` query parameter or `localStorage`.
 
 ## Customizing further
 
