@@ -1,0 +1,91 @@
+---
+title: Theme base colors
+summary: The tabler-themes stylesheet ships five gray palettes - slate, gray, zinc, neutral, and stone - that you switch between with the data-bs-theme-base attribute. It's what the theme-base setting on the Color modes page actually changes.
+description: Load the tabler-themes plugin and switch between five gray base palettes (slate, gray, zinc, neutral, stone) with data-bs-theme-base.
+css-plugins: [themes]
+related: [/ui/getting-started/color-modes, /ui/getting-started/customize]
+---
+
+import CdnImportPlugin from '@components/CdnImportPlugin.astro';
+
+Every gray you see in Tabler - card backgrounds, borders, muted text, table stripes - is built from a `--tblr-gray-50` … `--tblr-gray-950` scale. By default that scale is Tabler's own `gray` palette. The `tabler-themes` stylesheet adds four more takes on the same scale - `slate`, `zinc`, `neutral`, and `stone` - so you can pick a cooler or warmer neutral without touching a single component's CSS.
+
+This page covers the palettes themselves. For the script that lets visitors switch between them (and between light, dark, and auto mode), see [Color modes](/ui/getting-started/color-modes).
+
+## Installation
+
+This part of Tabler is distributed as a plugin, separate from the core `tabler.css` bundle. To enable it, include `tabler-themes.css` (or `tabler-themes.min.css`) in your page, alongside the core stylesheet:
+
+<CdnImportPlugin plugins={['themes']} />
+
+If you compile Tabler from source with Sass, add its own entry point:
+
+```scss
+@use '@tabler/core/scss/tabler-themes';
+```
+
+## Base color palettes
+
+Set `data-bs-theme-base` on `<html>` to one of five values. `gray` is the default - Tabler looks the same with or without the attribute set to `gray`.
+
+| Value | Description |
+| --- | --- |
+| `gray` | Tabler's default neutral gray (no attribute needed) |
+| `slate` | A cooler, slightly blue-tinted gray |
+| `zinc` | A neutral, low-saturation gray |
+| `neutral` | A pure, desaturated gray |
+| `stone` | A warmer, slightly brown-tinted gray |
+
+```html
+<html data-bs-theme-base="slate">
+```
+
+Here is every shade of every palette, from lightest (`50`) to darkest (`950`):
+
+export const bases = {
+  slate: ['#f8fafc', '#f1f5f9', '#e2e8f0', '#cbd5e1', '#94a3b8', '#64748b', '#475569', '#334155', '#1e293b', '#0f172a', '#020617'],
+  gray: ['#f9fafb', '#f3f4f6', '#e5e7eb', '#d1d5db', '#9ca3af', '#6b7280', '#4b5563', '#374151', '#1f2937', '#111827', '#030712'],
+  zinc: ['#fafafa', '#f4f4f5', '#e4e4e7', '#d4d4d8', '#a1a1aa', '#71717a', '#52525b', '#3f3f46', '#27272a', '#18181b', '#09090b'],
+  neutral: ['#fafafa', '#f5f5f5', '#e5e5e5', '#d4d4d4', '#a3a3a3', '#737373', '#525252', '#404040', '#262626', '#171717', '#0a0a0a'],
+  stone: ['#fafaf9', '#f5f5f4', '#e7e5e4', '#d6d3d1', '#a8a29e', '#78716c', '#57534e', '#44403c', '#292524', '#1c1917', '#0c0a09'],
+};
+
+<div class="table-responsive">
+<table class="table card-table">
+<thead><tr><th>Base</th><th>50</th><th>100</th><th>200</th><th>300</th><th>400</th><th>500</th><th>600</th><th>700</th><th>800</th><th>900</th><th>950</th></tr></thead>
+<tbody>
+{Object.entries(bases).map(([name, shades]) => (
+<tr>
+<td>{name}</td>
+{shades.map((hex) => (
+<td><span style={{ display: 'inline-block', width: '24px', height: '24px', borderRadius: '6px', background: hex, border: '1px solid var(--tblr-border-color)' }} /></td>
+))}
+</tr>
+))}
+</tbody>
+</table>
+</div>
+
+## How it connects to `data-bs-theme-base`
+
+For each palette, the stylesheet redefines the eleven gray variables under an attribute selector:
+
+```css
+[data-bs-theme-base='slate'],
+[data-theme-base='slate'] {
+  --gray-50: #f8fafc;
+  /* … through --gray-950 */
+}
+```
+
+Every selector matches two attributes: `data-bs-theme-base` (Bootstrap's namespaced convention, the one Tabler's own theme script writes) and the shorter `data-theme-base` (for setups that don't use the `bs-` prefix). Set either one - you don't need both. The compiled CSS variables are published with Tabler's `tblr-` prefix, so in your own CSS you read them as `--tblr-gray-50` … `--tblr-gray-950`.
+
+Because this only changes CSS variables, it has no effect on its own - you still need `data-bs-theme-base` set on `<html>` (or an ancestor) to pick a palette. The [Color modes](/ui/getting-started/color-modes) page covers the three ways to set it: a `?theme-base=slate` query parameter, `localStorage`, or rendering the attribute yourself.
+
+## Customizing further
+
+`tabler-themes.css` only covers the five built-in palettes. To use your own gray scale instead, override the same eleven variables directly, as shown in [Customize Tabler: gray scale](/ui/getting-started/customize#gray-scale) - you don't need this plugin at all if you only ever use one custom scale.
+
+## Accessibility
+
+Every built-in palette keeps roughly the same lightness steps as the default `gray` scale, so switching `theme-base` doesn't break the contrast that Tabler's components already rely on between text, borders, and surfaces. If you build a custom palette instead (see above), check that your `50` and `950` shades still give enough contrast against white and black text - large lightness jumps between adjacent steps can make borders disappear or muted text unreadable.
