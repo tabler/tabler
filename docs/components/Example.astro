@@ -9,7 +9,7 @@ import { beautifyHtml, highlightCode, removeHref } from '@shared/lib/code-exampl
  * - transparent — checkerboard pattern, for components with their own background
  * - primary — theme-aware white (bg-surface)
  */
-type ExampleBackground = 'surface-secondary' | 'transparent' | 'primary'
+type ExampleBackground = 'surface-secondary' | 'transparent' | 'primary' | 'dark'
 
 interface Props {
   /** raw HTML of the example; when absent — the slot is rendered */
@@ -35,6 +35,7 @@ const backgroundClasses: Record<ExampleBackground, string> = {
   'surface-secondary': 'bg-surface-secondary',
   'transparent': 'bg-pattern-rectangles',
   'primary': 'bg-surface',
+  'dark': 'bg-dark',
 }
 
 // Strip empty lines from the example HTML.
