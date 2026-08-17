@@ -1,0 +1,110 @@
+---
+title: Color modes
+summary: Tabler ships a small theming script that switches your site between light, dark, and auto color modes, plus base gray shade, font, primary color, and corner radius - all without a page reload or a flash of the wrong theme.
+description: Set up Tabler's light, dark, and auto color modes, and learn the five theme attributes for base color, font, primary color, and corner radius.
+related: [/ui/getting-started/customize]
+---
+
+import { site } from '@shared/lib/site.ts';
+import { Code } from 'astro:components';
+
+## Overview
+
+Tabler includes a small script, [`tabler-theme.js`](https://github.com/tabler/tabler/blob/dev/core/js/tabler-theme.ts), that controls five theme settings. Each setting is read from a URL query parameter or `localStorage`, then applied as a `data-bs-*` attribute on `<html>`. Tabler's CSS reads these attributes to switch styles instantly, with no page reload.
+
+| Setting | Attribute | Default | Allowed values |
+| --- | --- | --- | --- |
+| Color mode | `data-bs-theme` | `light` | `light`, `dark`, `auto` |
+| Base gray shade | `data-bs-theme-base` | `gray` | `slate`, `gray`, `zinc`, `neutral`, `stone` |
+| Font family | `data-bs-theme-font` | `sans-serif` | `sans-serif`, `serif`, `monospace`, `comic` |
+| Primary color | `data-bs-theme-primary` | `blue` | `blue`, `azure`, `indigo`, `purple`, `pink`, `red`, `orange`, `yellow`, `lime`, `green`, `teal`, `cyan`, `inverted` |
+| Corner radius | `data-bs-theme-radius` | `1` | `0`, `0.5`, `1`, `1.5`, `2` |
+
+The `data-bs-theme-base` colors are the gray palettes that back every other color mode. See [issue #2894](https://github.com/tabler/tabler/issues/2894) for the dedicated page documenting each palette; this page only covers the script that switches between them.
+
+Each setting only appears on `<html>` when it differs from its default. For example, `data-bs-theme-primary="blue"` is never written because `blue` is already the default - the browser falls back to Tabler's built-in styles instead.
+
+## Setup
+
+Load the theme script right after the opening `<body>` tag, and do not add `defer` or `async` to it:
+
+<Code
+  lang="html"
+  code={`<body>
+  <script src="${site.cdnUrl}/dist/js/tabler-theme.min.js"></script>
+  ...
+</body>`}
+/>
+
+The script has to run and set `data-bs-theme` on `<html>` before the browser paints anything. If you defer it, or place it in `<head>`, the page paints with the light theme first and then flips to dark a moment later - a visible flash of the wrong theme (FOUC). Loading it inline, first thing in `<body>`, is what prevents that flash.
+
+This is separate from Tabler's main [`tabler.min.js`](/ui/getting-started/installation) bundle, which still loads with `defer` near the end of `<body>` as usual.
+
+## Color mode: light, dark, and auto
+
+Set `theme` to `light` or `dark` to force a mode, or to `auto` to follow the visitor's operating system setting:
+
+```html
+<!-- Force dark mode -->
+<html data-bs-theme="dark">
+
+<!-- Follow the OS setting -->
+<html data-bs-theme="auto">
+```
+
+With `auto`, the script checks the `prefers-color-scheme` media query once on load, and resolves it to `light` or `dark` right away - `data-bs-theme` is set to the resolved value, never to the literal string `auto`. It also keeps listening for OS-level changes: if the visitor switches their system between light and dark while your page is open, the script updates `data-bs-theme` on the fly, with no reload needed.
+
+## Setting values
+
+You can set any of the five keys in three ways, and they all agree with each other:
+
+1. **URL query parameter** - add `?theme=dark` (or any other key) to the page URL. The script reads it, applies it, and saves it to `localStorage` so it persists on the next visit.
+2. **`localStorage`** - each key is stored under `tabler-<key>`, for example `tabler-theme` or `tabler-theme-primary`. This is what makes the choice persist across page loads once it has been set once, by either method here.
+3. **Server-rendered attribute** - if you already know the visitor's preference (from a cookie or account setting), you can render `data-bs-*` attributes on `<html>` yourself. The script still runs and may override them from `localStorage` or the URL, so treat this as an initial value rather than a hard override.
+
+A query parameter always wins over what's already stored, and updates the stored value for next time:
+
+```
+https://example.com/?theme=dark&theme-primary=azure&theme-radius=0
+```
+
+## Building your own theme switcher
+
+Tabler's own demo pages ship two working examples you can copy:
+
+- [`shared/components/navbar/NavbarSideTheme.astro`](https://github.com/tabler/tabler/blob/dev/shared/components/navbar/NavbarSideTheme.astro) is a simple light/dark toggle in the navbar. It's just two links:
+
+  ```html
+  <a href="?theme=dark">Enable dark mode</a>
+  <a href="?theme=light">Enable light mode</a>
+  ```
+
+  Since the theme script reads `theme` straight from the query string, a plain link is enough to switch modes - no JavaScript of your own required. `.hide-theme-dark` and `.hide-theme-light` are used to show only the relevant link for the current mode.
+
+- [`shared/components/demo/ThemeSettings.astro`](https://github.com/tabler/tabler/blob/dev/shared/components/demo/ThemeSettings.astro) is a full settings panel, opened from a floating button, with radios and color swatches for all five keys. It only builds the form markup - the behavior lives in a page-level script in [`shared/layouts/BaseLayout.astro`](https://github.com/tabler/tabler/blob/dev/shared/layouts/BaseLayout.astro) that, on every `change` event:
+
+  ```js
+  document.documentElement.setAttribute('data-bs-' + key, value)
+  window.localStorage.setItem('tabler-' + key, value)
+  url.searchParams.set(key, value)
+  window.history.pushState({}, '', url)
+  ```
+
+  It sets the attribute immediately, saves it to `localStorage`, and pushes it into the URL without a reload, so a shared link reproduces the same look. Use this as a starting point for your own settings UI - it's meant to be copied and adjusted, not used as-is in production.
+
+## Resetting the choice
+
+To reset a key back to its default, remove its `localStorage` entry and its `data-bs-*` attribute:
+
+```js
+document.documentElement.removeAttribute('data-bs-theme')
+window.localStorage.removeItem('tabler-theme')
+```
+
+`ThemeSettings.astro`'s "Reset changes" button does this for all five keys at once, and also strips them from the URL's query string.
+
+## Accessibility
+
+`auto` mode respects the visitor's OS-level `prefers-color-scheme` setting instead of forcing a choice on them, which is the accessible default when you don't have a stronger reason to pick one. If you do force `light` or `dark`, still offer a visible way to switch modes rather than only reading the OS preference once - some visitors change their preference based on time of day or lighting conditions.
+
+Switching `theme-primary`, `theme-base`, or `theme-radius` can change color contrast across the page. Re-check contrast for any custom combination you offer, since some primary colors don't clear WCAG AA contrast with white text at their default shade.
