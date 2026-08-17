@@ -1,0 +1,99 @@
+---
+title: Accessibility
+summary: What Tabler does for you out of the box, and what you still need to do yourself, to make an accessible interface - color contrast, keyboard focus, screen readers, reduced motion, and touch target size.
+description: A single place for Tabler's accessibility guidance - color contrast, keyboard focus, screen readers, reduced motion, and touch targets.
+related: [/ui/forms, /ui/forms/form-fieldset, /ui/forms/form-datepicker, /ui/utilities/visually-hidden, /ui/components/inline-player]
+---
+import Example from '@components/Example.astro';
+
+Accessibility guidance used to be spread across separate component pages. This page collects it in one place: what Tabler already handles for you, and what you still need to do yourself. It links out to the relevant component pages instead of repeating their details.
+
+## Color contrast
+
+Tabler computes a readable text color (`--tblr-{color}-fg`) for every base color automatically, so `.bg-primary`, `.badge-success`, and similar classes always get white or black text. This is a convenience, not a WCAG guarantee: it only checks for a 2:1 contrast ratio, well below the 4.5:1 that WCAG 2.1 AA requires for normal text (3:1 for large text and UI components).
+
+In practice, white text on these base colors falls short of AA for normal-sized text, even though Tabler may still choose white automatically:
+
+| Color | White text contrast | Normal text (4.5:1) | Large text / UI (3:1) |
+| --- | --- | --- | --- |
+| `azure` | 3.05:1 | Fails | Passes |
+| `orange` | 3.04:1 | Fails | Passes |
+| `teal` | 3.12:1 | Fails | Passes |
+| `cyan` | 3.04:1 | Fails | Passes |
+| `yellow` | 2.13:1 | Fails | Fails |
+| `lime` | 2.44:1 | Fails | Fails |
+| `green` | 2.74:1 | Fails | Fails |
+
+For these colors, prefer black text, use them only for large text or icons, or use the `-lt` (light) variant as a background with the base color as text instead of the other way around. `blue`, `indigo`, `purple`, `pink`, and `red` all clear 4.5:1 with white text and don't need special handling.
+
+Contrast is symmetric, so the same numbers apply the other way around: a `.text-yellow`, `.text-lime`, `.text-green`, `.text-cyan`, `.text-teal`, `.text-azure`, or `.text-orange` heading or icon on Tabler's default light page background has the same contrast problem as white text on those colors. Use a darker shade, add a background, or keep these colors to large text and decorative icons on a light background.
+
+Check any color combination you rely on with a contrast checker before shipping it, especially custom colors set through [CSS variables](/ui/getting-started/customize#custom-primary-color).
+
+## Keyboard navigation and focus
+
+Every interactive element in Tabler keeps a visible focus indicator. Do not remove it with `outline: none` or a custom `:focus` style unless you replace it with something at least as visible - doing so breaks keyboard navigation for anyone not using a mouse.
+
+The default focus ring is drawn with `box-shadow` so it follows the shape of rounded elements. If your OS or browser is set to Windows High Contrast mode (`forced-colors: active`), Tabler switches automatically to an `outline` instead, since `box-shadow` is stripped in that mode.
+
+Every page built with the Tabler layout ([`shared/layouts/BaseLayout.astro`](https://github.com/tabler/tabler/blob/dev/shared/layouts/BaseLayout.astro), and the docs site itself) starts with a skip link:
+
+```html
+<a href="#content" class="visually-hidden-focusable skip-link">Skip to main content</a>
+```
+
+It stays hidden until it receives keyboard focus, then it becomes visible as the first focusable element on the page, letting keyboard users jump straight to `#content` and skip the navbar and sidebar. If you build your own page shell instead of using `BaseLayout`, add a skip link like this one and make sure the page's main landmark has a matching `id`.
+
+When you build custom interactive markup, keep the natural DOM order matching the visual order. Reordering focusable elements with CSS (`order`, absolute positioning) without also reordering the markup makes the tab order jump around unpredictably.
+
+## Screen readers
+
+Use `.visually-hidden` to give screen reader users text that has no visual equivalent, such as a heading for a section that is obvious visually but not structurally, or extra context for an icon-only control. See the [Visually hidden](/ui/utilities/visually-hidden) page for the full set of helpers, including `.visually-hidden-focusable` for content (like the skip link above) that should appear once it is focused.
+
+Any icon-only button or link needs an `aria-label`, because the icon alone gives assistive technology nothing to announce:
+
+```html
+<button type="button" class="btn-close" aria-label="Close"></button>
+<a href="#" class="btn btn-icon" aria-label="Delete">
+  <svg class="icon"><!-- ... --></svg>
+</a>
+```
+
+A few Tabler components already ship the ARIA roles and live regions they need, so you don't have to add them yourself:
+
+- [Alerts](/ui/components/alert) render with `role="alert"`.
+- [Toasts](/ui/components/toast) render with `role="alert"`, `aria-live="assertive"`, and `aria-atomic="true"`, so screen readers announce them as they appear.
+- [Offcanvas](/ui/components/offcanvas) panels use `role="dialog"` and `aria-modal="true"`.
+- [Segmented controls](/ui/components/segmented-control) use `role="tablist"` / `role="tab"` with `aria-selected` kept in sync with the active item.
+- The [date picker](/ui/forms/form-datepicker)'s month-navigation buttons need their `aria-label` reapplied on every render - see that page for the exact code.
+
+Components that don't manage their own ARIA state (custom dropdowns, modals you build from scratch, non-standard widgets) still need you to wire up roles, `aria-expanded`, `aria-controls`, and similar attributes by hand.
+
+Group related inputs with a `<fieldset>` and `<legend>` rather than just a `<div>` - it gives screen reader users the group's purpose every time they land on one of its fields. See [Form fieldset](/ui/forms/form-fieldset) for the markup. The [Inline player](/ui/components/inline-player) is keyboard-operable and exposes captions where the source provides them, since it's built on the Plyr library.
+
+## Reduced motion
+
+Tabler respects `prefers-reduced-motion: reduce` at the CSS level. When a user has this preference set:
+
+- Purely decorative looping animations are turned off entirely - blinking badges, animated status dots and indicators, pulsing/rotating/shaking icons, animated card gradients, and animated wave backgrounds.
+- Animations that communicate state, like loading spinners and indeterminate progress bars, are not removed (a spinner that never moves looks broken) but their speed is slowed down instead.
+
+This is handled for you in built-in components. If you add your own CSS animations or transitions, wrap them the same way:
+
+```scss
+@media (prefers-reduced-motion: reduce) {
+  .my-custom-animation {
+    animation: none !important;
+  }
+}
+```
+
+## Touch target size
+
+Tabler's default form controls and buttons are sized to stay comfortably above the WCAG 2.2 AA minimum target size of 24×24 CSS pixels. Small-size controls (`.btn-sm`, `.form-control-sm`) are still above that floor, but they leave less room for error, so avoid combining a small size with an icon-only button where possible.
+
+For icon-only controls, use a big enough size (`.btn-icon` at the default or `lg` size rather than `sm`) and give adjacent tappable elements enough spacing so touches don't land on the wrong target, especially in toolbars and table row actions on mobile.
+
+## Known gaps and reporting issues
+
+Accessibility work in Tabler is ongoing, and some areas still need attention - for example, form control border contrast is tracked in [issue #2672](https://github.com/tabler/tabler/issues/2672). If you find a color combination, keyboard trap, missing label, or other accessibility bug, please [open an issue](https://github.com/tabler/tabler/issues/new) on GitHub with steps to reproduce it. Pull requests that fix accessibility issues are welcome - see [How to contribute](/ui/getting-started/how-to-contribute).
