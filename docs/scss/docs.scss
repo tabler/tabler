@@ -3,11 +3,29 @@
 // and themes them with Tabler variables.
 @use '@docsearch/css/dist/style.css';
 
+// DocSearch ships its own palette — an Algolia blue plus lavender greys — and
+// switches themes on `html[data-theme=dark]`, which Tabler never sets. Mapping
+// every colour onto a Tabler token fixes both: the modal matches the docs, and
+// it follows the color mode through the `light-dark()` tokens.
 :root {
   --docsearch-primary-color: var(--tblr-primary);
+  --docsearch-highlight-color: var(--tblr-primary);
+  --docsearch-text-color: var(--tblr-body-color);
+  --docsearch-muted-color: var(--tblr-secondary);
+  --docsearch-secondary-text-color: var(--tblr-secondary);
+  --docsearch-icon-color: var(--tblr-secondary);
+  --docsearch-subtle-color: var(--tblr-border-color);
+  --docsearch-container-background: color-mix(in srgb, var(--tblr-backdrop-bg), transparent calc(100% - 32%));
+  --docsearch-modal-background: var(--tblr-bg-surface);
+  --docsearch-modal-shadow: var(--tblr-shadow-dropdown);
   --docsearch-searchbox-background: var(--tblr-bg-surface);
   --docsearch-searchbox-focus-background: var(--tblr-bg-surface);
-  --docsearch-text-color: var(--tblr-body-text);
+  --docsearch-hit-background: var(--tblr-bg-surface-secondary);
+  --docsearch-hit-color: var(--tblr-body-color);
+  --docsearch-hit-shadow: none;
+  --docsearch-footer-background: var(--tblr-bg-surface);
+  --docsearch-key-background: var(--tblr-bg-surface-secondary);
+  --docsearch-key-color: var(--tblr-secondary);
   --docsearch-key-shadow: 0 0 0 1px var(--tblr-border-color);
   --docsearch-key-gradient: var(--tblr-bg-surface-secondary);
 }
@@ -57,16 +75,12 @@
   color: var(--tblr-muted) !important;
 }
 
+// The selected hit is tinted like the active page in the sidebar rather than
+// filled with the primary color: DocSearch colors the matched words itself, and
+// on a solid fill they came out blue on blue.
 .DocSearch-Hit[aria-selected='true'] a {
-  background-color: var(--tblr-primary) !important;
+  background-color: color-mix(in srgb, var(--tblr-primary) 8%, transparent) !important;
   border-color: var(--tblr-primary) !important;
-  color: var(--tblr-primary-fg) !important;
-}
-
-.DocSearch-Hit[aria-selected='true'] .DocSearch-Hit-Container,
-.DocSearch-Hit[aria-selected='true'] .DocSearch-Hit-title,
-.DocSearch-Hit[aria-selected='true'] .DocSearch-Hit-path {
-  color: var(--tblr-primary-fg) !important;
 }
 
 .DocSearch-Modal {
