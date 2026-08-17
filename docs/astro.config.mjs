@@ -3,6 +3,7 @@ import { defineConfig, envField } from 'astro/config'
 import vercel from '@astrojs/vercel'
 import mdx from '@astrojs/mdx'
 import { satteri } from '@astrojs/markdown-satteri'
+import { unwrapJsxParagraphs } from './lib/satteri-unwrap-jsx-paragraphs.mjs'
 import { fileURLToPath } from 'node:url'
 import { copyAssets } from '../.build/copy-assets'
 
@@ -143,7 +144,7 @@ export default defineConfig({
   ],
   markdown: {
     // No typographic quote rewriting.
-    processor: satteri({ features: { smartPunctuation: false } }),
+    processor: satteri({ features: { smartPunctuation: false }, mdastPlugins: [unwrapJsxParagraphs] }),
     shikiConfig: {
       theme: 'github-dark',
     },
