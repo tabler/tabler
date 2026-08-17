@@ -5,6 +5,7 @@ import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { sync } from 'glob'
 import * as prettier from 'prettier'
+import { compile } from '@mdx-js/mdx'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 
@@ -80,19 +81,46 @@ async function formatExamples(source: string): Promise<string> {
     const lines = inner.split('\n').filter((line) => line.trim())
     if (!lines.every((line) => line.trim().startsWith('<'))) return _m
 
-    const formatted = (await formatHTML(inner, { embeddedLanguageFormatting: 'off' })).replace(/^\s*[\r\n]/gm, '').trim()
-
-    // Only take the result when every line is safe for MDX. MDX parses the slot
+    // Only take a result when every line is safe for MDX. MDX parses the slot
     // as markdown flow content, so a line that mixes raw text with markup gets
     // wrapped in a stray <p> — unless the whole line is one complete element
     // (then the text is JSX text inside it). Lines starting with anything other
-    // than a tag become paragraphs too. Where prettier cannot format without
-    // breaking inline content, the example is left exactly as it was.
-    const isSafe = formatted.split('\n').every(isLineSafe)
+    // than a tag become paragraphs too. Long text is the usual offender, so
+    // when the default width wraps it onto bare lines, wider print widths are
+    // tried before giving up — a longer line beats a one-line example.
+    //
+    // Prettier breaks long tags into one-attribute-per-line, which is valid JSX
+    // for MDX, so tags are collapsed back to one line before the line checks.
+    for (const printWidth of [100, 160, 240]) {
+      const formatted = (await formatHTML(inner, { embeddedLanguageFormatting: 'off', printWidth })).replace(/^\s*[\r\n]/gm, '').trim()
+      if (!formatted) break
+      const virtual = formatted.replace(tagPattern, (tag) => tag.replace(/\s+/g, ' '))
+      if (!virtual.split('\n').every(isLineSafe)) continue
 
-    return formatted && isSafe ? open + formatted + close : _m
+      // Final authority on parseability: the real MDX compiler. Prettier's
+      // whitespace-sensitive output for inline elements (`</a` + a lone `>`)
+      // parses in some positions and not in others, and the micromark rules
+      // are too subtle to model here — anything it rejects keeps the original.
+      if (!(await compilesAsMdx(open + formatted + close))) continue
+
+      return open + formatted + close
+    }
+
+    return _m
   })
 }
+
+async function compilesAsMdx(source: string): Promise<boolean> {
+  try {
+    await compile(source)
+    return true
+  } catch {
+    return false
+  }
+}
+
+// A complete tag, including attribute values that may span multiple lines.
+const tagPattern = /<\/?[a-zA-Z][\w.-]*(?:"[^"]*"|'[^']*'|[^<>"'])*?\/?>/g
 
 const voidTags = new Set(['area', 'base', 'br', 'col', 'embed', 'hr', 'img', 'input', 'link', 'meta', 'param', 'source', 'track', 'wbr'])
 
