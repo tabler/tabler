@@ -7,18 +7,18 @@ related: [/ui/utilities/background-patterns, /ui/base/colors]
 
 import Example from '@components/Example.astro'
 import site from '@data/site.json'
-export const colors = [...Object.keys(site.colors), 'white', 'transparent']
+export const colors = [...Object.keys(site.colors), 'white']
 
 ## Default gradient
 
-Use `.bg-gradient` to enable gradient background rendering on an element. Then combine it with color stop utilities to define the final look.
+Use `.bg-gradient` to enable gradient background rendering on an element. Then combine it with color stop utilities to define the final look. A stop you do not set stays transparent, so a single `from` color already fades out.
 
 ```html
-<div class="bg-gradient bg-gradient-from-primary bg-gradient-to-transparent"></div>
+<div class="bg-gradient bg-gradient-from-primary"></div>
 ```
 
 <Example>
-<div class="border rounded bg-gradient bg-gradient-from-primary bg-gradient-to-transparent p-5"></div>
+<div class="border rounded bg-gradient bg-gradient-from-primary p-5"></div>
 </Example>
 
 ## Gradient directions
@@ -37,49 +37,49 @@ Use direction utilities to control gradient flow:
 <Example hideCode>
 <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-4 g-3">
   <div class="col">
-    <div class="border rounded bg-gradient bg-gradient-from-blue bg-gradient-to-transparent bg-gradient-to-t p-4"></div>
+    <div class="border rounded bg-gradient bg-gradient-from-blue bg-gradient-to-t p-4"></div>
     <code>.bg-gradient-to-t</code>
   </div>
   <div class="col">
-    <div class="border rounded bg-gradient bg-gradient-from-blue bg-gradient-to-transparent bg-gradient-to-te p-4"></div>
+    <div class="border rounded bg-gradient bg-gradient-from-blue bg-gradient-to-te p-4"></div>
     <code>.bg-gradient-to-te</code>
   </div>
   <div class="col">
-    <div class="border rounded bg-gradient bg-gradient-from-blue bg-gradient-to-transparent bg-gradient-to-e p-4"></div>
+    <div class="border rounded bg-gradient bg-gradient-from-blue bg-gradient-to-e p-4"></div>
     <code>.bg-gradient-to-e</code>
   </div>
   <div class="col">
-    <div class="border rounded bg-gradient bg-gradient-from-blue bg-gradient-to-transparent bg-gradient-to-be p-4"></div>
+    <div class="border rounded bg-gradient bg-gradient-from-blue bg-gradient-to-be p-4"></div>
     <code>.bg-gradient-to-be</code>
   </div>
   <div class="col">
-    <div class="border rounded bg-gradient bg-gradient-from-blue bg-gradient-to-transparent bg-gradient-to-b p-4"></div>
+    <div class="border rounded bg-gradient bg-gradient-from-blue bg-gradient-to-b p-4"></div>
     <code>.bg-gradient-to-b</code>
   </div>
   <div class="col">
-    <div class="border rounded bg-gradient bg-gradient-from-blue bg-gradient-to-transparent bg-gradient-to-bs p-4"></div>
+    <div class="border rounded bg-gradient bg-gradient-from-blue bg-gradient-to-bs p-4"></div>
     <code>.bg-gradient-to-bs</code>
   </div>
   <div class="col">
-    <div class="border rounded bg-gradient bg-gradient-from-blue bg-gradient-to-transparent bg-gradient-to-s p-4"></div>
+    <div class="border rounded bg-gradient bg-gradient-from-blue bg-gradient-to-s p-4"></div>
     <code>.bg-gradient-to-s</code>
   </div>
   <div class="col">
-    <div class="border rounded bg-gradient bg-gradient-from-blue bg-gradient-to-transparent bg-gradient-to-ts p-4"></div>
+    <div class="border rounded bg-gradient bg-gradient-from-blue bg-gradient-to-ts p-4"></div>
     <code>.bg-gradient-to-ts</code>
   </div>
 </div>
 </Example>
 
 <Example codeOnly>
-<div class="bg-gradient bg-gradient-from-blue bg-gradient-to-transparent bg-gradient-to-t">...</div>
-<div class="bg-gradient bg-gradient-from-blue bg-gradient-to-transparent bg-gradient-to-te"> ... </div>
-<div class="bg-gradient bg-gradient-from-blue bg-gradient-to-transparent bg-gradient-to-e">...</div>
-<div class="bg-gradient bg-gradient-from-blue bg-gradient-to-transparent bg-gradient-to-be"> ... </div>
-<div class="bg-gradient bg-gradient-from-blue bg-gradient-to-transparent bg-gradient-to-b">...</div>
-<div class="bg-gradient bg-gradient-from-blue bg-gradient-to-transparent bg-gradient-to-bs"> ... </div>
-<div class="bg-gradient bg-gradient-from-blue bg-gradient-to-transparent bg-gradient-to-s">...</div>
-<div class="bg-gradient bg-gradient-from-blue bg-gradient-to-transparent bg-gradient-to-ts"> ... </div>
+<div class="bg-gradient bg-gradient-from-blue bg-gradient-to-t">...</div>
+<div class="bg-gradient bg-gradient-from-blue bg-gradient-to-te">...</div>
+<div class="bg-gradient bg-gradient-from-blue bg-gradient-to-e">...</div>
+<div class="bg-gradient bg-gradient-from-blue bg-gradient-to-be">...</div>
+<div class="bg-gradient bg-gradient-from-blue bg-gradient-to-b">...</div>
+<div class="bg-gradient bg-gradient-from-blue bg-gradient-to-bs">...</div>
+<div class="bg-gradient bg-gradient-from-blue bg-gradient-to-s">...</div>
+<div class="bg-gradient bg-gradient-from-blue bg-gradient-to-ts">...</div>
 </Example>
 
 ## Gradient color stops
@@ -95,7 +95,7 @@ Here is a list of classes:
 <Example hideCode>
 <div class="row row-cols-1 row-cols-lg-2 g-3">
   <div class="col">
-    <div class="border rounded bg-gradient bg-gradient-from-purple bg-gradient-to-transparent p-5"></div>
+    <div class="border rounded bg-gradient bg-gradient-from-purple p-5"></div>
     <code>.bg-gradient-from-purple .bg-gradient-to-transparent</code>
   </div>
   <div class="col">
@@ -106,7 +106,7 @@ Here is a list of classes:
 </Example>
 
 <Example codeOnly>
-<div class="bg-gradient bg-gradient-from-purple bg-gradient-to-transparent">...</div>
+<div class="bg-gradient bg-gradient-from-purple">...</div>
 <div class="bg-gradient bg-gradient-from-pink bg-gradient-via-orange bg-gradient-to-yellow"> ... </div>
 </Example>
 
@@ -119,7 +119,7 @@ You can use any project color token with `from`, `via`, and `to` utilities. See 
 <div class="row row-cols-1 row-cols-sm-2 row-cols-lg-3 row-cols-xl-6 g-3">
   {colors.map((color) => (
   <div class="col">
-    <div class={`border rounded bg-gradient bg-gradient-from-${color} bg-gradient-to-transparent mb-2 p-4`}></div>
+    <div class={`border rounded bg-gradient bg-gradient-from-${color} mb-2 p-4`}></div>
     <code>.bg-gradient-from-{ color }</code>
   </div>
   ))}
@@ -127,7 +127,7 @@ You can use any project color token with `from`, `via`, and `to` utilities. See 
 </Example>
 <Example codeOnly>
   {colors.map((color) => (
-  <div class={`bg-gradient bg-gradient-from-${color} bg-gradient-to-transparent`}>...</div>
+  <div class={`bg-gradient bg-gradient-from-${color}`}>...</div>
   ))}
 </Example>
 
@@ -139,7 +139,7 @@ Use gradient utilities on card sections to highlight key content areas.
 
 <Example>
 <div class="card">
-  <div class="card-body bg-gradient bg-gradient-from-indigo bg-gradient-to-transparent rounded-top">
+  <div class="card-body bg-gradient bg-gradient-from-indigo rounded-top">
     <h3 class="card-title mb-1">Performance</h3>
     <p class="text-secondary mb-0">Weekly trend overview</p>
   </div>
