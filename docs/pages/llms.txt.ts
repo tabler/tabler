@@ -32,14 +32,26 @@ export const GET: APIRoute = async () => {
     return `- [${entry.data.title}](${base}${url === '/' ? '/index' : url}.md): ${entry.data.description}`
   }
 
+  const pageUrls = (nodes: (MenuNode | undefined)[]) => nodes.flatMap((node) => [node?.url, ...(node?.children ?? []).map((child) => child.url)]).filter((url): url is string => typeof url === 'string' && url.startsWith('/'))
+
   const sections: string[] = []
   for (const group of docs.menu as MenuNode[]) {
-    for (const section of group.children ?? []) {
-      const urls = [section.url, ...(section.children ?? []).map((child) => child.url)].filter((url): url is string => typeof url === 'string' && url.startsWith('/'))
-      const lines = urls.map((url) => item(normalizeUrl(url))).filter(Boolean)
+    // Groups get a heading of their own; pages listed straight under a section
+    // (products without sub-groups) are collected into one heading for it.
+    const loose = (group.children ?? []).filter((child) => !child.children?.length)
+    for (const section of (group.children ?? []).filter((child) => child.children?.length)) {
+      const lines = pageUrls([section])
+        .map((url) => item(normalizeUrl(url)))
+        .filter(Boolean)
       if (lines.length) {
         sections.push(`## ${group.title} — ${section.title}\n\n${lines.join('\n')}`)
       }
+    }
+    const looseLines = pageUrls(loose)
+      .map((url) => item(normalizeUrl(url)))
+      .filter(Boolean)
+    if (looseLines.length) {
+      sections.push(`## ${group.title}\n\n${looseLines.join('\n')}`)
     }
   }
 
