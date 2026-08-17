@@ -145,19 +145,64 @@ Use `.badge-sm` or `.badge-lg` to change badge size according to your needs. The
 
 <Example centered vertical>
 <BadgeList>
-  <Badge color="primary" size="sm" text="New" class="badge-sm" />
+  <Badge color="primary" size="sm" text="New" />
   <Badge color="primary" size="sm" text="1" class="badge-pill" />
 </BadgeList>
 <BadgeList>
-  <Badge color="primary" text="New" class="badge-sm" />
+  <Badge color="primary" text="New" />
   <Badge color="primary" text="1" class="badge-pill" />
 </BadgeList>
 <BadgeList>
-  <Badge color="primary" size="lg" text="New" class="badge-sm" />
+  <Badge color="primary" size="lg" text="New" />
   <Badge color="primary" size="lg" text="1" class="badge-pill" />
 </BadgeList>
 </Example>
 
+
+## Outline badges
+
+Use `.badge-outline` for a badge with a border and no fill. Add a `text-*` class to set its color - the border follows the text.
+
+<Example centered>
+<BadgeList>
+  {colors.map(([name]) => (
+  <span class={`badge badge-outline text-${name}`}>{name}</span>
+  ))}
+</BadgeList>
+</Example>
+
+## Dot badges
+
+Use `.badge-dot` for a small dot with no text. It marks a state next to a label, so always keep that label readable next to it.
+
+<Example centered>
+<BadgeList>
+  <span class="badge badge-dot bg-green"></span>
+  <span class="badge badge-dot bg-yellow"></span>
+  <span class="badge badge-dot bg-red"></span>
+</BadgeList>
+</Example>
+
+## Icon-only badges
+
+Use `.badge-icononly` when the badge holds nothing but an icon. It removes the horizontal padding, so the icon stays centered.
+
+<Example centered>
+<BadgeList>
+  <Badge color="primary" class="badge-icononly" icon="star" />
+  <Badge color="green" class="badge-icononly" icon="check" />
+  <Badge color="red" class="badge-icononly" icon="x" />
+</BadgeList>
+</Example>
+
+## Accessibility
+
+A badge is text, not a control, so most of the work is in the words you put in it.
+
+- A badge that only shows a color, such as `.badge-dot` or an empty notification badge, means nothing to a screen reader. Put the state in text next to it, or add an `aria-label` to the element it describes.
+- Write counts so they make sense on their own: `4 unread messages` reads better than a bare `4`. Keep the short version visible and the full version in an `aria-label` when space is tight.
+- A badge inside a button or a link is part of that control's name. Check how the whole control reads out loud before shortening the text.
+- Color alone should never carry the meaning. Pair it with a word or an icon, the same way [statuses](/ui/components/status) do.
 
 ## More examples
 

@@ -324,6 +324,144 @@ Add the `.sticky-top` class to the `<thead>` element to keep the header row visi
 </table>
 </Example>
 
+## Sortable headers
+
+Put a `.table-sort` button inside a `th` to get a sortable-looking header. The button shows a neutral arrow, and adding `.asc` or `.desc` marks the current direction.
+
+Sorting itself is up to you - the classes only style the header. Tabler's own demo uses [List.js](https://listjs.com) and passes the field through `data-sort`.
+
+<Example>
+<table class="table">
+  <thead>
+    <tr>
+      <th><button class="table-sort" data-sort="sort-name">Name</button></th>
+      <th><button class="table-sort asc" data-sort="sort-city">City</button></th>
+      <th><button class="table-sort" data-sort="sort-score">Score</button></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Elliot Fisher</td>
+      <td>Adelaide</td>
+      <td>92</td>
+    </tr>
+    <tr>
+      <td>Beverly Mills</td>
+      <td>Bristol</td>
+      <td>78</td>
+    </tr>
+  </tbody>
+</table>
+</Example>
+
+## Selectable rows
+
+Add `.table-selectable` to the table and `.table-selectable-check` to each checkbox. A checked row gets a highlighted background, with no JavaScript involved.
+
+Inside such a row you can swap content with `.on-checked` and `.on-unchecked`: the first only shows while the row is selected, the second while it is not.
+
+<Example>
+<table class="table table-selectable">
+  <thead>
+    <tr>
+      <th class="w-1">
+        <input type="checkbox" class="form-check-input table-selectable-check" aria-label="Select all rows" />
+      </th>
+      <th>Task</th>
+      <th>Status</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>
+        <input type="checkbox" class="form-check-input table-selectable-check" aria-label="Select task" checked />
+      </td>
+      <td>Prepare the release notes</td>
+      <td>
+        <span class="on-checked">Selected</span>
+        <span class="on-unchecked text-secondary">Not selected</span>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <input type="checkbox" class="form-check-input table-selectable-check" aria-label="Select task" />
+      </td>
+      <td>Review the pull request</td>
+      <td>
+        <span class="on-checked">Selected</span>
+        <span class="on-unchecked text-secondary">Not selected</span>
+      </td>
+    </tr>
+  </tbody>
+</table>
+</Example>
+
+## Stacked table on small screens
+
+A wide table can stack into a list instead of scrolling sideways. Use `.table-mobile-{breakpoint}` - `.table-mobile-md` stacks below `md` - and give every cell a `data-label`, which becomes the label above its value.
+
+<Example>
+<table class="table table-mobile-md">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>City</th>
+      <th>Score</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td data-label="Name">Elliot Fisher</td>
+      <td data-label="City">Adelaide</td>
+      <td data-label="Score">92</td>
+    </tr>
+    <tr>
+      <td data-label="Name">Beverly Mills</td>
+      <td data-label="City">Bristol</td>
+      <td data-label="Score">78</td>
+    </tr>
+  </tbody>
+</table>
+</Example>
+
+## Borderless, centered and transparent tables
+
+`.table-borderless` removes the header background, `.table-transparent` clears the header and body backgrounds, and `.table-center` centers every cell.
+
+<Example>
+<table class="table table-borderless table-center">
+  <thead>
+    <tr>
+      <th>Plan</th>
+      <th>Seats</th>
+      <th>Price</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Starter</td>
+      <td>3</td>
+      <td>$9</td>
+    </tr>
+    <tr>
+      <td>Team</td>
+      <td>10</td>
+      <td>$29</td>
+    </tr>
+  </tbody>
+</table>
+</Example>
+
+## Accessibility
+
+A table is read cell by cell, so the structure has to say what each cell means.
+
+- Use `th` with `scope="col"` or `scope="row"` for headers. Without a scope, a screen reader cannot tie a value back to its column.
+- Add a `caption` when the table needs a title. It is announced first and stays tied to the table, unlike a heading above it.
+- In a selectable table, give every checkbox its own `aria-label` - "Select task" is enough, and "Select all rows" for the one in the header.
+- `.table-sort` is a real `button`, so it is reachable by keyboard. Once you wire up sorting, also set `aria-sort` on the `th` to `ascending`, `descending` or `none`.
+- A stacked `.table-mobile-*` still keeps its header cells in the markup, so the reading order stays correct while the `data-label` text carries the column name visually.
+
 ## SCSS variables
 
 Use these SCSS variables to customize tables. The default values are:
