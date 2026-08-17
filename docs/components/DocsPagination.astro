@@ -19,9 +19,15 @@ interface MenuNode {
 interface Props {
   /** Page URL in the docs namespace (equivalent of page.url), e.g. "/ui/components/alert". */
   url: string
+  /**
+   * Which half to render. The child cards of an index page are content and stay
+   * inside the article panel; the prev/next nav sits on the page canvas below
+   * it. Omitted renders both.
+   */
+  only?: 'children' | 'pagination'
 }
 
-const { url } = Astro.props
+const { url, only } = Astro.props
 
 const children = await getDocsChildren(url)
 
@@ -61,7 +67,7 @@ const { prev, next, found } = findPage(docs.menu as MenuNode[]) ?? {
 ---
 
 <!-- BEGIN DOCS PAGINATION -->{
-  children.length > 0 && (
+  only !== 'pagination' && children.length > 0 && (
     <div class="mt-6 pt-6">
       <div class="row row-deck row-cards">
         {children.map((child: DocsPage) => (
@@ -73,8 +79,8 @@ const { prev, next, found } = findPage(docs.menu as MenuNode[]) ?? {
 }
 
 {
-  children.length === 0 && found && (prev || next) && (
-    <nav class="docs-pagination mt-6 pt-6" aria-label="Pagination">
+  only !== 'children' && children.length === 0 && found && (prev || next) && (
+    <nav class="docs-pagination" aria-label="Pagination">
       {prev && (
         <a class="docs-pagination-link" href={prev.url} rel="prev">
           <span class="docs-pagination-label">

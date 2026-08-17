@@ -117,8 +117,13 @@
   position: absolute !important;
 }
 
-.shiki {
-  background: var(--tblr-gray-900) !important;
+// Highlighted code. Shiki writes the theme's own background and foreground
+// into a style attribute — `.shiki` comes from the docs components, and
+// `.astro-code` from markdown fences. Both follow Tabler's surface instead,
+// so only the token colors come from the shiki theme.
+.shiki,
+.astro-code {
+  background: var(--tblr-bg-surface-dark) !important;
   color: var(--tblr-gray-300) !important;
 }
 
@@ -275,11 +280,17 @@ header > .navbar {
   font-size: 0.875rem;
 }
 
-// Previous/next page navigation: a pair of bordered cards.
+// Previous/next page navigation: a pair of cards on the page canvas below the
+// article panel, aligned with it and with the footer.
 .docs-pagination {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1rem;
+  margin-block-end: 1.5rem;
+
+  @media (min-width: 992px) {
+    margin-inline: 1.5rem;
+  }
 
   .docs-pagination-link {
     display: flex;
@@ -311,11 +322,15 @@ header > .navbar {
     text-align: end;
   }
 
+  // Direction reads as an eyebrow label, so the page title carries the line.
   .docs-pagination-label {
     display: inline-flex;
     align-items: center;
     gap: 0.25rem;
-    font-size: 0.875rem;
+    font-size: 0.6875rem;
+    font-weight: var(--tblr-font-weight-medium);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
     color: var(--tblr-secondary);
   }
 
@@ -323,6 +338,54 @@ header > .navbar {
     font-weight: var(--tblr-font-weight-medium);
     color: var(--tblr-body-color);
     transition: color 0.15s ease-in-out;
+  }
+
+  // Side by side leaves no room for a longer page title on a phone. Last in the
+  // block on purpose: it has to outrank the `grid-column: 2` rule above.
+  @media (max-width: 575.98px) {
+    grid-template-columns: 1fr;
+
+    .docs-pagination-next {
+      grid-column: 1;
+    }
+  }
+}
+
+// Related pages use the same card language as prev/next: a quiet bordered
+// surface that takes the primary color on hover, and a title that leads.
+.docs-related {
+  .card {
+    border-radius: var(--tblr-border-radius-lg);
+    box-shadow: none;
+    transition:
+      border-color 0.15s ease-in-out,
+      box-shadow 0.15s ease-in-out;
+
+    &:hover,
+    &:focus-visible {
+      border-color: var(--tblr-primary);
+      box-shadow: var(--tblr-shadow-xs);
+
+      .h3 {
+        color: var(--tblr-primary);
+      }
+    }
+  }
+
+  .card-body {
+    padding: 1rem 1.25rem;
+  }
+
+  .h3 {
+    margin-bottom: 0.25rem;
+    font-size: 1rem;
+    font-weight: var(--tblr-font-weight-medium);
+    color: var(--tblr-body-color);
+    transition: color 0.15s ease-in-out;
+  }
+
+  p {
+    font-size: 0.875rem;
   }
 }
 
