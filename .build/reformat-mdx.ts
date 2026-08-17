@@ -51,13 +51,6 @@ async function replaceAsync(str: string, regex: RegExp, asyncFn: (...args: strin
   return result + str.slice(last)
 }
 
-// Elements where an inter-tag space is rendered as a visible gap. Between
-// block-level tags (div, p, headings…) browsers collapse that whitespace, so
-// only a space between two inline-level siblings blocks reflowing. Capitalized
-// names are Astro components (e.g. <Icon />), which render inline content.
-const inlineTags = 'a|abbr|b|bdi|bdo|br|button|cite|code|data|dfn|em|i|img|input|kbd|label|mark|q|s|samp|select|small|span|strong|sub|sup|svg|textarea|time|u|var'
-const inlineGap = new RegExp(`(?:</(?:${inlineTags})>|<(?:br|img|input)[^<>]*>|<[A-Z][^<>]*/>)[ \\t]+<(?:(?:${inlineTags})[\\s>/]|[A-Z])`)
-
 /**
  * `<Example>` slots hold the demo markup, so they get the same treatment as an
  * ```html fence.
@@ -74,11 +67,12 @@ const inlineGap = new RegExp(`(?:</(?:${inlineTags})>|<(?:br|img|input)[^<>]*>|<
  */
 async function formatExamples(source: string): Promise<string> {
   return replaceAsync(source, /(<Example\b[^>]*>\n)([\s\S]*?)(\n<\/Example>)/g, async (_m: string, open: string, inner: string, close: string) => {
-    // A space between two inline tags on one line is rendered, but JSX drops
-    // whitespace that contains a newline. Reflowing such an example would
-    // silently delete the gaps between, say, a row of buttons, so it is left
-    // alone. Gaps between block-level tags carry no rendering and don't count.
-    if (inner.includes('{') || inlineGap.test(inner)) return _m
+    // Whitespace between sibling JSX elements never survives MDX — it is
+    // dropped whether it is a space on one line or a newline (verified against
+    // this repo's MDX pipeline). Only whitespace adjacent to raw text renders,
+    // and the isLineSafe check below keeps text glued to its markup. So
+    // reflowing tag-to-tag gaps cannot change what a page shows.
+    if (inner.includes('{')) return _m
 
     // A line that does not start with a tag is markdown flow content: MDX renders
     // it as its own <p>. Reflowing would fold it into a tag line and drop the
