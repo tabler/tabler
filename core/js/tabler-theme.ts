@@ -6,6 +6,7 @@
 interface ThemeConfig {
   'theme': string
   'theme-base': string
+  'theme-contrast': string
   'theme-font': string
   'theme-primary': string
   'theme-radius': string
@@ -14,6 +15,8 @@ interface ThemeConfig {
 const themeConfig: ThemeConfig = {
   'theme': 'light',
   'theme-base': 'gray',
+  // 'auto' = no attribute: the css then follows `prefers-contrast: more`
+  'theme-contrast': 'auto',
   'theme-font': 'sans-serif',
   'theme-primary': 'blue',
   'theme-radius': '1',

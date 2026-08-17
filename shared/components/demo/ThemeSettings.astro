@@ -7,6 +7,7 @@ import { site } from '@shared/lib/site'
 const defaults = {
   'theme': 'light',
   'theme-base': 'gray',
+  'theme-contrast': 'auto',
   'theme-font': 'sans-serif',
   'theme-primary': 'blue',
   'theme-radius': '1',
@@ -35,6 +36,21 @@ const defaults = {
                 <div class="form-selectgroup-item">
                   <input type="radio" name="theme" value={mode} class="form-check-input" checked={mode === defaults.theme} />
                   <div class="form-check-label">{mode.charAt(0).toUpperCase() + mode.slice(1)}</div>
+                </div>
+              </label>
+            ))
+          }
+        </fieldset>
+
+        <fieldset class="border-0 p-0 mb-4">
+          <legend class="form-label float-none mb-0" style="font-size: inherit;">Contrast</legend>
+          <FormHint as="p">Increase contrast for better readability. Auto follows your system setting.</FormHint>
+          {
+            ['auto', 'normal', 'high'].map((contrast) => (
+              <label class="form-check">
+                <div class="form-selectgroup-item">
+                  <input type="radio" name="theme-contrast" value={contrast} class="form-check-input" checked={contrast === defaults['theme-contrast']} />
+                  <div class="form-check-label">{contrast.charAt(0).toUpperCase() + contrast.slice(1)}</div>
                 </div>
               </label>
             ))
