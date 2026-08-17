@@ -48,4 +48,15 @@
   // The global `@extend [data-bs-theme='dark']` for light-scoped subtrees
   // inside a dark body lives in `_extends.scss` — with the module system it
   // must have every dark-styling module upstream.
+
+  // Printing a dark page wastes ink/toner and can leave near-white text on
+  // paper, since browsers skip background colors in print by default. Force
+  // every light-dark() token back to its light value regardless of theme.
+  @include media-print() {
+    :root,
+    [data-bs-theme='dark'],
+    [data-theme='dark'] {
+      color-scheme: light !important;
+    }
+  }
 }
