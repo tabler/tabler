@@ -7,6 +7,7 @@ related: [/ui/forms/form-select-tomselect, /ui/forms/form-image-check, /ui/forms
 ---
 import Example from '@components/Example.astro';
 import { site } from '@shared/lib/site';
+import Icon from '@ui/Icon.astro'
 
 ## Simple selectgroup
 
@@ -102,24 +103,7 @@ We recommend you use Tabler Icons for the best experience. You can find { site.i
     <label class="form-selectgroup-item">
       <input type="checkbox" name="name" value="sun" class="form-selectgroup-input" checked />
       <span class="form-selectgroup-label">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="icon"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          stroke-width="2"
-          stroke="currentColor"
-          fill="none"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-          <circle cx="12" cy="12" r="4" />
-          <path
-            d="M3 12h1m8 -9v1m8 8h1m-9 8v1m-6.4 -15.4l.7 .7m12.1 -.7l-.7 .7m0 11.4l.7 .7m-12.1 -.7l-.7 .7"
-          />
-        </svg>
+        <Icon name="sun" />
       </span>
     </label>
     <label class="form-selectgroup-item">
@@ -147,22 +131,7 @@ We recommend you use Tabler Icons for the best experience. You can find { site.i
     <label class="form-selectgroup-item">
       <input type="checkbox" name="name" value="cloud-rain" class="form-selectgroup-input" />
       <span class="form-selectgroup-label">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          class="icon"
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          stroke-width="2"
-          stroke="currentColor"
-          fill="none"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-        >
-          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
-          <path d="M7 18a4.6 4.4 0 0 1 0 -9a5 4.5 0 0 1 11 2h1a3.5 3.5 0 0 1 0 7" />
-          <path d="M11 13v2m0 3v2m4 -5v2m0 3v2" />
-        </svg>
+        <Icon name="cloud-rain" />
       </span>
     </label>
     <label class="form-selectgroup-item">
@@ -198,7 +167,44 @@ We recommend you use Tabler Icons for the best experience. You can find { site.i
 You can also add text to the element. Look at the example below to see how it works:
 
 <Example>
-<div class="mb-3"> <label class="form-label">Selectgroup with icons and text</label> <div class="form-selectgroup"> <label class="form-selectgroup-item"> <input type="radio" name="icons" value="home" class="form-selectgroup-input" checked /> <span class="form-selectgroup-label"> <svg xmlns="http://www.w3.org/2000/svg" class="icon me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" > <path stroke="none" d="M0 0h24v24H0z" fill="none" /> <polyline points="5 12 3 12 12 3 21 12 19 12" /> <path d="M5 12v7a2 2 0 0 0 2 2h10a2 2 0 0 0 2 -2v-7" /> <path d="M9 21v-6a2 2 0 0 1 2 -2h2a2 2 0 0 1 2 2v6" /> </svg> Home </span> </label> <label class="form-selectgroup-item"> <input type="radio" name="icons" value="user" class="form-selectgroup-input" /> <span class="form-selectgroup-label"> <svg xmlns="http://www.w3.org/2000/svg" class="icon me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" > <path stroke="none" d="M0 0h24v24H0z" fill="none" /> <circle cx="12" cy="7" r="4" /> <path d="M6 21v-2a4 4 0 0 1 4 -4h4a4 4 0 0 1 4 4v2" /> </svg> User </span> </label> <label class="form-selectgroup-item"> <input type="radio" name="icons" value="circle" class="form-selectgroup-input" /> <span class="form-selectgroup-label"> <svg xmlns="http://www.w3.org/2000/svg" class="icon me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" > <path stroke="none" d="M0 0h24v24H0z" fill="none" /> <circle cx="12" cy="12" r="9" /> </svg> Circle </span> </label> <label class="form-selectgroup-item"> <input type="radio" name="icons" value="square" class="form-selectgroup-input" /> <span class="form-selectgroup-label"> <svg xmlns="http://www.w3.org/2000/svg" class="icon me-1" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" > <path stroke="none" d="M0 0h24v24H0z" fill="none" /> <rect x="4" y="4" width="16" height="16" rx="2" /> </svg> Square </span> </label> </div> </div>
+<div class="mb-3">
+  <label class="form-label">Selectgroup with icons and text</label>
+  <div class="form-selectgroup">
+    <label class="form-selectgroup-item">
+      <input type="radio" name="icons" value="home" class="form-selectgroup-input" checked />
+      <span class="form-selectgroup-label"> <Icon name="home" class="me-1" /> Home </span>
+    </label>
+    <label class="form-selectgroup-item">
+      <input type="radio" name="icons" value="user" class="form-selectgroup-input" />
+      <span class="form-selectgroup-label"> <Icon name="user" class="me-1" /> User </span>
+    </label>
+    <label class="form-selectgroup-item">
+      <input type="radio" name="icons" value="circle" class="form-selectgroup-input" />
+      <span class="form-selectgroup-label"> <Icon name="circle" class="me-1" /> Circle </span>
+    </label>
+    <label class="form-selectgroup-item">
+      <input type="radio" name="icons" value="square" class="form-selectgroup-input" />
+      <span class="form-selectgroup-label">
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          class="icon me-1"
+          width="24"
+          height="24"
+          viewBox="0 0 24 24"
+          stroke-width="2"
+          stroke="currentColor"
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+          <rect x="4" y="4" width="16" height="16" rx="2" />
+        </svg>
+        Square
+      </span>
+    </label>
+  </div>
+</div>
 </Example>
 
 ## Pill selectgroup
@@ -247,14 +253,26 @@ Use more advanced selectboxes to display the range of available options. You can
       <input type="radio" name="form-payment" value="visa" class="form-selectgroup-input" />
       <div class="form-selectgroup-label d-flex align-items-center p-3">
         <div class="me-3"><span class="form-selectgroup-check"></span></div>
-        <div><span class="payment payment-provider-visa payment-xs me-2"></span> ending in <strong>7998</strong></div>
+        <div>
+          <span class="payment payment-provider-visa payment-xs me-2"></span> ending in
+          <strong>7998</strong>
+        </div>
       </div>
     </label>
     <label class="form-selectgroup-item flex-fill">
-      <input type="radio" name="form-payment" value="mastercard" class="form-selectgroup-input" checked />
+      <input
+        type="radio"
+        name="form-payment"
+        value="mastercard"
+        class="form-selectgroup-input"
+        checked
+      />
       <div class="form-selectgroup-label d-flex align-items-center p-3">
         <div class="me-3"><span class="form-selectgroup-check"></span></div>
-        <div><span class="payment payment-provider-mastercard payment-xs me-2"></span> ending in <strong>2807</strong></div>
+        <div>
+          <span class="payment payment-provider-mastercard payment-xs me-2"></span> ending in
+          <strong>2807</strong>
+        </div>
       </div>
     </label>
     <label class="form-selectgroup-item flex-fill">
