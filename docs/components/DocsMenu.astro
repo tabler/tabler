@@ -44,11 +44,11 @@ const menu = docs.menu as MenuSection[]
                 <div>
                   {/* href/data-bs-* only when the element has children */}
                   {hasChildren ? (
-                    <a class={`nav-link${expanded ? ' active' : ''}`} href={level2.url} data-bs-toggle="collapse" data-bs-target={`#collapse-${slug(level2.url)}`} aria-expanded={expanded ? 'true' : 'false'}>
+                    <a class={`nav-link${expanded ? ' active' : ''}`} href={level2.url} data-bs-toggle="collapse" data-bs-target={`#collapse-${slug(level2.url)}`} aria-expanded={expanded ? 'true' : 'false'} aria-current={url === level2.url ? 'page' : undefined}>
                       {level2.title} <span class="nav-link-toggle" />
                     </a>
                   ) : (
-                    <a class={`nav-link${expanded ? ' active' : ''}`} href={level2.url}>
+                    <a class={`nav-link${expanded ? ' active' : ''}`} href={level2.url} aria-current={url === level2.url ? 'page' : undefined}>
                       {level2.title}
                     </a>
                   )}
@@ -57,7 +57,7 @@ const menu = docs.menu as MenuSection[]
                     <div class={`nav nav-vertical collapse${expanded ? ' show' : ''}`} id={`collapse-${slug(level2.url)}`}>
                       {level2.children!.map((level3) => (
                         <div>
-                          <a class={`nav-link${url === level3.url ? ' active' : ''}`} href={level3.url}>
+                          <a class={`nav-link${url === level3.url ? ' active' : ''}`} href={level3.url} aria-current={url === level3.url ? 'page' : undefined}>
                             {level3.title}
                           </a>
                         </div>

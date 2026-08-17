@@ -292,7 +292,7 @@ const relatedPages = await Promise.all(
 		<!-- END DOCS STYLES -->
 	</head>
 
-	<body class="d-flex flex-column" style="background: var(--tblr-bg-surface)">
+	<body class="d-flex flex-column">
 		<a href="#content" class="visually-hidden-focusable skip-link">Skip to main content</a>
 		<!-- BEGIN GLOBAL THEME SCRIPT -->
 		<script is:inline src="/dist/js/tabler-theme.js"></script>
@@ -307,14 +307,14 @@ const relatedPages = await Promise.all(
 			<div class="container">
 				<div class="row g-0">
 					<!-- BEGIN DOCS MENU -->
-					<div class="col-docs d-none d-lg-block border-end">
-						<div class="py-4">
+					<div class="col-docs d-none d-lg-block">
+						<div class="py-6">
 							<div class="space-y space-y-5">
 								<nav class="nav nav-vertical" aria-label="Resources">
 									{
 										docsLinks.map((link) => (
 											<a href={link.url} class="nav-link" target="_blank" rel="noopener noreferrer">
-												<span class="border me-2 rounded p-1">
+												<span class="border me-2 rounded p-1 bg-surface d-inline-flex">
 													<Icon name={link.icon} />
 												</span>
 												{link.title}
@@ -329,9 +329,9 @@ const relatedPages = await Promise.all(
 						</div>
 					</div>
 					<!-- END DOCS MENU -->
-					<div class="col bg-docs-gradient">
-						<div class="py-lg-5 ps-lg-5">
-							<div class="py-6 ps-lg-6 p-xxl-6">
+					<div class="col d-flex flex-column">
+						<div class="docs-article flex-fill">
+							<div class="p-4 py-6 p-lg-6">
 								{breadcrumbs && (
 									<nav aria-label="Breadcrumb">
 										<ol class="breadcrumb breadcrumb-arrows breadcrumb-muted mb-3">
@@ -388,60 +388,52 @@ const relatedPages = await Promise.all(
 									)}
 
 									{!hidePagination && <DocsPagination url={docsUrl} />}
-
-									<div class="mt-7">
-										<div>
-											<a
-												href={`${site.githubUrl}/edit/dev/${editFilePath}`}
-												class="link-primary"
-												target="_blank" rel="noopener noreferrer"><Icon name="edit" class="icon-inline" /> Edit this page on GitHub</a
-											>
-										</div>
-
-										<nav class="mt-5" aria-label="Documentation sections">
-											<ul class="list-inline list-inline-dots mb-0 text-secondary">
-												{[
-													{ title: 'Getting started', url: '/ui/getting-started' },
-													{ title: 'UI components', url: '/ui/components' },
-													{ title: 'Icons', url: '/icons' },
-													{ title: 'Illustrations', url: '/illustrations' },
-													{ title: 'Emails', url: '/emails' },
-													{ title: 'FAQ', url: '/ui/getting-started/faq' },
-													{ title: 'License', url: '/ui/getting-started/license' },
-												].map((section) => (
-													<li class="list-inline-item">
-														<a href={section.url} class="link-secondary">
-															{section.title}
-														</a>
-													</li>
-												))}
-											</ul>
-										</nav>
-
-										<div class="mt-5">
-											<div class="row">
-												<div class="col text-secondary">
-													© {year} Tabler. All rights reserved.
-												</div>
-
-												<div class="col text-end">
-													<a href={site.githubUrl} class="link-secondary" target="_blank" rel="noopener noreferrer"><Icon name="brand-github" /></a>
-													<a href={site.githubSponsorsUrl} class="link-secondary" target="_blank" rel="noopener noreferrer"><Icon name="heart" /></a>
-													<a href={opencollectiveUrl} class="link-secondary" target="_blank" rel="noopener noreferrer"><Icon name="hearts" /></a>
-													<a href={xUrl} class="link-secondary" target="_blank" rel="noopener noreferrer"><Icon name="brand-x" /></a>
-													<a href={linkedinUrl} class="link-secondary" target="_blank" rel="noopener noreferrer"><Icon name="brand-linkedin" /></a>
-												</div>
-											</div>
-										</div>
-									</div>
 								</Prose>
 							</div>
 						</div>
+
+						<footer class="docs-footer">
+							<nav aria-label="Documentation sections">
+								<ul class="list-inline list-inline-dots mb-0 text-secondary">
+									{[
+										{ title: 'Getting started', url: '/ui/getting-started' },
+										{ title: 'UI components', url: '/ui/components' },
+										{ title: 'Icons', url: '/icons' },
+										{ title: 'Illustrations', url: '/illustrations' },
+										{ title: 'Emails', url: '/emails' },
+										{ title: 'FAQ', url: '/ui/getting-started/faq' },
+										{ title: 'License', url: '/ui/getting-started/license' },
+									].map((section) => (
+										<li class="list-inline-item">
+											<a href={section.url} class="link-secondary">
+												{section.title}
+											</a>
+										</li>
+									))}
+								</ul>
+							</nav>
+
+							<div class="mt-4">
+								<div class="row">
+									<div class="col text-secondary">
+										© {year} Tabler. All rights reserved.
+									</div>
+
+									<div class="col text-end">
+										<a href={site.githubUrl} class="link-secondary" target="_blank" rel="noopener noreferrer"><Icon name="brand-github" /></a>
+										<a href={site.githubSponsorsUrl} class="link-secondary" target="_blank" rel="noopener noreferrer"><Icon name="heart" /></a>
+										<a href={opencollectiveUrl} class="link-secondary" target="_blank" rel="noopener noreferrer"><Icon name="hearts" /></a>
+										<a href={xUrl} class="link-secondary" target="_blank" rel="noopener noreferrer"><Icon name="brand-x" /></a>
+										<a href={linkedinUrl} class="link-secondary" target="_blank" rel="noopener noreferrer"><Icon name="brand-linkedin" /></a>
+									</div>
+								</div>
+							</div>
+						</footer>
 					</div>
 					<!-- BEGIN DOCS TOC -->
 					<div class="col-2 d-none d-xxl-block">
 						<div class="py-6 sticky-top">
-							<DocsToc toc={toc} />
+							<DocsToc toc={toc} editUrl={`${site.githubUrl}/edit/dev/${editFilePath}`} />
 						</div>
 					</div>
 					<!-- END DOCS TOC -->

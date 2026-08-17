@@ -1,6 +1,8 @@
 ---
 // TOC comes in as a prop from the consuming page (h2/h3 headings from the
 // markdown content, excluding <!--EXAMPLE-->...<!--/EXAMPLE--> blocks).
+import Subheader from '@ui/Subheader.astro'
+import Icon from '@ui/Icon.astro'
 
 export interface TocItem {
   /** 2 or 3 (h2/h3); h3 gets the ms-3 indent */
@@ -12,9 +14,11 @@ export interface TocItem {
 
 interface Props {
   toc?: TocItem[]
+  /** "Edit this page" URL on GitHub; omitted for pages without a source file */
+  editUrl?: string | undefined
 }
 
-const { toc = [] } = Astro.props
+const { toc = [], editUrl } = Astro.props
 
 // shared/data/illustrations.json has 125 entries.
 const illustrationsCount = 125
@@ -23,15 +27,27 @@ const illustrationsCount = 125
 <!-- BEGIN DOCS TOC -->{
   toc.length > 0 && (
     <Fragment>
-      <h3 id="toc-heading">Table of Contents</h3>
+      <Subheader as="h3" id="toc-heading" class="mb-2">
+        On this page
+      </Subheader>
       <nav class="nav nav-vertical" id="toc" aria-labelledby="toc-heading">
         {toc.map((item) => (
-          <a href={`#${item.id}`} class={`nav-link${item.level === 3 ? ' ms-3' : ''}`}>
+          <a href={`#${item.id}`} class={`nav-link${item.level === 3 ? ' docs-toc-sub' : ''}`}>
             {item.text}
           </a>
         ))}
       </nav>
     </Fragment>
+  )
+}
+
+{
+  editUrl && (
+    <div class="mt-4">
+      <a href={editUrl} class="link-secondary docs-edit-link" target="_blank" rel="noopener noreferrer">
+        <Icon name="edit" class="icon-inline" /> Edit this page on GitHub
+      </a>
+    </div>
   )
 }
 

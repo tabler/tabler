@@ -96,7 +96,16 @@ export default defineConfig({
           from: path('./assets'),
           to: path('./public'),
           label: '@tabler/docs',
-          requiredFile: path('./assets/css/docs.css'),
+          requiredFile: path('./assets/favicon.ico'),
+        },
+        {
+          // docs css built by this package's sass pipeline (see the `css` script).
+          // Source is tmp-assets/ (not dist/) for the same unbounded-growth reason
+          // as in preview — see preview/.build/vite.config.mts.
+          from: path('./tmp-assets/css'),
+          to: path('./public/css'),
+          label: '@tabler/docs',
+          requiredFile: path('./tmp-assets/css/docs.css'),
         },
         {
           from: path('../core/dist'),
@@ -126,6 +135,9 @@ export default defineConfig({
         { from: path('./assets'), to: path('./public') },
         { from: path('../shared/static'), to: path('./public/static') },
       ],
+      // watch-css writes straight into public/css — the file is already in
+      // place, but Astro does not reload the browser on public/ changes.
+      reloadDirs: [path('./public/css')],
     }),
     mdx(),
   ],
