@@ -118,6 +118,9 @@ function lineBalance(line: string): number {
 
 const hasText = (line: string): boolean => line.replace(/<[^<>]*>/g, '').trim().length > 0
 
+/** The tags of a fragment in order, for comparing markup before and after formatting. */
+const tagSequence = (html: string): string => [...html.matchAll(/<(\/?)([a-zA-Z][\w.-]*)/g)].map((m) => `${m[1]}${m[2]!.toLowerCase()}`).join(',')
+
 /**
  * Merge raw-text lines back into their markup (see formatExamples). MDX parses
  * a line that mixes text and tags as one markdown paragraph, and every tag in
@@ -152,13 +155,19 @@ async function processFiles(): Promise<void> {
   for (const file of docs) {
     const oldContent = readFileSync(file, 'utf8')
 
-    // get codeblocks from markdown
-    let content = await replaceAsync(oldContent, /(```([a-z0-9]+).*?\n)(.*?)(```)/gs, async (m: string, m1: string, m2: string, m3: string, m4: string) => {
+    // Code fences, anchored to column 0: an indented fence belongs to a list
+    // item, and reprinting it without that indentation breaks the list.
+    let content = await replaceAsync(oldContent, /^(```([a-z0-9]+).*?\n)([\s\S]*?)^(```)/gm, async (m: string, m1: string, m2: string, m3: string, m4: string) => {
       if (m2 === 'html') {
         let formattedHtml = await formatHTML(m3)
 
         // remove empty lines
         formattedHtml = formattedHtml.replace(/^\s*[\r\n]/gm, '')
+
+        // Fences hold illustrative snippets, not always whole documents, and
+        // js-beautify silently closes what it thinks is unclosed. Only take
+        // its output when it rewrapped the same tags it was given.
+        if (tagSequence(formattedHtml) !== tagSequence(m3)) return m
 
         return m1 + formattedHtml.trim() + '\n' + m4
       }
