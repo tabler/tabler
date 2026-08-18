@@ -64,6 +64,21 @@ export const GET: APIRoute = async () => {
     sections.push(`## Other\n\n${remaining.join('\n')}`)
   }
 
+  // Class reference for every page that carries `classnames` front matter, so an
+  // agent reading this file alone knows which classes exist without fetching
+  // each page. Grouped by kind, in the same order the page renders them.
+  const groupOrder = ['component', 'part', 'style', 'modifier', 'behavior', 'direction', 'color', 'size']
+  const classSections = entries
+    .filter((entry) => entry.data.classnames)
+    .sort((a, b) => a.data.title.localeCompare(b.data.title))
+    .map((entry) => {
+      const groups = Object.entries(entry.data.classnames as Record<string, { class: string }[]>).sort(([a], [b]) => (groupOrder.indexOf(a) + 1 || 99) - (groupOrder.indexOf(b) + 1 || 99))
+      const lines = groups.map(([group, rows]) => `- ${group}: ${rows.map((row) => `\`${row.class}\``).join(', ')}`)
+      return `### ${entry.data.title}\n\n[${entry.data.title} documentation](${base}${docsUrlFromId(entry.id)})\n\n${lines.join('\n')}`
+    })
+
+  const classReference = classSections.length ? `## Class names\n\nEvery class each component ships, grouped by kind. A name in braces stands for a family: \`alert-{color}\` means any base color, \`table-mobile-{breakpoint}\` any breakpoint.\n\n${classSections.join('\n\n')}` : ''
+
   const body = `# Tabler
 
 > ${site.description}
@@ -75,6 +90,8 @@ Every page is available as markdown by appending \`.md\` to its url, for example
 The markup is taken from the documentation source. A small number of examples are written with Tabler's own documentation components, and those appear as component tags (for example \`<Alert type="success" />\`) instead of the final html; open the page itself for those.
 
 ${sections.join('\n\n')}
+
+${classReference}
 `
 
   return new Response(body, {
