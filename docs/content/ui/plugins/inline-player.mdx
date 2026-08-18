@@ -7,6 +7,7 @@ related: [/ui/components/carousel]
 ---
 import Example from '@components/Example.astro';
 import { Code } from 'astro:components';
+import TabsPackage from '@components/TabsPackage.astro';
 import { site } from '@shared/lib/site.ts';
 
 ## Overview
@@ -15,11 +16,16 @@ The Inline Player is a versatile, modern media player designed for seamless inte
 
 ## Installation
 
-To use the Inline Player, you need to include the Plyr library in your project. You can install it via npm or include it directly from a CDN. The following example demonstrates how to include the Plyr library from a CDN:
+To use the Inline Player, you need to include the Plyr library in your project. You can install it via npm:
+
+<TabsPackage name="plyr" />
+
+Or include it from a CDN. Plyr draws its own controls, so the stylesheet is required - without it the player falls back to the browser's native controls.
 
 <Code
 	lang="html"
-	code={`<script src="${site.cdnUrl}/dist/libs/plyr/dist/plyr.min.js"></script>`}
+	code={`<link rel="stylesheet" href="${site.cdnUrl}/dist/libs/plyr/dist/plyr.css" />
+<script src="${site.cdnUrl}/dist/libs/plyr/dist/plyr.min.js"></script>`}
 />
 
 ## YouTube video
@@ -40,7 +46,20 @@ For the Vimeo video you just need to change the `data-plyr-provider`.
 
 ## HTML5 video and audio
 
-Check out the [Plyr documentation](https://github.com/sampotts/plyr) for more options and examples, including HTML5 video and audio support.
+For a file you host yourself, use a normal `video` or `audio` element and let Plyr take it over. Keep the `controls` attribute, so the player still works if the script fails to load.
+
+```html
+<video id="player-video" controls playsinline poster="/media/clip-poster.jpg">
+  <source src="/media/clip.mp4" type="video/mp4" />
+  <track kind="captions" label="English" srclang="en" src="/media/clip.en.vtt" default />
+</video>
+```
+
+```js
+new Plyr('#player-video');
+```
+
+An audio player uses the same pattern with an `audio` element. See the [Plyr documentation](https://github.com/sampotts/plyr) for the full list of options.
 
 ## Customization
 
@@ -51,3 +70,10 @@ The Inline Player uses the primary color as the default color scheme. You can cu
 ```
 
 For more customization options, refer to the [Customizing the CSS](https://github.com/sampotts/plyr?tab=readme-ov-file#customizing-the-css) section in the Plyr documentation.
+
+## Accessibility
+
+- Keep the native controls unless you build a full replacement. They are keyboard operable and already named in the user's language.
+- Video needs captions. Add a `track` element with `kind="captions"`, and a transcript nearby for audio.
+- Never autoplay with sound. If the player must start on its own, keep it muted and give users a visible way to stop it.
+- Do not make a video the only source of an instruction. Anything essential belongs in text as well.

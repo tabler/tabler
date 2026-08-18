@@ -52,7 +52,8 @@ Look at the example below to see how the input mask works:
 
 <Example column>
 <label class="form-label">Telephone mask</label>
-<input type="text" name="input-mask" class="form-control" data-mask="(00) 0000-0000" data-mask-visible="true" placeholder="(00) 0000-0000" autocomplete="off" />
+<label class="form-label" for="mask-phone">Phone number</label>
+<input type="text" id="mask-phone" name="input-mask" class="form-control" data-mask="(00) 0000-0000" data-mask-visible="true" placeholder="(00) 0000-0000" autocomplete="off" />
 </Example>
 
 ## More examples
@@ -64,3 +65,10 @@ If you need more examples of input masks, you can find them in the [IMask docume
 Tabler automatically initializes all elements with `data-mask` on page load. This is the code that runs:
 
 <CodeDocs name="input-mask-init" file="core/js/src/input-mask.ts" />
+
+## Accessibility
+
+- A mask changes what the field accepts as the user types, which is easy to lose track of without sight. Say the expected format in a hint tied to the field with `aria-describedby`.
+- Keep a real `label`. The placeholder shows the pattern, and it disappears as soon as typing starts.
+- Do not block paste. A masked field that rejects a pasted phone number is a dead end for anyone using a password manager or a switch device.
+- Use the right `type` and `autocomplete`, so the browser can still fill the field and the phone keyboard matches.

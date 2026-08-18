@@ -14,4 +14,29 @@ import TabsPackage from '@components/TabsPackage.astro'
 
 or just [download from Github](https://github.com/tabler/tabler-icons/releases).
 
-All EPS files are stored in `icons` subdirectory.
+Files live in `icons/outline` and `icons/filled`, one EPS per icon, named after the icon.
+
+## Usage
+
+EPS is an older vector format, still expected by print shops and by design tools that do not read SVG. Use it when a supplier asks for EPS specifically - for anything else a newer format is a better fit.
+
+- **Print production.** Most printers accept EPS without conversion, and it keeps the paths as vectors.
+- **Legacy design tools.** Older versions of Illustrator, CorelDRAW and QuarkXPress open EPS directly.
+- **Embroidery, signage and cutting machines.** These workflows often accept EPS and little else.
+
+The icons are drawn as strokes. Some print workflows want outlines instead, so expand the strokes before sending the file if your supplier asks for it.
+
+## CDN
+
+Load a single icon straight from the package without installing it:
+
+```html
+https://unpkg.com/@tabler/icons-eps@latest/icons/outline/home.eps
+https://unpkg.com/@tabler/icons-eps@latest/icons/filled/home.eps
+```
+
+`latest` always serves the newest icons. Pin a version number instead when you need the set to stay stable.
+
+## When to use another format
+
+On the web use [SVG](/icons/static-files/svg). For documents and modern print use [PDF](/icons/static-files/pdf), which every current tool reads. Reach for EPS only when something in the chain requires it.
