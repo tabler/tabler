@@ -7,28 +7,55 @@ related: [/ui/plugins/chart]
 ---
 import Example from '@components/Example.astro';
 import CodeDocs from '@components/CodeDocs.astro';
+import TabsPackage from '@components/TabsPackage.astro';
+import { Code } from 'astro:components';
+import { site } from '@shared/lib/site.ts';
 
-The countup component is used to display numbers dynamically. It is a great way to make the interface more interactive and engaging. The countup component is a simple and easy way to animate numbers in your application.
+## Overview
 
-To be able to use the countup in your application you will need to install the countup.js dependency with `npm install countup.js`.
+A countup animates a number from a starting value up to its final value. Use it for statistics on a dashboard or a landing page, where the number is the point of the block.
 
-For more advanced features of countups, see the demo on the [countUp.js website](https://inorganik.github.io/countUp.js/).
-
-## Basic usage
-
-To create a countup, add `data-countup` to any HTML text tag and specify the number which is to be reached. The animation will be triggered as soon as the number enters the viewport.
-
-```html
-<h1 data-countup>30000</h1>
-```
-
-The results can be seen in the example below.
+Write the final number as the text of the element and add `data-countup`. Tabler finds every such element and animates it when it scrolls into view, so no JavaScript of your own is needed.
 
 <Example centered>
 <h1 data-countup>30000</h1>
 </Example>
 
-## Duration
+## Installation
+
+Install countup.js with npm:
+
+<TabsPackage name="countup.js" />
+
+Or include it from a CDN:
+
+<Code lang="html" code={`<script src="${site.cdnUrl}/dist/libs/countup.js/dist/countUp.umd.js"></script>`} />
+
+Tabler reads the library from the `countUp` global, so load the UMD build above before `tabler.js`. If you install with npm and bundle it yourself, assign it first:
+
+```js
+import * as countUp from 'countup.js';
+
+window.countUp = countUp;
+```
+
+For options beyond the ones below, see the [countUp.js website](https://inorganik.github.io/countUp.js/).
+
+## Usage
+
+Add `data-countup` to any text element and write the target number inside it. The animation starts as soon as the number enters the viewport.
+
+```html
+<h1 data-countup>30000</h1>
+```
+
+Pass options as JSON in the same attribute. Every option below works this way.
+
+```html
+<h1 data-countup='{"duration":4,"suffix":"%"}'>300</h1>
+```
+
+### Duration
 
 Set the `duration` to determine how long the animation should take. By default, the duration is set to 2 seconds, but you can modify it as you wish.
 
@@ -36,7 +63,7 @@ Set the `duration` to determine how long the animation should take. By default, 
 <h1 data-countup>30000</h1> <h1 data-countup='{"duration":4}'>30000</h1> <h1 data-countup='{"duration":6}'>30000</h1>
 </Example>
 
-## Starting value
+### Starting value
 
 By default the countup will start from zero. If you want to set a different start value use `startVal`.
 You can also set the start value to be greater than the final value, so that it counts down instead of up.
@@ -46,7 +73,7 @@ To see how the starting value affects the animation, look at the example below.
 <h1 data-countup='{"startVal":12345}'>30000</h1> <h1 data-countup='{"startVal":47655}'>30000</h1>
 </Example>
 
-## Decimal places
+### Decimal places
 
 Set how many decimal numbers should be displayed using `decimalPlaces`. By default, the number of decimal places is set to 0.
 
@@ -54,7 +81,7 @@ Set how many decimal numbers should be displayed using `decimalPlaces`. By defau
 <h1 data-countup>3.123</h1> <h1 data-countup='{"decimalPlaces":1}'>3.123</h1> <h1 data-countup='{"decimalPlaces":2}'>3.123</h1> <h1 data-countup='{"decimalPlaces":3}'>3.123</h1>
 </Example>
 
-## Easing
+### Easing
 
 Disable easing using `"useEasing": false`. Easing is set to `true` by default, so that the animation speed changes over the course of its duration. Easing can be disabled to make the animation linear.
 
@@ -62,7 +89,7 @@ Disable easing using `"useEasing": false`. Easing is set to `true` by default, s
 <h1 data-countup>30000</h1> <h1 data-countup='{"useEasing": false}'>30000</h1>
 </Example>
 
-## Use grouping
+### Use grouping
 
 Disable grouping using `"useGrouping": false`. Grouping is set to `true` by default, so that the number is displayed with a separator.
 
@@ -70,7 +97,7 @@ Disable grouping using `"useGrouping": false`. Grouping is set to `true` by defa
 <h1 data-countup>30000</h1> <h1 data-countup='{"useGrouping": false}'>30000</h1>
 </Example>
 
-## Separator
+### Separator
 
 You can change the default separator using `separator` and specifying the one you wish to use.
 
@@ -78,7 +105,7 @@ You can change the default separator using `separator` and specifying the one yo
 <h1 data-countup>3000000</h1> <h1 data-countup='{"separator":" "}'>3000000</h1>
 </Example>
 
-## Decimal separator
+### Decimal separator
 
 You can change the default decimal separator using `decimal` and specifying the one you wish to use.
 
@@ -86,7 +113,7 @@ You can change the default decimal separator using `decimal` and specifying the 
 <h1 data-countup='{"decimalPlaces":2}'>3.12</h1> <h1 data-countup='{"decimalPlaces":2,"decimal":","}'>3.12</h1>
 </Example>
 
-## Prefix
+### Prefix
 
 Set the countup prefix using `prefix` and specifying the prefix you want to add, for instance a currency symbol.
 
@@ -94,7 +121,7 @@ Set the countup prefix using `prefix` and specifying the prefix you want to add,
 <h1 data-countup='{"prefix":"$"}'>30000</h1> <h1 data-countup='{"prefix":"€"}'>30000</h1>
 </Example>
 
-## Suffix
+### Suffix
 
 Set the countup suffix using `suffix` and specifying the suffix you want to add, for instance a percentage symbol.
 
@@ -107,3 +134,18 @@ Set the countup suffix using `suffix` and specifying the suffix you want to add,
 Tabler automatically initializes all elements with `data-countup` on page load. This is the code that runs:
 
 <CodeDocs name="countup-init" file="core/js/src/countup.ts" />
+
+## Accessibility
+
+- Write the final number in the HTML, as the examples do. That is what a search engine indexes, what shows without JavaScript, and what a screen reader reads if it reaches the element before the animation starts.
+- Never put a countup inside an `aria-live` region. The text changes on every frame, so a live region would announce dozens of intermediate numbers.
+- The number on its own says nothing. Give it a visible label next to it, or an `aria-label` on the block that holds both.
+- Tabler does not check `prefers-reduced-motion`, so a countup animates even for users who asked for less motion. Skip the initialization for them:
+
+```js
+if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  document.querySelectorAll('[data-countup]').forEach((el) => el.removeAttribute('data-countup'));
+}
+```
+
+Run it before `tabler.js`, so the number simply stays at its final value.
