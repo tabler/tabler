@@ -53,14 +53,32 @@
 }
 
 // Markdown tables pick up the styled table look (from `ui/_markdown.scss`)
-.prose > table,
-.markdown > table {
-  @extend .table, .table-bordered, .table-sm;
+.prose>table,
+.markdown>table {
+  @extend .table;
+  font-size: var(--body-font-size);
+
+  &> :not(caption)>*>*:first-child {
+    padding-left: 0;
+  }
+
+  &> :not(caption)>*>*:last-child {
+    padding-right: 0;
+  }
+
+  &> :not(caption)>*:last-child>* {
+    border-bottom: 0;
+  }
+
+  thead > tr > th {
+    background-color: transparent;
+  }
 }
 
 // Light-scoped subtrees inside a dark body inherit the dark styles
 // (from `layout/_dark.scss`)
 @if $enable-dark-mode {
+
   body[data-bs-theme='dark'] [data-bs-theme='light'],
   body[data-theme='dark'] [data-theme='light'] {
     @extend [data-bs-theme='dark'];
