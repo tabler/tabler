@@ -310,7 +310,7 @@ const relatedPages = await Promise.all(
 		<!-- END NAVBAR  -->
 		<!-- BEGIN PAGE BODY -->
 		<main id="content" class="flex-fill">
-			<div class="container">
+			<div class="container-lg">
 				<div class="row g-0">
 					<!-- BEGIN DOCS MENU -->
 					<div class="col-docs offcanvas-lg offcanvas-start" tabindex="-1" id="docs-menu-offcanvas" aria-labelledby="docs-menu-offcanvas-title">
@@ -371,7 +371,7 @@ const relatedPages = await Promise.all(
 									tabindex="0"
 								>
 									<div class="d-flex">
-										<h1>
+										<h1 class="docs-page-title">
 											{title}
 										</h1>
 
@@ -384,7 +384,7 @@ const relatedPages = await Promise.all(
 										}
 									</div>
 
-									<p class="text-secondary fs-3 lh-3">{summary}</p>
+									<p class="docs-page-lead text-secondary fs-3 lh-3">{summary}</p>
 
 									{/* Page must supply headings with ids (MDX does this by default). */}
 									<slot />
@@ -492,6 +492,9 @@ const relatedPages = await Promise.all(
 						e.trigger.classList.remove('btn-dark');
 						e.trigger.children[0].classList.add('d-none');
 						e.trigger.children[1].classList.remove('d-none');
+						// The checkmark is the only feedback a sighted user gets; the label
+						// carries the same message to a screen reader.
+						e.trigger.setAttribute('aria-label', 'Copied');
 
 						setTimeout(function () {
 							e.trigger.classList.remove('btn-success');
@@ -499,6 +502,7 @@ const relatedPages = await Promise.all(
 
 							e.trigger.children[0].classList.remove('d-none');
 							e.trigger.children[1].classList.add('d-none');
+							e.trigger.setAttribute('aria-label', 'Copy code');
 						}, 2000);
 					});
 
