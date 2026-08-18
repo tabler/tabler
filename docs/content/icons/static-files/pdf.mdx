@@ -5,6 +5,8 @@ description: Download Tabler Icons as PDF files, ready to place in documents, pr
 ---
 
 import TabsPackage from '@components/TabsPackage.astro'
+import { Code } from 'astro:components'
+import { site } from '@shared/lib/site.ts'
 
 ![Tabler Icons in PDF format](/img/icons/package-pdf.png)
 
@@ -31,12 +33,10 @@ Each icon is drawn as a stroke, not a filled shape. Recolour the stroke rather t
 
 Load a single icon straight from the package without installing it:
 
-```html
-https://unpkg.com/@tabler/icons-pdf@latest/icons/outline/home.pdf
-https://unpkg.com/@tabler/icons-pdf@latest/icons/filled/home.pdf
-```
+<Code lang="html" code={`https://unpkg.com/@tabler/icons-pdf@${site.iconsVersion}/icons/outline/home.pdf
+https://unpkg.com/@tabler/icons-pdf@${site.iconsVersion}/icons/filled/home.pdf`} />
 
-`latest` always serves the newest icons. Pin a version number instead when you need the set to stay stable.
+Swap the version for `latest` to always pull the newest icons, or keep it pinned so the set stays stable.
 
 ## When to use another format
 

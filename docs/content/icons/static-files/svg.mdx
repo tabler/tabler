@@ -5,6 +5,8 @@ description: Download Tabler Icons as SVG files that scale without quality loss.
 ---
 
 import TabsPackage from '@components/TabsPackage.astro'
+import { Code } from 'astro:components'
+import { site } from '@shared/lib/site.ts'
 import Icon from '@ui/Icon.astro'
 import Example from '@components/Example.astro'
 
@@ -65,16 +67,12 @@ Add an icon to be displayed on your page with the following markup (`activity` i
 
 Load the outline version of an icon as an image straight from the `icons/outline` directory of the CDN package:
 
-```html
-<img src="https://unpkg.com/@tabler/icons@latest/icons/outline/home.svg" />
-```
+<Code lang="html" code={`<img src="https://unpkg.com/@tabler/icons@${site.iconsVersion}/icons/outline/home.svg" />`} />
 
 ### Filled version
 
 Use the `icons/filled` path to load the filled version of an icon:
 
-```html
-<img src="https://unpkg.com/@tabler/icons@latest/icons/filled/home.svg" />
-```
+<Code lang="html" code={`<img src="https://unpkg.com/@tabler/icons@${site.iconsVersion}/icons/filled/home.svg" />`} />
 
-`latest` always serves the newest icons. Pin a version number instead when you need the set to stay stable.
+Swap the version for `latest` to always pull the newest icons, or keep it pinned so the set stays stable.

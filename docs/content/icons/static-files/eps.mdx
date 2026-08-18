@@ -5,6 +5,8 @@ description: Download Tabler Icons as EPS files for print projects and vector ed
 ---
 
 import TabsPackage from '@components/TabsPackage.astro'
+import { Code } from 'astro:components'
+import { site } from '@shared/lib/site.ts'
 
 ![Tabler Icons in EPS format](/img/icons/package-eps.png)
 
@@ -30,12 +32,10 @@ The icons are drawn as strokes. Some print workflows want outlines instead, so e
 
 Load a single icon straight from the package without installing it:
 
-```html
-https://unpkg.com/@tabler/icons-eps@latest/icons/outline/home.eps
-https://unpkg.com/@tabler/icons-eps@latest/icons/filled/home.eps
-```
+<Code lang="html" code={`https://unpkg.com/@tabler/icons-eps@${site.iconsVersion}/icons/outline/home.eps
+https://unpkg.com/@tabler/icons-eps@${site.iconsVersion}/icons/filled/home.eps`} />
 
-`latest` always serves the newest icons. Pin a version number instead when you need the set to stay stable.
+Swap the version for `latest` to always pull the newest icons, or keep it pinned so the set stays stable.
 
 ## When to use another format
 
