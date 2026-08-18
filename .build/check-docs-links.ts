@@ -5,9 +5,14 @@
 // - redirect destinations in docs/astro.config.mjs
 // - href string literals in docs .astro components
 // - docs paths linked from the demo site: <DocsLink path="…"> and getDocsUrl('…')
+// - asset paths that actually render: src, poster and CSS url() in mdx and in
+//   docs .astro components
 // Anchors are checked against heading slugs computed with github-slugger —
 // the same library the markdown pipeline uses. Demo markup inside <Example>
 // blocks and code fences is ignored; its links are illustrative by design.
+// Assets are the exception: an <img> inside an <Example> really renders on the
+// page, so those are checked. Code fences stay exempt — a snippet points at
+// files in the reader's own project (/media/clip.mp4), not at ours.
 // Run: pnpm run check-docs-links
 
 import { existsSync, readFileSync } from 'node:fs'
@@ -106,12 +111,12 @@ const frontmatter = (file: string): string => {
   return source.startsWith('---') ? (source.split(/^---$/m, 3)[1] ?? '') : ''
 }
 
+const stripCode = (text: string): string => text.replace(/^```[\s\S]*?^```/gm, '').replace(/`[^`\n]*`/g, '')
+
 const stripDemosAndCode = (text: string): string =>
-  text
+  stripCode(text)
     .replace(/<Example\b[\s\S]*?<\/Example>/g, '')
     .replace(/<Example\b[^>]*\/>/g, '')
-    .replace(/^```[\s\S]*?^```/gm, '')
-    .replace(/`[^`\n]*`/g, '')
 
 // ---------------------------------------------------------------------------
 // Validation
@@ -164,6 +169,28 @@ const checkTarget = (sourceLabel: string, link: string, sourceFile?: string) => 
   }
 }
 
+// Asset references that the browser really fetches: src, poster and CSS url().
+// Only literal absolute paths are checked — `src={...}` is built at render time
+// and cannot be resolved here.
+const assetRefPattern = /(?:src|poster)="(\/[^"]+)"|url\((\/[^)"']+)\)/g
+
+const checkAsset = (sourceLabel: string, reference: string) => {
+  checkedLinks++
+  const path = (reference.split(/[?#]/)[0] ?? '').replace(/\/+$/, '')
+  if (skipPrefixes.some((prefix) => path.startsWith(prefix))) return
+
+  const assetRoot = Object.keys(assetRoots).find((prefix) => path.startsWith(`${prefix}/`))
+  if (!assetRoot) {
+    // Outside a known root the file cannot be resolved from the repo, so the
+    // reference is only reportable when it claims a directory we do own.
+    return
+  }
+  const roots = assetRoots[assetRoot] ?? []
+  if (!roots.some((root) => existsSync(join(root, path.slice(assetRoot.length + 1))))) {
+    errors.push(`${sourceLabel}: dead asset "${reference}"`)
+  }
+}
+
 // 1. Markdown links + `related:` frontmatter in every mdx page.
 for (const file of sync(join(contentDir, '**', '*.mdx'))) {
   const label = relative(repoRoot, file)
@@ -177,6 +204,11 @@ for (const file of sync(join(contentDir, '**', '*.mdx'))) {
       continue
     }
     checkTarget(label, link, file)
+  }
+
+  // Assets render from demo markup too, so this uses the code-only stripper.
+  for (const match of stripCode(body(file)).matchAll(assetRefPattern)) {
+    checkAsset(label, match[1] ?? match[2] ?? '')
   }
 
   // `related:` accepts both the array and the scalar form (see content.config.ts).
@@ -214,8 +246,12 @@ for (const destination of redirectDestinations) {
 // 4. Internal href literals in docs components, layouts and astro pages.
 for (const file of sync(join(repoRoot, 'docs', '{components,layouts,pages}', '**', '*.astro'))) {
   const label = relative(repoRoot, file)
-  for (const match of readFileSync(file, 'utf8').matchAll(/href(?:=|:\s*)["'](\/[^"']*)["']/g)) {
+  const source = readFileSync(file, 'utf8')
+  for (const match of source.matchAll(/href(?:=|:\s*)["'](\/[^"']*)["']/g)) {
     checkTarget(label, match[1] ?? '')
+  }
+  for (const match of source.matchAll(assetRefPattern)) {
+    checkAsset(label, match[1] ?? match[2] ?? '')
   }
 }
 
@@ -234,9 +270,9 @@ for (const file of sync(join(repoRoot, '{preview,shared}', '**', '*.astro'), { i
 
 const uniqueErrors = [...new Set(errors)]
 if (uniqueErrors.length > 0) {
-  console.error(`Found ${uniqueErrors.length} dead link(s) (${checkedLinks} links checked):\n`)
+  console.error(`Found ${uniqueErrors.length} dead reference(s) (${checkedLinks} links and assets checked):\n`)
   for (const error of uniqueErrors) console.error(`  ${error}`)
   process.exit(1)
 }
 
-console.log(`OK — ${checkedLinks} links checked across ${routeFiles.size} pages, no dead links.`)
+console.log(`OK — ${checkedLinks} links and assets checked across ${routeFiles.size} pages, nothing dead.`)
