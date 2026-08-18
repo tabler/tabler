@@ -85,7 +85,7 @@ Combine the page title with a result count, a search input, and a primary action
       <div class="d-flex">
         <div class="me-3 d-none d-md-block">
           <div class="input-icon">
-            <input type="text" class="form-control" placeholder="Search…" />
+            <input type="search" class="form-control" placeholder="Search…" aria-label="Search" />
             <span class="input-icon-addon"><Icon name="search" /></span>
           </div>
         </div>
@@ -161,3 +161,11 @@ In addition to the breadcrumb, the header often includes actions or buttons that
   </div>
 </div>
 </Example>
+
+## Accessibility
+
+- The page title belongs in an `h1`, and there should be exactly one per page. `page-title` is a style, not a heading.
+- The pretitle is context, not a heading. Keep it a `div` so it does not break the heading order.
+- Buttons in `page-header` come after the title in the markup even when they sit to its right. That is the order they should be read in.
+- An icon-only action needs an `aria-label`.
+- A search field in the header needs a label. When the design has no room, use `aria-label` and `type="search"`.

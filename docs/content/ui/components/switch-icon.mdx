@@ -13,7 +13,7 @@ import CodeDocs from '@components/CodeDocs.astro';
 The icon transition is triggered by adding an `.active` class to the `switch-icon` component.
 
 <Example centered>
-<button class="switch-icon" data-bs-toggle="switch-icon">
+<button type="button" class="switch-icon" data-bs-toggle="switch-icon" aria-pressed="false" aria-label="Like">
   <span class="switch-icon-a text-secondary"><Icon name="heart" /></span>
   <span class="switch-icon-b text-red"><Icon name="heart" filled /></span>
 </button>
@@ -24,23 +24,23 @@ The icon transition is triggered by adding an `.active` class to the `switch-ico
 You can also add a fancy animation to add variety to your button. See demo below:
 
 <Example centered>
-<button class="switch-icon" data-bs-toggle="switch-icon">
+<button type="button" class="switch-icon" data-bs-toggle="switch-icon" aria-pressed="false" aria-label="Select">
   <span class="switch-icon-a text-secondary"><Icon name="circle" /></span>
   <span class="switch-icon-b text-primary"><Icon name="circle" filled /></span>
 </button>
-<button class="switch-icon switch-icon-fade" data-bs-toggle="switch-icon">
+<button type="button" class="switch-icon switch-icon-fade" data-bs-toggle="switch-icon" aria-pressed="false" aria-label="Like">
   <span class="switch-icon-a text-secondary"><Icon name="heart" /></span>
   <span class="switch-icon-b text-red"><Icon name="heart" filled /></span>
 </button>
-<button class="switch-icon switch-icon-scale" data-bs-toggle="switch-icon">
+<button type="button" class="switch-icon switch-icon-scale" data-bs-toggle="switch-icon" aria-pressed="false" aria-label="Add to favourites">
   <span class="switch-icon-a text-secondary"><Icon name="star" /></span>
   <span class="switch-icon-b text-yellow"><Icon name="star" filled /></span>
 </button>
-<button class="switch-icon switch-icon-flip" data-bs-toggle="switch-icon">
+<button type="button" class="switch-icon switch-icon-flip" data-bs-toggle="switch-icon" aria-pressed="false" aria-label="Vote up">
   <span class="switch-icon-a text-secondary"><Icon name="thumb-up" /></span>
   <span class="switch-icon-b text-blue"><Icon name="thumb-up" filled /></span>
 </button>
-<button class="switch-icon switch-icon-slide-up" data-bs-toggle="switch-icon">
+<button type="button" class="switch-icon switch-icon-slide-up" data-bs-toggle="switch-icon" aria-pressed="false" aria-label="Toggle">
   <span class="switch-icon-a text-secondary">
     <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
       <path stroke="none" d="M0 0h24v24H0z" fill="none" />
@@ -54,7 +54,7 @@ You can also add a fancy animation to add variety to your button. See demo below
     </svg>
   </span>
 </button>
-<button class="switch-icon switch-icon-slide-left" data-bs-toggle="switch-icon">
+<button type="button" class="switch-icon switch-icon-slide-left" data-bs-toggle="switch-icon" aria-pressed="false" aria-label="Toggle">
   <span class="switch-icon-a text-secondary">
     <Icon name="check" />
   </span>
@@ -62,7 +62,7 @@ You can also add a fancy animation to add variety to your button. See demo below
     <Icon name="x" />
   </span>
 </button>
-<button class="switch-icon switch-icon-slide-down" data-bs-toggle="switch-icon">
+<button type="button" class="switch-icon switch-icon-slide-down" data-bs-toggle="switch-icon" aria-pressed="false" aria-label="Toggle">
   <span class="switch-icon-a text-secondary">
     <Icon name="arrow-down" />
   </span>
@@ -70,7 +70,7 @@ You can also add a fancy animation to add variety to your button. See demo below
     <Icon name="arrow-up" />
   </span>
 </button>
-<button class="switch-icon switch-icon-slide-end" data-bs-toggle="switch-icon">
+<button type="button" class="switch-icon switch-icon-slide-end" data-bs-toggle="switch-icon" aria-pressed="false" aria-label="Toggle">
   <span class="switch-icon-a text-secondary">
     <Icon name="car" />
   </span>
@@ -85,3 +85,10 @@ You can also add a fancy animation to add variety to your button. See demo below
 Tabler toggles the `active` class on every element with `data-bs-toggle="switch-icon"` on click. This is the code that runs:
 
 <CodeDocs name="switch-icon-init" file="core/js/src/switch-icon.ts" />
+
+## Accessibility
+
+- A switch icon is a toggle button. Give it `type="button"`, an `aria-label` saying what it toggles, and `aria-pressed` for the state - Tabler keeps `aria-pressed` in sync from the first click, but the initial value has to be in your markup.
+- The two icons are decoration. The state lives in `aria-pressed`, not in which icon is visible.
+- Colour alone should not carry the state. A filled red heart and an outlined grey one differ in shape too, which is what makes them readable.
+- The animations run on every toggle. Disable them under `prefers-reduced-motion` if you add your own.

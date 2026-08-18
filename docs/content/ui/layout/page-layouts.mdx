@@ -36,7 +36,7 @@ To create a sample version of the dashboard, you can use the following code snip
     </div>
   </header>
   <div class="page-wrapper">
-    <div class="page-body">
+    <main id="content" class="page-body">
       <div class="container-xl">
         <div class="row row-deck row-cards">
           <div class="col-4">
@@ -61,7 +61,7 @@ To create a sample version of the dashboard, you can use the following code snip
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 </Example>
@@ -102,7 +102,7 @@ To create a sidebar layout, you can use the following code snippet. This code sn
 <div class="page">
   <aside class="navbar navbar-vertical navbar-expand-sm position-absolute" data-bs-theme="dark">
     <div class="container-fluid">
-      <button class="navbar-toggler" type="button">
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#sidebar-menu" aria-controls="sidebar-menu" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
       <h1 class="navbar-brand navbar-brand-autodark">
@@ -146,7 +146,7 @@ To create a sidebar layout, you can use the following code snippet. This code sn
         </div>
       </div>
     </div>
-    <div class="page-body">
+    <main id="content" class="page-body">
       <div class="container-xl">
         <div class="row row-deck row-cards">
           <div class="col-sm-6 col-lg-3">
@@ -220,7 +220,28 @@ To create a sidebar layout, you can use the following code snippet. This code sn
           </div>
         </div>
       </div>
-    </div>
+    </main>
   </div>
 </div>
 </Example>
+
+## Accessibility
+
+A layout is what a screen reader user navigates by, so the landmarks matter more here than on any single component.
+
+- Use the real elements for the regions. Tabler's own layout renders `header` for the top bar, `aside` for the vertical navbar, `main` for `.page-body` and `footer` for the footer. The classes are styling; the elements are what create the landmarks.
+- `.page-body` should be a `main`, and there is exactly one per page. It is the target the skip link points at.
+- Start the page with a skip link, so keyboard users can jump past the navigation. Tabler ships one:
+
+```html
+<a href="#content" class="visually-hidden-focusable skip-link">Skip to main content</a>
+...
+<main id="content" class="page-body">
+```
+
+  `visually-hidden-focusable` keeps the link out of the way until it takes focus, and then shows it.
+
+- Label each navigation region. A page with a sidebar and a top bar has two `nav` elements, and `aria-label="Primary"` on one of them is what tells them apart.
+- The navbar toggler needs `aria-controls` pointing at the collapsing element and a name such as "Toggle navigation". Bootstrap keeps `aria-expanded` in sync.
+- Keep the DOM order close to the reading order. A sidebar that appears on the right visually should still come where it belongs in the markup.
+- `d-print-none` on the navbar and the footer removes them from print, which is what you want - but check that nothing users need only exists there.

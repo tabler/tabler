@@ -16,8 +16,14 @@ To inform users whether the entered value is correct or not, use either of the v
 To apply the validation state to the form control, use the `.is-valid` and `.is-invalid` classes. For assistive tech, also set `aria-invalid="true"` on invalid controls.
 
 <Example column>
-<input type="text" class="form-control is-valid" placeholder="Valid State..." aria-invalid="false" />
-<input type="text" class="form-control is-invalid" placeholder="Invalid State..." aria-invalid="true" />
+<div>
+  <label class="form-label" for="state-valid">Valid state</label>
+  <input type="text" id="state-valid" class="form-control is-valid" aria-invalid="false" />
+</div>
+<div>
+  <label class="form-label" for="state-invalid">Invalid state</label>
+  <input type="text" id="state-invalid" class="form-control is-invalid" aria-invalid="true" />
+</div>
 </Example>
 
 ## Validation feedback
@@ -36,9 +42,9 @@ You can also use the `.valid-feedback` to provide users with positive feedback.
 
 <Example column>
 <div>
-  <label class="form-label required">City</label>
-  <input type="text" class="form-control is-valid" value="Warsaw" />
-  <div class="valid-feedback">Looks good!</div>
+  <label class="form-label required" for="city-valid">City</label>
+  <input type="text" class="form-control is-valid" id="city-valid" required value="Warsaw" aria-describedby="city-valid-feedback" />
+  <div class="valid-feedback" id="city-valid-feedback">Looks good!</div>
 </div>
 </Example>
 
@@ -48,10 +54,26 @@ If you prefer a more subtle manner of informing users of the input control valid
 
 To do this, use the `.is-valid-lite` and `.is-invalid-lite` classes.
 
+These variants drop the colored frame and the feedback message, so the state is left to a small icon. Keep `aria-invalid` on the field, and keep the reason in text somewhere the field points to - otherwise the error exists only as a symbol.
+
 <Example column>
-<input type="text" class="form-control is-valid is-valid-lite" placeholder="Valid State..." />
-<input type="text" class="form-control is-invalid is-invalid-lite" placeholder="Invalid State..." />
+<div>
+  <label class="form-label" for="state-valid-lite">Valid state</label>
+  <input type="text" id="state-valid-lite" class="form-control is-valid is-valid-lite" aria-invalid="false" />
+</div>
+<div>
+  <label class="form-label" for="state-invalid-lite">Invalid state</label>
+  <input type="text" id="state-invalid-lite" class="form-control is-invalid is-invalid-lite" aria-invalid="true" />
+</div>
 </Example>
+
+## Accessibility
+
+- Colour alone must not say that a field is wrong. Keep `aria-invalid="true"` on the field and a message in text.
+- Give the feedback element an `id` and point the field at it with `aria-describedby`, so the message is read with the field rather than after the form.
+- Say what to do, not only what failed. "Please provide a valid city" beats "Invalid".
+- On submit, move focus to the first field that failed. Otherwise a keyboard user has to hunt for it.
+- Validate when the user leaves a field, not on every keystroke. A message that appears and disappears while typing is announced over and over.
 
 ## SCSS variables
 

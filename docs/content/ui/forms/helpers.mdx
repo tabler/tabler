@@ -28,25 +28,25 @@ Look at the example below to see how the input help works:
 
 <Example column>
 <div>
-  <label class="form-label"> ZIP Code <span class="form-help" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<p>ZIP Code must be US or CDN format. You can use an extended ZIP+4 code to determine address more accurately.</p><p class='mb-0'><a href=''>USP ZIP codes lookup tools</a></p>"> ? </span> </label>
-  <input type="text" class="form-control" placeholder="Your ZIP Code" />
+  <label class="form-label" for="helper-zip"> ZIP Code <span class="form-help" data-bs-toggle="popover" data-bs-placement="top" data-bs-html="true" data-bs-content="<p>ZIP Code must be US or CDN format. You can use an extended ZIP+4 code to determine address more accurately.</p><p class='mb-0'><a href=''>USP ZIP codes lookup tools</a></p>"> ? </span> </label>
+  <input type="text" id="helper-zip" class="form-control" placeholder="Your ZIP Code" />
 </div>
 </Example>
 
 ## Required field
 
-Use the `.required` class to indicate that a field is required. It will add a red asterisk to the label.
+Use the `.required` class to indicate that a field is required. It will add a red asterisk to the label. The class only draws the asterisk, so put the `required` attribute on the field as well - that is what a screen reader and the browser's own validation read.
 
 <Example column>
 <div>
-  <label class="form-label required">Required</label>
-  <input type="text" class="form-control" name="..." placeholder="Required..." />
+  <label class="form-label required" for="helper-required">Required</label>
+  <input type="text" id="helper-required" class="form-control" name="..." placeholder="Required..." required />
 </div>
 </Example>
 
 ## Form hint
 
-Use a form hint to provide users with additional information about a form element. The text will appear below the input field. To add a form hint, use the `.form-hint` class.
+Use a form hint to provide users with additional information about a form element. The text will appear below the input field. To add a form hint, use the `.form-hint` class. Give the hint an `id` and point the field at it with `aria-describedby`, so the hint is read together with the field.
 
 ```html
 <div class="form-hint">We'll never share your email with anyone else.</div>
@@ -56,9 +56,9 @@ Look at the example below to see how the form hint works:
 
 <Example column>
 <div>
-  <label class="form-label">Email address</label>
-  <input type="email" class="form-control" placeholder="Enter your email address" />
-  <FormHint>We'll never share your email with anyone else.</FormHint>
+  <label class="form-label" for="helper-email">Email address</label>
+  <input type="email" id="helper-email" class="form-control" placeholder="Enter your email address" aria-describedby="helper-email-hint" />
+  <FormHint id="helper-email-hint">We'll never share your email with anyone else.</FormHint>
 </div>
 </Example>
 
@@ -72,3 +72,10 @@ Use the `.form-label-description` class to add additional information to the lab
   <textarea class="form-control" name="" rows="3" placeholder="Content.."></textarea>
 </div>
 </Example>
+
+## Accessibility
+
+- Give the hint an `id` and point the field at it with `aria-describedby`. A hint that only sits next to the field is not connected to it.
+- The `required` class draws the asterisk; the `required` attribute is what a screen reader and the browser's validation read. Use both.
+- The `form-help` popover is opened by click, so its content is reachable - but keep it for extra detail, never for something users must read to fill the field in.
+- One `aria-describedby` can point at several ids. Use that to read a hint and an error message together, rather than replacing one with the other.
