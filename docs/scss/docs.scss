@@ -336,27 +336,6 @@ header > .navbar {
   > .docs-page-lead {
     text-wrap: balance;
   }
-
-  // Reference tables read as dense data next to the prose, not as body text.
-  // Only direct children — demo tables inside <Example> keep the product styles.
-  > table {
-    font-size: 0.875rem;
-
-    // Header cells are 12px by default, which is smaller than the data below
-    // them; the column label should not be the hardest thing in the row to read.
-    th {
-      font-size: inherit;
-    }
-
-    // A class name is a single token; breaking `alert-dismissible` across two
-    // lines makes the reference column harder to scan than the prose beside it.
-    // Only above `sm` — on a phone the extra width would push the page sideways.
-    @media (min-width: 576px) {
-      td:first-child code {
-        white-space: nowrap;
-      }
-    }
-  }
 }
 
 // Table of contents: rail with a scrollspy indicator.
@@ -390,9 +369,43 @@ header > .navbar {
   }
 }
 
-// Edit-this-page link under the table of contents.
-.docs-edit-link {
+// Page tools under the table of contents: copy, source, edit. One shape for all
+// three, so the button does not read as a different kind of control than the
+// links next to it.
+.docs-page-links {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.docs-page-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0;
   font-size: 0.875rem;
+  color: var(--tblr-secondary);
+  text-decoration: none;
+  background: none;
+  border: 0;
+
+  .icon {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+  }
+
+  &:hover,
+  &:focus-visible {
+    color: var(--tblr-body-color);
+  }
+
+  &:focus-visible {
+    outline: 0;
+    border-radius: var(--tblr-border-radius);
+    box-shadow: 0 0 0 var(--tblr-focus-ring-width, 0.25rem) var(--tblr-focus-ring-color);
+  }
 }
 
 // Previous/next page navigation: a pair of cards on the page canvas below the

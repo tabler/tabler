@@ -22,7 +22,12 @@ const { entry } = Astro.props
 const { data } = entry
 const { Content, headings } = await render(entry)
 
-const toc = headings.filter((heading) => heading.depth === 2 || heading.depth === 3).map((heading) => ({ level: heading.depth as 2 | 3, text: heading.text, id: heading.slug }))
+const toc: { level: 2 | 3; text: string; id: string }[] = headings.filter((heading) => heading.depth === 2 || heading.depth === 3).map((heading) => ({ level: heading.depth as 2 | 3, text: heading.text, id: heading.slug }))
+
+// DocsClassnames renders after the page body, so its heading is not in `headings`.
+if (data.classnames) {
+  toc.push({ level: 2, text: 'Class reference', id: 'class-reference' })
+}
 ---
 
 <DocsLayout
@@ -37,6 +42,7 @@ const toc = headings.filter((heading) => heading.depth === 2 || heading.depth ==
   related={data.related}
   hidePagination={data.hidePagination}
   classnames={data.classnames}
+  sourcePath={data.source}
   toc={toc}
   url={docsUrlFromId(entry.id)}
   markdownUrl={`/${entry.id}.md`}

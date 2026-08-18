@@ -48,6 +48,8 @@ const docs = defineCollection({
       'hide-pagination': z.boolean().default(false),
       /** renders the "Added in X" badge next to the h1 */
       'added-in': z.string().optional(),
+      /** repo-relative path of the file that implements this component, e.g. "core/scss/ui/_alerts.scss" */
+      'source': z.string().optional(),
       /**
        * Class reference for the component, grouped by kind. Rendered above the
        * page body by DocsClassnames. Colors that come from a palette loop are
