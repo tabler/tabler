@@ -210,6 +210,42 @@ You can use the modal to create a form. Look at the example below to see how the
 </div>
 </Example>
 
+## Blurred backdrop
+
+Add `modal-blur` next to `modal` to blur the page behind the dialog instead of only dimming it.
+
+```html
+<div class="modal modal-blur fade" id="modal-blurred" tabindex="-1" role="dialog" aria-hidden="true">
+  <!-- modal-dialog -->
+</div>
+```
+
+## Full width modal
+
+Add `modal-full-width` to the `modal-dialog` to let the dialog use the whole viewport width, minus the usual margin. Use it for content that needs the room, such as a wide table or a side-by-side comparison.
+
+The Bootstrap size classes cover the smaller steps: `modal-sm`, `modal-lg` and `modal-xl`.
+
+```html
+<div class="modal-dialog modal-full-width modal-dialog-centered" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">Full width modal</h5>
+      <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+    <div class="modal-body">Content</div>
+  </div>
+</div>
+```
+
+## Accessibility
+
+- Set `tabindex="-1"` on the modal and point `aria-labelledby` at the title. Bootstrap then moves focus into the dialog, traps it while the dialog is open, and returns it to the trigger on close.
+- Give every modal a visible title. A dialog with no accessible name is announced as just "dialog".
+- Keep the close button labelled. `btn-close` has no text of its own, so it needs `aria-label="Close"`.
+- Do not open a modal from inside another modal. Bootstrap supports one dialog at a time and the focus trap follows the last one opened.
+- A modal that must not be dismissed by accident takes `data-bs-backdrop="static"`, but never remove the close control entirely - <kbd>Escape</kbd> is the only way out for many keyboard users.
+
 ## SCSS variables
 
 Use these SCSS variables to customize modals. The default values are:

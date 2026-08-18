@@ -52,16 +52,18 @@ Use the button classes that correspond to the function of your button. The big r
 
 Make buttons look inactive to show that an action is possible once the user meets certain criteria, such as completing the required fields to submit a form.
 
+On a `button` element use the `disabled` attribute. On a link the `disabled` class only changes how it looks, so add `aria-disabled="true"` and `tabindex="-1"` as well - otherwise the link still takes focus and still follows on Enter.
+
 <Example separated centered>
 <div class="btn-list">
-  <a href="#" class="btn btn-primary disabled">Primary</a>
-  <a href="#" class="btn btn-secondary disabled">Secondary</a>
-  <a href="#" class="btn btn-success disabled">Success</a>
-  <a href="#" class="btn btn-warning disabled">Warning</a>
-  <a href="#" class="btn btn-danger disabled">Danger</a>
-  <a href="#" class="btn btn-info disabled">Info</a>
-  <a href="#" class="btn btn-dark disabled">Dark</a>
-  <a href="#" class="btn btn-light disabled">Light</a>
+  <a href="#" class="btn btn-primary disabled" aria-disabled="true" tabindex="-1">Primary</a>
+  <a href="#" class="btn btn-secondary disabled" aria-disabled="true" tabindex="-1">Secondary</a>
+  <a href="#" class="btn btn-success disabled" aria-disabled="true" tabindex="-1">Success</a>
+  <a href="#" class="btn btn-warning disabled" aria-disabled="true" tabindex="-1">Warning</a>
+  <a href="#" class="btn btn-danger disabled" aria-disabled="true" tabindex="-1">Danger</a>
+  <a href="#" class="btn btn-info disabled" aria-disabled="true" tabindex="-1">Info</a>
+  <a href="#" class="btn btn-dark disabled" aria-disabled="true" tabindex="-1">Dark</a>
+  <a href="#" class="btn btn-light disabled" aria-disabled="true" tabindex="-1">Light</a>
 </div>
 </Example>
 
@@ -352,10 +354,12 @@ Create a [dropdown](/ui/components/dropdown) button that will encourage users to
 
 Add the `.btn-loading` class to show a button's loading state, which can be useful in the case of operations that take longer to process. Thanks to that, users will be aware of the current state of their action and won't give it up before it's finished.
 
+The class hides the label and draws a spinner in its place. It sets `pointer-events: none`, which stops the mouse but not the keyboard, so add `aria-busy="true"` and disable the control while it works.
+
 <Example centered>
 <div class="btn-list">
-  <a href="#" class="btn btn-primary btn-loading">Button</a>
-  <a href="#" class="btn btn-primary btn-loading">Loading button with loooong content</a>
+  <button type="button" class="btn btn-primary btn-loading" aria-busy="true" disabled>Button</button>
+  <button type="button" class="btn btn-primary btn-loading" aria-busy="true" disabled>Loading button with loooong content</button>
 </div>
 </Example>
 
@@ -500,7 +504,7 @@ Add a subtle animation effect to your buttons when users hover over them. This c
 
 ## Button sizes
 
-Use size modifiers to change the size of your buttons. Available sizes: `.btn-xs`, `.btn-sm`, default, `.btn-lg`, `.btn-xl`.
+Use size modifiers to change the size of your buttons. Available sizes: `.btn-sm`, default, `.btn-lg`, `.btn-xl`.
 
 <Example separated centered vertical>
 <button type="button" class="btn btn-sm">Small button</button>
@@ -572,6 +576,36 @@ Use button groups to combine related buttons together. Button groups are perfect
 <Example centered>
 <ButtonGroup vertical={true}> <button type="button" class="btn">Top</button> <button type="button" class="btn">Middle</button> <button type="button" class="btn">Bottom</button> </ButtonGroup>
 </Example>
+
+## Centered button list
+
+`btn-list` lays buttons out in a row with a consistent gap. Add `btn-list-center` to center that row, for example under an empty state or at the end of a form.
+
+<Example>
+<div class="btn-list btn-list-center">
+  <button type="button" class="btn btn-primary">Save</button>
+  <button type="button" class="btn">Cancel</button>
+</div>
+</Example>
+
+## Floating button
+
+Add `btn-floating` to pin a button to the bottom corner of the viewport. It stays there while the page scrolls, casts a dropdown shadow, and is hidden when the page is printed. Pair it with `btn-icon` for the usual round action button.
+
+```html
+<a href="#" class="btn btn-primary btn-icon btn-floating" aria-label="New message">
+  <!-- SVG icon -->
+</a>
+```
+
+## Accessibility
+
+- Use `button` for an action and `a` for navigation. A link styled as a button still navigates, and a `button` inside a form still submits unless you set `type="button"`.
+- An icon-only button has no text, so give it an `aria-label` that says what it does. `btn-icon` only removes the horizontal padding; it does not add a name.
+- Mark a disabled link with `aria-disabled="true"` and `tabindex="-1"`. The `disabled` class is styling only.
+- Pair `btn-loading` with `aria-busy="true"` and a disabled state. The class blanks the label with `color: transparent`, so the old text is still what a screen reader reads.
+- A button that toggles something needs `aria-pressed`; one that opens a panel needs `aria-expanded`. Bootstrap sets `aria-expanded` for you on dropdown and collapse triggers.
+- Color alone should not carry the meaning. `btn-danger` looks alarming, but the label has to say what happens.
 
 ## SCSS variables
 

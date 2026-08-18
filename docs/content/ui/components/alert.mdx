@@ -29,6 +29,46 @@ Add a link to your alert message to redirect users to the details they need to c
 <Alert color="danger" title="This is a danger alert" link="check it out" />
 </Example>
 
+Use `alert-action` instead when the link is the thing to do next rather than a word inside a sentence. It is underlined on its own line and drops the underline on hover.
+
+<Example>
+<div class="alert alert-danger" role="alert">
+  <h4 class="alert-heading">An error occurred</h4>
+  <div class="text-secondary">We could not save your changes.</div>
+  <a href="#" class="alert-action">Try again</a>
+</div>
+</Example>
+
+## Alert with a list
+
+Wrap several messages in a `ul` with the `alert-list` class. It removes the default list margin so the items sit flush inside the alert.
+
+<Example>
+<div class="alert alert-warning" role="alert">
+  <h4 class="alert-heading">Check these fields</h4>
+  <ul class="alert-list">
+    <li>The email address is missing.</li>
+    <li>The password is too short.</li>
+  </ul>
+</div>
+</Example>
+
+## Minor alerts
+
+Add `alert-minor` for a quieter alert. It drops the tinted background and keeps a plain border, so the color only shows in the icon and the heading. Use it where an alert would otherwise dominate the page.
+
+<Example>
+<div class="alert alert-minor alert-info alert-dismissible" role="alert">
+  <div class="alert-heading">Did you know?</div>
+  <div class="text-secondary">Here is something that you might like to know.</div>
+  <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+</div>
+<div class="alert alert-minor alert-success" role="alert">
+  <div class="alert-heading">Everything worked</div>
+  <div class="text-secondary">Your account has been saved.</div>
+</div>
+</Example>
+
 ## Dismissible alerts
 
 Add the `x` close button to make an alert modal dismissible. Thanks to that, your alert modal will disappear only when the user closes it.
@@ -203,7 +243,7 @@ You can also use other elements, like icons and dismissible buttons, with this t
     </div>
     <div>Wow! Everything worked!</div>
   </div>
-  <a class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="close"></a>
+  <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
 </div>
 <div class="alert alert-important alert-danger alert-dismissible" role="alert">
   <div class="d-flex">
@@ -212,13 +252,13 @@ You can also use other elements, like icons and dismissible buttons, with this t
     </div>
     <div>Your account has been deleted and can't be restored.</div>
   </div>
-  <a class="btn-close btn-close-white" data-bs-dismiss="alert" aria-label="close"></a>
+  <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
 </div>
 </Example>
 
 ## Custom alert color
 
-You're not limited to the 4 default alert colors. You can use any [base or social color](/ui/base/colors) you want.
+You're not limited to the 4 default alert colors. You can use any [base color](/ui/base/colors) you want.
 
 <Example>
 <div class="alert alert-lime" role="alert">
@@ -229,11 +269,11 @@ You're not limited to the 4 default alert colors. You can use any [base or socia
   <h4 class="alert-heading">Did you know?</h4>
   <div class="text-secondary">Here is something that you might like to know.</div>
 </div>
-<div class="alert alert-facebook" role="alert">
+<div class="alert alert-blue" role="alert">
   <h4 class="alert-heading">You have a new friend on Facebook</h4>
   <div class="text-secondary">Say hello to your new friend!</div>
 </div>
-<div class="alert alert-instagram alert-dismissible alert-important" role="alert">
+<div class="alert alert-pink alert-dismissible alert-important" role="alert">
   <div class="d-flex">
     <div>
       <span class="avatar me-3" style="background-image: url(/static/avatars/035f.jpg)"></span>
@@ -246,6 +286,15 @@ You're not limited to the 4 default alert colors. You can use any [base or socia
   <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
 </div>
 </Example>
+
+## Accessibility
+
+- Give an alert a role that matches how urgent it is. `role="alert"` interrupts the screen reader and suits an error; `role="status"` waits for a pause and suits a confirmation.
+- The live region has to exist before the message arrives. Render the container on page load and put the text into it, rather than inserting the whole alert at the moment of the event.
+- Label the dismiss button with `aria-label="Close"`. `btn-close` has no text of its own.
+- The icon is decoration, so the alert must still read correctly with the icon ignored. Keep the meaning in the heading and the text.
+- Colour alone does not say "error". A red alert and a green one must differ in their words too.
+- After dismissing an alert, move focus somewhere sensible. Focus left on a removed element falls back to the top of the page.
 
 ## SCSS variables
 

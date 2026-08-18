@@ -30,12 +30,32 @@ Results can be seen in the example below.
 
 To use filled icons, you need to copy the SVG code of the selected filled Icon from the [Tabler Icons website](https://tabler.io/icons) and paste it into your HTML file.
 
+To fill an outline icon instead of swapping it, add the `icon-filled` class. It sets `fill: currentColor`, so the shape is filled with the current text color.
+
 <Example centered>
 <Icon name="heart" filled />
 <Icon name="bell-ringing" filled />
 <Icon name="cherry" filled />
 <Icon name="circle-key" filled />
 </Example>
+
+## Icon size
+
+An icon matches the font size of its parent by default. Use a size class to set it explicitly.
+
+| Class | Size |
+| --- | --- |
+| `icon-sm` | 1rem, for icons inside small text or a badge |
+| `icon-md` | 1.5rem, with a thinner stroke |
+| `icon-lg` | 2.5rem, for an empty state or a modal heading |
+
+<Example centered>
+<Icon name="heart" size="sm" />
+<Icon name="heart" size="md" />
+<Icon name="heart" size="lg" />
+</Example>
+
+Add `icon-inline` when the icon sits inside a line of text, so it lines up with the letters instead of the line box.
 
 ## Icon colors
 
@@ -68,3 +88,11 @@ To add an animation to the icon, you need to add the `icon-pulse`, `icon-tada`, 
 <Icon name="bell" class="icon-tada" />
 <Icon name="rotate-clockwise" class="icon-rotate" />
 </Example>
+
+## Accessibility
+
+- An icon next to a label is decoration. Tabler renders icons with `aria-hidden="true"`, so they stay out of the reading order.
+- An icon used on its own is a control with no text, so put an `aria-label` on the element that holds it - the button or the link, not the SVG.
+- Do not rely on an icon to carry a meaning users have to guess. A trash can reads as "delete" to most people; a wrench does not read as "settings" to everyone.
+- Icons scale with the font size, so they follow a user's zoom. Avoid fixed pixel sizes in your own CSS.
+- `icon-pulse`, `icon-tada` and `icon-rotate` run forever. Keep them for a state that is really live, and stop them under `prefers-reduced-motion`.

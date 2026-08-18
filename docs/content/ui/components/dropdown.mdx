@@ -206,11 +206,64 @@ Use a dropdown with [card](/ui/components/card) content to make it easy for user
 </div>
 </Example>
 
+## Multi-column menu
+
+A long menu can be split into columns instead of scrolling. Wrap the items in `dropdown-menu-columns`, then group them into `dropdown-menu-column` elements - one per column.
+
+<Example>
+<div class="dropdown">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Components</button>
+  <div class="dropdown-menu">
+    <div class="dropdown-menu-columns">
+      <div class="dropdown-menu-column">
+        <a class="dropdown-item" href="#">Accordion</a>
+        <a class="dropdown-item" href="#">Alert</a>
+        <a class="dropdown-item" href="#">Avatar</a>
+      </div>
+      <div class="dropdown-menu-column">
+        <a class="dropdown-item" href="#">Badge</a>
+        <a class="dropdown-item" href="#">Button</a>
+        <a class="dropdown-item" href="#">Card</a>
+      </div>
+    </div>
+  </div>
+</div>
+</Example>
+
+## Submenu
+
+Nest a dropdown inside a menu item and add `dropend` to open the child menu to the side instead of below.
+
+<Example>
+<div class="dropdown">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Actions</button>
+  <div class="dropdown-menu">
+    <a class="dropdown-item" href="#">Edit</a>
+    <div class="dropdown dropend">
+      <a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Move to</a>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" href="#">Inbox</a>
+        <a class="dropdown-item" href="#">Archive</a>
+      </div>
+    </div>
+    <a class="dropdown-item" href="#">Delete</a>
+  </div>
+</div>
+</Example>
+
 ## JavaScript
 
 Tabler automatically initializes all elements with `data-bs-toggle="dropdown"` on page load. This is the code that runs:
 
 <CodeDocs name="dropdown-init" file="core/js/src/dropdown.ts" />
+
+## Accessibility
+
+- The trigger must be a `button`, or an `a` with an `href`. Bootstrap toggles `aria-expanded` on it for you, so do not set it by hand.
+- Bootstrap moves focus into the menu and supports the arrow keys, <kbd>Home</kbd>, <kbd>End</kbd> and <kbd>Escape</kbd>. That only works while the items are `.dropdown-item` elements inside `.dropdown-menu`.
+- An icon-only trigger needs an `aria-label`. The caret is decorative and carries no name.
+- A dropdown used as a menu of actions should hold `button` items; one used for navigation should hold links. Mixing them makes the keyboard behaviour inconsistent.
+- Use `.dropdown-header` for a group title and `.dropdown-divider` for a separator, rather than styling a plain item to look like one.
 
 ## SCSS variables
 

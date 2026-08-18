@@ -427,6 +427,51 @@ Add an icon link which you want to display at the end of your input control to v
 </div>
 </Example>
 
+## Horizontal form
+
+Put the label and the field in one `row` to place them side by side. The label takes `col-form-label` instead of `form-label`, which keeps it aligned with the field rather than sitting above it.
+
+Add `required` to the label to append a red asterisk.
+
+<Example>
+<div class="mb-3 row">
+  <label class="col-3 col-form-label required" for="form-horizontal-email">Email address</label>
+  <div class="col">
+    <input type="email" id="form-horizontal-email" class="form-control" placeholder="you@example.com" />
+  </div>
+</div>
+<div class="mb-3 row">
+  <label class="col-3 col-form-label" for="form-horizontal-company">Company</label>
+  <div class="col">
+    <input type="text" id="form-horizontal-company" class="form-control" placeholder="Optional" />
+  </div>
+</div>
+</Example>
+
+## Form footer
+
+Wrap the buttons that close a form in `form-footer`. It only adds the top margin that separates them from the last field, so the spacing is the same in every form.
+
+<Example>
+<div class="mb-3">
+  <label class="form-label" for="form-footer-name">Name</label>
+  <input type="text" id="form-footer-name" class="form-control" />
+</div>
+<div class="form-footer">
+  <button type="submit" class="btn btn-primary w-100">Create account</button>
+</div>
+</Example>
+
+## Accessibility
+
+- Every field needs a `label` with a `for` that matches the field id. A placeholder is not a label - it disappears as soon as the user types.
+- When the design has no room for a visible label, keep the `label` and hide it with `visually-hidden` rather than dropping it.
+- Tie help text and errors to the field with `aria-describedby`, so they are read together with it. See [form helpers](/ui/forms/helpers) and [validation states](/ui/forms/validation).
+- Mark a required field with the `required` attribute, not only with an asterisk in the label.
+- Group related checkboxes or radios in a `fieldset` with a `legend`. The legend is the only thing that names the group. See [fieldsets](/ui/forms/fieldset).
+- Keep `input` types honest - `email`, `tel`, `url` and `number` change the on-screen keyboard on phones and let the browser validate for you.
+- Do not disable a field to make it read-only. `disabled` removes it from the tab order and from the submitted data; `readonly` keeps both.
+
 ## SCSS variables
 
 Use these SCSS variables to customize form controls. The default values are:

@@ -39,6 +39,22 @@ If you use a second paragraph, it will be separated from the first one by a blan
 </Example>
 
 
+Add the `lead` class to the opening paragraph of a section. In Tabler it does not enlarge the text the way Bootstrap does - it prints the paragraph in the secondary color, so the intro reads as a subtitle under the heading.
+
+<Example vertical>
+<h2>Installation</h2>
+<p class="lead">Everything you need to get Tabler running in your project.</p>
+<p>Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam nonumy eirmod tempor invidunt ut labore.</p>
+</Example>
+
+## Selected text
+
+`text-selected` paints a run of text with the same highlight the browser uses for a selection. Use it to point at a fragment in a tutorial or a changelog, where a real selection cannot be shown.
+
+<Example>
+<p>To select text using your mouse, click and drag the cursor over the text <span class="text-selected">you want to highlight</span>.</p>
+</Example>
+
 ## Semantic text elements
 
 Use a variety of semantic text elements, depending on how you want to display particular fragments of content.
@@ -166,9 +182,38 @@ To edit settings, press
 <kbd>C</kbd> .
 </Example>
 
+## Mentions
+
+Use the `mention` class for an inline chip inside running text - a person, a tag, an app or a color. It works on a `span`, or on an `a` when the chip should link somewhere.
+
+<Example>
+<p>Hey <a href="#" class="mention"><span class="mention-avatar" style="background-image: url(/static/avatars/035f.jpg)"></span><span class="visually-hidden">@</span>JohnDoe</a>, have you seen the latest updates?</p>
+</Example>
+
+Put one of these elements first inside the chip to show what it refers to:
+
+| Class | Shows |
+| --- | --- |
+| `mention-avatar` | a round picture of a person |
+| `mention-app` | a square logo of an app or a brand |
+| `mention-color` | a color swatch, tinted with any `bg-*` utility |
+
+Add `mention-count` at the end for a muted number, for example how many posts carry a tag.
+
+<Example>
+<p>
+  <a href="#" class="mention">#WebDevelopment<span class="mention-count">16</span></a>
+  <a href="#" class="mention"><span class="mention-app" style="background-image: url(/static/brands/netflix.svg)"></span>Netflix</a>
+  <span class="mention"><span class="mention-color bg-blue"></span>#066fd1</span>
+  <span class="mention"><span class="mention-color bg-green"></span>rgb(47, 179, 68)</span>
+</p>
+</Example>
+
+The `@` or `#` sign is part of the meaning, not decoration. When the design drops it, keep it in a `visually-hidden` span so the chip still reads as a mention.
+
 ## Prose
 
-If you can't use the CSS classes you want, or you just want to use HTML tags, use the `.prose` class in a container. It will apply the default styles for markdown elements. The `.markdown` class is an alias and will be removed in a future release. The `.wysiwyg` integration is deprecated and will be removed in a future release. See the [Prose page](/ui/base/prose) for full examples.
+If you can't use the CSS classes you want, or you just want to use HTML tags, use the `.prose` class in a container. It will apply the default styles for markdown elements. The `.markdown` class is an alias and will be removed in a future release. See the [Prose page](/ui/base/prose) for full examples.
 
 <Example>
 <Prose>
@@ -184,3 +229,13 @@ If you can't use the CSS classes you want, or you just want to use HTML tags, us
   </ul>
 </Prose>
 </Example>
+
+## Accessibility
+
+- Headings carry the structure of the page. Use `h1` to `h6` in order, and the `.h1` to `.h6` classes when you need the look of a heading on something that is not one.
+- One `h1` per page, naming that page.
+- Do not use a heading to make text big, and do not use `strong` in place of a heading. A screen reader user navigates by heading, so a fake one is a missing landmark.
+- Body text should not go below 0.875rem, and it has to stay readable at 200% zoom without horizontal scrolling.
+- Keep line length around 60 to 80 characters. Longer lines are hard to track, especially with dyslexia or low vision.
+- `text-uppercase` changes the look, not the text, but some screen readers read an already-uppercase word letter by letter. Write the word normally and let CSS transform it.
+- Do not use `letter-spacing` or `line-height` utilities to squeeze text below the browser default. Users need that space.

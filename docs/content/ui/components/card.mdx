@@ -110,7 +110,7 @@ Add the `.row-deck` class to `.row`, if you want to display several cards next t
 
 ## Post card with aside image
 
-You can also add an image on the left side of the card. To do it, add the `.card-aside` class to the element with the `.card` class. Then add the image in the `.card-aside-column` element and it will be automatically centered and scaled to the right size.
+You can also put the image beside the text instead of above it. Use a `row row-0` inside the card, give the image column a fixed width, and let the body take the rest. `object-cover` on the image keeps it filling its column without distortion.
 
 <Example>
 <div class="card d-flex flex-column">
@@ -497,6 +497,133 @@ Put content on top of an image with `card-img-overlay`. Add `card-img-overlay-da
   </div>
 </div>
 </Example>
+
+## Card cover
+
+Use `card-cover` for a header with a background photo. It darkens the image with an overlay, so white text on top stays readable whatever the picture looks like. Add `card-cover-blurred` to blur the photo behind that overlay.
+
+<Example>
+<div class="row row-cards">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-cover text-center text-white" style="background-image: url(/static/photos/book-on-the-grass.jpg)">
+        <div class="h1 m-0">Reading list</div>
+        <div class="mt-1">12 books this year</div>
+      </div>
+      <div class="card-body">Standard overlay.</div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-cover card-cover-blurred text-center text-white" style="background-image: url(/static/photos/cup-of-coffee-and-an-open-book.jpg)">
+        <div class="h1 m-0">Reading list</div>
+        <div class="mt-1">12 books this year</div>
+      </div>
+      <div class="card-body">Blurred variant.</div>
+    </div>
+  </div>
+</div>
+</Example>
+
+## Pills in a card header
+
+Tabs in a card header take `card-header-tabs`. For the pill style, use `card-header-pills` on the same `nav`.
+
+<Example>
+<div class="card">
+  <div class="card-header">
+    <ul class="nav nav-pills card-header-pills">
+      <li class="nav-item"><a class="nav-link active" href="#">Overview</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Activity</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Settings</a></li>
+    </ul>
+  </div>
+  <div class="card-body">Card content</div>
+</div>
+</Example>
+
+## Image on the trailing side
+
+`card-img-top` rounds the top corners of an image, and `card-img-end` rounds the trailing ones. Use it when the image sits beside the text rather than above it, so its corners follow the card.
+
+<Example>
+<div class="card">
+  <div class="row row-0">
+    <div class="col">
+      <div class="card-body">
+        <h3 class="card-title">Card with a side image</h3>
+        <div class="text-secondary">The image keeps the rounded corner on the trailing edge of the card.</div>
+      </div>
+    </div>
+    <div class="col-4">
+      <img src="/static/photos/book-on-the-grass.jpg" class="w-100 h-100 object-cover card-img-end" alt="" />
+    </div>
+  </div>
+</div>
+</Example>
+
+## Card action button
+
+Use `card-btn` for a full-width action at the bottom of a card. It gets a top border, centers its content and highlights on hover, so several of them side by side read as one button bar.
+
+<Example>
+<div class="card" style="max-width: 20rem">
+  <div class="card-body text-center">
+    <span class="avatar avatar-xl mb-3" style="background-image: url(/static/avatars/029m.jpg)"></span>
+    <div class="fw-medium">Egan Poetz</div>
+    <div class="card-meta">Product Manager</div>
+  </div>
+  <div class="d-flex">
+    <a href="#" class="card-btn"><Icon name="mail" class="me-2" /> Email</a>
+    <a href="#" class="card-btn"><Icon name="phone" class="me-2" /> Call</a>
+  </div>
+</div>
+</Example>
+
+`card-meta` above is the muted secondary line that goes with a title - a role, a date, an author.
+
+## Rotated card
+
+Add one of the `card-rotate-*` classes to tilt a card slightly. Use it for a stack of cards or a decorative section header, not for content users have to read.
+
+| Class | Tilt |
+| --- | --- |
+| `card-rotate-start` | towards the start edge |
+| `card-rotate-end` | towards the end edge |
+| `card-rotate-left` | left, regardless of text direction |
+| `card-rotate-right` | right, regardless of text direction |
+
+<Example>
+<div class="row row-cards">
+  <div class="col-6">
+    <div class="card card-rotate-start"><div class="card-body">Rotated to the start</div></div>
+  </div>
+  <div class="col-6">
+    <div class="card card-rotate-end"><div class="card-body">Rotated to the end</div></div>
+  </div>
+</div>
+</Example>
+
+## Code in a card
+
+`card-code` replaces the card body when the card holds a code block. It removes the body padding and the border the highlighter adds, so the code sits flush against the card edges.
+
+<Example>
+<div class="card" style="max-width: 24rem">
+  <div class="card-header">
+    <h3 class="card-title">Card with code</h3>
+  </div>
+  <div class="card-code">
+```scss
+.card-footer {
+  background: transparent;
+}
+```
+  </div>
+</div>
+</Example>
+
+Use it instead of `card-body`, not next to it.
 
 ## Accessibility
 

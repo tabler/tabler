@@ -107,23 +107,63 @@ Add a [status indicator](/ui/components/status) to your avatar to show, for inst
     <span class="badge bg-info"></span>
   </span>
   <span class="avatar" style="background-image: url(/static/avatars/048m.jpg)">
-    <span class="badge bg-gray">5</span>
+    <span class="badge bg-gray-500">5</span>
   </span>
 </AvatarList>
 </Example>
 
 ## Avatar shape
 
-Change the shape of an avatar with the default Bootstrap image classes. You can make them round or square and change their border radius.
+An avatar is a circle by default. Add `avatar-square` to give it the same rounded corners as the rest of the interface - the usual choice when the avatar stands for a company, a project or an app rather than a person.
 
 <Example centered>
 <AvatarList>
   <span class="avatar" style="background-image: url(/static/avatars/019m.jpg)"></span>
-  <span class="avatar rounded" style="background-image: url(/static/avatars/039f.jpg)"></span>
-  <span class="avatar rounded-circle">AA</span>
+  <span class="avatar avatar-square" style="background-image: url(/static/avatars/039f.jpg)"></span>
+  <span class="avatar avatar-square bg-primary text-white">TB</span>
+  <span class="avatar avatar-square bg-green-lt">AA</span>
+</AvatarList>
+</Example>
+
+For any other radius use the Bootstrap utilities. `rounded-0` gives sharp corners, and `rounded-3` a larger radius than `avatar-square`.
+
+<Example centered>
+<AvatarList>
   <span class="avatar rounded-0" style="background-image: url(/static/avatars/043f.jpg)"></span>
   <span class="avatar rounded-3" style="background-image: url(/static/avatars/044f.jpg)"></span>
 </AvatarList>
+</Example>
+
+## Avatar brand
+
+Add a `avatar-brand` element inside an avatar to mark where the account comes from. It sits in the bottom corner and keeps its own background, so a brand logo stays readable over any photo.
+
+<Example centered>
+<AvatarList>
+  <span class="avatar" style="background-image: url(/static/avatars/000m.jpg)">
+    <span class="avatar-brand" style="background-image: url(/static/brands/github.svg)"></span>
+  </span>
+  <span class="avatar" style="background-image: url(/static/avatars/002m.jpg)">
+    <span class="avatar-brand" style="background-image: url(/static/brands/google.svg)"></span>
+  </span>
+</AvatarList>
+</Example>
+
+## Avatar on a cover
+
+Add `avatar-cover` to pull an avatar halfway over the element above it and draw a ring in the card background color. Use it for a profile picture that overlaps a cover image.
+
+<Example>
+<div class="card" style="max-width: 20rem">
+  <div class="card-body p-0">
+    <div class="bg-primary-lt" style="height: 5rem"></div>
+    <div class="text-center p-3">
+      <span class="avatar avatar-xl avatar-cover rounded-circle mb-3" style="background-image: url(/static/avatars/039f.jpg)"></span>
+      <div class="fw-medium">Paweł Kuna</div>
+      <div class="text-secondary">UI Designer</div>
+    </div>
+  </div>
+</div>
 </Example>
 
 ## Avatar upload
