@@ -9,27 +9,29 @@ interface Props {
 const { name }: Props = Astro.props
 ---
 
-<ul class="nav nav-bordered mb-2" role="tablist">
-  {
-    packageManagers.map((manager, i) => {
-      return (
-        <li class="nav-item" role="presentation">
-          <button class={`nav-link${i === 0 ? ' active' : ''}`} id={`${manager.name}-tab`} data-bs-toggle="tab" data-bs-target={`#${manager.name}`} type="button" role="tab" aria-controls={manager.name} aria-selected={i === 0 ? 'true' : 'false'}>
-            {manager.name}
-          </button>
-        </li>
-      )
-    })
-  }
-</ul>
-<div class="tab-content">
-  {
-    packageManagers.map((manager, i) => {
-      return (
-        <div class={`tab-pane${i === 0 ? ' show active' : ''}`} id={`${manager.name}`} role="tabpanel" aria-labelledby={`${manager.name}-tab`}>
-          <Code code={`${manager.command} ${manager.install} ${name}`} lang="bash" />
-        </div>
-      )
-    })
-  }
+<div>
+  <ul class="nav nav-bordered mb-3" role="tablist">
+    {
+      packageManagers.map((manager, i) => {
+        return (
+          <li class="nav-item" role="presentation">
+            <button class={`nav-link${i === 0 ? ' active' : ''}`} id={`${manager.name}-tab`} data-bs-toggle="tab" data-bs-target={`#${manager.name}`} type="button" role="tab" aria-controls={manager.name} aria-selected={i === 0 ? 'true' : 'false'}>
+              {manager.name}
+            </button>
+          </li>
+        )
+      })
+    }
+  </ul>
+  <div class="tab-content">
+    {
+      packageManagers.map((manager, i) => {
+        return (
+          <div class={`tab-pane${i === 0 ? ' show active' : ''}`} id={`${manager.name}`} role="tabpanel" aria-labelledby={`${manager.name}-tab`}>
+            <Code code={`${manager.command} ${manager.install} ${name}`} lang="bash" />
+          </div>
+        )
+      })
+    }
+  </div>
 </div>
