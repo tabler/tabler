@@ -35,6 +35,8 @@ export default defineConfig({
   // Google index, Algolia search results and external backlinks.
   redirects: {
     '/ui/base/markdown': { status: 301, destination: '/ui/base/prose' },
+    // @tabler/icons-eps is no longer maintained; PDF is the vector format to use.
+    '/icons/static-files/eps': { status: 301, destination: '/icons/static-files/pdf' },
     ...Object.fromEntries(
       [
         ['alerts', 'alert'],
