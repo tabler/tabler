@@ -219,13 +219,37 @@ header > .navbar {
   .nav-link {
     border-radius: var(--tblr-border-radius);
     padding: 0.375rem 0.625rem;
-    color: var(--tblr-secondary);
+    color: var(--tblr-body-color);
 
     &:hover,
     &:focus-visible {
-      color: var(--tblr-body-color);
       background-color: color-mix(in srgb, var(--tblr-body-color) 6%, transparent);
     }
+
+    // The sidebar links had no visible focus ring at all — `.nav-link` only
+    // resets the outline. Match the ring the buttons use.
+    &:focus-visible {
+      outline: 0;
+      box-shadow: 0 0 0 var(--tblr-focus-ring-width, 0.25rem) var(--tblr-focus-ring-color);
+    }
+  }
+
+  // Every row stays one line: a wrapped label turns the current-page pill into
+  // a two-line block and breaks the rhythm of the list.
+  .nav-link-title {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .nav-link-toggle {
+    flex-shrink: 0;
+  }
+
+  // Hierarchy comes from weight, not size: a group that opens a section reads
+  // stronger than the pages inside it.
+  #menu .nav-link[data-bs-toggle='collapse'] {
+    font-weight: var(--tblr-font-weight-medium);
   }
 
   .nav-vertical .nav {

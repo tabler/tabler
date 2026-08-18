@@ -58,15 +58,15 @@ const groupId = (group: MenuGroup) =>
                       without an index page toggles from a button instead */}
                   {hasChildren && level2.url ? (
                     <a class={`nav-link${expanded ? ' active' : ''}`} href={level2.url} data-bs-toggle="collapse" data-bs-target={`#${groupId(level2)}`} aria-expanded={expanded ? 'true' : 'false'} aria-current={url === level2.url ? 'page' : undefined}>
-                      {level2.title} <span class="nav-link-toggle" />
+                      <span class="nav-link-title">{level2.title}</span> <span class="nav-link-toggle" />
                     </a>
                   ) : hasChildren ? (
                     <button type="button" class="nav-link w-100 bg-transparent border-0 text-start" data-bs-toggle="collapse" data-bs-target={`#${groupId(level2)}`} aria-expanded={expanded ? 'true' : 'false'}>
-                      {level2.title} <span class="nav-link-toggle" />
+                      <span class="nav-link-title">{level2.title}</span> <span class="nav-link-toggle" />
                     </button>
                   ) : (
                     <a class={`nav-link${expanded ? ' active' : ''}`} href={level2.url} aria-current={url === level2.url ? 'page' : undefined}>
-                      {level2.title}
+                      <span class="nav-link-title">{level2.title}</span>
                     </a>
                   )}
 
@@ -75,7 +75,7 @@ const groupId = (group: MenuGroup) =>
                       {level2.children!.map((level3) => (
                         <div>
                           <a class={`nav-link${url === level3.url ? ' active' : ''}`} href={level3.url} aria-current={url === level3.url ? 'page' : undefined}>
-                            {level3.title}
+                            <span class="nav-link-title">{level3.title}</span>
                           </a>
                         </div>
                       ))}
