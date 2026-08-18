@@ -131,6 +131,14 @@ Example below shows how tabs with dropdown menus are displayed.
 </ul>
 </Example>
 
+## Accessibility
+
+- Use `nav` with an `aria-label` for navigation, and `role="tablist"` only when the links really switch panels on the same page.
+- Mark the current page with `aria-current="page"`, not with the `active` class alone.
+- A disabled nav link should be an `a` with no `href` plus `aria-disabled="true"`. Without `href` it cannot be focused, which is what you want.
+- Every link needs text. An icon-only link takes an `aria-label`.
+- Keep the DOM order the same as the visual order. `nav-fill` and `nav-justified` change the widths, not the order.
+
 ## SCSS variables
 
 Use these SCSS variables to customize navs and tabs. The default values are:

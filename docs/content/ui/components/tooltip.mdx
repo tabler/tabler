@@ -34,6 +34,14 @@ Tabler automatically initializes all elements with `data-bs-toggle="tooltip"` on
 
 <CodeDocs name="tooltip-init" file="core/js/src/tooltip.ts" />
 
+## Accessibility
+
+- A tooltip only describes; it never replaces a name. The trigger still needs its own text or `aria-label`.
+- The trigger must be focusable. Bootstrap shows the tooltip on focus as well as on hover, so a `span` or an `a` without `href` leaves keyboard users with nothing.
+- Never put a link, a button or a form field inside a tooltip. It disappears on blur, so nothing in it can be reached. Use a popover for that.
+- Tabler enables HTML in a tooltip only when you set `data-bs-html="true"`. Leave it off for text that comes from users.
+- Do not attach a tooltip to a disabled control - a disabled element fires no events. Wrap it in a focusable span instead.
+
 ## SCSS variables
 
 Use these SCSS variables to customize tooltips. The default values are:

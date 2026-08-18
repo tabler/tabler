@@ -62,6 +62,14 @@ Instead of adding an icon or illustration you can simply give the text:
 </div>
 </Example>
 
+## Accessibility
+
+- The empty state title is the first thing users read, so make it a real heading at the right level for the page, not a styled `div`.
+- Say what happened and what to do next. "No results" alone leaves users stuck; "No results for `tabler`. Try a shorter search." does not.
+- The illustration is decoration. Give it `alt=""`, or `aria-hidden="true"` when it is an inline SVG.
+- The action in `empty-action` should be a real `button` or link, so it can be reached with the keyboard.
+- When the empty state replaces content after a search, announce it from a live region - otherwise a screen reader user gets no signal that the list changed.
+
 ## SCSS variables
 
 Use these SCSS variables to customize the empty state. The default values are:

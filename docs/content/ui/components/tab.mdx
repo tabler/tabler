@@ -214,3 +214,10 @@ Add the `.nav-fill` class to make the tabs take up the full space of the parent 
 Tabler activates the tab that matches the URL hash on page load, so you can link to a specific tab. This is the code that runs:
 
 <CodeDocs name="tab-init" file="core/js/src/tab.ts" />
+
+## Accessibility
+
+- Wrap the tabs in an element with `role="tablist"`, give each trigger `role="tab"` and each panel `role="tabpanel"`, and link them with `aria-controls` and `aria-labelledby`.
+- Bootstrap sets `aria-selected` and moves focus with the arrow keys, but only when the roles above are present. Without them the tabs are plain links.
+- Tabler activates a tab from the url hash on page load, so a tab trigger with `href="#billing"` doubles as a deep link. Keep the panel ids stable if you link to them.
+- Only the active panel should be reachable. Bootstrap hides the others with `display: none`, which also removes them from the tab order.

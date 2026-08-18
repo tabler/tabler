@@ -42,3 +42,10 @@ Customize the color of dividers to make them go well with your design. See the [
 <div class="hr-text text-primary">Primary divider</div>
 <p> Dicta error hic illo iure necessitatibus nihil officiis omnis perferendis, praesentium repellendus rerum, saepe sed, sit! </p>
 </Example>
+
+## Accessibility
+
+- A divider that separates sections is decoration, so `hr` with no extra markup is enough - browsers already expose it as a separator.
+- When the divider carries a label, keep the label as text. Do not fake it with a `::before`, since generated content is not reliably read.
+- A vertical divider between inline items is decoration too. Use `aria-hidden="true"` if you build it from a `span` rather than an `hr`.
+- Do not use a divider to group form fields. Use a `fieldset` with a `legend`, which is what actually creates the group.

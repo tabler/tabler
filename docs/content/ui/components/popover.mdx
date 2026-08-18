@@ -42,6 +42,14 @@ Tabler automatically initializes all elements with `data-bs-toggle="popover"` on
 
 <CodeDocs name="popover-init" file="core/js/src/popover.ts" />
 
+## Accessibility
+
+- The trigger must be a `button` or a link with an `href`, so it can take focus. Bootstrap manages `aria-describedby` while the popover is open.
+- Popovers open on click by default, which is what makes their content reachable. If you switch to `data-bs-trigger="hover"`, the content becomes unreachable by keyboard.
+- Set `data-bs-trigger="focus"` to make a popover dismiss itself when focus leaves, which is the closest thing to <kbd>Escape</kbd> behaviour.
+- Tabler enables HTML in a popover only when you set `data-bs-html="true"`. Leave it off for content that comes from users.
+- Keep the title and body as text. A popover holding a form is a modal in disguise - use a real dialog for that.
+
 ## SCSS variables
 
 Use these SCSS variables to customize popovers. The default values are:

@@ -28,3 +28,10 @@ Tabler provides `.pe-none` and `.pe-auto` classes to prevent or add element inte
   <a href="#" class="pe-auto">This link</a> can be clicked (this is default behavior).
 </div>
 </Example>
+
+## Accessibility
+
+- `user-select-none` stops users from selecting and copying text. Never put it on content people may want to copy, such as a code snippet, an address, or an error message.
+- `pe-none` blocks the mouse but leaves the element in the tab order, so a keyboard user can still reach and activate it. Add `tabindex="-1"` and `aria-disabled="true"`, as the example above does, or use the `disabled` attribute on a real control.
+- `aria-disabled="true"` tells assistive technology the control is off, but it does not stop the click. `disabled` on a `button` or an `input` does both, and is the better choice when the element supports it.
+- `user-select-all` selects the whole block on one click, which helps for a token or a key. Keep it off long text, where users expect to select a part.

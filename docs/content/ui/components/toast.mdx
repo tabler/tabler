@@ -72,6 +72,14 @@ Tabler binds every element with `data-bs-toggle="toast"` to show the toast from 
 
 <CodeDocs name="toast-init" file="core/js/src/toast.ts" />
 
+## Accessibility
+
+- Put `role="status"` and `aria-live="polite"` on a toast that reports success, and `role="alert"` with `aria-live="assertive"` on one that reports an error. Assertive interrupts the reader, so keep it for things that matter.
+- The live region has to be in the DOM before the message arrives. Render an empty toast container on page load and fill it, rather than inserting the whole toast at the moment of the event.
+- Toasts hide themselves after `data-bs-delay`. That is too fast to read for many people - set `data-bs-autohide="false"` for anything the user has to act on.
+- A toast does not take focus. Never put the only copy of an action inside one.
+- Label the close button with `aria-label="Close"`.
+
 ## SCSS variables
 
 Use these SCSS variables to customize toasts. The default values are:
