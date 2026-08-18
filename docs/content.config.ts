@@ -6,6 +6,13 @@ import { z } from 'astro/zod'
 // Docs pages live in ./content (not ./pages) so they are not routed by the file
 // system — pages/[...slug].astro renders them from this collection instead.
 
+/** One row of the class reference: the class, what it does, and whether it is the default. */
+const classnameEntry = z.object({
+  class: z.string(),
+  desc: z.string(),
+  default: z.boolean().default(false),
+})
+
 /** Accepts both `docs-libs: apexcharts` and `docs-libs: [apexcharts]`. */
 const stringList = z.union([z.string(), z.array(z.string())]).transform((value) => (Array.isArray(value) ? value : [value]))
 
@@ -41,6 +48,12 @@ const docs = defineCollection({
       'hide-pagination': z.boolean().default(false),
       /** renders the "Added in X" badge next to the h1 */
       'added-in': z.string().optional(),
+      /**
+       * Class reference for the component, grouped by kind. Rendered above the
+       * page body by DocsClassnames. Colors that come from a palette loop are
+       * listed once as `alert-{color}` rather than one row per generated class.
+       */
+      'classnames': z.record(z.string(), z.array(classnameEntry)).optional(),
     })
     // strict so a mistyped key fails the build instead of being silently dropped
     .strict()

@@ -10,6 +10,7 @@ import Icon from '@ui/Icon.astro';
 import DocsNavbar from '@components/DocsNavbar.astro';
 import DocsMenu from '@components/DocsMenu.astro';
 import DocsSearch from '@components/DocsSearch.astro';
+import DocsClassnames from '@components/DocsClassnames.astro';
 import DocsToc from '@components/DocsToc.astro';
 import type { TocItem } from '@components/DocsToc.astro';
 import DocsPagination from '@components/DocsPagination.astro';
@@ -25,6 +26,8 @@ interface Props {
 	seoTitle?: string | undefined;
 	/** front matter: lead below the title (p.text-secondary.fs-3.lh-3) */
 	summary?: string | undefined;
+	/** class reference table, rendered above the page body */
+	classnames?: Record<string, { class: string; desc: string; default: boolean }[]> | undefined;
 	/** front matter: SEO description */
 	description?: string | undefined;
 	/** front matter: optional SEO description override */
@@ -58,6 +61,7 @@ const {
 	title,
 	seoTitle,
 	summary,
+	classnames,
 	description,
 	seoDescription,
 	addedIn,
@@ -373,6 +377,8 @@ const relatedPages = await Promise.all(
 									</div>
 
 									<p class="docs-page-lead text-secondary fs-3 lh-3">{summary}</p>
+
+									{classnames && <DocsClassnames classnames={classnames} />}
 
 									{/* Page must supply headings with ids (MDX does this by default). */}
 									<slot />

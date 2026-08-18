@@ -325,12 +325,6 @@ header > .navbar {
     }
   }
 
-  // Inline code chips ran at 0.857em, visibly smaller than the sentence
-  // around them.
-  > :is(p, ul, ol, table) code {
-    font-size: 0.9em;
-  }
-
   // `pretty` only optimises the tail of a block, so it stays cheap on long
   // text; `balance` evens out all lines and suits short headings.
   > :is(p, li, blockquote, dd),
@@ -354,10 +348,13 @@ header > .navbar {
       font-size: inherit;
     }
 
-    // A class name chip is the content of most cells here, so it matches the
-    // cell text instead of shrinking another 10% inside it.
-    code {
-      font-size: 1em;
+    // A class name is a single token; breaking `alert-dismissible` across two
+    // lines makes the reference column harder to scan than the prose beside it.
+    // Only above `sm` — on a phone the extra width would push the page sideways.
+    @media (min-width: 576px) {
+      td:first-child code {
+        white-space: nowrap;
+      }
     }
   }
 }
