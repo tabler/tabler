@@ -59,7 +59,6 @@
 
   &:hover {
     background-color: var(--tblr-bg-surface-tertiary) !important;
-    border-color: var(--tblr-border-color-active) !important;
   }
 }
 
@@ -187,9 +186,11 @@ header > .navbar {
 
 // Page footer below the article panel, aligned with the panel content.
 .docs-footer {
+  margin-block-start: 2rem;
   padding: 0.5rem 0 2rem;
 
   @media (min-width: 992px) {
+    margin-block-start: 4rem;
     margin-inline: 1.5rem;
     padding: 0.5rem 0 2.5rem;
   }
@@ -254,6 +255,89 @@ header > .navbar {
   }
 }
 
+// Article typography. Docs pages are long-form reading, so the prose gets a
+// larger heading scale and more breathing room than the product defaults in
+// core's _markdown.scss. Everything targets direct children of .prose — the
+// markdown output — so markup inside <Example> demos keeps the product styles.
+.docs-page-title {
+  font-size: 1.75rem;
+  text-wrap: balance;
+}
+
+.docs-article .prose {
+  // Heading scale: the defaults (h2 20px, h3 16px) leave h3 the same size as
+  // body text, so subsections disappear. Margin below grows from 8px, which
+  // glued the heading to its section while 40px separated it from the last.
+  > h2 {
+    margin-bottom: 1rem;
+    font-size: 1.375rem;
+  }
+
+  > h3 {
+    margin-bottom: 0.75rem;
+    font-size: 1.125rem;
+  }
+
+  > p,
+  > ul,
+  > ol {
+    margin-bottom: 1.25rem;
+  }
+
+  > ul li + li,
+  > ol li + li {
+    margin-top: 0.25em;
+  }
+
+  // Prose links keep the primary color but gain a quiet underline, so they
+  // are findable when scanning and do not rely on color alone (WCAG 1.4.1).
+  > :is(p, ul, ol, table) a:not(.btn) {
+    text-decoration: underline;
+    text-decoration-color: color-mix(in srgb, var(--tblr-primary) 40%, transparent);
+    text-underline-offset: 3px;
+
+    &:hover {
+      text-decoration-color: var(--tblr-primary);
+    }
+  }
+
+  // Inline code chips ran at 0.857em, visibly smaller than the sentence
+  // around them.
+  > :is(p, ul, ol, table) code {
+    font-size: 0.9em;
+  }
+
+  // `pretty` only optimises the tail of a block, so it stays cheap on long
+  // text; `balance` evens out all lines and suits short headings.
+  > :is(p, li, blockquote, dd),
+  > :is(ul, ol) li {
+    text-wrap: pretty;
+  }
+
+  > :is(h2, h3, h4, h5, h6),
+  > .docs-page-lead {
+    text-wrap: balance;
+  }
+
+  // Reference tables read as dense data next to the prose, not as body text.
+  // Only direct children — demo tables inside <Example> keep the product styles.
+  > table {
+    font-size: 0.875rem;
+
+    // Header cells are 12px by default, which is smaller than the data below
+    // them; the column label should not be the hardest thing in the row to read.
+    th {
+      font-size: inherit;
+    }
+
+    // A class name chip is the content of most cells here, so it matches the
+    // cell text instead of shrinking another 10% inside it.
+    code {
+      font-size: 1em;
+    }
+  }
+}
+
 // Table of contents: rail with a scrollspy indicator.
 #toc {
   border-inline-start: 1px solid var(--tblr-border-color);
@@ -307,22 +391,14 @@ header > .navbar {
     flex-direction: column;
     gap: 0.25rem;
     padding: 1rem 1.25rem;
-    border: 1px solid var(--tblr-border-color);
     border-radius: var(--tblr-border-radius-lg);
-    background-color: var(--tblr-bg-surface);
+    background-color: transparent;
     text-decoration: none;
-    transition:
-      border-color 0.15s ease-in-out,
-      box-shadow 0.15s ease-in-out;
+    transition: background-color 0.15s ease-in-out;
 
     &:hover,
     &:focus-visible {
-      border-color: var(--tblr-primary);
-      box-shadow: var(--tblr-shadow-xs);
-
-      .docs-pagination-title {
-        color: var(--tblr-primary);
-      }
+      background-color: color-mix(in srgb, var(--tblr-body-color) 4%, transparent);
     }
   }
 
