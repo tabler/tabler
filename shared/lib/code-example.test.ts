@@ -11,6 +11,12 @@ describe('beautifyHtml', () => {
     // between sibling elements — so line breaks have to be added back.
     expect(beautifyHtml('<div><span>x</span></div>')).toBe('<div>\n  <span>x</span>\n</div>')
   })
+
+  it('starts a comment that follows an element on its own line', () => {
+    // Icon examples are a comment plus an svg, repeated — without the break the
+    // next comment ends up on the closing tag of the icon before it.
+    expect(beautifyHtml('<svg></svg><!-- next --><svg></svg>')).toBe('<svg></svg>\n<!-- next -->\n<svg></svg>')
+  })
 })
 
 describe('highlightCode', () => {
