@@ -57,8 +57,8 @@ const innerClasses = ['p-6 w-full', column && 'd-flex gap-3 flex-column', !colum
 const highlighted = hideCode ? '' : await highlightCode(beautifyHtml(code ?? html), 'html')
 ---
 
-<!--EXAMPLE-->
-<div class="docs-example my-5">
+<!--EXAMPLE-->{/* data-example-markup carries the markup for examples with no code panel, so the .md mirror (docs/lib/llms.ts) still has real html to show */}
+<div class="docs-example my-5" data-example-markup={hideCode ? (code ?? html) : undefined}>
   {
     hasDemo && (
       <div class:list={exampleClasses} style={height ? `height: ${height}` : undefined}>
