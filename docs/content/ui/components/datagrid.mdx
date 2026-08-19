@@ -3,22 +3,151 @@ title: Data grid
 summary: Use the data grid component to display detailed information about your product. The data is displayed as a column of items consisting of a title and content.
 description: Display labeled data in a compact datagrid - a responsive list of title and content pairs, ideal for detail panels and summaries.
 related: [/ui/components/table]
+source: core/scss/ui/_datagrid.scss
+classnames:
+  component:
+    - class: datagrid
+      desc: Container element, a responsive grid of label and value pairs
+  part:
+    - class: datagrid-title
+      desc: Label above a value
 ---
 import Example from '@components/Example.astro';
 import CodeDocs from '@components/CodeDocs.astro';
+import Icon from '@ui/Icon.astro'
 
-Use the `.datagrid` class to build a responsive list of label and value pairs. Each `.datagrid-item` contains a `.datagrid-title` and a `.datagrid-content`, which can hold text, [avatars](/ui/components/avatar), [statuses](/ui/components/status), or [form controls](/ui/forms/form-elements).
+## Overview
+
+Use the `.datagrid` class to lay out label and value pairs. Each pair is a `.datagrid-item` with a `.datagrid-title` for the label and a `.datagrid-content` for the value.
+
+The datagrid is a CSS grid that fits as many columns as the available width allows, so it reflows on its own - there is nothing to set per breakpoint.
 
 <Example>
-<div class="datagrid"> <div class="datagrid-item"> <div class="datagrid-title">Registrar</div> <div class="datagrid-content">Third Party</div> </div> <div class="datagrid-item"> <div class="datagrid-title">Nameservers</div> <div class="datagrid-content">Third Party</div> </div> <div class="datagrid-item"> <div class="datagrid-title">Port number</div> <div class="datagrid-content">3306</div> </div> <div class="datagrid-item"> <div class="datagrid-title">Expiration date</div> <div class="datagrid-content">–</div> </div> <div class="datagrid-item"> <div class="datagrid-title">Creator</div> <div class="datagrid-content"> <div class="d-flex align-items-center"> <span class="avatar avatar-xs me-2 rounded" style="background-image: url(/static/avatars/027m.jpg)" ></span> Paweł Kuna </div> </div> </div> <div class="datagrid-item"> <div class="datagrid-title">Age</div> <div class="datagrid-content">15 days</div> </div> <div class="datagrid-item"> <div class="datagrid-title">Edge network</div> <div class="datagrid-content"> <span class="status status-green"> Active </span> </div> </div> <div class="datagrid-item"> <div class="datagrid-title">Avatars list</div> <div class="datagrid-content"> <div class="avatar-list avatar-list-stacked"> <span class="avatar avatar-xs rounded" style="background-image: url(/static/avatars/029f.jpg)" ></span> <span class="avatar avatar-xs rounded">JL</span> <span class="avatar avatar-xs rounded" style="background-image: url(/static/avatars/015f.jpg)" ></span> <span class="avatar avatar-xs rounded" style="background-image: url(/static/avatars/004m.jpg)" ></span> <span class="avatar avatar-xs rounded" style="background-image: url(/static/avatars/037m.jpg)" ></span> <span class="avatar avatar-xs rounded">+3</span> </div> </div> </div> <div class="datagrid-item"> <div class="datagrid-title">Checkbox</div> <div class="datagrid-content"> <label class="form-check"> <input class="form-check-input" type="checkbox" checked /> <span class="form-check-label">Click me</span> </label> </div> </div> <div class="datagrid-item"> <div class="datagrid-title">Icon</div> <div class="datagrid-content"> <svg xmlns="http://www.w3.org/2000/svg" class="icon text-green" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" > <path stroke="none" d="M0 0h24v24H0z" fill="none" /> <path d="M5 12l5 5l10 -10" /> </svg> Checked </div> </div> <div class="datagrid-item"> <div class="datagrid-title">Form control</div> <div class="datagrid-content"> <input type="text" class="form-control form-control-flush" placeholder="Input placeholder" /> </div> </div> <div class="datagrid-item"> <div class="datagrid-title">Longer description</div> <div class="datagrid-content">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</div> </div> </div>
+<div class="datagrid">
+  <div class="datagrid-item">
+    <div class="datagrid-title">Registrar</div>
+    <div class="datagrid-content">Third Party</div>
+  </div>
+  <div class="datagrid-item">
+    <div class="datagrid-title">Port number</div>
+    <div class="datagrid-content">3306</div>
+  </div>
+  <div class="datagrid-item">
+    <div class="datagrid-title">Age</div>
+    <div class="datagrid-content">15 days</div>
+  </div>
+</div>
 </Example>
 
-You can adjust the datagrid to your needs by setting the values of variables:
+## Content types
+
+A value is a plain container, so it takes anything: text, [avatars](/ui/components/avatar), [statuses](/ui/components/status), icons or [form controls](/ui/forms/elements). Mixing them keeps a detail panel compact.
+
+<Example>
+<div class="datagrid">
+  <div class="datagrid-item">
+    <div class="datagrid-title">Registrar</div>
+    <div class="datagrid-content">Third Party</div>
+  </div>
+  <div class="datagrid-item">
+    <div class="datagrid-title">Nameservers</div>
+    <div class="datagrid-content">Third Party</div>
+  </div>
+  <div class="datagrid-item">
+    <div class="datagrid-title">Port number</div>
+    <div class="datagrid-content">3306</div>
+  </div>
+  <div class="datagrid-item">
+    <div class="datagrid-title">Expiration date</div>
+    <div class="datagrid-content">–</div>
+  </div>
+  <div class="datagrid-item">
+    <div class="datagrid-title">Creator</div>
+    <div class="datagrid-content">
+      <div class="d-flex align-items-center">
+        <span class="avatar avatar-xs me-2 rounded" style="background-image: url(/static/avatars/027m.jpg)"></span> Paweł Kuna
+      </div>
+    </div>
+  </div>
+  <div class="datagrid-item">
+    <div class="datagrid-title">Age</div>
+    <div class="datagrid-content">15 days</div>
+  </div>
+  <div class="datagrid-item">
+    <div class="datagrid-title">Edge network</div>
+    <div class="datagrid-content"><span class="status status-green">Active</span></div>
+  </div>
+  <div class="datagrid-item">
+    <div class="datagrid-title">Avatars list</div>
+    <div class="datagrid-content">
+      <div class="avatar-list avatar-list-stacked">
+        <span class="avatar avatar-xs rounded" style="background-image: url(/static/avatars/029f.jpg)"></span>
+        <span class="avatar avatar-xs rounded">JL</span>
+        <span class="avatar avatar-xs rounded" style="background-image: url(/static/avatars/015f.jpg)"></span>
+        <span class="avatar avatar-xs rounded" style="background-image: url(/static/avatars/004m.jpg)"></span>
+        <span class="avatar avatar-xs rounded" style="background-image: url(/static/avatars/037m.jpg)"></span>
+        <span class="avatar avatar-xs rounded">+3</span>
+      </div>
+    </div>
+  </div>
+  <div class="datagrid-item">
+    <div class="datagrid-title">Checkbox</div>
+    <div class="datagrid-content">
+      <label class="form-check">
+        <input class="form-check-input" type="checkbox" checked />
+        <span class="form-check-label">Click me</span>
+      </label>
+    </div>
+  </div>
+  <div class="datagrid-item">
+    <div class="datagrid-title">Icon</div>
+    <div class="datagrid-content">
+      <Icon name="check" class="text-green" /> Checked
+    </div>
+  </div>
+  <div class="datagrid-item">
+    <div class="datagrid-title">Form control</div>
+    <div class="datagrid-content">
+      <input type="text" class="form-control form-control-flush" placeholder="Input placeholder" />
+    </div>
+  </div>
+  <div class="datagrid-item">
+    <div class="datagrid-title">Longer description</div>
+    <div class="datagrid-content">Lorem ipsum dolor sit amet, consectetur adipisicing elit.</div>
+  </div>
+</div>
+</Example>
+
+## Column width
+
+Columns are generated with `auto-fit`, so the item width decides how many fit in a row. Set the two custom properties on the `.datagrid` element to change the layout:
 
 | Variable                     | Description                    | Default  |
 |------------------------------|--------------------------------|----------|
 | `--tblr-datagrid-item-width` | Width of the datagrid item     | `15rem`  |
 | `--tblr-datagrid-padding`    | Gap between the datagrid items | `1.5rem` |
+
+## Accessibility
+
+The pairs are only visually connected, so tell assistive tech how they belong together.
+
+- A screen reader reads a `div` based datagrid as loose lines of text. When the pairs matter, use a description list instead: `dl.datagrid`, then `div.datagrid-item` wrapping a `dt.datagrid-title` and a `dd.datagrid-content`. The styles are class based, so nothing changes visually.
+- Keep the label short and meaningful on its own. "Expiration date" works out of context, "Date" does not.
+- When a value is empty, write it out - a dash or "Not set" - instead of leaving the cell blank.
+- A value that is a form control still needs its own label. Use the `.datagrid-title` as that label by pairing `for` and `id`, or add an `aria-label` to the control.
+
+<Example>
+<dl class="datagrid">
+  <div class="datagrid-item">
+    <dt class="datagrid-title">Registrar</dt>
+    <dd class="datagrid-content mb-0">Third Party</dd>
+  </div>
+  <div class="datagrid-item">
+    <dt class="datagrid-title">Expiration date</dt>
+    <dd class="datagrid-content mb-0">–</dd>
+  </div>
+</dl>
+</Example>
 
 ## SCSS variables
 

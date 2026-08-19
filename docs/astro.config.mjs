@@ -3,6 +3,7 @@ import { defineConfig, envField } from 'astro/config'
 import vercel from '@astrojs/vercel'
 import mdx from '@astrojs/mdx'
 import { satteri } from '@astrojs/markdown-satteri'
+import { unwrapJsxParagraphs } from './lib/satteri-unwrap-jsx-paragraphs.mjs'
 import { fileURLToPath } from 'node:url'
 import { copyAssets } from '../.build/copy-assets'
 
@@ -34,6 +35,8 @@ export default defineConfig({
   // Google index, Algolia search results and external backlinks.
   redirects: {
     '/ui/base/markdown': { status: 301, destination: '/ui/base/prose' },
+    // @tabler/icons-eps is no longer maintained; PDF is the vector format to use.
+    '/icons/static-files/eps': { status: 301, destination: '/icons/static-files/pdf' },
     ...Object.fromEntries(
       [
         ['alerts', 'alert'],
@@ -41,7 +44,6 @@ export default defineConfig({
         ['badges', 'badge'],
         ['buttons', 'button'],
         ['cards', 'card'],
-        ['charts', 'chart'],
         ['dropdowns', 'dropdown'],
         ['icons', 'icon'],
         ['modals', 'modal'],
@@ -54,9 +56,36 @@ export default defineConfig({
         ['timelines', 'timeline'],
         ['toasts', 'toast'],
         ['tooltips', 'tooltip'],
-        ['vector-maps', 'vector-map'],
       ].map(([from, to]) => [`/ui/components/${from}`, { status: 301, destination: `/ui/components/${to}` }]),
     ),
+    // Components that need a third-party library moved to /ui/plugins/.
+    ...Object.fromEntries(['autosize', 'chart', 'countup', 'dropzone', 'fullcalendar', 'inline-player', 'lightbox', 'range-slider', 'signature', 'vector-map', 'wysiwyg'].map((slug) => [`/ui/components/${slug}`, { status: 301, destination: `/ui/plugins/${slug}` }])),
+    // Pre-Astro plural urls for two of those pages, sent straight to the new home.
+    '/ui/components/charts': { status: 301, destination: '/ui/plugins/chart' },
+    '/ui/components/vector-maps': { status: 301, destination: '/ui/plugins/vector-map' },
+    // The form- prefix was redundant inside /ui/forms/.
+    '/ui/forms/form-elements': { status: 301, destination: '/ui/forms/elements' },
+    '/ui/forms/form-fieldset': { status: 301, destination: '/ui/forms/fieldset' },
+    '/ui/forms/form-floating': { status: 301, destination: '/ui/forms/floating-labels' },
+    '/ui/forms/form-helpers': { status: 301, destination: '/ui/forms/helpers' },
+    '/ui/forms/form-selectboxes': { status: 301, destination: '/ui/forms/select-group' },
+    '/ui/forms/form-image-check': { status: 301, destination: '/ui/forms/image-check' },
+    '/ui/forms/form-color-check': { status: 301, destination: '/ui/forms/color-check' },
+    '/ui/forms/form-select-tomselect': { status: 301, destination: '/ui/plugins/advanced-select' },
+    '/ui/forms/form-colorpicker': { status: 301, destination: '/ui/plugins/color-picker' },
+    '/ui/forms/form-datepicker': { status: 301, destination: '/ui/plugins/date-picker' },
+    '/ui/forms/form-input-mask': { status: 301, destination: '/ui/plugins/input-mask' },
+    '/ui/forms/form-validation': { status: 301, destination: '/ui/forms/validation' },
+    // Illustrations and Emails lost their "introduction" wrapper.
+    '/illustrations/introduction': { status: 301, destination: '/illustrations' },
+    '/illustrations/introduction/preview': { status: 301, destination: '/illustrations/preview' },
+    '/illustrations/introduction/contents': { status: 301, destination: '/illustrations/contents' },
+    '/illustrations/introduction/customization': { status: 301, destination: '/illustrations/customization' },
+    '/illustrations/introduction/license': { status: 301, destination: '/illustrations/license' },
+    '/emails/introduction': { status: 301, destination: '/emails' },
+    '/emails/introduction/contents': { status: 301, destination: '/emails/contents' },
+    '/emails/introduction/compiled-html': { status: 301, destination: '/emails/compiled-html' },
+    '/emails/introduction/source-html': { status: 301, destination: '/emails/source-html' },
   },
   // pages live at the package root (./pages) — content-first layout; all
   // components/lib/data are shared (see the @shared alias). The docs content
@@ -96,7 +125,16 @@ export default defineConfig({
           from: path('./assets'),
           to: path('./public'),
           label: '@tabler/docs',
-          requiredFile: path('./assets/css/docs.css'),
+          requiredFile: path('./assets/favicon.ico'),
+        },
+        {
+          // docs css built by this package's sass pipeline (see the `css` script).
+          // Source is tmp-assets/ (not dist/) for the same unbounded-growth reason
+          // as in preview — see preview/.build/vite.config.mts.
+          from: path('./tmp-assets/css'),
+          to: path('./public/css'),
+          label: '@tabler/docs',
+          requiredFile: path('./tmp-assets/css/docs.css'),
         },
         {
           from: path('../core/dist'),
@@ -126,12 +164,15 @@ export default defineConfig({
         { from: path('./assets'), to: path('./public') },
         { from: path('../shared/static'), to: path('./public/static') },
       ],
+      // watch-css writes straight into public/css — the file is already in
+      // place, but Astro does not reload the browser on public/ changes.
+      reloadDirs: [path('./public/css')],
     }),
     mdx(),
   ],
   markdown: {
     // No typographic quote rewriting.
-    processor: satteri({ features: { smartPunctuation: false } }),
+    processor: satteri({ features: { smartPunctuation: false }, mdastPlugins: [unwrapJsxParagraphs] }),
     shikiConfig: {
       theme: 'github-dark',
     },

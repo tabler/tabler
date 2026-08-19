@@ -1,151 +1,44 @@
 ---
 import Icon from '@ui/Icon.astro'
 import DocsLogo from './DocsLogo.astro'
+import docs from '@data/docs.json'
 import { site } from '@shared/lib/site'
 
+// Website / Preview / Support come from shared/data/docs.json, the same list the
+// sidebar used to render — keeping one source of truth for the product links.
+const productLinks = docs.links as { title: string; url: string; icon: string }[]
+
 // Eventually belongs in src/lib/site.ts (out of scope for this task).
-const previewUrl = 'https://preview.tabler.io'
 const changelogUrl = 'https://tabler.io/changelog'
 ---
 
 <!-- BEGIN DOCS NAVBAR -->
 <nav class="navbar navbar-expand sticky-top" aria-label="Docs">
-  <div class="container">
-    <div class="row flex-fill align-items-md-center">
-      <div class="col">
-        <div class="d-flex align-items-center gap-4">
-          <a href="/" class="navbar-brand navbar-brand-autodark gap-4">
-            <DocsLogo />
-          </a>
-          <div>
-            <span class="badge">v{site.version}</span>
-          </div>
-        </div>
-      </div>
-      <div class="d-none d-md-block col">
-        {
-          /* Native Tabler search input. The script below lazy-imports @docsearch/js on
-            interaction and opens its modal; DocSearch mounts into the hidden #docsearch. */
-        }
-        <div class="input-icon">
-          <span class="input-icon-addon">
-            <Icon name="search" />
-          </span>
-          <input type="search" id="docs-search-input" class="form-control cursor-pointer" placeholder="Search…" aria-label="Search documentation" autocomplete="off" readonly />
-          <span class="input-icon-addon">
-            <kbd id="docs-search-kbd">⌘K</kbd>
-          </span>
-        </div>
-        <div id="docsearch" class="d-none"></div>
-      </div>
-      <div class="col d-flex">
-        <ul class="navbar-nav ms-auto gap-2 align-items-center">
-          <li class="nav-item d-none d-md-block">
-            <a href={previewUrl} class="nav-link">Preview</a>
-          </li>
-          <li class="nav-item d-none d-md-block">
-            <a href={changelogUrl} class="nav-link">Changelog</a>
-          </li>
-          <li class="nav-item hide-theme-dark">
-            <a href="?theme=dark" class="btn btn-icon">
-              <Icon name="moon" />
-            </a>
-          </li>
-          <li class="nav-item hide-theme-light">
-            <a href="?theme=light" class="btn btn-icon">
-              <Icon name="sun" />
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href={site.githubUrl} class="btn btn-icon" target="_blank" rel="noopener noreferrer">
-              <Icon name="brand-github" />
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href={previewUrl} class="btn btn-primary" target="_blank" rel="noopener noreferrer">
-              <Icon name="eye" /> Preview
-            </a>
-          </li>
-        </ul>
+  <div class="container-lg">
+    <div class="d-flex align-items-center flex-fill gap-2">
+      <button type="button" class="btn btn-icon btn-ghost-secondary d-lg-none" data-bs-toggle="offcanvas" data-bs-target="#docs-menu-offcanvas" aria-controls="docs-menu-offcanvas" aria-label="Open documentation menu">
+        <Icon name="menu-2" />
+      </button>
+      <a href="/" class="navbar-brand navbar-brand-autodark me-2">
+        <DocsLogo />
+      </a>
+      <span class="badge d-none d-sm-inline-block">v{site.version}</span>
+      <div class="ms-auto d-flex align-items-center gap-2">
+        <nav class="d-none d-md-flex align-items-center me-1" aria-label="Tabler sites">
+          {
+            productLinks.map((link) => (
+              <a href={link.url} class="nav-link docs-navbar-link" target="_blank" rel="noopener noreferrer">
+                {link.title}
+              </a>
+            ))
+          }
+          <a href={changelogUrl} class="nav-link docs-navbar-link" target="_blank" rel="noopener noreferrer">Changelog</a>
+        </nav>
+        <a href={site.githubUrl} class="btn btn-icon btn-ghost-secondary" target="_blank" rel="noopener noreferrer" aria-label="Tabler on GitHub">
+          <Icon name="brand-github" />
+        </a>
       </div>
     </div>
   </div>
 </nav>
 <!-- END DOCS NAVBAR -->
-
-<script>
-  // Lazy DocSearch: the native input above triggers a dynamic import of
-  // @docsearch/js, which Vite splits into its own hashed chunk — nothing is
-  // downloaded until the first interaction. DocSearch mounts into the hidden
-  // #docsearch container; opening the modal means clicking its hidden button.
-  import { DOCSEARCH_APP_ID, DOCSEARCH_INDEX_NAME, DOCSEARCH_API_KEY } from 'astro:env/client'
-
-  const input = document.getElementById('docs-search-input')
-  const mount = document.getElementById('docsearch')
-  // Local consts so TypeScript narrows `string | undefined` inside the closures below.
-  const appId = DOCSEARCH_APP_ID
-  const indexName = DOCSEARCH_INDEX_NAME
-  const apiKey = DOCSEARCH_API_KEY
-
-  if (input && !(appId && indexName && apiKey)) {
-    // No Algolia env config (see .env.example) — hide the dead search input.
-    input.closest<HTMLElement>('.input-icon')?.classList.add('d-none')
-    console.warn('Docs search disabled: DOCSEARCH_* env variables are not set.')
-  }
-
-  if (input && mount && appId && indexName && apiKey) {
-    const isMac = /Mac|iPhone|iPad|iPod/.test(navigator.userAgent)
-    const kbd = document.getElementById('docs-search-kbd')
-    if (kbd && !isMac) kbd.textContent = 'Ctrl K'
-
-    let state: 'idle' | 'loading' | 'ready' = 'idle'
-    let openWhenReady = false
-
-    const openModal = () => mount.querySelector<HTMLElement>('.DocSearch-Button')?.click()
-
-    const load = async (open: boolean) => {
-      openWhenReady = openWhenReady || open
-      if (state === 'ready') {
-        if (open) openModal()
-        return
-      }
-      if (state === 'loading') return
-      state = 'loading'
-      try {
-        const { default: docsearch } = await import('@docsearch/js')
-        docsearch({
-          container: '#docsearch',
-          appId,
-          indexName,
-          apiKey,
-        })
-        state = 'ready'
-        // The bundle renders its (hidden) button and binds its own shortcuts.
-        if (openWhenReady) openModal()
-      } catch {
-        state = 'idle'
-      }
-    }
-
-    input.addEventListener('click', () => {
-      load(true)
-      input.blur()
-    })
-    // Keyboard users: prefetch on focus, open on Enter or when they start typing.
-    input.addEventListener('focus', () => load(false))
-    input.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter' || event.key.length === 1) {
-        event.preventDefault()
-        load(true)
-        input.blur()
-      }
-    })
-    input.addEventListener('pointerenter', () => load(false))
-    document.addEventListener('keydown', (event) => {
-      if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k' && state !== 'ready') {
-        event.preventDefault()
-        load(true)
-      }
-    })
-  }
-</script>

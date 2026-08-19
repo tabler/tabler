@@ -2,7 +2,15 @@
 title: Map
 summary: A map shows places and markers on an interactive world map. Tabler provides the markup and the setup code, and the map itself is rendered by Mapbox GL JS.
 description: Show interactive maps with markers using Mapbox GL JS. Tabler provides the container markup and setup code to get you started.
-related: [/ui/components/vector-map]
+related: [/ui/plugins/vector-map]
+source: core/scss/_utilities.scss
+classnames:
+  component:
+    - class: ratio
+      desc: Wrapper that keeps the embed at a fixed aspect ratio
+  size:
+    - class: ratio-{ratio}
+      desc: The aspect to hold, for example ratio-16x9 or ratio-21x9
 ---
 import Example from '@components/Example.astro';
 import { Code } from 'astro:components';
@@ -11,7 +19,7 @@ import { Code } from 'astro:components';
 
 The map is a small wrapper around [Mapbox GL JS](https://docs.mapbox.com/mapbox-gl-js/). Tabler gives you the container markup and a short init script. Mapbox draws the tiles, handles zoom, and renders the markers.
 
-A Mapbox account and an access token are needed, because every map load calls the Mapbox API. If you only need a simple map of countries or regions, use the [vector map](/ui/components/vector-map) instead. It needs no account and no network calls.
+A Mapbox account and an access token are needed, because every map load calls the Mapbox API. If you only need a simple map of countries or regions, use the [vector map](/ui/plugins/vector-map) instead. It needs no account and no network calls.
 
 ## Installation
 
@@ -38,7 +46,9 @@ Use a public token only. A secret token (`sk.`) must never be sent to the browse
 Put the map container inside a `ratio` element, so the map keeps its shape on every screen size. Give the inner element an `id` and the `w-100 h-100` classes.
 
 <Example codeOnly>
-<div class="ratio ratio-16x9"> <div> <div id="map-simple" class="w-100 h-100"></div> </div> </div>
+<div class="ratio ratio-16x9">
+  <div><div id="map-simple" class="w-100 h-100"></div></div>
+</div>
 </Example>
 
 Change the shape with the ratio classes, for example `ratio-21x9` for a wide map or `ratio-1x1` for a square one.
@@ -97,7 +107,14 @@ The `color` option is written to the `fill` attribute of the marker icon. A CSS 
 Add a card title above the map. This is the usual layout for a small map next to other content.
 
 <Example codeOnly>
-<div class="card"> <div class="card-body"> <div class="card-title">Simple map</div> <div class="ratio ratio-16x9"> <div> <div id="map-card" class="w-100 h-100"></div> </div> </div> </div> </div>
+<div class="card">
+  <div class="card-body">
+    <div class="card-title">Simple map</div>
+    <div class="ratio ratio-16x9">
+      <div><div id="map-card" class="w-100 h-100"></div></div>
+    </div>
+  </div>
+</div>
 </Example>
 
 ### Full-card map
@@ -105,7 +122,11 @@ Add a card title above the map. This is the usual layout for a small map next to
 Drop the card body to let the map fill the whole card. Add `rounded` to the container, so the map follows the card corners.
 
 <Example codeOnly>
-<div class="card"> <div class="ratio ratio-21x9"> <div> <div id="map-full" class="w-100 h-100 rounded"></div> </div> </div> </div>
+<div class="card">
+  <div class="ratio ratio-21x9">
+    <div><div id="map-full" class="w-100 h-100 rounded"></div></div>
+  </div>
+</div>
 </Example>
 
 Live versions of these maps are on the [maps preview page](https://preview.tabler.io/maps.html).

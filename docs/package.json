@@ -7,10 +7,12 @@
     "node": ">=22.12.0"
   },
   "scripts": {
-    "dev": "astro dev",
-    "build": "astro build",
+    "dev": "pnpm run css && concurrently -n astro,css -c blue,magenta \"astro dev\" \"pnpm run watch-css\"",
+    "build": "pnpm run css && astro build",
+    "css": "sass scss/:tmp-assets/css/ --no-source-map --load-path=./node_modules",
+    "watch-css": "sass --watch scss/:public/css/ --no-source-map --load-path=./node_modules",
     "preview": "astro preview",
-    "clean": "shx rm -rf dist public .astro",
+    "clean": "shx rm -rf dist public .astro tmp-assets",
     "type-check": "astro check"
   },
   "dependencies": {
@@ -22,6 +24,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.4",
+    "@docsearch/css": "^4.7.0",
     "@astrojs/markdown-satteri": "^0.3.4",
     "@astrojs/mdx": "^7.0.3",
     "@tabler/preview": "workspace:*",

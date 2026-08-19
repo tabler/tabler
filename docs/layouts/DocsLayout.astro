@@ -9,6 +9,8 @@ import docs from '@data/docs.json';
 import Icon from '@ui/Icon.astro';
 import DocsNavbar from '@components/DocsNavbar.astro';
 import DocsMenu from '@components/DocsMenu.astro';
+import DocsSearch from '@components/DocsSearch.astro';
+import DocsClassnames from '@components/DocsClassnames.astro';
 import DocsToc from '@components/DocsToc.astro';
 import type { TocItem } from '@components/DocsToc.astro';
 import DocsPagination from '@components/DocsPagination.astro';
@@ -24,6 +26,10 @@ interface Props {
 	seoTitle?: string | undefined;
 	/** front matter: lead below the title (p.text-secondary.fs-3.lh-3) */
 	summary?: string | undefined;
+	/** repo-relative path of the file implementing the component, linked next to the edit link */
+	sourcePath?: string | undefined;
+	/** class reference table, rendered above the page body */
+	classnames?: Record<string, { class: string; desc: string; default: boolean }[]> | undefined;
 	/** front matter: SEO description */
 	description?: string | undefined;
 	/** front matter: optional SEO description override */
@@ -57,6 +63,8 @@ const {
 	title,
 	seoTitle,
 	summary,
+	classnames,
+	sourcePath,
 	description,
 	seoDescription,
 	addedIn,
@@ -267,10 +275,6 @@ const relatedPages = await Promise.all(
 		<link rel="stylesheet" href="/dist/css/tabler.css" />
 		<!-- END GLOBAL MANDATORY STYLES -->
 
-		<!-- BEGIN PLUGINS STYLES -->
-		{pagePlugins.map((plugin) => <link href={`/dist/css/tabler-${plugin}.css`} rel="stylesheet" />)}
-		<!-- END PLUGINS STYLES -->
-
 		{
 			docsLibCss.length > 0 && (
 				<Fragment>
@@ -280,6 +284,10 @@ const relatedPages = await Promise.all(
 				</Fragment>
 			)
 		}
+
+		<!-- BEGIN PLUGINS STYLES -->
+		{pagePlugins.map((plugin) => <link href={`/dist/css/tabler-${plugin}.css`} rel="stylesheet" />)}
+		<!-- END PLUGINS STYLES -->
 
 		<!-- BEGIN CUSTOM FONT -->
 		<link rel="preconnect" href="https://rsms.me/" />
@@ -292,10 +300,15 @@ const relatedPages = await Promise.all(
 		<!-- END DOCS STYLES -->
 	</head>
 
-	<body class="d-flex flex-column" style="background: var(--tblr-bg-surface)">
+	<body class="d-flex flex-column">
 		<a href="#content" class="visually-hidden-focusable skip-link">Skip to main content</a>
 		<!-- BEGIN GLOBAL THEME SCRIPT -->
 		<script is:inline src="/dist/js/tabler-theme.js"></script>
+		<script is:inline>
+			// The stored *choice* (light/dark/auto) drives the footer theme switcher's
+			// active segment; tabler-theme.js above only exposes the resolved theme.
+			document.documentElement.setAttribute('data-docs-theme', localStorage.getItem('tabler-theme') || 'auto');
+		</script>
 		<!-- END GLOBAL THEME SCRIPT -->
 		<!-- BEGIN NAVBAR  -->
 		<header role="banner">
@@ -304,34 +317,29 @@ const relatedPages = await Promise.all(
 		<!-- END NAVBAR  -->
 		<!-- BEGIN PAGE BODY -->
 		<main id="content" class="flex-fill">
-			<div class="container">
+			<div class="container-lg">
 				<div class="row g-0">
 					<!-- BEGIN DOCS MENU -->
-					<div class="col-docs d-none d-lg-block border-end">
-						<div class="py-4">
-							<div class="space-y space-y-5">
-								<nav class="nav nav-vertical" aria-label="Resources">
-									{
-										docsLinks.map((link) => (
-											<a href={link.url} class="nav-link" target="_blank" rel="noopener noreferrer">
-												<span class="border me-2 rounded p-1">
-													<Icon name={link.icon} />
-												</span>
-												{link.title}
-											</a>
-										))
-									}
-								</nav>
-								<div class="flex-fill">
-									<DocsMenu url={docsUrl} />
+					<div class="col-docs offcanvas-lg offcanvas-start" tabindex="-1" id="docs-menu-offcanvas" aria-labelledby="docs-menu-offcanvas-title">
+						<div class="offcanvas-header d-lg-none">
+							<h2 class="offcanvas-title" id="docs-menu-offcanvas-title">Menu</h2>
+							<button type="button" class="btn-close" data-bs-dismiss="offcanvas" data-bs-target="#docs-menu-offcanvas" aria-label="Close"></button>
+						</div>
+						<div class="offcanvas-body">
+							<div class="py-lg-4 flex-fill">
+								<div class="space-y space-y-5">
+									<DocsSearch />
+									<div class="flex-fill">
+										<DocsMenu url={docsUrl} />
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 					<!-- END DOCS MENU -->
-					<div class="col bg-docs-gradient">
-						<div class="py-lg-5 ps-lg-5">
-							<div class="py-6 ps-lg-6 p-xxl-6">
+					<div class="col d-flex flex-column">
+						<div class="docs-article flex-fill">
+							<div class="p-4 py-6 p-lg-6">
 								{breadcrumbs && (
 									<nav aria-label="Breadcrumb">
 										<ol class="breadcrumb breadcrumb-arrows breadcrumb-muted mb-3">
@@ -358,7 +366,7 @@ const relatedPages = await Promise.all(
 									tabindex="0"
 								>
 									<div class="d-flex">
-										<h1>
+										<h1 class="docs-page-title">
 											{title}
 										</h1>
 
@@ -371,15 +379,17 @@ const relatedPages = await Promise.all(
 										}
 									</div>
 
-									<p class="text-secondary fs-3 lh-3">{summary}</p>
+									<p class="docs-page-lead text-secondary fs-3 lh-3">{summary}</p>
 
 									{/* Page must supply headings with ids (MDX does this by default). */}
 									<slot />
 
+									{classnames && <DocsClassnames classnames={classnames} />}
+
 									{relatedPages.length > 0 && (
 										<Fragment>
 											<h2 id="related">Related</h2>
-											<div class="row row-deck row-cards">
+											<div class="row row-deck row-cards docs-related">
 												{relatedPages.map((page) => (
 													<DocsCard href={page.url} title={page.title} description={page.description} />
 												))}
@@ -387,61 +397,74 @@ const relatedPages = await Promise.all(
 										</Fragment>
 									)}
 
-									{!hidePagination && <DocsPagination url={docsUrl} />}
-
-									<div class="mt-7">
-										<div>
-											<a
-												href={`${site.githubUrl}/edit/dev/${editFilePath}`}
-												class="link-primary"
-												target="_blank" rel="noopener noreferrer"><Icon name="edit" class="icon-inline" /> Edit this page on GitHub</a
-											>
-										</div>
-
-										<nav class="mt-5" aria-label="Documentation sections">
-											<ul class="list-inline list-inline-dots mb-0 text-secondary">
-												{[
-													{ title: 'Getting started', url: '/ui/getting-started' },
-													{ title: 'UI components', url: '/ui/components' },
-													{ title: 'Icons', url: '/icons' },
-													{ title: 'Illustrations', url: '/illustrations' },
-													{ title: 'Emails', url: '/emails' },
-													{ title: 'FAQ', url: '/ui/getting-started/faq' },
-													{ title: 'License', url: '/ui/getting-started/license' },
-												].map((section) => (
-													<li class="list-inline-item">
-														<a href={section.url} class="link-secondary">
-															{section.title}
-														</a>
-													</li>
-												))}
-											</ul>
-										</nav>
-
-										<div class="mt-5">
-											<div class="row">
-												<div class="col text-secondary">
-													© {year} Tabler. All rights reserved.
-												</div>
-
-												<div class="col text-end">
-													<a href={site.githubUrl} class="link-secondary" target="_blank" rel="noopener noreferrer"><Icon name="brand-github" /></a>
-													<a href={site.githubSponsorsUrl} class="link-secondary" target="_blank" rel="noopener noreferrer"><Icon name="heart" /></a>
-													<a href={opencollectiveUrl} class="link-secondary" target="_blank" rel="noopener noreferrer"><Icon name="hearts" /></a>
-													<a href={xUrl} class="link-secondary" target="_blank" rel="noopener noreferrer"><Icon name="brand-x" /></a>
-													<a href={linkedinUrl} class="link-secondary" target="_blank" rel="noopener noreferrer"><Icon name="brand-linkedin" /></a>
-												</div>
-											</div>
-										</div>
-									</div>
+									{!hidePagination && <DocsPagination url={docsUrl} only="children" />}
 								</Prose>
 							</div>
 						</div>
+
+						{!hidePagination && <DocsPagination url={docsUrl} only="pagination" />}
+
+						<footer class="docs-footer">
+							<nav class="d-md-none mb-3" aria-label="Tabler sites">
+								<ul class="list-inline list-inline-dots mb-0 text-secondary">
+									{docsLinks.map((link) => (
+										<li class="list-inline-item">
+											<a href={link.url} class="link-secondary" target="_blank" rel="noopener noreferrer">
+												{link.title}
+											</a>
+										</li>
+									))}
+								</ul>
+							</nav>
+
+							<nav aria-label="Documentation sections">
+								<ul class="list-inline list-inline-dots mb-0 text-secondary">
+									{[
+										{ title: 'Getting started', url: '/ui/getting-started' },
+										{ title: 'UI components', url: '/ui/components' },
+										{ title: 'Icons', url: '/icons' },
+										{ title: 'Illustrations', url: '/illustrations' },
+										{ title: 'Emails', url: '/emails' },
+										{ title: 'FAQ', url: '/ui/getting-started/faq' },
+										{ title: 'License', url: '/ui/getting-started/license' },
+									].map((section) => (
+										<li class="list-inline-item">
+											<a href={section.url} class="link-secondary">
+												{section.title}
+											</a>
+										</li>
+									))}
+								</ul>
+							</nav>
+
+							<div class="mt-4">
+								<div class="row">
+									<div class="col-12 col-sm text-secondary">
+										© {year} Tabler. All rights reserved.
+									</div>
+
+									<div class="col-12 col-sm d-flex align-items-center justify-content-start justify-content-sm-end gap-4 mt-3 mt-sm-0">
+										<nav class="nav nav-segmented nav-sm docs-theme-toggle" aria-label="Color scheme">
+											<a href="?theme=light" class="nav-link docs-theme-toggle-light" data-bs-toggle="tooltip" data-bs-placement="top" title="Light mode" aria-label="Enable light mode"><Icon name="sun" class="nav-link-icon" /></a>
+											<a href="?theme=auto" class="nav-link docs-theme-toggle-auto" data-bs-toggle="tooltip" data-bs-placement="top" title="System mode" aria-label="Follow the system color scheme"><Icon name="sun-moon" class="nav-link-icon" /></a>
+											<a href="?theme=dark" class="nav-link docs-theme-toggle-dark" data-bs-toggle="tooltip" data-bs-placement="top" title="Dark mode" aria-label="Enable dark mode"><Icon name="moon" class="nav-link-icon" /></a>
+										</nav>
+										<div class="d-inline-flex align-items-center gap-2">
+											<a href={site.githubUrl} class="link-secondary" target="_blank" rel="noopener noreferrer" data-bs-toggle="tooltip" data-bs-placement="top" title="Tabler on GitHub" aria-label="Tabler on GitHub"><Icon name="brand-github" /></a>
+											<a href={site.githubSponsorsUrl} class="link-secondary" target="_blank" rel="noopener noreferrer" data-bs-toggle="tooltip" data-bs-placement="top" title="Sponsor on GitHub" aria-label="Sponsor Tabler on GitHub"><Icon name="heart" /></a>
+											<a href={opencollectiveUrl} class="link-secondary" target="_blank" rel="noopener noreferrer" data-bs-toggle="tooltip" data-bs-placement="top" title="Support on Open Collective" aria-label="Support Tabler on Open Collective"><Icon name="hearts" /></a>
+											<a href={xUrl} class="link-secondary" target="_blank" rel="noopener noreferrer" data-bs-toggle="tooltip" data-bs-placement="top" title="Tabler on X" aria-label="Tabler on X"><Icon name="brand-x" /></a>
+											<a href={linkedinUrl} class="link-secondary" target="_blank" rel="noopener noreferrer" data-bs-toggle="tooltip" data-bs-placement="top" title="Tabler on LinkedIn" aria-label="Tabler on LinkedIn"><Icon name="brand-linkedin" /></a>
+										</div>
+									</div>
+								</div>
+							</div>
+						</footer>
 					</div>
 					<!-- BEGIN DOCS TOC -->
 					<div class="col-2 d-none d-xxl-block">
-						<div class="py-6 sticky-top">
-							<DocsToc toc={toc} />
+						<div class="py-5 sticky-top">
+							<DocsToc toc={toc} editUrl={`${site.githubUrl}/edit/dev/${editFilePath}`} sourceUrl={sourcePath ? `${site.githubUrl}/blob/dev/${sourcePath}` : undefined} markdownUrl={markdownUrl} />
 						</div>
 					</div>
 					<!-- END DOCS TOC -->
@@ -478,6 +501,9 @@ const relatedPages = await Promise.all(
 						e.trigger.classList.remove('btn-dark');
 						e.trigger.children[0].classList.add('d-none');
 						e.trigger.children[1].classList.remove('d-none');
+						// The checkmark is the only feedback a sighted user gets; the label
+						// carries the same message to a screen reader.
+						e.trigger.setAttribute('aria-label', 'Copied');
 
 						setTimeout(function () {
 							e.trigger.classList.remove('btn-success');
@@ -485,6 +511,7 @@ const relatedPages = await Promise.all(
 
 							e.trigger.children[0].classList.remove('d-none');
 							e.trigger.children[1].classList.add('d-none');
+							e.trigger.setAttribute('aria-label', 'Copy code');
 						}, 2000);
 					});
 

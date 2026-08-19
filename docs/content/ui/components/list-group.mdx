@@ -2,6 +2,38 @@
 title: List group
 summary: A list group shows a series of related items in one block. Use it for simple lists, navigation, settings, and lists of records inside a card.
 description: Group related items in one list.
+source: core/scss/ui/_lists.scss
+classnames:
+  component:
+    - class: list-group
+      desc: Container element
+  part:
+    - class: list-group-item
+      desc: One entry
+    - class: list-group-header
+      desc: Section label between entries
+    - class: list-group-item-actions
+      desc: Slot for controls on the trailing edge of an entry
+  style:
+    - class: list-group-flush
+      desc: Removes the outer border, to sit flush in a card
+    - class: list-group-transparent
+      desc: Removes the background and the borders
+    - class: list-group-numbered
+      desc: Numbers the entries
+    - class: list-separated
+      desc: Spaces the entries apart instead of joining them with borders
+  behavior:
+    - class: list-group-hoverable
+      desc: Highlights the entry under the cursor
+    - class: list-group-item-action
+      desc: Marks an entry as a link or a button
+  direction:
+    - class: list-group-horizontal
+      desc: Lays the entries out in a row; -{breakpoint} only above that width
+  color:
+    - class: list-group-item-{color}
+      desc: Tints one entry, for example list-group-item-success
 ---
 import Example from '@components/Example.astro';
 import Icon from '@ui/Icon.astro';
@@ -11,13 +43,21 @@ import Icon from '@ui/Icon.astro';
 Use the `list-group` class on the container and `list-group-item` on each row. Items share one border and stack on top of each other.
 
 <Example bg="surface-secondary" column>
-<div class="list-group"> <div class="list-group-item">First item</div> <div class="list-group-item">Second item</div> <div class="list-group-item">Third item</div> </div>
+<div class="list-group">
+  <div class="list-group-item">First item</div>
+  <div class="list-group-item">Second item</div>
+  <div class="list-group-item">Third item</div>
+</div>
 </Example>
 
 The container can be any element. Use `ul` with `li` items for a real list, or `nav` with `a` items for navigation.
 
 <Example bg="surface-secondary" column>
-<ul class="list-group"> <li class="list-group-item">First item</li> <li class="list-group-item">Second item</li> <li class="list-group-item">Third item</li> </ul>
+<ul class="list-group">
+  <li class="list-group-item">First item</li>
+  <li class="list-group-item">Second item</li>
+  <li class="list-group-item">Third item</li>
+</ul>
 </Example>
 
 ## Variants
@@ -27,7 +67,13 @@ The container can be any element. Use `ul` with `li` items for a real list, or `
 Add `list-group-flush` to remove the outer border and the rounded corners. Use it when the list sits inside another element, for example a card.
 
 <Example bg="surface-secondary" column>
-<div class="card"> <div class="list-group list-group-flush"> <div class="list-group-item">First item</div> <div class="list-group-item">Second item</div> <div class="list-group-item">Third item</div> </div> </div>
+<div class="card">
+  <div class="list-group list-group-flush">
+    <div class="list-group-item">First item</div>
+    <div class="list-group-item">Second item</div>
+    <div class="list-group-item">Third item</div>
+  </div>
+</div>
 </Example>
 
 ### Links and buttons
@@ -35,7 +81,11 @@ Add `list-group-flush` to remove the outer border and the rounded corners. Use i
 Add `list-group-item-action` to items that the user can click. It adds a hover and focus state. Use it on `a` or `button` elements only.
 
 <Example bg="surface-secondary" column>
-<div class="list-group"> <a href="#" class="list-group-item list-group-item-action">Profile</a> <a href="#" class="list-group-item list-group-item-action">Billing</a> <a href="#" class="list-group-item list-group-item-action">Notifications</a> </div>
+<div class="list-group">
+  <a href="#" class="list-group-item list-group-item-action">Profile</a>
+  <a href="#" class="list-group-item list-group-item-action">Billing</a>
+  <a href="#" class="list-group-item list-group-item-action">Notifications</a>
+</div>
 </Example>
 
 ### Active and disabled
@@ -43,7 +93,11 @@ Add `list-group-item-action` to items that the user can click. It adds a hover a
 Mark the current item with `active`. Tabler shows it with a thicker border on the start side. Use `disabled` for an item the user cannot pick.
 
 <Example bg="surface-secondary" column>
-<div class="list-group"> <a href="#" class="list-group-item list-group-item-action active" aria-current="true">Active item</a> <a href="#" class="list-group-item list-group-item-action">Normal item</a> <a class="list-group-item list-group-item-action disabled" aria-disabled="true" tabindex="-1">Disabled item</a> </div>
+<div class="list-group">
+  <a href="#" class="list-group-item list-group-item-action active" aria-current="true"> Active item </a>
+  <a href="#" class="list-group-item list-group-item-action">Normal item</a>
+  <a class="list-group-item list-group-item-action disabled" aria-disabled="true" tabindex="-1"> Disabled item </a>
+</div>
 </Example>
 
 ### Section header
@@ -51,7 +105,13 @@ Mark the current item with `active`. Tabler shows it with a thicker border on th
 Use `list-group-header` to split a long list into groups. The header is a small uppercase label with its own background.
 
 <Example bg="surface-secondary" column>
-<div class="list-group list-group-flush"> <div class="list-group-header">Today</div> <div class="list-group-item">Report generated</div> <div class="list-group-item">New comment</div> <div class="list-group-header">Yesterday</div> <div class="list-group-item">Invoice paid</div> </div>
+<div class="list-group list-group-flush">
+  <div class="list-group-header">Today</div>
+  <div class="list-group-item">Report generated</div>
+  <div class="list-group-item">New comment</div>
+  <div class="list-group-header">Yesterday</div>
+  <div class="list-group-item">Invoice paid</div>
+</div>
 </Example>
 
 ### Hoverable items with actions
@@ -59,7 +119,24 @@ Use `list-group-header` to split a long list into groups. The header is a small 
 Add `list-group-hoverable` to the container to highlight the row under the pointer. Inside an item, put extra controls in a `list-group-item-actions` element. They stay hidden and appear on hover. Add the `show` class to keep an action always visible.
 
 <Example bg="surface-secondary" column>
-<div class="list-group list-group-hoverable"> <div class="list-group-item"> <div class="row align-items-center"> <div class="col text-truncate">Change deprecated html tags</div> <div class="col-auto"> <a href="#" class="list-group-item-actions"> <Icon name="star" color="muted" /> </a> </div> </div> </div> <div class="list-group-item"> <div class="row align-items-center"> <div class="col text-truncate">Fix spacing in the navbar</div> <div class="col-auto"> <a href="#" class="list-group-item-actions show"> <Icon name="star" color="yellow" /> </a> </div> </div> </div> </div>
+<div class="list-group list-group-hoverable">
+  <div class="list-group-item">
+    <div class="row align-items-center">
+      <div class="col text-truncate">Change deprecated html tags</div>
+      <div class="col-auto">
+        <a href="#" class="list-group-item-actions"><Icon name="star" color="muted" /></a>
+      </div>
+    </div>
+  </div>
+  <div class="list-group-item">
+    <div class="row align-items-center">
+      <div class="col text-truncate">Fix spacing in the navbar</div>
+      <div class="col-auto">
+        <a href="#" class="list-group-item-actions show"><Icon name="star" color="yellow" /></a>
+      </div>
+    </div>
+  </div>
+</div>
 </Example>
 
 ### Transparent
@@ -67,7 +144,17 @@ Add `list-group-hoverable` to the container to highlight the row under the point
 Add `list-group-transparent` to drop the background and the borders. Icons inside the items turn gray. This variant works well as a side menu.
 
 <Example bg="surface-secondary" column>
-<div class="list-group list-group-transparent"> <a href="#" class="list-group-item list-group-item-action d-flex align-items-center"> <Icon name="user" class="me-2" />Account </a> <a href="#" class="list-group-item list-group-item-action d-flex align-items-center active"> <Icon name="settings" class="me-2" />Settings </a> <a href="#" class="list-group-item list-group-item-action d-flex align-items-center"> <Icon name="bell" class="me-2" />Notifications </a> </div>
+<div class="list-group list-group-transparent">
+  <a href="#" class="list-group-item list-group-item-action d-flex align-items-center">
+    <Icon name="user" class="me-2" /> Account
+  </a>
+  <a href="#" class="list-group-item list-group-item-action d-flex align-items-center active">
+    <Icon name="settings" class="me-2" /> Settings
+  </a>
+  <a href="#" class="list-group-item list-group-item-action d-flex align-items-center">
+    <Icon name="bell" class="me-2" /> Notifications
+  </a>
+</div>
 </Example>
 
 ### Numbered
@@ -75,7 +162,11 @@ Add `list-group-transparent` to drop the background and the borders. Icons insid
 Use an `ol` element with `list-group-numbered` to number the items. The numbers come from CSS, so you do not write them in the markup.
 
 <Example bg="surface-secondary" column>
-<ol class="list-group list-group-numbered"> <li class="list-group-item">Create an account</li> <li class="list-group-item">Confirm your email</li> <li class="list-group-item">Invite your team</li> </ol>
+<ol class="list-group list-group-numbered">
+  <li class="list-group-item">Create an account</li>
+  <li class="list-group-item">Confirm your email</li>
+  <li class="list-group-item">Invite your team</li>
+</ol>
 </Example>
 
 ### Horizontal
@@ -83,7 +174,11 @@ Use an `ol` element with `list-group-numbered` to number the items. The numbers 
 Add `list-group-horizontal` to place the items in a row. Use a breakpoint, for example `list-group-horizontal-md`, to switch from a column to a row on wider screens.
 
 <Example bg="surface-secondary" column>
-<div class="list-group list-group-horizontal"> <div class="list-group-item">First</div> <div class="list-group-item">Second</div> <div class="list-group-item">Third</div> </div>
+<div class="list-group list-group-horizontal">
+  <div class="list-group-item">First</div>
+  <div class="list-group-item">Second</div>
+  <div class="list-group-item">Third</div>
+</div>
 </Example>
 
 ### Contextual colors
@@ -91,7 +186,12 @@ Add `list-group-horizontal` to place the items in a row. Use a breakpoint, for e
 Use `list-group-item-*` with a theme color to give one item a background. See the [full list of available colors](/ui/base/colors) for more details.
 
 <Example bg="surface-secondary" column>
-<div class="list-group"> <div class="list-group-item list-group-item-primary">Primary item</div> <div class="list-group-item list-group-item-success">Success item</div> <div class="list-group-item list-group-item-warning">Warning item</div> <div class="list-group-item list-group-item-danger">Danger item</div> </div>
+<div class="list-group">
+  <div class="list-group-item list-group-item-primary">Primary item</div>
+  <div class="list-group-item list-group-item-success">Success item</div>
+  <div class="list-group-item list-group-item-warning">Warning item</div>
+  <div class="list-group-item list-group-item-danger">Danger item</div>
+</div>
 </Example>
 
 ## Examples
@@ -101,7 +201,33 @@ Use `list-group-item-*` with a theme color to give one item a background. See th
 Add `card-list-group` to the list inside a card. The items then use the card padding, and the borders on the sides are removed. A border is added between the card body and the list.
 
 <Example bg="surface-secondary" column>
-<div class="card"> <div class="card-header"> <h3 class="card-title">Team</h3> </div> <div class="list-group card-list-group"> <div class="list-group-item"> <div class="row align-items-center"> <div class="col-auto"> <span class="avatar" style="background-image: url(/static/avatars/000m.jpg)"></span> </div> <div class="col text-truncate"> <div>Paweł Kuna</div> <div class="text-secondary text-truncate">UI Designer</div> </div> </div> </div> <div class="list-group-item"> <div class="row align-items-center"> <div class="col-auto"> <span class="avatar" style="background-image: url(/static/avatars/016f.jpg)"></span> </div> <div class="col text-truncate"> <div>Alice Marlin</div> <div class="text-secondary text-truncate">Frontend developer</div> </div> </div> </div> </div> </div>
+<div class="card">
+  <div class="card-header"><h3 class="card-title">Team</h3></div>
+  <div class="list-group card-list-group">
+    <div class="list-group-item">
+      <div class="row align-items-center">
+        <div class="col-auto">
+          <span class="avatar" style="background-image: url(/static/avatars/000m.jpg)"></span>
+        </div>
+        <div class="col text-truncate">
+          <div>Paweł Kuna</div>
+          <div class="text-secondary text-truncate">UI Designer</div>
+        </div>
+      </div>
+    </div>
+    <div class="list-group-item">
+      <div class="row align-items-center">
+        <div class="col-auto">
+          <span class="avatar" style="background-image: url(/static/avatars/016f.jpg)"></span>
+        </div>
+        <div class="col text-truncate">
+          <div>Alice Marlin</div>
+          <div class="text-secondary text-truncate">Frontend developer</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 </Example>
 
 ### Notifications list
@@ -109,7 +235,37 @@ Add `card-list-group` to the list inside a card. The items then use the card pad
 This pattern joins several variants: a flush list inside a card, hoverable rows, and an action that shows on hover.
 
 <Example bg="surface-secondary" column>
-<div class="card"> <div class="card-header"> <h3 class="card-title">Notifications</h3> </div> <div class="list-group list-group-flush list-group-hoverable"> <div class="list-group-item"> <div class="row align-items-center"> <div class="col-auto"><span class="status-dot status-dot-animated bg-red d-block"></span></div> <div class="col text-truncate"> <a href="#" class="text-body d-block">Build failed</a> <div class="d-block text-secondary text-truncate mt-n1">The last deploy did not finish</div> </div> <div class="col-auto"> <a href="#" class="list-group-item-actions"> <Icon name="star" color="muted" /> </a> </div> </div> </div> <div class="list-group-item"> <div class="row align-items-center"> <div class="col-auto"><span class="status-dot d-block"></span></div> <div class="col text-truncate"> <a href="#" class="text-body d-block">New comment</a> <div class="d-block text-secondary text-truncate mt-n1">Alice replied in the design thread</div> </div> <div class="col-auto"> <a href="#" class="list-group-item-actions show"> <Icon name="star" color="yellow" /> </a> </div> </div> </div> </div> </div>
+<div class="card">
+  <div class="card-header"><h3 class="card-title">Notifications</h3></div>
+  <div class="list-group list-group-flush list-group-hoverable">
+    <div class="list-group-item">
+      <div class="row align-items-center">
+        <div class="col-auto">
+          <span class="status-dot status-dot-animated bg-red d-block"></span>
+        </div>
+        <div class="col text-truncate">
+          <a href="#" class="text-body d-block">Build failed</a>
+          <div class="d-block text-secondary text-truncate mt-n1"> The last deploy did not finish </div>
+        </div>
+        <div class="col-auto">
+          <a href="#" class="list-group-item-actions"><Icon name="star" color="muted" /></a>
+        </div>
+      </div>
+    </div>
+    <div class="list-group-item">
+      <div class="row align-items-center">
+        <div class="col-auto"><span class="status-dot d-block"></span></div>
+        <div class="col text-truncate">
+          <a href="#" class="text-body d-block">New comment</a>
+          <div class="d-block text-secondary text-truncate mt-n1"> Alice replied in the design thread </div>
+        </div>
+        <div class="col-auto">
+          <a href="#" class="list-group-item-actions show"><Icon name="star" color="yellow" /></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 </Example>
 
 ## Inline list
@@ -119,13 +275,44 @@ This pattern joins several variants: a flush list inside a card, hoverable rows,
 Use `list-inline` on a `ul` and `list-inline-item` on each `li`.
 
 <Example bg="surface-secondary" column>
-<ul class="list-inline mb-0"> <li class="list-inline-item">Documentation</li> <li class="list-inline-item">License</li> <li class="list-inline-item">Source code</li> </ul>
+<ul class="list-inline mb-0">
+  <li class="list-inline-item">Documentation</li>
+  <li class="list-inline-item">License</li>
+  <li class="list-inline-item">Source code</li>
+</ul>
 </Example>
 
 Add `list-inline-dots` to separate items with a centered dot instead of relying on spacing alone. Tabler uses this pattern in its own footer.
 
 <Example bg="surface-secondary" column>
-<ul class="list-inline list-inline-dots mb-0"> <li class="list-inline-item">Documentation</li> <li class="list-inline-item">License</li> <li class="list-inline-item">Source code</li> </ul>
+<ul class="list-inline list-inline-dots mb-0">
+  <li class="list-inline-item">Documentation</li>
+  <li class="list-inline-item">License</li>
+  <li class="list-inline-item">Source code</li>
+</ul>
+</Example>
+
+## Separated list
+
+`list-separated` stacks its children with a gap between them instead of a border. Use it when each item is a block of its own - a card, a media object, a row of details - rather than a row in a bordered list.
+
+<Example>
+<ul class="list-separated">
+  <li class="d-flex align-items-center">
+    <span class="avatar me-3" style="background-image: url(/static/avatars/029m.jpg)"></span>
+    <div>
+      <div class="fw-medium">Egan Poetz</div>
+      <div class="text-secondary">Product Manager</div>
+    </div>
+  </li>
+  <li class="d-flex align-items-center">
+    <span class="avatar me-3" style="background-image: url(/static/avatars/035f.jpg)"></span>
+    <div>
+      <div class="fw-medium">Paweł Kuna</div>
+      <div class="text-secondary">UI Designer</div>
+    </div>
+  </li>
+</ul>
 </Example>
 
 ## Accessibility

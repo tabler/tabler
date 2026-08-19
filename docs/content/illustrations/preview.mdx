@@ -1,0 +1,48 @@
+---
+title: Preview
+order: 1
+summary: 'Tabler Illustrations offers 80 illustrations in two themes: light and dark. You can use them in your projects to enhance the visual appeal and convey messages effectively.'
+description: Browse all Tabler Illustrations in light and dark themes.
+---
+
+import illustrations from '@data/illustrations.json'
+export const allIllustrations = illustrations.sort()
+
+Every illustration comes in a light and a dark variant, drawn to sit on the matching page background. The name under each one is the file name, the same in every format the package ships - see the [folder structure](/illustrations/contents) for where each format lives.
+
+## Using an illustration
+
+The simplest way is an `img` element pointing at the SVG file:
+
+```html
+<img src="/illustrations/light/undraw-empty.svg" alt="" class="w-100" />
+```
+
+Leave `alt` empty when the illustration only decorates a block that already has a heading and text, which is the usual case in an [empty state](/ui/components/empty). Write real `alt` text only when the picture carries information nothing else on the page does.
+
+## Following the color mode
+
+To switch variants with the page, place both files and let Tabler hide the one that does not apply. That is what this page does:
+
+```html
+<img src="/illustrations/light/undraw-empty.svg" alt="" class="hide-theme-dark" />
+<img src="/illustrations/dark/undraw-empty.svg" alt="" class="hide-theme-light" />
+```
+
+The `svg-css-autodark` folder holds a single-file version that follows the color mode on its own, with no second image. See [customization](/illustrations/customization#autodark-mode) for how it works and how to recolor it.
+
+## All illustrations
+
+Find out more and purchase Tabler Illustrations at [our website](https://tabler.io/illustrations).
+
+<div class="row g-2 gy-6">
+  {allIllustrations.map((illustration, i) => {
+    return (
+      <div class="col-6 col-md-4 col-lg-3 text-center">
+        <img src={`/static/illustrations/light/${illustration}.png`} alt={illustration} class="hide-theme-dark" />
+        <img src={`/static/illustrations/dark/${illustration}.png`} alt={illustration} class="hide-theme-light" />
+        <code>{illustration}</code>
+      </div>
+    )
+  })}
+</div>

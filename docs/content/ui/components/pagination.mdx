@@ -3,6 +3,30 @@ title: Pagination
 summary: Pagination is a user interface element that allows users to navigate through a set of data or content that is divided into multiple pages. It is commonly used in web applications, blogs, and e-commerce sites to display large amounts of information in a manageable way.
 description: Navigate through multi-page content with pagination controls.
 related: [/ui/components/table]
+source: core/scss/ui/_pagination.scss
+classnames:
+  component:
+    - class: pagination
+      desc: Container element, an unordered list
+  part:
+    - class: page-item
+      desc: One entry in the pager
+    - class: page-link
+      desc: The clickable element inside an entry
+    - class: page-item-title
+      desc: Page name, for a pager that names pages instead of numbering them
+    - class: page-item-subtitle
+      desc: Small uppercase label above the title
+  style:
+    - class: pagination-outline
+      desc: Outlined entries instead of filled ones
+    - class: pagination-circle
+      desc: Round entries
+  size:
+    - class: pagination-sm
+      desc: Small size
+    - class: pagination-lg
+      desc: Large size
 ---
 import Example from '@components/Example.astro';
 import Pagination from '@ui/Pagination.astro';
@@ -55,6 +79,37 @@ If you want to use a circle version of the pagination, you can use the `.paginat
 <Example centered vertical separated>
 <Pagination count={5} activeItem={3} class="pagination-circle" /> <Pagination count={5} activeItem={3} class="pagination-circle pagination-outline" />
 </Example>
+
+## Pager with page names
+
+For prose - documentation, a blog, a wizard - name the pages instead of numbering them. Put `page-item-subtitle` above the title for the direction, and `page-item-title` for the name of the target page.
+
+<Example>
+<nav aria-label="Pagination">
+  <ul class="pagination">
+    <li class="page-item page-prev">
+      <a class="page-link" href="#" rel="prev">
+        <div class="page-item-subtitle">previous</div>
+        <div class="page-item-title">Getting started</div>
+      </a>
+    </li>
+    <li class="page-item page-next">
+      <a class="page-link" href="#" rel="next">
+        <div class="page-item-subtitle">next</div>
+        <div class="page-item-title">Installation</div>
+      </a>
+    </li>
+  </ul>
+</nav>
+</Example>
+
+## Accessibility
+
+- Wrap the list in `<nav aria-label="Pagination">`. A page can have more than one pager, so the label is what tells them apart.
+- Mark the current page with `aria-current="page"` on its link, not with the `active` class alone.
+- Previous and next arrows need text. Keep a `visually-hidden` label, or set `aria-label="Previous"` on the link.
+- A disabled step is still a link. Add `aria-disabled="true"` and `tabindex="-1"` so it is skipped, since the `disabled` class only changes how it looks.
+- The page numbers alone do not say what they page through. Say it in the `nav` label, for example `aria-label="Search results pages"`.
 
 ## SCSS variables
 

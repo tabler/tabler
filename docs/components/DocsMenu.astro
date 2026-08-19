@@ -9,7 +9,10 @@ interface MenuLeaf {
   url: string
 }
 
-interface MenuGroup extends MenuLeaf {
+interface MenuGroup {
+  title: string
+  /** omitted for groups that only label a set of pages, with no index page of their own */
+  url?: string
   children?: MenuLeaf[]
 }
 
@@ -25,6 +28,15 @@ interface Props {
 
 const { url } = Astro.props
 const menu = docs.menu as MenuSection[]
+
+// Keep declarations above this line: a value between the interfaces stops
+// Astro's frontmatter scanner from picking up `Props`, leaving props untyped.
+
+/** Collapse target: from the group's url, or from its title when it has none. */
+const groupId = (group: MenuGroup) =>
+  `collapse-${slug(group.url ?? group.title)
+    .toLowerCase()
+    .replace(/[^a-z0-9-]+/g, '-')}`
 ---
 
 <!-- BEGIN DOCS MENU -->
@@ -42,23 +54,28 @@ const menu = docs.menu as MenuSection[]
               const expanded = url === level2.url || Boolean(level2.children?.some((child) => child.url === url))
               return (
                 <div>
-                  {/* href/data-bs-* only when the element has children */}
-                  {hasChildren ? (
-                    <a class={`nav-link${expanded ? ' active' : ''}`} href={level2.url} data-bs-toggle="collapse" data-bs-target={`#collapse-${slug(level2.url)}`} aria-expanded={expanded ? 'true' : 'false'}>
-                      {level2.title} <span class="nav-link-toggle" />
+                  {/* href/data-bs-* only when the element has children; a group
+                      without an index page toggles from a button instead */}
+                  {hasChildren && level2.url ? (
+                    <a class={`nav-link${expanded ? ' active' : ''}`} href={level2.url} data-bs-toggle="collapse" data-bs-target={`#${groupId(level2)}`} aria-expanded={expanded ? 'true' : 'false'} aria-current={url === level2.url ? 'page' : undefined}>
+                      <span class="nav-link-title">{level2.title}</span> <span class="nav-link-toggle" />
                     </a>
+                  ) : hasChildren ? (
+                    <button type="button" class="nav-link w-100 bg-transparent border-0 text-start" data-bs-toggle="collapse" data-bs-target={`#${groupId(level2)}`} aria-expanded={expanded ? 'true' : 'false'}>
+                      <span class="nav-link-title">{level2.title}</span> <span class="nav-link-toggle" />
+                    </button>
                   ) : (
-                    <a class={`nav-link${expanded ? ' active' : ''}`} href={level2.url}>
-                      {level2.title}
+                    <a class={`nav-link${expanded ? ' active' : ''}`} href={level2.url} aria-current={url === level2.url ? 'page' : undefined}>
+                      <span class="nav-link-title">{level2.title}</span>
                     </a>
                   )}
 
                   {hasChildren && (
-                    <div class={`nav nav-vertical collapse${expanded ? ' show' : ''}`} id={`collapse-${slug(level2.url)}`}>
+                    <div class={`nav nav-vertical collapse${expanded ? ' show' : ''}`} id={groupId(level2)}>
                       {level2.children!.map((level3) => (
                         <div>
-                          <a class={`nav-link${url === level3.url ? ' active' : ''}`} href={level3.url}>
-                            {level3.title}
+                          <a class={`nav-link${url === level3.url ? ' active' : ''}`} href={level3.url} aria-current={url === level3.url ? 'page' : undefined}>
+                            <span class="nav-link-title">{level3.title}</span>
                           </a>
                         </div>
                       ))}

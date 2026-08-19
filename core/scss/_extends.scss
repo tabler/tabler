@@ -55,7 +55,26 @@
 // Markdown tables pick up the styled table look (from `ui/_markdown.scss`)
 .prose > table,
 .markdown > table {
-  @extend .table, .table-bordered, .table-sm;
+  @extend .table;
+  font-size: var(--body-font-size);
+
+  th:first-child,
+  td:first-child {
+    padding-left: 0;
+  }
+
+  th:last-child,
+  td:last-child {
+    padding-right: 0;
+  }
+
+  tr:last-child > * {
+    border-bottom: 0;
+  }
+
+  th {
+    --bg-surface-tertiary: transparent;
+  }
 }
 
 // Light-scoped subtrees inside a dark body inherit the dark styles

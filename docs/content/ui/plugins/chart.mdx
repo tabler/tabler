@@ -1,0 +1,205 @@
+---
+title: Chart
+docs-libs: [apexcharts]
+summary: Tabler uses ApexCharts - a free and open-source modern charting library that helps developers to create beautiful and interactive visualizations for web pages.
+description: Build interactive line, bar, pie, and other charts with ApexCharts. Copy ready-to-use configurations styled to match Tabler.
+related: [/ui/plugins/countup, /ui/components/trending]
+---
+
+import Example from '@components/Example.astro'
+import Chart from '@shared/components/demo/Chart.astro'
+import ChartSparkline from '@ui/ChartSparkline.astro'
+import CdnImportPlugin from '@components/CdnImportPlugin.astro';
+import TabsPackage from '@components/TabsPackage.astro';
+import CodeDocs from '@components/CodeDocs.astro';
+import { Code } from 'astro:components';
+import { site } from '@shared/lib/site.ts';
+
+## Overview
+
+Tabler draws charts with [ApexCharts](https://apexcharts.com/). ApexCharts renders the SVG and handles the data, and Tabler supplies the container class and a theme that makes the result match the rest of the interface.
+
+Tabler does not initialize charts for you. You create each chart in JavaScript and point it at an empty element.
+
+## Installation
+
+Install ApexCharts with npm:
+
+<TabsPackage name="apexcharts" />
+
+Or include it from a CDN:
+
+<Code lang="html" code={`<script src="${site.cdnUrl}/dist/libs/apexcharts/dist/apexcharts.min.js"></script>`} />
+
+ApexCharts draws with its own default colors, grid and tooltip. Tabler restyles all of it, and those styles live in the vendors plugin, so include `tabler-vendors.css` as well:
+
+<CdnImportPlugin plugins={['vendors']} />
+
+## Usage
+
+Add an empty element with the `chart` class, then pass it to ApexCharts. The class reserves a minimum height, so the card does not jump while the chart is loading.
+
+```html
+<div id="chart-revenue" class="chart"></div>
+```
+
+```js
+new ApexCharts(document.getElementById('chart-revenue'), {
+  chart: { type: 'line', fontFamily: 'inherit', height: 240 },
+  series: [{ name: 'Revenue', data: [37, 45, 32, 58, 41, 63] }],
+}).render();
+```
+
+Set `fontFamily: 'inherit'` so the chart labels use your interface font instead of the ApexCharts default.
+
+### Chart size
+
+Set the height in the ApexCharts config, not in CSS. After it renders, ApexCharts writes its own `min-height` onto the container as an inline style, and that beats any height a class sets.
+
+```js
+new ApexCharts(element, {
+  chart: { type: 'line', height: 40 },
+  // ...
+}).render();
+```
+
+The size classes below reserve space before the chart renders, so the layout does not jump. Match the class to the height you pass to ApexCharts.
+
+| Class | Reserved height |
+| --- | --- |
+| `chart` | 10rem minimum, grows with the content |
+| `chart-sm` | 2.5rem, for a chart inside a table row or a list |
+| `chart-lg` | 15rem, for a chart that carries a whole card |
+| `chart-square` | 5.75rem, for a pie or radial chart next to text |
+
+<Example>
+  <div class="card">
+    <div class="card-body">
+      <Chart chartId="demo-line" size="sm" label="Small chart example" />
+    </div>
+  </div>
+</Example>
+
+### Sparklines
+
+A sparkline is a small chart with no axes, grid or tooltip, meant to sit inline next to a number. Use the `chart-sparkline` class and turn on the ApexCharts `sparkline` option.
+
+<Example centered>
+  <ChartSparkline id="docs-sparkline-bar" type="bar" data="4,9,6,10,7,12,8" />
+  <ChartSparkline id="docs-sparkline-line" type="line" color="green" data="4,9,6,10,7,12,8" />
+  <ChartSparkline id="docs-sparkline-donut" type="donut" color="azure" percentage="68" />
+</Example>
+
+Add `chart-sparkline-sm` for a shorter sparkline, `chart-sparkline-square` for a pie or radial one, and `chart-sparkline-wide` when the default width is too narrow.
+
+## Chart types
+
+See the [ApexCharts documentation](https://apexcharts.com/docs/) for the full list of options behind each of these.
+
+### Line chart
+
+Line charts are an essential tool for visualizing data trends over time. They are particularly useful for representing continuous data, such as stock prices, website traffic, or user activity. Below is an example of a line chart showcasing session duration, page views, and total visits:
+
+<Example>
+  <div class="card">
+    <div class="card-body">
+      <Chart chartId="demo-line" label="Line chart example" height={15} />
+    </div>
+  </div>
+</Example>
+
+### Area chart
+
+Area charts are ideal for representing cumulative data over time. They add visual emphasis to trends by filling the space under the line, making it easier to compare values. Here's an example of an area chart with smooth transitions and data from two series:
+
+<Example>
+  <div class="card">
+    <div class="card-body">
+      <Chart chartId="demo-area" label="Area chart example" height={15} />
+    </div>
+  </div>
+</Example>
+
+### Bar chart
+
+Bar charts are highly effective for comparing data across different categories. They provide a clear and concise way to visualize differences in values, making them perfect for analyzing categorical data. Here's an example of a bar chart with stacked bars for enhanced readability:
+
+<Example>
+  <div class="card">
+    <div class="card-body">
+      <Chart chartId="demo-bar" label="Bar chart example" height={15} />
+    </div>
+  </div>
+</Example>
+
+### Pie chart
+
+Pie charts are a simple and effective way to visualize proportions and ratios. They are commonly used to represent data as percentages of a whole, making them ideal for displaying parts of a dataset. Below is an example of a pie chart showcasing distribution across categories:
+
+<Example>
+  <div class="card">
+    <div class="card-body">
+      <Chart chartId="demo-pie" label="Pie chart example" height={15} />
+    </div>
+  </div>
+</Example>
+
+### Heatmap chart
+
+Heatmaps provide a graphical representation of data where individual values are represented by color intensity. They are particularly useful for identifying patterns or anomalies within large datasets. Here's an example of a heatmap chart to visualize data distributions:
+
+<Example>
+  <div class="card">
+    <div class="card-body">
+      <Chart chartId="demo-heatmap" label="Heatmap chart example" height={15} />
+    </div>
+  </div>
+</Example>
+
+### Advanced example
+
+For more complex data visualizations, you can create advanced charts with multiple series and custom configurations. Below is an example of a social media referrals chart combining data from Facebook, Twitter, and Dribbble:
+
+<Example>
+  <div class="card">
+    <div class="card-body">
+      <Chart chartId="social-referrals" label="Social referrals chart" height={15} />
+    </div>
+  </div>
+</Example>
+
+## Legend key
+
+ApexCharts draws its own legend, but you can also build a plain-HTML legend next to a chart's title — for example to label the series above the chart instead of below it. Add a `legend` span before each label and color it with a `bg-*` utility class.
+
+<Example>
+<div class="d-flex align-items-center gap-3">
+  <div class="d-flex align-items-center gap-2">
+    <span class="legend bg-primary"></span>
+    <span class="text-secondary">This year</span>
+  </div>
+  <div class="d-flex align-items-center gap-2">
+    <span class="legend bg-secondary"></span>
+    <span class="text-secondary">Last year</span>
+  </div>
+</div>
+</Example>
+
+## Accessibility
+
+A chart is a picture, and a screen reader reads the SVG inside it as a pile of numbers and labels in drawing order.
+
+- Give the container `role="img"` and an `aria-label` that says what the chart shows. That replaces the SVG contents with one sentence.
+- Do not let color carry the meaning on its own. ApexCharts labels each series in its legend, so keep the legend on, or label the series in text next to the chart.
+- Put the same numbers somewhere readable - a table, a caption, or the summary line above the card. That serves screen reader users and anyone who prints the page.
+- Charts animate on first render. Set `chart.animations.enabled: false` when the page respects `prefers-reduced-motion`.
+
+```html
+<div id="chart-revenue" class="chart" role="img" aria-label="Monthly revenue, January to June 2026"></div>
+```
+
+## SCSS variables
+
+Use these SCSS variables to customize charts. The default values are:
+
+<CodeDocs name="chart-variables" file="core/scss/_variables.scss" />

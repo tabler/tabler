@@ -1,0 +1,68 @@
+---
+title: Autosize
+summary: The autosize element will automatically adjust the textarea height and make it easier for users to follow as they type.
+docs-libs: [autosize]
+description: Make textareas grow automatically as users type with the autosize plugin, so longer text stays visible without manual resizing.
+related: [/ui/forms/elements]
+---
+import Example from '@components/Example.astro';
+import CodeDocs from '@components/CodeDocs.astro';
+import TabsPackage from '@components/TabsPackage.astro';
+import { Code } from 'astro:components';
+import { site } from '@shared/lib/site.ts';
+
+## Overview
+
+A textarea keeps its height no matter how much text it holds, so long answers end up in a small scrolling box. The [autosize](https://github.com/jackmoore/autosize) plugin grows the field as the user types and shrinks it again when text is removed.
+
+<Example column vertical>
+<label class="form-label">Autosize example</label>
+<textarea class="form-control" data-bs-toggle="autosize" placeholder="Type something…"></textarea>
+</Example>
+
+## Installation
+
+Install autosize with npm:
+
+<TabsPackage name="autosize" />
+
+Or include it from a CDN:
+
+<Code lang="html" code={`<script src="${site.cdnUrl}/dist/libs/autosize/dist/autosize.min.js"></script>`} />
+
+The plugin only changes the height of the field, so it needs no CSS of its own.
+
+## Usage
+
+Add `data-bs-toggle="autosize"` to a textarea. Tabler picks it up on page load, so there is nothing else to call.
+
+<Example column vertical>
+<label class="form-label">Message</label>
+<textarea class="form-control" data-bs-toggle="autosize" rows="1" placeholder="Write a message…"></textarea>
+</Example>
+
+Set `rows` to choose the starting height. With `rows="1"` the field starts as a single line and grows from there.
+
+## JavaScript
+
+Tabler initializes every element with `data-bs-toggle="autosize"` on page load. This is the code that runs:
+
+<CodeDocs name="autosize-init" file="core/js/src/autosize.ts" />
+
+Call the plugin yourself when you add a textarea later, for example inside a modal or a row added by JavaScript:
+
+```js
+autosize(document.getElementById('message'));
+```
+
+Autosize measures the field, so a hidden textarea gets the wrong height. Run `autosize.update()` once it becomes visible:
+
+```js
+autosize.update(document.getElementById('message'));
+```
+
+## Accessibility
+
+- Keep the `label` for the field. A growing textarea is still a normal form control and needs its name.
+- Let the field grow instead of setting a fixed `max-height`. Cutting the growth off brings back the scrolling box the plugin is meant to remove.
+- Do not remove the resize handle unless the field really grows on its own - without either one, a user cannot see long text.

@@ -1,0 +1,96 @@
+---
+title: WYSIWYG editor
+docs-libs: [hugerte]
+summary: The WYSIWYG editor that is flexible, customizable, and designed with the user in mind. HugeRTE can handle any challenge, from the most simple implementation through to the most complex use case.
+description: Add rich text editing to your forms with HugeRTE, a flexible WYSIWYG editor that works well with Tabler styles.
+related: [/ui/forms/elements, /ui/base/prose]
+---
+
+import Example from '@components/Example.astro'
+import CdnImportPlugin from '@components/CdnImportPlugin.astro';
+import TabsPackage from '@components/TabsPackage.astro';
+import { Code } from 'astro:components';
+import { site } from '@shared/lib/site.ts';
+import Wysiwyg from '@ui/Wysiwyg.astro'
+
+## Overview
+
+A WYSIWYG editor turns a plain textarea into a rich text field with a toolbar, so users can format text without writing HTML. Tabler uses [HugeRTE](https://hugerte.org/), an open-source fork of TinyMCE with the same API.
+
+<Example>
+<Wysiwyg id="example" />
+</Example>
+
+## Installation
+
+Install HugeRTE with npm:
+
+<TabsPackage name="hugerte" />
+
+Or include it from a CDN:
+
+<Code lang="html" code={`<script src="${site.cdnUrl}/dist/libs/hugerte/hugerte.min.js"></script>`} />
+
+The editor renders in its own skin. Tabler restyles it to match the interface in the vendors plugin, so include `tabler-vendors.css` as well:
+
+<CdnImportPlugin plugins={['vendors']} />
+
+## Usage
+
+Put a `textarea` in your form and pass its selector to `hugerte.init()`. The editor replaces the field visually but keeps writing into it, so the form still submits the same value under the same name.
+
+```html
+<form method="post">
+  <textarea id="editor">Hello, <b>Tabler</b>!</textarea>
+</form>
+```
+
+```js
+hugeRTE.init({
+  selector: '#editor',
+  height: 300,
+  menubar: false,
+  statusbar: false,
+  plugins: ['advlist', 'autolink', 'lists', 'link', 'image', 'code'],
+  toolbar: 'undo redo | bold italic | bullist numlist | link image | code',
+});
+```
+
+`menubar: false` and `statusbar: false` strip the editor down to a toolbar, which fits a form better than the full application look.
+
+## Dark mode
+
+HugeRTE ships its own light and dark skins, and it picks one when it starts. Read the current color mode from the `data-bs-theme` attribute and pass the matching skin:
+
+```js
+const options = { selector: '#editor', height: 300 };
+
+if (document.documentElement.getAttribute('data-bs-theme') === 'dark') {
+  options.skin = 'oxide-dark';
+  options.content_css = 'dark';
+}
+
+hugeRTE.init(options);
+```
+
+The editor keeps that skin until it is recreated, so switch the theme before initializing, or destroy and init again when the user changes it.
+
+## Content styles
+
+Text inside the editor lives in an iframe, so page CSS does not reach it. Use `content_style` to match the font of your interface:
+
+```js
+hugeRTE.init({
+  selector: '#editor',
+  content_style: 'body { font-family: inherit; font-size: 14px; }',
+});
+```
+
+To display the saved HTML afterwards, wrap it in the [prose](/ui/base/prose) class, which styles headings, lists and links the same way.
+
+## Accessibility
+
+- Keep a `label` for the original textarea and connect it with `for` and `id`. The editor copies that name onto its own field.
+- The toolbar is reachable with the keyboard. `Alt+F9` opens the menu bar, `Alt+F10` the toolbar and `Alt+F11` the element path, so do not remove those shortcuts when you customize the setup.
+- Only offer buttons your users need. A short toolbar is easier to navigate, especially with a keyboard or a screen reader.
+- Ask for alternative text when users insert an image. HugeRTE shows that field in the image dialog by default - keep it.

@@ -3,6 +3,23 @@ title: Breadcrumb
 summary: A breadcrumb is used to show the current website or app location and reduce the number of actions users need to take. It helps users navigate the website hierarchy and better understand its structure.
 description: Show the current page location with a breadcrumb trail. Help users navigate your site hierarchy and understand its structure.
 related: [/ui/components/pagination]
+source: core/scss/ui/_breadcrumbs.scss
+classnames:
+  component:
+    - class: breadcrumb
+      desc: Container element, an ordered list
+  part:
+    - class: breadcrumb-item
+      desc: One step in the trail
+  style:
+    - class: breadcrumb-arrows
+      desc: Chevron between the items
+    - class: breadcrumb-bullets
+      desc: Bullet between the items
+    - class: breadcrumb-dots
+      desc: Dot between the items
+    - class: breadcrumb-muted
+      desc: Quieter text color for the whole trail
 ---
 import Example from '@components/Example.astro';
 import Breadcrumb from '@ui/Breadcrumb.astro';
@@ -52,6 +69,13 @@ You can use breadcrumbs in [headers](/ui/layout/page-headers) to show the curren
 <Example centered vertical>
 <div class="page-header"> <div class="row align-items-center mw-100"> <div class="col"> <Breadcrumb pages={['Home', 'Library', 'Articles']} /> <h2 class="page-title"> <span class="text-truncate">How to Build a Modern Dashboard with Tabler</span> </h2> </div> <div class="col-auto"> <div class="btn-list"> <a href="#" class="btn d-none d-md-inline-flex"> <Icon name="edit" /> Edit </a> <a href="#" class="btn btn-primary">Publish</a> </div> </div> </div> </div>
 </Example>
+
+## Accessibility
+
+- Wrap the list in `<nav aria-label="Breadcrumb">`. That label is what tells this navigation apart from the others on the page.
+- Mark the last item with `aria-current="page"`. It is the current page, so it should not be a link.
+- Keep the separator in CSS, as Tabler does. A separator typed into the markup is read out between every item.
+- Breadcrumbs show where a page sits, not where the user has been. Keep them the same for everyone who lands on that page.
 
 ## SCSS variables
 

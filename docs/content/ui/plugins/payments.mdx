@@ -21,7 +21,7 @@ You can also include the plugin via CDN:
 
 To create a payment provider icon, add the `payment` class to a component and specify the payment provider with the `payment-provider-*` class. The full list of payment providers can be found at the end of this page.
 
-<Example>
+<Example centered>
 <span class="payment payment-provider-shopify"></span>
 <span class="payment payment-provider-visa"></span>
 <span class="payment payment-provider-paypal"></span>
@@ -31,7 +31,7 @@ To create a payment provider icon, add the `payment` class to a component and sp
 
 Using Bootstrap’s typical naming structure, you can create a standard payment, or scale it up or down to different sizes based on what’s needed.
 
-<Example>
+<Example centered>
 <span class="payment payment-xl payment-provider-shopify"></span>
 <span class="payment payment-lg payment-provider-visa"></span>
 <span class="payment payment-md payment-provider-paypal"></span>
@@ -39,8 +39,40 @@ Using Bootstrap’s typical naming structure, you can create a standard payment,
 <span class="payment payment-xs payment-provider-blik"></span>
 </Example>
 
+## Light and dark logos
+
+Every provider ships in two variants. `payment-provider-*` is the light one, and `payment-provider-*-dark` is meant for a dark surface.
+
+<Example centered background="dark">
+<span class="payment payment-lg payment-provider-visa-dark"></span>
+<span class="payment payment-lg payment-provider-paypal-dark"></span>
+<span class="payment payment-lg payment-provider-mastercard-dark"></span>
+</Example>
+
+## Accepted methods in a checkout
+
+The usual place for these logos is under a payment form, to say which cards you take. They are decoration there, so keep the list in text as well.
+
+<Example>
+<div>
+  <div class="text-secondary mb-2">We accept Visa, Mastercard and PayPal.</div>
+  <div class="d-flex gap-1" aria-hidden="true">
+    <span class="payment payment-provider-visa"></span>
+    <span class="payment payment-provider-mastercard"></span>
+    <span class="payment payment-provider-paypal"></span>
+  </div>
+</div>
+</Example>
+
 ## List of available payment providers
 
 Select an icon from the list of payment providers. Each icon comes in two color variants - light and dark, so you can choose the one that goes well with your design.
 
 <Payments />
+
+## Accessibility
+
+- A card logo is a picture. Put the card name in text or in an `aria-label`, so the accepted methods are not left to logo recognition.
+- When the logos only say which cards you take, they are decoration. Mark them `aria-hidden="true"` and put the list in a sentence: "We accept Visa, Mastercard and American Express."
+- When a logo is a choice the user makes, it has to be a real `input` with a label, not a clickable image. See [image check](/ui/forms/image-check).
+- Never rely on the logo alone to mark the selected payment method. Add a visible mark and keep the state in the input.

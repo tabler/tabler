@@ -1,4 +1,5 @@
 import corePackage from '@tabler/core/package.json'
+import iconsInfo from '../data/icons-info.json'
 
 const version = corePackage.version
 
@@ -18,6 +19,7 @@ export const site = {
   googleMapsDevKey: 'AIzaSyCL-BY8-sq12m0S9H-S_yMqDmcun3A9znw',
   // From shared/data/icons-info.json.
   iconsCount: 5986,
+  iconsVersion: iconsInfo.version,
   descriptionShort: 'Premium and Open Source dashboard template with responsive and high quality UI.',
   description: 'Tabler is packed with beautifully crafted components and powerful features. Jump in and start building a stunning dashboard — all for free!',
   themeColor: '#066fd1',
