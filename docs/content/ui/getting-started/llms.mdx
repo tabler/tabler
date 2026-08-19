@@ -1,0 +1,71 @@
+---
+title: Docs for LLMs
+summary: The Tabler documentation is also published as plain markdown, so AI tools and agents can read it without parsing HTML.
+description: Use llms.txt and the markdown version of every Tabler docs page to give AI tools accurate, up-to-date context about Tabler.
+---
+
+Large language models work better when they read the real documentation instead of guessing class names. Tabler publishes its docs in two machine-readable forms: one index file that lists every page, and a markdown copy of each page.
+
+## Overview
+
+[llms.txt](https://llmstxt.org) is a simple convention. A site puts one markdown file at its root that describes what the site is about and links to the pages worth reading. Tabler follows it:
+
+- `https://docs.tabler.io/llms.txt` — the index of the whole documentation.
+- `https://docs.tabler.io/<page>.md` — the markdown version of a single page.
+
+Both are plain text. You can open them in a browser, download them with `curl`, or paste the url into a chat with an AI assistant.
+
+## The index file
+
+Fetch the index to see the full map of the docs:
+
+```shell
+curl https://docs.tabler.io/llms.txt
+```
+
+It contains:
+
+- A short description of what Tabler is.
+- Every documentation page, grouped the same way as the sidebar, with a one-line description and a link to its markdown file.
+- A class reference for every component that has one, so a model can look up which classes exist without opening each page.
+
+In the class reference, a name in braces stands for a family of classes. `alert-{color}` means any base color, and `table-mobile-{breakpoint}` means any breakpoint.
+
+## Markdown pages
+
+Add `.md` to any docs url to get the same page as markdown:
+
+```shell
+curl https://docs.tabler.io/ui/components/button.md
+```
+
+The markdown file keeps the page title, the summary, the prose, and the markup of every example as fenced code blocks. It drops the navigation, the styling, and everything else that only matters in a browser.
+
+The home page is the one exception. Use `/index.md`, because `/.md` is not a valid url.
+
+Every docs page also links to these files in its `<head>`, so a crawler that already has the html can find them:
+
+```html
+<link rel="alternate" type="text/plain" href="/llms.txt" title="llms.txt" />
+<link rel="alternate" type="text/markdown" href="/ui/components/button.md" title="Button (markdown)" />
+```
+
+## Usage
+
+Point your tool at the file that fits the task:
+
+- **Whole library.** Give the assistant `https://docs.tabler.io/llms.txt` when it needs to know what Tabler offers and which page to read next.
+- **One component.** Give it the page's `.md` url when you are working on a single component and want the exact markup.
+- **Local context.** Download the files into your project and commit them, so the same context is used by everyone on the team and by tools that cannot fetch urls.
+
+A short prompt is usually enough:
+
+```text
+Read https://docs.tabler.io/ui/components/card.md and build a card with a header, a footer and a table inside.
+```
+
+## What is not included
+
+The examples come from the documentation source. Most of them are written as plain html and appear in the markdown exactly as they render on the page.
+
+A small number of examples are written with Tabler's own documentation components. Those show up as component tags, for example `<Alert type="success" />`, instead of the final markup. Open the html page for those.
