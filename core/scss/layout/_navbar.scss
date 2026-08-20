@@ -327,6 +327,21 @@ Navbar
     &#{$infix} {
       @include media-breakpoint-down(breakpoint-next($breakpoint)) {
         @include navbar-vertical-nav();
+
+        // Below the breakpoint the navbar-footer sits in the top bar row:
+        // the avatar alone, with its menu dropping down instead of up.
+        .navbar-footer {
+          .nav-link-title {
+            display: none;
+          }
+
+          .dropup .dropdown-menu {
+            inset-inline-start: auto;
+            inset-inline-end: 0;
+            top: 100%;
+            bottom: auto;
+          }
+        }
       }
 
       @include media-breakpoint-up($next) {
@@ -608,6 +623,10 @@ Navbar vertical
             // Bottom-pinned footer area, e.g. a user block. Sits after the
             // growing nav, separated with the navbar border.
             .navbar-footer {
+              // In the markup the footer sits before the collapse (so it
+              // stays in the mobile top bar row); order moves it to the
+              // bottom of the desktop column.
+              order: 1;
               padding-block: $sidebar-inset;
               margin-top: auto;
               border-top: var(--navbar-border-width) var(--border-style) var(--navbar-border-color);
@@ -616,8 +635,8 @@ Navbar vertical
               // own bulk. Overrides the variables the nav-link padding reads,
               // so it wins regardless of rule order.
               .navbar-nav {
-                --sidebar-nav-padding-y: 0.25rem;
-                --sidebar-nav-padding-x: 0.25rem;
+                --sidebar-nav-padding-y: 0.5rem;
+                --sidebar-nav-padding-x: 0.5rem;
                 flex-grow: 0;
               }
 
