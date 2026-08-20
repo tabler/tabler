@@ -24,6 +24,8 @@
       --sidebar-nav-padding-y: #{$sidebar-nav-padding-y};
       --sidebar-nav-padding-x: #{$sidebar-nav-padding-x};
       --sidebar-nav-indent: #{$sidebar-nav-indent};
+      --sidebar-section-title-font-size: #{$sidebar-section-title-font-size};
+      --sidebar-section-title-margin-top: #{$sidebar-section-title-margin-top};
       // Inset the list so the rounded hover/active pills never touch the
       // sidebar edges. The same inset and link padding apply in the folded
       // state, so icons keep their exact position when the sidebar folds.
@@ -41,6 +43,22 @@
         --nav-link-icon-color: currentColor;
         font-weight: var(--font-weight-medium);
         background: var(--navbar-active-bg);
+      }
+
+      // Group label — aligned with the item text, muted like the icons.
+      .nav-section-title {
+        display: block;
+        padding: 0.25rem var(--sidebar-nav-padding-x);
+        margin-top: var(--sidebar-section-title-margin-top);
+        font-size: var(--sidebar-section-title-font-size);
+        font-weight: var(--font-weight-medium);
+        color: #{color-transparent(var(--navbar-color), 0.7)};
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+
+        &:first-child {
+          margin-top: 0;
+        }
       }
     }
 
@@ -143,6 +161,33 @@
       opacity: 0;
     }
 
+    // The label text cannot fit the rail — indent it away (stays in the
+    // accessibility tree, line box keeps the element height stable) and show
+    // a short separator instead, centered within the WHOLE gap between the
+    // groups: the box's 50% is shifted up by half the label's top margin.
+    .nav-section-title {
+      position: relative;
+      overflow: hidden;
+      text-indent: -9999px;
+      white-space: nowrap;
+
+      &::before {
+        position: absolute;
+        inset-inline-start: calc(50% - 0.625rem);
+        top: calc(50% - var(--sidebar-section-title-margin-top) / 2);
+        width: 1.25rem;
+        height: var(--border-width);
+        content: '';
+        background: #{color-transparent(var(--navbar-color), 0.2)};
+      }
+
+      // Nothing above the first group to separate — no line, and no margin
+      // shift to compensate for either.
+      &:first-child::before {
+        content: none;
+      }
+    }
+
     .nav-link.dropdown-toggle::after {
       display: none;
     }
@@ -231,6 +276,12 @@ Navbar
   .navbar-nav {
     --nav-link-icon-margin-end: #{$nav-link-icon-margin-end};
     min-height: subtract($navbar-height, 2 * $navbar-padding-y);
+
+    // Section labels only make sense in a vertical list — the vertical
+    // navbar styles re-enable them.
+    .nav-section-title {
+      display: none;
+    }
 
     .nav-link {
       position: relative;

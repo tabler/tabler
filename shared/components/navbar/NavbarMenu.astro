@@ -15,6 +15,8 @@ interface Level1 {
   'disabled'?: boolean
   'right'?: boolean
   'columns'?: number
+  /** section label rendered before this item (sidebar only, needs the `sections` prop) */
+  'section'?: string
   'children'?: Record<string, Record<string, unknown>>
 }
 
@@ -26,10 +28,12 @@ interface Props {
   longTitles?: boolean
   keepOpen?: boolean
   autoOpen?: boolean
+  /** renders `section` fields from the menu data as group labels */
+  sections?: boolean
   class?: string
 }
 
-const { pageMenu = '', sample = false, hideIcons = false, longTitles = false, keepOpen = false, autoOpen = false, class: className } = Astro.props
+const { pageMenu = '', sample = false, hideIcons = false, longTitles = false, keepOpen = false, autoOpen = false, sections = false, class: className } = Astro.props
 
 const currentPage = pageMenu.split('.')
 const items = Object.entries((sample ? menuSample : menu) as Record<string, Level1>)
@@ -54,6 +58,7 @@ const chunk = <T,>(arr: T[], size: number): T[][] => {
 
       return (
         <Fragment>
+          {sections && item.section && <li class="nav-section-title">{item.section}</li>}
           <Fragment set:html={'<!-- BEGIN NAVBAR ITEM -->'} />
           <li class:list={['nav-item', active && 'active', hasChildren && 'dropdown']}>
             <a
