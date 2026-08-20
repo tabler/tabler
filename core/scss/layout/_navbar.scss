@@ -3,6 +3,67 @@
 @use '../config' as *;
 
 @mixin navbar-vertical-nav {
+  // Applies to every navbar-nav in the vertical navbar — the menu inside
+  // .navbar-collapse and e.g. a .navbar-footer list outside of it.
+  .navbar-nav {
+    // Sidebar icons carry more meaning than inline tab icons, so they get
+    // stronger contrast than the global 50% $nav-link-icon-color. Derived
+    // from --navbar-color, which is defined at this scope (unlike
+    // --nav-link-color, which only exists inside .nav).
+    --nav-link-icon-color: #{color-transparent(var(--navbar-color), 0.7)};
+    --nav-link-icon-width: #{$sidebar-nav-icon-width};
+    --nav-link-icon-height: #{$sidebar-nav-icon-height};
+    --sidebar-inset: #{$sidebar-inset};
+    --sidebar-nav-padding-y: #{$sidebar-nav-padding-y};
+    --sidebar-nav-padding-x: #{$sidebar-nav-padding-x};
+    --sidebar-nav-indent: #{$sidebar-nav-indent};
+    --sidebar-section-title-font-size: #{$sidebar-section-title-font-size};
+    --sidebar-section-title-margin-top: #{$sidebar-section-title-margin-top};
+    // Inset the list so the rounded hover/active pills never touch the
+    // sidebar edges. The same inset and link padding apply in the folded
+    // state, so icons keep their exact position when the sidebar folds.
+    padding-inline: var(--sidebar-inset);
+    margin-inline-start: 0;
+    margin-inline-end: 0;
+
+    .nav-link {
+      justify-content: start;
+      padding: var(--sidebar-nav-padding-y) var(--sidebar-nav-padding-x);
+    }
+
+    // One line, ellipsized — a title never wraps, so rows keep their height
+    // while the folding sidebar animates its width.
+    .nav-link-title {
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    // stylelint-disable-next-line selector-max-class
+    .nav-item.active > .nav-link {
+      --nav-link-icon-color: currentColor;
+      font-weight: var(--font-weight-medium);
+      background: var(--navbar-active-bg);
+    }
+
+    // Group label — aligned with the item text, muted like the icons.
+    .nav-section-title {
+      display: block;
+      padding: 0.25rem var(--sidebar-nav-padding-x);
+      margin-top: var(--sidebar-section-title-margin-top);
+      font-size: var(--sidebar-section-title-font-size);
+      font-weight: var(--font-weight-medium);
+      color: #{color-transparent(var(--navbar-color), 0.7)};
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+
+      &:first-child {
+        margin-top: 0;
+      }
+    }
+  }
+
   .navbar-collapse {
     flex-direction: column;
 
@@ -10,56 +71,6 @@
       flex-direction: column;
       align-items: stretch;
       padding: 0;
-    }
-
-    .navbar-nav {
-      // Sidebar icons carry more meaning than inline tab icons, so they get
-      // stronger contrast than the global 50% $nav-link-icon-color. Derived
-      // from --navbar-color, which is defined at this scope (unlike
-      // --nav-link-color, which only exists inside .nav).
-      --nav-link-icon-color: #{color-transparent(var(--navbar-color), 0.7)};
-      --nav-link-icon-width: #{$sidebar-nav-icon-width};
-      --nav-link-icon-height: #{$sidebar-nav-icon-height};
-      --sidebar-inset: #{$sidebar-inset};
-      --sidebar-nav-padding-y: #{$sidebar-nav-padding-y};
-      --sidebar-nav-padding-x: #{$sidebar-nav-padding-x};
-      --sidebar-nav-indent: #{$sidebar-nav-indent};
-      --sidebar-section-title-font-size: #{$sidebar-section-title-font-size};
-      --sidebar-section-title-margin-top: #{$sidebar-section-title-margin-top};
-      // Inset the list so the rounded hover/active pills never touch the
-      // sidebar edges. The same inset and link padding apply in the folded
-      // state, so icons keep their exact position when the sidebar folds.
-      padding-inline: var(--sidebar-inset);
-      margin-inline-start: 0;
-      margin-inline-end: 0;
-
-      .nav-link {
-        justify-content: start;
-        padding: var(--sidebar-nav-padding-y) var(--sidebar-nav-padding-x);
-      }
-
-      // stylelint-disable-next-line selector-max-class
-      .nav-item.active > .nav-link {
-        --nav-link-icon-color: currentColor;
-        font-weight: var(--font-weight-medium);
-        background: var(--navbar-active-bg);
-      }
-
-      // Group label — aligned with the item text, muted like the icons.
-      .nav-section-title {
-        display: block;
-        padding: 0.25rem var(--sidebar-nav-padding-x);
-        margin-top: var(--sidebar-section-title-margin-top);
-        font-size: var(--sidebar-section-title-font-size);
-        font-weight: var(--font-weight-medium);
-        color: #{color-transparent(var(--navbar-color), 0.7)};
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
-
-        &:first-child {
-          margin-top: 0;
-        }
-      }
     }
 
     .dropdown-menu-columns {
@@ -146,20 +157,26 @@
     display: none;
   }
 
-  .navbar-collapse {
-    // The list inset and link padding are identical in both states, so the
-    // icons keep their exact position — only the titles collapse.
-    .navbar-nav .nav-link {
-      --nav-link-icon-margin-end: 0;
-    }
+  // The list inset and link padding are identical in both states, so the
+  // icons keep their exact position — only the titles collapse. Aside-wide
+  // (not .navbar-collapse-scoped), so the footer outside the collapse folds
+  // the same way.
+  .navbar-nav .nav-link {
+    --nav-link-icon-margin-end: 0;
+  }
 
-    // Collapsed, not display: none — titles stay in the accessibility tree.
-    .nav-link-title {
-      width: 0;
-      overflow: hidden;
-      white-space: nowrap;
-      opacity: 0;
-    }
+  // Collapsed, not display: none — titles stay in the accessibility tree.
+  .nav-link-title {
+    width: 0;
+    overflow: hidden;
+    white-space: nowrap;
+    opacity: 0;
+  }
+
+  .navbar-collapse {
+    // Flyouts must escape the nav's scroll area; the folded rail therefore
+    // cannot scroll (documented — the hover variant is the escape hatch).
+    overflow: visible;
 
     // The label text cannot fit the rail — indent it away (stays in the
     // accessibility tree, line box keeps the element height stable) and show
@@ -537,7 +554,6 @@ Navbar vertical
             align-items: start;
             width: var(--sidebar-width);
             padding: 0;
-            overflow-y: scroll;
             @include transition(transform $transition-time);
 
             &.navbar-right,
@@ -570,8 +586,12 @@ Navbar vertical
               opacity: 1;
             }
 
+            // The nav is the sidebar's scroll area — the brand above and the
+            // footer below stay pinned.
             .navbar-collapse {
               align-items: stretch;
+              min-height: 0;
+              overflow-y: auto;
             }
 
             .navbar-nav {
@@ -585,11 +605,35 @@ Navbar vertical
               }
             }
 
+            // Bottom-pinned footer area, e.g. a user block. Sits after the
+            // growing nav, separated with the navbar border.
+            .navbar-footer {
+              padding-block: $sidebar-inset;
+              margin-top: auto;
+              border-top: var(--navbar-border-width) var(--border-style) var(--navbar-border-color);
+
+              // Tighter link padding than the menu — the avatar brings its
+              // own bulk. Overrides the variables the nav-link padding reads,
+              // so it wins regardless of rule order.
+              .navbar-nav {
+                --sidebar-nav-padding-y: 0.25rem;
+                --sidebar-nav-padding-x: 0.25rem;
+                flex-grow: 0;
+              }
+
+              .nav-link .avatar {
+                // Never squeezed by the appearing title during the hover
+                // unfold animation.
+                flex-shrink: 0;
+                margin-inline-end: var(--nav-link-icon-margin-end);
+              }
+            }
+
             > [class^='container'] {
               flex-direction: column;
               align-items: stretch;
               justify-content: start;
-              min-height: 100%;
+              height: 100%;
               padding: 0;
             }
 
@@ -633,7 +677,6 @@ Navbar vertical
               &:hover,
               &:has(:focus-visible) {
                 width: $sidebar-width;
-                overflow-y: auto;
                 box-shadow:
                   inset calc(-1 * var(--navbar-border-width)) 0 0 0 var(--navbar-border-color),
                   var(--shadow-lg);

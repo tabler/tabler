@@ -3,6 +3,7 @@ import NavbarToggler from './NavbarToggler.astro'
 import Logo from './Logo.astro'
 import NavbarSide from './NavbarSide.astro'
 import NavbarMenu from './NavbarMenu.astro'
+import SidebarUser from './SidebarUser.astro'
 import Icon from '@ui/Icon.astro'
 import type { Breakpoint } from './NavbarSide.astro'
 
@@ -19,11 +20,13 @@ interface Props {
   foldedHover?: boolean | undefined
   /** renders a bottom-pinned button toggling the folded state at runtime */
   foldToggle?: boolean | undefined
+  /** renders a user block in the sidebar footer */
+  user?: boolean | undefined
   /** equivalent of the page-menu front matter (active menu entry), e.g. "layout.vertical" */
   pageMenu?: string | undefined
 }
 
-const { dark = false, breakpoint = 'lg', end = false, transparent = false, folded = false, foldedHover = false, foldToggle = false, pageMenu } = Astro.props
+const { dark = false, breakpoint = 'lg', end = false, transparent = false, folded = false, foldedHover = false, foldToggle = false, user = false, pageMenu } = Astro.props
 
 const isFolded = folded || foldedHover
 
@@ -53,6 +56,8 @@ const asideClass = ['navbar navbar-vertical', end && 'navbar-end', `navbar-expan
       {/* A folded sidebar renders flyout submenus, so the active branch is not kept open inline. */}
       <NavbarMenu autoOpen={!isFolded} class="pt-lg-3" keepOpen={!isFolded} sections pageMenu={pageMenu} />
     </nav>
+
+    {user && <SidebarUser />}
   </div>
 </aside>
 <!-- END SIDEBAR -->

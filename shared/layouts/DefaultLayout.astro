@@ -44,6 +44,8 @@ interface Props {
   sidebarFoldedHover?: boolean
   /** renders the runtime fold toggle button in the sidebar */
   sidebarFoldToggle?: boolean
+  /** layout-sidebar-user — user block in the sidebar footer */
+  sidebarUser?: boolean
   /** layout-navbar-transparent (sidebar variant) */
   navbarTransparent?: boolean
   /** layout-navbar-condensed */
@@ -80,6 +82,7 @@ const {
   sidebarFolded,
   sidebarFoldedHover,
   sidebarFoldToggle,
+  sidebarUser,
   navbarTransparent,
   navbarCondensed,
   navbarDark,
@@ -100,7 +103,7 @@ const headerTitle = pageHeader === false ? undefined : (pageHeader ?? title)
       sidebar && (
         <Fragment>
           <Fragment set:html={'<!--  BEGIN SIDEBAR  -->'} />
-          <Sidebar dark={sidebarDark} end={sidebarEnd} transparent={navbarTransparent} folded={sidebarFolded} foldedHover={sidebarFoldedHover} foldToggle={sidebarFoldToggle} breakpoint="lg" pageMenu={pageMenu} />
+          <Sidebar dark={sidebarDark} end={sidebarEnd} transparent={navbarTransparent} folded={sidebarFolded} foldedHover={sidebarFoldedHover} foldToggle={sidebarFoldToggle} user={sidebarUser} breakpoint="lg" pageMenu={pageMenu} />
           <Fragment set:html={'<!--  END SIDEBAR  -->'} />
         </Fragment>
       )
