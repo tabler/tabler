@@ -304,6 +304,18 @@ Navbar
           }
         }
       }
+
+      // In the first, tightest segment after a horizontal navbar expands there
+      // is no room for icons — hide them there, derived from the navbar's own
+      // navbar-expand-* breakpoint, so the markup needs no display utilities.
+      // The vertical navbar always shows its icons.
+      @if $next and breakpoint-next($next, $grid-breakpoints) {
+        @include media-breakpoint-only($next) {
+          &:not(.navbar-vertical) .navbar-nav .nav-link-icon {
+            display: none;
+          }
+        }
+      }
     }
   }
 }
