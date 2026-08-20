@@ -83,6 +83,30 @@ describe('sidebar folded toggle', () => {
     vi.restoreAllMocks()
   })
 
+  it('closes open submenus when the pointer leaves a hover-variant sidebar', () => {
+    document.documentElement.setAttribute('data-bs-sidebar', 'folded-hover')
+    fixtureEl.innerHTML = ['<aside class="navbar navbar-vertical">', '  <div class="dropdown"><a class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="true"></a><div class="dropdown-menu show"></div></div>', '</aside>'].join('')
+    const hide = vi.fn()
+    vi.spyOn(Dropdown, 'getInstance').mockReturnValue({ hide } as never)
+
+    fixtureEl.querySelector('aside')!.dispatchEvent(new MouseEvent('mouseleave'))
+
+    expect(hide).toHaveBeenCalledTimes(1)
+    vi.restoreAllMocks()
+  })
+
+  it('keeps flyouts open when the pointer leaves a static folded sidebar', () => {
+    document.documentElement.setAttribute('data-bs-sidebar', 'folded')
+    fixtureEl.innerHTML = ['<aside class="navbar navbar-vertical">', '  <div class="dropdown"><a class="dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="true"></a><div class="dropdown-menu show"></div></div>', '</aside>'].join('')
+    const hide = vi.fn()
+    vi.spyOn(Dropdown, 'getInstance').mockReturnValue({ hide } as never)
+
+    fixtureEl.querySelector('aside')!.dispatchEvent(new MouseEvent('mouseleave'))
+
+    expect(hide).not.toHaveBeenCalled()
+    vi.restoreAllMocks()
+  })
+
   it('ignores clicks outside a toggle', () => {
     fixtureEl.innerHTML = '<button type="button">Plain</button>'
 

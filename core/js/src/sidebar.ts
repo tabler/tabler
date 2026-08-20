@@ -36,6 +36,27 @@ document.addEventListener('click', (event: MouseEvent) => {
   hideSidebarDropdowns(target.closest('.navbar-vertical [data-bs-toggle="dropdown"]'))
 })
 
+// When a hover-expanding sidebar collapses back to the rail, close its open
+// submenus — an inline submenu left open would flash as a floating flyout.
+// Static folded rails are excluded: crossing the small gap between the rail
+// and an open flyout must not close it. mouseleave does not bubble, so the
+// listener runs in the capture phase.
+document.addEventListener(
+  'mouseleave',
+  (event: MouseEvent) => {
+    const target = event.target as Element
+    if (!(target instanceof Element) || !target.matches('.navbar-vertical')) {
+      return
+    }
+
+    const hoverVariant = document.documentElement.getAttribute('data-bs-sidebar') === 'folded-hover' || target.classList.contains('navbar-folded-hover')
+    if (hoverVariant) {
+      hideSidebarDropdowns()
+    }
+  },
+  true,
+)
+
 // The folded state may come pre-render from localStorage (tabler-theme.js), so
 // align the toggle buttons with it once the DOM is available. Server-rendered
 // open submenus are also closed, so they don't hang as open flyouts.
