@@ -13,12 +13,28 @@
     }
 
     .navbar-nav {
+      // Sidebar icons carry more meaning than inline tab icons, so they get
+      // stronger contrast than the global 50% $nav-link-icon-color. Derived
+      // from --navbar-color, which is defined at this scope (unlike
+      // --nav-link-color, which only exists inside .nav).
+      --nav-link-icon-color: #{color-transparent(var(--navbar-color), 0.7)};
+      // Inset the list so the rounded hover/active pills never touch the
+      // sidebar edges. The same inset and link padding apply in the folded
+      // state, so icons keep their exact position when the sidebar folds.
+      padding-inline: $sidebar-inset;
       margin-inline-start: 0;
       margin-inline-end: 0;
 
       .nav-link {
         justify-content: start;
-        padding: 0.5rem calc(#{$container-padding-x} / 2);
+        padding: 0.75rem 0.75rem;
+      }
+
+      // stylelint-disable-next-line selector-max-class
+      .nav-item.active > .nav-link {
+        --nav-link-icon-color: currentColor;
+        font-weight: var(--font-weight-medium);
+        background: var(--navbar-active-bg);
       }
     }
 
@@ -40,8 +56,11 @@
         display: flex;
         width: auto;
         min-width: 0;
-        padding-inline-start: add(calc(#{$container-padding-x} / 2), 1.75rem);
+        // Link padding (0.75rem) + the icon column (1.75rem) — items align
+        // with the parent link's title.
+        padding-inline-start: 2.5rem;
         color: inherit;
+        @include border-radius(var(--border-radius));
 
         &.disabled {
           color: var(--disabled-color);
@@ -51,19 +70,20 @@
 
         &.active,
         &:active {
+          font-weight: var(--font-weight-medium);
           background: var(--navbar-active-bg);
         }
       }
 
       .dropdown-menu .dropdown-item {
-        padding-inline-start: add(calc(#{$container-padding-x} / 2), 3.25rem);
+        padding-inline-start: 4rem;
       }
 
       // Third-level submenu in the mobile vertical navbar — genuinely nested two
       // dropdown-menu levels deep.
       // stylelint-disable-next-line selector-max-class, selector-max-compound-selectors
       .dropdown-menu .dropdown-menu .dropdown-item {
-        padding-inline-start: add(calc(#{$container-padding-x} / 2), 4.75rem);
+        padding-inline-start: 5.5rem;
       }
     }
 
@@ -71,12 +91,100 @@
       margin-inline-start: auto;
     }
 
+    // The active pill is the selection indicator — no underline or edge bar.
     .nav-item.active::after {
-      inset-inline-end: auto;
+      content: none;
+    }
+  }
+}
+
+// Icon-only rail: hides link titles, centers icons and turns the inline submenus
+// flattened by navbar-vertical-nav() back into floating flyout dropdowns.
+@mixin navbar-vertical-folded {
+  // Flyouts must escape the rail, so the folded sidebar itself cannot scroll.
+  overflow: visible;
+
+  // A wide brand (e.g. a full logo) must not push the container beyond the
+  // rail width; the brand crops instead.
+  [class^='container'] {
+    min-width: 0;
+  }
+
+  // The brand keeps the expanded state's start padding, so the logo does not
+  // move when the sidebar folds; anything wider than the rail crops.
+  .navbar-brand {
+    overflow: hidden;
+  }
+
+  // The pin button lives on the expanded sidebar only; the folded rail
+  // unfolds by hovering (folded-hover) or via an outside control.
+  [data-bs-toggle='sidebar-folded'] {
+    display: none;
+  }
+
+  .navbar-collapse {
+    // The list inset and link padding are identical in both states, so the
+    // icons keep their exact position — only the titles collapse.
+    .navbar-nav .nav-link {
+      --nav-link-icon-margin-end: 0;
+    }
+
+    // Collapsed, not display: none — titles stay in the accessibility tree.
+    .nav-link-title {
+      width: 0;
+      overflow: hidden;
+      white-space: nowrap;
+      opacity: 0;
+    }
+
+    .nav-link.dropdown-toggle::after {
+      display: none;
+    }
+
+    // Restore the multi-column layout that navbar-vertical-nav() stacks —
+    // it keeps long flyout menus from overflowing the viewport.
+    .dropdown-menu-columns {
+      flex-direction: row;
+    }
+
+    .dropdown-menu {
+      position: absolute;
+      inset-inline-start: 100%;
       top: 0;
-      bottom: 0;
-      border-inline-start-width: 3px;
-      border-bottom-width: 0;
+      min-width: var(--dropdown-min-width);
+      padding: var(--dropdown-padding-y) var(--dropdown-padding-x);
+      margin: 0;
+      color: var(--dropdown-color);
+      background-color: var(--dropdown-bg);
+      background-clip: padding-box;
+      // No border — like the base .dropdown-menu, whose edge is the 1px ring
+      // built into --shadow-dropdown.
+      box-shadow: var(--dropdown-box-shadow);
+      @include border-radius(var(--dropdown-border-radius));
+
+      .dropdown-item {
+        padding: var(--dropdown-item-padding-y) var(--dropdown-item-padding-x);
+        color: var(--dropdown-link-color);
+        @include border-radius(0);
+      }
+
+      // Undo the tree indents navbar-vertical-nav() puts on nested levels.
+      .dropdown-menu .dropdown-item {
+        padding-inline-start: var(--dropdown-item-padding-x);
+      }
+
+      // stylelint-disable-next-line selector-max-class, selector-max-compound-selectors
+      .dropdown-menu .dropdown-menu .dropdown-item {
+        padding-inline-start: var(--dropdown-item-padding-x);
+      }
+    }
+
+    // The nav list is inset, so 100% of the .dropdown lands short of the rail
+    // edge — compensate for the inset and add a small gap, so the flyout's
+    // border does not sit flush against the rail's edge border. Nested
+    // (dropend) flyouts are not inset and keep the plain 100%.
+    .nav-item > .dropdown-menu {
+      inset-inline-start: calc(100% + #{$sidebar-inset + 0.25rem});
     }
   }
 }
@@ -183,7 +291,7 @@ Navbar
         &.navbar-vertical {
           ~ .navbar,
           ~ .page-wrapper {
-            margin-inline-start: $sidebar-width;
+            margin-inline-start: var(--sidebar-width);
           }
         }
 
@@ -192,7 +300,7 @@ Navbar
           ~ .navbar,
           ~ .page-wrapper {
             margin-inline-start: 0;
-            margin-inline-end: $sidebar-width;
+            margin-inline-end: var(--sidebar-width);
           }
         }
       }
@@ -321,6 +429,29 @@ Navbar side
 Navbar vertical
  */
 @if $enable-navbar-vertical {
+  // Folded sidebar: every geometry consumer (aside width, page paddings,
+  // page-wrapper/navbar margins) reads --sidebar-width, so flipping this one
+  // variable re-lays-out the whole page. Two routes to the same state:
+  // a .navbar-folded/.navbar-folded-hover class on the aside (static markup),
+  // or data-bs-sidebar="folded"/"folded-hover" on <html> (set pre-render from
+  // localStorage by tabler-theme.js, toggled by [data-bs-toggle="sidebar-folded"]).
+  // html[…] beats the :root declaration of --sidebar-width on the same element;
+  // a bare :where()/[…] selector would lose to it and never take effect.
+  html[data-bs-sidebar^='folded'] {
+    --sidebar-width: var(--sidebar-folded-width);
+  }
+
+  .navbar-vertical:is(.navbar-folded, .navbar-folded-hover) {
+    --sidebar-width: var(--sidebar-folded-width);
+
+    // The class sits on the aside, so its layout siblings need their own copy.
+    ~ .page,
+    ~ .page-wrapper,
+    ~ .navbar {
+      --sidebar-width: var(--sidebar-folded-width);
+    }
+  }
+
   .navbar-vertical {
     &.navbar-expand {
       @each $breakpoint in map.keys($grid-breakpoints) {
@@ -335,7 +466,7 @@ Navbar vertical
             bottom: 0;
             z-index: $zindex-fixed;
             align-items: start;
-            width: $sidebar-width;
+            width: var(--sidebar-width);
             padding: 0;
             overflow-y: scroll;
             @include transition(transform $transition-time);
@@ -346,9 +477,26 @@ Navbar vertical
               inset-inline-end: 0;
             }
 
+            // Logo on the start side, room for an action (e.g. the pin
+            // toggle) on the end side. The inline padding centers the logo
+            // mark in the folded rail and is identical in both states, so the
+            // logo mark and the nav icons share one center axis and nothing
+            // moves when the sidebar folds.
             .navbar-brand {
-              justify-content: center;
-              padding: (($navbar-height - $navbar-brand-image-height) * 0.5) 0;
+              justify-content: space-between;
+              padding: (($navbar-height - $navbar-brand-image-height) * 0.5) (($sidebar-folded-width - $navbar-brand-image-height) * 0.5);
+              margin-inline-end: 0;
+            }
+
+            // The fold toggle keeps its layout slot (no jumping) but only
+            // becomes visible while the sidebar is hovered or focused.
+            [data-bs-toggle='sidebar-folded'] {
+              opacity: 0;
+              @include transition(opacity $transition-time);
+            }
+
+            &:is(:hover, :focus-within) [data-bs-toggle='sidebar-folded'] {
+              opacity: 1;
             }
 
             .navbar-collapse {
@@ -375,7 +523,7 @@ Navbar vertical
             }
 
             ~ .page {
-              padding-inline-start: $sidebar-width;
+              padding-inline-start: var(--sidebar-width);
 
               [class^='container'] {
                 padding-inline-start: 1.5rem;
@@ -386,10 +534,37 @@ Navbar vertical
             &.navbar-right ~ .page,
             &.navbar-end ~ .page {
               padding-inline-start: 0;
-              padding-inline-end: $sidebar-width;
+              padding-inline-end: var(--sidebar-width);
             }
 
             @include navbar-vertical-nav();
+
+            // Folded state, both routes; the hover variant folds only while
+            // neither hovered nor focused from the keyboard.
+            &:is(.navbar-folded, .navbar-folded-hover:not(:hover, :focus-within)),
+            :where([data-bs-sidebar='folded']) &,
+            :where([data-bs-sidebar='folded-hover']) &:not(:hover, :focus-within) {
+              @include navbar-vertical-folded();
+            }
+
+            &.navbar-folded-hover,
+            :where([data-bs-sidebar='folded-hover']) & {
+              @include transition(transform $transition-time, width $transition-time);
+
+              .nav-link-title {
+                @include transition(opacity $transition-time);
+              }
+
+              // Temporarily unfolds as an overlay: siblings keep the folded
+              // --sidebar-width, so page content does not reflow.
+              &:is(:hover, :focus-within) {
+                width: $sidebar-width;
+                overflow-y: auto;
+                box-shadow:
+                  inset calc(-1 * var(--navbar-border-width)) 0 0 0 var(--navbar-border-color),
+                  var(--shadow-lg);
+              }
+            }
           }
         }
       }

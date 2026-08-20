@@ -9,6 +9,7 @@ interface ThemeConfig {
   'theme-font': string
   'theme-primary': string
   'theme-radius': string
+  'sidebar': string
 }
 
 const themeConfig: ThemeConfig = {
@@ -17,6 +18,7 @@ const themeConfig: ThemeConfig = {
   'theme-font': 'sans-serif',
   'theme-primary': 'blue',
   'theme-radius': '1',
+  'sidebar': 'default',
 }
 
 const params = new Proxy(new URLSearchParams(window.location.search), {

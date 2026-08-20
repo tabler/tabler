@@ -84,6 +84,8 @@ Use the list wrappers instead of margin utilities on each child:
 
 The pluralised class names (`.badges-list`, `.tags-list`) are deprecated aliases of `.badge-list` / `.tag-list`. Do not add `me-2`/`mb-2` to individual items.
 
+Icon action buttons: `btn-action` is always combined with `btn` (`btn btn-action`, plus `btn-sm` when small) — never use `btn-action` on its own.
+
 ## 6. Data and repetition
 
 - Loop over `shared/data/*.json` (`site.json` colors, `people.json`, `flags.json`) instead of pasting 20 near-identical blocks.

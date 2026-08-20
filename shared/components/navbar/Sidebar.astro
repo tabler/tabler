@@ -3,6 +3,7 @@ import NavbarToggler from './NavbarToggler.astro'
 import Logo from './Logo.astro'
 import NavbarSide from './NavbarSide.astro'
 import NavbarMenu from './NavbarMenu.astro'
+import Icon from '@ui/Icon.astro'
 import type { Breakpoint } from './NavbarSide.astro'
 
 interface Props {
@@ -10,15 +11,23 @@ interface Props {
   breakpoint?: Breakpoint | undefined
   /** layout-sidebar-end — navbar-end class */
   end?: boolean | undefined
-  /** layout-navbar-transparent — navbar-transparent class */
+  /** layout-sidebar-transparent — navbar-transparent class */
   transparent?: boolean | undefined
+  /** layout-sidebar-folded — navbar-folded class (icon-only rail with flyout submenus) */
+  folded?: boolean | undefined
+  /** layout-sidebar-folded-hover — navbar-folded-hover class (folded rail that unfolds on hover/focus) */
+  foldedHover?: boolean | undefined
+  /** renders a bottom-pinned button toggling the folded state at runtime */
+  foldToggle?: boolean | undefined
   /** equivalent of the page-menu front matter (active menu entry), e.g. "layout.vertical" */
   pageMenu?: string | undefined
 }
 
-const { dark = false, breakpoint = 'lg', end = false, transparent = false, pageMenu } = Astro.props
+const { dark = false, breakpoint = 'lg', end = false, transparent = false, folded = false, foldedHover = false, foldToggle = false, pageMenu } = Astro.props
 
-const asideClass = ['navbar navbar-vertical', end && 'navbar-end', `navbar-expand-${breakpoint}`, transparent && 'navbar-transparent'].filter(Boolean).join(' ')
+const isFolded = folded || foldedHover
+
+const asideClass = ['navbar navbar-vertical', end && 'navbar-end', `navbar-expand-${breakpoint}`, transparent && 'navbar-transparent', folded && 'navbar-folded', foldedHover && 'navbar-folded-hover'].filter(Boolean).join(' ')
 ---
 
 <!-- BEGIN SIDEBAR -->
@@ -26,13 +35,23 @@ const asideClass = ['navbar navbar-vertical', end && 'navbar-end', `navbar-expan
   <div class="container-fluid">
     <NavbarToggler target="sidebar-menu" />
 
-    <Logo header />
+    {/* Small logo mark: the full wordmark would crop in the folded rail and jump during the hover-expand transition. */}
+    <Logo header smallLogo>
+      {
+        foldToggle && (
+          <button type="button" class="btn btn-action btn-sm d-none d-lg-inline-flex" data-bs-toggle="sidebar-folded" aria-pressed={folded ? 'true' : 'false'} aria-label="Pin sidebar">
+            <Icon name="pin" />
+          </button>
+        )
+      }
+    </Logo>
 
     {/* Only the Sponsor button renders (no show-* flags). */}
     <NavbarSide class="d-lg-none" breakpoint={breakpoint} />
 
     <nav class="collapse navbar-collapse" id="sidebar-menu" aria-label="Sidebar">
-      <NavbarMenu autoOpen class="pt-lg-3" keepOpen pageMenu={pageMenu} />
+      {/* A folded sidebar renders flyout submenus, so the active branch is not kept open inline. */}
+      <NavbarMenu autoOpen={!isFolded} class="pt-lg-3" keepOpen={!isFolded} pageMenu={pageMenu} />
     </nav>
   </div>
 </aside>

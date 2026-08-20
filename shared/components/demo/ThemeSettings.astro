@@ -10,7 +10,14 @@ const defaults = {
   'theme-font': 'sans-serif',
   'theme-primary': 'blue',
   'theme-radius': '1',
+  'sidebar': 'default',
 }
+
+const sidebarModes = [
+  { value: 'default', label: 'Expanded' },
+  { value: 'folded', label: 'Folded' },
+  { value: 'folded-hover', label: 'Folded with hover' },
+]
 ---
 
 <!-- BEGIN THEME SETTINGS -->
@@ -112,6 +119,24 @@ const defaults = {
                   <div class="form-selectgroup-item">
                     <input type="radio" name="theme-radius" value={radius} class="form-check-input" checked={radius === defaults['theme-radius']} />
                     <div class="form-check-label">{radius}</div>
+                  </div>
+                </label>
+              ))
+            }
+          </div>
+        </fieldset>
+
+        <fieldset class="border-0 p-0 mb-4">
+          <legend class="form-label float-none mb-0" style="font-size: inherit;">Sidebar</legend>
+          <FormHint as="p">Choose how the vertical sidebar behaves.</FormHint>
+
+          <div>
+            {
+              sidebarModes.map((mode) => (
+                <label class="form-check">
+                  <div class="form-selectgroup-item">
+                    <input type="radio" name="sidebar" value={mode.value} class="form-check-input" checked={mode.value === defaults.sidebar} />
+                    <div class="form-check-label">{mode.label}</div>
                   </div>
                 </label>
               ))

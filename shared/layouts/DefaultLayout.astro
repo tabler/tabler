@@ -38,6 +38,12 @@ interface Props {
   rtl?: boolean
   /** layout-sidebar-end */
   sidebarEnd?: boolean
+  /** layout-sidebar-folded — icon-only sidebar rail with flyout submenus */
+  sidebarFolded?: boolean
+  /** layout-sidebar-folded-hover — folded rail that unfolds on hover/focus */
+  sidebarFoldedHover?: boolean
+  /** renders the runtime fold toggle button in the sidebar */
+  sidebarFoldToggle?: boolean
   /** layout-navbar-transparent (sidebar variant) */
   navbarTransparent?: boolean
   /** layout-navbar-condensed */
@@ -54,7 +60,34 @@ interface Props {
   navbarClass?: string
 }
 
-const { title, pageLibs, pageHeader, pageHeaderFile, pretitle, description, pageMenu, sidebar, sidebarDark, hideTopbar, containerCentered, wrapperFull, containerClass, bodyClass, rtl, sidebarEnd, navbarTransparent, navbarCondensed, navbarDark, navbarOverlap, navbarSticky, navbarHideBrand, navbarClass } = Astro.props
+const {
+  title,
+  pageLibs,
+  pageHeader,
+  pageHeaderFile,
+  pretitle,
+  description,
+  pageMenu,
+  sidebar,
+  sidebarDark,
+  hideTopbar,
+  containerCentered,
+  wrapperFull,
+  containerClass,
+  bodyClass,
+  rtl,
+  sidebarEnd,
+  sidebarFolded,
+  sidebarFoldedHover,
+  sidebarFoldToggle,
+  navbarTransparent,
+  navbarCondensed,
+  navbarDark,
+  navbarOverlap,
+  navbarSticky,
+  navbarHideBrand,
+  navbarClass,
+} = Astro.props
 
 // Most pages repeat the page title verbatim, so `pageHeader` falls back to `title`.
 // Pages that deliberately have no header (blank, playgrounds) pass pageHeader={false}.
@@ -67,7 +100,7 @@ const headerTitle = pageHeader === false ? undefined : (pageHeader ?? title)
       sidebar && (
         <Fragment>
           <Fragment set:html={'<!--  BEGIN SIDEBAR  -->'} />
-          <Sidebar dark={sidebarDark} end={sidebarEnd} transparent={navbarTransparent} breakpoint="lg" pageMenu={pageMenu} />
+          <Sidebar dark={sidebarDark} end={sidebarEnd} transparent={navbarTransparent} folded={sidebarFolded} foldedHover={sidebarFoldedHover} foldToggle={sidebarFoldToggle} breakpoint="lg" pageMenu={pageMenu} />
           <Fragment set:html={'<!--  END SIDEBAR  -->'} />
         </Fragment>
       )
