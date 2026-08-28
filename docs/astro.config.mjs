@@ -31,7 +31,7 @@ export default defineConfig({
       enabled: true,
     },
   }),
-  // Renamed/moved pages, shared with middleware.ts — see lib/redirects.ts.
+  // renamed/moved pages, shared with middleware.ts
   redirects,
   // pages live at the package root (./pages) — content-first layout; all
   // components/lib/data are shared (see the @shared alias). The docs content

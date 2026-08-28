@@ -1,9 +1,6 @@
-// Renamed/moved docs pages. Add an entry here whenever a docs URL changes.
-// Consumed by astro.config.mjs (turned into real HTTP redirects at Vercel's
-// routing layer) and by middleware.ts (which must let these urls fall through
-// to the redirect instead of rewriting them to nonexistent `.md` mirrors).
-// The plural component slugs are the pre-Astro URLs still present in the
-// Google index, Algolia search results and external backlinks.
+// Renamed/moved docs pages; add an entry whenever a docs URL changes.
+// Shared by astro.config.mjs (real HTTP redirects) and middleware.ts (which
+// must let these urls fall through instead of rewriting them to `.md`).
 
 type Redirect = { status: 301; destination: string }
 
@@ -11,6 +8,7 @@ export const redirects: Record<string, Redirect> = {
   '/ui/base/markdown': { status: 301, destination: '/ui/base/prose' },
   // @tabler/icons-eps is no longer maintained; PDF is the vector format to use.
   '/icons/static-files/eps': { status: 301, destination: '/icons/static-files/pdf' },
+  // pre-Astro plural slugs, still present in the Google index and backlinks
   ...Object.fromEntries(
     [
       ['alerts', 'alert'],

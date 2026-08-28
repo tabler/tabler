@@ -1,8 +1,6 @@
-// https://llmstxt.org — the whole docs as one markdown file, so an agent can
-// ingest everything in a single fetch instead of walking the /llms.txt index.
-// Pages are the same markdown the `.md` mirrors serve (see [...slug].md.ts):
-// home page first, then sidebar order (the same order llms.txt presents),
-// pages missing from the sidebar tree last, alphabetically.
+// https://llmstxt.org — the whole docs as one markdown file. Pages are the
+// same markdown the `.md` mirrors serve, in sidebar order (home page first,
+// pages missing from the sidebar tree last).
 import type { APIRoute } from 'astro'
 import { getCollection } from 'astro:content'
 import { site } from '@shared/lib/site'

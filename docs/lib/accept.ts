@@ -1,9 +1,6 @@
-// Accept-header content negotiation between text/html and text/markdown,
-// following RFC 9110 media ranges and q-values. The rules this encodes:
-// - compare q-values, never substring-match the header
-// - a tie goes to markdown only when the client explicitly named text/markdown,
-//   so `Accept: */*` from a browser still gets html
-// - when neither type is acceptable the caller should answer 406
+// Accept negotiation between text/html and text/markdown (RFC 9110 q-values).
+// A tie goes to markdown only when the client named text/markdown explicitly,
+// so `Accept: */*` from a browser still gets html; 'none' means answer 406.
 
 type MediaRange = {
   type: string
@@ -24,8 +21,7 @@ function parseAccept(header: string): MediaRange[] {
         const [key, value] = param.split('=')
         if (key?.trim().toLowerCase() === 'q') {
           const parsed = Number.parseFloat(value ?? '')
-          // a q parameter that is present but unparsable fails closed: a range
-          // with a mangled weight must not outrank an intact one
+          // a present but unparsable q fails closed
           q = Number.isNaN(parsed) ? 0 : Math.min(Math.max(parsed, 0), 1)
         }
       }

@@ -156,8 +156,6 @@ async function renderedExamples(entry: CollectionEntry<'docs'>): Promise<(string
         return markup ? beautifyHtml(decodeEntities(markup[1]!)) : null
       })
   } catch (error) {
-    // A page that fails to render still gets its prose and its source-level
-    // examples — but the degradation must be visible in the build log.
     console.warn(`[llms] Rendering ${entry.id} failed, examples fall back to their MDX source:`, error)
     return []
   }
@@ -232,8 +230,7 @@ async function buildPageMarkdown(entry: CollectionEntry<'docs'>, url: string): P
   return `${header}\n${await mdxToMarkdown(entry.body ?? '', await renderedExamples(entry))}\n`
 }
 
-// Both prerendered consumers ([...slug].md.ts and llms-full.txt.ts) ask for the
-// same pages in one build; render each page once and share the promise.
+// [...slug].md.ts and llms-full.txt.ts render the same pages in one build.
 const pageCache = new Map<string, Promise<string>>()
 
 /** A single docs page as a standalone markdown document. */
@@ -249,11 +246,7 @@ export function pageMarkdown(entry: CollectionEntry<'docs'>, url: string): Promi
 
 type MenuNode = { url?: string; children?: MenuNode[] }
 
-/**
- * Docs urls in sidebar order — the reading order llms.txt presents, reused by
- * llms-full.txt so the index and the full file agree. Pages missing from the
- * docs.json tree are simply absent; callers append them however they sort.
- */
+/** Docs urls in sidebar (docs.json) order — the shared reading order of llms.txt and llms-full.txt. */
 export function menuOrderedUrls(): string[] {
   const normalize = (url: string) => {
     const parts = url.split('/').filter(Boolean)
