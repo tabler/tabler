@@ -10,21 +10,7 @@
       "headers": [{ "key": "Cache-Control", "value": "public, max-age=3600, stale-while-revalidate=86400" }]
     },
     {
-      "source": "/",
-      "headers": [
-        { "key": "Link", "value": "</index.md>; rel=\"alternate\"; type=\"text/markdown\"" },
-        { "key": "Vary", "value": "Accept" }
-      ]
-    },
-    {
-      "source": "/:path([^.]+)",
-      "headers": [
-        { "key": "Link", "value": "</:path.md>; rel=\"alternate\"; type=\"text/markdown\"" },
-        { "key": "Vary", "value": "Accept" }
-      ]
-    },
-    {
-      "source": "/:path([^.]+)\\.md",
+      "source": "/:path((?!index$)[^.]+)\\.md",
       "headers": [
         { "key": "Link", "value": "</:path>; rel=\"alternate\"; type=\"text/html\"" },
         { "key": "Vary", "value": "Accept" }
