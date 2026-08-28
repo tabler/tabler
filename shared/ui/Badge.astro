@@ -1,36 +1,25 @@
 ---
 import Icon from './Icon.astro'
-import Avatar from './Avatar.astro'
-import people from '@data/people.json'
-import { firstLetters } from '@shared/lib/string-format'
 
-interface Person {
-  full_name?: string
-  photo?: string
-  [key: string]: unknown
-}
+/** core/scss/ui/_badges.scss `.badge-{size}` modifier classes */
+type BadgeSize = 'sm' | 'lg'
 
 interface Props {
   text?: string
   color?: string
-  /** badge-{scale} right after badge */
-  scale?: string
+  size?: BadgeSize | undefined
   /** -lt colour variant + text-{color}-lt-fg */
   light?: boolean
   class?: string
   icon?: string
-  /** person-id — renders an inline avatar badge for people[personId - 1] */
-  personId?: number
-  /** addon text in a <span class="badge-addon"> */
-  addon?: string
-  addonColor?: string
+  iconEnd?: string
+  /** remaining attributes (id, data-*, aria-*, …) are forwarded to the root element */
+  [key: string]: unknown
 }
 
-const { text, color, scale, light, class: className, icon, personId, addon, addonColor } = Astro.props
+const { text, color, size, light, class: className, icon, iconEnd, ...rest } = Astro.props
 
-const person = personId ? (people as Person[])[personId - 1] : undefined
-
-const classes = ['badge', scale && `badge-${scale}`, color && `bg-${color}${light ? '-lt' : ''} text-${color}${light ? '-lt' : ''}-fg`, className]
+const classes = ['badge', size && `badge-${size}`, color && `bg-${color}${light ? '-lt' : ''} text-${color}${light ? '-lt' : ''}-fg`, className]
 ---
 
-<span class:list={classes}>{icon && <Icon name={icon} />}{personId && <Avatar personId={personId} />}{text ? text : person?.full_name}{addon && <span class={`badge-addon ${addonColor ? `bg-${addonColor}` : ''}`}>{addon}</span>}</span>
+<span class:list={classes} {...rest}>{icon && <Icon name={icon} />}{text}{iconEnd && <Icon name={iconEnd} />}</span>

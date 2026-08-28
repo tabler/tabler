@@ -3,4 +3,4 @@
 "@tabler/preview": minor
 ---
 
-Added `auto` color mode to theme settings with system `prefers-color-scheme` support and an inverted primary color scheme option.
+Added an `auto` color mode to theme settings with system `prefers-color-scheme` support.

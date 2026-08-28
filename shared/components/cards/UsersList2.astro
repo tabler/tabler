@@ -1,33 +1,29 @@
 ---
 import Avatar from '@ui/Avatar.astro'
+import { people } from '@shared/lib/people'
 import CardTitle from '@ui/CardTitle.astro'
-import people from '@data/people.json'
 import { randomNumber, timeagoLabel } from '@shared/lib/pseudo-random'
-
-interface Person {
-  full_name?: string
-  photo?: string
-  [key: string]: unknown
-}
+import { requireIndex } from '@shared/lib/array'
 
 interface Props {
-  limit?: number
-  offset?: number
-  title?: string
   class?: string
 }
 
-const { limit = 10, offset = 0, title = 'Top users', class: className } = Astro.props
+const { class: className } = Astro.props
 
-const colors = 'green,red,yellow,x,x'.split(',')
-const statusLabels: Record<string, string> = { green: 'Online', red: 'Busy', yellow: 'Away', x: 'Offline' }
+const limit = 10
+const offset = 0
+const title = 'Top users'
 
-const rows = (people as Person[]).slice(offset, offset + limit).map((person, idx) => {
+const colors = ['green', 'red', 'yellow', 'x', 'x'] as const
+const statusLabels: Record<(typeof colors)[number], string> = { green: 'Online', red: 'Busy', yellow: 'Away', x: 'Offline' }
+
+const rows = people.slice(offset, offset + limit).map((person, idx) => {
   const index = idx + 1 // forloop.index (1-based)
-  const status = colors[randomNumber(index + 5, 0, colors.length - 1)]
+  const status = requireIndex(colors, randomNumber(index + 5, 0, colors.length - 1))
   return {
     person,
-    status,
+    status: status !== 'x' ? status : 'secondary',
     statusLabel: statusLabels[status],
     timeago: timeagoLabel(index, 6),
   }

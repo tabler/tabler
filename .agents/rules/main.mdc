@@ -13,10 +13,32 @@ Shared instructions for all AI agents (Claude Code, Cursor, etc.). Canonical age
 
 - `core/` — `@tabler/core`: SCSS sources (`core/scss/`), JS, the distributable framework.
 - `preview/` — `@tabler/preview`: demo site built with Astro (pages in `preview/pages/*.astro`).
-- `docs/` — `@tabler/docs`: documentation site built with Astro (pages in `docs/pages/**/*.mdx`); docs-specific rules: `.agents/rules/docs.mdc`.
+- `docs/` — `@tabler/docs`: documentation site built with Astro (content in `docs/content/**/*.mdx`); docs-specific rules: `.agents/rules/docs.mdc`.
 - `shared/` — Astro components (`ui/`, `components/`, `layouts/`, `lib/`) shared by `preview` and `docs` via `@shared`; JSON data in `data/` via `@data`; plus `static/`.
 - `docs/components/` — docs-only Astro components (`Example`, menu, …) via `@components`.
 - Package manager: pnpm workspaces + turbo. Node.js >= 22.12.
+
+## Skills
+
+Task-specific instructions live in `.agents/skills/<name>/SKILL.md` — read the matching one before starting, it is the source of truth for that area.
+
+| Skill | Use it when |
+| --- | --- |
+| `ui-component` | creating or extending a component in `shared/ui/` or `shared/components/` |
+| `astro-scripts` | a component or page needs client-side JavaScript |
+| `page-layouts` | choosing or changing the page chrome (`shared/layouts/`) |
+| `shared-lib` | moving logic into `shared/lib/` and testing it |
+| `core-scss` | writing or changing styles in `core/scss/` |
+| `core-js` | working on the framework JavaScript in `core/js/` |
+| `demo-pages` | adding or updating a page in `preview/pages/` |
+| `write-docs` | writing or updating a page in `docs/content/` |
+| `class-reference` | a docs page needs its `classnames` table added or refreshed |
+| `navigation` | menus, page URLs and docs redirects |
+| `astro-dev` | starting a dev server and verifying a change in the browser |
+| `html-diff` | proving a refactor changes no rendered HTML |
+| `build-pipeline` | assets missing, stale or growing; editing `.build/` or the asset manifests |
+| `generate-changeset` | writing a changeset (always — never hand-write the file) |
+| `mr-description` | drafting an MR/PR title and description |
 
 ## Language
 
@@ -28,6 +50,10 @@ Shared instructions for all AI agents (Claude Code, Cursor, etc.). Canonical age
 ### Astro pages and components
 
 - Pages are Astro components; reusable markup lives in `shared/components/`.
+- Building or changing a shared component: follow the `ui-component` skill (Props interface, prop names, class composition, slots).
+- Client-side JavaScript: follow the `astro-scripts` skill. Always `<script is:inline>` inside `<CaptureScript>` — never a bundled script.
+- Page chrome (header, navbar, sidebar, wrappers) comes from a layout in `shared/layouts/` — see the `page-layouts` skill. Pages never hand-roll it.
+- Logic beyond assembling classes belongs in `shared/lib/*.ts` with a sibling `*.test.ts` — see the `shared-lib` skill.
 - Icons: use the shared component — `<Icon name="home" />` (import from `@ui/Icon.astro`).
 - Links between preview pages are relative: `./job-listing.html` (root-level pages).
 - Boolean HTML attributes in Astro: `selected={true}` renders a bare attribute, but some attributes (e.g. `multiple`) render `="true"` — use `multiple ? '' : undefined` when a bare attribute is required.
@@ -48,8 +74,14 @@ Shared instructions for all AI agents (Claude Code, Cursor, etc.). Canonical age
 - Use semantic HTML elements and proper heading hierarchy.
 - Include ARIA labels (e.g. `aria-label` for icon-only buttons) and alt text for images.
 
+### Verifying changes
+
+- Start dev servers and check pages in the browser with the `astro-dev` skill (preview 3000, docs 3010); never build while a dev server is running.
+- For a change that should not alter rendered HTML, prove it with the `html-diff` skill.
+
 ## SCSS guidelines
 
+- Follow the `core-scss` skill for anything under `core/scss/`: custom-property pattern, the build-time `--tblr-` prefix, dark mode, RTL, sass-true tests and the lint/size gates.
 - Use semantic class names that describe purpose, not appearance.
 - Keep Bootstrap-compatible class naming conventions.
 - Group related styles together with clear comments; keep consistent spacing and indentation.
@@ -84,8 +116,9 @@ Shared instructions for all AI agents (Claude Code, Cursor, etc.). Canonical age
 
 ### Changesets
 
+- **Always use the `generate-changeset` skill** (`.agents/skills/generate-changeset/SKILL.md`) to write a changeset — both when asked for one and on your own before committing or opening a PR that touches `core/`, `preview/`, or `docs/`. Do not hand-write the file.
 - Each change gets a separate file in `.changeset/` with a descriptive kebab-case filename (e.g. `progress-sizes.md`).
-- One sentence per changeset, starting with an action verb (`Added`, `Updated`, `Fixed`, `Removed`), with backticks for code elements (`.btn-ghost`, `stroke-width`, `1.5`, `arrow-up`).
+- One sentence per changeset, **130 characters or fewer** (hard ceiling 160, only when a longer list is the actual content), starting with an action verb (`Added`, `Updated`, `Fixed`, `Removed`), with backticks for code elements (`.btn-ghost`, `stroke-width`, `1.5`, `arrow-up`). A changeset is one changelog line — keep the reasons, implementation notes, and affected-file lists in the PR description. Always name a concrete component, class, variable, page, or dependency; "Fixed mixed declarations in SCSS" tells a reader nothing.
 - Version bumps: **major** = breaking changes; **minor** = new features, components, or pages; **patch** = bug fixes, small improvements, style/accessibility tweaks.
 - Packages: `"@tabler/core"` for SCSS/JS/classes, `"@tabler/preview"` for demo pages, `"@tabler/docs"` for documentation; list multiple packages when the change spans areas.
 - Example:

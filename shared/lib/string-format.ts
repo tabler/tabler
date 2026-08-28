@@ -1,4 +1,10 @@
 // String/number formatting helpers used by the demo data across components.
+import { site } from './site'
+
+/** Builds a docs.tabler.io URL from a path, e.g. "/ui/components/button#ghost-buttons". */
+export function getDocsUrl(path: string): string {
+  return `${site.docsUrl}${path}`
+}
 
 /** Uppercases the first char, lowercases the rest. */
 export function capitalize(s: string): string {
@@ -23,26 +29,17 @@ export function formatNumber(value: number): string {
   return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')
 }
 
-/** Splits a string on `sep`, dropping trailing empty segments (e.g. "a,b," -> ["a", "b"]). */
-export function splitDropTrailingEmpty(str: string, sep: string): string[] {
-  const items = str.split(sep)
-  while (items.length > 0 && items[items.length - 1] === '') items.pop()
-  return items
-}
-
-/** Lowercases a single-word string for use as an anchor slug. */
-export function slugifyWord(text: string): string {
-  return text.toLowerCase()
+/** Lowercases and collapses non-alphanumeric runs into single dashes, trimming edge dashes (e.g. "Create your URL" -> "create-your-url"). */
+export function slugify(text: string): string {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '')
 }
 
 /** Strips slashes and joins segments: "/ui/getting-started/" -> "uigetting-started". */
 export function pathSlug(u: string): string {
   return u.split('/').filter(Boolean).join('')
-}
-
-/** Strips a trailing "%" from a value, defaulting to "0" when empty/undefined. */
-export function parsePercentage(value: number | string | undefined): string {
-  return `${value ?? ''}`.split('%').join('') || '0'
 }
 
 /** Formats a millisecond duration as "M:SS". */

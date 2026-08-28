@@ -2,4 +2,4 @@
 "@tabler/core": patch
 ---
 
-Fixed mixed declarations in SCSS.
+Fixed Sass mixed-declaration warnings in the navbar, card, nav and table styles.

@@ -1,16 +1,27 @@
 ---
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
-import Table from '@ui/Table.astro'
+import Table from '@components/demo/Table.astro'
 import Progressbg from '@shared/components/cards/tables/Progressbg.astro'
 import Invoices from '@shared/components/cards/Invoices.astro'
-import AdvancedTable from '@ui/AdvancedTable.astro'
+import AdvancedTable from '@components/demo/AdvancedTable.astro'
 import Card from '@ui/Card.astro'
+import CardHeader from '@ui/CardHeader.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import DocsLink from '@ui/DocsLink.astro'
 ---
 
-<DefaultLayout title="Tables" pageHeader="Tables" pageMenu="base.tables" pageLibs={['lists']}>
+<DefaultLayout title="Tables" pageMenu="base.tables" pageLibs={['lists']}>
+  <DocsLink slot="page-header-actions" path="/ui/components/table" />
   <div class="row row-cards">
     <div class="col-lg-8">
       <Card>
+        <CardHeader>
+          <div>
+            <CardTitle>Basic table</CardTitle>
+            <CardSubtitle>A clean list of rows and columns, ready to drop into any card.</CardSubtitle>
+          </div>
+        </CardHeader>
         <Table card={true} limit={8} />
       </Card>
     </div>
@@ -21,18 +32,36 @@ import Card from '@ui/Card.astro'
 
     <div class="col-12">
       <Card>
-        <Table card={true} stripped={true} offset={5} />
+        <CardHeader>
+          <div>
+            <CardTitle>Striped rows</CardTitle>
+            <CardSubtitle>Alternate row shading with <code>striped</code> to make wide tables easier to scan.</CardSubtitle>
+          </div>
+        </CardHeader>
+        <Table card={true} striped={true} offset={5} />
       </Card>
     </div>
 
     <div class="col-12">
       <Card>
+        <CardHeader>
+          <div>
+            <CardTitle>With avatars</CardTitle>
+            <CardSubtitle>Swap the plain name column for an avatar, title, and department.</CardSubtitle>
+          </div>
+        </CardHeader>
         <Table card={true} avatars={true} offset={10} />
       </Card>
     </div>
 
     <div class="col-12">
       <Card>
+        <CardHeader>
+          <div>
+            <CardTitle>Responsive with actions</CardTitle>
+            <CardSubtitle>Collapses to stacked rows on mobile and adds an actions button per row.</CardSubtitle>
+          </div>
+        </CardHeader>
         <Table card={true} mobile={true} avatars={true} offset={15} buttons={true} />
       </Card>
     </div>
@@ -42,7 +71,7 @@ import Card from '@ui/Card.astro'
     </div>
 
     <div class="col-12">
-      <AdvancedTable />
+      <AdvancedTable id="advanced-table" />
     </div>
   </div>
 </DefaultLayout>

@@ -4,10 +4,12 @@ import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
 import ButtonList from '@ui/ButtonList.astro'
 import Trending from '@ui/Trending.astro'
 import Card from '@ui/Card.astro'
-import CardHeader from '@ui/CardHeader.astro'
 import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
 import socialTiles from '@data/social-tiles.json'
 import socials from '@data/socials.json'
+import DocsLink from '@ui/DocsLink.astro'
 
 interface SocialTile {
   icon: string
@@ -26,13 +28,15 @@ const socialList = socials as Social[]
 const fillers = Array.from({ length: 21 })
 ---
 
-<DefaultLayout title="Social icons" pageHeader="Social icons" pageMenu="base.social">
+<DefaultLayout title="Social icons" pageMenu="base.social" description="Branded icons and helpers for linking out to, or signing in with, social networks.">
+  <DocsLink slot="page-header-actions" path="/ui/plugins/social-icons" />
+
   <div class="row row-cards">
     <div class="col-12">
       <div class="row g-3">
         {
           tiles.map((tile) => (
-            <div class="col-3">
+            <div class="col-6 col-md-4 col-lg-3">
               <Card>
                 <CardBody>
                   <div class="row align-items-center">
@@ -56,10 +60,9 @@ const fillers = Array.from({ length: 21 })
     </div>
     <div class="col-12">
       <Card>
-        <CardHeader>
-          <h3 class="card-title">Sign in with social media</h3>
-        </CardHeader>
         <CardBody>
+          <CardTitle>Sign in with social media</CardTitle>
+          <CardSubtitle>A button per provider, for a social sign-in screen.</CardSubtitle>
           <ButtonList>
             {
               socialList.map((social) => (
@@ -76,9 +79,10 @@ const fillers = Array.from({ length: 21 })
 
     <div class="col-12">
       <Card>
-        <CardHeader>
-          <h3 class="card-title">List of all social media icons</h3>
-        </CardHeader>
+        <CardBody>
+          <CardTitle>List of all social media icons</CardTitle>
+          <CardSubtitle>Every brand icon shipped with the social icons plugin.</CardSubtitle>
+        </CardBody>
         <CardBody class="p-0">
           <div class="demo-icons-list-wrap">
             <div class="demo-icons-list">

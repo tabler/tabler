@@ -9,24 +9,37 @@ import CardTitle from '@ui/CardTitle.astro'
 import Button from '@ui/Button.astro'
 import Avatar from '@ui/Avatar.astro'
 import Icon from '@ui/Icon.astro'
-import people from '@data/people.json'
+import { people } from '@shared/lib/people'
+import { requireIndex } from '@shared/lib/array'
+import DocsLink from '@ui/DocsLink.astro'
 
-const person0 = people[0]
-const person3 = people[3]
+const person0 = requireIndex(people, 0)
+const person3 = requireIndex(people, 3)
 ---
 
-<DefaultLayout title="Card actions" pageHeader="Card actions" pageMenu="base.cards.actions">
+<DefaultLayout title="Card actions" pageMenu="base.cards.actions">
+  <DocsLink slot="page-header-actions" path="/ui/components/card" />
+
   <div class="row row-cards">
     <div class="col-md-6">
       <Card>
-        <CardHeader title="Sample card" />
+        <CardHeader>
+          <div>
+            <CardTitle>Sample card</CardTitle>
+            <CardSubtitle>A blank card with a title and no actions.</CardSubtitle>
+          </div>
+        </CardHeader>
         <BodyPlaceholder />
       </Card>
     </div>
 
     <div class="col-md-6">
       <Card>
-        <CardHeader title="Card with action">
+        <CardHeader>
+          <div>
+            <CardTitle>Card with action</CardTitle>
+            <CardSubtitle>Add a single action button to the header.</CardSubtitle>
+          </div>
           <CardActions>
             <Button color="primary" icon="plus" text="Add new" />
           </CardActions>
@@ -37,7 +50,11 @@ const person3 = people[3]
 
     <div class="col-md-6">
       <Card>
-        <CardHeader title="Cart title">
+        <CardHeader>
+          <div>
+            <CardTitle>Card title</CardTitle>
+            <CardSubtitle>Add two secondary action buttons to the header.</CardSubtitle>
+          </div>
           <CardActions>
             <Button icon="phone" text="Phone" />
             <Button icon="mail" text="Email" />
@@ -56,7 +73,7 @@ const person3 = people[3]
                 <Avatar person={person0} />
               </div>
               <div class="col">
-                <h3 class="card-title">{person0.full_name}</h3>
+                <CardTitle>{person0.full_name}</CardTitle>
                 <CardSubtitle as="div">{person0.job_title}</CardSubtitle>
               </div>
             </div>
@@ -106,7 +123,7 @@ const person3 = people[3]
                 <Avatar person={person3} />
               </div>
               <div class="col">
-                <h3 class="card-title">{person3.full_name}</h3>
+                <CardTitle>{person3.full_name}</CardTitle>
                 <CardSubtitle as="div">{person3.job_title}</CardSubtitle>
               </div>
             </div>
@@ -128,7 +145,11 @@ const person3 = people[3]
 
     <div class="col-md-6">
       <Card>
-        <CardHeader title="Card actions">
+        <CardHeader>
+          <div>
+            <CardTitle>Icon toolbar</CardTitle>
+            <CardSubtitle>A compact row of icon-only actions in the header.</CardSubtitle>
+          </div>
           <CardActions class="btn-actions">
             <a href="#" class="btn-action"><Icon name="refresh" /></a>
             <a href="#" class="btn-action"><Icon name="chevron-up" /></a>

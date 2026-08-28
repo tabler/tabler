@@ -1,28 +1,22 @@
 ---
 // Front matter page-container-class: "flex-fill d-flex flex-column" → containerClass prop.
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import { people } from '@shared/lib/people'
 import Icon from '@ui/Icon.astro'
 import Avatar from '@ui/Avatar.astro'
-import Chat from '@ui/Chat.astro'
-import people from '@data/people.json'
+import Chat from '@components/demo/Chat.astro'
 import chats from '@data/chats.json'
-
-interface Person {
-  full_name?: string
-  photo?: string
-  [key: string]: unknown
-}
 
 interface Message {
   message?: string
   [key: string]: unknown
 }
 
-const sidebarPeople = (people as Person[]).slice(0, 10)
+const sidebarPeople = people.slice(0, 10)
 const messages = chats as Message[]
 ---
 
-<DefaultLayout title="Chat" pageHeader="Chat" pageMenu="extra.chat" containerClass="flex-fill d-flex flex-column">
+<DefaultLayout title="Chat" pageMenu="extra.chat" containerClass="flex-fill d-flex flex-column">
   <div class="card flex-fill">
     <div class="row g-0 flex-fill">
       <div class="col-12 col-lg-5 col-xl-3 border-end d-flex flex-column">
@@ -38,7 +32,7 @@ const messages = chats as Message[]
               sidebarPeople.map((person, i) => {
                 const index = i + 1
                 return (
-                  <a href="#chat-1" class:list={['nav-link text-start mw-100 p-3', index === 1 && 'active']} id="chat-1-tab" data-bs-toggle="pill" role="tab" aria-selected="true">
+                  <a href={`#chat-${index}`} class:list={['nav-link text-start mw-100 p-3', index === 1 && 'active']} id={`chat-${index}-tab`} data-bs-toggle="pill" role="tab" aria-selected={index === 1 ? 'true' : 'false'}>
                     <div class="row align-items-center flex-fill">
                       <div class="col-auto">
                         <Avatar person={person} />

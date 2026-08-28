@@ -22,28 +22,9 @@
   @return $return;
 }
 
-@function squircle-radius($radius) {
-  $return: ();
-  @each $value in valid-radius($radius) {
-    @if $value == 0 {
-      $return: list.append($return, 0);
-    } @else {
-      $return: list.append($return, calc(#{$value} * 2.5));
-    }
-  }
-  @return $return;
-}
-
 @mixin border-radius($radius: $border-radius, $fallback-border-radius: false) {
   @if $enable-rounded {
     border-radius: valid-radius($radius);
-
-    // @if $radius != 0 {
-    //   @supports (corner-shape: squircle) {
-    //     corner-shape: squircle;
-    //     border-radius: squircle-radius($radius) !important;
-    //   }
-    // }
   } @else if $fallback-border-radius != false {
     border-radius: $fallback-border-radius;
   }

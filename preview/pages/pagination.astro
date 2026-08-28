@@ -3,21 +3,30 @@ import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
 import Pagination from '@ui/Pagination.astro'
 import Card from '@ui/Card.astro'
 import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import DocsLink from '@ui/DocsLink.astro'
 ---
 
-<DefaultLayout title="Pagination" pageHeader="Pagination" pageMenu="base.pagination">
+<DefaultLayout title="Pagination" pageMenu="base.pagination" description="Pagination splits a long list of results into pages, with Prev/Next controls.">
+  <DocsLink slot="page-header-actions" path="/ui/components/pagination" />
+
   <div class="row row-cards">
     <div class="col-12">
       <Card>
         <CardBody>
-          <Pagination />
-          <Pagination text />
+          <CardTitle>Numbered</CardTitle>
+          <CardSubtitle>Page numbers, with or without <code>text</code> Prev/Next labels.</CardSubtitle>
+          <Pagination count={5} activeItem={3} />
+          <Pagination count={5} activeItem={3} text />
         </CardBody>
       </Card>
     </div>
     <div class="col-12">
       <Card>
         <CardBody>
+          <CardTitle>With descriptions</CardTitle>
+          <CardSubtitle>Add <code>prevDescription</code>/<code>nextDescription</code> to name the adjacent page.</CardSubtitle>
           <Pagination count={0} prevDescription="Getting started" nextDescription="Breadcrumbs" />
         </CardBody>
       </Card>

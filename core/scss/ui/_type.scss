@@ -9,10 +9,10 @@
 
 a {
   text-decoration-skip-ink: auto;
-  color: color-mix(in sRGB, transparent, var(--link-color) var(--link-opacity, 100%));
+  color: color-mix(in sRGB, transparent, var(--link-color) calc(var(--link-opacity, 1) * 100%));
 
   &:hover {
-    color: color-mix(in sRGB, transparent, var(--link-hover-color) var(--link-opacity, 100%));
+    color: color-mix(in sRGB, transparent, var(--link-hover-color) calc(var(--link-opacity, 1) * 100%));
   }
 }
 
@@ -91,6 +91,10 @@ blockquote {
 
   p {
     margin-bottom: var(--blockquote-paragraph-margin-bottom);
+
+    &:last-child {
+      margin-bottom: 0;
+    }
   }
 
   cite {

@@ -2,5 +2,4 @@
 "@tabler/preview": minor
 ---
 
-Refactored page-menu structure for dashboards and updated navigation menu organization.
-
+Updated the page-menu structure for dashboards and reorganized the navigation menu.

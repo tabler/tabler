@@ -2,4 +2,4 @@
 "@tabler/core": patch
 ---
 
-Fixed double bottom border in tables.
+Fixed the double bottom border on the last table row inside a `.card`.

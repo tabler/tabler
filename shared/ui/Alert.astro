@@ -1,43 +1,44 @@
 ---
 import Icon from './Icon.astro'
-import ButtonList from './ButtonList.astro'
+
+/** alert-{color} — matches defaultIcons below */
+type AlertColor = 'success' | 'warning' | 'danger' | 'info'
 
 interface Props {
-  type?: string
-  icon?: string
-  important?: boolean
-  minor?: boolean
+  color?: AlertColor
+  /** alert-important (filled) / alert-minor (borderless) style variants */
+  variant?: 'important' | 'minor'
   showClose?: boolean
-  avatar?: boolean
   class?: string
   title?: string
   description?: string
   list?: string[]
   action?: string
   link?: string
-  buttons?: boolean
+  /** remaining attributes (id, data-*, aria-*, …) are forwarded to the root element */
+  [key: string]: unknown
 }
 
-const { type = 'success', icon: iconProp, important, minor, showClose, avatar, class: className, title = 'This is a custom alert box!', description, list, action, link, buttons } = Astro.props
+const { color = 'success', variant, showClose, class: className, title, description, list, action, link, ...rest } = Astro.props
 
-const defaultIcons: Record<string, string> = {
+const defaultIcons: Record<AlertColor, string> = {
   success: 'check',
   warning: 'alert-triangle',
   danger: 'alert-circle',
   info: 'info-circle',
 }
-const icon = iconProp ?? defaultIcons[type]
+const icon = defaultIcons[color]
 
-const classes = ['alert', important ? 'alert-important' : minor ? 'alert-minor' : undefined, `alert-${type}`, showClose && 'alert-dismissible', avatar && 'alert-avatar', className]
+const classes = ['alert', variant && `alert-${variant}`, `alert-${color}`, showClose && 'alert-dismissible', className]
 ---
 
-<div class:list={classes} role="alert">
+<div class:list={classes} role="alert" {...rest}>
   <div class="alert-icon">{icon && <Icon name={icon} class="alert-icon" />}</div>
   {
     description || list ? (
       <div>
         {/* set:html preserves entities like &hellip; in the title */}
-        <h4 class="alert-heading" set:html={title} />
+        {title && <h4 class="alert-heading" set:html={title} />}
         <div class="alert-description">
           <Fragment set:html={description ?? ''} />
           {list && list.length > 0 && (
@@ -63,18 +64,6 @@ const classes = ['alert', important ? 'alert-important' : minor ? 'alert-minor' 
           </a>
         ) : null}
       </Fragment>
-    )
-  }
-  {
-    buttons && (
-      <ButtonList>
-        <a href="#" class={`btn btn-${type}`}>
-          Okay
-        </a>
-        <a href="#" class="btn">
-          Cancel
-        </a>
-      </ButtonList>
     )
   }
   {showClose && <a class="btn-close" data-bs-dismiss="alert" aria-label="close" />}

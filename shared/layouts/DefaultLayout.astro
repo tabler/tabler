@@ -7,21 +7,19 @@ import PageHeader from '@shared/components/layout/PageHeader.astro'
 import Footer from '@shared/components/layout/Footer.astro'
 
 interface Props {
-  title?: string
+  title?: string | undefined
   /** Script/CSS library keys passed to BaseLayout */
   pageLibs?: string[]
-  /** page-header — the title in the page header */
-  pageHeader?: string
+  /** page-header — the title in the page header. Defaults to `title`; pass false for no page header */
+  pageHeader?: string | false | undefined
   /** page-header-file — renders a layout/headers/{file} component instead of the title block */
-  pageHeaderFile?: string
+  pageHeaderFile?: string | undefined
   /** page-header-pretitle */
-  pretitle?: string
+  pretitle?: string | undefined
   /** page-header-description */
-  description?: string
-  /** page-header-actions, e.g. "buttons" */
-  actions?: string
+  description?: string | undefined
   /** page-menu from the front matter, e.g. "layout.vertical" — active menu entry */
-  pageMenu?: string
+  pageMenu?: string | undefined
   /** layout-sidebar */
   sidebar?: boolean
   /** layout-sidebar-dark */
@@ -56,11 +54,14 @@ interface Props {
   navbarClass?: string
 }
 
-const { title, pageLibs, pageHeader, pageHeaderFile, pretitle, description, actions, pageMenu, sidebar, sidebarDark, hideTopbar, containerCentered, wrapperFull, containerClass, bodyClass, rtl, sidebarEnd, navbarTransparent, navbarCondensed, navbarDark, navbarOverlap, navbarSticky, navbarHideBrand, navbarClass } =
-  Astro.props
+const { title, pageLibs, pageHeader, pageHeaderFile, pretitle, description, pageMenu, sidebar, sidebarDark, hideTopbar, containerCentered, wrapperFull, containerClass, bodyClass, rtl, sidebarEnd, navbarTransparent, navbarCondensed, navbarDark, navbarOverlap, navbarSticky, navbarHideBrand, navbarClass } = Astro.props
+
+// Most pages repeat the page title verbatim, so `pageHeader` falls back to `title`.
+// Pages that deliberately have no header (blank, playgrounds) pass pageHeader={false}.
+const headerTitle = pageHeader === false ? undefined : (pageHeader ?? title)
 ---
 
-<BaseLayout title={title} pageLibs={pageLibs} bodyClass={bodyClass} rtl={rtl}>
+<BaseLayout title={title} pageLibs={pageLibs} bodyClass={bodyClass} rtl={rtl} description={description}>
   <div class="page">
     {
       sidebar && (
@@ -84,7 +85,9 @@ const { title, pageLibs, pageHeader, pageHeaderFile, pretitle, description, acti
 
     <div class:list={['page-wrapper', wrapperFull && 'page-wrapper-full']}>
       <!-- BEGIN PAGE HEADER -->
-      <PageHeader title={pageHeader} pretitle={pretitle} description={description} actions={actions} file={pageHeaderFile} textWhite={navbarOverlap && navbarDark} />
+      <PageHeader title={headerTitle} pretitle={pretitle} description={description} file={pageHeaderFile} textWhite={navbarOverlap && navbarDark}>
+        <slot name="page-header-actions" slot="actions" />
+      </PageHeader>
       <!-- END PAGE HEADER -->
 
       <!-- BEGIN PAGE BODY -->

@@ -2,4 +2,4 @@
 "@tabler/docs": patch
 ---
 
-Updated UI component documentation to use singular file names and frontmatter fields (`title`, `summary`, `description`), and added redirects from legacy plural routes.
+Updated UI component docs to singular file names and frontmatter, with redirects from plural routes.

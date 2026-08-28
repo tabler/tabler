@@ -1,13 +1,14 @@
 ---
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
 import Badge from '@ui/Badge.astro'
+import BadgeList from '@ui/BadgeList.astro'
 import Card from '@ui/Card.astro'
 import CardBody from '@ui/CardBody.astro'
 import CardFooter from '@ui/CardFooter.astro'
 import { site } from '@shared/lib/site'
 ---
 
-<DefaultLayout title="Logs" pageHeader="Logs" pageMenu="extra.logs">
+<DefaultLayout title="Logs" pageMenu="extra.logs">
   <div class="row">
     <div class="col-lg-6">
       <Card>
@@ -48,14 +49,12 @@ import { site } from '@shared/lib/site'
           </div>
 
           <h4>Log Levels</h4>
-          <div>
-            <div class="mb-2">
-              <Badge text="INFO" color="success" />
-              <Badge text="WARNING" color="warning" />
-              <Badge text="ERROR" color="disabled" />
-              <Badge text="DEBUG" color="disabled" />
-            </div>
-          </div>
+          <BadgeList class="mb-2">
+            <Badge text="INFO" color="success" />
+            <Badge text="WARNING" color="warning" />
+            <Badge text="ERROR" color="danger" />
+            <Badge text="DEBUG" color="secondary" />
+          </BadgeList>
         </CardBody>
         <CardFooter>
           <h4>Log Source</h4>

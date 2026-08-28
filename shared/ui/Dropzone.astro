@@ -1,15 +1,15 @@
 ---
 import CaptureScript from '../components/CaptureScript.astro'
 interface Props {
-  id?: string
+  id: string
   multiple?: boolean
   custom?: boolean
   text?: string
   description?: string
-  label?: string
 }
 
-const { id, multiple, custom, text = 'Text', description = 'Description', label = 'Upload file' } = Astro.props
+const { id, multiple, custom, text, description } = Astro.props
+const label = 'Upload file'
 
 const dropzoneId = `dropzone-${id}`
 const dropzoneSelector = `#dropzone-${id}`
@@ -32,7 +32,7 @@ const fileInputId = `${dropzoneId}-file`
 </form>
 <CaptureScript>
   <!-- BEGIN DROPZONE -->
-  <script define:vars={{ dropzoneId, dropzoneSelector }}>
+  <script is:inline define:vars={{ dropzoneId, dropzoneSelector }}>
     window.tabler_dropzone ??= {}
 
     function initDropzone() {

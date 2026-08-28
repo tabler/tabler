@@ -7,11 +7,14 @@ import Prose from '@ui/Prose.astro'
 import CaptureScript from '@shared/components/CaptureScript.astro'
 import { site } from '@shared/lib/site'
 import emails from '@data/emails.json'
+import DocsLink from '@ui/DocsLink.astro'
 
 const emailEntries = Object.entries(emails)
 ---
 
 <DefaultLayout pageHeader="Email templates" pageMenu="addons.emails" pageLibs={['masonry', 'fslightbox']}>
+  <DocsLink slot="page-header-actions" path="/emails" />
+
   <div class="row row-cards">
     <div class="col-12">
       <div class="card card-md">
@@ -60,7 +63,7 @@ const emailEntries = Object.entries(emails)
             <div class="col-6">
               <div class="p-7">
                 <Prose>
-                  <h3 data-email-title></h3>
+                  <h3 id="email-modal-label" data-email-title></h3>
                   <p data-email-description></p>
                 </Prose>
 

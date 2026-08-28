@@ -1,32 +1,32 @@
 ---
 import Icon from './Icon.astro'
 
+/** core/scss/ui/_switch-icon.scss `.switch-icon-{variant}` transition classes */
+type SwitchIconVariant = 'fade' | 'scale' | 'flip' | 'slide-up' | 'slide-down' | 'slide-left' | 'slide-right' | 'slide-start' | 'slide-end'
+
 interface Props {
   icon?: string
-  iconB?: string
-  iconAColor?: string
-  iconBColor?: string
-  iconBClass?: string
-  variant?: string
-  active?: boolean
-  /** accessible name announced alongside the pressed state, e.g. "Favorite" */
-  label?: string
+  /** text-{activeColor} on the switched-on icon */
+  activeColor?: string
+  variant?: SwitchIconVariant | undefined
+  class?: string
+  /** remaining attributes (id, data-*, aria-*, …) are forwarded to the root element */
+  [key: string]: unknown
 }
 
-const { icon = 'heart', iconB, iconAColor = 'muted', iconBColor = 'red', iconBClass, variant, active, label = 'Favorite' } = Astro.props
+const { icon = 'heart', activeColor = 'red', variant, class: className, ...rest } = Astro.props
 
-const resolvedIconB = iconB ?? icon ?? 'heart'
-// star/heart force the filled variant; otherwise use the passed class.
-const resolvedIconBClass = icon === 'star' || icon === 'heart' ? 'icon-filled' : iconBClass
+// star/heart force the filled variant; otherwise no extra class.
+const resolvedIconBClass = icon === 'star' || icon === 'heart' ? 'icon-filled' : undefined
 
-const buttonClass = ['switch-icon', variant && `switch-icon-${variant}`, active && 'active']
+const buttonClass = ['switch-icon', variant && `switch-icon-${variant}`, className]
 ---
 
-<button type="button" class:list={buttonClass} data-bs-toggle="switch-icon" aria-pressed={active ? 'true' : 'false'} aria-label={label}>
-  <span class={`switch-icon-a text-${iconAColor}`}>
+<button type="button" class:list={buttonClass} data-bs-toggle="switch-icon" aria-pressed="false" aria-label="Favorite" {...rest}>
+  <span class="switch-icon-a text-muted">
     <Icon name={icon} />
   </span>
-  <span class={`switch-icon-b text-${iconBColor}`}>
-    <Icon name={resolvedIconB} class={resolvedIconBClass} />
+  <span class={`switch-icon-b text-${activeColor}`}>
+    <Icon name={icon} class={resolvedIconBClass} />
   </span>
 </button>

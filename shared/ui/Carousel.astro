@@ -1,67 +1,26 @@
 ---
 // Self-contained carousel (.carousel). Default slot holds the .carousel-item elements
 // (the caller marks the first one "active" — see CarouselCard.astro / hero/Side.astro);
-// indicators/controls are generated from props. A "controls" slot overrides the default
-// icon-span controls with custom markup (e.g. an <Icon>-based pair).
+// a "controls" slot renders custom prev/next markup (e.g. an <Icon>-based pair).
 
 interface Props {
   id?: string
-  /** slide count, used to generate indicator buttons */
-  slideCount: number
-  fade?: boolean
   /** data-bs-interval in ms, or false to disable autoplay */
   interval?: number | false
-  indicators?: boolean
-  indicatorsVariant?: 'dot' | 'thumb'
-  indicatorsVertical?: boolean
-  /** ratio ratio-4x3 on each indicator button, typically paired with indicatorsVariant="thumb" */
-  indicatorsThumbRatio?: boolean
-  /** background-image per slide, used when indicatorsVariant="thumb" */
-  indicatorsImages?: string[]
-  controls?: boolean
   class?: string
   /** remaining attributes forwarded to the element */
   [key: string]: unknown
 }
 
-const { id, slideCount, fade, interval, indicators, indicatorsVariant, indicatorsVertical, indicatorsThumbRatio, indicatorsImages, controls, class: className, ...rest } = Astro.props
+const { id, interval, class: className, ...rest } = Astro.props
 
-const target = id ? `#${id}` : undefined
-const slideIndexes = Array.from({ length: slideCount }, (_, i) => i)
 const hasCustomControls = Astro.slots.has('controls')
 ---
 
-<div id={id} class:list={['carousel', 'slide', fade && 'carousel-fade', className]} data-bs-ride="carousel" data-bs-interval={interval === false ? 'false' : interval} {...rest}>
-  {
-    indicators && (
-      <div class:list={['carousel-indicators', indicatorsVertical && 'carousel-indicators-vertical', indicatorsVariant === 'dot' && 'carousel-indicators-dot', indicatorsVariant === 'thumb' && 'carousel-indicators-thumb']}>
-        {slideIndexes.map((i) => (
-          <button type="button" data-bs-target={target} data-bs-slide-to={i} class:list={[indicatorsThumbRatio && 'ratio ratio-4x3', i === 0 && 'active']} style={indicatorsVariant === 'thumb' && indicatorsImages?.[i] ? `background-image: url(${indicatorsImages[i]})` : undefined} />
-        ))}
-      </div>
-    )
-  }
-
+<div id={id} class:list={['carousel', 'slide', className]} data-bs-ride="carousel" data-bs-interval={interval === false ? 'false' : interval} {...rest}>
   <div class="carousel-inner">
     <slot />
   </div>
 
-  {
-    hasCustomControls ? (
-      <slot name="controls" />
-    ) : (
-      controls && (
-        <Fragment>
-          <a class="carousel-control-prev" href={target} role="button" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true" />
-            <span class="visually-hidden">Previous</span>
-          </a>
-          <a class="carousel-control-next" href={target} role="button" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true" />
-            <span class="visually-hidden">Next</span>
-          </a>
-        </Fragment>
-      )
-    )
-  }
+  {hasCustomControls && <slot name="controls" />}
 </div>

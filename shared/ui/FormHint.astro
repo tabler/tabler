@@ -1,17 +1,21 @@
 ---
+import type { HTMLTag } from 'astro/types'
+
 // Form hint text (.form-hint).
 
-interface Props {
-  /** element to render — default div */
-  as?: string
+// `as` must stay out of the Props body: Astro's frontmatter scanner bails on a member
+// literally named `as` and silently falls back to untyped props.
+type PolymorphicProps = { as?: HTMLTag }
+
+interface Props extends PolymorphicProps {
   class?: string
   /** id so a control can reference the hint via aria-describedby */
-  id?: string
+  id?: string | undefined
 }
 
-const { as: Tag = 'div', class: className, id } = Astro.props
+const { as: Tag = 'div', class: className, id }: Props = Astro.props
 ---
 
-<Tag class:list={['form-hint', className]} id={id}>
+<Tag class:list={['form-hint', className]} {...id ? { id } : {}}>
   <slot />
 </Tag>

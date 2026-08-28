@@ -4,20 +4,19 @@ import { capitalize } from '@shared/lib/string-format'
 interface Props {
   type?: 'checkbox' | 'radio'
   checked?: boolean
-  disabled?: boolean
   /** Switch mode (prop name isSwitch; `switch` is reserved). */
   switch?: boolean
   title?: string | false
   name?: string
-  inline?: boolean
-  size?: string
-  empty?: boolean
+  /** core/scss/ui/forms/_form-check.scss `.form-switch-{size}` — only 'lg' exists */
+  size?: 'lg' | undefined
   titleOn?: string
   titleOff?: string
   class?: string
 }
 
-const { type = 'checkbox', checked = false, disabled = false, switch: isSwitch = false, title: titleProp = false, name, inline, size, empty: isEmpty = false, titleOn, titleOff, class: className } = Astro.props
+const { type = 'checkbox', checked = false, switch: isSwitch = false, title: titleProp = false, name, size, titleOn, titleOff, class: className } = Astro.props
+const disabled = false
 
 let title = titleProp
 if (!title) {
@@ -32,9 +31,9 @@ if (!title) {
   title = t
 }
 
-const labelClasses = ['form-check', inline && 'form-check-inline', isSwitch && 'form-switch', isSwitch && size && `form-switch-${size}`, className]
+const labelClasses = ['form-check', isSwitch && 'form-switch', isSwitch && size && `form-switch-${size}`, className]
 
-const inputClasses = ['form-check-input', isEmpty && 'position-static']
+const inputClasses = ['form-check-input']
 ---
 
 <label class:list={labelClasses}>
@@ -46,7 +45,7 @@ const inputClasses = ['form-check-input', isEmpty && 'position-static']
         <span class="form-check-label form-check-label-off">{titleOff}</span>
       </Fragment>
     ) : (
-      !isEmpty && <span class="form-check-label">{title}</span>
+      <span class="form-check-label">{title}</span>
     )
   }
 </label>

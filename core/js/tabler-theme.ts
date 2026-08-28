@@ -12,7 +12,7 @@ interface ThemeConfig {
 }
 
 const themeConfig: ThemeConfig = {
-  'theme': 'light',
+  'theme': 'auto',
   'theme-base': 'gray',
   'theme-font': 'sans-serif',
   'theme-primary': 'blue',
@@ -49,7 +49,8 @@ for (const key in themeConfig) {
 }
 
 prefersDark.addEventListener('change', (event) => {
-  if (localStorage.getItem('tabler-theme') === 'auto') {
+  // No stored choice means the default, which is auto.
+  if ((localStorage.getItem('tabler-theme') ?? 'auto') === 'auto') {
     if (event.matches) {
       document.documentElement.setAttribute('data-bs-theme', 'dark')
     } else {

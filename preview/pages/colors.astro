@@ -6,7 +6,9 @@ import Card from '@ui/Card.astro'
 import CardBody from '@ui/CardBody.astro'
 import Avatar from '@ui/Avatar.astro'
 import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
 import site from '@data/site.json'
+import DocsLink from '@ui/DocsLink.astro'
 
 type ColorEntry = [string, { title: string; hex: string; abbr?: string; icon?: string }]
 
@@ -18,18 +20,22 @@ const socialColors = Object.entries(site.socialColors) as ColorEntry[]
 const gradientColors = [...Object.keys(site.colors), 'inverted', 'white', 'transparent']
 ---
 
-<DefaultLayout title="Colors" pageHeader="Colors" pageMenu="base.colors">
+<DefaultLayout title="Colors" pageMenu="base.colors" description="The full color palette, with hex values, and a gradient builder.">
+  <DocsLink slot="page-header-actions" path="/ui/base/colors" />
+
   <div class="row row-cards">
-    <div class="col-3">
+    <div class="col-6 col-lg-3">
       <Card>
         <CardBody>
+          <CardTitle>Colors</CardTitle>
+          <CardSubtitle>The extended color palette, with hex values.</CardSubtitle>
           <div class="row g-3">
             {
               colors.map(([name, color]) => (
                 <div class="col-12">
                   <div class="row align-items-center">
                     <div class="col-auto">
-                      <Avatar square class={`bg-${name} text-${name}-fg`} placeholder={color.abbr} />
+                      <Avatar shape="square" class={`bg-${name} text-${name}-fg`} placeholder={color.abbr} />
                     </div>
                     <div class="col">
                       {color.title}
@@ -44,16 +50,18 @@ const gradientColors = [...Object.keys(site.colors), 'inverted', 'white', 'trans
         </CardBody>
       </Card>
     </div>
-    <div class="col-3">
+    <div class="col-6 col-lg-3">
       <Card>
         <CardBody>
+          <CardTitle>Light colors</CardTitle>
+          <CardSubtitle>A tinted, low-contrast version of each color.</CardSubtitle>
           <div class="row g-3">
             {
               lightColors.map(([name, color]) => (
                 <div class="col-12">
                   <div class="row align-items-center">
                     <div class="col-auto">
-                      <Avatar square class={`bg-${name}-lt text-${name}-lt-fg`} placeholder={color.abbr} />
+                      <Avatar shape="square" class={`bg-${name}-lt text-${name}-lt-fg`} placeholder={color.abbr} />
                     </div>
                     <div class="col">
                       {color.title}
@@ -68,16 +76,18 @@ const gradientColors = [...Object.keys(site.colors), 'inverted', 'white', 'trans
         </CardBody>
       </Card>
     </div>
-    <div class="col-3">
+    <div class="col-6 col-lg-3">
       <Card>
         <CardBody>
+          <CardTitle>Gray colors</CardTitle>
+          <CardSubtitle>The neutral gray scale used for text, borders, and backgrounds.</CardSubtitle>
           <div class="row g-3">
             {
               grayColors.map(([name, color]) => (
                 <div class="col-12">
                   <div class="row align-items-center">
                     <div class="col-auto">
-                      <Avatar square class={`bg-${name} text-${name}-fg`} placeholder={color.abbr} />
+                      <Avatar shape="square" class={`bg-${name} text-${name}-fg`} placeholder={color.abbr} />
                     </div>
                     <div class="col">
                       {color.title}
@@ -92,16 +102,18 @@ const gradientColors = [...Object.keys(site.colors), 'inverted', 'white', 'trans
         </CardBody>
       </Card>
     </div>
-    <div class="col-3">
+    <div class="col-6 col-lg-3">
       <Card>
         <CardBody>
+          <CardTitle>Social colors</CardTitle>
+          <CardSubtitle>Brand colors for social networks.</CardSubtitle>
           <div class="row g-3">
             {
               socialColors.map(([name, color]) => (
                 <div class="col-12">
                   <div class="row align-items-center">
                     <div class="col-auto">
-                      <Avatar square class={`bg-${name} text-${name}-fg`} icon={color.icon} />
+                      <Avatar shape="square" class={`bg-${name} text-${name}-fg`} icon={color.icon} />
                     </div>
                     <div class="col">
                       {color.title}
@@ -118,10 +130,11 @@ const gradientColors = [...Object.keys(site.colors), 'inverted', 'white', 'trans
     </div>
     <div class="col-12">
       <div class="row">
-        <div class="col-6">
+        <div class="col-12 col-lg-6">
           <Card>
             <CardBody>
               <CardTitle>Gradient</CardTitle>
+              <CardSubtitle>Build a gradient from any two colors and preview it live.</CardSubtitle>
               <form action="">
                 <div class="row g-4">
                   <div class="col">
@@ -174,9 +187,11 @@ const gradientColors = [...Object.keys(site.colors), 'inverted', 'white', 'trans
             </CardBody>
           </Card>
         </div>
-        <div class="col-6">
+        <div class="col-12 col-lg-6">
           <Card>
             <CardBody>
+              <CardTitle>Gradient colors</CardTitle>
+              <CardSubtitle>Every color faded to transparent, fading in from the left or the right.</CardSubtitle>
               <div class="row">
                 <div class="col">
                   <div class="space-y">

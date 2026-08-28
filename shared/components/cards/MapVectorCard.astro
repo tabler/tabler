@@ -1,17 +1,18 @@
 ---
-import MapVector from '@ui/MapVector.astro'
+import MapVector from '@shared/components/demo/MapVector.astro'
+import CardTitle from '@ui/CardTitle.astro'
 
 interface Props {
   title?: string
-  map?: string
 }
 
-const { title, map = 'world' } = Astro.props
+const { title } = Astro.props
+const map = 'world'
 ---
 
 <div class="card">
   <div class="card-body">
-    {title && <h3 class="card-title">{title}</h3>}
+    {title && <CardTitle>{title}</CardTitle>}
     <MapVector mapId={map} color="primary" ratio="21x9" />
   </div>
 </div>

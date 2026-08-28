@@ -1,9 +1,12 @@
 // @ts-check
-import { defineConfig } from 'astro/config'
+import { defineConfig, envField } from 'astro/config'
+import vercel from '@astrojs/vercel'
 import mdx from '@astrojs/mdx'
 import { satteri } from '@astrojs/markdown-satteri'
+import { unwrapJsxParagraphs } from './lib/satteri-unwrap-jsx-paragraphs.mjs'
 import { fileURLToPath } from 'node:url'
 import { copyAssets } from '../.build/copy-assets'
+import { redirects } from './lib/redirects.ts'
 
 /** @param {string} p */
 const path = (p) => fileURLToPath(new URL(p, import.meta.url))
@@ -11,8 +14,28 @@ const path = (p) => fileURLToPath(new URL(p, import.meta.url))
 // https://astro.build/config
 export default defineConfig({
   site: 'https://docs.tabler.io',
+  env: {
+    // DocSearch/Algolia config for the docs search (see DocsNavbar.astro).
+    // Values come from the environment only (.env locally, project settings on
+    // Vercel) — see .env.example. When unset, the search input is hidden.
+    schema: {
+      DOCSEARCH_APP_ID: envField.string({ context: 'client', access: 'public', optional: true }),
+      DOCSEARCH_INDEX_NAME: envField.string({ context: 'client', access: 'public', optional: true }),
+      DOCSEARCH_API_KEY: envField.string({ context: 'client', access: 'public', optional: true }),
+    },
+  },
+  // Static output + the Vercel adapter: turns `redirects` below into real HTTP
+  // redirects at Vercel's routing layer (no adapter = meta-refresh HTML pages).
+  adapter: vercel({
+    webAnalytics: {
+      enabled: true,
+    },
+  }),
+  // renamed/moved pages, shared with middleware.ts
+  redirects,
   // pages live at the package root (./pages) — content-first layout; all
-  // components/lib/data are shared (see the @shared alias)
+  // components/lib/data are shared (see the @shared alias). The docs content
+  // itself lives in ./content and is rendered by pages/[...slug].astro.
   srcDir: '.',
   server: {
     port: 3010,
@@ -21,6 +44,9 @@ export default defineConfig({
     host: true,
   },
   vite: {
+    define: {
+      TABLER_STATIC_BASE: JSON.stringify('/static'),
+    },
     resolve: {
       alias: {
         '@data': fileURLToPath(new URL('../shared/data', import.meta.url)),
@@ -29,10 +55,10 @@ export default defineConfig({
         '@ui': fileURLToPath(new URL('../shared/ui', import.meta.url)),
         // docs-only components (Example, DocsMenu, …)
         '@components': fileURLToPath(new URL('./components', import.meta.url)),
-        // docs-only layouts (DocsLayout + the MDX adapter, referenced by `layout:` front matter)
+        // docs-only layouts (DocsLayout)
         '@layouts': fileURLToPath(new URL('./layouts', import.meta.url)),
-        // this package's pages dir — used by @shared/lib/docs-children's glob
-        '@pages': fileURLToPath(new URL('./pages', import.meta.url)),
+        // docs-only helpers (docs collection queries)
+        '@lib': fileURLToPath(new URL('./lib', import.meta.url)),
       },
     },
   },
@@ -45,7 +71,17 @@ export default defineConfig({
           from: path('./assets'),
           to: path('./public'),
           label: '@tabler/docs',
-          requiredFile: path('./assets/css/docs.css'),
+          requiredFile: path('./assets/favicon.ico'),
+        },
+        {
+          // docs css built by this package's sass pipeline (see the `css` and
+          // `watch-css` scripts, which both write here). Source is tmp-assets/
+          // (not public/) because copy-assets wipes public/ on every restart —
+          // anything a watcher writes straight into public/ is lost there.
+          from: path('./tmp-assets/css'),
+          to: path('./public/css'),
+          label: '@tabler/docs',
+          requiredFile: path('./tmp-assets/css/docs.css'),
         },
         {
           from: path('../core/dist'),
@@ -73,6 +109,7 @@ export default defineConfig({
         { from: path('../core/dist'), to: path('./public/dist') },
         { from: path('../preview/tmp-assets'), to: path('./public/preview') },
         { from: path('./assets'), to: path('./public') },
+        { from: path('./tmp-assets/css'), to: path('./public/css') },
         { from: path('../shared/static'), to: path('./public/static') },
       ],
     }),
@@ -80,7 +117,7 @@ export default defineConfig({
   ],
   markdown: {
     // No typographic quote rewriting.
-    processor: satteri({ features: { smartPunctuation: false } }),
+    processor: satteri({ features: { smartPunctuation: false }, mdastPlugins: [unwrapJsxParagraphs] }),
     shikiConfig: {
       theme: 'github-dark',
     },

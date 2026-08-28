@@ -1,16 +1,19 @@
 ---
 // Card maps span full-width column with no card-body; non-card maps get card-body with title.
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
-import Map from '@ui/Map.astro'
+import Map from '@components/demo/Map.astro'
 import Card from '@ui/Card.astro'
 import CardBody from '@ui/CardBody.astro'
 import maps from '@data/maps.json'
+import CardTitle from '@ui/CardTitle.astro'
+import DocsLink from '@ui/DocsLink.astro'
 
 type MapData = { title?: string; card?: boolean }
 const mapEntries = Object.entries(maps as Record<string, MapData>)
 ---
 
-<DefaultLayout title="Maps" pageHeader="Maps" pageMenu="plugins.maps" pageLibs={['mapbox']}>
+<DefaultLayout title="Maps" pageMenu="plugins.maps" pageLibs={['mapbox']} description="Interactive Mapbox maps — plain, styled, or full-card with custom markers.">
+  <DocsLink slot="page-header-actions" path="/ui/components/map" />
   <div class="row row-cards">
     {
       mapEntries.map(([mapId, data]) =>
@@ -24,7 +27,7 @@ const mapEntries = Object.entries(maps as Record<string, MapData>)
           <div class="col-lg-6">
             <Card>
               <CardBody>
-                <h3 class="card-title">{data.title}</h3>
+                <CardTitle>{data.title}</CardTitle>
                 <Map mapId={mapId} />
               </CardBody>
             </Card>

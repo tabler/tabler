@@ -12,39 +12,45 @@ import CardBody from '@ui/CardBody.astro'
 import CardFooter from '@ui/CardFooter.astro'
 import Alert from '@ui/Alert.astro'
 import Badge from '@ui/Badge.astro'
+import BadgeList from '@ui/BadgeList.astro'
 import Progress from '@ui/Progress.astro'
-import Select from '@ui/Select.astro'
+import DataSelect from '@components/demo/DataSelect.astro'
 import Check from '@ui/form/Check.astro'
 import FormGroup from '@ui/FormGroup.astro'
-import Nav from '@ui/Nav.astro'
+import Nav from '@components/demo/Nav.astro'
 import Breadcrumb from '@ui/Breadcrumb.astro'
 import Pagination from '@ui/Pagination.astro'
 import Avatar from '@ui/Avatar.astro'
+import AvatarList from '@ui/AvatarList.astro'
 import Icon from '@ui/Icon.astro'
-import Dropdown from '@ui/Dropdown.astro'
-import Accordion from '@ui/Accordion.astro'
+import Dropdown from '@components/demo/Dropdown.astro'
+import Accordion from '@components/demo/Accordion.astro'
 import Spinner from '@ui/Spinner.astro'
 import Rating from '@ui/Rating.astro'
 import Steps from '@ui/Steps.astro'
 import StatusDot from '@ui/StatusDot.astro'
-import Toast from '@ui/Toast.astro'
+import Toast from '@components/demo/Toast.astro'
 import InputIcon from '@ui/form/InputIcon.astro'
 import InputGroup from '@ui/InputGroup.astro'
 import Range from '@ui/Range.astro'
 import Tag from '@ui/Tag.astro'
+import TagList from '@ui/TagList.astro'
 import Ribbon from '@ui/Ribbon.astro'
 import Flag from '@ui/Flag.astro'
 import Payment from '@ui/Payment.astro'
-import Timeline from '@ui/Timeline.astro'
+import Timeline from '@components/demo/Timeline.astro'
 import Empty from '@ui/Empty.astro'
 import NavSegmented from '@ui/NavSegmented.astro'
 import ListGroup from '@ui/ListGroup.astro'
 import ListGroupItem from '@ui/ListGroupItem.astro'
 import payments from '@data/payments.json'
 
-const paymentNames = Object.fromEntries((payments as { name: string; logo: string }[]).map((p) => [p.logo, p.name]))
+const PAYMENT_IDS = ['visa', 'mastercard', 'paypal', 'americanexpress', 'applepay', 'google-pay', 'stripe', 'discover', 'jcb', 'maestro', 'dinersclub', 'bitcoin', 'ethereum', 'klarna', 'venmo', 'square'] as const
+type PaymentId = (typeof PAYMENT_IDS)[number]
 
-const countryNames: Record<string, string> = {
+const paymentNames = Object.fromEntries((payments as { name: string; logo: string }[]).map((p) => [p.logo, p.name])) as Record<PaymentId, string>
+
+const countryNames = {
   us: 'United States',
   gb: 'United Kingdom',
   de: 'Germany',
@@ -124,9 +130,9 @@ function greetUser(name) {
 
               <h4>Icon Buttons</h4>
               <ButtonList class="mb-3 align-items-start">
-                <Button icon="heart" iconOnly />
-                <Button icon="star" iconOnly />
-                <Button icon="check" iconOnly />
+                <Button icon="heart" iconOnly text="Heart" />
+                <Button icon="star" iconOnly text="Star" />
+                <Button icon="check" iconOnly text="Check" />
               </ButtonList>
             </div>
           </div>
@@ -164,10 +170,10 @@ function greetUser(name) {
       <Card>
         <CardHeader title="Alerts" />
         <CardBody>
-          <Alert type="info" title="This is a primary alert with an icon." />
-          <Alert type="success" title="This is a success alert message." />
-          <Alert type="warning" title="This is a warning alert message." />
-          <Alert type="danger" title="This is a danger alert message." />
+          <Alert color="info" title="This is a primary alert with an icon." />
+          <Alert color="success" title="This is a success alert message." />
+          <Alert color="warning" title="This is a warning alert message." />
+          <Alert color="danger" title="This is a danger alert message." />
         </CardBody>
       </Card>
     </div>
@@ -178,18 +184,18 @@ function greetUser(name) {
         <CardHeader title="Badges" />
         <CardBody>
           <div class="space-y">
-            <div>
+            <BadgeList>
               <Badge text="Default" />
               <Badge text="Primary" color="primary" />
               <Badge text="Secondary" color="secondary" />
               <Badge text="Success" color="success" />
               <Badge text="Warning" color="warning" />
               <Badge text="Danger" color="danger" />
-            </div>
-            <div>
+            </BadgeList>
+            <BadgeList>
               <Badge text="With Icon" color="primary" icon="star" />
               <Badge text="Light Badge" color="primary" light />
-            </div>
+            </BadgeList>
           </div>
         </CardBody>
       </Card>
@@ -202,16 +208,16 @@ function greetUser(name) {
         <CardBody>
           <div class="space-y">
             <div>
-              <Progress value="25" />
+              <Progress value={25} />
             </div>
             <div>
-              <Progress value="50" color="success" />
+              <Progress value={50} color="success" />
             </div>
             <div>
-              <Progress value="75" color="warning" />
+              <Progress value={75} color="warning" />
             </div>
             <div>
-              <Progress value="90" color="danger" showValue />
+              <Progress value={90} color="danger" showValue />
             </div>
           </div>
         </CardBody>
@@ -235,23 +241,23 @@ function greetUser(name) {
                 <input type="password" class="form-control" id="all-elements-password-input" placeholder="Enter password" />
               </FormGroup>
               <FormGroup label="Select Dropdown" for="select-demo-select">
-                <Select id="demo-select" values={['Option 1', 'Option 2', 'Option 3']} />
+                <DataSelect id="demo-select" values={['Option 1', 'Option 2', 'Option 3']} />
               </FormGroup>
             </div>
             <div class="col-md-6">
               <FormGroup label="Textarea" for="all-elements-textarea">
                 <textarea class="form-control" id="all-elements-textarea" rows="3" placeholder="Enter message"></textarea>
               </FormGroup>
-              <FormGroup label="Checkboxes">
+              <FormGroup label="Checkboxes" associate={false}>
                 <Check title="Option 1" type="checkbox" />
                 <Check title="Option 2" type="checkbox" checked />
               </FormGroup>
-              <FormGroup label="Radio Buttons">
+              <FormGroup label="Radio Buttons" associate={false}>
                 <Check title="Option 1" type="radio" name="radio-demo" />
                 <Check title="Option 2" type="radio" name="radio-demo" checked />
               </FormGroup>
               {/* Check.astro has no id prop to target with `for`; its own <label> already wraps the input, so it's self-labeled */}
-              <FormGroup label="Switch">
+              <FormGroup label="Switch" associate={false}>
                 <Check title="Enable notifications" switch />
               </FormGroup>
             </div>
@@ -283,10 +289,10 @@ function greetUser(name) {
             <div class="col-md-6">
               <h4>Pagination</h4>
               {/* activeItem="2" is a string — strict equality never matches integer index, so no page is active */}
-              <Pagination count={5} activeItem="2" class="mb-4" />
+              <Pagination count={5} activeItem={2} class="mb-4" />
 
               <h4>Pagination with Text</h4>
-              <Pagination count={3} text />
+              <Pagination count={3} activeItem={3} text />
             </div>
           </div>
         </CardBody>
@@ -358,22 +364,22 @@ function greetUser(name) {
         <CardHeader title="Avatars" />
         <CardBody>
           <div class="space-y">
-            <div>
+            <AvatarList>
               <Avatar placeholder="JD" size="sm" />
               <Avatar placeholder="JS" />
               <Avatar placeholder="BJ" size="lg" />
               <Avatar placeholder="AB" size="xl" />
-            </div>
-            <div>
-              <Avatar placeholder="RD" shape="avatar-rounded" />
-              <Avatar placeholder="PR" color="primary" shape="avatar-rounded" />
-              <Avatar placeholder="SC" color="success" shape="avatar-rounded" />
-            </div>
-            <div>
+            </AvatarList>
+            <AvatarList>
+              <Avatar placeholder="RD" shape="rounded" />
+              <Avatar placeholder="PR" color="primary" shape="rounded" />
+              <Avatar placeholder="SC" color="success" shape="rounded" />
+            </AvatarList>
+            <AvatarList>
               <Avatar icon="user" />
               <Avatar icon="star" color="warning" />
               <Avatar placeholder="ST" status="success" />
-            </div>
+            </AvatarList>
           </div>
         </CardBody>
       </Card>
@@ -465,10 +471,10 @@ function greetUser(name) {
 
               <h4>Steps</h4>
               <div class="mb-3">
-                <Steps count={4} active="2" />
+                <Steps count={4} active={2} />
               </div>
               <div class="mb-3">
-                <Steps count={4} active="3" numbers />
+                <Steps count={4} active={3} numbers />
               </div>
             </div>
           </div>
@@ -483,10 +489,10 @@ function greetUser(name) {
         <CardBody>
           <h4>Status Dots</h4>
           <div class="mb-3">
-            <StatusDot color="success" label="Success" />
-            <StatusDot color="warning" label="Warning" />
-            <StatusDot color="danger" label="Danger" />
-            <StatusDot color="info" animated label="Info" />
+            <StatusDot color="success" ariaLabel="Success" />
+            <StatusDot color="warning" ariaLabel="Warning" />
+            <StatusDot color="danger" ariaLabel="Danger" />
+            <StatusDot color="info" animated ariaLabel="Info" />
           </div>
 
           <h4>Toast Notifications</h4>
@@ -520,7 +526,7 @@ function greetUser(name) {
 
           <h4>Range Slider</h4>
           <div class="mb-3">
-            <Range id="demo-range" min={0} max={100} value="50" />
+            <Range id="demo-range" min={0} max={100} value={50} />
           </div>
         </CardBody>
       </Card>
@@ -532,11 +538,11 @@ function greetUser(name) {
         <CardHeader title="Tags & Labels" />
         <CardBody>
           <h4>Tags</h4>
-          <div class="mb-3">
+          <TagList class="mb-3">
             <Tag text="Primary Tag" icon="star" />
             <Tag text="Success Tag" status="success" />
             <Tag text="Warning Tag" status="warning" />
-          </div>
+          </TagList>
 
           <h4>Ribbons</h4>
           <div class="position-relative mb-4" style="height: 100px; background-color: var(--tblr-bg-surface-secondary); border-radius: 8px;">
@@ -557,16 +563,16 @@ function greetUser(name) {
           <h4>Flags</h4>
           <div class="mb-3">
             <div class="d-flex flex-wrap gap-2">
-              <Flag flag="us" label={countryNames.us} />
-              <Flag flag="gb" label={countryNames.gb} />
-              <Flag flag="de" label={countryNames.de} />
-              <Flag flag="fr" label={countryNames.fr} />
-              <Flag flag="pl" label={countryNames.pl} />
-              <Flag flag="es" label={countryNames.es} />
-              <Flag flag="it" label={countryNames.it} />
-              <Flag flag="nl" label={countryNames.nl} />
-              <Flag flag="ca" label={countryNames.ca} />
-              <Flag flag="au" label={countryNames.au} />
+              <Flag flag="us" ariaLabel={countryNames.us} />
+              <Flag flag="gb" ariaLabel={countryNames.gb} />
+              <Flag flag="de" ariaLabel={countryNames.de} />
+              <Flag flag="fr" ariaLabel={countryNames.fr} />
+              <Flag flag="pl" ariaLabel={countryNames.pl} />
+              <Flag flag="es" ariaLabel={countryNames.es} />
+              <Flag flag="it" ariaLabel={countryNames.it} />
+              <Flag flag="nl" ariaLabel={countryNames.nl} />
+              <Flag flag="ca" ariaLabel={countryNames.ca} />
+              <Flag flag="au" ariaLabel={countryNames.au} />
             </div>
           </div>
 
@@ -574,10 +580,10 @@ function greetUser(name) {
           <div class="mb-3">
             <div class="d-flex flex-wrap gap-2">
               {
-                (['visa', 'mastercard', 'paypal', 'americanexpress', 'applepay', 'google-pay', 'stripe', 'discover', 'jcb', 'maestro', 'dinersclub', 'bitcoin', 'ethereum', 'klarna', 'venmo', 'square'] as const).map((payment) => (
+                PAYMENT_IDS.map((payment) => (
                   <>
-                    <Payment payment={payment} label={paymentNames[payment]} class="hide-theme-dark" />
-                    <Payment payment={payment} label={paymentNames[payment]} dark class="hide-theme-light" />
+                    <Payment payment={payment} ariaLabel={paymentNames[payment]} class="hide-theme-dark" />
+                    <Payment payment={payment} ariaLabel={paymentNames[payment]} dark class="hide-theme-light" />
                   </>
                 ))
               }
@@ -602,7 +608,7 @@ function greetUser(name) {
       <Card>
         <CardHeader title="Empty State" />
         <CardBody>
-          <Empty title="No data found" subtitle="Try adjusting your search or filter to find what you're looking for." illustration="boy-girl.svg" buttonText="Add new item" buttonIcon="plus" />
+          <Empty title="No data found" description="Try adjusting your search or filter to find what you're looking for." illustration="boy-girl.svg" buttonText="Add new item" buttonIcon="plus" />
         </CardBody>
       </Card>
     </div>
@@ -641,7 +647,7 @@ function greetUser(name) {
             <div class="modal-dialog modal-sm modal-dialog-centered" role="document">
               <div class="modal-content">
                 <div class="modal-body text-center py-4">
-                  <Icon name="circle-check" color="success" size="xl" class="mb-2" />
+                  <Icon name="circle-check" color="success" size="lg" class="mb-2" />
                   <h3>Success!</h3>
                   <div class="text-secondary">Your action was completed successfully.</div>
                 </div>

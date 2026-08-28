@@ -1,5 +1,6 @@
 ---
 import ScreenshotLayout from '../layouts/ScreenshotLayout.astro'
+import type { PaymentProvider } from '@shared/lib/tokens'
 import Payment from '@ui/Payment.astro'
 import allPayments from '@data/payments.json'
 
@@ -13,7 +14,7 @@ const payments = popularLogos.map((logo) => allPayments.find((item) => item.logo
     {
       payments.map((item) => (
         <span title={item.name}>
-          <Payment payment={item.logo} dark={true} />
+          <Payment payment={item.logo as PaymentProvider} dark={true} />
         </span>
       ))
     }

@@ -1,8 +1,8 @@
 ---
 // Photos filtered to horizontal=true, then sliced by offset/limit.
+import { staticPath } from '@shared/lib/assets'
 import photos from '@data/photos.json'
 import CardTitle from '@ui/CardTitle.astro'
-import Carousel from '@ui/Carousel.astro'
 
 interface Props {
   id?: string
@@ -15,12 +15,12 @@ interface Props {
   controls?: boolean
   captions?: boolean
   offset?: number
-  limit?: number
   fade?: boolean
 }
 
-const { id: idProp, title = 'Carousel', indicators, indicatorsThumb, indicatorsThumbRatio, indicatorsDot, indicatorsVertical, controls, captions, offset = 0, limit = 5, fade } = Astro.props
+const { id: idProp, title = 'Carousel', indicators, indicatorsThumb, indicatorsThumbRatio, indicatorsDot, indicatorsVertical, controls, captions, offset = 0, fade } = Astro.props
 
+const limit = 5
 const carouselId = idProp ?? 'carousel'
 const filteredPhotos = (photos as { file: string; title?: string; horizontal?: boolean }[]).filter((p) => p.horizontal)
 const slides = filteredPhotos.slice(offset, offset + limit)
@@ -41,7 +41,7 @@ const slides = filteredPhotos.slice(offset, offset + limit)
                 data-bs-target={`#carousel-${carouselId}`}
                 data-bs-slide-to={`${i}`}
                 class={`${indicatorsThumbRatio ? ' ratio ratio-4x3' : ''}${i === 0 ? ' active' : ''}`}
-                style={indicatorsThumb ? `background-image: url(./static/photos/${photo.file})` : undefined}
+                style={indicatorsThumb ? `background-image: url(${staticPath(`photos/${photo.file}`)})` : undefined}
                 aria-label={`Slide ${i + 1}`}
                 aria-current={i === 0 ? 'true' : undefined}
               />
@@ -54,7 +54,7 @@ const slides = filteredPhotos.slice(offset, offset + limit)
         {
           slides.map((photo, i) => (
             <div class={`carousel-item${i === 0 ? ' active' : ''}`}>
-              <img class="d-block w-100" alt={captions ? '' : (photo.title ?? '')} src={`./static/photos/${photo.file}`} />
+              <img class="d-block w-100" alt={captions ? '' : (photo.title ?? '')} src={staticPath(`photos/${photo.file}`)} />
 
               {captions && (
                 <Fragment>

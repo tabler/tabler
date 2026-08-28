@@ -1,0 +1,98 @@
+---
+title: Empty state
+summary: An empty state or blank page is commonly used as a placeholder for first-use, empty data, or an error screen. Its goal is to engage users when there is no content to display, which makes its design important for the overall user experience of your website or app.
+description: Design empty states that guide users when there is no content to show. Combine images, text, and actions for first-use and error screens.
+related: [/ui/components/placeholder]
+source: core/scss/ui/_empty.scss
+classnames:
+  component:
+    - class: empty
+      desc: Container element
+  part:
+    - class: empty-header
+      desc: Large muted text above the title, usually an error code
+    - class: empty-img
+      desc: Illustration slot
+    - class: empty-icon
+      desc: Icon slot, an alternative to the illustration
+    - class: empty-title
+      desc: Heading that says what is missing
+    - class: empty-subtitle
+      desc: Explanation under the title
+    - class: empty-action
+      desc: Row holding the call to action
+  style:
+    - class: empty-bordered
+      desc: Adds a dashed border around the whole block
+---
+import Example from '@components/Example.astro';
+import Illustration from '@ui/Illustration.astro';
+import CodeDocs from '@components/CodeDocs.astro';
+import Icon from '@ui/Icon.astro'
+
+## Default markup
+
+Use the default empty state to engage users in the critical moments of their experience with your website or app. A good empty state screen should let users know what is happening and what they should do next as well as encourage them to take action.
+
+<Example>
+<div class="empty">
+  <div class="empty-icon"><Icon name="mood-sad" /></div>
+  <p class="empty-title">No results found</p>
+  <p class="empty-subtitle text-secondary"> Try adjusting your search or filter to find what you're looking for. </p>
+  <div class="empty-action">
+    <a href="#" class="btn btn-primary">
+      <Icon name="search" /> Search again
+    </a>
+  </div>
+</div>
+</Example>
+
+## Empty state with illustration
+
+Make your empty state screen more attractive and engaging by adding an illustration. Thanks to a more personalized design, you will improve your brand image and make your website or app more user friendly.
+
+Do you need an illustration to enhance your web designs? We've got something for you! Check out our premium SVG [illustrations](https://tabler.io/illustrations).
+
+<Example>
+<div class="empty">
+  <div class="empty-img"><Illustration image="boy-with-key" alt="Empty state illustration" /></div>
+  <p class="empty-title">Invoices are managed from here</p>
+  <p class="empty-subtitle text-secondary"> Try adjusting your search or filter to find what you're looking for. </p>
+  <div class="empty-action">
+    <a href="#" class="btn btn-primary">
+      <Icon name="plus" /> New invoice
+    </a>
+  </div>
+</div>
+</Example>
+
+## Empty state with header
+
+Instead of adding an icon or illustration you can simply give the text:
+
+<Example>
+<div class="empty">
+  <div class="empty-header">404</div>
+  <p class="empty-title">Oops… You just found an error page</p>
+  <p class="empty-subtitle text-secondary"> Try adjusting your search or filter to find what you're looking for. </p>
+  <div class="empty-action">
+    <a href="#" class="btn btn-primary">
+      <Icon name="arrow-left" /> Take me home
+    </a>
+  </div>
+</div>
+</Example>
+
+## Accessibility
+
+- The empty state title is the first thing users read, so make it a real heading at the right level for the page, not a styled `div`.
+- Say what happened and what to do next. "No results" alone leaves users stuck; "No results for `tabler`. Try a shorter search." does not.
+- The illustration is decoration. Give it `alt=""`, or `aria-hidden="true"` when it is an inline SVG.
+- The action in `empty-action` should be a real `button` or link, so it can be reached with the keyboard.
+- When the empty state replaces content after a search, announce it from a live region - otherwise a screen reader user gets no signal that the list changed.
+
+## SCSS variables
+
+Use these SCSS variables to customize the empty state. The default values are:
+
+<CodeDocs name="empty-variables" file="core/scss/_variables.scss" />

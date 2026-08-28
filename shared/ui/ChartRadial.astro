@@ -2,14 +2,14 @@
 import CaptureScript from '../components/CaptureScript.astro'
 
 interface Props {
-  id?: string
+  id: string
   height?: number
   class?: string
-  title?: string
-  value?: number
+  title: string
+  value: number
 }
 
-const { id = 'active-users-4', height = 350, class: className = '', title = 'Active users', value = 58 }: Props = Astro.props
+const { id, height = 350, class: className = '', title, value }: Props = Astro.props
 
 const chartId = `chart-${id}`
 const fixedTitle = title.toUpperCase()
@@ -18,7 +18,7 @@ const fixedTitle = title.toUpperCase()
 <div id={chartId} class={`position-relative ${className}`} role="img" aria-label={title}></div>
 <CaptureScript>
   <!-- BEGIN CHART RADIAL -->
-  <script define:vars={{ chartId, height, value, fixedTitle }}>
+  <script is:inline define:vars={{ chartId, height, value, fixedTitle }}>
     function initRadialChart() {
       window.tabler_chart ??= {}
 

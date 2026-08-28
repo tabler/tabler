@@ -4,18 +4,17 @@ import Icon from './Icon.astro'
 interface Props {
   text?: string
   top?: boolean
-  left?: boolean
-  bottom?: boolean
-  bookmark?: boolean
   color?: string
-  filled?: boolean
+  class?: string
+  /** remaining attributes (id, data-*, aria-*, …) are forwarded to the root element */
+  [key: string]: unknown
 }
 
-const { text, top, left, bottom, bookmark, color, filled } = Astro.props
+const { text, top, color, class: className, ...rest } = Astro.props
 
-const classes = ['ribbon', top && 'ribbon-top', left && 'ribbon-start', bottom && 'ribbon-bottom', bookmark && 'ribbon-bookmark', color && `bg-${color}`]
+const classes = ['ribbon', top && 'ribbon-top', color && `bg-${color}`, className]
 ---
 
-<div class:list={classes}>
-  {text ? text : <Icon name="star" type={filled ? 'filled' : 'outline'} />}
+<div class:list={classes} {...rest}>
+  {text ? text : <Icon name="star" />}
 </div>

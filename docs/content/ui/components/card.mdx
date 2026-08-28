@@ -1,0 +1,713 @@
+---
+title: Card
+summary: A card is a flexible user interface element that helps organize content into meaningful sections and display it across different screen sizes. It can contain smaller elements such as images, text, links, and buttons, and can act as an entry point to more detailed information.
+description: Organize content with flexible cards. Combine headers, footers, images, and actions to build sections that work on any screen size.
+related: [/ui/components/card-gradient, /ui/components/ribbon]
+source: core/scss/ui/_cards.scss
+classnames:
+  component:
+    - class: card
+      desc: Container element
+  part:
+    - class: card-header
+      desc: Title bar at the top
+    - class: card-title
+      desc: Heading, inside the header or the body
+    - class: card-subtitle
+      desc: Small label above the title
+    - class: card-body
+      desc: Content area
+    - class: card-footer
+      desc: Row at the bottom
+    - class: card-meta
+      desc: Muted secondary line, for a role or a date
+    - class: card-actions
+      desc: Slot for controls on the trailing edge of the header
+    - class: card-btn
+      desc: Full width action along the bottom edge
+    - class: card-img-top
+      desc: Image above the body; card-img-end rounds the trailing corners instead
+    - class: card-img-overlay
+      desc: Content laid over an image; add card-img-overlay-dark for a scrim
+    - class: card-cover
+      desc: Header with a background photo and an overlay; card-cover-blurred blurs it
+    - class: card-stamp
+      desc: Large decorative mark in the corner
+    - class: card-status-top
+      desc: Colored bar on an edge; also -bottom and -start
+    - class: card-progress
+      desc: Progress bar attached to the card edge
+    - class: card-tabs
+      desc: Wrapper for a card whose header is a row of tabs
+    - class: card-header-tabs
+      desc: Tabs inside the header; card-header-pills for the pill style
+    - class: card-table
+      desc: Table that sits flush inside the card
+    - class: card-code
+      desc: Replaces the body for a code block, removing the padding
+    - class: card-list-group
+      desc: List group that sits flush inside the card
+  style:
+    - class: card-borderless
+      desc: Removes the border
+    - class: card-transparent
+      desc: Removes the background and the border
+    - class: card-dashed
+      desc: Dashed border, for an empty or a placeholder card
+  modifier:
+    - class: card-stacked
+      desc: Draws a second card behind this one
+    - class: card-rotate-start
+      desc: Tilts the card; also -end, -left and -right
+    - class: card-body-scrollable
+      desc: Scrolls the body instead of growing the card
+  behavior:
+    - class: card-active
+      desc: Marks the card as selected
+    - class: card-inactive
+      desc: Dims the card
+    - class: card-link
+      desc: Whole card is a link; -pop and -rotate add a hover effect
+  size:
+    - class: card-sm
+      desc: Tighter padding
+    - class: card-md
+      desc: Default padding
+    - class: card-lg
+      desc: Roomier padding
+---
+import Example from '@components/Example.astro';
+import Icon from '@ui/Icon.astro';
+import CodeDocs from '@components/CodeDocs.astro';
+
+## Default card
+
+Use the `.card` and `.card-body` classes to create a card and use it as the basis for a more advanced card design. A card is a perfect way to organize content and make it look neat and tidy.
+
+<Example column>
+<div class="card">
+  <div class="card-body"><p>This is some text within a card body.</p></div>
+</div>
+</Example>
+
+## Card padding
+
+You can change the padding of a newly created card. To do it, use the `.card-sm`, `.card-md` or `.card-lg` classes.
+
+Cards with the `.card-sm` class are well suited for small items such as widgets, etc., while the `.card-lg` class can be used for large blocks of text. Padding will be automatically reduced on small devices, to fit the screen size.
+
+<Example column>
+<div class="card card-sm"><div class="card-body">This is some text within a card body.</div></div>
+<div class="card"><div class="card-body">This is some text within a card body.</div></div>
+<div class="card card-md"><div class="card-body">This is some text within a card body.</div></div>
+<div class="card card-lg"><div class="card-body">This is some text within a card body.</div></div>
+</Example>
+
+## Card with title
+
+Add a title to your card by including the `.card-title` class within `.card-body`. You can also place the title inside the `.card-header` element to separate the title from the content with a horizontal line.
+
+<Example column>
+<div class="card">
+  <div class="card-body">
+    <h3 class="card-title">Card title</h3>
+    <p class="text-secondary">This is some text within a card body.</p>
+  </div>
+</div>
+<div class="card">
+  <div class="card-header"><h3 class="card-title">Card title</h3></div>
+  <div class="card-body"><p class="text-secondary">This is some text within a card body.</p></div>
+</div>
+</Example>
+
+## Card with title and image
+
+To create a more visually appealing card, add a title and an image. Thanks to that, the card will go well with your interface design and draw users' attention.
+
+<Example column>
+<div class="card">
+  <div class="img-responsive img-responsive-21x9 card-img-top" style="background-image: url(/static/photos/cup-of-coffee-and-an-open-book.jpg)"></div>
+  <div class="card-body">
+    <h3 class="card-title">Card with title and image</h3>
+    <p class="text-secondary"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit incidunt, iste, itaque minima neque pariatur perferendis sed suscipit velit vitae voluptatem. </p>
+  </div>
+</div>
+</Example>
+
+## Blog post card
+
+Add an image to your blog post card to make it eye-catching. You can do it by adding the image, with a `.card-img-top` class, inside the `.card` element. Thanks to the `.d-flex` and `.flex-column` classes within `.card-body`, the author details will be displayed at the bottom of the card.
+
+<Example column>
+<div class="card d-flex flex-column">
+  <a href="#"><img class="card-img-top" src="/static/photos/book-on-the-grass.jpg" alt="" /></a>
+  <div class="card-body d-flex flex-column">
+    <h3 class="card-title"><a href="#">How do you know she is a witch?</a></h3>
+    <div class="text-secondary"> Are you suggesting that coconuts migrate? No, no, no! Yes, yes. A bit. But she's got a wart. You ... </div>
+    <div class="d-flex align-items-center pt-4 mt-auto">
+      <span class="avatar" style="background-image: url(/static/avatars/023m.jpg)"></span>
+      <div class="ms-3">
+        <a href="#" class="text-body">Maryjo Lebarree</a>
+        <div class="text-secondary">3 days ago</div>
+      </div>
+      <div class="ms-auto">
+        <a href="#" class="icon d-none d-md-inline-block ms-3 text-secondary">
+          <Icon name="heart" />
+        </a>
+      </div>
+    </div>
+  </div>
+</div>
+</Example>
+
+## Row deck
+
+Add the `.row-deck` class to `.row`, if you want to display several cards next to one another. Thanks to that, they will all have the same height.
+
+<Example>
+<div class="row row-deck">
+  <div class="col-md-4">
+    <div class="card"><div class="card-body">Short content</div></div>
+  </div>
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-body"> Extra long content of card. Lorem ipsum dolor sit amet, consetetur sadipscing elitr </div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card"><div class="card-body">Short content</div></div>
+  </div>
+</div>
+</Example>
+
+## Post card with aside image
+
+You can also put the image beside the text instead of above it. Use a `row row-0` inside the card, give the image column a fixed width, and let the body take the rest. `object-cover` on the image keeps it filling its column without distortion.
+
+<Example>
+<div class="card d-flex flex-column">
+  <div class="row row-0 flex-fill">
+    <div class="col-md-3">
+      <a href="#">
+        <img src="/static/photos/a-woman-works-on-a-laptop-at-home.jpg" class="w-100 h-100 object-cover" alt="Card side image" />
+      </a>
+    </div>
+    <div class="col">
+      <div class="card-body h-full d-flex flex-column">
+        <h3 class="card-title"><a href="#">Shut up!</a></h3>
+        <div class="text-secondary"> Burn her! How do you know she is a witch? You don't frighten us, English pig-dogs! Go and boil yo... </div>
+        <div class="d-flex align-items-center pt-4 mt-auto">
+          <span class="avatar" style="background-image: url(/static/avatars/029m.jpg)"></span>
+          <div class="ms-3">
+            <a href="#" class="text-body">Egan Poetz</a>
+            <div class="text-secondary">3 days ago</div>
+          </div>
+          <div class="ms-auto">
+            <a href="#" class="icon d-none d-md-inline-block ms-3 text-red">
+              <Icon name="heart" />
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</Example>
+
+## Color variations
+
+Add a status color to your card, either at the top or on the side of the card, to customize it and make it more eye-catching. Use `card-status-*` and `bg-*` classes to change the placement and color of the status border.
+
+<Example>
+<div class="row row-deck">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-status-top bg-danger"></div>
+      <div class="card-body">
+        <h3 class="card-title">Card with top status</h3>
+        <p class="text-secondary"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit incidunt, iste, itaque minima neque pariatur perferendis sed suscipit velit vitae voluptatem. </p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-status-start bg-green"></div>
+      <div class="card-body">
+        <h3 class="card-title">Card with side status</h3>
+        <p class="text-secondary"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit incidunt, iste, itaque minima neque pariatur perferendis sed suscipit velit vitae voluptatem. </p>
+      </div>
+    </div>
+  </div>
+</div>
+</Example>
+
+## Card stamp
+
+Use a card stamp to put a large, faded icon in the top corner of a card. It is only a decoration, so it never covers the text and it does not react to clicks.
+
+Add a `.card-stamp` element as a direct child of the card, before the card body. Put the icon in a `.card-stamp-icon` element inside it.
+
+<Example column>
+<div class="card">
+  <div class="card-stamp">
+    <div class="card-stamp-icon bg-yellow"><Icon name="bell" /></div>
+  </div>
+  <div class="card-body">
+    <h3 class="card-title">Card with a stamp</h3>
+    <p class="text-secondary"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit incidunt, iste, itaque minima neque pariatur. </p>
+  </div>
+</div>
+</Example>
+
+## Card stamp size and color
+
+Add the `card-stamp-lg` class to make the stamp bigger. Change the circle color with a `bg-*` class, and the icon color with a `text-*` class.
+
+<Example>
+<div class="row row-deck">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-stamp card-stamp-lg">
+        <div class="card-stamp-icon bg-primary"><Icon name="ghost" /></div>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title">Large stamp</h3>
+        <p class="text-secondary">The large stamp is a good fit for banners and wide cards.</p>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card bg-primary text-primary-fg">
+      <div class="card-stamp">
+        <div class="card-stamp-icon bg-white text-primary"><Icon name="star" /></div>
+      </div>
+      <div class="card-body">
+        <h3 class="card-title">Stamp on a color card</h3>
+        <p>Use a white circle with a colored icon on a card with a background color.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</Example>
+
+## Stacked card
+
+Use the `card-stacked` class to stack up multiple cards, if you want to save screen space or create a visually appealing effect.
+
+<Example column>
+<div class="card card-stacked">
+  <div class="card-body">
+    <h3 class="card-title">Stacked card</h3>
+    <p class="text-secondary"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Aperiam deleniti fugit incidunt, iste, itaque minima neque pariatur perferendis sed suscipit velit vitae voluptatem. </p>
+  </div>
+</div>
+</Example>
+
+## Tabbed card
+
+Organize multiple cards into [tabs](/ui/components/tab) to be able to display more content in a well-organized way and allow users to alternate between them easily.
+
+<Example column>
+<div class="card-tabs">
+  <ul class="nav nav-tabs">
+    <li class="nav-item">
+      <a href="#tab-top-1" class="nav-link active" data-bs-toggle="tab">Tab 1</a>
+    </li>
+    <li class="nav-item"><a href="#tab-top-2" class="nav-link" data-bs-toggle="tab">Tab 2</a></li>
+    <li class="nav-item"><a href="#tab-top-3" class="nav-link" data-bs-toggle="tab">Tab 3</a></li>
+    <li class="nav-item"><a href="#tab-top-4" class="nav-link" data-bs-toggle="tab">Tab 4</a></li>
+  </ul>
+  <div class="tab-content">
+    <div id="tab-top-1" class="card tab-pane active show">
+      <div class="card-body">
+        <div class="card-title">Content of tab #1</div>
+        <p class="text-secondary"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci, alias aliquid distinctio dolorem expedita, fugiat hic magni molestiae molestias odit. </p>
+      </div>
+    </div>
+    <div id="tab-top-2" class="card tab-pane">
+      <div class="card-body">
+        <div class="card-title">Content of tab #2</div>
+        <p class="text-secondary"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci, alias aliquid distinctio dolorem expedita, fugiat hic magni molestiae molestias odit. </p>
+      </div>
+    </div>
+    <div id="tab-top-3" class="card tab-pane">
+      <div class="card-body">
+        <div class="card-title">Content of tab #3</div>
+        <p class="text-secondary"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci, alias aliquid distinctio dolorem expedita, fugiat hic magni molestiae molestias odit. </p>
+      </div>
+    </div>
+    <div id="tab-top-4" class="card tab-pane">
+      <div class="card-body">
+        <div class="card-title">Content of tab #4</div>
+        <p class="text-secondary"> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Adipisci, alias aliquid distinctio dolorem expedita, fugiat hic magni molestiae molestias odit. </p>
+      </div>
+    </div>
+  </div>
+</div>
+</Example>
+
+## Card status
+
+Add a status color to the top, bottom or side of a card. Use `card-status-top`, `card-status-bottom` or `card-status-start` with a `bg-*` color.
+
+<Example>
+<div class="row row-deck">
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-status-top bg-primary"></div>
+      <div class="card-body">Top status</div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-status-bottom bg-green"></div>
+      <div class="card-body">Bottom status</div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card">
+      <div class="card-status-start bg-orange"></div>
+      <div class="card-body">Side status</div>
+    </div>
+  </div>
+</div>
+</Example>
+
+## Card progress
+
+Put a progress bar at the edge of a card with `card-progress`. It squares off against the card corners, so use it as the first or the last child.
+
+<Example>
+<div class="card">
+  <div class="card-body">
+    <h3 class="card-title">Storage</h3>
+    <p class="text-secondary mb-0">484 GB of 512 GB used</p>
+  </div>
+  <div class="progress card-progress">
+    <div class="progress-bar" style="width: 94%" role="progressbar" aria-valuenow="94" aria-valuemin="0" aria-valuemax="100" aria-label="94% used"></div>
+  </div>
+</div>
+</Example>
+
+## Card actions
+
+Use `card-actions` for buttons and links in a card header. It keeps them aligned with the title.
+
+<Example>
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title">Team members</h3>
+    <div class="card-actions">
+      <a href="#" class="btn btn-primary">
+        <Icon name="plus" /> Invite
+      </a>
+    </div>
+  </div>
+  <div class="card-body">Invite a teammate to this project.</div>
+</div>
+</Example>
+
+## Card subtitle
+
+Add `card-subtitle` above a title for a small label, such as a category or a date.
+
+<Example>
+<div class="card">
+  <div class="card-body">
+    <p class="card-subtitle">Reports</p>
+    <h3 class="card-title">Monthly summary</h3>
+    <p class="text-secondary mb-0">Every report from the last 30 days.</p>
+  </div>
+</div>
+</Example>
+
+## Card surfaces
+
+Change how solid a card looks. `card-borderless` drops the border, `card-dashed` draws it dashed, and `card-transparent` removes the background as well - useful for an "add new" tile.
+
+<Example>
+<div class="row row-deck">
+  <div class="col-md-4">
+    <div class="card card-borderless">
+      <div class="card-body">Borderless</div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card card-dashed">
+      <div class="card-body">Dashed</div>
+    </div>
+  </div>
+  <div class="col-md-4">
+    <div class="card card-transparent">
+      <div class="card-body text-secondary">
+        <Icon name="plus" /> Add new
+      </div>
+    </div>
+  </div>
+</div>
+</Example>
+
+## Header and footer variants
+
+`card-header-light` tints the header, and `card-footer-transparent` drops the footer background and its top padding.
+
+<Example>
+<div class="card">
+  <div class="card-header card-header-light">
+    <h3 class="card-title">Invoice #4321</h3>
+  </div>
+  <div class="card-body">Paid on 12 May.</div>
+  <div class="card-footer card-footer-transparent">
+    <a href="#" class="link-primary">Download PDF</a>
+  </div>
+</div>
+</Example>
+
+## Scrollable body
+
+Add `card-body-scrollable` with a height to keep a long list inside the card instead of stretching it.
+
+<Example>
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title">Changelog</h3>
+  </div>
+  <div class="card-body card-body-scrollable" style="height: 10rem">
+    <p>Fixed the dropdown position inside a card.</p>
+    <p>Added a dark variant to the image overlay.</p>
+    <p>Improved the contrast of muted text.</p>
+    <p>Removed the unused card options markup.</p>
+    <p>Documented the scrollable card body.</p>
+  </div>
+</div>
+</Example>
+
+## Table in a card
+
+Add `card-table` to a table so it runs edge to edge and drops its bottom margin.
+
+<Example>
+<div class="card">
+  <div class="card-header">
+    <h3 class="card-title">Invoices</h3>
+  </div>
+  <table class="table card-table">
+    <thead>
+      <tr>
+        <th>Number</th>
+        <th>Status</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>#4321</td>
+        <td><span class="status status-green">Paid</span></td>
+      </tr>
+      <tr>
+        <td>#4322</td>
+        <td><span class="status status-yellow">Pending</span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+</Example>
+
+## Clickable card
+
+Make the whole card a link with `card-link`. Add `card-link-pop` to lift it on hover, or `card-link-rotate` to tilt it.
+
+<Example>
+<div class="row row-deck">
+  <div class="col-md-6">
+    <a href="#" class="card card-link card-link-pop">
+      <div class="card-body">
+        <h3 class="card-title">Lifts on hover</h3>
+        <p class="text-secondary mb-0">card-link-pop</p>
+      </div>
+    </a>
+  </div>
+  <div class="col-md-6">
+    <a href="#" class="card card-link card-link-rotate">
+      <div class="card-body">
+        <h3 class="card-title">Tilts on hover</h3>
+        <p class="text-secondary mb-0">card-link-rotate</p>
+      </div>
+    </a>
+  </div>
+</div>
+</Example>
+
+## Card states
+
+`card-active` marks the selected card, and `card-inactive` fades one out until it is hovered.
+
+<Example>
+<div class="row row-deck">
+  <div class="col-md-6">
+    <div class="card card-active">
+      <div class="card-body">Active card</div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card card-inactive">
+      <div class="card-body">Inactive card</div>
+    </div>
+  </div>
+</div>
+</Example>
+
+## Image overlay
+
+Put content on top of an image with `card-img-overlay`. Add `card-img-overlay-dark` for a gradient that keeps light text readable.
+
+<Example>
+<div class="card">
+  <img src="/static/photos/a-woman-works-on-a-laptop-at-home.jpg" alt="" class="card-img" />
+  <div class="card-img-overlay card-img-overlay-dark">
+    <h3 class="card-title text-white">Working from home</h3>
+    <p class="text-white mb-0">Text stays readable over the photo.</p>
+  </div>
+</div>
+</Example>
+
+## Card cover
+
+Use `card-cover` for a header with a background photo. It darkens the image with an overlay, so white text on top stays readable whatever the picture looks like. Add `card-cover-blurred` to blur the photo behind that overlay.
+
+<Example>
+<div class="row row-cards">
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-cover text-center text-white" style="background-image: url(/static/photos/book-on-the-grass.jpg)">
+        <div class="h1 m-0">Reading list</div>
+        <div class="mt-1">12 books this year</div>
+      </div>
+      <div class="card-body">Standard overlay.</div>
+    </div>
+  </div>
+  <div class="col-md-6">
+    <div class="card">
+      <div class="card-cover card-cover-blurred text-center text-white" style="background-image: url(/static/photos/cup-of-coffee-and-an-open-book.jpg)">
+        <div class="h1 m-0">Reading list</div>
+        <div class="mt-1">12 books this year</div>
+      </div>
+      <div class="card-body">Blurred variant.</div>
+    </div>
+  </div>
+</div>
+</Example>
+
+## Pills in a card header
+
+Tabs in a card header take `card-header-tabs`. For the pill style, use `card-header-pills` on the same `nav`.
+
+<Example>
+<div class="card">
+  <div class="card-header">
+    <ul class="nav nav-pills card-header-pills">
+      <li class="nav-item"><a class="nav-link active" href="#">Overview</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Activity</a></li>
+      <li class="nav-item"><a class="nav-link" href="#">Settings</a></li>
+    </ul>
+  </div>
+  <div class="card-body">Card content</div>
+</div>
+</Example>
+
+## Image on the trailing side
+
+`card-img-top` rounds the top corners of an image, and `card-img-end` rounds the trailing ones. Use it when the image sits beside the text rather than above it, so its corners follow the card.
+
+<Example>
+<div class="card">
+  <div class="row row-0">
+    <div class="col">
+      <div class="card-body">
+        <h3 class="card-title">Card with a side image</h3>
+        <div class="text-secondary">The image keeps the rounded corner on the trailing edge of the card.</div>
+      </div>
+    </div>
+    <div class="col-4">
+      <img src="/static/photos/book-on-the-grass.jpg" class="w-100 h-100 object-cover card-img-end" alt="" />
+    </div>
+  </div>
+</div>
+</Example>
+
+## Card action button
+
+Use `card-btn` for a full-width action at the bottom of a card. It gets a top border, centers its content and highlights on hover, so several of them side by side read as one button bar.
+
+<Example>
+<div class="card" style="max-width: 20rem">
+  <div class="card-body text-center">
+    <span class="avatar avatar-xl mb-3" style="background-image: url(/static/avatars/029m.jpg)"></span>
+    <div class="fw-medium">Egan Poetz</div>
+    <div class="card-meta">Product Manager</div>
+  </div>
+  <div class="d-flex">
+    <a href="#" class="card-btn"><Icon name="mail" class="me-2" /> Email</a>
+    <a href="#" class="card-btn"><Icon name="phone" class="me-2" /> Call</a>
+  </div>
+</div>
+</Example>
+
+`card-meta` above is the muted secondary line that goes with a title - a role, a date, an author.
+
+## Rotated card
+
+Add one of the `card-rotate-*` classes to tilt a card slightly. Use it for a stack of cards or a decorative section header, not for content users have to read.
+
+| Class | Tilt |
+| --- | --- |
+| `card-rotate-start` | towards the start edge |
+| `card-rotate-end` | towards the end edge |
+| `card-rotate-left` | left, regardless of text direction |
+| `card-rotate-right` | right, regardless of text direction |
+
+<Example>
+<div class="row row-cards">
+  <div class="col-6">
+    <div class="card card-rotate-start"><div class="card-body">Rotated to the start</div></div>
+  </div>
+  <div class="col-6">
+    <div class="card card-rotate-end"><div class="card-body">Rotated to the end</div></div>
+  </div>
+</div>
+</Example>
+
+## Code in a card
+
+`card-code` replaces the card body when the card holds a code block. It removes the body padding and the border the highlighter adds, so the code sits flush against the card edges.
+
+<Example>
+<div class="card" style="max-width: 24rem">
+  <div class="card-header">
+    <h3 class="card-title">Card with code</h3>
+  </div>
+  <div class="card-code">
+```scss
+.card-footer {
+  background: transparent;
+}
+```
+  </div>
+</div>
+</Example>
+
+Use it instead of `card-body`, not next to it.
+
+## Accessibility
+
+A card is a container, so it has no role of its own. What matters is the content inside it.
+
+- Keep one heading per card and match its level to the page outline. `card-title` only sets the look, so use a real `h2`-`h4` element.
+- For a clickable card, wrap the card in a single `a` element (`card-link`) rather than putting a link only on the title. That way the whole card is one tab stop with one accessible name.
+- `card-status-*` and `card-stamp` are decoration. Never let a color or an icon be the only carrier of meaning - repeat it in text, for example with a [status](/ui/components/status) or a [badge](/ui/components/badge).
+- Give an image inside a card a real `alt` when it carries information, or an empty `alt=""` when it is decorative.
+
+## SCSS variables
+
+Use these SCSS variables to customize cards. The default values are:
+
+<CodeDocs name="card-variables" file="core/scss/_variables.scss" />

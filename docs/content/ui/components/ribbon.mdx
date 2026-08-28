@@ -1,0 +1,102 @@
+---
+title: Ribbon
+summary: A ribbon is a graphical element that attracts user attention to a given interface element and makes it stand out.
+description: Highlight cards and other elements with ribbons. Change the position, color, and shape, or add icons and text to draw attention.
+related: [/ui/components/card, /ui/components/badge]
+source: core/scss/ui/_ribbons.scss
+classnames:
+  component:
+    - class: ribbon
+      desc: Container element, positioned over its parent
+  style:
+    - class: ribbon-bookmark
+      desc: Notched bookmark shape instead of a plain band
+  direction:
+    - class: ribbon-top
+      desc: Places the ribbon along the top edge
+    - class: ribbon-bottom
+      desc: Places the ribbon along the bottom edge
+    - class: ribbon-start
+      desc: Places the ribbon on the leading edge
+  color:
+    - class: bg-{color}
+      desc: Any base color, for example bg-red or bg-green
+---
+import Example from '@components/Example.astro';
+import Icon from '@ui/Icon.astro';
+import CodeDocs from '@components/CodeDocs.astro';
+
+## Default markup
+
+Use the `ribbon` class to add the default ribbon to any section of your interface.
+
+<Example card column>
+<div class="card">
+  <div class="card-body" style="height: 5rem"></div>
+  <div class="ribbon"><Icon name="star" /></div>
+</div>
+</Example>
+
+## Ribbon position
+
+You can change the position of a ribbon by adding one of the following classes to the element:
+
+- `ribbon-top` - moves it to the top
+- `ribbon-end` - moves it to the right
+- `ribbon-bottom` - moves it to the bottom
+- `ribbon-start` - moves it to the left
+
+Using multiple classes at once will give you more position options. For example, the following class: `.ribbon.ribbon-top.ribbon-start` will move the ribbon to the top left corner.
+
+<Example column>
+<div class="card">
+  <div class="card-body" style="height: 5rem"></div>
+  <div class="ribbon ribbon-top ribbon-start"><Icon name="star" /></div>
+</div>
+</Example>
+
+## Ribbon color
+
+Customize the ribbon's background color. See the [full list of available colors](/ui/base/colors) for more details.
+
+<Example column>
+<div class="card">
+  <div class="card-body" style="height: 5rem"></div>
+  <div class="ribbon bg-red"><Icon name="star" /></div>
+</div>
+</Example>
+
+## Ribbon text
+
+Add your own text to a ribbon to display any additional information and make it easy to spot for users.
+
+<Example column>
+<div class="card">
+  <div class="card-body" style="height: 5rem"></div>
+  <div class="ribbon bg-green">NEW</div>
+</div>
+</Example>
+
+## Bookmark ribbon
+
+Use the `.ribbon-bookmark` class to create a bookmark ribbon. It is a special style of ribbon that is used to highlight important elements in your interface.
+
+<Example column>
+<div class="card w-100">
+  <div class="card-body" style="height: 5rem"></div>
+  <div class="ribbon ribbon-bookmark bg-orange"><Icon name="star" /></div>
+</div>
+</Example>
+
+## Accessibility
+
+- A ribbon is a short label placed over a card. Keep the text in the markup rather than in a background image, or it is lost to a screen reader.
+- Read the ribbon in the order it appears in the markup, not where it lands visually. Put it near the card title so it is announced with it.
+- An icon-only ribbon needs an `aria-label`, or a `visually-hidden` word next to the icon.
+- The ribbon sits on top of the card, so check the contrast against whatever is behind it - a photo needs an overlay.
+
+## SCSS variables
+
+Use these SCSS variables to customize ribbons. The default values are:
+
+<CodeDocs name="ribbon-variables" file="core/scss/_variables.scss" />

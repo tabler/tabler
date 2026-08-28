@@ -5,6 +5,7 @@ import Badge from '@ui/Badge.astro'
 import ListGroup from '@ui/ListGroup.astro'
 import ListGroupItem from '@ui/ListGroupItem.astro'
 import crmDashboard from '@data/crm-dashboard.json'
+import CardTitle from '@ui/CardTitle.astro'
 
 const churn = crmDashboard.churn_risk
 ---
@@ -13,10 +14,10 @@ const churn = crmDashboard.churn_risk
   <div class="card-header">
     <div class="d-flex align-items-center gap-2">
       <Icon name="alert-triangle" class="text-red" />
-      <h3 class="card-title mb-0">Churn risk</h3>
+      <CardTitle class="mb-0">Churn risk</CardTitle>
     </div>
     <CardActions>
-      <Badge text="3 accounts" color="red" />
+      <Badge text={`${churn.items.length} accounts`} color="red" />
     </CardActions>
   </div>
 

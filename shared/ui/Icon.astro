@@ -1,24 +1,24 @@
 ---
-import icons from '@data/icons.json'
+import { iconSvg, iconSourceComment } from '@shared/lib/svg'
+
+/** core/scss/ui/_icons.scss `.icon-{size}` modifier classes */
+export type IconSize = 'sm' | 'md' | 'lg'
 
 interface Props {
   name: string
-  type?: 'outline' | 'filled'
-  class?: string
-  color?: string
-  size?: string
+  /** filled icon variant (default: outline) */
+  filled?: boolean
+  class?: string | undefined
+  color?: string | undefined
+  size?: IconSize | undefined
   inline?: boolean
 }
 
-const { name, type = 'outline', class: className, color, size, inline } = Astro.props
-
-const icon = (icons as unknown as Record<string, { svg: Record<string, string> }>)[name]
+const { name, filled, class: className, color, size, inline } = Astro.props
 
 const classes = ['icon', className, color && `text-${color}`, inline && 'icon-inline', size && `icon-${size}`].filter(Boolean).join(' ')
 
-let svg = icon?.svg?.[type] ?? ''
-svg = svg.replace('<path stroke="none" d="M0 0h24v24H0z" fill="none"/>', '')
-svg = svg.replace(/class="[^"]+"/, `aria-hidden="true" focusable="false" class="${classes}"`)
+const svg = iconSvg(name, { filled, classes })
 ---
 
-{icon && <Fragment set:html={`<!-- Download SVG icon from http://tabler.io/icons/icon/${name} -->\n\t${svg}`} />}
+{svg !== undefined && <Fragment set:html={`${iconSourceComment(name)}\n\t${svg}`} />}

@@ -1,0 +1,154 @@
+---
+title: Tracking
+summary: Component for visualizing activity logs or other monitoring-related data. With its ability to show data in a visually appealing and easily understandable way, the tracking component is an essential tool for any organization that relies on data monitoring and analysis to optimize performance and user experience.
+description: Visualize activity logs and uptime data with the tracking component - a compact row of colored blocks that show status over time.
+related: [/ui/components/tooltip, /ui/plugins/chart]
+source: core/scss/ui/_tracking.scss
+classnames:
+  component:
+    - class: tracking
+      desc: Container element
+  part:
+    - class: tracking-block
+      desc: One block in the strip, colored with a bg-{color} utility
+  modifier:
+    - class: tracking-squares
+      desc: Draws the blocks as equal squares instead of tall bars
+---
+import Subheader from '@ui/Subheader.astro';
+import Example from '@components/Example.astro';
+import CodeDocs from '@components/CodeDocs.astro';
+import Icon from '@ui/Icon.astro'
+
+## Basic example
+
+Build a tracking view from a `.tracking` wrapper with one `.tracking-block` element per time period. Use background classes such as `bg-success` or `bg-danger` to show each status, and add [tooltips](/ui/components/tooltip) for details.
+
+<Example>
+<div class="tracking">
+  <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+  <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+  <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+  <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+  <div class="tracking-block bg-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Downtime"></div>
+  <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+  <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+  <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+  <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+  <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+  <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+  <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+  <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+  <div class="tracking-block bg-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Big load"></div>
+  <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+  <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+  <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+  <div class="tracking-block bg-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Downtime"></div>
+  <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+  <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+  <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+  <div class="tracking-block" data-bs-toggle="tooltip" data-bs-placement="top" title="No data"></div>
+  <div class="tracking-block" data-bs-toggle="tooltip" data-bs-placement="top" title="No data"></div>
+  <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+  <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+  <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+  <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+  <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+  <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+  <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+</div>
+</Example>
+
+## Tracking inside a card
+
+You can add a tracking component inside the cards to give your reports a fresh look and visualize the status of your system in an attractive way. If you want to read how to add other elements to a card it is worth reading [documentation of card](/ui/components/card).
+
+<Example column>
+<div class="card">
+  <div class="card-body">
+    <div class="d-flex align-items-center">
+      <Subheader>Status monitoring</Subheader>
+      <div class="ms-auto lh-1">
+        <div class="dropdown">
+          <a class="dropdown-toggle text-secondary" href="#" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> Current month </a>
+          <div class="dropdown-menu dropdown-menu-end">
+            <a class="dropdown-item active" href="#">Current month</a>
+            <a class="dropdown-item" href="#">Last month</a>
+            <a class="dropdown-item" href="#">Last 3 months</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex align-items-baseline">
+      <div class="h1 mb-3 me-2">99.5%</div>
+      <div class="me-auto">
+        <span class="text-green d-inline-flex align-items-center lh-1"> 2% <Icon name="trending-up" class="ms-1" /> </span>
+      </div>
+    </div>
+    <div class="mt-2">
+      <div class="tracking">
+        <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+        <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+        <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+        <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+        <div class="tracking-block bg-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Downtime"></div>
+        <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+        <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+        <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+        <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+        <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+        <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+        <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+        <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+        <div class="tracking-block bg-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Big load"></div>
+        <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+        <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+        <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+        <div class="tracking-block bg-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Downtime"></div>
+        <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+        <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+        <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+        <div class="tracking-block" data-bs-toggle="tooltip" data-bs-placement="top" title="No data"></div>
+        <div class="tracking-block" data-bs-toggle="tooltip" data-bs-placement="top" title="No data"></div>
+        <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+        <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+        <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+        <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+        <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+        <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+        <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+      </div>
+    </div>
+  </div>
+</div>
+</Example>
+
+## Square blocks
+
+Add `tracking-squares` to draw the blocks as squares of equal size instead of tall bars. Use it for a compact status strip, for example one square per day.
+
+<Example>
+<div class="tracking tracking-squares">
+  <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+  <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+  <div class="tracking-block bg-warning" data-bs-toggle="tooltip" data-bs-placement="top" title="Degraded"></div>
+  <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+  <div class="tracking-block bg-danger" data-bs-toggle="tooltip" data-bs-placement="top" title="Down"></div>
+  <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+  <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+  <div class="tracking-block bg-success" data-bs-toggle="tooltip" data-bs-placement="top" title="Operational"></div>
+</div>
+</Example>
+
+## Accessibility
+
+- A tracking strip is a chart made of blocks. Give the container `role="img"` and an `aria-label` that sums it up, for example "Uptime over the last 90 days, 3 incidents".
+- The tooltips on the blocks are mouse-only. Put the same information in a table or a summary line so it can be reached another way.
+- Green and red blocks look identical to many users. Add a shape, a label, or a legend next to the strip.
+- Do not make each block focusable. Ninety focus stops for one chart is worse than none.
+
+## SCSS variables
+
+Use these SCSS variables to customize the tracking component. The default values are:
+
+<CodeDocs name="tracking-variables" file="core/scss/_variables.scss" />

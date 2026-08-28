@@ -6,21 +6,21 @@ import Illustration from './Illustration.astro'
 interface Props {
   icon?: string
   height?: number | string
-  bordered?: boolean
   class?: string
   /** illustration file name, e.g. "computer-fix.svg" */
-  illustration?: string
+  illustration?: string | undefined
   /** icon-text param — big text rendered instead of an icon/illustration */
-  iconText?: string
+  iconText?: string | undefined
   title?: string
-  subtitle?: string
+  description?: string | undefined
+  /** the action button renders only when buttonText is set */
   buttonText?: string
   buttonIcon?: string
 }
 
-const { icon = 'mood-sad', height = 256, bordered, class: className, illustration, iconText, title = 'No results found', subtitle = "Try adjusting your search or filter to find what you're looking for.", buttonText = 'Search again', buttonIcon = 'search' } = Astro.props
+const { icon, height = 256, class: className, illustration, iconText, title, description, buttonText, buttonIcon } = Astro.props
 
-const classes = ['empty', bordered && 'empty-bordered', className]
+const classes = ['empty', className]
 ---
 
 <div class:list={classes}>
@@ -31,16 +31,20 @@ const classes = ['empty', bordered && 'empty-bordered', className]
       </div>
     ) : iconText ? (
       <div class="empty-header" set:html={iconText} />
-    ) : (
+    ) : icon ? (
       <div class="empty-icon">
         <Icon name={icon} />
       </div>
-    )
+    ) : null
   }
 
   <p class="empty-title" set:html={title} />
-  <p class="empty-subtitle text-secondary" set:html={subtitle} />
-  <div class="empty-action">
-    <Button text={buttonText} color="primary" icon={buttonIcon} href="." />
-  </div>
+  <p class="empty-subtitle text-secondary" set:html={description} />
+  {
+    buttonText && (
+      <div class="empty-action">
+        <Button text={buttonText} color="primary" icon={buttonIcon} href="." />
+      </div>
+    )
+  }
 </div>

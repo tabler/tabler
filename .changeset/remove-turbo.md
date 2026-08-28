@@ -1,5 +1,5 @@
 ---
-"@tabler/core": major
+"@tabler/core": minor
 "@tabler/preview": patch
 ---
 

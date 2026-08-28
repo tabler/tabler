@@ -10,10 +10,13 @@ import YouWin from '@shared/components/cards/YouWin.astro'
 import Weather from '@shared/components/cards/Weather.astro'
 import ProfileContact from '@shared/components/cards/ProfileContact.astro'
 import SmallStats from '@shared/components/cards/SmallStats.astro'
-import people from '@data/people.json'
+import { people } from '@shared/lib/people'
+import { requireIndex } from '@shared/lib/array'
+import DocsLink from '@ui/DocsLink.astro'
 ---
 
-<DefaultLayout title="Card Gradients" pageHeader="Card Gradients" pageMenu="base.cards.gradients" pageLibs={['apexcharts']}>
+<DefaultLayout title="Card Gradients" pageMenu="base.cards.gradients" pageLibs={['apexcharts']}>
+  <DocsLink slot="page-header-actions" path="/ui/components/card-gradient" />
   <div class="row row-cards">
     <div class="col-md-6">
       <div class="row row-cards">
@@ -65,7 +68,7 @@ import people from '@data/people.json'
     <div class="col-3">
       <div class="row row-cards">
         <div class="col-12">
-          <Weather city="Warsaw, PL" temperature={3} color="rain" icon="cloud-rain" description="Cloudy morning" />
+          <Weather city="Warsaw, PL" temperature={3} color="ocean" icon="cloud-rain" description="Cloudy morning" />
         </div>
         <div class="col-12">
           <Weather city="Oslo, NO" temperature="-5" color="snow" icon="cloud" description="Snowy day" />
@@ -74,7 +77,7 @@ import people from '@data/people.json'
           <Weather city="Dubai, AE" temperature="32" color="sun" icon="sun" description="Sunny day" />
         </div>
         <div class="col-12">
-          <ProfileContact person={people[6]} />
+          <ProfileContact person={requireIndex(people, 6)} />
         </div>
         <div class="col-12">
           <SmallStats chartType="line" chartData="11,16,13,20,17,24,19,23,16,20,13,17,11,19" color="primary" id="chart1" class="card-gradient card-gradient-end card-gradient-primary" />

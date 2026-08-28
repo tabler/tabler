@@ -1,46 +1,46 @@
-# Astro Starter Kit: Basics
+# @tabler/docs
+
+Documentation site for the Tabler ecosystem, deployed at [docs.tabler.io](https://docs.tabler.io). Built with [Astro](https://astro.build) and MDX.
+
+## Development
+
+From the repository root:
 
 ```sh
-pnpm create astro@latest -- --template basics
+pnpm install
+pnpm --dir docs run dev
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+The dev server runs at `http://localhost:3010`.
 
-## 🚀 Project Structure
+## Structure
 
-Inside of your Astro project, you'll see the following folders and files:
+Pages live at the package root (`srcDir: '.'`), not in `src/`:
 
-```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+| Path          | Purpose                                                                                                                 |
+| ------------- | ----------------------------------------------------------------------------------------------------------------------- |
+| `pages/`      | MDX content pages (`ui/`, `icons/`, `illustrations/`, `emails/`) plus `sitemap.xml.ts`, `robots.txt.ts` and `404.astro` |
+| `layouts/`    | `DocsLayout.astro` (full page shell) and `DocsMdxLayout.astro` (MDX adapter)                                            |
+| `components/` | Docs-only components (`Example`, `DocsMenu`, `DocsCard`, …)                                                             |
+| `assets/`     | Docs CSS/JS sources, copied into `public/` at build time                                                                |
+| `public/`     | Static assets; `dist/`, `preview/` and `static/` subdirs are synced from other packages by the `copyAssets` integration |
+
+Shared components, layouts and data come from `../shared` (aliases `@shared`, `@ui`, `@data`).
+
+The sidebar tree is not generated from the filesystem — it is defined in `../shared/data/docs.json`. A new page needs an entry there to be reachable (see `components/DocsMenu.astro`).
+
+## Build
+
+```sh
+pnpm --dir docs run build
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+Static output goes to `dist/` and, via the `@astrojs/vercel` adapter, to `.vercel/output/`. Redirects for renamed pages are defined in `astro.config.mjs` (`redirects`).
 
-## 🧞 Commands
+## Checks
 
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `pnpm install`             | Installs dependencies                            |
-| `pnpm dev`             | Starts local dev server at `localhost:4321`      |
-| `pnpm build`           | Build your production site to `./dist/`          |
-| `pnpm preview`         | Preview your build locally, before deploying     |
-| `pnpm astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `pnpm astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+```sh
+pnpm --dir docs run type-check
+pnpm run lint-md
+pnpm run check-docs-links # validates internal links at the source level (also part of `pnpm lint`)
+```

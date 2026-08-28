@@ -2,12 +2,12 @@
 import Icon from './Icon.astro'
 
 interface Props {
-  value?: number
-  unit?: string
+  value: number
+  unit?: string | undefined
   class?: string
 }
 
-const { value = 25, unit = '%', class: className } = Astro.props
+const { value, unit = '%', class: className } = Astro.props
 
 const trendingColor = value > 0 ? 'green' : value === 0 ? 'muted' : 'red'
 const trendingIcon = value > 0 ? 'arrow-up' : value === 0 ? 'minus' : 'arrow-down'

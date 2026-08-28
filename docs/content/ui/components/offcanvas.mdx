@@ -1,0 +1,87 @@
+---
+title: Offcanvas
+summary: Offcanvas is a hidden sidebar that slides into view from the edge of the screen. Use it for navigation, filters or settings that should not take up space all the time.
+description: Sidebar panel that slides in from the edge of the viewport.
+related: [/ui/components/modal]
+source: core/scss/ui/_offcanvas.scss
+classnames:
+  component:
+    - class: offcanvas
+      desc: Container element, hidden until Bootstrap opens it
+  part:
+    - class: offcanvas-header
+      desc: Title bar with a bottom border
+    - class: offcanvas-title
+      desc: Heading inside the header
+    - class: offcanvas-body
+      desc: Content area
+    - class: offcanvas-footer
+      desc: Row of actions at the bottom
+  modifier:
+    - class: offcanvas-narrow
+      desc: Narrower panel, 20rem instead of the default width
+  direction:
+    - class: offcanvas-start
+      desc: Slides in from the leading edge
+    - class: offcanvas-end
+      desc: Slides in from the trailing edge
+    - class: offcanvas-top
+      desc: Slides in from the top
+    - class: offcanvas-bottom
+      desc: Slides in from the bottom
+  size:
+    - class: offcanvas-{breakpoint}
+      desc: Behaves as an offcanvas below the breakpoint and as normal content above it
+---
+import Example from '@components/Example.astro';
+import CodeDocs from '@components/CodeDocs.astro';
+
+Offcanvas is a sidebar component that can be toggled via JavaScript to appear from the left, right, top, or bottom edge of the viewport. Buttons or anchors are used as triggers that are attached to specific elements you toggle, and `data` attributes are used to invoke our JavaScript.
+
+## Basic usage
+
+To create an offcanvas, add the `.offcanvas` class to a container element. You can also add the `.offcanvas-start`, `.offcanvas-end`, `.offcanvas-top`, or `.offcanvas-bottom` class to specify the position of the offcanvas. The `.show` class is used to display the offcanvas.
+
+<Example raw code={`<div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvas" aria-labelledby="offcanvasLabel" data-bs-scroll="true"> <div class="offcanvas-body"> Content for the offcanvas goes here. You can place just about any Tabler component or custom elements here. </div> </div>`}>
+<div class="offcanvas offcanvas-start show position-static" tabindex="-1" id="offcanvas" aria-labelledby="offcanvasLabel" data-bs-scroll="true" > <div class="offcanvas-body"> Content for the offcanvas goes here. You can place just about any Tabler component or custom elements here. </div> </div>
+</Example>
+
+## Header, title and footer
+
+Split the panel into `offcanvas-header`, `offcanvas-body` and `offcanvas-footer`. The header takes a bottom border and holds the title and the close button; the footer keeps the same padding as the body, which suits the buttons that close the panel.
+
+Use `offcanvas-title` for the heading, and point the panel's `aria-labelledby` at its id so the panel is announced by name.
+
+<Example raw code={`<div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvas-header" aria-labelledby="offcanvas-header-label"> <div class="offcanvas-header"> <h2 class="offcanvas-title" id="offcanvas-header-label">Filters</h2> <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button> </div> <div class="offcanvas-body">Pick the filters you want to apply.</div> <div class="offcanvas-footer"> <button type="button" class="btn btn-primary w-100">Apply</button> </div> </div>`}>
+<div class="offcanvas offcanvas-end show position-static" tabindex="-1" id="offcanvas-header" aria-labelledby="offcanvas-header-label"> <div class="offcanvas-header"> <h2 class="offcanvas-title" id="offcanvas-header-label">Filters</h2> <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button> </div> <div class="offcanvas-body">Pick the filters you want to apply.</div> <div class="offcanvas-footer"> <button type="button" class="btn btn-primary w-100">Apply</button> </div> </div>
+</Example>
+
+## Narrow panel
+
+Add `offcanvas-narrow` for a panel thinner than the default. It suits a short list of filters or settings, where the full width would leave the panel mostly empty.
+
+<Example raw code={`<div class="offcanvas offcanvas-end offcanvas-narrow" tabindex="-1" id="offcanvas-header" aria-labelledby="offcanvas-header-label"> <div class="offcanvas-header"> <h2 class="offcanvas-title" id="offcanvas-header-label">Filters</h2> <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button> </div> <div class="offcanvas-body">Pick the filters you want to apply.</div> <div class="offcanvas-footer"> <button type="button" class="btn btn-primary w-100">Apply</button> </div> </div>`}>
+<div class="offcanvas offcanvas-end offcanvas-narrow show position-static" tabindex="-1" id="offcanvas-header" aria-labelledby="offcanvas-header-label"> <div class="offcanvas-header"> <h2 class="offcanvas-title" id="offcanvas-header-label">Filters</h2> <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button> </div> <div class="offcanvas-body">Pick the filters you want to apply.</div> <div class="offcanvas-footer"> <button type="button" class="btn btn-primary w-100">Apply</button> </div> </div>
+</Example>
+
+## Cookies banner
+
+The offcanvas component is used to display a cookies banner. It is a great way to inform users about the use of cookies on your website and to get their consent.
+
+<Example raw code={`<div class="offcanvas offcanvas-bottom h-auto" tabindex="-1" id="offcanvasBottom" aria-modal="true" role="dialog" data-bs-scroll="true"> <div class="offcanvas-body"> <div class="container"> <div class="row align-items-center"> <div class="col"> <strong>Do you like cookies?</strong> 🍪 We use cookies to ensure you get the best experience on our website. <a href="./terms-of-service.html" target="_blank">Learn more</a> </div> <div class="col-auto"> <button type="button" class="btn btn-primary" data-bs-dismiss="offcanvas"> Essential Cookies Only </button> </div> <div class="col-auto"> <button type="button" class="btn btn-primary" data-bs-dismiss="offcanvas"> Allow All Cookies </button> </div> </div> </div> </div> </div>`}>
+<div class="offcanvas offcanvas-bottom h-auto show position-static" tabindex="-1" id="offcanvasBottom" aria-modal="true" role="dialog" data-bs-scroll="true" > <div class="offcanvas-body"> <div class="container"> <div class="row align-items-center"> <div class="col"> <strong>Do you like cookies?</strong> 🍪 We use cookies to ensure you get the best experience on our website. <a href="./terms-of-service.html" target="_blank">Learn more</a> </div> <div class="col-auto"> <button type="button" class="btn btn-primary" data-bs-dismiss="offcanvas"> Essential Cookies Only </button> </div> <div class="col-auto"> <button type="button" class="btn btn-primary" data-bs-dismiss="offcanvas"> Allow All Cookies </button> </div> </div> </div> </div> </div>
+</Example>
+
+## Accessibility
+
+- Point `aria-labelledby` at the offcanvas title so the panel is announced by name.
+- Bootstrap moves focus into the panel, keeps it there while the panel is open, and returns it to the trigger on close. That depends on `tabindex="-1"` being on the offcanvas element.
+- The toggle needs `aria-controls` with the panel id. Bootstrap manages `aria-expanded` itself.
+- <kbd>Escape</kbd> closes the panel unless you set `data-bs-keyboard="false"`. If you do turn it off, keep a visible close button.
+- Content behind the panel stays in the DOM. Use the backdrop, which Bootstrap marks `aria-hidden`, rather than building your own overlay.
+
+## SCSS variables
+
+Use these SCSS variables to customize the offcanvas component. The default values are:
+
+<CodeDocs name="offcanvas-variables" file="core/scss/_variables.scss" />

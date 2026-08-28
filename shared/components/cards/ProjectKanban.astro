@@ -1,7 +1,6 @@
 ---
-// NOTE: widgets page passes `value=` but only `percentage` (default 20) drives the bar — `value` is accepted but ignored.
 import Progress from '@ui/Progress.astro'
-import AvatarList from '@ui/AvatarList.astro'
+import PeopleAvatarList from '@shared/components/demo/PeopleAvatarList.astro'
 import Icon from '@ui/Icon.astro'
 import CardTitle from '@ui/CardTitle.astro'
 
@@ -10,18 +9,16 @@ interface Props {
   badge?: string
   offset?: number
   limit?: number
-  percentage?: number | string
   percentageColor?: string
   due?: string
-  /** unused — see note above */
-  value?: number | string
+  value?: number
 }
 
-const { title = 'Task Title', badge, offset = 40, limit = 7, percentage = 20, percentageColor = 'green', due = '2 days' } = Astro.props
+const { title = 'Task Title', badge, offset = 40, limit = 7, percentageColor = 'green', due = '2 days', value = 20 } = Astro.props
 ---
 
 <div class="card">
-  <Progress value={percentage} class="card-progress" color={percentageColor} />
+  <Progress value={value} class="card-progress" color={percentageColor} />
   <div class="card-body">
     <CardTitle>
       <a href="#">{title}</a>
@@ -35,7 +32,7 @@ const { title = 'Task Title', badge, offset = 40, limit = 7, percentage = 20, pe
       }
     </CardTitle>
 
-    <AvatarList offset={offset} limit={limit} stacked class="mb-3" />
+    <PeopleAvatarList offset={offset} limit={limit} stacked class="mb-3" />
 
     <div class="card-meta d-flex justify-content-between">
       <div class="d-flex align-items-center">

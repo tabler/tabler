@@ -13,9 +13,28 @@ function getHighlighter(): Promise<Highlighter> {
 }
 
 export function beautifyHtml(code: string): string {
-  return beautify.html(code, {
+  // A comment that follows an element stays glued to it — js-beautify never adds
+  // the break itself. Icon examples arrive as one line, so every "Download SVG
+  // icon" comment would sit on the closing tag of the icon before it.
+  const withCommentBreaks = code.replace(/>\s*<!--/g, '>\n<!--')
+
+  return beautify.html(withCommentBreaks, {
     indent_size: 2,
-    wrap_line_length: 80,
+    indent_char: ' ',
+    max_preserve_newlines: 5,
+    preserve_newlines: true,
+    indent_scripts: 'normal',
+    wrap_attributes: 'auto',
+    end_with_newline: false,
+    wrap_line_length: 0,
+    indent_inner_html: false,
+    indent_empty_lines: false,
+    // The examples arrive as one line: MDX drops the whitespace between
+    // sibling elements, and js-beautify will not add a line break where one
+    // would be rendered as a space. Emptying the inline list lifts that
+    // restriction, so every element goes on its own line — the demo markup
+    // is written that way in the source.
+    inline: [],
   })
 }
 
@@ -41,18 +60,6 @@ export function extractMarkedSnippet(source: string, marker: string, name: strin
     .map((line) => line.slice(minSpaces))
     .join('\n')
     .trim()
-}
-
-/** Escape text for use in HTML attributes (e.g. data-clipboard-text). */
-export function escapeAttribute(text: string): string {
-  return text
-    .replace(/&/g, '&amp;')
-    .replace(/'/g, '&apos;')
-    .replace(/"/g, '&quot;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/\r\n/g, '&#13;')
-    .replace(/[\r\n]/g, '&#13;')
 }
 
 /** Replace href="#" with javascript:void(0) in example markup. */

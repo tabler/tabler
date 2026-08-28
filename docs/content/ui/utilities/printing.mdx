@@ -1,0 +1,102 @@
+---
+title: Printing
+summary: Print-friendly styles that hide navigation, keep pages in light colors, and control page breaks.
+description: Learn what Tabler hides when a page is printed, the d-print-* utilities, and the media-print mixin for custom print styles.
+related: [/ui/layout/page-layouts, /ui/layout/navbars]
+---
+import Example from '@components/Example.astro';
+
+Tabler adjusts its styles automatically when a page is printed, so you don't get a printout full of navigation bars, buttons, and dark backgrounds. This page explains what changes on print, and how to write your own print-only styles.
+
+## What gets hidden on print
+
+Elements that only make sense on screen are hidden with `display: none` when the page is printed. This includes:
+
+- The navbar, both the top navbar and the vertical (sidebar) navbar
+- The footer
+- Page header actions, such as buttons and dropdowns next to the page title
+- Dropdowns, popovers, and toasts
+- Modals and offcanvas panels
+- Pagination
+- Close buttons
+- The floating action toolbar
+
+You don't need to add anything for these to work — they're built into the component styles. For example, the navbar in a default layout already has this rule, so it disappears on print without any extra class:
+
+```html
+<header class="navbar navbar-expand-md">...</header>
+```
+
+If you build your own layout elements and want them hidden on print too, add the [`.d-print-none`](#print-utilities) utility class, or use the [`media-print` mixin](#the-media-print-mixin) in your own SCSS.
+
+## Dark mode on print
+
+If dark mode is active, Tabler still prints the page in light colors. Dark backgrounds waste ink and toner, and browsers skip background colors by default when printing, which can leave low-contrast, near-white text on a white page. Forcing light colors keeps printed pages readable no matter which theme a visitor had selected.
+
+## Tables and cards
+
+Tables and cards get a few adjustments so they print well over multiple pages:
+
+- A table's `<thead>` repeats at the top of every printed page.
+- A table row never splits across a page break.
+- A card never splits across a page break — it either fits fully on one page or starts on the next one.
+- Cards lose their border and shadow when printed, since these don't add anything on paper.
+
+## Print utilities
+
+Tabler generates `d-print-*` classes to show or hide any element only when the page is printed, the same way [display utilities](/ui/utilities) work on screen.
+
+Class|`display` value used on print
+-|-
+`d-print-none`|`none`
+`d-print-inline`|`inline`
+`d-print-inline-block`|`inline-block`
+`d-print-block`|`block`
+`d-print-grid`|`grid`
+`d-print-inline-grid`|`inline-grid`
+`d-print-table`|`table`
+`d-print-table-row`|`table-row`
+`d-print-table-cell`|`table-cell`
+`d-print-flex`|`flex`
+`d-print-inline-flex`|`inline-flex`
+
+`.d-print-none` is the one you'll use most — add it to anything that shouldn't appear on a printout, like a "Search" box or an "Edit" button:
+
+<Example>
+<div class="d-print-none"><span class="badge bg-blue-lt">Hidden on print</span></div>
+</Example>
+
+The other `d-print-*` classes work the other way around: pair them with a screen-only display utility (such as `.d-none`) to show something only when the page is printed:
+
+```html
+<div class="d-none d-print-block">This text only shows up when the page is printed.</div>
+```
+
+## The media-print mixin
+
+When customizing Tabler's SCSS, use the `media-print` mixin instead of writing `@media print` by hand. It lives in `core/scss/mixins/_mixins.scss`:
+
+```scss
+@mixin media-print {
+  @media print {
+    @content;
+  }
+}
+```
+
+Use it inside a component or layout rule to add print-only styles next to the rest of the component's SCSS:
+
+```scss
+.my-widget {
+  border: var(--border-width) var(--border-style) var(--border-color);
+
+  @include media-print() {
+    border: none;
+    box-shadow: none;
+  }
+}
+```
+
+## Accessibility
+
+Hiding navigation and interactive controls on print doesn't affect screen readers or keyboard users — it only applies inside the `print` media type, so the page works exactly as before on screen. Keep enough contrast in any custom print styles you add: printed pages can't rely on color alone, since some printers output in black and white.

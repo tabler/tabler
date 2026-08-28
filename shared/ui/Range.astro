@@ -4,18 +4,18 @@ import CaptureScript from '../components/CaptureScript.astro';
 interface Props {
 	min?: number;
 	max?: number;
-	step?: number;
-	value?: string | number;
+	/** single handle, or an array for a multi-handle slider */
+	value?: number | number[];
 	id?: string;
 	connect?: boolean;
 	class?: string;
 }
 
-const { min = 0, max = 100, step = 10, value = 50, id, connect = false, class: className } = Astro.props;
+const { min = 0, max = 100, value = 50, id, connect = false, class: className } = Astro.props;
+const step = 10;
 
-const values = String(value).split(',');
-const size = values.length;
-const numericValues = values.map(Number);
+const numericValues = Array.isArray(value) ? value : [value];
+const size = numericValues.length;
 const startValue = size > 1 ? numericValues : numericValues[0];
 
 // Connect array: alternate false/true for mid segments, then true, false.
@@ -33,14 +33,14 @@ const rangeId = `range-${id}`;
 	id ? (
 		<div class:list={['form-range mb-2', className]} id={rangeId} />
 	) : (
-		<input type="range" class:list={['form-range mb-2', className]} value={value} min={min} max={max} step={step} />
+		<input type="range" class:list={['form-range mb-2', className]} value={Array.isArray(value) ? value[0] : value} min={min} max={max} step={step} />
 	)
 }
 {
 	id && (
 		<CaptureScript>
 			<!-- BEGIN RANGE -->
-			<script define:vars={{ rangeId, startValue, connectValue, step, min, max }}>
+			<script is:inline define:vars={{ rangeId, startValue, connectValue, step, min, max }}>
 				function initRange() {
 					window.noUiSlider &&
 						noUiSlider.create(document.getElementById(rangeId), {

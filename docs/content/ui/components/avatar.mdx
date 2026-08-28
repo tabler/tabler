@@ -1,0 +1,300 @@
+---
+title: Avatar
+summary: An avatar helps customize interface elements and make the product experience more personalized. It is often used in communication apps, collaboration tools, and social media.
+description: Display user avatars with images, initials, or icons. Change sizes, shapes, and colors, or group them into stacked avatar lists.
+related: [/ui/components/status, /ui/components/badge]
+source: core/scss/ui/_avatars.scss
+classnames:
+  component:
+    - class: avatar
+      desc: Container element
+  part:
+    - class: avatar-brand
+      desc: Small brand mark in the bottom corner
+    - class: avatar-cover
+      desc: Pulls the avatar over the element above it, with a ring
+    - class: avatar-upload-text
+      desc: Label inside an empty upload slot
+    - class: avatar-list
+      desc: Wrapper that spaces several avatars in a row
+  style:
+    - class: avatar-square
+      desc: Rounded corners instead of a circle
+    - class: avatar-rounded
+      desc: Fully round, the default shape
+    - class: avatar-upload
+      desc: Dashed empty slot for a picture that is not set yet
+  modifier:
+    - class: avatar-list-stacked
+      desc: Overlaps the avatars in the list
+  color:
+    - class: bg-{color}
+      desc: Any base color for an avatar with initials, for example bg-azure-lt
+  size:
+    - class: avatar-{size}
+      desc: From avatar-xxs to avatar-2xl; avatar-list-{size} sizes a whole list
+---
+import Example from '@components/Example.astro';
+import Icon from '@ui/Icon.astro';
+import AvatarList from '@ui/AvatarList.astro';
+import CodeDocs from '@components/CodeDocs.astro';
+
+## Default markup
+
+Use the `avatar` class to add an avatar to your interface design for greater customization.
+
+<Example centered>
+<AvatarList>
+  <span class="avatar" style="background-image: url(/static/avatars/002f.jpg)"></span>
+  <span class="avatar">JL</span>
+  <span class="avatar" style="background-image: url(/static/avatars/004f.jpg)"></span>
+</AvatarList>
+</Example>
+
+## Avatar image
+
+Set an image as the background to make users easy to indentify and create a personalized experience.
+
+<Example centered>
+<AvatarList>
+  <span class="avatar" style="background-image: url(/static/avatars/016f.jpg)"></span>
+  <span class="avatar" style="background-image: url(/static/avatars/022m.jpg)"></span>
+  <span class="avatar" style="background-image: url(/static/avatars/036m.jpg)"></span>
+</AvatarList>
+</Example>
+
+## Initials
+
+You can also use initials instead of pictures.
+
+<Example centered>
+<AvatarList>
+  <span class="avatar">AB</span>
+  <span class="avatar">CD</span>
+  <span class="avatar">EF</span>
+  <span class="avatar">GH</span>
+  <span class="avatar">IJ</span>
+</AvatarList>
+</Example>
+
+## Avatar icons
+
+Besides pictures and initials, you can also use [icons](/ui/components/icon) to make the avatars more universal.
+
+<Example centered>
+<AvatarList>
+  <span class="avatar"><Icon name="user" /></span>
+  <span class="avatar"><Icon name="plus" /></span>
+  <span class="avatar"><Icon name="settings" /></span>
+</AvatarList>
+</Example>
+
+## Avatar initials color
+
+Customize the color of the avatars' background. See the [full list of available colors](/ui/base/colors) for more details.
+
+<Example centered>
+<AvatarList>
+  <span class="avatar bg-green-lt">AB</span>
+  <span class="avatar bg-red-lt">CD</span>
+  <span class="avatar bg-yellow-lt">EF</span>
+  <span class="avatar bg-primary-lt">GH</span>
+  <span class="avatar bg-purple-lt">IJ</span>
+</AvatarList>
+</Example>
+
+## Avatar size
+
+Using Bootstrap’s typical naming structure, you can create a standard avatar or scale it up or down to different sizes based on what you need.
+
+<Example centered>
+<AvatarList>
+  <span class="avatar avatar-xl" style="background-image: url(/static/avatars/000m.jpg)"></span>
+  <span class="avatar avatar-lg" style="background-image: url(/static/avatars/000m.jpg)"></span>
+  <span class="avatar" style="background-image: url(/static/avatars/000m.jpg)"></span>
+  <span class="avatar avatar-sm" style="background-image: url(/static/avatars/000m.jpg)"></span>
+  <span class="avatar avatar-xs" style="background-image: url(/static/avatars/000m.jpg)"></span>
+</AvatarList>
+</Example>
+
+## Avatar status
+
+Add a [status indicator](/ui/components/status) to your avatar to show, for instance, if a user is online or offline or indicate the number of messages they have received.
+
+<Example centered>
+<AvatarList>
+  <span class="avatar" style="background-image: url(/static/avatars/018m.jpg)"></span>
+  <span class="avatar" style="background-image: url(/static/avatars/015m.jpg)">
+    <span class="badge bg-danger"></span>
+  </span>
+  <span class="avatar" style="background-image: url(/static/avatars/022m.jpg)">
+    <span class="badge bg-success"></span>
+  </span>
+  <span class="avatar">
+    <span class="badge bg-warning"></span> SA
+  </span>
+  <span class="avatar" style="background-image: url(/static/avatars/022m.jpg)">
+    <span class="badge bg-info"></span>
+  </span>
+  <span class="avatar" style="background-image: url(/static/avatars/048m.jpg)">
+    <span class="badge bg-gray-500">5</span>
+  </span>
+</AvatarList>
+</Example>
+
+## Avatar shape
+
+An avatar is a circle by default. Add `avatar-square` to give it the same rounded corners as the rest of the interface - the usual choice when the avatar stands for a company, a project or an app rather than a person.
+
+<Example centered>
+<AvatarList>
+  <span class="avatar" style="background-image: url(/static/avatars/019m.jpg)"></span>
+  <span class="avatar avatar-square" style="background-image: url(/static/avatars/039f.jpg)"></span>
+  <span class="avatar avatar-square bg-primary text-white">TB</span>
+  <span class="avatar avatar-square bg-green-lt">AA</span>
+</AvatarList>
+</Example>
+
+For any other radius use the Bootstrap utilities. `rounded-0` gives sharp corners, and `rounded-3` a larger radius than `avatar-square`.
+
+<Example centered>
+<AvatarList>
+  <span class="avatar rounded-0" style="background-image: url(/static/avatars/043f.jpg)"></span>
+  <span class="avatar rounded-3" style="background-image: url(/static/avatars/044f.jpg)"></span>
+</AvatarList>
+</Example>
+
+## Avatar brand
+
+Add a `avatar-brand` element inside an avatar to mark where the account comes from. It sits in the bottom corner and keeps its own background, so a brand logo stays readable over any photo.
+
+<Example centered>
+<AvatarList>
+  <span class="avatar" style="background-image: url(/static/avatars/000m.jpg)">
+    <span class="avatar-brand" style="background-image: url(/static/brands/github.svg)"></span>
+  </span>
+  <span class="avatar" style="background-image: url(/static/avatars/002m.jpg)">
+    <span class="avatar-brand" style="background-image: url(/static/brands/google.svg)"></span>
+  </span>
+</AvatarList>
+</Example>
+
+## Avatar on a cover
+
+Add `avatar-cover` to pull an avatar halfway over the element above it and draw a ring in the card background color. Use it for a profile picture that overlaps a cover image.
+
+<Example>
+<div class="card" style="max-width: 20rem">
+  <div class="card-body p-0">
+    <div class="bg-primary-lt" style="height: 5rem"></div>
+    <div class="text-center p-3">
+      <span class="avatar avatar-xl avatar-cover rounded-circle mb-3" style="background-image: url(/static/avatars/039f.jpg)"></span>
+      <div class="fw-medium">Paweł Kuna</div>
+      <div class="text-secondary">UI Designer</div>
+    </div>
+  </div>
+</div>
+</Example>
+
+## Avatar upload
+
+Use the `avatar-upload` class together with `avatar` to show an empty avatar slot. It has a dashed border and no image, so users can see that the picture is still missing. On hover the border and the icon turn to the primary color.
+
+Put an icon inside to show the action. The variant is often used as a link or a button.
+
+<Example centered>
+<AvatarList>
+  <a href="#" class="avatar avatar-upload"><Icon name="plus" /></a>
+  <a href="#" class="avatar avatar-upload rounded"><Icon name="plus" /></a>
+  <a href="#" class="avatar avatar-upload rounded-0"><Icon name="camera" /></a>
+</AvatarList>
+</Example>
+
+## Avatar upload size
+
+The upload avatar uses the same size classes as a normal avatar, from `avatar-xxs` to `avatar-2xl`.
+
+<Example centered>
+<AvatarList>
+  <a href="#" class="avatar avatar-upload avatar-2xl rounded"><Icon name="plus" /></a>
+  <a href="#" class="avatar avatar-upload avatar-xl rounded"><Icon name="plus" /></a>
+  <a href="#" class="avatar avatar-upload avatar-lg rounded"><Icon name="plus" /></a>
+  <a href="#" class="avatar avatar-upload rounded"><Icon name="plus" /></a>
+  <a href="#" class="avatar avatar-upload avatar-sm rounded"><Icon name="plus" /></a>
+</AvatarList>
+</Example>
+
+## Avatar upload text
+
+Add a short label under the icon with the `avatar-upload-text` class. The content is stacked in a column, so use this only in the larger sizes. The text is shown in uppercase, like all avatar text.
+
+<Example centered>
+<AvatarList>
+  <a href="#" class="avatar avatar-upload avatar-xl rounded">
+    <Icon name="plus" />
+    <span class="avatar-upload-text">Upload</span>
+  </a>
+  <a href="#" class="avatar avatar-upload avatar-2xl rounded">
+    <Icon name="camera" />
+    <span class="avatar-upload-text">Add photo</span>
+  </a>
+</AvatarList>
+</Example>
+
+## Avatar upload in a form
+
+To pick a real file, use a `label` with the upload classes and connect it to a hidden file input. Add `cursor-pointer`, because the pointer cursor is only set for links.
+
+<Example>
+<div class="row align-items-end" style="width: 100%;">
+  <div class="col-auto">
+    <label for="avatar-file" class="avatar avatar-upload avatar-lg rounded cursor-pointer">
+      <Icon name="plus" />
+    </label>
+    <input type="file" id="avatar-file" class="visually-hidden" accept="image/*" />
+  </div>
+  <div class="col">
+    <label class="form-label" for="avatar-file">Avatar</label>
+    <div class="text-secondary">Click to upload a new avatar</div>
+  </div>
+</div>
+</Example>
+
+## Avatar list
+
+Use the `.avatar-list` container to create a list of avatars within one parent container. It keeps consistent spacing between items and wraps them when there is not enough space.
+
+<Example centered>
+<AvatarList>
+  <span class="avatar rounded" style="background-image: url(/static/avatars/031f.jpg)"></span>
+  <span class="avatar rounded">JL</span>
+  <span class="avatar rounded" style="background-image: url(/static/avatars/033f.jpg)"></span>
+  <span class="avatar rounded" style="background-image: url(/static/avatars/017m.jpg)"></span>
+  <span class="avatar rounded" style="background-image: url(/static/avatars/024m.jpg)"></span>
+</AvatarList>
+</Example>
+
+## Stacked list
+
+Make the list stack once a certain number of avatars is reached to make it look clear and display well regardless of the screen size.
+
+<Example centered>
+<AvatarList stacked={true}> <span class="avatar">EB</span> <span class="avatar" style="background-image: url(/static/avatars/026m.jpg)"></span> <span class="avatar" style="background-image: url(/static/avatars/016f.jpg)"></span> <span class="avatar" style="background-image: url(/static/avatars/028m.jpg)"></span> <span class="avatar" style="background-image: url(/static/avatars/030m.jpg)"></span> <span class="avatar">+8</span> </AvatarList>
+</Example>
+
+<Example centered>
+<AvatarList stacked={true}> <span class="avatar avatar-sm rounded-circle" style="background-image: url(/static/avatars/035m.jpg)" ></span> <span class="avatar avatar-sm rounded-circle" style="background-image: url(/static/avatars/027f.jpg)" ></span> <span class="avatar avatar-sm rounded-circle" style="background-image: url(/static/avatars/036f.jpg)" ></span> <span class="avatar avatar-sm rounded-circle">SA</span> <span class="avatar avatar-sm rounded-circle" style="background-image: url(/static/avatars/034f.jpg)" ></span> <span class="avatar avatar-sm rounded-circle" style="background-image: url(/static/avatars/043f.jpg)" ></span> <span class="avatar avatar-sm rounded-circle" style="background-image: url(/static/avatars/039f.jpg)" ></span> <span class="avatar avatar-sm rounded-circle" style="background-image: url(/static/avatars/020m.jpg)" ></span> </AvatarList>
+</Example>
+
+## Accessibility
+
+- An avatar with a background image has no text of its own. Show the user name next to it, or add an `aria-label` to the avatar.
+- Give the upload avatar a clear name. Use the `avatar-upload-text` label, an `aria-label`, or a `form-label` linked with `for`.
+- Use a `label` with a file input, or a `button`, when the upload avatar does something. A link with `href="#"` is only good for a static demo.
+- Keep the hidden file input in the markup with the `visually-hidden` class. Do not use `display: none`, because then keyboard users cannot reach it.
+
+## SCSS variables
+
+Use these SCSS variables to customize avatars. The default values are:
+
+<CodeDocs name="avatar-variables" file="core/scss/_variables.scss" />

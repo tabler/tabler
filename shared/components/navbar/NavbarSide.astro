@@ -7,11 +7,14 @@ import NavbarSideApps from './NavbarSideApps.astro'
 import NavbarSideLanguage from './NavbarSideLanguage.astro'
 import NavbarSideUser from './NavbarSideUser.astro'
 
+/** Bootstrap responsive breakpoint used for `d-{breakpoint}-flex` — $grid-breakpoints minus xs */
+export type Breakpoint = 'sm' | 'md' | 'lg' | 'xl' | 'xxl'
+
 interface Props {
   class?: string
-  breakpoint?: string
+  breakpoint?: Breakpoint | undefined
   condensed?: boolean
-  personId?: number
+  personId?: number | undefined
   hideUsername?: boolean
   dark?: boolean
   showThemeToggle?: boolean
@@ -47,7 +50,7 @@ const githubSponsorsUrl = 'https://github.com/sponsors/codecalm'
     !condensed && (
       <div class={`nav-item d-none d-${breakpoint}-flex me-3`}>
         <ButtonList>
-          <Button icon="heart" iconColor="pink" outline text="Sponsor" href={githubSponsorsUrl} external />
+          <Button icon="heart" iconColor="pink" text="Sponsor" href={githubSponsorsUrl} external />
         </ButtonList>
       </div>
     )

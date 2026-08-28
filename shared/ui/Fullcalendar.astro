@@ -3,12 +3,12 @@
 // runtime, relative to currentYear/currentMonth.
 import CaptureScript from '../components/CaptureScript.astro'
 interface Props {
-  id?: string
+  id: string
   /** Injects the demo events array */
   sampleEvents?: boolean
 }
 
-const { id = 'default', sampleEvents } = Astro.props
+const { id, sampleEvents } = Astro.props
 const calendarId = `calendar-${id}`
 
 const sampleEventData = sampleEvents
@@ -38,7 +38,7 @@ const sampleEventData = sampleEvents
 <div id={calendarId}></div>
 <CaptureScript>
   <!-- BEGIN FULLCALENDAR -->
-  <script define:vars={{ calendarId, sampleEventData }}>
+  <script is:inline define:vars={{ calendarId, sampleEventData }}>
     function initCalendar() {
       const calendarEl = document.getElementById(calendarId)
       const currentYear = new Date().getFullYear()

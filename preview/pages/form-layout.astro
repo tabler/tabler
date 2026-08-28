@@ -1,6 +1,7 @@
 ---
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
 import Button from '@ui/Button.astro'
+import ButtonList from '@ui/ButtonList.astro'
 import InputIcon from '@ui/form/InputIcon.astro'
 import Check from '@ui/form/Check.astro'
 import Icon from '@ui/Icon.astro'
@@ -9,20 +10,30 @@ import FormGroup from '@ui/FormGroup.astro'
 import Card from '@ui/Card.astro'
 import CardHeader from '@ui/CardHeader.astro'
 import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
 import Layout from '@shared/components/cards/form/Layout.astro'
 import Payment from '@shared/components/cards/form/Payment.astro'
 import flags from '@data/flags.json'
+import DocsLink from '@ui/DocsLink.astro'
 
 const countries = flags as { name: string }[]
 ---
 
 <DefaultLayout title="Form layout" pageHeader="Form Layout" pageMenu="form.layout" pageLibs={['litepicker']}>
+  <DocsLink slot="page-header-actions" path="/ui/forms" />
+
   <div class="row row-cards row-cols-1 row-cols-md-3">
     <div class="col">
       <div class="row row-cards">
         <div class="col-12">
           <Card>
-            <CardHeader title="Basic Form" />
+            <CardHeader>
+              <div>
+                <CardTitle>Basic Form</CardTitle>
+                <CardSubtitle>A minimal sign-up form with just the essentials.</CardSubtitle>
+              </div>
+            </CardHeader>
             <CardBody>
               <form class="space-y">
                 <div class="row">
@@ -46,7 +57,12 @@ const countries = flags as { name: string }[]
         </div>
         <div class="col-12">
           <Card>
-            <CardHeader title="Example Form" />
+            <CardHeader>
+              <div>
+                <CardTitle>Example Form</CardTitle>
+                <CardSubtitle>A contact form with a subject select and a message field.</CardSubtitle>
+              </div>
+            </CardHeader>
             <CardBody>
               <form>
                 <div class="space-y">
@@ -80,11 +96,16 @@ const countries = flags as { name: string }[]
       <div class="row row-cards">
         <div class="col-12">
           <Card>
-            <CardHeader title="Example Form with Icons" />
+            <CardHeader>
+              <div>
+                <CardTitle>Example Form with Icons</CardTitle>
+                <CardSubtitle>Prefix each field with an icon for a friendlier sign-up flow.</CardSubtitle>
+              </div>
+            </CardHeader>
             <CardBody>
               <form class="space-y">
                 <div><InputIcon icon="user" placeholder="Username" prepend /></div>
-                <div><InputIcon icon="mail" placeholder="Email address" prepend type="mail" /></div>
+                <div><InputIcon icon="mail" placeholder="Email address" prepend type="email" /></div>
                 <div><InputIcon icon="lock" placeholder="Password" prepend type="password" /></div>
                 <div><InputIcon icon="lock" placeholder="Confirm Password" prepend type="password" /></div>
                 <div>
@@ -100,7 +121,12 @@ const countries = flags as { name: string }[]
 
         <div class="col-12">
           <Card>
-            <CardHeader title="Form with Icons and Validation" />
+            <CardHeader>
+              <div>
+                <CardTitle>Form with Icons and Validation</CardTitle>
+                <CardSubtitle>Pair an icon input with valid and invalid feedback states.</CardSubtitle>
+              </div>
+            </CardHeader>
             <CardBody>
               <form class="space-y">
                 <div>
@@ -126,7 +152,12 @@ const countries = flags as { name: string }[]
 
         <div class="col-12">
           <Card>
-            <CardHeader title="Example Form" />
+            <CardHeader>
+              <div>
+                <CardTitle>Example Form</CardTitle>
+                <CardSubtitle>A longer profile form grouped into personal info and address sections.</CardSubtitle>
+              </div>
+            </CardHeader>
             <CardBody>
               <form>
                 <div class="space-y">
@@ -148,7 +179,7 @@ const countries = flags as { name: string }[]
                       </div>
                     </FormGroup>
                     <FormGroup label="Date of Birth" for="datepicker-birth-date" class="">
-                      <div><Datepicker layout="icon" id="birth-date" /></div>
+                      <div><Datepicker layout="icon" id="birth-date" value="2020-06-20" /></div>
                     </FormGroup>
                   </div>
                   <FormGroup label="Category" for="example-form-category" class="">
@@ -184,17 +215,17 @@ const countries = flags as { name: string }[]
                     </FormGroup>
                   </div>
                   <div>
-                    <FormGroup label="Membership" class="">
+                    <FormGroup label="Membership" class="" associate={false}>
                       <div class="d-flex flex-row gap-4">
                         <Check title="Free" type="radio" name="membership" checked />
                         <Check title="Paid" type="radio" name="membership" />
                       </div>
                     </FormGroup>
                   </div>
-                  <div class="text-end">
+                  <ButtonList class="justify-content-end">
                     <Button text="Cancel" />
                     <Button color="primary" text="Save Changes" />
-                  </div>
+                  </ButtonList>
                 </div>
               </form>
             </CardBody>
@@ -203,6 +234,6 @@ const countries = flags as { name: string }[]
       </div>
     </div>
 
-    <div class="col"><Payment label="Visa" /></div>
+    <div class="col"><Payment payment="visa" ariaLabel="Visa" /></div>
   </div>
 </DefaultLayout>

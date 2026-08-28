@@ -2,4 +2,4 @@
 "@tabler/core": patch
 ---
 
-Update SCSS to use logical properties
+Updated core SCSS to logical properties such as `margin-inline-start` and `margin-inline-end`.

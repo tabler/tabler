@@ -1,60 +1,42 @@
 ---
 import Icon from '@ui/Icon.astro'
 import DocsLogo from './DocsLogo.astro'
+import docs from '@data/docs.json'
 import { site } from '@shared/lib/site'
 
+// Website / Preview / Support come from shared/data/docs.json, the same list the
+// sidebar used to render — keeping one source of truth for the product links.
+const productLinks = docs.links as { title: string; url: string; icon: string }[]
+
 // Eventually belongs in src/lib/site.ts (out of scope for this task).
-const previewUrl = 'https://preview.tabler.io'
 const changelogUrl = 'https://tabler.io/changelog'
 ---
 
 <!-- BEGIN DOCS NAVBAR -->
 <nav class="navbar navbar-expand sticky-top" aria-label="Docs">
-  <div class="container">
-    <div class="row flex-fill align-items-md-center">
-      <div class="col">
-        <div class="d-flex align-items-center gap-4">
-          {/* href="." — relative link for docs root */}
-          <a href="." class="navbar-brand navbar-brand-autodark gap-4">
-            <DocsLogo />
-          </a>
-          <div>
-            <span class="badge">v{site.version}</span>
-          </div>
-        </div>
-      </div>
-      <div class="d-none d-md-block col">
-        <div id="docsearch"></div>
-      </div>
-      <div class="col d-flex">
-        <ul class="navbar-nav ms-auto gap-2 align-items-center">
-          <li class="nav-item d-none d-md-block">
-            <a href={previewUrl} class="nav-link">Preview</a>
-          </li>
-          <li class="nav-item d-none d-md-block">
-            <a href={changelogUrl} class="nav-link">Changelog</a>
-          </li>
-          <li class="nav-item hide-theme-dark">
-            <a href="?theme=dark" class="btn btn-icon">
-              <Icon name="moon" />
-            </a>
-          </li>
-          <li class="nav-item hide-theme-light">
-            <a href="?theme=light" class="btn btn-icon">
-              <Icon name="sun" />
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href={site.githubUrl} class="btn btn-icon" target="_blank">
-              <Icon name="brand-github" />
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href={previewUrl} class="btn btn-primary" target="_blank">
-              <Icon name="eye" /> Preview
-            </a>
-          </li>
-        </ul>
+  <div class="container-lg">
+    <div class="d-flex align-items-center flex-fill gap-2">
+      <button type="button" class="btn btn-icon btn-ghost-secondary d-lg-none" data-bs-toggle="offcanvas" data-bs-target="#docs-menu-offcanvas" aria-controls="docs-menu-offcanvas" aria-label="Open documentation menu">
+        <Icon name="menu-2" />
+      </button>
+      <a href="/" class="navbar-brand navbar-brand-autodark me-2">
+        <DocsLogo />
+      </a>
+      <span class="badge d-none d-sm-inline-block">v{site.version}</span>
+      <div class="ms-auto d-flex align-items-center gap-2">
+        <nav class="d-none d-md-flex align-items-center me-1" aria-label="Tabler sites">
+          {
+            productLinks.map((link) => (
+              <a href={link.url} class="nav-link docs-navbar-link" target="_blank" rel="noopener noreferrer">
+                {link.title}
+              </a>
+            ))
+          }
+          <a href={changelogUrl} class="nav-link docs-navbar-link" target="_blank" rel="noopener noreferrer">Changelog</a>
+        </nav>
+        <a href={site.githubUrl} class="btn btn-icon btn-ghost-secondary" target="_blank" rel="noopener noreferrer" aria-label="Tabler on GitHub">
+          <Icon name="brand-github" />
+        </a>
       </div>
     </div>
   </div>

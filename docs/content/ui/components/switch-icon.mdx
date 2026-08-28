@@ -1,0 +1,113 @@
+---
+title: Switch icon
+summary: The Switch Icon component is used to create a transition between two icons. You can use any icon, both line and filled version.
+description: Animate a smooth transition between two icons with the switch icon component - useful for likes, toggles, and favorite buttons.
+related: [/ui/components/icon]
+source: core/scss/ui/_switch-icon.scss
+classnames:
+  component:
+    - class: switch-icon
+      desc: Button that swaps between two icons
+  part:
+    - class: switch-icon-a
+      desc: Icon shown in the off state
+    - class: switch-icon-b
+      desc: Icon shown in the on state
+  behavior:
+    - class: switch-icon-fade
+      desc: Crossfades between the icons
+    - class: switch-icon-flip
+      desc: Flips the icon over
+    - class: switch-icon-scale
+      desc: Scales one icon out and the other in
+    - class: switch-icon-slide-{direction}
+      desc: Slides the icons; up, down, left, right, start or end
+---
+import Example from '@components/Example.astro';
+import Icon from '@ui/Icon.astro';
+import CodeDocs from '@components/CodeDocs.astro';
+
+## Default markup
+
+The icon transition is triggered by adding an `.active` class to the `switch-icon` component.
+
+<Example centered>
+<button type="button" class="switch-icon" data-bs-toggle="switch-icon" aria-pressed="false" aria-label="Like">
+  <span class="switch-icon-a text-secondary"><Icon name="heart" /></span>
+  <span class="switch-icon-b text-red"><Icon name="heart" filled /></span>
+</button>
+</Example>
+
+## Switch animations
+
+You can also add a fancy animation to add variety to your button. See demo below:
+
+<Example centered>
+<button type="button" class="switch-icon" data-bs-toggle="switch-icon" aria-pressed="false" aria-label="Select">
+  <span class="switch-icon-a text-secondary"><Icon name="circle" /></span>
+  <span class="switch-icon-b text-primary"><Icon name="circle" filled /></span>
+</button>
+<button type="button" class="switch-icon switch-icon-fade" data-bs-toggle="switch-icon" aria-pressed="false" aria-label="Like">
+  <span class="switch-icon-a text-secondary"><Icon name="heart" /></span>
+  <span class="switch-icon-b text-red"><Icon name="heart" filled /></span>
+</button>
+<button type="button" class="switch-icon switch-icon-scale" data-bs-toggle="switch-icon" aria-pressed="false" aria-label="Add to favourites">
+  <span class="switch-icon-a text-secondary"><Icon name="star" /></span>
+  <span class="switch-icon-b text-yellow"><Icon name="star" filled /></span>
+</button>
+<button type="button" class="switch-icon switch-icon-flip" data-bs-toggle="switch-icon" aria-pressed="false" aria-label="Vote up">
+  <span class="switch-icon-a text-secondary"><Icon name="thumb-up" /></span>
+  <span class="switch-icon-b text-blue"><Icon name="thumb-up" filled /></span>
+</button>
+<button type="button" class="switch-icon switch-icon-slide-up" data-bs-toggle="switch-icon" aria-pressed="false" aria-label="Toggle">
+  <span class="switch-icon-a text-secondary">
+    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+    </svg>
+  </span>
+  <span class="switch-icon-b text-azure">
+    <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+      <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+      <path d="M22 4.01c-1 .49 -1.98 .689 -3 .99c-1.121 -1.265 -2.783 -1.335 -4.38 -.737s-2.643 2.06 -2.62 3.737v1c-3.245 .083 -6.135 -1.395 -8 -4c0 0 -4.182 7.433 4 11c-1.872 1.247 -3.739 2.088 -6 2c3.308 1.803 6.913 2.423 10.034 1.517c3.58 -1.04 6.522 -3.723 7.651 -7.742a13.84 13.84 0 0 0 .497 -3.753c-.002 -.249 1.51 -2.772 1.818 -4.013z" />
+    </svg>
+  </span>
+</button>
+<button type="button" class="switch-icon switch-icon-slide-left" data-bs-toggle="switch-icon" aria-pressed="false" aria-label="Toggle">
+  <span class="switch-icon-a text-secondary">
+    <Icon name="check" />
+  </span>
+  <span class="switch-icon-b text-red">
+    <Icon name="x" />
+  </span>
+</button>
+<button type="button" class="switch-icon switch-icon-slide-down" data-bs-toggle="switch-icon" aria-pressed="false" aria-label="Toggle">
+  <span class="switch-icon-a text-secondary">
+    <Icon name="arrow-down" />
+  </span>
+  <span class="switch-icon-b text-secondary">
+    <Icon name="arrow-up" />
+  </span>
+</button>
+<button type="button" class="switch-icon switch-icon-slide-end" data-bs-toggle="switch-icon" aria-pressed="false" aria-label="Toggle">
+  <span class="switch-icon-a text-secondary">
+    <Icon name="car" />
+  </span>
+  <span class="switch-icon-b text-secondary">
+    <Icon name="scooter" />
+  </span>
+</button>
+</Example>
+
+## JavaScript
+
+Tabler toggles the `active` class on every element with `data-bs-toggle="switch-icon"` on click. This is the code that runs:
+
+<CodeDocs name="switch-icon-init" file="core/js/src/switch-icon.ts" />
+
+## Accessibility
+
+- A switch icon is a toggle button. Give it `type="button"`, an `aria-label` saying what it toggles, and `aria-pressed` for the state - Tabler keeps `aria-pressed` in sync from the first click, but the initial value has to be in your markup.
+- The two icons are decoration. The state lives in `aria-pressed`, not in which icon is visible.
+- Colour alone should not carry the state. A filled red heart and an outlined grey one differ in shape too, which is what makes them readable.
+- The animations run on every toggle. Disable them under `prefers-reduced-motion` if you add your own.

@@ -1,5 +1,6 @@
 ---
 // `photo` and `index` are passed explicitly from the parent loop.
+import { staticPath } from '@shared/lib/assets'
 import Avatar from '@ui/Avatar.astro'
 import Icon from '@ui/Icon.astro'
 import { randomNumber, timeagoLabel } from '@shared/lib/pseudo-random'
@@ -30,7 +31,7 @@ const heartClass = (index > 2 && index < 9) || index === 10 ? 'icon-filled text-
 ---
 
 <div class="card card-sm">
-  <a href="#" class="d-block"><img src={`./static/photos/${photo.file}`} class="card-img-top" /></a>
+  <a href="#" class="d-block"><img src={staticPath(`photos/${photo.file}`)} class="card-img-top" /></a>
   <div class="card-body">
     <div class="d-flex align-items-center">
       <Avatar person={person} class="me-3 rounded" />

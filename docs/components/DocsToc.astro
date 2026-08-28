@@ -1,6 +1,8 @@
 ---
 // TOC comes in as a prop from the consuming page (h2/h3 headings from the
 // markdown content, excluding <!--EXAMPLE-->...<!--/EXAMPLE--> blocks).
+import Subheader from '@ui/Subheader.astro'
+import Icon from '@ui/Icon.astro'
 
 export interface TocItem {
   /** 2 or 3 (h2/h3); h3 gets the ms-3 indent */
@@ -12,21 +14,29 @@ export interface TocItem {
 
 interface Props {
   toc?: TocItem[]
+  /** "Edit this page" URL on GitHub; omitted for pages without a source file */
+  editUrl?: string | undefined
+  /** URL of the file implementing the component, from the page's `source` front matter */
+  sourceUrl?: string | undefined
+  /** url of this page's markdown mirror, offered as a copy button */
+  markdownUrl?: string | undefined
 }
 
-const { toc = [] } = Astro.props
+const { toc = [], editUrl, sourceUrl, markdownUrl } = Astro.props
 
-// shared/data/illustrations.json has 100 entries.
-const illustrationsCount = 100
+// shared/data/illustrations.json has 125 entries.
+const illustrationsCount = 125
 ---
 
 <!-- BEGIN DOCS TOC -->{
   toc.length > 0 && (
     <Fragment>
-      <h3 id="toc-heading">Table of Contents</h3>
-      <nav class="nav nav-vertical" id="toc" aria-labelledby="toc-heading">
+      <Subheader as="h3" id="toc-heading" class="mb-2">
+        On this page
+      </Subheader>
+      <nav class="nav nav-vertical mb-6" id="toc" aria-labelledby="toc-heading">
         {toc.map((item) => (
-          <a href={`#${item.id}`} class={`nav-link${item.level === 3 ? ' ms-3' : ''}`}>
+          <a href={`#${item.id}`} class={`nav-link${item.level === 3 ? ' docs-toc-sub' : ''}`}>
             {item.text}
           </a>
         ))}
@@ -35,11 +45,65 @@ const illustrationsCount = 100
   )
 }
 
-<a href="https://r.tabler.io/illustrations" class="card card-sm mt-6 shadow-none" target="_blank">
+<a href="https://r.tabler.io/illustrations" class="card card-sm shadow-none" target="_blank" rel="noopener noreferrer">
   <div class="card-body">
-    <img src="/img/banner-carbon.png" class="mb-3" alt="" />
+    <img src="/img/banner-carbon.png" class="mb-3" alt="" width="260" height="200" loading="lazy" />
 
     <h4>{illustrationsCount} sleek illustrations for your startup's visual identity.</h4>
   </div>
 </a>
+
+{
+  (markdownUrl || sourceUrl || editUrl) && (
+    <nav class="docs-page-links mt-6" aria-label="Page tools">
+      {markdownUrl && (
+        <button type="button" class="docs-page-link" data-docs-copy-markdown={markdownUrl}>
+          <Icon name="clipboard" />
+          <span data-docs-copy-label>Copy page as Markdown</span>
+        </button>
+      )}
+
+      {sourceUrl && (
+        <a href={sourceUrl} class="docs-page-link" target="_blank" rel="noopener noreferrer">
+          <Icon name="code" />
+          Source code
+        </a>
+      )}
+
+      {editUrl && (
+        <a href={editUrl} class="docs-page-link" target="_blank" rel="noopener noreferrer">
+          <Icon name="edit" />
+          Edit this page on GitHub
+        </a>
+      )}
+    </nav>
+  )
+}
 <!-- END DOCS TOC -->
+
+<script>
+  // Fetches the .md mirror of the page and puts it on the clipboard, so the
+  // whole page can be pasted into an assistant without hunting for the url.
+  const button = document.querySelector<HTMLButtonElement>('[data-docs-copy-markdown]')
+
+  if (button) {
+    const label = button.querySelector<HTMLElement>('[data-docs-copy-label]')
+
+    button.addEventListener('click', async () => {
+      if (!label) return
+      const url = button.dataset.docsCopyMarkdown
+      if (!url) return
+      try {
+        const response = await fetch(url)
+        await navigator.clipboard.writeText(await response.text())
+        const original = label.textContent
+        label.textContent = 'Copied'
+        setTimeout(() => {
+          label.textContent = original
+        }, 2000)
+      } catch {
+        // clipboard or network refused — leave the label alone
+      }
+    })
+  }
+</script>

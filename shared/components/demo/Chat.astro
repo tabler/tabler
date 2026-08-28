@@ -1,0 +1,89 @@
+---
+import Avatar from '@ui/Avatar.astro'
+import { people } from '@shared/lib/people'
+import chats from '@data/chats.json'
+import { requireIndex } from '@shared/lib/array'
+
+interface Message {
+  'timestamp'?: string
+  'person-id': number
+  'message'?: string
+  'loading'?: boolean
+  'gif'?: string
+}
+
+interface Props {
+  wide?: boolean
+}
+
+const { wide } = Astro.props
+
+const messages = chats as Message[]
+const peopleList = people
+---
+
+<div class="chat">
+  <div class="chat-bubbles">
+    {
+      messages.map((message) => {
+        const person = requireIndex(peopleList, message['person-id'])
+        const me = message['person-id'] === 0
+        const messageColClass = message.loading ? 'col-auto' : `col${wide ? ' col-lg-6' : ''}`
+
+        const avatar = (
+          <div class="col-auto">
+            <Avatar person={person} />
+          </div>
+        )
+
+        const messageBlock = (
+          <div class={messageColClass}>
+            <div class:list={['chat-bubble', me && 'chat-bubble-me']}>
+              {!message.loading && (
+                <div class="chat-bubble-title">
+                  <div class="row">
+                    <div class="col chat-bubble-author">{person.full_name}</div>
+                    <div class="col-auto chat-bubble-date">{message.timestamp}</div>
+                  </div>
+                </div>
+              )}
+              <div class="chat-bubble-body">
+                {message.loading ? (
+                  <p class="text-secondary text-italic">
+                    typing
+                    <span class="animated-dots" />
+                  </p>
+                ) : (
+                  <p set:html={message.message} />
+                )}
+                {message.gif && (
+                  <div class="mt-2">
+                    <img src={message.gif} alt="" class="rounded img-fluid" />
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+        )
+
+        return (
+          <div class="chat-item">
+            <div class:list={['row align-items-end', me && 'justify-content-end']}>
+              {me ? (
+                <Fragment>
+                  {messageBlock}
+                  {avatar}
+                </Fragment>
+              ) : (
+                <Fragment>
+                  {avatar}
+                  {messageBlock}
+                </Fragment>
+              )}
+            </div>
+          </div>
+        )
+      })
+    }
+  </div>
+</div>

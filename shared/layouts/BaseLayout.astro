@@ -1,23 +1,25 @@
 ---
-import ThemeSettings from '@ui/ThemeSettings.astro'
+import ThemeSettings from '@shared/components/demo/ThemeSettings.astro'
 import { site } from '@shared/lib/site'
 import PageModals from '@shared/components/PageModals.astro'
 import PageScripts from '@shared/components/PageScripts.astro'
 import libs from '@tabler/core/libs.json'
 
 interface Props {
-  title?: string
+  title?: string | undefined
   /** Third-party libs from libs.json, e.g. ['apexcharts', 'jsvectormap'] */
-  pageLibs?: string[]
+  pageLibs?: string[] | undefined
   /** Extra body classes, e.g. "layout-boxed" / "layout-fluid" */
-  bodyClass?: string
+  bodyClass?: string | undefined
   /** dir="rtl" + RTL variants of the tabler/plugin stylesheets */
-  rtl?: boolean
+  rtl?: boolean | undefined
   /** Relative asset base: '.' for root pages, '..' one level deep */
   base?: string
+  /** <meta name="description"> — falls back to the site description */
+  description?: string | undefined
 }
 
-const { title, pageLibs = [], bodyClass, rtl = false, base = '.' } = Astro.props
+const { title, pageLibs = [], bodyClass, rtl = false, base = '.', description } = Astro.props
 
 // Development build: unminified assets, dev favicon.
 const environment = 'development'
@@ -44,6 +46,7 @@ const libJsFiles = (head: boolean) => pageLibEntries.filter(([, lib]) => Boolean
     <meta http-equiv="X-UA-Compatible" content="ie=edge" />
 
     <title>{title ? `${title} - ` : ''}{site.title} - {site.descriptionShort}</title>
+    <meta name="description" content={description ?? site.descriptionShort} />
 
     <link rel="icon" href={`${base}/favicon-dev.ico`} type="image/x-icon" />
     <link rel="shortcut icon" href={`${base}/favicon-dev.ico`} type="image/x-icon" />
@@ -193,7 +196,6 @@ const libJsFiles = (head: boolean) => pageLibEntries.filter(([, lib]) => Boolean
 
         resetButton.addEventListener('click', function () {
           for (var key in themeConfig) {
-            var value = themeConfig[key]
             document.documentElement.removeAttribute('data-bs-' + key)
             window.localStorage.removeItem('tabler-' + key)
             url.searchParams.delete(key)

@@ -1,0 +1,331 @@
+---
+title: Alert
+summary: An alert message is used to inform users about the status of their action and help them solve problems that may occur. Good alert design is important for the overall user experience of a website or app.
+description: Show alert messages that inform users about success, info, warning, or danger states, with icons, links, and dismissible options.
+related: [/ui/components/toast]
+source: core/scss/ui/_alerts.scss
+classnames:
+  component:
+    - class: alert
+      desc: Container element
+  part:
+    - class: alert-heading
+      desc: Title line above the message
+    - class: alert-description
+      desc: Secondary text under the title
+    - class: alert-icon
+      desc: Icon slot, sized and colored with the alert
+    - class: alert-link
+      desc: Link inside the message, matched to the alert color
+    - class: alert-action
+      desc: Underlined link on its own line, for the next step
+    - class: alert-list
+      desc: List inside the alert, with the default list margin removed
+  style:
+    - class: alert-important
+      desc: Solid fill in the alert color, with white text
+    - class: alert-minor
+      desc: Drops the tinted background, keeps a plain border
+    - class: alert-dismissible
+      desc: Reserves room on the trailing edge for the close button
+  color:
+    - class: alert-{color}
+      desc: Any base color, for example alert-success, alert-blue or alert-muted
+---
+import Example from '@components/Example.astro';
+import CodeDocs from '@components/CodeDocs.astro';
+import Alert from '@ui/Alert.astro';
+import Icon from '@ui/Icon.astro'
+
+## Default markup
+
+Depending on the information you need to convey, you can use one of the following types of alert messages - **success**, **info**, **warning** or **danger**. Using the right type of alert modal will help draw users' attention to the message and prompt them to take action.
+
+Combine `alert` class with one of the following: `alert-success`, `alert-info`, `alert-warning`, `alert-danger` to get the alert that you need.
+
+Alert classes affect the color of all the text inside an alert. Use another class, e.g. `text-secondary` to change the color of the alert's content.
+
+<Example>
+<Alert color="success" title="Wow! Everything worked!" description="Your account has been saved!" /> <Alert color="info" title="Did you know?" description="Here is something that you might like to know." /> <Alert color="warning" title="Uh oh, something went wrong" description="Sorry! There was a problem with your request." /> <Alert color="danger" title={"I'm so sorry&hellip;"} description="Your account has been deleted and can't be restored." />
+</Example>
+
+## Alert links
+
+Add a link to your alert message to redirect users to the details they need to complete or additional information they should read. Use `alert-link` class to style the link and match the text color.
+
+<Example>
+<Alert color="danger" title="This is a danger alert" link="check it out" />
+</Example>
+
+Use `alert-action` instead when the link is the thing to do next rather than a word inside a sentence. It is underlined on its own line and drops the underline on hover.
+
+<Example>
+<div class="alert alert-danger" role="alert">
+  <h4 class="alert-heading">An error occurred</h4>
+  <div class="text-secondary">We could not save your changes.</div>
+  <a href="#" class="alert-action">Try again</a>
+</div>
+</Example>
+
+## Alert with a list
+
+Wrap several messages in a `ul` with the `alert-list` class. It removes the default list margin so the items sit flush inside the alert.
+
+<Example>
+<div class="alert alert-warning" role="alert">
+  <h4 class="alert-heading">Check these fields</h4>
+  <ul class="alert-list">
+    <li>The email address is missing.</li>
+    <li>The password is too short.</li>
+  </ul>
+</div>
+</Example>
+
+## Minor alerts
+
+Add `alert-minor` for a quieter alert. It drops the tinted background and keeps a plain border, so the color only shows in the icon and the heading. Use it where an alert would otherwise dominate the page.
+
+<Example>
+<div class="alert alert-minor alert-info alert-dismissible" role="alert">
+  <div class="alert-heading">Did you know?</div>
+  <div class="text-secondary">Here is something that you might like to know.</div>
+  <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+</div>
+<div class="alert alert-minor alert-success" role="alert">
+  <div class="alert-heading">Everything worked</div>
+  <div class="text-secondary">Your account has been saved.</div>
+</div>
+</Example>
+
+## Dismissible alerts
+
+Add the `x` close button to make an alert modal dismissible. Thanks to that, your alert modal will disappear only when the user closes it.
+
+```html
+<a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+```
+
+<Example>
+<Alert color="danger" title="This is a danger alert" showClose />
+</Example>
+
+## Alerts with icons
+
+Add an icon to your alert modal to make it more user-friendly and help users easily identify the message.
+
+Use the `alert-icon` class on an `<svg>` (or on an `<i>` when using the webfont) to provide the proper styling.
+
+<Example>
+<div class="alert alert-success" role="alert">
+  <div class="d-flex">
+    <div>
+      <Icon name="check" class="alert-icon" />
+    </div>
+    <div>
+      <h4 class="alert-heading">Wow! Everything worked!</h4>
+      <div class="text-secondary">Your account has been saved!</div>
+    </div>
+  </div>
+</div>
+<div class="alert alert-info" role="alert">
+  <div class="d-flex">
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <circle cx="12" cy="12" r="9" />
+        <line x1="12" y1="8" x2="12.01" y2="8" />
+        <polyline points="11 12 12 12 12 16 13 16" />
+      </svg>
+    </div>
+    <div>
+      <h4 class="alert-heading">Did you know?</h4>
+      <div class="text-secondary">Here is something that you might like to know.</div>
+    </div>
+  </div>
+</div>
+<div class="alert alert-warning" role="alert">
+  <div class="d-flex">
+    <div>
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon alert-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+        <path d="M12 9v2m0 4v.01" />
+        <path d="M5 19h14a2 2 0 0 0 1.84 -2.75l-7.1 -12.25a2 2 0 0 0 -3.5 0l-7.1 12.25a2 2 0 0 0 1.75 2.75" />
+      </svg>
+    </div>
+    <div>
+      <h4 class="alert-heading">Uh oh, something went wrong</h4>
+      <div class="text-secondary">Sorry! There was a problem with your request.</div>
+    </div>
+  </div>
+</div>
+<div class="alert alert-danger" role="alert">
+  <div class="d-flex">
+    <div>
+      <Icon name="alert-circle" class="alert-icon" />
+    </div>
+    <div>
+      <h4 class="alert-heading">I'm so sorry&hellip;</h4>
+      <div class="text-secondary">Your account has been deleted and can't be restored.</div>
+    </div>
+  </div>
+</div>
+</Example>
+
+## Alert with avatar
+
+Add an [avatar](/ui/components/avatar) to your alert modal to make it more personalized.
+
+<Example>
+<div class="alert alert-success" role="alert">
+  <div class="d-flex">
+    <div>
+      <span class="avatar me-3" style="background-image: url(/static/avatars/039m.jpg)"></span>
+    </div>
+    <div> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit. </div>
+  </div>
+</div>
+<div class="alert alert-info" role="alert">
+  <div class="d-flex">
+    <div><span class="avatar me-3">JL</span></div>
+    <div> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit. </div>
+  </div>
+</div>
+<div class="alert alert-warning" role="alert">
+  <div class="d-flex">
+    <div>
+      <span class="avatar me-3" style="background-image: url(/static/avatars/035f.jpg)"></span>
+    </div>
+    <div> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit. </div>
+  </div>
+</div>
+<div class="alert alert-danger" role="alert">
+  <div class="d-flex">
+    <div>
+      <span class="avatar me-3" style="background-image: url(/static/avatars/056f.jpg)"></span>
+    </div>
+    <div> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit. Lorem ipsum dolor sit amet, consectetur adipisicing elit. </div>
+  </div>
+</div>
+</Example>
+
+## Alert with buttons
+
+Add primary and secondary [buttons](/ui/components/button) to your alert modals if you want users to take a particular action based on the information included in the modal message.
+
+Buttons don't inherit the alert's color, so you should set the proper class if you want it to be matched. For example, `btn-success` for `alert-success`.
+
+<Example>
+<div class="alert alert-success alert-dismissible" role="alert">
+  <h3 class="mb-1">Some Title</h3>
+  <p class="text-secondary"> Lorem ipsum Minim ad pariatur eiusmod ea ut nulla aliqua est quis id dolore minim voluptate. </p>
+  <div class="btn-list">
+    <a href="#" class="btn btn-success">Okay</a>
+    <a href="#" class="btn">Cancel</a>
+  </div>
+  <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+</div>
+<div class="alert alert-info alert-dismissible" role="alert">
+  <h3 class="mb-1">Some Title</h3>
+  <p class="text-secondary"> Lorem ipsum Minim ad pariatur eiusmod ea ut nulla aliqua est quis id dolore minim voluptate. </p>
+  <div class="btn-list">
+    <a href="#" class="btn btn-info">Okay</a>
+    <a href="#" class="btn">Cancel</a>
+  </div>
+  <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+</div>
+<div class="alert alert-warning alert-dismissible" role="alert">
+  <h3 class="mb-1">Some Title</h3>
+  <p class="text-secondary"> Lorem ipsum Minim ad pariatur eiusmod ea ut nulla aliqua est quis id dolore minim voluptate. </p>
+  <div class="btn-list">
+    <a href="#" class="btn btn-warning">Okay</a>
+    <a href="#" class="btn">Cancel</a>
+  </div>
+  <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+</div>
+<div class="alert alert-danger alert-dismissible" role="alert">
+  <h3 class="mb-1">Some Title</h3>
+  <p class="text-secondary"> Lorem ipsum Minim ad pariatur eiusmod ea ut nulla aliqua est quis id dolore minim voluptate. </p>
+  <div class="btn-list">
+    <a href="#" class="btn btn-danger">Okay</a>
+    <a href="#" class="btn">Cancel</a>
+  </div>
+  <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+</div>
+</Example>
+
+## Important alerts
+
+If you want your alert to be really eye-catching, you can add an `alert-important` class. It will use the selected color as a background for the alert.
+
+```html
+<div class="alert alert-important alert-success alert-dismissible" role="alert">...</div>
+```
+
+You can also use other elements, like icons and dismissible buttons, with this type of alert.
+
+<Example>
+<div class="alert alert-important alert-success alert-dismissible" role="alert">
+  <div class="d-flex">
+    <div>
+      <Icon name="check" class="alert-icon" />
+    </div>
+    <div>Wow! Everything worked!</div>
+  </div>
+  <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+</div>
+<div class="alert alert-important alert-danger alert-dismissible" role="alert">
+  <div class="d-flex">
+    <div>
+      <Icon name="alert-circle" class="alert-icon" />
+    </div>
+    <div>Your account has been deleted and can't be restored.</div>
+  </div>
+  <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+</div>
+</Example>
+
+## Custom alert color
+
+You're not limited to the 4 default alert colors. You can use any [base color](/ui/base/colors) you want.
+
+<Example>
+<div class="alert alert-lime" role="alert">
+  <h4 class="alert-heading">Wow! Everything worked!</h4>
+  <div class="text-secondary">Your account has been saved!</div>
+</div>
+<div class="alert alert-cyan" role="alert">
+  <h4 class="alert-heading">Did you know?</h4>
+  <div class="text-secondary">Here is something that you might like to know.</div>
+</div>
+<div class="alert alert-blue" role="alert">
+  <h4 class="alert-heading">You have a new friend on Facebook</h4>
+  <div class="text-secondary">Say hello to your new friend!</div>
+</div>
+<div class="alert alert-pink alert-dismissible alert-important" role="alert">
+  <div class="d-flex">
+    <div>
+      <span class="avatar me-3" style="background-image: url(/static/avatars/035f.jpg)"></span>
+    </div>
+    <div>
+      <h4 class="alert-heading">Sophia just added a new post on Instagram</h4>
+      <div>Be the first to see it!</div>
+    </div>
+  </div>
+  <a class="btn-close" data-bs-dismiss="alert" aria-label="close"></a>
+</div>
+</Example>
+
+## Accessibility
+
+- Give an alert a role that matches how urgent it is. `role="alert"` interrupts the screen reader and suits an error; `role="status"` waits for a pause and suits a confirmation.
+- The live region has to exist before the message arrives. Render the container on page load and put the text into it, rather than inserting the whole alert at the moment of the event.
+- Label the dismiss button with `aria-label="Close"`. `btn-close` has no text of its own.
+- The icon is decoration, so the alert must still read correctly with the icon ignored. Keep the meaning in the heading and the text.
+- Colour alone does not say "error". A red alert and a green one must differ in their words too.
+- After dismissing an alert, move focus somewhere sensible. Focus left on a removed element falls back to the top of the page.
+
+## SCSS variables
+
+Use these SCSS variables to customize alerts. The default values are:
+
+<CodeDocs name="alert-variables" file="core/scss/_variables.scss" />

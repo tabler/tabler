@@ -1,45 +1,37 @@
 ---
 import Icon from './Icon.astro'
+import type { FlagCountry } from '@shared/lib/tokens'
+import type { Person } from '@shared/lib/people'
 import Flag from './Flag.astro'
 import Avatar from './Avatar.astro'
-import Payment from './Payment.astro'
 import Badge from './Badge.astro'
 
-interface Person {
-  full_name?: string
-  photo?: string
-  [key: string]: unknown
-}
-
 interface Props {
-  text?: string
-  flag?: string
+  text?: string | undefined
+  flag?: FlagCountry | undefined
   icon?: string
   person?: Person
-  personId?: number
-  payment?: string
   status?: string
   legend?: string
   checkbox?: boolean
   checked?: boolean
   badge?: string | number
+  class?: string
+  /** remaining attributes (id, data-*, aria-*, …) are forwarded to the root element */
+  [key: string]: unknown
 }
 
-const { text, flag, icon, person, personId, payment, status, legend, checkbox, checked, badge } = Astro.props
+const { text, flag, icon, person, status, legend, checkbox, checked, badge, class: className, ...rest } = Astro.props
 ---
 
-<span class="tag">
+<span class:list={['tag', className]} {...rest}>
   {
     flag ? (
       <Flag flag={flag} size="xxs" class="tag-flag" />
     ) : icon ? (
-      <Icon name={icon} size="xxs" class="tag-icon" />
+      <Icon name={icon} size="sm" class="tag-icon" />
     ) : person ? (
       <Avatar person={person} size="xxs" class="tag-avatar" />
-    ) : personId ? (
-      <Avatar personId={personId} size="xxs" class="tag-avatar" />
-    ) : payment ? (
-      <Payment payment={payment} size="xxs" class="tag-payment" />
     ) : status ? (
       <Badge color={status} class="tag-status badge-dot" text="" />
     ) : legend ? (
@@ -49,7 +41,7 @@ const { text, flag, icon, person, personId, payment, status, legend, checkbox, c
     ) : null
   }
   {text}
-  {badge && <Badge class="tag-badge" text={String(badge)} />}
+  {badge != null && <Badge class="tag-badge" text={String(badge)} />}
 
   <button type="button" class="btn-close" aria-label={text ? `Remove ${text}` : 'Remove'}></button>
 </span>

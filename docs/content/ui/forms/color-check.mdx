@@ -1,0 +1,50 @@
+---
+title: Color check
+order: 7
+summary: The color check is a great way to make your form more user-friendly and engaging. You can use the color check to create a visually appealing form that will help users make decisions quickly and easily.
+description: Let users pick a color with radio or checkbox controls styled as color swatches. A simple way to make forms more visual.
+related: [/ui/forms/image-check, /ui/base/colors]
+---
+
+import Example from '@components/Example.astro'
+import InputColor from '@shared/components/parts/form/InputColor.astro'
+
+Your input controls can come in a variety of colors, depending on your preferences. See the [full list of available colors](/ui/base/colors) for more details.
+
+```html
+<label class="form-colorinput">
+  <input name="..." type="radio" value="..." class="form-colorinput-input" />
+  <span class="form-colorinput-color bg-lime"></span>
+</label>
+```
+
+There is also an example of a color input:
+
+<Example>
+<InputColor type="checkbox" />
+</Example>
+
+If you need to select only one color, you can use the radio input type:
+
+<Example>
+  <InputColor name="color-rounded" rounded={true} />
+</Example>
+
+## Input color picker
+
+Add an color picker to your form to let users customize it according to their preferences.
+
+<Example>
+<div class="mb-3">
+  <label class="form-label">Color picker</label>
+  <input type="color" class="form-control form-control-color" value="#066fd1" title="Choose your color" />
+</div>
+</Example>
+
+## Accessibility
+
+- A colour swatch has no name. Put the colour in text inside a `visually-hidden` span, or use `aria-label` on the input, so the option is not announced as just "radio".
+- Colour on its own cannot be the only way to tell options apart. Keep a visible mark for the selected one - Tabler draws a checkmark inside the swatch.
+- Wrap the set in a `fieldset` with a `legend`, so the group has a name. See [fieldsets](/ui/forms/fieldset).
+- Keep the real `input` in the markup. It is what makes the arrow keys, the space bar and the checked state work.
+- Do not use a colour picker as the only way to choose something meaningful, such as a category. Offer the name as well.

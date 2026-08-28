@@ -1,12 +1,10 @@
 ---
 import Icon from '@ui/Icon.astro'
-import DropdownMenu from '@ui/DropdownMenu.astro'
+import DropdownMenu from '@shared/components/demo/DropdownMenu.astro'
 
 interface Props {
   id: string
   icons?: boolean
-  /** hide-text param; not used by current call sites */
-  hideText?: boolean
   reverse?: boolean
   justified?: boolean
   activity?: boolean
@@ -16,29 +14,28 @@ interface Props {
   animation?: boolean
 }
 
-const { id, icons, hideText, reverse = false, justified, activity, disabled, dropdown, settings, animation } = Astro.props
+const { id, icons, reverse = false, justified, activity, disabled, dropdown, settings, animation } = Astro.props
 
-const iconClass = hideText ? undefined : 'me-2'
 const navClass = `nav nav-tabs card-header-tabs${reverse ? ' flex-row-reverse' : ''}${justified ? ' nav-fill' : ''}`
 const paneClass = `tab-pane${animation ? ' fade' : ''}`
 ---
 
 <div class="card">
   <div class="card-header">
-    <ul class={navClass} role="tablist" data-bs-toggle="tab">
+    <ul class={navClass} role="tablist">
       <li class="nav-item" role="presentation">
-        <a href={`#tabs-home-${id}`} id={`tabs-home-${id}-tab`} class="nav-link active" data-bs-toggle="tab" data-bs-target={`#tabs-home-${id}`} role="tab" aria-controls={`tabs-home-${id}`} aria-selected="true">{icons && <Icon name="home" class={iconClass} />}{!hideText && 'Home'}</a>
+        <a href={`#tabs-home-${id}`} id={`tabs-home-${id}-tab`} class="nav-link active" data-bs-toggle="tab" data-bs-target={`#tabs-home-${id}`} role="tab" aria-controls={`tabs-home-${id}`} aria-selected="true">{icons && <Icon name="home" class="me-2" />}Home</a>
       </li>
       <li class="nav-item" role="presentation">
-        <a href={`#tabs-profile-${id}`} id={`tabs-profile-${id}-tab`} class="nav-link" data-bs-toggle="tab" data-bs-target={`#tabs-profile-${id}`} role="tab" aria-controls={`tabs-profile-${id}`} aria-selected="false">{icons && <Icon name="user" class={iconClass} />}{!hideText && 'Profile'}</a>
+        <a href={`#tabs-profile-${id}`} id={`tabs-profile-${id}-tab`} class="nav-link" data-bs-toggle="tab" data-bs-target={`#tabs-profile-${id}`} role="tab" aria-controls={`tabs-profile-${id}`} aria-selected="false">{icons && <Icon name="user" class="me-2" />}Profile</a>
       </li>
 
       {
         activity && (
           <li class="nav-item" role="presentation">
             <a href={`#tabs-activity-${id}`} id={`tabs-activity-${id}-tab`} class="nav-link" data-bs-toggle="tab" data-bs-target={`#tabs-activity-${id}`} role="tab" aria-controls={`tabs-activity-${id}`} aria-selected="false">
-              {icons && <Icon name="activity" class={iconClass} />}
-              {!hideText && 'Activity'}
+              {icons && <Icon name="activity" class="me-2" />}
+              Activity
             </a>
           </li>
         )
@@ -47,9 +44,9 @@ const paneClass = `tab-pane${animation ? ' fade' : ''}`
       {
         disabled && (
           <li class="nav-item" role="presentation">
-            <a href={`#tabs-activity-${id}`} class="nav-link disabled" data-bs-toggle="tab" role="tab" aria-selected="false" aria-disabled="true" tabindex="-1">
-              {icons && <Icon name="x" class={iconClass} />}
-              {!hideText && 'Disabled'}
+            <a href="#" class="nav-link disabled" data-bs-toggle="tab" role="tab" aria-selected="false" aria-disabled="true" tabindex="-1">
+              {icons && <Icon name="x" class="me-2" />}
+              Disabled
             </a>
           </li>
         )

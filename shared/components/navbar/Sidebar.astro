@@ -3,16 +3,17 @@ import NavbarToggler from './NavbarToggler.astro'
 import Logo from './Logo.astro'
 import NavbarSide from './NavbarSide.astro'
 import NavbarMenu from './NavbarMenu.astro'
+import type { Breakpoint } from './NavbarSide.astro'
 
 interface Props {
-  dark?: boolean
-  breakpoint?: string
+  dark?: boolean | undefined
+  breakpoint?: Breakpoint | undefined
   /** layout-sidebar-end — navbar-end class */
-  end?: boolean
+  end?: boolean | undefined
   /** layout-navbar-transparent — navbar-transparent class */
-  transparent?: boolean
+  transparent?: boolean | undefined
   /** equivalent of the page-menu front matter (active menu entry), e.g. "layout.vertical" */
-  pageMenu?: string
+  pageMenu?: string | undefined
 }
 
 const { dark = false, breakpoint = 'lg', end = false, transparent = false, pageMenu } = Astro.props

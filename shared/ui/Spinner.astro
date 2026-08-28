@@ -1,23 +1,17 @@
 ---
-// With explicit `size`: `spinner-{type}-{size}`. Without `size`: `spinner-{type}-{argCount}` (e.g. spinner-border-2).
-import { includeArgCount } from '@shared/lib/include-args'
-
 interface Props {
-  element?: 'div' | 'span'
-  type?: string
+  type?: 'border' | 'grow'
   color?: string
-  size?: string
+  /** core/scss/bootstrap/_spinners.scss `.spinner-{type}-{size}` — only 'sm' exists */
+  size?: 'sm' | undefined
   class?: string
+  /** remaining attributes (id, data-*, aria-*, …) are forwarded to the root element */
+  [key: string]: unknown
 }
 
-const { element: Element = 'div', type = 'border', color, size, class: className } = Astro.props
+const { type = 'border', color, size, class: className, ...rest } = Astro.props
 
-const includeArgKeys = ['element', 'type', 'color', 'size', 'class'] as const
-const argCount = includeArgCount(Astro.props as Record<string, unknown>, includeArgKeys)
-// include['size'] → explicit value, else the arg count meta-property.
-const sizeValue = size !== undefined ? size : argCount || undefined
-
-const classes = [`spinner-${type}`, color && `text-${color}`, sizeValue && `spinner-${type}-${sizeValue}`, className]
+const classes = [`spinner-${type}`, color && `text-${color}`, size && `spinner-${type}-${size}`, className]
 ---
 
-<Element class:list={classes} role="status" />
+<div class:list={classes} role="status" {...rest}></div>

@@ -1,0 +1,255 @@
+---
+title: Upgrade to 1.5
+summary: Move your project from Tabler 1.4 to 1.5. This guide lists every breaking change, with a before and after example for each one, so you know exactly what to update in your markup, JavaScript and Sass.
+description: Upgrade guide from Tabler 1.4 to 1.5 with all breaking changes, renamed classes and Sass updates.
+added-in: '1.5.0'
+related: [/ui/getting-started/rtl]
+---
+
+Most projects only use the compiled CSS and JavaScript from `dist/`. If that is you, the upgrade is short: update the package, remove Bootstrap, and check the [visual changes](#visual-changes). Projects that compile Tabler from the Sass sources have more work to do — see [Sass changes](#sass-changes).
+
+## Overview
+
+Use this table to find the changes that affect you.
+
+If you…|You need to…
+---|---
+Load `dist/css` and `dist/js`|Remove Bootstrap's CSS and JS — Tabler now ships them
+Load `bootstrap.bundle.min.js`|Remove it, or components will start twice
+Use `window.bootstrap.Modal`|Use `window.tabler.Modal`
+Compile `scss/tabler.scss` yourself|Switch to `@use … with ()` and add the PostCSS prefix step
+Override Sass variables|Check the [list of removed variables](#removed-sass-variables)
+Use `.badges-list` or `.tags-list`|Rename to `.badge-list` and `.tag-list` (old names still work)
+Use ApexCharts|Update to ApexCharts 6
+Use Turbo with Tabler|The built-in integration is gone — see [Turbo](#turbo-integration-removed)
+Load `tabler.rtl.css`|You can drop it — plain `tabler.css` now handles RTL
+
+## Update the package
+
+Install the new version:
+
+```sh
+npm install --save @tabler/core@1.5.0
+```
+
+Or update the CDN links:
+
+```html
+<link
+  rel="stylesheet"
+  href="https://cdn.jsdelivr.net/npm/@tabler/core@1.5.0/dist/css/tabler.min.css"
+/>
+<script src="https://cdn.jsdelivr.net/npm/@tabler/core@1.5.0/dist/js/tabler.min.js"></script>
+```
+
+## Bootstrap is now part of Tabler
+
+Bootstrap is no longer a dependency. Its JavaScript and Sass sources live inside `@tabler/core`, based on Bootstrap 5.3.8.
+
+Remove Bootstrap from your project:
+
+```sh
+npm uninstall bootstrap
+```
+
+Then remove the separate Bootstrap files from your pages:
+
+```diff
+- <link rel="stylesheet" href="/vendor/bootstrap/bootstrap.min.css" />
+  <link rel="stylesheet" href="/vendor/tabler/tabler.min.css" />
+
+- <script src="/vendor/bootstrap/bootstrap.bundle.min.js"></script>
+  <script src="/vendor/tabler/tabler.min.js"></script>
+```
+
+If you leave `bootstrap.bundle.min.js` on the page, every component starts twice. You will see modals that close at once, or dropdowns that never open.
+
+### JavaScript imports
+
+Bootstrap components are exported from `@tabler/core`:
+
+```diff
+- import { Modal, Tooltip } from 'bootstrap'
++ import { Modal, Tooltip } from '@tabler/core'
+```
+
+### Global variable
+
+The UMD build puts everything under `tabler`:
+
+```diff
+- const modal = new bootstrap.Modal(element)
++ const modal = new tabler.Modal(element)
+```
+
+`tabler.bootstrap.Modal` also works. You can replace `bootstrap.` with `tabler.bootstrap.` across your project as a quick fix.
+
+### Data attributes
+
+Every component now reads `data-tblr-*` as well as `data-bs-*`. Both prefixes work, so you do not need to change your markup:
+
+```html
+<button data-bs-toggle="modal" data-bs-target="#modal">Works</button>
+<button data-tblr-toggle="modal" data-tblr-target="#modal">Also works</button>
+```
+
+Dark mode still uses `data-bs-theme="dark"`.
+
+## Turbo integration removed
+
+The built-in `@hotwired/turbo` integration is gone, together with the `.turbo-progress-bar` styles. You can keep using Turbo, but install it yourself and style the progress bar in your own CSS:
+
+```css
+.turbo-progress-bar {
+  height: 3px;
+  background-color: var(--tblr-primary);
+}
+```
+
+## Smaller dist/libs folder
+
+`dist/libs` now holds only the runtime files each library needs, instead of a full copy of every package. If you link straight to a file inside `dist/libs`, check that the path still exists after the upgrade. Files that are no longer shipped can be loaded from your own `node_modules` or from a CDN.
+
+## Sass changes
+
+Skip this section if you use the compiled CSS from `dist/css`.
+
+### Sass module system
+
+The Sass sources now use the module system (`@use` and `@forward`). Setting variables before an `@import` no longer changes them. Use `@use … with ()` instead:
+
+```diff
+- $primary: #f11d46;
+- $font-family-sans-serif: 'Inter', sans-serif;
+- @import '@tabler/core/scss/tabler';
++ @use '@tabler/core/scss/tabler' with (
++   $primary: #f11d46,
++   $font-family-sans-serif: ('Inter', sans-serif)
++ );
+```
+
+`@import` still compiles, but Dart Sass marks it as deprecated and will remove it in Sass 3.0. Move to `@use` now.
+
+### Custom property prefix moved to PostCSS
+
+The `$prefix` Sass variable was removed. Custom properties are written without a prefix in the sources, such as `--card-bg`, and the public `--tblr-` prefix is added at build time by PostCSS.
+
+This means plain `sass` output no longer holds `--tblr-*` names:
+
+```css
+/* sass scss/tabler.scss → tabler.css */
+:root {
+  --primary: #066fd1; /* not --tblr-primary */
+}
+```
+
+Add [postcss-prefix-custom-properties](https://www.npmjs.com/package/postcss-prefix-custom-properties) to your CSS pipeline, after Sass:
+
+```js
+import postcss from 'postcss'
+import prefixCustomProperties from 'postcss-prefix-custom-properties'
+
+const result = await postcss([
+  prefixCustomProperties({
+    prefix: 'tblr-',
+    // Vendor stylesheets read their own variable names — never prefix these
+    ignore: [/^--tblr-/, /^--bs-/, /^--fc-/, /^--gl-/, /^--litepicker-/, /^--plyr-/, /^--ts-/, '--section-bg'],
+  }),
+]).process(css, { from: undefined })
+```
+
+If you do not want a PostCSS step, use the compiled `dist/css/tabler.css` and override the CSS variables. See [Customize Tabler](/ui/getting-started/customize).
+
+### Custom properties instead of Sass variables
+
+Some Sass variables only fed a CSS variable, so they were dropped in favor of that variable. Surface colors are the most common case:
+
+```diff
+- @use '@tabler/core/scss/tabler' with ($bg-surface: #fff);
++ :root {
++   --tblr-bg-surface: #fff;
++ }
+```
+
+### Removed Sass variables
+
+Unused `!default` variables were removed. Passing one to `@use … with ()` now raises a Sass error instead of being ignored:
+
+```text
+Error: This variable was not declared with !default in the @used module.
+```
+
+These variables are gone:
+
+`$accordion-bg`, `$accordion-border-color`, `$accordion-button-active-bg`, `$accordion-button-focus-border-color`, `$accordion-color`, `$accordion-icon-width`, `$avatar-box-shadow`, `$badge-line-height`, `$bg-surface`, `$bg-surface-dark`, `$bg-surface-secondary`, `$bg-surface-tertiary`, `$card-bg-hover`, `$card-hover-box-shadow`, `$code-line-height`, `$enable-social-colors`, `$font-local`, `$font-size-75`, `$font-size-100`, `$font-size-200`, `$font-size-300`, `$font-size-400`, `$font-size-500`, `$font-size-600`, `$font-size-700`, `$font-weight-black`, `$form-check-input-checked-color`, `$form-switch-bg-size`, `$line-height-100`, `$line-height-200`, `$line-height-300`, `$line-height-400`, `$line-height-500`, `$line-height-600`, `$line-height-700`, `$nav-link-active-color`, `$nav-tabs-bg`, `$navbar-brand-margin-right`, `$navbar-dark-active-bg`, `$prefix`, `$spacer-0`, `$steps-margin`, `$table-bg-scale-dark`, `$table-th-border-color`, `$table-th-color`, `$text-muted`, `$text-secondary-dark-opacity`, `$text-secondary-light-opacity`
+
+Most of them have a CSS variable you can use instead. For example, `$font-size-300` is now `--tblr-font-size-h3`, and `$text-muted` is `--tblr-secondary-color`.
+
+## Renamed classes
+
+The old names still work, so you can rename at your own pace.
+
+Old|New|Status
+---|---|---
+`.badges-list`|`.badge-list`|Deprecated alias
+`.tags-list`|`.tag-list`|Deprecated alias
+`.markdown`|`.prose`|Both supported
+
+```diff
+- <div class="badges-list">
++ <div class="badge-list">
+```
+
+## Visual changes
+
+These changes are not breaking, but they change how a page looks. Check your screens after the upgrade.
+
+- **Fonts** — Geist and Geist Mono are the new defaults. To keep your old stack, set `--tblr-font-sans-serif`.
+- **Shadows** — the `--tblr-shadow-*` tokens use a new `xs` to `2xl` scale, plus `overlay`, with softer defaults.
+- **Colors** — body text is lighter, dark mode borders and disabled inputs are easier to see, and `--tblr-gray-*-fg` tokens now map straight to `--tblr-gray-*`.
+- **Sizes** — `.form-control`, `.btn` and `.input-group` now agree on `sm` and `lg` sizes, `.btn-icon` is square, and `.icon-sm` uses a `1.5` stroke width.
+- **Cards** — `--tblr-card-header-bg` and `--tblr-card-footer-bg` can be set on their own, and the card status bar is `3px`.
+- **Layout** — `scrollbar-gutter: stable` on `html` removes the white gap next to the scrollbar.
+- **Trending** — the component uses the `arrow-up` and `arrow-down` icons instead of `trending-up` and `trending-down`.
+
+## RTL
+
+The Sass sources use logical properties and a `--tblr-dir` multiplier, so plain `tabler.css` works in both directions. Set `dir` on the document and drop the RTL stylesheet:
+
+```diff
+  <html dir="rtl">
+- <link rel="stylesheet" href="/dist/css/tabler.rtl.min.css" />
++ <link rel="stylesheet" href="/dist/css/tabler.min.css" />
+```
+
+The `*.rtl.css` files are still published, so nothing breaks if you keep them. See the [RTL support](/ui/getting-started/rtl) page for the full list of RTL builds and which utilities flip automatically.
+
+## Third party libraries
+
+- **ApexCharts** moved from 3.54 to 6.x. If you install ApexCharts yourself, update it too and read the [ApexCharts changelog](https://github.com/apexcharts/apexcharts.js/releases) — the major versions renamed several options. Charts also read `--chart-{id}-color-{index}` variables now.
+- **Tabler Icons** moved to 3.45, and **Tabler Illustrations** to 1.16.
+
+## Browser support
+
+Tabler 1.5 uses the CSS `light-dark()` and `color-mix()` functions for its color tokens. This raises the minimum browser versions:
+
+Browser|Minimum version
+---|---
+Chrome|123
+Edge|123
+Firefox|120
+Safari|17.5
+
+Older browsers still render the layout, but colors fall back to unstyled values. See [Browser support](/ui/getting-started/browser-support) for the full list.
+
+## What is new in 1.5
+
+Besides the changes above, 1.5 adds:
+
+- New components: `.btn-ghost`, `.card-gradient`, progress steps, progress background, `.progress-lg` and `.progress-xl`, background pattern utilities, `.text-gray-*` utilities, and a `.bg-blur` utility.
+- An `auto` color mode that follows the system `prefers-color-scheme` setting.
+- A language selector in the navbar and a new structure for the `navbar-side` component.
+- New preview pages: CRM dashboard, crypto dashboard, task list, onboarding, pay, card gradients, all elements, and several new modals.
+- [Framework integration guides](/ui/getting-started/frameworks) for Laravel, React, Next.js, Vue, Angular, Nuxt, Symfony, Django, Rails, SvelteKit and Astro.
+
+The full list is in the [changelog](https://github.com/tabler/tabler/blob/dev/core/CHANGELOG.md).

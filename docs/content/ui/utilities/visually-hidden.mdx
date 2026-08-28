@@ -1,0 +1,22 @@
+---
+title: Visually hidden
+summary: Use these helpers to visually hide elements but keep them accessible to assistive technologies.
+description: Hide elements visually while keeping them accessible to screen readers.
+---
+import Example from '@components/Example.astro';
+
+Visually hide an element while still allowing it to be exposed to assistive technologies (such as screen readers) with `.visually-hidden`. Use `.visually-hidden-focusable` to visually hide an element by default, but to display it when it's focused (e.g. by a keyboard-only user). `.visually-hidden-focusable` can also be applied to a container – thanks to `:focus-within`, the container will be displayed when any child element of the container receives focus.
+
+```html
+<h2 class="visually-hidden">Title for screen readers</h2>
+<a class="visually-hidden-focusable" href="#content">Skip to main content</a>
+<div class="visually-hidden-focusable">A container with a <a href="#">focusable element</a>.</div>
+```
+
+## Accessibility
+
+- `visually-hidden` keeps content in the accessibility tree, unlike `display: none` and the `hidden` attribute, which remove it for everyone. Use it for text only a screen reader needs.
+- Do not put anything focusable inside `visually-hidden`. The focus moves to an element nobody can see. Use `visually-hidden-focusable` for a skip link or any control that has to appear when it takes focus.
+- Use it to name a control that shows only an icon, to label a table column that has no visible header, or to spell out a direction such as "Previous page".
+- Do not use it to hide content you no longer want. Screen reader users still get it, which makes the page longer, not cleaner.
+- Text hidden this way is still found by in-page search in some browsers, and it is still copied with the surrounding text.

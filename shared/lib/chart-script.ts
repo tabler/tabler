@@ -108,7 +108,7 @@ export function chartStyle(opts: { id: string; data: ChartData }): string {
  * Chart.astro. This is data-driven (from our own charts.json, not user input),
  * same trust level as everything else here.
  */
-export function chartConfig(opts: { id: string; data: ChartData; height: number }): { config: Record<string, unknown>; xFormatterExpr?: string } {
+export function chartConfig(opts: { id: string; data: ChartData; height: number }): { config: Record<string, unknown>; xFormatterExpr?: string | undefined } {
   const { id, data, height } = opts
   const type = data.type ?? 'bar'
   const series = data.series ?? []

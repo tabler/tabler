@@ -1,0 +1,51 @@
+---
+import { people } from '@shared/lib/people'
+import Icon from '@ui/Icon.astro'
+import Avatar from '@ui/Avatar.astro'
+
+interface Props {
+  show?: boolean
+}
+
+const { show } = Astro.props
+
+const peopleItems = people.slice(0, 3)
+---
+
+<div class={`dropdown-menu${show ? ' dropdown-menu-demo' : ''}`}>
+  <h6 class="dropdown-header">Dropdown header</h6>
+  <button type="button" class="dropdown-item"><Icon name="activity" class="dropdown-item-icon" /> Item 1</button>
+  <button type="button" class="dropdown-item"><Icon name="edit" class="dropdown-item-icon" /> Item 2</button>
+
+  <div class="dropdown-item">
+    <button type="button" class="text-reset border-0 bg-transparent p-0">My profile</button>
+    <label class="form-check m-0 ms-auto">
+      <input type="checkbox" class="form-check-input" />
+      Public
+    </label>
+  </div>
+  <label class="dropdown-item"><input class="form-check-input m-0 me-2" type="radio" name="dropdown-menu-all-radio" /> Radio input</label>
+  <label class="dropdown-item"><input class="form-check-input m-0 me-2" type="checkbox" /> Checkbox input</label>
+  <label class="dropdown-item form-switch"><input class="form-check-input m-0 me-2" type="checkbox" /> Checkbox input</label>
+
+  <div class="dropdown-divider"></div>
+
+  <button type="button" class="dropdown-item">Dropdown item 1</button>
+  <button type="button" class="dropdown-item">Dropdown item 2</button>
+  <button type="button" class="dropdown-item disabled" disabled>Dropdown disabled</button>
+  <button type="button" class="dropdown-item active">Dropdown active</button>
+
+  <div class="dropdown-divider"></div>
+
+  {
+    peopleItems.map((person) => (
+      <button type="button" class="dropdown-item">
+        <Avatar person={person} class="rounded me-2" size="xs" /> {person.full_name}
+      </button>
+    ))
+  }
+
+  <div class="dropdown-divider"></div>
+
+  <button type="button" class="dropdown-item"><Icon name="logout" class="dropdown-item-icon" /> Logout</button>
+</div>

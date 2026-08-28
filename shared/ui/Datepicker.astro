@@ -1,30 +1,29 @@
 ---
 import Icon from './Icon.astro';
+import { iconSvg, iconSourceComment } from '@shared/lib/svg';
 import CaptureScript from '../components/CaptureScript.astro';
 
 interface Props {
 	id?: string;
 	value?: string;
-	placeholder?: string;
 	class?: string;
-	/** 'icon' | 'icon-prepend' | undefined (plain) */
-	layout?: string;
+	/** input-icon layout; omit for a plain input */
+	layout?: 'icon' | 'icon-prepend' | undefined;
 	inline?: boolean;
 }
 
 const {
 	id,
-	value = '2020-06-20',
-	placeholder = 'Select a date',
+	value,
 	class: className,
 	layout,
 	inline,
 } = Astro.props;
 
-const chevronLeft =
-	'<!-- Download SVG icon from http://tabler.io/icons/icon/chevron-left -->\n\t<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" class="icon"><path d="M15 6l-6 6l6 6" /></svg>';
-const chevronRight =
-	'<!-- Download SVG icon from http://tabler.io/icons/icon/chevron-right -->\n\t<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false" class="icon"><path d="M9 6l6 6l-6 6" /></svg>';
+const placeholder = 'Select a date';
+
+const chevronLeft = `${iconSourceComment('chevron-left')}\n\t${iconSvg('chevron-left') ?? ''}`;
+const chevronRight = `${iconSourceComment('chevron-right')}\n\t${iconSvg('chevron-right') ?? ''}`;
 
 const datepickerId = id ? `datepicker-${id}` : undefined;
 ---
@@ -66,7 +65,7 @@ const datepickerId = id ? `datepicker-${id}` : undefined;
 	id && (
 		<CaptureScript>
 			<!-- BEGIN DATEPICKER -->
-			<script define:vars={{ datepickerId, chevronLeft, chevronRight, inline }}>
+			<script is:inline define:vars={{ datepickerId, chevronLeft, chevronRight, inline }}>
 				function initDatepicker() {
 					window.tabler_datepicker ??= {};
 

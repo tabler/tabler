@@ -2,26 +2,18 @@
 // Marketing pages live one level deep, so the avatar asset base is ".."
 // (reference uses "../static/avatars/...") — passed to Avatar via `base`.
 import testimonials from '@data/testimonials.json'
-import people from '@data/people.json'
+import { people } from '@shared/lib/people'
 import Avatar from '@ui/Avatar.astro'
 
-interface Person {
-  full_name?: string
-  photo?: string
-  job_title?: string
-  [key: string]: unknown
-}
-
 interface Props {
-  background?: string
   class?: string
   limit?: number
   hideHeader?: boolean
 }
 
-const { background, class: className, limit = 99, hideHeader } = Astro.props
+const { class: className, limit = 99, hideHeader } = Astro.props
 
-const sectionClass = ['section', background && `section-${background}`, className]
+const sectionClass = ['section', className]
 
 // Slice testimonials and split into 3 columns.
 const list = (testimonials as string[]).slice(0, limit)
@@ -36,7 +28,7 @@ for (let i = 0; i < list.length; i += chunkSize) {
 let i = 1
 const cards = groups.map((group) =>
   group.map((testimonial) => {
-    const person = (people as Person[])[i] ?? {}
+    const person = people[i] ?? {}
     i += 1
     return { testimonial, person }
   }),

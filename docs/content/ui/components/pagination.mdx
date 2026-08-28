@@ -1,0 +1,118 @@
+---
+title: Pagination
+summary: Pagination is a user interface element that allows users to navigate through a set of data or content that is divided into multiple pages. It is commonly used in web applications, blogs, and e-commerce sites to display large amounts of information in a manageable way.
+description: Navigate through multi-page content with pagination controls.
+related: [/ui/components/table]
+source: core/scss/ui/_pagination.scss
+classnames:
+  component:
+    - class: pagination
+      desc: Container element, an unordered list
+  part:
+    - class: page-item
+      desc: One entry in the pager
+    - class: page-link
+      desc: The clickable element inside an entry
+    - class: page-item-title
+      desc: Page name, for a pager that names pages instead of numbering them
+    - class: page-item-subtitle
+      desc: Small uppercase label above the title
+  style:
+    - class: pagination-outline
+      desc: Outlined entries instead of filled ones
+    - class: pagination-circle
+      desc: Round entries
+  size:
+    - class: pagination-sm
+      desc: Small size
+    - class: pagination-lg
+      desc: Large size
+---
+import Example from '@components/Example.astro';
+import Pagination from '@ui/Pagination.astro';
+import CodeDocs from '@components/CodeDocs.astro';
+
+## Basic example
+
+Use slightly customized pagination with previous and next icon links:
+
+<Example centered vertical>
+<Pagination count={5} activeItem={3} />
+</Example>
+
+## With first and last links
+
+When you have a lot of pages, you can use first and last links to quickly navigate to the beginning or end of the pagination.
+
+<Example centered vertical>
+<Pagination count={5} activeItem={3} firstLast />
+</Example>
+
+## Offset
+
+If the count of pages is too large, you can use offset to show only a few pages at a time.
+
+<Example centered vertical>
+<Pagination offset={3} count={20} activeItem={3} />
+</Example>
+
+## Button with text
+
+When you want to use pagination with text, you can use text buttons. This will give you a more traditional look and feel, which is great for applications where you want to keep the focus on the content rather than the navigation.
+
+<Example centered vertical>
+<Pagination count={5} activeItem={3} text />
+</Example>
+
+## Outline version
+
+If you want to use an outline version of the pagination, you can use the `.pagination-outline` class. This will give you a more subtle look and feel, which is great for applications where you want to keep the focus on the content rather than the navigation.
+
+<Example centered vertical>
+<Pagination count={5} activeItem={3} class="pagination-outline" />
+</Example>
+
+## Circle version
+
+If you want to use a circle version of the pagination, you can use the `.pagination-circle` class. This will give you a more subtle look and feel, which is great for applications where you want to keep the focus on the content rather than the navigation. This can also be combined with the `.pagination-outline` class for a more prominent look.
+
+<Example centered vertical separated>
+<Pagination count={5} activeItem={3} class="pagination-circle" /> <Pagination count={5} activeItem={3} class="pagination-circle pagination-outline" />
+</Example>
+
+## Pager with page names
+
+For prose - documentation, a blog, a wizard - name the pages instead of numbering them. Put `page-item-subtitle` above the title for the direction, and `page-item-title` for the name of the target page.
+
+<Example>
+<nav aria-label="Pagination">
+  <ul class="pagination">
+    <li class="page-item page-prev">
+      <a class="page-link" href="#" rel="prev">
+        <div class="page-item-subtitle">previous</div>
+        <div class="page-item-title">Getting started</div>
+      </a>
+    </li>
+    <li class="page-item page-next">
+      <a class="page-link" href="#" rel="next">
+        <div class="page-item-subtitle">next</div>
+        <div class="page-item-title">Installation</div>
+      </a>
+    </li>
+  </ul>
+</nav>
+</Example>
+
+## Accessibility
+
+- Wrap the list in `<nav aria-label="Pagination">`. A page can have more than one pager, so the label is what tells them apart.
+- Mark the current page with `aria-current="page"` on its link, not with the `active` class alone.
+- Previous and next arrows need text. Keep a `visually-hidden` label, or set `aria-label="Previous"` on the link.
+- A disabled step is still a link. Add `aria-disabled="true"` and `tabindex="-1"` so it is skipped, since the `disabled` class only changes how it looks.
+- The page numbers alone do not say what they page through. Say it in the `nav` label, for example `aria-label="Search results pages"`.
+
+## SCSS variables
+
+Use these SCSS variables to customize pagination. The default values are:
+
+<CodeDocs name="pagination-variables" file="core/scss/_variables.scss" />

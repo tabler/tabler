@@ -1,0 +1,56 @@
+---
+import Icon from '@ui/Icon.astro'
+import questions from '@data/questions.json'
+
+interface Props {
+  count?: number
+  id: string
+  /** toggle-icon — when set, the toggle gets accordion-button-toggle-plus */
+  toggleIcon?: string
+  /** each entry becomes accordion-{type} (core/scss/ui/_accordion.scss) */
+  type?: ('flush' | 'tabs' | 'inverted')[]
+  /** show-icon — renders the accordion-button-icon (link icon) */
+  showIcon?: boolean
+}
+
+const { count = 4, id, toggleIcon, type = [], showIcon } = Astro.props
+
+const resolvedToggleIcon = toggleIcon ?? 'chevron-down'
+const hasToggleIcon = toggleIcon !== undefined
+const types = type
+
+const items = questions.slice(0, count)
+
+const accordionClasses = ['accordion', ...types.map((t) => `accordion-${t}`)].join(' ')
+---
+
+<div class={accordionClasses} id={`accordion-${id}`}>
+  {
+    items.map((question, i) => {
+      const index = i + 1
+      const isFirst = index === 1
+      return (
+        <div class="accordion-item">
+          <h2 class="accordion-header">
+            <button id={`accordion-button-${index}-${id}`} class={`accordion-button${isFirst ? '' : ' collapsed'}`} type="button" data-bs-toggle="collapse" data-bs-target={`#collapse-${index}-${id}`} aria-expanded={isFirst ? 'true' : 'false'} aria-controls={`collapse-${index}-${id}`}>
+              {showIcon && (
+                <div class="accordion-button-icon">
+                  <Icon name="link" />
+                </div>
+              )}
+
+              {question.question}
+
+              <div class={`accordion-button-toggle${hasToggleIcon ? ' accordion-button-toggle-plus' : ''}`}>
+                <Icon name={resolvedToggleIcon} />
+              </div>
+            </button>
+          </h2>
+          <div id={`collapse-${index}-${id}`} class={`accordion-collapse collapse${isFirst ? ' show' : ''}`} data-bs-parent={`#accordion-${id}`} role="region" aria-labelledby={`accordion-button-${index}-${id}`}>
+            <div class="accordion-body">{question.answer}</div>
+          </div>
+        </div>
+      )
+    })
+  }
+</div>

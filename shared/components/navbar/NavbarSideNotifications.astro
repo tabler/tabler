@@ -4,11 +4,12 @@ import Button from '@ui/Button.astro'
 import ListGroup from '@ui/ListGroup.astro'
 import ListGroupItem from '@ui/ListGroupItem.astro'
 import CardTitle from '@ui/CardTitle.astro'
+import CaptureScript from '../CaptureScript.astro'
 ---
 
 <!-- BEGIN NOTIFICATIONS -->
 <div class="nav-item dropdown d-none d-md-flex">
-  <a href="#" class="nav-link px-0" data-bs-toggle="dropdown" aria-label="Show notifications" data-bs-auto-close="outside" aria-expanded="false">
+  <a href="#" id="navbar-notifications-toggle" class="nav-link px-0" data-bs-toggle="dropdown" aria-label="Show notifications" data-bs-auto-close="outside" aria-expanded="false">
     <Icon name="bell" />
     <span class="badge bg-red"></span>
   </a>
@@ -17,7 +18,7 @@ import CardTitle from '@ui/CardTitle.astro'
     <div class="card">
       <div class="card-header d-flex">
         <CardTitle>Notifications</CardTitle>
-        <div class="btn-close ms-auto" data-bs-dismiss="dropdown"></div>
+        <button type="button" class="btn-close ms-auto" data-navbar-notifications-close aria-label="Close"></button>
       </div>
       <ListGroup flush hoverable>
         <ListGroupItem>
@@ -95,4 +96,14 @@ import CardTitle from '@ui/CardTitle.astro'
   </div>
   <!-- END NAVBAR NOTIFICATIONS -->
 </div>
+<CaptureScript>
+  <!-- BEGIN NAVBAR NOTIFICATIONS CLOSE -->
+  <script is:inline>
+    document.querySelector('[data-navbar-notifications-close]').addEventListener('click', () => {
+      const toggle = document.getElementById('navbar-notifications-toggle')
+      window.tabler.bootstrap.Dropdown.getOrCreateInstance(toggle).hide()
+    })
+  </script>
+  <!-- END NAVBAR NOTIFICATIONS CLOSE -->
+</CaptureScript>
 <!-- END NOTIFICATIONS -->

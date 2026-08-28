@@ -1,0 +1,107 @@
+---
+title: RTL support
+summary: Turn on right-to-left layouts for Arabic, Hebrew, and other RTL languages, and learn which styles flip automatically.
+description: Learn how to enable RTL in Tabler, which stylesheet to load, how the RTL CSS is generated, and which utility classes are direction-aware.
+related: [/ui/getting-started/upgrade, /ui/components/popover]
+---
+import Example from '@components/Example.astro';
+
+Tabler supports right-to-left (RTL) layouts for languages like Arabic, Hebrew, and Persian. This page explains how to turn RTL on, which stylesheets exist, and which classes flip direction automatically.
+
+## Turn on RTL
+
+Add `dir="rtl"` to the `<html>` element. Tabler's Sass sources use CSS logical properties (like `margin-inline-start` instead of `margin-left`) and a direction-aware custom property, so the regular `tabler.css` file already works in both directions:
+
+```html
+<html dir="rtl">
+  <link rel="stylesheet" href="/dist/css/tabler.min.css" />
+</html>
+```
+
+You don't need a separate stylesheet for this to work. Setting `dir="rtl"` is enough for most of the framework: spacing, borders, rounded corners, and positioning all mirror on their own.
+
+## The `*.rtl.css` files
+
+Tabler still builds and publishes an RTL variant of every stylesheet, generated with [rtlcss](https://rtlcss.com/). These exist for a few rules that aren't logical-property-based yet — see [Known gap: text alignment](#known-gap-text-alignment) below — and for projects that upgraded before the logical-properties change and don't want to touch their markup.
+
+Stylesheet|RTL variant
+-|-
+`dist/css/tabler.css`|`dist/css/tabler.rtl.css`
+`dist/css/tabler-flags.css`|`dist/css/tabler-flags.rtl.css`
+`dist/css/tabler-marketing.css`|`dist/css/tabler-marketing.rtl.css`
+`dist/css/tabler-payments.css`|`dist/css/tabler-payments.rtl.css`
+`dist/css/tabler-props.css`|`dist/css/tabler-props.rtl.css`
+`dist/css/tabler-socials.css`|`dist/css/tabler-socials.rtl.css`
+`dist/css/tabler-themes.css`|`dist/css/tabler-themes.rtl.css`
+`dist/css/tabler-vendors.css`|`dist/css/tabler-vendors.rtl.css`
+
+Each of these also has a minified `.rtl.min.css` version. If you load an RTL stylesheet, keep `dir="rtl"` on `<html>` too — the CSS and the `dir` attribute are meant to be used together.
+
+```diff
+  <html dir="rtl">
+- <link rel="stylesheet" href="/dist/css/tabler.min.css" />
++ <link rel="stylesheet" href="/dist/css/tabler.rtl.min.css" />
+```
+
+## How the RTL CSS is generated
+
+The `.rtl.css` files are not hand-written. Tabler's build compiles each stylesheet as usual, then runs it through rtlcss, which flips physical values like `left`/`right`, `margin-left`/`margin-right`, and text direction to their mirrored equivalent.
+
+If you compile Tabler from source and write your own SCSS, keep this in mind: anything you add to a stylesheet that also runs through the RTL build gets mirrored the same way. When a rule must stay fixed in both directions — an icon, a chevron, a background image position — wrap it in an rtlcss control comment:
+
+```scss
+// Skip the next declaration only
+.my-icon {
+  background-position: left center; /* rtl:ignore */
+}
+
+// Skip a whole block
+/* rtl:begin:ignore */
+.my-widget {
+  left: 0;
+  text-align: left;
+}
+/* rtl:end:ignore */
+```
+
+These comments are read by rtlcss at build time, not by the browser, so they only matter if your CSS goes through the same RTL build step. Tabler's own component styles use this escape hatch already, for example on badges, steps, and dropdown carets, where the shape must stay the same regardless of direction.
+
+## Direction-aware utilities
+
+Most of Tabler's spacing and position utilities use CSS logical properties, so they flip automatically with `dir="rtl"` — no RTL stylesheet needed:
+
+Class|Physical equivalent (LTR)|CSS property
+-|-|-
+`.ms-*`|`margin-left`|`margin-inline-start`
+`.me-*`|`margin-right`|`margin-inline-end`
+`.ps-*`|`padding-left`|`padding-inline-start`
+`.pe-*`|`padding-right`|`padding-inline-end`
+`.start-*`|`left`|`inset-inline-start`
+`.end-*`|`right`|`inset-inline-end`
+`.border-start`|`border-left`|`border-inline-start`
+`.border-end`|`border-right`|`border-inline-end`
+`.rounded-start`|`border-top-left-radius`, `border-bottom-left-radius`|`border-start-start-radius`, `border-end-start-radius`
+
+Use these instead of a physical direction whenever you can. For example, prefer `.ms-3` over a custom `margin-left: 1rem`, so your own markup follows the document direction the same way Tabler's components do.
+
+### Known gap: text alignment
+
+`.text-start` and `.text-end` are the exception. They compile to plain `text-align: left` and `text-align: right`, so they **do not** flip under plain `tabler.css` with `dir="rtl"`. They only mirror when you load the corresponding `.rtl.css` stylesheet, since that's where rtlcss swaps `left` and `right`. If your page relies on `.text-start` / `.text-end` for RTL content, load the `*.rtl.css` build described above, or set `text-align` with a logical value (`start` / `end`) yourself.
+
+## Preview
+
+See RTL applied to a full dashboard layout, including charts and tables, on the [RTL layout preview page](https://preview.tabler.io/layout-rtl.html).
+
+<Example centered>
+<div dir="rtl" class="d-flex align-items-center gap-2 border rounded p-3">
+  <span class="avatar avatar-sm" style="background-image: url(/static/avatars/000m.jpg)"></span>
+  <div>
+    <div class="fw-medium">مثال على اتجاه RTL</div>
+    <div class="text-secondary">Example RTL direction</div>
+  </div>
+</div>
+</Example>
+
+## Accessibility
+
+Set `dir="rtl"` on `<html>` (or on a specific container) rather than mirroring styles by hand. This keeps text direction, bidi handling, and screen reader behavior consistent with the markup, instead of only changing how the page looks.

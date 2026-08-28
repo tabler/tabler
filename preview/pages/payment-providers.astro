@@ -1,20 +1,29 @@
 ---
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import type { PaymentProvider } from '@shared/lib/tokens'
 import Payment from '@ui/Payment.astro'
 import Card from '@ui/Card.astro'
 import CardHeader from '@ui/CardHeader.astro'
 import CardBody from '@ui/CardBody.astro'
 import payments from '@data/payments.json'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import DocsLink from '@ui/DocsLink.astro'
 
 const providers = payments as { name: string; logo: string }[]
 ---
 
-<DefaultLayout title="Payment Providers" pageHeader="Payment Providers" pageMenu="addons.payments">
+<DefaultLayout title="Payment Providers" pageMenu="addons.payment-providers">
+  <DocsLink slot="page-header-actions" path="/ui/plugins/payments" />
+
   <div class="row row-cards">
     <div class="col-12">
       <Card>
         <CardHeader>
-          <h3 class="card-title">Light version</h3>
+          <div>
+            <CardTitle>Light version</CardTitle>
+            <CardSubtitle>Provider logos on a light background, for use on white or light cards.</CardSubtitle>
+          </div>
         </CardHeader>
         <CardBody>
           <div class="row g-5 row-cols-5">
@@ -23,7 +32,7 @@ const providers = payments as { name: string; logo: string }[]
                 <div class="col">
                   <div class="row">
                     <div class="col-auto">
-                      <Payment payment={provider.logo} />
+                      <Payment payment={provider.logo as PaymentProvider} />
                     </div>
                     <div class="col">
                       <strong class="d-block">{provider.name}</strong>
@@ -42,7 +51,10 @@ const providers = payments as { name: string; logo: string }[]
     <div class="col-12">
       <Card>
         <CardHeader>
-          <h3 class="card-title">Dark version</h3>
+          <div>
+            <CardTitle>Dark version</CardTitle>
+            <CardSubtitle>Provider logos with an inverted color scheme, for dark backgrounds.</CardSubtitle>
+          </div>
         </CardHeader>
         <CardBody>
           <div class="row g-5 row-cols-5">
@@ -51,7 +63,7 @@ const providers = payments as { name: string; logo: string }[]
                 <div class="col">
                   <div class="row">
                     <div class="col-auto">
-                      <Payment payment={provider.logo} dark={true} />
+                      <Payment payment={provider.logo as PaymentProvider} dark={true} />
                     </div>
                     <div class="col">
                       <strong class="d-block">{provider.name}</strong>
