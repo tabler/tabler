@@ -6,6 +6,7 @@ import type { GetStaticPaths } from 'astro'
 import { getCollection, render } from 'astro:content'
 import DocsLayout from '@layouts/DocsLayout.astro'
 import { docsUrlFromId } from '@lib/docs-pages'
+import { markdownUrlFromDocsUrl } from '@lib/markdown-url'
 
 export const getStaticPaths = (async () => {
   const entries = await getCollection('docs')
@@ -45,7 +46,7 @@ if (data.classnames) {
   sourcePath={data.source}
   toc={toc}
   url={docsUrlFromId(entry.id)}
-  markdownUrl={`/${entry.id}.md`}
+  markdownUrl={markdownUrlFromDocsUrl(docsUrlFromId(entry.id))}
   editPath={entry.filePath ? `docs/${entry.filePath}` : undefined}
 >
   <Content />

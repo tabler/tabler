@@ -17,6 +17,7 @@ import { experimental_AstroContainer as AstroContainer } from 'astro/container'
 import { getContainerRenderer } from '@astrojs/mdx/container-renderer'
 import { beautifyHtml, extractMarkedSnippet } from '@shared/lib/code-example'
 import { site } from '@shared/lib/site'
+import docs from '@data/docs.json'
 import packageManagers from '@data/package-managers.json'
 import { cdnCssTag, cdnJsTag, cdnPackageSnippet, cdnPluginSnippet } from './cdn-snippets.ts'
 
@@ -154,8 +155,8 @@ async function renderedExamples(entry: CollectionEntry<'docs'>): Promise<(string
         const markup = block.match(/data-clipboard-text="([^"]*)"/) ?? block.match(/data-example-markup="([^"]*)"/)
         return markup ? beautifyHtml(decodeEntities(markup[1]!)) : null
       })
-  } catch {
-    // A page that fails to render still gets its prose and its source-level examples.
+  } catch (error) {
+    console.warn(`[llms] Rendering ${entry.id} failed, examples fall back to their MDX source:`, error)
     return []
   }
 }
@@ -222,12 +223,37 @@ export async function mdxToMarkdown(body: string, examples: (string | null)[] = 
     .trim()
 }
 
-/** A single docs page as a standalone markdown document. */
-export async function pageMarkdown(entry: CollectionEntry<'docs'>, url: string): Promise<string> {
+async function buildPageMarkdown(entry: CollectionEntry<'docs'>, url: string): Promise<string> {
   const { title, summary, description } = entry.data
   const header = [`# ${title}`, '', `> ${summary}`, '', description, '', `Source: ${url}`, '', '---', ''].join('\n')
 
   return `${header}\n${await mdxToMarkdown(entry.body ?? '', await renderedExamples(entry))}\n`
+}
+
+// [...slug].md.ts and llms-full.txt.ts render the same pages in one build.
+const pageCache = new Map<string, Promise<string>>()
+
+/** A single docs page as a standalone markdown document. */
+export function pageMarkdown(entry: CollectionEntry<'docs'>, url: string): Promise<string> {
+  const key = `${entry.id}\n${url}`
+  let cached = pageCache.get(key)
+  if (!cached) {
+    cached = buildPageMarkdown(entry, url)
+    pageCache.set(key, cached)
+  }
+  return cached
+}
+
+type MenuNode = { url?: string; children?: MenuNode[] }
+
+/** Docs urls in sidebar (docs.json) order — the shared reading order of llms.txt and llms-full.txt. */
+export function menuOrderedUrls(): string[] {
+  const normalize = (url: string) => {
+    const parts = url.split('/').filter(Boolean)
+    return parts.length ? `/${parts.join('/')}` : '/'
+  }
+  const walk = (nodes: MenuNode[]): string[] => nodes.flatMap((node) => [...(node.url ? [normalize(node.url)] : []), ...walk(node.children ?? [])])
+  return [...new Set(walk(docs.menu as MenuNode[]))]
 }
 
 /** Absolute in production, root-relative in dev — same rule as sitemap.xml.ts. */

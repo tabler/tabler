@@ -8,6 +8,7 @@ import docs from '@data/docs.json'
 import { site } from '@shared/lib/site'
 import { docsUrlFromId } from '@lib/docs-pages'
 import { baseUrl } from '@lib/llms'
+import { markdownUrlFromDocsUrl } from '@lib/markdown-url'
 
 export const prerender = true
 
@@ -28,8 +29,7 @@ export const GET: APIRoute = async () => {
     const entry = byUrl.get(url)
     if (!entry || listed.has(url)) return null
     listed.add(url)
-    // `/` has no `.md` sibling — its mirror is `/index.md`
-    return `- [${entry.data.title}](${base}${url === '/' ? '/index' : url}.md): ${entry.data.description}`
+    return `- [${entry.data.title}](${base}${markdownUrlFromDocsUrl(url)}): ${entry.data.description}`
   }
 
   const pageUrls = (nodes: (MenuNode | undefined)[]) => nodes.flatMap((node) => [node?.url, ...(node?.children ?? []).map((child) => child.url)]).filter((url): url is string => typeof url === 'string' && url.startsWith('/'))
@@ -85,7 +85,7 @@ export const GET: APIRoute = async () => {
 
 Tabler is a free and open source dashboard UI kit built on Bootstrap. This file indexes the documentation at ${site.docsUrl}.
 
-Every page is available as markdown by appending \`.md\` to its url, for example \`${site.docsUrl}/ui/components/button.md\`. Those files contain the same prose as the html page plus the markup of every example, as fenced code blocks.
+Every page is available as markdown by appending \`.md\` to its url, for example \`${site.docsUrl}/ui/components/button.md\`. Those files contain the same prose as the html page plus the markup of every example, as fenced code blocks. The whole documentation concatenated into one file is available at \`${site.docsUrl}/llms-full.txt\`.
 
 The markup is taken from the rendered pages, so every example is plain html — the same markup the copy button on the page gives you.
 
