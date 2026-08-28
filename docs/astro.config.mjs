@@ -35,6 +35,8 @@ export default defineConfig({
   // Google index, Algolia search results and external backlinks.
   redirects: {
     '/ui/base/markdown': { status: 301, destination: '/ui/base/prose' },
+    // Payments became its own product section, like icons/illustrations/emails.
+    '/ui/plugins/payments': { status: 301, destination: '/payments' },
     // @tabler/icons-eps is no longer maintained; PDF is the vector format to use.
     '/icons/static-files/eps': { status: 301, destination: '/icons/static-files/pdf' },
     ...Object.fromEntries(

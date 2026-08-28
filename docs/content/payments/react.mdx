@@ -1,27 +1,27 @@
 ---
-title: Preact
-description: Add Tabler payment provider logos to Preact apps with the official tree-shakable package. Render 100+ payment provider logos as components.
-summary: Tabler Payments for Preact offers payment provider logos as tree-shakable components, so you can use them the same way as any other Preact component.
+title: React
+description: Add Tabler payment provider logos to React apps with the official tree-shakable package. Render 100+ payment provider logos as components.
+summary: Tabler Payments for React offers payment provider logos as tree-shakable components, so you can use them the same way as any other React component.
 ---
 
 import TabsPackage from '@components/TabsPackage.astro'
 
-This is an alternative to the [CSS payments plugin](/ui/plugins/payments) for Preact projects: instead of adding `payment`/`payment-provider-*` classes to a `<span>`, you render a real Preact component. This gives you type-checked props, no separate CSS file to load, and tree-shaking — a page that only uses `PaymentVisa` doesn't ship the SVG markup for the other 99 providers.
+This is an alternative to the [CSS payments plugin](/payments) for React projects: instead of adding `payment`/`payment-provider-*` classes to a `<span>`, you render a real React component. This gives you type-checked props, no separate CSS file to load, and tree-shaking — a page that only uses `PaymentVisa` doesn't ship the SVG markup for the other 99 providers.
 
 This package is pre-1.0: the API may still change before a 1.0 release.
 
 ## Installation
 
-<TabsPackage name="@tabler/payments-preact" />
+<TabsPackage name="@tabler/payments-react" />
 
-`preact` is a peer dependency — the package reuses the Preact version already in your project instead of bundling its own.
+`react` is a peer dependency — the package reuses the React version already in your project instead of bundling its own.
 
 ## How to use
 
-Every provider — Visa, Mastercard, PayPal, and so on — is exported as its own named component, following the pattern `Payment<ProviderName>`. Import the one you need and render it like any other Preact component:
+Every provider — Visa, Mastercard, PayPal, and so on — is exported as its own named component, following the pattern `Payment<ProviderName>`. Import the one you need and render it like any other React component:
 
 ```jsx
-import { PaymentVisa } from '@tabler/payments-preact';
+import { PaymentVisa } from '@tabler/payments-react';
 
 function AcceptedCards() {
   return <PaymentVisa variant="dark" size={32} />;
@@ -37,7 +37,7 @@ Sometimes the provider isn't known ahead of time in your source code — for exa
 For this case, use the `Payment` component instead: pass the provider's slug as a `provider` prop and it renders the right logo for you.
 
 ```jsx
-import { Payment } from '@tabler/payments-preact';
+import { Payment } from '@tabler/payments-react';
 
 <Payment provider="visa" variant="dark" size={32} />
 ```
@@ -89,20 +89,20 @@ Adds an accessible `<title>` element as the first child inside the SVG, which sc
 <PaymentVisa title="Visa" />
 ```
 
-See the [Accessibility](/ui/plugins/payments#accessibility) section on the main Payments page for concrete guidance on when a logo needs this and when it should stay `aria-hidden` instead.
+See the [Accessibility](/payments#accessibility) section on the main Payments page for concrete guidance on when a logo needs this and when it should stay `aria-hidden` instead.
 
 ### Everything else
 
-Any other prop you pass — `class`, `onClick`, `style`, `data-*`, and so on — is forwarded as-is to the root `<svg>` element, exactly like it would be on a plain HTML element:
+Any other prop you pass — `className`, `onClick`, `style`, `data-*`, `aria-*`, and so on — is forwarded as-is to the root `<svg>` element, exactly like it would be on a plain HTML element:
 
 ```jsx
-<PaymentVisa class="rounded shadow-sm" onClick={() => selectMethod('visa')} data-testid="visa-logo" />
+<PaymentVisa className="rounded shadow-sm" onClick={() => selectMethod('visa')} data-testid="visa-logo" />
 ```
 
 ### `provider` (dynamic `Payment` component only)
 
-Required when using `Payment` instead of a named import. Takes the provider's slug as a string: the component name without the `Payment` prefix, in kebab-case. For example, `PaymentGooglePay` → `"google-pay"`. Any of the 100+ supported providers works here, not just the ones shown in the examples on this page — see the [package README](https://github.com/tabler/tabler-payments/blob/main/packages/payments-preact/README.md) for the full list. See [Rendering a provider by name at runtime](#rendering-a-provider-by-name-at-runtime) above.
+Required when using `Payment` instead of a named import. Takes the provider's slug as a string: the component name without the `Payment` prefix, in kebab-case. For example, `PaymentGooglePay` → `"google-pay"`. Any of the 100+ supported providers works here, not just the ones shown in the examples on this page — see the [package README](https://github.com/tabler/tabler-payments/blob/main/packages/payments-react/README.md) for the full list. See [Rendering a provider by name at runtime](#rendering-a-provider-by-name-at-runtime) above.
 
 ## Available providers
 
-There are over 100 supported providers, each with a `Payment<ProviderName>` component. See the [package README](https://github.com/tabler/tabler-payments/blob/main/packages/payments-preact/README.md) for the full list of provider names and slugs.
+There are over 100 supported providers, each with a `Payment<ProviderName>` component. See the [package README](https://github.com/tabler/tabler-payments/blob/main/packages/payments-react/README.md) for the full list of provider names and slugs.
