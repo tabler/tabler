@@ -5,14 +5,18 @@ interface Props {
   count: number
   active: number
   numbers?: boolean
+  /** steps-{color} — recolors the dots and connectors */
+  color?: string
+  /** steps-vertical — stacks the steps into a column */
+  vertical?: boolean
   class?: string
   /** remaining attributes (id, data-*, aria-*, …) are forwarded to the root element */
   [key: string]: unknown
 }
 
-const { count, active, numbers, class: className, ...rest } = Astro.props
+const { count, active, numbers, color, vertical, class: className, ...rest } = Astro.props
 
-const classes = ['steps', numbers && 'steps-counter', className]
+const classes = ['steps', color && `steps-${color}`, numbers && 'steps-counter', vertical && 'steps-vertical', className]
 
 const steps = range(1, count)
 ---

@@ -13,7 +13,12 @@ function getHighlighter(): Promise<Highlighter> {
 }
 
 export function beautifyHtml(code: string): string {
-  return beautify.html(code, {
+  // A comment that follows an element stays glued to it — js-beautify never adds
+  // the break itself. Icon examples arrive as one line, so every "Download SVG
+  // icon" comment would sit on the closing tag of the icon before it.
+  const withCommentBreaks = code.replace(/>\s*<!--/g, '>\n<!--')
+
+  return beautify.html(withCommentBreaks, {
     indent_size: 2,
     indent_char: ' ',
     max_preserve_newlines: 5,
