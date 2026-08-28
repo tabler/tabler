@@ -3,9 +3,11 @@
 // `Accept: text/markdown`. Runs only on Vercel deployments.
 import type { MiddlewareHandler } from 'astro'
 import { next, rewrite } from '@vercel/functions'
-import { preferredFormat } from './lib/accept'
-import { markdownUrlFromDocsUrl } from './lib/markdown-url'
-import { redirects } from './lib/redirects'
+// .js extensions: Vercel compiles this file separately with node16 module
+// resolution, which requires them; TS and vite both resolve .js -> .ts.
+import { preferredFormat } from './lib/accept.js'
+import { markdownUrlFromDocsUrl } from './lib/markdown-url.js'
+import { redirects } from './lib/redirects.js'
 
 // Astro picks this file up as its own middleware (`srcDir` is the project
 // root) and requires an `onRequest` export; the real logic is Vercel-only.
@@ -22,7 +24,8 @@ export default function middleware(request: Request) {
   const url = new URL(request.url)
 
   // renamed pages fall through to their 301; negotiation reruns on the target
-  if (Object.hasOwn(redirects, url.pathname)) return next()
+  // not Object.hasOwn — Vercel's middleware type-check runs with a pre-es2022 lib
+  if (Object.prototype.hasOwnProperty.call(redirects, url.pathname)) return next()
 
   const format = preferredFormat(request.headers.get('accept'))
 
