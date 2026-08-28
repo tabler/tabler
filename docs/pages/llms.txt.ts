@@ -85,7 +85,7 @@ export const GET: APIRoute = async () => {
 
 Tabler is a free and open source dashboard UI kit built on Bootstrap. This file indexes the documentation at ${site.docsUrl}.
 
-Every page is available as markdown by appending \`.md\` to its url, for example \`${site.docsUrl}/ui/components/button.md\`. Those files contain the same prose as the html page plus the markup of every example, as fenced code blocks.
+Every page is available as markdown by appending \`.md\` to its url, for example \`${site.docsUrl}/ui/components/button.md\`. Those files contain the same prose as the html page plus the markup of every example, as fenced code blocks. The whole documentation concatenated into one file is available at \`${site.docsUrl}/llms-full.txt\`.
 
 The markup is taken from the documentation source. A small number of examples are written with Tabler's own documentation components, and those appear as component tags (for example \`<Alert type="success" />\`) instead of the final html; open the page itself for those.
 
