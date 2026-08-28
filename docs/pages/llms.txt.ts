@@ -8,6 +8,7 @@ import docs from '@data/docs.json'
 import { site } from '@shared/lib/site'
 import { docsUrlFromId } from '@lib/docs-pages'
 import { baseUrl } from '@lib/llms'
+import { markdownUrlFromDocsUrl } from '@lib/markdown-url'
 
 export const prerender = true
 
@@ -28,8 +29,7 @@ export const GET: APIRoute = async () => {
     const entry = byUrl.get(url)
     if (!entry || listed.has(url)) return null
     listed.add(url)
-    // `/` has no `.md` sibling — its mirror is `/index.md`
-    return `- [${entry.data.title}](${base}${url === '/' ? '/index' : url}.md): ${entry.data.description}`
+    return `- [${entry.data.title}](${base}${markdownUrlFromDocsUrl(url)}): ${entry.data.description}`
   }
 
   const pageUrls = (nodes: (MenuNode | undefined)[]) => nodes.flatMap((node) => [node?.url, ...(node?.children ?? []).map((child) => child.url)]).filter((url): url is string => typeof url === 'string' && url.startsWith('/'))

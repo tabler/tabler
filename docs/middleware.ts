@@ -5,6 +5,7 @@
 import type { MiddlewareHandler } from 'astro'
 import { next, rewrite } from '@vercel/functions'
 import { preferredFormat } from './lib/accept'
+import { markdownUrlFromDocsUrl } from './lib/markdown-url'
 import { redirects } from './lib/redirects'
 
 // Astro also picks this file up as its own middleware (`srcDir` is the project
@@ -19,9 +20,6 @@ export const config = {
   matcher: '/((?!(?:dist|preview|img|static|css|js)/)(?!.*\\.).*)',
 }
 
-// The `.md` mirror of a docs page url; the mirror of `/` is `/index.md`.
-const markdownPath = (pathname: string) => (pathname === '/' ? '/index.md' : `${pathname.replace(/\/$/, '')}.md`)
-
 const alternate = (path: string, type: string) => `<${path}>; rel="alternate"; type="${type}"`
 
 export default function middleware(request: Request) {
@@ -35,7 +33,7 @@ export default function middleware(request: Request) {
 
   if (format === 'markdown') {
     const htmlPath = url.pathname
-    url.pathname = markdownPath(url.pathname)
+    url.pathname = markdownUrlFromDocsUrl(url.pathname)
     return rewrite(url, {
       headers: {
         Link: alternate(htmlPath, 'text/html'),
@@ -56,7 +54,7 @@ export default function middleware(request: Request) {
 
   return next({
     headers: {
-      Link: alternate(markdownPath(url.pathname), 'text/markdown'),
+      Link: alternate(markdownUrlFromDocsUrl(url.pathname), 'text/markdown'),
       Vary: 'Accept',
     },
   })

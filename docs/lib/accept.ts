@@ -24,7 +24,9 @@ function parseAccept(header: string): MediaRange[] {
         const [key, value] = param.split('=')
         if (key?.trim().toLowerCase() === 'q') {
           const parsed = Number.parseFloat(value ?? '')
-          if (!Number.isNaN(parsed)) q = Math.min(Math.max(parsed, 0), 1)
+          // a q parameter that is present but unparsable fails closed: a range
+          // with a mangled weight must not outrank an intact one
+          q = Number.isNaN(parsed) ? 0 : Math.min(Math.max(parsed, 0), 1)
         }
       }
       return { type, subtype, q }
