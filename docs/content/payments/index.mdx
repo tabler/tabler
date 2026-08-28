@@ -8,11 +8,14 @@ css-plugins: [payments]
 
 import Example from '@components/Example.astro'
 import CdnImportPlugin from '@components/CdnImportPlugin.astro'
+import { Image } from 'astro:assets'
 import payments from '@data/payments.json'
+import coverLight from '../../images/cover-payments.jpg'
+import coverDark from '../../images/cover-payments-dark.jpg'
 
 <figure>
-	<img src="/img/cover-payments.jpg" alt="Tabler Payments" class="hide-theme-dark" width="1600" height="840" />
-	<img src="/img/cover-payments-dark.jpg" alt="Tabler Payments" class="hide-theme-light" width="1600" height="840" />
+	<Image src={coverLight} alt="Tabler Payments" class="hide-theme-dark" width={800} densities={[1, 2]} loading="eager" />
+	<Image src={coverDark} alt="Tabler Payments" class="hide-theme-light" width={800} densities={[1, 2]} loading="eager" />
 </figure>
 
 Tabler Payments is a collection of { payments.length } payment provider logos, from the most popular card brands like Visa and Mastercard to local payment methods. Every logo ships in two color versions — light and dark — so it looks right on any background.
