@@ -1,31 +1,31 @@
 ---
-title: Astro
-description: Add Tabler payment provider logos to Astro projects with the official tree-shakable package. Render 100+ payment provider logos as native components.
-summary: Tabler Payments for Astro provides payment provider logos as native Astro components, rendered server-side with no client-side hydration.
+title: Preact
+description: Add Tabler payment provider logos to Preact apps with the official tree-shakable package. Render 100+ payment provider logos as components.
+summary: Tabler Payments for Preact offers payment provider logos as tree-shakable components, so you can use them the same way as any other Preact component.
 ---
 
 import TabsPackage from '@components/TabsPackage.astro'
 
-This is an alternative to the [CSS payments plugin](/payments) for Astro projects: instead of adding `payment`/`payment-provider-*` classes to a `<span>`, you render a real Astro component. This gives you type-checked props and no separate CSS file to load. It renders server-side only, with no client-side JavaScript shipped — the same as any other `.astro` component.
+This is an alternative to the [CSS payments plugin](/payments/css) for Preact projects: instead of adding `payment`/`payment-provider-*` classes to a `<span>`, you render a real Preact component. This gives you type-checked props, no separate CSS file to load, and tree-shaking — a page that only uses `PaymentVisa` doesn't ship the SVG markup for the other 99 providers.
 
 This package is pre-1.0: the API may still change before a 1.0 release.
 
 ## Installation
 
-<TabsPackage name="@tabler/payments-astro" />
+<TabsPackage name="@tabler/payments-preact" />
 
-`astro` is a peer dependency — the package reuses the Astro version already in your project instead of bundling its own. This package specifically needs Astro `>=7.2.4 <8.0.0`.
+`preact` is a peer dependency — the package reuses the Preact version already in your project instead of bundling its own.
 
 ## How to use
 
-Every provider — Visa, Mastercard, PayPal, and so on — is exported as its own named component, following the pattern `Payment<ProviderName>`. Import the one you need in your frontmatter and render it in your template:
+Every provider — Visa, Mastercard, PayPal, and so on — is exported as its own named component, following the pattern `Payment<ProviderName>`. Import the one you need and render it like any other Preact component:
 
-```astro
----
-import { PaymentVisa } from '@tabler/payments-astro';
----
+```jsx
+import { PaymentVisa } from '@tabler/payments-preact';
 
-<PaymentVisa variant="dark" size={32} />
+function AcceptedCards() {
+  return <PaymentVisa variant="dark" size={32} />;
+}
 ```
 
 This works well when you know exactly which providers you want to show, and you write their names directly in your code — for example a fixed row of cards you accept.
@@ -36,10 +36,8 @@ Sometimes the provider isn't known ahead of time in your source code — for exa
 
 For this case, use the `Payment` component instead: pass the provider's slug as a `provider` prop and it renders the right logo for you.
 
-```astro
----
-import { Payment } from '@tabler/payments-astro';
----
+```jsx
+import { Payment } from '@tabler/payments-preact';
 
 <Payment provider="visa" variant="dark" size={32} />
 ```
@@ -63,48 +61,48 @@ Both the named provider components (`PaymentVisa`, `PaymentMastercard`, ...) and
 
 Every logo ships in two pre-baked color versions, `light` and `dark` — exactly like the CSS plugin's `payment-provider-*` (light) and `payment-provider-*-dark` classes. Pick `variant="dark"` when the logo sits on a dark surface (a dark navbar, a dark card, dark mode), and leave it at the `light` default everywhere else. There's no automatic detection of the surrounding background — you choose explicitly:
 
-```astro
-<PaymentVisa variant="light" /> <!-- default, for light backgrounds -->
-<PaymentVisa variant="dark" />  <!-- for dark backgrounds -->
+```jsx
+<PaymentVisa variant="light" /> {/* default, for light backgrounds */}
+<PaymentVisa variant="dark" />  {/* for dark backgrounds */}
 ```
 
 ### `size`
 
 Sets the rendered SVG **height**, in pixels. The width is calculated for you from the provider's fixed 5:3 aspect ratio (`width = size * 1.66666`, rounded to 2 decimals), so a logo never looks stretched or squashed no matter what size you pick:
 
-```astro
-<PaymentVisa size={24} /> <!-- 24px tall, 40px wide (the default) -->
-<PaymentVisa size={48} /> <!-- 48px tall, 80px wide -->
+```jsx
+<PaymentVisa size={24} /> {/* 24px tall, 40px wide (the default) */}
+<PaymentVisa size={48} /> {/* 48px tall, 80px wide */}
 ```
 
 If you need a specific width instead — for example to fit a fixed-width column — pass `width` directly. An explicit `width` prop overrides the calculated one, while `size` still controls the height:
 
-```astro
-<PaymentVisa size={24} width={64} /> <!-- 24px tall, but exactly 64px wide -->
+```jsx
+<PaymentVisa size={24} width={64} /> {/* 24px tall, but exactly 64px wide */}
 ```
 
 ### `title`
 
 Adds an accessible `<title>` element as the first child inside the SVG, which screen readers announce when they reach the logo. This does **not** happen automatically — without `title` (or an `aria-label` on a wrapping element), the logo is invisible to assistive technology, which is correct when it's purely decorative but wrong when it's the only way to identify a payment method:
 
-```astro
+```jsx
 <PaymentVisa title="Visa" />
 ```
 
-See the [Accessibility](/payments#accessibility) section on the main Payments page for concrete guidance on when a logo needs this and when it should stay `aria-hidden` instead.
+See the [Accessibility](/payments/css#accessibility) section on the CSS plugin page for concrete guidance on when a logo needs this and when it should stay `aria-hidden` instead.
 
 ### Everything else
 
-Any other prop you pass — `class`, `stroke-width`, `data-*`, and so on — is forwarded as-is to the root `<svg>` element, exactly like it would be on a plain HTML element:
+Any other prop you pass — `class`, `onClick`, `style`, `data-*`, and so on — is forwarded as-is to the root `<svg>` element, exactly like it would be on a plain HTML element:
 
-```astro
-<PaymentVisa class="rounded shadow-sm" data-testid="visa-logo" />
+```jsx
+<PaymentVisa class="rounded shadow-sm" onClick={() => selectMethod('visa')} data-testid="visa-logo" />
 ```
 
 ### `provider` (dynamic `Payment` component only)
 
-Required when using `Payment` instead of a named import. Takes the provider's slug as a string: the component name without the `Payment` prefix, in kebab-case. For example, `PaymentGooglePay` → `"google-pay"`. Any of the 100+ supported providers works here, not just the ones shown in the examples on this page — see the [package README](https://github.com/tabler/tabler-payments/blob/main/packages/payments-astro/README.md) for the full list. See [Rendering a provider by name at runtime](#rendering-a-provider-by-name-at-runtime) above.
+Required when using `Payment` instead of a named import. Takes the provider's slug as a string: the component name without the `Payment` prefix, in kebab-case. For example, `PaymentGooglePay` → `"google-pay"`. Any of the 100+ supported providers works here, not just the ones shown in the examples on this page — see the [package README](https://github.com/tabler/tabler-payments/blob/main/packages/payments-preact/README.md) for the full list. See [Rendering a provider by name at runtime](#rendering-a-provider-by-name-at-runtime) above.
 
 ## Available providers
 
-There are over 100 supported providers, each with a `Payment<ProviderName>` component. See the [package README](https://github.com/tabler/tabler-payments/blob/main/packages/payments-astro/README.md) for the full list of provider names and slugs, and a note on why the `astro` version is pinned exactly.
+There are over 100 supported providers, each with a `Payment<ProviderName>` component. See the [package README](https://github.com/tabler/tabler-payments/blob/main/packages/payments-preact/README.md) for the full list of provider names and slugs.

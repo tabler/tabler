@@ -1,82 +1,51 @@
 ---
-title: Payments
-summary: The Tabler payments plug-in will let you use a set of payment provider icons to facilitate the payment process and make it more user-friendly.
-description: Show payment provider logos like Visa, Mastercard, and PayPal with the payments plugin to make checkout pages clearer.
+title: Tabler Payments
+summary: Tabler Payments is a set of over 160 payment provider logos — Visa, Mastercard, PayPal and many more — that you can use to make checkout pages and payment forms clearer and more trustworthy.
+order: 5
+description: Over 160 payment provider logos for checkout pages and payment forms.
 css-plugins: [payments]
 ---
 
 import Example from '@components/Example.astro'
-import Payments from '@components/Payments.astro'
 import CdnImportPlugin from '@components/CdnImportPlugin.astro'
+import payments from '@data/payments.json'
 
-## Installation
+<figure>
+	<img src="/img/cover-payments.jpg" alt="Tabler Payments" class="hide-theme-dark" width="1600" height="840" />
+	<img src="/img/cover-payments-dark.jpg" alt="Tabler Payments" class="hide-theme-light" width="1600" height="840" />
+</figure>
 
-This part of Tabler is distributed as a plugin. To enable it you should include `tabler-payments.css` or `tabler-payments.min.css` file in your page.
+Tabler Payments is a collection of { payments.length } payment provider logos, from the most popular card brands like Visa and Mastercard to local payment methods. Every logo ships in two color versions — light and dark — so it looks right on any background.
 
-You can also include the plugin via CDN:
+<Example centered>
+<span class="payment payment-lg payment-provider-visa"></span>
+<span class="payment payment-lg payment-provider-mastercard"></span>
+<span class="payment payment-lg payment-provider-paypal"></span>
+<span class="payment payment-lg payment-provider-shopify"></span>
+<span class="payment payment-lg payment-provider-amazon"></span>
+</Example>
+
+You can use the logos in two ways:
+
+- **[CSS plugin](/payments/css)** — add the `payment` and `payment-provider-*` classes to a `<span>`. Works with plain HTML and any framework, and needs only one extra stylesheet.
+- **[Libraries](/payments/libraries)** — render logos as native, tree-shakable components in [React](/payments/libraries/react), [Vue](/payments/libraries/vue), [Preact](/payments/libraries/preact) or [Astro](/payments/libraries/astro), with type-checked props and no separate CSS file.
+
+Both ways use the same set of providers and the same light and dark artwork, so you can mix them or switch between them without visual changes.
+
+## Quick start
+
+For the CSS plugin, include the stylesheet from a CDN and add a `<span>` with the provider's class:
 
 <CdnImportPlugin plugins={['payments']} />
 
-## Framework components
+<Example centered html={`<span class="payment payment-provider-visa"></span>`} />
 
-If your project uses [React](/payments/react), [Vue](/payments/vue), [Preact](/payments/preact) or [Astro](/payments/astro), you can use payment provider logos as components instead of CSS classes. Each provider ships as its own tree-shakable component (for example `PaymentVisa`), plus a `Payment` component that renders by slug — useful for a data-driven list of accepted methods.
+For a framework project, install the package for your stack and import the providers you need — only the logos you import end up in your bundle:
 
-## Payment
+```jsx
+import { PaymentVisa } from '@tabler/payments-react';
 
-To create a payment provider icon, add the `payment` class to a component and specify the payment provider with the `payment-provider-*` class. The full list of payment providers can be found at the end of this page.
+<PaymentVisa size={32} />
+```
 
-<Example centered>
-<span class="payment payment-provider-shopify"></span>
-<span class="payment payment-provider-visa"></span>
-<span class="payment payment-provider-paypal"></span>
-</Example>
-
-## Payment sizes
-
-Using Bootstrap’s typical naming structure, you can create a standard payment, or scale it up or down to different sizes based on what’s needed.
-
-<Example centered>
-<span class="payment payment-xl payment-provider-shopify"></span>
-<span class="payment payment-lg payment-provider-visa"></span>
-<span class="payment payment-md payment-provider-paypal"></span>
-<span class="payment payment-sm payment-provider-amazon"></span>
-<span class="payment payment-xs payment-provider-blik"></span>
-</Example>
-
-## Light and dark logos
-
-Every provider ships in two variants. `payment-provider-*` is the light one, and `payment-provider-*-dark` is meant for a dark surface.
-
-<Example centered background="dark">
-<span class="payment payment-lg payment-provider-visa-dark"></span>
-<span class="payment payment-lg payment-provider-paypal-dark"></span>
-<span class="payment payment-lg payment-provider-mastercard-dark"></span>
-</Example>
-
-## Accepted methods in a checkout
-
-The usual place for these logos is under a payment form, to say which cards you take. They are decoration there, so keep the list in text as well.
-
-<Example>
-<div>
-  <div class="text-secondary mb-2">We accept Visa, Mastercard and PayPal.</div>
-  <div class="d-flex gap-1" aria-hidden="true">
-    <span class="payment payment-provider-visa"></span>
-    <span class="payment payment-provider-mastercard"></span>
-    <span class="payment payment-provider-paypal"></span>
-  </div>
-</div>
-</Example>
-
-## List of available payment providers
-
-Select an icon from the list of payment providers. Each icon comes in two color variants - light and dark, so you can choose the one that goes well with your design.
-
-<Payments />
-
-## Accessibility
-
-- A card logo is a picture. Put the card name in text or in an `aria-label`, so the accepted methods are not left to logo recognition.
-- When the logos only say which cards you take, they are decoration. Mark them `aria-hidden="true"` and put the list in a sentence: "We accept Visa, Mastercard and American Express."
-- When a logo is a choice the user makes, it has to be a real `input` with a label, not a clickable image. See [image check](/ui/forms/image-check).
-- Never rely on the logo alone to mark the selected payment method. Add a visible mark and keep the state in the input.
+The [CSS plugin](/payments/css) page documents all classes, sizes and the full provider list; each [library page](/payments/libraries) covers installation and props for its framework.
