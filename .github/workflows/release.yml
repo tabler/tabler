@@ -16,9 +16,10 @@ jobs:
     name: Release
     runs-on: ubuntu-latest
     permissions:
-      contents: write # to create release 
+      contents: write # to create release
       issues: write # to post issue comments
       pull-requests: write # to create pull request
+      id-token: write # for npm trusted publishing (OIDC)
     steps:
       - name: Checkout Repo
         uses: actions/checkout@v7
@@ -32,6 +33,9 @@ jobs:
           node-version-file: '.nvmrc'
           cache: 'pnpm'
 
+      - name: Update npm # trusted publishing requires npm >= 11.5.1
+        run: npm install -g npm@latest
+
       - name: Install Dependencies
         run: pnpm install
 
@@ -39,7 +43,7 @@ jobs:
         run: pnpm run build
 
       - name: Create release Pull Request or publish to NPM
-        uses: changesets/action@v1
+        uses: changesets/action@v2
         with:
           version: pnpm run version
           publish: pnpm run publish
@@ -47,5 +51,3 @@ jobs:
           title: "chore: update versions"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
