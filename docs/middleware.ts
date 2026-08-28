@@ -1,9 +1,14 @@
 // Vercel Routing Middleware (https://vercel.com/docs/routing-middleware): serves
 // the markdown mirror of a docs page when the client prefers it via
-// `Accept: text/markdown`. Runs only on Vercel deployments — `astro dev` and
-// `astro build` ignore this file.
+// `Accept: text/markdown`. Runs only on Vercel deployments.
+import type { MiddlewareHandler } from 'astro'
 import { next, rewrite } from '@vercel/functions'
 import { preferredFormat } from './lib/accept'
+
+// Astro also picks this file up as its own middleware (`srcDir` is the project
+// root) and requires an `onRequest` export. Prerendered pages need none, so it
+// is a passthrough — the negotiation lives in Vercel's routing layer below.
+export const onRequest: MiddlewareHandler = (_context, nextHandler) => nextHandler()
 
 export const config = {
   // Only extensionless paths, i.e. the html docs pages. Requests that name a
