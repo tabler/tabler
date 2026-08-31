@@ -35,6 +35,14 @@ ApexCharts draws with its own default colors, grid and tooltip. Tabler restyles 
 
 <CdnImportPlugin plugins={['vendors']} />
 
+### License
+
+<Warning title="Tabler is MIT licensed, ApexCharts is not">
+  From version 5 on ApexCharts is dual-licensed: free under its Community license for organizations under $2 million in annual revenue, paid above that, with a separate OEM license for redistributing it inside a product you ship to others.
+</Warning>
+
+Tabler bundles the built file in `dist/libs` so the examples work out of the box, but the license stays with ApexCharts. Read the [ApexCharts license options](https://apexcharts.com/license/) before you use charts in a commercial product.
+
 ## Usage
 
 Add an empty element with the `chart` class, then pass it to ApexCharts. The class reserves a minimum height, so the card does not jump while the chart is loading.
@@ -75,7 +83,7 @@ The size classes below reserve space before the chart renders, so the layout doe
 <Example>
   <div class="card">
     <div class="card-body">
-      <Chart chartId="demo-line" size="sm" label="Small chart example" />
+      <Chart chartId="demo-line" id="demo-line-sm" size="sm" label="Small chart example" />
     </div>
   </div>
 </Example>
@@ -91,6 +99,56 @@ A sparkline is a small chart with no axes, grid or tooltip, meant to sit inline 
 </Example>
 
 Add `chart-sparkline-sm` for a shorter sparkline, `chart-sparkline-square` for a pie or radial one, and `chart-sparkline-wide` when the default width is too narrow.
+
+### Colors
+
+Tabler ships a five-color chart palette. Charts pick colors from it in order, so a chart with three series is colored without naming a single color.
+
+| Variable | Default |
+| --- | --- |
+| `--tblr-chart-1` | `--tblr-primary` |
+| `--tblr-chart-2` | `--tblr-green` |
+| `--tblr-chart-3` | `--tblr-azure` |
+| `--tblr-chart-4` | `--tblr-purple` |
+| `--tblr-chart-5` | `--tblr-orange` |
+
+Override them to recolor every chart at once, the same way `--tblr-primary` recolors the rest of the interface:
+
+```css
+:root {
+  --tblr-chart-1: #7048e8;
+  --tblr-chart-2: #f76707;
+}
+```
+
+To color one series, pass the color in the ApexCharts config as usual:
+
+```js
+new ApexCharts(element, {
+  colors: ['var(--tblr-chart-2)'],
+  // ...
+}).render();
+```
+
+### Theme tokens
+
+ApexCharts reads its own design tokens from the chart element, and Tabler sets them to its theme colors. Text, gridlines and the chart surface follow the color mode on their own - including charts you build yourself, without any Tabler helper.
+
+| Token | Used for | Tabler value |
+| --- | --- | --- |
+| `--apx-fore` | labels, axis titles, legend | `--tblr-secondary` |
+| `--apx-grid` | gridlines and axis lines | `--tblr-border-color` |
+| `--apx-surface` | chart background | `--tblr-bg-surface` |
+| `--apx-accent` | single-series color | `--tblr-chart-1` |
+| `--apx-series-1` … `--apx-series-5` | multi-series palette | `--tblr-chart-1` … `--tblr-chart-5` |
+
+Set a token on a single card to change only that chart:
+
+```css
+.card-dark-chart {
+  --apx-grid: rgba(255, 255, 255, 0.1);
+}
+```
 
 ## Chart types
 
@@ -151,7 +209,91 @@ Heatmaps provide a graphical representation of data where individual values are 
 <Example>
   <div class="card">
     <div class="card-body">
-      <Chart chartId="demo-heatmap" label="Heatmap chart example" height={15} />
+      <Chart chartId="activity-heatmap" label="Heatmap chart example" height={15} />
+    </div>
+  </div>
+</Example>
+
+### Radar chart
+
+Radar charts compare a few series across the same set of categories. They work best for scores and ratings, where every axis uses the same scale. Set `chart.type` to `radar` and pass the axis names in `xaxis.categories`:
+
+<Example>
+  <div class="card">
+    <div class="card-body">
+      <Chart chartId="radar" label="Radar chart example" height={15} />
+    </div>
+  </div>
+</Example>
+
+### Polar area chart
+
+A polar area chart is a pie chart where each slice keeps the same angle and grows outwards with its value. Use it when the parts of a whole differ a lot in size. Set `chart.type` to `polarArea` and pass plain numbers in `series`:
+
+<Example>
+  <div class="card">
+    <div class="card-body">
+      <Chart chartId="polar-area" label="Polar area chart example" height={15} />
+    </div>
+  </div>
+</Example>
+
+### Treemap chart
+
+Treemaps show parts of a whole as blocks. The bigger the value, the bigger the block, so they fit storage, budgets and other breakdowns with many entries. Set `chart.type` to `treemap` and pass `{ x, y }` points, where `x` is the label:
+
+<Example>
+  <div class="card">
+    <div class="card-body">
+      <Chart chartId="treemap" label="Treemap chart example" height={15} />
+    </div>
+  </div>
+</Example>
+
+### Timeline chart
+
+A timeline puts one bar per row between a start and an end date. Use it for roadmaps, releases and schedules. Set `chart.type` to `rangeBar`, turn on `plotOptions.bar.horizontal`, set `xaxis.type` to `datetime` and pass `y` as a `[start, end]` pair of timestamps:
+
+<Example>
+  <div class="card">
+    <div class="card-body">
+      <Chart chartId="timeline" label="Timeline chart example" height={15} />
+    </div>
+  </div>
+</Example>
+
+### Box plot chart
+
+Box plots show how values spread out, not just their average. Each box covers the middle half of the data, the line inside it is the median, and the whiskers reach the lowest and highest values. Set `chart.type` to `boxPlot` and pass `y` as `[min, q1, median, q3, max]`:
+
+<Example>
+  <div class="card">
+    <div class="card-body">
+      <Chart chartId="box-plot" label="Box plot chart example" height={15} />
+    </div>
+  </div>
+</Example>
+
+### Bubble chart
+
+Bubble charts add a third value to a scatter plot: the size of the point. Set `chart.type` to `bubble` and pass `{ x, y, z }` points, where `z` is the bubble size:
+
+<Example>
+  <div class="card">
+    <div class="card-body">
+      <Chart chartId="bubble" label="Bubble chart example" height={15} />
+    </div>
+  </div>
+</Example>
+
+### Funnel chart
+
+A funnel shows how many items are left at each step of a process. It is a horizontal bar chart with `plotOptions.bar.isFunnel` turned on. Turn on `distributed` as well, so every stage gets its own color, and keep the legend on, because a funnel hides the y-axis labels:
+
+<Example>
+  <div class="card">
+    <div class="card-body">
+      <Chart chartId="funnel" label="Funnel chart example" height={15} />
     </div>
   </div>
 </Example>
@@ -164,6 +306,71 @@ For more complex data visualizations, you can create advanced charts with multip
   <div class="card">
     <div class="card-body">
       <Chart chartId="social-referrals" label="Social referrals chart" height={15} />
+    </div>
+  </div>
+</Example>
+
+## Axes, annotations and zoom
+
+### Two y-axes
+
+Series with different units need their own scale. Pass an array to `yaxis`, bind each entry to a serie with `seriesName`, and set `opposite` on the second one to move it to the right side.
+
+<Example>
+  <div class="card">
+    <div class="card-body">
+      <Chart chartId="revenue-vs-orders" label="Revenue in dollars and order count per month" height={16} />
+    </div>
+  </div>
+</Example>
+
+Mixing shapes works the same way: give a serie its own `type` (`column`, `line`, `area`) and ApexCharts draws that serie differently from the rest.
+
+### Annotations
+
+Annotations draw a line across the plot. Use `annotations.yaxis` for a target or a limit, and `annotations.xaxis` for a moment in time, like a release or a campaign.
+
+<Example>
+  <div class="card">
+    <div class="card-body">
+      <Chart chartId="uptime-sla" label="Monthly uptime against the 99.9 percent service level target" height={16} />
+    </div>
+  </div>
+</Example>
+
+Each annotation takes a value, a `borderColor` and an optional `label`. On a category axis the value is the category name, on a datetime axis it is a timestamp.
+
+<Example>
+  <div class="card">
+    <div class="card-body">
+      <Chart chartId="sales-with-markers" label="Monthly sales with campaign start markers" height={16} />
+    </div>
+  </div>
+</Example>
+
+### Brush and zoom
+
+A brush is a small chart that picks the range of a bigger one. Give the main chart an `id`, then point the small one at it with `chart.brush`, and set the starting range in `chart.selection`. Render the main chart first - the brush looks its target up by id.
+
+<Example>
+  <div class="card">
+    <div class="card-body">
+      <Chart chartId="traffic-zoom" label="Sessions over 90 days, zoomed to the selected range" height={11} />
+      <Chart chartId="traffic-brush" label="Range selector for the sessions chart" height={5} />
+    </div>
+  </div>
+</Example>
+
+### Synced charts
+
+Charts that share a `chart.group` name move together. Hover one and the others show the same point, zoom one and the others follow. Every chart in the group needs its own `chart.id` and the same x values.
+
+<Example>
+  <div class="card">
+    <div class="card-body">
+      <Chart chartId="synced-visits" label="Daily visits" height={8} />
+      <Chart chartId="synced-signups" label="Daily sign-ups" height={8} />
+      <Chart chartId="synced-revenue" label="Daily revenue" height={8} />
     </div>
   </div>
 </Example>
