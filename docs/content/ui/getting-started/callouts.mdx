@@ -1,0 +1,88 @@
+---
+title: Docs callouts
+summary: Callouts pull one sentence out of the flow of a page - a prerequisite, a gotcha, a warning. Tabler docs ship five of them, and any MDX page can use them without an import.
+description: Info, Tip, Warning, Danger and Note callouts for Tabler documentation pages, with usage rules and accessibility notes.
+---
+
+## Overview
+
+A callout is a short aside inside a docs page. It carries something a reader must not miss while scanning: a step to do first, a mistake that costs an hour, a limit of the library.
+
+Callouts belong to the documentation, not to the Tabler UI package. For an alert inside a product interface, use the [alert component](/ui/components/alert) instead.
+
+## Variants
+
+Five variants cover what a docs page needs. The icon and the border carry the state color; the text stays body color, so a callout never depends on color alone.
+
+### Info
+
+Use it for context and prerequisites - something to know or to do before the rest of the page makes sense.
+
+<Info title="Read the installation guide first">
+  The examples on this page assume Tabler is already installed and the stylesheet is on the page.
+</Info>
+
+```mdx
+<Info title="Read the installation guide first">
+  The examples on this page assume Tabler is already installed.
+</Info>
+```
+
+### Tip
+
+Use it for advice that makes the task easier, but is not required to finish it.
+
+<Tip title="Set the theme before init">
+  Some plugins keep the skin they were created with, so switching the theme afterwards has no effect.
+</Tip>
+
+### Warning
+
+Use it when missing the information breaks something later - a deprecation, a load order, a license limit.
+
+<Warning title="`@import` is on its way out">
+  It still compiles, but Dart Sass marks it as deprecated and will remove it in Sass 3.0.
+</Warning>
+
+### Danger
+
+Use it for what cannot be undone or what is unsafe - lost data, leaked credentials.
+
+<Danger title="Use a public token only">
+  A secret token must never be sent to the browser. Limit the token to your own domains.
+</Danger>
+
+### Note
+
+A callout with no title is body text only. Use it for a short aside that needs no heading.
+
+<Note>
+  Tabler ships the compiled CSS in `dist/css`, so a project without a Sass pipeline can still use it.
+</Note>
+
+## Usage
+
+Every MDX page in the docs can use the five tags without importing them - `docs/pages/[...slug].astro` passes them to the rendered content.
+
+```mdx
+<Warning title="Optional title">
+  Body text, with **markdown** and [links](/ui/getting-started/installation).
+</Warning>
+```
+
+The `title` prop is optional and renders as the first line in medium weight. The body is markdown, so keep it on its own lines inside the tags.
+
+## When to use one
+
+A callout works because it is rare. On a page where every third paragraph is boxed, nothing stands out and the reader skips all of them.
+
+- Use one when missing the information causes a real problem: a broken build, a security hole, a step done in the wrong order.
+- Keep it to one or two per page.
+- Do not box the main instruction of a section. If the paragraph is what the section is about, it belongs in the flow, under its heading.
+- Do not box a list of accessibility rules or best practices. Those are lists, and they read better as lists.
+
+## Accessibility
+
+- Each callout renders as `<aside role="note">` with an `aria-label` built from the variant and the title, so a screen reader announces "Warning: `@import` is on its way out" instead of an unlabeled group.
+- The state color sits on the icon and the border. The text keeps the body color, which passes contrast in both color modes and does not carry meaning through color alone (WCAG 1.4.1).
+- The icon is decorative and hidden from assistive tech - the variant is already in the label.
