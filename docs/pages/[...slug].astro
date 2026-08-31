@@ -7,6 +7,14 @@ import { getCollection, render } from 'astro:content'
 import DocsLayout from '@layouts/DocsLayout.astro'
 import { docsUrlFromId } from '@lib/docs-pages'
 import { markdownUrlFromDocsUrl } from '@lib/markdown-url'
+import Danger from '@components/callouts/Danger.astro'
+import Info from '@components/callouts/Info.astro'
+import Note from '@components/callouts/Note.astro'
+import Tip from '@components/callouts/Tip.astro'
+import Warning from '@components/callouts/Warning.astro'
+
+// Callouts are available to every MDX page without an import of its own.
+const callouts = { Danger, Info, Note, Tip, Warning }
 
 export const getStaticPaths = (async () => {
   const entries = await getCollection('docs')
@@ -49,5 +57,5 @@ if (data.classnames) {
   markdownUrl={markdownUrlFromDocsUrl(docsUrlFromId(entry.id))}
   editPath={entry.filePath ? `docs/${entry.filePath}` : undefined}
 >
-  <Content />
+  <Content components={callouts} />
 </DocsLayout>
