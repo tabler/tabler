@@ -3,7 +3,7 @@ title: Theme base colors
 summary: The tabler-themes stylesheet ships five gray palettes - slate, gray, zinc, neutral, and stone - that you switch between with the data-bs-theme-base attribute.
 description: Load the tabler-themes plugin and switch between five gray base palettes (slate, gray, zinc, neutral, stone) with data-bs-theme-base.
 css-plugins: [themes]
-related: [/ui/getting-started/customize]
+related: [/ui/getting-started/customize, /ui/getting-started/color-modes]
 ---
 
 import CdnImportPlugin from '@components/CdnImportPlugin.astro';
@@ -78,7 +78,9 @@ For each palette, the stylesheet redefines the eleven gray variables under an at
 
 Every selector matches two attributes: `data-bs-theme-base` (Bootstrap's namespaced convention, the one Tabler's own theme script writes) and the shorter `data-theme-base` (for setups that don't use the `bs-` prefix). Set either one - you don't need both. The compiled CSS variables are published with Tabler's `tblr-` prefix, so in your own CSS you read them as `--tblr-gray-50` … `--tblr-gray-950`.
 
-Because this only changes CSS variables, it has no effect on its own - you still need `data-bs-theme-base` set on `<html>` (or an ancestor) to pick a palette. Set it in markup, or let Tabler's theme script pick it up from a `?theme-base=slate` query parameter or `localStorage`.
+<Info title="The stylesheet alone changes nothing">
+  Because it only redefines CSS variables, you still need `data-bs-theme-base` on `<html>` (or an ancestor) to pick a palette. Set it in markup, or let Tabler's theme script pick it up from a `?theme-base=slate` query parameter or `localStorage`.
+</Info>
 
 ## Customizing further
 
