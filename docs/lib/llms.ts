@@ -17,6 +17,7 @@ import { experimental_AstroContainer as AstroContainer } from 'astro/container'
 import { getContainerRenderer } from '@astrojs/mdx/container-renderer'
 import { beautifyHtml, extractMarkedSnippet } from '@shared/lib/code-example'
 import { site } from '@shared/lib/site'
+import { callouts } from '@components/callouts/index.ts'
 import docs from '@data/docs.json'
 import packageManagers from '@data/package-managers.json'
 import { cdnCssTag, cdnJsTag, cdnPackageSnippet, cdnPluginSnippet } from './cdn-snippets.ts'
@@ -145,7 +146,8 @@ const getContainer = () => (container ??= loadRenderers([getContainerRenderer()]
 async function renderedExamples(entry: CollectionEntry<'docs'>): Promise<(string | null)[]> {
   try {
     const { Content } = await render(entry)
-    const html = await (await getContainer()).renderToString(Content)
+    // Same components the page route passes, or every page using a callout throws.
+    const html = await (await getContainer()).renderToString(Content, { props: { components: callouts } })
 
     return html
       .split(EXAMPLE_MARKER)
