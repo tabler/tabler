@@ -1,10 +1,41 @@
 @use '../config' as *;
 
+// ApexCharts reads these tokens from the chart element's computed style (theme.tokens,
+// on by default since v6), so the library themes itself — including charts an app builds
+// on its own, without going through Tabler's chart helpers.
+//
+// The palette is the public part: override --tblr-chart-1 … --tblr-chart-5 to recolor
+// every chart at once, the same way --tblr-primary recolors the rest of the interface.
+:root {
+  --chart-1: var(--primary);
+  --chart-2: var(--green);
+  --chart-3: var(--azure);
+  --chart-4: var(--purple);
+  --chart-5: var(--orange);
+  --apx-accent: var(--chart-1);
+  --apx-fore: var(--secondary);
+  --apx-grid: var(--border-color);
+  // No --apx-surface on purpose: it makes ApexCharts paint a solid background behind the
+  // plot, which would cover the card underneath — tinted and gradient cards included.
+  --apx-series-1: var(--chart-1);
+  --apx-series-2: var(--chart-2);
+  --apx-series-3: var(--chart-3);
+  --apx-series-4: var(--chart-4);
+  --apx-series-5: var(--chart-5);
+}
+
 .apexcharts-tooltip {
+  // ApexCharts paints the tooltip title and other muted text from this variable, and its
+  // default is a dark gray that disappears on the inverted Tabler tooltip surface.
+  // !important because ApexCharts injects its own stylesheet at runtime, after this one,
+  // and its default lands on the same selector.
+  --apx-tt-color-muted: #{$tooltip-color} !important;
+
   padding: 0.25rem !important;
   font-size: $tooltip-font-size !important;
   color: $tooltip-color !important;
   background: $tooltip-bg !important;
+  border: 0 !important;
   box-shadow: none !important;
 }
 
@@ -14,6 +45,7 @@
   font-weight: var(--font-weight-semibold);
   background: transparent !important;
   border: 0 !important;
+  opacity: 0.7;
 }
 
 .apexcharts-tooltip-y-group {
@@ -28,8 +60,19 @@
   font-size: 16px !important;
 }
 
-.apexcharts-gridline {
+.apexcharts-gridline,
+.apexcharts-grid-borders line,
+.apexcharts-xaxis-tick,
+.apexcharts-yaxis-tick {
   stroke: var(--border-color) !important;
+}
+
+// ApexCharts outlines markers, treemap cells and data label pills in white, so they
+// separate from the plot. On a dark background that outline is the thing that stands out.
+.apexcharts-marker,
+.apexcharts-treemap-rect,
+.apexcharts-data-labels rect {
+  stroke: var(--bg-surface) !important;
 }
 
 .apexcharts-legend-text {

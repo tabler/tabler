@@ -17,6 +17,7 @@ export const cssVarPrefix = 'tblr-'
 // foreign name.
 export const cssVarIgnore = [
   /^--tblr-/, // already prefixed, e.g. names that cannot round-trip postcss (see $navbar-light-icon-color)
+  /^--apx-/, // apexcharts
   /^--bs-/, // bootstrap
   /^--fc-/, // fullcalendar
   /^--gl-/, // star-rating.js
