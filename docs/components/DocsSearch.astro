@@ -56,11 +56,13 @@ import Icon from '@ui/Icon.astro'
       if (state === 'loading') return
       state = 'loading'
       try {
-        const { default: docsearch } = await import('@docsearch/js')
+        // The package root is the Ask AI build in v5; /docsearch is plain keyword search.
+        const { default: docsearch } = await import('@docsearch/js/docsearch')
         docsearch({
           container: '#docsearch',
           appId,
-          indexName,
+          // DocSearch 5 takes a list of indices instead of a single indexName.
+          indices: [indexName],
           apiKey,
         })
         state = 'ready'
