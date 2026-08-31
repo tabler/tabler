@@ -51,7 +51,7 @@ const elementId = `chart-${id}`;
 				<script is:inline define:vars={{ chartKey, elementId, config, xFormatterExpr }}>
 					window.tabler_chart ??= {};
 
-					// Heatmap shades each cell by computing off the literal base color in JS
+					// Heatmap and treemap shade each cell by computing off the literal base color in JS
 					// (light -> full color-mix by value), unlike other chart types where the
 					// SVG `fill` attribute just holds `var(--chart-...)` and the browser paints
 					// it directly. A raw var()/color-mix() string can't be parsed by that color
@@ -83,7 +83,7 @@ const elementId = `chart-${id}`;
 							config.xaxis.labels.formatter = new Function('val', `return (${xFormatterExpr})`);
 						}
 
-						if (config.chart?.type === 'heatmap' && Array.isArray(config.colors)) {
+						if ((config.chart?.type === 'heatmap' || config.chart?.type === 'treemap') && Array.isArray(config.colors)) {
 							config.colors = config.colors.map(resolveCssVar);
 						}
 
