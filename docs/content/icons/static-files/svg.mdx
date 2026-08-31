@@ -5,6 +5,8 @@ description: Download Tabler Icons as SVG files that scale without quality loss.
 ---
 
 import TabsPackage from '@components/TabsPackage.astro'
+import { Code } from 'astro:components'
+import { site } from '@shared/lib/site.ts'
 import Icon from '@ui/Icon.astro'
 import Example from '@components/Example.astro'
 
@@ -33,10 +35,9 @@ If you load an icon as an image, you can modify its size using CSS.
 You can paste the content of the icon file into your HTML code to display it on the page.
 
 <Example codeOnly>
-  <a href="">
-    <Icon name="disabled" />
-    Click me
-  </a>
+<a href="">
+  <Icon name="disabled" /> Click me
+</a>
 </Example>
 
 Thanks to that, you can change the size, color and the `stroke-width` of the icons with CSS code.
@@ -66,16 +67,12 @@ Add an icon to be displayed on your page with the following markup (`activity` i
 
 Load the outline version of an icon as an image straight from the `icons/outline` directory of the CDN package:
 
-```html
-<img src="https://unpkg.com/@tabler/icons@$ICONS_VERSION/icons/outline/home.svg" />
-```
+<Code lang="html" code={`<img src="https://unpkg.com/@tabler/icons@${site.iconsVersion}/icons/outline/home.svg" />`} />
 
 ### Filled version
 
 Use the `icons/filled` path to load the filled version of an icon:
 
-```html
-<img src="https://unpkg.com/@tabler/icons@$ICONS_VERSION/icons/filled/home.svg" />
-```
+<Code lang="html" code={`<img src="https://unpkg.com/@tabler/icons@${site.iconsVersion}/icons/filled/home.svg" />`} />
 
-Instead of a specific version, you can use `latest` to always get the newest icons.
+Swap the version for `latest` to always pull the newest icons, or keep it pinned so the set stays stable.

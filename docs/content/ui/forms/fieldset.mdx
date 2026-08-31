@@ -1,0 +1,75 @@
+---
+title: Fieldset
+seoTitle: Form fieldset
+order: 2
+summary: By grouping form elements together with the fieldset element, you can improve the organization and accessibility of your forms, making it easier for users to understand the purpose of each input and provide accurate information.
+description: Group related form fields with a styled fieldset to make long forms better organized and easier to understand.
+related: [/ui/forms/elements]
+---
+import Example from '@components/Example.astro';
+
+## Default markup
+
+Group parts of your form to make it well-structured and clearer for users, using the `fieldset` element.
+
+Give every fieldset a `legend`. The legend names the group, and it is the only thing that does - a heading placed above the fieldset looks the same but is not connected to the fields.
+
+<Example background="primary" column>
+<fieldset class="form-fieldset">
+  <legend class="form-label">Contact details</legend>
+  <div class="mb-3">
+    <label class="form-label required" for="fieldset-name">Full name</label>
+    <input type="text" id="fieldset-name" class="form-control" autocomplete="name" required />
+  </div>
+  <div class="mb-3">
+    <label class="form-label required" for="fieldset-company">Company</label>
+    <input type="text" id="fieldset-company" class="form-control" autocomplete="organization" required />
+  </div>
+  <div class="mb-3">
+    <label class="form-label required" for="fieldset-email">Email</label>
+    <input type="email" id="fieldset-email" class="form-control" autocomplete="email" required />
+  </div>
+  <div class="mb-3">
+    <label class="form-label" for="fieldset-phone">Phone number</label>
+    <input type="tel" id="fieldset-phone" class="form-control" autocomplete="tel" />
+  </div>
+  <label class="form-check">
+    <input type="checkbox" class="form-check-input" required />
+    <span class="form-check-label required">I agree to the Terms &amp; Conditions</span>
+  </label>
+</fieldset>
+</Example>
+
+## Grouping choices
+
+A fieldset is the only correct way to group a set of radios or checkboxes. Without it the options are read one by one with no idea what question they answer.
+
+<Example background="primary" column>
+<fieldset class="form-fieldset">
+  <legend class="form-label">How should we contact you?</legend>
+  <label class="form-check">
+    <input type="radio" class="form-check-input" name="fieldset-contact" checked />
+    <span class="form-check-label">By email</span>
+  </label>
+  <label class="form-check">
+    <input type="radio" class="form-check-input" name="fieldset-contact" />
+    <span class="form-check-label">By phone</span>
+  </label>
+  <label class="form-check">
+    <input type="radio" class="form-check-input" name="fieldset-contact" />
+    <span class="form-check-label">Do not contact me</span>
+  </label>
+</fieldset>
+</Example>
+
+## Disabling a group
+
+The `disabled` attribute on a `fieldset` disables every control inside it at once, so you do not have to set it on each field.
+
+## Accessibility
+
+- Every fieldset needs a `legend`, and it has to be the first child. A fieldset without one groups the fields visually but says nothing.
+- Keep the legend short. It is read before every field in the group, so a long sentence is repeated on each one.
+- Do not use a fieldset just to draw a box. A group that has no name is noise for a screen reader - use a plain `div` instead.
+- Radios and checkboxes that belong to one question always go in a fieldset. Text fields only need one when they really form a set, such as an address.
+- `disabled` on the fieldset takes every control inside out of the tab order and out of the submitted data. Use `readonly` on individual fields when the values should still be sent.

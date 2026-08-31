@@ -7,4 +7,38 @@ summary: Tabler Emails is a set of 80 eye-catching, customizable HTML templates.
 seoDescription: Tabler Emails is a collection of 80 premium, customizable HTML templates. They are compatible with over 90 email clients and devices.
 ---
 
-Tabler Emails is a package of ready-to-use HTML email templates. Each template is tested in more than 90 email clients and devices, so your messages look right everywhere. Use the [compiled templates](/emails/introduction/compiled-html) as they are, or customize the [source files](/emails/introduction/source-html) to match your brand.
+import { Image } from 'astro:assets'
+import coverLight from '../../images/cover-emails.jpg'
+import coverDark from '../../images/cover-emails-dark.jpg'
+
+<figure>
+	<Image src={coverLight} alt="Tabler Emails" class="hide-theme-dark" width={800} densities={[1, 2]} loading="eager" />
+	<Image src={coverDark} alt="Tabler Emails" class="hide-theme-light" width={800} densities={[1, 2]} loading="eager" />
+</figure>
+
+Tabler Emails is a package of 80 ready-to-use HTML email templates — transactional messages like welcome, password reset or invoice, and marketing layouts. Each template is tested in more than 90 email clients and devices, so your messages look right everywhere.
+
+## What's inside
+
+Every template lives in its own folder and comes in four variants, plus screenshots for a quick preview:
+
+```text
+tabler-emails/emails/welcome/
+├── compiled.html        ← ready to send, styles inlined
+├── compiled-dark.html   ← the same, in the dark color scheme
+├── source.html          ← editable source, for customization
+├── source-dark.html
+├── assets/              ← images used by this template
+└── screenshot.jpg
+```
+
+The `compiled` files have all styles inlined and work as-is in email clients. The `source` files are easier to read and edit — use them when you want to change the layout, then inline the styles before sending.
+
+## Quick start
+
+1. Pick a template folder — for example `emails/welcome/`.
+2. Open `compiled.html` and replace the texts, links and logo with your own.
+3. Upload the images from `assets/` to your server or CDN and update their URLs.
+4. Paste the result into your email provider or send it through your backend.
+
+No build step is required for the compiled templates. Read about the [package contents](/emails/contents), use the [compiled templates](/emails/compiled-html) as they are, or customize the [source files](/emails/source-html) to match your brand.

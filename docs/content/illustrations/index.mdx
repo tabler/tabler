@@ -5,5 +5,43 @@ description: Customizable illustrations for modern web and mobile designs.
 summary: Tabler Illustrations is a collection of customizable SVG illustrations for your web project. Explore our library of illustrations to enhance your web development experience.
 ---
 
-<img src="/img/cover-illustrations.png" alt="Tabler Illustrations" class="hide-theme-dark" width="1600" height="750" />
-<img src="/img/cover-illustrations-dark.png" alt="Tabler Illustrations" class="hide-theme-light" width="1600" height="750" />
+import { Image } from 'astro:assets'
+import coverLight from '../../images/cover-illustrations.jpg'
+import coverDark from '../../images/cover-illustrations-dark.jpg'
+
+<figure>
+	<Image src={coverLight} alt="Tabler Illustrations" class="hide-theme-dark" width={800} densities={[1, 2]} loading="eager" />
+	<Image src={coverDark} alt="Tabler Illustrations" class="hide-theme-light" width={800} densities={[1, 2]} loading="eager" />
+</figure>
+
+Tabler Illustrations is a set of 130 illustrations for empty states, error pages, onboarding screens and marketing sections. Every illustration comes in a light and a dark variant, so it fits both color modes of your interface.
+
+## What's inside
+
+Each illustration ships in several formats, all included in one package:
+
+- **SVG** — the primary format for the web, in `light/` and `dark/` variants.
+- **SVG with CSS variables** — colors exposed as `--tblr-illustrations-*` custom properties, so you can re-color the artwork from CSS.
+- **SVG with auto dark mode** — one file that switches between light and dark styling on its own, based on the page theme.
+- **PNG** — raster exports, with and without a background.
+- **EPS and PDF** — vector files for print and design tools.
+- **Figma** — a source file for editing the artwork directly.
+
+## Quick start
+
+Embed an illustration like any other image:
+
+```html
+<img src="illustrations/svg/light/boy-girl.svg" alt="" width="400" height="300" />
+```
+
+To match the artwork to your brand, use the CSS-variables version and override its custom properties — for example the primary color and the skin tone:
+
+```css
+:root {
+  --tblr-illustrations-primary: #066fd1;
+  --tblr-illustrations-skin: #ffcb9d;
+}
+```
+
+[Preview the collection](/illustrations/preview), check [what is inside the package](/illustrations/contents), learn how to [customize the illustrations](/illustrations/customization), and read the [license terms](/illustrations/license).

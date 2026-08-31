@@ -1,0 +1,205 @@
+---
+title: Color picker
+order: 9
+summary: A color picker lets users pick a color from a gradient, a set of swatches, or by typing a value. Use it in theme settings, tag colors, and any field that stores a color.
+docs-libs: [coloris.js]
+description: Let users pick a color in a form.
+related: [/ui/plugins/date-picker]
+---
+import Example from '@components/Example.astro';
+import CdnImportPlugin from '@components/CdnImportPlugin.astro';
+import { Code } from 'astro:components';
+import { site } from '@shared/lib/site.ts';
+
+## Overview
+
+The color picker is a normal text input with the [Coloris](https://github.com/melloware/coloris-npm) plugin attached. Coloris wraps the field, adds a color button inside it, and opens a picker on click. The value stays in the input, so the field works in a form like any other.
+
+<Example>
+<input type="text" class="form-control d-block" id="colorpicker-overview" value="#066fd1" />
+</Example>
+
+## Installation
+
+Install Coloris with npm:
+
+```shell
+npm install @melloware/coloris
+```
+
+Or include it from a CDN. You need both the script and its stylesheet:
+
+<Code
+	lang="html"
+	code={`<link rel="stylesheet" href="${site.cdnUrl}/dist/libs/@melloware/coloris/dist/coloris.min.css" />
+<script src="${site.cdnUrl}/dist/libs/@melloware/coloris/dist/umd/coloris.min.js"></script>`}
+/>
+
+Tabler restyles the picker to match the rest of the interface. Those styles live in the vendors plugin, so include `tabler-vendors.css` as well:
+
+<CdnImportPlugin plugins={['vendors']} />
+
+## Usage
+
+### Basic field
+
+Add a text input with the `form-control` class, then attach Coloris to it with a selector.
+
+<Example codeOnly>
+<input type="text" class="form-control d-block" id="colorpicker" value="#066fd1" />
+</Example>
+
+```js
+document.addEventListener('DOMContentLoaded', function () {
+  Coloris({
+    el: '#colorpicker',
+    selectInput: false,
+  })
+})
+```
+
+`selectInput: false` stops the plugin from selecting the whole text when the field gets focus.
+
+### Color format
+
+Set `format` to choose what the input stores. Use `hex` when you save the value in a database, because it is short and easy to read.
+
+| Format | Value in the input |
+| --- | --- |
+| `hex` | `#066fd1` |
+| `rgb` | `rgb(6, 111, 209)` |
+| `hsl` | `hsl(209, 94%, 42%)` |
+| `mixed` | Hex when the color is solid, `rgba()` when it is not. |
+| `auto` | Guessed from the current value. |
+
+<Example>
+<input type="text" class="form-control d-block" id="colorpicker-rgb" value="rgb(66, 153, 225)" />
+</Example>
+
+### Alpha channel
+
+Alpha is off by default. Set `alpha: true` to add the opacity slider.
+
+<Example>
+<input type="text" class="form-control d-block" id="colorpicker-alpha" value="rgba(174, 62, 201, 0.5)" />
+</Example>
+
+```js
+Coloris({ el: '#colorpicker-alpha', alpha: true, format: 'mixed' })
+```
+
+### Swatches
+
+Pass a list of colors as `swatches`. They show under the picker as quick choices. Tabler theme colors work well here.
+
+<Example>
+<input type="text" class="form-control d-block" id="colorpicker-swatches" value="#4299e1" />
+</Example>
+
+```js
+Coloris({
+  el: '#colorpicker-swatches',
+  swatches: ['#066fd1', '#4299e1', '#4263eb', '#ae3ec9', '#d6336c', '#d63939'],
+})
+```
+
+To read the colors from the theme instead of writing them by hand, take them from the CSS variables:
+
+```js
+const swatches = ['--tblr-blue', '--tblr-azure', '--tblr-indigo'].map(function (prop) {
+  return getComputedStyle(document.body).getPropertyValue(prop)
+})
+```
+
+### Swatches only
+
+Set `swatchesOnly: true` to hide the gradient. Users can then pick only from your list. Use it when a design system allows a fixed set of colors.
+
+<Example>
+<input type="text" class="form-control d-block" id="colorpicker-swatches-only" value="#2fb344" />
+</Example>
+
+### Common options
+
+These are the options you will need most often. Coloris has more, and they are listed in its [documentation](https://github.com/melloware/coloris-npm#configuration).
+
+| Option | What it does |
+| --- | --- |
+| `el` | Selector of the field or fields to attach to. |
+| `format` | Value format: `hex`, `rgb`, `hsl`, `mixed`, or `auto`. |
+| `alpha` | Shows the opacity slider. Off by default. |
+| `swatches` | List of colors shown under the picker. |
+| `swatchesOnly` | Hides the gradient and leaves only the swatches. |
+| `selectInput` | Selects the text when the field gets focus. |
+| `formatToggle` | Lets users switch the format inside the picker. |
+| `clearButton` | Adds a button that clears the value. |
+| `closeButton` | Adds a close button to the picker. |
+| `themeMode` | `light`, `dark`, or `auto`. |
+| `inline` | Shows the picker on the page instead of in a popup. |
+
+### Read the picked color
+
+Coloris fires a `coloris:pick` event on every change. Use it to update a preview or to save the value.
+
+```js
+document.addEventListener('coloris:pick', function (event) {
+  console.log(event.detail.color)
+})
+```
+
+### Several fields with different options
+
+`Coloris()` sets the options for all fields it is attached to. When one field needs its own settings, register it with `setInstance()`.
+
+```js
+Coloris({ el: '.color-input', alpha: false, swatchesOnly: false, swatches: swatches })
+
+Coloris.setInstance('#brand-color', {
+  alpha: false,
+  swatchesOnly: true,
+  swatches: swatches,
+})
+```
+
+There is one picker for the whole page, and it is set up again every time it opens. Options you leave out of an instance keep the value from the field opened before it. Repeat the options that matter in every instance, as in the example above, so each field always opens the same way.
+
+## Examples
+
+### Field with a label
+
+Use the picker like any other form field: a label, the input, and a hint below it.
+
+<Example bg="surface-secondary" column>
+<div class="card">
+  <div class="card-body">
+    <div class="mb-0">
+      <label class="form-label" for="colorpicker-form">Brand color</label>
+      <input type="text" class="form-control d-block" id="colorpicker-form" value="#d6336c" />
+      <small class="form-hint">This color is used for buttons and links.</small>
+    </div>
+  </div>
+</div>
+</Example>
+
+## Accessibility
+
+- Always add a `<label>` linked to the input with `for` and `id`. The color button alone does not say what the field is for.
+- Keep the text value visible. Users who cannot tell colors apart can still read and type the value.
+- Do not use the color as the only meaning. If a color marks a status, repeat the status in text.
+- The picker can be used with the keyboard, and the input accepts a typed value, so a mouse is never required.
+
+<script>{`
+window.addEventListener('load', function () {
+	if (typeof Coloris === 'undefined') return;
+
+	const swatches = ['--tblr-blue', '--tblr-azure', '--tblr-indigo', '--tblr-purple', '--tblr-pink', '--tblr-red', '--tblr-orange', '--tblr-green'].map(function (prop) {
+		return getComputedStyle(document.body).getPropertyValue(prop).trim();
+	});
+
+	Coloris({ el: '.form-control[id^="colorpicker"]', selectInput: false, format: 'hex', alpha: false, swatchesOnly: false, swatches: swatches });
+
+	Coloris.setInstance('#colorpicker-rgb', { format: 'rgb', alpha: false, swatchesOnly: false, swatches: swatches });
+	Coloris.setInstance('#colorpicker-alpha', { format: 'mixed', alpha: true, swatchesOnly: false, swatches: swatches });
+	Coloris.setInstance('#colorpicker-swatches-only', { format: 'hex', alpha: false, swatchesOnly: true, swatches: swatches });
+});
+`}</script>

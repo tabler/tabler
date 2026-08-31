@@ -9,6 +9,7 @@ export const GET: APIRoute = () => {
   const body = `Sitemap: ${sitemapUrl}
 
 User-agent: *
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Disallow:${isProduction ? '' : ' /'}
 `
 

@@ -5,6 +5,8 @@ description: Download Tabler Icons as PNG files - raster images for mockups, cha
 ---
 
 import TabsPackage from '@components/TabsPackage.astro'
+import { Code } from 'astro:components'
+import { site } from '@shared/lib/site.ts'
 
 ![Tabler Icons in PNG format](/img/icons/package-png.png)
 
@@ -23,16 +25,12 @@ All PNG files are stored in `icons` subdirectory.
 
 Load the outline version of an icon as an image straight from the `icons/outline` directory of the CDN package:
 
-```html
-<img src="https://unpkg.com/@tabler/icons-png@$ICONS_VERSION/icons/outline/home.png" />
-```
+<Code lang="html" code={`<img src="https://unpkg.com/@tabler/icons-png@${site.iconsVersion}/icons/outline/home.png" />`} />
 
 ### Filled version
 
 Use the `icons/filled` path to load the filled version of an icon:
 
-```html
-<img src="https://unpkg.com/@tabler/icons-png@$ICONS_VERSION/icons/filled/home.png" />
-```
+<Code lang="html" code={`<img src="https://unpkg.com/@tabler/icons-png@${site.iconsVersion}/icons/filled/home.png" />`} />
 
-Instead of a specific version, you can use `latest` to always get the newest icons.
+Swap the version for `latest` to always pull the newest icons, or keep it pinned so the set stays stable.

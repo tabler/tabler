@@ -1,0 +1,99 @@
+---
+title: Vector map
+docs-libs: [jsvectormap]
+description: Interactive guide to creating a vector map with jsVectorMap.
+summary: A vector map is a great way to display geographical data in an interactive and visually appealing way. Learn how to create a vector map with jsVectorMap.
+related: [/ui/components/map]
+---
+
+import Example from '@components/Example.astro'
+import MapVector from '@shared/components/demo/MapVector.astro'
+import { Code } from 'astro:components'
+import { site } from '@shared/lib/site.ts'
+import TabsPackage from '@components/TabsPackage.astro'
+
+## Overview
+
+A vector map draws countries and regions as SVG paths, so it stays sharp at any size and every region can be styled or clicked. Tabler uses [jsVectorMap](https://jvm-docs.vercel.app/), and themes it to match the rest of the interface.
+
+The library ships the map data separately from the code. Load the map you need - the world map here - or the build will render an empty box.
+
+## Installation
+
+Install jsVectorMap with npm:
+
+<TabsPackage name="jsvectormap" />
+
+Or include it from a CDN. You need three files: the stylesheet, the library, and the map data.
+
+<Code
+	lang="html"
+	code={`<link rel="stylesheet" href="${site.cdnUrl}/dist/libs/jsvectormap/dist/jsvectormap.min.css" />
+<script src="${site.cdnUrl}/dist/libs/jsvectormap/dist/jsvectormap.min.js"></script>
+<script src="${site.cdnUrl}/dist/libs/jsvectormap/dist/maps/world.js"></script>`}
+/>
+
+Use `maps/world-merc.js` instead for the Mercator projection.
+
+## Usage
+
+Add an empty element with a height, then point jsVectorMap at it. The `map` option has to match the map file you loaded.
+
+```html
+<div id="map-world" style="height: 20rem"></div>
+```
+
+```js
+new jsVectorMap({
+  selector: '#map-world',
+  map: 'world',
+});
+```
+
+The map sizes itself from its container, so the container needs a height before the map is created. Call `updateSize()` on resize to keep it in step:
+
+```js
+const map = new jsVectorMap({ selector: '#map-world', map: 'world' });
+
+window.addEventListener('resize', () => map.updateSize());
+```
+
+## Default map
+
+Integrating the vector map into your website is straightforward. Below is a sample implementation for a world map:
+
+<Example codeOnly>
+<MapVector mapId="empty" />
+</Example>
+
+## Sample demo
+
+Look at the example below to see how the vector map works with a world map.
+
+<Example>
+<MapVector mapId="world" />
+</Example>
+
+## Markers
+
+You can add markers to the map to highlight specific locations. Below is a sample implementation for a world map with markers:
+
+<Example>
+<MapVector mapId="world-markers" />
+</Example>
+
+## Lines
+
+You can also draw lines on the map to represent routes or connections between different locations. Below is a sample implementation for a world map with lines:
+
+<Example>
+<MapVector mapId="world-lines" />
+</Example>
+
+## Accessibility
+
+- A map is a picture built from paths, and a screen reader reads them as a list of shapes. Give the container `role="img"` and an `aria-label` that says what it shows.
+- The data behind the map has to be reachable another way. A table of the same values, next to or below the map, serves screen reader users and anyone printing the page.
+- Hovering a region is mouse-only. Do not put anything there that is not also available in the text version.
+- Colour scales are hard to read for many users. Add a legend with the actual numbers rather than colour alone.
+- Do not make every region focusable. A world map would be hundreds of tab stops.

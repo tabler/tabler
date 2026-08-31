@@ -3,6 +3,18 @@ title: Popover
 summary: A popover is used to provide additional information for elements where a simple tooltip is not sufficient.
 description: Show extra information in popovers when a tooltip is not enough. Set the placement and trigger to control how they appear.
 related: [/ui/components/tooltip, /ui/components/dropdown]
+source: core/scss/ui/_popovers.scss
+classnames:
+  component:
+    - class: popover
+      desc: Container element, positioned by Bootstrap
+  part:
+    - class: popover-header
+      desc: Title bar
+    - class: popover-body
+      desc: Content area
+    - class: popover-arrow
+      desc: Pointer towards the trigger, positioned by Bootstrap
 ---
 import Example from '@components/Example.astro';
 import CodeDocs from '@components/CodeDocs.astro';
@@ -12,15 +24,20 @@ import CodeDocs from '@components/CodeDocs.astro';
 To create a default popover use:
 
 <Example centered>
-<button type="button" class="btn" data-bs-toggle="popover" title="Popover title" data-bs-content="And here's some amazing content. It's very engaging. Right?" > Click to toggle popover </button>
+<button type="button" class="btn" data-bs-toggle="popover" title="Popover title" data-bs-content="And here's some amazing content. It's very engaging. Right?"> Click to toggle popover </button>
 </Example>
 
 ## Four directions
 
-Four options are available: `top`, `right`, `bottom`, and `left` aligned. Directions are mirrored when using Bootstrap in RTL.
+Four options are available: `top`, `right`, `bottom`, and `left` aligned. Directions are mirrored when using Bootstrap in [RTL](/ui/getting-started/rtl).
 
 <Example centered>
-<div class="btn-list"> <button type="button" class="btn" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-content="Top popover" > Popover on top </button> <button type="button" class="btn" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="right" data-bs-content="Right popover" > Popover on right </button> <button type="button" class="btn" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content="Bottom popover" > Popover on bottom </button> <button type="button" class="btn" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="left" data-bs-content="Left popover" > Popover on left </button> </div>
+<div class="btn-list">
+  <button type="button" class="btn" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="top" data-bs-content="Top popover"> Popover on top </button>
+  <button type="button" class="btn" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="right" data-bs-content="Right popover"> Popover on right </button>
+  <button type="button" class="btn" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="bottom" data-bs-content="Bottom popover"> Popover on bottom </button>
+  <button type="button" class="btn" data-bs-container="body" data-bs-toggle="popover" data-bs-placement="left" data-bs-content="Left popover"> Popover on left </button>
+</div>
 </Example>
 
 ## Popover on hover
@@ -28,7 +45,7 @@ Four options are available: `top`, `right`, `bottom`, and `left` aligned. Direct
 Popover can be triggered in one or more of the following styles: `manual`, with a `click`, on `focus`, and on `hover`. This one reacts on hover. See more details on the Popover component page of [Bootstrap's documentation](https://getbootstrap.com/docs)
 
 <Example centered>
-<button type="button" class="btn btn-primary" data-bs-trigger="hover" data-bs-toggle="popover" title="Popover title" data-bs-content="And here's some amazing content. It's very engaging. Right?" > Hover to toggle popover </button>
+<button type="button" class="btn btn-primary" data-bs-trigger="hover" data-bs-toggle="popover" title="Popover title" data-bs-content="And here's some amazing content. It's very engaging. Right?"> Hover to toggle popover </button>
 </Example>
 
 ## JavaScript
@@ -36,6 +53,14 @@ Popover can be triggered in one or more of the following styles: `manual`, with 
 Tabler automatically initializes all elements with `data-bs-toggle="popover"` on page load. This is the code that runs:
 
 <CodeDocs name="popover-init" file="core/js/src/popover.ts" />
+
+## Accessibility
+
+- The trigger must be a `button` or a link with an `href`, so it can take focus. Bootstrap manages `aria-describedby` while the popover is open.
+- Popovers open on click by default, which is what makes their content reachable. If you switch to `data-bs-trigger="hover"`, the content becomes unreachable by keyboard.
+- Set `data-bs-trigger="focus"` to make a popover dismiss itself when focus leaves, which is the closest thing to <kbd>Escape</kbd> behaviour.
+- Tabler enables HTML in a popover only when you set `data-bs-html="true"`. Leave it off for content that comes from users.
+- Keep the title and body as text. A popover holding a form is a modal in disguise - use a real dialog for that.
 
 ## SCSS variables
 

@@ -1,0 +1,74 @@
+---
+title: Mention
+summary: A mention is an inline chip inside running text. Use it to point at a person, a tag, an app or a color without breaking the flow of the sentence.
+description: Add inline mention chips to text - people, tags, apps and colors - with an avatar, a logo or a color swatch inside.
+related: [/ui/base/typography, /ui/components/tag]
+source: core/scss/ui/_type.scss
+classnames:
+  component:
+    - class: mention
+      desc: The chip itself, on a span or on an a
+  part:
+    - class: mention-avatar
+      desc: Round picture of a person at the start of the chip
+    - class: mention-app
+      desc: Square logo of an app or a brand
+    - class: mention-color
+      desc: Color swatch, tinted with any bg-{color} utility
+    - class: mention-count
+      desc: Muted number at the end, for example how many posts carry a tag
+---
+
+import Example from '@components/Example.astro'
+
+## Default markup
+
+Use the `mention` class for a chip inside a sentence. It works on a `span`, or on an `a` when the chip should link somewhere.
+
+<Example centered background="primary">
+Hey <a href="#" class="mention"><span class="mention-avatar" style="background-image: url(/static/avatars/035f.jpg)"></span><span class="visually-hidden">@</span>JohnDoe</a>, have you seen the latest updates?
+</Example>
+
+## Mention with an avatar
+
+Put a `mention-avatar` first inside the chip to show who it refers to. The picture is set as a background image.
+
+<Example centered background="primary">
+  <a href="#" class="mention"><span class="mention-avatar" style="background-image: url(/static/avatars/035f.jpg)"></span><span class="visually-hidden">@</span>JaneSmith</a>
+  <a href="#" class="mention"><span class="mention-avatar" style="background-image: url(/static/avatars/029m.jpg)"></span><span class="visually-hidden">@</span>EganPoetz</a>
+</Example>
+
+## Mention with an app
+
+`mention-app` shows a square logo instead of a round picture, for a service or a brand.
+
+<Example centered background="primary">
+  <a href="#" class="mention"><span class="mention-app" style="background-image: url(/static/brands/netflix.svg)"></span>Netflix</a>
+  <a href="#" class="mention"><span class="mention-app" style="background-image: url(/static/brands/github.svg)"></span>GitHub</a>
+</Example>
+
+## Mention with a color
+
+`mention-color` is a swatch you tint with any `bg-*` utility, so a color value can be named and shown at once.
+
+<Example centered background="primary">
+  <span class="mention"><span class="mention-color bg-blue"></span>#066fd1</span>
+  <span class="mention"><span class="mention-color bg-green"></span>rgb(47, 179, 68)</span>
+  <span class="mention"><span class="mention-color bg-orange"></span>hsl(24deg, 94%, 50%)</span>
+</Example>
+
+## Mention with a count
+
+Add `mention-count` at the end for a muted number, for example how many posts carry a tag.
+
+<Example centered background="primary">
+  <a href="#" class="mention">#WebDevelopment<span class="mention-count">16</span></a>
+  <a href="#" class="mention">#Tabler<span class="mention-count">4</span></a>
+</Example>
+
+## Accessibility
+
+- The `@` or `#` sign is part of the meaning, not decoration. When the design drops it, keep it in a `visually-hidden` span so the chip still reads as a mention.
+- The avatar, the logo and the swatch are background images, so they carry no text. The name inside the chip has to say who or what it is.
+- A chip that links somewhere must be an `a` with an `href`. A `span` with a click handler cannot be reached by keyboard.
+- `mention-color` shows a color as a swatch, so never let the swatch be the only clue - keep the value or the color name in the text, as the examples do.

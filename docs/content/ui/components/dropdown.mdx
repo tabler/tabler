@@ -3,6 +3,47 @@ title: Dropdown
 summary: A dropdown is used to display a list of options or include more items in a menu without overwhelming users with too many buttons and long lists. It improves interaction with your website or software and keeps the interface clear.
 description: Build dropdown menus that reveal lists of options or actions. Add icons, dividers, and custom triggers to keep the interface clean.
 related: [/ui/components/button, /ui/components/popover]
+source: core/scss/ui/_dropdowns.scss
+classnames:
+  component:
+    - class: dropdown
+      desc: Wrapper around the trigger and the menu
+  part:
+    - class: dropdown-toggle
+      desc: The trigger; Bootstrap keeps aria-expanded in sync
+    - class: dropdown-menu
+      desc: The menu itself
+    - class: dropdown-item
+      desc: One entry
+    - class: dropdown-item-icon
+      desc: Icon at the start of an entry
+    - class: dropdown-item-indicator
+      desc: Marker slot, for a checkbox or a radio
+    - class: dropdown-item-text
+      desc: Plain text that is not an action
+    - class: dropdown-header
+      desc: Section label between entries
+    - class: dropdown-divider
+      desc: Separator line
+    - class: dropdown-menu-columns
+      desc: Splits a long menu into columns, holding dropdown-menu-column elements
+    - class: dropdown-menu-card
+      desc: Lets the menu hold card content instead of a list
+  style:
+    - class: dropdown-menu-arrow
+      desc: Adds a pointer towards the trigger
+    - class: dropdown-menu-dark
+      desc: Dark menu
+    - class: dropdown-toggle-split
+      desc: Separates the caret into its own button
+  behavior:
+    - class: dropdown-menu-scrollable
+      desc: Scrolls a long menu instead of growing it
+  direction:
+    - class: dropdown-menu-end
+      desc: Aligns the menu to the trailing edge; -{breakpoint}- variants apply above a width
+    - class: dropend
+      desc: Opens a nested menu to the side, for a submenu
 ---
 import Example from '@components/Example.astro';
 import CodeDocs from '@components/CodeDocs.astro';
@@ -12,7 +53,14 @@ import CodeDocs from '@components/CodeDocs.astro';
 With small markup changes, you can turn any `.btn` into a dropdown toggle and use it to display more options for users to choose from. Start with the default dropdown and then use additional classes to make your dropdown more user-friendly.
 
 <Example height="220px">
-<div class="dropdown"> <a href="#" class="btn dropdown-toggle" data-bs-toggle="dropdown">Open dropdown</a> <div class="dropdown-menu"> <a class="dropdown-item" href="#">Action</a> <a class="dropdown-item" href="#">Another action</a> <a class="dropdown-item" href="#">Third action</a> </div> </div>
+<div class="dropdown">
+  <a href="#" class="btn dropdown-toggle" data-bs-toggle="dropdown">Open dropdown</a>
+  <div class="dropdown-menu">
+    <a class="dropdown-item" href="#">Action</a>
+    <a class="dropdown-item" href="#">Another action</a>
+    <a class="dropdown-item" href="#">Third action</a>
+  </div>
+</div>
 </Example>
 
 ## Dropdown divider
@@ -20,7 +68,15 @@ With small markup changes, you can turn any `.btn` into a dropdown toggle and us
 Use dropdown dividers to separate groups of dropdown items for greater clarity.
 
 <Example height="240px">
-<div class="dropdown"> <a href="#" class="btn dropdown-toggle" data-bs-toggle="dropdown">Open dropdown</a> <div class="dropdown-menu"> <a class="dropdown-item" href="#"> Action </a> <a class="dropdown-item" href="#"> Another action </a> <div class="dropdown-divider"></div> <a class="dropdown-item" href="#">Separated link</a> </div> </div>
+<div class="dropdown">
+  <a href="#" class="btn dropdown-toggle" data-bs-toggle="dropdown">Open dropdown</a>
+  <div class="dropdown-menu">
+    <a class="dropdown-item" href="#">Action</a>
+    <a class="dropdown-item" href="#">Another action</a>
+    <div class="dropdown-divider"></div>
+    <a class="dropdown-item" href="#">Separated link</a>
+  </div>
+</div>
 </Example>
 
 ## Active state
@@ -28,7 +84,14 @@ Use dropdown dividers to separate groups of dropdown items for greater clarity.
 Make a dropdown item look active, so that it highlights when a user hovers over a given option.
 
 <Example height="220px">
-<div class="dropdown"> <a href="#" class="btn dropdown-toggle" data-bs-toggle="dropdown">Open dropdown</a> <div class="dropdown-menu"> <a class="dropdown-item" href="#"> Action </a> <a class="dropdown-item" href="#"> Another action </a> <a class="dropdown-item active" href="#">Active action</a> </div> </div>
+<div class="dropdown">
+  <a href="#" class="btn dropdown-toggle" data-bs-toggle="dropdown">Open dropdown</a>
+  <div class="dropdown-menu">
+    <a class="dropdown-item" href="#">Action</a>
+    <a class="dropdown-item" href="#">Another action</a>
+    <a class="dropdown-item active" href="#">Active action</a>
+  </div>
+</div>
 </Example>
 
 ## Disabled state
@@ -36,7 +99,14 @@ Make a dropdown item look active, so that it highlights when a user hovers over 
 Make a dropdown item look disabled to display options which are currently not available but can activate once certain conditions are met.
 
 <Example height="220px">
-<div class="dropdown"> <a href="#" class="btn dropdown-toggle" data-bs-toggle="dropdown">Open dropdown</a> <div class="dropdown-menu"> <a class="dropdown-item" href="#"> Action </a> <a class="dropdown-item" href="#"> Another action </a> <a class="dropdown-item disabled" href="#">Disabled action</a> </div> </div>
+<div class="dropdown">
+  <a href="#" class="btn dropdown-toggle" data-bs-toggle="dropdown">Open dropdown</a>
+  <div class="dropdown-menu">
+    <a class="dropdown-item" href="#">Action</a>
+    <a class="dropdown-item" href="#">Another action</a>
+    <a class="dropdown-item disabled" href="#">Disabled action</a>
+  </div>
+</div>
 </Example>
 
 ## Dropdown header
@@ -44,7 +114,14 @@ Make a dropdown item look disabled to display options which are currently not av
 Add a dropdown header to group dropdown items into sections and name them accordingly.
 
 <Example height="210px">
-<div class="dropdown"> <a href="#" class="btn dropdown-toggle" data-bs-toggle="dropdown">Open dropdown</a> <div class="dropdown-menu"> <span class="dropdown-header">Dropdown header</span> <a class="dropdown-item" href="#"> Action </a> <a class="dropdown-item" href="#"> Another action </a> </div> </div>
+<div class="dropdown">
+  <a href="#" class="btn dropdown-toggle" data-bs-toggle="dropdown">Open dropdown</a>
+  <div class="dropdown-menu">
+    <span class="dropdown-header">Dropdown header</span>
+    <a class="dropdown-item" href="#">Action</a>
+    <a class="dropdown-item" href="#">Another action</a>
+  </div>
+</div>
 </Example>
 
 ## Dropdown with icons
@@ -52,7 +129,18 @@ Add a dropdown header to group dropdown items into sections and name them accord
 Use [icons](/ui/components/icon) in your dropdowns to add more visual content and make the options easy to identify for users.
 
 <Example height="210px">
-<div class="dropdown"> <a href="#" class="btn dropdown-toggle" data-bs-toggle="dropdown">Open dropdown</a> <div class="dropdown-menu"> <span class="dropdown-header">Dropdown header</span> <a class="dropdown-item" href="#"> <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon icon-tabler icon-tabler-settings" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" > <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" ></path> <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path> </svg> Action </a> <a class="dropdown-item" href="#"> <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon icon-tabler icon-tabler-pencil" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" > <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4"></path> <path d="M13.5 6.5l4 4"></path> </svg> Another action </a> </div> </div>
+<div class="dropdown">
+  <a href="#" class="btn dropdown-toggle" data-bs-toggle="dropdown">Open dropdown</a>
+  <div class="dropdown-menu">
+    <span class="dropdown-header">Dropdown header</span>
+    <a class="dropdown-item" href="#">
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon icon-tabler icon-tabler-settings" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z"></path> <path d="M12 12m-3 0a3 3 0 1 0 6 0a3 3 0 1 0 -6 0"></path> </svg> Action
+    </a>
+    <a class="dropdown-item" href="#">
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon icon-tabler icon-tabler-pencil" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none"></path> <path d="M4 20h4l10.5 -10.5a1.5 1.5 0 0 0 -4 -4l-10.5 10.5v4"></path> <path d="M13.5 6.5l4 4"></path> </svg> Another action
+    </a>
+  </div>
+</div>
 </Example>
 
 ## Dropdown with arrow
@@ -60,7 +148,13 @@ Use [icons](/ui/components/icon) in your dropdowns to add more visual content an
 Add an arrow that points at the dropdown button.
 
 <Example height="190px">
-<div class="dropdown"> <a href="#" class="btn dropdown-toggle" data-bs-toggle="dropdown">Open dropdown</a> <div class="dropdown-menu dropdown-menu-arrow"> <a class="dropdown-item" href="#"> Action </a> <a class="dropdown-item" href="#"> Another action </a> </div> </div>
+<div class="dropdown">
+  <a href="#" class="btn dropdown-toggle" data-bs-toggle="dropdown">Open dropdown</a>
+  <div class="dropdown-menu dropdown-menu-arrow">
+    <a class="dropdown-item" href="#">Action</a>
+    <a class="dropdown-item" href="#">Another action</a>
+  </div>
+</div>
 </Example>
 
 ## Dropdown with badge
@@ -68,15 +162,34 @@ Add an arrow that points at the dropdown button.
 Add a [badge](/ui/components/badge) to your dropdown items to show additional information related to an item or distinguish it from other elements.
 
 <Example height="190px">
-<div class="dropdown"> <a href="#" class="btn dropdown-toggle" data-bs-toggle="dropdown">Open dropdown</a> <div class="dropdown-menu"> <a class="dropdown-item" href="#"> Action <span class="badge bg-primary ms-auto">12</span> </a> <a class="dropdown-item" href="#"> Another action <span class="badge bg-green ms-auto"></span> </a> </div> </div>
+<div class="dropdown">
+  <a href="#" class="btn dropdown-toggle" data-bs-toggle="dropdown">Open dropdown</a>
+  <div class="dropdown-menu">
+    <a class="dropdown-item" href="#"> Action <span class="badge bg-primary ms-auto">12</span> </a>
+    <a class="dropdown-item" href="#"> Another action <span class="badge bg-green ms-auto"></span> </a>
+  </div>
+</div>
 </Example>
 
 ## Dropdown with checkboxes
 
-Use dropdowns with [checkboxes](/ui/forms/form-elements) to allow users to select options from a predefined list. Dropdowns with checkboxes are particularly useful for filtering.
+Use dropdowns with [checkboxes](/ui/forms/elements) to allow users to select options from a predefined list. Dropdowns with checkboxes are particularly useful for filtering.
 
 <Example height="220px">
-<div class="dropdown"> <a href="#" class="btn dropdown-toggle" data-bs-toggle="dropdown">Open dropdown</a> <div class="dropdown-menu"> <label class="dropdown-item"> <input class="form-check-input m-0 me-2" type="radio" /> Option 1 </label> <label class="dropdown-item"> <input class="form-check-input m-0 me-2" type="radio" /> Option 2 </label> <label class="dropdown-item"> <input class="form-check-input m-0 me-2" type="radio" /> Option 3 </label> </div> </div>
+<div class="dropdown">
+  <a href="#" class="btn dropdown-toggle" data-bs-toggle="dropdown">Open dropdown</a>
+  <div class="dropdown-menu">
+    <label class="dropdown-item">
+      <input class="form-check-input m-0 me-2" type="radio" /> Option 1
+    </label>
+    <label class="dropdown-item">
+      <input class="form-check-input m-0 me-2" type="radio" /> Option 2
+    </label>
+    <label class="dropdown-item">
+      <input class="form-check-input m-0 me-2" type="radio" /> Option 3
+    </label>
+  </div>
+</div>
 </Example>
 
 ## Dark dropdown
@@ -84,7 +197,18 @@ Use dropdowns with [checkboxes](/ui/forms/form-elements) to allow users to selec
 Make your dropdown suit the dark mode of your website or software.
 
 <Example height="220px">
-<div class="dropdown"> <a href="#" class="btn dropdown-toggle" data-bs-toggle="dropdown">Open dropdown</a> <div class="dropdown-menu dropdown-menu-arrow bg-dark text-white"> <span class="dropdown-header">Dropdown header</span> <a class="dropdown-item" href="#"> <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" > <path stroke="none" d="M0 0h24v24H0z" fill="none" /> <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" /> <circle cx="12" cy="12" r="3" /> </svg> Action </a> <a class="dropdown-item" href="#"> <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" > <path stroke="none" d="M0 0h24v24H0z" fill="none" /> <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" /> <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" /> <path d="M16 5l3 3" /> </svg> Another action </a> </div> </div>
+<div class="dropdown">
+  <a href="#" class="btn dropdown-toggle" data-bs-toggle="dropdown">Open dropdown</a>
+  <div class="dropdown-menu dropdown-menu-arrow bg-dark text-white">
+    <span class="dropdown-header">Dropdown header</span>
+    <a class="dropdown-item" href="#">
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none" /> <path d="M10.325 4.317c.426 -1.756 2.924 -1.756 3.35 0a1.724 1.724 0 0 0 2.573 1.066c1.543 -.94 3.31 .826 2.37 2.37a1.724 1.724 0 0 0 1.065 2.572c1.756 .426 1.756 2.924 0 3.35a1.724 1.724 0 0 0 -1.066 2.573c.94 1.543 -.826 3.31 -2.37 2.37a1.724 1.724 0 0 0 -2.572 1.065c-.426 1.756 -2.924 1.756 -3.35 0a1.724 1.724 0 0 0 -2.573 -1.066c-1.543 .94 -3.31 -.826 -2.37 -2.37a1.724 1.724 0 0 0 -1.065 -2.572c-1.756 -.426 -1.756 -2.924 0 -3.35a1.724 1.724 0 0 0 1.066 -2.573c-.94 -1.543 .826 -3.31 2.37 -2.37c1 .608 2.296 .07 2.572 -1.065z" /> <circle cx="12" cy="12" r="3" /> </svg> Action
+    </a>
+    <a class="dropdown-item" href="#">
+      <svg xmlns="http://www.w3.org/2000/svg" class="icon dropdown-item-icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"> <path stroke="none" d="M0 0h24v24H0z" fill="none" /> <path d="M7 7h-1a2 2 0 0 0 -2 2v9a2 2 0 0 0 2 2h9a2 2 0 0 0 2 -2v-1" /> <path d="M20.385 6.585a2.1 2.1 0 0 0 -2.97 -2.97l-8.415 8.385v3h3l8.385 -8.415z" /> <path d="M16 5l3 3" /> </svg> Another action
+    </a>
+  </div>
+</div>
 </Example>
 
 ## Dropdown with card content
@@ -92,7 +216,80 @@ Make your dropdown suit the dark mode of your website or software.
 Use a dropdown with [card](/ui/components/card) content to make it easy for users to get more information on a given subject and avoid ovewhelming them with too much content at once.
 
 <Example height="520px">
-<div class="dropdown"> <a href="#" class="btn dropdown-toggle" data-bs-toggle="dropdown">Open dropdown</a> <div class="dropdown-menu dropdown-menu-card" style="max-width: 16rem"> <div class="card d-flex flex-column"> <a href="#"> <img class="card-img-top" src="/static/photos/friends-at-a-restaurant-drinking-wine.jpg" alt="How do you know she is a witch?" /> </a> <div class="card-body d-flex flex-column"> <h3 class="card-title"> <a href="#">How do you know she is a witch?</a> </h3> <div class="text-secondary"> Are you suggesting that coconuts migrate? No, no, no! Yes, yes. A bit. </div> <div class="d-flex align-items-center pt-4 mt-auto"> <span class="avatar" style="background-image: url(/static/avatars/013m.jpg)"></span> <div class="ms-3"> <a href="#" class="text-body">Maryjo Lebarree</a> <div class="text-secondary">3 days ago</div> </div> <div class="ms-auto"> <a href="#" class="icon d-none d-md-inline-block ms-3 text-secondary"> <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round" > <path stroke="none" d="M0 0h24v24H0z" fill="none" /> <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" /> </svg> </a> </div> </div> </div> </div> </div> </div>
+<div class="dropdown">
+  <a href="#" class="btn dropdown-toggle" data-bs-toggle="dropdown">Open dropdown</a>
+  <div class="dropdown-menu dropdown-menu-card" style="max-width: 16rem">
+    <div class="card d-flex flex-column">
+      <a href="#">
+        <img class="card-img-top" src="/static/photos/friends-at-a-restaurant-drinking-wine.jpg" alt="How do you know she is a witch?" />
+      </a>
+      <div class="card-body d-flex flex-column">
+        <h3 class="card-title"><a href="#">How do you know she is a witch?</a></h3>
+        <div class="text-secondary"> Are you suggesting that coconuts migrate? No, no, no! Yes, yes. A bit. </div>
+        <div class="d-flex align-items-center pt-4 mt-auto">
+          <span class="avatar" style="background-image: url(/static/avatars/013m.jpg)"></span>
+          <div class="ms-3">
+            <a href="#" class="text-body">Maryjo Lebarree</a>
+            <div class="text-secondary">3 days ago</div>
+          </div>
+          <div class="ms-auto">
+            <a href="#" class="icon d-none d-md-inline-block ms-3 text-secondary">
+              <svg xmlns="http://www.w3.org/2000/svg" class="icon" width="24" height="24" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+                <path stroke="none" d="M0 0h24v24H0z" fill="none" />
+                <path d="M19.5 12.572l-7.5 7.428l-7.5 -7.428m0 0a5 5 0 1 1 7.5 -6.566a5 5 0 1 1 7.5 6.572" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</Example>
+
+## Multi-column menu
+
+A long menu can be split into columns instead of scrolling. Wrap the items in `dropdown-menu-columns`, then group them into `dropdown-menu-column` elements - one per column.
+
+<Example>
+<div class="dropdown">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Components</button>
+  <div class="dropdown-menu">
+    <div class="dropdown-menu-columns">
+      <div class="dropdown-menu-column">
+        <a class="dropdown-item" href="#">Accordion</a>
+        <a class="dropdown-item" href="#">Alert</a>
+        <a class="dropdown-item" href="#">Avatar</a>
+      </div>
+      <div class="dropdown-menu-column">
+        <a class="dropdown-item" href="#">Badge</a>
+        <a class="dropdown-item" href="#">Button</a>
+        <a class="dropdown-item" href="#">Card</a>
+      </div>
+    </div>
+  </div>
+</div>
+</Example>
+
+## Submenu
+
+Nest a dropdown inside a menu item and add `dropend` to open the child menu to the side instead of below.
+
+<Example>
+<div class="dropdown">
+  <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">Actions</button>
+  <div class="dropdown-menu">
+    <a class="dropdown-item" href="#">Edit</a>
+    <div class="dropdown dropend">
+      <a class="dropdown-item dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">Move to</a>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" href="#">Inbox</a>
+        <a class="dropdown-item" href="#">Archive</a>
+      </div>
+    </div>
+    <a class="dropdown-item" href="#">Delete</a>
+  </div>
+</div>
 </Example>
 
 ## JavaScript
@@ -100,6 +297,14 @@ Use a dropdown with [card](/ui/components/card) content to make it easy for user
 Tabler automatically initializes all elements with `data-bs-toggle="dropdown"` on page load. This is the code that runs:
 
 <CodeDocs name="dropdown-init" file="core/js/src/dropdown.ts" />
+
+## Accessibility
+
+- The trigger must be a `button`, or an `a` with an `href`. Bootstrap toggles `aria-expanded` on it for you, so do not set it by hand.
+- Bootstrap moves focus into the menu and supports the arrow keys, <kbd>Home</kbd>, <kbd>End</kbd> and <kbd>Escape</kbd>. That only works while the items are `.dropdown-item` elements inside `.dropdown-menu`.
+- An icon-only trigger needs an `aria-label`. The caret is decorative and carries no name.
+- A dropdown used as a menu of actions should hold `button` items; one used for navigation should hold links. Mixing them makes the keyboard behaviour inconsistent.
+- Use `.dropdown-header` for a group title and `.dropdown-divider` for a separator, rather than styling a plain item to look like one.
 
 ## SCSS variables
 

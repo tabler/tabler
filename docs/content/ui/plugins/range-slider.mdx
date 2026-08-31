@@ -1,0 +1,92 @@
+---
+title: Range slider
+docs-libs: [nouislider]
+description: Let users pick a value or range with a slider powered by noUiSlider, styled to match the rest of your Tabler interface.
+summary: A range slider allows users to select a range of values by adjusting two handles along a track, providing an intuitive and space-efficient input method.
+related: [/ui/forms/elements]
+---
+import Example from '@components/Example.astro';
+import CdnImportPlugin from '@components/CdnImportPlugin.astro';
+import TabsPackage from '@components/TabsPackage.astro';
+import { Code } from 'astro:components';
+import { site } from '@shared/lib/site.ts';
+
+## Overview
+
+A range slider lets users pick a value by dragging a handle instead of typing it. Use it when the exact number matters less than the rough position, for example a price range or a volume level. Tabler styles the [noUiSlider](https://refreshless.com/nouislider/) plugin to match the rest of the interface.
+
+<Example>
+<div id="range-overview"></div> <script>{`document.addEventListener("DOMContentLoaded", function () { window.noUiSlider && noUiSlider.create(document.getElementById("range-overview"), { start: 20, connect: [true, false], step: 10, range: { min: 0, max: 100 } }); });`}</script>
+</Example>
+
+## Installation
+
+Install noUiSlider with npm:
+
+<TabsPackage name="nouislider" />
+
+Or include it from a CDN:
+
+<Code lang="html" code={`<link rel="stylesheet" href="${site.cdnUrl}/dist/libs/nouislider/dist/nouislider.min.css" />\n<script src="${site.cdnUrl}/dist/libs/nouislider/dist/nouislider.min.js"></script>`} />
+
+Tabler restyles the slider in the vendors plugin, so include `tabler-vendors.css` as well:
+
+<CdnImportPlugin plugins={['vendors']} />
+
+## Usage
+
+### Single value
+
+Create an empty element and call `noUiSlider.create()` on it. `start` sets the initial value, `range` the bounds, and `step` how far one move goes.
+
+`connect: [true, false]` fills the track before the handle, which shows how far along the value is.
+
+<Example>
+<div id="range-single"></div> <script>{`document.addEventListener("DOMContentLoaded", function () { window.noUiSlider && noUiSlider.create(document.getElementById("range-single"), { start: 20, connect: [true, false], step: 10, range: { min: 0, max: 100 } }); });`}</script>
+</Example>
+
+```js
+noUiSlider.create(document.getElementById('range-single'), {
+  start: 20,
+  connect: [true, false],
+  step: 10,
+  range: { min: 0, max: 100 },
+});
+```
+
+### Two handles
+
+Pass two values in `start` to get a range with a lower and an upper handle. With `connect: true` the fill sits between them.
+
+<Example>
+<div id="range-two"></div> <script>{`document.addEventListener("DOMContentLoaded", function () { window.noUiSlider && noUiSlider.create(document.getElementById("range-two"), { start: [20, 70], connect: true, step: 5, range: { min: 0, max: 100 } }); });`}</script>
+</Example>
+
+### Reading the value
+
+The slider is not a form field, so it sends nothing on submit. Listen for updates and copy the value into a hidden input, or use it directly.
+
+```js
+const slider = document.getElementById('range-single');
+
+noUiSlider.create(slider, {
+  start: 20,
+  connect: [true, false],
+  range: { min: 0, max: 100 },
+});
+
+slider.noUiSlider.on('update', (values, handle) => {
+  document.getElementById('price').value = values[handle];
+});
+```
+
+See the [noUiSlider documentation](https://refreshless.com/nouislider/) for the full list of options.
+
+## Accessibility
+
+noUiSlider gives each handle `role="slider"` with the current, minimum and maximum values, so screen readers announce it and the arrow keys work out of the box. What is left to you:
+
+- Add a visible label above the slider and point it at the handle with `aria-labelledby`, or set `handleAttributes` when creating the slider to give each handle an `aria-label`.
+- With two handles, name them separately - "Minimum price" and "Maximum price" - otherwise both read out the same.
+- Show the selected value as text next to the slider. A handle position alone is hard to read, and impossible to confirm without sight.
+- Keep a typed input as an alternative when the exact value matters. Dragging is imprecise for anyone with limited motor control.

@@ -1,0 +1,68 @@
+---
+import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
+import Chart from '@components/demo/Chart.astro'
+import Card from '@ui/Card.astro'
+import CardBody from '@ui/CardBody.astro'
+import CardTitle from '@ui/CardTitle.astro'
+import CardSubtitle from '@ui/CardSubtitle.astro'
+import DocsLink from '@ui/DocsLink.astro'
+---
+
+<DefaultLayout title="Charts advanced" pageMenu="plugins.charts-advanced" pageLibs={['apexcharts']} description="Charts that go past a single series: two scales in one plot, threshold and marker lines, a brush to zoom with, and a group of charts that move together.">
+  <DocsLink slot="page-header-actions" path="/ui/plugins/chart" />
+
+  <div class="row row-cards">
+    <div class="col-lg-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Two y-axes</CardTitle>
+          <CardSubtitle>Plot values with different units together. Bind each axis to a serie with <code>seriesName</code> and move the second one to the right with <code>opposite</code>.</CardSubtitle>
+          <Chart chartId="revenue-vs-orders" height={16} label="Revenue in dollars and order count per month" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Threshold line</CardTitle>
+          <CardSubtitle>Draw a target or a limit across the plot with <code>annotations.yaxis</code>, so a reader sees at a glance which points miss it.</CardSubtitle>
+          <Chart chartId="uptime-sla" height={16} label="Monthly uptime against the 99.9 percent service level target" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Marker lines</CardTitle>
+          <CardSubtitle>Mark the moment something happened with <code>annotations.xaxis</code> — a release, a campaign, an incident.</CardSubtitle>
+          <Chart chartId="sales-with-markers" height={16} label="Monthly sales with campaign start markers" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-lg-6">
+      <Card>
+        <CardBody>
+          <CardTitle>Brush and zoom</CardTitle>
+          <CardSubtitle>The small chart below picks the range shown above. Point it at the main chart id with <code>chart.brush</code> and render the main chart first.</CardSubtitle>
+          <Chart chartId="traffic-zoom" height={11} label="Sessions over 90 days, zoomed to the selected range" />
+          <Chart chartId="traffic-brush" height={5} label="Range selector for the sessions chart" />
+        </CardBody>
+      </Card>
+    </div>
+
+    <div class="col-12">
+      <Card>
+        <CardBody>
+          <CardTitle>Synced charts</CardTitle>
+          <CardSubtitle>Charts that share a <code>chart.group</code> name follow one another — hover or zoom on one and the rest do the same.</CardSubtitle>
+          <Chart chartId="synced-visits" height={8} label="Daily visits" />
+          <Chart chartId="synced-signups" height={8} label="Daily sign-ups" />
+          <Chart chartId="synced-revenue" height={8} label="Daily revenue" />
+        </CardBody>
+      </Card>
+    </div>
+  </div>
+</DefaultLayout>

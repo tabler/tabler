@@ -94,3 +94,10 @@ We welcome contributions of all kinds! See the [contributing guide](https://gith
 ## 📄 License
 
 Tabler is licensed under the [MIT License](https://github.com/tabler/tabler/blob/dev/LICENSE).
+
+Third-party libraries shipped in `dist/libs` keep their own licenses. One of them needs
+attention: **ApexCharts is not MIT from version 5 on**. It is dual-licensed - free under
+its Community license for organizations under $2M in annual revenue, and paid above that
+threshold, with a separate OEM license for redistribution. Check the
+[ApexCharts license options](https://apexcharts.com/license/) before you ship charts in a
+commercial product.

@@ -4,6 +4,14 @@ summary: A progress step helps users track their place in a short process by bre
 description: Use progress steps to display compact onboarding, checkout, and setup progress.
 added-in: '1.5.0'
 related: [/ui/components/progress, /ui/components/step]
+source: core/scss/ui/_progress.scss
+classnames:
+  component:
+    - class: progress-steps
+      desc: Container element
+  part:
+    - class: progress-steps-item
+      desc: One step; mark the reached ones as active
 ---
 import Example from '@components/Example.astro';
 import ProgressSteps from '@ui/ProgressSteps.astro';
@@ -23,7 +31,12 @@ Use `.progress-steps` as the container and `.progress-steps-item` for each segme
 The example below shows the default progress step structure.
 
 <Example>
-<ol class="progress-steps" aria-label="Onboarding progress"> <li class="progress-steps-item"></li> <li class="progress-steps-item"></li> <li class="progress-steps-item"></li> <li class="progress-steps-item"></li> </ol>
+<ol class="progress-steps" aria-label="Onboarding progress">
+  <li class="progress-steps-item"></li>
+  <li class="progress-steps-item"></li>
+  <li class="progress-steps-item"></li>
+  <li class="progress-steps-item"></li>
+</ol>
 </Example>
 
 ## Variants
@@ -49,7 +62,30 @@ Use hidden labels so assistive technologies can announce meaningful step names.
 Use contextual background classes on completed and current items. This helps match state color to your flow semantics.
 
 <Example>
-<div class="mb-2"> <ol class="progress-steps" aria-label="Green progress"> <li class="progress-steps-item bg-green" aria-current="step"> <span class="visually-hidden">Step 1</span> </li> <li class="progress-steps-item"> <span class="visually-hidden">Step 2</span> </li> </ol> </div> <div class="mb-2"> <ol class="progress-steps" aria-label="Orange progress"> <li class="progress-steps-item bg-orange" aria-current="step"> <span class="visually-hidden">Step 1</span> </li> <li class="progress-steps-item"> <span class="visually-hidden">Step 2</span> </li> </ol> </div> <div> <ol class="progress-steps" aria-label="Red progress"> <li class="progress-steps-item bg-red" aria-current="step"> <span class="visually-hidden">Step 1</span> </li> <li class="progress-steps-item"> <span class="visually-hidden">Step 2</span> </li> </ol> </div>
+<div class="mb-2">
+  <ol class="progress-steps" aria-label="Green progress">
+    <li class="progress-steps-item bg-green" aria-current="step">
+      <span class="visually-hidden">Step 1</span>
+    </li>
+    <li class="progress-steps-item"><span class="visually-hidden">Step 2</span></li>
+  </ol>
+</div>
+<div class="mb-2">
+  <ol class="progress-steps" aria-label="Orange progress">
+    <li class="progress-steps-item bg-orange" aria-current="step">
+      <span class="visually-hidden">Step 1</span>
+    </li>
+    <li class="progress-steps-item"><span class="visually-hidden">Step 2</span></li>
+  </ol>
+</div>
+<div>
+  <ol class="progress-steps" aria-label="Red progress">
+    <li class="progress-steps-item bg-red" aria-current="step">
+      <span class="visually-hidden">Step 1</span>
+    </li>
+    <li class="progress-steps-item"><span class="visually-hidden">Step 2</span></li>
+  </ol>
+</div>
 </Example>
 
 ### Width and layout utilities
@@ -59,3 +95,10 @@ Use utility classes on `.progress-steps` to control width and placement in layou
 <Example>
 <ProgressSteps count={5} active={1} class="w-50" id="profile-progress" ariaLabel="Profile completion" />
 </Example>
+
+## Accessibility
+
+- Say where the user is in text as well - "Step 2 of 4" next to the bar, or in a `visually-hidden` span. The filled shape alone does not carry it.
+- Mark the current step with `aria-current="step"`.
+- If you use the underlying progress bar to draw the line, give it `role="progressbar"` with the step number as `aria-valuenow` and the total as `aria-valuemax`.
+- Do not rely on the colour of a circle to say "done". Add an icon or a word.

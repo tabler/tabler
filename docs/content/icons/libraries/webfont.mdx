@@ -5,6 +5,8 @@ summary: Tabler Icons as a webfont allows you to easily include icons in your pr
 ---
 
 import TabsPackage from '@components/TabsPackage.astro'
+import { Code } from 'astro:components'
+import { site } from '@shared/lib/site.ts'
 
 ![Tabler Icons webfont](/img/icons/package-webfont.png)
 
@@ -19,14 +21,12 @@ or just [download from Github](https://github.com/tabler/tabler-icons/releases).
 
 Link the stylesheet directly from a CDN if you do not want to install the package:
 
-```html
-<link
+<Code lang="html" code={`<link
   rel="stylesheet"
-  href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@$ICONS_VERSION/dist/tabler-icons.min.css"
-/>
-```
+  href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@${site.iconsVersion}/dist/tabler-icons.min.css"
+/>`} />
 
-Instead of a specific version, you can use `latest` to always get the newest icons.
+Swap the version for `latest` to always pull the newest icons, or keep it pinned so the set stays stable.
 
 ## Usage
 

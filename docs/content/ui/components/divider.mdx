@@ -2,6 +2,25 @@
 title: Divider
 summary: Dividers help organize content and make the interface layout clear and uncluttered. Greater clarity adds up to better user experience and enhanced interaction with a website or app.
 description: Separate content with horizontal dividers. Add optional text labels aligned left, center, or right to keep layouts clear.
+source: core/scss/ui/_type.scss
+classnames:
+  component:
+    - class: hr
+      desc: Applied to the hr element
+  part:
+    - class: hr-text
+      desc: Divider with a label; the text sits in a child element
+  modifier:
+    - class: hr-text-spaceless
+      desc: Removes the vertical margin
+  direction:
+    - class: hr-text-start
+      desc: Moves the label to the leading edge
+    - class: hr-text-end
+      desc: Moves the label to the trailing edge
+  color:
+    - class: text-{color}
+      desc: Any base color for a labelled divider
 ---
 import Example from '@components/Example.astro';
 
@@ -10,7 +29,9 @@ import Example from '@components/Example.astro';
 Use dividers to visually separate content into parts. You can use a line only or add text that will be centered by default.
 
 <Example>
-<p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias, dolore dolores doloribus est ex. </p> <div class="hr-text">See also</div> <p> Dicta error hic illo iure necessitatibus nihil officiis omnis perferendis, praesentium repellendus rerum, saepe sed, sit! </p>
+<p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias, dolore dolores doloribus est ex. </p>
+<div class="hr-text">See also</div>
+<p> Dicta error hic illo iure necessitatibus nihil officiis omnis perferendis, praesentium repellendus rerum, saepe sed, sit! </p>
 </Example>
 
 ## Text position
@@ -18,7 +39,13 @@ Use dividers to visually separate content into parts. You can use a line only or
 You can modify the position of the text which is to be included in a separator and make it left- or right-aligned. Otherwise, the text will remain centered.
 
 <Example>
-<p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias, dolore dolores doloribus est ex. </p> <div class="hr-text hr-text-start">Start divider</div> <p> Dicta error hic illo iure necessitatibus nihil officiis omnis perferendis, praesentium repellendus rerum, saepe sed, sit! </p> <div class="hr-text">Centered divider</div> <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias, dolore dolores doloribus est ex. </p> <div class="hr-text hr-text-end">End divider</div> <p> Dicta error hic illo iure necessitatibus nihil officiis omnis perferendis, praesentium repellendus rerum, saepe sed, sit! </p>
+<p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias, dolore dolores doloribus est ex. </p>
+<div class="hr-text hr-text-start">Start divider</div>
+<p> Dicta error hic illo iure necessitatibus nihil officiis omnis perferendis, praesentium repellendus rerum, saepe sed, sit! </p>
+<div class="hr-text">Centered divider</div>
+<p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias, dolore dolores doloribus est ex. </p>
+<div class="hr-text hr-text-end">End divider</div>
+<p> Dicta error hic illo iure necessitatibus nihil officiis omnis perferendis, praesentium repellendus rerum, saepe sed, sit! </p>
 </Example>
 
 ## Divider color
@@ -26,5 +53,18 @@ You can modify the position of the text which is to be included in a separator a
 Customize the color of dividers to make them go well with your design. See the [full list of available colors](/ui/base/colors) for more details.
 
 <Example>
-<p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias, dolore dolores doloribus est ex. </p> <div class="hr-text text-green">Green divider</div> <p> Dicta error hic illo iure necessitatibus nihil officiis omnis perferendis, praesentium repellendus rerum, saepe sed, sit! </p> <div class="hr-text text-red">Red divider</div> <p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias, dolore dolores doloribus est ex. </p> <div class="hr-text text-primary">Primary divider</div> <p> Dicta error hic illo iure necessitatibus nihil officiis omnis perferendis, praesentium repellendus rerum, saepe sed, sit! </p>
+<p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias, dolore dolores doloribus est ex. </p>
+<div class="hr-text text-green">Green divider</div>
+<p> Dicta error hic illo iure necessitatibus nihil officiis omnis perferendis, praesentium repellendus rerum, saepe sed, sit! </p>
+<div class="hr-text text-red">Red divider</div>
+<p> Lorem ipsum dolor sit amet, consectetur adipisicing elit. Alias, dolore dolores doloribus est ex. </p>
+<div class="hr-text text-primary">Primary divider</div>
+<p> Dicta error hic illo iure necessitatibus nihil officiis omnis perferendis, praesentium repellendus rerum, saepe sed, sit! </p>
 </Example>
+
+## Accessibility
+
+- A divider that separates sections is decoration, so `hr` with no extra markup is enough - browsers already expose it as a separator.
+- When the divider carries a label, keep the label as text. Do not fake it with a `::before`, since generated content is not reliably read.
+- A vertical divider between inline items is decoration too. Use `aria-hidden="true"` if you build it from a `span` rather than an `hr`.
+- Do not use a divider to group form fields. Use a `fieldset` with a `legend`, which is what actually creates the group.

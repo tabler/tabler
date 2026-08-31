@@ -1,0 +1,224 @@
+---
+title: Advanced select
+seoTitle: Advanced select (Tom Select)
+order: 8
+summary: Tom Select turns a normal `<select>` into a searchable, keyboard-friendly dropdown. Use it for long option lists, multi-value fields, or options that need an avatar, flag, or badge next to the text.
+docs-libs: [tom-select]
+description: Build searchable single and multi-value selects with the Tom Select plugin, including optgroups, validation states, and rich options with avatars or flags.
+related: [/ui/forms/select-group, /ui/forms/elements]
+---
+
+import Example from '@components/Example.astro';
+import TabsPackage from '@components/TabsPackage.astro';
+import { Code } from 'astro:components';
+import { site } from '@shared/lib/site.ts';
+
+## Overview
+
+[Tom Select](https://tom-select.js.org/) attaches to a normal `<select class="form-select">` and replaces it with a searchable dropdown. The original `<select>` stays in the DOM and keeps its value, so it still works in a plain HTML form.
+
+<Example>
+<select class="form-select" id="select-overview" data-placeholder="Pick a fruit">
+  <option value="apple">Apple</option>
+  <option value="banana">Banana</option>
+  <option value="cherry">Cherry</option>
+  <option value="date">Date</option>
+  <option value="elderberry">Elderberry</option>
+</select>
+</Example>
+
+## Installation
+
+Install Tom Select with npm:
+
+<TabsPackage name="tom-select" />
+
+Or include it from a CDN. You need both the script and its stylesheet:
+
+<Code
+	lang="html"
+	code={`<link rel="stylesheet" href="${site.cdnUrl}/dist/libs/tom-select/dist/css/tom-select.bootstrap5.min.css" />
+<script src="${site.cdnUrl}/dist/libs/tom-select/dist/js/tom-select.base.min.js"></script>`}
+/>
+
+## Usage
+
+### Basic select
+
+Add `class="form-select"` to a `<select>`, give it an `id`, then attach Tom Select to that id.
+
+<Example codeOnly>
+<select class="form-select" id="select-basic">
+  <option value="apple">Apple</option>
+  <option value="banana">Banana</option>
+  <option value="cherry">Cherry</option>
+</select>
+</Example>
+
+```js
+new TomSelect('#select-basic', {
+  copyClassesToDropdown: false,
+});
+```
+
+### Placeholder
+
+Native `<select>` elements don't support the `placeholder` attribute, so add `data-placeholder` instead. Tom Select reads it and shows it as the empty-state text.
+
+<Example>
+<select class="form-select" id="select-placeholder" data-placeholder="Pick a fruit">
+  <option value="apple">Apple</option>
+  <option value="banana">Banana</option>
+  <option value="cherry">Cherry</option>
+</select>
+</Example>
+
+### Multiple values
+
+Add the `multiple` attribute to let users pick more than one option. Tom Select shows each pick as a removable tag.
+
+<Example>
+<select class="form-select" id="select-multiple" multiple data-placeholder="Pick fruits">
+  <option value="apple">Apple</option>
+  <option value="banana">Banana</option>
+  <option value="cherry">Cherry</option>
+  <option value="date">Date</option>
+  <option value="elderberry">Elderberry</option>
+</select>
+</Example>
+
+```js
+new TomSelect('#select-multiple', {
+  copyClassesToDropdown: false,
+});
+```
+
+### Optgroups
+
+Group related options with `<optgroup>`. Tom Select shows the group label in the dropdown and keeps it searchable.
+
+<Example>
+<select class="form-select" id="select-optgroup" data-placeholder="Pick a fruit">
+  <optgroup label="Citrus">
+    <option value="orange">Orange</option>
+    <option value="lemon">Lemon</option>
+    <option value="lime">Lime</option>
+  </optgroup>
+  <optgroup label="Berries">
+    <option value="strawberry">Strawberry</option>
+    <option value="blueberry">Blueberry</option>
+    <option value="raspberry">Raspberry</option>
+  </optgroup>
+</select>
+</Example>
+
+### Validation states
+
+Add `.is-valid` or `.is-invalid` to the `<select>` to show a validation state. Tom Select carries the class over to its own wrapper, so the field still shows the usual green or red styling.
+
+<Example column>
+<div class="mb-3">
+  <label class="form-label">Valid select</label>
+  <select class="form-select is-valid" id="select-valid" data-placeholder="Pick a fruit">
+    <option value="apple" selected>Apple</option>
+    <option value="banana">Banana</option>
+  </select>
+</div>
+<div>
+  <label class="form-label">Invalid select</label>
+  <select class="form-select is-invalid" id="select-invalid" data-placeholder="Pick a fruit">
+    <option value="apple">Apple</option>
+    <option value="banana">Banana</option>
+  </select>
+</div>
+</Example>
+
+### Rich options
+
+An option can carry extra markup — an avatar, a flag, a badge — through a `data-custom-properties` attribute. Read it in a custom `render.option` / `render.item` function and show it next to the option text.
+
+<Example>
+<select class="form-select" id="select-avatar" data-placeholder="Assign to…">
+  <option value="1" data-custom-properties='<span class="avatar avatar-xs">JD</span>'> Jane Doe </option>
+  <option value="2" data-custom-properties='<span class="avatar avatar-xs">MS</span>'> Mark Smith </option>
+  <option value="3" data-custom-properties='<span class="avatar avatar-xs">AK</span>'> Amy Kim </option>
+</select>
+</Example>
+
+<Example>
+<select class="form-select" id="select-flag" data-placeholder="Pick a country">
+  <option value="us" data-custom-properties='<span class="flag flag-xs flag-country-us"></span>'> United States </option>
+  <option value="gb" data-custom-properties='<span class="flag flag-xs flag-country-gb"></span>'> United Kingdom </option>
+  <option value="de" data-custom-properties='<span class="flag flag-xs flag-country-de"></span>'> Germany </option>
+  <option value="fr" data-custom-properties='<span class="flag flag-xs flag-country-fr"></span>'> France </option>
+</select>
+</Example>
+
+```js
+function renderOption(data, escape) {
+  if (data.customProperties) {
+    return `<div class="dropdown-item"><span class="dropdown-item-indicator">${data.customProperties}</span>${escape(data.text)}</div>`;
+  }
+  return `<div>${escape(data.text)}</div>`;
+}
+
+new TomSelect('#select-avatar', {
+  copyClassesToDropdown: false,
+  dropdownParent: 'body',
+  render: {
+    item: renderOption,
+    option: renderOption,
+  },
+});
+```
+
+Tom Select turns a `data-custom-properties` attribute into `data.customProperties` on the option object, so `render.option` and `render.item` can read it. `escape()` keeps user-supplied text safe when it is inserted as HTML.
+
+### Common options
+
+These are the options you will need most often. Tom Select has more, and they are listed in its [documentation](https://tom-select.js.org/docs/).
+
+| Option | What it does |
+| --- | --- |
+| `copyClassesToDropdown` | Copies the `<select>` classes onto the dropdown. Tabler keeps this `false` and styles the dropdown itself. |
+| `dropdownParent` | Where the dropdown is appended in the DOM, for example `'body'` so it is not clipped by a card or modal. |
+| `maxItems` | Maximum number of selected items on a multi-value select. |
+| `create` | `true` lets users type a value that is not in the option list. |
+| `plugins` | List of Tom Select plugins to enable, for example `remove_button`. |
+| `render.option` / `render.item` | Custom render functions for a dropdown option and a selected item. |
+
+## Accessibility
+
+- Always add a `<label>` linked to the `<select>` with `for` and `id`. Tom Select's generated markup does not replace the need for a label.
+- The dropdown can be operated with the keyboard: type to search, arrow keys to move between options, <kbd>Enter</kbd> to pick one, and <kbd>Backspace</kbd> to remove the last tag on a multi-value select.
+- When using `render.option`, keep enough text content in the rendered HTML — an avatar or flag alone does not tell a screen reader user which option it is.
+- Escape user-supplied text in custom render functions with the `escape` argument, so option text can never break out of the generated HTML.
+
+<script>{`
+window.addEventListener('load', function () {
+	if (typeof TomSelect === 'undefined') return;
+
+	function renderOption(data, escape) {
+		if (data.customProperties) {
+			return '<div class="dropdown-item"><span class="dropdown-item-indicator">' + data.customProperties + '</span>' + escape(data.text) + '</div>';
+		}
+		return '<div>' + escape(data.text) + '</div>';
+	}
+
+	['select-overview', 'select-basic', 'select-placeholder', 'select-multiple', 'select-optgroup', 'select-valid', 'select-invalid'].forEach(function (id) {
+		var el = document.getElementById(id);
+		if (el) new TomSelect(el, { copyClassesToDropdown: false, dropdownParent: 'body' });
+	});
+
+	['select-avatar', 'select-flag'].forEach(function (id) {
+		var el = document.getElementById(id);
+		if (el) {
+			new TomSelect(el, {
+				copyClassesToDropdown: false,
+				dropdownParent: 'body',
+				render: { item: renderOption, option: renderOption },
+			});
+		}
+	});
+});
+`}</script>

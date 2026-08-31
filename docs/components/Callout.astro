@@ -1,0 +1,40 @@
+---
+// A tinted aside for a note, a tip or a warning inside docs prose. MDX pages use the
+// named wrappers next to this file (<Info>, <Tip>, <Warning>, <Danger>, <Note>), which
+// [...slug].astro passes to <Content /> — so a page can call them without importing.
+import Icon from '@ui/Icon.astro'
+
+export type CalloutType = 'info' | 'tip' | 'warning' | 'danger' | 'note'
+
+interface Props {
+  type?: CalloutType
+  /** Bold first line. Without it the callout is body text only. */
+  title?: string | undefined
+}
+
+const { type = 'info', title } = Astro.props
+
+const icons: Record<CalloutType, string> = {
+  info: 'info-circle',
+  tip: 'bulb',
+  warning: 'alert-triangle',
+  danger: 'alert-circle',
+  note: 'pencil',
+}
+
+const labels: Record<CalloutType, string> = {
+  info: 'Info',
+  tip: 'Tip',
+  warning: 'Warning',
+  danger: 'Danger',
+  note: 'Note',
+}
+---
+
+<aside class:list={['callout', `callout-${type}`]} role="note" aria-label={title ? `${labels[type]}: ${title}` : labels[type]}>
+  <Icon name={icons[type]} class="callout-icon" />
+  <div class="callout-body">
+    {title && <p class="callout-title">{title}</p>}
+    <slot />
+  </div>
+</aside>
