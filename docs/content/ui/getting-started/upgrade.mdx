@@ -235,6 +235,19 @@ Bootstrap compiles from `scss/bootstrap/` now, so the partials that used to brid
 @use '@tabler/core/scss/tabler-marketing';
 ```
 
+### Google Fonts variables
+
+`$font-google` and `$font-google-monospaced` still add the Google Fonts `@import`, but they no longer put the font at the front of `$font-family-sans-serif` and `$font-family-monospace`. `$font-local` is gone. Set the font stack yourself:
+
+```diff
+  @use "@tabler/core/scss/tabler" with (
+    $font-google: "Inter",
++   $font-family-sans-serif: ("Inter", -apple-system, BlinkMacSystemFont, sans-serif)
+  );
+```
+
+Geist is embedded through `@font-face` rules in `tabler.css`, and the font files ship in `dist/fonts/`. If you serve the CSS from another folder, set `$assets-base` so the `../fonts/` paths still resolve, or override `--tblr-font-sans-serif` to use your own font.
+
 ## Renamed classes
 
 The old names still work, so you can rename at your own pace.
