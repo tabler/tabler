@@ -27,9 +27,10 @@
   --body-color: light-dark(var(--gray-700), var(--gray-200));
   --body-bg: light-dark(var(--bg-surface-secondary), var(--gray-900));
 
-  // Same color-mix() expression in both modes — no light-dark() needed.
-  --link-color: var(--primary);
-  --link-hover-color: color-mix(in srgb, var(--primary), #000 20%);
+  // Dark mode tints the primary towards white, so links keep a 4.5:1 contrast
+  // on the dark surfaces. Hover shades the link in light mode and tints it in dark.
+  --link-color: light-dark(var(--primary), color-mix(in srgb, var(--primary), #fff 40%));
+  --link-hover-color: light-dark(color-mix(in srgb, var(--link-color), #000 20%), color-mix(in srgb, var(--link-color), #fff 20%));
 
   --secondary: light-dark(var(--gray-500), var(--gray-400));
   --tertiary: var(--gray-400);
