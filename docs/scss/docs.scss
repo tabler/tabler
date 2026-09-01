@@ -579,3 +579,31 @@ header > .navbar {
     }
   }
 }
+
+//
+// Sticky header
+//
+// `position: sticky` only travels inside its containing block. The docs shell
+// has no `.page` wrapper - the header is a child of `body` - and core's
+// `body { height: 100% }` makes that block exactly one viewport tall, so the
+// header would unstick after the first screen (#2332). Let the docs body grow
+// with its content instead; `.page` does the same thing for the app layouts.
+body {
+  height: auto;
+  min-height: 100%;
+}
+
+:root {
+  // Matches `$navbar-height` in core - the height of the docs navbar.
+  --docs-header-height: 3.5rem;
+}
+
+// Anchors from the table of contents would otherwise land under the header.
+html {
+  scroll-padding-top: var(--docs-header-height);
+}
+
+// The table of contents sticks too, so it has to clear the header (#2421).
+.docs-toc-sticky {
+  top: var(--docs-header-height);
+}
