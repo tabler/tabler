@@ -5,32 +5,43 @@ summary: Learn about the supported browsers and compatibility guidelines for usi
 ---
 import Example from '@components/Example.astro';
 
-Tabler is fully optimized for all modern browsers, including the latest versions of Chrome, Firefox, Edge, Safari, and Opera. These browsers ensure a seamless and responsive experience, allowing users to enjoy Tabler's advanced UI components without compatibility issues.
+Tabler runs in every current browser: Chrome, Firefox, Edge, Safari, Opera and the Chromium browsers built on them.
 
-Tabler supports browsers with at least 0.5% global usage, the last 2 major versions of each browser, and excludes dead browsers. The framework introduces modern features like CSS Grid, object fit, and sticky positioning, which enhance design flexibility but may not be fully supported on older browsers.
-
-For the best experience, we recommend using one of the latest supported browsers to take full advantage of Tabler’s capabilities and design precision.
+The minimum versions below are not a policy, they are what the CSS needs. Tabler's colors and color modes are built on `light-dark()` and `color-mix()`, and the layout uses `:has()` and `@property`. None of them have a fallback, so a browser that misses one drops those declarations and the page renders wrong - usually as missing colors. See [what sets the floor](#what-sets-the-floor) for the exact features.
 
 ## Supported browsers
 
 Browser|Minimum Version
 ---|----------
-<img src="/img/browsers/chrome.svg" width="24" height="24" alt="Chrome Logo"/>|Chrome 120+
-<img src="/img/browsers/firefox.svg" width="24" height="24" alt="Firefox Logo"/>|Firefox 121+
-<img src="/img/browsers/safari.svg" width="24" height="24" alt="Safari Logo"/>|Safari 15.6+
-<img src="/img/browsers/edge.svg" width="24" height="24" alt="Edge Logo"/>|last 2 major versions
-<img src="/img/browsers/opera.svg" width="24" height="24" alt="Opera Logo"/>|last 2 major versions
-<img src="/img/browsers/electron.svg" width="24" height="24" alt="Electron Logo"/>|last 2 major versions
-<img src="/img/browsers/brave.svg" width="24" height="24" alt="Brave Logo"/>|last 2 major versions
-<img src="/img/browsers/vivaldi.svg" width="24" height="24" alt="Vivaldi Logo"/>|last 2 major versions
+<img src="/img/browsers/chrome.svg" width="24" height="24" alt="Chrome Logo"/>|Chrome 123+
+<img src="/img/browsers/firefox.svg" width="24" height="24" alt="Firefox Logo"/>|Firefox 128+
+<img src="/img/browsers/safari.svg" width="24" height="24" alt="Safari Logo"/>|Safari 17.5+
+<img src="/img/browsers/edge.svg" width="24" height="24" alt="Edge Logo"/>|Edge 123+
+<img src="/img/browsers/opera.svg" width="24" height="24" alt="Opera Logo"/>|Opera 109+
+<img src="/img/browsers/electron.svg" width="24" height="24" alt="Electron Logo"/>|Chromium 123+
+<img src="/img/browsers/brave.svg" width="24" height="24" alt="Brave Logo"/>|Chromium 123+
+<img src="/img/browsers/vivaldi.svg" width="24" height="24" alt="Vivaldi Logo"/>|Chromium 123+
 
 ## Mobile browsers
 
 Browser|Minimum Version
 ---|----------
-iOS Safari|iOS 15.6+
-Samsung Internet|Samsung 23+
+iOS Safari|iOS 17.5+
+Samsung Internet|Samsung 27+
+
+## What sets the floor
+
+Each row is the first version that supports the feature. The highest number in a column becomes the minimum for that browser.
+
+Feature|Used for|Chrome|Firefox|Safari
+---|---|---|---|---
+`light-dark()`|Every color that differs between light and dark mode|123|120|17.5
+`@property`|The animated gradient on cards|85|128|16.4
+`:has()`|State that depends on a child, for example a selected table row or the folded sidebar|105|121|15.4
+`color-mix()`|Tints, shades and translucent surfaces|111|113|16.2
+
+Opera 109 and Samsung Internet 27 are the first releases built on Chromium 123.
 
 ## Unsupported browsers
 
-Internet Explorer 11 and earlier versions are not supported. KaiOS 2.5 and earlier versions are also not supported.
+Internet Explorer is not supported, and neither is any browser released before the versions above. There is no polyfill to add: the features that set the floor are CSS, so a missing one cannot be patched with JavaScript.
