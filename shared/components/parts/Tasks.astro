@@ -1,6 +1,4 @@
 ---
-// task['due-date'] is undefined (field is due_date) — due-date branch never renders.
-// Avatar offset uses task['users-offset'] (hyphenated key).
 import Icon from '@ui/Icon.astro'
 import PeopleAvatarList from '@shared/components/demo/PeopleAvatarList.astro'
 import CardTitle from '@ui/CardTitle.astro'
@@ -54,11 +52,11 @@ const data = tasksData as unknown as { columns: Column[] }
                       <div class="row">
                         <div class="col">{task.users && <PeopleAvatarList stacked={true} size="xs" offset={task['users-offset'] ?? 0} limit={task.users} />}</div>
 
-                        {task['due-date'] && (
+                        {task.due_date && (
                           <div class="col-auto">
                             <a href="#" class="link-warning">
                               <Icon name="calendar" />
-                              {task['due-date']}
+                              {task.due_date}
                             </a>
                           </div>
                         )}
