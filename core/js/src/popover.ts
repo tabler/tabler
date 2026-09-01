@@ -1,8 +1,5 @@
 import { Popover } from './bootstrap'
 
-/*
-Core popovers
- */
 // js-docs-start popover-init
 const popoverTriggerList: HTMLElement[] = [].slice.call(document.querySelectorAll<HTMLElement>('[data-bs-toggle="popover"]'))
 popoverTriggerList.map(function (popoverTriggerEl: HTMLElement) {

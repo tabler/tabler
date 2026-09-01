@@ -90,9 +90,7 @@ export default defineConfig({
           requiredFile: path('../core/dist/css/tabler.css'),
         },
         {
-          // Sourced from preview's isolated tmp-assets/ (not dist/) — dist/ is Astro's
-          // own build output there, and reading demo assets from it caused unbounded
-          // growth across repeated builds. See preview/.build/vite.config.mts.
+          // preview's demo assets, from its tmp-assets/ (not dist/ — see copy-assets.ts).
           from: path('../preview/tmp-assets'),
           to: path('./public/preview'),
           label: '@tabler/preview',

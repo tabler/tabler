@@ -22,15 +22,12 @@ interface MenuSection {
 }
 
 interface Props {
-  /** Page URL in the docs namespace (equivalent of page.url), e.g. "/ui/components/alert". */
+  /** Page URL in the docs namespace, e.g. "/ui/components/alert". */
   url: string
 }
 
 const { url } = Astro.props
 const menu = docs.menu as MenuSection[]
-
-// Keep declarations above this line: a value between the interfaces stops
-// Astro's frontmatter scanner from picking up `Props`, leaving props untyped.
 
 /** Collapse target: from the group's url, or from its title when it has none. */
 const groupId = (group: MenuGroup) =>

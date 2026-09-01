@@ -12,15 +12,11 @@ interface Props {
   offset?: number
   hoverable?: boolean
   checkbox?: boolean
-  /** checked-ids — 1-based indices, e.g. [2, 5, 8] */
+  /** 1-based indices of the checked rows, e.g. [2, 5, 8] */
   checkedIds?: number[]
   title?: string
   class?: string
-  /**
-   * Inert. The lists.html Contacts card passes `hover=true`, but
-   * users-list.html never reads it — only `hoverable` toggles the star column.
-   * Declared for call-site compatibility.
-   */
+  /** Unused; only `hoverable` toggles the star column. */
   hover?: boolean
 }
 
@@ -32,7 +28,7 @@ const colors = ['green', 'red', 'yellow', 'x', 'x']
 const commitList = commits as { description: string }[]
 
 const rows = people.slice(offset, offset + limit).map((person, idx) => {
-  const index = idx + 1 // forloop.index (1-based)
+  const index = idx + 1
   const color = colors[randomNumber(index + 5, 0, colors.length - 1)]
   const checked = checkedIds?.includes(index) ?? false
   const i = index + offset

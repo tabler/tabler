@@ -15,10 +15,9 @@ const commitList = commits as { description: string }[]
 // Sort by last_name (case-sensitive).
 const sorted = sortBy(people, (p) => p.last_name ?? '')
 
-// offset is unset in the include, so `forloop.index | plus: offset` == forloop.index.
 let prevLetter = ''
 const rows = sorted.map((person, idx) => {
-  const index = idx + 1 // forloop.index (1-based)
+  const index = idx + 1
   const firstLetter = (person.last_name ?? '').slice(0, 1)
   let header: string | null = null
   if (prevLetter !== firstLetter) {

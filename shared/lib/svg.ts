@@ -1,6 +1,5 @@
-// Inline-SVG preparation helpers — the single home for the processing that
-// Icon.astro and Rating.astro used to duplicate (filler-path strip + a11y
-// attribute/class swap) and for the illustration attribute rewrites.
+// Inline-SVG preparation helpers: filler-path strip, a11y attribute/class swap
+// and the illustration attribute rewrites.
 import icons from '../data/icons.json'
 
 type IconRecord = { svg: Record<string, string | null | undefined> }

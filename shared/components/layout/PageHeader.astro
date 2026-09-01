@@ -1,23 +1,20 @@
 ---
-// Layout front-matter flags are plain props here.
-// TODO: layout-navbar-overlap && layout-navbar-dark → extra text-white class
-// on .page-header — both unset on the homepage.
 import HeaderProfile from './HeaderProfile.astro';
 import HeaderUptime from './HeaderUptime.astro';
 import PageTitle from '@ui/PageTitle.astro';
 
 interface Props {
-	/** page-header — the page title; without it the whole block is not rendered */
+	/** page title; without it the whole block is not rendered */
 	title?: string | undefined;
-	/** page-header-pretitle */
+	/** small text above the title */
 	pretitle?: string | undefined;
-	/** page-header-description */
+	/** text below the title */
 	description?: string | undefined;
-	/** page-header-class */
+	/** extra classes on .page-header */
 	class?: string;
-	/** page-header-file — name of an include from layout/headers/, e.g. "profile" */
+	/** name of a layout/headers/ component rendered instead of the title block, e.g. "profile" */
 	file?: string | undefined;
-	/** layout-navbar-overlap && layout-navbar-dark → text-white on .page-header */
+	/** text-white on .page-header (dark overlapping navbar) */
 	textWhite?: boolean | undefined;
 }
 

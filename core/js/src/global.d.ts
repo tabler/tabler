@@ -1,5 +1,3 @@
-// Global type declarations for window properties
-
 interface Window {
   autosize?: (element: HTMLElement | HTMLTextAreaElement) => void
   countUp?: {
