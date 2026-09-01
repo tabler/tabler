@@ -1,0 +1,69 @@
+# Custom properties the css references but never defines. Each one makes the
+# declaration that reads it invalid, so the browser drops it - see
+# check-css-vars.ts. The check fails on any name that is not listed here, and
+# also on a listed name that no longer dangles, so fixing one means deleting
+# its line.
+#
+# Everything below is a real bug waiting to be fixed, not an accepted exception.
+
+# `.list-group-item-{color}` reads subtle/emphasis tokens that bootstrap only
+# builds for $theme-colors, so these variants render with no background and no
+# text color at all.
+--tblr-azure-bg-subtle
+--tblr-azure-border-subtle
+--tblr-azure-text-emphasis
+--tblr-blue-bg-subtle
+--tblr-blue-border-subtle
+--tblr-blue-text-emphasis
+--tblr-cyan-bg-subtle
+--tblr-cyan-border-subtle
+--tblr-cyan-text-emphasis
+--tblr-green-bg-subtle
+--tblr-green-border-subtle
+--tblr-green-text-emphasis
+--tblr-indigo-bg-subtle
+--tblr-indigo-border-subtle
+--tblr-indigo-text-emphasis
+--tblr-lime-bg-subtle
+--tblr-lime-border-subtle
+--tblr-lime-text-emphasis
+--tblr-muted-bg-subtle
+--tblr-muted-border-subtle
+--tblr-muted-text-emphasis
+--tblr-orange-bg-subtle
+--tblr-orange-border-subtle
+--tblr-orange-text-emphasis
+--tblr-pink-bg-subtle
+--tblr-pink-border-subtle
+--tblr-pink-text-emphasis
+--tblr-purple-bg-subtle
+--tblr-purple-border-subtle
+--tblr-purple-text-emphasis
+--tblr-red-bg-subtle
+--tblr-red-border-subtle
+--tblr-red-text-emphasis
+--tblr-teal-bg-subtle
+--tblr-teal-border-subtle
+--tblr-teal-text-emphasis
+--tblr-yellow-bg-subtle
+--tblr-yellow-border-subtle
+--tblr-yellow-text-emphasis
+
+# tabler-marketing.css: `.shape-*` backgrounds, borders and headings reach for
+# tokens that only ever existed in the marketing prototype.
+--tblr-black-lt
+--tblr-border-color-dark
+--tblr-border-color-light
+--tblr-border-radius-circle
+--tblr-font-weight-black
+--tblr-gray-dark-lt
+--tblr-gray-lt
+
+# `body { text-align }` - bootstrap leaves the token unset by default, so the
+# declaration never applies.
+--tblr-body-text-align
+
+# `.nav-link` font size and the active nav link color (#2287): both drop, so a
+# nav link takes the body font size and keeps the inherited color when active.
+--tblr-nav-link-active-color
+--tblr-nav-link-font-size
