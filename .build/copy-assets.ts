@@ -1,7 +1,7 @@
 // Shared Astro integration that rebuilds a package's public/ directory from
-// source and generated workspace assets (the Eleventy passthrough-copy
-// equivalent), then keeps it in sync during dev. Used by @tabler/docs and
-// @tabler/preview — each passes its own manifest from astro.config.mjs.
+// source and generated workspace assets, then keeps it in sync during dev.
+// Used by @tabler/docs and @tabler/preview — each passes its own manifest
+// from astro.config.mjs.
 //
 // Runs inside Astro's own lifecycle (astro:config:done) instead of a standalone
 // pre-script, so the copy is ordered by Astro for both dev and build — mirrors

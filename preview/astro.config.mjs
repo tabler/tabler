@@ -106,7 +106,7 @@ export default defineConfig({
       publicDir: path('./public'),
       copies: [
         {
-          // @tabler/core dist (css/js/fonts/img/libs) — same as the Eleventy passthrough.
+          // @tabler/core dist (css/js/fonts/img/libs).
           // Fallback keeps current assets if core rebuilds dist mid-copy in turbo dev.
           from: path('./node_modules/@tabler/core/dist'),
           to: path('./public/dist'),
