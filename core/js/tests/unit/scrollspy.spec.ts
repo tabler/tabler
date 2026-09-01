@@ -624,4 +624,11 @@ describe('ScrollSpy', () => {
       expect(ScrollSpy.getInstance(scrollSpyEl)).not.toBeNull()
     })
   })
+  describe('target ids', () => {
+    it('should accept anchors whose target id starts with a digit', () => {
+      fixtureEl.innerHTML = ['<ul id="navigation" class="navbar">', '   <a class="nav-link" href="#1-intro">Intro</a>', '</ul>', '<div id="content">', '  <div id="1-intro">test</div>', '</div>'].join('')
+
+      expect(() => new ScrollSpy('#content', { target: '#navigation' })).not.toThrow()
+    })
+  })
 })
