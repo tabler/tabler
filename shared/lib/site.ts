@@ -13,7 +13,7 @@ export const site = {
   githubUrl: 'https://github.com/tabler/tabler',
   githubSponsorsUrl: 'https://github.com/sponsors/codecalm',
   icons: { link: 'https://tabler.io/icons' },
-  emails: { price: '$29', buy_link: 'https://r.tabler.io/buy-emails', count: '' },
+  emails: { price: '$29', buy_link: 'https://r.tabler.io/buy-emails' },
   // Dev Google Maps API key for local development builds.
   googleMapsDevKey: 'AIzaSyCL-BY8-sq12m0S9H-S_yMqDmcun3A9znw',
   // From shared/data/icons-info.json.

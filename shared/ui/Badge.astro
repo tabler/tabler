@@ -8,7 +8,7 @@ interface Props {
   text?: string
   color?: string
   size?: BadgeSize | undefined
-  /** -lt colour variant + text-{color}-lt-fg */
+  /** -lt soft colour variant */
   light?: boolean
   class?: string
   icon?: string
@@ -19,7 +19,7 @@ interface Props {
 
 const { text, color, size, light, class: className, icon, iconEnd, ...rest } = Astro.props
 
-const classes = ['badge', size && `badge-${size}`, color && `bg-${color}${light ? '-lt' : ''} text-${color}${light ? '-lt' : ''}-fg`, className]
+const classes = ['badge', size && `badge-${size}`, color && (light ? `bg-${color}-lt` : `bg-${color} text-${color}-fg`), className]
 ---
 
 <span class:list={classes} {...rest}>{icon && <Icon name={icon} />}{text}{iconEnd && <Icon name={iconEnd} />}</span>
