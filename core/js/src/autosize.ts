@@ -1,4 +1,3 @@
-// Autosize plugin
 // js-docs-start autosize-init
 const autosizeElements: NodeListOf<HTMLElement> = document.querySelectorAll<HTMLElement>('[data-bs-toggle="autosize"]')
 

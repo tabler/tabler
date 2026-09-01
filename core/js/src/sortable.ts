@@ -1,4 +1,3 @@
-// SortableJS plugin
 // Initializes Sortable on elements marked with [data-sortable]
 // Allows options via JSON in data attribute: data-sortable='{"animation":150}'
 

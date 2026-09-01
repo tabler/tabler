@@ -19,7 +19,7 @@ const colors = ['green', 'red', 'yellow', 'x', 'x'] as const
 const statusLabels: Record<(typeof colors)[number], string> = { green: 'Online', red: 'Busy', yellow: 'Away', x: 'Offline' }
 
 const rows = people.slice(offset, offset + limit).map((person, idx) => {
-  const index = idx + 1 // forloop.index (1-based)
+  const index = idx + 1
   const status = requireIndex(colors, randomNumber(index + 5, 0, colors.length - 1))
   return {
     person,

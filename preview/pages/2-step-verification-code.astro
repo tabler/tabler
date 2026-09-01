@@ -56,11 +56,9 @@ import CardTitle from '@ui/CardTitle.astro'
     <script is:inline>
       const inputs = document.querySelectorAll('[data-code-input]')
 
-      // Attach an event listener to each input element
       inputs.forEach((input, i) => {
         input.addEventListener('input', (e) => {
           const target = e.target
-          // If the input field has a character, and there is a next input field, focus it
           if (target.value.length === target.maxLength && i + 1 < inputs.length) {
             inputs[i + 1].focus()
           }
@@ -68,7 +66,6 @@ import CardTitle from '@ui/CardTitle.astro'
 
         input.addEventListener('keydown', (e) => {
           const target = e.target
-          // If the input field is empty and Backspace is pressed, and there is a previous input field, focus it
           if (target.value.length === 0 && e.key === 'Backspace' && i > 0) {
             inputs[i - 1].focus()
           }

@@ -10,12 +10,10 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const fromDir = join(__dirname, '..', 'node_modules/geist/dist/fonts')
 const toDir = join(__dirname, '..', 'fonts')
 
-// Create fonts directory if it doesn't exist
 if (!existsSync(toDir)) {
   mkdirSync(toDir, { recursive: true })
 }
 
-// Copy geist-mono fonts
 const monoFrom = join(fromDir, 'geist-mono')
 const monoTo = join(toDir, 'geist-mono')
 
@@ -33,7 +31,6 @@ if (existsSync(monoFrom)) {
   console.warn(`Warning: geist-mono fonts not found at ${monoFrom}`)
 }
 
-// Copy geist-sans fonts
 const sansFrom = join(fromDir, 'geist-sans')
 const sansTo = join(toDir, 'geist-sans')
 

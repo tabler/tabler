@@ -20,16 +20,12 @@ export function createViteConfig({ entry, name, fileName, formats, outDir, banne
   // Rollup-only generatedCode.constBindings option
   const rollupOutput: { banner?: string } = {}
 
-  // Add banner if provided
   if (banner) {
     rollupOutput.banner = banner
   }
 
   const config: UserConfig = {
-    // These are library (JS bundle) builds, not app builds — Vite's default
-    // behavior of copying <root>/public into outDir on every build is not wanted
-    // here (and in @tabler/preview, where public/ is itself generated from this
-    // same outDir, caused unbounded growth across repeated builds).
+    // Library builds: never copy <root>/public into outDir (see copy-assets.ts).
     publicDir: false,
     build: {
       lib: {

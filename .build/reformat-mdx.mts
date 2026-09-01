@@ -161,7 +161,6 @@ async function processFiles(): Promise<void> {
       if (m2 === 'html') {
         let formattedHtml = await formatHTML(m3)
 
-        // remove empty lines
         formattedHtml = formattedHtml.replace(/^\s*[\r\n]/gm, '')
 
         // Fences hold illustrative snippets, not always whole documents, and

@@ -114,10 +114,8 @@ export default defineConfig({
           allowDestinationFallback: true,
         },
         {
-          // demo css/js built by this package's sass/vite pipeline. Source is
-          // tmp-assets/ (NOT dist/) on purpose — dist/ is Astro's own build output,
-          // and copying from a path Astro also writes to caused unbounded growth
-          // across repeated builds. See preview/.build/vite.config.mts.
+          // demo css/js built by this package's sass/vite pipeline, from tmp-assets/
+          // (not dist/, which is Astro's own build output — see copy-assets.ts).
           from: path('./tmp-assets'),
           to: path('./public/preview'),
           label: '@tabler/preview',
