@@ -363,7 +363,10 @@ $negative-spacers: null !default;
 
 // Body
 
-$body-text-align: null !default;
+// `start`, the property's own initial value, rather than null: `_reboot.scss`
+// reads `--body-text-align` unconditionally, so a null left the declaration
+// invalid.
+$body-text-align: start !default;
 $body-color: $gray-500 !default;
 $body-bg: $white !default;
 
@@ -1519,9 +1522,10 @@ $modal-status-size: $border-width-wide !default;
 // scss-docs-start nav-variables
 $nav-link-padding-y: 0.5rem !default;
 $nav-link-padding-x: 0.75rem !default;
-$nav-link-font-size: null !default;
+$nav-link-font-size: var(--body-font-size) !default;
 $nav-link-font-weight: null !default;
 $nav-link-color: var(--gray-500) !default;
+$nav-link-active-color: var(--body-color) !default;
 $nav-link-hover-color: var(--link-hover-color) !default;
 $nav-link-transition:
   color 0.15s ease-in-out,
