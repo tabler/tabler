@@ -62,6 +62,11 @@
 }
 
 .btn-link {
+  // Tokens, not just the plain properties below: the disabled state reads
+  // `--btn-bg` and `--btn-border-color`, so setting only `background-color`
+  // here would leave a disabled link button with the default surface and border.
+  --btn-bg: transparent;
+  --btn-border-color: transparent;
   color: #{color.adjust($primary, $lightness: 5%)};
   background-color: transparent;
   border-color: transparent;
@@ -269,6 +274,8 @@
 //
 .btn-action {
   --border-color: transparent;
+  --btn-bg: transparent;
+  --btn-disabled-color: var(--secondary);
   color: var(--secondary);
   @include border-radius(var(--border-radius));
   background: transparent;

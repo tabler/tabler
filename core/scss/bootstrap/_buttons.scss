@@ -20,6 +20,12 @@
   --btn-hover-border-color: transparent;
   --btn-box-shadow: #{$btn-box-shadow};
   --btn-disabled-opacity: #{$btn-disabled-opacity};
+  // Disabled reuses the button's own colors, dimmed by the opacity above.
+  // Without these the `:disabled` rule reads tokens only the color variants
+  // set, so a plain button fell back to `currentColor` for the border.
+  --btn-disabled-color: var(--btn-color);
+  --btn-disabled-bg: var(--btn-bg);
+  --btn-disabled-border-color: var(--btn-border-color);
   // Zero-size shadow, not `none`: the active state is combined with the focus
   // ring in one `box-shadow` list, where `none` would negate every other shadow
   --btn-active-shadow: 0 0 0 #000;
