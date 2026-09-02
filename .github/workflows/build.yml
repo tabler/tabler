@@ -37,3 +37,12 @@ jobs:
 
       - name: Build
         run: pnpm run build
+
+      - name: Install Playwright
+        run: pnpm exec playwright install --with-deps chromium
+
+      - name: Check rendered html
+        run: pnpm run check-html preview/dist docs/dist --quiet
+
+      - name: Check markup classes
+        run: pnpm run check-markup-classes --html preview/dist --html docs/dist --css preview/dist/dist/css --css preview/dist/dist/libs --css preview/dist/preview/css --css docs/dist/css --css docs/dist/preview/css
