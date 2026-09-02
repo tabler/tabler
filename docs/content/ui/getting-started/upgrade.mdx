@@ -246,7 +246,7 @@ Bootstrap compiles from `scss/bootstrap/` now, so the partials that used to brid
   );
 ```
 
-Geist is embedded through `@font-face` rules in `tabler.css`, and the font files ship in `dist/fonts/`. If you serve the CSS from another folder, set `$assets-base` so the `../fonts/` paths still resolve, or override `--tblr-font-sans-serif` to use your own font.
+Tabler no longer ships a web font. The default stack uses the system font of the device, so nothing is downloaded. To use your own font, override `--tblr-font-sans-serif`.
 
 ## Renamed classes
 
@@ -267,7 +267,7 @@ Old|New|Status
 
 These changes are not breaking, but they change how a page looks. Check your screens after the upgrade.
 
-- **Fonts** — Geist and Geist Mono are the new defaults. To keep your old stack, set `--tblr-font-sans-serif`.
+- **Fonts** — the defaults are now the system fonts of the device, instead of Inter. To keep your old stack, set `--tblr-font-sans-serif`.
 - **Shadows** — the `--tblr-shadow-*` tokens use a new `xs` to `2xl` scale, plus `overlay`, with softer defaults.
 - **Colors** — body text is lighter, dark mode borders and disabled inputs are easier to see, and `--tblr-gray-*-fg` tokens now map straight to `--tblr-gray-*`.
 - **Links** — in dark mode, links use a lighter tint of the primary color, so they meet the 4.5:1 contrast ratio on dark surfaces. Override `--tblr-link-color` to change it.
