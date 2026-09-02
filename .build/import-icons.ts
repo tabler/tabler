@@ -1,7 +1,8 @@
 #!/usr/bin/env node
-// Regenerate shared/data/icons.json and icons-info.json from the installed
-// @tabler/icons package. `pnpm run import-icons` refreshes the data files from
-// the installed version; `pnpm run update-icons` bumps the package first.
+// Regenerates shared/data/icons.json and icons-info.json from the installed
+// @tabler/icons package. `pnpm run update:icons` bumps the package first.
+//
+// Run: pnpm run import:icons
 import { readFileSync, writeFileSync } from 'node:fs'
 import { join, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
