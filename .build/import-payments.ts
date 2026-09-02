@@ -1,16 +1,8 @@
 #!/usr/bin/env node
-// Imports payment provider assets from the tabler/tabler-payments repo, so the
-// payments plugin never drifts from the icon source of truth:
-//   - core/img/payments/                       <- src/light/*.svg + src/dark/*.svg (as *-dark.svg)
-//   - $payment-providers in core/scss/_variables.scss
-//   - shared/data/payments.json                <- payments.json (name + logo, demo data)
+// Imports payment provider assets from the tabler/tabler-payments repo: the light
+// and dark SVGs, the $payment-providers list and the demo data.
 //
-// Source checkout resolution order:
-//   1. TABLER_PAYMENTS_DIR env var
-//   2. ../tabler-payments (sibling checkout)
-//   3. fresh shallow clone into a temp dir (the repo is private — needs git auth)
-//
-// Run: pnpm run import-payments
+// Run: pnpm run import:payments
 // Then: pnpm run generate-tokens — refreshes PaymentProvider in shared/lib/tokens.ts
 import { execFileSync } from 'node:child_process'
 import { copyFileSync, existsSync, mkdirSync, mkdtempSync, readdirSync, readFileSync, rmSync, writeFileSync } from 'node:fs'
@@ -37,8 +29,7 @@ function resolveSourceDir(): string {
   return cloneDir
 }
 
-// Provider order everywhere follows the SVG filename (with extension), so
-// 'amazon-pay' sorts before 'amazon' — same as an `ls` of the source dir.
+// Sorted by file name, so 'amazon-pay' comes before 'amazon' — as in an `ls`.
 const svgNames = (dir: string) =>
   readdirSync(dir)
     .filter((file) => file.endsWith('.svg'))
@@ -64,7 +55,6 @@ try {
     throw new Error(`import-payments: light/dark sets differ (only light: ${onlyLight.join(', ') || '—'}; only dark: ${onlyDark.join(', ') || '—'})`)
   }
 
-  // 1. core/img/payments — clean replace, dark variants get a `-dark` suffix
   const previous = existsSync(imgDir) ? new Set(svgNames(imgDir).map((name) => name.replace(/-dark$/, ''))) : new Set<string>()
   rmSync(imgDir, { recursive: true, force: true })
   mkdirSync(imgDir, { recursive: true })
@@ -73,14 +63,12 @@ try {
     copyFileSync(join(darkDir, `${name}.svg`), join(imgDir, `${name}-dark.svg`))
   }
 
-  // 2. $payment-providers in core/scss/_variables.scss
   const scss = readFileSync(scssFile, 'utf8')
   const listPattern = /(\$payment-providers: \(\n)[\s\S]*?(\n\);)/
   if (!listPattern.test(scss)) throw new Error(`import-payments: $payment-providers list not found in ${scssFile}`)
   const listBody = providers.map((name) => `  '${name}'`).join(',\n')
   writeFileSync(scssFile, scss.replace(listPattern, `$1${listBody}$2`))
 
-  // 3. shared/data/payments.json — demo data keeps its `{ name, logo }` shape
   const meta = JSON.parse(readFileSync(metaFile, 'utf8')) as { name: string; logo: string }[]
   const names = new Map(meta.map((entry) => [entry.logo, entry.name]))
   for (const logo of names.keys()) {

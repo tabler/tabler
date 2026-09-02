@@ -1,5 +1,6 @@
 import corePackage from '@tabler/core/package.json'
 import iconsInfo from '../data/icons-info.json'
+import illustrationsInfo from '../data/illustrations-info.json'
 
 const version = corePackage.version
 
@@ -19,6 +20,9 @@ export const site = {
   // From shared/data/icons-info.json.
   iconsCount: 5986,
   iconsVersion: iconsInfo.version,
+  // From shared/data/illustrations-info.json.
+  illustrationsCount: illustrationsInfo.count,
+  illustrationsVersion: illustrationsInfo.version,
   descriptionShort: 'Premium and Open Source dashboard template with responsive and high quality UI.',
   description: 'Tabler is packed with beautifully crafted components and powerful features. Jump in and start building a stunning dashboard — all for free!',
   themeColor: '#066fd1',
