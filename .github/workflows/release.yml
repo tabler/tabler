@@ -24,25 +24,17 @@ jobs:
       - name: Checkout Repo
         uses: actions/checkout@v7
 
-      - name: Install PNPM
-        uses: pnpm/action-setup@v6
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v7
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'pnpm'
+      - name: Set up the workspace
+        uses: ./.github/actions/setup
 
       - name: Update npm # trusted publishing requires npm >= 11.5.1
         run: npm install -g npm@latest
-
-      - name: Install Dependencies
-        run: pnpm install
 
       - name: Build
         run: pnpm run build
 
       - name: Create release Pull Request or publish to NPM
+        id: changesets
         uses: changesets/action@v2
         with:
           version-script: pnpm run version
@@ -51,3 +43,13 @@ jobs:
           pr-title: "chore: update versions"
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # `pnpm run build` above zipped preview/dist into packages-zip/; attach it to
+      # the GitHub release that changesets/action just created for @tabler/core.
+      - name: Attach the preview zip to the GitHub release
+        if: steps.changesets.outputs.published == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          version=$(node -p "require('./core/package.json').version")
+          gh release upload "@tabler/core@${version}" "packages-zip/tabler-${version}.zip" --clobber

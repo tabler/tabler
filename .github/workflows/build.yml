@@ -2,6 +2,9 @@ name: Build
 
 on:
   pull_request: null
+  push:
+    branches:
+      - dev
 
 permissions:
   contents: read
@@ -13,27 +16,8 @@ jobs:
       - name: Clone repository
         uses: actions/checkout@v7
 
-      - name: Cache turbo build setup
-        uses: actions/cache@v6
-        with: 
-          path: .turbo
-          key: ${{ runner.os }}-turbo-${{ github.sha }}
-          restore-keys: |
-            ${{ runner.os }}-turbo-
-
-      - name: Install PNPM
-        uses: pnpm/action-setup@v6
-
-      - name: Set up Node.js
-        uses: actions/setup-node@v7
-        with:
-          node-version-file: '.nvmrc'
-          cache: 'pnpm'
-
-      - run: node --version
-
-      - name: Install pnpm dependencies
-        run: pnpm install
+      - name: Set up the workspace
+        uses: ./.github/actions/setup
 
       - name: Build
         run: pnpm run build
