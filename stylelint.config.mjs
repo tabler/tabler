@@ -4,7 +4,7 @@
 // fails every file with "Unknown rule @stylistic/…".
 import stylistic from '@stylistic/stylelint-config'
 
-// Prettier already owns SCSS formatting in this repo (`pnpm lint-prettier`), so every
+// Prettier already owns SCSS formatting in this repo (`pnpm lint:prettier`), so every
 // purely stylistic rule that stylelint-config-twbs-bootstrap pulls in through @stylistic
 // is switched off — otherwise the two tools fight over quotes, indentation and zeros.
 const prettierOwned = Object.fromEntries(Object.keys(stylistic.rules).map((rule) => [rule, null]))

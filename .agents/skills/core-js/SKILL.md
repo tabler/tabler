@@ -94,6 +94,6 @@ Prefer a small dependency-free implementation over pulling a package in: every k
 - [ ] Bootstrap-port changes stay close to upstream and come with a `js/tests/unit` spec
 - [ ] `js-docs-*` markers intact and self-contained
 - [ ] `pnpm --filter @tabler/core test` (js + scss) clean
-- [ ] `pnpm run type-check` and `pnpm run lint-prettier` clean
+- [ ] `pnpm run type-check` and `pnpm run lint:prettier` clean
 - [ ] `pnpm run bundlewatch` within budget, or the new limit justified in the PR
 - [ ] Docs page updated and changeset written

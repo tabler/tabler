@@ -137,7 +137,7 @@ export default defineConfig({
         { from: path('../core/dist'), to: path('./public/dist') },
         { from: path('../shared/static'), to: path('./public/static') },
       ],
-      // watch-css/watch-js write straight into public/preview — the file is already
+      // watch:css/watch:js write straight into public/preview — the file is already
       // in place, but Astro does not reload the browser on public/ changes.
       reloadDirs: [path('./public/preview')],
     }),

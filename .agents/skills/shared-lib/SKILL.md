@@ -83,4 +83,4 @@ Every package extends `astro/tsconfigs/strictest`, so indexing an array yields `
 - [ ] Sibling `*.test.ts` covering the branches, not just the happy path
 - [ ] Deterministic: `pseudo-random.ts`, no `Math.random()`, no unseeded dates
 - [ ] JSON cast once in the lib module, `requireIndex` for trusted indexing
-- [ ] `pnpm --filter @tabler/shared test`, repo-level `type-check` and `format-prettier` clean
+- [ ] `pnpm --filter @tabler/shared test`, repo-level `type-check` and `format:prettier` clean

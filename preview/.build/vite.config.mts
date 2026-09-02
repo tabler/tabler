@@ -15,7 +15,7 @@ const entry = path.resolve(__dirname, '../js/demo.ts')
 // leading-dot path segment (e.g. ".build/out/...") with a spurious "not a supported
 // option" error; a plain relative dir avoids that entirely.
 //
-// Watch mode (pnpm run watch-js, via PREVIEW_JS_OUT_DIR): writes straight to
+// Watch mode (pnpm run watch:js, via PREVIEW_JS_OUT_DIR): writes straight to
 // public/preview/js. `astro dev` never touches public/, so there's no dist/
 // collision to avoid there, and this lets edits show up on refresh without an
 // extra copy-assets.mjs pass.

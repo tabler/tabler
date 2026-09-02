@@ -4,7 +4,7 @@
 // truth. Values are read through the real Sass compiler (after every merge and
 // !default), not by parsing the source text.
 // Run: pnpm run generate-tokens        — (re)write the file
-//      pnpm run generate-tokens:check  — fail when the committed file is stale
+//      pnpm run check:tokens  — fail when the committed file is stale
 import { readFileSync, writeFileSync, existsSync } from 'node:fs'
 import { join, dirname, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
