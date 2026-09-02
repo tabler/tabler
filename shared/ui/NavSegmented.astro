@@ -1,4 +1,5 @@
 ---
+import { ucFirst } from '@shared/lib/string-format'
 import Icon from './Icon.astro'
 
 interface Props {
@@ -40,7 +41,15 @@ const rows = Array.from({ length: count }, (_, i) => {
       return (
         <Fragment>
           {name && <input type="radio" class="nav-link-input" name={name} id={`segmented-${name}-${row.index}`} checked={row.isDefault} />}
-          <Element for={name ? `segmented-${name}-${row.index}` : undefined} class:list={row.linkClasses} role={name ? undefined : 'tab'} data-bs-toggle={name ? undefined : 'tab'} aria-selected={name ? undefined : row.isDefault ? 'true' : 'false'} aria-disabled={row.isDisabled ? 'true' : undefined}>
+          <Element
+            for={name ? `segmented-${name}-${row.index}` : undefined}
+            class:list={row.linkClasses}
+            role={name ? undefined : 'tab'}
+            data-bs-toggle={name ? undefined : 'tab'}
+            aria-selected={name ? undefined : row.isDefault ? 'true' : 'false'}
+            aria-disabled={row.isDisabled ? 'true' : undefined}
+            aria-label={row.item ? undefined : row.icon && ucFirst(row.icon)}
+          >
             {row.icon && <Icon name={row.icon} class="nav-link-icon" />}
             {row.item && row.item}
           </Element>
