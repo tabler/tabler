@@ -24,6 +24,23 @@ This starts the preview website at [http://localhost:3000](http://localhost:3000
 
 You can also skip the local setup entirely: open the repository in [GitHub Codespaces](https://codespaces.new/tabler/tabler) or a VS Code Dev Container — the configuration in `.devcontainer/` installs Node.js, pnpm and all dependencies for you.
 
+### Docker
+
+If you prefer not to install Node.js, build and run the provided image from the repository root:
+
+```sh
+docker build -t tabler .
+docker run -p 3000:3000 -p 3010:3010 -v $(pwd)/core:/app/core -v $(pwd)/preview:/app/preview -v $(pwd)/docs:/app/docs -v $(pwd)/shared:/app/shared tabler
+```
+
+This mounts the source directories into the container and exposes the preview on port 3000 and the documentation on port 3010. Edit anything in `core/`, `preview/`, `docs/` or `shared/` and the browser refreshes after the rebuild.
+
+Or use Docker Compose, which applies the same mounts and ports:
+
+```sh
+docker compose up --build
+```
+
 ## Where things live
 
 - `core/` — the framework: SCSS (`core/scss/`) and JavaScript (`core/js/`)
