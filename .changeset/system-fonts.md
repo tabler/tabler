@@ -4,4 +4,4 @@
 "@tabler/docs": patch
 ---
 
-Use the system fonts as the default `$font-family-sans-serif` and `$font-family-monospace`. Tabler no longer bundles a web font, so no font files are downloaded.
+Updated the default `$font-family-sans-serif` and `$font-family-monospace` to the system font stacks. Tabler no longer bundles a web font, so no font files are downloaded.

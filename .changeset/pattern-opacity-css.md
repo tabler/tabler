@@ -1,7 +1,7 @@
 ---
 "@tabler/core": minor
-"@tabler/docs": patch
 "@tabler/preview": patch
+"@tabler/docs": patch
 ---
 
-Added `--pattern-opacity-factor` and `.bg-pattern-opacity-*` utilities for background patterns.
+Added `--tblr-pattern-opacity-factor` and `.bg-pattern-opacity-*` utilities for background patterns.
