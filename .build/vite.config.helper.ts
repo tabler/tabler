@@ -50,7 +50,6 @@ export function createViteConfig({ entry, name, fileName, formats, outDir, banne
       target: 'es2015',
       tsconfigRaw: {
         compilerOptions: {
-          module: 'ES2020',
           target: 'ES2015',
         },
       },

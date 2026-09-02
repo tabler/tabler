@@ -1,7 +1,6 @@
 #!/usr/bin/env node
 
-import { existsSync, mkdirSync } from 'node:fs'
-import { copySync } from 'fs-extra/esm'
+import { cpSync, existsSync, mkdirSync } from 'node:fs'
 import { fileURLToPath } from 'node:url'
 import { join, dirname } from 'node:path'
 
@@ -22,9 +21,7 @@ if (existsSync(monoFrom)) {
     mkdirSync(monoTo, { recursive: true })
   }
 
-  copySync(monoFrom, monoTo, {
-    dereference: true,
-  })
+  cpSync(monoFrom, monoTo, { recursive: true, dereference: true })
 
   console.log(`Successfully copied geist-mono fonts`)
 } else {
@@ -39,9 +36,7 @@ if (existsSync(sansFrom)) {
     mkdirSync(sansTo, { recursive: true })
   }
 
-  copySync(sansFrom, sansTo, {
-    dereference: true,
-  })
+  cpSync(sansFrom, sansTo, { recursive: true, dereference: true })
 
   console.log(`Successfully copied geist-sans fonts`)
 } else {
