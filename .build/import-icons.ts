@@ -45,15 +45,8 @@ for (const iconName in iconsTags) {
   }
 }
 
-writeFileSync(
-  join(repoRoot, 'shared/data/icons-info.json'),
-  JSON.stringify({
-    version,
-    count: Object.values(svgList).reduce((acc, icon) => {
-      return acc + (icon.svg.outline ? 1 : 0) + (icon.svg.filled ? 1 : 0)
-    }, 0),
-  }),
-)
+// `count` is the number of unique icons, not of the outline and filled files.
+writeFileSync(join(repoRoot, 'shared/data/icons-info.json'), JSON.stringify({ version, count: Object.keys(svgList).length }))
 
 writeFileSync(join(repoRoot, 'shared/data/icons.json'), JSON.stringify(svgList))
 
