@@ -29,14 +29,17 @@ const prefersDark = window.matchMedia('(prefers-color-scheme: dark)')
 
 for (const key in themeConfig) {
   const param = params[key]
+  const attrName = 'data-bs-' + key
   let selectedValue: string
 
   if (!!param) {
     localStorage.setItem('tabler-' + key, param)
     selectedValue = param
   } else {
-    const storedTheme = localStorage.getItem('tabler-' + key)
-    selectedValue = storedTheme ? storedTheme : themeConfig[key as keyof ThemeConfig]
+ 	const storedTheme = localStorage.getItem('tabler-' + key)
+	// Respect server-rendered attribute when localStorage is empty.
+	const serverValue = document.documentElement.getAttribute(attrName)
+	selectedValue = storedTheme ?? serverValue ?? themeConfig[key as keyof ThemeConfig]
   }
 
   if (key === 'theme' && selectedValue === 'auto') {
@@ -44,9 +47,9 @@ for (const key in themeConfig) {
   }
 
   if (selectedValue !== themeConfig[key as keyof ThemeConfig]) {
-    document.documentElement.setAttribute('data-bs-' + key, selectedValue)
-  } else {
-    document.documentElement.removeAttribute('data-bs-' + key)
+    document.documentElement.setAttribute(attrName, selectedValue)
+  } else if (!document.documentElement.hasAttribute(attrName)) {
+    document.documentElement.removeAttribute(attrName)
   }
 }
 
