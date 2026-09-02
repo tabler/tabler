@@ -18,7 +18,7 @@ export const site = {
   // Dev Google Maps API key for local development builds.
   googleMapsDevKey: 'AIzaSyCL-BY8-sq12m0S9H-S_yMqDmcun3A9znw',
   // From shared/data/icons-info.json.
-  iconsCount: 5986,
+  iconsCount: iconsInfo.count,
   iconsVersion: iconsInfo.version,
   // From shared/data/illustrations-info.json.
   illustrationsCount: illustrationsInfo.count,
