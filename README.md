@@ -170,12 +170,6 @@ We welcome contributions of all kinds! Please read the [contributing guide](CONT
 - **Have an idea?** [Open a feature request](https://github.com/tabler/tabler/issues/new?template=feature_request.yml) or start a [discussion](https://github.com/tabler/tabler/discussions).
 - **Found a security issue?** Please report it privately — see our [security policy](SECURITY.md).
 
-## 🪴 Project activity
-
-<p align="center">
-	<img src="https://repobeats.axiom.co/api/embed/61d1db34446967b0848af68198a392067e0f5870.svg" alt="Repobeats analytics image" />
-</p>
-
 ## 🤓 Creators
 
 **Paweł Kuna**
