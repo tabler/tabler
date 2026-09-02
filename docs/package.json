@@ -9,8 +9,8 @@
   "scripts": {
     "dev": "pnpm run css && concurrently -n astro,css -c blue,magenta \"astro dev\" \"pnpm run watch-css\"",
     "build": "pnpm run css && astro build",
-    "css": "sass scss/:tmp-assets/css/ --no-source-map --load-path=./node_modules",
-    "watch-css": "sass --watch scss/:tmp-assets/css/ --no-source-map --load-path=./node_modules",
+    "css": "tsx ../.build/build-css.ts scss tmp-assets/css --minify --no-prefix",
+    "watch-css": "nodemon --watch scss/ --ext scss --exec \"tsx ../.build/build-css.ts scss tmp-assets/css --no-prefix\"",
     "preview": "astro preview",
     "clean": "shx rm -rf dist public .astro tmp-assets",
     "type-check": "astro check"
