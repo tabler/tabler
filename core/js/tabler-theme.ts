@@ -35,8 +35,10 @@ for (const key in themeConfig) {
     localStorage.setItem('tabler-' + key, param)
     selectedValue = param
   } else {
+    // A stored choice wins; otherwise a server-rendered attribute is the starting value.
     const storedTheme = localStorage.getItem('tabler-' + key)
-    selectedValue = storedTheme ? storedTheme : themeConfig[key as keyof ThemeConfig]
+    const serverValue = document.documentElement.getAttribute('data-bs-' + key)
+    selectedValue = storedTheme ?? serverValue ?? themeConfig[key as keyof ThemeConfig]
   }
 
   if (key === 'theme' && selectedValue === 'auto') {

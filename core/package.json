@@ -8,20 +8,21 @@
     "dev-prepare": "pnpm run clean && pnpm run copy && concurrently \"pnpm run css-build\" \"pnpm run js-build\"",
     "build": "pnpm run clean && pnpm run build-assets && pnpm run copy",
     "build-assets": "concurrently \"pnpm run css\" \"pnpm run js\"",
-    "clean": "shx rm -rf dist demo",
+    "clean": "shx rm -rf dist",
     "css": "tsx ../.build/build-css.ts scss dist/css --rtl --minify --banner",
     "css-build": "tsx ../.build/build-css.ts scss dist/css --rtl",
-    "css-lint": "pnpm run lint:scss && pnpm run css-lint-variables",
+    "lint": "pnpm run lint:scss && pnpm run lint:scss:vars",
     "lint:scss": "stylelint \"scss/**/*.scss\" --config ../stylelint.config.mjs",
     "lint:scss:fix": "pnpm run lint:scss --fix",
-    "css-lint-variables": "find-unused-sass-variables scss/",
-    "js": "pnpm run js-build && pnpm run js-build-min",
+    "lint:scss:vars": "find-unused-sass-variables scss/",
+    "js": "pnpm run js-build && pnpm run js-build-min && pnpm run js-types",
+    "js-types": "tsc -p tsconfig.types.json",
     "js-build": "concurrently \"pnpm run js-build-standalone\" \"pnpm run js-build-theme\"",
     "js-build-theme": "cross-env BASE_NAME=tabler-theme vite build --config .build/vite.config.mts",
     "js-build-standalone": "cross-env BASE_NAME=tabler vite build --config .build/vite.config.mts",
     "js-build-min": "concurrently \"pnpm run js-build-min-standalone\" \"pnpm run js-build-min-theme\"",
-    "js-build-min-standalone": "concurrently \"terser dist/js/tabler.js --compress --mangle --comments '/@license|@preserve|^!/' --source-map \\\"content=dist/js/tabler.js.map,filename=dist/js/tabler.min.js.map,url=tabler.min.js.map\\\" -o dist/js/tabler.min.js\" \"terser dist/js/tabler.esm.js --module --compress --mangle --comments '/@license|@preserve|^!/' --source-map \\\"content=dist/js/tabler.esm.js.map,filename=dist/js/tabler.esm.min.js.map,url=tabler.esm.min.js.map\\\" -o dist/js/tabler.esm.min.js\"",
-    "js-build-min-theme": "concurrently \"terser dist/js/tabler-theme.js --compress --mangle --comments '/@license|@preserve|^!/' --source-map \\\"content=dist/js/tabler-theme.js.map,filename=dist/js/tabler-theme.min.js.map,url=tabler-theme.min.js.map\\\" -o dist/js/tabler-theme.min.js\" \"terser dist/js/tabler-theme.esm.js --module --compress --mangle --comments '/@license|@preserve|^!/' --source-map \\\"content=dist/js/tabler-theme.esm.js.map,filename=dist/js/tabler-theme.esm.min.js.map,url=tabler-theme.esm.min.js.map\\\" -o dist/js/tabler-theme.esm.min.js\"",
+    "js-build-min-standalone": "concurrently \"terser dist/js/tabler.js --compress --mangle --source-map \\\"content=dist/js/tabler.js.map,filename=dist/js/tabler.min.js.map,url=tabler.min.js.map\\\" -o dist/js/tabler.min.js\" \"terser dist/js/tabler.esm.js --module --compress --mangle --source-map \\\"content=dist/js/tabler.esm.js.map,filename=dist/js/tabler.esm.min.js.map,url=tabler.esm.min.js.map\\\" -o dist/js/tabler.esm.min.js\"",
+    "js-build-min-theme": "concurrently \"terser dist/js/tabler-theme.js --compress --mangle --source-map \\\"content=dist/js/tabler-theme.js.map,filename=dist/js/tabler-theme.min.js.map,url=tabler-theme.min.js.map\\\" -o dist/js/tabler-theme.min.js\" \"terser dist/js/tabler-theme.esm.js --module --compress --mangle --source-map \\\"content=dist/js/tabler-theme.esm.js.map,filename=dist/js/tabler-theme.esm.min.js.map,url=tabler-theme.esm.min.js.map\\\" -o dist/js/tabler-theme.esm.min.js\"",
     "copy": "concurrently \"pnpm run copy-img\" \"pnpm run copy-libs\" \"pnpm run copy-fonts\"",
     "copy-img": "shx mkdir -p dist/img && shx cp -rf img/* dist/img",
     "copy-libs": "tsx .build/copy-libs.ts",
@@ -67,10 +68,8 @@
     "node": ">=20"
   },
   "files": [
-    "docs/**/*",
     "dist/**/*",
     "js/**/*.{ts,js,map}",
-    "img/**/*.{svg}",
     "scss/**/*.scss",
     "libs.json"
   ],
@@ -80,6 +79,7 @@
   "umd:main": "dist/js/tabler.min.js",
   "module": "dist/js/tabler.esm.js",
   "main": "dist/js/tabler.js",
+  "types": "dist/types/tabler.d.ts",
   "bundlewatch": {
     "files": [
       {
@@ -281,8 +281,5 @@
     "typed.js": "^3.0.0",
     "typescript": "^7.0.2",
     "vitest": "4.1.11"
-  },
-  "directories": {
-    "doc": "docs"
   }
 }

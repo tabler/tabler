@@ -1,0 +1,26 @@
+name: Set up the workspace
+description: Restore the turbo cache, install pnpm and Node.js, install the dependencies
+
+runs:
+  using: composite
+  steps:
+    - name: Cache turbo build setup
+      uses: actions/cache@v6
+      with:
+        path: .turbo
+        key: ${{ runner.os }}-turbo-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-turbo-
+
+    - name: Install PNPM
+      uses: pnpm/action-setup@v6
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v7
+      with:
+        node-version-file: '.nvmrc'
+        cache: 'pnpm'
+
+    - name: Install pnpm dependencies
+      run: pnpm install
+      shell: bash

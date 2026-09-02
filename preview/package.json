@@ -9,7 +9,7 @@
   "scripts": {
     "assets": "shx rm -rf tmp-assets && pnpm run css && pnpm run js",
     "css": "tsx ../.build/build-css.ts scss tmp-assets/css --minify",
-    "js": "vite build --config .build/vite.config.mts && terser tmp-assets/js/demo.js --module --compress --mangle --comments '/@license|@preserve|^!/' --source-map \"content=tmp-assets/js/demo.js.map,filename=tmp-assets/js/demo.min.js.map,url=demo.min.js.map\" -o tmp-assets/js/demo.min.js",
+    "js": "vite build --config .build/vite.config.mts && terser tmp-assets/js/demo.js --module --compress --mangle --source-map \"content=tmp-assets/js/demo.js.map,filename=tmp-assets/js/demo.min.js.map,url=demo.min.js.map\" -o tmp-assets/js/demo.min.js",
     "watch-css": "nodemon --watch scss/ --ext scss --exec \"tsx ../.build/build-css.ts scss public/preview/css\"",
     "watch-js": "cross-env PREVIEW_JS_OUT_DIR=public/preview/js vite build --watch --config .build/vite.config.mts",
     "watch": "concurrently \"pnpm run watch-css\" \"pnpm run watch-js\"",
@@ -18,7 +18,8 @@
     "build": "pnpm run assets && astro build",
     "preview": "astro preview",
     "clean": "shx rm -rf dist public/dist public/preview public/css .astro tmp-assets",
-    "import-icons": "pnpm up @tabler/icons@latest && node .build/import-icons.mjs",
+    "import-icons": "node .build/import-icons.mjs",
+    "update-icons": "pnpm up @tabler/icons@latest && pnpm run import-icons",
     "import-illustrations": "node .build/import-illustrations.mjs",
     "type-check": "astro check"
   },

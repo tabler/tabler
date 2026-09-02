@@ -3,7 +3,9 @@ import Icon from './Icon.astro'
 import Button from './Button.astro'
 import Illustration from './Illustration.astro'
 
-interface Props {
+type PolymorphicProps = { as?: 'p' | 'h1' | 'h2' }
+
+interface Props extends PolymorphicProps {
   icon?: string
   height?: number | string
   class?: string
@@ -18,7 +20,7 @@ interface Props {
   buttonIcon?: string
 }
 
-const { icon, height = 256, class: className, illustration, iconText, title, description, buttonText, buttonIcon } = Astro.props
+const { as: Title = 'p', icon, height = 256, class: className, illustration, iconText, title, description, buttonText, buttonIcon } = Astro.props
 
 const classes = ['empty', className]
 ---
@@ -38,7 +40,7 @@ const classes = ['empty', className]
     ) : null
   }
 
-  <p class="empty-title" set:html={title} />
+  <Title class="empty-title" set:html={title} />
   <p class="empty-subtitle text-secondary" set:html={description} />
   {
     buttonText && (

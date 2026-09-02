@@ -33,8 +33,9 @@ for (const file of sync(join(pagesDir, '**', '*.astro'))) {
   routes.set((url === '/' ? 'index' : url.slice(1)).replaceAll('/', '_') + '.html', url)
 }
 
-// The footer stamps the render time into every page — meaningless for diffing.
-const normalize = (html: string) => html.replace(/Generated \d{4}[^<]*/g, 'Generated')
+// The footer stamps the render time into every page, and the dev server injects
+// its own client script — neither says anything about the rendered markup.
+const normalize = (html: string) => html.replace(/Generated \d{4}[^<]*/g, 'Generated').replace(/[ \t]*<script type="module" src="\/@vite\/client"><\/script>\n?/g, '')
 
 const fetchPage = async (url: string): Promise<string> => {
   const response = await fetch(baseUrl + url)

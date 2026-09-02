@@ -77,10 +77,12 @@ async function formatExamples(source: string): Promise<string> {
   return replaceAsync(source, /(<Example\b[^>]*>\n)([\s\S]*?)(\n<\/Example>)/g, async (_m: string, open: string, inner: string, close: string) => {
     if (inner.includes('{')) return _m
 
-    // Whitespace sensitivity is off: MDX drops whitespace between sibling JSX
-    // elements anyway, and with the default `css` sensitivity prettier glues
-    // inline siblings together (`</span><span`) and wraps inside their tags.
-    const formatted = glueTextLines((await formatHTML(inner, { embeddedLanguageFormatting: 'off', htmlWhitespaceSensitivity: 'ignore' })).replace(/^\s*[\r\n]/gm, '').trim())
+    // Whitespace sensitivity follows css display: an inline element keeps its
+    // text exactly (`ignore` would pad `<span>@</span>JohnDoe` with spaces the
+    // reader can see), and a block element still gets one child per line. A
+    // long inline line wraps inside its tags (`</span\n><span`); the wide
+    // print width keeps that to the rare very long example.
+    const formatted = glueTextLines((await formatHTML(inner, { embeddedLanguageFormatting: 'off', htmlWhitespaceSensitivity: 'css', printWidth: 160 })).replace(/^\s*[\r\n]/gm, '').trim())
     if (!formatted) return _m
 
     if (!(await compilesAsMdx(open + formatted + close))) {

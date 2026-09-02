@@ -88,7 +88,7 @@ const headingSlugsOf = (file: string): Set<string> => {
     const slugger = new GithubSlugger()
     slugs = new Set<string>()
     if (file.endsWith('.mdx')) {
-      for (const line of stripDemosAndCode(body(file)).split('\n')) {
+      for (const line of stripFences(body(file)).split('\n')) {
         const heading = line.match(/^#{1,6}\s+(.*)$/)
         if (heading) {
           const text = (heading[1] ?? '').replace(/[`*_]|\[([^\]]*)\]\([^)]*\)/g, '$1').trim()
@@ -111,7 +111,9 @@ const frontmatter = (file: string): string => {
   return source.startsWith('---') ? (source.split(/^---$/m, 3)[1] ?? '') : ''
 }
 
-const stripCode = (text: string): string => text.replace(/^```[\s\S]*?^```/gm, '').replace(/`[^`\n]*`/g, '')
+// Fenced blocks only: heading text keeps its inline code, which the slugger sees too.
+const stripFences = (text: string): string => text.replace(/^```[\s\S]*?^```/gm, '')
+const stripCode = (text: string): string => stripFences(text).replace(/`[^`\n]*`/g, '')
 
 const stripDemosAndCode = (text: string): string =>
   stripCode(text)

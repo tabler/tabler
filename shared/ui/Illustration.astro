@@ -14,7 +14,7 @@ const { image, height = 128, class: className } = Astro.props
 const key = image.replaceAll('.svg', '')
 const source = (freeIllustrations as { autodark: Record<string, string> }).autodark[key] ?? ''
 
-const illustration = illustrationSvg(source, { classes: `img${className ? ` ${className}` : ''}`, height })
+const illustration = illustrationSvg(source, { ...(className ? { classes: className } : {}), height })
 ---
 
 <!-- BEGIN ILLUSTRATION -->
