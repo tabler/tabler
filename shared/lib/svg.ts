@@ -1,6 +1,18 @@
 // Inline-SVG preparation helpers: filler-path strip, a11y attribute/class swap
 // and the illustration attribute rewrites.
 import icons from '../data/icons.json'
+import freeIllustrations from '../data/free-illustrations.json'
+
+/** Names of the illustrations bundled in @data/free-illustrations.json. */
+export type FreeIllustration = keyof typeof freeIllustrations.autodark
+
+/** How an illustration is named in markup — with or without the ".svg" suffix. */
+export type IllustrationImage = FreeIllustration | `${FreeIllustration}.svg`
+
+/** Source SVG of a bundled illustration, in its auto-dark variant. */
+export function freeIllustrationSource(image: IllustrationImage): string {
+  return freeIllustrations.autodark[image.replaceAll('.svg', '') as FreeIllustration] ?? ''
+}
 
 type IconRecord = { svg: Record<string, string | null | undefined> }
 
