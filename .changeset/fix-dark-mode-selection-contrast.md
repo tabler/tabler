@@ -2,4 +2,4 @@
 "@tabler/core": patch
 ---
 
-Fixed dark mode text selection contrast with a `--tblr-selection-bg` variable.
+Fixed dark mode text selection contrast with a new `$selection-bg` Sass variable.
