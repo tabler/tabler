@@ -27,7 +27,7 @@ A `shared/` change shows up in both preview and docs. Verify in the package the 
 
 ## 2. Full dev vs. astro-only
 
-Each package's `dev` script is `astro dev` plus its asset watchers (`concurrently`), and turbo runs `dev-prepare` first so `tmp-assets/` and `public/` exist:
+Each package's `dev` script is `astro dev` plus its asset watchers (`concurrently`), and turbo runs `dev:prepare` first so `tmp-assets/` and `public/` exist:
 
 - **SCSS or `core/` touched → use the full `dev` script.** `astro dev` alone will not rebuild the stylesheets.
 - **Only `.astro` / `.mdx` / `shared/lib` touched → `astro dev --background` inside the package is enough** and faster, provided the assets have been built before. Manage it with `astro dev status`, `astro dev logs`, `astro dev stop`; the log file is `.astro/dev.log` in the package. Add `--force` to replace a server that is already running.
@@ -55,17 +55,17 @@ Each package's `dev` script is `astro dev` plus its asset watchers (`concurrentl
 In order:
 
 - **CSS did not change** — the SCSS watcher is not running. Restart with the full `dev` script rather than `astro dev`.
-- **Assets 404 after a restart** — `public/preview` (or `docs/public`) was wiped by a build or a `clean`. Run `pnpm --dir <pkg> run dev-prepare`, then start dev again.
+- **Assets 404 after a restart** — `public/preview` (or `docs/public`) was wiped by a build or a `clean`. Run `pnpm --dir <pkg> run dev:prepare`, then start dev again.
 - **A `public/` file changed but the browser did not reload** — Astro does not watch `public/`; the `copyAssets` integration reloads the listed dirs, everything else needs a manual refresh.
 - **`shared/` change not picked up** — the file is aliased, not watched through `node_modules`; confirm the import uses `@shared`/`@ui`, not a path into `node_modules`.
-- Still wrong: `pnpm --dir <pkg> run clean`, then `dev-prepare`, then `dev`.
+- Still wrong: `pnpm --dir <pkg> run clean`, then `dev:prepare`, then `dev`.
 
 ## 6. Gates before handing work back
 
 Run at the repo root and read the **full** output — a tail hides TypeScript errors:
 
 ```bash
-pnpm run type-check && pnpm run format-prettier && pnpm run lint
+pnpm run type-check && pnpm run format:prettier && pnpm run lint
 ```
 
 `type-check` is `astro check` per package, so it covers `.astro` frontmatter and templates. For a markup refactor that should not change output at all, also run the `html-diff` skill.
@@ -77,4 +77,4 @@ pnpm run type-check && pnpm run format-prettier && pnpm run lint
 - [ ] No build started while a dev server was running
 - [ ] Page opened, console clean, interaction exercised
 - [ ] Screenshot for visual changes
-- [ ] Repo-level `type-check` / `format-prettier` / `lint` clean, full output read
+- [ ] Repo-level `type-check` / `format:prettier` / `lint` clean, full output read

@@ -99,14 +99,14 @@ Add a test when you write a mixin whose output is easy to break silently — the
 
 ```bash
 pnpm --filter @tabler/core lint:scss       # stylelint (twbs config; prettier owns formatting)
-pnpm run lint-scss                         # + find-unused-sass-variables (`lint:scss:vars` in core)
-pnpm run generate-tokens:check             # shared/lib/tokens.ts must match the Sass maps
-pnpm run lint-prettier                     # formatting
+pnpm run lint:scss                         # + find-unused-sass-variables (`lint:scss:vars` in core)
+pnpm run check:tokens             # shared/lib/tokens.ts must match the Sass maps
+pnpm run lint:prettier                     # formatting
 pnpm run bundlewatch                       # size budgets (tabler.css 80 kB, tabler.min.css 75 kB)
 ```
 
 - A new entry in `$theme-colors`, `$avatar-sizes` and friends must be regenerated into `shared/lib/tokens.ts` with `pnpm run generate-tokens` — the check gate fails otherwise.
-- An unused Sass variable fails `lint-scss`; delete it or use it.
+- An unused Sass variable fails `lint:scss`; delete it or use it.
 - Growth past a bundlewatch limit is a decision, not an accident: raise the number in `core/package.json` deliberately and say so in the PR.
 
 ## 9. Checklist
@@ -117,5 +117,5 @@ pnpm run bundlewatch                       # size budgets (tabler.css 80 kB, tab
 - [ ] Dark mode via `light-dark()` or all three dark selectors, behind `$enable-dark-mode`
 - [ ] Logical properties, or `--dir` + `/* rtl:ignore */`; no hand-written RTL
 - [ ] sass-true test for a mixin that can break silently
-- [ ] `lint-scss`, `generate-tokens:check`, `lint-prettier`, `test:scss` clean
+- [ ] `lint:scss`, `check:tokens`, `lint:prettier`, `test:scss` clean
 - [ ] Docs page and class table updated (`write-docs`, `class-reference`), changeset written

@@ -56,7 +56,7 @@ Anything to the right of the title goes in the `page-header-actions` slot, as a 
 ```
 
 - **Docs link:** `path` is the page's path under `docs/content/**` without the extension — `docs/content/ui/components/badge.mdx` → `/ui/components/badge`. Add one whenever a matching docs page exists.
-- **Check the path with `pnpm run check-docs-links`.** It resolves every `<DocsLink path="…">` against `docs/content/**` and fails on a typo, so you do not need a browser for this.
+- **Check the path with `pnpm run check:docs-links`.** It resolves every `<DocsLink path="…">` against `docs/content/**` and fails on a typo, so you do not need a browser for this.
 - If you do open the link, use `docs-dev.tabler.io`, which serves `dev`. `docs.tabler.io` serves the last release and still has the pre-content-collection urls, so a valid page can 404 there. A 404 on production alone is never a reason to change a path.
 - **Prebuilt action groups** (`HeaderActionsButtons`, `HeaderActionsPrint`, `HeaderActionsPhotos`, …) live in `shared/components/layout/` and go in the same slot: `<HeaderActionsButtons slot="page-header-actions" />`. There is no `actions="buttons"` prop any more.
 
@@ -113,10 +113,10 @@ A demo page should show exactly one `h1` and then `h2`s — no `h3` in the card 
 ## 9. Quality checklist
 
 - [ ] `title` and `description` set; no `pageHeader` repeating the title
-- [ ] `DocsLink` present when a docs page exists; `pnpm run check-docs-links` passes
+- [ ] `DocsLink` present when a docs page exists; `pnpm run check:docs-links` passes
 - [ ] One card per variant; `CardTitle` + `CardSubtitle` on each
 - [ ] No raw `card-title` / `card-subtitle` / `page-title` markup
 - [ ] List wrappers instead of per-item margins
-- [ ] `pnpm run format-prettier` and `pnpm run type-check` clean (repo root, not a tail-filtered subset)
+- [ ] `pnpm run format:prettier` and `pnpm run type-check` clean (repo root, not a tail-filtered subset)
 - [ ] Page opened in the browser, console clean, heading order checked
 - [ ] Changeset written with the `generate-changeset` skill

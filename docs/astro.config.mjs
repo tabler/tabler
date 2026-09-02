@@ -74,7 +74,7 @@ export default defineConfig({
           requiredFile: path('./assets/favicon.ico'),
         },
         {
-          // docs css built by this package's `css` and `watch-css` scripts
+          // docs css built by this package's `css` and `watch:css` scripts
           // (both write here). Source is tmp-assets/
           // (not public/) because copy-assets wipes public/ on every restart —
           // anything a watcher writes straight into public/ is lost there.

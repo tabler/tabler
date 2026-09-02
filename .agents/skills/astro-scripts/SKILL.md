@@ -119,4 +119,4 @@ An inline script that throws leaves the page looking fine but dead. Never hand o
 - [ ] Instance stored in a `window.tabler_*` registry keyed by id
 - [ ] Library present in `core/libs.json` and declared via `pageLibs` / `docs-libs`
 - [ ] Two instances on one page still work
-- [ ] Console clean in the browser; `pnpm run format-prettier` and `pnpm run type-check` clean
+- [ ] Console clean in the browser; `pnpm run format:prettier` and `pnpm run type-check` clean

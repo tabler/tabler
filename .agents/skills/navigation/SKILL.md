@@ -69,7 +69,7 @@ Update in the same pass: `shared/data/docs.json`, any `related:` front matter po
 ## 4. Verify with the link gate
 
 ```bash
-pnpm run check-docs-links
+pnpm run check:docs-links
 ```
 
 It resolves, from source and without a build: markdown links and `related:` in `docs/content/**/*.mdx`, menu and link URLs in `shared/data/docs.json`, redirect destinations from `docs/astro.config.mjs`, `href` literals in docs components, `<DocsLink path="…">` and `getDocsUrl('…')` in the demo site, plus asset paths that really render. Anchors are checked against real heading slugs.
@@ -82,5 +82,5 @@ It does **not** check `menu.json`: a wrong preview URL or a `pageMenu` key that 
 - [ ] New docs page added to `docs.json` at the right depth, url absolute and extension-free
 - [ ] Renamed or removed docs URL has a 301 in `docs/astro.config.mjs`
 - [ ] `related:` entries and `<DocsLink path="…">` updated to the new path
-- [ ] `pnpm run check-docs-links` clean
+- [ ] `pnpm run check:docs-links` clean
 - [ ] Menu highlighting checked in the browser

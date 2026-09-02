@@ -141,5 +141,5 @@ A new component is not done until it is visible and documented:
 - [ ] `class: className` merged last, `...rest` forwarded
 - [ ] Accessible: semantic element, `ariaLabel` where the content is an icon
 - [ ] Logic in `shared/lib` with a test, not in the frontmatter
-- [ ] `pnpm run format-prettier` and `pnpm run type-check` clean at the repo root (full output, not a tail)
+- [ ] `pnpm run format:prettier` and `pnpm run type-check` clean at the repo root (full output, not a tail)
 - [ ] Demo page + docs page + changeset
