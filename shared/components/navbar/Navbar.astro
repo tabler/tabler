@@ -31,6 +31,8 @@ interface Props {
 	backgroundColor?: string;
 	/** extra classes on the header */
 	class?: string | undefined;
+	/** id of the collapsible menu; pass a unique one when a page renders several navbars */
+	menuId?: string;
 }
 
 // When a page passes no pageMenu, nothing in the menu is active.
@@ -53,6 +55,7 @@ const {
 	background,
 	backgroundColor,
 	class: className,
+	menuId = 'navbar-menu',
 } = Astro.props;
 
 const breakpoint = 'md';
@@ -76,7 +79,7 @@ const headerClass = [
 	data-bs-theme={dark ? 'dark' : undefined}
 >
 	<div class="container-xl">
-		<NavbarToggler target="navbar-menu" />
+		<NavbarToggler target={menuId} />
 
 		{
 			!hideBrand && (
@@ -106,7 +109,7 @@ const headerClass = [
 
 		{
 			condensed && (
-				<div class="collapse navbar-collapse" id="navbar-menu">
+				<div class="collapse navbar-collapse" id={menuId}>
 					{hideSearch ? (
 						<Fragment>
 							<Fragment set:html={'<!-- BEGIN NAVBAR MENU -->'} />
@@ -133,7 +136,7 @@ const headerClass = [
 {
 	!condensed && (
 		<div class={`navbar-expand-${breakpoint}`}>
-			<div class="collapse navbar-collapse" id="navbar-menu">
+			<div class="collapse navbar-collapse" id={menuId}>
 				<div class="navbar">
 					<div class="container-xl">
 						<div class="row flex-column flex-md-row flex-fill align-items-center">

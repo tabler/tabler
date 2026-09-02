@@ -1,4 +1,5 @@
 ---
+import { ucFirst } from '@shared/lib/string-format'
 import DefaultLayout from '@shared/layouts/DefaultLayout.astro'
 import Icon from '@ui/Icon.astro'
 import Button from '@ui/Button.astro'
@@ -69,7 +70,7 @@ const sizes = ['sm', 'md', 'lg', 'xl'] as const
           <div class="btn-actions">
             {
               actions.map((action) => (
-                <a class="btn btn-action">
+                <a href="#" class="btn btn-action" aria-label={ucFirst(action)}>
                   <Icon name={action} />
                 </a>
               ))

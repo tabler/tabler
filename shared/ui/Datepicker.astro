@@ -85,10 +85,12 @@ const datepickerId = id ? `datepicker-${id}` : undefined;
 					// name. Litepicker also re-renders these buttons (new DOM nodes) on every open
 					// and every month change, so re-apply the labels on each "render" event instead
 					// of labeling once at init.
-					picker.on('render', () => {
+					const labelMonthButtons = () => {
 						picker.ui?.querySelector('.button-previous-month')?.setAttribute('aria-label', 'Previous month');
 						picker.ui?.querySelector('.button-next-month')?.setAttribute('aria-label', 'Next month');
-					});
+					};
+					picker.on('render', labelMonthButtons);
+					labelMonthButtons();
 
 					window.tabler_datepicker[datepickerId] = picker;
 				}
