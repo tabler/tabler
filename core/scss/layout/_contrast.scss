@@ -1,0 +1,63 @@
+@use '../config' as *;
+
+// High-contrast color mode.
+//
+// Overrides the semantic tokens from `layout/_root.scss` so text reaches
+// WCAG AAA (7:1) and non-text UI (borders, icons, focus) reaches 3:1
+// (WCAG 1.4.11), in both light and dark color modes.
+//
+// Enabled explicitly with `data-bs-theme-contrast="high"`, or automatically
+// when the OS asks for more contrast (`prefers-contrast: more`). Setting
+// `data-bs-theme-contrast="normal"` opts out of the automatic behavior.
+//
+// The resulting token pairs are verified by `.build/check-contrast.ts`
+// (`pnpm run css-check-contrast`).
+@mixin theme-contrast-high() {
+  --body-color: light-dark(var(--gray-900), var(--gray-50));
+  --secondary: light-dark(var(--gray-700), var(--gray-300));
+  --tertiary: light-dark(var(--gray-600), var(--gray-300));
+
+  // Decorative gray-400 icons don't reach 3:1 — tie them to secondary text
+  --icon-color: var(--secondary);
+
+  // Translucent borders composite below 3:1 on tinted surfaces, so every
+  // border token becomes an opaque gray here.
+  --border-color: light-dark(var(--gray-500), var(--gray-400));
+  --border-color-translucent: var(--border-color);
+  --border-dark-color: light-dark(var(--gray-600), var(--gray-300));
+  --border-dark-color-translucent: var(--border-dark-color);
+  --border-active-color: light-dark(var(--gray-700), var(--gray-200));
+  --border-active-color-translucent: var(--border-active-color);
+
+  // Links keep the primary hue, pushed towards the mode's text color until
+  // they clear AAA on every surface.
+  --link-color: light-dark(color-mix(in srgb, var(--primary), #000 35%), color-mix(in srgb, var(--primary), #fff 60%));
+  --link-hover-color: light-dark(color-mix(in srgb, var(--primary), #000 50%), color-mix(in srgb, var(--primary), #fff 75%));
+
+  // Disabled content is exempt from WCAG, but the default 40% alpha is
+  // illegible; keep it visibly dimmed yet readable.
+  --disabled-color: #{color-transparent(var(--body-color), 0.6)};
+
+  // Full-opacity focus ring instead of the default 25% glow
+  --focus-ring-color: light-dark(var(--primary), color-mix(in srgb, var(--primary), #fff 40%));
+
+  // Raw primary sits below 3:1 on dark surfaces, so primary UI gets a tinted
+  // variant there — with dark text to keep 4.5:1 on buttons. Compile-time
+  // values: a runtime `data-bs-theme-primary` accent still overrides these
+  // (accessible variants of the accent palette are a follow-up).
+  --primary: light-dark(#{$primary}, #{tint-color($primary, 40%)});
+  --primary-fg: light-dark(var(--light), var(--gray-950));
+}
+
+@if $enable-contrast-mode {
+  [data-bs-theme-contrast='high'],
+  [data-theme-contrast='high'] {
+    @include theme-contrast-high();
+  }
+
+  @media (prefers-contrast: more) {
+    :root:not([data-bs-theme-contrast]):not([data-theme-contrast]) {
+      @include theme-contrast-high();
+    }
+  }
+}
