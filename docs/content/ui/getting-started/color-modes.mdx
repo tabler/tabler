@@ -60,7 +60,7 @@ You can set any of the five keys in three ways, and they all agree with each oth
 
 1. **URL query parameter** - add `?theme=dark` (or any other key) to the page URL. The script reads it, applies it, and saves it to `localStorage` so it persists on the next visit.
 2. **`localStorage`** - each key is stored under `tabler-<key>`, for example `tabler-theme` or `tabler-theme-primary`. This is what makes the choice persist across page loads once it has been set once, by either method here.
-3. **Server-rendered attribute** - if you already know the visitor's preference (from a cookie or account setting), you can render `data-bs-*` attributes on `<html>` yourself. The script still runs and may override them from `localStorage` or the URL, so treat this as an initial value rather than a hard override.
+3. **Server-rendered attribute** - if you already know the visitor's preference (from a cookie or account setting), render the `data-bs-*` attributes on `<html>` yourself. The script keeps them as the starting value and only replaces them with a stored choice or a URL parameter.
 
 A query parameter always wins over what's already stored, and updates the stored value for next time:
 

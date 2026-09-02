@@ -1,0 +1,39 @@
+---
+title: Background blur
+summary: Blur whatever sits behind an element with the bg-blur utility. It works with translucent backgrounds, so overlays, sticky bars and floating cards stay readable on top of busy content.
+description: Use the bg-blur utility to add a backdrop blur behind translucent overlays, sticky bars and floating cards.
+related: [/ui/utilities/background-patterns, /ui/components/card]
+added-in: 1.5.0
+---
+import Example from '@components/Example.astro';
+
+## Overview
+
+The `bg-blur` class sets `backdrop-filter: blur(4px)` on an element. The blur applies to the content behind the element, not to the element itself, so pair it with a translucent background such as `bg-white-lt` or an `rgba()` color. On an opaque background the blur has nothing to show through.
+
+## Usage
+
+Place the blurred element over an image or a pattern. The text stays sharp while the background softens.
+
+<Example>
+<div class="bg-pattern-dots bg-primary-lt rounded p-4">
+  <div class="card bg-blur" style="background-color: rgba(255, 255, 255, 0.6)">
+    <div class="card-body">
+      <h3 class="card-title">Floating card</h3>
+      <p class="mb-0"> The dots behind this card are blurred by <code>bg-blur</code> . </p>
+    </div>
+  </div>
+</div>
+</Example>
+
+A sticky navbar or a footer bar over scrolling content is the same pattern: keep the bar translucent and add `bg-blur`.
+
+```html
+<header class="navbar sticky-top bg-blur" style="background-color: rgba(255, 255, 255, 0.8)">
+  ...
+</header>
+```
+
+## Accessibility
+
+The blur changes only the backdrop. Check the text against the resulting background: a translucent surface over a dark photo can drop below the 4.5:1 contrast ratio even though the same surface passes on a light one. Raise the alpha of the background color when it does.

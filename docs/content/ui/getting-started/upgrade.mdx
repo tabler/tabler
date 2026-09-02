@@ -115,13 +115,13 @@ The built-in `@hotwired/turbo` integration is gone, together with the `.turbo-pr
 
 `tabler-theme.js` used `light` as its default color mode. It now defaults to `auto`: with no stored choice, the script reads `prefers-color-scheme` and sets `data-bs-theme` on `<html>` to `light` or `dark`. Visitors whose operating system is set to dark will see your pages in dark mode after the upgrade.
 
-The script applies the resolved mode on every load, so a `data-bs-theme` you render on the server is replaced. If your pages should stay light no matter what the OS says, do not load the script: the CSS renders in light mode whenever `data-bs-theme` is absent.
+To keep light as the starting point, render the attribute on the server; the script only replaces it with a stored choice or a URL parameter:
 
-```diff
-- <script src="/dist/js/tabler-theme.min.js"></script>
+```html
+<html data-bs-theme="light">
 ```
 
-If you keep the script, a visitor can pick a mode with `?theme=light` or `?theme=dark` in the URL, and the choice is stored in `localStorage`. See [Color modes](/ui/getting-started/color-modes) for all theme settings.
+A visitor can still pick a mode with `?theme=light` or `?theme=dark` in the URL, and the choice is stored in `localStorage`. See [Color modes](/ui/getting-started/color-modes) for all theme settings.
 
 ## Removed payment providers
 

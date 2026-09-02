@@ -3,6 +3,7 @@
 // markdown content, excluding <!--EXAMPLE-->...<!--/EXAMPLE--> blocks).
 import Subheader from '@ui/Subheader.astro'
 import Icon from '@ui/Icon.astro'
+import illustrations from '@data/illustrations.json'
 
 export interface TocItem {
   /** 2 or 3 (h2/h3); h3 gets the ms-3 indent */
@@ -24,7 +25,7 @@ interface Props {
 
 const { toc = [], editUrl, sourceUrl, markdownUrl } = Astro.props
 
-const illustrationsCount = 130
+const illustrationsCount = illustrations.length
 ---
 
 <!-- BEGIN DOCS TOC -->{

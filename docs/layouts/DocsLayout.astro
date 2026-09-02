@@ -24,7 +24,7 @@ interface Props {
 	title: string;
 	/** front matter: optional SEO title override */
 	seoTitle?: string | undefined;
-	/** front matter: lead below the title (p.text-secondary.fs-3.lh-3) */
+	/** front matter: lead below the title (p.text-secondary.fs-3.lh-lg) */
 	summary?: string | undefined;
 	/** repo-relative path of the file implementing the component, linked next to the edit link */
 	sourcePath?: string | undefined;
@@ -365,10 +365,10 @@ const relatedPages = await Promise.all(
 								)}
 
 								<Prose
-									data-bs-spy="scroll"
-									data-bs-target="#toc"
-									data-bs-root-margin="50px 0px -0%"
-									data-bs-smooth-scroll="true"
+									data-bs-spy={toc.length > 0 ? 'scroll' : undefined}
+									data-bs-target={toc.length > 0 ? '#toc' : undefined}
+									data-bs-root-margin={toc.length > 0 ? '50px 0px -0%' : undefined}
+									data-bs-smooth-scroll={toc.length > 0 ? 'true' : undefined}
 									tabindex="0"
 								>
 									<div class="d-flex">
@@ -379,13 +379,13 @@ const relatedPages = await Promise.all(
 										{
 											addedIn && (
 												<div class="ms-auto">
-													<span class="badge bg-primary-lt text-primary-lt-fg">Added in {addedIn}</span>
+													<span class="badge bg-primary-lt">Added in {addedIn}</span>
 												</div>
 											)
 										}
 									</div>
 
-									<p class="docs-page-lead text-secondary fs-3 lh-3">{summary}</p>
+									<p class="docs-page-lead text-secondary fs-3 lh-lg">{summary}</p>
 
 									{/* Page must supply headings with ids (MDX does this by default). */}
 									<slot />
