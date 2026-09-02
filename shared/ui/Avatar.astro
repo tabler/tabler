@@ -16,7 +16,6 @@ interface Props {
   person?: Person | undefined
   link?: boolean
   size?: AvatarSize | undefined
-  thumb?: boolean
   class?: string
   /** avatar-{shape} (core/scss/ui/_avatars.scss) */
   shape?: 'rounded' | 'square' | undefined
@@ -31,7 +30,7 @@ interface Props {
   [key: string]: unknown
 }
 
-const { src: srcProp, placeholder: placeholderProp, person, link: linkProp = false, size, thumb, class: className, shape, color, status, statusLabel, brand, icon, base = assetRoot, ...rest } = Astro.props
+const { src: srcProp, placeholder: placeholderProp, person, link: linkProp = false, size, class: className, shape, color, status, statusLabel, brand, icon, base = assetRoot, ...rest } = Astro.props
 
 let src = srcProp
 let placeholder = placeholderProp
@@ -45,11 +44,9 @@ if (person) {
 
 const El = linkProp ? 'a' : 'span'
 
-const classes = ['avatar', size && `avatar-${size}`, thumb && 'avatar-thumb', className, shape && `avatar-${shape}`, color && `bg-${color}-lt`]
+const classes = ['avatar', size && `avatar-${size}`, className, shape && `avatar-${shape}`, color && `bg-${color}-lt`]
 ---
 
 <El class:list={classes} style={src ? `background-image: url(${base}/${src})` : undefined} {...rest}
-  >{status && <span class={`badge bg-${status}`} aria-label={statusLabel ?? status} />}{brand && <span class="avatar-brand" style={`background-image: url(${base}/static/brands/${brand}.svg);`} />}{
-    src ? null : placeholder ? placeholder : icon ? <Icon name={icon} class="avatar-icon" /> : <Icon name="user" class="avatar-icon" />
-  }</El
+  >{status && <span class={`badge bg-${status}`} aria-label={statusLabel ?? status} />}{brand && <span class="avatar-brand" style={`background-image: url(${base}/static/brands/${brand}.svg);`} />}{src ? null : placeholder ? placeholder : icon ? <Icon name={icon} /> : <Icon name="user" />}</El
 >
