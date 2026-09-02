@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest'
-import { iconSvg, iconSourceComment, illustrationSvg } from './svg'
+import { freeIllustrationSource, iconSvg, iconSourceComment, illustrationSvg } from './svg'
 
 describe('iconSvg', () => {
   it('returns the processed outline svg with a11y attributes and the given classes', () => {
@@ -31,6 +31,16 @@ describe('iconSvg', () => {
 describe('iconSourceComment', () => {
   it('links the tabler.io icon page', () => {
     expect(iconSourceComment('heart')).toBe('<!-- Download SVG icon from http://tabler.io/icons/icon/heart -->')
+  })
+})
+
+describe('freeIllustrationSource', () => {
+  it('returns the same svg with and without the ".svg" suffix', () => {
+    expect(freeIllustrationSource('boy-girl.svg')).toBe(freeIllustrationSource('boy-girl'))
+  })
+
+  it('returns the auto-dark source of a bundled illustration', () => {
+    expect(freeIllustrationSource('not-found')).toContain('<svg ')
   })
 })
 
