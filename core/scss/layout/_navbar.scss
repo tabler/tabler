@@ -47,6 +47,16 @@
       background: var(--navbar-active-bg);
     }
 
+    // A group that only holds the current page is emphasized, not filled: the
+    // pill marks the page itself, and painting the group with the same pill
+    // reads as two selections. The folded rail puts it back — there the titles
+    // are collapsed and the submenu is a flyout, so the pill is the only thing
+    // left that can point at the group.
+    // stylelint-disable-next-line selector-max-class
+    .nav-item.active > .nav-link.dropdown-toggle {
+      background: transparent;
+    }
+
     // Group label — aligned with the item text, muted like the icons.
     .nav-section-title {
       display: block;
@@ -163,6 +173,15 @@
   // the same way.
   .navbar-nav .nav-link {
     --nav-link-icon-margin-end: 0;
+  }
+
+  // Only icons are readable in the rail, so the group holding the current page
+  // takes the pill back — the emphasis the expanded sidebar carries on the
+  // title alone cannot be seen here. Scoped through .navbar-nav to match the
+  // specificity of the rule it overrides, which wins on source order.
+  // stylelint-disable-next-line selector-max-class
+  .navbar-nav .nav-item.active > .nav-link.dropdown-toggle {
+    background: var(--navbar-active-bg);
   }
 
   // Collapsed, not display: none — titles stay in the accessibility tree.

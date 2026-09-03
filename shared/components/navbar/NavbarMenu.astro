@@ -68,7 +68,7 @@ const chunk = <T,>(arr: T[], size: number): T[][] => {
               role={hasChildren ? 'button' : undefined}
               aria-haspopup={hasChildren ? 'true' : undefined}
               aria-expanded={hasChildren ? (autoOpen && key === currentPage[0] ? 'true' : 'false') : undefined}
-              aria-current={active ? 'page' : undefined}
+              aria-current={active && !hasChildren ? 'page' : undefined}
             >
               {!hideIcons && <span class="nav-link-icon">{item.icon && <Icon name={item.icon} />}</span>}
 
