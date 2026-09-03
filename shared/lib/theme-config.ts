@@ -34,8 +34,12 @@ export interface ThemeSetting {
   legend: string
   /** help text under the legend */
   hint: string
-  /** 'radio' renders chips, 'color' renders color swatches, 'preset' renders illustrated tiles that set several keys */
-  control: 'radio' | 'color' | 'preset'
+  /**
+   * 'radio' renders chips, 'color' renders color swatches, 'font' renders "Aa"
+   * tiles in each font, 'tile' renders a thumbnail per value, 'preset' renders
+   * thumbnails that set several keys at once.
+   */
+  control: 'radio' | 'color' | 'font' | 'tile' | 'preset'
   options: ThemeOption[] | ThemePreset[]
   /**
    * Only meaningful while the sidebar is on screen; the panel hides these
@@ -85,21 +89,21 @@ export const themeSections: ThemeSection[] = [
         key: 'theme-font',
         legend: 'Font family',
         hint: 'The typeface used across the app.',
-        control: 'radio',
+        control: 'font',
         options: autoOptions(site.themeFonts),
       },
       {
         key: 'theme-base',
         legend: 'Theme base',
         hint: 'The gray palette behind every surface.',
-        control: 'radio',
+        control: 'tile',
         options: autoOptions(site.themeBases),
       },
       {
         key: 'theme-radius',
         legend: 'Corner radius',
         hint: 'How round corners are drawn.',
-        control: 'radio',
+        control: 'tile',
         options: site.themeRadiuses.map((value) => ({ value, label: value })),
       },
     ],
@@ -111,9 +115,9 @@ export const themeSections: ThemeSection[] = [
         key: 'navbar-position',
         legend: 'Navigation',
         hint: 'Where the main menu lives.',
-        control: 'radio',
+        control: 'tile',
         options: [
-          { value: 'horizontal', label: 'Top navbar' },
+          { value: 'horizontal', label: 'Navbar' },
           { value: 'vertical', label: 'Sidebar' },
         ],
       },
@@ -121,14 +125,14 @@ export const themeSections: ThemeSection[] = [
         key: 'layout',
         legend: 'Container width',
         hint: 'How wide the page content runs.',
-        control: 'radio',
+        control: 'tile',
         options: autoOptions(['default', 'fluid', 'boxed']),
       },
       {
         key: 'navbar',
         legend: 'Navbar behavior',
         hint: 'Keep the navbar visible while scrolling.',
-        control: 'radio',
+        control: 'tile',
         navbarOnly: true,
         options: [
           { value: 'default', label: 'Default' },
@@ -139,12 +143,12 @@ export const themeSections: ThemeSection[] = [
         key: 'sidebar',
         legend: 'Sidebar',
         hint: 'How the sidebar behaves.',
-        control: 'radio',
+        control: 'tile',
         sidebarOnly: true,
         options: [
           { value: 'default', label: 'Expanded' },
           { value: 'folded', label: 'Folded' },
-          { value: 'folded-hover', label: 'Folded with hover' },
+          { value: 'folded-hover', label: 'On hover' },
         ],
       },
     ],

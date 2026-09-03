@@ -9,37 +9,82 @@ import { themeDefaults, themeSections, type ThemeKey, type ThemePreset } from '@
 
 const lastSection = themeSections.length - 1
 
-// Thumbnails for the preset tiles: a page with its navigation bar, painted the
-// way the preset paints them. The gray scale is used on purpose — those
-// values do not flip with the color mode, so a "Light" tile stays light on a
-// dark page; only the primary color follows the chosen accent.
-const shade = { light: 'var(--tblr-gray-50)', dark: 'var(--tblr-gray-900)' }
-const bar = { light: 'var(--tblr-white)', dark: 'var(--tblr-gray-800)', primary: 'var(--tblr-primary)' }
-const lines = { light: 'var(--tblr-gray-300)', dark: 'var(--tblr-gray-700)' }
-type Mode = keyof typeof shade
+// Thumbnails, drawn as inline SVG on the theme's own custom properties so they
+// follow the color mode, the gray base and the accent color. The preset tiles
+// pin light and dark on purpose (they depict a mode); the layout tiles follow
+// the page. All share one 96×64 frame.
+type Mode = 'light' | 'dark'
+const shade: Record<Mode, string> = { light: 'var(--tblr-gray-50)', dark: 'var(--tblr-gray-900)' }
+const bar: Record<Mode | 'primary', string> = { light: 'var(--tblr-white)', dark: 'var(--tblr-gray-800)', primary: 'var(--tblr-primary)' }
+const lineOn: Record<Mode, string> = { light: 'var(--tblr-gray-300)', dark: 'var(--tblr-gray-700)' }
+// mode-aware palette for the layout tiles
+const page = 'var(--tblr-bg-surface-secondary)'
+const surface = 'var(--tblr-bg-surface)'
+const border = 'var(--tblr-border-color)'
+const primary = 'var(--tblr-primary)'
+
+const svg = (inner: string, attrs = '') => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 64" class="form-imagecheck-image w-100" aria-hidden="true" focusable="false"${attrs}>${inner}</svg>`
+const frame = (fill: string) => `<rect x="0.5" y="0.5" width="95" height="63" rx="6" fill="${fill}" stroke="${border}" />`
+const outline = `<rect x="0.5" y="0.5" width="95" height="63" rx="6" fill="none" stroke="${border}" />`
+const topBar = (fill: string) => `<path d="M6.5 0.5h83a6 6 0 0 1 6 6v13.5h-95v-13.5a6 6 0 0 1 6 -6z" fill="${fill}" /><rect x="0.5" y="19.5" width="95" height="0.5" fill="${border}" />`
+const rail = (w: number, fill: string) => `<path d="M6.5 0.5h${w - 6}v63h-${w - 6}a6 6 0 0 1 -6 -6v-51a6 6 0 0 1 6 -6z" fill="${fill}" /><rect x="${w}" y="0.5" width="0.5" height="63" fill="${border}" />`
+const lines = (x: number, y: number, widths: number[], fill: string, step = 11) => widths.map((w, i) => `<rect x="${x}" y="${y + i * step}" width="${w}" height="5" rx="2.5" fill="${fill}" />`).join('')
+const dots = (x: number, y: number, count: number, fill: string) => Array.from({ length: count }, (_, i) => `<circle cx="${x}" cy="${y + i * 11}" r="2.5" fill="${fill}" />`).join('')
 
 const pageHalf = (mode: Mode, right: boolean) => (right ? `<path d="M48 0.5h41.5a6 6 0 0 1 6 6v51a6 6 0 0 1 -6 6h-41.5z" fill="${shade[mode]}" />` : `<path d="M6.5 0.5h41.5v63h-41.5a6 6 0 0 1 -6 -6v-51a6 6 0 0 1 6 -6z" fill="${shade[mode]}" />`)
 const barHalf = (fill: string, right: boolean) => (right ? `<path d="M48 0.5h41.5a6 6 0 0 1 6 6v13.5h-47.5z" fill="${fill}" />` : `<path d="M6.5 0.5h41.5v19.5h-47.5v-13.5a6 6 0 0 1 6 -6z" fill="${fill}" />`)
 
-/** The tile for a preset: page halves, navigation bar halves, content lines, frame. */
-const tileSvg = (values: Partial<Record<ThemeKey, string>>) => {
+/** A preset tile: page halves and navigation bar halves in the preset's modes. */
+const presetSvg = (values: Partial<Record<ThemeKey, string>>) => {
   const theme = values.theme ?? 'light'
   const nav = values['navbar-theme'] ?? 'default'
-  // "auto" shows both modes side by side; the navigation follows each half.
-  const modes: [Mode, Mode] = theme === 'auto' ? ['light', 'dark'] : [theme as Mode, theme as Mode]
-  const barFill = (mode: Mode) => (nav === 'default' ? bar[mode] : bar[nav as keyof typeof bar])
-  const body = pageHalf(modes[0], false) + pageHalf(modes[1], true) + barHalf(barFill(modes[0]), false) + barHalf(barFill(modes[1]), true)
-  const content = [
-    [12, 30, 46],
-    [12, 41, 72],
-    [12, 52, 30],
-  ]
-    .map(([x, y, w]) => `<rect x="${x}" y="${y}" width="${w}" height="5" rx="2.5" fill="${lines[modes[0]]}" />`)
-    .join('')
-  const frame = '<rect x="0.5" y="0.5" width="95" height="63" rx="6" fill="none" stroke="var(--tblr-border-color)" />'
-
-  return `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 64" class="form-imagecheck-image w-100" aria-hidden="true" focusable="false">${body}${content}${frame}</svg>`
+  const [first, second]: [Mode, Mode] = theme === 'auto' ? ['light', 'dark'] : [theme as Mode, theme as Mode]
+  const barFill = (mode: Mode) => (nav === 'primary' ? bar.primary : nav === 'dark' ? bar.dark : bar[mode])
+  return svg(pageHalf(first, false) + pageHalf(second, true) + barHalf(barFill(first), false) + barHalf(barFill(second), true) + lines(12, 30, [46, 72, 30], lineOn[first]) + outline)
 }
+
+/** Marks drawn inside an accent-colored navigation shape. */
+const onAccent = 'rgba(255, 255, 255, 0.7)'
+/** A content card: the page's own surface with a border, lines inside. */
+const card = (x: number, y: number, w: number, h: number) => `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="3" fill="${surface}" stroke="${border}" />` + lines(x + 6, y + 7, [w * 0.6, w * 0.8, w * 0.4].map(Math.round), border, 9)
+/** A scrollbar thumb on the right edge, at the top or scrolled down. */
+const thumb = (y: number) => `<rect x="90" y="${y}" width="3" height="14" rx="1.5" fill="${border}" />`
+
+/** A tile for one value of one setting. */
+const tileSvg = (key: string, value: string): string => {
+  switch (key) {
+    case 'navbar-position':
+      // The navigation is the accent-colored shape: a bar across the top or a rail down the start side.
+      return value === 'vertical'
+        ? svg(frame(page) + rail(30, primary) + lines(7, 10, [16, 16, 16, 16], onAccent, 10) + lines(40, 12, [40, 48, 28], border) + outline)
+        : svg(frame(page) + topBar(primary) + [8, 26, 44].map((x) => `<rect x="${x}" y="8" width="14" height="4" rx="2" fill="${onAccent}" />`).join('') + lines(12, 30, [46, 72, 30], border) + outline)
+    case 'layout':
+      // Only the content width changes, so the navigation stays out of these tiles.
+      // The surround is the inverted surface, so it stays dark on a light page and light on a dark one.
+      if (value === 'boxed') return svg(`<rect x="0.5" y="0.5" width="95" height="63" rx="6" fill="var(--tblr-bg-surface-inverted)" /><rect x="12" y="8" width="72" height="48" rx="4" fill="${page}" />` + card(18, 16, 60, 32) + outline)
+      return value === 'fluid' ? svg(frame(page) + card(4, 8, 88, 48) + outline) : svg(frame(page) + card(22, 8, 52, 48) + outline)
+    case 'navbar':
+      // Sticky: the bar keeps its place while the content has scrolled up behind it.
+      return value === 'sticky'
+        ? svg(frame(page) + lines(12, 4, [46, 72, 30, 60], border) + thumb(44) + `<rect x="0.5" y="19.5" width="95" height="5" fill="var(--tblr-gray-900)" opacity="0.18" />` + topBar(primary) + outline)
+        : svg(frame(page) + topBar(primary) + lines(12, 30, [46, 72, 30], border) + thumb(24) + outline)
+    case 'sidebar':
+      if (value === 'folded') return svg(frame(page) + rail(16, primary) + dots(8, 12, 4, onAccent) + lines(26, 12, [50, 60, 34], border) + outline)
+      if (value === 'folded-hover') return svg(frame(page) + rail(16, primary) + dots(8, 12, 4, onAccent) + lines(26, 12, [50, 60, 34], border) + `<rect x="16" y="0.5" width="4" height="63" fill="var(--tblr-gray-900)" opacity="0.12" /><rect x="16.5" y="0.5" width="28" height="63" fill="${surface}" stroke="${border}" />` + lines(21, 9.5, [18, 18, 18, 18], border, 11) + outline)
+      return svg(frame(page) + rail(30, primary) + lines(7, 10, [16, 16, 16, 16], onAccent, 10) + lines(40, 12, [40, 48, 28], border) + outline)
+    case 'theme-base':
+      // The base's own gray scale: the attribute swaps the --tblr-gray-* values for this tile only.
+      return svg(frame(surface) + [100, 300, 500, 700, 900].map((shadeValue, i) => `<rect x="${10 + i * 16}" y="24" width="12" height="16" rx="3" fill="var(--tblr-gray-${shadeValue})" />`).join(''), ` data-bs-theme-base="${value}"`)
+    case 'theme-radius': {
+      // One shape carries the whole message: a square at 0, a circle at 2.
+      const r = Number(value) * 10
+      return svg(frame(page) + `<rect x="28" y="12" width="40" height="40" rx="${r}" fill="${primary}" />`)
+    }
+    default:
+      return svg(frame(page) + outline)
+  }
+}
+
 ---
 
 <!-- BEGIN THEME SETTINGS -->
@@ -61,16 +106,18 @@ const tileSvg = (values: Partial<Record<ThemeKey, string>>) => {
 
       {
         themeSections.map((section, index) => (
-          <section class:list={['p-3', index < lastSection && 'border-bottom']}>
+          <section class:list={['p-4', index < lastSection && 'border-bottom']}>
             <Subheader as="h3" class="mb-3">
               {section.title}
             </Subheader>
 
-            <div class="space-y-3">
+            <div class="space-y-4">
               {section.settings.map((setting) => (
-                <fieldset class="border-0 p-0 m-0" data-theme-setting={setting.key}>
-                  <legend class="form-label float-none mb-1">{setting.legend}</legend>
-                  <FormHint as="p" class="mb-2">
+                <div role="group" aria-labelledby={`theme-setting-${setting.key}`} data-theme-setting={setting.key}>
+                  <div class="form-label mb-1" id={`theme-setting-${setting.key}`}>
+                    {setting.legend}
+                  </div>
+                  <FormHint as="p" class="mb-3">
                     {setting.hint}
                   </FormHint>
 
@@ -85,14 +132,45 @@ const tileSvg = (values: Partial<Record<ThemeKey, string>>) => {
                         </div>
                       ))}
                     </div>
+                  ) : setting.control === 'font' ? (
+                    <div class="row g-3">
+                      {setting.options.map((option) => (
+                        <div class="col-4">
+                          {/* Block, unlike the image tiles: text does not size the label the way an image does. */}
+                          <label class="form-imagecheck d-block">
+                            <input type="radio" name={setting.key} value={option.value} class="form-imagecheck-input" checked={option.value === themeDefaults[setting.key as ThemeKey]} />
+                            <span class="form-imagecheck-figure p-1">
+                              <span class={`form-imagecheck-image text-center py-2 display-5 fw-medium lh-1 font-${option.value}`} aria-hidden="true">
+                                Aa
+                              </span>
+                              <span class="form-imagecheck-caption">{option.label}</span>
+                            </span>
+                          </label>
+                        </div>
+                      ))}
+                    </div>
+                  ) : setting.control === 'tile' ? (
+                    <div class="row g-3">
+                      {setting.options.map((option) => (
+                        <div class="col-4">
+                          <label class="form-imagecheck">
+                            <input type="radio" name={setting.key} value={option.value} class="form-imagecheck-input" checked={option.value === themeDefaults[setting.key as ThemeKey]} />
+                            <span class="form-imagecheck-figure p-1">
+                              <Fragment set:html={tileSvg(setting.key, option.value)} />
+                              <span class="form-imagecheck-caption">{option.label}</span>
+                            </span>
+                          </label>
+                        </div>
+                      ))}
+                    </div>
                   ) : setting.control === 'preset' ? (
-                    <div class="row g-2">
+                    <div class="row g-3">
                       {(setting.options as ThemePreset[]).map((option) => (
                         <div class="col-4">
                           <label class="form-imagecheck">
                             <input type="radio" name={setting.key} value={option.value} class="form-imagecheck-input" checked={Object.entries(option.values).every(([key, value]) => themeDefaults[key as ThemeKey] === value)} />
-                            <span class="form-imagecheck-figure">
-                              <Fragment set:html={tileSvg(option.values)} />
+                            <span class="form-imagecheck-figure p-1">
+                              <Fragment set:html={presetSvg(option.values)} />
                               <span class="form-imagecheck-caption">{option.label}</span>
                             </span>
                           </label>
@@ -109,7 +187,7 @@ const tileSvg = (values: Partial<Record<ThemeKey, string>>) => {
                       ))}
                     </div>
                   )}
-                </fieldset>
+                </div>
               ))}
             </div>
           </section>
