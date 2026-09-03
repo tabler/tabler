@@ -6,7 +6,7 @@ summary: Tabler Payments for Astro provides payment provider logos as native Ast
 
 import TabsPackage from '@components/TabsPackage.astro'
 
-This is an alternative to the [CSS payments plugin](/payments/css) for Astro projects: instead of adding `payment`/`payment-provider-*` classes to a `<span>`, you render a real Astro component. This gives you type-checked props and no separate CSS file to load. It renders server-side only, with no client-side JavaScript shipped — the same as any other `.astro` component.
+This is an alternative to the [CSS payments plugin](/payments/css) for Astro projects: instead of adding `payment`/`payment-provider-*` classes to a `<span>`, you render a real Astro component. This gives you type-checked props and no separate CSS file to load. It renders server-side only, with no client-side JavaScript shipped - the same as any other `.astro` component.
 
 This package is pre-1.0: the API may still change before a 1.0 release.
 
@@ -14,11 +14,11 @@ This package is pre-1.0: the API may still change before a 1.0 release.
 
 <TabsPackage name="@tabler/payments-astro" />
 
-`astro` is a peer dependency — the package reuses the Astro version already in your project instead of bundling its own. This package specifically needs Astro `>=7.2.4 <8.0.0`.
+`astro` is a peer dependency - the package reuses the Astro version already in your project instead of bundling its own. This package specifically needs Astro `>=7.2.4 <8.0.0`.
 
 ## How to use
 
-Every provider — Visa, Mastercard, PayPal, and so on — is exported as its own named component, following the pattern `Payment<ProviderName>`. Import the one you need in your frontmatter and render it in your template:
+Every provider - Visa, Mastercard, PayPal, and so on - is exported as its own named component, following the pattern `Payment<ProviderName>`. Import the one you need in your frontmatter and render it in your template:
 
 ```astro
 ---
@@ -28,11 +28,11 @@ import { PaymentVisa } from '@tabler/payments-astro';
 <PaymentVisa variant="dark" size={32} />
 ```
 
-This works well when you know exactly which providers you want to show, and you write their names directly in your code — for example a fixed row of cards you accept.
+This works well when you know exactly which providers you want to show, and you write their names directly in your code - for example a fixed row of cards you accept.
 
 ### Rendering a provider by name at runtime
 
-Sometimes the provider isn't known ahead of time in your source code — for example, it's a string coming from an API response or a CMS field.
+Sometimes the provider isn't known ahead of time in your source code - for example, it's a string coming from an API response or a CMS field.
 
 For this case, use the `Payment` component instead: pass the provider's slug as a `provider` prop and it renders the right logo for you.
 
@@ -44,9 +44,9 @@ import { Payment } from '@tabler/payments-astro';
 <Payment provider="visa" variant="dark" size={32} />
 ```
 
-The slug is the component name without the `Payment` prefix, in kebab-case — for example `PaymentGooglePay` is `"google-pay"`. This works the same way for any of the 100+ supported payment providers.
+The slug is the component name without the `Payment` prefix, in kebab-case - for example `PaymentGooglePay` is `"google-pay"`. This works the same way for any of the 100+ supported payment providers.
 
-If `provider` doesn't match a known slug, `Payment` renders nothing rather than throwing — useful when the data driving it isn't fully trusted (for example, a slug typed by hand in a CMS).
+If `provider` doesn't match a known slug, `Payment` renders nothing rather than throwing - useful when the data driving it isn't fully trusted (for example, a slug typed by hand in a CMS).
 
 ## Props
 
@@ -56,12 +56,12 @@ Both the named provider components (`PaymentVisa`, `PaymentMastercard`, ...) and
 | ---------- | ------------------- | ------- | -------------- |
 | `variant`  | `'light' \| 'dark'` | `light` | no             |
 | `size`     | `string \| number`  | `24`    | no             |
-| `title`    | `string`            | —       | no             |
-| `provider` | `string`            | —       | `Payment` only |
+| `title`    | `string`            | - | no             |
+| `provider` | `string`            | - | `Payment` only |
 
 ### `variant`
 
-Every logo ships in two pre-baked color versions, `light` and `dark` — exactly like the CSS plugin's `payment-provider-*` (light) and `payment-provider-*-dark` classes. Pick `variant="dark"` when the logo sits on a dark surface (a dark navbar, a dark card, dark mode), and leave it at the `light` default everywhere else. There's no automatic detection of the surrounding background — you choose explicitly:
+Every logo ships in two pre-baked color versions, `light` and `dark` - exactly like the CSS plugin's `payment-provider-*` (light) and `payment-provider-*-dark` classes. Pick `variant="dark"` when the logo sits on a dark surface (a dark navbar, a dark card, dark mode), and leave it at the `light` default everywhere else. There's no automatic detection of the surrounding background - you choose explicitly:
 
 ```astro
 <PaymentVisa variant="light" /> <!-- default, for light backgrounds -->
@@ -77,7 +77,7 @@ Sets the rendered SVG **height**, in pixels. The width is calculated for you fro
 <PaymentVisa size={48} /> <!-- 48px tall, 80px wide -->
 ```
 
-If you need a specific width instead — for example to fit a fixed-width column — pass `width` directly. An explicit `width` prop overrides the calculated one, while `size` still controls the height:
+If you need a specific width instead - for example to fit a fixed-width column - pass `width` directly. An explicit `width` prop overrides the calculated one, while `size` still controls the height:
 
 ```astro
 <PaymentVisa size={24} width={64} /> <!-- 24px tall, but exactly 64px wide -->
@@ -85,7 +85,7 @@ If you need a specific width instead — for example to fit a fixed-width column
 
 ### `title`
 
-Adds an accessible `<title>` element as the first child inside the SVG, which screen readers announce when they reach the logo. This does **not** happen automatically — without `title` (or an `aria-label` on a wrapping element), the logo is invisible to assistive technology, which is correct when it's purely decorative but wrong when it's the only way to identify a payment method:
+Adds an accessible `<title>` element as the first child inside the SVG, which screen readers announce when they reach the logo. This does **not** happen automatically - without `title` (or an `aria-label` on a wrapping element), the logo is invisible to assistive technology, which is correct when it's purely decorative but wrong when it's the only way to identify a payment method:
 
 ```astro
 <PaymentVisa title="Visa" />
@@ -95,7 +95,7 @@ See the [Accessibility](/payments/css#accessibility) section on the CSS plugin p
 
 ### Everything else
 
-Any other prop you pass — `class`, `stroke-width`, `data-*`, and so on — is forwarded as-is to the root `<svg>` element, exactly like it would be on a plain HTML element:
+Any other prop you pass - `class`, `stroke-width`, `data-*`, and so on - is forwarded as-is to the root `<svg>` element, exactly like it would be on a plain HTML element:
 
 ```astro
 <PaymentVisa class="rounded shadow-sm" data-testid="visa-logo" />
@@ -103,7 +103,7 @@ Any other prop you pass — `class`, `stroke-width`, `data-*`, and so on — is 
 
 ### `provider` (dynamic `Payment` component only)
 
-Required when using `Payment` instead of a named import. Takes the provider's slug as a string: the component name without the `Payment` prefix, in kebab-case. For example, `PaymentGooglePay` → `"google-pay"`. Any of the 100+ supported providers works here, not just the ones shown in the examples on this page — see the [package README](https://github.com/tabler/tabler-payments/blob/main/packages/payments-astro/README.md) for the full list. See [Rendering a provider by name at runtime](#rendering-a-provider-by-name-at-runtime) above.
+Required when using `Payment` instead of a named import. Takes the provider's slug as a string: the component name without the `Payment` prefix, in kebab-case. For example, `PaymentGooglePay` → `"google-pay"`. Any of the 100+ supported providers works here, not just the ones shown in the examples on this page - see the [package README](https://github.com/tabler/tabler-payments/blob/main/packages/payments-astro/README.md) for the full list. See [Rendering a provider by name at runtime](#rendering-a-provider-by-name-at-runtime) above.
 
 ## Available providers
 
