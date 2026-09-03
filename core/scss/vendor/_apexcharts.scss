@@ -31,16 +31,17 @@
   // and its default lands on the same selector.
   --apx-tt-color-muted: #{$tooltip-color} !important;
   // The arrow connector is a separate element painted from these two tokens, not
-  // from the box's background: without them it stays white on the dark tooltip,
-  // with a hairline the box itself does not have.
+  // from the box's background: without them it stays white on the dark tooltip.
+  // The border token keeps the tooltip color rather than going transparent, and
+  // the box keeps its 1px border: ApexCharts parks the arrow's centre on that
+  // border line, so removing it leaves a 1px seam between box and arrow.
   --apx-tt-bg: #{$tooltip-bg} !important;
-  --apx-tt-border: transparent !important;
+  --apx-tt-border: #{$tooltip-bg} !important;
 
   padding: 0.25rem !important;
   font-size: $tooltip-font-size !important;
   color: $tooltip-color !important;
   background: $tooltip-bg !important;
-  border: 0 !important;
   box-shadow: none !important;
 }
 
