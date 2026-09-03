@@ -52,20 +52,21 @@ const asideClass = ['navbar navbar-vertical', end && 'navbar-end', `navbar-expan
     }
     <SidebarUser />
 
-    {/* flex-column: the menu grows, so the list after it sits at the bottom of the scroll area. */}
-    <nav class="collapse navbar-collapse flex-column" id="sidebar-menu" aria-label="Sidebar">
+    <nav class="collapse navbar-collapse" id="sidebar-menu" aria-label="Sidebar">
       {/* A folded sidebar renders flyout submenus, so the active branch is not kept open inline. */}
       <NavbarMenu autoOpen={!isFolded} class="pt-lg-3" keepOpen={!isFolded} sections pageMenu={pageMenu} />
 
-      {/* Last entry of the menu, on every screen size; it opens the theme settings panel. */}
-      <ul class="navbar-nav flex-grow-0">
-        <li class="nav-item">
-          <button type="button" class="nav-link" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-settings" aria-controls="offcanvas-settings">
-            <span class="nav-link-icon"><Icon name="brush" /></span>
-            <span class="nav-link-title">Customize</span>
-          </button>
-        </li>
-      </ul>
+      {/* .navbar-side: the menu's trailing group, pinned to the bottom of the sidebar. */}
+      <div class="navbar-side">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <button type="button" class="nav-link" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-settings" aria-controls="offcanvas-settings">
+              <span class="nav-link-icon"><Icon name="brush" /></span>
+              <span class="nav-link-title">Customize</span>
+            </button>
+          </li>
+        </ul>
+      </div>
     </nav>
   </div>
 </aside>

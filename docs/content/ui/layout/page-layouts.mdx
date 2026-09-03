@@ -244,6 +244,26 @@ Group related menu items with a label. Add a `nav-section-title` list item befor
 
 The label is aligned with the item text and muted, so it does not compete with the links. In the folded sidebar, the label text is replaced with a short separator line centered in the gap between the groups, and the label keeps its height, so the menu does not shift when the sidebar folds. Section labels render only in vertical navbars - a horizontal navbar hides them.
 
+### Trailing entries
+
+A `.navbar-side` wrapper with its own `.navbar-nav` after the menu is the sidebar's trailing group: a Customize link, a help link, anything that belongs at the end rather than in the menu. It stacks like the menu and never grows, and when the menu is shorter than the sidebar it is pinned to the bottom of the scroll area. In a horizontal navbar the same class lays the group out as a row on the end side.
+
+```html
+<nav class="collapse navbar-collapse" id="sidebar-menu">
+  <ul class="navbar-nav">...</ul>
+  <div class="navbar-side">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <button type="button" class="nav-link" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-settings">
+          <span class="nav-link-icon"><svg><!-- brush icon --></svg></span>
+          <span class="nav-link-title">Customize</span>
+        </button>
+      </li>
+    </ul>
+  </div>
+</nav>
+```
+
 ### Sidebar footer and user block
 
 The vertical sidebar has three zones: the brand at the top, the nav as its own scroll area, and an optional `navbar-footer` pinned at the bottom. A common use is a user block with a drop-up menu:

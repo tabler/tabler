@@ -74,6 +74,24 @@
     }
   }
 
+  // .navbar-side wraps the menu's trailing group (a Customize link, a help
+  // link) in its own .navbar-nav. The base rule lays it out as a row for the
+  // horizontal navbar; here it stacks like the menu, never grows, and the
+  // auto margin pins it to the bottom of the scroll area when the menu is
+  // shorter than the sidebar.
+  .navbar-side {
+    flex-grow: 0;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: start;
+    padding-bottom: 0.25rem;
+    margin-top: auto;
+
+    .navbar-nav {
+      flex-grow: 0;
+    }
+  }
+
   .navbar-collapse {
     flex-direction: column;
 
@@ -355,6 +373,12 @@ Navbar
           margin-inline: auto;
         }
 
+        // In the stacked mobile menu nothing pins the trailing group to the
+        // bottom, so a small gap marks it as a separate part of the menu.
+        &.navbar-vertical .navbar-side {
+          margin-top: $sidebar-inset;
+        }
+
         // Below the breakpoint the navbar-footer sits in the top bar row:
         // the avatar alone, with its menu dropping down instead of up.
         .navbar-footer {
@@ -549,6 +573,9 @@ Navbar nav
 /**
 Navbar side
  */
+// The group at the end of a navbar: a row on the end side of a horizontal
+// navbar. In a vertical navbar the same class pins the group to the bottom
+// of the menu — see navbar-vertical-nav().
 .navbar-side {
   display: flex;
   flex-direction: row;
