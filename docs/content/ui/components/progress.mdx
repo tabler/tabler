@@ -1,6 +1,6 @@
 ---
 title: Progress bar
-summary: A progress bar is used to provide feedback on an action status and inform users about current progress. Although it is a small interface element, it is extremely helpful in managing user expectations and preventing abandonment of an initiated process.
+summary: A progress bar shows how much of a task is done. It comes in sizes and colors, and in stacked, striped, animated and indeterminate variants.
 description: Show task progress with progress bars. Set the value, color, and size, or use indeterminate bars for unknown durations.
 related: [/ui/components/progress-step, /ui/components/spinner]
 source: core/scss/ui/_progress.scss
@@ -41,7 +41,7 @@ import CodeDocs from '@components/CodeDocs.astro';
 
 ## Default markup
 
-To create a default progress bar, add a `.progress` class to a `<div>` element. Thanks to that, you will be able to notify users how long they have to wait for a process to complete.
+Add the `.progress` class to a `<div>` and put a `.progress-bar` inside it. The width of the inner bar is the value.
 
 <Example>
 <div class="progress">
@@ -53,13 +53,11 @@ To create a default progress bar, add a `.progress` class to a `<div>` element. 
 
 ## Progress size
 
-Using Bootstrap’s typical naming structure, you can create a standard progress bar or scale it up or down to different sizes based on what’s needed.
+Add a size class such as `.progress-sm` to make the bar thinner or thicker. The names follow the usual Bootstrap pattern.
 
 ```html
 <div class="progress progress-sm">...</div>
 ```
-
-Look at the example below to see how it works:
 
 <Example columnFullWidth>
 <div class="progress progress-sm">
@@ -110,7 +108,7 @@ You can create a progress bar which shows indeterminate progress by adding `.pro
 
 ## Native progress element
 
-You can also use the native HTML5 `<progress>` element. It is a great way to create a progress bar without the need for additional HTML elements. This is what it looks like:
+The native `<progress>` element is styled too, so you can use it without any extra markup:
 
 <Example>
 <progress class="progress progress-sm" value="15" max="100" />
@@ -118,7 +116,7 @@ You can also use the native HTML5 `<progress>` element. It is a great way to cre
 
 ## Progress color
 
-You can change the color of the progress bar by adding a color class to the `.progress-bar` element. You can use the color classes like `.bg-primary`, `.bg-success`, etc. to change the color of the progress bar.
+Add a `bg-*` class such as `.bg-success` to the `.progress-bar` to change its color.
 
 See the [full list of available colors](/ui/base/colors) for more details.
 
@@ -147,15 +145,13 @@ See the [full list of available colors](/ui/base/colors) for more details.
 
 ## Multiple progress bars
 
-You can stack multiple progress bars on top of each other to create a visually appealing design. This can be done by adding multiple `.progress` elements inside a `.progress-stacked` container.
+Put several `.progress` elements inside a `.progress-stacked` container to show the parts of a whole in one bar, for example the share of each file type in the used storage.
 
 ```html
 <div class="progress-stacked">
   <div class="progress">...</div>
 </div>
 ```
-
-This is how it looks:
 
 <Example vertical column>
 <div class="progress-stacked">
@@ -218,10 +214,9 @@ Use `.progress-separated` to make stacked segments easier to read when values ar
 
 ## Progress background
 
-By using a progress bar component as a background element, designers can create a dynamic and engaging visual experience for users. For example, the progress bar could be used to represent the completion of a long-term goal or project, such as a fundraising campaign or construction project. As users interact with the
-page, the progress bar could gradually fill up, creating a sense of momentum and progress.
+A progress bar can also be the background of a row or a tile, so the row itself fills up as the value grows. It suits a ranking or a long-running goal, such as a fundraising target.
 
-Thanks to this you can create a nice looking statistics section:
+This example uses it for a ranking of countries:
 
 <Example columnFullWidth>
 <ProgressBg value={65} text="Poland" showValue />
@@ -241,7 +236,7 @@ You can combine progress background with contextual light colors to better separ
 
 ## Accessibility
 
-- Put `role="progressbar"` with `aria-valuenow`, `aria-valuemin` and `aria-valuemax` on the element that carries the value, and give it an `aria-label`. Without them a bar is a coloured box with no meaning.
+- Put `role="progressbar"` with `aria-valuenow`, `aria-valuemin` and `aria-valuemax` on the element that carries the value, and give it an `aria-label`. Without them a bar is a colored box with no meaning.
 - On a stacked bar the width sits on each `.progress` segment, so the role and the value belong there, not on the inner `.progress-bar`.
 - An indeterminate bar keeps the role but has no `aria-valuenow`. A missing value is what says "unknown", while `aria-valuenow="0"` says "nothing done yet".
 - Repeat the number in text next to the bar, or in a `visually-hidden` span inside it. Not every screen reader announces a progress value on its own.

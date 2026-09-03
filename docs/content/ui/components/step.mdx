@@ -1,6 +1,6 @@
 ---
 title: Step
-summary: A step is used to guide users through a complex process and make it easier to complete. Breaking a multi-step process into smaller parts and tracking progress along the way helps users finish it successfully.
+summary: "Steps show where the user is in a multi-step process: which steps are done, which one is active and which are left."
 description: Guide users through multi-step processes with a steps indicator. Show completed, active, and upcoming steps in a clear layout.
 related: [/ui/components/progress-step]
 source: core/scss/ui/_steps.scss
@@ -26,9 +26,7 @@ import CodeDocs from '@components/CodeDocs.astro';
 
 ## Default markup
 
-Steps provide a clear visual representation of a user’s progress through a multi-step process. By showing what has been completed and what remains, steps enhance usability and encourage task completion.
-
-To create a default progress tracker, use the `.steps` class and define each step as a `.step-item`. The active step clearly indicates the current position in the process.
+Use the `.steps` class for the list and `.step-item` for each step. The `active` class marks the current step.
 
 ```html
 <div class="steps">
@@ -38,7 +36,7 @@ To create a default progress tracker, use the `.steps` class and define each ste
 </div>
 ```
 
-The example below demonstrates a simple progress tracker with four steps, where the third step is active.
+Four steps, with the third one active:
 
 <Example>
 <div class="steps">
@@ -51,7 +49,7 @@ The example below demonstrates a simple progress tracker with four steps, where 
 
 ## Tooltips
 
-Add [tooltips](/ui/components/tooltip) if you want to provide users with additional information about the steps they are expected to complete. Tooltips are displayed when a user hovers over a given step and help clarify what might not be clear from the interface.
+Add a [tooltip](/ui/components/tooltip) to a step to explain it on hover, for example when the step titles are short.
 
 To add a tooltip, use the `data-bs-toggle="tooltip"` attribute and specify the tooltip content with the `title` attribute.
 
@@ -67,7 +65,7 @@ To add a tooltip, use the `data-bs-toggle="tooltip"` attribute and specify the t
 </a>
 ```
 
-The example below demonstrates a progress tracker with tooltips for each step.
+A tracker with a tooltip on each step:
 
 <Example>
 <div class="steps">
@@ -80,13 +78,13 @@ The example below demonstrates a progress tracker with tooltips for each step.
 
 ## Color
 
-You can customize the default progress indicator by changing the color to one that better suits your design. See the [full list of available colors](/ui/base/colors) for more details.
+Change the color with a `steps-*` class, using any name from the [color palette](/ui/base/colors).
 
 ```html
 <div class="steps steps-green">...</div>
 ```
 
-The example below demonstrates a progress tracker with two different color schemes.
+Two color schemes:
 
 <Example>
 <div class="steps steps-green">
@@ -105,7 +103,7 @@ The example below demonstrates a progress tracker with two different color schem
 
 ## Steps without title
 
-For designs with limited space, use progress indicators without titles and add tooltips to provide the necessary details.
+When there's no room for titles, use steps without them and put the details in tooltips.
 
 <Example>
 <div class="steps">
@@ -118,13 +116,13 @@ For designs with limited space, use progress indicators without titles and add t
 
 ## Steps with numbers
 
-Use the `steps-counter` class to create a progress tracker with numbers instead of titles and change the color to customize it.
+The `steps-counter` class shows a number in each step instead of a title.
 
 ```html
 <div class="steps steps-counter">...</div>
 ```
 
-The example below demonstrates a progress tracker with numbers and a different color scheme.
+Numbered steps in another color:
 
 <Example>
 <div class="steps steps-counter">
@@ -139,8 +137,8 @@ The example below demonstrates a progress tracker with numbers and a different c
 ## Accessibility
 
 - Use an ordered list for the steps. The numbering is meaning, not decoration, so let the markup carry it.
-- Mark the current step with `aria-current="step"`. The `active` class only changes the colours.
-- A completed step and a pending one must differ in more than colour - a checkmark, a label, or the word "done".
+- Mark the current step with `aria-current="step"`. The `active` class only changes the colors.
+- A completed step and a pending one must differ in more than color - a checkmark, a label, or the word "done".
 - If a step is a link, keep it a real link; if it cannot be reached yet, use `aria-disabled="true"` and take it out of the tab order.
 
 ## SCSS variables

@@ -1,7 +1,7 @@
 ---
 title: RTL support
 summary: Turn on right-to-left layouts for Arabic, Hebrew, and other RTL languages, and learn which styles flip automatically.
-description: Learn how to enable RTL in Tabler, which stylesheet to load, how the RTL CSS is generated, and which utility classes are direction-aware.
+description: How to enable RTL in Tabler, which stylesheet to load, how the RTL CSS is generated and which utilities are direction-aware.
 related: [/ui/getting-started/upgrade, /ui/components/popover]
 ---
 import Example from '@components/Example.astro';
@@ -22,7 +22,7 @@ You don't need a separate stylesheet for this to work. Setting `dir="rtl"` is en
 
 ## The `*.rtl.css` files
 
-Tabler still builds and publishes an RTL variant of every stylesheet, generated with [rtlcss](https://rtlcss.com/). These exist for a few rules that aren't logical-property-based yet — see [Known gap: text alignment](#known-gap-text-alignment) below — and for projects that upgraded before the logical-properties change and don't want to touch their markup.
+Tabler still builds and publishes an RTL variant of every stylesheet, generated with [rtlcss](https://rtlcss.com/). These exist for a few rules that aren't logical-property-based yet - see [Known gap: text alignment](#known-gap-text-alignment) below - and for projects that upgraded before the logical-properties change and don't want to touch their markup.
 
 Stylesheet|RTL variant
 -|-
@@ -35,7 +35,7 @@ Stylesheet|RTL variant
 `dist/css/tabler-themes.css`|`dist/css/tabler-themes.rtl.css`
 `dist/css/tabler-vendors.css`|`dist/css/tabler-vendors.rtl.css`
 
-Each of these also has a minified `.rtl.min.css` version. If you load an RTL stylesheet, keep `dir="rtl"` on `<html>` too — the CSS and the `dir` attribute are meant to be used together.
+Each of these also has a minified `.rtl.min.css` version. If you load an RTL stylesheet, keep `dir="rtl"` on `<html>` too - the CSS and the `dir` attribute are meant to be used together.
 
 ```diff
   <html dir="rtl">
@@ -47,7 +47,7 @@ Each of these also has a minified `.rtl.min.css` version. If you load an RTL sty
 
 The `.rtl.css` files are not hand-written. Tabler's build compiles each stylesheet as usual, then runs it through rtlcss, which flips physical values like `left`/`right`, `margin-left`/`margin-right`, and text direction to their mirrored equivalent.
 
-If you compile Tabler from source and write your own SCSS, keep this in mind: anything you add to a stylesheet that also runs through the RTL build gets mirrored the same way. When a rule must stay fixed in both directions — an icon, a chevron, a background image position — wrap it in an rtlcss control comment:
+If you compile Tabler from source and write your own SCSS, keep this in mind: anything you add to a stylesheet that also runs through the RTL build gets mirrored the same way. When a rule must stay fixed in both directions - an icon, a chevron, a background image position - wrap it in an rtlcss control comment:
 
 ```scss
 // Skip the next declaration only
@@ -68,7 +68,7 @@ These comments are read by rtlcss at build time, not by the browser, so they onl
 
 ## Direction-aware utilities
 
-Most of Tabler's spacing and position utilities use CSS logical properties, so they flip automatically with `dir="rtl"` — no RTL stylesheet needed:
+Most of Tabler's spacing and position utilities use CSS logical properties, so they flip automatically with `dir="rtl"` - no RTL stylesheet needed:
 
 Class|Physical equivalent (LTR)|CSS property
 -|-|-

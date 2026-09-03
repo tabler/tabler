@@ -1,12 +1,12 @@
 ---
 title: Upgrade to 1.5
-summary: Move your project from Tabler 1.4 to 1.5. This guide lists every breaking change, with a before and after example for each one, so you know exactly what to update in your markup, JavaScript and Sass.
+summary: Move a project from Tabler 1.4 to 1.5. Every breaking change is listed with a before and after example for markup, JavaScript and Sass.
 description: Upgrade guide from Tabler 1.4 to 1.5 with all breaking changes, renamed classes and Sass updates.
 added-in: '1.5.0'
 related: [/ui/getting-started/rtl]
 ---
 
-Most projects only use the compiled CSS and JavaScript from `dist/`. If that is you, the upgrade is short: update the package, remove Bootstrap, and check the [color mode default](#color-mode-defaults-to-auto) and the [visual changes](#visual-changes). Projects that compile Tabler from the Sass sources have more work to do — see [Sass changes](#sass-changes).
+Most projects only use the compiled CSS and JavaScript from `dist/`. If that is you, the upgrade is short: update the package, remove Bootstrap, and check the [color mode default](#color-mode-defaults-to-auto) and the [visual changes](#visual-changes). Projects that compile Tabler from the Sass sources have more work to do - see [Sass changes](#sass-changes).
 
 ## Overview
 
@@ -14,18 +14,18 @@ Use this table to find the changes that affect you.
 
 If you…|You need to…
 ---|---
-Load `dist/css` and `dist/js`|Remove Bootstrap's CSS and JS — Tabler now ships them
+Load `dist/css` and `dist/js`|Remove Bootstrap's CSS and JS - Tabler now ships them
 Load `bootstrap.bundle.min.js`|Remove it, or components will start twice
 Use `window.bootstrap.Modal`|Use `window.tabler.Modal`
 Compile `scss/tabler.scss` yourself|Switch to `@use … with ()` and add the PostCSS prefix step
 Override Sass variables|Check the [list of removed variables](#removed-sass-variables)
 Use `.badges-list` or `.tags-list`|Rename to `.badge-list` and `.tag-list` (old names still work)
 Use ApexCharts|Update to ApexCharts 7
-Use Turbo with Tabler|The built-in integration is gone — see [Turbo](#turbo-integration-removed)
-Load `tabler-theme.js`|Pages follow the OS color scheme now — see [Color mode](#color-mode-defaults-to-auto)
+Use Turbo with Tabler|The built-in integration is gone - see [Turbo](#turbo-integration-removed)
+Load `tabler-theme.js`|Pages follow the OS color scheme now - see [Color mode](#color-mode-defaults-to-auto)
 Use payment provider icons|Check the [removed providers](#removed-payment-providers)
 Link files inside `dist/libs`|Check the [moved paths](#smaller-distlibs-folder)
-Load `tabler.rtl.css`|You can drop it — plain `tabler.css` now handles RTL
+Load `tabler.rtl.css`|You can drop it - plain `tabler.css` now handles RTL
 
 ## Update the package
 
@@ -193,7 +193,7 @@ import prefixCustomProperties from 'postcss-prefix-custom-properties'
 const result = await postcss([
   prefixCustomProperties({
     prefix: 'tblr-',
-    // Vendor stylesheets read their own variable names — never prefix these
+    // Vendor stylesheets read their own variable names - never prefix these
     ignore: [/^--tblr-/, /^--bs-/, /^--fc-/, /^--gl-/, /^--litepicker-/, /^--plyr-/, /^--ts-/, '--section-bg'],
   }),
 ]).process(css, { from: undefined })
@@ -267,14 +267,14 @@ Old|New|Status
 
 These changes are not breaking, but they change how a page looks. Check your screens after the upgrade.
 
-- **Fonts** — the defaults are now the system fonts of the device, instead of Inter. To keep your old stack, set `--tblr-font-sans-serif`.
-- **Shadows** — the `--tblr-shadow-*` tokens use a new `xs` to `2xl` scale, plus `overlay`, with softer defaults.
-- **Colors** — body text is lighter, dark mode borders and disabled inputs are easier to see, and `--tblr-gray-*-fg` tokens now map straight to `--tblr-gray-*`.
-- **Links** — in dark mode, links use a lighter tint of the primary color, so they meet the 4.5:1 contrast ratio on dark surfaces. Override `--tblr-link-color` to change it.
-- **Sizes** — `.form-control`, `.btn` and `.input-group` now agree on `sm` and `lg` sizes, `.btn-icon` is square, and `.icon-sm` uses a `1.5` stroke width.
-- **Cards** — `--tblr-card-header-bg` and `--tblr-card-footer-bg` can be set on their own, and the card status bar is `3px`.
-- **Layout** — `scrollbar-gutter: stable` on `html` removes the white gap next to the scrollbar.
-- **Trending** — the component uses the `arrow-up` and `arrow-down` icons instead of `trending-up` and `trending-down`.
+- **Fonts**: the defaults are now the system fonts of the device, instead of Inter. To keep your old stack, set `--tblr-font-sans-serif`.
+- **Shadows**: the `--tblr-shadow-*` tokens use a new `xs` to `2xl` scale, plus `overlay`, with softer defaults.
+- **Colors**: body text is lighter, dark mode borders and disabled inputs are easier to see, and `--tblr-gray-*-fg` tokens now map straight to `--tblr-gray-*`.
+- **Links**: in dark mode, links use a lighter tint of the primary color, so they meet the 4.5:1 contrast ratio on dark surfaces. Override `--tblr-link-color` to change it.
+- **Sizes**: `.form-control`, `.btn` and `.input-group` now agree on `sm` and `lg` sizes, `.btn-icon` is square, and `.icon-sm` uses a `1.5` stroke width.
+- **Cards**: `--tblr-card-header-bg` and `--tblr-card-footer-bg` can be set on their own, and the card status bar is `3px`.
+- **Layout**: `scrollbar-gutter: stable` on `html` removes the white gap next to the scrollbar.
+- **Trending**: the component uses the `arrow-up` and `arrow-down` icons instead of `trending-up` and `trending-down`.
 
 ## RTL
 
@@ -290,7 +290,7 @@ The `*.rtl.css` files are still published, so nothing breaks if you keep them. S
 
 ## Third party libraries
 
-- **ApexCharts** moved from 3.54 to 7.0. If you install ApexCharts yourself, update it too and read the [ApexCharts changelog](https://github.com/apexcharts/apexcharts.js/releases) — the major versions renamed several options. Charts also read `--chart-{id}-color-{index}` variables now.
+- **ApexCharts** moved from 3.54 to 7.0. If you install ApexCharts yourself, update it too and read the [ApexCharts changelog](https://github.com/apexcharts/apexcharts.js/releases) - the major versions renamed several options. Charts also read `--chart-{id}-color-{index}` variables now.
 - **Tabler Icons** moved to 3.46, and **Tabler Illustrations** to 1.16.
 
 ## Browser support

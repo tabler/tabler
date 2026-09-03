@@ -1,7 +1,7 @@
 ---
 title: Inline player
 docs-libs: [plyr]
-summary: A simple, lightweight, accessible and customizable HTML5, YouTube and Vimeo media player that supports modern browsers.
+summary: Play HTML5, YouTube and Vimeo media with Plyr, a small accessible player styled with Tabler colors.
 description: Embed audio and video with a lightweight, accessible media player that supports HTML5, YouTube, and Vimeo sources.
 related: [/ui/components/carousel]
 ---
@@ -12,11 +12,11 @@ import { site } from '@shared/lib/site.ts';
 
 ## Overview
 
-The Inline Player is a versatile, modern media player designed for seamless integration into websites. It supports HTML5, YouTube, and Vimeo content, offering a lightweight and accessible solution for media playback. Built with customization and ease of use in mind, this player ensures compatibility with modern browsers and enhances user experience.
+The inline player is [Plyr](https://github.com/sampotts/plyr), a small media player for HTML5 video and audio, YouTube and Vimeo. It draws its own controls, which Tabler styles to match the rest of the UI, and it's keyboard accessible out of the box.
 
 ## Installation
 
-To use the Inline Player, you need to include the Plyr library in your project. You can install it via npm:
+Install Plyr from npm:
 
 <TabsPackage name="plyr" />
 
@@ -30,7 +30,7 @@ Or include it from a CDN. Plyr draws its own controls, so the stylesheet is requ
 
 ## YouTube video
 
-Integrating the Inline Player into your website is straightforward. Below is a sample implementation for a YouTube video:
+For a YouTube video, add a `div` with the provider and the video id, then create the player from it:
 
 <Example>
 <div id="player-youtube" data-plyr-provider="youtube" data-plyr-embed-id="dQw4w9WgXcQ"></div> <script is:inline src={`${site.cdnUrl}/dist/libs/plyr/dist/plyr.min.js`}></script> <script>{`document.addEventListener("DOMContentLoaded", function () { window.Plyr && new Plyr("#player-youtube"); });`}</script>
@@ -63,7 +63,7 @@ An audio player uses the same pattern with an `audio` element. See the [Plyr doc
 
 ## Customization
 
-The Inline Player uses the primary color as the default color scheme. You can customize the player by modifying the CSS variables in your stylesheet. For example, to change the main color, you can add the following CSS:
+Tabler sets the player's main color to the primary color. To change it, override the Plyr CSS variable in your stylesheet:
 
 ```scss
 --plyr-color-main: #ff0000; /* Change to your desired color */
