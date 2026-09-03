@@ -2,22 +2,8 @@
 // Offcanvas behavior script lives in BaseLayout (after global scripts).
 import FormHint from '@ui/FormHint.astro'
 import Icon from '@ui/Icon.astro'
-import { site } from '@shared/lib/site'
-
-const defaults = {
-  'theme': 'light',
-  'theme-base': 'gray',
-  'theme-font': 'sans-serif',
-  'theme-primary': 'blue',
-  'theme-radius': '1',
-  'sidebar': 'default',
-}
-
-const sidebarModes = [
-  { value: 'default', label: 'Expanded' },
-  { value: 'folded', label: 'Folded' },
-  { value: 'folded-hover', label: 'Folded with hover' },
-]
+import Subheader from '@ui/Subheader.astro'
+import { themeDefaults, themeSections } from '@shared/lib/theme-config'
 ---
 
 <!-- BEGIN THEME SETTINGS -->
@@ -33,116 +19,46 @@ const sidebarModes = [
     </div>
     <div class="offcanvas-body d-flex flex-column">
       <div>
-        <fieldset class="border-0 p-0 mb-4">
-          <legend class="form-label float-none mb-0" style="font-size: inherit;">Color mode</legend>
-          <FormHint as="p">Choose the color mode for your app.</FormHint>
-          {
-            ['light', 'dark', 'auto'].map((mode) => (
-              <label class="form-check">
-                <div class="form-selectgroup-item">
-                  <input type="radio" name="theme" value={mode} class="form-check-input" checked={mode === defaults.theme} />
-                  <div class="form-check-label">{mode.charAt(0).toUpperCase() + mode.slice(1)}</div>
-                </div>
-              </label>
-            ))
-          }
-        </fieldset>
+        {
+          themeSections.map((section) => (
+            <Fragment>
+              <Subheader class="mb-3">{section.title}</Subheader>
 
-        <fieldset class="border-0 p-0 mb-4">
-          <legend class="form-label float-none mb-0" style="font-size: inherit;">Color scheme</legend>
-          <FormHint as="p">The perfect color mode for your app.</FormHint>
+              {section.settings.map((setting) => (
+                <fieldset class="border-0 p-0 mb-4" data-theme-setting={setting.key} data-theme-sidebar-only={setting.sidebarOnly ? '' : undefined}>
+                  <legend class="form-label float-none mb-0" style="font-size: inherit;">
+                    {setting.legend}
+                  </legend>
+                  <FormHint as="p">{setting.hint}</FormHint>
 
-          <div class="row g-2">
-            {
-              site.themeColors.map((color) => (
-                <div class="col-auto">
-                  <label class="form-colorinput">
-                    <input name="theme-primary" type="radio" value={color} class="form-colorinput-input" aria-label={color} />
-                    <span class={`form-colorinput-color bg-${color}`} />
-                  </label>
-                </div>
-              ))
-            }
-            <div class="col-auto">
-              <label class="form-colorinput">
-                <input name="theme-primary" type="radio" value="inverted" class="form-colorinput-input" aria-label="Inverted" />
-                <span class="form-colorinput-color bg-inverted"></span>
-              </label>
-            </div>
-          </div>
-        </fieldset>
-
-        <fieldset class="border-0 p-0 mb-4">
-          <legend class="form-label float-none mb-0" style="font-size: inherit;">Font family</legend>
-          <FormHint as="p">Choose the font family that fits your app.</FormHint>
-
-          <div>
-            {
-              site.themeFonts.map((font) => (
-                <label class="form-check">
-                  <div class="form-selectgroup-item">
-                    <input type="radio" name="theme-font" value={font} class="form-check-input" checked={font === defaults['theme-font']} />
-                    <div class="form-check-label">{font.charAt(0).toUpperCase() + font.slice(1)}</div>
-                  </div>
-                </label>
-              ))
-            }
-          </div>
-        </fieldset>
-
-        <fieldset class="border-0 p-0 mb-4">
-          <legend class="form-label float-none mb-0" style="font-size: inherit;">Theme base</legend>
-          <FormHint as="p">Choose the gray shade for your app.</FormHint>
-
-          <div>
-            {
-              site.themeBases.map((base) => (
-                <label class="form-check">
-                  <div class="form-selectgroup-item">
-                    <input type="radio" name="theme-base" value={base} class="form-check-input" checked={base === defaults['theme-base']} />
-                    <div class="form-check-label">{base.charAt(0).toUpperCase() + base.slice(1)}</div>
-                  </div>
-                </label>
-              ))
-            }
-          </div>
-        </fieldset>
-
-        <fieldset class="border-0 p-0 mb-4">
-          <legend class="form-label float-none mb-0" style="font-size: inherit;">Corner Radius</legend>
-          <FormHint as="p">Choose the border radius factor for your app.</FormHint>
-
-          <div>
-            {
-              site.themeRadiuses.map((radius) => (
-                <label class="form-check">
-                  <div class="form-selectgroup-item">
-                    <input type="radio" name="theme-radius" value={radius} class="form-check-input" checked={radius === defaults['theme-radius']} />
-                    <div class="form-check-label">{radius}</div>
-                  </div>
-                </label>
-              ))
-            }
-          </div>
-        </fieldset>
-
-        <fieldset class="border-0 p-0 mb-4">
-          <legend class="form-label float-none mb-0" style="font-size: inherit;">Sidebar</legend>
-          <FormHint as="p">Choose how the vertical sidebar behaves.</FormHint>
-
-          <div>
-            {
-              sidebarModes.map((mode) => (
-                <label class="form-check">
-                  <div class="form-selectgroup-item">
-                    <input type="radio" name="sidebar" value={mode.value} class="form-check-input" checked={mode.value === defaults.sidebar} />
-                    <div class="form-check-label">{mode.label}</div>
-                  </div>
-                </label>
-              ))
-            }
-          </div>
-        </fieldset>
+                  {setting.control === 'color' ? (
+                    <div class="row g-2">
+                      {setting.options.map((option) => (
+                        <div class="col-auto">
+                          <label class="form-colorinput">
+                            <input type="radio" name={setting.key} value={option.value} class="form-colorinput-input" checked={option.value === themeDefaults[setting.key]} aria-label={option.label} />
+                            <span class={`form-colorinput-color bg-${option.value}`} />
+                          </label>
+                        </div>
+                      ))}
+                    </div>
+                  ) : (
+                    <div>
+                      {setting.options.map((option) => (
+                        <label class="form-check">
+                          <div class="form-selectgroup-item">
+                            <input type="radio" name={setting.key} value={option.value} class="form-check-input" checked={option.value === themeDefaults[setting.key]} />
+                            <div class="form-check-label">{option.label}</div>
+                          </div>
+                        </label>
+                      ))}
+                    </div>
+                  )}
+                </fieldset>
+              ))}
+            </Fragment>
+          ))
+        }
       </div>
 
       <div class="mt-auto space-y">

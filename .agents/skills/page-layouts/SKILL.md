@@ -45,18 +45,24 @@ Do not pass `pageHeader` when it repeats `title` — the fallback already covers
 
 ## 3. `DefaultLayout` — chrome flags
 
-Each flag maps to one documented body/layout class, so reach for the prop instead of `bodyClass`:
+Every page renders **both** navigations — the vertical sidebar and the horizontal navbar — and the layout is chosen by `data-bs-*` attributes on `<html>`, which the theme settings panel can change at runtime. Props that map to an attribute state the page's own layout; a visitor's stored choice still wins.
 
-| Prop | Class |
+| Prop | Result |
 | --- | --- |
-| `sidebar`, `sidebarDark`, `sidebarEnd` | `layout-sidebar`, `layout-sidebar-dark`, `layout-sidebar-end` |
-| `hideTopbar` | `layout-hide-topbar` |
-| `navbarTransparent`, `navbarCondensed`, `navbarDark`, `navbarOverlap`, `navbarSticky`, `navbarHideBrand` | the matching `layout-navbar-*` classes |
-| `navbarClass` | extra classes on the navbar |
+| `navbarPosition` | `data-bs-navbar-position` — `horizontal` (default) or `vertical` |
+| `layout` | `data-bs-layout` — `fluid` or `boxed` |
+| `navbarSticky` | `data-bs-navbar="sticky"` |
+| `navbarDark` | `data-bs-navbar-theme="dark"` |
+| `sidebarDark` | `data-bs-sidebar-theme="dark"` |
+| `sidebarMode` | `data-bs-sidebar` — `folded` or `folded-hover` |
+| `sidebarEnd`, `sidebarFoldToggle`, `sidebarUser` | sidebar markup: end side, pin button, user block |
+| `navbarTransparent`, `navbarCondensed`, `navbarOverlap` | navbar markup variants |
 | `wrapperFull` | `page-wrapper-full`, drops the `.container-xl` around the body |
 | `containerCentered`, `containerClass` | `my-auto` / extra classes on the `.container-xl` |
-| `bodyClass` | free-form body classes — `layout-boxed`, `layout-fluid` |
+| `bodyClass` | free-form body classes; use `layout` for the container width |
 | `rtl` | `dir="rtl"` plus the RTL stylesheets |
+
+There is no `sidebar` or `hideTopbar` prop any more: which navigation shows is `navbarPosition`, not which one is rendered.
 
 ## 4. The page-header slot
 

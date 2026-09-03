@@ -1,7 +1,7 @@
 ---
 title: Color modes
-summary: The theme script switches between light, dark and auto color modes, plus the base gray, font, primary color and corner radius, without a page reload.
-description: Set up Tabler's light, dark, and auto color modes, and learn the five theme attributes for base color, font, primary color, and corner radius.
+summary: The theme script switches between light, dark and auto color modes, plus the base gray, font, primary color, corner radius and the page layout, without a page reload.
+description: Set up Tabler's light, dark, and auto color modes, and learn the theme attributes for base color, font, primary color, corner radius and layout.
 related: [/ui/getting-started/customize, /ui/plugins/theme-base-colors]
 ---
 
@@ -10,7 +10,7 @@ import { Code } from 'astro:components';
 
 ## Overview
 
-Tabler includes a small script, [`tabler-theme.js`](https://github.com/tabler/tabler/blob/dev/core/js/tabler-theme.ts), that controls five theme settings. Each setting is read from a URL query parameter or `localStorage`, then applied as a `data-bs-*` attribute on `<html>`. Tabler's CSS reads these attributes to switch styles instantly, with no page reload.
+Tabler includes a small script, [`tabler-theme.js`](https://github.com/tabler/tabler/blob/dev/core/js/tabler-theme.ts), that controls the settings below. Each setting is read from a URL query parameter or `localStorage`, then applied as a `data-bs-*` attribute on `<html>`. Tabler's CSS reads these attributes to switch styles instantly, with no page reload.
 
 | Setting | Attribute | Default | Allowed values |
 | --- | --- | --- | --- |
@@ -19,10 +19,25 @@ Tabler includes a small script, [`tabler-theme.js`](https://github.com/tabler/ta
 | Font family | `data-bs-theme-font` | `sans-serif` | `sans-serif`, `serif`, `monospace`, `comic` |
 | Primary color | `data-bs-theme-primary` | `blue` | `blue`, `azure`, `indigo`, `purple`, `pink`, `red`, `orange`, `yellow`, `lime`, `green`, `teal`, `cyan`, `inverted` |
 | Corner radius | `data-bs-theme-radius` | `1` | `0`, `0.5`, `1`, `1.5`, `2` |
+| Navigation position | `data-bs-navbar-position` | `horizontal` | `horizontal`, `vertical` |
+| Container width | `data-bs-layout` | `default` | `default`, `fluid`, `boxed` |
+| Navbar behavior | `data-bs-navbar` | `default` | `default`, `sticky` |
+| Navbar theme | `data-bs-navbar-theme` | `default` | `default`, `dark` |
+| Sidebar | `data-bs-sidebar` | `default` | `default`, `folded`, `folded-hover` |
+| Sidebar theme | `data-bs-sidebar-theme` | `default` | `default`, `dark` |
 
 The `data-bs-theme-base` colors are the gray palettes that back every other color mode. See [Theme base colors](/ui/plugins/theme-base-colors) for every shade of every palette; this page only covers the script that switches between them.
 
 Each setting only appears on `<html>` when it differs from its default. For example, `data-bs-theme-primary="blue"` is never written because `blue` is already the default - the browser falls back to Tabler's built-in styles instead.
+
+## Layout settings
+
+The last six settings change the page layout rather than its colors, and they need the markup described in [Page layouts](/ui/layout/page-layouts):
+
+- `data-bs-navbar-position` only does something on a page that renders **both** navigations - a vertical `aside.navbar-vertical` and a horizontal navbar, both direct children of `.page`. The CSS shows one and hides the other. A page with a single navbar keeps it, whatever the stored value says, so a stale choice can never leave a page with no navigation.
+- `data-bs-layout` is the attribute form of the `.layout-fluid` and `.layout-boxed` body classes. Use one route or the other, not both.
+- `data-bs-navbar="sticky"` makes the top navbar stick to the top of the viewport while the page scrolls. On the two-row navbar only the top row sticks.
+- `default` on the two theme settings means "follow the page color mode", not "always light". Set `dark` to give the navbar or the sidebar the dark palette on a light page - the same result as putting `data-bs-theme="dark"` on that element in your markup.
 
 ## Setup
 
@@ -56,7 +71,7 @@ With `auto`, the script checks the `prefers-color-scheme` media query once on lo
 
 ## Setting values
 
-You can set any of the five keys in three ways, and they all agree with each other:
+You can set any of these keys in three ways, and they all agree with each other:
 
 1. **URL query parameter** - add `?theme=dark` (or any other key) to the page URL. The script reads it, applies it, and saves it to `localStorage` so it persists on the next visit.
 2. **`localStorage`** - each key is stored under `tabler-<key>`, for example `tabler-theme` or `tabler-theme-primary`. This is what makes the choice persist across page loads once it has been set once, by either method here.
@@ -65,7 +80,7 @@ You can set any of the five keys in three ways, and they all agree with each oth
 A query parameter always wins over what's already stored, and updates the stored value for next time:
 
 ```text
-https://example.com/?theme=dark&theme-primary=azure&theme-radius=0
+https://example.com/?theme=dark&theme-primary=azure&navbar-position=vertical&layout=boxed
 ```
 
 ## Building your own theme switcher
@@ -81,7 +96,7 @@ Tabler's own demo pages ship two working examples you can copy:
 
   Since the theme script reads `theme` straight from the query string, a plain link is enough to switch modes - no JavaScript of your own required. `.hide-theme-dark` and `.hide-theme-light` are used to show only the relevant link for the current mode.
 
-- [`shared/components/demo/ThemeSettings.astro`](https://github.com/tabler/tabler/blob/dev/shared/components/demo/ThemeSettings.astro) is a full settings panel, opened from a floating button, with radios and color swatches for all five keys. It only builds the form markup - the behavior lives in a page-level script in [`shared/layouts/BaseLayout.astro`](https://github.com/tabler/tabler/blob/dev/shared/layouts/BaseLayout.astro) that, on every `change` event:
+- [`shared/components/demo/ThemeSettings.astro`](https://github.com/tabler/tabler/blob/dev/shared/components/demo/ThemeSettings.astro) is a full settings panel, opened from a floating button, with radios and color swatches for every key. It only builds the form markup - the behavior lives in a page-level script in [`shared/layouts/BaseLayout.astro`](https://github.com/tabler/tabler/blob/dev/shared/layouts/BaseLayout.astro) that, on every `change` event:
 
   ```js
   document.documentElement.setAttribute('data-bs-' + key, value)
@@ -101,7 +116,7 @@ document.documentElement.removeAttribute('data-bs-theme')
 window.localStorage.removeItem('tabler-theme')
 ```
 
-`ThemeSettings.astro`'s "Reset changes" button does this for all five keys at once, and also strips them from the URL's query string.
+`ThemeSettings.astro`'s "Reset changes" button does this for every key at once, and also strips them from the URL's query string.
 
 ## Accessibility
 

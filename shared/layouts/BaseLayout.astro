@@ -4,6 +4,7 @@ import { site } from '@shared/lib/site'
 import PageModals from '@shared/components/PageModals.astro'
 import PageScripts from '@shared/components/PageScripts.astro'
 import libs from '@tabler/core/libs.json'
+import { themeDefaults, sidebarOnlyKeys, themeDataAttributes, type ThemeKey } from '@shared/lib/theme-config'
 
 interface Props {
   title?: string | undefined
@@ -17,9 +18,15 @@ interface Props {
   base?: string
   /** <meta name="description"> — falls back to the site description */
   description?: string | undefined
+  /** layout settings the page renders as data-bs-* on <html>; the switcher's stored choice still wins */
+  themeSettings?: Partial<Record<ThemeKey, string | undefined>> | undefined
 }
 
-const { title, pageLibs = [], bodyClass, rtl = false, base = '.', description } = Astro.props
+const { title, pageLibs = [], bodyClass, rtl = false, base = '.', description, themeSettings = {} } = Astro.props
+
+// The page's own layout, in the switcher's vocabulary: rendered before the theme
+// script runs, so a page keeps its variant until the visitor chooses otherwise.
+const themeAttributes = themeDataAttributes(themeSettings)
 
 // Development build: unminified assets, dev favicon.
 const environment = 'development'
@@ -38,7 +45,7 @@ const libJsFiles = (head: boolean) => pageLibEntries.filter(([, lib]) => Boolean
 ---
 
 <!doctype html>
-<html lang="en" dir={rtl ? 'rtl' : undefined}>
+<html lang="en" dir={rtl ? 'rtl' : undefined} {...themeAttributes}>
   <head>
     <!-- BEGIN META -->
     <meta charset="utf-8" />
@@ -118,14 +125,10 @@ const libJsFiles = (head: boolean) => pageLibEntries.filter(([, lib]) => Boolean
     <script is:inline src={`${base}/dist/js/tabler${min}.js`} defer></script>
     <!-- END GLOBAL MANDATORY SCRIPTS -->
 
-    <!-- BEGIN DEMO SCRIPTS -->
-    <script is:inline src={`${base}/preview/js/demo${min}.js`} defer></script>
-    <!-- END DEMO SCRIPTS -->
-
     <PageScripts />
 
     <!-- BEGIN PAGE SCRIPTS -->
-    <script is:inline>
+    <script is:inline define:vars={{ themeDefaults, sidebarOnlyKeys }}>
       /*
 			This script handles the theme settings offcanvas functionality
 			It saves the selected settings to localStorage and applies them to the document
@@ -135,33 +138,65 @@ const libJsFiles = (head: boolean) => pageLibEntries.filter(([, lib]) => Boolean
 			This is just a demo script to show how to implement theme settings. You can modify it as needed.
 			*/
       document.addEventListener('DOMContentLoaded', function () {
-        var themeConfig = {
-          'theme': 'light',
-          'theme-base': 'gray',
-          'theme-font': 'sans-serif',
-          'theme-primary': 'blue',
-          'theme-radius': '1',
-          'sidebar': 'default',
-        }
-
         var url = new URL(window.location)
         var form = document.getElementById('offcanvas-settings')
         var resetButton = document.getElementById('reset-changes')
 
-        var checkItems = function () {
-          for (var key in themeConfig) {
-            var value = window.localStorage['tabler-' + key] || themeConfig[key]
+        // Same rule as the theme script: the default state is the absence of the
+        // attribute, so only a non-default value is written.
+        var applyValue = function (key, value) {
+          var applied = value
 
-            if (!!value) {
-              var radios = form.querySelectorAll(`[name="${key}"]`)
-
-              if (!!radios) {
-                radios.forEach((radio) => {
-                  radio.checked = radio.value === value
-                })
-              }
-            }
+          if (key === 'theme' && value === 'auto') {
+            applied = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
           }
+
+          if (applied !== themeDefaults[key]) {
+            document.documentElement.setAttribute('data-bs-' + key, applied)
+          } else {
+            document.documentElement.removeAttribute('data-bs-' + key)
+          }
+        }
+
+        // Same precedence as the theme script: a stored choice wins, otherwise
+        // the attribute the page rendered for its own layout, otherwise the
+        // default. Reading the attribute matters on the layout demo pages,
+        // where the page states its variant and nothing is stored yet.
+        //
+        // Color mode is the exception: data-bs-theme holds the resolved value,
+        // so "auto" on a light system looks exactly like an explicit "light"
+        // and reading it back would silently turn the default into a choice.
+        var currentValue = function (key) {
+          var stored = window.localStorage['tabler-' + key]
+          var rendered = key === 'theme' ? null : document.documentElement.getAttribute('data-bs-' + key)
+
+          return stored || rendered || themeDefaults[key]
+        }
+
+        // The sidebar settings only do something while the sidebar is on screen.
+        var toggleSidebarSettings = function () {
+          var vertical = currentValue('navbar-position') === 'vertical'
+
+          sidebarOnlyKeys.forEach(function (key) {
+            var fieldset = form.querySelector('[data-theme-setting="' + key + '"]')
+
+            if (fieldset) {
+              fieldset.hidden = !vertical
+            }
+          })
+        }
+
+        var checkItems = function () {
+          for (var key in themeDefaults) {
+            var value = currentValue(key)
+            var radios = form.querySelectorAll('[name="' + key + '"]')
+
+            radios.forEach(function (radio) {
+              radio.checked = radio.value === value
+            })
+          }
+
+          toggleSidebarSettings()
         }
 
         form.addEventListener('change', function (event) {
@@ -169,34 +204,30 @@ const libJsFiles = (head: boolean) => pageLibEntries.filter(([, lib]) => Boolean
             name = target.name,
             value = target.value
 
-          for (var key in themeConfig) {
+          for (var key in themeDefaults) {
             if (name === key) {
-              var applied = value
-              if (key === 'theme' && value === 'auto') {
-                applied = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-              }
-              if (applied !== themeConfig[key]) {
-                document.documentElement.setAttribute('data-bs-' + key, applied)
-              } else {
-                document.documentElement.removeAttribute('data-bs-' + key)
-              }
+              applyValue(key, value)
               window.localStorage.setItem('tabler-' + key, value)
               url.searchParams.set(key, value)
             }
           }
 
+          toggleSidebarSettings()
+          // Plugins that measured the old width (charts, maps) need a nudge.
+          window.dispatchEvent(new Event('resize'))
           window.history.pushState({}, '', url)
         })
 
         resetButton.addEventListener('click', function () {
-          for (var key in themeConfig) {
-            document.documentElement.removeAttribute('data-bs-' + key)
+          for (var key in themeDefaults) {
+            applyValue(key, themeDefaults[key])
             window.localStorage.removeItem('tabler-' + key)
             url.searchParams.delete(key)
           }
 
           checkItems()
 
+          window.dispatchEvent(new Event('resize'))
           window.history.pushState({}, '', url)
         })
 

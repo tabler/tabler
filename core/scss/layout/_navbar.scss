@@ -531,6 +531,18 @@ Navbar side
 }
 
 /**
+Navbar sticky
+ */
+// Runtime route only (data-bs-navbar="sticky" on <html>); static markup wraps
+// the navbar in its own .sticky-top. Just the top bar sticks — on the two-row
+// navbar the menu row scrolls away, so the sticky strip stays one row high.
+html[data-bs-navbar='sticky'] .page > .navbar:not(.navbar-vertical) {
+  position: sticky;
+  top: 0;
+  z-index: $zindex-sticky;
+}
+
+/**
 Navbar vertical
  */
 @if $enable-navbar-vertical {
@@ -554,6 +566,34 @@ Navbar vertical
     ~ .page-wrapper,
     ~ .navbar {
       --sidebar-width: var(--sidebar-folded-width);
+    }
+  }
+
+  // Navbar position (data-bs-navbar-position on <html>). A page can render both
+  // navbars — the vertical aside first, the horizontal navbar(s) after — and
+  // these rules show one of them. Horizontal is the default and writes no
+  // attribute, so its rule matches on the attribute's absence.
+  //
+  // Both rules are guarded with :has() so they only fire on a page that really
+  // renders the other navbar: a page with a single navbar keeps it, whatever a
+  // stale stored choice says, and can never end up with no navigation at all.
+  html:not([data-bs-navbar-position='vertical']) .page:has(> [class*='navbar-expand']:not(.navbar-vertical)) {
+    > .navbar-vertical {
+      display: none;
+    }
+
+    // The hidden aside must leave no gap: its siblings offset themselves by
+    // --sidebar-width, and this declaration sits on the same elements as the
+    // folded copy above, so it wins by coming later.
+    > .navbar,
+    > .page-wrapper {
+      --sidebar-width: 0;
+    }
+  }
+
+  html[data-bs-navbar-position='vertical'] .page:has(> .navbar-vertical) {
+    > [class*='navbar-expand']:not(.navbar-vertical) {
+      display: none;
     }
   }
 

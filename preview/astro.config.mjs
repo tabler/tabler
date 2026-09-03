@@ -114,7 +114,7 @@ export default defineConfig({
           allowDestinationFallback: true,
         },
         {
-          // demo css/js built by this package's sass/vite pipeline, from tmp-assets/
+          // demo css built by this package's sass pipeline, from tmp-assets/
           // (not dist/, which is Astro's own build output — see copy-assets.ts).
           from: path('./tmp-assets'),
           to: path('./public/preview'),
@@ -137,7 +137,7 @@ export default defineConfig({
         { from: path('../core/dist'), to: path('./public/dist') },
         { from: path('../shared/static'), to: path('./public/static') },
       ],
-      // watch:css/watch:js write straight into public/preview — the file is already
+      // watch:css writes straight into public/preview — the file is already
       // in place, but Astro does not reload the browser on public/ changes.
       reloadDirs: [path('./public/preview')],
     }),

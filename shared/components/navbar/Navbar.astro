@@ -14,7 +14,6 @@ interface Props {
 	dark?: boolean | undefined;
 	transparent?: boolean;
 	overlap?: boolean | undefined;
-	sticky?: boolean | undefined;
 	hideBrand?: boolean | undefined;
 	/** use the sample menu (menu-sample.json) instead of the real one */
 	sample?: boolean;
@@ -43,7 +42,6 @@ const {
 	dark = false,
 	transparent = false,
 	overlap = false,
-	sticky = false,
 	hideBrand = false,
 	sample = false,
 	personId,
@@ -63,14 +61,11 @@ const breakpoint = 'md';
 const headerClass = [
 	`navbar navbar-expand-${breakpoint}`,
 	transparent ? 'navbar-transparent' : background && `bg-${background}`,
-	sticky && 'sticky-top',
 	overlap && 'navbar-overlap',
 	className,
 	'd-print-none',
 ]
 ---
-
-{sticky && <Fragment set:html="<div class='sticky-top'>" />}
 
 <!-- BEGIN NAVBAR -->
 <header
@@ -184,5 +179,3 @@ const headerClass = [
 	)
 }
 <!-- END NAVBAR -->
-
-{sticky && <Fragment set:html="</div>" />}
