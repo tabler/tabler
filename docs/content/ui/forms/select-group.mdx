@@ -2,7 +2,7 @@
 title: Select group
 seoTitle: Form select group
 order: 5
-summary: Use selectgroup to make your form more intuitive by providing users with a set of options to choose from. You can add simple selectgroup with a label, use icons only or icons with labels. Alternatively, you can use pill selectgroup if they go well with your design.
+summary: A select group is a set of radios or checkboxes styled as buttons, with a label, an icon or both, in the default or the pill style.
 description: Offer sets of options with select groups - labeled, icon-only, or pill-shaped controls built on checkboxes and radios.
 css-plugins: [payments]
 related: [/ui/plugins/advanced-select, /ui/forms/image-check, /ui/forms/color-check]
@@ -13,7 +13,7 @@ import Icon from '@ui/Icon.astro'
 
 ## Simple selectgroup
 
-To create a simple selectgroup, use the `.form-selectgroup` class. You should add a label to the selectgroup by using the `.form-selectgroup-item` class for the input element and the `.form-selectgroup-label` class for the label.
+Wrap the options in a `.form-selectgroup` element. Each option is a `.form-selectgroup-item` label with a hidden `.form-selectgroup-input` and a `.form-selectgroup-label` for the text.
 
 ```html
 <label class="form-selectgroup-item">
@@ -21,8 +21,6 @@ To create a simple selectgroup, use the `.form-selectgroup` class. You should ad
   <span class="form-selectgroup-label">...</span>
 </label>
 ```
-
-Look at the example below to see how the simple selectgroup works:
 
 <Example centered>
 <div>
@@ -49,7 +47,7 @@ Look at the example below to see how the simple selectgroup works:
 
 ## Multiple choices
 
-You can also create a selectgroup with multiple choices. To do this, change the `type` attribute of the input element to `checkbox`.
+Change the input type to `checkbox` to let the user pick more than one option.
 
 ```html
 <label class="form-selectgroup-item">
@@ -57,8 +55,6 @@ You can also create a selectgroup with multiple choices. To do this, change the 
   <span class="form-selectgroup-label">...</span>
 </label>
 ```
-
-Look at the example below to see how the multiple choices selectgroup works:
 
 <Example centered>
 <div>
@@ -85,7 +81,7 @@ Look at the example below to see how the multiple choices selectgroup works:
 
 ## Icon input
 
-To create an icon input, use the `.form-selectgroup` class. You should add a label to the selectgroup by using the `.form-selectgroup-item` class for the input element and the `.form-selectgroup-label` class for the label. You can use the `.icon` class to style the icon.
+The label can hold an icon instead of text. The markup is the same, with an `.icon` element inside `.form-selectgroup-label`.
 
 ```html
 <label class="form-selectgroup-item">
@@ -96,7 +92,7 @@ To create an icon input, use the `.form-selectgroup` class. You should add a lab
 </label>
 ```
 
-We recommend you use Tabler Icons for the best experience. You can find { site.iconsCount } free icons in the [Tabler Icons](https://tabler.io/icons) library. Just copy the SVG code and paste it into your project.
+The examples use [Tabler Icons](https://tabler.io/icons), which has { site.iconsCount } free icons. Copy the SVG code into the label.
 
 <Example centered>
 <div class="mb-3">
@@ -140,7 +136,7 @@ We recommend you use Tabler Icons for the best experience. You can find { site.i
 </div>
 </Example>
 
-You can also add text to the element. Look at the example below to see how it works:
+An icon and text can go together in one label:
 
 <Example>
 <div class="mb-3">
@@ -170,13 +166,11 @@ You can also add text to the element. Look at the example below to see how it wo
 
 ## Pill selectgroup
 
-If you want to use pill selectgroup, use the `.form-selectgroup-pills` class. All the other classes are the same as in the simple selectgroup.
+Add `.form-selectgroup-pills` to the group for rounded, pill-shaped options. The rest of the markup stays the same.
 
 ```html
 <div class="form-selectgroup form-selectgroup-pills">...</div>
 ```
-
-Look at the example below to see how the pill selectgroup works:
 
 <Example>
 <div class="mb-3">
@@ -204,7 +198,7 @@ Look at the example below to see how the pill selectgroup works:
 
 ## Advanced selectboxes
 
-Use more advanced selectboxes to display the range of available options. You can choose selectboxes with [radio buttons](/ui/forms/elements) if you want users to select only one option, or with checkboxes if they are allowed to choose multiple options.
+`form-selectgroup-boxes` turns each option into a box with a title and a description. Use [radios](/ui/forms/elements) when only one option can be picked and checkboxes when several can.
 
 <Example column>
 <div class="mb-3">
