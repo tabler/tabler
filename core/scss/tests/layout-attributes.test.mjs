@@ -52,14 +52,19 @@ describe('navbar position', () => {
   })
 })
 
-describe('dark navbar and sidebar', () => {
-  it('gives the navbar the dark color mode', () => {
-    expect(flat).toMatch(/html\[data-bs-navbar-theme=dark\] \.page > \.navbar:not\(\.navbar-vertical\)[^{]*\{[^}]*color-scheme: dark/)
+describe('navbar theme', () => {
+  it('gives whichever navigation shows the dark color mode', () => {
+    expect(flat).toMatch(/html\[data-bs-navbar-theme=dark\] \.page > \.navbar[^{]*\{[^}]*color-scheme: dark/)
   })
 
-  it('gives the sidebar the dark navbar variables', () => {
-    // Sass merges the extend into `.navbar[data-bs-theme=dark]`, so the emitted
-    // selector carries both classes.
-    expect(flat).toMatch(/html\[data-bs-sidebar-theme=dark\] \.page > \.navbar\.navbar-vertical[^{]*\{[^}]*--navbar-color/)
+  it('gives the navigation the dark navbar variables', () => {
+    // Sass merges the extend into `.navbar[data-bs-theme=dark]`; the sidebar
+    // is `.navbar.navbar-vertical`, so one selector serves both navigations.
+    expect(flat).toMatch(/html\[data-bs-navbar-theme=dark\] \.page > \.navbar[^{]*\{[^}]*--navbar-color/)
+  })
+
+  it('paints the primary variant on the primary color with the dark palette', () => {
+    expect(flat).toContain('html[data-bs-navbar-theme=primary] .page > .navbar { --navbar-bg: var(--primary); --navbar-border-color: transparent; }')
+    expect(flat).toMatch(/html\[data-bs-navbar-theme=primary\] \.page > \.navbar[^{]*\{[^}]*color-scheme: dark/)
   })
 })

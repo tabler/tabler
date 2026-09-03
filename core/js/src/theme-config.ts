@@ -16,7 +16,6 @@ export const themeDefaults = {
   'navbar-position': 'horizontal',
   'navbar-theme': 'default',
   'sidebar': 'default',
-  'sidebar-theme': 'default',
 } as const
 
 export type ThemeKey = keyof typeof themeDefaults

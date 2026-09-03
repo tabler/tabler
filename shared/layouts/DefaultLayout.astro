@@ -24,8 +24,6 @@ interface Props {
   navbarPosition?: 'horizontal' | 'vertical'
   /** container width: default, fluid or boxed */
   layout?: 'default' | 'fluid' | 'boxed'
-  /** dark sidebar */
-  sidebarDark?: boolean
   /** adds my-auto to the .container-xl */
   containerCentered?: boolean
   /** page-wrapper-full and no .container-xl around the body */
@@ -56,32 +54,8 @@ interface Props {
   navbarSticky?: boolean
 }
 
-const {
-  title,
-  pageLibs,
-  pageHeader,
-  pageHeaderFile,
-  pretitle,
-  description,
-  pageMenu,
-  navbarPosition,
-  layout,
-  sidebarDark,
-  containerCentered,
-  wrapperFull,
-  containerClass,
-  bodyClass,
-  rtl,
-  sidebarEnd,
-  sidebarMode,
-  sidebarFoldToggle,
-  sidebarUser,
-  navbarTransparent,
-  navbarCondensed,
-  navbarDark,
-  navbarOverlap,
-  navbarSticky,
-} = Astro.props
+const { title, pageLibs, pageHeader, pageHeaderFile, pretitle, description, pageMenu, navbarPosition, layout, containerCentered, wrapperFull, containerClass, bodyClass, rtl, sidebarEnd, sidebarMode, sidebarFoldToggle, sidebarUser, navbarTransparent, navbarCondensed, navbarDark, navbarOverlap, navbarSticky } =
+  Astro.props
 
 // Most pages repeat the page title verbatim, so `pageHeader` falls back to `title`.
 // Pages that deliberately have no header (blank, playgrounds) pass pageHeader={false}.
@@ -97,7 +71,6 @@ const themeSettings: Partial<Record<ThemeKey, string | undefined>> = {
   'navbar': navbarSticky ? 'sticky' : undefined,
   'navbar-theme': navbarDark ? 'dark' : undefined,
   'sidebar': sidebarMode,
-  'sidebar-theme': sidebarDark ? 'dark' : undefined,
 }
 ---
 

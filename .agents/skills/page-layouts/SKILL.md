@@ -52,8 +52,7 @@ Every page renders **both** navigations — the vertical sidebar and the horizon
 | `navbarPosition` | `data-bs-navbar-position` — `horizontal` (default) or `vertical` |
 | `layout` | `data-bs-layout` — `fluid` or `boxed` |
 | `navbarSticky` | `data-bs-navbar="sticky"` |
-| `navbarDark` | `data-bs-navbar-theme="dark"` |
-| `sidebarDark` | `data-bs-sidebar-theme="dark"` |
+| `navbarDark` | `data-bs-navbar-theme="dark"` — the dark palette on whichever navigation shows |
 | `sidebarMode` | `data-bs-sidebar` — `folded` or `folded-hover` |
 | `sidebarEnd`, `sidebarFoldToggle`, `sidebarUser` | sidebar markup: end side, pin button, user block |
 | `navbarTransparent`, `navbarCondensed`, `navbarOverlap` | navbar markup variants |

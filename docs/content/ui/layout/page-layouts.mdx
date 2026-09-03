@@ -446,20 +446,21 @@ The CSS then shows one and hides the other, and removes the sidebar's width from
 
 The demo pages use this: every page renders both navigations, and the layout demos state their own variant with the attribute.
 
-### Dark navbar and sidebar
+### Navigation theme
 
 ```html
 <html data-bs-navbar-theme="dark">
-<html data-bs-sidebar-theme="dark">
+<html data-bs-navbar-theme="primary">
 ```
 
-`default` means "follow the page color mode", so the navbar is light on a light page and dark on a dark one. `dark` gives that element the dark palette on a light page, exactly like putting `data-bs-theme="dark"` on the navbar in your markup:
+The attribute colors whichever navigation the page shows - the vertical sidebar is a navbar too. `default` means "follow the page color mode", so the navigation is light on a light page and dark on a dark one. `dark` gives it the dark palette on a light page, exactly like putting `data-bs-theme="dark"` on the navbar in your markup. `primary` paints it in the primary color and keeps the dark text palette, the same look as `.bg-primary` with `data-bs-theme="dark"`:
 
 ```html
 <header class="navbar navbar-expand-md" data-bs-theme="dark">...</header>
+<header class="navbar navbar-expand-md bg-primary" data-bs-theme="dark">...</header>
 ```
 
-A light navbar inside a dark page is not supported - a light-scoped subtree inside a dark page inherits the dark styles.
+A light navigation inside a dark page is not supported - a light-scoped subtree inside a dark page inherits the dark styles.
 
 ## Accessibility
 

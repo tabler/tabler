@@ -22,9 +22,8 @@ Tabler includes a small script, [`tabler-theme.js`](https://github.com/tabler/ta
 | Navigation position | `data-bs-navbar-position` | `horizontal` | `horizontal`, `vertical` |
 | Container width | `data-bs-layout` | `default` | `default`, `fluid`, `boxed` |
 | Navbar behavior | `data-bs-navbar` | `default` | `default`, `sticky` |
-| Navbar theme | `data-bs-navbar-theme` | `default` | `default`, `dark` |
+| Navigation theme | `data-bs-navbar-theme` | `default` | `default`, `dark`, `primary` |
 | Sidebar | `data-bs-sidebar` | `default` | `default`, `folded`, `folded-hover` |
-| Sidebar theme | `data-bs-sidebar-theme` | `default` | `default`, `dark` |
 
 The `data-bs-theme-base` colors are the gray palettes that back every other color mode. See [Theme base colors](/ui/plugins/theme-base-colors) for every shade of every palette; this page only covers the script that switches between them.
 
@@ -32,12 +31,12 @@ Each setting only appears on `<html>` when it differs from its default. For exam
 
 ## Layout settings
 
-The last six settings change the page layout rather than its colors, and they need the markup described in [Page layouts](/ui/layout/page-layouts):
+The last five settings change the page layout rather than its colors, and they need the markup described in [Page layouts](/ui/layout/page-layouts):
 
 - `data-bs-navbar-position` only does something on a page that renders **both** navigations - a vertical `aside.navbar-vertical` and a horizontal navbar, both direct children of `.page`. The CSS shows one and hides the other. A page with a single navbar keeps it, whatever the stored value says, so a stale choice can never leave a page with no navigation.
 - `data-bs-layout` is the attribute form of the `.layout-fluid` and `.layout-boxed` body classes. Use one route or the other, not both.
 - `data-bs-navbar="sticky"` makes the top navbar stick to the top of the viewport while the page scrolls. On the two-row navbar only the top row sticks.
-- `default` on the two theme settings means "follow the page color mode", not "always light". Set `dark` to give the navbar or the sidebar the dark palette on a light page - the same result as putting `data-bs-theme="dark"` on that element in your markup.
+- `data-bs-navbar-theme` colors whichever navigation the page shows, since the vertical sidebar is a navbar too. `default` means "follow the page color mode", not "always light". `dark` gives it the dark palette on a light page - the same result as putting `data-bs-theme="dark"` on the element in your markup. `primary` paints it in the primary color with the dark text palette.
 
 ## Setup
 
@@ -105,7 +104,7 @@ Tabler's own demo pages ship two working examples you can copy:
   window.history.pushState({}, '', url)
   ```
 
-  It sets the attribute immediately, saves it to `localStorage`, and pushes it into the URL without a reload, so a shared link reproduces the same look. Use this as a starting point for your own settings UI - it's meant to be copied and adjusted, not used as-is in production.
+  It sets the attribute immediately, saves it to `localStorage`, and pushes it into the URL without a reload, so a shared link reproduces the same look. Its "Color scheme" tiles are presets: one tile sets `theme` and `navbar-theme` together, and reads as selected only while both keys hold the tile's values. The script knows nothing about presets - they are a convenience of the panel, built on the keys above. Use this as a starting point for your own settings UI - it's meant to be copied and adjusted, not used as-is in production.
 
 ## Resetting the choice
 

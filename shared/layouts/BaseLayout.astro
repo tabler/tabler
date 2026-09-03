@@ -4,7 +4,7 @@ import { site } from '@shared/lib/site'
 import PageModals from '@shared/components/PageModals.astro'
 import PageScripts from '@shared/components/PageScripts.astro'
 import libs from '@tabler/core/libs.json'
-import { themeDefaults, sidebarOnlyKeys, themeDataAttributes, type ThemeKey } from '@shared/lib/theme-config'
+import { themeDefaults, themePresets, sidebarOnlyKeys, navbarOnlyKeys, themeDataAttributes, type ThemeKey } from '@shared/lib/theme-config'
 
 interface Props {
   title?: string | undefined
@@ -128,7 +128,7 @@ const libJsFiles = (head: boolean) => pageLibEntries.filter(([, lib]) => Boolean
     <PageScripts />
 
     <!-- BEGIN PAGE SCRIPTS -->
-    <script is:inline define:vars={{ themeDefaults, sidebarOnlyKeys }}>
+    <script is:inline define:vars={{ themeDefaults, themePresets, sidebarOnlyKeys, navbarOnlyKeys }}>
       /*
 			This script handles the theme settings offcanvas functionality
 			It saves the selected settings to localStorage and applies them to the document
@@ -173,26 +173,50 @@ const libJsFiles = (head: boolean) => pageLibEntries.filter(([, lib]) => Boolean
           return stored || rendered || themeDefaults[key]
         }
 
-        // The sidebar settings only do something while the sidebar is on screen.
+        // Some settings only do something with one of the navigations on
+        // screen; the others are hidden rather than left to do nothing.
         var toggleSidebarSettings = function () {
           var vertical = currentValue('navbar-position') === 'vertical'
+          var setHidden = function (keys, hidden) {
+            keys.forEach(function (key) {
+              var fieldset = form.querySelector('[data-theme-setting="' + key + '"]')
 
-          sidebarOnlyKeys.forEach(function (key) {
-            var fieldset = form.querySelector('[data-theme-setting="' + key + '"]')
+              if (fieldset) {
+                fieldset.hidden = hidden
+              }
+            })
+          }
 
-            if (fieldset) {
-              fieldset.hidden = !vertical
-            }
+          setHidden(sidebarOnlyKeys, !vertical)
+          setHidden(navbarOnlyKeys, vertical)
+        }
+
+        var setValue = function (key, value) {
+          applyValue(key, value)
+          window.localStorage.setItem('tabler-' + key, value)
+          url.searchParams.set(key, value)
+        }
+
+        // A preset tile stands for several keys; it reads as checked only
+        // while every one of them holds the tile's value.
+        var presetMatches = function (values) {
+          return Object.keys(values).every(function (key) {
+            return currentValue(key) === values[key]
           })
         }
 
         var checkItems = function () {
           for (var key in themeDefaults) {
             var value = currentValue(key)
-            var radios = form.querySelectorAll('[name="' + key + '"]')
 
-            radios.forEach(function (radio) {
+            form.querySelectorAll('[name="' + key + '"]').forEach(function (radio) {
               radio.checked = radio.value === value
+            })
+          }
+
+          for (var name in themePresets) {
+            form.querySelectorAll('[name="' + name + '"]').forEach(function (radio) {
+              radio.checked = presetMatches(themePresets[name][radio.value])
             })
           }
 
@@ -204,12 +228,14 @@ const libJsFiles = (head: boolean) => pageLibEntries.filter(([, lib]) => Boolean
             name = target.name,
             value = target.value
 
-          for (var key in themeDefaults) {
-            if (name === key) {
-              applyValue(key, value)
-              window.localStorage.setItem('tabler-' + key, value)
-              url.searchParams.set(key, value)
+          if (name in themePresets) {
+            var values = themePresets[name][value]
+
+            for (var presetKey in values) {
+              setValue(presetKey, values[presetKey])
             }
+          } else if (name in themeDefaults) {
+            setValue(name, value)
           }
 
           toggleSidebarSettings()

@@ -2,4 +2,4 @@
 "@tabler/core": minor
 ---
 
-Added `data-bs-layout`, `data-bs-navbar-position`, `data-bs-navbar-theme` and `data-bs-sidebar-theme` layout settings.
+Added the `data-bs-layout`, `data-bs-navbar-position`, `data-bs-navbar` and `data-bs-navbar-theme` layout settings.

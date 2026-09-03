@@ -17,21 +17,34 @@ export interface ThemeOption {
   label: string
 }
 
+/**
+ * A preset is one tile that sets several settings at once, the way AppStack's
+ * "color scheme" picks the page theme and the sidebar theme together. The
+ * switcher script knows nothing about presets: the panel expands one into
+ * the keys it stands for, and reads the tile back from those keys.
+ */
+export interface ThemePreset extends ThemeOption {
+  values: Partial<Record<ThemeKey, string>>
+}
+
 export interface ThemeSetting {
-  key: ThemeKey
+  /** input name; a real switcher key, or the preset group's own name */
+  key: ThemeKey | string
   /** fieldset legend */
   legend: string
   /** help text under the legend */
   hint: string
-  /** 'radio' renders labelled radios, 'color' renders color swatches */
-  control: 'radio' | 'color'
-  options: ThemeOption[]
+  /** 'radio' renders chips, 'color' renders color swatches, 'preset' renders illustrated tiles that set several keys */
+  control: 'radio' | 'color' | 'preset'
+  options: ThemeOption[] | ThemePreset[]
   /**
    * Only meaningful while the sidebar is on screen; the panel hides these
    * settings when the navigation is horizontal, the way Dashkit hides its
    * sidebar sizing group.
    */
   sidebarOnly?: boolean
+  /** Only meaningful with the top navbar; hidden while the navigation is vertical. */
+  navbarOnly?: boolean
 }
 
 export interface ThemeSection {
@@ -49,37 +62,43 @@ export const themeSections: ThemeSection[] = [
     title: 'Appearance',
     settings: [
       {
-        key: 'theme',
-        legend: 'Color mode',
-        hint: 'Choose the color mode for your app.',
-        control: 'radio',
-        options: autoOptions(['light', 'dark', 'auto']),
+        key: 'scheme',
+        legend: 'Color scheme',
+        hint: 'The page and its navigation, in one pick.',
+        control: 'preset',
+        options: [
+          { value: 'auto', label: 'Auto', values: { 'theme': 'auto', 'navbar-theme': 'default' } },
+          { value: 'light', label: 'Light', values: { 'theme': 'light', 'navbar-theme': 'default' } },
+          { value: 'dark', label: 'Dark', values: { 'theme': 'dark', 'navbar-theme': 'default' } },
+          { value: 'dark-nav', label: 'Dark nav', values: { 'theme': 'light', 'navbar-theme': 'dark' } },
+          { value: 'colored', label: 'Colored', values: { 'theme': 'light', 'navbar-theme': 'primary' } },
+        ],
       },
       {
         key: 'theme-primary',
-        legend: 'Color scheme',
-        hint: 'The perfect color mode for your app.',
+        legend: 'Accent color',
+        hint: 'The accent color used across the app.',
         control: 'color',
         options: autoOptions([...site.themeColors, 'inverted']),
       },
       {
         key: 'theme-font',
         legend: 'Font family',
-        hint: 'Choose the font family that fits your app.',
+        hint: 'The typeface used across the app.',
         control: 'radio',
         options: autoOptions(site.themeFonts),
       },
       {
         key: 'theme-base',
         legend: 'Theme base',
-        hint: 'Choose the gray shade for your app.',
+        hint: 'The gray palette behind every surface.',
         control: 'radio',
         options: autoOptions(site.themeBases),
       },
       {
         key: 'theme-radius',
         legend: 'Corner radius',
-        hint: 'Choose the border radius factor for your app.',
+        hint: 'How round corners are drawn.',
         control: 'radio',
         options: site.themeRadiuses.map((value) => ({ value, label: value })),
       },
@@ -91,7 +110,7 @@ export const themeSections: ThemeSection[] = [
       {
         key: 'navbar-position',
         legend: 'Navigation',
-        hint: 'Choose where the main menu lives.',
+        hint: 'Where the main menu lives.',
         control: 'radio',
         options: [
           { value: 'horizontal', label: 'Top navbar' },
@@ -101,31 +120,25 @@ export const themeSections: ThemeSection[] = [
       {
         key: 'layout',
         legend: 'Container width',
-        hint: 'Choose how wide the page content runs.',
+        hint: 'How wide the page content runs.',
         control: 'radio',
         options: autoOptions(['default', 'fluid', 'boxed']),
       },
       {
         key: 'navbar',
         legend: 'Navbar behavior',
-        hint: 'Keep the top navbar visible while scrolling.',
+        hint: 'Keep the navbar visible while scrolling.',
         control: 'radio',
+        navbarOnly: true,
         options: [
           { value: 'default', label: 'Default' },
           { value: 'sticky', label: 'Sticky' },
         ],
       },
       {
-        key: 'navbar-theme',
-        legend: 'Navbar theme',
-        hint: 'Default follows the color mode.',
-        control: 'radio',
-        options: autoOptions(['default', 'dark']),
-      },
-      {
         key: 'sidebar',
         legend: 'Sidebar',
-        hint: 'Choose how the vertical sidebar behaves.',
+        hint: 'How the sidebar behaves.',
         control: 'radio',
         sidebarOnly: true,
         options: [
@@ -134,14 +147,6 @@ export const themeSections: ThemeSection[] = [
           { value: 'folded-hover', label: 'Folded with hover' },
         ],
       },
-      {
-        key: 'sidebar-theme',
-        legend: 'Sidebar theme',
-        hint: 'Default follows the color mode.',
-        control: 'radio',
-        sidebarOnly: true,
-        options: autoOptions(['default', 'dark']),
-      },
     ],
   },
 ]
@@ -149,8 +154,14 @@ export const themeSections: ThemeSection[] = [
 /** Every setting, in panel order. */
 export const themeSettings: ThemeSetting[] = themeSections.flatMap((section) => section.settings)
 
-/** Settings the panel hides while the navigation is horizontal. */
-export const sidebarOnlyKeys: ThemeKey[] = themeSettings.filter((setting) => setting.sidebarOnly).map((setting) => setting.key)
+/** The preset groups, keyed by input name: tile value -> the keys and values it sets. */
+export const themePresets: Record<string, Record<string, Partial<Record<ThemeKey, string>>>> = Object.fromEntries(themeSettings.filter((setting) => setting.control === 'preset').map((setting) => [setting.key, Object.fromEntries((setting.options as ThemePreset[]).map((option) => [option.value, option.values]))]))
+
+/** Input names of the settings the panel hides while the navigation is horizontal. */
+export const sidebarOnlyKeys: string[] = themeSettings.filter((setting) => setting.sidebarOnly).map((setting) => setting.key)
+
+/** Input names of the settings the panel hides while the navigation is vertical. */
+export const navbarOnlyKeys: string[] = themeSettings.filter((setting) => setting.navbarOnly).map((setting) => setting.key)
 
 /**
  * Builds the `data-bs-*` attributes a page renders on <html> to express its own
