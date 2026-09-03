@@ -54,14 +54,14 @@ Every page renders **both** navigations — the vertical sidebar and the horizon
 | `navbarSticky` | `data-bs-navbar="sticky"` |
 | `navbarDark` | `data-bs-navbar-theme="dark"` — the dark palette on whichever navigation shows |
 | `sidebarMode` | `data-bs-sidebar` — `folded` or `folded-hover` |
-| `sidebarEnd`, `sidebarFoldToggle`, `sidebarUser` | sidebar markup: end side, pin button, user block |
+| `sidebarEnd`, `sidebarFoldToggle` | sidebar markup: end side, pin button |
 | `navbarTransparent`, `navbarCondensed`, `navbarOverlap` | navbar markup variants |
 | `wrapperFull` | `page-wrapper-full`, drops the `.container-xl` around the body |
 | `containerCentered`, `containerClass` | `my-auto` / extra classes on the `.container-xl` |
 | `bodyClass` | free-form body classes; use `layout` for the container width |
 | `rtl` | `dir="rtl"` plus the RTL stylesheets |
 
-There is no `sidebar` or `hideTopbar` prop any more: which navigation shows is `navbarPosition`, not which one is rendered.
+There is no `sidebar`, `hideTopbar` or `sidebarUser` prop any more: which navigation shows is `navbarPosition`, not which one is rendered, and the sidebar always carries the user block, like the navbar always carries the user menu.
 
 ## 4. The page-header slot
 

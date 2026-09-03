@@ -40,8 +40,6 @@ interface Props {
   sidebarMode?: 'folded' | 'folded-hover'
   /** renders the runtime fold toggle button in the sidebar */
   sidebarFoldToggle?: boolean
-  /** user block in the sidebar footer */
-  sidebarUser?: boolean
   /** transparent sidebar */
   navbarTransparent?: boolean
   /** condensed single-row navbar */
@@ -54,8 +52,7 @@ interface Props {
   navbarSticky?: boolean
 }
 
-const { title, pageLibs, pageHeader, pageHeaderFile, pretitle, description, pageMenu, navbarPosition, layout, containerCentered, wrapperFull, containerClass, bodyClass, rtl, sidebarEnd, sidebarMode, sidebarFoldToggle, sidebarUser, navbarTransparent, navbarCondensed, navbarDark, navbarOverlap, navbarSticky } =
-  Astro.props
+const { title, pageLibs, pageHeader, pageHeaderFile, pretitle, description, pageMenu, navbarPosition, layout, containerCentered, wrapperFull, containerClass, bodyClass, rtl, sidebarEnd, sidebarMode, sidebarFoldToggle, navbarTransparent, navbarCondensed, navbarDark, navbarOverlap, navbarSticky } = Astro.props
 
 // Most pages repeat the page title verbatim, so `pageHeader` falls back to `title`.
 // Pages that deliberately have no header (blank, playgrounds) pass pageHeader={false}.
@@ -77,7 +74,7 @@ const themeSettings: Partial<Record<ThemeKey, string | undefined>> = {
 <BaseLayout title={title} pageLibs={pageLibs} bodyClass={bodyClass} rtl={rtl} description={description} themeSettings={themeSettings}>
   <div class="page">
     <!--  BEGIN SIDEBAR  -->
-    <Sidebar end={sidebarEnd} transparent={navbarTransparent} foldToggle={sidebarFoldToggle} user={sidebarUser} breakpoint="lg" pageMenu={pageMenu} />
+    <Sidebar end={sidebarEnd} transparent={navbarTransparent} foldToggle={sidebarFoldToggle} breakpoint="lg" pageMenu={pageMenu} />
     <!--  END SIDEBAR  -->
 
     <!-- BEGIN NAVBAR  -->

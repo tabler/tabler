@@ -347,6 +347,14 @@ Navbar
       @include media-breakpoint-down(breakpoint-next($breakpoint)) {
         @include navbar-vertical-nav();
 
+        // Below the breakpoint the vertical navbar is a top bar row: toggler,
+        // brand, and whatever trails them (a user block, or nothing). Auto
+        // margins keep the brand centered either way — space-between alone
+        // would push it to the far edge when nothing follows it.
+        &.navbar-vertical .navbar-brand {
+          margin-inline: auto;
+        }
+
         // Below the breakpoint the navbar-footer sits in the top bar row:
         // the avatar alone, with its menu dropping down instead of up.
         .navbar-footer {
