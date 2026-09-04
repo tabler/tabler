@@ -18,7 +18,7 @@ const repoRoot = join(__dirname, '..')
 
 const sections = [
   { dir: 'core', title: 'Core changes' },
-  { dir: 'preview', title: 'Preview changes' },
+  { dir: 'preview', title: 'Demo changes' },
   { dir: 'docs', title: 'Docs changes' },
 ]
 

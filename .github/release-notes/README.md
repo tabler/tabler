@@ -6,13 +6,13 @@ The release workflow writes the GitHub release body from two parts:
    example `1.5.0.md`. It is optional. Write it before the `chore: update
    versions` pull request is merged, because the workflow reads it from the
    commit it publishes.
-2. **The changes** — `## Core changes`, `## Preview changes` and `## Docs
+2. **The changes** — `## Core changes`, `## Demo changes` and `## Docs
    changes`, built by `pnpm run release-notes` from the three `CHANGELOG.md`
    files. Never write these by hand.
 
 A changeset that bumps several packages ends up in each of their changelogs, so
 the script shows every entry once: under Core if core is involved, otherwise
-under Preview, otherwise under Docs. The `Minor Changes` / `Patch Changes` split
+under Demo, otherwise under Docs. The `Minor Changes` / `Patch Changes` split
 is dropped — each package gets one flat list.
 
 The workflow also renames the release from `@tabler/core@1.5.0` to
