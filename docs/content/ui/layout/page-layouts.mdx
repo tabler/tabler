@@ -244,6 +244,26 @@ Group related menu items with a label. Add a `nav-section-title` list item befor
 
 The label is aligned with the item text and muted, so it does not compete with the links. In the folded sidebar, the label text is replaced with a short separator line centered in the gap between the groups, and the label keeps its height, so the menu does not shift when the sidebar folds. Section labels render only in vertical navbars - a horizontal navbar hides them.
 
+### Trailing entries
+
+A `.navbar-side` wrapper with its own `.navbar-nav` after the menu is the sidebar's trailing group: a Customize link, a help link, anything that belongs at the end rather than in the menu. It stacks like the menu and never grows, and when the menu is shorter than the sidebar it is pinned to the bottom of the scroll area. In a horizontal navbar the same class lays the group out as a row on the end side.
+
+```html
+<nav class="collapse navbar-collapse" id="sidebar-menu">
+  <ul class="navbar-nav">...</ul>
+  <div class="navbar-side">
+    <ul class="navbar-nav">
+      <li class="nav-item">
+        <button type="button" class="nav-link" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-settings">
+          <span class="nav-link-icon"><svg><!-- brush icon --></svg></span>
+          <span class="nav-link-title">Customize</span>
+        </button>
+      </li>
+    </ul>
+  </div>
+</nav>
+```
+
 ### Sidebar footer and user block
 
 The vertical sidebar has three zones: the brand at the top, the nav as its own scroll area, and an optional `navbar-footer` pinned at the bottom. A common use is a user block with a drop-up menu:
@@ -393,6 +413,74 @@ document.addEventListener('tabler:sidebar-folded', (event) => {
 ```
 
 You can also add tooltips with the link title to icon-only links, so users see the name of each item on hover.
+
+## Layout options
+
+Beyond the sidebar, four more layout choices are available as attributes on `<html>`, applied before the page renders by [`tabler-theme.js`](/ui/getting-started/color-modes). Every one of them has a static route too, so you can hard-code a layout without any JavaScript.
+
+### Container width
+
+The page content runs at the container's normal width by default. Set `fluid` to let every container fill the viewport, or `boxed` to center the whole page in a frame:
+
+```html
+<!-- attribute route, switchable at runtime -->
+<html data-bs-layout="fluid">
+<html data-bs-layout="boxed">
+
+<!-- class route, fixed in the markup -->
+<body class="layout-fluid">
+<body class="layout-boxed">
+```
+
+Use one route or the other, not both. The boxed frame is the containing block of a vertical navbar, so a sidebar stays inside the frame instead of pinning to the viewport - it scrolls with the frame rather than staying fixed.
+
+### Sticky navbar
+
+`data-bs-navbar="sticky"` keeps the top navbar at the top of the viewport while the page scrolls:
+
+```html
+<html data-bs-navbar="sticky">
+```
+
+Only the navbar that is a direct child of `.page` sticks. On the two-row navbar the menu row scrolls away underneath, so the sticky strip stays one row high. Without the attribute you can still wrap a navbar in your own `.sticky-top` element.
+
+### Navigation position
+
+`data-bs-navbar-position` picks which navigation the page shows:
+
+```html
+<html data-bs-navbar-position="vertical">
+```
+
+This one needs the markup to cooperate. Render **both** navigations as direct children of `.page`, the vertical `aside` first:
+
+```html
+<div class="page">
+  <aside class="navbar navbar-vertical navbar-expand-lg">...</aside>
+  <header class="navbar navbar-expand-md">...</header>
+  <div class="page-wrapper">...</div>
+</div>
+```
+
+The CSS then shows one and hides the other, and removes the sidebar's width from the page offset when the sidebar is hidden. Both rules only fire when the other navigation really is on the page, so a page with a single navbar keeps it whatever the stored value says. That is what makes the layout safe to switch at runtime: no stored choice can leave a visitor with no navigation.
+
+The demo pages use this: every page renders both navigations, and the layout demos state their own variant with the attribute.
+
+### Navigation theme
+
+```html
+<html data-bs-navbar-theme="dark">
+<html data-bs-navbar-theme="primary">
+```
+
+The attribute colors whichever navigation the page shows - the vertical sidebar is a navbar too. `default` means "follow the page color mode", so the navigation is light on a light page and dark on a dark one. `dark` gives it the dark palette on a light page, exactly like putting `data-bs-theme="dark"` on the navbar in your markup. `primary` paints it in the primary color and keeps the dark text palette, the same look as `.bg-primary` with `data-bs-theme="dark"`:
+
+```html
+<header class="navbar navbar-expand-md" data-bs-theme="dark">...</header>
+<header class="navbar navbar-expand-md bg-primary" data-bs-theme="dark">...</header>
+```
+
+A light navigation inside a dark page is not supported - a light-scoped subtree inside a dark page inherits the dark styles.
 
 ## Accessibility
 

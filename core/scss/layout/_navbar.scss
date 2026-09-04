@@ -47,6 +47,16 @@
       background: var(--navbar-active-bg);
     }
 
+    // A group that only holds the current page is emphasized, not filled: the
+    // pill marks the page itself, and painting the group with the same pill
+    // reads as two selections. The folded rail puts it back — there the titles
+    // are collapsed and the submenu is a flyout, so the pill is the only thing
+    // left that can point at the group.
+    // stylelint-disable-next-line selector-max-class
+    .nav-item.active > .nav-link.dropdown-toggle {
+      background: transparent;
+    }
+
     // Group label — aligned with the item text, muted like the icons.
     .nav-section-title {
       display: block;
@@ -61,6 +71,24 @@
       &:first-child {
         margin-top: 0;
       }
+    }
+  }
+
+  // .navbar-side wraps the menu's trailing group (a Customize link, a help
+  // link) in its own .navbar-nav. The base rule lays it out as a row for the
+  // horizontal navbar; here it stacks like the menu, never grows, and the
+  // auto margin pins it to the bottom of the scroll area when the menu is
+  // shorter than the sidebar.
+  .navbar-side {
+    flex-grow: 0;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: start;
+    padding-bottom: 0.25rem;
+    margin-top: auto;
+
+    .navbar-nav {
+      flex-grow: 0;
     }
   }
 
@@ -163,6 +191,15 @@
   // the same way.
   .navbar-nav .nav-link {
     --nav-link-icon-margin-end: 0;
+  }
+
+  // Only icons are readable in the rail, so the group holding the current page
+  // takes the pill back — the emphasis the expanded sidebar carries on the
+  // title alone cannot be seen here. Scoped through .navbar-nav to match the
+  // specificity of the rule it overrides, which wins on source order.
+  // stylelint-disable-next-line selector-max-class
+  .navbar-nav .nav-item.active > .nav-link.dropdown-toggle {
+    background: var(--navbar-active-bg);
   }
 
   // Collapsed, not display: none — titles stay in the accessibility tree.
@@ -327,6 +364,20 @@ Navbar
     &#{$infix} {
       @include media-breakpoint-down(breakpoint-next($breakpoint)) {
         @include navbar-vertical-nav();
+
+        // Below the breakpoint the vertical navbar is a top bar row: toggler,
+        // brand, and whatever trails them (a user block, or nothing). Auto
+        // margins keep the brand centered either way — space-between alone
+        // would push it to the far edge when nothing follows it.
+        &.navbar-vertical .navbar-brand {
+          margin-inline: auto;
+        }
+
+        // In the stacked mobile menu nothing pins the trailing group to the
+        // bottom, so a small gap marks it as a separate part of the menu.
+        &.navbar-vertical .navbar-side {
+          margin-top: $sidebar-inset;
+        }
 
         // Below the breakpoint the navbar-footer sits in the top bar row:
         // the avatar alone, with its menu dropping down instead of up.
@@ -522,12 +573,39 @@ Navbar nav
 /**
 Navbar side
  */
+// The group at the end of a navbar: a row on the end side of a horizontal
+// navbar. In a vertical navbar the same class pins the group to the bottom
+// of the menu — see navbar-vertical-nav().
 .navbar-side {
   display: flex;
   flex-direction: row;
   align-items: center;
   justify-content: space-around;
   margin: 0;
+}
+
+/**
+Navbar sticky
+ */
+// Runtime route only (data-bs-navbar="sticky" on <html>); static markup wraps
+// the navbar in its own .sticky-top. Just the top bar sticks — on the two-row
+// navbar the menu row scrolls away, so the sticky strip stays one row high.
+html[data-bs-navbar='sticky'] .page > .navbar:not(.navbar-vertical) {
+  position: sticky;
+  top: 0;
+  z-index: $zindex-sticky;
+}
+
+/**
+Navbar primary
+ */
+// Runtime route only (data-bs-navbar-theme="primary" on <html>): the primary
+// color as the navbar surface. The text palette comes from the dark color
+// mode, which _extends.scss applies to the same selector; static markup gets
+// the same look from .bg-primary with data-bs-theme="dark" on the navbar.
+html[data-bs-navbar-theme='primary'] .page > .navbar {
+  --navbar-bg: var(--primary);
+  --navbar-border-color: transparent;
 }
 
 /**
@@ -554,6 +632,34 @@ Navbar vertical
     ~ .page-wrapper,
     ~ .navbar {
       --sidebar-width: var(--sidebar-folded-width);
+    }
+  }
+
+  // Navbar position (data-bs-navbar-position on <html>). A page can render both
+  // navbars — the vertical aside first, the horizontal navbar(s) after — and
+  // these rules show one of them. Horizontal is the default and writes no
+  // attribute, so its rule matches on the attribute's absence.
+  //
+  // Both rules are guarded with :has() so they only fire on a page that really
+  // renders the other navbar: a page with a single navbar keeps it, whatever a
+  // stale stored choice says, and can never end up with no navigation at all.
+  html:not([data-bs-navbar-position='vertical']) .page:has(> [class*='navbar-expand']:not(.navbar-vertical)) {
+    > .navbar-vertical {
+      display: none;
+    }
+
+    // The hidden aside must leave no gap: its siblings offset themselves by
+    // --sidebar-width, and this declaration sits on the same elements as the
+    // folded copy above, so it wins by coming later.
+    > .navbar,
+    > .page-wrapper {
+      --sidebar-width: 0;
+    }
+  }
+
+  html[data-bs-navbar-position='vertical'] .page:has(> .navbar-vertical) {
+    > [class*='navbar-expand']:not(.navbar-vertical) {
+      display: none;
     }
   }
 

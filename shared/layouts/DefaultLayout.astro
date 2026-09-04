@@ -4,6 +4,7 @@ import Navbar from '@shared/components/navbar/Navbar.astro'
 import Sidebar from '@shared/components/navbar/Sidebar.astro'
 import PageHeader from '@shared/components/layout/PageHeader.astro'
 import Footer from '@shared/components/layout/Footer.astro'
+import type { ThemeKey } from '@shared/lib/theme-config'
 
 interface Props {
   title?: string | undefined
@@ -19,32 +20,26 @@ interface Props {
   description?: string | undefined
   /** active menu entry, e.g. "layout.vertical" */
   pageMenu?: string | undefined
-  /** renders the vertical sidebar */
-  sidebar?: boolean
-  /** dark sidebar */
-  sidebarDark?: boolean
-  /** hides the top navbar */
-  hideTopbar?: boolean
+  /** where the main menu lives: the top navbar or the vertical sidebar */
+  navbarPosition?: 'horizontal' | 'vertical'
+  /** container width: default, fluid or boxed */
+  layout?: 'default' | 'fluid' | 'boxed'
   /** adds my-auto to the .container-xl */
   containerCentered?: boolean
   /** page-wrapper-full and no .container-xl around the body */
   wrapperFull?: boolean
   /** extra classes on the .container-xl */
   containerClass?: string
-  /** extra body classes, e.g. "layout-boxed" or "layout-fluid" */
+  /** extra body classes */
   bodyClass?: string
   /** dir="rtl" and the RTL stylesheets */
   rtl?: boolean
   /** sidebar on the end side */
   sidebarEnd?: boolean
-  /** icon-only sidebar rail with flyout submenus */
-  sidebarFolded?: boolean
-  /** folded rail that unfolds on hover/focus */
-  sidebarFoldedHover?: boolean
+  /** icon-only sidebar rail: folded, or folded until hovered */
+  sidebarMode?: 'folded' | 'folded-hover'
   /** renders the runtime fold toggle button in the sidebar */
   sidebarFoldToggle?: boolean
-  /** user block in the sidebar footer */
-  sidebarUser?: boolean
   /** transparent sidebar */
   navbarTransparent?: boolean
   /** condensed single-row navbar */
@@ -55,68 +50,36 @@ interface Props {
   navbarOverlap?: boolean
   /** sticky navbar */
   navbarSticky?: boolean
-  /** hides the brand in the navbar */
-  navbarHideBrand?: boolean
-  /** extra classes on the navbar */
-  navbarClass?: string
 }
 
-const {
-  title,
-  pageLibs,
-  pageHeader,
-  pageHeaderFile,
-  pretitle,
-  description,
-  pageMenu,
-  sidebar,
-  sidebarDark,
-  hideTopbar,
-  containerCentered,
-  wrapperFull,
-  containerClass,
-  bodyClass,
-  rtl,
-  sidebarEnd,
-  sidebarFolded,
-  sidebarFoldedHover,
-  sidebarFoldToggle,
-  sidebarUser,
-  navbarTransparent,
-  navbarCondensed,
-  navbarDark,
-  navbarOverlap,
-  navbarSticky,
-  navbarHideBrand,
-  navbarClass,
-} = Astro.props
+const { title, pageLibs, pageHeader, pageHeaderFile, pretitle, description, pageMenu, navbarPosition, layout, containerCentered, wrapperFull, containerClass, bodyClass, rtl, sidebarEnd, sidebarMode, sidebarFoldToggle, navbarTransparent, navbarCondensed, navbarDark, navbarOverlap, navbarSticky } = Astro.props
 
 // Most pages repeat the page title verbatim, so `pageHeader` falls back to `title`.
 // Pages that deliberately have no header (blank, playgrounds) pass pageHeader={false}.
 const headerTitle = pageHeader === false ? undefined : (pageHeader ?? title)
+
+// The page always renders both navigations and states its own layout as
+// data-bs-* attributes on <html>; CSS shows one of them. That is what lets the
+// theme settings panel switch the layout at runtime on any page — see
+// `shared/lib/theme-config.ts`.
+const themeSettings: Partial<Record<ThemeKey, string | undefined>> = {
+  'navbar-position': navbarPosition,
+  'layout': layout,
+  'navbar': navbarSticky ? 'sticky' : undefined,
+  'navbar-theme': navbarDark ? 'dark' : undefined,
+  'sidebar': sidebarMode,
+}
 ---
 
-<BaseLayout title={title} pageLibs={pageLibs} bodyClass={bodyClass} rtl={rtl} description={description}>
+<BaseLayout title={title} pageLibs={pageLibs} bodyClass={bodyClass} rtl={rtl} description={description} themeSettings={themeSettings}>
   <div class="page">
-    {
-      sidebar && (
-        <Fragment>
-          <Fragment set:html={'<!--  BEGIN SIDEBAR  -->'} />
-          <Sidebar dark={sidebarDark} end={sidebarEnd} transparent={navbarTransparent} folded={sidebarFolded} foldedHover={sidebarFoldedHover} foldToggle={sidebarFoldToggle} user={sidebarUser} breakpoint="lg" pageMenu={pageMenu} />
-          <Fragment set:html={'<!--  END SIDEBAR  -->'} />
-        </Fragment>
-      )
-    }
+    <!--  BEGIN SIDEBAR  -->
+    <Sidebar end={sidebarEnd} transparent={navbarTransparent} foldToggle={sidebarFoldToggle} breakpoint="lg" pageMenu={pageMenu} />
+    <!--  END SIDEBAR  -->
 
-    {
-      !hideTopbar && (
-        <Fragment>
-          <Fragment set:html={'<!-- BEGIN NAVBAR  -->'} />
-          <Navbar hideSearch pageMenu={pageMenu} condensed={navbarCondensed} dark={navbarDark} overlap={navbarOverlap} sticky={navbarSticky} hideBrand={navbarHideBrand} class={navbarClass} />
-          <Fragment set:html={'<!-- END NAVBAR  -->'} />
-        </Fragment>
-      )
-    }
+    <!-- BEGIN NAVBAR  -->
+    <Navbar hideSearch pageMenu={pageMenu} condensed={navbarCondensed} overlap={navbarOverlap} />
+    <!-- END NAVBAR  -->
 
     <div class:list={['page-wrapper', wrapperFull && 'page-wrapper-full']}>
       <!-- BEGIN PAGE HEADER -->

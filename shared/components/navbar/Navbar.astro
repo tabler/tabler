@@ -14,7 +14,6 @@ interface Props {
 	dark?: boolean | undefined;
 	transparent?: boolean;
 	overlap?: boolean | undefined;
-	sticky?: boolean | undefined;
 	hideBrand?: boolean | undefined;
 	/** use the sample menu (menu-sample.json) instead of the real one */
 	sample?: boolean;
@@ -43,7 +42,6 @@ const {
 	dark = false,
 	transparent = false,
 	overlap = false,
-	sticky = false,
 	hideBrand = false,
 	sample = false,
 	personId,
@@ -63,14 +61,11 @@ const breakpoint = 'md';
 const headerClass = [
 	`navbar navbar-expand-${breakpoint}`,
 	transparent ? 'navbar-transparent' : background && `bg-${background}`,
-	sticky && 'sticky-top',
 	overlap && 'navbar-overlap',
 	className,
 	'd-print-none',
 ]
 ---
-
-{sticky && <Fragment set:html="<div class='sticky-top'>" />}
 
 <!-- BEGIN NAVBAR -->
 <header
@@ -155,26 +150,26 @@ const headerClass = [
 							)}
 
 							<div class="col col-md-auto">
-								<!-- BEGIN NAVBAR NAV -->
-								<ul class="navbar-nav">
-									<li class="nav-item">
-										<a
-											class="nav-link"
-											href="#"
-											data-bs-toggle="offcanvas"
-											data-bs-target="#offcanvas-settings"
-										>
-											<span class="badge badge-sm bg-red text-red-fg">
-												New
-											</span>
-											<span class="nav-link-icon">
-												<Icon name="settings" />
-											</span>
-											<span class="nav-link-title"> Theme Settings </span>
-										</a>
-									</li>
-								</ul>
-								<!-- END NAVBAR NAV -->
+								<!-- BEGIN NAVBAR SIDE -->
+								<div class="navbar-side">
+									<ul class="navbar-nav">
+										<li class="nav-item">
+											<button
+												type="button"
+												class="nav-link"
+												data-bs-toggle="offcanvas"
+												data-bs-target="#offcanvas-settings"
+												aria-controls="offcanvas-settings"
+											>
+												<span class="nav-link-icon">
+													<Icon name="brush" />
+												</span>
+												<span class="nav-link-title">Customize</span>
+											</button>
+										</li>
+									</ul>
+								</div>
+								<!-- END NAVBAR SIDE -->
 							</div>
 						</div>
 					</div>
@@ -184,5 +179,3 @@ const headerClass = [
 	)
 }
 <!-- END NAVBAR -->
-
-{sticky && <Fragment set:html="</div>" />}

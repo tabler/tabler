@@ -38,7 +38,11 @@ body {
 //
 // Fluid container
 //
-.layout-fluid {
+// Two routes to the same state, like the folded sidebar: a class on the body
+// (static markup) or data-bs-layout on <html>, set pre-render from localStorage
+// by tabler-theme.js.
+.layout-fluid,
+html[data-bs-layout='fluid'] {
   .container,
   [class^='container-'],
   [class*=' container-'] {
@@ -49,7 +53,8 @@ body {
 //
 // Boxed container
 //
-.layout-boxed {
+.layout-boxed,
+html[data-bs-layout='boxed'] body {
   --theme-boxed-border-radius: 0;
   --theme-boxed-width: #{map.get($container-max-widths, xxl)};
 
@@ -60,6 +65,9 @@ body {
   }
 
   .page {
+    // Makes the frame the containing block of the fixed vertical navbar, so a
+    // sidebar stays inside the boxed page instead of pinning to the viewport.
+    contain: layout;
     max-width: var(--theme-boxed-width);
     margin: 0 auto;
     color: var(--body-color);
@@ -70,7 +78,11 @@ body {
       border: var(--border-width) var(--border-style) var(--border-color);
     }
 
-    > .navbar:first-child {
+    // Whichever navbar opens the frame: the first child on a page that has one
+    // navbar, or the horizontal navbar on a page that renders the vertical
+    // sidebar before it.
+    > .navbar:first-child,
+    > .navbar:not(.navbar-vertical):first-of-type {
       border-start-start-radius: var(--theme-boxed-border-radius);
       border-start-end-radius: var(--theme-boxed-border-radius);
     }

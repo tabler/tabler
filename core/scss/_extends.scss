@@ -84,4 +84,16 @@
   body[data-theme='dark'] [data-theme='light'] {
     @extend [data-bs-theme='dark'];
   }
+
+  // Navbar theme chosen at runtime (data-bs-navbar-theme on <html>). It covers
+  // whichever navigation the page shows — the vertical sidebar is a .navbar
+  // too. Extending the dark color mode keeps this route identical to the
+  // static one, which sets data-bs-theme="dark" on the element itself; the
+  // primary variant is the dark palette on a primary background (see
+  // layout/_navbar.scss). The default value writes no attribute and means
+  // "follow the page", so there is no rule for it.
+  html[data-bs-navbar-theme='dark'] .page > .navbar,
+  html[data-bs-navbar-theme='primary'] .page > .navbar {
+    @extend [data-bs-theme='dark'];
+  }
 }

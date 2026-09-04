@@ -3,23 +3,7 @@
  * to ensure we switch to the chosen dark/light theme as fast as possible.
  * This will prevent any flashes of the light theme (default) before switching.
  */
-interface ThemeConfig {
-  'theme': string
-  'theme-base': string
-  'theme-font': string
-  'theme-primary': string
-  'theme-radius': string
-  'sidebar': string
-}
-
-const themeConfig: ThemeConfig = {
-  'theme': 'auto',
-  'theme-base': 'gray',
-  'theme-font': 'sans-serif',
-  'theme-primary': 'blue',
-  'theme-radius': '1',
-  'sidebar': 'default',
-}
+import { themeDefaults, type ThemeKey } from './src/theme-config'
 
 const params = new Proxy(new URLSearchParams(window.location.search), {
   get: (searchParams: URLSearchParams, prop: string): string | null => searchParams.get(prop),
@@ -27,7 +11,7 @@ const params = new Proxy(new URLSearchParams(window.location.search), {
 
 const prefersDark = window.matchMedia('(prefers-color-scheme: dark)')
 
-for (const key in themeConfig) {
+for (const key in themeDefaults) {
   const param = params[key]
   let selectedValue: string
 
@@ -38,14 +22,14 @@ for (const key in themeConfig) {
     // A stored choice wins; otherwise a server-rendered attribute is the starting value.
     const storedTheme = localStorage.getItem('tabler-' + key)
     const serverValue = document.documentElement.getAttribute('data-bs-' + key)
-    selectedValue = storedTheme ?? serverValue ?? themeConfig[key as keyof ThemeConfig]
+    selectedValue = storedTheme ?? serverValue ?? themeDefaults[key as ThemeKey]
   }
 
   if (key === 'theme' && selectedValue === 'auto') {
     selectedValue = prefersDark.matches ? 'dark' : 'light'
   }
 
-  if (selectedValue !== themeConfig[key as keyof ThemeConfig]) {
+  if (selectedValue !== themeDefaults[key as ThemeKey]) {
     document.documentElement.setAttribute('data-bs-' + key, selectedValue)
   } else {
     document.documentElement.removeAttribute('data-bs-' + key)

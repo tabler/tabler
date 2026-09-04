@@ -19,13 +19,11 @@ interface Props {
   foldedHover?: boolean | undefined
   /** renders a bottom-pinned button toggling the folded state at runtime */
   foldToggle?: boolean | undefined
-  /** renders a user block in the sidebar footer */
-  user?: boolean | undefined
   /** active menu entry, e.g. "layout.vertical" */
   pageMenu?: string | undefined
 }
 
-const { dark = false, breakpoint = 'lg', end = false, transparent = false, folded = false, foldedHover = false, foldToggle = false, user = false, pageMenu } = Astro.props
+const { dark = false, breakpoint = 'lg', end = false, transparent = false, folded = false, foldedHover = false, foldToggle = false, pageMenu } = Astro.props
 
 const isFolded = folded || foldedHover
 
@@ -52,11 +50,23 @@ const asideClass = ['navbar navbar-vertical', end && 'navbar-end', `navbar-expan
       /* Before the collapse, like the regular navbar's side items — on mobile it
         stays in the top bar row; on desktop CSS order moves it to the bottom. */
     }
-    {user && <SidebarUser />}
+    <SidebarUser />
 
     <nav class="collapse navbar-collapse" id="sidebar-menu" aria-label="Sidebar">
       {/* A folded sidebar renders flyout submenus, so the active branch is not kept open inline. */}
       <NavbarMenu autoOpen={!isFolded} class="pt-lg-3" keepOpen={!isFolded} sections pageMenu={pageMenu} />
+
+      {/* .navbar-side: the menu's trailing group, pinned to the bottom of the sidebar. */}
+      <div class="navbar-side">
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <button type="button" class="nav-link" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-settings" aria-controls="offcanvas-settings">
+              <span class="nav-link-icon"><Icon name="brush" /></span>
+              <span class="nav-link-title">Customize</span>
+            </button>
+          </li>
+        </ul>
+      </div>
     </nav>
   </div>
 </aside>

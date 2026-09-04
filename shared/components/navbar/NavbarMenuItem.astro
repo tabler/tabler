@@ -29,6 +29,9 @@ const hasChildren = !!item.children
 const relative = (url?: string) => (isExternal(url) ? url : `./${url}`)
 
 const active = level1Key === currentPage[0] && itemKey === currentPage[1]
+// A group is an ancestor of the current page, not the page itself; only the
+// link that really points at it may claim aria-current.
+const isCurrentPage = active && !hasChildren
 
 const itemClasses = ['dropdown-item', hasChildren && 'dropdown-toggle', active && 'active', item.color && `text-${item.color}`]
 ---
@@ -36,7 +39,7 @@ const itemClasses = ['dropdown-item', hasChildren && 'dropdown-toggle', active &
 <!-- BEGIN NAVBAR ITEM -->{
   hasChildren ? (
     <div class="dropend">
-      <a class:list={itemClasses} href="#" data-bs-toggle="dropdown" data-bs-auto-close={keepOpen ? 'false' : 'outside'} role="button" aria-haspopup="true" aria-expanded="false" aria-current={active ? 'page' : undefined}>
+      <a class:list={itemClasses} href="#" data-bs-toggle="dropdown" data-bs-auto-close={keepOpen ? 'false' : 'outside'} role="button" aria-haspopup="true" aria-expanded="false">
         {item.icon && <Icon name={item.icon} class="icon-inline me-1" />}
 
         {item.title}
@@ -58,7 +61,7 @@ const itemClasses = ['dropdown-item', hasChildren && 'dropdown-toggle', active &
       </div>
     </div>
   ) : (
-    <a class:list={itemClasses} href={relative(item.url)} target={isExternal(item.url) ? '_blank' : undefined} rel={isExternal(item.url) ? 'noopener' : undefined} aria-current={active ? 'page' : undefined}>
+    <a class:list={itemClasses} href={relative(item.url)} target={isExternal(item.url) ? '_blank' : undefined} rel={isExternal(item.url) ? 'noopener' : undefined} aria-current={isCurrentPage ? 'page' : undefined}>
       {item.icon && <Icon name={item.icon} class="icon-inline me-1" />}
 
       {item.title}
