@@ -53,3 +53,16 @@ jobs:
         run: |
           version=$(node -p "require('./core/package.json').version")
           gh release upload "@tabler/core@${version}" "packages-zip/tabler-${version}.zip" --clobber
+
+      # `changesets/action` names the release `@tabler/core@1.5.0` and fills it with
+      # the raw changelog entry. Rename it to `Tabler v1.5.0` and replace the body with
+      # the intro from `.github/release-notes/<version>.md` followed by the changes
+      # grouped per package.
+      - name: Write the release notes
+        if: steps.changesets.outputs.published == 'true'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          version=$(node -p "require('./core/package.json').version")
+          pnpm run release-notes "${RUNNER_TEMP}/release-body.md"
+          gh release edit "@tabler/core@${version}" --title "Tabler v${version}" --notes-file "${RUNNER_TEMP}/release-body.md"
