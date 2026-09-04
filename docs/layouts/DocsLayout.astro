@@ -13,6 +13,7 @@ import DocsSearch from '@components/DocsSearch.astro';
 import DocsClassnames from '@components/DocsClassnames.astro';
 import DocsToc from '@components/DocsToc.astro';
 import type { TocItem } from '@components/DocsToc.astro';
+import DocsCopyMarkdownLink from '@components/DocsCopyMarkdownLink.astro';
 import DocsPagination from '@components/DocsPagination.astro';
 import DocsCard from '@components/DocsCard.astro';
 import { getDocsPage } from '@lib/docs-pages';
@@ -384,9 +385,13 @@ const relatedPages = await Promise.all(
 													</div>
 												)
 											}
-											<div class="d-flex align-items-center">
-												<button class="btn btn-sm">Copy to LLM</button>
-											</div>
+											{
+												markdownUrl && (
+													<div class="d-flex align-items-center">
+														<DocsCopyMarkdownLink url={markdownUrl} />
+													</div>
+												)
+											}
 										</div>
 									</div>
 
