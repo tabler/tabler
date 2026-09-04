@@ -137,9 +137,15 @@ const crawl = async (browser: Browser, base: string, paths: string[]) => {
       const path = queue.shift()!
       const page: Page = await context.newPage()
       const report: PageReport = { url: path, errors: [], warnings: [] }
-      page.on('pageerror', (e) => report.errors.push(`script error: ${String(e).slice(0, 160)}`))
+      // A page can send the browser off the site, like changelog.html does. What
+      // it lands on is someone else's, so nothing it logs, throws or contains is
+      // ours to report.
+      const onSite = () => page.url().startsWith(base)
+      page.on('pageerror', (e) => {
+        if (onSite()) report.errors.push(`script error: ${String(e).slice(0, 160)}`)
+      })
       page.on('console', (m) => {
-        if (m.type() !== 'error') return
+        if (m.type() !== 'error' || !onSite()) return
         const text = m.text()
         if (!CONSOLE_IGNORE.some((re) => re.test(text))) report.warnings.push(`console: ${text.slice(0, 160)}`)
       })
@@ -150,15 +156,17 @@ const crawl = async (browser: Browser, base: string, paths: string[]) => {
       try {
         await page.goto(base + path, { waitUntil: 'load', timeout: 60_000 })
         await page.waitForTimeout(500)
-        const r = (await page.evaluate(INSPECT)) as Inspection
-        for (const id of r.duplicateIds) if (!VENDOR_ID_PREFIXES.some((p) => id.startsWith(p))) report.errors.push(`duplicate id "${id}"`)
-        for (const t of r.missingTargets) report.errors.push(`no element for ${t}`)
-        for (const n of r.nested) report.errors.push(`nested interactive: ${n}`)
-        for (const src of r.imgNoAlt) report.warnings.push(`img without alt: ${src}`)
-        for (const html of r.unnamed) report.warnings.push(`no accessible name: ${html}`)
-        for (const href of r.links) {
-          const key = href.split(/[?#]/)[0]!
-          if (!links.has(key)) links.set(key, path)
+        if (onSite()) {
+          const r = (await page.evaluate(INSPECT)) as Inspection
+          for (const id of r.duplicateIds) if (!VENDOR_ID_PREFIXES.some((p) => id.startsWith(p))) report.errors.push(`duplicate id "${id}"`)
+          for (const t of r.missingTargets) report.errors.push(`no element for ${t}`)
+          for (const n of r.nested) report.errors.push(`nested interactive: ${n}`)
+          for (const src of r.imgNoAlt) report.warnings.push(`img without alt: ${src}`)
+          for (const html of r.unnamed) report.warnings.push(`no accessible name: ${html}`)
+          for (const href of r.links) {
+            const key = href.split(/[?#]/)[0]!
+            if (!links.has(key)) links.set(key, path)
+          }
         }
       } catch (e) {
         report.errors.push(`navigation: ${String(e).slice(0, 160)}`)
