@@ -14,8 +14,13 @@ interface PackageJson {
 
 const pkg: PackageJson = JSON.parse(readFileSync(path.join(__dirname, '../core', 'package.json'), 'utf8'))
 
+// macOS and Windows drop these files into the folders they browse, so a zip
+// built there ships them to everyone who downloads the package.
+const junkFiles = ['.DS_Store', 'Thumbs.db']
+const isJunk = (entry: string): boolean => junkFiles.includes(path.basename(entry))
+
 const zip = new AdmZip()
-zip.addLocalFolder(path.join(__dirname, '../preview/dist'), 'dashboard')
+zip.addLocalFolder(path.join(__dirname, '../preview/dist'), 'dashboard', (entry: string) => !isJunk(entry))
 
 zip.addLocalFile(path.join(__dirname, '../shared/static', 'og.png'), '.', 'preview.png')
 
