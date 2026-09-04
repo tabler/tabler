@@ -31,7 +31,11 @@ const { version } = JSON.parse(readFileSync(join(repoRoot, 'core', 'package.json
 // The `## <version>` block of a changelog, without its heading.
 const versionBlock = (changelog: string): string => {
   const lines = changelog.split('\n')
-  const start = lines.findIndex((line) => line.trim() === `## ${version}`)
+  // `## 1.5.0`, or `## 1.5.0 - 2026-09-05` once the date has been stamped on it.
+  const start = lines.findIndex((line) => {
+    const heading = line.trim()
+    return heading === `## ${version}` || heading.startsWith(`## ${version} - `)
+  })
   if (start === -1) return ''
 
   const rest = lines.slice(start + 1)

@@ -1,11 +1,8 @@
 ---
-import ProseLayout from '@shared/layouts/ProseLayout.astro'
-import { renderMarkdown } from '@shared/lib/render-markdown'
-import changelog from '../../core/CHANGELOG.md?raw'
-
-const changelogHtml = renderMarkdown(changelog)
+// The changelog lives on the website now. The page stays so that the menu link,
+// old bookmarks and the copy in the downloadable package all keep working.
+import RedirectLayout from '@shared/layouts/RedirectLayout.astro'
+import site from '@shared/data/site.json'
 ---
 
-<ProseLayout title="Changelog" pageMenu="help.changelog">
-  <Fragment set:html={changelogHtml} />
-</ProseLayout>
+<RedirectLayout url={site.changelogUrl} />
